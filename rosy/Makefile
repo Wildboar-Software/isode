@@ -62,7 +62,7 @@ lint:		l-rosy l-librosy
 inst-rosy:	$(BINDIR)rosy
 
 $(BINDIR)rosy:	xrosy
-		-cp $@ zxrosy
+		- if [ -f $@ ]; then cp $@ zxrosy; fi
 		-rm -f $@
 		cp xrosy $@
 		-@ls -gls $@
@@ -143,7 +143,7 @@ $(LIBDIR)librosy.a:	librosy.a
 		-@echo ""
 
 $(LINTDIR)llib-lrosy:	llib-lrosy
-		-cp $@ zllib-lrosy
+		- if [ -f $@ ]; then cp $@ zllib-lrosy; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lrosy | \

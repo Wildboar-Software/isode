@@ -73,7 +73,7 @@ lint:		l-initiator l-responder
 inst-initiator:	$(BINDIR)callback
 
 $(BINDIR)callback:	xinitiator
-		-cp $@ zcallback
+		- if [ -f $@ ]; then cp $@ zcallback; fi
 		-rm -f $@
 		cp xinitiator $@
 		-@ls -gls $@
@@ -99,7 +99,7 @@ initiator.o:	$(HFILES)
 inst-responder:	$(SBINDIR)iso.callback
 
 $(SBINDIR)iso.callback:	xresponder
-		-cp $@ ziso.callback
+		- if [ -f $@ ]; then cp $@ ziso.callback; fi
 		-rm -f $@
 		cp xresponder $@
 		-@ls -gls $@

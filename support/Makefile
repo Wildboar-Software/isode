@@ -76,7 +76,7 @@ l-:;
 inst-tsapd:	$(SBINDIR)tsapd
 
 $(SBINDIR)tsapd:	xtsapd
-		-cp $@ zxtsapd
+		- if [ -f $@ ]; then cp $@ zxtsapd; fi
 		-rm -f $@
 		cp xtsapd $@
 		-@ls -gls $@
@@ -97,7 +97,7 @@ tsapd.o:	$(HFILES) $(HDIR)x25.h $(HDIR)logger.h $(HDIR)tailor.h
 inst-iaed:	$(SBINDIR)iaed
 
 $(SBINDIR)iaed:	xiaed
-		-cp $@ zxiaed
+		- if [ -f $@ ]; then cp $@ zxiaed; fi
 		-rm -f $@
 		cp xiaed $@
 		-@ls -gls $@
@@ -135,7 +135,7 @@ man-iaed:;	@$(UTILDIR)inst-man.sh $(MANOPTS) iaed.8c
 inst-isore:	$(SBINDIR)isore
 
 $(SBINDIR)isore:	xisore
-		-cp $@ zxisore
+		- if [ -f $@ ]; then cp $@ zxisore; fi
 		-rm -f $@
 		cp xisore $@
 		-@ls -gls $@
@@ -159,7 +159,7 @@ l-isore:;	$(LINT) $(LFLAGS) isore.c \
 inst-isod:	$(SBINDIR)isod.tsap
 
 $(SBINDIR)isod.tsap:	xisod
-		-cp $@ zxisod
+		- if [ -f $@ ]; then cp $@ zxisod; fi
 		-rm -f $@ \
 			$(SBINDIR)isod.ssap \
 			$(SBINDIR)isod.psap \
@@ -194,7 +194,7 @@ isod.o:		$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 inst-isoc:	$(BINDIR)isoc
 
 $(BINDIR)isoc:	xisoc
-		-cp $@ zxisoc
+		- if [ -f $@ ]; then cp $@ zxisoc; fi
 		-rm -f $@
 		cp xisoc $@
 		-@ls -gls $@
@@ -232,7 +232,7 @@ $(LIBDIR)libisode.a:	libisode.a
 		-@echo ""
 
 $(LINTDIR)llib-lisode:	llib-lisode
-		-cp $@ zllib-lisode
+		- if [ -f $@ ]; then cp $@ zllib-lisode; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lisode | \
@@ -298,7 +298,7 @@ isodevrsn.c:	$(LIBES)
 aliases:	$(ETCDIR)isoaliases
 
 $(ETCDIR)isoaliases:	isoaliases
-		-cp $@ zisoaliases
+		- if [ -f $@ ]; then cp $@ zisoaliases; fi
 		cp isoaliases $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -311,7 +311,7 @@ isoaliases:	aliases.local aliases.db
 entities:	$(ETCDIR)isoentities
 
 $(ETCDIR)isoentities:	isoentities
-		-cp $@ zisoentities
+		- if [ -f $@ ]; then cp $@ zisoentities; fi
 		cp isoentities $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -327,7 +327,7 @@ isoentities:	entities.prefix entities.local entities.db
 macros:		$(ETCDIR)isomacros
 
 $(ETCDIR)isomacros:	isomacros
-		-cp $@ zisomacros
+		- if [ -f $@ ]; then cp $@ zisomacros; fi
 		cp isomacros $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -340,7 +340,7 @@ isomacros:	macros.prefix macros.local macros.db
 objects:	$(ETCDIR)isobjects
 
 $(ETCDIR)isobjects:	isobjects
-		-cp $@ zisobjects
+		- if [ -f $@ ]; then cp $@ zisobjects; fi
 		cp isobjects $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -353,7 +353,7 @@ isobjects:	objects.local objects.db
 services:	$(ETCDIR)isoservices
 
 $(ETCDIR)isoservices:	isoservices
-		-cp $@ zisoservices
+		- if [ -f $@ ]; then cp $@ zisoservices; fi
 		cp isoservices $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -366,7 +366,7 @@ isoservices:	services.local services.db
 tailor:		$(ETCDIR)isotailor
 
 $(ETCDIR)isotailor:	isotailor
-		-cp $@ zisotailor
+		- if [ -f $@ ]; then cp $@ zisotailor; fi
 		cp isotailor $@
 		-chmod a+r $@
 		-@ls -gls $@
@@ -383,7 +383,7 @@ LPP-LLIBS=	$(TOPDIR)llib-lisode-lpp
 inst-lppd:	$(SBINDIR)lppd
 
 $(SBINDIR)lppd:	xlppd
-		-cp $@ zxlppd
+		- if [ -f $@ ]; then cp $@ zxlppd; fi
 		-rm -f $@
 		cp xlppd $@
 		-@ls -gls $@

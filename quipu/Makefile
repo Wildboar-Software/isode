@@ -101,7 +101,7 @@ saber_obj:;	#load $(OFILES) quipuvrsn.o
 inst-quipu:     $(SBINDIR)ros.quipu
 
 $(SBINDIR)ros.quipu:   xquipu
-		-cp $@ zros.quipu
+		- if [ -f $@ ]; then cp $@ zros.quipu; fi
 		-rm -f $@
 		cp xquipu $@
 		-@ls -gls $@

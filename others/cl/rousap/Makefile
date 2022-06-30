@@ -82,7 +82,7 @@ $(LIBDIR)librousap.a:	librousap.a
 		-@echo ""
 
 $(LINTDIR)llib-lrousap:	llib-lrousap
-		-cp $@ zllib-lrousap
+		- if [ -f $@ ]; then cp $@ zllib-lrousap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lrousap > $@

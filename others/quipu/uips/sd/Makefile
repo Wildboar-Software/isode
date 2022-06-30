@@ -53,7 +53,7 @@ inst-sd:    $(BINDIR)sd
 		-mkdir $(ETCDIR)sd
 
 $(BINDIR)sd: xsd
-	        -cp $@ zxsd
+	        - if [ -f $@ ]; then cp $@ zxsd; fi
 	        -rm -f $@
 	        cp xsd $@
 	        -@ls -gls $@

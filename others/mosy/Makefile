@@ -68,7 +68,7 @@ lint:		l-mosy
 inst-mosy:	$(BINDIR)mosy
 
 $(BINDIR)mosy:	xmosy
-		-cp $@ zxmosy
+		- if [ -f $@ ]; then cp $@ zxmosy; fi
 		-rm -f $@
 		cp xmosy $@
 		-@ls -gls $@

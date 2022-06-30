@@ -70,7 +70,7 @@ lint:		l-idistd l-idist
 inst-idistd:	$(SBINDIR)ros.idist
 
 $(SBINDIR)ros.idist:	idistd
-		-cp $@ zros.idist
+		- if [ -f $@ ]; then cp $@ zros.idist; fi
 		-rm -f $@
 		cp idistd $@
 		-@ls -gls $@
@@ -107,7 +107,7 @@ l-idistd:	$(IDISTDC) Idist_tables.c true
 inst-idist:	$(BINDIR)idist
 
 $(BINDIR)idist:	idist
-		-cp $@ zidist
+		- if [ -f $@ ]; then cp $@ zidist; fi
 		-rm -f $@
 		cp idist $@
 		-@ls -gls $@

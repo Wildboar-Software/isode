@@ -99,7 +99,7 @@ $(LIBDIR)libpusap2.a:	libpusap2.a
 		-@echo ""
 
 $(LINTDIR)llib-lpusap2:	llib-lpusap2
-		-cp $@ zllib-lpusap2
+		- if [ -f $@ ]; then cp $@ zllib-lpusap2; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lpusap2 > $@

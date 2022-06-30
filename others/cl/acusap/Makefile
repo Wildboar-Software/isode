@@ -122,7 +122,7 @@ $(LIBDIR)libacusap.a:	libacusap.a
 		-@echo ""
 
 $(LINTDIR)llib-lacusap:	llib-lacusap
-		-cp $@ zllib-lacusap
+		- if [ -f $@ ]; then cp $@ zllib-lacusap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lacusap > $@

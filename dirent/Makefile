@@ -53,7 +53,7 @@ $(LIBDIR)libdirent.a:	libdirent.a
 		-@echo ""
 
 $(LINTDIR)llib-ldirent:	llib-ldirent
-		-cp $@ zllib-ldirent
+		- if [ -f $@ ]; then cp $@ zllib-ldirent; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-ldirent | \

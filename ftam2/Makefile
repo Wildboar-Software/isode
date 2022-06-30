@@ -65,7 +65,7 @@ lint:		l-ftamd l-ftam
 inst-ftamd:	$(SBINDIR)iso.ftam
 
 $(SBINDIR)iso.ftam:	xftamd
-		-cp $@ ziso.ftam
+		- if [ -f $@ ]; then cp $@ ziso.ftam; fi
 		-rm -f $@
 		cp xftamd $@
 		-@ls -gls $@
@@ -101,7 +101,7 @@ ftamd-trans.o:	ftamsystem.h ftamsbr.h DOCS-types.h $(HFILES) \
 inst-ftam:	$(BINDIR)ftam
 
 $(BINDIR)ftam:	xftam
-		-cp $@ zxftam
+		- if [ -f $@ ]; then cp $@ zxftam; fi
 		-rm -f $@
 		cp xftam $@
 		-@ls -gls $@

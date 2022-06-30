@@ -74,7 +74,7 @@ $(QLIB):	true
 inst-doog:	$(BINDIR)doog
 
 $(BINDIR)doog:	xdoog
-		-cp $@ zxdoog
+		- if [ -f $@ ]; then cp $@ zxdoog; fi
 		rm -f $@
 		cp xdoog $@
 		-@ls -gls $@

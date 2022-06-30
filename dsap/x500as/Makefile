@@ -172,7 +172,7 @@ inst-headers:;	-mkdir $(PEPSYDIRM)
 inst-target:	$(PEPSYDIR)$(TARGET)
 
 $(PEPSYDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""

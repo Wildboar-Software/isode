@@ -59,7 +59,7 @@ HFILES	=	$(HDIR)tsap.h $(HDIR)tusap.h \
 #inst-tsapud:	$(ETCDIR)tsapud
 
 #$(ETCDIR)tsapud:	xtsapud
-#		-cp $@ zxtsapud
+#		- if [ -f $@ ]; then cp $@ zxtsapud; fi
 #		-rm -f $@
 #		cp xtsapud $@
 #		-@ls -gls $@

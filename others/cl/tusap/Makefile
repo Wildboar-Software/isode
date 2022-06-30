@@ -85,7 +85,7 @@ $(LIBDIR)libtusap.a:	libtusap.a
 		-@echo ""
 
 $(LINTDIR)llib-ltusap:	llib-ltusap
-		-cp $@ zllib-ltusap
+		- if [ -f $@ ]; then cp $@ zllib-ltusap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-ltusap > $@

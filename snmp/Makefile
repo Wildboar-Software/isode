@@ -81,7 +81,7 @@ lint:		l-snmpd l-snmpc l-snmpt l-unixd l-snmpi
 inst-snmpd:	$(SBINDIR)snmpd
 
 $(SBINDIR)snmpd: xsnmpd
-		-cp $@ zsnmpd
+		- if [ -f $@ ]; then cp $@ zsnmpd; fi
 		-rm -f $@
 		cp xsnmpd $@
 		-@ls -gls $@
@@ -126,7 +126,7 @@ smux-g.o:	smux-g.h $(HDIR)internet.h
 inst-snmpc:	$(SBINDIR)snmpc
 
 $(SBINDIR)snmpc: xsnmpc
-		-cp $@ zsnmpc
+		- if [ -f $@ ]; then cp $@ zsnmpc; fi
 		-rm -f $@
 		cp xsnmpc $@
 		-@ls -gls $@
@@ -159,7 +159,7 @@ snmpc.o:	SNMP-types.h mib.h objects.h smux.h $(HFILES) $(HDIR)tailor.h \
 inst-snmpt:	$(SBINDIR)snmpt
 
 $(SBINDIR)snmpt: xsnmpt
-		-cp $@ zsnmpt
+		- if [ -f $@ ]; then cp $@ zsnmpt; fi
 		-rm -f $@
 		cp xsnmpt $@
 		-@ls -gls $@
@@ -190,7 +190,7 @@ snmpt.o:	SNMP-types.h mib.h objects.h smux.h $(HFILES) $(HDIR)tailor.h \
 inst-unixd:	$(SBINDIR)smux.unixd
 
 $(SBINDIR)smux.unixd: xunixd
-		-cp $@ zunixd
+		- if [ -f $@ ]; then cp $@ zunixd; fi
 		-rm -f $@
 		cp xunixd $@
 		-@ls -gls $@
@@ -228,7 +228,7 @@ unixFs.o:	SNMP-types.h objects.h smux.h $(HFILES) $(HDIR)logger.h
 inst-snmpi:	$(BINDIR)snmpi
 
 $(BINDIR)snmpi:	xsnmpi
-		-cp $@ zxsnmpi
+		- if [ -f $@ ]; then cp $@ zxsnmpi; fi
 		-rm -f $@
 		cp xsnmpi $@
 		-@ls -gls $@
@@ -261,25 +261,25 @@ inst-headers:	$(INCDIR)snmp/objects.h $(INCDIR)snmp/smux.h \
 			$(PEPSYDIR)SNMP-types.h $(PEPSYDIR)SNMP.ph
 
 $(INCDIR)snmp/objects.h: objects.h
-		-cp $@ zobjects.h
+		- if [ -f $@ ]; then cp $@ zobjects.h; fi
 		cp objects.h $@
 		-@ls -gls $@
 		-@echo ""
 
 $(INCDIR)snmp/smux.h: smux.h
-		-cp $@ zsmux.h
+		- if [ -f $@ ]; then cp $@ zsmux.h; fi
 		cp smux.h $@
 		-@ls -gls $@
 		-@echo ""
 
 $(PEPSYDIR)SNMP-types.h: SNMP-types.h
-		-cp $@ zSNMP-types.h
+		- if [ -f $@ ]; then cp $@ zSNMP-types.h; fi
 		cp SNMP-types.h $@
 		-@ls -gls $@
 		-@echo ""
 
 $(PEPSYDIR)SNMP.ph: SNMP.ph
-		-cp $@ zSNMP.ph
+		- if [ -f $@ ]; then cp $@ zSNMP.ph; fi
 		cp SNMP.ph $@
 		-@ls -gls $@
 		-@echo ""
@@ -299,7 +299,7 @@ $(LIBDIR)libisnmp.a:	libisnmp.a
 		-@echo ""
 
 $(LINTDIR)llib-lisnmp:	llib-lisnmp
-		-cp $@ zllib-lisnmp
+		- if [ -f $@ ]; then cp $@ zllib-lisnmp; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)snmp/\1"%' \
 			< llib-lisnmp | \
@@ -354,7 +354,7 @@ runcom:;
 inst-peers:	$(ETCDIR)snmpd.peers
 
 $(ETCDIR)snmpd.peers:	snmpd.peers
-		-cp $@ zsnmpd.peers
+		- if [ -f $@ ]; then cp $@ zsnmpd.peers; fi
 		-rm -f $@
 		cp snmpd.peers $@
 		-chmod 600 $@
@@ -383,7 +383,7 @@ inst-objects:;	-mkdir $(INCDIR)snmp
 inst-target:	$(ETCDIR)$(TARGET)
 
 $(ETCDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		-rm -f $@
 		cp $(TARGET) $@
 		-@if [ "$(TARGET)" = "objects.defs" ]; then \
@@ -394,7 +394,7 @@ $(ETCDIR)$(TARGET):	$(TARGET)
 inst-target2:	$(INCDIR)snmp/$(TARGET2)
 
 $(INCDIR)snmp/$(TARGET2):	$(TARGET2)
-		-cp $@ z$(TARGET2)
+		- if [ -f $@ ]; then cp $@ z$(TARGET2); fi
 		-rm -f $@
 		cp $(TARGET2) $@
 		-@ls -gls $@

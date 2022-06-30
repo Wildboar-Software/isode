@@ -80,7 +80,7 @@ LLOCKC =	llock.c rfainfo.c dirname.c tailor.c ls.o advise.c
 inst-llock:	$(BINDIR)llock
 
 $(BINDIR)llock:	xllock
-		-cp $@ zllock
+		- if [ -f $@ ]; then cp $@ zllock; fi
 		-rm -f $@
 		-rm -f $(BINDIR)lunlock
 		cp xllock $@
@@ -105,7 +105,7 @@ l-llock:;	$(LINT) $(LFLAGS) $(LLOCKC) \
 inst-rfatime:	$(SBINDIR)rfatime
 
 $(SBINDIR)rfatime:	xrfatime
-		-cp $@ zrfatime
+		- if [ -f $@ ]; then cp $@ zrfatime; fi
 		-rm -f $@
 		cp xrfatime $@
 		chown root $@
@@ -137,7 +137,7 @@ RFADO=		rfad.o RFA-Rops.o ryresponder.o reqmaster.o filedata.o \
 inst-rfad:	$(SBINDIR)ros.rfa
 
 $(SBINDIR)ros.rfa:	xrfad
-		-cp $@ zxros.rfa
+		- if [ -f $@ ]; then cp $@ zxros.rfa; fi
 		-rm -f $@
 		cp xrfad $@
 		chown root $@
@@ -178,7 +178,7 @@ RFAC	=	ls.c dirname.c rfainfo.c sync.c rfa2fi.c getfile.c printerr.c\
 inst-rfa:	$(BINDIR)rfa
 
 $(BINDIR)rfa:	xrfa
-		-cp $@ zxrfa
+		- if [ -f $@ ]; then cp $@ zxrfa; fi
 		-rm -f $@
 		cp xrfa $@
 		chown root $@

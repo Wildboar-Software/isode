@@ -71,7 +71,7 @@ lint:           l-de
 inst-de:	$(BINDIR)de
 
 $(BINDIR)de:	xde
-		-cp $@ zxde
+		- if [ -f $@ ]; then cp $@ zxde; fi
 		-rm -f $@
 		cp xde $@
 		-@ls -gls $@

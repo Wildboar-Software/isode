@@ -66,7 +66,7 @@ lint:		l-osilookup
 inst-osilookup:	$(SBINDIR)osilookup
 
 $(SBINDIR)osilookup:	xosilookup
-		-cp $@ zxosilookup
+		- if [ -f $@ ]; then cp $@ zxosilookup; fi
 		-rm -f $@
 		cp xosilookup $@
 		-@ls -gls $@

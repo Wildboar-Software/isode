@@ -49,7 +49,7 @@ inst-all:;      -mkdir $(INCDIR)quipu
 inst-target:    $(DIR)/$(TARGET)
 
 $(DIR)/$(TARGET):       $(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< $(TARGET) | \
 			sed -e 's%#include "/usr/include/\(.*\)"%#include <\1>%' > $@

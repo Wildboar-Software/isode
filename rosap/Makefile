@@ -86,7 +86,7 @@ $(LIBDIR)librosap.a:	librosap.a
 		-@echo ""
 
 $(LINTDIR)llib-lrosap:	llib-lrosap
-		-cp $@ zllib-lrosap
+		- if [ -f $@ ]; then cp $@ zllib-lrosap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lrosap | \

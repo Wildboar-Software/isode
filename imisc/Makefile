@@ -66,7 +66,7 @@ lint-lpp:;	$(MAKE) LPP=-lpp lint
 inst-imiscd:	$(SBINDIR)$(ROS)imisc
 
 $(SBINDIR)$(ROS)imisc:	ximiscd$(LPP)
-		-cp $@ z$(ROS)imisc
+		- if [ -f $@ ]; then cp $@ z$(ROS)imisc; fi
 		-rm -f $@
 		cp ximiscd$(LPP) $@
 		-@ls -gls $@
@@ -101,7 +101,7 @@ ryresponder.o:	ryresponder.h $(HFILES) $(HDIR)tailor.h
 inst-imisc:	$(BINDIR)imisc$(LPP)
 
 $(BINDIR)imisc$(LPP):	ximisc$(LPP)
-		-cp $@ zximisc$(LPP)
+		- if [ -f $@ ]; then cp $@ zximisc$(LPP); fi
 		-rm -f $@
 		cp ximisc$(LPP) $@
 		-@ls -gls $@

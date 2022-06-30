@@ -81,7 +81,7 @@ $(LIBDIR)librtsap.a:	librtsap.a
 		-@echo ""
 
 $(LINTDIR)llib-lrtsap:	llib-lrtsap
-		-cp $@ zllib-lrtsap
+		- if [ -f $@ ]; then cp $@ zllib-lrtsap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lrtsap | \

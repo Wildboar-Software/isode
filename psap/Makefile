@@ -93,7 +93,7 @@ $(LIBDIR)libpsap.a:	libpsap.a
 		-@echo ""
 
 $(LINTDIR)llib-lpsap:	llib-lpsap
-		-cp $@ zllib-lpsap
+		- if [ -f $@ ]; then cp $@ zllib-lpsap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lpsap | \

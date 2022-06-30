@@ -70,7 +70,7 @@ lint:           l-fred l-dad
 inst-fred:	$(BINDIR)fred
 
 $(BINDIR)fred:	xfred
-		-cp $@ zxfred
+		- if [ -f $@ ]; then cp $@ zxfred; fi
 		-rm -f $@
 		cp xfred $@
 		-rm -f $(SBINDIR)in.whitepages
@@ -149,7 +149,7 @@ ufnrc:
 inst-fredsh:	$(SBINDIR)fredsh
 
 $(SBINDIR)fredsh:	xfredsh Makefile
-		-cp $@ zxfredsh
+		- if [ -f $@ ]; then cp $@ zxfredsh; fi
 		-rm -f $@
 		sed -e 's%@(BINDIR)%$(BINDIR)%' < fredsh.sh > $@
 		chmod a+rx $@
@@ -171,7 +171,7 @@ xfredsh:	fredsh.sh
 inst-fredman:	$(ETCDIR)fred.0
 
 $(ETCDIR)fred.0:	fred.1c Makefile
-		-cp $@ zfred.0
+		- if [ -f $@ ]; then cp $@ zfred.0; fi
 		-rm -f $@
 		(echo '.ds ED $(ETCDIR)' ; cat fred.1c) | \
 			nroff -man -Tlpr | \
@@ -188,7 +188,7 @@ $(ETCDIR)fred.0:	fred.1c Makefile
 inst-dad:	$(SBINDIR)dad
 
 $(SBINDIR)dad:	xdad
-		-cp $@ zxdad
+		- if [ -f $@ ]; then cp $@ zxdad; fi
 		-rm -f $@
 		cp xdad $@
 		-@ls -gls $@
@@ -211,7 +211,7 @@ l-dad:;		$(LINT) $(LFLAGS) dad.c ../dish/socket.c $(LLIBS) \
 inst-whitepages:	$(BINDIR)whitepages
 
 $(BINDIR)whitepages:	xwhitepages
-		-cp $@ zxwhitepages
+		- if [ -f $@ ]; then cp $@ zxwhitepages; fi
 		-rm -f $@
 		cp xwhitepages $@
 		-@ls -gls $@

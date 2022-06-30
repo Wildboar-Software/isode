@@ -67,7 +67,7 @@ lint:		l-vtd l-vt
 inst-vtd:	$(SBINDIR)iso.vt
 
 $(SBINDIR)iso.vt:	xvtd
-		-cp $@ ziso.vt
+		- if [ -f $@ ]; then cp $@ ziso.vt; fi
 		-rm -f $@
 		cp xvtd $@
 		-@ls -gls $@
@@ -103,7 +103,7 @@ l-vtd:		$(PYFILES-C) true
 inst-vt:	$(BINDIR)vt
 
 $(BINDIR)vt:	xvt
-		-cp $@ zxvt
+		- if [ -f $@ ]; then cp $@ zxvt; fi
 		-rm -f $@
 		cp xvt $@
 		-@ls -gls $@

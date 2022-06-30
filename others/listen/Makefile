@@ -49,7 +49,7 @@ lint:		l-listen l-initiate
 inst-listen:	$(BINDIR)listen
 
 $(BINDIR)listen:	xlisten
-		-cp $@ zxlisten
+		- if [ -f $@ ]; then cp $@ zxlisten; fi
 		-rm -f $@
 		cp xlisten $@
 		-@ls -gls $@
@@ -78,7 +78,7 @@ report.o:	../callback/report.c
 inst-initiate:	$(BINDIR)initiate
 
 $(BINDIR)initiate:	xinitiate
-		-cp $@ zxinitiate
+		- if [ -f $@ ]; then cp $@ zxinitiate; fi
 		-rm -f $@
 		cp xinitiate $@
 		-@ls -gls $@

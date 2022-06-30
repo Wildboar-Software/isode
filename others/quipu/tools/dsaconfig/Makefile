@@ -84,7 +84,7 @@ $(ETCDIR)dsaptailor: dsaptailor $(TOPDIR)dsap/dsaptailor.root-dsas
 inst-dsaconfig:	$(SBINDIR)dsaconfig
 
 $(SBINDIR)dsaconfig:	xdsaconfig
-		-cp $@ zxdsaconfig
+		- if [ -f $@ ]; then cp $@ zxdsaconfig; fi
 		-rm -f $@
 		cp xdsaconfig $@
 		-@ls -gls $@
@@ -107,7 +107,7 @@ l-dsaconfig:;	$(LINT) $(LFLAGS) dsaconfig.c $(LLIBS) \
 inst-usconfig:	$(SBINDIR)usconfig
 
 $(SBINDIR)usconfig:	xusconfig
-		-cp $@ zxusconfig
+		- if [ -f $@ ]; then cp $@ zxusconfig; fi
 		-rm -f $@
 		cp xusconfig $@
 		-@ls -gls $@

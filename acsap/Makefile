@@ -92,7 +92,7 @@ $(LIBDIR)libacsap.a:	libacsap.a
 		-@echo ""
 
 $(LINTDIR)llib-lacsap:	llib-lacsap
-		-cp $@ zllib-lacsap
+		- if [ -f $@ ]; then cp $@ zllib-lacsap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lacsap | \
@@ -106,7 +106,7 @@ inst-headers:;	@for h in $(HEADERS); do $(MAKE) TARGET=$$h inst-target; done
 inst-target:	$(PEPSYDIR)$(TARGET)
 
 $(PEPSYDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""
@@ -227,7 +227,7 @@ l-acsaptest:;	$(LINT) $(LFLAGS) acsaptest.c llib-lacsap $(LLIBS) \
 inst-dased:	$(SBINDIR)dased
 
 $(SBINDIR)dased:	xdased
-		-cp $@ zxdased
+		- if [ -f $@ ]; then cp $@ zxdased; fi
 		-rm -f $@
 		cp xdased $@
 		-@ls -gls $@

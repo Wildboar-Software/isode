@@ -57,7 +57,7 @@ inst-pod:	$(BINDIR)pod
 		-mkdir $(ETCDIR)xd
 
 $(BINDIR)pod:	xpod
-	        -cp $@ zxpod
+	        - if [ -f $@ ]; then cp $@ zxpod; fi
 	        -rm -f $@
 	        cp xpod $@
 	        -@ls -gls $@

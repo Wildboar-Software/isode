@@ -78,7 +78,7 @@ lint:		l-ftamd-ftp
 inst-ftamd-ftp:	$(SBINDIR)iso.ftam-ftp
 
 $(SBINDIR)iso.ftam-ftp:	xftamd-ftp
-		-cp $@ zxftamd-ftp
+		- if [ -f $@ ]; then cp $@ zxftamd-ftp; fi
 		-rm -f $@
 		cp xftamd-ftp $@
 		-@ls -gls $@

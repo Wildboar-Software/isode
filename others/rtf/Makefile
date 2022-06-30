@@ -69,7 +69,7 @@ lint:		l-rtfd l-rtf
 inst-rtfd:	$(SBINDIR)iso.rtf
 
 $(SBINDIR)iso.rtf:	xrtfd
-		-cp $@ ziso.rtf
+		- if [ -f $@ ]; then cp $@ ziso.rtf; fi
 		-rm -f $@
 		cp xrtfd $@
 		-@ls -gls $@
@@ -96,7 +96,7 @@ rtfd.o:		$(HFILES) RTF-types.h
 inst-rtf:	$(BINDIR)rtf
 
 $(BINDIR)rtf:	xrtf
-		-cp $@ zrtf
+		- if [ -f $@ ]; then cp $@ zrtf; fi
 		-rm -f $@
 		cp xrtf $@
 		-@ls -gls $@

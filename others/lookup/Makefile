@@ -76,7 +76,7 @@ lint:		l-lookupd l-lookup
 inst-lookupd:	$(SBINDIR)ros.lookup
 
 $(SBINDIR)ros.lookup:	lookupd
-		-cp $@ zros.lookup
+		- if [ -f $@ ]; then cp $@ zros.lookup; fi
 		-rm -f $@
 		cp lookupd $@
 		-@ls -gls $@
@@ -111,7 +111,7 @@ ryresponder.o:	ryresponder.h
 inst-lookup:	$(BINDIR)lookup
 
 $(BINDIR)lookup:	lookup
-		-cp $@ zlookup
+		- if [ -f $@ ]; then cp $@ zlookup; fi
 		-rm -f $@
 		cp lookup $@
 		-@ls -gls $@

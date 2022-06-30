@@ -94,7 +94,7 @@ $(LIBDIR)libdsap.a:     libdsap.a
 		-@echo ""
 
 $(LINTDIR)llib-ldsap:   llib-ldsap
-		-cp $@ zllib-ldsap
+		- if [ -f $@ ]; then cp $@ zllib-ldsap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-ldsap | \
@@ -174,21 +174,21 @@ $(ETCDIR)dsaptailor: dsaptailor dsaptailor.root-dsas
 inst-oidtable:  $(ETCDIR)oidtable.at $(ETCDIR)oidtable.gen $(ETCDIR)oidtable.oc
 
 $(ETCDIR)oidtable.at: oidtable.at oidtable.at.local 
-		-cp $@ zoidtable.at
+		- if [ -f $@ ]; then cp $@ zoidtable.at; fi
 		cat oidtable.at oidtable.at.local > $@
 		-chmod a+r $@
 		-@ls -gls $@
 		-@echo ""
 
 $(ETCDIR)oidtable.gen: oidtable.gen oidtable.gen.local
-		-cp $@ zoidtable.gen
+		- if [ -f $@ ]; then cp $@ zoidtable.gen; fi
 		cat oidtable.gen oidtable.gen.local > $@
 		-chmod a+r $@
 		-@ls -gls $@
 		-@echo ""
 
 $(ETCDIR)oidtable.oc: oidtable.oc oidtable.oc.local
-		-cp $@ zoidtable.oc
+		- if [ -f $@ ]; then cp $@ zoidtable.oc; fi
 		cat oidtable.oc oidtable.oc.local > $@
 		-chmod a+r $@
 		-@ls -gls $@

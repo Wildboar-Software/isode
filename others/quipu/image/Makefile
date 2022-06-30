@@ -61,7 +61,7 @@ lint:		l-xface l-xwho
 inst-xface:	$(BINDIR)xface
 
 $(BINDIR)xface:	xface
-		-cp $@ zxface
+		- if [ -f $@ ]; then cp $@ zxface; fi
 		-rm -f $@
 		cp xface $@
 		-@ls -gls $@
@@ -86,7 +86,7 @@ imagesbr.o:	imagesbr.h
 inst-xwho:	$(BINDIR)xwho
 
 $(BINDIR)xwho:	xwho
-		-cp $@ zxwho
+		- if [ -f $@ ]; then cp $@ zxwho; fi
 		-rm -f $@
 		cp xwho $@
 		-@ls -gls $@
