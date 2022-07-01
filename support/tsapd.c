@@ -997,9 +997,9 @@ char	**vec;
 
 /*  */
 
-static	search_directory ( int	firstime;
+static	search_directory ( int	firstime )
 {
-							)nt	    i;
+							int	    i;
 	struct ds_search_arg *sa = &search_arg;
 		struct ds_search_result search_result;
 			struct ds_search_result *sr = &search_result;
@@ -1385,7 +1385,7 @@ static int  rebind_to_directory () {
 
 /*  */
 
-static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *be) {
+static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -1423,11 +1423,11 @@ static int  unbind_from_directory () {
 
 /*  */
 
-static int  do_error ( struct DSError *de;
+static int  do_error ( struct DSError *de )
 {
 	if (de -> dse_type == DSE_REFERRAL
 			&& de -> ERR_REFERRAL.DSE_ref_candidates) {
-							 )egister struct access_point *ap;
+							 struct access_point *ap;
 			struct ds_bind_arg bind_arg,
 				bind_result;
 				struct ds_bind_arg *ba = &bind_arg,
