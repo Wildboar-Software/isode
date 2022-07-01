@@ -107,6 +107,7 @@ char   *gensym (), *modsym ();
 static MD	lookup_module ();
 static FILE   *open_ph_file ();
 static SY	new_symbol (), add_symbol ();
+extern FILE *yyin, *yyout;
 
 YP	lookup_type ();
 static YP	lookup_binding ();
@@ -129,6 +130,9 @@ main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
 	struct section *sectp;
+
+    yyin  = stdin;
+    yyout = stdout;
 
 	fprintf (stderr, "%s\n", pepyversion);
 

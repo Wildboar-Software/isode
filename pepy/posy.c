@@ -123,6 +123,7 @@ static char sysact[BUFSIZ];
 
 static FILE *fact;
 static FILE *fdef;
+extern FILE *yyin, *yyout;
 
 typedef struct modlist {
 	char   *md_module;
@@ -186,8 +187,11 @@ main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *dp;
 
-	dp = pepyversion + strlen ("pepy ");
-	fprintf (stderr, "posy %s\n", dp);
+    yyin  = stdin;
+    yyout = stdout;
+
+    dp = pepyversion + strlen ("pepy ");
+    fprintf (stderr, "posy %s\n", dp);
 
 	sysout[0] = sysdef[0] = sysact[0] = NULL;
 	for (argc--, argv++; argc > 0; argc--, argv++) {

@@ -86,6 +86,7 @@ static char systub[BUFSIZ];
 static FILE *fdef;
 static FILE *ftbl;
 static FILE *fstb;
+extern FILE *yyin, *yyout;
 
 typedef struct symlist {
 	char   *sy_encpref;
@@ -151,6 +152,9 @@ int
 main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
+
+    yyin  = stdin;
+    yyout = stdout;
 
 	fprintf (stderr, "%s\n", rosyversion);
 

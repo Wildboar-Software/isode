@@ -209,6 +209,7 @@ static	write_ph_file ();
 extern void exit();	/* to keep lint happy */
 
 static FILE   *open_ph_file ();
+extern FILE *yyin, *yyout;
 
 YP	lookup_type ();
 
@@ -224,8 +225,11 @@ main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *dp;
 
-	dp = pepsyversion + strlen ("pepsy ");
-	fprintf (stderr, "pepsy %s\n", dp);
+    yyin  = stdin;
+    yyout = stdout;
+
+    dp = pepsyversion + strlen ("pepsy ");
+    fprintf (stderr, "pepsy %s\n", dp);
 
 	sysout[0] = sysdef[0] = sysact[0] = NULL;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
@@ -352,7 +356,7 @@ yyerror (char *s) {
 warning (char* fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
-	va_list ap;
+	va_list	ap;
 
 	va_start (ap, fmt);
 
@@ -408,7 +412,7 @@ myyerror (char* fmt, ...) {
 #ifndef	lint
 static	pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
-	va_list ap;
+	va_list	ap;
 
 	va_start (ap, fmt);
 

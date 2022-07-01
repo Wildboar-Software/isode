@@ -102,7 +102,7 @@ cmd_list:	/* empty */
 	;
 
 cmd:		USER SP username CRLF
-		= {
+		{
 			/* remote host information may appear in user
 			 * name as user@osihost.  Save user and hostname until
 			 * all neccessary information is gathered.
@@ -128,7 +128,7 @@ cmd:		USER SP username CRLF
 			free((char*)$3);
 		}
 	|	PASS SP password CRLF
-		= {
+		{
 			/* Try and login. dologin() checks if it has
 			 * all the neccessary information to try and login.
 			 * Appropriate response codes are generated.
@@ -138,24 +138,24 @@ cmd:		USER SP username CRLF
 			free((char*)$3);
 		}
 	|	SITE SP osi_hostname CRLF
-		= {
+		{
 			osi_host = savestr((char*)$3);
 			logged_in = ftp_passwd ? dologin() : 0;
 			free((char*)$3);
 		}
 	|	ACCT SP account CRLF
-		= {
+		{
 			ftp_account = savestr((char*)$3);
 			logged_in = dologin();
 			free((char*)$3);
 		}
 	|	PORT SP host_port CRLF
-		= {
+		{
 			usedefault = 0;
 			ack((char*)$1);
 		}
 	|	TYPE SP type_code CRLF
-		= {
+		{
 			/* The ISODE supports three file types:
 			 *	binary
 			 *	text
@@ -197,7 +197,7 @@ cmd:		USER SP username CRLF
 			}
 		}
 	|	STRU SP struct_code CRLF
-		= {
+		{
 			switch ($3) {
 
 			case STRU_F:
@@ -209,7 +209,7 @@ cmd:		USER SP username CRLF
 			}
 		}
 	|	MODE SP mode_code CRLF
-		= {
+		{
 			switch ($3) {
 
 			case MODE_S:
@@ -221,56 +221,56 @@ cmd:		USER SP username CRLF
 			}
 		}
 	|	ALLO SP NUMBER CRLF
-		= {
+		{
 			ack((char*)$1);
 		}
 	|	RETR check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				retrieve((char*)$4);
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	STOR check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				ftp_store((char*)$4, "w");
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	APPE check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				ftp_store((char *)$4, "a");
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	NLST check_login CRLF
-		= {
+		{
 			if ($2)
 				directory("NLST",".");
 		}
 	|	NLST check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				directory("NLST", (char*)$4);
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	LIST check_login CRLF
-		= {
+		{
 			if ($2)
 				directory("LIST", ".");
 		}
 	|	LIST check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				directory("LIST", (char*)$4);
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	DELE check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				ftp_delete((char*)$4);
 			if ($4 != NULL)
@@ -278,37 +278,37 @@ cmd:		USER SP username CRLF
 		}
 	|	rename_cmd
 	|	HELP CRLF
-		= {
+		{
 			help((char*)0);
 		}
 	|	HELP SP STRING CRLF
-		= {
+		{
 			help((char*)$3);
 		}
 	|	NOOP CRLF
-		= {
+		{
 			ack((char*)$1);
 		}
 	|	XMKD check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				(void)makedir((char*)$4);
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	XRMD check_login SP pathname CRLF
-		= {
+		{
 			if ($2 && $4 != NULL)
 				removedir((char*)$4);
 			if ($4 != NULL)
 				free((char*)$4);
 		}
 	|	QUIT CRLF
-		= {
+		{
 			dologout(0);
 		}
 	|	error CRLF
-		= {
+		{
 			yyerrok;
 		}
 	;
@@ -329,7 +329,7 @@ byte_size:	NUMBER
 
 host_port:	NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA 
 		NUMBER COMMA NUMBER
-		= {
+		{
 			register char *a, *p;
 
 			a = (char *)&data_dest.sin_addr;
@@ -341,91 +341,91 @@ host_port:	NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA
 	;
 
 form_code:	N
-	= {
+	{
 		$$ = FORM_N;
 	}
 	|	T
-	= {
+	{
 		$$ = FORM_T;
 	}
 	|	C
-	= {
+	{
 		$$ = FORM_C;
 	}
 	;
 
 type_code:	A
-	= {
+	{
 		cmd_type = TYPE_A;
 		cmd_form = FORM_N;
 	}
 	|	A SP form_code
-	= {
+	{
 		cmd_type = TYPE_A;
 		cmd_form = $3;
 	}
 	|	E
-	= {
+	{
 		cmd_type = TYPE_E;
 		cmd_form = FORM_N;
 	}
 	|	E SP form_code
-	= {
+	{
 		cmd_type = TYPE_E;
 		cmd_form = $3;
 	}
 	|	I
-	= {
+	{
 		cmd_type = TYPE_I;
 	}
 	|	L
-	= {
+	{
 		cmd_type = TYPE_L;
 		cmd_bytesz = 8;
 	}
 	|	L SP byte_size
-	= {
+	{
 		cmd_type = TYPE_L;
 		cmd_bytesz = $3;
 	}
 	/* this is for a bug in the BBN ftp */
 	|	L byte_size
-	= {
+	{
 		cmd_type = TYPE_L;
 		cmd_bytesz = $2;
 	}
 	;
 
 struct_code:	F
-	= {
+	{
 		$$ = STRU_F;
 	}
 	|	R
-	= {
+	{
 		$$ = STRU_R;
 	}
 	|	P
-	= {
+	{
 		$$ = STRU_P;
 	}
 	;
 
 mode_code:	S
-	= {
+	{
 		$$ = MODE_S;
 	}
 	|	B
-	= {
+	{
 		$$ = MODE_B;
 	}
 	|	C
-	= {
+	{
 		$$ = MODE_C;
 	}
 	;
 
 pathname:	pathstring
-	= {
+	{
 			$$ = $1;
 	}
 	;
@@ -434,7 +434,7 @@ pathstring:	STRING
 	;
 
 rename_cmd:	rename_from rename_to
-	= {
+	{
 		if ($1 && $2)
 			renamecmd((char*)$1, (char*)$2);
 		else
@@ -447,7 +447,7 @@ rename_cmd:	rename_from rename_to
 	;
 
 rename_from:	RNFR check_login SP pathname CRLF
-	= {
+	{
 		char *from = 0, *renamefrom();
 
 		if ($2 && $4)
@@ -459,13 +459,13 @@ rename_from:	RNFR check_login SP pathname CRLF
 	;
 
 rename_to:	RNTO SP pathname CRLF
-	= {
+	{
 		$$ = $3;
 	}
 	;
 
 check_login:	/* empty */
-	= {
+	{
 		if (logged_in)
 			$$ = 1;
 		else {
