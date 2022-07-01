@@ -1,24 +1,15 @@
-__END_DECLS static int
-readv (int fd, struct iovec *iov, int iovcnt) {
-	struct msghdr hdr;
+/*
+ * $XConsortium: XlibInt.c,v 11.90 88/09/30 17:25:18 jim Exp $
+ */
 
-	hdr.msg_iov = iov;
-	hdr.msg_iovlen = iovcnt;
-	hdr.msg_accrights = 0;
-	hdr.msg_accrightslen = 0;
-	hdr.msg_name = 0;
-	hdr.msg_namelen = 0;
-
-	return (recvmsg (fd, &hdr, 0));
-}
-
-static int
-writev (
-	int fd;
-	struct iovec *iov;
-	int iovcnt;
-{
-	D_REPLIES
+#include "copyright.h"
+/* Copyright    Massachusetts Institute of Technology    1985, 1986, 1987 */
+/*
+ *	XlibInternal.c - Internal support routines for the C subroutine
+ *	interface library (Xlib) to the X Window System Protocol V11.0.
+ */
+#define NEED_EVENTS
+#define NEED_REPLIES
 
 #include <stdio.h>
 #include "Xlibint.h"
@@ -35,10 +26,26 @@ writev (
 	/*
 	 * Cray UniCOS does not have readv and writev so we emulate
 	 */
+#include <sys/socket.h>
+
+static int readv (int fd, struct iovec *iov, int iovcnt) {
+	struct msghdr hdr;
+
+	hdr.msg_iov = iov;
+	hdr.msg_iovlen = iovcnt;
+	hdr.msg_accrights = 0;
+	hdr.msg_accrightslen = 0;
+	hdr.msg_name = 0;
+	hdr.msg_namelen = 0;
+
+	return (recvmsg (fd, &hdr, 0));
+}
+
+static int writev (
 	int fd,
-		struct iovec *iov,
-			int iovcnt
-		) {
+	struct iovec *iov,
+	int iovcnt
+) {
 		struct msghdr hdr;
 
 		hdr.msg_iov = iov;
