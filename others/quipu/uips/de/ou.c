@@ -43,7 +43,7 @@ extern int highNumber;
 extern int exactMatch;
 extern char exactString[];
 
-struct namelist * ouatts;
+extern struct namelist * ouatts;
 
 struct ds_search_arg *fillMostOUSearchArgs();
 

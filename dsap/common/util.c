@@ -212,7 +212,6 @@ PElementID id;
 
 #ifndef lint
 ps_printf (PS ps, char *fmt, ...) {
-	PS ps;
 	extern int std_flush ();
 	va_list ap;
 

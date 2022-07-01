@@ -30,9 +30,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/filter
 #include "util.h"
 #include "filter.h"
 
-struct ds_search_arg sarg;
-struct ds_search_result sresult;
-struct DSError serror;
+extern struct ds_search_arg sarg;
+extern struct ds_search_result sresult;
+extern struct DSError serror;
 
 struct s_filter *
 	andfilter () {

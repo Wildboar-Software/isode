@@ -55,8 +55,8 @@ extern int explicit;
 extern char *tab;
 static int cons_type = 0;
 
-s_table *ptr;
-s_table *save_ptr;
+static s_table *ptr;
+static s_table *save_ptr;
 
 #define WORDSIZE	20
 

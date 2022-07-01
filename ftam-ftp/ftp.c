@@ -53,12 +53,9 @@ void	advise (int, char *, char *, ...);
 #define DONE	1
 #endif /* NOTOK */
 
-int	verbose = 0;
-
 struct	sockaddr_in hisctladdr;
 struct	sockaddr_in data_addr;
 int	data = -1;
-int	connected = 0;
 struct	sockaddr_in myctladdr;
 
 FILE	*cin, *cout;

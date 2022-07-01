@@ -44,7 +44,7 @@ extern int numberType;
 extern int exactMatch;
 extern char exactString[];
 
-struct namelist * orgatts;
+extern struct namelist * orgatts;
 
 struct ds_search_arg *fillMostOrgSearchArgs();
 

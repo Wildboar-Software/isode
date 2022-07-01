@@ -129,7 +129,6 @@ char	*envinit[] = { "TERM=network", 0 };
 SFD	cleanup();
 static int do_cleaning = 0;
 
-char   *myname;
 LLog    _vt_log = {
 	"vt.log", NULLCP, NULLCP,
 	LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE, LLOG_FATAL, -1,

@@ -54,7 +54,6 @@ extern char *yp2name();
 extern YV calc_yv();
 extern SY syfind();
 static s_table *en_ptr;
-extern s_table *ptr;
 extern char	*rm_indirect();
 extern char	*getfield();
 extern char	*setfield();
@@ -62,7 +61,7 @@ extern char	*setfield();
 static int cons_type = 0;
 /* int     explicit; */
 
-s_table *save_ptr;
+static s_table *save_ptr;
 
 extern YT gen_etag();
 

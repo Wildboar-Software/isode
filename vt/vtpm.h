@@ -246,11 +246,11 @@ extern int	fd,
 	connected,
 	netfile;
 
-char	*dprofile, *cprofile;
+extern char	*dprofile, *cprofile;
 #ifndef SVR4
-char	*ttyname();
+extern char	*ttyname();
 #endif
-char	*myname;
+extern char	*myname;
 extern PE	p_ondq;
 extern LLog _vt_log, *vt_log;
 
@@ -258,7 +258,7 @@ extern LLog _vt_log, *vt_log;
 extern int errno;
 extern unsigned	state, sector;
 
-int		vns,
+extern int		vns,
 		allpmde, /* all draft VTE parameters defined */
 		allpmdu, /* all draft VTE parameters defined or undefined */
 		cnw,	 /* collision winner right assigned to this VTPM  */
@@ -355,5 +355,5 @@ extern struct PSAPfinish *pf;
 void	finalbye ();
 void	acs_adios ();
 
-int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
+extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
 

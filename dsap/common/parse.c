@@ -591,7 +591,7 @@ int dtype;
 	extern int print_parse_errors;
 	extern int parse_line;
 	int save;
-	extern PS opt;
+	extern PS _opt;
 	char check = TRUE;
 
 	DATABASE_HEAP;
@@ -624,12 +624,12 @@ int dtype;
 		if (unravel_attribute (eptr,&err) != OK) {
 			parse_error ("Error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
-				ds_error (opt,&err);
+				ds_error (_opt,&err);
 		}
 		if (check_schema (eptr,NULLATTR,&err) != OK) {
 			parse_error ("Schema error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
-				ds_error (opt,&err);
+				ds_error (_opt,&err);
 		}
 		parse_line = save;
 	}

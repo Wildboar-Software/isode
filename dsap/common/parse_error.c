@@ -35,7 +35,7 @@ int parse_status = 0;
 #ifdef TURBO_DISK
 char *parse_entry = NULL;
 #endif
-PS opt = NULLPS;
+PS _opt = NULLPS;
 int parse_line = 1;
 extern LLog * log_dsap;
 
@@ -47,9 +47,9 @@ char *a, *b;
 	parse_status++;
 
 	if (print_parse_errors) {
-		if (opt == NULLPS) {
-			opt = ps_alloc (std_open);
-			if (std_setup (opt,stderr) != OK) {
+		if (_opt == NULLPS) {
+			_opt = ps_alloc (std_open);
+			if (std_setup (_opt,stderr) != OK) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("cant open error (parse)..."));
 				LLOG (log_dsap,LLOG_EXCEPTIONS,(a,b));
 				return;
@@ -57,13 +57,13 @@ char *a, *b;
 		}
 #ifdef TURBO_DISK
 		if ( parse_entry != NULL )
-			ps_printf(opt, "key (%s): ", parse_entry);
+			ps_printf(_opt, "key (%s): ", parse_entry);
 #else
 		if (parse_line != 0)
-			ps_printf (opt,"line %d: ",parse_line);
+			ps_printf (_opt,"line %d: ",parse_line);
 #endif
-		ps_printf (opt,a,b);
-		ps_printf (opt,"\n");
+		ps_printf (_opt,a,b);
+		ps_printf (_opt,"\n");
 	} else {
 #ifdef TURBO_DISK
 		if ( parse_entry != NULL ) {

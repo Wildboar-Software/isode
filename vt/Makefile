@@ -37,9 +37,9 @@ LIBES	=	$(TOPDIR)libisode.a
 LLIBS	=	$(TOPDIR)llib-lisode
 VTH	=	vtpm.h $(HDIR)acsap.h $(HDIR)psap.h $(HDIR)manifest.h \
 		$(HDIR)config.h $(HDIR)general.h $(HDIR)psap2.h $(HDIR)logger.h
-CFILES	=	vtpm.c vtuser.c vt_telnet.c map.c \
+CFILES	=	vtpm.c vtpm_var.c vtuser.c vt_telnet.c map.c \
 		actions1.c actions5.c states1.c states5.c
-OFILES	=	vtpm.o vtuser.o vt_telnet.o map.o \
+OFILES	=	vtpm.o vtpm_var.o vtuser.o vt_telnet.o map.o \
 		actions1.o actions5.o states1.o states5.o
 PYFILES	=	bk_content.py rcv_asq.py rcv_asr.py rcv_text.py send_asq.py \
 		send_asr.py send_text.py send_udq.py rcv_udq.py print_vt.py
@@ -81,6 +81,7 @@ xvtd:		vtd.o $(OFILES) libvt.a $(LIBES)
 
 vtd.o:		$(VTH) sector1.h $(HDIR)tailor.h
 vtpm.o:		$(VTH) eventmsg.h sector1.h
+vtpm_var.o:		$(VTH)
 vtuser.o:	$(VTH) sector1.h sector5.h
 vt_telnet.o:	$(VTH) sector1.h
 map.o:		$(VTH) sector1.h

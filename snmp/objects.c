@@ -49,8 +49,8 @@ static	OID	compile_heap4;
 int	once_only_Tbuckets = 0;
 OT	Tbuckets[TBUCKETS];
 
-OT	anchor;
-OT	chain;
+extern OT	anchor;
+extern OT	chain;
 
 
 static OID	resolve ();

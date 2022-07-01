@@ -157,7 +157,6 @@ struct	sgttyb ottyb;
 #endif
 
 static int runcom = 0;
-char	*myname;
 static char *myhome;
 int	tmode();
 

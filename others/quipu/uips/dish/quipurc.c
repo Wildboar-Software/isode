@@ -101,7 +101,7 @@ extern	Attr_Sequence	get_attributes() ;
 #endif
 extern	char		*TidyString() ;
 
-Entry	current_entry ;
+extern Entry	current_entry ;
 Entry	entry_ptr ;
 
 char	Manager[LINESIZE] ;

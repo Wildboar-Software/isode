@@ -46,7 +46,7 @@ extern char exactString[];
 
 /* PRR stands fpr people, rooms and roles */
 
-struct namelist * prratts;
+extern struct namelist * prratts;
 
 struct ds_search_arg *fillMostPRRSearchArgs();
 

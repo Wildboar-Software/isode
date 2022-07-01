@@ -30,43 +30,42 @@
 /*
  * Options and other state info.
  */
-int	trace;			/* trace packets exchanged */
-int	hash;			/* print # for each buffer transferred */
-int	verbose;		/* print messages to/from server */
-int	connected;		/* connected to server */
-int	fromatty;		/* input is from a terminal */
-int	interactive;		/* interactively prompt on m* cmds */
-int	debug;			/* debugging level */
-int	bell;			/* ring bell on cmd completion */
-int	doglob;			/* glob local file names */
-int	autologin;		/* establish user account on connection */
+extern int	trace;			/* trace packets exchanged */
+extern int	hash;			/* print # for each buffer transferred */
+extern int	verbose;		/* print messages to/from server */
+extern int	connected;		/* connected to server */
+extern int	fromatty;		/* input is from a terminal */
+extern int	interactive;		/* interactively prompt on m* cmds */
+extern int	bell;			/* ring bell on cmd completion */
+extern int	doglob;			/* glob local file names */
+extern int	autologin;		/* establish user account on connection */
 
-char	typename[32];		/* name of file transfer type */
-int	type;			/* file transfer type */
-char	structname[32];		/* name of file transfer structure */
-int	stru;			/* file transfer structure */
-char	formname[32];		/* name of file transfer format */
-int	form;			/* file transfer format */
-char	modename[32];		/* name of file transfer mode */
-int	mode;			/* file transfer mode */
-char	bytename[32];		/* local byte size in ascii */
-int	bytesize;		/* local byte size in binary */
+extern char	typename[32];		/* name of file transfer type */
+extern int	type;			/* file transfer type */
+extern char	structname[32];		/* name of file transfer structure */
+extern int	stru;			/* file transfer structure */
+extern char	formname[32];		/* name of file transfer format */
+extern int	form;			/* file transfer format */
+extern char	modename[32];		/* name of file transfer mode */
+extern int	mode;			/* file transfer mode */
+extern char	bytename[32];		/* local byte size in ascii */
+extern int	bytesize;		/* local byte size in binary */
 
-char	*hostname;		/* name of host connected to */
+extern char	*hostname;		/* name of host connected to */
 
-struct	servent *sp;		/* service spec for tcp/ftp */
+extern struct	servent *sp;		/* service spec for tcp/ftp */
 
 #include <setjmp.h>
-jmp_buf	toplevel;		/* non-local goto stuff for cmd scanner */
+extern jmp_buf	toplevel;		/* non-local goto stuff for cmd scanner */
 
-char	line[200];		/* input line buffer */
-char	*stringbase;		/* current scan point in line buffer */
-char	argbuf[200];		/* argument storage buffer */
-char	*argbase;		/* current storage point in arg buffer */
-int	margc;			/* count of arguments on input line */
-char	*margv[20];		/* args parsed from input line */
+extern char	line[200];		/* input line buffer */
+extern char	*stringbase;		/* current scan point in line buffer */
+extern char	argbuf[200];		/* argument storage buffer */
+extern char	*argbase;		/* current storage point in arg buffer */
+extern int	margc;			/* count of arguments on input line */
+extern char	*margv[20];		/* args parsed from input line */
 
-int	options;		/* used during socket creation */
+extern int	options;		/* used during socket creation */
 
 /*
  * Format of command table.
@@ -82,10 +81,8 @@ struct cmd {
 extern	char *tail();
 extern	char *remglob();
 extern	int errno;
-extern	int sys_nerr;
-extern	char *sys_errlist[];
 
 /* global interface variables */
-int ftp_directory;/* TRUE if last ftp_exist was a multiple listing */
-char ftp_error_buffer[BUFSIZ];
-char *ftp_error; /* points to FTP diagnostic string */
+extern int ftp_directory;/* TRUE if last ftp_exist was a multiple listing */
+extern char ftp_error_buffer[BUFSIZ];
+extern char *ftp_error; /* points to FTP diagnostic string */

@@ -36,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_debug.c,v 9.0 1
 #include "quipu/turbo.h"
 
 extern LLog 		*log_dsap;
-int		turbo_index_num;
+extern int		turbo_index_num;
 AttributeType	*turbo_index;
 
 PS	ps;
