@@ -12,6 +12,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpdc.c,v 9.0 19
  *
  */
 
+#include <errno.h>
 #include "ntp.h"
 
 #define	WTIME	10		/* Time to wait for all responses */

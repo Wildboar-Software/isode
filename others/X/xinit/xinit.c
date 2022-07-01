@@ -15,7 +15,6 @@ static char *rcsid_xinit_c = "$XConsortium: xinit.c,v 11.32 88/10/05 09:27:45 ji
 #include <sys/wait.h>
 #endif
 #include <errno.h>
-extern int sys_nerr;
 #ifdef hpux
 #include <sys/utsname.h>
 #endif
@@ -389,11 +388,9 @@ processTimeout (int pid, int timeout, char *string) {
 
 static int
 _vError (char *fmt, va_list ap) {
-	extern char	*sys_errlist[];
-
 	fprintf(stderr, "%s:  ", program);
-	if (errno > 0 && errno < sys_nerr)
-		fprintf (stderr, "%s (errno %d):  ", sys_errlist[errno], errno);
+	if (errno)
+		fprintf (stderr, "%s (errno %d):  ", strerror(errno), errno);
 	vfprintf(stderr, fmt, ap);
 }
 

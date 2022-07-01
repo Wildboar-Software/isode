@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 

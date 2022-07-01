@@ -79,7 +79,7 @@ void advise (char *, char *, ...);
  */
 #define	FTPUSERS	"/usr/etc/ftpusers"
 
-extern	char *sys_errlist[];
+extern	int errno;
 extern  char ftam_error[];
 extern	char version[];
 
@@ -295,9 +295,9 @@ char *name;
 	data = getdatasock();
 	if (data == NOTOK) {
 		reply(425, "Can't create data socket (%s,%d): %s.",
-			  inet_ntoa(data_source.sin_addr),
-			  ntohs(data_source.sin_port),
-			  sys_errlist[errno]);
+		    inet_ntoa(data_source.sin_addr),
+		    ntohs(data_source.sin_port),
+		    strerror(errno));
 		return (NOTOK);
 	}
 	reply(150, "Opening data connection for %s (%s,%d).",
@@ -310,7 +310,7 @@ char *name;
 			continue;
 		}
 		reply(425, "Can't build data connection: %s.",
-			  sys_errlist[errno]);
+			  strerror(errno));
 		close(data);
 		data = -1;
 		return (NOTOK);

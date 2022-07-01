@@ -22,6 +22,7 @@
 
 
 #include <stdio.h>
+#include <errno.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

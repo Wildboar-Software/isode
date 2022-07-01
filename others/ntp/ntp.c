@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp.c,v 9.0 1992
  *
  */
 
+#include <errno.h>
 #include "ntp.h"
 
 char *modename[8] = {

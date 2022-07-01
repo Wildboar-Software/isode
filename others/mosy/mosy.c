@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>

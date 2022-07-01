@@ -26,6 +26,7 @@
 /* HULA */
 /* addtestd.c - trivial add network service -- responder */
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "ryresponder.h"	/* for generic idempotent responders */

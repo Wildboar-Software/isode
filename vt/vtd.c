@@ -297,9 +297,8 @@ fatal (int f, char *msg) {
 int
 fatalperror (int f, char *msg, int errnum) {
 	char buf[BUFSIZ];
-	extern char *sys_errlist[];
 
-	sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
+	sprintf(buf, "%s: %s", msg, strerror(errnum));
 	fatal(f, buf);
 }
 

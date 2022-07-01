@@ -116,6 +116,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 
 + #ifdef	WP
 + #include <setjmp.h>
++ #include <errno.h>
 + #include <signal.h>
 + #include <sys/ioctl.h>
 + 

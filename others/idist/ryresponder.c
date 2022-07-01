@@ -15,6 +15,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryresponder.c,
  *
  */
 
+#include <errno.h>
 #include "Idist-types.h"
 #include "Idist-ops.h"
 #include <stdio.h>

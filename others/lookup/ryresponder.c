@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryresponder.c
  */
 
 
+#include <errno.h>
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>

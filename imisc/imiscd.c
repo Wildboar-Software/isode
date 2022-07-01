@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imiscd.c,v 9.0 1992/0
 #include <time.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <errno.h>
 #include "IMISC-types.h"	/* IMISC type definitions */
 #include "ryresponder.h"	/* for generic idempotent responders */
 #include "IMISC-ops.h"		/* IMISC operation definitions */

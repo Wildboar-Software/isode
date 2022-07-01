@@ -32,6 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/parse2.c,v 9.0 1992/0
 #ifdef TURBO_DISK
 #include <gdbm.h>
 #endif
+#include <errno.h>
 
 Avlnode *getentry_block();
 Entry get_entry_aux();

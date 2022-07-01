@@ -30,6 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/ryresponder.c,v 
  *
  */
 
+#include <errno.h>
 #include <stdio.h>
 #include <setjmp.h>
 #include "RFA-types.h"

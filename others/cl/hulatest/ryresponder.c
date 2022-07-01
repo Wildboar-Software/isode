@@ -31,6 +31,7 @@
 */
 /* HULA */
 
+#include <errno.h>
 #include <ctype.h>
 /* ryresponder.c - generic idempotent responder */
 /* modified for UNIT-DATA protocol stack */

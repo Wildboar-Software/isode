@@ -44,7 +44,6 @@ static int  udpretry ();
 static int  PUservice ();
 
 
-
 /*  */
 
 #define	MAXTRIES	 3		/* should be tailorable... */

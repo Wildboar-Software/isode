@@ -174,7 +174,6 @@ extern char *host;		/* host name of master copy */
 extern char homedir[];		/* home directory of current user */
 extern char user[];		/* the users name */
 extern int errno;		/* system error number */
-extern char *sys_errlist[];
 extern char *myname;
 
 char *makestr();

@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/objects.c,v 9.0 1992/0
 
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include "objects.h"
 #include "tailor.h"

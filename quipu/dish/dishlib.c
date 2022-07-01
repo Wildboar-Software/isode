@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 
  */
 
 
+#include <errno.h>
 #include <stdio.h>
 #include <signal.h>
 #include "quipu/util.h"

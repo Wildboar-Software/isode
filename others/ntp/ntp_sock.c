@@ -11,6 +11,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_sock.c,v 9.0
  *
  */
 
+#include <errno.h>
 #include "ntp.h"
 
 struct intf *addrs;

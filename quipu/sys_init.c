@@ -26,6 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/sys_init.c,v 9.0 1992
 
 
 #include <stdio.h>
+#include <errno.h>
 #include "quipu/oid.h"
 #include "quipu/config.h"
 #include "tailor.h"

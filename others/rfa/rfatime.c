@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfatime.c,v 9.0 
  */
 
 
+#include <errno.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/time.h>

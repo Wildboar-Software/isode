@@ -22,6 +22,7 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imiscd.c,v 5.0 88/07/21 14:42:08
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "ryresponder.h"	/* for generic idempotent responders */

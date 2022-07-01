@@ -12,6 +12,7 @@
 #define NEED_REPLIES
 
 #include <stdio.h>
+#include <errno.h>
 #include "Xlibint.h"
 
 #ifdef ISOCONN
@@ -1365,15 +1366,6 @@ static int writev (
 	}
 
 
-	static char *
-	_SysErrorMsg (int n) {
-		extern char *sys_errlist[];
-		extern int sys_nerr;
-		char *s = ((n >= 0 && n < sys_nerr) ? sys_errlist[n] : "unknown error");
-
-		return (s ? s : "no such error");
-	}
-
 	/*
 	 * _XIOError - Default fatal system error reporting routine.  Called when
 	 * an X internal system error is encountered.
@@ -1383,7 +1375,7 @@ static int writev (
 	{
 		fprintf (stderr,
 				 "XIO:  fatal IO error %d (%s) on X server \"%s\"\r\n",
-				 errno, _SysErrorMsg (errno), DisplayString (dpy));
+				 errno, strerror (errno), DisplayString (dpy));
 		fprintf (stderr,
 				 "      after %lu requests (%lu known processed) with %d events remaining.\r\n",
 				 NextRequest(dpy) - 1, LastKnownRequestProcessed(dpy),

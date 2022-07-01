@@ -33,6 +33,7 @@
  */
 
 
+#include <errno.h>
 #include "psap.h"
 
 struct tuple {
@@ -404,6 +405,4 @@ OID	int2oid ();
 OID	oidlookup ();
 char	*oidname ();
 char	*oidprint ();
-
-extern int errno;
 
