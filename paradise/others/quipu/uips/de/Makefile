@@ -93,6 +93,7 @@ $(BINDIR)de:	xde
 		-@echo ""
 
 de:		xde
+		cp xde $@
 
 xde:		$(OFILES) $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(OFILES) \

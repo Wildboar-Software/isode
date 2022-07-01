@@ -74,6 +74,7 @@ $(SBINDIR)iso.vt:	xvtd
 		-@echo ""
 
 vtd:		xvtd
+		cp xvtd $@
 
 xvtd:		vtd.o $(OFILES) libvt.a $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ vtd.o $(OFILES) libvt.a \
@@ -109,6 +110,7 @@ $(BINDIR)vt:	xvt
 		-@echo ""
 
 vt:		xvt
+		cp xvt $@
 
 xvt:		vt.o $(OFILES) libvt.a $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ vt.o $(OFILES) libvt.a \

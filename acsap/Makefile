@@ -234,6 +234,7 @@ $(SBINDIR)dased:	xdased
 		-@echo ""
 
 dased:		xdased
+		cp xdased $@
 
 xdased:		dased.o DASE_tables.o $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ dased.o DASE_tables.o \

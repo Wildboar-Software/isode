@@ -83,6 +83,7 @@ $(SBINDIR)ntpd:	xntpd
 		-@echo ""
 
 ntpd:	xntpd
+		cp xntpd $@
 
 xntpd:	${NTPDOBJ}
 	$(CC) $(LDFLAGS) -o $@ ${NTPDOBJ} $(LIBES) $(LSOCKET)
@@ -110,6 +111,7 @@ $(BINDIR)ntp:	xntp
 		-@echo ""
 
 ntp:		xntp
+		cp xntp $@
 
 xntp:		$(NTPOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTPOBJ) $(LIBES) $(LSOCKET)
@@ -137,6 +139,7 @@ $(SBINDIR)ntpdc:	xntpdc
 		-@echo ""
 
 ntpdc:		xntpdc
+		cp xntpdc $@
 
 xntpdc: 	$(NTPDCOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTPDCOBJ) $(LIBES) $(LSOCKET)
@@ -164,6 +167,7 @@ $(BINDIR)ntq:	xntq
 		-@echo ""
 
 ntq:	xntq
+		cp xntq $@
 
 xntq: 		$(NTQOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTQOBJ) $(LIBES) $(LSOCKET)

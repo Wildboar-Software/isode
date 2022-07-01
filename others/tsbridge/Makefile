@@ -73,6 +73,7 @@ $(SBINDIR)tsbridge:	xtsbridge
 		-@echo ""
 
 tsbridge:	xtsbridge
+		cp xtsbridge $@
 
 xtsbridge:	tsbridge.o
 		$(LDCC) $(LDFLAGS) -o $@ tsbridge.o $(LIBES) $(LSOCKET)

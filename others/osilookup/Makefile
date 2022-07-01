@@ -73,6 +73,7 @@ $(SBINDIR)osilookup:	xosilookup
 		-@echo ""
 
 osilookup:	xosilookup
+		cp xosilookup $@
 
 xosilookup:	osilookup.o
 		$(LDCC) $(LDFLAGS) -o $@ osilookup.o $(LIBES) $(LSOCKET)

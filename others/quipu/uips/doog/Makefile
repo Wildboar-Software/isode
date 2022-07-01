@@ -58,6 +58,7 @@ depend:		$(CFILES)
 ###############################################################################
 
 doog:           xdoog
+		cp xdoog $@
 
 xdoog:		$(OFILES) $(QLIB) 
 	$(LDCC) $(LDFLAGS) -o $@ $(OFILES) \

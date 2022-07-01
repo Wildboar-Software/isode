@@ -34,7 +34,7 @@ PEPYPATH=	-DPEPYPATH
 
 
 LIBD	=	$(TOPDIR)libftam.a $(TOPDIR)libisode.a 
-LIBES	=	$(TOPDIR)libftam.a $(LIBISODE)
+LIBES	=	$(TOPDIR)libftam.a $(LIBISODE) -lcrypt
 LLIBS	=	$(TOPDIR)llib-lftam $(TOPDIR)llib-lisode
 CFILES	=	ftamd.c ftamsystem.c ftamd-manage.c ftamd-select.c \
 			ftamd-trans.c \
@@ -72,6 +72,7 @@ $(SBINDIR)iso.ftam:	xftamd
 		-@echo ""
 
 ftamd:		xftamd
+		cp xftamd $@
 
 xftamd:		ftamd.o ftamsystem.o ftamd-manage.o ftamd-select.o \
 			ftamd-trans.o ftamsbr.o DOCS_tables.o $(LIBD)
@@ -107,6 +108,7 @@ $(BINDIR)ftam:	xftam
 		-@echo ""
 
 ftam:		xftam
+		cp xftam $@
 
 xftam:		ftam.o ftamuser.o ftam-assoc.o ftam-dir.o ftam-get.o \
 			ftam-glob.o ftam-ls.o ftam-mgmt.o ftam-put.o \

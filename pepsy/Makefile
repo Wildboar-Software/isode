@@ -81,8 +81,7 @@ $(BINDIR)pepsy:	xpepsy
 		-@echo ""
 
 pepsy:		xpepsy
-		rm -rf pepsy
-		ln xpepsy pepsy
+		cp xpepsy $@
 
 xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(PEPSY-O) \

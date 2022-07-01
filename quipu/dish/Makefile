@@ -78,6 +78,7 @@ $(BINDIR)dish:	xdish
 		-@echo ""
 
 dish:		xdish
+		cp xdish $@
 
 xdish:		libdish.a dish.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ dish.o $(LIBDISH) \

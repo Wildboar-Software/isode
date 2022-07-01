@@ -83,8 +83,7 @@ $(SBINDIR)tsapd:	xtsapd
 		-@echo ""
 
 tsapd:		xtsapd
-		rm -f tsapd
-		ln xtsapd tsapd
+		cp xtsapd $@
 
 xtsapd:		tsapd.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ tsapd.o $(LIBISODE) $(LSOCKET)
@@ -105,8 +104,7 @@ $(SBINDIR)iaed:	xiaed
 		-@echo ""
 
 iaed:		xiaed
-		rm -f iaed
-		ln xiaed iaed
+		cp xiaed $@
 
 xiaed:		iaed.o $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ iaed.o \
@@ -144,8 +142,7 @@ $(SBINDIR)isore:	xisore
 		-@echo ""
 
 isore:		xisore
-		rm -f isore
-		ln xisore isore
+		cp xisore $@
 
 xisore:		isore.o
 		$(LDCC) $(LDFLAGS) -o $@ isore.o $(TOPDIR)libcompat.a \
@@ -179,8 +176,7 @@ $(SBINDIR)isod.tsap:	xisod
 		-@echo ""
 
 isod:		xisod
-		rm -f isod
-		ln xisod isod
+		cp xisod $@
 
 xisod:		isod.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ isod.o $(LIBISODE) $(LSOCKET)
@@ -205,8 +201,7 @@ $(BINDIR)isoc:	xisoc
 		-@echo ""
 
 isoc:		xisoc
-		rm -f isoc
-		ln xisoc isoc
+		cp xisoc $@
 
 xisoc:		isoc.o $(TOPDIR)libisode.a
 		$(LDCC) $(LDFLAGS) -o $@ isoc.o $(LIBISODE) $(LSOCKET)
@@ -395,8 +390,7 @@ $(SBINDIR)lppd:	xlppd
 		-@echo ""
 
 lppd:		xlppd
-		-rm -f lppd
-		-ln xlppd lppd
+		cp xlppd $@
 
 xlppd:		lppd.o $(LPP-LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ lppd.o $(LPP-LIBES) $(LSOCKET)

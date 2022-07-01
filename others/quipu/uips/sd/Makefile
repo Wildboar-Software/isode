@@ -60,6 +60,7 @@ $(BINDIR)sd: xsd
 	        -@echo ""
 
 sd:         xsd
+	        cp xsd $@
 
 xsd:	$(OFILES) $(LIBES)
 	$(LDCC) $(LDFLAGS) -o $@ $(OFILES) $(LIBDSAP) $(LIBISODE) $(CURSES) \

@@ -91,6 +91,7 @@ $(SBINDIR)dsaconfig:	xdsaconfig
 		-@echo ""
 
 dsaconfig:	xdsaconfig
+		cp xdsaconfig $@
 
 xdsaconfig:	dsaconfig.o $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ dsaconfig.o $(LIBES) $(LSOCKET)
@@ -113,6 +114,7 @@ $(SBINDIR)usconfig:	xusconfig
 		-@echo ""
 
 usconfig:	xusconfig
+		cp xusconfig $@
 
 xusconfig:	usconfig.o $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ usconfig.o $(LIBES) $(LSOCKET)

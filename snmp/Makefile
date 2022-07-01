@@ -43,7 +43,7 @@ GCCFLAGS=
 
 
 LIBD   =	libisnmp.a $(TOPDIR)libisode.a
-LIBES   =	libisnmp.a $(LIBISODE)
+LIBES   =	libisnmp.a $(LIBISODE) -lcrypt
 LLIBS   =	$(TOPDIR)llib-lisode
 MIB-C	=	$(AE-C) smux-g.c \
 			system.c interfaces.c routes.c ip.c icmp.c tcp.c \
@@ -88,6 +88,7 @@ $(SBINDIR)snmpd: xsnmpd
 		-@echo ""
 
 snmpd:		xsnmpd
+		cp xsnmpd $@
 
 xsnmpd:		snmpd.o $(MIB-O) $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ snmpd.o $(MIB-O) $(LIBES) \
@@ -132,6 +133,7 @@ $(SBINDIR)snmpc: xsnmpc
 		-@echo ""
 
 snmpc:		xsnmpc
+		cp xsnmpc $@
 
 xsnmpc:		snmpc.o $(AE-O) $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ snmpc.o $(AE-O) $(LIBES) \
@@ -164,6 +166,7 @@ $(SBINDIR)snmpt: xsnmpt
 		-@echo ""
 
 snmpt:		xsnmpt
+		cp xsnmpt $@
 
 xsnmpt:		snmpt.o $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ snmpt.o $(LIBES) $(LSOCKET)
@@ -197,6 +200,7 @@ it:		xunixd
 		xunixd
 
 unixd:		xunixd
+		cp xunixd $@
 
 xunixd:		unixd.o users.o print.o printcap.o unixFs.o $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ unixd.o users.o print.o printcap.o \
@@ -231,6 +235,7 @@ $(BINDIR)snmpi:	xsnmpi
 		-@echo ""
 
 snmpi:		xsnmpi
+		cp xsnmpi $@
 
 xsnmpi:		snmpi.o snmpb.o $(LIBD)
 		$(LDCC) $(LDFLAGS) -o $@ snmpi.o snmpb.o $(LIBES) $(LSOCKET)
@@ -396,6 +401,7 @@ $(INCDIR)snmp/$(TARGET2):	$(TARGET2)
 		-@echo ""
 
 objects:	$(DEFS)
+		touch $@
 
 objects.defs:	$(DEFS2)
 		cat $(DEFS2) > $@
@@ -413,7 +419,8 @@ unixd.defs:	smi.defs bsd.defs unix.defs
 
 loadobjects.c:  $(DEFS2)
 		$(MAKE) objects.defs
-		./xsnmpi -f objects.defs compile -s loadobjects
+		if [ -f ./xsnmpi ]; then \
+			./xsnmpi -f objects.defs compile -s loadobjects; fi
 
 
 ################################################################

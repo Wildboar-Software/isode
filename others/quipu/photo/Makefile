@@ -84,6 +84,7 @@ hexphoto: hexphoto.o d_main.o
 	$(LDCC) $(LDFLAGS) -o hexphoto hexphoto.o d_main.o $(LIBISODE) $(LSOCKET)
 
 jpeg:	xjpeg jpeg2asn
+		cp xjpeg $@
 
 xjpeg:	jpegphoto.o
 	$(LDCC) $(LDFLAGS) -o xjpeg jpegphoto.o $(LIBISODE) $(LSOCKET)

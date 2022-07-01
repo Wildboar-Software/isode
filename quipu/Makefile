@@ -108,6 +108,7 @@ $(SBINDIR)ros.quipu:   xquipu
 		-@echo ""
 
 quipu:          xquipu 
+		cp xquipu $@
 
 xquipu:		$(LIBES) $(OFILES) quipuvrsn.o
 		$(LDCC) $(LDFLAGS) -o $@ $(OFILES) quipuvrsn.o \
