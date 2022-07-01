@@ -66,6 +66,9 @@ SOFTWARE.
 #include "dixstruct.h"
 #include "osdep.h"
 
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
+
 #define acmp(a1, a2, len) bcmp((char *)(a1), (char *)(a2), len)
 #define acopy(a1, a2, len) bcopy((char *)(a1), (char *)(a2), len)
 

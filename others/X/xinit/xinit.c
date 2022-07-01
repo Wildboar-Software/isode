@@ -25,6 +25,9 @@ extern char *getenv();
 extern char **environ;
 char **newenviron = NULL;
 
+int Error (char *fmt, ...);
+int Fatal (char *fmt, ...);
+
 #ifndef SHELL
 #define SHELL "sh"
 #endif
@@ -384,19 +387,31 @@ processTimeout (int pid, int timeout, char *string) {
 	return( pid != pidfound );
 }
 
-int
-Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
+static int
+_vError (char *fmt, va_list ap) {
 	extern char	*sys_errlist[];
 
 	fprintf(stderr, "%s:  ", program);
 	if (errno > 0 && errno < sys_nerr)
 		fprintf (stderr, "%s (errno %d):  ", sys_errlist[errno], errno);
-	fprintf(stderr, fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
+	vfprintf(stderr, fmt, ap);
 }
 
 int
-Fatal (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
-	Error(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
+Error (char *fmt, ...) {
+	va_list ap;
+
+	va_start (ap, fmt)
+	_vError(fmt, ap);
+	va_end (ap);
+}
+
+int
+Fatal (char *fmt, ...) {
+	va_list ap;
+	va_start (ap, fmt)
+	_vError(fmt, ap);
+	va_end (ap);
 	exit(ERR_EXIT);
 }
 

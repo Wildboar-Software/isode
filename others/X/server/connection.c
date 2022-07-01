@@ -94,6 +94,9 @@ static int unixDomainConnection = -1;
 
 extern char *isodetcpath;
 
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
+
 #ifdef ISODEBUG
 /*
  * Set to true for loads of TSAP messages...

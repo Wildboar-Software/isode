@@ -58,6 +58,8 @@ extern Bool AnyClientsWriteBlocked;
 static Bool CriticalOutputPending;
 static int timesThisConnection = 0;
 
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
 
 
 #define request_length(req, cli) ((cli->swapped ? \
