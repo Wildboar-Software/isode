@@ -63,8 +63,16 @@ static char *vbp = NULL;
 static char *vsp;
 
 IFP   vfnx = (IFP) fprintf;
-FILE *vfp =  NULL; //FIXME stdout;
+FILE *vfp = (FILE*) NULL;
 static PS    vps = NULLPS;
+
+#ifdef __GNUC__
+__attribute__((constructor))
+static void _init_vfp ()
+{
+	vfp = stdout;
+}
+#endif
 
 static char   *oct2str (), *newbuf ();
 

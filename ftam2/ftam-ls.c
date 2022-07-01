@@ -50,7 +50,15 @@ struct filent *filents = NULL;
 #ifdef	BRIDGE
 FILE	*fdopen();
 #endif
-static  FILE *lsfp = NULL;//FIXME stdout;
+static  FILE *lsfp;
+
+#ifdef __GNUC__
+__attribute__((constructor))
+static void _init_fp ()
+{
+	lsfp = stdout;
+}
+#endif
 
 
 char   *ctime ();

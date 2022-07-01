@@ -71,8 +71,16 @@ char   *myuser = NULLCP;
 
 extern char *isodeversion;
 
-FILE   *stdfp = stdout;
+FILE   *stdfp = NULL;
 FILE   *errfp = NULL;
+
+#ifdef __GNUC__
+__attribute__((constructor))
+static void _init_fp ()
+{
+	stdfp = stdout;
+}
+#endif
 
 /*  */
 
