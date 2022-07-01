@@ -32,7 +32,7 @@ DIR	*dirp;			/* stream from opendir() */
 	if ( dirp->dd_loc < dirp->dd_size )	/* valid index */
 		return ((struct dirent *)&dirp->dd_buf[dirp->dd_loc])->d_off;
 	else				/* beginning of next directory block */
-		return lseek( dirp->dd_fd, (off_t)0, SEEK_CUR );
+		return lseek( dirfd(dirp), (off_t)0, SEEK_CUR );
 }
 #else
 int

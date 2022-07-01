@@ -65,7 +65,7 @@ char		*dirname;	/* name of directory */
 		return NULL;		/* not enough memory */
 	}
 
-	dirp->dd_fd = fd;
+	dirfd(dirp) = fd;
 	dirp->dd_loc = dirp->dd_size = 0;	/* refill needed */
 
 	return dirp;

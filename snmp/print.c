@@ -333,7 +333,7 @@ int	offset;
 
 		if (chdir (pq -> pq_SD) == NOTOK || !(dp = opendir (".")))
 			continue;
-		fstat (dp -> dd_fd, &pq -> pq_st);
+		fstat (dirfd(dp), &pq -> pq_st);
 		while (dd = readdir (dp)) {
 			int    j;
 			unsigned int *ip;

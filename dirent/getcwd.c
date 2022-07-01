@@ -41,7 +41,7 @@ extern int	errno;			/* normally done by <errno.h> */
 char	*
 getcwd( buf, size )			/* returns pointer to CWD pathname */
 char		*buf;		/* where to put name (NULL to malloc) */
-int		size;		/* size of buf[] or malloc()ed memory */
+size_t		size;		/* size of buf[] or malloc()ed memory */
 {
 	static char	dotdots[] =
 		"../../../../../../../../../../../../../../../../../../../../../../../../../..";
@@ -90,7 +90,7 @@ int		size;		/* size of buf[] or malloc()ed memory */
 		if ( (dirp = opendir( dotdot )) == NULL )	/* new parent */
 			goto error;	/* errno already set */
 
-		if ( fstat( dirp->dd_fd, dd ) != 0 ) {
+		if ( fstat( dirfd(dirp), dd ) != 0 ) {
 			serrno = errno;	/* set by fstat() */
 			closedir( dirp );
 			errno = serrno;	/* in case closedir() clobbered it */

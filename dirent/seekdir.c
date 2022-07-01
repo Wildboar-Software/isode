@@ -96,7 +96,7 @@ off_t	loc;		/* position from telldir() */
 
 				dirp->dd_loc = dirp->dd_size = 0;
 
-				if ( lseek( dirp->dd_fd, (off_t)0, SEEK_SET )
+				if ( lseek( dirfd(dirp), (off_t)0, SEEK_SET )
 						!= 0
 				   )
 					return;	/* errno already set (EBADF) */

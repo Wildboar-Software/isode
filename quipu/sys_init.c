@@ -106,7 +106,7 @@ mk_dsa_tmp_dir (void) {
 			&& ((statbuf.st_mode & S_IFMT) == S_IFDIR)) {
 		/* tmpdir exists - clean it */
 		struct dirent **namelist;
-		_scandir(edbtmp_buf, &namelist, rmFiles, NULLIFP);
+		scandir(edbtmp_buf, &namelist, rmFiles, NULLIFP);
 		if (namelist)
 			free((char *) namelist);
 
