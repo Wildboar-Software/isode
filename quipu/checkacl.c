@@ -203,7 +203,7 @@ sacl_match (DN binddn, DN selfdn, Saclinfo s) {
 }
 
 static
-check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, int authtype) {
+check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, char authtype) {
 	AV_Sequence		avs;
 	Ftypelist		ft;
 	Saclinfo		s, save;
@@ -397,7 +397,7 @@ rc_cmp (struct result_count *a, struct result_count *b) {
  */
 
 int
-check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, int authtype) {
+check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, char authtype) {
 	struct result_count	*rc;
 	Typedata		td;
 	Ftypelist		ft;
@@ -467,7 +467,7 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
  */
 
 int
-check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, int authtype, int *saclerror) {
+check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, char authtype, int *saclerror) {
 	Entry			stop, ancestor;
 	extern Entry		database_root;
 

@@ -1950,7 +1950,7 @@ add_value (YV y, YV z) {
 /*    TAGS */
 
 YT
-new_tag (int class) {
+new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)

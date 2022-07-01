@@ -54,7 +54,7 @@ extern Entry local_find_entry_aux();
 static int relayfordsa();
 
 struct connection *
-make_conn_block (DN name, struct PSAPaddr *addr, int conn_ctx) {
+make_conn_block (DN name, struct PSAPaddr *addr, char conn_ctx) {
 	struct connection	* cn;
 
 	struct TSAPaddr *ta;
@@ -694,7 +694,7 @@ task2oper (struct task_act *tk) {
 }
 
 int
-chain_ok (struct task_act *tk, int refer_ok, DN dsadn) {
+chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	struct common_args	* ca;
 	struct common_args	* get_ca_ref();
 
@@ -962,7 +962,7 @@ di2ap (struct di_block *di) {
 }
 
 int
-di2cref (struct di_block *di, struct DSError *err, int ctx) {
+di2cref (struct di_block *di, struct DSError *err, char ctx) {
 	struct continuation_ref     * cref;
 	struct di_block * loop;
 	struct access_point *ap_append(), *ap;

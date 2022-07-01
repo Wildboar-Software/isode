@@ -639,7 +639,7 @@ intrser (int sig) {
 /*  */
 
 int
-set_lookup_dase (int flag) {
+set_lookup_dase (char flag) {
 	if (!(stayopen = flag) && ps) {
 		struct TSAPdisconnect tds;
 

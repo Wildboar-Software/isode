@@ -229,7 +229,7 @@ write_mapped_rdn (PS aps, char *name, char *file) {
 }
 
 static
-rdn2filename (PS aps, RDN rdn, int make) {
+rdn2filename (PS aps, RDN rdn, char make) {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
 
@@ -280,7 +280,7 @@ rdn2filename (PS aps, RDN rdn, int make) {
 }
 
 static
-dn2filename (PS aps, DN dn, int make) {
+dn2filename (PS aps, DN dn, char make) {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
 		if (make) {

@@ -599,7 +599,7 @@ queued (void) {
 /*	RETURNS - OK on success, NOTOK otherwise			 */
 /*************************************************************************/
 int
-putch (int c) {
+putch (char c) {
 	if (debug > 1) {
 		advise(LLOG_DEBUG, NULLCP,  "in putch, queued is %d, c is %c", cbuf.queued, c);
 		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %d, cbuf.head is %d, cbuf.tail is %d", (int)cbuf.buf, (int)cbuf.head, (int)cbuf.tail);

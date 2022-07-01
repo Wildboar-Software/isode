@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2prim.c,v 9.0 1992/
 /*  */
 
 PE
-str2prim (char *s, int len, int class, int id) {
+str2prim (char *s, int len, PElementClass class, PElementID id) {
 	PE	    pe;
 
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)

@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_del.c,v 9.0 1992/0
 /*  */
 
 int
-set_del (PE pe, int class, int id) {
+set_del (PE pe, PElementClass class, PElementID id) {
 	int    pe_id;
 	PE	   *p,
 	 q;

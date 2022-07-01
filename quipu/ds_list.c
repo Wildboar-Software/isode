@@ -37,7 +37,7 @@ extern Entry database_root;
 static int build_result();
 
 int
-do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
+do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	int retval;
 	DN realtarget;
@@ -234,7 +234,7 @@ build_list (Entry e, DN dn) {
 }
 
 static int
-build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result, struct DSError *error, DN binddn, int dsp, int laclsizelimit) {
+build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result, struct DSError *error, DN binddn, char dsp, int laclsizelimit) {
 	DN dn;
 	DN dnend;
 	int size;

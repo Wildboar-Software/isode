@@ -69,7 +69,7 @@ SkipAsn1Len  {
 }
 
 void
-DoG3Fax (int firstChar) {
+DoG3Fax (unsigned char firstChar) {
 	char            buffer[8192];
 	FILE           *newPipe;
 	int             len;

@@ -105,7 +105,7 @@ char	multiline;
 }
 
 int
-set_av_pe_print (int sntx, char *print_pe) {
+set_av_pe_print (short sntx, char *print_pe) {
 	if (sntx >= num_syntax)
 		return;
 
@@ -165,7 +165,7 @@ short x;
 }
 
 char *
-syntax2str (int sntx) {
+syntax2str (short sntx) {
 	if (sntx >= num_syntax)
 		return NULLCP;
 

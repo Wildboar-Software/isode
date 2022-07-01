@@ -59,7 +59,7 @@ struct	acl *acl_list;
 int updateerror;
 
 int
-do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
+do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;

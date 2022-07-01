@@ -45,7 +45,7 @@ struct {
 int num_help = 0;
 
 int
-add_dish_help (char *command, char *args, int serv, int other, char *use) {
+add_dish_help (char *command, char *args, char serv, char other, char *use) {
 	help_info[num_help].command = command;
 	help_info[num_help].args = args;
 	help_info[num_help].serv = serv;

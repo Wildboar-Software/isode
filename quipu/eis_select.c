@@ -46,7 +46,7 @@ eis_select (
 	EntryInfoSelection eis,
 	Entry entryptr,
 	DN dn,
-	int qctx,	/* If TRUE - it is a Quipu context association */
+	char qctx,	/* If TRUE - it is a Quipu context association */
 	DN node
 ) {
 	Attr_Sequence result = NULLATTR;
@@ -240,7 +240,7 @@ dsa_eis_select (
 	EntryInfoSelection eis,
 	Entry entryptr,
 	DN dn,
-	int qctx,	/* If TRUE - it is a Quipu context association */
+	char qctx,	/* If TRUE - it is a Quipu context association */
 	DN node
 ) {
 	Attr_Sequence result = NULLATTR;
@@ -375,7 +375,7 @@ as_cpy_type (Attr_Sequence as) {
 }
 
 static Attr_Sequence
-as_cpy_enc (Attr_Sequence as, DN dn, DN node, int qctx) {
+as_cpy_enc (Attr_Sequence as, DN dn, DN node, char qctx) {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
 	Attr_Sequence eptr;

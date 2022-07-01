@@ -439,7 +439,7 @@ PE pe;
 }
 
 static char *
-quotechar (int a, char *b) {
+quotechar (char a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
 
@@ -1246,7 +1246,7 @@ part_parse (
 }
 
 int
-case_exact_match (int sntx) {
+case_exact_match (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
 	else
@@ -1254,7 +1254,7 @@ case_exact_match (int sntx) {
 }
 
 int
-approx_string (int sntx) {
+approx_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
 	else
@@ -1262,7 +1262,7 @@ approx_string (int sntx) {
 }
 
 int
-sub_string (int sntx) {
+sub_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
 	else
@@ -1270,7 +1270,7 @@ sub_string (int sntx) {
 }
 
 int
-telephone_match (int sntx) {
+telephone_match (short sntx) {
 	return( sntx == tel_sntx );
 }
 

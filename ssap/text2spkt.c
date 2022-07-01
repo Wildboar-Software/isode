@@ -358,7 +358,7 @@ type_ssn (LLog *lp, char *rw, char *what, u_long ssn) {
 
 
 static
-type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t) {
+type_bits (LLog *lp, char *rw, char *s, u_char bits, int mask, char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
@@ -376,7 +376,7 @@ type_bits (LLog *lp, char *rw, char *s, int bits, int mask, char *t) {
 }
 
 static
-type_settings (LLog *lp, char *rw, int settings) {
+type_settings (LLog *lp, char *rw, u_char settings) {
 	int     token;
 
 	ll_printf (lp, "%sSETTINGS/", rw);
@@ -388,7 +388,7 @@ type_settings (LLog *lp, char *rw, int settings) {
 
 
 static
-type_tsdu (LLog *lp, char *rw, int init, int resp) {
+type_tsdu (LLog *lp, char *rw, u_short init, u_short resp) {
 	ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 			   rw, init, resp);
 }
@@ -412,7 +412,7 @@ type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
 
 
 static
-type_vrsn (LLog *lp, char *rw, int version) {
+type_vrsn (LLog *lp, char *rw, u_char version) {
 	ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
@@ -425,7 +425,7 @@ type_reason (LLog *lp, char *rw, int reason) {
 
 
 static
-type_prepare (LLog *lp, char *rw, int type) {
+type_prepare (LLog *lp, char *rw, u_char type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
@@ -449,7 +449,7 @@ type_prepare (LLog *lp, char *rw, int type) {
 
 
 static
-type_error (LLog *lp, char *rw, int reason) {
+type_error (LLog *lp, char *rw, u_char reason) {
 	ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
@@ -479,7 +479,7 @@ type_error (LLog *lp, char *rw, int reason) {
 
 
 static
-type_resync (LLog *lp, char *rw, int type) {
+type_resync (LLog *lp, char *rw, u_char type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:

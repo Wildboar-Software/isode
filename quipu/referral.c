@@ -304,7 +304,7 @@ out:
 }
 
 struct di_block *
-ap2di (struct access_point *ap, DN name, int master, int di_type, struct oper_act *oper, int cr_type) {
+ap2di (struct access_point *ap, DN name, char master, char di_type, struct oper_act *oper, int cr_type) {
 	struct access_point *loop;
 	struct di_block	*res = NULL_DI_BLOCK;
 	struct di_block	*ptr;
@@ -342,7 +342,7 @@ ap2di (struct access_point *ap, DN name, int master, int di_type, struct oper_ac
 
 
 int
-dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, int master) {
+dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, char master) {
 	DLOG(log_dsap, LLOG_TRACE, ("dsa_info_parent"));
 
 	if(top_ap == NULLACCESSPOINT) {

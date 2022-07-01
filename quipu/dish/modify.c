@@ -609,7 +609,7 @@ dsa_control_info (void) {
 }
 
 int
-mod_template (char *name, int noedit) {
+mod_template (char *name, char noedit) {
 	FILE           *fptr;
 	PS              ps;
 	extern AttributeType at_objectclass;

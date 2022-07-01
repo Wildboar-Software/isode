@@ -223,7 +223,7 @@ call_add (int argc, char **argv) {
 }
 
 int
-make_old (char *file, int commit) {
+make_old (char *file, char commit) {
 	char newname[LINESIZE];
 
 	if (dad_flag) {

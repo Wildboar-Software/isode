@@ -1087,7 +1087,7 @@ search_kid (Entry e, struct search_kid_arg *ska) {
 
 
 static EntryInfo *
-filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror) {
+filterchildren (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, char authtype, int *saclerror) {
 	EntryInfo      *einfo = NULLENTRYINFO;
 	int    tmp = 0;
 	char            domore = TRUE;
@@ -1327,7 +1327,7 @@ search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task *
  */
 
 EntryInfo *
-filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, int authtype, int *saclerror, struct ds_search_task *local, int dosacl) {
+filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype, int *saclerror, struct ds_search_task *local, char dosacl) {
 	EntryInfo	*einfo;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter entry"));

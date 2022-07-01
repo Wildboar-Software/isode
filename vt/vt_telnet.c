@@ -143,8 +143,8 @@ vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 
 int
 vt_set_nego (	/*Update NA/NI control object as in image*/
-	int image,
-	int mask
+	char image,
+	char mask
 ) {
 
 	TEXT_UPDATE ud;
