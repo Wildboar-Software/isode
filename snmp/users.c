@@ -1876,12 +1876,14 @@ integer	cor;
 	int	    invalid,
 			iserr,
 			ngr,
-			npw;
+			npw,
+			fd;
 	char    tmpfil[BUFSIZ];
 	struct pw *pw;
 	struct gr *gr;
 	struct gu *gu;
 	FILE   *fp;
+
 
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
@@ -1889,8 +1891,8 @@ integer	cor;
 			goto check_gr;
 		invalid = 0;
 		strcpy (tmpfil, "/etc/ptmpXXXXXX");
-		unlink (mktemp (tmpfil));
-		if (!(fp = fopen (tmpfil, "w"))) {
+		fd = mkstemp (tmpfil);
+		if (!(fp = fdopen (fd, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_pw;
 		}
@@ -1963,8 +1965,8 @@ check_gr:
 			break;
 		invalid = 0;
 		strcpy (tmpfil, "/etc/gtmpXXXXXX");
-		unlink (mktemp (tmpfil));
-		if (!(fp = fopen (tmpfil, "w"))) {
+		fd = mkstemp (tmpfil);
+		if (!(fp = fdopen (fd, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_gr;
 		}

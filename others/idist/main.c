@@ -192,7 +192,7 @@ main (int argc, char *argv[]) {
 	argc -= optind;
 	argv += optind;
 
-	mktemp(utmpfile);
+	mkstemp(utmpfile);
 
 	if (cmdargs)
 		docmdargs(argc, argv);

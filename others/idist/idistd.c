@@ -575,7 +575,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
 
-	mktemp (utmpfile);
+	close (mkstemp (utmpfile));
 
 	return ACS_ACCEPT;
 }

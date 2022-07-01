@@ -145,7 +145,7 @@ char * file;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
 	char *mptr, *nptr;
-	int i;
+	int i, fd;
 #ifdef TEMPNAM
 	char mapdir[LINESIZE];
 	char *cp;
@@ -177,8 +177,9 @@ char * file;
 	ps_print (aps,mapname);
 	*aps->ps_ptr = 0;
 
-	if ((aps->ps_base = mktemp (aps->ps_base)) == NULLCP)
+	if ((fd = mkstemp (aps->ps_base)) < 0)
 		return FALSE;
+	close (fd);
 #else /* TEMPNAM */
 	for (i=0 ; (*nptr!=0) && (i < 5) ; nptr++)
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))

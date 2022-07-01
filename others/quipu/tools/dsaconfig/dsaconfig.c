@@ -722,12 +722,13 @@ int
 generate_sed () {
 	FILE   *fp;
 	struct pair *p;
+	int fd;
 
 	sprintf (sedfil, "/tmp/%sXXXXXX", myname);
-	unlink (mktemp (sedfil));
+	fd = mkstemp (sedfil);
 
-	if ((fp = fopen (sedfil, "w")) == NULL)
-		adios (sedfil, "unable to create");
+	if ((fp = fdopen (fd, "w")) == NULL)
+		adios (sedfil, "unable to open");
 
 	for (p = pairs; p -> p_name; p++)
 		if (!(p -> p_flags & P_MBOX) && p -> p_value)
@@ -1069,7 +1070,7 @@ fudge_file (char *name) {
 
 	sprintf (buffer, "%sXXXXXX", myname);
 	strcpy (tmpfil, isodefile (buffer, 0));
-	unlink (mktemp (tmpfil));
+	close (mkstemp (tmpfil));
 
 	sprintf (buffer, "sed -f %s < %s > %s", sedfil, file, tmpfil);
 	if (debug)

@@ -486,7 +486,7 @@ do_edit (int sd, char *octets) {
 	struct stat st;
 
 	strcpy (tmpfil, "/tmp/fredXXXXXX");
-	unlink (mktemp (tmpfil));
+	close (mkstemp (tmpfil));
 
 	if (sscanf (octets, "%d", &j) != 1 || j < 0) {
 		advise (NULLCP, "protocol botch");

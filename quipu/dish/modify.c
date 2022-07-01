@@ -98,7 +98,7 @@ call_modify (int argc, char **argv) {
 		strcpy (fname, home);
 	else if (dad_flag) {
 		strcpy (fname, "/tmp/dishXXXXXX");
-		unlink (mktemp (fname));
+		close (mkstemp (fname));
 	} else if (home = getenv ("HOME"))
 		sprintf (fname, "%s/.dishdraft", home);
 	else

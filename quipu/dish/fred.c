@@ -1947,6 +1947,7 @@ int	islong;
 	AV_Sequence avs;
 	Entry    theEntry;
 	PS	     nps;
+	int fd;
 
 	fred_init ();
 
@@ -2027,11 +2028,11 @@ int	islong;
 				}
 
 				strcpy (tmp1, "/tmp/faxXXXXXX");
-				unlink (mktemp (tmp1));
+				fd = mkstemp (tmp1);
 				strcpy (tmp2, "/tmp/pbmXXXXXX");
-				unlink (mktemp (tmp2));
+				close (mkstemp (tmp2));
 
-				if ((fp = fopen (tmp1, "w")) == NULL)
+				if ((fp = fdopen (fd, "w")) == NULL)
 					break;
 
 				if ((ps = ps_alloc (std_open)) == NULLPS

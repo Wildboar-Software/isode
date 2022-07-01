@@ -909,6 +909,7 @@ int fd;
 	FILE * fptr = (FILE *) NULL;
 	PS fps;
 	struct edbops_list * nextop;
+	int fd;
 
 	/* send first part of an EDB file */
 	if (EDB_encode (result, &pe) == NOTOK) {
@@ -936,14 +937,14 @@ out:
 	*/
 
 	sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
-	if ((fname = mktemp (strdup(buffer))) == NULLCP) {
+	if ((fname = strdup(buffer)) == NULLCP || (fd = mkstemp (fname)) < 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
-			  ("Too many getedbs at once '%s'",fname));
+			  ("Too many getedbs at once '%s'",fname ? fname : ""));
 		goto out;
 	}
 
 	um = umask (0177);
-	if ((fptr = fopen (fname,"w")) != NULL) {
+	if ((fptr = fdopen (fd,"w")) != NULL) {
 		umask (um);
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,

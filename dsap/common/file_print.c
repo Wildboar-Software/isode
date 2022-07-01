@@ -81,7 +81,8 @@ char full;
 	if (parse_rdn == NULLRDN) {
 		ps_printf (sps,"/tmp/%s_XXXXXX",at->oa_ot.ot_name);
 		used_temp = TRUE;
-		fs->fs_name = mktemp(strdup (buffer));
+		fs->fs_name = strdup (buffer);
+		close (mkstemp (fs->fs_name));
 		if (pathend != NULLCP)
 			*pathend = val;
 		return (OK);
@@ -113,10 +114,13 @@ char full;
 				*mptr++ = *nptr, i++;
 
 		strcpy (mptr,"XXXXXX");
-		if (path != NULLCP)
-			fs->fs_name = mktemp(strdup (_isodefile(path,nbuf)));
-		else
-			fs->fs_name = mktemp(strdup (nbuf));
+		if (path != NULLCP) {
+			fs->fs_name = strdup (_isodefile(path,nbuf);
+			close (mkstemp (fs->fs_name)));
+		} else {
+			fs->fs_name = strdup (nbuf);
+			close (mkstemp (fs->fs_name)));
+		}
 		if (pathend != NULLCP)
 			*pathend = val;
 
