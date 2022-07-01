@@ -70,7 +70,8 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 
 short add_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 char *	sntx;
-IFP	enc,dec,parse,print,cpy,cmp,sfree,approx;
+IFP	print,cmp,sfree,approx;
+PFP	enc,dec,parse,cpy;
 char *  print_pe;
 char	multiline;
 {
@@ -85,7 +86,8 @@ char	multiline;
 
 set_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 short sntx;
-IFP	enc,dec,parse,print,cpy,cmp,sfree,approx;
+IFP	print,cmp,sfree,approx;
+PFP	enc,dec,parse,cpy;
 char *  print_pe;
 char	multiline;
 {

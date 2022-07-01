@@ -784,7 +784,7 @@ losing:
 		return generr (offset);
 	}
 
-	if ((ifvar = (int) ot -> ot_info) == userGroup
+	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		goto losing;
 try_again:
@@ -953,7 +953,7 @@ int	offset;
 	if (get_pw (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	if ((ifvar = (int) ot -> ot_info) == userGroup
+	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -1249,7 +1249,7 @@ int	offset;
 	if (get_gr (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -1369,7 +1369,7 @@ int	offset;
 	if (get_gr (offset) == NOTOK || get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gr = get_grent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1546,7 +1546,7 @@ int	offset;
 	if (get_gu (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_SMUX__PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -1634,7 +1634,7 @@ int	offset;
 	if (get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gu = get_guent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,

@@ -147,9 +147,7 @@ char *bp, *name;
 	int c;
 	int i = 0, cnt = 0;
 	char ibuf[BUFSIZ];
-	/*
-		char *cp2;
-	 */
+	char *cp2;
 	int tf;
 
 	tbuf = bp;

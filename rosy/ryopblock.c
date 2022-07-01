@@ -153,7 +153,7 @@ int	reason;
 		if (opb -> opb_fd == sd) {
 			if (opb -> opb_errfnx)
 				(*opb -> opb_errfnx) (sd, opb -> opb_id, RY_REJECT,
-									  (caddr_t) reason, &rois);
+									  (caddr_t) (size_t) reason, &rois);
 
 			freeopblk (opb);
 		}

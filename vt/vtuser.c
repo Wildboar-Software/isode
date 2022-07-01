@@ -607,7 +607,7 @@ int
 putch (char c) {
 	if (debug > 1) {
 		advise(LLOG_DEBUG, NULLCP,  "in putch, queued is %d, c is %c", cbuf.queued, c);
-		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %d, cbuf.head is %d, cbuf.tail is %d", (int)cbuf.buf, (int)cbuf.head, (int)cbuf.tail);
+		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %p, cbuf.head is %p, cbuf.tail is %p", cbuf.buf, cbuf.head, cbuf.tail);
 		advise(LLOG_DEBUG, NULLCP,  "cbuf.max_len is %d", (int)cbuf.max_len);
 	}
 	if (cbuf.queued >= CBUFSIZE) {
@@ -619,7 +619,7 @@ putch (char c) {
 		cbuf.tail = cbuf.head = cbuf.buf;
 		cbuf.queued = 0;
 		if (debug)
-			advise(LLOG_DEBUG, NULLCP,  "tail and head set to %d", (int)cbuf.buf);
+			advise(LLOG_DEBUG, NULLCP,  "tail and head set to %p", cbuf.buf);
 	}
 	*(cbuf.tail) = c;
 	if (++(cbuf.tail) > cbuf.buf + CBUFSIZE)

@@ -44,7 +44,7 @@ RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *ro
 	struct assocblk   *acb;
 	PE	pe;
 	struct SSAPref ref;
-	struct SSAPstart    sss;
+	struct SSAPstart    sss = {};
 	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

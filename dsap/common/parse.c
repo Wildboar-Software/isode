@@ -590,7 +590,7 @@ int dtype;
 	struct DSError err;
 	extern int print_parse_errors;
 	extern int parse_line;
-	int save;
+	char *save;
 	extern PS _opt;
 	char check = TRUE;
 

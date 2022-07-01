@@ -75,6 +75,8 @@ static	int cmd_form;
 static	int cmd_bytesz;
 
 char	*savestr();
+
+#define YYSTYPE size_t
 %}
 
 %token
@@ -454,7 +456,7 @@ rename_from:	RNFR check_login SP pathname CRLF
 			from = renamefrom((char*)$4);
 		if (from == 0 && $4)
 			free((char*)$4);
-		$$ = (int)from;
+		$$ = (size_t)from;
 	}
 	;
 
@@ -639,7 +641,7 @@ yylex()
 					/* NOTREACHED */
 				}
 				state = p->state;
-				yylval = (int) p->name;
+				yylval = (size_t) p->name;
 				return (p->token);
 			}
 			break;
@@ -778,7 +780,7 @@ copy(s)
 	if (p == NULL)
 		fatal("Ran out of memory.");
 	(void)strcpy(p, s);
-	return ((int)p);
+	return ((size_t)p);
 }
 
 help(s)

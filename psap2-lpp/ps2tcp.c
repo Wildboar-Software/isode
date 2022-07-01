@@ -255,7 +255,7 @@ struct PSAPindication *pi;
 	fd_set  mask;
 	struct sockaddr_in *isock = &peers[fd];
 
-	if (!FD_SET (fd, &inprogress))
+	if (!FD_ISSET (fd, &inprogress))
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "connection not in progress");
 	FD_ZERO (&mask);

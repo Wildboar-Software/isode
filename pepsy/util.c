@@ -233,7 +233,7 @@ dmp_tpe (
 	}
 	if (par == prev)
 		pepsylose (mod, p, NULLPE,
-				   "dmp_tpe:par == prev == 0x%x internal error\n", (int) par);
+				   "dmp_tpe:par == prev == %p internal error\n", par);
 	par--;
 	j = p - *par;
 

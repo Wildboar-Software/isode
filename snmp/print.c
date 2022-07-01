@@ -441,7 +441,7 @@ int	offset;
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -619,7 +619,7 @@ int	offset;
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pq = get_pqent (oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -689,7 +689,7 @@ int	offset;
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -875,7 +875,7 @@ int	offset;
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pj = get_pjent (oid -> oid_elements + ot -> ot_name -> oid_nelem,

@@ -961,7 +961,7 @@ char   *file;\n\
 	}\n\
 \n\
     for (ot = _types; ot -> ot_text; ot++)\n\
-	ot -> ot_syntax = (i = (int) ot -> ot_syntax) < 0\n\
+	ot -> ot_syntax = (i = (ssize_t) ot -> ot_syntax) < 0\n\
 	    			? NULLOS : _syntaxes[i].value;\n\
 \n\
     return OK;\n\

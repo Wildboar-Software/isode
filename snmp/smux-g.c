@@ -56,7 +56,7 @@ int	offset;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
@@ -148,7 +148,7 @@ int	offset;
 	OS	    os = ot -> ot_syntax;
 	caddr_t value;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 	case type_SNMP_PDUs_commit:
@@ -234,7 +234,7 @@ int	offset;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -332,7 +332,7 @@ int	offset;
 	caddr_t value;
 
 #ifndef	lint
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 #endif
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:

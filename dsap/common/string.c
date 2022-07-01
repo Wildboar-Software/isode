@@ -646,7 +646,7 @@ prtparse (char *str) {
 	if ((ptr = prtparse_aux(str)) != NULLCP)
 		return (ptr);
 	else {
-		parse_error ("character '%c' not in printablestring",(char *)char_failed);
+		parse_error ("character '%c' not in printablestring",char_failed);
 		return (NULLCP);
 	}
 }

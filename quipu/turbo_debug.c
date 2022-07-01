@@ -142,7 +142,7 @@ rprint_directory (Entry node, int depth) {
 	ps_print( ps, "\n" );
 
 	if ( node->e_children != NULLAVL )
-		avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
+		avl_apply( node->e_children, rprint_directory, (caddr_t) (size_t) (depth + 1),
 				   NOTOK, AVL_INORDER );
 }
 

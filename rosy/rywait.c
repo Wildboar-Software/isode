@@ -1,5 +1,6 @@
 /* rywait.c - ROSY: wait */
 
+#include <sys/types.h>
 #ifndef	lint
 static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rywait.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
 #endif
@@ -458,7 +459,7 @@ bad_error:
 			if (op2 -> opb_errfnx) {
 				result = (*op2 -> opb_errfnx) (sd, id = op2 -> opb_id,
 											   RY_REJECT,
-											   (caddr_t) rou -> rou_reason,
+											   (caddr_t) (size_t) rou -> rou_reason,
 											   roi);
 				freeopblk (op2);
 
@@ -497,7 +498,7 @@ bad_response:
 
 			if (op2 -> opb_errfnx) {
 				result = (*op2 -> opb_errfnx) (sd, id = op2 -> opb_id, RY_REJECT,
-											   (caddr_t) rou ->rou_reason, roi);
+											   (caddr_t) (size_t) rou ->rou_reason, roi);
 
 				freeopblk (op2);
 

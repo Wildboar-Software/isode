@@ -385,7 +385,7 @@ imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, st
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
-		advise (NULLCP, "%s", RoErrString ((int) parameter));
+		advise (NULLCP, "%s", RoErrString ((ssize_t) parameter));
 		return OK;
 	}
 

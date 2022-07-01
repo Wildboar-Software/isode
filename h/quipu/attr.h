@@ -94,11 +94,11 @@ struct file_syntax {
 
 typedef struct {
 	char *	s_sntx;		/* String defining syntax */
-	IFP	s_encode;
-	IFP	s_decode;
-	IFP	s_parse;
+	PFP	s_encode;
+	PFP	s_decode;
+	PFP	s_parse;
 	IFP	s_print;
-	IFP	s_copy;
+	PFP	s_copy;
 	IFP	s_compare;
 	IFP	s_free;
 	char *	s_pe_print;	/* process to handle raw PE */

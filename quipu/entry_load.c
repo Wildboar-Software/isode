@@ -444,7 +444,7 @@ entry_load_kids (
 
 	got_all = TRUE;
 
-	if (avl_apply(entryptr, load_a_kid,  (caddr_t) offset, NOTOK, AVL_PREORDER)
+	if (avl_apply(entryptr, load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
 

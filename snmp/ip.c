@@ -203,7 +203,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -369,7 +369,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 	case type_SNMP_PDUs_commit:
@@ -496,7 +496,7 @@ int	offset;
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + IFN_SIZE)
@@ -621,7 +621,7 @@ int	offset;
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -810,7 +810,7 @@ int	offset;
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (get_routes (offset) == NOTOK)
@@ -1117,7 +1117,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -1253,7 +1253,7 @@ int	offset;
 	if (get_arptab (offset) == NOTOK)
 		return generr (offset);
 
-	switch (ifvar = (int) ot -> ot_info) {
+	switch (ifvar = (ssize_t) ot -> ot_info) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
@@ -1406,7 +1406,7 @@ int	offset;
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	switch (ifvar = (int) ot -> ot_info) {
+	switch (ifvar = (ssize_t) ot -> ot_info) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
