@@ -657,7 +657,12 @@ CheckFamily (int connection, int family) {
  * Returns 1 if host is invalid, 0 if we've found it. */
 
 int
-InvalidHost (struct sockaddr *saddr, int len) {
+#ifdef ISOCONN
+InvalidHost (struct TSAPaddr *saddr, int len)
+#else /* ISOCONN */
+InvalidHost (struct sockaddr *saddr, int len)
+#endif /* ISOCONN */
+{
 	int 			family;
 	pointer			addr;
 	HOST 		*host;
