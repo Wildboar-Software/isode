@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/routes.c,v 9.0 1992/06
 
 
 #include <stdio.h>
+#include <string.h>
 #include "mib.h"
 #include "interfaces.h"
 #include "routes.h"
@@ -49,7 +50,59 @@ struct rtetab *rts_iso = NULL;
 static	int	first_time = 1;
 int	flush_rt_cache = 0;
 
+static int  get_route ();
+
 /*  */
+
+#ifdef LINUX
+static int _read_routes()
+{
+	FILE *f;
+	char line[256];
+	char ifname[20];
+	struct rtentry re;
+	int result;
+
+	f = fopen ("/proc/net/route", "r");
+	if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/route");
+		return NOTOK;
+	}
+
+	fgets(line, sizeof(line), f); /* header */
+
+	rts = NULL; rtp = &rts;
+
+	result = OK;
+	while (fgets(line, sizeof(line), f)) {
+		struct interface *is;
+
+		sscanf(line, "%20s %x %x %hx %hx %lx",
+				ifname,
+				&((struct sockaddr_in *) &re.rt_dst)->sin_addr.s_addr,
+				&((struct sockaddr_in *) &re.rt_gateway)->sin_addr.s_addr,
+				&re.rt_flags,
+				&re.rt_refcnt,
+				&re.rt_use);
+
+		for (is = ifs; is; is = is -> ifn_next) {
+			if (strncmp (is -> ifn_interface.ac_if.if_name, ifname, sizeof (ifname)) == 0) {
+				re.rt_ifp = &is -> ifn_interface.ac_if;
+				break;
+			}
+		}
+
+		if (get_route (&re) == NOTOK) {
+			result = NOTOK;
+			break;
+		}
+	}
+
+	fclose (f);
+
+	return result;
+}
+#endif
 
 int	get_routes (offset)
 int	offset;
@@ -61,15 +114,15 @@ int	offset;
 	struct rtentry **rtaddr,
 			   **rtnet,
 			   **rthost;
-#else
+#elif !defined(LINUX)
 	struct mbuf **rtaddr,
 			   **rtnet,
 			   **rthost;
+	struct nlist nzs;
+	struct nlist *nz = &nzs;
 #endif
 	struct rtetab  *rt,
 			   *rp;
-	struct nlist nzs;
-	struct nlist *nz = &nzs;
 	static   int lastq = -1;
 
 	if (quantum == lastq)
@@ -102,6 +155,7 @@ int	offset;
 	}
 #endif
 
+#ifndef LINUX
 	if (getkmem (nl + N_RTHASHSIZE, (caddr_t) &rthashsize, sizeof rthashsize)
 			== NOTOK)
 		return NOTOK;
@@ -160,6 +214,10 @@ int	offset;
 
 		free ((char *) rtaddr);
 	}
+#else
+	if (_read_routes() != OK)
+		advise (LLOG_EXCEPTIONS, "failed", "read routing table");
+#endif
 
 
 #ifdef	BSD44
@@ -174,8 +232,10 @@ sort_routes:
 
 out2:
 	;
+#ifndef LINUX
 	free ((char *) rtnet);
 	free ((char *) rthost);
+#endif
 
 #ifdef	BSD44
 out1:

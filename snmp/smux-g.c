@@ -218,7 +218,7 @@ int	offset;
 #define	TB_VALID	1		/* smuxTstatus */
 #define	TB_INVALID	2		/*   .. */
 
-struct smuxTree *get_tbent ();
+static struct smuxTree *get_tbent ();
 
 
 static int  o_smuxTree (oi, v, offset)

@@ -31,24 +31,74 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/tcp.c,v 9.0 1992/06/16
 
 
 #include <stdio.h>
+#include <string.h>
 #include "mib.h"
 
 #include "internet.h"
 #ifdef	BSD43
 #include <sys/param.h>
 #endif
+#ifndef LINUX
 #include <sys/protosw.h>
+#endif
 #include <sys/socketvar.h>
 #include <net/route.h>
 #include <netinet/in_systm.h>
 #ifdef	BSD44
 #include <netinet/ip.h>
 #endif
+#ifndef LINUX
 #include <netinet/in_pcb.h>
+#endif
 #include <netinet/tcp.h>
+#ifndef LINUX
 #include <netinet/tcp_fsm.h>
 #include <netinet/tcp_timer.h>
 #include <netinet/tcp_var.h>
+#else
+struct	tcpstat {
+	u_long	tcps_rtoalgorithm;	/*  */
+	u_long	tcps_rtomin;	/*  */
+	u_long	tcps_rtomax;	/*  */
+	u_long	tcps_maxconn;	/*  */
+	u_long	tcps_outsegs;	/*  */
+	u_long	tcps_ierrors;	/*  */
+	u_long	tcps_orsts;  	/*  */
+	u_long	tcps_connattempt;	/* connections initiated */
+	u_long	tcps_accepts;		/* connections accepted */
+	u_long	tcps_drops;		/* connections dropped */
+	u_long	tcps_conndrops;		/* embryonic connections dropped */
+	u_long	tcps_sndrexmitpack;	/* data packets retransmitted */
+	u_long	tcps_rcvtotal;		/* total packets received */
+};
+struct inpcb {
+	struct	inpcb *inp_next;
+	struct	in_addr inp_faddr;	/* foreign host table entry */
+	u_short	inp_fport;		/* foreign port */
+	struct	in_addr inp_laddr;	/* local host table entry */
+	u_short	inp_lport;		/* local port */
+};
+struct socket {
+	struct	sockbuf {
+		u_short	sb_cc;		/* actual chars in buffer */
+	} so_rcv, so_snd;
+};
+struct tcpcb {
+	short	t_state;		/* state of this connection */
+};
+#define	TCPS_ESTABLISHED	TCP_ESTABLISHED	/* established */
+#define	TCPS_SYN_SENT		TCP_SYN_SENT	/* active, have sent syn */
+#define	TCPS_SYN_RECEIVED	TCP_SYN_RECV	/* have send and received syn */
+#define	TCPS_FIN_WAIT_1		TCP_FIN_WAIT1	/* have closed, sent fin */
+#define	TCPS_FIN_WAIT_2		TCP_FIN_WAIT2	/* have closed, fin is acked */
+#define	TCPS_TIME_WAIT		TCP_TIME_WAIT	/* in 2*msl quiet wait after close */
+#define	TCPS_CLOSED		    TCP_CLOSE	/* closed */
+#define	TCPS_CLOSE_WAIT		TCP_CLOSE_WAIT	/* rcvd fin, waiting for close */
+#define	TCPS_LAST_ACK		TCP_LAST_ACK	/* had fin and close; await FIN ACK */
+#define	TCPS_LISTEN		    TCP_LISTEN	/* listening for connection */
+#define	TCPS_CLOSING		TCP_CLOSING	/* closed xchd FIN; await FIN ACK */
+#define	TCP_NSTATES	11
+#endif
 
 /*  */
 
@@ -61,6 +111,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/tcp.c,v 9.0 1992/06/16
 static struct tcpstat tcpstat;
 
 static int tcpConnections;
+
+static int  get_connections ();
 
 /*  */
 
@@ -76,12 +128,66 @@ static int tcpConnections;
 #define	tcpInSegs	9
 #define	tcpOutSegs	10
 #define	tcpRetransSegs	11
-#if	!defined(SUNOS4) || defined(SUNOS41)
+#if defined(LINUX) || !defined(SUNOS4) || defined(SUNOS41)
 #define	tcpInErrs	12
 #else
 #undef	tcpInErrs	/* 12		/* NOT IMPLEMENTED */
 #endif
+#ifdef LINUX
+#define	tcpOutRsts	13
+#else
 #undef	tcpOutRsts	/* 13		/* NOT IMPLEMENTED */
+#endif
+
+#ifdef LINUX
+int _read_snmp_stats ();
+
+static int _read_tcp_stats ()
+{
+	char *labels, *label;
+	long *values, value;
+	size_t len;
+	int i;
+
+	if (_read_snmp_stats ("tcp", &labels, &values, &len) != OK)
+		return NOTOK;
+
+	for (i = 0; i < len; i++) {
+		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
+		value = values[i];
+		if (!strcmp ("RtoAlgorithm", label))
+			tcpstat.tcps_rtoalgorithm = value;
+		else if (!strcmp ("RtoMin", label))
+			tcpstat.tcps_rtomin = value;
+		else if (!strcmp ("RtoMax", label))
+			tcpstat.tcps_rtomax = value;
+		else if (!strcmp ("MaxConn", label))
+			tcpstat.tcps_maxconn = value;
+		else if (!strcmp ("ActiveOpens", label))
+			tcpstat.tcps_connattempt = value;
+		else if (!strcmp ("PassiveOpens", label))
+			tcpstat.tcps_accepts = value;
+		else if (!strcmp ("AttemptFails", label))
+			tcpstat.tcps_conndrops = value;
+		else if (!strcmp ("EstabResets", label))
+			tcpstat.tcps_drops = value;
+		else if (!strcmp ("CurrEstab", label))
+			tcpConnections = value;
+		else if (!strcmp ("InSegs", label))
+			tcpstat.tcps_rcvtotal = value;
+		else if (!strcmp ("OutSegs", label))
+			tcpstat.tcps_outsegs = value;
+		else if (!strcmp ("RetransSegs", label))
+			tcpstat.tcps_sndrexmitpack = value;
+		else if (!strcmp ("InErrs", label))
+			tcpstat.tcps_ierrors = value;
+		else if (!strcmp ("OutRsts", label))
+			tcpstat.tcps_orsts = value;
+	}
+
+	return OK;
+}
+#endif
 
 
 static int  o_tcp (oi, v, offset)
@@ -123,42 +229,65 @@ int	offset;
 	}
 
 	switch (ifvar) {
+#ifndef LINUX
 	case tcpCurrEstab:
 		if (get_connections (type_SNMP_PDUs_get__request) == NOTOK)
 			return generr (offset);
 		break;
+#endif
 
 	default:
 		if (quantum != lastq) {
 			lastq = quantum;
 
+#ifndef LINUX
 			if (getkmem (nl + N_TCPSTAT, (caddr_t) tcps, sizeof *tcps)
 					== NOTOK)
 				return generr (offset);
+#else
+			if (_read_tcp_stats () != OK)
+				advise (LLOG_EXCEPTIONS, "failed", "read tcp stats");
+#endif
 		}
 		break;
 	}
 
 	switch (ifvar) {
 	case tcpRtoAlgorithm:
+#ifdef LINUX
+	    return o_integer (oi, v, tcps -> tcps_rtoalgorithm);
+#else
 #ifdef	TCPTV_REXMTMAX
 		return o_integer (oi, v, RTOA_VANJ);
 #else
 		return o_integer (oi, v, RTOA_OTHER);
 #endif
+#endif
 
 	case tcpRtoMin:
+#ifdef LINUX
+		return o_integer (oi, v, tcps -> tcps_rtomin);
+#else
 		return o_integer (oi, v, TCPTV_MIN * 100);	/* milliseconds */
+#endif
 
+#ifdef LINUX
+		return o_integer (oi, v, tcps -> tcps_rtomax);
+#else
 #ifdef	TCPTV_REXMTMAX
 	case tcpRtoMax:
 		return o_integer (oi, v, TCPTV_REXMTMAX * 100); /*   .. */
 #endif
+#endif
 
 	case tcpMaxConn:
+#ifdef LINUX
+		return o_integer (oi, v, tcps -> tcps_maxconn);
+#else
 		return o_integer (oi, v, MXCN_NONE);
+#endif
 
-#ifdef	TCPTV_REXMTMAX
+#if defined(LINUX) || defined(TCPTV_REXMTMAX)
 	case tcpActiveOpens:
 		return o_integer (oi, v, tcps -> tcps_connattempt);
 
@@ -175,13 +304,17 @@ int	offset;
 	case tcpCurrEstab:
 		return o_integer (oi, v, tcpConnections);
 
-#ifdef	TCPTV_REXMTMAX
+#if defined(LINUX) || defined(TCPTV_REXMTMAX)
 	case tcpInSegs:
 		return o_integer (oi, v, tcps -> tcps_rcvtotal);
 
 	case tcpOutSegs:
+#ifdef LINUX
+		return o_integer (oi, v, tcps -> tcps_outsegs);
+#else
 		return o_integer (oi, v, tcps -> tcps_sndtotal
 						  - tcps -> tcps_sndrexmitpack);
+#endif
 
 	case tcpRetransSegs:
 		return o_integer (oi, v, tcps -> tcps_sndrexmitpack);
@@ -189,12 +322,21 @@ int	offset;
 
 #ifdef	tcpInErrs
 	case tcpInErrs:
-#if	!defined(BSD44) && !(defined(BSD43) && defined(ultrix)) && !defined(SVR4) && !defined(__NeXT__) && !defined(SUNOS41)
+#ifdef LINUX
+		return o_integer (oi, v, tcps -> tcps_ierrors);
+#elif	!defined(BSD44) && !(defined(BSD43) && defined(ultrix)) && !defined(SVR4) && !defined(__NeXT__) && !defined(SUNOS41)
 		return o_integer (oi, v, tcps -> tcps_badsegs);
 #else
 		return o_integer (oi, v, tcps -> tcps_rcvbadsum
 						  + tcps -> tcps_rcvbadoff
 						  + tcps -> tcps_rcvshort);
+#endif
+#endif
+
+#ifdef LINUX
+#ifdef	tcpOutRsts
+	case tcpOutRsts:
+	    return o_integer (oi, v, tcps -> tcps_orsts);
 #endif
 #endif
 
@@ -226,7 +368,7 @@ static struct tcptab *tts = NULL;
 static	int	flush_tcp_cache = 0;
 
 
-struct tcptab *get_tcpent ();
+static struct tcptab *get_tcpent ();
 
 /*  */
 
@@ -237,6 +379,55 @@ struct tcptab *get_tcpent ();
 #define	tcpConnRemPort	4
 #define	unixTcpConnSendQ 5
 #define	unixTcpConnRecvQ 6
+
+#ifdef LINUX
+static struct tcptab *_read_tcp_connections(int *len)
+{
+	FILE *f;
+	char line[256];
+	int i;
+	struct tcptab *tt, *t, **tp;
+	unsigned char *cp;
+
+	*len = 0;
+
+	f = fopen ("/proc/net/tcp", "r");
+	if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/tcp");
+		return NULL;
+	}
+
+	fgets(line, sizeof(line), f); /* header */
+
+	tp = &tt;
+
+	for (i = 0; fgets(line, sizeof(line), f); i++) {
+
+		if ((t = calloc (1, sizeof (struct tcptab))) == NULL)
+			adios (NULLCP, "out of memory");
+
+		sscanf(line, "%*d: %x:%hx %x:%hx %hx %hx:%hx",
+				&t -> tt_pcb.inp_laddr.s_addr, &t -> tt_pcb.inp_lport,
+				&t -> tt_pcb.inp_faddr.s_addr, &t -> tt_pcb.inp_fport,
+				&t -> tt_tcpb.t_state,
+				&t -> tt_socb.so_snd.sb_cc, &t -> tt_socb.so_rcv.sb_cc);
+
+		cp = t -> tt_instance;
+		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_laddr);
+		*cp++ = ntohs (t -> tt_pcb.inp_lport);
+		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_faddr);
+		*cp++ = ntohs (t -> tt_pcb.inp_fport);
+
+		*tp = t; tp = &t -> tt_next;
+	}
+
+	*len = i;
+
+	fclose (f);
+
+	return tt;
+}
+#endif
 
 
 static int  o_tcp_conn (oi, v, offset)
@@ -379,8 +570,10 @@ int	offset;
 	struct inpcb  *ip;
 	struct inpcb *head,
 			   tcb;
+#ifndef LINUX
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
+#endif
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -394,6 +587,7 @@ int	offset;
 	}
 	lastq = quantum, flush_tcp_cache = 0;
 
+#ifndef LINUX
 	for (ts = tts; ts; ts = tp) {
 		tp = ts -> tt_next;
 
@@ -448,6 +642,9 @@ int	offset;
 		}
 	}
 	first_time = 0;
+#else
+	tts = _read_tcp_connections(&i);
+#endif
 
 	if ((tcpConnections = i) > 1) {
 		struct tcptab **base,
@@ -508,11 +705,10 @@ out:
 
 /*    UNIX */
 
-#include <sys/mbuf.h>
-
 
 static	int	unixNetstat = 1;
 
+#ifndef LINUX
 static	struct mbstat mbstat;
 
 /*  */
@@ -700,6 +896,7 @@ again:
 		return int_SNMP_error__status_noSuchName;
 	}
 }
+#endif
 
 /*  */
 
@@ -782,22 +979,23 @@ init_tcp () {
 		ot -> ot_getfnx = o_tcp_conn,
 			  ot -> ot_info = (caddr_t) unixTcpConnRecvQ;
 
-	tcp_states[TCPS_CLOSED] = 1;
-	tcp_states[TCPS_LISTEN] = 2;
-	tcp_states[TCPS_SYN_SENT] = 3;
-	tcp_states[TCPS_SYN_RECEIVED] = 4;
-	tcp_states[TCPS_ESTABLISHED] = 5;
-	tcp_states[TCPS_CLOSE_WAIT] = 8;
-	tcp_states[TCPS_FIN_WAIT_1] = 6;
-	tcp_states[TCPS_CLOSING] = 10;
-	tcp_states[TCPS_LAST_ACK] = 9;
-	tcp_states[TCPS_FIN_WAIT_2] = 7;
-	tcp_states[TCPS_TIME_WAIT] = 11;
+	tcp_states[TCPS_CLOSED] = TCPS_CLOSED;
+	tcp_states[TCPS_LISTEN] = TCPS_LISTEN;
+	tcp_states[TCPS_SYN_SENT] = TCPS_SYN_SENT;
+	tcp_states[TCPS_SYN_RECEIVED] = TCPS_SYN_RECEIVED;
+	tcp_states[TCPS_ESTABLISHED] = TCPS_ESTABLISHED;
+	tcp_states[TCPS_CLOSE_WAIT] = TCPS_CLOSE_WAIT;
+	tcp_states[TCPS_FIN_WAIT_1] = TCPS_FIN_WAIT_1;
+	tcp_states[TCPS_CLOSING] = TCPS_CLOSING;
+	tcp_states[TCPS_LAST_ACK] = TCPS_LAST_ACK;
+	tcp_states[TCPS_FIN_WAIT_2] = TCPS_FIN_WAIT_2;
+	tcp_states[TCPS_TIME_WAIT] = TCPS_TIME_WAIT;
 
 	if (ot = text2obj ("unixNetstat"))
 		ot -> ot_getfnx = o_generic,
 			  ot -> ot_info = (caddr_t) &unixNetstat;
 
+#ifndef LINUX
 	if (ot = text2obj ("mbufs"))
 		ot -> ot_getfnx = o_mbuf,
 			  ot -> ot_info = (caddr_t) mbufs;
@@ -836,4 +1034,5 @@ init_tcp () {
 	if (ot = text2obj ("mbufAllocates"))
 		ot -> ot_getfnx = o_mbufType,
 			  ot -> ot_info = (caddr_t) mbufAllocates;
+#endif
 }

@@ -28,7 +28,7 @@
 /*  */
 
 #ifndef	BSD44
-#define	AF_ISO	AF_NBS		/* any value will do */
+#define	AF_ISO	AF_MAX		/* any value will do */
 
 
 struct iso_addr {

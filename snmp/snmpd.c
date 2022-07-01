@@ -1294,7 +1294,9 @@ static	gc_set () {
 	}
 #endif
 
+#ifndef LINUX
 	chekmem ((struct nlist *) 0);
+#endif
 }
 
 /*    PROXY */

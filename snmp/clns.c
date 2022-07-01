@@ -525,6 +525,7 @@ int	offset;
 #define	clnpAdEntIfIndex 1
 #define	clnpAdEntReasmMaxSize 2
 
+extern int	get_interfaces ();
 
 static int  o_clnp_addr (oi, v, offset)
 OI	oi;

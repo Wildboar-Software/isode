@@ -29,8 +29,27 @@
 #ifdef	BSD44
 #include <sys/param.h>
 #endif
+#ifndef __linux__
 #include <sys/mbuf.h>
+#endif
+
+#ifndef __linux__
 #include <net/route.h>
+#else
+#define	RTF_UP		0x1		/* route useable */
+#define	RTF_GATEWAY	0x2		/* destination is a gateway */
+#define	RTF_HOST	0x4		/* host entry (net otherwise) */
+#define	RTF_DYNAMIC	0x10		/* created dynamically (by redirect) */
+
+struct rtentry {
+	struct	sockaddr rt_dst;	/* key */
+	struct	sockaddr rt_gateway;	/* value */
+	u_short	rt_flags;		/* up/down?, host/net */
+	u_short	rt_refcnt;		/* # held references */
+	u_long	rt_use;			/* raw # packets forwarded */
+	struct	ifnet *rt_ifp;		/* the answer: interface to use */
+};
+#endif
 
 /*  */
 

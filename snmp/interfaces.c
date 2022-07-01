@@ -1,5 +1,8 @@
 /* interfaces.c - MIB realization of the Interfaces group */
 
+#include <net/if.h>
+#include <stdlib.h>
+#include <sys/socket.h>
 #ifndef	lint
 static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 1992/06/16 12:38:11 isode Rel $";
 #endif
@@ -31,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
 
 
 #include <stdio.h>
+#include <string.h>
 #include "mib.h"
 #include "interfaces.h"
 #ifdef	BSD44
@@ -38,6 +42,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
 #endif
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
+#endif
+#ifdef LINUX
+#include <unistd.h>
+#include <ifaddrs.h>
+#include <linux/if_link.h>
+#include <linux/if_packet.h>
+#include <net/if_arp.h>
 #endif
 
 /*  */
@@ -72,6 +83,9 @@ struct address *afs_iso = NULL;
 
 static	int	flush_if_cache = 0;
 
+int	get_interfaces ();
+static struct address *find_address ();
+
 /*  */
 
 #define	ifIndex		0
@@ -104,7 +118,9 @@ static	int	flush_if_cache = 0;
 #endif
 #define	ifOutDiscards	18
 #define	ifOutErrors	19
+#ifndef LINUX
 #define	ifOutQLen	20
+#endif
 #define	ifSpecific	21
 
 
@@ -286,13 +302,19 @@ stuff_ifnum:
 #endif
 
 	case ifOutDiscards:
+#ifdef LINUX
+		return o_integer (oi, v, ifn -> if_oqdrops);
+#else
 		return o_integer (oi, v, ifn -> if_snd.ifq_drops);
+#endif
 
 	case ifOutErrors:
 		return o_integer (oi, v, ifn -> if_oerrors);
 
+#ifdef ifOutQLen
 	case ifOutQLen:
 		return o_integer (oi, v, ifn -> if_snd.ifq_len);
+#endif
 
 	case ifSpecific:
 		return o_specific (oi, v, (caddr_t) nullSpecific);
@@ -457,12 +479,111 @@ malformed:
 
 /*  */
 
+static struct interface *_find_interface_by_name (struct interface *list, const char *ifname)
+{
+	for (; list; list = list -> ifn_next) {
+		if (!strncmp(list -> ifn_interface.ac_if.if_name, ifname, IFNAMSIZ))
+			return list;
+	}
+	return NULL;
+}
+
+#ifdef LINUX
+static struct address *_upate_addresses (struct interface *list, int *addr_number)
+{
+    struct ifaddrs *ifaddr, *ifa;
+	struct interface *is;
+	struct ifnet *ifn;
+	struct address *addresses, *addresses_tail, *adrp;
+
+	*addr_number = 0;
+
+	if (getifaddrs (&ifaddr) == -1) {
+		advise (LLOG_EXCEPTIONS, "failed", "getifaddrs");
+		return NULL;
+	}
+
+	for (is = list; is; is = is -> ifn_next) {
+		struct ifaddr *ifb, *next;
+		ifn = &is -> ifn_interface.ac_if;
+		ifn -> if_flags = 0;
+		for (ifb = ifn -> if_addrlist; ifb; ifb = next) {
+			next = ifb -> ifa_next;
+			free ((char *) ifb);
+		}
+	}
+
+	addresses = addresses_tail = NULL;
+
+	for (ifa = ifaddr; ifa; ifa = ifa->ifa_next) {
+
+		if (ifa->ifa_addr == NULL)
+			continue;
+
+		is = _find_interface_by_name (list, ifa -> ifa_name);
+		if (is == NULL)
+			continue;
+
+		ifn = &is -> ifn_interface.ac_if;
+		ifn -> if_flags |= ifa -> ifa_flags;
+
+		if (ifa -> ifa_addr -> sa_family == AF_INET) {
+			struct ifaddr *addr, **tail;
+
+			tail = &ifn -> if_addrlist;
+			for (; *tail; tail = &(*tail) -> ifa_next) {}
+
+			if ((*tail = calloc (1, sizeof (struct ifaddr))) == NULL)
+				adios (NULLCP, "out of memory");
+			addr = *tail;
+
+			if ((adrp = calloc (1, sizeof (*addresses))) == NULL)
+				adios (NULLCP, "out of memory");
+
+			addr -> ifa_addr = *ifa -> ifa_addr;
+			adrp -> adr_address.sa = *ifa -> ifa_addr;
+
+			if (ifa -> ifa_flags & IFF_BROADCAST && ifa -> ifa_broadaddr ->sa_family == AF_INET) {
+				addr -> ifa_broadaddr = *ifa -> ifa_broadaddr;
+				adrp -> adr_broadaddr.sa = *ifa -> ifa_broadaddr;
+			} else if (ifa -> ifa_flags & IFF_POINTOPOINT && ifa -> ifa_broadaddr ->sa_family == AF_INET) {
+				addr -> ifa_dstaddr = *ifa -> ifa_dstaddr;
+			}
+			adrp -> adr_netmask.sa = *ifa -> ifa_netmask;
+			adrp -> adr_indexmask |= is -> ifn_indexmask;
+
+			adrp -> adr_insize = ipaddr2oid (adrp -> adr_instance, &adrp -> adr_address.un_in);
+
+			if (addresses_tail) {
+				addresses_tail -> adr_next = adrp;
+				addresses_tail = adrp;
+			} else {
+				addresses = addresses_tail = adrp;
+			}
+
+			++*addr_number;
+
+		} else if (ifa -> ifa_addr -> sa_family == AF_PACKET) {
+			if (ifa->ifa_data != NULL) {
+                struct rtnl_link_stats *stats = ifa -> ifa_data;
+				ifn -> if_ipackets = stats -> rx_packets;
+				ifn -> if_ierrors= stats -> rx_errors;
+				ifn -> if_opackets = stats -> tx_packets;
+				ifn -> if_oerrors= stats -> tx_errors;
+            }
+		}
+	}
+	return addresses;
+}
+#endif
+
 init_interfaces () {
 	int	    i;
 	struct ifnet *ifnet;
 	OT	    ot;
 	struct interface  *is,
 			   **ifp;
+#ifndef LINUX
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 
@@ -542,6 +663,57 @@ disabled:
 					"add interface %d: %s 0x%x",
 					is -> ifn_index, is -> ifn_descr, is -> ifn_offset);
 	}
+#else
+	struct ifaddrs *ifaddr, *ifa;
+	if (getifaddrs (&ifaddr) == -1) {
+		advise (LLOG_EXCEPTIONS, "failed", "getifaddrs");
+		return NOTOK;
+	}
+
+	ifp = &ifs;
+	for (i = 0, ifa = ifaddr; ifa; ifa = ifa->ifa_next) {
+		struct ifnet *ifn;
+
+		if (ifa->ifa_addr == NULL)
+			continue;
+
+		is = _find_interface_by_name (ifs, ifa -> ifa_name);
+		if (is == NULL) {
+			int fd;
+			struct ifreq ifr;
+
+			if ((is = (struct interface *) calloc (1, sizeof *is)) == NULL)
+				adios (NULLCP, "out of memory");
+			is -> ifn_index = i + 1;
+			is -> ifn_indexmask = 1 << i;
+			++i;
+			ifn = &is -> ifn_interface.ac_if;
+			ifn -> if_name = strdup (ifa -> ifa_name);
+			ifn -> if_flags = ifa -> ifa_flags;
+			is -> ifn_speed = 10000000;
+			snprintf (is -> ifn_descr, sizeof (is -> ifn_descr), "%s", ifa -> ifa_name);
+
+			/* get mtu using ioctl */
+			fd = socket (AF_INET, SOCK_DGRAM, 0);
+			snprintf (ifr.ifr_name, sizeof (ifr.ifr_name), "%s", ifa -> ifa_name);
+			if (ioctl (fd, SIOCGIFMTU, &ifr) == 0)
+				ifn -> if_mtu = ifr.ifr_mtu;
+			close (fd);
+
+			*ifp = is, ifp = &is -> ifn_next;
+		}
+
+		ifn = &is -> ifn_interface.ac_if;
+		ifn -> if_flags |= ifa -> ifa_flags;
+
+		if (ifa -> ifa_addr -> sa_family == AF_PACKET) {
+			struct sockaddr_ll *addr = (struct sockaddr_ll*) ifa -> ifa_addr;
+			is -> ifn_type = addr -> sll_hatype == ARPHRD_ETHER ? TYPE_ETHER : TYPE_OTHER;
+			memcpy (is -> ifn_interface.ac_enaddr, addr -> sll_addr, 6);
+			is -> ifn_offset = addr -> sll_ifindex;
+		}
+	}
+#endif
 
 	if (ot = text2obj ("ifNumber")) {
 		ot -> ot_getfnx = o_generic;
@@ -627,9 +799,11 @@ disabled:
 	if (ot = text2obj ("ifOutErrors"))
 		ot -> ot_getfnx = o_interfaces,
 			  ot -> ot_info = (caddr_t) ifOutErrors;
+#ifdef ifOutQLen
 	if (ot = text2obj ("ifOutQLen"))
 		ot -> ot_getfnx = o_interfaces,
 			  ot -> ot_info = (caddr_t) ifOutQLen;
+#endif
 	if (ot = text2obj ("ifSpecific"))
 		ot -> ot_getfnx = o_interfaces,
 			  ot -> ot_info = (caddr_t) ifSpecific;
@@ -685,6 +859,9 @@ int	offset;
 	afs_iso = NULL;
 #endif
 
+#ifdef LINUX
+	afs = afs_inet = _upate_addresses (ifs, &adrNumber);
+#else
 	afp = &afs;
 	for (is = ifs; is; is = is -> ifn_next) {
 		struct arpcom ifns;
@@ -880,6 +1057,7 @@ int	offset;
 				   sizeof is -> ifn_interface.ac_enaddr.ether_addr_octet);
 #endif
 	}
+#endif
 
 	for (is = ifs; is; is = is -> ifn_next) {
 		is -> ifn_ready = 0;
@@ -965,7 +1143,7 @@ int	offset;
 
 /*  */
 
-struct address *find_address (addr)
+static struct address *find_address (addr)
 union sockaddr_un *addr;
 {
 	struct address *as;

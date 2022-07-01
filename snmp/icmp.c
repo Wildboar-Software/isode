@@ -40,7 +40,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/icmp.c,v 9.0 1992/06/1
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
+#ifndef LINUX
 #include <netinet/icmp_var.h>
+#else
+struct	icmpstat {
+/* statistics related to icmp packets generated */
+	int	icps_omsgs;		/* # of tx messages */
+	int	icps_error;		/* # of calls to icmp_error */
+	int	icps_outhist[ICMP_MAXTYPE + 1];
+/* statistics related to input messages processed */
+	int	icps_imsgs;		/* # of rx messages */
+	int	icps_ierrors;	/* # of rx errors */
+	int	icps_inhist[ICMP_MAXTYPE + 1];
+};
+#endif
 
 /*  */
 
@@ -74,6 +87,82 @@ static struct icmpstat icmpstat;
 #define	icmpOutTimestampReps 23
 #define	icmpOutAddrMasks 24
 #define	icmpOutAddrMaskReps 25
+
+
+#ifdef LINUX
+int _read_snmp_stats ();
+
+static int _read_icmp_stats ()
+{
+	char *labels, *label;
+	long *values, value;
+	size_t len;
+	int i;
+
+	if (_read_snmp_stats ("icmp", &labels, &values, &len) != OK)
+		return NOTOK;
+
+	for (i = 0; i < len; i++) {
+		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
+		value = values[i];
+		if (!strcmp ("InMsgs", label))
+		    icmpstat.icps_imsgs = value;
+		else if (!strcmp ("InErrors", label))
+		    icmpstat.icps_ierrors = value;
+		else if (!strcmp ("InDestUnreachs", label))
+		    icmpstat.icps_inhist[ICMP_UNREACH] = value;
+		else if (!strcmp ("InTimeExcds", label))
+		    icmpstat.icps_inhist[ICMP_TIMXCEED] = value;
+		else if (!strcmp ("InParmProbs", label))
+		    icmpstat.icps_inhist[ICMP_PARAMPROB] = value;
+		else if (!strcmp ("InSrcQuenchs", label))
+		    icmpstat.icps_inhist[ICMP_SOURCEQUENCH] = value;
+		else if (!strcmp ("InRedirects", label))
+		    icmpstat.icps_inhist[ICMP_REDIRECT] = value;
+		else if (!strcmp ("InEchos", label))
+		    icmpstat.icps_inhist[ICMP_ECHO] = value;
+		else if (!strcmp ("InEchoReps", label))
+		    icmpstat.icps_inhist[ICMP_ECHOREPLY] = value;
+		else if (!strcmp ("InTimestamps", label))
+		    icmpstat.icps_inhist[ICMP_TSTAMP] = value;
+		else if (!strcmp ("InTimestampReps", label))
+		    icmpstat.icps_inhist[ICMP_TSTAMPREPLY] = value;
+		else if (!strcmp ("InAddrMasks", label))
+		    icmpstat.icps_inhist[ICMP_MASKREQ] = value;
+		else if (!strcmp ("InAddrMaskReps", label))
+		    icmpstat.icps_inhist[ICMP_MASKREPLY] = value;
+		else if (!strcmp ("OutMsgs", label))
+		    icmpstat.icps_omsgs = value;
+		else if (!strcmp ("OutErrors", label))
+		    icmpstat.icps_error = value;
+		else if (!strcmp ("OutDestUnreachs", label))
+		    icmpstat.icps_outhist[ICMP_UNREACH] = value;
+		else if (!strcmp ("OutTimeExcds", label))
+		    icmpstat.icps_outhist[ICMP_TIMXCEED] = value;
+		else if (!strcmp ("OutParmProbs", label))
+		    icmpstat.icps_outhist[ICMP_PARAMPROB] = value;
+		else if (!strcmp ("OutSrcQuenchs", label))
+		    icmpstat.icps_outhist[ICMP_SOURCEQUENCH] = value;
+		else if (!strcmp ("OutRedirects", label))
+		    icmpstat.icps_outhist[ICMP_REDIRECT] = value;
+		else if (!strcmp ("OutEchos", label))
+		    icmpstat.icps_outhist[ICMP_ECHO] = value;
+		else if (!strcmp ("OutEchoReps", label))
+		    icmpstat.icps_outhist[ICMP_ECHOREPLY] = value;
+		else if (!strcmp ("OutTimestamps", label))
+		    icmpstat.icps_outhist[ICMP_TSTAMP] = value;
+		else if (!strcmp ("OutTimestampReps", label))
+		    icmpstat.icps_outhist[ICMP_TSTAMPREPLY] = value;
+		else if (!strcmp ("OutAddrMasks", label))
+		    icmpstat.icps_outhist[ICMP_MASKREQ] = value;
+		else if (!strcmp ("OutAddrMaskReps", label))
+		    icmpstat.icps_outhist[ICMP_MASKREPLY] = value;
+
+	}
+
+	return OK;
+}
+#endif
 
 
 static int  o_icmp (oi, v, offset)
@@ -117,12 +206,18 @@ int	offset;
 	if (quantum != lastq) {
 		lastq = quantum;
 
+#ifndef LINUX
 		if (getkmem (nl + N_ICMPSTAT, (caddr_t) icps, sizeof *icps) == NOTOK)
 			return generr (offset);
+#else
+		if (_read_icmp_stats () != OK)
+			advise (LLOG_EXCEPTIONS, "failed", "read icmp stats");
+#endif
 	}
 
 	switch (ifvar) {
 	case icmpInMsgs:
+#ifndef LINUX
 		return o_integer (oi, v, icps -> icps_badcode
 						  + icps -> icps_checksum
 						  + icps -> icps_badlen
@@ -137,11 +232,18 @@ int	offset;
 						  + icps -> icps_inhist[ICMP_TSTAMPREPLY]
 						  + icps -> icps_inhist[ICMP_MASKREQ]
 						  + icps -> icps_inhist[ICMP_MASKREPLY]);
+#else
+		return o_integer (oi, v, icps -> icps_imsgs);
+#endif
 
 	case icmpInErrors:
+#ifndef LINUX
 		return o_integer (oi, v, icps -> icps_badcode
 						  + icps -> icps_checksum
 						  + icps -> icps_badlen);
+#else
+		return o_integer (oi, v, icps -> icps_ierrors);
+#endif
 
 	case icmpInDestUnreachs:
 		return o_integer (oi, v, icps -> icps_inhist[ICMP_UNREACH]);
@@ -177,6 +279,7 @@ int	offset;
 		return o_integer (oi, v, icps -> icps_inhist[ICMP_MASKREPLY]);
 
 	case icmpOutMsgs:
+#ifndef LINUX
 		return o_integer (oi, v, icps -> icps_error
 						  + icps -> icps_reflect
 						  + icps -> icps_outhist[ICMP_UNREACH]
@@ -190,6 +293,9 @@ int	offset;
 						  + icps -> icps_outhist[ICMP_TSTAMPREPLY]
 						  + icps -> icps_outhist[ICMP_MASKREQ]
 						  + icps -> icps_outhist[ICMP_MASKREPLY]);
+#else
+		return o_integer (oi, v, icps -> icps_omsgs);
+#endif
 
 	case icmpOutErrors:
 		return o_integer (oi, v, icps -> icps_error);

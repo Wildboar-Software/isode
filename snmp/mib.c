@@ -52,6 +52,7 @@ static	int	wd;
 #define nlist_item(s) { s }
 #endif
 
+#ifndef LINUX
 struct nlist nl[] = {
 	nlist_item("_arptab"),
 	nlist_item("_arptab_size"),
@@ -80,6 +81,7 @@ struct nlist nl[] = {
 #endif
 	nlist_item(NULL)
 };
+#endif
 
 
 struct	timeval	my_boottime;
@@ -95,6 +97,7 @@ OID	nullSpecific = NULLOID;
 #endif
 
 init_mib () {
+#ifndef LINUX
 	struct nlist *nz;
 
 	if (nlist (VMUNIX, nl) == NOTOK)
@@ -107,6 +110,7 @@ init_mib () {
 	if ((kd = open ("/dev/kmem", O_RDONLY)) == NOTOK)
 		adios ("/dev/kmem", "unable to read");
 	wd = NOTOK;
+#endif
 
 	if ((nullSpecific = text2oid ("0.0")) == NULLOID)
 		adios (NULLCP, "text2oid (\"0.0\") failed!");
@@ -174,6 +178,7 @@ char   *name,
 
 /*  */
 
+#ifndef LINUX
 int	getkmem (n, buffer, cc)
 struct nlist *n;
 caddr_t	buffer;
@@ -246,3 +251,4 @@ struct nlist *n;
 
 	return OK;
 }
+#endif

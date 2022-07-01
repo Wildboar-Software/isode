@@ -110,7 +110,10 @@ struct gu {
 static	struct gu *gu_head = NULL;
 
 
-char   *mycrypt ();
+static char   *mycrypt ();
+
+static	free_pw (), free_gr ();
+
 
 /*  */
 
@@ -278,7 +281,7 @@ struct passwd *pwp;
 #ifdef PW_QUOTA
 	pwp -> pw_quota = -1;
 #endif
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 	pwp -> pw_comment =
 #endif
 		pwp -> pw_gecos = pwp -> pw_dir = pwp -> pw_shell = "";
@@ -315,7 +318,7 @@ static	free_pw () {
 					free (pwp -> pw_name);
 				if (pwp -> pw_passwd)
 					free (pwp -> pw_passwd);
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				if (pwp -> pw_comment)
 					free (pwp -> pw_comment);
 #endif
@@ -901,7 +904,7 @@ try_again:
 		return NOTOK;
 
 	case userComment:
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 		if (*pwp -> pw_comment)
 			return o_string (oi, v, pwp -> pw_comment,
 							 strlen (pwp -> pw_comment));
@@ -983,7 +986,7 @@ no_mem:
 					free (pwp -> pw_name), pwp -> pw_name = NULL;
 				if (pwp -> pw_passwd)
 					free (pwp -> pw_passwd);
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				if (pwp -> pw_comment)
 					free (pwp -> pw_comment);
 #endif
@@ -1008,7 +1011,7 @@ no_mem:
 		pwp = &pw -> pw_pw;
 		if ((pwp -> pw_name = strdup (name)) == NULL
 				|| (pwp -> pw_passwd = strdup ("*")) == NULL
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				|| (pwp -> pw_comment = strdup ("")) == NULL
 #endif
 				|| (pwp -> pw_gecos = strdup ("")) == NULL
@@ -1055,7 +1058,7 @@ no_mem:
 		if (!pw -> pw_malloc) {
 			if (!(pwp -> pw_name = strdup (pwp -> pw_name))
 					|| !(pwp -> pw_passwd = strdup (pwp -> pw_passwd))
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 					|| !(pwp -> pw_comment = strdup (pwp -> pw_comment))
 #endif
 					|| !(pwp -> pw_gecos = strdup (pwp -> pw_gecos))
@@ -1158,7 +1161,7 @@ done_gid:
 #endif
 
 	case userComment:
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 		ap = &pwp -> pw_comment;
 		goto do_string;
 #else
