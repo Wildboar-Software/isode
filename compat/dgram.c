@@ -756,6 +756,6 @@ struct sockaddr *sock;
 /*  */
 
 int
-dgram_dummy  {}
+dgram_dummy () {}
 
 #endif

@@ -54,7 +54,7 @@ QCardinal requests_made = 0, requests_failed = 0;
 jmp_buf env;
 
 void
-interact  {
+interact () {
 	char commandline[LINESIZE];
 
 	setjmp(env);
@@ -71,7 +71,7 @@ interact  {
 }
 
 void
-intquit  {
+intquit () {
 	char input[LINESIZE];
 
 	while (1) {
@@ -570,18 +570,18 @@ entryList *returnlist;
 }
 
 void
-nullfn  {
+nullfn () {
 }
 
 void
-abort_query  {
+abort_query () {
 	uprint("\nQuery interrupted.\n");
 	abort_request(request_id);
 	longjmp(env, 0);
 }
 
 void
-abort_command  {
+abort_command () {
 	uprint("\nCommand interrupted.\n");
 	longjmp(env, 0);
 }

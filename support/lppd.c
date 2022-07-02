@@ -312,7 +312,7 @@ no_more:
 /*  */
 
 static
-envinit  {
+envinit () {
 	int     i,
 	sd;
 

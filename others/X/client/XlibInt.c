@@ -1667,7 +1667,7 @@ static int writev (
 	 */
 
 	void
-	_XFreeQ  {
+	_XFreeQ () {
 		_XQEvent *qelt = _qfree;
 
 		while (qelt) {

@@ -459,7 +459,7 @@ send_rsp:
 /*  */
 
 static
-bind_to_dsa  {
+bind_to_dsa () {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
 	struct ds_bind_error be;
@@ -846,7 +846,7 @@ arginit (char **vec) {
 /*  */
 
 static
-envinit  {
+envinit()  {
 	int     i,
 	sd;
 

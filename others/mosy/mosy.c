@@ -338,7 +338,7 @@ va_dcl {
 /*  */
 
 int
-yywrap  {
+yywrap () {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -388,7 +388,7 @@ yyprint_aux (char *s, char *mode) {
 /*    PASS1 */
 
 int
-pass1  {
+pass1 () {
 	printf ("-- object definitions compiled from %s", mymodule);
 	if (mymoduleid)
 		printf (" %s", oidprint(mymoduleid));
@@ -544,7 +544,7 @@ YP	yp;
 /*    PASS2 */
 
 int
-pass2  {
+pass2 () {
 	SY	    sy;
 
 	if (!sflag)

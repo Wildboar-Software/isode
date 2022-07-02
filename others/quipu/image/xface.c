@@ -249,7 +249,7 @@ arginit (char **vec) {
 /*  */
 
 static
-envinit  {
+envinit () {
 	int     i,
 	pid;
 
@@ -273,7 +273,7 @@ envinit  {
 /*  */
 
 static
-display_X  {
+display_X () {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -368,7 +368,7 @@ display_X  {
 /*  */
 
 static
-Redisplay  {
+Redisplay () {
 	int     sx,
 	sy,
 	dx,
@@ -412,7 +412,7 @@ Redisplay  {
 /*  */
 
 static int
-ALRMser  {
+ALRMser () {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);

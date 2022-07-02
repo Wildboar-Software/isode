@@ -700,5 +700,5 @@ int
 _ccurx25_stub() {}
 #endif  /* CCUR_X25 */
 int
-_ccurx25_stub2  {}
+_ccurx25_stub2()  {}
 #endif  /* X25 */

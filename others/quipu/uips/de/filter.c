@@ -35,7 +35,7 @@ struct ds_search_result sresult;
 struct DSError serror;
 
 struct s_filter *
-	andfilter  {
+	andfilter () {
 	struct s_filter * fp;
 
 	fp = filter_alloc();
@@ -45,7 +45,7 @@ struct s_filter *
 }
 
 struct s_filter *
-	orfilter  {
+	orfilter () {
 	struct s_filter * fp;
 
 	fp = filter_alloc();

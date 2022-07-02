@@ -567,7 +567,7 @@ shutdown (int serverpid, int clientpid) {
  */
 
 int
-set_environment  {
+set_environment () {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

@@ -395,6 +395,6 @@ EntryInfo	*alias_entry ;
 }
 
 int
-shadow_entry  {
+shadow_entry () {
 	;
 }

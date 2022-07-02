@@ -420,7 +420,7 @@ free_filter:
 /*  */
 
 static
-do_bind  {
+do_bind () {
 	struct ds_bind_arg bind_arg,
 		bind_result;
 	struct ds_bind_arg *ba = &bind_arg,

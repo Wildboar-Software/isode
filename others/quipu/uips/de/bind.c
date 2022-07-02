@@ -61,7 +61,7 @@ static int bindStarted = FALSE;
 static int boundOnce = FALSE;
 
 int
-tryBackup  {
+tryBackup () {
 
 	if (triedBackup == TRUE)
 		return NOTOK;
@@ -194,7 +194,7 @@ wait_bind_to_ds (int assoc, int wantToBlock) {
 } /* bind_to_ds */
 
 int
-rebind  {
+rebind () {
 	if (boundToDSA == FALSE)
 		return(de_bind(TRUE));
 	else
@@ -218,7 +218,7 @@ de_bind (int wantToBlock) {
 }
 
 int
-de_unbind  {
+de_unbind () {
 	if (deLogLevel)
 		ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
 	ds_unbind();

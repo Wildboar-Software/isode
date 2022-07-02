@@ -138,7 +138,7 @@ main (int argc, char **argv) {
 
 
 int
-cleanup  {
+cleanup () {
 }
 
 

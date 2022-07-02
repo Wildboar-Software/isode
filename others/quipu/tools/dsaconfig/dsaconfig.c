@@ -238,7 +238,7 @@ struct pair *n2p ();
 /*  */
 
 static
-read_config  {
+read_config () {
 	int	    lineno;
 	char *cp,
 	*dp;
@@ -711,7 +711,7 @@ hit:
 /*  */
 
 int
-generate_sed  {
+generate_sed () {
 	FILE   *fp;
 	struct pair *p;
 
@@ -792,7 +792,7 @@ no_match:
 /*    EDB */
 
 static
-build_root  {
+build_root () {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)
@@ -859,7 +859,7 @@ static char *c_TLC[] = {
 
 
 static
-build_TLC  {
+build_TLC () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s", wildlife,
@@ -901,7 +901,7 @@ static char *o_I[] = {
 
 
 static
-build_organization  {
+build_organization () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s", wildlife,
@@ -939,7 +939,7 @@ static char *u_J[] = {
 
 
 static
-build_unit  {
+build_unit () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
@@ -980,7 +980,7 @@ make_edb (char *dir, char *type, char *date, char *entries[]) {
 /*  */
 
 static char *
-version  {
+version () {
 	long    clock;
 	struct UTCtime ut;
 	static char buffer[BUFSIZ];
@@ -995,17 +995,17 @@ version  {
 /*    FILES */
 
 static
-build_tailor  {
+build_tailor () {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
 static
-build_startup  {
+build_startup () {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
 static
-build_nightly  {
+build_nightly () {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
@@ -1038,12 +1038,12 @@ make_file (char *infile, char *outfile, int mode, int dosed) {
 /*    SED */
 
 static
-build_dsap  {
+build_dsap () {
 	fudge_file ("dsaptailor");
 }
 
 static
-build_fred  {
+build_fred () {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
@@ -1128,7 +1128,7 @@ usage:
 /*  */
 
 static
-parse_3166  {
+parse_3166 () {
 	int	    bitno;
 	unsigned int bits_size;
 	char *cp,
@@ -1208,7 +1208,7 @@ parse_3166  {
 /*  */
 
 static
-table_3166  {
+table_3166 () {
 	char *cp,
 	*dp;
 	char    d,

@@ -173,7 +173,7 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 /*  */
 
 static int
-ManInit  {
+ManInit () {
 	struct sockaddr_in sin;
 	struct sockaddr_in *sock = &sin;
 	struct servent *sp;

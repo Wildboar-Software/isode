@@ -100,7 +100,7 @@ read_args (unsigned int argc, char ***avptr) {
 }
 
 void
-setsignals  {
+setsignals () {
 	int     i;
 
 	for (i=0; i<18; i++)
@@ -113,7 +113,7 @@ eprint (char *str) {
 }
 
 void
-sd_quit  {
+sd_quit () {
 	quit("\n", 0);
 }
 

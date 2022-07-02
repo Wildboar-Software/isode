@@ -158,7 +158,7 @@ main (int argc, char **argv, char **envp) {
 
 /*-------------------------------------*/
 int
-togglemode
+togglemode ()
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -176,7 +176,7 @@ togglemode
 
 /*-------------------------------------*/
 int
-bind
+bind ()
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -206,7 +206,7 @@ bind
 
 /*-------------------------------------*/
 int
-initbindvars
+initbindvars ()
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -234,7 +234,7 @@ initbindvars
 
 /*-------------------------------------*/
 int
-unbind
+unbind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -255,7 +255,7 @@ unbind
 
 /*-------------------------------------*/
 int
-listenup
+listenup ()
 /*-------------------------------------*/
 {
 	;
@@ -298,7 +298,7 @@ listenup
 
 /*-------------------------------------*/
 int
-audtsendreq
+audtsendreq ()
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -328,7 +328,7 @@ audtsendreq
 
 /*-------------------------------------*/
 int
-audtsend
+audtsend ()
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -367,7 +367,7 @@ audtsend
 
 /*-------------------------------------*/
 int
-audtread
+audtread ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -446,7 +446,7 @@ validbinding (
 
 /*-------------------------------------*/
 int
-audtrebind
+audtrebind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)

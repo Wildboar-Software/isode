@@ -497,7 +497,7 @@ fork_again:
 /*  */
 
 static
-rcfile  {
+rcfile () {
 	char   *bp;
 	char    buffer[BUFSIZ],
 	command[BUFSIZ],
@@ -675,7 +675,7 @@ arginit (char **vec) {
 /*  */
 
 static void
-envinit  {
+envinit () {
 	int     i,
 	sd;
 

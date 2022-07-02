@@ -551,7 +551,7 @@ outOfMem:
 **********************/
 
 void
-FlushAllOutput  {
+FlushAllOutput () {
 	int index, base, mask;
 	OsCommPtr oc;
 	ClientPtr client;
@@ -589,13 +589,13 @@ FlushAllOutput  {
 }
 
 void
-FlushIfCriticalOutputPending  {
+FlushIfCriticalOutputPending () {
 	if (CriticalOutputPending)
 		FlushAllOutput();
 }
 
 void
-SetCriticalOutputPending  {
+SetCriticalOutputPending () {
 	CriticalOutputPending = TRUE;
 }
 

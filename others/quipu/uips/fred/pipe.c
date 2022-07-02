@@ -759,7 +759,7 @@ no_pager:
  */
 
 static
-foreground  {
+foreground () {
 #ifdef	TIOCGPGRP
 	int     pgrp,
 	tpgrp;
@@ -955,7 +955,7 @@ da_command (char *fmt) {
 /*  */
 
 static int
-da_response  {
+da_response () {
 	char *cp,
 	*ep;
 
@@ -998,7 +998,7 @@ da_response  {
 /*  */
 
 int
-sync_ufnrc  {
+sync_ufnrc () {
 	char *bp;
 	char    buffer[BUFSIZ];
 	struct area_guide *ag;
@@ -1043,7 +1043,7 @@ sync_ufnrc  {
 /*  */
 
 int
-init_ufnrc  {
+init_ufnrc () {
 	int   i;
 	int	    inprogress;
 	char *bp,

@@ -282,7 +282,7 @@ set_up_defaults:
 }
 
 int
-doCountry  {
+doCountry () {
 
 	if ((strcmp(qinfo[COUNTRY].entered, qinfo[COUNTRY].defvalue) == 0) &&
 	(qinfo[COUNTRY].lp != NULLLIST) && (qinfo[COUNTRY].listlen == 1)) {
@@ -599,18 +599,18 @@ printNames (int objectType) {
 }
 
 int
-printCountry  {
+printCountry () {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
 void
-foundFollowing  {
+foundFollowing () {
 	resetprint("\nFound the following entries.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
 void
-matchFollowing  {
+matchFollowing () {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
@@ -857,7 +857,7 @@ enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, s
 }
 
 char
-enterYesNo  {
+enterYesNo () {
 	char buf[LINESIZE];
 	int i;
 
@@ -875,7 +875,7 @@ enterYesNo  {
 }
 
 int
-displayValidWildCards  {
+displayValidWildCards () {
 	printf("The following wild-card formats are acceptable:\n");
 	printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
@@ -887,7 +887,7 @@ countryCodeMessage (int str) {
 }
 
 void
-onint1  {
+onint1 () {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -911,7 +911,7 @@ cleanup (int exitCode) {
 
 /* the flushes need dealing with properly */
 void
-onalarm  {
+onalarm () {
 
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);

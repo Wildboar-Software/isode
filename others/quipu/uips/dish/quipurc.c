@@ -110,7 +110,7 @@ char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
 int
-main  {
+main () {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
 	struct	stat	buf ;
@@ -511,15 +511,15 @@ main  {
 }
 
 void
-advise  {
+advise () {
 }
 
 void
-set_sequence  {
+set_sequence () {
 }
 
 void
-unset_sequence  {
+unset_sequence () {
 }
 
 dish_error (ps,error)

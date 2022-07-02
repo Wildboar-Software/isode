@@ -746,7 +746,7 @@ PE	pe;
 
 
 int
-specialSyntaxHandlers  {
+specialSyntaxHandlers () {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

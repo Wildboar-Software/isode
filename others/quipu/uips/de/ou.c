@@ -98,7 +98,7 @@ freeOUs (struct namelist **listpp) {
 }
 
 void
-freeOUSearchArgs  {
+freeOUSearchArgs () {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);

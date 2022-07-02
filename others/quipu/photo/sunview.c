@@ -42,7 +42,7 @@ extern int PIC_LINESIZE;
 
 
 int
-sigwinched  {
+sigwinched () {
 	tool_sigwinch (tool);
 }
 

@@ -634,7 +634,7 @@ clock_update (struct ntp_peer *peer) {
 /* 3.4.6 Initialization procedure */
 
 void
-initialize  {
+initialize () {
 	sys.leap = ALARM;	/* indicate unsynchronized */
 	sys.stratum = 0;
 	sys.precision = 0;	/* may be specified in the config file;
@@ -713,9 +713,9 @@ poll_update (struct ntp_peer *peer, int new_hpoll) {
 /* 3.4.9 Authentication Procedures */
 #if	0
 int
-encrypt  {}
+encrypt () {}
 int
-decrypt  {}
+decrypt () {}
 #endif
 
 /* 4.1 Clock Filter Procedure */
@@ -800,7 +800,7 @@ clock_filter (struct ntp_peer *peer, double new_delay, double new_offset) {
 
 /* 4.2 Clock Select Procedure */
 void
-select_clock  {
+select_clock () {
 	struct ntp_peer *ptmp, *peer = peer_list.head;
 	struct sel_lst {
 		struct ntp_peer *peer;

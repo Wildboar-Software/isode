@@ -428,7 +428,7 @@ str2ia5list (char *s, int len) {
 }
 
 struct type_Idist_FileList *
-	do_listcdir  {
+	do_listcdir () {
 	DIR	*d;
 	struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -476,7 +476,7 @@ struct type_Idist_FileList *
 }
 
 int
-fixup  {
+fixup () {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;

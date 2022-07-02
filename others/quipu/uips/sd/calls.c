@@ -116,7 +116,7 @@ get_strioid (char *ptr) {
 }
 
 void
-user_tailor  {
+user_tailor () {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -415,7 +415,7 @@ user_tailor  {
 }
 
 void
-main_help  {
+main_help () {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
@@ -423,7 +423,7 @@ main_help  {
 }
 
 void
-main_bind  {
+main_bind () {
 	cleartext();
 	if (*passwd != 0)
 		strcpy(bindpass,"******");
@@ -432,12 +432,12 @@ main_bind  {
 }
 
 void
-cnnct_quit  {
+cnnct_quit () {
 	quit("Exiting sd.\n", 0);
 }
 
 void
-cnnct_bind  {
+cnnct_bind () {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -522,7 +522,7 @@ cnnct_bind  {
 }
 
 void
-rd_start  {
+rd_start () {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -594,7 +594,7 @@ rd_start  {
 }
 
 void
-back_start  {
+back_start () {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -615,7 +615,7 @@ back_start  {
 }
 
 void
-widen  {
+widen () {
 	char *str, *sptr;
 	int count = 0;
 	str_seq first;
@@ -659,7 +659,7 @@ widen  {
 }
 
 void
-set_default_type  {
+set_default_type () {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -724,7 +724,7 @@ set_default_type  {
 /* These are the functions called by the list level widgets */
 
 void
-list_start  {
+list_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -873,7 +873,7 @@ char * cptr;
 }
 
 void
-srch_start  {
+srch_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -1148,7 +1148,7 @@ quipu_error (struct DSError *err) {
 }
 
 void
-returnmain  {
+returnmain () {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1343,7 +1343,7 @@ make_friendly (char *fstr, char *str) {
 }
 
 void
-goto_addr  {
+goto_addr () {
 	set_default_type();
 	rd_start();
 }

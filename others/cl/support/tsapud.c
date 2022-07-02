@@ -403,7 +403,7 @@ arginit (char **vec) {
 /*  */
 
 static
-envinit  {
+envinit () {
 	int     i,
 	sd;
 

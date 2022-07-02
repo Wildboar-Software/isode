@@ -357,7 +357,7 @@ arginit (int ac, char **av) {
 /*  */
 /* read_dsas () -- read in identities and locations of regional DSAs */
 void
-read_dsas  {
+read_dsas () {
 	u_short lncnt;			/* linecount */
 	char *cp;				/* character pointer */
 	char *toks[NVEC+1];			/* tokens on line */
@@ -420,7 +420,7 @@ read_dsas  {
 /*  */
 /* read_config () -- parse configuration file, and initialize from it */
 void
-read_config  {
+read_config () {
 	u_short lncnt;			/* linecount */
 	char *toks[NVEC+1];			/* tokens on line */
 	char *cp,*cp2;			/* character pointers */
@@ -741,7 +741,7 @@ bad_postaladdress (
 /*  */
 /* build_top () -- build root, c=US */
 void
-build_top  {
+build_top () {
 	struct pair *pp;
 	int i;
 	extern void copy_edb ();
@@ -851,7 +851,7 @@ add_state (
 
 /*  */
 void
-build_dsa  {
+build_dsa () {
 	unlink (DSAENTRY);
 	bzero (buf, BUFSIZ);
 	sprintf (buf, "sed -f %s %s  > %s", SEDFILE, DSATMPL, DSAENTRY);
@@ -865,7 +865,7 @@ build_dsa  {
 /*  */
 /* build_orgedb () -- build skeleton EDB for organization */
 void
-build_orgedb  {
+build_orgedb () {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	extern struct pair *findpair ();
@@ -909,7 +909,7 @@ build_orgedb  {
 
 /* build_ouedb () -- build skeleton EDB for organizational unit */
 void
-build_ouedb  {
+build_ouedb () {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	char *ounm;			/* name of organizational unit */
@@ -960,7 +960,7 @@ build_ouedb  {
 /*  */
 /* build_tailor () -- build tailor files */
 void
-build_tailor  {
+build_tailor () {
 	extern void make_file ();
 
 	make_file ("quiputailor", QUIPUTMPL);
@@ -969,7 +969,7 @@ build_tailor  {
 
 /* build_scripts () -- build script files */
 void
-build_scripts  {
+build_scripts () {
 	extern void make_file ();
 
 	make_file ("startup.sh", STARTUPTMPL);
@@ -979,7 +979,7 @@ build_scripts  {
 
 /* build_uifl () -- build user interface configuration files */
 void
-build_uifl  {
+build_uifl () {
 	extern void make_file ();
 
 	sprintf (file, "%s/fredrc", isodetcpath);
@@ -993,7 +993,7 @@ build_uifl  {
 /*  */
 /* create_sedfile () -- create sed file to convert templates */
 void
-create_sedfile  {
+create_sedfile () {
 	FILE *sedfp;			/* sed file pointer */
 	struct pair *pp;			/* to get pair values */
 	char *orgnm;			/* organization name */
@@ -1087,7 +1087,7 @@ make_file (
 /*  */
 /* build_mesgfl () -- build file that needs to be sent to wpp-manager */
 void
-build_mesgfl  {
+build_mesgfl () {
 	FILE *msgfp;			/* pointer to message file */
 	FILE *fp;				/* pointer to various EDB entries */
 	struct pair *pp;			/* to get pair values */
@@ -1220,7 +1220,7 @@ findpair (
 /*  */
 /* set_permissions () -- set appropriate permissions on database directory */
 void
-set_permissions  {
+set_permissions () {
 	struct pair *pp;			/* to get pair values */
 	char *owner, *group;		/* owner and group */
 	char *wildlife;			/* database directory */
@@ -1284,7 +1284,7 @@ set_permissions  {
 /*  */
 /* make_usstates () -- generate EDB format entries for the U.S. states */
 void
-make_usstates  {
+make_usstates () {
 	int i,j;
 	char *masterdsa;
 
@@ -1310,7 +1310,7 @@ make_usstates  {
 /*  */
 /* timestamp () -- return timestamp to use as version on EDB file */
 char *
-timestamp  {
+timestamp () {
 	long clock;
 	struct UTCtime ut;
 	static char timestamp [32];

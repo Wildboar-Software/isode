@@ -673,7 +673,7 @@ read_file (char *file) {
 /*  */
 
 static void
-envinit  {
+envinit () {
 	int     i,
 	sd;
 

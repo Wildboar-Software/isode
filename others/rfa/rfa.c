@@ -1101,12 +1101,12 @@ executeCommand (char *cmd) {
 }
 
 int
-cleanup  {
+cleanup () {
 }
 
 
 int
-getConnection  {
+getConnection () {
 	if (connected)
 		return OK;
 	if (makeconn(host, passwd, user) == NOTOK)  {

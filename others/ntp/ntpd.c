@@ -210,7 +210,7 @@ main (int argc, char *argv[]) {
 }
 
 int
-doit  {
+doit () {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -998,7 +998,7 @@ static int kern_hz, kern_tick;
 #endif
 
 static void
-init_kern_vars  {
+init_kern_vars () {
 	int kmem;
 	static char	*memory = "/dev/kmem";
 	static struct nlist nl[4];
@@ -1169,7 +1169,7 @@ GetHostName (char *name, struct Naddr *addr) {
 }
 /* every hour, dump some useful information to the log */
 static void
-hourly  {
+hourly () {
 	char buf[200];
 	int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -1311,7 +1311,7 @@ read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #endif
 
 int
-create_listeners  {
+create_listeners () {
 	create_sockets(servport);
 
 	create_osilisten (osiaddress);
@@ -1338,7 +1338,7 @@ paddr (struct Naddr *addr) {
 }
 
 int
-envinit  {
+envinit () {
 	int s;
 
 	if (!debug) {

@@ -23,7 +23,7 @@ extern void receive();
 
 
 int
-main  {
+main () {
 	int i, cc, val;
 	char foo[10];
 

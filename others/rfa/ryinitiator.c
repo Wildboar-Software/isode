@@ -155,7 +155,7 @@ PE	data;
 }
 
 int
-closeconn  {
+closeconn () {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
