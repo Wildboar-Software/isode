@@ -72,7 +72,7 @@ int	pepsylose (modtyp*module, ...) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
 			continue;
 		cp = PY_pepy + strlen (PY_pepy);
-		sprintf (cp, "encoding %s expecting %s,class=%s/%d",
+		sprintf (cp, "encoding %s expecting %s,class=%s/id=%d",
 				 pname(p1),
 				 pr_petype (p -> pe_type),
 				 pe_classlist[p -> pe_flags & FL_CLASS],
