@@ -735,15 +735,17 @@ pass2()  {
 
 	fflush (stdout);
 	fflush (fdef);
-	fclose (ftbl);
-	fclose (fstb);
+	fflush (ftbl);
+	fflush (fstb);
 
-	if (ferror (stdout) || ferror (fdef))
-		;// FIXME myyerror ("write error - %s", sys_errname (errno));
+	if (ferror (stdout) || ferror (fdef) || ferror (ftbl) || ferror (fstb))
+		myyerror ("write error - %s", sys_errname (errno));
 
 	fclose (fdef);
 
-	fclose (stdout);
+	fclose (ftbl);
+
+	fclose (fstb);
 }
 
 /*  */
