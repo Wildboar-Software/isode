@@ -376,7 +376,7 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	va_copy(fp, ap);
 
 	fmt = va_arg (ap, char *);
-	if (strcmp (fmt, "%*s") != 0) {
+	if (strcmp (fmt, "%s") != 0) {
 		bp = buffer;
 		_asprintf (bp, NULLCP, fmt, ap);
 	} else {
