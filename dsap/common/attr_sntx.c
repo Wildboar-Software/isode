@@ -91,7 +91,7 @@ int	format;
 	Attr_Sequence  atl;
 	AV_Sequence avs;
 	extern int oidformat;
-	i;
+	int i;
 
 	if (a) {
 		if (format == READOUT) {

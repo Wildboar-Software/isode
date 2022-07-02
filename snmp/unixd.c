@@ -305,7 +305,7 @@ losing:
 
 	for (tc = triples; tc -> t_tree; tc++)
 		if (tc -> t_name) {
-			if (smux_(tc -> t_name, -1, tc -> t_access) == NOTOK) {
+			if (smux_register (tc -> t_name, -1, tc -> t_access) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "smux_register: %s [%s]",
 						smux_error (smux_errno), smux_info);
 				goto losing;
@@ -353,7 +353,7 @@ losing:
 		}
 		for (tc++; tc -> t_tree; tc++)
 			if (tc -> t_name) {
-				if (smux_(tc -> t_name, -1, tc -> t_access)
+				if (smux_register (tc -> t_name, -1, tc -> t_access)
 						== NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"smux_register: %s [%s]",

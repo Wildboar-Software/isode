@@ -342,7 +342,7 @@ int	reason;
 
 /*    REGISTER */
 
-int	smux_(subtree, priority, operation)
+int	smux_register (subtree, priority, operation)
 OID	subtree;
 int	priority,
 	operation;

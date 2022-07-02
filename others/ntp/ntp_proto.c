@@ -1073,7 +1073,7 @@ sanity_check (struct ntp_peer *peer) {
 	/* Sanity check 3.
 	   Both peer.estdelay and
 	   peer.estdisp to be less than NTP_MAXWGT, which insures that the
-	   filter at least half full, yet avoids using data from
+	   filter register at least half full, yet avoids using data from
 	   very noisy associations or broken implementations.  	*/
 	if (peer->estdisp > (float)NTP_MAXWGT ||
 			peer->estdelay > (float)NTP_MAXWGT)

@@ -795,8 +795,8 @@ bit_string * lineptr;
 int  length;
 char xcolour;
 {
-	i;
-	l;
+	int i;
+	int l;
 
 	/*
 	    if ( length < 0 ) {

@@ -108,7 +108,7 @@ main (int argc, char **argv) {
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   host, myservice);
 
-	/*--- operation to serve ---*/
+	/*--- register operation to serve ---*/
 	advise (LLOG_EXCEPTIONS, NULLCP, "doing");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, table_RFA_Operations, ds -> ds_operation,

@@ -653,7 +653,7 @@ char	utmp[] = "/etc/utmp";
 long	lseek ();
 
 rmut() {
-	f;
+	int f;
 	int found = 0;
 
 	f = open(utmp, 2);

@@ -420,7 +420,7 @@ static int writev (
 	Display *dpy;
 	{
 		char buf[BUFSIZE];
-		long pend_not_register; /* because can't "&" a variable */
+		long pend_not_register; /* because can't "&" a register variable */
 		long pend;
 		xEvent *ev;
 		Bool not_yet_flushed = True;

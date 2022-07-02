@@ -635,7 +635,7 @@ init_ntp (char *config) {
 			TRACE (1, ("Ignoring line %s ...", argv[0]));
 	}
 	/*
-	 *  Read saved drift compensation value.
+	 *  Read saved drift compensation register value.
 	 */
 	if ((fp = fopen(driftcomp_file, "r")) != NULL) {
 		if (fscanf(fp, "%lf", &j) == 1 && j > -1.0 && j < 1.0) {
