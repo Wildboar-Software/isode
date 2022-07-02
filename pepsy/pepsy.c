@@ -421,7 +421,7 @@ static	pyyerror (YP yp , ...) {
 
 	fmt = va_arg (ap, char*);
 
-	_asprintf (buffer, NULLCP, fmt, yp);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

@@ -59,13 +59,15 @@ int	pepsylose (modtyp*module, ...) {
 	char	*cp;
 	PE	pe;
 	char	buffer[BUFSIZ];
+	char	*fmt;
 
 	va_start (ap, module);
 
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
+	fmt = va_arg (ap, char *);
 
-	_asprintf (buffer, NULLCP, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	sprintf (PY_pepy, "%s: module %s ",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
@@ -110,13 +112,15 @@ int	ppepsylose (modtyp*module, ...) {
 	char	*cp;
 	PE	pe;
 	char	buffer[BUFSIZ];
+	char	*fmt;
 
 	va_start (ap, module);
 
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
+	fmt = va_arg (ap, char *);
 
-	_asprintf (buffer, NULLCP, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	sprintf (PY_pepy, "%s: module %s",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
