@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/synctime.c,v 9.0
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <varargs.h>
 #include <dirent.h>
 #include <errno.h>
 #include "RFA-ops.h"        /* operation definitions */

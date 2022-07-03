@@ -38,18 +38,17 @@ isWrapOn() {
 	return wrapLines;
 }
 
-pageprint(va_alist)
-va_dcl /* no ; */
+void pageprint(char *fmt, ...)
 {
 	va_list ap;
 	char buf[BUFSIZ];
 	int i, c;
 	static int charsInLine = 0;
 
-	va_start (ap);
+	va_start (ap, fmt);
 	if (discardInput == TRUE)
 		return;
-	_asprintf (buf, NULLCP, ap);
+	_asprintf (buf, NULLCP, fmt, ap);
 	for (i = 0; buf[i] != '\0'; i++) {
 		if (buf[i] == '\n') {
 			charsInLine = 0;

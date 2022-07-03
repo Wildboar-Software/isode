@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
 #include <ctype.h>
 #include <sys/types.h>
 #include <errno.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <string.h>
 #include <sys/file.h>
 #include <pwd.h>
@@ -52,7 +52,8 @@ char line[BUFSIZ];			/* configuration line */
 char file[BUFSIZ];			/* a file name */
 char oldfile[BUFSIZ];			/* file name (as above) with suffix */
 
-extern void adios (), advise ();
+void adios (char *what, char *fmt, ...);
+void advise (char *what, char *fmt, ...);
 
 
 
@@ -1324,16 +1325,15 @@ timestamp () {
 
 /* adios () -- exit with error */
 #ifndef lint
+static void _advise ();
 
 void
-adios (va_alist)
-va_dcl {
+adios (char *what, char *fmt, ...) {
 	va_list ap;
-	extern void _advise ();
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -1355,24 +1355,23 @@ char *what, fmt);
 #ifndef lint
 
 void
-advise (va_alist)
-va_dcl {
+advise (char *what, char *fmt, ...)
+{
 	va_list ap;
 	extern void _advise ();
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
-void
-_advise (va_list ap) {
+static void _advise (char *what, char *fmt, va_list ap) {
 
 	char buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 

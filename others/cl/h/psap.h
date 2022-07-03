@@ -484,7 +484,7 @@ char   *bitstr2strb ();
 
 extern char PY_pepy[];
 
-void	PY_advise ();
+void	PY_advise (char *, char *, ...);
 
 int	vpush (), vpop ();
 int	vname (), vtag ();

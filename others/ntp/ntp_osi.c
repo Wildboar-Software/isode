@@ -35,8 +35,10 @@ extern unsigned int servport;
 extern char *ntoa();
 extern double drift_comp, compliance;	/* logical clock variables */
 extern void make_new_peer(), tstamp(), clock_update (),
-	   receive (), clear (), clock_filter (),
-	   select_clock (), poll_update (), adios (), advise ();
+		receive (), clear (), clock_filter (),
+		select_clock (), poll_update ();
+extern void adios (char *, char *, ...);
+extern void advise (int, char *, char *,, ...);
 extern struct ntp_peer *find_peer ();
 extern int demobilize ();
 static double ul_fixed_to_doublep ();

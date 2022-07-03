@@ -58,7 +58,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #include <ctype.h>
 #include <setjmp.h>
 #include <pwd.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 #define	BELL	'\07'
 #ifndef	SUNOS4
@@ -74,6 +74,8 @@ void	vhangup();
 int	connected = FALSE;
 char	command[256];
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 /*
  * I/O data buffers, pointers, and counters.
@@ -736,13 +738,12 @@ finalbye (void) {
 
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (vt_log, LLOG_FATAL, ap);
+	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -761,16 +762,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (vt_log, code, ap);
+	_ll_log (vt_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpi.c,v 9.0 1992/06/
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #ifndef SVR4_UCB
@@ -74,7 +74,7 @@ static	int	interrupted;
 
 static	SFP	istat;
 
-SFD	intrser ();
+static SFD	intrser ();
 
 
 static	char   *defs = NULLCP;
@@ -86,10 +86,11 @@ static	int	sd;
 static	struct TSAPaddr  snmp_ta;
 
 char   *snmp_error ();
-struct type_SNMP_Message *new_message ();
+static struct type_SNMP_Message *new_message ();
 
 
-void	adios (), advise ();
+void	adios (char *what, char *fmt, ...);
+void	advise (char *what, char *fmt, ...);
 
 /*  */
 
@@ -99,16 +100,19 @@ struct dispatch {
 
 	char   *ds_help;		/* help string */
 };
-struct dispatch *getds ();
+static struct dispatch *getds ();
 
 
-int	f_audit ();
+static int	f_audit ();
 #ifdef	BSD42
-int	f_bulk ();
+static int	f_bulk ();
 #endif
-int	f_compile (), f_dump ();
-int	f_get (), f_get_next (), f_set ();
-int	f_help (), f_quit (), f_status ();
+static int	f_compile (), f_dump ();
+static int	f_get (), f_get_next (), f_set ();
+static int	f_help (), f_quit (), f_status ();
+
+static int  get_ava (), process (), ncols ();
+static  arginit (); 
 
 static struct dispatch dispatches[] = {
 	"audit", f_audit, "audit traps",
@@ -138,7 +142,7 @@ static struct dispatch dispatches[] = {
 
 
 static	int	helpwidth;
-
+static int  _getline (), snmploop ();
 
 #ifndef	SYS5
 long	random ();
@@ -1777,7 +1781,7 @@ cots:
 
 /*    INTERACTIVE */
 
-static int  getline (prompt, buffer)
+static int  _getline (prompt, buffer)
 char   *prompt,
 	   *buffer;
 {
@@ -1877,16 +1881,15 @@ FILE *fp;
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -1905,24 +1908,22 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void  _advise (char *what, char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 

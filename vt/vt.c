@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt.c,v 9.0 1992/06/16 12
 #endif
 #include <ctype.h>
 #include <setjmp.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 #define	strip(x)	((x)&0177)
 #define TBUFSIZ		1024
@@ -105,6 +105,8 @@ int	vt_open (), vt_close (), vt_quit (), vt_status (), vt_suspend ();
 int	vt_ayt (), vt_break (), vt_escape ();
 int	vt_set (), vt_help ();
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 static struct dispatch dispatches[] = {
 	"ayt", vt_ayt, DS_OPEN,
@@ -1505,17 +1507,13 @@ finalbye (void) {
 
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
-	int	    code;
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 	static int latched = 0;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (vt_log, code, ap);
+	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -1535,18 +1533,14 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code,
-	flags;
+void	advise (int code, char *what, char *fmt, ...) {
+	int flags;
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	flags = vt_log -> ll_stat;
 

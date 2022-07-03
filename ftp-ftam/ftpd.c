@@ -63,10 +63,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 #include "manifest.h"
 #include "logger.h"
 extern LLog _ftam_log, *ftam_log;
-#include <varargs.h>
+#include <stdarg.h>
 
 char *ctime();
-void adios (), advise ();
+void adios (char *, char *, ...);
+void advise (char *, char *, ...);
 
 /*
  * File containing login names
@@ -326,28 +327,24 @@ char *s;
 }
 
 #ifndef	lint
-reply(va_alist)
-va_dcl {
-	int	n;
-	va_list ap;
+static _reply ();
 
-	va_start (ap);
+void reply(int n, ...)
+{
+    va_list ap;
 
-	n = va_arg (ap, int);
+    va_start (ap, n);
 
 	_reply (n, ' ', ap);
 
 	va_end (ap);
 }
 
-lreply(va_alist)
-va_dcl {
-	int	n;
-	va_list ap;
+void lreply(int n, ...)
+{
+    va_list ap;
 
-	va_start (ap);
-
-	n = va_arg (ap, int);
+    va_start (ap, n);
 
 	_reply (n, '-', ap);
 
@@ -359,9 +356,11 @@ int	n;
 char    c;
 va_list ap;
 {
-	char    buffer[BUFSIZ];
+    char    buffer[BUFSIZ];
+    char    *fmt;
 
-	_asprintf (buffer, NULLCP, ap);
+	fmt = va_arg (ap, char *);
+    _asprintf (buffer, NULLCP, fmt, ap);
 
 	printf ("%d%c%s\r\n", n, c, buffer);
 	fflush (stdout);

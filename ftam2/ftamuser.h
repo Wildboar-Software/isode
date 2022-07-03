@@ -28,12 +28,12 @@
 extern int  ontty;
 extern int  interrupted;
 
-void	adios (char* what, ...);
-void	advise (char* what, ...);
+void	adios (char *what, char *fmt, ...);
+void	advise (char *what, char *fmt, ...);
 int getftamline(char* prompt, char* buffer);
 
 #ifndef	BRIDGE
-int	ask (char* fmt, ...);
+int	ask (char *fmt, ...), _getline ();
 #endif
 
 /*    DATA */

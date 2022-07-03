@@ -353,13 +353,13 @@ yyerror_aux (char *s) {
 /*  */
 
 #ifndef	lint
-myyerror (char*what, ...) {
+myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, what, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -369,12 +369,13 @@ myyerror (char*what, ...) {
 
 #ifdef        notyet
 #ifndef       lint
-static        pyyerror (YP yp, ...) {
+static        pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
+	register YP       yp;
 
-	va_start (ap, yp);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, yp, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

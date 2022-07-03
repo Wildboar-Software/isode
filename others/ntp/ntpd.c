@@ -84,8 +84,8 @@ extern void clock_update();
 extern void clear();
 extern void clock_filter();
 extern void select_clock();
-extern void advise ();
-extern void adios ();
+extern void adios(char *, char *, ...);
+extern void advise(int, char *, char *, ...);
 extern void init_logical_clock();
 extern void create_osilisten ();
 extern void iso_init ();
@@ -973,7 +973,7 @@ other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
 			break;
 
 		case TBLPEER_AUTH:
-			advise (LLOG_NOTICE, "auth code not done yet");
+			advise (LLOG_NOTICE, NULLCP, "auth code not done yet");
 			break;
 		}
 		argc -= 2;
@@ -1381,17 +1381,16 @@ envinit () {
 #endif
 }
 
-#include <varargs.h>
+#include <stdarg.h>
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 	extern LLog *pgm_log;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -1408,17 +1407,14 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	extern LLog    *pgm_log;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

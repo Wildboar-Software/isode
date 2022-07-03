@@ -39,6 +39,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions5.c,v 9.0 1992/06
 
 extern int sd;		/*Global Session Descriptor (ISODE) */
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 /*  xx1x xxxx = awaiting ack from peer i.e., 420 */
 /*  xxxx xx1x = awaiting ack from user */
 

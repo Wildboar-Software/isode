@@ -61,6 +61,7 @@ extern char *findHelp();
 void onint1(), de_exit();
 void foundFollowing(), matchFollowing();
 char enterYesNo();
+extern void resetprint(char *, ...);
 
 struct query qinfo[MAXTYPE + 1];
 

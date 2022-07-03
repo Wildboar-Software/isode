@@ -55,6 +55,9 @@ extern do_break;
 extern telnet_profile;
 extern int connected;
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 vt_newline() {	/*Produce Newline update*/
 
 	TEXT_UPDATE ud;

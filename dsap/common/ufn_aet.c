@@ -38,7 +38,7 @@ extern Filter ocfilter ();
 extern Filter joinfilter ();
 
 extern char PY_pepy[];
-void	PY_advise ();
+void	PY_advise (char *, char *, ...);
 
 
 static Filter aet_filter (context)

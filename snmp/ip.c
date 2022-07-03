@@ -50,6 +50,14 @@ static int	ipforwarding;
 
 static struct ipstat ipstat;
 
+static int  get_arptab ();
+static  sort_arptab ();
+
+#ifdef LINUX
+int _read_snmp_stats ();
+int _file_printf (const char *path, const char *fmt, ...);
+#endif
+
 /*  */
 
 #define	ipForwarding	0
@@ -2046,3 +2054,72 @@ init_ip () {
 			  ot -> ot_setfnx = s_address,
 					ot -> ot_info = (caddr_t) ipNetToMediaType;
 }
+
+#ifdef LINUX
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
+{
+    FILE *f;
+    char *header, stats[1024];
+    char *prefix;
+    char *name, *value;
+	char *c;
+    int i, n;
+	int found = 0;
+
+	*labels = NULL; *values = NULL; *len = 0;
+
+    f = fopen ("/proc/net/snmp", "r");
+    if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/snmp");
+		return NOTOK;
+    }
+
+    header = malloc(512);
+
+	for (; fgets (header, sizeof (header), f) && fgets (stats, sizeof (stats), f);) {
+        if (!(prefix = strtok (header, " ")))
+            continue;
+        if (strncasecmp (prefix, proto, strlen (prefix) - 1) != 0)
+            continue;
+		found = 1;
+        *labels = header;
+		for (n = 0, c = stats; *c; c++) {
+			if (*c == ' ') n++;
+		}
+        strtok(stats, " ");
+		n--;
+		*values = calloc (1, sizeof (*values) * n);
+        for (i = 0; (value = strtok (NULL, " \n")); i ++) {
+			(*values)[i] = atol (value);
+        }
+        *len = i;
+        break;
+    }
+
+    fclose (f);
+
+	if (!found) {
+		free (header);
+		return NOTOK;
+	}
+
+	return OK;
+}
+
+int _file_printf (const char *path, const char *fmt, ...)
+{
+	FILE *f;
+	va_list ap;
+
+	if (!fopen (path, "w")) {
+		advise (LLOG_EXCEPTIONS, "failed", "open %s for write", path);
+		return NOTOK;
+	}
+
+	va_start (ap, fmt);
+	vfprintf(f, fmt, ap);
+	va_end (ap);
+
+	return OK;
+}
+#endif

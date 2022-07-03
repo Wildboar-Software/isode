@@ -154,8 +154,8 @@ extern	int	as_print (), de_print (), fi_print ();
 #endif
 
 
-void	adios (char*what, ...);
-void	advise (int code, ...);
+void	adios (char *, char *, ...);
+void	advise (int, char *, char*, ...);
 
 static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event);
 
@@ -1618,10 +1618,12 @@ static  envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (char*what, ...) {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
+
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
@@ -1642,14 +1644,12 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (int code, ...) {
-	char* what;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap, code);
-	what = va_arg(ap, char*);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, code, what, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

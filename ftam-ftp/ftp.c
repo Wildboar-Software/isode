@@ -41,11 +41,11 @@ static	char *rcsid = "$Header: /xtel/isode/isode/ftam-ftp/RCS/ftp.c,v 9.0 1992/0
 
 #include <stdio.h>
 #include <errno.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 #include "ftp_var.h"
 #include "logger.h"
-void	advise ();
+void	advise (int, char *, char *, ...);
 
 #ifndef NOTOK
 #define NOTOK (-1)
@@ -77,6 +77,9 @@ ftp_init() {
 	ftp_error = ftp_error_buffer;
 	verbose = isatty (fileno (stderr));
 }
+
+int getreply ();
+int command (char *fmt, ...);
 
 hookup(host, port)
 char *host;
@@ -189,22 +192,22 @@ char *user, *pass, *acct;
 }
 
 #ifndef	lint
-command(va_alist)
-va_dcl {
+static int _command ();
+
+int command(char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	val = _command (ap);
+	val = _command (fmt, ap);
 
 	va_end (ap);
 
 	return val;
 }
 
-_command(ap)
-va_list ap;
+static int _command(char *fmt, va_list ap)
 {
 	char buffer[BUFSIZ];
 
@@ -214,7 +217,7 @@ va_list ap;
 		return (NOTOK);
 	}
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	fprintf (cout, "%s\r\n", buffer);
 	fflush(cout);
 	if (verbose)

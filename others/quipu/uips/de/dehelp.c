@@ -42,6 +42,7 @@ char *TidyString();
 char *checkSetTerm();
 void displayCurrentSettings();
 void soundBell();
+extern void pageprint(char *, ...);
 
 static struct {
 	char *topic;

@@ -39,6 +39,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions1.c,v 9.0 1992/06
 
 extern int sd;		/*Global Session Descriptor (ISODE) */
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 #define	invalid_result(str,pe) \
     	adios (NULLCP, "%s: invalid result (%s)", (str), \
 	       pe_error ((p) -> pe_errno))

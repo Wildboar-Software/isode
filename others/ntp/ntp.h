@@ -454,7 +454,7 @@ extern char *paddr (), *ntoa ();
 extern long lseek ();
 extern long random ();
 
-extern void advise (), avoid ();
+extern void advise (int, char *, char *, ...), avoid ();
 
 extern double s_fixed_to_double(), ul_fixed_to_double();
 extern double	atof();

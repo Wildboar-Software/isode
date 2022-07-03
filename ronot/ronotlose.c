@@ -40,9 +40,8 @@ static int  _ronotlose ();
 /*  */
 
 #ifndef	lint
-int	ronotlose (struct RoNOTindication*rni, ...) {
-	int	    reason,
-			result;
+int	ronotlose (struct RoNOTindication* rni, ...) {
+	int	    reason, result;
 	va_list ap;
 
 	va_start (ap, rni);

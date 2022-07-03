@@ -43,7 +43,7 @@
 #include "general.h"
 #include "logger.h"
 
-void	advise ();
+void	advise (int, char *, char *, ...);
 #ifndef	NULLCP
 #define	NULLCP	((char *) 0)
 #endif

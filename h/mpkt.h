@@ -55,4 +55,4 @@ struct MReport {
 	} u;
 };
 
-int	TManGen ();
+int	TManGen (unsigned int, ...);

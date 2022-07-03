@@ -45,4 +45,5 @@ typedef struct sblk {
 }		*SB;
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);

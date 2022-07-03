@@ -19,7 +19,7 @@
  *      info2_qb (pe, qp, pi)					*
  *      info2_ppdu (pb, pi, data, ndata, ppdu)			*
  * 	ss2pulose (pb, pi, event, sa)				*
- * 	pusaplose (va_alist)					*
+ * 	pusaplose (pi, ...)					*
  *      PuErrString (code)					*
  * 	PS_print (pe, text, rw, fnx)				*
  *	newpublk ()						*
@@ -58,7 +58,7 @@ static char *rcsid = "$Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "pupkt.h"
@@ -552,15 +552,13 @@ ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SS
 
 #ifndef	lint
 /*----------------------------------------------------------------------------*/
-int	pusaplose (va_alist)
+int	pusaplose (struct PSAPindication *pi, ...)
 /*----------------------------------------------------------------------------*/
-va_dcl {
-	int     reason,
-	result;
-	struct PSAPindication *pi;
+{
+	int     reason, result;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pi);
 	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 	result = _pusaplose (pi, reason, ap);

@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -98,7 +98,8 @@ static struct TSAPaddr *tz;
 static struct TSAPaddr  tas[NTADDRS];
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 void	ts_advise ();
 
 
@@ -144,7 +145,7 @@ char  **argv,
 			if (!tp4service)
 				continue;
 
-			advise (NULLCP, LOG_INFO, "listening on TSEL %s",
+			advise (LOG_INFO, NULLCP, "listening on TSEL %s",
 					sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
 		} else {
 			na = ta -> ta_addrs;
@@ -153,7 +154,7 @@ char  **argv,
 			case NA_TCP:
 				if (!udpservice)
 					continue;
-				advise (NULLCP, LOG_INFO, "listening on UDP %s %d",
+				advise (LOG_INFO, NULLCP, "listening on UDP %s %d",
 						na2str (na), ntohs (na -> na_port));
 				break;
 
@@ -163,7 +164,7 @@ char  **argv,
 			}
 
 			if (ta -> ta_selectlen)
-				advise (NULLCP, LOG_INFO, "   %s",
+				advise (LOG_INFO, NULLCP, "   %s",
 						sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
 		}
 
@@ -244,7 +245,7 @@ tsapud (int vecp, char **vec) {
 		return;
 	}
 
-	advise (NULLCP, LOG_INFO,
+	advise (LOG_INFO, NULLCP,
 			"T-UNITDATA.INDICATION: <%d, <%s, %s>, <%s, %s>",
 			tud -> tud_sd,
 			na2str (tud -> tud_calling.ta_addrs),
@@ -283,7 +284,7 @@ tsapud (int vecp, char **vec) {
 
 out:
 	;
-	advise (NULLCP, LOG_ERR, "%s", buffer);
+	advise (LOG_ERR, NULLCP, "%s", buffer);
 	if (strlen (buffer) >= TD_SIZE)
 		buffer[0] = NULL;
 
@@ -303,7 +304,7 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	else
 		sprintf (buffer, "[%s]", TuErrString (td -> td_reason));
 
-	advise (NULLCP, code, "%s: %s", event, buffer);
+	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
 
@@ -457,7 +458,7 @@ envinit () {
 	closelog ();
 	openlog (myname, LOG_PID);
 
-	advise (NULLCP, LOG_INFO, "starting");
+	advise (LOG_INFO, NULLCP, "starting");
 }
 
 /*    ERRORS */
@@ -466,16 +467,12 @@ envinit () {
 void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
-	char   *what;
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-
-	_advise (LOG_ERR, what, ap);
+	_advise (LOG_ERR, what, fmt, ap);
 
 	va_end (ap);
 
@@ -492,28 +489,22 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
-	char   *what;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-	code = va_arg (ap, int);
-
-	_advise (code, what, ap);
+	_advise (code, what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (int code, char *what, va_list ap) {
+static void  _advise (int code, char *what, char *fmt, ap) {
 	char    buffer[BUFSIZ];
 
-	_asprintf (buffer, what, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	syslog (code, "%s", buffer);
 
@@ -529,7 +520,7 @@ _advise (int code, char *what, va_list ap) {
 /* VARARGS */
 
 void
-advise (char *what, int code, char *fmt) {
-	advise (what, code, fmt);
+advise (int code, char *what, char *fmt) {
+	advise (code, what, fmt);
 }
 #endif

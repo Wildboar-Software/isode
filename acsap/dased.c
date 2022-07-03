@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/dased.c,v 9.0 1992/06
 
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "sys.file.h"
 
@@ -74,12 +74,16 @@ static	PS	ps;
 static	PS	nps;
 
 
-int	dns_compar ();
-DNS	dase_interact (), just_say_no ();
-PE	name2psap ();
+static int	dns_compar ();
+static DNS	dase_interact (), just_say_no ();
+static PE	name2psap ();
 
-void	adios (), advise (), ts_adios (), ts_advise ();
-
+static void	adios (char *, char *, ...);
+static void	advise (int, char *, char *, ...);
+static void	ts_adios (), ts_advise ();
+static void	dased (), dase_aux (), make_bind_args (),
+            arginit (), envinit ();
+static int	bind_to_dsa ();
 
 char   *dn2str ();
 PE	grab_pe ();
@@ -911,13 +915,13 @@ envinit()  {
 /*    ERRORS */
 
 #ifndef lint
-static void    adios (va_alist)
-va_dcl {
+static void    adios (char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+    _ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -934,16 +938,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef lint
-static void    advise (va_alist)
-va_dcl {
-	int     code;
+static void    advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+    _ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

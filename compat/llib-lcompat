@@ -109,12 +109,13 @@ char   *what,
 }
 
 
-int	_ll_log (lp, event, ap)
+int	_ll_log (lp, event, what, fmt, ap)
 LLog   *lp;
+char *what, *fmt;
 int	event;
 va_list ap;
 {
-    return _ll_log (lp, event, ap);
+    return _ll_log (lp, event, what, fmt, ap);
 }
 
 
@@ -247,12 +248,13 @@ va_list	ap;
 }
 
 
-void	_asprintf (bp, what, ap)
+void	_asprintf (bp, what, fmt, ap)
 char   *bp,
-       *what;
+       *what
+       *fmt;
 va_list	ap;
 {
-    _asprintf (bp, what, ap);
+    _asprintf (bp, what, fmt, ap);
 }
 
 

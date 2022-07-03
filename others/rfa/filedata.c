@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/filedata.c,v 9.0
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <varargs.h>
 #include <errno.h>
 #include "RFA-ops.h"        /* operation definitions */
 #include "RFA-types.h"  /* type definitions */

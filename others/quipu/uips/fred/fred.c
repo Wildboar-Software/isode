@@ -28,7 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "fred.h"
 #include "internet.h"
 
@@ -623,11 +623,9 @@ int	sig;
 /*  */
 
 #ifndef	lint
-int	ask (va_alist)
-va_dcl {
-	int     x,
-	y,
-	result;
+int	ask (char *fmt, ...)
+{
+	int     x, y, result;
 	char    buffer[BUFSIZ];
 	va_list ap;
 
@@ -651,9 +649,9 @@ va_dcl {
 		return DONE;
 	}
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -803,11 +801,10 @@ done:
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 	static int	latch = 0;
 
@@ -815,12 +812,12 @@ va_dcl {
 		_exit (1);
 	latch = 1;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
 	if (network)
-		_ll_log (fred_log, LLOG_FATAL, ap);
+		_ll_log (fred_log, LLOG_FATAL, what, fmt, ap);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -839,25 +836,23 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list	ap;
+static void  _advise (char *what, char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 	FILE   *fp = network ? stdfp : stderr;
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdfp);
 

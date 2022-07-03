@@ -40,9 +40,8 @@ static char *myname = "pp";
 static enum { ps2pp, pl2pp } mode = ps2pp;
 
 
-static void adios (char*what, ...);
-
-static void advise (char*what, ...);
+static void	adios (char* what, char* fmt, ...),
+			advise (char* what, char* fmt, ...);
 
 static int  process ();
 
@@ -150,15 +149,15 @@ done:
 
 
 #ifndef	lint
-static void	_advise (char*what, ...);
+static void	_advise (char*, char*, va_list);
 
 
-static void  adios (char*what, ...) {
+static void  adios (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -175,25 +174,21 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-static void  advise (char*what, ...) {
+static void  advise (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (char*what, ...) {
+static void  _advise (char* what, char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	va_list ap;
-
-	va_start (ap, what);
-
-	asprintf (buffer, what, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 
@@ -202,8 +197,6 @@ static void  _advise (char*what, ...) {
 	fputc ('\n', stderr);
 
 	fflush (stderr);
-
-	va_end (ap);
 }
 #else
 /* VARARGS */

@@ -349,18 +349,14 @@ yyerror (char *s) {
 }
 
 #ifndef lint
-warning (char*fmt, ...) {
-	return;
-//FIXME
+warning (char* fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
-	char* other;
 	va_list ap;
 
 	va_start (ap, fmt);
-	other = va_arg(ap, char*);
 
-	_asprintf (buffer, NULLCP, fmt, other);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -396,13 +392,11 @@ yyerror_aux (char *s) {
 #ifndef	lint
 myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
-	char* other;
 	va_list ap;
 
 	va_start (ap, fmt);
-	other = va_arg(ap, char*);
 
-	_asprintf (buffer, NULLCP, fmt, other);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -412,14 +406,11 @@ myyerror (char* fmt, ...) {
 
 
 #ifndef	lint
-static	pyyerror (YP yp , ...) {
+static	pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
-	char* fmt;
 
-	va_start (ap, yp);
-
-	fmt = va_arg (ap, char*);
+	va_start (ap, fmt);
 
 	_asprintf (buffer, NULLCP, fmt, ap);
 

@@ -39,7 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpd.c,v 9.0 1992/06/
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "mib.h"
 #include "sys.file.h"
 #include <sys/stat.h>
@@ -137,8 +137,9 @@ static	int	didhup = OK;
 SFD	hupser ();
 #endif
 
-void	adios (), advise ();
-void	ts_advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+static void	ts_advise ();
 
 
 
@@ -3082,13 +3083,12 @@ char  **vec;
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -3107,16 +3107,13 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

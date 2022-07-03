@@ -353,9 +353,7 @@ extern struct PSAPdata	px;
 extern struct PSAPfinish *pf;
 
 void	finalbye ();
-void	adios (), advise ();
-void	acs_adios (), acs_advise ();
-void	ps_adios (), ps_advise ();
+void	acs_adios ();
 
 int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
 

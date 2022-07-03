@@ -168,7 +168,7 @@ static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  w
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
 
-		asprintf (bp = buffer, what, fmt, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		pa -> pa_peer = 0;

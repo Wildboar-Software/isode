@@ -50,6 +50,8 @@ extern char * prtparse ();
 extern char * mapPhone ();
 extern int ch_set;
 extern int telcmp();
+extern void pageprint(char *, ...);
+extern char *strdup();
 
 
 

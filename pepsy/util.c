@@ -56,10 +56,9 @@ pepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 int	pepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p, *p1;
-	char	*cp;
+	char	*cp, *fmt;
 	PE	pe;
 	char	buffer[BUFSIZ];
-	char	*fmt;
 
 	va_start (ap, module);
 
@@ -68,7 +67,7 @@ int	pepsylose (modtyp*module, ...) {
 	fmt = va_arg (ap, char *);
 
 	_asprintf (buffer, NULLCP, fmt, ap);
-	sprintf (PY_pepy, "%s: module %s ",
+	snprintf (PY_pepy, BUFSIZ, "%s: module %s",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
@@ -109,10 +108,9 @@ ppepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 int	ppepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p;
-	char	*cp;
+	char	*cp, *fmt;
 	PE	pe;
 	char	buffer[BUFSIZ];
-	char	*fmt;
 
 	va_start (ap, module);
 
@@ -121,7 +119,7 @@ int	ppepsylose (modtyp*module, ...) {
 	fmt = va_arg (ap, char *);
 
 	_asprintf (buffer, NULLCP, fmt, ap);
-	sprintf (PY_pepy, "%s: module %s",
+	snprintf (PY_pepy, BUFSIZ, "%s: module %s",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		cp = PY_pepy + strlen (PY_pepy);

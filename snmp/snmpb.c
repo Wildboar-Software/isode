@@ -186,7 +186,8 @@ OID	oid_median (), oid_copy ();
 extern	int	debug;
 extern	int	watch;
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (char *, char *, ...);
 char   *snmp_error ();
 
 /*    BULK1 */

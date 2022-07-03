@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/pipe
 
 #include <ctype.h>
 #include <signal.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "fred.h"
 #include "internet.h"
 
@@ -52,7 +52,7 @@ static  foreground ();
 static	mypager ();
 static pagchar ();
 #ifndef	lint
-static int  da_command ();
+static int  da_command (char *, ...);
 static int  _da_command ();
 #endif
 static int  da_response ();
@@ -905,22 +905,20 @@ f_quit (char **vec) {
 /*    DA */
 
 #ifndef	lint
-static int  da_command (va_alist)
-va_dcl {
+static int  da_command (char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	val = _da_command (ap);
+	val = _da_command (fmt, ap);
 
 	va_end (ap);
 
 	return val;
 }
 
-static int  _da_command (ap)
-va_list ap;
+static int  _da_command (char *fmt, va_list ap)
 {
 	int	    cc,
 			len;
@@ -929,7 +927,7 @@ va_list ap;
 	if (dafd == NOTOK)
 		return NOTOK;
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	if (watch) {
 		fprintf (stderr, "<--- %s\n", buffer);
 		fflush (stderr);

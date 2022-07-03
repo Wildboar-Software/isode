@@ -83,4 +83,5 @@ extern	struct timeval
 extern	OID	nullSpecific;
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);

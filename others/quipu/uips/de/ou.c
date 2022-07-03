@@ -49,6 +49,7 @@ struct ds_search_arg *fillMostOUSearchArgs();
 
 void makeExplicitOUFilter();
 void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
+extern void pageprint(char *, ...);
 
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};

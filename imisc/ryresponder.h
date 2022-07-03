@@ -36,7 +36,8 @@ struct dispatch {
 };
 
 
-void	adios (char*, ...), advise (int code, ...);
+void	adios (char *, char *, ...),
+		advise (int, char *, char *, ...);
 void	acs_advise ();
 void	ros_adios (), ros_advise ();
 void	ryr_advise (char*, ...);

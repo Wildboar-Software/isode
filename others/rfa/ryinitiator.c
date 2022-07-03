@@ -31,12 +31,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/ryinitiator.c,v 
  */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "RFA-ops.h"
 #include "RFA-types.h"
 
 
-void	errexit (), errmsg (), ros_adios (), ros_errmsg (),
+void	errexit (char *, char *, ...);
+void	errmsg (char *, char *, ...);
+void	ros_adios (), ros_errmsg (),
 		acs_errmsg (), acs_errexit ();
 
 
@@ -269,13 +271,12 @@ acs_errmsg (struct AcSAPabort *aca, char *event) {
 void	_errmsg ();
 
 
-void	errexit (va_alist)
-va_dcl {
+void	errexit (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_errmsg (ap);
+	_errmsg (what, fmt, ap);
 
 	cleanup ();
 
@@ -294,23 +295,21 @@ errexit (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	errmsg (va_alist)
-va_dcl {
+void	errmsg (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_errmsg (ap);
+	_errmsg (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_errmsg (va_list ap) {
+static void  _errmsg (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 
@@ -331,13 +330,12 @@ errmsg (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	ryr_errmsg (va_alist)
-va_dcl {
+void	ryr_errmsg (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_errmsg (ap);
+	_errmsg (what, fmt, ap);
 
 	va_end (ap);
 }

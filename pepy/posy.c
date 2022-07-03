@@ -368,13 +368,13 @@ myyerror (char*fmt, ...) {
 
 
 #ifndef	lint
-static	pyyerror (YP yp, ...) {
+static	pyyerror (YP yp, char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
 
-	va_start (ap, yp);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, yp, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

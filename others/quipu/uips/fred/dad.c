@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <pwd.h>
 
 #include "config.h"
@@ -69,11 +69,12 @@ static	struct sockaddr_in lo_socket;
 
 void	arginit (), envinit ();
 
-void	advise (), adios ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 static	dadser ();
 #ifndef	lint
-static int  da_response ();
+static int  da_response (char *, ...);
 static int  _da_response ();
 #endif
 static int  start_dish ();
@@ -368,30 +369,29 @@ were_history:
 /*  */
 
 #ifndef	lint
-static int  da_response (va_alist)
-va_dcl {
+static int  _da_response ();
+
+static int  da_response (char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	val = _da_response (ap);
+	val = _da_response (fmt, ap);
 
 	va_end (ap);
 
 	return val;
 }
 
-static int
-_da_response (va_list ap) {
-	int	    cc,
-			fd,
-			len;
+static int  _da_response (char *fmt, va_list ap)
+{
+	int	    cc, fd, len;
 	char    buffer[BUFSIZ];
 
 	fd = va_arg (ap, int);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	if (debug)
 		fprintf (stderr, "<--- %s\n", buffer);
 
@@ -746,13 +746,12 @@ envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -769,16 +768,12 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

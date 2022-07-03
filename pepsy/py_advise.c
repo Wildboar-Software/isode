@@ -36,12 +36,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 199
 char   PY_pepy[BUFSIZ] = "";
 
 
-void	PY_advise (char* what, ...) {
+void	PY_advise (char* what, char* fmt, ...) {
 	va_list	ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	asprintf (PY_pepy, what, ap);
+	_asprintf (PY_pepy, what, fmt, ap);
 
 	va_end (ap);
 }

@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa.c,v 9.0 1992/06/1
 
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "quipu/util.h"
 #include <sys/stat.h>
 #include "sys.file.h"
@@ -76,7 +76,8 @@ void   Remove_openCall_attribute() ;
 
 static  char *myname;
 
-void    adios (), advise ();
+void    adios (char *, char *, ...);
+void    advise (int, char *, char *, ...);
 void    mk_dsa_tmp_dir();
 static  envinit (), setdsauid();
 SFD attempt_restart();
@@ -627,13 +628,12 @@ fork_ok:
 	/* 	ERRORS */
 
 #ifndef	lint
-	void    adios (va_alist)
-	va_dcl {
+	void    adios (char *what, char *fmt, ...) {
 		va_list ap;
 
-		va_start (ap);
-
-		_ll_log (log_dsap, LLOG_FATAL, ap);
+		va_start (ap, fmt);
+	
+		_ll_log (log_dsap, LLOG_FATAL, what, fmt, ap);
 
 		va_end (ap);
 
@@ -654,18 +654,14 @@ fork_ok:
 #endif
 
 #ifndef	lint
-	void    advise (va_alist)
-	va_dcl {
-		int     code;
+	void    advise (int code, char *what, char *fmt, ...) {
 		va_list ap;
 
-		va_start (ap);
+		va_start (ap, fmt);
 
-		code = va_arg (ap, int);
+		_ll_log (log_dsap, code, what, fmt, ap);
 
-		_ll_log (log_dsap, code, ap);
-
-		va_end (ap);
+			va_end (ap);
 	}
 #else
 	/* VARARGS */

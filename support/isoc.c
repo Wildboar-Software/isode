@@ -85,7 +85,8 @@ static int   status = 0;
 static char *myname = "isoc";
 
 
-void	adios (char*what, ...), advise (char*what, ...);
+void	adios (char* what, char* fmt, ...),
+		advise (char* what, char* fmt, ...);
 static void	ts_adios (), ts_advise ();
 static void	ss_adios (), ss_advise ();
 static void	ps_adios (), ps_advise ();
@@ -3062,12 +3063,12 @@ int l;
 static void	_advise ();
 
 
-void	adios (char*what, ...) {	/* fmr, ... */
+void	adios (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -3086,22 +3087,19 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (char*what, ...) {
+void	advise (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (char*what, va_list ap) {
+static void  _advise (char* what, char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];
-	char* fmt;
-
-	fmt= va_arg(ap, char*);
 
 	_asprintf (buffer, what, fmt, ap);
 

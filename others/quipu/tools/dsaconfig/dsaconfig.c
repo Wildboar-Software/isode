@@ -30,7 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 #include "internet.h"
@@ -56,8 +56,16 @@ static char *wildlife = NULL;
 static char sedfil[BUFSIZ];
 
 
-void	adios (), advise ();
-char   *version ();
+static void	adios (char *what, char *fmt, ...);
+static void	advise (char *what, char *fmt, ...);
+static char   *version ();
+static char *strdup ();
+
+static read_config (), read_psap (), build_root (), build_TLC (),
+       build_organization (), build_unit (), make_edb (),
+       build_tailor (), build_startup (), build_nightly (),
+       make_file (), build_dsap (), build_fred (), fudge_file (),
+       arginit (), parse_3166 (), table_3166 ();
 
 
 
@@ -1268,16 +1276,15 @@ table_3166 () {
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-static void  adios (va_alist)
-va_dcl {
+static void  adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -1294,23 +1301,21 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-static void  advise (va_alist)
-va_dcl {
+static void  advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 

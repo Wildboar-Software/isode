@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/print.c,v 9.0 1992/06/
 
 extern	int	quantum;
 
-void	advise ();
+void	advise (int, char *, char *, ...);
 
 /*  */
 

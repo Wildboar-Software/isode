@@ -118,7 +118,10 @@
 #define	copyFTAMdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
+struct ftamblk;
+int	ftamlose (struct FTAMindication *fti, ...);
+int fpktlose (struct ftamblk *fsb, ...);
+int ftamoops (struct FTAMindication *fti, ...);
 
 /*  */
 

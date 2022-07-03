@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
 
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "mosy-defs.h"
 
 /*    DATA */
@@ -277,20 +277,19 @@ yyerror (char *s) {
 }
 
 #ifndef lint
-warning (va_alist)
-va_dcl {
+warning (char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
-	sprintf (buffer2, "Warning: %s", buffer);
+	snprintf (buffer2, BUFSIZ, "Warning: %s", buffer);
 	yyerror_aux (buffer2);
 }
 
@@ -320,14 +319,13 @@ yyerror_aux (char *s) {
 /*  */
 
 #ifndef	lint
-myyerror (va_alist)
-va_dcl {
+myyerror (char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

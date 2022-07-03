@@ -28,7 +28,7 @@ UDQPDU DEFINITIONS ::=
 #undef PEPYPARM
 #define PEPYPARM int *
 
-void	adios ();
+void	adios (char *, char *, ...);
 
 
 #define	bitstr2int(arg,val,cnt) \

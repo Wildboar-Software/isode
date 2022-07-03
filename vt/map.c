@@ -66,6 +66,13 @@ extern int showoptions;
 extern int debug;
 extern int telnet_profile;
 
+#ifdef TERMIOS
+static realptyecho ();
+#endif
+
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 TEXT_UPDATE *ndq_queue, *deq();		/*Incoming (From Net) NDQ's*/
 
 int

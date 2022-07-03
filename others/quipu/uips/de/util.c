@@ -48,6 +48,7 @@ extern char origDefaultCo[], origDefaultOrg[];
 extern int deLogLevel;
 extern int alarmCount;
 extern int bindTimeout;
+extern void pageprint(char *, ...);
 void onint1();
 
 int

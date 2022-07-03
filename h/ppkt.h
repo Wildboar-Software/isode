@@ -227,6 +227,8 @@ int	psaplose (struct PSAPindication*pi, ...);
 int	freepblk ();
 struct psapblk *newpblk (), *findpblk ();
 
+int	psaplose (struct PSAPindication*, int, ...);
+
 #ifndef	LPP
 #define	PC_PROV_BASE		PC_NOTSPECIFIED
 #define	PC_ABORT_BASE \

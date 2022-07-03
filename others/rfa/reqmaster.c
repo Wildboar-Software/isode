@@ -50,9 +50,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/reqmaster.c,v 9.
 /*--------------------------------------------------------------
  *  op_reqMaster - get mastership of a file
  *-------------------------------------------------------------*/
-op_requestMaster (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
-	struct type_RFA_RequestMasterArg *rma =
-		(struct type_RFA_RequestMasterArg *) in;
+int op_requestMaster (
+	int sd,
+	struct RyOperation *ryo,
+	struct RoSAPinvoke *rox,
+	caddr_t in,
+	struct RoSAPindication *roi
+) {
+	struct type_RFA_RequestMasterArg *rma = (struct type_RFA_RequestMasterArg *) in;
 	struct type_RFA_RequestMasterRes rmr;
 	struct RfaInfo *rfalist, *rfa;
 	char *s;

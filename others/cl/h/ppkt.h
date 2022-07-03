@@ -111,7 +111,9 @@
 int	pusaplose ();
 #endif
 
-int	ppktlose (), psaplose ();
+struct psapblk;
+int	psaplose (struct PSAPindication*, ...);
+int	ppktlose (struct psapblk*pb, ...);
 
 
 /*  */

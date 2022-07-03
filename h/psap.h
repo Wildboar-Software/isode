@@ -566,7 +566,7 @@ char   *bitstr2strb ();
 
 extern char PY_pepy[];
 
-static void	PY_advise (char*what, ...);
+void	PY_advise (char *, char *, ...);
 int	PY_pp ();
 
 int	testdebug ();
@@ -575,6 +575,7 @@ int	vpush (), vpop ();
 int	vname (), vtag ();
 int	vprint (char*fmt,...);
 int	vstring (), vunknown ();
+int	vprint (char*, ...);
 
 char   *bit2str ();
 

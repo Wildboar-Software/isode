@@ -112,13 +112,13 @@ rts_advise (struct RtSAPabort *rta, char *event) {
 /*  */
 
 #ifndef	lint
-void	adios (char* what, ...)
+void	adios (char *what, char *fmt, ...)
 {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, what, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -135,13 +135,12 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (int code, char* what, ...)
-{
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, code, what, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }
@@ -156,13 +155,13 @@ advise (int code, char *what, char *fmt) {
 
 
 #ifndef	lint
-void	ryr_advise (char* what, ...)
+void	ryr_advise (char *what, char *fmt, ...)
 {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_NOTICE, what, ap);
+	_ll_log (pgm_log, LLOG_NOTICE, what, fmt, ap);
 
 	va_end (ap);
 }

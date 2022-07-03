@@ -19,7 +19,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryresponder.c,
 #include "Idist-ops.h"
 #include <stdio.h>
 #include <setjmp.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 
@@ -338,14 +338,12 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 
 #ifndef	lint
 
-void	adios (va_alist)
-va_dcl {
-	char   *what;
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -364,16 +362,12 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }
@@ -390,13 +384,12 @@ advise (int code, char *what, char *fmt) {
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
+void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_NOTICE, ap);
+	_ll_log (pgm_log, LLOG_NOTICE, what, fmt, ap);
 
 	va_end (ap);
 }
@@ -416,15 +409,14 @@ note (char *fmt) {
 }
 
 #else
-note (va_alist)
-va_dcl {
+note (char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	struct type_Idist_IA5List **ia5p;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	addtoia5 (buffer, strlen (buffer));
 
@@ -439,18 +431,17 @@ nadvise (char *what, char *fmt) {
 	nadvise (what, fmt);
 }
 #else
-nadvise (va_alist)
-va_dcl {
+nadvise (char *what, char *fmt, ...) {
 	va_list ap;
 	char	buf[BUFSIZ], *cp;
 	extern	char *host;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
 	sprintf (buf, "%s (%s): ", myname, host);
 	cp = buf + strlen (buf);
 
-	asprintf (cp, ap);
+	_asprintf (cp, what, fmt, ap);
 
 	addtoia5 (buf, strlen (buf));
 

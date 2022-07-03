@@ -52,6 +52,7 @@ struct ds_search_arg *fillMostPRRSearchArgs();
 
 void makeExplicitPRRFilter();
 void prrFilter1(), prrFilter2(), prrFilter3(), prrFilter4();
+extern void pageprint(char *, ...);
 
 VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};

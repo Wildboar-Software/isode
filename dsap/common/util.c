@@ -31,7 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
 #include "quipu/commonarg.h"
 #include "quipu/malloc.h"
 #include "tsap.h"
-#include <varargs.h>
+#include <stdarg.h>
 
 extern LLog * log_dsap;
 extern char dsa_mode;
@@ -211,22 +211,16 @@ PElementID id;
 }
 
 #ifndef lint
-ps_printf (va_alist)
-va_dcl {
+ps_printf (PS ps, char *fmt, ...) {
 	PS ps;
 	extern int std_flush ();
 	va_list ap;
 
-	va_start (ap);
-
-	ps = va_arg (ap, PS);
+	va_start (ap, fmt);
 
 #ifdef VSPRINTF
 
 	if (ps->ps_flushP == std_flush) {
-		char * fmt;
-
-		fmt = va_arg (ap, char *);
 
 		if (vfprintf ((FILE *)ps->ps_addr, fmt, ap) == EOF)
 			ps->ps_errno = PS_ERR_IO;
@@ -236,8 +230,8 @@ va_dcl {
 
 	{
 		char buffer [8192]; 	/* How big should this go !!! */
-
-		_asprintf (buffer,NULLCP,ap);
+		
+		_asprintf (buffer,NULLCP, fmt,ap);
 
 		ps_print (ps,buffer);
 	}

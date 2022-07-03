@@ -576,6 +576,8 @@ int syntax;
 		return NULLIFP;
 }
 
+extern int ps_printf (PS ps, char *fmt, ...);
+
 AttrV_print (ps,x,format)
 PS ps;
 AttributeValue x;

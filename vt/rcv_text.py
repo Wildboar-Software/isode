@@ -26,7 +26,7 @@ NDQPDU DEFINITIONS ::=
 #include <stdio.h>
 #include "sector1.h"
 
-void	adios ();
+void	adios (char *, char *, ...);
 
 #undef PEPYPARM
 #define PEPYPARM int *

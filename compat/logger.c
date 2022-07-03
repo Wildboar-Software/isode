@@ -141,15 +141,16 @@ ll_close (LLog *lp) {
 #ifndef	lint
 int	ll_log (LLog*lp, ...) {
 	int	    event, result;
-	char* what;
+	char *what, *fmt;
 	va_list ap;
 
 	va_start (ap, lp);
 
 	event = va_arg (ap, int);
 	what = va_arg (ap, char*);
+	fmt = va_arg (ap, char*);
 
-	result = _ll_log (lp, event, what, ap);
+	result = _ll_log (lp, event, what, fmt, ap);
 
 	va_end (ap);
 
@@ -167,10 +168,9 @@ ll_log (LLog *lp, int event, char *what, char *fmt) {
 /*  */
 
 int
-_ll_log (LLog *lp, int event, char* what, va_list ap) {	/* fmt, args ... */
+_ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args ... */
 	int	    cc, status;
 	char *bp;
-	char* fmt;
 	char buffer[BUFSIZ];
 
 	if (!(lp -> ll_events & event))
@@ -183,7 +183,6 @@ _ll_log (LLog *lp, int event, char* what, va_list ap) {	/* fmt, args ... */
 
 	bp += strlen (bp);
 
-	fmt = va_arg(ap, char*);
 	_asprintf (bp, what, fmt, ap);
 
 #ifndef	SYS5
@@ -371,9 +370,6 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	char   *bp;
 	char     buffer[BUFSIZ];
 	char    *fmt;
-	va_list fp;
-
-	va_copy(fp, ap);
 
 	fmt = va_arg (ap, char *);
 	if (strcmp (fmt, "%s") != 0) {
@@ -381,7 +377,7 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 		_asprintf (bp, NULLCP, fmt, ap);
 	} else {
 		bp = NULL;
-		fmt = va_arg (fp, char *);
+		fmt = va_arg (ap, char *);
 	}
 
 	if (!(lp -> ll_stat & LLOGTTY) && lp -> ll_fd == NOTOK && strcmp (lp -> ll_file, "-") == 0)
@@ -423,7 +419,7 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	} else
 		status = OK;
 
-	va_end(fp);
+	va_end(ap);
 
 	return status;
 }

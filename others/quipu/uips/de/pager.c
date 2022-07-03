@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/pager.
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <sys/types.h>
 #include <termios.h>
 #include "quipu/util.h"
@@ -81,32 +81,30 @@ isWrapOn () {
 	return wrapLines;
 }
 
-resetprint(va_alist)
-va_dcl {
+void resetprint(char *fmt, ...) {
 	va_list ap;
 	char buf[BUFSIZ];
 
-	va_start (ap);
-	_asprintf (buf, NULLCP, ap);
+	va_start (ap, fmt);
+	_asprintf (buf, NULLCP, fmt, ap);
 	fputs(buf, stdout);
 	pagerOn(numOK);
 	redisplay = TRUE;
 	va_end(ap);
 }
 
-pageprint(va_alist)
-va_dcl /* no ; */
+void pageprint(char *fmt, ...)
 {
 	va_list ap;
 	char buf[BUFSIZ];
 	int i, c;
 	static int charsInLine = 0;
 
-	va_start (ap);
+	va_start (ap, fmt);
 	redisplay = FALSE;
 	if (discardInput == TRUE)
 		return;
-	_asprintf (buf, NULLCP, ap);
+	_asprintf (buf, NULLCP, fmt, ap);
 	for (i = 0; buf[i] != '\0'; i++) {
 		if (buf[i] == '\n') {
 			charsInLine = 0;

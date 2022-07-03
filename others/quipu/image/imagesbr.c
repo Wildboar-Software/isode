@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr
 
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "imagesbr.h"
 #include "quipu/bind.h"
 #include "quipu/ds_search.h"
@@ -628,16 +628,15 @@ caddr_t line;
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -654,23 +653,22 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap)
+{
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 

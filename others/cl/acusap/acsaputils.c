@@ -20,7 +20,7 @@
  *      findacublk (sd)                                         *
  *      freeacublk (acb)                                        *
  * 	ps2aculose (acb, aci, event, pa)                        *
- * 	acusaplose (va_alist)                                   *
+ * 	acusaplose (aci, ...)                                       *
  *      AcuErrString (code)                                     *
  *                                                              *
  *  internal routines:                                          *
@@ -42,7 +42,7 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acupkt.h"
@@ -308,16 +308,13 @@ ps2aculose (
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
-int	acusaplose (va_alist)
+int	acusaplose (struct AcSAPindication *aci, ...)
 /*---------------------------------------------------------------------------*/
-va_dcl {
-	int	    reason,
-	result;
-	struct AcSAPindication *aci;
+{
+    int reason, result;
 	va_list ap;
 
-	va_start (ap);
-	aci = va_arg (ap, struct AcSAPindication *);
+	va_start (ap, aci);
 	reason = va_arg (ap, int);
 	result = _acusaplose (aci, reason, ap);
 	va_end (ap);
@@ -353,7 +350,7 @@ _acusaplose (  /* what, fmt, args ... */
 		aci -> aci_type = ACI_ABORT;
 		aca = &aci -> aci_abort;
 
-		asprintf (bp = buffer, ap);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		aca -> aca_source = ACA_LOCAL;

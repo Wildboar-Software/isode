@@ -14,7 +14,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/main.c
 #define IP _IP
 #include <curses.h>
 #undef OK
-#include <varargs.h>
+#include <stdarg.h>
 
 #include "widget.h"
 #include "quipu/util.h"
@@ -132,17 +132,13 @@ int_quit (int sig) {
 }
 
 
-advise (va_alist)
-va_dcl {
-	int     code;
+advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 	extern LLog * log_dsap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (log_dsap, code, ap);
+	_ll_log (log_dsap, code, what, fmt, ap);
 
 	va_end (ap);
 }
