@@ -217,7 +217,7 @@ main (int argc, char **argv, char **envp) {
 
 /* ARGSUSED */
 
-static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
+static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti) {
 	int    cc;
 	int	    n;
 	char *dp,
@@ -380,7 +380,7 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 /*  */
 
-static arginit (char **vec)
+static arginit (char **vec) {
 	char *ap;
 	char    prompt[BUFSIZ];
 
