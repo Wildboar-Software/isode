@@ -45,6 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
 #include "isoservent.h"
 #include "tailor.h"
 #include <sys/stat.h>
+#include <sys/param.h>
 
 #undef	TIMER
 #undef	TMS
@@ -531,14 +532,14 @@ static int  ss_main ( struct isoservent *is, char   *addr) {
 	fflush (stderr);
 #ifndef	ASYNC
 	if (SConnRequest (sf, NULLSA, sz, requirements, tokens, ISN (requirements),
-					  userdata, /* sizeof userdata */ SS_SIZE, NULLQOS, sc, si) == NOTOK) {
+					  userdata, sizeof userdata /*SS_SIZE*/, NULLQOS, sc, si) == NOTOK) {
 		fprintf (stderr, "failed\n");
 		ss_adios (sa, "S-CONNECT.REQUEST");
 	}
 	sd = sc -> sc_sd;
 #else
 	if ((i = SAsynConnRequest (sf, NULLSA, sz, requirements, tokens,
-							   ISN (requirements), userdata, /* sizeof userdata */ SS_SIZE, NULLQOS, sc, si, 1))
+							   ISN (requirements), userdata, sizeof userdata /*SS_SIZE*/, NULLQOS, sc, si, 1))
 			== NOTOK) {
 		fprintf (stderr, "failed\n");
 		ss_adios (sa, "S-(ASYN-)CONNECT.REQUEST");
@@ -592,7 +593,7 @@ static int  ss_main ( struct isoservent *is, char   *addr) {
 			advise (NULLCP, "greetings: %d octets", sc -> sc_cc);
 	}
 #endif
-	if (bcmp (userdata, sc->sc_data, sc)) {
+	if (bcmp (userdata, sc->sc_data, MIN(sizeof userdata, sc -> sc_cc))) {
 		advise (NULLCP, "data mismatch (0)");
 	}
 
