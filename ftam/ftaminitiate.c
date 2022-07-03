@@ -38,6 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftaminitiate.c,v 9.0 1
 static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti);
 
 /*    F-INITIALIZE.REQUEST */
+static int  FInitializeRequestAux ();
 
 int
 FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {

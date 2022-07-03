@@ -554,10 +554,10 @@ lookup(cmd)
 #include <arpa/telnet.h>
 
 /*
- * getline - a hacked up version of fgets to ignore TELNET escape codes.
+ * _getline - a hacked up version of fgets to ignore TELNET escape codes.
  */
-char *
-getline(s, n, iop)
+static char *
+_getline(s, n, iop)
 	char *s;
 	register FILE *iop;
 {
@@ -615,7 +615,7 @@ yylex()
 		case CMD:
 			(void)signal(SIGALRM, toolong);
 			(void)alarm((unsigned)timeout);
-			if (getline(cbuf, sizeof(cbuf)-1, stdin) == NULL) {
+			if (_getline(cbuf, sizeof(cbuf)-1, stdin) == NULL) {
 				dologout(0);
 			}
 			(void)alarm(0);

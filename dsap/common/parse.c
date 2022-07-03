@@ -64,7 +64,7 @@ char	*brkl();
 
 #ifdef TURBO_DISK
 
-char *getline (db)
+char *_getline (db)
 GDBM_FILE	db;
 {
 	static datum	newkey, key, dat;
@@ -159,9 +159,8 @@ GDBM_FILE	db;
 	return save;
 }
 
-char *
-getnextline (void) {
-	return getline (save_db);
+char *getnextline () {
+	return _getline (save_db);
 }
 
 
@@ -310,7 +309,7 @@ FILE * savefile;
 #ifdef TURBO_DISK
 char * fgetline (file)
 #else
-char * getline (file)
+char * _getline (file)
 #endif
 FILE * file;
 {
@@ -352,7 +351,7 @@ char * getnextline ()
 #ifdef TURBO_DISK
 	return fgetline (savefile);
 #else
-	return getline (savefile);
+	return _getline (savefile);
 #endif
 }
 
@@ -548,12 +547,12 @@ FILE * file;
 	Attr_Sequence as_combine ();
 	char * ptr;
 
-	if ((ptr = getline (file)) == NULLCP)
+	if ((ptr = _getline (file)) == NULLCP)
 		return (NULLATTR);
 
 	while ( *ptr != 0 ) {
 		as = as_combine (as,ptr,FALSE);
-		if ((ptr = getline (file)) == NULLCP)
+		if ((ptr = _getline (file)) == NULLCP)
 			break;
 	}
 	return (as);
@@ -597,13 +596,13 @@ int dtype;
 
 	DATABASE_HEAP;
 
-	if ((ptr = getline (file)) == NULLCP) {
+	if ((ptr = _getline (file)) == NULLCP) {
 		GENERAL_HEAP;
 		return (NULLENTRY);
 	}
 
 	while (*ptr == 0)
-		if ((ptr = getline (file)) == NULLCP) {
+		if ((ptr = _getline (file)) == NULLCP) {
 			GENERAL_HEAP;
 			return (NULLENTRY);
 		}

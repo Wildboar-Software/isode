@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-put.c,v 9.0 1992
 #include <stdio.h>
 #include "ftamuser.h"
 
+static int  put (),  putaux ();
 
 
 #ifdef	BRIDGE

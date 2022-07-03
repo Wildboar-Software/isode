@@ -116,8 +116,9 @@ extern struct SecurityServices *dsap_security;
 
 char ** sargv;
 
-int
-main (int argc, char **argv) {
+static void	osisecinit ();
+
+int main (int argc, char **argv) {
 #ifdef SBRK_DEBUG
 	unsigned proc_size = 0;
 	unsigned new_size;
@@ -884,7 +885,7 @@ fork_ok:
 
 
 
-	static	osisecinit(argc, argv, fn)
+	static void osisecinit(argc, argv, fn)
 	int             *argc;
 	char          ***argv;
 	int	fn;

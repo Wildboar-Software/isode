@@ -464,7 +464,7 @@ envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void  _advise ();
 
 
 void	adios (char *what, char *fmt, ...) {

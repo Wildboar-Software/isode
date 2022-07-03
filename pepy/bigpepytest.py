@@ -677,7 +677,7 @@ int	n;
 
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
 static void  adios (char *what, char *fmt, ...)

@@ -42,6 +42,8 @@ static	fdfget ( struct FTAMdiagnostic **diags);
 static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
 static int  de2fadu (PE pe, int concat);
 
+static	uxfget (), fdfget (), tvsub ();
+static int	de2fadu ();
 
 /*    TRANSFER */
 

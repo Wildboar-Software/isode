@@ -50,6 +50,8 @@ struct oper_act * oper_alloc();
 struct PSAPaddr	* psap_cpy();
 struct access_point *ap_cpy ();
 extern Entry local_find_entry_aux();
+int chain_ok (struct task_act *, char, DN);
+int di2cref (struct di_block *, struct DSError *, char);
 
 static int relayfordsa();
 

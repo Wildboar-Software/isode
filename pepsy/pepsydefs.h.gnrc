@@ -129,7 +129,7 @@ typedef struct ypt {
 }			ypt, *YT;
 #define	NULLYT	((YT) 0)
 
-YT	new_tag (), copy_tag ();
+YT	new_tag (PElementClass), copy_tag ();
 
 %BEGIN(PEPSY)%
 /* Encoding functions definitions */

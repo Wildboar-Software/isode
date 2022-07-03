@@ -1639,10 +1639,10 @@ check_known_oids ()
 	(void) check_known_oids();
 } 
 
-char * getline (file)
+char * _getline (file)
 FILE * file;
 {
-	return getline (file);
+	return _getline (file);
 }
 
 Attr_Sequence get_attributes_aux (file) 

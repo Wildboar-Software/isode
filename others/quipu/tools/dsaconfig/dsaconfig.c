@@ -137,7 +137,7 @@ struct country {
 #define	C_SHORT	0x01
 };
 
-struct country *read_country ();
+static struct country *read_country ();
 
 /*  */
 
@@ -241,7 +241,7 @@ static struct pair pairs[] = {
 	NULL
 };
 
-struct pair *n2p ();
+static struct pair *n2p ();
 
 /*  */
 

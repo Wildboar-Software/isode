@@ -49,6 +49,8 @@ extern	char	dad_flag;
 char            fname[128];
 static char	new_draft;
 
+int make_old (char *, char);
+
 int
 call_add (int argc, char **argv) {
 

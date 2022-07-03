@@ -101,9 +101,10 @@ struct dispatch {
 struct dispatch *getds ();
 
 
-int	vt_open (), vt_close (), vt_quit (), vt_status (), vt_suspend ();
-int	vt_ayt (), vt_break (), vt_escape ();
-int	vt_set (), vt_help ();
+static int	vt_open (), vt_close (), vt_quit (), vt_status (), vt_suspend ();
+int	vt_ayt (), vt_break ();
+static int	vt_set (), vt_help (), vt_escape ();
+static int	vtploop (), printvar ();
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
@@ -145,6 +146,7 @@ static struct dispatch dispatches[] = {
 
 SFD	intr(), deadpeer();
 char	*control(), *strdup ();
+static int	_getline ();
 
 #ifdef TERMIOS
 struct	termios oterm;
@@ -158,6 +160,8 @@ static int runcom = 0;
 char	*myname;
 static char *myhome;
 int	tmode();
+
+static int	 ncols (), rcinit ();
 
 LLog    _vt_log = {
 	"./vt.log", NULLCP, NULLCP,
@@ -300,7 +304,7 @@ command (int top) {
 		signal (SIGINT, SIG_DFL);
 	eof = 0;
 	for (;;) {
-		if (getline ("%s> ", line) == NOTOK) {
+		if (_getline ("%s> ", line) == NOTOK) {
 			if (eof) {
 				if (!connected)
 					exit (0);
@@ -365,7 +369,7 @@ vtploop (char **vec, int error) {
 /*  */
 
 int
-getline (char *prompt, char *buffer) {
+_getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -450,7 +454,7 @@ getds (char *name) {
 static int
 vt_open (char **vec) {
 	if (*++vec == NULL) {
-		if (getline ("host: ", line) == NOTOK
+		if (_getline ("host: ", line) == NOTOK
 				|| str2vecX (line, vec, 0, NULLIP, NULL, 0) < 1)
 			return NOTOK;
 	}
@@ -572,7 +576,7 @@ vt_escape (char **vec) {
 	char   c;
 
 	if (*++vec == NULL) {
-		if (getline ("new escape character: ", line) == NOTOK
+		if (_getline ("new escape character: ", line) == NOTOK
 				|| str2vec (line, vec) < 1)
 			return NOTOK;
 	}
@@ -622,15 +626,14 @@ struct var {
 	IFP	    v_hook;
 };
 
-struct var *getvar ();
+static struct var *getvar ();
 
 
 static int   echo = 0;
 static int   repertoire = 0;
 static int   verbose = 0;
 
-int	set_debug (), set_echo (), set_escape (), set_repertoire ();
-
+static int	set_debug (), set_echo (), set_escape (), set_repertoire ();
 
 static struct var vars[] = {
 	"acsaplevel", &_acsap_log.ll_events, "ACSAP logging", xsaplevels,
@@ -695,7 +698,7 @@ static struct var vars[] = {
 static int varwidth1;
 static int varwidth2;
 
-char    **getval ();
+static char    **getval ();
 
 /*  */
 

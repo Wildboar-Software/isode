@@ -36,6 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease1.c,v 
 #include "ppkt.h"
 #include "tailor.h"
 
+static int  PRelRequestAux ();
+
 /*    P-RELEASE.REQUEST */
 
 int	PRelRequest (sd, data, ndata, secs, pr, pi)

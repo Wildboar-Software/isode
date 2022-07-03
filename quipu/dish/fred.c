@@ -90,7 +90,7 @@ static AttributeType t_surname;
 static AttributeType t_title;
 
 
-Entry	fredentry ();
+static Entry	fredentry ();
 Attr_Sequence fred_as (), fred_full ();
 
 static struct dn_seq *interact ();
@@ -181,8 +181,8 @@ usage:
 static	int	dlevel = 0;
 static	int	dsa_status;
 
-struct dn_seq *dm2dn_seq ();
-struct dn_seq *dm2dn_seq_aux ();
+static struct dn_seq *dm2dn_seq ();
+static struct dn_seq *dm2dn_seq_aux ();
 
 #define	make_filter(cp,at) \
     	strfilter ((at), (cp), index ((cp), '*') ? FILTERITEM_SUBSTRINGS \
@@ -485,8 +485,8 @@ free_filter:
 
 /*    EXPAND SUPPORT */
 
-struct dn_seq	*expand_full (),
-		 *expand_partial ();
+static struct dn_seq	*expand_full (),
+						*expand_partial ();
 
 /*  */
 

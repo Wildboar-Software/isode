@@ -67,7 +67,7 @@ static int  stay_bound = 0;
 DN	local_dn;
 
 
-struct dn_seq *dm2dn_seq ();
+static struct dn_seq *dm2dn_seq ();
 
 
 extern char *local_dit;
@@ -165,7 +165,8 @@ mbox2ak (char *local, char *domain) {
 static int bound = 0;
 static int dlevel = 0;
 
-struct dn_seq *dm2dn_seq_aux ();
+static struct dn_seq *dm2dn_seq_aux ();
+static  do_bind ();
 
 
 static struct dn_seq *

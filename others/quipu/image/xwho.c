@@ -119,6 +119,8 @@ static int largest_h, largest_w;
 
 static struct host *hosts;
 
+static  update_X (), service_X (), init_X (), layout_X(), display_top (),
+        display_host (), display_face (), read_X (), display_this_host ();
 
 /*    MAIN */
 

@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrelease2.c,v 9.0 1
 static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);
 
 /*    F-TERMINATE.RESPONSE */
+static int  FTerminateResponseAux ();
 
 int
 FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {

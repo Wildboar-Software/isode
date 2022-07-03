@@ -59,8 +59,8 @@ struct whois {
 };
 
 
-char   *eqstr (), *limits ();
-FILE   *capture ();
+static char   *eqstr (), *limits ();
+static FILE   *capture ();
 
 /*  */
 

@@ -60,6 +60,8 @@ static	int	dont_bother_anymore = 0;
 
 int	init_users (), sync_users ();	/* users group */
 int	init_print (), sync_print ();	/* print group */
+static  arginit (), envinit  (), mibinit  (), start_smux (),
+        doit_smux (), do_smux ();
 
 static struct triple {
 	char   *t_tree;

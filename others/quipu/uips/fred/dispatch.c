@@ -76,7 +76,8 @@ FILE   *errfp = NULL;
 
 /*  */
 
-int	f_set (), f_help ();
+static int	f_set ();
+int	f_help ();
 int	f_alias (), f_area (), f_dish (), f_edit (), f_manual (), f_report (),
 	f_thisis ();
 int	f_bind (), f_quit ();
@@ -123,7 +124,7 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-struct dispatch *getds ();
+static struct dispatch *getds ();
 static printvar ();
 static	snarf ();
 
@@ -245,7 +246,7 @@ struct var {
 #define	V_SERVER	0x02
 };
 
-struct var *getvar ();
+static struct var *getvar ();
 
 
 static struct var vars[] = {
@@ -295,7 +296,7 @@ static struct var vars[] = {
 static int varwidth1;
 static int varwidth2;
 
-char    **getval ();
+static char    **getval ();
 
 /*  */
 

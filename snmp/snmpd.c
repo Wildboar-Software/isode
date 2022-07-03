@@ -141,6 +141,13 @@ void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 static void	ts_advise ();
 
+static	doit_udp (), doit_aux (), gc_set (), smux_process (),
+        pb_free (), tb_free (), export_view (), do_trap (),
+        do_traps (), arginit (), envinit (), readconfig ();
+static int process (), do_operation (), do_pass (),
+           proxy1 (), proxy2 (), start_smux (), doit_smux (),
+           smux_method (), f_logging (), f_variable ();
+static  struct community *str2comm ();
 
 
 

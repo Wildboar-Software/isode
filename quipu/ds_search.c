@@ -41,8 +41,8 @@ extern LLog    *log_stat;
 static PS       filter_ps;
 #endif
 
-EntryInfo      *filterentry();
-static EntryInfo *filterchildren();
+EntryInfo      *filterentry(struct ds_search_arg *, struct entry *, struct dncomp *, char,  int *, struct ds_search_task *, char);
+static EntryInfo *filterchildren(struct ds_search_arg *, struct entry *, struct ds_search_task **, struct ds_search_task **, int,  char,  int *);
 static          test_avs();
 static          apply_search();
 static          substr_search();

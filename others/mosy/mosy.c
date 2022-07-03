@@ -30,6 +30,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
 #include <stdarg.h>
 #include "mosy-defs.h"
 
+static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),
+        check_objects (), print_yi (), print_yo (), print_yt (), print_type (),
+        print_value ();
+
 /*    DATA */
 
 int	Cflag = 0;		/* mosy */
@@ -136,15 +140,15 @@ static	SY	mytraps = NULLSY;
 static	SY	mytypes = NULLSY;
 
 
-SY	new_symbol (), add_symbol ();
+static SY	new_symbol (), add_symbol ();
 
-char   *id2str ();
+static char   *id2str ();
 
-YP	lookup_type ();
-char   *val2str ();
+static YP	lookup_type ();
+static char   *val2str ();
 
-OI	lookup_identifier ();
-OT	lookup_object ();
+static OI	lookup_identifier ();
+static OT	lookup_object ();
 
 /*    MAIN */
 

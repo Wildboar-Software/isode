@@ -39,7 +39,7 @@ Attr_Sequence eis_select ();
 Attr_Sequence dsa_eis_select ();
 extern Attr_Sequence entry_find_type();
 static cant_use_cache();
-static attribute_not_cached ();
+static attribute_not_cached (Entry, DN, OID, DN, int, char);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;

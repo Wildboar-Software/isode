@@ -45,7 +45,7 @@ extern struct qbuf        *qb_cpy() ;
 static        PE          dsa_control_enc() ;
 static struct dsa_control * dsa_control_decode() ;
 int	  dsa_control_print() ;
-struct dsa_control * dsa_control_cpy() ;
+static struct dsa_control * dsa_control_cpy() ;
 int	  dsa_control_cmp() ;
 void	  dsa_control_free();
 struct dsa_control * str2dsa_control() ;

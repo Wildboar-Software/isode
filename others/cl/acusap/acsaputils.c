@@ -306,6 +306,7 @@ ps2aculose (
 
 /*  */
 #ifndef	lint
+static int  _acusaplose ();
 
 /*---------------------------------------------------------------------------*/
 int	acusaplose (struct AcSAPindication *aci, ...)

@@ -114,7 +114,12 @@ struct pj {
 static	struct pj *pj_head = NULL;
 
 
-char   *pgetstr ();
+#ifdef LINUX
+#define pgetstr tgetstr
+#endif
+extern char   *pgetstr ();
+static	free_pq (), free_pj (), upstat (), startdaemon ();
+static int findaemon ();
 
 /*  */
 
@@ -991,7 +996,7 @@ int	init_print () {
  */
 
 
-static int  select (dd)
+static int  _select (dd)
 struct dirent *dd;
 {
 	char    c = dd -> d_name[0];
@@ -1026,6 +1031,8 @@ struct dirent **d1,
     		advise (LLOG_EXCEPTIONS, (file), \
 			"unable to set mode 0%o for", (int) (m)); \
 	else
+
+static int  _select ();
 
 int	sync_print (cor)
 integer	cor;

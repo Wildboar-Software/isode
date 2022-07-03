@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamaccess1.c,v 9.0 19
 static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.REQUEST */
+static int  FAccessRequestAux ();
 
 int
 FAccessRequest (

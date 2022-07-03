@@ -583,8 +583,6 @@ PS ps;
 AttributeValue x;
 int format;
 {
-	extern int ps_printf ();
-
 	if (format == RDNOUT)
 		format = EDBOUT;
 

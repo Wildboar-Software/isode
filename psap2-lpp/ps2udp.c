@@ -40,6 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
 #include "dgram.h"
 #include "internet.h"
 
+static int  udpretry ();
+static int  PUservice ();
 
 
 

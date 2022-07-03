@@ -139,7 +139,6 @@
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
 
-
 /*  */
 
 int	ps2acslose ();

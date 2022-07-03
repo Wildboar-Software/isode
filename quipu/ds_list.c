@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_list.c,v 9.0 1992/
 
 extern LLog * log_dsap;
 extern Entry database_root;
-static int build_result();
+static int build_result(struct ds_list_arg *, Entry, struct ds_list_result *, struct DSError *, DN, char, int);
 
 int
 do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {

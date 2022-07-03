@@ -67,7 +67,7 @@ static	char   *myname = "dad";
 static	struct sockaddr_in lo_socket;
 
 
-void	arginit (), envinit ();
+static void	arginit (), envinit ();
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);

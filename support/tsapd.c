@@ -173,9 +173,10 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 static int  setperms ();
 static int  tsapd ();
 static  envinit ();
-#ifndef	IAE
 static	arginit ();
-#endif
+static	search_directory ();
+static int	rebind_to_directory (), make_bind_args (), unbind_from_directory (),
+            do_error ();
 
 
 

@@ -36,7 +36,7 @@ extern LLog * log_dsap;
 static Attr_Sequence  cpy_as_comp_type ();
 Attr_Sequence  cpy_as_comp ();
 static Attr_Sequence  as_cpy_type ();
-static Attr_Sequence  as_cpy_enc ();
+static Attr_Sequence  as_cpy_enc (Attr_Sequence, DN, DN, char);
 extern AV_Sequence avs_cpy_enc ();
 extern Attr_Sequence dsa_pseudo_attr;
 extern AttributeType at_acl;

@@ -304,7 +304,7 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 /*  */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
 void	adios (char *what, char *fmt, ...) {

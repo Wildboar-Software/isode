@@ -26,7 +26,7 @@
  *                                                              *
  *  internal routines:						*
  *								*
- *	invoke(),  getline(), timer(), _advise()		*
+ *	invoke(),  _getline(), timer(), _advise()		*
  *      tvsub(), timing_result)					*
  *								*
  ****************************************************************
@@ -68,6 +68,7 @@
 static int count = 1;
 int	length = 536;
 
+static int _getline(char *);
 
 #ifdef	TIMER
 #define	DS_RESULT(ds)	(timing ? timing_result : (ds) -> ds_result)
@@ -261,7 +262,7 @@ IFP	quit;
 
 	if (iloop) {
 		for (;;) {
-			if (getline (buffer) == NOTOK)
+			if (_getline (buffer) == NOTOK)
 				break;
 
 			if (str2vec (buffer, vec) < 1)
@@ -360,7 +361,7 @@ out:
 /*    INTERACTIVE */
 
 static int
-getline (char *buffer) {
+_getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;

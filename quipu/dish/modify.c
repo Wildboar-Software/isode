@@ -44,6 +44,8 @@ extern	PS	opt, rps;
 extern	char	dad_flag;
 extern char     fname[];
 
+int mod_template (char *, char);
+
 struct	list_element {
 	char   *mod;
 	char	add;			/* 1=add, 0=remove */

@@ -52,8 +52,10 @@ OT	anchor;
 OT	chain;
 
 
-OID	resolve ();
+static OID	resolve ();
 
+static int  read_name (), read_type (), add_objects_aux (),
+            dump_object ();
 
 extern	int	errno;
 

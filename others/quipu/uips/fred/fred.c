@@ -58,8 +58,8 @@ SFP	astat;
 SFP	istat;
 SFP	qstat;
 
-SFD	alrmser ();
-SFD	intrser ();
+static SFD	alrmser ();
+static SFD	intrser ();
 
 LLog    _fred_log = {
 	"fred.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
@@ -368,7 +368,7 @@ main (int argc, char **argv, char **envp) {
 			}
 		}
 
-		if (getline ("%s> ", buffer) == NOTOK) {
+		if (_getline ("%s> ", buffer) == NOTOK) {
 			if (eof)
 				break;
 
@@ -500,7 +500,7 @@ arginit (char **vec) {
 /*    INTERACTIVE */
 
 int
-getline (char *prompt, char *buffer) {
+_getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;

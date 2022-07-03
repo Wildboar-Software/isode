@@ -62,6 +62,7 @@ void	advise (int, char *, char *, ...);
 #define DONE	1
 #endif /* NOTOK */
 
+int getreply ();
 
 /*
  * ftp_login: establish command connection with remote host

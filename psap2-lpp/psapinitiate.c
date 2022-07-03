@@ -36,6 +36,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapinitiate.c,v 
 #include "ppkt.h"
 #include "tailor.h"
 
+static int  PAsynRetryAux ();
+static int  PConnRequestAux ();
+static int  PConnRequestAux2 ();
+
 /*    P-(ASYN-)CONNECT.REQUEST */
 
 #ifndef	notdef

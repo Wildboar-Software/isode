@@ -174,8 +174,7 @@ main (int argc, char **argv, char **envp) {
 
 /*    DASE */
 
-static
-dased (int vecp, char **vec) {
+static void dased (int vecp, char **vec) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
@@ -234,8 +233,7 @@ dased (int vecp, char **vec) {
 
 /*  */
 
-static
-dase_aux (struct type_DASE_Query__REQ *req) {
+static void dase_aux (struct type_DASE_Query__REQ *req) {
 	int    i;
 	int	    vecp;
 	char **vp;
@@ -501,7 +499,7 @@ bind_to_dsa () {
 
 /*  */
 
-static int
+static void
 make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -743,8 +741,7 @@ name2psap (DN dn) {
 
 /*    INIT */
 
-static
-arginit (char **vec) {
+static void arginit (char **vec) {
 	int	    argp;
 	char   *ap;
 	char  **argptr,

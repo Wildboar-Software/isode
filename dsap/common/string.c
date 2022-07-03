@@ -36,6 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/string.c,v 9.0 
 
 extern LLog * log_dsap;
 extern char * srealloc ();
+extern char * strdup ();
 
 static short exct = 0;
 static short tel_sntx = 0;

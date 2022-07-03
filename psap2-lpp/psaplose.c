@@ -36,6 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
 #include "ppkt.h"
 #include "tailor.h"
 
+static int  _psaplose ();
+
 /*  */
 
 #ifndef	lint

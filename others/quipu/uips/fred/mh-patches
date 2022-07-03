@@ -107,7 +107,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
   char   *getname (addrs)
 ***************
 *** 824,826 ****
---- 833,1211 ----
+--- 833,1213 ----
   
       return 0;
   }
@@ -188,6 +188,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + }
 + 
 + /*  */
++ static int  _getline ();
 + 
 + static int  das_init ()
 + {
@@ -226,7 +227,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 
 +     (void) signal (SIGPIPE, SIG_IGN);
 + 
-+     switch (getline (das_response, sizeof das_response, das_input)) {
++     switch (_getline (das_response, sizeof das_response, das_input)) {
 + 	case OK: 
 + 	    if (*das_response == '+') {
 + 		int     a[5];
@@ -307,7 +308,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 	char	c,
 + 		input[BUFSIZ];
 + 
-+ 	if (getline (input, sizeof input, in) != OK)
++ 	if (_getline (input, sizeof input, in) != OK)
 + 	    goto real_losing;
 + 
 + 	switch (c = input[0]) {
@@ -373,7 +374,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 
 + /*  */
 + 
-+ static int  getline (s, n, iop)
++ static int  _getline (s, n, iop)
 + char   *s;
 + int     n;
 + FILE * iop;

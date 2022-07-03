@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamaccess2.c,v 9.0 19
 static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.RESPONSE */
+static int  FAccessResponseAux ();
 
 int
 FAccessResponse (

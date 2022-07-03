@@ -42,6 +42,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
 #include <sys/ioctl.h>
 #endif
 
+static int  tcpready ();
+static int  PTservice ();
+
 /*    DATA */
 
 #ifdef	FIONBIO

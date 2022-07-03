@@ -268,7 +268,7 @@ acs_errmsg (struct AcSAPabort *aca, char *event) {
 
 
 #ifndef	lint
-void	_errmsg ();
+static void	_errmsg ();
 
 
 void	errexit (char *what, char *fmt, ...) {

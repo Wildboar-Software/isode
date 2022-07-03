@@ -73,6 +73,8 @@ int default_rep_flag = 0;
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
+int		putch (char);
+
 /*************************************************************************/
 /* VASS_REQ - create an ASQ PDU and generate a VASSreq event to 	 */
 /*			send it.					 */

@@ -49,6 +49,6 @@ struct isoservent *getisoservent ();
 
 struct isoservent *getisoserventbyname ();
 struct isoservent *getisoserventbyselector ();
-struct isoservent *getisoserventbyport ();
+struct isoservent *getisoserventbyport (char *, short unsigned int);
 
 #endif

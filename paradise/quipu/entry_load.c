@@ -93,7 +93,7 @@ char * file;
 #ifdef	TURBO_DISK
 	char *ptr, *newname, *tmp, *fgetline();
 #else	/* TURBO_DISK */
-	char *ptr, *newname, *tmp, *getline();
+	char *ptr, *newname, *tmp, *_getline();
 #endif	/* TURBO_DISK */
 	extern int parse_line;
 	int i;
@@ -107,7 +107,7 @@ char * file;
 #ifdef	TURBO_DISK
 	while ( (ptr = fgetline(mapfp)) != NULLCP)
 #else	/* TURBO_DISK */
-	while ( (ptr = getline(mapfp)) != NULLCP)
+	while ( (ptr = _getline(mapfp)) != NULLCP)
 #endif	/* TURBO_DISK */
 	{
 		if ((newname = rindex(ptr,'#')) == NULLCP) {

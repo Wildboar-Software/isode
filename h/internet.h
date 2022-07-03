@@ -72,8 +72,8 @@ int	join_tcp_server ();
 #ifdef TLI_TCP
 int	join_tcp_client ();
 int	join_tcp_server ();
-int	read_tcp_socket ();
-int	write_tcp_socket ();
+ssize_t	read_tcp_socket ();
+ssize_t	write_tcp_socket ();
 int	close_tcp_socket ();
 #define	select_tcp_socket	selsocket
 #endif
@@ -99,8 +99,8 @@ int	join_tcp_server ();
 #endif
 #endif
 
-int	read_tcp_socket ();
-int	write_tcp_socket ();
+ssize_t	read_tcp_socket ();
+ssize_t	write_tcp_socket ();
 int	close_tcp_socket ();
 
 int	select_tcp_socket ();
@@ -180,6 +180,9 @@ struct hostent *gethostbystring ();
    compilers. */
 
 char   *inet_ntoa ();
+#ifdef LINUX
+extern in_addr_t inet_addr (), inet_network ();
+#else
 #ifndef	DG
 #ifndef	HPUX
 in_addr_t inet_network ();
@@ -188,5 +191,6 @@ in_addr_t inet_network ();
 #endif
 #else
 struct in_addr inet_addr (), inet_network ();
+#endif
 #endif
 #endif

@@ -34,15 +34,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/text2spkt.c,v 9.0 1992
 
 static	type_id ();
 static	type_ssn ();
-static	type_bits ();
-static	type_settings ();
-static	type_tsdu ();
+static	type_bits (LLog *, char *, char *, u_char,  int,  char *);
+static	type_settings (LLog *, char *, u_char);
+static	type_tsdu (LLog *, char *, u_short,  u_short);
 static	type_ref ();
-static	type_vrsn ();
+static	type_vrsn (LLog *, char *, u_char);
 static	type_reason ();
-static	type_prepare ();
-static	type_error ();
-static	type_resync ();
+static	type_prepare (LLog *, char *, u_char);
+static	type_error (LLog *, char *, u_char);
+static	type_resync (LLog *, char *, u_char);
 static	type_data ();
 static	type_info ();
 

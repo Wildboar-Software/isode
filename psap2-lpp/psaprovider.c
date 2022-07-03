@@ -36,6 +36,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprovider.c,v 9
 #include "ppkt.h"
 #include "tailor.h"
 
+static int  qb_cmp ();
+static int  PReadRequestAux ();
+static int  _PDataRequestAux ();
+
 /*    DATA */
 
 static int  once_only = 0;
@@ -65,7 +69,7 @@ struct PSAPindication *pi;
 
 	psapPsig (pb, sd);
 
-	if ((result = PDataRequestAux (pb, data[0], pi)) == NOTOK)
+	if ((result = _PDataRequestAux (pb, data[0], pi)) == NOTOK)
 		freepblk (pb);
 
 	sigiomask (smask);
@@ -75,7 +79,7 @@ struct PSAPindication *pi;
 
 /*  */
 
-static int  PDataRequestAux (pb, data, pi)
+static int  _PDataRequestAux (pb, data, pi)
 struct psapblk *pb;
 PE	data;
 struct PSAPindication *pi;

@@ -215,7 +215,7 @@ extern	PE	pe_list;
 extern	PE	pe_active;
 #endif
 
-PE	pe_alloc ();
+PE	pe_alloc (PElementClass, PElementForm, PElementID);
 int	pe_free ();
 int	pe_cmp ();
 PE	pe_cpy ();
@@ -317,14 +317,14 @@ PE	num2prim ();
 #endif
 
 double	prim2real ();
-PE	real2prim ();
+PE	real2prim (double, PElementClass, PElementID);
 #define double2prim(i)		real2prim ((i), PE_CLASS_UNIV, PE_PRIM_REAL)
 
 
 char   *prim2str ();
-PE	str2prim ();
+PE	str2prim (char *, int, PElementClass, PElementID);
 struct qbuf *prim2qb ();
-PE	qb2prim_aux ();		/* really should be qb2pe () */
+PE	qb2prim_aux (struct qbuf *, PElementClass, PElementID, int);		/* really should be qb2pe () */
 #define	qb2prim(q,c,i)		qb2prim_aux ((q), (c), (i), 0)
 #define	oct2prim(s,len)		str2prim ((s), (len), \
 					    PE_CLASS_UNIV, PE_PRIM_OCTS)
@@ -362,7 +362,7 @@ PE	obj2prim ();
 UTC	prim2time ();
 #define	prim2utct(pe)		prim2time ((pe), 0)
 #define	prim2gent(pe)		prim2time ((pe), 1)
-PE	time2prim ();
+PE	time2prim (UTC, int, PElementClass, PElementID);
 #define	utct2prim(u)		time2prim ((u), 0, PE_CLASS_UNIV, PE_DEFN_UTCT)
 #define	gent2prim(u)		time2prim ((u), 1, PE_CLASS_UNIV, PE_DEFN_GENT)
 char   *time2str ();
@@ -372,8 +372,9 @@ UTC	str2utct (), str2gent ();
 
 PE	prim2set ();
 #define	set2prim(pe)		(pe)
-int	set_add (), set_addon (), set_del ();
-PE	set_find ();
+int	set_add (), set_addon ();
+int set_del (PE, PElementClass, PElementID);
+PE	set_find (PE, PElementClass, PElementID);
 #define	first_member(pe)	((pe) -> pe_cons)
 #define	next_member(pe,p)	((p) -> pe_next)
 
@@ -559,7 +560,7 @@ int	pe2uvec ();
 char   *int2strb ();
 int	strb2int ();
 
-PE	strb2bitstr ();
+PE	strb2bitstr (char *, int, PElementClass, PElementID);
 char   *bitstr2strb ();
 
 /*  */
@@ -573,7 +574,6 @@ int	testdebug ();
 
 int	vpush (), vpop ();
 int	vname (), vtag ();
-int	vprint (char*fmt,...);
 int	vstring (), vunknown ();
 int	vprint (char*, ...);
 

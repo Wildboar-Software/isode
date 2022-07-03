@@ -78,7 +78,10 @@ static Frame myframe;
 static unsigned long backpix, bdrpix;
 static GC  forepix, highpix;
 
-int	ALRMser (), XWINser ();
+static int	ALRMser (), XWINser ();
+static int  _getline ();
+static	fetch_face (), arginit (), envinit (), display_X (),
+        Redisplay (), ALRMser (), XWINser ();
 
 
 
@@ -106,7 +109,7 @@ main (int argc, char **argv, char **envp) {
 		errsw = NOTOK;
 
 	for (;;) {
-		if ((portsw > 0 ? readsocket (buffer) : getline (buffer)) == NOTOK)
+		if ((portsw > 0 ? readsocket (buffer) : _getline (buffer)) == NOTOK)
 			break;
 
 		if (str2vec (buffer, vec) != 2)
@@ -136,7 +139,7 @@ fetch_face (char *host, char *user) {
 /*  */
 
 static int
-getline (char *buffer) {
+_getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;

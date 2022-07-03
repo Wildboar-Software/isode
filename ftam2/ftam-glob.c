@@ -75,11 +75,16 @@ static	char **gargv;		/* Pointer to the (stack) arglist */
 static	int    gargc;		/* Number args in gargv */
 static	int    gnleft;
 static	int    gflag;
-static	int tglob();
+static	int tglob(char);
 char	*globerr;
 static char *home;
 struct	passwd *getpwnam();
 static	char *strspl(), **copyblk(), *strend();
+static ginit (), collect (), acollect (), sort (), expand (),
+       execbrc (), match (), amatch (), Gcat (), addpath (char),
+       rscan (), letter (char), digit (char), any ();
+
+static int  fatal ();
 
 static	int globcnt;
 
@@ -92,7 +97,6 @@ static	char *entp;
 static	char **sortbas;
 
 
-int	chkrdir ();
 static int chkldir ( char   *path, struct stat *st);
 static int (*chkdir) () = chkldir;
 
@@ -103,7 +107,6 @@ static int (*gethdir) () = getldir;
 static int matchldir (char *pattern);
 static int matchrdir (char *pattern);
 static int (*matchdir) () = matchldir;
-
 
 static char ** glob (char *v) {
 	char agpath[BUFSIZ];

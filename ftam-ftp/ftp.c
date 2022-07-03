@@ -97,7 +97,6 @@ int port;
 		static struct hostent def;
 		static struct in_addr defaddr;
 		static char namebuf[128];
-		u_long inet_addr();
 
 		defaddr.s_addr = inet_addr(host);
 		if (defaddr.s_addr == -1) {
@@ -236,9 +235,7 @@ char   *fmt;
 
 #include <ctype.h>
 
-getreply(expecteof)
-int expecteof;
-{
+int getreply(int expecteof) {
 	int c, n;
 	int code, dig;
 	int originalcode = 0, continuation = 0;

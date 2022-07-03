@@ -195,7 +195,7 @@ char   *sprintb ();
 
 #define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, NULL, 1)
 
-int	str2vecX ();
+int	str2vecX (char *, char **, int,  int *, char,  int);
 
 /*    STR2ELEM */
 
@@ -228,7 +228,7 @@ int	log_tai ();
 int	sstr2arg ();
 
 void	(*set_smalloc_handler()) ();
-char    *smalloc (), *strdup ();
+char    *smalloc ();
 
 /*    MISC */
 

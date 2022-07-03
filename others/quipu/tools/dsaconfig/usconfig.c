@@ -795,6 +795,8 @@ add_us (
 
 	copy_edb (USDN, ORGENTRY, 0x01);
 }
+extern void copy_edb ();
+extern struct pair *findpair ();
 
 /*  */
 /* add_state () -- build state entry, adding organization if necessary*/
@@ -803,8 +805,6 @@ add_state (
 	int addorg			/* add organization to state entry? */
 ) {
 	struct pair *state;			/* name of state */
-	extern void copy_edb ();
-	extern struct pair *findpair ();
 	FILE *statefp;
 
 	/* get name of state */
@@ -1358,7 +1358,6 @@ void
 advise (char *what, char *fmt, ...)
 {
 	va_list ap;
-	extern void _advise ();
 
 	va_start (ap, fmt);
 

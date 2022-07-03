@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryinitiator.c
 
 static char *myname = "ryinitiator";
 
+static int _getline(char *);
 
 extern char *isodeversion;
 
@@ -153,7 +154,7 @@ IFP	quit;
 
 	if (iloop) {
 		for (;;) {
-			if (getline (buffer) == NOTOK)
+			if (_getline (buffer) == NOTOK)
 				break;
 
 			if (str2vec (buffer, vec) < 1)
@@ -218,7 +219,7 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 /*  */
 
 static int
-getline (char *buffer) {
+_getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;

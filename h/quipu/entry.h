@@ -43,8 +43,6 @@ struct acl_attr {
 #define NULLACL_ATTR ((struct acl_attr *)0)
 #define acl_attr_alloc()  (struct acl_attr *) smalloc (sizeof (struct acl_attr));
 
-
-
 struct acl {                    /* represents ACL                       */
 	struct acl_info  *ac_child;
 	struct acl_info  *ac_entry;
@@ -55,8 +53,8 @@ struct acl {                    /* represents ACL                       */
 #define acl_alloc()  (struct acl *) smalloc (sizeof (struct acl));
 #define NULLACL (struct acl *)NULL
 
-struct acl * acl_cpy();
-struct acl * str2acl();
+static struct acl * acl_cpy();
+static struct acl * str2acl();
 
 /* Entry is the structure which is used to hold the DIT in core         */
 
@@ -176,8 +174,8 @@ struct tree_struct {            /* represents TreeStructure             */
 #define NULLTREE ((struct tree_struct *)0)
 #define tree_struct_alloc()     (struct tree_struct *) smalloc (sizeof (struct tree_struct))
 
-struct tree_struct * tree_struct_cpy ();
-struct tree_struct * str2schema ();
+static struct tree_struct * tree_struct_cpy ();
+static struct tree_struct * str2schema ();
 
 struct dn_seq {
 	DN  dns_dn;
@@ -219,8 +217,8 @@ struct edb_info {               /* represent EDBInfo                    */
 #define NULLEDB ((struct edb_info *) 0)
 
 #define edb_info_alloc()   (struct edb_info *) smalloc (sizeof (struct edb_info));
-struct edb_info * edb_info_cpy ();
-struct edb_info * str2update ();
+static struct edb_info * edb_info_cpy ();
+static struct edb_info * str2update ();
 
 DN get_copy_dn ();
 

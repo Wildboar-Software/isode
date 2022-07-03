@@ -36,7 +36,7 @@ extern int parse_status;
 int
 main (int argc, char **argv) {
 	char * buffer;
-	char * getline();
+	char * _getline();
 	int opt;
 	extern int optind;
 	extern char *optarg;
@@ -80,7 +80,7 @@ main (int argc, char **argv) {
 		for (;;) {
 			fprintf (stderr,"-> ");
 
-			if ((buffer = getline(stdin)) == NULLCP)
+			if ((buffer = _getline(stdin)) == NULLCP)
 				break;
 
 			if (*buffer == 'q' && strlen(buffer) == 1)

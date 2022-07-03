@@ -383,7 +383,7 @@ struct sockaddr_in *sock;
 }
 
 /*  */
-int read_tcp_socket (fd, buffer, len)
+ssize_t read_tcp_socket (fd, buffer, len)
 int	fd;
 char	*buffer;
 int	len;
@@ -394,7 +394,7 @@ int	len;
 	return n;
 }
 
-int write_tcp_socket (fd, buffer, len)
+ssize_t write_tcp_socket (fd, buffer, len)
 int	fd;
 char	*buffer;
 int	len;

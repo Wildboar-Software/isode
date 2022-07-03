@@ -66,11 +66,13 @@ void	advise (char *what, char *fmt, ...);
 static void _advise (char* what, char *fmt, va_list ap);
 
 #ifndef	BRIDGE
-SFD	intrser ();
+static SFD	intrser ();
 #endif
 
 extern char* command_prompt;
 extern char* default_prompt();
+
+static	ftamloop (), arginit ();
 
 /*    MAIN */
 

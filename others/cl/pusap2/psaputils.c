@@ -551,6 +551,8 @@ ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SS
 /*  */
 
 #ifndef	lint
+static int  _pusaplose ();
+
 /*----------------------------------------------------------------------------*/
 int	pusaplose (struct PSAPindication *pi, ...)
 /*----------------------------------------------------------------------------*/

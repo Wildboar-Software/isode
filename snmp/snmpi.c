@@ -183,7 +183,7 @@ char  **argv,
 
 	eof = 0;
 	for (interrupted = 0;; interrupted = 0) {
-		if (getline ("%s> ", buffer) == NOTOK) {
+		if (_getline ("%s> ", buffer) == NOTOK) {
 			if (eof)
 				break;
 
