@@ -26,6 +26,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
@@ -198,7 +200,7 @@ int	i;
 #endif
 {
 	int	    pid;
-#ifdef SVR4
+#ifndef UNIONWAIT
 	int	status;
 #else
 	union wait status;
@@ -208,7 +210,7 @@ int	i;
 	signal (SIGCLD, dishser);
 #endif
 
-#ifdef SVR4
+#ifndef UNIONWAIT
 	while ((pid = wait (&status)) != NOTOK
 #else
 	while ((pid = wait (&status.w_status)) != NOTOK
@@ -608,7 +610,11 @@ int	sig;
 long	code;
 struct sigcontext *sc;
 {
+#ifdef UNIONWAIT
 	union wait status;
+#else
+	int status;
+#endif
 
 	while (wait3 (&status, WNOHANG, (struct rusage *) NULL) > 0)
 		continue;

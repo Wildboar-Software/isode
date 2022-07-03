@@ -395,7 +395,9 @@ struct sigcontext *sc;
 	struct TSAPdisconnect *td = &tds;
 
 #ifndef	BSDSIGS
+#ifdef SIGEMT
 	signal (SIGEMT, DATAser);
+#endif
 
 	smask = sigioblock ();
 #endif
@@ -446,7 +448,9 @@ struct sigcontext *sc;
 	}
 
 #ifndef	SIGPOLL
-	kill (TPid, SIGEMT);
+#ifdef SIGEMT
+    kill (TPid, SIGEMT);
+#endif
 #endif
 
 #ifndef	BSDSIGS
@@ -549,7 +553,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 		}
 
 #ifdef	BSDSIGS
-#ifdef	SUNOS4
+#if	defined(SUNOS4) || defined(LINUX)
 		if (fcntl (tb -> tb_fd, F_SETOWN, getpid ()) == NOTOK)
 			return tsaplose (td, DR_CONGEST, "failed", "fcntl F_SETOWN");
 #else

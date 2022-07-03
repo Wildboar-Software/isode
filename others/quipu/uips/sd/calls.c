@@ -34,7 +34,7 @@ char bound = FALSE;  /* indication of wether bound */
 char * TidyString();
 
 /* hack to get isode/curses compatability */
-#if	defined(SVR4) && !defined(SVR4_UCB)
+#if defined(LINUX) || defined(SVR4) && !defined(SVR4_UCB)
 #undef WINDOW
 #else
 #define WINDOW char

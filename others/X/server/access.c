@@ -41,6 +41,7 @@ SOFTWARE.
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include "af_osi.h"
 
 #ifdef hpux
 #include <sys/utsname.h>

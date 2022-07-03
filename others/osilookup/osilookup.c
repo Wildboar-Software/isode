@@ -34,6 +34,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+
+#if defined(SUNLINK_5_2) || defined(SUNLINK_6_0) || defined(SUNLINK_7_0)
+
+/*    SunLink OSI */
+
 #ifndef	SUNLINK_6_0
 #include <sys/ieee802.h>
 #else
@@ -117,3 +122,18 @@ int    n;
 
 	return (n * 2);
 }
+
+#else
+
+/*   Not SunLink OSI */
+
+main (argc, argv, envp)
+int	argc;
+char  **argv,
+      **envp;
+{
+	fprintf (stderr,"%s only works on SunOS with SunLink OSI\n", argv[0]);
+	exit (0);
+}
+
+#endif

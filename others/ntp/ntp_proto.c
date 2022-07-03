@@ -24,6 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_proto.c,v 9.
  */
 
 #include "ntp.h"
+#include "af_osi.h"
 
 int peer_switches, peer_sw_inhibited;
 

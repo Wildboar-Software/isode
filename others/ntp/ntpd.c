@@ -13,9 +13,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpd.c,v 9.0 199
  *
  */
 
-
+#include "manifest.h"
+#include <stdarg.h>
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include "ntp.h"
 #include "patchlevel.h"
+#include "af_osi.h"
 
 #ifndef L_SET
 #define L_SET SEEK_SET
@@ -999,6 +1003,23 @@ static int kern_hz, kern_tick;
 
 static void
 init_kern_vars () {
+#ifdef __linux__
+	kern_hz = HZ;
+
+	if (tickadj == 0)
+		tickadj = 10*1000/HZ;
+
+	struct timex txc = {};
+	txc.tick = tickadj * 1000;  /* convert tickadj to micoseconds */
+	txc.modes = MOD_CLKB;
+
+	if (ntp_adjtime(&txc) < 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "ntp_adjtime with %d fails", tickadj);
+	} else {
+		advise (LLOG_NOTICE, NULLCP,  "System tickadj SET to %d", tickadj);
+		kern_tickadj = tickadj;
+	}
+#else  /* not __linux__ */
 	int kmem;
 	static char	*memory = "/dev/kmem";
 	static struct nlist nl[4];
@@ -1084,6 +1105,7 @@ init_kern_vars () {
 	}
 #endif	/* SETTICKADJ */
 	close(kmem);
+#endif  /* __linux__ */
 
 	/*
 	 *  If we have successfully discovered `hz' from the kernel, then we
@@ -1350,7 +1372,7 @@ envinit () {
 		open("/", 0);
 		dup2(0, 1);
 		dup2(0, 2);
-		setpgrp(0, getpid());
+		setpgrp();
 #ifdef TIOCNOTTY
 		s = open("/dev/tty", O_RDWR);
 		if (s >= 0) {

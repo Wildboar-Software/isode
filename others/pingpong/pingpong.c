@@ -24,6 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/pingpong/RCS/pingpong.c,
  *
  */
 
+#include "manifest.h"
 #include <stdio.h>
 #include "isoaddrs.h"
 #include "tsap.h"

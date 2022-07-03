@@ -30,7 +30,7 @@
 /* Make sure this is here in new versions */
 /*#include "sector1.h"*/
 
-#if (defined(BSD44) || defined(SVR4)) && ! defined(_AIX)
+#if defined(LINUX) || (defined(BSD44) || defined(SVR4)) && ! defined(_AIX)
 #define TERMIOS
 #endif
 

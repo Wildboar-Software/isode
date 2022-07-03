@@ -136,12 +136,14 @@
 
 #else /* SVR4 */
 
+#ifndef	LINUX
 #if	defined(BSDSTRS) && !defined(BSD44) && (!defined(BSD43) || defined(SUNOS4) || defined(vax) || defined(RT) || (defined(mips) && defined(ultrix))) && !defined(XOS_2)
 #if !(defined(__STDC__) && defined(__GNUC__) && defined(mips) && defined(ultrix))
 //char   *sprintf ();
 #endif
 #else
 //int     sprintf ();
+#endif
 #endif
 
 char   *getenv ();
@@ -246,6 +248,9 @@ void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ..
 
 /*  time */
 
+#ifdef LINUX
+#include <time.h>
+#endif
 #ifndef makedev
 #include <sys/types.h>
 #endif

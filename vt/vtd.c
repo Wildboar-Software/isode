@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #undef MAP_BACKSPACE	/*Map backspace character to VT ERASE CHAR*/
 
 #include <signal.h>
+#include <unistd.h>
 #include "vtpm.h"
 #include "sector1.h"
 #include "tailor.h"
@@ -67,7 +68,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #define BANNER	"\r\n\r\nSunOS UNIX (%s)\r\n\r\n\r%s"
 #endif
 
-#if !defined(SYS5) && !defined(BSD44) && !defined(_AIX)
+#if !defined(SYS5) && !defined(BSD44) && !defined(_AIX) && !defined(LINUX)
 void	vhangup();
 #endif
 

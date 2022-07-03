@@ -33,6 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
 #include <signal.h>
 #include "tpkt.h"
 #include "mpkt.h"
+#include "af_osi.h"
 
 #ifdef	TP4
 #include "tp4.h"

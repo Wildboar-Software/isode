@@ -17,6 +17,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_osi.c,v 9.0 
 
 #include "NTP-ops.h"
 #include "NTP-types.h"
+#include "af_osi.h"
 
 void	ros_advise (), acs_advise ();
 extern LLog *pgm_log;

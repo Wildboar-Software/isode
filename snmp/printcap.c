@@ -60,7 +60,9 @@ static char sccsid[] = "@(#)printcap.c	5.7 (Berkeley) 3/4/91";
 
 char   *strcpy ();
 
+#ifndef __linux__
 #define PRINTCAP
+#endif
 
 #ifdef PRINTCAP
 #define tgetent	pgetent

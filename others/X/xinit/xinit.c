@@ -106,9 +106,11 @@ char **client = clientargv + 2;		/* make sure room for sh .xinitrc args */
 char *displayNum;
 char *program;
 Display *xd;			/* server connection */
-#ifndef SYSV
+#ifdef UNIONWAIT
 union wait	status;
-#endif /* SYSV */
+#else
+int status;
+#endif /* UNIONWAIT */
 int serverpid = -1;
 int clientpid = -1;
 extern int	errno;
@@ -436,7 +438,7 @@ startServer (char *server[]) {
 		 * prevent server from getting sighup from vhangup()
 		 * if client is xterm -L
 		 */
-		setpgrp(0,getpid());
+		setpgrp();
 
 		Execute (server);
 		Error ("no server \"%s\" in PATH\n", server[0]);
@@ -497,7 +499,7 @@ startClient (char *client[]) {
 
 	if ((clientpid = vfork()) == 0) {
 		setuid(getuid());
-		setpgrp(0, getpid());
+		setpgrp();
 		environ = newenviron;
 		Execute (client);
 		Error ("no program named \"%s\" in PATH\r\n", client[0]);

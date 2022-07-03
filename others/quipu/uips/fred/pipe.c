@@ -639,7 +639,7 @@ int	cc;
 	static SFP Istat, Qstat;
 
 	if (cc == 0) {
-#ifdef SVR4
+#ifndef UNIONWAIT
 		int	status;
 #else
 		union wait status;
@@ -659,7 +659,7 @@ int	cc;
 		clearerr (fp);
 		close (sd);
 
-#ifdef SVR4
+#ifndef UNIONWAIT
 		while ((child = wait (&status)) != NOTOK
 #else
 		while ((child = wait (&status.w_status)) != NOTOK
