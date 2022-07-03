@@ -1509,13 +1509,11 @@ char   *group;
 static int  EACCESS ( char   *file, int	mode) {
 	int	    result;
 
-	seteuid (0);
-	setreuid (myuid);
+	setreuid (myuid, 0);
 
 	result = access (file, mode);
 
-	setreuid (0);
-	seteuid (myuid);
+	setreuid (0, myuid);
 
 	return result;
 }
