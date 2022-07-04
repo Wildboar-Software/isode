@@ -571,7 +571,7 @@ void	adios (char *what, char *fmt, ...)
 
 	va_start (ap, fmt);
 
-	_advise (ap, what, fmt);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -603,7 +603,7 @@ void	advise (char *what, char *fmt, ...)
 
 	va_start (ap, fmt);
 
-	_advise (ap, what, fmt);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
