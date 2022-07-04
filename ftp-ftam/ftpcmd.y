@@ -75,6 +75,7 @@ static	int cmd_form;
 static	int cmd_bytesz;
 
 char	*savestr();
+static char	*copy(char *);
 
 #define YYSTYPE size_t
 %}
@@ -771,6 +772,7 @@ upper(s)
 	}
 }
 
+static char *
 copy(s)
 	char *s;
 {
@@ -780,7 +782,7 @@ copy(s)
 	if (p == NULL)
 		fatal("Ran out of memory.");
 	(void)strcpy(p, s);
-	return ((size_t)p);
+	return ((char *)p);
 }
 
 help(s)
