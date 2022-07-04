@@ -78,7 +78,7 @@ vtd:		xvtd
 
 xvtd:		vtd.o $(OFILES) libvt.a $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ vtd.o $(OFILES) libvt.a \
-			$(LIBISODE) $(LSOCKET)
+			$(LIBISODE) $(LSOCKET) -lutil
 
 vtd.o:		$(VTH) sector1.h $(HDIR)tailor.h
 vtpm.o:		$(VTH) eventmsg.h sector1.h
