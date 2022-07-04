@@ -46,7 +46,6 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "pupkt.h"

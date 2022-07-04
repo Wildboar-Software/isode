@@ -39,7 +39,7 @@ Attr_Sequence eis_select ();
 Attr_Sequence dsa_eis_select ();
 extern Attr_Sequence entry_find_type();
 static cant_use_cache();
-static attribute_not_cached ();
+static attribute_not_cached (Entry, DN, OID, DN, int, char);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;
@@ -47,7 +47,7 @@ extern DN mydsadn;
 extern struct di_block * di_alloc();
 
 int
-do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int quipu_ctx, int authtype) {
+do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
 	Entry  entryptr;
 	int retval;
 #ifdef NOTUSED
@@ -285,7 +285,7 @@ cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
 }
 
 static
-attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, int dfltacl) {
+attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dfltacl) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 

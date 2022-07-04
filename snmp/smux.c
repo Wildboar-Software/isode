@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux.c,v 9.0 1992/06/1
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "smux.h"
 #include "tailor.h"
 
@@ -65,6 +65,9 @@ static	struct timeval my_boottime;
 
 
 extern	int	errno;
+
+static int  smuxlose (int, char *, char *, ...);
+static int  smuxalloc (), smuxsend ();
 
 /*    INIT */
 
@@ -342,7 +345,7 @@ int	reason;
 
 /*    REGISTER */
 
-int	smux_(subtree, priority, operation)
+int	smux_register (subtree, priority, operation)
 OID	subtree;
 int	priority,
 	operation;
@@ -528,15 +531,15 @@ struct type_SNMP_VarBindList *bindings;
 /*    LOSE */
 
 #ifndef	lint
-static int  smuxlose (va_alist)
-va_dcl {
+static int  smuxlose (int reason, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	smux_errno = va_arg (ap, int);
+	smux_errno = reason;
 
-	asprintf (smux_info, ap);
+	_asprintf (smux_info, what, fmt, ap);
 
 	va_end (ap);
 

@@ -64,7 +64,7 @@ char	*brkl();
 
 #ifdef TURBO_DISK
 
-char *getline (db)
+char *_getline (db)
 GDBM_FILE	db;
 {
 	static datum	newkey, key, dat;
@@ -159,9 +159,8 @@ GDBM_FILE	db;
 	return save;
 }
 
-char *
-getnextline (void) {
-	return getline (save_db);
+char *getnextline () {
+	return _getline (save_db);
 }
 
 
@@ -310,7 +309,7 @@ FILE * savefile;
 #ifdef TURBO_DISK
 char * fgetline (file)
 #else
-char * getline (file)
+char * _getline (file)
 #endif
 FILE * file;
 {
@@ -352,7 +351,7 @@ char * getnextline ()
 #ifdef TURBO_DISK
 	return fgetline (savefile);
 #else
-	return getline (savefile);
+	return _getline (savefile);
 #endif
 }
 
@@ -548,12 +547,12 @@ FILE * file;
 	Attr_Sequence as_combine ();
 	char * ptr;
 
-	if ((ptr = getline (file)) == NULLCP)
+	if ((ptr = _getline (file)) == NULLCP)
 		return (NULLATTR);
 
 	while ( *ptr != 0 ) {
 		as = as_combine (as,ptr,FALSE);
-		if ((ptr = getline (file)) == NULLCP)
+		if ((ptr = _getline (file)) == NULLCP)
 			break;
 	}
 	return (as);
@@ -591,19 +590,19 @@ int dtype;
 	struct DSError err;
 	extern int print_parse_errors;
 	extern int parse_line;
-	int save;
-	extern PS opt;
+	char *save;
+	extern PS _opt;
 	char check = TRUE;
 
 	DATABASE_HEAP;
 
-	if ((ptr = getline (file)) == NULLCP) {
+	if ((ptr = _getline (file)) == NULLCP) {
 		GENERAL_HEAP;
 		return (NULLENTRY);
 	}
 
 	while (*ptr == 0)
-		if ((ptr = getline (file)) == NULLCP) {
+		if ((ptr = _getline (file)) == NULLCP) {
 			GENERAL_HEAP;
 			return (NULLENTRY);
 		}
@@ -625,12 +624,12 @@ int dtype;
 		if (unravel_attribute (eptr,&err) != OK) {
 			parse_error ("Error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
-				ds_error (opt,&err);
+				ds_error (_opt,&err);
 		}
 		if (check_schema (eptr,NULLATTR,&err) != OK) {
 			parse_error ("Schema error in entry ending line %d...",(char *) save);
 			if (print_parse_errors)
-				ds_error (opt,&err);
+				ds_error (_opt,&err);
 		}
 		parse_line = save;
 	}

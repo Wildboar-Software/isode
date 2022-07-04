@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/users.c,v 9.0 1992/06/
 
 extern	int	quantum;
 
-void	advise ();
+void	advise (int, char *, char *, ...);
 
 /*  */
 
@@ -110,7 +110,10 @@ struct gu {
 static	struct gu *gu_head = NULL;
 
 
-char   *mycrypt ();
+static char   *mycrypt ();
+
+static	free_pw (), free_gr ();
+
 
 /*  */
 
@@ -278,7 +281,7 @@ struct passwd *pwp;
 #ifdef PW_QUOTA
 	pwp -> pw_quota = -1;
 #endif
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 	pwp -> pw_comment =
 #endif
 		pwp -> pw_gecos = pwp -> pw_dir = pwp -> pw_shell = "";
@@ -315,7 +318,7 @@ static	free_pw () {
 					free (pwp -> pw_name);
 				if (pwp -> pw_passwd)
 					free (pwp -> pw_passwd);
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				if (pwp -> pw_comment)
 					free (pwp -> pw_comment);
 #endif
@@ -781,7 +784,7 @@ losing:
 		return generr (offset);
 	}
 
-	if ((ifvar = (int) ot -> ot_info) == userGroup
+	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		goto losing;
 try_again:
@@ -901,7 +904,7 @@ try_again:
 		return NOTOK;
 
 	case userComment:
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 		if (*pwp -> pw_comment)
 			return o_string (oi, v, pwp -> pw_comment,
 							 strlen (pwp -> pw_comment));
@@ -950,7 +953,7 @@ int	offset;
 	if (get_pw (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	if ((ifvar = (int) ot -> ot_info) == userGroup
+	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -983,7 +986,7 @@ no_mem:
 					free (pwp -> pw_name), pwp -> pw_name = NULL;
 				if (pwp -> pw_passwd)
 					free (pwp -> pw_passwd);
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				if (pwp -> pw_comment)
 					free (pwp -> pw_comment);
 #endif
@@ -1008,7 +1011,7 @@ no_mem:
 		pwp = &pw -> pw_pw;
 		if ((pwp -> pw_name = strdup (name)) == NULL
 				|| (pwp -> pw_passwd = strdup ("*")) == NULL
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 				|| (pwp -> pw_comment = strdup ("")) == NULL
 #endif
 				|| (pwp -> pw_gecos = strdup ("")) == NULL
@@ -1055,7 +1058,7 @@ no_mem:
 		if (!pw -> pw_malloc) {
 			if (!(pwp -> pw_name = strdup (pwp -> pw_name))
 					|| !(pwp -> pw_passwd = strdup (pwp -> pw_passwd))
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 					|| !(pwp -> pw_comment = strdup (pwp -> pw_comment))
 #endif
 					|| !(pwp -> pw_gecos = strdup (pwp -> pw_gecos))
@@ -1158,7 +1161,7 @@ done_gid:
 #endif
 
 	case userComment:
-#ifndef BSD44
+#if !defined(BSD44) && !defined(__linux__)
 		ap = &pwp -> pw_comment;
 		goto do_string;
 #else
@@ -1246,7 +1249,7 @@ int	offset;
 	if (get_gr (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -1366,7 +1369,7 @@ int	offset;
 	if (get_gr (offset) == NOTOK || get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gr = get_grent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1543,7 +1546,7 @@ int	offset;
 	if (get_gu (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_SMUX__PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -1631,7 +1634,7 @@ int	offset;
 	if (get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gu = get_guent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1876,12 +1879,14 @@ integer	cor;
 	int	    invalid,
 			iserr,
 			ngr,
-			npw;
+			npw,
+			fd;
 	char    tmpfil[BUFSIZ];
 	struct pw *pw;
 	struct gr *gr;
 	struct gu *gu;
 	FILE   *fp;
+
 
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
@@ -1889,8 +1894,8 @@ integer	cor;
 			goto check_gr;
 		invalid = 0;
 		strcpy (tmpfil, "/etc/ptmpXXXXXX");
-		unlink (mktemp (tmpfil));
-		if (!(fp = fopen (tmpfil, "w"))) {
+		fd = mkstemp (tmpfil);
+		if (!(fp = fdopen (fd, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_pw;
 		}
@@ -1963,8 +1968,8 @@ check_gr:
 			break;
 		invalid = 0;
 		strcpy (tmpfil, "/etc/gtmpXXXXXX");
-		unlink (mktemp (tmpfil));
-		if (!(fp = fopen (tmpfil, "w"))) {
+		fd = mkstemp (tmpfil);
+		if (!(fp = fdopen (fd, "w"))) {
 			advise (LLOG_FATAL, tmpfil, "unable to write");
 			goto flush_gr;
 		}

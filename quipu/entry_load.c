@@ -85,7 +85,7 @@ read_mapped_rdn (PS aps, char *name, char *file) {
 #ifdef	TURBO_DISK
 	char *ptr, *newname, *tmp, *fgetline();
 #else	/* TURBO_DISK */
-	char *ptr, *newname, *tmp, *getline();
+	char *ptr, *newname, *tmp, *_getline();
 #endif	/* TURBO_DISK */
 	extern int parse_line;
 	int i;
@@ -99,7 +99,7 @@ read_mapped_rdn (PS aps, char *name, char *file) {
 #ifdef	TURBO_DISK
 	while ( (ptr = fgetline(mapfp)) != NULLCP)
 #else	/* TURBO_DISK */
-	while ( (ptr = getline(mapfp)) != NULLCP)
+	while ( (ptr = _getline(mapfp)) != NULLCP)
 #endif	/* TURBO_DISK */
 	{
 		if ((newname = rindex(ptr,'#')) == NULLCP) {
@@ -134,7 +134,7 @@ write_mapped_rdn (PS aps, char *name, char *file) {
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
 	char *mptr, *nptr;
-	int i;
+	int i, fd;
 #ifdef TEMPNAM
 	char mapdir[LINESIZE];
 	char *cp;
@@ -166,8 +166,9 @@ write_mapped_rdn (PS aps, char *name, char *file) {
 	ps_print (aps,mapname);
 	*aps->ps_ptr = 0;
 
-	if ((aps->ps_base = mktemp (aps->ps_base)) == NULLCP)
+	if ((fd = mkstemp (aps->ps_base)) < 0)
 		return FALSE;
+	close (fd);
 #else /* TEMPNAM */
 	for (i=0 ; (*nptr!=0) && (i < 5) ; nptr++)
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
@@ -229,7 +230,7 @@ write_mapped_rdn (PS aps, char *name, char *file) {
 }
 
 static
-rdn2filename (PS aps, RDN rdn, int make) {
+rdn2filename (PS aps, RDN rdn, char make) {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
 
@@ -280,7 +281,7 @@ rdn2filename (PS aps, RDN rdn, int make) {
 }
 
 static
-dn2filename (PS aps, DN dn, int make) {
+dn2filename (PS aps, DN dn, char make) {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
 		if (make) {
@@ -381,10 +382,10 @@ sibling_expected (Entry e) {
 
 static char got_all = TRUE;
 
+static int  entry_load_kids();
+
 static
 load_a_kid (Entry e, int offset) {
-	static int      entry_load_kids();
-
 	if ((!e->e_external) &&
 			(e->e_master == NULLAV) &&
 			(e->e_slave == NULLAV)) {
@@ -443,7 +444,7 @@ entry_load_kids (
 
 	got_all = TRUE;
 
-	if (avl_apply(entryptr, load_a_kid,  (caddr_t) offset, NOTOK, AVL_PREORDER)
+	if (avl_apply(entryptr, load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
 

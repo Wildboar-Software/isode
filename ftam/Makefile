@@ -86,7 +86,7 @@ $(LIBDIR)libftam.a:	libftam.a
 		-@echo ""
 
 $(LINTDIR)llib-lftam:	llib-lftam
-		-cp $@ zllib-lftam
+		- if [ -f $@ ]; then cp $@ zllib-lftam; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lftam | \
@@ -101,7 +101,7 @@ inst-headers:;	@cd $(TOPDIR)h; $(MAKE) inst-ftam
 inst-target:	$(PEPSYDIR)$(TARGET)
 
 $(PEPSYDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""
@@ -184,7 +184,7 @@ ftamfdf.o:	$(HXFILES)
 documents:	$(ETCDIR)isodocuments
 
 $(ETCDIR)isodocuments:	isodocuments
-		-cp $@ zisodocuments
+		- if [ -f $@ ]; then cp $@ zisodocuments; fi
 		cp isodocuments $@
 		-@ls -gls $@
 		-@echo ""

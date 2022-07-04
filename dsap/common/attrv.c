@@ -70,7 +70,8 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 
 short add_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 char *	sntx;
-IFP	enc,dec,parse,print,cpy,cmp,sfree,approx;
+IFP	print,cmp,sfree,approx;
+PFP	enc,dec,parse,cpy;
 char *  print_pe;
 char	multiline;
 {
@@ -85,7 +86,8 @@ char	multiline;
 
 set_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 short sntx;
-IFP	enc,dec,parse,print,cpy,cmp,sfree,approx;
+IFP	print,cmp,sfree,approx;
+PFP	enc,dec,parse,cpy;
 char *  print_pe;
 char	multiline;
 {
@@ -105,7 +107,7 @@ char	multiline;
 }
 
 int
-set_av_pe_print (int sntx, char *print_pe) {
+set_av_pe_print (short sntx, char *print_pe) {
 	if (sntx >= num_syntax)
 		return;
 
@@ -165,7 +167,7 @@ short x;
 }
 
 char *
-syntax2str (int sntx) {
+syntax2str (short sntx) {
 	if (sntx >= num_syntax)
 		return NULLCP;
 
@@ -576,13 +578,13 @@ int syntax;
 		return NULLIFP;
 }
 
+extern int ps_printf (PS ps, char *fmt, ...);
+
 AttrV_print (ps,x,format)
 PS ps;
 AttributeValue x;
 int format;
 {
-	extern int ps_printf ();
-
 	if (format == RDNOUT)
 		format = EDBOUT;
 

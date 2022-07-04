@@ -8,7 +8,8 @@ static char *text;
 static char *myname = "hello_world";
 
 
-void adios ();
+static void adios (char *, char *, ...);
+void advise (char *, char *, ...);
 
 /*  */
 
@@ -53,21 +54,20 @@ END
 
 /*    ERRORS */
 
-#include <varargs.h>
+#include <stdarg.h>
 
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-static void  adios (va_alist)
-va_dcl
+static void  adios (char *what, char *fmt, ...)
 {
     va_list ap;
 
-    va_start (ap);
+    va_start (ap, fmt);
 
-    _advise (ap);
+    _advise (what, fmt, ap);
 
     va_end (ap);
 
@@ -86,25 +86,11 @@ char   *what,
 
 
 #ifndef	lint
-static void  advise (va_alist)
-va_dcl
-{
-    va_list ap;
-
-    va_start (ap);
-
-    _advise (ap);
-
-    va_end (ap);
-}
-
-
-static void  _advise (ap)
-va_list	ap;
+static void  _advise (char *what, char *fmt, va_list ap)
 {
     char    buffer[BUFSIZ];
 
-    asprintf (buffer, ap);
+    _asprintf (buffer, what, fmt, ap);
 
     (void) fflush (stdout);
 
@@ -113,15 +99,6 @@ va_list	ap;
     (void) fputc ('\n', stderr);
 
     (void) fflush (stderr);
-}
-#else
-/* VARARGS */
-
-static void  advise (what, fmt)
-char   *what,
-       *fmt;
-{
-    advise (what, fmt);
 }
 #endif
 

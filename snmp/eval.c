@@ -31,6 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/eval.c,v 9.0 1992/06/1
 
 /*    FUNCTION MIB */
 
+static int  eval_expr (), read_tl (), read_long (), read_oid (), get_var_value ();
+
 #define	NSTACK	10
 
 static	integer	*tos;
@@ -103,7 +105,7 @@ int	offset;
 			arg2;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (curexpr == NULL)
@@ -265,7 +267,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	struct expr *e;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
@@ -658,7 +660,7 @@ int	offset;
 	struct qbuf *qb;
 
 #ifndef	lint
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 #endif
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:

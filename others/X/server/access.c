@@ -41,6 +41,7 @@ SOFTWARE.
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
+#include "af_osi.h"
 
 #ifdef hpux
 #include <sys/utsname.h>
@@ -65,6 +66,9 @@ SOFTWARE.
 #include <stdio.h>
 #include "dixstruct.h"
 #include "osdep.h"
+
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
 
 #define acmp(a1, a2, len) bcmp((char *)(a1), (char *)(a2), len)
 #define acopy(a1, a2, len) bcopy((char *)(a1), (char *)(a2), len)
@@ -657,7 +661,12 @@ CheckFamily (int connection, int family) {
  * Returns 1 if host is invalid, 0 if we've found it. */
 
 int
-InvalidHost (struct sockaddr *saddr, int len) {
+#ifdef ISOCONN
+InvalidHost (struct TSAPaddr *saddr, int len)
+#else /* ISOCONN */
+InvalidHost (struct sockaddr *saddr, int len)
+#endif /* ISOCONN */
+{
 	int 			family;
 	pointer			addr;
 	HOST 		*host;

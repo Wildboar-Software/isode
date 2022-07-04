@@ -57,13 +57,14 @@ lint:           l-dish
 inst-dish:      $(BINDIR)dish_manage
 
 $(BINDIR)dish_manage:	xdish
-		-cp $@ zxdish_manage
+		- if [ -f $@ ]; then cp $@ zxdish_manage; fi
 		-rm -f $@
 		cp xdish $@
 		-@ls -gls $@
 		-@echo ""
 
 dish:		xdish
+		cp xdish $@
 
 xdish:		dish.o libmanage.a
 		$(LDCC) $(LDFLAGS) -o $@ dish.o $(LIBES) 
@@ -132,7 +133,7 @@ $(BINDIR)del_alias:
 		ln $(BINDIR)list $@
 		
 $(BINDIR)dish:	$(BINDIR)dish_manage
-		-cp $@ zxdish
+		- if [ -f $@ ]; then cp $@ zxdish; fi
 		-rm -f $@
 		cp xdish $@
 		-@ls -gls $@

@@ -25,6 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/malloc.c,v 9.0 1992/0
  */
 
 #include <stdio.h>
+#ifdef	__linux__
+#include <values.h>
+#define	_MALLOC_H	1	/* not to include the standard <malloc.h> */
+#endif
 #include "manifest.h"
 #include "quipu/util.h"
 #ifndef MALLOC_TEST
@@ -103,7 +107,7 @@ struct header {
 			unsigned short 	 control;
 			unsigned short   size;
 		} small;
-		unsigned int big;
+		size_t big;
 	} un;
 };
 
@@ -117,11 +121,11 @@ struct header {
 /* sizes chosen for anticipated QUIPU behaviour */
 
 #define BUCKETS 8
-static unsigned sizes [BUCKETS] = { 0, 12, 24, 68, 512, 1028, 8204, MAXINT};
+static size_t sizes [BUCKETS] = { 0, 12, 24, 68, 512, 1028, 8204, MAXINT};
 
 struct freelist {
 	struct header * block;
-	unsigned int size;
+	size_t size;
 	struct freelist * next;
 	struct freelist * prev;
 };
@@ -142,12 +146,12 @@ static int first_malloc = 1;
 static char * top_mem;
 
 #ifdef	BSD42
-static unsigned int pagesize = 0x2000;
+static size_t pagesize = 0x2000;
 #endif
 
 /* all calculated later - initialise for safety */
-static unsigned int pagemask = 0xE000;
-static unsigned int pageminusone = 0x1FFF;
+static size_t pagemask = 0xE000;
+static size_t pageminusone = 0x1FFF;
 static unsigned short smallmax = 0xDFFF;
 
 extern caddr_t sbrk();
@@ -265,7 +269,7 @@ write_int (unsigned x) {
 }
 
 static
-log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr) {
+log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
 	write_string ("realloc of ");
 	write_int (oldlen);
 	write_string ("at ");
@@ -284,7 +288,7 @@ log_realloc (unsigned oldlen, unsigned newlen, unsigned bsize, char *addr) {
 }
 
 static
-print_free_list (unsigned heap) {
+print_free_list (size_t heap) {
 	int i;
 	struct freelist * top;
 	struct freelist * ptr;
@@ -369,9 +373,9 @@ new_freelist (void) {
 static char *
 big_malloc (
 	/* used for mallocs of > MAXSMALL */
-	unsigned realsize
+	size_t realsize
 ) {
-	unsigned blocksize;
+	size_t blocksize;
 	struct freelist * flist;
 	struct header * head = (struct header *)0;
 	char * mem;
@@ -444,7 +448,7 @@ big_free (struct header *ptr) {
 static
 add_free (struct header *x) {
 	struct freelist *next, *c;
-	unsigned * p = sizes;
+	size_t * p = sizes;
 
 	x->use &= ~INUSE;
 
@@ -487,7 +491,7 @@ next_free_block (struct header *ptr) {
 
 	next = (struct header *)((char *)ptr + ptr->smallsize);
 
-	if (((int)(next - 1) & pagemask) != ((int)next & pagemask))
+	if (((size_t)(next - 1) & pagemask) != ((size_t)next & pagemask))
 		return (struct header *)0;
 
 	if (((char *)next < top_mem) && (next->use == (ptr->use & ~INUSE)))
@@ -512,15 +516,15 @@ x_malloc (size)
 #else
 malloc (size)
 #endif
-unsigned size;
+size_t size;
 {
 	char * mem;
 	struct header *head;
-	unsigned realsize, blocksize;
+	size_t realsize, blocksize;
 	struct freelist * top;
 	struct freelist * ptr;
 	int i;
-	unsigned * p = sizes;
+	size_t * p = sizes;
 
 	if (first_malloc) {
 #ifdef	BSD42
@@ -549,7 +553,7 @@ unsigned size;
 
 	if (first_malloc) {
 		/* set up freelist */
-		unsigned x;
+		size_t x;
 		int j;
 
 		for (i = 0; i < MAXHEAP; i++) {
@@ -563,7 +567,7 @@ unsigned size;
 		}
 
 		/* align first sbrk to page boundary */
-		x = (unsigned)sbrk(0);
+		x = (size_t)sbrk(0);
 		x = PAGEALIGN (x) - x;
 		blocksize = PAGEALIGN(realsize) + x;
 		if ((head = (struct header *) sbrk ((int)blocksize)) == (struct header *)-1) {
@@ -634,14 +638,22 @@ return_memory:
 
 FREE_RETURN
 #ifdef lint
-x_free(s)
+x_free(s1)
 #else
-free(s)
+free(s1)
 #endif
-char *s;
+#ifndef LINUX
+char *s1;
+#else
+void *s1;
+#endif
 {
 	struct header * ptr;
 	struct header * next;
+	char* s = (char*) s1;
+
+	if (s == NULL)
+		return;
 
 	ptr = (struct header *) (s - ALIGN (sizeof (struct header)));
 
@@ -687,18 +699,22 @@ char *s;
 
 MALLOC_RETURN
 #ifdef lint
-x_realloc(s, n)
+x_realloc(s1, n)
 #else
-realloc(s, n)
+realloc(s1, n)
 #endif
-char *s;
-unsigned n;
+#ifndef LINUX
+char *s1;
+#else
+void *s1;
+#endif
+size_t n;
 {
-	char * mem;
-	unsigned realsize;
+	char *mem, *s = (char*) s1;
+	size_t realsize;
 	struct header * ptr;
 	struct header * next;
-	unsigned copysize;
+	size_t copysize;
 
 	ptr = (struct header *) (s - ALIGN (sizeof (struct header)));
 
@@ -759,7 +775,7 @@ unsigned n;
 		/* is it big enough ? */
 		if (ptr->smallsize + top->smallsize >= realsize) {
 #ifdef MALLOCTRACE
-			unsigned savesize;
+			size_t savesize;
 			savesize = ptr->smallsize;
 #endif
 
@@ -793,10 +809,10 @@ x_calloc(n, size)
 #else
 calloc(n, size)
 #endif
-unsigned n, size;
+size_t n, size;
 {
 	char * mem;
-	unsigned x;
+	size_t x;
 
 	x= n*size;
 	if ((mem = malloc (x)) == (char *)0)

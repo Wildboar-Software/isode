@@ -26,7 +26,7 @@ NDQPDU DEFINITIONS ::=
 #include <stdio.h>
 #include "sector1.h"
 
-void	adios ();
+void	adios (char *, char *, ...);
 
 #undef PEPYPARM
 #define PEPYPARM int *
@@ -353,7 +353,7 @@ register TEXT_UPDATE *elem;
 	(*qhp)->ndq_elem = elem;
 	(*qhp) = elem;
 
-	return ( (int) liq );	/* last-in-queue zero, says queue was empty */
+	return ( (size_t) liq );	/* last-in-queue zero, says queue was empty */
 }
 
 /*

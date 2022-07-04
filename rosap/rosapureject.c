@@ -37,6 +37,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 
 /*    RO-U-REJECT.REQUEST */
 
 int
+RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi);
+
+int
 RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
@@ -96,7 +99,7 @@ RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPi
 /*  */
 
 int
-RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, int id, int priority, struct RoSAPindication *roi) {
+RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi) {
 	PE pe,
 	p;
 

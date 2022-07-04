@@ -171,6 +171,13 @@ FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 }
 
 /*  */
+static int  doPSdata ();
+static int  doPStokens ();
+static int  doPSsync ();
+static int  doPSactivity ();
+static int  doPSreport ();
+static int  doPSfinish ();
+static int  doPSabort ();
 
 int
 FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {

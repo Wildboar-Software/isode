@@ -151,7 +151,7 @@ lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindicati
 				== NULL
 				|| xalloc (res -> gid, struct type_PasswordLookup_GroupID *)
 				== NULL
-#ifndef _AIX
+#if !defined(_AIX) && !defined(__linux__)
 				|| (pw -> pw_comment
 					&& (res -> comment = salloc (pw -> pw_comment))
 					== NULL)

@@ -716,7 +716,7 @@ do_slave (char **av) {
 /* unregister							*/
 /*--------------------------------------------------------------*/
 int
-do_un(char **av) {
+do_unregister(char **av) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
 	char *fn;
@@ -1029,7 +1029,7 @@ executeCommand (char *cmd) {
 		},
 		{
 			"unregister",	do_unregister,
-			"una previously MASTER or SLAVE file"
+			"unregister a previously MASTER or SLAVE file"
 		},
 		{
 			"setreq",	do_setreq,
@@ -1101,12 +1101,12 @@ executeCommand (char *cmd) {
 }
 
 int
-cleanup  {
+cleanup () {
 }
 
 
 int
-getConnection  {
+getConnection () {
 	if (connected)
 		return OK;
 	if (makeconn(host, passwd, user) == NOTOK)  {

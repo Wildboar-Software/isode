@@ -28,25 +28,25 @@ static char *rcsid = "$Header: /f/iso/rosap/RCS/rosaplose.c,v 5.0 88/07/21 14:56
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ropkt.h"
 
 
 /*  */
 
 #ifndef	lint
-int	ropktlose (va_alist)
-va_dcl {
+static int	_rosaplose ();
+
+int	ropktlose (struct assocblk *acb, ...)
+{
 	int	    reason,
-	result,
-	value;
-	struct assocblk *acb;
+		    result,
+		    value;
 	struct RoSAPindication *roi;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
 
@@ -94,20 +94,20 @@ ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *
 /*  */
 
 #ifndef	lint
-int	rosapreject (va_alist)
-va_dcl {
+int	rosapreject (struct assocblk *acb, ...)
+{
 	int	    reason,
-	result;
-	struct assocblk *acb;
+		    result;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, acb);
 
-	acb = va_arg (ap, struct assocblk *);
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
+
+	result = _rosaplose (roi, reason, ap);
 
 	result = _rosaplose (roi, reason, ap);
 
@@ -134,16 +134,13 @@ rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char
 /*  */
 
 #ifndef	lint
-int	rosaplose (va_alist)
-va_dcl {
-	int	    reason,
-	result;
-	struct RoSAPindication *roi;
+int	rosaplose (struct RoSAPindication *roi, ...)
+{
+	int	    reason, result;
 	va_list (ap);
 
-	va_start (ap);
+	va_start (ap, roi);
 
-	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _rosaplose (roi, reason, ap);
@@ -173,13 +170,16 @@ _rosaplose (  /* what, fmt, args ... */
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct RoSAPpreject *rop;
+	char    *what, *fmt;
 
 	if (roi) {
 		bzero ((char *) roi, sizeof *roi);
 		roi -> roi_type = ROI_PREJECT;
 		rop = &roi -> roi_preject;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		rop -> rop_reason = reason;

@@ -101,13 +101,14 @@ saber_obj:;	#load $(OFILES) quipuvrsn.o
 inst-quipu:     $(SBINDIR)ros.quipu
 
 $(SBINDIR)ros.quipu:   xquipu
-		-cp $@ zros.quipu
+		- if [ -f $@ ]; then cp $@ zros.quipu; fi
 		-rm -f $@
 		cp xquipu $@
 		-@ls -gls $@
 		-@echo ""
 
 quipu:          xquipu 
+		cp xquipu $@
 
 xquipu:		$(LIBES) $(OFILES) quipuvrsn.o
 		$(LDCC) $(LDFLAGS) -o $@ $(OFILES) quipuvrsn.o \

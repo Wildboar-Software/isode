@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "copyright.h"
 /* $XConsortium: XConnDis.c,v 11.36 88/09/16 11:09:34 jim Exp $ */
 /* Copyright    Massachusetts Institute of Technology    1985, 1986	*/

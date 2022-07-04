@@ -513,6 +513,8 @@ bad1:
 }
 
 /*  */
+static ftam_finishindication();
+static ftam_abortindication();
 
 int
 ftam_indication (struct FTAMindication *fti) {

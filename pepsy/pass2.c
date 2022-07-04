@@ -135,11 +135,11 @@ gen_tablefile (char *inc) {
 		}
 	}
 
-	fprintf(fptab, "\n#define OFFSET(t,f)\t((int ) &(((t *)0)->f))\n\n");
+	fprintf(fptab, "\n#define OFFSET(t,f)\t((ssize_t ) &(((t *)0)->f))\n\n");
 #ifndef	hpux
-	fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) (((t *)0)->f))\n\n");
+	fprintf(fptab, "\n#define AOFFSET(t,f)\t((ssize_t ) (((t *)0)->f))\n\n");
 #else
-	fprintf(fptab, "\n#define AOFFSET(t,f)\t((int ) &(((t *)0)->f[0]))\n\n");
+	fprintf(fptab, "\n#define AOFFSET(t,f)\t((ssize_t ) &(((t *)0)->f[0]))\n\n");
 #endif
 	nentries = 0;
 	/*

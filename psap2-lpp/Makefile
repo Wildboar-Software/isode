@@ -74,7 +74,7 @@ $(LIBDIR)libpsap2-lpp.a:	libpsap2-lpp.a
 		-@echo ""
 
 $(LINTDIR)llib-lpsap2-lpp:	llib-lpsap2-lpp
-		-cp $@ zllib-lpsap2-lpp
+		- if [ -f $@ ]; then cp $@ zllib-lpsap2-lpp; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lpsap2-lpp | \
@@ -168,7 +168,7 @@ $(LIBDIR)libisode-lpp.a:	libisode-lpp.a
 		-@echo ""
 
 $(LINTDIR)llib-lisode-lpp:	llib-lisode-lpp
-		-cp $@ zllib-lisode-lpp
+		- if [ -f $@ ]; then cp $@ zllib-lisode-lpp; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lisode-lpp | \

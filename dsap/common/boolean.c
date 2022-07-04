@@ -35,6 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/boolean.c,v 9.0
 extern int strprint();
 extern int sfree();
 extern int lexequ();
+extern char *strdup();
 
 static PE boolenc (x)
 char *x;

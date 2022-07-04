@@ -43,7 +43,7 @@
 #include "general.h"
 #include "logger.h"
 
-void	advise ();
+void	advise (int, char *, char *, ...);
 #ifndef	NULLCP
 #define	NULLCP	((char *) 0)
 #endif
@@ -62,6 +62,7 @@ void	advise ();
 #define DONE	1
 #endif /* NOTOK */
 
+int getreply ();
 
 /*
  * ftp_login: establish command connection with remote host

@@ -80,7 +80,7 @@ lint:		l-ftpd-ftam
 inst-ftpd-ftam:	$(SBINDIR)in.ftpd-ftam
 
 $(SBINDIR)in.ftpd-ftam:	xftpd-ftam
-		-cp $@ zxftpd-ftam
+		- if [ -f $@ ]; then cp $@ zxftpd-ftam; fi
 		-rm -f $@
 		cp xftpd-ftam $@
 		-@ls -gls $@

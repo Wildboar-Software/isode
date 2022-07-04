@@ -56,7 +56,7 @@ pepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 int	pepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p, *p1;
-	char	*cp;
+	char	*cp, *fmt;
 	PE	pe;
 	char	buffer[BUFSIZ];
 
@@ -64,15 +64,16 @@ int	pepsylose (modtyp*module, ...) {
 
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
+	fmt = va_arg (ap, char *);
 
-	_asprintf (buffer, NULLCP, NULLCP, ap);
-	sprintf (PY_pepy, "%s: module %s ",
+	_asprintf (buffer, NULLCP, fmt, ap);
+	snprintf (PY_pepy, BUFSIZ, "%s: module %s",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		for (p1 = p; p1 -> pe_type != PE_END; p1++)
 			continue;
 		cp = PY_pepy + strlen (PY_pepy);
-		sprintf (cp, "encoding %s expecting %s,class=%s/%d",
+		sprintf (cp, "encoding %s expecting %s,class=%s/id=%d",
 				 pname(p1),
 				 pr_petype (p -> pe_type),
 				 pe_classlist[p -> pe_flags & FL_CLASS],
@@ -107,7 +108,7 @@ ppepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 int	ppepsylose (modtyp*module, ...) {
 	va_list	ap;
 	ptpe	*p;
-	char	*cp;
+	char	*cp, *fmt;
 	PE	pe;
 	char	buffer[BUFSIZ];
 
@@ -115,9 +116,10 @@ int	ppepsylose (modtyp*module, ...) {
 
 	p = va_arg (ap, ptpe *);
 	pe = va_arg (ap, PE);
+	fmt = va_arg (ap, char *);
 
-	_asprintf (buffer, NULLCP, NULLCP, ap);
-	sprintf (PY_pepy, "%s: module %s",
+	_asprintf (buffer, NULLCP, fmt, ap);
+	snprintf (PY_pepy, BUFSIZ, "%s: module %s",
 			 buffer, module ? module -> md_name : "<none>");
 	if (p) {
 		cp = PY_pepy + strlen (PY_pepy);
@@ -231,7 +233,7 @@ dmp_tpe (
 	}
 	if (par == prev)
 		pepsylose (mod, p, NULLPE,
-				   "dmp_tpe:par == prev == 0x%x internal error\n", (int) par);
+				   "dmp_tpe:par == prev == %p internal error\n", par);
 	par--;
 	j = p - *par;
 

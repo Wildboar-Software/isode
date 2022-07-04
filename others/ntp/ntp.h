@@ -36,7 +36,12 @@
 #include <arpa/inet.h>
 
 #include <errno.h>
+#ifdef __linux__
+#include <linux/param.h>
+#include <sys/timex.h>
+#else
 #include <nlist.h>
+#endif
 
 #include "rosy.h"
 #include "tsap.h"
@@ -454,7 +459,7 @@ extern char *paddr (), *ntoa ();
 extern long lseek ();
 extern long random ();
 
-extern void advise (), avoid ();
+extern void advise (int, char *, char *, ...), avoid ();
 
 extern double s_fixed_to_double(), ul_fixed_to_double();
 extern double	atof();

@@ -15,7 +15,6 @@ static char *rcsid_xinit_c = "$XConsortium: xinit.c,v 11.32 88/10/05 09:27:45 ji
 #include <sys/wait.h>
 #endif
 #include <errno.h>
-extern int sys_nerr;
 #ifdef hpux
 #include <sys/utsname.h>
 #endif
@@ -24,6 +23,9 @@ extern int sys_nerr;
 extern char *getenv();
 extern char **environ;
 char **newenviron = NULL;
+
+int Error (char *fmt, ...);
+int Fatal (char *fmt, ...);
 
 #ifndef SHELL
 #define SHELL "sh"
@@ -104,9 +106,11 @@ char **client = clientargv + 2;		/* make sure room for sh .xinitrc args */
 char *displayNum;
 char *program;
 Display *xd;			/* server connection */
-#ifndef SYSV
+#ifdef UNIONWAIT
 union wait	status;
-#endif /* SYSV */
+#else
+int status;
+#endif /* UNIONWAIT */
 int serverpid = -1;
 int clientpid = -1;
 extern int	errno;
@@ -384,19 +388,29 @@ processTimeout (int pid, int timeout, char *string) {
 	return( pid != pidfound );
 }
 
-int
-Error (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
-	extern char	*sys_errlist[];
-
+static int
+_vError (char *fmt, va_list ap) {
 	fprintf(stderr, "%s:  ", program);
-	if (errno > 0 && errno < sys_nerr)
-		fprintf (stderr, "%s (errno %d):  ", sys_errlist[errno], errno);
-	fprintf(stderr, fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
+	if (errno)
+		fprintf (stderr, "%s (errno %d):  ", strerror(errno), errno);
+	vfprintf(stderr, fmt, ap);
 }
 
 int
-Fatal (char *fmt, int x0, int x1, int x2, int x3, int x4, int x5, int x6, int x7, int x8, int x9) {
-	Error(fmt, x0,x1,x2,x3,x4,x5,x6,x7,x8,x9);
+Error (char *fmt, ...) {
+	va_list ap;
+
+	va_start (ap, fmt)
+	_vError(fmt, ap);
+	va_end (ap);
+}
+
+int
+Fatal (char *fmt, ...) {
+	va_list ap;
+	va_start (ap, fmt)
+	_vError(fmt, ap);
+	va_end (ap);
 	exit(ERR_EXIT);
 }
 
@@ -424,7 +438,7 @@ startServer (char *server[]) {
 		 * prevent server from getting sighup from vhangup()
 		 * if client is xterm -L
 		 */
-		setpgrp(0,getpid());
+		setpgrp();
 
 		Execute (server);
 		Error ("no server \"%s\" in PATH\n", server[0]);
@@ -485,7 +499,7 @@ startClient (char *client[]) {
 
 	if ((clientpid = vfork()) == 0) {
 		setuid(getuid());
-		setpgrp(0, getpid());
+		setpgrp();
 		environ = newenviron;
 		Execute (client);
 		Error ("no program named \"%s\" in PATH\r\n", client[0]);
@@ -567,7 +581,7 @@ shutdown (int serverpid, int clientpid) {
  */
 
 int
-set_environment  {
+set_environment () {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

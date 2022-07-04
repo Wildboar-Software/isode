@@ -30,9 +30,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/unixd.c,v 9.0 1992/06/
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "smux.h"
 #include "objects.h"
 #include "sys.file.h"
@@ -60,6 +62,8 @@ static	int	dont_bother_anymore = 0;
 
 int	init_users (), sync_users ();	/* users group */
 int	init_print (), sync_print ();	/* print group */
+static  arginit (), envinit  (), mibinit  (), start_smux (),
+        doit_smux (), do_smux ();
 
 static struct triple {
 	char   *t_tree;
@@ -84,7 +88,8 @@ static	fd_set	ifds;
 static	fd_set	ofds;
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 /*    MAIN */
 
@@ -305,7 +310,7 @@ losing:
 
 	for (tc = triples; tc -> t_tree; tc++)
 		if (tc -> t_name) {
-			if (smux_(tc -> t_name, -1, tc -> t_access) == NOTOK) {
+			if (smux_register (tc -> t_name, -1, tc -> t_access) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "smux_register: %s [%s]",
 						smux_error (smux_errno), smux_info);
 				goto losing;
@@ -353,7 +358,7 @@ losing:
 		}
 		for (tc++; tc -> t_tree; tc++)
 			if (tc -> t_name) {
-				if (smux_(tc -> t_name, -1, tc -> t_access)
+				if (smux_register (tc -> t_name, -1, tc -> t_access)
 						== NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"smux_register: %s [%s]",
@@ -522,13 +527,12 @@ out:
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -547,16 +551,13 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

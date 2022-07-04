@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/objects.c,v 9.0 1992/0
 
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include "objects.h"
 #include "tailor.h"
@@ -48,12 +49,14 @@ static	OID	compile_heap4;
 int	once_only_Tbuckets = 0;
 OT	Tbuckets[TBUCKETS];
 
-OT	anchor;
-OT	chain;
+extern OT	anchor;
+extern OT	chain;
 
 
-OID	resolve ();
+static OID	resolve ();
 
+static int  read_name (), read_type (), add_objects_aux (),
+            dump_object ();
 
 extern	int	errno;
 
@@ -958,7 +961,7 @@ char   *file;\n\
 	}\n\
 \n\
     for (ot = _types; ot -> ot_text; ot++)\n\
-	ot -> ot_syntax = (i = (int) ot -> ot_syntax) < 0\n\
+	ot -> ot_syntax = (i = (ssize_t) ot -> ot_syntax) < 0\n\
 	    			? NULLOS : _syntaxes[i].value;\n\
 \n\
     return OK;\n\

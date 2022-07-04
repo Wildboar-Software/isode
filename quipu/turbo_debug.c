@@ -36,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_debug.c,v 9.0 1
 #include "quipu/turbo.h"
 
 extern LLog 		*log_dsap;
-int		turbo_index_num;
+extern int		turbo_index_num;
 AttributeType	*turbo_index;
 
 PS	ps;
@@ -142,7 +142,7 @@ rprint_directory (Entry node, int depth) {
 	ps_print( ps, "\n" );
 
 	if ( node->e_children != NULLAVL )
-		avl_apply( node->e_children, rprint_directory, (caddr_t) (depth + 1),
+		avl_apply( node->e_children, rprint_directory, (caddr_t) (size_t) (depth + 1),
 				   NOTOK, AVL_INORDER );
 }
 

@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/udp.c,v 9.0 1992/06/16
 
 
 #include <stdio.h>
+#include <string.h>
 #include "mib.h"
 
 #include "internet.h"
@@ -41,26 +42,81 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/udp.c,v 9.0 1992/06/16
 #include <sys/socketvar.h>
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
+#ifndef LINUX
 #include <netinet/in_pcb.h>
 #include <netinet/ip_var.h>
 #include <netinet/udp.h>
 #include <netinet/udp_var.h>
+#else
+struct	udpstat {
+				/* input statistics: */
+	u_long	udps_ipackets;		/* total input packets */
+	u_long	udps_ierrors;		/* total input errors */
+	u_long	udps_noport;		/* no socket on port */
+				/* output statistics: */
+	u_long	udps_opackets;		/* total output packets */
+};
+struct inpcb {
+	struct	inpcb *inp_next;
+	struct	in_addr inp_faddr;	/* foreign host table entry */
+	u_short	inp_fport;		/* foreign port */
+	struct	in_addr inp_laddr;	/* local host table entry */
+	u_short	inp_lport;		/* local port */
+};
+struct socket {
+	struct	sockbuf {
+		u_short	sb_cc;		/* actual chars in buffer */
+	} so_rcv, so_snd;
+};
+#endif
 
 /*  */
 
 static struct udpstat udpstat;
 
+static int  get_listeners ();
+
 /*  */
 
-#ifdef	BSD44
+#if defined(BSD44) || defined(LINUX)
 #define	udpInDatagrams	1
 #define	udpNoPorts	2
 #endif
 #define	udpInErrors	3
-#ifdef	BSD44
+#if defined(BSD44) || defined(LINUX)
 #define	udpOutDatagrams 4
 #endif
 
+
+#ifdef LINUX
+int _read_snmp_stats ();
+
+static int _read_udp_stats ()
+{
+	char *labels, *label;
+	long *values, value;
+	size_t len;
+	int i;
+
+	if (_read_snmp_stats ("udp", &labels, &values, &len) != OK)
+		return NOTOK;
+
+	for (i = 0; i < len; i++) {
+		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
+		value = values[i];
+		if (!strcmp ("InDatagrams", label))
+			udpstat.udps_ipackets = value;
+		else if (!strcmp ("NoPorts", label))
+			udpstat.udps_noport = value;
+		else if (!strcmp ("InErrors", label))
+			udpstat.udps_ierrors = value;
+		else if (!strcmp ("OutDatagrams", label))
+			udpstat.udps_opackets = value;
+	}
+
+	return OK;
+}
+#endif
 
 static int  o_udp (oi, v, offset)
 OI	oi;
@@ -73,7 +129,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -103,8 +159,13 @@ int	offset;
 	if (quantum != lastq) {
 		lastq = quantum;
 
+#ifndef LINUX
 		if (getkmem (nl + N_UDPSTAT, (caddr_t) udps, sizeof *udps) == NOTOK)
 			return generr (offset);
+#else
+		if (_read_udp_stats () != OK)
+			advise (LLOG_EXCEPTIONS, "failed", "read udp stats");
+#endif
 	}
 
 	switch (ifvar) {
@@ -119,9 +180,13 @@ int	offset;
 #endif
 
 	case udpInErrors:
+#ifndef LINUX
 		return o_integer (oi, v, udps -> udps_hdrops
 						  + udps -> udps_badsum
 						  + udps -> udps_badlen);
+#else
+		return o_integer (oi, v, udps -> udps_ierrors);
+#endif
 
 #ifdef	udpOutDatagrams
 	case udpOutDatagrams:
@@ -151,7 +216,7 @@ static struct udptab *uts = NULL;
 static	int	flush_udp_cache = 0;
 
 
-struct udptab *get_udpent ();
+static struct udptab *get_udpent ();
 
 /*  */
 
@@ -162,6 +227,51 @@ struct udptab *get_udpent ();
 #define	unixUdpSendQ 4
 #define	unixUdpRecvQ 5
 
+#ifdef LINUX
+static struct udptab *_read_udp_sockets(int *len)
+{
+	FILE *f;
+	char line[256];
+	int i;
+	struct udptab *ut, *t, **tp;
+	unsigned char *cp;
+
+	*len = 0;
+
+	f = fopen ("/proc/net/udp", "r");
+	if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/udp");
+		return NULL;
+	}
+
+	fgets(line, sizeof(line), f); /* header */
+
+	tp = &ut;
+
+	for (i = 0; fgets(line, sizeof(line), f); i++) {
+
+		if ((t = calloc (1, sizeof (struct udptab))) == NULL)
+			adios (NULLCP, "out of memory");
+
+		sscanf(line, "%*d: %x:%hx %x:%hx %*x %hx:%hx",
+				&t -> ut_pcb.inp_laddr.s_addr, &t -> ut_pcb.inp_lport,
+				&t -> ut_pcb.inp_faddr.s_addr, &t -> ut_pcb.inp_fport,
+				&t -> ut_socb.so_snd.sb_cc, &t -> ut_socb.so_rcv.sb_cc);
+
+		cp = t -> ut_instance;
+		cp += ipaddr2oid (cp, &t -> ut_pcb.inp_laddr);
+		*cp++ = ntohs (t -> ut_pcb.inp_lport);
+
+		*tp = t; tp = &t -> ut_next;
+	}
+
+	*len = i;
+
+	fclose (f);
+
+	return ut;
+}
+#endif
 
 static int  o_udp_listen (oi, v, offset)
 OI	oi;
@@ -181,7 +291,7 @@ int	offset;
 	if (get_listeners (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + UT_SIZE)
@@ -291,8 +401,10 @@ int	offset;
 	struct inpcb *head,
 			   udb,
 			   zdb;
+#ifndef LINUX
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
+#endif
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -306,6 +418,7 @@ int	offset;
 	}
 	lastq = quantum, flush_udp_cache = 0;
 
+#ifndef LINUX
 	for (us = uts; us; us = up) {
 		up = us -> ut_next;
 
@@ -369,6 +482,9 @@ int	offset;
 		}
 	}
 	first_time = 0;
+#else
+	uts = _read_udp_sockets(&i);
+#endif
 
 	if (i > 1) {
 		struct udptab **base,

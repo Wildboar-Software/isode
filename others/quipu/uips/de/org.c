@@ -44,12 +44,13 @@ extern int numberType;
 extern int exactMatch;
 extern char exactString[];
 
-struct namelist * orgatts;
+extern struct namelist * orgatts;
 
 struct ds_search_arg *fillMostOrgSearchArgs();
 
 void makeExplicitOrgFilter();
 void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
+extern void pageprint(char *, ...);
 
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};
 VFP normalOrg[] = {orgFilter1, orgFilter2, orgFilter3, orgFilter4, NULLVFP};
@@ -100,7 +101,7 @@ freeOrgs (struct namelist **listpp) {
 }
 
 void
-freeOrgSearchArgs  {
+freeOrgSearchArgs () {
 	/*
 	Attr_Sequence atl, x;
 	*/

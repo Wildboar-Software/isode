@@ -402,7 +402,7 @@ done:
 
 int
 set_lookup_ufn (
-	int flag	/* if TRUE always unbind */
+	char flag	/* if TRUE always unbind */
 ) {
 	if ((unbind = flag) && bound) {
 		bound = FALSE;

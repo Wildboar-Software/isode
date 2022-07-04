@@ -31,13 +31,45 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/ip.c,v 9.0 1992/06/16 
 
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <unistd.h>
 #include "mib.h"
 #include "interfaces.h"
 #include "routes.h"
 
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
+#ifndef LINUX
 #include <netinet/ip_var.h>
+#else
+struct	ipstat {
+	long	ips_total;              /* total packets received */
+	long	ips_inhdrerrors;        /* header errors */
+	long	ips_fragments;          /* fragments received */
+	long	ips_reasmfails;         /* fragment errors */
+	long	ips_forward;            /* packets forwarded */
+	long	ips_cantforward;        /* packets rcvd for unreachable dest */
+	long	ips_noproto;            /* unknown or unsupported protocol */
+	long	ips_delivered;          /* datagrams delivered to upper level*/
+	long	ips_localout;           /* total ip packets generated here */
+	long	ips_odropped;           /* lost packets due to nobufs, etc. */
+	long	ips_reassembled;        /* total packets reassembled ok */
+	long	ips_fragmented;         /* datagrams sucessfully fragmented */
+	long	ips_ofragments;         /* output fragments created */
+	long	ips_cantfrag;           /* don't fragment flag was set, etc. */
+	long	ips_defaultTTL;
+	long	ips_reasmtimeout;
+	long	ips_inaddrerrors;
+	long	ips_indiscards;
+};
+struct	arptab {
+	struct	in_addr at_iaddr;	/* internet address */
+	u_char	at_enaddr[6];		/* ethernet address */
+	u_char	at_flags;		/* flags */
+};
+#endif
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
 #endif
@@ -49,6 +81,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/ip.c,v 9.0 1992/06/16 
 static int	ipforwarding;
 
 static struct ipstat ipstat;
+
+static int  get_arptab ();
+static  sort_arptab ();
+
+#ifdef LINUX
+int _read_snmp_stats ();
+int _file_printf (const char *path, const char *fmt, ...);
+#endif
 
 /*  */
 
@@ -62,11 +102,11 @@ static struct ipstat ipstat;
 #ifdef	BSD43
 #define	ipForwDatagrams	5
 #endif
-#ifdef	BSD44
+#if defined(BSD44) || defined(LINUX)
 #define	ipInUnknownProtos 6
 #endif
 #undef	ipInDiscards	/* 7		/* NOT IMPLEMENTED */
-#ifdef	BSD44
+#if defined(BSD44) || defined(LINUX)
 #define	ipInDelivers	8
 #define	ipOutRequests	9
 #define	ipOutDiscards	10
@@ -78,18 +118,79 @@ static struct ipstat ipstat;
 #ifdef	BSD43
 #define	ipReasmReqds	13
 #endif
-#ifdef	BSD44
+#if defined(BSD44) || defined(LINUX)
 #define	ipReasmOKs	14
 #endif
 #ifdef	BSD43
 #define	ipReasmFails	15
 #endif
-#ifdef	BSD44
+#ifdef	LINUX
+#define	ipReasmFails	15
+#endif
+#if defined(BSD44) || defined(LINUX)
 #undef	ipFragOKs	16
 #undef	ipFragFails	17
 #undef	ipFragCreates	18
 #endif
 
+
+#ifdef LINUX
+static int _read_ip_stats ()
+{
+	char *labels, *label;
+	long *values, value;
+	size_t len;
+	int i;
+
+	if (_read_snmp_stats ("ip", &labels, &values, &len) != OK)
+		return NOTOK;
+
+	for (i = 0; i < len; i++) {
+		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
+		value = values[i];
+		if (!strcmp ("Forwarding", label))
+			ipforwarding = value;
+        else if (!strcmp ("DefaultTTL", label))
+			ipstat.ips_defaultTTL = value;
+        else if (!strcmp ("InReceives", label))
+			ipstat.ips_total = value;
+        else if (!strcmp ("InHdrErrors", label))
+			ipstat.ips_inhdrerrors = value;
+        else if (!strcmp ("InAddrErrors", label))
+			ipstat.ips_inaddrerrors = value;
+        else if (!strcmp ("ForwDatagrams", label))
+			ipstat.ips_forward = value;
+        else if (!strcmp ("InUnknownProtos", label))
+			ipstat.ips_noproto = value;
+        else if (!strcmp ("InDiscards", label))
+			ipstat.ips_indiscards = value;
+        else if (!strcmp ("InDelivers", label))
+			ipstat.ips_delivered = value;
+        else if (!strcmp ("OutRequests", label))
+			ipstat.ips_localout = value;
+        else if (!strcmp ("OutDiscards", label))
+			ipstat.ips_odropped = value;
+        else if (!strcmp ("OutNoRoutes", label))
+			ipstat.ips_cantforward = value;
+        else if (!strcmp ("ReasmTimeout", label))
+			ipstat.ips_reasmtimeout = value;
+        else if (!strcmp ("ReasmReqds", label))
+			ipstat.ips_fragments = value;
+        else if (!strcmp ("ReasmOKs", label))
+			ipstat.ips_reassembled = value;
+        else if (!strcmp ("ReasmFails", label))
+			ipstat.ips_reasmfails = value;
+        else if (!strcmp ("FragOKs", label))
+			ipstat.ips_fragmented = value;
+        else if (!strcmp ("FragFails", label))
+			ipstat.ips_cantfrag = value;
+        else if (!strcmp ("FragCreates", label))
+			ipstat.ips_ofragments = value;
+	}
+
+	return OK;
+}
+#endif
 
 static int  o_ip (oi, v, offset)
 OI	oi;
@@ -102,7 +203,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -138,11 +239,16 @@ int	offset;
 		if (quantum != lastq) {
 			lastq = quantum;
 
+#ifndef LINUX
 			if (getkmem (nl + N_IPFORWARDING, (caddr_t) &ipforwarding,
 						 sizeof ipforwarding) == NOTOK
 					|| getkmem (nl + N_IPSTAT, (caddr_t) ips, sizeof *ips)
 					== NOTOK)
 				return generr (offset);
+#else
+			if (_read_ip_stats () != OK)
+				advise (LLOG_EXCEPTIONS, NULLCP, "failed to read ip stats");
+#endif
 		}
 		break;
 	}
@@ -152,7 +258,11 @@ int	offset;
 		return o_integer (oi, v, ipforwarding ? FORW_GATEWAY : FORW_HOST);
 
 	case ipDefaultTTL:
+#ifdef LINUX
+		return o_integer (oi, v, ips -> ips_defaultTTL);
+#else
 		return o_integer (oi, v, MAXTTL);
+#endif
 
 #ifdef	ipInReceives
 	case ipInReceives:
@@ -160,11 +270,15 @@ int	offset;
 #endif
 
 	case ipInHdrErrors:
+#ifndef LINUX
 		return o_integer (oi, v, ips -> ips_badsum
 						  + ips -> ips_tooshort
 						  + ips -> ips_toosmall
 						  + ips -> ips_badhlen
 						  + ips -> ips_badlen);
+#else
+		return o_integer (oi, v, ips -> ips_inhdrerrors);
+#endif
 
 #ifdef	ipForwDatagrams
 	case ipForwDatagrams:
@@ -197,7 +311,11 @@ int	offset;
 #endif
 
 	case ipReasmTimeout:
+#ifdef LINUX
+		return o_integer (oi, v, ips -> ips_reasmtimeout);
+#else
 		return o_integer (oi, v, IPFRAGTTL);
+#endif
 
 #ifdef	ipReasmReqds
 	case ipReasmReqds:
@@ -210,9 +328,13 @@ int	offset;
 #endif
 
 #ifdef	ipReasmFails
+#ifndef LINUX
 	case ipReasmFails:
 		return o_integer (oi, v, ips -> ips_fragdropped
 						  + ips -> ips_fragtimeout);
+#else
+		return o_integer (oi, v, ips -> ips_reasmfails);
+#endif
 #endif
 
 #ifdef	ipFragOKs
@@ -247,7 +369,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 	case type_SNMP_PDUs_commit:
@@ -299,7 +421,11 @@ int	offset;
 	case type_SNMP_PDUs_set__request:
 		if (ot -> ot_save)
 			(*os -> os_free) (ot -> ot_save), ot -> ot_save = NULL;
+#ifndef LINUX
 		if (chekmem (nl + N_IPFORWARDING) == NOTOK)
+#else
+		if (access ("/proc/sys/net/ipv4/ip_forward", W_OK) != 0)
+#endif
 			return int_SNMP_error__status_genErr;
 		if ((*os -> os_decode) (&ot -> ot_save, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
@@ -316,8 +442,12 @@ int	offset;
 		break;
 
 	case type_SNMP_PDUs_commit:
+#ifndef LINUX
 		if (setkmem (nl + N_IPFORWARDING, (caddr_t) &ipforwarding,
 					 sizeof ipforwarding) == NOTOK)
+#else
+		if (_file_printf ("/proc/sys/net/ipv4/ip_forward", "%d", ipforwarding) != OK)
+#endif
 			return int_SNMP_error__status_genErr;
 	/* and fall */
 
@@ -347,6 +477,7 @@ int	offset;
 #define	ipAdEntBcastAddr 3
 #define	ipAdEntReasmMaxSize 4
 
+extern int	get_interfaces ();
 
 static int  o_ip_addr (oi, v, offset)
 OI	oi;
@@ -365,7 +496,7 @@ int	offset;
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + IFN_SIZE)
@@ -490,7 +621,7 @@ int	offset;
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -679,7 +810,7 @@ int	offset;
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (get_routes (offset) == NOTOK)
@@ -963,6 +1094,7 @@ losing_noop:
 
 /*  */
 
+#ifndef LINUX
 static struct rtstat rtstat;
 
 /*  */
@@ -985,7 +1117,7 @@ int	offset;
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -1039,6 +1171,7 @@ int	offset;
 		return int_SNMP_error__status_noSuchName;
 	}
 }
+#endif
 
 /*  */
 
@@ -1120,7 +1253,7 @@ int	offset;
 	if (get_arptab (offset) == NOTOK)
 		return generr (offset);
 
-	switch (ifvar = (int) ot -> ot_info) {
+	switch (ifvar = (ssize_t) ot -> ot_info) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
@@ -1273,7 +1406,7 @@ int	offset;
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	switch (ifvar = (int) ot -> ot_info) {
+	switch (ifvar = (ssize_t) ot -> ot_info) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
@@ -1561,6 +1694,64 @@ losing_noop:
 
 /*  */
 
+#ifdef LINUX
+static struct arptab *_read_arptab ()
+{
+	char line[256];
+    FILE *f;
+	int tblsize;
+	struct arptab *arptab;
+	int i;
+	struct arptablist {
+		struct arptablist *next;
+		struct arptab arptab;
+	} *head, *tail, *prev, *node, *next;
+
+	f = fopen("/proc/net/arp", "r");
+	if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/arp");
+		return NULL;
+	}
+
+	fgets(line, sizeof(line), f); // skip header
+
+	head = tail = prev = NULL;
+
+	for (i = 0; fgets(line, sizeof(line), f); i++) {
+		u_char *h, *ip;
+
+		prev = tail;
+		if ((tail = calloc(1, sizeof(*tail))) == NULL)
+			adios (NULLCP, "out of memory");
+		if (!head)
+			head = tail;
+		if (prev)
+			prev -> next = tail;
+
+        h = (u_char *) &tail -> arptab.at_enaddr;
+		ip = (u_char *) &tail -> arptab.at_iaddr;
+        sscanf(line, "%hhd.%hhd.%hhd.%hhd 0x%*x 0x%hhx %hhx:%hhx:%hhx:%hhx:%hhx:%hhx %*[^ ] %*s\n",
+			   &ip[0], &ip[1], &ip[2], &ip[3],
+			   &tail -> arptab.at_flags,
+               &h[0], &h[1], &h[2], &h[3], &h[4], &h[5]);
+	}
+
+	tblsize = i;
+	if ((arptab = calloc(1, sizeof(struct arptab) * tblsize)) == NULL)
+		adios (NULLCP, "out of memory");
+
+	for (i = 0, node = head; node; (node = next), i++) {
+		next = node -> next;
+		arptab[i] = node -> arptab;
+		free (node);
+	}
+
+	fclose(f);
+
+	return arptab;
+}
+#endif
+
 static int  get_arptab (offset)
 int	offset;
 {
@@ -1593,6 +1784,7 @@ int	offset;
 	}
 	adn = adm = ada = NULL, adrNumber = 0;
 
+#ifndef LINUX
 	if (getkmem (nl + N_ARPTAB_SIZE, (caddr_t) &arptab_size,
 				 sizeof arptab_size) == NOTOK)
 		return NOTOK;
@@ -1600,6 +1792,9 @@ int	offset;
 	if ((arptab = (struct arptab *) malloc ((unsigned) (tblsize))) == NULL)
 		adios (NULLCP, "out of memory");
 	if (getkmem (nl + N_ARPTAB, (caddr_t) arptab, tblsize) == NOTOK) {
+#else
+	if ((arptab = _read_arptab()) == NULL) {
+#endif
 no_dice:
 		;
 		free ((char *) arptab);
@@ -2000,6 +2195,7 @@ init_ip () {
 		ot -> ot_getfnx = o_ip_route,
 			  ot -> ot_info = (caddr_t) unixIpRouteUses;
 
+#ifndef LINUX
 	if (ot = text2obj ("unixRouteBadRedirects"))
 		ot -> ot_getfnx = o_ip_routing_stats,
 			  ot -> ot_info = (caddr_t) unixRouteBadRedirects;
@@ -2015,6 +2211,7 @@ init_ip () {
 	if (ot = text2obj ("unixRouteWildcardUses"))
 		ot -> ot_getfnx = o_ip_routing_stats,
 			  ot -> ot_info = (caddr_t) unixRouteWildcardUses;
+#endif
 
 	if (ot = text2obj ("atIfIndex"))
 		ot -> ot_getfnx = o_address,
@@ -2046,3 +2243,72 @@ init_ip () {
 			  ot -> ot_setfnx = s_address,
 					ot -> ot_info = (caddr_t) ipNetToMediaType;
 }
+
+#ifdef LINUX
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
+{
+    FILE *f;
+    char *header, stats[1024];
+    char *prefix;
+    char *name, *value;
+	char *c;
+    int i, n;
+	int found = 0;
+
+	*labels = NULL; *values = NULL; *len = 0;
+
+    f = fopen ("/proc/net/snmp", "r");
+    if (!f) {
+		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/snmp");
+		return NOTOK;
+    }
+
+    header = malloc(512);
+
+	for (; fgets (header, sizeof (header), f) && fgets (stats, sizeof (stats), f);) {
+        if (!(prefix = strtok (header, " ")))
+            continue;
+        if (strncasecmp (prefix, proto, strlen (prefix) - 1) != 0)
+            continue;
+		found = 1;
+        *labels = header;
+		for (n = 0, c = stats; *c; c++) {
+			if (*c == ' ') n++;
+		}
+        strtok(stats, " ");
+		n--;
+		*values = calloc (1, sizeof (*values) * n);
+        for (i = 0; (value = strtok (NULL, " \n")); i ++) {
+			(*values)[i] = atol (value);
+        }
+        *len = i;
+        break;
+    }
+
+    fclose (f);
+
+	if (!found) {
+		free (header);
+		return NOTOK;
+	}
+
+	return OK;
+}
+
+int _file_printf (const char *path, const char *fmt, ...)
+{
+	FILE *f;
+	va_list ap;
+
+	if (!fopen (path, "w")) {
+		advise (LLOG_EXCEPTIONS, "failed", "open %s for write", path);
+		return NOTOK;
+	}
+
+	va_start (ap, fmt);
+	vfprintf(f, fmt, ap);
+	va_end (ap);
+
+	return OK;
+}
+#endif

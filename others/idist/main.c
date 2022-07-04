@@ -192,7 +192,7 @@ main (int argc, char *argv[]) {
 	argc -= optind;
 	argv += optind;
 
-	mktemp(utmpfile);
+	mkstemp(utmpfile);
 
 	if (cmdargs)
 		docmdargs(argc, argv);
@@ -216,7 +216,7 @@ main (int argc, char *argv[]) {
 }
 
 int
-usage  {
+usage () {
 	advise (NULLCP,
 	"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
 	myname);

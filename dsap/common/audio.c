@@ -66,7 +66,7 @@ int format;
 
 	int	pid;
 	int	childpid;
-#ifdef SVR4
+#ifndef UNIONWAIT
 	int	status;
 #else
 	union wait status;

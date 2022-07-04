@@ -78,20 +78,21 @@ lint:		l-ftamd-ftp
 inst-ftamd-ftp:	$(SBINDIR)iso.ftam-ftp
 
 $(SBINDIR)iso.ftam-ftp:	xftamd-ftp
-		-cp $@ zxftamd-ftp
+		- if [ -f $@ ]; then cp $@ zxftamd-ftp; fi
 		-rm -f $@
 		cp xftamd-ftp $@
 		-@ls -gls $@
 		-@echo ""
 
 ftamd-ftp:	xftamd-ftp
+		cp xftamd-ftp $@
 
-xftamd-ftp:	$(OFILES) $(DOCS-O) ftp.o ftp_lib.o $(DLIBES)
-		$(LDCC) $(LDFLAGS) -o $@ $(OFILES) $(DOCS-O) ftp.o ftp_lib.o \
+xftamd-ftp:	$(OFILES) $(DOCS-O) ftp.o ftp_lib.o ftp_var.o $(DLIBES)
+		$(LDCC) $(LDFLAGS) -o $@ $(OFILES) $(DOCS-O) ftp.o ftp_lib.o ftp_var.o \
 			$(LIBES) $(LSOCKET)
 
 l-ftamd-ftp:;	$(LINT) $(LFLAGS) -DBRIDGE -I$(FTAM) $(CFILES) ftp.c \
-			$(DOCS-C) ftp_lib.c $(LLIBS) \
+			$(DOCS-C) ftp_lib.c ftp_var.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
 ftamd.o:	$(HFILES) $(FTAM)ftamd.c
@@ -115,6 +116,7 @@ ftamsbr.o:	$(HFILES) $(FTAM)ftamsbr.c
 
 ftp.o:		ftp_var.h
 ftp_lib.o:	ftp_var.h
+ftp_var.o:	ftp_var.h
 
 
 ##################################################################
@@ -134,7 +136,7 @@ manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 clean:;		rm -f *.o x* z* _* core
 
 grind:;		iprint Makefile
-		tgrind -lc ftp_var.h ftp.c ftp_lib.c
+		tgrind -lc ftp_var.h ftp_var.c ftp.c ftp_lib.c
 		@echo $(MANUALS) | \
 			tr " " "\012" | \
 			sed -e "s%.*%itroff -man &%" | \

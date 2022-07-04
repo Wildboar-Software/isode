@@ -107,6 +107,7 @@ char   *gensym (), *modsym ();
 static MD	lookup_module ();
 static FILE   *open_ph_file ();
 static SY	new_symbol (), add_symbol ();
+extern FILE *yyin, *yyout;
 
 YP	lookup_type ();
 static YP	lookup_binding ();
@@ -129,6 +130,9 @@ main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
 	struct section *sectp;
+
+    yyin  = stdin;
+    yyout = stdout;
 
 	fprintf (stderr, "%s\n", pepyversion);
 
@@ -307,7 +311,7 @@ prologue()  {
 	}
 	if (aflag)
 		printf ("#define\tadvise\t%s\n\n", aflag);
-	printf ("static void\tadvise (char*what, ...);\n");
+	printf ("void\tadvise (char *what, char *fmt, ...);\n");
 }
 /*    ERRORS */
 
@@ -381,13 +385,13 @@ myyerror (char* fmt, ...) {
 
 
 #ifndef	lint
-pyyerror (YP yp, ...) {
+pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
 
-	va_start (ap, yp);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, yp, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 

@@ -66,13 +66,14 @@ lint:		l-osilookup
 inst-osilookup:	$(SBINDIR)osilookup
 
 $(SBINDIR)osilookup:	xosilookup
-		-cp $@ zxosilookup
+		- if [ -f $@ ]; then cp $@ zxosilookup; fi
 		-rm -f $@
 		cp xosilookup $@
 		-@ls -gls $@
 		-@echo ""
 
 osilookup:	xosilookup
+		cp xosilookup $@
 
 xosilookup:	osilookup.o
 		$(LDCC) $(LDFLAGS) -o $@ osilookup.o $(LIBES) $(LSOCKET)

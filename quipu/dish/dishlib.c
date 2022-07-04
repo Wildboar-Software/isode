@@ -25,11 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 
  */
 
 
+#include <errno.h>
 #include <stdio.h>
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
-#include <varargs.h>
+#include <stdarg.h>
 
 #ifdef	SOCKETS
 #include "internet.h"
@@ -626,17 +627,13 @@ int sd;
 	longjmp (dish_env,2);
 }
 
-void    advise (va_alist)
-va_dcl {
-	int     code;
+void    advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 	extern LLog    *log_dsap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (log_dsap, code, ap);
+	_ll_log (log_dsap, code, what, fmt, ap);
 
 	va_end (ap);
 }

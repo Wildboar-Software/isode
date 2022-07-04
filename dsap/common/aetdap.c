@@ -214,7 +214,7 @@ out:
 
 int
 set_lookup_dap (
-	int flag		/* if TRUE always unbind */
+	char flag		/* if TRUE always unbind */
 ) {
 	extern char * oidtable;
 

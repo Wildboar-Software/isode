@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.0 1992/0
  */
 
 
+#include <errno.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "tailor.h"
@@ -857,6 +858,7 @@ edb_start (struct getedb_arg *arg, struct DSError *error, struct getedb_result *
 	FILE * fptr = (FILE *) NULL;
 	PS fps;
 	struct edbops_list * nextop;
+	int sfd;
 
 	/* send first part of an EDB file */
 	if (EDB_encode (result, &pe) == NOTOK) {
@@ -883,14 +885,14 @@ out:
 	*/
 
 	sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
-	if ((fname = mktemp (strdup(buffer))) == NULLCP) {
+	if ((fname = strdup(buffer)) == NULLCP || (sfd = mkstemp (fname)) < 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("Too many getedbs at once '%s'",fname));
 		goto out;
 	}
 
 	um = umask (0177);
-	if ((fptr = fopen (fname,"w")) != NULL) {
+	if ((fptr = fdopen (sfd,"w")) != NULL) {
 		umask (um);
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,

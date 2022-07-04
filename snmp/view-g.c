@@ -46,7 +46,8 @@ static int	viewmask = 0x1;
 static OID	localAgent = NULLOID;
 static OID	rfc1157Domain = NULLOID;
 
-struct view *get_prent ();
+static struct view *get_prent ();
+static int  str2sa ();
 
 
 static int  o_viewPrim (oi, v, offset)
@@ -62,7 +63,7 @@ int	offset;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -197,7 +198,7 @@ int	isnext;
 
 static struct community *CLex = NULL;
 
-struct community *get_acent ();
+static struct community *get_acent ();
 
 
 static int  o_viewAcl (oi, v, offset)
@@ -213,7 +214,7 @@ int	offset;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -331,7 +332,7 @@ int	isnext;
 
 static OID    trapview = NULLOID;
 
-struct trap *get_trent ();
+static struct trap *get_trent ();
 
 
 static int  o_viewTrap (oi, v, offset)
@@ -347,7 +348,7 @@ int	offset;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)

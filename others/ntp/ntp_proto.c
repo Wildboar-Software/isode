@@ -24,6 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_proto.c,v 9.
  */
 
 #include "ntp.h"
+#include "af_osi.h"
 
 int peer_switches, peer_sw_inhibited;
 
@@ -634,7 +635,7 @@ clock_update (struct ntp_peer *peer) {
 /* 3.4.6 Initialization procedure */
 
 void
-initialize  {
+initialize () {
 	sys.leap = ALARM;	/* indicate unsynchronized */
 	sys.stratum = 0;
 	sys.precision = 0;	/* may be specified in the config file;
@@ -713,9 +714,9 @@ poll_update (struct ntp_peer *peer, int new_hpoll) {
 /* 3.4.9 Authentication Procedures */
 #if	0
 int
-encrypt  {}
+encrypt () {}
 int
-decrypt  {}
+decrypt () {}
 #endif
 
 /* 4.1 Clock Filter Procedure */
@@ -800,7 +801,7 @@ clock_filter (struct ntp_peer *peer, double new_delay, double new_offset) {
 
 /* 4.2 Clock Select Procedure */
 void
-select_clock  {
+select_clock () {
 	struct ntp_peer *ptmp, *peer = peer_list.head;
 	struct sel_lst {
 		struct ntp_peer *peer;
@@ -1073,7 +1074,7 @@ sanity_check (struct ntp_peer *peer) {
 	/* Sanity check 3.
 	   Both peer.estdelay and
 	   peer.estdisp to be less than NTP_MAXWGT, which insures that the
-	   filter at least half full, yet avoids using data from
+	   filter register at least half full, yet avoids using data from
 	   very noisy associations or broken implementations.  	*/
 	if (peer->estdisp > (float)NTP_MAXWGT ||
 			peer->estdelay > (float)NTP_MAXWGT)

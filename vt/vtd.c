@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #undef MAP_BACKSPACE	/*Map backspace character to VT ERASE CHAR*/
 
 #include <signal.h>
+#include <unistd.h>
 #include "vtpm.h"
 #include "sector1.h"
 #include "tailor.h"
@@ -58,7 +59,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #include <ctype.h>
 #include <setjmp.h>
 #include <pwd.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 #define	BELL	'\07'
 #ifndef	SUNOS4
@@ -67,13 +68,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #define BANNER	"\r\n\r\nSunOS UNIX (%s)\r\n\r\n\r%s"
 #endif
 
-#if !defined(SYS5) && !defined(BSD44) && !defined(_AIX)
+#if !defined(SYS5) && !defined(BSD44) && !defined(_AIX) && !defined(LINUX)
 void	vhangup();
 #endif
 
 int	connected = FALSE;
 char	command[256];
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 /*
  * I/O data buffers, pointers, and counters.
@@ -127,7 +130,6 @@ char	*envinit[] = { "TERM=network", 0 };
 SFD	cleanup();
 static int do_cleaning = 0;
 
-char   *myname;
 LLog    _vt_log = {
 	"vt.log", NULLCP, NULLCP,
 	LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE, LLOG_FATAL, -1,
@@ -295,9 +297,8 @@ fatal (int f, char *msg) {
 int
 fatalperror (int f, char *msg, int errnum) {
 	char buf[BUFSIZ];
-	extern char *sys_errlist[];
 
-	sprintf(buf, "%s: %s", msg, sys_errlist[errnum]);
+	sprintf(buf, "%s: %s", msg, strerror(errnum));
 	fatal(f, buf);
 }
 
@@ -653,7 +654,7 @@ char	utmp[] = "/etc/utmp";
 long	lseek ();
 
 rmut() {
-	f;
+	int f;
 	int found = 0;
 
 	f = open(utmp, 2);
@@ -736,13 +737,12 @@ finalbye (void) {
 
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (vt_log, LLOG_FATAL, ap);
+	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -761,16 +761,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (vt_log, code, ap);
+	_ll_log (vt_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

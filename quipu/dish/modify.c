@@ -44,6 +44,8 @@ extern	PS	opt, rps;
 extern	char	dad_flag;
 extern char     fname[];
 
+int mod_template (char *, char);
+
 struct	list_element {
 	char   *mod;
 	char	add;			/* 1=add, 0=remove */
@@ -96,7 +98,7 @@ call_modify (int argc, char **argv) {
 		strcpy (fname, home);
 	else if (dad_flag) {
 		strcpy (fname, "/tmp/dishXXXXXX");
-		unlink (mktemp (fname));
+		close (mkstemp (fname));
 	} else if (home = getenv ("HOME"))
 		sprintf (fname, "%s/.dishdraft", home);
 	else
@@ -609,7 +611,7 @@ dsa_control_info (void) {
 }
 
 int
-mod_template (char *name, int noedit) {
+mod_template (char *name, char noedit) {
 	FILE           *fptr;
 	PS              ps;
 	extern AttributeType at_objectclass;

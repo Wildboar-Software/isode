@@ -60,7 +60,9 @@ static char sccsid[] = "@(#)printcap.c	5.7 (Berkeley) 3/4/91";
 
 char   *strcpy ();
 
+#ifndef __linux__
 #define PRINTCAP
+#endif
 
 #ifdef PRINTCAP
 #define tgetent	pgetent
@@ -78,9 +80,9 @@ char   *strcpy ();
 static	FILE *pfp = NULL;	/* printcap data base file pointer */
 static	char *tbuf;
 static	int hopcount;		/* detect infinite loops in termcap, init 0 */
-char	*tskip();
+static char	*tskip();
 char	*tgetstr();
-char	*tdecode();
+static char	*tdecode();
 char	*getenv();
 
 /*
@@ -145,9 +147,7 @@ char *bp, *name;
 	int c;
 	int i = 0, cnt = 0;
 	char ibuf[BUFSIZ];
-	/*
-		char *cp2;
-	 */
+	char *cp2;
 	int tf;
 
 	tbuf = bp;

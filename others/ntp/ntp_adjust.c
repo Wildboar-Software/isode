@@ -41,7 +41,7 @@ int	firstpass = 1;
 #endif
 
 void
-init_logical_clock  {
+init_logical_clock () {
 	if (kern_tickadj)
 		adj_precision = kern_tickadj;
 	else

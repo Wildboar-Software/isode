@@ -1742,7 +1742,7 @@ dmp_ptpe (
 	}
 	if (par == prev) {
 		ppepsylose (mod, p, NULLPE,
-					"dmp_ptpe:par == prev == 0x%x internal error\n", (int) par);
+					"dmp_ptpe:par == prev == %p internal error\n", par);
 		return;
 	}
 	par--;

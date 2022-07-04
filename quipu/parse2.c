@@ -32,11 +32,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/parse2.c,v 9.0 1992/0
 #ifdef TURBO_DISK
 #include <gdbm.h>
 #endif
+#include <errno.h>
 
 Avlnode *getentry_block();
 Entry get_entry_aux();
 extern LLog * log_dsap;
-char * getline ();
+char * _getline ();
 static test_duplicate ();
 int rdn_print ();
 int master_edbs = 0;
@@ -259,7 +260,7 @@ char ** versionptr;
 		0,		-1,
 	};
 
-	if ((ptr = getline (file)) == NULLCP) {
+	if ((ptr = _getline (file)) == NULLCP) {
 		parse_error ("NULL file !!!",NULLCP);
 		return (NOTOK);
 	}
@@ -269,7 +270,7 @@ char ** versionptr;
 		return (NOTOK);
 	}
 
-	if ((ptr = getline (file)) == NULLCP) {
+	if ((ptr = _getline (file)) == NULLCP) {
 		parse_error ("No version specified",NULLCP);
 		return (NOTOK);
 	}

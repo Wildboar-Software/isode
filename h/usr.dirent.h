@@ -38,6 +38,7 @@ typedef struct {
 #define	seekdir		_seekdir
 #define	rewinddir	_rewinddir
 #define	closedir	_closedir
+#define	dirfd(dp)	((dp)->dd_fd)
 
 extern DIR		*opendir();
 extern struct dirent	*readdir();
@@ -49,7 +50,6 @@ extern int		closedir();
 #ifndef NULL
 #define	NULL	0			/* DAG -- added for convenience */
 #endif
-#endif	/* not GETDENTS */
 
 #define	getcwd		_getcwd
 
@@ -58,5 +58,6 @@ extern char             *getcwd ();
 
 #define	scandir	_scandir
 #define	alphasort _alphasort
+#endif	/* not GETDENTS */
 
 extern char *direntversion;

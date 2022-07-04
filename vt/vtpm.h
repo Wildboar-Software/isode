@@ -30,7 +30,7 @@
 /* Make sure this is here in new versions */
 /*#include "sector1.h"*/
 
-#if (defined(BSD44) || defined(SVR4)) && ! defined(_AIX)
+#if defined(LINUX) || (defined(BSD44) || defined(SVR4)) && ! defined(_AIX)
 #define TERMIOS
 #endif
 
@@ -236,9 +236,9 @@
 
 #define PEPYPARM int *
 
-PE	pre, pwe;
-PE	mkdeliver();
-int	fd,
+extern PE	pre, pwe;
+extern PE	mkdeliver();
+extern int	fd,
 	readfds,
 	writefds,
 	exfds,
@@ -246,11 +246,11 @@ int	fd,
 	connected,
 	netfile;
 
-char	*dprofile, *cprofile;
+extern char	*dprofile, *cprofile;
 #ifndef SVR4
-char	*ttyname();
+extern char	*ttyname();
 #endif
-char	*myname;
+extern char	*myname;
 extern PE	p_ondq;
 extern LLog _vt_log, *vt_log;
 
@@ -258,7 +258,7 @@ extern LLog _vt_log, *vt_log;
 extern int errno;
 extern unsigned	state, sector;
 
-int		vns,
+extern int		vns,
 		allpmde, /* all draft VTE parameters defined */
 		allpmdu, /* all draft VTE parameters defined or undefined */
 		cnw,	 /* collision winner right assigned to this VTPM  */
@@ -353,9 +353,7 @@ extern struct PSAPdata	px;
 extern struct PSAPfinish *pf;
 
 void	finalbye ();
-void	adios (), advise ();
-void	acs_adios (), acs_advise ();
-void	ps_adios (), ps_advise ();
+void	acs_adios ();
 
-int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
+extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
 

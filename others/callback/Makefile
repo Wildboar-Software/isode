@@ -73,13 +73,14 @@ lint:		l-initiator l-responder
 inst-initiator:	$(BINDIR)callback
 
 $(BINDIR)callback:	xinitiator
-		-cp $@ zcallback
+		- if [ -f $@ ]; then cp $@ zcallback; fi
 		-rm -f $@
 		cp xinitiator $@
 		-@ls -gls $@
 		-@echo ""
 
 initiator:	xinitiator
+		cp xinitiator $@
 
 xinitiator:	initiator.o report.o
 		$(LDCC) $(LDFLAGS) -o $@ initiator.o report.o $(LIBES) \
@@ -98,13 +99,14 @@ initiator.o:	$(HFILES)
 inst-responder:	$(SBINDIR)iso.callback
 
 $(SBINDIR)iso.callback:	xresponder
-		-cp $@ ziso.callback
+		- if [ -f $@ ]; then cp $@ ziso.callback; fi
 		-rm -f $@
 		cp xresponder $@
 		-@ls -gls $@
 		-@echo ""
 
 responder:	xresponder
+		cp xresponder $@
 
 xresponder:	responder.o report.o
 		$(LDCC) $(LDFLAGS)  -o $@ responder.o report.o $(LIBES) \

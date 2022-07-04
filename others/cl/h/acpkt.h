@@ -113,7 +113,7 @@
 
 
 #ifdef  HULA
-int     acusaplose ();
+int	acusaplose (struct AcSAPindication *aci, ...);
 #endif
 
 /*  */

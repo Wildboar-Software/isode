@@ -34,7 +34,7 @@ DIR		*dirp;	/* stream from opendir() */
 
 		if ( dirp->dd_size == 0	/* need to refill buffer */
 				&& (dirp->dd_size =
-						getdents( dirp->dd_fd, dirp->dd_buf, (unsigned)DIRBUF )
+						getdents( dirfd(dirp), dirp->dd_buf, (unsigned)DIRBUF )
 				   ) <= 0
 		   )
 			return NULL;	/* EOF or error */

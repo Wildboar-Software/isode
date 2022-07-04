@@ -74,7 +74,7 @@ lint-all:	lint l-pepytest l-pp l-mpp l-salary l-hello_world l-bigpepytest
 inst-pepy:	$(BINDIR)pepy
 
 $(BINDIR)pepy:	xpepy
-		-cp $@ zxpepy
+		- if [ -f $@ ]; then cp $@ zxpepy; fi
 		-rm -f $@
 		cp xpepy $@
 		-@ls -gls $@
@@ -136,7 +136,7 @@ l-pepy:		pepy.h yacc.c lex.c pepyvrsn.c true
 inst-posy:	$(BINDIR)posy
 
 $(BINDIR)posy:	xposy
-		-cp $@ zxposy
+		- if [ -f $@ ]; then cp $@ zxposy; fi
 		-rm -f $@
 		cp xposy $@
 		-@ls -gls $@
@@ -181,7 +181,7 @@ inst-headers:;	-mkdir $(PEPYDIRM)
 inst-target:	$(PEPYDIR)$(TARGET)
 
 $(PEPYDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""

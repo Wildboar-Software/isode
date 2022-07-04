@@ -27,9 +27,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.c,
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "sys.file.h"
 #include "tsap.h"
@@ -70,7 +72,8 @@ static ContTbl *find_connection ();
 
 static void read_file ();
 
-static void adios (), advise ();
+static void	adios (char *, char *, ...);
+static void	advise (int, char *, char *, ...);
 
 static void ts_adios (), ts_advise ();
 static void ts_close (), ts_discon ();
@@ -673,7 +676,7 @@ read_file (char *file) {
 /*  */
 
 static void
-envinit  {
+envinit () {
 	int     i,
 	sd;
 
@@ -738,13 +741,12 @@ envinit  {
 /*    ERRORS */
 
 #ifndef lint
-static void    adios (va_alist)
-va_dcl {
+static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+    _ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -761,16 +763,12 @@ adios (char *what, char *fmt) {
 
 
 #ifndef lint
-static void    advise (va_alist)
-va_dcl {
-	int     code;
+static void    advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+    _ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

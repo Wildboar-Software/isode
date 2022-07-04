@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/print.c,v 9.0 1992/06/
 
 extern	int	quantum;
 
-void	advise ();
+void	advise (int, char *, char *, ...);
 
 /*  */
 
@@ -114,7 +114,12 @@ struct pj {
 static	struct pj *pj_head = NULL;
 
 
-char   *pgetstr ();
+#ifdef LINUX
+#define pgetstr tgetstr
+#endif
+extern char   *pgetstr ();
+static	free_pq (), free_pj (), upstat (), startdaemon ();
+static int findaemon ();
 
 /*  */
 
@@ -328,7 +333,7 @@ int	offset;
 
 		if (chdir (pq -> pq_SD) == NOTOK || !(dp = opendir (".")))
 			continue;
-		fstat (dp -> dd_fd, &pq -> pq_st);
+		fstat (dirfd(dp), &pq -> pq_st);
 		while (dd = readdir (dp)) {
 			int    j;
 			unsigned int *ip;
@@ -436,7 +441,7 @@ int	offset;
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -614,7 +619,7 @@ int	offset;
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pq = get_pqent (oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -684,7 +689,7 @@ int	offset;
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
 	switch (offset) {
@@ -870,7 +875,7 @@ int	offset;
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
 
-	ifvar = (int) ot -> ot_info;
+	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pj = get_pjent (oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -991,7 +996,7 @@ int	init_print () {
  */
 
 
-static int  select (dd)
+static int  _select (dd)
 struct dirent *dd;
 {
 	char    c = dd -> d_name[0];
@@ -1026,6 +1031,8 @@ struct dirent **d1,
     		advise (LLOG_EXCEPTIONS, (file), \
 			"unable to set mode 0%o for", (int) (m)); \
 	else
+
+static int  _select ();
 
 int	sync_print (cor)
 integer	cor;

@@ -41,7 +41,8 @@ static enum { ps2test, pl2test } mode = ps2test;
 
 static int  process ();
 
-static void	adios (char*what, ...);
+static void	adios (char *, char *, ...);
+void	advise (char *, char *, ...);
 
 /*    MAIN */
 
@@ -221,16 +222,16 @@ END
 
 
 #ifndef	lint
-static void	_advise (char*what, ...);
+static void	_advise (char *, char *, va_list);
 
 
-static void  adios (char*what, ...)
+static void  adios (char *what, char *fmt, ...)
 {
     va_list ap;
 
-    va_start (ap, what);
+    va_start (ap, fmt);
 
-    _advise (what, ap);
+    _advise (what, fmt, ap);
 
     va_end (ap);
 
@@ -249,27 +250,11 @@ char   *what,
 
 
 #ifndef	lint
-static void  advise (char*what, ...)
-{
-    va_list ap;
-
-    va_start (ap, what);
-
-    _advise (what, ap);
-
-    va_end (ap);
-}
-
-
-static void  _advise (char*what, ...)
+static void  _advise (char *what, char *fmt, va_list ap)
 {
     char    buffer[BUFSIZ];
 
-    va_list ap;
-
-    va_start (ap, what);
-
-    asprintf (buffer, what, ap);
+    _asprintf (buffer, what, fmt, ap);
 
     (void) fflush (stdout);
 
@@ -280,15 +265,6 @@ static void  _advise (char*what, ...)
     (void) fflush (stderr);
 
     va_end (ap);
-}
-#else
-/* VARARGS */
-
-static void  advise (what, fmt)
-char   *what,
-       *fmt;
-{
-    advise (what, fmt);
 }
 #endif
 

@@ -30,30 +30,28 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
+static int  _psaplose ();
+
 /*  */
 
 #ifndef	lint
-int	ppktlose (va_alist)
-va_dcl {
-	int	    reason,
-	result;
-	PE	    pe;
-	struct psapblk *pb;
+int	ppktlose (struct psapblk *pb, ...) {
+	int	    result, reason;
 	struct PSAPindication *pi;
+	struct type_PS_SessionConnectionIdentifier *pref;
+	PE	    pe;
 	struct PSAPabort *pa;
 	struct type_PS_Abort__PDU *pdu;
-	struct type_PS_SessionConnectionIdentifier *pref;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pb);
 
-	pb = va_arg (ap, struct psapblk *);
 	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 	pref = va_arg (ap, struct type_PS_SessionConnectionIdentifier *);
@@ -141,16 +139,12 @@ char   *what,
 /*  */
 
 #ifndef	lint
-int	psaplose (va_alist)
-va_dcl {
-	int     reason,
-	result;
-	struct PSAPindication *pi;
+int	psaplose (struct PSAPindication *pi, ...) {
+	int     reason, result;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, pi);
 
-	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _psaplose (pi, reason, ap);

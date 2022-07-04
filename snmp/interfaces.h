@@ -31,6 +31,27 @@
 #include <netinet/if_ether.h>		/* to get struct arpcom */
 #include "clns.h"
 
+#ifdef LINUX
+struct ifnet {
+	char	*if_name;		/* name, e.g. ``en'' or ``lo'' */
+	short	if_mtu;			/* maximum transmission unit */
+	short	if_flags;		/* up/down, broadcast, etc. */
+	struct	ifaddr *if_addrlist;	/* linked list of addresses per if */
+/* generic interface statistics */
+	int	if_ipackets;		/* packets received on interface */
+	int	if_ierrors;		/* input errors on interface */
+	int	if_opackets;		/* packets sent on interface */
+	int	if_oerrors;		/* output errors on interface */
+	int	if_oqdrops;		/* output errors on interface */
+/* end statistics */
+	struct	ifnet *if_next;
+};
+struct	arpcom {
+	struct	ifnet ac_if;	/* network-visible interface */
+	u_char	ac_enaddr[6];	/* ethernet hardware address */
+};
+#endif
+
 /*  */
 
 extern	int	ifNumber;
@@ -92,10 +113,10 @@ extern struct address *afs_iso;
 #endif
 
 
-struct address *find_address (), *get_addrent ();
+struct address *get_addrent ();
 
 
-#if	defined(BSD44) || defined(BSD43_Tahoe) || defined(RT) || defined(MIPS) || defined(ultrix) || defined(__NeXT__)
+#if	defined(BSD44) || defined(BSD43_Tahoe) || defined(RT) || defined(MIPS) || defined(ultrix) || defined(__NeXT__) || defined(LINUX)
 #define	NEW_AT
 #else
 #undef	NEW_AT

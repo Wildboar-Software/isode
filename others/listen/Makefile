@@ -49,13 +49,14 @@ lint:		l-listen l-initiate
 inst-listen:	$(BINDIR)listen
 
 $(BINDIR)listen:	xlisten
-		-cp $@ zxlisten
+		- if [ -f $@ ]; then cp $@ zxlisten; fi
 		-rm -f $@
 		cp xlisten $@
 		-@ls -gls $@
 		-@echo ""
 
 listen:		xlisten
+		cp xlisten $@
 
 xlisten:	listen.o report.o
 		$(LDCC) $(LDFLAGS) -o $@ listen.o report.o $(LIBES) \
@@ -77,13 +78,14 @@ report.o:	../callback/report.c
 inst-initiate:	$(BINDIR)initiate
 
 $(BINDIR)initiate:	xinitiate
-		-cp $@ zxinitiate
+		- if [ -f $@ ]; then cp $@ zxinitiate; fi
 		-rm -f $@
 		cp xinitiate $@
 		-@ls -gls $@
 		-@echo ""
 
 initiate:	xinitiate
+		cp xinitiate $@
 
 xinitiate:	initiate.o report.o
 		$(LDCC) $(LDFLAGS)  -o $@ initiate.o report.o $(LIBES) \

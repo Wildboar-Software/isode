@@ -76,13 +76,14 @@ NTPDSRC= ntpd.c ntpsubs.c ntp_proto.c ntp_sock.c ntp_adjust.c read_local.c \
 inst-ntpd:	$(SBINDIR)ntpd
 
 $(SBINDIR)ntpd:	xntpd
-		-cp $@ zntpd
+		- if [ -f $@ ]; then cp $@ zntpd; fi
 		-rm -f $@
 		cp xntpd $@
 		-@ls -gls $@
 		-@echo ""
 
 ntpd:	xntpd
+		cp xntpd $@
 
 xntpd:	${NTPDOBJ}
 	$(CC) $(LDFLAGS) -o $@ ${NTPDOBJ} $(LIBES) $(LSOCKET)
@@ -103,13 +104,14 @@ NTPSRC	= ntp.c ntpsubs.c
 inst-ntp:	$(BINDIR)ntp
 
 $(BINDIR)ntp:	xntp
-		-cp $@ zntp
+		- if [ -f $@ ]; then cp $@ zntp; fi
 		-rm -f $@
 		cp xntp $@
 		-@ls -gls $@
 		-@echo ""
 
 ntp:		xntp
+		cp xntp $@
 
 xntp:		$(NTPOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTPOBJ) $(LIBES) $(LSOCKET)
@@ -130,13 +132,14 @@ NTPDCSRC	= ntpdc.c
 inst-ntpdc:	$(SBINDIR)ntpdc
 
 $(SBINDIR)ntpdc:	xntpdc
-		-cp $@ zntpdc
+		- if [ -f $@ ]; then cp $@ zntpdc; fi
 		-rm -f $@
 		cp xntpdc $@
 		-@ls -gls $@
 		-@echo ""
 
 ntpdc:		xntpdc
+		cp xntpdc $@
 
 xntpdc: 	$(NTPDCOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTPDCOBJ) $(LIBES) $(LSOCKET)
@@ -157,13 +160,14 @@ NTQSRC	= NTP-types.c NTP-stubs.c NTP-ops.c ntq.c
 inst-ntq:	$(BINDIR)ntq
 
 $(BINDIR)ntq:	xntq
-		-cp $@ zntq
+		- if [ -f $@ ]; then cp $@ zntq; fi
 		-rm -f $@
 		cp xntq $@
 		-@ls -gls $@
 		-@echo ""
 
 ntq:	xntq
+		cp xntq $@
 
 xntq: 		$(NTQOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(NTQOBJ) $(LIBES) $(LSOCKET)

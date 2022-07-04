@@ -49,7 +49,7 @@ static int TPid = NOTOK;
 /*    INTERNAL */
 
 struct tsapblk *
-	newtublk  {
+	newtublk () {
 	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);

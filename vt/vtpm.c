@@ -57,6 +57,10 @@ struct PSAPindication pi;
 struct PSAPdata	px;
 struct PSAPfinish *pf;
 
+static void  ps_adios (),  ps_advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 /****************************************************************************/
 /* GET EVENT - attempt to read a PDU from the presentation connection	    */
 /*		   designated by "sd", determine			    */
@@ -616,6 +620,8 @@ send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 }
 
 /*  */
+
+static void  acs_advise ();
 
 void
 acs_adios (struct AcSAPabort *aa, char *event) {

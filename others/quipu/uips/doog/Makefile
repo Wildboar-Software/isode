@@ -58,6 +58,7 @@ depend:		$(CFILES)
 ###############################################################################
 
 doog:           xdoog
+		cp xdoog $@
 
 xdoog:		$(OFILES) $(QLIB) 
 	$(LDCC) $(LDFLAGS) -o $@ $(OFILES) \
@@ -73,7 +74,7 @@ $(QLIB):	true
 inst-doog:	$(BINDIR)doog
 
 $(BINDIR)doog:	xdoog
-		-cp $@ zxdoog
+		- if [ -f $@ ]; then cp $@ zxdoog; fi
 		rm -f $@
 		cp xdoog $@
 		-@ls -gls $@

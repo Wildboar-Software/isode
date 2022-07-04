@@ -25,10 +25,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "mosy-defs.h"
+
+static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),
+        check_objects (), print_yi (), print_yo (), print_yt (), print_type (),
+        print_value ();
 
 /*    DATA */
 
@@ -136,15 +141,15 @@ static	SY	mytraps = NULLSY;
 static	SY	mytypes = NULLSY;
 
 
-SY	new_symbol (), add_symbol ();
+static SY	new_symbol (), add_symbol ();
 
-char   *id2str ();
+static char   *id2str ();
 
-YP	lookup_type ();
-char   *val2str ();
+static YP	lookup_type ();
+static char   *val2str ();
 
-OI	lookup_identifier ();
-OT	lookup_object ();
+static OI	lookup_identifier ();
+static OT	lookup_object ();
 
 /*    MAIN */
 
@@ -277,20 +282,19 @@ yyerror (char *s) {
 }
 
 #ifndef lint
-warning (va_alist)
-va_dcl {
+warning (char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
-	sprintf (buffer2, "Warning: %s", buffer);
+	snprintf (buffer2, BUFSIZ, "Warning: %s", buffer);
 	yyerror_aux (buffer2);
 }
 
@@ -320,14 +324,13 @@ yyerror_aux (char *s) {
 /*  */
 
 #ifndef	lint
-myyerror (va_alist)
-va_dcl {
+myyerror (char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -338,7 +341,7 @@ va_dcl {
 /*  */
 
 int
-yywrap  {
+yywrap () {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -388,7 +391,7 @@ yyprint_aux (char *s, char *mode) {
 /*    PASS1 */
 
 int
-pass1  {
+pass1 () {
 	printf ("-- object definitions compiled from %s", mymodule);
 	if (mymoduleid)
 		printf (" %s", oidprint(mymoduleid));
@@ -544,7 +547,7 @@ YP	yp;
 /*    PASS2 */
 
 int
-pass2  {
+pass2 () {
 	SY	    sy;
 
 	if (!sflag)

@@ -136,12 +136,14 @@
 
 #else /* SVR4 */
 
+#ifndef	LINUX
 #if	defined(BSDSTRS) && !defined(BSD44) && (!defined(BSD43) || defined(SUNOS4) || defined(vax) || defined(RT) || (defined(mips) && defined(ultrix))) && !defined(XOS_2)
 #if !(defined(__STDC__) && defined(__GNUC__) && defined(mips) && defined(ultrix))
 //char   *sprintf ();
 #endif
 #else
 //int     sprintf ();
+#endif
 #endif
 
 char   *getenv ();
@@ -195,7 +197,7 @@ char   *sprintb ();
 
 #define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, NULL, 1)
 
-int	str2vecX ();
+int	str2vecX (char *, char **, int,  int *, char,  int);
 
 /*    STR2ELEM */
 
@@ -228,7 +230,7 @@ int	log_tai ();
 int	sstr2arg ();
 
 void	(*set_smalloc_handler()) ();
-char    *smalloc (), *strdup ();
+char    *smalloc ();
 
 /*    MISC */
 
@@ -240,14 +242,15 @@ char   *sys_errname ();
 #endif
 
 #include <stdarg.h>
-void    isosprintf(char*bp, char*what, char*fmt, ...);            /* fmt, args, ... */
-void    _isosprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
-#define asprintf isoprintf
-#define _asprintf _isoprintf
+void    asprintf(char*bp, va_list ap);            /* fmt, args, ... */
+void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
 
 
 /*  time */
 
+#ifdef LINUX
+#include <time.h>
+#endif
 #ifndef makedev
 #include <sys/types.h>
 #endif

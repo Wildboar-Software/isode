@@ -122,7 +122,6 @@ struct var {
 static struct var * getvar (char *name);
 static printvar (struct var *v);
 
-#ifndef	BRIDGE
 int f_put();
 int f_cd();
 int f_chgrp();
@@ -142,6 +141,7 @@ int f_status();
 int f_quit();
 
 
+#ifndef	BRIDGE
 static struct dispatch  dispatches[] = {
 	"append", f_put, DS_OPEN | DS_MODES, FCLASS_TRANSFER, FUNIT_WRITE,
 	"append to a file in the virtual filestore",
@@ -387,7 +387,7 @@ static struct var vars[] = {
 static int varwidth1;
 static int varwidth2;
 
-char    **getval ();
+static char    **getval ();
 
 /*  */
 

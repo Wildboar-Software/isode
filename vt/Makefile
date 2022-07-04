@@ -37,9 +37,9 @@ LIBES	=	$(TOPDIR)libisode.a
 LLIBS	=	$(TOPDIR)llib-lisode
 VTH	=	vtpm.h $(HDIR)acsap.h $(HDIR)psap.h $(HDIR)manifest.h \
 		$(HDIR)config.h $(HDIR)general.h $(HDIR)psap2.h $(HDIR)logger.h
-CFILES	=	vtpm.c vtuser.c vt_telnet.c map.c \
+CFILES	=	vtpm.c vtpm_var.c vtuser.c vt_telnet.c map.c \
 		actions1.c actions5.c states1.c states5.c
-OFILES	=	vtpm.o vtuser.o vt_telnet.o map.o \
+OFILES	=	vtpm.o vtpm_var.o vtuser.o vt_telnet.o map.o \
 		actions1.o actions5.o states1.o states5.o
 PYFILES	=	bk_content.py rcv_asq.py rcv_asr.py rcv_text.py send_asq.py \
 		send_asr.py send_text.py send_udq.py rcv_udq.py print_vt.py
@@ -67,20 +67,22 @@ lint:		l-vtd l-vt
 inst-vtd:	$(SBINDIR)iso.vt
 
 $(SBINDIR)iso.vt:	xvtd
-		-cp $@ ziso.vt
+		- if [ -f $@ ]; then cp $@ ziso.vt; fi
 		-rm -f $@
 		cp xvtd $@
 		-@ls -gls $@
 		-@echo ""
 
 vtd:		xvtd
+		cp xvtd $@
 
 xvtd:		vtd.o $(OFILES) libvt.a $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ vtd.o $(OFILES) libvt.a \
-			$(LIBISODE) $(LSOCKET)
+			$(LIBISODE) $(LSOCKET) -lutil
 
 vtd.o:		$(VTH) sector1.h $(HDIR)tailor.h
 vtpm.o:		$(VTH) eventmsg.h sector1.h
+vtpm_var.o:		$(VTH)
 vtuser.o:	$(VTH) sector1.h sector5.h
 vt_telnet.o:	$(VTH) sector1.h
 map.o:		$(VTH) sector1.h
@@ -101,13 +103,14 @@ l-vtd:		$(PYFILES-C) true
 inst-vt:	$(BINDIR)vt
 
 $(BINDIR)vt:	xvt
-		-cp $@ zxvt
+		- if [ -f $@ ]; then cp $@ zxvt; fi
 		-rm -f $@
 		cp xvt $@
 		-@ls -gls $@
 		-@echo ""
 
 vt:		xvt
+		cp xvt $@
 
 xvt:		vt.o $(OFILES) libvt.a $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ vt.o $(OFILES) libvt.a \

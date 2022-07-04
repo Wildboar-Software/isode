@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0
 
 #include <errno.h>
 #include <stdio.h>
-#include <varargs.h>
 #include "Idist-types.h"      /* type definitions */
 #include "Idist-ops.h"                /* operation definitions */
 #include "ryresponder.h"      /* for generic idempotent responders */
@@ -576,7 +575,7 @@ PE	*pe;
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
 
-	mktemp (utmpfile);
+	close (mkstemp (utmpfile));
 
 	return ACS_ACCEPT;
 }

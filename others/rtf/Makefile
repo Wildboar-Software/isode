@@ -69,15 +69,14 @@ lint:		l-rtfd l-rtf
 inst-rtfd:	$(SBINDIR)iso.rtf
 
 $(SBINDIR)iso.rtf:	xrtfd
-		-cp $@ ziso.rtf
+		- if [ -f $@ ]; then cp $@ ziso.rtf; fi
 		-rm -f $@
 		cp xrtfd $@
 		-@ls -gls $@
 		-@echo ""
 
 rtfd:		xrtfd
-		rm -f rtfd
-		ln xrtfd rtfd
+		cp xrtfd $@
 
 xrtfd:		rtfd.o rtfsbr.o RTF_tables.o
 		$(LDCC) $(LDFLAGS)  -o $@ rtfd.o rtfsbr.o RTF_tables.o \
@@ -97,15 +96,14 @@ rtfd.o:		$(HFILES) RTF-types.h
 inst-rtf:	$(BINDIR)rtf
 
 $(BINDIR)rtf:	xrtf
-		-cp $@ zrtf
+		- if [ -f $@ ]; then cp $@ zrtf; fi
 		-rm -f $@
 		cp xrtf $@
 		-@ls -gls $@
 		-@echo ""
 
 rtf:		xrtf
-		rm -f rtf
-		ln xrtf rtf
+		cp xrtf $@
 
 xrtf:		rtf.o rtfsbr.o RTF_tables.o
 		$(LDCC) $(LDFLAGS) -o $@ rtf.o rtfsbr.o RTF_tables.o \

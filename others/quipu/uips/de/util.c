@@ -48,6 +48,7 @@ extern char origDefaultCo[], origDefaultOrg[];
 extern int deLogLevel;
 extern int alarmCount;
 extern int bindTimeout;
+extern void pageprint(char *, ...);
 void onint1();
 
 int
@@ -59,7 +60,7 @@ listlen (struct namelist *lp) {
 }
 
 unsigned int
-alarmLen  {
+alarmLen () {
 	if ((lexequ(qinfo[ORG].entered, origDefaultOrg) == 0) &&
 	(lexequ(qinfo[COUNTRY].entered, origDefaultCo) == 0))
 		return localAlarmTime;
@@ -68,7 +69,7 @@ alarmLen  {
 }
 
 void
-initAlarm  {
+initAlarm () {
 	void onalarm();
 
 	alarmCount = 0;
@@ -77,7 +78,7 @@ initAlarm  {
 }
 
 void
-alarmCleanUp  {
+alarmCleanUp () {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (alarmCount > 1) {
@@ -87,13 +88,13 @@ alarmCleanUp  {
 }
 
 void
-handleTimeout  {
+handleTimeout () {
 	de_unbind();
 	signal(SIGALRM, SIG_IGN);
 }
 
 void
-startUnbindTimer  {
+startUnbindTimer () {
 	void handleTimeout();
 
 	signal(SIGALRM, (VFP) handleTimeout);
@@ -101,7 +102,7 @@ startUnbindTimer  {
 }
 
 void
-stopUnbindTimer  {
+stopUnbindTimer () {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 }
@@ -299,7 +300,7 @@ lastRDN (char *dnstr) {
 }
 
 void
-clearProblemFlags  {
+clearProblemFlags () {
 	limitProblem = notAllReached = FALSE;
 }
 

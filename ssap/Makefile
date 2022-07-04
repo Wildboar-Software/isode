@@ -74,7 +74,7 @@ $(LIBDIR)libssap.a:	libssap.a
 		-@echo ""
 
 $(LINTDIR)llib-lssap:	llib-lssap
-		-cp $@ zllib-lssap
+		- if [ -f $@ ]; then cp $@ zllib-lssap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lssap | \

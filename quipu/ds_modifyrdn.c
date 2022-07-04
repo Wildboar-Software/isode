@@ -40,7 +40,7 @@ extern LLog * log_dsap;
 extern DN mydsadn;
 
 int
-do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
+do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	RDN rdn;
 	Attr_Sequence as;

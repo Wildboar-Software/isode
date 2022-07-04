@@ -26,7 +26,9 @@
  */
 
 
+#ifndef __linux__
 #include <nlist.h>
+#endif
 #ifdef	__NeXT__
 #define	n_name	n_un.n_name
 #endif
@@ -45,6 +47,7 @@
 
 /*  */
 
+#ifndef __linux__
 extern struct nlist nl[];
 #define	N_ARPTAB	0
 #define	N_ARPTAB_SIZE	1
@@ -67,6 +70,7 @@ extern struct nlist nl[];
 #define	N_CLNP_STAT	17
 #define	N_ESIS_STAT	18
 #endif
+#endif
 
 
 int	init_mib (), fin_mib (), set_variable ();
@@ -83,4 +87,5 @@ extern	struct timeval
 extern	OID	nullSpecific;
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);

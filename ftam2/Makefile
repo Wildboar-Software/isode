@@ -34,7 +34,7 @@ PEPYPATH=	-DPEPYPATH
 
 
 LIBD	=	$(TOPDIR)libftam.a $(TOPDIR)libisode.a 
-LIBES	=	$(TOPDIR)libftam.a $(LIBISODE)
+LIBES	=	$(TOPDIR)libftam.a $(LIBISODE) -lcrypt
 LLIBS	=	$(TOPDIR)llib-lftam $(TOPDIR)llib-lisode
 CFILES	=	ftamd.c ftamsystem.c ftamd-manage.c ftamd-select.c \
 			ftamd-trans.c \
@@ -65,13 +65,14 @@ lint:		l-ftamd l-ftam
 inst-ftamd:	$(SBINDIR)iso.ftam
 
 $(SBINDIR)iso.ftam:	xftamd
-		-cp $@ ziso.ftam
+		- if [ -f $@ ]; then cp $@ ziso.ftam; fi
 		-rm -f $@
 		cp xftamd $@
 		-@ls -gls $@
 		-@echo ""
 
 ftamd:		xftamd
+		cp xftamd $@
 
 xftamd:		ftamd.o ftamsystem.o ftamd-manage.o ftamd-select.o \
 			ftamd-trans.o ftamsbr.o DOCS_tables.o $(LIBD)
@@ -100,13 +101,14 @@ ftamd-trans.o:	ftamsystem.h ftamsbr.h DOCS-types.h $(HFILES) \
 inst-ftam:	$(BINDIR)ftam
 
 $(BINDIR)ftam:	xftam
-		-cp $@ zxftam
+		- if [ -f $@ ]; then cp $@ zxftam; fi
 		-rm -f $@
 		cp xftam $@
 		-@ls -gls $@
 		-@echo ""
 
 ftam:		xftam
+		cp xftam $@
 
 xftam:		ftam.o ftamuser.o ftam-assoc.o ftam-dir.o ftam-get.o \
 			ftam-glob.o ftam-ls.o ftam-mgmt.o ftam-put.o \

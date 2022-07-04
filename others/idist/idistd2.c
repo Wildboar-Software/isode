@@ -21,6 +21,7 @@
 static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd2.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
 #endif
 
+#include <errno.h>
 #include "defs.h"
 #include "Idist-types.h"
 
@@ -428,7 +429,7 @@ str2ia5list (char *s, int len) {
 }
 
 struct type_Idist_FileList *
-	do_listcdir  {
+	do_listcdir () {
 	DIR	*d;
 	struct dirent *dp;
 	struct type_Idist_FileList *base, **flp;
@@ -476,7 +477,7 @@ struct type_Idist_FileList *
 }
 
 int
-fixup  {
+fixup () {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;

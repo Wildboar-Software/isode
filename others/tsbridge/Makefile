@@ -66,13 +66,14 @@ lint:		l-tsbridge
 inst-tsbridge:	$(SBINDIR)tsbridge
 
 $(SBINDIR)tsbridge:	xtsbridge
-		-cp $@ zxtsbridge
+		- if [ -f $@ ]; then cp $@ zxtsbridge; fi
 		-rm -f $@
 		cp xtsbridge $@
 		-@ls -gls $@
 		-@echo ""
 
 tsbridge:	xtsbridge
+		cp xtsbridge $@
 
 xtsbridge:	tsbridge.o
 		$(LDCC) $(LDFLAGS) -o $@ tsbridge.o $(LIBES) $(LSOCKET)

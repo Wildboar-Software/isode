@@ -13,9 +13,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpd.c,v 9.0 199
  *
  */
 
-
+#include "manifest.h"
+#include <stdarg.h>
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include "ntp.h"
 #include "patchlevel.h"
+#include "af_osi.h"
 
 #ifndef L_SET
 #define L_SET SEEK_SET
@@ -84,8 +88,8 @@ extern void clock_update();
 extern void clear();
 extern void clock_filter();
 extern void select_clock();
-extern void advise ();
-extern void adios ();
+extern void adios(char *, char *, ...);
+extern void advise(int, char *, char *, ...);
 extern void init_logical_clock();
 extern void create_osilisten ();
 extern void iso_init ();
@@ -210,7 +214,7 @@ main (int argc, char *argv[]) {
 }
 
 int
-doit  {
+doit () {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -635,7 +639,7 @@ init_ntp (char *config) {
 			TRACE (1, ("Ignoring line %s ...", argv[0]));
 	}
 	/*
-	 *  Read saved drift compensation value.
+	 *  Read saved drift compensation register value.
 	 */
 	if ((fp = fopen(driftcomp_file, "r")) != NULL) {
 		if (fscanf(fp, "%lf", &j) == 1 && j > -1.0 && j < 1.0) {
@@ -973,7 +977,7 @@ other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
 			break;
 
 		case TBLPEER_AUTH:
-			advise (LLOG_NOTICE, "auth code not done yet");
+			advise (LLOG_NOTICE, NULLCP, "auth code not done yet");
 			break;
 		}
 		argc -= 2;
@@ -998,7 +1002,24 @@ static int kern_hz, kern_tick;
 #endif
 
 static void
-init_kern_vars  {
+init_kern_vars () {
+#ifdef __linux__
+	kern_hz = HZ;
+
+	if (tickadj == 0)
+		tickadj = 10*1000/HZ;
+
+	struct timex txc = {};
+	txc.tick = tickadj * 1000;  /* convert tickadj to micoseconds */
+	txc.modes = MOD_CLKB;
+
+	if (ntp_adjtime(&txc) < 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "ntp_adjtime with %d fails", tickadj);
+	} else {
+		advise (LLOG_NOTICE, NULLCP,  "System tickadj SET to %d", tickadj);
+		kern_tickadj = tickadj;
+	}
+#else  /* not __linux__ */
 	int kmem;
 	static char	*memory = "/dev/kmem";
 	static struct nlist nl[4];
@@ -1084,6 +1105,7 @@ init_kern_vars  {
 	}
 #endif	/* SETTICKADJ */
 	close(kmem);
+#endif  /* __linux__ */
 
 	/*
 	 *  If we have successfully discovered `hz' from the kernel, then we
@@ -1169,7 +1191,7 @@ GetHostName (char *name, struct Naddr *addr) {
 }
 /* every hour, dump some useful information to the log */
 static void
-hourly  {
+hourly () {
 	char buf[200];
 	int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -1311,7 +1333,7 @@ read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #endif
 
 int
-create_listeners  {
+create_listeners () {
 	create_sockets(servport);
 
 	create_osilisten (osiaddress);
@@ -1338,7 +1360,7 @@ paddr (struct Naddr *addr) {
 }
 
 int
-envinit  {
+envinit () {
 	int s;
 
 	if (!debug) {
@@ -1350,7 +1372,7 @@ envinit  {
 		open("/", 0);
 		dup2(0, 1);
 		dup2(0, 2);
-		setpgrp(0, getpid());
+		setpgrp();
 #ifdef TIOCNOTTY
 		s = open("/dev/tty", O_RDWR);
 		if (s >= 0) {
@@ -1381,17 +1403,16 @@ envinit  {
 #endif
 }
 
-#include <varargs.h>
+#include <stdarg.h>
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 	extern LLog *pgm_log;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -1408,17 +1429,14 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...)
+{
 	extern LLog    *pgm_log;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

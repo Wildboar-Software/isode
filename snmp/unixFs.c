@@ -167,7 +167,7 @@ int offset;
 try_again:
 		fs = get_fsent(INST_PTR(oid,ot),INST_SZ(oid,ot), 1);
 		if( fs == NULL ) {
-			if( ((int)ot->ot_info + 1) > fsMAX )
+			if( ((ssize_t)ot->ot_info + 1) > fsMAX )
 				return(NONAME);
 
 			oid->oid_nelem -= INST_SZ(oid,ot);
@@ -204,7 +204,7 @@ try_again:
 
 	/*** Now, return the particular variable. ***/
 
-	switch( (int)ot->ot_info ) {
+	switch( (ssize_t)ot->ot_info ) {
 	case fsIdentifier:
 		return( o_integer(oi, v, fs->fs_Identifier) );
 	case fsName:

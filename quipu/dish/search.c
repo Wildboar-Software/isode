@@ -59,7 +59,7 @@ Filter          get_filter ();
 char           *TidyString ();
 char		allow_move = TRUE;
 
-int		csr_compar ();
+static int	csr_compar ();
 
 int
 call_search (int argc, char **argv) {

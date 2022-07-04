@@ -61,16 +61,18 @@ int	interrupted;
 static ftamloop (char **vec, int error);
 static SFD intrser (int sig);
 
-void	adios (char* what, ...);
-void	advise (char* what, ...);
-static void _advise (char* what, va_list ap);
+void	adios (char *what, char *fmt, ...);
+void	advise (char *what, char *fmt, ...);
+static void _advise (char* what, char *fmt, va_list ap);
 
 #ifndef	BRIDGE
-SFD	intrser ();
+static SFD	intrser ();
 #endif
 
 extern char* command_prompt;
 extern char* default_prompt();
+
+static	ftamloop (), arginit ();
 
 /*    MAIN */
 
@@ -562,16 +564,14 @@ ask (char *fmt) {
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
-
-
-void	adios (char* what, ...) {
+void	adios (char *what, char *fmt, ...)
+{
 	struct FTAMindication   ftis;
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -597,21 +597,23 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (char*what, ...) {
+void	advise (char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void _advise (char* what, va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap)
+{
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 #ifndef	BRIDGE
 	if (hash && marks >= BUFSIZ) {

@@ -68,13 +68,14 @@ lint:		l-mosy
 inst-mosy:	$(BINDIR)mosy
 
 $(BINDIR)mosy:	xmosy
-		-cp $@ zxmosy
+		- if [ -f $@ ]; then cp $@ zxmosy; fi
 		-rm -f $@
 		cp xmosy $@
 		-@ls -gls $@
 		-@echo ""
 
 mosy:		xmosy
+		cp xmosy $@
 
 xmosy:		mosyvrsn.o
 		$(LDCC) $(LDFLAGS) -o $@ mosy.o yacc.o pepy_misc.o mosyvrsn.o \

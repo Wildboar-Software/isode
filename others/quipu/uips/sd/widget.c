@@ -83,7 +83,7 @@ int text_height;
 jmp_buf	env;
 
 void
-initwidgets  {
+initwidgets () {
 	initscr();
 	noecho();
 	crmode();
@@ -93,7 +93,7 @@ initwidgets  {
 }
 
 void
-textfresh  {
+textfresh () {
 	wrefresh (Text);
 }
 
@@ -116,12 +116,12 @@ WIDGET	*thesewdgts;
 }
 
 int
-linec  {
+linec () {
 	return (int) LINES;
 }
 
 int
-gety  {
+gety () {
 	int y,x;
 	getyx(Text, y, x);
 	/* Get rid of lint warning */
@@ -292,7 +292,7 @@ WINDOW	*text;
 }
 
 void
-deleteactive  {
+deleteactive () {
 	if (activelist.count > 0)
 		--(activelist.count);
 }
@@ -304,7 +304,7 @@ activeindex (int indx) {
 
 /* Refresh each of the active widgets and the current text window */
 void
-redraw  {
+redraw () {
 	int	i;
 
 #ifndef QUICKREFRESH
@@ -484,7 +484,7 @@ WIDGET	*wdgt;
 
 /* Loop forever, calling widget callback functions when activated */
 void
-interact  {
+interact () {
 	int	ch, indx;
 	void		int_quit(), jumpback();
 
@@ -861,7 +861,7 @@ char	label[];
 
 /* Try to locate the bottom of the last set of widgets displayed */
 int
-lowesty  {
+lowesty () {
 	int		cnt = 0;
 	WIDGET		*wdgts;
 
@@ -904,7 +904,7 @@ xprintint (char *fmt, int a) {
 }
 
 void
-cleartext  {
+cleartext () {
 #ifndef QUICKREFRESH
 	clearok (Text,TRUE);
 #endif /* QUICKREFRESH */
@@ -913,7 +913,7 @@ cleartext  {
 
 /* Jump back to the interact function only on an interrupt */
 void
-jumpback  {
+jumpback () {
 	waddstr(Text,"\n*** Interrupted ***\n");
 	wrefresh(Text);
 	longjmp(env, TRUE);
@@ -921,19 +921,19 @@ jumpback  {
 
 /* This is used as a declaration, when no function callback is required */
 void
-nullfn  {
+nullfn () {
 }
 
 /* This is used by widgets that just want to kill the current level */
 void
-quitfn  {
+quitfn () {
 	wclear(Text);
 	wrefresh(Text);
 	killwidgets(activelist.widgets[activelist.count - 1]);
 }
 
 void
-endwidgets  {
+endwidgets () {
 	move(LINES-1, 0);
 	refresh();
 	endwin();

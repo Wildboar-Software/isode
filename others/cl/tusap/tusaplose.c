@@ -14,22 +14,21 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <starg.h>
 #include "tpkt.h"
 
 /*  */
 
 #ifndef	lint
-int	tusaplose (va_alist)
-va_dcl {
+static int _tusaplose ();
+
+int	tusaplose (struct TSAPdisconnect *td, ...) {
 	int	    reason,
-	result;
-	struct TSAPdisconnect *td;
+		    result;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, td);
 
-	td = va_arg (ap, struct TSAPdisconnect *);
 	reason = va_arg (ap, int);
 
 	result = _tusaplose (td, reason, ap);
@@ -59,11 +58,14 @@ _tusaplose (	/* what, fmt, args ... */
 ) {
 	char  *bp;
 	char    buffer[BUFSIZ];
+	char    *what, *fmt;
 
 	if (td) {
 		bzero ((char *) td, sizeof *td);
 
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		td -> td_reason = reason;

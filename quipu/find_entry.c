@@ -465,7 +465,7 @@ really_find_entry (
 
 
 int
-referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, int chain) {
+referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, char chain) {
 	int ret;
 	struct di_block     * di_tmp;
 

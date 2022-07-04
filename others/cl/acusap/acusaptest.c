@@ -28,7 +28,7 @@
 #include "isoaddrs.h"
 #include "internet.h"
 #include "ADD-types.h"
-#include "varargs.h"
+#include <stdarg.h>
 
 #include "ssap.h"
 #include "susap.h"
@@ -76,8 +76,8 @@ static	  struct  type_ADD_Sum  *pSum = &Sum;
 
 void acs_adios();
 void acs_advise();
-void adios();
-void advise();
+void	adios (char *, char *, ...);
+void	advise (char *, char *, ...);
 
 /*  */
 
@@ -158,7 +158,7 @@ main (int argc, char **argv, char **envp) {
 
 /*-------------------------------------*/
 int
-togglemode
+togglemode ()
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -176,7 +176,7 @@ togglemode
 
 /*-------------------------------------*/
 int
-bind
+bind ()
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -206,7 +206,7 @@ bind
 
 /*-------------------------------------*/
 int
-initbindvars
+initbindvars ()
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -234,7 +234,7 @@ initbindvars
 
 /*-------------------------------------*/
 int
-unbind
+unbind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -255,7 +255,7 @@ unbind
 
 /*-------------------------------------*/
 int
-listenup
+listenup ()
 /*-------------------------------------*/
 {
 	;
@@ -298,7 +298,7 @@ listenup
 
 /*-------------------------------------*/
 int
-audtsendreq
+audtsendreq ()
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -328,7 +328,7 @@ audtsendreq
 
 /*-------------------------------------*/
 int
-audtsend
+audtsend ()
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -367,7 +367,7 @@ audtsend
 
 /*-------------------------------------*/
 int
-audtread
+audtread ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -446,7 +446,7 @@ validbinding (
 
 /*-------------------------------------*/
 int
-audtrebind
+audtrebind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)
@@ -579,13 +579,13 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 /*  */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...)
+{
 	va_list ap;
-	va_start (ap);
-	_advise (ap);
+    va_start (ap, fmt);
+    _advise (what, fmt, ap);
 	va_end (ap);
 	_exit (1);
 }
@@ -599,19 +599,17 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char *what, char *fmt, ...) {
 	va_list ap;
-	va_start (ap);
-	_advise (ap);
+    va_start (ap, fmt);
+    _advise (what, fmt, ap);
 	va_end (ap);
 }
 
-static void
-_advise (va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+    _asprintf (buffer, what, fmt, ap);
 	fflush (stdout);
 	fprintf (stderr, "%s: ", myservice);
 	fputs (buffer, stderr);
@@ -629,12 +627,10 @@ advise (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
-	char   *what;
+void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
-	va_start (ap);
-	_advise (ap);
+	va_start (ap, fmt);
+	_advise (what, fmt, ap);
 	va_end (ap);
 }
 #else

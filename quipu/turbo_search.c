@@ -637,16 +637,16 @@ int			toplevel;
 			if (phoneflag)
 				avl_prefixapply(theindex, thestring,
 								build_indexnode, (caddr_t) node,
-								substring_prefix_tel_cmp, (caddr_t)len,
+								substring_prefix_tel_cmp, (caddr_t)(size_t)len,
 								NOTOK);
 			else
 				avl_prefixapply(theindex, thestring,
 								build_indexnode, (caddr_t) node,
-								substring_prefix_cmp, (caddr_t)len, NOTOK);
+								substring_prefix_cmp, (caddr_t)(size_t)len, NOTOK);
 		} else {
 			avl_prefixapply(theindex, thestring,
 							build_indexnode, (caddr_t) node,
-							substring_prefix_case_cmp, (caddr_t)len, NOTOK);
+							substring_prefix_case_cmp, (caddr_t)(size_t)len, NOTOK);
 		}
 
 		if (node->in_num == 0) {

@@ -53,7 +53,7 @@ void closing_analyse() ;
 extern LLog * log_dsap;
 extern LLog * tsap_log;
 
-time_t	timenow;
+extern time_t	timenow;
 
 int
 dsa_wait (int secs) {

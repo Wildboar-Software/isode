@@ -107,7 +107,7 @@ int	pid,
 
 
 void
-dummy  {
+dummy () {
 	;
 }
 

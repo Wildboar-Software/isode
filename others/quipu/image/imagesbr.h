@@ -58,7 +58,8 @@ struct type_IMAGE_Image *fetch_image ();
 
 /* ERRORS */
 
-void	adios (), advise ();
+void	adios (char *what, char *fmt, ...);
+void	advise (char *what, char *fmt, ...);
 
 
 /* MISC */

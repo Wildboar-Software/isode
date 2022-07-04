@@ -44,7 +44,7 @@ $(LIBDIR)libsusap.a:	libsusap.a
 		-@echo ""
  
 $(LINTDIR)llib-lsusap:	llib-lsusap
-		-cp $@ zllib-lsusap
+		- if [ -f $@ ]; then cp $@ zllib-lsusap; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lsusap > $@

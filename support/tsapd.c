@@ -25,6 +25,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
@@ -154,8 +156,8 @@ extern	int	as_print (), de_print (), fi_print ();
 #endif
 
 
-void	adios (char*what, ...);
-void	advise (int code, ...);
+void	adios (char *, char *, ...);
+void	advise (int, char *, char*, ...);
 
 static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event);
 
@@ -173,9 +175,10 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 static int  setperms ();
 static int  tsapd ();
 static  envinit ();
-#ifndef	IAE
 static	arginit ();
-#endif
+static	search_directory ();
+static int	rebind_to_directory (), make_bind_args (), unbind_from_directory (),
+            do_error ();
 
 
 
@@ -997,9 +1000,9 @@ char	**vec;
 
 /*  */
 
-static	search_directory ( int	firstime;
+static	search_directory ( int	firstime )
 {
-							)nt	    i;
+							int	    i;
 	struct ds_search_arg *sa = &search_arg;
 		struct ds_search_result search_result;
 			struct ds_search_result *sr = &search_result;
@@ -1385,7 +1388,7 @@ static int  rebind_to_directory () {
 
 /*  */
 
-static	int	make_bind_args ( struct ds_bind_arg *ba, *br; struct ds_bind_error *be) {
+static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -1423,11 +1426,11 @@ static int  unbind_from_directory () {
 
 /*  */
 
-static int  do_error ( struct DSError *de;
+static int  do_error ( struct DSError *de )
 {
 	if (de -> dse_type == DSE_REFERRAL
 			&& de -> ERR_REFERRAL.DSE_ref_candidates) {
-							 )egister struct access_point *ap;
+							 struct access_point *ap;
 			struct ds_bind_arg bind_arg,
 				bind_result;
 				struct ds_bind_arg *ba = &bind_arg,
@@ -1618,10 +1621,12 @@ static  envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (char*what, ...) {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
+
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	_ll_log (pgm_log, LLOG_FATAL, what, ap);
 
@@ -1642,14 +1647,12 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (int code, ...) {
-	char* what;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap, code);
-	what = va_arg(ap, char*);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, code, what, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

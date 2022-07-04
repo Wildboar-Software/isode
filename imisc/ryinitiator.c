@@ -516,12 +516,12 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 static void	_advise ();
 
 
-void	adios (char*what, ...) {
+void	adios (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -538,22 +538,21 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (char*what, ...) {
+void	advise (char* what, char* fmt, ...) {
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_advise (what, ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (char* what, va_list ap) {
+static void  _advise (char* what, char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, what, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 
@@ -572,22 +571,3 @@ advise (char *what, char *fmt) {
 }
 #endif
 
-
-#ifndef	lint
-void	ryr_advise (char*what, ...) {
-	va_list ap;
-
-	va_start (ap, what);
-
-	_advise (what, ap);
-
-	va_end (ap);
-}
-#else
-/* VARARGS */
-
-void
-ryr_advise (char *what, char *fmt) {
-	ryr_advise (what, fmt);
-}
-#endif

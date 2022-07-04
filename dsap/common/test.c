@@ -36,7 +36,7 @@ extern int parse_status;
 int
 main (int argc, char **argv) {
 	char * buffer;
-	char * getline();
+	char * _getline();
 	int opt;
 	extern int optind;
 	extern char *optarg;
@@ -80,7 +80,7 @@ main (int argc, char **argv) {
 		for (;;) {
 			fprintf (stderr,"-> ");
 
-			if ((buffer = getline(stdin)) == NULLCP)
+			if ((buffer = _getline(stdin)) == NULLCP)
 				break;
 
 			if (*buffer == 'q' && strlen(buffer) == 1)
@@ -106,7 +106,7 @@ do_parse (char *str) {
 	Attr_Sequence as_combine();
 	PE pe = NULLPE;
 	static PS ps = NULLPS;
-	extern PS opt;
+	extern PS _opt;
 
 	parse_status = 0;
 
@@ -128,7 +128,7 @@ do_parse (char *str) {
 		return;
 	}
 
-	pe2pl (opt,pe);
+	pe2pl (_opt,pe);
 
 	as_free (as);
 
@@ -137,14 +137,14 @@ do_parse (char *str) {
 		return;
 	}
 
-	ps_print (opt,"READOUT:\n");
-	as_print (opt,as,READOUT);
+	ps_print (_opt,"READOUT:\n");
+	as_print (_opt,as,READOUT);
 
 	if (as_cmp (as,as2) != 0)
 		fprintf (stderr,"*** Compare/Copy problem ***\n");
 
-	ps_print (opt,"EDBOUT:\n");
-	as_print (opt,as2,EDBOUT);
+	ps_print (_opt,"EDBOUT:\n");
+	as_print (_opt,as2,EDBOUT);
 
 	if (ps == NULL
 			&& ((ps = ps_alloc (str_open)) == NULLPS)

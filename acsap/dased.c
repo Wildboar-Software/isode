@@ -24,10 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/dased.c,v 9.0 1992/06
  *
  */
 
-
+#include <unistd.h>
+#define getdtablesize()	(sysconf (_SC_OPEN_MAX))
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "sys.file.h"
 
@@ -74,12 +75,16 @@ static	PS	ps;
 static	PS	nps;
 
 
-int	dns_compar ();
-DNS	dase_interact (), just_say_no ();
-PE	name2psap ();
+static int	dns_compar ();
+static DNS	dase_interact (), just_say_no ();
+static PE	name2psap ();
 
-void	adios (), advise (), ts_adios (), ts_advise ();
-
+static void	adios (char *, char *, ...);
+static void	advise (int, char *, char *, ...);
+static void	ts_adios (), ts_advise ();
+static void	dased (), dase_aux (), make_bind_args (),
+            arginit (), envinit ();
+static int	bind_to_dsa ();
 
 char   *dn2str ();
 PE	grab_pe ();
@@ -170,8 +175,7 @@ main (int argc, char **argv, char **envp) {
 
 /*    DASE */
 
-static
-dased (int vecp, char **vec) {
+static void dased (int vecp, char **vec) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
@@ -230,8 +234,7 @@ dased (int vecp, char **vec) {
 
 /*  */
 
-static
-dase_aux (struct type_DASE_Query__REQ *req) {
+static void dase_aux (struct type_DASE_Query__REQ *req) {
 	int    i;
 	int	    vecp;
 	char **vp;
@@ -459,7 +462,7 @@ send_rsp:
 /*  */
 
 static
-bind_to_dsa  {
+bind_to_dsa () {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
 	struct ds_bind_error be;
@@ -497,7 +500,7 @@ bind_to_dsa  {
 
 /*  */
 
-static int
+static void
 make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -739,8 +742,7 @@ name2psap (DN dn) {
 
 /*    INIT */
 
-static
-arginit (char **vec) {
+static void arginit (char **vec) {
 	int	    argp;
 	char   *ap;
 	char  **argptr,
@@ -846,7 +848,7 @@ arginit (char **vec) {
 /*  */
 
 static
-envinit  {
+envinit()  {
 	int     i,
 	sd;
 
@@ -911,13 +913,13 @@ envinit  {
 /*    ERRORS */
 
 #ifndef lint
-static void    adios (va_alist)
-va_dcl {
+static void    adios (char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+    _ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -934,16 +936,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef lint
-static void    advise (va_alist)
-va_dcl {
-	int     code;
+static void    advise (int code, char *what, char *fmt, ...)
+{
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+    _ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

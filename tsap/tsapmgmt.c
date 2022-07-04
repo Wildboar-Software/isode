@@ -49,18 +49,15 @@ static struct qbuf data;
 
 /* VARARGS2 */
 
-int	TManGen (va_alist)
-va_dcl {
+int	TManGen (unsigned int type, ...) {
 	int	    a,
 	result;
 	struct TSAPaddr *b;
-	unsigned int type;
 	struct tsapblk *tb;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, type);
 
-	type = va_arg (ap, unsigned int);
 	tb = va_arg (ap, struct tsapblk *);
 	a = 0, b = NULLTA;
 	switch (type) {
@@ -173,7 +170,7 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 /*  */
 
 static int
-ManInit  {
+ManInit () {
 	struct sockaddr_in sin;
 	struct sockaddr_in *sock = &sin;
 	struct servent *sp;

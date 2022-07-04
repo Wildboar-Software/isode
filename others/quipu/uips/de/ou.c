@@ -43,12 +43,13 @@ extern int highNumber;
 extern int exactMatch;
 extern char exactString[];
 
-struct namelist * ouatts;
+extern struct namelist * ouatts;
 
 struct ds_search_arg *fillMostOUSearchArgs();
 
 void makeExplicitOUFilter();
 void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
+extern void pageprint(char *, ...);
 
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};
@@ -98,7 +99,7 @@ freeOUs (struct namelist **listpp) {
 }
 
 void
-freeOUSearchArgs  {
+freeOUSearchArgs () {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);

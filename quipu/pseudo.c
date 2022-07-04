@@ -403,7 +403,7 @@ write_dsa_entry (Entry eptr) {
 }
 
 int
-load_pseudo_attrs (int data_type) {
+load_pseudo_attrs (char data_type) {
 	FILE * fptr;
 	char filename[LINESIZE];
 	DN dn;

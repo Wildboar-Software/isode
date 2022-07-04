@@ -30,7 +30,7 @@ do
 		    BSD42|ROS)
 			    echo ranlib "$L"
 			    case "$L" in
-				/*)	(cd /usr/tmp; ranlib "$L")
+				/*)	(cd /tmp; ranlib "$L")
 					;;
 
 				*)	ranlib "$L"

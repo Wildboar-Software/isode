@@ -43,6 +43,6 @@ extern LLog *pgm_log;
 char   *SReportString ();
 
 void	rts_adios (), rts_advise ();
-void	adios (char* what, ...);
-void	advise (int code, char* what, ...);
-void	ryr_advise (char* what, ...);
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+void	ryr_advise (char *, char *, ...);

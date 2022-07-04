@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr
 
 #include <ctype.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "imagesbr.h"
 #include "quipu/bind.h"
 #include "quipu/ds_search.h"
@@ -67,7 +67,7 @@ static int  stay_bound = 0;
 DN	local_dn;
 
 
-struct dn_seq *dm2dn_seq ();
+static struct dn_seq *dm2dn_seq ();
 
 
 extern char *local_dit;
@@ -165,7 +165,8 @@ mbox2ak (char *local, char *domain) {
 static int bound = 0;
 static int dlevel = 0;
 
-struct dn_seq *dm2dn_seq_aux ();
+static struct dn_seq *dm2dn_seq_aux ();
+static  do_bind ();
 
 
 static struct dn_seq *
@@ -420,7 +421,7 @@ free_filter:
 /*  */
 
 static
-do_bind  {
+do_bind () {
 	struct ds_bind_arg bind_arg,
 		bind_result;
 	struct ds_bind_arg *ba = &bind_arg,
@@ -628,16 +629,15 @@ caddr_t line;
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -654,23 +654,22 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
+void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap)
+{
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 

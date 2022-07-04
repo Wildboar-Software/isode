@@ -38,6 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/map.c,v 9.0 1992/06/16 1
 #endif
 #ifdef TERMIOS
 #include <sys/termios.h>
+#include <unistd.h>
 #endif
 #include <fcntl.h>
 
@@ -65,6 +66,13 @@ extern int transparent;
 extern int showoptions;
 extern int debug;
 extern int telnet_profile;
+
+#ifdef TERMIOS
+static realptyecho ();
+#endif
+
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 TEXT_UPDATE *ndq_queue, *deq();		/*Incoming (From Net) NDQ's*/
 

@@ -50,6 +50,8 @@ extern char * prtparse ();
 extern char * mapPhone ();
 extern int ch_set;
 extern int telcmp();
+extern void pageprint(char *, ...);
+extern char *strdup();
 
 
 
@@ -746,7 +748,7 @@ PE	pe;
 
 
 int
-specialSyntaxHandlers  {
+specialSyntaxHandlers () {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

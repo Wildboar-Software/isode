@@ -28,7 +28,7 @@ install: inst-all clean
 inst-idm:	$(BINDIR)idm
 
 $(BINDIR)idm:	xdm
-		-cp $@ zxdm
+		- if [ -f $@ ]; then cp $@ zxdm; fi
 		-rm -f $@
 		cp xdm $@
 		-@ls -gls $@

@@ -60,6 +60,10 @@ static	int	timelap;
 static	int	timelap2;
 static  int     RTTperthread = MAXTIME;
 
+static int  wait_for_action (), new_thread (), next_thread (),
+            bulk2_aux (), new_bound ();
+static  print_bulk (), free_thread (), free_request (),
+        free_bound (), push_requests ();
 
 /* BINDING INFORMATION (results) */
 struct binding {
@@ -180,13 +184,14 @@ static	int	boundlimit = MAXBOUNDS;
 
 
 /* MISCELLANEOUS INFORMATION */
-OID	oid_median (), oid_copy ();
+static OID	oid_median (), oid_copy ();
 
 
 extern	int	debug;
 extern	int	watch;
 
-void	adios (), advise ();
+void	adios (char *, char *, ...);
+void	advise (char *, char *, ...);
 char   *snmp_error ();
 
 /*    BULK1 */

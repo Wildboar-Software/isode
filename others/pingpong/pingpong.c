@@ -24,6 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/pingpong/RCS/pingpong.c,
  *
  */
 
+#include "manifest.h"
 #include <stdio.h>
 #include "isoaddrs.h"
 #include "tsap.h"
@@ -87,7 +88,7 @@ do_args (int argc, char **argv) {
 
 
 int
-start_listener  {
+start_listener () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -98,7 +99,7 @@ start_listener  {
 }
 
 int
-ping_address  {
+ping_address () {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -121,7 +122,7 @@ ping_address  {
 
 
 int
-wait_for_result  {
+wait_for_result () {
 	int	vecp = 0;
 	char    *vec[4];
 	int	i;
@@ -202,7 +203,7 @@ sink_data (int sd) {
 }
 
 int
-progress_connection  {
+progress_connection () {
 	struct TSAPdisconnect	td_s;
 	struct TSAPdisconnect	*td = &td_s;
 	struct TSAPconnect tcs;
@@ -238,7 +239,7 @@ progress_connection  {
 }
 
 int
-stop_nicely  {
+stop_nicely () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -247,7 +248,7 @@ stop_nicely  {
 
 
 int
-updatemask  {
+updatemask () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 

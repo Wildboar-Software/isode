@@ -149,8 +149,12 @@ else
 #endif
 
 
+int	ll_log (LLog*, ...);
+int	ll_printf (LLog*, ...);
+char   *ll_preset (char*, ...);
+
 int	ll_open ();
-int	ll_log (LLog*, ...), _ll_log ();
+int	_ll_log ();
 int	ll_close ();
 
 void	ll_hdinit ();

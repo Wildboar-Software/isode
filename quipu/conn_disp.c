@@ -121,7 +121,6 @@ running_analyse (struct connection *cn, struct DSAPindication *di) {
 	struct op_list *tmp_op_list ;
 	struct DSArgument *arg ;
 	UTCtime ut ;
-	time_t timenow ;
 
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Ping! We have a running_analysis to do...\n") ;

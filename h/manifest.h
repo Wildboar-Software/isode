@@ -179,13 +179,29 @@ typedef char *CP;
 #define	NULLVP		((char **) 0)
 #endif
 
+#include <stdint.h>
+
 #ifndef INTDEF
-#define	INTDEF	long
+#define	INTDEF	int32_t
 #endif
 
 typedef INTDEF integer;
 #define NULLINT		((integer) 0)
 #define NULLINTP	((integer *) 0)
+
+#if defined(SVR4) || defined(SYSV) || defined(BSD44) || defined(LINUX)
+#else
+#define UNIONWAIT
+#endif
+
+#ifdef LINUX
+#define _POSIX_SOURCE	1
+#define _POSIX_C_SOURCE	200809L
+#define _XOPEN_SOURCE	700
+#define _XOPEN_SOURCE_EXTENDED	1
+#define _DEFAULT_SOURCE	1
+#include <features.h>
+#endif
 
 #ifndef	makedev
 #include <sys/types.h>
@@ -196,7 +212,7 @@ typedef struct fd_set { int fds_bits[1]; } fd_set;
 #endif
 #endif
 
-#if defined (_AIX) && defined (SYS5)
+#if defined (LINUX) || defined (_AIX) && defined (SYS5)
 #include <sys/select.h>
 #endif
 
@@ -212,7 +228,7 @@ typedef unsigned long	u_long;
 #include <sys/select.h>
 #endif
 
-#ifndef FD_SET
+#if	!defined(FD_SET) && !defined(LINUX)
 #define	FD_SETSIZE	    (sizeof (fd_set) * 8)
 
 #define FD_SET(f,s)	    ((s)->fds_bits[0] |= (1 << (f)))
@@ -225,16 +241,20 @@ typedef unsigned long	u_long;
 
 
 #undef	IP
-typedef int	*IP;
+typedef ssize_t	*IP;
 #define	NULLIP		((IP) 0)
 
 
-typedef	int	(*IFP) ();
+typedef	ssize_t	(*IFP) ();
 #define	NULLIFP		((IFP) 0)
 
 
 typedef void   (*VFP) ();
 #define	NULLVFP		((VFP) 0)
+
+
+typedef	void * (*PFP) ();
+#define	NULLPFP		((PFP) 0)
 
 
 #ifndef	SFD

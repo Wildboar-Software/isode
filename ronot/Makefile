@@ -67,7 +67,7 @@ $(LIBDIR)libronot.a:	libronot.a
 		-@echo ""
 
 $(LINTDIR)llib-lronot:	llib-lronot
-		-cp $@ zllib-lronot
+		- if [ -f $@ ]; then cp $@ zllib-lronot; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lronot | \

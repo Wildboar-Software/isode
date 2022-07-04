@@ -482,7 +482,7 @@ start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 /*  */
 
 static int
-end_spdu (int code, struct local_buf *c) {
+end_spdu (unsigned char code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
@@ -512,7 +512,7 @@ end_spdu (int code, struct local_buf *c) {
 /*  */
 
 static
-start_pgi (int code, struct local_buf *c) {
+start_pgi (unsigned char code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);

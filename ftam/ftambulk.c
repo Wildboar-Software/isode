@@ -36,6 +36,7 @@ static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagn
 static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /*    F-DATA.REQUEST */
+static int  FDataRequestAux (), FDataEndRequestAux (), FCancelRequestAux ();
 
 int
 FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {

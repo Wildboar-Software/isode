@@ -71,8 +71,8 @@ int	join_tcp_client ();
 #endif
 #endif
 
-int	read_tcp_socket ();
-int	write_tcp_socket ();
+ssize_t	read_tcp_socket ();
+ssize_t	write_tcp_socket ();
 int	close_tcp_socket ();
 
 int	select_tcp_socket ();

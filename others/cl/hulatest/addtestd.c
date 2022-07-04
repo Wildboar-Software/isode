@@ -26,6 +26,7 @@
 /* HULA */
 /* addtestd.c - trivial add network service -- responder */
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "ryresponder.h"	/* for generic idempotent responders */
@@ -81,14 +82,14 @@ struct RoSAPindication *roi;
 	struct type_ADD_Addends *paddends;
 
 	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
 	}
 	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	if ((psum = (struct type_ADD_Sum *) calloc (1, sizeof *psum)) == NULL
 			|| in == NULL )

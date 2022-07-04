@@ -27,10 +27,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/0
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "internet.h"
 #include "sys.file.h"
@@ -43,6 +45,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/0
 #include "isoservent.h"
 #include "logger.h"
 #include "tailor.h"
+
+static int   lppd ();
+static void  envinit ();
+static void  ts_advise ();
+static void  arginit ();
 
 /*  */
 
@@ -75,12 +82,8 @@ static struct dispatch *dz;
 static struct dispatch  dps[NTADDRS];
 
 
-#ifndef USE_STDARG
-void  adios (), advise ();
-#else
-void  adios (char* what, char* fmt,...);
-void  advise (int code, ...);
-#endif
+void  adios  (char *, char *, ...);
+void  advise (int, char *, char *, ...);
 
 void	ts_advise ();
 
@@ -312,7 +315,7 @@ no_more:
 /*  */
 
 static
-envinit  {
+envinit () {
 	int     i,
 	sd;
 
@@ -377,25 +380,13 @@ envinit  {
 /*    ERRORS */
 
 #ifndef	lint
-#ifndef USE_STDARG
-void	adios (va_alist)
-va_dcl
-#else
-void  adios (char* what, char* fmt, ...)
-#endif
+void  adios (char *what, char *fmt, ...)
 {
 	va_list ap;
 
-#ifndef USE_STDARG
-	va_start (ap);
-
-	_ll_log (pgm_log, LLOG_FATAL, ap);
-
-#else
 	va_start (ap, fmt);
 
-	_ll_log_aux (pgm_log, LLOG_FATAL, what, fmt, ap);
-#endif
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -412,24 +403,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-#ifndef USE_STDARG
-void	advise (va_alist)
-va_dcl
-#else
-void  advise (int code, ...)
-#endif
+void  advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
-#ifndef USE_STDARG
-	int           code;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-#else
-	va_start (ap, code);
-#endif
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

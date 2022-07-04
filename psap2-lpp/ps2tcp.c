@@ -29,6 +29,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
 
 /* LINTLIBRARY */
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
 #define	LPP
 #include "PS-types.h"
@@ -41,6 +43,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
 #ifdef	BSD42
 #include <sys/ioctl.h>
 #endif
+
+static int  tcpready ();
+static int  PTservice ();
 
 /*    DATA */
 
@@ -250,7 +255,7 @@ struct PSAPindication *pi;
 	fd_set  mask;
 	struct sockaddr_in *isock = &peers[fd];
 
-	if (!FD_SET (fd, &inprogress))
+	if (!FD_ISSET (fd, &inprogress))
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "connection not in progress");
 	FD_ZERO (&mask);

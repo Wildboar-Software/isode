@@ -48,6 +48,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/time.c,v 9.0 19
 extern int strprint ();
 extern int sfree ();
 extern int pstrcmp();
+extern char *strdup();
 
 static UTC	qstr2utct (s, len)
 char   *s;

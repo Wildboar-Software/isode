@@ -36,6 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/string.c,v 9.0 
 
 extern LLog * log_dsap;
 extern char * srealloc ();
+extern char * strdup ();
 
 static short exct = 0;
 static short tel_sntx = 0;
@@ -439,7 +440,7 @@ PE pe;
 }
 
 static char *
-quotechar (int a, char *b) {
+quotechar (char a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
 
@@ -645,7 +646,7 @@ prtparse (char *str) {
 	if ((ptr = prtparse_aux(str)) != NULLCP)
 		return (ptr);
 	else {
-		parse_error ("character '%c' not in printablestring",(char *)char_failed);
+		parse_error ("character '%c' not in printablestring",char_failed);
 		return (NULLCP);
 	}
 }
@@ -1246,7 +1247,7 @@ part_parse (
 }
 
 int
-case_exact_match (int sntx) {
+case_exact_match (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
 	else
@@ -1254,7 +1255,7 @@ case_exact_match (int sntx) {
 }
 
 int
-approx_string (int sntx) {
+approx_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
 	else
@@ -1262,7 +1263,7 @@ approx_string (int sntx) {
 }
 
 int
-sub_string (int sntx) {
+sub_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
 	else
@@ -1270,7 +1271,7 @@ sub_string (int sntx) {
 }
 
 int
-telephone_match (int sntx) {
+telephone_match (short sntx) {
 	return( sntx == tel_sntx );
 }
 

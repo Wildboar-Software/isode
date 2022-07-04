@@ -66,15 +66,14 @@ lint-lpp:;	$(MAKE) LPP=-lpp lint
 inst-imiscd:	$(SBINDIR)$(ROS)imisc
 
 $(SBINDIR)$(ROS)imisc:	ximiscd$(LPP)
-		-cp $@ z$(ROS)imisc
+		- if [ -f $@ ]; then cp $@ z$(ROS)imisc; fi
 		-rm -f $@
 		cp ximiscd$(LPP) $@
 		-@ls -gls $@
 		-@echo ""
 
 imiscd:		ximiscd$(LPP)
-		rm -f imiscd
-		ln ximiscd$(LPP) imiscd
+		cp ximiscd$(LPP) $@
 
 ximiscd$(LPP):	imiscd.o IMISC-Rops.o ryresponder.o IMISC_tables.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ imiscd.o IMISC-Rops.o ryresponder.o \
@@ -102,15 +101,14 @@ ryresponder.o:	ryresponder.h $(HFILES) $(HDIR)tailor.h
 inst-imisc:	$(BINDIR)imisc$(LPP)
 
 $(BINDIR)imisc$(LPP):	ximisc$(LPP)
-		-cp $@ zximisc$(LPP)
+		- if [ -f $@ ]; then cp $@ zximisc$(LPP); fi
 		-rm -f $@
 		cp ximisc$(LPP) $@
 		-@ls -gls $@
 		-@echo ""
 
 imisc:		ximisc$(LPP)
-		rm -f imisc
-		ln ximisc$(LPP) imisc
+		cp ximisc$(LPP) $@
 
 ximisc$(LPP):	imisc.o IMISC-Iops.o ryinitiator.o IMISC_tables.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ imisc.o IMISC-Iops.o ryinitiator.o \

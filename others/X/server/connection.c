@@ -39,6 +39,9 @@ SOFTWARE.
  *
  *****************************************************************/
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
+
 #ifdef ISOCONN
 #include <math.h>
 #endif /* ISOCONN */
@@ -93,6 +96,9 @@ static int unixDomainConnection = -1;
 #include <isode/isoservent.h>
 
 extern char *isodetcpath;
+
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
 
 #ifdef ISODEBUG
 /*
@@ -196,7 +202,7 @@ extern int GiveUp();
 static struct sockaddr_un unsock;
 
 static int
-open_unix_socket  {
+open_unix_socket () {
 	int oldUmask;
 	int request;
 
@@ -228,7 +234,7 @@ open_unix_socket  {
  *****************/
 
 void
-CreateWellKnownSockets  {
+CreateWellKnownSockets () {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
    					 LSB or MSB */
@@ -421,7 +427,7 @@ CreateWellKnownSockets  {
 }
 
 void
-ResetWellKnownSockets  {
+ResetWellKnownSockets () {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
 		/*
@@ -557,7 +563,7 @@ TReadFromClient (int client, char *data, int size, int nonblock) {
 
 jmp_buf	env;
 void
-TimeOut  {
+TimeOut () {
 	longjmp(env, 1);
 }
 static Bool

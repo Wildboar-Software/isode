@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfad.c,v 9.0 199
 #include <grp.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <varargs.h>
 #include "RFA-types.h"	/* type definitions */
 #include "RFA-ops.h"	    /* operation definitions */
 #include "ryresponder.h"
@@ -108,7 +107,7 @@ main (int argc, char **argv) {
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   host, myservice);
 
-	/*--- operation to serve ---*/
+	/*--- register operation to serve ---*/
 	advise (LLOG_EXCEPTIONS, NULLCP, "doing");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, table_RFA_Operations, ds -> ds_operation,
@@ -138,7 +137,7 @@ main (int argc, char **argv) {
 
 
 int
-cleanup  {
+cleanup () {
 }
 
 

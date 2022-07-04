@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-select.c,v 9.0 
 #include <grp.h>
 #include <stdio.h>
 #include <pwd.h>
+#include <unistd.h>
 #include "ftamsystem.h"
 
 
@@ -1509,13 +1510,11 @@ char   *group;
 static int  EACCESS ( char   *file, int	mode) {
 	int	    result;
 
-	seteuid (0);
-	setreuid (myuid);
+	setreuid (myuid, 0);
 
 	result = access (file, mode);
 
-	setreuid (0);
-	seteuid (myuid);
+	setreuid (0, myuid);
 
 	return result;
 }

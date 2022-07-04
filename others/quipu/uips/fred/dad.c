@@ -26,10 +26,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
  */
 
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <pwd.h>
 
 #include "config.h"
@@ -67,13 +69,14 @@ static	char   *myname = "dad";
 static	struct sockaddr_in lo_socket;
 
 
-void	arginit (), envinit ();
+static void	arginit (), envinit ();
 
-void	advise (), adios ();
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
 
 static	dadser ();
 #ifndef	lint
-static int  da_response ();
+static int  da_response (char *, ...);
 static int  _da_response ();
 #endif
 static int  start_dish ();
@@ -197,7 +200,7 @@ int	i;
 #endif
 {
 	int	    pid;
-#ifdef SVR4
+#ifndef UNIONWAIT
 	int	status;
 #else
 	union wait status;
@@ -207,7 +210,7 @@ int	i;
 	signal (SIGCLD, dishser);
 #endif
 
-#ifdef SVR4
+#ifndef UNIONWAIT
 	while ((pid = wait (&status)) != NOTOK
 #else
 	while ((pid = wait (&status.w_status)) != NOTOK
@@ -368,30 +371,29 @@ were_history:
 /*  */
 
 #ifndef	lint
-static int  da_response (va_alist)
-va_dcl {
+static int  _da_response ();
+
+static int  da_response (char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	val = _da_response (ap);
+	val = _da_response (fmt, ap);
 
 	va_end (ap);
 
 	return val;
 }
 
-static int
-_da_response (va_list ap) {
-	int	    cc,
-			fd,
-			len;
+static int  _da_response (char *fmt, va_list ap)
+{
+	int	    cc, fd, len;
 	char    buffer[BUFSIZ];
 
 	fd = va_arg (ap, int);
 
-	_asprintf (buffer, NULLCP, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 	if (debug)
 		fprintf (stderr, "<--- %s\n", buffer);
 
@@ -497,7 +499,7 @@ fork_again:
 /*  */
 
 static
-rcfile  {
+rcfile () {
 	char   *bp;
 	char    buffer[BUFSIZ],
 	command[BUFSIZ],
@@ -608,7 +610,11 @@ int	sig;
 long	code;
 struct sigcontext *sc;
 {
+#ifdef UNIONWAIT
 	union wait status;
+#else
+	int status;
+#endif
 
 	while (wait3 (&status, WNOHANG, (struct rusage *) NULL) > 0)
 		continue;
@@ -675,7 +681,7 @@ arginit (char **vec) {
 /*  */
 
 static void
-envinit  {
+envinit () {
 	int     i,
 	sd;
 
@@ -746,13 +752,12 @@ envinit  {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -769,16 +774,12 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

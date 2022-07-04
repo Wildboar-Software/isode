@@ -35,7 +35,7 @@ DIR		*dirp;	/* stream from opendir() */
 	}
 
 	dirp->dd_loc = dirp->dd_size = 0;	/* invalidate buffer */
-	lseek( dirp->dd_fd, (off_t)0, SEEK_SET );	/* may set errno */
+	lseek( dirfd(dirp), (off_t)0, SEEK_SET );	/* may set errno */
 }
 #else
 int

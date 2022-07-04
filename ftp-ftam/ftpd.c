@@ -63,10 +63,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 #include "manifest.h"
 #include "logger.h"
 extern LLog _ftam_log, *ftam_log;
-#include <varargs.h>
+#include <stdarg.h>
 
 char *ctime();
-void adios (), advise ();
+void adios (char *, char *, ...);
+void advise (char *, char *, ...);
 
 /*
  * File containing login names
@@ -78,7 +79,7 @@ void adios (), advise ();
  */
 #define	FTPUSERS	"/usr/etc/ftpusers"
 
-extern	char *sys_errlist[];
+extern	int errno;
 extern  char ftam_error[];
 extern	char version[];
 
@@ -294,9 +295,9 @@ char *name;
 	data = getdatasock();
 	if (data == NOTOK) {
 		reply(425, "Can't create data socket (%s,%d): %s.",
-			  inet_ntoa(data_source.sin_addr),
-			  ntohs(data_source.sin_port),
-			  sys_errlist[errno]);
+		    inet_ntoa(data_source.sin_addr),
+		    ntohs(data_source.sin_port),
+		    strerror(errno));
 		return (NOTOK);
 	}
 	reply(150, "Opening data connection for %s (%s,%d).",
@@ -309,7 +310,7 @@ char *name;
 			continue;
 		}
 		reply(425, "Can't build data connection: %s.",
-			  sys_errlist[errno]);
+			  strerror(errno));
 		close(data);
 		data = -1;
 		return (NOTOK);
@@ -326,28 +327,24 @@ char *s;
 }
 
 #ifndef	lint
-reply(va_alist)
-va_dcl {
-	int	n;
-	va_list ap;
+static _reply ();
 
-	va_start (ap);
+void reply(int n, ...)
+{
+    va_list ap;
 
-	n = va_arg (ap, int);
+    va_start (ap, n);
 
 	_reply (n, ' ', ap);
 
 	va_end (ap);
 }
 
-lreply(va_alist)
-va_dcl {
-	int	n;
-	va_list ap;
+void lreply(int n, ...)
+{
+    va_list ap;
 
-	va_start (ap);
-
-	n = va_arg (ap, int);
+    va_start (ap, n);
 
 	_reply (n, '-', ap);
 
@@ -359,9 +356,11 @@ int	n;
 char    c;
 va_list ap;
 {
-	char    buffer[BUFSIZ];
+    char    buffer[BUFSIZ];
+    char    *fmt;
 
-	_asprintf (buffer, NULLCP, ap);
+	fmt = va_arg (ap, char *);
+    _asprintf (buffer, NULLCP, fmt, ap);
 
 	printf ("%d%c%s\r\n", n, c, buffer);
 	fflush (stdout);

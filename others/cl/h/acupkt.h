@@ -60,7 +60,7 @@
 #define	ACS_USER_BASE	ACS_USER_NULL
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
-int     acusaplose ();
+int     acusaplose (struct AcSAPindication *aci, ...);
 int     ps2aculose ();
 
 struct type_ACS_Association__information *info2_apdu ();

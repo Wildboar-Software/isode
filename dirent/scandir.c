@@ -59,7 +59,7 @@ int (*select)(), (*dcomp)();
 
 	if ((dirp = opendir(dirname)) == NULL)
 		return(-1);
-	if (fstat(dirp->dd_fd, &stb) < 0)
+	if (fstat(dirfd(dirp), &stb) < 0)
 		return(-1);
 
 	/*
@@ -96,7 +96,7 @@ int (*select)(), (*dcomp)();
 		 * realloc the maximum size.
 		 */
 		if (++nitems >= arraysz) {
-			if (fstat(dirp->dd_fd, &stb) < 0)
+			if (fstat(dirfd(dirp), &stb) < 0)
 				return(-1);	/* just might have grown */
 			arraysz = stb.st_size / 12;
 			names = (struct dirent **)realloc((char *)names,

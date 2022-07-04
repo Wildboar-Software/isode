@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 19
 /*  */
 
 PE
-strb2bitstr (char *cp, int len, int class, int id) {
+strb2bitstr (char *cp, int len, PElementClass class, PElementID id) {
 	int    i,
 		   j,
 		   bit,

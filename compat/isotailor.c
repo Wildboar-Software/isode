@@ -1006,7 +1006,7 @@ events_value (struct pair *pairs, char *s, char *var) {
 
 #ifdef DEBUG
 int
-tailorfree  {
+tailorfree () {
 	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)

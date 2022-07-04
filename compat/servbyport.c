@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyport.c,v 9.0 1
 /*  */
 
 struct isoservent *
-getisoserventbyport (char *provider, int port) {
+getisoserventbyport (char *provider, unsigned short port) {
 	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);

@@ -39,11 +39,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 
 /*  */
 
-void	asprintf (char*bp, char*what, char*fmt, ...) {	/* fmt, args, ... */
-	va_list ap;
-	va_start(ap, fmt);
-	_asprintf (bp, what, fmt, ap);
-	va_end(ap);
+void	asprintf (char *bp, va_list ap) {	/* what, fmt, args, ... */
+    char   *what, *fmt;
+
+    what = va_arg (ap, char *);
+    fmt  = va_arg (ap, char *);
+
+    _asprintf (bp, what, fmt, ap);
 }
 
 #ifdef X25

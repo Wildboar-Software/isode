@@ -66,7 +66,7 @@ lint:           l-pipe l-unbind l-quipurc
 inst-pipe:	$(BINDIR)list
 
 $(BINDIR)list:	xpipe
-		-cp $@ zxpipe
+		- if [ -f $@ ]; then cp $@ zxpipe; fi
 		-rm -f $@
 		cp xpipe $@
 		-rm -f $(BINDIR)compare
@@ -109,7 +109,7 @@ l-pipe:;	$(LINT) $(LFLAGS) pipe.c socket.c $(LLIBS) \
 inst-unbind:	$(BINDIR)unbind
 
 $(BINDIR)unbind: xunbind
-		-cp $@ zxunbind
+		- if [ -f $@ ]; then cp $@ zxunbind; fi
 		-rm -f $@
 		cp xunbind $@
 		-rm -f $(BINDIR)squid
@@ -132,7 +132,7 @@ l-unbind:;	$(LINT) $(LFLAGS) unbind.c socket.c $(LLIBS) \
 inst-dishinit:	$(SBINDIR)dishinit
 
 $(SBINDIR)dishinit: dishinit
-		-cp $@ zdishinit
+		- if [ -f $@ ]; then cp $@ zdishinit; fi
 		-rm -f $@
 		cp dishinit $@
 		chmod 600 $@
@@ -147,7 +147,7 @@ $(SBINDIR)dishinit: dishinit
 inst-quipurc:	 $(SBINDIR)new_quipurc
 
 $(SBINDIR)new_quipurc: xquipurc
-		-cp $@ zxquipurc
+		- if [ -f $@ ]; then cp $@ zxquipurc; fi
 		-rm -f $@
 		cp xquipurc $@
 		chmod ugo+s $@
@@ -173,7 +173,7 @@ inst-sid:	$(BINDIR)clist $(BINDIR)dlist $(BINDIR)osearch \
 		$(BINDIR)ousearch $(BINDIR)psearch
 
 $(BINDIR)clist:  clist
-		 -cp $@ zclist
+		 - if [ -f $@ ]; then cp $@ zclist; fi
 		 -rm -f $@
 		 cp clist $@
 		 chmod a+x $@
@@ -181,7 +181,7 @@ $(BINDIR)clist:  clist
 		 -@echo ""
 
 $(BINDIR)dlist:  dlist
-		 -cp $@ zdlist
+		 - if [ -f $@ ]; then cp $@ zdlist; fi
 		 -rm -f $@
 		 cp dlist $@
 		 chmod a+x $@
@@ -189,7 +189,7 @@ $(BINDIR)dlist:  dlist
 		 -@echo ""
 
 $(BINDIR)osearch:  osearch
-		 -cp $@ zosearch
+		 - if [ -f $@ ]; then cp $@ zosearch; fi
 		 -rm -f $@
 		 cp osearch $@
 		 chmod a+x $@
@@ -197,7 +197,7 @@ $(BINDIR)osearch:  osearch
 		 -@echo ""
 
 $(BINDIR)ousearch:  ousearch
-		 -cp $@ zousearch
+		 - if [ -f $@ ]; then cp $@ zousearch; fi
 		 -rm -f $@
 		 cp ousearch $@
 		 chmod a+x $@
@@ -205,7 +205,7 @@ $(BINDIR)ousearch:  ousearch
 		 -@echo ""
 
 $(BINDIR)psearch:  psearch
-		 -cp $@ zpsearch
+		 - if [ -f $@ ]; then cp $@ zpsearch; fi
 		 -rm -f $@
 		 cp psearch $@
 		 chmod a+x $@

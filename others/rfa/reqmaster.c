@@ -1,7 +1,63 @@
-__END_DECLS
-op_requestMaster (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
-	struct type_RFA_RequestMasterArg *rma =
-		(struct type_RFA_RequestMasterArg *) in;
+/*
+ * RFA - Remote File Access
+ *
+ * Access and Management for a partial file system tree that exists
+ * at two sites either as master files or slave files
+ *
+ * reqmaster.c : responder operation to transfer mastership for file
+ *
+ * Contributed by Oliver Wenzel, GMD Berlin, 1990
+ *
+ * $Header: /xtel/isode/isode/others/rfa/RCS/reqmaster.c,v 9.0 1992/06/16 12:47:25 isode Rel $
+ *
+ * $Log: reqmaster.c,v $
+ * Revision 9.0  1992/06/16  12:47:25  isode
+ * Release 8.0
+ *
+ */
+
+#ifndef       lint
+static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/reqmaster.c,v 9.0 1992/06/16 12:47:25 isode Rel $";
+#endif
+
+/*
+ *                              NOTICE
+ *
+ *    Acquisition, use, and distribution of this module and related
+ *    materials are subject to the restrictions of a license agreement.
+ *    Consult the Preface in the User's Manual for the full terms of
+ *    this agreement.
+ *
+ */
+
+#include <stdio.h>
+#include <pwd.h>
+#include <grp.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdarg.h>
+#include "sys.file.h"
+#include "RFA-ops.h"        /* operation definitions */
+#include "RFA-types.h"  /* type definitions */
+#include "ryresponder.h"    /* for generic idempotent responders */
+#include "psap.h"   /* for generic idempotent responders */
+#include "rfa.h"
+#include "rfainfo.h"
+#ifdef SYS5
+#include <unistd.h>
+#endif
+
+/*--------------------------------------------------------------
+ *  op_reqMaster - get mastership of a file
+ *-------------------------------------------------------------*/
+int op_requestMaster (
+	int sd,
+	struct RyOperation *ryo,
+	struct RoSAPinvoke *rox,
+	caddr_t in,
+	struct RoSAPindication *roi
+) {
+	struct type_RFA_RequestMasterArg *rma = (struct type_RFA_RequestMasterArg *) in;
 	struct type_RFA_RequestMasterRes rmr;
 	struct RfaInfo *rfalist, *rfa;
 	char *s;

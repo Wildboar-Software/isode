@@ -73,7 +73,9 @@ main (int argc, char **argv, char **envp) {
 			break;
 
 		default:
-			kill (ppid, SIGUNUSED); //FIXME SIGEMT);
+#ifndef BSDSIGS
+			kill (ppid, SIGEMT);
+#endif
 			sigpause (0);
 			break;
 		}

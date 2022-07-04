@@ -160,7 +160,8 @@ extern	int	as_print (), de_print (), fi_print ();
 #endif
 
 
-void	adios (), advise ();
+void	adios (char *, char *, ...)
+		advise (int, char *, char *, ...);
 static void	ts_advise ();
 #ifdef SYS5
 static  SFD cldser();
@@ -1670,13 +1671,12 @@ static  envinit () {
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -1695,16 +1695,12 @@ char   *what,
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+	_ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

@@ -56,7 +56,7 @@ inst-scripts:;	-mkdir /usr/local/lib/awk
 inst-script:	$(BINDIR)$(TARGET)
 
 $(BINDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""

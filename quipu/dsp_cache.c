@@ -144,7 +144,7 @@ cache_dsp_entry (EntryInfo *ptr) {
 
 
 int
-dsp_cache (struct DSArgument *arg, struct DSResult *res, int ctx, DN binddn) {
+dsp_cache (struct DSArgument *arg, struct DSResult *res, char ctx, DN binddn) {
 	EntryInfo *ptr;
 	Entry entryptr;
 	Attr_Sequence as, eis_select (), attr_eis_select ();

@@ -59,8 +59,8 @@ struct whois {
 };
 
 
-char   *eqstr (), *limits ();
-FILE   *capture ();
+static char   *eqstr (), *limits ();
+static FILE   *capture ();
 
 /*  */
 
@@ -910,15 +910,15 @@ char   *command;
 	char    tmpfil[BUFSIZ];
 	FILE   *fp,
 		   *savfp;
+	int     fd;
 
 	strcpy (tmpfil, "/tmp/fredXXXXXX");
-	unlink (mktemp (tmpfil));
+	fd = mkstemp (tmpfil);
 
-	if ((fp = fopen (tmpfil, "w+")) == NULL) {
-		advise (tmpfil, "unable to create");
+	if ((fp = fdopen (fd, "w+")) == NULL) {
+		advise (tmpfil, "unable to open");
 		return NULL;
 	}
-	unlink (tmpfil);
 
 	savfp = stdfp, stdfp = fp;
 	savnet = network, network = 0;

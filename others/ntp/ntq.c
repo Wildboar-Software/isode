@@ -13,7 +13,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntq.c,v 9.0 1992
  */
 
 #include "ntp.h"
-#include <varargs.h>
+#include <stdarg.h>
 #include "NTP-ops.h"
 #include "NTP-types.h"
 
@@ -25,8 +25,9 @@ char	*mypci = "ntp pci";
 
 int	query_result (), query_error ();
 
-void	ros_adios (), ros_advise (), acs_adios (), acs_advise (),
-		advise (), adios ();
+void	ros_adios (), ros_advise (), acs_adios (), acs_advise ();
+static void	adios (char *, char *, ...);
+static void	advise (char *, char *, ...);
 PE	build_bind_arg ();
 
 int
@@ -370,13 +371,12 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 void    _advise ();
 
 
-void    adios (va_alist)
-va_dcl {
+static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_advise (ap);
+	_advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -385,31 +385,28 @@ va_dcl {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
-	adios (what, fmt);
+static void    adios (char *what, char *fmt) {
+    adios (what, fmt);
 }
 #endif
 
 #ifndef lint
-void    advise (va_alist)
-va_dcl {
-	va_list ap;
+static void    advise (char *what, char *fmt, ...) {
+    va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void  _advise (ap)
-va_list ap;
+static void  _advise (char *what, char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+    _asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 
@@ -422,21 +419,19 @@ va_list ap;
 #else
 /* VARARGS */
 
-void
-advise (char *what, char *fmt) {
-	advise (what, fmt);
+static void    advise (char *what, char *fmt) {
+    advise (what, fmt);
 }
 #endif
 
 
 #ifndef lint
-void    ryr_advise (va_alist)
-va_dcl {
-	va_list ap;
+void    ryr_advise (char *what, char *fmt, ...) {
+    va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 }

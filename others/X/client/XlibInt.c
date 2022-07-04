@@ -1,26 +1,18 @@
-__END_DECLS static int
-readv (int fd, struct iovec *iov, int iovcnt) {
-	struct msghdr hdr;
+/*
+ * $XConsortium: XlibInt.c,v 11.90 88/09/30 17:25:18 jim Exp $
+ */
 
-	hdr.msg_iov = iov;
-	hdr.msg_iovlen = iovcnt;
-	hdr.msg_accrights = 0;
-	hdr.msg_accrightslen = 0;
-	hdr.msg_name = 0;
-	hdr.msg_namelen = 0;
-
-	return (recvmsg (fd, &hdr, 0));
-}
-
-static int
-writev (
-	int fd;
-	struct iovec *iov;
-	int iovcnt;
-{
-	D_REPLIES
+#include "copyright.h"
+/* Copyright    Massachusetts Institute of Technology    1985, 1986, 1987 */
+/*
+ *	XlibInternal.c - Internal support routines for the C subroutine
+ *	interface library (Xlib) to the X Window System Protocol V11.0.
+ */
+#define NEED_EVENTS
+#define NEED_REPLIES
 
 #include <stdio.h>
+#include <errno.h>
 #include "Xlibint.h"
 
 #ifdef ISOCONN
@@ -35,10 +27,26 @@ writev (
 	/*
 	 * Cray UniCOS does not have readv and writev so we emulate
 	 */
+#include <sys/socket.h>
+
+static int readv (int fd, struct iovec *iov, int iovcnt) {
+	struct msghdr hdr;
+
+	hdr.msg_iov = iov;
+	hdr.msg_iovlen = iovcnt;
+	hdr.msg_accrights = 0;
+	hdr.msg_accrightslen = 0;
+	hdr.msg_name = 0;
+	hdr.msg_namelen = 0;
+
+	return (recvmsg (fd, &hdr, 0));
+}
+
+static int writev (
 	int fd,
-		struct iovec *iov,
-			int iovcnt
-		) {
+	struct iovec *iov,
+	int iovcnt
+) {
 		struct msghdr hdr;
 
 		hdr.msg_iov = iov;
@@ -413,7 +421,7 @@ writev (
 	Display *dpy;
 	{
 		char buf[BUFSIZE];
-		long pend_not_register; /* because can't "&" a variable */
+		long pend_not_register; /* because can't "&" a register variable */
 		long pend;
 		xEvent *ev;
 		Bool not_yet_flushed = True;
@@ -1358,15 +1366,6 @@ writev (
 	}
 
 
-	static char *
-	_SysErrorMsg (int n) {
-		extern char *sys_errlist[];
-		extern int sys_nerr;
-		char *s = ((n >= 0 && n < sys_nerr) ? sys_errlist[n] : "unknown error");
-
-		return (s ? s : "no such error");
-	}
-
 	/*
 	 * _XIOError - Default fatal system error reporting routine.  Called when
 	 * an X internal system error is encountered.
@@ -1376,7 +1375,7 @@ writev (
 	{
 		fprintf (stderr,
 				 "XIO:  fatal IO error %d (%s) on X server \"%s\"\r\n",
-				 errno, _SysErrorMsg (errno), DisplayString (dpy));
+				 errno, strerror (errno), DisplayString (dpy));
 		fprintf (stderr,
 				 "      after %lu requests (%lu known processed) with %d events remaining.\r\n",
 				 NextRequest(dpy) - 1, LastKnownRequestProcessed(dpy),
@@ -1660,7 +1659,7 @@ writev (
 	 */
 
 	void
-	_XFreeQ  {
+	_XFreeQ () {
 		_XQEvent *qelt = _qfree;
 
 		while (qelt) {

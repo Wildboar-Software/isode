@@ -11,19 +11,21 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntp_sock.c,v 9.0
  *
  */
 
+#include <errno.h>
 #include "ntp.h"
 
 struct intf *addrs;
 int nintf = 0;
 
-extern void adios ();
+extern void adios (char *, char *, ...);
+extern void advise (int, char *, char *, ...);
 extern void receive();
 
 #ifdef	TEST
 
 
 int
-main  {
+main () {
 	int i, cc, val;
 	char foo[10];
 

@@ -33,6 +33,7 @@ static char *rcsid = "$Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/
 #include <isode/internet.h>
 #include <isode/isoaddrs.h>
 #include <isode/tailor.h>
+#include <stdarg.h>
 
 /*    DATA */
 
@@ -100,7 +101,8 @@ static struct snmp_search *tail = NULL;
 
 
 static	snmp_onceonly (), snmp_get_next (), snmp_get_next_aux (), req_ready (),
-		snmp_ready (), snmp_map (), snmp_diag ();
+		snmp_ready (), snmp_map ();
+static void snmp_diag (char *, char *, ...);
 
 char   *snmp_error (), *snmp_variable ();
 
@@ -1886,17 +1888,14 @@ done:
 /*  */
 
 #ifndef	lint
-static	snmp_diag (va_alist)
-va_dcl {
-	char   *what,
-	buffer[BUFSIZ];
+static void	snmp_diag (char *what, char *fmt, ...)
+{
+	char   buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-
-	_asprintf (buffer, what, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	va_end (ap);
 

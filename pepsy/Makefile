@@ -74,15 +74,14 @@ PEPSY-O	= pepsy.o pepsy-yacc.o pepsy_misc.o pass2.o etabs.o dtabs.o ptabs.o \
 inst-pepsy:	$(BINDIR)pepsy
 
 $(BINDIR)pepsy:	xpepsy
-		-cp $@ zxpepsy
+		- if [ -f $@ ]; then cp $@ zxpepsy; fi
 		-rm -f $@
 		-cp xpepsy $@
 		@ls -gls $@
 		-@echo ""
 
 pepsy:		xpepsy
-		rm -rf pepsy
-		ln xpepsy pepsy
+		cp xpepsy $@
 
 xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 		$(LDCC) $(LDFLAGS) -o $@ $(PEPSY-O) \
@@ -163,7 +162,7 @@ inst-headers:;	-mkdir $(PEPSYDIRM)
 inst-target:	$(PEPSYDIR)$(TARGET)
 
 $(PEPSYDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		cp $(TARGET) $@
 		-@ls -gls $@
 		-@echo ""

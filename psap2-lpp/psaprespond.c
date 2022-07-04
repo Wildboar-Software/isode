@@ -38,6 +38,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9
 
 #define	AC_ASN		"acse pci version 1"
 
+static int  PInitAux ();
+
 /*    P-CONNECT.INDICATION */
 
 int	PInit (vecp, vec, ps, pi)

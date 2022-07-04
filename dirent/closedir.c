@@ -31,7 +31,7 @@ DIR	*dirp;		/* stream from opendir() */
 		return -1;		/* invalid pointer */
 	}
 
-	fd = dirp-> dd_fd;
+	fd = dirfd(dirp);
 	free( (pointer)dirp->dd_buf );
 	free( (pointer)dirp );
 	return close( fd );

@@ -78,7 +78,7 @@
 #define BUFLEN		1024
 #endif
 
-int lowy;
+extern int lowy;
 
 /* This is the height of a widget box, in number of lines */
 #define WDGTHGHT	3
@@ -106,8 +106,8 @@ typedef struct widget {
 	WINDOW	*wndw;		/* The curses-widget window structure */
 } WIDGET;
 
-WIDGET *currwidgets;
-char typetoggled;
+extern WIDGET *currwidgets;
+extern char typetoggled;
 
 void initwidgets(), textfresh(), makewidgets(), setwdgtwdth(),
 	 killwidgets(), activewidget(), deleteactive(), activeindex(),

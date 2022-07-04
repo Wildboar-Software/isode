@@ -38,7 +38,7 @@ extern Attr_Sequence entry_find_type();
 static attribute_not_cached ();
 
 int
-do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, int dsp, int authtype) {
+do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	Attr_Sequence  as;
 	Attr_Sequence ias = NULLATTR;

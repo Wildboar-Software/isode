@@ -87,7 +87,7 @@ $(LIBDIR)libicompat.a:	libcompat.a
 		-@echo ""
 
 $(LINTDIR)llib-licompat:	llib-lcompat
-		-cp $@ zllib-lcompat
+		- if [ -f $@ ]; then cp $@ zllib-lcompat; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lcompat | \
@@ -195,7 +195,7 @@ inst-mandefs:	$(UTILDIR)inst-man.sh
 mandefs:	$(UTILDIR)inst-man.sh
 
 $(UTILDIR)inst-man.sh: inst-man.sh Makefile $(TOPDIR)config/CONFIG.make
-		-cp $@ zxinst-man.sh
+		- if [ -f $@ ]; then cp $@ zxinst-man.sh; fi
 		-rm -f $@
 		cat inst-man.sh | \
 			sed -e 's%@(BINDIR)%$(BINDIR)%' | \
@@ -216,7 +216,7 @@ $(UTILDIR)inst-man.sh: inst-man.sh Makefile $(TOPDIR)config/CONFIG.make
 inst-isologs:	$(SBINDIR)isologs
 
 $(SBINDIR)isologs: isologs.sh Makefile
-		-cp $@ zxisologs
+		- if [ -f $@ ]; then cp $@ zxisologs; fi
 		-rm -f $@
 		sed -e 's%@(ETCDIR)%$(ETCDIR)%' < isologs.sh | \
 			sed -e 's%@(LOGDIR)%$(LOGDIR)%' > $@

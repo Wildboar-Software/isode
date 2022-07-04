@@ -42,6 +42,7 @@ char *TidyString();
 char *checkSetTerm();
 void displayCurrentSettings();
 void soundBell();
+extern void pageprint(char *, ...);
 
 static struct {
 	char *topic;
@@ -74,7 +75,7 @@ static struct {
 };
 
 int
-tailorHelp  {
+tailorHelp () {
 	int i;
 
 	if (controlCtoQuit)
@@ -285,7 +286,7 @@ invalidinput:
 }
 
 void
-displayCurrentSettings  {
+displayCurrentSettings () {
 	int i;
 
 	printf("These are the current settings:\n\n");

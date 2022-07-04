@@ -26,7 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/report.c,v 
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 #include "logger.h"
@@ -49,13 +49,12 @@ reportailor (char *myname) {
 /*  */
 
 #ifndef	lint
-void	adios (va_alist)
-va_dcl {
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	_ll_log (pgm_log, LLOG_FATAL, ap);
+	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 
 	va_end (ap);
 
@@ -72,16 +71,13 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
-	va_list ap;
+void	advise (int code, char *what, char *fmt, ...)
+{
+    va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	code = va_arg (ap, int);
-
-	_ll_log (pgm_log, code, ap);
+    _ll_log (pgm_log, code, what, fmt, ap);
 
 	va_end (ap);
 }

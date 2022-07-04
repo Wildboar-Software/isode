@@ -58,6 +58,8 @@ extern Bool AnyClientsWriteBlocked;
 static Bool CriticalOutputPending;
 static int timesThisConnection = 0;
 
+extern int Error (char *fmt, ...);
+extern int Fatal (char *fmt, ...);
 
 
 #define request_length(req, cli) ((cli->swapped ? \
@@ -551,7 +553,7 @@ outOfMem:
 **********************/
 
 void
-FlushAllOutput  {
+FlushAllOutput () {
 	int index, base, mask;
 	OsCommPtr oc;
 	ClientPtr client;
@@ -589,13 +591,13 @@ FlushAllOutput  {
 }
 
 void
-FlushIfCriticalOutputPending  {
+FlushIfCriticalOutputPending () {
 	if (CriticalOutputPending)
 		FlushAllOutput();
 }
 
 void
-SetCriticalOutputPending  {
+SetCriticalOutputPending () {
 	CriticalOutputPending = TRUE;
 }
 

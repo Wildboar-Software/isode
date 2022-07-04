@@ -123,7 +123,7 @@ static XtActionsRec currPosActionsTable[] = {
 };
 
 void
-CreateWidgets  {
+CreateWidgets () {
 	int count;
 	Arg args[MAXARGS];
 
@@ -152,7 +152,7 @@ CreateWidgets  {
 }
 
 void
-PodLoop  {
+PodLoop () {
 	Widget PosWindow;
 	XSizeHints   hints;
 	XWMHints wm_hints;
@@ -223,7 +223,7 @@ PodLoop  {
 }
 
 void
-make_photo_widget  {
+make_photo_widget () {
 	int count;
 	Arg args[MAXARGS];
 	Widget TextForm, TextWindow;
@@ -254,7 +254,7 @@ make_photo_widget  {
 }
 
 void
-kill_photo  {
+kill_photo () {
 	if (PhotoWindow != NULL) {
 		XtUnmanageChild(PhotoWindow);
 		XtDestroyWidget(PhotoWindow);
@@ -263,7 +263,7 @@ kill_photo  {
 }
 
 void
-print_photo  {
+print_photo () {
 	int count;
 	Arg args[MAXARGS];
 
@@ -960,7 +960,7 @@ Widget parent;
 }
 
 static void
-displayReadPopup  {
+displayReadPopup () {
 	if (curr_read_popup) {
 		XtPopup(curr_read_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_read_popup));
@@ -1814,7 +1814,7 @@ XtPointer closure, calldata;
 }
 
 static void
-CreateMessagePopup  {
+CreateMessagePopup () {
 	int count;
 	Arg args[MAXARGS];
 
@@ -1833,7 +1833,7 @@ CreateMessagePopup  {
 }
 
 static void
-CreateVersionPopup  {
+CreateVersionPopup () {
 	Widget title, piccy, version_label, text_form;
 	Arg args[MAXARGS];
 	int count;
@@ -1977,7 +1977,7 @@ Cardinal num_params;
 }
 
 static void
-CreateErrorPopup  {
+CreateErrorPopup () {
 	Widget text;
 	int count;
 	Arg args[MAXARGS];
@@ -2123,7 +2123,7 @@ XtPointer closure, calldata;
 }
 
 static void
-kill_error  {
+kill_error () {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2171,7 +2171,7 @@ char *mess;
 }
 
 void
-kill_message  {
+kill_message () {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2195,7 +2195,7 @@ kill_message  {
 }
 
 static void
-CreateHelpPopup  {
+CreateHelpPopup () {
 	Widget popup_help, popup_help_button, popup_quit_button,
 	popup_help_form, popup_help_scrolwin;
 

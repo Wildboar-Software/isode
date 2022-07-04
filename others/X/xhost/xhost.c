@@ -48,6 +48,7 @@ extern unsigned long inet_makeaddr();
 #include <isode/isoservent.h>
 #include "../server/osdep.h"
 #endif /* ISOCONN */
+#include "af_osi.h"
 
 static int local_xerror();
 

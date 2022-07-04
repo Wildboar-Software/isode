@@ -59,7 +59,7 @@ inst-all:;	-mkdir $(INCDIRM)
 inst-target:	$(INCDIR)$(TARGET)
 
 $(INCDIR)$(TARGET):	$(TARGET)
-		-cp $@ z$(TARGET)
+		- if [ -f $@ ]; then cp $@ z$(TARGET); fi
 		sed -e 's%#include "\([^/]*\)"%#include "$(INCDIR)\1"%' \
 			< $(TARGET) > $@
 		-@ls -gls $@

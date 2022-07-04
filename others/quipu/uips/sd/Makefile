@@ -27,8 +27,8 @@
 
 LIBES   =       $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 LLIBS   =       $(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode
-CFILES  =	y.tab.c calls.c main.c widget.c help.c sequence.c filt.c
-OFILES  =	y.tab.o calls.o main.o widget.o help.o sequence.o filt.o
+CFILES  =	y.tab.c calls.c main.c widget.c widget_var.c help.c sequence.c filt.c
+OFILES  =	y.tab.o calls.o main.o widget.o widget_var.o help.o sequence.o filt.o
 YFILES  =       conf_read.y
 
 CURSES  = 	-lcurses -ltermcap 
@@ -53,13 +53,14 @@ inst-sd:    $(BINDIR)sd
 		-mkdir $(ETCDIR)sd
 
 $(BINDIR)sd: xsd
-	        -cp $@ zxsd
+	        - if [ -f $@ ]; then cp $@ zxsd; fi
 	        -rm -f $@
 	        cp xsd $@
 	        -@ls -gls $@
 	        -@echo ""
 
 sd:         xsd
+	        cp xsd $@
 
 xsd:	$(OFILES) $(LIBES)
 	$(LDCC) $(LDFLAGS) -o $@ $(OFILES) $(LIBDSAP) $(LIBISODE) $(CURSES) \
@@ -206,6 +207,7 @@ main.o: ./widget.h
 sequence.o: ./sequence.h
 symtab.o: ./symtab.h
 widget.o: ./widget.h
+widget_var.o: ./widget.h
 y.tab.o: ../../../../h/config.h
 y.tab.o: ../../../../h/general.h
 y.tab.o: ../../../../h/isoaddrs.h

@@ -14,23 +14,22 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "spkt.h"
 #include "tailor.h"
 
 /*  */
 
 #ifndef	lint
-int	susaplose (va_alist)
-va_dcl {
+static int _susaplose ();
+
+int	susaplose (struct SSAPindication *si, ...) {
 	int	    reason,
-	result;
-	struct SSAPindication *si;
+		    result;
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, si);
 
-	si = va_arg (ap, struct SSAPindication *);
 	reason = va_arg (ap, int);
 
 	result = _susaplose (si, reason, ap);

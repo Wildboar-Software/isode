@@ -22,6 +22,7 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imiscd.c,v 5.0 88/07/21 14:42:08
  */
 
 
+#include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
 #include "ryresponder.h"	/* for generic idempotent responders */
@@ -114,15 +115,15 @@ op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 	struct UTCtime *ut = &uts;
 	struct type_IMISC_UTCResult *ur;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	if (time (&clock) == NOTOK || (tm = gmtime (&clock)) == NULL)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
@@ -158,15 +159,15 @@ op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 	struct UTCtime *ut = &uts;
 	struct type_IMISC_GenResult *gr;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 #if	defined(BSD42) || defined (HPUX)
 	if (gettimeofday (&tvs, (struct timezone *) 0) == NOTOK)
@@ -211,15 +212,15 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 	struct type_IMISC_TimeResult trs;
 	struct type_IMISC_TimeResult *tr = &trs;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	if (time (&clock) == NOTOK)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
@@ -260,15 +261,15 @@ op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, 
 	struct type_IMISC_IA5List *ia5;
 	struct type_IMISC_IA5List **ia5p;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	ia5 = NULL;
 	ia5p = &ia5;
@@ -362,15 +363,15 @@ op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 	struct type_IMISC_IA5List *ia5;
 	struct type_IMISC_IA5List **ia5p;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	re = ring;
 	for (i = 0; i < 0x80; i++)
@@ -424,15 +425,15 @@ op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in,
 	struct type_IMISC_IA5List *ia5;
 	struct type_IMISC_IA5List **ia5p;
 
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	ia5 = NULL;
 	ia5p = &ia5;
@@ -690,17 +691,17 @@ op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, s
 	struct type_IMISC_IA5List *ia5;
 	struct type_IMISC_IA5List **ia5p;
 
-	vecp = vecq = 0;
-	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
-				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
-				sd, ryo -> ryo_name, rox -> rox_linkid);
+    vecp = vecq = 0;
+    if (rox -> rox_nolinked == 0) {
+		advise (LOG_INFO, NULLCP,
+			"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
+			sd, ryo -> ryo_name, rox -> rox_linkid);
 		result = ureject (sd, ROS_IP_LINKED, rox, roi);
 		goto out;
-	}
-	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
-				sd, ryo -> ryo_name);
+    }
+    if (debug)
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
+			sd, ryo -> ryo_name);
 
 	if (ryo -> ryo_op == operation_IMISC_qotd) {
 		vec[vecp++] = pgm = FORTUNE;
@@ -869,14 +870,14 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 
 	vecp = 0;
 	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
+		advise (LOG_INFO, NULLCP,
 				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
 				sd, ryo -> ryo_name, rox -> rox_linkid);
 		result = ureject (sd, ROS_IP_LINKED, rox, roi);
 		goto out;
 	}
 	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
+		advise (LOG_DEBUG, NULLCP, , "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
 
 	for (ia5 = (struct type_IMISC_IA5List  *) in; ia5; ia5 = ia5 -> next)
@@ -886,7 +887,7 @@ op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 	vecl[vecp] = NULLCP;
 
 	if (vecp < 3) {
-		advise (NULLCP, LOG_INFO,
+		advise (LOG_INFO, NULLCP,
 				"too few arguments (got %d, wanted at least 3)", vecp);
 		result = ureject (sd, ROS_IP_MISTYPED, rox, roi);
 		goto out;
@@ -1011,13 +1012,13 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 static int
 op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	if (rox -> rox_nolinked == 0) {
-		advise (NULLCP, LOG_INFO,
+		advise (LOG_INFO, NULLCP,
 				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
 				sd, ryo -> ryo_name, rox -> rox_linkid);
 		return ureject (sd, ROS_IP_LINKED, rox, roi);
 	}
 	if (debug)
-		advise (NULLCP, LOG_DEBUG, "RO-INVOKE.INDICATION/%d: %s",
+		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
 
 	if (RyDsResult (sd, rox -> rox_id, ryo -> ryo_op == operation_IMISC_echo

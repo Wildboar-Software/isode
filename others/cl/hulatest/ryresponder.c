@@ -31,6 +31,7 @@
 */
 /* HULA */
 
+#include <errno.h>
 #include <ctype.h>
 /* ryresponder.c - generic idempotent responder */
 /* modified for UNIT-DATA protocol stack */
@@ -38,7 +39,7 @@
 
 #include <stdio.h>
 #include <setjmp.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "ryresponder.h"
 
 #define ACSE
@@ -122,7 +123,7 @@ IFP	start,
 
 	openlog (myname, LOG_PID);
 
-	advise (NULLCP, LOG_INFO, "starting");
+	advise (LOG_INFO, NULLCP, "starting");
 
 	if ((aei = str2aei (host, myservice)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity", host, myservice);
@@ -222,7 +223,7 @@ char  **vec;
 	acs_advise (aca, "initialization fails");
 	return NOTOK;
     }
-    advise (NULLCP, LOG_INFO,
+    advise (LOG_INFO, NULLCP,
 		"A-ASSOCIATE.INDICATION: <%d, %s, %s, %s, %d>",
 		acs -> acs_sd, sprintoid (acs -> acs_context),
 		sprintaei (&acs -> acs_callingtitle),
@@ -231,7 +232,7 @@ char  **vec;
     sd = acs -> acs_sd;
 
     for (vec++; *vec; vec++)
-	advise (NULLCP, LOG_INFO, "unknown argument \"%s\"", *vec);
+	advise (LOG_INFO, NULLCP, "unknown argument \"%s\"", *vec);
 
     reply = startfnx ? (*startfnx) (sd, acs) : ACS_ACCEPT;
 
@@ -316,10 +317,10 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 		struct RoSAPureject   *rou = &roi -> roi_ureject;
 
 		if (rou -> rou_noid)
-			advise (NULLCP, LOG_INFO, "RO-REJECT-U.INDICATION/%d: %s",
+			advise (LOG_INFO, NULLCP, "RO-REJECT-U.INDICATION/%d: %s",
 					sd, RoErrString (rou -> rou_reason));
 		else
-			advise (NULLCP, LOG_INFO,
+			advise (LOG_INFO, NULLCP,
 					"RO-REJECT-U.INDICATION/%d: %s (id=%d)",
 					sd, RoErrString (rou -> rou_reason),
 					rou -> rou_id);
@@ -341,7 +342,7 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 			struct AcSAPindication  acis;
 			struct AcSAPabort *aca = &acis.aci_abort;
 
-			advise (NULLCP, LOG_INFO, "A-RELEASE.INDICATION/%d: %d",
+			advise (LOG_INFO, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				sd, acf -> acf_reason);
 
 			reply = stopfnx ? (*stopfnx) (sd, acf) : ACS_ACCEPT;
@@ -374,11 +375,11 @@ static int  ros_lose (td)
 struct TSAPdisconnect *td;
 {
     if (td -> td_cc > 0)
-	advise (NULLCP, LOG_INFO, "TNetAccept: [%s] %*.*s",
+	advise (LOG_INFO, NULLCP, "TNetAccept: [%s] %*.*s",
 		TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
 		td -> td_data);
     else
-	advise (NULLCP, LOG_INFO, "TNetAccept: [%s]",
+	advise (LOG_INFO, NULLCP, "TNetAccept: [%s]",
 		TErrString (td -> td_reason));
 }
 */
@@ -403,7 +404,7 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
 
-	advise (NULLCP, LOG_INFO, "%s: %s", event, buffer);
+	advise (LOG_INFO, NULLCP, "%s: %s", event, buffer);
 }
 
 /*  */
@@ -419,26 +420,22 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
 
-	advise (NULLCP, LOG_INFO, "%s: %s (source %d)", event, buffer,
+	advise (LOG_INFO, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
 
 /*  */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-void	adios (va_alist)
-va_dcl {
-	char   *what;
+void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-
-	_advise (LOG_ERR, what, ap);
+	_advise (LOG_ERR, what, fmt, ap);
 
 	va_end (ap);
 
@@ -455,28 +452,21 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-void	advise (va_alist)
-va_dcl {
-	int	    code;
-	char   *what;
+void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-	code = va_arg (ap, int);
-
-	_advise (code, what, ap);
+	_advise (code, what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (int code, char *what, va_list ap) {
+static void  _advise (int code, char *what, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	_asprintf (buffer, what, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	syslog (code, "%s", buffer);
 
@@ -492,23 +482,19 @@ _advise (int code, char *what, va_list ap) {
 /* VARARGS */
 
 void
-advise (char *what, int code, char *fmt) {
-	advise (what, code, fmt);
+advise (int code, char *what, char *fmt) {
+	advise (code, what, , fmt);
 }
 #endif
 
 
 #ifndef	lint
-void	ryr_advise (va_alist)
-va_dcl {
-	char   *what;
+void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+	va_start (ap, fmt);
 
-	what = va_arg (ap, char *);
-
-	_advise (LOG_INFO, what, ap);
+	_advise (LOG_INFO, what, fmt, ap);
 
 	va_end (ap);
 }

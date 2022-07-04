@@ -27,6 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
 
 /* LINTLIBRARY */
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -53,7 +55,7 @@ extern IFP set_check_fd ();
 
 /*  */
 
-union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
+union sockaddri_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	sa;
 
 #ifdef	TCP
@@ -68,7 +70,7 @@ union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 
 struct dgramblk {
 	int	    dgram_parent;
-	union sockaddr_un dgram_peer;
+	union sockaddri_un dgram_peer;
 #ifdef	BSD44
 	u_char  dgram_addrlen;
 #endif
@@ -488,7 +490,7 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 	struct dgramblk *up,
 			   *vp;
 	struct dgramblk *wp;
-	union sockaddr_un *sock;
+	union sockaddri_un *sock;
 
 	if (rfds) {
 		jfds = *rfds;
@@ -528,7 +530,7 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 					== NULL)
 				return NOTOK;
 
-			sock = (union sockaddr_un *) qb -> qb_base;
+			sock = (union sockaddri_un *) qb -> qb_base;
 			qb -> qb_data = qb -> qb_base + slen;
 			if ((cc = recvfrom (fd, qb -> qb_data, MAXDGRAM, NULL,
 								&sock -> sa, &slen)) == NOTOK) {
@@ -756,6 +758,6 @@ struct sockaddr *sock;
 /*  */
 
 int
-dgram_dummy  {}
+dgram_dummy () {}
 
 #endif

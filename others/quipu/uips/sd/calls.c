@@ -21,7 +21,7 @@ Attr_Sequence read_types = 0, read_types2 = 0, oclass = 0;
 
 str_seq curr_dnseq, textseq, back_seq;
 
-int current_entry, entry_number, display_entry;
+int current_entry_, entry_number, display_entry;
 int back_buf_num;
 
 int rdn_print(), as_print();
@@ -34,7 +34,7 @@ char bound = FALSE;  /* indication of wether bound */
 char * TidyString();
 
 /* hack to get isode/curses compatability */
-#if	defined(SVR4) && !defined(SVR4_UCB)
+#if defined(LINUX) || defined(SVR4) && !defined(SVR4_UCB)
 #undef WINDOW
 #else
 #define WINDOW char
@@ -116,7 +116,7 @@ get_strioid (char *ptr) {
 }
 
 void
-user_tailor  {
+user_tailor () {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -415,7 +415,7 @@ user_tailor  {
 }
 
 void
-main_help  {
+main_help () {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
@@ -423,7 +423,7 @@ main_help  {
 }
 
 void
-main_bind  {
+main_bind () {
 	cleartext();
 	if (*passwd != 0)
 		strcpy(bindpass,"******");
@@ -432,12 +432,12 @@ main_bind  {
 }
 
 void
-cnnct_quit  {
+cnnct_quit () {
 	quit("Exiting sd.\n", 0);
 }
 
 void
-cnnct_bind  {
+cnnct_bind () {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -514,7 +514,7 @@ cnnct_bind  {
 		LLOG (log_stat,LLOG_NOTICE,("sd called from a ('%s')", getenv(buf)));
 #endif
 	}
-	display_entry = current_entry = 1;
+	display_entry = current_entry_ = 1;
 	entry_number = 0;
 	back_buf_num = 0;
 	textseq = back_seq = curr_dnseq = NULLDS;
@@ -522,7 +522,7 @@ cnnct_bind  {
 }
 
 void
-rd_start  {
+rd_start () {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -594,7 +594,7 @@ rd_start  {
 }
 
 void
-back_start  {
+back_start () {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -610,12 +610,12 @@ back_start  {
 	curr_dnseq = back_seq;
 	text_state = BACK_LIST;
 	entry_number = back_buf_num;
-	current_entry = display_entry = 1;
+	current_entry_ = display_entry = 1;
 	scrollbar('\0');
 }
 
 void
-widen  {
+widen () {
 	char *str, *sptr;
 	int count = 0;
 	str_seq first;
@@ -659,7 +659,7 @@ widen  {
 }
 
 void
-set_default_type  {
+set_default_type () {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -724,7 +724,7 @@ set_default_type  {
 /* These are the functions called by the list level widgets */
 
 void
-list_start  {
+list_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -797,7 +797,7 @@ list_start  {
 			if (text_state == DN_LIST) free_seq(curr_dnseq);
 			free_seq(textseq);
 			curr_dnseq = textseq = NULLDS;
-			display_entry = current_entry = 1;
+			display_entry = current_entry_ = 1;
 			entry_number = 0;
 			text_state = DN_LIST;
 
@@ -873,7 +873,7 @@ char * cptr;
 }
 
 void
-srch_start  {
+srch_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -953,7 +953,7 @@ srch_start  {
 			if (text_state == DN_LIST) free_seq(curr_dnseq);
 			free_seq(textseq);
 			curr_dnseq = textseq = NULLDS;
-			display_entry = current_entry = 1;
+			display_entry = current_entry_ = 1;
 			entry_number = 0;
 			text_state = DN_LIST;
 
@@ -1064,7 +1064,7 @@ caddr_t ptr;
 	curr_dnseq = NULLDS;
 	free_seq(textseq);
 	textseq = NULLDS;
-	display_entry = current_entry = 1;
+	display_entry = current_entry_ = 1;
 	entry_number = 0;
 	text_state = TEXT;
 
@@ -1148,7 +1148,7 @@ quipu_error (struct DSError *err) {
 }
 
 void
-returnmain  {
+returnmain () {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1235,13 +1235,13 @@ scrollbar (int command) {
 		for (count = 0; (display_entry + count) < entry_number &&
 				count < text_height/2; count++);
 
-		current_entry += count;
+		current_entry_ += count;
 	} else if(command == ']') {
 
-		for (count = 0; (current_entry - count) > 1 &&
+		for (count = 0; (current_entry_ - count) > 1 &&
 				count < text_height/2; count++);
 
-		current_entry -= count;
+		current_entry_ -= count;
 	}
 
 	cleartext();
@@ -1268,13 +1268,13 @@ scrollbar (int command) {
 		break;
 	}
 
-	if (current_entry > entry_number)
-		current_entry = 1;
+	if (current_entry_ > entry_number)
+		current_entry_ = 1;
 
 	lines = linec()-2;
 	count = 0;
 
-	for (display_entry = current_entry; display_entry <= entry_number
+	for (display_entry = current_entry_; display_entry <= entry_number
 			&& gety() < lines; display_entry++) {
 
 		if (text_state == DN_LIST || text_state == BACK_LIST)
@@ -1304,10 +1304,10 @@ scrollbar (int command) {
 	}
 
 	if (text_state == DN_LIST)
-		if (current_entry >= entry_number) xprint("<List finished>");
+		if (current_entry_ >= entry_number) xprint("<List finished>");
 		else        xprintint("<Total of %d entries>", entry_number);
 
-	printbar(entry_number, current_entry, display_entry-current_entry);
+	printbar(entry_number, current_entry_, display_entry-current_entry_);
 	display_entry--;
 	return;
 }
@@ -1343,7 +1343,7 @@ make_friendly (char *fstr, char *str) {
 }
 
 void
-goto_addr  {
+goto_addr () {
 	set_default_type();
 	rd_start();
 }

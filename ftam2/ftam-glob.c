@@ -61,9 +61,9 @@ static execbrc (char *p, char *s);
 static match (char *s, char *p);
 static amatch (char *s, char *p);
 static Gcat (char *s1, char *s2);
-static addpath (int c);
-static letter (int c);
-static digit (int c);
+static addpath (char c);
+static letter (char c);
+static digit (char c);
 static any (int c, char *s);
 static	chkrdir ( char   *path, struct stat *st);
 static getrdir (char *hdir);
@@ -75,11 +75,16 @@ static	char **gargv;		/* Pointer to the (stack) arglist */
 static	int    gargc;		/* Number args in gargv */
 static	int    gnleft;
 static	int    gflag;
-static	int tglob();
+static	int tglob(char);
 char	*globerr;
 static char *home;
 struct	passwd *getpwnam();
 static	char *strspl(), **copyblk(), *strend();
+static ginit (), collect (), acollect (), sort (), expand (),
+       execbrc (), match (), amatch (), Gcat (), addpath (char),
+       rscan (), letter (char), digit (char), any ();
+
+static int  fatal ();
 
 static	int globcnt;
 
@@ -92,7 +97,6 @@ static	char *entp;
 static	char **sortbas;
 
 
-int	chkrdir ();
 static int chkldir ( char   *path, struct stat *st);
 static int (*chkdir) () = chkldir;
 
@@ -103,7 +107,6 @@ static int (*gethdir) () = getldir;
 static int matchldir (char *pattern);
 static int matchrdir (char *pattern);
 static int (*matchdir) () = matchldir;
-
 
 static char ** glob (char *v) {
 	char agpath[BUFSIZ];
@@ -524,7 +527,7 @@ static Gcat (char *s1, char *s2) {
 	}
 }
 
-static addpath (int c) {
+static addpath (char c) {
 
 	if (gpathp >= lastgpathp)
 		globerr = "Pathname too long";
@@ -549,7 +552,7 @@ static rscan (char **t, int (*f)(char)) {
 }
 
 #ifdef	notdef
-static scan (char **t, int (*f)(void)) {
+static scan (char **t, int (*f)(char)) {
 	char *p, c;
 
 	while (p = *t++)
@@ -558,7 +561,7 @@ static scan (char **t, int (*f)(void)) {
 }
 #endif
 
-static tglob (int c) {
+static tglob (char c) {
 
 	if (any(c, globchars))
 		gflag |= c == '{' ? 2 : 1;
@@ -566,18 +569,18 @@ static tglob (int c) {
 }
 
 #ifdef	notdef
-static trim (int c) {
+static trim (char c) {
 
 	return (c & TRIM);
 }
 #endif
 
-static letter (int c) {
+static letter (char c) {
 
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
 }
 
-static digit (int c) {
+static digit (char c) {
 
 	return (c >= '0' && c <= '9');
 }

@@ -25,6 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/add.c,v 9.0 1992
  */
 
 
+#include <errno.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/add.h"
@@ -48,6 +49,8 @@ extern	char	dad_flag;
 
 char            fname[128];
 static char	new_draft;
+
+int make_old (char *, char);
 
 int
 call_add (int argc, char **argv) {
@@ -74,7 +77,7 @@ call_add (int argc, char **argv) {
 		strcpy (fname, home);
 	else if (dad_flag) {
 		strcpy (fname, "/tmp/dishXXXXXX");
-		unlink (mktemp (fname));
+		close (mkstemp (fname));
 	} else if (home = getenv ("HOME"))
 		sprintf (fname, "%s/.dishdraft", home);
 	else
@@ -223,7 +226,7 @@ call_add (int argc, char **argv) {
 }
 
 int
-make_old (char *file, int commit) {
+make_old (char *file, char commit) {
 	char newname[LINESIZE];
 
 	if (dad_flag) {

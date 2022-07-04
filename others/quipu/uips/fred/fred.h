@@ -22,6 +22,7 @@
 
 
 #include <stdio.h>
+#include <errno.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
@@ -37,8 +38,9 @@ extern	SFP	qstat;
 extern LLog _fred_log, *fred_log;
 
 
-void	adios (), advise ();
-int	ask (), getline ();
+void	adios (char *, char *, ...);
+void	advise (char *, char *, ...);
+int	ask (char *, ...), _getline ();
 char   *strdup ();
 
 /*    DATA */

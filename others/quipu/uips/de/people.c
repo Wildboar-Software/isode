@@ -46,12 +46,13 @@ extern char exactString[];
 
 /* PRR stands fpr people, rooms and roles */
 
-struct namelist * prratts;
+extern struct namelist * prratts;
 
 struct ds_search_arg *fillMostPRRSearchArgs();
 
 void makeExplicitPRRFilter();
 void prrFilter1(), prrFilter2(), prrFilter3(), prrFilter4();
+extern void pageprint(char *, ...);
 
 VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
@@ -126,7 +127,7 @@ freePRRs (struct namelist **listpp) {
 }
 
 int
-freePRRSearchArgs  {
+freePRRSearchArgs () {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }

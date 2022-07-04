@@ -76,7 +76,7 @@ $(LIBDIR)libpsap2.a:	libpsap2.a
 		-@echo ""
 
 $(LINTDIR)llib-lpsap2:	llib-lpsap2
-		-cp $@ zllib-lpsap2
+		- if [ -f $@ ]; then cp $@ zllib-lpsap2; fi
 		-rm -f $@
 		sed -e 's%#include "\(.*\)"%#include "$(INCDIR)\1"%' \
 			< llib-lpsap2 | \

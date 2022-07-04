@@ -86,6 +86,7 @@ static char systub[BUFSIZ];
 static FILE *fdef;
 static FILE *ftbl;
 static FILE *fstb;
+extern FILE *yyin, *yyout;
 
 typedef struct symlist {
 	char   *sy_encpref;
@@ -151,6 +152,9 @@ int
 main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
+
+    yyin  = stdin;
+    yyout = stdout;
 
 	fprintf (stderr, "%s\n", rosyversion);
 
@@ -353,13 +357,13 @@ yyerror_aux (char *s) {
 /*  */
 
 #ifndef	lint
-myyerror (char*what, ...) {
+myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 
-	va_start (ap, what);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, what, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -369,12 +373,13 @@ myyerror (char*what, ...) {
 
 #ifdef        notyet
 #ifndef       lint
-static        pyyerror (YP yp, ...) {
+static        pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
+	register YP       yp;
 
-	va_start (ap, yp);
+	va_start (ap, fmt);
 
-	_asprintf (buffer, NULLCP, yp, ap);
+	_asprintf (buffer, NULLCP, fmt, ap);
 
 	va_end (ap);
 
@@ -735,15 +740,17 @@ pass2()  {
 
 	fflush (stdout);
 	fflush (fdef);
-	fclose (ftbl);
-	fclose (fstb);
+	fflush (ftbl);
+	fflush (fstb);
 
-	if (ferror (stdout) || ferror (fdef))
-		;// FIXME myyerror ("write error - %s", sys_errname (errno));
+	if (ferror (stdout) || ferror (fdef) || ferror (ftbl) || ferror (fstb))
+		myyerror ("write error - %s", sys_errname (errno));
 
 	fclose (fdef);
 
-	fclose (stdout);
+	fclose (ftbl);
+
+	fclose (fstb);
 }
 
 /*  */
@@ -1950,7 +1957,7 @@ add_value (YV y, YV z) {
 /*    TAGS */
 
 YT
-new_tag (int class) {
+new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)

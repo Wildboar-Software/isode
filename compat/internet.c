@@ -27,6 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 
 /* LINTLIBRARY */
 
+#include <unistd.h>
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -228,7 +230,7 @@ struct sockaddr_in *sock;
 #ifdef ULTRIX_X25_DEMSA
 	else {
 		/* this descriptor will be used for the accepted connection */
-		/* so we the descriptor result                     */
+		/* so we register the descriptor result                     */
 		if ( X25RegisterFD(result,rhandler,whandler,xhandler,result) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));
 			return NOTOK;
@@ -271,7 +273,7 @@ struct sockaddr_in *sock;
 	}
 #ifdef ULTRIX_X25_DEMSA
 	else {
-		/* connect returned success, now we the descriptor */
+		/* connect returned success, now we register the descriptor */
 		/* fd for the connection, which is going to be established  */
 		if ( X25RegisterFD(fd,rhandler,whandler,xhandler,fd) < NULL) {
 			SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("X25RegisterFD"));

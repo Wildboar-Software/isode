@@ -26,7 +26,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/rawinp
 
 
 #include <stdio.h>
+#ifdef __linux__
+#include <linux/termios.h>
+#else
 #include <sys/termio.h>
+#endif
 
 static short savemode;
 static unsigned char savemin;
@@ -36,7 +40,7 @@ static struct termio t;
    to be safe */
 
 int
-setRawMode  {
+setRawMode () {
 
 	if (ioctl(0, TCGETA, &t) == -1) {
 		fprintf(stderr, "Couldn't go into raw mode (1), aaaaaagggggghhhhh!!!!\n");
@@ -53,7 +57,7 @@ setRawMode  {
 }
 
 int
-unsetRawMode  {
+unsetRawMode () {
 
 	t.c_lflag = savemode;
 	t.c_cc[VMIN] = savemin;

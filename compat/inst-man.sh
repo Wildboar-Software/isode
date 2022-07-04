@@ -93,8 +93,8 @@ do
 			;;
 
 		    BSD42)
-			echo install -m 0644 -c $X ${MANDIR}man$E/$F
-			install -m 0644 -c $X ${MANDIR}man$E/$F
+			echo install -D -m 0644 -c $X ${MANDIR}man$E/$F
+			install -D -m 0644 -c $X ${MANDIR}man$E/$F
 			;;
 
 		    AIX)

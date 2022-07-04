@@ -38,7 +38,7 @@ main (int argc, char **argv) {
 
 
 int
-test1  {
+test1 () {
 	int i;
 	double l_fixed_to_double();
 	struct l_fixedpt sample;
@@ -61,7 +61,7 @@ test1  {
 }
 
 int
-test2  {
+test2 () {
 	struct timeval tp;
 	struct l_fixedpt time_lm;
 

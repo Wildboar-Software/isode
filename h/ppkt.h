@@ -130,7 +130,6 @@
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
 
 
-
 /*  */
 
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
@@ -226,6 +225,8 @@ int	psaplose (struct PSAPindication*pi, ...);
 
 int	freepblk ();
 struct psapblk *newpblk (), *findpblk ();
+
+int	psaplose (struct PSAPindication*, ...);
 
 #ifndef	LPP
 #define	PC_PROV_BASE		PC_NOTSPECIFIED

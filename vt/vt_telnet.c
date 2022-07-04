@@ -55,6 +55,9 @@ extern do_break;
 extern telnet_profile;
 extern int connected;
 
+void	adios (char *, char *, ...);
+void	advise (int, char *, char *, ...);
+
 vt_newline() {	/*Produce Newline update*/
 
 	TEXT_UPDATE ud;
@@ -143,8 +146,8 @@ vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 
 int
 vt_set_nego (	/*Update NA/NI control object as in image*/
-	int image,
-	int mask
+	char image,
+	char mask
 ) {
 
 	TEXT_UPDATE ud;

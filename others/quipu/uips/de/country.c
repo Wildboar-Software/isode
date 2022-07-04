@@ -51,6 +51,8 @@ void coFilter1(), coFilter2(), coFilter3(), coFilter4();
 VFP explicitCo[] = {makeExplicitCoFilter, NULLVFP};
 VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
 
+extern void pageprint(char *, ...);
+
 int
 makeRootCountry (struct namelist **clistp) {
 	*clistp = list_alloc();
@@ -107,7 +109,7 @@ freeCos (struct namelist **listpp) {
 }
 
 void
-freeCoSearchArgs  {
+freeCoSearchArgs () {
 	dn_free(sarg.sra_baseobject);
 }
 

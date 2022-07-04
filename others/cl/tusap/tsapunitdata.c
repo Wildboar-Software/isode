@@ -1195,7 +1195,9 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	struct TSAPdata   *tx = &txs;
 
 #ifndef	BSDSIGS
+#ifdef SIGEMT
 	signal (SIGEMT, UNITDATAser);
+#endif
 
 	smask = sigioblock ();
 #endif
@@ -1249,7 +1251,9 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 	 */
 
 #ifndef	SIGPOLL
+#ifdef SIGEMT
 	kill (TPid, SIGEMT);
+#endif
 #endif
 
 #ifndef	BSDSIGS
@@ -1296,10 +1300,14 @@ TUnitDataWakeUp (struct tsapblk *tb)
 
 	if (!inited) {
 #ifndef	BSDSIGS
+#ifdef SIGEMT
 		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
 #endif
+#endif
 
+#ifdef SIGEMT
 		signal (SIGEMT, UNITDATAser);
+#endif
 #ifndef	BSDSIGS
 		sigiomask (smask);
 #endif
@@ -1323,7 +1331,9 @@ TUnitDataWakeUp (struct tsapblk *tb)
 			continue;
 
 		case OK:
+#ifdef SIGEMT
 			signal (SIGEMT, SIG_DFL);
+#endif
 			execv (*is -> is_vec, is -> is_vec);
 			_exit (1);
 

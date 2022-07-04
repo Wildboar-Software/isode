@@ -71,13 +71,14 @@ lint:           l-dish
 inst-dish:      $(BINDIR)dish
 
 $(BINDIR)dish:	xdish
-		-cp $@ zxdish
+		- if [ -f $@ ]; then cp $@ zxdish; fi
 		-rm -f $@
 		cp xdish $@
 		-@ls -gls $@
 		-@echo ""
 
 dish:		xdish
+		cp xdish $@
 
 xdish:		libdish.a dish.o $(LIBES)
 		$(LDCC) $(LDFLAGS) -o $@ dish.o $(LIBDISH) \
@@ -160,7 +161,7 @@ l-libdish:     $(CFILES) true
 inst-editentry:	$(BINDIR)editentry
 
 $(BINDIR)editentry: editentry
-		-cp $@ zeditentry
+		- if [ -f $@ ]; then cp $@ zeditentry; fi
 		-rm -f $@
 		cp editentry $@
 		chmod a+rx $@

@@ -30,7 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "general.h"
 #include "manifest.h"
 #include "internet.h"
@@ -56,8 +56,16 @@ static char *wildlife = NULL;
 static char sedfil[BUFSIZ];
 
 
-void	adios (), advise ();
-char   *version ();
+static void	adios (char *what, char *fmt, ...);
+static void	advise (char *what, char *fmt, ...);
+static char   *version ();
+static char *strdup ();
+
+static read_config (), read_psap (), build_root (), build_TLC (),
+       build_organization (), build_unit (), make_edb (),
+       build_tailor (), build_startup (), build_nightly (),
+       make_file (), build_dsap (), build_fred (), fudge_file (),
+       arginit (), parse_3166 (), table_3166 ();
 
 
 
@@ -129,7 +137,7 @@ struct country {
 #define	C_SHORT	0x01
 };
 
-struct country *read_country ();
+static struct country *read_country ();
 
 /*  */
 
@@ -233,12 +241,12 @@ static struct pair pairs[] = {
 	NULL
 };
 
-struct pair *n2p ();
+static struct pair *n2p ();
 
 /*  */
 
 static
-read_config  {
+read_config () {
 	int	    lineno;
 	char *cp,
 	*dp;
@@ -711,15 +719,16 @@ hit:
 /*  */
 
 int
-generate_sed  {
+generate_sed () {
 	FILE   *fp;
 	struct pair *p;
+	int fd;
 
 	sprintf (sedfil, "/tmp/%sXXXXXX", myname);
-	unlink (mktemp (sedfil));
+	fd = mkstemp (sedfil);
 
-	if ((fp = fopen (sedfil, "w")) == NULL)
-		adios (sedfil, "unable to create");
+	if ((fp = fdopen (fd, "w")) == NULL)
+		adios (sedfil, "unable to open");
 
 	for (p = pairs; p -> p_name; p++)
 		if (!(p -> p_flags & P_MBOX) && p -> p_value)
@@ -792,7 +801,7 @@ no_match:
 /*    EDB */
 
 static
-build_root  {
+build_root () {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)
@@ -859,7 +868,7 @@ static char *c_TLC[] = {
 
 
 static
-build_TLC  {
+build_TLC () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s", wildlife,
@@ -901,7 +910,7 @@ static char *o_I[] = {
 
 
 static
-build_organization  {
+build_organization () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s", wildlife,
@@ -939,7 +948,7 @@ static char *u_J[] = {
 
 
 static
-build_unit  {
+build_unit () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
@@ -980,7 +989,7 @@ make_edb (char *dir, char *type, char *date, char *entries[]) {
 /*  */
 
 static char *
-version  {
+version () {
 	long    clock;
 	struct UTCtime ut;
 	static char buffer[BUFSIZ];
@@ -995,17 +1004,17 @@ version  {
 /*    FILES */
 
 static
-build_tailor  {
+build_tailor () {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
 static
-build_startup  {
+build_startup () {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
 static
-build_nightly  {
+build_nightly () {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
@@ -1038,12 +1047,12 @@ make_file (char *infile, char *outfile, int mode, int dosed) {
 /*    SED */
 
 static
-build_dsap  {
+build_dsap () {
 	fudge_file ("dsaptailor");
 }
 
 static
-build_fred  {
+build_fred () {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
@@ -1061,7 +1070,7 @@ fudge_file (char *name) {
 
 	sprintf (buffer, "%sXXXXXX", myname);
 	strcpy (tmpfil, isodefile (buffer, 0));
-	unlink (mktemp (tmpfil));
+	close (mkstemp (tmpfil));
 
 	sprintf (buffer, "sed -f %s < %s > %s", sedfil, file, tmpfil);
 	if (debug)
@@ -1128,7 +1137,7 @@ usage:
 /*  */
 
 static
-parse_3166  {
+parse_3166 () {
 	int	    bitno;
 	unsigned int bits_size;
 	char *cp,
@@ -1208,7 +1217,7 @@ parse_3166  {
 /*  */
 
 static
-table_3166  {
+table_3166 () {
 	char *cp,
 	*dp;
 	char    d,
@@ -1268,16 +1277,15 @@ table_3166  {
 /*    ERRORS */
 
 #ifndef	lint
-void	_advise ();
+static void	_advise ();
 
 
-static void  adios (va_alist)
-va_dcl {
+static void  adios (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 
@@ -1294,23 +1302,21 @@ adios (char *what, char *fmt) {
 
 
 #ifndef	lint
-static void  advise (va_alist)
-va_dcl {
+static void  advise (char *what, char *fmt, ...) {
 	va_list ap;
 
-	va_start (ap);
+    va_start (ap, fmt);
 
-	_advise (ap);
+    _advise (what, fmt, ap);
 
 	va_end (ap);
 }
 
 
-static void
-_advise (va_list ap) {
+static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
-	asprintf (buffer, ap);
+	_asprintf (buffer, what, fmt, ap);
 
 	fflush (stdout);
 
