@@ -1,12 +1,20 @@
-# isode-8.0
-The original ISODE open source code version 8.0 ported to modern Linuces
+# ISODE
 
+The [ISO Development Environment](https://en.wikipedia.org/wiki/ISO_Development_Environment)
+as preserved and maintained by [Wildboar Software](https://wildboarsoftware.com/en).
 
+This project was recently updated to build and run within an Ubuntu Docker
+container.
 
+Wildboar Software publish Docker containers for running Quipu from this
+repository, and possibly some of the other apps in the future.
+
+If you find any bugs, please report them to the
+[issues page](https://github.com/Wildboar-Software/isode/issues).
+
+## Original README
 
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
 NAME
      isode-gen - generating the ISO Development Environment
