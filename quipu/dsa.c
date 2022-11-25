@@ -731,7 +731,7 @@ fork_ok:
 		signal (SIGSYS,  attempt_restart);
 
 		if (sig >= 0 && debug)
-			fprintf (stderr,"DSA %s has a problem\n",mydsaname);
+			fprintf (stderr, "DSA %s encountered a problem, as indicated by signal: %d\n", mydsaname, sig);
 
 		dsa_abort (1);
 
