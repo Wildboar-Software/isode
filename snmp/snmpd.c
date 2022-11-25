@@ -136,7 +136,7 @@ static char	source[BUFSIZ];
 #ifdef	DEBUG
 static	int	didhup = OK;
 
-SFD	hupser ();
+static SFD	hupser ();
 #endif
 
 void	adios (char *, char *, ...);

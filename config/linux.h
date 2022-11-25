@@ -31,5 +31,6 @@
 #define GETDENTS
 #define GETCWD
 #define STRDUP
+#define DEBUG
 
 #endif

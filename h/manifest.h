@@ -31,6 +31,14 @@
 #include "config.h"		/* system-specific configuration */
 #endif
 
+#ifdef LINUX
+#define _POSIX_SOURCE	1
+#define _POSIX_C_SOURCE	200809L
+#define _XOPEN_SOURCE	700
+#define _XOPEN_SOURCE_EXTENDED	1
+#define _DEFAULT_SOURCE	1
+#include <features.h>
+#endif
 
 /* target-dependent defines:
 
@@ -192,15 +200,6 @@ typedef INTDEF integer;
 #if defined(SVR4) || defined(SYSV) || defined(BSD44) || defined(LINUX)
 #else
 #define UNIONWAIT
-#endif
-
-#ifdef LINUX
-#define _POSIX_SOURCE	1
-#define _POSIX_C_SOURCE	200809L
-#define _XOPEN_SOURCE	700
-#define _XOPEN_SOURCE_EXTENDED	1
-#define _DEFAULT_SOURCE	1
-#include <features.h>
 #endif
 
 #ifndef	makedev

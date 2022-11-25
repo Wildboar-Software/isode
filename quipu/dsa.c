@@ -124,7 +124,7 @@ int main (int argc, char **argv) {
 #ifdef SBRK_DEBUG
 	unsigned proc_size = 0;
 	unsigned new_size;
-	extern caddr_t sbrk();
+	// extern caddr_t sbrk();
 #endif
 	extern char *treedir;
 	extern char	* mydsaname;
