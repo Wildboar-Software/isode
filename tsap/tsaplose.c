@@ -49,13 +49,15 @@ static int  _tsaplose ();
 int	tpktlose (struct tsapblk* tb, ...) {
 	int	    reason,
 			result;
+	char	*what, *fmt, *bp;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td;
 	va_list ap;
+	char    buffer[BUFSIZ];
 
 	va_start (ap, tb);
 
-	tb = va_arg (ap, struct tsapblk *);
+	// tb = va_arg (ap, struct tsapblk *);
 
 	td = va_arg (ap, struct TSAPdisconnect *);
 	if (td == NULL)
@@ -64,6 +66,12 @@ int	tpktlose (struct tsapblk* tb, ...) {
 	reason = va_arg (ap, int);
 
 	result = _tsaplose (td, reason, ap);
+
+	what = va_arg(ap, char *);
+	fmt = va_arg(ap, char *);
+
+	if (fmt)
+		_asprintf (bp = buffer, what, fmt, ap);
 
 	va_end (ap);
 
