@@ -1,3 +1,5 @@
+!docker/EDB
+
 RemoteSystemsTempFiles/
 cproto-4.6/
 config/CONFIG.make

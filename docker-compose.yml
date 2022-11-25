@@ -1,0 +1,31 @@
+# This is a Docker Compose file for deploying this project.
+version: '3.7'
+
+services:
+  quipu:
+    build:
+      context: .
+      dockerfile: quipu.dockerfile
+    hostname: 'meerkat'
+    stdin_open: true
+    tty: true
+    labels:
+      author: Wildboar Software
+      app: quipu
+      version: "8.1"
+    network_mode: host
+    ports:
+      - '17003:17003/tcp'
+    volumes:
+      - type: bind
+        source: ./docker/db
+        target: /usr/local/etc/isode/quipu-db
+        read_only: false
+      - type: bind
+        source: ./docker/quiputailor
+        target: /usr/local/etc/isode/quiputailor
+        read_only: true
+      - type: bind
+        source: ./docker/oidtable.at.local
+        target: /usr/local/etc/isode/oidtable.at.local
+        read_only: true
