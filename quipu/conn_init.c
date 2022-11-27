@@ -72,7 +72,7 @@ conn_init (struct connection *cn) {
 	cn->cn_dn = NULLDN;
 
 	if (result != OK) {
-		ds_log(da, "Incomming connection failed",cn->cn_ad);
+		ds_log(da, "Incoming connection failed",cn->cn_ad);
 		conn_extract (cn);
 		return;
 	}
