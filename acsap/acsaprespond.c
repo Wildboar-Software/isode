@@ -82,8 +82,13 @@ AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *ac
 									&pdu);
 
 #ifdef	DEBUG
-	if (result == OK && (acsap_log -> ll_events & LLOG_PDUS))
-		pvpdu (acsap_log, print_ACS_ACSE__apdu_P, pe, "ACSE-apdu", 1);
+	if (result == OK) {
+		if (acsap_log -> ll_events & LLOG_PDUS) {
+			pvpdu (acsap_log, print_ACS_ACSE__apdu_P, pe, "ACSE-apdu", 1);
+		}
+	} else {
+		LLOG (acsap_log, LLOG_EXCEPTIONS, ("ACSE APDU decoding failure (code %d)", result));
+	}
 #endif
 
 	ctx = pe -> pe_context;
