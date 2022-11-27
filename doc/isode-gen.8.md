@@ -1,9 +1,6 @@
-
-
+# ISODE-GEN (8)
 
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
 NAME
      isode-gen - generating the ISO Development Environment
@@ -14,7 +11,7 @@ READ THIS
 
      Acquisition,  use,  and  distribution  of  this  module  and
      related  materials  are  subject  to  the  restrictions of a
-     license agreement.  Consult the Preface in the _U_s_e_r'_s _M_a_n_u_a_l
+     license agreement.  Consult the Preface in the User's Manual
      for the full terms of this agreement.
 
      You will probably want to read  over  this  entire  document
@@ -27,12 +24,11 @@ READ THIS
      note to "ISODE-Request@NIC.SRI.COM".
 
 SYNOPSIS
-          % cd isode-8.0
-          % cp config/_s_y_s_t_e_m.h h/config.h
-          % cp config/_s_y_s_t_e_m.make config/CONFIG.make
-          % cp config/*.local support/
-          % ./make everything
-          # ./make inst-everything
+     `% cp config/linux h/config.h`  
+     `% cp config/linux.make config/CONFIG.make`  
+     `% cp config/*.local support/`  
+     `% ./make everything`  
+     `# ./make inst-everything`  
 
 
 DESCRIPTION
@@ -40,15 +36,6 @@ DESCRIPTION
      is  assumed  that you have super-user privileges in order to
      (re-)install the software.  Super-user  privileges  are  not
      required to configure or generate this software.
-
-     The  distribution  tape  contains  the  hierarchy  for   the
-     isode-8.0  directory.  Bring the sources on-line by changing
-     to a directory for local sources and running tar, e.g.,
-
-          % cd /usr/src/local/
-          % tar x
-          % cd isode-8.0
-
 
 CONFIGURATION
      First, go to the config/ directory.
@@ -74,7 +61,8 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      Select the Makefile and include-file  skeletons  which  most
      closely match your system.  The current choices are:
 
-          _f_i_l_e        _c_o_n_f_i_g_u_r_a_t_i_o_n
+          file        configuration
+          linux       Linux
           aix         AIX 3.2
           apollo      Apollo
           aux         A/UX release 2.0.1
@@ -109,10 +97,10 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
   MAKEFILE
      Copy the makefile skeleton of your  choice  to  pickle.make,
      where  "pickle"  is  the name of your system.  Now edit this
-     file to set the following _m_a_k_e variables:
+     file to set the following make variables:
 
-          _v_a_r_i_a_b_l_e _d_e_f_a_u_l_t              _s_p_e_c_i_f_i_e_s
-          OPTIONS                       options to _c_c and _l_i_n_t (e.g., -I../h)
+          variable default              specifies
+          OPTIONS                       options to cc and lint (e.g., -I../h)
           LSOCKET                       libraries to link in (e.g., -lcci)
           BINDIR   /usr/local/bin/      where to install user programs
           SBINDIR  /usr/etc/            where to install administrator
@@ -148,7 +136,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           ln pickle.make CONFIG.make
 
      (yes, that's "CONFIG" in uppercase and "make" in lowercase).
-     Both  of these files are in the isode-8.0/config/ directory.
+     Both  of these files are in the isode/config/ directory.
      This latter file is the one which the software uses to  con-
      figure itself during generation.
 
@@ -244,7 +232,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      One further note for users of a release earlier then 7.0  of
      SunLink  OSI:  if you intend to run the standard SunLink OSI
      listener (osi.netd), then you must change the TSEL  used  by
-     _t_s_a_p_d when it listens.  This is done in two steps: First, in
+     tsapd when it listens.  This is done in two steps: First, in
      support/entities.local, change your entry to read as:
 
           myhost default  1.17.4.1.0  #2/NS+mynsap
@@ -292,7 +280,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
       support/objects.local as appropriate.
 
 GENERATION
-     Go to the isode-8.0 directory
+     Go to the isode directory
 
           % cd ..
 
@@ -305,15 +293,15 @@ GENERATION
 
           % ./make
 
-     If you are using SunOS, do not use the _m_a_k_e program supplied
+     If you are using SunOS, do not use the make program supplied
      with the SunPro package.  It is not, contrary to any claims,
-     compatible with the standard _m_a_k_e facility.   Further,  note
+     compatible with the standard make facility.   Further,  note
      that  if  you  are  running  a version of SunOS 4.0 prior to
-     release 4.0.3, then you may need to  use  the  _m_a_k_e  program
-     found  in  /usr/old/, if the standard _m_a_k_e your are using is
-     the SunPro _m_a_k_e.  In this case, you will  need  to  put  the
-     old, standard _m_a_k_e in /usr/bin/, and you can keep the SunPro
-     _m_a_k_e in /bin/.
+     release 4.0.3, then you may need to  use  the  make  program
+     found  in  /usr/old/, if the standard make your are using is
+     the SunPro make.  In this case, you will  need  to  put  the
+     old, standard make in /usr/bin/, and you can keep the SunPro
+     make in /bin/.
 
      If you are using SVR3, then you will probably have  to  type
      this command before starting the compilation:
@@ -342,7 +330,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
      in order to get FTAM to fully compile.
 
-     The _m_a_k_e command from the top-level directory will  cause  a
+     The make command from the top-level directory will  cause  a
      complete  generation  of  the  system.   If  all  goes well,
      proceed with the installation.  If not, complain,  as  there
      "should be no problems" at this step.  Some files while com-
@@ -364,7 +352,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
           *** Error code 1 (ignored)
 
-     This is also normal.  As a rule, unless _m_a_k_e says  something
+     This is also normal.  As a rule, unless make says  something
      like
 
           *** Error code 1
@@ -377,10 +365,10 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 TESTING
      Some directories may have a resident test program, e.g.,  in
-     the  psap/  directory,  there  is a program called _p_s_a_p_t_e_s_t.
+     the  psap/  directory,  there  is a program called psaptest.
      These programs are for internal testing only,  and  are  not
      for  use  by  "mere  mortals".   If you want to test things,
-     after installation run _i_s_o_d_e-_t_e_s_t  (see  the  USER  PROGRAMS
+     after installation run isode-test  (see  the  USER  PROGRAMS
      section).
 
 INSTALLATION
@@ -401,8 +389,8 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-     super-user on the _t_a_r_g_e_t system after changing to the source
-     directory on the _s_o_u_r_c_e system.
+     super-user on the target system after changing to the source
+     directory on the source system.
 
      In the directions that follow, reference is made to some  of
      the directories defined in the CONFIG.make file.  You should
@@ -423,7 +411,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      each-time  activities  that  you  perform  every  time   the
      software is installed.
 
-     The first once-only activity is to  verify  that  the  _t_s_a_p_d
+     The first once-only activity is to  verify  that  the  tsapd
      daemon  will  be  run  when the machine goes multi-user.  On
      Berkeley UNIX systems, add these lines to the  /etc/rc.local
      file:
@@ -438,7 +426,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      /etc/rc2 script might be edited.
 
      Once you are familiar with the system, you will likely  want
-     to  run  the  OSI Directory and use another program, _i_a_e_d to
+     to  run  the  OSI Directory and use another program, iaed to
      invoke  local  services.   The  section  DIRECTORY  SERVICES
      discusses this in greater detail.  (However, if this is your
      first time, don't skip ahead.)
@@ -493,15 +481,15 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           # ./make inst-all
 
      which does the installation.  This command will try to build
-     all  the  directories you have specified, using _m_k_d_i_r.  This
+     all  the  directories you have specified, using mkdir.  This
      means that the parent of  each  of  these  directories  must
-     exist for the the _m_k_d_i_r to succeed.
+     exist for the the mkdir to succeed.
 
      The second each-time activity, is that if  you  are  already
      running  the  ISODE,  then you will need to kill and restart
-     the _t_s_a_p_d (8c) daemon, otherwise incoming  connections  will
+     the tsapd (8c) daemon, otherwise incoming  connections  will
      not  be  initialized correctly.  Otherwise, start the daemon
-     now.  From the _C_S_h_e_l_l, the command might be:
+     now.  From the CShell, the command might be:
 
           # $(SBINDIR)tsapd >& /dev/null
 
@@ -552,15 +540,15 @@ TAILORING
 USER PROGRAMS
      By default, two services are installed.
 
-     The first service, having programs _i_s_o_c and _i_s_o_d, is used to
+     The first service, having programs isoc and isod, is used to
      test out the installation of the ISODE on your system:
 
           % ./make test
 
-     which runs the _i_s_o_d_e-_t_e_s_t script.
+     which runs the isode-test script.
 
-     The second service, having programs _i_m_i_s_c and _r_o_s._i_m_i_s_c,  is
-     a  small demo service supporting things like _f_i_n_g_e_r, _w_h_o and
+     The second service, having programs imisc and rosimisc,  is
+     a  small demo service supporting things like finger, who and
      so forth.
 
      There are additional  programs  in  the  others/  directory.
@@ -579,7 +567,7 @@ REGISTERING OSI APPLICATION SERVICES
      Once you have installed the ISODE, you must bring up a  DSA.
      The  procedures  for  doing  this  varies, depending on your
      location; consult the section "Setting up an Initial DSA" in
-     Volume 5 of the _U_s_e_r'_s _M_a_n_u_a_l.
+     Volume 5 of the User's Manual.
 
      You should also configure the $(ETCDIR)ufnrc file to reflect
      your  local Directory Tree. Details are given at the head of
@@ -634,12 +622,12 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      would contain all the entries of interest.
 
   Once-only Installation
-     The _b_o_o_t_s_v_c script will generate a shell  script  that  will
+     The bootsvc script will generate a shell  script  that  will
      create  an  applicationProcess  entry  and then an entry for
      each of the OSI services provided by  the  ISODE.   So,  you
      must first select the RDN for the applicationProcess entry.
 
-     Run _b_o_o_t_s_v_c to create a script:
+     Run bootsvc to create a script:
 
           % support/bootsvc <<aP-name>> > run.sh
 
@@ -648,7 +636,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           % support/bootsvc cheetah > run.sh
 
      Note that the first line of this script is  used  to  define
-     the  network address where _i_a_e_d listens for incoming connec-
+     the  network address where iaed listens for incoming connec-
      tions.  By default, only the address for the  Internet  com-
      munity  (RFC1006)  is  set.  If the end-system is configured
 
@@ -670,7 +658,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
           A="Internet=`hostname`|NS+aabbcc"
 
-     Next, start _d_i_s_h in the background,  bind  as  the  manager,
+     Next, start dish in the background,  bind  as  the  manager,
      move to the location in the DIT where the services are to be
      registered and run the script, e.g.,
 
@@ -680,7 +668,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           % sh run.sh
 
 
-     Following this, you need to arrange  for  _i_a_e_d  rather  than
+     Following this, you need to arrange  for  iaed  rather  than
      _t_s_a_p_d  to run when the machine goes multi-user.  On Berkeley
      UNIX systems, replace these lines to the /etc/rc.local file:
 
@@ -698,12 +686,12 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
      On other systems, a similar procedure is followed.
 
-     When _i_a_e_d starts, it will connect to the Directory, find the
+     When iaed starts, it will connect to the Directory, find the
      services contained therein, and start listening as appropri-
      ate.
 
      Finally, when the Directory  software  was  installed,  this
-     included  a  program  called _d_a_s_e_d.  If you have not already
+     included  a  program  called dasd.  If you have not already
      done so, edit the $(ETCDIR)isotailor file to have these  two
      lines:
 
@@ -711,11 +699,11 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           ns_address: Internet=domain-name+17006
 
      where "domain-name" is the DNS name  or  IP-address  of  the
-     machine  which  is  running  _d_a_s_e_d.  This can be a different
+     machine  which  is  running  dased.  This can be a different
      machine than the one running the DSA, but it's probably best
-     to have the local DSA and _d_a_s_e_d running on the same machine.
+     to have the local DSA and dased running on the same machine.
 
-     Next, arrange for _d_a_s_e_d to be started when the machine  goes
+     Next, arrange for dased to be started when the machine  goes
      multi-user.   On  Berkeley  UNIX systems, add these lines to
 
 
@@ -740,11 +728,11 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
      On other systems, a similar procedure is followed.
 
-     When _d_a_s_e_d starts, it will listen for  incoming  connections
+     When dased starts, it will listen for  incoming  connections
      from  initiator  ISODE programs.  (By default, the initiator
      programs aren't loaded with  the  user-friendly  nameservice
      and  the  DAP, owing to the code size--instead, they talk to
-     _d_a_s_e_d.)
+     dased.)
 
      For your other systems, edit the $(ETCDIR)isotailor file  to
      have these two lines:
@@ -753,7 +741,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           ns_address: Internet=domain-name+17006
 
      where "domain-name" is the DNS name  or  IP-address  of  the
-     machine which is running _d_a_s_e_d.
+     machine which is running dased.
 
      To test the system:
 
@@ -772,14 +760,14 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      The installation procedures need be performed only once.  If
      you   decide   to  disable  a  service,  simply  remove  the
      corresponding entry from the Directory.  To add a  new  ser-
-     vice,  see the Section "Defining New Services" in the _U_s_e_r'_s
-     _M_a_n_u_a_l.
+     vice,  see the Section "Defining New Services" in the User's
+     Manual.
 
 FTAM/FTP gateway
      Because the FTAM/FTP gateway is meant to appear as  an  FTAM
      entity,  the entry for this service must be placed in a dif-
      ferent portion of the DIT than the regular FTAM service.  As
-     such, the _b_o_o_t_s_v_c script will not install this service.
+     such, the bootsvc script will not install this service.
 
      Hence, if you wish to run such a service, you will  have  to
      install  it  manually.   The  entry  might be something like
@@ -809,7 +797,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
      Look in your part of the Directory to see some  examples  of
      what   these  entries  look  like.   The  are  some  scripts
-     described in _o_t_h_e_r_s/_q_u_i_p_u/_t_o_o_l_s/_s_c_r_i_p_t_s/_R_E_A_D-_M_E which can be
+     described in others/quipu/tools/scripts/READ-ME which can be
      used to maintain such entries.
 
 FILE TRANSFER, ACCESS AND MANAGEMENT
@@ -823,7 +811,7 @@ FILE TRANSFER, ACCESS AND MANAGEMENT
      transfer  of text files, transfer of binary files, directory
      listings, and file management.
 
-     To generate FTAM, go to the isode-8.0 directory and type:
+     To generate FTAM, go to the isode directory and type:
 
           % ./make all-ftam
 
@@ -872,10 +860,10 @@ FTAM/FTP GATEWAY
      ftam  initiator.  Note that the gateway currently resides at
      a different location than the standard  FTAM  responder  and
      FTP  server.   (This  may be corrected in a future release.)
-     Read  the  manual  entries  for  _f_t_a_m_d-_f_t_p (8c)  and   _f_t_p_d-
-     _f_t_a_m (8c) for the details.
+     Read  the  manual  entries  for  ftamd-ftp (8c)  and   ftpd-
+     ftam (8c) for the details.
 
-     To generate the  FTAM/FTAM  gateway,  go  to  the  isode-8.0
+     To generate the  FTAM/FTAM  gateway,  go  to  the  isode
      directory and type:
 
           % ./make all-ftam-ftp
@@ -933,7 +921,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      is the OSI terminal service.  The implementation provided is
      roughly comparable to an average telnet implementation.
 
-     To generate the VT system, go to the isode-8.0 directory and
+     To generate the VT system, go to the isode directory and
      type:
 
           % ./make all-vt
@@ -970,7 +958,7 @@ DIRECTORY SERVICES
      necessary in both instances, as appropriate.
 
   QUIPU GENERATION
-     To generate QUIPU, go to the isode-8.0 directory and type:
+     To generate QUIPU, go to the isode directory and type:
 
           % ./make all-quipu
 
@@ -1012,7 +1000,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      The QUIPU DSA is a "static responder".  This means  that  it
      accepts new associations and managing old ones as necessary.
      Hence, if you intend to run a local DSA, it is necessary  to
-     start the _r_o_s._q_u_i_p_u daemon when the machine goes multi-user.
+     start the rosquipu daemon when the machine goes multi-user.
      On  Berkeley  UNIX  systems,  add   these   lines   to   the
      /etc/rc.local file:
 
@@ -1088,10 +1076,10 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      "'0101'H/Internet+..."  string.   This  information  can  be
      found in the Directory on the host which is running the DSA.
 
-     Do not confuse the _d_s_a__a_d_d_r_e_s_s used in this  file  with  the
-     _n_s__a_d_d_r_e_s_s  used  in the $(ETCDIR)isotailor file.  These are
+     Do not confuse the dsaaddress used in this  file  with  the
+     nsaddress  used  in the $(ETCDIR)isotailor file.  These are
      separate services and must live at different addresses.  See
-     _q_u_i_p_u_t_a_i_l_o_r (5)  for  a  description  of  the  full range of
+     quiputailor (5)  for  a  description  of  the  full range of
      tailoring options in the $(ETCDIR)dsaptailor file.
 
   QUIPU ONCE-ONLY
@@ -1099,7 +1087,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      if you are already running QUIPU, then you will need to kill
      and restart the QUIPU DSA.
 
-     Start the DSA now.  From the _C_S_h_e_l_l, the command might be:
+     Start the DSA now.  From the CShell, the command might be:
 
           # $(SBINDIR)ros.quipu >& /dev/null
 
@@ -1132,11 +1120,11 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      with releases of Berkeley UNIX.
 
      It must be stressed that this package is not a complete net-
-     work  management  system.   In particular, whilst _s_n_m_p_d pro-
+     work  management  system.   In particular, whilst snmpd pro-
      vides a minimal agent functionality, there  are  no  Network
-     Operation Center (NOC) tools--_s_n_m_p_i is a debugging aid only.
+     Operation Center (NOC) tools--snmp is a debugging aid only.
 
-     To generate the SNMP system, go to the  isode-8.0  directory
+     To generate the SNMP system, go to the  isode  directory
      and type:
 
           % ./make all-snmp
@@ -1200,9 +1188,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      agent for your installation.
 
      Finally, if you are already running the SNMP, then you  will
-     need  to  kill and restart the _s_n_m_p_d (8c) and SMUX UNIX dae-
-     mons.  (It is  best  to  kill  _s_m_u_x._u_n_i_x_d  first,  and  then
-     _s_n_m_p_d.)  Otherwise, start the daemons now.  From the _C_S_h_e_l_l,
+     need  to  kill and restart the snmpd (8c) and SMUX UNIX dae-
+     mons.  (It is  best  to  kill  smuxunixd  first,  and  then
+     snmpd.)  Otherwise, start the daemons now.  From the CShell,
      the command might be:
 
           # $(SBINDIR)snmpd >& /dev/null
@@ -1219,7 +1207,7 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
      lightweight presentation protocol  for  TCP/IP-based  inter-
      nets.
 
-     To generate the LPP system, go to  the  isode-8.0  directory
+     To generate the LPP system, go to  the  isode  directory
      and type:
 
           % ./make all-lpp
@@ -1236,7 +1224,7 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
      installed;  and  each-time activities that you perform every
      time the software is installed.
 
-     The first once-only activity is to verify that the _l_p_p_d dae-
+     The first once-only activity is to verify that the lppd dae-
      mon will be run when the machine goes multi-user.  On Berke-
      ley UNIX systems, add these lines to the /etc/rc.local file:
 
@@ -1286,10 +1274,10 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
      Regardless of the command  you  use,  the  second  each-time
      activity, is that if you are already running the LPP system,
-     then you will need to kill and restart the _l_p_p_d (8c) daemon,
+     then you will need to kill and restart the lppd (8c) daemon,
      otherwise  incoming  connections  will  not  be  initialized
      correctly.  Otherwise,  start  the  daemon  now.   From  the
-     _C_S_h_e_l_l, the command might be:
+     CShell, the command might be:
 
           # $(SBINDIR)lppd >& /dev/null
 
@@ -1325,7 +1313,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-     There should be a separate compressed _t_a_r  file,  containing
+     There should be a separate compressed tar  file,  containing
      only  PostScript  files,  available on the machine where you
      retrieved this distribution.
 
@@ -1333,12 +1321,12 @@ FILES
      Too numerous to mention.  Honest.
 
 SEE ALSO
-     _T_h_e _I_S_O _D_e_v_e_l_o_p_m_e_n_t _E_n_v_i_r_o_n_m_e_n_t: _U_s_e_r'_s _M_a_n_u_a_l
+     The ISO Development Environment: User's Manual
 
 AUTHOR
      Marshall T. Rose
      with assistance from a cast of thousands (read  the  Preface
-     in the _U_s_e_r'_s _M_a_n_u_a_l)
+     in the User's Manual)
 
 
 

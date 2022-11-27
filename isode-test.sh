@@ -1,5 +1,4 @@
-: run this script through /bin/sh
-
+#!/bin/sh
 # A program to test out the isode services etc.
 #
 # Pretty simple minded - but gives some indications.
