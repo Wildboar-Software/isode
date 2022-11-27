@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 
 /* LINTLIBRARY */
 
 #include "logger.h"
+#include "tailor.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 
@@ -47,6 +48,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 
 	watch_dog ("RoBindInit");
 	if (result = RoBindInit (vecp, vec, acs, rni) != OK) {
+		DLOG (log_dsap, LLOG_EXCEPTIONS, ("ROSE bind failed with reason %d", result));
 		watch_dog_reset ();
 		return (ronot2dsaplose (di, "D-BIND.INDICATION", rni));
 	}
@@ -101,6 +103,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 
 	case NOTOK:
 	default:
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unrecognizable abstract syntax."));
 		watch_dog ("RoBindReject (default)");
 		RoBindReject(acs, ACS_TRANSIENT, ACS_CONTEXT, rni);
 		watch_dog_reset ();
@@ -115,6 +118,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 
 	/* Decode bind argument */
 	if ((acs->acs_ninfo != 1) || (acs->acs_info[0] == NULLPE)) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Invalid ACSE user data."));
 		watch_dog ("RoBindReject (ninfo)");
 		RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();
@@ -123,6 +127,7 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 
 	if (decode_DAS_DirectoryBindArgument (acs->acs_info[0],
 										  1, NULLCP, NULLIP, &bind_arg) != OK) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode directory bind argument."));
 		watch_dog ("RoBindReject (decode)");
 		RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);
 		watch_dog_reset ();

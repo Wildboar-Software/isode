@@ -45,13 +45,10 @@ int	ronotlose (struct RoNOTindication* rni, ...) {
 	va_list ap;
 
 	va_start (ap, rni);
-
 	reason = va_arg (ap, int);
-
+	SLOG (rosap_log, LLOG_EXCEPTIONS, NULLCP, ("ROSE operation failed with reason %d", reason));
 	result = _ronotlose (rni, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -73,17 +70,13 @@ _ronotlose (  /* what, fmt, args ... */
 	va_list ap
 ) {
 	char  *bp;
-	char  *what;
-	char  *fmt;
 	char    buffer[BUFSIZ];
 
 	if (rni) {
 		bzero ((char *) rni, sizeof *rni);
 		rni -> rni_reason = reason;
-
-		_asprintf (bp = buffer, what, fmt, ap);
+		bp = buffer;
 		bp += strlen (bp);
-
 		copyRoNOTdata (buffer, bp - buffer, rni);
 	}
 

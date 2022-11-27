@@ -41,6 +41,7 @@ struct RoNOTindication	* rni;
 
 	char	* cp;
 	char	  buffer[BUFSIZ];
+	cp = buffer;
 
 #ifdef DEBUG
 
@@ -50,8 +51,6 @@ struct RoNOTindication	* rni;
 			   event, AcErrString (rni->rni_reason), rni->rni_cc,
 			   rni->rni_cc, rni->rni_data));
 #endif
-
-	sprintf (cp = buffer, " (Error in RO-BIND)");
 
 	if (rni->rni_cc > 0)
 		return (dsaplose (di, DA_RO_BIND, NULLCP, "%*.*s%s",

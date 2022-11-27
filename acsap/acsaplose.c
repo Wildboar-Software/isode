@@ -36,10 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
 
 /*  */
 
-#ifndef	lint
-static int _acsaplose (struct AcSAPindication *aci, int reason, va_list ap); /* what, fmt, args ... */
-#endif
-
 int	acsaplose (struct AcSAPindication*aci, ...);
 
 #ifndef	lint
@@ -58,7 +54,7 @@ int	acpktlose (struct assocblk*acb, ...) {
 	aci = va_arg (ap, struct AcSAPindication *);
 	reason = va_arg (ap, int);
 
-	result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, NULLCP, NULLCP, ap);
 
 	va_end (ap);
 
@@ -100,38 +96,33 @@ acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *
 
 /*  */
 
-#ifndef	lint
 int	acsaplose (struct AcSAPindication*aci, ...) {
 	int	    reason,
 			result;
+	char 	*what, *fmt;
 	va_list ap;
 
 	va_start (ap, aci);
 
 	reason = va_arg (ap, int);
+	what = va_arg (ap, char *);
+	fmt = va_arg (ap, char *);
 
-	result = _acsaplose (aci, reason, ap);
+	result = _acsaplose (aci, reason, what, fmt, ap);
 
 	va_end (ap);
 
 	return result;
 }
-#else
-/* VARARGS4 */
 
-int
-acsaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
-	return acsaplose (aci, reason, what, fmt);
-}
-#endif
-
-/*  */
-
-#ifndef	lint
-static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) { /* what, fmt, args ... */
+int _acsaplose (
+	struct AcSAPindication *aci,
+	int reason,
+	char *what,
+	char *fmt,
+	va_list ap
+) {
 	char  *bp;
-	char  *what;
-	char  *fmt;
 	char    buffer[BUFSIZ];
 	struct AcSAPabort *aca;
 
@@ -139,12 +130,9 @@ static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) { 
 		bzero ((char *) aci, sizeof *aci);
 		aci -> aci_type = ACI_ABORT;
 		aca = &aci -> aci_abort;
-
-		what = va_arg(ap, char*);
-		fmt = va_arg(ap, char*);
-		_asprintf (bp = buffer, what, fmt, ap);
+		bp = buffer;
+		_asprintf (bp, what, fmt, ap);
 		bp += strlen (bp);
-
 		aca -> aca_source = ACA_LOCAL;
 		aca -> aca_reason = reason;
 		copyAcSAPdata (buffer, bp - buffer, aca);
@@ -152,4 +140,3 @@ static int _acsaplose (  struct AcSAPindication *aci, int reason, va_list ap) { 
 
 	return NOTOK;
 }
-#endif
