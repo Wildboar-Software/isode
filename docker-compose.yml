@@ -6,14 +6,11 @@ services:
     build:
       context: .
       dockerfile: quipu.dockerfile
-    hostname: 'meerkat'
-    stdin_open: true
     tty: true
     labels:
       author: Wildboar Software
       app: quipu
       version: "8.1"
-    network_mode: host
     ports:
       - '17003:17003/tcp'
     volumes:
