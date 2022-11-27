@@ -1,4 +1,4 @@
-: run this script through /bin/sh
+#!/bin/sh
 M=/bin/make
 if [ -f /usr/bin/make ]; then
     M=/usr/bin/make
