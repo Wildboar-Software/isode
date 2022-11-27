@@ -144,6 +144,7 @@ RemoteSystemsTempFiles/
 
 # ISODE
 [A-Z]*
+!LICENSE
 z[A-Z]*
 *.o
 *.a

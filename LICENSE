@@ -1,0 +1,47 @@
+# Notice, Disclaimer, and Conditions of Use
+
+(This license was copied from _The ISO Development Environment: User's Manual,
+Volume 1: Application Services_ (which is included in this repo) by
+Jonathan M. Wilbur, after formatting as Markdown and correcting a small typo. In
+the opinion of Jonathan M. Wilbur, this license is basically identical to the
+MIT license, but different only because the MIT license was very newly created
+when ISODE was created. I am not a lawyer. What follows is the original text of
+the license as described above.)
+
+The ISODE is openly available but is NOT in the public domain. You are allowed
+and encouraged to take this software and build commercial products. However,
+as a condition of use, you are required to "hold harmless" all contributors.
+
+Permission to use, copy, modify, and distribute this software and its documen-
+tation for any purpose and without fee is hereby granted, provided that this
+notice and the reference to this notice appearing in each software module be
+retained unaltered, and that the name of any contributors shall not be used in
+advertising or publicity pertaining to distribution of the software without
+speci c written prior permission. No contributor makes any representations about
+the suitability of this software for any purpose. It is provided "as is" without
+express or implied warranty.
+
+ALL CONTRIBUTORS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
+ALL IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS. IN NO EVENT SHALL ANY
+CONTRIBUTOR BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY
+DAMAGES WHATSOSEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+As used above, "contributor" includes, but is not limited to:
+
+- The MITRE Corporation
+- The Northrop Corporation
+- NYSERNet, Inc.
+- Performance Systems International, Inc.
+- University College London
+- The University of Nottingham
+- X-Tel Services Ltd
+- The Wollongong Group, Inc.
+- Marshall T. Rose
+
+In particular, the Northrop Corporation provided the initial sponsorship for the
+ISODE and the Wollongong Group, Inc., also supported this effort. The ISODE
+receives partial support from the U.S. Defense Advanced Research Projects Agency
+and the Rome Air Development Center of the U.S. Air Force Systems Command under
+contract number F30602-88-C-0016 to NYSER-Net Inc.
