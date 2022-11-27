@@ -25,4 +25,4 @@ jobs:
           push: true
           tags: ghcr.io/wildboar-software/quipu:latest,ghcr.io/wildboar-software/quipu:${{ github.ref_name }}
           context: ./
-          file: ./Dockerfile
+          file: ./quipu.dockerfile
