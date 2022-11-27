@@ -26,6 +26,18 @@ services:
         target: /usr/local/etc/isode/quiputailor
         read_only: true
       - type: bind
-        source: ./docker/oidtable.at.local
-        target: /usr/local/etc/isode/oidtable.at.local
+        source: ./docker/isotailor
+        target: /usr/local/etc/isode/isotailor
         read_only: true
+      # - type: bind
+      #   source: ./docker/oidtable.gen.local
+      #   target: /usr/local/etc/isode/oidtable.gen.local
+      #   read_only: true
+      # - type: bind
+      #   source: ./docker/oidtable.at.local
+      #   target: /usr/local/etc/isode/oidtable.at.local
+      #   read_only: true
+      # - type: bind
+      #   source: ./docker/oidtable.oc.local
+      #   target: /usr/local/etc/isode/oidtable.oc.local
+      #   read_only: true
