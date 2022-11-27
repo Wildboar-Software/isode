@@ -12,6 +12,16 @@ repository, and possibly some of the other apps in the future.
 If you find any bugs, please report them to the
 [issues page](https://github.com/Wildboar-Software/isode/issues).
 
+## Using the Docker Image
+
+```bash
+docker run --rm -it \
+     -v quipudb:/usr/local/etc/isode/quipu-db \
+     -v $(pwd)/docker/quiputailor:/usr/local/etc/isode/quiputailor \
+     -v $(pwd)/docker/isotailor:/usr/local/etc/isode/isotailor \
+     ghcr.io/wildboar-software/quipu:v8.1
+```
+
 ## Original README
 
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
@@ -38,7 +48,6 @@ READ THIS
      note to "ISODE-Request@NIC.SRI.COM".
 
 SYNOPSIS
-     `% cd isode-8.0`  
      `% cp config/linux h/config.h`  
      `% cp config/linux.make config/CONFIG.make`  
      `% cp config/*.local support/`  
@@ -51,15 +60,6 @@ DESCRIPTION
      is  assumed  that you have super-user privileges in order to
      (re-)install the software.  Super-user  privileges  are  not
      required to configure or generate this software.
-
-     The  distribution  tape  contains  the  hierarchy  for   the
-     isode-8.0  directory.  Bring the sources on-line by changing
-     to a directory for local sources and running tar, e.g.,
-
-          % cd /usr/src/local/
-          % tar x
-          % cd isode-8.0
-
 
 CONFIGURATION
      First, go to the config/ directory.
@@ -160,7 +160,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           ln pickle.make CONFIG.make
 
      (yes, that's "CONFIG" in uppercase and "make" in lowercase).
-     Both  of these files are in the isode-8.0/config/ directory.
+     Both  of these files are in the isode/config/ directory.
      This latter file is the one which the software uses to  con-
      figure itself during generation.
 
@@ -304,7 +304,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
       support/objects.local as appropriate.
 
 GENERATION
-     Go to the isode-8.0 directory
+     Go to the isode directory
 
           % cd ..
 
@@ -835,7 +835,7 @@ FILE TRANSFER, ACCESS AND MANAGEMENT
      transfer  of text files, transfer of binary files, directory
      listings, and file management.
 
-     To generate FTAM, go to the isode-8.0 directory and type:
+     To generate FTAM, go to the isode directory and type:
 
           % ./make all-ftam
 
@@ -887,7 +887,7 @@ FTAM/FTP GATEWAY
      Read  the  manual  entries  for  ftamd-ftp (8c)  and   ftpd-
      ftam (8c) for the details.
 
-     To generate the  FTAM/FTAM  gateway,  go  to  the  isode-8.0
+     To generate the  FTAM/FTAM  gateway,  go  to  the  isode
      directory and type:
 
           % ./make all-ftam-ftp
@@ -945,7 +945,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      is the OSI terminal service.  The implementation provided is
      roughly comparable to an average telnet implementation.
 
-     To generate the VT system, go to the isode-8.0 directory and
+     To generate the VT system, go to the isode directory and
      type:
 
           % ./make all-vt
@@ -982,7 +982,7 @@ DIRECTORY SERVICES
      necessary in both instances, as appropriate.
 
   QUIPU GENERATION
-     To generate QUIPU, go to the isode-8.0 directory and type:
+     To generate QUIPU, go to the isode directory and type:
 
           % ./make all-quipu
 
@@ -1148,7 +1148,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      vides a minimal agent functionality, there  are  no  Network
      Operation Center (NOC) tools--snmp is a debugging aid only.
 
-     To generate the SNMP system, go to the  isode-8.0  directory
+     To generate the SNMP system, go to the  isode  directory
      and type:
 
           % ./make all-snmp
@@ -1231,7 +1231,7 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
      lightweight presentation protocol  for  TCP/IP-based  inter-
      nets.
 
-     To generate the LPP system, go to  the  isode-8.0  directory
+     To generate the LPP system, go to  the  isode  directory
      and type:
 
           % ./make all-lpp
