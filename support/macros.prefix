@@ -43,24 +43,24 @@ TCP		TELEX+00728722+RFC-1006+
 
 # Interim Community Names
 
-realNS		NS+
-Int-X25		X25(80)=01+
+# realNS		NS+
+# Int-X25		X25(80)=01+
 # Janet		X25(80)=02+
 Internet	TCP=03+
 localTCP	TCP=05+
 localHost	localTCP=127.0.0.1+
-IXI		X25(80)=06+
+# IXI		X25(80)=06+
 
 NSAP		NS+
 
 # US GOSIP v2 Addresses
 
-us		NS+47000580
-nsfnet  	us=ffff00
-psinet		us=fffc00
+# us		NS+47000580
+# nsfnet  	us=ffff00
+# psinet		us=fffc00
 
 # UK CONS addresses
-UKNS		DCC+826+d
-JanetNS		UKNS=11000
+# UKNS		DCC+826+d
+# JanetNS		UKNS=11000
 
 
