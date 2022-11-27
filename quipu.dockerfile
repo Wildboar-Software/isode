@@ -23,6 +23,7 @@ RUN mkdir -p /usr/local/etc/isode/quipu-db/ && \
     cp -r /isode/others/quipu/quipu-db/organisation/* /usr/local/etc/isode/quipu-db/ && \
     sed -i 's/mydsaname\s*.*/mydsaname\tc=GB@cn=toucan/' /usr/local/etc/isode/quiputailor
 
+RUN rm -rf /isode
 WORKDIR /usr/local/etc/isode/
 
 # You HAVE to use a local path to quiputailor. I don't know why.
