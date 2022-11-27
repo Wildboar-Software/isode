@@ -156,15 +156,7 @@ ds_log (struct DSAPabort *da, char *str, int fd) {
 		reason = "?";
 		break;
 	}
-
-	if (da->da_cc)
-		sprintf (buffer,"DSAP %s abort (%d), %s (%s): %s",
-				 source, fd, str, reason, da->da_data);
-	else
-		sprintf (buffer,"DSAP %s abort (%d), %s (%s)",
-				 source, fd, str, reason);
-
+	sprintf (buffer,"DSAP %s abort (%d), %s (%s)", source, fd, str, reason);
 	LLOG (log_dsap, LLOG_EXCEPTIONS, ("%s", buffer));
-
 }
 
