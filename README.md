@@ -1,16 +1,25 @@
 # ISODE
 
-The [ISO Development Environment](https://en.wikipedia.org/wiki/ISO_Development_Environment)
-as preserved and maintained by [Wildboar Software](https://wildboarsoftware.com/en).
+The
+[ISO Development Environment](https://en.wikipedia.org/wiki/ISO_Development_Environment)
+as preserved and maintained by
+[Wildboar Software](https://wildboarsoftware.com/en).
 
 This project was recently updated to build and run within an Ubuntu Docker
-container.
+container and to support `UTF8String` attribute values. There may be additional
+changes from the original ISODE code, which will be documented in
+[the changelog](./CHANGELOG.md) from here on out.
 
-Wildboar Software publish Docker containers for running Quipu from this
-repository, and possibly some of the other apps in the future.
+Wildboar Software publishes Docker containers for running Quipu from this
+repository, and might do so for some of the other apps in the future.
 
 If you find any bugs, please report them to the
 [issues page](https://github.com/Wildboar-Software/isode/issues).
+
+## Versioning
+
+The `version.*` files within each project folder in this repository will no
+longer be maintained. Eventually this will be eliminated.
 
 ## Build and Install
 

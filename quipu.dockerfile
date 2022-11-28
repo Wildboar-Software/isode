@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 LABEL com.wildboarsoftware.app="quipu"
 LABEL com.wildboarsoftware.major_version="8"
-LABEL com.wildboarsoftware.minor_version="1"
+LABEL com.wildboarsoftware.minor_version="3"
 
 # From: https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run
 # "Always combine RUN apt-get update with apt-get install in the same RUN statement."

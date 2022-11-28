@@ -138,33 +138,42 @@ typedef struct PElement {
 	/* Pseudo Types */
 #define	PE_UNIV_EOC	0x000	/*   End-of-contents */
 
-	/* Built-in Types */
-#define	PE_PRIM_BOOL	0x001	/*   Boolean */
-#define	PE_PRIM_INT	0x002	/*   Integer */
-#define	PE_PRIM_BITS	0x003	/*   Bitstring */
-#define	PE_PRIM_OCTS	0x004	/*   Octetstring */
-#define	PE_PRIM_NULL	0x005	/*   Null */
-#define	PE_PRIM_OID	0x006	/*   Object identifier */
-#define	PE_PRIM_ODE	0x007	/*   Object descriptor */
-#define	PE_CONS_EXTN	0x008	/*   External */
-#define PE_PRIM_REAL	0x009	/*   Real */
-#define PE_PRIM_ENUM	0x00a	/*   Enumerated type */
-#define PE_PRIM_ENCR	0x00b	/*   Encrypted */
-#define	PE_CONS_SEQ	0x010	/*   Sequence */
-#define	PE_CONS_SET	0x011	/*   Set */
-
-	/* Defined Types */
-#define	PE_DEFN_NUMS	0x012	/*   Numeric String */
-#define	PE_DEFN_PRTS	0x013	/*   Printable String */
-#define	PE_DEFN_T61S	0x014	/*   T.61 String */
-#define	PE_DEFN_VTXS	0x015	/*   Videotex String */
-#define	PE_DEFN_IA5S	0x016	/*   IA5 String */
-#define	PE_DEFN_UTCT	0x017	/*   UTC Time */
-#define	PE_DEFN_GENT	0x018	/*   Generalized Time */
-#define	PE_DEFN_GFXS	0x019	/*   Graphics string (ISO2375) */
-#define	PE_DEFN_VISS	0x01a	/*   Visible string */
-#define	PE_DEFN_GENS	0x01b	/*   General string */
-#define	PE_DEFN_CHRS	0x01c	/*   Character string */
+#define	PE_PRIM_BOOL		0x001	/* Boolean */
+#define	PE_PRIM_INT			0x002	/* Integer */
+#define	PE_PRIM_BITS		0x003	/* Bitstring */
+#define	PE_PRIM_OCTS		0x004	/* Octetstring */
+#define	PE_PRIM_NULL		0x005	/* Null */
+#define	PE_PRIM_OID			0x006	/* Object identifier */
+#define	PE_PRIM_ODE			0x007	/* Object descriptor */
+#define	PE_CONS_EXTN		0x008	/* External */
+#define PE_PRIM_REAL		0x009	/* Real */
+#define PE_PRIM_ENUM		0x00a	/* Enumerated type */
+#define PE_PRIM_ENCR		0x00b	/* Encrypted */
+#define PE_DEFN_UTF8		0x00c 	/* UTF8String */
+#define PE_PRIM_ROID		0x00d	/* Relative OID */
+#define PE_PRIM_TIME		0x00e	/* TIME */
+#define PE_PRIM_RESV		0x00f	/* Reserved 15 */
+#define	PE_CONS_SEQ			0x010	/* Sequence */
+#define	PE_CONS_SET			0x011	/* Set */
+#define	PE_DEFN_NUMS		0x012	/* Numeric String */
+#define	PE_DEFN_PRTS		0x013	/* Printable String */
+#define	PE_DEFN_T61S		0x014	/* T.61 String */
+#define	PE_DEFN_VTXS		0x015	/* Videotex String */
+#define	PE_DEFN_IA5S		0x016	/* IA5 String */
+#define	PE_DEFN_UTCT		0x017	/* UTC Time */
+#define	PE_DEFN_GENT		0x018	/* Generalized Time */
+#define	PE_DEFN_GFXS		0x019	/* Graphics string (ISO2375) */
+#define	PE_DEFN_VISS		0x01a	/* Visible string */
+#define	PE_DEFN_GENS		0x01b	/* General string */
+#define PE_DEFN_USTR		0x01c	/* UniversalString */
+#define PE_DEFN_CSTR		0x01d	/* CHARACTER STRING */
+#define PE_DEFN_BSTR		0x01e	/* BMPString */
+#define PE_DEFN_DATE		0x01f	/* DATE */
+#define PE_DEFN_TOD			0x020	/* TIME-OF-DAY */
+#define PE_DEFN_DTIM		0x021	/* DATE-TIME */
+#define PE_DEFN_DURN		0x022	/* DURATION */
+#define PE_DEFN_OID_IRI		0x023	/* OID-IRI */
+#define PE_DEFN_ROID_IRI	0x024	/* RELATIVE-OID-IRI */
 
 	PElementLen	pe_len;
 #define	PE_LEN_XTND	0x80	/* long or indefinite form */
@@ -326,28 +335,28 @@ PE	str2prim (char *, int, PElementClass, PElementID);
 struct qbuf *prim2qb ();
 PE	qb2prim_aux (struct qbuf *, PElementClass, PElementID, int);		/* really should be qb2pe () */
 #define	qb2prim(q,c,i)		qb2prim_aux ((q), (c), (i), 0)
-#define	oct2prim(s,len)		str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_PRIM_OCTS)
-#define	ia5s2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_IA5S)
-#define	nums2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_NUMS)
-#define	prts2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_PRTS)
-#define	t61s2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_T61S)
-#define	vtxs2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_VTXS)
-#define	gfxs2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_GFXS)
-#define	viss2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_VISS)
-#define	gens2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_GENS)
-#define	chrs2prim(s,len)	str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_DEFN_CHRS)
-#define	ode2prim(s,len)		str2prim ((s), (len), \
-					    PE_CLASS_UNIV, PE_PRIM_ODE)
+#define	oct2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_PRIM_OCTS)
+#define	ode2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_PRIM_ODE)
+#define utf2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_UTF8)
+// #define time2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_TIME)
+#define	nums2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_NUMS)
+#define	prts2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_PRTS)
+#define	t61s2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_T61S)
+#define	vtxs2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_VTXS)
+#define	ia5s2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_IA5S)
+#define	utc2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_UTCT)
+#define gent2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GENT)
+#define	gfxs2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GFXS)
+#define	viss2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_VISS)
+#define	gens2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GENS)
+// UniversalString cannot have a macro like above.
+// BMPString cannot have a macro like above.
+#define date2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_DATE)
+#define tod2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_TIME_OF_DAY)
+#define dt2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_DTIM)
+#define dur2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_DURN)
+#define oidiri2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_OID_IRI)
+#define roidiri2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_ROID_IRI)
 
 PE	prim2bit ();
 PE	bit2prim ();

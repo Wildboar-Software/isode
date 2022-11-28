@@ -145,6 +145,7 @@ RemoteSystemsTempFiles/
 # ISODE
 [A-Z]*
 !LICENSE
+!CHANGELOG.md
 z[A-Z]*
 *.o
 *.a

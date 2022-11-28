@@ -258,7 +258,7 @@ char *x;
 		x++;
 		return (t61s2prim(x,strlen(x)));
 	} else
-		return (prts2prim(x,strlen(x)));
+		return (utf2prim(x,strlen(x)));
 }
 
 static char *
@@ -297,6 +297,23 @@ PE pe;
 		free (p);
 	}
 	return (NULLCP);
+}
+
+static char * utf8dec (pe)
+PE pe;
+{
+	int z;
+	char * p, *ptr, val;
+
+	ptr = prim2str(pe,&z);
+	val = *ptr;
+	if (((p = TidyString2(ptr)) == NULLCP) || (*p == 0))
+		if (val == ' ') {
+			free (p);
+			return strdup (" ");
+		} else
+			return NULLCP;
+	return (p);
 }
 
 #ifdef STRICT_X500
@@ -419,7 +436,7 @@ PE pe;
 	char * ptr, *p2, val;
 
 	if (pe->pe_form != PE_FORM_PRIM) {
-		LLOG (log_dsap,LLOG_EXCEPTIONS,("Primative string expected"));
+		LLOG (log_dsap,LLOG_EXCEPTIONS,("Primitive string expected"));
 		return NULLCP;
 	}
 
@@ -437,6 +454,63 @@ PE pe;
 		return (local_t61 (p2));
 	} else
 		return (prtsdec(pe));
+}
+
+// UnboundedDirectoryString ::= CHOICE {
+// 	teletexString 		TeletexString(SIZE (1..MAX)),
+// 	printableString 	PrintableString(SIZE (1..MAX)),
+// 	bmpString 			BMPString(SIZE (1..MAX)),
+// 	universalString 	UniversalString(SIZE (1..MAX)),
+// 	uTF8String 			UTF8String(SIZE (1..MAX)) }
+
+static char * dirstrdec (pe)
+PE pe;
+{
+	int z;
+	char * ptr, *p2, val;
+
+	if (pe->pe_form != PE_FORM_PRIM) {
+		DLOG (log_dsap,LLOG_DEBUG,("Primitive string expected"));
+		return NULLCP;
+	}
+
+	if (pe->pe_class != PE_CLASS_UNIV) {
+		DLOG (log_dsap,LLOG_DEBUG,("Invalid DirectoryString tag class %d", pe->pe_class));
+		return NULLCP;
+	}
+
+	switch (pe->pe_id) {
+		case PE_DEFN_UTF8:
+			return (utf8dec(pe));
+		case PE_DEFN_PRTS:
+			return (prtsdec(pe));
+		case PE_DEFN_T61S: {
+			ptr = prim2str(pe,&z);
+			val = *ptr;
+			if (((p2 = TidyString2(ptr)) == NULLCP) || (*p2 == 0))
+				if (val == ' ') {
+					free (p2);
+					p2 = strdup ("  ");
+					*p2 = T61_MARK;
+					return p2;
+				} else
+					return NULLCP;
+			return (local_t61 (p2));
+		}
+		case PE_DEFN_USTR: {
+			DLOG (log_dsap,LLOG_DEBUG,("UniversalString not supported."));
+			return NULLCP;
+		}
+		case PE_DEFN_BSTR: {
+			DLOG (log_dsap,LLOG_DEBUG,("BMPString not supported."));
+			return NULLCP;
+		}
+		default: {
+			DLOG (log_dsap,LLOG_DEBUG,
+				("Unrecognized DirectoryString alternative (tagged [UNIVERSAL %d]).", pe->pe_id));
+			return NULLCP;
+		}
+	}
 }
 
 static char *
@@ -1285,7 +1359,7 @@ string_syntaxes (void) {
 	/* 1-7 Approx       */
 
 	exct = add_attribute_syntax ("caseexactstring",
-								 (IFP) strenc,	(IFP) t61dec,
+								 (IFP) strenc,	(IFP) dirstrdec,
 								 (IFP) t61parse,	strprint,
 								 (IFP) strdup,	tpstrcmp,
 								 sfree,		NULLCP,
@@ -1329,7 +1403,7 @@ string_syntaxes (void) {
 						  soundex_match,	TRUE);
 
 	add_attribute_syntax ("caseignorestring",
-						  (IFP) strenc,	(IFP) t61dec,
+						  (IFP) strenc,	(IFP) dirstrdec,
 						  (IFP) t61parse,	strprint,
 						  (IFP) strdup,	tlexequ,
 						  sfree,		NULLCP,
