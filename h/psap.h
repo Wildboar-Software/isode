@@ -167,6 +167,7 @@ typedef struct PElement {
 #define	PE_DEFN_GENS		0x01b	/* General string */
 #define PE_DEFN_USTR		0x01c	/* UniversalString */
 #define PE_DEFN_CSTR		0x01d	/* CHARACTER STRING */
+#define PE_DEFN_CHRS		0x01d
 #define PE_DEFN_BSTR		0x01e	/* BMPString */
 #define PE_DEFN_DATE		0x01f	/* DATE */
 #define PE_DEFN_TOD			0x020	/* TIME-OF-DAY */
