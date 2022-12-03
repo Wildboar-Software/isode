@@ -5,6 +5,10 @@ on:
     tags:        
       - v*
 
+env:
+  STORAGE_ACCOUNT_NAME: wildboarprod
+  CHART_CONTAINER: helm-charts
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +30,41 @@ jobs:
           tags: ghcr.io/wildboar-software/quipu:latest,ghcr.io/wildboar-software/quipu:${{ github.ref_name }}
           context: ./
           file: ./quipu.dockerfile
+
+  helm:
+    name: Publish Helm Chart
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        timeout-minutes: 2
+      - name: Create the Helm Package
+        run: helm package .
+        timeout-minutes: 2
+        working-directory: ./k8s/charts/quipu-dsa
+      - name: Create the Helm Index
+        run: helm repo index . --url https://${{ env.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/${{ env.CHART_CONTAINER }}
+        working-directory: ./k8s/charts/quipu-dsa
+        timeout-minutes: 2
+      - name: Upload Helm Packages
+        uses: bacongobbler/azure-blob-storage-upload@main
+        timeout-minutes: 2
+        with:
+          source_dir: ./k8s/charts/quipu-dsa
+          container_name: ${{ env.CHART_CONTAINER }}
+          sas_token: ${{ secrets.AZURE_BLOB_SAS }}
+          extra_args: '--pattern *.tgz'
+          overwrite: 'true'
+      - name: Upload Helm Index
+        uses: bacongobbler/azure-blob-storage-upload@main
+        timeout-minutes: 2
+        with:
+          source_dir: ./k8s/charts/quipu-dsa
+          container_name: ${{ env.CHART_CONTAINER }}
+          sas_token: ${{ secrets.AZURE_BLOB_SAS }}
+          extra_args: '--pattern index.yaml'
+          overwrite: 'true'

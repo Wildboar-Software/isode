@@ -1,6 +1,6 @@
 oidtable	oidtable
 mydsaname	cn=toucan
-treedir     /usr/local/etc/isode/quipu-db/
+treedir     /var/db/
 logdir		/tmp/
 dsaplog		level=all sflags=tty
 update 		off
