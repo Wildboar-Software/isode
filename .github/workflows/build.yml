@@ -55,6 +55,7 @@ jobs:
         timeout-minutes: 2
         with:
           source_dir: ./k8s/charts/quipu-dsa
+          account_name: ${{ env.STORAGE_ACCOUNT_NAME }}
           container_name: ${{ env.CHART_CONTAINER }}
           sas_token: ${{ secrets.AZURE_BLOB_SAS }}
           extra_args: '--pattern *.tgz'
@@ -64,6 +65,7 @@ jobs:
         timeout-minutes: 2
         with:
           source_dir: ./k8s/charts/quipu-dsa
+          account_name: ${{ env.STORAGE_ACCOUNT_NAME }}
           container_name: ${{ env.CHART_CONTAINER }}
           sas_token: ${{ secrets.AZURE_BLOB_SAS }}
           extra_args: '--pattern index.yaml'
