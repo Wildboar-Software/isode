@@ -146,6 +146,8 @@ RemoteSystemsTempFiles/
 [A-Z]*
 !LICENSE
 !CHANGELOG.md
+!README.md
+!Chart.yaml
 z[A-Z]*
 *.o
 *.a
