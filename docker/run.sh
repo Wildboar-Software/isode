@@ -27,5 +27,7 @@ EOF
     fi
 fi
 
+cd /usr/local/etc/isode/
+
 # Now for the program itself. You HAVE to use a local path to quiputailor for some reason.
 /usr/local/sbin/ros.quipu -t ./quiputailor
