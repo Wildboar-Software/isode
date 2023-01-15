@@ -50,7 +50,7 @@ dsaplog		level=exceptions
 logdir		/tmp/
 
 # default tree directory
-treedir		@(ETCDIR)quipu-db/
+treedir		/var/db/
 
 # slave updates
 update		off
