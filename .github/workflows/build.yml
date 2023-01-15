@@ -48,6 +48,8 @@ jobs:
         working-directory: ./k8s/charts/quipu-dsa
       - name: Download Existing Helm Chart index
         run: curl https://${{ env.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/${{ env.CHART_CONTAINER }}/index.yaml > existing-index.yaml
+        working-directory: ./k8s/charts/quipu-dsa
+        timeout-minutes: 2
       - name: Create the Helm Index
         run: |
           helm repo index . \
