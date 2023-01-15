@@ -838,9 +838,9 @@ data:
     shadow		aliasedObjectName
     optimize_attr	commonName
     optimize_attr	surName
-    dsaplog		level=exceptions 
+    dsaplog		level=all 
     logdir		/tmp/
-    treedir		/usr/local/etc/isode/quipu-db/
+    treedir		/var/db/
     update		off
     searchlevel	2
     lastmodified 	on
