@@ -24,5 +24,6 @@ RUN ./make everything && ./make inst-everything
 RUN rm -rf /isode
 WORKDIR /usr/local/etc/isode/
 ADD docker/run.sh /usr/local/etc/isode/
+RUN chmod +x /usr/local/etc/isode/run.sh
 
-CMD [ "./run.sh" ]
+CMD [ "/usr/local/etc/isode/run.sh" ]

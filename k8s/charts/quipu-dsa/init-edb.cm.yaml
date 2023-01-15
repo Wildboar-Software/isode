@@ -1,0 +1,25 @@
+# This file is not a part of the Helm Chart, but instead, it is just here so you
+# can manually copy it, edit it, and use it and have a correct configuration
+# folder.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edb-init-config
+data:
+  EDB: |
+    MASTER
+    1221127185525Z
+    cn=Toucan
+    objectClass= top & applicationEntity & dSA & quipuDSA
+    cn= Toucan
+    description= Bird with large colorful bill.
+    presentationAddress= TELEX+00728722+RFC-1006+03+0.0.0.0+17003
+    supportedApplicationContext= X500DSP & X500DAP & InternetDSP & quipuDSP
+    userPassword= {CRYPT}BPGE
+    manager= cn=Toucan
+    acl= others # read # entry &\
+      group # c=GB@o=XX@ou=Computer Science@cn=incads # write # entry &\
+      others # read # default &\
+      group # c=GB@o=XX@ou=Computer Science@cn=incads # write # default
+    eDBinfo= ##
+    quipuVersion= quipu 8.0 \231 (hostname) of Sat 26 Nov 2022 11:35:51 AM EST

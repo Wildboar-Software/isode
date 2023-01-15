@@ -30,7 +30,11 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- if .Values.image.tag }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          {{- else }}
+          image: "{{ .Values.image.repository }}:v{{ .Chart.AppVersion }}"
+          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: itot
@@ -39,8 +43,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+            {{- if .Values.edbDataPVCName }}
             - name: data
               mountPath: /var/db/
+            {{- end }}
             - name: config
               mountPath: /usr/local/etc/isode/
             {{- if .Values.edbInitConfigName }}
@@ -60,12 +66,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        {{- if .Values.edbDataPVCName }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ .Values.edbDataPVCName }}
+        {{- end }}
         - name: config
           configMap:
-            name: {{ .Values.configName }}
+            name: {{ .Values.configName | default (include "quipu-dsa.fullname" .) }}
         {{- if .Values.edbInitConfigName }}
         - name: edb-init
           configMap:

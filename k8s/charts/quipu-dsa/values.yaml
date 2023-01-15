@@ -45,12 +45,18 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+service:
+  type: ClusterIP
+  # A value of "local" for `externalTrafficPolicy` will maintain the client's IP
+  # address in Azure and other cloud providers.
+  externalTrafficPolicy: Local
+  port: 17003
 
 # This ConfigMap shall contain all files used by the `quipu-dsa` Docker image in
 # the `/usr/local/etc/isode` folder.
 #
 # Note that, for data to persist, your `quiputailor` file must have a `treedir`
-configName: quipu-config
+# configName: quipu-config
 
 # This configmap is used to seed the `treedir` folder (where all of the EDB
 # files containing your actual DSEs resides) if this folder is non-existent or
@@ -61,4 +67,4 @@ configName: quipu-config
 # This PVC contains the data from the `treedir` folder (where all of the EDB
 # files containing your actual DSEs resides). This can be left unset, but if so,
 # your data will not be persisted between shutdowns.
-edbDataPVCName: quipu-data
+# edbDataPVCName: quipu-data

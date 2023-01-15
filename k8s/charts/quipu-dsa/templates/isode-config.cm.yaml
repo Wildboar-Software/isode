@@ -1,10 +1,10 @@
-# This file is not a part of the Helm Chart, but instead, it is just here so you
-# can manually copy it, edit it, and use it and have a correct configuration
-# folder.
+{{- if empty .Values.configName }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: quipu-config
+  name: {{ include "quipu-dsa.fullname" . }}
+  labels:
+    {{- include "quipu-dsa.labels" . | nindent 4 }}
 data:
   dsaptailor: |
     oidtable	oidtable
@@ -3236,3 +3236,4 @@ data:
     fsBlocksAvailable    fsTableEntry.9   INTEGER         read-only       mandatory
     fsInodeCount         fsTableEntry.10  INTEGER         read-only       mandatory
     fsInodesAvailable    fsTableEntry.11  INTEGER         read-only       mandatory
+{{- end }}
