@@ -104,9 +104,13 @@ data:
     Internet-RFC-1006 TELEX+00728722+RFC-1006+03+
     X25(80)		TELEX+00728722+X.25(80)+
     TCP		TELEX+00728722+RFC-1006+
+    realNS		NS+
+    Int-X25		X25(80)=01+
+    Janet		X25(80)=02+
     Internet	TCP=03+
     localTCP	TCP=05+
     localHost	localTCP=127.0.0.1+
+    IXI		X25(80)=06+
     NSAP		NS+
   isoservices: |
     "lpp/isode miscellany"		""		lpp.imisc
