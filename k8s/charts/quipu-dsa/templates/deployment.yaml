@@ -74,9 +74,15 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.edbDataPVCName }}
         {{- end }}
+        {{-if .Values.configName }}
         - name: config
           configMap:
-            name: {{ .Values.configName | default (include "quipu-dsa.fullname" .) }}
+            name: {{ .Values.configName }}
+        {{- else }}
+        - name: config
+          configMap:
+            name: {{ (include "quipu-dsa.fullname" .) }}-config
+        {{- end }}
         {{- if .Values.edbInitConfigName }}
         - name: edb-init
           configMap:
