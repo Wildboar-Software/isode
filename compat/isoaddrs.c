@@ -356,9 +356,7 @@ str2paddr (char *str) {
 #ifdef ULTRIX_X25_DEMSA
 	int n_colon;
 #endif
-
 	LLOG (addr_log, LLOG_DEBUG, ("str2paddr: %s", str));
-	i = i % 2;
 
 	bzero ((char *) pa, sizeof *pa);
 	strcpy (buf1, str);
@@ -628,8 +626,7 @@ handle_dsp:
 							len--)
 						*fp++ = padchar;
 					strcpy (fp, dp);
-					if (strncmp ("RFC-1006+", ep,
-								 sizeof "RFC-1006+" - 1) == 0) {
+					if (strncmp ("RFC-1006+", ep, sizeof "RFC-1006+" - 1) == 0) {
 #ifdef	h_addr
 						char **ap;
 #endif
@@ -664,7 +661,20 @@ handle_dsp:
 								na -> na_tset = atoi (ep);
 						}
 #ifdef	h_addr
+						struct in_addr * prev_addr = (struct in_addr *) *(hp -> h_addr_list);
 						for (ap = hp -> h_addr_list + 1; *ap; ap++) {
+							/* This is a hack to fix an issue where resolving a
+							hostname could return duplicate IP addresses. This
+							can happen if you have duplicated names in your
+							/etc/hosts file. I discovered this because localhost
+							resolves to both an IPv4 and IPv6 address. The
+							system call converts the IPv6 to the equivalent
+							IPv4, which causes duplicates. This hack will not
+							fix duplicates that are not adjacent in the list. */
+							struct in_addr * curr_addr = (struct in_addr *) *ap;
+							if (curr_addr->s_addr == prev_addr->s_addr) continue;
+							prev_addr = curr_addr;
+
 							ta -> ta_naddr++, na++;
 
 							if (ta -> ta_naddr >= NTADDR)
@@ -677,8 +687,7 @@ handle_dsp:
 #endif
 						break;
 					}
-					if (strncmp ("X.25(80)+", ep,
-								 sizeof "X.25(80)+" - 1) == 0) {
+					else if (strncmp ("X.25(80)+", ep, sizeof "X.25(80)+" - 1) == 0) {
 						na -> na_stack = NA_X25;
 						ep += sizeof "X.25(80)+" - 1;
 						if ((ep = index (dp = ep, '+')) == NULL)
