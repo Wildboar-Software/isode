@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include "manifest.h"
 #include "sys.file.h"
 #include <sys/stat.h>

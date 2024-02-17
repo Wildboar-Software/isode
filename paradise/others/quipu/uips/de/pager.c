@@ -33,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/pager.
 
 
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <sys/types.h>
 #include <termios.h>
 #include "quipu/util.h"

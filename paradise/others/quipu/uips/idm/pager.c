@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <sys/types.h>
 #include <termios.h>
 #include "quipu/util.h"
