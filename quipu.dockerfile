@@ -12,6 +12,10 @@ RUN mkdir -p /var/db/tmp
 RUN apt-get update && apt-get install -y build-essential git bison flex
 ADD . /isode
 WORKDIR /isode
+
+# This is just here to prevent accidentally including pre-built outputs in the Dockerfile.
+RUN ./make clean
+
 ADD config/linux.h h/config.h
 ADD config/linux.make config/CONFIG.make
 ADD config/*.local support/
