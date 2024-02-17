@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y build-essential git bison flex
 ADD . /isode
 WORKDIR /isode
 
+# This seems to be necessary to run the clean target.
+ADD config/linux.make config/CONFIG.make
+
 # This is just here to prevent accidentally including pre-built outputs in the Dockerfile.
 RUN ./make clean
 
