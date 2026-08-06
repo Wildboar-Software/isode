@@ -32,6 +32,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
 #include "general.h"
 #include "manifest.h"
 #include "sys.file.h"
+#if defined(LINUX)
+#include <termios.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#endif
 
 #ifdef	BSD44
 char   *getpass ();
@@ -51,8 +56,11 @@ getpassword (char *prompt) {
 		  *ep;
 #if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	struct sgttyb   sg;
-#else
+#elif !defined(LINUX)
 	struct termio   sg;
+#endif
+#if defined(LINUX)
+	struct termios oldtty, newtty;
 #endif
 	SFP	    istat;
 	FILE    *fp;
@@ -78,11 +86,17 @@ getpassword (char *prompt) {
 	flags = sg.sg_flags;
 	sg.sg_flags &= ~ECHO;
 	stty (fileno (fp), &sg);
-#else
+#elif !defined(LINUX)
 	ioctl (fileno (fp), TCGETA, (char *) &sg);
 	flags = sg.c_lflag;
 	sg.c_lflag &= ~ECHO;
 	ioctl (fileno (fp), TCSETAW, (char *) &sg);
+#endif
+#if defined(LINUX)
+	tcgetattr(fileno(fp), &oldtty);
+	newtty = oldtty;
+	newtty.c_lflag &= ~ECHO;
+	tcsetattr(fileno(fp), TCSAFLUSH, &newtty);
 #endif
 
 #ifdef SUNLINK_7_0
@@ -115,11 +129,13 @@ getpassword (char *prompt) {
 #if	!defined(LINUX) && !defined(SYS5) && !defined(XOS_2)
 	sg.sg_flags = flags;
 	stty (fileno (fp), &sg);
-#else
+#elif !defined(LINUX)
 	sg.c_lflag = flags;
 	ioctl (fileno (fp), TCSETAW, (char *) &sg);
 #endif
-
+#if defined(LINUX)
+	tcsetattr(fileno(fp), TCSAFLUSH, &oldtty);
+#endif
 	signal (SIGINT, istat);
 
 	if (isopen)

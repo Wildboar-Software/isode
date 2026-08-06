@@ -41,7 +41,7 @@
 #endif
 #endif
 
-#if	defined(SYS5) || defined(LINUX)
+#if	defined(SYS5)
 #include <termio.h>
 #endif
 #include <termios.h>
