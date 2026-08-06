@@ -51,7 +51,7 @@ str2elem (char *s, unsigned int elements[]) {
 		if ((cp == dp) || (*dp && *dp != '.'))
 			break;
 		*ip++ = (unsigned int) atoi (cp), i++;
-		if (*dp == NULL)
+		if (*dp == 0)
 			break;
 	}
 	if (*dp || i >= NELEM)

@@ -427,7 +427,7 @@ struct RoSAPindication *roi;
 			*dp = *rp;
 		}
 
-		*dp = NULL;
+		*dp = 0;
 		if ((*ia5p = str2ia5list (line)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -676,7 +676,7 @@ pwdgen (char *pw) {
 			}
 		}
 
-		*s = NULL;
+		*s = 0;
 	} while (object (pw));
 
 	return OK;
@@ -856,7 +856,7 @@ oops:
 			case OK:
 				close (pd[0]);
 				if (dp != data) {
-					*dp = NULL;
+					*dp = 0;
 					if ((*ia5p = str2ia5list (data)) == NULL)
 						goto congested;
 					ia5p = &((*ia5p) -> next);
@@ -872,7 +872,7 @@ oops:
 				for (bp = buffer; i > 0; bp++, i--)
 					switch (*bp) {
 					case '\n':
-						*dp = NULL;
+						*dp = 0;
 						if ((*ia5p = str2ia5list (data)) == NULL)
 							goto congested;
 						ia5p = &((*ia5p) -> next);
@@ -1035,7 +1035,7 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	bp += strlen (bp);
 	strncpy (bp, ut -> ut_line, LMAX);
 	bp += LMAX;
-	*bp = NULL;
+	*bp = 0;
 	if (stat (tty, &st) == NOTOK
 			|| (st.st_mode & (S_IWRITE >> 3)) != (S_IWRITE >> 3))
 		return NOTOK;

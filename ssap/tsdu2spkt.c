@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/tsdu2spkt.c,v 9.0 1992
 
 /*  */
 
-static	put2spdu ();
+static	void put2spdu ();
 
 struct	local_buf {
 	char *top;				/* Top of buffer */
@@ -528,7 +528,7 @@ end_pgi (struct local_buf *c) {
 /*  */
 
 static
-put2spdu (int code, int li, char *value, struct local_buf *c) {
+void put2spdu (int code, int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1,
 		   *p2;
@@ -549,7 +549,7 @@ put2spdu (int code, int li, char *value, struct local_buf *c) {
 			if (c -> allocli < 255)
 				cl += 2;
 			cp = realloc (c -> top, (unsigned) (c -> len += cl));
-			if (cp == NULL) {
+			if (cp == NULLCP) {
 				c -> len = 0;
 				return;
 			}

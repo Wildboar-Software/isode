@@ -335,7 +335,7 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 #endif
 
 	if (cp = index (domain1, '+')) {
-		*cp++ = NULL;
+		*cp++ = 0;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
@@ -350,7 +350,7 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	na -> na_community = ts_comm_tcp_default;
 
 	if (cp = index (domain2, '+')) {
-		*cp++ = NULL;
+		*cp++ = 0;
 		na -> na_port = htons ((u_short) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);

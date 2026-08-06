@@ -42,7 +42,7 @@ pe2ssdu (PE pe, char **base, int *len) {
 	Qcp = (char *)malloc((unsigned)plen);
 	*base = Qcp;
 
-	if (Qcp == NULL)
+	if (Qcp == NULLCP)
 		return NOTOK;
 
 	Len = 0;

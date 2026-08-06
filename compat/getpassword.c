@@ -116,7 +116,7 @@ getpassword (char *prompt) {
 			break;
 		else if (bp < ep)
 			*bp++ = c;
-	*bp = NULL;
+	*bp = 0;
 
 #ifdef SUNLINK_7_0
 	fprintf (stdout, "\n");

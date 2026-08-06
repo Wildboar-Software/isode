@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -49,24 +50,24 @@ str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
 		vec[i] = NULL;
 		if (brk > 0) {
 			if (i > 0 && *s == brk)
-				*s++ = NULL;
+				*s++ = 0;
 		} else
 			while (isspace ((u_char) *s) || *s == comma)
-				*s++ = NULL;
-		if (*s == NULL)
+				*s++ = 0;
+		if (*s == 0)
 			break;
 
 		if (*s == '"') {
 			if (i < nmask)
 				*mask |= 1 << i;
-			for (vec[i++] = ++s; *s != NULL && *s != '"'; s++)
+			for (vec[i++] = ++s; *s != 0 && *s != '"'; s++)
 				if (*s == QUOTE) {
 					if (*++s == '"')
 						strcpy (s - 1, s);
 					s--;
 				}
 			if (*s == '"')
-				*s++ = NULL;
+				*s++ = 0;
 			continue;
 		}
 		if (*s == QUOTE && *++s != '"')
@@ -75,10 +76,10 @@ str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
 
 		if (brk > 0) {
 			if (*s != brk)
-				for (s++; *s != NULL && *s != brk; s++)
+				for (s++; *s != 0 && *s != brk; s++)
 					continue;
 		} else
-			for (s++; *s != NULL && !isspace ((u_char) *s) && *s != comma; s++)
+			for (s++; *s != 0 && !isspace ((u_char) *s) && *s != comma; s++)
 				continue;
 	}
 	vec[i] = NULL;

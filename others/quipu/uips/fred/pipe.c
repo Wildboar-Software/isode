@@ -117,9 +117,9 @@ dish (char *command, int silent) {
 
 			if (cp = index (server, ':')) {
 				if (sscanf (cp + 1, "%d", &portno) == 1)
-					*cp = NULL;
+					*cp = 0;
 				else
-					cp = NULL;
+					cp = NULLCP;
 			}
 			if ((hp = gethostbystring (server)) == NULL)
 				adios (NULLCP,
@@ -149,7 +149,7 @@ dish (char *command, int silent) {
 					|| sscanf (dp + 1, "%d", &portno) != 1)
 				adios (NULLCP, "malformed response for data connection: %s",
 					   da_reply);
-			*dp = NULL;
+			*dp = 0;
 
 			if ((hp = gethostbystring (cp)) == NULL)
 				adios (NULLCP, "%s: unknown host for data connection", cp);
@@ -332,7 +332,7 @@ lost_dua:
 				}
 				break;
 			}
-			*cp = NULL;
+			*cp = 0;
 		}
 
 		switch (buffer[0]) {
@@ -361,7 +361,7 @@ copy_out:
 					   **vp;
 
 				if (cp = index (buffer + 1, '\n'))
-					*cp = NULL;
+					*cp = 0;
 #ifdef	notdef
 				if (buffer[1] == NULL)
 					break;
@@ -559,7 +559,7 @@ all_done:
 	if (system (buffer))
 		goto all_done;
 
-	cp = NULL;
+	cp = NULLCP;
 	if ((fp = fopen (tmpfil, "r")) == NULL) {
 		advise ("reading", "unable to re-open %s for", tmpfil);
 		goto all_done;
@@ -594,7 +594,7 @@ nearly_done:
 		default:
 			break;
 		}
-	*dp = NULL;
+	*dp = 0;
 
 	fclose (fp);
 	unlink (tmpfil);
@@ -964,17 +964,17 @@ da_response () {
 		if (*cp++ == '\n')
 			break;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	if (cp > da_reply)
 		cp--;
 	if (*cp == '\n') {
-		*cp = NULL;
+		*cp = 0;
 		if (cp > da_reply)
 			cp--;
 	}
 	if (*cp == '\r')
-		*cp = NULL;
+		*cp = 0;
 
 	if (watch) {
 		fprintf (stderr, "---> %s\n", da_reply);
@@ -1077,10 +1077,10 @@ init_ufnrc () {
 		if (*buffer == '#')
 			continue;
 		if (bp = index (buffer, '\n'))
-			*bp = NULL;
+			*bp = 0;
 
 		bp = buffer;
-		if (*bp == NULL) {
+		if (*bp == 0) {
 			if (inprogress) {
 				strcpy (ep, "\"");
 				ep += strlen (ep);
@@ -1098,10 +1098,10 @@ init_ufnrc () {
 				advise (NULLCP, "%s: missing ':' at line %d", ufnrc, i);
 				return NOTOK;
 			}
-			*cp++ = NULL;
+			*cp++ = 0;
 
 			if (dp = index (bp, ',')) {
-				*dp++ = NULL;
+				*dp++ = 0;
 
 				while (isspace (*dp))
 					dp++;

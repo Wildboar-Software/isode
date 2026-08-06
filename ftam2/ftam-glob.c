@@ -813,10 +813,10 @@ static matchrdir (char *pattern) {
 			strcpy (cwd, gpath);
 		cp = cwd + strlen (cwd) - 1;
 		if (*cp == '/')
-			*cp = NULL;
+			*cp = 0;
 		else {
 			*++cp = '/';
-			*++cp = NULL;
+			*++cp = 0;
 		}
 		cp = cwd;
 		break;

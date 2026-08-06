@@ -125,7 +125,7 @@ show_picture (char *picture, char *picture_process, int len) {
 		if (cp > buffer) {
 			if (*--cp != '\n')
 				cp++;
-			*cp = NULL;
+			*cp = 0;
 		} else
 			sprintf (buffer, "%s invoked", argv[0]);
 

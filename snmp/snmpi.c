@@ -661,7 +661,7 @@ char  **vec;
 			file = "./loadobjects.defs";
 		if (sp = rindex (file, '/'))
 			sp++;
-		if (sp == NULL || *sp == NULL)
+		if (sp == NULLCP || *sp == 0)
 			sp = file;
 		sp += strlen (file = sp) - 5;
 		if (sp > file && strcmp (sp, ".defs") == 0)
@@ -1078,7 +1078,7 @@ int	offset;
 	if (cp = index (ava, '=')) {
 		if (offset != type_SNMP_PDUs_set__request)
 			advise (NULLCP, "value unnecessary for get operation");
-		*cp++ = NULL;
+		*cp++ = 0;
 	} else if (offset == type_SNMP_PDUs_set__request) {
 		advise (NULLCP, "need variable=value for set operation");
 		return NOTOK;
@@ -1097,7 +1097,7 @@ int	offset;
 	if ((v -> name = oid_cpy (oi ? oi -> oi_name : oid)) == NULLOID)
 		adios (NULLCP, "out of memory");
 
-	if (cp == NULL) {
+	if (cp == NULLCP) {
 		if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 				== NULLPE)
 			adios (NULLCP, "out of memory");
@@ -1834,7 +1834,7 @@ char   *prompt,
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	armed = 0;
 

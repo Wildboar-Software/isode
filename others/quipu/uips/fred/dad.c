@@ -317,7 +317,7 @@ dadser (int fd, struct sockaddr_in *isock) {
 			}
 			break;
 		}
-		*cp = NULL;
+		*cp = 0;
 
 		if (eof && (cp == buffer))
 			break;
@@ -325,12 +325,12 @@ dadser (int fd, struct sockaddr_in *isock) {
 		if (cp > buffer)
 			cp--;
 		if (*cp == '\n') {
-			*cp = NULL;
+			*cp = 0;
 			if (cp > buffer)
 				cp--;
 		}
 		if (*cp == '\r')
-			*cp = NULL;
+			*cp = 0;
 
 		if (debug)
 			fprintf (stderr, "---> %s\n", buffer);
@@ -513,7 +513,7 @@ rcfile () {
 		if (*buffer == '#')
 			continue;
 		if (bp = index (buffer, '\n'))
-			*bp = NULL;
+			*bp = 0;
 
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {

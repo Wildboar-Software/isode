@@ -296,8 +296,8 @@ yyfussy:
 						yyerror("Missing '$' in [[ - ]]");
 					if (c == '$') {
 						unput(c);
-						*cp = NULL;
-					} else *--cp = NULL;
+						*cp = 0;
+					} else *--cp = 0;
 					yylval.yy_string = pp;
 					if (yydebug)
 						fprintf (stderr, "VAL: \"%s\"\n",
@@ -376,7 +376,7 @@ yyfussy:
 			switch (*(cp = yytext + strlen (yytext) - 1)) {
 			case 'H':
 			case 'h':
-				*--cp = NULL;
+				*--cp = 0;
 				for (cp = yytext + 1; *cp; cp++)
 					if (!isxdigit(*cp))
 						yyerror ("bad hex string");
@@ -388,7 +388,7 @@ yyfussy:
 
 			case 'B':
 			case 'b':
-				*--cp = NULL;
+				*--cp = 0;
 				for (cp = yytext + 1; *cp; cp++)
 					if (*cp != '0' && *cp != '1')
 						yyerror ("bad bit string");
@@ -447,7 +447,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading value");
 				if (d == '%' && c == ']' ) {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_string = pp;
 					if (yydebug)
 						fprintf (stderr, "VAL: \"%s\"\n",
@@ -485,7 +485,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_action = new_action (pp, mylineno);;
 					if (yydebug)
 						fprintf (stderr, "ACTION: \"%s\", %d\n",
@@ -524,7 +524,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '>' && c == '>') {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_action = new_action (pp, mylineno);;
 					if (yydebug)
 						fprintf (stderr,"%cCHOICE: \"%s\", %d\n",
@@ -562,7 +562,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_action = new_action (pp, mylineno);;
 					if (yydebug)
 						fprintf (stderr,"EACTION: \"%s\", %d\n",
@@ -599,7 +599,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_action = new_action (pp, mylineno);;
 					if (yydebug)
 						fprintf (stderr,"DACTION: \"%s\", %d\n",
@@ -636,7 +636,7 @@ yyfussy:
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-					*--cp = NULL;
+					*--cp = 0;
 					yylval.yy_action = new_action (pp, mylineno);;
 					if (yydebug)
 						fprintf (stderr,"PACTION: \"%s\", %d\n",

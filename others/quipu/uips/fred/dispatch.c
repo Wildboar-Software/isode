@@ -799,7 +799,7 @@ snarf (char *file, char *name, char **variable) {
 			if (*bp == '#' || *bp == '\n')
 				continue;
 			if (bp = index (buffer, '\n'))
-				*bp = NULL;
+				*bp = 0;
 			if (lexnequ (buffer, name, strlen (name)))
 				continue;
 
@@ -809,7 +809,7 @@ snarf (char *file, char *name, char **variable) {
 
 			if (*bp == '"') {
 				if (*(dp = bp + strlen (bp) - 1) == '"')
-					bp++, *dp = NULL;
+					bp++, *dp = 0;
 				goto set_variable;
 			}
 
@@ -829,7 +829,7 @@ snarf (char *file, char *name, char **variable) {
 
 				dp++, ep++;
 			}
-			*ep = NULL;
+			*ep = 0;
 
 set_variable:
 			;
@@ -865,7 +865,7 @@ rcfile (char *file, int op, int isystem) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 
 		bzero ((char *) vec, sizeof vec);
 		if (str2vecY (buffer, vec) < 1)

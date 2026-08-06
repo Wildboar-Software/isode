@@ -118,7 +118,7 @@ concrete:
 				} else
 					*dp++ = j + '0';
 			}
-			*dp = NULL;
+			*dp = 0;
 
 			cp = nsap;
 lock_and_load:

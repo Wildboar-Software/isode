@@ -56,7 +56,7 @@ void	_asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ...
 	int    eindex;
 	eindex = errno;
 
-	*bp = NULL;
+	*bp = 0;
 
 	if (fmt) {
 #ifndef	VSPRINTF

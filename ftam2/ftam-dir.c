@@ -63,7 +63,7 @@ int f_lcd (char **vec) {
 			printf ("%s\n", lcwd = strdup (cwd));
 #endif
 		else
-			lcwd = cp, cp = NULL;
+			lcwd = cp, cp = 0;
 	}
 
 	if (cp)
@@ -137,7 +137,7 @@ isdir (char *dir, char *dp, int silent) {
 
 	result = OK;
 	if (dp)
-		*dp = NULL;
+		*dp = 0;
 
 	if (!vf -> vf_oid || !(units & FUNIT_LIMITED))
 		return result;

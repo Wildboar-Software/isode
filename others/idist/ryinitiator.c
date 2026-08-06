@@ -82,7 +82,7 @@ makeconn (char *thehost) {
 		printf ("updating host %s\n", rhost);
 	sprintf (buf, "user (%s:%s): ", rhost, ruser);
 	cp = getstring (buf);
-	if (cp == NULL)
+	if (cp == NULLCP)
 		cp = ruser;
 	initial -> user = str2qb (cp, strlen (cp), 1);
 

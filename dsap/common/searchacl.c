@@ -386,7 +386,7 @@ char	*str;
 		new->sac_scope = scope;
 
 	if ( new->sac_access == SACL_UNSEARCHABLE ) {
-		if ( s != NULL ) {
+		if ( s != NULLCP ) {
 			parse_error( "extra junk after nosearch '%s'", s+1 );
 			sacl_free( new );
 			return( NULLSACL );
@@ -395,7 +395,7 @@ char	*str;
 		}
 	}
 
-	if ( s == NULL ) {
+	if ( s == NULLCP ) {
 		/*
 		 * if this is only a baseobject sacl, it doesn't need
 		 * anything more.
@@ -433,7 +433,7 @@ char	*str;
 		return( NULLSACL );
 	}
 
-	if ( s == NULL ) {
+	if ( s == NULLCP ) {
 		parse_error( "[no]partialresults missing from searchacl" ,NULLCP);
 		sacl_free( new );
 		return( NULLSACL );
@@ -467,7 +467,7 @@ char	*str;
 		return( NULLSACL );
 	}
 
-	if ( s == NULL ) {
+	if ( s == NULLCP ) {
 		return( new );	/* default to no min key length */
 	}
 
@@ -698,7 +698,7 @@ char	*str;
 		return( NULLLISTACL );
 	}
 
-	if ( s == NULL ) {
+	if ( s == NULLCP ) {
 		parse_error( "listacl scope missing",NULLCP );
 		sacl_free( new );
 		return( NULLLISTACL );
@@ -731,7 +731,7 @@ char	*str;
 		return( NULLLISTACL );
 	}
 
-	if ( s == NULL ) {
+	if ( s == NULLCP ) {
 		return( new );
 	}
 

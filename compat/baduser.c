@@ -61,7 +61,7 @@ baduser (char *file, char *user) {
 
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if (bp = index (buffer, '\n'))
-				*bp = NULL;
+				*bp = 0;
 			if (strcmp (buffer, user) == 0) {
 				hit++;
 				break;

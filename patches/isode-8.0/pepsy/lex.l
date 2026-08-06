@@ -231,8 +231,8 @@ static struct table reserved[] = {
 				    if ((tok == VALX || tok == VALO) &&
 				       (c != '$'))
 				       yyerror("Missing '$' in [[ - ]]");
-				    if (c == '$') {unput(c); *cp = NULL;}
-				    else *--cp = NULL;
+				    if (c == '$') {unput(c); *cp = 0;}
+				    else *--cp = 0;
 				    yylval.yy_string = pp;
 				    if (yydebug)
 					fprintf (stderr, "VAL: \"%s\"\n",
@@ -300,7 +300,7 @@ static struct table reserved[] = {
 			    switch (*(cp = yytext + strlen (yytext) - 1)) {
 				case 'H':
 				case 'h':
-				    *--cp = NULL;
+				    *--cp = 0;
 				    for (cp = yytext + 1; *cp; cp++)
 					if (!isxdigit(*cp))
 					    yyerror ("bad hex string");
@@ -312,7 +312,7 @@ static struct table reserved[] = {
 
 				case 'B':
 				case 'b':
-				    *--cp = NULL;
+				    *--cp = 0;
 				    for (cp = yytext + 1; *cp; cp++)
 					if (*cp != '0' && *cp != '1')
 					    yyerror ("bad bit string");
@@ -364,7 +364,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading value");
 				if (d == '%' && c == ']' ) {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_string = pp;
 				    if (yydebug)
 					fprintf (stderr, "VAL: \"%s\"\n",
@@ -400,7 +400,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr, "ACTION: \"%s\", %d\n",
@@ -437,7 +437,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '>' && c == '>') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr,"%cCHOICE: \"%s\", %d\n",
@@ -474,7 +474,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr,"EACTION: \"%s\", %d\n",
@@ -509,7 +509,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr,"DACTION: \"%s\", %d\n",
@@ -544,7 +544,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr,"PACTION: \"%s\", %d\n",

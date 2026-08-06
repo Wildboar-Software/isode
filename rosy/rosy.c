@@ -246,7 +246,7 @@ usage:
 			continue;
 		if (sp = rindex (cp, '/'))
 			sp++;
-		if (sp == NULL || *sp == NULL)
+		if (sp == NULLCP || *sp == 0)
 			sp = cp;
 		sp += strlen (cp = sp) - 3;
 		if (sp > cp && strcmp (sp, ".ry") == 0)
@@ -281,11 +281,11 @@ usage:
 
 	if (cp = index (rosyversion, ')'))
 		for (cp++; *cp != ' '; cp++)
-			if (*cp == NULL) {
-				cp = NULL;
+			if (*cp == 0) {
+				cp = NULLCP;
 				break;
 			}
-	if (cp == NULL)
+	if (cp == NULLCP)
 		cp = rosyversion + strlen (rosyversion);
 	sprintf (autogen, "%*.*s",
 			 cp - rosyversion, cp - rosyversion, rosyversion);
@@ -1583,7 +1583,7 @@ dump_real (double r) {
 		printf ("{ 0, 10, 0 } -- %s --", sbuf);
 		return;
 	}
-	*cp++ = NULL;
+	*cp++ = 0;
 	printf ("{ %s%c%s, 10, %d }",
 			sp, *dp, dp + 2, atoi (cp) - strlen (dp + 2));
 #endif
@@ -1635,7 +1635,7 @@ act2prf (char *cp, int level, char *e1, char *e2) {
 			fp = ep = dp + strlen (dp);
 
 		j = expand (dp, ep, &gp);
-		if (gp == NULL) {
+		if (gp == NULLCP) {
 			if (*fp)
 				printf ("\n");
 			continue;
@@ -2116,7 +2116,7 @@ modsym_aux (char *name, char *bp) {
 			break;
 		}
 
-	*bp = NULL;
+	*bp = 0;
 }
 
 static
@@ -2134,5 +2134,5 @@ cmodsym_aux (char *name, char *bp) {
 			break;
 		}
 
-	*bp = NULL;
+	*bp = 0;
 }

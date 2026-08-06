@@ -222,8 +222,8 @@ do_dm_match (int n, char **vec) {
 
 	if ((cp = index (vec[0], '@')) && cp != vec[0]) {
 		strcpy (mbox, vec[0]);
-		*cp++ = NULL;
-		if (*cp == NULL) {
+		*cp++ = 0;
+		if (*cp == 0) {
 			ps_printf (OPT, "Must specify domain in mailbox specification.\n");
 			return;
 		}
@@ -445,7 +445,7 @@ struct dn_seq *dlist;
 			filter_free (sa -> sra_filter);
 			if (dp = index (dp, '.'))
 				dp++;
-			if (dp == NULL)
+			if (dp == NULLCP)
 				break;
 			continue;
 		}
@@ -709,7 +709,7 @@ no_mem:
 			struct dn_seq *ds;
 
 			if (xp = index (cp, '$'))
-				*xp++ = NULL;
+				*xp++ = 0;
 			else
 				xp = cp + strlen (cp);
 

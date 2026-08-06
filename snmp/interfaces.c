@@ -439,7 +439,7 @@ char   *name,
 
 	if ((cp = index (ava, '=')) == NULL)
 		return;
-	*cp++ = NULL;
+	*cp++ = 0;
 
 	if (lexequ (ava, "ifType") == 0) {
 		if (sscanf (cp, "%d", &i) != 1 || i < TYPE_MIN || i > TYPE_MAX) {

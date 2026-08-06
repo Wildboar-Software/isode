@@ -196,7 +196,7 @@ int	offset;
 
 		for (cp = pq -> pq_buffer; *cp; cp++)
 			if (*cp == '|' || *cp == ':') {
-				*cp = NULL;
+				*cp = 0;
 				break;
 			}
 		if (cp - pq -> pq_buffer > PQ_SIZE) {
@@ -545,7 +545,7 @@ try_again:
 					if (!fgets (buffer, sizeof buffer - 1, fp))
 						buffer[0] = NULL;
 					if (cp = index (buffer, '\n'))
-						*cp = NULL;
+						*cp = 0;
 					if (strncmp (buffer, "job: ", sizeof "job: " - 1) == 0
 							&& (cp = index (buffer + sizeof "job: " - 1,
 											';'))
@@ -787,7 +787,7 @@ try_again:
 				struct stat st;
 
 				if (cp = index (buffer, '\n'))
-					*cp = NULL;
+					*cp = 0;
 				switch (buffer[0]) {
 				case 'P':
 					if (!pj -> pj_owner[0])
@@ -1263,7 +1263,7 @@ integer	cor;
 						if (buffer[0] != 'U')
 							continue;
 						if (cp = index (buffer, '\n'))
-							*cp = NULL;
+							*cp = 0;
 						if (unlink (buffer + 1) == NOTOK) {
 							advise (LLOG_EXCEPTIONS, buffer + 1,
 									"unable to remove");
@@ -1406,7 +1406,7 @@ char   *current;
 		char   *cp;
 
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		if ((pid = atoi (buffer)) > OK && kill (pid, 0) == NOTOK)
 			pid = OK;
 
@@ -1414,7 +1414,7 @@ char   *current;
 			if (pid > OK
 					&& fgets (buffer, sizeof buffer - 1, fp)) {
 				if (cp = index (buffer, '\n'))
-					*cp = NULL;
+					*cp = 0;
 				strcpy (current, buffer);
 			} else
 				current[0] = NULL;

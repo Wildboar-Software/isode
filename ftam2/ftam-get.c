@@ -265,7 +265,7 @@ static int check_get (char *dst) {
 
 	if ((result = access (dst, W_OK)) == NOTOK && errno == ENOENT)
 		if (cp = rindex (dst, '/')) {
-			*cp = NULL;
+			*cp = 0;
 			result = access (*dst ? dst : "/", W_OK);
 			*cp = '/';
 		} else

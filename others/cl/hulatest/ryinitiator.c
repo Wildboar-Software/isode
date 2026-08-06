@@ -197,7 +197,7 @@ IFP	quit;
 	    }
 	*/
 
-	if (*ap == NULL) {
+	if (*ap == NULLCP) {
 		printf ("%s", myname);
 		/*
 			if (sf -> sr_ulen > 2)
@@ -391,7 +391,7 @@ _getline (char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return OK;
 }

@@ -147,7 +147,7 @@ out2:
 			}
 
 		send_pipe_aux2 (cp, cc);
-		free (cp), cp = NULL;
+		free (cp), cp = NULLCP;
 
 		if ((res = read_pipe_aux2 (&cp, &cc)) < 1) {
 			ps_printf (OPT, "read failure\n");

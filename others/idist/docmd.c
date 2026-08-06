@@ -243,7 +243,7 @@ dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmd
 			continue;
 		}
 found:
-		tp = NULL;
+		tp = NULLCP;
 		cmptime(f->n_name);
 	}
 
@@ -277,7 +277,7 @@ cmptime (char *name) {
 	/*
 	 * first time cmptime() is called?
 	 */
-	if (tp == NULL) {
+	if (tp == NULLCP) {
 		if (exptilde(target, name) == NULL)
 			return;
 		tp = name = target;

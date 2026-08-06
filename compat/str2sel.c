@@ -44,7 +44,7 @@ str2sel (char *s, int quoted, char *sel, int n) {
 			r;
 	char  *cp;
 
-	if (*s == NULL)
+	if (*s == 0)
 		return 0;
 
 	if (quoted <= 0) {
@@ -52,7 +52,7 @@ str2sel (char *s, int quoted, char *sel, int n) {
 			if (!isxdigit ((u_char) *cp))
 				break;
 
-		if (*cp == NULL && (i = (cp - s)) >= 2 && (i & 0x01) == 0) {
+		if (*cp == 0 && (i = (cp - s)) >= 2 && (i & 0x01) == 0) {
 			if (i > (r = n * 2))
 				i = r;
 			i = implode ((u_char *) sel, s, i);
@@ -112,7 +112,7 @@ str2sel (char *s, int quoted, char *sel, int n) {
 				break;
 			}
 	if (n > 0)
-		*cp = NULL;
+		*cp = 0;
 
 	return (cp - sel);
 }

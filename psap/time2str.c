@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2str.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 
 
@@ -82,7 +83,7 @@ time2str (UTC u, int generalized) {
 			bp += strlen (bp);
 		}
 
-	*bp = NULL;
+	*bp = 0;
 
 	return buffer;
 }

@@ -187,7 +187,7 @@ err_recv:
 					exit(-29);
 				}
 			}
-			*cp = NULL;
+			*cp = 0;
 
 			if (*buffer == 'e') {
 				if (system (&buffer[1]))
@@ -201,7 +201,7 @@ err_recv:
 				fprintf (stderr,"%s",buffer + 1);
 				fgets (where, sizeof where, stdin);
 				if (cp = index (where, '\n'))
-					*cp = NULL;
+					*cp = 0;
 			} else {	/* 'p' */
 				sprintf (where,
 						 "Enter password for \"%s\": ",
@@ -367,7 +367,7 @@ char          **argv;
 					fprintf (stderr,"%s",buffer + 1);
 					fgets (where, sizeof where, stdin);
 					if (cp = index (where, '\n'))
-						*cp = NULL;
+						*cp = 0;
 				} else {	/* 'p' */
 					sprintf (where,
 							 "Enter password for \"%s\": ",

@@ -162,7 +162,7 @@ chkparent (char *name) {
 	struct stat stb;
 
 	cp = rindex(name, '/');
-	if (cp == NULL || cp == name)
+	if (cp == NULLCP || cp == name)
 		return(0);
 	*cp = '\0';
 	if (lstat(name, &stb) < 0) {

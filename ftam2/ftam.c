@@ -108,7 +108,7 @@ main (int argc, char **argv, char **envp) {
 	if (!fflag && (fp = fopen (buffer, "r"))) {
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if (bp = index (buffer, '\n'))
-				*bp = NULL;
+				*bp = 0;
 
 			bzero ((char *) vec, sizeof vec);
 			if ((vecp = str2vec (buffer, vec)) < 1)
@@ -327,13 +327,13 @@ static arginit (char **vec) {
 			while (*++ap)
 				switch (*ap) {
 				case 'a':
-					if ((pp = *++vec) == NULL || *pp == NULL)
+					if ((pp = *++vec) == NULLCP || *pp == 0)
 						adios (NULLCP, "usage: %s -a acct", myname);
 					aflag = pp;
 					break;
 
 				case 'c':
-					if ((pp = *++vec) == NULL || *pp == NULL)
+					if ((pp = *++vec) == NULLCP || *pp == 0)
 						adios (NULLCP, "usage: %s -c mode", myname);
 					concur = pp;
 					break;
@@ -360,7 +360,7 @@ static arginit (char **vec) {
 					break;
 
 				case 'o':
-					if ((pp = *++vec) == NULL || *pp == NULL)
+					if ((pp = *++vec) == NULLCP || *pp == 0)
 						adios (NULLCP, "usage: %s -o mode", myname);
 					oflag = pp;
 					break;
@@ -370,7 +370,7 @@ static arginit (char **vec) {
 					break;
 
 				case 'u':
-					if ((pp = *++vec) == NULL || *pp == NULL)
+					if ((pp = *++vec) == NULLCP || *pp == 0)
 						adios (NULLCP, "usage: %s -u user", myname);
 					uflag = pp;
 					break;
@@ -457,7 +457,7 @@ int getftamline (char *prompt, char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	armed = 0;
 

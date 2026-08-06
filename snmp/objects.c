@@ -217,7 +217,7 @@ you_lose:
 		if (*buffer == '#' || strncmp (buffer, "--", 2) == 0)
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
@@ -573,7 +573,7 @@ char   *name;
 			goto free_up;
 
 	if (cp != name) {
-		*cp = NULL;
+		*cp = 0;
 		if ((oid = resolve (name, NULLOT)) == NULLOID)
 			goto free_up;
 		if (i == 0) {
@@ -631,7 +631,7 @@ OT	ot;
 	oid -> oid_elements = elements;
 
 	if (cp = index (id, '.'))
-		*cp = NULL;
+		*cp = 0;
 	if (isdigit (*id)) {
 		ot2 = NULLOT;
 		oid -> oid_nelem = 1;

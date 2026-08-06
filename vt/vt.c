@@ -265,7 +265,7 @@ main (int argc, char *argv[]) {
 
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if (bp = index (buffer, '\n'))
-				*bp = NULL;
+				*bp = 0;
 
 			bzero ((char *) vec, sizeof vec);
 			if (str2vec (buffer, vec) < 1)
@@ -397,7 +397,7 @@ _getline (char *prompt, char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return OK;
 }

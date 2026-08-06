@@ -92,7 +92,7 @@ log_tai ( /* for now only alter the level - files etc later */
 	for(i = 0; i < ac; i++) {
 		if((p = index(av[i], '=')) == NULLCP)
 			continue;
-		*p++ = NULL;
+		*p++ = 0;
 		switch(cmd_srch(av[i], log_tbl)) {
 		case LG_LEVEL:
 			val = cmd_srch(p,log_lvltbl);

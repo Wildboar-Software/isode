@@ -229,7 +229,7 @@ add_macro (char *name, char *value) {
 			   *p;
 
 	if (cp = index (value, '=')) {
-		*cp++ = NULL;
+		*cp++ = 0;
 		if ((p = name2macro (value)) == NULL) {
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 				  ("macro \"%s\" references non-existant macro \"%s\"",
@@ -377,7 +377,7 @@ str2paddr (char *str) {
 						   str));
 					return NULLPA;
 				}
-				*cp++ = NULL;
+				*cp++ = 0;
 				strcpy (*sp, dp);
 				*lp = strlen (dp);
 				break;
@@ -404,7 +404,7 @@ missing_quoteH:
 						  ("missing 'H in selector: %s",str));
 					return NULLPA;
 				}
-				*cp++ = NULL;
+				*cp++ = 0;
 				if (*cp++ != 'H')
 					goto missing_quoteH;
 				IMPLODE (*lp, *sp, dp, strlen (dp), NULLPA, L1);
@@ -436,10 +436,10 @@ stuff_selectors:
 			if ((cp = index (ep = cp, '|')) == NULL)
 				cp = ep + strlen (ep);
 			else
-				*cp++ = NULL;
+				*cp++ = 0;
 
 			if (dp = index (ep, '=')) {
-				*dp++ = NULL;
+				*dp++ = 0;
 				if ((m = name2macro (ep)) == NULL) {
 					SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 						  ("non-existant macro \"%s\"", ep));
@@ -491,7 +491,7 @@ missing_seperator:
 					  ("missing network-address seperator: %s", str));
 				return NULLPA;
 			}
-			*ep++ = NULL;
+			*ep++ = 0;
 			if (ta -> ta_naddr >= NTADDR) {
 #ifdef	h_addr
 too_many:
@@ -525,7 +525,7 @@ too_many:
 				if ((ep = index (dp = ep, '+')) == NULL)
 					ep = dp + strlen (dp);
 				else
-					*ep++ = NULL;
+					*ep++ = 0;
 				for (fp = dp; *fp; fp++)
 					if (!isdigit ((u_char) *fp))
 						break;
@@ -535,7 +535,7 @@ too_many:
 					return NULLPA;
 				}
 				if (lexequ (pp -> p_name, "X121") == 0 &&
-						*ep == NULL) {
+						*ep == 0) {
 					/* X121 form -- should be more general
 					 * Only applies if the DSP is NULL
 					 */
@@ -636,11 +636,11 @@ handle_dsp:
 						ep += sizeof "RFC-1006+" - 1;
 						if ((ep = index (dp = ep, '+')) == NULL)
 							goto missing_seperator;
-						*ep++ = NULL;
+						*ep++ = 0;
 						if ((ep = index (dp = ep, '+')) == NULL)
 							ep = dp + strlen (dp);
 						else
-							*ep++ = NULL;
+							*ep++ = 0;
 
 						if ((hp = gethostbystring (dp)) == NULL) {
 							SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -654,7 +654,7 @@ handle_dsp:
 							if ((ep = index (dp = ep, '+')) == NULL)
 								ep = dp + strlen (dp);
 							else
-								*ep++ = NULL;
+								*ep++ = 0;
 							na -> na_port = htons ((u_short) atoi(dp));
 
 							if (*ep)
@@ -692,11 +692,11 @@ handle_dsp:
 						ep += sizeof "X.25(80)+" - 1;
 						if ((ep = index (dp = ep, '+')) == NULL)
 							goto missing_seperator;
-						*ep++ = NULL;
+						*ep++ = 0;
 						if ((ep = index (dp = ep, '+')) == NULL)
 							ep = dp + strlen (dp);
 						else
-							*ep++ = NULL;
+							*ep++ = 0;
 #ifdef ULTRIX_X25_DEMSA
 						n_colon = 0;
 						if ( dec_x25_demsa_invalid_dte(dp,&n_colon)) {
@@ -732,7 +732,7 @@ invalid_dte:
 
 							if ((ep = index (dp = ep, '+')) == NULL)
 								goto missing_seperator;
-							*ep++ = NULL;
+							*ep++ = 0;
 
 							if (lexequ (dp, "CUDF") == 0) {
 								cudf = na -> na_cudf;
@@ -849,7 +849,7 @@ macro2comm (char *name, struct ts_interim *ts) {
 	if ((ep = index (dp = buffer, '+')) == NULL)
 		ep = dp + strlen (dp);
 	else
-		*ep++ = NULL;
+		*ep++ = 0;
 
 	if (lexequ (dp, "NS") == 0) {
 		IMPLODE (ts -> ts_length, ts -> ts_prefix, ep, strlen (ep),
@@ -877,7 +877,7 @@ macro2comm (char *name, struct ts_interim *ts) {
 	if ((ep = index (dp = ep, '+')) == NULL)
 		ep = dp + strlen (dp);
 	else
-		*ep++ = NULL;
+		*ep++ = 0;
 
 	for (fp = dp; *fp; fp++)
 		if (!isdigit ((u_char) *fp))
@@ -888,7 +888,7 @@ macro2comm (char *name, struct ts_interim *ts) {
 		return NOTOK;
 	}
 
-	if (lexequ (pp -> p_name, "X121") == 0 && *ep == NULL) {
+	if (lexequ (pp -> p_name, "X121") == 0 && *ep == 0) {
 		/* Only used if there is no DSP */
 		strcpy (ap, dp);
 		ap += strlen (ap);
@@ -952,7 +952,7 @@ macro2comm (char *name, struct ts_interim *ts) {
 		if ((ep = index (dp = ep, '+')) == NULL)
 			ep = dp + strlen (dp);
 		else
-			*ep++ = NULL;
+			*ep++ = 0;
 		if (lexequ (dp, "RFC-1006") == 0)
 			ts -> ts_syntax = NA_TCP;
 		else if (lexequ (dp, "X.25(80)") == 0)
@@ -965,7 +965,7 @@ macro2comm (char *name, struct ts_interim *ts) {
 		if ((ep = index (dp = ep, '+')) == NULL)
 			ep = dp + strlen (dp);
 		else
-			*ep++ = NULL;
+			*ep++ = 0;
 
 		strcpy (ap, dp);
 
@@ -1041,7 +1041,7 @@ SEL2STR (char *sel, int len) {
 		*cp++ = *dp;
 	}
 	*cp++ = '"';
-	*cp = NULL;
+	*cp = 0;
 
 	return buffer;
 }
@@ -1121,12 +1121,10 @@ bad_pa:
 		if (compact > 0) {
 			if ((ca = na2norm (na)) == NULLNA)
 				goto bad_pa;
-
 			strcpy (cp, "NS+");
 			cp += strlen (cp);
-
 			cp += explode (cp, (u_char *) ca -> na_address, ca -> na_addrlen);
-			*cp = NULL;
+			*cp = 0;
 			continue;
 		}
 
@@ -1147,7 +1145,7 @@ bad_pa:
 		strcpy (dp = cp, ts -> ts_value);
 		cp += strlen (cp) - 1;
 		if (*cp != '+')
-			*++cp = '+', *++cp = NULL;
+			*++cp = '+', *++cp = 0;
 		else
 			cp++;
 
@@ -1159,7 +1157,7 @@ bad_pa:
 			cp += strlen (cp);
 
 			cp += explode (cp, (u_char *) na -> na_address, na -> na_addrlen);
-			*cp = NULL;
+			*cp = 0;
 
 			/* Use afi_info to pretty print as AFI+IDI+DSP */
 			for (cp = dp + 3, a = afi_entries; a->p_name; a++) {
@@ -1244,7 +1242,7 @@ bad_pa:
 					cp += explode (cp, (u_char *) na -> na_cudf,
 								   (int) na -> na_cudflen);
 				}
-				*cp = NULL;
+				*cp = 0;
 			}
 			break;
 
@@ -1265,7 +1263,7 @@ bad_pa:
 			cp = dp + strlen (dp);
 		}
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return bp;
 }

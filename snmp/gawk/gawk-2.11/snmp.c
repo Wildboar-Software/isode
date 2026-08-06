@@ -260,7 +260,7 @@ char   *name;
 	for (cp = name; is_identchar (*cp); cp++)
 		continue;
 	if (c = *cp)
-		*cp = NULL;
+		*cp = 0;
 	if ((ot = text2obj (name)) && ot -> ot_syntax) {
 		r -> magic = (caddr_t) ot;
 		if (ot -> ot_getfnx || snmp_scalars_as_arrays)
@@ -1488,7 +1488,7 @@ int	len;
 		sprintf (bp, "%s%02x", s, *cp & 0xff);
 		bp += strlen (bp);
 	}
-	*bp = NULL;		/* in case len == 0 */
+	*bp = 0;		/* in case len == 0 */
 	r -> stlen = bp - r -> stptr;
 	r -> stref = 1;
 	r -> flags |= STR | MALLOC;
@@ -1840,7 +1840,7 @@ struct sockaddr_in *isock;
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
 		case 3:

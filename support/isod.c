@@ -178,13 +178,13 @@ main (int argc, char **argv, char **envp) {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 
 	if (cp = rindex (*argv, '.'))
-		*cp++ = NULL;
+		*cp++ = 0;
 
 	/* cheat! should do this after calling the init function (sigh!) */
 	if (argc > 1 && strcmp (argv[1], "-rtse") == 0)
 		isacs++;
 
-	if (cp == NULL || strcmp (cp, "tsap") == 0)
+	if (cp == NULLCP || strcmp (cp, "tsap") == 0)
 		ts_main (argc, argv);
 	else if (strcmp (cp, "ssap") == 0)
 		ss_main (argc, argv);

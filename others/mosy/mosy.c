@@ -214,7 +214,7 @@ usage:
 			continue;
 		if (sp = rindex (cp, '/'))
 			sp++;
-		if (sp == NULL || *sp == NULL)
+		if (sp == NULLCP || *sp == 0)
 			sp = cp;
 		sp += strlen (cp = sp) - 3;
 		if (sp > cp && strcmp (sp, ".my") == 0)
@@ -249,11 +249,11 @@ usage:
 
 	if (cp = index (mosyversion, ')'))
 		for (cp++; *cp != ' '; cp++)
-			if (*cp == NULL) {
-				cp = NULL;
+			if (*cp == 0) {
+				cp = NULLCP;
 				break;
 			}
-	if (cp == NULL)
+	if (cp == NULLCP)
 		cp = mosyversion + strlen (mosyversion);
 	sprintf (autogen, "%*.*s",
 			 cp - mosyversion, cp - mosyversion, mosyversion);
@@ -864,8 +864,7 @@ YV	yv;
 		sprintf (cp, "%s%s", dp, val2str (yv));
 		cp += strlen (cp);
 	}
-	*cp = NULL;
-
+	*cp = 0;
 	return buffer;
 }
 

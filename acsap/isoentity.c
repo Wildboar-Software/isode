@@ -103,7 +103,7 @@ _startisoentity (char *descriptor) {
 		if (*dp == '\n' && dp == buffer)
 			continue;
 		if (cp = index (buffer, '\n')) {
-			*cp-- = NULL;
+			*cp-- = 0;
 			if (*cp == '\\') {
 				if ((dp = cp) + 1 >= ep)
 					dp = buffer;

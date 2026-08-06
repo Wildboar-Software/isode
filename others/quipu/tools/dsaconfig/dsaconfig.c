@@ -271,7 +271,7 @@ read_config () {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);
@@ -482,7 +482,7 @@ illegal:
 		int	i;
 
 		for (i = 1; cp = index (dp, '$'); dp = cp + 1, i++) {
-			*cp = NULL;
+			*cp = 0;
 			if (strlen (dp) > 30)
 				goto too_long;
 			*cp = '$';
@@ -587,7 +587,7 @@ read_country (char *code) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n')) {
-			*cp = NULL;
+			*cp = 0;
 			if ((d = getc (fp)) != EOF)
 				ungetc (d, fp);
 			switch (d) {
@@ -599,7 +599,7 @@ read_country (char *code) {
 			default:
 				*cp++ = ' ';
 				if ((dp = cp) + 1 >= ep) {
-					*ep = NULL;
+					*ep = 0;
 					adios (NULLCP,
 						   "virtual line too long in %s: \"%s\"",
 						   file, cp);
@@ -682,7 +682,7 @@ read_psap (char *dsa, char **addr) {
 			continue;
 		for (cp++; isspace (*cp); cp++)
 			continue;
-		if (*cp == NULL) {
+		if (*cp == 0) {
 malformed:
 			;
 			adios (NULLCP, "malformed entry in dsaptailor for DSA %s", dsa);
@@ -704,7 +704,7 @@ malformed:
 			}
 			break;
 		}
-		*dp = NULL;
+		*dp = 0;
 		if (*cp != '\n')
 			goto malformed;
 		*addr = strdup (stuff);
@@ -780,7 +780,7 @@ char   *entries[];
 			}
 			if ((dp = index (++cp, ')')) == NULL)
 				adios (NULLCP, "internal error -- you lose big");
-			*dp = NULL;
+			*dp = 0;
 
 			if ((p = n2p (cp, 0)) == NULL) {
 				bp = buffer;
@@ -792,7 +792,7 @@ char   *entries[];
 			cp = ++dp;
 		}
 
-		*bp = NULL;
+		*bp = 0;
 		fprintf (fp, "%s\n", buffer);
 no_match:
 		;
@@ -1165,7 +1165,7 @@ parse_3166 () {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n')) {
-			*cp = NULL;
+			*cp = 0;
 			if ((d = getc (fp)) != EOF)
 				ungetc (d, fp);
 			switch (d) {
@@ -1177,7 +1177,7 @@ parse_3166 () {
 			default:
 				*cp++ = ' ';
 				if ((dp = cp) + 1 >= ep) {
-					*ep = NULL;
+					*ep = 0;
 					adios (NULLCP,
 					"virtual line too long in %s: \"%s\"",
 					file, cp);
@@ -1237,7 +1237,7 @@ table_3166 () {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n')) {
-			*cp = NULL;
+			*cp = 0;
 			if ((d = getc (fp)) != EOF)
 				ungetc (d, fp);
 			switch (d) {
@@ -1249,7 +1249,7 @@ table_3166 () {
 			default:
 				*cp++ = ' ';
 				if ((dp = cp) + 1 >= ep) {
-					*ep = NULL;
+					*ep = 0;
 					adios (NULLCP,
 					"virtual line too long in %s: \"%s\"",
 					file, cp);

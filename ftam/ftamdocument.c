@@ -94,7 +94,7 @@ getisodocument (void) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		if (str2vec (buffer, vec) < 6)
 			continue;
 

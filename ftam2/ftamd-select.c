@@ -873,7 +873,7 @@ no_access:
 	}
 	if (request & FA_PERM_PARENT) {
 		if (cp = rindex (myfile, '/')) {
-			*cp = NULL;
+			*cp = 0;
 			result = EACCESS (*myfile ? myfile : "/", W_OK);
 			*cp = '/';
 		} else
@@ -1086,7 +1086,7 @@ struct FTAMdiagnostic **diags;
 
 #ifndef	BRIDGE
 		if (cp = rindex (file, '/')) {
-			*cp = NULL;
+			*cp = 0;
 			result = EACCESS (*file ? file : "/", W_OK);
 			*cp = '/';
 		} else
@@ -1377,9 +1377,9 @@ static char *getfile (char*file) {
 
 	case '~':
 		if (cp = index (pp = file + 1, '/'))
-			*cp = NULL;
+			*cp = 0;
 
-		if (*pp == NULL)
+		if (*pp == 0)
 			pp = myhome;
 		else {
 			if ((pw = getpwnam (pp)) == NULL)

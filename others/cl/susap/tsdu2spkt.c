@@ -558,7 +558,7 @@ put2spdu (int code, int li, char *value, struct local_buf *c) {
 			if (c -> allocli < 255)
 				cl += 2;
 			cp = realloc (c -> top, (unsigned) (c -> len += cl));
-			if (cp == NULL) {
+			if (cp == NULLCP) {
 				c -> len = 0;
 				return;
 			}

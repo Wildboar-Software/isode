@@ -219,7 +219,7 @@ you_lose:
 						p != q && pp < ep;
 						pp += p -> qb_len, p = p -> qb_forw)
 					bcopy (p -> qb_data, pp, p -> qb_len);
-			*pp = NULL;
+			*pp = 0;
 
 			done = 1;
 		}
@@ -538,10 +538,10 @@ read_el()  {
 		if (*buffer == '#')
 			continue;
 		if (bp = index (buffer, '\n'))
-			*bp = NULL;
+			*bp = 0;
 
 		bp = buffer;
-		if (*bp == NULL) {
+		if (*bp == 0) {
 			dtail = NULL;
 			continue;
 		}
@@ -582,10 +582,10 @@ out:
 				PY_advise (NULLCP, "%s: missing ':' at line %d", ufnrc, i);
 				goto out;
 			}
-			*cp++ = NULL;
+			*cp++ = 0;
 
 			if (dp = index (bp, ',')) {
-				*dp++ = NULL;
+				*dp++ = 0;
 
 				while (isspace (*dp))
 					dp++;

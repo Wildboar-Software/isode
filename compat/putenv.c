@@ -79,7 +79,7 @@ unsetenv (const char *name) {
 	for (ep = environ; *ep; ep++)
 		if (nvmatch (name, *ep))
 			break;
-	if (*ep == NULL)
+	if (*ep == NULLCP)
 		return 1;
 
 	for (nep = ep + 1; *nep; nep++)

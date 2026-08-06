@@ -448,15 +448,15 @@ error_return:
 				if (!effector) {
 					if (*cp == '\n') {
 #ifndef	BRIDGE
-						*cp = NULL;
+						*cp = 0;
 #else
 						if (cp > bp) {
 							if (*--cp == '\r')
-								*cp = NULL;
+								*cp = 0;
 							else
-								*++cp = NULL;
+								*++cp = 0;
 						} else
-							*cp = NULL;
+							*cp = 0;
 #endif
 						n = cp - bp;
 						bp = cp;
@@ -594,7 +594,7 @@ static	fdfget ( struct FTAMdiagnostic **diags) {
 
 	if (strcmp (myfile, ".") == 0) {
 		pp = path;
-		*pp = NULL;
+		*pp = 0;
 		len = 0;
 	} else
 #ifdef apollo

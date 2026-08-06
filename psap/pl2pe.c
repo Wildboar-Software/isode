@@ -365,7 +365,7 @@ PL	pl;
 				if (pl_read (ps, &c) == NOTOK)
 					return NOTOK;
 			}
-			*bp = NULL;
+			*bp = 0;
 			ps -> ps_scratch = c;
 			return OK;
 		}

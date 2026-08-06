@@ -194,7 +194,7 @@ read_pipe_aux (char *buf, int len) {
 		}
 		break;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return (cp - buf);
 #else
@@ -271,7 +271,7 @@ out:
 		default:
 			break;
 		}
-	*dp = NULL;
+	*dp = 0;
 
 	return res;
 }
@@ -357,7 +357,7 @@ get_dish_sock (struct sockaddr_in *isock) {
 		fprintf (stderr,"DISHPROC malformed");
 		return (-1);
 	}
-	*dp = NULL;
+	*dp = 0;
 
 	if ((hp = gethostbystring (ptr)) == NULL) {
 		fprintf (stderr,"%s: unknown host in DISHPROC", ptr);

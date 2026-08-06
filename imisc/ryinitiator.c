@@ -157,7 +157,7 @@ IFP	quit;
 	if ((cp = *ap++) == NULL)
 		adios (NULLCP, "usage: %s host [operation [ arguments ... ]]", myname);
 
-	if ((aei = _str2aei (cp, myservice, mycontext, *ap == NULL, NULLCP,
+	if ((aei = _str2aei (cp, myservice, mycontext, *ap == NULLCP, NULLCP,
 						 NULLCP)) == NULLAEI)
 		adios (NULLCP, "unable to resolve service: %s", PY_pepy);
 	if ((pa = aei2addr (aei)) == NULLPA)
@@ -181,7 +181,7 @@ IFP	quit;
 		bzero ((char *) sf, sizeof *sf);
 	}
 
-	if (*ap == NULL) {
+	if (*ap == NULLCP) {
 		printf ("%s", myname);
 		if (sf -> sr_ulen > 2)
 			printf (" running on host %s", sf -> sr_udata + 2);
@@ -366,7 +366,7 @@ getlines (char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return OK;
 }

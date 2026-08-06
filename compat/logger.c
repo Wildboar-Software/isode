@@ -247,7 +247,7 @@ _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args 
 			   && ll_check (lp) == NOTOK)
 		return NOTOK;
 
-	*bp++ = '\n', *bp = NULL;
+	*bp++ = '\n', *bp = 0;
 	cc = bp - buffer;
 
 	if ((status = write (lp -> ll_fd, buffer, cc)) != cc) {
@@ -286,7 +286,7 @@ ll_hdinit (LLog *lp, char *prefix) {
 	} else {
 		if ((cp = rindex (prefix, '/')))
 			cp++;
-		if (cp == NULL || *cp == NULL)
+		if (cp == NULLCP || *cp == 0)
 			cp = prefix;
 	}
 
@@ -321,7 +321,7 @@ ll_dbinit (LLog *lp, char *prefix) {
 	if (prefix) {
 		if ((cp = rindex (prefix, '/')))
 			cp++;
-		if (cp == NULL || *cp == NULL)
+		if (cp == NULLCP || *cp == 0)
 			cp = prefix;
 
 		sprintf (buffer, "./%s.log", cp);
@@ -378,7 +378,7 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 		bp = buffer;
 		_asprintf (bp, NULLCP, fmt, ap);
 	} else {
-		bp = NULL;
+		bp = NULLCP;
 		fmt = va_arg (ap, char *);
 	}
 

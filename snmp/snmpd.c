@@ -3011,7 +3011,7 @@ static	readconfig () {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		strcpy (line, buffer);
 
 		bzero ((char *) vec, sizeof vec);

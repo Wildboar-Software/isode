@@ -140,7 +140,7 @@ too_many_fields:
 						"only one of NAME, HANDLE, or MAILBOX allowed");
 				goto you_really_lose;
 			}
-			if (*++cp == NULL) {
+			if (*++cp == 0) {
 				advise (NULLCP, "expecting NAME after \".\"");
 				goto you_really_lose;
 			}
@@ -151,7 +151,7 @@ too_many_fields:
 		case '!':
 			if (w -> w_inputype != W_NULL)
 				goto too_many_fields;
-			if (*++cp == NULL) {
+			if (*++cp == 0) {
 				advise (NULLCP, "expecting HANDLE after \"!\"");
 				goto you_really_lose;
 			}
@@ -436,7 +436,7 @@ name_or_something:
 					goto you_really_lose;
 				}
 
-				*dp++ = NULL;
+				*dp++ = 0;
 
 				w -> w_inputype = W_NAME;
 				w -> w_input = cp;
@@ -592,7 +592,7 @@ you_lose:
 			advise (NULLCP, "internal error(1)");
 			goto you_lose;
 		}
-		*cp = NULL;
+		*cp = 0;
 
 		if (!isdigit (*buffer)) {
 			fprintf (stderr, "%s\n", buffer);
@@ -603,7 +603,7 @@ you_lose:
 			advise (NULLCP, "internal error(2)");
 			goto you_lose;
 		}
-		*cp++ = NULL;
+		*cp++ = 0;
 		while (*cp == ' ')
 			cp++;
 
@@ -847,7 +847,7 @@ static char *
 eqstr (char *s, int exact) {
 	static char buffer[BUFSIZ];
 
-	if (s == NULL)
+	if (s == NULLCP)
 		return NULL;
 
 	if (index (s, '*'))

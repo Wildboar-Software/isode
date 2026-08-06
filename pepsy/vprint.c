@@ -59,7 +59,7 @@ static char  *py_classlist[] = {
 	"UNIVERSAL", "APPLICATION", "", "PRIVATE"
 };
 
-static char *vbp = NULL;
+static char *vbp = NULLCP;
 static char *vsp;
 
 IFP   vfnx = (IFP) fprintf;
@@ -585,8 +585,7 @@ vpopstr()  {
 	while (--vbp >= vsp)
 		if (*vbp != ' ')
 			break;
-	*++vbp = NULL;
-
+	*++vbp = 0;
 	vfp = stdout;
 }
 

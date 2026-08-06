@@ -512,7 +512,7 @@ compath (char *f) {
 			switch (*++cp) {
 			case 0:
 				if (--cp > f)
-					*cp = NULL;
+					*cp = 0;
 				break;
 
 			case '/':
@@ -531,7 +531,7 @@ compath (char *f) {
 				if (strcmp (cp, DOT) == 0) {
 					if (cp > f + 1)
 						cp--;
-					*cp = NULL;
+					*cp = 0;
 					break;
 				}
 				if (strcmp (cp, DOTDOT) == 0) {
@@ -540,7 +540,7 @@ compath (char *f) {
 							break;
 					if (cp <= f)
 						cp = f + 1;
-					*cp = NULL;
+					*cp = 0;
 					break;
 				}
 				if (strncmp (cp, PWD, NPWD) == 0) {

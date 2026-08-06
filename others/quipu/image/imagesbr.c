@@ -274,7 +274,7 @@ struct dn_seq *dlist;
 			filter_free (sa -> sra_filter);
 			if (dp = index (dp, '.'))
 				dp++;
-			if (dp == NULL)
+			if (dp == NULLCP)
 				break;
 			continue;
 		}

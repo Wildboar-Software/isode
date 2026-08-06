@@ -245,8 +245,8 @@ static struct table reserved[] = {
 				    if ((tok == VALX || tok == VALO) &&
 				       (c != '$'))
 				       yyerror("Missing '$' in [[ - ]]");
-				    if (c == '$') {unput(c); *cp = NULL;}
-				    else *--cp = NULL;
+				    if (c == '$') {unput(c); *cp = 0;}
+				    else *--cp = 0;
 				    yylval.yy_string = pp;
 				    if (yydebug)
 					fprintf (stderr, "VAL: \"%s\"\n",
@@ -309,14 +309,14 @@ static struct table reserved[] = {
 			    switch (*(cp = yytext + strlen (yytext) - 1)) {
 				case 'H':
 				case 'h':
-				    *cp = NULL;
+				    *cp = 0;
 				    (void) sscanf (yytext + 1, "%x",
 						&yylval.yy_number);
 				    break;
 
 				case 'B':
 				case 'b':
-				    *cp-- = NULL, *cp = NULL;
+				    *cp-- = 0, *cp = 0;
 				    for (i = 0, cp = yytext + 1; *cp; ) {
 					i <<= 1;
 					i += *cp++ - '0';
@@ -355,7 +355,7 @@ static struct table reserved[] = {
 				}
 				*cp++ = c;
 			    }
-			    *cp = NULL;
+			    *cp = 0;
 			    yylval.yy_string = pp;
 			    if (yydebug)
 				fprintf (stderr, "LIT: \"%s\"\n",
@@ -394,7 +394,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading value");
 				if (d == '%' && c == ']' ) {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_string = pp;
 				    if (yydebug)
 					fprintf (stderr, "VAL: \"%s\"\n",
@@ -430,7 +430,7 @@ static struct table reserved[] = {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
-				    *--cp = NULL;
+				    *--cp = 0;
 				    yylval.yy_action = new_action (pp, mylineno);;
 				    if (yydebug)
 					fprintf (stderr, "ACTION: \"%s\", %d\n",

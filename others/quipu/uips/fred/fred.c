@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <string.h>
 #include <unistd.h>
 #include "fred.h"
 #include "internet.h"
@@ -149,7 +150,7 @@ main (int argc, char **argv, char **envp) {
 
 			if (cp == buffer)
 				break;
-			*cp = NULL;
+			*cp = 0;
 
 			for (p = pairs; p -> p_name; p++)
 				if (lexnequ (buffer, p -> p_name, c = strlen (p -> p_name))
@@ -161,7 +162,7 @@ main (int argc, char **argv, char **envp) {
 							ep = cp + strlen (cp) - 1;
 							while (*ep == ' ')
 								ep--;
-							*++ep = NULL;
+							*++ep = 0;
 							*p -> p_value = strdup (cp);
 						}
 					}
@@ -213,7 +214,7 @@ main (int argc, char **argv, char **envp) {
 			if (c != EOF)
 				while (fgets (buffer, sizeof buffer, stdin)) {
 					if (cp = index (buffer, '\n'))
-						*cp = NULL;
+						*cp = 0;
 					if (buffer[0] == NULL)
 						break;
 
@@ -300,9 +301,9 @@ main (int argc, char **argv, char **envp) {
 			break;
 		}
 		if (cp = index (buffer, '\r'))
-			*cp = NULL;
+			*cp = 0;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 
 		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
 				address, buffer);
@@ -550,7 +551,7 @@ _getline (char *prompt, char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	armed = 0;
 
@@ -585,7 +586,7 @@ FILE  *iop;
 		return NOTOK;
 	if (c == EOF && p == s)
 		return DONE;
-	*p++ = NULL;
+	*p++ = 0;
 
 	return OK;
 }
@@ -715,7 +716,7 @@ normal:
 	for (dp = cp++; !isspace (*cp); cp++)
 		if (!*cp)
 			goto normal;
-	*cp = NULL;
+	*cp = 0;
 	if ((i = strlen (dp)) > 5 || strncmp ("whois", dp, i)) {
 		*cp = ' ';
 		goto normal;
@@ -764,7 +765,7 @@ rcmap (struct sockaddr_in *isock) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		bzero ((char *) vec, sizeof vec);
 		if (str2vec (buffer, vec) != 4)
 			continue;

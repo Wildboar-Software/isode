@@ -89,13 +89,13 @@ getisoservent (void) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 3)
 			continue;
 
 		if ((cp = index (vec[0], '/')) == NULL)
 			continue;
-		*cp++ = NULL;
+		*cp++ = 0;
 
 		is -> is_provider = vec[0];
 		is -> is_entity = cp;

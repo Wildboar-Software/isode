@@ -167,7 +167,7 @@ _getline (char *buffer) {
 		if (cp < ep)
 			*cp++ = i;
 	}
-	*cp = NULL;
+	*cp = 0;
 
 	return OK;
 }

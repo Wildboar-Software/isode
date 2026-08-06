@@ -641,7 +641,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 	}
 + 
   	if (cp = rindex (str, '\n'))
-  	    *cp = NULL;
+  	    *cp = 0;
   	for (cp = pp = str; cp = index (pp, ','); pp = cp) {
 ***************
 *** 759,765 ****
@@ -927,7 +927,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 		      *fp;
 + 
 + 	if (fp = wp_expand (adr, err)) {
-+ 	    *bp = NULL;
++ 	    *bp = 0;
 + 	    ep = concat (dp, fp, cp, (char *) NULL);
 + 	    cp = ep + strlen (dp), last_lex = save_lex;
 + 	    free (dp);
@@ -961,7 +961,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 ***************
 *** 798,803 ****
 --- 843,863 ----
-  	cp = NULL;
+  	cp = 0;
   	return (last_lex = LX_END);
       }
 + 
@@ -970,7 +970,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 	for (cp++;;)
 + 	    switch (c = *cp++) {
 + 		case '>':
-+ 		    *bp = NULL;
++ 		    *bp = 0;
 + 		    cp++;
 + 		    return (last_lex = LX_WP);
 + 

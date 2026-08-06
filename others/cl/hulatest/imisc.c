@@ -254,7 +254,7 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 			if ((cp = malloc ((unsigned) length)) == NULL)
 				adios (NULLCP, "no memory");
 		} else
-			cp = NULL;
+			cp = NULLCP;
 		if ((data = oct2prim (cp, length)) == NULLPE)
 			adios (NULLCP, "no memory");
 		if (cp)

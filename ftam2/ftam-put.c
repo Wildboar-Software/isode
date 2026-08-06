@@ -704,15 +704,15 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 				if (!effector) {
 					if (*cp == '\n') {
 #ifndef	BRIDGE
-						*cp = NULL;
+						*cp = 0;
 #else
 						if (cp > bp) {
 							if (*--cp == '\r')
-								*cp = NULL;
+								*cp = 0;
 							else
-								*++cp = NULL;
+								*++cp = 0;
 						} else
-							*cp = NULL;
+							*cp = 0;
 #endif
 						n = cp - bp;
 						bp = cp;

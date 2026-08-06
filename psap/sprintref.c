@@ -85,7 +85,7 @@ sprintref (struct SSAPref *sr) {
 	}
 	*cp++ = '>';
 
-	*cp = NULL;
+	*cp = 0;
 
 	return buffer;
 }

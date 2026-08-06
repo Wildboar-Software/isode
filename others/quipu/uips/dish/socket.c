@@ -86,7 +86,7 @@ int	pid,
 		fprintf (stderr,"DISHPROC malformed");
 		return (-1);
 	}
-	*dp = NULL;
+	*dp = 0;
 
 	if ((hp = gethostbystring (ptr)) == NULL) {
 		fprintf (stderr,"%s: unknown host in DISHPROC", ptr);

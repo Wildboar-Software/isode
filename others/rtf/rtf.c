@@ -223,7 +223,7 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 	char *dp,
 		 *ep;
 	static int bsize;
-	static char *bp = NULL;
+	static char *bp = NULLCP;
 
 	if (base == NULLVP) {
 #ifdef	DEBUG
@@ -232,7 +232,7 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 		return OK;
 	}
 
-	if (bp == NULL) {
+	if (bp == NULLCP) {
 		struct stat st;
 
 		if (fstat (fd, &st) == NOTOK)

@@ -781,7 +781,7 @@ char	**vec;
 			case 'N':
 #ifdef AEF_NSAP
 				if ((ap = *++vec) == NULL || *ap == '-')
-					if ( (ap = local_nsap) == NULL || *ap == NULL)
+					if ( (ap = local_nsap) == NULL || *ap == 0)
 						adios (NULLCP, "usage: %s -N nsap", pgmname);
 					else
 						vec--;
@@ -796,7 +796,7 @@ char	**vec;
 					struct TSAPaddr *loop_na;
 
 					if ((ap = *++vec) == NULL || *ap == '-')
-						if ( (ap = local_nsap) == NULL || *ap == NULL)
+						if ( (ap = local_nsap) == NULL || *ap == 0)
 							adios (NULLCP, "usage: %s -N nsap", pgmname);
 						else
 							vec--;

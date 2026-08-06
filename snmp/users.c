@@ -196,7 +196,7 @@ losing:
 		default:
 			break;
 		}
-	*dp = NULL;
+	*dp = 0;
 	pw_st = st;	/* struct copy */
 	lastq = quantum;
 
@@ -227,7 +227,7 @@ again:
 				char   *cp;
 				struct pw *qw;
 
-				*dp++ = NULL;
+				*dp++ = 0;
 				while (++dp < ep)
 					if (*dp == '\n') {
 						dp++;
@@ -276,7 +276,7 @@ struct passwd *pwp;
 		  *dp;
 
 	if (dp = index (cp = pwp -> pw_name + strlen (pwp -> pw_name) + 1, '\n'))
-		*dp = NULL;
+		*dp = 0;
 
 #ifdef PW_QUOTA
 	pwp -> pw_quota = -1;
@@ -287,21 +287,21 @@ struct passwd *pwp;
 		pwp -> pw_gecos = pwp -> pw_dir = pwp -> pw_shell = "";
 	if (!(dp = index (pwp -> pw_passwd = cp, ':')))
 		return;
-	*dp++ = NULL;
+	*dp++ = 0;
 	if (!(cp = index (dp, ':')))
 		return;
-	*cp++ = NULL;
+	*cp++ = 0;
 	pwp -> pw_uid = atoi (dp);
 	if (!(dp = index (cp, ':')))
 		return;
-	*dp++ = NULL;
+	*dp++ = 0;
 	pwp -> pw_gid = atoi (cp);
 	if (!(cp = index (pwp -> pw_gecos = dp, ':')))
 		return;
-	*cp++ = NULL;
+	*cp++ = 0;
 	if (!(dp = index (pwp -> pw_dir = cp, ':')))
 		return;
-	*dp++ = NULL;
+	*dp++ = 0;
 	pwp -> pw_shell = dp;
 }
 
@@ -448,7 +448,7 @@ losing:
 		default:
 			break;
 		}
-	*dp = NULL;
+	*dp = 0;
 	gr_st = st;	/* struct copy */
 	lastq = quantum;
 
@@ -480,7 +480,7 @@ again:
 				char   *cp;
 				struct gr *qw;
 
-				*dp++ = NULL;
+				*dp++ = 0;
 				while (++dp < ep)
 					if (*dp == '\n') {
 						dp++;
@@ -529,11 +529,11 @@ struct group *grp;
 		 *dp;
 
 	if (dp = index (cp = grp -> gr_name + strlen (grp -> gr_name) + 1, '\n'))
-		*dp = NULL;
+		*dp = 0;
 
 	if (!(dp = index (grp -> gr_passwd = cp, ':')))
 		return;
-	*dp++ = NULL;
+	*dp++ = 0;
 	grp -> gr_gid = atoi (dp);
 }
 
@@ -670,13 +670,13 @@ again:
 				if (i-- <= 0)
 					break;
 				if (dp = index (*ap = dp, ','))
-					*dp++ = NULL;
+					*dp++ = 0;
 				for (bp = grp -> gr_mem; bp < ap; bp++)
 					if (strcmp (*bp, *ap) == 0) {
 						advise (LLOG_EXCEPTIONS, NULLCP,
 								"duplicate member: %d for %s", grp -> gr_gid,
 								*bp);
-						*ap = NULL;
+						*ap = NULLCP;
 						goto again;
 					}
 			}
@@ -969,7 +969,7 @@ int	offset;
 		for (cp = name; i-- > 0; ip++, cp++)
 			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
-		*cp = NULL;
+		*cp = 0;
 
 		i = 0;
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
@@ -1095,7 +1095,7 @@ bad_value:
 		}
 		cp = qb2str ((struct qbuf *) value);
 		(*os -> os_free) (value);
-		if (*cp == NULL) {
+		if (*cp == 0) {
 			free (cp);
 			goto bad_value;
 		}
@@ -1176,7 +1176,7 @@ do_string:
 			goto bad_value;
 		cp = qb2str ((struct qbuf *) value);
 		(*os -> os_free) (value);
-		if (*cp == NULL) {
+		if (*cp == 0) {
 			free (cp);
 			goto bad_value;
 		}
@@ -1188,7 +1188,7 @@ do_string:
 				goto bad_value;
 			}
 			if ((dp = rindex (cp + 1, '/')) && !*++dp)
-				*--dp = NULL;
+				*--dp = 0;
 		}
 		free (*ap);
 		*ap = cp;
@@ -1383,7 +1383,7 @@ int	offset;
 		for (cp = name; i-- > 0; ip++, cp++)
 			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
-		*cp = NULL;
+		*cp = 0;
 
 		i = 0;
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
@@ -1482,7 +1482,7 @@ bad_value:
 		}
 		cp = qb2str ((struct qbuf *) value);
 		(*os -> os_free) (value);
-		if (*cp == NULL) {
+		if (*cp == 0) {
 			free (cp);
 			goto bad_value;
 		}
@@ -1653,7 +1653,7 @@ int	offset;
 			else if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		}
-		*cp = NULL, ip++;
+		*cp = 0, ip++;
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 			if (strcmp (gr -> gr_gr.gr_name, group) == 0)
 				break;
@@ -1664,7 +1664,7 @@ int	offset;
 		for (cp = user; i-- > 0; ip++, cp++)
 			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
-		*cp = NULL;
+		*cp = 0;
 		if (cp == user)
 			return int_SNMP_error__status_noSuchName;
 

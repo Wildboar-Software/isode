@@ -164,7 +164,7 @@ usage:
 
 	for (i = rows; i-- > 0; ) {
 		pbm_readpbmrow (fp, bP = bitrow, cols, format);
-		*byteP = NULL, bitcount = 7;
+		*byteP = 0, bitcount = 7;
 
 		for (j = cols; j-- > 0; ) {
 			unsigned char mask = 1 << bitcount;
@@ -174,7 +174,7 @@ usage:
 			else
 				*byteP &= ~mask;
 			if (--bitcount < 0)
-				*++byteP = NULL, bitcount = 7;
+				*++byteP = 0, bitcount = 7;
 		}
 		if (bitcount != 7)
 			byteP++;

@@ -90,7 +90,7 @@ struct smuxEntry  *getsmuxEntry () {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		if ((vecp = str2vec (buffer, vec)) < 3)
 			continue;
 

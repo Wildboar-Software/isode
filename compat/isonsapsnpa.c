@@ -95,7 +95,7 @@ getisonsapsnpa()  {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = 0;
 		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 1)
 			continue;
 

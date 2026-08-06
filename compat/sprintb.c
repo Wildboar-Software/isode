@@ -57,7 +57,7 @@ sprintb (int v, char *bits) {
 				for (; *bits > 32; bits++)
 					continue;
 		*bp++ = '>';
-		*bp = NULL;
+		*bp = 0;
 	}
 
 	return buffer;

@@ -464,7 +464,7 @@ makestr(str)
 	register char *cp, *s;
 
 	str = cp = malloc((unsigned)strlen(s = str) + 1);
-	if (cp == NULL)
+	if (cp == NULLCP)
 		adios (NULLCP, "ran out of memory");
 	while (*cp++ = *s++)
 		;

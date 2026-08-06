@@ -117,7 +117,7 @@ char type;
 			dp = buffer + (dp - s);
 			s = buffer;
 
-			*dp++ = NULL;
+			*dp++ = 0;
 			if (*s)
 				if ((filt -> FUITEM.UNSUB.fi_sub_initial =
 							str2avs (s, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
@@ -127,7 +127,7 @@ char type;
 			if (dp = rindex (s, '*')) {
 				AV_Sequence any_end = NULL;
 
-				*dp++ = NULL;
+				*dp++ = 0;
 				if (*dp)
 					if ((filt -> FUITEM.UNSUB.fi_sub_final =
 								str2avs (dp, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
@@ -136,7 +136,7 @@ char type;
 
 				do {
 					if (dp = index (s, '*'))
-						*dp++ = NULL;
+						*dp++ = 0;
 					if (*s) {
 						AV_Sequence any;
 

@@ -77,7 +77,7 @@ char   *getlocalhost () {
 #endif
 
 		if (cp = index (buffer, '.'))
-			*cp = NULL;
+			*cp = 0;
 	}
 
 	return buffer;

@@ -145,7 +145,7 @@ expstr (char *s) {
 	int savec, oeargc;
 	extern char homedir[];
 
-	if (s == NULL || *s == '\0')
+	if (s == NULLCP || *s == 0)
 		return;
 
 	if ((which & E_VARS) && (cp = index(s, '$')) != NULL) {
@@ -567,7 +567,7 @@ Cat (char *s1, char *s2) {
 		yyerror("Arguments too long");
 	eargv[eargc] = 0;
 	eargv[eargc - 1] = s = malloc((unsigned)len);
-	if (s == NULL)
+	if (s == NULLCP)
 		adios (NULLCP, "ran out of memory");
 	while (*s++ = *s1++ & TRIM)
 		;

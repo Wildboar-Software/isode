@@ -69,7 +69,7 @@ out:
 
 		fc = &fpm -> filename;
 		for (ap = fa -> fa_files, i = fa -> fa_nfile - 1; i >= 0; ap++, i--) {
-			if (*ap == NULL) {
+			if (*ap == NULLCP) {
 				ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						  "empty filename at slot %d",
 						  fa -> fa_nfile - i - 1);

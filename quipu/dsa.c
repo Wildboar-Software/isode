@@ -174,7 +174,7 @@ int main (int argc, char **argv) {
 		for (ap = argv, sp = sargv; *sp = *ap++; sp++)
 			continue;
 		*sp++ = "-r";
-		*sp = NULL;
+		*sp = NULLCP;
 	}
 no_copy:
 	;

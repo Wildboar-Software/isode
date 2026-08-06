@@ -168,7 +168,7 @@ arginit (char **vec) {
 		myname = *vec;
 
 	isodetailor (myname, 1);
-	lp = NULL;
+	lp = NULLCP;
 
 	nhosts = 0;
 	for (vec++; ap = *vec; vec++)

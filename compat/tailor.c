@@ -526,7 +526,7 @@ isodetailor (char *myname, int wantuser) {
 		if (myname) {
 			if (mp = rindex (myname, '/'))
 				mp++;
-			if (mp == NULL || *mp == NULL)
+			if (mp == NULLCP || *mp == 0)
 				mp = myname;
 		} else
 			mp = "isode";
@@ -552,7 +552,7 @@ tailor_read (char *file) {
 				fprintf (stderr, "%s: line too long\n", file);
 				break;
 			}
-			*cp = NULL;
+			*cp = 0;
 			if (*buffer == '#' || *buffer == NULL)
 				continue;
 			if ((bp = index (buffer, ':')) == NULL) {
@@ -562,17 +562,17 @@ tailor_read (char *file) {
 			}
 			for (cp = bp - 1; cp >= buffer; cp--)
 				if (isspace ((u_char) *cp))
-					*cp = NULL;
+					*cp = 0;
 				else
 					break;
 
-			*bp++ = NULL;
+			*bp++ = 0;
 			while (isspace ((u_char) *bp))
-				*bp++ = NULL;
+				*bp++ = 0;
 
 			for (cp = bp + strlen (bp) - 1; cp >= bp; cp--)
 				if (isspace ((u_char) *cp))
-					*cp = NULL;
+					*cp = 0;
 				else
 					break;
 
@@ -731,7 +731,7 @@ isodexport (char *myname) {
 			if (jp >= ip)
 				*ip++ = ts -> ts_subnet;
 		}
-		*ip = NULL;
+		*ip = 0;
 
 		for (ap = tsb_addresses; *ap; ap++)
 			free (*ap);
@@ -765,10 +765,10 @@ isodexport (char *myname) {
 					if (*kp == ts -> ts_subnet)
 						break;
 				if (!*kp)
-					*kp++ = ts -> ts_subnet, *kp = NULL;
+					*kp++ = ts -> ts_subnet, *kp = 0;
 			}
 		}
-		*ip = NULL, *cpp = NULLCP;
+		*ip = 0, *cpp = NULLCP;
 
 		cp = _ts_comm_nsap_default;
 		for (ts = ts_interim; ts -> ts_name; ts++)
@@ -866,7 +866,7 @@ isodexport (char *myname) {
 			if (jp >= ip)
 				*ip++ = ts -> ts_subnet, *cpp++ = strdup (adrp);
 		}
-		*ip = NULL, *cpp = NULLCP;
+		*ip = 0, *cpp = NULLCP;
 
 #endif /* CCUR_X25 */
 
@@ -969,7 +969,7 @@ tailor_value (char *s) {
 				*bp = toascii (i);
 				break;
 			}
-	*bp = NULL;
+	*bp = 0;
 
 	if ((bp = malloc ((unsigned) (strlen (buffer) + 1))) != NULL)
 		strcpy (bp, buffer);

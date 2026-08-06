@@ -322,12 +322,12 @@ usage:
 
 	if (cp = index (dp, ')')) {
 		for (cp++; *cp != ' '; cp++)
-			if (*cp == NULL)
+			if (*cp == 0)
 				break;
-		if (*cp == NULL)
-			cp = NULL;
+		if (*cp == 0)
+			cp = NULLCP;
 	}
-	if (cp == NULL)
+	if (cp == NULLCP)
 		cp = dp + strlen (dp);
 	sprintf (autogen, "pepsy %*.*s", cp - dp, cp - dp, dp);
 
@@ -1362,11 +1362,11 @@ int	direction;
 					 top ? "parm" : yp -> yp_declexp);
 			cp += strlen (cp);
 		} else
-			cp = NULL;
+			cp = NULLCP;
 		if (!hflag || !(y = yp -> yp_type) || y -> yp_next)
 			top = 0;
 		else if (top)
-			cp = NULL;
+			cp = NULLCP;
 		for (y = yp -> yp_type; y; y = y -> yp_next) {
 			if (cp)
 				sprintf (cp, "%s;", y -> yp_offset);
@@ -1509,7 +1509,7 @@ int	direction;
 			&& yp -> yp_varexp
 			&& (cp = index (yp -> yp_varexp, ' '))
 			&& strncmp (cp + 1, "-> ", 3) == 0) {
-		*cp = NULL;
+		*cp = 0;
 		sprintf (buffer, "(*%s) -> %s", yp -> yp_varexp, cp + 4);
 		yp -> yp_varexp = new_string (buffer);
 	}
@@ -1674,7 +1674,7 @@ char   *id,
 			dp += strlen (dp);
 		} else {
 			strcpy (buf1, buf2);
-			dp = NULL;
+			dp = 0;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
 		if (h2flag && top)
@@ -1725,7 +1725,7 @@ char   *id,
 		sprintf (bp, " -> %s", cp);
 		level++;
 		pepsy (y, 0, level, cp, ep, buf2, h2flag);
-		*bp = NULL;
+		*bp = 0;
 		if (y -> yp_code != YP_IDEFINED)
 			free (cp);
 		if (!h2flag)
@@ -1756,7 +1756,7 @@ char   *id,
 			dp += strlen (dp);
 		} else {
 			strcpy (buf1, buf2);
-			dp = NULL;
+			dp = NULLCP;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
 		if (!top) {
@@ -1828,7 +1828,7 @@ char   *id,
 				cp = gensym (ep, NULLCP);
 			sprintf (bp, " -> %s", cp);
 			pepsy (y, 0, level, cp, ep, buf2, 0);
-			*bp = NULL;
+			*bp = 0;
 			if (!(y -> yp_flags & YP_ID))
 				free (cp);
 			if (y -> yp_next)
@@ -1858,7 +1858,7 @@ char   *id,
 			dp += strlen (dp);
 		} else {
 			strcpy (buf1, buf2);
-			dp = NULL;
+			dp = NULLCP;
 		}
 		newid = yp -> yp_ptrname ? yp -> yp_ptrname : id;
 		if (!top) {
@@ -1913,7 +1913,7 @@ char   *id,
 			y->yp_varexp = my_strcat("un.",  t);
 			free(t);
 
-			*bp = NULL;
+			*bp = 0;
 			if (!(y -> yp_flags & YP_ID))
 				free (cp);
 			if (y -> yp_next)
@@ -2397,7 +2397,7 @@ dump_real (double r) {
 		printf ("{ 0, 10, 0 } -- %s --", sbuf);
 		return;
 	}
-	*cp++ = NULL;
+	*cp++ = 0;
 	printf ("{ %s%c%s, 10, %d }",
 			sp, *dp, dp + 2, atoi (cp) - strlen (dp + 2));
 #endif
@@ -3029,7 +3029,7 @@ modsym_aux (char *name, char *bp) {
 			break;
 		}
 
-	*bp = NULL;
+	*bp = 0;
 }
 
 /*  */
