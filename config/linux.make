@@ -19,7 +19,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-OPTIONS +=      -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS +=      -std=gnu89 -fcommon -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
 
 HDIR	=	$(TOPDIR)h/
