@@ -242,7 +242,9 @@ char   *sys_errname ();
 #endif
 
 #include <stdarg.h>
+#ifndef ASPRINTF
 void    asprintf(char*bp, va_list ap);            /* fmt, args, ... */
+#endif
 void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
 
 

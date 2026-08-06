@@ -32,5 +32,6 @@
 #define GETCWD
 #define STRDUP
 #define DEBUG
+#define ASPRINTF
 
 #endif

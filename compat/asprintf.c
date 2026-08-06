@@ -30,6 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -43,6 +44,8 @@ void	asprintf (char *bp, va_list ap) {	/* what, fmt, args, ... */
 
     _asprintf (bp, what, fmt, ap);
 }
+#endif
+
 
 #ifdef X25
 unsigned char isode_x25_err[2];
@@ -100,4 +103,3 @@ void	_asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ...
 
 	errno = eindex;
 }
-#endif
