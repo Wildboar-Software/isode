@@ -36,11 +36,13 @@ DIRS	=	$(LIBDIRS) support imisc
 OTHERS	=	dsap ftam ftam2 ftam-ftp ftp-ftam others psap2-lpp quipu \
 		snmp vt
 
-
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \
 			      cd $$i; $(MAKE) all); \
 		    done
+
+# Just a target I added for debugging individual modules
+# one:;		cd compat; $(MAKE) all;
 
 inst-all:	make-dirs
 		@for i in $(DIRS); \
