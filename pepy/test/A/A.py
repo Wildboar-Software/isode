@@ -4,6 +4,7 @@
 #define	DEBUG
 
 #include <stdio.h>
+#include <unistd.h>
 
 /*    DATA */
 

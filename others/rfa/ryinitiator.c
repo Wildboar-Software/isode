@@ -32,6 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/ryinitiator.c,v 
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "RFA-ops.h"
 #include "RFA-types.h"
 

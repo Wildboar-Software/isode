@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
 #include <pwd.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "general.h"
 #include "manifest.h"
 #include "internet.h"

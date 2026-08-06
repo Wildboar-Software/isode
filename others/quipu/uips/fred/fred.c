@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "fred.h"
 #include "internet.h"
 

@@ -32,6 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/advise.c,v 9.0 1
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "manifest.h"
 #include "logger.h"
 

@@ -10,6 +10,7 @@ static char *rcsid_xinit_c = "$XConsortium: xinit.c,v 11.32 88/10/05 09:27:45 ji
 #include <stdio.h>
 #include <ctype.h>
 #include <signal.h>
+#include <unistd.h>
 #include <sys/resource.h>
 #ifndef SYSV
 #include <sys/wait.h>

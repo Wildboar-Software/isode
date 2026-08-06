@@ -22,6 +22,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd2.c,v 9.
 #endif
 
 #include <errno.h>
+#include <unistd.h>
 #include "defs.h"
 #include "Idist-types.h"
 

@@ -30,6 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "ftamuser.h"
 #include "tailor.h"
 

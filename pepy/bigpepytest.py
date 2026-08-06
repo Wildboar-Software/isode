@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/bigpepytest.py,v 9.0 1
 
 #include <stdio.h>
 
-
 static int  count;
 
 static char *myname = "bigpepytest";
@@ -674,7 +673,7 @@ int	n;
 /* 	ERRORS */
 
 #include <stdarg.h>
-
+#include <unistd.h>
 
 #ifndef	lint
 static void	_advise ();

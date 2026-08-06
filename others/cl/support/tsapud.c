@@ -38,6 +38,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "manifest.h"
 #include <sys/ioctl.h>
 #include <sys/stat.h>

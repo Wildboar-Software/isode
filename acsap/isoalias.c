@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/isoalias.c,v 9.0 1992
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
@@ -110,7 +111,7 @@ read_file (char *file) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
-			*cp = NULL;
+			*cp = '\0';
 		if (str2vec (buffer, vec) < 2)
 			continue;
 

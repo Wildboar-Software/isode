@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "imagesbr.h"
 #include "quipu/bind.h"
 #include "quipu/ds_search.h"

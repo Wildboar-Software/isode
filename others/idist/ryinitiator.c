@@ -21,6 +21,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "Idist-types.h"
 #include "Idist-ops.h"
 #include "defs.h"

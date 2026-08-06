@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/picture.c,v 9.0
 /* LINTLIBRARY */
 
 #include <signal.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/photo.h"
 #include "quipu/attr.h"

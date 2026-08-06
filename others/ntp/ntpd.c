@@ -1403,8 +1403,6 @@ envinit () {
 #endif
 }
 
-#include <stdarg.h>
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

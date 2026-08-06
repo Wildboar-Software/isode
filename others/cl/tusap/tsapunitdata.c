@@ -42,6 +42,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 #include "tpkt.h"
 #include "tsap.h"
 #include "tusap.h"

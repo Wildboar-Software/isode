@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryresponder.c,v 9.0 1
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 #include "tailor.h"

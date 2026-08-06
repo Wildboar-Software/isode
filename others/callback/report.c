@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/report.c,v 
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "general.h"
 #include "manifest.h"
 #include "logger.h"

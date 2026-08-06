@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
 
 #include "rtf.h"
 #include <stdarg.h>
+#include <unistd.h>
 #if	defined(SYS5) && !defined(HPUX)
 #include <sys/times.h>
 #define	TMS

@@ -21,6 +21,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryresponder.c,
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 

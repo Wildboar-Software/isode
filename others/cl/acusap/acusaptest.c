@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <unistd.h>
 #define  ACSE
 #include "acupkt.h"
 #include "isoservent.h"

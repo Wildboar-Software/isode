@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/pipe
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "tailor.h"
 #include "general.h"

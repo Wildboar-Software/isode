@@ -14,6 +14,7 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntq.c,v 9.0 1992
 
 #include "ntp.h"
 #include <stdarg.h>
+#include <unistd.h>
 #include "NTP-ops.h"
 #include "NTP-types.h"
 

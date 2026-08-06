@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpi.c,v 9.0 1992/06/
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #ifndef SVR4_UCB

@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
 
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "isoservent.h"

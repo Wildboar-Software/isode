@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "ryresponder.h"
 
 #define ACSE

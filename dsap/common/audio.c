@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/audio.c,v 9.0 1
 /* LINTLIBRARY */
 
 #include <signal.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"

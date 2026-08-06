@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtpm.c,v 9.0 1992/06/16 
  *
  */
 
-
+#include <unistd.h>
 #include "vtpm.h"
 #include "eventmsg.h"
 #include "sector1.h"

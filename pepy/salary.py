@@ -72,7 +72,7 @@ END
 /*    ERRORS */
 
 #include <stdarg.h>
-
+#include <unistd.h>
 
 #ifndef	lint
 static void	_advise ();

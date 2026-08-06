@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryinitiator.c,v 9.0 1
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include "ryinitiator.h"
 
 #undef	TIMER

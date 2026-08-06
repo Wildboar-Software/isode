@@ -53,6 +53,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 #include <pwd.h>
 #include <setjmp.h>
 /*
