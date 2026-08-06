@@ -53,7 +53,7 @@ static  char *eval = NULLCP;
 char   *mymodule = "";
 OID	mymoduleid;
 
-int yysection = NULL;
+int yysection = 0;
 char *yyencpref = "none";
 char *yydecpref = "none";
 char *yyprfpref = "none";
@@ -162,7 +162,7 @@ main (int argc, char **argv, char **envp) {
 
 	fprintf (stderr, "%s\n", mosyversion);
 
-	sysout[0] = NULL;
+	sysout[0] = 0;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
 		cp = *argv;
 
@@ -241,7 +241,7 @@ usage:
 	}
 
 	if (strcmp (sysout, "-") == 0)
-		sysout[0] = NULL;
+		sysout[0] = 0;
 	if (*sysout && freopen (sysout, "w", stdout) == NULL) {
 		fprintf (stderr, "unable to write "), perror (sysout);
 		exit (1);
@@ -667,7 +667,7 @@ again:
 		break;
 
 	case YP_NULL:
-		id = "NULL";
+		id = "0";
 		break;
 
 	case YP_SEQTYPE:

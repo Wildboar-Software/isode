@@ -389,12 +389,12 @@ print_bind_error (struct ds_bind_error *err, int mode) {
 
 	ds_bind_error_aux (ps, err, mode);
 
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }

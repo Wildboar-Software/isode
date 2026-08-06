@@ -162,12 +162,12 @@ DN	dn;
 
 	dn_print (ps, dn, RDNOUT);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }
@@ -188,12 +188,12 @@ RDN	rdn;
 
 	rdn_print (ps, rdn, RDNOUT);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }

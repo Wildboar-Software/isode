@@ -162,7 +162,7 @@ do_parse (char *str) {
 	pe = NULLPE;
 
 	/* remove \n */
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	parse_status = 0;
 
@@ -182,5 +182,5 @@ do_parse (char *str) {
 	}
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 }

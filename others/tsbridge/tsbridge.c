@@ -398,7 +398,7 @@ getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp) {
 	isnew = 0;
 	/* try old form... */
 	bcopy (ta -> ta_selector, buffer, ta -> ta_selectlen);
-	buffer[ta -> ta_selectlen] = NULL;
+	buffer[ta -> ta_selectlen] = 0;
 
 	if ((nta = str2taddr (buffer)) == NULLTA) {
 		ts_close (sd, "unable to translate address");

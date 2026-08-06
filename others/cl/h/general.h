@@ -139,7 +139,7 @@ char   *sprintb ();
 #define	NSLACK	10
 
 
-#define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, NULL)
+#define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, 0)
 
 int	str2vecX ();
 

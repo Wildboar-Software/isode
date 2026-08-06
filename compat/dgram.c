@@ -442,7 +442,7 @@ write_dgram_socket (int fd, struct qbuf *qb) {
 	return sendto (fd, qb -> qb_data, qb -> qb_len, NULL,
 				   &up -> dgram_peer.sa, (int) up -> dgram_peer.sa.sa_len);
 #else
-	return sendto (fd, qb -> qb_data, qb -> qb_len, NULL,
+	return sendto (fd, qb -> qb_data, qb -> qb_len, 0,
 				   &up -> dgram_peer.sa, sizeof up -> dgram_peer.sa);
 #endif
 }
@@ -532,7 +532,7 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 
 			sock = (union sockaddri_un *) qb -> qb_base;
 			qb -> qb_data = qb -> qb_base + slen;
-			if ((cc = recvfrom (fd, qb -> qb_data, MAXDGRAM, NULL,
+			if ((cc = recvfrom (fd, qb -> qb_data, MAXDGRAM, 0,
 								&sock -> sa, &slen)) == NOTOK) {
 				free ((char *) qb);
 				return NOTOK;
@@ -724,7 +724,7 @@ static struct printent {
 	AF_ISO,	isoprint,
 #endif
 
-	NULL
+	0
 };
 
 static	action (s, fd, sock)

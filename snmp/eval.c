@@ -323,7 +323,7 @@ int	offset;
 		return o_integer (oi, v, ifnum);
 
 	case exprEval:
-		e -> e_eval = 0, e -> e_status = E_noError, e -> e_hints[0] = NULL;
+		e -> e_eval = 0, e -> e_status = E_noError, e -> e_hints[0] = 0;
 		eval_expr (curexpr = e);
 		curexpr = NULL;
 		return o_integer (oi, v, e -> e_eval);
@@ -878,7 +878,7 @@ invalid:
 	e -> e_size = ps -> ps_ptr - (e -> e_expr = ps -> ps_base);
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	ps_free (ps);
 

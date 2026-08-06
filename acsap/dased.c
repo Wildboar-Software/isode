@@ -346,7 +346,7 @@ no_mem:
 		} else {
 			if (passwd[0])
 				changed++;
-			passwd[0] = NULL;
+			passwd[0] = 0;
 		}
 
 		if (isbound && changed) {
@@ -358,7 +358,7 @@ no_mem:
 	if (!isbound && bind_to_dsa () == NOTOK)
 		goto send_rsp;
 
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 	pe = NULLPE;
 	if (vecp == 1 && *vec[0] == '@') {
 		static DN dnstat;
@@ -410,7 +410,7 @@ all_done:
 
 		ufn_dn_print_aux (nps, *dn, NULLDN, 0);
 		ps_print (nps, " ");
-		*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 		rsp -> friendly = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
 
@@ -593,7 +593,7 @@ out:
 
 		dn_print (nps, dns -> dns_dn, EDBOUT);
 		ps_print (nps, " ");
-		*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 		pair -> complete = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
 
@@ -601,7 +601,7 @@ out:
 
 		ufn_dn_print_aux (nps, dns -> dns_dn, dn, 0);
 		ps_print (nps, " ");
-		*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 		pair -> friendly = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
 
@@ -788,12 +788,12 @@ static void arginit (char **vec) {
 
 	dsap_init (&argp, (argptr = args, &argptr));
 
-	userdn = NULLDN, passwd[0] = NULL;
+	userdn = NULLDN, passwd[0] = 0;
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
 			case 'a':
-				if ((ap = *++vec) == NULL || *ap == '-')
+				if ((ap = *++vec) == NULLCP || *ap == '-')
 					adios (NULLCP, "usage: %s -a address", pgmname);
 				if ((ta = str2taddr (ap)) == NULLTA)
 					adios (NULLCP, "bad address \"%s\"", ap);

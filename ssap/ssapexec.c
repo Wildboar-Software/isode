@@ -67,7 +67,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms) 
 			if ((is = getisoserventbyselector ("ssap", s -> s_called, s -> s_calledlen)) == NULL) {
 				char buffer[BUFSIZ];
 
-				buffer[explode (buffer, (u_char *) s -> s_called, s-> s_calledlen)] = NULL;
+				buffer[explode (buffer, (u_char *) s -> s_called, s-> s_calledlen)] = 0;
 				spktlose (sd, si, SC_SSAPID | SC_REFUSE, NULLCP, "ISO service ssap/%s not found", buffer);
 				break;
 			}

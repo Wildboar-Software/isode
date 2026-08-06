@@ -285,7 +285,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading value");
 				if ((d == ']' && c == ']' && tok !=CONTROL) ||
@@ -402,7 +402,7 @@ yyfussy:
 		}
 		break;
 		case 25: {
-			yytext[strlen (yytext) - 1] = NULL;
+			yytext[strlen (yytext) - 1] = 0;
 			yylval.yy_string = new_string (yytext + 1);
 			if (yydebug)
 				fprintf (stderr, "LIT: \"%s\"\n", yylval.yy_string);
@@ -443,7 +443,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading value");
 				if (d == '%' && c == ']' ) {
@@ -481,7 +481,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
@@ -520,7 +520,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '>' && c == '>') {
@@ -558,7 +558,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
@@ -595,7 +595,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {
@@ -632,7 +632,7 @@ yyfussy:
 					== NULL)
 				yyerror ("out of memory");
 
-			for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 					yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {

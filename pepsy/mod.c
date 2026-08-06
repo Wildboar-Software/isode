@@ -91,7 +91,7 @@ char   *new;
 	if (*sysin)
 		fprintf(fp, "# line %d \"%s\"\n", lineno, sysin);
 
-	for (d = NULL; c = *action; d = c, action++) {
+	for (d = 0; c = *action; d = c, action++) {
 		Printf(4, ("open char is %c\n", *action));
 		for (i = 0; i < MAXLENGTH - 1 && (isalpha(*action) || *action == '_'); action++, i++)
 			t[i] = *action;
@@ -113,7 +113,7 @@ char   *new;
 		case '$':
 			if (c == '$') {
 				fprintf(fp, "%s", arg);
-				c = NULL;
+				c = 0;
 				break;
 			}
 			fputc('$', fp);	/* fall */

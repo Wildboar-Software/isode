@@ -996,7 +996,7 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
 	struct FTAMdiagnostic *dp;
 
 #ifdef	BRIDGE
-	ftam_error[0] = NULL;
+	ftam_error[0] = 0;
 #endif
 	for (dp = diag, i = ndiag - 1; i >= 0; dp++, i--) {
 		if (dp -> ftd_identifier != FS_GEN_NOREASON) {

@@ -129,7 +129,7 @@ main (int argc, char **argv, char **envp) {
 			vec[vecp++] = uflag;
 		if (aflag)
 			vec[vecp++] = aflag;
-		vec[vecp] = NULL;
+		vec[vecp] = 0;
 
 		if (ftamloop (vec, NOTOK) != OK && op)
 			exit (1);
@@ -145,7 +145,7 @@ main (int argc, char **argv, char **envp) {
 		vec[vecp++] = "set";
 		vec[vecp++] = "concurrency";
 		vec[vecp++] = concur;
-		vec[vecp] = NULL;
+		vec[vecp] = 0;
 
 		if (ftamloop (vec, NOTOK) != OK && op)
 			exit (1);
@@ -156,7 +156,7 @@ main (int argc, char **argv, char **envp) {
 		vec[vecp++] = "set";
 		vec[vecp++] = "override";
 		vec[vecp++] = oflag;
-		vec[vecp] = NULL;
+		vec[vecp] = 0;
 
 		if (ftamloop (vec, NOTOK) != OK && op)
 			exit (1);
@@ -167,7 +167,7 @@ main (int argc, char **argv, char **envp) {
 	if (op) {
 		for (vecp = 0; *op; op++)
 			vec[vecp++] = *op;
-		vec[vecp] = NULL;
+		vec[vecp] = 0;
 
 		status = ftamfd != NOTOK ? 1 : 0;
 		switch (ftamloop (vec, NOTOK)) {
@@ -229,7 +229,7 @@ main (int argc, char **argv, char **envp) {
 	if (ftamfd != NOTOK) {
 		vecp = 0;
 		vec[vecp++] = "close";
-		vec[vecp] = NULL;
+		vec[vecp] = 0;
 
 		ftamloop (vec, NOTOK);
 	}

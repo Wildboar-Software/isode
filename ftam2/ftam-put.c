@@ -690,7 +690,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
 					if ((int)(strlen(line) + 1) < (ep - bp - 1)) {
 						strcpy (bp, line);
-						line[0] = NULL;
+						line[0] = 0;
 					} else
 						break;
 				} else {

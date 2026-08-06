@@ -230,7 +230,7 @@ int     len;
 			*d++ = g + 'a' - 0x0a;
 	}
 
-	*d = NULL;
+	*d = 0;
 
 	return len;
 }
@@ -2029,7 +2029,7 @@ yyreduce:
 	case 41:
 #line 499 "pepsy-yacc.y"
 		{
-			yysection = NULL;
+			yysection = 0;
 			if (strcmp (yyencpref = yyvsp[-2].yy_string, "none"))
 				yysection |= YP_ENCODER;
 			if (strcmp (yydecpref = yyvsp[-1].yy_string, "none"))

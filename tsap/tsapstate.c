@@ -51,7 +51,7 @@ TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
 		return tsaplose (td, DR_WAITING, NULLCP, NULLCP);
 	}
 
-	buffer[explode (buffer, (u_char *) tb, sizeof *tb)] = NULL;
+	buffer[explode (buffer, (u_char *) tb, sizeof *tb)] = 0;
 	*vec++ = buffer;
 	*vec = NULL;
 

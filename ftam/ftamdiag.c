@@ -174,7 +174,7 @@ fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiag
 				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 								 "out of memory");
 			strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
-			dp -> ftd_data[sizeof dp -> ftd_data - 1] = NULL;
+			dp -> ftd_data[sizeof dp -> ftd_data - 1] = 0;
 			dp -> ftd_cc = strlen (dp -> ftd_data);
 			free (cp);
 		} else

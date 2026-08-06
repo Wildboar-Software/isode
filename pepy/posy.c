@@ -193,7 +193,7 @@ main (int argc, char **argv, char **envp) {
     dp = pepyversion + strlen ("pepy ");
     fprintf (stderr, "posy %s\n", dp);
 
-	sysout[0] = sysdef[0] = sysact[0] = NULL;
+	sysout[0] = sysdef[0] = sysact[0] = 0;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
 		cp = *argv;
 
@@ -274,7 +274,7 @@ usage:
 	}
 
 	if (strcmp (sysout, "-") == 0)
-		sysout[0] = NULL;
+		sysout[0] = 0;
 	if (*sysout && freopen (sysout, "w", stdout) == NULL) {
 		fprintf (stderr, "unable to write "), perror (sysout);
 		exit (1);
@@ -2542,7 +2542,7 @@ int	level;
 		break;
 
 	case YV_NULL:
-		printf ("NULL");
+		printf ("0");
 		break;
 
 	default:

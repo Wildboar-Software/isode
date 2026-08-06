@@ -527,7 +527,7 @@ try_again:
 				return int_SNMP_error__status_genErr;
 			}
 
-			pq -> pq_status = 0, pq -> pq_display[0] = NULL;
+			pq -> pq_status = 0, pq -> pq_display[0] = 0;
 			if (stat (pq -> pq_LO, &st) != NOTOK) {
 				FILE   *fp;
 
@@ -543,14 +543,14 @@ try_again:
 					char    buffer[sizeof pq -> pq_display];
 
 					if (!fgets (buffer, sizeof buffer - 1, fp))
-						buffer[0] = NULL;
+						buffer[0] = 0;
 					if (cp = index (buffer, '\n'))
 						*cp = 0;
 					if (strncmp (buffer, "job: ", sizeof "job: " - 1) == 0
 							&& (cp = index (buffer + sizeof "job: " - 1,
 											';'))
 							&& *++cp == ' '
-							&& *++cp != NULL)
+							&& *++cp != 0)
 						strcpy (pq -> pq_display,
 								(pq -> pq_status & PQ_STDAEMON)
 								? cp : "");
@@ -780,7 +780,7 @@ try_again:
 				return int_SNMP_error__status_genErr;
 			}
 
-			pj -> pj_size = 0, host[0] = NULL;
+			pj -> pj_size = 0, host[0] = 0;
 
 			while (fgets (buffer, sizeof buffer - 1, fp)) {
 				char   *cp;
@@ -1417,7 +1417,7 @@ char   *current;
 					*cp = 0;
 				strcpy (current, buffer);
 			} else
-				current[0] = NULL;
+				current[0] = 0;
 		}
 	}
 

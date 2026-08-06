@@ -345,7 +345,7 @@ static
 type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
-	buffer[explode (buffer, (u_char *) selector, len)] = NULL;
+	buffer[explode (buffer, (u_char *) selector, len)] = 0;
 
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
@@ -513,7 +513,7 @@ type_info (LLog *lp, char *fmt, int len, char *data) {
 
 	ll_printf (lp, fmt, len);
 	if (0 < len && len < sizeof buffer / 2) {
-		buffer[explode (buffer, (u_char *) data, len)] = NULL;
+		buffer[explode (buffer, (u_char *) data, len)] = 0;
 		ll_printf (lp, " %s", buffer);
 	}
 }

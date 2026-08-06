@@ -250,13 +250,13 @@ read_print (int (*func), caddr_t ptr) {
 	if (str_setup(ps, NULLCP, 0, 0) == NOTOK) return;
 
 	(*func) (ps, ptr, READOUT);
-	*--ps->ps_ptr = NULL, ps->ps_cnt++;
+	*--ps->ps_ptr = 0, ps->ps_cnt++;
 
 	str = ps->ps_base;
 
 	ps->ps_base = NULL;
 	ps->ps_cnt = 0;
-	ps->ps_ptr = NULL;
+	ps->ps_ptr = 0;
 	ps->ps_bufsiz = 0;
 
 	ps_free(ps);

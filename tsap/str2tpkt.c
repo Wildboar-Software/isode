@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/str2tpkt.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "tpkt.h"
 #include "tailor.h"
 
@@ -51,7 +52,7 @@ tpkt2str (struct tsapkt *t) {
 		bcopy (t -> t_qbuf -> qb_data, packet + cc, t -> t_qbuf -> qb_len);
 		cc += t -> t_qbuf -> qb_len;
 	}
-	buffer[explode (buffer, (u_char *) packet, cc)] = NULL;
+	buffer[explode (buffer, (u_char *) packet, cc)] = 0;
 
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("write %d bytes, \"%s\"", strlen (buffer), buffer));

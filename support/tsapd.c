@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <signal.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "manifest.h"
@@ -383,7 +384,7 @@ out:
 	;
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s", buffer);
 	if ((int)strlen (buffer) >= TD_SIZE)
-		buffer[0] = NULL;
+		buffer[0] = 0;
 	TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
 
 	exit (1);
@@ -582,7 +583,7 @@ char	**vec;
 	tcp_na = tz -> ta_addrs;
 	tcp_na -> na_stack = NA_TCP;
 	tcp_na -> na_community = ts_comm_tcp_default;
-	tcp_na -> na_domain[0] = NULL;
+	tcp_na -> na_domain[0] = 0;
 	tcp_na -> na_port = sp ? sp -> s_port : htons ((u_short) 102);
 	tz -> ta_naddr = 1;
 
@@ -865,7 +866,7 @@ char	**vec;
 		tp4service = 1;		/* hack it */
 
 	options = SVC_OPT_PREFERCHAIN;
-	userdn = NULLDN, passwd[0] = NULL;
+	userdn = NULLDN, passwd[0] = 0;
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {

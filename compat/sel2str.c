@@ -75,7 +75,7 @@ ugly:
 		if (len > NASIZE)	/* XXX */
 			len = NASIZE;
 
-		cp[explode (cp, (u_char *) sel, len)] = NULL;
+		cp[explode (cp, (u_char *) sel, len)] = 0;
 	}
 #ifndef	NOGOSIP
 out:

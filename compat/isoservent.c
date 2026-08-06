@@ -90,7 +90,7 @@ getisoservent (void) {
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
-		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 3)
+		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, 0, 1)) < 3)
 			continue;
 
 		if ((cp = index (vec[0], '/')) == NULL)

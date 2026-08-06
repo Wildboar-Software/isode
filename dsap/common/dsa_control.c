@@ -170,7 +170,7 @@ dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 										  malloc (sizeof (struct optional_dn)) ;
 		if (dsa_c_ptr->un.lockdsa->offset == EMPTYDN) {
 			tmp_opt_dn->offset = EMPTYDN ;
-			tmp_opt_dn->un.no_dn = NULL ;
+			tmp_opt_dn->un.no_dn = 0 ;
 			new_item->un.lockdsa = tmp_opt_dn ;
 		} else {
 			tmp_opt_dn->offset = DN_PRESENT ;
@@ -188,7 +188,7 @@ dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 										  malloc (sizeof (struct optional_dn)) ;
 		if (dsa_c_ptr->un.refresh->offset == EMPTYDN) {
 			tmp_opt_dn->offset = EMPTYDN ;
-			tmp_opt_dn->un.no_dn = NULL ;
+			tmp_opt_dn->un.no_dn = 0 ;
 			new_item->un.refresh = tmp_opt_dn ;
 		} else {
 			tmp_opt_dn->offset = DN_PRESENT ;
@@ -206,7 +206,7 @@ dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 										  malloc (sizeof (struct optional_dn)) ;
 		if (dsa_c_ptr->un.unlock->offset == EMPTYDN) {
 			tmp_opt_dn->offset = EMPTYDN ;
-			tmp_opt_dn->un.no_dn = NULL ;
+			tmp_opt_dn->un.no_dn = 0 ;
 			new_item->un.unlock = tmp_opt_dn ;
 		} else {
 			tmp_opt_dn->offset = DN_PRESENT ;

@@ -287,7 +287,7 @@ caddr_t ptr;
 
 	(*func) (ps,ptr,EDBOUT);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	LLOG (lp,event,("%s: %s",str,ps->ps_base));
 

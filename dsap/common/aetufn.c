@@ -224,7 +224,7 @@ PE     *real_name;
 			goto out;
 		}
 	}
-	password[0] = NULL;
+	password[0] = 0;
 	if (passwd)
 		strcpy (password, passwd);
 
@@ -243,7 +243,7 @@ PE     *real_name;
 	if (el == NULLEL)
 		set_el ();
 
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 
 	if ((n = sstr2arg (buffer,20,v,",")) == NOTOK) {
 		PY_advise (NULLCP, "invalid name");
@@ -304,7 +304,7 @@ all_done:
 				&& str_setup (ps, NULLCP, 0, 0) != NOTOK) {
 			ufn_dn_print_aux (ps, *dn, NULLDN, 0);
 			ps_print (ps, " ");
-			*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+			*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 			printf ("[ using %s ]\n", ps -> ps_base);
 			fflush (stdout);
@@ -424,7 +424,7 @@ main (int argc, char **argv) {
 	int ontty, n;
 	PE title, paddr;
 
-	buffer[0] = NULL;
+	buffer[0] = 0;
 
 	ontty = isatty (fileno (stdin));
 	for (n=1; n<argc; n++) {

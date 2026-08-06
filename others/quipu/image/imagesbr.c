@@ -207,9 +207,9 @@ struct dn_seq *dlist;
 	if ((ps = ps_alloc (str_open))
 			&& str_setup (ps, buffer, sizeof buffer, 1) != NOTOK) {
 		dn_print (ps, dn, EDBOUT);
-		*ps -> ps_ptr = NULL;
+		*ps -> ps_ptr = 0;
 	} else
-		buffer[0] = NULL;
+		buffer[0] = 0;
 	if (ps)
 		ps_free (ps);
 

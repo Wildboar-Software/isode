@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
@@ -72,7 +73,7 @@ pa2str (struct PSAPaddr *px) {
 			ta -> ta_naddr = 1;
 			goto bridge;
 		}
-		for (ep = (dp = ta -> ta_selector) + ta -> ta_selectlen, *ep = NULL;
+		for (ep = (dp = ta -> ta_selector) + ta -> ta_selectlen, *ep = 0;
 				dp < ep;
 				dp++)
 			if (!isprint ((u_char) *dp) && *dp != ' ')

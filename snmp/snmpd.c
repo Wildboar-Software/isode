@@ -2643,7 +2643,7 @@ char	**vec;
 	tcp_na = tz -> ta_addrs;
 	tcp_na -> na_stack = NA_TCP;
 	tcp_na -> na_community = ts_comm_tcp_default;
-	tcp_na -> na_domain[0] = NULL;
+	tcp_na -> na_domain[0] = 0;
 #ifndef	SNMPT
 	tcp_na -> na_port = sp ? sp -> s_port : htons ((u_short) 161);
 	udport = tcp_na -> na_port;

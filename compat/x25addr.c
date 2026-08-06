@@ -113,7 +113,7 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 			} else bcopy(generic -> na_dte, dte, dtelen = generic -> na_dtelen);
 		}
 	} else bcopy (generic -> na_dte, dte, dtelen = generic -> na_dtelen);
-	dte[dtelen] = NULL;
+	dte[dtelen] = 0;
 
 #if defined(SUN_X25_HACK) || defined(CCUR_X25)
 	/*
@@ -152,7 +152,7 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 					 i = strlen(x25_local_dte)) == 0 ) {
 			bcopy(generic -> na_dte + i, dte, dtelen =
 					  generic -> na_dtelen - i);
-			dte[dtelen] = NULL;
+			dte[dtelen] = 0;
 		}
 	}
 #endif
@@ -515,7 +515,7 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 			   dtelen = specific -> addr.x25hostlen);
 	else {
 		dte [0] = '0';
-		dte [1] = NULL;
+		dte [1] = 0;
 		dtelen = 1;
 	}
 

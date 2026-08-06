@@ -64,7 +64,7 @@ setenv (const char *name, const char *value, int overwrite) {
 	for (ep = environ, i = 0; *ep; nep[i++] = *ep++)
 		continue;
 	nep[i++] = cp;
-	nep[i] = NULL;
+	nep[i] = NULLCP;
 	environ = nep;
 	return 0;
 }

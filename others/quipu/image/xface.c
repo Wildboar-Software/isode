@@ -582,7 +582,7 @@ readsocket (char *buffer) {
 		break;
 	}
 
-	buffer[cc] = NULL;
+	buffer[cc] = 0;
 
 	return OK;
 }

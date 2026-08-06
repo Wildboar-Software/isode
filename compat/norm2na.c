@@ -73,7 +73,7 @@ norm2na (char *p, int len, struct NSAPaddr *na) {
 		na -> na_dtelen = xlen;
 		for (cp2 = na -> na_dte; xlen-- > 0; )
 			*cp2++ = *cp++;
-		*cp2 = NULL;
+		*cp2 = 0;
 		na -> na_stack = NA_X25;
 		na -> na_community = SUBNET_INT_X25;
 	} else {

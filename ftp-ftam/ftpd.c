@@ -39,6 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 #include "config.h"
 #include <sys/param.h>
 #include <sys/stat.h>
+#include <string.h>
 /*
 #include <sys/socket.h>
  */
@@ -213,7 +214,7 @@ char *name;
 	 */
 	vec[0] = "f_get";
 	vec[1] = name;
-	vec[2] = NULL;
+	vec[2] = NULLCP;
 
 	if ((result = f_get(vec)) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);

@@ -183,12 +183,12 @@ DN	dn;
 
 	dn_print (ps, dn, EDBOUT);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }
@@ -210,12 +210,12 @@ int    multiline;
 
 	ufn_dn_print (ps, dn, multiline);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }
@@ -238,12 +238,12 @@ char   *sep;
 	ps_print (ps, "<");
 	dn_rfc_print (ps, dn, sep);
 	ps_print (ps, "> ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	cp = ps -> ps_base;
 
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
-	ps -> ps_ptr = NULL, ps -> ps_bufsiz = 0;
+	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 
 	return cp;
 }

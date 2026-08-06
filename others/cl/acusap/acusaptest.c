@@ -281,7 +281,7 @@ listenup ()
 	    tz = tas;
 	    tcp_na = tz -> ta_addrs;
 	    tcp_na -> na_type = NA_TCP;
-	    tcp_na -> na_domain[0] = NULL;
+	    tcp_na -> na_domain[0] = 0;
 	    tcp_na -> na_port = sp -> s_port;
 	    tz -> ta_naddr = 1;
 

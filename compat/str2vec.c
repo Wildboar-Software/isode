@@ -47,7 +47,7 @@ str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
 		*mask = 0;
 
 	for (i = 0; i <= NVEC;) {
-		vec[i] = NULL;
+		vec[i] = NULLCP;
 		if (brk > 0) {
 			if (i > 0 && *s == brk)
 				*s++ = 0;
@@ -82,7 +82,7 @@ str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
 			for (s++; *s != 0 && !isspace ((u_char) *s) && *s != comma; s++)
 				continue;
 	}
-	vec[i] = NULL;
+	vec[i] = NULLCP;
 
 	return i;
 }

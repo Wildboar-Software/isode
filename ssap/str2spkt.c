@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/str2spkt.c,v 9.0 1992/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "spkt.h"
 #include "tailor.h"
 
@@ -63,7 +64,7 @@ spkt2str (struct ssapkt *s) {
 			break;
 		}
 
-	buffer[explode (buffer, (u_char *) base, len)] = NULL;
+	buffer[explode (buffer, (u_char *) base, len)] = 0;
 	if (len > 0)
 		free (base);
 

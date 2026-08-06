@@ -203,7 +203,7 @@ static struct nsapent {
 	tp4listen, tp4accept1, tp4accept2, tp4unique, close_tp4_socket,
 #endif
 
-	NULL
+	0
 };
 
 
@@ -1705,7 +1705,7 @@ struct TSAPdisconnect *td;
 	else
 		tb -> tb_flags &= ~TB_EXPD;
 	tb -> tb_cc = explode (buffer, (u_char *)udata, cc);
-	buffer[tb -> tb_cc] = NULL;
+	buffer[tb -> tb_cc] = 0;
 	tb -> tb_data = buffer;
 
 	tp4init (tb);
@@ -1893,7 +1893,7 @@ struct TSAPdisconnect *td;
 	len = 0;
 	if (cc > 0)
 		len += explode (buffer + len, (u_char *) udata, cc);
-	buffer[len] = NULL;
+	buffer[len] = 0;
 	vec[2] = buffer;
 
 	vec[*vecp = 3] = NULLCP;
@@ -2046,7 +2046,7 @@ struct TSAPdisconnect *td;
 	len = explode (buffer, (u_char *) tp, sizeof (TP_MSG_CONNECT));
 	if (cc > 0)
 		len += explode (buffer + len, (u_char *) data, cc);
-	buffer[len] = NULL;
+	buffer[len] = 0;
 	vec[2] = buffer;
 
 	vec[*vecp = 3] = NULLCP;

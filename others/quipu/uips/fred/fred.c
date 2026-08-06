@@ -293,7 +293,7 @@ main (int argc, char **argv, char **envp) {
 		/* NOTREACHED */
 
 		case DONE:
-			buffer[0] = NULL;
+			buffer[0] = 0;
 		/* and fall... */
 
 		case OK:

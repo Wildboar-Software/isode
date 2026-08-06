@@ -42,7 +42,7 @@ all:;		@for i in $(DIRS); \
 		    done
 
 # Just a target I added for debugging individual modules
-# one:;		cd compat; $(MAKE) all;
+one:;		cd compat; $(MAKE) all;
 
 inst-all:	make-dirs
 		@for i in $(DIRS); \

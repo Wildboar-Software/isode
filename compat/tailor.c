@@ -516,7 +516,7 @@ isodetailor (char *myname, int wantuser) {
 		return;
 	inited = 1;
 
-	tsb_addresses[0] = NULL;
+	tsb_addresses[0] = 0;
 
 	tailor_read (isodefile (isotailor, 0));
 
@@ -813,7 +813,7 @@ isodexport (char *myname) {
 					   ts -> ts_name, ts -> ts_value ? ts -> ts_value : "",
 					   ts -> ts_subnet, ts -> ts_syntax));
 				buffer[explode(buffer, (u_char *) ts -> ts_prefix,
-							   ts -> ts_length)] = NULL;
+							   ts -> ts_length)] = 0;
 				LLOG (addr_log, LLOG_DEBUG,
 					  ("    prefix \"%s\" (%d octets)", buffer,
 					   ts -> ts_length));

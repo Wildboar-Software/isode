@@ -117,7 +117,7 @@ str2dsaQoS (char *str) {
 	struct dsaQoS *a;
 
 	if (ptr = index (str, '#'))
-		*ptr = NULL;
+		*ptr = 0;
 	quality = cmd_srch (str, dsaQoS_tab);
 	if (ptr)
 		*ptr = '#';
@@ -358,7 +358,7 @@ str2attrQoS (char *str) {
 		parse_error ("Missing '+' in AttributeQuality %s", str);
 		return NULL;
 	}
-	*ptr = NULL;
+	*ptr = 0;
 	level = cmd_srch (str, attrQoS_tab);
 	*ptr = '+';
 
@@ -399,7 +399,7 @@ out:
 		ditQoS_free (a);
 		return NULL;
 	}
-	*ptr = NULL;
+	*ptr = 0;
 	a -> dit_namespace = cmd_srch (str, ditQoS_tab);
 	*ptr = '#';
 	if (a -> dit_namespace == -1) {
@@ -414,7 +414,7 @@ out:
 					 str);
 		goto out;
 	}
-	*ptr = NULL;
+	*ptr = 0;
 	a -> dit_default = str2attrQoS (qtr);
 	*ptr = '#';
 	if (!a -> dit_default)
@@ -422,7 +422,7 @@ out:
 
 	qtr = SkipSpace (ptr + 1);
 	if (ptr = index (qtr, '#'))
-		*ptr = NULL;
+		*ptr = 0;
 	q = &a -> dit_attrs;
 	while (*qtr) {
 		char	u;
@@ -434,7 +434,7 @@ out:
 		*q = p,	q = &p -> dit_next, *q = NULL;
 
 		if (ttr = index (qtr, '$'))
-			*ttr = NULL;
+			*ttr = 0;
 
 		if (!(rtr = index (qtr, '+'))) {
 			parse_error ("missing AttributeQuality in attributeQuality %s",
@@ -447,7 +447,7 @@ out2:
 				*ptr = '#';
 			goto out;
 		}
-		*rtr = NULL;
+		*rtr = 0;
 		for (utr = qtr + strlen (qtr) - 1;
 				utr >= qtr && isspace ((u_char) *utr);
 				utr--)
@@ -456,7 +456,7 @@ out2:
 		if ((u = *utr) == NULL || utr == qtr)
 			p -> dit_type = str2AttrT (qtr);
 		else {
-			*utr = NULL;
+			*utr = 0;
 			p -> dit_type = str2AttrT (qtr);
 			*utr = u;
 		}
@@ -540,7 +540,7 @@ CMD_TABLE *cmd;
 	if ((c = *p) == NULL || p == str)
 		return cmd_srch (str, cmd);
 
-	*p = NULL;
+	*p = 0;
 	result = cmd_srch (str, cmd);
 	*p = c;
 

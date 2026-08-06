@@ -395,11 +395,11 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 	(void) strcpy (das_response, "connection closed by foreign host");
 + 	return DONE;
 +     }
-+     *p = NULL;
++     *p = 0;
 +     if (*--p == '\n')
-+ 	*p = NULL;
++ 	*p = 0;
 +     if (*--p == '\r')
-+ 	*p = NULL;
++ 	*p = 0;
 + 
 +     return OK;
 + }

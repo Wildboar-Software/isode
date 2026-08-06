@@ -190,7 +190,7 @@ main (int argc, char *argv[]) {
 	fflag = 0;
 	logname = 0;
 	myhostname = PLocalHostName ();
-	peerhost[0] = NULL;
+	peerhost[0] = 0;
 	acc = &accs;
 	acr = &acrs;
 	aci = &acis;
@@ -455,7 +455,7 @@ static int
 vt_open (char **vec) {
 	if (*++vec == NULL) {
 		if (_getline ("host: ", line) == NOTOK
-				|| str2vecX (line, vec, 0, NULLIP, NULL, 0) < 1)
+				|| str2vecX (line, vec, 0, (int *)NULLIP, 0, 0) < 1)
 			return NOTOK;
 	}
 

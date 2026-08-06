@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/parse.c,v 9.0 1
  *
  */
 
-
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
@@ -590,7 +590,7 @@ int dtype;
 	struct DSError err;
 	extern int print_parse_errors;
 	extern int parse_line;
-	char *save;
+	int save;
 	extern PS _opt;
 	char check = TRUE;
 
@@ -622,12 +622,12 @@ int dtype;
 		save = parse_line;
 		parse_line = 0;
 		if (unravel_attribute (eptr,&err) != OK) {
-			parse_error ("Error in entry ending line %d...",(char *) save);
+			parse_error ("Error in entry ending line %d...", save);
 			if (print_parse_errors)
 				ds_error (_opt,&err);
 		}
 		if (check_schema (eptr,NULLATTR,&err) != OK) {
-			parse_error ("Schema error in entry ending line %d...",(char *) save);
+			parse_error ("Schema error in entry ending line %d...", save);
 			if (print_parse_errors)
 				ds_error (_opt,&err);
 		}

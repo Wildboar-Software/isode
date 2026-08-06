@@ -748,9 +748,7 @@ struct sockaddr_iso *x;
 OS	os;
 {
 	char    buffer[sizeof x -> siso_data * 2 + 1];
-
-	buffer[explode (buffer, (u_char *) x -> siso_data, (int) x -> siso_nlen)] =
-		NULL;
+	buffer[explode (buffer, (u_char *) x -> siso_data, (int) x -> siso_nlen)] = 0;
 	printf ("NS+%s", buffer);
 }
 

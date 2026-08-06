@@ -115,7 +115,7 @@ static
 type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
-	buffer[explode (buffer, (u_char *) selector, len)] = NULL;
+	buffer[explode (buffer, (u_char *) selector, len)] = 0;
 
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
@@ -132,7 +132,7 @@ type_data (LLog *lp, char *type, char *rw, int len, char *data) {
 		i = (sizeof buffer - 1) / 2;
 		if (len < i)
 			i = len;
-		buffer[explode (buffer, (u_char *) cp, i)] = NULL;
+		buffer[explode (buffer, (u_char *) cp, i)] = 0;
 		ll_printf (lp, "%s", buffer);
 		cp += i;
 		len -= i;

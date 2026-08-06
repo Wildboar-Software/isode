@@ -245,7 +245,7 @@ you_lose:
 
 	fclose (fp);
 
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 	if (compile_flag < 1) {
 		int	again,
 			hit,

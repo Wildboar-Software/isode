@@ -50,7 +50,7 @@ explode (char *a, u_char *b, int n) {
 		*a++ = nib2hex[(u_char)(c & 0xf0) >> 4];
 		*a++ = nib2hex[(c & 0x0f)];
 	}
-	*a = NULL;
+	*a = 0;
 
 	return (n * 2);
 }

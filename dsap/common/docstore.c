@@ -141,11 +141,11 @@ str2documentStore (char *str) {
 		parse_error ("seperator missing in documentStore '%s'",str);
 		return NULL;
 	}
-	*d1 = NULL;
+	*d1 = 0;
 
 	for (ptr = str + strlen (str) - 1; ptr >= str && isspace (*ptr); ptr--)
 		continue;
-	*++ptr = NULL;
+	*++ptr = 0;
 
 	if (lexequ (str, "ftp") == 0)
 		method = DS_FTP;
@@ -167,12 +167,12 @@ str2documentStore (char *str) {
 	bzero ((char *) a, sizeof *a);
 	a -> ds_method = method;
 
-	*d2 = NULL;
+	*d2 = 0;
 	a -> ds_host = strdup (SkipSpace (d1 + 1));
 	*d2 = '$';
 
 	if (d3 = index (d2 + 1, '$')) {
-		*d3 = NULL;
+		*d3 = 0;
 		a -> ds_dir = strdup (SkipSpace (d2 + 1));
 		*d3 = '$';
 
@@ -183,18 +183,18 @@ str2documentStore (char *str) {
 	d1 = a -> ds_host;
 	for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 		continue;
-	*++ptr = NULL;
+	*++ptr = 0;
 
 	if (d1 = a -> ds_dir) {
 		for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 			continue;
-		*++ptr = NULL;
+		*++ptr = 0;
 	}
 
 	d1 = a -> ds_file;
 	for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 		continue;
-	*++ptr = NULL;
+	*++ptr = 0;
 
 	return a;
 }

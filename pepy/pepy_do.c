@@ -733,12 +733,12 @@ do_action (char *action, int level, char *arg, int lineno) {
 	if (!Pflag && *sysin)
 		printf ("# line %d \"%s\"\n", lineno, sysin);
 
-	for (d = NULL; c = *action++; d = c)
+	for (d = 0; c = *action++; d = c)
 		switch (d) {
 		case '$':
 			if (c == '$') {
 				printf ("%s", arg);
-				c = NULL;
+				c = 0;
 				break;
 			}
 			putchar ('$');	/* fall */

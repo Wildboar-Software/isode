@@ -57,7 +57,7 @@ qb2str (struct qbuf *q) {
 
 		p = p -> qb_forw;
 	} while (p != q);
-	*d = NULL;
+	*d = 0;
 
 	return b;
 }

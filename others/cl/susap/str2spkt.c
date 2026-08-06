@@ -61,7 +61,7 @@ struct ssapkt *s;
 			break;
 		}
 
-	buffer[explode (buffer, (u_char *) base, len)] = NULL;
+	buffer[explode (buffer, (u_char *) base, len)] = 0;
 	if (len > 0)
 		free (base);
 

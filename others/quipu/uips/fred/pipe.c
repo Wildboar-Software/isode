@@ -279,7 +279,7 @@ err_recv:
 			continue;
 		}
 
-		buffer[cc] = NULL;
+		buffer[cc] = 0;
 		if (debug)
 			fprintf (stderr, "read %d octets from DUA: '%c'\n", cc,
 					 cc > 0 ? buffer[0] : ' ');
@@ -830,7 +830,7 @@ pagchar (int ch) {
 		if (bflag)
 			putc (0x07, stdout);
 		fflush (stdout);
-		buffer[0] = NULL;
+		buffer[0] = 0;
 		read (fileno (stdout), buffer, sizeof buffer);
 		if (buffer[0] == '\n')
 			rows = 0;

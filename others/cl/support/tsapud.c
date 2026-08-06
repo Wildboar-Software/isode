@@ -289,7 +289,7 @@ out:
 	;
 	advise (LOG_ERR, NULLCP, "%s", buffer);
 	if (strlen (buffer) >= TD_SIZE)
-		buffer[0] = NULL;
+		buffer[0] = 0;
 
 	exit (1);
 }
@@ -359,7 +359,7 @@ arginit (char **vec) {
 
 	tcp_na = tz -> ta_addrs;
 	tcp_na -> na_type = NA_TCP;
-	tcp_na -> na_domain[0] = NULL;
+	tcp_na -> na_domain[0] = 0;
 	tcp_na -> na_port = sp -> s_port;
 	tz -> ta_naddr = 1;
 

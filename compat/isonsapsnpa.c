@@ -96,7 +96,7 @@ getisonsapsnpa()  {
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
-		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, NULL, 1)) < 1)
+		if ((vecp = str2vecX (buffer, vec, 1 + 1, &mask, 0, 1)) < 1)
 			continue;
 
 		ta = str2taddr (vec[0]);

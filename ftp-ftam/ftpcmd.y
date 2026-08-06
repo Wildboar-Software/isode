@@ -114,7 +114,7 @@ cmd:		USER SP username CRLF
 
 			ftp_user = savestr((char*)$3);
 			if (op = index (ftp_user, '@')) {
-			    *op++ = NULL;
+			    *op++ = 0;
 			    osi_host = op;
 			}
 
@@ -672,7 +672,7 @@ yylex()
 			 */
 			if (n > 1 && cbuf[cpos] == '\n') {
 				cbuf[cpos] = '\0';
-				yylval = copy(cp);
+				yylval = (size_t)copy(cp);
 				cbuf[cpos] = '\n';
 				state = ARGS;
 				return (STRING);

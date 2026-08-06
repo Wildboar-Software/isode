@@ -246,7 +246,7 @@ int     len;
 	    *d++ = g + 'a' - 0x0a;
     }
 
-    *d = NULL;
+    *d = 0;
 
     return len;
 }
@@ -554,7 +554,7 @@ Section:		ENCODER String
 			  yyprint (NULLCP, 0, 1); }
 	|		SECTIONS String String String
 			{
-			    yysection = NULL;
+			    yysection = 0;
 			    if (strcmp (yyencpref = $2, "none"))
 				yysection |= YP_ENCODER;
 			    if (strcmp (yydecpref = $3, "none"))

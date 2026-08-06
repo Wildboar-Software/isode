@@ -414,7 +414,7 @@ nadfparse (char *str) {
 		parse_error ("missing subset in NADF Guide %s", str);
 		return NULL;
 	}
-	*ptr2 = NULL;
+	*ptr2 = 0;
 	res = guideparse (str);
 	*ptr2 = '#';
 	if (!res)

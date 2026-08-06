@@ -154,7 +154,7 @@ out:
 			goto out;
 		}
 	}
-	password[0] = NULL;
+	password[0] = 0;
 	if (passwd)
 		strcpy (password, passwd);
 

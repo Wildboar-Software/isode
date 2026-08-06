@@ -283,7 +283,7 @@ getdents (		/* returns # bytes read;
 #ifdef UFS
 						 DIRSIZ );
 				/* be sure d_name is NULL-terminated */
-				bp->d_name[DIRSIZ] = NULL;
+				bp->d_name[DIRSIZ] = 0;
 #else
 						 reclen - DIRENTBASESIZ );
 				/* adds NUL padding */

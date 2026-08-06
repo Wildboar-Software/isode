@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/icmp.c,v 9.0 1992/06/1
  *
  */
 
-
+#include <string.h>
 #include <stdio.h>
 #include "mib.h"
 

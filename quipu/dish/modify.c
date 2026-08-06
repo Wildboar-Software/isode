@@ -473,7 +473,7 @@ you_lose:
 
 	dn_print (ps, fb, EDBOUT);
 	ps_print (ps, " ");
-	*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 
 	ps_free (ps);
 

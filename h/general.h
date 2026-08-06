@@ -194,8 +194,7 @@ char   *sprintb ();
 #define	NVEC	100
 #define	NSLACK	10
 
-
-#define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, NULL, 1)
+#define	str2vec(s,v)	str2vecX ((s), (v), 0, (int *)0, 0, 1)
 
 int	str2vecX (char *, char **, int,  int *, char,  int);
 

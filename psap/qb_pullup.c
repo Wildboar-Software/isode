@@ -64,7 +64,7 @@ qb_pullup (struct qbuf *qb) {
 
 		free ((char *) qp);
 	}
-	*d = NULL;
+	*d = 0;
 
 	insque (p, qb);
 

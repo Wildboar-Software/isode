@@ -1521,7 +1521,7 @@ yyreduce:
 	case 37:
 #line 303 "yacc.y"
 		{
-			yysection = NULL;
+			yysection = 0;
 			if (strcmp (yyencpref = yyvsp[-2].yy_string, "none"))
 				yysection |= YP_ENCODER;
 			if (strcmp (yydecpref = yyvsp[-1].yy_string, "none"))

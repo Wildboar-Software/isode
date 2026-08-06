@@ -354,7 +354,7 @@ p_pr_type (
 			break;
 
 		case T_NULL:
-			VPRINT(("NULL"));
+			VPRINT(("0"));
 			break;
 
 		case SANY:
@@ -1407,7 +1407,7 @@ p_pr_etype (
 		break;
 
 	case T_NULL:
-		VPRINT(("NULL"));
+		VPRINT(("0"));
 		break;
 
 	case ANY:

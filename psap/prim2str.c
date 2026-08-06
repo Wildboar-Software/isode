@@ -94,7 +94,7 @@ prim2str (PE pe, int *len) {
 	}
 
 	if (dp)
-		dp[*len = i] = NULL;
+		dp[*len = i] = 0;
 
 	return dp;
 }

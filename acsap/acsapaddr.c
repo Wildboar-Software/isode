@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapaddr.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"
@@ -104,7 +105,7 @@ _str2aei (char *designator, char *qualifier, char *context, int interactive, cha
 	LLOG (addr_log, LLOG_TRACE, ("str2aei \"%s\" \"%s\" \"%s\" %d", designator, qualifier, context, interactive));
 
 	aei = NULL, lookup = NULL;
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 
 	if (ns_enabled) {
 		if (aei = str2aei_dse (designator, context, interactive, userdn, passwd)) {
@@ -147,7 +148,7 @@ aei2addr (AEI aei) {
 	isodetailor (NULLCP, 0);
 	SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr %s", sprintaei (aei)));
 
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 
 	if (lookup) {
 		pa = (*lookup) (aei);

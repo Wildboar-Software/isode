@@ -228,7 +228,7 @@ do_dm_match (int n, char **vec) {
 			return;
 		}
 	} else {
-		mbox[0] = NULL;
+		mbox[0] = 0;
 		cp = cp ? ++cp : vec[0];
 	}
 
@@ -350,7 +350,7 @@ free_filter:
 		dn_seq_free (dlist);
 		if (result == NULL && nps && nps -> ps_byteno) {
 			ps_print (nps, " ");
-			*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+			*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 			ps_print (OPT, nps -> ps_base);
 
@@ -956,7 +956,7 @@ losing:
 			ps_print (nps, "$");
 			dn_print (nps, ptr -> dns_dn, EDBOUT);
 			ps_print (nps, " ");
-			*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+			*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 			sprintf (buffer, "l%s\n", nps -> ps_base);
 
@@ -1061,7 +1061,7 @@ losing:
 		ufn_dn_print_aux (nps, dns -> dns_dn, dn, 0);
 		ps_print (nps, " [y/n] ? ");
 		ps_print (nps, " ");
-		*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 		strcpy (buffer, nps -> ps_base);
 
@@ -1576,7 +1576,7 @@ subdisplay;
 							AttrV_print (ps, &rdn -> rdn_av, EDBOUT);
 						}
 						ps_print (ps, " ");
-						*--ps -> ps_ptr = NULL, ps -> ps_cnt++;
+						*--ps -> ps_ptr = 0, ps -> ps_cnt++;
 						setenv ("RDN", ps -> ps_base);
 					} else
 						setenv ("RDN", "Photo");
@@ -1976,7 +1976,7 @@ int	islong;
 				ps_print (nps, "$");
 				dn_print (nps, adn, EDBOUT);
 				ps_print (nps, " ");
-				*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+				*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 				sprintf (buffer, "d%s\n", nps -> ps_base);
 
@@ -2101,7 +2101,7 @@ out2:
 				ps_print (nps, "$");
 				dn_print (nps, dn, EDBOUT);
 				ps_print (nps, " ");
-				*--nps -> ps_ptr = NULL, nps -> ps_cnt++;
+				*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
 				sprintf (buffer + strlen (buffer), "$%s\n",
 						 nps -> ps_base);

@@ -785,7 +785,7 @@ envlist el;
 	if (ufn_partials)
 		dn_seq_free (ufn_partials), ufn_partials = NULL;
 
-	PY_pepy[0] = NULL;
+	PY_pepy[0] = 0;
 	if (el == NULLEL) {
 		if ((el = read_envlist ()) == NULLEL) {
 			sprintf (PY_pepy,"Can't read environment");

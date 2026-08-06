@@ -457,7 +457,7 @@ dirAttrs *attrs;
 
 	buffer = ps->ps_base;
 
-	ps->ps_ptr = NULL;
+	ps->ps_ptr = 0;
 	ps->ps_cnt = 0;
 	ps->ps_bufsiz = 0;
 	ps->ps_base = NULL;

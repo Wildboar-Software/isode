@@ -136,7 +136,7 @@ main (int argc, char **argv, char **envp) {
 
 	fprintf (stderr, "%s\n", pepyversion);
 
-	sysout[0] = NULL;
+	sysout[0] = 0;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
 		cp = *argv;
 
@@ -275,7 +275,7 @@ usage:
 		exit (pp ());
 
 	if (strcmp (sysout, "-") == 0)
-		sysout[0] = NULL;
+		sysout[0] = 0;
 	if (!bflag && *sysout && freopen (sysout, "w", stdout) == NULL) {
 		fprintf (stderr, "unable to write "), perror (sysout);
 		exit (1);

@@ -174,7 +174,7 @@ str2fax (char *str) {
 	f = (struct fax *) smalloc (sizeof *f);
 
 	if (ptr = index (str, '$'))
-		*ptr = NULL;
+		*ptr = 0;
 	if ((int)strlen (str) > UB_TELEPHONE_NUMBER) {
 		parse_error ("fax phone number too big",NULLCP);
 		free ((char *) f);

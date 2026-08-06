@@ -1761,7 +1761,7 @@ char   *s;
 	srandom ((int) time ((long *) 0));
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
-	salt[2] = NULL;
+	salt[2] = 0;
 
 	return crypt (s, salt);
 }

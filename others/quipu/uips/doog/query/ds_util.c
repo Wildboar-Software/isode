@@ -44,7 +44,7 @@ DN dn;
 
 	qy_dn_print(ps, dn, READOUT);
 	ps_print (ps, " ");
-	*--ps->ps_ptr = NULL;
+	*--ps->ps_ptr = 0;
 	ps -> ps_cnt++;
 
 	cp = ps->ps_base;

@@ -595,7 +595,7 @@ static struct web {
 	'e', 4, 1, &Ex, NULL,
 	'z', 5, 2, &Zx, NULL,
 
-	NULL, 0, 0, NULL, NULL
+	0, 0, 0, NULL, NULL
 };
 
 /*  */
@@ -703,7 +703,7 @@ object (char *pw) {
 	char    buffer[BUFSIZ];
 	struct obj *o;
 
-	for (f = buffer + strlen (s = pw), *f = NULL; *s; s++)
+	for (f = buffer + strlen (s = pw), *f = 0; *s; s++)
 		*--f = *s;
 
 	for (o = objects; s = o -> o_string; o++)

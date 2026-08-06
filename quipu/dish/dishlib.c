@@ -494,7 +494,7 @@ do_dish (void) {
 #ifndef NO_STATS
 			char buf [LINESIZE];
 
-			buf[0] = NULL;
+			buf[0] = 0;
 #endif
 
 			vector[0] = Commands[x].command;

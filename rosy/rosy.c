@@ -58,7 +58,7 @@ static char *opvp[NOPS];
 static int opvc;
 OID	mymoduleid;
 
-int yysection = NULL;
+int yysection = 0;
 char *yyencpref = "none";
 char *yydecpref = "none";
 char *yyprfpref = "none";
@@ -158,7 +158,7 @@ main (int argc, char **argv, char **envp) {
 
 	fprintf (stderr, "%s\n", rosyversion);
 
-	sysout[0] = sysdef[0] = systbl[0] = systub[0] = NULL;
+	sysout[0] = sysdef[0] = systbl[0] = systub[0] = 0;
 	for (argc--, argv++; argc > 0; argc--, argv++) {
 		cp = *argv;
 
@@ -273,7 +273,7 @@ usage:
 	}
 
 	if (strcmp (sysout, "-") == 0)
-		sysout[0] = NULL;
+		sysout[0] = 0;
 	if (*sysout && freopen (sysout, "w", stdout) == NULL) {
 		fprintf (stderr, "unable to write "), perror (sysout);
 		exit (1);
@@ -951,8 +951,8 @@ do_op2 (YO yo, char *id) {
 			fprintf (ftbl, "\t%s,\n",
 					 csymmod(yp->yp_module, yp->yp_identifier, PREFIX));
 		} else {
-			fprintf (ftbl, "\tNULL,\n ");
-			fprintf (ftbl, "\tNULL,\n");
+			fprintf (ftbl, "\t0,\n ");
+			fprintf (ftbl, "\t0,\n");
 		}
 	} else {
 		fprintf (ftbl, "\t%s_argument,\n ",
@@ -977,8 +977,8 @@ do_op2 (YO yo, char *id) {
 			fprintf (ftbl, "\t%s,\n",
 					 csymmod(yp->yp_module, yp->yp_identifier, PREFIX));
 		} else {
-			fprintf (ftbl, "\tNULL,\n ");
-			fprintf (ftbl, "\tNULL,\n");
+			fprintf (ftbl, "\t0,\n ");
+			fprintf (ftbl, "\t0,\n");
 		}
 	} else {
 		fprintf (ftbl, "\t%d, %s_result,\n",
@@ -994,7 +994,7 @@ do_op2 (YO yo, char *id) {
 		fprintf (ftbl, "\terrors_%s",
 				 modsym (mymodule, yo -> yo_name, NULLCP));
 	else
-		fprintf (ftbl, "\tNULL");
+		fprintf (ftbl, "\t0");
 	fprintf (ftbl, ",\n\n");
 }
 
@@ -1078,7 +1078,7 @@ do_err2 (YE ye, char *id) {
 			fprintf (ftbl, "\t%s,\n",
 					 csymmod(yp->yp_module, yp->yp_identifier, PREFIX));
 		} else {
-			fprintf (ftbl, "\tNULL,\n\tNULL,\n");
+			fprintf (ftbl, "\t0,\n\t0,\n");
 		}
 	} else {
 		fprintf (ftbl, "\t%s_parameter,\n",

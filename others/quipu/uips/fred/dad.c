@@ -583,7 +583,7 @@ rcpipe (char *command) {
 		if (cc == 0)
 			break;
 		if (debug) {
-			buffer[cc] = NULL;
+			buffer[cc] = 0;
 			fprintf (stderr, "%*.*s", cc, cc, buffer);
 		}
 	}

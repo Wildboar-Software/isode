@@ -280,7 +280,7 @@ ll_hdinit (LLog *lp, char *prefix) {
 
 	if (prefix == NULLCP) {
 		if ((lp -> ll_stat & LLOGHDR) && strlen (lp -> ll_hdr) == 25)
-			(cp = lp -> ll_hdr)[8] = NULL;
+			(cp = lp -> ll_hdr)[8] = 0;
 		else
 			cp = "unknown";
 	} else {

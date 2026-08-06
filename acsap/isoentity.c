@@ -111,7 +111,7 @@ _startisoentity (char *descriptor) {
 			}
 		}
 
-		switch (vecp = str2vecX (buffer, vec, 5 + 1, &mask, NULL, 1)) {
+		switch (vecp = str2vecX (buffer, vec, 5 + 1, &mask, 0, 1)) {
 		case 3:			/* no address */
 		case 4:			/* new-style */
 			break;

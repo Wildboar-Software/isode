@@ -498,7 +498,7 @@ bad_pe:
 			break;
 
 		case PE_ID (PE_CLASS_UNIV, PE_PRIM_NULL):
-			VPRINT ("NULL");
+			VPRINT ("0");
 			break;
 
 		case PE_ID (PE_CLASS_UNIV, PE_PRIM_OID):

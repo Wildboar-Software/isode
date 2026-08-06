@@ -236,7 +236,7 @@ static struct table reserved[] = {
 				    == NULL)
 				yyerror ("out of memory");
 
-			    for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			    for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading value");
 				if ((d == ']' && c == ']' && tok !=CONTROL) ||
@@ -390,7 +390,7 @@ static struct table reserved[] = {
 				    == NULL)
 				yyerror ("out of memory");
 
-			    for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			    for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading value");
 				if (d == '%' && c == ']' ) {
@@ -426,7 +426,7 @@ static struct table reserved[] = {
 				    == NULL)
 				yyerror ("out of memory");
 
-			    for (ep = (cp = pp) + len - 1, d = NULL;; d = c) {
+			    for (ep = (cp = pp) + len - 1, d = 0;; d = c) {
 				if ((c = input ()) == NULL)
 				    yyerror ("end-of-file while reading action");
 				if (d == '%' && c == '}') {

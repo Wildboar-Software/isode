@@ -68,7 +68,7 @@ find_nest (char *str) {
 
 	if(!(ptr2 = index(cp,AS_END_DELIMITER)))
 		return(NULL);
-	*ptr2 = NULL;
+	*ptr2 = 0;
 
 	while((ptr1 = index(ptr1,AS_START_DELIMITER))) {
 		*ptr2 = AS_END_DELIMITER;
@@ -76,7 +76,7 @@ find_nest (char *str) {
 		ptr1++;
 		if(!(ptr2 = index(ptr2,AS_END_DELIMITER)))
 			return(NULL);
-		*ptr2 = NULL;
+		*ptr2 = 0;
 	}
 	*ptr2 = AS_END_DELIMITER;
 	return(ptr2);

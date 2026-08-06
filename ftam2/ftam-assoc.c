@@ -59,7 +59,7 @@ f_open (char **vec) {
 		return NOTOK;
 #else
 		if (getftamline ("host: ", buffer) == NOTOK
-				|| str2vecX (buffer, vec, 0, NULLIP, NULL, 0) < 1)
+				|| str2vecX (buffer, vec, 0, NULLIP, 0, 0) < 1)
 			return OK;
 #endif
 	}
@@ -136,7 +136,7 @@ f_open (char **vec) {
 		sprintf (prompt, "DN-password (%s): ", userdn);
 		strcpy (buffer, getpassword (prompt));
 	} else
-		buffer[0] = NULL;
+		buffer[0] = 0;
 
 	if ((aei = _str2aei (host, storename, "iso ftam", ontty,
 						 userdn && *userdn ? userdn : NULLCP,

@@ -311,7 +311,7 @@ static struct nsapent {
 	HIGH_QUALITY, NA_TSET_TCP,  tcpopen,
 	LOW_QUALITY,  NA_TSET_UDP,  udpopen,
 
-	NULL
+	0
 };
 
 

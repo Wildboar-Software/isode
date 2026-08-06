@@ -429,7 +429,7 @@ send_get_edb (char *version, DN dn, DN from) {
 				ps_printf (ps, " for ");
 				if (dn)
 					dn_print (ps, dn, EDBOUT);
-				*ps -> ps_ptr = NULL;
+				*ps -> ps_ptr = 0;
 
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
@@ -481,7 +481,7 @@ send_get_edb (char *version, DN dn, DN from) {
 				ps_printf (ps, " for ");
 				if (dn)
 					dn_print (ps, dn, EDBOUT);
-				*ps -> ps_ptr = NULL;
+				*ps -> ps_ptr = 0;
 
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
