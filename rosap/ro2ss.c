@@ -41,7 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ss.c,v 9.0 1992/06
 #define	doSSabort	ss2rosabort
 
 
-static int	ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
+static void	ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
 		ssREPORTser (), ssFINISHser (), ssABORTser ();
 
 static int  doSSdata ();
@@ -612,131 +612,96 @@ out:
 	return NOTOK;
 }
 
-/*  */
-
-static int
-ssDATAser (int sd, struct SSAPdata *sx) {
+static void ssDATAser (int sd, struct SSAPdata *sx) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	if (doSSdata (acb, NULL, sx, roi) != OK)
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssTOKENser (int sd, struct SSAPtoken *st) {
+static void ssTOKENser (int sd, struct SSAPtoken *st) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	if (doSStokens (acb, st, roi) != OK)
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssSYNCser (int sd, struct SSAPsync *sn) {
+static void ssSYNCser (int sd, struct SSAPsync *sn) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	if (doSSsync (acb, sn, roi) != OK)
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssACTIVITYser (int sd, struct SSAPactivity *sv) {
+static void ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	if (doSSactivity (acb, sv, roi) != OK)
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssREPORTser (int sd, struct SSAPreport *sp) {
+static void ssREPORTser (int sd, struct SSAPreport *sp) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	if (doSSreport (acb, sp, roi) != OK)
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssFINISHser (int sd, struct SSAPfinish *sf) {
+static void ssFINISHser (int sd, struct SSAPfinish *sf) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	doSSfinish (acb, sf, roi);
-
 	(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-ssABORTser (int sd, struct SSAPabort *sa) {
+static void ssABORTser (int sd, struct SSAPabort *sa) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	doSSabort (acb, sa, roi);
-
 	(*handler) (sd, roi);
 }
 
-/*  */
-
-int
-ss2roslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct SSAPabort *sa) {
+int ss2roslose (
+	struct assocblk *acb,
+	struct RoSAPindication *roi,
+	char *event,
+	struct SSAPabort *sa
+) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

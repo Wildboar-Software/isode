@@ -84,8 +84,7 @@ static int  EACCESS ( char   *file, int	mode);
 
 /*    SELECTION REGIME */
 
-int
-ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
+void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 	int     action,
 			state;
 

@@ -32,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
 #include <sys/times.h>
 #define	TMS
 #else
-static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 #endif
 
 /*    DATA */
@@ -194,8 +194,7 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 
 
 #ifndef	TMS
-int
-timer (int cc) {
+void timer (int cc) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,
@@ -217,10 +216,7 @@ timer (int cc) {
 			cc, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-
-static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0)
-{
-
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

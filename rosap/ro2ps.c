@@ -40,7 +40,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ps.c,v 9.0 1992/06
 static int	acslose ();
 
 static int	pslose ();
-static int	psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
+static void	psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
 		psREPORTser (), psFINISHser (), psABORTser ();
 
 static int  doPSdata ();
@@ -407,8 +407,7 @@ out:
 
 /*  */
 
-static int
-psDATAser (int sd, struct PSAPdata *px) {
+static void psDATAser (int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -424,8 +423,7 @@ psDATAser (int sd, struct PSAPdata *px) {
 
 /*  */
 
-static int
-psTOKENser (int sd, struct PSAPtoken *pt) {
+static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -439,10 +437,7 @@ psTOKENser (int sd, struct PSAPtoken *pt) {
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-psSYNCser (int sd, struct PSAPsync *pn) {
+static void psSYNCser (int sd, struct PSAPsync *pn) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -456,10 +451,7 @@ psSYNCser (int sd, struct PSAPsync *pn) {
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-psACTIVITYser (int sd, struct PSAPactivity *pv) {
+static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -473,10 +465,7 @@ psACTIVITYser (int sd, struct PSAPactivity *pv) {
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-psREPORTser (int sd, struct PSAPreport *pp) {
+static void psREPORTser (int sd, struct PSAPreport *pp) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -490,46 +479,36 @@ psREPORTser (int sd, struct PSAPreport *pp) {
 		(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-psFINISHser (int sd, struct PSAPfinish *pf) {
+static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	doPSfinish (acb, pf, roi);
-
 	(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-psABORTser (int sd, struct PSAPabort *pa) {
+static void psABORTser (int sd, struct PSAPabort *pa) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rosindication;
-
 	doPSabort (acb, pa, roi);
-
 	(*handler) (sd, roi);
 }
 
-/*  */
-
-static int
-pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct PSAPabort *pa) {
+static int pslose (
+	struct assocblk *acb,
+	struct RoSAPindication *roi,
+	char *event,
+	struct PSAPabort *pa
+) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

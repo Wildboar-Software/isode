@@ -195,10 +195,10 @@ struct RyOperation *findopbyop (), *findopbyname ();
 
 struct RyError *finderrbyerr (), *finderrbyname ();
 
-int	freeopblk (), loseopblk ();
+void freeopblk (), loseopblk ();
 struct opsblk *newopblk (), *findopblk (), *firstopblk ();
 
-int	freedsblk (), losedsblk ();
+void freedsblk (), losedsblk ();
 struct dspblk *newdsblk (), *finddsblk ();
 
 #endif

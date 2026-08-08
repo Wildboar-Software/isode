@@ -174,21 +174,14 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
 
 static int  setperms ();
-static int  tsapd ();
+static void tsapd ();
 static  envinit ();
 static	arginit ();
 static	search_directory ();
 static int	rebind_to_directory (), make_bind_args (), unbind_from_directory (),
             do_error ();
 
-
-
-/*  */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    failed,
 			vecp;
 	char   *vec[4];
@@ -287,14 +280,11 @@ main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-/*  */
-
 static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int
-tsapd (int vecp, char **vec) {
+static void tsapd (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
 	struct isoservent *is;

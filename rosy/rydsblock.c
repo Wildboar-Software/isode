@@ -61,51 +61,30 @@ struct RyOperation *ryo;
 	return dsb;
 }
 
-/*  */
-
-freedsblk (dsb)
-struct dspblk *dsb;
-{
+void freedsblk (struct dspblk *dsb) {
 	if (dsb == NULL)
 		return;
-
 	remque (dsb);
-
 	free ((char *) dsb);
 }
 
-/*  */
-
-struct dspblk   *finddsblk (sd, op)
-int	sd,
-	op;
-{
+struct dspblk *finddsblk (int sd, int op) {
 	struct dspblk *dsb;
-
 	if (once_only == 0)
 		return NULL;
-
 	for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = dsb -> dsb_forw)
 		if (dsb -> dsb_fd == sd && dsb -> dsb_ryo -> ryo_op == op)
 			return dsb;
-
 	return NULL;
 }
 
-/*  */
-
-losedsblk (sd)
-int	sd;
-{
+void losedsblk (int sd) {
 	struct dspblk *dsb,
 			   *ds2;
-
 	if (once_only == 0)
 		return;
-
 	for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = ds2) {
 		ds2 = dsb -> dsb_forw;
-
 		if (dsb -> dsb_fd == sd)
 			freedsblk (dsb);
 	}

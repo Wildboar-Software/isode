@@ -91,7 +91,7 @@ struct opsblk {
 #define	NULLOPB		((struct opsblk *) 0)
 
 
-int	freeopblk (), loseopblk ();
+void freeopblk (), loseopblk ();
 struct opsblk *newopblk (), *findopblk (), *firstopblk ();
 
 
@@ -109,7 +109,7 @@ struct dspblk {
 #define	NULLDSB		((struct dspblk *) 0)
 
 
-int	freedsblk (), losedsblk ();
+void	freedsblk (), losedsblk ();
 struct dspblk *newdsblk (), *finddsblk ();
 
 

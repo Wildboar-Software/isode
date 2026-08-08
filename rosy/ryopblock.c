@@ -63,11 +63,7 @@ int	sd,
 	return opb;
 }
 
-/*  */
-
-freeopblk (opb)
-struct opsblk *opb;
-{
+void freeopblk (struct opsblk *opb) {
 	if (opb == NULL)
 		return;
 
@@ -134,12 +130,7 @@ int	sd;
 	return op2;
 }
 
-/*  */
-
-loseopblk (sd, reason)
-int	sd;
-int	reason;
-{
+void loseopblk (int sd, int reason) {
 	struct opsblk *opb,
 			   *op2;
 	struct RoSAPindication  rois;

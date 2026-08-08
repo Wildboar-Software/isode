@@ -634,8 +634,7 @@ putch (char c) {
 /*			called "p_ondq".				 */
 /*************************************************************************/
 
-int
-vtsend (void) {
+void vtsend (void) {
 	if(p_ondq == NULLPE) return;
 	vtdata(p_ondq);
 	pe_free(p_ondq);
@@ -646,7 +645,7 @@ vtsend (void) {
 	obj_count = 0;
 	updt_count = 0;
 }
-
+
 /************************************************************************/
 /* VTDATA - generate a VDATREQ event to send an NDQ			*/
 /*									*/
@@ -655,22 +654,18 @@ vtsend (void) {
 /*		NDQ - a presentation element containing an NDQ.		*/
 /************************************************************************/
 
-int
-vtdata (PE ndq) {
+void vtdata (PE ndq) {
 	if (ndq == NULLPE)
 		return;
-
 	do_event(VDATreq_n,ndq);
 }
 
-
 /************************************************************************/
 /* MKDELIVER - create a DLQ. Requests for an acknowlegement are not	*/
 /*		allowed at this time.					*/
 /************************************************************************/
 
-PE
-mkdeliver (int ack) {
+PE mkdeliver (int ack) {
 	PE	p_dlq;
 
 	if (ack != FALSE)
@@ -682,14 +677,13 @@ mkdeliver (int ack) {
 	p_dlq->pe_context = 1;
 	return(p_dlq);
 }
-
+
 /**************************************************************************/
 /* VDELREQ - create a deliver request PE and generate a VDELreq		  */
 /*			event to send it.				  */
 /**************************************************************************/
 
-int
-vdelreq (int ack) {
+void vdelreq (int ack) {
 	PE	p_dlq;
 
 	if (ack)
@@ -711,8 +705,7 @@ vdelreq (int ack) {
 /*			acknowledgement is requested or not.		  */
 /**************************************************************************/
 
-int
-vdelind (PE del_pe, int ack) {
+void vdelind (PE del_pe, int ack) {
 	if (ack) {
 		if (debug)
 			advise(LLOG_DEBUG, NULLCP,  "vdelind with ack requested not implemented!");
@@ -728,25 +721,19 @@ vdelind (PE del_pe, int ack) {
 /*				only SEQUENCED is implemented now	*/
 /************************************************************************/
 
-int
-vdatind (int type, PE pe) {
+void vdatind (int type, PE pe) {
 	if (type != SEQUENCED)
 		adios(NULLCP, "unimplemented NDQ type %d", type);
 	map(pe);
 }
 
-int
-vhdatind (PE pe) {
-
+void vhdatind (PE pe) {
 	advise(LLOG_NOTICE,NULLCP,"vhdatind(): HDQ's not supported\n");
 	pe_free(pe);
 }
 
-int
-vudatind (PE pe) {
-
+void vudatind (PE pe) {
 	TEXT_UPDATE ud;
-
 	if(unbuild_UDQPDU_UDQpdu(pe,1,NULLIP,NULLVP,(PEPYPARM) &ud) == NOTOK) {
 		advise(LLOG_NOTICE,NULLCP,"UDQ parse failure\n");
 	} else {
@@ -755,7 +742,7 @@ vudatind (PE pe) {
 		pe_free(pe);
 	}
 }
-
+
 /*****************************************************************************/
 /* Connect_request:							     */
 /*									     */
@@ -769,8 +756,7 @@ vudatind (PE pe) {
 /*	by the association.						     */
 /*****************************************************************************/
 
-int
-con_req (void) {
+int con_req (void) {
 	int	uevent;
 
 	if (debug)
@@ -805,10 +791,7 @@ con_req (void) {
 	else return(-1);
 }
 
-
-
-int
-read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
+int read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 		  some global values (profile_id,G_Func_Units,vcwa).
 		  Return 0 if ASQ is improperly formatted or missing a
 		  required field.  For now, only the more obvious fields are
@@ -818,7 +801,6 @@ read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 		*/
 	PE pe
 ) {
-
 	int i,n, D;
 	ASQ_MSG ud;
 
@@ -934,12 +916,9 @@ read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
 
 	return(1);
 }
-
-int
-vasscnf (	/*Handle ASR received from Acceptor*/
-	PE pe
-) {
 
+/*Handle ASR received from Acceptor*/
+int vasscnf (PE pe) {
 	ASR_MSG udr;
 	int rep, n;
 	int window_flag = 0;
@@ -1018,10 +997,8 @@ vasscnf (	/*Handle ASR received from Acceptor*/
 	}
 	return(OK);
 }
-
 
-int
-asq (PE data) {
+void asq (PE data) {
 	int	srequirements;
 	struct PSAPctxlist vclist;
 	OID vt_asn;
@@ -1109,8 +1086,7 @@ asq (PE data) {
 #endif
 }
 
-int
-vt_disconnect (void) {
+void vt_disconnect (void) {
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci)
 			== NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
@@ -1118,12 +1094,8 @@ vt_disconnect (void) {
 		connected = FALSE;
 		do_event (RLR, acr -> acr_info[0]);
 	}
-
 	ACRFREE (acr);
-
 }
-
-
 
 #define	ASYNC	0
 
@@ -1134,21 +1106,11 @@ vt_disconnect (void) {
 #define	PMASK \
 	"\020\01MANAGEMENT\02RESTORATION"
 
-/*    DATA */
-
 char   *ctime ();
 int	result;
 
-/*PE	pe;*/
-
-/*************************************************************************/
-/*    ASS_IND 								 */
-/*************************************************************************/
-
-int
-ass_ind (int argc, char **argv) {
+int ass_ind (int argc, char **argv) {
 	struct PSAPctxlist *pl;
-
 
 	aca = &aci->aci_abort;
 	ps = &acs->acs_start;
@@ -1187,18 +1149,11 @@ ass_ind (int argc, char **argv) {
 	return( do_event(ASQ,acs->acs_info[0]) );
 }
 
-
-
-/* ARGSUSED */
-
-int
-vassind (PE pe) {
+int vassind (PE pe) {
 	return(vass_resp(SUCCESS));
 }
 
-
-int
-vbrkreq (void) {
+int vbrkreq (void) {
 	PE brk_pe;
 	BRcnt brk;
 
@@ -1213,9 +1168,8 @@ vbrkreq (void) {
 	flushbufs();  /* flush local buffers */
 	do_event(VBRKreq,brk_pe);
 }
-
-int
-vbrkrsp (void) {
+
+void vbrkrsp (void) {
 	PE brk_pe;
 	BRcnt brk;
 
@@ -1230,10 +1184,7 @@ vbrkrsp (void) {
 	do_event(VBRKrsp,brk_pe);
 }
 
-
-/* ARGSUSED */
-int
-vbrkind (PE brk_pe) {
+void vbrkind (PE brk_pe) {
 	flushbufs();
 	vtok = 1; /* got tokens from peer */
 	advise(LLOG_DEBUG, NULLCP,  "Received VT-BREAK");
@@ -1255,10 +1206,8 @@ vbrkind (PE brk_pe) {
 	}
 	/*Re-Negotiate Remote Echo and Suppress Go Ahead*/
 }
-
-/*ARGSUSED */
-int
-vbrkcnf (PE brk_pe) {
+
+void vbrkcnf (PE brk_pe) {
 	printf("\r\n[break]\r\n");
 	if(telnet_profile) {
 #ifndef PTYBUG

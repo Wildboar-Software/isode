@@ -106,7 +106,7 @@ struct QOStype myqos;
 static int f_set (char **vec);
 static char ** getval (char *name, char **choices);
 static int f_help (char **vec);
-static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 
 struct var {
 	char   *v_name;
@@ -116,11 +116,11 @@ struct var {
 	char  **v_dvalue;
 	char   *v_mask;
 
-	int (*v_hook)(struct var *v);
+	void (*v_hook)(struct var *v);
 };
 
 static struct var * getvar (char *name);
-static printvar (struct var *v);
+static void printvar (struct var *v);
 
 int f_put();
 int f_cd();
@@ -284,18 +284,14 @@ static char *xsaplevels[] = {
 	"none", "fatal", "exceptions", "notice", "pdus", "trace", "debug", NULL
 };
 
-
 static char *sversions[] = {
 	"default", "v1", "v2", NULL
 };
 
-
-
-
-static int set_prompt (struct var *v);
-static int set_realstore (struct var *v);
-static int set_trace (struct var *v);
-static int set_type (struct var *v);
+static void set_prompt (struct var *v);
+static void set_realstore (struct var *v);
+static void set_trace (struct var *v);
+static void set_type (struct var *v);
 
 /* prompt stuff */
 # define DEFAULT_PROMPT 	"%s> "
@@ -567,9 +563,7 @@ out_of_range:
 	return OK;
 }
 
-/*  */
-
-static printvar (struct var *v) {
+static void printvar (struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -607,19 +601,13 @@ static printvar (struct var *v) {
 	printf ("    - %s\n", v -> v_dname);
 }
 
-/*  */
-
-/* ARGSUSED */
-
-char *
-default_prompt (void) {
+char *default_prompt (void) {
 	return(DEFAULT_PROMPT);
 }
 
 
-static int set_prompt (struct var *v) {
+static void set_prompt (struct var *v) {
 	char	*new = *(v->v_dvalue);
-
 	if(!new || !lexequ(new, DEFAULT_PROMPT_STR)) {
 		command_prompt = default_prompt();
 	} else {
@@ -627,10 +615,8 @@ static int set_prompt (struct var *v) {
 	}
 }
 
-
-static int set_realstore (struct var *v) {
+static void set_realstore (struct var *v) {
 	char   *vec[2];
-
 	if (ftamfd != NOTOK) {
 		vec[0] = "sd";
 		vec[1] = NULLCP;
@@ -639,11 +625,7 @@ static int set_realstore (struct var *v) {
 	}
 }
 
-
-
-/* ARGSUSED */
-
-static int set_trace (struct var *v) {
+static void set_trace (struct var *v) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -657,7 +639,7 @@ static int set_trace (struct var *v) {
 
 /* ARGSUSED */
 
-static int set_type (struct var *v) {
+static void set_type (struct var *v) {
 	struct vfsmap *vf;
 
 	if (ftamfd == NOTOK)
@@ -1273,31 +1255,25 @@ FILE *fp;
 
 
 #ifndef	TMS
-int
-timer (int cc, char *action) {
+void timer (int cc, char *action) {
 	long    ms;
 	float   bs;
-	struct timeval  stop,
-			   td;
+	struct timeval stop, td;
 	static struct timeval   start;
-
 	if (cc == 0) {
 		gettimeofday (&start, (struct timezone *) 0);
 		return;
 	} else
 		gettimeofday (&stop, (struct timezone  *) 0);
-
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
 	bs = (((float) cc * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
-
 	advise (NULLCP, "%d bytes %s in %d.%02d seconds (%.2f Kbytes/s)",
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
 
 static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
-
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

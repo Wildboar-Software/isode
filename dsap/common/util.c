@@ -32,6 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
 #include "quipu/malloc.h"
 #include "tsap.h"
 #include <stdarg.h>
+#include <stdlib.h>
 
 extern LLog * log_dsap;
 extern char dsa_mode;
@@ -251,8 +252,7 @@ char * fmt;
 #endif
 
 
-int
-fatal (int code, char *fmt) {
+void fatal (int code, char *fmt) {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));

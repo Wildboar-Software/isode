@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt_telnet.c,v 9.0 1992/0
  *
  */
 
-
 #include "vtpm.h"
 #include "sector1.h"
 #ifdef SVR4_UCB
@@ -50,18 +49,16 @@ extern char sync_image;
 extern char ga_image;
 extern char nego_state;
 extern int my_right;
-extern transparent;
-extern do_break;
-extern telnet_profile;
+extern int transparent;
+extern int do_break;
+extern int telnet_profile;
 extern int connected;
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void adios (char *, char *, ...);
+void advise (int, char *, char *, ...);
 
-vt_newline() {	/*Produce Newline update*/
-
+void vt_newline(void) {	/*Produce Newline update*/
 	TEXT_UPDATE ud;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = DISPLAY_OBJ;
@@ -69,12 +66,9 @@ vt_newline() {	/*Produce Newline update*/
 	ud.updates.do_list.do_type = DO_NEXT_X;		/*Next X-Array*/
 	send_queue(ud);
 }
-
-int
-vt_char_erase (void) {	/*Pointer Relative (x=x-1) & erase current*/
 
+void vt_char_erase (void) {	/*Pointer Relative (x=x-1) & erase current*/
 	TEXT_UPDATE ud;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = DISPLAY_OBJ;
@@ -84,22 +78,16 @@ vt_char_erase (void) {	/*Pointer Relative (x=x-1) & erase current*/
 	ud.updates.do_list.do_cmd.ptr_rel.y_true = 0;
 	ud.updates.do_list.do_cmd.ptr_rel.z_true = 0;
 	ud.updates.do_list.do_cmd.ptr_rel.x_value = -1;
-
 	send_queue(ud);
-
 	ud.updates.do_list.do_type = DO_ERASE;
 	ud.updates.do_list.do_cmd.erase.start_erase.ptr_type = 0; /*Current*/
 	ud.updates.do_list.do_cmd.erase.end_erase.ptr_type = 0; /*Current*/
 	ud.updates.do_list.do_cmd.erase.erase_attr = 0;
-
 	send_queue(ud);
 }
-
-int
-vt_line_erase (void) {	/*Erase full x-array & pointer to x = 1*/
 
+void vt_line_erase (void) {	/*Erase full x-array & pointer to x = 1*/
 	TEXT_UPDATE ud;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = DISPLAY_OBJ;
@@ -108,18 +96,13 @@ vt_line_erase (void) {	/*Erase full x-array & pointer to x = 1*/
 	ud.updates.do_list.do_cmd.erase.start_erase.ptr_type = 3; /*Start X*/
 	ud.updates.do_list.do_cmd.erase.end_erase.ptr_type = 6; /*End X*/
 	ud.updates.do_list.do_cmd.erase.erase_attr = 0;
-
 	send_queue(ud);
-
 	ud.updates.do_list.do_type = DO_PTR_ABS;
 	ud.updates.do_list.do_cmd.ptr_abs.ptr_type = 3; /*Start X*/
-
 	send_queue(ud);
 }
-
-int
-vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 
+void vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 	TEXT_UPDATE ud;
 	char int_mask;
 	char image;
@@ -143,16 +126,11 @@ vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 	ud.updates.co_list.co_cmd.bool_update.mask_count = KB_SIZE;
 	send_queue(ud);
 }
-
-int
-vt_set_nego (	/*Update NA/NI control object as in image*/
-	char image,
-	char mask
-) {
 
+/* Update NA/NI control object as in image */
+void vt_set_nego (char image, char mask) {
 	TEXT_UPDATE ud;
 	char e_image;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = CTRL_OBJ;
@@ -166,57 +144,44 @@ vt_set_nego (	/*Update NA/NI control object as in image*/
 	send_queue(ud);
 	vtsend();	/*Since we're bypassing normal keyboard entry*/
 }
-
-int
-vt_echo (int echo) {
 
+void vt_echo (int echo) {
 	if (!telnet_profile) {
-		advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
+		advise (LLOG_NOTICE,NULLCP, "not using TELNET profile");
 		return;
 	}
 	if ((ni_image & ECHO_OBJ) != (nego_state & ECHO_OBJ)) {
-		advise (LLOG_NOTICE,NULLCP,
-				"negotiation in progress, try again later...");
+		advise (LLOG_NOTICE, NULLCP, "negotiation in progress, try again later...");
 		return;
 	}
-
 	if (echo != ((nego_state & ECHO_OBJ) ? 1 : 0)) {
 		if (echo)
 			ni_image |= ECHO_OBJ;
 		else
 			ni_image &= ~ECHO_OBJ;
-
-		vt_set_nego(ni_image,ECHO_OBJ);/*Set proper UNIX echo state when reponse
+		vt_set_nego(ni_image, ECHO_OBJ);/*Set proper UNIX echo state when reponse
 				  is received. */
 	} else
 		advise (LLOG_NOTICE,NULLCP,  "already using %s echoing",
 				echo ? "remote" : "local");
 }
-
-int
-vt_rem_echo (	/*Request Remote Echo Mode.  Parameter is pointer
-			  to image byte. */
-	char *img_addr
-) {
+
+/* Request Remote Echo Mode.  Parameter is pointer to image byte. */
+void vt_rem_echo (char *img_addr) {
 	*img_addr |= ECHO_OBJ;
-	vt_set_nego(*img_addr,ECHO_OBJ);
+	vt_set_nego(*img_addr, ECHO_OBJ);
 }
 
-
-int
-vt_sup_ga (	/*Request Suppress Go Ahead*/
-	char *img_addr
-) {
+/* Request Suppress Go Ahead */
+void vt_sup_ga (char *img_addr) {
 	*img_addr |= SUP_GA;
-	vt_set_nego(*img_addr,SUP_GA);
+	vt_set_nego(*img_addr, SUP_GA);
 }
-
-/* ARGSUSED */
-int
-vt_break (char **vec) {
+
+int vt_break (char **vec) {
 #ifdef VT_BREAK
 	if(!do_break) {
-		advise(LLOG_NOTICE,NULLCP,"VT-BREAK Functional Unit Not Chosen");
+		advise(LLOG_NOTICE, NULLCP, "VT-BREAK Functional Unit Not Chosen");
 		return OK;
 	}
 	tmode(2);
@@ -241,16 +206,11 @@ vt_break (char **vec) {
 	send_queue(ud);
 	vtsend();
 #endif
-
 	return OK;
 }
-
-/* ARGSUSED */
-int
-vt_ayt (	/*Send Are You There*/
-	char **vec
-) {
 
+/* Send Are You There */
+int vt_ayt (char **vec) {
 	TEXT_UPDATE ud;
 	char mask;
 	char image;
@@ -273,23 +233,15 @@ vt_ayt (	/*Send Are You There*/
 	ud.updates.co_list.co_cmd.bool_update.mask_count = KB_SIZE;
 	send_queue(ud);
 	vtsend();
-
 	return OK;
 }
-
-int
-switch_rep (/*Change to specified repertoire.
-	             Switching is done by sending
-		     a Write Attribute NDQ.
-		   */
-	int rep_num
-) {
 
+/* Change to specified repertoire. Switching is done by sending
+a Write Attribute NDQ. */
+void switch_rep (int rep_num) {
 	TEXT_UPDATE ud;
-
 	if(rep_num == 1) transparent = 0;
 	else transparent = 1;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw =  DISPLAY_OBJ;
@@ -301,11 +253,10 @@ switch_rep (/*Change to specified repertoire.
 	send_queue(ud);
 	vtsend();
 }
-
-int
-vt_repertoire (int repertoire) {
+
+void vt_repertoire (int repertoire) {
 	if (!telnet_profile) {
-		advise (LLOG_NOTICE,NULLCP,  "not using TELNET profile");
+		advise (LLOG_NOTICE,NULLCP, "not using TELNET profile");
 		return;
 	}
 
@@ -314,29 +265,23 @@ vt_repertoire (int repertoire) {
 			ni_image |= (DISP_BIN|KBD_BIN);
 		else
 			ni_image &= ~(DISP_BIN|KBD_BIN);
-		vt_set_nego(ni_image,DISP_BIN|KBD_BIN);
+		vt_set_nego(ni_image, DISP_BIN|KBD_BIN);
 	} else
-		advise (LLOG_NOTICE,NULLCP,  "already using %s repertoire",
+		advise (LLOG_NOTICE,NULLCP, "already using %s repertoire",
 				transparent ? "BINARY" : "ASCII");
 }
-
-int
-vt_clr_obj (void) {	/*Set TELNET Profile Control Objects to 0*/
+
+void vt_clr_obj (void) {	/*Set TELNET Profile Control Objects to 0*/
 	kb_image = di_image = 0;
 	nego_state = ni_image = na_image = 0;
 	sync_image = ga_image = 0;
 }
-
-/*ARGSUSED*/
-int
-vt_sync (	/*Send TELNET SYNC signal (test for UDQ & typed data)*/
-	char **vec
-) {
 
+/*Send TELNET SYNC signal (test for UDQ & typed data)*/
+int vt_sync (char **vec) {
 	PE 	udqp;
 	TEXT_UPDATE 	ud;
 	char 	mask, image;
-
 	mask = SYNC;
 	sync_image ^= SYNC;
 	image = sync_image;

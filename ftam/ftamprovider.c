@@ -132,13 +132,13 @@ static int  once_only = 0;
 static struct ftamblk ftamque;
 static struct ftamblk *FSHead = &ftamque;
 
-static int psDATAser (int sd, struct PSAPdata *px);
-static int psTOKENser (int sd, struct PSAPtoken *pt);
-static int psSYNCser (int sd, struct PSAPsync *pn);
-static int psACTIVITYser (int sd, struct PSAPactivity *pv);
-static int psREPORTser (int sd, struct PSAPreport *pp);
-static int psFINISHser (int sd, struct PSAPfinish *pf);
-static int psABORTser (int sd, struct PSAPabort *pa);
+static void psDATAser (int sd, struct PSAPdata *px);
+static void psTOKENser (int sd, struct PSAPtoken *pt);
+static void psSYNCser (int sd, struct PSAPsync *pn);
+static void psACTIVITYser (int sd, struct PSAPactivity *pv);
+static void psREPORTser (int sd, struct PSAPreport *pp);
+static void psFINISHser (int sd, struct PSAPfinish *pf);
+static void psABORTser (int sd, struct PSAPabort *pa);
 
 static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti);
 static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti);
@@ -1739,10 +1739,7 @@ static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindi
 
 	return acs2ftamabort (fsb, aca, fti);
 }
-
-/*  */
-
-static int psDATAser (int sd, struct PSAPdata *px) {
+static void psDATAser (int sd, struct PSAPdata *px) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1756,9 +1753,7 @@ static int psDATAser (int sd, struct PSAPdata *px) {
 		(*handler) (sd, fti);
 }
 
-/*  */
-
-static int psTOKENser (int sd, struct PSAPtoken *pt) {
+static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1774,7 +1769,7 @@ static int psTOKENser (int sd, struct PSAPtoken *pt) {
 
 /*  */
 
-static int psSYNCser (int sd, struct PSAPsync *pn) {
+static void psSYNCser (int sd, struct PSAPsync *pn) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1790,7 +1785,7 @@ static int psSYNCser (int sd, struct PSAPsync *pn) {
 
 /*  */
 
-static int psACTIVITYser (int sd, struct PSAPactivity *pv) {
+static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1806,7 +1801,7 @@ static int psACTIVITYser (int sd, struct PSAPactivity *pv) {
 
 /*  */
 
-static int psREPORTser (int sd, struct PSAPreport *pp) {
+static void psREPORTser (int sd, struct PSAPreport *pp) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1822,7 +1817,7 @@ static int psREPORTser (int sd, struct PSAPreport *pp) {
 
 /*  */
 
-static int psFINISHser (int sd, struct PSAPfinish *pf) {
+static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1838,7 +1833,7 @@ static int psFINISHser (int sd, struct PSAPfinish *pf) {
 
 /*  */
 
-static int psABORTser (int sd, struct PSAPabort *pa) {
+static void psABORTser (int sd, struct PSAPabort *pa) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -2102,10 +2097,7 @@ newfsblk (void) {
 	return fsb;
 }
 
-/*  */
-
-int
-freefsblk (struct ftamblk *fsb) {
+void freefsblk (struct ftamblk *fsb) {
 	int    i;
 	struct PSAPcontext *pp;
 	struct FTAMcontent *fcont;

@@ -495,9 +495,7 @@ outside:
 #define	PWD	"../"
 #define	NPWD	(sizeof PWD - 1)
 
-
-int
-compath (char *f) {
+void compath (char *f) {
 	char  *cp,
 		  *dp;
 

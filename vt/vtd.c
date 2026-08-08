@@ -28,6 +28,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
 #undef MAP_BACKSPACE	/*Map backspace character to VT ERASE CHAR*/
 
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include "vtpm.h"
 #include "sector1.h"
@@ -138,8 +140,7 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	int f = 0;
 	char *cp = line;
 	char *logname = NULLCP;
@@ -306,8 +307,7 @@ fatalperror (int f, char *msg, int errnum) {
  * Main loop.  Select from pty and network.
  */
 
-int
-vtd (int f, int p) {
+void vtd (int f, int p) {
 	int on = 1;
 	int	nfds, result;
 
@@ -472,7 +472,7 @@ vtd (int f, int p) {
  * If it is in raw mode, just write NULL;
  * otherwise, write intr char.
  */
-interrupt() {
+void interrupt(void) {
 #ifdef TERMIOS
 	struct termios term;
 
@@ -657,7 +657,7 @@ char	utmp[] = "/etc/utmp";
 
 long	lseek ();
 
-rmut() {
+void rmut(void) {
 	int f;
 	int found = 0;
 
@@ -699,8 +699,7 @@ rmut() {
 }
 
 #else
-int
-rmut (void) {
+void rmut (void) {
 	char *p;
 
 	p = line + sizeof(_PATH_DEV) - 1;
@@ -714,8 +713,7 @@ rmut (void) {
 }
 #endif
 
-int
-bye (void) {
+void bye (void) {
 	if(do_cleaning) {
 		rmut();
 		kill(0, SIGKILL);
@@ -723,8 +721,7 @@ bye (void) {
 	exit(0);
 }
 
-int
-flushbufs (void) {
+void flushbufs (void) {
 	pcc = 0;
 	pfrontp = pbackp = ptyobuf;
 	nfrontp = nbackp = netobuf;
@@ -732,62 +729,44 @@ flushbufs (void) {
 		continue;
 }
 
-/*    ERRORS */
-
-void
-finalbye (void) {
+void finalbye (void) {
 	bye ();
 }
 
-
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	bye ();
-
 	_exit (1);
 }
 #else
 /* VARARGS2 */
-
 void
 adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
-
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...)
-{
+void advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (vt_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
 /* VARARGS3 */
-
 void
 advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
-int
-ptyflush (void) {
+void ptyflush (void) {
 	int n;
-
 	if ((n = pfrontp - pbackp) > 0) {
 		n = write(pty, pbackp, n);
 	}
@@ -799,8 +778,7 @@ ptyflush (void) {
 }
 
 #ifdef TERMIOS
-int
-ptyecho (int on) {
+void ptyecho (int on) {
 	struct termios term;
 
 	ptyflush();
@@ -818,8 +796,7 @@ ptyecho (int on) {
 	}
 }
 #else
-int
-setmode (int on, int off) {
+void setmode (int on, int off) {
 	struct sgttyb b;
 
 	ptyflush();

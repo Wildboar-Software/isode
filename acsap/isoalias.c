@@ -55,8 +55,8 @@ struct pair {
 static int inited = 0;
 static struct pair *Pbuckets[PBUCKETS];
 
-static int  read_aliases ();
-static int  read_file ();
+static void read_aliases (void);
+static void read_file (char *file);
 
 /*  */
 
@@ -75,10 +75,7 @@ alias2name (char *name) {
 	return (p ? p -> p_value : NULL);
 }
 
-/*  */
-
-static int
-read_aliases()  {
+static void read_aliases(void)  {
 	char   *hp;
 	char   buffer[BUFSIZ];
 
@@ -96,10 +93,7 @@ read_aliases()  {
 	read_file (buffer);
 }
 
-/*  */
-
-static int
-read_file (char *file) {
+static void read_file (char *file) {
 	char *cp;
 	char   buffer[BUFSIZ + 1],
 		   *vec[NVEC + NSLACK + 1];

@@ -32,9 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ps.c,v 9.0 1992/06
 #include "rtpkt.h"
 #include "tailor.h"
 
-/*    DATA */
-
-static int	psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
+static void psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
 		psREPORTser (),	psFINISHser (), psABORTser ();
 
 static int  doPSdata ();
@@ -1098,8 +1096,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
-
 static int
 doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti) {
 	struct AcSAPindication  acis;
@@ -1113,138 +1109,102 @@ doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *r
 		if (!(acb -> acb_flags & ACB_STICKY))
 			acb -> acb_fd = NOTOK;
 		freeacblk (acb);
-
 		return NOTOK;
 	}
 
 	return acs2rtsabort (acb, aca, rti);
 }
 
-/*  */
-
-static int
-psDATAser (int sd, struct PSAPdata *px) {
+static void psDATAser (int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doPSdata (acb, px, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psTOKENser (int sd, struct PSAPtoken *pt) {
+static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doPStoken (acb, pt, 0, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psSYNCser (int sd, struct PSAPsync *pn) {
+static void psSYNCser (int sd, struct PSAPsync *pn) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doPSsync (acb, pn, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psACTIVITYser (int sd, struct PSAPactivity *pv) {
+static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doPSactivity (acb, pv, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psREPORTser (int sd, struct PSAPreport *pp) {
+static void psREPORTser (int sd, struct PSAPreport *pp) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doPSreport (acb, pp, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psFINISHser (int sd, struct PSAPfinish *pf) {
+static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	doPSfinish (acb, pf, rti);
-
 	(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-psABORTser (int sd, struct PSAPabort *pa) {
+static void psABORTser (int sd, struct PSAPabort *pa) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	doPSabort (acb, pa, rti);
-
 	(*handler) (sd, rti);
 }
 
-/*  */
-
-int
-ps2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct PSAPabort *pa) {
+int ps2rtslose (
+	struct assocblk *acb,
+	struct RtSAPindication *rti,
+	char *event,
+	struct PSAPabort *pa
+) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -1283,4 +1243,3 @@ ps2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, stru
 	else
 		return rtpktlose (acb, rti, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
-

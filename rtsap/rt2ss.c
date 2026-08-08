@@ -33,14 +33,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ss.c,v 9.0 1992/06
 #include "rtpkt.h"
 #include "tailor.h"
 
-/*    DATA */
-
 #define	doSSabort	ss2rtsabort
 
-
-static int	ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
+static void ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
 		ssREPORTser (),	ssFINISHser (), ssABORTser ();
-
 
 static int  doSSdata ();
 static int  doSSfinish ();
@@ -49,10 +45,7 @@ static int  doSSactivity ();
 static int  doSSsync ();
 static int  doSStoken ();
 
-/*  */
-
-int
-rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
+int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result,
 			len;
 	char   *base;
@@ -1015,132 +1008,97 @@ out:
 	return NOTOK;
 }
 
-/*  */
-
-static int
-ssDATAser (int sd, struct SSAPdata *sx) {
+static void ssDATAser (int sd, struct SSAPdata *sx) {
 	// TODO: This pattern is used a lot, and its unnecessarily verbose. Simplify this.
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doSSdata (acb, sx, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssTOKENser (int sd, struct SSAPtoken *st) {
+static void ssTOKENser (int sd, struct SSAPtoken *st) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doSStoken (acb, st, 0, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssSYNCser (int sd, struct SSAPsync *sn) {
+static void ssSYNCser (int sd, struct SSAPsync *sn) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doSSsync (acb, sn, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssACTIVITYser (int sd, struct SSAPactivity *sv) {
+static void ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doSSactivity (acb, sv, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssREPORTser (int sd, struct SSAPreport *sp) {
+static void ssREPORTser (int sd, struct SSAPreport *sp) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	if (doSSreport (acb, sp, rti) != OK)
 		(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssFINISHser (int sd, struct SSAPfinish *sf) {
+static void ssFINISHser (int sd, struct SSAPfinish *sf) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	doSSfinish (acb, sf, rti);
-
 	(*handler) (sd, rti);
 }
 
-/*  */
-
-static int
-ssABORTser (int sd, struct SSAPabort *sa) {
+static void ssABORTser (int sd, struct SSAPabort *sa) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
-
 	if ((acb = findacblk (sd)) == NULL)
 		return;
 	handler = acb -> acb_rtsindication;
-
 	doSSabort (acb, sa, rti);
-
 	(*handler) (sd, rti);
 }
 
-/*  */
-
-int
-ss2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct SSAPabort *sa) {
+int ss2rtslose (
+	struct assocblk *acb,
+	struct RtSAPindication *rti,
+	char *event,
+	struct SSAPabort *sa
+) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

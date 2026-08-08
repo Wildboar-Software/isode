@@ -64,10 +64,10 @@ typedef struct {
 #define NULLAttrV (AttributeValue) NULL
 #define AttrV_alloc()   (AttributeValue) smalloc (sizeof (attrVal));
 
-AttributeValue AttrV_cpy();
-AttributeValue str_at2AttrV();
-AttributeValue str2AttrV();
-short str2syntax();
+AttributeValue AttrV_cpy(AttributeValue x);
+AttributeValue str_at2AttrV(char * str, AttributeType at);
+AttributeValue str2AttrV(char * str, short syntax);
+short str2syntax(char * str);
 short add_attribute_syntax ();
 short modify_av_printer ();
 

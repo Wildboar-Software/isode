@@ -881,7 +881,7 @@ static void do_struct2 (YP yp, char *id, char *pullup)
 					 modsym (mymodule, id, "type"));
 			if (h2flag && flg)
 				fprintf (fact, "    int\tn_parm;\n");
-			fprintf (fact, "\n    if (parm == NULL)\n\treturn;\n\n");
+			fprintf (fact, "\n    if (parm == NULL)\n\treturn -1;\n\n");
 		}
 		posy (yp, 1, 1, "parm", id, "parm", flg && h2flag);
 		fprintf (fdef, "};\n");

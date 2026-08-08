@@ -68,24 +68,19 @@ extern int debug;
 extern int telnet_profile;
 
 #ifdef TERMIOS
-static realptyecho ();
+static void realptyecho (int on);
 #endif
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void adios (char *, char *, ...);
+void advise (int, char *, char *, ...);
 
-TEXT_UPDATE *ndq_queue, *deq();		/*Incoming (From Net) NDQ's*/
+TEXT_UPDATE *ndq_queue, *deq();		/* Incoming (From Net) NDQ's */
 
-int
-map (	/*Parse the given NDQ (could contain several updates).
-		  Pass individual updates to appropriate processing
-		  routine.
-		*/
-	PE ndq
-) {
-
+/* Parse the given NDQ (could contain several updates).
+Pass individual updates to appropriate processing
+routine. */
+void map (PE ndq) {
 	TEXT_UPDATE *ud;
-
 	if(unbuild_NDQPDU_NDQpdu(ndq,1,NULLIP,NULLVP,(PEPYPARM)0) == NOTOK) {
 		advise (LLOG_NOTICE,NULLCP,  "NDQ parse failure (%s)", PY_pepy);
 		return;
@@ -104,12 +99,8 @@ map (	/*Parse the given NDQ (could contain several updates).
 	pe_free(ndq);
 }
 
-
-int
-display_ud ( 		/*Handle Display Updates*/
-	DO_UPDATE *doptr
-) {
-
+/* Handle Display Updates */
+void display_ud (DO_UPDATE *doptr) {
 	int i;
 	char *pt;
 #ifdef TERMIOS
@@ -221,13 +212,9 @@ display_ud ( 		/*Handle Display Updates*/
 		break;
 	}		/*End Switch*/
 }
-
 
-int
-control_ud (		/*Handle Control Object Updates*/
-	CO_UPDATE *coptr
-) {
-
+/*Handle Control Object Updates*/
+void control_ud (CO_UPDATE *coptr) {
 	char active = 0;
 #ifdef TERMIOS
 	struct termios term;
@@ -785,13 +772,9 @@ control_ud (		/*Handle Control Object Updates*/
 	}
 
 }
-
-int
-attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
-	DO_UPDATE *doptr
-) {
 
-
+/* Handle Write Attribute Display Object Update */
+void attrib_hdlr (DO_UPDATE *doptr) {
 	if(doptr->do_cmd.wrt_attrib.attr_id == 0)
 		/*If switching repertoires*/
 	{
@@ -815,13 +798,10 @@ attrib_hdlr (	/*Handle Write Attribute Display Object Update*/
 		advise(LLOG_NOTICE,NULLCP,  "Attribute Update with invalid I.D. (%d)\n", doptr->do_cmd.wrt_attrib.attr_id);
 }
 
-/*    TTY */
-
 #ifdef TERMIOS
 extern struct	termios oterm;
 
-int
-tmode (int f) {
+int tmode (int f) {
 	static int prevmode = 0;
 	struct termios term;
 	int onoff, old;
@@ -885,8 +865,7 @@ struct	ltchars noltc =	{
 	-1, -1, -1, -1, -1, -1
 };
 
-int
-tmode (int f) {
+int tmode (int f) {
 	static int prevmode = 0;
 	struct tchars *tc;
 	struct ltchars *ltc;
@@ -950,8 +929,7 @@ tmode (int f) {
 }
 #endif
 
-int
-kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
+void kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
 #ifdef TERMIOS
 	struct termios term;
 
@@ -968,13 +946,9 @@ kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt char*/
 #endif
 }
 
-int
-def_echo (	/*Handle Default Profile Echo Ctrl Object*/
-	CO_UPDATE *coptr
-) {
-
+/* Handle Default Profile Echo Ctrl Object */
+void def_echo (CO_UPDATE *coptr) {
 	char active = 0;
-
 	if(coptr->co_cmd.bool_update.mask_count == 0) active = 0xff;
 	else active = *coptr->co_cmd.bool_update.mask;
 
@@ -986,11 +960,10 @@ def_echo (	/*Handle Default Profile Echo Ctrl Object*/
 			tmode(1);
 	}
 }
-#ifdef TERMIOS
-static
-realptyecho (int on) {
-	struct termios term;
 
+#ifdef TERMIOS
+static void realptyecho (int on) {
+	struct termios term;
 	if (tcgetattr(pty, &term) == -1) {
 		perror("tcgetattr");
 		return;

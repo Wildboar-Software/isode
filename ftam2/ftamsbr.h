@@ -224,4 +224,4 @@ extern int  ftp_directory;
 
 int	de2fd ();
 
-int	compath ();
+void compath (char *f);

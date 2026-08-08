@@ -177,7 +177,7 @@ struct psapblk {
 };
 #define	NULLPB		((struct psapblk *) 0)
 
-int	freepblk ();
+void freepblk (struct psapblk *pb);
 struct psapblk *newpblk (), *findpblk ();
 
 #ifdef HULA

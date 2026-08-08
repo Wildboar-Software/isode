@@ -257,7 +257,7 @@ struct assocblk {
 }
 
 
-int	freeacblk ();
+void freeacblk (struct assocblk *acb);
 struct assocblk *newacblk (), *findacblk ();
 
 int	acpktlose (struct assocblk*acb, ...);

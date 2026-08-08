@@ -40,6 +40,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <stdlib.h>
 /*
 #include <sys/socket.h>
  */
@@ -125,10 +126,7 @@ int	swaitint = SWAITINT;
 
 SFD	lostconn();
 
-main(argc, argv)
-int argc;
-char *argv[];
-{
+void main(int argc, char *argv[]) {
 	int	addrlen;
 	char *ptr;
 	struct servent *sp;
@@ -187,26 +185,19 @@ char *argv[];
 	}
 }
 
-SFD
-lostconn() {
+SFD lostconn() {
 	advise (NULLCP,"lost connection");
 	dologout(-1);
 }
 
-char *
-savestr(s)
-char *s;
-{
+char *savestr(char *s) {
 	char *new = malloc((unsigned) (strlen(s) + 1));
-
 	if (new != NULL)
 		strcpy(new, s);
 	return (new);
 }
 
-retrieve(name)
-char *name;
-{
+int retrieve(char *name) {
 	int result;
 
 	/* FTAM file retrieval block function.  Return values:
@@ -218,19 +209,15 @@ char *name;
 	vec[0] = "f_get";
 	vec[1] = name;
 	vec[2] = NULLCP;
-
 	if ((result = f_get(vec)) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 	} else if (result == OK)
 		reply(226, "Transfer complete.");
-
 	data = -1;
-	return;
+	return result;
 }
 
-ftp_store(name, modeX)
-char *name, *modeX;
-{
+int ftp_store(char *name, char *modeX) {
 	int result;
 	/*
 	 * f_put is FTAM file storage block function.  First arguement
@@ -249,10 +236,10 @@ char *name, *modeX;
 	else if (result == OK)
 		reply(226, "Transfer complete.");
 	data = -1;
+	return result;
 }
 
-int
-getdatasock() {
+int getdatasock() {
 	/* UCB data socket creation routine */
 	int s;
 #ifdef	BSD43
@@ -281,10 +268,7 @@ bad:
 	return (NOTOK);
 }
 
-int
-dataconn(name)
-char *name;
-{
+int dataconn(char *name) {
 	/* UCB data connection routine */
 	int retry = 0;
 
@@ -323,53 +307,39 @@ char *name;
 	return (data);
 }
 
-fatal(s)
-char *s;
-{
+void fatal(char *s) {
 	reply(451, "Error in server: %s\n", s);
 	/* reply(221, "Closing connection due to server error.");*/
 	dologout(0);
 }
 
 #ifndef	lint
-static _reply ();
+static void _reply (int n, char c, va_list ap);
 
 void reply(int n, ...)
 {
     va_list ap;
-
     va_start (ap, n);
-
 	_reply (n, ' ', ap);
-
 	va_end (ap);
 }
 
 void lreply(int n, ...)
 {
     va_list ap;
-
     va_start (ap, n);
-
 	_reply (n, '-', ap);
-
 	va_end (ap);
 }
 
-static _reply (n, c, ap)
-int	n;
-char    c;
-va_list ap;
-{
+static void _reply (int n, char c, va_list ap) {
     char    buffer[BUFSIZ];
     char    *fmt;
 
 	fmt = va_arg (ap, char *);
     _asprintf (buffer, NULLCP, fmt, ap);
-
 	printf ("%d%c%s\r\n", n, c, buffer);
 	fflush (stdout);
-
 	if (verbose)
 		advise (NULLCP,"<--- %d%c%s", n, c, buffer);
 }
@@ -392,37 +362,26 @@ char   *fmt;
 }
 #endif
 
-replystr(s)
-char *s;
-{
+void replystr(char *s) {
 	printf("%s\r\n", s);
 	fflush(stdout);
 	if (verbose)
 		advise(NULLCP,"<--- %s", s);
 }
 
-ack(s)
-char *s;
-{
+void ack(char *s) {
 	reply(200, "%s command okay.", s);
 }
 
-nack(s)
-char *s;
-{
+void nack(char *s) {
 	reply(502, "%s command not implemented.", s);
 }
 
-/*ARGSUSED*/
-yyerror(s)
-char *s;
-{
+void yyerror(char *s) {
 	reply(500, "Command not understood.");
 }
 
-ftp_delete(name)
-char *name;
-{
+void ftp_delete(char *name) {
 	/* f_rm is the general purpose FTAM file/directory deletion routine.
 	 * Change information is formatted in ftam_error.
 	 */
@@ -437,16 +396,11 @@ char *name;
 	ack("DELE");
 }
 
-makedir(name)
-char *name;
-{
-
+void makedir(char *name) {
 	/* f_mkdir is the FTAM directory creation routine */
-
 	vec[0] = "f_mkdir";
 	vec[1] = name;
 	vec[2] = NULL;
-
 	if (f_mkdir(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
@@ -454,16 +408,12 @@ char *name;
 	ack("MKDIR");
 }
 
-removedir(name)
-char *name;
-{
-
+void removedir(char *name) {
 	/* f_rm is the general purpose FTAM file/directory deletion routine.
 	 */
 	vec[0] = "f_rm";
 	vec[1] = name;
 	vec[2] = NULL;
-
 	if (f_rm(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
@@ -471,18 +421,12 @@ char *name;
 	ack("RMDIR");
 }
 
-char *
-renamefrom(name)
-char *name;
-{
+char *renamefrom(char *name) {
 	reply(350, "Ready for destination name");
 	return (name);
 }
 
-renamecmd(from, to)
-char *from, *to;
-{
-
+void renamecmd(char *from, char *to) {
 	/* f_mv is FTAM block function to select and change attributes
 	 * (i.e. file name)
 	 */
@@ -498,9 +442,7 @@ char *from, *to;
 	ack("RNTO");
 }
 
-dolog(sin)
-struct sockaddr_in *sin;
-{
+void dolog(struct sockaddr_in *sin) {
 #ifdef	notanymore
 	struct hostent *hp = gethostbyaddr((char*)&sin->sin_addr,
 									   sizeof (struct in_addr), AF_INET);
@@ -545,10 +487,11 @@ char *how, *name;
 	data = -1;
 
 }
+
 /*
  * Execute FTAM login if all necessary arguements present
  */
-dologin() {
+int dologin(void) {
 
 	if (!ftp_user) {
 		reply(500,"Send USER command first");
@@ -594,9 +537,7 @@ dologin() {
 /*
  * exit with supplied status.
  */
-dologout(status)
-int status;
-{
+void dologout(int status) {
 
 	vec[0] = "f_close";
 	vec[1] = NULL;
@@ -610,15 +551,12 @@ int status;
 	_exit(status);
 }
 
-
 /*
  * Check user requesting login priviledges.
  * Disallow anyone mentioned in the file FTPUSERS
  * to allow people such as uucp to be avoided.
  */
-checkuser(name)
-char *name;
-{
+int checkuser(char *name) {
 	char line[BUFSIZ];
 	FILE *fd, *fopen();
 	int found = 0;
@@ -639,4 +577,3 @@ char *name;
 	fclose(fd);
 	return (!found);
 }
-

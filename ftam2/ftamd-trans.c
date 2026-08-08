@@ -97,8 +97,7 @@ ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 */
 
 
-int
-ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
+void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 	int	    result;
 	struct FADUidentity *fa = &ftrw -> ftrw_identity;
 	struct FTAMdiagnostic   diags[NFDIAG];
@@ -1080,10 +1079,7 @@ struct FTAMgroup *ftg;
 
 
 #ifndef	TMS
-timer (cc, action)
-int     cc;
-char   *action;
-{
+void timer (int cc, char *action) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,

@@ -49,12 +49,12 @@ register char	*s;
     
     switch (debug) {
 	case NOTOK:
-	    return;
+	    return -1;
 
 	case OK:
 	    if ((debug = (cp = getenv ("PEPYDEBUG")) && *cp ? atoi (cp)
 							    : NOTOK) == NOTOK)
-		return;
+		return -1;
 	    (void) fflush (stdout);
 #ifndef lint
 	    (void) fprintf (stderr, "testdebug made with %s\n", pepyid);

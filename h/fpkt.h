@@ -197,7 +197,7 @@ struct ftamblk {
 };
 #define	NULLFSB		((struct ftamblk *) 0)
 
-int	freefsblk ();
+void freefsblk (struct ftamblk *fsb);
 struct ftamblk *newfsblk (), *findfsblk ();
 
 int	ftamlose (struct FTAMindication* fti, ...);

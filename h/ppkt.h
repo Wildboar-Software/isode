@@ -223,7 +223,7 @@ struct psapblk {
 int	ppktlose (struct psapblk*pb, ...);
 int	psaplose (struct PSAPindication*pi, ...);
 
-int	freepblk ();
+void freepblk (struct psapblk *pb);
 struct psapblk *newpblk (), *findpblk ();
 
 int	psaplose (struct PSAPindication*, ...);

@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2rts.c,v 9.0 1992/0
 /*    DATA */
 
 static int	rtslose ();
-static int	rtsINDICATIONser ();
+static void rtsINDICATIONser ();
 
 static int  doRTSturn ();
 static int  doRTSclose ();
@@ -329,10 +329,7 @@ doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication
 	return NOTOK;
 }
 
-/*  */
-
-static int
-rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
+static void rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	int     result;
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
@@ -376,8 +373,6 @@ rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	if (result != OK)
 		(*handler) (sd, roi);
 }
-
-/*  */
 
 int
 ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
@@ -466,8 +461,6 @@ out:
 	freeacblk (acb);
 	return NOTOK;
 }
-
-/*  */
 
 static int
 rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta) {

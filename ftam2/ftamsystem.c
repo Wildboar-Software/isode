@@ -189,9 +189,7 @@ int	ftp_default = VFS_UBF;
 }
 #endif
 
-
-int
-ftam_start (struct FTAMstart *fts) {
+void ftam_start (struct FTAMstart *fts) {
 	int    i;
 #ifndef	BRIDGE
 	int	    guest;

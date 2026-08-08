@@ -373,8 +373,6 @@ doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-/*  */
-
 static int
 doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) {
 	int	    result;
@@ -387,35 +385,23 @@ doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) 
 
 	result = ssdu2info (pb, pi, sp -> sp_data, sp -> sp_cc, pp -> pp_info,
 						&pp -> pp_ninfo, "P-U-EXCEPTION-REPORT user-data", PPDU_NONE);
-
 	SPFREE (sp);
-
 	return (result != NOTOK ? DONE : NOTOK);
 }
-
-/*  */
 
 static int
 doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPfinish *pf = &pi -> pi_finish;
-
 	pi -> pi_type = PI_FINISH;
-
 	result = ssdu2info (pb, pi, sf -> sf_data, sf -> sf_cc, pf -> pf_info,
 						&pf -> pf_ninfo, "P-RELEASE user-data", PPDU_NONE);
-
 	SFFREE (sf);
-
 	if (result == NOTOK)
 		return NOTOK;
-
 	pb -> pb_flags |= PB_FINN;
-
 	return DONE;
 }
-
-/*  */
 
 int
 ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi) {
@@ -784,7 +770,7 @@ struct psapblk *newpblk(void)  {
 	return pb;
 }
 
-int freepblk (struct psapblk *pb) {
+void freepblk (struct psapblk *pb) {
 	int    i;
 	struct PSAPcontext *qp;
 

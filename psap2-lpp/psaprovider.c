@@ -408,20 +408,15 @@ struct psapblk  *newpblk () {
 }
 
 
-int	freepblk (pb)
-struct psapblk *pb;
-{
+void freepblk (struct psapblk *pb) {
 #ifdef	notdef
 	int    i;
 	struct PSAPcontext *qp;
 #endif
-
 	if (pb == NULL)
 		return;
-
 	if (pb -> pb_fd != NOTOK && pb -> pb_closefnx)
 		(*pb -> pb_closefnx) (pb -> pb_fd);
-
 	if (pb -> pb_retry)
 		pe_free (pb -> pb_retry);
 	if (pb -> pb_response)
@@ -430,7 +425,6 @@ struct psapblk *pb;
 		free_PS_SessionConnectionIdentifier (pb -> pb_reference);
 	if (pb -> pb_stream)
 		ps_free (pb -> pb_stream);
-
 #ifdef	notdef	/* don't need this stuff */
 	for (qp = pb -> pb_contexts, i = pb -> pb_ncontexts - 1;
 			i >= 0;
@@ -445,12 +439,9 @@ struct psapblk *pb;
 	if (pb -> pb_atn)
 		oid_free (pb -> pb_atn);
 #endif
-
 	if (pb -> pb_ber)
 		oid_free (pb -> pb_ber);
-
 	remque (pb);
-
 	free ((char *) pb);
 }
 

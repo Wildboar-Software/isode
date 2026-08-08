@@ -59,10 +59,7 @@ newacblk()  {
 	return acb;
 }
 
-/*  */
-
-int
-freeacblk (struct assocblk *acb) {
+void freeacblk (struct assocblk *acb) {
 	if (acb == NULL)
 		return;
 

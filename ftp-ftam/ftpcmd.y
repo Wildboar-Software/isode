@@ -542,10 +542,7 @@ struct tab cmdtab[] = {		/* In order defined in RFC 765 */
 	{ NULL,   0,    0,    0,	0 }
 };
 
-struct tab *
-lookup(cmd)
-	char *cmd;
-{
+struct tab *lookup(char *cmd) {
 	register struct tab *p;
 
 	for (p = cmdtab; p->name != NULL; p++)
@@ -559,11 +556,7 @@ lookup(cmd)
 /*
  * _getline - a hacked up version of fgets to ignore TELNET escape codes.
  */
-static char *
-_getline(s, n, iop)
-	char *s;
-	register FILE *iop;
-{
+static char *_getline(char *s, int n, FILE *iop) {
 	register c;
 	register char *cs;
 
@@ -585,11 +578,7 @@ _getline(s, n, iop)
 	return (s);
 }
 
-/* ARGSUSED */
-static SFD
-toolong(sd)
-int sd;
-{
+static SFD toolong(int sd) {
 	time_t now;
 	extern char *ctime();
 
@@ -766,9 +755,7 @@ yylex()
 	}
 }
 
-upper(s)
-	char *s;
-{
+void upper(char *s) {
 	while (*s != '\0') {
 		if (islower(*s))
 			*s = toupper(*s);
@@ -776,10 +763,7 @@ upper(s)
 	}
 }
 
-static char *
-copy(s)
-	char *s;
-{
+static char *copy(char *s) {
 	char *p;
 
 	p = malloc((unsigned) (strlen(s) + 1));
@@ -789,9 +773,7 @@ copy(s)
 	return ((char *)p);
 }
 
-help(s)
-	char *s;
-{
+void help(char *s) {
 	register struct tab *c;
 	register int width, NCMDS;
 

@@ -34,8 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rosy.c,v 9.0 1992/06/1
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
 
-/*    DATA */
-
 int	Cflag = 0;		/* rosy */
 int	dflag = 0;
 int     Pflag = 0;		/* pepy compat... */
@@ -127,23 +125,23 @@ static SY	new_symbol (), add_symbol ();
 static YE	lookup_err ();
 static YP	lookup_type ();
 
-static	cmodsym_aux ();
-static	modsym_aux ();
-static	print_value ();
-static	print_err ();
-static	print_op ();
-static	expand ();
-static	act2prf ();
-static dump_real ();
-static	val2prf ();
-static int  val2int ();
-static  normalize ();
-static	do_type ();
-static	do_err2 ();
-static	do_err1 ();
-static	do_op2 ();
-static	do_op1 ();
-static	yyerror_aux ();
+static void cmodsym_aux ();
+static void modsym_aux ();
+static void print_value ();
+static void print_err ();
+static void print_op ();
+static int expand ();
+static void act2prf ();
+static void dump_real ();
+static void val2prf ();
+static int val2int ();
+static void normalize ();
+static void do_type ();
+static void do_err2 ();
+static void do_err1 ();
+static void do_op2 ();
+static void do_op1 ();
+static void yyerror_aux ();
 
 /*    MAIN */
 
@@ -408,26 +406,15 @@ pyyerror (YP yp, char *fmt) {
 #endif
 #endif
 
-/*  */
-
-int
-yywrap()  {
+int yywrap() {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
-
 	return 1;
 }
 
-/*  */
+void yyprint (char *s, int f, int top) { }
 
-/* ARGSUSED */
-
-int
-yyprint (char *s, int f, int top) {
-}
-
-static
-yyprint_aux (char *s, char *mode) {
+static void yyprint_aux (char *s, char *mode) {
 	int	    len;
 	static int nameoutput = 0;
 	static int outputlinelen = 79;
@@ -458,20 +445,14 @@ yyprint_aux (char *s, char *mode) {
 	linepos += len;
 }
 
-/*    PASS1 */
-
-int
-pass1()  {
+void pass1()  {
 	printf ("%s ", mymodule);
 	if (mymoduleid)
 		printf ("%s ", oidprint(mymoduleid));
 	printf ("DEFINITIONS ::=\n\n");
 }
 
-/*  */
-
-int
-pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode) {
+void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode) {
 	SY	    sy;
 	YO	    yo;
 
@@ -500,10 +481,7 @@ pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opco
 	myoperations = add_symbol (myoperations, sy);
 }
 
-/*  */
-
-int
-pass1_err (char *mod, char *id, YP param, int errcode) {
+void pass1_err (char *mod, char *id, YP param, int errcode) {
 	SY	    sy;
 	YE	    ye;
 
@@ -530,10 +508,7 @@ pass1_err (char *mod, char *id, YP param, int errcode) {
 	myerrors = add_symbol (myerrors, sy);
 }
 
-/*  */
-
-int
-pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp) {
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp) {
 	SY	    sy;
 
 	if (dflag && lookup_type (mod, id))	/* no duplicate entries, please... */
@@ -554,10 +529,7 @@ pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP
 	mytypes = add_symbol (mytypes, sy);
 }
 
-/*    PASS2 */
-
-int
-pass2()  {
+void pass2(void)  {
 	int	    i;
 	SY	    sy,
 	 sy2;
@@ -754,12 +726,7 @@ pass2()  {
 	fclose (fstb);
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static
-do_op1 (YO yo, char *id) {
+static void do_op1 (YO yo, char *id) {
 	YE	    ye;
 	YP	    yp;
 	YV	    yv;
@@ -878,12 +845,7 @@ do_op1 (YO yo, char *id) {
 	fprintf (ftbl, "\n");
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static
-do_op2 (YO yo, char *id) {
+static void do_op2 (YO yo, char *id) {
 	YP	    yp;
 
 	fprintf (fdef, "\n#define stub_%s(sd,id,in,rfx,efx,class,roi)\\\n",
@@ -999,12 +961,7 @@ do_op2 (YO yo, char *id) {
 	fprintf (ftbl, ",\n\n");
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static
-do_err1 (YE ye, char *id) {
+static void do_err1 (YE ye, char *id) {
 	YP	    yp;
 
 	fprintf (fdef, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
@@ -1058,12 +1015,7 @@ do_err1 (YE ye, char *id) {
 	}
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static
-do_err2 (YE ye, char *id) {
+static void do_err2 (YE ye, char *id) {
 	YP	yp;
 
 	fprintf (ftbl, "\t\t\t\t\t/* ERROR %s */\n", ye -> ye_name);
@@ -1091,12 +1043,7 @@ do_err2 (YE ye, char *id) {
 	}
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static
-do_type (YP yp, int level, char *id) {
+static void do_type (YP yp, int level, char *id) {
 	YP	    y;
 	YV	    yv;
 	YT	    yt;
@@ -1388,12 +1335,8 @@ do_type (YP yp, int level, char *id) {
 		printf (" <<%s>>", yp -> yp_optcontrol);
 }
 
-/*    ERROR HANDLING */
-
-static YE
-lookup_err (YV yv) {
-	char  *id,
-		  *mod;
+static YE lookup_err (YV yv) {
+	char  *id, *mod;
 	SY sy;
 
 	if (yv -> yv_code != YV_IDEFINED)
@@ -1419,10 +1362,7 @@ lookup_err (YV yv) {
 	/* NOTREACHED */
 }
 
-/*    TYPE HANDLING */
-
-static YP
-lookup_type (char *mod, char *id) {
+static YP lookup_type (char *mod, char *id) {
 	SY	    sy;
 
 	for (sy = mytypes; sy; sy = sy -> sy_next) {
@@ -1440,10 +1380,7 @@ lookup_type (char *mod, char *id) {
 	return NULLYP;
 }
 
-/*  */
-
-static
-normalize (YP *yp, char *id) {
+static void normalize (YP *yp, char *id) {
 	int	    i;
 	YP	    y,
 	 z;
@@ -1466,10 +1403,7 @@ normalize (YP *yp, char *id) {
 				y);
 }
 
-/*    VALUE HANDLING */
-
-static int
-val2int (YV yv) {
+static int val2int (YV yv) {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
 	case YV_NUMBER:
@@ -1495,12 +1429,10 @@ val2int (YV yv) {
 		myyerror ("unknown value: %d", yv -> yv_code);
 	}
 	/* NOTREACHED */
+	return 0;
 }
 
-/*  */
-
-static
-val2prf (YV yv, int level) {
+static void val2prf (YV yv, int level) {
 	YV    y;
 
 	if (yv -> yv_flags & YV_ID)
@@ -1556,8 +1488,7 @@ val2prf (YV yv, int level) {
 	}
 }
 
-static
-dump_real (double r) {
+static void dump_real (double r) {
 #ifndef	BSD44
 	extern char *ecvt ();
 	char	*cp;
@@ -1590,11 +1521,7 @@ dump_real (double r) {
 #endif
 }
 
-
-/*    ACTION HANDLING */
-
-static
-act2prf (char *cp, int level, char *e1, char *e2) {
+static void act2prf (char *cp, int level, char *e1, char *e2) {
 	int    i,
 		   j,
 		   l4;
@@ -1657,8 +1584,7 @@ out:
 }
 
 
-static
-expand (char *dp, char *ep, char **gp) {
+static int expand (char *dp, char *ep, char **gp) {
 	int    i;
 
 	*gp = NULL;
@@ -1682,10 +1608,7 @@ expand (char *dp, char *ep, char **gp) {
 	return i;
 }
 
-/*    DEBUG */
-
-static
-print_op (YO yo, int level) {
+static void print_op (YO yo, int level) {
 	if (yo == NULLYO)
 		return;
 
@@ -1706,10 +1629,7 @@ print_op (YO yo, int level) {
 	}
 }
 
-/*  */
-
-static
-print_err (YE ye, int level) {
+static void print_err (YE ye, int level) {
 	if (ye == NULLYE)
 		return;
 
@@ -1722,10 +1642,7 @@ print_err (YE ye, int level) {
 	}
 }
 
-/*  */
-
-int
-print_type (YP yp, int level) {
+void print_type (YP yp, int level) {
 	YP	    y;
 	YV	    yv;
 
@@ -1812,10 +1729,7 @@ print_type (YP yp, int level) {
 	}
 }
 
-/*  */
-
-static
-print_value (YV yv, int level) {
+static void print_value (YV yv, int level) {
 	YV	    y;
 
 	if (yv == NULLYV)
@@ -1873,10 +1787,7 @@ print_value (YV yv, int level) {
 	}
 }
 
-/*    SYMBOLS */
-
-static SY
-new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
+static SY new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
 	SY    sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
@@ -1891,8 +1802,7 @@ new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
 }
 
 
-static SY
-add_symbol (SY s1, SY s2) {
+static SY add_symbol (SY s1, SY s2) {
 	SY	    sy;
 
 	if (s1 == NULLSY)
@@ -1905,10 +1815,7 @@ add_symbol (SY s1, SY s2) {
 	return s1;
 }
 
-/*    TYPES */
-
-YP
-new_type (int code) {
+YP new_type (int code) {
 	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -1919,8 +1826,7 @@ new_type (int code) {
 }
 
 
-YP
-add_type (YP y, YP z) {
+YP add_type (YP y, YP z) {
 	YP	    yp;
 
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
@@ -1930,10 +1836,7 @@ add_type (YP y, YP z) {
 	return y;
 }
 
-/*    VALUES */
-
-YV
-new_value (int code) {
+YV new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -1943,9 +1846,7 @@ new_value (int code) {
 	return yv;
 }
 
-
-YV
-add_value (YV y, YV z) {
+YV add_value (YV y, YV z) {
 	YV	    yv;
 
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
@@ -1955,10 +1856,7 @@ add_value (YV y, YV z) {
 	return y;
 }
 
-/*    TAGS */
-
-YT
-new_tag (PElementClass class) {
+YT new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
@@ -1968,10 +1866,7 @@ new_tag (PElementClass class) {
 	return yt;
 }
 
-/*    STRINGS */
-
-char *
-new_string (char *s) {
+char *new_string (char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
@@ -1980,8 +1875,6 @@ new_string (char *s) {
 	strcpy (p, s);
 	return p;
 }
-
-/*    SYMBOLS */
 
 static struct triple {
 	char	   *t_name;
@@ -2008,10 +1901,7 @@ static struct triple {
 	NULL
 };
 
-/*  */
-
-static char *
-modsym (char *module, char *id, char *prefix) {
+static char *modsym (char *module, char *id, char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -2037,14 +1927,12 @@ modsym (char *module, char *id, char *prefix) {
 	return buffer;
 }
 
-
 /*
  * we do the same as modsym except we generate a more "compress" name,
  * no underscores between components and dash is translated to only one
  * underscore to be compatiable with pepsy. Hence name Compress MODule SYMbol
  */
-static char *
-cmodsym (char *module, char *id, char *prefix, char *realid) {
+static char *cmodsym (char *module, char *id, char *prefix, char *realid) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -2074,8 +1962,7 @@ cmodsym (char *module, char *id, char *prefix, char *realid) {
 /* like cmodsym except we put identifier (sym) then the module (mod) hence its
  * name symmod
  */
-static char *
-csymmod (char *module, char *id, char *prefix) {
+static char *csymmod (char *module, char *id, char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -2101,8 +1988,7 @@ csymmod (char *module, char *id, char *prefix) {
 	return buffer;
 }
 
-static
-modsym_aux (char *name, char *bp) {
+static void modsym_aux (char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)
@@ -2120,8 +2006,7 @@ modsym_aux (char *name, char *bp) {
 	*bp = 0;
 }
 
-static
-cmodsym_aux (char *name, char *bp) {
+static void cmodsym_aux (char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)

@@ -26,6 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt.c,v 9.0 1992/06/16 12
 
 
 #include <signal.h>
+#include <string.h>
 #include <unistd.h>
 #include "vtpm.h"
 #include "sector1.h"
@@ -44,8 +45,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt.c,v 9.0 1992/06/16 12
 #define	strip(x)	((x)&0177)
 #define TBUFSIZ		1024
 
-char	ttyobuf[TBUFSIZ], *tfrontp = ttyobuf, *tbackp = ttyobuf;
-char	netobuf[BUFSIZ], *nfrontp = netobuf, *nbackp = netobuf;
+char ttyobuf[TBUFSIZ], *tfrontp = ttyobuf, *tbackp = ttyobuf;
+char netobuf[BUFSIZ], *nfrontp = netobuf, *nbackp = netobuf;
+
+struct var {
+	char   *v_name;
+	int	    *v_value;
+
+	char   *v_dname;
+	char  **v_dvalue;
+	char   *v_mask;
+
+	void (*v_hook)(struct var *v);
+};
 
 int	connected;
 int	net;
@@ -82,7 +94,7 @@ char peerhost[BUFSIZ];
 struct PSAPaddr ts_bound;
 int pty;			/*Kludge for single map.c (sorry)*/
 
-char	line[BUFSIZ];
+char line[BUFSIZ];
 
 jmp_buf	toplevel;
 jmp_buf	peerdied;
@@ -101,14 +113,22 @@ struct dispatch {
 
 struct dispatch *getds ();
 
+static int vt_open (char **vec);
+static int vt_close (char **vec);
+static int vt_escape (char **vec);
+static int vt_help (char **vec);
+static int vt_quit (char **vec);
+static int vt_status (char **vec);
+static int vt_suspend (char **vec);
+static int vt_set (char **vec);
+int vt_ayt (char **vec);
+int vt_break (char **vec);
+static int vtploop (char **vec, int error);
+static void printvar (struct var *v);
+void do_vt (void);
 
-static int	vt_open (), vt_close (), vt_quit (), vt_status (), vt_suspend ();
-int	vt_ayt (), vt_break ();
-static int	vt_set (), vt_help (), vt_escape ();
-static int	vtploop (), printvar ();
-
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void adios (char *, char *, ...);
+void advise (int, char *, char *, ...);
 
 static struct dispatch dispatches[] = {
 	"ayt", vt_ayt, DS_OPEN,
@@ -145,9 +165,9 @@ static struct dispatch dispatches[] = {
 };
 
 
-SFD	intr(), deadpeer();
-char	*control(), *strdup ();
-static int	_getline ();
+void intr(void), deadpeer(void);
+char	*control(int c);
+static int	_getline (char *prompt, char *buffer);
 
 #ifdef TERMIOS
 struct	termios oterm;
@@ -159,9 +179,10 @@ struct	sgttyb ottyb;
 
 static int runcom = 0;
 static char *myhome;
-int	tmode();
+int	tmode(int f);
 
-static int	 ncols (), rcinit ();
+static int ncols (FILE *fp);
+static void rcinit (void);
 
 LLog    _vt_log = {
 	"./vt.log", NULLCP, NULLCP,
@@ -169,8 +190,18 @@ LLog    _vt_log = {
 };
 LLog   *vt_log = &_vt_log;
 
-int
-main (int argc, char *argv[]) {
+static int vt_open (char **vec) {
+	if (*++vec == NULL) {
+		if (_getline ("host: ", line) == NOTOK
+				|| str2vecX (line, vec, 0, (int *)NULL, 0, 0) < 1)
+			return NOTOK;
+	}
+	strcpy (peerhost, *vec);
+	do_vt ();
+	return OK;
+}
+
+int main (int argc, char *argv[]) {
 	int	i,
 		fflag;
 	char   *logname,
@@ -219,7 +250,6 @@ main (int argc, char *argv[]) {
 	intr_char = otc.t_intrc;
 #endif
 
-
 	setbuf(stdin, NULLCP);
 	setbuf(stdout, NULLCP);
 
@@ -255,7 +285,6 @@ main (int argc, char *argv[]) {
 				  myname);
 	}
 
-
 	runcom = 1;
 
 	rcinit ();
@@ -290,10 +319,7 @@ main (int argc, char *argv[]) {
 		command(1);
 }
 
-/*    DISPATCH */
-
-int
-command (int top) {
+void command (int top) {
 	int eof,oldmode;
 	char *vec[NVEC + 1];
 
@@ -333,10 +359,7 @@ command (int top) {
 	}
 }
 
-/*  */
-
-static int
-vtploop (char **vec, int error) {
+static int vtploop (char **vec, int error) {
 	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -366,10 +389,7 @@ vtploop (char **vec, int error) {
 	}
 }
 
-/*  */
-
-int
-_getline (char *prompt, char *buffer) {
+int _getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -402,10 +422,7 @@ _getline (char *prompt, char *buffer) {
 	return OK;
 }
 
-/*  */
-
-struct dispatch *
-getds (char *name) {
+struct dispatch *getds (char *name) {
 	int    longest,
 		   nmatches;
 	char  *p,
@@ -449,25 +466,9 @@ getds (char *name) {
 	}
 }
 
-/*    OPERATIONS */
-
-static int
-vt_open (char **vec) {
-	if (*++vec == NULL) {
-		if (_getline ("host: ", line) == NOTOK
-				|| str2vecX (line, vec, 0, (int *)NULL, 0, 0) < 1)
-			return NOTOK;
-	}
-
-	strcpy (peerhost, *vec);
-	do_vt ();
-
-	return OK;
-}
 
 
-int
-do_vt (void) {
+void do_vt (void) {
 #ifdef LINUX
 	signal(SIGINT, (__sighandler_t)intr);
 #else
@@ -492,12 +493,9 @@ do_vt (void) {
 	adios (NULLCP, "association terminated by peer");
 }
 
-/*  */
-
 /* ARGSUSED */
 
-static int
-vt_close (char **vec) {
+static int vt_close (char **vec) {
 	tmode(0);
 	vrelreq();
 	if (getch () >= -1) {
@@ -518,39 +516,22 @@ vt_close (char **vec) {
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-vt_quit (char *vec) {
+static int vt_quit (char **vec) {
 	if (connected)
 		vt_close (NULLVP);
-
-	exit(0);	/* NOTREACHED */
+	exit(0);
+	return OK; /* NOTREACHED */
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-vt_status (char **vec) {
+static int vt_status (char **vec) {
 	printf ("associated with terminal service on \"%s\"\n  at %s\n",
 			peerhost, pa2str (&ts_bound));
 	printf ("  using %s profile\n", vtp_profile.profile_name);
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-vt_suspend (char **vec) {
+static int vt_suspend (char **vec) {
 	int save;
-
 	save = tmode(0);
 	kill(0, SIGTSTP);
 
@@ -577,10 +558,7 @@ vt_suspend (char **vec) {
 	return OK;
 }
 
-/*  */
-
-static int
-vt_escape (char **vec) {
+static int vt_escape (char **vec) {
 	char   c;
 
 	if (*++vec == NULL) {
@@ -589,7 +567,7 @@ vt_escape (char **vec) {
 			return NOTOK;
 	}
 
-	if ((c = *vec[0]) != NULL) {
+	if ((c = *vec[0]) != 0) {
 		char   *cp = control (escape = c);
 
 		free (escapestr);
@@ -599,8 +577,6 @@ vt_escape (char **vec) {
 
 	return OK;
 }
-
-/*    VARIABLES */
 
 static char *debug_val[] = {
 	"0", "1", "2", "3", "4", "5", "6", "7", NULL
@@ -622,18 +598,6 @@ static char *xsaplevels[] = {
 	"none", "fatal", "exceptions", "notice", "pdus", "trace", "debug", NULL
 };
 
-
-struct var {
-	char   *v_name;
-	int	    *v_value;
-
-	char   *v_dname;
-	char  **v_dvalue;
-	char   *v_mask;
-
-	int (*v_hook)(struct var *v);
-};
-
 static struct var *getvar ();
 
 
@@ -641,7 +605,10 @@ static int   echo = 0;
 static int   repertoire = 0;
 static int   verbose = 0;
 
-static int	set_debug (), set_echo (), set_escape (), set_repertoire ();
+static void set_debug (struct var *v);
+static void set_echo (struct var *v);
+static void set_escape (struct var *v);
+static void set_repertoire (struct var *v);
 
 static struct var vars[] = {
 	"acsaplevel", &_acsap_log.ll_events, "ACSAP logging", xsaplevels,
@@ -708,10 +675,7 @@ static int varwidth2;
 
 static char    **getval ();
 
-/*  */
-
-static int
-vt_set (char **vec) {
+static int vt_set (char **vec) {
 	int    i,
 		   j;
 	int     value,
@@ -891,10 +855,7 @@ out_of_range:
 	return DONE;
 }
 
-/*  */
-
-static
-printvar (struct var *v) {
+static void printvar (struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -932,61 +893,38 @@ printvar (struct var *v) {
 	printf ("    - %s\n", v -> v_dname);
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-set_debug (struct var *v) {
+static void set_debug (struct var *v) {
 	if (debug)
 		ll_dbinit (vt_log, myname);
 	else
 		vt_log -> ll_stat &= ~LLOGTTY;
 }
 
-
-/* ARGSUSED */
-
-static int
-set_echo (struct var *v) {
+static void set_echo (struct var *v) {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
 		return;
 	}
-
 	vt_echo (echo);
 }
 
-
-/* ARGSUSED */
-
-static int
-set_escape (struct var *v) {
+static void set_escape (struct var *v) {
 	if (*escapestr) {
-		char   *cp = control (escape = *escapestr);
-
+		char *cp = control (escape = *escapestr);
 		free (escapestr);
 		escapestr = strdup (cp);
 	}
 }
 
-
-/* ARGSUSED */
-
-static int
-set_repertoire (struct var *v) {
+static void set_repertoire (struct var *v) {
 	if (!connected) {
 		advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
 		return;
 	}
-
 	vt_repertoire (repertoire);
 }
 
-/*  */
-
-static char **
-getval (char *name, char **choices) {
+static char **getval (char *name, char **choices) {
 	int    longest,
 		   nmatches;
 	char  *p,
@@ -1029,17 +967,11 @@ getval (char *name, char **choices) {
 	}
 }
 
-/*  */
-
-static struct var *
-getvar (char *name) {
-	int    longest,
-		   nmatches;
-	char  *p,
-		  *q;
-	char    buffer[BUFSIZ];
-	struct var *v,
-			   *f;
+static struct var *getvar (char *name) {
+	int longest, nmatches;
+	char *p, *q;
+	char buffer[BUFSIZ];
+	struct var *v, *f;
 
 	longest = nmatches = 0;
 	for (v = vars; p = v -> v_name; v++) {
@@ -1075,21 +1007,12 @@ getvar (char *name) {
 	}
 }
 
-/*    HELP */
-
 static int helpwidth = 0;
 
-
-static int
-vt_help (char **vec) {
-	int    i,
-		   j,
-		   w;
-	int     columns,
-			width,
-			lines;
-	struct dispatch   *ds,
-			   *es;
+static int vt_help (char **vec) {
+	int i, j, w;
+	int columns, width, lines;
+	struct dispatch *ds, *es;
 
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
@@ -1135,9 +1058,7 @@ vt_help (char **vec) {
 /* ARGSUSED */
 #endif
 
-static int    ncols (fp)
-FILE *fp;
-{
+static int ncols (FILE *fp) {
 #ifdef	TIOCGWINSZ
 	int	    i;
 	struct winsize win;
@@ -1146,14 +1067,10 @@ FILE *fp;
 			&& (i = win.ws_col) > 0)
 		return i;
 #endif
-
 	return 80;
 }
 
-/*  */
-
-static
-rcinit (void) {
+static void rcinit (void) {
 	int    w;
 	char **cp;
 	struct dispatch *ds;
@@ -1202,8 +1119,7 @@ int	tcc;
 /*
  * Select from tty and network...
  */
-int
-vt (int s) {
+void vt (int s) {
 	int c;
 	int tin = fileno(stdin), tout = fileno(stdout);
 	int nfds, result;
@@ -1316,8 +1232,7 @@ vt (int s) {
  * Construct a control character sequence
  * for a special character.
  */
-char *
-control (int c) {
+char *control (int c) {
 	static char buf[3];
 
 	if (c == 0177)
@@ -1333,26 +1248,21 @@ control (int c) {
 	return (buf);
 }
 
-SFD
-deadpeer (void) {
+void deadpeer (void) {
 	tmode(0);
 	longjmp(peerdied, -1);
 }
 
-SFD
-intr (void) {
+void intr (void) {
 	tmode(0);
 	longjmp(toplevel, -1);
 }
 
-int
-ttyflush (int dd) {
+void ttyflush (int dd) {
 	int n;
 
 	if ((n = tfrontp - tbackp) > 0) {
-
 		n = write(dd, tbackp, n);
-
 	}
 	if (n < 0) {
 		advise(LLOG_NOTICE,NULLCP,  "ttyflush(): Negative returned from write");
@@ -1363,12 +1273,10 @@ ttyflush (int dd) {
 		tbackp = tfrontp = ttyobuf;
 }
 
-int
-netflush (int dd) {
+void netflush (int dd) {
 	char *cp;
 	int n, i, j;
-	int nl_flag;		/*If current PDU includes newline, follow it
-				  with a Deliver Request*/
+	int nl_flag; // If current PDU includes newline, follow it with a Deliver Request
 
 	nl_flag = 0;
 	if ((n = nfrontp - nbackp) > 0) {
@@ -1498,9 +1406,8 @@ netflush (int dd) {
 	if (nbackp == nfrontp)
 		nbackp = nfrontp = netobuf;
 }
-
-int
-flushbufs (void) {
+
+void flushbufs (void) {
 	tcc = 0;
 	tbp = tibuf;
 	nfrontp = nbackp = netobuf;
@@ -1509,75 +1416,52 @@ flushbufs (void) {
 	tfrontp = tbackp = ttyobuf;
 }
 
-/*    ERRORS */
-
-void
-finalbye (void) {
+void finalbye (void) {
 	tmode (0);
 }
 
-
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
 	static int latched = 0;
-
 	va_start (ap, fmt);
-
 	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	if (connected && latched++ == 0)
 		vt_close (NULLVP);
-
 	_exit (1);
 }
 #else
 /* VARARGS2 */
-
 void
 adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	int flags;
 	char    buffer[BUFSIZ];
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, what, fmt, ap);
-
 	flags = vt_log -> ll_stat;
-
 	if (code & (LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE)) {
 		fflush (stdout);
-
 		fprintf (stderr, "%s: ", myname);
 		fputs (buffer, stderr);
 		fputc ('\n', stderr);
-
 		fflush (stderr);
-
 		vt_log -> ll_stat &= ~LLOGTTY;
 	}
-
 	ll_log (vt_log, code, NULLCP, "%s", buffer);
-
 	vt_log -> ll_stat = flags;
-
 	va_end (ap);
 }
 #else
 /* VARARGS3 */
-
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

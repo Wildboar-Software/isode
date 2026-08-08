@@ -35,6 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include "manifest.h"
 #include "sys.file.h"
@@ -175,23 +177,13 @@ int	ssapd (), psapd ();
 #endif
 
 static int  setperms ();
-static int  tsapd ();
+static void tsapd (int vecp, char **vec);
 static  envinit ();
 #ifndef	IAE
 static	arginit ();
 #endif
 
-
-
-/*  */
-
-/* ARGSUSED */
-
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	int	    failed,
 			vecp;
 	char   *vec[4];
@@ -290,16 +282,11 @@ char  **argv,
 	return 0;
 }
 
-/*  */
-
 static char buffer1[4096];
 static char buffer2[32768];
 
 
-static int  tsapd (vecp, vec)
-int	vecp;
-char  **vec;
-{
+static void tsapd (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
 	struct isoservent *is;
