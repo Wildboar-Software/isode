@@ -25,8 +25,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy_misc.c,v 9.0 19
  */
 
 
-#include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "pepsydefs.h"
 
 /*  Oid manipulation */
@@ -78,10 +78,7 @@ OID	o1, o2;
 	return noid;
 }
 
-defineoid (name, oid)
-char	*name;
-OID	oid;
-{
+void defineoid (char *name, OID oid) {
 	char	*p;
 	OP		op;
 
@@ -108,9 +105,7 @@ OID	oid;
 	myoids = op;
 }
 
-OID	oidlookup (name)
-char	*name;
-{
+OID oidlookup (char *name) {
 	OP	op;
 
 	for (op = myoids; op; op = op -> op_next)
@@ -121,9 +116,7 @@ char	*name;
 	return NULLOID;
 }
 
-char	*oidname (oid)
-OID	oid;
-{
+char *oidname (OID oid) {
 	OP	op;
 
 	for (op = myoids; op; op = op -> op_next)
@@ -133,9 +126,7 @@ OID	oid;
 	return NULLCP;
 }
 
-OID	int2oid (n)
-int	n;
-{
+OID	int2oid (int n) {
 	OID		noid;
 
 	noid = (OID) calloc(1, sizeof(*noid));
@@ -152,8 +143,7 @@ int	n;
 
 /*  */
 
-int
-addtable (
+void addtable (
 	char *name,
 	int lt,
 	int typ	/* Does it allow implicit's to work or not */
@@ -167,11 +157,7 @@ addtable (
 	symtab[lt] = sp;
 }
 
-addtableref (name, id, lt)
-char	*name;
-OID	id;
-int	lt;
-{
+void addtableref (char *name, OID id, int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;
@@ -267,9 +253,7 @@ print_expimp()  {
 	}
 }
 
-check_impexp (yp)
-YP	yp;
-{
+void check_impexp (YP yp) {
 	SYM		sp;
 
 	for (sp = symtab[TBL_EXPORT]; sp; sp = sp->sym_next)
@@ -287,6 +271,7 @@ YP	yp;
 			/*	    yp -> yp_flags |= YP_IMPORTED;	*/
 		}
 }
+
 static struct oidtbl {
 	char	*oid_name;
 	int		oid_value;
@@ -299,8 +284,7 @@ static struct oidtbl {
 	NULL,
 };
 
-int
-initoidtbl()  {
+void initoidtbl(void) {
 	struct oidtbl *op;
 	OID		oid;
 
@@ -310,9 +294,7 @@ initoidtbl()  {
 	}
 }
 
-char	*oidprint (oid)
-OID	oid;
-{
+char *oidprint (OID oid) {
 	static char buf[BUFSIZ];
 	char	*cp;
 	char	*p;
@@ -351,16 +333,12 @@ OID	oid;
  * look at import list and return any clue found as to handling implicit tags
  * on that type
  */
-int
-chkil (char *id) {
+int chkil (char *id) {
 	SYM sy;
-
 	for (sy = symtab[TBL_IMPORT]; sy; sy = sy->sym_next)
 		if (strcmp(sy->sym_name, id) == 0)
 			break;
 	if (sy)
 		return (sy->sym_type);
-
 	return (ER_UNKNOWN);
-
 }

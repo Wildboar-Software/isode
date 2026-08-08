@@ -465,14 +465,19 @@ struct ssapblk {
 };
 #define	NULLBP		((struct ssapblk *) 0)
 
-int	freesblk ();
-struct ssapblk *newsblk (), *findsblk ();
+void freesblk (struct ssapblk *sb);
+struct ssapblk *newsblk ();
+struct ssapblk *findsblk (int sd);
 
+int ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td);
 
-int	ts2sslose ();
-
-int	spkt2sd ();
-struct ssapkt *sb2spkt ();
+int	spkt2sd (struct ssapkt *s, int sd, int expedited, struct SSAPindication *si);
+struct ssapkt *sb2spkt (
+	struct ssapblk *sb,
+	struct SSAPindication *si,
+	int secs,
+	struct TSAPdata *ty
+);
 
 /*    SPKT datastructure */
 
@@ -920,12 +925,12 @@ struct ssapkt {
 #define	NULLSPKT	((struct ssapkt *) 0)
 
 
-int	freespkt ();
+void freespkt (struct ssapkt *s);
 struct ssapkt *newspkt ();
 
 void	text2spkt (), spkt2text ();
 
-int	spkt2tsdu ();
+int	spkt2tsdu (struct ssapkt *s, char **base, int *len);
 struct ssapkt *tsdu2spkt ();
 
 char   *spkt2str ();

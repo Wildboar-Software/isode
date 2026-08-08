@@ -646,8 +646,7 @@ newtblk()  {
 }
 
 
-int
-freetblk (struct tsapblk *tb) {
+void freetblk (struct tsapblk *tb) {
 	SBV     smask;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;

@@ -580,10 +580,7 @@ void put2spdu (int code, int li, char *value, struct local_buf *c) {
 	}
 }
 
-/*  */
-
-int
-spkt2tsdu (struct ssapkt *s, char **base, int *len) {
+int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	struct local_buf    c;
 	char    isn[SIZE_CN_ISN + 1];
 
@@ -1006,10 +1003,7 @@ spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-/*  */
-
-static u_long
-str2ssn (char *s, int n) {
+static u_long str2ssn (char *s, int n) {
 	u_long u;
 
 	for (u = 0L; n > 0; n--)
@@ -1017,8 +1011,6 @@ str2ssn (char *s, int n) {
 
 	return u;
 }
-
-/*  */
 
 /* this is used to pull PCI, not user data... */
 
@@ -1033,8 +1025,7 @@ str2ssn (char *s, int n) {
     } \
     else
 
-static char *
-pullqb (struct qbuf *qb, int n) {
+static char *pullqb (struct qbuf *qb, int n) {
 	int    i;
 	int	    once;
 	char  *cp;
@@ -1074,10 +1065,7 @@ pullqb (struct qbuf *qb, int n) {
 	return buffer;
 }
 
-/*  */
-
-struct ssapkt *
-tsdu2spkt (struct qbuf *qb, int len, int *cc) {
+struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	int    li;
 	int     cat0,
 			nread,
@@ -1761,10 +1749,7 @@ do_pgi:
 	return s;
 }
 
-/*  */
-
-struct ssapkt *
-newspkt (int code) {
+struct ssapkt *newspkt (int code) {
 	struct ssapkt *s;
 
 	s = (struct ssapkt *) calloc (1, sizeof *s);
@@ -1777,9 +1762,7 @@ newspkt (int code) {
 	return s;
 }
 
-
-int
-freespkt (struct ssapkt *s) {
+void freespkt (struct ssapkt *s) {
 	if (s == NULL)
 		return;
 

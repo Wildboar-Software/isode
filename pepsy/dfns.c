@@ -26,6 +26,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dfns.c,v 9.0 1992/06/
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "general.h"
 #include "mine.h"
 #include "pepsydefs.h"
@@ -111,14 +113,10 @@ notidtoid (char *s) {
 /*
  * return a copy of the string s
  */
-char *
-my_new_str (char *s) {
-
+char *my_new_str (char *s) {
 	char   *t;
-
 	if ((t = (char *) malloc((unsigned)strlen(s) + 1)) == NULL)
 		my_error("my_new_str: Out of memory");
-
 	strcpy(t, s);
 	return t;
 }
@@ -126,8 +124,7 @@ my_new_str (char *s) {
 /*
  * return the concatenation of the strings s1 and s2
  */
-char *
-my_strcat (char *s1, char *s2) {
+char *my_strcat (char *s1, char *s2) {
 	char   *s3, *s, *t;
 
 	if (s1 == NULL || *s1 == '\0')
@@ -175,8 +172,7 @@ static unsigned int len = 0;
 /*
  * Return in a static buffer the two strings concatenated
  */
-char *
-concat (char *s1, char *s2) {
+char *concat (char *s1, char *s2) {
 	int     tot;
 
 	tot = strlen(s1) + strlen(s2) + 1;
@@ -199,12 +195,10 @@ concat (char *s1, char *s2) {
  * Generate a free call given the name of the parameter, the module
  * name, and the name of the type
  */
-char *
-gfree (
-	char *module,			/* name of module we are in (usually
-				 * mymodule) */
-	char *id,			/* name of type we want to free */
-	char *parm			/* name of the pointer to the data */
+char *gfree (
+	char *module, /* name of module we are in (usually mymodule) */
+	char *id,	  /* name of type we want to free */
+	char *parm	  /* name of the pointer to the data */
 ) {
 	char   *p1 = notidtoid(module);
 	char   *p2 = notidtoid(id);

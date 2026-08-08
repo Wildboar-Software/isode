@@ -27,6 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/etabs.c,v 9.0 1992/06
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "pepsydefs.h"
 #include "sym.h"
 #include "pass2.h"
@@ -84,18 +86,11 @@ char   *str_yp_code[] = {
 /*
  * table encode a type. generate tables for the encoding of a type
  */
-tenc_typ(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
-{
-
+void tenc_typ(FILE *fp, YP yp, char *id, char *type) {
 	char   *t, *f;
 	char   *p1;
 	YP      y;
 	YAL		yal;
-
 
 	if (yp->yp_code < 0 || yp->yp_code > YP_REAL)
 		ferrd(1, "tenc_typ: unimplemented type %d\n", yp->yp_code);
@@ -666,10 +661,7 @@ static int fflags[] = {
 /*
  * calculate the tag string of the given type and return it
  */
-char   *
-c_tag(yp)
-YP      yp;
-{
+char *c_tag(YP yp) {
 	static char buf[WORDSIZE];
 	int     i;
 
@@ -694,10 +686,7 @@ YP      yp;
 /*
  * calculate the tag string of the explicit tag and return it
  */
-char   *
-ec_tag(yp)
-YP      yp;
-{
+char *ec_tag(YP yp) {
 	static char buf[WORDSIZE];
 	int     i;
 
@@ -715,11 +704,7 @@ YP      yp;
  * produce a string that represents the class/flags field for a given
  * yp entry taking the class to be that given in cl
  */
-char   *
-c_flags(yp, cl)
-YP      yp;
-PElementClass cl;
-{
+char *c_flags(YP yp, PElementClass cl) {
 	char   *p1;
 	static char buf[STRSIZE];
 

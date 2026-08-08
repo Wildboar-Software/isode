@@ -49,7 +49,7 @@ typedef struct OIDentifier {
 OID	ode2oid ();
 int	oid_cmp (), elem_cmp ();
 OID	oid_cpy ();
-int	oid_free ();
+void oid_free (OID oid);
 #define	oid2ode(i)	oid2ode_aux ((i), 1)
 char   *oid2ode_aux ();
 char   *sprintoid ();

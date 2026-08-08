@@ -21,16 +21,11 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/tsdu2spkt.c,v 5.0 88/07/21 14:58:
  *
  */
 
-
-/* LINTLIBRARY */
-
 #include <stdio.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*  */
-
-struct	local_buf {
+struct local_buf {
 	char *top;				/* Top of buffer */
 	char *ptr;				/* Pointer to working buffer */
 	int pgi;				/* Offset of last PGI li */
@@ -39,8 +34,6 @@ struct	local_buf {
 	int allocli;				/* Allocated li */
 	int len;				/* Current buffer size */
 };
-
-/*  */
 
 #define PMASK_NODATA		0x000000
 #define	PMASK_CN_ID		0x000001	/*   1: Connection ID */
@@ -412,10 +405,7 @@ static int pi_length[PI_TABLE_LEN] = {
     } \
 }
 
-/*  */
-
-static
-start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
+static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 	if (s -> s_udata)
 		switch (s -> s_code) {
 		case SPDU_DT: 	/* caller responsible for this... */
@@ -492,10 +482,7 @@ start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 		c -> ptr = c -> top + 2;
 }
 
-/*  */
-
-static int
-end_spdu (int code, struct local_buf *c) {
+static int end_spdu (int code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
@@ -519,26 +506,19 @@ end_spdu (int code, struct local_buf *c) {
 	return NOTOK;
 }
 
-/*  */
-
-static
-start_pgi (int code, struct local_buf *c) {
+static void start_pgi (int code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
 
 
-static
-end_pgi (struct local_buf *c) {
+static void end_pgi (struct local_buf *c) {
 	if (c -> len)
 		*(c -> top + c -> pgi) = (c -> len - c -> left) - (c -> pgi + 1);
 }
 
-/*  */
-
-static
-put2spdu (int code, int li, char *value, struct local_buf *c) {
+static void put2spdu (int code, int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1,
 		   *p2;
@@ -588,10 +568,7 @@ put2spdu (int code, int li, char *value, struct local_buf *c) {
 	}
 }
 
-/*  */
-
-int
-spkt2tsdu (struct ssapkt *s, char **base, int *len) {
+int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	struct local_buf    c;
 	char    isn[SIZE_CN_ISN + 1];
 
@@ -2066,8 +2043,7 @@ newspkt (int code) {
 }
 
 
-int
-freespkt (struct ssapkt *s) {
+int freespkt (struct ssapkt *s) {
 	struct qbuf *qb,
 			   *qp;
 

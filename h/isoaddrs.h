@@ -246,9 +246,9 @@ struct TSAPaddr *is2taddr (char *host, char *service, struct isoservent *is);	/*
 
 /*  */
 
-struct PSAPaddr *str2paddr ();  /* string encoding to PSAPaddr */
-struct SSAPaddr *str2saddr ();  /* string encoding to SSAPaddr */
-struct TSAPaddr *str2taddr ();  /* string encoding to TSAPaddr */
+struct PSAPaddr *str2paddr (char *str);  /* string encoding to PSAPaddr */
+struct SSAPaddr *str2saddr (char *str);  /* string encoding to SSAPaddr */
+struct TSAPaddr *str2taddr (char *str);  /* string encoding to TSAPaddr */
 
 #define	paddr2str(pa,na)	_paddr2str ((pa), (na), 0)
 

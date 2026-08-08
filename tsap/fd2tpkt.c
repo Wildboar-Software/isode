@@ -35,11 +35,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/fd2tpkt.c,v 9.0 1992/0
 
 /*  */
 
-static int  fd2tpktaux ();
-static int  readx ();
+static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx);
+static int  readx (int fd, char *buffer, int n, IFP readfnx);
 
-struct tsapkt *
-fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
+struct tsapkt *fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
@@ -63,8 +62,7 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 
 /*  */
 
-static int
-fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
+static int fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	int    code, len, vlen;
 	char  *vptr;
 
@@ -314,8 +312,7 @@ fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 
 /*  */
 
-static int
-readx (int fd, char *buffer, int n, IFP readfnx) {
+static int readx (int fd, char *buffer, int n, IFP readfnx) {
 	int    i,
 		   cc;
 	char   *bp;
@@ -339,8 +336,7 @@ readx (int fd, char *buffer, int n, IFP readfnx) {
 
 /*  */
 
-int
-tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
+int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 	int     i,
 			ilen,
 			ulen;
@@ -359,10 +355,11 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 		return t -> t_errno;
 
 	if (t -> t_vrsn != TPKT_VRSN)
-		if (t -> t_vrsn)
+		if (t -> t_vrsn) {
 			return DR_PROTOCOL;
-		else
+		} else {
 			t -> t_vrsn = TPKT_VRSN;
+		}
 
 	if (t -> t_vdata != NULL) {
 		free (t -> t_vdata);
@@ -489,8 +486,7 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 
 /*  */
 
-struct tsapkt *
-newtpkt (int code) {
+struct tsapkt *newtpkt (int code) {
 	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);
@@ -504,8 +500,7 @@ newtpkt (int code) {
 }
 
 
-int
-freetpkt (struct tsapkt *t) {
+void freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
 

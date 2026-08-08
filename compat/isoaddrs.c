@@ -39,9 +39,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
 
 /*    DATA */
 
-static int  read_macros ();
-static int  read_file ();
-static int  add_macro ();
+static void read_macros (void);
+static void read_file (char *file);
+static int add_macro (char *name, char *value);
 static char *isomacros = "isomacros";
 
 #define	MBUCKETS	128
@@ -174,8 +174,7 @@ value2macro (char *value) {
 
 /*  */
 
-static int
-read_macros()  {
+static void read_macros(void)  {
 	char *hp;
 	char    buffer[BUFSIZ];
 
@@ -195,8 +194,7 @@ read_macros()  {
 
 /*  */
 
-static int
-read_file (char *file) {
+static void read_file (char *file) {
 	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + NSLACK + 1];
@@ -216,7 +214,6 @@ read_file (char *file) {
 		if (add_macro (vec[0], vec[1]) == NOTOK)
 			break;
 	}
-
 	fclose (fp);
 }
 
@@ -227,8 +224,7 @@ add_macro (char *name, char *value) {
 	int	    i;
 	char  *cp;
 	char    buffer[BUFSIZ];
-	struct macro *m,
-			   *p;
+	struct macro *m, *p;
 
 	if (cp = index (value, '=')) {
 		*cp++ = 0;
@@ -268,8 +264,7 @@ add_macro (char *name, char *value) {
 
 /*  */
 
-char *
-macro2str (char *name) {
+char *macro2str (char *name) {
 	struct macro *m = name2macro (name);
 
 	return (m ? m -> m_value : NULLCP);
@@ -281,7 +276,6 @@ macro2str (char *name) {
 #define	PS_SEL1	1	/*   .. got one selector already */
 #define	PS_SEL2	2	/*   .. got two selectors already */
 #define	PS_SEL3	3	/* <network-address> */
-
 
 static struct afi_info {
 	char   *p_name;
@@ -301,14 +295,12 @@ static struct afi_info {
 #define p_ia5_dsp_len(pp) \
 	(pp -> p_ia5 == NULL ? NOTOK : (pp -> p_dec_dsp_len >> 1))
 
-
 static char sel1[TSSIZE];
 static char sel2[TSSIZE];
 static char sel3[TSSIZE];
 static char *sels[3] = {
 	sel1, sel2, sel3
 };
-
 
 #define	IMPLODE(intres,octres,octval,intval,losing,loslab) \
 { \
@@ -331,8 +323,7 @@ loslab: ; \
 
 /*  */
 
-struct PSAPaddr *
-str2paddr (char *str) {
+struct PSAPaddr *str2paddr (char *str) {
 	int    state,
 		   *lp;
 	int	    j,
@@ -826,8 +817,7 @@ next:
 
 /*  */
 
-int
-macro2comm (char *name, struct ts_interim *ts) {
+int macro2comm (char *name, struct ts_interim *ts) {
 	int	    j,
 			len;
 	char  *ap,
@@ -1010,8 +1000,7 @@ out:
 
 /*    PADDR2STR */
 
-static char *
-SEL2STR (char *sel, int len) {
+static char *SEL2STR (char *sel, int len) {
 	char  *cp,
 		  *dp,
 		  *ep;
@@ -1050,8 +1039,7 @@ SEL2STR (char *sel, int len) {
 
 /*  */
 
-char *
-_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
+char *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
 	int   n;
 	int	    first;
 	char *bp,
@@ -1273,8 +1261,7 @@ bad_pa:
 /*  */
 
 #ifdef DEBUG
-int
-free_macros()  {
+void free_macros(void)  {
 	int    i;
 	struct macro *m,
 			   *p;

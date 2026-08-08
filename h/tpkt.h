@@ -210,7 +210,7 @@ struct tsapblk {
 #define	NULLBP		((struct tsapblk *) 0)
 
 
-int	freetblk ();
+void freetblk (struct tsapblk *tb);
 struct tsapblk *newtblk (), *findtblk ();
 
 /*    TPKT datastructure */
@@ -393,8 +393,8 @@ struct tsapkt {
 #define	NULLPKT		((struct tsapkt *) 0)
 
 
-int	freetpkt ();
-struct tsapkt *newtpkt ();
+void freetpkt (struct tsapkt *t);
+struct tsapkt *newtpkt (int code);
 
 void	text2tpkt (), tpkt2text ();
 

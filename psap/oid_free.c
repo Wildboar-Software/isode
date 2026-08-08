@@ -24,17 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid_free.c,v 9.0 1992/
  *
  */
 
-
-/* LINTLIBRARY */
-
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
-
-int	oid_free (oid)
-OID oid;
-{
+void oid_free (OID oid) {
 	if (oid == NULLOID)
 		return;
 

@@ -58,24 +58,16 @@ int	e_actions, d_actions, p_actions; /* number of actions of each type */
 
 FILE   *ffopen();
 
-int
-peri_pass2()  {
+void peri_pass2() {
 	char *inc;	/* *_pre_defs.h file */
-
 	if (!sflag)
 		fflush(stderr);
-
 	tab = notidtoid(mymodule);
-
 	if (strcmp(mymodule, "UNIV"))
 		lookup_module("UNIV", NULLOID);
-
 	inc = my_strcat (mymodule, HFILE2);
-
 	gen_typesfile(inc);
-
 	gen_tablefile(inc);
-
 }
 
 /*
@@ -94,9 +86,7 @@ peri_pass2()  {
  *			module. contains references to all the tables.
  *		lint declaractions for the "pepy" functions
  */
-int
-gen_tablefile (char *inc) {
-
+void gen_tablefile (char *inc) {
 	int     nentries;
 	int     encflag = 1, decflag = 1, prntflag = 1;
 	SY      sy;
@@ -203,8 +193,7 @@ gen_tablefile (char *inc) {
 /*
  * generate the *-types.h file
  */
-int
-gen_typesfile (char *inc) {
+void gen_typesfile (char *inc) {
 	char   *buf;
 #ifdef ACT_CODE
 	int     encflag = 1, decflag = 1, prntflag = 1;
@@ -349,11 +338,7 @@ gen_typesfile (char *inc) {
 #endif
 }
 
-
-gen_enctbl(fp, sy)
-FILE	*fp;
-SY      sy;
-{
+void gen_enctbl(FILE *fp, SY sy) {
 	YP	yp;
 
 	yp = sy->sy_type;
@@ -369,10 +354,7 @@ SY      sy;
 	fprintf(fp, "\n");
 }
 
-gen_dectbl(fp, sy)
-FILE	*fp;
-SY      sy;
-{
+void gen_dectbl(FILE *fp, SY sy) {
 	fprintf(fp,"static ptpe %s%s[] = {\n", DTABLE, proc_name(sy->sy_name, 0));
 	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
 			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
@@ -386,10 +368,7 @@ SY      sy;
 }
 
 
-gen_prnttbl(fp, sy)
-FILE	*fp;
-SY      sy;
-{
+void gen_prnttbl(FILE *fp, SY sy) {
 	fprintf(fp,"static ptpe %s%s[] = {\n",PTABLE, proc_name(sy->sy_name, 0));
 	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
 			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
@@ -402,13 +381,10 @@ SY      sy;
 	fprintf(fp, "\n");
 }
 
-
 /*
  * define the tpe index tables and the pointer table
  */
-gen_tpe(fp)
-FILE	*fp;
-{
+void gen_tpe(FILE *fp) {
 	SY	sy;
 	int	empty = 1;
 
@@ -460,11 +436,7 @@ FILE	*fp;
 /*
  * output the module structure for this module
  */
-gen_modtype(fp, no, f1, f2, f3)
-FILE	*fp;
-int     no;
-int     f1, f2, f3;
-{
+void gen_modtype(FILE *fp, int no, int f1, int f2, int f3) {
 	if (!f1)
 		fprintf(fp, "extern PE\t%s%s();\n", ENC_FNCNAME, tab);
 	if (!f2)
@@ -502,10 +474,7 @@ int     f1, f2, f3;
 /*
  * open a file called name
  */
-FILE   *
-ffopen(name)
-char   *name;
-{
+FILE *ffopen(char *name) {
 	FILE   *fp;
 
 	if ((fp = fopen(name, "w")) == NULL) {
@@ -519,10 +488,7 @@ char   *name;
 /*
  * output the file prologue to the file specified by fp
  */
-file_header(fp, act)
-FILE   *fp;
-char   *act;
-{
+void file_header(FILE *fp, char *act) {
 	fprintf(fp, "#include %s\n", PSAP_DOT_H);
 	fprintf(fp, "#include \"%s\"\n", INCFILE1);
 	fprintf(fp, "#include \"%s\"\n", act);
@@ -538,10 +504,7 @@ char   *act;
 /*
  * output the function prologue to the file specified by fp
  */
-open_func(fp)
-FILE   *fp;
-{
-
+void open_func(FILE *fp) {
 	fprintf(fp, "(pe, parm, p, mod)\n");
 	fprintf(fp, "PE\tpe;\n");
 	fprintf(fp, "PEPYPARM\tparm;\n");
@@ -555,9 +518,7 @@ FILE   *fp;
 /*
  * output the function epilogue to the file specified by fp
  */
-close_func(fp)
-FILE   *fp;
-{
+void close_func(FILE *fp) {
 	fprintf(fp, "\t\tdefault:\n");
 	fprintf(fp, "\t\t\tbreak;\n");
 	fprintf(fp, "\t}\n");
@@ -567,8 +528,7 @@ FILE   *fp;
 /*
  * print the table id_table
  */
-int
-print_table()  {
+void print_table() {
 	int     i;
 	id_entry *t;
 
@@ -579,6 +539,7 @@ print_table()  {
 			printf("NULL -- %d\n", i);
 	}
 }
+
 static struct univ_typ univ_tab[] = {
 	{
 		"EXTERNAL", "struct	type_UNIV_EXTERNAL	*", "EXTERNAL", 8, 0,
@@ -650,8 +611,7 @@ extern struct univ_typ *simptyp();
  * data structure which contains the parameters describing how it
  * should be processed
  */
-struct univ_typ *
-univtyp (char *name) {
+struct univ_typ *univtyp (char *name) {
 	int     low, high, i;
 	struct univ_typ *p;
 
@@ -685,8 +645,7 @@ univtyp (char *name) {
  * numbers are greater then all letters lower case are greater then
  * upper case There must be a better way !
  */
-int
-scmp (char *s1, char *s2) {
+int scmp (const char *s1, const char *s2) {
 	while (*s1 == *s2 && *s2)
 		s1++, s2++;
 	if (*s1 == '\0' && *s2 == '\0')
@@ -717,8 +676,7 @@ scmp (char *s1, char *s2) {
 /*
  * lookup a symbol and return a pointer to it
  */
-SY
-syfind (char *name) {
+SY syfind (char *name) {
 	SY      sy;
 
 	for (sy = mysymbols; sy; sy = sy->sy_next) {
@@ -733,10 +691,7 @@ syfind (char *name) {
 /*
  * determine if the symbol is a simple type that is optimised
  */
-struct univ_typ *
-simptyp(yp)
-YP      yp;
-{
+struct univ_typ *simptyp(YP yp) {
 	struct univ_typ *p;
 
 	static struct univ_typ bitstring =
@@ -786,31 +741,23 @@ YP      yp;
 /*
  * lookup a type name until you get something that is not a name
  */
-YP
-lkup(yp)
-YP	yp;
-{
+YP lkup(YP yp) {
 	YP	yp1;
 
 	if (yp == NULLYP)
 		return (yp);
-
 	while (yp->yp_code == YP_IDEFINED) {
 		if ((yp1 = lookup_type(yp->yp_module, yp->yp_identifier)) == NULLYP)
 			return (yp);
 		yp = yp1;
 	}
-
 	return (yp);
 }
 /*
  * compute the type of tag it should be given the tag and the type it is
  * being applied to
  */
-comptag(tag, yp)
-int	tag;
-YP	yp;
-{
+int comptag(int tag, YP yp) {
 	static int	warned = 0;
 	YP	yp1;
 	struct univ_typ	*p;
@@ -859,9 +806,7 @@ YP	yp;
  * Generate function definitions for all the macros so that lint
  * can type check all their uses
  */
-gen_lint(fp)
-FILE	*fp;
-{
+void gen_lint(FILE *fp) {
 	char   *buf;
 	SY      sy;
 	YP      yp;
@@ -966,13 +911,13 @@ FILE	*fp;
  * pointer table support routines
  */
 static char	**ptr_tab;	/* reference of the pointer */
-static int	ptr_cnt = 0;
-static int 	ptr_max = 0;
+static int ptr_cnt = 0;
+static int ptr_max = 0;
+
 /*
  * add the given pointer to the pointer table and return its index
  */
-int
-addptr (char *p) {
+int addptr (char *p) {
 	int	ind;
 	int i;
 	char *s;
@@ -984,7 +929,6 @@ addptr (char *p) {
 	for (i = 0; i < ptr_cnt; i++)
 		if (strcmp(p, ptr_tab[i]) == 0)
 			return (i);
-
 	if (ptr_max <= ptr_cnt) {
 		if (ptr_max == 0)
 			ptr_tab = (char **) malloc ((unsigned)sizeof(char **) * (ptr_max = 100));
@@ -996,45 +940,31 @@ addptr (char *p) {
 				ptr_cnt);
 		exit(1);
 	}
-
 	if ((s = malloc ((unsigned) (strlen (p) + 1))) == NULLCP) {
 		fprintf(stderr, "\naddptr:out of memory\n");
 		exit(1);
 	}
 	strcpy (s, p);
-
 	ptr_tab[ind = ptr_cnt++] = s;
-
 	return (ind);
 }
 
-
-dump_ptrtab(fp)
-FILE	*fp;
-{
+void dump_ptrtab(FILE *fp) {
 	int		i;
-
-
 	fprintf(fp, "\n/* Pointer table %d entries */\n", ptr_cnt);
-
 #ifdef PUT_PEPSY_STATIC_BACK
 	/*
 	  Appears to be valid ANSI and K&R c, but gives some compilers
 	   a real hard time.  So leave it out, unless really needed.
 	*/
-
 	fprintf(fp, "static caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
 #else
-
 	fprintf(fp, "caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
 #endif
-
 	for (i = 0; i < ptr_cnt; i++)
 		fprintf(fp, "    (caddr_t ) %s,\n", ptr_tab[i]);
-
 	if (ptr_cnt <= 0)
 		fprintf(fp, "    (caddr_t ) 0,\n");	/* for fussy C compilers */
-
 	fprintf(fp, "};\n");
 }
 
@@ -1047,25 +977,19 @@ FILE	*fp;
  * remove a level of indirection from the given type. If possible. if not
  * return NULLCP, otherwise return the new type in a temporary buffer
  */
-char *
-rm_indirect (char *p) {
+char *rm_indirect (char *p) {
 	static char	buf[STRSIZE];
-	int		i;
-
+	int	i;
 	if (p == NULLCP || *p == '\0' || (i = strlen(p)) >= STRSIZE)
 		return (NULLCP);
-
 	strncpy(buf, p, STRSIZE);
-
 	for (; i >= 0; i--) {
 		if (buf[i] == '*') {
 			buf[i] = '\0';
 			return (buf);
 		}
 	}
-
 	return (NULLCP);
-
 }
 
 /*
@@ -1073,36 +997,25 @@ rm_indirect (char *p) {
  * expression for the bit number.
  * if it fails return NULLCP
  */
-char *
-getfldbit (char *p, char **pstr) {
+char *getfldbit (char *p, char **pstr) {
 	static char buf[STRSIZE];
-
 	if (p == NULLCP || pstr == (char **)0)
 		return (NULLCP);
-
 	if ((p = getidordot(p, buf, STRSIZE)) == NULLCP)
 		return (NULLCP);
-
 	while (*p && isspace(*p))
 		p++;
-
 	if (*p != '$') {	/* must be a -> */
-
 		if (strncmp(p, "->", 2) != 0)
 			return (NULLCP);
-
 		p += 2;
-
 		if ((p = getidordot(p, buf, STRSIZE)) == NULLCP)
 			return (NULLCP);
-
 		while (*p && isspace(*p))
 			p++;
-
 		if (*p != '$')
 			return (NULLCP);
 	}
-
 	*pstr = p + 1;	/* have to leave it up to the compiler to verify the
 			 * constant expression for the bit number
 			 */
@@ -1110,14 +1023,11 @@ getfldbit (char *p, char **pstr) {
 }
 
 /* return a pointer after the current batch of white space if any */
-char *
-skipspace (char *p) {
+char *skipspace (char *p) {
 	if (p == NULLCP)
 		return (NULLCP);
-
 	while (*p && isspace(*p))
 		p++;
-
 	return (p);
 }
 
@@ -1125,92 +1035,66 @@ skipspace (char *p) {
  * extract the field from the C arguement and return it in a static buffer
  * else return NULLCP
  */
-char *
-getfield (char *p) {
+char *getfield (char *p) {
 	static char buf[STRSIZE];
-	char	*buf1;
-
+	char *buf1;
 	if (p == NULLCP)
 		return (NULLCP);
-
 	while (*p && isspace(*p))
 		p++;
-
 	if (*p == '*')	/* to support *parm field */
 		return (p);
-
 	if ((p = getidordot(p, buf, STRSIZE)) == NULLCP)
 		return (NULLCP);
-
 	while (*p && isspace(*p))
 		p++;
-
 	if (*p == '\0')
 		return (buf);
-
 	if (strncmp(p, "->", 2) != 0)
 		return (NULLCP);
-
 	p += 2;
-
 	/* if we have an & keep it on the field */
 	if (*buf == '&')
 		buf1 = buf + 1;
 	else
 		buf1 = buf;
-
 	if ((p = getidordot(p, buf1, STRSIZE)) == NULLCP)
 		return (NULLCP);
-
 	while (*p && isspace(*p))
 		p++;
-
 	if (*p == '\0')
 		return (buf);
-
 	return (NULLCP);
 }
 
 /*
  * get an identifier into the given buffer [A-Za-z_] are legal chars
  */
-char *
-getid (char *p, char *buf, int len) {
+char *getid (char *p, char *buf, int len) {
 	char	*fbuf;
-
 	fbuf = buf;
-
 	while (*p && isspace(*p))
 		p++;
-
 	while (*p && (isalnum(*p) || *p == '_')) {
 		if (len-- >= 0)
 			*buf++ = *p;
 		p++;
 	}
-
 	if (fbuf == buf)
 		return (NULLCP);
-
 	*buf = '\0';
-
 	return (p);
-
 }
 
 /*
  * get an identifier into the given buffer - '.' are considered part of an
  * identifier - should really be called get field reference
  */
-char *
-getidordot (char *p, char *buf, int len) {
+char *getidordot (char *p, char *buf, int len) {
 	char	*fbuf;
-
 	fbuf = buf;
-
 	while (*p && isspace(*p))
 		p++;
-
 	if (*p == '&') {
 		len--;
 		*buf++ = *p++;
@@ -1218,21 +1102,17 @@ getidordot (char *p, char *buf, int len) {
 		while (*p && isspace(*p))
 			p++;
 	}
-
 	while (*p && (isalnum(*p) || *p == '_' || *p == '.')) {
 		if (len-- >= 0)
 			*buf++ = *p;
 		p++;
 	}
-
 	if (fbuf == buf)
 		return (NULLCP);
-
 	*buf = '\0';
-
 	return (p);
-
 }
+
 static char *noindstr[] = {
 	"*", "*parm", "&", "&parm",
 	NULLCP
@@ -1242,30 +1122,22 @@ static char *noindstr[] = {
  * determine if the given field means no indirection wanted and so return 1
  * else return 0
  */
-int
-noindirect (char *f) {
+int noindirect (char *f) {
 	char *p, **ps;
 	int		l;
-
 	if (f == NULLCP)
 		return (1);
-
 	f = skipspace(f);
-
 	if (f == NULLCP)
 		return (1);
-
 	if (*f == '&')
 		return (1);
-
 	for (p = f; *p && !isspace(*p); p++)
 		;
 	l = p - f;
-
 	for (ps = noindstr; *ps; ps++)
 		if (l == strlen(*ps) && strncmp(f, *ps, l) == 0)
 			return (1);
-
 	return (0);
 }
 
@@ -1275,35 +1147,25 @@ noindirect (char *f) {
  * Namely the yp_parm_type to contain the (Parameter) type string.
  * then if there is a $ the yp_parm to the part after the $, the field
  */
-setvaltype(yp, str)
-YP	yp;
-char	*str;
-{
+int setvaltype(YP yp, char *str) {
 	char *p;
-
 	if (str == NULLCP || *(str = skipspace(str)) == '\0')
 		return (0);
-
 	if (p = index(str, '$')) {
 		*p++ = '\0';
 		p = skipspace(p);
 		yp->yp_parm = strdup(p);
 		yp->yp_flags |= YP_PARMVAL;
 	}
-
 	yp->yp_param_type = strdup(str);
-
 	return (1);
-
 }
 
 
 /*
  * generate the functions that carry out the action statements
  */
-gen_actfunct(fp)
-FILE	*fp;
-{
+void gen_actfunct(FILE *fp) {
 	SY	sy;
 	YP	yp;
 
@@ -1375,11 +1237,7 @@ FILE	*fp;
 /*
  * generate the actions for this YP unit and all its children
  */
-gen_actions(fp, oyp, form)
-FILE	*fp;
-YP	oyp;
-int	form;	/* what type of action is it */
-{
+void gen_actions(FILE *fp, YP oyp, int form) {
 	YP	yp;
 	YAL	yal;
 
@@ -1417,15 +1275,11 @@ int	form;	/* what type of action is it */
 		}
 	}
 }
+
 /*
  * dump out a single action
  */
-dumpact(fp, yal, form, ret)
-FILE	*fp;
-YAL	yal;
-int	form;
-int	ret;
-{
+void dumpact(FILE *fp, YAL yal, int form, int ret) {
 	char	*comm = yal->yal_comment;
 	char	*type = yal->yal_type;
 	Action	act;
@@ -1490,10 +1344,7 @@ int	ret;
  * specification
  * i.e. a [[ P type ]] specification
  */
-char	*
-partyp2str(yp)
-YP	yp;
-{
+char *partyp2str(YP yp) {
 	char *p;
 
 	if (yp->yp_param_type == NULLCP) {
@@ -1509,11 +1360,11 @@ YP	yp;
 
 	return (p);
 }
+
 /*
  * produce a string giving the type of a symbol, in a static buffer
  */
-char *
-sym2type (SY sy) {
+char *sym2type (SY sy) {
 	static char buffer[STRSIZE];
 
 	if (sy->sy_type && sy->sy_type->yp_param_type)
@@ -1524,9 +1375,7 @@ sym2type (SY sy) {
 	return (buffer);
 }
 
-char *genstrform (yp)
-YP yp;
-{
+char *genstrform (YP yp) {
 	char *s;
 	int pindex;
 	static char genbuf[BUFSIZ];

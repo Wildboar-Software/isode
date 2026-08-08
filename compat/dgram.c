@@ -48,7 +48,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
 #ifndef	DEBUG
 #define	action(s,f,i)
 #else
-static	action ();
+static void action (char *s, int fd, struct sockaddr *sock);
 #endif
 
 extern IFP set_check_fd ();
@@ -727,11 +727,7 @@ static struct printent {
 	0
 };
 
-static	action (s, fd, sock)
-char   *s;
-int	fd;
-struct sockaddr *sock;
-{
+static void action (char *s, int fd, struct sockaddr *sock) {
 	char    buffer[BUFSIZ];
 	struct printent *p;
 

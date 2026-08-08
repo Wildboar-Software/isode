@@ -64,22 +64,16 @@ qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
 }
 
 
-static int
-qbuf_close (PS ps) {
-	struct qbuf   *qb;
-
+static int qbuf_close (PS ps) {
+	struct qbuf *qb;
 	if ((qb = (struct qbuf *) ps -> ps_addr) == NULL)
-		return;
-
+		return OK;
 	QBFREE (qb);
+	return OK;
 }
 
-/*  */
-
-int
-qbuf_open (PS ps) {
+int qbuf_open (PS ps) {
 	ps -> ps_readP = qbuf_read;
 	ps -> ps_closeP = qbuf_close;
-
 	return OK;
 }
