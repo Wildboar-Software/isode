@@ -37,9 +37,9 @@ id_entry *id_table[TABLESIZE];
 
 #define my_error(mesg)	(fprintf(stderr, "%s\n",mesg),exit(1))
 
-extern char *notidtoid(), *my_new_str(), *my_strcat();
+extern char *notidtoid(char *s), *my_new_str(char *s), *my_strcat(char *s1, char *s2);
 extern char *
-proc_name(), *mymodule;
+proc_name(char *t, int flag), *mymodule;
 
 /*
  * Lookup the hash table (id_table) for the string t and insert it at
@@ -47,8 +47,7 @@ proc_name(), *mymodule;
  * The argument flag indicates whether t is being defined (1) or used
  * (0).
  */
-char *
-proc_name (char *t, int flag) {
+char *proc_name (char *t, int flag) {
 	int     i;
 	static int curr = 0;
 	id_entry *ptr;
@@ -78,8 +77,7 @@ proc_name (char *t, int flag) {
  * output a sequence of #define statements (one for each value stored
  * in the hash table) to the file specified by fp
  */
-out_final_defs(fp)
-FILE   *fp;
+void out_final_defs(FILE *fp)
 {
 	int     j;
 	id_entry *ptr;
@@ -156,8 +154,7 @@ hash_val (char *s) {
 /*
  * initialize the table id_table
  */
-int
-init()  {
+int init(void) {
 	int     i;
 
 	for (i = 0; i <= TABLESIZE; i++)

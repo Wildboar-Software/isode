@@ -216,7 +216,7 @@ static void modsym_aux (char *name, char *bp);
 static void read_ph_file (char *module, OID oid);
 static void write_ph_file (void);
 
-static FILE *open_ph_file ();
+static FILE *open_ph_file (char *fn, char *fnoid, char *mode);
 extern FILE *yyin, *yyout;
 extern int comptag(int tag, YP yp);
 
@@ -427,7 +427,7 @@ static void pyyerror (YP yp, char *fmt) {
 }
 #endif
 
-int yywrap() {
+int yywrap(void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	return 1;
@@ -491,7 +491,7 @@ void yyprint (char *s, int f, int top) {
 	linepos += len;
 }
 
-void pass1() { }
+void pass1(void) { }
 
 void pass1_type (
 	char *encpref,
@@ -520,8 +520,7 @@ void pass1_type (
 	mysymbols = add_symbol (mysymbols, sy);
 }
 
-static void hprologue (fp)
-FILE *fp;
+static void hprologue (FILE *fp)
 {
 #define NFILES 	5
 	char *files[NFILES];
@@ -551,7 +550,7 @@ FILE *fp;
 #undef NFILES
 }
 
-void pass2() {
+void pass2(void) {
 	SY	    sy;
 	YP	    yp;
 
@@ -2253,7 +2252,7 @@ static void val2prf (YV yv, int level) {
 
 static void dump_real (double r) {
 #ifndef	BSD44
-	extern char *ecvt ();
+	extern char *ecvt (double, int, int *, int *);
 	char	*cp;
 	char	sbuf[128];
 	int	decpt, sign;
@@ -2899,9 +2898,9 @@ static char *gensym (char *s, char *a) {
 }
 
 /* pepy compatible routines - you know how it is ... */
-void init_new_file() { }
+void init_new_file(void) { }
 
-void end_file() { }
+void end_file(void) { }
 
 static char *array (char *s, int flg) {
 	static char buf[BUFSIZ];
@@ -3372,7 +3371,7 @@ Action new_action_t(char *text, int lineno, int num) {
  * support routine for YAL = allocate space for it and make sure it is
  * zero'd
  */
-YAL new_yal() {
+YAL new_yal(void) {
 	YAL	yal;
 
 	if ((yal = (YAL) calloc(1, sizeof (*yal))) == NULLYAL)

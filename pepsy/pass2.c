@@ -40,25 +40,25 @@ extern char *eval;
 
 extern int Aflag;
 extern SY mysymbols;
-extern char *modsym(), *gfree();
-extern char *my_strcat();
-extern char *notidtoid();
-extern char	*rm_indirect();
-extern char	*getid();
-extern char	*getidordot();
-extern char	*getfield();
-extern char	*sym2type();
-extern YP	lookup_type();
-extern MD	lookup_module ();
+extern char *modsym(char *module, char *id, char *prefix), *gfree(char *module, char *id, char *parm);
+extern char *my_strcat(char *s1, char *s2);
+extern char *notidtoid(char *s);
+extern char	*rm_indirect(char *p);
+extern char	*getid(char *p, char *buf, int len);
+extern char	*getidordot(char *p, char *buf, int len);
+extern char	*getfield(char *p);
+extern char	*sym2type(SY sy);
+extern YP	lookup_type(char *mod, char *id);
+extern MD	lookup_module (char *module, OID oid);
 
 char	*tab;	/* mymodule - with - changed to _ */
 
 Action	start_action, final_action;
 int	e_actions, d_actions, p_actions; /* number of actions of each type */
 
-FILE   *ffopen();
+FILE   *ffopen(char *name);
 
-void peri_pass2() {
+void peri_pass2(void) {
 	char *inc;	/* *_pre_defs.h file */
 	if (!sflag)
 		fflush(stderr);
@@ -528,7 +528,7 @@ void close_func(FILE *fp) {
 /*
  * print the table id_table
  */
-void print_table() {
+void print_table(void) {
 	int     i;
 	id_entry *t;
 

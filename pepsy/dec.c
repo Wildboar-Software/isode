@@ -33,10 +33,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dec.c,v 9.0 1992/06/1
 #include	"pepsy.h"
 #include	"tailor.h"
 
-extern int pepsylose ();
+extern int pepsylose (modtyp *module, ...);
 
-extern ptpe *next_tpe(), *fdflt_b();
-extern char *pr_petype();
+extern ptpe *next_tpe(ptpe *p), *fdflt_b(ptpe *p);
+extern char *pr_petype(int type);
 
 #define NEXT_TPE(p)	(p = next_tpe(p))
 #define CHKTAG(mod, p, pe)	ismatch(p, mod, pe->pe_class, pe->pe_id)
@@ -48,7 +48,7 @@ static char oomsg[] = "Out of memory";
 static char inpmsg[] = "Illegal Null Pointer";
 #define inpm(a,b)	pepsylose ((a), (b), NULLPE, inpmsg)
 
-static PE setpresent();
+static PE setpresent(PE head, ptpe *p, modtyp *mod);
 
 #define F_CI 0x100	/* called internally */
 
@@ -56,16 +56,16 @@ static PE setpresent();
 #define ALLOC_MEM(p, parm)	(p->pe_type == SOBJECT \
 	&& p[-1].pe_type == MEMALLOC)
 
-static int pr_obj();
-static int pr_type();
-static int pr_seq();
-static int pr_set();
-static int pr_seqof();
-static int pr_setof();
-static int pr_choice();
-static int pr_etype();
-static int setdval();
-static int fix_mem();
+static int pr_obj(int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
+static int pr_type(int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
+static int pr_seq(PE head, char **parm, ptpe *p, modtyp *mod);
+static int pr_set(PE head, char **parm, ptpe *p, modtyp *mod);
+static int pr_seqof(PE head, char **parm, ptpe *p, modtyp *mod);
+static int pr_setof(PE head, char **parm, ptpe *p, modtyp *mod);
+static int pr_choice(PE head, char **parm, ptpe *p, modtyp *mod);
+static int pr_etype(PE pe, char **parm, ptpe *p, modtyp *mod);
+static int setdval(ptpe *typ, ptpe *dflt, char **parm, modtyp *mod);
+static int fix_mem(char **parm, ptpe *p);
 
 /*
  * decode the specified type of the specified module into the given

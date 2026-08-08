@@ -52,8 +52,7 @@ static OP	myoids;
 static SYM	symtab[MAX_TBLS];
 
 
-OID	addoid (o1, o2)
-OID	o1, o2;
+OID	addoid (OID o1, OID o2)
 {
 	OID		noid;
 
@@ -173,7 +172,7 @@ void addtableref (char *name, OID id, int lt) {
 }
 
 int
-print_expimp()  {
+print_expimp(void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;

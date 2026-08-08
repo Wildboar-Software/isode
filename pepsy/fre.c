@@ -38,14 +38,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/fre.c,v 9.0 1992/06/1
 #include	"pepsy.h"
 
 
-extern ptpe *next_tpe();
-extern int pepsylose ();
+extern ptpe *next_tpe(ptpe *p);
+extern int pepsylose (modtyp *module, ...);
 #define NEXT_TPE(p)	p = next_tpe(p)
 #define CHKTAG(mod, p, pe)	ismatch(p, mod, pe->pe_class, pe->pe_id)
 
-static fre_seq();
-static fre_seqof();
-static fre_choice();
+static int fre_seq(char *parm, ptpe *p, modtyp *mod, int dofree);
+static int fre_seqof(char *parm, ptpe *p, modtyp *mod, int dofree);
+static int fre_choice(char *parm, ptpe *p, modtyp *mod, int dofree);
 
 /*
  * free an objects data. Basic algorithm is to walk through it twice
@@ -320,8 +320,7 @@ again:
 /*
  * free elements of a sequential type. e.g. sequence or set
  */
-static
-fre_seq (
+static int fre_seq (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -330,7 +329,6 @@ fre_seq (
 	/*    int    *popt = NULL;	Pointer to optional field */
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
-
 
 	if (parm == 0)
 		return OK;
@@ -459,8 +457,7 @@ fre_seq (
  * free all the fields in a SET OF/SEQUENCE OF type structure. We
  * must follow the linked list until the end
  */
-static
-fre_seqof (
+static int fre_seqof (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -593,8 +590,7 @@ fre_seqof (
  * which item is present and then call the appropriate routine to
  * free it
  */
-static
-fre_choice (
+static int fre_choice (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */

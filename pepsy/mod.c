@@ -31,10 +31,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/mod.c,v 9.0 1992/06/1
 #include "pass2.h"
 
 extern char *sysin;
-extern char *proc_name();
-extern char *my_strcat();
+extern char *proc_name(char *t, int flag);
+extern char *my_strcat(char *s1, char *s2);
 
-char   *calc_arg();
+char   *calc_arg(YP yp, int actno);
 
 #define MAXLENGTH 30
 
@@ -73,13 +73,7 @@ FILE   *fpa;
 }
 #endif
 
-my_do_action(fp, action, level, arg, lineno, new)
-FILE   *fp;
-char   *action;
-int     level;
-char   *arg;
-int     lineno;
-char   *new;
+void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new)
 {
 	int     i;
 	char    t[MAXLENGTH];
@@ -139,10 +133,7 @@ char   *new;
 	fprintf(fp, "%*s}\n", level * 4, "");
 }
 
-char   *
-calc_arg(yp, actno)
-YP      yp;
-int     actno;
+char *calc_arg(YP yp, int actno)
 {
 
 	switch (actno) {

@@ -39,33 +39,33 @@ s_table *head;
 extern s_table *lookup_list(), *proc_def();
 
 extern char *genstrform ();
-extern char *c_tag(), *c_class();
-extern char *ec_tag(), *ec_class();
-extern char *strip_last();
-extern char *get_val(), *get_comp(), *get_string();
+extern char *c_tag(YP yp), *c_class(YP yp);
+extern char *ec_tag(YP yp), *ec_class(YP yp);
+extern char *strip_last(char *s);
+extern char *get_val(char **s), *get_comp(char **s), *get_string(char *s, int direction);
 extern s_table *get_offset();
-extern char *my_strcat(), *strp2name();
+extern char *my_strcat(), *strp2name(char *s1, char *s2);
 extern char *my_new_str();
 extern char *mymodule;
 extern char *modsym();
 extern char *concat();
-extern char *genlabel();
+extern char *genlabel(char *name, YP yp);
 extern char *notidtoid();
-extern char *code2name();
-extern char *yp2name();
-extern YV calc_yv();
+extern char *code2name(int code);
+extern char *yp2name(YP yp);
+extern YV calc_yv(YP yp, char *id);
 extern SY syfind();
 static s_table *en_ptr;
 extern char	*rm_indirect();
-extern char	*getfield();
-extern char	*setfield();
+extern char	*getfield(char *);
+extern char	*setfield(char *p);
 
 static int cons_type = 0;
 /* int     explicit; */
 
 static s_table *save_ptr;
 
-extern YT gen_etag();
+extern YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
 
 #define WORDSIZE	20
 #define MAXNAME		256	/* maximum size of a identifier */
@@ -82,6 +82,44 @@ char   *str_yp_code[] = {
 };
 
 #endif
+
+/*
+ * produce a string that represents the class/flags field for a given
+ * yp entry taking the class to be that given in cl
+ */
+char *c_flags(YP yp, PElementClass cl) {
+	char   *p1;
+	static char buf[STRSIZE];
+
+	switch (yp->yp_code) {
+	case YP_IDEFINED:
+	case YP_CHOICE:
+		if (yp->yp_flags & YP_TAG)
+			break;
+		if (yp->yp_flags & YP_OPTIONAL
+				&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
+					!= (YP_OPTIONAL|YP_OPTCONTROL))) {
+			p1 = "FL_OPTIONAL";
+		} else if (yp->yp_flags & YP_DEFAULT) {
+			p1 = "FL_DEFAULT";
+		} else
+			p1 = "0";
+		return (p1);
+	default:
+		break;
+	}
+	p1 = class2str(cl);
+	if (yp->yp_flags & YP_OPTIONAL
+			&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
+				!= (YP_OPTIONAL|YP_OPTCONTROL))) {
+		strncpy(buf, p1, STRSIZE);
+		p1 = strncat(buf, "|FL_OPTIONAL", STRSIZE);
+	} else if (yp->yp_flags & YP_DEFAULT) {
+		strncpy(buf, p1, STRSIZE);
+		p1 = strncat(buf, "|FL_DEFAULT", STRSIZE);
+	}
+	return (p1);
+}
 
 /*
  * table encode a type. generate tables for the encoding of a type
@@ -355,7 +393,7 @@ void tenc_typ(FILE *fp, YP yp, char *id, char *type) {
 
 		{
 			/* Predefined Universal Type */
-			struct univ_typ *p, *univtyp();
+			struct univ_typ *p, *univtyp(char *);
 
 			if ((p = univtyp(yp->yp_identifier))) {
 				if (p->univ_flags & UNF_EXTMOD) {
@@ -701,49 +739,10 @@ char *ec_tag(YP yp) {
 }
 
 /*
- * produce a string that represents the class/flags field for a given
- * yp entry taking the class to be that given in cl
- */
-char *c_flags(YP yp, PElementClass cl) {
-	char   *p1;
-	static char buf[STRSIZE];
-
-	switch (yp->yp_code) {
-	case YP_IDEFINED:
-	case YP_CHOICE:
-		if (yp->yp_flags & YP_TAG)
-			break;
-		if (yp->yp_flags & YP_OPTIONAL
-				&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
-					!= (YP_OPTIONAL|YP_OPTCONTROL))) {
-			p1 = "FL_OPTIONAL";
-		} else if (yp->yp_flags & YP_DEFAULT) {
-			p1 = "FL_DEFAULT";
-		} else
-			p1 = "0";
-		return (p1);
-
-	default:
-		break;
-	}
-	p1 = class2str(cl);
-	if (yp->yp_flags & YP_OPTIONAL
-			&& ((yp->yp_flags & (YP_OPTIONAL|YP_OPTCONTROL|YP_DEFAULT))
-				!= (YP_OPTIONAL|YP_OPTCONTROL))) {
-		strncpy(buf, p1, STRSIZE);
-		p1 = strncat(buf, "|FL_OPTIONAL", STRSIZE);
-	} else if (yp->yp_flags & YP_DEFAULT) {
-		strncpy(buf, p1, STRSIZE);
-		p1 = strncat(buf, "|FL_DEFAULT", STRSIZE);
-	}
-	return (p1);
-}
-/*
  * turn the class number into its corresponding string
  */
 char	*
-class2str(cl)
-PElementClass	cl;
+class2str(PElementClass cl)
 {
 	char *p1;
 
@@ -776,8 +775,7 @@ PElementClass	cl;
  * return it
  */
 char   *
-c_class(yp)
-YP      yp;
+c_class(YP yp)
 {
 	int     i;
 
@@ -794,8 +792,7 @@ YP      yp;
  * return it
  */
 char   *
-ec_class(yp)
-YP      yp;
+ec_class(YP yp)
 {
 	int     i;
 	char   *p1;
@@ -860,11 +857,7 @@ YP      yp;
 /*
  * generate tables for encoding a contructed type
  */
-tenc_loop(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
+void tenc_loop(FILE *fp, YP yp, char *id, char *type)
 {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tenc_typ(fp, yp, id, type);
@@ -941,7 +934,7 @@ add_list (char *type, char *id) {
  * print the declaration list
  */
 int
-print_list()  {
+print_list(void) {
 	s_table *prev;
 
 	for (prev = head; prev != NULL; prev = prev->next) {
@@ -1050,8 +1043,7 @@ get_string (char *s, int direction) {
  * Determine wether this list contains any items that will generate
  * an optional field. If so return non zero
  */
-optfield(yp)
-YP      yp;
+int optfield(YP yp)
 {
 	for (; yp; yp = yp->yp_next) {
 		if (yp->yp_flags & YP_OPTIONAL) {
@@ -1073,10 +1065,7 @@ YP      yp;
 	return (0);
 }
 
-gen_dflts(fp, yp, type)
-FILE    *fp;
-YP      yp;
-char   *type;
+void gen_dflts(FILE *fp, YP yp, char *type)
 {
 	YP      y;
 
@@ -1130,10 +1119,7 @@ strp2name (char *s1, char *s2) {
  * to have pointers which reference these definitions for use by
  * gdflt routine.
  */
-defdflt(fp, yp, name)
-FILE    *fp;
-YP      yp;
-char   *name;
+void defdflt(FILE *fp, YP yp, char *name)
 {
 	YV      yv;
 	YV      yv1;
@@ -1347,11 +1333,7 @@ dumpdef3:	/* Reals */
  * should contain the default value which the encoder will know means
  * default encoding
  */
-gdflt(fp, yp, which)
-FILE	*fp;
-YP      yp;
-int     which;			/* Which type of entries to generate
-				 * G_ENC encode G_DEC decode */
+void gdflt(FILE *fp, YP yp, int which)
 {
 	YV      yv;
 	YV      yv1;
@@ -1503,18 +1485,13 @@ int     which;			/* Which type of entries to generate
  * looking at the value definitions associated with type definition
  * yp. Returns the value definition if found or NULL if not.
  */
-YV
-calc_yv(yp, id)
-YP      yp;
-char   *id;
+YV calc_yv(YP yp, char *id)
 {
 	YV      yv;
-
 	for (yv = yp->yp_value; yv != NULL; yv = yv->yv_next) {
 		if (yv->yv_flags & YV_NAMED && strcmp(yv->yv_named, id) == 0)
 			return (yv);
 	}
-
 	return (NULL);
 }
 
@@ -1527,9 +1504,7 @@ char   *id;
  * character array which contains the bits.
  */
 
-numtobstr(yv, ppstr)
-YV      yv;
-char  **ppstr;
+int numtobstr(YV yv, char **ppstr)
 {
 
 	int     ibits, lastb, i;
@@ -1549,7 +1524,9 @@ char  **ppstr;
 	*ppstr = buf;
 	return (lastb + 1);
 }
+
 #define ROUNDUP		10
+
 /*
  * Take a list of Values (YV_VALIST) which should contain a list of
  * bits and convert them into a bitstring initialisation. As in
@@ -1559,12 +1536,7 @@ char  **ppstr;
  * address is in ppstr. yp is the definition of the type which
  * contains the names of all the defined bits.
  */
-valisttobs(yp, yv, ppstr)
-YP      yp;
-YV      yv;
-char  **ppstr;
-{
-
+int valisttobs(YP yp, YV yv, char **ppstr) {
 	YV      yv1, yv2;
 	int     lastb, val, nsize, size;
 	char   *buf;
@@ -1596,15 +1568,13 @@ char  **ppstr;
 	*ppstr = buf;
 	return (lastb + 1);
 }
+
 /*
  * Print the string out in a format acceptable as a quoted string in
  * a C program including the quotes. Using \ escapes for unprintable
  * characters
  */
-prstr(fp, str, len)
-FILE   *fp;
-char   *str;
-int     len;
+void prstr(FILE *fp, char *str, int len)
 {
 	fputc('"', fp);
 	while (len-- > 0) {
@@ -1618,14 +1588,12 @@ int     len;
 	fputc('"', fp);
 #define MAXPLINE	16
 }
+
 /*
  * output a initialisation for a character array as unsigned hex
  * numbers
  */
-prhstr(fp, str, len)
-FILE   *fp;
-char   *str;
-int     len;
+void prhstr(FILE *fp, char *str, int len)
 {
 	int     npline;		/* number on this line */
 
@@ -1642,12 +1610,12 @@ int     len;
 	}
 	fprintf(fp, "}");
 }
+
 /*
  * determine if the string is printable i.e. only sensible to be read
  * as a character string. 1 (true) if it is 0, if it isn't
  */
-int
-printable (char *str, int i) {
+int printable (char *str, int i) {
 	while (i-- > 0) {
 		if (!isprint(*str & 0xff))
 			return (0);		/* look for the first non printable
@@ -1656,15 +1624,12 @@ printable (char *str, int i) {
 	}
 	return (1);
 }
+
 /*
  * generate a unique identifier  using the name given and the name if
  * present in yp. Return a pointer to it in a space malloc'ed out
  */
-char   *
-genlabel(name, yp)
-char   *name;
-YP      yp;
-{
+char *genlabel(char *name, YP yp) {
 	char    buf[MAXNAME];
 	static int cnt;
 	char   *p1, *p2;
@@ -1680,11 +1645,11 @@ YP      yp;
 
 	return (my_new_str(buf));
 }
+
 /*
  * generate a ptr table reference for the given module table entry
  */
-int
-gen_modref (char *mod) {
+int gen_modref (char *mod) {
 	char	buf[BUFSIZ];
 	char	*p1;
 	int		ind;
@@ -1693,12 +1658,10 @@ gen_modref (char *mod) {
 	sprintf(buf, "&%s%s%s", PREFIX, p1, MODTYP_SUFFIX);
 	ind = addptr(buf);
 	free(p1);
-
 	return (ind);
 }
 
-char *
-setfield (char *p) {
+char *setfield (char *p) {
 	char	*f;
 
 	if ((f = getfield(p)) == NULLCP) {
@@ -1710,17 +1673,15 @@ setfield (char *p) {
 
 /*
  * print a normal table entry
+ * fp: file
+ * t: parent type
+ * f: field name
+ * yp: object
+ * p1: table entry name
  */
-prnte(fp, t, f, yp, p1)
-FILE	*fp;
-char	*t;	/* parent type */
-char	*f; 	/* field name */
-YP	yp;	/* object */
-char	*p1;	/* table entry name */
-{
+void prnte(FILE *fp, char *t, char *f, YP yp, char *p1) {
 	if (p1 == NULL)
 		ferr(1, "prnte: called with a NULL p1\n");
-
 	if (t && noindirect(f))
 		prstfield(fp, p1, t, f, c_tag(yp), c_class(yp), yp);
 	else
@@ -1738,12 +1699,13 @@ char	*p1;	/* table entry name */
  * else - can't find the base type - probably because it is external
  *   i)  generate a warning and exit
  */
-gen_identry(fp, t, f, yp, fn)
-FILE	*fp;
-char	*t, *f;
-YP	yp;
-int	(*fn)();
-{
+void gen_identry(
+	FILE *fp,
+	char *t,
+	char *f,
+	YP yp,
+	void (*fn) (FILE *fp, YP oyp, YP yp1, char *t, char *f)
+) {
 	YP	yp1;
 	int	code;
 	SY	sy;
@@ -1837,13 +1799,7 @@ int	(*fn)();
  * down to what it is. Given that its use above has an IMPLICIT tag pd_yt
  * if it is non Null
  */
-YT
-gen_etag(fp, pd_yt, yp, flags)
-FILE	*fp;
-YT	pd_yt;
-YP	yp;
-char	*flags;
-{
+YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags) {
 	YT	yt;
 
 	yt = yp->yp_tag;
@@ -1875,10 +1831,7 @@ char	*flags;
  * generate the table entry for a value passing defined type which
  * is equivalent to the given primative type
  */
-gen_ventry(fp, oyp, yp, t, f)
-FILE	*fp;
-YP	oyp, yp;
-char	*t, *f;
+void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f)
 {
 	char	*p1;
 	char	s = oyp->yp_prfexp;	/* type of value passing */
@@ -2007,40 +1960,27 @@ char	*t, *f;
 
 /*
  * generate a table entry for a function call that handles this type
+ * fn: name of routine to generate 
  */
-gen_fn(fp, yp, fn)
-FILE	*fp;
-YP	yp;
-char	*fn;	/* name of routine to generate */
-{
-
+void gen_fn(FILE *fp, YP yp, char *fn) {
 	gen_identry(fp, fn, NULLCP, yp, gen_fnentry);
 }
 
 /*
  * generate a table entry for a function call that handles this type
+ * fn: name of routine to generate
  */
-/* ARGSUSED */
-gen_fnentry(fp, oyp, yp, fn, dummy)
-FILE	*fp;
-YP	oyp;
-YP	yp;
-char	*fn;	/* name of routine to generate */
-char	*dummy;
-{
-
+void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy) {
 	fprintf(fp, "\t{ FN_CALL, %d, %s, %s, %s },\n",
 			addptr(fn), c_tag(yp), c_class(yp),
 			genstrform(yp));
 }
+
 /*
  * declare the functions that are used
  * One day generate ANSII C definitions as well
  */
-declfns(fp, fn)
-FILE	*fp;
-YFN	fn;
-{
+void declfns(FILE *fp, YFN fn) {
 	if (fn->yfn_enc) {
 		fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
 	}
@@ -2054,13 +1994,11 @@ YFN	fn;
 		fprintf(fp, "extern int	%s();\n", fn->yfn_fre);
 	}
 }
+
 /*
  * generate the table entry to handle an action - UCODE
  */
-gen_act(fp, act, yp)
-FILE	*fp;
-Action	act;
-YP yp;
+void gen_act(FILE *fp, Action act, YP yp)
 {
 	fprintf(fp, "\t{ UCODE, %d, 0, 0, %s }, /* line %d */\n",
 			act->a_num, genstrform (yp), act->a_line);
@@ -2069,10 +2007,7 @@ YP yp;
 /*
  * print out the field entry for a type where all the parameters are given
  */
-prtfield(fp, typ, t, f, cl, fl, yp)
-FILE	*fp;
-char	*typ, *t, *f, *cl, *fl;
-YP 	yp;
+void prtfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp)
 {
 	if (cl == NULLCP)
 		cl = "0";
@@ -2091,10 +2026,7 @@ YP 	yp;
  * print out the field entry for a Simple type where all the parameters
  * are given
  */
-prstfield(fp, typ, t, f, cl, fl, yp)
-FILE	*fp;
-char	*typ, *t, *f, *cl, *fl;
-YP	yp;
+void prstfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp)
 {
 	if (cl == NULLCP)
 		cl = "0";
@@ -2112,12 +2044,9 @@ YP	yp;
  * convert an integer into a temporary string. Useful for calling
  * the printing routines with
  */
-char *
-int2tstr (int i) {
+char *int2tstr (int i) {
 	static char	buf[STRSIZE];
-
 	sprintf(buf, "%d", i);
-
 	return (buf);
 }
 
@@ -2127,31 +2056,25 @@ static char	*codetab[] = {
 	"SEQUENCE OF", "SEQUENCE",  "SET", "SET OF", "SET", "CHOICE",
 	"ANY", "OBJECT IDENTIFIER", "Defined type", "ENUMERATED",
 	"REAL", "Imported type",
-
 	NULL
 };
+
 /*
  * produce a user readable name for a yp_code value
  */
-char *
-code2name (int code) {
+char *code2name (int code) {
 	static char	buf[STRSIZE];
-
 	if (code < 0 || code > YP_IMPTYPE) {
 		sprintf(buf, "Unknown code (%d)", code);
 		return (buf);
 	}
-
 	return (codetab[code]);
 }
 /*
  * print out a description of the yp type for the user that is good enough
  * for them to identifier the entry if possible
  */
-char	*
-yp2name(yp)
-YP	yp;
-{
+char *yp2name(YP yp) {
 	static char	buf[STRSIZE*4];
 	char	*p;
 
@@ -2174,32 +2097,28 @@ YP	yp;
 		sprintf(p, "%s", code2name(yp->yp_code));
 		p += strlen(p);
 	}
-
 	if (yp->yp_flags & YP_ID) {
 		sprintf(p, " %s", yp->yp_id);
 		p += strlen(p);
 	}
-
 	if (yp->yp_lineno > 0) {
 		sprintf(p, " on line %d", yp->yp_lineno);
 		p += strlen(p);
 	}
-
 	return (buf);
-
 }
+
 /*
  * generate a table entry for the given compound type. It determines wether to
  * generate a simple type (prstfield) or not.
+ *
+ * type: zero if we are foundation type of the table
+ * t: parent type
+ * f: field name
+ * yp: object
+ * p1: table entry name
  */
-prcte(fp, type, t, f, yp, p1)
-FILE	*fp;
-char	*type;	/* zero if we are foundation type of the table */
-char	*t;	/* parent type */
-char	*f; 	/* field name */
-YP	yp;	/* object */
-char	*p1;	/* table entry name */
-{
+void prcte(FILE *fp, char *type, char *t, char *f, YP yp, char *p1) {
 	if (type == NULL || (type && noindirect(f)))
 		prstfield(fp, p1, t, f, c_tag(yp), c_class(yp), yp);
 	else

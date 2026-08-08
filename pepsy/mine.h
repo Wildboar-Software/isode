@@ -42,5 +42,3 @@ typedef struct S_TABLE {
 } s_table;
 
 extern	id_entry	*id_table[];
-
-extern char *c_flags();

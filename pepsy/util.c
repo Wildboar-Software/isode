@@ -40,9 +40,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/util.c,v 9.0 1992/06/
 #endif
 #define pname(t)	((t)->pe_typename ? *(t)->pe_typename : "???")
 
-char *pr_petype ();
+char *pr_petype (int type);
 
-extern void exit();
+extern void exit(int);
 
 #ifdef lint
 /* VARARGS4 */
@@ -175,8 +175,7 @@ ferrd (int n, char *mesg, int d) {
 #define TYP_PRINT	2
 #define TYP_LAST	2
 
-int
-dmp_tpe (
+void dmp_tpe (
 	char *s,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -240,11 +239,12 @@ dmp_tpe (
 	printf("%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);
 }
+
 #define NENTRY(x)	((sizeof (x)/sizeof (x[0])))
+
 /*
  * Print out a ptpe entry
  */
-
 static CMD_TABLE pepsy_type_tbl[] = {
 	"PE_START",	PE_START,
 	"PE_END",	PE_END,
@@ -303,8 +303,7 @@ static CMD_TABLE pepsy_type_tbl[] = {
 	NULLCP,		-10,
 };
 
-char *
-pr_petype (int type) {
+char *pr_petype (int type) {
 	static char nbuf[30];
 	char *p;
 
@@ -313,8 +312,7 @@ pr_petype (int type) {
 	return p;
 }
 
-int
-pr_entry (ptpe *p) {
+void pr_entry (ptpe *p) {
 	printf ("%s, ", pr_petype (p -> pe_type));
 	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }
@@ -323,16 +321,14 @@ pr_entry (ptpe *p) {
 /*
  * null function for what evr purposes
  */
-int
-f_null()  {
+void f_null(void) {
 }
 
 /*
  * compare a given number of bits pointed to by the two character
  * pointers return 0 if they are the same non zero otherwise
  */
-int
-bitscmp (char *p1, char *p2, int len) {
+int bitscmp (char *p1, char *p2, int len) {
 	int i;
 	unsigned int mask;
 
@@ -351,12 +347,12 @@ bitscmp (char *p1, char *p2, int len) {
 }
 
 #define MIN(a, b)	(a < b ? a : b)
+
 /*
  * compare an octet string and a qb and return 0 if they are the same
  * and non zero otherwise
  */
-int
-ostrcmp (char *p, int len, struct qbuf *qb) {
+int ostrcmp (char *p, int len, struct qbuf *qb) {
 	struct qbuf *qp;
 
 	if (len < 0 || qb == NULL || p == NULL)
@@ -383,8 +379,7 @@ ostrcmp (char *p, int len, struct qbuf *qb) {
 /*
  * Is data present for the optional item? 1 for yes 0 for no
  */
-int
-hasdata (
+int hasdata (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -444,8 +439,7 @@ next:
  * structure and if so return greater than zero (meaning don't encode this
  * item). On error return NOTOK
  */
-int
-same (
+int same (
 	ptpe *typ,
 	ptpe *dflt,
 	char *parm,
@@ -624,12 +618,8 @@ o1string:
  * Calculate the next tpe entry in the sequence. Count a sequence as
  * one element
  */
-ptpe *
-next_tpe (ptpe *p) {
+ptpe *next_tpe (ptpe *p) {
 	int     level;
-
-
-
 	level = 0;
 	if (p->pe_type == PE_END) {
 		pepsylose (NULLMODTYP, p, NULLPE,
@@ -709,8 +699,7 @@ again:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-int
-ismatch (
+int ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
 	unsigned int cl,
@@ -764,8 +753,7 @@ ismatch (
  * find the data entry that goes with this DFLT_F entry
  * bascially skip over any ETAGS that (an arbitary number but almost always 1)
  */
-ptpe *
-fdflt_f (ptpe *p) {
+ptpe *fdflt_f (ptpe *p) {
 	if (p->pe_type != DFLT_F)
 		ferr(1, "fdlt_f:Internal Error missing DFLT_F\n");
 
@@ -780,8 +768,7 @@ fdflt_f (ptpe *p) {
 /*
  * find the DFLT_B entry
  */
-ptpe *
-fdflt_b (ptpe *p) {
+ptpe *fdflt_b (ptpe *p) {
 	for (p++; p->pe_type != PE_END; p++) {
 		if (p->pe_type == DFLT_B)
 			return (p);

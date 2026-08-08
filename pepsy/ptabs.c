@@ -26,6 +26,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/ptabs.c,v 9.0 1992/06
 
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "pepsydefs.h"
 #include "pass2.h"
 #include "mine.h"
@@ -36,17 +38,18 @@ extern char *strip_last();
 extern char *str_yp_code[];
 extern char *get_val(), *get_comp(), *strp2name();
 extern s_table *lookup_list(), *get_offset();
-extern YP tprnt_loop();
-extern int	gen_pentry();
+extern YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+extern void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 
-extern char *concat();
-extern char *my_strcat();
-extern char	*rm_indirect();
-extern char	*getfield();
+extern char *concat(char *s1, char *s2);
+extern char *my_strcat(char *s1, char *s2);
+extern char	*rm_indirect(char *p);
+extern char	*getfield(char *p);
 extern char	*setfield();
 extern char	*yp2name ();
 extern char	*code2name ();
-extern char	*modsym ();
+extern char	*modsym (char *module, char *id, char *prefix);
+char *c_flags(YP yp, PElementClass cl);
 
 /*
 extern int explicit;
@@ -70,12 +73,7 @@ static int	mrose3; /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
 /*
  * table printe a type. generate tables for the printing of a type
  */
-tprnt_typ(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
-{
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type) {
 	char   *t, *f;
 	char   *p1;
 	YP      y;
@@ -636,23 +634,14 @@ char   *type;
 /*
  * generate tables for printing a contructed type
  */
-YP
-tprnt_loop(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
-{
+YP tprnt_loop(FILE *fp, YP yp, char *id, char *type) {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tprnt_typ(fp, yp, id, type);
 	}
 }
 
 
-ddflt(fp, yp)
-FILE	*fp;
-YP      yp;
-{
+void ddflt(FILE *fp, YP yp) {
 	switch (yp->yp_code) {
 	case YP_BOOL:
 	case YP_INT:
@@ -688,12 +677,7 @@ YP      yp;
 /*
  * print a Non offset table entry
  */
-prte_noff(fp, type, yp, idx)
-FILE	*fp;
-char	*type;
-YP	yp;
-int	idx;
-{
+void prte_noff(FILE *fp, char *type, YP yp, int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -725,11 +709,7 @@ int	idx;
 /*
  * print a Non offset table entry for an ETAG - special case
  */
-prte_enoff(fp, type, yp, idx)
-FILE	*fp;
-char	*type;
-YP	yp;
-int	idx;
+void prte_enoff(FILE *fp, char *type, YP yp, int idx)
 {
 	char	*tag;
 	char	*flags;
@@ -765,14 +745,7 @@ int	idx;
 /*
  * print an offset table entry
  */
-/* ARGSUSED */
-prte_off(fp, type, yp, t, f, idx)
-FILE	*fp;
-char	*type;
-YP	yp;
-char	*t, *f;
-int	idx;
-{
+void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -816,14 +789,9 @@ int	idx;
  * handle the very complex task of defined types.
  * Basically generating object calls
  */
-pr_deftyp(fp, yp, t, f)
-FILE	*fp;
-YP	yp;
-char	*t;
-char	*f;
-{
+void pr_deftyp(FILE *fp, YP yp, char *t, char *f) {
 	/* Predefined Universal Type */
-	struct univ_typ *p, *univtyp();
+	struct univ_typ *p, *univtyp(char *name);
 
 	if ((p = univtyp(yp->yp_identifier))) {
 		if (p->univ_flags & UNF_EXTMOD) {
@@ -843,12 +811,7 @@ do_obj:
 /*
  * print an offset table entry for an OBJECT type entry
  */
-/* ARGSUSED */
-prte_obj(fp, yp, t, f)
-FILE	*fp;
-YP	yp;
-char	*t, *f;
-{
+void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 	char	*type;
 	char	*obj;
 	char	*flags;
@@ -914,12 +877,7 @@ char	*t, *f;
  * print an table entry for Universal type with the given entry
  */
 /* ARGSUSED */
-prte_univt(fp, p, yp, t, f)
-FILE	*fp;
-struct univ_typ *p;
-YP	yp;
-char	*t, *f;
-{
+void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
 	char	*type;
 	int		tag;
 	PElementClass class;
@@ -981,15 +939,10 @@ char	*t, *f;
  * generate the table entry for a value passing defined type which
  * is equivalent to the given primative type
  */
-gen_pentry(fp, oyp, yp, t, f)
-FILE	*fp;
-YP	oyp, yp;
-char	*t, *f;
-{
+void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f) {
 	char	*p1;
 	char	s = oyp->yp_prfexp;	/* type of value passing */
 	int		idx;
-
 
 	if (noindirect(f) && s != 'q' && s != 'a')
 		ferrs(1,
@@ -1121,10 +1074,8 @@ char	*t, *f;
 	prte_off(fp, p1, yp, t, f, idx);
 }
 
-int
-addsptr (char *s) {
+int addsptr (char *s) {
 	char buf[BUFSIZ];
-
 	sprintf (buf, "\"%s\"", s);
 	return addptr (buf);
 }

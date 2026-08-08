@@ -25,6 +25,8 @@
  * #ifdef on the version number. Also used to provide backwards compatible
  * macro definitions for posy/pepy.
  */
+#include <stdio.h>
+#include "pepsydefs.h"
 #define PEPSY_VERSION_NUMBER	2
 #define NBPC	8	/* Number of Bits per character - machine dependant */
 #define NBPI	sizeof (int)*NBPC	/* Number of bits per integer */
@@ -97,7 +99,7 @@ struct	univ_typ	{
 #define UNF_HASDATA	2	/* Has data structure - allocate data for it */
 };
 
-extern struct univ_typ *univtyp();
+extern struct univ_typ *univtyp(char *name);
 
 /* How many entries in an array */
 #define NENTRIES(x)	(sizeof (x)/sizeof ((x)[0]))
@@ -115,19 +117,17 @@ extern int	options[];
 
 #define STRSIZE 128	/* general buffer size */
 
-extern char   *proc_name();
+extern char   *proc_name(char *t, int flag);
 
-extern char *getfield(), *getfldbit();
-extern char *class2str();
+extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
+extern char *class2str(PElementClass cl);
 
-extern int	gen_ventry();	/* generate a Value Passing Entry */
-extern int	gen_fnentry();	/* generate a function calling entry */
+extern void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f);	/* generate a Value Passing Entry */
+extern void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy);	/* generate a function calling entry */
 /* extern Action	start_action, final_action; */
-extern char	*int2tstr();	/* integer to temporary string */
+extern char	*int2tstr(int i);	/* integer to temporary string */
 
-extern char *getfield(), *getfldbit();
-extern char *class2str();
+extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
+extern char *class2str(PElementClass cl);
 
-extern int	gen_ventry();	/* generate a Value Passing Entry */
-extern int	gen_fnentry();	/* generate a function calling entry */
 /* extern Action	start_action, final_action; */

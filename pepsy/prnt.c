@@ -39,12 +39,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/prnt.c,v 9.0 1992/06/
 #define	CHOICE_PUSH
 
 
-extern PE p_setpresent();
+extern PE p_setpresent(PE head, ptpe *p, modtyp *mod);
 extern IFP vfnx;
 extern FILE *vfp;
 
-extern ptpe *next_ptpe();
-extern int pepsylose ();
+extern ptpe *next_ptpe(ptpe *p);
+extern int pepsylose (modtyp *module, ...);
 
 int     xlevel = 0;
 int     tabed = 0;
@@ -53,14 +53,14 @@ int     xpushed = 0;
 #define NEXT_PTPE(p)	(p = next_ptpe(p))
 #define CHKTAG(mod, p, pe)	p_ismatch(p, mod, pe->pe_class, pe->pe_id)
 
-static int p_pr_obj();
-static int p_pr_type();
-static int p_pr_seq();
-static int p_pr_set();
-static int p_pr_seqof();
-static int p_pr_setof();
-static int p_pr_choice();
-static int p_pr_etype();
+static int p_pr_obj(int expl, PE pe, ptpe *p, modtyp *mod);
+static int p_pr_type(int expl, PE pe, ptpe *p, modtyp *mod);
+static int p_pr_seq(PE head, ptpe *p, modtyp *mod);
+static int p_pr_set(PE head, ptpe *p, modtyp *mod);
+static int p_pr_seqof(PE head, ptpe *p, modtyp *mod);
+static int p_pr_setof(PE head, ptpe *p, modtyp *mod);
+static int p_pr_choice(PE head, ptpe *p, modtyp *mod);
+static int p_pr_etype(PE pe, ptpe *p, modtyp *mod);
 
 /* SUPPRESS 36 *//* for Saber C */
 
@@ -1709,11 +1709,10 @@ printable (char *strptr, int len) {
 /*
  * (Dump) Print out a printable entry in a human recognisable form
  */
-int
-dmp_ptpe (
+void dmp_ptpe (
 	char *s,
 	ptpe *p,
-	modtyp *mod			/* Module it is from */
+	modtyp *mod	/* Module it is from */
 ) {
 	int     i, j;
 	ptpe  **par, **prev;

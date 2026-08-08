@@ -24,13 +24,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dtabs.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "pepsydefs.h"
 #include "pass2.h"
 #include "mine.h"
 #include <ctype.h>
-
 
 extern char *c_tag(), *c_class();
 extern char *ec_tag(), *ec_class();
@@ -38,15 +38,15 @@ extern char *strip_last();
 extern char *str_yp_code[];
 extern char *get_val(), *get_comp(), *strp2name();
 extern s_table *lookup_list(), *get_offset();
-extern YP tdec_loop();
+extern YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
 
-extern char *concat();
-extern char *my_strcat();
-extern char	*rm_indirect();
-extern char	*getfield();
+extern char *concat(char *s1, char *s2);
+extern char *my_strcat(char *s1, char *s2);
+extern char	*rm_indirect(char *p);
+extern char	*getfield(char *p);
 extern char	*setfield();
-extern char	*modsym ();
-extern char	*genstrform ();
+extern char	*modsym (char *module, char *id, char *prefix);
+extern char	*genstrform (YP yp);
 extern int	gen_sentry();
 
 /* extern int explicit; */
@@ -56,11 +56,7 @@ extern int	gen_sentry();
 /*
  * table encode a type. generate tables for the encoding of a type
  */
-tdec_typ(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
+void tdec_typ(FILE *fp, YP yp, char *id, char *type)
 {
 	char   *t, *f;
 	char   *p1;
@@ -356,7 +352,7 @@ char   *type;
 
 		{
 			/* Predefined Universal Type */
-			struct univ_typ *p, *univtyp();
+			struct univ_typ *p, *univtyp(char *name);
 
 			if ((p = univtyp(yp->yp_identifier))) {
 				if (p->univ_flags & UNF_EXTMOD) {
@@ -696,12 +692,7 @@ out:
 /*
  * generate tables for encoding a contructed type
  */
-YP
-tdec_loop(fp, yp, id, type)
-FILE	*fp;
-YP      yp;
-char   *id;
-char   *type;
+YP tdec_loop(FILE *fp, YP yp, char *id, char *type)
 {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tdec_typ(fp, yp, id, type);
@@ -710,9 +701,7 @@ char   *type;
 /*
  * Generate a malloc of for the given object
  */
-genmalloc(fp, yp)
-FILE	*fp;
-YP      yp;
+void genmalloc(FILE *fp, YP yp)
 {
 	if (hasdatstr(yp))
 		fprintf(fp, "\t{ MEMALLOC, 0, sizeof (%s), 0, %s },\n",
@@ -724,8 +713,7 @@ YP      yp;
  * itself recursively to handle the cases of pulled up types
  * returns non zero if it does need a type allocated for it
  */
-hasdatstr(yp)
-YP      yp;
+int hasdatstr(YP yp)
 {
 	YP	    y;
 	YP	yp1;
@@ -740,11 +728,8 @@ YP      yp;
 	case YP_OCT:
 	case YP_OID:
 		break;
-
 	case YP_IDEFINED:
-
 		yp1 = lkup(yp);
-
 		if (yp1->yp_code == YP_IDEFINED) {
 			if ((p = univtyp(yp1->yp_identifier)) == NULL
 					|| p->univ_type <= YP_UNDF) {
@@ -771,11 +756,9 @@ YP      yp;
 	return (0);
 }
 
-int control_act (act)
-Action act;
+int control_act (Action act)
 {
 	char *p;
-
 	for (p = act -> a_data; *p; p++)
 		if (!isspace (*p) && *p == '0')
 			return -1;
@@ -789,21 +772,16 @@ Action act;
  * return non zero if we don't want the normal decoding entry to be
  * generated after us for freeing purposes.
  */
-gen_freefn(fp, yp)
-FILE	*fp;
-YP	yp;
+int gen_freefn(FILE *fp, YP yp)
 {
 	char	*fn;
-
 	if (yp->yp_yfn && (fn = yp->yp_yfn->yfn_fre)) {
 		fprintf(fp, "\t{ FFN_CALL, %d, 0, 0, %s},\n",
 				addptr(fn), genstrform(yp));
 		return (1);	/* don't free as per normal */
 	}
-
 	fprintf(fp, "\t{ FREE_ONLY, 0, 0, 0, %s},\n",
 			genstrform(yp));
 	return (0);
-
 }
 

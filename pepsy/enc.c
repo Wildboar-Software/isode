@@ -39,8 +39,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/enc.c,v 9.0 1992/06/1
 #endif
 
 
-extern ptpe *next_tpe(), *fdflt_f();
-extern char *pr_petype();
+extern ptpe *next_tpe(ptpe *p), *fdflt_f(ptpe *p);
+extern char *pr_petype(int type);
 char   *idname(), *clname();
 
 #define NEXT_TPE(p) (p = next_tpe(p))
@@ -51,14 +51,14 @@ static char oomsg[] = "Out of memory";
 #define RET_OK(rpe, pe)		*(rpe) = (pe), (OK)
 #define pname(t)	((t)->pe_typename ? *(t)->pe_typename : "???")
 
-static int en_obj ();
-static int en_type();
-static int en_seq();
-static int en_set();
-static int en_seqof();
-static int en_setof();
-static int en_choice();
-static int en_etype();
+static int en_obj (char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_type(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_seq(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_set(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_seqof(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_setof(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_choice(char *parm, ptpe *p, modtyp *mod, PE *rpe);
+static int en_etype(char *parm, ptpe *p, modtyp *mod, PE *rpe);
 
 /*
  * encode the specified type of the specified module into the given
