@@ -45,17 +45,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/time.c,v 9.0 19
 #include "quipu/attr.h"
 #include "psap.h"
 
-extern int strprint ();
-extern int sfree ();
-extern int pstrcmp();
-extern char *strdup();
+extern int strprint (PS ps, char *str, int format);
+extern int sfree (char *x);
+extern int pstrcmp(char *a, char *b);
+extern char *strdup(const char *);
 
-static UTC	qstr2utct (s, len)
-char   *s;
-int	len;
+static UTC	qstr2utct (char *s, int len)
 {
 	UTC	    ut;
-
 	if (len > 14
 			&& strncmp (s, "1989", 4) == 0
 			&& (ut = str2utct (s + 2, len - 2)))
@@ -67,19 +64,15 @@ int	len;
 #define	str2utct	qstr2utct
 
 
-static PE timeenc (x)
-char *x;
+static PE timeenc (char *x)
 {
 	PE ret_pe = NULLPE;
-
 	/* Should switch to pepsy -> need to use qbufs! */
-
 	build_UNIV_UTCTime (&ret_pe,0,0,x,NULL);
 	return (ret_pe);
 }
 
-static char * timedec (pe)
-PE pe;
+static char * timedec (PE pe)
 {
 	char * x;
 	if (parse_UNIV_UTCTime (pe,0,0,&x,NULL) == NOTOK)
@@ -87,44 +80,33 @@ PE pe;
 	return (x);
 }
 
-utcprint (ps,xtime,format)
-PS ps;
-char *xtime;
-int format;
+void utcprint (PS ps, char *xtime, int format)
 {
 	UTC	    ut;
 
 	if (format == READOUT && (ut = str2utct (xtime, strlen (xtime)))) {
 		long    mtime;
-
 		mtime = gtime (ut2tm (ut));
-
 		ps_printf (ps, "%-24.24s", ctime (&mtime));
 	} else
 		ps_printf (ps, "%s", xtime);
 }
 
 
-static
-utccmp (char *a, char *b) {
-	long    a_time,
-			mdiff;
-	UTC	    ut;
+static int utccmp (char *a, char *b) {
+	long a_time, mdiff;
+	UTC ut;
 
 	if ((ut = str2utct (a, strlen (a))) == NULL)
 		return pstrcmp (a, b);
 	a_time = gtime (ut2tm (ut));
-
 	if ((ut = str2utct (b, strlen (b))) == NULL)
 		return pstrcmp (a, b);
-
 	return ((mdiff = a_time - gtime (ut2tm (ut))) == 0L ? 0
 			: mdiff > 0L ? 1 : -1);
 }
 
-
-int
-time_syntax (void) {
+void time_syntax (void) {
 	add_attribute_syntax ("UTCTime",
 						  timeenc,		timedec,
 						  strdup,		utcprint,
@@ -132,4 +114,3 @@ time_syntax (void) {
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
 }
-

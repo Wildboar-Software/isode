@@ -28,14 +28,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_str.c,v 9.0 
 
 static char dn_alias;
 
-extern int dn_cmp ();
-extern int dn_free ();
-extern char * SkipSpace ();
+extern int dn_cmp (DN a, DN b);
+extern int dn_free (DN dn);
+extern char * SkipSpace (char *ptr);
 
 short syntax_dn = 0;
 
-DN str2dn (str)
-char * str;
+DN str2dn (char *str)
 {
 	char *ptr;
 	char *save,val, sep = '@';
@@ -151,9 +150,7 @@ char * str;
 	return (dn);
 }
 
-DN str2dn_aux (str,alias)
-char * str;
-char *alias;
+DN str2dn_aux (char *str, char *alias)
 {
 	DN dn;
 	dn_alias = FALSE;
@@ -162,8 +159,7 @@ char *alias;
 	return (dn);
 }
 
-DN str2dnX (str)
-char * str;
+DN str2dnX (char *str)
 {
 	char * ptr;
 
@@ -178,8 +174,7 @@ char * str;
 	return (str2dn(str));
 }
 
-DN dn_dec (pe)
-PE pe;
+DN dn_dec (PE pe)
 {
 	DN adn;
 
@@ -189,8 +184,7 @@ PE pe;
 	return (adn);
 }
 
-PE dn_enc (dn)
-DN dn;
+PE dn_enc (DN dn)
 {
 	PE ret_pe;
 

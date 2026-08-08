@@ -151,7 +151,7 @@ Entry directory_load();
 int find_entry ();
 int find_master_entry ();
 int really_find_entry ();
-Entry local_find_entry ();
+Entry local_find_entry (DN object, char deref);
 Entry get_default_entry ();
 
 #define isleaf(x) 	((x)->e_leaf || \

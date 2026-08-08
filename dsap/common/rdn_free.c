@@ -26,15 +26,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_free.c,v 9.
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-rdn_comp_free (rdn)
-RDN rdn;
+void rdn_comp_free (RDN rdn)
 {
 	AttrV_free_aux (&rdn->rdn_av);
 	free ((char *) rdn);
 }
 
-rdn_free (rdn)
-RDN rdn;
+void rdn_free (RDN rdn)
 {
 	RDN eptr;
 	RDN next;
@@ -44,4 +42,3 @@ RDN rdn;
 		rdn_comp_free (eptr);
 	}
 }
-

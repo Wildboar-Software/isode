@@ -40,8 +40,7 @@ extern LLog *log_dsap;
 	ispunct((unsigned char) (x)) || \
 	isdigit((unsigned char) (x)) || x == '\0')
 
-char *
-first_word (char *ptr) {
+char *first_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
 
@@ -54,8 +53,7 @@ first_word (char *ptr) {
 	return(ptr);
 }
 
-char *
-next_word (char *ptr) {
+char *next_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
 
@@ -75,8 +73,7 @@ next_word (char *ptr) {
 	/* NOTREACHED */
 }
 
-int
-soundex (char *s, char **c) {
+void soundex (char *s, char **c) {
 	char code, adjacent, ch, *p;
 	int i, cmax;
 
@@ -166,8 +163,7 @@ soundex (char *s, char **c) {
 static char	*g_bcode;
 static int	g_bcodelen;
 
-static
-match_word (char *a) {
+static int match_word (char *a) {
 	char	*as;
 	int	cmp;
 
@@ -182,8 +178,7 @@ match_word (char *a) {
 	return(cmp == 0);
 }
 
-int
-soundex_cmp (char *a, char *b) {
+int soundex_cmp (char *a, char *b) {
 	char result = FALSE;
 	char * ptr;
 
@@ -207,9 +202,7 @@ soundex_cmp (char *a, char *b) {
 	return (result);
 }
 
-soundex_match (fitem,avs)
-struct filter_item *fitem;
-AV_Sequence avs;
+int soundex_match (struct filter_item *fitem, AV_Sequence avs)
 {
 	for (; avs != NULLAV; avs=avs->avseq_next)
 		if (soundex_cmp ((char *)avs->avseq_av.av_struct, (char *)fitem->UNAVA.ava_value->av_struct))

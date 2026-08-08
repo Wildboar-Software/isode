@@ -31,9 +31,7 @@ extern char dsa_mode;
 
 int file_attr_length;
 
-static char *
-readfile (file)
-FILE * file;
+static char *readfile (FILE *file)
 {
 	char *parse_buffer;
 	int parse_len;
@@ -74,8 +72,7 @@ FILE * file;
 }
 
 
-PE grab_filepe (av)
-AttributeValue av;
+PE grab_filepe (AttributeValue av)
 {
 	FILE * fptr;
 	struct file_syntax * fs;
@@ -146,9 +143,7 @@ out:
 
 }
 
-
-file_decode (x)
-AttributeValue x;
+void file_decode (AttributeValue x)
 {
 	struct file_syntax * fs;
 

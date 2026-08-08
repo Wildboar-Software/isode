@@ -33,10 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/pe.c,v 9.0 1992
 
 extern LLog * log_dsap;
 
-pe_print (ps, pe, format)
-PS     ps;
-PE     pe;
-int     format;
+void pe_print (PS ps, PE pe, int format)
 {
 	char * ptr, *s;
 	int i, j;
@@ -88,14 +85,13 @@ int     format;
 
 }
 
-PE asn2pe (str)
-char * str;
+PE asn2pe (char *str)
 {
 	char * ptr;
 	char * pe_ptr;
 	int i,j;
 	PS sps;
-	void StripSpace ();
+	void StripSpace (char *b);
 	PE pe;
 	extern char hex2nib[];
 #ifdef oldcode

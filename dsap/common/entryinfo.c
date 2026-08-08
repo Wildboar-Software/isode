@@ -30,9 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/entryinfo.c,v 9
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 
-entryinfo_comp_free (a,state)
-EntryInfo *a;
-int state;
+void entryinfo_comp_free (EntryInfo *a, int state)
 {
 	EntryInfo * einfo, *e2;
 	Attr_Sequence as;
@@ -66,9 +64,7 @@ int state;
 	}
 }
 
-entryinfo_free (a,state)
-EntryInfo * a;
-int state;
+void entryinfo_free (EntryInfo *a, int state)
 {
 	if (a == NULLENTRYINFO)
 		return;
@@ -76,9 +72,7 @@ int state;
 	free ((char *) a);
 }
 
-entryinfo_cpy (a,b)
-EntryInfo *a;
-EntryInfo *b;
+void entryinfo_cpy (EntryInfo *a, EntryInfo *b)
 {
 	a->ent_dn        = dn_cpy (b->ent_dn);
 	a->ent_attr      = as_cpy (b->ent_attr);
@@ -87,23 +81,17 @@ EntryInfo *b;
 	a->ent_next      = b->ent_next;
 }
 
-entryinfo_append (a,b)
-EntryInfo *a,*b;
+void entryinfo_append (EntryInfo *a, EntryInfo *b)
 {
 	EntryInfo *ptr;
-
 	if ( a  == NULLENTRYINFO )
 		return;
-
 	for (ptr=a; ptr->ent_next != NULLENTRYINFO; ptr=ptr->ent_next)
 		;  /* noop */
-
 	ptr->ent_next = b;
 }
 
-entryinfo_merge (a,b,fast)
-EntryInfo *a,*b;
-int fast;
+void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast)
 {
 	EntryInfo *ptr;
 	EntryInfo *tmp, *prev, *trail;
@@ -143,10 +131,7 @@ int fast;
 	trail->ent_next = b;
 }
 
-entryinfo_print (ps,entryinfo,format)
-PS  ps;
-EntryInfo *entryinfo;
-int format;
+void entryinfo_print (PS ps, EntryInfo *entryinfo, int format)
 {
 	EntryInfo *einfo;
 

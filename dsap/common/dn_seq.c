@@ -23,10 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_seq.c,v 9.0 
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 
@@ -43,8 +39,7 @@ dn_seq_free (struct dn_seq *dnseq) {
 
 }
 
-struct dn_seq *
-dn_seq_cpy (struct dn_seq *dnseq) {
+struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
 	struct dn_seq * ptr;
 	struct dn_seq * ptr2;
 	struct dn_seq * result = NULLDNSEQ;
@@ -60,9 +55,7 @@ dn_seq_cpy (struct dn_seq *dnseq) {
 }
 
 
-check_dnseq (dnseq,who)
-struct dn_seq * dnseq;
-DN who;
+int check_dnseq (struct dn_seq *dnseq, DN who)
 {
 	struct dn_seq * ptr;
 
@@ -74,8 +67,7 @@ DN who;
 	return (NOTOK);
 }
 
-int
-dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
+int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 	struct dn_seq	* dns1;
 	struct dn_seq	* dns2;
 
@@ -109,9 +101,7 @@ dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 	return (0);
 }
 
-check_dnseq_prefix (dnseq,who)
-struct dn_seq * dnseq;
-DN who;
+int check_dnseq_prefix (struct dn_seq *dnseq, DN who)
 {
 	struct dn_seq * ptr;
 
@@ -123,10 +113,7 @@ DN who;
 	return (NOTOK);
 }
 
-dn_seq_print (ps,dnseq,format)
-PS ps;
-struct dn_seq * dnseq;
-int format;
+void dn_seq_print (PS ps, struct dn_seq *dnseq, int format)
 {
 	if (dnseq == NULLDNSEQ)
 		return;
@@ -141,8 +128,7 @@ int format;
 	}
 }
 
-struct dn_seq *
-str2dnseq (char *str) {
+struct dn_seq *str2dnseq (char *str) {
 	char *ptr;
 	char *save,val;
 	struct dn_seq * dns = NULLDNSEQ;
@@ -189,49 +175,34 @@ str2dnseq (char *str) {
 	return (dns);
 }
 
-int	  dn_in_dnseq(dn, dnseq)
-DN		  dn;
-struct dn_seq	* dnseq;
+int	  dn_in_dnseq(DN dn, struct dn_seq *dnseq)
 {
 	struct dn_seq	* ptr;
 	int 	i = 1;
-
 	for(ptr=dnseq; ptr!=NULLDNSEQ; ptr=ptr->dns_next, i++) {
-		if(dn_cmp(dn, ptr->dns_dn) == 0)
+		if (dn_cmp(dn, ptr->dns_dn) == 0)
 			break;
 	}
-
 	if(ptr == NULLDNSEQ)
 		return(FALSE);
-
 	return(i);
 }
 
-struct dn_seq	* dn_seq_push(dn,dnseq)
-DN		  dn;
-struct dn_seq	* dnseq;
+struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq)
 {
 	struct dn_seq * ret;
-
 	ret = dn_seq_alloc();
-
 	ret->dns_dn = dn_cpy(dn);
 	ret->dns_next = dnseq;
-
 	return(ret);
 }
 
-struct dn_seq *
-dn_seq_pop (struct dn_seq *dnseq) {
+struct dn_seq *dn_seq_pop (struct dn_seq *dnseq) {
 	struct dn_seq * ret;
-
 	if(dnseq == NULLDNSEQ)
 		return(NULLDNSEQ);
-
 	ret = dnseq->dns_next;
-
 	dn_free(dnseq->dns_dn);
 	free((char *)dnseq);
-
 	return(ret);
 }

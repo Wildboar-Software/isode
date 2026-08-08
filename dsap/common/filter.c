@@ -27,13 +27,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/filter.c,v 9.0 
 
 /* LINTLIBRARY */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 
 extern LLog * log_dsap;
 
-filter_free (filt)
-Filter filt;
+void filter_free (Filter filt)
 {
 	Filter ptr;
 	Filter next;
@@ -66,8 +66,7 @@ Filter filt;
 	}
 }
 
-filter_append (a,b)
-Filter a,b;
+void filter_append (Filter a, Filter b)
 {
 	Filter ptr,trail;
 
@@ -81,10 +80,7 @@ Filter a,b;
 }
 
 
-Filter strfilter (at,s,type)
-AttributeType at;
-char * s;
-char type;
+Filter strfilter (AttributeType at, char *s, char type)
 {
 	Filter filt;
 
@@ -177,8 +173,7 @@ all_done:
 	return filt;
 }
 
-Filter ocfilter (s)
-char * s;
+Filter ocfilter (char *s)
 {
 	Filter filt;
 
@@ -200,9 +195,7 @@ char * s;
 	return filt;
 }
 
-Filter joinfilter (f, type)
-Filter f;
-char type;
+Filter joinfilter (Filter f, char type)
 {
 	Filter filt;
 
@@ -214,21 +207,13 @@ char type;
 	return filt;
 }
 
-/* ARGSUSED */
-
-int	fi_print (ps, fi, format)
-PS	ps;
-Filter	fi;
-int	format;
+void fi_print (PS ps, Filter fi, int format)
 {
 	print_filter (ps, fi, 0);
 }
 
 
-print_filter (nps, fi, level)
-PS nps;
-Filter	fi;
-int	level;
+void print_filter (PS nps, Filter fi, int level)
 {
 	char   *cp;
 	Filter    fi2;

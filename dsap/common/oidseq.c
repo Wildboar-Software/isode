@@ -174,10 +174,7 @@ oid_seq_cpy (struct oid_seq *a) {
 	return (result);
 }
 
-oid_seq_print (ps,ptr,format)
-PS ps;
-struct oid_seq * ptr;
-int format;
+void oid_seq_print (PS ps, struct oid_seq *ptr, int format)
 {
 	int i = 4;
 
@@ -194,14 +191,13 @@ int format;
 			ps_printf (ps,"$%s",oid2name (ptr->oid_oid,oidformat));
 }
 
-struct oid_seq *
-str2oidseq (char *str) {
+struct oid_seq *str2oidseq (char *str) {
 	char *ptr;
 	char *save,val;
 	struct oid_seq * ois = NULLOIDSEQ;
 	struct oid_seq * newois;
 	OID oid;
-	char * SkipSpace();
+	char * SkipSpace(char *ptr);
 
 	while ( (ptr = index (str,'$')) != 0) {
 		save = ptr++;

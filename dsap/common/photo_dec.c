@@ -48,7 +48,7 @@ static char ref_colour;
 static char colour;
 char *bitmap;
 
-static void  resync ();
+static void  resync (bit_string *lineptr);
 static int seqerrs = 0;
 
 int
@@ -314,10 +314,7 @@ decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
  *              a code word tree to find a matching code word.
  */
 
-static node *
-find_node (lineptr, tree_top)
-bit_string * lineptr;
-node * tree_top;
+static node *find_node (bit_string *lineptr, node *tree_top)
 {
 	node * ptr;
 
@@ -354,10 +351,7 @@ node * tree_top;
  * The code is assumed to be one dimensional.
 */
 
-run_type
-next_run (lineptr,xcolour)
-bit_string * lineptr;
-char    xcolour;
+run_type next_run (bit_string *lineptr, char xcolour)
 {
 
 	node *   ptr;
@@ -414,10 +408,7 @@ char    xcolour;
 /*             -2 if error detected and resync succeeded
 */
 
-decode_one (lineptr, t4_lineptr)
-bit_string * lineptr;
-bit_string * t4_lineptr;
-
+int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 {
 	run_type run;
 	char xcolour = WHITE;
@@ -481,12 +472,7 @@ bit_string * t4_lineptr;
 /*             -2 if resynch performed
 */
 
-decode_two (ref_lineptr, code_lineptr, t4_lineptr)
-
-bit_string * ref_lineptr;
-bit_string * code_lineptr;
-bit_string * t4_lineptr;
-
+int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr)
 {
 	int length;
 	node * ptr;
@@ -564,12 +550,7 @@ bit_string * t4_lineptr;
 /*              else next colour
 */
 
-undo_uncompressed_mode (lineptr, t4_lineptr, xcolour, twoD)
-bit_string * lineptr;
-bit_string * t4_lineptr;
-int xcolour;
-int twoD;
-
+void undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD)
 {
 	int black_length;
 	int next_colour;
@@ -624,10 +605,7 @@ int twoD;
 /* up until position b2.
 */
 
-undo_pass_mode (ref_lineptr, code_lineptr)
-bit_string * ref_lineptr;
-bit_string * code_lineptr;
-
+void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 {
 	int length;
 
@@ -658,11 +636,7 @@ bit_string * code_lineptr;
 /*             -2 if resynch performed
 */
 
-undo_horiz_mode (t4_lineptr, code_lineptr)
-
-bit_string * t4_lineptr;
-bit_string * code_lineptr;
-
+void undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 {
 	run_type run;
 
@@ -703,17 +677,10 @@ bit_string * code_lineptr;
 /* DESCRIPTION: Find b1, the write 1's or 0's upto it allowing for the offset.
 */
 
-undo_vert_mode (ref_lineptr, code_lineptr, offset)
-
-bit_string * ref_lineptr;
-bit_string * code_lineptr;
-char         offset;
-
+void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
 {
 	int   length;
-
 	goto_b1 (ref_lineptr);
-
 	length = (*ref_lineptr->run_pos - position) + offset - FIXED_OFFSET;
 	put_run (code_lineptr, length , colour);
 	colour = 1 - colour;
@@ -730,9 +697,7 @@ char         offset;
  *
  */
 
-goto_b1 (lineptr)
-bit_string * lineptr;
-
+void goto_b1 (bit_string *lineptr)
 {
 	while (*lineptr->run_pos > position) {
 		--lineptr->run_pos;
@@ -766,10 +731,7 @@ bit_string * lineptr;
 /*
 */
 
-static void
-resync (lineptr)
-bit_string * lineptr;
-
+static void resync (bit_string *lineptr)
 {
 	int i;
 
@@ -790,10 +752,7 @@ bit_string * lineptr;
 /* SYNOPSIS:    writes a run_length to the indicated bit_string.        */
 /*                                                                      */
 
-put_run (lineptr, length, xcolour)
-bit_string * lineptr;
-int  length;
-char xcolour;
+void put_run (bit_string *lineptr, int length, char xcolour)
 {
 	int i;
 	int l;
@@ -872,23 +831,18 @@ char xcolour;
 /* SYNOPSIS:    Initialises the output buffers
 */
 
-set_doutput (lineptr)
-bit_string * lineptr;
+void set_doutput (bit_string *lineptr)
 {
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
 }
-
-
-
 
 /* ROUTINE:     flush_doutput;
 /*
 /* SYNOPSIS:    flush the output buffer;
 */
 
-flush_doutput (lineptr)
-bit_string * lineptr;
+void flush_doutput (bit_string *lineptr)
 {
 	int count = 0;
 
@@ -906,9 +860,7 @@ bit_string * lineptr;
 /* SYNOPSIS:    Initialises the input buffers
 */
 
-set_dinput (lineptr, length)
-bit_string * lineptr;
-int	length;
+int set_dinput (bit_string *lineptr, int length)
 {
 	unsigned char cbyte;
 	int count;

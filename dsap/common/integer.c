@@ -29,19 +29,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/integer.c,v 9.0
 #include "quipu/attr.h"
 #include "psap.h"
 
-static PE intenc (x)
-int * x;
+static PE intenc (int *x)
 {
 	return (int2prim(*x));
 }
-static PE enumenc (x)
-int *x;
+
+static PE enumenc (int *x)
 {
 	return enumint2prim ((integer)*x);
 }
 
-static int * intdec (pe)
-PE pe;
+static int * intdec (PE pe)
 {
 	int * x;
 
@@ -55,67 +53,56 @@ PE pe;
 
 }
 
-static int * enumdec (pe)
-PE pe;
+static int * enumdec (PE pe)
 {
 	int *x;
 
-	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_ENUM))
+	if (!test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_ENUM))
 		return 0;
 	x = (int *) smalloc (sizeof (int));
 	*x = prim2enum(pe);
-
 	return x;
 }
 
-
-
-/* ARGSUSED */
-static intprint (ps,x,format)
-PS ps;
-int * x,format;
+static void intprint (PS ps, int *x, int format)
 {
 	ps_printf (ps,"%d",*x);
 }
+
 #define enumprint intprint
 
-static int *
-intdup (int *x) {
+static int *intdup (int *x) {
 	int *y;
-
 	y = (int *) smalloc (sizeof (int));
 	*y = *x;
-
 	return (y);
 }
+
 #define enumdup intdup
 
-static
-intcmp (int *x, int *y) {
+static int intcmp (int *x, int *y) {
 	return ( *x == *y ? 0 : (*x > *y ? 1 : -1) );
 }
+
 #define enumcmp intcmp
 
-static
-intfree (int *x) {
+static void intfree (int *x) {
 	free ((char *) x);
 }
+
 #define enumfree intfree
 
-static int *
-intparse (char *str) {
-	int atoi();
+static int *intparse (char *str) {
+	int atoi(const char *);
 	int * x;
-
 	x = (int *) smalloc (sizeof (int));
 	*x = atoi (str);
-
 	return (x);
 }
+
 #define enumparse intparse
 
-int
-integer_syntax (void) {
+void integer_syntax (void) {
 	add_attribute_syntax ("integer",
 						  intenc,		intdec,
 						  intparse,		intprint,

@@ -54,10 +54,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/guide.c,v 9.0 1
 #include "cmd_srch.h"
 #include "quipu/syntaxes.h"
 
-static free_CriteriaItem ();
+static void free_CriteriaItem (struct CriteriaItem *arg);
 
-static
-Criteria_free (struct Criteria *arg) {
+static void Criteria_free (struct Criteria *arg) {
 	struct Criteria *parm = arg;
 
 	if (parm == NULL)
@@ -100,8 +99,7 @@ Criteria_free (struct Criteria *arg) {
 	free ((char *) arg);
 }
 
-static
-free_CriteriaItem (struct CriteriaItem *arg) {
+static void free_CriteriaItem (struct CriteriaItem *arg) {
 	struct CriteriaItem *parm = arg;
 
 	if (parm == NULL)
@@ -111,8 +109,7 @@ free_CriteriaItem (struct CriteriaItem *arg) {
 }
 
 
-static
-guidefree (struct Guide *arg) {
+static void guidefree (struct Guide *arg) {
 	if (arg == NULL)
 		return;
 
@@ -125,8 +122,7 @@ guidefree (struct Guide *arg) {
 	free ((char *)arg);
 }
 
-static struct CriteriaItem *
-CriteriaItem_cpy (struct CriteriaItem *arg) {
+static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg) {
 	struct CriteriaItem *parm = arg;
 	struct CriteriaItem *res;
 
@@ -142,8 +138,7 @@ CriteriaItem_cpy (struct CriteriaItem *arg) {
 }
 
 
-static struct Criteria *
-Criteria_cpy (struct Criteria *a) {
+static struct Criteria *Criteria_cpy (struct Criteria *a) {
 	struct Criteria *b;
 
 	if (a == NULL)
@@ -190,8 +185,7 @@ Criteria_cpy (struct Criteria *a) {
 	return (b);
 }
 
-static struct Guide *
-guidecpy (struct Guide *a) {
+static struct Guide *guidecpy (struct Guide *a) {
 	struct Guide * b;
 
 	b = (struct Guide * ) smalloc (sizeof(struct Guide));
@@ -219,8 +213,7 @@ static CMD_TABLE guide_tab [] = {
 	0,		NOCHOICE
 };
 
-static struct CriteriaItem *
-CriteriaItem_parse (char *str) {
+static struct CriteriaItem *CriteriaItem_parse (char *str) {
 	struct CriteriaItem * res;
 	char * ptr;
 	if ((str == NULLCP) || (*str == 0))
@@ -251,10 +244,7 @@ CriteriaItem_parse (char *str) {
 
 }
 
-
-
-static
-getop (char *str, char *ch) {
+static int getop (char *str, char *ch) {
 	int             i,
 					bracket = 0;
 
@@ -275,9 +265,7 @@ getop (char *str, char *ch) {
 	return (-1);
 }
 
-
-static struct Criteria *
-Criteria_parse (char *str) {
+static struct Criteria *Criteria_parse (char *str) {
 	int             gotit,
 					bracketed;
 	char            ch,
@@ -361,8 +349,7 @@ Criteria_parse (char *str) {
 	return (result);
 }
 
-static struct Guide *
-guideparse (char *str) {
+static struct Guide *guideparse (char *str) {
 	char *ptr;
 	struct Guide * res;
 
@@ -400,8 +387,7 @@ static CMD_TABLE subset_tab[] = {
 	NULL,	       -1
 };
 
-static struct Guide *
-nadfparse (char *str) {
+static struct Guide *nadfparse (char *str) {
 	char   *ptr1,
 		   *ptr2;
 	struct Guide *res;
@@ -429,11 +415,11 @@ nadfparse (char *str) {
 }
 
 
-static CriteriaItem_print(ps,parm,format)
-PS ps;
-struct CriteriaItem * parm;
-int format;
-{
+static void CriteriaItem_print(
+	PS ps,
+	struct CriteriaItem * parm,
+	int format
+) {
 	char *ptr;
 
 	if (parm == NULL)
@@ -453,12 +439,11 @@ int format;
 
 }
 
-
-static Criteria_print (ps,a,format)
-PS ps;
-struct Criteria * a;
-int format;
-{
+static void Criteria_print (
+	PS ps,
+	struct Criteria * a,
+	int format
+) {
 	char * sep;
 
 	if (format == READOUT)
@@ -505,11 +490,11 @@ int format;
 	}
 }
 
-static guideprint (ps,a,format)
-PS ps;
-struct Guide * a;
-int format;
-{
+static void guideprint (
+	PS ps,
+	struct Guide * a,
+	int format
+) {
 	if (a->objectClass) {
 		if (format == READOUT) {
 			ps_print (ps,"Class: ");
@@ -531,65 +516,47 @@ int format;
 	}
 }
 
-static PE guideenc (m)
-struct Guide * m;
-{
+static PE guideenc (struct Guide * m) {
 	PE ret_pe;
-
 	encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 
-static struct Guide * guidedec (pe)
-PE pe;
+static struct Guide * guidedec (PE pe)
 {
 	struct Guide * m;
-
 	if (decode_SA_Guide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return ((struct Guide *) NULL);
 	m -> subset = -1;
-
 	return (m);
 }
 
-static PE nadfenc (m)
-struct Guide * m;
+static PE nadfenc (struct Guide *m)
 {
 	PE ret_pe;
-
 	encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 
-static struct Guide * nadfdec (pe)
-PE pe;
+static struct Guide *nadfdec (PE pe)
 {
 	struct Guide * m;
-
 	if (decode_SA_NadfGuide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return ((struct Guide *) NULL);
-
 	return (m);
 }
 
-static
-criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b) {
-
+static int criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b) {
 	if (a == NULL)
 		return (b==NULL ? 0 : -1);
 	if (b == NULL)
 		return (1);
-
 	if (a->offset != b->offset)
 		return (a->offset>b->offset ? 1 : -1);
-
 	return (AttrT_cmp (a->attrib,b->attrib));
 }
 
-static
-criteria_cmp (struct Criteria *a, struct Criteria *b) {
+static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
 	int result;
 
 	if (a==NULL)
@@ -637,8 +604,7 @@ criteria_cmp (struct Criteria *a, struct Criteria *b) {
 	return (result);
 }
 
-static
-guidecmp (struct Guide *a, struct Guide *b) {
+static int guidecmp (struct Guide *a, struct Guide *b) {
 	int i;
 	if (a == (struct Guide *)NULL)
 		if (b == (struct Guide *)NULL)
@@ -660,8 +626,7 @@ guidecmp (struct Guide *a, struct Guide *b) {
 	return (i);
 }
 
-int
-guide_syntax (void) {
+void guide_syntax (void) {
 	add_attribute_syntax ("Guide",
 						  guideenc,		guidedec,
 						  guideparse,	guideprint,
@@ -675,6 +640,4 @@ guide_syntax (void) {
 						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
 						  NULLIFP,	TRUE);
-
 }
-

@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ufn_aet.c,v 9.0
  *
  */
 
-
+#include <string.h>
 #include "quipu/ufn.h"
 #include "quipu/list.h"
 #include "quipu/ds_search.h"
@@ -34,15 +34,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ufn_aet.c,v 9.0
 extern LLog * log_dsap;
 extern LLog * addr_log;
 
-extern Filter ocfilter ();
-extern Filter joinfilter ();
+extern Filter ocfilter (char *s);
+extern Filter joinfilter (Filter f, char type);
 
 extern char PY_pepy[];
 void	PY_advise (char *, char *, ...);
 
 
-static Filter aet_filter (context)
-char * context;
+static Filter aet_filter (char *context)
 {
 	Filter a,b;
 
@@ -67,11 +66,7 @@ char * context;
 	return joinfilter (b,FILTER_AND);
 }
 
-static aet_search (base, subtree, filt, res)
-DN base;
-char subtree;
-Filter filt;
-DNS * res;
+static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 {
 	struct ds_search_arg search_arg;
 	static struct ds_search_result result;
@@ -124,18 +119,12 @@ DNS * res;
 }
 
 
-aet_match (c,v,interact,result,el,context)
-int c;
-char ** v;
-DNS *result;
-DNS (* interact) ();
-envlist el;
-char * context;
+int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el, char *context)
 {
 	DNS ufnr = NULLDNS;
 	DNS newap = NULLDNS;
 	DNS apps = NULLDNS;
-	DNS dns, DNS_append();
+	DNS dns, DNS_append(DNS a, DNS b);
 	Filter filt;
 	int ok = TRUE;
 

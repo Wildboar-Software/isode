@@ -31,9 +31,7 @@ IFP oc_hier = NULLIFP;
 short acl_sntx = -1;
 IFP merge_acl = NULLIFP;
 
-AV_Sequence str2avs (str,at)
-char * str;
-AttributeType at;
+AV_Sequence str2avs (char *str, AttributeType at)
 {
 	char * ptr;
 	char * save,val;
@@ -88,9 +86,7 @@ AttributeType at;
 }
 
 
-AV_Sequence fast_str2avs (str,at)
-char * str;
-AttributeType at;
+AV_Sequence fast_str2avs (char *str, AttributeType at)
 {
 	char * ptr;
 	char * save,val;
@@ -98,7 +94,7 @@ AttributeType at;
 	AV_Sequence newavs;
 	AV_Sequence fast_avs = NULLAV;
 	AV_Sequence fast_tail = NULLAV;
-	extern AV_Sequence avs_fast_merge ();
+	extern AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequence d);
 
 	if (str == NULLCP)
 		return (NULLAV);

@@ -97,11 +97,10 @@ static CMD_TABLE chtab[] = {
  * do system wide initialisations
  */
 
-int
-dsap_tai (int argc, char **argv) {
+int dsap_tai (int argc, char **argv) {
 	char    *arg, *term;
-	extern char * getenv ();
-	short str2syntax ();
+	extern char * getenv (const char *);
+	short str2syntax (char *);
 
 	if(argc < 2)
 		return(NOTOK);
@@ -203,4 +202,3 @@ dsap_tai (int argc, char **argv) {
 		ch_set = cmd_srch(arg, chtab);
 	return (OK);
 }
-

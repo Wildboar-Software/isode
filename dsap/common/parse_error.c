@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/parse_error.c,v
 
 /* LINTLIBRARY */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "psap.h"
 
@@ -39,8 +40,7 @@ PS _opt = NULLPS;
 int parse_line = 1;
 extern LLog * log_dsap;
 
-parse_error (a,b)
-char *a, *b;
+void parse_error (char *a, char *b)
 {
 	char buffer [LINESIZE];
 

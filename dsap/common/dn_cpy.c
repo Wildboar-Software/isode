@@ -28,8 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_cpy.c,v 9.0 
 
 extern LLog * log_dsap;
 
-DN  dn_comp_cpy (dn)
-DN  dn;
+DN  dn_comp_cpy (DN dn)
 {
 	DN ptr;
 	if (dn==NULLDN) {
@@ -41,8 +40,7 @@ DN  dn;
 	return (ptr);
 }
 
-DN  dn_cpy (dn)
-DN  dn;
+DN  dn_cpy (DN dn)
 {
 	DN start;
 	DN eptr,ptr,ptr2;

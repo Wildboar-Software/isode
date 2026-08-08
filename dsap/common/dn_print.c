@@ -26,10 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_print.c,v 9.
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-void dn_print (ps,dn,format)
-DN  dn;
-PS   ps;
-int  format;
+void dn_print (PS ps, DN dn, int format)
 {
 	DN eptr;
 
@@ -64,10 +61,7 @@ int  format;
 	}
 }
 
-static void dn_rprint(ps, dn, sep)
-PS ps;
-DN dn;
-char * sep;
+static void dn_rprint(PS ps, DN dn, char *sep)
 {
 	if (dn -> dn_parent != NULLDN) {
 		dn_rprint(ps, dn -> dn_parent, sep);
@@ -77,10 +71,7 @@ char * sep;
 	dn_comp_print (ps, dn, READOUT);
 }
 
-void dn_rfc_print(ps, dn, sep)
-PS ps;
-DN dn;
-char * sep;
+void dn_rfc_print(PS ps, DN dn, char *sep)
 {
 	if (dn == NULLDN) {
 		ps_print (ps, "NULL DN");
@@ -90,15 +81,10 @@ char * sep;
 	dn_rprint(ps, dn, sep);
 }
 
-/*  */
-
 static DN localdn = NULLDN;
 extern char * local_dit;
 
-void ufn_dn_print (ps,dn,multiline)
-PS  ps;
-DN  dn;
-int multiline;
+void ufn_dn_print (PS ps, DN dn, int multiline)
 {
 	if (dn == NULLDN)
 		return;
@@ -112,11 +98,7 @@ int multiline;
 
 int	ufn_indent = 16;
 
-int ufn_dn_print_aux (ps,dn,marker,multiline)
-PS  ps;
-DN  dn;
-DN marker;
-int	multiline;
+int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
 {
 	DN next = NULLDN;
 	char res = 0;
@@ -146,9 +128,7 @@ int	multiline;
 }
 
 
-void ufn_rdn_print (ps,rdn)
-RDN  rdn;
-PS   ps;
+void ufn_rdn_print (PS ps, RDN rdn)
 {
 	RDN eptr;
 
@@ -167,8 +147,7 @@ PS   ps;
 
 static PS ps = NULLPS;
 
-char   *dn2str (dn)
-DN	dn;
+char   *dn2str (DN dn)
 {
 	char       *cp;
 
@@ -193,9 +172,7 @@ DN	dn;
 	return cp;
 }
 
-char   *dn2ufn (dn,multiline)
-DN	dn;
-int    multiline;
+char   *dn2ufn (DN dn, int multiline)
 {
 	char       *cp;
 
@@ -220,9 +197,7 @@ int    multiline;
 	return cp;
 }
 
-char   *dn2rfc (dn,sep)
-DN	dn;
-char   *sep;
+char   *dn2rfc (DN dn, char *sep)
 {
 	char       *cp;
 

@@ -189,10 +189,7 @@ TidyString (char *a) {
 	return (c);
 }
 
-test_prim_pe (pe,class,id)
-PE pe;
-PElementClass class;
-PElementID id;
+int test_prim_pe (PE pe, PElementClass class, PElementID id)
 {
 	if (pe == NULLPE)
 		return FALSE;
@@ -264,12 +261,12 @@ void fatal (int code, char *fmt) {
 
 static PS ps = NULLPS;
 
-pslog (lp,event,str,func,ptr)
-LLog * lp;
-int event;
-char * str;
-int (*func) ();         /* assumes func (PS ,dataptr,(int) format); */
-caddr_t ptr;
+void pslog (LLog *lp, int event, char *str, int (*func) (/* ??? */), caddr_t ptr)
+          
+          
+           
+                        /* assumes func (PS ,dataptr,(int) format); */
+            
 {
 	/* log info to pstream */
 
@@ -304,8 +301,7 @@ stop_listeners (void) {
 	TNetClose (NULLTA,td);
 }
 
-quipu_pe_cmp (a,b)
-PE a,b;
+int quipu_pe_cmp (PE a, PE b)
 {
 	char *p,*q;
 	int j,i;
@@ -378,11 +374,9 @@ PE a,b;
 
 IFP acl_fn = NULLIFP;
 
-struct acl_info *
-acl_dflt (void) {
+struct acl_info *acl_dflt (void) {
 	if (acl_fn == NULLIFP)
 		return ((struct acl_info *) NULL);
 	else
 		return ((struct acl_info *)(*acl_fn)());
 }
-

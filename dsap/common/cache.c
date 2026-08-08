@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cache.c,v 9.0 1
  *
  */
 
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/list.h"
@@ -34,14 +34,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cache.c,v 9.0 1
 extern LLog * log_dsap;
 extern Entry database_root;
 extern int local_cache_size;
-extern int entryrdn_cmp();
+extern int entryrdn_cmp(RDN rdn, Entry ent);
 
 struct list_cache *list_top = NULLCACHE;
 Entry  current_entry = NULLENTRY;
 DN     current_dn = NULLDN;
 extern time_t cache_timeout;
 
-Entry local_find_entry_aux ();
+Entry local_find_entry_aux (DN object, char deref);
 
 struct subordinate *
 subord_cpy (struct subordinate *x) {
@@ -73,11 +73,7 @@ subord_cpy (struct subordinate *x) {
 }
 
 /* ARGSUSED */
-cache_list (ptr, prob,dn,sizelimit)
-struct subordinate *ptr;
-int             prob;
-DN 		dn;
-int 		sizelimit;
+void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit)
 {
 	struct list_cache *cache;
 	struct subordinate *sub;
@@ -105,25 +101,20 @@ int 		sizelimit;
 
 }
 
-delete_list_cache (adn)
-DN adn;
+void delete_list_cache (DN adn)
 {
 	DN dntop, trail = NULLDN;
 	struct list_cache *ptr, *lt = NULLCACHE;
 
 	if (adn == NULLDN)
 		return;
-
 	dntop = adn;
-
 	for (; adn->dn_parent != NULLDN; adn=adn->dn_parent)
 		trail = adn;
-
 	if (trail == NULLDN)
 		dntop = NULLDN;
 	else
 		trail->dn_parent = NULLDN;
-
 	for (ptr = list_top; ptr != NULLCACHE; ptr = ptr->list_next) {
 		if (dn_cmp (ptr->list_dn, dntop) == 0) {
 			if (lt == NULLCACHE)
@@ -142,9 +133,7 @@ DN adn;
 		trail->dn_parent = adn;
 }
 
-struct list_cache *find_list_cache (dn,sizelimit)
-DN dn;
-int sizelimit;
+struct list_cache *find_list_cache (DN dn, int sizelimit)
 {
 	struct list_cache *ptr;
 	int i;
@@ -176,15 +165,9 @@ free_all_list_cache (void) {
 	}
 }
 
-
-
-
-cache_entry (ptr, complete, vals)
-EntryInfo      *ptr;
-char            complete;
-char            vals;
+void cache_entry (EntryInfo *ptr, char complete, char vals)
 {
-	Entry           make_path ();
+	Entry           make_path (DN dn);
 	DN              dnptr;
 	extern 	AttributeType at_alias;
 	Attr_Sequence	as, as_merge_aux();
@@ -242,9 +225,7 @@ char            vals;
 	}
 }
 
-
-delete_cache (adn)
-DN              adn;
+void delete_cache (DN adn)
 {
 	Entry           ptr;
 
@@ -266,10 +247,7 @@ DN              adn;
 	}
 }
 
-
-Entry local_find_entry (object,deref)
-DN                      object;
-char deref;
+Entry local_find_entry (DN object, char deref)
 {
 	Entry the_entry;
 
@@ -284,9 +262,7 @@ char deref;
 		return (the_entry);
 }
 
-Entry local_find_entry_aux (object,deref)
-DN                      object;
-char deref;
+Entry local_find_entry_aux (DN object, char deref)
 {
 	Entry  the_entry;
 	RDN    b_rdn;
@@ -340,8 +316,7 @@ char deref;
 }
 
 
-DN get_copy_dn (entryptr)
-Entry entryptr;
+DN get_copy_dn (Entry entryptr)
 {
 	DN dn;
 	DN dnptr;
@@ -360,13 +335,10 @@ Entry entryptr;
 	return (dn);
 }
 
-
 IFP unrav_fn = NULLIFP;
 IFP schema_fn = NULLIFP;
 
-unravel_attribute (eptr,error)
-Entry eptr;
-struct DSError * error;
+int unravel_attribute (Entry eptr, struct DSError *error)
 {
 	if (unrav_fn == NULLIFP)
 		return (OK);
@@ -374,10 +346,7 @@ struct DSError * error;
 		return ((*unrav_fn)(eptr,error));
 }
 
-check_schema (eptr,as,error)
-Entry eptr;
-Attr_Sequence as;
-struct DSError * error;
+int check_schema (Entry eptr, Attr_Sequence as, struct DSError *error)
 {
 	if (schema_fn == NULLIFP)
 		return (OK);
@@ -390,7 +359,6 @@ char *
 new_version (void) {
 	time_t clock;
 	struct UTCtime ut;
-
 	time (&clock);
 	tm2ut (gmtime (&clock),&ut);
 	return (strdup(utct2str(&ut)));

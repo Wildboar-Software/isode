@@ -36,10 +36,9 @@ extern short oc_sntx;
 extern IFP oc_hier;
 extern IFP oc_avsprint;
 
-static add_hierarchy ();
+static void add_hierarchy (objectclass *oc, AV_Sequence *avsp);
 
-objectclass * oc_add (oid)
-OID oid;
+objectclass * oc_add (OID oid)
 {
 	oid_table * Current;
 	extern objectclass ocOIDTable[];
@@ -59,11 +58,10 @@ OID oid;
 	return (&ocOIDTable[ocNumEntries++]);
 }
 
-objectclass * str2oc (str)
-char * str;
+objectclass * str2oc (char *str)
 {
 	char * ptr;
-	char * get_oid ();
+	char * get_oid (char *str);
 	objectclass *oc;
 
 	if ((oc = name2oc (str)) != NULLOBJECTCLASS)
@@ -78,8 +76,7 @@ char * str;
 	return (oc_add (str2oid(ptr)));
 }
 
-static AV_Sequence new_oc_avs (oc)
-objectclass * oc;
+static AV_Sequence new_oc_avs (objectclass *oc)
 {
 	AV_Sequence avs;
 
@@ -90,8 +87,7 @@ objectclass * oc;
 	return (avs);
 }
 
-static AV_Sequence str2oc_hier (str)
-char * str;
+static AV_Sequence str2oc_hier (char *str)
 {
 	AV_Sequence avs = NULLAV;
 	objectclass * oc;
@@ -130,9 +126,7 @@ char * str;
 	return (avs);
 }
 
-add_oc_avs (oc,avsp)
-objectclass * oc;
-AV_Sequence *avsp;
+void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
 {
 	AV_Sequence loop;
 	objectclass *ocp;
@@ -147,9 +141,7 @@ AV_Sequence *avsp;
 	*avsp = avs_merge (*avsp,new_oc_avs(oc));
 }
 
-static add_hierarchy (oc,avsp)
-objectclass * oc;
-AV_Sequence *avsp;
+static void add_hierarchy (objectclass *oc, AV_Sequence *avsp)
 {
 	struct oc_seq * oidseq;
 
@@ -161,8 +153,7 @@ AV_Sequence *avsp;
 }
 
 
-static in_hierarchy (a,b)
-AV_Sequence a, b;
+static int in_hierarchy (AV_Sequence a, AV_Sequence b)
 {
 	struct oc_seq * oidseq;
 	objectclass *oca, *ocb;
@@ -184,10 +175,10 @@ AV_Sequence a, b;
 	return (FALSE);
 }
 
-static oc_print_avs (ps,avs,format)  /* need to use this somehow !!! */
-PS ps;
-AV_Sequence avs;
-int format;
+static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use this somehow !!! */
+      
+                
+           
 {
 	AV_Sequence newavs;
 	char found;
@@ -220,23 +211,19 @@ int format;
 	AttrV_print (ps,&avs->avseq_av,format);
 }
 
-objectclass_cmp (a,b)
-objectclass *a, *b;
+int objectclass_cmp (objectclass *a, objectclass *b)
 {
 	/* macro ! */
 
 	return objclass_cmp(a,b);
 }
 
-static objectclass * oc_cpy (oc)
-objectclass * oc;
+static objectclass * oc_cpy (objectclass *oc)
 {
 	return (oc);	/* static table !!! */
 }
 
-check_in_oc (oid,avs)
-OID oid;
-AV_Sequence avs;
+int check_in_oc (OID oid, AV_Sequence avs)
 {
 	objectclass * oc;
 
@@ -252,26 +239,23 @@ AV_Sequence avs;
 }
 
 /* ARGSUSED */
-static oc_free (oc)
-objectclass * oc;
+static void oc_free (objectclass *oc)
 {
 	;	/* static table !!! */
 }
 
-static PE oc_enc (oc)
-objectclass *oc;
+static PE oc_enc (objectclass *oc)
 {
 	return (oid2prim(oc->oc_ot.ot_oid));
 }
 
 
-static objectclass * oc_dec (pe)
-PE pe;
+static objectclass * oc_dec (PE pe)
 {
 	OID oid;
 	objectclass *oc;
 
-	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
+	if (!test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
 		return NULLOBJECTCLASS;
 
 	if ((oid = prim2oid (pe)) == NULLOID)
@@ -285,10 +269,7 @@ PE pe;
 
 
 
-oc_print (ps,oc,format)
-PS ps;
-objectclass * oc;
-int format;
+void oc_print (PS ps, objectclass *oc, int format)
 {
 	extern int oidformat;
 
@@ -298,18 +279,14 @@ int format;
 		ps_printf (ps,"%s",oc2name (oc,oidformat));
 }
 
-int
-objectclass_syntax (void) {
-
+void objectclass_syntax (void) {
 	oc_sntx = add_attribute_syntax ("objectclass",
 									oc_enc,		oc_dec,
 									str2oc,		oc_print,
 									oc_cpy,		objectclass_cmp,
 									oc_free,	NULLCP,
 									NULLIFP,	FALSE );
-
 	oc_hier = (IFP) str2oc_hier;
 	oc_avsprint = (IFP) oc_print_avs;
 	want_oc_hierarchy ();
-
 }

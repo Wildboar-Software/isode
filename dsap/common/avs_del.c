@@ -28,8 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_del.c,v 9.0
 
 extern LLog * log_dsap;
 
-avs_delnext (avs)
-AV_Sequence  avs;
+void avs_delnext (AV_Sequence avs)
 {
 	AV_Sequence ptr;
 	if (avs == NULLAV)

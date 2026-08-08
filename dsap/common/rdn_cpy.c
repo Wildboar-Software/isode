@@ -29,8 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_cpy.c,v 9.0
 
 extern LLog * log_dsap;
 
-RDN  rdn_comp_cpy (rdn)
-RDN  rdn;
+RDN  rdn_comp_cpy (RDN rdn)
 {
 	RDN ptr;
 	unsigned last_heap;
@@ -53,8 +52,7 @@ RDN  rdn;
 	return (ptr);
 }
 
-RDN  rdn_cpy (rdn)
-RDN  rdn;
+RDN  rdn_cpy (RDN rdn)
 {
 	RDN start;
 	RDN eptr;
@@ -73,4 +71,3 @@ RDN  rdn;
 	}
 	return (start);
 }
-

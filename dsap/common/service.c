@@ -46,8 +46,7 @@ struct dua_sequence * current_sequence = NULL_DS;
 struct dua_sequence * top_sequence = NULL_DS;
 extern struct SecurityServices *dsap_security;
 
-set_default_service (opt)
-PS opt;
+int set_default_service (PS opt)
 {
 	if (default_service [0] == 0) {
 		serv_argc = 0;
@@ -63,8 +62,7 @@ PS opt;
 	}
 }
 
-int get_default_service (ca)
-CommonArgs * ca;
+int get_default_service (CommonArgs *ca)
 {
 	PS opt;
 	char buffer [LINESIZE];
@@ -107,11 +105,7 @@ CommonArgs * ca;
 
 }
 
-int service_control (opt,argc, argv, ca)
-PS 		opt;
-int             argc;
-char          **argv;
-CommonArgs     *ca;
+int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
 
 	if (get_default_service (ca) != OK) {
@@ -122,15 +116,11 @@ CommonArgs     *ca;
 	return (do_service_control (opt,argc, argv, ca));
 }
 
-int do_service_control (opt,argc, argv, ca)
-PS 		opt;
-int             argc;
-char          **argv;
-CommonArgs     *ca;
+int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
 
 	ServiceControl  *sc;
-	int             shuffle_up ();
+	int             shuffle_up (int argc, char **argv, int start);
 	int             x;
 	char            shuffle;
 
@@ -217,7 +207,7 @@ CommonArgs     *ca;
 			chase_flag = 2;
 
 		else if (test_arg(argv[x], "-strong", 3)) {
-			char *new_version();
+			char *new_version(void);
 			struct certificate *cert_cpy();
 
 			ca->ca_security = (struct security_parms *)
@@ -323,8 +313,7 @@ unset_sequence (void) {
 	current_sequence = NULL_DS;
 }
 
-add_sequence (adn)
-DN adn;
+int add_sequence (DN adn)
 {
 	struct dua_seq_entry * ptr;
 	int x=1;
@@ -348,8 +337,7 @@ DN adn;
 	return (x);
 }
 
-DN sequence_dn(y)
-int y;
+DN sequence_dn(int y)
 {
 	struct dua_seq_entry * ptr;
 	int x = 1;
@@ -371,10 +359,7 @@ int y;
 }
 
 
-show_sequence (RPS,str,ufn)
-PS RPS;
-char * str;
-char	ufn;
+void show_sequence (PS RPS, char *str, char ufn)
 {
 	struct dua_seq_entry * ptr;
 	int x = 1;
@@ -400,4 +385,3 @@ char	ufn;
 		ps_print (RPS,"\n");
 	}
 }
-

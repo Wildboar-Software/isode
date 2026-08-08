@@ -40,10 +40,7 @@ static char used_temp;
 /* ARGSUSED */
 #endif
 
-int dflt_attr_file (at,x,full)
-AttributeType  at;
-AttributeValue x;
-char full;
+int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 {
 	/* make default file name */
 	char buffer [LINESIZE];
@@ -141,10 +138,7 @@ char full;
 
 
 
-fileattr_print (ps,y,format)
-PS ps;
-AttributeValue y;
-int format;
+void fileattr_print (PS ps, AttributeValue y, int format)
 {
 	struct file_syntax * fs;
 	int um;
@@ -216,12 +210,9 @@ int format;
 		DLOG (log_dsap,LLOG_DEBUG,("Written photo file '%s'",fs->fs_name));
 	}
 	return;
-
 }
 
-void as_write_files (as,where)
-Attr_Sequence as;
-char *where;
+void as_write_files (Attr_Sequence as, char *where)
 {
 	struct file_syntax * fs;
 	int um;
@@ -293,4 +284,3 @@ char *where;
 					  ("Written photo file (tmp) '%s'",fs->fs_name));
 			}
 }
-

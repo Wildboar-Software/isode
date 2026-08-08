@@ -26,9 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_new.c,v 9.0
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-RDN  rdn_comp_new (at,av)
-AttributeType  at;
-AttributeValue av;
+RDN  rdn_comp_new (AttributeType at, AttributeValue av)
 {
 	RDN ptr;
 	ptr = rdn_comp_alloc ();

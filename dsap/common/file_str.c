@@ -1,3 +1,4 @@
+#include <unistd.h>
 #ifndef lint
 static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_str.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
 #endif
@@ -22,7 +23,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_str.c,v 9.
  *
  */
 
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #ifdef	CHECK_FILE_ATTRIBUTES
@@ -32,10 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_str.c,v 9.
 extern LLog * log_dsap;
 extern char dsa_mode;
 
-str2file_aux (str,at,x)
-char * str;
-AttributeType at;
-AttributeValue x;
+int str2file_aux (char *str, AttributeType at, AttributeValue x)
 {
 	struct file_syntax * fs;
 #ifdef CHECK_FILE_ATTRIBUTES
@@ -92,9 +90,7 @@ AttributeValue x;
 
 }
 
-AttributeValue str2file (str,at)
-char * str;
-AttributeType at;
+AttributeValue str2file (char *str, AttributeType at)
 {
 	AttributeValue x;
 
@@ -105,28 +101,21 @@ AttributeType at;
 	return (NULLAttrV);
 }
 
-int
-file_free (struct file_syntax *fs) {
+void file_free (struct file_syntax *fs) {
 	if (fs == (struct file_syntax *) NULL)
 		return;
-
 	fs->fs_ref--;
-
 	if (fs->fs_ref > 0)
 		return;
-
 	if ( (fs->fs_mode & FS_TMP) ||
 			(!dsa_mode && (fs->fs_mode & FS_CREATE))) {
 		unlink (fs->fs_name);
 		DLOG (log_dsap,LLOG_DEBUG,("Removed photo file '%s'",fs->fs_name));
 		fs->fs_mode &= ~FS_CREATE;
 	}
-
 	if (fs->fs_attr)
 		AttrV_free (fs->fs_attr);
-
 	if (fs->fs_name)
 		free (fs->fs_name);
-
 	free ((char *) fs);
 }

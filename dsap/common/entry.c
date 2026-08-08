@@ -37,18 +37,14 @@ extern int local_slave_size;
 extern int local_cache_size;
 
 
-directory_free (directory)
-Entry directory;
+void directory_free (Entry directory)
 {
 	extern Entry database_root;
-
 	if (directory !=  NULLENTRY) {
 		if (directory != database_root)
 			turbo_index_delete(directory);
-
 		if (directory->e_children != NULLAVL)
 			avl_free(directory->e_children, directory_free);
-
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:
 			local_slave_size--;
@@ -60,29 +56,22 @@ Entry directory;
 			local_cache_size--;
 			break;
 		}
-
 		entry_free(directory);
 	}
 }
 
-entry_free (entryptr)
-Entry entryptr;
+void entry_free (Entry entryptr)
 {
 	if (entryptr->e_refcount-- > 0)
 		return;
-
 	rdn_free (entryptr->e_name);
 	as_free (entryptr->e_attributes);
-
 	if (entryptr->e_edbversion !=  NULLCP )
 		free (entryptr->e_edbversion);
-
 	if (entryptr->e_dsainfo != NULLDSA)
 		free ((char *) entryptr->e_dsainfo);
-
 	if (entryptr->e_inherit != NULLAV)
 		avs_free (entryptr->e_inherit);
-
 	free ((char *) entryptr);
 }
 
@@ -90,10 +79,7 @@ Entry entryptr;
  * entry_replace - called from do_ds_modifyentry to update entry old with most
  * fields of entry new.
  */
-
-entry_replace( old, new )
-Entry   old;
-Entry   new;
+void entry_replace(Entry old, Entry new)
 {
 	as_free( old->e_attributes );
 	old->e_attributes = as_cpy( new->e_attributes );
@@ -107,8 +93,7 @@ Entry   new;
 	/* the rest must be set by calling unravel */
 }
 
-Entry entry_cpy (entryptr)
-Entry entryptr;
+Entry entry_cpy (Entry entryptr)
 {
 	Entry ptr;
 
@@ -134,9 +119,7 @@ Entry entryptr;
 	return (ptr);
 }
 
-
-Entry get_default_entry (parent)
-Entry parent;
+Entry get_default_entry (Entry parent)
 {
 	Entry eptr;
 
@@ -149,25 +132,18 @@ Entry parent;
 	return (eptr);
 }
 
-
-int
-check_known_oids (void) {
+void check_known_oids (void) {
 	at_objectclass = AttrT_new (OBJECTCLASS_OID);
 	at_alias = AttrT_new (ALIAS_OID);
 }
 
 
-entryrdn_cmp( rdn, ent )
-RDN     rdn;
-Entry   ent;
+int entryrdn_cmp(RDN rdn, Entry ent)
 {
 	return( rdn_cmp_reverse( rdn, ent->e_name ) );
 }
 
-entry_cmp( e1, e2 )
-Entry   e1;
-Entry   e2;
+int entry_cmp(Entry e1, Entry e2)
 {
 	return( rdn_cmp_reverse( e1->e_name, e2->e_name ) );
 }
-

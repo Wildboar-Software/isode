@@ -26,8 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_merge.c,v 9
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-RDN rdn_merge (a,b)
-RDN a,b;
+RDN rdn_merge (RDN a, RDN b)
 {
 	RDN aptr, bptr, result, trail;
 
@@ -86,4 +85,3 @@ RDN a,b;
 
 	return (result);
 }
-

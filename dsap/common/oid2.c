@@ -22,7 +22,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oid2.c,v 9.0 19
  *
  */
 
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "cmd_srch.h"
@@ -31,9 +31,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oid2.c,v 9.0 19
 extern char chrcnv [];
 
 extern LLog * log_dsap;
-int load_obj_hier();
-int add_oc_macro();
-static get_oc_bits ();
+int load_obj_hier(char *sep, char *newname);
+int add_oc_macro(char *buf, char *ptr);
+static get_oc_bits (char *str);
 
 extern oid_table OIDTable[];
 extern objectclass ocOIDTable[];
@@ -41,8 +41,8 @@ extern oid_table_attr attrOIDTable[];
 extern int NumEntries;
 extern int attrNumEntries;
 extern int ocNumEntries;
-extern void free_oid_buckets();
-static table_seq table_seq_new ();
+extern void free_oid_buckets(void);
+static table_seq table_seq_new (char *str);
 
 struct mac_buf {                        /* for handling macros */
 	char name [BUFSIZE];
@@ -184,9 +184,7 @@ get_oc_bits (char *str) {
 	return (OK);
 }
 
-static table_seq undo_macro (top,ptr)
-table_seq top;
-char * ptr;
+static table_seq undo_macro (table_seq top, char *ptr)
 {
 	int i;
 	table_seq tab;
@@ -212,8 +210,7 @@ char * ptr;
 	return (top);
 }
 
-static table_seq table_seq_new (str)
-char * str;
+static table_seq table_seq_new (char *str)
 {
 	char * ptr;
 	table_seq tptr;
@@ -280,8 +277,7 @@ add_oc_macro (char *buf, char *ptr) {
 	strcpy(macro[NumMacro++].value,ptr);
 }
 
-void	table_seq_free (ts)
-table_seq ts;
+void table_seq_free (table_seq ts)
 {
 	table_seq tptr;
 

@@ -27,8 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_str.c,v 9.0
 #include "quipu/name.h"
 #include "quipu/malloc.h"
 
-RDN str2rdn_aux (str)
-char * str;
+RDN str2rdn_aux (char *str)
 {
 	AttributeType at;
 	char * ptr;
@@ -89,8 +88,7 @@ char * str;
 }
 
 
-RDN str2rdn (str)
-char * str;
+RDN str2rdn (char *str)
 {
 	char *ptr;
 	char *save,val;

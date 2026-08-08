@@ -28,17 +28,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_cmp.c,v 9.0
 #include "quipu/dsp.h"
 #include "quipu/ds_error.h"
 
-rdn_cmp_comp (a,b)
-RDN  a,b;
+int rdn_cmp_comp (RDN a, RDN b)
 {
 	int j;
-
 	if (a->rdn_at != b->rdn_at)
 		return ((a->rdn_at > b->rdn_at) ? 1 : -1);
-
 	j = AttrV_cmp (&a->rdn_av,&b->rdn_av);
-
 	return (j);
-
 }
-

@@ -26,16 +26,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_new.c,v 9.0
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-avs_comp_fill (ptr,pe)
-AV_Sequence ptr;
-AttributeValue pe;
+avs_comp_fill (AV_Sequence ptr, AttributeValue pe)
 {
 	ptr->avseq_av.av_struct = pe->av_struct;
 	ptr->avseq_av.av_syntax = pe->av_syntax;
 }
 
-AV_Sequence  avs_comp_new (pe)
-AttributeValue pe;
+AV_Sequence  avs_comp_new (AttributeValue pe)
 {
 	AV_Sequence ptr;
 	ptr = avs_comp_alloc ();

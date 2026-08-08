@@ -58,13 +58,13 @@ extern LLog * log_dsap;
 }
 
 
-static ravl_insert( iroot, data, taller, fcmp, fdup, depth )
-Avlnode 	**iroot;
-caddr_t		data;
-int		*taller;
-IFP		fcmp;		/* comparison function */
-IFP		fdup;		/* function to call for duplicates */
-int		depth;
+static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP fdup, int depth)
+        	        
+       		     
+   		        
+   		     		/* comparison function */
+   		     		/* function to call for duplicates */
+   		      
 {
 	int	rc, cmp, tallersub;
 	Avlnode	*l, *r;
@@ -214,11 +214,7 @@ int		depth;
  * NOTE: this routine may malloc memory
  */
 
-avl_insert( root, data, fcmp, fdup )
-Avlnode	**root;
-caddr_t	data;
-IFP	fcmp;
-IFP	fdup;
+int avl_insert(Avlnode **root, caddr_t data, IFP fcmp, IFP fdup)
 {
 	int	taller;
 
@@ -226,8 +222,7 @@ IFP	fdup;
 }
 
 /* called from delete when root's right subtree has been shortened */
-static right_balance( root )
-Avlnode	**root;
+static int right_balance(Avlnode **root)
 {
 	int	shorter;
 	Avlnode	*r, *l;
@@ -286,8 +281,7 @@ Avlnode	**root;
 }
 
 /* called from delete when root's left subtree has gotten shorter */
-static left_balance( root )
-Avlnode	**root;
+static int left_balance(Avlnode **root)
 {
 	int	shorter;
 	Avlnode	*r, *l;
@@ -345,11 +339,7 @@ Avlnode	**root;
 	return( shorter );
 }
 
-static caddr_t ravl_delete( root, data, fcmp, shorter )
-Avlnode	**root;
-caddr_t	data;
-IFP	fcmp;
-int	*shorter;
+static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 {
 	int	shortersubtree = 0;
 	int	cmp;
@@ -432,21 +422,13 @@ int	*shorter;
 	return( savedata );
 }
 
-caddr_t avl_delete( root, data, fcmp )
-Avlnode	**root;
-caddr_t	data;
-IFP	fcmp;
+caddr_t avl_delete(Avlnode **root, caddr_t data, IFP fcmp)
 {
 	int	shorter;
-
 	return( ravl_delete( root, data, fcmp, &shorter ) );
 }
 
-avl_inapply( root, fn, arg, stopflag )
-Avlnode	*root;
-IFP	fn;
-caddr_t	arg;
-int	stopflag;
+int avl_inapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -465,11 +447,7 @@ int	stopflag;
 		return( avl_inapply( root->avl_right, fn, arg, stopflag ) );
 }
 
-avl_postapply( root, fn, arg, stopflag )
-Avlnode	*root;
-IFP	fn;
-caddr_t	arg;
-int	stopflag;
+int avl_postapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -487,11 +465,7 @@ int	stopflag;
 	return( (*fn)( root->avl_data, arg ) );
 }
 
-avl_preapply( root, fn, arg, stopflag )
-Avlnode	*root;
-IFP	fn;
-caddr_t	arg;
-int	stopflag;
+int avl_preapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
@@ -516,14 +490,13 @@ int	stopflag;
  * the traversal is cut short, otherwise it continues.  Do not use -6 as
  * a stopflag.
  */
-
-avl_apply( root, fn, arg, stopflag, type )
-Avlnode	*root;
-IFP	fn;
-caddr_t	arg;
-int	stopflag;
-int	type;
-{
+int avl_apply(
+	Avlnode *root,
+	IFP fn,
+	caddr_t arg,
+	int stopflag,
+	int type
+) {
 	switch ( type ) {
 	case AVL_INORDER:
 		return( avl_inapply( root, fn, arg, stopflag ) );
@@ -532,11 +505,9 @@ int	type;
 	case AVL_POSTORDER:
 		return( avl_postapply( root, fn, arg, stopflag ) );
 	default:
-		DLOG( log_dsap, LLOG_EXCEPTIONS, ("Invalid traversal type %d",
-										  type) );
+		DLOG( log_dsap, LLOG_EXCEPTIONS, ("Invalid traversal type %d", type) );
 		return( NOTOK );
 	}
-
 	/* NOTREACHED */
 }
 
@@ -551,36 +522,25 @@ int	type;
  * AVL_NOMORE is returned.
  */
 
-avl_prefixapply( root, data, fmatch, marg, fcmp, carg, stopflag )
-Avlnode	*root;
-caddr_t	data;
-IFP	fmatch;
-caddr_t	marg;
-IFP	fcmp;
-caddr_t	carg;
-int	stopflag;
+int avl_prefixapply(Avlnode *root, caddr_t data, IFP fmatch, caddr_t marg, IFP fcmp, caddr_t carg, int stopflag)
 {
 	int	cmp;
 
 	if ( root == 0 )
 		return( AVL_NOMORE );
-
 	cmp = (*fcmp)( data, root->avl_data, carg );
 	if ( cmp == 0 ) {
 		if ( (*fmatch)( root->avl_data, marg ) == stopflag )
 			return( stopflag );
-
 		if ( root->avl_left != 0 )
 			if ( avl_prefixapply( root->avl_left, data, fmatch,
 								  marg, fcmp, carg, stopflag ) == stopflag )
 				return( stopflag );
-
 		if ( root->avl_right != 0 )
 			return( avl_prefixapply( root->avl_right, data, fmatch,
 									 marg, fcmp, carg, stopflag ) );
 		else
 			return( AVL_NOMORE );
-
 	} else if ( cmp < 0 ) {
 		if ( root->avl_left != 0 )
 			return( avl_prefixapply( root->avl_left, data, fmatch,
@@ -590,7 +550,6 @@ int	stopflag;
 			return( avl_prefixapply( root->avl_right, data, fmatch,
 									 marg, fcmp, carg, stopflag ) );
 	}
-
 	return( AVL_NOMORE );
 }
 
@@ -600,9 +559,7 @@ int	stopflag;
  * number of items actually freed is returned.
  */
 
-avl_free( root, dfree )
-Avlnode	*root;
-IFP	dfree;
+int avl_free(Avlnode *root, IFP dfree)
 {
 	int	nleft, nright;
 
@@ -631,20 +588,15 @@ IFP	dfree;
  * < 0 if arg1 is less than arg2 and > 0 if arg1 is greater than arg2.
  */
 
-caddr_t avl_find( root, data, fcmp )
-Avlnode	*root;
-caddr_t	data;
-IFP	fcmp;
+caddr_t avl_find(Avlnode *root, caddr_t data, IFP fcmp)
 {
 	int	cmp;
-
 	while ( root != 0 && (cmp = (*fcmp)( data, root->avl_data )) != 0 ) {
 		if ( cmp < 0 )
 			root = root->avl_left;
 		else
 			root = root->avl_right;
 	}
-
 	return( root ? root->avl_data : 0 );
 }
 
@@ -654,9 +606,7 @@ static int	avl_nextlist;
 
 #define AVL_GRABSIZE	100
 
-/* ARGSUSED 1 */
-static
-avl_buildlist (caddr_t data, int arg) {
+static int avl_buildlist (caddr_t data, int arg) {
 	static int	slots;
 
 	if ( avl_list == (caddr_t *) 0 ) {
@@ -674,8 +624,7 @@ avl_buildlist (caddr_t data, int arg) {
 	return( 0 );
 }
 
-caddr_t avl_getfirst( root )
-Avlnode	*root;
+caddr_t avl_getfirst(Avlnode *root)
 {
 	if ( avl_list ) {
 		free( (char *) avl_list);
@@ -683,31 +632,23 @@ Avlnode	*root;
 	}
 	avl_maxlist = 0;
 	avl_nextlist = 0;
-
 	if ( root == 0 )
 		return( 0 );
-
-	avl_apply( root, avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
-
+	avl_apply( root, (IFP)avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
 	return( avl_list[ avl_nextlist++ ] );
 }
 
-caddr_t
-avl_getnext (void) {
+caddr_t avl_getnext (void) {
 	if ( avl_list == 0 )
 		return( 0 );
-
 	if ( avl_nextlist == avl_maxlist ) {
 		free( (caddr_t) avl_list);
 		avl_list = (caddr_t *) 0;
 		return( 0 );
 	}
-
 	return( avl_list[ avl_nextlist++ ] );
 }
 
-
-int
-avl_dup_error (void) {
+int avl_dup_error (void) {
 	return( NOTOK );
 }

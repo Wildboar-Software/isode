@@ -40,10 +40,7 @@ int  format;
 }
 #endif
 
-avs_print (ps,avs,format)
-AV_Sequence  avs;
-PS   ps;
-int  format;
+void avs_print (PS ps, AV_Sequence avs, int format)
 {
 	if (avs == NULLAV) {
 		ps_print (ps,"\n");
@@ -57,11 +54,7 @@ int  format;
 	ps_print (ps,"\n");
 }
 
-avs_print_aux (ps,avs,format,sep)
-AV_Sequence  avs;
-PS   ps;
-int  format;
-char *sep;
+void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep)
 {
 	AV_Sequence eptr;
 
@@ -77,4 +70,3 @@ char *sep;
 		AttrV_print (ps,&eptr->avseq_av,format);
 	}
 }
-

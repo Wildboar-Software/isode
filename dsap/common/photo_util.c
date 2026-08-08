@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/photo_util.c,v 
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 
@@ -49,10 +47,9 @@ int PIC_LINESIZE,STOP,NUMLINES;
 /* SYNOPSIS:    Gets the next bit from the input.                       */
 /*              Returns 0 if it is a zero.                              */
 /*              Returns 1 if it is a one                                */
-char
-get_bit (lineptr)
+char get_bit (bit_string *lineptr)
 
-bit_string * lineptr;      /* the line to get the bit from */
+                           /* the line to get the bit from */
 
 {
 	unsigned char    result;
@@ -81,10 +78,7 @@ bit_string * lineptr;      /* the line to get the bit from */
 /* SYNOPSIS:  Sets the next bit of the bit string pointed to by         */
 /*            lineptr to a one.                                         */
 
-set_bit (lineptr)
-
-bit_string *  lineptr;
-
+void set_bit (bit_string *lineptr)
 {
 	/* This sets the masked bit */
 	lineptr->pos |= lineptr->mask;
@@ -95,21 +89,14 @@ bit_string *  lineptr;
 		*lineptr->dbuf++ = lineptr->pos;
 		lineptr->mask = BIT_MASK;
 	}
-
 }
-
-
-
 
 /* ROUTINE:   Clr_bit                                                   */
 /*                                                                      */
 /* SYNOPSIS:  clears the next bit of the bit string pointed to by       */
 /*            lineptr.  i.e set it to zero.                             */
 
-clr_bit (lineptr)
-
-bit_string *  lineptr;
-
+void clr_bit (bit_string *lineptr)
 {
 	/* clear the masked bit */
 	lineptr->pos &=   ~(lineptr->mask) ;
@@ -120,9 +107,4 @@ bit_string *  lineptr;
 		*lineptr->dbuf++ = lineptr->pos;
 		lineptr->mask = BIT_MASK;
 	}
-
 }
-
-
-
-

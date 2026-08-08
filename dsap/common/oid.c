@@ -39,11 +39,11 @@ extern LLog * log_dsap;
 
 FILE * f_table;
 
-static char * get_entry ();
-static add_entry ();
-char * get_oid();
-static char * name2gen ();
-int add_entry_aux ();
+static char * get_entry (void);
+static add_entry (char *newname, int towho);
+char * get_oid(char *str);
+static char * name2gen (char *nodename);
+int add_entry_aux (char *a, caddr_t b, int c, char *d);
 
 oid_table       OIDTable [TABLESIZE];
 oid_table_attr  attrOIDTable [TABLESIZE];
@@ -151,11 +151,7 @@ bad_entry:
 	return OK;
 }
 
-add_entry_aux (a,b,c,d)
-char * a;
-caddr_t b;
-int c;
-char * d;
+int add_entry_aux (char *a, caddr_t b, int c, char *d)
 {
 	int	    i;
 	struct pair *p;
@@ -496,8 +492,7 @@ get_entry (void) {
 
 }
 
-oid_table_attr *name2attr(nodename)
-char * nodename;
+oid_table_attr *name2attr(char *nodename)
 {
 	int i;
 	char * ptr;
@@ -545,18 +540,14 @@ char * nodename;
 
 }
 
-set_heap (x)
-AttributeType x;
+int set_heap (AttributeType x)
 {
 	if (x == NULLTABLE_ATTR)
 		return 0;
-
 	return (attr_index = x - &attrOIDTable[0]);
-
 }
 
-oid_table_attr *oid2attr(oid)
-OID oid;
+oid_table_attr *oid2attr(OID oid)
 {
 	int i;
 	oid_table_attr * ptr = &attrOIDTable[0];
@@ -572,8 +563,7 @@ OID oid;
 	return (NULLTABLE_ATTR);
 }
 
-objectclass *name2oc(nodename)
-char * nodename;
+objectclass *name2oc(char *nodename)
 {
 	int i;
 	char * ptr;
@@ -613,8 +603,7 @@ char * nodename;
 }
 
 
-objectclass *oid2oc(oid)
-OID oid;
+objectclass *oid2oc(OID oid)
 {
 	int i;
 	objectclass * oc = &ocOIDTable[0];
@@ -630,8 +619,7 @@ OID oid;
 }
 
 
-static char * full_gen (ot)
-oid_table * ot;
+static char *full_gen (oid_table *ot)
 {
 	static char * buffer;
 	char * ptr;
@@ -667,8 +655,7 @@ oid_table * ot;
 	return (&buffer[1]);
 }
 
-static char * part_gen (ot)
-oid_table * ot;
+static char *part_gen (oid_table *ot)
 {
 	static char * buffer = NULLCP;
 	char * ptr;
@@ -721,9 +708,7 @@ oid_table_attr *oa;
 }
 #endif
 
-char *attr2name(oa,format)
-oid_table_attr *oa;
-int format;
+char *attr2name(oid_table_attr *oa, int format)
 {
 	int x;
 
@@ -747,9 +732,7 @@ int format;
 }
 
 
-char *oc2name(oc,format)
-objectclass *oc;
-int format;
+char *oc2name(objectclass *oc, int format)
 {
 	if ( oc != NULLOBJECTCLASS)
 		switch (format) {
@@ -764,9 +747,7 @@ int format;
 		return (NULLCP);
 }
 
-char *oid2name(oid,format)
-OID oid;
-int format;
+char *oid2name(OID oid, int format)
 {
 	oid_table_attr * at;
 	objectclass * oc;
@@ -804,8 +785,7 @@ int format;
 
 }
 
-OID name2oid (str)
-char * str;
+OID name2oid(char *str)
 {
 	struct pair *p;
 	OID ptr;
@@ -859,17 +839,13 @@ char * str;
 
 }
 
-PE oid2pe (o)
-OID o;
+PE oid2pe (OID o)
 {
 	/* needed cos of a macro */
 	return (oid2prim (o));
 }
 
-oidprint (ps,o,format)
-PS ps;
-OID o;
-int format;
+void oidprint (PS ps, OID o, int format)
 {
 	extern int oidformat;
 
@@ -879,8 +855,7 @@ int format;
 		ps_printf (ps,"%s",oid2name(o,OIDPART));
 }
 
-OID dup_prim2oid (pe)
-PE pe;
+OID dup_prim2oid (PE pe)
 {
 	OID oid;
 
@@ -893,8 +868,7 @@ PE pe;
 	return (oid_cpy(oid));
 }
 
-void
-free_oid_buckets (void) {
+void free_oid_buckets (void) {
 	int i;
 	struct pair *p, *np;
 
@@ -908,8 +882,7 @@ free_oid_buckets (void) {
 }
 
 
-int
-oid_syntax (void) {
+void oid_syntax (void) {
 	add_attribute_syntax ("oid",
 						  oid2pe,		dup_prim2oid,
 						  name2oid,		oidprint,
@@ -917,4 +890,3 @@ oid_syntax (void) {
 						  oid_free,	NULLCP,
 						  NULLIFP,	FALSE );
 }
-

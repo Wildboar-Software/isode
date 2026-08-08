@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/turbo_index.c,v
  *
  */
 
-
+#include <string.h>
 #include <stdio.h>
 #include "quipu/config.h"
 #include "quipu/attr.h"
@@ -56,71 +56,51 @@ strrev (char *s) {
 	return( rsave );
 }
 
-static index_cmp( a, b )
-Index_node	*a;
-Index_node	*b;
+static int index_cmp(Index_node *a, Index_node *b)
 {
 	return( AttrV_cmp( (AttributeValue) a->in_value,
 					   (AttributeValue) b->in_value ) );
 }
 
-static sindex_cmp( a, b )
-Index_node	*a;
-Index_node	*b;
+static int sindex_cmp(Index_node *a, Index_node *b)
 {
 	return( strcmp( (char *) a->in_value, (char *) b->in_value ) );
 }
 
-index_soundex_cmp( code, node )
-char		*code;
-Index_node	*node;
+int index_soundex_cmp(char *code, Index_node *node)
 {
 	return( strcmp( code, (char *) node->in_value ) );
 }
 
-index_soundex_prefix( code, node, len )
-char		*code;
-Index_node	*node;
-int		len;
+int index_soundex_prefix(char *code, Index_node *node, int len)
 {
 	return( strncmp( code, (char *) node->in_value, len ) );
 }
 
-substring_prefix_cmp( val, node, len )
-char		*val;
-Index_node	*node;
-int		len;
+int substring_prefix_cmp(char *val, Index_node *node, int len)
 {
 	return(strncmp(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-substring_prefix_tel_cmp( val, node, len )
-char		*val;
-Index_node	*node;
-int		len;
+int substring_prefix_tel_cmp(char *val, Index_node *node, int len)
 {
 	return(telncmp(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-substring_prefix_case_cmp( val, node, len )
-char		*val;
-Index_node	*node;
-int		len;
+int substring_prefix_case_cmp(char *val, Index_node *node, int len)
 {
 	return(lexnequ(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-indexav_cmp( av, node )
-AttributeValue	av;
-Index_node	*node;
+int indexav_cmp(AttributeValue av, Index_node *node)
 {
 	return( AttrV_cmp( av, (AttributeValue) node->in_value ) );
 }
 
-Index_node *new_indexnode() {
+Index_node *new_indexnode(void) {
 	Index_node	*new;
 
 	new = (Index_node *) malloc( sizeof(Index_node) );
@@ -132,9 +112,7 @@ Index_node *new_indexnode() {
 	return( new );
 }
 
-static index_dup( node, dup )
-Index_node	*node;
-Index_node	*dup;
+static int index_dup(Index_node *node, Index_node *dup)
 {
 	int	j;
 	int	low, mid, high;
@@ -203,24 +181,21 @@ Index_node	*dup;
 	return( NOTOK );
 }
 
-static indexav_free( node )
-Index_node	*node;
+static void indexav_free(Index_node *node)
 {
 	AttrV_free( (AttributeValue) node->in_value );
 	free( (char *) node->in_entries );
 	free( (char *) node );
 }
 
-static soundex_free( node )
-Index_node	*node;
+static void soundex_free(Index_node *node)
 {
 	free( (char *) node->in_value );
 	free( (char *) node->in_entries );
 	free( (char *) node );
 }
 
-static index_free( pindex )
-Index	*pindex;
+static void index_free(Index *pindex)
 {
 	dn_free( pindex->i_dn );
 	avl_free( pindex->i_root, indexav_free );
@@ -229,22 +204,17 @@ Index	*pindex;
 }
 
 /* ARGSUSED */
-static i_dup( a )
-Index	*a;
+static int i_dup(Index *a)
 {
 	return( NOTOK );
 }
 
-static i_cmp( a, b )
-Index	*a;
-Index	*b;
+static int i_cmp(Index *a, Index *b)
 {
 	return( dn_order_cmp( a->i_dn, b->i_dn ) );
 }
 
-idn_cmp( a, b )
-DN	a;
-Index	*b;
+int idn_cmp(DN a, Index *b)
 {
 	return( dn_order_cmp( a, b->i_dn ) );
 }
@@ -258,9 +228,7 @@ Index	*b;
  *      2       =>      neither a nor b is a prefix of the other
  */
 
-th_prefix( a, b )
-DN      a;
-DN      b;
+int th_prefix(DN a, DN b)
 {
 	for ( ; a && b; a = a->dn_parent, b = b->dn_parent )
 		if ( dn_comp_cmp( a, b ) == NOTOK )
@@ -276,8 +244,7 @@ DN      b;
 		return( 1 );            /* b is a prefix of a */
 }
 
-static Index *new_index( dn )
-DN	dn;
+static Index *new_index(DN dn)
 {
 	Index	*pindex;
 	int	i;
@@ -323,9 +290,7 @@ int		ps;
  * kept with index index.
  */
 
-static add_nonlocalalias( e, pindex )
-Index		*pindex;
-struct entry	*e;
+static void add_nonlocalalias(struct entry *e, Index *pindex)
 {
 	struct entry	**tmp;
 	int		i;
@@ -348,8 +313,8 @@ struct entry	*e;
 	}
 
 	pindex->i_nonlocalaliases = (struct entry **) realloc(
-									(char *)pindex->i_nonlocalaliases, (unsigned) sizeof(struct entry *) * (i + 2) );
-
+									(char *)pindex->i_nonlocalaliases,
+									(unsigned) sizeof(struct entry *) * (i + 2) );
 	pindex->i_nonlocalaliases[ i ] = e;
 	pindex->i_nonlocalaliases[ i + 1 ] = NULLENTRY;
 }
@@ -358,17 +323,12 @@ struct entry	*e;
  * addnonleafkids - add entry e to the list of nonlocal kids kept
  * in index index.
  */
-
-static add_nonleafkid( e, pindex )
-Index		*pindex;
-struct entry	*e;
+static void add_nonleafkid(struct entry *e, Index *pindex)
 {
 	struct entry	**tmp;
 	int		i;
-
 	if ( pindex == NULLINDEX )
 		return;
-
 	if ( pindex->i_nonleafkids == (struct entry **) 0 ) {
 		pindex->i_nonleafkids = (struct entry **) malloc(sizeof(Entry));
 		pindex->i_nonleafkids[ 0 ] = (Entry) 0;
@@ -381,11 +341,9 @@ struct entry	*e;
 			return;
 		}
 	}
-
 	pindex->i_nonleafkids = (struct entry **) realloc(
 								(char *) pindex->i_nonleafkids,
 								(unsigned) (sizeof(struct entry *) * (i + 2)) );
-
 	pindex->i_nonleafkids[ i ] = e;
 	pindex->i_nonleafkids[ i + 1 ] = NULLENTRY;
 }
@@ -394,31 +352,23 @@ struct entry	*e;
  * delete_nonleafkid - delete a reference to nonleaf child entry e
  * in index index.
  */
-
-static delete_nonleafkid( e, pindex )
-struct entry	*e;
-Index		*pindex;
+static void delete_nonleafkid(struct entry *e, Index *pindex)
 {
 	int		i, j;
 	struct entry	**tmp;
-
 	if ( pindex->i_nonleafkids == (struct entry **) 0 ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Index has no non-leaf entries"));
 		return;
 	}
-
 	for ( i = 0, tmp = pindex->i_nonleafkids; *tmp; tmp++, i++ )
 		if ( *tmp == e ) break;
-
 	if ( *tmp == NULLENTRY ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Cannot find non-leaf entry"));
 		return;
 	}
-
 	for ( j = i + 1; pindex->i_nonleafkids[ j ]; j++ )
 		pindex->i_nonleafkids[ j - 1 ] = pindex->i_nonleafkids[ j ];
 	pindex->i_nonleafkids[ j - 1 ] = NULLENTRY;
-
 	return;
 }
 
@@ -426,10 +376,7 @@ Index		*pindex;
  * delete_nonlocalalias - delete a reference to nonlocal alias entry e
  * in index index.
  */
-
-static delete_nonlocalalias( e, pindex )
-struct entry	*e;
-Index		*pindex;
+static void delete_nonlocalalias(struct entry *e, Index *pindex)
 {
 	int		i, j;
 	struct entry	**tmp;
@@ -438,20 +385,16 @@ Index		*pindex;
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("index has no non-local aliases"));
 		return;
 	}
-
 	for ( i = 0, tmp = pindex->i_nonlocalaliases; *tmp; tmp++, i++ )
 		if ( *tmp == e ) break;
-
 	if ( *tmp == (struct entry *) 0 ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Cannot find non-local alias"));
 		return;
 	}
-
 	for ( j = i + 1; pindex->i_nonlocalaliases[ j ]; j++ )
 		pindex->i_nonlocalaliases[ j - 1 ] =
 			pindex->i_nonlocalaliases[ j ];
 	pindex->i_nonlocalaliases[ j - 1 ] = NULLENTRY;
-
 	return;
 }
 
@@ -460,11 +403,7 @@ Index		*pindex;
  * index for attribute type attr.
  */
 
-static turbo_attr_insert( pindex, e, attr, values )
-Index		*pindex;
-Entry		e;
-AttributeType	attr;
-AV_Sequence	values;
+static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Sequence values)
 {
 	int		i;
 	int		substr;
@@ -472,9 +411,9 @@ AV_Sequence	values;
 	AttributeValue	save;
 	Index_node	*imem;
 	char		*word, *code, *savestr;
-	char		*first_word(), *next_word();
+	char		*first_word(char *ptr), *next_word(char *ptr);
 	IFP		approxfn();
-	int		soundex_match();
+	int		soundex_match(struct filter_item *fitem, AV_Sequence avs);
 
 	/* find the appropriate index */
 	for ( i = 0; i < turbo_index_num; i++ )
@@ -583,10 +522,10 @@ AV_Sequence	values;
  * attrs to optimize. if an attr to optimize is found, we add that attribute
  * along with a pointer to the corresponding entry to the appropriate
  * attribute index.
+ *
+ * @param e the entry these attrs belong to
  */
-
-turbo_add2index( e )
-Entry	e;		/* the entry these attrs belong to */
+void turbo_add2index(Entry e)
 {
 	Entry		parent;
 	Attr_Sequence	as, entry_find_type();
@@ -682,19 +621,14 @@ Entry	e;		/* the entry these attrs belong to */
  * turbo_attr_delete -- delete entry e from index for values of attribute
  * attr.
  */
-
-static turbo_attr_delete( pindex, e, attr, values )
-Index		*pindex;
-Entry		e;
-AttributeType	attr;
-AV_Sequence	values;
+static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Sequence values)
 {
 	int		i, j, k;
 	AV_Sequence	av;
 	Index_node	*node, *imem;
 	struct entry	**p;
 	char		*code, *word;
-	char		*first_word(), *next_word();
+	char		*first_word(char *ptr), *next_word(char *ptr);
 
 	/* find the appropriate index */
 	for ( i = 0; i < turbo_index_num; i++ )
@@ -807,8 +741,7 @@ AV_Sequence	values;
  * node.
  */
 
-turbo_index_delete( e )
-Entry	e;
+void turbo_index_delete(Entry e)
 {
 	Entry		parent;
 	Attr_Sequence	as;
@@ -902,8 +835,7 @@ Entry	e;
  * otherwise.
  */
 
-turbo_isoptimized( attr )
-AttributeType	attr;
+int turbo_isoptimized(AttributeType attr)
 {
 	int	i;
 
@@ -921,8 +853,7 @@ AttributeType	attr;
  * attribute to be optimized during loading.
  */
 
-int
-turbo_optimize (char *attr) {
+int turbo_optimize (char *attr) {
 	AttributeType	a;
 
 	if ( (a = str2AttrT( attr )) == NULLAttrT ) {
@@ -946,17 +877,14 @@ turbo_optimize (char *attr) {
 
 	turbo_index_types[ turbo_index_num ] = AttrT_cpy(a);
 	turbo_index_num++;
-
 	return;
 }
 
 /*
  * index_subtree - arrange for the subtree starting at tree to be indexed.
  */
-
-int
-index_subtree (char *tree) {
-	DN		dn, str2dn();
+void index_subtree (char *tree) {
+	DN		dn, str2dn(char *str);
 	Index		*pindex;
 
 	if ( (dn = str2dn( tree )) == NULLDN ) {
@@ -974,17 +902,14 @@ index_subtree (char *tree) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Subtree index for %s already exists\n", tree));
 		index_free( pindex );
 	}
-
 	return;
 }
 
 /*
  * index_siblings - arrange for the children of parent to be indexed.
  */
-
-int
-index_siblings (char *parent) {
-	DN		dn, str2dn();
+void index_siblings (char *parent) {
+	DN		dn, str2dn(char *str);
 	Index		*pindex;
 
 	if ( (dn = str2dn( parent )) == NULLDN ) {

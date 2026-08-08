@@ -39,11 +39,7 @@ use_serv_null (void) {
 
 /* LINTLIBRARY */
 
-struct signature *
-nullsigned(data, type, module)
-char           *data;
-int             type;
-modtyp         *module;
+struct signature *nullsigned(char *data, int type, modtyp *module)
 {
 	struct signature *result = (struct signature *) calloc((unsigned)1, sizeof(*result));
 	if(result != (struct signature *)0) {
@@ -58,27 +54,12 @@ modtyp         *module;
 }
 
 
-int
-nullverify(data, type, module, sig, pubkey, keyparms, hashparms)
-char           *data;
-int             type;
-modtyp         *module;
-struct signature *sig;
-struct GenericPublicKey  *pubkey;
-struct GenericParameters *keyparms;
-struct GenericHashParameters *hashparms;
+int nullverify(char *data, int type, modtyp *module, struct signature *sig, struct GenericPublicKey *pubkey, struct GenericParameters *keyparms, struct GenericHashParameters *hashparms)
 {
 	return 0;
 }
 
-int
-null_ckpath(data, type, module, path, sig, nameptr)
-caddr_t         data;
-int             type;
-modtyp         *module;
-struct certificate_list *path;
-struct signature *sig;
-DN             *nameptr;
+int null_ckpath(caddr_t data, int type, modtyp *module, struct certificate_list *path, struct signature *sig, DN *nameptr)
 {
 	return (DSE_SC_AUTHENTICATION);
 }
@@ -88,37 +69,21 @@ null_mkpath (void) {
 	return (struct certificate_list *) 0;
 }
 
-struct encrypted *
-nullencrypted(concrete, type, module, publickey, parms)
-char           *concrete;
-int             type;
-modtyp         *module;
-struct GenericPublicKey *publickey;
-struct GenericParameters *parms;
+struct encrypted *nullencrypted(char *concrete, int type, modtyp *module, struct GenericPublicKey *publickey, struct GenericParameters *parms)
 {
 	return (struct encrypted *)0;
 }
 
 
-int
-nulldecrypted(enc, type, module, concrete, privkey, parms)
-struct encrypted *enc;
-int             type;
-modtyp         *module;
-char          **concrete;
-struct GenericSecretKey *privkey;
-struct GenericParameters *parms;
+int nulldecrypted(struct encrypted *enc, int type, modtyp *module, char **concrete, struct GenericSecretKey *privkey, struct GenericParameters *parms)
 {
 	return 0;
 }
 
-struct Nonce *
-nullmknonce (struct Nonce *previous) {
+struct Nonce *nullmknonce (struct Nonce *previous) {
 	return ((struct Nonce *) 0);
 }
 
-int
-nullcknonce (struct Nonce *nonce) {
+int nullcknonce (struct Nonce *nonce) {
 	return (DSE_SC_AUTHENTICATION);
 }
-

@@ -57,9 +57,9 @@ GDBM_FILE	save_db;
 #endif
 
 extern char	*unesc_char();
-extern char	*unesc_cont();
+extern char	*unesc_cont(char *ptr, int len);
 extern char *getstring();
-char *srealloc();
+char *srealloc(char *p, int nsize);
 char	*brkl();
 
 #ifdef TURBO_DISK
@@ -183,9 +183,7 @@ static int	size;
 /*
  * get a physical line - handle arbitary long physical line
  */
-static char *
-getphyline (file)
-FILE * file;
+static char *getphyline (FILE *file)
 {
 	extern int parse_line;
 	char * ptr;
@@ -234,10 +232,7 @@ FILE * file;
  * Assuming that only characters from buf onwards have been
  * altered. We recalculate the end of buffer from buf
  */
-static char *
-catphyline (file, str)
-FILE * file;
-char	*str;
+static char *catphyline (FILE *file, char *str)
 {
 	extern int parse_line;
 	char * ptr;
@@ -303,15 +298,15 @@ free_phylinebuf (void) {
 
 }
 
-extern char	*unesc_cont();
+extern char	*unesc_cont(char *ptr, int len);
 FILE * savefile;
 
 #ifdef TURBO_DISK
 char * fgetline (file)
 #else
-char * _getline (file)
+char * _getline (FILE *file)
 #endif
-FILE * file;
+            
 {
 	int		len;
 	int		ocurlen;
@@ -345,7 +340,7 @@ FILE * file;
 #ifdef TURBO_DISK
 char * fgetnextline ()
 #else
-char * getnextline ()
+char * getnextline (void)
 #endif
 {
 #ifdef TURBO_DISK
@@ -359,8 +354,7 @@ char * getnextline ()
  * un-escape a continued line and return pointer to end of the buffer
  * if the line is continued
  */
-char *
-unesc_cont (char *ptr, int len) {
+char *unesc_cont (char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -383,10 +377,7 @@ unesc_cont (char *ptr, int len) {
  * write no more than wl characters of the line out escaping any
  * characters at the end to a file pointer.
  */
-fpwr_esc(fp, line, wl)
-FILE	*fp;
-char	*line;
-int	wl;
+void fpwr_esc(FILE *fp, char *line, int wl)
 {
 	int		len;	/* length of line left */
 	int		pos;	/* position we are going to break line at */
@@ -421,14 +412,12 @@ int	wl;
 		len -= pos;
 	}
 }
+
 /*
  * write no more than wl characters of the line out escaping any
  * characters at the end.
  */
-pswr_esc(ps, line, wl)
-PS	ps;
-char	*line;
-int	wl;
+void pswr_esc(PS ps, char *line, int wl)
 {
 	int		len;	/* length of line left */
 	int		pos;	/* position we are going to break line at */
@@ -476,8 +465,7 @@ int	wl;
 	}
 }
 
-int
-cnt_escp (char *ptr, int len) {
+int cnt_escp (char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -489,16 +477,13 @@ cnt_escp (char *ptr, int len) {
 	return (cnt);
 }
 
-char *
-srealloc (char *p, int nsize) {
+char *srealloc (char *p, int nsize) {
 	char *ptr;
-
 	if ((ptr = realloc(p, (unsigned) nsize)) == NULL) {
 		LLOG (compat_log,LLOG_FATAL, ("realloc() failure"));
 		abort ();
 		/* NOTREACHED */
 	}
-
 	return(ptr);
 }
 
@@ -536,20 +521,18 @@ FILE * file;
 
 #endif
 
-Attr_Sequence get_attributes_aux (file)
+Attr_Sequence get_attributes_aux (FILE *file)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+         	     
 #else
-FILE * file;
+            
 #endif
 {
 	Attr_Sequence as = NULLATTR;
 	Attr_Sequence as_combine ();
 	char * ptr;
-
 	if ((ptr = _getline (file)) == NULLCP)
 		return (NULLATTR);
-
 	while ( *ptr != 0 ) {
 		as = as_combine (as,ptr,FALSE);
 		if ((ptr = _getline (file)) == NULLCP)
@@ -558,31 +541,29 @@ FILE * file;
 	return (as);
 }
 
-Attr_Sequence get_attributes (file)
+Attr_Sequence get_attributes (FILE *file)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+         	     
 #else
-FILE * file;
+            
 #endif
 {
 	extern int parse_status;
 	extern int parse_line;
-
 	parse_status = 0;
 	parse_line   = 0;
-
 	return (get_attributes_aux (file));
 }
 
 
-Entry get_entry_aux (file,parent,dtype)
+Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+         	     
 #else
-FILE * file;
+            
 #endif
-Entry parent;
-int dtype;
+             
+          
 {
 	Entry eptr;
 	char * ptr;
@@ -654,14 +635,14 @@ int dtype;
 }
 
 
-Entry get_entry (file,parent,dtype)
+Entry get_entry (FILE *file, Entry parent, int dtype)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+         	     
 #else
-FILE * file;
+            
 #endif
-Entry parent;
-int dtype;
+             
+          
 {
 	extern int parse_status;
 	extern int parse_line;
@@ -673,8 +654,7 @@ int dtype;
 }
 
 
-Entry new_constructor (parent)
-Entry parent;
+Entry new_constructor (Entry parent)
 {
 	Entry constructor;
 
@@ -695,14 +675,13 @@ Entry parent;
 	return (constructor);
 }
 
-Entry make_path (dn)
-DN dn;
+Entry make_path (DN dn)
 {
 	Entry ptr;
 	RDN    b_rdn;
 	Entry	parent, new;
 	Avlnode	*kids;
-	int	entryrdn_cmp(), entry_cmp();
+	int	entryrdn_cmp(RDN rdn, Entry ent), entry_cmp(Entry e1, Entry e2);
 
 	if (database_root == NULLENTRY || database_root->e_children == NULLAVL) {
 		if ((database_root = new_constructor(NULLENTRY)) == NULLENTRY)
@@ -768,6 +747,4 @@ DN dn;
 
 	}
 	/* NOTREACHED */
-
 }
-

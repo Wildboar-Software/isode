@@ -30,8 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_merge.c,v 9
 
 extern LLog * log_dsap;
 
-AV_Sequence avs_merge (a,b)
-AV_Sequence a,b;
+AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b)
 {
 	AV_Sequence aptr, bptr, result, trail, tmp;
 
@@ -103,8 +102,7 @@ AV_Sequence a,b;
 }
 
 
-AV_Sequence avs_fast_merge (a,b,c,d)
-AV_Sequence a,b,c,d;
+AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequence d)
 {
 	AV_Sequence aptr, bptr, result, trail, tmp;
 

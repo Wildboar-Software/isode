@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ufn_parse.c,v 9
  *
  */
 
-
+#include <string.h>
 #include "quipu/ufn.h"
 #include "tailor.h"
 #include "quipu/list.h"
@@ -53,19 +53,18 @@ Attr_Sequence ufnas = NULL;
 
 extern LLog * log_dsap;
 
-extern Filter strfilter ();
-extern Filter ocfilter ();
-extern Filter joinfilter ();
-extern struct dn_seq *dn_seq_push ();
+extern Filter strfilter (AttributeType at, char *s, char type);
+extern Filter ocfilter (char *s);
+extern Filter joinfilter (Filter f, char type);
+extern struct dn_seq *dn_seq_push (DN dn, struct dn_seq *dnseq);
 
 char ufn_abort = FALSE;		/* external to force UFN to abort */
 
 #ifdef	DEBUG
-static	print_search ();
+static void print_search (DN dn, char subtree, Filter fi);
 #endif
 
-DNS DNS_append (a,b)
-DNS a, b;
+DNS DNS_append (DNS a, DNS b)
 {
 	DNS c;
 	if (a == NULLDNS)
@@ -79,8 +78,7 @@ DNS a, b;
 	return a;
 }
 
-static Attr_Sequence read_cache (base)
-DN base;
+static Attr_Sequence read_cache (DN base)
 {
 	Entry ptr;
 
@@ -90,9 +88,7 @@ DN base;
 	return NULLATTR;
 }
 
-static char exact_match (dn,s)
-DN dn;
-char * s;
+static char exact_match (DN dn, char *s)
 {
 	RDN rdn;
 	for (; dn->dn_parent != NULLDN; dn=dn->dn_parent)
@@ -106,9 +102,7 @@ char * s;
 	return FALSE;
 }
 
-static char good_match (dn,s)
-DN dn;
-char * s;
+static char good_match (DN dn, char *s)
 {
 	Attr_Sequence as;
 	AV_Sequence avs;
@@ -121,11 +115,7 @@ char * s;
 	return FALSE;
 }
 
-dnSelect (s,dlist,interact,el)
-char * s;
-DNS *dlist;
-DNS (* interact) ();
-DNS el;
+int dnSelect (char *s, DNS *dlist, DNS (*interact) (/* ??? */), DNS el)
 {
 	DNS exact = NULLDNS;
 	DNS good  = NULLDNS;
@@ -177,9 +167,7 @@ DNS el;
 DN	ufn_bad_dsa = NULLDN;
 DNS	ufn_partials = NULLDNS;
 
-static char present (d,t)
-DN d;
-AttributeType t;
+static char present (DN d, AttributeType t)
 {
 	RDN rdn;
 	DN p, q;
@@ -201,15 +189,15 @@ AttributeType t;
 	}
 }
 
-ufn_search (base, subtree, filt, res, s, interact, el)
-DN base;
-char subtree;
-Filter filt;
-DNS * res;
-char * s;
-DNS (* interact) ();
-DNS el;
-{
+int ufn_search (
+	DN base,
+	char subtree,
+	Filter filt,
+	DNS *res,
+	char *s,
+	DNS (*interact) (/* ??? */),
+	DNS el
+) {
 	struct ds_search_arg search_arg;
 	static struct ds_search_result result;
 	struct DSError err;
@@ -312,11 +300,7 @@ set_bad_dsa:
 #define	SUBSTRINGS()	((ufn_flags & UFN_WILDHEAD) ? FILTERITEM_SUBSTRINGS \
 			 			    : -FILTERITEM_SUBSTRINGS)
 
-static rootSearch (s,interact,el,result)
-char * s;
-DNS (* interact) ();
-DNS el;
-DNS * result;
+static int rootSearch (char *s, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
@@ -357,12 +341,7 @@ DNS * result;
 	return ufn_search (NULLDN,FALSE,filt,result,s,interact,el);
 }
 
-static intSearch (base,s,interact,el,result)
-DN base;
-char * s;
-DNS (* interact) ();
-DNS el;
-DNS * result;
+static int intSearch (DN base, char *s, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 
@@ -461,13 +440,7 @@ DNS * result;
 	return ufn_search (base,FALSE,filtf,result,s,interact,el);
 }
 
-static leafSearch (base,s,subtree,interact,el,result)
-DN base;
-char * s;
-char subtree;
-DNS (* interact) ();
-DNS el;
-DNS * result;
+static int leafSearch (DN base, char *s, char subtree, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
@@ -496,12 +469,7 @@ DNS * result;
 	return ufn_search (base,subtree,filt,result,s,interact,el);
 }
 
-static keyedSearch (base,t,v,interact,el,result)
-DN base;
-char * t, *v;
-DNS (* interact) ();
-DNS el;
-DNS * result;
+static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb;
 	AttributeType at;
@@ -531,13 +499,7 @@ DNS * result;
 }
 
 
-static purportedMatch(base,c,v,interact,el,result)
-DN base;
-int c;
-char ** v;
-DNS (* interact) ();
-DNS el;
-DNS * result;
+static int purportedMatch(DN base, int c, char **v, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	char * s;
 	DNS root, x, new = NULLDNS;
@@ -618,47 +580,30 @@ DNS * result;
 	return matches;
 }
 
-static envMatch (c,v,el,interact,result)
-int c;
-char ** v;
-DNS el;
-DNS (* interact) ();
-DNS * result;
+static int envMatch (int c, char **v, DNS el, DNS (*interact) (/* ??? */), DNS *result)
 {
 	int res;
-
 	if (el == NULLDNS)
 		return TRUE;
-
 	if ( ! ( res = purportedMatch(el->dns_dn,c,v,interact,el,result)))
 		return FALSE;
 	if (*result != NULLDNS)
 		return res;
 	if (res == TRUE)
 		return TRUE;
-
 	return envMatch(c,v,el->dns_next,interact,result);
-
 }
 
-static	friendlyMatch_aux (c,v,el,interact,result)
-int c;
-char ** v;
-envlist el;
-DNS (* interact) ();
-DNS * result;
+static int friendlyMatch_aux (int c, char **v, envlist el, DNS (*interact) (/* ??? */), DNS *result)
 {
 	if (el == NULLEL)
 		return TRUE;
-
 	if ( ( c <= el->Upper) && (c >= el->Lower) )
 		return envMatch (c,v,el->Dns,interact,result);
-
 	return (friendlyMatch_aux (c,v,el->Next,interact,result));
-
 }
 
-envlist read_envlist() {
+envlist read_envlist(void) {
 	char * home, *p, *ptr;
 	char ufnrc [LINESIZE];
 	char * def, *opened;
@@ -762,19 +707,12 @@ envlist read_envlist() {
 			env->Upper = env->Lower;
 
 	}
-
 	fclose (file);
-
 	return top;
 }
 
 
-ufn_match (c,v,interact,result,el)
-int c;
-char ** v;
-DNS (* interact) ();
-DNS * result;
-envlist el;
+int ufn_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el)
 {
 	static int inited = FALSE;
 
@@ -784,7 +722,6 @@ envlist el;
 		dn_free (ufn_bad_dsa), ufn_bad_dsa = NULL;
 	if (ufn_partials)
 		dn_seq_free (ufn_partials), ufn_partials = NULL;
-
 	PY_pepy[0] = 0;
 	if (el == NULLEL) {
 		if ((el = read_envlist ()) == NULLEL) {
@@ -792,14 +729,11 @@ envlist el;
 			return 0;
 		}
 	}
-
 	ufn_abort = FALSE;
-
 	return (friendlyMatch_aux (c,v,el,interact,result));
 }
 
-int
-ufn_init (void) {
+int ufn_init (void) {
 	Attr_Sequence as;
 	int result = TRUE;
 
@@ -859,16 +793,12 @@ ufn_init (void) {
 	ufnas = as_merge (ufnas,as);
 	as = as_comp_new (at_Userid,NULLAV,NULLACL_INFO);
 	ufnas = as_merge (ufnas,as);
-
 	return result;
 }
 
 #ifdef	DEBUG
 
-static	print_search (dn, subtree, fi)
-DN	dn;
-char	subtree;
-Filter	fi;
+static void print_search (DN dn, char subtree, Filter fi)
 {
 	static	PS	nps = NULLPS;
 

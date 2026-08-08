@@ -170,11 +170,11 @@ show_picture (char *picture, char *picture_process, int len) {
 }
 
 
-exec_print (ps,av,proc)
-PS ps;
-AttributeValue av;
-char * proc;
-{
+void exec_print (
+	PS ps,
+	AttributeValue av,
+	char * proc
+) {
 	char * ptr;
 	PS sps;
 	PE pe, grab_pe();

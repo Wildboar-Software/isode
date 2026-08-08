@@ -28,8 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_cpy.c,v 9.0
 
 extern LLog * log_dsap;
 
-AV_Sequence  avs_comp_cpy (avs)
-AV_Sequence  avs;
+AV_Sequence  avs_comp_cpy (AV_Sequence avs)
 {
 	AV_Sequence ptr;
 
@@ -42,8 +41,7 @@ AV_Sequence  avs;
 	return (ptr);
 }
 
-static AV_Sequence  avs_comp_cpy_enc (avs)
-AV_Sequence  avs;
+static AV_Sequence  avs_comp_cpy_enc (AV_Sequence avs)
 {
 	AV_Sequence ptr;
 
@@ -56,8 +54,7 @@ AV_Sequence  avs;
 	return (ptr);
 }
 
-AV_Sequence  avs_cpy (avs)
-AV_Sequence  avs;
+AV_Sequence  avs_cpy (AV_Sequence avs)
 {
 	AV_Sequence start;
 	AV_Sequence ptr,ptr2;
@@ -77,8 +74,7 @@ AV_Sequence  avs;
 	return (start);
 }
 
-AV_Sequence  avs_cpy_enc (avs)
-AV_Sequence  avs;
+AV_Sequence  avs_cpy_enc (AV_Sequence avs)
 {
 	AV_Sequence start;
 	AV_Sequence ptr,ptr2;

@@ -26,21 +26,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_free.c,v 9.0
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-dn_comp_free (dn)
-DN dn;
+void dn_comp_free (DN dn)
 {
 	rdn_free (dn->dn_rdn);
 	free ((char *) dn);
 }
-dn_free (dn)
-DN dn;
+
+void dn_free (DN dn)
 {
 	DN eptr;
 	DN next;
-
 	for (eptr = dn; eptr != NULLDN; eptr=next) {
 		next = eptr->dn_parent;
 		dn_comp_free (eptr);
 	}
 }
-

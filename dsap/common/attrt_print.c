@@ -30,11 +30,11 @@ extern int oidformat;
 AttributeType last_at;
 int avs_count = 1;
 
-AttrT_print (ps,x,format)
-PS ps;
-AttributeType x;
-int format;
-{
+void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+) {
 	if (x == NULLAttrT) {
 		ps_print(ps,"Unknown Type");
 		return;

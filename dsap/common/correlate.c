@@ -32,10 +32,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/correlate.c,v 9
 #include "quipu/ds_search.h"
 
 extern LLog * log_dsap;
-int	entryinfo_print();
+int	entryinfo_print(PS ps, EntryInfo *entryinfo, int format);
 
-int
-correlate_search_results (struct ds_search_result *sr_res) {
+void correlate_search_results (struct ds_search_result *sr_res) {
 	struct ds_search_result	* sr_tmp;
 	struct ds_search_result	* sr_last;
 
@@ -74,8 +73,7 @@ correlate_search_results (struct ds_search_result *sr_res) {
 	}
 }
 
-int
-merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *sr_tmp) {
+void merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *sr_tmp) {
 	ContinuationRef		cr_tmp;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("merge_search_results"));
@@ -130,11 +128,9 @@ merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *
 	}
 #endif
 	DLOG(log_dsap, LLOG_DEBUG, ("After merging results:"));
-
 }
 
-int
-search_result_free (struct ds_search_result *arg) {
+void search_result_free (struct ds_search_result *arg) {
 	DLOG(log_dsap, LLOG_DEBUG, ("search_result_free"));
 
 	if(arg == NULLSRR) {

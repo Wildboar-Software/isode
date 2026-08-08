@@ -32,19 +32,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/boolean.c,v 9.0
 #include "quipu/attr.h"
 #include "psap.h"
 
-extern int strprint();
-extern int sfree();
+extern int strprint(PS ps, char *str, int format);
+extern int sfree(char *x);
 extern int lexequ();
-extern char *strdup();
+extern char *strdup(const char *);
 
-static PE boolenc (x)
-char *x;
+static PE boolenc (char *x)
 {
 	return (bool2prim (lexequ (x,"TRUE") ? 0 : 1));
 }
 
-static char * booldec (pe)
-PE pe;
+static char * booldec (PE pe)
 {
 	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_BOOL))
 		return (NULLCP);

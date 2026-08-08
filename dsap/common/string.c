@@ -24,9 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/string.c,v 9.0 
  *
  */
 
-
-/* LINTLIBRARY */
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 
@@ -35,8 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/string.c,v 9.0 
 #define NICER_ESCAPES
 
 extern LLog * log_dsap;
-extern char * srealloc ();
-extern char * strdup ();
+extern char * srealloc (char *p, int nsize);
+extern char * strdup (const char *);
 
 static short exct = 0;
 static short tel_sntx = 0;
@@ -44,7 +42,7 @@ static char char_failed;
 
 int ch_set = 0;
 
-extern int soundex_match ();
+extern int soundex_match (struct filter_item *fitem, AV_Sequence avs);
 
 
 static unsigned char escapes[16][17] = {
@@ -134,9 +132,7 @@ static unsigned char trans[32] = {
 	'l', 0xf8, '?', 0xdf, 0xfe, 't', 'N', '?'
 };
 
-int iso8859print(ps, sstr)
-PS ps;
-char *sstr;
+void iso8859print(PS ps, char *sstr)
 {
 	unsigned char *str;
 	int n;
@@ -223,14 +219,12 @@ char *sstr;
 	ps_printf(ps, "%s", buff);
 }
 
-static PE ia5enc (x)
-char *x;
+static PE ia5enc (char *x)
 {
 	return (ia5s2prim(x,strlen(x)));
 }
 
-static PE nstrenc (x)
-char *x;
+static PE nstrenc (char *x)
 {
 	return (nums2prim(x,strlen(x)));
 }
@@ -239,20 +233,17 @@ char *x;
 /*
  * Real octet strings encode (r_*)
  */
-PE r_octenc (x)
-struct qbuf *x;
+PE r_octenc (struct qbuf *x)
 {
 	return (qb2prim(x,PE_CLASS_UNIV, PE_PRIM_OCTS));
 }
 
-static PE octenc (x)
-char *x;
+static PE octenc (char *x)
 {
 	return (oct2prim(x,strlen(x)));
 }
 
-static PE strenc (x)
-char *x;
+static PE strenc (char *x)
 {
 	if (*x == T61_MARK) {
 		x++;
@@ -261,8 +252,7 @@ char *x;
 		return (utf2prim(x,strlen(x)));
 }
 
-static char *
-local_t61 (char *a) {
+static char *local_t61 (char *a) {
 	char * b;
 
 	if (a == NULLCP)
@@ -275,8 +265,7 @@ local_t61 (char *a) {
 	return (--b);
 }
 
-static char * prtsdec (pe)
-PE pe;
+static char * prtsdec (PE pe)
 {
 	int z;
 	char * p, *ptr, val;
@@ -299,8 +288,7 @@ PE pe;
 	return (NULLCP);
 }
 
-static char * utf8dec (pe)
-PE pe;
+static char * utf8dec (PE pe)
 {
 	int z;
 	char * p, *ptr, val;
@@ -342,8 +330,7 @@ check_3166 (char *a) {
 }
 
 
-static char * cntydec (pe)
-PE pe;
+static char * cntydec (PE pe)
 {
 	char *a;
 #ifdef STRICT_X500
@@ -380,9 +367,7 @@ losing:
 	goto losing;
 }
 
-struct qbuf *
-r_octsdec (pe)
-PE pe;
+struct qbuf *r_octsdec (PE pe)
 {
 
 	if (PE_ID(pe->pe_class, pe->pe_id) ==
@@ -392,8 +377,8 @@ PE pe;
 		return ((struct qbuf *)0);
 
 }
-static char * octsdec (pe)
-PE pe;
+
+static char * octsdec (PE pe)
 {
 	int z;
 
@@ -405,8 +390,7 @@ PE pe;
 
 }
 
-static char * ia5sdec (pe)
-PE pe;
+static char * ia5sdec (PE pe)
 {
 	int z;
 
@@ -417,8 +401,7 @@ PE pe;
 		return (NULLCP);
 }
 
-static char * numsdec (pe)
-PE pe;
+static char * numsdec (PE pe)
 {
 	int z;
 	if ( PE_ID(pe->pe_class, pe->pe_id) ==
@@ -429,8 +412,7 @@ PE pe;
 }
 
 
-static char * t61dec (pe)
-PE pe;
+static char * t61dec (PE pe)
 {
 	int z;
 	char * ptr, *p2, val;
@@ -463,8 +445,7 @@ PE pe;
 // 	universalString 	UniversalString(SIZE (1..MAX)),
 // 	uTF8String 			UTF8String(SIZE (1..MAX)) }
 
-static char * dirstrdec (pe)
-PE pe;
+static char * dirstrdec (PE pe)
 {
 	int z;
 	char * ptr, *p2, val;
@@ -513,8 +494,7 @@ PE pe;
 	}
 }
 
-static char *
-quotechar (char a, char *b) {
+static char *quotechar (char a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
 
@@ -609,10 +589,7 @@ unquotechar (char *a, char *b) {
 	return (a);
 }
 
-
-int
-check_print_string (char *str) {
-
+int check_print_string (char *str) {
 	for (; *str != 0; str++) {
 		if ((isascii((*str)& 0xff)) && (isalnum ((*str) & 0xff)))
 			continue;
@@ -643,8 +620,7 @@ check_print_string (char *str) {
 #define MINBUF		3
 #define PARSE_INCR	240
 
-struct qbuf *
-r_octparse (char *str) {
+struct qbuf *r_octparse (char *str) {
 	static char 	*buf;
 	static int 		buflen = 0;
 	char	*ptr;
@@ -682,8 +658,7 @@ r_octparse (char *str) {
 	return (str2qb(buf, ptr - buf, 1));
 }
 
-char *
-octparse (char *str) {
+char *octparse (char *str) {
 	char buffer [BUFSIZ];
 	char * ptr=buffer;
 	int i;
@@ -708,8 +683,7 @@ octparse (char *str) {
 
 #define prtparse_aux(z)	(check_print_string(z) ? strdup(z) : NULLCP)
 
-char *
-prtparse (char *str) {
+char *prtparse (char *str) {
 	char * ptr;
 
 	if ((*str == '\\') && (*(str+1) == '2')
@@ -725,8 +699,7 @@ prtparse (char *str) {
 	}
 }
 
-static char *
-cntyparse (char *str) {
+static char *cntyparse (char *str) {
 	char * a;
 
 	if ((a=prtparse(str)) == NULLCP)
@@ -740,8 +713,7 @@ cntyparse (char *str) {
 	return (NULLCP);
 }
 
-static char *
-t61parse (char *str) {
+static char *t61parse (char *str) {
 	extern char t61_flag;
 	char * res;
 
@@ -767,8 +739,7 @@ t61parse (char *str) {
 }
 
 
-char *
-cryptstring (char *str) {
+char *cryptstring (char *str) {
 	char * p;
 	/* This is a SIMPLE HACK to prevent passwords being revealed */
 	/* at a glance.  It buys virtually no extra security */
@@ -782,10 +753,9 @@ cryptstring (char *str) {
 	return (str);
 }
 
-char *
-cryptparse (char *str) {
+char *cryptparse (char *str) {
 	extern char crypt_flag;
-	char * octparse ();
+	char * octparse (char *str);
 
 	if (crypt_flag) {
 		crypt_flag = FALSE;  /* recognised it !!! */
@@ -794,28 +764,23 @@ cryptparse (char *str) {
 		return (octparse (str));
 }
 
-int
-sfree (char *x) {
+void sfree (char *x) {
 	free (x);
 }
 
-int
-pstrcmp (char *a, char *b) {
+int pstrcmp (char *a, char *b) {
 	while (*a == *b) {
 		if (*a++ == NULL)
 			return (0);
 		b++;
 	}
-
 	if (*a > *b)
 		return (1);
 	else
 		return (-1);
-
 }
 
-static
-tpstrcmp (char *a, char *b) {
+static int tpstrcmp (char *a, char *b) {
 	if (*a == T61_MARK)
 		a++;
 	if (*b == T61_MARK)
@@ -833,8 +798,7 @@ tpstrcmp (char *a, char *b) {
 		return (-1);
 }
 
-static
-tlexequ (char *a, char *b) {
+static int tlexequ (char *a, char *b) {
 
 	/* lexequ with T.61 knowledge */
 
@@ -855,19 +819,15 @@ tlexequ (char *a, char *b) {
 		return (-1);
 }
 
-int
-passwdcmp (char *a, char *b) {
+int passwdcmp (char *a, char *b) {
 	if (strcmp (a,b) == 0)
 		return (0);
 	else
 		return (2);
-
 }
 
-int
-telcmp (char *a, char *b) {
-	char c1,
-		 c2;
+int telcmp (char *a, char *b) {
+	char c1, c2;
 
 	for (;;) {
 		while (c1 = *a++)
@@ -890,8 +850,7 @@ telcmp (char *a, char *b) {
 	}
 }
 
-int
-telstrlen (char *s) {
+int telstrlen (char *s) {
 	int	len;
 
 	for ( len = 0; *s; s++ )
@@ -901,10 +860,8 @@ telstrlen (char *s) {
 	return( len );
 }
 
-int
-telncmp (char *a, char *b, int len) {
-	char c1,
-		 c2;
+int telncmp (char *a, char *b, int len) {
+	char c1, c2;
 
 	for (;;) {
 		while (c1 = *a++)
@@ -929,10 +886,7 @@ telncmp (char *a, char *b, int len) {
 	}
 }
 
-strprint (ps,str,format)
-PS ps;
-char * str;
-int format;
+void strprint (PS ps, char *str, int format)
 {
 	if (*str == T61_MARK) {
 		if (format != READOUT) {
@@ -953,10 +907,7 @@ int format;
 	}
 }
 
-cryptprint (ps,str,format)
-PS ps;
-char * str;
-int format;
+void cryptprint (PS ps, char *str, int format)
 {
 	char ptr [LINESIZE];
 	extern char dsa_mode;
@@ -977,10 +928,7 @@ int format;
 #define MAXLINE		75	/* maximum line length */
 #define BUFSLOP		5	/* space to allow over run an unexpanded char */
 
-r_octprint (ps, qb, format)
-PS ps;
-struct qbuf * qb;
-int format;
+void r_octprint (PS ps, struct qbuf *qb, int format)
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
@@ -1032,11 +980,7 @@ again:
 		ps_write(ps, (PElementData)buf, ptr - buf);
 }
 
-/* ARGSUSED */
-octprint (ps,str,format)
-PS ps;
-char * str;
-int format;
+void octprint (PS ps, char *str, int format)
 {
 	char	buf[MAXLINE + 4];
 	register	char	*ptr = buf;
@@ -1093,8 +1037,7 @@ int format;
  * Doesn't work for a qbuf which doesn't have a head ! Don't really know what
  * is the proper form of a queue buf. Marshall's doco doesn't say
  */
-int
-qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
+int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 	struct	qbuf	*qp1, *qp2;
 	char	*po1, *po2;
 	int	len1, len2;
@@ -1158,8 +1101,7 @@ qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
  * actually compares them and returns 1, 0, -1 depending on wether the
  * len characters of string1 are greater, equal or less than string2
  */
-int
-nbcmp (char *string1, char *string2, int len) {
+int nbcmp (char *string1, char *string2, int len) {
 	while (len-- > 0) {
 		if (*string1++ == *string2++)
 			continue;
@@ -1173,8 +1115,7 @@ nbcmp (char *string1, char *string2, int len) {
 #define SIZEOFQB(qb)  (sizeof (struct qbuf) +  (qb && qb->qb_data ? qb->qb_len \
 				: 0))
 
-struct qbuf *
-qb_cpy (struct qbuf *qb) {
+struct qbuf *qb_cpy (struct qbuf *qb) {
 	struct qbuf	*qp;
 	struct qbuf	*nqb;
 	struct qbuf	*nqp;
@@ -1210,10 +1151,10 @@ qb_cpy (struct qbuf *qb) {
 /*
  * output the string to the PS - including a delimiter on the end
  */
-part_print (ps, p, len)
-PS ps;
-char	*p;	/* string to be output (may contain nulls) */
-int	len;	/* number of characters in string */
+void part_print (PS ps, char *p, int len)
+      
+    	   	/* string to be output (may contain nulls) */
+   	    	/* number of characters in string */
 {
 	char 	buf[MAXLINE + BUFSLOP];
 	register	char *str;
@@ -1268,8 +1209,7 @@ again:
  * as we support binary strings. But we always terminate out strings with
  * a '\0' for the convience of non binary string users
  */
-char *
-part_parse (
+char *part_parse (
 	char **pstr,		/* address of pointer to string */
 	int *plen		/* address of integer we set the length to */
 ) {
@@ -1320,38 +1260,33 @@ part_parse (
 	return (buf);
 }
 
-int
-case_exact_match (short sntx) {
+int case_exact_match (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 3)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int
-approx_string (short sntx) {
+int approx_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 7)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int
-sub_string (short sntx) {
+int sub_string (short sntx) {
 	if ((sntx < exct) || (sntx > (exct + 8)))
 		return (FALSE);
 	else
 		return (TRUE);
 }
 
-int
-telephone_match (short sntx) {
+int telephone_match (short sntx) {
 	return( sntx == tel_sntx );
 }
 
 
-int
-string_syntaxes (void) {
+void string_syntaxes (void) {
 	/* Don't change ordering here unless you know
 	   the side effects !!! */
 
@@ -1440,4 +1375,3 @@ string_syntaxes (void) {
 						  sfree,		NULLCP,
 						  NULLIFP,	TRUE);
 }
-

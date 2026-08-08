@@ -88,4 +88,4 @@ typedef struct nd {
 full_code get_code();
 char get_bit();
 node * get_node ();
-run_type next_run ();
+run_type next_run (bit_string *lineptr, char xcolour);

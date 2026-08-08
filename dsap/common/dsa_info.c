@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_info.c,v 9.
 #include "quipu/syntaxes.h"
 extern LLog * log_dsap;
 
-static
-edb_info_free (struct edb_info *edb) {
+static void edb_info_free (struct edb_info *edb) {
 	if (edb == NULLEDB)
 		return;
 
@@ -44,8 +43,7 @@ edb_info_free (struct edb_info *edb) {
 	free ((char *) edb);
 }
 
-static struct edb_info *
-edb_info_cpy (struct edb_info *a) {
+static struct edb_info *edb_info_cpy (struct edb_info *a) {
 	struct edb_info * result;
 
 	result = edb_info_alloc ();
@@ -93,11 +91,11 @@ PE pe;
 }
 
 
-static edb_info_print (ps,edb,format)
-PS ps;
-struct edb_info * edb;
-int format;
-{
+static void edb_info_print (
+	PS ps,
+	struct edb_info * edb,
+	int format
+) {
 	if (edb == NULLEDB)
 		return;
 
@@ -135,12 +133,9 @@ int format;
 
 	if (edb->edb_sendto != NULLDNSEQ)
 		DLOG (log_dsap,LLOG_EXCEPTIONS,("edb_sendto not null"));
-
 }
 
-
-static struct edb_info *
-str2update (char *str) {
+static struct edb_info *str2update (char *str) {
 	char * ptr;
 	char * save,val;
 	struct edb_info * ei;

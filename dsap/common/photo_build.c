@@ -25,8 +25,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/photo_build.c,v
  */
 
 
-
-#include <stdio.h>
+#include <string.h>
 #include "quipu/photo.h"
 #include "general.h"
 
@@ -288,9 +287,7 @@ static char * uncompressed_2d = "0000001111";
 /*              be stored, and the sets all the pointer fields of the   */
 /*              node to NULL, and initialises the other fields          */
 
-node *
-get_node ()
-
+node *get_node (void)
 {
 	node * mem;
 
@@ -378,17 +375,16 @@ build_trees (void) {
 	return(0);
 }
 
-/* ROUTINE:     add_tree                                                */
-/*                                                                      */
-/* SYNOPSIS:    adds a run to the tree                                  */
-/*                                                                      */
+/**
+ * Adds a run to the tree
+ * @param string containing the bit sequence         
+ * @param run the run length associated with the sequence
+ * @param mode the type of data we are entering           
+ * @param root top of the tree string should be added to
+*/
+void add_tree (char *string, int run, char mode, node *root)
 
-add_tree (string,run,mode,root)
 
-char *  string;         /* string containing the bit sequence           */
-int     run;            /* the run length associated with the sequence  */
-char    mode;           /* the type of data we are entering             */
-node *  root;           /* top of the tree string should be added to    */
 {
 
 	char *   ptr;
@@ -413,4 +409,3 @@ node *  root;           /* top of the tree string should be added to    */
 	treeptr->n_type = mode;
 	treeptr->value  = run;
 }
-

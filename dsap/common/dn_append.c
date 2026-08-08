@@ -28,8 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_append.c,v 9
 
 extern LLog * log_dsap;
 
-dn_append (a,b)
-DN a,b;
+void dn_append (DN a, DN b)
 {
 	DN ptr;
 	DN eptr;
