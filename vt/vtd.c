@@ -337,7 +337,11 @@ vtd (int f, int p) {
 	signal(SIGTSTP, SIG_IGN);
 #endif
 #ifdef	SIGCHLD
+# ifdef LINUX
+	signal(SIGCHLD, (__sighandler_t)cleanup);
+# else
 	signal(SIGCHLD, cleanup);
+# endif
 #endif
 	/*
 	 * Show banner that getty never gave.
@@ -667,7 +671,7 @@ rmut() {
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
 			SCPYN(wtmp.ut_host, "");
 #endif
-			time(&wtmp.ut_time);
+			time((time_t *)&wtmp.ut_time);
 			write(f, (char *)&wtmp, sizeof (wtmp));
 			found++;
 		}
@@ -681,7 +685,7 @@ rmut() {
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
 			SCPYN(wtmp.ut_host, "");
 #endif
-			time(&wtmp.ut_time);
+			time((time_t *)&wtmp.ut_time);
 			lseek(f, (long)0, 2);
 			write(f, (char *)&wtmp, sizeof (wtmp));
 			close(f);

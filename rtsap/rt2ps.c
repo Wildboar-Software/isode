@@ -395,11 +395,15 @@ rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : 0)
 
 
 int
-rt2psasync (struct assocblk *acb, IFP indication, struct RtSAPindication *rti) {
+rt2psasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RtSAPindication *rti),
+	struct RtSAPindication *rti
+) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -764,7 +768,7 @@ doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPin
 				if (acb -> acb_downtrans) {
 					if ((*acb -> acb_downtrans) (acb -> acb_fd, NULLVP,
 												 /* surely this should be rtsap_priority NULLIP, acsap_priority,*/
-												 NULLIP, prttp -> parm,
+												 (int *)0, prttp -> parm,
 												 0L, 0L, rti) == NOTOK
 							&& PActIntrRequest (acb -> acb_fd, SP_LOCAL,
 												pi) == NOTOK) {
@@ -1120,7 +1124,7 @@ doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *r
 
 static int
 psDATAser (int sd, struct PSAPdata *px) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1137,7 +1141,7 @@ psDATAser (int sd, struct PSAPdata *px) {
 
 static int
 psTOKENser (int sd, struct PSAPtoken *pt) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1154,7 +1158,7 @@ psTOKENser (int sd, struct PSAPtoken *pt) {
 
 static int
 psSYNCser (int sd, struct PSAPsync *pn) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1171,7 +1175,7 @@ psSYNCser (int sd, struct PSAPsync *pn) {
 
 static int
 psACTIVITYser (int sd, struct PSAPactivity *pv) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1188,7 +1192,7 @@ psACTIVITYser (int sd, struct PSAPactivity *pv) {
 
 static int
 psREPORTser (int sd, struct PSAPreport *pp) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1205,7 +1209,7 @@ psREPORTser (int sd, struct PSAPreport *pp) {
 
 static int
 psFINISHser (int sd, struct PSAPfinish *pf) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1223,7 +1227,7 @@ psFINISHser (int sd, struct PSAPfinish *pf) {
 
 static int
 psABORTser (int sd, struct PSAPabort *pa) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;

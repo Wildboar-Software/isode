@@ -1,7 +1,9 @@
 
-# include <stdio.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-main() {
+int main() {
 	unsigned int i;
 	char buf[1];
 	int result, count;
@@ -15,5 +17,5 @@ main() {
 			exit(1);
 		}
 	}
-	exit(0);
+	return 0;
 }

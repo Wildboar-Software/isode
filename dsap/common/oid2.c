@@ -51,17 +51,14 @@ struct mac_buf {                        /* for handling macros */
 
 int NumMacro            = 0;
 
-int
-want_oc_hierarchy (void) {
-	extern IFP oc_load;
-	extern IFP oc_macro_add;
-
+void want_oc_hierarchy (void) {
+	extern int (*oc_load)(char *sep, char *newname);
+	extern int (*oc_macro_add)(char *buf, char *ptr);
 	oc_load = load_obj_hier;
 	oc_macro_add = add_oc_macro;
 }
 
-int
-load_obj_hier (char *sep, char *newname) {
+int load_obj_hier (char *sep, char *newname) {
 	if (sep == 0) {
 		LLOG (log_dsap,LLOG_FATAL,("hierarchy missing %s",newname));
 		return NOTOK;

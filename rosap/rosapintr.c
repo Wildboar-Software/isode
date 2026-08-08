@@ -43,14 +43,18 @@ RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priorit
 	int	    nfds,
 			result;
 	fd_set  rfds;
+#ifdef LINUX
+	__sighandler_t istat;
+#else
 	SFP    istat;
+#endif
 
 	if (RoInvokeRequest (sd, op, ROS_ASYNC, args, invokeID, linkedID, priority,
 						 roi) == NOTOK)
 		return NOTOK;
 
 	interrupted = 0;
-	istat = signal (SIGINT, intrser);
+	istat = signal (SIGINT, (__sighandler_t)intrser);
 
 	for (;;) {
 		nfds = 0;

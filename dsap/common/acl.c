@@ -848,9 +848,9 @@ acl_syntax (void) {
 	extern IFP acl_fn;
 
 	acl_sntx = add_attribute_syntax ("acl",
-									 (IFP) acl_enc,	(IFP) acl_decode,
-									 (IFP) str2acl,	acl_print,
-									 (IFP) acl_cpy,	acl_cmp,
+									 acl_enc,	acl_decode,
+									 str2acl,	acl_print,
+									 acl_cpy,	acl_cmp,
 									 acl_free,	NULLCP,
 									 NULLIFP,	TRUE);
 

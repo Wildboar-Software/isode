@@ -56,6 +56,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 
 static int  pe2pl_aux ();

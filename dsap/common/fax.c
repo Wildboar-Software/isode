@@ -288,9 +288,9 @@ PE	pe;
 int
 fax_syntax (void) {
 	add_attribute_syntax ("FacsimileTelephoneNumber",
-						  (IFP) fax_enc,	(IFP) fax_dec,
-						  (IFP) str2fax,	fax_print,
-						  (IFP) fax_cpy,	fax_cmp,
+						  fax_enc,		fax_dec,
+						  str2fax,		fax_print,
+						  fax_cpy,		fax_cmp,
 						  fax_free,	NULLCP,
 						  NULLIFP,	TRUE);
 }

@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/sprintaei.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"
 

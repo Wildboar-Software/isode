@@ -117,16 +117,16 @@ intparse (char *str) {
 int
 integer_syntax (void) {
 	add_attribute_syntax ("integer",
-						  (IFP) intenc,	(IFP) intdec,
-						  (IFP) intparse,	intprint,
-						  (IFP) intdup,	intcmp,
+						  intenc,		intdec,
+						  intparse,		intprint,
+						  intdup,		intcmp,
 						  intfree,	NULLCP,
 						  NULLIFP,	FALSE);
 
 	add_attribute_syntax("enumerated",
-						 (IFP) enumenc, 	(IFP)enumdec,
-						 (IFP) enumparse,	enumprint,
-						 (IFP) enumdup,	enumcmp,
+						 enumenc, 	enumdec,
+						 enumparse,	enumprint,
+						 enumdup,	enumcmp,
 						 enumfree,		NULLCP,
 						 NULLIFP,		FALSE);
 }

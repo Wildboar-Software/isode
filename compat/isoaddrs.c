@@ -29,6 +29,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"

@@ -26,9 +26,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rosy.c,v 9.0 1992/06/1
 
 
 #include <errno.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"

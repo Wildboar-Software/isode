@@ -126,9 +126,9 @@ utccmp (char *a, char *b) {
 int
 time_syntax (void) {
 	add_attribute_syntax ("UTCTime",
-						  (IFP) timeenc,	(IFP) timedec,
-						  (IFP) strdup,	utcprint,
-						  (IFP) strdup,	utccmp,
+						  timeenc,		timedec,
+						  strdup,		utcprint,
+						  strdup,		utccmp,
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
 }

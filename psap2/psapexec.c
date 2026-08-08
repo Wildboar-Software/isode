@@ -56,7 +56,7 @@ PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, 
 	missingP (arg1);
 	missingP (arg2);
 
-	cp = NULLCP, cpr = NULL;
+	cp = NULL, cpr = NULL;
 	pe = NULLPE;
 
 	if ((pb = newpblk ()) == NULL)

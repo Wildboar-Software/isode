@@ -28,13 +28,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sprintb.c,v 9.0 1992
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
-#include "manifest.h"
 
-/*  */
-
-char *
-sprintb (int v, char *bits) {
+char *sprintb (int v, char *bits) {
 	int    i,
 		   j;
 	char   c,

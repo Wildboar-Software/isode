@@ -30,7 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 199
 /* LINTLIBRARY */
 
 #include <ctype.h>
-#include <stdio.h>
+#include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "internet.h"

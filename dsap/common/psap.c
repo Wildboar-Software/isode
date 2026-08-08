@@ -115,9 +115,9 @@ psap_print (PS ps, struct PSAPaddr *p, int format) {
 int
 psap_syntax (void) {
 	add_attribute_syntax ("presentationAddress",
-						  (IFP) psap_enc,		(IFP) psap_dec,
-						  (IFP) psap_parse,	psap_print,
-						  (IFP) psap_cpy,		psap_cmp,
-						  psap_free,		NULLCP,
-						  NULLIFP,		TRUE );
+						  psap_enc,		psap_dec,
+						  psap_parse,	psap_print,
+						  psap_cpy,		psap_cmp,
+						  psap_free,  	NULLCP,
+						  NULL,		TRUE );
 }

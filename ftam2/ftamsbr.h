@@ -156,7 +156,7 @@ struct vfsmap {
 	int	    vf_id;		/* presentation context */
 
 	int	    vf_mode;		/* st.st_mode & S_IFMT bits */
-	IFP	    vf_peek;		/* sees if really this type of file */
+	int (*vf_peek)(struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd);		/* sees if really this type of file */
 	char    vf_stat;		/* stat character for 'ls' */
 
 	int	    vf_simplify;	/* the next document type to try */
@@ -168,7 +168,7 @@ struct vfsmap {
 	int	    vf_mandatory;	/* > 0 parameter required
 				   < 0 parameter optional
 				  == 0 parameter illegal */
-	IFP	    vf_check;		/*   .. check */
+	int (*vf_check)(void *param, char *data);		/*   .. check */
 	int	    vf_number;		/* encode/decode index */
 
 	char  *vf_text;		/* textual description */

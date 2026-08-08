@@ -201,9 +201,9 @@ DN dn;
 int
 dn_syntax (void) {
 	syntax_dn = add_attribute_syntax ("dn",
-									  (IFP) dn_enc,	(IFP) dn_dec,
-									  (IFP) str2dnX,	(IFP) dn_print,
-									  (IFP) dn_cpy,	dn_cmp,
+									  dn_enc, dn_dec,
+									  str2dnX, dn_print,
+									  dn_cpy,	dn_cmp,
 									  dn_free,	NULLCP,
 									  NULLIFP,	TRUE );
 }

@@ -56,6 +56,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl2pe.c,v 9.0 1992/06/
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 
 /*    DATA */

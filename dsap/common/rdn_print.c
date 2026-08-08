@@ -26,11 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/rdn_print.c,v 9
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-rdn_comp_print (ps,rdn,format)
-PS   ps;
-RDN  rdn;
-int  format;
-{
+void rdn_comp_print (PS ps, RDN rdn, int format) {
 
 	if (rdn!=NULLRDN) {
 		AttrT_print (ps,rdn->rdn_at,format);
@@ -40,25 +36,17 @@ int  format;
 	return;
 }
 
-rdn_print (ps,rdn,format)
-RDN  rdn;
-PS   ps;
-int  format;
-{
+void rdn_print (PS ps, RDN rdn, int format) {
 	RDN eptr;
-
 	if (rdn ==  NULLRDN) {
 		if (format == READOUT)
-			ps_print  (ps,"NULL RDN");
+			ps_print (ps,"NULL RDN");
 		return;
 	}
-
 	rdn_comp_print (ps,rdn,format);
-
 	for (eptr=rdn->rdn_next; eptr!=NULLRDN; eptr=eptr->rdn_next) {
 		ps_print (ps,"%");
 		rdn_comp_print (ps,eptr,format);
 	}
-
 }
 

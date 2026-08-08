@@ -348,7 +348,11 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 		   *vptr,
 		   *outptr;
 	struct udvec  *uv;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	SBV	    smask;
 
 	if (t -> t_errno != OK)
@@ -467,7 +471,7 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 		tpkt2text (tsap_log, t, 0);
 #endif
 
-	pstat = signal (SIGPIPE, SIG_IGN);
+	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
 	smask = sigioblock ();
 
 	i = (*writefnx) (tb, t, outptr, ilen);

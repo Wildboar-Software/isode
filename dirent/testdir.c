@@ -4,12 +4,11 @@
 	last edit:	25-Apr-1987	D A Gwyn
 */
 
-#include	<sys/types.h>
-#include	<stdio.h>
-#include	"usr.dirent.h"
-
-extern void	exit();
-extern int	strcmp();
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "usr.dirent.h"
+#include <string.h>
 
 int
 main (int argc, char **argv) {

@@ -140,9 +140,9 @@ qap_print (PS ps, struct access_point *p, int format) {
 int
 ap_syntax (void) {
 	add_attribute_syntax ("AccessPoint",
-						  (IFP) qap_enc,		(IFP) qap_dec,
-						  (IFP) qap_parse,	qap_print,
-						  (IFP) qap_cpy,		qap_cmp,
+						  qap_enc,		qap_dec,
+						  qap_parse,	qap_print,
+						  qap_cpy,		qap_cmp,
 						  aps_free,		NULLCP,
 						  NULLIFP,		TRUE );
 }

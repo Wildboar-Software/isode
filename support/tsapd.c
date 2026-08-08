@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
  *
  */
 
-
+#include <stdlib.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -325,7 +325,7 @@ tsapd (int vecp, char **vec) {
 			taddr2str (&ts -> ts_calling), taddr2str (&ts -> ts_called),
 			ts -> ts_expedited, ts -> ts_tsdusize);
 
-	hook = ssapd;
+	hook = (IFP)ssapd;
 #ifndef	IAE
 	if (ts -> ts_called.ta_selectlen) {
 		if ((is = getisoserventbyselector ("tsap", ts -> ts_called.ta_selector,
@@ -1517,7 +1517,11 @@ static SFD  hupser (sig)
 int	sig;
 {
 #ifndef	BSD42
+#ifdef LINUX
+	signal (sig, (__sighandler_t)hupser);
+#else
 	signal (sig, hupser);
+#endif
 #endif
 
 	search_directory (0);
@@ -1615,7 +1619,11 @@ static  envinit () {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 
 #ifdef	IAE
+#ifdef LINUX
+	signal (SIGHUP, (__sighandler_t)hupser);
+#else
 	signal (SIGHUP, hupser);
+#endif
 #endif
 }
 

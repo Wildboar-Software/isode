@@ -174,7 +174,7 @@ struct PSAPindication *pi;
 int     reason;
 va_list	ap;
 {
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct PSAPabort *pa;
 
@@ -183,7 +183,9 @@ va_list	ap;
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg(ap, char*);
+		fmt = va_arg(ap, char*);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		pa -> pa_peer = 0;

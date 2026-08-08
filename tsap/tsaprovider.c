@@ -67,7 +67,11 @@ int
 TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
+#ifdef LINUX
+	__sighandler_t istat;
+#else
 	SFP	    istat;
+#endif
 	int     result;
 	struct udvec uvs[2];
 	struct udvec *uv = uvs;
@@ -107,7 +111,11 @@ int
 TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
-	SFP	    istat;
+#ifdef LINUX
+	__sighandler_t	    istat;
+#else
+    SFP	    istat;
+#endif
 	int     result;
 	struct udvec uvs[2];
 	struct udvec *uv = uvs;
@@ -153,7 +161,11 @@ TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	int    n;
 	SBV     smask,
 			imask;
-	SFP	    istat;
+#ifdef LINUX
+	__sighandler_t	    istat;
+#else
+    SFP	    istat;
+#endif
 	int     result;
 	struct tsapblk *tb;
 	struct udvec *vv;
@@ -191,7 +203,11 @@ int
 TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
 	SBV	    smask,
 			imask;
-	SFP	    istat;
+#ifdef LINUX
+	__sighandler_t	    istat;
+#else
+    SFP	    istat;
+#endif
 	int     nfds,
 			oob,
 			result;
@@ -548,7 +564,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
-			signal (SIGPOLL, DATAser);
+			signal (SIGPOLL, (__sighandler_t)DATAser);
 
 			inited++;
 		}

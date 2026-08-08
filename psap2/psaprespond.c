@@ -62,7 +62,7 @@ PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi) {
 	if ((pb = newpblk ()) == NULL)
 		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 
-	cp = NULLCP, cpr = NULL;
+	cp = NULL, cpr = NULL;
 
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
 		ss2pslose (pb, pi, "SInit", sa);

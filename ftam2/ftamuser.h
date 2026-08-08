@@ -87,7 +87,7 @@ char   *str2file ();
 
 struct dispatch {
 	char   *ds_name;
-	IFP	    ds_fnx;
+	int (*ds_fnx)(char **vec);
 
 	int	    ds_flags;
 #define	DS_NULL		0x00

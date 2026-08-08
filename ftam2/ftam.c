@@ -87,7 +87,11 @@ main (int argc, char **argv, char **envp) {
 	int     eof,
 			status,
 			vecp;
-	SFP	    istat;
+#ifdef LINUX
+	__sighandler_t istat;
+#else
+	SFP istat;
+#endif
 	char   *bp,
 		   buffer[BUFSIZ],
 		   *vec[NVEC + 1];
@@ -183,7 +187,11 @@ main (int argc, char **argv, char **envp) {
 			break;
 		}
 	} else {
+#ifdef LINUX
+		istat = signal (SIGINT, (__sighandler_t)intrser);
+#else
 		istat = signal (SIGINT, intrser);
+#endif
 
 		eof = 0;
 		for (interrupted = 0;; interrupted = 0) {
@@ -223,7 +231,11 @@ main (int argc, char **argv, char **envp) {
 			break;
 		}
 
+#ifdef LINUX
+		signal (SIGINT, (__sighandler_t)istat);
+#else
 		signal (SIGINT, istat);
+#endif
 	}
 
 	if (ftamfd != NOTOK) {

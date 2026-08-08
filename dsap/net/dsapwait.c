@@ -982,7 +982,13 @@ static char * watch_dog_where;
 static watchdogfinal = FALSE;
 
 int
-watch_dog_final (SFP fn) {
+watch_dog_final (
+#ifdef LINUX
+	__sighandler_t fn
+#else
+	SFP fn
+#endif
+) {
 	watchdogfinal = TRUE;
 
 	if (dsa_mode) {
@@ -993,7 +999,11 @@ watch_dog_final (SFP fn) {
 }
 
 /* ARGSUSED */
-static SFD
+#ifdef LINUX
+void
+#else
+SFP
+#endif
 watch_dog_activate (int sd) {
 	static char called = FALSE;
 
@@ -1012,7 +1022,11 @@ watch_dog_activate (int sd) {
 }
 
 /* ARGSUSED */
-static SFD
+#ifdef LINUX
+void
+#else
+SFP
+#endif
 slack_watch_dog_activate (int sd) {
 	LLOG (log_dsap, LLOG_EXCEPTIONS,
 		  ("Watchdog: blocking in %s, trying again...",

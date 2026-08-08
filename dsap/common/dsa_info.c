@@ -235,9 +235,9 @@ struct edb_info * ei;
 int
 edbinfo_syntax (void) {
 	add_attribute_syntax ("edbinfo",
-						  (IFP) edb_info_enc,	(IFP) edb_info_decode,
-						  (IFP) str2update,	edb_info_print,
-						  (IFP) edb_info_cpy,	edb_info_cmp,
+						  edb_info_enc,	edb_info_decode,
+						  str2update,	edb_info_print,
+						  edb_info_cpy,	edb_info_cmp,
 						  edb_info_free,		NULLCP,
 						  NULLIFP,		TRUE );
 }

@@ -504,7 +504,7 @@ out:
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(data ? (i) : NULLIFP)
+#define	e(i)	(data ? (i) : 0)
 
 
 int

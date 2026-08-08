@@ -223,11 +223,11 @@ PE	pe;
 int
 documentStore_syntax (void) {
 	add_attribute_syntax ("documentStoreSyntax",
-						  (IFP) documentStore_enc,
-						  (IFP) documentStore_dec,
-						  (IFP) str2documentStore,
+						  documentStore_enc,
+						  documentStore_dec,
+						  str2documentStore,
 						  documentStore_print,
-						  (IFP) documentStore_cpy,
+						  documentStore_cpy,
 						  documentStore_cmp,
 						  documentStore_free,
 						  NULLCP, NULLIFP, TRUE);

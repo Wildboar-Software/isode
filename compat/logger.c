@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include <time.h>
 #include "general.h"
 #include "manifest.h"
@@ -66,7 +67,7 @@ struct ll_private {
 };
 
 static struct ll_private *llp = NULL;
-static IFP _ll_header_routine = ll_defmhdr;
+static IFP _ll_header_routine = (IFP)ll_defmhdr;
 
 long	lseek ();
 

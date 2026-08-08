@@ -310,9 +310,9 @@ PE pe;
 int
 post_syntax (void) {
 	add_attribute_syntax ("PostalAddress",
-						  (IFP) addrenc,	(IFP) addrdec,
-						  (IFP) addrparse,addrprint,
-						  (IFP) addrcpy,	addrcmp,
+						  addrenc,		addrdec,
+						  addrparse,	addrprint,
+						  addrcpy,		addrcmp,
 						  addrfree,	NULLCP,
 						  NULLIFP,	TRUE);
 

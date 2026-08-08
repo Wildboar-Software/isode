@@ -89,7 +89,7 @@ jmp_buf	peerdied;
 
 struct dispatch {
 	char   *ds_name;
-	IFP	    ds_fnx;
+	int (*ds_fnx)(char **vec);
 
 	int	    ds_flags;
 #define	DS_NULL		0x00
@@ -455,7 +455,7 @@ static int
 vt_open (char **vec) {
 	if (*++vec == NULL) {
 		if (_getline ("host: ", line) == NOTOK
-				|| str2vecX (line, vec, 0, (int *)NULLIP, 0, 0) < 1)
+				|| str2vecX (line, vec, 0, (int *)NULL, 0, 0) < 1)
 			return NOTOK;
 	}
 
@@ -468,8 +468,16 @@ vt_open (char **vec) {
 
 int
 do_vt (void) {
+#ifdef LINUX
+	signal(SIGINT, (__sighandler_t)intr);
+#else
 	signal(SIGINT, intr);
+#endif
+#ifdef LINUX
+	signal(SIGPIPE, (__sighandler_t)deadpeer);
+#else
 	signal(SIGPIPE, deadpeer);
+#endif
 	printf("Trying...\n");
 	fflush(stdout);
 
@@ -617,13 +625,13 @@ static char *xsaplevels[] = {
 
 struct var {
 	char   *v_name;
-	IP	    v_value;
+	int	    *v_value;
 
 	char   *v_dname;
 	char  **v_dvalue;
 	char   *v_mask;
 
-	IFP	    v_hook;
+	int (*v_hook)(struct var *v);
 };
 
 static struct var *getvar ();
@@ -637,59 +645,59 @@ static int	set_debug (), set_echo (), set_escape (), set_repertoire ();
 
 static struct var vars[] = {
 	"acsaplevel", &_acsap_log.ll_events, "ACSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"acsapfile", NULLIP, "ACSAP trace file", &_acsap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"acsapfile", NULL, "ACSAP trace file", &_acsap_log.ll_file, NULLCP,
+	NULL,
 
 	"addrlevel", &_addr_log.ll_events, "address logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"addrfile", NULLIP, "address trace file", &_addr_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"addrfile", NULL, "address trace file", &_addr_log.ll_file, NULLCP,
+	NULL,
 
 	"compatlevel", &_compat_log.ll_events, "COMPAT logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"compatfile", NULLIP, "COMPAT trace file", &_compat_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"compatfile", NULL, "COMPAT trace file", &_compat_log.ll_file, NULLCP,
+	NULL,
 
-	"crmod", &crmod, "map CR on output", bool, NULLCP, NULLIFP,
+	"crmod", &crmod, "map CR on output", bool, NULLCP, NULL,
 
 	"debug", &debug, "debug VT", debug_val, NULLCP, set_debug,
 
 	"echo", &echo, "local or remote echoing", emodes, NULLCP, set_echo,
 
-	"escape", NULLIP, "escape character", &escapestr, NULLCP, set_escape,
+	"escape", NULL, "escape character", &escapestr, NULLCP, set_escape,
 
-	"options", &showoptions, "show option processing", bool, NULLCP, NULLIFP,
+	"options", &showoptions, "show option processing", bool, NULLCP, NULL,
 
 	"psaplevel", &_psap_log.ll_events, "PSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"psapfile", NULLIP, "PSAP trace file", &_psap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"psapfile", NULL, "PSAP trace file", &_psap_log.ll_file, NULLCP,
+	NULL,
 
 	"psap2level", &_psap2_log.ll_events, "PSAP2 logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"psap2file", NULLIP, "PSAP2 trace file", &_psap2_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"psap2file", NULL, "PSAP2 trace file", &_psap2_log.ll_file, NULLCP,
+	NULL,
 
 	"repertoire", &repertoire, "terminal repertoire", rmodes, NULLCP,
 	set_repertoire,
 
 	"ssaplevel", &_ssap_log.ll_events, "SSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"ssapfile", NULLIP, "SSAP trace file", &_ssap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"ssapfile", NULL, "SSAP trace file", &_ssap_log.ll_file, NULLCP,
+	NULL,
 
 	"tracelevel", &_vt_log.ll_events, "VT logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"tracefile", NULLIP, "VT trace file", &_vt_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"tracefile", NULL, "VT trace file", &_vt_log.ll_file, NULLCP,
+	NULL,
 
 	"tsaplevel", &_tsap_log.ll_events, "TSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"tsapfile", NULLIP, "TSAP trace file", &_tsap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"tsapfile", NULL, "TSAP trace file", &_tsap_log.ll_file, NULLCP,
+	NULL,
 
-	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULLIFP,
+	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULL,
 
 	NULL
 };
@@ -780,7 +788,7 @@ vt_set (char **vec) {
 		return DONE;
 	}
 
-	if (v -> v_value == NULLIP) {
+	if (v -> v_value == NULL) {
 		int    w;
 
 		if (*v -> v_dvalue)

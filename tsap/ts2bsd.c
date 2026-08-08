@@ -435,7 +435,11 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	struct iovec iovs[MSG_MAXIOVLEN];
 	struct iovec *vv,
 			   *wv;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 
 	bzero ((char *) msg, sizeof *msg);
 
@@ -583,7 +587,11 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	struct msghdr *msg = &msgs;
 	struct iovec vvs;
 	struct iovec *vv = &vvs;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	SBV	    smask;
 
 	bzero ((char *) msg, sizeof *msg);

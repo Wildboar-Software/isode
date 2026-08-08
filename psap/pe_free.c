@@ -33,12 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_free.c,v 9.0 1992/0
 
 /*  */
 
-int
-pe_free (PE pe) {
-	PE	    p,
-	 q;
-	struct qbuf *qb,
-			   *qp;
+void pe_free (PE pe) {
+	PE p, q;
+	struct qbuf *qb, *qp;
 
 	if (!pe)
 		abort ();

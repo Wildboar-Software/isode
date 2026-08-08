@@ -29,6 +29,14 @@
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
 
+#ifndef	_RoSAP_
+#include "rosap.h"		/* definitions for RoS-USERs */
+#endif
+
+#ifndef	_RtSAP_
+#include "rtsap.h"		/* definitions for RT-SE users */
+#endif
+
 /*  */
 
 #ifdef	ACSE
@@ -184,7 +192,7 @@ struct assocblk {
 	int	    acb_settings;	/* initial settings */
 	int	    acb_ssdusize;	/* largest atomic SSDU */
 
-	IFP	    acb_uabort;		/* disconnect underlying service */
+	int(*acb_uabort)(int sd, PE *data, int ndata, void *);		/* disconnect underlying service */
 
 	/* ACSE */
 	int	    acb_sversion;	/* session service version number */
@@ -202,13 +210,13 @@ struct assocblk {
 	long    acb_ssn;		/* highest serial number sent */
 	int	    acb_ack;		/* highest serial number acknowledged */
 
-	IFP	    acb_pturnrequest;	/* RT-TURN-PLEASE.REQUEST */
-	IFP	    acb_gturnrequest;	/* RT-TURN-GIVE.REQUEST */
-	IFP	    acb_transferequest;	/* RT-TRANSER.REQUEST */
-	IFP	    acb_rtwaitrequest;	/* RT-WAIT.REQUEST */
-	IFP	    acb_rtsetindications;/* define vectors for INDICATION events */
-	IFP	    acb_rtselectmask;	/* map association descriptors for select () */
-	IFP	    acb_rtpktlose;	/* protocol-level abort */
+	int (*acb_pturnrequest)(struct assocblk *acb, int priority, struct RtSAPindication *rti);	/* RT-TURN-PLEASE.REQUEST */
+	int (*acb_gturnrequest)(struct assocblk *acb, struct RtSAPindication *rti);	/* RT-TURN-GIVE.REQUEST */
+	int (*acb_transferequest)(struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti);	/* RT-TRANSER.REQUEST */
+	int (*acb_rtwaitrequest)(struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti);	/* RT-WAIT.REQUEST */
+	int (*acb_rtsetindications)(struct assocblk *acb, IFP indication, struct RtSAPindication *rti);/* define vectors for INDICATION events */
+	int (*acb_rtselectmask)(struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti);	/* map association descriptors for select () */
+	int (*acb_rtpktlose)(struct assocblk *acb, int result);	/* protocol-level abort */
 
 	int	    acb_priority;	/* priority of please turn */
 	struct AcSAPfinish acb_finish;
@@ -217,24 +225,24 @@ struct assocblk {
 	char   *acb_base;		/*   .. */
 	int	    acb_len;		/*   .. */
 
-	IFP	    acb_uptrans;	/* upcall for up-transfer */
-	IFP	    acb_downtrans;	/* upcall for down-transfer */
+	int (*acb_uptrans)(int sd, int type, caddr_t addr, struct RtSAPindication *rti);	/* upcall for up-transfer */
+	int (*acb_downtrans)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);	/* upcall for down-transfer */
 
-	IFP	    acb_rtsindication;	/* rts event handler */
+	int (*acb_rtsindication)(int sd, struct RtSAPindication *rti);	/* rts event handler */
 
 	/* ROSE */
 	int	    acb_rosid;		/* ROSE (SASE) context id */
-	IFP	    acb_putosdu;	/* osdu2acb */
-	IFP	    acb_rowaitrequest;	/* RO-WAIT.REQUEST */
-	IFP	    acb_ready;		/* get HDX permission */
-	IFP	    acb_rosetindications;/* define vectors for INDICATION events */
-	IFP	    acb_roselectmask;	/* map association descriptors for select () */
-	IFP	    acb_ropktlose;	/* protocol-level abort */
-	PE	    (*acb_getosdu) ();	/* for users of THORN... */
+	int (*acb_putosdu)(struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi);	/* osdu2acb */
+	int (*acb_rowaitrequest)(struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi);	/* RO-WAIT.REQUEST */
+	int (*acb_ready)(struct assocblk *acb, int priority, struct RoSAPindication *roi);		/* get HDX permission */
+	int (*acb_rosetindications)(struct assocblk *acb, IFP indication, struct RoSAPindication *roi);/* define vectors for INDICATION events */
+	int (*acb_roselectmask)(struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi);	/* map association descriptors for select () */
+	int (*acb_ropktlose)(struct assocblk *acb, int result);	/* protocol-level abort */
+	PE (*acb_getosdu) ();	/* for users of THORN... */
 
 	PE	    acb_apdu;		/* APDU buffered */
 
-	IFP	    acb_rosindication;	/* ros event handler */
+	int (*acb_rosindication)(int sd, struct RoSAPindication *roi);	/* ros event handler */
 };
 #define	NULLACB		((struct assocblk *) 0)
 

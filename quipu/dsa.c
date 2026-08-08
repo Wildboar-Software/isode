@@ -272,25 +272,45 @@ no_copy:
 	* Do stop_dsa() on receiving a Ctrl-C
 	*/
 
-	signal (SIGINT, stop_dsa);
-	signal (SIGTERM,stop_dsa);
-	signal (SIGHUP, stop_dsa);
+#ifdef LINUX
+	signal (SIGINT, (__sighandler_t)stop_dsa);
+	signal (SIGTERM,(__sighandler_t)stop_dsa);
+	signal (SIGHUP, (__sighandler_t)stop_dsa);
 
 	/* now started don't stop on core dumps !!! */
-	signal (SIGQUIT, attempt_restart);
-	signal (SIGILL,  attempt_restart);
-	signal (SIGBUS,  attempt_restart);
-	signal (SIGSEGV, attempt_restart);
-	signal (SIGSYS,  attempt_restart);
-	signal (SIGPIPE,  attempt_restart);
+	signal (SIGQUIT, (__sighandler_t)attempt_restart);
+	signal (SIGILL,  (__sighandler_t)attempt_restart);
+	signal (SIGBUS,  (__sighandler_t)attempt_restart);
+	signal (SIGSEGV, (__sighandler_t)attempt_restart);
+	signal (SIGSYS,  (__sighandler_t)attempt_restart);
+	signal (SIGPIPE,  (__sighandler_t)attempt_restart);
 #ifdef	SIGUSR1
-	signal (SIGUSR1, list_status);
+	signal (SIGUSR1, (__sighandler_t)list_status);
 #ifdef	SIGUSR2
-	signal (SIGUSR2, list_status2);
+	signal (SIGUSR2, (__sighandler_t)list_status2);
 #endif
 #endif
+#else // LINUX
+signal (SIGINT, stop_dsa);
+signal (SIGTERM,stop_dsa);
+signal (SIGHUP, stop_dsa);
 
-	abort_vector = attempt_restart;
+/* now started don't stop on core dumps !!! */
+signal (SIGQUIT, attempt_restart);
+signal (SIGILL,  attempt_restart);
+signal (SIGBUS,  attempt_restart);
+signal (SIGSEGV, attempt_restart);
+signal (SIGSYS,  attempt_restart);
+signal (SIGPIPE,  attempt_restart);
+#ifdef	SIGUSR1
+signal (SIGUSR1, list_status);
+#ifdef	SIGUSR2
+signal (SIGUSR2, list_status2);
+#endif
+#endif
+#endif // LINUX
+
+	abort_vector = (SFP)attempt_restart;
 	parse_line = 0;
 
 	sprintf (start_buf,"DSA %s has started on %s",mydsaname,
@@ -703,8 +723,7 @@ fork_ok:
 #define	CLEAR_TIME	300	/*   .. */
 #endif
 
-	SFD attempt_restart (sig)
-	int sig;
+	SFD attempt_restart (int sig)
 	{
 		int sd;
 		static int here_again = 0;
@@ -724,12 +743,19 @@ fork_ok:
 		for (sd = 0; sd < NSIG ; sd++)
 			signal (sd, SIG_DFL); /* to stop recursion */
 
+#ifdef LINUX
+		signal (SIGQUIT, (__sighandler_t)attempt_restart);
+		signal (SIGILL,  (__sighandler_t)attempt_restart);
+		signal (SIGBUS,  (__sighandler_t)attempt_restart);
+		signal (SIGSEGV, (__sighandler_t)attempt_restart);
+		signal (SIGSYS,  (__sighandler_t)attempt_restart);
+#else
 		signal (SIGQUIT, attempt_restart);
 		signal (SIGILL,  attempt_restart);
 		signal (SIGBUS,  attempt_restart);
 		signal (SIGSEGV, attempt_restart);
 		signal (SIGSYS,  attempt_restart);
-
+#endif
 		if (sig >= 0 && debug)
 			fprintf (stderr, "DSA %s encountered a problem, as indicated by signal: %d\n", mydsaname, sig);
 

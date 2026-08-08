@@ -167,7 +167,7 @@ char   *ll_preset (char* fmt, ...);
 
 int	ll_check ();
 
-int	ll_defmhdr ();
+int	ll_defmhdr (char *bufferp, char *headerp, char *dheaderp);
 IFP	ll_setmhdr ();
 #endif
 

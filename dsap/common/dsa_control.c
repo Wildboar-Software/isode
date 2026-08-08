@@ -73,10 +73,10 @@ int
 dsa_control_syntax (void) {
 	add_attribute_syntax
 	("DSAControl",
-	 (IFP)dsa_control_enc,    (IFP)dsa_control_decode,/* Encoder and decoder */
-	 (IFP)str2dsa_control,	dsa_control_print,          /* parser, print */
-	 (IFP)dsa_control_cpy,    dsa_control_cmp,/* copy and compare */
-	 (IFP)dsa_control_free,	NULLCP,             /* structure_free, print - READOUT */
+	 dsa_control_enc,    dsa_control_decode,/* Encoder and decoder */
+	 str2dsa_control,	dsa_control_print,          /* parser, print */
+	 dsa_control_cpy,    dsa_control_cmp,/* copy and compare */
+	 dsa_control_free,	NULLCP,             /* structure_free, print - READOUT */
 	 NULLIFP,	TRUE );                     /* Approx matching, multiline output */
 }
 
@@ -444,10 +444,10 @@ int
 quipu_call_syntax (void) {
 	add_attribute_syntax
 	("Call",
-	 (IFP)quipu_call_enc,    (IFP)quipu_call_decode,     /* Encoder and decoder */
-	 (IFP)str2quipu_call,	  quipu_call_print,      /* parser, print */
-	 (IFP)quipu_call_cpy,    quipu_call_cmp,        /* copy and compare */
-	 (IFP)quipu_call_free,	  NULLCP,               /* structure_free, print - READOUT */
+	 quipu_call_enc,    quipu_call_decode,     /* Encoder and decoder */
+	 str2quipu_call,	  quipu_call_print,      /* parser, print */
+	 quipu_call_cpy,    quipu_call_cmp,        /* copy and compare */
+	 quipu_call_free,	  NULLCP,               /* structure_free, print - READOUT */
 	 NULLIFP,	          TRUE );               /* Approx matching, multiline output */
 }
 

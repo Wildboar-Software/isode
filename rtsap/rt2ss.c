@@ -390,11 +390,15 @@ rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : 0)
 
 
 int
-rt2ssasync (struct assocblk *acb, IFP indication, struct RtSAPindication *rti) {
+rt2ssasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RtSAPindication *rti),
+	struct RtSAPindication *rti
+) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -599,7 +603,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 						   ps_error (result));
 				goto out;
 			}
-			result = parse_OACS_Priority(pe, 1, NULLIP, NULLVP, &priority);
+			result = parse_OACS_Priority(pe, 1, (int *)0, NULLVP, &priority);
 
 #ifdef	DEBUG
 			if (result != NOTOK && (rtsap_log -> ll_events & LLOG_PDUS))
@@ -617,7 +621,7 @@ doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPin
 			if (trans) {
 				if (acb -> acb_downtrans) {
 					if ((*acb -> acb_downtrans) (acb -> acb_fd, NULLVP,
-												 NULLIP, priority -> parm,
+												 (int *)0, priority -> parm,
 												 0L, 0L, rti) == NOTOK
 							&& SActIntrRequest (acb -> acb_fd, SP_LOCAL,
 												si) == NOTOK) {
@@ -970,7 +974,7 @@ ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication 
 		goto out;
 	}
 	/* acsap_abort = -1; */
-	result = parse_OACS_AbortInformation (pe, 1, NULLIP, NULLVP, &pabi);
+	result = parse_OACS_AbortInformation (pe, 1, (int *)0, NULLVP, &pabi);
 
 #ifdef	DEBUG
 	if (result != NOTOK && (rtsap_log -> ll_events & LLOG_PDUS))
@@ -1015,7 +1019,8 @@ out:
 
 static int
 ssDATAser (int sd, struct SSAPdata *sx) {
-	IFP	    handler;
+	// TODO: This pattern is used a lot, and its unnecessarily verbose. Simplify this.
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1032,7 +1037,7 @@ ssDATAser (int sd, struct SSAPdata *sx) {
 
 static int
 ssTOKENser (int sd, struct SSAPtoken *st) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1049,7 +1054,7 @@ ssTOKENser (int sd, struct SSAPtoken *st) {
 
 static int
 ssSYNCser (int sd, struct SSAPsync *sn) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1066,7 +1071,7 @@ ssSYNCser (int sd, struct SSAPsync *sn) {
 
 static int
 ssACTIVITYser (int sd, struct SSAPactivity *sv) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1083,7 +1088,7 @@ ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 
 static int
 ssREPORTser (int sd, struct SSAPreport *sp) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1100,7 +1105,7 @@ ssREPORTser (int sd, struct SSAPreport *sp) {
 
 static int
 ssFINISHser (int sd, struct SSAPfinish *sf) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -1118,7 +1123,7 @@ ssFINISHser (int sd, struct SSAPfinish *sf) {
 
 static int
 ssABORTser (int sd, struct SSAPabort *sa) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;

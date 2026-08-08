@@ -996,21 +996,14 @@ int	init_print () {
  */
 
 
-static int  _select (dd)
-struct dirent *dd;
-{
-	char    c = dd -> d_name[0];
-
+static int  _select (const struct dirent *dd) {
+	char c = dd -> d_name[0];
 	return ((c == 't' || c == 'c' || c == 'd') && dd -> d_name[1] == 'f');
 }
 
 
-static int  sortq (d1, d2)
-struct dirent **d1,
-		   **d2;
-{
-	char    c1,
-			c2;
+static int sortq (const struct dirent **d1, const struct dirent **d2) {
+	char c1, c2;
 
 	if (c1 = strcmp ((*d1) -> d_name + 3, (*d2) -> d_name + 3))
 		return c1;
@@ -1031,8 +1024,6 @@ struct dirent **d1,
     		advise (LLOG_EXCEPTIONS, (file), \
 			"unable to set mode 0%o for", (int) (m)); \
 	else
-
-static int  _select ();
 
 int	sync_print (cor)
 integer	cor;
@@ -1119,7 +1110,7 @@ integer	cor;
 				break;
 
 			case PQ_CLEAN:
-				if ((status = scandir (".", &queue, select, sortq))
+				if ((status = scandir (".", &queue, _select, sortq))
 						== NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"unable to examine %s", pq -> pq_SD);

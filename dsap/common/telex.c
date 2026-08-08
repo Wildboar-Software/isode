@@ -196,9 +196,9 @@ PE pe;
 int
 telex_syntax (void) {
 	add_attribute_syntax ("TelexNumber",
-						  (IFP) telex_enc,	(IFP) telex_dec,
-						  (IFP) str2telex,	telex_print,
-						  (IFP) telex_cpy,	telex_cmp,
+						  telex_enc,		telex_dec,
+						  str2telex,		telex_print,
+						  telex_cpy,		telex_cmp,
 						  telex_free,		NULLCP,
 						  NULLIFP,		TRUE);
 }

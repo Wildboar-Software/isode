@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/isoalias.c,v 9.0 1992
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include "general.h"
 #include "manifest.h"

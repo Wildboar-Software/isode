@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/nsapcmp.c,v 9.0 1992
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"

@@ -73,13 +73,18 @@ name2value_dase (char *name, char *context, int ontty, char *userdn, char *passw
 	char   *vec[NVEC + 1];
 	PE	    pe = NULLPE,
 			result = NULLPE;
+#ifdef LINUX
+	__sighandler_t istat;
+#else
 	SFP	    istat;
+#endif
+
 	struct type_DASE_Query__REQ *parm = NULL;
 
 	*real_name = NULLPE;
 
 	if (ontty) {
-		istat = signal (SIGINT, intrser);
+		istat = signal (SIGINT, (__sighandler_t)intrser);
 		interrupted = 0;
 	}
 

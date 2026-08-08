@@ -155,7 +155,11 @@ char *argv[];
 	}
 	ctrl_addr.sin_port = sp->s_port;
 	data_source.sin_port = htons(ntohs((u_short) sp->s_port) - 1);
+#ifdef LINUX
+	signal(SIGPIPE, (__sighandler_t)lostconn);
+#else
 	signal(SIGPIPE, lostconn);
+#endif
 	signal(SIGCHLD, SIG_IGN);
 	dup2(0, 1);
 	/* do telnet option negotiation here */
@@ -185,7 +189,6 @@ char *argv[];
 
 SFD
 lostconn() {
-
 	advise (NULLCP,"lost connection");
 	dologout(-1);
 }

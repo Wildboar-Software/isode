@@ -69,32 +69,32 @@ static int imisc_error ();
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	utctime_result, imisc_error,
 	"the universal time",
 
 	"gentime",	operation_IMISC_genTime,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	gentime_result, imisc_error,
 	"the generalized time",
 
 	"time",	operation_IMISC_timeOfDay,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	timeofday_result, imisc_error,
 	"the current time since the epoch",
 
 	"users",	operation_IMISC_users,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	ia5_result, imisc_error,
 	"the users logged in on the system",
 
 	"chargen",	operation_IMISC_charGen,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	ia5_result, imisc_error,
 	"the character generation pattern",
 
 	"qotd",	operation_IMISC_qotd,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	ia5_result, imisc_error,
 	"the quote of the day",
 
@@ -104,7 +104,7 @@ static struct dispatch dispatches[] = {
 	"the finger of users logged in",
 
 	"pwdgen",	operation_IMISC_pwdGen,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	ia5_result, imisc_error,
 	"some pseudo-randomly generated passwords",
 
@@ -114,7 +114,7 @@ static struct dispatch dispatches[] = {
 	"send a message to a remote user",
 
 	"ping", operation_IMISC_ping,
-	NULLIFP, NULL, 0,
+	NULL, NULL, 0,
 	null_result, imisc_error,
 	"ping responder",
 
@@ -130,12 +130,12 @@ static struct dispatch dispatches[] = {
 
 	"help", 0,
 	do_help, NULL, 0,
-	NULLIFP, NULLIFP,
+	NULL, NULL,
 	"print this information",
 
 	"quit", 0,
 	do_quit, NULL, 0,
-	NULLIFP, NULLIFP,
+	NULL, NULL,
 	"terminate the association and exit",
 
 	NULL

@@ -60,8 +60,8 @@ static	int	got_at_least_one = 0;
 static	int	dont_bother_anymore = 0;
 
 
-int	init_users (), sync_users ();	/* users group */
-int	init_print (), sync_print ();	/* print group */
+int	init_users (void), sync_users (int cor);	/* users group */
+int	init_print (void), sync_print (int cor);	/* print group */
 static  arginit (), envinit  (), mibinit  (), start_smux (),
         doit_smux (), do_smux ();
 
@@ -69,8 +69,8 @@ static struct triple {
 	char   *t_tree;
 	OID	    t_name;
 	int	    t_access;
-	IFP	    t_init;
-	IFP	    t_sync;
+	int	    (*t_init)(void);
+	int	    (*t_sync)(int cor);
 }	triples[] = {
 	"users", NULL, readWrite, init_users, sync_users,
 	"print", NULL, readWrite, init_print, sync_print,
@@ -434,7 +434,7 @@ int	offset;
 			status;
 	object_instance ois;
 	struct type_SNMP_VarBindList *vp;
-	IFP	    method;
+	int	    (*method)(OI oi, void *varbind, int offset);
 
 	quantum = pdu -> request__id;
 	idx = 0;

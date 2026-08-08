@@ -1881,31 +1881,21 @@ no_dice:
 
 /*  */
 
-static int  adn_compar (a, b)
-struct adrtab **a,
-		   **b;
-{
+static int adn_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
 }
 
 
-static int  adm_compar (a, b)
-struct adrtab **a,
-		   **b;
-{
+static int adm_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
 					 (*b) -> adm_instance, (*b) -> adm_insize);
 }
 
-static int  ada_compar (a, b)
-struct adrtab **a,
-		   **b;
-{
+static int ada_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> ada_instance, (*a) -> ada_insize,
 					 (*b) -> ada_instance, (*b) -> ada_insize);
 }
-
 
 static	sort_arptab () {
 	struct adrtab *at,
@@ -1921,7 +1911,7 @@ static	sort_arptab () {
 	for (at = adn; at; at = at -> adn_next)
 		*afe++ = at;
 
-	qsort ((char *) base, adrNumber, sizeof *base, (IFP) adn_compar);
+	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adn_compar);
 
 	afp = base;
 	at = adn = *afp++;
@@ -1931,7 +1921,7 @@ static	sort_arptab () {
 	}
 	at -> adn_next = NULL;
 
-	qsort ((char *) base, adrNumber, sizeof *base, (IFP) adm_compar);
+	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adm_compar);
 
 	afp = base;
 	at = adm = *afp++;
@@ -1941,7 +1931,7 @@ static	sort_arptab () {
 	}
 	at -> adm_next = NULL;
 
-	qsort ((char *) base, adrNumber, sizeof *base, (IFP) ada_compar);
+	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) ada_compar);
 
 	afp = base;
 	at = ada = *afp++;

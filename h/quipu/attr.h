@@ -26,6 +26,7 @@
 
 #include "quipu/oid.h"
 #include "manifest.h"
+#include "quipu/util.h"
 
 #ifndef TRUE
 #define FALSE 0
@@ -93,17 +94,21 @@ struct file_syntax {
 #define ps_print(ps,data) (void)ps_write(ps,(PElementData)data,strlen(data))
 
 typedef struct {
-	char *	s_sntx;		/* String defining syntax */
-	PFP	s_encode;
-	PFP	s_decode;
-	PFP	s_parse;
-	IFP	s_print;
-	PFP	s_copy;
-	IFP	s_compare;
-	IFP	s_free;
-	char *	s_pe_print;	/* process to handle raw PE */
-	IFP	s_approx;	/* approx match routine */
-	char 	s_multiline;	/* if true print each value on new line */
+	char *s_sntx;		/* String defining syntax */
+	PE (*s_encode)(void *value);
+	void* (*s_decode)(PE pe);
+	void* (*s_parse)(char *str);
+	void (*s_print)(PS ps, void *value, int format);
+	void* (*s_copy)(void *value);
+	/* return 0 if equal, -1 or 1 if not equal (not sure which way though) */
+	int	(*s_compare)(void *value1, void *value2);
+	void (*s_free)(void *value);
+	char *s_pe_print;	/* process to handle raw PE */
+	/* Approximate match routine. The first argument is a filter_item, and
+	the second is an AV_Sequence. I just couldn't actually use those types in
+	this header without recursive includes. */
+	int	(*s_approx)(void *filter_item, void *attr_value_seq);
+	char s_multiline;	/* if true print each value on new line */
 } sntx_table;
 
 extern char quipu_faststart;

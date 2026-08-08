@@ -26,6 +26,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/psaptest.c,v 9.0 1992/
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "psap.h"
 #include "tailor.h"
 #include <sys/stat.h>

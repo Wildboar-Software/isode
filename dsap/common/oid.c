@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oid.c,v 9.0 199
 
 /* LINTLIBRARY */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "cmd_srch.h"
@@ -83,8 +84,8 @@ static struct pair *Pbuckets[PBUCKETS];
 
 static char allow_single_oid = FALSE;
 
-IFP oc_load = NULLIFP;
-IFP oc_macro_add = NULLIFP;
+int (*oc_load)(char *sep, char *newname) = NULL;
+int (*oc_macro_add)(char *buf, char *ptr) = NULL;
 
 int
 load_oid_table (char *table) {
@@ -910,9 +911,9 @@ free_oid_buckets (void) {
 int
 oid_syntax (void) {
 	add_attribute_syntax ("oid",
-						  (IFP) oid2pe,	(IFP) dup_prim2oid,
-						  (IFP) name2oid,	oidprint,
-						  (IFP) oid_cpy,	oid_cmp,
+						  oid2pe,		dup_prim2oid,
+						  name2oid,		oidprint,
+						  oid_cpy,		oid_cmp,
 						  oid_free,	NULLCP,
 						  NULLIFP,	FALSE );
 }

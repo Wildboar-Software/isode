@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include <stdarg.h>
@@ -85,7 +86,7 @@ static int num_cmd = 0;
 
 add_dish_command (name,func,len)
 char * name;
-IFP func;
+int (*func)(int, char **);
 int len;
 {
 	Commands[num_cmd].command = name;
@@ -156,6 +157,15 @@ dish_init (int argc, char **argv) {
 
 	dish_cmd_init ();
 
+#ifdef LINUX
+	signal (SIGHUP, (__sighandler_t)dish_quit);
+	signal (SIGQUIT, (__sighandler_t)dish_quit);
+	signal (SIGILL, (__sighandler_t)dish_quit);
+	signal (SIGBUS, (__sighandler_t)dish_quit);
+	signal (SIGSEGV, (__sighandler_t)dish_quit);
+	signal (SIGSYS, (__sighandler_t)dish_quit);
+	signal (SIGTERM, (__sighandler_t)dish_quit);
+#else
 	signal (SIGHUP,	dish_quit);
 	signal (SIGQUIT,	dish_quit);
 	signal (SIGILL, 	dish_quit);
@@ -163,6 +173,7 @@ dish_init (int argc, char **argv) {
 	signal (SIGSEGV,	dish_quit);
 	signal (SIGSYS,	dish_quit);
 	signal (SIGTERM,	dish_quit);
+#endif
 
 #ifdef TURBO_DISK
 	fromfile = 1;
@@ -347,7 +358,11 @@ do_dish (void) {
 	gnu_gets_setup ();
 #endif
 
+#ifdef LINUX
+	signal (SIGINT, (__sighandler_t)dish_intr);
+#else
 	signal (SIGINT, dish_intr);
+#endif
 	if (setjmp (dish_env) == 1)
 		goto tidy_up;
 

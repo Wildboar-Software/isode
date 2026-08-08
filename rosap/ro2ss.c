@@ -79,13 +79,17 @@ RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : 0)
 
 
 /* ARGSUSED */
 
 int
-ro2ssasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi) {
+ro2ssasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RoSAPindication *roi),
+	struct RoSAPindication *roi
+) {
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;
 
@@ -612,7 +616,7 @@ out:
 
 static int
 ssDATAser (int sd, struct SSAPdata *sx) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -621,7 +625,7 @@ ssDATAser (int sd, struct SSAPdata *sx) {
 		return;
 	handler = acb -> acb_rosindication;
 
-	if (doSSdata (acb, NULLIP, sx, roi) != OK)
+	if (doSSdata (acb, NULL, sx, roi) != OK)
 		(*handler) (sd, roi);
 }
 
@@ -629,7 +633,7 @@ ssDATAser (int sd, struct SSAPdata *sx) {
 
 static int
 ssTOKENser (int sd, struct SSAPtoken *st) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -646,7 +650,7 @@ ssTOKENser (int sd, struct SSAPtoken *st) {
 
 static int
 ssSYNCser (int sd, struct SSAPsync *sn) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -663,7 +667,7 @@ ssSYNCser (int sd, struct SSAPsync *sn) {
 
 static int
 ssACTIVITYser (int sd, struct SSAPactivity *sv) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -680,7 +684,7 @@ ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 
 static int
 ssREPORTser (int sd, struct SSAPreport *sp) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -697,7 +701,7 @@ ssREPORTser (int sd, struct SSAPreport *sp) {
 
 static int
 ssFINISHser (int sd, struct SSAPfinish *sf) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -715,7 +719,7 @@ ssFINISHser (int sd, struct SSAPfinish *sf) {
 
 static int
 ssABORTser (int sd, struct SSAPabort *sa) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;

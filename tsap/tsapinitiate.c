@@ -27,11 +27,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapinitiate.c,v 9.0 1
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "isoservent.h"
+#include "manifest.h"
 #include "tailor.h"
 #ifdef X25
 #include "x25.h"
@@ -44,7 +45,7 @@ static struct nsapent {
 	IFP	    ns_open;
 }     nsaps[] = {
 #ifdef	TCP
-	NA_TCP, TS_TCP, tcpopen,
+	NA_TCP, TS_TCP, (IFP)tcpopen,
 #endif
 #ifdef	X25
 	NA_X25, TS_X25, x25open,

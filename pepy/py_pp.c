@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/py_pp.c,v 9.0 1992/06/
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "psap.h"
 
 #define	ps_advise(ps, f) \

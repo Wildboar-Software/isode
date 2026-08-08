@@ -302,9 +302,9 @@ int
 objectclass_syntax (void) {
 
 	oc_sntx = add_attribute_syntax ("objectclass",
-									(IFP) oc_enc,	(IFP) oc_dec,
-									(IFP) str2oc,	oc_print,
-									(IFP) oc_cpy,	objectclass_cmp,
+									oc_enc,		oc_dec,
+									str2oc,		oc_print,
+									oc_cpy,		objectclass_cmp,
 									oc_free,	NULLCP,
 									NULLIFP,	FALSE );
 

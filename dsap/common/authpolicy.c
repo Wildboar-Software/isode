@@ -200,9 +200,9 @@ authp_syntax (void) {
 	extern	sfree();
 
 	authp_sntx = add_attribute_syntax ("AuthenticationPolicySyntax",
-									   (IFP) authp_enc,	(IFP) authp_decode,
-									   (IFP) str2authp,	authp_print,
-									   (IFP) authp_cpy,	authp_cmp,
+									   authp_enc,	authp_decode,
+									   str2authp,	authp_print,
+									   authp_cpy,	authp_cmp,
 									   sfree,			NULLCP,
 									   NULLIFP,		TRUE);
 }

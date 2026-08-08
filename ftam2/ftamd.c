@@ -75,7 +75,7 @@ main (int argc, char **argv, char **envp) {
 #ifdef ULTRIX_X25_DEMSA
 	if (Post_Exec(argc,argv,"FTAM main module") == NOTOK) exit(1);
 #endif
-	if (FInit (argc, argv, fts, debug ? FTraceHook : NULLIFP, fti) == NOTOK)
+	if (FInit (argc, argv, fts, debug ? FTraceHook : NULL, fti) == NOTOK)
 		ftam_adios (&fti -> fti_abort, "initialization");
 	advise (LLOG_NOTICE, NULLCP,
 			"F-INITIALIZE.INDICATION: <%d, %s, %s, %s, %s>",

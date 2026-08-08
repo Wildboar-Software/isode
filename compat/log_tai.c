@@ -27,7 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/log_tai.c,v 9.0 1992
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "cmd_srch.h"
 #include "general.h"
 #include "manifest.h"

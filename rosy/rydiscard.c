@@ -67,7 +67,7 @@ struct RoSAPindication *roi;
 						  "invocation %d not in progress on association %d",
 						  id, sd);
 
-	opb -> opb_resfnx = opb -> opb_errfnx = do_response;
+	opb -> opb_resfnx = opb -> opb_errfnx = (IFP)do_response;
 
 	return OK;
 }

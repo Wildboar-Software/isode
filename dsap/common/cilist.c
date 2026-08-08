@@ -222,9 +222,9 @@ PE pe;
 int
 cilist_syntax (void) {
 	add_attribute_syntax ("CaseIgnoreList",
-						  (IFP) cilistenc,	(IFP) cilistdec,
-						  (IFP) cilistparse,	cilistprint,
-						  (IFP) cilistcpy,	cilistcmp,
+						  cilistenc,	cilistdec,
+						  cilistparse,	cilistprint,
+						  cilistcpy,	cilistcmp,
 						  cilistfree,	NULLCP,
 						  NULLIFP,	TRUE);
 

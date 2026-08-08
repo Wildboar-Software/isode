@@ -73,7 +73,11 @@ static	int	armed;
 static	jmp_buf	intrenv;
 static	int	interrupted;
 
+#ifdef LINUX
+static __sighandler_t istat;
+#else
 static	SFP	istat;
+#endif
 
 static SFD	intrser ();
 
@@ -97,7 +101,7 @@ void	advise (char *what, char *fmt, ...);
 
 struct dispatch {
 	char   *ds_name;		/* command name */
-	IFP	    ds_fnx;		/* dispatch */
+	int	    (*ds_fnx)(char **vec);		/* dispatch */
 
 	char   *ds_help;		/* help string */
 };
@@ -180,7 +184,11 @@ char  **argv,
 		goto were_out_of_here;
 	}
 
+#ifdef LINUX
+	istat = signal (SIGINT, (__sighandler_t) intrser);
+#else
 	istat = signal (SIGINT, intrser);
+#endif
 
 	eof = 0;
 	for (interrupted = 0;; interrupted = 0) {
@@ -485,13 +493,25 @@ out:
 /*  */
 
 #ifdef	BSD42
-int	bulk1 (), bulk2 ();
+int	bulk1 (
+	PS	ps,
+	int	sd,
+	struct type_SNMP_VarBindList *vb,
+	char   *community
+);
+
+int bulk2 (
+	PS	ps,
+	int	sd,
+	struct type_SNMP_VarBindList *vb,
+	char   *community
+);
 
 static int  f_bulk (vec)
 char  **vec;
 {
 	int	    result;
-	IFP	    fnx = bulk1;
+	int	    (*fnx)(PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) = bulk1;
 	struct type_SNMP_VarBindList **vp;
 	struct type_SNMP_VarBindList *vb;
 	OT	    et = NULL;

@@ -135,7 +135,7 @@ int	ftamoops (struct FTAMindication *fti, ...) {
 
 
 static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap) {
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct FTAMabort  *fta;
 	struct FTAMdiagnostic *ftd;
@@ -145,7 +145,9 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 		fti -> fti_type = FTI_ABORT;
 		fta = &fti -> fti_abort;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		fta -> fta_peer = 0;

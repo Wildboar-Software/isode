@@ -32,6 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplisten.c,v 9.0 199
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
+#include <unistd.h>
 #include "tailor.h"
 #include "tpkt.h"
 #include "mpkt.h"
@@ -182,7 +184,7 @@ static struct nsapent {
 }	nsaps[] = {
 #ifdef	TCP
 	NA_TCP, TS_TCP,
-	tcplisten, tcpaccept1, tcpaccept2, tcpunique, close_tcp_socket,
+	(IFP)tcplisten, (IFP)tcpaccept1, (IFP)tcpaccept2, (IFP)tcpunique, (IFP)close_tcp_socket,
 #endif
 
 #ifdef	X25
@@ -475,7 +477,7 @@ struct TSAPdisconnect *td;
 
 	if (!inited) {
 #if defined(BSD42) || defined(HPUX)
-		signal (SIGCHLD, chldser);
+		signal (SIGCHLD, (__sighandler_t)chldser);
 #else
 		signal (SIGCLD, SIG_IGN);
 #endif
@@ -848,11 +850,11 @@ struct TSAPdisconnect *td;
 
 /*  */
 
-#ifdef	BSD42
 #include <sys/wait.h>
 
 /* ARGSUSED */
 
+#ifdef LINUX
 static	SFD chldser (sig, code, sc)
 int	sig;
 long	code;
@@ -2297,7 +2299,7 @@ struct TSAPdisconnect *td;
 							   "queued writes not supported by TS-stack");
 		else {
 			tb -> tb_flags |= TB_QWRITES;
-			tb -> tb_queuePfnx = TNetQueue;
+			tb -> tb_queuePfnx = (IFP)TNetQueue;
 		}
 	} else if (tb -> tb_qwrites.qb_forw != &tb -> tb_qwrites)
 		result = tsaplose (td, DR_WAITING, NULLCP,

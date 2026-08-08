@@ -191,7 +191,7 @@ static struct proxyque {
 	int	    pq_age;
 
 	int	    pq_fd;
-	IFP	    pq_closefnx;
+	int	    (*pq_closefnx)(int fd);
 	PS	    pq_ps;
 
 	struct qbuf pq_community;
@@ -1155,7 +1155,7 @@ struct view *vu;
 	struct type_SNMP_PDUs *pdu = msg -> data;
 	struct type_SNMP_VarBindList *vp;
 	struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
-	IFP	    method;
+	int	    (*method)(OI oi, void *v, int offset);
 
 	idx = 0;
 	for (vp = msg -> data -> un.get__request -> variable__bindings;
@@ -2928,7 +2928,11 @@ static  envinit () {
 
 	advise (LLOG_NOTICE, NULLCP, "starting");
 #ifdef	DEBUG
+#ifdef LINUX
+	signal (SIGHUP, (__sighandler_t)hupser);
+#else
 	signal (SIGHUP, hupser);
+#endif
 #endif
 }
 
@@ -2968,7 +2972,7 @@ int	f_community (), f_logging (), f_proxy (), f_trap (), f_variable (),
 
 static struct pair {
 	char   *p_name;		/* runcom directive */
-	IFP	    p_handler;		/* dispatch */
+	int	    (*p_handler)(char **vec);		/* dispatch */
 }	pairs[] = {
 	"community",    f_community,
 	"logging",	    f_logging,

@@ -30,6 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplose.c,v 9.0 1992/
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"

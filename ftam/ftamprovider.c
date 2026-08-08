@@ -1854,7 +1854,7 @@ static int psABORTser (int sd, struct PSAPabort *pa) {
 
 /*    define vector for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : NULL)
 
 
 int

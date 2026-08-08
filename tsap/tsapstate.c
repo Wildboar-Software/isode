@@ -27,9 +27,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapstate.c,v 9.0 1992
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
 #include <signal.h>
+#include <string.h>
 #include "tpkt.h"
+#include "manifest.h"
 
 /*  */
 

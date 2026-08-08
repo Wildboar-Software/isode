@@ -50,19 +50,19 @@ extern PE grab_filepe ();
 static short num_syntax = 1;
 static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 		"ASN", 		/* ASN - default type */
-		(IFP)pe_cpy,	/* default encode */
-		NULLIFP,	/* no decoding needed */
-		NULLIFP,	/* default parse */
-		NULLIFP, 	/* default print */
-		(IFP)pe_cpy,	/* default copy */
+		pe_cpy,	/* default encode */
+		NULL,	/* no decoding needed */
+		NULL,	/* default parse */
+		NULL, 	/* default print */
+		(PFP)pe_cpy,	/* default copy */
 #ifdef STRICT_X500
-		NULLIFP,	/* Not allowed if syntax unknown (X.501 9.6.2) */
+		NULL,	/* Not allowed if syntax unknown (X.501 9.6.2) */
 #else
 		quipu_pe_cmp,	/* default compare */
 #endif
-		pe_free,	/* default free */
+		(void (*)(void *))pe_free,	/* default free */
 		NULLCP,		/* no pe_printer */
-		NULLIFP,	/* NO approx matching */
+		NULL,	/* NO approx matching */
 		TRUE,		/* one per line */
 	}
 };
@@ -70,8 +70,14 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 
 short add_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 char *	sntx;
-IFP	print,cmp,sfree,approx;
-PFP	enc,dec,parse,cpy;
+void (*print)(PS ps, void *value, int format);
+int (*cmp)(void *value1, void *value2);
+void (*sfree)(void *value);
+int (*approx)(void *filter_item, void *attr_value_seq);
+void* (*parse)(char *str);
+void* (*cpy)(void *value);
+PE (*enc)(void *value);
+void* (*dec)(PE pe);
 char *  print_pe;
 char	multiline;
 {
@@ -86,8 +92,14 @@ char	multiline;
 
 set_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
 short sntx;
-IFP	print,cmp,sfree,approx;
-PFP	enc,dec,parse,cpy;
+void (*print)(PS ps, void *value, int format);
+int (*cmp)(void *value1, void *value2);
+void (*sfree)(void *value);
+int (*approx)(void *filter_item, void *attr_value_seq);
+void* (*parse)(char *str);
+void* (*cpy)(void *value);
+PE (*enc)(void *value);
+void* (*dec)(PE pe);
 char *  print_pe;
 char	multiline;
 {
@@ -114,21 +126,21 @@ set_av_pe_print (short sntx, char *print_pe) {
 	syntax_table[sntx].s_pe_print= print_pe;
 }
 
-set_av_printer (sntx,print)
-short sntx;
-IFP print;
-{
+void set_av_printer (
+	short sntx,
+	void (*print)(PS ps, void *value, int format)
+) {
 	if (sntx >= num_syntax)
 		return;
 
 	syntax_table[sntx].s_print = print;
 }
 
-short modify_av_printer (at,sntx,print)
-AttributeType at;
-char * sntx;
-IFP print;
-{
+short modify_av_printer (
+	AttributeType at,
+	char * sntx,
+	void (*print)(PS ps, void *value, int format)
+) {
 	short nstx;
 
 	nstx  = add_attribute_syntax(sntx,
@@ -147,21 +159,17 @@ IFP print;
 	return nstx;
 }
 
-split_attr (as)
-Attr_Sequence as;
-{
+int split_attr (Attr_Sequence as) {
 	if ((as->attr_type == NULLTABLE_ATTR)
-			||(as->attr_type->oa_syntax >= AV_WRITE_FILE))
-		return (TRUE);
+			|| (as->attr_type->oa_syntax >= AV_WRITE_FILE))
+		return TRUE;
 	else
-		return (syntax_table[as->attr_type->oa_syntax].s_multiline);
+		return syntax_table[as->attr_type->oa_syntax].s_multiline;
 }
 
-IFP approxfn (x)
-short x;
-{
+int (*approxfn(short x))(void *filter_item, void *attr_value_seq) {
 	if (x >= num_syntax)
-		return NULLIFP;
+		return NULL;
 
 	return (syntax_table[x].s_approx);
 }
@@ -214,7 +222,7 @@ AttributeValue x;
 	}
 
 	if (( x->av_syntax < AV_WRITE_FILE )
-			&& (syntax_table[x->av_syntax].s_free != NULLIFP)
+			&& (syntax_table[x->av_syntax].s_free != NULL)
 			&& (x->av_struct != NULL))
 		(*syntax_table[x->av_syntax].s_free) (x->av_struct);
 }
@@ -226,7 +234,7 @@ AttributeValue  av;
 
 	if (av->av_syntax == AV_FILE)
 		ret_pe = grab_filepe (av);
-	else if (syntax_table[av->av_syntax].s_encode != NULLIFP)
+	else if (syntax_table[av->av_syntax].s_encode != NULL)
 		ret_pe = (PE)((*syntax_table[av->av_syntax].s_encode) (av->av_struct));
 
 	return (ret_pe);
@@ -253,7 +261,7 @@ AttributeValue y;
 
 	ATTRIBUTE_HEAP;
 
-	if (syntax_table[y_syntax].s_decode != NULLIFP) {
+	if (syntax_table[y_syntax].s_decode != NULL) {
 		PE oldpe = (PE)y->av_struct;
 		if ((y->av_struct = (caddr_t)((*syntax_table[y_syntax].s_decode) (oldpe))) == NULL) {
 			RESTORE_HEAP;
@@ -427,7 +435,7 @@ AttributeValue x;
 		x->av_syntax = syntax - AV_WRITE_FILE;
 	x->av_struct = NULL;
 
-	if (syntax_table[syntax].s_parse != NULLIFP) {
+	if (syntax_table[syntax].s_parse != NULL) {
 		if ((x->av_struct = (caddr_t)(*syntax_table[syntax].s_parse) (str)) == NULL)
 			return (NOTOK);
 		if (t61_flag) {
@@ -470,7 +478,7 @@ AttributeValue y;
 
 	if (x->av_syntax == AV_FILE)
 		y->av_struct = (caddr_t) fileattr_cpy ((struct file_syntax *)x->av_struct);
-	else if (syntax_table[x->av_syntax].s_copy != NULLIFP)
+	else if (syntax_table[x->av_syntax].s_copy != NULL)
 		y->av_struct = (caddr_t)(*syntax_table[x->av_syntax].s_copy) (x->av_struct);
 	else
 		y->av_struct = NULL;
@@ -493,7 +501,7 @@ AttributeValue y;
 
 	if (x->av_syntax == AV_FILE)
 		y->av_struct = (caddr_t) grab_filepe (x);
-	else if (syntax_table[x->av_syntax].s_encode != NULLIFP)
+	else if (syntax_table[x->av_syntax].s_encode != NULL)
 		y->av_struct = (caddr_t)(*syntax_table[x->av_syntax].s_encode) (x->av_struct);
 	else
 		y->av_struct = NULL;
@@ -511,7 +519,7 @@ RDN  a,b;
 		if (a->rdn_at != b->rdn_at)
 			return ((a->rdn_at > b->rdn_at) ? 1 : -1);
 
-		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULLIFP)
+		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULL)
 			return (2); /* can't compare */
 		else if (( i = (*syntax_table[a->rdn_av.av_syntax].s_compare) (a->rdn_av.av_struct,b->rdn_av.av_struct)) != 0)
 			return i;
@@ -534,7 +542,7 @@ RDN  a,b;
 		if (a->rdn_at != b->rdn_at)
 			return ((a->rdn_at > b->rdn_at) ? -1 : 1);
 
-		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULLIFP)
+		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULL)
 			return (2); /* can't compare */
 		else if (( i = (*syntax_table[a->rdn_av.av_syntax].s_compare) (a->rdn_av.av_struct,b->rdn_av.av_struct)) != 0)
 			return i;
@@ -557,34 +565,29 @@ AttributeValue x,y;
 	if (x->av_syntax == AV_FILE)
 		return (file_cmp ((struct file_syntax *)x->av_struct,(struct file_syntax *)y->av_struct));
 
-	if (syntax_table[x->av_syntax].s_compare != NULLIFP)
+	if (syntax_table[x->av_syntax].s_compare != NULL)
 		return ((*syntax_table[x->av_syntax].s_compare) (x->av_struct,y->av_struct));
 	else
 		return (2); /* can't compare */
 }
 
-IFP av_cmp_fn (syntax)
-int syntax;
+int (*av_cmp_fn(short syntax))(void *value1, void *value2)
 {
 	if ( syntax >= AV_WRITE_FILE )
-		return NULLIFP;
+		return NULL;
 
 	if (syntax == AV_FILE)
 		return (file_cmp);
 
-	if (syntax_table[syntax].s_compare != NULLIFP)
+	if (syntax_table[syntax].s_compare != NULL)
 		return (syntax_table[syntax].s_compare);
 	else
-		return NULLIFP;
+		return NULL;
 }
 
 extern int ps_printf (PS ps, char *fmt, ...);
 
-AttrV_print (ps,x,format)
-PS ps;
-AttributeValue x;
-int format;
-{
+void AttrV_print (PS ps, AttributeValue x, int format) {
 	if (format == RDNOUT)
 		format = EDBOUT;
 
@@ -592,13 +595,14 @@ int format;
 		fileattr_print (ps,x,format);
 	else if ((format == READOUT) && (syntax_table[x->av_syntax].s_pe_print != NULLCP))
 		exec_print (ps,x,syntax_table[x->av_syntax].s_pe_print);
-	else if (syntax_table[x->av_syntax].s_print != NULLIFP) {
+	else if (syntax_table[x->av_syntax].s_print != NULL) {
 		if (x->av_struct != NULL)
 			(*syntax_table[x->av_syntax].s_print) (ps,x->av_struct,format);
 	} else if (format == READOUT) {
 		vpushquipu (ps);
 		vunknown ((PE)x->av_struct);
 		vpopquipu ();
-	} else
+	} else {
 		pe_print (ps,(PE)x->av_struct,format);
+	}
 }

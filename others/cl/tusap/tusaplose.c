@@ -14,7 +14,8 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
-#include <starg.h>
+#include <stdarg.h>
+#include <string.h>
 #include "tpkt.h"
 
 /*  */

@@ -48,7 +48,7 @@ RoWaitRequest (int sd, int secs, struct RoSAPindication *roi) {
 
 	rosapXsig (acb, sd);
 
-	result =  (*acb -> acb_rowaitrequest) (acb, NULLIP, secs, roi);
+	result =  (*acb -> acb_rowaitrequest) (acb, NULL, secs, roi);
 
 	sigiomask (smask);
 

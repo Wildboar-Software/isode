@@ -58,7 +58,7 @@ RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 	acb -> acb_ready = ro2rtsready;
 	acb -> acb_rosetindications = ro2rtsasync;
 	acb -> acb_roselectmask = ro2rtsmask;
-	acb -> acb_ropktlose = NULLIFP;
+	acb -> acb_ropktlose = 0;
 
 	acb -> acb_flags |= ACB_STICKY;
 
@@ -67,13 +67,17 @@ RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : 0)
 
 
 /* ARGSUSED */
 
 int
-ro2rtsasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi) {
+ro2rtsasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RoSAPindication *roi),
+	struct RoSAPindication *roi
+) {
 	struct RtSAPindication  rtis;
 	struct RtSAPabort *rta = &rtis.rti_abort;
 
@@ -330,7 +334,7 @@ doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication
 static int
 rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	int     result;
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;

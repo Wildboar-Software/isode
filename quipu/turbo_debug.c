@@ -37,6 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_debug.c,v 9.0 1
 
 extern LLog 		*log_dsap;
 extern int		turbo_index_num;
+extern void rdn_print(PS, RDN, int);
 AttributeType	*turbo_index;
 
 PS	ps;
@@ -87,7 +88,13 @@ savl_print (Avlnode *root) {
 }
 
 static
-ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth) {
+ravl_print (
+	Avlnode *root,
+	void (*fn)(PS, RDN, int),
+	PS fps,
+	int format,
+	int depth
+) {
 	int	i;
 
 	if ( root == 0 )
@@ -106,7 +113,6 @@ ravl_print (Avlnode *root, IFP fn, PS fps, int format, int depth) {
 int
 avl_print (Avlnode *root) {
 	PS	fps;
-	int	rdn_print();
 
 	printf( "**** avl_print ****\n" );
 

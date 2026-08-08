@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "rtpkt.h"
 #include "tailor.h"
 
@@ -135,13 +136,18 @@ _rtsaplose (  /* what, fmt, args ... */
 	char  *bp;
 	char    buffer[BUFSIZ];
 	struct RtSAPabort *rta;
+    char   *what, *fmt;
+
 
 	if (rti) {
 		bzero ((char *) rti, sizeof *rti);
 		rti -> rti_type = RTI_ABORT;
 		rta = &rti -> rti_abort;
 
-		asprintf (bp = buffer, ap);
+		bp = buffer;
+		what = va_arg (ap, char *);
+		fmt  = va_arg (ap, char *);
+		_asprintf (bp, what, fmt, ap);
 		bp += strlen (bp);
 
 		rta -> rta_peer = 0;

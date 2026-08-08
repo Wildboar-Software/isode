@@ -972,10 +972,14 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	struct qbuf *qb;
 	IFP	    wfnx = (tb -> tb_flags & TB_X25) ? write_x25_socket
 				   : write_tcp_socket;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	SBV	    smask;
 
-	pstat = signal (SIGPIPE, SIG_IGN);
+	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
 	smask = sigioblock ();
 
 #ifdef	FIONBIO
@@ -1050,23 +1054,23 @@ out:
 
 int
 tp0init (struct tsapblk *tb) {
-	tb -> tb_connPfnx = TConnect;
-	tb -> tb_retryPfnx = TRetry;
+	tb -> tb_connPfnx = (IFP)TConnect;
+	tb -> tb_retryPfnx = (IFP)TRetry;
 
-	tb -> tb_startPfnx = TStart;
-	tb -> tb_acceptPfnx = TAccept;
+	tb -> tb_startPfnx = (IFP)TStart;
+	tb -> tb_acceptPfnx = (IFP)TAccept;
 
-	tb -> tb_writePfnx = TWrite;
-	tb -> tb_readPfnx = TRead;
-	tb -> tb_discPfnx = TDisconnect;
-	tb -> tb_losePfnx = TLose;
+	tb -> tb_writePfnx = (IFP)TWrite;
+	tb -> tb_readPfnx = (IFP)TRead;
+	tb -> tb_discPfnx = (IFP)TDisconnect;
+	tb -> tb_losePfnx = (IFP)TLose;
 
 #ifdef	NODELAY
-	tb -> tb_drainPfnx = TDrain;
+	tb -> tb_drainPfnx = (IFP)TDrain;
 #endif
 
 #ifdef  MGMT
-	tb -> tb_manfnx = TManGen;
+	tb -> tb_manfnx = (IFP)TManGen;
 #endif
 }
 #endif

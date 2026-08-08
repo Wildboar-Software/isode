@@ -304,13 +304,12 @@ PE	pe;
 int
 attribute_syntax (void) {
 	as_sntx = add_attribute_syntax ("AttributeSyntax",
-									(IFP) attrSntx_enc,
-									(IFP) attrSntx_dec,
-									(IFP) str2attrSntx,
+									attrSntx_enc,
+									attrSntx_dec,
+									str2attrSntx,
 									attrSntx_print,
-									(IFP) as_cpy,
+									as_cpy,
 									as_cmp,
 									as_free,
 									NULLCP, NULLIFP, TRUE);
-
 }

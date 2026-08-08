@@ -27,6 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include "rosap.h"
 #include "rtsap.h"

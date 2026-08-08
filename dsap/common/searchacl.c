@@ -815,9 +815,9 @@ int	format;
 int
 sacl_syntax (void) {
 	sacl_sntx = add_attribute_syntax ("SearchACLSyntax",
-									  (IFP) sacl_enc,	(IFP) sacl_decode,
-									  (IFP) str2sacl,	sacl_print,
-									  (IFP) sacl_cpy,	sacl_cmp,
+									  sacl_enc,	sacl_decode,
+									  str2sacl,	sacl_print,
+									  sacl_cpy,	sacl_cmp,
 									  sacl_free,	NULLCP,
 									  NULLIFP,	TRUE);
 }
@@ -825,9 +825,9 @@ sacl_syntax (void) {
 int
 lacl_syntax (void) {
 	lacl_sntx = add_attribute_syntax ("ListACLSyntax",
-									  (IFP) lacl_enc,	(IFP) lacl_decode,
-									  (IFP) str2lacl,	lacl_print,
-									  (IFP) lacl_cpy,	lacl_cmp,
+									  lacl_enc,	lacl_decode,
+									  str2lacl,	lacl_print,
+									  lacl_cpy,	lacl_cmp,
 									  lacl_free,	NULLCP,
 									  NULLIFP,	TRUE);
 }

@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 19
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "tailor.h"
 #include "quipu/dap2.h"
 
@@ -74,7 +75,7 @@ _daplose (  /* what, fmt, args ... */
 	int reason,
 	va_list ap
 ) {
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct DAPabort	* da;
 
@@ -84,7 +85,9 @@ _daplose (  /* what, fmt, args ... */
 		da = &(di->di_abort);
 		da->da_reason = reason;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		copyDAPdata (buffer, bp - buffer, da);
@@ -132,7 +135,7 @@ _dapreject (  /* what, fmt, args ... */
 	int id,
 	va_list ap
 ) {
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct DAPpreject	* dp;
 
@@ -143,7 +146,9 @@ _dapreject (  /* what, fmt, args ... */
 		dp->dp_id = id;
 		dp->dp_reason = reason;
 
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
 
 		copyDAPdata (buffer, bp - buffer, dp);

@@ -344,7 +344,11 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 		   *vptr,
 		   *outptr;
 	struct udvec  *uv;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	SBV	    smask;
 
 	if (t -> t_errno != OK)

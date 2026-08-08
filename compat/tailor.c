@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/tailor.c,v 9.0 1992/
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"

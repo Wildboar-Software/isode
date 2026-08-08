@@ -67,9 +67,9 @@ boolget (char *x) {
 int
 boolean_syntax (void) {
 	add_attribute_syntax ("boolean",
-						  (IFP) boolenc,	(IFP) booldec,
-						  (IFP) boolget,	strprint,
-						  (IFP) strdup,	lexequ,
+						  boolenc,		booldec,
+						  boolget,		strprint,
+						  strdup,		lexequ,
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
 }

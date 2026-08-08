@@ -197,9 +197,9 @@ PE pe;
 int
 pref_deliv_syntax (void) {
 	add_attribute_syntax ("DeliveryMethod",
-						  (IFP) pdmenc,	(IFP) pdmdec,
-						  (IFP) pdmparse,pdmprint,
-						  (IFP) pdmcpy,	pdmcmp,
+						  pdmenc,		pdmdec,
+						  pdmparse,		pdmprint,
+						  pdmcpy,		pdmcmp,
 						  pdmfree,	NULLCP,
 						  NULLIFP,	TRUE);
 

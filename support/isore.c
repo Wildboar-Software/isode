@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isore.c,v 9.0 1992/
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 #include "general.h"
 #include "manifest.h"
 

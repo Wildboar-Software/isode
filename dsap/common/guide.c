@@ -663,16 +663,16 @@ guidecmp (struct Guide *a, struct Guide *b) {
 int
 guide_syntax (void) {
 	add_attribute_syntax ("Guide",
-						  (IFP) guideenc,	(IFP) guidedec,
-						  (IFP) guideparse,guideprint,
-						  (IFP) guidecpy,	guidecmp,
+						  guideenc,		guidedec,
+						  guideparse,	guideprint,
+						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
 						  NULLIFP,	TRUE);
 
 	add_attribute_syntax ("NadfGuide",
-						  (IFP) nadfenc,	(IFP) nadfdec,
-						  (IFP) nadfparse,guideprint,
-						  (IFP) guidecpy,	guidecmp,
+						  nadfenc,		nadfdec,
+						  nadfparse,	guideprint,
+						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
 						  NULLIFP,	TRUE);
 

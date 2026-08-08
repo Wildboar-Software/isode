@@ -291,7 +291,7 @@ p_pr_type (
 		case IMP_OBJ:
 			p++;
 			if (p->pe_type == EXTOBJ || p->pe_type == SEXTOBJ) {
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 			} else {
@@ -319,7 +319,7 @@ p_pr_type (
 			if (p[1].pe_type != EXTMOD) {
 				return (ppepsylose (mod, p, pe, "p_pr_type: missing EXTMOD"));
 			}
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 					   (char **) 0) == NOTOK)
 				goto bad;
 			break;
@@ -561,7 +561,7 @@ p_pr_seq (
 		case IMP_OBJ:
 			p++;
 			if (p->pe_type == EXTOBJ) {
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 			} else {
@@ -597,7 +597,7 @@ p_pr_seq (
 			if (p[1].pe_type != EXTMOD) {
 				return (ppepsylose (mod, p, pe, "p_pr_seq: missing EXTMOD"));
 			}
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0,NULLIP,
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0,(int *)0,
 					   (char **)0) == NOTOK)
 				goto bad;
 			break;
@@ -606,7 +606,7 @@ p_pr_seq (
 			if (p[1].pe_type != EXTMOD) {
 				return (ppepsylose (mod, p, pe, "p_pr_seq: missing EXTMOD"));
 			}
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 					   (char **)0) == NOTOK)
 				goto bad;
 			break;
@@ -736,7 +736,7 @@ p_pr_set (
 		case IMP_OBJ:
 			p++;
 			if (p->pe_type == EXTOBJ) {
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 			} else {
@@ -768,7 +768,7 @@ p_pr_set (
 			if (p[1].pe_type != EXTMOD) {
 				return (ppepsylose (mod, p, pe, "p_pr_set: missing EXTMOD"));
 			}
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP, (char **)0) == NOTOK)
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0, (char **)0) == NOTOK)
 				return (NOTOK);
 			break;
 
@@ -776,7 +776,7 @@ p_pr_set (
 			if (p[1].pe_type != EXTMOD) {
 				return (ppepsylose (mod, p, pe, "p_pr_set: missing EXTMOD"));
 			}
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 					   (char **)0) == NOTOK)
 				goto bad;
 			break;
@@ -921,7 +921,7 @@ p_pr_seqof (
 				if (p[1].pe_type != EXTMOD) {
 					return (ppepsylose (mod, p, pe,"p_pr_seqof:missing EXTMOD"));
 				}
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **)0) == NOTOK)
 					goto bad;
 				break;
@@ -930,7 +930,7 @@ p_pr_seqof (
 				if (p[1].pe_type != EXTMOD) {
 					return (ppepsylose (mod, p, pe,"p_pr_seqof:missing EXTMOD"));
 				}
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 				break;
@@ -1071,7 +1071,7 @@ p_pr_setof (
 				if (p[1].pe_type != EXTMOD) {
 					return (ppepsylose (mod, p, pe,"p_pr_setof:missing EXTMOD"));
 				}
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 				break;
@@ -1080,7 +1080,7 @@ p_pr_setof (
 				if (p[1].pe_type != EXTMOD) {
 					return (ppepsylose (mod, p, pe,"p_pr_setof:missing EXTMOD"));
 				}
-				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+				if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 						   (char **) 0) == NOTOK)
 					goto bad;
 				break;
@@ -1321,7 +1321,7 @@ p_pr_etype (
 	case IMP_OBJ:
 		p++;
 		if (p->pe_type == EXTOBJ) {
-			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+			if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 					   (char **) 0) == NOTOK)
 				goto bad;
 		} else {
@@ -1362,7 +1362,7 @@ p_pr_etype (
 		if (p[1].pe_type != EXTMOD) {
 			return (ppepsylose (mod, p, pe, "p_pr_etype: missing EXTMOD"));
 		}
-		if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+		if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 				   (char **) 0) == NOTOK)
 			goto bad;
 		break;
@@ -1371,7 +1371,7 @@ p_pr_etype (
 		if (p[1].pe_type != EXTMOD) {
 			return (ppepsylose (mod, p, pe, "p_pr_etype: missing EXTMOD"));
 		}
-		if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, NULLIP,
+		if (prnt_f(p->pe_tag, EXT2MOD(mod, (p + 1)), pe, 0, (int *)0,
 				   (char **) 0) == NOTOK)
 			goto bad;
 		break;

@@ -61,23 +61,27 @@ RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 	acb -> acb_putosdu = ro2pswrite;
 	acb -> acb_rowaitrequest = ro2pswait;
-	acb -> acb_ready = NULLIFP;
+	acb -> acb_ready = 0;
 	acb -> acb_rosetindications = ro2psasync;
 	acb -> acb_roselectmask = ro2psmask;
-	acb -> acb_ropktlose = NULLIFP;
+	acb -> acb_ropktlose = 0;
 
 	return OK;
 }
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : NULLIFP)
+#define	e(i)	(indication ? (i) : 0)
 
 
 /* ARGSUSED */
 
 int
-ro2psasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi) {
+ro2psasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RoSAPindication *roi),
+	struct RoSAPindication *roi
+) {
 	struct PSAPindication   pis;
 	struct PSAPabort  *pa = &pis.pi_abort;
 
@@ -405,7 +409,7 @@ out:
 
 static int
 psDATAser (int sd, struct PSAPdata *px) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -414,7 +418,7 @@ psDATAser (int sd, struct PSAPdata *px) {
 		return;
 	handler = acb -> acb_rosindication;
 
-	if (doPSdata (acb, NULLIP, px, roi) != OK)
+	if (doPSdata (acb, NULL, px, roi) != OK)
 		(*handler) (sd, roi);
 }
 
@@ -422,7 +426,7 @@ psDATAser (int sd, struct PSAPdata *px) {
 
 static int
 psTOKENser (int sd, struct PSAPtoken *pt) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -439,7 +443,7 @@ psTOKENser (int sd, struct PSAPtoken *pt) {
 
 static int
 psSYNCser (int sd, struct PSAPsync *pn) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -456,7 +460,7 @@ psSYNCser (int sd, struct PSAPsync *pn) {
 
 static int
 psACTIVITYser (int sd, struct PSAPactivity *pv) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -473,7 +477,7 @@ psACTIVITYser (int sd, struct PSAPactivity *pv) {
 
 static int
 psREPORTser (int sd, struct PSAPreport *pp) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -490,7 +494,7 @@ psREPORTser (int sd, struct PSAPreport *pp) {
 
 static int
 psFINISHser (int sd, struct PSAPfinish *pf) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -508,7 +512,7 @@ psFINISHser (int sd, struct PSAPfinish *pf) {
 
 static int
 psABORTser (int sd, struct PSAPabort *pa) {
-	IFP	    handler;
+	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;

@@ -122,14 +122,22 @@ int sd;
 	if (frompipe && (waiting >= cache_time))
 		dish_quit (SIGHUP);
 
+#ifdef LINUX
+	signal (SIGALRM, (__sighandler_t)alarm_sig);
+#else
 	signal (SIGALRM, alarm_sig);
+#endif
 	alarm (connect_time);
 }
 
 int
 set_alarm (void) {
 	waiting = 0;
+#ifdef LINUX
+	signal (SIGALRM, (__sighandler_t)alarm_sig);
+#else
 	signal (SIGALRM, alarm_sig);
+#endif
 	alarm (connect_time);
 }
 
@@ -149,7 +157,11 @@ int sd;
 
 int
 bind_alarm (void) {
+#ifdef LINUX
+	signal (SIGALRM, (__sighandler_t)bind_sig);
+#else
 	signal (SIGALRM, bind_sig);
+#endif
 	alarm (connect_time);
 }
 

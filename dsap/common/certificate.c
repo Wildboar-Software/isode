@@ -483,9 +483,9 @@ int
 certificate_syntax (void) {
 	add_attribute_syntax(
 		"Certificate",
-		(IFP) cert_enc, (IFP) cert_dec,
-		(IFP) str2cert, (IFP) printcert,
-		(IFP) cert_cpy, (IFP) cert_cmp,
+		cert_enc, cert_dec,
+		str2cert, printcert,
+		cert_cpy, cert_cmp,
 		cert_free,	NULLCP,
 		NULLIFP,	TRUE);
 }

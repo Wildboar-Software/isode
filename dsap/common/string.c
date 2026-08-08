@@ -1359,84 +1359,84 @@ string_syntaxes (void) {
 	/* 1-7 Approx       */
 
 	exct = add_attribute_syntax ("caseexactstring",
-								 (IFP) strenc,	(IFP) dirstrdec,
-								 (IFP) t61parse,	strprint,
-								 (IFP) strdup,	tpstrcmp,
+								 strenc,	dirstrdec,
+								 t61parse,	strprint,
+								 strdup,	tpstrcmp,
 								 sfree,		NULLCP,
 								 soundex_match,	TRUE);
 
 	tel_sntx = add_attribute_syntax ("TelephoneNumber",
-									 (IFP) strenc,	(IFP) prtsdec,
-									 (IFP) prtparse,	strprint,
-									 (IFP) strdup,	telcmp,
+									 strenc,	prtsdec,
+									 prtparse,	strprint,
+									 strdup,	telcmp,
 									 sfree,		NULLCP,
 									 soundex_match,	TRUE);
 
 	add_attribute_syntax ("printablestring",
-						  (IFP) strenc,	(IFP) prtsdec,
-						  (IFP) prtparse,	strprint,
-						  (IFP) strdup,	pstrcmp,
+						  strenc,	prtsdec,
+						  prtparse,	strprint,
+						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	add_attribute_syntax ("ia5string",
-						  (IFP) ia5enc,	(IFP) ia5sdec,
-						  (IFP) octparse,	octprint,
-						  (IFP) strdup,	pstrcmp,
+						  ia5enc,	ia5sdec,
+						  octparse,	octprint,
+						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	/* 5-8 ignore strings */
 
 	add_attribute_syntax ("countrystring",
-						  (IFP) strenc,	(IFP) cntydec,
-						  (IFP) cntyparse,strprint,
-						  (IFP) strdup,	lexequ,
+						  strenc,	cntydec,
+						  cntyparse,strprint,
+						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	add_attribute_syntax ("DestinationString",
-						  (IFP) strenc,	(IFP) prtsdec,
-						  (IFP) prtparse,	strprint,
-						  (IFP) strdup,	lexequ,
+						  strenc,	prtsdec,
+						  prtparse,	strprint,
+						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	add_attribute_syntax ("caseignorestring",
-						  (IFP) strenc,	(IFP) dirstrdec,
-						  (IFP) t61parse,	strprint,
-						  (IFP) strdup,	tlexequ,
+						  strenc,	dirstrdec,
+						  t61parse,	strprint,
+						  strdup,	tlexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	add_attribute_syntax ("caseIgnoreIa5string",
-						  (IFP) ia5enc,	(IFP) ia5sdec,
-						  (IFP) octparse,	octprint,
-						  (IFP) strdup,	lexequ,
+						  ia5enc,	ia5sdec,
+						  octparse,	octprint,
+						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
 
 	/* 1-9 -> substrings */
 	add_attribute_syntax ("numericstring",
-						  (IFP) nstrenc,	(IFP) numsdec,
-						  (IFP) strdup,	strprint,
-						  (IFP) strdup,	pstrcmp,
+						  nstrenc,	numsdec,
+						  strdup,	strprint,
+						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
 
 
 	/* Not really strings at all (yet!) */
 	add_attribute_syntax ("octetstring",
-						  (IFP) r_octenc,	(IFP) r_octsdec,
-						  (IFP) r_octparse, r_octprint,
-						  (IFP) qb_cpy,	qb_cmp,
+						  r_octenc,	r_octsdec,
+						  r_octparse, r_octprint,
+						  qb_cpy,	qb_cmp,
 						  qb_free,		NULLCP,
 						  NULLIFP,	TRUE);
 
 	add_attribute_syntax ("password",
-						  (IFP) octenc,	(IFP) octsdec,
-						  (IFP) cryptparse,	cryptprint,
-						  (IFP) strdup,	passwdcmp,
+						  octenc,	octsdec,
+						  cryptparse,	cryptprint,
+						  strdup,	passwdcmp,
 						  sfree,		NULLCP,
 						  NULLIFP,	TRUE);
 }

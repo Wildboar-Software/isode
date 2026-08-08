@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
+#include <string.h>
 #include "psap.h"
 #include "tailor.h"
 

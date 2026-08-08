@@ -717,7 +717,7 @@ static struct printent {
 	IFP	    p_function;
 } ents[] = {
 #ifdef	TCP
-	AF_INET,	inetprint,
+	AF_INET,	(IFP)inetprint,
 #endif
 
 #ifdef	CLTS

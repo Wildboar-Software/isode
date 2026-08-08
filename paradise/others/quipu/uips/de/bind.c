@@ -39,6 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/bind.c
 *****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 #include "bind.h"
 #include "util.h"
 #include "quipu/common.h"

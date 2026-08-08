@@ -294,9 +294,9 @@ PE pe;
 int
 teletex_syntax (void) {
 	add_attribute_syntax ("TeletexTerminalIdentifier",
-						  (IFP) teletex_enc,	(IFP) teletex_dec,
-						  (IFP) str2teletex,	teletex_print,
-						  (IFP) teletex_cpy,	teletex_cmp,
+						  teletex_enc,		teletex_dec,
+						  str2teletex,		teletex_print,
+						  teletex_cpy,		teletex_cmp,
 						  teletex_free,		NULLCP,
 						  NULLIFP,		TRUE);
 }

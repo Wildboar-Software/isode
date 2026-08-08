@@ -505,20 +505,20 @@ PE	pe;
 int
 QoS_syntax (void) {
 	add_attribute_syntax ("DSAQualitySyntax",
-						  (IFP) dsaQoS_enc,
-						  (IFP) dsaQoS_dec,
-						  (IFP) str2dsaQoS,
+						  dsaQoS_enc,
+						  dsaQoS_dec,
+						  str2dsaQoS,
 						  dsaQoS_print,
-						  (IFP) dsaQoS_cpy,
+						  dsaQoS_cpy,
 						  dsaQoS_cmp,
 						  dsaQoS_free,
 						  NULLCP, NULLIFP, TRUE);
 	add_attribute_syntax ("DataQualitySyntax",
-						  (IFP) ditQoS_enc,
-						  (IFP) ditQoS_dec,
-						  (IFP) str2ditQoS,
+						  ditQoS_enc,
+						  ditQoS_dec,
+						  str2ditQoS,
 						  ditQoS_print,
-						  (IFP) ditQoS_cpy,
+						  ditQoS_cpy,
 						  ditQoS_cmp,
 						  ditQoS_free,
 						  NULLCP, NULLIFP, TRUE);

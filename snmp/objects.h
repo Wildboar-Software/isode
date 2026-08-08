@@ -25,7 +25,7 @@
  *
  */
 
-
+#include <stdint.h>
 #ifndef	PEPYPATH
 #include <isode/psap.h>
 #else
@@ -52,6 +52,8 @@ typedef struct object_syntax {
 int	readsyntax (), add_syntax ();
 OS	text2syn ();
 
+typedef struct object_instance object_instance, *OI;
+
 /*  */
 
 typedef struct object_type {
@@ -76,8 +78,9 @@ typedef struct object_type {
 #define	OT_DEPRECATED	0x03
 
 	caddr_t ot_info;			/* object information */
-	IFP	    ot_getfnx;			/* get/get-next method */
-	IFP	    ot_setfnx;			/* set method */
+	int	    (*ot_getfnx)(OI oi, void *v, int offset);			/* get/get-next method */
+	int	    (*ot_setfnx)(OI oi, void *v, int offset);			/* set method */
+
 #define	type_SNMP_PDUs_commit	(-1)
 #define	type_SNMP_PDUs_rollback	(-2)
 
@@ -102,11 +105,11 @@ OID	text2oid ();
 char   *oid2ode_aux ();
 
 
-typedef struct object_instance {
+struct object_instance {
 	OID	    oi_name;			/* instance OID */
 
 	OT	    oi_type;			/* prototype */
-}		object_instance, *OI;
+};
 #define	NULLOI	((OI) 0)
 
 OI	name2inst (), next2inst (), text2inst ();
@@ -116,7 +119,8 @@ OI	name2inst (), next2inst (), text2inst ();
 extern	IFP	o_advise;
 
 
-int	o_generic (), s_generic ();
+int	o_generic (OI oi, void *v, int offset);
+int s_generic (OI oi, void *v, int offset);
 
 int	o_number ();
 int	o_longword ();

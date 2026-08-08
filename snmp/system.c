@@ -94,17 +94,17 @@ int	offset;
 static struct sys_pair {
 	char   *s_name;
 	char   *s_text;
-	IFP	    s_getfnx;
-	IFP	    s_setfnx;
+	int	    (*s_getfnx)(OI oi, void *v, int offset);
+	int	    (*s_setfnx)(OI oi, void *v, int offset);
 }    pairs[] = {
-	"sysDescr",    sysDescr,	o_generic,	NULLIFP,
-	"sysObjectID", sysObjectID, o_generic,	NULLIFP,
-	"sysUpTime",   NULL,	o_sysUpTime,	NULLIFP,
+	"sysDescr",    sysDescr,	o_generic,	NULL,
+	"sysObjectID", sysObjectID, o_generic,	NULL,
+	"sysUpTime",   NULL,	o_sysUpTime,	NULL,
 	"sysContact",  NULL,	o_generic,	s_generic,
 #define	SYS_NAME	4
 	"sysName",     NULL,	o_generic,	s_generic,
 	"sysLocation", NULL,	o_generic,	s_generic,
-	"sysServices", "72",	o_generic,	NULLIFP,
+	"sysServices", "72",	o_generic,	NULL,
 
 	NULL
 };

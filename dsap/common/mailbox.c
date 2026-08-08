@@ -140,9 +140,9 @@ PE pe;
 int
 mailbox_syntax (void) {
 	add_attribute_syntax ("Mailbox",
-						  (IFP) mail_enc,		(IFP) mail_dec,
-						  (IFP) str2mailbox,	mailbox_print,
-						  (IFP) mailbox_cpy,	mailbox_cmp,
+						  mail_enc,		mail_dec,
+						  str2mailbox,	mailbox_print,
+						  mailbox_cpy,	mailbox_cmp,
 						  mailbox_free,		NULLCP,
 						  NULLIFP,		TRUE);
 }

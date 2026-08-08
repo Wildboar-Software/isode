@@ -241,19 +241,19 @@ typedef unsigned long	u_long;
 
 #undef	IP
 typedef ssize_t	*IP;
-#define	NULLIP		((IP) 0)
+#define	NULLIP		((IP) NULL)
 
 
 typedef	ssize_t	(*IFP) ();
-#define	NULLIFP		((IFP) 0)
+#define	NULLIFP		((IFP) NULL)
 
 
 typedef void   (*VFP) ();
-#define	NULLVFP		((VFP) 0)
+#define	NULLVFP		((VFP) NULL)
 
 
 typedef	void * (*PFP) ();
-#define	NULLPFP		((PFP) 0)
+#define	NULLPFP		((PFP) NULL)
 
 
 #ifndef	SFD

@@ -236,9 +236,9 @@ prot_free (struct protected_password *parm) {
 int
 protected_password_syntax (void) {
 	add_attribute_syntax ("ProtectedPassword",
-						  (IFP) prot_enc,	(IFP) prot_dec,
-						  (IFP) str2prot,	prot_print,
-						  (IFP) prot_cpy,	prot_cmp,
+						  prot_enc,	prot_dec,
+						  str2prot,	prot_print,
+						  prot_cpy,	prot_cmp,
 						  prot_free,	NULLCP,
 						  NULLIFP,	FALSE);
 }

@@ -258,7 +258,7 @@ static struct udptab *_read_udp_sockets(int *len)
 				&t -> ut_pcb.inp_faddr.s_addr, &t -> ut_pcb.inp_fport,
 				&t -> ut_socb.so_snd.sb_cc, &t -> ut_socb.so_rcv.sb_cc);
 
-		cp = t -> ut_instance;
+		cp = (unsigned char *) t -> ut_instance;
 		cp += ipaddr2oid (cp, &t -> ut_pcb.inp_laddr);
 		*cp++ = ntohs (t -> ut_pcb.inp_lport);
 

@@ -412,7 +412,7 @@ static struct tcptab *_read_tcp_connections(int *len)
 				&t -> tt_tcpb.t_state,
 				&t -> tt_socb.so_snd.sb_cc, &t -> tt_socb.so_rcv.sb_cc);
 
-		cp = t -> tt_instance;
+		cp = (unsigned char *) t -> tt_instance;
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_laddr);
 		*cp++ = ntohs (t -> tt_pcb.inp_lport);
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_faddr);

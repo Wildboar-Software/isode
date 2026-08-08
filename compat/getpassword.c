@@ -62,7 +62,11 @@ getpassword (char *prompt) {
 #if defined(LINUX)
 	struct termios oldtty, newtty;
 #endif
+#ifdef LINUX
+	__sighandler_t istat;
+#else
 	SFP	    istat;
+#endif
 	FILE    *fp;
 	static char buffer[BUFSIZ];
 

@@ -212,10 +212,10 @@ struct psapblk {
 	IFP	    pb_AbortIndication;		/*   .. */
 
 #ifdef	LPP
-	IFP	    pb_retryfnx;
-	IFP     pb_closefnx;
-	IFP	    pb_selectfnx;
-	IFP	    pb_checkfnx;
+	int	    (*pb_retryfnx)(struct psapblk *pb, int reason, struct PSAPindication *pi);
+	int     (*pb_closefnx)(int fd);
+	int	    (*pb_selectfnx)(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
+	int	    (*pb_checkfnx)(struct psapblk *pb, struct PSAPindication *pi);
 #endif
 };
 #define	NULLPB		((struct psapblk *) 0)

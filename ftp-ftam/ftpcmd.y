@@ -616,7 +616,11 @@ yylex()
 		switch (state) {
 
 		case CMD:
+#ifdef LINUX
+			(void)signal(SIGALRM, (__sighandler_t)toolong);
+#else
 			(void)signal(SIGALRM, toolong);
+#endif
 			(void)alarm((unsigned)timeout);
 			if (_getline(cbuf, sizeof(cbuf)-1, stdin) == NULL) {
 				dologout(0);

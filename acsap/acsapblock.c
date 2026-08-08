@@ -75,7 +75,6 @@ freeacblk (struct assocblk *acb) {
 		if (acb -> acb_flags & ACB_ACS) {
 			if (acb -> acb_flags & ACB_RTS) {/* recurse */
 				struct AcSAPindication  acis;
-
 				(*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &acis);
 				return;
 			} else {
@@ -86,7 +85,7 @@ freeacblk (struct assocblk *acb) {
 		} else {
 			struct SSAPindication   sis;
 
-			(*acb -> acb_uabort) (acb -> acb_fd, NULLCP, 0, &sis);
+			(*acb -> acb_uabort) (acb -> acb_fd, NULLPEP, 0, &sis);
 		}
 
 	if (acb -> acb_flags & ACB_FINISH)

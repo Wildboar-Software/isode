@@ -58,13 +58,13 @@ static struct sockaddr_in *peers = NULL;
 
 /*  */
 
-int	tcpopen (pb, calling, called, pi, async)
-struct psapblk *pb;
-struct NSAPaddr *calling,
-		   *called;
-struct PSAPindication *pi;
-int	async;
-{
+int	tcpopen (
+	struct psapblk *pb,
+	struct NSAPaddr *calling,
+	struct NSAPaddr *called,
+	struct PSAPindication *pi,
+	int async
+) {
 	int     fd;
 #ifdef	FIONBIO
 	int	    onoff;

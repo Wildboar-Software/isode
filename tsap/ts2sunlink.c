@@ -307,7 +307,11 @@ static int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 
 	if ((tp = newtp4pkt (TP_CONNECT_RESP)) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
@@ -375,7 +379,11 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	struct iovec iovs[MSG_MAXIOVLEN];
 	struct iovec *vv,
 			   *wv;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 
 	if ((tp = newtp4pkt (expedited ? TP_X_DATA_REQ : TP_DATA_REQ)) == NULL) {
 		tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
@@ -571,7 +579,11 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	struct tp4pkt *tp;
 	struct iovec vvs;
 	struct iovec *vv = &vvs;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	SBV	    smask;
 
 	if ((tp = newtp4pkt (TP_DATA_REQ)) == NULL)
@@ -756,7 +768,11 @@ static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 
 	if (tp = newtp4pkt (TP_DISCONNECT_REQ)) {
 		tp -> tp4_reason = (TP_DR_REASON) DR_NORMAL;

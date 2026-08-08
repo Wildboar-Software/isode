@@ -110,9 +110,9 @@ PE pe;
 int
 schema_syntax (void) {
 	add_attribute_syntax ("schema",
-						  (IFP) ts_enc,		(IFP) ts_dec,
-						  (IFP) str2schema,	tree_struct_print,
-						  (IFP) tree_struct_cpy,	tree_struct_cmp,
+						  ts_enc,		ts_dec,
+						  str2schema,	tree_struct_print,
+						  tree_struct_cpy,	tree_struct_cmp,
 						  tree_struct_free,	NULLCP,
 						  NULLIFP,		FALSE );
 }

@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"

@@ -110,13 +110,13 @@ static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 
 struct var {
 	char   *v_name;
-	IP	    v_value;
+	int	   *v_value;
 
 	char   *v_dname;
 	char  **v_dvalue;
 	char   *v_mask;
 
-	IFP	    v_hook;
+	int (*v_hook)(struct var *v);
 };
 
 static struct var * getvar (char *name);
@@ -305,80 +305,80 @@ char	*var_prompt = DEFAULT_PROMPT_STR;
 
 static struct var vars[] = {
 	"acsaplevel", &_acsap_log.ll_events, "ACSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"acsapfile", NULLIP, "ACSAP trace file", &_acsap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"acsapfile", NULL, "ACSAP trace file", &_acsap_log.ll_file, NULLCP,
+	NULL,
 
 	"addrlevel", &_addr_log.ll_events, "address logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"addrfile", NULLIP, "address trace file", &_addr_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"addrfile", NULL, "address trace file", &_addr_log.ll_file, NULLCP,
+	NULL,
 
 	"bell", &bell, "ring the bell when a command finishes", bool, NULLCP,
-	NULLIFP,
+	NULL,
 
 	"compatlevel", &_compat_log.ll_events, "COMPAT logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"compatfile", NULLIP, "COMPAT trace file", &_compat_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"compatfile", NULL, "COMPAT trace file", &_compat_log.ll_file, NULLCP,
+	NULL,
 
 	"concurrency", &concurrency,	/* Olivier Dubois */
-	"request concurrency control for transfers", bool, NULLCP, NULLIFP,
+	"request concurrency control for transfers", bool, NULLCP, NULL,
 
-	"debug", &debug, "debug FTAM", bool, NULLCP, NULLIFP,
+	"debug", &debug, "debug FTAM", bool, NULLCP, NULL,
 
 	"glob", &globbing, "expand metacharacters like the shell", bool, NULLCP,
-	NULLIFP,
+	NULL,
 
-	"hash", &hash, "hash mark printing", hmodes, NULLCP, NULLIFP,
+	"hash", &hash, "hash mark printing", hmodes, NULLCP, NULL,
 
-	"override", &omode, "creation override mode", omodes, NULLCP, NULLIFP,
+	"override", &omode, "creation override mode", omodes, NULLCP, NULL,
 
-	"prompt", NULLIP, "command prompt string", &var_prompt, NULLCP,
+	"prompt", NULL, "command prompt string", &var_prompt, NULLCP,
 	set_prompt,
 
 	"psaplevel", &_psap_log.ll_events, "PSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"psapfile", NULLIP, "PSAP trace file", &_psap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"psapfile", NULL, "PSAP trace file", &_psap_log.ll_file, NULLCP,
+	NULL,
 
 	"psap2level", &_psap2_log.ll_events, "PSAP2 logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"psap2file", NULLIP, "PSAP2 trace file", &_psap2_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"psap2file", NULL, "PSAP2 trace file", &_psap2_log.ll_file, NULLCP,
+	NULL,
 
-	"qualifier", NULLIP, "service qualifier", &storename, NULLCP, NULLIFP,
+	"qualifier", NULL, "service qualifier", &storename, NULLCP, NULL,
 
-	"query", &query, "confirm operations on globbing", bool, NULLCP, NULLIFP,
+	"query", &query, "confirm operations on globbing", bool, NULLCP, NULL,
 
 	"realstore", &realstore, "type of remote realstore", realstores, NULLCP,
 	set_realstore,
 
 	"ssaplevel", &_ssap_log.ll_events, "SSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"ssapfile", NULLIP, "SSAP trace file", &_ssap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"ssapfile", NULL, "SSAP trace file", &_ssap_log.ll_file, NULLCP,
+	NULL,
 
 	"sversion", &myqos.qos_sversion, "session version number", sversions,
-	NULLCP, NULLIFP,
+	NULLCP, NULL,
 
 	"trace", &trace, "trace FPDUs", bool, NULLCP, set_trace,
-	"tracefile", NULLIP, "FTAM trace file", &_ftam_log.ll_file, NULLCP,
-	NULLIFP,
+	"tracefile", NULL, "FTAM trace file", &_ftam_log.ll_file, NULLCP,
+	NULL,
 
 	"tsaplevel", &_tsap_log.ll_events, "TSAP logging", xsaplevels,
-	LLOG_MASK, NULLIFP,
-	"tsapfile", NULLIP, "TSAP trace file", &_tsap_log.ll_file, NULLCP,
-	NULLIFP,
+	LLOG_MASK, NULL,
+	"tsapfile", NULL, "TSAP trace file", &_tsap_log.ll_file, NULLCP,
+	NULL,
 
 	"type", &tmode, "file transfer mode", tmodes, NULLCP, set_type,
 
-	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULLIFP,
+	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULL,
 
-	"userdn", NULLIP, "DN to use when binding for AE-lookup", &userdn, NULLCP,
-	NULLIFP,
+	"userdn", NULL, "DN to use when binding for AE-lookup", &userdn, NULLCP,
+	NULL,
 
-	"watch", &watch, "watch transfers", bool, NULLCP, NULLIFP,
+	"watch", &watch, "watch transfers", bool, NULLCP, NULL,
 
 	NULL
 };
@@ -465,7 +465,7 @@ static int f_set (char **vec) {
 		return OK;
 	}
 
-	if (v -> v_value == NULLIP) {
+	if (v -> v_value == NULL) {
 		int    w;
 
 		if (*v -> v_dvalue)
@@ -650,7 +650,7 @@ static int set_trace (struct var *v) {
 	if (ftamfd == NOTOK)
 		return;
 
-	if (FHookRequest (ftamfd, trace ? FTraceHook : NULLIFP, fti) == NOTOK)
+	if (FHookRequest (ftamfd, trace ? FTraceHook : NULL, fti) == NOTOK)
 		ftam_advise (&fti -> fti_abort, "F-HOOK.REQUEST");
 }
 
@@ -847,9 +847,9 @@ int	fadusize;
 
 struct vfsmap vfs[] = {
 	/* VFS_DEF */
-	"default", NULLOID, NULLCP, VF_NULL, 0, 0, NULLIFP, ' ', VFS_XXX,
+	"default", NULLOID, NULLCP, VF_NULL, 0, 0, NULL, ' ', VFS_XXX,
 	0,
-	0, NULLIFP,
+	0, NULL,
 	-1,
 	NULLCP,
 
@@ -874,7 +874,7 @@ struct vfsmap vfs[] = {
 	"NBS-9",  NULLOID, NULLCP, VF_NULL, 0, S_IFDIR, fdfpeek, 'd', VFS_XXX,
 #endif /* COMPAT_OLD_NBS9OID */
 	FA_ACC_UA,
-	0, NULLIFP,
+	0, NULL,
 	_ZNBS_9_ParametersDOCS,
 	"file directory file",
 

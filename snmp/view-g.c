@@ -784,9 +784,7 @@ stuff_it:
 
 /*  */
 
-int	f_community (vec)
-char  **vec;
-{
+int	f_community (char **vec) {
 	struct community *c;
 	struct NSAPaddr *na;
 

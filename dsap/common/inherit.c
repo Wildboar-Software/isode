@@ -336,9 +336,9 @@ inherit_syntax (void) {
 	extern short inherit_sntx;
 
 	inherit_sntx = add_attribute_syntax ("InheritedAttribute",
-										 (IFP) inherit_enc,	(IFP) inherit_dec,
-										 (IFP) str2inherit,	inherit_print,
-										 (IFP) inherit_cpy,	inherit_cmp,
+										 inherit_enc,	inherit_dec,
+										 str2inherit,	inherit_print,
+										 inherit_cpy,	inherit_cmp,
 										 inherit_free,		NULLCP,
 										 NULLIFP,		TRUE);
 }

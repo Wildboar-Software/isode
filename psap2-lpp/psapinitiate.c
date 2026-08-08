@@ -306,7 +306,13 @@ static struct nsapent {
 	int     ns_reliability;
 	int	    ns_tset;
 
-	IFP	    ns_open;
+	int	    (*ns_open)(
+		struct psapblk *pb,
+		struct NSAPaddr *calling,
+		struct NSAPaddr *called,
+		struct PSAPindication *pi,
+		int async
+	);
 }	nsaps[] = {
 	HIGH_QUALITY, NA_TSET_TCP,  tcpopen,
 	LOW_QUALITY,  NA_TSET_UDP,  udpopen,

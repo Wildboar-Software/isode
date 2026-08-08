@@ -32,7 +32,7 @@ OID	ode2oid (char* descriptor) {
 #else
 /* LINTLIBRARY */
 
-#include <stdio.h>
+#include <string.h>
 #include "psap.h"
 #include "ppkt.h"
 

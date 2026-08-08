@@ -320,7 +320,7 @@ struct RoSAPindication *roi;
 	while (read (ud, (char *) ut, sizeof *ut) == sizeof *ut) {
 		if (ut -> ut_name[0] == NULL)
 			continue;
-		if ((dp = ctime (&ut -> ut_time)) == NULL)
+		if ((dp = ctime ((const time_t *)&ut -> ut_time)) == NULL)
 			goto congested;
 		sprintf (buffer, "%-*.*s %-*.*s %.12s",
 				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line, dp + 4);

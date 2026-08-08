@@ -639,7 +639,7 @@ int	rw;
 	char   *bp;
 	char   buffer[BUFSIZ];
 
-	vfp = (FILE *) lp, vfnx = ll_printf;
+	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
 
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
@@ -692,7 +692,7 @@ _vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 
-	vfp = (FILE *) lp, vfnx = ll_printf;
+	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
 
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",

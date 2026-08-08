@@ -103,7 +103,7 @@ struct vfsmap vfs[] = {
 	"NBS-9",  NULLOID, NULLCP, VF_NULL, 0, S_IFDIR, fdfpeek, 'd', VFS_XXX,
 #endif /* COMPAT_OLD_NBS9OID */
 	FA_ACC_UA,
-	1, NULLIFP,
+	1, NULL,
 	_ZNBS_9_ParametersDOCS,
 	"file directory file",
 

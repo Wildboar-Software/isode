@@ -133,12 +133,9 @@ int	ftamfd;
 
 /*  */
 
-int	binarycheck (param, data)
-caddr_t param;
-char   *data;
+int	binarycheck (void *param, char *data)
 {
-	struct type_DOCS_FTAM__3__Parameters *p3 =
-		(struct type_DOCS_FTAM__3__Parameters *) param;
+	struct type_DOCS_FTAM__3__Parameters *p3 = param;
 
 	if (p3 -> optionals
 			& opt_DOCS_FTAM__3__Parameters_maximum__string__length) {

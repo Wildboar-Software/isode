@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaplose.c,v 9.0 1
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "tailor.h"
 #include "quipu/dsap.h"
 
@@ -69,7 +70,7 @@ dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 
 #ifndef	lint
 static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* what, fmt, args ... */
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct DSAPabort	* da;
 
@@ -78,10 +79,10 @@ static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* 
 		di->di_type = DI_ABORT;
 		da = &(di->di_abort);
 		da->da_reason = reason;
-
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		copyDSAPdata (buffer, bp - buffer, da);
 	}
 
@@ -127,7 +128,7 @@ _dsapreject (  /* what, fmt, args ... */
 	int id,
 	va_list ap
 ) {
-	char  *bp;
+	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct DSAPpreject	* dp;
 
@@ -137,10 +138,10 @@ _dsapreject (  /* what, fmt, args ... */
 		dp = &(di->di_preject);
 		dp->dp_id = id;
 		dp->dp_reason = reason;
-
-		asprintf (bp = buffer, ap);
+		what = va_arg (ap, char *);
+		fmt = va_arg (ap, char *);
+		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		copyDSAPdata (buffer, bp - buffer, dp);
 	}
 

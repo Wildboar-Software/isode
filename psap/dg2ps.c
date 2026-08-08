@@ -27,9 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/dg2ps.c,v 9.0 1992/06/
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
 #include "psap.h"
-
 
 struct ps_dg {
 	int	    ps_fd;

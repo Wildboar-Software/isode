@@ -59,7 +59,7 @@ f_open (char **vec) {
 		return NOTOK;
 #else
 		if (getftamline ("host: ", buffer) == NOTOK
-				|| str2vecX (buffer, vec, 0, NULLIP, 0, 0) < 1)
+				|| str2vecX (buffer, vec, 0, NULL, 0, 0) < 1)
 			return OK;
 #endif
 	}
@@ -181,7 +181,7 @@ f_open (char **vec) {
 							units, attrs, NULLPE, fqos, fc,
 							*user ? user : NULLCP, account,
 							passwd[0] ? passwd : NULLCP, strlen (passwd),
-							&myqos, trace ? FTraceHook : NULLIFP, ftc, fti)
+							&myqos, trace ? FTraceHook : NULL, ftc, fti)
 			== NOTOK) {
 #ifndef	BRIDGE
 		if (verbose)

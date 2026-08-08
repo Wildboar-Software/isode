@@ -73,7 +73,11 @@ int format;
 	union wait status;
 #endif
 
-	SFP	pstat;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
+	SFP	    pstat;
+#endif
 
 
 	if (format != READOUT) {
@@ -90,7 +94,7 @@ int format;
 		return;
 	}
 
-	pstat = signal (SIGPIPE, SIG_IGN);
+	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
 
 	switch (childpid = fork()) {
 
@@ -162,9 +166,9 @@ audio_parse (char *str) {
 int
 audio_syntax (void) {
 	add_attribute_syntax ("audio",
-						  (IFP)r_octenc,		(IFP) r_octsdec,
-						  (IFP)audio_parse,	audio_print,
-						  (IFP)qb_cpy,		qb_cmp,
+						  r_octenc,		r_octsdec,
+						  audio_parse,	audio_print,
+						  qb_cpy,		qb_cmp,
 						  qb_free,		NULLCP,
 						  NULLIFP,		TRUE);
 

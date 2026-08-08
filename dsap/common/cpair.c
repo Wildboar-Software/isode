@@ -173,9 +173,9 @@ int
 certificate_pair_syntax (void) {
 	add_attribute_syntax(
 		"CertificatePair",
-		(IFP) cpair_enc,	(IFP) cpair_dec,
-		(IFP) str2cpair,	printcpair,
-		(IFP) cpair_cpy,	cpair_cmp,
+		cpair_enc,	cpair_dec,
+		str2cpair,	printcpair,
+		cpair_cpy,	cpair_cmp,
 		cpair_free,	NULLCP,
 		NULLIFP,	TRUE);
 }

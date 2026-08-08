@@ -70,7 +70,11 @@ struct RoSAPindication *roi;
 	int     firstime,
 			opclass,
 			result;
+#ifdef LINUX
+	__sighandler_t istat;
+#else
 	SFP	    istat;
+#endif
 
 #ifdef	notdef			/* let RyOpInvoke check these as necessary */
 	missingP (ryo);
@@ -82,7 +86,7 @@ struct RoSAPindication *roi;
 
 	if ((opclass = class) == ROS_INTR) {
 		interrupted = 0;
-		istat = signal (SIGINT, intrser);
+		istat = signal (SIGINT, (__sighandler_t)intrser);
 
 		opclass = ROS_ASYNC;
 	}
@@ -161,7 +165,7 @@ again:
 	}
 
 	if (class == ROS_INTR)
-		signal (SIGINT, istat);
+		signal (SIGINT, (__sighandler_t)istat);
 
 	return result;
 }

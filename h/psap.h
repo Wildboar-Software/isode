@@ -226,7 +226,7 @@ extern	PE	pe_active;
 #endif
 
 PE	pe_alloc (PElementClass, PElementForm, PElementID);
-int	pe_free ();
+void pe_free (PE pe);
 int	pe_cmp ();
 PE	pe_cpy ();
 int	pe_pullup ();
@@ -404,7 +404,9 @@ char   *pe_error ();
 #endif
 #endif
 
-typedef struct {
+typedef struct PStream PStream, *PS;
+
+struct PStream {
 	int	    ps_errno;		/* Error codes */
 #define	PS_ERR_NONE	 0	/*   No error */
 #define	PS_ERR_OVERID	 1	/*   Overflow in ID */
@@ -457,12 +459,12 @@ typedef struct {
 
 	int	    ps_byteno;		/* byte position */
 
-	IFP	    ps_primeP;
-	IFP	    ps_readP;
-	IFP	    ps_writeP;
-	IFP	    ps_flushP;
-	IFP	    ps_closeP;
-}			PStream, *PS;
+	int(*ps_primeP)(PS ps, int waiting);
+	int(*ps_readP)(PS ps, PElementData data, PElementLen n, int in_line);
+	int(*ps_writeP)(PS ps, PElementData data, PElementLen n, int in_line);
+	int(*ps_flushP)(PS ps);
+	int(*ps_closeP)(PS ps);
+};
 #define	NULLPS	((PS) 0)
 
 #define	ps_seterr(ps, e, v)	((ps) -> ps_errno = (e), (v))

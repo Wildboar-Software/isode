@@ -75,7 +75,11 @@ int
 f_fls (char **vec) {
 	int	    doingpipe,
 			result;
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	    pstat;
+#endif
 	char   *cp,
 		   *pp,
 		   buffer[BUFSIZ];

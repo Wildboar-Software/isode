@@ -27,6 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tcp.c,v 9.0 1992/06
 
 /* LINTLIBRARY */
 
+#include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -370,13 +372,13 @@ TTService (struct tsapblk *tb) {
 	tb -> tb_tsdusize = MAX1006
 						- (tb -> tb_tpduslop = sizeof t -> t_pkthdr + DT_MAGIC);
 
-	tb -> tb_retryfnx = tcpretry;
+	tb -> tb_retryfnx = (IFP)tcpretry;
 
-	tb -> tb_initfnx = tcpinit;
-	tb -> tb_readfnx = read_tcp_socket;
-	tb -> tb_writefnx = tp0write;
-	tb -> tb_closefnx = close_tcp_socket;
-	tb -> tb_selectfnx = select_tcp_socket;
+	tb -> tb_initfnx = (IFP)tcpinit;
+	tb -> tb_readfnx = (IFP)read_tcp_socket;
+	tb -> tb_writefnx = (IFP)tp0write;
+	tb -> tb_closefnx = (IFP)close_tcp_socket;
+	tb -> tb_selectfnx = (IFP)select_tcp_socket;
 
 	tp0init (tb);
 }

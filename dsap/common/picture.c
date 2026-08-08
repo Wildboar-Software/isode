@@ -54,7 +54,11 @@ show_picture (char *picture, char *picture_process, int len) {
 	static char * buffer = NULLCP;
 	char    * cp;
 	char	* argv[NVEC];
+#ifdef LINUX
+	__sighandler_t pstat;
+#else
 	SFP	pstat;
+#endif
 	ChildList *cl;
 
 	if (buffer == NULLCP)
@@ -232,18 +236,16 @@ extern int quipu_pe_cmp();
 int
 photo_syntax (void) {
 	add_attribute_syntax ("photo",
-						  (IFP)pe_cpy,	NULLIFP,
+						  pe_cpy,	NULLIFP,
 						  NULLIFP,	picture_print,
-						  (IFP)pe_cpy,	quipu_pe_cmp,
+						  pe_cpy,	quipu_pe_cmp,
 						  pe_free,	NULLCP,
 						  NULLIFP,	TRUE );
-
 
 	add_attribute_syntax ("jpeg",
-						  (IFP)pe_cpy,	NULLIFP,
+						  pe_cpy,	NULLIFP,
 						  NULLIFP,	picture_print,
-						  (IFP)pe_cpy,	quipu_pe_cmp,
+						  pe_cpy,	quipu_pe_cmp,
 						  pe_free,	NULLCP,
 						  NULLIFP,	TRUE );
-
 }

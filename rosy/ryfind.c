@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
+#include <string.h>
 #include "rosy.h"
 
 /*  */
