@@ -268,7 +268,7 @@ typedef	void * (*PFP) ();
 
 
 struct udvec {			/* looks like a BSD iovec... */
-    caddr_t uv_base;
+    char *uv_base;
     int	    uv_len;
 
     int	    uv_inline;

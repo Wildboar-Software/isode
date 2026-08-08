@@ -31,26 +31,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy_undo.c,v 9.0 1992
 extern struct tuple tuples[];
 extern int	rflag, hflag;
 
-char   *gensym (), *modsym ();
+char   *gensym (void), *modsym (char *module, char *id, int direct);
 
-YP	lookup_type (), lookup_binding ();
-YT	lookup_tag ();
+YP	lookup_type (char *mod, char *id), lookup_binding ();
+YT	lookup_tag (YP yp);
 char	*add_point ();
 
-static	undo_type_element ();
-static	undo_type_member ();
-static int  undo_type_choice ();
-static undo_components_seq ();
-static	undo_components_set ();
+static void undo_type_element (YP yp, int level, int first, int last, char *id, char *arg, char *narg, int Vflag);
+static void undo_type_member (YP yp, int level, char *arg, char *narg, int Vflag);
+static int  undo_type_choice (YP yp, int level, char *narg, int Vflag);
+static int undo_components_seq (YP yp, int level, int first, int last, char *id, char *arg, char *narg, int Vflag);
+static void undo_components_set (YP yp, int level, char *arg, char *narg, int Vflag);
 
-/*  */
-
-undo_type (yp, level, id, arg, Vflag)
-YP	yp;
-int	level;
-char  *id,
-	  *arg;
-int	Vflag;
+void undo_type (YP yp, int level, char *id, char *arg, int Vflag)
 {
 	int    i,
 		   j;
@@ -787,17 +780,7 @@ int	Vflag;
 	}
 }
 
-/*  */
-
-static	undo_type_element (yp, level, first, last, id, arg, narg, Vflag)
-YP	yp;
-int	level;
-int	first,
-	last;
-char  *id,
-	  *arg,
-	  *narg;
-int	Vflag;
+static void undo_type_element (YP yp, int level, int first, int last, char *id, char *arg, char *narg, int Vflag)
 {
 	char  *narg2;
 	YT yt;
@@ -909,14 +892,7 @@ int	Vflag;
 	printf ("%*s}\n\n", level * 4, "");
 }
 
-/*  */
-
-static	undo_type_member (yp, level, arg, narg, Vflag)
-YP	yp;
-int	level;
-char   *arg,
-	   *narg;
-int	Vflag;
+static void undo_type_member (YP yp, int level, char *arg, char *narg, int Vflag)
 {
 	int	    pullup = 0;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
@@ -1013,11 +989,7 @@ int	Vflag;
 }
 /*  */
 
-static int  undo_type_choice (yp, level, narg, Vflag)
-YP	yp;
-int	level;
-char  *narg;
-int	Vflag;
+static int  undo_type_choice (YP yp, int level, char *narg, int Vflag)
 {
 	int	    pullup = 0;
 	int	    result;
@@ -1096,13 +1068,7 @@ int	Vflag;
 	return result;
 }
 
-static undo_components_seq (yp, level, first, last, id, arg, narg, Vflag)
-YP	yp;
-int level, first, last;
-char	*id,
-		*arg,
-		*narg;
-int	Vflag;
+static int undo_components_seq (YP yp, int level, int first, int last, char *id, char *arg, char *narg, int Vflag)
 {
 	YP	newyp;
 	YP	y;
@@ -1135,12 +1101,7 @@ int	Vflag;
 	return i;
 }
 
-static	undo_components_set (yp, level, arg, narg, Vflag)
-YP	yp;
-int	level;
-char   *arg,
-	   *narg;
-int	Vflag;
+static void undo_components_set (YP yp, int level, char *arg, char *narg, int Vflag)
 {
 	YP	newyp, y;
 

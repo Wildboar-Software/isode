@@ -24,6 +24,9 @@
 #ifndef	_PSAP_
 #define	_PSAP_
 
+#ifdef LINUX
+#include <sys/types.h>
+#endif
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -423,7 +426,7 @@ struct PStream {
 #define	PS_ERR_XXX	12	/*   XXX */
 
 	union {
-		caddr_t un_ps_addr;
+		char *un_ps_addr;
 		struct {
 			char   *st_ps_base;
 			int	    st_ps_cnt;
@@ -451,7 +454,7 @@ struct PStream {
 #define	ps_slop	ps_un.un_ps_uv.uv_ps_slop
 #define	ps_cc	ps_un.un_ps_uv.uv_ps_cc
 
-	caddr_t ps_extra;		/* for George's recursive PStreams */
+	char *ps_extra;		/* for George's recursive PStreams */
 
 	int	    ps_inline;		/* for "ultra-efficient" PStreams */
 
@@ -482,7 +485,7 @@ int	ps_io ();
 int	ps_flush ();
 
 int	std_open ();
-#define	std_setup(ps, fp)	((ps) -> ps_addr = (caddr_t) (fp), OK)
+#define	std_setup(ps, fp)	((ps) -> ps_addr = (char *) (fp), OK)
 
 int	str_open ();
 int	str_setup ();
@@ -494,7 +497,7 @@ int	fdx_open ();
 int	fdx_setup ();
 
 int	qbuf_open ();
-#define	qbuf_setup(ps, qb)	((ps) -> ps_addr = (caddr_t) (qb), OK)
+#define	qbuf_setup(ps, qb)	((ps) -> ps_addr = (char *) (qb), OK)
 
 #define	ts_open	dg_open
 #define	ts_setup(p,f,s)		dg_setup ((p), (f), (s), ts_read, ts_write)
@@ -584,18 +587,20 @@ int	PY_pp ();
 
 int	testdebug ();
 
-int	vpush (), vpop ();
-int	vname (), vtag ();
-int	vstring (), vunknown ();
-int	vprint (char*, ...);
-
-char   *bit2str ();
-
-int	vpushfp (), vpopfp ();
-
-int	vpushstr (), vpopstr ();
-
-int	vpushpp (), vpopp ();
+void vpush (void);
+void vpop (void);
+void vname (char *name);
+void vtag (int class, int id);
+void vstring (PE pe);
+void vunknown (PE pe);
+void vprint (char*, ...);
+char *bit2str ();
+void vpushfp (FILE *fp, PE pe, char *s, int rw);
+void vpopfp (void);
+void vpushstr (char *cp);
+void vpopstr (void);
+void vpushpp (FILE *vfp, PE pe, char *text, int rw);
+void vpopp (void);
 
 #ifdef PEPSY_VERSION
 /* handle calls to the vunknown print routine */

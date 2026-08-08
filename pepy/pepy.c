@@ -103,23 +103,23 @@ typedef struct symlist {
 static	SY	mysymbols = NULLSY;
 
 
-char   *gensym (), *modsym ();
-static MD	lookup_module ();
-static FILE   *open_ph_file ();
-static SY	new_symbol (), add_symbol ();
+char   *gensym (void), *modsym (char *module, char *id, int direct);
+static MD	lookup_module (char *module, OID oid);
+static FILE   *open_ph_file (char *fn, char *fnoid, char *mode);
+static SY	new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP type), add_symbol (SY s1, SY s2);
 extern FILE *yyin, *yyout;
 
-YP	lookup_type ();
-static YP	lookup_binding ();
-YT	lookup_tag ();
+YP	lookup_type (char *mod, char *id);
+static YP	lookup_binding (char *mod, char *id, char *binding);
+YT	lookup_tag (YP yp);
 
-static prologue ();
-static prologue3 ();
-static prologue2 ();
-static	write_ph_file ();
-static int  pp ();
-static	print_value ();
-static	modsym_aux ();
+static void prologue (void);
+static void prologue3 (void);
+static void prologue2 (void);
+static void write_ph_file (void);
+static int  pp (void);
+static void print_value (YV yv, int level);
+static void modsym_aux (char *name, char *bp);
 
 /*    MAIN */
 
@@ -290,7 +290,7 @@ usage:
 }
 
 static
-prologue()  {
+prologue(void) {
 	char *cp;
 
 	if (cp = index (pepyversion, ')'))
@@ -413,20 +413,13 @@ char   *fmt;
 }
 #endif
 
-/*  */
-
-int
-yywrap()  {
+int yywrap(void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
-
 	return 1;
 }
 
-/*  */
-
-int
-yyprint (char *s, int f, int top) {
+void yyprint (char *s, int f, int top) {
 	int	    len;
 	static int didf = 0;
 	static int nameoutput = 0;
@@ -483,13 +476,13 @@ yyprint (char *s, int f, int top) {
 /*    PASS1 */
 
 int
-pass1()  {
+pass1(void) {
 	if (!bflag)
 		prologue3 ();
 }
 
 static
-prologue3()  {
+prologue3(void) {
 	printf ("\n/* Generated from module %s", mymodule);
 	if (mymoduleid)
 		printf (", Object Identifier %s", sprintoid (mymoduleid));
@@ -497,13 +490,7 @@ prologue3()  {
 }
 /*  */
 
-pass1_type (encpref, decpref, prfpref, mod, id, yp)
-char  *encpref,
-	  *decpref,
-	  *prfpref,
-	  *mod,
-	  *id;
-YP	yp;
+pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
 	SY	    sy;
 
@@ -524,7 +511,7 @@ YP	yp;
 /*    PASS2 */
 
 int
-pass2()  {
+pass2(void) {
 	SY	    sy;
 	YP	    yp;
 
@@ -604,7 +591,7 @@ pass2()  {
 }
 
 static
-prologue2()  {
+prologue2(void) {
 	printf("\n#ifndef PEPYPARM\n#define PEPYPARM char *\n");
 	printf ("#endif /* PEPYPARM */\n"); /* keep ansi happy ... */
 	printf("extern PEPYPARM NullParm;\n");
@@ -651,9 +638,9 @@ struct tuple tuples[] = {
 
 /*    PULLUP */
 
-choice_pullup (yp, partial)
-YP	yp;
-int	partial;	/* pullup fully, or just enough? */
+choice_pullup (YP yp, int partial)
+  	   
+   	        	/* pullup fully, or just enough? */
 {
 	YP	   *x,
 	 y,
@@ -696,11 +683,7 @@ int	partial;	/* pullup fully, or just enough? */
 
 /*  */
 
-tag_pullup (yp, level, arg, whatsit)
-YP	yp;
-int	level;
-char   *arg,
-	   *whatsit;
+tag_pullup (YP yp, int level, char *arg, char *whatsit)
 {
 	char   *narg;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
@@ -729,11 +712,7 @@ char   *arg,
 }
 
 
-tag_pushdown (yp, level, arg, whatsit)
-YP     yp;
-int    level;
-char   *arg,
-	   *whatsit;
+tag_pushdown (YP yp, int level, char *arg, char *whatsit)
 {
 	char   *narg;
 
@@ -757,9 +736,7 @@ char   *arg,
 
 /*    TYPE HANDLING */
 
-tag_type (yp)
-YP	yp;
-{
+void tag_type (YP yp) {
 	struct tuple *t;
 	YT	    yt;
 	YP	    y;
@@ -803,12 +780,7 @@ YP	yp;
 	pyyerror (yp, "don't know how to do a set/choice member that isn't tagged or bound");
 }
 
-/*  */
-
-YP  lookup_type (mod, id)
-char *mod,
-	 *id;
-{
+YP  lookup_type (char *mod, char *id) {
 	SY	    sy;
 
 	for (sy = mysymbols; sy; sy = sy -> sy_next) {
@@ -826,12 +798,7 @@ char *mod,
 	return NULLYP;
 }
 
-/*  */
-
-static YP  lookup_binding (mod, id, binding)
-char  *mod,
-	  *id,
-	  *binding;
+static YP  lookup_binding (char *mod, char *id, char *binding)
 {
 	YP	    yp,
 	 z;
@@ -850,10 +817,7 @@ char  *mod,
 	/* NOTREACHED */
 }
 
-/*  */
-
-int
-check_type (char *type, int level, char *class, char *form, char *id, char *arg) {
+int check_type (char *type, int level, char *class, char *form, char *id, char *arg) {
 	int	    explicit;
 
 	if (level == 1) {
@@ -889,11 +853,7 @@ check_type (char *type, int level, char *class, char *form, char *id, char *arg)
 	printf ("\n");
 }
 
-/*  */
-
-int  is_any_type (yp)
-YP	yp;
-{
+int is_any_type (YP yp) {
 	YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
@@ -915,9 +875,7 @@ YP	yp;
 	return (yp -> yp_code == YP_ANY && !(yp -> yp_flags & YP_TAG));
 }
 
-int  is_nonimplicit_type (yp)
-YP	yp;
-{
+int is_nonimplicit_type (YP yp) {
 	YP z;
 
 	while (yp -> yp_code == YP_IDEFINED) {
@@ -946,13 +904,9 @@ YP	yp;
 	return 0;
 }
 
-/*  */
-
-uniqint (yv)
-YV	yv;
-{
+void uniqint (YV yv) {
 	int    i;
-	YV	    y;
+	YV y;
 
 	for (; yv; yv = yv -> yv_next) {
 		i = val2int (yv);
@@ -970,12 +924,7 @@ YV	yv;
 	}
 }
 
-/*  */
-
-uniqtag (y, z)
-YP	y,
- z;
-{
+void uniqtag (YP y, YP z) {
 	int     i;
 	int    id;
 	YT yt;
@@ -1005,11 +954,7 @@ YP	y,
 	}
 }
 
-/*  */
-
-int  val2int (yv)
-YV	yv;
-{
+int val2int (YV yv) {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
 	case YV_NUMBER:
@@ -1034,14 +979,9 @@ YV	yv;
 	/* NOTREACHED */
 }
 
-/*    PH FILES */
-
 /* really need much more information in the .ph file... */
 
-static	read_ph_file (module, oid)
-char *module;
-OID	oid;
-{
+static void read_ph_file (char *module, OID oid) {
 	int     class,
 			value,
 			direction;
@@ -1055,7 +995,7 @@ OID	oid;
 	FILE  *fp;
 	YP	    yp;
 	YT	    yt;
-	YV	    yv;
+	YV yv;
 
 	sprintf (file, "%s.ph", module);
 	if (oid)
@@ -1103,10 +1043,7 @@ OID	oid;
 	fclose (fp);
 }
 
-/*  */
-
-static
-write_ph_file()  {
+static void write_ph_file(void) {
 	int	    msave;
 	char    file[BUFSIZ];
 	char    fileoid[BUFSIZ];
@@ -1147,18 +1084,11 @@ write_ph_file()  {
 	fclose (fp);
 }
 
-/*  */
-
 #ifndef	PEPYPATH
 #define	PEPYPATH	""
 #endif
 
-
-static FILE *open_ph_file (fn, fnoid, mode)
-char *fn,
-	 *fnoid,
-	 *mode;
-{
+static FILE *open_ph_file (char *fn, char *fnoid, char *mode) {
 	char  *dst,
 		  *path;
 	char    fnb[BUFSIZ];
@@ -1215,8 +1145,6 @@ char *fn,
 	return fp;
 }
 
-/*    PRETTY-PRINTING */
-
 #define	S0	0
 #define	S1	1
 #define	S2	2
@@ -1228,8 +1156,7 @@ char *fn,
 #define S8	8
 #define S9	9
 
-static int
-pp()  {
+static int pp(void) {
 	int    c,
 		   s;
 	char  *bp,
@@ -1328,14 +1255,9 @@ flush:
 	return 0;
 }
 
-/*    DEBUG */
-
-print_type (yp, level)
-YP	yp;
-int	level;
-{
+void print_type (YP yp, int level) {
 	YP	    y;
-	YV	    yv;
+	YV yv;
 
 	if (yp == NULLYP)
 		return;
@@ -1419,13 +1341,8 @@ int	level;
 	}
 }
 
-/*  */
-
-static	print_value (yv, level)
-YV	yv;
-int	level;
-{
-	YV	    y;
+static void print_value (YV yv, int level) {
+	YV y;
 
 	if (yv == NULLYV)
 		return;
@@ -1482,17 +1399,15 @@ int	level;
 	}
 }
 
-/*    SYMBOLS */
-
-static SY  new_symbol (encpref, decpref, prfpref, mod, id, type)
-char  *encpref,
-	  *decpref,
-	  *prfpref,
-	  *mod,
-	  *id;
-YP	type;
-{
-	SY    sy;
+static SY new_symbol (
+	char *encpref,
+	char *decpref,
+	char *prfpref,
+	char *mod,
+	char *id,
+	YP type
+) {
+	SY sy;
 
 	if ((sy = (SY) calloc (1, sizeof *sy)) == NULLSY)
 		yyerror ("out of memory");
@@ -1507,27 +1422,19 @@ YP	type;
 }
 
 
-static SY
-add_symbol (SY s1, SY s2) {
-	SY	    sy;
-
+static SY add_symbol (SY s1, SY s2) {
+	SY sy;
 	if (s1 == NULLSY)
 		return s2;
-
 	for (sy = s1; sy -> sy_next; sy = sy -> sy_next)
 		continue;
 	sy -> sy_next = s2;
-
 	return s1;
 }
 
-/*    MODULES */
-
-static MD  lookup_module (module, oid)
-char   *module;
-OID	oid;
+static MD  lookup_module (char *module, OID oid)
 {
-	MD	    md;
+	MD md;
 
 	for (md = mymodules; md; md = md -> md_next) {
 		if (module && md -> md_module && strcmp (md -> md_module, module) == 0)
@@ -1554,10 +1461,8 @@ OID	oid;
 
 /*    TYPES */
 
-YP	new_type (code)
-int	code;
-{
-	YP    yp;
+YP	new_type (int code) {
+	YP yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -1566,12 +1471,8 @@ int	code;
 	return yp;
 }
 
-
-YP	add_type (y, z)
-YP	y,
- z;
-{
-	YP	    yp;
+YP	add_type (YP y, YP z) {
+	YP yp;
 
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
@@ -1580,12 +1481,8 @@ YP	y,
 	return y;
 }
 
-/*  */
-
-YP	copy_type (yp)
-YP	yp;
-{
-	YP	    y;
+YP	copy_type (YP yp) {
+	YP y;
 
 	if (yp == NULLYP)
 		return NULLYP;
@@ -1690,11 +1587,7 @@ YP	yp;
 	return y;
 }
 
-/*    VALUES */
-
-YV	new_value (code)
-int	code;
-{
+YV new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -1704,32 +1597,21 @@ int	code;
 	return yv;
 }
 
-
-YV	add_value (y, z)
-YV	y,
- z;
-{
-	YV	    yv;
+YV add_value (YV y, YV z) {
+	YV yv;
 
 	if (y == NULLYV)
 		return z;
-
 	if (z == NULLYV)
 		return y;
-
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
 		continue;
 	yv -> yv_next = z;
-
 	return y;
 }
 
-/*  */
-
-YV	copy_value (yv)
-YV	yv;
-{
-	YV	    y;
+YV copy_value (YV yv) {
+	YV y;
 
 	if (yv == NULLYV)
 		return NULLYV;
@@ -1782,11 +1664,7 @@ YV	yv;
 	return y;
 }
 
-/*    TAGS */
-
-YT	new_tag (class)
-PElementClass	class;
-{
+YT new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
@@ -1796,11 +1674,7 @@ PElementClass	class;
 	return yt;
 }
 
-/*  */
-
-YT	copy_tag (yt)
-YT	yt;
-{
+YT copy_tag (YT yt) {
 	YT	    y;
 
 	if (yt == NULLYT)
@@ -1813,16 +1687,12 @@ YT	yt;
 	return y;
 }
 
-/*  */
-
-YT  lookup_tag (yp)
-YP	yp;
-{
+YT lookup_tag (YP yp) {
 	struct tuple *t;
 	static struct ypt ypts;
 	YT	    yt = &ypts;
 	static struct ypv ypvs;
-	YV	    yv = &ypvs;
+	YV yv = &ypvs;
 	YP	    z;
 
 	if (yp -> yp_flags & YP_TAG)
@@ -1857,10 +1727,7 @@ YP	yp;
 	return NULLYT;
 }
 
-/*    STRINGS */
-
-char *
-new_string (char *s) {
+char *new_string (char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
@@ -1869,8 +1736,6 @@ new_string (char *s) {
 	strcpy (p, s);
 	return p;
 }
-
-/*    SYMBOLS */
 
 static struct triple {
 	char	   *t_name;
@@ -1897,10 +1762,7 @@ static struct triple {
 	NULL
 };
 
-/*  */
-
-char *
-modsym (char *module, char *id, int direct) {
+char *modsym (char *module, char *id, int direct) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -1939,9 +1801,7 @@ modsym (char *module, char *id, int direct) {
 	return buffer;
 }
 
-
-static
-modsym_aux (char *name, char *bp) {
+static void modsym_aux (char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)
@@ -1959,10 +1819,7 @@ modsym_aux (char *name, char *bp) {
 	*bp = 0;
 }
 
-/*  */
-
-char *
-gensym()  {
+char *gensym(void) {
 	char    buffer[BUFSIZ];
 	static int  i = 0;
 
@@ -1970,8 +1827,7 @@ gensym()  {
 	return new_string (buffer);
 }
 
-int
-init_new_file()  {
+void init_new_file(void) {
 	static int file_no = 0;
 	char	buffer[BUFSIZ];
 
@@ -1990,10 +1846,8 @@ init_new_file()  {
 	prologue2 ();
 }
 
-int
-end_file()  {
+void end_file(void) {
 	fflush (stdout);
 	if (ferror (stdout))
 		myyerror ("write error - %s", sys_errname (errno));
-
 }

@@ -12,6 +12,9 @@
 %END(MOSY)%
 /* %WARNING% */
 
+#ifndef _GOOBIS_BO_BOOBIS_H_
+#define _GOOBIS_BO_BOOBIS_H_
+
 /* 
  * $Header: /xtel/isode/isode/pepsy/RCS/pepsy.h.gnrc,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
@@ -329,3 +332,5 @@ char	*oidname ();
 char	*oidprint ();
 
 extern int errno;
+
+#endif _GOOBIS_BO_BOOBIS_H_

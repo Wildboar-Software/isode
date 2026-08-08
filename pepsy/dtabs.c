@@ -48,6 +48,7 @@ extern char	*setfield();
 extern char	*modsym (char *module, char *id, char *prefix);
 extern char	*genstrform (YP yp);
 extern int	gen_sentry();
+extern char *c_flags(YP yp, PElementClass cl);
 
 /* extern int explicit; */
 

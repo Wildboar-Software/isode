@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy_misc.c,v 9.0 1992
  *    this agreement.
  *
  */
-
-
 #include <stdio.h>
 #include <string.h>
 #include "pepy.h"
@@ -46,13 +44,10 @@ typedef struct symtable {
 } symtable, *SYM;
 #define NULLSYM ((SYM)0)
 
-
 static OP	myoids;
 static SYM	symtab[MAX_TBLS];
 
-
-OID	addoid (o1, o2)
-OID	o1, o2;
+OID	addoid (OID o1, OID o2)
 {
 	OID		noid;
 
@@ -77,9 +72,7 @@ OID	o1, o2;
 	return noid;
 }
 
-defineoid (name, oid)
-char	*name;
-OID	oid;
+void defineoid (char *name, OID oid)
 {
 	char	*p;
 	OP		op;
@@ -107,8 +100,7 @@ OID	oid;
 	myoids = op;
 }
 
-OID	oidlookup (name)
-char	*name;
+OID	oidlookup (char *name)
 {
 	OP	op;
 
@@ -120,8 +112,7 @@ char	*name;
 	return NULLOID;
 }
 
-char	*oidname (oid)
-OID	oid;
+char *oidname (OID oid)
 {
 	OP	op;
 
@@ -132,8 +123,7 @@ OID	oid;
 	return NULLCP;
 }
 
-OID	int2oid (n)
-int	n;
+OID	int2oid (int n)
 {
 	OID		noid;
 
@@ -161,11 +151,7 @@ addtable (char *name, int lt) {
 	symtab[lt] = sp;
 }
 
-addtableref (name, id, lt)
-char	*name;
-OID	id;
-int	lt;
-{
+void addtableref (char *name, OID id, int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;
@@ -181,7 +167,7 @@ int	lt;
 }
 
 int
-print_expimp()  {
+print_expimp(void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;
@@ -260,8 +246,7 @@ print_expimp()  {
 	}
 }
 
-check_impexp (yp)
-YP	yp;
+void check_impexp (YP yp)
 {
 	SYM		sp;
 
@@ -292,7 +277,6 @@ importedP (char *name) {
 	return 0;
 }
 
-
 static struct oidtbl {
 	char	*oid_name;
 	int		oid_value;
@@ -306,7 +290,7 @@ static struct oidtbl {
 };
 
 int
-initoidtbl()  {
+initoidtbl(void) {
 	struct oidtbl *op;
 	OID		oid;
 
@@ -316,8 +300,7 @@ initoidtbl()  {
 	}
 }
 
-char	*oidprint (oid)
-OID	oid;
+char *oidprint (OID oid)
 {
 	static char buf[BUFSIZ];
 	char	*cp;
@@ -352,5 +335,3 @@ OID	oid;
 	strcat (cp, " }");
 	return buf;
 }
-
-

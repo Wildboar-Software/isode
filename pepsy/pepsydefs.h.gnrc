@@ -12,6 +12,9 @@
 %END(MOSY)%
 /* %WARNING% */
 
+#if !defined(_PEPSYDEFS_H_) && !defined(_GOOBIS_BO_BOOBIS_H_)
+#define _PEPSYDEFS_H_
+
 /* 
  * $Header: /xtel/isode/isode/pepsy/RCS/pepsydefs.h.gnrc,v 9.0 1992/06/16 12:24:03 isode Rel $
  *
@@ -406,3 +409,4 @@ OID	oidlookup ();
 char	*oidname ();
 char	*oidprint ();
 
+#endif // _PEPSYDEFS_H_

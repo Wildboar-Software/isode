@@ -23,10 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/vprint.c,v 9.0 1992/0
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -35,16 +31,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/vprint.c,v 9.0 1992/0
 #include "pepsy.h"
 #include "logger.h"
 
-
 #ifndef __STDC__
 int	fprintf ();
 #endif
 
-static	vprint1 ();
-static	vprint2 ();
-static	vwrite ();
-
-/*    DATA */
+static void vprint1 (void);
+static void vprint2 (void);
+static void vwrite (char *s);
 
 #define	VPRINT(s)	vprint1 (), vwrite ((s)), vprint2 ()
 
@@ -74,47 +67,36 @@ static void _init_vfp ()
 }
 #endif
 
-static char   *oct2str (), *newbuf ();
+static char *oct2str (char *s, int len);
+static char *newbuf (int i);
 
-/*    VPUSH/VPOP */
-
-int
-vpush()  {
+void vpush(void)  {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
 	else if (!didname && docomma)
 		vwrite (",\n");
-
 	if (didname)
 		vwrite (" ");
 	else if (vfp && vlevel > 0)
 		(*vfnx) (vfp, "%*s", vlevel * 3, "");
 	vwrite ("{");
 	vlevel++;
-
 	didname = didvpop = docomma = 0, didvpush = 1;
 }
 
-
-int
-vpop()  {
+void vpop(void)  {
 	if (didname || docomma)
 		vwrite ("\n");
-
 	vlevel--;
 	if (!didvpush && vfp && vlevel > 0)
 		(*vfnx) (vfp, "%*s", vlevel * 3, "");
 	vwrite ("}");
 	if (vlevel == 0)
 		vwrite ("\n");
-
 	didname = didvpush = 0, didvpop = docomma = vlevel ? 1 : 0;
 }
 
-/*    VNAME/VTAG */
-
-int
-vname (char *name) {
+void vname (char *name) {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
 	else if (docomma)
@@ -123,13 +105,11 @@ vname (char *name) {
 	if (vfp && vlevel > 0)
 		(*vfnx) (vfp, "%*s", vlevel * 3, "");
 	vwrite (name);
-
 	didname = 1;
 }
 
 
-int
-vtag (int class, int id) {
+void vtag (int class, int id) {
 	char *bp;
 	static char buffer[BUFSIZ];
 
@@ -155,23 +135,15 @@ vtag (int class, int id) {
 	vname (buffer);
 }
 
-/*    VPRINT */
-
 #ifndef	lint
-vprint (char*fmt, ...) {
+void vprint (char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
-
 	vprint1 ();
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	vwrite (buffer);
-
 	vprint2 ();
 }
 #else
@@ -183,9 +155,7 @@ vprint (char *fmt) {
 }
 #endif
 
-
-static
-vprint1()  {
+static void vprint1(void) {
 	if (didvpush) {
 		vwrite ("\n"), didvpush = 0;
 		goto indent;
@@ -201,19 +171,13 @@ indent:
 	}
 }
 
-
-static
-vprint2()  {
+static void vprint2(void)  {
 	if (vlevel == 0)
 		vwrite ("\n");
-
 	didname = didvpop = 0, docomma = vlevel ? 1 : 0;
 }
 
-/*  */
-
-static
-vwrite (char *s) {
+static void vwrite (char *s) {
 	if (vfp)
 		(*vfnx) (vfp, "%s", s);
 	else {
@@ -233,11 +197,8 @@ vwrite (char *s) {
 	}
 }
 
-/*    VSTRING */
-
-int
-vstring (PE pe) {
-	PE	    p;
+void vstring (PE pe) {
+	PE p;
 
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -254,16 +215,10 @@ vstring (PE pe) {
 	}
 }
 
-/*  */
-
-static char *
-oct2str (char *s, int len) {
+static char *oct2str (char *s, int len) {
 	int     ia5ok;
 	int    k;
-	char  *bp,
-		  *cp,
-		  *dp,
-		  *zp;
+	char  *bp, *cp, *dp, *zp;
 
 	ia5ok = 1, k = 0;
 	for (dp = (cp = s) + len; cp < dp; cp++) {
@@ -351,18 +306,10 @@ oct2str (char *s, int len) {
 	return zp;
 }
 
-/*  */
-
-char *
-bit2str (PE pe, char *s) {
-	int     ia5ok;
-	int    hit,
-		   i,
-		   j,
-		   k;
-	char  *bp,
-		  *cp,
-		  *zp;
+char *bit2str (PE pe, char *s) {
+	int ia5ok;
+	int hit, i, j, k;
+	char *bp, *cp, *zp;
 
 	j = pe -> pe_nbits;
 	if ((cp = s) && *++cp) {
@@ -425,14 +372,11 @@ bit2str (PE pe, char *s) {
 	return zp;
 }
 
-/*  */
-
 #ifdef vunknown
 #undef vunknown
 #endif
 
-int
-vunknown (PE pe) {
+void vunknown (PE pe) {
 	int     i;
 #ifdef	notyet	    /* could comment this in, but then all programs need -lm */
 	double  j;
@@ -537,21 +481,11 @@ bad_pe:
 	}
 }
 
-/*    VPUSHFP/VPOPFP */
-
-vpushfp (fp, pe, s, rw)
-FILE   *fp;
-PE	pe;
-char   *s;
-int	rw;
-{
-	vpushpp ((caddr_t) fp, fprintf, pe, s, rw);
+void vpushfp (FILE *fp, PE pe, char *s, int rw) {
+	vpushpp (fp, pe, s, rw);
 }
 
-vsetfp (fp, s)
-FILE	* fp;
-char	* s;
-{
+void vsetfp (FILE *fp, char *s) {
 	vfp = fp;
 	vfnx = (IFP) fprintf;
 
@@ -561,27 +495,19 @@ char	* s;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-int
-vpopfp()  {
+void vpopfp(void)  {
 	(*vfnx) (vfp, "-------\n");
 	fflush (vfp);
-
 	vpopp ();
 }
 
-/*    VPUSHSTR/VPOPSTR */
-
-int
-vpushstr (char *cp) {
+void vpushstr (char *cp) {
 	vfp = NULL;
 	vbp = vsp = cp;
-
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-
-int
-vpopstr()  {
+void vpopstr(void)  {
 	while (--vbp >= vsp)
 		if (*vbp != ' ')
 			break;
@@ -589,58 +515,45 @@ vpopstr()  {
 	vfp = stdout;
 }
 
-/*    VPUSHPP */
-
-int
-vpushpp (caddr_t pv, IFP pfnx, PE pe, char *text, int rw) {
-	vfp = (FILE *) pv, vfnx = pfnx;
-
-	(*vfnx) (vfp, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
+void vpushpp (
+	FILE *vfp,
+	PE pe,
+	char *text,
+	int rw
+) {
+	fprintf(vfp, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
 	if (pe -> pe_context != PE_DFLT_CTX)
-		(*vfnx) (vfp, ", context %d", pe -> pe_context);
-	(*vfnx) (vfp, "\n");
-
+		fprintf(vfp, ", context %d", pe -> pe_context);
+	fprintf(vfp, "\n");
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-int
-vpopp()  {
+void vpopp(void)  {
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
 
 
-int
-vpushquipu (PS ps) {
+void vpushquipu (PS ps) {
 	vps = ps;
 	vfp = NULL;
-
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
-
-int
-vpopquipu()  {
+void vpopquipu(void)  {
 	vpopp();
 	vps = NULLPS;
 }
 
-/*    PVPDU - for pepsy */
-
 #undef	pvpdu
 
-pvpdu (lp, ind, mod, pe, text, rw)
-LLog *lp;
-int	ind;		/* index into tables */
-modtyp	*mod;		/* pointer to tables */
-PE pe;
-char   *text;
-int	rw;
-{
+/**
+ * ind: index into tables
+ * mod: pointer to tables
+ */
+void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-
 	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
-
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -650,50 +563,37 @@ int	rw;
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
-
 	vlevel = didname = didvpush = didvpop = docomma = 0;
-
 	if (mod == NULL)
 		vunknown (pe);
 	else
 		prnt_f (ind, mod, pe, 1, NULLIP, NULLVP);
-
 	ll_printf (lp, "-------\n");
-
 	ll_sync (lp);
-
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
 
-/*    MISC */
-
 static char *bufp = NULL;
 
-static char *
-newbuf (int i) {
+static char *newbuf (int i) {
 	static unsigned int len = 0;
-
 	if (i++ < len)
 		return bufp;
-
 	if (bufp)
 		free (bufp);
 	if ((bufp = malloc ((unsigned int) i)))
 		len = i;
 	else
 		len = 0;
-
 	return bufp;
 }
+
 /*  VPDU - support for backwards compatibility */
 
-int
-_vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
+void _vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-
 	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
-
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -703,21 +603,15 @@ _vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
 		bp += strlen (bp);
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
-
 	vlevel = didname = didvpush = didvpop = docomma = 0;
-
 	(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
-
 	ll_printf (lp, "-------\n");
-
 	ll_sync (lp);
-
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
 
 #ifdef DEBUG
-int
-free_pepsy_bp()  {
+void free_pepsy_bp(void)  {
 	if (bufp)
 		free(bufp);
 }

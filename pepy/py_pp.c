@@ -44,7 +44,7 @@ static enum { ps2pp, pl2pp } mode = ps2pp;
 static void	adios (char* what, char* fmt, ...),
 			advise (char* what, char* fmt, ...);
 
-static int  process ();
+static int  process (char *file, FILE *fp, IFP pfx);
 
 /*  */
 
@@ -93,10 +93,7 @@ PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 
 /*  */
 
-static int  process (file, fp, pfx)
-char *file;
-FILE *fp;
-IFP	pfx;
+static int  process (char *file, FILE *fp, IFP pfx)
 {
 	PE	    pe;
 	PS	    ps;

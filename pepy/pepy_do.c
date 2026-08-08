@@ -35,21 +35,15 @@ char   *gensym (), *modsym ();
 
 YP	lookup_type (), lookup_binding ();
 YT	lookup_tag ();
-static char	*add_point ();
+static char	*add_point (char *arg);
 
-static  do_type_member ();
-static  do_type_choice ();
-static  do_type_element ();
-static  do_components_seq ();
-static  do_components_set ();
+static void do_type_member (YP yp, int level, char *narg);
+static void do_type_choice (YP yp, int caseindex, int level, char *narg);
+static void do_type_element (YP yp, int level, int last, char *id, char *narg);
+static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg);
+static void do_components_set (YP yp, int level, char *arg, char *id, char *narg);
 
-/*  */
-
-do_type (yp, level, id, arg)
-YP	yp;
-int	level;
-char  *id,
-	  *arg;
+void do_type (YP yp, int level, char *id, char *arg)
 {
 	int    i;
 	char  *narg;
@@ -635,21 +629,13 @@ char  *id,
 }
 
 
-static char *
-add_point (char *arg) {
+static char *add_point (char *arg) {
 	char    buffer[BUFSIZ];
-
 	sprintf (buffer, "(*%s)", arg);
 	return new_string (buffer);
 }
 
-/*  */
-
-static  do_type_member (yp, level, narg)
-YP     yp;
-int    level;
-char   *narg;
-{
+static void do_type_member (YP yp, int level, char *narg) {
 	int     pushdown = (yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) == YP_TAG;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
 
@@ -687,15 +673,7 @@ char   *narg;
 	printf ("%*s}\n", level * 4, "");
 }
 
-
-/*  */
-
-static  do_type_choice (yp, caseindex, level, narg)
-YP     yp;
-int    caseindex,
-	   level;
-char  *narg;
-{
+static void do_type_choice (YP yp, int caseindex, int level, char *narg) {
 	int     pushdown = (yp -> yp_flags & YP_TAG)
 					   && !(yp -> yp_flags & YP_IMPLICIT);
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
@@ -721,12 +699,8 @@ char  *narg;
 	printf ("%*s}\n%*sbreak;\n", level * 4, "", level * 4, "");
 }
 
-/*  */
-
-int
-do_action (char *action, int level, char *arg, int lineno) {
-	char   c,
-		   d;
+int do_action (char *action, int level, char *arg, int lineno) {
+	char c, d;
 
 	printf ("%*s{\n", level * 4, "");
 
@@ -763,17 +737,7 @@ do_action (char *action, int level, char *arg, int lineno) {
 	printf ("%*s}\n", level * 4, "");
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static  do_type_element (yp, level, last, id, narg)
-YP     yp;
-int    level;
-int     last;
-char   *id;
-char  *narg;
-{
+static void do_type_element (YP yp, int level, int last, char *id, char *narg) {
 	printf ("%*s%s = NULLPE;\n\n", level * 4, "", narg);
 	if (yp -> yp_flags & (YP_OPTIONAL | YP_DEFAULT)) {
 		if (yp -> yp_flags & YP_OPTCONTROL)
@@ -794,13 +758,7 @@ char  *narg;
 	printf ("%*s}\n\n", level * 4, "");
 }
 
-static do_components_seq (yp, level, last, id, arg, narg)
-YP	yp;
-int level;
-char	*id,
-		*arg,
-		*narg;
-{
+static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg) {
 	YP	newyp, y;
 
 	if (yp -> yp_module) {
@@ -808,12 +766,10 @@ char	*id,
 				  yp -> yp_identifier);
 		return;
 	}
-
 	if (!(newyp = lookup_type (yp->yp_module, yp -> yp_identifier))) {
 		pyyerror (yp, "Can't find refernced COMPONENTS OF");
 		return;
 	}
-
 	if (newyp -> yp_code != YP_SEQLIST) {
 		yyerror_aux ("COMPONENTS OF type is not a SEQUENCE");
 		print_type (yp, 0);
@@ -839,7 +795,6 @@ char	*id,
 	}
 	for (y = newyp -> yp_type; y; y = y -> yp_next) {
 		YP     z;
-
 		if (!(y -> yp_flags & (YP_OPTIONAL | YP_DEFAULT))
 				|| lookup_tag (y) == NULLYT)
 			continue;
@@ -857,12 +812,7 @@ char	*id,
 
 
 
-static  do_components_set (yp, level, arg, id, narg)
-YP     yp;
-int    level;
-char   *narg, *arg, *id;
-{
-
+static void do_components_set (YP yp, int level, char *arg, char *id, char *narg) {
 	YP	newyp, y;
 
 	if (yp -> yp_module) {
@@ -870,18 +820,15 @@ char   *narg, *arg, *id;
 				  yp -> yp_identifier);
 		return;
 	}
-
 	if (!(newyp = lookup_type (yp->yp_module, yp -> yp_identifier))) {
 		pyyerror (yp, "Can't find refernced COMPONENTS OF");
 		return;
 	}
-
 	if (newyp -> yp_code != YP_SETLIST) {
 		yyerror_aux ("COMPONENTS OF type is not a SET");
 		print_type (yp, 0);
 		return;
 	}
-
 	for (y = newyp -> yp_type; y; y = y -> yp_next) {
 		if (y -> yp_flags & YP_COMPONENTS)
 			do_components_set (y, level, arg, id, narg);

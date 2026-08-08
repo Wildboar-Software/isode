@@ -150,40 +150,34 @@ typedef struct symlist {
 
 static	SY	mysymbols = NULLSY;
 
+static char   *gensym (char *s, char *a), *modsym (char *module, char *id, char *prefix), *array (char *s, int flg);
+static MD	lookup_module (char *module);
+static SY	new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP type), add_symbol (SY s1, SY s2);
+static double val2real (YV yv);
+static void prime_default (YP yp, int level);
+static YP	lookup_type (char *mod, char *id);
 
-static char   *gensym (), *modsym (), *array ();
-static MD	lookup_module ();
-static SY	new_symbol (), add_symbol ();
-static double val2real ();
-static void prime_default ();
-static YP	lookup_type ();
+static void yyerror_aux (char *s);
+static void do_struct0 (YP yp, char *id);
+static void do_struct1 (YP yp, char *id, char *pullup);
+static void do_struct2 (YP yp, char *id, char *pullup);
+static void do_type0 (YP yp, int direction);
+static void do_type0_aux (YP yp, int direction);
+static void do_type1 (YP yp, int top, int level, char *id, char *var, char *action2, int direction);
+static void posy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg);
+static void printag (YP yp, int level, char *pullup);
+static void xalloc (YP yp, int top, int level, char *arg, char *type, int brackets);
+static void balloc (YP yp, char *var, char *action2, int level);
+static void choice_pullup (YP yp, int partial);
+static void components_pullup (YP yp);
+static int  val2int (YV yv);
+static void val2prf (YV yv, int level);
+static void dump_real (double r);
+static int  dfl2int (YP yp);
+static void print_value (YV yv, int level);
+static void modsym_aux (char *name, char *bp);
 
-static	yyerror_aux ();
-static	do_struct0 ();
-static	do_struct1 ();
-static	do_struct2 ();
-static	do_type0 ();
-static do_type0_aux ();
-static	do_type1 ();
-static	posy ();
-static	printag ();
-static	xalloc ();
-static	balloc ();
-static	choice_pullup ();
-static	components_pullup ();
-static  int  val2int ();
-static	val2prf ();
-static  dump_real ();
-static  int  dfl2int ();
-static	print_value ();
-static	modsym_aux ();
-
-/*    MAIN */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    i;
 	char  *cp,
 		  *dp;
@@ -407,22 +401,14 @@ char   *fmt;
 }
 #endif
 
-/*  */
-
-int
-yywrap()  {
+int yywrap(void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
 	return 1;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-int
-yyprint (char *s, int f, int top) {
+void yyprint (char *s, int f, int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -454,10 +440,7 @@ yyprint (char *s, int f, int top) {
 	linepos += len;
 }
 
-/*    PASS1 */
-
-int
-pass1()  {
+int pass1(void) {
 	printf ("%s ", mymodule);
 	if (mymoduleid) {
 		printf ("%s ", oidprint(mymoduleid));
@@ -465,15 +448,7 @@ pass1()  {
 	printf ("DEFINITIONS ::=\n\n");
 }
 
-/*  */
-
-pass1_type (encpref, decpref, prfpref, mod, id, yp)
-char  *encpref,
-	  *decpref,
-	  *prfpref,
-	  *mod,
-	  *id;
-YP	yp;
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
 	SY	    sy;
 
@@ -494,10 +469,7 @@ YP	yp;
 	mysymbols = add_symbol (mysymbols, sy);
 }
 
-/*    PASS2 */
-
-int
-pass2()  {
+void pass2(void) {
 	int	    first;
 	SY	    sy;
 	YP	    yp,
@@ -728,13 +700,7 @@ again:
 	fclose (fdef);
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static	do_struct0 (yp, id)
-YP	yp;
-char   *id;
+static void do_struct0 (YP yp, char *id)
 {
 	YP	    y;
 
@@ -776,15 +742,9 @@ char   *id;
 	}
 }
 
-/*  */
-
-static	do_struct1 (yp, id, pullup)
-YP	yp;
-char   *id,
-	   *pullup;
+static void do_struct1 (YP yp, char *id, char *pullup)
 {
-	int    i,
-		   j;
+	int    i, j;
 	char    buf1[BUFSIZ];
 	YP	    y;
 	YV	    yv;
@@ -883,12 +843,7 @@ char   *id,
 	}
 }
 
-/*  */
-
-static	do_struct2 (yp, id, pullup)
-YP	yp;
-char   *id,
-	   *pullup;
+static void do_struct2 (YP yp, char *id, char *pullup)
 {
 	YP	    y;
 	int	flg = (yp -> yp_code == YP_SEQTYPE || yp -> yp_code == YP_SETTYPE);
@@ -942,14 +897,10 @@ char   *id,
 	}
 }
 
-/*  */
-
 static int type0_brackets;
 static int type0_bit;
 
-static	do_type0 (yp, direction)
-YP	yp;
-int	direction;
+static void do_type0 (YP yp, int direction)
 {
 	type0_brackets = type0_bit = 0;
 	do_type0_aux (yp, direction);
@@ -957,9 +908,7 @@ int	direction;
 		printf ("    %%}\n   ");
 }
 
-static do_type0_aux (yp, direction)
-YP yp;
-int 	direction;
+static void do_type0_aux (YP yp, int direction)
 {
 	YP	    y;
 
@@ -1004,18 +953,7 @@ int 	direction;
 	}
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static	do_type1 (yp, top, level, id, var, action2, direction)
-YP yp;
-int	top,
-	level;
-char   *id,
-	   *var,
-	   *action2;
-int	direction;
+static void do_type1 (YP yp, int top, int level, char *id, char *var, char *action2, int direction)
 {
 	int	    i;
 	char   *cp,
@@ -1587,9 +1525,7 @@ int	direction;
 
 /*    TYPE HANDLING */
 
-static YP  lookup_type (mod, id)
-char *mod,
-	 *id;
+static YP lookup_type (char *mod, char *id)
 {
 	SY	    sy;
 
@@ -1608,16 +1544,7 @@ char *mod,
 	return NULLYP;
 }
 
-/*  */
-
-static	posy (yp, top, level, id, val, var, arrayflg)
-YP	yp;
-int	top,
-	level,
-	arrayflg;
-char   *id,
-	   *val,
-	   *var;
+static void posy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg)
 {
 	int    i,
 		   j;
@@ -2172,12 +2099,7 @@ char   *id,
 	}
 }
 
-/*  */
-
-static	printag (yp, level, pullup)
-YP	yp;
-int	level;
-char   *pullup;
+static void printag (YP yp, int level, char *pullup)
 {
 	fprintf (fdef, "%*s/* ", level * 4, "");
 	switch (yp -> yp_code) {
@@ -2196,15 +2118,7 @@ char   *pullup;
 	fprintf (fdef, " */\n");
 }
 
-/*  */
-
-static	xalloc (yp, top, level, arg, type, brackets)
-YP	yp;
-int	top,
-	level,
-	brackets;
-char   *arg,
-	   *type;
+static void xalloc (YP yp, int top, int level, char *arg, char *type, int brackets)
 {
 	int	    didone;
 	YP	    y;
@@ -2297,11 +2211,7 @@ char   *arg,
 	}
 }
 
-
-static	balloc (yp, var, action2, level)
-YP	yp;
-char   *var, *action2;
-int	level;
+static void balloc (YP yp, char *var, char *action2, int level)
 {
 	printf ("\n%*s%%{\n", level * 4, "");
 	level++;
@@ -2341,11 +2251,7 @@ int	level;
 }
 #endif
 
-/*  */
-
-static	choice_pullup (yp, partial)
-YP	yp;
-int	partial;
+static void choice_pullup (YP yp, int partial)
 {
 	YP	   *x,
 	 y,
@@ -2390,10 +2296,7 @@ patch:
 	}
 }
 
-/*  */
-
-static	components_pullup (yp)
-YP	yp;
+static void components_pullup (YP yp)
 {
 	YP    *x,
 	y,
@@ -2439,10 +2342,7 @@ YP	yp;
 	}
 }
 
-/*    VALUE HANDLING */
-
-static int  val2int (yv)
-YV	yv;
+static int val2int (YV yv)
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -2463,10 +2363,10 @@ YV	yv;
 		myyerror ("unknown value: %d", yv -> yv_code);
 	}
 	/* NOTREACHED */
+	return 0;
 }
 
-static double  val2real (yv)
-YV	yv;
+static double val2real (YV yv)
 {
 	switch (yv -> yv_code) {
 	case YV_NUMBER:
@@ -2489,13 +2389,10 @@ YV	yv;
 		myyerror ("unknown value: %d", yv -> yv_code);
 	}
 	/* NOTREACHED */
+	return 0.0;
 }
 
-/*  */
-
-static	val2prf (yv, level)
-YV	yv;
-int	level;
+static void val2prf (YV yv, int level)
 {
 	YV    y;
 
@@ -2503,7 +2400,7 @@ int	level;
 		printf ("%s ", yv -> yv_id);
 
 	if (yv -> yv_flags & YV_TYPE)	/* will this REALLY work??? */
-		do_type1 (yv -> yv_type, 0, level, NULLCP, NULLCP, NULLCP, NULL);
+		do_type1 (yv -> yv_type, 0, level, NULLCP, NULLCP, NULLCP, 0);
 
 	switch (yv -> yv_code) {
 	case YV_BOOL:
@@ -2551,10 +2448,10 @@ int	level;
 		/* NOTREACHED */
 	}
 }
-static
-dump_real (double r) {
+
+static void dump_real (double r) {
 #ifndef	BSD44
-	extern char *ecvt ();
+	extern char *ecvt (double, int, int *, int *);
 	char	*cp;
 	char	sbuf[128];
 	int	decpt, sign;
@@ -2585,13 +2482,8 @@ dump_real (double r) {
 #endif
 }
 
-/*  */
-
-static int  dfl2int (yp)
-YP	yp;
-{
-	YV	    yv,
-	 y;
+static int dfl2int (YP yp) {
+	YV yv, y;
 
 	yv = yp -> yp_default;
 	switch (yv -> yv_code) {
@@ -2625,11 +2517,7 @@ YP	yp;
 	/* NOTREACHED */
 }
 
-/*    DEBUG */
-
-print_type (yp, level)
-YP	yp;
-int	level;
+void print_type (YP yp, int level)
 {
 	YP	    y;
 	YV	    yv;
@@ -2717,13 +2605,8 @@ int	level;
 	}
 }
 
-/*  */
-
-static	print_value (yv, level)
-YV	yv;
-int	level;
-{
-	YV	    y;
+static void print_value (YV yv, int level) {
+	YV y;
 
 	if (yv == NULLYV)
 		return;
@@ -2780,15 +2663,7 @@ int	level;
 	}
 }
 
-/*    SYMBOLS */
-
-static SY  new_symbol (encpref, decpref, prfpref, mod, id, type)
-char  *encpref,
-	  *decpref,
-	  *prfpref,
-	  *mod,
-	  *id;
-YP	type;
+static SY new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP type)
 {
 	SY    sy;
 
@@ -2804,80 +2679,53 @@ YP	type;
 	return sy;
 }
 
-
-static SY
-add_symbol (SY s1, SY s2) {
+static SY add_symbol (SY s1, SY s2) {
 	SY	    sy;
-
 	if (s1 == NULLSY)
 		return s2;
-
 	for (sy = s1; sy -> sy_next; sy = sy -> sy_next)
 		continue;
 	sy -> sy_next = s2;
-
 	return s1;
 }
 
-/*    MODULES */
-
-static MD
-lookup_module (char *module) {
+static MD lookup_module (char *module) {
 	MD	    md;
 
 	for (md = mymodules; md; md = md -> md_next)
 		if (strcmp (md -> md_module, module) == 0)
 			return md;
-
 	if ((md = (MD) calloc (1, sizeof *md)) == NULLMD)
 		yyerror ("out of memory");
 	md -> md_module = new_string (module);
-
 	if (mymodules != NULLMD)
 		md -> md_next = mymodules;
 	mymodules = md;
-
 	return NULLMD;
 }
 
-/*    TYPES */
-
-YP	new_type (code)
-int	code;
-{
+YP new_type (int code) {
 	YP    yp;
-
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
 	yp -> yp_code = code;
-
 	return yp;
 }
 
 
-YP	add_type (y, z)
-YP	y,
- z;
-{
+YP	add_type (YP y, YP z) {
 	YP	    yp;
-
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
 	yp -> yp_next = z;
-
 	return y;
 }
 
-/*  */
-
-YP	copy_type (yp)
-YP	yp;
-{
+YP copy_type (YP yp) {
 	YP	    y;
 
 	if (yp == NULLYP)
 		return NULLYP;
-
 	y = new_type (yp -> yp_code);
 	y -> yp_direction = yp -> yp_direction;
 
@@ -2979,39 +2827,23 @@ YP	yp;
 	return y;
 }
 
-/*    VALUES */
-
-YV	new_value (code)
-int	code;
-{
-	YV    yv;
-
+YV new_value (int code) {
+	YV yv;
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
 	yv -> yv_code = code;
-
 	return yv;
 }
 
-
-YV	add_value (y, z)
-YV	y,
- z;
-{
+YV add_value (YV y, YV z) {
 	YV	    yv;
-
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
 		continue;
 	yv -> yv_next = z;
-
 	return y;
 }
 
-/*  */
-
-YV	copy_value (yv)
-YV	yv;
-{
+YV copy_value (YV yv) {
 	YV	    y;
 
 	if (yv == NULLYV)
@@ -3065,11 +2897,7 @@ YV	yv;
 	return y;
 }
 
-/*    TAGS */
-
-YT	new_tag (class)
-PElementClass	class;
-{
+YT new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
@@ -3079,37 +2907,23 @@ PElementClass	class;
 	return yt;
 }
 
-/*  */
-
-YT	copy_tag (yt)
-YT	yt;
-{
+YT copy_tag (YT yt) {
 	YT	    y;
 
 	if (yt == NULLYT)
 		return NULLYT;
-
 	y = new_tag (yt -> yt_class);
-
 	y -> yt_value = copy_value (yt -> yt_value);
-
 	return y;
 }
 
-/*    STRINGS */
-
-char *
-new_string (char *s) {
+char *new_string (char *s) {
 	char  *p;
-
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
-
 	strcpy (p, s);
 	return p;
 }
-
-/*    SYMBOLS */
 
 static struct triple {
 	char	   *t_name;
@@ -3132,14 +2946,10 @@ static struct triple {
 	"GeneralString", PE_CLASS_UNIV, PE_DEFN_GENS,
 	"EXTERNAL", PE_CLASS_UNIV, PE_CONS_EXTN,
 	"ObjectDescriptor", PE_CLASS_UNIV, PE_PRIM_ODE,
-
 	NULL
 };
 
-/*  */
-
-static char *
-modsym (char *module, char *id, char *prefix) {
+static char *modsym (char *module, char *id, char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
 			buf3[BUFSIZ];
@@ -3165,9 +2975,7 @@ modsym (char *module, char *id, char *prefix) {
 	return buffer;
 }
 
-
-static
-modsym_aux (char *name, char *bp) {
+static void modsym_aux (char *name, char *bp) {
 	char   c;
 
 	while (c = *name++)
@@ -3185,10 +2993,7 @@ modsym_aux (char *name, char *bp) {
 	*bp = 0;
 }
 
-/*  */
-
-static char *
-gensym (char *s, char *a) {
+static char *gensym (char *s, char *a) {
 	int     i;
 	char  *p;
 	char    buffer[BUFSIZ];
@@ -3224,23 +3029,19 @@ gensym (char *s, char *a) {
 }
 
 /* pepy compatible routines - you know how it is ... */
-int
-init_new_file()  {
+void init_new_file(void) {
 	;
 }
 
-int
-end_file()  {
+void end_file(void) {
 	;
 }
 
-static char *
-array (char *s, int flg) {
+static char *array (char *s, int flg) {
 	static char buf[BUFSIZ];
 	char	*p;
 
 	if (!flg) return s;
-
 	if (p = index (s, '[')) {
 		sprintf (buf, "%*.*s[1]", p - s, p - s, s);
 		return buf;
@@ -3248,10 +3049,7 @@ array (char *s, int flg) {
 	return s;
 }
 
-static void prime_default (yp, level)
-YP	yp;
-int	level;
-{
+static void prime_default (YP yp, int level) {
 	switch (yp -> yp_code) {
 	case YP_BOOL:
 		printf ("%*s%s = %d;\n", level * 4, "",
