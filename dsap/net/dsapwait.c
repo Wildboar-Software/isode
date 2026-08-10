@@ -45,10 +45,8 @@ extern char * RoErrString();
 #define DUMP_ERR 	"err"
 #endif
 
-static slack_watch_dog ();
+static void slack_watch_dog (char *where);
 extern char dsa_mode;
-
-/* ARGSUSED */
 
 int
 DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
@@ -80,8 +78,7 @@ DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
 	return (result);
 }
 
-static
-dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
+static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 	int op;
 	char * err;
 	int cc = 0;
@@ -136,7 +133,6 @@ dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 		ROPFREE (&(roi->roi_preject));
 		break;
 	}
-
 }
 
 int
@@ -1035,15 +1031,13 @@ slack_watch_dog_activate (int sd) {
 	watch_dog (watch_dog_where);
 }
 
-int
-watch_dog (char *where) {
+void watch_dog (char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
 	*/
 	if (watchdogfinal)
 		return;
-
 	if (dsa_mode) {
 		watch_dog_where = where;
 		signal (SIGALRM, watch_dog_activate);
@@ -1051,8 +1045,7 @@ watch_dog (char *where) {
 	}
 }
 
-static
-slack_watch_dog (char *where) {
+static void slack_watch_dog (char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
@@ -1060,7 +1053,6 @@ slack_watch_dog (char *where) {
 	*/
 	if (watchdogfinal)
 		return;
-
 	if (dsa_mode) {
 		watch_dog_where = where;
 		signal (SIGALRM, slack_watch_dog_activate);
@@ -1068,12 +1060,9 @@ slack_watch_dog (char *where) {
 	}
 }
 
-int
-watch_dog_aux (char *where, unsigned secs) {
-
+void watch_dog_aux (char *where, unsigned secs) {
 	if (watchdogfinal)
 		return;
-
 	if (dsa_mode) {
 		watch_dog_where = where;
 		signal (SIGALRM, watch_dog_activate);
@@ -1081,19 +1070,16 @@ watch_dog_aux (char *where, unsigned secs) {
 	}
 }
 
-int
-watch_dog_reset (void) {
+void watch_dog_reset (void) {
 	if (watchdogfinal)
 		return;
-
 	if (dsa_mode) {
 		signal (SIGALRM, SIG_IGN);
 		alarm ((unsigned) 0);
 	}
 }
 
-int
-watch_dog_final_reset (void) {
+void watch_dog_final_reset (void) {
 	if (dsa_mode) {
 		signal (SIGALRM, SIG_IGN);
 		alarm ((unsigned) 0);

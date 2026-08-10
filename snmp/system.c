@@ -94,8 +94,8 @@ int	offset;
 static struct sys_pair {
 	char   *s_name;
 	char   *s_text;
-	int	    (*s_getfnx)(OI oi, void *v, int offset);
-	int	    (*s_setfnx)(OI oi, void *v, int offset);
+	int	    (*s_getfnx)(OI oi, struct type_SNMP_VarBind *v, int offset);
+	int	    (*s_setfnx)(OI oi, struct type_SNMP_VarBind *v, int offset);
 }    pairs[] = {
 	"sysDescr",    sysDescr,	o_generic,	NULL,
 	"sysObjectID", sysObjectID, o_generic,	NULL,

@@ -79,7 +79,8 @@ struct interface {
 extern struct interface *ifs;
 
 
-int	set_interface (), sort_interface ();
+void set_interface (char *name, char *ava);
+int	sort_interface (void);
 
 /*  */
 

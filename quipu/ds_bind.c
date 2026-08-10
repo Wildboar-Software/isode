@@ -53,8 +53,7 @@ extern LLog * log_stat;
 int bind_window = 300; /* Tailorable timeout for credentials */
 int auth_bind = 0;
 
-int
-ds_bind_init (struct connection *cn) {
+int ds_bind_init (struct connection *cn) {
 	struct ds_bind_arg	* arg = &(cn->cn_start.cs_ds.ds_bind_arg);
 	struct ds_bind_arg	* result = &(cn->cn_start.cs_res);
 	struct ds_bind_error * error = &(cn->cn_start.cs_err);
@@ -486,8 +485,7 @@ bind_compare_result_wakeup (struct oper_act *on) {
 	oper_free(on);
 }
 
-int
-bind_compare_error_wakeup (struct oper_act *on) {
+void bind_compare_error_wakeup (struct oper_act *on) {
 	int errmsg = DSE_SV_DITERROR;
 	int errtype = DBE_TYPE_SERVICE;
 
@@ -538,8 +536,7 @@ bind_compare_error_wakeup (struct oper_act *on) {
 	oper_free(on);
 }
 
-int
-bind_compare_fail_wakeup (struct oper_act *on) {
+void bind_compare_fail_wakeup (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_fail_wakeup()"));
 
 	/*
@@ -571,8 +568,7 @@ bind_compare_fail_wakeup (struct oper_act *on) {
 	oper_free(on);
 }
 
-int
-do_ds_unbind (struct connection *conn) {
+void do_ds_unbind (struct connection *conn) {
 	struct stat st;
 #ifndef NO_STATS
 	char buff[LINESIZE];
@@ -604,13 +600,11 @@ static struct dn_seq * reject_prefix_list = NULLDNSEQ;
 static struct dn_seq * accept_prefix_list = NULLDNSEQ;
 static int reject_len;
 
-int
-reject_length (char *str) {
+void reject_length (char *str) {
 	reject_len = atoi (str);
 }
 
-int
-reject_prefix (char *str) {
+void reject_prefix (char *str) {
 	struct dn_seq * dsa, *loop;
 
 	if (( dsa=str2dnseq(str)) == NULLDNSEQ) {
@@ -627,9 +621,7 @@ reject_prefix (char *str) {
 	}
 }
 
-
-int
-accept_prefix (char *str) {
+void accept_prefix (char *str) {
 	struct dn_seq * dsa, *loop;
 
 	if (( dsa=str2dnseq(str)) == NULLDNSEQ) {
@@ -646,10 +638,8 @@ accept_prefix (char *str) {
 	}
 }
 
-static
-check_prefix_list (DN dn) {
+static int check_prefix_list (DN dn) {
 	if (accept_prefix_list) {
-
 		if (check_dnseq_prefix (accept_prefix_list,dn) == OK) {
 			if (check_dnseq_prefix (reject_prefix_list,dn) == OK)
 				return FALSE;
@@ -657,15 +647,12 @@ check_prefix_list (DN dn) {
 		}
 		return FALSE;
 	}
-
 	if (check_dnseq_prefix (reject_prefix_list,dn) == OK)
 		return FALSE;
-
 	return TRUE;
 }
 
-static
-check_dn_length (DN dn) {
+static int check_dn_length (DN dn) {
 	int i = 0;
 	DN tmp;
 
@@ -677,5 +664,3 @@ check_dn_length (DN dn) {
 
 	return TRUE;
 }
-
-

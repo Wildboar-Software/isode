@@ -550,7 +550,7 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 /*              else next colour
 */
 
-void undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD)
+int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD)
 {
 	int black_length;
 	int next_colour;
@@ -621,9 +621,6 @@ void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 	--code_lineptr->run_pos;     /* don't count this as a change */
 }
 
-
-
-
 /* ROUTINE:     undo_horiz_mode
 /*
 /* SYNOPSIS:    decodes a section recognised as horizontal mode.
@@ -635,8 +632,7 @@ void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 /*             -1 if too many sequencing errors
 /*             -2 if resynch performed
 */
-
-void undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
+int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 {
 	run_type run;
 
@@ -669,14 +665,12 @@ void undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 	return (0);
 }
 
-
 /* ROUTINE:     undo_vert_mode
 /*
 /* SYNOPSIS:    decodes vertical mode
 /*
 /* DESCRIPTION: Find b1, the write 1's or 0's upto it allowing for the offset.
 */
-
 void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
 {
 	int   length;
@@ -685,8 +679,6 @@ void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char off
 	put_run (code_lineptr, length , colour);
 	colour = 1 - colour;
 }
-
-
 
 /* ROUTINE:     goto_b1
  *
@@ -723,14 +715,11 @@ void goto_b1 (bit_string *lineptr)
 			lineptr->run_pos += 2;
 }
 
-
-
 /* ROUTINE:     resync
 /*
 /* SYNOPSIS:    resynchronizes sequencing by locating the next EOL
 /*
 */
-
 static void resync (bit_string *lineptr)
 {
 	int i;
@@ -745,13 +734,10 @@ static void resync (bit_string *lineptr)
 	}
 }
 
-
-
 /* ROUTINE:     put_run                                                 */
 /*                                                                      */
 /* SYNOPSIS:    writes a run_length to the indicated bit_string.        */
 /*                                                                      */
-
 void put_run (bit_string *lineptr, int length, char xcolour)
 {
 	int i;
@@ -823,14 +809,10 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 	*lineptr->run_pos++ = position;
 }
 
-
-
-
 /* ROUTINE:     set_doutput;
 /*
 /* SYNOPSIS:    Initialises the output buffers
 */
-
 void set_doutput (bit_string *lineptr)
 {
 	lineptr->dbuf = lineptr->dbuf_top;
@@ -841,7 +823,6 @@ void set_doutput (bit_string *lineptr)
 /*
 /* SYNOPSIS:    flush the output buffer;
 */
-
 void flush_doutput (bit_string *lineptr)
 {
 	int count = 0;
@@ -853,13 +834,10 @@ void flush_doutput (bit_string *lineptr)
 	photo_white (count);
 }
 
-
-
 /* ROUTINE:     set_dinput;
 /*
 /* SYNOPSIS:    Initialises the input buffers
 */
-
 int set_dinput (bit_string *lineptr, int length)
 {
 	unsigned char cbyte;
@@ -888,7 +866,5 @@ int set_dinput (bit_string *lineptr, int length)
 
 	lineptr->pos = *lineptr->dbuf++;
 	lineptr->mask = BIT_MASK;
-
 	return (0);
 }
-

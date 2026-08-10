@@ -47,19 +47,19 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/audio.c,v 9.0 1
 
 /* Use the {FILE} mechanism to pull in the sound files */
 
-extern r_octprint();
+extern void r_octprint(PS ps, struct qbuf *qb, int format);
 extern PE r_octenc();
 extern struct qbuf * r_octsdec();
 extern struct qbuf * r_octparse();
 extern struct qbuf * qb_cpy();
-extern qb_cmp();
+extern int qb_cmp(struct qbuf *qb1, struct qbuf *qb2);
 extern int file_attr_length;
 
-audio_print (ps,qb,format)
-PS ps;
-struct qbuf * qb;
-int format;
-{
+void audio_print (
+	PS ps,
+	struct qbuf * qb,
+	int format
+) {
 	int     pd[2];
 	char    buffer [LINESIZE];
 	char	execvector [LINESIZE];

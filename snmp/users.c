@@ -23,10 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/users.c,v 9.0 1992/06/
  *    this agreement.
  *
  */
-
-
-/*    USERS */
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -34,22 +30,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/users.c,v 9.0 1992/06/
 #include "objects.h"
 #include "logger.h"
 
-
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
-
 
 extern	int	quantum;
 
 void	advise (int, char *, char *, ...);
 
-/*  */
-
 #include <pwd.h>
 #include <grp.h>
 #include "sys.file.h"
 #include <sys/stat.h>
-
 
 struct pw {
 #define	PW_SIZE	8
@@ -71,7 +62,6 @@ static	int	pw_touched = 0;
 static	int	pw_fd = NOTOK;
 static	struct stat pw_st;
 
-
 struct gr {
 #define	GR_SIZE	8
 	unsigned int  gr_instance[GR_SIZE];
@@ -92,7 +82,6 @@ static	int	gr_touched = 0;
 static	int	gr_fd = NOTOK;
 static	struct stat gr_st;
 
-
 struct gu {
 #define	GU_SIZE	(PW_SIZE + 1 + GR_SIZE)
 	unsigned int  gu_instance[GU_SIZE];
@@ -109,26 +98,15 @@ struct gu {
 
 static	struct gu *gu_head = NULL;
 
-
 static char   *mycrypt ();
+static void free_pw (void), free_gr (void);
 
-static	free_pw (), free_gr ();
-
-
-/*  */
-
-static int  pw_compar (a, b)
-struct pw *a,
-		   *b;
-{
+static int  pw_compar (struct pw *a, struct pw *b) {
 	return elem_cmp (a -> pw_instance, a -> pw_insize,
 					 b -> pw_instance, b -> pw_insize);
 }
 
-
-static int  get_pw (offset)
-int	offset;
-{
+static int get_pw (int offset) {
 	int    i,
 		   j;
 	int	    cc;
@@ -269,9 +247,7 @@ out:
 }
 
 
-static	fill_pw (pwp)
-struct passwd *pwp;
-{
+static void fill_pw (struct passwd *pwp) {
 	char  *cp,
 		  *dp;
 
@@ -306,7 +282,7 @@ struct passwd *pwp;
 }
 
 
-static	free_pw () {
+static void free_pw (void) {
 	struct pw *pw;
 
 	if (pw_head) {
@@ -330,25 +306,17 @@ static	free_pw () {
 					free (pwp -> pw_shell);
 			}
 		}
-
 		free ((char *) pw_head), pw_head = NULL;
 	}
 	if (pw_data)
 		free (pw_data), pw_data = NULL;
-
 	if (pw_fd != NOTOK) {
 		flock (pw_fd, LOCK_UN);
 		close (pw_fd), pw_fd = NOTOK;
 	}
 }
 
-/*  */
-
-static struct pw *get_pwent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct pw *get_pwent (unsigned int *ip, int len, int isnext) {
 	struct pw *pw;
 
 	for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
@@ -363,24 +331,15 @@ int	isnext;
 		case 1:
 			return (isnext ? pw : NULL);
 		}
-
 	return NULL;
 }
 
-/*  */
-
-static int  gr_compar (a, b)
-struct gr *a,
-		   *b;
-{
+static int gr_compar (struct gr *a, struct gr *b) {
 	return elem_cmp (a -> gr_instance, a -> gr_insize,
 					 b -> gr_instance, b -> gr_insize);
 }
 
-
-static int  get_gr (offset)
-int	offset;
-{
+static int get_gr (int offset) {
 	int    i,
 		   j;
 	int	    cc;
@@ -522,15 +481,10 @@ out:
 }
 
 
-static	fill_gr (grp)
-struct group *grp;
-{
-	char *cp,
-		 *dp;
-
+static void fill_gr (struct group *grp) {
+	char *cp, *dp;
 	if (dp = index (cp = grp -> gr_name + strlen (grp -> gr_name) + 1, '\n'))
 		*dp = 0;
-
 	if (!(dp = index (grp -> gr_passwd = cp, ':')))
 		return;
 	*dp++ = 0;
@@ -538,15 +492,12 @@ struct group *grp;
 }
 
 
-static	free_gr () {
+static void free_gr (void) {
 	struct gr *gr;
-
 	if (gr_head) {
 		struct gu *gu;
-
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			struct group *grp = &gr -> gr_gr;
-
 			if (gr -> gr_malloc) {
 				if (grp -> gr_name)
 					free (grp -> gr_name);
@@ -556,37 +507,26 @@ static	free_gr () {
 			if (grp -> gr_mem)
 				free ((char *)  grp -> gr_mem);
 		}
-
 		free ((char *) gr_head), gr_head = NULL;
-
 		if (gu_head) {
 			for (gu = gu_head; gu -> gu_user; gu++)
 				if (gu -> gu_malloc) {
 					if (gu -> gu_user)
 						free (gu -> gu_user);
 				}
-
 			free ((char *) gu_head), gu_head = NULL;
 		}
 	}
 	if (gr_data)
 		free (gr_data), gr_data = NULL;
-
 	if (gr_fd != NOTOK) {
 		flock (gr_fd, LOCK_UN);
 		close (gr_fd), gr_fd = NOTOK;
 	}
 }
 
-/*  */
-
-static struct gr *get_grent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct gr *get_grent (unsigned int *ip, int len, int isnext) {
 	struct gr *gr;
-
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		switch (elem_cmp (gr -> gr_instance, gr -> gr_insize, ip, len)) {
 		case 0:
@@ -603,28 +543,16 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
-
-static int  gu_compar (a, b)
-struct gu *a,
-		   *b;
-{
+static int gu_compar (struct gu *a, struct gu *b) {
 	return elem_cmp (a -> gu_instance, a -> gu_insize,
 					 b -> gu_instance, b -> gu_insize);
 }
 
-
-static int  gm_compar (a, b)
-char  **a,
-	  **b;
-{
+static int gm_compar (char **a, char **b) {
 	return strcmp (*a, *b);
 }
 
-
-static int  get_gu (offset)
-int	offset;
-{
+static int get_gu (int offset) {
 	int     i;
 	char   *cp,
 		   **ap;
@@ -722,13 +650,7 @@ again:
 	return OK;
 }
 
-/*  */
-
-static struct gu *get_guent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct gu *get_guent (unsigned int *ip, int len, int isnext) {
 	struct gu *gu;
 
 	if (!gu_head)
@@ -749,8 +671,6 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
-
 #define	userName	0
 #define	userPasswd	1
 #define	userID		2
@@ -763,11 +683,7 @@ int	isnext;
 #define	userStatus	9
 
 
-static int  o_user (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -930,13 +846,7 @@ try_again:
 	}
 }
 
-/*  */
-
-static int  s_user (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar,
 			result;
 	int    i;
@@ -1223,19 +1133,12 @@ do_string:
 	}
 }
 
-/*  */
-
 #define	groupName	0
 #define	groupPasswd	1
 #define	groupID		2
 #define	groupStatus	3
 
-
-static int  o_group (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int o_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -1347,13 +1250,7 @@ try_again:
 	}
 }
 
-/*  */
-
-static int  s_group (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar,
 			result;
 	int    i;
@@ -1524,16 +1421,9 @@ bad_value:
 	}
 }
 
-/*  */
-
 #define	grUserStatus	0
 
-
-static int  o_gruser (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -1614,13 +1504,7 @@ int	offset;
 	}
 }
 
-/*  */
-
-static int  s_gruser (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip;
@@ -1751,10 +1635,7 @@ static char itoa64[] =
 long	random ();
 char   *crypt ();
 
-
-static char *mycrypt (s)
-char   *s;
-{
+static char *mycrypt (char *s) {
 	long    v;
 	char    salt[3];
 
@@ -1766,9 +1647,7 @@ char   *s;
 	return crypt (s, salt);
 }
 
-/*  */
-
-int	init_users () {
+void init_users (void) {
 	OT	    ot;
 
 	if (ot = text2obj ("userName"))
@@ -1833,49 +1712,36 @@ int	init_users () {
 					ot -> ot_info = (caddr_t) grUserStatus;
 }
 
-/*  */
-
-static int  pw_sort (a, b)
+static int pw_sort (a, b)
 struct pw *a,
 		   *b;
 {
 	int	    i;
-
 	if (a -> pw_pw.pw_uid == 0 || b -> pw_pw.pw_uid == 0) {
 		if (strcmp (a -> pw_pw.pw_name, "root") == 0)
 			return (-1);
 		if (strcmp (b -> pw_pw.pw_name, "root") == 0)
 			return (1);
 	}
-
 	if (i = a -> pw_pw.pw_uid - b -> pw_pw.pw_uid)
 		return i;
 	return strcmp (a -> pw_pw.pw_name, b -> pw_pw.pw_name);
 }
 
-
-static int  gr_sort (a, b)
-struct gr *a,
-		   *b;
-{
+static int gr_sort (struct gr *a, struct gr *b) {
 	int	    i;
-
 	if (a -> gr_gr.gr_gid == 0 || b -> gr_gr.gr_gid == 0) {
 		if (strcmp (a -> gr_gr.gr_name, "wheel") == 0)
 			return (-1);
 		if (strcmp (b -> gr_gr.gr_name, "wheel") == 0)
 			return (1);
 	}
-
 	if (i = a -> gr_gr.gr_gid - b -> gr_gr.gr_gid)
 		return i;
 	return strcmp (a -> gr_gr.gr_name, b -> gr_gr.gr_name);
 }
 
-
-int	sync_users (cor)
-integer	cor;
-{
+void sync_users (int cor) {
 	int	    invalid,
 			iserr,
 			ngr,
@@ -1886,7 +1752,6 @@ integer	cor;
 	struct gr *gr;
 	struct gu *gu;
 	FILE   *fp;
-
 
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:

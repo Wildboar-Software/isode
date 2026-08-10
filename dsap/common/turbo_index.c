@@ -853,7 +853,7 @@ int turbo_isoptimized(AttributeType attr)
  * attribute to be optimized during loading.
  */
 
-int turbo_optimize (char *attr) {
+void turbo_optimize (char *attr) {
 	AttributeType	a;
 
 	if ( (a = str2AttrT( attr )) == NULLAttrT ) {

@@ -131,4 +131,3 @@ QCardinal request_id;
 	extern int dsap_ad;
 	return dsap_ad;
 } /* get_association_descriptor */
-

@@ -62,7 +62,6 @@ static int boundOnce = FALSE;
 
 int
 tryBackup () {
-
 	if (triedBackup == TRUE)
 		return NOTOK;
 	if (backup_dsa_address == NULLCP)
@@ -193,16 +192,14 @@ wait_bind_to_ds (int assoc, int wantToBlock) {
 	return NOTOK; /* exit this way if can't talk to access point(s) */
 } /* bind_to_ds */
 
-int
-rebind () {
+int rebind () {
 	if (boundToDSA == FALSE)
 		return(de_bind(TRUE));
 	else
 		return OK;
 }
 
-int
-de_bind (int wantToBlock) {
+int de_bind (int wantToBlock) {
 	static int assoc;
 
 	if (bindStarted == FALSE) {
@@ -217,8 +214,7 @@ de_bind (int wantToBlock) {
 	return OK;
 }
 
-int
-de_unbind () {
+void de_unbind () {
 	if (deLogLevel)
 		ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
 	ds_unbind();

@@ -23,10 +23,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/aetufn.c,v 9.0 
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "quipu/ufn.h"
 #include "quipu/util.h"
 #include "quipu/read.h"
@@ -40,15 +40,14 @@ extern char * dn2str();
 extern char * dn2ufn();
 extern struct dn_seq *dn_seq_push ();
 
-static	set_el ();
+static void set_el (void);
 
-/* ARGSUSED */
-static DNS ufn_interact (dns,dn,s)
-DNS dns;
-DN dn;
-char * s;
-{
-	char    buf[LINESIZE];
+static DNS ufn_interact (
+	DNS dns,
+	DN dn,
+	char * s
+) {
+	char buf[LINESIZE];
 	DNS result = NULLDNS;
 	DNS tmp;
 
@@ -328,8 +327,7 @@ all_done:
 }
 
 
-static
-set_el (void) {
+static void set_el (void) {
 	envlist  en,
 			 *ep;
 	DN	    local_dn,
@@ -399,18 +397,13 @@ done:
 	dn_free (c_dn);
 }
 
-
-int
-set_lookup_ufn (
-	char flag	/* if TRUE always unbind */
-) {
+/* if flag is TRUE always unbind */
+void set_lookup_ufn (char flag) {
 	if ((unbind = flag) && bound) {
 		bound = FALSE;
 		ds_unbind ();
 	}
-
 	acsap_lookup = name2value_ufn;
-
 	if (el == NULLEL)
 		set_el ();
 }

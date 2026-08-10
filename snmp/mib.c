@@ -88,15 +88,13 @@ struct	timeval	my_boottime;
 
 OID	nullSpecific = NULLOID;
 
-/*  */
-
 #ifdef __NeXT__
 #define	VMUNIX	"/mach"
 #else
 #define	VMUNIX	"/vmunix"
 #endif
 
-init_mib () {
+void init_mib (void) {
 #ifndef LINUX
 	struct nlist *nz;
 
@@ -116,9 +114,7 @@ init_mib () {
 		adios (NULLCP, "text2oid (\"0.0\") failed!");
 }
 
-/*  */
-
-fin_mib () {
+void fin_mib (void) {
 	OT	    ot;
 
 	for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next)
@@ -134,12 +130,7 @@ fin_mib () {
 	}
 }
 
-/*  */
-
-set_variable (name, newvalue)
-char   *name,
-	   *newvalue;
-{
+void set_variable (char *name, char *newvalue) {
 	caddr_t  value;
 	OT	    ot = text2obj (name);
 	OS	    os;

@@ -45,40 +45,30 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/qos.c,v 9.0 199
 
 static int  CMD_SRCH ();
 
-static
-dsaQoS_free (struct dsaQoS *a) {
+static void dsaQoS_free (struct dsaQoS *a) {
 	if (!a)
 		return;
-
 	if (a -> dsa_description)
 		free (a -> dsa_description);
-
 	free ((char *) a);
 }
 
-static struct dsaQoS *
-dsaQoS_cpy (struct dsaQoS *a) {
+static struct dsaQoS *dsaQoS_cpy (struct dsaQoS *a) {
 	struct dsaQoS *b;
-
 	b = (struct dsaQoS *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
-
 	b -> dsa_quality = a -> dsa_quality;
 	if (a -> dsa_description)
 		b -> dsa_description = strdup (a -> dsa_description);
-
 	return b;
 }
 
-static
-dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b) {
+static int dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b) {
 	int	    res;
-
 	if (!a)
 		return (b ? (-1) : 0);
 	else if (!b)
 		return 1;
-
 	if (res = b -> dsa_quality - a -> dsa_quality)
 		return (res > 0 ? 1 : -1);
 	return lexequ (a -> dsa_description, b -> dsa_description);
@@ -93,25 +83,18 @@ static CMD_TABLE dsaQoS_tab[] = {
 	NULL,		-1
 };
 
-static	dsaQoS_print (ps, a, format)
-PS	ps;
-struct dsaQoS *a;
-int	format;
-{
+static void dsaQoS_print (PS ps, struct dsaQoS *a, int format) {
 	char   *ptr = rcmd_srch (a -> dsa_quality, dsaQoS_tab);
-
 	if (format == READOUT)
 		ps_printf (ps, "%s", ptr ? ptr : "UNKNOWN !!!");
 	else
 		ps_printf (ps, "%s", ptr ? ptr : "DEFUNCT");
-
 	if (a -> dsa_description)
 		ps_printf (ps, format == READOUT ? " (%s)" : " # %s",
 				   a -> dsa_description);
 }
 
-static struct dsaQoS *
-str2dsaQoS (char *str) {
+static struct dsaQoS *str2dsaQoS (char *str) {
 	int	    quality;
 	char   *ptr;
 	struct dsaQoS *a;
@@ -137,8 +120,7 @@ str2dsaQoS (char *str) {
 	return a;
 }
 
-static PE dsaQoS_enc (a)
-struct dsaQoS *a;
+static PE dsaQoS_enc (struct dsaQoS *a)
 {
 	PE	    pe;
 
@@ -147,8 +129,7 @@ struct dsaQoS *a;
 	return pe;
 }
 
-static struct dsaQoS *dsaQoS_dec (pe)
-PE	pe;
+static struct dsaQoS *dsaQoS_dec (PE pe)
 {
 	struct dsaQoS *a;
 
@@ -158,87 +139,64 @@ PE	pe;
 	return a;
 }
 
-static
-attrQoS_free (struct attrQoS *a) {
+static void attrQoS_free (struct attrQoS *a) {
 	if (!a)
 		return;
 
 	free ((char *) a);
 }
 
-static
-ditQoS_free (struct ditQoS *a) {
-	struct attrsQoS *p,
-			   *q;
-
+static void ditQoS_free (struct ditQoS *a) {
+	struct attrsQoS *p, *q;
 	if (!a)
 		return;
-
 	if (a -> dit_default)
 		attrQoS_free (a -> dit_default);
-
 	for (p = a -> dit_attrs; p; p = q) {
 		q = p -> dit_next;
-
 		AttrT_free (p -> dit_type);
 		attrQoS_free (p -> dit_quality);
 		free ((char *) p);
 	}
-
 	if (a -> dit_description)
 		free (a -> dit_description);
-
 	free ((char *) a);
 }
 
-static struct attrQoS *
-attrQoS_cpy (struct attrQoS *a) {
+static struct attrQoS *attrQoS_cpy (struct attrQoS *a) {
 	struct attrQoS *b;
-
 	b = (struct attrQoS *) smalloc (sizeof *b);
 	*b = *a;	/* struct copy */
-
 	return b;
 }
 
-static struct ditQoS *
-ditQoS_cpy (struct ditQoS *a) {
+static struct ditQoS *ditQoS_cpy (struct ditQoS *a) {
 	struct ditQoS *b;
-	struct attrsQoS  *p,
-			   **q,
-			   *r;
+	struct attrsQoS  *p, **q, *r;
 
 	b = (struct ditQoS *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
-
 	b -> dit_namespace = a -> dit_namespace;
-
 	b -> dit_default = attrQoS_cpy (a -> dit_default);
-
 	q = &b -> dit_attrs;
 	for (r = a -> dit_attrs; r; r = r -> dit_next) {
 		p = (struct attrsQoS *) smalloc (sizeof *p);
 		*q = p,	q = &p -> dit_next, *q = NULL;
-
 		p -> dit_type = AttrT_cpy (r -> dit_type);
 		p -> dit_quality = attrQoS_cpy (r -> dit_quality);
 	}
-
 	if (a -> dit_description)
 		b -> dit_description = strdup (a -> dit_description);
-
 	return b;
 }
 
-static
-attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
+static int attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
 	int	    res;
 
 	if (!a)
 		return (b ? (-1) : 0);
 	else if (!b)
 		return 1;
-
 	if (res = b -> attr_level - a -> attr_level)
 		return (res > 0 ? 1 : -1);
 	if (res = b -> attr_completeness - a -> attr_completeness)
@@ -246,22 +204,18 @@ attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
 	return 0;
 }
 
-static
-ditQoS_cmp (struct ditQoS *a, struct ditQoS *b) {
+static int ditQoS_cmp (struct ditQoS *a, struct ditQoS *b) {
 	int	    res;
-	struct attrsQoS *p,
-			   *r;
+	struct attrsQoS *p, *r;
 
 	if (!a)
 		return (b ? (-1) : 0);
 	else if (!b)
 		return 1;
-
 	if (res = b -> dit_namespace - a -> dit_namespace)
 		return (res > 0 ? 1 : -1);
 	if (res = attrQoS_cmp (a -> dit_default, b -> dit_default))
 		return res;
-
 	for (p = a -> dit_attrs, r = b -> dit_attrs;
 			p && r;
 			p = p -> dit_next, r = r -> dit_next)
@@ -273,7 +227,6 @@ ditQoS_cmp (struct ditQoS *a, struct ditQoS *b) {
 			return (-1);
 	} else if (!r)
 		return 1;
-
 	return lexequ (a -> dit_description, b -> dit_description);
 }
 
@@ -296,10 +249,7 @@ static CMD_TABLE attrQoS_tab[] = {
 	NULL,		-1
 };
 
-static	attrQoS_print (ps, a, format)
-PS	ps;
-struct attrQoS *a;
-int	format;
+static void attrQoS_print (PS ps, struct attrQoS *a, int format)
 {
 	char   *p = rcmd_srch (a -> attr_level, attrQoS_tab),
 			*q = rcmd_srch (a -> attr_completeness, ditQoS_tab);
@@ -310,10 +260,7 @@ int	format;
 			   p ? p : "UNKNOWN !!!", q ? q : "UNKNOWN !!!");
 }
 
-static	ditQoS_print (ps, a, format)
-PS	ps;
-struct ditQoS *a;
-int	format;
+static void ditQoS_print (PS ps, struct ditQoS *a, int format)
 {
 	char   *ptr = rcmd_srch (a -> dit_namespace, ditQoS_tab);
 	struct attrsQoS  *p;
@@ -347,13 +294,10 @@ int	format;
 	}
 }
 
-static struct attrQoS *
-str2attrQoS (char *str) {
-	int	    level,
-			completeness;
+static struct attrQoS *str2attrQoS (char *str) {
+	int	    level, completeness;
 	char   *ptr;
 	struct attrQoS *a;
-
 	if (!(ptr = index (str, '+'))) {
 		parse_error ("Missing '+' in AttributeQuality %s", str);
 		return NULL;
@@ -361,22 +305,17 @@ str2attrQoS (char *str) {
 	*ptr = 0;
 	level = cmd_srch (str, attrQoS_tab);
 	*ptr = '+';
-
 	if (level == -1) {
 		parse_error ("unknown maintenance-level in AttributeQuality %s", str);
 		return NULL;
 	}
-
 	if ((completeness = cmd_srch (SkipSpace (ptr + 1), ditQoS_tab)) == -1) {
-		parse_error ("unknown attribute-completeness in AttributeQuality %s",
-					 str);
+		parse_error ("unknown attribute-completeness in AttributeQuality %s", str);
 		return NULL;
 	}
-
 	a = (struct attrQoS *) smalloc (sizeof *a);
 	a -> attr_level = level;
 	a -> attr_completeness = completeness;
-
 	return a;
 }
 
@@ -386,8 +325,7 @@ str2ditQoS (char *str) {
 	char   *ptr,
 		   *qtr;
 	struct ditQoS *a;
-	struct attrsQoS  *p,
-			   **q;
+	struct attrsQoS *p, **q;
 
 	a = (struct ditQoS *) smalloc (sizeof *a);
 	bzero ((char *) a, sizeof *a);
@@ -403,15 +341,13 @@ out:
 	a -> dit_namespace = cmd_srch (str, ditQoS_tab);
 	*ptr = '#';
 	if (a -> dit_namespace == -1) {
-		parse_error ("unknown namespace-completeness in DataQualitySyntax %s",
-					 str);
+		parse_error ("unknown namespace-completeness in DataQualitySyntax %s", str);
 		goto out;
 	}
 
 	qtr = SkipSpace (ptr + 1);
 	if (!(ptr = index (qtr, '#'))) {
-		parse_error ("missing defaultAttributeQuality in DataQualitySyntax %s",
-					 str);
+		parse_error ("missing defaultAttributeQuality in DataQualitySyntax %s", str);
 		goto out;
 	}
 	*ptr = 0;
@@ -481,29 +417,22 @@ out2:
 	return a;
 }
 
-static PE ditQoS_enc (a)
-struct ditQoS *a;
+static PE ditQoS_enc (struct ditQoS *a)
 {
 	PE	    pe;
-
 	encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
-
 	return pe;
 }
 
-static struct ditQoS *ditQoS_dec (pe)
-PE	pe;
+static struct ditQoS *ditQoS_dec (PE pe)
 {
 	struct ditQoS *a;
-
 	if (decode_Thorn_DataQualitySyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
 		return NULL;
-
 	return a;
 }
 
-int
-QoS_syntax (void) {
+void QoS_syntax (void) {
 	add_attribute_syntax ("DSAQualitySyntax",
 						  dsaQoS_enc,
 						  dsaQoS_dec,
@@ -526,9 +455,7 @@ QoS_syntax (void) {
 
 
 #undef	cmd_srch
-static int  CMD_SRCH (str, cmd)
-char   *str;
-CMD_TABLE *cmd;
+static int  CMD_SRCH (char *str, CMD_TABLE *cmd)
 {
 	int	    result;
 	char    c;

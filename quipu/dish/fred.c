@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "manifest.h"
 #include "sys.file.h"
@@ -90,21 +91,21 @@ static AttributeType t_slave;
 static AttributeType t_surname;
 static AttributeType t_title;
 
-
-static Entry	fredentry ();
-Attr_Sequence fred_as (), fred_full ();
+int showfred (DN mydn, char islong, char subdisplay);
+static Entry fredentry (DN adn, char islong);
+Attr_Sequence fred_as (void), fred_full (void);
 
 static struct dn_seq *interact ();
 
-static	do_dm_match ();
-static	fred_children ();
-static	done_match ();
-static  int dns_sort ();
-static	do_ufn_match ();
-static	build_ufnrc ();
-static	do_expand ();
-static	fred_init ();
-static  showfredattr ();
+static void do_dm_match (int n, char **vec);
+static int fred_children (DN parentdn, struct subordinate *ptr, int prob);
+static void done_match (struct dn_seq *dns, char *fancy);
+static int dns_sort (struct dn_seq **dns, int i);
+static void do_ufn_match (int n, char **vec);
+static void build_ufnrc (int argc, char **argv);
+static void do_expand (int n, char **vec);
+static void fred_init (void);
+static void showfredattr (AttributeValue av);
 
 Filter	joinfilter (), ocfilter (), strfilter ();
 PE	grab_pe ();
@@ -113,8 +114,7 @@ struct dn_seq *dn_seq_push ();
 
 /*    FRED BACK-END */
 
-int
-call_fred (int argc, char **argv) {
+void call_fred (int argc, char **argv) {
 	static int did_ufnas = 0;
 
 	if (argc < 2)
@@ -189,10 +189,7 @@ static struct dn_seq *dm2dn_seq_aux ();
     	strfilter ((at), (cp), index ((cp), '*') ? FILTERITEM_SUBSTRINGS \
 						 : FILTERITEM_EQUALITY)
 
-/*  */
-
-static
-do_dm_match (int n, char **vec) {
+static void do_dm_match (int n, char **vec) {
 	int	    seqno;
 	char   *cp,
 		   mbox[BUFSIZ];
@@ -364,27 +361,17 @@ free_filter:
 
 /*  */
 
-static struct dn_seq *
-dm2dn_seq (char *dm) {
+static struct dn_seq *dm2dn_seq (char *dm) {
 	char *dp;
-
 	for (dp = dm; *dp; dp++)
 		if (isupper (*dp))
 			*dp = tolower (*dp);
-
 	dlevel = 0;
 	dsa_status = OK;
-
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
 }
 
-/*  */
-
-static struct dn_seq *dm2dn_seq_aux (dm, dn, dlist)
-char   *dm;
-DN	dn;
-struct dn_seq *dlist;
-{
+static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 	char   *dp;
 	struct ds_search_arg search_arg;
 	struct ds_search_arg *sa = &search_arg;
@@ -392,55 +379,42 @@ struct dn_seq *dlist;
 	struct ds_search_result *sr = &search_result;
 	struct DSError error;
 	struct DSError *se = &error;
-
 	bzero ((char *) sa, sizeof *sa);
-
 	sa -> sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	sa -> sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	sa -> sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
-
 	sa -> sra_baseobject = dn;
 	sa -> sra_subset = SRA_ONELEVEL;
 	sa -> sra_searchaliases = FALSE;
-
 	sa -> sra_eis.eis_allattributes = FALSE;
 	sa -> sra_eis.eis_select = fred_as ();
 	sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 	dp = dm;
 	for (;;) {
 		int	    i;
 		EntryInfo  *ptr;
 		s_filter *fi;
-
 		if ((dsa_status = rebind ()) != OK)
 			return dlist;
-
 		if ((i = strlen (dp)) < dlevel)
 			break;
-
 		sa -> sra_filter = fi = filter_alloc ();
-
 		bzero ((char *) fi, sizeof *fi);
 		fi -> flt_type = FILTER_ITEM;
 		fi -> FUITEM.fi_type = FILTERITEM_EQUALITY;
 		if ((fi -> FUITEM.UNAVA.ava_type = t_domain) == NULL)
 			fatal (-100, "associatedDomain: invalid attribute type");
 		fi -> FUITEM.UNAVA.ava_value = str2AttrV (dp, t_domain -> oa_syntax);
-
 		while (ds_search (sa, se, sr) != DS_OK) {
 			if (dish_error (OPT, se) == 0) {
 				dsa_status = NOTOK;
 				goto free_filter;
 			}
-
 			sa -> sra_baseobject =
 				se -> ERR_REFERRAL.DSE_ref_candidates -> cr_name;
 		}
-
 		if (sr -> srr_correlated != TRUE)
 			correlate_search_results (sr);
-
 		if (sr -> CSR_entries == NULLENTRYINFO) {
 			filter_free (sa -> sra_filter);
 			if (dp = index (dp, '.'))
@@ -449,17 +423,14 @@ struct dn_seq *dlist;
 				break;
 			continue;
 		}
-
 		for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next)
 			cache_entry (ptr, sa -> sra_eis.eis_allattributes,
 						 sa -> sra_eis.eis_infotypes);
-
 		if (i > dlevel) {
 			dlevel = i;
 			if (dlist)
 				dn_seq_free (dlist), dlist = NULLDNSEQ;
 		}
-
 		if (i == dlevel)
 			for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
 				struct dn_seq *dprev = dlist;
@@ -471,7 +442,6 @@ struct dn_seq *dlist;
 				else if (i < dlevel)
 					break;
 			}
-
 		dn_free (sr -> CSR_object);
 		entryinfo_free (sr -> CSR_entries, 0);
 		crefs_free (sr -> CSR_cr);
@@ -480,58 +450,40 @@ free_filter:
 		filter_free (sa -> sra_filter);
 		break;
 	}
-
 	return dlist;
 }
-
-/*    EXPAND SUPPORT */
 
 static struct dn_seq	*expand_full (),
 						*expand_partial ();
 
-/*  */
-
-static
-do_expand (int n, char **vec) {
+static void do_expand (int n, char **vec) {
 	int	    complete;
 	DN	    dn;
 	struct dn_seq *result;
-
 	if (n > 0 && strcmp (*vec, "-full") == 0) {
 		n--, vec++;
 		fred_long = TRUE;
 	} else
 		fred_long = FALSE;
-
 	if (n != 1) {
 		Usage ("fred");
 		return;
 	}
-
 	dn = NULLDN;
 	if (strcmp (*vec, "@") && (dn = str2dn (*vec)) == NULLDN) {
 		ps_printf (OPT, "Bad DN: %s", *vec);
 		return;
 	}
-
 	result = fred_long ? expand_full (dn, &complete)
 			 : expand_partial (dn, &complete);
-
 	dn_free (dn);
-
 	if (result == NULL)
 		return;
-
 	fred_list = TRUE;
 	done_match (result, complete ? "5" : "3");
 }
 
-/*  */
-
-static struct dn_seq *expand_full (dn, complete)
-DN	dn;
-int    *complete;
-{
+static struct dn_seq *expand_full (DN dn, int *complete) {
 	struct ds_list_arg list_arg;
 	struct ds_list_arg *la = &list_arg;
 	struct ds_list_result list_result;
@@ -589,19 +541,12 @@ int    *complete;
 
 		result = dn_seq_push (adn, result);
 	}
-
 	dn_free (adn);
-
 	subords_free (lr -> lsr_subordinates);
-
 	return result;
 }
 
-/*  */
-
-static struct dn_seq *expand_partial (dn, complete)
-DN	dn;
-int    *complete;
+static struct dn_seq *expand_partial (DN dn, int *complete)
 {
 	struct ds_search_arg search_arg;
 	struct ds_search_arg *sa = &search_arg;
@@ -670,18 +615,12 @@ int    *complete;
 free_filter:
 	;
 	filter_free (sa -> sra_filter);
-
 	return result;
 }
 
-/*    UFNRC SUPPORT */
-
 static	envlist myel = NULLEL;
 
-/*  */
-
-static
-build_ufnrc (int argc, char **argv) {
+static void build_ufnrc (int argc, char **argv) {
 	envlist	el;
 	envlist  en,
 			 *ep;
@@ -752,8 +691,6 @@ losing:
 }
 
 
-/*    UFN SUPPORT */
-
 #ifndef	SOCKETS
 extern	char	search_result;
 #endif
@@ -761,10 +698,7 @@ extern	char	remote_prob;
 extern	DN	ufn_bad_dsa;
 extern	DNS	ufn_partials;
 
-/*  */
-
-static
-do_ufn_match (int n, char **vec) {
+static void do_ufn_match (int n, char **vec) {
 	struct dn_seq  *dns;
 
 	if (rebind () != OK)
@@ -904,12 +838,7 @@ lost_entry:
 	}
 }
 
-/*  */
-
-static struct dn_seq *interact (dns, dn, s)
-struct dn_seq *dns;
-DN	dn;
-char   *s;
+static struct dn_seq *interact (struct dn_seq *dns, DN dn, char *s)
 {
 	int	    i,
 			j;
@@ -1102,37 +1031,24 @@ out:
 	return result;
 }
 
-/*  */
-
-static int
-dns_compar (struct dn_seq **a, struct dn_seq **b) {
+static int dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	int	    i;
-	DN	    adn,
-	 bdn;
-
+	DN	    adn, bdn;
 	for (adn = (*a) -> dns_dn; adn -> dn_parent; adn = adn -> dn_parent)
 		continue;
 	for (bdn = (*b) -> dns_dn; bdn -> dn_parent; bdn = bdn -> dn_parent)
 		continue;
-
 	i = rdn_cmp (adn -> dn_rdn, bdn -> dn_rdn);
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-
-static int
-dns_sort (struct dn_seq **dns, int i) {
+static int dns_sort (struct dn_seq **dns, int i) {
 	struct dn_seq *ptr;
-
 	if (i == 0)
 		for (ptr = *dns; ptr; ptr = ptr -> dns_next)
 			i++;
-
 	if (i > 1) {
-		struct dn_seq **base,
-				   **bp,
-				   **ep;
-
+		struct dn_seq **base, **bp, **ep;
 		if (base = (struct dn_seq **) malloc ((unsigned) (i * sizeof *base))) {
 			ep = base;
 			for (ptr = *dns; ptr; ptr = ptr -> dns_next)
@@ -1153,10 +1069,7 @@ dns_sort (struct dn_seq **dns, int i) {
 	}
 }
 
-/*  */
-
-static
-done_match (struct dn_seq *dns, char *fancy) {
+static void done_match (struct dn_seq *dns, char *fancy) {
 	int	    i;
 	struct dn_seq *ptr;
 
@@ -1268,8 +1181,6 @@ fresh_start:
 
 	dn_seq_free (dns);
 }
-
-/*    SHOWENTRY SUPPORT */
 
 extern int postal_indent;
 extern int qos_indent;
@@ -1418,26 +1329,15 @@ static struct template {
 	"audio",				"Audio:        ",
 	10, NULL,
 #endif
-
 	NULL
 };
 
-
-static int  ava_compar (a, b)
-RDN    *a,
-*b;
-{
+static int ava_compar (RDN *a, RDN *b) {
 	/* tricky, just check 'a' part, no need to check 'v' part! */
 	return (*a) -> rdn_at - (*b) -> rdn_at;
 }
 
-/*  */
-
-showfred (mydn, islong, subdisplay)
-DN	mydn;
-char	islong,
-subdisplay;
-{
+int showfred (DN mydn, char islong, char subdisplay) {
 	int	    didtime,
 	hasauthor,
 	haspost,
@@ -1782,11 +1682,7 @@ out:
 
 /*  */
 
-static	fred_children (parentdn, ptr, prob)
-DN	parentdn;
-struct subordinate *ptr;
-int	prob;
-{
+static int fred_children (DN parentdn, struct subordinate *ptr, int prob) {
 	int	    i,
 	nchild;
 	struct subordinate *qtr;
@@ -1823,11 +1719,7 @@ int	prob;
 	return nchild;
 }
 
-/*  */
-
-static showfredattr (av)
-AttributeValue av;
-{
+static void showfredattr (AttributeValue av) {
 	int	    seqno;
 
 	if (av -> av_syntax == s_dn) {
@@ -1838,9 +1730,6 @@ AttributeValue av;
 	} else
 		AttrV_print (RPS, av, READOUT);
 }
-
-/*    MISC */
-
 
 static struct pair {
 	char   *p_name;
@@ -1867,10 +1756,7 @@ static struct pair {
 	NULL
 };
 
-/*  */
-
-static
-fred_init (void) {
+static void fred_init (void) {
 	struct pair *p;
 	struct template *t;
 	static int once_only = 1;
@@ -1889,11 +1775,7 @@ fred_init (void) {
 		t -> t_at = AttrT_new (t -> t_name);
 }
 
-/*  */
-
-static  Entry fredentry (adn, islong)
-DN	adn;
-char	islong;
+static Entry fredentry (DN adn, char islong)
 {
 	Entry newentry;
 
@@ -1903,18 +1785,15 @@ char	islong;
 
 	if (adn == NULLDN)
 		return NULLENTRY;
-
 	if ((newentry = local_find_entry (read_arg.rda_object = adn,
 									  FALSE)) == NULLENTRY
 			|| !newentry -> e_lock
 			|| (islong && !newentry -> e_complete)) {
 		if (rebind () != OK)
 			return newentry;
-
 		service_control (OPT, 0, NULLVP, &read_arg.rda_common);
 		read_arg.rda_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
-
 		read_arg.rda_eis.eis_allattributes = FALSE;
 		read_arg.rda_eis.eis_select = islong ? fred_full () : fred_as ();
 		read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
@@ -1925,24 +1804,16 @@ char	islong;
 #endif
 			return newentry;
 		}
-
 		cache_entry (&read_result.rdr_entry, islong ? TRUE : FALSE,
 					 read_arg.rda_eis.eis_infotypes);
-
 		entryinfo_comp_free (&read_result.rdr_entry, 0);
-
 		newentry = local_find_entry (adn, FALSE);
 	}
 
 	return newentry;
 }
 
-/*  */
-
-showfredDNs (dn, islong)
-DN	dn;
-int	islong;
-{
+void showfredDNs (DN dn, int islong) {
 	Attr_Sequence eptr;
 	AV_Sequence avs;
 	Entry    theEntry;
@@ -1953,15 +1824,12 @@ int	islong;
 
 	if (!(theEntry = fredentry (dn, islong)))
 		return;
-
 	if ((nps = ps_alloc (str_open)) == NULLPS
 			|| str_setup (nps, NULLCP, 0, 0) == NOTOK) {
 		if (nps)
 			ps_free (nps);
-
 		return;
 	}
-
 	for (eptr = theEntry -> e_attributes; eptr; eptr = eptr -> attr_link)
 		if (eptr -> attr_type -> oa_syntax == s_dn) {
 			if (AttrT_cmp (eptr -> attr_type, t_master) == 0
@@ -2145,16 +2013,11 @@ losing:
 	ps_free (nps);
 }
 
-/*  */
-
-Attr_Sequence fred_as () {
+Attr_Sequence fred_as (void) {
 	static Attr_Sequence as = NULL;
-
 	if (!as) {
 		AttributeType at;
-
 		fred_init ();
-
 		if (at = t_mbox)
 			as = as_merge (as,
 						   as_comp_new (AttrT_cpy (at), NULLAV, NULLACL_INFO));
@@ -2168,13 +2031,10 @@ Attr_Sequence fred_as () {
 			as = as_merge (as,
 						   as_comp_new (AttrT_cpy (at), NULLAV, NULLACL_INFO));
 	}
-
 	return as;
 }
 
-/*  */
-
-Attr_Sequence fred_full () {
+Attr_Sequence fred_full (void) {
 	static Attr_Sequence as = NULL;
 
 	if (!as) {

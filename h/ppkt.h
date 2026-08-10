@@ -291,6 +291,7 @@ extern struct pair preq_pairs[], sreq_pairs[];
 	: psaplose ((pi), PC_SESSION, NULLCP, NULLCP))
 
 
-int	pdu2sel (), refcmp ();
-struct SSAPref *pdu2ref ();
+void pdu2sel (char *sel, int *len, int i, struct qbuf *pb);
+int refcmp (struct type_PS_SessionConnectionIdentifier *ref1, struct type_PS_SessionConnectionIdentifier *ref2);
+struct SSAPref *pdu2ref (struct type_PS_SessionConnectionIdentifier *ref);
 #endif

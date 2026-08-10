@@ -443,17 +443,14 @@ DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 static int pdu_count = -1;
 static char * pdu_dir = NULLCP;
 
-int
-pdu_dump_init (char *dir) {
+void pdu_dump_init (char *dir) {
 	pdu_count = 0;
 	pdu_dir = strdup (dir);
 	LLOG (log_dsap, LLOG_NOTICE, ("PDU Tracing enabled - %s",dir));
-
 	mkdir (pdu_dir,0755);
 }
 
-int
-pdu_dump (PE pe, char *type, int op) {
+void pdu_dump (PE pe, char *type, int op) {
 	char filename [BUFSIZE];
 	char * oper;
 	PS ps;

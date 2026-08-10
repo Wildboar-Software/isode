@@ -37,7 +37,7 @@ extern LLog * log_stat;
 #endif
 extern  struct PSAPaddr		* dsaladdr;
 
-void	  ds_log();
+void ds_log(struct DSAPabort *da, char *str, int fd);
 
 struct connection	* conn_alloc();
 
@@ -48,8 +48,7 @@ extern  void opening_analyse() ;
 extern  time_t timenow;
 extern  char   quipu_shutdown;
 
-int
-conn_init (struct connection *cn) {
+void conn_init (struct connection *cn) {
 	int				  result, ds_bind_return ;
 	char			**vec;
 	struct DSAPstart		* ds;
@@ -165,9 +164,7 @@ out:
 
 	if (TSetQueuesOK (cn->cn_ad, 1, td) == NOTOK)
 		td_log (td, "TSetQueuesOK (incoming)");
-
 	ds_bind_return = ds_bind_init(cn);
-
 #ifdef QUIPU_CONSOLE
 	opening_analyse(cn);
 #endif
@@ -189,8 +186,7 @@ out:
 	}
 }
 
-int
-conn_init_res (struct connection *cn) {
+void conn_init_res (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &(di_s);
@@ -200,7 +196,6 @@ conn_init_res (struct connection *cn) {
 	struct PSAPstart            * ps = &(acs->acs_start);
 
 	DLOG(log_dsap,LLOG_TRACE, ("conn_init_res(%d)",cn->cn_ad));
-
 #ifdef DEBUG
 	{
 		int	  i;
@@ -212,25 +207,21 @@ conn_init_res (struct connection *cn) {
 		}
 	}
 #endif
-
 	result = DBindResult (cn->cn_ad, acs->acs_context, NULLAEI, NULLPA,
 						  &(ps->ps_ctxlist), ps->ps_defctxresult, PR_MYREQUIRE,
 						  ps->ps_srequirements & (ROS_MYREQUIRE | SR_NEGOTIATED),
 						  SERIAL_NONE, ps->ps_settings, &(ps->ps_connect),
 						  &(cn->cn_start.cs_res), ds->ds_pctx_id, di);
-
 	if (result == OK) {
 		cn->cn_state = CN_OPEN;
 	} else {
 		ds_log(da, "D-BIND.RESULT",cn->cn_ad);
 		conn_extract(cn);
 	}
-
 	ACSFREE (acs);
 }
 
-int
-conn_init_err (struct connection *cn) {
+void conn_init_err (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
@@ -269,25 +260,19 @@ conn_init_err (struct connection *cn) {
 
 }
 
-int
-conn_pre_init (int newfd, int vecp, char **vec) {
+void conn_pre_init (int newfd, int vecp, char **vec) {
 	struct connection	* cn = NULLCONN;
-
 	for (cn = connlist; cn != NULLCONN; cn = cn->cn_next)
 		if (newfd == cn->cn_ad)
 			break;
-
 	if (cn == NULLCONN) {
 		cn = conn_alloc();
-
 		cn->cn_next = connlist;
 		connlist = cn;
 		conns_used++;
-
 		cn->cn_ad = newfd;
 		cn->cn_initiator = FALSE;
 	}
-
 	cn->cn_start.cs_vecp = vecp;
 	if (vec[0])
 		cn->cn_start.cs_svec[0] = cn->cn_start.cs_vec[0] = strdup (vec[0]);
@@ -297,56 +282,38 @@ conn_pre_init (int newfd, int vecp, char **vec) {
 		cn->cn_start.cs_svec[2] = cn->cn_start.cs_vec[2] = strdup (vec[2]);
 	if (vec[3])
 		cn->cn_start.cs_svec[3] = cn->cn_start.cs_vec[3] = strdup (vec[3]);
-
 	cn->cn_state = CN_OPENING;
-
 	cn->cn_last_used = timenow;
-
 	if (newfd == NOTOK)
 		conn_init (cn);
 	else
 		DLOG (log_dsap,LLOG_NOTICE, ("opening association on %d",newfd ));
 }
 
-int
-warn_conn_init (int newfd) {
+void warn_conn_init (int newfd) {
 	/* An association will come soon... */
-	struct connection	* cn = NULLCONN;
-
+	struct connection * cn = NULLCONN;
 	for (cn = connlist; cn != NULLCONN; cn = cn->cn_next)
 		if (newfd == cn->cn_ad)
 			break;
-
 	if (cn != NULLCONN) {
-
 		if ( cn->cn_state != CN_PRE_OPENING ) {
-
-			LLOG (log_dsap,LLOG_EXCEPTIONS, ("Help needed on %d !",newfd ));
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("Help needed on %d !", newfd));
 			net_send_abort (cn);	/* what else ? */
 		} else {
 
 			cn->cn_last_used = timenow;
-			DLOG (log_dsap,LLOG_NOTICE,
-				  ("second about to open association on %d",newfd ));
+			DLOG (log_dsap, LLOG_NOTICE, ("second about to open association on %d", newfd));
 		}
-
 	} else {
-
 		cn = conn_alloc();
-
 		cn->cn_next = connlist;
 		connlist = cn;
 		conns_used++;
-
 		cn->cn_ad = newfd;
 		cn->cn_initiator = FALSE;
-
 		cn->cn_state = CN_PRE_OPENING;
-
 		cn->cn_last_used = timenow;
-
-		DLOG (log_dsap,LLOG_NOTICE,
-			  ("about to open association on %d",newfd ));
+		DLOG (log_dsap, LLOG_NOTICE, ("about to open association on %d", newfd));
 	}
-
 }

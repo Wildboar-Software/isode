@@ -54,7 +54,7 @@ PE     *data;
 int	ndata;
 struct PSAPindication *pi;
 {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct psapblk *pb;
 
@@ -64,20 +64,13 @@ struct PSAPindication *pi;
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "wrong context for user data");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = _PDataRequestAux (pb, data[0], pi)) == NOTOK)
 		freepblk (pb);
-
 	sigiomask (smask);
-
 	return result;
 }
-
-/*  */
 
 static int  _PDataRequestAux (pb, data, pi)
 struct psapblk *pb;
@@ -92,22 +85,17 @@ struct PSAPindication *pi;
 	PS	    ps;
 
 	pe = NULLPE;
-
 	if (pb -> pb_reliability == LOW_QUALITY) {
 		struct type_PS_CL__UserData__PDU *pdu;
-
 		if ((pdu = (struct type_PS_CL__UserData__PDU *) malloc (sizeof *pdu))
 				== NULL)
 			return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
-
 		pdu -> reference = pb -> pb_reference;
 		pdu -> user__data = data;
-
 		result = encode_PS_CL__UserData__PDU (&pe, 1, 0, NULLCP, pdu);
 #ifdef	DEBUG
 		cp = "CL-UserData-PDU";
 #endif
-
 		pdu -> reference = NULL;
 		pdu -> user__data = NULLPE;
 		free_PS_CL__UserData__PDU (pdu);
@@ -117,7 +105,6 @@ struct PSAPindication *pi;
 		cp = "UserData-PDU";
 #endif
 	}
-
 	if (result != NOTOK) {
 		PLOGP (psap2_log,PS_PDUs, pe, cp, 0);
 
@@ -128,10 +115,8 @@ struct PSAPindication *pi;
 	} else
 		psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 				  PY_pepy);
-
 	if (pe)
 		pe_free (pe);
-
 	return result;
 }
 
@@ -143,7 +128,7 @@ struct PSAPdata *px;
 int	secs;
 struct PSAPindication *pi;
 {
-	SBV	    smask;
+	int	    smask;
 	int	    nfds,
 			result;
 	fd_set  mask;
@@ -152,46 +137,34 @@ struct PSAPindication *pi;
 
 	missingP (px);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	FD_ZERO (&mask);
 	FD_SET (pb -> pb_fd, &mask);
 	nfds = pb -> pb_fd + 1;
 
 	for (;;) {
-		fd_set	 ifds,
-				 efds;
+		fd_set	 ifds, efds;
 		PS 	ps = pb -> pb_stream;
-
 		ifds = mask;	/* struct copy */
 		efds = mask;	/* struct copy */
-
 		if (ps_prime (ps, 1) == OK
 				&& (*pb -> pb_selectfnx) (nfds, &ifds, NULLFD, &efds, secs)
 				<= OK) {
 			result = psaplose (pi, PC_TIMER, NULLCP, NULLCP);
 			break;
 		}
-
 		if (FD_ISSET (pb -> pb_fd, &ifds) || FD_ISSET (pb -> pb_fd, & efds))
 			if ((result = PReadRequestAux (pb, px, pi)) != NOTOK
 					|| secs != NOTOK
 					|| pa -> pa_reason != PC_TIMER)
 				break;
 	}
-
 	if (result == NOTOK && pa -> pa_reason != PC_TIMER)
 		freepblk (pb);
-
 	sigiomask (smask);
-
 	return result;
 }
-
-/*  */
 
 static int  PReadRequestAux (pb, px, pi)
 struct psapblk *pb;
@@ -206,21 +179,17 @@ struct PSAPindication *pi;
 
 	if ((pe = ps2pe (ps = pb -> pb_stream)) == NULLPE)
 		return pslose (pi, ps -> ps_errno);
-
 	pdu = NULL;
 	result = decode_PS_PDUs (pe, 1, NULLIP, NULLVP, &pdu);
-
 #ifdef	DEBUG
 	if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 		pvpdu (psap2_log, print_PS_PDUs_P, pe, "PDU", 1);
 #endif
-
 	pe_free (pe);
 
 	if (result == NOTOK) {
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref2;
-
 		ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
 				  "error decoding PDU: %s", PY_pepy);
 		goto out;
@@ -244,15 +213,11 @@ bad_ref2:
 				free_PS_PDUs (pdu);
 			return psaplose (pi, PC_TIMER, NULLCP, NULLCP);
 		}
-
 		pe = rr -> user__data, rr -> user__data = NULLPE;
-
 		pi -> pi_type = PI_FINISH;
 		bzero ((char *) pf, sizeof *pf);
-
 		(pf -> pf_info[0] = pe) -> pe_context = PCI_ACSE;
 		pf -> pf_ninfo = 1;
-
 		pb -> pb_flags |= PB_FINN;
 		result = DONE;
 	}
@@ -293,15 +258,12 @@ bad_ref2:
 			break;
 		}
 		pe = ab -> user__data, ab -> user__data = NULLPE;
-
 		pi -> pi_type = PI_ABORT;
 		bzero ((char *) pa, sizeof *pa);
-
 		pa -> pa_peer = 1;
 		pa -> pa_reason = PC_ABORTED;
 		(pa -> pa_info[0] = pe) -> pe_context = PCI_ACSE;
 		pa -> pa_ninfo = 1;
-
 		result = NOTOK;
 	}
 	break;
@@ -367,8 +329,6 @@ out:
 
 /*    define vectors for INDICATION events */
 
-/* ARGSUSED */
-
 int	PSetIndications (sd, data, tokens, sync, activity, report, finish,
 					 abort, pi)
 int	sd;
@@ -382,28 +342,20 @@ IFP	data,
 struct PSAPindication *pi;
 {
 	missingP (pi);
-
 	return psaplose (pi, PC_OPERATION, NULLCP, NULLCP);
 }
 
-/*    INTERNAL */
-
 struct psapblk  *newpblk () {
 	struct psapblk *pb;
-
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
 	if (pb == NULL)
 		return NULL;
-
 	pb -> pb_fd = NOTOK;
-
 	if (once_only == 0) {
 		PHead -> pb_forw = PHead -> pb_back = PHead;
 		once_only++;
 	}
-
 	insque (pb, PHead -> pb_back);
-
 	return pb;
 }
 
@@ -445,74 +397,51 @@ void freepblk (struct psapblk *pb) {
 	free ((char *) pb);
 }
 
-/*  */
-
-struct psapblk   *findpblk (sd)
-int sd;
-{
+struct psapblk *findpblk (int sd) {
 	struct psapblk *pb;
-
 	if (once_only == 0)
 		return NULL;
-
 	for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 		if (pb -> pb_fd == sd)
 			return pb;
-
 	return NULL;
 }
 
-/*  */
-
-int	refcmp (ref1, ref2)
-struct type_PS_SessionConnectionIdentifier *ref1,
-		   *ref2;
-{
+int	refcmp (
+	struct type_PS_SessionConnectionIdentifier *ref1,
+	struct type_PS_SessionConnectionIdentifier *ref2
+) {
 	if (ref1 == NULLRF)
 		return (ref2 != NULLRF);
 	else if (ref2 == NULLRF)
 		return 1;
-
 	if (qb_cmp (ref1 -> callingSSUserReference, ref2 -> callingSSUserReference)
 			|| qb_cmp (ref1 -> commonReference, ref2 -> commonReference)
 			|| qb_cmp (ref1 -> additionalReferenceInformation,
 					   ref2 -> additionalReferenceInformation)) {
 		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP, ("reference mismatch"));
-
 		return 1;
 	}
-
 	return 0;
 }
 
-
-static int  qb_cmp (qb1, qb2)
-struct qbuf *qb1,
-		   *qb2;
-{
-	int    i,
-		   len1,
-		   len2;
-	char  *cp1,
-		  *cp2;
-	struct qbuf *qp1,
-			   *qp2;
+static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
+	int    i, len1, len2;
+	char  *cp1, *cp2;
+	struct qbuf *qp1, *qp2;
 
 	if (qb1 == NULL)
 		return (qb2 != NULL);
 	else if (qb2 == NULL)
 		return 1;
-
 	for (qp1 = qb1 -> qb_forw; qp1 != qb1; qp1 = qp1 -> qb_forw)
 		if ((len1 = qp1 -> qb_len) > 0)
 			break;
 	cp1 = qp1 -> qb_data;
-
 	for (qp2 = qb2 -> qb_forw; qp2 != qb2; qp2 = qp2 -> qb_forw)
 		if ((len2 = qp2 -> qb_len) > 0)
 			break;
 	cp2 = qp2 -> qb_data;
-
 	for (;;) {
 		if (qp1 == qb1)
 			return (qb2 != qb2);
@@ -542,48 +471,30 @@ struct qbuf *qb1,
 	}
 }
 
-/*  */
-
-struct SSAPref *pdu2ref (ref)
-struct type_PS_SessionConnectionIdentifier *ref;
-{
+struct SSAPref *pdu2ref (struct type_PS_SessionConnectionIdentifier *ref) {
 	int	    i;
 	static struct SSAPref sfs;
 	struct SSAPref *sf = &sfs;
-
 	pdu2sel (sf -> sr_udata, &i, sizeof sf -> sr_udata,
 			 ref -> callingSSUserReference);
 	sf -> sr_ulen = i;
-
 	pdu2sel (sf -> sr_cdata, &i, sizeof sf -> sr_cdata,
 			 ref -> commonReference);
 	sf -> sr_clen = i;
-
 	pdu2sel (sf -> sr_adata, &i, sizeof sf -> sr_adata,
 			 ref -> additionalReferenceInformation);
 	sf -> sr_alen = i;
-
 	sf -> sr_vlen = 0;
-
 	return sf;
 }
 
-/*  */
-
-int	pdu2sel (sel, len, i, pb)
-char   *sel;
-int    *len;
-int i;
-struct qbuf *pb;
-{
+void pdu2sel (char *sel, int *len, int i, struct qbuf *pb) {
 	char  *cp;
 	struct qbuf *qb;
-
 	if (pb == NULL) {
 		*len = 0;
 		return;
 	}
-
 	cp = sel;
 	for (qb = pb -> qb_forw; qb != pb && i > 0; qb = qb -> qb_forw) {
 		if (qb -> qb_len > i)
@@ -591,6 +502,5 @@ struct qbuf *pb;
 		bcopy (qb -> qb_data, cp, qb -> qb_len);
 		cp += qb -> qb_len, i -= qb -> qb_len;
 	}
-
 	*len = cp - sel;
 }

@@ -174,10 +174,10 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
 
 static int  setperms ();
-static void tsapd ();
-static  envinit ();
-static	arginit ();
-static	search_directory ();
+static void tsapd (int vecp, char **vec);
+static void envinit (void);
+static void arginit (char **vec);
+static void search_directory (int firstime);
 static int	rebind_to_directory (), make_bind_args (), unbind_from_directory (),
             do_error ();
 
@@ -380,13 +380,10 @@ out:
 	exit (1);
 }
 
-/*  */
-
-static int  setperms (is)
 #ifndef	IAE
-struct isoservent *is;
+static int setperms (struct isoservent *is)
 #else
-struct IAEntry *is;
+static int setperms (struct IAEntry *is)
 #endif
 {
 	struct stat st;
@@ -525,9 +522,7 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 /*  */
 
 #ifndef	IAE
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	int	    rflag;
 	char  *ap;
 #ifdef	TCP
@@ -989,11 +984,8 @@ char	**vec;
 	}
 }
 
-/*  */
-
-static	search_directory ( int	firstime )
-{
-							int	    i;
+static void search_directory(int firstime) {
+	int	    i;
 	struct ds_search_arg *sa = &search_arg;
 		struct ds_search_result search_result;
 			struct ds_search_result *sr = &search_result;
@@ -1301,11 +1293,12 @@ losing_iae:
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
 
-	for (ta = tys; ta < ty; *tz++ = *ta++)	/* struct copy */
-continue;
+	for (ta = tys; ta < ty; *tz++ = *ta++) {
+		continue;
+	}
 
-if (debug) {
-	advise (LLOG_DEBUG, NULLCP, "application entitites...");
+	if (debug) {
+		advise (LLOG_DEBUG, NULLCP, "application entitites...");
 		for (ia = iae; ia < iz; ia++)
 			advise (LLOG_DEBUG, NULLCP, "  addr=%s vector=%s",
 					taddr2str (&ia -> is_addr), ia -> is_vector);
@@ -1319,9 +1312,7 @@ if (debug) {
 	nextime += IAETIME;
 }
 
-/*  */
-
-static	bind_to_directory () {
+static void bind_to_directory (void) {
 	struct ds_bind_arg bind_arg,
 			   bind_result;
 	struct ds_bind_arg *ba = &bind_arg,
@@ -1539,7 +1530,7 @@ int   sig;
 
 /* ^L */
 
-static  envinit () {
+static void envinit (void) {
 	int     i,
 			sd;
 

@@ -44,8 +44,7 @@ struct {
 } help_info[MAXARG];
 int num_help = 0;
 
-int
-add_dish_help (char *command, char *args, char serv, char other, char *use) {
+void add_dish_help (char *command, char *args, char serv, char other, char *use) {
 	help_info[num_help].command = command;
 	help_info[num_help].args = args;
 	help_info[num_help].serv = serv;
@@ -54,8 +53,7 @@ add_dish_help (char *command, char *args, char serv, char other, char *use) {
 	num_help++;
 }
 
-int
-dish_help_init (void) {
+void dish_help_init (void) {
 	add_dish_help (
 		"dish",		"[-pipe] [-noconnect] [-user <name>]\n[-password [<password>]] [-call <dsa name>] [-fast]\n[-simple] [-protected] [-strong] [-noauthentication]", FALSE, FALSE,
 		"Directory Shell," );
@@ -106,8 +104,7 @@ dish_help_init (void) {
 		"control the operation of the DSA (managers only)," );
 }
 
-int
-Usage (char *rtn) {
+void Usage (char *rtn) {
 	extern DN       dn,
 		   savename;
 	int             i;
@@ -132,8 +129,7 @@ Usage (char *rtn) {
 	ps_print (OPT, "Usage...\n");
 }
 
-int
-help_arg (char *rtn) {
+void help_arg (char *rtn) {
 	int             i;
 
 	for (i = 0; help_info[i].command != 0; i++)
@@ -150,18 +146,13 @@ help_arg (char *rtn) {
 	ps_print (OPT,"Sorry - No help available\n");
 }
 
-print_other (aps,x)
-PS aps;
-char x;
-{
+void print_other (PS aps, char x) {
 	if (x == FALSE)
 		return;
-
 	ps_print (aps,"\n[-[no]types <attribute-type> *] [-[no]all]\n[-[no]value] [-[no]show] \n[-[no]key] [-edb]\n[-proc <syntax> <process>]");
 }
 
-int
-print_service (void) {
+void print_service (void) {
 	ps_print (RPS,"[-sequence <name>] [-nosequence]\n");
 	ps_print (RPS,"[-[no]preferchain] [-[no]chaining]\n");
 	ps_print (RPS,"[-[dont]usecopy] [-[dont]dereferencealias]\n");
@@ -173,15 +164,11 @@ print_service (void) {
 
 }
 
-int
-call_help (void) {
+void call_help (void) {
 	int             i;
-
 	ps_print (RPS, "The following commands are recognised...\n\n");
-
 	for (i = 0; help_info[i].command != 0; i++)
 		ps_printf (RPS, "%-10s - %s\n", help_info[i].command, help_info[i].use);
-
 	ps_print (RPS,"\nEnter <command> -help for help on that command\n");
 	ps_print (RPS, "See the DISH manual for full details\n\n");
 }

@@ -72,8 +72,9 @@ extern struct nlist nl[];
 #endif
 #endif
 
-
-int	init_mib (), fin_mib (), set_variable ();
+void init_mib(void);
+void fin_mib (void);
+void set_variable (char *name, char *newvalue);
 int	getkmem (), setkmem (), chekmem ();
 
 /*  */

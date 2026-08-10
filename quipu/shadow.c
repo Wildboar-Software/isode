@@ -68,8 +68,7 @@ typedef struct _atlist {
 #define NULLATL (atlist)NULL
 atlist at_list = NULLATL;
 
-int
-shadow_entry (Entry eptr) {
+void shadow_entry (Entry eptr) {
 	DN dn, ndn;
 	Attr_Sequence as;
 	AV_Sequence avs;
@@ -119,15 +118,13 @@ shadow_entry (Entry eptr) {
 				}
 }
 
-int
-shadow_myentry (void) {
+void shadow_myentry (void) {
 	if ( check_dnseq (shades, mydsadn) == NOTOK)
 		shades = dn_seq_push (mydsadn,shades);
 }
 
 #ifdef DEBUG
-int
-free_shadow_lists (void) {
+void free_shadow_lists (void) {
 	if (dn_shades)
 		dn_seq_free (dn_shades);
 	if (shades)
@@ -135,8 +132,7 @@ free_shadow_lists (void) {
 }
 #endif
 
-int
-shadow_attribute (char *s) {
+void shadow_attribute (char *s) {
 	AttributeType at;
 	atlist new_atl;
 
@@ -150,8 +146,7 @@ shadow_attribute (char *s) {
 	}
 }
 
-int
-shadow_update (void) {
+void shadow_update (void) {
 	struct dn_seq * dnseq;
 	struct oper_act	* op;
 	static struct ds_read_arg sarg = {
@@ -170,7 +165,6 @@ shadow_update (void) {
 	struct DSError err;
 
 	DLOG(log_dsap, LLOG_TRACE, ("shadow_update"));
-
 	for (dnseq = dn_shades; dnseq != NULLDNSEQ; dnseq = dnseq -> dns_next) {
 		if ((eptr = local_find_entry (dnseq -> dns_dn,FALSE)) == NULLENTRY) {
 			/* aliases !!! */
@@ -183,7 +177,6 @@ shadow_update (void) {
 						   (caddr_t) dnseq -> dns_dn);
 					continue;
 				}
-
 				else if ( eptr -> e_alias )
 					if ((eptr = make_path (eptr -> e_alias)) ==
 							NULLENTRY) {
@@ -198,7 +191,6 @@ shadow_update (void) {
 		else if ((eptr->e_data == E_TYPE_SLAVE) ||
 				 (eptr->e_data == E_DATA_MASTER))
 			continue;
-
 		if ( check_dnseq (shades, dnseq -> dns_dn) == NOTOK)
 			shades = dn_seq_push (dnseq -> dns_dn,shades);
 	}
@@ -207,36 +199,26 @@ shadow_update (void) {
 	dn_shades = NULLDNSEQ;
 
 	for (dnseq = shades; dnseq != NULLDNSEQ; dnseq = dnseq -> dns_next) {
-
 		if((op = oper_alloc()) == NULLOPER)
 			return;
-
 		op -> on_type = ON_TYPE_SHADOW;
 		op -> on_req.dca_dsarg.arg_type = OP_READ;
-
 		sarg.rda_common.ca_servicecontrol.svc_options |=
 			SVC_OPT_DONTDEREFERENCEALIAS;
 		/* would loose track on result - could do more tho! */
-
 		op -> on_req.dca_dsarg.arg_rd = sarg;	  /* struct copy */
-
 		op -> on_req.dca_dsarg.arg_rd.rda_object =
 			dn_cpy (dnseq -> dns_dn);
-
 		op -> on_req.dca_charg.cha_originator =
 			dn_cpy (mydsadn);
-
 		op -> on_req.dca_charg.cha_reftype = RT_SUBORDINATE;
-
 		op -> on_req.dca_charg.cha_progress.op_resolution_phase =
 			OP_PHASE_PROCEEDING;
-
 		op -> on_req.dca_charg.cha_progress.op_nextrdntoberesolved = -1;
 		for (tdn = dnseq -> dns_dn ; tdn != NULLDN ;
 				tdn = tdn -> dn_parent)
 			op ->
 			on_req.dca_charg.cha_progress.op_nextrdntoberesolved++;
-
 		op -> on_req.dca_charg.cha_trace =
 			(struct trace_info *) malloc (sizeof (struct trace_info));
 		op -> on_req.dca_charg.cha_trace -> ti_dsa =
@@ -246,9 +228,7 @@ shadow_update (void) {
 		op -> on_req.dca_charg.cha_trace -> ti_progress =
 			op -> on_req.dca_charg.cha_progress;
 		op -> on_req.dca_charg.cha_trace -> ti_next = NULLTRACEINFO;
-
 		op -> on_dsas = NULL_DI_BLOCK;
-
 		if ((eptr = local_find_entry_aux (dnseq -> dns_dn,FALSE)) == NULLENTRY) {
 			if ((eptr = local_find_entry_aux (dnseq -> dns_dn,TRUE)) == NULLENTRY)
 				if ((eptr = make_path (dnseq -> dns_dn)) == NULLENTRY) {
@@ -261,14 +241,11 @@ shadow_update (void) {
 		} else if ( eptr -> e_external ) {
 			op -> on_dsas = di_alloc();
 			op -> on_dsas -> di_type = DI_TASK;
-
 			op -> on_dsas -> di_rdn_resolved = op ->
 											   on_req.dca_charg.cha_progress.op_nextrdntoberesolved;
 			op -> on_dsas -> di_aliasedRDNs = CR_NOALIASEDRDNS;
-
 			op -> on_dsas -> di_oper = op;
 			op -> on_dsas -> di_type = DI_OPERATION;
-
 			op -> on_dsas -> di_target = dn_cpy (dnseq -> dns_dn);
 			op -> on_dsas -> di_reftype = eptr-> e_reftype;
 			aps = ap_cpy ((struct access_point *) eptr ->
@@ -276,16 +253,13 @@ shadow_update (void) {
 			op -> on_dsas -> di_dn = dn_cpy (aps->ap_name);
 			op -> on_dsas -> di_accesspoints = aps;
 			op -> on_dsas -> di_state = DI_ACCESSPOINT;
-
 		} else if ((eptr->e_data == E_TYPE_SLAVE) ||
 				   (eptr->e_data == E_DATA_MASTER)) {
 			op -> on_dsas = di_alloc();
 			op -> on_dsas -> di_type = DI_TASK;
-
 			op -> on_dsas -> di_rdn_resolved = op ->
 											   on_req.dca_charg.cha_progress.op_nextrdntoberesolved;
 			op -> on_dsas -> di_aliasedRDNs = CR_NOALIASEDRDNS;
-
 			op -> on_dsas -> di_oper = op;
 			op -> on_dsas -> di_type = DI_OPERATION;
 			op -> on_dsas -> di_dn = dn_cpy (dnseq -> dns_dn);
@@ -297,7 +271,6 @@ shadow_update (void) {
 		} else
 			constructor_dsa_info (dnseq -> dns_dn, NULLDNSEQ,
 								  TRUE, eptr, &err, &(op -> on_dsas) );
-
 		if ( op -> on_dsas )
 			schedule_operation (op);
 		else

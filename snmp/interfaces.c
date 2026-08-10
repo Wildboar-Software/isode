@@ -31,8 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
  *    this agreement.
  *
  */
-
-
 #include <stdio.h>
 #include <string.h>
 #include "mib.h"
@@ -86,8 +84,6 @@ static	int	flush_if_cache = 0;
 int	get_interfaces ();
 static struct address *find_address ();
 
-/*  */
-
 #define	ifIndex		0
 #define	ifDescr		1
 #define	ifType		2		/* SEMI IMPLEMENTED */
@@ -123,12 +119,7 @@ static struct address *find_address ();
 #endif
 #define	ifSpecific	21
 
-
-static int  o_interfaces (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifnum,
 			ifvar;
 	struct interface *is;
@@ -324,13 +315,7 @@ stuff_ifnum:
 	}
 }
 
-/*  */
-
-static int  s_interfaces (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifnum;
 	int    i;
 	struct interface *is;
@@ -418,12 +403,7 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
-
-set_interface (name, ava)
-char   *name,
-	   *ava;
-{
+void set_interface (char *name, char *ava) {
 	int	    i;
 	u_long  l;
 	char   *cp;
@@ -476,8 +456,6 @@ malformed:
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "unknown attribute \"%s=%s\"", ava, cp);
 }
-
-/*  */
 
 static struct interface *_find_interface_by_name (struct interface *list, const char *ifname)
 {
@@ -577,7 +555,7 @@ static struct address *_upate_addresses (struct interface *list, int *addr_numbe
 }
 #endif
 
-init_interfaces () {
+int init_interfaces (void) {
 	int	    i;
 	struct ifnet *ifnet;
 	OT	    ot;
@@ -809,33 +787,22 @@ disabled:
 			  ot -> ot_info = (caddr_t) ifSpecific;
 }
 
-/*  */
-
-static int  adr_compar (a, b)
-struct address **a,
-		   **b;
-{
+static int adr_compar (const void *ap, const void *ab) {
+	struct address **a = ap;
+	struct address **b = ab;
 	int    i;
-
 	if ((i = (*a) -> adr_address.sa.sa_family
 			 - (*b) -> adr_address.sa.sa_family))
 		return (i > 0 ? 1 : -1);
-
 	return elem_cmp ((*a) -> adr_instance, (*a) -> adr_insize,
 					 (*b) -> adr_instance, (*b) -> adr_insize);
 }
 
 
-int	get_interfaces (offset)
-int	offset;
-{
+int	get_interfaces (int offset) {
 	int	    adrNumber = 0;
 	struct interface  *is;
-	struct address    *as,
-			   *ap,
-			   **base,
-			   **afe,
-			   **afp;
+	struct address    *as, *ap, **base, **afe, **afp;
 	static   int first_time = 1;
 	static   int lastq = -1;
 
@@ -1141,8 +1108,6 @@ int	offset;
 	return OK;
 }
 
-/*  */
-
 static struct address *find_address (addr)
 union sockaddr_un *addr;
 {
@@ -1185,14 +1150,12 @@ union sockaddr_un *addr;
 	return NULL;
 }
 
-/*  */
-
-struct address *get_addrent (ip, len, head, isnext)
-unsigned int *ip;
-int	len;
-struct address *head;
-int	isnext;
-{
+struct address *get_addrent (
+	unsigned int *ip,
+	int len,
+	struct address *head,
+	int isnext
+) {
 	int	    family;
 	struct address *as;
 

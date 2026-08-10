@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/referral.c,v 9.0 1992
  *    this agreement.
  *
  */
-
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 
@@ -37,15 +35,11 @@ struct di_block	* di_alloc();
 
 static struct access_point * top_ap = NULLACCESSPOINT;
 
-struct access_point *
-ap_cpy (struct access_point *ap) {
+struct access_point *ap_cpy (struct access_point *ap) {
 	struct access_point	* ret_ap;
 	struct access_point	**tmp_ap;
-
 	if(ap == NULLACCESSPOINT)
 		return(NULLACCESSPOINT);
-
-
 	for(tmp_ap = &ret_ap; ap != NULLACCESSPOINT; ap=ap->ap_next) {
 		(*tmp_ap) = (struct access_point *) calloc(1, sizeof(struct access_point));
 		(*tmp_ap)->ap_name = dn_cpy(ap->ap_name);
@@ -53,32 +47,24 @@ ap_cpy (struct access_point *ap) {
 			(*tmp_ap)->ap_address = psap_cpy(ap->ap_address);
 		tmp_ap = &((*tmp_ap)->ap_next);
 	}
-
 	(*tmp_ap) = NULLACCESSPOINT;
-
 	return(ret_ap);
 }
 
-
-static ContinuationRef
-new_ref (DN name, int rt, struct access_point *ap) {
+static ContinuationRef new_ref (DN name, int rt, struct access_point *ap) {
 	ContinuationRef ptr;
-
 	if (ap == NULLACCESSPOINT)
 		return (NULLCONTINUATIONREF);
-
 	ptr = (ContinuationRef) smalloc (sizeof(continuation_ref));
 	ptr->cr_aliasedRDNs = CR_NOALIASEDRDNS;
 	ptr->cr_name = dn_cpy (name);
 	ptr->cr_rdn_resolved = CR_RDNRESOLVED_NOTDEFINED;
 	ptr->cr_reftype = rt;
 	ptr->cr_accesspoints = ap_cpy(ap);
-
 	return (ptr);
 }
 
-struct access_point *
-ap_append (struct access_point *a, struct access_point *b) {
+struct access_point *ap_append (struct access_point *a, struct access_point *b) {
 	struct access_point * trail;
 	struct access_point * top;
 
@@ -99,14 +85,11 @@ cont_ref_parent (DN name) {
 	return (new_ref(name,RT_SUPERIOR,top_ap));
 }
 
-int
-add_str_parent (char *sdn, char *spsap) {
+void add_str_parent (char *sdn, char *spsap) {
 	DN dn,str2dn();
 	struct PSAPaddr *psap, * str2paddr();
 	struct access_point * next_ap;
-
 	/* add string DN and string PSAP to list of parents */
-
 	if ((psap = str2paddr (spsap)) == NULLPA) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid parent address %s",spsap));
 		return;
@@ -115,20 +98,16 @@ add_str_parent (char *sdn, char *spsap) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid parent dn %s",sdn));
 		return;
 	}
-
 	next_ap = (struct access_point *) smalloc (sizeof(struct access_point));
 	next_ap->ap_name = dn;
 	next_ap->ap_address = psap_cpy(psap);
 	next_ap->ap_next = NULLACCESSPOINT;
 	top_ap = ap_append (top_ap,next_ap);
-
 }
 
 #ifdef DEBUG
-int
-free_parents (void) {
+void free_parents (void) {
 	struct access_point * ap, *ap_next;
-
 	for (ap = top_ap; ap != NULLACCESSPOINT; ap = ap_next) {
 		ap_next = ap->ap_next;
 		dn_free (ap->ap_name);
@@ -138,8 +117,7 @@ free_parents (void) {
 }
 #endif
 
-struct PSAPaddr *
-parent_psap (void) {
+struct PSAPaddr *parent_psap (void) {
 	if (top_ap == NULLACCESSPOINT)
 		return (NULLPA);
 	return (top_ap->ap_address);
@@ -159,8 +137,14 @@ parent_psap (void) {
 *  NB - As with get_dsa_info, the blocks generated need to be further
 *  processed by the calling routine.
 */
-int
-dsa_info_new (DN name, struct dn_seq *dn_stack, int master, Entry entry_ptr, struct DSError *err, struct di_block **di_p) {
+int dsa_info_new (
+	DN name,
+	struct dn_seq *dn_stack,
+	int master,
+	Entry entry_ptr,
+	struct DSError *err,
+	struct di_block **di_p
+) {
 	AV_Sequence		  avs;
 	int			  ret_val;
 	struct DSError		  err_tmp;
@@ -303,8 +287,14 @@ out:
 	return (ret_val);
 }
 
-struct di_block *
-ap2di (struct access_point *ap, DN name, char master, char di_type, struct oper_act *oper, int cr_type) {
+struct di_block *ap2di (
+	struct access_point *ap,
+	DN name,
+	char master,
+	char di_type,
+	struct oper_act *oper,
+	int cr_type
+) {
 	struct access_point *loop;
 	struct di_block	*res = NULL_DI_BLOCK;
 	struct di_block	*ptr;
@@ -334,26 +324,18 @@ ap2di (struct access_point *ap, DN name, char master, char di_type, struct oper_
 		if (master)
 			break;	/* Only want to use first AP */
 	}
-
 	sort_dsa_list (&res);
-
 	return res;
 }
 
-
-int
-dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, char master) {
+int dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, char master) {
 	DLOG(log_dsap, LLOG_TRACE, ("dsa_info_parent"));
-
 	if(top_ap == NULLACCESSPOINT) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("No parents!"));
 		err->dse_type = DSE_SERVICEERROR;
 		err->ERR_SERVICE.DSE_sv_problem = DSE_SV_INVALIDREFERENCE;
 		return(DS_X500_ERROR);
 	}
-
 	*di_p = ap2di (top_ap,name,master,DI_TASK,NULLOPER,RT_SUPERIOR);
-
 	return(DS_CONTINUE);
 }
-

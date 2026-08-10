@@ -34,8 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpd.c,v 9.0 1992/06/
  *    this agreement.
  *
  */
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -68,7 +66,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpd.c,v 9.0 1992/06/
 #undef	SMUX
 #endif
 
-
 #define	MAXSNMP		484
 #define	IDLE_TIME	(3 * 60)
 
@@ -84,7 +81,6 @@ static	char	sfile[BUFSIZ];
 static	char   *spath;
 static	char  **sargv;
 #endif
-
 
 #define	LLOG_XXX	(LLOG_PDUS | LLOG_DEBUG)
 
@@ -117,7 +113,6 @@ int	tcpservice = 1;
 static	int	x25service = 1;
 static	int	tp4service = 1;
 
-
 #define	NTADDRS	FD_SETSIZE
 
 static fd_set	ifds;
@@ -132,28 +127,15 @@ static struct timeval   lru[FD_SETSIZE];
 #endif
 static char	source[BUFSIZ];
 
-
 #ifdef	DEBUG
 static	int	didhup = OK;
 
-static SFD	hupser ();
+static void hupser (int sig);
 #endif
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 static void	ts_advise ();
-
-static	doit_udp (), doit_aux (), gc_set (), smux_process (),
-        pb_free (), tb_free (), export_view (), do_trap (),
-        do_traps (), arginit (), envinit (), readconfig ();
-static int process (), do_operation (), do_pass (),
-           proxy1 (), proxy2 (), start_smux (), doit_smux (),
-           smux_method (), f_logging (), f_variable ();
-static  struct community *str2comm ();
-
-
-
-/*  */
 
 int	nd = NOTOK;
 
@@ -169,18 +151,13 @@ int	traport;
 static	int	clts = NOTOK;
 #endif
 
-/*  */
-
 #ifndef	SNMPT
 int	quantum = 0;
-
 
 #include "snmp-g.h"
 
 struct snmpstat snmpstat;
-
 caddr_t	*agentAction;
-
 
 /* PROXY */
 
@@ -202,44 +179,27 @@ static	int	pqs = 0;
 
 static struct proxyque *pqr = NULL;
 
-
 /* VIEWS */
 
 #include "view-g.h"
 
-
 static OID viewTree = NULLOID;
-
 static struct view viewque;
 struct view *VHead = &viewque;
-
 
 /* COMMUNITIES */
 
 static struct community commque;
 struct community *CHead = &commque;
 
-struct community *str2comm ();
-
-
-/* TRAPS */
-
-static struct trap trapque;
-struct trap *UHead = &trapque;
-
-#ifdef	TCP
-static struct type_SNMP_Message *trap = NULL;
-#endif
 #ifdef	SMUX
 static struct qbuf *loopback_addr = NULL;
 #endif
-
 
 /* SMUX GROUP */
 
 #ifdef	SMUX
 #include "smux-g.h"
-
 
 static	int	smux_enabled = 1;
 static	int	smux = NOTOK;
@@ -264,20 +224,78 @@ static struct smuxReserved {
 };
 #endif
 
+/* TRAPS */
+
+static struct trap trapque;
+struct trap *UHead = &trapque;
+
+#ifdef	TCP
+static struct type_SNMP_Message *trap = NULL;
+#endif
+
 #else	/* SNMPT */
 
-/*  */
-
 #define	proxy_clear(fd)
-
 
 static	PS	audit = NULLPS;
 
 #endif	/* SNMPT */
 
-/*    MAIN */
+/* FUNCTIONS */
 
-/* ARGSUSED */
+static void doit_udp (int pd);
+static void gc_set (void),
+        pb_free (), tb_free (), export_view (), do_trap (),
+        do_traps (), arginit (), readconfig ();
+static void envinit (void);
+static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx);
+static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu);
+static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu),
+           proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm),
+		   proxy2 (struct type_SNMP_Message *msg),
+		   start_smux (void),
+           smux_method (struct type_SNMP_PDUs *pdu, OT ot, struct smuxPeer *pb, struct type_SNMP_VarBind *v, int offset),
+		   f_logging (char **vec),
+		   f_variable (char **vec);
+static int do_operation (PS ps, struct type_SNMP_Message *msg, struct community *comm, int size);
+static struct community *str2comm (char *name, struct NSAPaddr *na);
+static void doit_smux (int fd);
+static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size);
+
+#ifdef	TCP
+static void doit_udp (int pd) {
+	int	    fd;
+	char   *cp;
+	struct sockaddr_in in_socket;
+	struct sockaddr_in *isock = &in_socket;
+	struct NSAPaddr nas;
+	struct NSAPaddr *na = &nas;
+
+	if ((fd = join_udp_client (pd, isock)) == NOTOK) {
+		if (errno == EWOULDBLOCK)
+			return;
+		adios ("failed", "join_udp_client");
+	}
+
+	sprintf (source, "Internet=%s+%d+2",
+			 cp = inet_ntoa (isock -> sin_addr),
+			 (int) ntohs (isock -> sin_port));
+
+	bzero ((char *) na, sizeof *na);
+	na -> na_stack = NA_TCP;
+	na -> na_community = ts_comm_tcp_default;
+	strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
+	na -> na_port = isock -> sin_port;
+
+	doit_aux (fd, na, (IFP) read_udp_socket, (IFP) write_udp_socket, (IFP) check_udp_socket);
+#ifndef	SNMPT
+	if (pqr)
+		pqr -> pq_fd = fd, pqr -> pq_closefnx = close_udp_socket;
+	else
+#endif
+		close_udp_socket (fd);
+}
+#endif
 
 main (argc, argv, envp)
 int	argc;
@@ -291,8 +309,8 @@ char  **argv,
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 
-	arginit (argv);
-	envinit ();
+	arginit(argv);
+	envinit();
 
 	failed = listening = 0;
 	nfds = 0;
@@ -611,9 +629,7 @@ do_clts:
 	}
 }
 
-/*  */
-
-static void  ts_advise (td, code, event)
+static void ts_advise (td, code, event)
 struct TSAPdisconnect *td;
 int	code;
 char   *event;
@@ -629,45 +645,6 @@ char   *event;
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
-
-/*    DOIT */
-
-#ifdef	TCP
-static	doit_udp (pd)
-int	pd;
-{
-	int	    fd;
-	char   *cp;
-	struct sockaddr_in in_socket;
-	struct sockaddr_in *isock = &in_socket;
-	struct NSAPaddr nas;
-	struct NSAPaddr *na = &nas;
-
-	if ((fd = join_udp_client (pd, isock)) == NOTOK) {
-		if (errno == EWOULDBLOCK)
-			return;
-		adios ("failed", "join_udp_client");
-	}
-
-	sprintf (source, "Internet=%s+%d+2",
-			 cp = inet_ntoa (isock -> sin_addr),
-			 (int) ntohs (isock -> sin_port));
-
-	bzero ((char *) na, sizeof *na);
-	na -> na_stack = NA_TCP;
-	na -> na_community = ts_comm_tcp_default;
-	strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
-	na -> na_port = isock -> sin_port;
-
-	doit_aux (fd, na, read_udp_socket, write_udp_socket, check_udp_socket);
-#ifndef	SNMPT
-	if (pqr)
-		pqr -> pq_fd = fd, pqr -> pq_closefnx = close_udp_socket;
-	else
-#endif
-		close_udp_socket (fd);
-}
-#endif
 
 /*  */
 
@@ -753,15 +730,7 @@ int	fd;
 }
 #endif
 
-/*  */
-
-static	doit_aux (fd, na, rfx, wfx, cfx)
-int	fd;
-struct NSAPaddr *na;
-IFP	rfx,
-	wfx,
-	cfx;
-{
+static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 	int	    result,
 			size;
 	PE	    pe;
@@ -881,12 +850,7 @@ out:
 /*    PROCESS */
 
 #ifndef	SNMPT
-static int  process (ps, msg, na, size)
-PS	ps;
-struct type_SNMP_Message *msg;
-struct NSAPaddr *na;
-int	size;
-{
+static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size) {
 	int	    result;
 	char   *commname;
 	struct community *comm;
@@ -942,14 +906,12 @@ out:
 	return result;
 }
 
-/*  */
-
-static int  do_operation (ps, msg, comm, size)
-PS	ps;
-struct type_SNMP_Message *msg;
-struct community *comm;
-int	size;
-{
+static int do_operation (
+	PS ps,
+	struct type_SNMP_Message *msg,
+	struct community *comm,
+	int size
+) {
 	int	    idx,
 			offset;
 	struct view *vu = comm -> c_view;
@@ -1142,20 +1104,14 @@ losing:
 	return DONE;
 }
 
-/*  */
-
-static int  do_pass (msg, offset, vu)
-struct type_SNMP_Message *msg;
-int	offset;
-struct view *vu;
-{
+static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu) {
 	int	    idx,
 			status;
 	object_instance ois;
 	struct type_SNMP_PDUs *pdu = msg -> data;
 	struct type_SNMP_VarBindList *vp;
 	struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
-	int	    (*method)(OI oi, void *v, int offset);
+	int	(*method)(OI oi, struct type_SNMP_VarBind *v, int offset);
 
 	idx = 0;
 	for (vp = msg -> data -> un.get__request -> variable__bindings;
@@ -1270,9 +1226,7 @@ get_next:
 	return 0;
 }
 
-/*  */
-
-static	gc_set () {
+static void gc_set (void) {
 #ifdef	SMUX
 	struct smuxPeer *pb,
 			   *qb;
@@ -1301,11 +1255,7 @@ static	gc_set () {
 
 /*    PROXY */
 
-static int  proxy1 (psp, msg, comm)
-PS	psp;
-struct type_SNMP_Message *msg;
-struct community *comm;
-{
+static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm) {
 	int	    result;
 	struct view *v = comm -> c_view;
 	struct proxyque *pq;
@@ -1410,9 +1360,7 @@ out:
 	return result;
 }
 
-/*  */
-
-static int  proxy2 (msg)
+static int proxy2 (msg)
 struct type_SNMP_Message *msg;
 {
 	integer  request;
@@ -1499,8 +1447,7 @@ again:
 #ifdef	SMUX
 #include "smux.h"
 
-
-static int  start_smux () {
+static int  start_smux (void) {
 	int	    fd;
 	struct sockaddr_in in_socket;
 	struct sockaddr_in *isock = &in_socket;
@@ -1554,11 +1501,7 @@ out:
 	return (pb -> pb_fd = fd);
 }
 
-/*  */
-
-static int  doit_smux (fd)
-int	fd;
-{
+static void doit_smux (int fd) {
 	PE	    pe;
 	struct smuxPeer *pb;
 	struct type_SNMP_SMUX__PDUs *pdu;
@@ -1570,12 +1513,9 @@ int	fd;
 		advise (LLOG_EXCEPTIONS, NULLCP, "lost smuxPeer block for %d", fd);
 		FD_CLR (fd, &ifds);
 		FD_CLR (fd, &sfds);
-
 		return;
 	}
-
 	strcpy (source, pb -> pb_source);
-
 	if ((pe = ps2pe (pb -> pb_ps)) == NULLPE) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "ps2pe: %s (SMUX %s)",
 				ps_error (pb -> pb_ps -> ps_errno), source);
@@ -1587,34 +1527,23 @@ out:
 		pb_free (pb);
 		return;
 	}
-
 	advise (LLOG_XXX, NULLCP, "SMUX packet from %s", source);
-
 	pdu = NULL;
-
 	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"decode_SNMP_SMUX__PDUs: %s (SMUX %s)", PY_pepy, source);
 		goto out;
 	}
-
 	PLOGP (pgm_log,SNMP_SMUX__PDUs, pe, "SMUX Message", 1);
-
 	if (smux_process (pb, pdu) == NOTOK)
 		pb_free (pb);
-
 	if (pdu)
 		free_SNMP_SMUX__PDUs (pdu);
 	if (pe)
 		pe_free (pe);
 }
 
-/*  */
-
-static	smux_process (pb, pdu)
-struct smuxPeer *pb;
-struct type_SNMP_SMUX__PDUs *pdu;
-{
+static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) {
 	int	    result = OK;
 
 	switch (pdu -> offset) {
@@ -1945,15 +1874,13 @@ unexpected:
 	return result;
 }
 
-/*  */
-
-static int  smux_method (pdu, ot, pb, v, offset)
-struct type_SNMP_PDUs *pdu;
-OT	ot;
-struct smuxPeer *pb;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int smux_method (
+	struct type_SNMP_PDUs *pdu,
+	OT ot,
+	struct smuxPeer *pb,
+	struct type_SNMP_VarBind *v,
+	int offset
+) {
 	int	    status,
 			orig_id;
 	struct type_SNMP_VarBindList *orig_bindings,
@@ -2148,54 +2075,34 @@ out:
 	return status;
 }
 
-/*  */
-
-static	pb_free (pb)
-struct smuxPeer *pb;
-{
-	struct smuxTree *tb,
-			   *ub;
-
+static void pb_free (struct smuxPeer *pb) {
+	struct smuxTree *tb, *ub;
 	if (pb == NULL)
 		return;
-
 	for (tb = THead -> tb_forw; tb != THead; tb = ub) {
 		ub = tb -> tb_forw;
-
 		if (tb -> tb_peer == pb)
 			tb_free (tb);
 	}
-
 	if (pb -> pb_ps)
 		ps_free (pb -> pb_ps);
-
 	if (pb -> pb_fd != NOTOK) {
 		close_tcp_socket (pb -> pb_fd);
 		FD_CLR (pb -> pb_fd, &ifds);
 		FD_CLR (pb -> pb_fd, &sfds);
 	}
-
 	if (pb -> pb_identity)
 		oid_free (pb -> pb_identity);
 	if (pb -> pb_description)
 		free (pb -> pb_description);
-
 	remque (pb);
-
 	free ((char *) pb);
 }
 
-/*  */
-
-static	tb_free (tb)
-struct smuxTree *tb;
-{
-	struct smuxTree *tp,
-			   **tpp;
-
+static void tb_free (struct smuxTree *tb) {
+	struct smuxTree *tp, **tpp;
 	if (tb == NULL)
 		return;
-
 	for (tpp = (struct smuxTree **) &tb -> tb_subtree -> ot_smux;
 			tp = *tpp;
 			tpp = &tp -> tb_next)
@@ -2203,34 +2110,23 @@ struct smuxTree *tb;
 			*tpp = tb -> tb_next;
 			break;
 		}
-
 	remque (tb);
-
 	free ((char *) tb);
 }
 #endif	/* SMUX */
 
-/*    VIEWS */
-
-static	start_view () {
+static void start_view () {
 	OT	    ot;
-
 	if (ot = text2obj ("view"))
 		viewTree = ot -> ot_name;
-
 	/* Initialize the view mask of all objects in the tree, not just
 	   the leaves.  This is necessary so that do_pass() will allow
 	   SMUX sub-agents to mount their subtrees over interior objects.  (EJP) */
-
 	for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next)
 		export_view (ot);
 }
 
-/*  */
-
-static	export_view (ot)
-OT	ot;
-{
+static void export_view (OT ot) {
 	struct subtree *s;
 	struct view  *v;
 	OID	    name = ot -> ot_name;
@@ -2250,13 +2146,8 @@ mark_it:
 
 /*    COMMUNITIES */
 
-static	struct community *str2comm (name, na)
-char   *name;
-struct NSAPaddr *na;
-{
-	struct community *c,
-			   *d;
-
+static struct community *str2comm (char *name, struct NSAPaddr *na) {
+	struct community *c, *d;
 	d = NULL;
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw)
 		if (strcmp (c -> c_name, name) == 0) {
@@ -2309,7 +2200,7 @@ struct NSAPaddr *na;
 
 /*    TRAPS */
 
-static	start_trap () {
+static void start_trap (void) {
 #ifdef	TCP
 	char    myhost[BUFSIZ];
 	struct hostent *hp;
@@ -2375,17 +2266,15 @@ out:
 #endif
 }
 
-/*  */
-
 #ifndef	TCP
 /* ARGSUSED */
 #endif
 
-static	do_trap (generic, specific, bindings)
-int	generic,
-	specific;
-struct type_SNMP_VarBindList *bindings;
-{
+static void do_trap (
+	int generic,
+	int specific,
+	struct type_SNMP_VarBindList *bindings
+) {
 #ifdef	TCP
 	struct type_SNMP_Message *msg;
 	struct type_SNMP_Trap__PDU *parm;
@@ -2394,7 +2283,6 @@ struct type_SNMP_VarBindList *bindings;
 	if ((msg = trap) == NULL)
 		return;
 	parm = msg -> data -> un.trap;
-
 	if ((ot = text2obj ("sysObjectID")) == NULLOT) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"unable to send trap: no such object: \"%s\"",
@@ -2412,30 +2300,25 @@ struct type_SNMP_VarBindList *bindings;
 	parm -> specific__trap = specific;
 	{
 		struct timeval now;
-
 		if (gettimeofday (&now, (struct timezone *) 0) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "gettimeofday");
 			return;
 		}
-
 		parm -> time__stamp -> parm = (now.tv_sec - my_boottime.tv_sec) * 100
 									  + ((now.tv_usec - my_boottime.tv_usec)
 										 / 10000);
 	}
 	parm -> variable__bindings = bindings;
-
 	do_traps (msg, (integer) generic, (integer) specific);
 #endif
 }
 
-/*  */
-
 #ifdef	TCP
-static	do_traps (msg, generic, specific)
-struct type_SNMP_Message *msg;
-integer	generic,
-		specific;
-{
+static void do_traps (
+	struct type_SNMP_Message *msg,
+	int generic,
+	int specific
+) {
 	int	    mask = 1 << 7 - generic;
 	struct trap *t;
 
@@ -2496,11 +2379,7 @@ integer	generic,
 #endif
 #else	/* SNMPT */
 
-/*  */
-
-/* ARGSUSED */
-
-static int  process (ps, msg, na, size)
+static int process (ps, msg, na, size)
 PS	ps;
 struct type_SNMP_Message *msg;
 struct NSAPaddr *na;
@@ -2587,11 +2466,7 @@ out:
 }
 #endif	/* SNMPT */
 
-/*    MISCELLANY */
-
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	char  *ap;
 #ifdef	SNMPT
 	char   *file = "snmp.traps";
@@ -2803,9 +2678,7 @@ char	**vec;
 #endif
 }
 
-/*  */
-
-static  envinit () {
+static void envinit (void) {
 	int     i,
 			sd;
 #ifndef	SNMPT
@@ -2914,7 +2787,7 @@ static  envinit () {
 	fin_view ();
 	fin_mib ();
 
-	start_trap ();
+	void start_trap (void);
 	start_view ();
 
 	o_advise = (IFP) advise;
@@ -2936,12 +2809,8 @@ static  envinit () {
 #endif
 }
 
-/*  */
-
 #ifdef	DEBUG
-static SFD  hupser (sig)
-int	sig;
-{
+static void hupser (int sig) {
 	char    buffer[BUFSIZ];
 	PE	    p;
 
@@ -2949,26 +2818,26 @@ int	sig;
 		didhup = OK;
 		return;
 	}
-
 	advise (LLOG_EXCEPTIONS, NULLCP,
 			"sbrk=0x%x allocs=%d frees=%d most=%d",
 			sbrk (0), pe_allocs, pe_frees, pe_most);
-
 	for (p = pe_active; p; p = p -> pe_link) {
 		sprintf (buffer, "active PE 0x%x (refcnt %d)", (caddr_t) p,
 				 p -> pe_refcnt);
-
 		_vpdu (pgm_log, vunknown, p, buffer, -1);
 	}
 }
 #endif
 
-/*    CONFIG */
-
 #ifndef	SNMPT
 
-int	f_community (), f_logging (), f_proxy (), f_trap (), f_variable (),
-	f_view (), f_expression ();
+int f_community (char **vec);
+int f_logging (char **vec);
+int f_proxy (char **vec);
+int f_trap (char **vec);
+int f_variable (char **vec);
+int f_view (char **vec);
+int f_expression (char **vec);
 
 static struct pair {
 	char   *p_name;		/* runcom directive */
@@ -2985,9 +2854,7 @@ static struct pair {
 	NULL
 };
 
-/*  */
-
-static	readconfig () {
+static void readconfig (void) {
 	char *cp;
 	char    buffer[BUFSIZ],
 			line[BUFSIZ],
@@ -3036,26 +2903,15 @@ static	readconfig () {
 	fclose (fp);
 }
 
-/*  */
-
-static int  f_logging (vec)
-char  **vec;
-{
+static int f_logging (char **vec) {
 	char  **vp;
-
 	for (vp = ++vec; *vp; vp++)
 		continue;
-
 	log_tai (pgm_log, vec, vp - vec);
-
 	return OK;
 }
 
-/*  */
-
-static int  f_variable (vec)
-char  **vec;
-{
+static int f_variable (char **vec) {
 	if (*++vec == NULL)
 		return NOTOK;
 
@@ -3070,43 +2926,30 @@ char  **vec;
 				set_interface (name, *vec);
 			else
 				return NOTOK;
-
 		return OK;
 	}
 #endif
-
 	if (lexequ (*vec, "snmpEnableAuthenTraps") == 0) {
 		++vec;
-
 		if (lexequ (*vec, "enabled") == 0)
 			*((integer *) snmpstat.s_enableauthentraps) = TRAPS_ENABLED;
 		else if (lexequ (*vec, "disabled") == 0)
 			*((integer *) snmpstat.s_enableauthentraps) = TRAPS_DISABLED;
-
 		return OK;
 	}
-
 	if (!vec[0] || !vec[1] || vec[2])
 		return NOTOK;
-
 	set_variable (vec[0], vec[1]);
-
 	return OK;
 }
 #endif	/* SNMPT */
 
-/*    ERRORS */
-
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -3120,16 +2963,12 @@ char   *what,
 }
 #endif
 
-
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...)
+void advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

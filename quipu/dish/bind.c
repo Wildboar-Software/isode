@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/bind.c,v 9.0 199
  *    this agreement.
  *
  */
-
-
 #include <signal.h>
 #include "manifest.h"
 #include "quipu/util.h"
@@ -90,22 +88,16 @@ extern unsigned long hash_passwd();
 extern char *hash2str();
 extern struct certificate *cert_cpy();
 extern struct SecurityServices *dsap_security;
-static int protect_password();
-static int sign_bindarg();
+static void protect_password(void);
+static int sign_bindarg(void);
 
-/* ARGSUSED */
-SFD alarm_sig (sd)
-int sd;
-{
-	SFD dish_quit ();
-
+SFD alarm_sig (int sd) {
+	void dish_quit (int sig);
 	if (frompipe && (parent_pid != 0))
 		if (kill (parent_pid,0) == -1) {
 			/* invoking shell gone - exit */
 			dish_quit (SIGHUP);
 		}
-
-
 	if (bound) {
 		dap_unbind (main_dsa_id);
 #ifndef NO_STATS
@@ -117,11 +109,9 @@ int sd;
 			referral_dsa = 0;
 		}
 	}
-
 	waiting += connect_time;
 	if (frompipe && (waiting >= cache_time))
 		dish_quit (SIGHUP);
-
 #ifdef LINUX
 	signal (SIGALRM, (__sighandler_t)alarm_sig);
 #else
@@ -130,8 +120,7 @@ int sd;
 	alarm (connect_time);
 }
 
-int
-set_alarm (void) {
+void set_alarm (void) {
 	waiting = 0;
 #ifdef LINUX
 	signal (SIGALRM, (__sighandler_t)alarm_sig);
@@ -141,12 +130,8 @@ set_alarm (void) {
 	alarm (connect_time);
 }
 
-/* ARGSUSED */
-SFD bind_sig (sd)
-int sd;
-{
+SFD bind_sig (int sd) {
 	extern jmp_buf  dish_env;
-
 	ps_print (OPT,"Bind timeout\n");
 	if (referral_dsa != 0) {
 		referral_dsa = 0;
@@ -155,8 +140,7 @@ int sd;
 	longjmp (dish_env,1);
 }
 
-int
-bind_alarm (void) {
+void bind_alarm (void) {
 #ifdef LINUX
 	signal (SIGALRM, (__sighandler_t)bind_sig);
 #else
@@ -165,20 +149,16 @@ bind_alarm (void) {
 	alarm (connect_time);
 }
 
-int
-isnumeric (char *ptr) {
+int isnumeric (char *ptr) {
 	if ((ptr == NULLCP) || (*ptr == 0))
 		return FALSE;
-
 	while (*ptr)
 		if (! isdigit (*ptr++) )
 			return FALSE;
-
 	return TRUE;
 }
 
-int
-call_bind (int argc, char **argv) {
+int call_bind (int argc, char **argv) {
 	int 	x;
 	char    noconnect = FALSE;
 	static  char    bdsa  [LINESIZE], save_bdsa[LINESIZE];
@@ -503,17 +483,12 @@ call_bind (int argc, char **argv) {
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("Bound '%s' to '%s'",username,myname));
 #endif
-
 	bound = TRUE;
 	user_name = bindarg.dba_dn;
-
 	return (OK);
-
 }
 
-int
-rebind (void) {
-
+int rebind (void) {
 	if (referral_dsa != 0) {
 		dap_unbind (referral_dsa);
 		referral_dsa = 0;
@@ -569,8 +544,7 @@ rebind (void) {
 	return (OK);
 }
 
-int
-referral_bind (struct PSAPaddr *addr) {
+int referral_bind (struct PSAPaddr *addr) {
 	if (referral_dsa != 0)
 		dap_unbind (referral_dsa++);
 	else
@@ -620,8 +594,7 @@ referral_bind (struct PSAPaddr *addr) {
 	return (1);
 }
 
-int
-call_unbind (int argc, char **argv) {
+void call_unbind (int argc, char **argv) {
 	int		x;
 	char		noquit = FALSE;
 	extern char	resbuf [];
@@ -661,8 +634,7 @@ call_unbind (int argc, char **argv) {
 	}
 }
 
-int
-unbind_from_dsa (void) {
+void unbind_from_dsa (void) {
 	if (bound) {
 		dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
@@ -670,7 +642,6 @@ unbind_from_dsa (void) {
 			referral_dsa = 0;
 		}
 	}
-
 	bound = FALSE;
 }
 
@@ -678,8 +649,7 @@ extern char no_rcfile;
 static time_t rc_mod_time;
 static char Dish_Home[LINESIZE];
 
-int
-user_tailor (void) {
+int user_tailor (void) {
 	int		isenv;
 	char           *part1;
 	char           *part2;
@@ -843,25 +813,18 @@ out:
 	return (OK);
 }
 
-test_rc_file (ps)
-PS  ps;
-{
+void test_rc_file (PS ps) {
 	struct	 stat	sbuf;
-
 	if (stat (Dish_Home,&sbuf) != 0)
 		return;
-
 	if (rc_mod_time < sbuf.st_mtime) {
 		ps_printf (ps,"WARNING: %s has changed - but not re-read!!!\n",
 				   Dish_Home);
 		rc_mod_time = sbuf.st_mtime;
 	}
-
 }
 
-SFD dish_quit (sig)
-int sig;
-{
+void dish_quit (int sig) {
 	if (bound) {
 		dap_unbind (main_dsa_id);
 		if (referral_dsa != 0) {
@@ -869,14 +832,11 @@ int sig;
 			referral_dsa = 0;
 		}
 	}
-
 	if (frompipe)
 		exit_pipe ();
 	else
 		fprintf (stderr,"Dish Problem\n");
-
 	hide_picture();
-
 	switch (sig) {
 	case SIGALRM:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Timer expired :- Dish quitting"));
@@ -891,11 +851,9 @@ int sig;
 		signal (sig, SIG_DFL); /* to stop recursion */
 		abort ();
 	}
-
 }
 
-static int
-protect_password (void) {
+static void protect_password (void) {
 	long hash;
 	char *cp;
 	int len;
@@ -914,21 +872,15 @@ protect_password (void) {
 	bindarg.dba_passwd_len = len;
 }
 
-
-static int
-sign_bindarg (void) {
+static int sign_bindarg (void) {
 	struct Nonce *nonce;
-
 	if (dsap_security == (struct SecurityServices *) 0)
 		return (NOTOK);
-
 	if (! dsap_security->serv_mknonce)
 		return (NOTOK);
-
 	nonce = (dsap_security->serv_mknonce)((struct Nonce *) 0);
 	if (nonce == (struct Nonce *) 0)
 		return (NOTOK);
-
 	bindarg.dba_time1 = nonce->non_time1;
 	bindarg.dba_time2 = nonce->non_time2;
 	bindarg.dba_r1.n_bits = nonce->non_r1.n_bits;
@@ -943,14 +895,11 @@ sign_bindarg (void) {
 						  _ZTokenToSignDAS, &_ZDAS_mod);
 	else
 		return (NOTOK);
-
 	if (bindarg.dba_sig == (struct signature *) 0)
 		return (NOTOK);
-
 	if (dsap_security->serv_mkpath)
 		bindarg.dba_cpath = (dsap_security->serv_mkpath)();
 	else
 		bindarg.dba_cpath = (struct certificate_list *)0;
-
 	return (OK);
 }

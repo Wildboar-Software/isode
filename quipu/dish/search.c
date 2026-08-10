@@ -61,8 +61,7 @@ char		allow_move = TRUE;
 
 static int	csr_compar ();
 
-int
-call_search (int argc, char **argv) {
+void call_search (int argc, char **argv) {
 	PS	aps;
 	struct ds_search_arg search_arg;
 	struct DSError  error;
@@ -438,14 +437,9 @@ check_rdn:
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-handle_problems (aps,cr,limit,proceed)
-PS aps;
-ContinuationRef cr;
-int limit;
-{
+void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed) {
 	if (! proceed)
 		return;
-
 	if (limit != LSR_NOLIMITPROBLEM) {
 		ps_print (aps, "(");
 		switch (limit) {
@@ -469,7 +463,6 @@ int limit;
 		if (! flag_show)
 			return;
 	}
-
 	if (cr != NULLCONTINUATIONREF) {
 		ContinuationRef crptr;
 		if (!flag_show) {
@@ -485,5 +478,4 @@ int limit;
 			ps_print (aps,")\n");
 		}
 	}
-
 }

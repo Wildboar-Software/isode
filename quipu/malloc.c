@@ -369,17 +369,12 @@ new_freelist (void) {
 	return (flist);
 }
 
-
-static char *
-big_malloc (
-	/* used for mallocs of > MAXSMALL */
-	size_t realsize
-) {
+/* used for mallocs of > MAXSMALL */
+static char *big_malloc (size_t realsize) {
 	size_t blocksize;
 	struct freelist * flist;
 	struct header * head = (struct header *)0;
 	char * mem;
-
 	for (flist = bigfree->next; flist != bigfree; flist=flist->next) {
 		if (flist->size >= realsize) {
 			head = flist->block;
@@ -389,7 +384,6 @@ big_malloc (
 			break;
 		}
 	}
-
 	if (head == (struct header *)0) {
 		/* go and get one then !!! */
 		blocksize = PAGEALIGN(realsize);
@@ -402,9 +396,7 @@ big_malloc (
 		head->bigsize = blocksize | 0x01;
 	} else
 		head->bigsize |= 0x01;
-
 	mem = (char *) head + ALIGN(sizeof (struct header));
-
 #ifdef MALLOCTRACE
 	write_string ("gets ");
 	write_int (head->bigsize & ~1 );
@@ -413,16 +405,12 @@ big_malloc (
 	write_string ("\n");
 	write_stack("x");
 #endif
-
 	return (mem);
-
 }
 
-static
-big_free (struct header *ptr) {
+static void big_free (struct header *ptr) {
 	struct freelist *next;
 	struct freehead *x;
-
 	if (listfree->next == listfree) {
 		if ((next = new_freelist ()) == (struct freelist *)0)
 			return;
@@ -431,7 +419,6 @@ big_free (struct header *ptr) {
 		next->prev->next = next->next;
 		next->next->prev = next->prev;
 	}
-
 	ptr->bigsize &= ~1;
 	next->size = ptr->bigsize;
 	next->block = ptr;
@@ -439,27 +426,19 @@ big_free (struct header *ptr) {
 	next->prev = bigfree;
 	bigfree->next->prev = next;
 	bigfree->next = next;
-
 	x = (struct freehead *) ptr;
-
 	x->flist = next;
 }
 
-static
-add_free (struct header *x) {
+static void add_free (struct header *x) {
 	struct freelist *next, *c;
 	size_t * p = sizes;
-
 	x->use &= ~INUSE;
-
 	if ((c = heapptr[x->use]) == (struct freelist *) 0)
 		c = heapptr[x->use] = heaps[x->use];
-
 	while ( x->smallsize > *p++ )
 		;
-
 	c = &c[ (p-1) - sizes];
-
 	if (listfree->next == listfree) {
 		if ((next = new_freelist ()) == (struct freelist *)0)
 			return;
@@ -468,14 +447,12 @@ add_free (struct header *x) {
 		next->prev->next = next->next;
 		next->next->prev = next->prev;
 	}
-
 	next->size = x->smallsize;
 	next->block = x;
 	next->next = c->next;
 	next->prev = c;
 	c->next->prev = next;
 	c->next = next;
-
 	((struct freehead *) x)->flist = next;
 }
 
@@ -485,20 +462,14 @@ add_free (struct header *x) {
 	a->next->prev = a->prev; \
 	return_freelist(a); }
 
-static struct header *
-next_free_block (struct header *ptr) {
+static struct header *next_free_block (struct header *ptr) {
 	struct header * next;
-
 	next = (struct header *)((char *)ptr + ptr->smallsize);
-
 	if (((size_t)(next - 1) & pagemask) != ((size_t)next & pagemask))
 		return (struct header *)0;
-
 	if (((char *)next < top_mem) && (next->use == (ptr->use & ~INUSE)))
 		return (next);
-
 	return (struct header *)0;
-
 }
 
 #define use_block(ptr,size) if ((ptr->smallsize != size) && (ptr->smallsize >= size + sizeof (struct freehead))) { \
@@ -512,11 +483,10 @@ next_free_block (struct header *ptr) {
 
 MALLOC_RETURN
 #ifdef lint
-x_malloc (size)
+x_malloc (size_t size)
 #else
-malloc (size)
+malloc (size_t size)
 #endif
-size_t size;
 {
 	char * mem;
 	struct header *head;
@@ -537,12 +507,10 @@ size_t size;
 
 	if (mem_heap >= MAXHEAP)
 		mem_heap = MAXHEAP - 1;
-
 	if (size < sizeof (struct freelist *))	/* memory will be used when freed for freelist !!! */
 		realsize = ALIGN (sizeof (struct freehead));
 	else
 		realsize = ALIGN (size) + ALIGN (sizeof (struct header));
-
 	if (realsize >= SMALLMAX) {
 #ifdef MALLOCTRACE
 		write_string ("malloc of ");
@@ -550,12 +518,10 @@ size_t size;
 #endif
 		return (big_malloc (realsize));
 	}
-
 	if (first_malloc) {
 		/* set up freelist */
 		size_t x;
 		int j;
-
 		for (i = 0; i < MAXHEAP; i++) {
 			heapptr[i] = (struct freelist *) 0;
 			for (j = 0 ; j<BUCKETS; j++) {
@@ -565,7 +531,6 @@ size_t size;
 				heaps[i][j].size = 0;
 			}
 		}
-
 		/* align first sbrk to page boundary */
 		x = (size_t)sbrk(0);
 		x = PAGEALIGN (x) - x;
@@ -582,12 +547,9 @@ size_t size;
 	} else {
 		if ((top = heapptr[mem_heap]) == (struct freelist *)0)
 			goto allocate_more;
-
 		while ( size > *p++ )
 			;
-
 		top = &top[ i = ((p-1) - sizes) ];
-
 		for (; i < BUCKETS ; i++,top++ ) {
 			for (ptr = top->next ; ptr != top; ptr=ptr->next) {
 				if (ptr->size >= realsize) {
@@ -597,10 +559,8 @@ size_t size;
 				}
 			}
 		}
-
 allocate_more:
 		;
-
 		blocksize = PAGEALIGN(realsize);
 		if ((head = (struct header *) sbrk ((int)blocksize)) == (struct header *)-1) {
 			/* there are 100s of places where Quipu would choke on a naff malloc */
@@ -615,11 +575,8 @@ allocate_more:
 
 return_memory:
 	;
-
 	use_block (head,realsize);
-
 	mem = (char *) head + ALIGN(sizeof (struct header));
-
 #ifdef MALLOCTRACE
 	write_string ("malloc of ");
 	write_int (size);
@@ -632,7 +589,6 @@ return_memory:
 	write_string ("\n");
 	write_stack("x");
 #endif
-
 	return (mem);
 }
 
@@ -651,12 +607,9 @@ void *s1;
 	struct header * ptr;
 	struct header * next;
 	char* s = (char*) s1;
-
 	if (s == NULL)
 		return;
-
 	ptr = (struct header *) (s - ALIGN (sizeof (struct header)));
-
 	if (ptr->smallsize & 1) {
 #ifdef MALLOCTRACE
 		write_string ("free of ");
@@ -669,7 +622,6 @@ void *s1;
 		big_free (ptr);
 		return;
 	}
-
 #ifdef MALLOCTRACE
 	write_string ("free of ");
 	write_int (ptr->smallsize);
@@ -680,21 +632,17 @@ void *s1;
 	write_string ("\n");
 	write_stack("x");
 #endif
-
 	if (! USED(ptr)) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("freeing problem"));
 		return;		/* already freed !!! */
 	}
-
 	/* join forward free block in loop to catch previous back blocks ! */
 	while ((next = next_free_block(ptr)) != (struct header *) 0) {
 		ptr->smallsize += next->smallsize;
 		remove_free (((struct freehead *)next)->flist);
 	}
 	add_free (ptr);
-
 	return;
-
 }
 
 MALLOC_RETURN
@@ -715,9 +663,7 @@ size_t n;
 	struct header * ptr;
 	struct header * next;
 	size_t copysize;
-
 	ptr = (struct header *) (s - ALIGN (sizeof (struct header)));
-
 	if (ptr->smallsize & 1) {
 		DLOG (log_dsap,LLOG_DEBUG,("re-alloc of big block"));
 #ifdef MALLOCTRACE
@@ -725,16 +671,12 @@ size_t n;
 #endif
 		realsize = ALIGN (n) + ALIGN (sizeof (struct header));
 		copysize = ptr->bigsize & ~1;
-
 		if (copysize >= realsize)
 			/* its big enough - carry on */
 			return s;
-
 		goto out;
 	}
-
 	copysize = ptr->smallsize;
-
 	if (! USED(ptr)) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("re-alloc problem"));
 #ifdef MALLOCTRACE
@@ -742,16 +684,13 @@ size_t n;
 #endif
 		goto out;
 	}
-
 	realsize = ALIGN (n) + ALIGN (sizeof (struct header));
-
 	if (realsize >= SMALLMAX) {
 		DLOG (log_dsap,LLOG_DEBUG,("re-alloc in to big block"));
 #ifdef MALLOCTRACE
 		write_stack ("x");
 #endif
 		goto out;
-
 	}
 	if (ptr->smallsize >= realsize) {
 #ifdef MALLOCTRACE
@@ -759,11 +698,9 @@ size_t n;
 #endif
 		return (s);
 	}
-
 	/* see if next block is free */
 	if ((next = next_free_block(ptr)) != (struct header *) 0) {
 		struct header * top;
-
 		top = next;
 		/* join with other free blocks */
 		while ((next = next_free_block(top)) != (struct header *) 0) {
@@ -771,14 +708,12 @@ size_t n;
 			remove_free (((struct freehead *)next)->flist);
 		}
 		remove_free (((struct freehead *)top)->flist);
-
 		/* is it big enough ? */
 		if (ptr->smallsize + top->smallsize >= realsize) {
 #ifdef MALLOCTRACE
 			size_t savesize;
 			savesize = ptr->smallsize;
 #endif
-
 			ptr->smallsize += top->smallsize;
 			use_block (ptr,realsize);
 #ifdef MALLOCTRACE
@@ -789,32 +724,27 @@ size_t n;
 			/* return to free list */
 			add_free (top);
 	}
-
 out:
 	;
 	if ((mem = malloc (n)) == (char *)0)
 		return ((char *)0);
-
 	copysize -= ALIGN (sizeof (struct header));
 	copysize = MIN (copysize, n);
 	bcopy (s,mem,(int)copysize);
 	free (s);
-
 	return (mem);
 }
 
 MALLOC_RETURN
 #ifdef lint
-x_calloc(n, size)
+x_calloc(size_t n, size_t size)
 #else
-calloc(n, size)
+calloc(size_t n, size_t size)
 #endif
-size_t n, size;
 {
 	char * mem;
 	size_t x;
-
-	x= n*size;
+	x = n * size;
 	if ((mem = malloc (x)) == (char *)0)
 		return ((char *)0);
 	bzero (mem,(int)x);
@@ -823,11 +753,10 @@ size_t n, size;
 
 FREE_RETURN
 #ifdef lint
-x_cfree(mem)
+x_cfree(char *mem)
 #else
-cfree(mem)
+cfree(char *mem)
 #endif
-char *  mem;
 {
 	free(mem);
 }

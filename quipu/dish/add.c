@@ -50,11 +50,9 @@ extern	char	dad_flag;
 char            fname[128];
 static char	new_draft;
 
-int make_old (char *, char);
+void make_old (char *file, char commit);
 
-int
-call_add (int argc, char **argv) {
-
+void call_add (int argc, char **argv) {
 	Entry           entry_ptr;
 	FILE           *fd;
 	struct ds_addentry_arg add_arg;
@@ -225,15 +223,12 @@ call_add (int argc, char **argv) {
 
 }
 
-int
-make_old (char *file, char commit) {
+void make_old (char *file, char commit) {
 	char newname[LINESIZE];
-
 	if (dad_flag) {
 		unlink (file);
 		return;
 	}
-
 	if (commit == 0) {
 		sprintf (newname, "%s.old", file);
 		rename (file, newname);
@@ -241,8 +236,7 @@ make_old (char *file, char commit) {
 }
 
 
-Attr_Sequence make_template_as (oc)
-AV_Sequence oc;
+Attr_Sequence make_template_as (AV_Sequence oc)
 {
 	AV_Sequence avs;
 	Attr_Sequence newas;
@@ -272,8 +266,7 @@ AV_Sequence oc;
 	return (as);
 }
 
-int
-add_template (char *name, char *objclass) {
+int add_template (char *name, char *objclass) {
 	FILE           *fptr;
 	PS              ps;
 	char            obuf[LINESIZE];
@@ -283,7 +276,6 @@ add_template (char *name, char *objclass) {
 
 	if (objclass == NULLCP)
 		objclass = ORG_PERSON;
-
 	if (!new_draft)
 		if ((fptr = fopen (name, "r")) != NULL) {
 			fclose (fptr);
@@ -304,20 +296,14 @@ add_template (char *name, char *objclass) {
 	if (std_setup (ps, fptr) == NOTOK) {
 		return (-1);
 	}
-
 	sprintf (obuf, "objectClass=%s", objclass);
 	if ((ocas = str2as (obuf)) == NULLATTR)
 		return (-1);
-
 	as = make_template_as (ocas->attr_value);
 	as = as_merge (as,ocas);
-
 	as_print (ps,as,EDBOUT);
-
 	as_free (as);
 	ps_free (ps);
 	fclose (fptr);
-
 	return (OK);
-
 }

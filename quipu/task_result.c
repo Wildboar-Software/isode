@@ -38,8 +38,7 @@ void ros_log ();
 * The DSA has produced a result for the task, encode the result,
 * generate an RO-RESULT.REQUEST and update the task block.
 */
-int
-task_result (struct task_act *task) {
+void task_result (struct task_act *task) {
 	int				  result;
 	struct DSAPindication	  di_s;
 	struct DSAPindication	* di = &(di_s);
@@ -60,7 +59,6 @@ task_result (struct task_act *task) {
 #endif
 
 	DLOG(log_dsap, LLOG_TRACE, ("task_result"));
-
 	if(task == NULLTASK) {
 		LLOG(log_dsap, LLOG_FATAL, ("Task memerr 5"));
 		return;
@@ -103,4 +101,3 @@ task_result (struct task_act *task) {
 		conn_extract(cn);
 	}
 }
-

@@ -53,8 +53,7 @@ common_prefix_len (char *a, char *b) {
  * This information is used later when checking search acls.
  */
 
-int
-ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
+void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 	Ftypelist	new, tmp;
 	int		i, plen;
 
@@ -65,13 +64,11 @@ ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 		(*l)->ft_numstrs = 0;
 		(*l)->ft_inequstrs = (char **) 0;
 		(*l)->ft_next = NULLFTL;
-
 		if ( inequstr != NULL ) {
 			(*l)->ft_inequstrs = (char **) smalloc(sizeof(char *));
 			(*l)->ft_numstrs = 1;
 			(*l)->ft_inequstrs[0] = inequstr;
 		}
-
 		return;
 	}
 
@@ -89,11 +86,9 @@ ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 
 		if ( AttrT_cmp( tmp->ft_type, type ) == 0 ) {
 			/* substring length shorter? */
-			if ( len >= 0 && (len < tmp->ft_len
-							  || tmp->ft_len == -1) ) {
+			if ( len >= 0 && (len < tmp->ft_len || tmp->ft_len == -1) ) {
 				tmp->ft_len = len;
 			}
-
 			/* check the >= or <= string prefix */
 			if ( inequstr != NULL ) {
 				/* record the new value */
@@ -122,7 +117,6 @@ ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 			return;
 		}
 	}
-
 	new = (Ftypelist) smalloc( sizeof(Ftype) );
 	new->ft_type = type;
 	new->ft_len = len;
@@ -135,12 +129,10 @@ ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 	}
 	new->ft_next = (*l)->ft_next;
 	(*l) = new;
-
 	return;
 }
 
-int
-ftype_free (Ftypelist ft) {
+void ftype_free (Ftypelist ft) {
 	Ftypelist	next = ft;
 
 	for ( ; next != NULLFTL; ft = next ) {
@@ -151,15 +143,13 @@ ftype_free (Ftypelist ft) {
 	}
 }
 
-int
-rc_free (struct result_count *rc) {
+void rc_free (struct result_count *rc) {
 	if ( rc->rc_types != NULLTYPEDATA )
 		free( (char *) rc->rc_types );
 	free( (char *) rc );
 }
 
-static
-oid_in_seq (AttributeType at, struct oid_seq *seq) {
+static int oid_in_seq (AttributeType at, struct oid_seq *seq) {
 	for ( ; seq != NULLOIDSEQ; seq = seq->oid_next ) {
 		if ( oid_cmp( at->oa_ot.ot_oid, seq->oid_oid ) == 0 ) {
 			return( 1 );
@@ -172,38 +162,37 @@ oid_in_seq (AttributeType at, struct oid_seq *seq) {
 	return( 0 );
 }
 
-static
-sacl_match (DN binddn, DN selfdn, Saclinfo s) {
+static int sacl_match (DN binddn, DN selfdn, Saclinfo s) {
 	switch ( s->sac_selector ) {
 	case ACL_ENTRY:
 		if ( selfdn != NULLDN && dn_cmp( binddn, selfdn ) == OK )
 			return( 1 );
 		break;
-
 	case ACL_GROUP:
 		if ( check_dnseq( s->sac_name, binddn ) == OK )
 			return( 1 );
 		break;
-
 	case ACL_PREFIX:
 		if ( check_dnseq_prefix( s->sac_name, binddn ) == OK )
 			return( 1 );
 		break;
-
 	case ACL_OTHER:
 		return( 1 );
-
 	default:
 		/* trouble */
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("sacl_match: unknown type") );
 		return( 0 );
 	}
-
 	return( 0 );
 }
 
-static
-check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, char authtype) {
+static int check_base_sacl (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	struct ds_search_task *local,
+	char authtype
+) {
 	AV_Sequence		avs;
 	Ftypelist		ft;
 	Saclinfo		s, save;
@@ -279,8 +268,13 @@ check_base_sacl (DN binddn, DN selfdn, Entry e, struct ds_search_task *local, ch
 	return( OK );
 }
 
-static struct result_count *
-make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local) {
+static struct result_count *make_rc (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	int scope,
+	struct ds_search_task *local
+) {
 	struct result_count	*rc;
 	AV_Sequence		avs;
 	Ftypelist		ft;
@@ -290,7 +284,6 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 	rc = (struct result_count *) smalloc( sizeof(struct result_count) );
 	bzero( (char *) rc, sizeof(struct result_count) );
 	rc->rc_base = e;
-
 	save = NULLSACL;
 
 	/*
@@ -299,22 +292,18 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 	 * scope.  If an applicable sacl is found, add its restrictions to
 	 * the list of restrictions being kept in the result count.
 	 */
-
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
 			ft = ft->ft_next ) {
 		/* for each set of sacls */
 		for ( avs = e->e_sacl; avs != NULLAV; avs = avs->avseq_next ) {
 			s = (Saclinfo) avs->avseq_av.av_struct;
-
 			/* right scope? */
 			if ( (s->sac_scope & scope) == 0 )
 				continue;
-
 			/* right type? */
 			if ( s->sac_types != NULLOIDSEQ &&
 					oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
 				continue;
-
 			/* right who? */
 			if ( ! sacl_match( binddn, selfdn, s ) )
 				continue;
@@ -325,16 +314,13 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 			 * most restrictive one, so save this one if it's
 			 * more restrictive than any found so far.
 			 */
-
 			/* first match */
 			if ( save == NULLSACL ) {
 				save = s;
-
 				/* more specific who match */
 			} else if ( selector_rank[s->sac_selector] <
 						selector_rank[save->sac_selector] ) {
 				save = s;
-
 				/* same who - more specific attribute */
 			} else if ( selector_rank[s->sac_selector] ==
 						selector_rank[save->sac_selector]
@@ -346,7 +332,6 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 		/* no sacls applicable to this type */
 		if ( save == NULLSACL )
 			continue;
-
 		/* We have found an applicable sacl. Add it to the rc */
 		td = (Typedata) smalloc( sizeof( typedata) );
 		td->td_type = ft->ft_type;
@@ -354,7 +339,6 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 		td->td_nopartial = save->sac_zeroifexceeded;
 		td->td_minkey = save->sac_minkeylength;
 		td->td_access = save->sac_access;
-
 		rc->rc_numtypes++;
 		if ( rc->rc_types == NULLTYPEDATA ) {
 			rc->rc_types = td;
@@ -365,7 +349,6 @@ make_rc (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local)
 			free( (char *) td );
 		}
 	}
-
 	return( rc );
 }
 
@@ -375,15 +358,20 @@ static int srch2sacl_scope[] = {
 	SACL_SUBTREE		/* SRA_WHOLESUBTREE	*/
 };
 
-static
-entry_rc_cmp (Entry e, struct result_count *rc) {
-	return( e < rc->rc_base ? -1 : e > rc->rc_base ? 1 : 0 );
+static int entry_rc_cmp (Entry e, struct result_count *rc) {
+	return ( e < rc->rc_base
+		? -1
+		: e > rc->rc_base
+			? 1
+			: 0 );
 }
 
-static
-rc_cmp (struct result_count *a, struct result_count *b) {
-	return( a->rc_base < b->rc_base ? -1
-			: a->rc_base > b->rc_base ? 1 : 0 );
+static int rc_cmp (struct result_count *a, struct result_count *b) {
+	return( a->rc_base < b->rc_base
+		? -1
+		: a->rc_base > b->rc_base
+			? 1
+			: 0 );
 }
 
 /*
@@ -395,9 +383,15 @@ rc_cmp (struct result_count *a, struct result_count *b) {
  * It's also called once to check the parent sacl during a single-level
  * search.
  */
-
-int
-check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, char authtype) {
+int check_one_sacl (
+	DN binddn,
+	DN selfdn,
+	Entry ancestor,
+	int scope,
+	struct ds_search_task *local,
+	int *saclerror,
+	char authtype
+) {
 	struct result_count	*rc;
 	Typedata		td;
 	Ftypelist		ft;
@@ -408,19 +402,14 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
 		binddn = authtype >= ancestor->e_authp->ap_listandsearch ?
 				 binddn : NULLDN;
 	}
-
 	if ( (rc = (struct result_count *) avl_find( (Avlnode *)local->st_sacls,
 			   (caddr_t) ancestor, entry_rc_cmp )) == (struct result_count *) 0 ) {
-
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
-
 		avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
 					rc_cmp, avl_dup_error );
 	}
-
 	rc->rc_count++;
-
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
 			ft = ft->ft_next ) {
 		for ( i = 0; i < rc->rc_numtypes; i++ ) {
@@ -431,14 +420,11 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
 		if ( i == rc->rc_numtypes ) {
 			continue;
 		}
-
 		td = &(rc->rc_types[i]);
-
 		if ( td->td_access == SACL_UNSEARCHABLE ) {
 			rc->rc_count--;
 			return( NOTOK );
 		}
-
 		if ( rc->rc_count > td->td_limit ) {
 			if ( td->td_nopartial )
 				*saclerror = -1;	/* security error */
@@ -447,14 +433,12 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
 			rc->rc_count--;
 			return( NOTOK );
 		}
-
 		if ( ft->ft_len >= 0 && ft->ft_len < td->td_minkey ) {
 			*saclerror = -1;
 			rc->rc_count--;
 			return( NOTOK );
 		}
 	}
-
 	return( OK );
 }
 
@@ -466,23 +450,26 @@ check_one_sacl (DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_searc
  * up to and including the base node of the search.
  */
 
-int
-check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search_task *local, char authtype, int *saclerror) {
+int check_ancestor_sacls (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	int scope,
+	struct ds_search_task *local,
+	char authtype,
+	int *saclerror
+) {
 	Entry			stop, ancestor;
 	extern Entry		database_root;
 
 	if ( manager( binddn ) )
 		return( OK );
-
 	scope = srch2sacl_scope[ scope ];	/* convert the scope */
-
 	/* base object sacls are always checked */
 	if ( check_base_sacl( binddn, selfdn, e, local, authtype ) == NOTOK )
 		return( NOTOK );
-
 	if ( scope == SACL_BASEOBJECT )
 		return( OK );
-
 	/* check single level sacl if appropriate */
 	if ( scope == SACL_SINGLELEVEL ) {
 		return ( check_one_sacl( binddn, selfdn, e->e_parent, scope,
@@ -493,13 +480,11 @@ check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search
 	 * It's a subtree search.  Walk back up the tree, checking
 	 * ancestor sacls as we go.
 	 */
-
 	stop = local->st_baseptr->e_parent;
 	for ( ancestor = e; ancestor != database_root && ancestor != stop;
 			ancestor = ancestor->e_parent ) {
 		if ( ancestor->e_sacl == NULLAV )
 			continue;
-
 		if ( check_one_sacl( binddn, selfdn, ancestor, scope, local,
 							 saclerror, authtype ) == NOTOK ) {
 			return( NOTOK );
@@ -508,17 +493,24 @@ check_ancestor_sacls (DN binddn, DN selfdn, Entry e, int scope, struct ds_search
 
 	if ( ancestor == database_root )
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("trouble in check_ancestor"));
-
 	return( OK );
 }
 
-int
-check_lacl (
-	DN binddn,		/* the dn requesting access 		  */
-	DN selfdn,		/* the dn of the entry containing the acl */
-	AV_Sequence avs,		/* the acl protecting the entry 	  */
-	int scope,		/* scope of acl's we want		  */
-	int *sizelimit	/* size limit on acl we found		  */
+/**
+ * Check list access controls
+ * @param binddn the dn requesting access
+ * @param selfdn the dn of the entry containing the acl
+ * @param avs the acl protecting the entry
+ * @param scope the scope of acl's we want
+ * @param sizelimit the size limit on acl we found
+ * @return OK if access is allowed, NOTOK if not
+ */
+int check_lacl (
+	DN binddn,
+	DN selfdn,
+	AV_Sequence avs,
+	int scope,
+	int *sizelimit
 ) {
 	Listacl		save, tmp, l;
 	AV_Sequence	av;

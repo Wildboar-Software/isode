@@ -28,8 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/objects.c,v 9.0 1992/0
  *    this agreement.
  *
  */
-
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -52,19 +50,14 @@ OT	Tbuckets[TBUCKETS];
 extern OT	anchor;
 extern OT	chain;
 
-
 static OID	resolve ();
-
-static int  read_name (), read_type (), add_objects_aux (),
-            dump_object ();
-
+static int  read_name (), read_type (), add_objects_aux ();
+static void dump_object (OT ot, int i);
 extern	int	errno;
 
 /*    OBJECTS */
 
-int	THASH (name)
-char   *name;
-{
+int	THASH (const char *name) {
 	char    c;
 	char *cp,
 		 *dp;
@@ -78,13 +71,11 @@ char   *name;
 		return (c & 0x7f);
 }
 
-
 #define	OT_XXX	0x04
 
-static int	ot_compar (a, b)
-OT    *a,
-*b;
-{
+static int	ot_compar (const void *ap, const void *ab) {
+	struct object_type **a = ap;
+	struct object_type **b = ab;
 	int	    i = oid_cmp ((*a) -> ot_name, (*b) -> ot_name);
 
 	if (i == 0
@@ -109,12 +100,9 @@ OT    *a,
 	return i;
 }
 
-
 static char *roots[] = { "ccitt", "iso", "joint-iso-ccitt" };
 
-int	readobjects (file)
-char   *file;
-{
+int	readobjects (const char *file) {
 	char *cp,
 		 **ap;
 	char    buffer[BUFSIZ],
@@ -335,85 +323,62 @@ you_lose:
 	dump_objects_by_tree ();
 #endif
 #endif
-
 	return (PY_pepy[0] ? NOTOK : OK);
 }
 
-/*  */
-
-static int  read_name (name, value, hash)
-char   *name,
-	   *value,
-	   *hash;
-{
+static int read_name (const char *name, const char *value, const char *hash) {
 	int	    i;
 	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
-
 	ot = compile_heap1++;
 	strcpy (ot -> ot_text = compile_heap2, name);
 	compile_heap2 += strlen (compile_heap2) + 1;
 	strcpy (ot -> ot_id = compile_heap2, value);
 	compile_heap2 += strlen (compile_heap2) + 1;
-
 	ot -> ot_chain = Tbuckets[i = *hash ? atoi (hash) : THASH (name)];
 	Tbuckets[i] = ot;
-
 	if (chain)
 		chain -> ot_next = ot;
 	else
 		anchor = ot;
 	chain = ot;
-
 	return OK;
-
 not_compiled:
 	;
 	if (text2obj (name)) {
 		sprintf (PY_pepy, "duplicate object \"%s\"", name);
 		return NOTOK;
 	}
-
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
 		sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
-
 	if ((ot -> ot_text = strdup (name)) == NULL
 			|| (ot -> ot_id = strdup (value)) == NULL) {
 		sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
-
 	ot -> ot_chain = Tbuckets[i = THASH (name)];
 	Tbuckets[i] = ot;
-
 	return OK;
 }
 
-/*  */
-
-static int  read_type (vec)
-char  **vec;
-{
+static int read_type (char **vec) {
 	int	    i;
 	OT	   ot;
 
 	if (compile_flag < 1)
 		goto not_compiled;
-
 	ot = compile_heap1++;
 	strcpy (ot -> ot_text = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
 	strcpy (ot -> ot_id = compile_heap2, *vec++);
 	compile_heap2 += strlen (compile_heap2) + 1;
-
 	ot -> ot_chain = Tbuckets[i = *vec[3] ? atoi (vec[3])
 								  : THASH (ot -> ot_text)];
 	Tbuckets[i] = ot;
-
 	chain -> ot_next = ot;
 	chain = ot;
 
@@ -425,18 +390,15 @@ not_compiled:
 		sprintf (PY_pepy, "duplicate object \"%s\"", *vec);
 		return NOTOK;
 	}
-
 	if ((ot = (OT) calloc (1, sizeof *ot)) == NULL) {
 		sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
-
 	if ((ot -> ot_text = strdup (*vec++)) == NULL
 			|| (ot -> ot_id = strdup (*vec++)) == NULL) {
 		sprintf (PY_pepy, "out of memory");
 		return NOTOK;
 	}
-
 	ot -> ot_chain = Tbuckets[i = THASH (ot -> ot_text)];
 	Tbuckets[i] = ot;
 
@@ -449,7 +411,6 @@ get_rest:
 				 "warning: object \"%s\" has unknown SYNTAX \"%s\"\n",
 				 ot -> ot_text, *vec);
 	vec++;
-
 	if (isdigit (**vec))
 		ot -> ot_access = atoi (*vec);
 	else if (lexequ (*vec, "read-only") == 0)
@@ -463,7 +424,6 @@ get_rest:
 				 "warning: object \"%s\" has unknown ACCESS \"%s\"\n",
 				 ot -> ot_text, *vec);
 	vec++;
-
 	if (isdigit (**vec))
 		ot -> ot_status = atoi (*vec);
 	else if (lexequ (*vec, "mandatory") == 0)
@@ -477,21 +437,14 @@ get_rest:
 				 "warning: object \"%s\" has unknown STATUS \"%s\"\n",
 				 ot -> ot_text, *vec);
 	vec++;
-
 	return OK;
 }
 
-/*  */
-
 /* does not insert into THASH table... */
 
-int	add_objects (ot)
-OT	ot;
-{
+int	add_objects (OT ot) {
 	OID oid = ot -> ot_name;
-	OT	 ot2,
-	 *otp;
-
+	OT	 ot2, *otp;
 	if (oid_cmp (chain -> ot_name, oid) < 0) {
 		chain -> ot_next = ot;
 		(chain = ot) -> ot_next = NULLOT;
@@ -502,17 +455,13 @@ OT	ot;
 		ot -> ot_next = ot2;
 		*otp = ot;
 	}
-
 	for (ot = anchor; ot; ot = ot -> ot_next)
 		ot -> ot_sibling = ot -> ot_children = NULLOT;
-
 	return add_objects_aux ();
 }
 
-
-static int  add_objects_aux () {
-	OT	    ot,
-	 ot2;
+static int  add_objects_aux (void) {
+	OT	    ot, ot2;
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
 		OIDentifier oids;
@@ -533,15 +482,10 @@ static int  add_objects_aux () {
 			fprintf (stderr, "no distant parent for %s",
 					 sprintoid (ot -> ot_name));
 	}
-
 	return OK;
 }
 
-/*  */
-
-OID	text2oid (name)
-char   *name;
-{
+OID	text2oid (const char *name) {
 	int	    i,
 			j;
 	unsigned int  *ip,
@@ -612,15 +556,10 @@ free_up:
 	;
 	if (name)
 		free(name);
-
 	return new;
 }
 
-
-static OID  resolve (id, ot)
-char   *id;
-OT	ot;
-{
+static OID  resolve (const char *id, OT ot) {
 	int	    i;
 	unsigned int elements[NELEM + 1];
 	char *cp;
@@ -664,13 +603,9 @@ OT	ot;
 	return oid_cpy (oid);
 }
 
-/*  */
-
 /* partial matches are made only on leaf nodes... */
 
-OT	name2obj (oid)
-OID	oid;
-{
+OT	name2obj (OID oid) {
 	int    i,
 		   j;
 	unsigned *ip;
@@ -705,32 +640,19 @@ OID	oid;
 	return ot;
 }
 
-/*  */
-
-OT	text2obj (text)
-char   *text;
-{
+OT	text2obj (const char *text) {
 	OT	   ot;
 
 	if (text == NULL || once_only_Tbuckets == 0)
 		return NULLOT;
-
 	for (ot = Tbuckets[THASH (text)];
 			ot && strcmp (ot -> ot_text, text);
 			ot = ot -> ot_chain)
 		continue;
-
 	return ot;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-char   *oid2ode_aux (oid, quoted)
-OID	oid;
-int	quoted;
-{
+char   *oid2ode_aux (OID oid, int quoted) {
 	int    i;
 	char  *bp;
 	unsigned int *ip;
@@ -743,7 +665,6 @@ int	quoted;
 			&& oid -> oid_elements[1] == 0)
 			|| (ot = name2obj (oid)) == NULLOT)
 		return sprintoid (oid);
-
 	strcpy (bp = buffer, ot -> ot_text);
 	bp += strlen (bp);
 	for (ip = oid -> oid_elements + (oid2 = ot -> ot_name) -> oid_nelem,
@@ -753,28 +674,18 @@ int	quoted;
 		sprintf (bp, ".%u", *ip);
 		bp += strlen (bp);
 	}
-
 	return buffer;
 }
 
-/*  */
-
-OI	name2inst (oid)
-OID	oid;
-{
+OI	name2inst (OID oid) {
 	static object_instance ois;
 	OI oi = &ois;
-
 	if ((oi -> oi_type = name2obj (oi -> oi_name = oid)) == NULLOT)
 		return NULLOI;
-
 	return oi;
 }
 
-
-OI	next2inst (oid)
-OID	oid;
-{
+OI	next2inst (OID oid) {
 	static object_instance ois;
 	OI oi = &ois;
 	OT ot;
@@ -792,26 +703,18 @@ OID	oid;
 #endif
 			if (oid_cmp (oid, ot -> ot_name) > 0)
 				continue;
-
 		oi -> oi_name = (oi -> oi_type = ot) -> ot_name;
 		return oi;
 	}
-
 	return NULLOI;
 }
 
-/*  */
-
-OI	text2inst (text)
-char   *text;
-{
+OI	text2inst (const char *text) {
 	static object_instance ois;
 	OI oi = &ois;
 	static OID oid = NULLOID;
-
 	if (oid)
 		oid_free (oid), oid = NULLOID;
-
 	if ((oid = text2oid (text)) == NULLOID)
 		return NULLOI;
 	if ((oi -> oi_type = name2obj (oi -> oi_name = oid)) == NULLOT) {
@@ -819,7 +722,6 @@ char   *text;
 			fprintf (stderr, "got name \"%s\", but not object\n", text);
 		return NULLOI;
 	}
-
 	return oi;
 }
 
@@ -827,11 +729,10 @@ char   *text;
 
 #define	DEBUG
 #ifdef	DEBUG
-dump_objects_by_text () {
+void dump_objects_by_text (void) {
 	int	    hit;
 	int    i;
 	OT	    ot;
-
 	for (i = 0; i < TBUCKETS; i++) {
 		hit = 0;
 		for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain) {
@@ -840,12 +741,10 @@ dump_objects_by_text () {
 			dump_object (ot, 2);
 		}
 	}
-
 	printf ("///////\n");
 }
 
-
-dump_objects_by_tree () {
+void dump_objects_by_tree (void) {
 	char **ap;
 	char  **bp;
 	OT	    ot;
@@ -856,38 +755,26 @@ dump_objects_by_tree () {
 		else
 			printf ("no object for root \"%s\"\n", *ap);
 	}
-
 	printf ("///////\n");
 }
 
-
-dump_object_by_tree (ot, i)
-OT	ot;
-int	i;
-{
+void dump_object_by_tree (OT ot, int i) {
 	if (ot == NULL)
 		return;
-
 	dump_object (ot, i);
 	dump_object_by_tree (ot -> ot_children, i + 1);
 	dump_object_by_tree (ot -> ot_sibling, i);
 }
 
-
-dump_objects_by_xxx () {
+void dump_objects_by_xxx (void) {
 	OT	    ot;
-
 	for (ot = anchor; ot; ot = ot -> ot_next)
 		dump_object (ot, 0);
-
 	printf ("///////\n");
 }
 
 
-static	dump_object (ot, i)
-OT	ot;
-int	i;
-{
+static void dump_object (OT ot, int i) {
 	printf ("%*.*s%s %s %s %s %d %d 0x%x\n", i, i, "",
 			ot -> ot_text, ot -> ot_id, sprintoid (ot -> ot_name),
 			ot -> ot_syntax ? ot -> ot_syntax -> os_name : "NULL",
@@ -898,25 +785,17 @@ int	i;
 /*    MISCELLANY */
 
 #ifndef SVR4
-
-char   *strdup (s)
-char   *s;
-{
+char *strdup (const char *s) {
 	char   *p;
-
 	if (p = malloc ((unsigned) (strlen (s) + 1)))
 		strcpy (p, s);
-
 	return p;
 }
-
 #endif
 
 /*  */
 
-flobjects (fp)
-FILE   *fp;
-{
+void flobjects (FILE *fp) {
 	int    i;
 	OT     ot;
 

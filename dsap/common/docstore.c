@@ -54,15 +54,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/docstore.c,v 9.
 		ftp $ nic.ddn.mil $ rfc: $ %s.txt
 */
 
-/* LINTLIBRARY */
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-
-static
-documentStore_free (struct documentStore *a) {
+static void documentStore_free (struct documentStore *a) {
 	if (!a)
 		return;
 
@@ -77,43 +73,31 @@ documentStore_free (struct documentStore *a) {
 }
 
 
-static struct documentStore *
-documentStore_cpy (struct documentStore *a) {
+static struct documentStore *documentStore_cpy (struct documentStore *a) {
 	struct documentStore *b;
-
 	b = (struct documentStore *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
-
 	b -> ds_method = a -> ds_method;
 	b -> ds_host = strdup (a -> ds_host);
 	if (a -> ds_dir)
 		b -> ds_dir = strdup (a -> ds_dir);
 	b -> ds_file = strdup (a -> ds_file);
-
 	return b;
 }
 
-
-static
-documentStore_cmp (struct documentStore *a, struct documentStore *b) {
+static int documentStore_cmp (struct documentStore *a, struct documentStore *b) {
 	int	    res;
-
 	if (!a)
 		return (b ? (-1) : 0);
 	else if (!b)
 		return 1;
-
 	if (res = b -> ds_method - a -> ds_method)
 		return (res > 0 ? 1 : -1);
 	return lexequ (a -> ds_host, b -> ds_host);
 }
 
 
-static	documentStore_print (ps, a, format)
-PS	ps;
-struct documentStore *a;
-int	format;
-{
+static void documentStore_print (PS ps, struct documentStore *a, int format) {
 	if (format == READOUT) {
 		ps_printf (ps, "use %s to %s and get %s",
 				   a -> ds_method ? "ftam" : "ftp", a -> ds_host,
@@ -127,13 +111,9 @@ int	format;
 }
 
 
-static struct documentStore *
-str2documentStore (char *str) {
-	int	    method;
-	char   *d1,
-		   *d2,
-		   *d3,
-		   *ptr;
+static struct documentStore *str2documentStore (char *str) {
+	int method;
+	char *d1, *d2, *d3, *ptr;
 	struct documentStore *a;
 
 	if ((d1 = index (str, '$')) == NULL
@@ -199,29 +179,22 @@ str2documentStore (char *str) {
 	return a;
 }
 
-static	PE documentStore_enc (a)
-struct documentStore *a;
+static PE documentStore_enc (struct documentStore *a)
 {
 	PE	    pe;
-
 	encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
-
 	return pe;
 }
 
-static struct documentStore *documentStore_dec (pe)
-PE	pe;
+static struct documentStore *documentStore_dec (PE pe)
 {
 	struct documentStore *a;
-
 	if (decode_Thorn_DocumentStoreSyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
 		return NULL;
-
 	return a;
 }
 
-int
-documentStore_syntax (void) {
+void documentStore_syntax (void) {
 	add_attribute_syntax ("documentStoreSyntax",
 						  documentStore_enc,
 						  documentStore_dec,

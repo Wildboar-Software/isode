@@ -24,7 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/service.c,v 9.0
  *
  */
 
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/dua.h"
@@ -102,7 +102,6 @@ int get_default_service (CommonArgs *ca)
 
 	ps_free (opt);
 	return (OK);
-
 }
 
 int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
@@ -120,7 +119,7 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
 
 	ServiceControl  *sc;
-	int             shuffle_up (int argc, char **argv, int start);
+	void shuffle_up (int argc, char **argv, int start);
 	int             x;
 	char            shuffle;
 
@@ -259,21 +258,17 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 	return (argc);
 }
 
-int
-shuffle_up (int argc, char **argv, int start) {
+void shuffle_up (int argc, char **argv, int start) {
 	int    x;
 
 	for (x = start; x < argc; x++)
-		if (x == argc - 1)	/* if it is the last one, then stick
-					 * a 0 in */
+		if (x == argc - 1)	/* if it is the last one, then stick a 0 in */
 			argv[x] = 0;
-		else		/* oterwise put the next one in it's place. */
+		else		/* otherwise put the next one in it's place. */
 			argv[x] = argv[x + 1];
 }
 
-int
-new_service (char *ptr) {
-
+void new_service (char *ptr) {
 	if (ptr != 0) {
 		if (*default_service != 0)
 			strcat (default_service," ");
@@ -281,8 +276,7 @@ new_service (char *ptr) {
 	}
 }
 
-int
-set_sequence (char *str) {
+void set_sequence (char *str) {
 	struct dua_sequence *ptr;
 
 	if (lexequ (str,"reset") == 0) {
@@ -308,8 +302,7 @@ set_sequence (char *str) {
 	current_sequence = ptr;
 }
 
-int
-unset_sequence (void) {
+void unset_sequence (void) {
 	current_sequence = NULL_DS;
 }
 
@@ -355,9 +348,7 @@ DN sequence_dn(int y)
 	if ( x == y )
 		return (ptr->de_name);
 	return (NULLDN);
-
 }
-
 
 void show_sequence (PS RPS, char *str, char ufn)
 {

@@ -118,10 +118,8 @@ static	struct pj *pj_head = NULL;
 #define pgetstr tgetstr
 #endif
 extern char   *pgetstr ();
-static	free_pq (), free_pj (), upstat (), startdaemon ();
-static int findaemon ();
-
-/*  */
+static void free_pq (void), free_pj (void), upstat (struct pq *pq, char *msg), startdaemon (struct pq *pq);
+static int findaemon (struct pq *pq, char *current);
 
 static int  pq_compar (a, b)
 struct pq *a,
@@ -131,12 +129,7 @@ struct pq *a,
 					 b -> pq_instance, b -> pq_insize);
 }
 
-
-/* ARGSUSED */
-
-static int  get_pq (offset)
-int	offset;
-{
+static int get_pq (int offset) {
 	int    i;
 	char   *bp,
 		   buffer[BUFSIZ],
@@ -233,20 +226,13 @@ int	offset;
 	return OK;
 }
 
-
-static	free_pq () {
+static void free_pq (void) {
 	if (pq_head)
 		free ((char *) pq_head), pq_head = NULL;
 	free_pj ();
 }
 
-/*  */
-
-static struct pq *get_pqent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct pq *get_pqent (unsigned int *ip, int len, int isnext) {
 	struct pq *pq;
 
 	for (pq = pq_head; pq -> pq_name; pq++)
@@ -265,24 +251,16 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
-
-static int  pj_compar (a, b)
-struct pj *a,
-		   *b;
+static int pj_compar (struct pj *a, struct pj *b)
 {
-	int	    i;
-
+	int i;
 	if (i = elem_cmp (a -> pj_instance, a -> pj_insize,
 					  b -> pj_instance, b -> pj_insize))
 		return i;
 	return (a -> pj_st.st_mtime - b -> pj_st.st_mtime);
 }
 
-
-static int  get_pj (offset)
-int	offset;
-{
+static int get_pj (int offset) {
 	int    i;
 	struct pj *pj;
 	struct pq *pq;
@@ -385,18 +363,12 @@ int	offset;
 }
 
 
-static	free_pj () {
+static void free_pj (void) {
 	if (pj_head)
 		free ((char *) pj_head), pj_head = NULL;
 }
 
-/*  */
-
-static struct pj *get_pjent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct pj *get_pjent (unsigned int *ip, int len, int isnext) {
 	struct pj *pj;
 
 	for (pj = pj_head; pj -> pj_pq; pj++)
@@ -415,20 +387,13 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
-
 #define	printQName	0
 #define	printQStatus	1
 #define	printQDisplay	2
 #define	printQEntries	3
 #define	printQAction	4
 
-
-static int  o_pq (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -601,13 +566,7 @@ try_again:
 	}
 }
 
-/*  */
-
-static int  s_pq (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	struct pq *pq;
@@ -661,8 +620,6 @@ int	offset;
 	}
 }
 
-/*  */
-
 #define	printJRank	0
 #define	printJName	1
 #define	printJOwner	2
@@ -670,12 +627,7 @@ int	offset;
 #define	printJSize	4
 #define	printJAction 5
 
-
-static int  o_pj (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -857,13 +809,7 @@ try_again:
 	}
 }
 
-/*  */
-
-static int  s_pj (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	struct pj *pj;
@@ -912,11 +858,8 @@ int	offset;
 	}
 }
 
-/*  */
-
-int	init_print () {
+void init_print (void) {
 	OT	    ot;
-
 	if (ot = text2obj ("printQName"))
 		ot -> ot_getfnx = o_pq,
 			  ot -> ot_info = (caddr_t) printQName;
@@ -933,7 +876,6 @@ int	init_print () {
 		ot -> ot_getfnx = o_pq,
 			  ot -> ot_setfnx = s_pq,
 					ot -> ot_info = (caddr_t) printQAction;
-
 	if (ot = text2obj ("printJRank"))
 		ot -> ot_getfnx = o_pj,
 			  ot -> ot_info = (caddr_t) printJRank;
@@ -956,8 +898,6 @@ int	init_print () {
 
 	umask (0);
 }
-
-/*  */
 
 /* the following code is from the BSD lpd sources, and is subject to these
    restrictions:
@@ -995,12 +935,10 @@ int	init_print () {
  * SUCH DAMAGE.
  */
 
-
-static int  _select (const struct dirent *dd) {
+static int _select (const struct dirent *dd) {
 	char c = dd -> d_name[0];
 	return ((c == 't' || c == 'c' || c == 'd') && dd -> d_name[1] == 'f');
 }
-
 
 static int sortq (const struct dirent **d1, const struct dirent **d2) {
 	char c1, c2;
@@ -1018,16 +956,13 @@ static int sortq (const struct dirent **d1, const struct dirent **d2) {
 	return 0;
 }
 
-
 #define	chmode(file,m) \
     	   (chmod ((file), (int) (m)) == NOTOK) \
     		advise (LLOG_EXCEPTIONS, (file), \
 			"unable to set mode 0%o for", (int) (m)); \
 	else
 
-int	sync_print (cor)
-integer	cor;
-{
+int	sync_print (int cor) {
 	int	    invalid,
 			pid;
 	char    buffer[BUFSIZ];
@@ -1304,12 +1239,7 @@ integer	cor;
 	}
 }
 
-/*  */
-
-static	upstat (pq, msg)
-struct pq *pq;
-char   *msg;
-{
+static void upstat (struct pq *pq, char *msg) {
 	int	    fd;
 
 	if ((fd = open (pq -> pq_ST, O_WRONLY | O_CREAT, 0664)) == NOTOK) {
@@ -1329,15 +1259,10 @@ char   *msg;
 	close (fd);
 }
 
-/*  */
-
 #include <sys/socket.h>
 #include <sys/un.h>
 
-
-static	startdaemon (pq)
-struct pq *pq;
-{
+static void startdaemon (struct pq *pq) {
 	int    n,
 		   sd;
 	char buffer[BUFSIZ];
@@ -1379,12 +1304,7 @@ struct pq *pq;
 	return;
 }
 
-/*  */
-
-static int  findaemon (pq, current)
-struct pq *pq;
-char   *current;
-{
+static int findaemon (struct pq *pq, char *current) {
 	int	    pid;
 	char    buffer[BUFSIZ];
 	FILE   *fp;
@@ -1411,8 +1331,6 @@ char   *current;
 				current[0] = 0;
 		}
 	}
-
 	fclose (fp);
-
 	return pid;
 }

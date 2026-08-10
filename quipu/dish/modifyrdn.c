@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/modifyrdn.c,v 9.
  *    this agreement.
  *
  */
-
-
 #include "quipu/util.h"
 #include "quipu/modifyrdn.h"
 #include "pepsy.h"
@@ -39,8 +37,7 @@ extern DN       dn;
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int
-call_modifyrdn (int argc, char **argv) {
+void call_modifyrdn (int argc, char **argv) {
 	struct ds_modifyrdn_arg modrdn_arg;
 	struct DSError  error;
 	RDN             newname = NULLRDN;
@@ -49,10 +46,8 @@ call_modifyrdn (int argc, char **argv) {
 	int             x;
 	char 		deleterdn = TRUE;
 
-
 	if ((argc = service_control (OPT,argc, argv, &modrdn_arg.mra_common)) == -1)
 		return;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-name",2)) {
 			if ((newname = str2rdn (argv[++x])) == NULLRDN) {
@@ -71,7 +66,6 @@ call_modifyrdn (int argc, char **argv) {
 			return;
 		}
 	}
-
 	modrdn_arg.deleterdn = deleterdn;
 	modrdn_arg.mra_object = dn;
 	if (newname == NULLRDN) {
@@ -80,18 +74,14 @@ call_modifyrdn (int argc, char **argv) {
 		return;
 	}
 	modrdn_arg.mra_newrdn = newname;
-
 	if (rebind () != OK)
 		return;
-
 	/* Strong authentication */
 	if (modrdn_arg.mra_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		modrdn_arg.mra_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&modrdn_arg, _ZModifyRDNArgumentDataDAS,&_ZDAS_mod);
 	}
-
 	while (ds_modifyrdn (&modrdn_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0) {
 			rdn_free(modrdn_arg.mra_newrdn);
@@ -99,12 +89,10 @@ call_modifyrdn (int argc, char **argv) {
 		}
 		modrdn_arg.mra_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	ps_print (RPS, "Modify done\n");
 	delete_cache (dn);	/* re-cache when next read */
 	for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		trail = dnptr;
-
 	dn_comp_free (dnptr);
 	trail->dn_parent = dn_comp_new (rdn_cpy (newname));
 	rdn_free(modrdn_arg.mra_newrdn);

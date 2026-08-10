@@ -27,6 +27,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_load.c,v 9.1 19
  *
  */
 
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include "config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -136,11 +140,7 @@ char * file;
 	return FALSE;
 }
 
-static write_mapped_rdn (aps,name,file)
-PS aps;
-char * name;
-char * file;
-{
+static int write_mapped_rdn (PS aps, char * name, char * file) {
 	FILE * mapfp;
 	char mapname[LINESIZE];
 	char sname[LINESIZE];
@@ -150,25 +150,19 @@ char * file;
 	char mapdir[LINESIZE];
 	char *cp;
 #endif
-
 	if ((int)strlen(name) < MAXFILENAMELEN)
 		return FALSE;
-
 	/* Make unique name for it */
 	mptr = mapname;
 	if ((nptr = index (name,'=')) == NULLCP)
 		return FALSE;
-
 	if ( (*nptr!=0) && isalpha(*nptr) )
 		*mptr++ = *nptr++;
-
 	++nptr;
-
 #ifndef TEMPNAM
 	for (i=0 ; (*nptr!=0) && (i < MAXFILENAMELEN-6) ; nptr++)
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
 			*mptr++ = *nptr, i++;
-
 	strcpy (sname,name);
 	strcpy (mptr,"XXXXXX");
 	i = strlen (name);
@@ -176,7 +170,6 @@ char * file;
 	aps->ps_cnt += i;
 	ps_print (aps,mapname);
 	*aps->ps_ptr = 0;
-
 	if ((fd = mkstemp (aps->ps_base)) < 0)
 		return FALSE;
 	close (fd);
@@ -185,34 +178,24 @@ char * file;
 		if (isascii(*nptr) && (isalnum(*nptr) || *nptr ==  '-'))
 			*mptr++ = *nptr, i++;
 	*mptr = '\0';
-
 	strcpy (sname,name);
-
 	i = strlen (name);
 	aps->ps_ptr -= i;
 	aps->ps_cnt += i;
 	*aps->ps_ptr = 0;
-
 	sprintf (mapdir, "%s", aps->ps_base);
-
 	if ((cp = tempnam (mapdir, mapname)) == NULLCP)
 		return FALSE;
-
 	sprintf (aps->ps_base, "%s", cp);
 	free (cp);
-
 	nptr = (aps->ps_base + strlen (mapdir));
 #endif /* TEMPNAM */
-
 	aps->ps_ptr = aps->ps_base + strlen(aps->ps_base);
-
 	DLOG(log_dsap,LLOG_DEBUG,("mapped name %s",aps->ps_base));
-
 	if (mkdir (aps->ps_base,0700) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("map rdn mkdir failure \"%s\" (%d)",aps->ps_base,errno));
 		return FALSE;
 	}
-
 	/* write it to map file */
 	if (fileexists(file))
 		mapfp = fopen (file,"a");
@@ -222,30 +205,22 @@ char * file;
 		mapfp = fopen (file,"w");
 		umask (um);
 	}
-
 	if (mapfp == (FILE *)NULL) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't write to \"%s\" (%d)",file,errno));
 		return FALSE;
 	}
-
 	if (fprintf (mapfp,"%s#%s\n",sname,nptr) == EOF) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't write to \"%s\" (%d)",file,errno));
 		return FALSE;
 	}
-
 	if (fclose (mapfp) != 0) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't close \"%s\" (%d)",file,errno));
 		return FALSE;
 	}
-
 	return TRUE;
 }
 
-static rdn2filename (aps,rdn,make)
-PS aps;
-RDN rdn;
-char make;
-{
+static int rdn2filename (PS aps, RDN rdn, char make) {
 	char *start = aps->ps_ptr;
 	char mapbuf [LINESIZE];
 

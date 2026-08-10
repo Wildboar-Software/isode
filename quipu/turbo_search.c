@@ -62,8 +62,7 @@ static void		subtree_refer();
 Attr_Sequence	eis_select();
 EntryInfo	*filterentry();
 
-int
-optimized_filter (Filter f) {
+int optimized_filter (Filter f) {
 	struct filter_item	*fi;
 
 	switch ( f->flt_type ) {
@@ -106,52 +105,41 @@ optimized_filter (Filter f) {
 	/* NOTREACHED */
 }
 
-/* ARGSUSED */
-static
-apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska) {
+static void apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska) {
 	EntryInfo	*p, *prev, *next;
 	int		saclerror = 0;
 
 	prev = next = NULLENTRYINFO;
 	for ( p = *list; p != NULLENTRYINFO; p = next ) {
 		next = p->ent_next;
-
 		if ( check_ancestor_sacls( (*ska->ska_local)->st_bind, NULLDN,
 								   p->ent_eptr, ska->ska_arg->sra_subset, *ska->ska_local,
 								   ska->ska_authtype, &saclerror ) == NOTOK ) {
 			/* zero-results... exceeded. nothing to be returned */
 			if ( saclerror < 0 )
 				break;
-
 			/*
 			 * otherwise run of the mill sacl size limit
 			 * exceeded -- don't return this entry.
 			 */
-
 			p->ent_next = NULLENTRYINFO;
 			entryinfo_comp_free( p, 0 );
-
 			if ( prev == NULLENTRYINFO ) {
 				*list = next;
 			} else {
 				prev->ent_next = next;
 			}
-
 			continue;	/* prev remains the same */
 		}
-
 		prev = p;
 	}
-
 	ska->ska_saclerror = saclerror;
 }
 
 /*
  * turbo_sibling_search - search a sibling index
  */
-
-int
-turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
+void turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
 	EntryInfo		*list;
 	Entry			*tmp;
 	DN			dn;
@@ -206,9 +194,7 @@ turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
 /*
  * turbo_subtree_search - search a subtree index
  */
-
-int
-turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
+void turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 	EntryInfo	*list;
 	Entry		*tmp;
 	DN		dn;
@@ -221,27 +207,21 @@ turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 		return;
 	}
 	dn_free( dn );
-
 	g_size_normalizer = 1;
 	list = turbo_filterkids( e, ska->ska_arg->sra_filter, ska, pindex, 1 );
-
 	apply_sacl( &list, e, ska );
-
 	/* security error coming back */
 	if ( ska->ska_saclerror < 0 ) {
 		entryinfo_free( list, 0 );
 		return;
 	}
-
 	if ( *ska->ska_einfo == NULLENTRYINFO )
 		*ska->ska_einfo = list;
 	else if ( list != NULLENTRYINFO )
 		entryinfo_append( *ska->ska_einfo, list );
-
 	/* sizelimit already exceeded */
 	if ( ska->ska_saclerror > 0 )
 		return;
-
 	/*
 	 * at this point, anything held locally below this point has been
 	 * searched.  we now search through the nonleaf children recursively
@@ -249,10 +229,8 @@ turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 	 * we find.  next, we search through the list of nonlocal aliases
 	 * searching for one that matches (if dereferencing is allowed).
 	 */
-
 	if ( pindex->i_nonleafkids != (Entry *) 0 )
 		subtree_refer( pindex, ska );
-
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
 			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ ) {
@@ -268,10 +246,7 @@ turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 	}
 }
 
-static void subtree_refer( pindex, ska )
-Index			*pindex;
-struct search_kid_arg	*ska;
-{
+static void subtree_refer( Index *pindex, struct search_kid_arg *ska ) {
 	Entry	*tmp;
 
 	for ( tmp = pindex->i_nonleafkids; *tmp != NULLENTRY; tmp++ ) {
@@ -288,14 +263,13 @@ struct search_kid_arg	*ska;
 	}
 }
 
-static EntryInfo *turbo_filterkids( e, f, ska, pindex, toplevel )
-Entry			e;
-Filter			f;
-struct search_kid_arg	*ska;
-Index			*pindex;
-int			toplevel;
-{
-
+static EntryInfo *turbo_filterkids(
+	Entry e,
+	Filter f,
+	struct search_kid_arg *ska,
+	Index *pindex,
+	int toplevel
+) {
 	if ( e == NULLENTRY || f == NULLFILTER ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("bad turbo_filterkids pars") );
 		return( NULLENTRYINFO );
@@ -317,8 +291,7 @@ int			toplevel;
 	/* NOT REACHED */
 }
 
-static
-eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
+static int eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
 	int		cmp;
 	EntryInfo	*eitmp;
 
@@ -327,7 +300,6 @@ eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
 	 * ordered here to make it easier to do and's and
 	 * or's later on.
 	 */
-
 	if ( *eilist == NULLENTRYINFO ) {
 		*eilist = ei;
 		if ( toplevel )
@@ -343,7 +315,6 @@ eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
 			size--;
 		return( OK );
 	}
-
 	eitmp = *eilist;
 	cmp = -1;
 	while ( eitmp->ent_next != NULLENTRYINFO ) {
@@ -352,23 +323,18 @@ eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel) {
 			break;
 		eitmp = eitmp->ent_next;
 	}
-
 	if ( cmp == 0 ) {
 		entryinfo_free(ei, 0);
 		return( NOTOK );
 	}
-
 	ei->ent_next = eitmp->ent_next;
 	eitmp->ent_next = ei;
-
 	if ( toplevel )
 		size--;
-
 	return( OK );
 }
 
-static
-entry_collect (Index_node *node, EntryInfo **eilist) {
+static int entry_collect (Index_node *node, EntryInfo **eilist) {
 	int		i;
 	EntryInfo	*ei;
 	int		saclerror;
@@ -377,22 +343,18 @@ entry_collect (Index_node *node, EntryInfo **eilist) {
 		if ( g_ska->ska_arg->sra_searchaliases &&
 				node->in_entries[i]->e_alias != NULLDN )
 			continue;
-
 		if ( (ei = filterentry( g_ska->ska_arg, node->in_entries[i],
 								(*g_ska->ska_local)->st_bind, g_ska->ska_authtype,
 								&saclerror, *g_ska->ska_local, 0 )) == NULLENTRYINFO ) {
 			continue;
 		}
-
 		/*
 		 * size will have been decremented by filterentry, so
 		 * we need to undo this here if the entry was a duplicate,
 		 * or we are not at the top level.
 		 */
-
 		if ( eis_merge( ei, eilist, 0 ) != OK || g_toplevel == 0 )
 			size++;
-
 		if ( size <= 0 ) {
 			size--;
 			return( NOTOK );
@@ -401,8 +363,7 @@ entry_collect (Index_node *node, EntryInfo **eilist) {
 	return( OK );
 }
 
-static
-build_indexnode (Index_node *node, Index_node *bignode) {
+static int build_indexnode (Index_node *node, Index_node *bignode) {
 	int	i, j;
 	int	low, mid, high;
 	int	dup;
@@ -410,7 +371,6 @@ build_indexnode (Index_node *node, Index_node *bignode) {
 
 	for (i = 0; i < node->in_num; i++) {
 		tmp1 = node->in_entries[i];
-
 		if ( bignode->in_num > 20 ) {
 			low = 0;
 			high = bignode->in_num - 1;
@@ -425,7 +385,6 @@ build_indexnode (Index_node *node, Index_node *bignode) {
 
 				mid = (low + high) / 2;
 			}
-
 			if ( bignode->in_entries[mid] == tmp1 )
 				continue;
 			else if ( bignode->in_entries[mid] < tmp1 )
@@ -449,7 +408,6 @@ build_indexnode (Index_node *node, Index_node *bignode) {
 		 * some space in the index, but it speeds things up, and cuts
 		 * down on fragmentation.
 		 */
-
 		if (bignode->in_num >= bignode->in_max) {
 			if (bignode->in_max == 0) {
 				bignode->in_max = 1;
@@ -466,30 +424,26 @@ build_indexnode (Index_node *node, Index_node *bignode) {
 			}
 		}
 		bignode->in_num++;
-
 		tmp1 = node->in_entries[i];
 		for (j = mid; j < bignode->in_num; j++) {
 			tmp2 = bignode->in_entries[j];
 			bignode->in_entries[j] = tmp1;
 			tmp1 = tmp2;
 		}
-
 		if (g_stopearly && --g_count == 0) {
 			return(NOTOK);
 		}
 	}
-
 	return(OK);
 }
 
-/* ARGSUSED */
-static EntryInfo *turbo_item( e, f, ska, pindex, toplevel )
-Entry			e;
-struct filter_item	*f;
-struct search_kid_arg	*ska;
-Index			*pindex;
-int			toplevel;
-{
+static EntryInfo *turbo_item(
+	Entry e,
+	struct filter_item *f,
+	struct search_kid_arg *ska,
+	Index *pindex,
+	int toplevel
+) {
 	int		i;
 	int		len;
 	int		phoneflag;
@@ -507,13 +461,11 @@ int			toplevel;
 	if ( pindex == NULLINDEX ) {
 		return( NULLENTRYINFO );
 	}
-
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		if ( AttrT_cmp( pindex[ i ].i_attr, f->UNAVA.ava_type )
 				== 0 )
 			break;
 	}
-
 	if ( i == turbo_index_num ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("can't find index") );
 		return( NULLENTRYINFO );
@@ -525,10 +477,8 @@ int			toplevel;
 	case FILTERITEM_EQUALITY:
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
 										(caddr_t) f->UNAVA.ava_value, indexav_cmp );
-
 		if ( node == ((Index_node *) 0) )
 			break;
-
 		g_toplevel = toplevel;
 		entry_collect( node, &eilist );
 		break;
@@ -542,13 +492,11 @@ int			toplevel;
 			g_count++;
 			code = NULL;
 			soundex( word, &code );
-
 			if (small == NULL || (int)strlen(code) > (int)strlen(small))
 				small = code;
 			else
 				free(code);
 		}
-
 		if (small == NULL)
 			break;
 #ifdef SOUNDEX_PREFIX
@@ -566,36 +514,29 @@ int			toplevel;
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
 										(caddr_t) small, index_soundex_cmp );
 #endif
-
 		/* we found nothing */
 		if (node->in_num == 0) {
 			free((char *) node);
 			break;
 		}
-
 		/*
 		 * now we build the result list by applying the filter
 		 * to the node we found above.
 		 */
-
 		g_toplevel = toplevel;
 		entry_collect(node, &eilist);
-
 #ifdef SOUNDEX_PREFIX
 		free((char *) node->in_entries);
 		free((char *) node);
 #endif
 		break;
-
 	case FILTERITEM_SUBSTRINGS:
 		if (f->UNSUB.fi_sub_initial == NULLAV &&
 				f->UNSUB.fi_sub_final == NULLAV) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("turbo_item: non-optimized substring filter"));
 			break;
 		}
-
 		phoneflag = telephone_match(f->UNSUB.fi_sub_type->oa_syntax);
-
 		/* no initial substring so use final */
 		if (f->UNSUB.fi_sub_initial == NULLAV) {
 			theindex = pindex[i].i_rroot;
@@ -611,7 +552,6 @@ int			toplevel;
 			/* otherwise, use whichever is longest */
 		} else {
 			int	flen, ilen;
-
 			if (phoneflag) {
 				flen = telstrlen(f->UNSUB.fi_sub_final->avseq_av.av_struct);
 				ilen = telstrlen(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
@@ -653,10 +593,8 @@ int			toplevel;
 			free((char *) node);
 			break;
 		}
-
 		g_toplevel = (toplevel == 1); /* > 1 => or search */
 		entry_collect(node, &eilist);
-
 		free((char *) node->in_entries);
 		free((char *) node);
 		free(thestring);
@@ -674,18 +612,16 @@ int			toplevel;
 			   f->fi_type) );
 		break;
 	}
-
 	return( eilist );
 }
 
-/* ARGSUSED */
-static EntryInfo *turbo_and( e, f, ska, pindex, toplevel )
-Entry			e;
-Filter			f;
-struct search_kid_arg	*ska;
-Index			*pindex;
-int			toplevel;
-{
+static EntryInfo *turbo_and(
+	Entry e,
+	Filter f,
+	struct search_kid_arg *ska,
+	Index *pindex,
+	int toplevel
+) {
 	for ( ; f != NULLFILTER; f = f->flt_next )
 		if ( optimized_filter( f ) )
 			break;
@@ -705,13 +641,13 @@ int			toplevel;
 	return( turbo_filterkids( e, f, ska, pindex, 1 ) );
 }
 
-static EntryInfo *turbo_or( e, f, ska, pindex, toplevel )
-Entry			e;
-Filter			f;
-struct search_kid_arg	*ska;
-Index			*pindex;
-int			toplevel;
-{
+static EntryInfo *turbo_or(
+	Entry e,
+	Filter f,
+	struct search_kid_arg *ska,
+	Index *pindex,
+	int toplevel
+) {
 	EntryInfo	*result = NULLENTRYINFO;
 	EntryInfo	*tmp;
 	Filter		nextf;
@@ -729,12 +665,10 @@ int			toplevel;
 			break;
 		nextf = nextf->flt_next;
 	}
-
 	return( result );
 }
 
-static EntryInfo *
-eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
+static EntryInfo *eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 	EntryInfo	*result, *rtail;
 	EntryInfo	*next;
 
@@ -757,7 +691,6 @@ eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 		}
 
 		entryinfo_free(b, 0);
-
 		if ( rtail != NULLENTRYINFO )
 			rtail->ent_next = NULLENTRYINFO;
 
@@ -780,15 +713,11 @@ eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 				break;
 			}
 		}
-
 		entryinfo_free(a, 0);
-
 		if ( rtail != NULLENTRYINFO )
 			rtail->ent_next = NULLENTRYINFO;
-
 		return( result );
 	}
-
 	result = a;
 	while (b != NULLENTRYINFO) {
 		next = b->ent_next;
@@ -799,9 +728,7 @@ eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 		if (toplevel && size <= 0)
 			break;
 	}
-
 	entryinfo_free(b, 0);
-
 	return( result );
 }
 

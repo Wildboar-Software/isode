@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_work.c,v 9.0 1992
 extern LLog * log_dsap;
 extern char quipu_shutdown;
 
-int
-dsa_work (struct task_act *tk) {
+void dsa_work (struct task_act *tk) {
 	struct DSArgument   *arg;
 	struct DSError      *err;
 	struct DSResult     *res;
@@ -304,8 +303,7 @@ dsa_work (struct task_act *tk) {
 
 }
 
-int
-search_continue (struct task_act *tk) {
+void search_continue (struct task_act *tk) {
 	struct ds_search_result * tk_sr = &(tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr);
 
 	/* Set up next part of search result to collate remote sub-searches */
@@ -327,8 +325,14 @@ search_continue (struct task_act *tk) {
 
 
 #ifndef NO_STATS
-int
-log_x500_event (struct DSArgument *arg, int context, DN orig, DN dsptarget, int ad, struct task_act *tk) {
+void log_x500_event (
+	struct DSArgument *arg,
+	int context,
+	DN orig,
+	DN dsptarget,
+	int ad,
+	struct task_act *tk
+) {
 	extern LLog * log_stat;
 	char * op;
 	DN daptarget = NULLDN;

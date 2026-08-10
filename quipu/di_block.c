@@ -44,8 +44,7 @@ di_alloc (void) {
 	return(di_ret);
 }
 
-int
-di_free (struct di_block *di) {
+void di_free (struct di_block *di) {
 	DLOG(log_dsap, LLOG_TRACE, ("di_free()"));
 
 	if (di->di_state == -1) {
@@ -82,16 +81,13 @@ di_free (struct di_block *di) {
 	free((char *)di);
 }
 
-int
-di_extract (struct di_block *old_di) {
+void di_extract (struct di_block *old_di) {
 	struct di_block	* di;
 	struct di_block	**next_di;
-
 	LLOG(log_dsap, LLOG_TRACE, ("di_extract"));
 #ifdef DEBUG
 	di_log(old_di);
 #endif
-
 	switch(old_di->di_type) {
 	case DI_GLOBAL:
 		next_di = &(deferred_dis);
@@ -114,22 +110,17 @@ di_extract (struct di_block *old_di) {
 	default:
 		break;
 	}
-
 	di_free(old_di);
 }
 
-int
-di_desist (struct di_block *di) {
+void di_desist (struct di_block *di) {
 	struct di_block	* di_tmp1;
 	struct di_block	* di_tmp1_next;
 	struct di_block	* di_tmp2;
 	struct di_block	**di_p2;
-
 	DLOG(log_dsap, LLOG_TRACE, ("di_desist()"));
-
 	for(di_tmp1=di; di_tmp1 != NULL_DI_BLOCK; di_tmp1 = di_tmp1_next) {
 		di_tmp1_next = di_tmp1->di_next;
-
 		switch(di_tmp1->di_state) {
 		case DI_ACCESSPOINT:
 		case DI_COMPLETE:
@@ -153,16 +144,13 @@ di_desist (struct di_block *di) {
 	}
 }
 
-int
-di_log (struct di_block *di) {
+void di_log (struct di_block *di) {
 	DLOG (log_dsap,LLOG_DEBUG, ("di_block [%x] , state = %d, type = %d",
 								di, di->di_state, di->di_type));
 }
 
-int
-di_list_log (struct di_block *di) {
+void di_list_log (struct di_block *di) {
 	struct di_block	* di_tmp;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("di_list:"));
 #ifdef DEBUG
 	for(di_tmp = di; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
@@ -172,19 +160,14 @@ di_list_log (struct di_block *di) {
 	DLOG(log_dsap, LLOG_DEBUG, ("di_list ends."));
 }
 
-
-
 static struct dn_seq * prefer_dsa_list = NULLDNSEQ;
 
-int
-prefer_dsa (char *str) {
+void prefer_dsa (char *str) {
 	struct dn_seq * dsa, *loop;
-
 	if (( dsa=str2dnseq(str)) == NULLDNSEQ) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid prefered DSA name %s",str));
 		return;
 	}
-
 	if (prefer_dsa_list == NULLDNSEQ)
 		prefer_dsa_list = dsa;
 	else {
@@ -194,20 +177,16 @@ prefer_dsa (char *str) {
 	}
 }
 
-static
-di_prefer_dsa (DN a, DN b) {
+static int di_prefer_dsa (DN a, DN b) {
 	int x,y;
-
 	if (prefer_dsa_list == NULLDNSEQ) {
 		DLOG (log_dsap,LLOG_TRACE,("NO DSAs to chose from"));
 		return 0;	/* not fussy !!! */
 	}
-
 	if ((b == NULLDN) || (a == NULLDN)) {
 		DLOG (log_dsap,LLOG_TRACE,("di_pref DNs NULL"));
 		return 0;	/* safty catch - don't think it can happen */
 	}
-
 	if ((x = dn_in_dnseq (a,prefer_dsa_list)) == 0)
 		if ((y = dn_in_dnseq (b,prefer_dsa_list)) == 0)
 			return 0;
@@ -215,23 +194,19 @@ di_prefer_dsa (DN a, DN b) {
 			DLOG (log_dsap,LLOG_TRACE,("DSA selected on preference"));
 			return -1;
 		}
-
 	if ((y = dn_in_dnseq (b,prefer_dsa_list)) == 0) {
 		DLOG (log_dsap,LLOG_TRACE,("DSA selected on preference"));
 		return 1;
 	}
-
 	if ( x != y ) {
 		DLOG (log_dsap,LLOG_TRACE,("DSA selected on preference"));
 		return ( x > y ? -1 : 1 );
 	}
-
 	return 0;
 
 }
 
-static
-di_ap2comp (struct di_block **di) {
+static void di_ap2comp (struct di_block **di) {
 	struct di_block *loop;
 	Entry eptr;
 
@@ -260,19 +235,12 @@ di_ap2comp (struct di_block **di) {
 
 }
 
-dsa_reliable (cn,good,when)
-struct connection * cn;
-char good;
-time_t when;
-{
+void dsa_reliable (struct connection * cn, char good, time_t when) {
 	Entry ptr;
-
 	if ( (ptr=local_find_entry(cn->cn_dn,FALSE)) == NULLENTRY)
 		return;
-
 	if (ptr->e_dsainfo == NULLDSA)
 		return;
-
 	ptr->e_dsainfo->dsa_last_attempt = when;
 	if (good) {
 		ptr->e_dsainfo->dsa_last_success = when;
@@ -281,18 +249,14 @@ time_t when;
 		ptr->e_dsainfo->dsa_failures++;
 }
 
-static
-di_cmp_reliability (struct di_block *a, struct di_block *b) {
+static int di_cmp_reliability (struct di_block *a, struct di_block *b) {
 	extern time_t retry_timeout;
 	struct dsa_info *da, *db;
-
 	/* If we have used a DSA recently, with no failures - use it again */
-
 	if ((da = a->di_entry->e_dsainfo) == NULLDSA)
 		return 0;
 	if ((db = b->di_entry->e_dsainfo) == NULLDSA)
 		return 0;
-
 	if (da->dsa_last_attempt == (time_t)0) {
 		if (db->dsa_failures == 0) {
 			if ((db->dsa_last_success != (time_t)0)
@@ -301,7 +265,6 @@ di_cmp_reliability (struct di_block *a, struct di_block *b) {
 		} else if (timenow - db->dsa_last_attempt < retry_timeout)
 			return 1;		/* b failed recently */
 		return 0;	/* have not tried either recently  */
-
 	} else if (db->dsa_last_attempt == (time_t)0) {
 		if (da->dsa_failures == 0) {
 			if ((da->dsa_last_success != (time_t)0)
@@ -311,18 +274,14 @@ di_cmp_reliability (struct di_block *a, struct di_block *b) {
 			return -1; 		/* a failed recently */
 		return 0;	/* have not tried either recently  */
 	}
-
 	if (da->dsa_failures == 0) {
 		if (db->dsa_failures == 0)
 			return 0;       /* both OK */
 		return 1;	/* a worked last time, b failed - use a */
 	}
-
 	if (db->dsa_failures == 0)
 		return -1;	/* b worked last time, a failed - use b */
-
 	/* both failed last time - see if either have suceeded recently */
-
 	if ((timenow - da->dsa_last_success) > retry_timeout ) {
 		if ((timenow - db->dsa_last_success) > retry_timeout)
 			return 0;	/* too long ago to tell */
@@ -330,13 +289,11 @@ di_cmp_reliability (struct di_block *a, struct di_block *b) {
 	}
 	if ((timenow - db->dsa_last_success) > retry_timeout)
 		return 1;	/* use a it worked not that long ago... */
-
 	/* neither has worked recently chose some other way */
 	return 0;
 }
 
-static
-di_cmp_address (struct di_block *a, struct di_block *b) {
+static int di_cmp_address (struct di_block *a, struct di_block *b) {
 	struct NSAPaddr *na;
 	struct NSAPaddr *nb;
 	struct NSAPaddr nas;
@@ -348,7 +305,6 @@ di_cmp_address (struct di_block *a, struct di_block *b) {
 	int ma,mb;
 
 	/* select DSA with best looking address !!! */
-
 	if (a->di_state == DI_COMPLETE) {
 		ta = &(a->di_entry->e_dsainfo->dsa_addr->pa_addr.sa_addr);
 		tb = &(b->di_entry->e_dsainfo->dsa_addr->pa_addr.sa_addr);
@@ -404,8 +360,6 @@ di_cmp_address (struct di_block *a, struct di_block *b) {
 	return 0;
 }
 
-static
-di_cmp (struct di_block *a, struct di_block *b)
 /*
 *  Select best di_block
 *    rule 1: deferred dsa infos have lowest preference,
@@ -417,6 +371,7 @@ di_cmp (struct di_block *a, struct di_block *b)
 *    preference 3: reliable DSAs
 *    preference 4: local DSAs
 */
+static int di_cmp (struct di_block *a, struct di_block *b)
 {
 	int x,y;
 
@@ -437,31 +392,25 @@ di_cmp (struct di_block *a, struct di_block *b)
 		if ( x > 3) x = 3;	/* ISP & QSP == QSP here */
 		y = quipu_ctx_supported (b->di_entry);
 		if ( y > 3) y = 3;	/* ISP & QSP == QSP here */
-
 		if ( x != y ) {
 			DLOG (log_dsap,LLOG_TRACE,("DSA selected on context"));
 			return ( x > y ? 1 : -1);	/* preference 1 or 2 */
 		}
-
 		if ((x=di_cmp_reliability (a,b)) != 0) {
 			DLOG (log_dsap,LLOG_TRACE,("DSA selected on relibility"));
 			return x;			/* preference 3 */
 		}
-
 		if ((x=di_cmp_address(a,b)) != 0) {
 			DLOG (log_dsap,LLOG_TRACE,("DSA selected on address"));
 			return x;		/* preference 4 */
 		}
-
 		break;
 	}
 
 	return (di_prefer_dsa(a->di_dn, b->di_dn));
 }
 
-
-int
-sort_dsa_list (struct di_block **dsas) {
+void sort_dsa_list (struct di_block **dsas) {
 	struct di_block	*trail;
 	struct di_block	*old_di, *new_di;
 	struct di_block *result;
@@ -520,24 +469,20 @@ sort_dsa_list (struct di_block **dsas) {
 
 }
 
-static int
-common_address (struct di_block *a, struct TSAPaddr *tb) {
+static int common_address (struct di_block *a, struct TSAPaddr *tb) {
 	struct TSAPaddr *ta;
 	struct NSAPaddr *na;
 	struct NSAPaddr *nb;
 	int x,y;
 
 	/* select DSA with best looking address !!! */
-
 	if (a->di_state == DI_DEFERRED)
 		return FALSE;
-
 	if (a->di_state == DI_COMPLETE)
 		ta = &(a->di_entry->e_dsainfo->dsa_addr->pa_addr.sa_addr);
 	else
 		/* Use 1 access point only */
 		ta = &(a->di_accesspoints->ap_address->pa_addr.sa_addr);
-
 	/* compare ta and tb to see if they have a network in common */
 	for (na=ta->ta_addrs , x = ta->ta_naddr - 1 ;
 			x >= 0;
@@ -553,8 +498,7 @@ common_address (struct di_block *a, struct TSAPaddr *tb) {
 }
 
 
-struct di_block *
-select_refer_dsa (struct di_block *di, struct task_act *tk) {
+struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk) {
 	struct di_block *best;
 	struct di_block *loop;
 	Entry eptr;
@@ -574,27 +518,21 @@ select_refer_dsa (struct di_block *di, struct task_act *tk) {
 	/* First set - find out who the remote end is... */
 	if (tk->tk_conn->cn_ctx == DS_CTX_X500_DAP)
 		return best;	/* we will chain anyway - unless prevented by service control... */
-
 	rdsa = tk->tk_conn->cn_dn;
 	if ((eptr=local_find_entry (rdsa,FALSE)) == NULLENTRY)
 		return best;	/* no way of knowing */
-
 	if (eptr->e_dsainfo == NULLDSA)
 		return best;	/* no way of knowing */
-
 	ta = &(eptr->e_dsainfo->dsa_addr->pa_addr.sa_addr);
 	ta = ta2norm (ta);	/* calculate subnets... */
-
 	for (loop=di; loop!=NULL_DI_BLOCK; loop=loop->di_next)
 		if (common_address (loop,ta))
 			return loop;
-
 	/* nothing on the same network - chain if possible !!! */
 	return NULL_DI_BLOCK;
 }
 
-int
-di_rdns (struct di_block *di, int rdns, int aliases, DN object) {
+void di_rdns (struct di_block *di, int rdns, int aliases, DN object) {
 	struct di_block *loop;
 
 	for (loop=di; loop!=NULL_DI_BLOCK; loop=loop->di_next) {
@@ -607,5 +545,3 @@ di_rdns (struct di_block *di, int rdns, int aliases, DN object) {
 			di->di_rdn_resolved = rdns;
 	}
 }
-
-

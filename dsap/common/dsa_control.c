@@ -53,7 +53,7 @@ static struct dsa_control * str2dsa_control_aux() ;
 
 static        PE          quipu_call_enc() ;
 static struct quipu_call *quipu_call_decode() ;
-int	  quipu_call_print() ;
+void quipu_call_print(PS ps, struct quipu_call *item, int format) ;
 struct quipu_call *quipu_call_cpy() ;
 int	  quipu_call_cmp() ;
 void	  quipu_call_free();
@@ -492,11 +492,7 @@ str2quipu_call_aux (char *str, struct quipu_call *item) {
 	return((struct quipu_call *) 0) ;
 }
 
-int
-quipu_call_print(ps, item, format)
-PS ps ;
-struct quipu_call * item ;
-int format ;
+void quipu_call_print(PS ps, struct quipu_call *item, int format)
 {
 	/* When the DSA exits, we do not want to print this out */
 	/* as it really is irrelevant info, not to be reloaded */

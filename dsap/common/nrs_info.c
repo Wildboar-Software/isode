@@ -80,85 +80,64 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/nrs_info.c,v 9.
 extern LLog	* log_dsap;
 PE		  asn2pe();
 
-PE	  asnstr2pe (orig)
-char	* orig;
-{
+PE asnstr2pe (char * orig) {
 	PE	  result;
 	char	* str;
 
 	if (orig == NULLCP)
 		return(NULLPE);
-
 	str = SkipSpace(orig);
-
 	if ((*str) == '\0')
 		return(NULLPE);
-
 	if (strncmp (str, "{ASN}", 5) == 0) {
 		result = asn2pe ((char *)(orig + 5));
 	} else {
 		parse_error ("Malformed ASN string '%s'", orig);
 		result = NULLPE;
 	}
-
 	return(result);
 }
 
-static
-str_seq_free (struct str_seq *arg) {
+static void str_seq_free (struct str_seq *arg) {
 	if (arg == (struct str_seq *)NULL)
 		return;
-
 	if (arg->ss_str)
 		free (arg->ss_str);
-
 	if (arg->ss_next)
 		str_seq_free (arg->ss_next);
-
 	free ((char *)arg);
 }
 
-static struct str_seq *
-str_seq_cpy (struct str_seq *arg) {
+static struct str_seq *str_seq_cpy (struct str_seq *arg) {
 	struct str_seq	* ret;
-
 	if (arg == (struct str_seq *)NULL)
 		return ((struct str_seq *)NULL);
-
 	ret = (struct str_seq *) smalloc (sizeof (struct str_seq));
-
 	ret->ss_str = strdup (arg->ss_str);
-
 	ret->ss_next = str_seq_cpy (arg->ss_next);
-
 	return (ret);
 }
 
-static
-str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2) {
+static int str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2) {
 	int	  ret;
-
 	if (arg1 == (struct str_seq *)NULL)
 		if (arg2 == (struct str_seq *)NULL)
 			return (0);
 		else
 			return (-1);
-
 	if (arg2 == (struct str_seq *)NULL)
 		return (1);
-
 	if ((ret = lexequ (arg1->ss_str, arg2->ss_str)) != 0)
 		return (ret);
-
 	return (str_seq_cmp (arg1->ss_next, arg2->ss_next));
 }
 
-static str_seq_print (ps, strseq, format)
-PS	  ps;
-struct str_seq	* strseq;
-int		  format;
-{
-	struct str_seq	* ss;
+static void str_seq_print (
+	PS ps,
+	struct str_seq * strseq,
+	int format
+) {
+	struct str_seq * ss;
 
 	for (ss=strseq; ss != (struct str_seq *)NULL; ss = ss->ss_next) {
 		if (ss != strseq)
@@ -171,8 +150,7 @@ int		  format;
 	}
 }
 
-static struct str_seq *
-str2str_seq (char *orig) {
+static struct str_seq *str2str_seq (char *orig) {
 	struct str_seq	* result;
 	struct str_seq	**ss;
 	char		* ptr_prev;
@@ -181,9 +159,7 @@ str2str_seq (char *orig) {
 	if (((ptr_prev = orig) == NULLCP) || ((*ptr_prev) == '\0')) {
 		return ((struct str_seq *)NULL);
 	}
-
 	ss = &(result);
-
 	while ( (ptr_next=index (ptr_prev, '$')) != NULLCP) {
 		*ptr_next = '\0';
 		ptr_next++;
@@ -194,62 +170,43 @@ str2str_seq (char *orig) {
 		ss = &((*ss)->ss_next);
 		ptr_prev = ptr_next;
 	}
-
 	(*ss) = (struct str_seq *) smalloc (sizeof (struct str_seq));
-
 	(*ss)->ss_str = strdup (ptr_prev);
-
 	(*ss)->ss_next = (struct str_seq *)NULL;
-
 	return (result);
 }
 
-static
-addr_info_free (struct addr_info *arg) {
+static void addr_info_free (struct addr_info *arg) {
 	if (arg == (struct addr_info *)NULL)
 		return;
-
 	if (arg->dte_number)
 		free (arg->dte_number);
-
 	if (arg->cudf)
 		free (arg->cudf);
-
 	if (arg->ybts_string)
 		free (arg->ybts_string);
-
 	if (arg->nsap)
 		free (arg->nsap);
-
 	if (arg->tselector)
 		free (arg->tselector);
-
 	if (arg->sselector)
 		free (arg->sselector);
-
 	if (arg->pselector)
 		free (arg->pselector);
-
 	if (arg->place_holder)
 		pe_free (arg->place_holder);
-
 	if (arg->application_title)
 		pe_free (arg->application_title);
-
 	if (arg->per_app_context_info)
 		pe_free (arg->per_app_context_info);
-
 	if (arg->applic_info)
 		str_seq_free (arg->applic_info);
-
 	if (arg->applic_relay)
 		str_seq_free (arg->applic_relay);
-
 	free ((char *) arg);
 }
 
-static struct addr_info *
-addr_info_cpy (struct addr_info *arg) {
+static struct addr_info *addr_info_cpy (struct addr_info *arg) {
 	struct addr_info	* ret;
 
 	if (arg == (struct addr_info *)NULL)
@@ -354,8 +311,7 @@ addr_info_cpy (struct addr_info *arg) {
 	return (ret);
 }
 
-static
-addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
+static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 	int	  ret;
 
 	if (arg1 == (struct addr_info *)NULL)
@@ -617,8 +573,7 @@ int			  format;
 	}
 }
 
-static struct addr_info *
-str2addr_info (char *orig) {
+static struct addr_info *str2addr_info (char *orig) {
 	struct addr_info	* result;
 	char			* copy;
 	char			* ptr_prev;
@@ -1015,71 +970,53 @@ str2addr_info (char *orig) {
 	return (result);
 }
 
-static
-nrs_routes_free (struct nrs_routes *arg) {
+static void nrs_routes_free (struct nrs_routes *arg) {
 	if (arg == (struct nrs_routes *)NULL)
 		return;
-
 	if (arg->cost)
 		pe_free (arg->cost);
-
 	if (arg->addr_info)
 		addr_info_free (arg->addr_info);
-
 	if (arg->next)
 		nrs_routes_free (arg->next);
-
 	free ((char *) arg);
 }
 
-static struct nrs_routes *
-nrs_routes_cpy (struct nrs_routes *arg) {
+static struct nrs_routes *nrs_routes_cpy (struct nrs_routes *arg) {
 	struct nrs_routes * ret;
-
 	if (arg == (struct nrs_routes *)NULL)
 		return ((struct nrs_routes *)NULL);
-
 	ret = (struct nrs_routes *) smalloc (sizeof (struct nrs_routes));
-
 	if (arg->cost == NULLPE)
 		ret->cost = NULLPE;
 	else
 		ret->cost = pe_cpy (arg->cost);
-
 	ret->addr_info = addr_info_cpy (arg->addr_info);
-
 	ret->next = nrs_routes_cpy (arg->next);
-
 	return (ret);
 }
 
-static
-nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2) {
+static int nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2) {
 	int	  ret;
-
 	if (arg1 == (struct nrs_routes *)NULL)
 		if (arg2 == (struct nrs_routes *)NULL)
 			return (0);
 		else
 			return (-1);
-
 	if (arg2 == (struct nrs_routes *)NULL)
 		return (1);
-
 	if ((ret = pe_cmp (arg1->cost, arg2->cost)) != 0)
 		return (ret);
-
 	if ((ret = addr_info_cmp (arg1->addr_info, arg2->addr_info)) != 0)
 		return (ret);
-
 	return (nrs_routes_cmp (arg1->next, arg2->next));
 }
 
-static nrs_routes_print (ps, routes, format)
-PS		  ps;
-struct nrs_routes	* routes;
-int			  format;
-{
+static void nrs_routes_print (
+	PS ps,
+	struct nrs_routes * routes,
+	int format
+) {
 	struct nrs_routes	* rt;
 
 	for (rt=routes; rt != (struct nrs_routes *)NULL; rt = rt->next) {
@@ -1099,8 +1036,7 @@ int			  format;
 	}
 }
 
-static struct nrs_routes *
-str2nrs_routes (char *orig) {
+static struct nrs_routes *str2nrs_routes (char *orig) {
 	struct nrs_routes	* result;
 	struct nrs_routes	**rt;
 	char			* copy;
@@ -1190,8 +1126,7 @@ str2nrs_routes (char *orig) {
 	return (result);
 }
 
-static
-nrs_info_free (struct nrs_info *arg) {
+static void nrs_info_free (struct nrs_info *arg) {
 	if (arg == (struct nrs_info *)NULL)
 		return;
 
@@ -1201,55 +1136,41 @@ nrs_info_free (struct nrs_info *arg) {
 	free ((char *) arg);
 }
 
-static struct nrs_info *
-nrs_info_cpy (struct nrs_info *arg) {
+static struct nrs_info *nrs_info_cpy (struct nrs_info *arg) {
 	struct nrs_info * result;
-
 	if (arg == (struct nrs_info *)NULL)
 		return ((struct nrs_info *)NULL);
-
 	result = (struct nrs_info *) smalloc (sizeof (struct nrs_info));
-
 	result->context = arg->context;
-
 	result->addr_sp_id = arg->addr_sp_id;
-
 	result->routes = nrs_routes_cpy (arg->routes);
-
 	return (result);
 }
 
-static
-nrs_info_cmp (struct nrs_info *arg1, struct nrs_info *arg2) {
+static int nrs_info_cmp (struct nrs_info *arg1, struct nrs_info *arg2) {
 	if (arg1 == (struct nrs_info *) NULL)
 		if (arg2 == (struct nrs_info *) NULL)
 			return (0);
 		else
 			return (-1);
-
 	if (arg2 == (struct nrs_info *) NULL)
 		return (1);
-
 	if (arg1->context < arg2->context)
 		return (-1);
-
 	if (arg1->context > arg2->context)
 		return (1);
-
 	if (arg1->addr_sp_id < arg2->addr_sp_id)
 		return (-1);
-
 	if (arg1->addr_sp_id > arg2->addr_sp_id)
 		return (1);
-
 	return (nrs_routes_cmp (arg1->routes, arg2->routes));
 }
 
-static context_print (ps, ctx, format)
-PS	  ps;
-int		  ctx;
-int		  format;
-{
+static void context_print (
+    PS ps,
+    int ctx,
+    int format
+) {
 	if (format != READOUT) {
 		ps_printf (ps, "%d", ctx);
 		return;
@@ -1307,11 +1228,11 @@ int		  format;
 	}
 }
 
-static addr_sp_id_print (ps, asi, format)
-PS	  ps;
-int		  asi;
-int		  format;
-{
+static void addr_sp_id_print (
+    PS ps,
+    int asi,
+    int format
+) {
 	if (format != READOUT) {
 		ps_printf (ps, "%d", asi);
 		return;
@@ -1336,25 +1257,20 @@ int		  format;
 	}
 }
 
-static nrs_info_print (ps, nrs, format)
-PS	  ps;
-struct nrs_info	* nrs;
-int		  format;
-{
+static void nrs_info_print (
+    PS ps,
+    struct nrs_info * nrs,
+    int format
+) {
 	context_print (ps, nrs->context, format);
-
 	ps_printf (ps, "$");
-
 	addr_sp_id_print (ps, nrs->addr_sp_id, format);
-
 	ps_printf (ps, "$");
-
 	if (nrs->routes)
 		nrs_routes_print (ps, nrs->routes, format);
 }
 
-static
-str2context (char *orig) {
+static int str2context (char *orig) {
 	char	* str;
 	char	* cc;
 	int	  its_all_digits;
@@ -1425,8 +1341,7 @@ str2context (char *orig) {
 	}
 }
 
-static
-str2addr_sp_id (char *orig) {
+static int str2addr_sp_id (char *orig) {
 	char	* str;
 	char	* cc;
 	int	  its_all_digits;
@@ -1475,8 +1390,7 @@ str2addr_sp_id (char *orig) {
 	}
 }
 
-static struct nrs_info *
-str2nrs_info (char *orig) {
+static struct nrs_info *str2nrs_info (char *orig) {
 	struct nrs_info	* result;
 	char		* copy;
 	char		* ptr_prev;
@@ -1536,9 +1450,7 @@ str2nrs_info (char *orig) {
 	return (result);
 }
 
-static PE nrs_info_enc (nrs)
-struct nrs_info * nrs;
-{
+static PE nrs_info_enc (struct nrs_info * nrs) {
 	PE ret_pe;
 
 	if (encode_NRS_NRSInformation (&ret_pe, 1, 0, NULLCP, nrs) != OK)
@@ -1547,8 +1459,7 @@ struct nrs_info * nrs;
 	return (ret_pe);
 }
 
-static struct nrs_info * nrs_info_dec (pe)
-PE pe;
+static struct nrs_info * nrs_info_dec (PE pe)
 {
 	struct nrs_info	* nrs;
 
@@ -1559,8 +1470,7 @@ PE pe;
 	return (nrs);
 }
 
-int
-nrs_info_syntax (void) {
+void nrs_info_syntax (void) {
 	add_attribute_syntax ("NRSInformation",
 						  (IFP) nrs_info_enc,	(IFP) nrs_info_dec,
 						  (IFP) str2nrs_info,	nrs_info_print,
@@ -1568,4 +1478,3 @@ nrs_info_syntax (void) {
 						  nrs_info_free,		NULLCP,
 						  NULLIFP,		TRUE);
 }
-

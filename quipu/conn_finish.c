@@ -33,9 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_finish.c,v 9.0 1
 
 extern  LLog    * log_dsap;
 
-/* ARGSUSED */
-int
-conn_finish (struct connection *conn, struct DSAPfinish *df) {
+void conn_finish (struct connection *conn, struct DSAPfinish *df) {
 	int			  result;
 	struct oper_act	* on;
 	extern time_t	  conn_timeout, timenow;
@@ -43,30 +41,25 @@ conn_finish (struct connection *conn, struct DSAPfinish *df) {
 	struct DSAPindication	* di = &(di_s);
 
 	DLOG(log_dsap, LLOG_TRACE, ("conn_finish()"));
-
 	/* Can release be negotiated? */
 	if (conn->cn_start.cs_ds.ds_start.acs_start.ps_srequirements & SR_NEGOTIATED) {
 		/* Should release be rejected? */
 		for(on=conn->cn_operlist; on!=NULLOPER; on=on->on_next_conn)
 			if (on->on_state == ON_CHAINED)
 				break;
-
 		if (on != NULLOPER) {
 			/*
 			* See if oper has had time to complete
 			* if so remote DSA has probably lost the operation (never !!!)
 			* else reject the release
 			*/
-
 			if ( timenow - conn->cn_last_used < conn_timeout) {
 				result = DUnBindReject (conn->cn_ad, ACS_REJECT,
 										ACR_NOTFINISHED, di);
-
 				if (result != OK) {
 					result = DUAbortRequest (conn->cn_ad, di);
 					if (result != OK)
 						force_close (conn->cn_ad, di);
-
 					do_ds_unbind(conn);
 					conn_extract(conn);
 				}
@@ -83,11 +76,9 @@ conn_finish (struct connection *conn, struct DSAPfinish *df) {
 	}
 	do_ds_unbind(conn);
 	conn_extract(conn);
-
 }
 
-int
-conn_rel_abort (struct connection *conn) {
+void conn_rel_abort (struct connection *conn) {
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
 
@@ -95,10 +86,7 @@ conn_rel_abort (struct connection *conn) {
 	if (!conn->cn_initiator)
 		return;
 #endif
-
 	LLOG(log_dsap, LLOG_NOTICE, ("conn_rel_abort %d",conn->cn_ad));
-
 	if ( DUAbortRequest (conn->cn_ad, di) != OK)
 		force_close (conn->cn_ad, di);
 }
-

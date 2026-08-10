@@ -43,12 +43,10 @@ IFP	o_advise = NULLIFP;
 
 /*  */
 
-int	o_generic (OI oi, void *varbind, int offset) {
+int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
-
-	struct type_SNMP_VarBind *v = (struct type_SNMP_VarBind *) varbind;
 
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -105,12 +103,8 @@ int	o_generic (OI oi, void *varbind, int offset) {
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
-
-int	s_generic (OI oi, void *varbind, int offset)
+int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 {
-	struct type_SNMP_VarBind *v = (struct type_SNMP_VarBind *) varbind;
-
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;

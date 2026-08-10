@@ -38,51 +38,40 @@ extern  LLog    * log_stat;
 #endif
 extern time_t	  timenow;
 
-int
-oper_error (struct connection *conn, struct DSAPindication *di) {
+void oper_error (struct connection *conn, struct DSAPindication *di) {
 	struct DSAPerror	* de = &(di->di_error);
 	struct oper_act *   oper;
-
 	DLOG(log_dsap, LLOG_TRACE, ("net_wait_ro_error"));
-
 	for(oper=conn->cn_operlist; oper != NULLOPER; oper=oper->on_next_conn)
 		if(oper->on_id == de->de_id)
 			break;
-
 	if(oper == NULLOPER) {
 		LLOG(log_dsap, LLOG_FATAL, ("oper_error: Cannot locate operation for error"));
 		ds_error_free (&di->di_error.de_err);
 		send_ro_ureject(conn->cn_ad, &(de->de_id), ROS_REP_UNRECOG);
 		return;
 	}
-
 #ifndef NO_STATS
 	LLOG(log_stat, LLOG_DEBUG, ("Error received (%d) [%d]",
 								oper->on_conn->cn_ad,
 								oper->on_id));
 #endif
-
 	if(oper->on_state == ON_ABANDONED) {
 		LLOG(log_dsap, LLOG_TRACE, ("oper_error: operation had been abandoned"));
 		ds_error_free (&di->di_error.de_err);
 		oper_extract(oper);
 		return;
 	}
-
 	if(!ds_recog_err(de->de_err.dse_type)) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_error - Unrecognised error"));
 		ds_error_free (&di->di_error.de_err);
 		send_ro_ureject(conn->cn_ad, &(de->de_id), ROS_REP_RECERR);
 		oper_fail_wakeup(oper);
 	}
-
 	/* free previous error - if any */
 	ds_error_free (&oper->on_resp.di_error.de_err);
-
 	oper->on_resp = (*di); /* struct copy */
-
 	conn->cn_last_used = timenow;
-
 	/* Need to check type of operation here! */
 	switch(oper->on_type) {
 	case ON_TYPE_X500:
@@ -107,6 +96,4 @@ oper_error (struct connection *conn, struct DSAPindication *di) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("oper_error - on_type invalid"));
 		break;
 	}
-
 }
-

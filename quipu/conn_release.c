@@ -34,12 +34,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_release.c,v 9.0 
 extern  LLog    * log_dsap;
 extern	time_t	  timenow;
 
-struct connection	* conn_alloc();
-void			  conn_free();
-void			  ds_log ();
+struct connection* conn_alloc();
+void conn_free (struct connection *conn);
+void ds_log(struct DSAPabort *da, char *str, int fd);
 
-int
-conn_release (struct connection *conn) {
+int conn_release (struct connection *conn) {
 	int				  result;
 	struct DSAPrelease		  dr_s;
 	struct DSAPrelease		* dr = &(dr_s);

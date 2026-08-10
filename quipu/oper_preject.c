@@ -33,21 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_preject.c,v 9.0 
 
 extern	LLog	* log_dsap;
 
-int
-oper_preject (struct connection *conn, struct DSAPpreject *dp) {
+void oper_preject (struct connection *conn, struct DSAPpreject *dp) {
 	struct oper_act *       on;
 
 	DLOG(log_dsap, LLOG_TRACE, ("oper_preject"));
-
 	if (dp->dp_id == -1) {
 		/* No identified operation to reject! */
 		return;
 	}
-
 	for(on=conn->cn_operlist; on!=NULLOPER; on=on->on_next_conn)
 		if(on->on_id == dp->dp_id)
 			break;
-
 	if(on == NULLOPER) {
 		if (dp->dp_reason != DA_ROS)	/* Ros will have logged it */
 			LLOG(log_dsap,LLOG_EXCEPTIONS,(
@@ -57,4 +53,3 @@ oper_preject (struct connection *conn, struct DSAPpreject *dp) {
 		oper_fail_wakeup(on);
 	}
 }
-

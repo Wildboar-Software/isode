@@ -40,8 +40,7 @@ extern char     fname[];
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-int
-editentry (int argc, char **argv) {
+int editentry (int argc, char **argv) {
 	char            str[LINESIZE];
 	char            prog[LINESIZE];
 	int             res;
@@ -183,10 +182,7 @@ out2:
 	return (OK);
 }
 
-
-int
-get_password (char *str, char *buffer) {
-
+void get_password (char *str, char *buffer) {
 	char            prog[LINESIZE];
 	int             res;
 	extern char     inbuf[];
@@ -196,9 +192,7 @@ get_password (char *str, char *buffer) {
 
 	if (frompipe) {
 		sprintf (prog, "p%s\n", str);
-
 		send_pipe_aux (prog);
-
 		if ((res = read_pipe_aux (prog,sizeof prog)) < 1) {
 			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
@@ -213,8 +207,7 @@ get_password (char *str, char *buffer) {
 	}
 }
 
-int
-yesno (char *str) {
+int yesno (char *str) {
 	char            prog[LINESIZE];
 	extern char     inbuf[];
 	extern int      fd;

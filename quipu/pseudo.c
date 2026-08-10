@@ -24,7 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/pseudo.c,v 9.0 1992/0
  *
  */
 
-
+#include <stdio.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
@@ -276,25 +277,20 @@ get_cacheEDB (void) {
 	return (as_find_type (dsa_pseudo_attr,at));
 }
 
-int
-write_dsa_entry (Entry eptr) {
+void write_dsa_entry (Entry eptr) {
 	int um;
 	FILE * fptr;
 	char filename[LINESIZE];
 	PS ps;
 	/* write e_attributes, and preserved attributes to DSA file */
-
 	update_pseudo_attr ();
-
 	if (dsa_pseudo_attr) {
 		sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
-
 		um = umask (0177);
 		if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 		}
 		umask (um);
-
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 			fclose (fptr);
@@ -305,19 +301,15 @@ write_dsa_entry (Entry eptr) {
 			fclose (fptr);
 			return;
 		}
-
 		parse_file = filename;
 		parse_rdn = eptr->e_name;
-
 		as_print (ps,dsa_pseudo_attr,EDBOUT);
-
 		if (ps->ps_errno != PS_ERR_NONE) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
 			fclose (fptr);
 			return;
 		}
 		ps_free (ps);
-
 		if (fflush (fptr) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
 			fclose (fptr);
@@ -336,21 +328,16 @@ write_dsa_entry (Entry eptr) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA EDB close error: %d",errno));
 			return;
 		}
-
 		LLOG (log_dsap,LLOG_NOTICE,("Written %s",filename));
 	}
-
 	if (eptr->e_data == E_DATA_MASTER)
 		return;
-
 	sprintf (filename,"%sDSA.real",isodefile(treedir,0));
-
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 	}
 	umask (um);
-
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 		fclose (fptr);
@@ -361,23 +348,18 @@ write_dsa_entry (Entry eptr) {
 		fclose (fptr);
 		return;
 	}
-
 	parse_file = filename;
 	parse_rdn = eptr->e_name;
-
 	if (dsa_real_attr)
 		as_free (dsa_real_attr);
 	dsa_real_attr = as_cpy (eptr->e_attributes);
-
 	as_print (ps,dsa_real_attr,EDBOUT);
-
 	if (ps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA ps error: %s",ps_error(ps->ps_errno)));
 		fclose (fptr);
 		return;
 	}
 	ps_free (ps);
-
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA flush error: %d",errno));
 		fclose (fptr);
@@ -396,60 +378,44 @@ write_dsa_entry (Entry eptr) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA EDB close error: %d",errno));
 		return;
 	}
-
 	LLOG (log_dsap,LLOG_NOTICE,("Written %s",filename));
-
-
 }
 
-int
-load_pseudo_attrs (char data_type) {
+void load_pseudo_attrs (char data_type) {
 	FILE * fptr;
 	char filename[LINESIZE];
 	DN dn;
 
 	/* write e_attributes, and preserved attributes to DSA file */
-
 	sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
-
 	/* What if DSA at top level with same name as us !?! */
 	parse_file = filename;
 	if (mydsadn)
 		for (dn=mydsadn; dn != NULLDN; dn = dn->dn_parent)
 			parse_rdn = dn->dn_rdn;
-
 	if ((fptr = fopen (filename,"r")) == (FILE *) NULL)
 		LLOG (log_dsap,LLOG_TRACE,("No DSA pseudo entry: \"%s\" (%d)",filename,errno));
 	else {
-
 #ifdef TURBO_DISK
 		if ((dsa_pseudo_attr = fget_attributes (fptr)) == NULLATTR)
 #else
 		if ((dsa_pseudo_attr = get_attributes (fptr)) == NULLATTR)
 #endif
-			LLOG (log_dsap,LLOG_TRACE,("Error in DSA pseudo entry: \"%s\" (%d)",filename,errno));
-
+		LLOG (log_dsap,LLOG_TRACE,("Error in DSA pseudo entry: \"%s\" (%d)",filename,errno));
 		fclose (fptr);
-
 	}
-
 	if (data_type == E_DATA_MASTER)
 		return;
-
 	sprintf (filename,"%sDSA.real",isodefile(treedir,0));
-
 	if ((fptr = fopen (filename,"r")) == (FILE *) NULL)
 		LLOG (log_dsap,LLOG_TRACE,("No DSA real entry: \"%s\" (%d)",filename,errno));
 	else {
-
 #ifdef TURBO_DISK
 		if ((dsa_real_attr = fget_attributes (fptr)) == NULLATTR)
 #else
 		if ((dsa_real_attr = get_attributes (fptr)) == NULLATTR)
 #endif
 			LLOG (log_dsap,LLOG_TRACE,("Error in DSA real entry: \"%s\" (%d)",filename,errno));
-
 		fclose (fptr);
 	}
-
 }

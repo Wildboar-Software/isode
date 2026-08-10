@@ -43,40 +43,32 @@ extern char quipu_shutdown;
 * Check what type of activity it is and dispatch to an appropriate
 * routine to handle the activity.
 */
-int
-conn_dispatch (struct connection *cn) {
+void conn_dispatch (struct connection *cn) {
 	int				  result;
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
 
 	DLOG (log_dsap,LLOG_TRACE,( "conn_dispatch()"));
-
 	bzero ((char *)di, sizeof di_s);
-
 	result = DWaitRequest(cn->cn_ctx, cn->cn_ad, OK, di);
-
 #ifdef QUIPU_CONSOLE
 	running_analyse(cn, di) ;
 #endif /* QUIPU_CONSOLE */
-
 	if (result == DONE) {
 		/* TIMER expired */
 		return;
 	}
-
 	if (result == NOTOK) {
 		switch(di->di_type) {
 		case DI_PREJECT:
 			DLOG(log_dsap, LLOG_DEBUG, ("conn_dispatch calling oper_preject"));
 			oper_preject(cn, &(di->di_preject));
 			return;
-
 		case DI_ABORT:
 			LLOG(log_dsap, LLOG_NOTICE, ("DWaitRequest - abort"));
 			do_ds_unbind (cn);
 			conn_extract(cn);
 			return;
-
 		default:
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
 				  ("Unknown indication type: %d (%d)",
@@ -92,19 +84,15 @@ conn_dispatch (struct connection *cn) {
 										   ("task_invoke failed in conn_dispatch (%d)",cn->cn_ad));
 		}
 		break;
-
 	case DI_RESULT:
 		oper_result(cn, di);
 		break;
-
 	case DI_ERROR:
 		oper_error(cn, di);
 		break;
-
 	case DI_FINISH:
 		conn_finish(cn, &(di->di_finish));
 		break;
-
 	default:
 		LLOG (log_dsap,LLOG_EXCEPTIONS,(
 				  "Unknown indication type: %d (%d)", di->di_type,cn->cn_ad));
@@ -113,8 +101,7 @@ conn_dispatch (struct connection *cn) {
 }
 
 #ifdef QUIPU_CONSOLE
-static void
-running_analyse (struct connection *cn, struct DSAPindication *di) {
+static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 	extern AV_Sequence open_call_avs ;
 	extern time_t timenow ;
 	AV_Sequence tmp_avs ;

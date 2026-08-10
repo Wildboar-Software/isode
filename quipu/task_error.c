@@ -39,8 +39,7 @@ void ros_log ();
 * The DSA has produced an error for the task, encode the error,
 * generate a D-ERROR.REQUEST and update the task block.
 */
-int
-task_error (struct task_act *task) {
+void task_error (struct task_act *task) {
 	int				  result;
 	struct DSAPindication	  di_s;
 	struct DSAPindication	* di = &(di_s);
@@ -49,7 +48,6 @@ task_error (struct task_act *task) {
 
 #ifndef NO_STATS
 	extern LLog * log_stat;
-
 	if (log_stat -> ll_events & LLOG_DEBUG)
 		LLOG (log_stat, LLOG_DEBUG,("Error sent (%d) [%d]",
 									task->tk_conn->cn_ad,
@@ -58,18 +56,14 @@ task_error (struct task_act *task) {
 		LLOG (log_stat, LLOG_TRACE,("Error sent (%d)",
 									task->tk_conn->cn_ad));
 #endif
-
 	if(task == NULLTASK) {
 		LLOG(log_dsap, LLOG_FATAL, ("Task memerr 2"));
 		return;
 	}
-
 	err = task->tk_error;
 	task->tk_resp.di_type = DI_ERROR;
-
 	if (log_dsap -> ll_events & LLOG_NOTICE)
 		log_ds_error (task->tk_error);
-
 	/* Return the right sort of referral error */
 	if(cn->cn_ctx == DS_CTX_X500_DAP) {
 		if(err->dse_type == DSE_DSAREFERRAL) {
@@ -82,7 +76,6 @@ task_error (struct task_act *task) {
 			err->dse_type = DSE_DSAREFERRAL;
 		}
 	}
-
 	switch (cn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		result = DapErrorRequest (cn->cn_ad, task->tk_dx.dx_id, err, di);
@@ -100,14 +93,12 @@ task_error (struct task_act *task) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("task_error(): Unknown context %d", cn->cn_ctx));
 		break;
 	}
-
 	if (result != OK) {
 		if(di->di_type == DI_ABORT) {
 			LLOG(log_dsap, LLOG_FATAL, ("D-RESULT.REQUEST: fatal reject - fail the connection"));
 			cn->cn_state = CN_FAILED;
 		}
 	}
-
 	if(cn->cn_state == CN_FAILED) {
 		DLOG(log_dsap, LLOG_DEBUG, ("task_error(): extracting conn:"));
 		conn_log(cn,LLOG_DEBUG);

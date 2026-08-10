@@ -41,10 +41,9 @@ extern	PS	opt, rps;
 
 extern  char    fred_flag;
 
-static new_alias ();
+static void new_alias (char *cp);
 
-int
-call_ds (int argc, char **argv) {
+void call_ds (int argc, char **argv) {
 	extern char bound;
 	extern char * myname;
 	extern char * dsa_address;
@@ -123,11 +122,7 @@ call_ds (int argc, char **argv) {
 		ps_printf (RPS, "DAP-listener: %s\n", getenv ("DISHPROC"));
 }
 
-
-/*  */
-
-static
-new_alias (char *cp) {
+static void new_alias (char *cp) {
 	int	    seqno;
 	DN	    sdn;
 
@@ -147,10 +142,7 @@ new_alias (char *cp) {
 	}
 }
 
-dish_error (ps,error)
-PS ps;
-struct DSError * error;
-{
+int dish_error (PS ps, struct DSError * error) {
 	struct access_point * ap;
 	extern char neverefer;
 	extern int chase_flag;

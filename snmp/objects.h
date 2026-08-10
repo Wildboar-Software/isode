@@ -31,6 +31,7 @@
 #else
 #include "psap.h"
 #endif
+#include "SNMP-types.h"
 
 /*  */
 
@@ -78,8 +79,8 @@ typedef struct object_type {
 #define	OT_DEPRECATED	0x03
 
 	caddr_t ot_info;			/* object information */
-	int	    (*ot_getfnx)(OI oi, void *v, int offset);			/* get/get-next method */
-	int	    (*ot_setfnx)(OI oi, void *v, int offset);			/* set method */
+	int	(*ot_getfnx)(OI oi, struct type_SNMP_VarBind *v, int offset);			/* get/get-next method */
+	int	(*ot_setfnx)(OI oi, struct type_SNMP_VarBind *v, int offset);			/* set method */
 
 #define	type_SNMP_PDUs_commit	(-1)
 #define	type_SNMP_PDUs_rollback	(-2)
@@ -119,8 +120,8 @@ OI	name2inst (), next2inst (), text2inst ();
 extern	IFP	o_advise;
 
 
-int	o_generic (OI oi, void *v, int offset);
-int s_generic (OI oi, void *v, int offset);
+int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
+int s_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
 
 int	o_number ();
 int	o_longword ();

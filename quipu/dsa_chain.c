@@ -55,8 +55,11 @@ int di2cref (struct di_block *, struct DSError *, char);
 
 static int relayfordsa();
 
-struct connection *
-make_conn_block (DN name, struct PSAPaddr *addr, char conn_ctx) {
+struct connection *make_conn_block (
+	DN name,
+	struct PSAPaddr *addr,
+	char conn_ctx
+) {
 	struct connection	* cn;
 
 	struct TSAPaddr *ta;
@@ -73,13 +76,11 @@ make_conn_block (DN name, struct PSAPaddr *addr, char conn_ctx) {
 		LLOG(log_dsap, LLOG_FATAL, ("Trying to connect to self :-)"));
 		return(NULLCONN);
 	}
-
 	if (! addr) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Invalid (accesspoint) reference",
 			   (IFP)dn_print,(caddr_t)name);
 		return(NULLCONN);
 	}
-
 	/* see if on the appropriate net */
 	ta = & (addr->pa_addr.sa_addr);
 
@@ -97,12 +98,10 @@ make_conn_block (DN name, struct PSAPaddr *addr, char conn_ctx) {
 			}
 		}
 	}
-
 	if (! onnet) {
 		LLOG(log_dsap, LLOG_TRACE, ("make_conn_block - no network in common"));
 		return(NULLCONN);
 	}
-
 	if((cn = conn_alloc()) == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("make_conn_block - conn_alloc() out of memory"));
 		return(NULLCONN);
@@ -111,17 +110,14 @@ make_conn_block (DN name, struct PSAPaddr *addr, char conn_ctx) {
 	cn->cn_ctx = conn_ctx;
 	cn->cn_initiator = TRUE;
 	make_dsa_bind_arg(&(cn->cn_connect.cc_req));
-
 	cn->cn_dn = dn_cpy(name);
 	DLOG (log_dsap,LLOG_TRACE,( "Before psap_dup: %s", paddr2str(addr,NULLNA)));
 	psap_dup(&(cn->cn_addr), addr);
 	DLOG (log_dsap,LLOG_TRACE,( "After psap_dup:  %s", paddr2str(&(cn->cn_addr),NULLNA)));
-
 	return(cn);
 }
 
-int
-link_op_to_conn (struct oper_act *on) {
+int link_op_to_conn (struct oper_act *on) {
 	char		  conn_ctx = DS_CTX_X500_DSP;
 	struct di_block	* di;
 	struct di_block	**next_di;
@@ -371,14 +367,12 @@ link_op_to_conn (struct oper_act *on) {
 	return(NOTOK);
 }
 
-int
-oper_chain (struct oper_act *on) {
+int oper_chain (struct oper_act *on) {
 	if(link_op_to_conn(on) == OK) {
 		if(on->on_conn == NULLCONN) {
 			DLOG(log_dsap, LLOG_DEBUG, ("oper_chain - link_op_to_conn: OK but no conn"));
 		} else {
 			DLOG(log_dsap, LLOG_DEBUG, ("oper_chain - link_op_to_conn: OK got conn"));
-
 			if(on->on_conn->cn_state == CN_OPEN) {
 				DLOG(log_dsap, LLOG_DEBUG, ("oper_chain - link_op_to_conn: OK got open conn"));
 				if(oper_send_invoke(on) != OK) {
@@ -390,7 +384,6 @@ oper_chain (struct oper_act *on) {
 				}
 			}
 		}
-
 		on->on_state = ON_CHAINED;
 	} else {
 		/*
@@ -407,12 +400,10 @@ oper_chain (struct oper_act *on) {
 
 		on->on_state = ON_DEFERRED;
 	}
-
 	return(OK);
 }
 
-int
-task_chain (struct task_act *tk, struct di_block *di) {
+int task_chain (struct task_act *tk, struct di_block *di) {
 	struct oper_act	* on;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 	struct di_block	* di_tmp;
@@ -532,12 +523,10 @@ task_chain (struct task_act *tk, struct di_block *di) {
 
 	chaining_analyse(tk, di) ;
 #endif /* QUIPU_CONSOLE */
-
 	return(OK);
 }
 
-int
-oper_rechain (struct oper_act *on) {
+int oper_rechain (struct oper_act *on) {
 	struct DSE_referral         * ref = &(on->on_resp.di_error.de_err.ERR_REFERRAL);
 	struct continuation_ref     * cref;
 	struct chain_arg	* cha = &(on->on_req.dca_charg);
@@ -613,29 +602,22 @@ oper_rechain (struct oper_act *on) {
 		on->on_dsas->di_accesspoints = ap_cpy(cref->cr_accesspoints);
 		on->on_dsas->di_next = NULL_DI_BLOCK;
 	}
-
 	sort_dsa_list (&on->on_dsas);	/* might be able to turn DI_ACCESS into DI_COMPLETE */
-
 	if (on->on_relay == FALSE) 		/* but not 2 ! */
 		on->on_relay = TRUE;	/* allow relay for new DSA set */
-
 	return(oper_chain(on));
 }
 
-struct oper_act *
-task2oper (struct task_act *tk) {
+struct oper_act *task2oper (struct task_act *tk) {
 	struct chain_arg	* cha = &(tk->tk_dx.dx_arg.dca_charg);
 	struct continuation_ref	* cref = tk->tk_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates;
 	struct trace_info		* ti;
 	struct oper_act		* on;
 
 	DLOG(log_dsap, LLOG_TRACE, ("Chain a task ..."));
-
 	if((on = oper_alloc()) == NULLOPER)
 		return(NULLOPER);
-
 	on->on_type = ON_TYPE_X500;
-
 	cha->cha_target = NULLDN;
 	if(cref->cr_name != NULLDN) {
 		cha->cha_target = dn_cpy(cref->cr_name);
@@ -689,26 +671,20 @@ task2oper (struct task_act *tk) {
 	ti->ti_progress = cref->cr_progress;
 	ti->ti_next = cha->cha_trace;
 	cha->cha_trace = ti;
-
 	on->on_arg = &(tk->tk_dx.dx_arg);
-
 	return(on);
 }
 
-int
-chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
+int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	struct common_args	* ca;
 	struct common_args	* get_ca_ref();
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
-
 	/* if refer_ok is FALSE - we MUST chain unless prevented, otherwise operation will fail */
-
 	DLOG (log_dsap,LLOG_TRACE,( "chain_ok: Checking if chaining is ok"));
 
 	if ( ! refer_ok) {
 		DLOG (log_dsap,LLOG_DEBUG,( "We MUST chain"));
-
 		if ((tk->tk_conn->cn_ctx != DS_CTX_X500_DAP)
 				&& (dspchaining == 1) /* off */
 				&& (! relayfordsa (tk->tk_conn->cn_dn))) { /* explicitly allowed */
@@ -719,12 +695,10 @@ chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 			DLOG (log_dsap,LLOG_DEBUG,( "But prohibited"));
 			return(FALSE);
 		}
-
 		if(ca->ca_servicecontrol.svc_options & SVC_OPT_LOCALSCOPE) {
 			DLOG (log_dsap,LLOG_DEBUG,( "But out of scope"));
 			return(FALSE);
 		}
-
 		DLOG (log_dsap,LLOG_DEBUG,( "Forced chain OK!"));
 		return TRUE;
 	}
@@ -732,7 +706,6 @@ chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	if (tk->tk_conn->cn_ctx != DS_CTX_X500_DAP) {
 		if ((dspchaining != 0) 	/* not on */
 				&& (! relayfordsa (tk->tk_conn->cn_dn)))  /* explicitly allowed */
-
 		{
 			DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because dspchaining is %s ",dspchaining == 1 ? "off" : "whenNeeded"));
 			return(FALSE);
@@ -753,7 +726,6 @@ chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 		DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because of prohibition"));
 		return(FALSE);
 	}
-
 	if(ca->ca_servicecontrol.svc_options & SVC_OPT_LOCALSCOPE) {
 		DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because of scope"));
 		return(FALSE);
@@ -777,12 +749,9 @@ chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	return(TRUE);
 }
 
-int
-task_result_wakeup (struct oper_act *on) {
+void task_result_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
-
 	DLOG(log_dsap, LLOG_TRACE, ("task_result_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
 			 ("Oper can't wake up (result)extracted task"));
@@ -794,23 +763,19 @@ task_result_wakeup (struct oper_act *on) {
 		*/
 
 		ds_error_free (tk->tk_error);
-
 		tk->tk_result = &(on->on_resp.di_result.dr_res);
-
 		dsp_cache (&(tk->tk_dx.dx_arg.dca_dsarg),
 				   &(tk->tk_result->dcr_dsres),
 				   tk->tk_conn->cn_ctx, tk->tk_conn->cn_dn);
 
 		task_conn_extract(tk);
-
 		task_result(tk);
 		oper_extract(on);
 		task_extract(tk);
 	}
 }
 
-int
-task_error_wakeup (struct oper_act *on) {
+void task_error_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	char free_error = TRUE;
 
@@ -842,10 +807,8 @@ task_error_wakeup (struct oper_act *on) {
 			}
 			DLOG(log_dsap, LLOG_DEBUG, ("Failed rechaining"));
 		}
-
 		task_conn_extract(tk);
 		task_error(tk);
-
 		if (free_error)
 			ds_error_free(&(tk->tk_resp.di_error.de_err));
 		oper_extract(on);
@@ -853,13 +816,11 @@ task_error_wakeup (struct oper_act *on) {
 	}
 }
 
-int
-task_fail_wakeup (struct oper_act *on) {
+void task_fail_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct DSError	* err;
 
 	DLOG(log_dsap, LLOG_TRACE, ("task_fail_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		if (on->on_state != ON_ABANDONED)
 			LLOG(log_dsap, LLOG_TRACE, ("task_fail_wakeup: no task"));
@@ -889,13 +850,9 @@ task_fail_wakeup (struct oper_act *on) {
 	task_extract(tk);
 }
 
-int
-task_dsa_info_wakeup (struct di_block *di) {
+int task_dsa_info_wakeup (struct di_block *di) {
 	struct task_act	* tk = di->di_task;
-
-
 	DLOG(log_dsap, LLOG_TRACE, ("task_dsa_info_wakeup"));
-
 	/*
 	* Were waiting for a reference to return.
 	* Check if the reference now returned is acceptable.
@@ -903,14 +860,12 @@ task_dsa_info_wakeup (struct di_block *di) {
 	* otherwise try another di_block for the reference.
 	*/
 	sort_dsa_list (&di);
-
 	if (tk == NULLTASK) {
 		if (di->di_oper == NULLOPER)
 			return FALSE;
 		else
 			return TRUE;
 	}
-
 	if(di2cref(di, &(tk->tk_resp.di_error.de_err), tk->tk_conn->cn_ctx) != OK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("task_dsa_info_wakeup - reference not acceptable"));
 		/* Remove di_block which generated unwanted referral wait */
@@ -925,16 +880,13 @@ task_dsa_info_wakeup (struct di_block *di) {
 		}
 		return TRUE;
 	}
-
 	task_conn_extract(tk);
 	task_error(tk);
 	task_extract(tk);
-
 	return TRUE;
 }
 
-static struct access_point *
-di2ap (struct di_block *di) {
+static struct access_point *di2ap (struct di_block *di) {
 	struct access_point *ap;
 
 	switch(di->di_state) {
@@ -963,8 +915,7 @@ di2ap (struct di_block *di) {
 
 }
 
-int
-di2cref (struct di_block *di, struct DSError *err, char ctx) {
+int di2cref (struct di_block *di, struct DSError *err, char ctx) {
 	struct continuation_ref     * cref;
 	struct di_block * loop;
 	struct access_point *ap_append(), *ap;
@@ -1038,8 +989,7 @@ di2cref (struct di_block *di, struct DSError *err, char ctx) {
 	return OK;
 }
 
-int
-oper_fail_wakeup (struct oper_act *on) {
+void oper_fail_wakeup (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("oper_fail_wakeup()"));
 	/*
 	*  Attempt to perform operation remotely has failed.
@@ -1076,9 +1026,7 @@ oper_fail_wakeup (struct oper_act *on) {
 	}
 }
 
-
-int
-subtask_chain (struct task_act *tk) {
+void subtask_chain (struct task_act *tk) {
 	struct ds_search_task	*refer;
 	struct ds_search_task	*nref;
 	struct ds_search_task	* trail = NULL_ST;
@@ -1106,9 +1054,7 @@ subtask_chain (struct task_act *tk) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("search referred without di_block list"));
 			continue;
 		}
-
 		sort_dsa_list (&di);
-
 		err.ERR_REFERRAL.DSE_ref_candidates = NULLCONTINUATIONREF;
 		if ((di_tmp = select_refer_dsa (di,tk)) == NULL_DI_BLOCK) {
 			/* The remote END is probably unable to follow the referral - chain if allowed */
@@ -1125,7 +1071,6 @@ subtask_chain (struct task_act *tk) {
 			}
 		} else
 			di2cref(di_tmp, &err, tk->tk_conn->cn_ctx);
-
 		on = oper_alloc();
 		on->on_type = ON_TYPE_SUBTASK;
 		on->on_dsas = di;
@@ -1138,9 +1083,7 @@ subtask_chain (struct task_act *tk) {
 		on->on_task = tk;
 		on->on_next_task = tk->tk_operlist;
 		tk->tk_operlist = on;
-
 		oncha = &(on->on_req.dca_charg);
-
 		if(refer->st_alias == NULLDN) {
 			if (err.ERR_REFERRAL.DSE_ref_candidates)
 				oncha->cha_target = dn_cpy(err.ERR_REFERRAL.DSE_ref_candidates->cr_name);
@@ -1149,7 +1092,6 @@ subtask_chain (struct task_act *tk) {
 		} else {
 			oncha->cha_target = dn_cpy(refer->st_alias);
 		}
-
 		if(di->di_rdn_resolved <= 0) {
 			oncha->cha_progress.op_resolution_phase = OP_PHASE_NOTSTARTED;
 			oncha->cha_progress.op_nextrdntoberesolved = 0;
@@ -1157,20 +1099,16 @@ subtask_chain (struct task_act *tk) {
 			oncha->cha_progress.op_resolution_phase = OP_PHASE_PROCEEDING;
 			oncha->cha_progress.op_nextrdntoberesolved = di->di_rdn_resolved;
 		}
-
 		oncha->cha_aliasderef = ((oncha->cha_aliasedrdns = di->di_aliasedRDNs) != CR_NOALIASEDRDNS);
 		if((oncha->cha_reftype = di->di_reftype) == RT_UNDEFINED)
 			oncha->cha_reftype = RT_SUPERIOR;
-
 #ifdef COMPAT_6_0
 		oncha->cha_entryonly = FALSE;
 #else
 		oncha->cha_entryonly = refer->st_entryonly;
 #endif
-
 		oncha->cha_returnrefs = FALSE;
 		oncha->cha_domaininfo = NULLPE;
-
 		if(tk->tk_timed == FALSE) {
 			oncha->cha_timelimit = NULLCP;
 		} else {
@@ -1182,7 +1120,6 @@ subtask_chain (struct task_act *tk) {
 			oncha->cha_timelimit = NULLCP;
 #endif
 		}
-
 		DLOG(log_dsap, LLOG_DEBUG, ("Checking history of op"));
 		if(tk->tk_conn->cn_ctx == DS_CTX_X500_DAP) {
 			DLOG(log_dsap, LLOG_DEBUG, ("... user originated ..."));
@@ -1192,12 +1129,10 @@ subtask_chain (struct task_act *tk) {
 			oncha->cha_originator = dn_cpy(tk->tk_dx.dx_arg.dca_charg.cha_originator);
 			oncha->cha_trace = ti_cpy(tkcha->cha_trace);
 		}
-
 		DLOG(log_dsap, LLOG_DEBUG, ("Setting trace info"));
 		ti = (struct trace_info *) malloc(sizeof(struct trace_info));
 		ti->ti_dsa = dn_cpy(mydsadn);
 		ti->ti_target = dn_cpy(di->di_target);
-
 		if(di->di_rdn_resolved <= 0) {
 			ti->ti_progress.op_resolution_phase = OP_PHASE_NOTSTARTED;
 			ti->ti_progress.op_nextrdntoberesolved = 0;
@@ -1205,23 +1140,18 @@ subtask_chain (struct task_act *tk) {
 			ti->ti_progress.op_resolution_phase = OP_PHASE_PROCEEDING;
 			ti->ti_progress.op_nextrdntoberesolved = di->di_rdn_resolved;
 		}
-
 		ti->ti_next = oncha->cha_trace;
 		oncha->cha_trace = ti;
-
 		on->on_req.dca_dsarg = tk->tk_dx.dx_arg.dca_dsarg;    /* struct copy */
-
 #ifdef COMPAT_6_0
 		on->on_req.dca_dsarg.arg_sr.sra_subset = refer->st_subset;
 #endif
-
 		DLOG(log_dsap, LLOG_DEBUG, ("Generating search subtask OP"));
 		if( (ca->ca_servicecontrol.svc_options & SVC_OPT_CHAININGPROHIBIT)
 				|| (oper_chain(on) != OK)) {
 			add_cref2poq (&tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr, err.ERR_REFERRAL.DSE_ref_candidates);
 			oper_task_extract(on);
 			oper_free(on);
-
 			if (trail == NULL_ST)
 				tk->refer_st = st_done(&refer);
 			else
@@ -1235,17 +1165,14 @@ subtask_chain (struct task_act *tk) {
 		trail->st_next = tk->referred_st;
 	tk->referred_st = tk->refer_st;
 	tk->refer_st = NULL_ST;
-
 	if((tk->referred_st == NULL_ST) && (tk->tk_state == TK_PASSIVE) && (tk->tk_operlist == NULLOPER)) {
 		task_conn_extract(tk);
 		task_result(tk);
 		task_extract(tk);
 	}
-
 }
 
-int
-subtask_result_wakeup (struct oper_act *on) {
+void subtask_result_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct ds_search_task	**next_st;
 	struct ds_search_task	* st;
@@ -1305,8 +1232,7 @@ subtask_result_wakeup (struct oper_act *on) {
 	}
 }
 
-int
-subtask_error_wakeup (struct oper_act *on) {
+void subtask_error_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct ds_search_task	**next_st;
 	struct ds_search_task	* st;
@@ -1326,7 +1252,6 @@ subtask_error_wakeup (struct oper_act *on) {
 			ds_error_free(&(tk->tk_resp.di_error.de_err));
 		*/
 		tk->tk_error = &(on->on_resp.di_error.de_err);
-
 		if((on->on_resp.di_error.de_err.dse_type == DSE_DSAREFERRAL)
 				|| (on->on_resp.di_error.de_err.dse_type == DSE_REFERRAL)) {
 			DLOG(log_dsap, LLOG_DEBUG, ("Try rechaining st"));
@@ -1338,7 +1263,6 @@ subtask_error_wakeup (struct oper_act *on) {
 			add_cref2poq (&tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr, on->on_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates);
 			on->on_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates = NULLCONTINUATIONREF;
 		}
-
 		next_st = &(tk->referred_st);
 		for(st=tk->referred_st; st!=NULL_ST; st=(*next_st)) {
 			if(st == on->on_subtask)
@@ -1353,9 +1277,7 @@ subtask_error_wakeup (struct oper_act *on) {
 			on->on_subtask = NULL_ST;
 			(*next_st) = st->st_next;
 		}
-
 		oper_extract(on);
-
 		if((tk->referred_st == NULL_ST) && (tk->tk_state == TK_PASSIVE) && (tk->tk_operlist == NULLOPER)) {
 			task_conn_extract(tk);
 			task_result(tk);
@@ -1364,15 +1286,13 @@ subtask_error_wakeup (struct oper_act *on) {
 	}
 }
 
-int
-subtask_fail_wakeup (struct oper_act *on) {
+void subtask_fail_wakeup (struct oper_act *on) {
 	struct task_act	* tk;
 	struct DSError	* err;
 	struct ds_search_task	**next_st;
 	struct ds_search_task	* st;
 
 	DLOG(log_dsap, LLOG_TRACE, ("subtask_fail_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		LLOG(log_dsap, LLOG_TRACE, ("subtask_fail_wakeup: no task"));
 		oper_extract(on);
@@ -1382,7 +1302,6 @@ subtask_fail_wakeup (struct oper_act *on) {
 		for(st=tk->referred_st; st!=NULL_ST; st=(*next_st)) {
 			if(st == on->on_subtask)
 				break;
-
 			next_st = &(st->st_next);
 		}
 		if(st == NULL_ST) {
@@ -1393,9 +1312,7 @@ subtask_fail_wakeup (struct oper_act *on) {
 			on->on_subtask = NULL_ST;
 			(*next_st) = st->st_next;
 		}
-
 		oper_extract(on);
-
 		if((tk->referred_st == NULL_ST) && (tk->tk_state == TK_PASSIVE) && (tk->tk_operlist == NULLOPER)) {
 			task_conn_extract(tk);
 			task_result(tk);
@@ -1409,25 +1326,19 @@ subtask_fail_wakeup (struct oper_act *on) {
 	}
 }
 
-int
-subtask_dsa_info_wakeup (struct di_block *di) {
+void subtask_dsa_info_wakeup (struct di_block *di) {
 	struct task_act	* tk = di->di_task;
-
-
 	DLOG(log_dsap, LLOG_TRACE, ("subtask_dsa_info_wakeup"));
-
 	if (tk == NULLTASK) {
 		LLOG(log_dsap, LLOG_TRACE, ("subtask_dsa_info_wakeup no task"));
 		return;
 	}
-
 	/*
 	* Were waiting for a reference to return.
 	* Check if the reference now returned is acceptable.
 	* If it is return a referral and unwrap everything,
 	* otherwise try another di_block for the reference.
 	*/
-
 	if(di2cref(di, &(tk->tk_resp.di_error.de_err), tk->tk_conn->cn_ctx) != OK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("subtask_dsa_info_wakeup - reference not acceptable"));
 		/* Remove di_block which generated unwanted referral wait */
@@ -1442,29 +1353,24 @@ subtask_dsa_info_wakeup (struct di_block *di) {
 		}
 		return;
 	}
-
 	task_conn_extract(tk);
 	task_error(tk);
 	task_extract(tk);
 }
 
 
-int
-add_cref2poq (struct ds_search_result *res, ContinuationRef cref) {
+void add_cref2poq (struct ds_search_result *res, ContinuationRef cref) {
 	ContinuationRef cr;
-
 	if (res->CSR_cr == NULLCONTINUATIONREF) {
 		res->CSR_cr = cref;
 		return;
 	}
 	for (cr = res->CSR_cr; cr->cr_next != NULLCONTINUATIONREF; cr=cr->cr_next)
 		;
-
 	cr->cr_next = cref;
 }
 
-int
-relay_dsa (struct oper_act *on) {
+int relay_dsa (struct oper_act *on) {
 	struct DSError  err;
 	struct di_block *di = NULL_DI_BLOCK;
 	Entry my_entry;
@@ -1537,27 +1443,20 @@ relay_dsa (struct oper_act *on) {
 	}
 
 	on->on_relay = 2;	/* Don't relay twice to same DSA ! */
-
 	if (di == NULL_DI_BLOCK)
 		return NOTOK;
-
 	on->on_dsas = di;
-
 	return OK;
-
 }
 
 static struct dn_seq * relays_for = NULLDNSEQ;
 
-int
-allowrelay (char *str) {
+void allowrelay (char *str) {
 	struct dn_seq * dsa, *loop;
-
 	if (( dsa=str2dnseq(str)) == NULLDNSEQ) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid relays for name %s",str));
 		return;
 	}
-
 	if (relays_for == NULLDNSEQ)
 		relays_for = dsa;
 	else {
@@ -1567,14 +1466,9 @@ allowrelay (char *str) {
 	}
 }
 
-static int
-relayfordsa (DN dn) {
-	if ( check_dnseq (relays_for, dn) == OK)
-		return TRUE;
-
-	return FALSE;
+static int relayfordsa (DN dn) {
+	return (check_dnseq (relays_for, dn) == OK);
 }
-
 
 #ifdef QUIPU_CONSOLE
 void

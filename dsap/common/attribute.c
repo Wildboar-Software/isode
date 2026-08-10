@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attribute.c,v 9
  *    this agreement.
  *
  */
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
@@ -66,12 +64,9 @@ extern short acl_sntx;
 extern AV_Sequence oc_avs();
 Attr_Sequence entry_find_type();
 
-int
-check_dsa_known_oids (void) {
+void check_dsa_known_oids (void) {
 	/* set pointers to special attributes */
-
 	check_known_oids ();
-
 	at_password 	= AttrT_new (PASSWORD_OID);
 	at_control 	= AttrT_new (CONTROL_OID);
 	at_dsa_control	= AttrT_new (DSA_CONTROL_OID);
@@ -90,22 +85,16 @@ check_dsa_known_oids (void) {
 	at_searchacl    = AttrT_new (SEARCHACL_OID);
 	at_listacl      = AttrT_new (LISTACL_OID);
 	at_authpolicy   = AttrT_new (AUTHPOLICY_OID);
-
 	at_subord 	= AttrT_new (SUBORD_OID);
 	at_xref 	= AttrT_new (XREF_OID);
 	at_nssr 	= AttrT_new (NSSR_OID);
 	at_listen 	= AttrT_new (LISTEN_OID);
-
 	alias_oc = oid_cpy (str2oid (ALIAS_OC));
 	quipu_dsa_oid = oid_cpy (str2oid(QUIPU_DSA));
 	extern_obj_oid = oid_cpy (str2oid(EXTERNOBJECT));
-
 }
 
-real_unravel_attribute (eptr,error)
-Entry eptr;
-struct DSError * error;
-{
+int real_unravel_attribute (Entry eptr, struct DSError * error) {
 	Attr_Sequence as;
 	Attr_Sequence ias;
 	RDN new_rdn, rdn_test;
@@ -445,10 +434,7 @@ struct DSError * error;
 	return (OK);
 }
 
-
-set_inheritance (eptr)
-Entry eptr;
-{
+void set_inheritance (Entry eptr) {
 	AV_Sequence avs;
 	InheritAttr tmp;
 	Attr_Sequence as;
@@ -486,10 +472,7 @@ Entry eptr;
 }
 
 
-Attr_Sequence entry_find_type (a,b)
-Entry a;
-AttributeType b;
-{
+Attr_Sequence entry_find_type (Entry a, AttributeType b) {
 	int i;
 	Attr_Sequence ptr;
 

@@ -288,13 +288,11 @@ send_pipe (char *buf) {
 }
 #endif
 
-int
-send_pipe_aux (char *buf) {
+void send_pipe_aux (char *buf) {
 	send_pipe_aux2 (buf, strlen (buf));
 }
 
-int
-send_pipe_aux2 (char *buf, int i) {
+void send_pipe_aux2 (char *buf, int i) {
 	int res;
 
 #ifndef	SOCKETS

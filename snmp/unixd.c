@@ -28,8 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/unixd.c,v 9.0 1992/06/
  *    this agreement.
  *
  */
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>
@@ -40,8 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/unixd.c,v 9.0 1992/06/
 #include "sys.file.h"
 #include "tailor.h"
 
-/*    DATA */
-
 int	debug = 0;
 static	int	nbits = FD_SETSIZE;
 
@@ -50,27 +46,24 @@ static LLog	_pgm_log = {
 	LLOG_FATAL, -1, LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
 static	LLog   *pgm_log = &_pgm_log;
-
 static	char   *myname = "unixd";
-
 
 static	int	smux_fd = NOTOK;
 static	int	rock_and_roll = 0;
 static	int	got_at_least_one = 0;
 static	int	dont_bother_anymore = 0;
 
-
-int	init_users (void), sync_users (int cor);	/* users group */
-int	init_print (void), sync_print (int cor);	/* print group */
-static  arginit (), envinit  (), mibinit  (), start_smux (),
-        doit_smux (), do_smux ();
+void init_users (void), sync_users (int cor);	/* users group */
+void init_print (void), sync_print (int cor);	/* print group */
+static void arginit (char **vec), envinit (void), mibinit (void), start_smux (void),
+        doit_smux (void), do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset);
 
 static struct triple {
 	char   *t_tree;
 	OID	    t_name;
 	int	    t_access;
-	int	    (*t_init)(void);
-	int	    (*t_sync)(int cor);
+	void	(*t_init)(void);
+	void	(*t_sync)(int cor);
 }	triples[] = {
 	"users", NULL, readWrite, init_users, sync_users,
 	"print", NULL, readWrite, init_print, sync_print,
@@ -80,20 +73,13 @@ static struct triple {
 
 static struct triple *tc;
 
-
 static	struct smuxEntry *se = NULL;
-
 
 static	fd_set	ifds;
 static	fd_set	ofds;
 
-
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
-
-/*    MAIN */
-
-/* ARGSUSED */
+void adios (char *, char *, ...);
+void advise (int, char *, char *, ...);
 
 main (argc, argv, envp)
 int	argc;
@@ -154,9 +140,7 @@ char  **argv,
 
 /*    MISCELLANY */
 
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
@@ -184,9 +168,7 @@ char	**vec;
 	}
 }
 
-/*  */
-
-static  envinit () {
+static void envinit (void) {
 	int     i,
 			sd;
 	char    file[BUFSIZ];
@@ -263,8 +245,7 @@ static  envinit () {
 
 int	quantum = 0;
 
-
-static  mibinit () {
+static void mibinit (void) {
 	OT	    ot;
 
 	if ((se = getsmuxEntrybyname ("unixd")) == NULL)
@@ -288,15 +269,12 @@ static  mibinit () {
 		rock_and_roll = 0;
 }
 
-/*  */
-
-static	start_smux () {
+static void start_smux (void) {
 	if (smux_simple_open (&se -> se_identity, "SMUX UNIX daemon",
 						  se -> se_password, strlen (se -> se_password))
 			== NOTOK) {
 		if (smux_errno == inProgress)
 			return;
-
 		advise (LLOG_EXCEPTIONS, NULLCP, "smux_simple_open: %s [%s]",
 				smux_error (smux_errno), smux_info);
 losing:
@@ -307,7 +285,6 @@ losing:
 	advise (LLOG_NOTICE, NULLCP, "SMUX open: %s \"%s\"",
 			oid2ode (&se -> se_identity), se -> se_name);
 	rock_and_roll = 1;
-
 	for (tc = triples; tc -> t_tree; tc++)
 		if (tc -> t_name) {
 			if (smux_register (tc -> t_name, -1, tc -> t_access) == NOTOK) {
@@ -321,11 +298,8 @@ losing:
 		}
 }
 
-/*  */
-
-static	doit_smux () {
+static void doit_smux (void) {
 	struct type_SNMP_SMUX__PDUs *event;
-
 	if (smux_wait (&event, NOTOK) == NOTOK) {
 		if (smux_errno == inProgress)
 			return;
@@ -424,17 +398,12 @@ unexpected:
 	}
 }
 
-/*  */
-
-static	do_smux (pdu, offset)
-struct type_SNMP_GetRequest__PDU *pdu;
-int	offset;
-{
+static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset) {
 	int	    idx,
 			status;
 	object_instance ois;
 	struct type_SNMP_VarBindList *vp;
-	int	    (*method)(OI oi, void *varbind, int offset);
+	int	(*method)(OI oi, struct type_SNMP_VarBind *v, int offset);
 
 	quantum = pdu -> request__id;
 	idx = 0;
@@ -516,7 +485,6 @@ get_next:
 out:
 	;
 	pdu -> error__index = idx;
-
 	if (smux_response (pdu) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "smux_response: %s [%s]",
 				smux_error (smux_errno), smux_info);
@@ -527,15 +495,11 @@ out:
 /*    ERRORS */
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -549,16 +513,12 @@ char   *what,
 }
 #endif
 
-
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...)
+void advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

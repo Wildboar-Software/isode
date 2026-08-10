@@ -30,46 +30,35 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn.c,v 9.0 1992/06/
 
 extern LLog * log_dsap;
 
-struct connection *
-conn_alloc (void) {
+struct connection *conn_alloc (void) {
 	struct connection * conn_ret;
-
 	conn_ret = (struct connection *) calloc(1,sizeof(struct connection));
 	conn_ret->cn_op_id = 1;
-
 	return(conn_ret);
 }
 
-int
-conn_free (struct connection *conn) {
+void conn_free (struct connection *conn) {
 	DLOG(log_dsap, LLOG_TRACE, ("conn_free()"));
-
 	if(conn->cn_dn != NULLDN) {
 		dn_free(conn->cn_dn);
 		conn->cn_dn = NULLDN ;
 	}
-
 	if (conn->cn_initiator) {
 		conn_connect_free (&(conn->cn_connect));
 	} else {
 		conn_start_free (&(conn->cn_start));
 	}
-
 	check_getedb_ops(conn->cn_ad);
-
 	free((char *)conn);
 }
 
-int
-conn_connect_free (struct conn_connect *cc) {
+void conn_connect_free (struct conn_connect *cc) {
 	bind_arg_free (&(cc->cc_req));
-
 	/* cc_dc should not be freed before calling conn_free() */
 	DCFREE (&(cc->cc_dc));
 }
 
-int
-conn_start_free (struct conn_start *cs) {
+void conn_start_free (struct conn_start *cs) {
 	if (cs->cs_svec[0])
 		free (cs->cs_svec[0]);
 	if (cs->cs_svec[1])
@@ -78,15 +67,12 @@ conn_start_free (struct conn_start *cs) {
 		free (cs->cs_svec[2]);
 	if (cs->cs_svec[3])
 		free (cs->cs_svec[3]);
-
 	bind_arg_free (&(cs->cs_res));
-
 	/* cs_ds should not be freed before calling conn_free() */
 	DSFREE (&(cs->cs_ds));
 }
 
-int
-conn_extract (struct connection *conn) {
+void conn_extract (struct connection *conn) {
 	/*
 	* Extract all the operations made on this connection, and all
 	* the tasks (and their derivative operations) made on the connection;
@@ -150,8 +136,7 @@ conn_extract (struct connection *conn) {
 	conn_free(conn);
 }
 
-int
-conn_log (struct connection *conn, int level) {
+void conn_log (struct connection *conn, int level) {
 	struct oper_act     * oper;
 	struct task_act     * task;
 	char * cntxt;
@@ -240,10 +225,8 @@ conn_log (struct connection *conn, int level) {
 }
 
 #ifdef DEBUG
-int
-conn_list_log (struct connection *cn) {
+void conn_list_log (struct connection *cn) {
 	struct connection	* cn_tmp;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Connection List:"));
 	for(cn_tmp=cn; cn_tmp!=NULLCONN; cn_tmp=cn_tmp->cn_next) {
 		conn_log(cn_tmp, LLOG_DEBUG);

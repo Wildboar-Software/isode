@@ -46,17 +46,13 @@ extern char	show_all_flag;
 static Attr_Sequence ignore_attr = NULLATTR;
 static char ignore_unknown = FALSE;
 
-showattribute (at)
-AttributeType at;
-{
+void showattribute (AttributeType at) {
 	Attr_Sequence  eptr;
-
 	if (! show_all_flag) {
 		if ( ! check_want_attr (at))
 			return;
 	} else if ( ! check_want_tmp_attr (at))
 		return;
-
 	for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 		/* Tiptoe through the list of types until one matches, and then print value. */
 		if (AttrT_cmp (eptr->attr_type,at) == 0) {
@@ -72,23 +68,18 @@ AttributeType at;
 			break;
 		}
 	}
-
 	if (eptr == NULLATTR)
 		if (key_flag)
 			ps_printf (OPT, "%-21s - (No such attribute in this entry)\n", at->oa_ot.ot_name);
 		else
 			ps_printf (OPT, "No value\n");
-
 }
 
-int
-show_unknown (void) {
+void show_unknown (void) {
 	ignore_unknown = TRUE;
 }
 
-check_want_attr (at)
-AttributeType at;
-{
+int check_want_attr (AttributeType at) {
 	Attr_Sequence as;
 
 	if (at == NULLTABLE_ATTR)
@@ -104,9 +95,7 @@ AttributeType at;
 	return (check_want_tmp_attr(at));
 }
 
-check_want_tmp_attr (at)
-AttributeType at;
-{
+int check_want_tmp_attr (AttributeType at) {
 	Attr_Sequence as;
 	Attr_Sequence as2;
 	extern Attr_Sequence tmp_ignore;
@@ -127,11 +116,9 @@ AttributeType at;
 	return (TRUE);
 }
 
-int
-new_ignore (char *ptr) {
+void new_ignore (char *ptr) {
 	AttributeType at;
 	Attr_Sequence newas;
-
 	if ((at = str2AttrT (ptr)) == NULLAttrT)
 		return;
 	newas = as_comp_new (at,NULLAV,NULLACL_INFO);

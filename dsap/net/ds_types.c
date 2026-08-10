@@ -34,8 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/ds_types.c,v 9.0 1
 
 extern LLog * log_dsap;
 
-int
-bind_arg_free (struct ds_bind_arg *arg) {
+void bind_arg_free (struct ds_bind_arg *arg) {
 	if (arg->dba_time1 != NULLCP)
 		free (arg->dba_time1);
 
@@ -44,13 +43,11 @@ bind_arg_free (struct ds_bind_arg *arg) {
 
 	dn_free (arg->dba_dn);
 	arg->dba_dn = NULLDN;
-
 	/* free signature */
 	/* free certificate_list */
 }
 
-int
-op_arg_free (struct ds_op_arg *arg) {
+void op_arg_free (struct ds_op_arg *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_arg_free()"));
 
 	if (arg->dca_dsarg.arg_type == -1 )
@@ -85,8 +82,7 @@ op_arg_free (struct ds_op_arg *arg) {
 	}
 }
 
-int
-ch_arg_free (struct chain_arg *arg) {
+void ch_arg_free (struct chain_arg *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("ch_arg_free(%x)",arg));
 
 	dn_free (arg->cha_originator);
@@ -111,8 +107,7 @@ ch_arg_free (struct chain_arg *arg) {
 	}
 }
 
-int
-ds_arg_free (struct DSArgument *arg) {
+void ds_arg_free (struct DSArgument *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("ds_arg_free()"));
 
 	if (arg->arg_type == -1 )
@@ -160,70 +155,60 @@ ds_arg_free (struct DSArgument *arg) {
 	arg->arg_type = -1;
 }
 
-int
-read_arg_free (struct ds_read_arg *arg) {
+void read_arg_free (struct ds_read_arg *arg) {
 	ca_free (&arg->rda_common);
 	dn_free (arg->rda_object);
 	as_free (arg->rda_eis.eis_select);
 }
 
-int
-compare_arg_free (struct ds_compare_arg *arg) {
+void compare_arg_free (struct ds_compare_arg *arg) {
 	ca_free (&arg->cma_common);
 	dn_free (arg->cma_object);
 	AttrT_free (arg->cma_purported.ava_type);
 	AttrV_free (arg->cma_purported.ava_value);
 }
 
-int
-list_arg_free (struct ds_list_arg *arg) {
+void list_arg_free (struct ds_list_arg *arg) {
 	ca_free (&arg->lsa_common);
 	dn_free (arg->lsa_object);
 }
 
-int
-search_arg_free (struct ds_search_arg *arg) {
+void search_arg_free (struct ds_search_arg *arg) {
 	ca_free (&arg->sra_common);
 	dn_free (arg->sra_baseobject);
 	as_free (arg->sra_eis.eis_select);
 	filter_free (arg->sra_filter);
 }
 
-int
-addentry_arg_free (struct ds_addentry_arg *arg) {
+void addentry_arg_free (struct ds_addentry_arg *arg) {
 	ca_free (&arg->ada_common);
 	dn_free (arg->ada_object);
 	as_free (arg->ada_entry);
 }
 
-int
-removeentry_arg_free (struct ds_removeentry_arg *arg) {
+void removeentry_arg_free (struct ds_removeentry_arg *arg) {
 	ca_free (&arg->rma_common);
 	dn_free (arg->rma_object);
 }
 
-int
-modifyentry_arg_free (struct ds_modifyentry_arg *arg) {
+void modifyentry_arg_free (struct ds_modifyentry_arg *arg) {
 	ca_free (&arg->mea_common);
 	dn_free (arg->mea_object);
 	ems_free (arg->mea_changes);
 }
 
-int
-modifyrdn_arg_free (struct ds_modifyrdn_arg *arg) {
+void modifyrdn_arg_free (struct ds_modifyrdn_arg *arg) {
 	ca_free (&arg->mra_common);
 	dn_free (arg->mra_object);
 	rdn_free (arg->mra_newrdn);
 }
 
-int
-getedb_arg_free (struct getedb_arg *arg) {
+void getedb_arg_free (struct getedb_arg *arg) {
 	dn_free (arg->ga_entry);
 	free ((char *)arg->ga_version);
 }
 
-int
-op_res_free (struct ds_op_res *res) {
+void op_res_free (struct ds_op_res *res) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_res_free()"));
 
 	if (res->dcr_dsres.result_type == -1 )
@@ -258,27 +243,20 @@ op_res_free (struct ds_op_res *res) {
 
 }
 
-int
-ch_res_free (struct chain_res *res) {
+void ch_res_free (struct chain_res *res) {
 	DLOG(log_dsap, LLOG_TRACE, ("ch_res_free()"));
-
 	/* free chain bits */
 	if (res->chr_domaininfo != NULLPE)
 		pe_free (res->chr_domaininfo);
-
 	cross_refs_free (res->chr_crossrefs);
 }
 
-int
-ds_res_free (struct DSResult *res) {
+void ds_res_free (struct DSResult *res) {
 	DLOG(log_dsap, LLOG_TRACE, ("ds_res_free()"));
-
 	if (res->result_type == -1 )
 		/* Already freed */
 		return;
-
 	DLOG(log_dsap, LLOG_TRACE, ("ds_res_free() - for real"));
-
 	switch (res->result_type) {
 	case OP_READ:
 		dn_free (res->res_rd.rdr_common.cr_requestor);
@@ -307,36 +285,28 @@ ds_res_free (struct DSResult *res) {
 	default:
 		break;
 	}
-
 	res->result_type = -1;
 }
 
-int
-trace_info_free (struct trace_info *ti) {
+void trace_info_free (struct trace_info *ti) {
 	DLOG(log_dsap, LLOG_TRACE, ("trace_info_free()"));
-
 	if (ti == NULLTRACEINFO)
 		return;
 	dn_free (ti->ti_target);
 	dn_free (ti->ti_dsa);
 	trace_info_free (ti->ti_next);
 	free( (char *) ti);
-
 }
 
-ca_free (ca)
-CommonArgs * ca;
+void ca_free (CommonArgs * ca)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("ca_free()"));
-
 	dn_free (ca->ca_requestor);
 	extension_free (ca->ca_extensions);
 }
 
-int
-extension_free (struct extension *ext) {
+void extension_free (struct extension *ext) {
 	DLOG(log_dsap, LLOG_TRACE, ("extension_free()"));
-
 	for (; ext != NULLEXT; ext=ext->ext_next) {
 		if (ext->ext_item != NULLPE)
 			pe_free (ext->ext_item);
@@ -344,10 +314,8 @@ extension_free (struct extension *ext) {
 	}
 }
 
-int
-cross_refs_free (struct cross_ref *xref) {
+void cross_refs_free (struct cross_ref *xref) {
 	DLOG(log_dsap, LLOG_TRACE, ("cross_refs_free()"));
-
 	if (xref == NULLXREF)
 		return;
 	dn_free (xref->xref_dn);
@@ -358,16 +326,13 @@ cross_refs_free (struct cross_ref *xref) {
 
 /* Copy routines */
 
-int
-ds_arg_dup (struct DSArgument *src, struct DSArgument *tgt) {
+int ds_arg_dup (struct DSArgument *src, struct DSArgument *tgt) {
 	DLOG(log_dsap, LLOG_TRACE, ("ds_arg_dup()"));
-
 	if (src->arg_type == -1 ) {
 		/* Has been freed */
 		LLOG (log_dsap, LLOG_DEBUG, ("ds_arg_dup(): src already freed"));
 		return (NOTOK);
 	}
-
 	switch (tgt->arg_type = src->arg_type) {
 	case OP_READ:
 		return (read_arg_dup (&(src->arg_rd), &(tgt->arg_rd)));
@@ -395,308 +360,227 @@ ds_arg_dup (struct DSArgument *src, struct DSArgument *tgt) {
 	}
 }
 
-int
-read_arg_dup (struct ds_read_arg *src, struct ds_read_arg *tgt) {
+int read_arg_dup (struct ds_read_arg *src, struct ds_read_arg *tgt) {
 	if (ca_dup (&(src->rda_common), &(tgt->rda_common)) != OK)
 		return (NOTOK);
-
 	if (src->rda_object == NULLDN)
 		tgt->rda_object = NULLDN;
 	else if ((tgt->rda_object = dn_cpy (src->rda_object)) == NULLDN)
 		return (NOTOK);
-
 	if (eis_dup (&(src->rda_eis), &(tgt->rda_eis)) != OK)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-compare_arg_dup (struct ds_compare_arg *src, struct ds_compare_arg *tgt) {
+int compare_arg_dup (struct ds_compare_arg *src, struct ds_compare_arg *tgt) {
 	if (ca_dup (&(src->cma_common), &(tgt->cma_common)) != OK)
 		return (NOTOK);
-
 	if (src->cma_object == NULLDN)
 		tgt->cma_object = NULLDN;
 	else if ((tgt->cma_object = dn_cpy (src->cma_object)) == NULLDN)
 		return (NOTOK);
-
 	if (ava_dup (&(src->cma_purported), &(tgt->cma_purported)) != OK)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-abandon_arg_dup (struct ds_abandon_arg *src, struct ds_abandon_arg *tgt) {
+int abandon_arg_dup (struct ds_abandon_arg *src, struct ds_abandon_arg *tgt) {
 	tgt->aba_invokeid = src->aba_invokeid;
-
 	return (OK);
 }
 
-int
-list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt) {
+int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt) {
 	if (ca_dup (&(src->lsa_common), &(tgt->lsa_common)) != OK)
 		return (NOTOK);
-
 	if (src->lsa_object == NULLDN)
 		tgt->lsa_object = NULLDN;
 	else if ((tgt->lsa_object = dn_cpy (src->lsa_object)) == NULLDN)
 		return (NOTOK);
-
 	return OK;
 }
 
-int
-search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt) {
+int search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt) {
 	struct s_filter	* filter_cpy();
-
 	if (ca_dup (&(src->sra_common), &(tgt->sra_common)) != OK)
 		return (NOTOK);
-
 	if (src->sra_baseobject = NULLDN)
 		tgt->sra_baseobject = NULLDN;
 	else if ((tgt->sra_baseobject = dn_cpy (src->sra_baseobject)) == NULLDN)
 		return (NOTOK);
-
 	tgt->sra_subset = src->sra_subset;
-
 	if (src->sra_filter == NULLFILTER)
 		tgt->sra_filter = NULLFILTER;
 	else if ((tgt->sra_filter = filter_cpy (src->sra_filter)) == NULLFILTER)
 		return (NOTOK);
-
 	tgt->sra_searchaliases = src->sra_searchaliases;
-
 	if (eis_dup (&(src->sra_eis), &(tgt->sra_eis)) != OK)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-addentry_arg_dup (struct ds_addentry_arg *src, struct ds_addentry_arg *tgt) {
+int addentry_arg_dup (struct ds_addentry_arg *src, struct ds_addentry_arg *tgt) {
 	if (ca_dup (&(src->ada_common), &(tgt->ada_common)) != OK)
 		return (NOTOK);
-
 	if (src->ada_object == NULLDN)
 		tgt->ada_object = NULLDN;
 	else if ((tgt->ada_object = dn_cpy (src->ada_object)) == NULLDN)
 		return (NOTOK);
-
 	if (src->ada_entry = NULLATTR)
 		tgt->ada_entry = NULLATTR;
 	else if ((tgt->ada_entry = as_cpy (src->ada_entry)) == NULLATTR)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt) {
+int removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt) {
 	if (ca_dup (&(src->rma_common), &(tgt->rma_common)) != OK)
 		return (NOTOK);
-
 	if (src->rma_object == NULLDN)
 		tgt->rma_object = NULLDN;
 	else if ((tgt->rma_object = dn_cpy (src->rma_object)) == NULLDN)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-modifyentry_arg_dup (struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt) {
+int modifyentry_arg_dup (struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt) {
 	struct entrymod	* ems_cpy();
-
 	if (ca_dup (&(src->mea_common), &(tgt->mea_common)) != OK)
 		return (NOTOK);
-
 	if (src->mea_object == NULLDN)
 		tgt->mea_object = NULLDN;
 	else if ((tgt->mea_object = dn_cpy (src->mea_object)) == NULLDN)
 		return (NOTOK);
-
 	if (src->mea_changes == (struct entrymod *) NULL)
 		tgt->mea_changes = (struct entrymod *) NULL;
 	else if ((tgt->mea_changes = ems_cpy (src->mea_changes)) == (struct entrymod *) NULL)
 		return (NOTOK);
-
 	return (OK);
 }
 
-int
-modifyrdn_arg_dup (struct ds_modifyrdn_arg *src, struct ds_modifyrdn_arg *tgt) {
+int modifyrdn_arg_dup (struct ds_modifyrdn_arg *src, struct ds_modifyrdn_arg *tgt) {
 	if (ca_dup (&(src->mra_common), &(tgt->mra_common)) != OK)
 		return (NOTOK);
-
 	if (src->mra_object == NULLDN)
 		tgt->mra_object = NULLDN;
 	else if ((tgt->mra_object = dn_cpy (src->mra_object)) == NULLDN)
 		return (NOTOK);
-
 	if (src->mra_newrdn == NULLRDN)
 		tgt->mra_newrdn = NULLRDN;
 	else if ((tgt->mra_newrdn = rdn_cpy (src->mra_newrdn)) == NULLRDN)
 		return (NOTOK);
-
 	tgt->deleterdn = src->deleterdn;
-
 	return (OK);
 }
 
-int
-getedb_arg_dup (struct getedb_arg *src, struct getedb_arg *tgt) {
+int getedb_arg_dup (struct getedb_arg *src, struct getedb_arg *tgt) {
 	if (src->ga_entry == NULLDN)
 		tgt->ga_entry = NULLDN;
 	else if ((tgt->ga_entry = dn_cpy (src->ga_entry)) == NULLDN)
 		return (NOTOK);
-
 	tgt->ga_version = strdup (src->ga_version);
 	tgt->get_next = NULL_GETARG;
 	return (OK);
 }
 
-int
-ca_dup (struct common_args *src, struct common_args *tgt) {
+int ca_dup (struct common_args *src, struct common_args *tgt) {
 	struct security_parms	* secp_cpy ();
 	struct signature	* sig_cpy ();
 	struct extension	* ext_cpy ();
-
 	tgt->ca_servicecontrol = src->ca_servicecontrol; /* struct copy */
-
 	if (src->ca_requestor = NULLDN)
 		tgt->ca_requestor = NULLDN;
 	else if ((tgt->ca_requestor = dn_cpy (src->ca_requestor)) == NULLDN)
 		return (NOTOK);
-
 	tgt->ca_progress = src->ca_progress; /* struct copy */
-
 	tgt->ca_aliased_rdns = src->ca_aliased_rdns;
-
 	if (src->ca_security = (struct security_parms *) NULL)
 		tgt->ca_security = (struct security_parms *) NULL;
 	else if ((tgt->ca_security = secp_cpy (src->ca_security)) == (struct security_parms *) NULL)
 		return (NOTOK);
-
 	if (src->ca_sig == (struct signature *) NULL)
 		tgt->ca_sig = (struct signature *) NULL;
 	else if ((tgt->ca_sig = sig_cpy (src->ca_sig)) == (struct signature *) NULL)
 		return (NOTOK);
-
 	if (src->ca_extensions == (struct extension *) NULL)
 		tgt->ca_extensions = (struct extension *) NULL;
 	else if ((tgt->ca_extensions = ext_cpy (src->ca_extensions)) == (struct extension *) NULL)
 		return (NOTOK);
-
 	return (OK);
 }
 
-struct security_parms *
-secp_cpy (struct security_parms *sp) {
+struct security_parms *secp_cpy (struct security_parms *sp) {
 	struct certificate_list	* cpair_cpy();
 	struct random_number	* random_cpy ();
-
 	struct security_parms	* ret;
 
 	if (sp == (struct security_parms *) NULL)
 		return ((struct security_parms *) NULL);
-
 	if ((ret = (struct security_parms *) smalloc (sizeof (struct security_parms))) == (struct security_parms *) NULL)
 		return ((struct security_parms *) NULL);
-
 	if (sp->sp_path == (struct certificate_list *) NULL)
 		ret->sp_path = (struct certificate_list *) NULL;
 	else if ((ret->sp_path = cpair_cpy (sp->sp_path)) == (struct certificate_list *) NULL)
 		return ((struct security_parms *) NULL);
-
 	if (sp->sp_name == NULLDN)
 		ret->sp_name = NULLDN;
 	else if ((ret->sp_name = dn_cpy (sp->sp_name)) == NULLDN)
 		return ((struct security_parms *) NULL);
-
 	ret->sp_time = strdup (sp->sp_time);
-
 	if (sp->sp_random == (struct random_number *) NULL)
 		ret->sp_random = (struct random_number *) NULL;
 	else if ((ret->sp_random = random_cpy (sp->sp_random)) == (struct random_number *) NULL)
 		return ((struct security_parms *) NULL);
-
 	ret->sp_target = sp->sp_target;
-
 	return (ret);
 }
 
-struct random_number *
-random_cpy (struct random_number *rand) {
+struct random_number *random_cpy (struct random_number *rand) {
 	struct random_number	* ret;
-
 	if (rand == (struct random_number *) NULL)
 		return ((struct random_number *) NULL);
-
 	if ((ret = (struct random_number *) smalloc (sizeof (struct random_number))) == (struct random_number *) NULL)
 		return ((struct random_number *) NULL);
-
 	ret->n_bits = rand->n_bits;
-
 	ret->value = strdup (rand->value);
-
 	return (ret);
 }
 
-struct signature *
-sig_cpy (struct signature *sig) {
+struct signature *sig_cpy (struct signature *sig) {
 	struct signature	* ret;
-
 	if (sig == (struct signature *) NULL)
 		return ((struct signature *) NULL);
-
 	if ((ret = (struct signature *) smalloc (sizeof (struct signature))) == (struct signature *) NULL)
 		return ((struct signature *) NULL);
-
 	alg_cpy (&ret->alg, &sig->alg);
-
 	if (sig->encoded == NULLPE)
 		ret->encoded = NULLPE;
 	else
 		ret->encoded = pe_cpy (sig->encoded);
-
 	ret->n_bits = sig->n_bits;
-
 	ret->encrypted = strdup (sig->encrypted);
-
 	return (ret);
 }
 
-struct extension *
-ext_cpy (struct extension *ext) {
+struct extension *ext_cpy (struct extension *ext) {
 	struct extension	* ret;
-
 	if (ext == (struct extension *) NULL)
 		return ((struct extension *) NULL);
-
 	if ((ret = (struct extension *) smalloc (sizeof (struct extension))) == (struct extension *) NULL)
 		return ((struct extension *) NULL);
-
 	ret->ext_id = ext->ext_id;
-
 	ret->ext_critical = ext->ext_critical;
-
 	if (ext->ext_item == NULLPE)
 		ret->ext_item = NULLPE;
 	else
 		ret->ext_item = pe_cpy (ext->ext_item);
-
 	if (ext->ext_next == (struct extension *) NULL)
 		ret->ext_next = (struct extension *) NULL;
 	else if ((ret->ext_next = ext_cpy (ext->ext_next)) == (struct extension *) NULL)
 		return ((struct extension *) NULL);
-
 	return (ret);
 }
 
-struct s_filter *
-filter_cpy (struct s_filter *flt) {
+struct s_filter *filter_cpy (struct s_filter *flt) {
 	struct s_filter	* ret;
 
 	if (flt == (struct s_filter *) NULL)
@@ -733,8 +617,7 @@ filter_cpy (struct s_filter *flt) {
 	return (ret);
 }
 
-int
-filter_item_dup (struct filter_item *src, struct filter_item *tgt) {
+int filter_item_dup (struct filter_item *src, struct filter_item *tgt) {
 	switch (tgt->fi_type = src->fi_type) {
 	case FILTERITEM_EQUALITY:
 	case FILTERITEM_GREATEROREQUAL:
@@ -760,44 +643,33 @@ filter_item_dup (struct filter_item *src, struct filter_item *tgt) {
 		DLOG (log_dsap, LLOG_DEBUG, ("filter_item_dup(): unknown filter_item type %d", src->fi_type));
 		return (NOTOK);
 	}
-
 	tgt->fi_ifp = src->fi_ifp;
-
 	return (OK);
 }
 
-int	  fi_sub_dup (src, tgt)
-Filter_Substrings	* src;
-Filter_Substrings	* tgt;
+int fi_sub_dup (Filter_Substrings *src, Filter_Substrings *tgt)
 {
 	if (src->fi_sub_type == NULLAttrT)
 		tgt->fi_sub_type = NULLAttrT;
 	else if ((tgt->fi_sub_type = AttrT_cpy (src->fi_sub_type)) == NULLAttrT)
 		return (NOTOK);
-
-
 	if (src->fi_sub_initial == NULLAV)
 		tgt->fi_sub_initial = NULLAV;
 	else if ((tgt->fi_sub_initial = avs_cpy (src->fi_sub_initial)) == NULLAV)
 		return (NOTOK);
-
 	if (src->fi_sub_any == NULLAV)
 		tgt->fi_sub_any = NULLAV;
 	else if ((tgt->fi_sub_any = avs_cpy (src->fi_sub_any)) == NULLAV)
 		return (NOTOK);
-
 	if (src->fi_sub_final == NULLAV)
 		tgt->fi_sub_final = NULLAV;
 	else if ((tgt->fi_sub_final = avs_cpy (src->fi_sub_final)) == NULLAV)
 		return (NOTOK);
-
 	tgt->fi_sub_match = strdup (src->fi_sub_match);
-
 	return (OK);
 }
 
-struct entrymod *
-ems_cpy (struct entrymod *em) {
+struct entrymod *ems_cpy (struct entrymod *em) {
 	struct entrymod	* ret;
 
 	if (em == (struct entrymod *) NULL)
@@ -821,32 +693,24 @@ ems_cpy (struct entrymod *em) {
 	return (ret);
 }
 
-int
-eis_dup (struct entryinfoselection *src, struct entryinfoselection *tgt) {
+int eis_dup (struct entryinfoselection *src, struct entryinfoselection *tgt) {
 	tgt->eis_allattributes = src->eis_allattributes;
-
 	if (src->eis_select == NULLATTR)
 		tgt->eis_select = NULLATTR;
 	else if ((tgt->eis_select = as_cpy (src->eis_select)) == NULLATTR)
 		return (NOTOK);
-
 	tgt->eis_infotypes = src->eis_infotypes;
-
 	return (OK);
 }
 
-int
-ava_dup (struct ava *src, struct ava *tgt) {
+int ava_dup (struct ava *src, struct ava *tgt) {
 	if (src->ava_type == NULLAttrT)
 		tgt->ava_type = NULLAttrT;
 	else if ((tgt->ava_type = AttrT_cpy (src->ava_type)) == NULLAttrT)
 		return (NOTOK);
-
 	if (src->ava_value == NULLAttrV)
 		tgt->ava_value = NULLAttrV;
 	else if ((tgt->ava_value = AttrV_cpy (src->ava_value)) == NULLAttrV)
 		return (NOTOK);
-
 	return (OK);
 }
-

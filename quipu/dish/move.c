@@ -39,19 +39,15 @@ extern char move_flag;
 
 DN	fixed_pos = NULLDN;
 
-int
-call_moveto (int argc, char **argv) {
+void call_moveto (int argc, char **argv) {
 	char pwd_flag = FALSE;
 	char check_move = TRUE;
 	int x;
-
 	if (argc == 1) {
 		Usage (argv[0]);
 		return;
 	}
-
 	move_flag = FALSE;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x],"-pwd",1))
 			pwd_flag = TRUE;
@@ -85,16 +81,13 @@ call_moveto (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (check_move)
 		if (test_move_dn() != TRUE) {
 			move_flag = FALSE;
 			return;
 		}
-
 	if (move_flag == TRUE)
 		consolidate_move ();
-
 	if (pwd_flag) {
 		dn_print (RPS, fixed_pos, EDBOUT);
 		ps_print (RPS, "\n");
@@ -102,8 +95,7 @@ call_moveto (int argc, char **argv) {
 
 }
 
-int
-consolidate_move (void) {
+void consolidate_move (void) {
 	if (move_flag) {
 		move_flag = FALSE;
 		dn_free (fixed_pos);
@@ -111,15 +103,13 @@ consolidate_move (void) {
 	}
 }
 
-int
-set_current_pos (void) {
+void set_current_pos (void) {
 	move_flag = FALSE;
 	dn_free (dn);
 	dn = dn_cpy (fixed_pos);
 }
 
-int
-move (char *arg) {
+int move (char *arg) {
 	extern int print_parse_errors;
 
 	DN              user_down ();
@@ -239,8 +229,7 @@ move (char *arg) {
 
 }
 
-int
-test_move_dn (void) {
+int test_move_dn (void) {
 	char * name = "moveto";
 
 	/* Might do something else here... */

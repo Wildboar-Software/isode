@@ -24,7 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/modify.c,v 9.0 1
  *
  */
 
-
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/modify.h"
 #include "quipu/read.h"
@@ -55,8 +57,7 @@ struct	list_element {
 extern Entry    current_entry;
 static char     new_draft;
 
-int
-call_modify (int argc, char **argv) {
+void call_modify (int argc, char **argv) {
 	struct ds_modifyentry_arg mod_arg;
 
 	struct DSError  error;
@@ -90,10 +91,8 @@ call_modify (int argc, char **argv) {
 	 */
 	if ((argc = service_control (OPT, argc, argv, &mod_arg.mea_common)) == -1)
 		return;
-
 	mod_arg.mea_changes = NULLMOD;
 	new_draft = FALSE;
-
 	if (home = getenv ("DISHDRAFT"))
 		strcpy (fname, home);
 	else if (dad_flag) {
@@ -103,7 +102,6 @@ call_modify (int argc, char **argv) {
 		sprintf (fname, "%s/.dishdraft", home);
 	else
 		strcpy (fname, "./.dishdraft");
-
 	for (x=1; x<argc; x++) {
 		if (test_arg (argv[x], "-draft",1)) {
 			draft_flag = 1;
@@ -363,13 +361,7 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 	return a;
 }
 
-
-
-struct entrymod * modify_avs (a,b,at)
-AV_Sequence a;
-AV_Sequence b;
-AttributeType at;
-{
+struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 	AV_Sequence x;
 	AV_Sequence y;
 	struct entrymod *em = NULLMOD, *emnew;
@@ -430,12 +422,10 @@ AttributeType at;
 			em = ems_append (em,emnew);
 	}
 
-
 	return (em);
 }
 
-int
-ems_part_free (struct entrymod *emp) {
+void ems_part_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_part_free(emp->em_next);
@@ -444,13 +434,11 @@ ems_part_free (struct entrymod *emp) {
 
 static	int	raboof = 0;
 
-static char *
-foobar (char *string) {
+static char *foobar (char *string) {
 	DN	    fb;
 	PS	    ps;
 	static char    buffer[BUFSIZ];
 	DN	    sequence_dn ();
-
 	if (!isdigit (*string))
 		return string;
 	if ((fb = sequence_dn (atoi (string))) == NULLDN) {
@@ -460,7 +448,6 @@ you_lose:
 		raboof = 1;
 		return string;
 	}
-
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
 		ps_printf (OPT, "ps_alloc: failed");
 		goto you_lose;
@@ -470,18 +457,14 @@ you_lose:
 		ps_free (ps);
 		goto you_lose;
 	}
-
 	dn_print (ps, fb, EDBOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	ps_free (ps);
-
 	return buffer;
 }
 
-int
-dsa_control (int argc, char **argv) {
+void dsa_control (int argc, char **argv) {
 	static struct entrymod mod = {
 		EM_ADDATTRIBUTE,
 		NULLATTR,
@@ -578,13 +561,10 @@ out:
 
 	if (do_unbind)
 		unbind_from_dsa();
-
-
 	/* as_free (mod_arg.mea_changes->em_what); */
 }
 
-int
-dsa_control_info (void) {
+void dsa_control_info (void) {
 	struct ds_read_arg read_arg;
 	struct DSError  error;
 	struct ds_read_result result;
@@ -598,20 +578,17 @@ dsa_control_info (void) {
 
 	if (rebind () != OK)
 		return;
-
 	if (ds_read (&read_arg, &error, &result) != DS_OK) {
 		dish_error (OPT, &error);
 		return;
 	}
-
 	if (result.rdr_entry.ent_attr) {
 		avs_print (RPS,result.rdr_entry.ent_attr->attr_value,READOUT);
 	} else
 		ps_printf (OPT, "No information !!!\n");
 }
 
-int
-mod_template (char *name, char noedit) {
+int mod_template (char *name, char noedit) {
 	FILE           *fptr;
 	PS              ps;
 	extern AttributeType at_objectclass;
@@ -638,7 +615,6 @@ mod_template (char *name, char noedit) {
 		return (-1);
 	}
 	umask (um);
-
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
 	}
@@ -648,23 +624,20 @@ mod_template (char *name, char noedit) {
 	for (as = current_entry->e_attributes; as != NULLATTR; as = as->attr_link)
 		if (as->attr_type == at_objectclass)
 			break;
-
 	tas = make_template_as (as->attr_value);
 	nas = as_cpy(current_entry->e_attributes);
-
 	tas = as_merge (tas,nas);
-
 	as_print (ps,tas,EDBOUT);
-
 	as_free (tas);
 	ps_free (ps);
 	fclose (fptr);
-
 	return (OK);
 }
 
-int
-build_modify (struct list_element *start, struct ds_modifyentry_arg *mod_arg) {
+int build_modify (
+	struct list_element *start,
+	struct ds_modifyentry_arg *mod_arg
+) {
 	struct	list_element	*temp_elem ;
 	struct	entrymod	*emnew ;
 	AttributeType	a_t ;
@@ -756,6 +729,5 @@ build_modify (struct list_element *start, struct ds_modifyentry_arg *mod_arg) {
 		mod_arg->mea_changes = ems_append (mod_arg->mea_changes, emnew) ;
 	}
 	mod_arg->mea_object = dn;
-
 	return (OK) ;
 }

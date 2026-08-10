@@ -45,8 +45,7 @@ extern char	move_flag;
 extern int      sizelimit;
 char  list_show;
 
-int
-call_list (int argc, char **argv) {
+void call_list (int argc, char **argv) {
 	struct ds_list_arg list_arg;
 	struct ds_list_result result;
 	struct list_cache *ptr;
@@ -57,14 +56,10 @@ call_list (int argc, char **argv) {
 
 	list_show = TRUE;
 	move_flag = FALSE;
-
 	list_arg.lsa_common.ca_servicecontrol.svc_sizelimit = sizelimit;
-
 	if ((argc = service_control (OPT, argc, argv, &list_arg.lsa_common)) == -1)
 		return;
-
 	for (x = 1; x < argc; x++) {
-
 		if (test_arg (argv[x], "-nocache",4))
 			nocacheflag = TRUE;
 		else if (test_arg (argv[x], "-noshow",4))
@@ -80,36 +75,28 @@ call_list (int argc, char **argv) {
 			Usage (argv[0]);
 			return;
 		}
-
 	}
-
 	list_arg.lsa_object = dn;
-
 	if ((!nocacheflag) && copy_flag)
 		if ((ptr = find_list_cache (dn,list_arg.lsa_common.ca_servicecontrol.svc_sizelimit)) != NULLCACHE) {
 			print_list_subordinates (ptr->list_subs, ptr->list_problem);
 			consolidate_move();
 			return;
 		}
-
 	if (rebind () != OK)
 		return;
-
 	/* Strong authentication */
 	if (list_arg.lsa_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		list_arg.lsa_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&list_arg, _ZListArgumentDataDAS,
 									   &_ZDAS_mod);
 	}
-
 	while (ds_list (&list_arg, &error, &result) != DS_OK) {	/* deal with error */
 		if (dish_error (OPT, &error) == 0)
 			return;
 		list_arg.lsa_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	if (result.lsr_common.cr_aliasdereferenced) {
 		ps_print (RPS, "(Alias dereferenced - ");
 		dn_print (RPS, result.lsr_object, EDBOUT);
@@ -117,17 +104,13 @@ call_list (int argc, char **argv) {
 		ps_print (RPS, ")\n");
 	}
 	print_list_subordinates (result.lsr_subordinates, result.lsr_limitproblem);
-
 	cache_list (result.lsr_subordinates, result.lsr_limitproblem,dn,
 				list_arg.lsa_common.ca_servicecontrol.svc_sizelimit);
-
 	subords_free (result.lsr_subordinates);
-
 	consolidate_move();
 }
 
-int
-print_list_subordinates (struct subordinate *ptr, int prob) {
+void print_list_subordinates (struct subordinate *ptr, int prob) {
 	DN adn;
 	DN newdn;
 	int seqno;
@@ -141,14 +124,11 @@ print_list_subordinates (struct subordinate *ptr, int prob) {
 		dn_free(adn);
 		adn = newdn;
 	}
-
 	if (result_sequence)
 		set_sequence (result_sequence);
-
 	if (ptr == NULLSUBORD)
 		if (list_show)
 			ps_print (RPS,"No children\n");
-
 	for (; ptr != NULLSUBORD; ptr = ptr->sub_next) {
 		rdn_free (newdn->dn_rdn);
 		dn_comp_fill (newdn,rdn_cpy(ptr->sub_rdn));
@@ -159,11 +139,8 @@ print_list_subordinates (struct subordinate *ptr, int prob) {
 			rdn_print (RPS, ptr->sub_rdn, READOUT);
 		ps_print (RPS, "\n");
 	}
-
 	dn_free (adn);
-
 	if (prob != LSR_NOLIMITPROBLEM)
 		if (list_show)
 			ps_print (RPS, "(Limit problem)\n");
-
 }

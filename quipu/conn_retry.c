@@ -39,14 +39,46 @@ extern LLog * log_stat;
 
 struct connection	* conn_alloc();
 
-static test_deadlock();
+static int test_deadlock (struct oper_act *on) {
+	struct di_block	* di;
+	int ndi = 0;
+
+	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
+		ndi++;
+
+	/* To proceed, we need to contact on_dsas. */
+	/* Check they do not rely on the conn that has just failed */
+	/* Possibly a better way of testing this... */
+
+	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
+		if (( di-> di_state == DI_DEFERRED ) &&
+				( di-> di_perform ) &&
+				( di-> di_perform-> on_conn ))
+			switch (di-> di_perform-> on_conn-> cn_state) {
+			case 0:
+			case CN_FAILED:
+				ndi--;
+			}
+
+	if (ndi != 0)
+		return OK;
+
+	if (on -> on_task) {
+		on -> on_task -> tk_resp.di_error.de_err.dse_type =
+			DSE_SERVICEERROR;
+		on -> on_task ->
+		tk_resp.di_error.de_err.ERR_SERVICE.DSE_sv_problem =
+			DSE_SV_UNABLETOPROCEED;
+	}
+
+	return NOTOK;
+}
 
 /*
 * Deal with an incoming acceptance of association establishment.
 * Return value says whether anything has happened or not.
 */
-int
-conn_retry (struct connection *conn, int moveon) {
+void conn_retry (struct connection *conn, int moveon) {
 	struct DSAPconnect		* dc = &(conn->cn_connect.cc_dc);
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;
@@ -190,40 +222,3 @@ conn_retry (struct connection *conn, int moveon) {
 		conn->cn_last_used = timenow;
 }
 
-
-static
-test_deadlock (struct oper_act *on) {
-	struct di_block	* di;
-	int ndi = 0;
-
-	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
-		ndi++;
-
-	/* To proceed, we need to contact on_dsas. */
-	/* Check they do not rely on the conn that has just failed */
-	/* Possibly a better way of testing this... */
-
-	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
-		if (( di-> di_state == DI_DEFERRED ) &&
-				( di-> di_perform ) &&
-				( di-> di_perform-> on_conn ))
-			switch (di-> di_perform-> on_conn-> cn_state) {
-			case 0:
-			case CN_FAILED:
-				ndi--;
-			}
-
-	if (ndi != 0)
-		return OK;
-
-
-	if (on -> on_task) {
-		on -> on_task -> tk_resp.di_error.de_err.dse_type =
-			DSE_SERVICEERROR;
-		on -> on_task ->
-		tk_resp.di_error.de_err.ERR_SERVICE.DSE_sv_problem =
-			DSE_SV_UNABLETOPROCEED;
-	}
-
-	return NOTOK;
-}

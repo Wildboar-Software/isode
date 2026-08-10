@@ -1264,8 +1264,13 @@ do_base (Entry eptr, struct ds_search_task **local) {
 	(*local)->st_next = new_task;
 }
 
-int
-search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task **local, struct ds_search_task **refer, int ismanager) {
+void search_refer (
+	struct ds_search_arg *arg,
+	Entry entryptr,
+	struct ds_search_task **local,
+	struct ds_search_task **refer,
+	int ismanager
+) {
 	struct ds_search_task *new_task;
 	struct DSError  error;
 	struct di_block *di_tmp;
@@ -1326,19 +1331,22 @@ search_refer (struct ds_search_arg *arg, Entry entryptr, struct ds_search_task *
  * SEARCH ENTRY
  */
 
-EntryInfo *
-filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype, int *saclerror, struct ds_search_task *local, char dosacl) {
+EntryInfo *filterentry (
+	struct ds_search_arg *arg,
+	Entry entryptr,
+	DN binddn,
+	char authtype,
+	int *saclerror,
+	struct ds_search_task *local,
+	char dosacl
+) {
 	EntryInfo	*einfo;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter entry"));
-
 	if (check_filter(arg->sra_filter, entryptr, binddn) != OK) {
 		DLOG(log_dsap, LLOG_DEBUG, ("none found"));
 		return (NULLENTRYINFO);
 	}
-
-	if ( check_acl( binddn, ACL_READ, entryptr->e_acl->ac_entry, NULLDN )
-			== NOTOK )
+	if ( check_acl( binddn, ACL_READ, entryptr->e_acl->ac_entry, NULLDN ) == NOTOK )
 		return( NULLENTRYINFO );
 
 	/*
@@ -1357,9 +1365,7 @@ filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype
 	einfo = entryinfo_alloc();
 	einfo->ent_dn = get_copy_dn(entryptr);
 	einfo->ent_eptr = entryptr;
-
 	einfo->ent_attr = eis_select(arg->sra_eis, entryptr, binddn, qctx && arg->sra_eis.eis_allattributes, einfo->ent_dn);
-
 	einfo->ent_iscopy = entryptr->e_data;
 	einfo->ent_age = (time_t) 0;
 	einfo->ent_next = NULLENTRYINFO;
@@ -1371,10 +1377,8 @@ filterentry (struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype
  * TEST FILTER AGAINST SINGLE ENTRY
  */
 
-static
-check_filter (Filter fltr, Entry entryptr, DN binddn) {
-	int    i;
-
+static int check_filter (Filter fltr, Entry entryptr, DN binddn) {
+	int i;
 	DLOG(log_dsap, LLOG_DEBUG, ("in check filter"));
 	switch (fltr->flt_type) {
 	case FILTER_ITEM:
@@ -1393,8 +1397,7 @@ check_filter (Filter fltr, Entry entryptr, DN binddn) {
 	/* NOTREACHED */
 }
 
-static
-check_filterop (Filter fltr, Entry entryptr, int op, DN binddn) {
+static int check_filterop (Filter fltr, Entry entryptr, int op, DN binddn) {
 	Filter ptr;
 	int             result;
 
@@ -1432,16 +1435,13 @@ check_filterop (Filter fltr, Entry entryptr, int op, DN binddn) {
 			return (-2);
 		}
 
-
 	return (result);
 }
 
 /*
  * CHECK FILTER ITEM AGAINST ENTRY
  */
-
-static
-check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn) {
+static int check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn) {
 	Attr_Sequence as;
 	Attr_Sequence   ias = NULLATTR;
 	AttributeType   at;
@@ -1537,9 +1537,7 @@ check_filteritem (struct filter_item *fitem, Entry entryptr, DN binddn) {
 	return res;
 }
 
-static
-test_avs (struct filter_item *fitem, AV_Sequence avs, int mode) {
-
+static int test_avs (struct filter_item *fitem, AV_Sequence avs, int mode) {
 	for (; avs != NULLAV; avs = avs->avseq_next) {
 		switch (((int) (*fitem->fi_ifp) (avs->avseq_av.av_struct, fitem->UNAVA.ava_value->av_struct))) {
 		case 0:
@@ -1561,14 +1559,10 @@ test_avs (struct filter_item *fitem, AV_Sequence avs, int mode) {
 	return (NOTOK);
 }
 
-
 /*
  * SUBSTRING MATCH
  */
-
-static
-substr_search (struct filter_item *fitem, AV_Sequence avs) {
-
+static int substr_search (struct filter_item *fitem, AV_Sequence avs) {
 	phoneflag = telephone_match(fitem->UNAVA.ava_type->oa_syntax);
 	for (; avs != NULLAV; avs = avs->avseq_next)
 		if (aux_substr_search(fitem, avs, fitem->UNSUB.fi_sub_match) == OK)
@@ -1576,10 +1570,7 @@ substr_search (struct filter_item *fitem, AV_Sequence avs) {
 	return (NOTOK);
 }
 
-
-
-static
-aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[]) {
+static int aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[]) {
 	AV_Sequence loopavs;
 	char  *compstr;
 	char           *top;
@@ -1651,8 +1642,7 @@ aux_substr_search (struct filter_item *fitem, AV_Sequence avs, char chrmatch[]) 
 	return (OK);
 }
 
-int
-attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
+int attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 	char  *str2;
 	int    count;
 	char           *top, *top2;
@@ -1711,8 +1701,7 @@ attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 }
 
 
-int
-subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di) {
+int subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di) {
 	/* turn query into a referral */
 	struct ds_search_task *new_task;
 
@@ -1750,8 +1739,7 @@ subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct 
 	*refer = new_task;
 }
 
-int
-dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result) {
+int dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result) {
 	extern DN       mydsadn;
 	char            buffer[LINESIZE];
 	Attr_Sequence   as;

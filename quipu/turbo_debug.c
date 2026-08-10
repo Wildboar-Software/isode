@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_debug.c,v 9.0 1
  *
  */
 
-
 #include <sys/types.h>
 #include <stdio.h>
 
@@ -42,12 +41,7 @@ AttributeType	*turbo_index;
 
 PS	ps;
 
-static rsavl_print( root, fn, fps, depth )
-Avlnode	*root;
-IFP	fn;
-FILE	*fps;
-int	depth;
-{
+static void rsavl_print( Avlnode *root, IFP fn, FILE *fps, int depth ) {
 	int	i;
 
 	if ( root == 0 )
@@ -63,8 +57,7 @@ int	depth;
 	rsavl_print( root->avl_left, fn, fps, depth+1 );
 }
 
-int
-savl_print (Avlnode *root) {
+void savl_print (Avlnode *root) {
 #ifndef __STDC__
 	int	fprintf ();
 #else
@@ -76,19 +69,15 @@ savl_print (Avlnode *root) {
 #endif
 
 	printf( "**** soundex avl_print ****\n" );
-
 	if ( root == 0 ) {
 		printf( "NULL\n" );
 		return;
 	}
-
-	( void ) rsavl_print( root, fprintf, (FILE *)stdout, 0 );
-
+	rsavl_print( root, (IFP)fprintf, (FILE *)stdout, 0 );
 	printf( "**** soundex avl_print end ****\n" );
 }
 
-static
-ravl_print (
+static void ravl_print (
 	Avlnode *root,
 	void (*fn)(PS, RDN, int),
 	PS fps,
@@ -96,31 +85,23 @@ ravl_print (
 	int depth
 ) {
 	int	i;
-
 	if ( root == 0 )
 		return;
-
 	ravl_print( root->avl_right, fn, fps, format, depth+1 );
-
 	for ( i = 0; i < depth; i++ )
 		ps_print( fps, "  " );
 	(*fn)( fps, (( Entry )(root->avl_data))->e_name, format );
 	ps_printf( fps, " %d\n", root->avl_bf );
-
 	ravl_print( root->avl_left, fn, fps, format, depth+1 );
 }
 
-int
-avl_print (Avlnode *root) {
+void avl_print (Avlnode *root) {
 	PS	fps;
-
 	printf( "**** avl_print ****\n" );
-
 	if ( root == 0 ) {
 		printf( "NULL\n" );
 		return;
 	}
-
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
 		printf( "avl_print: ps_alloc failed\n" );
 		return;
@@ -129,31 +110,23 @@ avl_print (Avlnode *root) {
 		printf( "avl_print: std_setup failed\n" );
 		return;
 	}
-
 	( void ) ravl_print( root, rdn_print, fps, EDBOUT, 0 );
-
 	printf( "**** avl_print end ****\n" );
-
 	ps_free( fps );
 }
 
-static
-rprint_directory (Entry node, int depth) {
+static void rprint_directory (Entry node, int depth) {
 	int	i;
-
 	for ( i = 0; i < depth; i++ )
 		ps_print( ps, "\t" );
-
 	rdn_print( ps, node->e_name, EDBOUT );
 	ps_print( ps, "\n" );
-
 	if ( node->e_children != NULLAVL )
 		avl_apply( node->e_children, rprint_directory, (caddr_t) (size_t) (depth + 1),
 				   NOTOK, AVL_INORDER );
 }
 
-int
-print_directory (Entry node) {
+void print_directory (Entry node) {
 	if ( (ps = ps_alloc( std_open )) == NULLPS ) {
 		printf( "avl_print: ps_alloc failed\n" );
 		return;
@@ -162,9 +135,7 @@ print_directory (Entry node) {
 		printf( "avl_print: std_setup failed\n" );
 		return;
 	}
-
 	rprint_directory( node, 0 );
-
 	ps_free( ps );
 	fflush( stdout );
 }
@@ -173,12 +144,9 @@ print_directory (Entry node) {
  * print_optimized_attrs -- print out a list of attributes being optimized.
  * for debugging...
  */
-
-int
-print_optimized_attrs (void) {
+void print_optimized_attrs (void) {
 	int	i;
 	PS	fps;
-
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
 		printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
@@ -187,7 +155,6 @@ print_optimized_attrs (void) {
 		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
-
 	ps_print( fps, "Optimized attributes:\n" );
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		ps_printf( fps, "\t" );
@@ -195,53 +162,41 @@ print_optimized_attrs (void) {
 		ps_printf( fps, "\n" );
 	}
 	ps_printf( fps, "End of Optimized Attributes:\n" );
-
 	ps_free( fps );
 }
 
-static
-print_index_node (Index_node *node, PS fps) {
+static int print_index_node (Index_node *node, PS fps) {
 	int	i;
 
 	ps_print( fps, "\t" );
 	AttrV_print( fps, (AttributeValue)node->in_value, EDBOUT );
 	ps_print( fps, "\n" );
-
 	for ( i = 0; i < node->in_num; i++ ) {
 		ps_print( fps, "\t\t" );
-		rdn_print( fps, node->in_entries[ i ]->e_name,
-				   EDBOUT );
+		rdn_print( fps, node->in_entries[ i ]->e_name, EDBOUT );
 		ps_print( fps, "\n" );
 	}
-
 	return( OK );
 }
 
-static
-print_soundex_node (Index_node *node, PS fps) {
+static int print_soundex_node (Index_node *node, PS fps) {
 	int	i;
 
 	ps_print( fps, "\t" );
 	ps_print( fps, node->in_value );
 	ps_print( fps, "\n" );
-
 	for ( i = 0; i < node->in_num; i++ ) {
 		ps_print( fps, "\t\t" );
-		rdn_print( fps, node->in_entries[ i ]->e_name,
-				   EDBOUT );
+		rdn_print( fps, node->in_entries[ i ]->e_name, EDBOUT );
 		ps_print( fps, "\n" );
 	}
-
 	return( OK );
 }
 
 /*
  * print_index -- print the given attribute index.
  */
-
-print_index( pindex )
-Index	*pindex;
-{
+void print_index( Index *pindex ) {
 	PS	fps;
 	int	i;
 
@@ -249,7 +204,6 @@ Index	*pindex;
 		printf("NULLINDEX\n");
 		return;
 	}
-
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
 		printf( "turbo_index_print: ps_alloc failed\n" );
 		return;
@@ -258,7 +212,6 @@ Index	*pindex;
 		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
-
 	ps_print( fps, "*******\n" );
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		ps_printf( fps, "  Index for attribute (%s)\n",
@@ -276,33 +229,27 @@ Index	*pindex;
 		ps_print( fps, "  Endof index\n" );
 	}
 	ps_print( fps, "*******\n" );
-
 	ps_free( fps );
 }
 
-int
-print_eis_list (EntryInfo *e) {
+void print_eis_list (EntryInfo *e) {
 	DN	dnend;
 
 	if ( e == NULLENTRYINFO ) {
 		printf("\tNULL\n");
 		return;
 	}
-
 	while ( e != NULLENTRYINFO ) {
 		for ( dnend = e->ent_dn; dnend->dn_parent != NULLDN;
 				dnend = dnend->dn_parent )
 			;	/* NULL */
-
 		printf("\t(%s)\n", dnend->dn_rdn->rdn_av.av_struct);
-
 		e = e->ent_next;
 	}
 	printf("(end)\n");
 }
 
-int
-print_dn (DN dn) {
+void print_dn (DN dn) {
 	PS	fps;
 
 	if ( (fps = ps_alloc( std_open )) == NULLPS ) {
@@ -313,11 +260,9 @@ print_dn (DN dn) {
 		printf( "turbo_index_print: std_setup failed\n" );
 		return;
 	}
-
 	ps_print( fps, "\tDN= " );
 	dn_print( fps, dn, EDBOUT );
 	ps_print( fps, "\n" );
 	ps_flush( fps );
-
 	ps_free( fps );
 }
