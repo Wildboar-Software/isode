@@ -19,7 +19,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-OPTIONS +=  -std=gnu17 -fcommon -Wno-error=implicit-function-declaration -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS +=  -std=gnu17 -Wno-error=implicit-function-declaration -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
 
 HDIR	=	$(TOPDIR)h/
