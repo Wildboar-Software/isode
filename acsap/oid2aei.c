@@ -27,24 +27,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/
 
 /* LINTLIBRARY */
 
-#include <stdio.h>
 #include "psap.h"
 #include "isoaddrs.h"
 
-/*  */
-
-AEI	oid2aei (oid)
-OID	oid;
-{
+AEI	oid2aei (OID oid) {
 	static AEInfo aeinfo;
 	AEI	    aei = &aeinfo;
 	static PE pe = NULLPE;
 
 	if (pe)
 		pe_free (pe);
-
 	bzero ((char *) aei, sizeof *aei);
 	aei -> aei_ap_title = pe = obj2prim (oid, PE_CLASS_UNIV, PE_PRIM_OID);
-
 	return aei;
 }

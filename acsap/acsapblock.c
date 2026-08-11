@@ -38,24 +38,19 @@ static struct assocblk *ACHead = &assocque;
 
 /*    ASSOCIATION BLOCKS */
 
-struct assocblk *
-newacblk()  {
+struct assocblk *newacblk(void) {
 	struct assocblk *acb;
 
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
 	if (acb == NULL)
 		return NULL;
-
 	acb -> acb_fd = NOTOK;
 	acb -> acb_actno = 1;
-
 	if (once_only == 0) {
 		ACHead -> acb_forw = ACHead -> acb_back = ACHead;
 		once_only++;
 	}
-
 	insque (acb, ACHead -> acb_back);
-
 	return acb;
 }
 
@@ -87,34 +82,24 @@ void freeacblk (struct assocblk *acb) {
 
 	if (acb -> acb_flags & ACB_FINISH)
 		ACFFREE (&acb -> acb_finish);
-
 	if (acb -> acb_context)
 		oid_free (acb -> acb_context);
 	if (acb -> acb_retry)
 		pe_free (acb -> acb_retry);
-
 	FREEACB (acb);
-
 	if (acb -> acb_apdu)
 		pe_free (acb -> acb_apdu);
-
 	remque (acb);
-
 	free ((char *) acb);
 }
 
-/*  */
-
-struct assocblk *
-findacblk (int sd) {
+struct assocblk *findacblk (int sd) {
 	struct assocblk *acb;
 
 	if (once_only == 0)
 		return NULL;
-
 	for (acb = ACHead -> acb_forw; acb != ACHead; acb = acb -> acb_forw)
 		if (acb -> acb_fd == sd)
 			return acb;
-
 	return NULL;
 }

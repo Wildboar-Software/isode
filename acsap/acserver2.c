@@ -34,16 +34,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver2.c,v 9.0 199
 #include "sys.file.h"
 #include "tailor.h"
 
-/*  */
-
 static	int	is_nfds;
 static fd_set	is_mask;
 static char	is_single;
 
-/*  */
-
-int
-iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdisconnect *td) {
+int iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdisconnect *td) {
 	struct PSAPaddr *pa = NULLPA;
 
 	if (argc <= 1 && (pa = aei2addr (aei)) == NULLPA)
@@ -53,20 +48,17 @@ iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdisconnect
 }
 
 
-int
-iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
+int iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
 	struct PSAPaddr *pa = NULLPA;
 
 	if (argc <= 1 && (pa = aei2addr (aei)) == NULLPA)
 		return tsaplose (td, DR_ADDRESS, NULLCP,
 						 "address translation failed");
-
 	return iserver_initAux (argc, argv, pa, initfnx, magicfnx, flag, td);
 }
 
 
-int
-iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
+int iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
 	int	fd;
 
 	isodetailor (NULLCP, 0);
@@ -140,10 +132,7 @@ iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP ma
 	return OK;
 }
 
-/*  */
-
-int
-iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td) {
+int iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td) {
 	int	    fd,
 			vecp;
 	fd_set  ifds,
@@ -214,9 +203,6 @@ iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_
 	return OK;
 }
 
-/*  */
-
-fd_set
-iserver_mask()  {
+fd_set iserver_mask(void) {
 	return is_mask;
 }

@@ -62,8 +62,8 @@ int	start_tcp_client ();
 int	start_tcp_server ();
 
 #if defined(SOCKETS) && !defined(TLI_TCP)
-int	join_tcp_client ();
-int	join_tcp_server ();
+int	join_tcp_client (int fd, struct sockaddr_in *sock);
+int	join_tcp_server (int fd, struct sockaddr_in *sock);
 #define	read_tcp_socket		read
 #define	write_tcp_socket	write
 #define	select_tcp_socket	selsocket
@@ -112,7 +112,7 @@ int	select_tcp_socket ();
 #include "dgram.h"
 #endif
 
-int	start_udp_server ();
+int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2);
 #define	start_udp_client	start_udp_server
 
 #define	join_udp_server(fd,sock) \

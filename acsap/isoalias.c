@@ -34,10 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/isoalias.c,v 9.0 1992
 #include "manifest.h"
 #include "tailor.h"
 
-/*    DATA */
-
 static char *isoaliases = "isoaliases";
-
 
 #define	PBUCKETS	128
 #define	PHASH(nm) \
@@ -48,7 +45,6 @@ static char *isoaliases = "isoaliases";
 struct pair {
 	char   *p_name;
 	char   *p_value;
-
 	struct pair *p_chain;
 };
 
@@ -58,10 +54,7 @@ static struct pair *Pbuckets[PBUCKETS];
 static void read_aliases (void);
 static void read_file (char *file);
 
-/*  */
-
-char *
-alias2name (char *name) {
+char *alias2name (char *name) {
 	struct pair *p;
 
 	if (!inited)
@@ -117,10 +110,7 @@ static void read_file (char *file) {
 	fclose (fp);
 }
 
-/*  */
-
-int
-add_alias (char *name, char *value) {
+int add_alias (char *name, char *value) {
 	int	    i;
 	struct pair *p;
 
@@ -153,8 +143,7 @@ add_alias (char *name, char *value) {
 }
 
 #ifdef DEBUG
-int
-free_isode_alias()  {
+int free_isode_alias(void) {
 	int i;
 	struct pair *p, *np;
 
@@ -165,6 +154,5 @@ free_isode_alias()  {
 			free (p->p_value);
 			free ((char *)p);
 		}
-
 }
 #endif

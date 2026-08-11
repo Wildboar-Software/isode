@@ -245,6 +245,5 @@ int
 _camtec_sunlink_stub2()  {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
-int
-_camtec_sunlink_stub()  {}
+int _camtec_sunlink_stub(void) {}
 #endif  /* X25 */

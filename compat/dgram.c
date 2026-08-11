@@ -23,10 +23,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
+#ifdef	CLTS
+#include <string.h>
+#endif
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -43,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
 #include "tp4.h"
 #endif
 
-
 #if	defined(SOCKETS) && (defined(TCP) || defined(CLTS))
 #ifndef	DEBUG
 #define	action(s,f,i)
@@ -51,9 +49,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/dgram.c,v 9.0 1992/0
 static void action (char *s, int fd, struct sockaddr *sock);
 #endif
 
-extern IFP set_check_fd ();
-
-/*  */
+extern IFP set_check_fd (int fd, IFP fnx, caddr_t data);
 
 union sockaddri_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	sa;
@@ -67,7 +63,6 @@ union sockaddri_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 #endif
 };
 
-
 struct dgramblk {
 	int	    dgram_parent;
 	union sockaddri_un dgram_peer;
@@ -78,65 +73,48 @@ struct dgramblk {
 	struct qbuf dgram_queue;
 };
 
-
 static int	maxpeers = 0;
 static struct dgramblk *peers = NULL;
 
-/*  */
-
 #ifdef	TCP
 
-/* ARGSUSED */
-
-int
-start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
+int start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
 	int     sd;
 #ifdef	BSD43
 	int	    onoff;
 #endif
-	struct dgramblk *up,
-			   *vp;
+	struct dgramblk *up, *vp;
 
 	if (peers == NULL) {
 		maxpeers = getdtablesize ();
 		peers = (struct dgramblk *) calloc ((unsigned)maxpeers, sizeof *peers);
 		if (peers == NULL)
 			return NOTOK;
-
 		for (vp = (up = peers) + maxpeers; up < vp; up++) {
 			up -> dgram_parent = NOTOK;
 			up -> dgram_queue.qb_forw = up -> dgram_queue.qb_back =
 											&up -> dgram_queue;
 		}
 	}
-
 	if ((sd = socket (AF_INET, SOCK_DGRAM, 0)) == NOTOK)
 		return NOTOK;
-
 	if (sock -> sin_port != 0) {
 		action ("BIND", sd, (struct sockaddr *) sock);
-
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			goto got_socket;
-
 		close (sd);
 		return NOTOK;
 	} else
 		sock -> sin_family = AF_INET;
-
 	for (port = IPPORT_RESERVED;; port++) {
 		sock -> sin_port = htons ((u_short) port);
-
 		action ("BIND", sd, (struct sockaddr *) sock);
-
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			break;
-
 		switch (errno) {
 		case EADDRINUSE:
 			continue;
-
 		case EADDRNOTAVAIL:
 		default:
 			close (sd);
@@ -168,20 +146,14 @@ got_socket:
 	if (opt2)
 		setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
-
-	set_check_fd (sd, check_dgram_socket, NULLCP);
+	set_check_fd (sd, (IFP)check_dgram_socket, NULLCP);
 	return (peers[sd].dgram_parent = sd);
 }
 #endif
 
-/*  */
-
 #ifdef	BSD_TP4
 
-/* ARGSUSED */
-
-int
-start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2) {
+int start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2) {
 	int     sd;
 #ifdef	BSD43
 	int	    onoff;
@@ -196,17 +168,14 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2) {
 		peers = (struct dgramblk *) calloc ((unsigned)maxpeers, sizeof *peers);
 		if (peers == NULL)
 			return NOTOK;
-
 		for (vp = (up = peers) + maxpeers; up < vp; up++) {
 			up -> dgram_parent = NOTOK;
 			up -> dgram_queue.qb_forw = up -> dgram_queue.qb_back =
 											&up -> dgram_queue;
 		}
 	}
-
 	if ((sd = socket (AF_ISO, SOCK_DGRAM, 0)) == NOTOK)
 		return NOTOK;
-
 	if (ifaddr -> siso_tlen != 0) {
 		action ("BIND", sd, (struct sockaddr *) ifaddr);
 
@@ -218,13 +187,11 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2) {
 		return NOTOK;
 	} else
 		ifaddr -> siso_family = AF_ISO;
-
 	{
 		int	pid;
 		u_char *dp,
 			   *ep,
 			   *fp;
-
 		pid = getpid ();
 		cp = fp = (u_char *) ifaddr -> siso_data + ifaddr -> siso_nlen;
 		for (ep = (dp = (u_char *) &pid) + sizeof pid; dp < ep; dp++)
@@ -233,18 +200,14 @@ start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2) {
 		ifaddr -> siso_slen = ifaddr -> siso_plen = 0;
 		ifaddr -> siso_len = sizeof *ifaddr;
 	}
-
 	for (*cp = 0x00; *cp < 0xff; *cp += 1) {
 		action ("BIND", sd, (struct sockaddr *) ifaddr);
-
 		if (bind (sd, (struct sockaddr *) ifaddr, (int) ifaddr -> siso_len)
 				!= NOTOK)
 			goto got_socket;
-
 		switch (errno) {
 		case EADDRINUSE:
 			continue;
-
 		case EADDRNOTAVAIL:
 		default:
 			close (sd);
@@ -279,16 +242,12 @@ got_socket:
 	if (opt2)
 		setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
-
 	set_check_fd (sd, check_dgram_socket, NULLCP);
 	return (peers[sd].dgram_parent = sd);
 }
 #endif
 
-/*  */
-
-int
-join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
+int join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
 	int	    nfds,
 			sd;
 	fd_set  ifds;
@@ -299,25 +258,20 @@ join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
 		errno = EINVAL;
 		return NOTOK;
 	}
-
 	if (newfd) {
 		FD_ZERO (&ifds);
-
 		nfds = fd + 1;
 		FD_SET (fd, &ifds);
 		if (select_dgram_socket (nfds, &ifds, NULLFD, NULLFD, OK) == NOTOK)
 			return NOTOK;
-
 		up = &peers[fd];
 		if ((qb = up -> dgram_queue.qb_forw) == &up -> dgram_queue) {
 			errno = EWOULDBLOCK;
 			return NOTOK;
 		}
-
 		if ((sd = dup (fd)) == NOTOK)
 			return NOTOK;
-		set_check_fd (fd, check_dgram_socket, NULLCP);
-
+		set_check_fd (fd, (IFP)check_dgram_socket, NULLCP);
 		up = &peers[sd];
 #ifdef	BSD44
 		bcopy (qb -> qb_base, (caddr_t) sock,
@@ -325,12 +279,10 @@ join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
 #else
 		*sock = *((struct sockaddr *) qb -> qb_base);	/* struct copy */
 #endif
-
 		remque (qb);
 		insque (qb, up -> dgram_queue.qb_back);
 	} else
 		up = &peers[fd];
-
 	up -> dgram_parent = fd;
 #ifdef	BSD44
 	if (sock -> sa_len == 0)
@@ -345,16 +297,11 @@ join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
 #else
 	up -> dgram_peer.sa = *sock;	/* struct copy */
 #endif
-
 	action ("JOIN", newfd ? sd : fd, sock);
-
 	return (newfd ? sd : OK);
 }
 
-/*  */
-
-int
-read_dgram_socket (int fd, struct qbuf **q) {
+int read_dgram_socket (int fd, struct qbuf **q) {
 	int	    nfds;
 	fd_set  ifds,
 			mask;
@@ -367,10 +314,8 @@ read_dgram_socket (int fd, struct qbuf **q) {
 		errno = EINVAL;
 		return NOTOK;
 	}
-
 	if ((qb = up -> dgram_queue.qb_forw) == &up -> dgram_queue) {
 		FD_ZERO (&mask);
-
 		nfds = fd + 1;
 		FD_SET (fd, &mask);
 		for (ifds = mask;; ifds = mask) {
@@ -382,16 +327,11 @@ read_dgram_socket (int fd, struct qbuf **q) {
 				break;
 		}
 	}
-
 	remque (qb);
 	qb -> qb_forw = qb -> qb_back = qb;
-
 	*q = qb;
-
 	return qb -> qb_len;
 }
-
-/*  */
 
 int
 hack_dgram_socket (int fd, struct sockaddr *sock) {
@@ -403,12 +343,10 @@ hack_dgram_socket (int fd, struct sockaddr *sock) {
 		errno = EINVAL;
 		return NOTOK;
 	}
-
 	if (sock == NULL) {
 		bzero ((caddr_t) &up -> dgram_peer, sizeof up -> dgram_peer);
 		return OK;
 	}
-
 #ifdef	BSD44
 	if (sock -> sa_len == 0)
 		sock -> sa_len = sizeof *sock;
@@ -417,15 +355,11 @@ hack_dgram_socket (int fd, struct sockaddr *sock) {
 #else
 	up -> dgram_peer.sa = *sock;	/* struct copy */
 #endif
-
 	action ("HACK", fd, sock);
-
 	return OK;
 }
 
-
-int
-write_dgram_socket (int fd, struct qbuf *qb) {
+int write_dgram_socket (int fd, struct qbuf *qb) {
 	struct dgramblk *up;
 
 	if (fd < 0
@@ -435,9 +369,7 @@ write_dgram_socket (int fd, struct qbuf *qb) {
 		errno = EINVAL;
 		return NOTOK;
 	}
-
 	action ("SENDTO", fd, &up -> dgram_peer.sa);
-
 #ifdef	BSD44
 	return sendto (fd, qb -> qb_data, qb -> qb_len, NULL,
 				   &up -> dgram_peer.sa, (int) up -> dgram_peer.sa.sa_len);
@@ -447,11 +379,7 @@ write_dgram_socket (int fd, struct qbuf *qb) {
 #endif
 }
 
-
-/*  */
-
-int
-close_dgram_socket (int fd) {
+int close_dgram_socket (int fd) {
 	struct dgramblk *up,
 			   *vp;
 
@@ -461,25 +389,18 @@ close_dgram_socket (int fd) {
 		errno = EINVAL;
 		return NOTOK;
 	}
-
 	action ("CLOSE", fd, &up -> dgram_peer.sa);
-
 	up -> dgram_parent = NOTOK;
 	bzero ((char *) &up -> dgram_peer, sizeof up -> dgram_peer);
 	QBFREE (&up -> dgram_queue);
-
 	for (vp = (up = peers) + maxpeers; up < vp; up++)
 		if (up -> dgram_parent == fd)
 			up -> dgram_parent = up - peers;
-
 	set_check_fd (fd, NULLIFP, NULLCP);
 	return close (fd);
 }
 
-/*  */
-
-int
-select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
+int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 	int    fd;
 	int	    cc,
 			mfds,
@@ -508,7 +429,6 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 	if ((result = selsocket (nfds, rfds, wfds, efds, secs)) == NOTOK
 			|| rfds == NULLFD)
 		return result;
-
 	ifds = *rfds;
 	if ((mfds = nfds) > maxpeers)
 		mfds = maxpeers;
@@ -519,10 +439,8 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 			char   *data;
 
 			FD_CLR (fd, &ifds);
-
 			if (up -> dgram_parent == NOTOK)
 				continue;
-
 			if ((qb = (struct qbuf *) malloc ((unsigned) (sizeof *qb
 											  + (slen
 												 = sizeof *sock)
@@ -541,9 +459,7 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 			sock -> sa.sa_len = slen;
 #endif
 			qb -> qb_len = cc;
-
 			action ("RECVFROM", fd, &sock -> sa);
-
 			vp = up;
 			data = sock -> sa.sa_data;
 			switch (sock -> sa.sa_family) {
@@ -551,7 +467,6 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 				len = sizeof sock -> sa.sa_data
 					  - sizeof sock -> sin.sin_zero;
 				break;
-
 			default:
 #ifdef	BSD44
 				len = sock -> sa.sa_len;
@@ -582,9 +497,7 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 					continue;
 				}
 			}
-
 			insque (qb, vp -> dgram_queue.qb_back);
-
 			if (--result <= 0
 					|| (result = selsocket (nfds, &ifds, NULLFD, NULLFD, OK))
 					<= 0)
@@ -612,26 +525,18 @@ select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int sec
 	for (fd = 0; fd < nfds; fd++)
 		if (FD_ISSET (fd, &ifds))
 			result++;
-
 	return result;
 }
 
-/*  */
-
-int
-check_dgram_socket (int fd) {
+int check_dgram_socket (int fd) {
 	int	    nfds;
 	fd_set  ifds;
 
 	FD_ZERO (&ifds);
-
 	nfds = fd + 1;
 	FD_SET (fd, &ifds);
-
 	return select_dgram_socket (nfds, &ifds, NULLFD, NULLFD, OK);
 }
-
-/*  */
 
 #ifdef	DEBUG
 
@@ -643,8 +548,6 @@ static void inetprint (struct sockaddr_in *sin, char *bp) {
 			 (int) ntohs (sin -> sin_port), NA_TSET_UDP);
 }
 #endif
-
-/*  */
 
 #ifdef	CLTS
 /* prints OSI address using the format described in:
@@ -662,9 +565,7 @@ static void inetprint (struct sockaddr_in *sin, char *bp) {
 #define PSEL(s) ((s)->siso_slen + SSEL(s))
 #endif
 
-
-static
-isoprint (struct sockaddr_iso *siso, char *bp) {
+static void isoprint (struct sockaddr_iso *siso, char *bp) {
 	int	    didone = 0;
 
 	if (siso -> siso_plen) {
@@ -688,27 +589,20 @@ isoprint (struct sockaddr_iso *siso, char *bp) {
 	hexprint (bp, siso -> siso_nlen, siso -> siso_data, "NS+", "");
 }
 
-
-static
-hexprint (char *bp, int n, u_char *buf, char *start, char *stop) {
+static void hexprint (char *bp, int n, u_char *buf, char *start, char *stop) {
 	u_char *in = buf, *top = in + n;
 
 	if (n == 0)
 		return;
-
 	strcpy (bp, start);
 	bp += strlen (bp);
-
 	while (in < top) {
 		sprintf (bp, "%02x", *in++ & 0xff);
 		bp += 2;
 	}
-
 	strcpy (bp, stop);
 }
 #endif
-
-/*  */
 
 static struct printent {
 	int	    p_family;

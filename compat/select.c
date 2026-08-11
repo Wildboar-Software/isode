@@ -23,10 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/select.c,v 9.0 1992/
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -35,11 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/select.c,v 9.0 1992/
 #include "tailor.h"
 #include <sys/stat.h>
 
-
-
 int	xselect_blocking_on_intr = 0;
-
-/*  */
 
 #if	defined(SOCKETS) && !defined(TLI_POLL)
 
@@ -91,8 +83,7 @@ xhandler (int fd) {
 #endif
 #endif
 
-int
-selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
+int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 	int     n;
 	fd_set  ifds,
 			ofds,
@@ -225,8 +216,6 @@ selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 #endif
 
 
-/*  */
-
 #ifdef	EXOS
 
 #ifdef	SYS5
@@ -347,8 +336,6 @@ again:
 
 #endif
 
-/*  */
-
 /* This routine used to be used for devices that didn't support real select.
    Those devices are no longer supported.
 
@@ -360,23 +347,17 @@ static IFP	sfnx[FD_SETSIZE] = { NULL };
 static caddr_t	sdata[FD_SETSIZE] = { NULL };
 
 
-IFP	set_check_fd (fd, fnx, data)
-int	fd;
-IFP	fnx;
-caddr_t	data;
+IFP	set_check_fd (int fd, IFP fnx, caddr_t data)
 {
 	IFP	    ofnx;
 
 	if (fd < 0 || fd >= FD_SETSIZE)
 		return NULLIFP;
-
 	ofnx = sfnx[fd];
 	sfnx[fd] = fnx, sdata[fd] = data;
-
 	return ofnx;
 }
 
-/*  */
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 

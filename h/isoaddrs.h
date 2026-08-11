@@ -235,7 +235,7 @@ int	setisoentity (), endisoentity ();
 
 struct isoentity *getisoentity ();
 
-AEI	oid2aei ();
+AEI	oid2aei (OID oid);
 #endif
 
 struct isoservent;

@@ -35,8 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapaddr.c,v 9.0 199
 
 
 #ifndef	NOSTUB
-AEI	str2aei_stub ();
-struct PSAPaddr *aei2addr_stub ();
+AEI	str2aei_stub (char *designator, char *qualifier);
+struct PSAPaddr *aei2addr_stub (AEI aei);
 #endif
 
 AEI	str2aei_dse ();
@@ -50,8 +50,6 @@ static char fallback1[BUFSIZ],
 #endif
 
 static struct PSAPaddr *(*lookup) () = NULL;
-
-/*  */
 
 /* backwards compatibility... */
 
@@ -71,10 +69,7 @@ static struct mapping {
 	NULL
 };
 
-/*  */
-
-AEI
-_str2aei (char *designator, char *qualifier, char *context, int interactive, char *userdn, char *passwd) {
+AEI _str2aei (char *designator, char *qualifier, char *context, int interactive, char *userdn, char *passwd) {
 	AEI	    aei;
 	struct mapping *m;
 
@@ -139,17 +134,12 @@ out:
 	return aei;
 }
 
-/*  */
-
-struct PSAPaddr *
-aei2addr (AEI aei) {
+struct PSAPaddr *aei2addr (AEI aei) {
 	struct PSAPaddr *pa;
 
 	isodetailor (NULLCP, 0);
 	SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr %s", sprintaei (aei)));
-
 	PY_pepy[0] = 0;
-
 	if (lookup) {
 		pa = (*lookup) (aei);
 #ifndef	NOSTUB
@@ -158,12 +148,9 @@ aei2addr (AEI aei) {
 			SLOG (addr_log, LLOG_NOTICE, NULLCP, ("fallback use of stub DSE succeeded"));
 		}
 #endif
-
 		lookup = NULL;
 	} else
 		pa = NULLPA;
-
 	SLOG (addr_log, LLOG_TRACE, NULLCP, ("aei2addr returns %s", paddr2str (pa, NULLNA)));
-
 	return pa;
 }

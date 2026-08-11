@@ -661,6 +661,5 @@ int
 _sunlink_stub2()  {}
 #endif
 #else
-int
-_sunlink_stub()  {}
+int _sunlink_stub(void) {}
 #endif

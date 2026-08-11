@@ -25,6 +25,7 @@
 #define	_LOGGER_
 
 #include "manifest.h"
+#include <stdarg.h>
 
 /*  */
 
@@ -153,22 +154,22 @@ int	ll_log (LLog*, ...);
 int	ll_printf (LLog*, ...);
 char   *ll_preset (char*, ...);
 
-int	ll_open ();
-int	_ll_log ();
-int	ll_close ();
+int	ll_open (LLog *lp);
+int	_ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap);
+int	ll_close (LLog *lp);
 
-void	ll_hdinit ();
-void	ll_dbinit ();
+void ll_hdinit (LLog *lp, char *prefix);
+void ll_dbinit (LLog *lp, char *prefix);
 
 int	ll_printf (LLog*, ...);
-int	ll_sync ();
+int	ll_sync (LLog *lp);
 
-char   *ll_preset (char* fmt, ...);
+char *ll_preset (char* fmt, ...);
 
-int	ll_check ();
+int	ll_check (LLog *lp);
 
 int	ll_defmhdr (char *bufferp, char *headerp, char *dheaderp);
-IFP	ll_setmhdr ();
+IFP	ll_setmhdr (IFP make_header_routine);
 #endif
 
 /******************************/

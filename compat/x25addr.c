@@ -1562,6 +1562,5 @@ struct NSAPaddr *nsap;
 #endif
 #endif
 #else
-int
-_x25addr_stub()  {}
+int _x25addr_stub(void) {}
 #endif

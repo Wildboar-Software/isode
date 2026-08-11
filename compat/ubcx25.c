@@ -295,6 +295,5 @@ int
 _ubcx25_stub2()  {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
-int
-_ubcx25_stub()  {}
+int _ubcx25_stub(void) {}
 #endif  /* X25 */

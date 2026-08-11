@@ -22,19 +22,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/char2bcd.c,v 9.0 199
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include "general.h"
 
-int  char2bcd (s, n, d)
-char   *s;
-int n;
-u_char *d;
-{
-	int    c,
-		   i;
+int char2bcd (char *s, int n, u_char *d) {
+	int c, i;
 
 	for (i = 0; *s && n-- > 0; i++) {
 		if ((c = *s++) >= 'a' && c <= 'f')
@@ -51,6 +42,5 @@ u_char *d;
 		else
 			*d = (c & 0xf) << 4;
 	}
-
 	return i;
 }

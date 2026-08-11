@@ -886,8 +886,7 @@ _hpuxx25_stub2()  {
 }
 #endif
 #else
-int
-_hpuxx25_stub()  {
+int _hpuxx25_stub(void) {
 	;
 }
 #endif

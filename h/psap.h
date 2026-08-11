@@ -35,12 +35,9 @@
 #endif
 #include <math.h>
 
-/*  */
-
 #ifndef USE_BUILTIN_OIDS
 #define USE_BUILTIN_OIDS	1
 #endif
-
 
 typedef struct OIDentifier {
 	int	    oid_nelem;		/* number of sub-identifiers */
@@ -58,8 +55,6 @@ char   *oid2ode_aux ();
 char   *sprintoid ();
 OID	str2oid ();
 
-/*  */
-
 typedef	u_char	   PElementClass;
 
 typedef	u_char	   PElementForm;
@@ -71,7 +66,6 @@ typedef u_short    PElementID;	/* 0..16383 are meaningful (14 bits) */
 	((int) ((((code) & 0x3fff) << 2) | ((class) & 0x0003)))
 
 typedef	int	   PElementLen;
-
 
 typedef u_char	  byte, *PElementData;
 #define	NULLPED	((PElementData) 0)
@@ -88,8 +82,6 @@ typedef u_char	  byte, *PElementData;
 
 #define	PEDcpy(b1, b2, length)	\
 			bcopy ((char *) (b1), (char *) (b2), (int) (length))
-
-/*  */
 
 typedef struct PElement {
 	int	    pe_errno;		/* Error codes */
@@ -219,7 +211,6 @@ typedef struct PElement {
 
 #define	pe_seterr(pe, e, v)	((pe) -> pe_errno = (e), (v))
 
-
 extern	int	pe_allocs;
 extern	int	pe_frees;
 extern	int	pe_most;
@@ -251,8 +242,6 @@ extern char **pe_applist;
 extern int    pe_maxpriv;
 extern char **pe_privlist;
 
-/*  */
-
 typedef struct UTCtime {
 	int	    ut_year;
 	int	    ut_mon;
@@ -273,15 +262,11 @@ typedef struct UTCtime {
 }			UTCtime, *UTC;
 #define	NULLUTC	((UTC) 0)
 
-
 void	tm2ut ();
 long	gtime ();
 struct tm *ut2tm ();
 
-/*  */
-
 extern char *psapversion;
-
 
 int	prim2flag ();
 PE	flag2prim ();
@@ -527,8 +512,6 @@ int	ps_get_abs ();
 
 char   *ps_error ();
 
-/*  */
-
 struct isobject {
 	char   *io_descriptor;
 
@@ -542,14 +525,11 @@ struct isobject *getisobject ();
 struct isobject *getisobjectbyname ();
 struct isobject *getisobjectbyoid ();
 
-/*  */
-
 extern	int	Len;
 extern	char   *Qcp;
 extern	char   *Ecp;
 
 int	pe2qb_f ();
-
 
 extern	int	Byteno;
 extern	int	Qbrefs;

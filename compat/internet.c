@@ -24,14 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
  *
  */
 
-
-/* LINTLIBRARY */
-
+#ifdef	DG
+#include <string.h>
+#endif
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
-#include <ctype.h>
 #include <errno.h>
-#include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
@@ -42,13 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 #include <demsb.h>
 #endif
 
-/*  */
-
 #ifdef	TCP
 #include "internet.h"
-
-
-
 
 /*    Berkeley UNIX: 4.2 */
 
@@ -56,9 +49,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 
 /* For real networking, nothing is better than 4BSD! */
 
-
-int
-start_tcp_client (struct sockaddr_in *sock, int priv) {
+int start_tcp_client (struct sockaddr_in *sock, int priv) {
 	int    port;
 	int     eindex,
 			sd;
@@ -110,10 +101,7 @@ got_socket:
 	return sd;
 }
 
-/*  */
-
-int
-start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
+int start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
 	int     eindex,
 			sd;
@@ -207,11 +195,7 @@ got_socket:
 	return sd;
 }
 
-/*  */
-
-int	join_tcp_client (fd, sock)
-int	fd;
-struct sockaddr_in *sock;
+int	join_tcp_client (int fd, struct sockaddr_in *sock)
 {
 	int     eindex,
 			len = sizeof *sock,
@@ -249,11 +233,7 @@ struct sockaddr_in *sock;
 	return result;
 }
 
-/*  */
-
-int	join_tcp_server (fd, sock)
-int	fd;
-struct sockaddr_in *sock;
+int	join_tcp_server (int fd, struct sockaddr_in *sock)
 {
 	int     eindex,
 			result;
@@ -414,8 +394,7 @@ static char *empty = NULL;
 static char *addrs[2] = { NULL, NULL };
 #endif
 
-struct hostent *
-gethostbystring (char *s) {
+struct hostent *gethostbystring (char *s) {
 	struct hostent *h;
 #ifndef	DG
 	int result;
@@ -598,8 +577,6 @@ getservbyname (char *name, char *proto) {
 
 	return NULL;
 }
-
-/*  */
 
 #define	s2a(b)	(((int) (b)) & 0xff)
 

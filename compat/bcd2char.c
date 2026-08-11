@@ -22,17 +22,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/bcd2char.c,v 9.0 199
  *    this agreement.
  *
  */
-
-/* LINTLIBRARY */
 #include "general.h"
 
-int     bcd2char (s, d, len)
-u_char *s;
-char  *d;
-int     len;
-{
-	int    i,
-		   g;
+int bcd2char (u_char *s, char *d, int len) {
+	int i, g;
 
 	for (i = 0; i < len; i++) {
 		g = s[i >> 1];
@@ -45,8 +38,6 @@ int     len;
 		else
 			*d++ = g + 'a' - 0x0a;
 	}
-
 	*d = 0;
-
 	return len;
 }

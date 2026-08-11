@@ -51,10 +51,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
 #ifndef	SYS5
 #include <syslog.h>
 
-extern void closelog();
+extern void closelog(void);
 #endif
-
-/*  */
 
 #ifndef	lint
 static
@@ -69,12 +67,9 @@ struct ll_private {
 static struct ll_private *llp = NULL;
 static IFP _ll_header_routine = (IFP)ll_defmhdr;
 
-long	lseek ();
+long	lseek (int, off_t, int);
 
-/*  */
-
-int
-ll_open (LLog *lp) {
+int ll_open (LLog *lp) {
 	int	    mask,
 			mode;
 	char   *bp,
@@ -85,7 +80,6 @@ ll_open (LLog *lp) {
 					  calloc ((unsigned int) sysconf (_SC_OPEN_MAX),
 							  sizeof *llp)) == NULL)
 		goto you_lose;
-
 	if (lp -> ll_file == NULLCP
 			|| *lp -> ll_file == NULL) {
 you_lose:
@@ -94,100 +88,70 @@ you_lose:
 		lp -> ll_stat |= LLOGERR;
 		return NOTOK;
 	}
-
 	lp -> ll_stat &= ~LLOGERR;
-
 	if (lp -> ll_fd != NOTOK)
 		return OK;
-
 	if (strcmp (lp -> ll_file, "-") == 0) {
 		lp -> ll_stat |= LLOGTTY;
 		return OK;
 	}
-
 	sprintf (bp = buffer, _isodefile (isodelogpath, lp -> ll_file),
 			 getpid ());
-
 	mode = O_WRONLY | O_APPEND;
 	if (lp -> ll_stat & LLOGCRT)
 		mode |= O_CREAT;
-
 	mask = umask (~0666);
 	lp -> ll_fd = open (bp, mode, 0666);
 	umask (mask);
-
 	if (ll_check (lp) == NOTOK)
 		return (NOTOK);
 	if (lp -> ll_fd != NOTOK)
 		llp[lp -> ll_fd].ll_checks = CHKINT;
-
 	return (lp -> ll_fd != NOTOK ? OK : NOTOK);
 }
 
-/*  */
-
-int
-ll_close (LLog *lp) {
+int ll_close (LLog *lp) {
 	int	    status;
 
 	if (lp -> ll_fd == NOTOK)
 		return OK;
-
 	status = close (lp -> ll_fd);
 	lp -> ll_fd = NOTOK;
-
 	return status;
 }
 
-/*  */
-
 #ifndef	lint
-int	ll_log (LLog*lp, ...) {
+int	ll_log (LLog *lp, ...) {
 	int	    event, result;
 	char *what, *fmt;
 	va_list ap;
-
 	va_start (ap, lp);
-
 	event = va_arg (ap, int);
 	what = va_arg (ap, char*);
 	fmt = va_arg (ap, char*);
-
 	result = _ll_log (lp, event, what, fmt, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
 /* VARARGS4 */
-
-int
-ll_log (LLog *lp, int event, char *what, char *fmt) {
+int ll_log (LLog *lp, int event, char *what, char *fmt) {
 	return ll_log (lp, event, what, fmt);
 }
 #endif
 
-/*  */
-
-int
-_ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args ... */
+int _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {
 	int	    cc, status;
 	char *bp;
 	char buffer[BUFSIZ];
 
 	if (!(lp -> ll_events & event))
 		return OK;
-
 	bp = buffer;
-
 	/* Create header */
 	(*_ll_header_routine)(bp, lp -> ll_hdr, lp -> ll_dhdr);
-
 	bp += strlen (bp);
-
 	_asprintf (bp, what, fmt, ap);
-
 #ifndef	SYS5
 	if (lp -> ll_syslog & event) {
 		int	priority;
@@ -215,9 +179,7 @@ _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args 
 			priority = LOG_NOTICE;
 			break;
 		}
-
 		syslog (priority, "%s", buffer + 13);
-
 		if (lp -> ll_stat & LLOGCLS)
 			closelog ();
 	}
@@ -238,7 +200,6 @@ _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args 
 		fflush (stderr);
 	}
 	bp += strlen (bp);
-
 	if (lp -> ll_fd == NOTOK) {
 		if ((lp -> ll_stat & (LLOGERR | LLOGTTY)) == (LLOGERR | LLOGTTY))
 			return OK;
@@ -247,10 +208,8 @@ _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {	/* fmt, args 
 	} else if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0)
 			   && ll_check (lp) == NOTOK)
 		return NOTOK;
-
 	*bp++ = '\n', *bp = 0;
 	cc = bp - buffer;
-
 	if ((status = write (lp -> ll_fd, buffer, cc)) != cc) {
 		if (status == NOTOK) {
 			ll_close (lp);
@@ -259,21 +218,15 @@ error:
 			lp -> ll_stat |= LLOGERR;
 			return NOTOK;
 		}
-
 		status = NOTOK;
 	} else
 		status = OK;
-
 	if ((lp -> ll_stat & LLOGCLS) && ll_close (lp) == NOTOK)
 		goto error;
-
 	return status;
 }
 
-/*  */
-
-void
-ll_hdinit (LLog *lp, char *prefix) {
+void ll_hdinit (LLog *lp, char *prefix) {
 	char  *cp,
 		  *up;
 	char    buffer[BUFSIZ],
@@ -290,7 +243,6 @@ ll_hdinit (LLog *lp, char *prefix) {
 		if (cp == NULLCP || *cp == 0)
 			cp = prefix;
 	}
-
 	if ((up = getenv ("USER")) == NULLCP
 			&& (up = getenv ("LOGNAME")) == NULLCP) {
 		sprintf (user, "#%d", getuid ());
@@ -298,22 +250,16 @@ ll_hdinit (LLog *lp, char *prefix) {
 	}
 	sprintf (buffer, "%-8.8s %05d (%-8.8s)",
 			 cp, getpid () % 100000, up);
-
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);
 	lp -> ll_stat &= ~LLOGHDR;
-
 	if ((lp -> ll_hdr = malloc ((unsigned) (strlen (buffer) + 1))) == NULLCP)
 		return;
-
 	strcpy (lp -> ll_hdr, buffer);
 	lp -> ll_stat |= LLOGHDR;
 }
 
-/*  */
-
-void
-ll_dbinit (LLog *lp, char *prefix) {
+void ll_dbinit (LLog *lp, char *prefix) {
 	char  *cp;
 	char    buffer[BUFSIZ];
 
@@ -338,31 +284,21 @@ ll_dbinit (LLog *lp, char *prefix) {
 	lp -> ll_stat |= LLOGTTY;
 }
 
-/*  */
-
 #ifndef	lint
 int	ll_printf (LLog*lp, ...) {
 	int	    result;
 	va_list ap;
-
 	va_start (ap, lp);
-
 	result = _ll_printf (lp, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
 /* VARARGS2 */
-
-int
-ll_printf (LLog *lp, char *fmt) {
+int ll_printf (LLog *lp, char *fmt) {
 	return ll_printf (lp, fmt);
 }
 #endif
-
-/*  */
 
 #ifndef	lint
 static
@@ -427,20 +363,15 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	return status;
 }
 
-/*  */
-
-int
-ll_sync (LLog *lp) {
+int ll_sync (LLog *lp) {
 	if (lp -> ll_stat & LLOGCLS)
 		return ll_close (lp);
 
 	return OK;
 }
 
-/*  */
-
 #ifndef	lint
-char   *ll_preset (char* fmt, ...) {
+char *ll_preset (char* fmt, ...) {
 	va_list ap;
 	static char buffer[BUFSIZ];
 
@@ -461,10 +392,7 @@ ll_preset (char *fmt) {
 }
 #endif
 
-/*  */
-
-int
-ll_check (LLog *lp) {
+int ll_check (LLog *lp) {
 #ifndef	BSD42
 	int	    fd;
 	char    buffer[BUFSIZ];
@@ -534,34 +462,24 @@ ll_defmhdr (
 	return OK;
 }
 
-/*  */
-
 /*
  * ll_setmhdr - Set "make header" routine, overriding default.
  */
-IFP
-ll_setmhdr (IFP make_header_routine) {
+IFP ll_setmhdr (IFP make_header_routine) {
 	IFP result = _ll_header_routine;
-
 	_ll_header_routine = make_header_routine;
-
 	return result;
-
 }
-
 
 #ifdef ULTRIX_X25
 #ifdef ULTRIX_X25_DEMSA
 
-char *
-CAT (char *x, char *y) {
+char *CAT (char *x, char *y) {
 	if ( strlen(x)+strlen(y)-2 > BUFSIZ-1 )
 		return (char *) y;
 	else {
-
 		strcpy(our_global_buffer,x);
 		strcat(our_global_buffer,y);
-
 		return (char *) our_global_buffer;
 	}
 }

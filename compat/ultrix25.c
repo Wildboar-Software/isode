@@ -1970,7 +1970,7 @@ _ultrix25_stub2()  {
 #endif  /* ULTRIX_X25 */
 #else	/* X25 */
 int
-_ultrix25_stub()  {
+_ultrix25_stub(void) {
 	;
 }
 #endif  /* X25 */

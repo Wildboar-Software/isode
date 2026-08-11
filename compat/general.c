@@ -38,7 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992
 
 /* Simply including "general.h" is sufficient. */
 
-int	_general_stub () {};
+int	_general_stub (void) {};
 
 #endif
 

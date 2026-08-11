@@ -35,8 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isonsapsnpa.c,v 9.0 
 #include "tailor.h"
 #include "cmd_srch.h"
 
-/*    DATA */
-
 static char *isonsapsnpa = "isonsapsnpa";
 
 static FILE *servf = NULL;
@@ -48,10 +46,7 @@ static CMD_TABLE tbl_communities[] = {
 	NULLCP,	NOTOK
 };
 
-/*  */
-
-int
-setisonsapsnpa (int f) {
+int setisonsapsnpa (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isonsapsnpa, 0), "r");
 	else
@@ -62,8 +57,7 @@ setisonsapsnpa (int f) {
 }
 
 
-int
-endisonsapsnpa()  {
+int endisonsapsnpa(void) {
 	if (servf && !stayopen) {
 		fclose (servf);
 		servf = NULL;
@@ -72,10 +66,7 @@ endisonsapsnpa()  {
 	return 1;
 }
 
-/*  */
-
-struct NSAPinfo *
-getisonsapsnpa()  {
+struct NSAPinfo *getisonsapsnpa(void) {
 	int	    mask,
 			vecp;
 	char  *cp;
@@ -134,12 +125,10 @@ getisonsapsnpa()  {
 
 		return is;
 	}
-
 	return NULL;
 }
 
-struct NSAPaddr *
-getisosnpa (struct NSAPaddr *nsap) {
+struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;
@@ -147,9 +136,7 @@ getisosnpa (struct NSAPaddr *nsap) {
 
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNA;
-
 	setisonsapsnpa (0);
-
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_nsap.na_stack == NOTOK || is -> is_plen < best)
 			continue;
@@ -160,14 +147,12 @@ getisosnpa (struct NSAPaddr *nsap) {
 		}
 	}
 	endisonsapsnpa ();
-
 	if (best >= 0)
 		return &ns -> is_nsap;
 	return NULLNA;
 }
 
-struct NSAPinfo *
-getnsapinfo (struct NSAPaddr *nsap) {
+struct NSAPinfo *getnsapinfo (struct NSAPaddr *nsap) {
 	struct NSAPinfo *is;
 	int best = -1;
 	static struct NSAPinfo nss;
@@ -175,9 +160,7 @@ getnsapinfo (struct NSAPaddr *nsap) {
 
 	if (nsap -> na_stack != NA_NSAP)
 		return NULLNI;
-
 	setisonsapsnpa (0);
-
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_plen < best)
 			continue;
@@ -189,7 +172,6 @@ getnsapinfo (struct NSAPaddr *nsap) {
 		}
 	}
 	endisonsapsnpa ();
-
 	if (best >= 0)
 		return ns;
 	return NULLNI;

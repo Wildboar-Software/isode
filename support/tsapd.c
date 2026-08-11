@@ -1602,52 +1602,31 @@ static void envinit (void) {
 #endif
 }
 
-/*    ERRORS */
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
-	_ll_log (pgm_log, LLOG_FATAL, what, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
 /* VARARGS */
-
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
-{
+void	adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
-/* VARARGS */
-
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
-{
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

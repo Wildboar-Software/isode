@@ -40,9 +40,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isohost.c,v 9.0 1992
 #include <sys/utsname.h>
 #endif
 
-/*  */
-
-char   *getlocalhost () {
+char *getlocalhost (void) {
 	char   *cp;
 #ifdef	TCP
 	struct hostent *hp;
@@ -54,7 +52,6 @@ char   *getlocalhost () {
 
 	if (buffer[0])
 		return buffer;
-
 	isodetailor (NULLCP, 0);
 	if (*isodename)
 		strcpy (buffer, isodename);
@@ -69,7 +66,6 @@ char   *getlocalhost () {
 		uname (&uts);
 		strcpy (buffer, uts.nodename);
 #endif
-
 #ifdef	TCP
 		if (hp = gethostbyname (buffer))
 			strcpy (buffer, hp -> h_name);
@@ -77,10 +73,8 @@ char   *getlocalhost () {
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 				  ("%s: unknown host", buffer));
 #endif
-
 		if (cp = index (buffer, '.'))
 			*cp = 0;
 	}
-
 	return buffer;
 }
