@@ -13,4 +13,3 @@ AttributeType x;
 {
 	return x;
 }
-

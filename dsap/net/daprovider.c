@@ -64,4 +64,3 @@ int ros2dapreject (struct DAPindication *di, char *event, struct RoSAPureject *r
 	else
 		return (dapreject (di, DA_ROS, rou->rou_id, NULLCP, " op id %d, reason: %d%s", rou->rou_id, rou->rou_reason, cp));
 }
-

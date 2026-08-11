@@ -472,4 +472,3 @@ struct s_filter ** fpp;
 	fp = fp->flt_next = eqfilter(FILTERITEM_APPROX, DE_ORGANISATIONAL_UNIT_NAME, oustr);
 	fp->flt_next = NULLFILTER;
 }
-

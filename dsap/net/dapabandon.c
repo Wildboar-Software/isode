@@ -56,4 +56,3 @@ int DapAbandon (int ad, int id, struct ds_abandon_arg *arg, struct DAPindication
 	return (DapInvokeReqAux (ad, id, OP_ABANDON, arg_pe, di, asyn));
 
 }
-

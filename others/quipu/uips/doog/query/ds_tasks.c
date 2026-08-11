@@ -147,4 +147,3 @@ DsTask task;
 
 	free((char *) task);
 } /* ds_task_free */
-

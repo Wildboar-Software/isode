@@ -22,4 +22,3 @@ int DRejectRequest (int sd, int reason, int id) {
 	}
 
 }
-

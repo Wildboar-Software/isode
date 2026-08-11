@@ -115,4 +115,3 @@ decode_decimal (PE pe) {
 	/* sorry - don't have the standard ! */
 	return pe_seterr (pe, PE_ERR_NOSUPP, NOTOK);
 }
-

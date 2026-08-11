@@ -168,4 +168,3 @@ void pref_deliv_syntax (void) {
 						  pdmfree,	NULLCP,
 						  NULLIFP,	TRUE);
 }
-

@@ -757,4 +757,3 @@ int gen_freefn(FILE *fp, YP yp)
 			genstrform(yp));
 	return (0);
 }
-

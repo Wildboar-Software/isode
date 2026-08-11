@@ -93,4 +93,3 @@ char *uderror_text[]
 #define UDERR_MAX	( (sizeof(uderror_text)) / (sizeof(uderror_text[0])) )
 
 #endif
-

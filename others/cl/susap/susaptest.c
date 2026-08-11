@@ -350,4 +350,3 @@ printtaddr (struct TSAPaddr *ta)
 	}
 
 }
-

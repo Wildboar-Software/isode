@@ -427,4 +427,3 @@ typedef struct asr_msg {
 	int valid_coll;		/*Is collision_winner valid?*/
 	int coll_winner;	/*Optional (0,1,2)*/
 } ASR_MSG;
-

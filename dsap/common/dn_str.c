@@ -173,4 +173,3 @@ int dn_syntax (void) {
 									  dn_free,	NULLCP,
 									  NULLIFP,	TRUE );
 }
-

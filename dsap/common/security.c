@@ -98,4 +98,3 @@ DN *nameptr;
 	else
 		return (DSE_SV_UNAVAILABLE);
 }
-

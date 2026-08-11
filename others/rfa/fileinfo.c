@@ -73,4 +73,3 @@ int op_listDir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_
 
 	return OK;
 }
-

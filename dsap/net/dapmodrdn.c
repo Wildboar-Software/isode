@@ -53,4 +53,3 @@ int DapModifyRDN (int ad, int id, struct ds_modifyrdn_arg *arg, struct DAPindica
 	return (DapInvokeReqAux (ad, id, OP_MODIFYRDN, arg_pe, di, asyn));
 
 }
-

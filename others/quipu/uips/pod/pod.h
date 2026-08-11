@@ -33,4 +33,3 @@
 		       (f)->max_bounds.descent )
 
 #define FONTWIDTH(f) ((f)->max_bounds.width)
-

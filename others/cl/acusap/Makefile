@@ -279,4 +279,3 @@ grind:;		iprint Makefile
 			sh -ve
 
 true:;
-

@@ -24,4 +24,3 @@ typedef struct br_cnt {
 	BKR_content	BKRcont;
 	EXPL_PTR 	ExPtr;
 } BRcnt;
-

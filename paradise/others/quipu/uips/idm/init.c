@@ -430,4 +430,3 @@ welcome() {
 		fclose(welcome_file);
 	}
 }
-

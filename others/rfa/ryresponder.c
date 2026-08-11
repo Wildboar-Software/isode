@@ -239,4 +239,3 @@ int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication
 
 	return OK;
 }
-

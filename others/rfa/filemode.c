@@ -227,4 +227,3 @@ time_t dt;
 
 	return rc;
 }
-

@@ -86,4 +86,3 @@ int main (int argc, char **argv)
 	fwrite (outbuf, optlen, 1, stdout);
 
 }
-

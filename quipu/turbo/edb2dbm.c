@@ -153,4 +153,3 @@ char * a;
 
 	return (c);
 }
-

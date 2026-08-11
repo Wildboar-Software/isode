@@ -14,5 +14,3 @@ L = /usr/ucl/lib/libXaw.a /usr/ucl/lib/libXt.a  \
 
 xwininfo: $(OBJS1) 
 	$(CC) -o $T$@ $(OBJS1) $(OBJSXI) $L
-
-

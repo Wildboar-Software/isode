@@ -115,4 +115,3 @@ char *rfa2ls (struct RfaInfo *rfa) {
 
 	return buf;
 }
-

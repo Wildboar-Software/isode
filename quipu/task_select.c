@@ -469,4 +469,3 @@ int schedule_operation (struct oper_act *x) {
 	} else
 		pending_ops = x;
 }
-

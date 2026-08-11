@@ -634,4 +634,3 @@ sortRfaInfoList (struct RfaInfo **rfap) {
 	}
 	*rfap = sorted;
 }
-

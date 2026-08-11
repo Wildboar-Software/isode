@@ -339,4 +339,3 @@ rfc2greybook (char *string) {
 		}
 	}
 }
-

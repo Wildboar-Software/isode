@@ -326,4 +326,3 @@ void	finalbye ();
 void	acs_adios ();
 
 extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/
-

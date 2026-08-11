@@ -7,4 +7,3 @@ typedef union {
 #define	SEARCHPATH	258
 #define	NUMBER	259
 #define	STRING	260
-

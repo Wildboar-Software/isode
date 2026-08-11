@@ -187,4 +187,3 @@ Display *dis;
 {
 	exit (0);
 }
-

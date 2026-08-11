@@ -135,4 +135,3 @@ void search_result_free (struct ds_search_result *arg) {
 
 	return;
 }
-

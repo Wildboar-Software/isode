@@ -62,4 +62,3 @@ bit_string * line;
 {
 	y -= SCALE;
 }
-

@@ -53,4 +53,3 @@ int DapAddEntry (int ad, int id, struct ds_addentry_arg *arg, struct DAPindicati
 	return (DapInvokeReqAux (ad, id, OP_ADDENTRY, arg_pe, di, asyn));
 
 }
-

@@ -45,4 +45,3 @@ int boolean_syntax (void) {
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
 }
-

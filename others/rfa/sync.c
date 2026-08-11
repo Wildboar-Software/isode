@@ -603,4 +603,3 @@ int rfaMake (char *dir, char *fns) {
 
 	return OK;
 }
-

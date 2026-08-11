@@ -57,4 +57,3 @@ int DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication
 	return (DapInvokeReqAux (ad, id, OP_COMPARE, arg_pe, di, asyn));
 
 }
-

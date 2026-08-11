@@ -109,4 +109,3 @@ struct dirent *entry;
 
 	return 0;
 }
-

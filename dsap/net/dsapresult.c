@@ -236,4 +236,3 @@ int IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 int IspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return QspEncodeResult (pep, res);
 }
-

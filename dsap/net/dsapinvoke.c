@@ -232,4 +232,3 @@ int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 int IspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return QspEncodeInvoke (pep, arg);
 }
-

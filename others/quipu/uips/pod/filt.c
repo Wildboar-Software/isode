@@ -514,4 +514,3 @@ filt_struct *filt;
 		return NULLFILTER;
 	}
 }
-

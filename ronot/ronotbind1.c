@@ -189,4 +189,3 @@ int ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) 
 
 	return (OK);
 }
-

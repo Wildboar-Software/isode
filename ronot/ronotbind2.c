@@ -208,4 +208,3 @@ int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTin
 		return (acs2ronotlose (rni, "RO-BIND.REJECT", aca));
 	}
 }
-

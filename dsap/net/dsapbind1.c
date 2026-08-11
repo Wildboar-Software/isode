@@ -453,4 +453,3 @@ int IspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct D
 
 	return (result);
 }
-

@@ -187,4 +187,3 @@ char *ntoa (struct sockaddr_in *nsin) {
 			 ntohs(nsin->sin_port));
 	return bufs[i];
 }
-

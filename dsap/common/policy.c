@@ -32,4 +32,3 @@ str2permission (char *str) {
 	}
 	return (result);
 }
-

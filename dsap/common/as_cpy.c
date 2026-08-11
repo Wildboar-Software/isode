@@ -45,4 +45,3 @@ Attr_Sequence  as;
 	}
 	return (start);
 }
-

@@ -156,4 +156,3 @@ int oper_send_invoke (struct oper_act *oper) {
 		return(OK);
 	}
 }
-

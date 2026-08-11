@@ -132,4 +132,3 @@ fi2rfa (struct type_RFA_FileInfoList *fil) {
 	}
 	return rfa;
 }
-

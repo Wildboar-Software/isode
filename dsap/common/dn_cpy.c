@@ -32,4 +32,3 @@ DN  dn_cpy (DN dn)
 	}
 	return (start);
 }
-

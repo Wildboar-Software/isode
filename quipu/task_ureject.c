@@ -25,4 +25,3 @@ int send_ro_ureject (int ad, int *id_p, int urej) {
 		watch_dog_reset();
 
 }
-

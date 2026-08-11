@@ -112,4 +112,3 @@ grind:;		iprint Makefile
 			tr " " "\012" | \
 			sed -e "s%.*%itroff -man &%" | \
 			sh -ve
-

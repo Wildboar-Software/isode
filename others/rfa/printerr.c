@@ -86,4 +86,3 @@ int printError (int error, caddr_t param, int *rc) {
 		*rc = 2;
 	}
 }
-

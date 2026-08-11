@@ -12,4 +12,3 @@ RDN  rdn_comp_new (AttributeType at, AttributeValue av)
 	ptr->rdn_next = NULLRDN;
 	return (ptr);
 }
-

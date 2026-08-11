@@ -132,4 +132,3 @@ int getop (char *str, char *ch) {
 	}
 	return (-1);
 }
-

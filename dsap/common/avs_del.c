@@ -18,4 +18,3 @@ void avs_delnext (AV_Sequence avs)
 		}
 	}
 }
-

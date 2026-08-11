@@ -53,4 +53,3 @@ int DapRemoveEntry (int ad, int id, struct ds_removeentry_arg *arg, struct DAPin
 	return (DapInvokeReqAux (ad, id, OP_REMOVEENTRY, arg_pe, di, asyn));
 
 }
-

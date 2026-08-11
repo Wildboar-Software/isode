@@ -22,4 +22,3 @@ main ()
 	TUnitDataWakeUp();	/* Sync wakeup routine on kill */
 
 }
-

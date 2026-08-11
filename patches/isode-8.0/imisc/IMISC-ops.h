@@ -171,4 +171,3 @@ extern struct RyError table_IMISC_Errors[];
 
 					/* ERROR userNotLoggedIn */
 #define error_IMISC_userNotLoggedIn	7
-

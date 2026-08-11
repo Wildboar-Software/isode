@@ -20,4 +20,3 @@ void dn_list_free(), dn_list_copy();
 QBool dn_list_add(), dn_list_merge(), dn_list_insert();
 
 #endif _query_entry_list_h_
-

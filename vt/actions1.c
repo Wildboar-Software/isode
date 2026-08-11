@@ -669,4 +669,3 @@ int a1_107 (		/*Generic Action*/
 	/*Stay in this state*/
 	return(OK);
 }
-

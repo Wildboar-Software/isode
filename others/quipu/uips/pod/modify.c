@@ -842,4 +842,3 @@ Attr_Sequence as;
 	as->attr_link = without_vals;
 	return with_vals;
 }
-

@@ -16,4 +16,3 @@ OBJS1 = $X/xmag.o
 
 xmag: $(OBJS1) 
 	$(CC) -DISOCONN -o $T$@ $(OBJS1) $(OBJSXI) $L
-

@@ -195,4 +195,3 @@ int task_invoke (register struct connection *conn, register struct DSAPinvoke *d
 	task->tk_state = TK_ACTIVE;
 	return(OK);
 }
-

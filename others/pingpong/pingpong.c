@@ -255,4 +255,3 @@ int ts_advise (char *str, struct TSAPdisconnect *td) {
 				td -> td_cc, td -> td_cc, td -> td_data);
 	else	 printf ("%s : %s\n", str, TErrString (td -> td_reason));
 }
-

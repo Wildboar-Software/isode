@@ -14,4 +14,3 @@ L = /usr/ucl/lib/libXaw.a /usr/ucl/lib/libXt.a  \
 
 xedit: $(OBJS1) 
 	$(CC) -o $T$@ $(OBJS1) $(OBJSXI) $L
-

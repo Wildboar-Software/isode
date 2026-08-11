@@ -10,4 +10,3 @@ AttributeType x;
 {
 	;
 }
-

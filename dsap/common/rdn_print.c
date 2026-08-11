@@ -24,4 +24,3 @@ void rdn_print (PS ps, RDN rdn, int format) {
 		rdn_comp_print (ps,eptr,format);
 	}
 }
-

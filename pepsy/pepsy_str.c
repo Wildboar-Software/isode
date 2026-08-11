@@ -28,4 +28,3 @@ char	*pepy_strings[] = {
 	(char *)0
 };
 #endif
-

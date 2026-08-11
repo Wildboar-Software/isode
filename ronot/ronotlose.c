@@ -89,4 +89,3 @@ int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *
 	else
 		return (ronotlose (rni, RBI_ACSE, NULLCP, "%s", cp));
 }
-

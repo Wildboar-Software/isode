@@ -81,4 +81,3 @@ bit_string * line;
 	sy++;
 
 }
-

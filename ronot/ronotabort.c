@@ -24,4 +24,3 @@ int RoBindUAbort (int sd, struct RoNOTindication *rni) {
 
 	return (OK);
 }
-

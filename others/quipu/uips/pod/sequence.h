@@ -18,4 +18,3 @@ char *get_from_seq();
 void add_seq();
 void free_seq();
 #endif
-

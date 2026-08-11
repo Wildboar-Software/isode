@@ -321,4 +321,3 @@ int dtype;
 
 	return (get_entries_aux (file,parent,version,dtype,(time_t)NULL));
 }
-

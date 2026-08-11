@@ -61,4 +61,3 @@ int DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, 
 	return (DapInvokeReqAux (ad, id, OP_READ, arg_pe, di, asyn));
 
 }
-

@@ -56,4 +56,3 @@ int DapList (int ad, int id, struct ds_list_arg *arg, struct DAPindication *di, 
 	return (DapInvokeReqAux (ad, id, OP_LIST, arg_pe, di, asyn));
 
 }
-

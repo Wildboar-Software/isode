@@ -209,4 +209,3 @@ void protected_password_syntax (void) {
 						  prot_free,	NULLCP,
 						  NULLIFP,	FALSE);
 }
-

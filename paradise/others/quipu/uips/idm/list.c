@@ -13,4 +13,3 @@ char *str;
 	(*lp)->name = copy_string(str);
 	(*lp)->next = NULLLIST;
 }
-

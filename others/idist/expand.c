@@ -575,4 +575,3 @@ int addpath (int c) {
 		*pathp = '\0';
 	}
 }
-

@@ -739,4 +739,3 @@ QCardinal request_id;
 
 	return results;
 } /* get_read_dn_attr_results */
-

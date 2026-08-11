@@ -414,4 +414,3 @@ char * objecttype;
 				"readOutcome:%s:%s", objecttype, outcome);
 	}
 }
-

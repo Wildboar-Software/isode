@@ -1661,4 +1661,3 @@ static int writev (
 		_qfree = NULL;
 		return;
 	}
-

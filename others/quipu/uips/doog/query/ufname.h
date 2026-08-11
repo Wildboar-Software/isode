@@ -133,4 +133,3 @@ void add_ufn_path_element();
 entryList get_ufn_path();
 
 #endif _query_ufname_h_
-

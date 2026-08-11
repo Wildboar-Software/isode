@@ -11,4 +11,3 @@ typedef struct {
 	int TCP_IP_OR_X25_SOCKET;
 	int descriptor;
 } t_list_of_conn_desc;
-

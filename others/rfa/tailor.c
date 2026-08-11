@@ -241,4 +241,3 @@ int tailor (char *fn) {
 		return NOTOK;
 	return OK;
 }
-

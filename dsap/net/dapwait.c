@@ -227,4 +227,3 @@ int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
 
 	return(success);
 }
-

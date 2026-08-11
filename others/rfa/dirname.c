@@ -181,4 +181,3 @@ char *getRfaContext (char *cwd, char *fn) {
 
 	return rp;
 }
-

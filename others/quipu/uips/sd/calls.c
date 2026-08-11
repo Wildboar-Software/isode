@@ -1617,4 +1617,3 @@ str_seq list;
 	}
 	return sortedList;
 }
-

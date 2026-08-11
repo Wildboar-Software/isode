@@ -43,4 +43,3 @@ inst-all:
 	ls -gls $(LETCDIR)quiputechusers
 
 clean:
-

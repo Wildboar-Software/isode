@@ -39,4 +39,3 @@ int DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
 
 	return (result);
 }
-

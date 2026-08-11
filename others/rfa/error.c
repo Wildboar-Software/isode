@@ -93,4 +93,3 @@ int statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke 
 
 	return aux_error (sd, error_RFA_statusError, (caddr_t)sep, rox, roi);
 }
-

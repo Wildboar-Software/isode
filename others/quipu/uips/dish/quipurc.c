@@ -628,4 +628,3 @@ int ems_part_free (struct entrymod *emp) {
 	ems_part_free(emp->em_next);
 	free((char *)emp);
 }
-

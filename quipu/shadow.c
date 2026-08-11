@@ -472,4 +472,3 @@ out:
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
 
 }
-

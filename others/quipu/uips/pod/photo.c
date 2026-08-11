@@ -125,4 +125,3 @@ int photo_white (int length) {
 
 	return 0;
 }
-

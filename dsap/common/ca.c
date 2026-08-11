@@ -93,4 +93,3 @@ ti_cpy (struct trace_info *ti) {
 
 	return(ret_ti);
 }
-

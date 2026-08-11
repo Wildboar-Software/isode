@@ -53,4 +53,3 @@ int DapModifyEntry (int ad, int id, struct ds_modifyentry_arg *arg, struct DAPin
 	return (DapInvokeReqAux (ad, id, OP_MODIFYENTRY, arg_pe, di, asyn));
 
 }
-

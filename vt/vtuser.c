@@ -1128,4 +1128,3 @@ void vbrkcnf (PE brk_pe) {
 		vt_sup_ga(&ni_image);
 	}
 }
-

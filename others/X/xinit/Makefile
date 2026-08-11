@@ -17,4 +17,3 @@ OBJS1 = xinit.o
 
 xinit: $(OBJS1) 
 	$(CC) -DISOCONN -DBINDIR=\"$(BINDIR)\" -o $T$@ $(OBJS1) $(OBJSXI) $L
-

@@ -70,4 +70,3 @@ AV_Sequence  avs_cpy_enc (AV_Sequence avs)
 	}
 	return (start);
 }
-

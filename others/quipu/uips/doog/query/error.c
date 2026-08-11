@@ -243,4 +243,3 @@ errorList list;
 
 	return new_list;
 } /* error_list_copy */
-

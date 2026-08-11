@@ -21,4 +21,3 @@ void	ryr_advise (char*, ...);
 void	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops, IFP start, IFP stop);
 
 extern int  debug;
-

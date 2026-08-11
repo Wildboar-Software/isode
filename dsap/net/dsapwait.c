@@ -1041,4 +1041,3 @@ void watch_dog_final_reset (void) {
 		alarm ((unsigned) 0);
 	}
 }
-

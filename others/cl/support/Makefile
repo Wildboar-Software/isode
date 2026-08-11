@@ -65,6 +65,3 @@ grind:;		iprint Makefile isoentities isobjects isoservices isotailor
 			tr " " "\012" | \
 			sed -e "s%.*%itroff -man &%" | \
 			sh -ve
-
-
-

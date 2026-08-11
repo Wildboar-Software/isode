@@ -48,4 +48,3 @@ WIDGET dethelpwdgts[] = {
 	{SCROLLBAR, "",                 '%',scrollbar, 0,0,3,0},
 	{FINISH,  "", 0,NULLFN}
 } ;
-

@@ -24,4 +24,3 @@
 #define aiws			/* AIX RS6000 workstation ONLY */
 
 #endif
-

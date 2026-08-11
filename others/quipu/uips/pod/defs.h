@@ -42,4 +42,3 @@ typedef struct dsErrorStruct {
 #define MAXTYPES  255
 
 #endif
-

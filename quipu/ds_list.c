@@ -321,4 +321,3 @@ int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target
 
 	return (NOTOK);
 }
-

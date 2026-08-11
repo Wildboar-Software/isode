@@ -316,4 +316,3 @@ ryr_errmsg (char *what, char *fmt) {
 	ryr_errmsg (what, fmt);
 }
 #endif
-

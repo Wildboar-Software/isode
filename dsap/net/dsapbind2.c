@@ -229,4 +229,3 @@ int DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindica
 
 	return (result);
 }
-

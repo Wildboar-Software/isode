@@ -57,4 +57,3 @@ table_entry table;
 		free((char *) entry);
 	}
 }
-

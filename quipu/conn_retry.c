@@ -196,4 +196,3 @@ void conn_retry (struct connection *conn, int moveon) {
 	if (pstate != conn->cn_state)
 		conn->cn_last_used = timenow;
 }
-

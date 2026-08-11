@@ -27,5 +27,3 @@ L = /usr/ucl/lib/libXaw.a /usr/ucl/lib/libXt.a  \
 
 uwm: $(OBJS) 
 	$(CC) -o $T$@ $(OBJS) $(OBJSXI) $L
-
-

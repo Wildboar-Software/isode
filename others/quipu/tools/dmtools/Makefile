@@ -10,5 +10,4 @@ install: inst-all clean
 
 inst-all:
 
-clean:	 
-
+clean:

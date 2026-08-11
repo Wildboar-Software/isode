@@ -40,4 +40,3 @@ void crefs_free(ContinuationRef crefp)
 	aps_free(crefp->cr_accesspoints);
 	free((char *)crefp);
 }
-

@@ -12,4 +12,3 @@ typedef struct symlist {
 	struct symlist *sy_next;
 }		symlist, *SY;
 #define	NULLSY	((SY) 0)
-

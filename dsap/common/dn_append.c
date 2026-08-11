@@ -16,4 +16,3 @@ void dn_append (DN a, DN b)
 		ptr->dn_parent = b;
 	}
 }
-

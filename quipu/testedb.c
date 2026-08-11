@@ -57,4 +57,3 @@ int refreshing = FALSE;
 int shadow_entry (Entry eptr) {
 	;
 }
-

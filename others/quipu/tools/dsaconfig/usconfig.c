@@ -1347,4 +1347,3 @@ advise (char *what, char *fmt) {
 }
 
 #endif /* lint */
-

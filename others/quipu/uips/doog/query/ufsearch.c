@@ -1207,4 +1207,3 @@ searchPair *list;
 
 	*list = NULLSearchPair;
 }
-

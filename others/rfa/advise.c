@@ -106,4 +106,3 @@ ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif
-

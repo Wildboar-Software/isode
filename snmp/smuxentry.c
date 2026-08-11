@@ -122,4 +122,3 @@ OID	identity;
 
 	return se;
 }
-

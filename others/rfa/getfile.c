@@ -211,4 +211,3 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 
 	return OK;
 }
-

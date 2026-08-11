@@ -185,4 +185,3 @@ int conn_req_aux (struct connection *cn) {
 
 	return(NOTOK);
 }
-

@@ -44,4 +44,3 @@ bit_string * line;
 		y = HEIGHT;
 	}
 }
-

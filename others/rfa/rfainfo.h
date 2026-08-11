@@ -69,4 +69,3 @@ extern char *status2str(), *status2sstr();
 extern struct RfaInfo *fi2rfa();
 extern struct type_RFA_FileInfoList *rfa2fil();
 extern struct type_RFA_FileInfo *rfa2fi();
-

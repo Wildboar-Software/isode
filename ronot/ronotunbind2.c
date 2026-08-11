@@ -142,4 +142,3 @@ int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni)
 
 	return (result);
 }
-

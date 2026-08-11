@@ -113,4 +113,3 @@ stringCell *sequence;
 
 	*sequence = NULLStrCell;
 } /* free_string_seq */
-

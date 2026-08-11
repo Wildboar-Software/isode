@@ -3897,4 +3897,3 @@ XtGrabKind grab_kind;
 	count++;
 	XtSetValues(label_widget, args, count);
 }
-

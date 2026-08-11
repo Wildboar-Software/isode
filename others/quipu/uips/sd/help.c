@@ -102,4 +102,3 @@ get_help (char *filename, char *line) {
 	fclose(helpfp);
 	scrollbar('\0');
 }
-

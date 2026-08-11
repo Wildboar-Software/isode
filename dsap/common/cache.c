@@ -333,4 +333,3 @@ char *new_version (void) {
 	tm2ut (gmtime (&clock),&ut);
 	return (strdup(utct2str(&ut)));
 }
-

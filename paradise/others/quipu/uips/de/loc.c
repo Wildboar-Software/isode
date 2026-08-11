@@ -513,4 +513,3 @@ struct s_filter ** fpp;
 	fp = fp->flt_next = eqfilter(FILTERITEM_APPROX, DE_LOCALITY_NAME, lstr);
 	fp->flt_next = NULLFILTER;
 }
-

@@ -810,4 +810,3 @@ specialSyntaxHandlers() {
 										 (IFP) octparse, de_mailprint, (IFP) strdup, lexequ,
 										 sfree, NULLCP, soundex_match, TRUE);
 }
-

@@ -24,4 +24,3 @@ int DUAbortRequest (int sd, struct DSAPindication *di) {
 
 	return (OK);
 }
-

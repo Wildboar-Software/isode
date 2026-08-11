@@ -148,4 +148,3 @@ int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 
 	return OK;
 }
-

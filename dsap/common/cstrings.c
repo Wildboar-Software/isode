@@ -62,4 +62,3 @@ int test_arg (char *x, char *y, int c) {
 		return (0);
 	}
 }
-

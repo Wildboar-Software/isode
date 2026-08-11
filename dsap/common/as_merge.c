@@ -209,4 +209,3 @@ Attr_Sequence a,b,c,d;
 
 	return (result);
 }
-

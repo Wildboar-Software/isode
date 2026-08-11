@@ -123,4 +123,3 @@ struct assocblk {
 };
 #define	NULLACB		((struct assocblk *) 0)
 int     freeacublk ();
-

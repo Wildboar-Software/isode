@@ -382,4 +382,3 @@ struct RoNOTindication	* rni;
 
 	return(OK);
 }
-

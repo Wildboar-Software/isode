@@ -329,4 +329,3 @@ int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOT
 
 	return(OK);
 }
-

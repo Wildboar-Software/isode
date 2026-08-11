@@ -237,5 +237,3 @@ $(ETCDIR)rfatailor:	rfatailor
 clean:;		rm -f *.o *.a RFA* x* z* _* core
 
 true:;
-
-

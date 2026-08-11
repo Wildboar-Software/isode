@@ -56,4 +56,3 @@ int DapSearch (int ad, int id, struct ds_search_arg *arg, struct DAPindication *
 	return (DapInvokeReqAux (ad, id, OP_SEARCH, arg_pe, di, asyn));
 
 }
-

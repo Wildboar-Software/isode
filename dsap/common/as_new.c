@@ -12,4 +12,3 @@ Attr_Sequence  as_comp_new (AttributeType at, AV_Sequence as, struct acl_info *a
 	ptr->attr_link = NULLATTR;
 	return (ptr);
 }
-

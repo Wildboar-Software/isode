@@ -152,4 +152,3 @@ int check_isp_ctxlist (struct PSAPctxlist *ctxlist) {
 
 	return (find_ctx_id (ctxlist, internet_ds_as));
 }
-

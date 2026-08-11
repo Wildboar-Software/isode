@@ -12,4 +12,3 @@ Attr_Sequence as_find_type (Attr_Sequence a, AttributeType b) {
 	}
 	return (NULLATTR);
 }
-

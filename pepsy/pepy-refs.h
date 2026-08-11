@@ -116,4 +116,3 @@ struct codedata {
 	OID	cd_oid2;
 	PE	cd_bit;
 };
-

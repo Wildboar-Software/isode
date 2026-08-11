@@ -17,4 +17,3 @@ OBJS1 = xhost.o
 
 xhost: $(OBJS1) 
 	$(CC) -DISOCONN -o $T$@ $(OBJS1) $(OBJSXI) $L
-

@@ -134,4 +134,3 @@ int getPagerInput() {
 int getpnum() {
 	return pagerNumber;
 }
-

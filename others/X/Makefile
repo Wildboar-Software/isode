@@ -38,4 +38,4 @@ clean:
 	$(TOP)/xmag \
 	$(TOP)/xhost \
 	$(TOP)/xedit \
-	$(TOP)/xwininfo 
+	$(TOP)/xwininfo

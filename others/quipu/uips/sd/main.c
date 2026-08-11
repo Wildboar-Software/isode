@@ -135,4 +135,3 @@ advise (int code, char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-

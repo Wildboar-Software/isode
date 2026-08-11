@@ -155,4 +155,3 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 
 	return (result);
 }
-

@@ -676,4 +676,3 @@ xConnClientPrefix *client;
 	WriteToServer(dpy->fd, buffer, bytes);
 	return;
 }
-

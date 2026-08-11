@@ -281,4 +281,3 @@ void post_syntax (void) {
 						  NULLIFP,	TRUE);
 
 }
-

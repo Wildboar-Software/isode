@@ -1146,4 +1146,3 @@ int main (int ac, char **av) {
 		closeconn();
 	exit (0);
 }
-

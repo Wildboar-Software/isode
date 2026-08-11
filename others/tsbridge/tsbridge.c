@@ -731,4 +731,3 @@ advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
-

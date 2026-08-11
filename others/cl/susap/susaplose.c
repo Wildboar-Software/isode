@@ -96,4 +96,3 @@ int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *t
 
 	return susaplose (si, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
-
