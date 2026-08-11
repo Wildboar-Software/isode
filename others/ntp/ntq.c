@@ -1,5 +1,3 @@
-
-
 /*
  * 
  * NTP query program - useful for debugging, Specific to OSI.

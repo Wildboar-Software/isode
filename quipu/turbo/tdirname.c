@@ -1,5 +1,3 @@
-
-
 #include "general.h"
 
 main( argc, argv )

@@ -1,5 +1,3 @@
-
-
 #include "general.h"
 #include <stdio.h>
 

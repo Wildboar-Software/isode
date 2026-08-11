@@ -1,5 +1,3 @@
-
-
 /*
  * 
  * Ntp UDP specific code (mainly) based on the 3.4 ntp but heavily modified.

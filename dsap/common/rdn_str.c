@@ -1,5 +1,3 @@
-
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/malloc.h"

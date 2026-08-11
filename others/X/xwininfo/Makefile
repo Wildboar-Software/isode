@@ -1,4 +1,3 @@
-
 X = /cs/sys/src/package/X11/R3/clients/xwininfo
 I = /cs/research/dsa/hubris/incads/sun4.0/isode-5.8uk
 

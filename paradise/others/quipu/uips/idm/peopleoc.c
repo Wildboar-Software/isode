@@ -1,4 +1,3 @@
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

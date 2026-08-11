@@ -1,5 +1,3 @@
-
-
 /*
  * data structure(s) for module T3 (t3.py)
  */

@@ -1,5 +1,3 @@
-
-
 /*
  * This module actually implements the the bulk of the NTP protocol processing.
  * It contains a minimum of machine and operating system dependencies (or at

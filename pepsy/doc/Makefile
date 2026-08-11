@@ -1,4 +1,3 @@
-
 FILES = overview.ms tables.ms wt-pep.ms
 
 pepsy.info: $(FILES)

@@ -1,4 +1,3 @@
-
 #include <signal.h>
 #include "manifest.h"
 #include "quipu/util.h"

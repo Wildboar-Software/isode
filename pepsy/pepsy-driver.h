@@ -1,5 +1,3 @@
-
-
 /*
  * common definitions for the pepsy driver routines
  */

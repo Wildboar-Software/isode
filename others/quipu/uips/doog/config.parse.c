@@ -1,4 +1,3 @@
-
 /*  A Bison parser, made from config.b  */
 
 #define	SEARCHPATH	258

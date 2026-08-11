@@ -1,5 +1,3 @@
-
-
 /*
  * 
  * NTP query program - useful fro debugging - no major changes yet

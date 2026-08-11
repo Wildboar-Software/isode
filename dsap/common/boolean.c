@@ -1,5 +1,3 @@
-
-
 /*
 	SYNTAX:
 		boolean ::= "TRUE" | "FALSE"

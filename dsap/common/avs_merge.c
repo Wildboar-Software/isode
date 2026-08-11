@@ -1,5 +1,3 @@
-
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/dsp.h"        /* for ds_error.h */

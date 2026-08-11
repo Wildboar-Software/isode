@@ -1,4 +1,4 @@
-	lint
+lint
 
 /*
  * ntp daemon - based on the 3.4 version but heavily modified for OSI

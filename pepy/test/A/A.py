@@ -1,4 +1,4 @@
-    A DEFINITIONS ::=
+A DEFINITIONS ::=
 %{
 
 #define	DEBUG
