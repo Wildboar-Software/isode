@@ -65,7 +65,6 @@ char  **argv,
     exit (status);
 }
 
-/*  */
 
 static int  process (file, fp)
 register char *file;
@@ -117,7 +116,6 @@ register FILE *fp;
     }
 }
 
-/*  */
 
 %}
 
@@ -200,7 +198,6 @@ char   *what,
     _exit (1);
 }
 
-/*  */
 
 /* VARARGS2 */
 

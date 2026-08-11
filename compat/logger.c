@@ -437,7 +437,6 @@ error:
 #endif
 }
 
-/*  */
 
 /*
  * ll_defmhdr - Default "make header" routine.

@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_io.c,v 9.0 1992/06/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 int
 ps_io (PS ps, IFP io, PElementData data, PElementLen n, int in_line) {

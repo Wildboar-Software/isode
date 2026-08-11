@@ -57,7 +57,6 @@ FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	return result;
 }
 
-/*  */
 
 static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	int    i;
@@ -148,7 +147,6 @@ FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, st
 	return result;
 }
 
-/*  */
 
 static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
@@ -266,7 +264,6 @@ FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], 
 	return result;
 }
 
-/*  */
 
 static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result,
@@ -402,7 +399,6 @@ FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[],
 	return result;
 }
 
-/*  */
 
 int
 FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {

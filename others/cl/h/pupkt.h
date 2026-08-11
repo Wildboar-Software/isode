@@ -10,7 +10,6 @@
 #include "ssap.h"		/* definitinos for SS-USERs */
 #include "susap.h"		/* definitinos for SS-USERs */
 
-/*  */
 
 
 #define toomuchP(b,n,m,p) \
@@ -53,7 +52,6 @@
 int	pusaplose ();
 
 
-/*  */
 
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	"iso asn.1 abstract transfer"
@@ -125,7 +123,6 @@ int	vunknown ();
 
 
 
-/*  */
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 #define	PPDU_UD        14

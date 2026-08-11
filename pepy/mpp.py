@@ -111,7 +111,6 @@ char  **argv,
     exit (status);		/* NOTREACHED */
 }
 
-/*  */
 
 static int  process (file, fp)
 register char *file;
@@ -187,7 +186,6 @@ register FILE *fp;
     }
 }
 
-/*  */
 
 %}
 

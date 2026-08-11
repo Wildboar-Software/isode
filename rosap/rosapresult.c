@@ -58,7 +58,6 @@ RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct R
 	return status;
 }
 
-/*  */
 
 static int
 RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {

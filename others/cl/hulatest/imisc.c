@@ -179,7 +179,6 @@ vec2ia5list (char **vec) {
 	return ia5;
 }
 
-/*  */
 
 static
 print_ia5list (struct type_IMISC_IA5List *ia5) {
@@ -205,7 +204,6 @@ do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List *
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -241,7 +239,6 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -265,7 +262,6 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -282,7 +278,6 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -331,7 +326,6 @@ utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, 
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -345,7 +339,6 @@ timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *resul
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -356,7 +349,6 @@ ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -372,7 +364,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -386,7 +377,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

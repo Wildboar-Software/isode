@@ -70,13 +70,11 @@ struct socket {
 };
 #endif
 
-/*  */
 
 static struct udpstat udpstat;
 
 static int  get_listeners ();
 
-/*  */
 
 #if defined(BSD44) || defined(LINUX)
 #define	udpInDatagrams	1
@@ -198,7 +196,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 struct udptab {
 #define	UT_SIZE	5			/* object instance */
@@ -218,7 +215,6 @@ static	int	flush_udp_cache = 0;
 
 static struct udptab *get_udpent ();
 
-/*  */
 
 #define	udpLocalAddress 0
 #define	udpLocalPort 1
@@ -378,7 +374,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  ut_compar (a, b)
 struct udptab **a,
@@ -515,7 +510,6 @@ int	offset;
 	return OK;
 }
 
-/*  */
 
 static struct udptab *get_udpent (ip, isnext)
 unsigned int *ip;

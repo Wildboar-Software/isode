@@ -30,7 +30,6 @@
 #include "isoaddrs.h"
 #endif
 
-/*  */
 
 struct TSAPstart {		/* T-CONNECT.INDICATON */
 	int     ts_sd;		/* TRANSPORT descriptor */
@@ -126,7 +125,6 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 	char    td_data[TD_SIZE];	/*   data */
 };
 
-/*  */
 
 extern char *tsapversion;
 

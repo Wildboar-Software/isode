@@ -74,7 +74,6 @@ PE	pe_list = NULLPE;
 PE	pe_active = NULLPE;
 #endif
 
-/*  */
 
 PE
 pe_alloc (PElementClass class, PElementForm form, PElementID id) {

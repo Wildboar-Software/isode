@@ -68,7 +68,6 @@ static char autogen[BUFSIZ];
 char *sysin = NULLCP;
 static char sysout[BUFSIZ];
 
-/*  */
 
 typedef struct yoi {
 	char   *yi_name;
@@ -108,7 +107,6 @@ typedef struct ytt {
 }		ytt, *TT;
 #define	NULLTT	((TT) 0)
 
-/*  */
 
 typedef struct symlist {
 	char   *sy_encpref;
@@ -321,7 +319,6 @@ yyerror_aux (char *s) {
 		fprintf (stderr, "last token read was \"%s\"\n", yytext);
 }
 
-/*  */
 
 #ifndef	lint
 myyerror (char *fmt, ...) {
@@ -338,7 +335,6 @@ myyerror (char *fmt, ...) {
 }
 #endif
 
-/*  */
 
 int
 yywrap () {
@@ -348,7 +344,6 @@ yywrap () {
 	return 1;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -398,7 +393,6 @@ pass1 () {
 	printf ("\n\n");
 }
 
-/*  */
 
 pass1_oid (mod, id, value)
 char   *mod,
@@ -429,7 +423,6 @@ YV	value;
 	myidentifiers = add_symbol (myidentifiers, sy);
 }
 
-/*  */
 
 pass1_obj (mod, id, syntax, value, aname, sname, descr, refer, idx, defval)
 char   *mod,
@@ -475,7 +468,6 @@ YV	value,
 	myobjects = add_symbol (myobjects, sy);
 }
 
-/*  */
 
 pass1_trap (mod, id, enterprise, number, vars, descr, refer)
 char   *mod,
@@ -514,7 +506,6 @@ char   *descr,
 	mytraps = add_symbol (mytraps, sy);
 }
 
-/*  */
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
 char  *encpref,
@@ -594,7 +585,6 @@ pass2 () {
 	delay = 0;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -603,7 +593,6 @@ do_id (OI yi, char *id) {
 	printf ("%-20s %s\n", yi -> yi_name, id2str (yi -> yi_value));
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -788,7 +777,6 @@ done_sequence:
 	}
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -847,7 +835,6 @@ lookup_identifier (char *mod, char *id) {
 	return NULLOI;
 }
 
-/*  */
 
 static char *id2str (yv)
 YV	yv;
@@ -889,7 +876,6 @@ lookup_object (char *mod, char *id) {
 	return NULLOT;
 }
 
-/*  */
 
 static	check_objects (yv, clause, typesOK)
 YV    yv;
@@ -1008,7 +994,6 @@ print_yi (OI yi, int level) {
 	}
 }
 
-/*  */
 
 static
 print_yo (OT yo, int level) {
@@ -1027,7 +1012,6 @@ print_yo (OT yo, int level) {
 	}
 }
 
-/*  */
 
 static
 print_yt (TT yt, int level) {
@@ -1047,7 +1031,6 @@ print_yt (TT yt, int level) {
 	}
 }
 
-/*  */
 
 static	print_type (yp, level)
 YP	yp;
@@ -1135,7 +1118,6 @@ int	level;
 	}
 }
 
-/*  */
 
 static	print_value (yv, level)
 YV	yv;

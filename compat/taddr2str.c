@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/taddr2str.c,v 9.0 19
 #include "manifest.h"
 #include "isoaddrs.h"
 
-/*  */
 
 char *
 taddr2str (struct TSAPaddr *ta) {

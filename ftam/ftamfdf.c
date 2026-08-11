@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamfdf.c,v 9.0 1992/0
 #include <stdio.h>
 #include "fpkt.h"
 
-/*  */
 
 int
 fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti) {
@@ -43,7 +42,6 @@ fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti) {
 	return fpm2bits (fsb, fname_pairs, bits, names, fti);
 }
 
-/*  */
 
 int
 fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti) {
@@ -58,7 +56,6 @@ fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti) {
 	return NOTOK;
 }
 
-/*  */
 
 int
 fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti) {
@@ -73,7 +70,6 @@ fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attribute
 	return NOTOK;
 }
 
-/*  */
 
 int
 fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti) {

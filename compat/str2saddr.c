@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2saddr.c,v 9.0 19
 #include "manifest.h"
 #include "isoaddrs.h"
 
-/*  */
 
 struct SSAPaddr *
 str2saddr (char *str) {

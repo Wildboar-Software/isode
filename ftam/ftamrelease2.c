@@ -58,7 +58,6 @@ FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct 
 	return result;
 }
 
-/*  */
 
 static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int     result;

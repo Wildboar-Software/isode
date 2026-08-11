@@ -63,7 +63,6 @@ RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, str
 	return result;
 }
 
-/*  */
 
 static int
 RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {

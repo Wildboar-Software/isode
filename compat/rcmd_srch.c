@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/rcmd_srch.c,v 9.0 19
 #include "manifest.h"
 #include "cmd_srch.h"
 
-/*  */
 
 char *
 rcmd_srch (int val, CMD_TABLE *cmd) {

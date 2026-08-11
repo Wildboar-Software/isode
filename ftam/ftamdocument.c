@@ -40,7 +40,6 @@ static int   stayopen = 0;
 
 static struct isodocument ids;
 
-/*  */
 
 int
 setisodocument (int f) {
@@ -64,7 +63,6 @@ endisodocument (void) {
 	return 1;
 }
 
-/*  */
 
 struct isodocument *
 getisodocument (void) {
@@ -148,7 +146,6 @@ free1:
 	return NULL;
 }
 
-/*  */
 
 struct isodocument *
 getisodocumentbyentry (char *entry) {
@@ -163,7 +160,6 @@ getisodocumentbyentry (char *entry) {
 	return id;
 }
 
-/*  */
 
 struct isodocument *getisodocumentbytype (type)
 OID	type;

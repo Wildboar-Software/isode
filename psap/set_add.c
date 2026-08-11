@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_add.c,v 9.0 1992/0
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 int
 set_add (PE pe, PE r) {

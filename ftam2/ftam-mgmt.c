@@ -33,7 +33,6 @@ static int rm (char *file, int multi);
 static int chgrp (char *group, char *file, int multi);
 static int makedir (char *dir, int multi);
 
-/*  */
 
 int f_mv (char **vec) {
 #ifdef	BRIDGE
@@ -227,7 +226,6 @@ out:
 #endif
 }
 
-/*  */
 
 static int mv (char *src, char *dst, int multi) {
 	struct FTAMgroup    ftgs;
@@ -309,7 +307,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 int
 f_rm (char **vec) {
@@ -364,7 +361,6 @@ out:
 #endif
 }
 
-/*  */
 
 static int rm (char *file, int multi) {
 	struct FTAMgroup    ftgs;
@@ -428,7 +424,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 #ifndef	BRIDGE
 int
@@ -487,7 +482,6 @@ out:
 	return OK;
 }
 
-/*  */
 
 static int chgrp (char *group, char *file, int multi) {
 	struct FTAMgroup    ftgs;
@@ -569,7 +563,6 @@ you_lose:
 }
 #endif
 
-/*  */
 
 int
 f_mkdir (char **vec) {
@@ -604,7 +597,6 @@ f_mkdir (char **vec) {
 #endif
 }
 
-/*  */
 
 static int makedir (char *dir, int multi) {
 	struct FTAMgroup    ftgs;

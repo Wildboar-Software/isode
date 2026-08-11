@@ -30,7 +30,6 @@
 
 #include "rosap.h"		/* definitions for RoS-USERs */
 
-/*  */
 
 struct RyOperation {
 	char   *ryo_name;		/* operation name */
@@ -62,7 +61,6 @@ struct RyError {
 
 struct RyError *finderrbyerr (), *finderrbyname ();
 
-/*  */
 
 struct opsblk {
 	struct opsblk *opb_forw;	/* doubly-linked list */
@@ -116,7 +114,6 @@ struct dspblk *newdsblk (), *finddsblk ();
 #define	RY_RESULT	(-1)	/* distinguishes RESULTs from ERRORs */
 #define	RY_REJECT	(-2)	/* distinguishes REJECTs from ERRORs */
 
-/*  */
 
 int	RyWait ();		/* WAIT */
 

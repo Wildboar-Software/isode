@@ -51,7 +51,6 @@ struct rtentry {
 };
 #endif
 
-/*  */
 
 #define	METRIC_NONE	(-1)			/* ipRouteMetric[1234] */
 
@@ -59,7 +58,6 @@ struct rtentry {
 #define	PROTO_ICMP	4
 #define	PROTO_ESIS	10
 
-/*  */
 
 struct rtetab {
 #define	RT_SIZE		20			/* object instance */

@@ -17,7 +17,6 @@
  *
  */
 
-/*  */
 
 #ifndef	_ISOSERVENT_
 #define	_ISOSERVENT_

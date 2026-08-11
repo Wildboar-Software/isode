@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/fd2tpkt.c,v 5.0 88/07/21 14:59:28
 #include "tpkt.h"
 #include "tailor.h"
 
-/*  */
 
 struct tsapkt *fd2tpkt (fd, initfnx, readfnx)
 int	fd;
@@ -70,7 +69,6 @@ IFP	initfnx,
 	return t;
 }
 
-/*  */
 
 static int  fd2tpktaux (fd, t, initfnx, readfnx)
 int	fd;
@@ -320,7 +318,6 @@ IFP	initfnx,
 	return OK;
 }
 
-/*  */
 
 static int  readx (fd, buffer, n, readfnx)
 int	fd;
@@ -349,7 +346,6 @@ IFP	readfnx;
 	return (bp - buffer);
 }
 
-/*  */
 
 int	tpkt2fd (fd, t, writefnx)
 int	fd;
@@ -506,7 +502,6 @@ IFP	writefnx;
 	return (i != NOTOK ? OK : DR_NETWORK);
 }
 
-/*  */
 
 struct tsapkt *
 newtpkt (int code) {

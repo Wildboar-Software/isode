@@ -29,7 +29,6 @@
 
 
 
-/*  */
 
 static char *reject_uerr0[] = {
 	"Reason not specified",
@@ -60,7 +59,6 @@ static char *reject_uerr8[] = {
 static int reject_uerr8_cnt = sizeof reject_uerr8 / sizeof reject_uerr8[0];
 
 
-/*  */
 
 char *
 SuErrString (int code) {

@@ -25,7 +25,6 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
 
-/*  */
 
 #define	FS_GEN(fsb) \
 	((fsb -> fsb_flags & FSB_INIT) ? FS_GEN_INITIATOR : FS_GEN_RESPONDER)
@@ -185,7 +184,6 @@
 
 int	ftamlose (), fpktlose (), ftamoops ();
 
-/*  */
 
 struct ftamblk {
 	struct ftamblk *fsb_forw;	/* doubly-linked list */
@@ -266,7 +264,6 @@ struct ftamblk *newfsblk (), *findfsblk ();
 #define	fsbtrace(fsb,a)	FTraceHook a
 #endif
 
-/*  */
 
 struct pair {
 	int	    p_mask;
@@ -277,7 +274,6 @@ extern struct pair funit_pairs[],
 		fattr_pairs[],
 		faction_pairs[];
 
-/*  */
 
 /* Application wide types */
 #define	FTAM_AET	0	/* Application-Entity-Title */
@@ -410,7 +406,6 @@ extern struct FADUidentity *ftam_faduid;
 
 extern char *fadu_nodename;
 
-/*  */
 
 int	attr2pe (), conctl2pe (), diag2pe (), faduid2pe ();
 

@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992
 
 #define	QUOTE	'\\'
 
-/*  */
 
 int
 str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {

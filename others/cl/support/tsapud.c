@@ -79,7 +79,6 @@
 #include "tusap.h"
 
 
-/*  */
 
 static int  debug = 1;
 static int  nbits = FD_SETSIZE;
@@ -109,7 +108,6 @@ void	ts_advise ();
 
 
 
-/*  */
 
 /* ARGSUSED */
 
@@ -219,7 +217,6 @@ char  **argv,
 	}
 }
 
-/*  */
 
 static char buffer1[4096];
 static char buffer2[32768];
@@ -294,7 +291,6 @@ out:
 	exit (1);
 }
 
-/*  */
 
 static void
 ts_advise (struct TSAPdisconnect *td, int code, char *event) {
@@ -311,7 +307,6 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 }
 
 
-/*  */
 
 static
 arginit (char **vec) {
@@ -404,7 +399,6 @@ arginit (char **vec) {
 		adios (NULLCP, "%s not owned by root", ap);
 }
 
-/*  */
 
 static
 envinit () {

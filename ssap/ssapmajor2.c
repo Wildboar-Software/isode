@@ -53,7 +53,6 @@ SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si) {
 	return result;
 }
 
-/*  */
 
 int
 SMajSyncResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {

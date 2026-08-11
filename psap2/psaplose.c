@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992
 #include "ppkt.h"
 #include "tailor.h"
 
-/*  */
 #ifndef	lint
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);
 #endif
@@ -122,7 +121,6 @@ ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, c
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	psaplose (struct PSAPindication*pi, ...) {
@@ -149,7 +147,6 @@ psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */

@@ -11,7 +11,6 @@ static char *myname = "hello_world";
 static void adios (char *, char *, ...);
 void advise (char *, char *, ...);
 
-/*  */
 
 /* ARGSUSED */
 

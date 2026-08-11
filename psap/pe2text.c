@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/0
 #include "psap.h"
 #include "logger.h"
 
-/*  */
 
 /* logfile-backed abstract for PStreams */
 
@@ -61,7 +60,6 @@ ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	return write (lp -> ll_fd, (char *) data, (int) n);
 }
 
-/*  */
 
 static int
 ll_psopen (PS ps) {
@@ -72,7 +70,6 @@ ll_psopen (PS ps) {
 
 #define	ll_psetup(ps, lp)	((ps) -> ps_addr = (caddr_t) (lp), OK)
 
-/*  */
 
 void
 pe2text (LLog *lp, PE pe, int rw, int cc) {

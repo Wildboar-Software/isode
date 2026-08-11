@@ -44,7 +44,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/clns.c,v 9.0 1992/06/1
 #include <netiso/clnp_stat.h>
 #include <netiso/esis.h>
 
-/*  */
 
 #define	FORW_IS		1		/* clnpForwarding */
 #define	FORW_ES		2
@@ -52,7 +51,6 @@ static	int	iso_systype;
 
 struct clnp_stat clnp_stat;
 
-/*  */
 
 #define	clnpForwarding	0
 #define	clnpDefaultLifeTime 1
@@ -402,7 +400,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  clnp_er_index (p)
 u_char p;
@@ -416,7 +413,6 @@ u_char p;
 	return (CLNP_ERRORS + 1);
 }
 
-/*  */
 
 static int  s_clnp (oi, v, offset)
 OI	oi;
@@ -515,7 +511,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 #define	CLNP_MAXPACKET	65535		/* clnpAdEntReasmMaxSize */
 /* equivalent of IP_MAXPACKET */
@@ -625,7 +620,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 #define	clnpRouteDest	0
 #define	clnpRouteIfIndex 1
@@ -786,7 +780,6 @@ try_again:
 	}
 }
 
-/*  */
 
 struct adrtab {
 #define	ADN_SIZE	ADR_SIZE		/* ClnpAddress instance */
@@ -824,7 +817,6 @@ static	int	flush_arp_cache = 0;
 
 static struct adrtab *get_arpent ();
 
-/*  */
 
 #define	clnpNetToMediaIfIndex 0
 #define	clnpNetToMediaPhysAddress 1
@@ -974,7 +966,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  adn_compar (a, b)
 struct adrtab **a,
@@ -1146,7 +1137,6 @@ int	offset;
 }
 #undef	ROUND
 
-/*  */
 
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
 unsigned int *ip;
@@ -1190,11 +1180,9 @@ out:
 	return NULL;
 }
 
-/*  */
 
 static	struct esis_stat esis_stat;
 
-/*  */
 
 #define	esisESHins	0
 #define	esisESHouts	1
@@ -1274,7 +1262,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 init_clns () {
 	OT	    ot;

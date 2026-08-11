@@ -76,7 +76,6 @@ struct dn_seq *dn_seq_push ();
 int	dn_seq_print ();
 PE	grab_pe ();
 
-/*  */
 
 void
 init_aka (char *pgm, int stayopen, char *dit) {
@@ -117,7 +116,6 @@ init_aka (char *pgm, int stayopen, char *dit) {
 		adios (NULLCP, "local_dit invalid: \"%s\"", cp);
 }
 
-/*  */
 
 static struct aka *
 mbox2ak (char *local, char *domain) {
@@ -186,7 +184,6 @@ dm2dn_seq (char *dm) {
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
 }
 
-/*  */
 
 static struct dn_seq *dm2dn_seq_aux (dm, dn, dlist)
 char   *dm;
@@ -314,7 +311,6 @@ free_filter:
 	return dlist;
 }
 
-/*  */
 
 static  PE  image_search (ak)
 struct aka *ak;
@@ -419,7 +415,6 @@ free_filter:
 	return pe;
 }
 
-/*  */
 
 static
 do_bind () {
@@ -455,7 +450,6 @@ static int    x, y, maxx;
 
 static struct type_IMAGE_Image *im = NULL;
 
-/*  */
 
 struct type_IMAGE_Image *
 fetch_image (char *local, char *domain) {
@@ -522,7 +516,6 @@ out:
 	return (ak -> ak_image = im);
 }
 
-/*  */
 
 /* ARGSUSED */
 

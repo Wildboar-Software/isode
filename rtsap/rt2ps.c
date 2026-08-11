@@ -43,7 +43,6 @@ static int  doPSactivity ();
 static int  doPSsync ();
 static int  doPStoken ();
 
-/*  */
 
 int
 rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
@@ -79,7 +78,6 @@ rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	return result;
 }
 
-/*  */
 
 int
 rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
@@ -106,7 +104,6 @@ rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 	return OK;
 }
 
-/*  */
 
 int
 rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
@@ -323,7 +320,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 int
 rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
@@ -531,7 +527,6 @@ acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, str
 		return rtsaplose (rti, reason, NULLCP, "%s", cp);
 }
 
-/*  */
 
 int
 acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti) {
@@ -715,7 +710,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti) {
@@ -806,7 +800,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti) {
@@ -858,7 +851,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti) {
@@ -1007,7 +999,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti) {
@@ -1056,7 +1047,6 @@ out1:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti) {

@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/nochrcnv.c,v 9.0 199
 #include <stdio.h>
 #include "general.h"
 
-/*  */
 
 char                    /* straight mapping - Non case sensive */
 /* used for consistency */

@@ -475,7 +475,6 @@ struct sigcontext *sc;
 #endif
 }
 
-/*  */
 
 #ifndef	SIGPOLL
 static int
@@ -703,7 +702,6 @@ void freetblk (struct tsapblk *tb) {
 	sigiomask (smask);
 }
 
-/*  */
 
 struct tsapblk *
 findtblk (int sd) {
@@ -719,7 +717,6 @@ findtblk (int sd) {
 	return NULL;
 }
 
-/*  */
 
 int
 copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {

@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/sprintaei.c,v 9.0 199
 #include "psap.h"
 #include "isoaddrs.h"
 
-/*  */
 
 char *
 sprintaei (AEI aei) {

@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/routes.c,v 9.0 1992/06
 #include "interfaces.h"
 #include "routes.h"
 
-/*  */
 
 int routeNumber = 0;
 struct rtetab  *rts = NULL;
@@ -52,7 +51,6 @@ int	flush_rt_cache = 0;
 
 static int  get_route ();
 
-/*  */
 
 #ifdef LINUX
 static int _read_routes()
@@ -254,7 +252,6 @@ out1:
 	return NOTOK;
 }
 
-/*  */
 
 static int  rt_compar (a, b)
 struct rtetab **a,
@@ -329,7 +326,6 @@ void sort_rtetab (void) {
 }
 
 
-/*  */
 
 static int  get_route (re)
 struct rtentry *re;
@@ -425,7 +421,6 @@ struct rtentry *re;
 	return OK;
 }
 
-/*  */
 
 #ifdef	BSD44
 static int  get_radix_nodes () {
@@ -454,7 +449,6 @@ static int  get_radix_nodes () {
 	return OK;
 }
 
-/*  */
 
 static int  get_radix_node (rn)
 struct radix_node *rn;
@@ -494,7 +488,6 @@ struct radix_node *rn;
 }
 #endif
 
-/*  */
 
 struct rtetab *get_rtent (ip, len, head, isnext)
 unsigned int *ip;

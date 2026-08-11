@@ -50,7 +50,6 @@
 #endif
 #endif
 
-/*  */
 
 #ifdef HULA
 #define	rosapPsig(acb, sd) \
@@ -235,7 +234,6 @@
 int	ropktlose (struct assocblk *acb, ...);
 int rosaplose (struct RoSAPindication *roi, ...);
 
-/*  */
 
 int	acb2osdu ();
 
@@ -253,7 +251,6 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 	ro2ssready ();
 #endif
 
-/*  */
 
 /* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */

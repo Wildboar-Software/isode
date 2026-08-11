@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992
 #endif
 #include "manifest.h"
 
-/*  */
 
 int	_iosignals_set = 0;
 
@@ -78,7 +77,6 @@ sigser (int sig) {
 	pending |= sigmask (sig);
 }
 
-/*  */
 #ifndef SVR4_UCB
 
 int

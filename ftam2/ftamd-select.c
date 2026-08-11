@@ -838,7 +838,6 @@ done_open:
 	}
 }
 
-/*  */
 
 #ifdef	BRIDGE
 /* ARGSUSED */
@@ -962,7 +961,6 @@ bad_concur:
 	return result;
 }
 
-/*  */
 
 static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags) {
 	int     id,
@@ -1035,7 +1033,6 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 	return result;
 }
 
-/*  */
 
 int	readattrs (attrnames, fa, proposed, parameter, file, st, diags)
 int	attrnames;
@@ -1239,7 +1236,6 @@ bad_param:
 	return OK;
 }
 
-/*  */
 
 static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
@@ -1350,7 +1346,6 @@ no_change:
 	return OK;
 }
 
-/*  */
 
 static char *getfile (char*file) {
 	char  *bp;
@@ -1433,7 +1428,6 @@ trunc:
 #endif
 }
 
-/*  */
 
 #ifndef	BRIDGE
 /* originally used algorithms similar to those in /bin/ls; Don Preuss of
@@ -1448,7 +1442,6 @@ static char *getuser (int uid) {
 	return (pw ? pw -> pw_name : NULL);
 }
 
-/*  */
 
 static char *getgroup (int gid) {
 	struct group *gr;
@@ -1466,7 +1459,6 @@ static char *getgroup (int gid) {
 	return my_name;
 }
 
-/*  */
 
 int	findgid (group)
 char   *group;
@@ -1502,7 +1494,6 @@ char   *group;
 }
 #endif
 
-/*  */
 
 #ifndef	SYS5
 #ifndef	BRIDGE
@@ -1520,7 +1511,6 @@ static int  EACCESS ( char   *file, int	mode) {
 #endif
 #else
 
-/*  */
 
 static int  chgrp ( char   *file, int	gid) {
 	int     i,
@@ -1555,7 +1545,6 @@ static int  chgrp ( char   *file, int	gid) {
 	}
 }
 
-/*  */
 
 static int  mkdir ( char   *dir, int	mode) {
 	int     i,
@@ -1589,7 +1578,6 @@ static int  mkdir ( char   *dir, int	mode) {
 	}
 }
 
-/*  */
 
 static int  rmdir (char* dir) {
 	int     i,
@@ -1620,7 +1608,6 @@ static int  rmdir (char* dir) {
 	}
 }
 
-/*  */
 
 static int  truncate ( char   *file, int	length) {
 	int	    fd;

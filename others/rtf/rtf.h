@@ -38,7 +38,6 @@
 
 extern LLog *pgm_log;
 
-/*  */
 
 char   *SReportString ();
 

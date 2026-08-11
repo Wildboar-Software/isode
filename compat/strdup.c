@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/strdup.c,v 9.0 1992/
 #include "manifest.h"
 #include "tailor.h"
 
-/*  */
 #if !defined(STRDUP) && (!defined(SVR4) || defined(_AIX))
 /* strdup in AIX does not seem to use QUIPUs malloc! */
 

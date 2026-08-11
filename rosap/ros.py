@@ -47,7 +47,6 @@ int	rosap_lnull;
 PE	rosap_data;
 int	rosap_reason;
 
-/*  */
 %}
 
 BEGIN

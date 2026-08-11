@@ -29,7 +29,6 @@
 
 #include "ssap.h"		/* definitinos for SS-USERs */
 
-/*  */
 
 #define	psapPsig(pb, sd) \
 { \
@@ -130,7 +129,6 @@
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
 
 
-/*  */
 
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	BER
@@ -257,7 +255,6 @@ struct pair {
 extern struct pair preq_pairs[], sreq_pairs[];
 #endif
 
-/*  */
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 

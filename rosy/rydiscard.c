@@ -47,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydiscard.c,v 9.0 1992
 }
 #endif
 
-/*  */
 
 static int	do_response ();
 
@@ -72,7 +71,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:
 #include "tailor.h"
 #include "internet.h"
 
-/*  */
 
 static int  fd2tpktaux ();
 static int  readx ();
@@ -58,7 +57,6 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	return t;
 }
 
-/*  */
 
 static int
 fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
@@ -308,7 +306,6 @@ fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	return OK;
 }
 
-/*  */
 
 static int
 readx (int fd, char *buffer, int n, IFP readfnx) {
@@ -333,7 +330,6 @@ readx (int fd, char *buffer, int n, IFP readfnx) {
 	return (bp - buffer);
 }
 
-/*  */
 
 int
 tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
@@ -483,7 +479,6 @@ tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 	return i;
 }
 
-/*  */
 
 struct tsapkt *
 newtpkt (int code) {

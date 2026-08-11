@@ -55,7 +55,6 @@ static char *myname = "xwho";
 static char *display = NULL;
 static char *geometry = NULL;
 
-/*  */
 
 typedef struct _frame {
 	short x, y;
@@ -350,7 +349,6 @@ update_X () {
 	service_X ();
 }
 
-/*  */
 
 static int
 service_X () {
@@ -428,7 +426,6 @@ service_X () {
 	}
 }
 
-/*  */
 
 static
 init_X () {
@@ -476,7 +473,6 @@ init_X () {
 	mapped = 0;
 }
 
-/*  */
 
 static
 layout_X () {
@@ -559,7 +555,6 @@ layout_X () {
 	largest_h = h;
 }
 
-/*  */
 
 static
 display_top () {
@@ -577,7 +572,6 @@ display_host (struct host *hp) {
 					  hp -> h_string, strlen (hp -> h_string));
 }
 
-/*  */
 
 static
 display_face (struct face *fp) {
@@ -618,7 +612,6 @@ display_face (struct face *fp) {
 	XDestroyImage (image);
 }
 
-/*  */
 
 static int
 facecmp (struct face **f1, struct face **f2) {
@@ -805,7 +798,6 @@ out:
 	;
 }
 
-/*  */
 
 static int
 display_this_host (char *n) {

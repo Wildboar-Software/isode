@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamfaduid.c,v 9.0 199
 #include <stdio.h>
 #include "fpkt.h"
 
-/*  */
 
 struct type_FTAM_FADU__Identity *
 faduid2fpm (struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti) {
@@ -137,7 +136,6 @@ bad_value:
 	return fpm;
 }
 
-/*  */
 
 int
 fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti) {

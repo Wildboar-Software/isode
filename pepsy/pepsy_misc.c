@@ -140,7 +140,6 @@ OID	int2oid (int n) {
 	return noid;
 }
 
-/*  */
 
 void addtable (
 	char *name,

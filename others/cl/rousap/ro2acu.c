@@ -180,7 +180,6 @@ ro2acuwait (
 }
 
 
-/*  */
 
 /* ARGSUSED */
 

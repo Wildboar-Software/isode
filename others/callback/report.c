@@ -39,7 +39,6 @@ static LLog _pgm_log = {
 };
 static LLog *pgm_log = &_pgm_log;
 
-/*  */
 
 int
 reportailor (char *myname) {
@@ -47,7 +46,6 @@ reportailor (char *myname) {
 	ll_hdinit (pgm_log, myname);
 }
 
-/*  */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {

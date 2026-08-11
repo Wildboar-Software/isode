@@ -37,7 +37,6 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
 
-/*  */
 
 struct RoSAPaddr {		/* RoSAP address (old-style)*/
 	struct SSAPaddr roa_addr;
@@ -46,7 +45,6 @@ struct RoSAPaddr {		/* RoSAP address (old-style)*/
 };
 #define	NULLRoA			((struct RoSAPaddr *) 0)
 
-/*  */
 
 #define	ROS_MYREQUIRE	SR_DUPLEX/* for direct users of ACSE */
 
@@ -249,7 +247,6 @@ struct RoSAPindication {
 #define	roi_finish	roi_un.roi_un_finish
 };
 
-/*  */
 
 extern char *rosapversion;
 

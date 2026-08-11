@@ -56,7 +56,6 @@ FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMind
 	return result;
 }
 
-/*  */
 
 static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti) {
 	int     result;

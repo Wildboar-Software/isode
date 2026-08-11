@@ -57,7 +57,6 @@ RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct
 	return result;
 }
 
-/*  */
 
 static int
 RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {

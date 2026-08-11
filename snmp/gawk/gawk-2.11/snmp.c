@@ -136,7 +136,6 @@ int	snmp_init () {
 	return 0;
 }
 
-/*  */
 
 int	e_integer (), e_octets (), e_display (), e_objectID (), e_null (),
 	e_counter (), e_gauge (), e_timeticks (), e_ipaddr (),  e_clnpaddr ();
@@ -601,7 +600,6 @@ NODE   *symbol,
 	return snmp_assoc_next (&s -> s_search, 0);
 }
 
-/*  */
 
 struct search *snmp_assoc_next (lookat, done)
 struct search *lookat;
@@ -667,7 +665,6 @@ int	done;
 	return l;
 }
 
-/*  */
 
 static int  snmp_get_next (s)
 struct snmp_search *s;
@@ -756,7 +753,6 @@ struct snmp_search *s;
 	return OK;
 }
 
-/*  */
 
 static int  snmp_get_next_aux (s)
 struct snmp_search *s;
@@ -969,7 +965,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int  req_ready (sr, do_val)
 struct snmp_req *sr;
@@ -1803,7 +1798,6 @@ got_host:
 	return OK;
 }
 
-/*  */
 
 /* Reads an IP address to community mapping file.  Use UNIX modes for
    protection of information therein...
@@ -1885,7 +1879,6 @@ done:
 	return result;
 }
 
-/*  */
 
 #ifndef	lint
 static void	snmp_diag (char *what, char *fmt, ...)
@@ -1917,7 +1910,6 @@ char   *what,
 }
 #endif
 
-/*  */
 
 char   *snmp_name (ptr)
 NODE   *ptr;
@@ -1925,7 +1917,6 @@ NODE   *ptr;
 	return ((OT) (ptr -> magic)) -> ot_text;
 }
 
-/*  */
 
 static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"

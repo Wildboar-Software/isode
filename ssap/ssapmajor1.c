@@ -54,7 +54,6 @@ SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *s
 	return result;
 }
 
-/*  */
 
 int
 SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si) {

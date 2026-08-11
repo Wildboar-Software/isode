@@ -75,7 +75,6 @@ static struct expr exprs[NEXPR];
 static struct expr *curexpr = NULL;
 static struct expr *roofexpr;
 
-/*  */
 
 #define	functAdd	 0
 #define	functSub	 1
@@ -245,7 +244,6 @@ int	offset;
 	return o_integer (oi, v, arg1);
 }
 
-/*  */
 
 /* assumes that exprEval occurs first in variable-bindings of get... */
 
@@ -342,7 +340,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  eval_expr (e)
 struct expr *e;
@@ -428,7 +425,6 @@ struct expr *e;
 	return OK;
 }
 
-/*  */
 
 static int  read_tl (e, class, form, id, len)
 struct expr *e;
@@ -455,7 +451,6 @@ PElementLen   *len;
 	return OK;
 }
 
-/*  */
 
 static int  read_long (e, base, len, form, result)
 struct expr *e;
@@ -488,7 +483,6 @@ integer *result;
 	return OK;
 }
 
-/*  */
 
 static int  read_oid (e, base, len, form, ox)
 struct expr *e;
@@ -561,7 +555,6 @@ OID   *ox;
 	return OK;
 }
 
-/*  */
 
 static int  get_var_value (e, oid, i)
 struct expr *e;
@@ -640,7 +633,6 @@ losing:
 	return OK;
 }
 
-/*  */
 
 static int  s_expressions (oi, v, offset)
 OI	oi;
@@ -720,7 +712,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 void init_eval (void) {
 	OT	    ot;

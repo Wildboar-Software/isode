@@ -49,7 +49,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
 #include <net/if_arp.h>
 #endif
 
-/*  */
 
 #define	TYPE_MIN	1		/* ifType */
 #define	TYPE_OTHER	1

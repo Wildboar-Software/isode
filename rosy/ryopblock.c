@@ -85,7 +85,6 @@ void freeopblk (struct opsblk *opb) {
 	free ((char *) opb);
 }
 
-/*  */
 
 struct opsblk   *findopblk (sd, id, flags)
 int	sd,
@@ -107,7 +106,6 @@ int	sd,
 	return NULL;
 }
 
-/*  */
 
 struct opsblk   *firstopblk (sd)
 int	sd;
@@ -151,7 +149,6 @@ void loseopblk (int sd, int reason) {
 	}
 }
 
-/*  */
 
 #ifdef	lint
 

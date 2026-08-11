@@ -130,11 +130,9 @@ extern int  mylevel;		/*   .. */
     else
 #endif
 
-/*  */
 
 extern int  errno;
 
-/*  */
 
 #ifdef	BRIDGE
 /* FTP interface routines and variables */

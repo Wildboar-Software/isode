@@ -25,7 +25,6 @@
 #include "isoaddrs.h"
 #include "logger.h"
 
-/*  */
 
 extern int   debug;
 extern int   errsw;

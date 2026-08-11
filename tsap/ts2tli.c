@@ -468,7 +468,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	return DONE;
 }
 
-/*  */
 
 static int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -560,7 +559,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
@@ -586,7 +584,6 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
 	return OK;
 }
 
-/*  */
 
 /*
  * This is a tricky one. We have to pass over a dup'd transport descriptor
@@ -657,7 +654,6 @@ reject: {
 	}
 }
 
-/*  */
 
 static int
 TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
@@ -816,7 +812,6 @@ done:
 	return OK;
 }
 
-/*  */
 
 static int
 TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -870,7 +865,6 @@ out:
 	return result;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -997,7 +991,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
@@ -1018,7 +1011,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 
 	return result;
 }
-/*  */
 
 /* ARGSUSED */
 
@@ -1089,7 +1081,6 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 	return (async ? OK : DONE);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1107,7 +1098,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1129,7 +1119,6 @@ tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR 
 	return buffer;
 }
 
-/*  */
 
 int
 tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
@@ -1169,7 +1158,6 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-/*  */
 
 int
 tp4init (struct tsapblk *tb) {
@@ -1200,7 +1188,6 @@ tp4init (struct tsapblk *tb) {
 	tb -> tb_selectfnx = select_tp4_socket;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1214,7 +1201,6 @@ start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, st
 	return sd;
 }
 
-/*  */
 
 int
 join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td) {
@@ -1256,7 +1242,6 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
 	return sd;
 }
 
-/*  */
 
 /*
  *	Default is a pretty common format for TLI addresses:
@@ -1482,7 +1467,6 @@ out_space:
 #endif
 }
 
-/*  */
 
 int
 tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {

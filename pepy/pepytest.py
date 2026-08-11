@@ -128,7 +128,6 @@ static int process (char *file, FILE *fp) {
     }
 }
 
-/*  */
 
 %}
 

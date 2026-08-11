@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_error.c,v 9.0 1992/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 static char *pe_errorlist[] = {
 	"Error 0",
@@ -53,7 +52,6 @@ static char *pe_errorlist[] = {
 
 static int pe_maxerror = sizeof pe_errorlist / sizeof pe_errorlist[0];
 
-/*  */
 
 char *
 pe_error (int c) {

@@ -43,7 +43,6 @@ static int  stayopen = 0;
 
 static struct isoservent    iss;
 
-/*  */
 
 int
 setisoservent (int f) {
@@ -67,7 +66,6 @@ endisoservent (void) {
 	return 1;
 }
 
-/*  */
 
 struct isoservent *
 getisoservent (void) {
@@ -114,7 +112,6 @@ getisoservent (void) {
 	return NULL;
 }
 
-/*  */
 
 #ifdef	DEBUG
 int

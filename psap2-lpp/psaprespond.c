@@ -93,7 +93,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

@@ -90,7 +90,6 @@ static int TPid = NOTOK;
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -214,7 +213,6 @@ TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdiscon
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -463,7 +461,6 @@ TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -515,7 +512,6 @@ TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -640,7 +636,6 @@ TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -702,7 +697,6 @@ TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOSt
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -902,7 +896,6 @@ TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -1039,7 +1032,6 @@ TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect
 
 #if FALSE
 
-/*  */
 
 /*
  ****************************************************************
@@ -1103,7 +1095,6 @@ IFP	data;
 }
 
 
-/*  */
 
 
 /*
@@ -1161,7 +1152,6 @@ int    *nfds;
 }
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -1265,7 +1255,6 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 
 
-/*  */
 
 #ifndef	SIGPOLL
 
@@ -1412,7 +1401,6 @@ struct tsapblk *tb;
 
 
 
-/*  */
 
 int
 newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
@@ -1448,7 +1436,6 @@ newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 #endif /* if FALSE */
 
 
-/*  */
 
 static struct TSAPaddr *
 newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na) {

@@ -193,7 +193,6 @@ done:
 	return DONE;
 }
 
-/*  */
 
 #ifndef	NODELAY
 /* ARGSUSED */
@@ -287,7 +286,6 @@ tcpinit (int fd, struct tsapkt *t) {
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -300,7 +298,6 @@ tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	return buffer;
 }
 
-/*  */
 
 int
 tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
@@ -360,7 +357,6 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-/*  */
 
 int
 TTService (struct tsapblk *tb) {

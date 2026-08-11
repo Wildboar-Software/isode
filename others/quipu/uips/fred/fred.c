@@ -558,7 +558,6 @@ _getline (char *prompt, char *buffer) {
 	return OK;
 }
 
-/*  */
 
 #ifndef	IAC
 #define	IAC	255
@@ -591,7 +590,6 @@ FILE  *iop;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -605,7 +603,6 @@ int	sig;
 	longjmp (alrmenv, NOTOK);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -622,7 +619,6 @@ int	sig;
 	interrupted++;
 }
 
-/*  */
 
 #ifndef	lint
 int	ask (char *fmt, ...)
@@ -697,7 +693,6 @@ ask (char *fmt) {
 }
 #endif
 
-/*  */
 
 int
 str2vecY (char *buffer, char **vec) {
@@ -873,7 +868,6 @@ advise (char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #include <utmp.h>
 

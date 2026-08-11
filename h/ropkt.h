@@ -42,7 +42,6 @@
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
 
-/*  */
 
 #define	rosapPsig(acb, sd) \
 { \
@@ -171,7 +170,6 @@ int	ropktlose (struct assocblk*acb, ...);
 int	rosapreject (struct assocblk*acb, ...);
 int	rosaplose (struct RoSAPindication*, ...);
 
-/*  */
 
 int	acb2osdu ();
 
@@ -187,7 +185,6 @@ int	ss2roslose (), ss2rosabort ();
 int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 	ro2ssready ();
 
-/*  */
 
 /* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */

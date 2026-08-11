@@ -58,7 +58,6 @@ RoEndResponse (int sd, struct RoSAPindication *roi) {
 
 }
 
-/*  */
 
 static int
 RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi) {

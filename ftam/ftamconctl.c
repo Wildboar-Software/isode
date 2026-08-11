@@ -54,7 +54,6 @@ struct pair fconctl_pairs [] = {
 	0, 0
 };
 
-/*  */
 
 struct type_FTAM_Concurrency__Control *
 conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
@@ -91,7 +90,6 @@ no_mem:
 	return fpm;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -116,7 +114,6 @@ fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, str
 	return OK;
 }
 
-/*  */
 
 struct type_FTAM_Concurrency__Access *
 conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {

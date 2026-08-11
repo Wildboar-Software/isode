@@ -31,7 +31,6 @@
 #include "isoaddrs.h"
 #endif
 
-/*  */
 
 
 #ifdef HULA

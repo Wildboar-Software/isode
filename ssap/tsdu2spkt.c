@@ -199,7 +199,6 @@ static int si_table[] = {
 };
 #define	SI_TABLE_LEN		((sizeof si_table) / (sizeof si_table[0]))
 
-/*  */
 
 #define	PGI_CN_ID		1
 #define		PI_CALLED_SS	9
@@ -280,7 +279,6 @@ static int pi_table[] = {
 };
 #define	PI_TABLE_LEN		((sizeof pi_table) / (sizeof pi_table[0]))
 
-/*  */
 
 static int pi_length[PI_TABLE_LEN] = {
 	0,							/* 0x00 */
@@ -330,7 +328,6 @@ static int pi_length[PI_TABLE_LEN] = {
 	SIZE_CN_ISN,				/* 0x37: 2nd initial s/n */
 };
 
-/*  */
 
 #define	If_Set(flag)	if (s -> s_mask & (flag))
 #define If_Reset(flag)	if (!(s -> s_mask & (flag)))

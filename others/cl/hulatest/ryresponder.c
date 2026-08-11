@@ -198,7 +198,6 @@ IFP	start,
 	exit (0);
 }
 
-/*  */
 
 /*
 ****************** removed for connectionless *************
@@ -260,7 +259,6 @@ char  **vec;
 *****************************************************
 */
 
-/*  */
 
 static int
 ros_work (int fd) {
@@ -300,7 +298,6 @@ ros_work (int fd) {
 	return OK;
 }
 
-/*  */
 
 static int
 ros_indication (int sd, struct RoSAPindication *roi) {
@@ -369,7 +366,6 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 }
 
 /* HULA removed for connectionless **********************/
-/*  */
 
 /*
 static int  ros_lose (td)
@@ -408,7 +404,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (LOG_INFO, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -425,7 +420,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-/*  */
 
 #ifndef	lint
 static void	_advise ();

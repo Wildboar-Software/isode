@@ -133,7 +133,6 @@ again:
 	}
 }
 
-/*  */
 
 static int  s_smuxPeer (oi, v, offset)
 OI	oi;
@@ -208,7 +207,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 #define	smuxTsubtree	0
 #define	smuxTpriority	1
@@ -315,7 +313,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  s_smuxTree (oi, v, offset)
 OI	oi;

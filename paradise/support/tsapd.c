@@ -81,7 +81,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/
 #endif
 #include "tailor.h"
 
-/*  */
 
 static int  debug = 0;
 static int  foreground = 0;
@@ -391,7 +390,6 @@ out:
 	exit (1);
 }
 
-/*  */
 
 static int  setperms (is)
 #ifndef	IAE
@@ -411,7 +409,6 @@ struct IAEntry *is;
 	}
 }
 
-/*  */
 
 static void  ts_advise (td, code, event)
 struct TSAPdisconnect *td;
@@ -430,7 +427,6 @@ char   *event;
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 #ifndef	NOGOSIP
 static int  ssapd (is, td)
@@ -469,7 +465,6 @@ struct TSAPdisconnect *td;
 	return DONE;
 }
 
-/*  */
 
 #define	RMASK \
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
@@ -547,7 +542,6 @@ struct SSAPindication *si;
 }
 #endif
 
-/*  */
 
 #ifndef	IAE
 static	arginit (vec)
@@ -820,7 +814,6 @@ char	**vec;
 		adios (NULLCP, "%s not owned by root", ap);
 }
 
-/*  */
 
 #else
 static	arginit (vec)
@@ -1030,7 +1023,6 @@ char	**vec;
 	}
 }
 
-/*  */
 
 static	search_directory (firstime)
 int	firstime;
@@ -1361,7 +1353,6 @@ losing_iae:
 	nextime += IAETIME;
 }
 
-/*  */
 
 static	bind_to_directory () {
 	struct ds_bind_arg bind_arg,
@@ -1401,7 +1392,6 @@ static	bind_to_directory () {
 	isbound = 1;
 }
 
-/*  */
 
 static int  rebind_to_directory () {
 	if (referral_dsa != NOTOK) {
@@ -1419,7 +1409,6 @@ static int  rebind_to_directory () {
 	return (isbound ? OK : NOTOK);
 }
 
-/*  */
 
 static	int	make_bind_args (ba, br, be)
 struct ds_bind_arg *ba,
@@ -1437,7 +1426,6 @@ struct ds_bind_error *be;
 		strcpy (ba -> dba_passwd, passwd);
 }
 
-/*  */
 
 static int  unbind_from_directory () {
 	int	    wasbound;
@@ -1461,7 +1449,6 @@ static int  unbind_from_directory () {
 	return wasbound;
 }
 
-/*  */
 
 static int  do_error (de)
 struct DSError *de;
@@ -1530,7 +1517,6 @@ struct DSError *de;
 	return NOTOK;
 }
 
-/*  */
 
 int	str2dnY (str, dn)
 char   *str;
@@ -1544,7 +1530,6 @@ DN     *dn;
 	return ((*dn = str2dn (str)) != NULLDN ? OK : NOTOK);
 }
 
-/*  */
 
 #ifdef	BSD42
 /* ARGSUSED */

@@ -58,7 +58,6 @@ RoEndRequest (int sd, int priority, struct RoSAPindication *roi) {
 
 }
 
-/*  */
 
 static int
 RoEndRequestAux (struct assocblk *acb, int priority, struct RoSAPindication *roi) {

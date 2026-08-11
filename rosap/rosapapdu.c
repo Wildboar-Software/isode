@@ -43,7 +43,6 @@ static int	prob2num ();
 static int  apdu_proc ();
 static int  opdu_proc ();
 
-/*  */
 
 int
 acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
@@ -90,7 +89,6 @@ acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *ro
 	return result;
 }
 
-/*  */
 
 /*
  * Process an APDU. This separates out all the differences between
@@ -185,7 +183,6 @@ apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindicat
 	return DONE;
 }
 
-/*  */
 
 /*
  * Process an OPDU. A separate function is used for this type of PDU to
@@ -273,7 +270,6 @@ opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *
 	return DONE;
 }
 
-/*  */
 
 static int Gprob[] = { ROS_GP_UNRECOG, ROS_GP_MISTYPED, ROS_GP_STRUCT };
 static int Iprob[] = { ROS_IP_DUP, ROS_IP_UNRECOG, ROS_IP_MISTYPED,

@@ -62,7 +62,6 @@ struct pair sreq_pairs[] = {
 	0, 0
 };
 
-/*  */
 
 #define	doABORT		ss2psabort
 
@@ -87,7 +86,6 @@ PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
 }
 
-/*  */
 
 int
 PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu) {
@@ -184,7 +182,6 @@ PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) 
 	return result;
 }
 
-/*  */
 
 static int
 PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
@@ -240,7 +237,6 @@ PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPi
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
@@ -293,7 +289,6 @@ out:
 	return result;
 }
 
-/*  */
 
 static int
 doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
@@ -314,7 +309,6 @@ doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-/*  */
 
 static int
 doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
@@ -345,7 +339,6 @@ doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-/*  */
 
 static int
 doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi) {
@@ -1094,7 +1087,6 @@ ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__d
 	return OK;
 }
 
-/*  */
 
 #ifndef	DEBUG
 /* ARGSUSED */
@@ -1191,7 +1183,6 @@ serialize:
 	return OK;
 }
 
-/*  */
 
 #ifndef	DEBUG
 /* ARGSUSED */
@@ -1319,7 +1310,6 @@ punch_it:
 	return result;
 }
 
-/*  */
 
 #ifndef	DEBUG
 /* ARGSUSED */
@@ -1444,7 +1434,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 struct qbuf *
 info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
@@ -1498,7 +1487,6 @@ out_f:
 	return NULL;
 }
 
-/*  */
 
 int
 qb2info (struct qbuf *qb, PE *pe) {
@@ -1538,7 +1526,6 @@ qb2info (struct qbuf *qb, PE *pe) {
 	return result;
 }
 
-/*  */
 
 struct type_PS_Identifier__list *
 silly_list (struct psapblk *pb, struct PSAPindication *pi) {

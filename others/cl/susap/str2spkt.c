@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/str2spkt.c,v 5.0 88/07/21 14:58:2
 #include "spkt.h"
 #include "tailor.h"
 
-/*  */
 
 char   *spkt2str (s)
 struct ssapkt *s;
@@ -88,7 +87,6 @@ struct ssapkt *s;
 	return buffer;
 }
 
-/*  */
 
 struct ssapkt *
 str2spkt (char *buffer) {

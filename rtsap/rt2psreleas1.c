@@ -55,7 +55,6 @@ RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct Rt
 	return result;
 }
 
-/*  */
 
 static int
 RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {

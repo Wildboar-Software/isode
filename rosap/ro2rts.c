@@ -217,7 +217,6 @@ ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindicatio
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -253,7 +252,6 @@ ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindic
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi) {
@@ -269,7 +267,6 @@ doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -292,7 +289,6 @@ doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication
 	return DONE;
 }
 
-/*  */
 
 static int
 doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi) {
@@ -310,7 +306,6 @@ doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindicati
 	return DONE;
 }
 
-/*  */
 
 static int
 doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi) {

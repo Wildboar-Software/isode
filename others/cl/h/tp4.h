@@ -81,7 +81,6 @@ struct tp4pkt *newtp4pkt ();
 int	gen2tp4 (), tp42gen ();
 #endif
 
-/*  */
 
 #ifdef	TLI
 #define	close_tp4_socket	t_close

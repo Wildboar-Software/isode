@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2real.c,v 9.0 1992
 
 #include "psap.h"
 
-/*  */
 
 static double decode_binary (), decode_decimal ();
 
@@ -74,7 +73,6 @@ prim2real (PE pe) {
 	/* NOTREACHED */
 }
 
-/*  */
 
 static double
 decode_binary (PE pe) {
@@ -131,7 +129,6 @@ decode_binary (PE pe) {
 	return mantissa * pow ((double)base, (double)exponent);
 }
 
-/*  */
 
 static double
 decode_decimal (PE pe) {

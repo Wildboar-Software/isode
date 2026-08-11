@@ -244,7 +244,6 @@ ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -271,7 +270,6 @@ ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindica
 	return result;
 }
 
-/*  */
 
 static int
 doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
@@ -292,7 +290,6 @@ doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAP
 	return acb2osdu (acb, invokeID, pe, roi);
 }
 
-/*  */
 
 static int
 doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi) {
@@ -304,7 +301,6 @@ doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi) {
@@ -316,7 +312,6 @@ doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi) {
@@ -328,7 +323,6 @@ doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindicat
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi) {
@@ -340,7 +334,6 @@ doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication 
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -370,7 +363,6 @@ doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication 
 	return DONE;
 }
 
-/*  */
 
 static int
 doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi) {
@@ -405,7 +397,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static void psDATAser (int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
@@ -421,7 +412,6 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 		(*handler) (sd, roi);
 }
 
-/*  */
 
 static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RoSAPindication *roi);

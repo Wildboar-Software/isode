@@ -27,7 +27,6 @@
 #include "isoaddrs.h"		/* definitions of ISO addresses */
 #endif
 
-/*  */
 
 #define	NPDATA		25	/* arbitrary */
 
@@ -57,7 +56,6 @@ struct SSAPref *addr2ref ();	/* address to session reference */
 
 char   *sprintref ();		/* return session reference in string form */
 
-/*  */
 
 struct PSAPstart {		/* P-CONNECT.INDICATION */
 	int	    ps_sd;		/* PRESENTATION descriptor */
@@ -413,7 +411,6 @@ struct PSAPindication {
 #define	pi_abort	pi_un.pi_un_abort
 };
 
-/*  */
 
 extern char *psap2version;
 

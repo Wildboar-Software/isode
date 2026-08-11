@@ -62,7 +62,6 @@ fdx_prime (PS ps, int waiting) {
 	return (waiting > 0 && pi -> pio_cnt > 0 ? DONE : OK);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -178,7 +177,6 @@ caddr_t	data;
 	return (ps_prime ((PS) data, 1) > 0 ? DONE : OK);
 }
 
-/*  */
 
 int	fdx_open (ps)
 PS	ps;

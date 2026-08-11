@@ -102,8 +102,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + int	do_wp = 0;
 + #endif
 + 
-  /*  */
-  
+    
   char   *getname (addrs)
 ***************
 *** 824,826 ****
@@ -112,8 +111,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
       return 0;
   }
 + 
-+ /*  */
-+ 
++ + 
 + #ifdef	WP
 + #include <setjmp.h>
 + #include <errno.h>
@@ -137,8 +135,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 
 + extern	int	errno;
 + 
-+ /*  */
-+ 
++ + 
 + char   *wp_expand (query, error)
 + char   *query,
 +        *error;
@@ -188,8 +185,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     return (getcpy (das_response));
 + }
 + 
-+ /*  */
-+ static int  _getline ();
++ + static int  _getline ();
 + 
 + static int  das_init ()
 + {
@@ -261,8 +257,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + /* NOTREACHED */
 + }
 + 
-+ /*  */
-+ 
++ + 
 + static int das_lookup (who)
 + char   *who;
 + {
@@ -373,8 +368,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     }
 + }
 + 
-+ /*  */
-+ 
++ + 
 + static int  _getline (s, n, iop)
 + char   *s;
 + int     n;
@@ -419,8 +413,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     return OK;
 + }
 + 
-+ /*  */
-+ 
++ + 
 + static int  yesno () {
 +     int     x,
 +             y,
@@ -561,8 +554,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     do_wp++;
 + #endif
   
-  /*  */
-  
+    
 ***************
 *** 534,540 ****
       else
@@ -670,8 +662,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
   	(void) putc ('\n', out);
   }
   
-  /*  */
---- 846,856 ----
+  --- 846,856 ----
   	advise (NULLCP, "%s: field does not allow groups", name);
   	badmsg++;
       }
@@ -682,8 +673,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     }
   }
   
-  /*  */
-***************
+  ***************
 *** 942,948 ****
   
       if (mp -> m_mbox == NULL || ((flags & HTRY) && !insert (mp)))
@@ -771,8 +761,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + #undef	WP
 + #endif
 + 
-  /*  */
-  
+    
   static struct swit whatnowswitches[] = {
 ***************
 *** 758,764 ****
@@ -874,8 +863,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + #undef	WP
 + #endif
 + 
-  /*  */
-  
+    
   static char *getcpy (s)
 ***************
 *** 298,303 ****
@@ -903,8 +891,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + char   *wp_expand ();
 + #endif
 + 
-  /*  */
-  
+    
   struct adrx *getadrx (addrs)
   register char   *addrs;
   {
@@ -1070,8 +1057,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 ***************
 *** 137,144 ****
   
-  /*  */
-  
+    
 ! static int  rcaux (sp, hp, rproto, response)
 ! register struct servent *sp;
   register struct hostent *hp;
@@ -1079,8 +1065,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
   register char *response;
 --- 143,150 ----
   
-  /*  */
-  
+    
 ! static int  rcaux (portno, hp, rproto, response)
 ! unsigned int portno;
   register struct hostent *hp;
@@ -1111,8 +1096,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
       }
 + }
 + 
-+ /*  */
-+ 
++ + 
 + #if	defined(BIND) && !defined(h_addr)
 + #define	h_addr	h_addr_list[0]
 + #endif
@@ -1156,4 +1140,4 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 +     return h;
   }
   
-  /*  */
+  

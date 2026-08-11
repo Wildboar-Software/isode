@@ -38,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
 
 static int  _psaplose ();
 
-/*  */
 
 #ifndef	lint
 int	ppktlose (struct psapblk *pb, ...) {
@@ -136,7 +135,6 @@ char   *what,
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	psaplose (struct PSAPindication *pi, ...) {
@@ -166,7 +164,6 @@ char   *what,
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int  _psaplose (pi, reason, ap)	/* what, fmt, args ... */

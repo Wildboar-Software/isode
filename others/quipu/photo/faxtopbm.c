@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm
 #include "sys.file.h"
 #include "pbm.h"
 
-/*  */
 
 /* If your pbm_writepbminit() and pbm_writepbmrow() routines only have  */
 /* 3 parameters (look in pbm/pbm.h!) you should remove the next line... */

@@ -41,7 +41,6 @@ static int  stayopen = 0;
 
 static struct isobject    ios;
 
-/*  */
 
 int
 setisobject (int f) {
@@ -65,7 +64,6 @@ endisobject()  {
 	return 1;
 }
 
-/*  */
 
 struct isobject *
 getisobject()  {

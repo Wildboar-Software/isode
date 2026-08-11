@@ -13,7 +13,6 @@
 
 
 
-/*  */
 
 
 #define	NPDATA		25	/* arbitrary */
@@ -152,7 +151,6 @@ struct PSAPindication {
 };
 
 
-/*  */
 
 extern char *psap2version;
 

@@ -247,7 +247,6 @@ ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -357,7 +356,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -397,7 +395,6 @@ ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindica
 	return result;
 }
 
-/*  */
 
 static int
 doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
@@ -428,7 +425,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi) {
@@ -484,7 +480,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi) {
@@ -497,7 +492,6 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi) {
@@ -510,7 +504,6 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindicat
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi) {
@@ -523,7 +516,6 @@ doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication 
 	return NOTOK;
 }
 
-/*  */
 
 static int
 doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi) {
@@ -547,7 +539,6 @@ doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication 
 	return DONE;
 }
 
-/*  */
 
 int
 ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi) {

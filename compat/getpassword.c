@@ -42,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
 char   *getpass ();
 #endif
 
-/*  */
 
 /* roll our own since want to get past UNIX's limit of 8 octets... */
 

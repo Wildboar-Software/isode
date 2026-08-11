@@ -254,7 +254,6 @@ SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct Q
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -313,7 +312,6 @@ SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 }
 
-/*  */
 
 /*
  ****************************************************************
@@ -389,7 +387,6 @@ SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -449,7 +446,6 @@ SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data,
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -637,7 +633,6 @@ SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 
 
-/*  */
 
 
 #define	NSPUV	12	/* really should be MSG_MAXIOVLEN - 4 */
@@ -875,7 +870,6 @@ SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -945,7 +939,6 @@ SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *
 
 
 
-/*  */
 
 /*
  ****************************************************************
@@ -1144,7 +1137,6 @@ struct SSAPindication *si;
 
 
 
-/*  */
 
 struct ssapkt *
 sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPunitdata *tud)
@@ -1229,7 +1221,6 @@ sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPu
 #if FALSE
 
 
-/*  */
 
 /*
  ****************************************************************

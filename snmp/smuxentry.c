@@ -45,7 +45,6 @@ static int  stayopen = 0;
 
 static struct smuxEntry    ses;
 
-/*  */
 
 int	setsmuxEntry (f)
 int	f;
@@ -69,7 +68,6 @@ int	endsmuxEntry () {
 	return 1;
 }
 
-/*  */
 
 struct smuxEntry  *getsmuxEntry () {
 	int	    vecp;
@@ -109,7 +107,6 @@ struct smuxEntry  *getsmuxEntry () {
 	return NULL;
 }
 
-/*  */
 
 struct smuxEntry *getsmuxEntrybyname (name)
 char   *name;
@@ -125,7 +122,6 @@ char   *name;
 	return se;
 }
 
-/*  */
 
 struct smuxEntry *getsmuxEntrybyidentity (identity)
 OID	identity;

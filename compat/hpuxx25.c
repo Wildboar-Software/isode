@@ -57,13 +57,11 @@ static struct fdl_st *fdl = NULL;
 static void setup_sigurg ();
 static void clear_sigurg ();
 
-/*  */
 
 #ifdef  DEBUG
 void    print_x25_facilities ();
 #endif
 
-/*  */
 
 /* ARGSUSED */
 
@@ -85,7 +83,6 @@ start_x25_client (struct NSAPaddr *local, int priv) {
 	return sd;
 }
 
-/*  */
 
 int
 start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
@@ -173,7 +170,6 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	return sd;
 }
 
-/*  */
 
 int
 join_x25_server (int fd, struct NSAPaddr *remote) {
@@ -208,7 +204,6 @@ join_x25_server (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-/*  */
 
 int
 join_x25_client (int fd, struct NSAPaddr *remote) {
@@ -236,7 +231,6 @@ join_x25_client (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-/*  */
 
 int
 fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
@@ -485,7 +479,6 @@ set_x25_facilities (int sd, int coc, char *caption) {
 	return OK;
 }
 
-/*  */
 
 int
 log_cause_and_diag (int fd) {
@@ -604,7 +597,6 @@ int fd;
 };
 
 
-/*  */
 
 #ifdef  DEBUG
 
@@ -624,7 +616,6 @@ log_x25_facilities (int fd, int coc, char *caption) {
 	return OK;
 }
 
-/*  */
 
 static void
 print_x25_facilities (FACILITY_DB *hp, int coc, char *caption) {

@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/
 #include "tsap.h"
 #include "tailor.h"
 
-/*  */
 
 int
 ts_read (int fd, struct qbuf **q) {

@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaperror.c,v 9.0 1992
 #include <stdio.h>
 #include "ssap.h"
 
-/*  */
 
 static char *reject_err0[] = {
 	"Reason not specified",
@@ -61,7 +60,6 @@ static char *reject_err8[] = {
 static int reject_err8_cnt = sizeof reject_err8 / sizeof reject_err8[0];
 
 
-/*  */
 
 char *
 SErrString (int code) {

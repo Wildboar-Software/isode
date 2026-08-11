@@ -223,7 +223,6 @@ struct edbdir topdirs[] = {
 #define SEDFILE			"sed.tmp"	/* sed filename */
 #define USDN			"c=US"		/* DN for the US */
 
-/*  */
 /* ARGSUSED */
 
 /* main () -- main function for program */
@@ -300,7 +299,6 @@ main (int argc, char **argv) {
 	exit (0);
 }
 
-/*  */
 /* arginit () -- parse command line, and initialize from it */
 void
 arginit (int ac, char **av) {
@@ -356,7 +354,6 @@ arginit (int ac, char **av) {
 		adios (NULLCP, "usage: %s config-file",prgnm);
 }
 
-/*  */
 /* read_dsas () -- read in identities and locations of regional DSAs */
 void
 read_dsas () {
@@ -419,7 +416,6 @@ read_dsas () {
 
 	fclose (fp);
 }
-/*  */
 /* read_config () -- parse configuration file, and initialize from it */
 void
 read_config () {
@@ -719,7 +715,6 @@ out:
 	fclose (cfgfp);			/* close configuration file */
 }
 
-/*  */
 /* bad_postaladdress () -- print error message for a bad postal address */
 void
 bad_postaladdress (
@@ -740,7 +735,6 @@ bad_postaladdress (
 	more than six items. Please refer to the Administrator's Guide.\n");
 }
 
-/*  */
 /* build_top () -- build root, c=US */
 void
 build_top () {
@@ -773,7 +767,6 @@ build_top () {
 	}					/* end, foreach directory */
 }
 
-/*  */
 /* add_us () -- add national organization to US EDB */
 void
 add_us (
@@ -799,7 +792,6 @@ add_us (
 extern void copy_edb ();
 extern struct pair *findpair ();
 
-/*  */
 /* add_state () -- build state entry, adding organization if necessary*/
 void
 add_state (
@@ -851,7 +843,6 @@ add_state (
 	}
 }
 
-/*  */
 void
 build_dsa () {
 	unlink (DSAENTRY);
@@ -864,7 +855,6 @@ build_dsa () {
 	copy_edb (USDN, DSAENTRY, 0x01);
 }
 
-/*  */
 /* build_orgedb () -- build skeleton EDB for organization */
 void
 build_orgedb () {
@@ -959,7 +949,6 @@ build_ouedb () {
 		adios (NULLCP, "system failed: cannot create %s", file);
 }
 
-/*  */
 /* build_tailor () -- build tailor files */
 void
 build_tailor () {
@@ -992,7 +981,6 @@ build_uifl () {
 
 }
 
-/*  */
 /* create_sedfile () -- create sed file to convert templates */
 void
 create_sedfile () {
@@ -1066,7 +1054,6 @@ create_sedfile () {
 	fclose (sedfp);
 }
 
-/*  */
 /* make_file () -- create a file from a template */
 void
 make_file (
@@ -1086,7 +1073,6 @@ make_file (
 		adios (NULLCP, "system failed: cannot create %s", fl);
 }
 
-/*  */
 /* build_mesgfl () -- build file that needs to be sent to wpp-manager */
 void
 build_mesgfl () {
@@ -1151,7 +1137,6 @@ build_mesgfl () {
 	unlink (DSAENTRY);
 }
 
-/*  */
 /* copy_edb () -- create an EDB, or append to an existing EDB */
 void
 copy_edb (
@@ -1198,7 +1183,6 @@ copy_edb (
 	fclose (edbfp);
 }
 
-/*  */
 /* findpair () -- find 'pair' structure corresponding to name provided */
 struct pair *
 findpair (
@@ -1219,7 +1203,6 @@ findpair (
 	return ((struct pair *)NULL);
 }
 
-/*  */
 /* set_permissions () -- set appropriate permissions on database directory */
 void
 set_permissions () {
@@ -1283,7 +1266,6 @@ set_permissions () {
 		adios (NULLCP, "cannot perform chmod -- system failed");
 }
 
-/*  */
 /* make_usstates () -- generate EDB format entries for the U.S. states */
 void
 make_usstates () {
@@ -1309,7 +1291,6 @@ make_usstates () {
 	}					/* end, foreach state */
 }
 
-/*  */
 /* timestamp () -- return timestamp to use as version on EDB file */
 char *
 timestamp () {

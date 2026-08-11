@@ -97,7 +97,6 @@ struct TSAPdisconnect;
 
 int	tpktlose(struct tsapblk*, ...), tsaplose (struct TSAPdisconnect*, ...);
 
-/*  */
 
 struct tsapADDR {
     struct NSAPaddr ta_addr;
@@ -448,7 +447,6 @@ struct tsapkt  *str2tpkt ();
 					/* for ER TPDUs */
 #define	VDAT_INVALID	0xc1		/* invalid TPDU */
 
-/*  */
 
 /* TP0 is the protocol */
 

@@ -27,7 +27,6 @@
 #include "smux.h"
 #include "objects.h"
 
-/*  */
 
 int	smux_init (debug)
 int	debug;			/* if non-zero says to print PDUs on tty */
@@ -91,7 +90,6 @@ int	i;
     return smux_error (i);
 }
 
-/*  */
 
 int	setsmuxEntry (f)
 int	f;
@@ -123,7 +121,6 @@ OID	identity;
     return getsmuxEntrybyidentity (identity);
 }
 
-/*  */
 
 int	readsyntax ()
 {
@@ -149,7 +146,6 @@ char   *name;
     return text2syn (name);
 }
 
-/*  */
 
 int	readobjects (file)
 char   *file;
@@ -221,7 +217,6 @@ char   *s;
     return strdup (s);
 }
 
-/*  */
 
 int	o_generic (oi, v, offset)
 OI	oi;

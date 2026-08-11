@@ -63,7 +63,6 @@ FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, str
 	return result;
 }
 
-/*  */
 
 int
 FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {

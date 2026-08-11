@@ -31,7 +31,6 @@
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
 
-/*  */
 
 #define	rtsapPsig(acb, sd) \
 { \
@@ -145,7 +144,6 @@
 
 int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
 
-/*  */
 
 #define	SetPS2RtService(acb) \
 { \
@@ -178,7 +176,6 @@ int	ss2rtslose (), ss2rtsabort ();
 int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 	rt2ssasync (), rt2ssmask (), rt2sslose ();
 
-/*  */
 /* RTORQ apdu */
 #define	RTORQ_CKPOINT	0	/* checkpointSize tag */
 #define	  RTORQ_CK_DFLT	0	/*   default */

@@ -32,7 +32,6 @@
 
 #include "pusap2.h"		/* definitions for PS-USERs */
 
-/*  */
 
 #define	NACDATA		3	/* arbitrary */
 
@@ -148,7 +147,6 @@ struct AcSAPindication {
 };
 
 
-/*  */
 
 extern char  *acsapversion;
 char   *AcuErrString ();        /* return AcuSAP error in string form*/

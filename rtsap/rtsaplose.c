@@ -37,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
 static int  _rtsaplose ();
 #endif
 
-/*  */
 
 #ifndef	lint
 int	rtpktlose (struct assocblk*acb, ...) {
@@ -97,7 +96,6 @@ rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	rtsaplose (struct RtSAPindication*rti, ...) {
@@ -124,7 +122,6 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

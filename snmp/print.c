@@ -43,7 +43,6 @@ extern	int	quantum;
 
 void	advise (int, char *, char *, ...);
 
-/*  */
 
 #include "pathnames.h"
 #include "sys.file.h"

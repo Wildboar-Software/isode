@@ -137,7 +137,6 @@
 #define	MAGIC_OCTET1	4
 #define	MAGIC_OCTET2	15
 
-/*  */
 
 struct vfsmap {
 	char   *vf_entry;		/* document entry */
@@ -207,7 +206,6 @@ int	binarypeek (), textpeek (), fdfpeek ();
 
 int	binarycheck (), textcheck ();
 
-/*  */
 
 #define	FA_RDATTR \
     (FA_FILENAME | FA_ACTIONS | FA_CONTENTS | FA_ACCOUNT | FA_DATE_CREATE \
@@ -215,7 +213,6 @@ int	binarycheck (), textcheck ();
 	| FA_ID_MODIFY | FA_ID_READ | FA_ID_ATTR | FA_AVAILABILITY \
 	| FA_FILESIZE)
 
-/*  */
 
 #ifdef	BRIDGE
 extern int  ftp_default;

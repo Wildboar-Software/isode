@@ -286,7 +286,6 @@ ts_main (int argc, char **argv) {
 	}
 }
 
-/*  */
 
 static int
 ts_dataindication (int sd, struct TSAPdata *tx) {
@@ -313,7 +312,6 @@ ts_dataindication (int sd, struct TSAPdata *tx) {
 	TXFREE (tx);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -330,7 +328,6 @@ ts_discindication (int sd, struct TSAPdisconnect *td) {
 	exit (0);
 }
 
-/*  */
 
 static void
 ts_adios (struct TSAPdisconnect *td, char *event) {
@@ -395,7 +392,6 @@ static int  owned = 0;
 static struct SSAPdata hxs;
 static struct SSAPdata *hx = &hxs;
 
-/*  */
 
 static int
 ss_main (int argc, char **argv) {
@@ -538,7 +534,6 @@ ss_main (int argc, char **argv) {
 
 #undef	dotoken
 
-/*  */
 
 static int
 ss_dataindication (int sd, struct SSAPdata *sx) {
@@ -643,7 +638,6 @@ ss_dataindication (int sd, struct SSAPdata *sx) {
 		free (p);
 }
 
-/*  */
 
 static int
 ss_tokenindication (int sd, struct SSAPtoken *st) {
@@ -700,7 +694,6 @@ ss_tokenindication (int sd, struct SSAPtoken *st) {
 	STFREE (st);
 }
 
-/*  */
 
 static int
 ss_syncindication (int sd, struct SSAPsync *sn) {
@@ -812,7 +805,6 @@ ss_syncindication (int sd, struct SSAPsync *sn) {
 	SNFREE (sn);
 }
 
-/*  */
 
 static int
 ss_actindication (int sd, struct SSAPactivity *sv) {
@@ -917,7 +909,6 @@ ss_actindication (int sd, struct SSAPactivity *sv) {
 	SVFREE (sv);
 }
 
-/*  */
 
 static int
 ss_reportindication (int sd, struct SSAPreport *sp) {
@@ -946,7 +937,6 @@ ss_reportindication (int sd, struct SSAPreport *sp) {
 	SPFREE (sp);
 }
 
-/*  */
 
 static int
 ss_finishindication (int sd, struct SSAPfinish *sf) {
@@ -985,7 +975,6 @@ ss_abortindication (int sd, struct SSAPabort *sa) {
 	exit (1);
 }
 
-/*  */
 
 static void
 ss_adios (struct SSAPabort *sa, char *event) {
@@ -1991,7 +1980,6 @@ accept:
 		}
 }
 
-/*  */
 
 static int
 rts_indication (int sd, struct RtSAPindication *rti) {

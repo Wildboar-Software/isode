@@ -138,7 +138,6 @@ name2macro (char *name) {
 	return m;
 }
 
-/*  */
 
 static struct macro *
 value2macro (char *value) {
@@ -172,7 +171,6 @@ value2macro (char *value) {
 	return p;
 }
 
-/*  */
 
 static void read_macros(void)  {
 	char *hp;
@@ -192,7 +190,6 @@ static void read_macros(void)  {
 	read_file (buffer);
 }
 
-/*  */
 
 static void read_file (char *file) {
 	char *cp;
@@ -217,7 +214,6 @@ static void read_file (char *file) {
 	fclose (fp);
 }
 
-/*  */
 
 static int
 add_macro (char *name, char *value) {
@@ -262,7 +258,6 @@ add_macro (char *name, char *value) {
 	return OK;
 }
 
-/*  */
 
 char *macro2str (char *name) {
 	struct macro *m = name2macro (name);
@@ -321,7 +316,6 @@ loslab: ; \
     (intres) = implode ((u_char *) (octres), y, z); \
 }
 
-/*  */
 
 struct PSAPaddr *str2paddr (char *str) {
 	int    state,
@@ -815,7 +809,6 @@ next:
 	return pa;
 }
 
-/*  */
 
 int macro2comm (char *name, struct ts_interim *ts) {
 	int	    j,
@@ -1037,7 +1030,6 @@ static char *SEL2STR (char *sel, int len) {
 	return buffer;
 }
 
-/*  */
 
 char *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
 	int   n;
@@ -1258,7 +1250,6 @@ bad_pa:
 	return bp;
 }
 
-/*  */
 
 #ifdef DEBUG
 void free_macros(void)  {

@@ -45,7 +45,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/fax.c,v 9.0 199
 
 extern LLog * log_dsap;
 
-/*  */
 
 struct pair {
 	char   *p_name;

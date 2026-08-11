@@ -48,7 +48,6 @@ static void type_info (LLog *lp, char *fmt, int len, char *data);
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
 
-/*  */
 
 #define	SPDU_TYPE(e)	ll_printf (lp, "%sCODE/ %s\n", rw, e)
 

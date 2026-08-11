@@ -38,7 +38,6 @@ char *Qcp, *Ecp;
 
 int Len;
 
-/*  */
 
 int
 pe2qb_f (PE pe) {

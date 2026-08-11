@@ -38,7 +38,6 @@ static int  pe2ps_aux2 ();
 int  ps_write_id ();
 int  ps_write_len ();
 
-/*  */
 
 int
 pe2ps_aux (PS ps, PE pe, int eval) {
@@ -100,7 +99,6 @@ pe2ps_aux2 (PS ps, PE pe, int eval) {
 	return OK;
 }
 
-/*  */
 
 int
 ps_write_id (PS ps, PE pe) {
@@ -140,7 +138,6 @@ ps_write_id (PS ps, PE pe) {
 	return OK;
 }
 
-/*  */
 
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */

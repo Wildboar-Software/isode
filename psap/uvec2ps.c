@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/uvec2ps.c,v 9.0 1992/0
 
 #define	PSDU_MAGIC	64	/* threshold for scattering */
 
-/*  */
 
 static int
 uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -128,7 +127,6 @@ uvec_close (PS ps) {
 	return OK;
 }
 
-/*  */
 
 int
 uvec_open (PS ps) {
@@ -162,7 +160,6 @@ uvec_setup (PS ps, int len) {
 	return OK;
 }
 
-/*  */
 
 int
 ps_get_plen (PE pe) {

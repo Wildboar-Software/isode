@@ -38,7 +38,6 @@ static char nib2hex[0x10] = {
 	'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 };
 
-/*  */
 
 int
 explode (char *a, u_char *b, int n) {

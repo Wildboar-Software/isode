@@ -126,7 +126,6 @@ IFP	start,
 	return 0;
 }
 
-/*  */
 
 static int
 ros_init (int vecp, char **vec) {
@@ -181,7 +180,6 @@ ros_init (int vecp, char **vec) {
 	return sd;
 }
 
-/*  */
 
 static int
 ros_work (int fd) {
@@ -221,7 +219,6 @@ ros_work (int fd) {
 	return OK;
 }
 
-/*  */
 
 static int
 ros_indication (int sd, struct RoSAPindication *roi) {
@@ -287,7 +284,6 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 	}
 }
 
-/*  */
 
 static int
 ros_lose (struct TSAPdisconnect *td) {
@@ -322,7 +318,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -339,7 +334,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-/*  */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {

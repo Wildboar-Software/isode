@@ -35,7 +35,6 @@
 #endif
 #endif
 
-/*  */
 
 typedef struct OIDentifier {
 	int	    oid_nelem;		/* number of sub-identifiers */
@@ -53,7 +52,6 @@ char   *oid2ode ();
 char   *sprintoid ();
 OID	str2oid ();
 
-/*  */
 
 typedef	u_char	   PElementClass;
 
@@ -83,7 +81,6 @@ typedef u_char	  byte, *PElementData;
 #define	PEDcpy(b1, b2, length)	\
 			bcopy ((char *) (b1), (char *) (b2), (int) (length))
 
-/*  */
 
 typedef struct PElement {
 	int	    pe_errno;		/* Error codes */
@@ -230,7 +227,6 @@ extern char **pe_applist;
 extern int    pe_maxpriv;
 extern char **pe_privlist;
 
-/*  */
 
 typedef struct UTCtime {
 	int	    ut_year;
@@ -257,7 +253,6 @@ void	tm2ut ();
 long	gtime ();
 struct tm *ut2tm ();
 
-/*  */
 
 extern char *psapversion;
 
@@ -344,7 +339,6 @@ PE	seq_find ();
 
 char   *pe_error ();
 
-/*  */
 
 typedef struct {
 	int	    ps_errno;		/* Error codes */
@@ -459,7 +453,6 @@ int	ps_get_abs ();
 
 char   *ps_error ();
 
-/*  */
 
 struct isobject {
 	char   *io_descriptor;
@@ -474,7 +467,6 @@ struct isobject *getisobject ();
 struct isobject *getisobjectbyname ();
 struct isobject *getisobjectbyoid ();
 
-/*  */
 
 PE	qbuf2pe ();
 char   *qb2str ();
@@ -494,7 +486,6 @@ int	strb2int ();
 PE	strb2bitstr ();
 char   *bitstr2strb ();
 
-/*  */
 
 extern char PY_pepy[];
 

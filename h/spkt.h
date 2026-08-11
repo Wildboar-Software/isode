@@ -372,7 +372,6 @@
 
 int	spktlose (int sd, ...), ssaplose (struct SSAPindication*si, ...);
 
-/*  */
 
 struct ssapblk {
     struct ssapblk *sb_forw;	/* doubly-linked list */

@@ -110,7 +110,6 @@ struct RoSAPindication *roi;
 	return result;
 }
 
-/*  */
 
 int	RyWaitAux (sd, opb, out, secs, roi)
 int	sd;

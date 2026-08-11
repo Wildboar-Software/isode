@@ -52,7 +52,6 @@ RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
 	return result;
 }
 
-/*  */
 
 int
 RtWaitRequestAux (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {

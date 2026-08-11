@@ -44,7 +44,6 @@ static int  udpretry ();
 static int  PUservice ();
 
 
-/*  */
 
 #define	MAXTRIES	 3		/* should be tailorable... */
 #define	WAITRIES	30		/*   .. */
@@ -138,7 +137,6 @@ int	async;
 		}
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -204,7 +202,6 @@ struct PSAPindication *pi;
 	return OK;
 }
 
-/*  */
 
 static int  udpretry (pb, reason, pi)
 struct psapblk *pb;
@@ -256,7 +253,6 @@ struct PSAPindication *pi;
 	return DONE;
 }
 
-/*  */
 
 static int  udpcheck (pb, pi)
 struct psapblk *pb;
@@ -275,7 +271,6 @@ struct PSAPindication *pi;
 	return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 }
 
-/*  */
 
 #define	udpclose	close_udp_socket
 #define	udpselect	select_udp_socket

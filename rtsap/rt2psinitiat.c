@@ -100,7 +100,6 @@ struct RtSAPindication *rti;
 }
 
 
-/*  */
 
 static int  RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle,
 							  callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,

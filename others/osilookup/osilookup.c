@@ -48,7 +48,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
 #include <netosi/osi_addr.h>
 #include <sunosi/mapds_user.h>
 
-/*  */
 
 /* ARGSUSED */
 

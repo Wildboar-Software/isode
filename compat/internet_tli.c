@@ -42,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
 #include "manifest.h"
 #include "tailor.h"
 
-/*  */
 
 #ifdef	TCP
 #include "internet.h"
@@ -186,7 +185,6 @@ int	priv;
 	return sd;
 }
 
-/*  */
 
 int	start_tcp_server (sock, backlog, opt1, opt2)
 struct sockaddr_in *sock;
@@ -272,7 +270,6 @@ int	backlog,
 	return sd;
 }
 
-/*  */
 
 int	join_tcp_client (fd, sock)
 int	fd;
@@ -326,7 +323,6 @@ disconnect:
 	goto out;
 }
 
-/*  */
 
 int	join_tcp_server (fd, sock)
 int	fd;
@@ -382,7 +378,6 @@ struct sockaddr_in *sock;
 	return OK;
 }
 
-/*  */
 ssize_t read_tcp_socket (fd, buffer, len)
 int	fd;
 char	*buffer;

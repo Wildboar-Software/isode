@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/py_advise.c,v 9.0 199
 #include <stdio.h>
 #include <stdarg.h>
 
-/*  */
 
 #ifndef	lint
 char   PY_pepy[BUFSIZ] = "";

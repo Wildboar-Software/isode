@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapactchk.c,v 9.0 199
 #include <stdio.h>
 #include "spkt.h"
 
-/*  */
 
 int
 SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls) {

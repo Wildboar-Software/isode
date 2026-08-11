@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamlose.c,v 9.0 1992/
 
 static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap);
 
-/*  */
 
 #ifndef	lint
 int	fpktlose (struct ftamblk *fsb, ...) {
@@ -77,7 +76,6 @@ fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *wha
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	ftamlose (struct FTAMindication *fti, ...) {
@@ -107,7 +105,6 @@ ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *f
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	ftamoops (struct FTAMindication *fti, ...) {

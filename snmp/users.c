@@ -1627,7 +1627,6 @@ bad_value:
 	}
 }
 
-/*  */
 
 static char itoa64[] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

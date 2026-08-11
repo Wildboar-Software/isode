@@ -65,7 +65,6 @@ static int  pe2pl_aux ();
     if (ps_write (ps, (PElementData) buffer, (PElementLen) strlen (buffer)) == NOTOK) \
 	return NOTOK
 
-/*  */
 
 int
 pe2pl (PS ps, PE pe) {
@@ -77,7 +76,6 @@ pe2pl (PS ps, PE pe) {
 	return result;
 }
 
-/*  */
 
 static int
 pe2pl_aux (PS ps, PE pe, int level) {

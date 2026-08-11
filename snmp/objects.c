@@ -793,7 +793,6 @@ char *strdup (const char *s) {
 }
 #endif
 
-/*  */
 
 void flobjects (FILE *fp) {
 	int    i;

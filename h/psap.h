@@ -384,7 +384,6 @@ PE	seq_find ();
 
 char   *pe_error ();
 
-/*  */
 
 #ifdef SVR4_UCB
 #ifdef PS	/* ucb define PS in sys/sparc/reg.h for "portability" !?! */

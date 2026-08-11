@@ -38,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
 static int  _ronotlose ();
 #endif
 
-/*  */
 
 #ifndef	lint
 int	ronotlose (struct RoNOTindication* rni, ...) {
@@ -61,7 +60,6 @@ ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyoid.c,v 9.0 19
 #include "psap.h"
 #include "tailor.h"
 
-/*  */
 
 struct isobject *getisobjectbyoid (oid)
 OID	oid;

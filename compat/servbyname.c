@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyname.c,v 9.0 1
 #include "isoservent.h"
 #include "tailor.h"
 
-/*  */
 
 struct isoservent *
 getisoserventbyname (char *entity, char *provider) {

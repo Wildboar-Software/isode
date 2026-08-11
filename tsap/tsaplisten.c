@@ -160,7 +160,6 @@ static fd_set qw_mask;
 
 static int	startlb (), uniqlb ();
 
-/*  */
 
 #ifdef	TCP
 static int	tcplisten (), tcpaccept1 (), tcpaccept2 (), tcpunique ();
@@ -227,7 +226,6 @@ static SFD	chldser ();
 #endif
 
 
-/*  */
 
 int	TNetListen (ta, td)
 struct TSAPaddr *ta;
@@ -252,7 +250,6 @@ struct TSAPdisconnect *td;
 	return TNetWork (ta, td, uniqlb, NULLIFP);
 }
 
-/*  */
 
 static int  TNetWork (ta, td, fnx, magic)
 struct TSAPaddr *ta;
@@ -366,7 +363,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int  startlb (ta, na, ns, magic, td)
 struct TSAPaddr *ta;
@@ -410,7 +406,6 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*  */
 
 static int  uniqlb (ta, na, ns, magic, td)
 struct TSAPaddr *ta;
@@ -451,7 +446,6 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*  */
 
 int	TNetAcceptAux (vecp, vec, newfd, ta, nfds, rfds, wfds, efds, secs, td)
 int    *vecp;
@@ -718,7 +712,6 @@ int	*nfds;
 	return qw_count;
 }
 
-/*  */
 
 int	TNetCheck (vecp, vec, ifds, ofds, nfds, td)
 int	*vecp;
@@ -797,7 +790,6 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*  */
 
 int	TNetClose (ta, td)
 struct TSAPaddr *ta;
@@ -848,7 +840,6 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*  */
 
 #include <sys/wait.h>
 
@@ -887,7 +878,6 @@ struct sigcontext *sc;
 }
 #endif
 
-/*  */
 
 #ifdef	LPP
 /* ARGSUSED */
@@ -1204,7 +1194,6 @@ struct TSAPdisconnect *td;
 	return fd;
 }
 
-/*  */
 
 #ifdef	LPP
 char   *udpsave ();
@@ -1301,7 +1290,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int tcpaccept2 (lb, vecp, vec, td)
 struct listenblk *lb;
@@ -1420,7 +1408,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int  tcpunique (ta, td)
 struct TSAPaddr *ta;
@@ -1487,7 +1474,6 @@ struct TSAPdisconnect *td;
 	return fd;
 }
 
-/*  */
 
 static int  x25accept1 (lb, td)
 struct listenblk *lb;
@@ -1551,7 +1537,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int x25accept2 (lb, vecp, vec, td)
 struct listenblk *lb;
@@ -1623,7 +1608,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int  x25unique (ta, td)
 struct TSAPaddr *ta;
@@ -1660,7 +1644,6 @@ struct TSAPdisconnect *td;
 	return start_tp4_server (ta, SOMAXCONN, _listen_opts, SO_KEEPALIVE, td);
 }
 
-/*  */
 
 static int  tp4accept1 (lb, td)
 struct listenblk *lb;
@@ -1730,7 +1713,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int tp4accept2 (lb, vecp, vec, td)
 struct listenblk *lb;
@@ -1771,7 +1753,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1801,7 +1782,6 @@ struct TSAPdisconnect *td;
 	return start_tp4_server (ta, SOMAXCONN, _listen_opts, SO_KEEPALIVE, td);
 }
 
-/*  */
 
 static int  tp4accept1 (lb, td)
 struct listenblk *lb;
@@ -1854,7 +1834,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int  tp4accept2 (lb, vecp, vec, td)
 struct listenblk *lb;
@@ -1918,7 +1897,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1949,7 +1927,6 @@ struct TSAPdisconnect *td;
 	return start_tp4_server (ta, SOMAXCONN, 0, 0, td);
 }
 
-/*  */
 
 static int  tp4accept1 (lb, td)
 struct listenblk *lb;
@@ -2002,7 +1979,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int tp4accept2 (lb, vecp, vec, td)
 struct listenblk *lb;
@@ -2074,7 +2050,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -2141,7 +2116,6 @@ struct listenblk *lb;
 	free ((char *) lb);
 }
 
-/*  */
 
 static struct listenblk  *findlblk (ta, type)
 struct TSAPaddr *ta;
@@ -2177,7 +2151,6 @@ int	fd;
 
 	return NULLLBP;
 }
-/*  */
 
 #ifdef	LPP
 #ifdef	lint
@@ -2238,7 +2211,6 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*  */
 
 static int  TDoQueues (lb, td)
 struct listenblk *lb;
@@ -2260,7 +2232,6 @@ struct TSAPdisconnect *td;
 	}
 }
 
-/*  */
 
 static int  TFreeQueues (lb)
 struct listenblk *lb;
@@ -2275,7 +2246,6 @@ struct listenblk *lb;
 	freelblk (lb);
 }
 
-/*  */
 
 int	TSetQueuesOK (sd, onoff, td)
 int	sd;

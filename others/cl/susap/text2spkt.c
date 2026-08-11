@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
 
-/*  */
 
 #define	SPDU_TYPE(e)	fprintf (fp, "%sCODE/ %s\n", rw, e)
 
@@ -340,7 +339,6 @@ int	read;
 	fprintf (fp, "%s)\n", rw);
 }
 
-/*  */
 
 static	type_id (fp, type, rw, selector, len)
 FILE   *fp;
@@ -568,7 +566,6 @@ int	len;
 	}
 }
 
-/*  */
 
 /* ARGSUSED */
 

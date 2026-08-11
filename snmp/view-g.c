@@ -160,7 +160,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static struct view *get_prent (ip, len, isnext)
 unsigned int *ip;
@@ -185,7 +184,6 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
 
 #define	viewAclView	  0
 #define	viewAclCommunity  1
@@ -299,7 +297,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static struct community *get_acent (ip, len, isnext)
 unsigned int *ip;
@@ -320,7 +317,6 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
 
 #define	viewTrapView	  0
 #define	viewTrapGenerics  1
@@ -432,7 +428,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static struct trap *get_trent (ip, len, isnext)
 unsigned int *ip;
@@ -457,7 +452,6 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
 
 static int  view_compar (a, b)
 struct view **a,
@@ -483,7 +477,6 @@ struct trap **a,
 					 (*b) -> t_instance, (*b) -> t_insize);
 }
 
-/*  */
 
 static struct wired {
 	char  *w_args1;
@@ -778,7 +771,6 @@ stuff_it:
 	}
 }
 
-/*  */
 
 int	f_community (char **vec) {
 	struct community *c;
@@ -849,7 +841,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 int	f_proxy (vec)
 char  **vec;
@@ -932,7 +923,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 int	f_trap (vec)
 char  **vec;
@@ -1021,7 +1011,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 int  f_view (vec)
 char  **vec;
@@ -1125,7 +1114,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 extern	int	tcpservice;
 extern	int	udport;

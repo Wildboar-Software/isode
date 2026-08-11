@@ -68,7 +68,6 @@ static int ls (char *file, char *entry, int top, int first, int last, int invis,
 static int fdfls (char *file);
 static int filcmp (struct filent **a, struct filent **b);
 
-/*  */
 
 #ifndef	BRIDGE
 int
@@ -133,7 +132,6 @@ f_fls (char **vec) {
 }
 #endif
 
-/*  */
 
 int
 f_ls (char **vec) {
@@ -214,7 +212,6 @@ f_ls (char **vec) {
 	return result;
 }
 
-/*  */
 
 static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi) {
 	int	    recurse;
@@ -389,7 +386,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 static int fdfls (char *file) {
 	int    i,
@@ -527,7 +523,6 @@ static int fdfls (char *file) {
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

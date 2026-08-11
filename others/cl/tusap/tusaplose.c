@@ -18,7 +18,6 @@
 #include <string.h>
 #include "tpkt.h"
 
-/*  */
 
 #ifndef	lint
 static int _tusaplose ();
@@ -48,7 +47,6 @@ tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

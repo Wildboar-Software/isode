@@ -52,7 +52,6 @@ struct	arpcom {
 };
 #endif
 
-/*  */
 
 extern	int	ifNumber;
 
@@ -82,7 +81,6 @@ extern struct interface *ifs;
 void set_interface (char *name, char *ava);
 int	sort_interface (void);
 
-/*  */
 
 union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	    sa;

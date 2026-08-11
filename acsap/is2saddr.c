@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992
 #include "isoaddrs.h"
 #include "isoservent.h"
 
-/*  */
 
 struct SSAPaddr *
 is2saddr (char *host, char *service, struct isoservent *is) {

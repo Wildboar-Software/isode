@@ -69,7 +69,6 @@ OS	text2syn ();
 
 typedef struct object_instance object_instance, *OI;
 
-/*  */
 
 typedef struct object_type {
 	char   *ot_text;			/* OBJECT DESCRIPTOR */
@@ -129,7 +128,6 @@ struct object_instance {
 
 OI	name2inst (), next2inst (), text2inst ();
 
-/*  */
 
 extern	IFP	o_advise;
 
@@ -163,7 +161,6 @@ int	mediaddr2oid ();
 
 OID	oid_extend (), oid_normalize ();
 
-/*  */
 
 extern	int	debug;
 extern	char	PY_pepy[BUFSIZ];

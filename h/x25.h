@@ -266,7 +266,6 @@ typedef struct NSAPaddr CONN_DB; /*
 
 #endif	/* ULTRIX_X25_DEMSA */
 #endif	/* ULTRIX_X25 */
-/*  */
 
 #ifdef SUN_X25
 #define close_x25_socket     close

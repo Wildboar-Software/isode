@@ -359,7 +359,6 @@ free_filter:
 	}
 }
 
-/*  */
 
 static struct dn_seq *dm2dn_seq (char *dm) {
 	char *dp;
@@ -1680,7 +1679,6 @@ out:
 	return nchild;
 }
 
-/*  */
 
 static int fred_children (DN parentdn, struct subordinate *ptr, int prob) {
 	int	    i,

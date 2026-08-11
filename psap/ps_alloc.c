@@ -64,7 +64,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/
    memory.
  */
 
-/*  */
 
 PS
 ps_alloc (IFP io) {

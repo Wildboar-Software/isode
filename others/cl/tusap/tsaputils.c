@@ -130,7 +130,6 @@ freetublk (struct tsapblk *tb) {
 	sigiomask (smask);
 }
 
-/*  */
 
 struct tsapblk *
 findtublk (int sd) {

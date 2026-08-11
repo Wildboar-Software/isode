@@ -42,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ut2tm.c,v 9.0 1992/06/
 extern int dmsize[];
 static  int makewkday ();
 
-/*  */
 
 struct tm *
 ut2tm (UTC ut) {
@@ -93,7 +92,6 @@ ut2tm (UTC ut) {
 	return tm;
 }
 
-/*  */
 
 #define	dysize(y)	\
 	(((y) % 4) ? 365 : (((y) % 100) ? 366 : (((y) % 400) ? 365 : 366)))

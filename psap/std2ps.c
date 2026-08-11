@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/std2ps.c,v 9.0 1992/06
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 /* ARGSUSED */
 
@@ -69,7 +68,6 @@ std_flush (PS ps) {
 	return ps_seterr (ps, PS_ERR_IO, NOTOK);
 }
 
-/*  */
 
 int
 std_open (PS ps) {

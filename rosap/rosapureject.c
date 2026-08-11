@@ -96,7 +96,6 @@ RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPi
 	return result;
 }
 
-/*  */
 
 int
 RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi) {

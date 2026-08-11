@@ -124,7 +124,6 @@ main (int argc, char **argv, char **envp) {
 	return (0);
 }
 
-/*  */
 
 static
 fetch_face (char *host, char *user) {
@@ -136,7 +135,6 @@ fetch_face (char *host, char *user) {
 		display_X ();
 }
 
-/*  */
 
 static int
 _getline (char *buffer) {
@@ -249,7 +247,6 @@ arginit (char **vec) {
 	SCRN = DefaultScreen (DISP);
 }
 
-/*  */
 
 static
 envinit () {
@@ -273,7 +270,6 @@ envinit () {
 	ll_hdinit (pgm_log, myname);
 }
 
-/*  */
 
 static
 display_X () {
@@ -368,7 +364,6 @@ display_X () {
 	XWINser (0);
 }
 
-/*  */
 
 static
 Redisplay () {
@@ -412,7 +407,6 @@ Redisplay () {
 	XDestroyImage (image);
 }
 
-/*  */
 
 static int
 ALRMser () {
@@ -427,7 +421,6 @@ ALRMser () {
 		myim = NULL;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -520,7 +513,6 @@ startsocket (int portno) {
 		adios ("socket", "unable to bind");
 }
 
-/*  */
 
 int
 readsocket (char *buffer) {

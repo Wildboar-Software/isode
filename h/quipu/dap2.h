@@ -42,12 +42,10 @@
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
 
-/*  */
 
 /* An additional value for "asyn" parameters for interruptibility */
 #define ROS_INTR	-1
 
-/*  */
 
 struct DAPconnect {
 	int	    dc_sd;		/* association descriptor */
@@ -187,7 +185,6 @@ struct DAPindication {
 #define	copyDAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-/*  */
 
 int	DapAsynBindReqAux ();	/* DAP-BIND.REQUEST (ARGUMENT) */
 int	DapAsynBindRequest ();	/* DAP-BIND.REQUEST (ARGUMENT) */

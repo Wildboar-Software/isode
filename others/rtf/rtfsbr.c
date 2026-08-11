@@ -43,7 +43,6 @@ static LLog _pgm_log = {
 };
 LLog *pgm_log = &_pgm_log;
 
-/*  */
 
 #define	RC_BASE	0x80
 
@@ -87,7 +86,6 @@ SReportString (int code) {
 	return buffer;
 }
 
-/*  */
 
 void
 rts_adios (struct RtSAPabort *rta, char *event) {
@@ -110,7 +108,6 @@ rts_advise (struct RtSAPabort *rta, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...)
@@ -175,7 +172,6 @@ ryr_advise (char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifdef	lint
 /* VARARGS4 */
@@ -186,7 +182,6 @@ rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	NBBY
 #define	NBBY	8

@@ -31,7 +31,6 @@
 #include "general.h"
 #endif
 
-/*  */
 
 #ifdef	NULLPE
 typedef struct AEInfo {		/* "real" directory services! */
@@ -65,7 +64,6 @@ AEI	_str2aei ();
 char   *sprintaei ();
 #endif
 
-/*  */
 
 struct NSAPaddr {		/* this structure shouldn't have holes in it */
 	long     na_stack;			/* TS-stack */
@@ -214,7 +212,6 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 
-/*  */
 
 #ifdef	NULLPE
 char   *alias2name ();
@@ -244,7 +241,6 @@ struct PSAPaddr *is2paddr (char *host, char *service, struct isoservent *is);	/*
 struct SSAPaddr *is2saddr (char *host, char *service, struct isoservent *is);	/* service entry to SSAPaddr */
 struct TSAPaddr *is2taddr (char *host, char *service, struct isoservent *is);	/* service entry to TSAPaddr */
 
-/*  */
 
 struct PSAPaddr *str2paddr (char *str);  /* string encoding to PSAPaddr */
 struct SSAPaddr *str2saddr (char *str);  /* string encoding to SSAPaddr */
@@ -263,7 +259,6 @@ struct NSAPinfo *getnsapinfo ();/* info about an NSAP */
 char   *na2str ();		/* pretty-print NSAPaddr */
 char   *pa2str ();		/* pretty-print PSAPaddr */
 
-/*  */
 
 int	isodeserver ();		/* generic server dispatch */
 
@@ -271,7 +266,6 @@ int	iserver_init ();	/* phase 1 */
 int	iserver_wait ();	/* phase 2 */
 fd_set	iserver_mask ();	/* linkage */
 
-/*  */
 
 /* all of this really should be in "isoqos.h" ... */
 

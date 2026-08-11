@@ -56,7 +56,6 @@ static struct sockaddr_in *peers = NULL;
 
 
 
-/*  */
 
 int	tcpopen (
 	struct psapblk *pb,
@@ -178,7 +177,6 @@ done:
 	return DONE;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -240,7 +238,6 @@ struct PSAPindication *pi;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -303,7 +300,6 @@ done:
 #endif
 }
 
-/*  */
 
 static int  tcpready (pb, pi)
 struct psapblk *pb;
@@ -329,7 +325,6 @@ struct PSAPindication *pi;
 	return OK;
 }
 
-/*  */
 
 #define	tcpclose	close_tcp_socket
 #define	tcpselect	select_tcp_socket

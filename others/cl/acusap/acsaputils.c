@@ -99,7 +99,6 @@ out:
 }
 
 
-/*  */
 /* ARGSUSED */
 
 /*---------------------------------------------------------------------------*/
@@ -135,7 +134,6 @@ int    *ndata;
 }
 
 
-/*  */
 #ifdef	DEBUG
 
 /*---------------------------------------------------------------------------*/
@@ -192,7 +190,6 @@ struct assocblk *
 }
 
 
-/*  */
 /*---------------------------------------------------------------------------*/
 struct assocblk *
 findacublk (
@@ -211,7 +208,6 @@ findacublk (
 }
 
 
-/*  */
 /*---------------------------------------------------------------------------*/
 int
 freeacublk (
@@ -304,7 +300,6 @@ ps2aculose (
 
 
 
-/*  */
 #ifndef	lint
 static int  _acusaplose ();
 
@@ -331,7 +326,6 @@ acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 
 
 
-/*  */
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
@@ -365,7 +359,6 @@ _acusaplose (  /* what, fmt, args ... */
 
 
 
-/*  */
 /* stolen from acsap2error.c - return AcuSAP error code in string form */
 
 /*---------------------------------------------------------------------------*/
@@ -401,7 +394,6 @@ static char *reject_err0[] = {
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 
-/*  */
 /*---------------------------------------------------------------------------*/
 char *
 AcuErrString (

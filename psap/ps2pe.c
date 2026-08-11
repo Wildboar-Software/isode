@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps2pe.c,v 9.0 1992/06/
 #include "psap.h"
 #include "tailor.h"
 
-/*  */
 
 PE
 ps2pe_aux (PS ps, int top, int all) {
@@ -112,7 +111,6 @@ you_lose:
 	return NULLPE;
 }
 
-/*  */
 
 static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
@@ -160,7 +158,6 @@ ps_read_id (PS ps, int top, PElementClass *class, PElementForm *form, PElementID
 	return OK;
 }
 
-/*  */
 
 int
 ps_read_len (PS ps, PElementLen *len) {
@@ -204,7 +201,6 @@ ps_read_len (PS ps, PElementLen *len) {
 	return OK;
 }
 
-/*  */
 
 int
 ps_read_cons (PS ps, PE *pe, PElementLen len) {

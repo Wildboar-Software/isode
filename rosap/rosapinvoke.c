@@ -68,7 +68,6 @@ RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID
 	return result;
 }
 
-/*  */
 
 static int
 RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {

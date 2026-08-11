@@ -24,7 +24,6 @@
 #ifndef	_TP4_
 #define	_TP4_
 
-/*  */
 
 #ifdef	BSD_TP4
 #ifndef	SOCK_STREAM
@@ -133,7 +132,6 @@ int	gen2tp4 (), tp42gen ();
 #define select_tp4_socket selsocket
 #endif
 
-/*  */
 
 #ifdef	BSD_TP4
 #define	close_tp4_socket	close

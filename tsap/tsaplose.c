@@ -40,7 +40,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplose.c,v 9.0 1992/
 #undef	MGMT
 #endif
 
-/*  */
 
 #ifndef	lint
 static int  _tsaplose ();
@@ -124,7 +123,6 @@ tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what,
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	tsaplose (struct TSAPdisconnect*td, ...) {
@@ -152,7 +150,6 @@ tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

@@ -125,7 +125,6 @@ extern struct area_guide areas[];
 
 extern char *whois_help[];
 
-/*  */
 
 extern int  errno;
 

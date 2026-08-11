@@ -148,7 +148,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -209,7 +208,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
 
@@ -246,7 +244,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*  */
 
 #ifdef	sun
 #define	BSD42
@@ -373,7 +370,6 @@ congested:
 #undef	SYS5
 #endif
 
-/*  */
 
 #define	NBYTES	512
 #define	LINSIZ	72
@@ -447,7 +443,6 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-/*  */
 
 #define	NPASS	6
 
@@ -501,7 +496,6 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-/*  */
 
 /* Based on an f77 algorithm supplied by Frank Wancho <Wancho@SIMTEL20>,
    which was based on a basic algorithm by Paul D. Merillat and Arthur A. Key.
@@ -598,7 +592,6 @@ static struct web {
 	0, 0, 0, NULL, NULL
 };
 
-/*  */
 
 #define	ifix(f)		((int) ((float) (f) + 0.5))
 #ifndef	SYS5
@@ -682,7 +675,6 @@ pwdgen (char *pw) {
 	return OK;
 }
 
-/*  */
 
 static struct obj {
 	char   *o_string;
@@ -714,7 +706,6 @@ object (char *pw) {
 	return OK;
 }
 
-/*  */
 
 #ifndef	FORTUNE
 #define	FORTUNE	"/usr/games/fortune"
@@ -903,7 +894,6 @@ out:
 	return result;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -1020,7 +1010,6 @@ out:
 	return result;
 }
 
-/*  */
 
 static int
 do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
@@ -1068,7 +1057,6 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	_exit (0);			/* NOTREACHED */
 }
 
-/*  */
 
 static int  op_data (sd, ryo, rox, in, roi)
 int	sd;

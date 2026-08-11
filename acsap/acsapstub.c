@@ -47,7 +47,6 @@ static int  lpp_aet ();
 
 static struct isoentity ies;
 
-/*  */
 
 AEI
 str2aei_stub (char *designator, char *qualifier) {
@@ -205,7 +204,6 @@ found_it:
 	return oid2aei (&ie -> ie_identifier);
 }
 
-/*  */
 
 #ifdef	LPP
 static unsigned int elements[NELEM + 1];
@@ -266,7 +264,6 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 }
 #endif
 
-/*  */
 
 struct PSAPaddr *
 aei2addr_stub (AEI aei) {
@@ -288,7 +285,6 @@ aei2addr_stub (AEI aei) {
 	return (pa -> pa_addr.sa_addr.ta_naddr > 0 ? pa : NULLPA);
 }
 
-/*  */
 
 #ifdef	LPP
 /* ARGSUSED */

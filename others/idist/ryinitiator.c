@@ -205,7 +205,6 @@ closeconn () {
 	ACRFREE (acr);
 }
 
-/*  */
 
 invoke (op, arg, mod, ind, rfx, efx)
 int	op;
@@ -247,9 +246,7 @@ IFP	rfx, efx;
 	return result_value;
 }
 
-/*  */
 
-/*  */
 
 SFD cleanup ();
 
@@ -276,7 +273,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
@@ -302,7 +298,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-/*  */
 
 #ifndef	lint
 static void	_advise ();

@@ -987,7 +987,6 @@ static void undo_type_member (YP yp, int level, char *arg, char *narg, int Vflag
 		printf ("%*s}\n\n", level * 4, "");
 	}
 }
-/*  */
 
 static int  undo_type_choice (YP yp, int level, char *narg, int Vflag)
 {

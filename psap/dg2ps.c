@@ -48,7 +48,6 @@ struct ps_dg {
 
 extern	IFP	set_check_fd ();
 
-/*  */
 
 static int
 dg_prime (PS ps, int waiting) {
@@ -178,7 +177,6 @@ dg_check (int fd, caddr_t data) {
 	return (ps_prime (ps, 1) > 0 ? DONE : OK);
 }
 
-/*  */
 
 int
 dg_open (PS ps) {

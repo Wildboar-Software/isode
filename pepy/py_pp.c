@@ -46,7 +46,6 @@ static void	adios (char* what, char* fmt, ...),
 
 static int  process (char *file, FILE *fp, IFP pfx);
 
-/*  */
 
 /* ARGSUSED */
 
@@ -91,7 +90,6 @@ PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 	return status;
 }
 
-/*  */
 
 static int  process (char *file, FILE *fp, IFP pfx)
 {

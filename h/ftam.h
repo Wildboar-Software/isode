@@ -50,7 +50,6 @@
 #endif
 #include "logger.h"
 
-/*  */
 
 /* FTAM-QoS */
 #define	FQOS_NORECOVERY	0	/*   no-recovery */
@@ -97,7 +96,6 @@
 #define	FACTION_TRANS	1	/*   transient-error */
 #define	FACTION_PERM	2	/*   permanent-error */
 
-/*  */
 
 struct FTAMcontent {
 	OID	    fc_dtn;		/* Document-Type-Name */
@@ -115,7 +113,6 @@ struct FTAMcontentlist {	/* Contents-Type-List */
 	struct FTAMcontent fc_contents[NFCONT];
 };
 
-/*  */
 
 struct FTAMdiagnostic {		/* Diagnostic */
 	int	    ftd_type;		/* diagnostic-type */
@@ -317,7 +314,6 @@ struct FTAMdiagnostic {		/* Diagnostic */
 	char    ftd_data[FTD_SIZE];	/*   data */
 };
 
-/*  */
 
 struct FTAMcharging {		/* Charging */
 	int	    fc_ncharge;		/* number of charges */
@@ -330,7 +326,6 @@ struct FTAMcharging {		/* Charging */
 	}	    fc_charges[NFCHRG];
 };
 
-/*  */
 
 struct FTAMpasswords {		/* Access-Passwords */
 	char   *fp_read;		/* read-password */
@@ -379,7 +374,6 @@ struct FTAMpasswords {		/* Access-Passwords */
 	free (FP -> fp_delete), FP -> fp_delete = NULL; \
 }
 
-/*  */
 
 struct FTAMconcurrency {	/* Concurrency-Control/Concurrency-Access */
 #define	FLOCK_SHARED	00	/* shared */
@@ -411,7 +405,6 @@ struct FTAMconcurrency {	/* Concurrency-Control/Concurrency-Access */
     (fc) -> fc_deletelock = FLOCK_NOTREQD; \
 }
 
-/*  */
 
 struct FTAMacelement {		/* SET OF Access-Control-Element */
 	int	    fe_actions;		/* action-list */
@@ -458,7 +451,6 @@ struct FTAMacelement {		/* SET OF Access-Control-Element */
     } \
 }
 
-/*  */
 
 struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 	long    fa_present;		/* values present */
@@ -534,7 +526,6 @@ struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 
 void	FAFREE ();
 
-/*  */
 
 struct FADUidentity {		/* FADU-Identity */
 	int	    fa_type;
@@ -589,7 +580,6 @@ struct FADUidentity {		/* FADU-Identity */
 	    free ((fu) -> fa_names[FUI]), (fu) -> fa_names[FUI] = NULL; \
 }
 
-/*  */
 
 struct FTAMstart {		/* F-INITIALIZE.INDICATION */
 	int	    fts_sd;		/* FTAM descriptor */
@@ -1201,7 +1191,6 @@ struct FTAMindication {
 #define	FADU_ENTERTREE	1	/* Enter-Subtree-Data-Element */
 #define	FADU_EXITREE	2	/* Exit-Subtree-Data-Element */
 
-/*  */
 
 extern char *ftamversion;
 
@@ -1243,7 +1232,6 @@ int	FTraceHook ();		/* user-defined tracing */
 
 char   *FErrString ();		/* return FTAM error code in string form */
 
-/*  */
 
 struct isodocument {
 	char   *id_entry;

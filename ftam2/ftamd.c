@@ -149,7 +149,6 @@ main (int argc, char **argv, char **envp) {
 		}
 }
 
-/*  */
 
 void
 ftam_adios (struct FTAMabort *fta, char *event) {
@@ -179,7 +178,6 @@ ftam_advise (struct FTAMabort *fta, char *event) {
 	}
 }
 
-/*  */
 
 static char *entity[] = {
 	"UNK", "IFSU", "IFPM", "VFS", "RFPM", "RFSU"
@@ -272,7 +270,6 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
 	}
 }
 
-/*  */
 
 #ifndef	lint
 void	adios (char* what, char* fmt, ...) {

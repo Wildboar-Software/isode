@@ -97,7 +97,6 @@ FReadWriteRequest (
 	return result;
 }
 
-/*  */
 
 static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti) {
 	int     result;
@@ -246,7 +245,6 @@ FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
 }
 
 
-/*  */
 
 static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {
 	int	    result;

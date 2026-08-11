@@ -38,7 +38,6 @@ static char *lcwd = NULL;
 
 int	fdffnx ();
 
-/*  */
 
 #ifndef	BRIDGE
 int f_lcd (char **vec) {
@@ -73,7 +72,6 @@ int f_lcd (char **vec) {
 }
 #endif
 
-/*  */
 
 int
 f_cd (char **vec) {
@@ -124,7 +122,6 @@ f_cd (char **vec) {
 	return OK;
 }
 
-/*  */
 
 int
 isdir (char *dir, char *dp, int silent) {
@@ -230,7 +227,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -258,7 +254,6 @@ f_pwd (char **vec) {
 	return OK;
 }
 
-/*  */
 
 char *
 str2file (char *s) {

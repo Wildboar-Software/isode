@@ -26,7 +26,6 @@
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
 
-/*  */
 
 #ifdef	ACSE
 
@@ -116,7 +115,6 @@
 int	acusaplose (struct AcSAPindication *aci, ...);
 #endif
 
-/*  */
 
 int	ps2acslose ();
 #ifdef  HULA
@@ -127,7 +125,6 @@ struct type_ACS_Association__information *info2apdu ();
 int	apdu2info ();
 #endif
 
-/*  */
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -243,7 +240,6 @@ int     freeacublk ();
 struct assocblk *newacublk (), *findacublk ();
 #endif
 
-/*  */
 
 #ifndef	ACSE
 

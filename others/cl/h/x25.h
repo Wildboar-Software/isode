@@ -80,7 +80,6 @@ typedef struct x25_sockaddr CONN_DB;
 
 #endif
 
-/*  */
 
 #ifdef	SUN_X25
 #define close_x25_socket     close

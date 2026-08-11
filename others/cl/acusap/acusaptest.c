@@ -40,7 +40,6 @@ static char *myservice = "acusaptest";
 static char *mycontext = "acusaptest context";
 static char *mypci = "acusaptest pci";
 
-/*  */
 
 char *gets (), *calloc ();
 
@@ -80,7 +79,6 @@ void acs_advise();
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
-/*  */
 
 /* ARGSUSED */
 
@@ -496,7 +494,6 @@ printsrv (
 }
 
 
-/*  */
 /*-------------------------------------*/
 static
 printpaddr (
@@ -577,7 +574,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-/*  */
 
 #ifndef	lint
 static void	_advise ();

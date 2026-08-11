@@ -136,7 +136,6 @@ int	debug;
 	return sd;
 }
 
-/*  */
 
 static int  smuxalloc () {
 	int	    len;
@@ -251,7 +250,6 @@ no_mem:
 	return result;
 }
 
-/*  */
 
 static int  smuxsend (pdu)
 struct type_SNMP_SMUX__PDUs *pdu;
@@ -557,7 +555,6 @@ char   *what,
 }
 #endif
 
-/*  */
 
 static char *errors_up[] = {
 	"goingDown",

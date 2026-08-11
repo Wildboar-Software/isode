@@ -463,7 +463,6 @@ int getftamline (char *prompt, char *buffer) {
 }
 #endif
 
-/*  */
 
 #ifndef	BRIDGE
 
@@ -481,7 +480,6 @@ static SFD intrser (int sig) {
 }
 #endif
 
-/*  */
 
 #ifndef	BRIDGE
 #ifndef	lint

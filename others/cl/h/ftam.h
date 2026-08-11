@@ -23,7 +23,6 @@
 
 #include "psap2.h"
 
-/*  */
 
 /* service levels */
 #define	FLEVEL_RELIABLE	0	/*   reliable */
@@ -68,7 +67,6 @@
 #define	FACTION_PERM	2	/*   permanent-error */
 
 
-/*  */
 
 struct FTAMcontent {
 	OID	    fc_dtn;		/* document type name */
@@ -86,7 +84,6 @@ struct FTAMcontentlist {	/* list of FTAM contents */
 	struct FTAMcontent fc_contents[NFCONT];
 };
 
-/*  */
 
 struct FTAMdiagnostic {
 	int	    ftd_type;		/* diagnostic-type */
@@ -272,7 +269,6 @@ struct FTAMdiagnostic {
 	char    ftd_data[FTD_SIZE];	/*   data */
 };
 
-/*  */
 
 struct FTAMcharging {		/* FTAM charging */
 	int	    fc_ncharge;		/* number of charges */
@@ -285,7 +281,6 @@ struct FTAMcharging {		/* FTAM charging */
 	}	    fc_charges[NFCHRG];
 };
 
-/*  */
 
 struct FTAMpasswords {
 	char   *fp_read;		/* read-password */
@@ -334,7 +329,6 @@ struct FTAMpasswords {
 	free (FP -> fp_delete), FP -> fp_delete = NULL; \
 }
 
-/*  */
 
 struct FTAMacelement {
 	int	    fe_actions;		/* action-list */
@@ -392,7 +386,6 @@ struct FTAMaclist {
     (fl) -> fl_delete = NULL; \
 }
 
-/*  */
 
 struct FTAMattributes {
 	long    fa_present;		/* values present */
@@ -467,7 +460,6 @@ struct FTAMattributes {
 
 void	FAFREE ();
 
-/*  */
 
 struct FTAMconcurrency {
 #define	FLOCK_SHARED	00	/* shared */
@@ -499,7 +491,6 @@ struct FTAMconcurrency {
     (fc) -> fc_deletelock = FLOCK_NOTREQD; \
 }
 
-/*  */
 
 struct FADUidentity {
 	int	    fa_type;
@@ -556,7 +547,6 @@ struct FADUidentity {
 	    free ((fu) -> fa_names[FUI]), (fu) -> fa_names[FUI] = NULL; \
 }
 
-/*  */
 
 struct FTAMstart {		/* F-INITIALIZE.INDICATION */
 	int	    fts_sd;		/* FTAM descriptor */
@@ -1085,7 +1075,6 @@ struct FTAMindication {
 #define	FADU_ENTERTREE	22	/* Enter-Subtree-Data-Element */
 #define	FADU_EXITREE	23	/* Exit-Subtree-Data-Element */
 
-/*  */
 
 extern char *ftamversion;
 
@@ -1127,7 +1116,6 @@ int	FTraceHook ();		/* user-defined tracing */
 
 char   *FErrString ();		/* return FTAM error code in string form */
 
-/*  */
 
 struct isodocument {
 	char   *id_entry;

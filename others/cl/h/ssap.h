@@ -31,7 +31,6 @@
 #include "isoaddrs.h"
 #endif
 
-/*  */
 
 struct SSAPactid {		/* Activity Identifier */
 #define	SID_DATA_SIZE	6
@@ -65,7 +64,6 @@ struct SSAPref {		/* SSAP reference */
 #define	sr_called_len	sr_vlen
 };
 
-/*  */
 
 struct SSAPstart {		/* S-CONNECT.INDICATION */
 	int	    ss_sd;		/* SESSION descriptor */
@@ -459,7 +457,6 @@ struct SSAPindication {
 
 };
 
-/*  */
 
 extern char *ssapversion;
 

@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver1.c,v 9.0 199
 #include "sys.file.h"
 #include "tailor.h"
 
-/*  */
 
 int
 isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td) {

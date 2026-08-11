@@ -356,7 +356,6 @@ static char *usens = "off";
 
 char   *ns_address = "undefined";
 
-/*  */
 
 static struct bind {
 	char   *b_key;
@@ -488,7 +487,6 @@ static struct bind {
 static int	tailor_read ();
 static char   *tailor_value ();
 
-/*  */
 
 char *
 isodesetailor (char *file) {
@@ -500,7 +498,6 @@ isodesetailor (char *file) {
 	return ofile;
 }
 
-/*  */
 
 void
 isodetailor (char *myname, int wantuser) {
@@ -534,7 +531,6 @@ isodetailor (char *myname, int wantuser) {
 	isodexport (myname);
 }
 
-/*  */
 
 static int
 tailor_read (char *file) {
@@ -582,7 +578,6 @@ tailor_read (char *file) {
 	}
 }
 
-/*  */
 
 int
 isodesetvar (char *name, char *value, int dynamic) {
@@ -599,7 +594,6 @@ isodesetvar (char *name, char *value, int dynamic) {
 	return NOTOK;
 }
 
-/*  */
 
 void
 isodexport (char *myname) {
@@ -911,7 +905,6 @@ isodexport (char *myname) {
 	ns_enabled = !strcmp (usens, "on");
 }
 
-/*  */
 
 #define	QUOTE	'\\'
 
@@ -974,7 +967,6 @@ tailor_value (char *s) {
 	return bp;
 }
 
-/*  */
 
 static int
 events_value (struct pair *pairs, char *s, char *var) {
@@ -1002,7 +994,6 @@ events_value (struct pair *pairs, char *s, char *var) {
 	return value;
 }
 
-/*  */
 
 #ifdef DEBUG
 int

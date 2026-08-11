@@ -36,7 +36,6 @@ int	ps_len_strategy = PS_LEN_SPAG;
 static int  ps_get_id ();
 static int  ps_get_len ();
 
-/*  */
 
 int
 ps_get_abs (PE pe) {
@@ -79,7 +78,6 @@ ps_get_abs (PE pe) {
 	return (ps_get_id (pe) + ps_get_len (pe) + len);
 }
 
-/*  */
 
 static int
 ps_get_id (PE pe) {
@@ -94,7 +92,6 @@ ps_get_id (PE pe) {
 	return i;
 }
 
-/*  */
 
 static int
 ps_get_len (PE pe) {

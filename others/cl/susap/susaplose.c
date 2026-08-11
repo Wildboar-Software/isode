@@ -18,7 +18,6 @@
 #include "spkt.h"
 #include "tailor.h"
 
-/*  */
 
 #ifndef	lint
 static int _susaplose ();
@@ -47,7 +46,6 @@ susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int
@@ -78,7 +76,6 @@ _susaplose (	/* what, fmt, args ... */
 #endif
 
 
-/*  */
 
 int
 ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td) {

@@ -167,7 +167,6 @@ void set_variable (char *name, char *newvalue) {
 	ot -> ot_info = value;
 }
 
-/*  */
 
 #ifndef LINUX
 int	getkmem (n, buffer, cc)

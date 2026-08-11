@@ -643,7 +643,6 @@ static void action (char *s, int fd, struct sockaddr *sock) {
 
 #else
 
-/*  */
 
 int
 dgram_dummy () {}

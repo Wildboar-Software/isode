@@ -994,7 +994,6 @@ ynorint (char *s) {
 	return atoi (s);
 }
 
-/*  */
 int kern_tickadj;
 static int kern_hz, kern_tick;
 #ifdef NeXT

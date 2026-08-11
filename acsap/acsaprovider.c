@@ -146,7 +146,6 @@ out:
 	return NULL;
 }
 
-/*  */
 
 /* ARGSUSED */
 

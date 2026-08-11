@@ -42,19 +42,16 @@
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
 
-/*  */
 
 /* An additional value for "asyn" parameters for interruptibility */
 #define ROS_INTR	-1
 
-/*  */
 
 /* Values used to convey response type throughout DSAP library */
 #define DS_RESULT	1
 #define DS_ERROR	2
 #define DS_REJECT	3
 
-/*  */
 
 struct DSAPstart {		/* D-BIND.INDICATION */
 	int	    ds_sd;		/* association descriptor */
@@ -241,7 +238,6 @@ struct DSAPindication {
 #define	copyDSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-/*  */
 
 extern char *dsapversion;
 

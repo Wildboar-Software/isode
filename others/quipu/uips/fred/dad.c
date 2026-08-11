@@ -185,7 +185,6 @@ main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -224,7 +223,6 @@ int	i;
 	}
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -368,7 +366,6 @@ were_history:
 	kill (dishpid, SIGKILL);
 }
 
-/*  */
 
 #ifndef	lint
 static int  _da_response ();
@@ -412,7 +409,6 @@ da_response (int fd, char *fmt) {
 }
 #endif
 
-/*  */
 
 static int
 start_dish (int binding) {
@@ -496,7 +492,6 @@ fork_again:
 	return (dishpid != NOTOK ? OK : NOTOK);
 }
 
-/*  */
 
 static
 rcfile () {
@@ -544,7 +539,6 @@ failed:
 		goto failed;
 }
 
-/*  */
 
 static int
 rcpipe (char *command) {
@@ -600,7 +594,6 @@ done:
 	return result;
 }
 
-/*  */
 
 #ifdef	BSD42
 /* ARGSUSED */
@@ -621,7 +614,6 @@ struct sigcontext *sc;
 }
 #endif
 
-/*  */
 
 static void
 arginit (char **vec) {
@@ -678,7 +670,6 @@ arginit (char **vec) {
 	}
 }
 
-/*  */
 
 static void
 envinit () {

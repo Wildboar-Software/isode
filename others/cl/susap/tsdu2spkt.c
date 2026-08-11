@@ -197,7 +197,6 @@ static int si_table[] = {
 
 #define	SI_TABLE_LEN		((sizeof si_table) / (sizeof si_table[0]))
 
-/*  */
 
 #define	PGI_CN_ID		1
 #define		PI_CALLED_SS	9
@@ -277,7 +276,6 @@ static int pi_table[] = {
 };
 #define	PI_TABLE_LEN		((sizeof pi_table) / (sizeof pi_table[0]))
 
-/*  */
 
 static int pi_length[PI_TABLE_LEN] = {
 	0,					/* 0x00 */
@@ -327,7 +325,6 @@ static int pi_length[PI_TABLE_LEN] = {
 	SIZE_CN_ISN,				/* 0x37: 2nd initial s/n */
 };
 
-/*  */
 
 #define	If_Set(flag)	if (s -> s_mask & (flag))
 #define If_Reset(flag)	if (!(s -> s_mask & (flag)))
@@ -1039,7 +1036,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-/*  */
 
 static u_long str2ssn (s, n)
 char  *s;
@@ -1053,7 +1049,6 @@ int	n;
 	return u;
 }
 
-/*  */
 
 /* this is used to pull PCI, not user data... */
 
@@ -1109,7 +1104,6 @@ pullqb (struct qbuf *qb, int n) {
 	return buffer;
 }
 
-/*  */
 
 struct ssapkt *
 tsdu2spkt (struct qbuf *qb, int len, int *cc) {
@@ -1821,7 +1815,6 @@ do_pgi:
 
 
 #ifdef HULA
-/*  */
 
 struct ssapkt *
 udtsdu2spkt (struct qbuf *qb, int len) {
@@ -2026,7 +2019,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 
 
 
-/*  */
 
 struct ssapkt *
 newspkt (int code) {

@@ -1029,7 +1029,6 @@ void ftam_bulkendindication (struct FTAMgroup *ftg) {
 	FTGFREE (ftg);
 }
 
-/*  */
 
 #ifndef	NBBY
 #define	NBBY	8

@@ -35,13 +35,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/values.c,v 9.0 1992/06
 #include "objects.h"
 #include "logger.h"
 
-/*  */
 
 #define	ADVISE	if (o_advise) (*o_advise)
 
 IFP	o_advise = NULLIFP;
 
-/*  */
 
 int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
@@ -158,7 +156,6 @@ int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 int	o_longword (oi, v, number)
 OI	oi;
@@ -200,7 +197,6 @@ caddr_t	number;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 int	o_string (oi, v, base, len)
 OI	oi;
@@ -242,7 +238,6 @@ int	len;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 int	o_qbstring (oi, v, value)
 OI	oi;
@@ -275,7 +270,6 @@ struct qbuf *value;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 int	o_specific (oi, v, value)
 OI	oi;
@@ -308,7 +302,6 @@ caddr_t	value;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 int	mediaddr2oid (ip, addr, len, islen)
 unsigned int *ip;
@@ -327,7 +320,6 @@ int	len,
 	return (len + (islen ? 1 : 0));
 }
 
-/*  */
 
 OID	oid_extend (q, howmuch)
 OID	q;
@@ -360,7 +352,6 @@ int	howmuch;
 	return oid;
 }
 
-/*  */
 
 OID	oid_normalize (q, howmuch, bigvalue)
 OID	q;

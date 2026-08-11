@@ -642,7 +642,6 @@ char   *event;
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 #ifdef	CLTS
 static	doit_clts (pd)
@@ -675,7 +674,6 @@ int	pd;
 }
 #endif
 
-/*  */
 
 #ifdef	COTS
 static int  start_tsap (vecp, vec)
@@ -710,7 +708,6 @@ char  **vec;
 	return ts -> ts_sd;
 }
 
-/*  */
 
 static	doit_cots (fd)
 int	fd;
@@ -1410,7 +1407,6 @@ out:
 	return DONE;
 }
 
-/*  */
 
 #ifdef	COTS
 static	proxy_clear (fd)

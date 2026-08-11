@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rts.py,v 9.0 1992/06/
 
 int	rtsap_priority;
 
-/*  */
 %}
 
 BEGIN

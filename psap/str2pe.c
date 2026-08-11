@@ -31,12 +31,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2pe.c,v 9.0 1992/06
 #include "psap.h"
 #include "tailor.h"
 
-/*  */
 
 static PElementLen	str_get_len ();
 static int  str_get_start ();
 
-/*  */
 
 #define	seterr(e,v)		(*result = (e), (v))
 
@@ -89,7 +87,6 @@ str2pe (char *s, int len, int *advance, int *result) {
 	return pe;
 }
 
-/*  */
 
 static int
 str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result) {
@@ -159,7 +156,6 @@ str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PEle
 	return OK;
 }
 
-/*  */
 
 static PElementLen
 str_get_len (char *s, int len, int *result) {

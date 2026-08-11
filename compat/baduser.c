@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992
 #include "manifest.h"
 #include "tailor.h"
 
-/*  */
 
 int
 baduser (char *file, char *user) {

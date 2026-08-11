@@ -27,7 +27,6 @@
 #include "tsap.h"
 #include "isoservent.h"
 
-/*  */
 
 /* A-ASSOCIATE.INDICATION */
 

@@ -27,7 +27,6 @@
 #include "general.h"
 #endif
 
-/*  */
 
 #ifdef	NULLPE
 typedef struct AEInfo {		/* "real" directory services! */
@@ -57,7 +56,6 @@ AEI	str2aei ();
 char   *sprintaei ();
 #endif
 
-/*  */
 
 struct NSAPaddr {
 	long     na_type;	/* this structure shouldn't have holes in it */
@@ -182,7 +180,6 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 
-/*  */
 
 #ifdef	NULLPE
 struct dse_service {
@@ -231,7 +228,6 @@ struct TSAPaddr *asn2taddr ();	/* ASN.1 value to TSAPaddr */
 char   *paddr2asn ();		/* PSAPaddr to ASN.1 value */
 char   *taddr2asn ();		/* TSAPaddr to ASN.1 value */
 
-/*  */
 
 struct nsap_entry {
 	char   *ns_service;
@@ -250,11 +246,9 @@ char   *taddr2str ();		/* TSAPaddr to string encoding */
 
 char   *na2str ();		/* pretty-print NSAPaddr */
 
-/*  */
 
 int	isodeserver ();		/* generic server dispatch */
 
-/*  */
 
 /* all of this really should be in "isoqos.h" ... */
 

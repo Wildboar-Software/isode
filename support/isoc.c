@@ -1997,7 +1997,6 @@ static void ps_abort (int sd, char *reason) {
 	adios (NULLCP, "%s", reason);
 }
 
-/*  */
 
 static void  ps_adios ( struct PSAPabort *pa, char   *event) {
 	ps_advise (pa, event);
@@ -2365,7 +2364,6 @@ static void rts_waitfor (int sd) {
 		}
 }
 
-/*  */
 
 static int  rts_event (sd, rti)
 int	sd;
@@ -2396,7 +2394,6 @@ struct RtSAPindication *rti;
 	}
 }
 
-/*  */
 
 static void  rts_adios (rta, event)
 struct RtSAPabort *rta;
@@ -2779,7 +2776,6 @@ static void ros_invokerequest (int sd, PE pe) {
 }
 
 
-/*  */
 
 static void  ros_adios (rop, event)
 struct RoSAPpreject *rop;

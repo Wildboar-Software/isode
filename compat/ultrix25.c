@@ -94,7 +94,6 @@ extern int X25Encode();
 static     char	enc_buf[1024];
 static     int	enc_buf_len;
 
-/*  */
 
 int
 start_x25_client (struct NSAPaddr *local) {
@@ -123,7 +122,6 @@ start_x25_client (struct NSAPaddr *local) {
 	return sd;
 }
 
-/*  */
 
 int
 start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
@@ -183,7 +181,6 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	return sd;
 }
 
-/*  */
 
 int
 join_x25_client (int fd, struct NSAPaddr *remote) {
@@ -556,7 +553,6 @@ log_x25_facilities (int fd, int coc, char *caption) {
 	return OK;
 }
 
-/*  */
 
 void *
 epl_prtstr (char *fmt, char *val, int vallen) {
@@ -1026,7 +1022,6 @@ start_x25_client (struct NSAPaddr *local) {
 
 }
 
-/*  */
 
 int
 start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
@@ -1251,7 +1246,6 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 }
 
-/*  */
 
 
 int
@@ -1430,7 +1424,6 @@ start_x25_client (struct NSAPaddr *local) {
 
 }
 
-/*  */
 
 int
 start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
@@ -1542,7 +1535,6 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 }
 
-/*  */
 
 
 int

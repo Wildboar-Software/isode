@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosaplose.c,v 9.0 199
 #include "ropkt.h"
 #include "tailor.h"
 
-/*  */
 #ifndef	lint
 static int  _rosaplose ();
 #endif
@@ -98,7 +97,6 @@ ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	rosapreject (struct assocblk*acb, ...) {
@@ -135,7 +133,6 @@ rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 int	rosaplose (struct RoSAPindication*roi, ...) {
@@ -162,7 +159,6 @@ rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

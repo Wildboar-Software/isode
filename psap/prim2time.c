@@ -37,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2time.c,v 9.0 1992
 
 static long	get_usec ();
 
-/*  */
 
 UTC
 prim2time (PE pe, int generalized) {
@@ -66,7 +65,6 @@ prim2time (PE pe, int generalized) {
 							   NULLUTC));
 }
 
-/*  */
 
 UTC
 str2utct (char *cp, int len) {
@@ -118,7 +116,6 @@ str2utct (char *cp, int len) {
 	return u;
 }
 
-/*  */
 
 UTC
 str2gent (char *cp, int len) {
@@ -225,7 +222,6 @@ get_zone:
 	return u;
 }
 
-/*  */
 
 /* not perfect, but what is? */
 

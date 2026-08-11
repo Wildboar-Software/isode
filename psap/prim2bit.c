@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 PE
 prim2bit (PE pe) {

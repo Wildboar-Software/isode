@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
 #include "isoaddrs.h"
 #include "internet.h"
 
-/*  */
 
 char *gets (), *calloc ();
 
@@ -38,7 +37,6 @@ printtaddr();
 
 
 
-/*  */
 
 /* ARGSUSED */
 
@@ -287,7 +285,6 @@ printsrv (struct isoservent *is) {
 }
 
 
-/*  */
 
 static
 printsaddr (struct SSAPaddr *sa)

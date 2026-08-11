@@ -55,7 +55,6 @@ RtEndResponse (int sd, struct RtSAPindication *rti) {
 
 }
 
-/*  */
 
 static int
 RtEndResponseAux (struct assocblk *acb, struct RtSAPindication *rti) {

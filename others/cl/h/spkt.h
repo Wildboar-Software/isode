@@ -24,7 +24,6 @@
 
 #include "tsap.h"		/* definitions for TS-USERs */
 
-/*  */
 
 #define	ssapPsig(sb, sd) \
 { \
@@ -362,7 +361,6 @@
 
 int	spktlose (), ssaplose ();
 
-/*  */
 
 struct ssapblk {
 	struct ssapblk *sb_forw;	/* doubly-linked list */

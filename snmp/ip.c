@@ -74,7 +74,6 @@ struct	arptab {
 #include <sys/ioctl.h>
 #endif
 
-/*  */
 
 #define	FORW_GATEWAY	1		/* ipForwarding */
 #define	FORW_HOST	2
@@ -90,7 +89,6 @@ int _read_snmp_stats ();
 int _file_printf (const char *path, const char *fmt, ...);
 #endif
 
-/*  */
 
 #define	ipForwarding	0
 #define	ipDefaultTTL	1
@@ -357,7 +355,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  s_ip (oi, v, offset)
 OI	oi;
@@ -460,7 +457,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 #ifndef	IP_MAXPACKET
 #define	IP_MAXPACKET	65535		/* ipAdEntReasmMaxSize */
@@ -469,7 +465,6 @@ int	offset;
 
 #define	IFN_SIZE	4
 
-/*  */
 
 #define	ipAdEntAddr	0
 #define	ipAdEntIfIndex	1
@@ -584,7 +579,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 #define	ipRouteDest	0
 #define	ipRouteIfIndex	1
@@ -793,7 +787,6 @@ try_again:
 	}
 }
 
-/*  */
 
 #ifndef	BSD44
 static int  s_ip_route (oi, v, offset)
@@ -1092,12 +1085,10 @@ losing_noop:
 #define	s_ip_route	NULLIFP
 #endif
 
-/*  */
 
 #ifndef LINUX
 static struct rtstat rtstat;
 
-/*  */
 
 #define	unixRouteBadRedirects 0
 #define	unixRouteCreatedByRedirects 1
@@ -1173,7 +1164,6 @@ int	offset;
 }
 #endif
 
-/*  */
 
 struct adrtab {
 #define	ADN_SIZE	(IFN_SIZE + 1)		/* IpAddress instance */
@@ -1223,7 +1213,6 @@ static	int	flush_arp_cache = 0;
 
 static struct adrtab *get_arpent ();
 
-/*  */
 
 #define	atIfIndex	0
 #define	atPhysAddress	1
@@ -1388,7 +1377,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static int  s_address (oi, v, offset)
 OI	oi;
@@ -1692,7 +1680,6 @@ losing_noop:
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
 
 #ifdef LINUX
 static struct arptab *_read_arptab ()
@@ -1879,7 +1866,6 @@ no_dice:
 	return OK;
 }
 
-/*  */
 
 static int adn_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
@@ -1944,7 +1930,6 @@ static void sort_arptab (void) {
 	free ((char *) base);
 }
 
-/*  */
 
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
 unsigned int *ip;

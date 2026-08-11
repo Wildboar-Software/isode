@@ -107,7 +107,6 @@ PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindicatio
 	return result;
 }
 
-/*  */
 
 static int
 PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {

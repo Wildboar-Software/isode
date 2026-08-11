@@ -77,7 +77,6 @@ static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, st
 	return result;
 }
 
-/*  */
 
 static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
@@ -146,7 +145,6 @@ out:
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
 
-/*  */
 
 static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	int     i,
@@ -445,7 +443,6 @@ finish_create:
 	return OK;
 }
 
-/*  */
 
 static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     i;

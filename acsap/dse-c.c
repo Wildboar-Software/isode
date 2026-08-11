@@ -42,7 +42,6 @@ static struct type_DSE_PSAPaddr *psap2dse ();
 static int  dse2psap ();
 static int  gstring ();
 
-/*  */
 
 int
 build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
@@ -60,7 +59,6 @@ build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
 	return result;
 }
 
-/*  */
 
 static struct type_DSE_PSAPaddr *
 psap2dse (struct PSAPaddr *pa) {
@@ -112,7 +110,6 @@ losing:
 	return dse;
 }
 
-/*  */
 
 int
 parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
@@ -130,7 +127,6 @@ parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
 	return result;
 }
 
-/*  */
 
 static int
 dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
@@ -168,7 +164,6 @@ dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	return OK;
 }
 
-/*  */
 
 static int
 gstring (char *buf, int buflen, struct qbuf *qb, char *w) {

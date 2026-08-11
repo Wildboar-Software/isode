@@ -77,7 +77,6 @@ static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, s
 	return result;
 }
 
-/*  */
 
 static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
@@ -160,7 +159,6 @@ out:
 	return OK;
 }
 
-/*  */
 
 static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	if (fsb -> fsb_flags & FSB_INIT)
@@ -436,7 +434,6 @@ wrong_state:
 	return OK;
 }
 
-/*  */
 
 static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     flags,

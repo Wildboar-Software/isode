@@ -75,7 +75,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
 #endif
 #include "tailor.h"
 
-/*  */
 
 static int  debug = 0;
 static int  foreground = 0;
@@ -397,7 +396,6 @@ static int setperms (struct IAEntry *is)
 	}
 }
 
-/*  */
 
 static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 	char    buffer[BUFSIZ];
@@ -412,7 +410,6 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 #ifndef	NOGOSIP
 static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
@@ -444,7 +441,6 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-/*  */
 
 #define	RMASK \
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
@@ -1344,7 +1340,6 @@ static void bind_to_directory (void) {
 	isbound = 1;
 }
 
-/*  */
 
 static int  rebind_to_directory () {
 	if (referral_dsa != NOTOK) {
@@ -1362,7 +1357,6 @@ static int  rebind_to_directory () {
 	return (isbound ? OK : NOTOK);
 }
 
-/*  */
 
 static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
@@ -1376,7 +1370,6 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 		strcpy (ba -> dba_passwd, passwd);
 }
 
-/*  */
 
 static int  unbind_from_directory () {
 	int	    wasbound;
@@ -1400,7 +1393,6 @@ static int  unbind_from_directory () {
 	return wasbound;
 }
 
-/*  */
 
 static int  do_error ( struct DSError *de )
 {
@@ -1468,7 +1460,6 @@ pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
 	return NOTOK;
 }
 
-/*  */
 
 int	str2dnY (str, dn)
 char   *str;
@@ -1482,7 +1473,6 @@ DN     *dn;
 	return ((*dn = str2dn (str)) != NULLDN ? OK : NOTOK);
 }
 
-/*  */
 
 #ifdef	BSD42
 /* ARGSUSED */

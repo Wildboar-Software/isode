@@ -47,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/dased.c,v 9.0 1992/06
 #define	STATS
 #endif
 
-/*  */
 
 static int debug = 0;
 static int nbits = FD_SETSIZE;
@@ -91,7 +90,6 @@ static int	bind_to_dsa ();
 char   *dn2str ();
 PE	grab_pe ();
 
-/*  */
 
 /* ARGSUSED */
 
@@ -234,7 +232,6 @@ static void dased (int vecp, char **vec) {
 	exit (0);
 }
 
-/*  */
 
 static void dase_aux (struct type_DASE_Query__REQ *req) {
 	int    i;
@@ -654,7 +651,6 @@ out:
 	return dns;
 }
 
-/*  */
 
 static int
 dns_compar (struct dn_seq **a, struct dn_seq **b) {
@@ -671,7 +667,6 @@ dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -682,7 +677,6 @@ just_say_no (DNS dns, DN dn, char *s) {
 	return NULL;
 }
 
-/*  */
 
 static PE
 name2psap (DN dn) {
@@ -945,7 +939,6 @@ advise (int code, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 static void
 ts_adios (struct TSAPdisconnect *td, char *event) {
@@ -954,7 +947,6 @@ ts_adios (struct TSAPdisconnect *td, char *event) {
 	exit (1);
 }
 
-/*  */
 
 static void
 ts_advise (struct TSAPdisconnect *td, int code, char *event) {

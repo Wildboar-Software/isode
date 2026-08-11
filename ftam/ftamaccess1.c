@@ -76,7 +76,6 @@ FAccessRequest (
 	return result;
 }
 
-/*  */
 
 static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti) {
 	int     result;

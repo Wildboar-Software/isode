@@ -35,7 +35,6 @@
 #include "rosap.h"		/* definitions for RoS-USERs */
 #endif
 
-/*  */
 
 #ifdef PEPSY_VERSION
 #include "pepsy.h"
@@ -90,7 +89,6 @@ struct RyError {
 #endif
 };
 
-/*  */
 
 struct opsblk {
 	struct opsblk *opb_forw;	/* doubly-linked list */
@@ -144,7 +142,6 @@ struct dspblk {
 #define	RY_RESULT	(-1)	/* distinguishes RESULTs from ERRORs */
 #define	RY_REJECT	(-2)	/* distinguishes REJECTs from ERRORs */
 
-/*  */
 /* Change the names to use the pepsy based rosy library */
 #ifdef PEPSY_DEFINITIONS
 #define RyDiscard		PRyDiscard

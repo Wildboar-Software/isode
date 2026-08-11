@@ -124,7 +124,6 @@ typedef struct ypv {
 
 YV	new_value (), add_value (), copy_value ();
 
-/*  */
 
 typedef struct ypt {
     PElementClass   yt_class;
@@ -179,7 +178,6 @@ extern int	e_actions, d_actions, p_actions;
 
 %END(PEPSY)%
 
-/*  */
 
 typedef struct ype {
     int     yp_code;
@@ -365,7 +363,6 @@ typedef struct modlist {
 }             modlist, *MD;
 #define       NULLMD  ((MD) 0)
 
-/*  */
 
 %BEGIN(PEPSY)%
 extern char *pepsyversion;

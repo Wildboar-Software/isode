@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/system.c,v 9.0 1992/06
 #include "tailor.h"
 #include <sys/time.h>
 
-/*  */
 
 static int  o_sysUpTime (oi, v, offset)
 OI	oi;
@@ -89,7 +88,6 @@ int	offset;
 	return o_number (oi, v, (caddr_t) &diff);
 }
 
-/*  */
 
 static struct sys_pair {
 	char   *s_name;

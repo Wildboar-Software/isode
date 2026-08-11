@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2num.c,v 9.0 1992/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 integer
 prim2num (PE pe) {

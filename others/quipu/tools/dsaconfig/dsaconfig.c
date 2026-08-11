@@ -140,7 +140,6 @@ struct country {
 
 static struct country *read_country ();
 
-/*  */
 
 struct pair {
 	char   *p_name;
@@ -244,7 +243,6 @@ static struct pair pairs[] = {
 
 static struct pair *n2p ();
 
-/*  */
 
 static
 read_config () {
@@ -562,7 +560,6 @@ postal_problem:
 	}
 }
 
-/*  */
 
 static struct country *
 read_country (char *code) {
@@ -660,7 +657,6 @@ read_country (char *code) {
 	return c;
 }
 
-/*  */
 
 static
 read_psap (char *dsa, char **addr) {
@@ -717,7 +713,6 @@ hit:
 	fclose (fp);
 }
 
-/*  */
 
 int
 generate_sed () {
@@ -740,7 +735,6 @@ generate_sed () {
 	fclose (fp);
 }
 
-/*  */
 
 static struct pair *
 n2p (char *name, int any) {
@@ -755,7 +749,6 @@ n2p (char *name, int any) {
 	/* NOTREACHED */
 }
 
-/*  */
 
 static	munge (fp, entries)
 FILE   *fp;
@@ -811,7 +804,6 @@ build_root () {
 	make_file ("root.edb", "EDB", 0600, 0);
 }
 
-/*  */
 
 static char *c_TLC[] = {
 	"o=@(organization)",
@@ -877,7 +869,6 @@ build_TLC () {
 	make_edb (buffer, "SLAVE", "0000000000Z", c_TLC);
 }
 
-/*  */
 
 static char *o_I[] = {
 	"cn=Manager",
@@ -920,7 +911,6 @@ build_organization () {
 	make_edb (buffer, "MASTER", version (), o_I);
 }
 
-/*  */
 
 static char *u_J[] = {
 	"cn=@(firstname) @(lastname)",
@@ -959,7 +949,6 @@ build_unit () {
 	make_edb (buffer, "MASTER", version (), u_J);
 }
 
-/*  */
 
 static
 make_edb (char *dir, char *type, char *date, char *entries[]) {
@@ -987,7 +976,6 @@ make_edb (char *dir, char *type, char *date, char *entries[]) {
 	chmod (edb, 0600);
 }
 
-/*  */
 
 static char *
 version () {
@@ -1019,7 +1007,6 @@ build_nightly () {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
-/*  */
 
 static
 make_file (char *infile, char *outfile, int mode, int dosed) {
@@ -1058,7 +1045,6 @@ build_fred () {
 	fudge_file ("ufnrc");
 }
 
-/*  */
 
 static
 fudge_file (char *name) {
@@ -1135,7 +1121,6 @@ usage:
 		goto usage;
 }
 
-/*  */
 
 static
 parse_3166 () {
@@ -1215,7 +1200,6 @@ parse_3166 () {
 	fclose (fp);
 }
 
-/*  */
 
 static
 table_3166 () {

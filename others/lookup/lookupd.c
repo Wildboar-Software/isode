@@ -109,7 +109,6 @@ struct RoSAPindication *roi;
 	return result;
 }
 
-/*  */
 
 static int  op_lookupUID (sd, ryo, rox, in, roi)
 int	sd;
@@ -134,7 +133,6 @@ struct RoSAPindication *roi;
 	return lookup (sd, getpwuid (arg -> parm), rox, roi);
 }
 
-/*  */
 
 static int
 lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

@@ -57,7 +57,6 @@ OID	ode2oid (char* descriptor) {
 #endif
 #endif
 
-/*  */
 #define ODECACHESIZE 10
 static struct la_cache {
 	char	*descriptor;

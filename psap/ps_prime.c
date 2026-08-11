@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_prime.c,v 9.0 1992/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 int
 ps_prime (PS ps, int waiting) {

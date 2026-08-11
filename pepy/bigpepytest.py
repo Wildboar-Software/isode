@@ -37,7 +37,6 @@ static char *myname = "bigpepytest";
 static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
-/*  */
 
 /* ARGSUSED */
 

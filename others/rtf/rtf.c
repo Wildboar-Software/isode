@@ -280,7 +280,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -378,7 +377,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 	return OK;
 }
 
-/*  */
 
 static arginit (char **vec) {
 	char *ap;

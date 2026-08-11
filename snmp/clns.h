@@ -25,7 +25,6 @@
  *
  */
 
-/*  */
 
 #ifndef	BSD44
 #define	AF_ISO	AF_MAX		/* any value will do */

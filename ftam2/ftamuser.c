@@ -209,7 +209,6 @@ static struct dispatch  dispatches[] = {
 	NULL
 };
 
-/*  */
 
 struct dispatch *getds (name)
 char *name;
@@ -385,7 +384,6 @@ static int varwidth2;
 
 static char    **getval ();
 
-/*  */
 
 static int f_set (char **vec) {
 	int    i,
@@ -654,7 +652,6 @@ static void set_type (struct var *v) {
 	}
 }
 
-/*  */
 
 static char ** getval (char *name, char **choices) {
 	int    longest,
@@ -699,7 +696,6 @@ static char ** getval (char *name, char **choices) {
 	}
 }
 
-/*  */
 
 static struct var * getvar (char *name) {
 	int    longest,
@@ -748,7 +744,6 @@ static struct var * getvar (char *name) {
 
 static int helpwidth;
 
-/*  */
 
 static int f_help (char **vec) {
 	int    i,
@@ -868,7 +863,6 @@ int	vfs_fdf = VFS_FDF;
 
 struct vfsmap *myvf;
 
-/*  */
 
 void
 ftam_advise (struct FTAMabort *fta, char *event) {
@@ -938,7 +932,6 @@ ftam_advise (struct FTAMabort *fta, char *event) {
 	}
 }
 
-/*  */
 
 void
 ftam_chrg (struct FTAMcharging *charges) {
@@ -959,7 +952,6 @@ ftam_chrg (struct FTAMcharging *charges) {
 #endif
 }
 
-/*  */
 
 static char *entity[] = {
 	"unknown",
@@ -1247,7 +1239,6 @@ FILE *fp;
 	return 80;
 }
 
-/*  */
 
 #ifndef	NBBY
 #define	NBBY	8
@@ -1316,7 +1307,6 @@ timer (int cc, char *action) {
 }
 #endif
 
-/*  */
 
 #ifdef	BRIDGE
 /* FTP TYPE Function */

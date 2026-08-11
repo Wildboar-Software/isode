@@ -67,7 +67,6 @@ FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[
 	return result;
 }
 
-/*  */
 
 static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;

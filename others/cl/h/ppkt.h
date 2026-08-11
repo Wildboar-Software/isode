@@ -24,7 +24,6 @@
 
 #include "ssap.h"		/* definitinos for SS-USERs */
 
-/*  */
 
 #define	psapPsig(pb, sd) \
 { \
@@ -116,7 +115,6 @@ int	psaplose (struct PSAPindication*, ...);
 int	ppktlose (struct psapblk*pb, ...);
 
 
-/*  */
 
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	"iso asn.1 abstract transfer"
@@ -228,7 +226,6 @@ struct pair {
 
 extern struct pair preq_pairs[], sreq_pairs[];
 
-/*  */
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 

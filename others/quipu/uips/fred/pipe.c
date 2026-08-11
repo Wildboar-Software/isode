@@ -39,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/pipe
 #include <sys/wait.h>
 #endif
 
-/*  */
 
 static int	dish_running = NOTOK;
 
@@ -470,7 +469,6 @@ stuff_it:
 	return status;
 }
 
-/*  */
 
 static
 do_edit (int sd, char *octets) {
@@ -626,7 +624,6 @@ nearly_done:
 	return DONE;
 }
 
-/*  */
 
 paginate (fp, buffer, cc)
 FILE   *fp;
@@ -750,7 +747,6 @@ no_pager:
 		fwrite (buffer, sizeof buffer[0], cc, fp);
 }
 
-/*  */
 
 /* if you start a command and then background fred, if your pager is less,
    then for some reason, less gets the terminal modes/process groups messed up.
@@ -782,7 +778,6 @@ foreground () {
 #endif
 }
 
-/*  */
 
 static	int	cols;
 static	int	rows;
@@ -951,7 +946,6 @@ da_command (char *fmt) {
 }
 #endif
 
-/*  */
 
 static int
 da_response () {
@@ -994,7 +988,6 @@ da_response () {
 	}
 }
 
-/*  */
 
 int
 sync_ufnrc () {
@@ -1039,7 +1032,6 @@ sync_ufnrc () {
 	return dish (buffer, 1);
 }
 
-/*  */
 
 int
 init_ufnrc () {

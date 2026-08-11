@@ -36,7 +36,6 @@ extern int vfs_fdf;
 
 extern struct vfsmap vfs[];
 
-/*  */
 
 #ifdef	BRIDGE
 /* ARGSUSED */
@@ -131,7 +130,6 @@ int	ftamfd;
 #endif
 }
 
-/*  */
 
 int	binarycheck (void *param, char *data)
 {
@@ -159,7 +157,6 @@ int	binarycheck (void *param, char *data)
 	return OK;
 }
 
-/*  */
 
 int	textcheck (param, data)
 caddr_t param;
@@ -208,7 +205,6 @@ char   *data;
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -241,7 +237,6 @@ int	ftamfd;
 	return DONE;
 }
 
-/*  */
 
 /* Various textual repetories.  In addition to the prohibited characters, on
    UNIX we disallow CRs.  This avoids funny CR-LF mappings. */
@@ -351,7 +346,6 @@ int	ftamfd;
 #endif
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -379,7 +373,6 @@ int	ftamfd;
 	return DONE;
 }
 
-/*  */
 
 /* If text, then need to worry about ESCape sequences for the various
    repetoires (thank you, Digital!)  For now, we'll recognize G0 and G1 from
@@ -484,7 +477,6 @@ outside:
 	return n;
 }
 
-/*  */
 
 /* right from MH's sbr/path.c... */
 

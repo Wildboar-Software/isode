@@ -153,7 +153,6 @@ out:
 	return result;
 }
 
-/*  */
 
 static int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -245,7 +244,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
@@ -299,7 +297,6 @@ out:
 	return result;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -347,7 +344,6 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	return result;
 }
 
-/*  */
 
 /* life would be nice if we didn't have to worry about the maximum number of
    bytes that can be written in a single syscall() */
@@ -566,7 +562,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int
 TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -646,7 +641,6 @@ out:
 	return result;
 }
 
-/*  */
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -739,7 +733,6 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-/*  */
 
 static int
 ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -762,7 +755,6 @@ ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return (NOTOK);
 }
 
-/*  */
 
 static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
@@ -798,7 +790,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -859,7 +850,6 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 	return (async ? OK : DONE);
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -875,7 +865,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -887,7 +876,6 @@ tp4save (int fd, struct TSAPdisconnect *td) {
 	return buffer;
 }
 
-/*  */
 
 int
 tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
@@ -903,7 +891,6 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-/*  */
 
 int
 tp4init (struct tsapblk *tb) {
@@ -935,7 +922,6 @@ tp4init (struct tsapblk *tb) {
 	tb -> tb_selectfnx = select_tp4_socket;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -964,7 +950,6 @@ start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct
 	return sd;
 }
 
-/*  */
 
 #ifndef	notdef
 /* ARGSUSED */
@@ -991,7 +976,6 @@ join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td) {
 	return sd;
 }
 
-/*  */
 
 /* SunLink OSI address encoding/decoding */
 
@@ -1095,7 +1079,6 @@ struct NSAPaddr	*template;
 	return gen2tp4 (&tas, specific, template);
 }
 
-/*  */
 
 int	tp42gen (generic, specific)
 struct TSAPaddr *generic;
@@ -1155,7 +1138,6 @@ OSI_ADDR	*specific;
 	return result;
 }
 
-/*  */
 
 struct tp4pkt *newtp4pkt (code)
 TP_EVENT code;

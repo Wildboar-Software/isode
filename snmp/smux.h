@@ -32,7 +32,6 @@
 #include "SNMP-types.h"
 #endif
 
-/*  */
 
 #define	readOnly	int_SNMP_operation_readOnly
 #define	readWrite	int_SNMP_operation_readWrite
@@ -56,7 +55,6 @@
 extern	integer	smux_errno;
 extern	char	smux_info[];
 
-/*  */
 
 int	smux_init ();				/* INIT */
 int	smux_simple_open ();			/* (simple) OPEN */
@@ -68,7 +66,6 @@ int	smux_trap ();				/* TRAP */
 
 char   *smux_error ();				/* TEXTUAL ERROR */
 
-/*  */
 
 struct smuxEntry {
 	char   *se_name;

@@ -30,7 +30,6 @@
 
 #include "psap2.h"		/* definitions for PS-USERs */
 
-/*  */
 
 #define	NACDATA		3	/* arbitrary */
 
@@ -224,7 +223,6 @@ struct AcSAPindication {
 #define	aci_abort	aci_un.aci_un_abort
 };
 
-/*  */
 
 extern char *acsapversion;
 

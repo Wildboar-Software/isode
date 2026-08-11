@@ -100,7 +100,6 @@ struct tcpcb {
 #define	TCP_NSTATES	11
 #endif
 
-/*  */
 
 #define	RTOA_OTHER	1		/* tcpRtoAlgorithm */
 #define	RTOA_VANJ	4		/*   ..  */
@@ -114,7 +113,6 @@ static int tcpConnections;
 
 static int  get_connections ();
 
-/*  */
 
 #define	tcpRtoAlgorithm	0
 #define	tcpRtoMin	1
@@ -345,7 +343,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 static	int	tcp_states[TCP_NSTATES];
 
@@ -370,7 +367,6 @@ static	int	flush_tcp_cache = 0;
 
 static struct tcptab *get_tcpent ();
 
-/*  */
 
 #define	tcpConnState	0
 #define	tcpConnLocalAddress 1
@@ -548,7 +544,6 @@ try_again:
 	}
 }
 
-/*  */
 
 static int  tt_compar (a, b)
 struct tcptab **a,
@@ -675,7 +670,6 @@ int	offset;
 	return OK;
 }
 
-/*  */
 
 static struct tcptab *get_tcpent (ip, isnext)
 unsigned int *ip;
@@ -711,7 +705,6 @@ static	int	unixNetstat = 1;
 #ifndef LINUX
 static	struct mbstat mbstat;
 
-/*  */
 
 #define	mbufs		0
 #define	mbufClusters	1
@@ -812,7 +805,6 @@ int	offset;
 	}
 }
 
-/*  */
 
 #define	mbufType	0
 #define	mbufAllocates	1

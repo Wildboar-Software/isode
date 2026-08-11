@@ -12,7 +12,6 @@
 #include "pusap2.h"		/* definitions for PS-USERs */
 #endif
 
-/*  */
 
 #define	AC_ASN		"acse pci version 1"
 
@@ -67,7 +66,6 @@ struct type_ACS_Association__information *info2_apdu ();
 int	apdu2_info ();
 
 
-/*  */
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */

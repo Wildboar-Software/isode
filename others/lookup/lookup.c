@@ -103,7 +103,6 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLoo
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -125,7 +124,6 @@ do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLook
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -142,7 +140,6 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

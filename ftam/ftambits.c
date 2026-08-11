@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/
 #include <stdio.h>
 #include "fpkt.h"
 
-/*  */
 
 PE
 bits2fpm (struct ftamblk *fsb, struct pair pairs[], int actions, struct FTAMindication *fti) {
@@ -54,7 +53,6 @@ no_mem:
 	return fpm;
 }
 
-/*  */
 
 /* ARGSUSED */
 

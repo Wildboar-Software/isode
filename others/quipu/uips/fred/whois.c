@@ -62,7 +62,6 @@ struct whois {
 static char   *eqstr (), *limits ();
 static FILE   *capture ();
 
-/*  */
 
 char *whois_help[] = {
 	"whois input-field [record-type] [area-designator] [output-control]",
@@ -107,7 +106,6 @@ f_whois (char **vec) {
 	return (nametype > 1 ? f_ufn (vec) : f_whois_aux (vec));
 }
 
-/*  */
 
 static int
 f_whois_aux (char **vec) {
@@ -647,7 +645,6 @@ out:
 	return OK;
 }
 
-/*  */
 
 static
 whois_aux (struct whois *w) {
@@ -827,7 +824,6 @@ options:
 	return dish (buffer, 0);
 }
 
-/*  */
 
 static int
 test_arg (char *user, char *full, int minlen) {
@@ -841,7 +837,6 @@ test_arg (char *user, char *full, int minlen) {
 	return 1;
 }
 
-/*  */
 
 static char *
 eqstr (char *s, int exact) {
@@ -862,7 +857,6 @@ eqstr (char *s, int exact) {
 	return buffer;
 }
 
-/*  */
 
 static char *
 limits (int isearch) {
@@ -900,7 +894,6 @@ limits (int isearch) {
 	return buffer;
 }
 
-/*  */
 
 static FILE *capture (command)
 char   *command;
@@ -935,7 +928,6 @@ char   *command;
 	return fp;
 }
 
-/*  */
 
 static int
 f_ufn (char **vec) {
@@ -968,7 +960,6 @@ f_ufn (char **vec) {
 	return dish (buffer, 0);
 }
 
-/*  */
 
 int
 test_ufn (char *cp) {

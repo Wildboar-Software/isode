@@ -165,7 +165,6 @@ done:
 	return DONE;
 }
 
-/*  */
 
 static int
 x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -290,7 +289,6 @@ read_nsdu_buffer (int fd, char *buffer, int cc) {
 	return cc;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -433,7 +431,6 @@ x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 }
 #endif
 
-/*  */
 
 int
 XTService (struct tsapblk *tb) {

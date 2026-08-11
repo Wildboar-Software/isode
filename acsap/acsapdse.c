@@ -42,7 +42,6 @@ extern	PE    name2value_dase ();
 
 PE	(*acsap_lookup) () = name2value_dase;
 
-/*  */
 
 AEI
 str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd) {
@@ -87,7 +86,6 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 	return (aei -> aei_ap_title ? aei : NULLAEI);
 }
 
-/*  */
 
 struct PSAPaddr *
 aei2addr_dse (AEI aei) {

@@ -40,7 +40,6 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 static int  put (char*src, char*dst, int append);
 #endif
 
-/*  */
 
 int
 f_put (char **vec) {
@@ -253,7 +252,6 @@ out:
 #endif
 }
 
-/*  */
 
 #ifdef	BRIDGE
 static int  put (char*dst, int append)
@@ -381,7 +379,6 @@ you_lose:
 	return result;
 }
 
-/*  */
 
 #ifdef	BRIDGE
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
@@ -937,7 +934,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 int	de2fadu (pe, concat)
 PE	pe;

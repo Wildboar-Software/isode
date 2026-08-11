@@ -85,7 +85,6 @@ freesublk (struct ssapblk *sb) {
 	free ((char *) sb);
 }
 
-/*  */
 
 struct ssapblk *
 findsublk (int sd) {

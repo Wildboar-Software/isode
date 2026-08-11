@@ -30,7 +30,6 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
 
-/*  */
 
 #define	FS_GEN(fsb) \
 	((fsb -> fsb_flags & FSB_INIT) ? FS_GEN_INITIATOR : FS_GEN_RESPONDER)
@@ -123,7 +122,6 @@ int	ftamlose (struct FTAMindication *fti, ...);
 int fpktlose (struct ftamblk *fsb, ...);
 int ftamoops (struct FTAMindication *fti, ...);
 
-/*  */
 
 struct ftamblk {
 	struct ftamblk *fsb_forw;	/* doubly-linked list */
@@ -210,7 +208,6 @@ int	fpktlose (struct ftamblk *fsb, ...);
 #define	fsbtrace(fsb,a)	FTraceHook a
 #endif
 
-/*  */
 
 struct pair {
 	int	    p_mask;
@@ -224,7 +221,6 @@ extern struct pair fclass_pairs[],
 		fmode_pairs[],
 		frequested_pairs[],
 		fpermitted_pairs[];
-/*  */
 
 struct type_FTAM_Access__Control__List *acl2fpm ();
 int	fpm2acl ();
@@ -270,7 +266,6 @@ int	fpm2pass ();
 struct type_FTAM_Shared__ASE__Information *shared2fpm ();
 int	fpm2shared ();
 
-/*  */
 
 int	acs2ftamlose (), acs2ftamabort ();
 int	ps2ftamlose ();

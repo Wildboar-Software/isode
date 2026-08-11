@@ -79,7 +79,6 @@ RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, 
 	return result;
 }
 
-/*  */
 
 static int
 RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {

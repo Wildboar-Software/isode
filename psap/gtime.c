@@ -56,7 +56,6 @@ int	dmsize[] = {
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
-/*  */
 
 long
 gtime (struct tm *tm) {

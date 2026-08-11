@@ -619,7 +619,6 @@ send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
-/*  */
 
 static void  acs_advise ();
 

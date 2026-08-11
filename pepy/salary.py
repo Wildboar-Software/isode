@@ -16,7 +16,6 @@ static struct salary_record {
 
 static void	adios (char *, char *, ...);
 
-/*  */
 
 /* ARGSUSED */
 

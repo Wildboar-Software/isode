@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ssdu2pe.c,v 9.0 1992/0
 #include "psap.h"
 #include "tailor.h"
 
-/*  */
 
 PE
 ssdu2pe (char *base, int len, char *realbase, int *result) {

@@ -52,7 +52,6 @@ char	hex2nib[0x80] = {
 	0, 0, 0, 0, 0, 0, 0, 0
 };
 
-/*  */
 
 int
 implode (u_char *a, char *b, int n) {

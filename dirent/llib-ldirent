@@ -31,7 +31,6 @@
 #include "manifest.h"
 #include "usr.dirent.h"
 
-/*  */
 
 #ifndef	GETDENTS
 /* open a directory stream */

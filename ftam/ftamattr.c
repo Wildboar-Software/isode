@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamattr.c,v 9.0 1992/
 #include <stdio.h>
 #include "fpkt.h"
 
-/*  */
 
 struct type_FTAM_Read__Attributes *
 attr2fpm (struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti) {
@@ -308,7 +307,6 @@ out:
 	return fpm;
 }
 
-/*  */
 
 int
 fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
@@ -492,7 +490,6 @@ no_mem:
 	return OK;
 }
 
-/*  */
 
 void
 FAFREE (struct FTAMattributes *fa) {

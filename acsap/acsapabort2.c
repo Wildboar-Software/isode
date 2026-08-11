@@ -62,7 +62,6 @@ AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
 	return result;
 }
 
-/*  */
 
 int
 ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci) {

@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaperror.c,v 9.0 1992
 #include <netosi/cons_impl.h>
 #endif
 
-/*  */
 
 static char *disc_err0[] = {
 	"Reason not specified",
@@ -68,7 +67,6 @@ static char *disc_err8[] = {
 
 static int  disc_err8_cnt = sizeof disc_err8 / sizeof disc_err8[0];
 
-/*  */
 
 #ifdef	SUNLINK_7_0
 static char *cons_err0 =
@@ -142,7 +140,6 @@ static char *cons_err1[] = {
 };
 #endif
 
-/*  */
 
 char *
 TErrString (int code) {

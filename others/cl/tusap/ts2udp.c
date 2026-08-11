@@ -52,7 +52,6 @@
 
 
 
-/*  */
 
 #ifdef	HULA
 #ifdef  UDP
@@ -62,7 +61,6 @@
 
 
 
-/*  */
 
 /* this structure is allocated for each socket device */
 
@@ -78,7 +76,6 @@ static struct udpconn *peers = NULL;
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -120,7 +117,6 @@ udpinit (struct tsapblk *tb)
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -272,7 +268,6 @@ udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, i
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -462,7 +457,6 @@ udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -527,7 +521,6 @@ udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 #if FALSE
 
-/*  */
 
 /*
  **********************************************************
@@ -586,7 +579,6 @@ join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -724,7 +716,6 @@ udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock,
 
 
 
-/*  */
 
 /*
  **********************************************************
@@ -787,7 +778,6 @@ udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 
 
 
-/*  */
 
 int
 udp_close (int fd) {
@@ -828,7 +818,6 @@ udp_close (int fd) {
 
 
 
-/*  */
 
 /*
  **********************************************************

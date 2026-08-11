@@ -55,11 +55,9 @@ struct	icmpstat {
 };
 #endif
 
-/*  */
 
 static struct icmpstat icmpstat;
 
-/*  */
 
 #define	icmpInMsgs	0
 #define	icmpInErrors	1

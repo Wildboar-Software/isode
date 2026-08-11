@@ -21,7 +21,6 @@
 
 
 
-/*  */
 
 static char *disc_uerr0[] = {
 	"Reason not specified or Successful Return",
@@ -54,7 +53,6 @@ static char *disc_uerr8[] = {
 
 static int  disc_uerr8_cnt = sizeof disc_uerr8 / sizeof disc_uerr8[0];
 
-/*  */
 
 char *
 TuErrString (int code) {

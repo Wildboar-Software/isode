@@ -82,7 +82,6 @@ static void _init_fp ()
 }
 #endif
 
-/*  */
 
 static int	f_set ();
 int	f_help ();
@@ -166,7 +165,6 @@ fredloop (char **vec, int error) {
 	}
 }
 
-/*  */
 
 static struct dispatch *
 getds (char *name) {
@@ -306,7 +304,6 @@ static int varwidth2;
 
 static char    **getval ();
 
-/*  */
 
 static int
 f_set (char **vec) {
@@ -507,7 +504,6 @@ out_of_range:
 	return OK;
 }
 
-/*  */
 
 static
 printvar (struct var *v) {
@@ -548,7 +544,6 @@ printvar (struct var *v) {
 	printf ("    - %s\n", v -> v_dname);
 }
 
-/*  */
 
 static char **
 getval (char *name, char **choices) {
@@ -594,7 +589,6 @@ getval (char *name, char **choices) {
 	}
 }
 
-/*  */
 
 static char *ignore[] = {
 	"level", "listings", "verify", NULL
@@ -655,7 +649,6 @@ getvar (char *name) {
 
 static int helpwidth;
 
-/*  */
 
 int
 f_help (char **vec) {
@@ -783,7 +776,6 @@ rcinit () {
 	}
 }
 
-/*  */
 
 static
 snarf (char *file, char *name, char **variable) {
@@ -843,7 +835,6 @@ set_variable:
 	}
 }
 
-/*  */
 
 int
 rcfile (char *file, int op, int isystem) {
@@ -882,7 +873,6 @@ rcfile (char *file, int op, int isystem) {
 	fclose (fp);
 }
 
-/*  */
 
 #ifndef	TIOCGWINSZ
 /* ARGSUSED */

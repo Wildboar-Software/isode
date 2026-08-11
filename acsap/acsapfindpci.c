@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 
 #define	ACSE
 #include "acpkt.h"
 
-/*  */
 
 int
 AcFindPCI (int sd, int *pci, struct AcSAPindication *aci) {

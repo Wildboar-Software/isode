@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb_pullup.c,v 9.0 1992
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 int
 qb_pullup (struct qbuf *qb) {

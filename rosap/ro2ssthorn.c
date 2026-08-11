@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 19
 #include <signal.h>
 #include "ropkt.h"
 
-/*  */
 
 static PE
 qb2Rpe (struct qbuf *qb, int len, int *result) {

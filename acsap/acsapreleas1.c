@@ -147,7 +147,6 @@ AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindic
 	return result;
 }
 
-/*  */
 
 static int
 AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {

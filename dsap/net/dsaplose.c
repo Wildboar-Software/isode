@@ -38,7 +38,6 @@ static int  _dsaplose ();
 static int  _dsapreject ();
 #endif
 
-/*  */
 
 #ifndef	lint
 int	dsaplose (struct DSAPindication *di, ...) {
@@ -66,7 +65,6 @@ dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* what, fmt, args ... */
@@ -118,7 +116,6 @@ dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

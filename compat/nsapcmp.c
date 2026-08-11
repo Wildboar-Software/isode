@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/nsapcmp.c,v 9.0 1992
 #include "manifest.h"
 #include "isoaddrs.h"
 
-/*  */
 
 int
 nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {

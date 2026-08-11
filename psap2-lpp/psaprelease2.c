@@ -74,7 +74,6 @@ struct PSAPindication *pi;
 	return result;
 }
 
-/*  */
 
 static int  PRelResponseAux (pb, data, pi)
 struct psapblk *pb;

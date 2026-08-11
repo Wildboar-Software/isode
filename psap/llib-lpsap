@@ -667,7 +667,6 @@ char   *s;
     return str2oid (s);
 }
 
-/*  */
 
 int	pe2qb_f (pe)
 PE	pe;
@@ -751,7 +750,6 @@ struct udvec **uv;
     return pe2uvec (pe, uv);
 }
 
-/*  */
 
 long	gtime (tm)
 struct tm *tm;

@@ -346,7 +346,6 @@ start_tcp_client (struct sockaddr_in *sock, int priv) {
 	}
 }
 
-/*  */
 
 int
 start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
@@ -490,7 +489,6 @@ gethostbyname (char *name) {
 
 }
 
-/*  */
 
 /* really only need the "tsap" entry in this table... but why not? */
 

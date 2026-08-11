@@ -38,7 +38,6 @@ static int  _daplose ();
 static int  _dapreject ();
 #endif
 
-/*  */
 
 #ifndef	lint
 int	daplose (struct DAPindication *di, ...) {
@@ -66,7 +65,6 @@ daplose (struct DAPindication *di, int reason, char *what, char *fmt) {
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int
@@ -125,7 +123,6 @@ dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt) 
 }
 #endif
 
-/*  */
 
 #ifndef	lint
 static int

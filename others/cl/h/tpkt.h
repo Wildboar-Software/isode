@@ -30,7 +30,6 @@
 
 #endif
 
-/*  */
 
 
 #define	tsapPsig(tb, sd) \
@@ -117,7 +116,6 @@
 
 int	tpktlose (), tsaplose ();
 
-/*  */
 
 /* network type codes:
 	must be outside [0-9A-Fa-f] */
@@ -476,7 +474,6 @@ struct tsapkt  *str2tpkt ();
 /* for ER TPDUs */
 #define	VDAT_INVALID	0xc1		/* invalid TPDU */
 
-/*  */
 
 /* TP0 is the protocol */
 

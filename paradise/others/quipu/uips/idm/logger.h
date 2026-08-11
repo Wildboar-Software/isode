@@ -27,7 +27,6 @@
 
 #include "manifest.h"
 
-/*  */
 
 typedef struct  ll_struct {
 	char   *ll_file;		/* path name to logging file */
@@ -65,7 +64,6 @@ typedef struct  ll_struct {
 	int     ll_fd;		/* file descriptor */
 } LLog;
 
-/*  */
 
 #define	SLOG(lp,event,what,args) \
 if (lp -> ll_events & (event)) { \

@@ -37,7 +37,6 @@
 #include "tpkt.h"
 
 
-/*  */
 
 /* returns ptr to header and header len */
 
@@ -103,7 +102,6 @@ struct TSAPdisconnect *td;
 
 
 
-/*  */
 
 /* returns header length */
 

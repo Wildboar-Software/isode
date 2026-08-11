@@ -110,7 +110,6 @@ addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **p
 	return OK;
 }
 
-/*  */
 
 /* ARGSUSED */
 
@@ -127,7 +126,6 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-/*  */
 
 /* ARGSUSED */
 

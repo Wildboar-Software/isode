@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2ps.c,v 9.0 1992/06
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 /* ARGSUSED */
 
@@ -96,7 +95,6 @@ str_close (PS ps) {
 	return OK;
 }
 
-/*  */
 
 int
 str_open (PS ps) {

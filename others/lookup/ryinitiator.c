@@ -177,7 +177,6 @@ IFP	quit;
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-/*  */
 
 static
 invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
@@ -217,7 +216,6 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 				 ds -> ds_mod, 1);
 }
 
-/*  */
 
 static int
 _getline (char *buffer) {
@@ -254,7 +252,6 @@ _getline (char *buffer) {
 	return OK;
 }
 
-/*  */
 
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
@@ -277,7 +274,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
 
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
@@ -302,7 +298,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-/*  */
 
 #ifndef	lint
 static void	_advise ();

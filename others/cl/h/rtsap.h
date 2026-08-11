@@ -30,7 +30,6 @@
 
 #include "acsap.h"		/* definitions for AcS-USERs */
 
-/*  */
 
 struct RtSAPaddr {		/* RtSAP address (old-style) */
 	struct SSAPaddr rta_addr;
@@ -39,7 +38,6 @@ struct RtSAPaddr {		/* RtSAP address (old-style) */
 };
 #define	NULLRtA			((struct RtSAPaddr *) 0)
 
-/*  */
 
 struct RtSAPstart {		/* RT-OPEN.INDICATION */
 	int	    rts_sd;		/* RTS descriptor */
@@ -178,7 +176,6 @@ struct RtSAPindication {
 #define	rti_finish	rti_un.rti_un_finish
 };
 
-/*  */
 
 extern char *rtsapversion;
 

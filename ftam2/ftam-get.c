@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-get.c,v 9.0 1992
 #include <stdio.h>
 #include "ftamuser.h"
 
-/*  */
 
 static int effector;
 
@@ -38,7 +37,6 @@ static struct vfsmap *findvf (char* file);
 static int  getloop (int fd, char* dst, IFP wfnx);
 static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
-/*  */
 
 int
 f_get (char **vec) {
@@ -256,7 +254,6 @@ out:
 #endif
 }
 
-/*  */
 
 #ifndef	BRIDGE
 static int check_get (char *dst) {
@@ -279,7 +276,6 @@ static int check_get (char *dst) {
 }
 #endif
 
-/*  */
 
 int
 getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx) {
@@ -627,7 +623,6 @@ you_lose:
 	return NOTOK;
 }
 
-/*  */
 
 static struct vfsmap *findvf (char* file) {
 	struct FTAMgroup    ftgs;
@@ -749,7 +744,6 @@ you_lose:
 	return NULL;
 }
 
-/*  */
 
 static int  getloop (int fd, char* dst, IFP wfnx) {
 	int	    reason,
@@ -857,7 +851,6 @@ do_cancel:
 	}
 }
 
-/*  */
 
 static int  ubffnx ( int	fd, struct PSAPdata *px, int	status) {
 	int    i,

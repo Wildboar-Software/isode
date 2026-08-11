@@ -38,14 +38,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmgmt.c,v 9.0 1992/
 
 #define LOCALTHLD 128		/* local threshold for reporting (bytes) */
 
-/*  */
 
 static long pid = OK;
 static int ManSoc;
 static struct MReport TsapInfo;
 static struct qbuf data;
 
-/*  */
 
 /* VARARGS2 */
 
@@ -82,7 +80,6 @@ int	TManGen (unsigned int type, ...) {
 	return result;
 }
 
-/*  */
 
 #define SendMReport()		write_udp_socket (ManSoc, &data)
 
@@ -167,7 +164,6 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 	return SendMReport ();
 }
 
-/*  */
 
 static int
 ManInit () {

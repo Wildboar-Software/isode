@@ -52,7 +52,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/x25addr.c,v 9.0 1992
 extern char * aix_x25_linkname;
 #endif
 
-/*  */
 
 /*
  * convert from the generic X25 structure to interface specific
@@ -439,7 +438,6 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	return(specific);
 }
 
-/*  */
 
 /*
  * convert from interface specific format to generic X.25 structure
@@ -715,7 +713,6 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	return(generic);
 }
 
-/*  */
 
 extern unsigned char isode_x25_err[2];
 extern char isode_x25_errflag;		/* From asprintf.c ! */
@@ -1522,7 +1519,6 @@ done:
 	return OK;
 };
 
-/*  */
 
 #if defined(SUN_X25) || defined(CCUR_X25)
 #ifdef AEF_NSAP
@@ -1542,7 +1538,6 @@ AEF *aef;
 }
 #endif
 
-/*  */
 #ifdef AEF_NSAP
 int if2nsap (aef, nsap)
 AEF	*aef;

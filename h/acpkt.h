@@ -37,7 +37,6 @@
 #include "rtsap.h"		/* definitions for RT-SE users */
 #endif
 
-/*  */
 
 #ifdef	ACSE
 
@@ -147,7 +146,6 @@
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
 
-/*  */
 
 int	ps2acslose ();
 
@@ -155,7 +153,6 @@ struct type_ACS_Association__information *info2apdu ();
 int	apdu2info ();
 #endif
 
-/*  */
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -263,7 +260,6 @@ struct assocblk *newacblk (), *findacblk ();
 int	acpktlose (struct assocblk*acb, ...);
 int	acsaplose (struct AcSAPindication*aci, ...);
 
-/*  */
 
 #ifndef	ACSE
 

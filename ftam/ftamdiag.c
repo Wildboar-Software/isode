@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdiag.c,v 9.0 1992/
 #include <stdio.h>
 #include "fpkt.h"
 
-/*  */
 
 struct type_FTAM_Diagnostic *
 diag2fpm (struct ftamblk *fsb, int magic, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
@@ -142,7 +141,6 @@ bad_dp:
 	return fpmp;
 }
 
-/*  */
 
 int
 fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti) {

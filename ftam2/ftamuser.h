@@ -159,7 +159,6 @@ char  **blkcpy ();
 char   *xglob1val ();
 char  **xglob ();
 
-/*  */
 
 extern int  errno;
 extern char *isodeversion;

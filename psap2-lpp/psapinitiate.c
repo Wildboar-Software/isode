@@ -122,7 +122,6 @@ struct PSAPindication *pi;
 	return result;
 }
 
-/*  */
 
 static int  PConnRequestAux (calling, called, ctxlist, ref, data, qos, pc, pi,
 							 async)
@@ -295,7 +294,6 @@ out1:
 	return NOTOK;
 }
 
-/*  */
 
 #define	QOS_RELIABLE_DFLT	HIGH_QUALITY
 
@@ -428,7 +426,6 @@ struct PSAPindication *pi;
 	return result;
 }
 
-/*  */
 
 static int  PAsynRetryAux (pb, pc, pi)
 struct psapblk *pb;

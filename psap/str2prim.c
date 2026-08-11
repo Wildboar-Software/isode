@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2prim.c,v 9.0 1992/
 #include <stdio.h>
 #include "psap.h"
 
-/*  */
 
 PE
 str2prim (char *s, int len, PElementClass class, PElementID id) {

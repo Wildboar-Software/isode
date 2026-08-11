@@ -170,7 +170,6 @@ FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	return result;
 }
 
-/*  */
 static int  doPSdata ();
 static int  doPStokens ();
 static int  doPSsync ();
@@ -255,7 +254,6 @@ do_data:
 	}
 }
 
-/*  */
 
 static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti) {
 	int     next;
@@ -1548,7 +1546,6 @@ out:
 	return NOTOK;
 }
 
-/*  */
 
 static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
@@ -1559,7 +1556,6 @@ static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMind
 	return NOTOK;
 }
 
-/*  */
 
 static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindication *fti) {
 	int i;
@@ -1628,7 +1624,6 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 	return doPSdata (fsb, px, fti);
 }
 
-/*  */
 
 static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
@@ -1639,7 +1634,6 @@ static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FT
 	return NOTOK;
 }
 
-/*  */
 
 static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
@@ -1650,7 +1644,6 @@ static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMin
 	return NOTOK;
 }
 
-/*  */
 
 static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMindication *fti) {
 	PE	    pe;
@@ -1720,7 +1713,6 @@ out1:
 	return NOTOK;
 }
 
-/*  */
 
 static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindication *fti) {
 	struct AcSAPindication  acis;
@@ -1767,7 +1759,6 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 		(*handler) (sd, fti);
 }
 
-/*  */
 
 static void psSYNCser (int sd, struct PSAPsync *pn) {
 	IFP	    handler;
@@ -1783,7 +1774,6 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 		(*handler) (sd, fti);
 }
 
-/*  */
 
 static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	IFP	    handler;
@@ -1799,7 +1789,6 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 		(*handler) (sd, fti);
 }
 
-/*  */
 
 static void psREPORTser (int sd, struct PSAPreport *pp) {
 	IFP	    handler;
@@ -1815,7 +1804,6 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 		(*handler) (sd, fti);
 }
 
-/*  */
 
 static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	IFP	    handler;
@@ -1831,7 +1819,6 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 		(*handler) (sd, fti);
 }
 
-/*  */
 
 static void psABORTser (int sd, struct PSAPabort *pa) {
 	IFP	    handler;
@@ -1955,7 +1942,6 @@ acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, stru
 						 EREF_NONE, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
 
-/*  */
 
 int
 acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti) {
@@ -2144,7 +2130,6 @@ void freefsblk (struct ftamblk *fsb) {
 	free ((char *) fsb);
 }
 
-/*  */
 
 struct ftamblk *
 findfsblk (int sd) {
