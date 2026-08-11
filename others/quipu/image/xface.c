@@ -1,8 +1,6 @@
 /* xface.c - face agent for X windows */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xface.c,v 9.0 1992/06/16 12:43:24 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/image/RCS/xface.c,v 9.0 1992/06/16 12:43:24 isode Rel $

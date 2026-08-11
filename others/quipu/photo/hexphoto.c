@@ -1,8 +1,6 @@
 /* hexphoto.c - your comments here */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/hexphoto.c,v 9.0 1992/06/16 12:43:35 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/photo/RCS/hexphoto.c,v 9.0 1992/06/16 12:43:35 isode Rel $

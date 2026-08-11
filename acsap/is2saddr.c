@@ -1,8 +1,6 @@
 /* is2saddr.c - old-style S-ADDR lookup */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/acsap/RCS/is2saddr.c,v 9.0 1992/06/16 12:05:59 isode Rel $

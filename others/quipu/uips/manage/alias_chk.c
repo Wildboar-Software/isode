@@ -1,9 +1,7 @@
 /* alias_chk.c - checks aliases from position provided downwards. */
 /* A management tool - probably best to run this as a manager. */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/manage/RCS/alias_chk.c,v 9.0 1992/06/16 12:44:45 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/manage/RCS/alias_chk.c,v 9.0 1992/06/16 12:44:45 isode Rel $

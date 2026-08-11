@@ -1,8 +1,6 @@
 /* str2spkt.c - read/write a SPDU thru a string */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/ssap/RCS/str2spkt.c,v 5.0 88/07/21 14:58:20 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/ssap/RCS/str2spkt.c,v 5.0 88/07/21 14:58:20 mrose Rel $

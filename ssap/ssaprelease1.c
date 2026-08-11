@@ -1,8 +1,6 @@
 /* ssaprelease1.c - SPM: initiate release */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprelease1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ssap/RCS/ssaprelease1.c,v 9.0 1992/06/16 12:39:41 isode Rel $

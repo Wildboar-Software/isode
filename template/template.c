@@ -1,8 +1,6 @@
 /* template.c - your comments here */
 
-#ifndef	lint
-static char *rcsid = "$Header$";
-#endif
+
 
 /*
  * $Header$

@@ -1,8 +1,6 @@
 /* fd2tpkt.c - read/write a TPDU thru a socket */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:42 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:42 isode Rel $

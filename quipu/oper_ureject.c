@@ -1,8 +1,6 @@
 /* oper_ureject.c - deal with user rejection of an operation */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_ureject.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/oper_ureject.c,v 9.0 1992/06/16 12:34:01 isode Rel $

@@ -1,8 +1,6 @@
 /* ip.c - MIB realization of the IP (and Address Translation) group */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/ip.c,v 9.0 1992/06/16 12:38:11 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/snmp/RCS/ip.c,v 9.0 1992/06/16 12:38:11 isode Rel $

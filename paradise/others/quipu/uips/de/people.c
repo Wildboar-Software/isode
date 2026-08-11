@@ -1,8 +1,6 @@
 /* people.c - search for a person */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/people.c,v 9.1 1992/08/25 15:50:26 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/people.c,v 9.1 1992/08/25 15:50:26 isode Exp $

@@ -1,8 +1,6 @@
 /* isoc.c - "minimal" ISODE client for testing */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/06/16 12:40:09 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/06/16 12:40:09 isode Rel $

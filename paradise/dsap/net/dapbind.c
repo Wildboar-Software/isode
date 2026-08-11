@@ -1,8 +1,6 @@
 /* dapbind.c - Establish directory association */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapbind.c,v 9.1 1992/07/22 08:05:00 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dapbind.c,v 9.1 1992/07/22 08:05:00 isode Exp $

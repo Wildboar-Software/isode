@@ -6,9 +6,7 @@
  * (Utterly Horrible Hack.)
  */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/quipurc.c,v 9.0 1992/06/16 12:44:21 isode Rel $";
-#endif
+
 
 /*
  *				  NOTICE

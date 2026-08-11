@@ -1,8 +1,6 @@
 /* country.c - search for a country */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/country.c,v 9.1 1992/08/25 15:50:26 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/country.c,v 9.1 1992/08/25 15:50:26 isode Exp $

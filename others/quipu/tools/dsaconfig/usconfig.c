@@ -1,8 +1,6 @@
 /* usconfig.c -- build database directory */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RCS/usconfig.c,v 9.0 1992/06/16 12:43:56 isode Rel $";
-#endif /* lint */
+ /* lint */
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RCS/usconfig.c,v 9.0 1992/06/16 12:43:56 isode Rel $

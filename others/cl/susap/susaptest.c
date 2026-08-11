@@ -1,8 +1,6 @@
 /* susaptest.c - test out -lsusap for session unit data service  */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:04 mrose Rel $";
-#endif
+
 
 /*
  *				  NOTICE

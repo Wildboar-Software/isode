@@ -1,8 +1,6 @@
 /* get_ava.c - */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/get_ava.c,v 9.0 1992/06/16 12:35:39 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/dish/RCS/get_ava.c,v 9.0 1992/06/16 12:35:39 isode Rel $

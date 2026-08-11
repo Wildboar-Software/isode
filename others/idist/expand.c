@@ -39,7 +39,6 @@
 
 #ifndef lint
 static char sccsid[] = "@(#)expand.c    5.6 (Berkeley) 6/1/90";
-static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/expand.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
 #endif
 
 #include <errno.h>

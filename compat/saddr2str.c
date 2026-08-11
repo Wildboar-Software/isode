@@ -1,8 +1,6 @@
 /* saddr2str.c - SSAPaddr to string value */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/saddr2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/compat/RCS/saddr2str.c,v 9.0 1992/06/16 12:07:00 isode Rel $

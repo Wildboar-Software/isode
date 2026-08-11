@@ -1,8 +1,6 @@
 /* rosaperror.c - return RoSAP error code in string form */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosaperror.c,v 9.0 1992/06/16 12:37:02 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/rosap/RCS/rosaperror.c,v 9.0 1992/06/16 12:37:02 isode Rel $

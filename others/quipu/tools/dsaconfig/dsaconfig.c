@@ -1,8 +1,6 @@
 /* dsaconfig.c - build a database directory for a Level-1 DSA */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RCS/dsaconfig.c,v 9.0 1992/06/16 12:43:56 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RCS/dsaconfig.c,v 9.0 1992/06/16 12:43:56 isode Rel $

@@ -1,6 +1,4 @@
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/RCS/interact.c,v 9.0 1992/06/16 12:45:18 isode Rel $";
-#endif
+
 
 /* $Header: /xtel/isode/isode/others/quipu/uips/doog/RCS/interact.c,v 9.0 1992/06/16 12:45:18 isode Rel $ */
 

@@ -1,8 +1,6 @@
 /* mosy.c - Managed Object Syntax-compiler (yacc-based) */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 1992/06/16 12:42:35 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 1992/06/16 12:42:35 isode Rel $

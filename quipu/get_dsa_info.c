@@ -1,8 +1,6 @@
 /* get_dsa_info.c - Get DSA info given its distinguished name */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/get_dsa_info.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/get_dsa_info.c,v 9.0 1992/06/16 12:34:01 isode Rel $

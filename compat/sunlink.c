@@ -1,8 +1,6 @@
 /* sunlink.c - X.25 abstractions for SunLink X25 */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sunlink.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/compat/RCS/sunlink.c,v 9.0 1992/06/16 12:07:00 isode Rel $

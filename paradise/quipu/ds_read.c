@@ -1,8 +1,6 @@
 /* ds_read.c - */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_read.c,v 9.3 1992/08/19 14:48:35 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/ds_read.c,v 9.3 1992/08/19 14:48:35 isode Exp $

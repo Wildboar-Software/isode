@@ -1,8 +1,6 @@
 /* udptest.c - test out -ltsap for unit data service over UDP */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:04 mrose Rel $";
-#endif
+
 
 /*
  *				  NOTICE

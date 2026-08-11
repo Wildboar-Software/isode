@@ -1,8 +1,6 @@
 /* task_invoke.c - deal with invocation of an operation over a connection */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/task_invoke.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/task_invoke.c,v 9.0 1992/06/16 12:34:01 isode Rel $

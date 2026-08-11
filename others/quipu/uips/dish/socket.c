@@ -1,8 +1,6 @@
 /* socket.c - dish -pipe support */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/socket.c,v 9.0 1992/06/16 12:44:21 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/socket.c,v 9.0 1992/06/16 12:44:21 isode Rel $

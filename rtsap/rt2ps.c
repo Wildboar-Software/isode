@@ -1,8 +1,6 @@
 /* rt2ps.c - RTPM: AcSAP/PSAP interface */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ps.c,v 9.0 1992/06/16 12:37:45 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/rtsap/RCS/rt2ps.c,v 9.0 1992/06/16 12:37:45 isode Rel $

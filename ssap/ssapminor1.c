@@ -1,8 +1,6 @@
 /* ssapminor1.c - SPM: initiate minorsyncs */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapminor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapminor1.c,v 9.0 1992/06/16 12:39:41 isode Rel $

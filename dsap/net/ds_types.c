@@ -1,8 +1,6 @@
 /* ds_types.c - Bind argument and operation argument type routines */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/ds_types.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/net/RCS/ds_types.c,v 9.0 1992/06/16 12:14:05 isode Rel $

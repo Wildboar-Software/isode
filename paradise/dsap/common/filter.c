@@ -1,8 +1,6 @@
 /* filter.c - Directory Operation Filters */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/filter.c,v 9.1 1992/06/24 15:20:19 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/common/RCS/filter.c,v 9.1 1992/06/24 15:20:19 isode Exp $

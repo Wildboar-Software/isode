@@ -1,8 +1,6 @@
 /* dsapunbind1.c - DSAP: Maps D-UNBIND onto RO-UNBIND.REQUEST */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind1.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind1.c,v 9.0 1992/06/16 12:14:05 isode Rel $

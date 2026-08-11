@@ -44,9 +44,7 @@
 /* modified from ISODE's acsapinitiat.c and acsaprespond.c */
 /* acsapinitiat.c - ACPM: initiator */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/acsap/RCS/acsapinitiat.c,v 5.0 88/07/21 14:21:35 mrose Rel $";
-#endif
+
 
 #include <stdio.h>
 #include <signal.h>

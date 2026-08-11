@@ -1,8 +1,6 @@
 /* conn_retry.c - deal with asynchronous A-Associate events */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_retry.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/conn_retry.c,v 9.0 1992/06/16 12:34:01 isode Rel $

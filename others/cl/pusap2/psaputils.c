@@ -43,9 +43,7 @@
 /* HULA P-UNIT-DATA Service */
 /* psaputils.c - PPM: provider utility routines */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14:42:56 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14:42:56 mrose Rel $

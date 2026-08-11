@@ -1,8 +1,6 @@
 /* prim2bit.c - presentation element to bit string */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/prim2bit.c,v 9.0 1992/06/16 12:25:44 isode Rel $

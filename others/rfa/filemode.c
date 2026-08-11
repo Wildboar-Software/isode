@@ -16,9 +16,7 @@
  *
  */
 
-#ifndef       lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/filemode.c,v 9.0 1992/06/16 12:47:25 isode Rel $";
-#endif
+
 
 /*
  *                              NOTICE

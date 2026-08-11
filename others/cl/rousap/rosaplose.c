@@ -1,8 +1,6 @@
 /* rosaplose.c - ROPM: you lose */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/rosap/RCS/rosaplose.c,v 5.0 88/07/21 14:56:12 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/rosap/RCS/rosaplose.c,v 5.0 88/07/21 14:56:12 mrose Rel $

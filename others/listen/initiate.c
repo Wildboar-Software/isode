@@ -1,8 +1,6 @@
 /* initiate.c -- initiator for listen demo */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/listen/RCS/initiate.c,v 9.0 1992/06/16 12:42:15 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/listen/RCS/initiate.c,v 9.0 1992/06/16 12:42:15 isode Rel $

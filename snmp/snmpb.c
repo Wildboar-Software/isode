@@ -1,8 +1,6 @@
 /* snmpb.c - snmpi bulk load */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/16 12:38:11 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/16 12:38:11 isode Rel $

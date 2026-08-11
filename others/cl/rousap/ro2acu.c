@@ -34,9 +34,7 @@
 
 /* ro2acu.c - modified from ro2ps.c - ROPM: PSAP interface */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/rosap/RCS/ro2ps.c,v 5.0 88/07/21 14:55:50 mrose Rel $";
-#endif
+
 
 #include <stdio.h>
 #include "ropkt.h"

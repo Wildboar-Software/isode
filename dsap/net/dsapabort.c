@@ -1,8 +1,6 @@
 /* dsapabort.c - DSAP: Lose the binding identified by the descriptor */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapabort.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dsapabort.c,v 9.0 1992/06/16 12:14:05 isode Rel $

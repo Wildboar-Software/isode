@@ -1,8 +1,6 @@
 /* tsbridge.c: transport bridge - jpo version ! */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.c,v 9.0 1992/06/16 12:48:17 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.c,v 9.0 1992/06/16 12:48:17 isode Rel $

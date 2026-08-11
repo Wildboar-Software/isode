@@ -1,8 +1,6 @@
 /* oid2aei.c - application entity titles -- OID to AE info  */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/06/16 12:05:59 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/06/16 12:05:59 isode Rel $

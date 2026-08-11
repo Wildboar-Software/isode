@@ -1,8 +1,6 @@
 /* ronotlose.c - RONOT: Support for ABSTRACT-BIND mappings */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 1992/06/16 12:36:36 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 1992/06/16 12:36:36 isode Rel $

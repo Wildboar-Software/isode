@@ -1,8 +1,6 @@
 /* vt_telnet.c - VT telnet profile */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt_telnet.c,v 9.0 1992/06/16 12:41:08 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/vt/RCS/vt_telnet.c,v 9.0 1992/06/16 12:41:08 isode Rel $

@@ -1,8 +1,6 @@
 /* tsapmgmt.c - management info reporting routines */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmgmt.c,v 9.0 1992/06/16 12:40:39 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/tsap/RCS/tsapmgmt.c,v 9.0 1992/06/16 12:40:39 isode Rel $

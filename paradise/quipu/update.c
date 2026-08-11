@@ -1,8 +1,6 @@
 /* update.c - write EDB back to disk after modify */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.1 1992/07/28 12:56:29 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.1 1992/07/28 12:56:29 isode Exp $

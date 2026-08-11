@@ -1,8 +1,6 @@
 /* ftamd.c - FTAM -- responder */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd.c,v 9.0 1992/06/16 12:15:43 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftamd.c,v 9.0 1992/06/16 12:15:43 isode Rel $

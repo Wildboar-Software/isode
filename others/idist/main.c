@@ -44,7 +44,6 @@ char copyright[] =
 
 #ifndef lint
 static char sccsid[] = "@(#)main.c      5.5 (Berkeley) 6/1/90";
-static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/main.c,v 9.0 1992/06/16 12:42:00 isode Rel $";
 #endif
 
 #include "defs.h"

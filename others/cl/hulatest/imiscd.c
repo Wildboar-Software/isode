@@ -1,8 +1,6 @@
 /* imiscd.c - miscellaneous network service -- responder */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/imisc/RCS/imiscd.c,v 5.0 88/07/21 14:42:08 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/imisc/RCS/imiscd.c,v 5.0 88/07/21 14:42:08 mrose Rel $

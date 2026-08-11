@@ -1,8 +1,6 @@
 /* text2spkt.c - read/write a SPDU thru a debug filter */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:21 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:21 mrose Rel $

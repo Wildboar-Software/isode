@@ -1,8 +1,6 @@
 /* ryinitiator.c - remote association initiator */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,v 9.0 1992/06/16 14:38:53 isode Rel $

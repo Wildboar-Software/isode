@@ -1,8 +1,6 @@
 /* psaprelease1.c - PPM: initiate release */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease1.c,v 9.0 1992/06/16 12:31:57 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease1.c,v 9.0 1992/06/16 12:31:57 isode Rel $

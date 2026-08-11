@@ -1,8 +1,6 @@
 /* ftam-glob.c - interactive initiator FTAM -- globbing */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 1992/06/16 12:15:43 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 1992/06/16 12:15:43 isode Rel $

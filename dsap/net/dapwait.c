@@ -1,8 +1,6 @@
 /* dapwait.c - DAP: Deal with incoming activity */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapwait.c,v 9.0 1992/06/16 12:14:05 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/net/RCS/dapwait.c,v 9.0 1992/06/16 12:14:05 isode Rel $

@@ -1,8 +1,6 @@
 /* tailor.c - ISODE tailoring */
 
-#ifndef	lint
-static char *rcsid = "$Header$";
-#endif
+
 
 /*
  * $Header$

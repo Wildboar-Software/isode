@@ -1,8 +1,6 @@
 /* osilookup.c - convert entry in /etc/osi.hosts to isoentities format */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.c,v 9.0 1992/06/16 12:43:08 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.c,v 9.0 1992/06/16 12:43:08 isode Rel $

@@ -1,8 +1,6 @@
 /* rtfs.c - RT-file transfer utility -- common subroutines */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1992/06/16 12:48:07 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1992/06/16 12:48:07 isode Rel $

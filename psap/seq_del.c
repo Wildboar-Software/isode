@@ -1,8 +1,6 @@
 /* seq_del.c - delete a member from a sequence */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_del.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/seq_del.c,v 9.0 1992/06/16 12:25:44 isode Rel $

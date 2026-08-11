@@ -1,8 +1,6 @@
 /* snmp.c - SNMP changes for gawk */
 
-#ifndef	lint
-static char *rcsid = "$Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/RCS/snmp.c,v 8.0 91/07/17 13:02:46 isode Rel $";
-#endif
+
 
 /*
  * $Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/RCS/snmp.c,v 8.0 91/07/17 13:02:46 isode Rel $

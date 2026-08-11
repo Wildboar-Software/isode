@@ -1,8 +1,6 @@
 /* di_block.c - routines to handle operation activity blocks */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/di_block.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/di_block.c,v 9.0 1992/06/16 12:34:01 isode Rel $

@@ -1,6 +1,4 @@
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpd.c,v 9.0 1992/06/16 14:45:01 isode Rel $";
-#endif	lint
+	lint
 
 /*
  * ntp daemon - based on the 3.4 version but heavily modified for OSI

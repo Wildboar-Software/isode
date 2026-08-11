@@ -1,8 +1,6 @@
 /* asn_ext.c - ASN.1 code pepsy can't quite do yet */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/x500as/RCS/asn_ext.c,v 9.0 1992/06/16 12:14:33 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/x500as/RCS/asn_ext.c,v 9.0 1992/06/16 12:14:33 isode Rel $

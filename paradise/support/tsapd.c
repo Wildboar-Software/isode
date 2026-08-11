@@ -1,8 +1,6 @@
 /* tsapd.c - OSI transport listener */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/07/27 10:24:25 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/07/27 10:24:25 isode Exp $

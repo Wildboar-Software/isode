@@ -1,8 +1,6 @@
 /* unbind.c - dish shell unbind and squid commands */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbind.c,v 9.0 1992/06/16 12:44:21 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbind.c,v 9.0 1992/06/16 12:44:21 isode Rel $

@@ -1,8 +1,6 @@
 /* ssapwrite.c - SPM: write various SPDUs  */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapwrite.c,v 9.0 1992/06/16 12:39:41 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/ssap/RCS/ssapwrite.c,v 9.0 1992/06/16 12:39:41 isode Rel $

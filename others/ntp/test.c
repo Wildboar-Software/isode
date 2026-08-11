@@ -1,6 +1,4 @@
-#ifndef	lint
-static char *RCSid = "$Source: /xtel/isode/isode/others/ntp/RCS/test.c,v $ $Revision: 9.0 $ $Date: 1992/06/16 12:42:48 $";
-#endif
+
 
 /*
  * $Log: test.c,v $

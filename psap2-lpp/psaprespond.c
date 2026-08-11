@@ -1,8 +1,6 @@
 /* psaprespond.c - PPM: responder */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9.0 1992/06/16 12:31:57 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9.0 1992/06/16 12:31:57 isode Rel $

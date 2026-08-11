@@ -1,7 +1,6 @@
 #include "ntp-config.h"
 
 #ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/ntp/RCS/read_psti.c,v 9.0 1992/06/16 12:42:48 isode Rel $";
 static char *sccsid = "@(#)read_psti.c	1.1	MS/ACF	89/02/17";
 #endif	lint
 

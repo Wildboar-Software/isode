@@ -1,8 +1,6 @@
 /* ryoperation.c - ROSY: operations */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryoper.c,v 9.0 1992/06/16 12:37:29 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/rosy/RCS/ryoper.c,v 9.0 1992/06/16 12:37:29 isode Rel $

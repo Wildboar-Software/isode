@@ -1,8 +1,6 @@
 /* tsdu2spkt.c - read/write a SPDU to a TSDU */
 
-#ifndef	lint
-static char *rcsid = "$Header: /f/iso/ssap/RCS/tsdu2spkt.c,v 5.0 88/07/21 14:58:23 mrose Rel $";
-#endif
+
 
 /*
  * $Header: /f/iso/ssap/RCS/tsdu2spkt.c,v 5.0 88/07/21 14:58:23 mrose Rel $

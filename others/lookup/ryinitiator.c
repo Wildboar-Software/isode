@@ -1,8 +1,6 @@
 /* ryinitiator.c - generic interactive initiator */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryinitiator.c,v 9.0 1992/06/16 12:42:23 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/lookup/RCS/ryinitiator.c,v 9.0 1992/06/16 12:42:23 isode Rel $

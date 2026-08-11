@@ -1,8 +1,6 @@
 /* imagesbr.c - image subroutines */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr.c,v 9.0 1992/06/16 12:43:24 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr.c,v 9.0 1992/06/16 12:43:24 isode Rel $

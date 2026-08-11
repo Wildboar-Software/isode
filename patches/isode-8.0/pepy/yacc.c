@@ -3,9 +3,7 @@ static char yysccsid[] = "@(#)yaccpar	1.8 (Berkeley) 01/20/90";
 #endif
 #define YYBYACC 1
 #line 5 "yacc.y"
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/yacc.y.gnrc,v 9.0 1992/06/16 12:25:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/pepy/RCS/yacc.y.gnrc,v 9.0 1992/06/16 12:25:01 isode Rel $

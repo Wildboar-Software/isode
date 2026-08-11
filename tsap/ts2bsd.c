@@ -1,9 +1,7 @@
 /* ts2bsd.c - TPM: 4.4BSD OSI TP4 interface */
 #define STATIC /**/
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06/16 12:40:39 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06/16 12:40:39 isode Rel $

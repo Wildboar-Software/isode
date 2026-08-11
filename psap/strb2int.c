@@ -1,8 +1,6 @@
 /* converts a bit string - output of bitstr2strb() - to an integer */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/strb2int.c,v 9.0 1992/06/16 12:25:44 isode Rel $

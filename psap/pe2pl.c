@@ -1,8 +1,6 @@
 /* pe2pl.c - presentation element to presentation list */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/16 12:25:44 isode Rel $

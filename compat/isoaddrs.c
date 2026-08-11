@@ -1,8 +1,6 @@
 /* isoaddrs.c - simple parsing of ISODE addresses */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 1992/06/16 12:07:00 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 1992/06/16 12:07:00 isode Rel $

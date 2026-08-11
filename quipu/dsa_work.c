@@ -1,8 +1,6 @@
 /* dsa_work.c - do some work on an active task. */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_work.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/dsa_work.c,v 9.0 1992/06/16 12:34:01 isode Rel $

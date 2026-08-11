@@ -23,9 +23,7 @@
 	SEQUENCE/SET OF Type should have Type be an ID for nicer naming
  */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/posy.c,v 9.0 1992/06/16 12:25:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/pepy/RCS/posy.c,v 9.0 1992/06/16 12:25:01 isode Rel $

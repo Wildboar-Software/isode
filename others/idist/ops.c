@@ -1,8 +1,6 @@
 /* idist.c - remote distribution - initiator */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ops.c,v 9.0 1992/06/16 12:42:00 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/others/idist/RCS/ops.c,v 9.0 1992/06/16 12:42:00 isode Rel $

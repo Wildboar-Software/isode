@@ -1,8 +1,6 @@
 /* aetdap.c - DAP-based DSE */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 1992/06/16 12:12:39 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 1992/06/16 12:12:39 isode Rel $

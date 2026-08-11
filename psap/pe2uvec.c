@@ -1,8 +1,6 @@
 /* pe2uvec.c - write a PE to a udvec */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2uvec.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/pe2uvec.c,v 9.0 1992/06/16 12:25:44 isode Rel $

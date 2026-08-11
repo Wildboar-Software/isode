@@ -1,8 +1,6 @@
 /* net_init.c - Init network section of DSA process */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/net_init.c,v 9.0 1992/06/16 12:34:01 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/net_init.c,v 9.0 1992/06/16 12:34:01 isode Rel $

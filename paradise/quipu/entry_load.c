@@ -1,8 +1,6 @@
 /* entry_load.c - load bits of the database */
 
-#ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_load.c,v 9.1 1992/07/08 09:21:06 isode Exp $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/quipu/RCS/entry_load.c,v 9.1 1992/07/08 09:21:06 isode Exp $

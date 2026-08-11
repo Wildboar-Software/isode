@@ -38,7 +38,6 @@
  */
 
 #ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/docmd.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
 static char sccsid[] = "@(#)docmd.c	5.6 (Berkeley) 6/1/90";
 #endif
 

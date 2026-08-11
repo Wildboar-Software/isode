@@ -1,8 +1,6 @@
 /* ts2tli.c - TPM: TLI OSI TP interface */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tli.c,v 9.0 1992/06/16 12:40:39 isode Rel $";
-#endif
+
 
 /*
  * This module written by X-Tel Serviecs Ltd, UK.

@@ -1,8 +1,6 @@
 /* ps_prime.c - prime a presentation stream */
 
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_prime.c,v 9.0 1992/06/16 12:25:44 isode Rel $";
-#endif
+
 
 /*
  * $Header: /xtel/isode/isode/psap/RCS/ps_prime.c,v 9.0 1992/06/16 12:25:44 isode Rel $
