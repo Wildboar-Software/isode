@@ -1,11 +1,5 @@
 /* dg2ps.c - datagram-backed abstraction for PStreams */
 
-
-
-
-
-
-
 #include "psap.h"
 
 struct ps_dg {

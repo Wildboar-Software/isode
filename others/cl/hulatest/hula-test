@@ -40,6 +40,5 @@ if [ $fast = 1 ]; then
     exit $error
 fi
 
-
 echo "Test done, Errors: $error"
 exit $error

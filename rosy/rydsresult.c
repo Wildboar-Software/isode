@@ -1,11 +1,5 @@
 /* rydsresult.c - ROSY: return result to invocation */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

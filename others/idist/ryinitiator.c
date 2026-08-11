@@ -1,7 +1,5 @@
 /* ryinitiator.c - remote association initiator */
 
-
-
 /*
  * 
  *

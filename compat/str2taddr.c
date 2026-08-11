@@ -1,11 +1,5 @@
 /* str2taddr.c - string value to TSAPaddr */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

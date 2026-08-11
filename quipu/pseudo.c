@@ -1,11 +1,5 @@
 /* pseudo.c -- Handle pseudo DSA attributes */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <unistd.h>
 #include "quipu/util.h"

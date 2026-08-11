@@ -1,7 +1,5 @@
 /* psaprelease2.c - PPM: respond to release */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

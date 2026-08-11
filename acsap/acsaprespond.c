@@ -1,11 +1,5 @@
 /* acsaprespond.c - ACPM: responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ACS-types.h"
 #define	ACSE

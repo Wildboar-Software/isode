@@ -1,11 +1,5 @@
 /* parse.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"

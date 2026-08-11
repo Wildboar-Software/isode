@@ -1,11 +1,5 @@
 /* dased.c - stand-alone DASE */
 
-
-
-
-
-
-
 #include <unistd.h>
 #define getdtablesize()	(sysconf (_SC_OPEN_MAX))
 #include <signal.h>

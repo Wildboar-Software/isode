@@ -1,11 +1,5 @@
 /* picture.c - exec printing of external attributes */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "quipu/util.h"

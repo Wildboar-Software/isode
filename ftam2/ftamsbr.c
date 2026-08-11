@@ -1,11 +1,5 @@
 /* ftamsbr.c - FTAM subroutines */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "ftamsbr.h"

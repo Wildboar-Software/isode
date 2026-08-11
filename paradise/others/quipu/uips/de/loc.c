@@ -1,7 +1,5 @@
 /* loc.c - search for a locality */
 
-
-
 /*
  * 
  *
@@ -11,8 +9,6 @@
  * *** empty log message ***
  *
  */
-
-
 
 #include <signal.h>
 #include "quipu/util.h"

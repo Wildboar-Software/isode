@@ -1,11 +1,5 @@
 /* dsa_work.c - do some work on an active task. */
 
-
-
-
-
-
-
 #include "acsap.h"
 #include "quipu/util.h"
 #include "quipu/common.h"

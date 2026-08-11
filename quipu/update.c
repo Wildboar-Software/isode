@@ -1,11 +1,5 @@
 /* update.c - write EDB back to disk after modify */
 
-
-
-
-
-
-
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"

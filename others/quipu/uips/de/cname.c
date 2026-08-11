@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "util.h"

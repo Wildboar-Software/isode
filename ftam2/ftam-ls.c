@@ -1,11 +1,5 @@
 /* ftam-ls.c - interactive initiator FTAM -- "ls" */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <stdio.h>
 #include "FTAM-types.h"

@@ -1,11 +1,5 @@
 /* ufn_aei.c - user-friendly aei lookup */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/ufn.h"
 #include "quipu/list.h"

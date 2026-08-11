@@ -1,11 +1,5 @@
 /* ssaprovider.c - implement the session protocol */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

@@ -1,11 +1,5 @@
 /* ds_types.c - Bind argument and operation argument type routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/bind.h"
 #include "quipu/common.h"

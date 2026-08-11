@@ -15,11 +15,6 @@ this software for any purpose.  It is provided "as is"
 without express or implied warranty.
 
 */
-
-#ifndef lint
-static char *rcsid_xhost_c = "$XConsortium: xhost.c,v 11.28 88/10/11 12:48:06 jim Exp $";
-#endif
-
 #include <signal.h>
 #include <setjmp.h>
 #include <ctype.h>

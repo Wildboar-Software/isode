@@ -1,11 +1,5 @@
 /* ps.c - fax to postscript */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <quipu/photo.h>
 

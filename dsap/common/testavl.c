@@ -1,11 +1,5 @@
 /* testavl.c - Test Tim Howes AVL code */
 
-
-
-
-
-
-
 #include <sys/types.h>
 #include <stdio.h>
 

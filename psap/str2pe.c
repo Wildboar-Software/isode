@@ -1,11 +1,5 @@
 /* str2pe.c - create an Inline CONStructor PElement */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

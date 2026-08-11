@@ -2,9 +2,6 @@
 /* acusap.h - include file for A-UNIT-DATA association control users */
 /* header from acsap.h left intact */
 
-
-
-
 #ifndef	_AcuSAP_
 #define	_AcuSAP_
 

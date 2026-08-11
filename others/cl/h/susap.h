@@ -8,8 +8,6 @@
  *
  */
 
-
-
 #ifndef	_SuSAP_
 #define	_SuSAP_
 

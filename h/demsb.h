@@ -1,9 +1,5 @@
 /* demsb.h - DEC DEMSA router interface (part b!) */
 
-
-
-
-
 /* definitions for DEMSA-BOX  */
 t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE] = {
 	NOTOK, NOTOK,

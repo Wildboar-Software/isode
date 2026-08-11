@@ -1,11 +1,5 @@
 /* rt2ssreleas1.c - RTPM: initiate release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

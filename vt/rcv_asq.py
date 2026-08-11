@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 ASQPDU DEFINITIONS ::=
 
 %{
@@ -72,7 +69,6 @@ PE pe;
 		else (void)printf("Invalid type\n");
 	}
 
-
 	for(i=0; i<ud.asq_profile.num_cds_objects; i++)
 	{
 		(void)printf("\n");
@@ -126,7 +122,6 @@ PE pe;
 }
 
 #endif
-
 
 #define	bitstr2int(arg,val,cnt) \
 { \

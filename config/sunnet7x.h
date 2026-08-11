@@ -1,10 +1,6 @@
 /* sunlink7.h - site configuration file for SunLink OSI and X.25 7.0 on
 	SunOS 4 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

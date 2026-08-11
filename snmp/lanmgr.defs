@@ -40,4 +40,3 @@ wkstaStatUses        workstation.3    Counter         read-only       mandatory
 wkstaStatUseFails    workstation.4    Counter         read-only       mandatory
 wkstaStatAutoRecs    workstation.5    Counter         read-only       mandatory
 
-

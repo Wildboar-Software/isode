@@ -34,8 +34,6 @@
 
 /* ro2acu.c - modified from ro2ps.c - ROPM: PSAP interface */
 
-
-
 #include <stdio.h>
 #include "ropkt.h"
 #include "tailor.h"

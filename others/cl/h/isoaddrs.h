@@ -1,8 +1,5 @@
 /* isoaddrs.h - ISO addressing */
 
-
-
-
 #ifndef	_ISOADDRS_
 #define	_ISOADDRS_
 

@@ -1,9 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
 #ifndef _destrings_h
 #define _destrings_h
 

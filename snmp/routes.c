@@ -1,7 +1,5 @@
 /* routes.c - MIB support of the routing tables */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <string.h>

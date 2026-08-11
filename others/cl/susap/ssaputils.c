@@ -1,7 +1,5 @@
 /* ssaputils.c - comon session utilities */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

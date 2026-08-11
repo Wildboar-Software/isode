@@ -1,9 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
 #include <stdio.h>
 #include "quipu/attrvalue.h"
 #include "util.h"

@@ -1,9 +1,5 @@
 /* sunlink3.h - site configuration file for SunLink OSI 5.2 on SunOS 3 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

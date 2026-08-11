@@ -1,11 +1,5 @@
 /* pl2pe.c - presentation list to presentation element */
 
-
-
-
-
-
-
 /* Presentation lists are a human-readable, unambiguous way of describing
    a presentation element.
 

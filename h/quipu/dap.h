@@ -1,9 +1,5 @@
 /* dap.h - */
 
-
-
-
-
 #ifndef QUIPUDAP
 #define QUIPUDAP
 

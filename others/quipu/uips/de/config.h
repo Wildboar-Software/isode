@@ -1,9 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
 #ifndef _deconfig_h
 #define _deconfig_h
 

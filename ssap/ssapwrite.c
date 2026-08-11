@@ -1,11 +1,5 @@
 /* ssapwrite.c - SPM: write various SPDUs  */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "spkt.h"
 

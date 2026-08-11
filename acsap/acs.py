@@ -10,9 +10,6 @@
 --
 -- 
 
-
-
-
 --* ACSE-1 *-- ACS DEFINITIONS ::=
 
 %{
@@ -42,7 +39,6 @@ ACSE-apdu ::=
             abrt
                 ABRT-apdu
         }
-
 
 AARQ-apdu ::=
     [APPLICATION 0]
@@ -97,7 +93,6 @@ AARQ-apdu ::=
                 OPTIONAL
         }
 
-
 AARE-apdu ::=
     [APPLICATION 1]
         IMPLICIT SEQUENCE {
@@ -146,7 +141,6 @@ AARE-apdu ::=
                 OPTIONAL
         }
 
-
 RLRQ-apdu ::=
     [APPLICATION 2]
         IMPLICIT SEQUENCE {
@@ -163,7 +157,6 @@ RLRQ-apdu ::=
                 IMPLICIT Association-information
                 OPTIONAL
         }
-
 
 RLRE-apdu ::=
     [APPLICATION 3]
@@ -182,7 +175,6 @@ RLRE-apdu ::=
                 OPTIONAL
         }
 
-
 ABRT-apdu ::=
     [APPLICATION 4]
         IMPLICIT SEQUENCE {
@@ -192,7 +184,6 @@ ABRT-apdu ::=
 	             acse-service-user(0),	--* *--
 	             acse-service-provider(1)	--* *--
 	         },				--* *--
-
 
             user-information[30]
                 IMPLICIT Association-information
@@ -205,10 +196,8 @@ ABRT-source ::=
             acse-service-provider(1)
         }
 
-
 Application-context-name ::=
         OBJECT IDENTIFIER
-
 
 AP-title ::=
         ANY
@@ -247,7 +236,6 @@ AE-invocation-id ::=
 
 AP-invocation-id ::=
         INTEGER
-
 
 Associate-result ::=
         INTEGER {

@@ -1,11 +1,5 @@
 /* acsapabort1.c - ACPM: user abort */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

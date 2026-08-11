@@ -1,8 +1,5 @@
 /* policy.h - representation of security policy */
 
-
-
-
 #ifndef QUIPUPOLICY
 #define QUIPUPOLICY
 #include "psap.h"

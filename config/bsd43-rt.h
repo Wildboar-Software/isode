@@ -12,8 +12,6 @@
  *
  */
 
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

@@ -1,11 +1,5 @@
 /* acl_info.c - ? */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 

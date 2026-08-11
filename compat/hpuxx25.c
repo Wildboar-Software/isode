@@ -1,7 +1,5 @@
 /* hpuxx25.c - X.25 abstractions for HPUX X25/9000 */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

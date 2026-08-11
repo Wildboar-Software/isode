@@ -1,11 +1,5 @@
 /* flag2prim.c - boolean to presentation element */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

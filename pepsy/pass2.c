@@ -1,11 +1,5 @@
 /* pass2.c */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>

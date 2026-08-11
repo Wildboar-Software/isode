@@ -1,11 +1,5 @@
 /* add.c - */
 
-
-
-
-
-
-
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"

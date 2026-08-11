@@ -1,11 +1,5 @@
 /* search.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 #include "quipu/list.h"

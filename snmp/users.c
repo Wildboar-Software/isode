@@ -1,10 +1,5 @@
 /* users.c - MIB realization of the users group */
 
-
-
-
-
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>

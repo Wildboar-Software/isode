@@ -1,11 +1,5 @@
 /* sstr2arg: convert string into argument list */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "manifest.h"
 #include "general.h"

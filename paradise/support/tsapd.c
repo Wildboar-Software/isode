@@ -1,7 +1,5 @@
 /* tsapd.c - OSI transport listener */
 
-
-
 /*
  * 
  *
@@ -17,8 +15,6 @@
  *
  *
  */
-
-
 
 #include <errno.h>
 #include <signal.h>

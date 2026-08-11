@@ -1,11 +1,5 @@
 /* imiscd.c - miscellaneous network service -- responder */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <time.h>
 #include <ctype.h>

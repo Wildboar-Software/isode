@@ -1,8 +1,5 @@
 /* acpkt.h - include file for association control providers (AcS-PROVIDER) */
 
-
-
-
 #ifndef	_AcSAP_
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif

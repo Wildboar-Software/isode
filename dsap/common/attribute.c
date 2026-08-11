@@ -1,10 +1,5 @@
 /* attribute.c - */
 
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"

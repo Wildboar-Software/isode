@@ -49,4 +49,3 @@ ds3TotalCSSs         ds3TotalEntry.6  Counter         read-only       mandatory
 ds3TotalBPVs         ds3TotalEntry.7  Counter         read-only       mandatory
 ds3TotalCVs          ds3TotalEntry.8  Counter         read-only       mandatory
 
-

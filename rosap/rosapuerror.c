@@ -1,7 +1,5 @@
 /* rosapuerror.c - ROPM: error */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

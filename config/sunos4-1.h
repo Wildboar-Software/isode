@@ -1,9 +1,5 @@
 /* sunos4-1.h - site configuration file for SunOS release 4.1 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

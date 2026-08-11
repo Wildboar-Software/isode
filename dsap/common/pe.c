@@ -1,11 +1,5 @@
 /* pe.c - General PE utility routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "psap.h"
 #include "quipu/attr.h"               /* for defn of READOUT */

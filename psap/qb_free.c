@@ -1,11 +1,5 @@
 /* qb_free.c - free a list of qbufs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

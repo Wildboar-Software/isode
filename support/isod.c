@@ -1,11 +1,5 @@
 /* isod.c - "minimal" ISODE server for testing */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

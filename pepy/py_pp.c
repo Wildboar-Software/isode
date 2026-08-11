@@ -1,11 +1,5 @@
 /* py_pp.c - generic pretty-printer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

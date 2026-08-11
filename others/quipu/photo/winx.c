@@ -1,11 +1,5 @@
 /* winx.c - xwindow version of display code */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include <X11/Xlib.h>

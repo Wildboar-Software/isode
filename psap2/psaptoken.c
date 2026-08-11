@@ -1,11 +1,5 @@
 /* psaptoken.c - PPM: tokens */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

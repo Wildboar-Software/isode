@@ -1,11 +1,5 @@
 /* pe_extract.c - extract a PE */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

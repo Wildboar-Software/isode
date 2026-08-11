@@ -1,11 +1,5 @@
 /* policy.c - SecurityPolicy abstract syntax  */
 
-
-
-
-
-
-
 #include "cmd_srch.h"
 #include "quipu/policy.h"
 

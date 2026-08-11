@@ -1,11 +1,5 @@
 /* pe2text.c - write a PE thru a debug filter */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

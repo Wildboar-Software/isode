@@ -1,11 +1,5 @@
 /* map.c - VT telnet profile mappings */
 
-
-
-
-
-
-
 #define DO_LOCAL_ECHO
 #undef PEPYPARM
 #define PEPYPARM int *

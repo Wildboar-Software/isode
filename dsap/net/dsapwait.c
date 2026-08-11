@@ -1,11 +1,5 @@
 /* dsapwait.c - DSAP: Deal with incoming activity */
 
-
-
-
-
-
-
 #include <signal.h>
 #include "logger.h"
 #include "quipu/util.h"

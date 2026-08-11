@@ -1,11 +1,5 @@
 /* dsapresult.c - DSAP : Send operation results */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"

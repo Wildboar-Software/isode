@@ -1,11 +1,5 @@
 /* turbo_index.c */
 
-
-
-
-
-
-
 #include <string.h>
 #include <stdio.h>
 #include "quipu/config.h"

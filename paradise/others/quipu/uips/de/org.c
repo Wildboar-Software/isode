@@ -1,10 +1,5 @@
 /* org.c - search for an organisation */
 
-
-
-
-
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"

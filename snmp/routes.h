@@ -15,8 +15,6 @@
  *
  */
 
-
-
 #ifdef	BSD44
 #include <sys/param.h>
 #endif

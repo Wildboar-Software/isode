@@ -1,7 +1,5 @@
 /* psaprovider.c - PPM: implement the pseudo-presentation protocol */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

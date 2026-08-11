@@ -1,9 +1,5 @@
 /* ftp_var.h - FTP global variables */
 
-
-
-
-
 /*
  *	Shamelessly taken from UCB
  */

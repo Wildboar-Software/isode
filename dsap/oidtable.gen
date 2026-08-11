@@ -12,7 +12,6 @@
 # 
 ###############################################################################
 
-
 # format:-
 #
 # name:				oid
@@ -42,7 +41,6 @@ memberBody:			iso.2
 standardsAustralia:		memberBody.36
 ansi:				memberBody.840
 gb:				memberBody.826
-
 
 psi:				ansi.113552
 rsadsi:                         ansi.113549
@@ -132,7 +130,6 @@ locatorDSP:                       locator.4
 locatorAbstractSyntax:            locator.5
 locatorAlgorithm:                 locator.6
 locatorSecurityPolicy:            locator.7
-
 
 # Attribute Syntaxes
 
@@ -286,13 +283,11 @@ mhs-ds-tables:			mhs-ds.1
 mhs-ds-tables-oc:		mhs-ds-tables.1
 mhs-ds-tables-at:		mhs-ds-tables.2
 
-
 # MHS tree stuff
 
 mhs-ds-tree:			mhs-ds.2
 mhs-ds-tree-oc:			mhs-ds-tree.1
 mhs-ds-tree-at:			mhs-ds-tree.2
-
 
 # Routing stuff
 

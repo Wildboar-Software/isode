@@ -1,9 +1,5 @@
 /* sys52-sun.h - site configuration file for SUN's SVR2 Compatiblity Package */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

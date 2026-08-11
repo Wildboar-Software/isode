@@ -31,4 +31,3 @@ exprExpr             exprEntry.3      OctetString     read-write      mandatory
 exprStatus           exprEntry.4      INTEGER         read-only       mandatory
 exprHints            exprEntry.5      DisplayString   read-only       mandatory
 
-

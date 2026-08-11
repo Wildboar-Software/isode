@@ -1,11 +1,5 @@
 /* isoc.c - "minimal" ISODE client for testing */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>

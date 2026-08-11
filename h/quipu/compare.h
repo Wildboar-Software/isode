@@ -1,9 +1,5 @@
 /* compare.h - */
 
-
-
-
-
 #ifndef QUIPUCOMP
 #define QUIPUCOMP
 

@@ -1,9 +1,5 @@
 /* dsp.h - a few DSP things */
 
-
-
-
-
 #ifndef DSP
 #define DSP
 

@@ -1,9 +1,5 @@
 /* osi.h - site configuration file for osi (SunOS) */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

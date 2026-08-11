@@ -1,12 +1,6 @@
 /* ts2bsd.c - TPM: 4.4BSD OSI TP4 interface */
 #define STATIC /**/
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"

@@ -1,11 +1,5 @@
 /* rylose.c - ROSY: clean-up after association termination */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

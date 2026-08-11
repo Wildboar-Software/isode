@@ -1,11 +1,5 @@
 /* filteritem.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 

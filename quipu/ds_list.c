@@ -1,11 +1,5 @@
 /* ds_list.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "quipu/list.h"

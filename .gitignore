@@ -139,7 +139,6 @@ RemoteSystemsTempFiles/
 ######################
 **/target/
 
-
 # Temporary files #
 ###################
 *.bak

@@ -16,9 +16,6 @@ static char *rcsid = "";
  *
  */
 
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 %BEGIN(PEPSY)%
@@ -35,7 +32,6 @@ static char *rcsid = "";
 %END(MOSY)%
 
 //#define	YYSTYPE	YYSTKTYPE
-
 
 #define	YYDEBUG	1
 
@@ -254,7 +250,6 @@ int bit2int(char *s) {
 
 %start	ModuleDefinition
 
-
 %union	{
     int	    yy_number;
     char   *yy_string;
@@ -270,7 +265,6 @@ int bit2int(char *s) {
     YAL     yy_yal;
 %END(PEPSY)%
 }
-
 
 %token  ABSENT ACTION ANY APPLICATION BAR BGIN BIT BITSTRING BOOLEAN
 	BSTRING BY CCE CHOICE COMMA COMPONENT COMPONENTS COMPONENTSOF
@@ -577,13 +571,11 @@ ErrorNames:		NamedValueList {
 			}
 	|		empty { $$ = NULLYV; }
 
-
 LinkedOperationNames:	NamedValueList {
 			    $$ = new_value (YV_VALIST);
 			    $$ -> yv_idlist = $1;
 			}
 	|		empty { $$ = NULLYV; }
-
 
 ErrorDefinition:	NAME ERROR Parameter CCE LITNUMBER {
 			    pass1_err (mymodule, $1, $3, $5);
@@ -811,7 +803,6 @@ Type:			BuiltinType CodingFn UAction {
 				$$->yp_aft_alist=yal_join($3, $$->yp_aft_alist);
 			}
 	;
-
 
 Control:		CONTROL
 	|		empty { $$ = NULLCP; }
@@ -1268,7 +1259,6 @@ Class:			UNIVERSAL { $$ = new_tag (PE_CLASS_UNIV); }
 	|		PRIVATE { $$ = new_tag (PE_CLASS_PRIV); }
 	|		empty { $$ = new_tag (PE_CLASS_CONT); }
 	;
-
 
 Valueassignment:	NAME Type CCE Value
 	;

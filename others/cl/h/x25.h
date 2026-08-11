@@ -10,8 +10,6 @@
  * $Log$
  */
 
-
-
 #ifndef	_X25_
 #define	_X25_
 

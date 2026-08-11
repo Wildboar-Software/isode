@@ -1,9 +1,5 @@
 /* sector5.h - VTPM: FSM sector 5 definitions */
 
-
-
-
-
 typedef struct expl_ptr {
 #define NULLCOORD  -1
 	int xval;	/* if they don't exist = NULLCOORD */

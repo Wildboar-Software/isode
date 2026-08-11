@@ -14,9 +14,6 @@
 --
 --
 
-
-
-
 --* RFC1098-SNMP *-- SNMP DEFINITIONS ::=
 
 BEGIN
@@ -25,7 +22,6 @@ BEGIN
 -- IMPORTS
 --     ObjectName, ObjectSyntax, NetworkAddress, IpAddress, TimeTicks
 --	    From RFC1065-SMI;
-
 
 -- top-level message
     
@@ -42,7 +38,6 @@ Message ::=
             data			-- e.g., PDUs if trivial
                 --* ANY *-- PDUs	-- authentication is being used
         }
-
 
 -- protocol data units
 
@@ -148,8 +143,6 @@ VarBindList ::=
         SEQUENCE OF
             VarBind
 
-
-
 -- types from RFC1065-SMI
 
 ObjectName ::=
@@ -174,7 +167,6 @@ TimeTicks ::=
 
 ClnpAddress ::=
 	OCTET STRING (SIZE (1..21))
-
 
 -- trap logging (snmpt)
 
@@ -202,7 +194,6 @@ Audit ::=
 DisplayString ::=
     OCTET STRING
 
-
 -- tags for SMUX-specific PDUs are application-wide to avoid conflict with
 -- tags for current (and future) SNMP-generic PDUs
 
@@ -227,7 +218,6 @@ SMUX-PDUs ::=
 	commitOrRollback	-- SNMP agent uses
 	    SOutPDU
     }
-
 
 -- open PDU
 -- currently only simple authentication
@@ -256,7 +246,6 @@ SimpleOpen ::=
 		OCTET STRING
 	}
 
-
 -- close PDU
 
 ClosePDU ::=
@@ -269,7 +258,6 @@ ClosePDU ::=
 	    internalError(4),
 	    authenticationFailure(5)
 	}
-
 
 -- insert PDU
 

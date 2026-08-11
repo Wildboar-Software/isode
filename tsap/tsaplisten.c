@@ -1,7 +1,5 @@
 /* tsaplisten.c - "network" listening */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <errno.h>
 #include <stdio.h>

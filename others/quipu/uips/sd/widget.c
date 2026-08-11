@@ -1,15 +1,11 @@
 /* widget.c - Provides the screen and widget code */
 
-
-
 /*
  * 
  */
 
 /*    This file has been modified by Damanjit Mahl @ Brunel University
  */
-
-
 
 /*****************************************************************************/
 /* File:	widget.c

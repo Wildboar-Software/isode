@@ -1,11 +1,5 @@
 /* rtsaplose.c - RTPM: you lose */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

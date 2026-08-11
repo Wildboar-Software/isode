@@ -1,11 +1,5 @@
 /* ftam.c - interactive FTAM initiator */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>

@@ -1,9 +1,5 @@
 /* sunos3.h - site configuration file for SunOS release 3 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

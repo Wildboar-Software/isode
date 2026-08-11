@@ -1,11 +1,5 @@
 /* dsa.c - Main routine for QUIPU DSA process */
 
-
-
-
-
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>

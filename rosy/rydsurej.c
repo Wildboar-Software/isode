@@ -1,11 +1,5 @@
 /* rydsureject.c - ROSY: reject invocation */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

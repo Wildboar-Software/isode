@@ -1,11 +1,5 @@
 /* oper_invoke.c - encode argument and invoke operation */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

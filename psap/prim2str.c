@@ -1,11 +1,5 @@
 /* prim2str.c - presentation element to octet string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -1,11 +1,5 @@
 /* ds_compare.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/compare.h"

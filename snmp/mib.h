@@ -15,8 +15,6 @@
  *
  */
 
-
-
 #ifndef __linux__
 #include <nlist.h>
 #endif

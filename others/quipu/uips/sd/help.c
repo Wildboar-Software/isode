@@ -1,7 +1,5 @@
 /* help.c - Display of assorted help texts */
 
-
-
 /*
  * 
  */

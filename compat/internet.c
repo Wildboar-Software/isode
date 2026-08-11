@@ -1,11 +1,5 @@
 /* internet.c - TCP/IP abstractions */
 
-
-
-
-
-
-
 #ifdef	DG
 #include <string.h>
 #endif

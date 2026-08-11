@@ -28,7 +28,6 @@ date in UTC format
                                     specifying deletion of an entry /
                                     attribute
 
-
 dmdiff <old_file> <new_file>
 
 produces a difference version of the 2 DM files.

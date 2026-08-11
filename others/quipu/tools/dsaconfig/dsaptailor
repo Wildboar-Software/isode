@@ -30,7 +30,6 @@
 # 
 ###############################################################################
 
-
 # this line must occur first
 oidtable	oidtable
 
@@ -59,7 +58,6 @@ quipurc		off
 
 # DUA search/list sizelimit
 sizelimit	20
-
 
 # some other DSAs of interest (added automatically)
 

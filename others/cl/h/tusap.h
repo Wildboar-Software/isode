@@ -8,8 +8,6 @@
  *
  */
 
-
-
 #ifndef	_TuSAP_
 #define	_TuSAP_
 

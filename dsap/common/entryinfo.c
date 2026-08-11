@@ -1,11 +1,5 @@
 /* entryinfo.c - Entry Information routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 

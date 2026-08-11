@@ -1,11 +1,5 @@
 /* ftamerror.c - return FTAM error code in string form */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ftam.h"
 

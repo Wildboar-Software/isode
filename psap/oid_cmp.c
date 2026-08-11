@@ -1,11 +1,5 @@
 /* oid_cmp.c - compare two object identifiers */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -1,7 +1,5 @@
 /* idistd.c - remote distribution -- responder */
 
-
-
 /*
  * 
  *

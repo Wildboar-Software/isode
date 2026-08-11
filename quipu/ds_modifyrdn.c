@@ -1,11 +1,5 @@
 /* ds_modifyrdn.c - */
 
-
-
-
-
-
-
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"

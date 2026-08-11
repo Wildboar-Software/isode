@@ -73,7 +73,6 @@ Packet ::= SEQUENCE {
 	transmitTimestamp	TimeStamp
 }
 
-
 ClockInfoList ::= SET OF ClockInfo
 
 ClockInfo ::= SEQUENCE {

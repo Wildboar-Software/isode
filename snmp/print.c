@@ -1,11 +1,5 @@
 /* print.c - MIB realization of the print group */
 
-
-
-
-
-
-
 /* PRINT */
 
 #include <errno.h>

@@ -1,11 +1,5 @@
 /* log_tai.c - system tailoring routines */
 
-
-
-
-
-
-
 #include <string.h>
 #include <stdlib.h>
 #include "cmd_srch.h"

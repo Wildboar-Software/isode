@@ -1,11 +1,5 @@
 /* pipe.c - fred talks to dish */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <signal.h>
 #include <stdarg.h>

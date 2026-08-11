@@ -1,11 +1,5 @@
 /* socket.c - dish -pipe support */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/util.h"
 #include "tailor.h"

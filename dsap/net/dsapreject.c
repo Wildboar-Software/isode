@@ -1,11 +1,5 @@
 /* dsapreject.c - DSAP: Reject a remote operations event */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dsap.h"

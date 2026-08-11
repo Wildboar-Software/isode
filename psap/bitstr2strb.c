@@ -1,11 +1,5 @@
 /* bitstr2strb.c - bit string to string of bits */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

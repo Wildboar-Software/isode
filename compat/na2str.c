@@ -1,11 +1,5 @@
 /* na2str.c - pretty-print NSAPaddr */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

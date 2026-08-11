@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 AF
 	{
 	joint-iso-ccitt

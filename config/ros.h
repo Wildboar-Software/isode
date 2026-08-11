@@ -1,9 +1,5 @@
 /* ros.h - site configuration file for ROS */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

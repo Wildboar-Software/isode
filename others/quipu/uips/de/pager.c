@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>

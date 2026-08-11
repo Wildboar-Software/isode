@@ -1,8 +1,5 @@
 /* ppkt.h - include file for presentation providers (PS-PROVIDER) */
 
-
-
-
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif

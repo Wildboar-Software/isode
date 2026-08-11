@@ -1,11 +1,5 @@
 /* filter.c - Directory Operation Filters */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

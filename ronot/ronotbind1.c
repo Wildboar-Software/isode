@@ -1,11 +1,5 @@
 /* ronotbind1.c - RONOT: ABSTRACT-BIND mapping onto A-ASSOCIATE.REQUEST */
 
-
-
-
-
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"

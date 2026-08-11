@@ -16,8 +16,6 @@
  *
  */
 
-
-
 #include "config.h"
 
 #ifndef OK

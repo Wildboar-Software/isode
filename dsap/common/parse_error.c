@@ -1,11 +1,5 @@
 /* parse_error.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "psap.h"

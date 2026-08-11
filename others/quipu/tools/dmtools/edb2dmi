@@ -53,8 +53,6 @@ nawk ' BEGIN {
 	print $0
 }
 
-
-
 function awksort(arname, n,     i, j, changes) {
     changes = 1
     for (i = n; i > 1 && changes != 0; i--) {

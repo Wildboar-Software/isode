@@ -1,7 +1,5 @@
 /* x25addr.c - X.25 level generic <-> interface address munging */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 /*
  * for *really* generic address translation

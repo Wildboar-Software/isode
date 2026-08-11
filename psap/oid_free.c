@@ -1,11 +1,5 @@
 /* oid_free.c - free an object identifier */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

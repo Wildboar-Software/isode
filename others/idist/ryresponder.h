@@ -1,9 +1,5 @@
 /* ryresponder.h - include file for the generic idempotent responder */
 
-
-
-
-
 #include "rosy.h"
 #include "logger.h"
 

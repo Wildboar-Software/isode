@@ -1,7 +1,5 @@
 /* icmp.c - MIB realization of the ICMP group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <string.h>
 #include <stdio.h>

@@ -1,8 +1,5 @@
 /* acsap.h - include file for association control users (AcS-USER) */
 
-
-
-
 #ifndef	_AcSAP_
 #define	_AcSAP_
 

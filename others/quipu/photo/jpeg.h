@@ -1,9 +1,5 @@
 /* jpeg.h - your comments here */
 
-
-
-
-
 #define JPEG_TAG        0x84
 #define OLD_G3Fax_TAG   0x03
 #define G3Fax_TAG       0xa4

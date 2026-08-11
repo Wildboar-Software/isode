@@ -1,11 +1,5 @@
 /* set_del.c - remove member from set */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -1,9 +1,5 @@
 /* commonarg.h - directory operation common arguments */
 
-
-
-
-
 #ifndef COMMONARG
 #define COMMONARG
 

@@ -13,8 +13,6 @@
  *
  */
 
-
-
 #ifndef	_RoSAP_
 #include "rosap.h"		/* definitions for RoS-USERs */
 #endif

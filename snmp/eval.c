@@ -1,11 +1,5 @@
 /* eval.c - MIB realization of the EVAL group */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "mib.h"

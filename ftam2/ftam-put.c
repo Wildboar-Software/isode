@@ -1,11 +1,5 @@
 /* ftam-put.c - interactive initiator FTAM -- "put" */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "ftamuser.h"

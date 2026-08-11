@@ -1,11 +1,5 @@
 /* psaprelease1.c - PPM: initiate release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

@@ -12,7 +12,6 @@
 # 
 ###############################################################################
 
-
 # format:-
 #
 # name:			 oid:			hiearchy: must :top may
@@ -274,7 +273,6 @@ foreignOrganization,nationalObject:	nadfObjectClass.10 : top : \
 fips55Object:		nadfObjectClass.11 : top : fipsPlaceNumericCode : \
 	stateOrProvinceName
 
-
 # MHS routing object classes
 
 # Routing information of a node
@@ -283,7 +281,6 @@ oRAddressComponent:mhs-ds-routing-oc.3:top: :\
 	authorativeAddress, routingFilter, routingAction,\
 	mTAInfo, accessMD, badAddressSearchPoint,\
 	badAddressSearchAttributes
-
 
 # Table stuff
 subtree:mhs-ds-tables-oc.1: top:cn:manager
@@ -328,14 +325,12 @@ mHSDomainDefinedAttribute:mhs-ds-tree-oc.3:\
 	oRAddressComponent:\
 	mHS-DDA,mHS-DDV:
 
-
 # UA Attributes
 
 #uA:mhsRoutingObjectClass.100:mhsUserAgent::
 
 routedUA:mhs-ds-routing-oc.5:mhsUser, oRAddressComponent:\
 	supportingMTA:
-
 
 # MTA definitions
 
@@ -355,13 +350,10 @@ mTA:mhs-ds-routing-oc.1:\
 	callingPresentationAddress,callingSelectorValidity,\
 	routingTreeList,accessMD,localAccessUnit,accessUnitsUsed
 
-
 # Location of Routing trees
 
 routingTreeRoot:mhs-ds-routing-oc.6:\
 	oRAddressComponent,subtree::
-
-
 
 # MTA Bilateral Table Entry
 
@@ -382,9 +374,7 @@ restrictedSubtree:mhs-ds-routing-oc.4: top::\
 	jNTMailSupport, badAddressSearchPoint,\
 	badAddressSearchAttributes
 
-
 # RFC1148 mappings
-
 
 rFC822toX400Mapping: mhs-ds-mapping-oc.1:domain::\
 	associatedORAddress, nonAuthorativeAssociatedORAddress,\
@@ -398,17 +388,13 @@ x400ToRFC822Mapping: mhs-ds-mapping-oc.2:\
 
 listUA: mhs-ds-list-oc.1:mhsUserAgent:distributionListName:
 
-
 distributionList:mhs-ds-list-oc.2:mhsDistributionList::\
 	dlPolicy,dlErrorsToName,dlDynamicMembers
-
 
 dlErrorsTo:mhs-ds-list-oc.3:mhsUserAgent,person::
 
 # PP Objects
 
-
 ppUa: ppObjectClass.10:routedUa:pPchannel:pPchannelSpecificInformation
-
 
 # end of object classes

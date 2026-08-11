@@ -14,9 +14,6 @@
 --
 --
 
-
-
-
 --* ISO8571-FTAM *-- FTAM DEFINITIONS ::=
 
 BEGIN
@@ -32,7 +29,6 @@ PDU ::=
 	    bulk-data-pdu --* *--
                 Bulk-Data-PDU
         }
-
 
 -- FTAM regime PDUs
 
@@ -274,7 +270,6 @@ F-P-ABORT-request ::=
                 Diagnostic
                 OPTIONAL
         }
-
 
 -- File selection and file open regime PDUs
 
@@ -849,7 +844,6 @@ F-ERASE-response ::=
                 OPTIONAL
         }
 
-
 -- Bulk data transfer PDUs
     
 Bulk-Data-PDU ::=
@@ -995,7 +989,6 @@ F-RESTART-END-response ::=
             checkpoint-identifier[0]
                 IMPLICIT INTEGER
         }
-
 
 -- application-wide types
 
@@ -1421,7 +1414,6 @@ State-Result ::=
 User-Identity ::=
     [APPLICATION 22]
         IMPLICIT GraphicString
-
 
 -- file attribute types
 

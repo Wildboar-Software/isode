@@ -1,7 +1,5 @@
 /* rosapselect.c - ROPM: map descriptors */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

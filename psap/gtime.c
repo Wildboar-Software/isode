@@ -1,11 +1,5 @@
 /* gtime.c - inverse gmtime */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <time.h>
 #include "psap.h"

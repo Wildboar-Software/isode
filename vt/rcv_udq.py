@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 UDQPDU DEFINITIONS ::=
 
 %{
@@ -21,7 +18,6 @@ UDQPDU DEFINITIONS ::=
 #define PEPYPARM int *
 
 void	adios (char *, char *, ...);
-
 
 #define	bitstr2int(arg,val,cnt) \
 { \

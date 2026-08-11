@@ -1,11 +1,5 @@
 /* tsaperror.c - print out TPKT error codes */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "tsap.h"
 #include "tp4.h"

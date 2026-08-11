@@ -1,11 +1,5 @@
 /* ftambulk.c - FPM: bulk data transfer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

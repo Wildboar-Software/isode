@@ -14,20 +14,15 @@
 --
 --
 
-
-
-
 BSDUNIX-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
 	enterprises
 	    FROM RFC1155-SMI;
 
-
 -- BSD UNIX-specific stuff
 
 unix	      OBJECT IDENTIFIER	::= { enterprises 4 }
-
 
 -- the agents group
 
@@ -60,10 +55,8 @@ agentAction OBJECT-TYPE
 		 coldStart - initiate a coldStart (restart the agent)"
 	::= { agents 3 }
 
-
 -- the mbuf group (defined in smux.my)
 -- mbuf OBJECT IDENTIFIER ::= { unix 2 }
-
 
 -- the SMUX peer group
 
@@ -74,14 +67,11 @@ unixd	OBJECT IDENTIFIER ::=	{ peers 1 }
 -- unixd.1:		mbufs
 -- unixd.2:		add print/users, remove mbufs
 
-
 -- the SMUX protocol group (defined in smux.my)
 -- smux OBJECT IDENTIFIER ::=	{ unix 4 }
 
-
 -- the NETSTAT group (defined in smux.my)
 -- netstat OBJECT IDENTIFIER ::= { unix 5 }
-
 
 -- all remaining groups are in unix.my
 

@@ -1,9 +1,5 @@
 /* ftamsystem.h - include file for FTAM responder */
 
-
-
-
-
 #include <errno.h>
 #include "ftamsbr.h"
 #include "logger.h"

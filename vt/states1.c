@@ -1,11 +1,5 @@
 /* states1.c - VTPM: FSM sector 1 states */
 
-
-
-
-
-
-
 #include "vtpm.h"
 
 #define	undefined(s1,e1) \

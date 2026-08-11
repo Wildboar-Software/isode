@@ -1,11 +1,5 @@
 /* ronotunbind1.c - RONOT: Maps ABSTRACT-UNBIND onto A-RELEASE.REQUEST */
 
-
-
-
-
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"

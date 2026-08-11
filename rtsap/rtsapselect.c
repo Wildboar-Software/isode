@@ -1,11 +1,5 @@
 /* rtsapselect.c - RTPM: map descriptors */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

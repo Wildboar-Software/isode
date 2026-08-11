@@ -1,11 +1,5 @@
 /* ssapabort.c - SPM: user abort */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

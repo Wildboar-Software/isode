@@ -43,9 +43,6 @@
 /* HULA P-UNIT-DATA Service */
 /* psaputils.c - PPM: provider utility routines */
 
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <signal.h>

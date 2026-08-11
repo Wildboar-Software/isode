@@ -1,9 +1,5 @@
 /* cheetah.h - site configuration file for cheetah (SunOS) */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

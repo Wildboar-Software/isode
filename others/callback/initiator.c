@@ -1,11 +1,5 @@
 /* initiator.c -- initiator for callback demo */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "callback.h"
 

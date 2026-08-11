@@ -30,4 +30,3 @@ ifExtnsRcvAddrIfIndex ifExtnsRcvAddrEntry.1 INTEGER         read-only       mand
 ifExtnsRcvAddress    ifExtnsRcvAddrEntry.2 PhysAddress     read-only       mandatory
 ifExtnsRcvAddrStatus ifExtnsRcvAddrEntry.3 INTEGER         read-write      mandatory
 
-

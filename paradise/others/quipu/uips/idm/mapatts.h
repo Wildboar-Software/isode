@@ -14,8 +14,6 @@
  *
  */
 
-
-
 struct mapnamelist {
 	char *tablename;
 	char *nicename;

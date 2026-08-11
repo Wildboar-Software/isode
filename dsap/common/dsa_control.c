@@ -1,11 +1,5 @@
 /* dsa_control.c - write-only attribute for dsa console. SPT */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <ctype.h>
 #include <stdlib.h>

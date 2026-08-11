@@ -1,8 +1,5 @@
 /* ssap.h - include file for session users (SS-USER) */
 
-
-
-
 #ifndef	_SSAP_
 #define	_SSAP_
 

@@ -1,11 +1,5 @@
 /* asprintf.c - sprintf with errno */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>

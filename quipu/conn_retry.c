@@ -1,11 +1,5 @@
 /* conn_retry.c - deal with asynchronous A-Associate events */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

@@ -1,13 +1,10 @@
 % LaTeX customization
 
-
 \makeatletter				% for a little while
-
 
 % plain TeX compatibility
 
 \def\oldstyle{\xdef\@oldstyle{\the\textfont\@ne}\mit\@oldstyle}
-
 
 % PhD-TeX compatibility
 
@@ -24,7 +21,6 @@
 
 \def\smaller{\footnotesize}
 \def\floatsize{\small}
-
 
 % Float Support
 
@@ -50,7 +46,6 @@
     \@@@tagfigure[#1]{\input figure#2\relax\centerline{\box\graph}}}
 \def\@@stagfigure[#1]#2{%
     \@@@stagfigure[#1]{\input figure#2\relax\centerline{\box\graph}}}
-
 
 % \tagdiagram*[FLOAT]{FILE}{CAPTION}{LABEL}
 %    *		optional
@@ -109,7 +104,6 @@
     \end{figure*}
 }
 
-
 % \tagtable*[FLOAT]{FILE}{CAPTION}{LABEL}
 %    *		optional
 %    FILE	read LaTeX input in file tableFILE
@@ -164,7 +158,6 @@
     \end{table*}
 }
 
-
 % Environments:
 
 % DESCRIBE - similar to DESCRIPTION, but indents extra on left margin of
@@ -175,13 +168,11 @@
 	\let\makelabel\descriptionlabel}}
 \let\enddescribe=\endlist
 
-
 % Document style options:
 %	     10pt - Makes ten-point type the normal (default) type size
 %	draftnote - Customized draft option
 
 \@namedef{ds@10pt}{\def\@ptsize{0}}	%%% for orthogonality
-
 
 \newif\ifdraft	\draftfalse
 
@@ -226,7 +217,6 @@
      }%
 }
 
-
 % Page Styles
 
 % \pagestyle{myfootings} similar to the myheadings command but also permits
@@ -242,7 +232,6 @@
 
 \def\markleftfoot#1{\def\@evenfoot{\hbox{}\sl#1\hfil}}
 \def\markrightfoot#1{\def\@oddfoot{\hfil\sl#1\hbox{}}}
-
 
 % \pagestyle{reprint} similar to plain page style in draft mode
 
@@ -263,7 +252,6 @@
     \def\@evenfoot{\rm\thepage\hfil\reprintstring}%
 }
 
-
 % The Title
 
 \def\title#1{%
@@ -273,7 +261,6 @@
 	\begin{center}\Large#1\end{center}%
     }%
 }
-
 
 % Miscellany
 
@@ -285,7 +272,6 @@
 
 \def\note#1{\ifdraft\marginpar{\tt#1}\fi}
 
-
 % Fractions (from The TUGboat v6 n1, 1985)
 
 \def\myfrac#1/#2{%
@@ -294,16 +280,13 @@
     /\kern-.15em\lower.25ex\mbox{\the\scriptfont\z@ #2}%
 }
 
-
 % Trademarks...
 
 \input trademark
 
-
 % Continuation Captions...
 
 \input captcont.sty
-
 
 % Startup
 
@@ -336,6 +319,5 @@
 	\ampm
     }%
 \endgroup
-
 
 \makeatother				% back to normal

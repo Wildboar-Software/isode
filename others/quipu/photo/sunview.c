@@ -1,11 +1,5 @@
 /* sunview.c - sunview display process */
 
-
-
-
-
-
-
 /* sunview display process */
 
 #include <stdio.h>

@@ -1,7 +1,5 @@
 /* linux.h - site configuration file for LINUX */
 
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

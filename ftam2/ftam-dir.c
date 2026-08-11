@@ -1,11 +1,5 @@
 /* ftam-dir.c - interactive initiator FTAM -- directory management */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <unistd.h>
 #include "ftamuser.h"

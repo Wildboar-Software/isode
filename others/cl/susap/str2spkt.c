@@ -1,10 +1,5 @@
 /* str2spkt.c - read/write a SPDU thru a string */
 
-
-
-
-
-
 #include <stdio.h>
 #include "spkt.h"
 #include "tailor.h"

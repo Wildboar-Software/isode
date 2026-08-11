@@ -1,9 +1,5 @@
 /* imagesbr.h - include file for image subroutines */
 
-
-
-
-
 #include "psap.h"
 #include "isoaddrs.h"
 #include "logger.h"

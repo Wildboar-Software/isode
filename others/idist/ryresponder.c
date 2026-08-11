@@ -1,9 +1,5 @@
 /* ryresponder.c - generic idempotent responder */
 
-
-
-
-
 #include <errno.h>
 #include "Idist-types.h"
 #include "Idist-ops.h"

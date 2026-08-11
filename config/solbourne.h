@@ -1,9 +1,5 @@
 /* solbourne.h - site configuration file for solbournes */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

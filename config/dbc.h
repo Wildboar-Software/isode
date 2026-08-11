@@ -1,9 +1,5 @@
 /* dbc.h - site configuration file for DBC (SunOS 4.1.1) */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

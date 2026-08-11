@@ -1,11 +1,5 @@
 /* ftamaccess2.c - FPM: respond to file access */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

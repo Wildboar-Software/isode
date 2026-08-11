@@ -1,7 +1,5 @@
 /* entry_load.c - load bits of the database */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <string.h>
 #include <stdio.h>

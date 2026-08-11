@@ -1,11 +1,5 @@
 /* turbo_debug.c */
 
-
-
-
-
-
-
 #include <sys/types.h>
 #include <stdio.h>
 

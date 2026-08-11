@@ -1,11 +1,5 @@
 /* fre.c */
 
-
-
-
-
-
-
 /*
  * These routines are the driving routines for freeing of the data
  */

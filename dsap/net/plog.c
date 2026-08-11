@@ -1,11 +1,5 @@
 /* plog.c - lower-layer logging routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"

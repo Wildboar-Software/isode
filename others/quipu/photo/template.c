@@ -1,11 +1,5 @@
 /* template.c - template for display processes */
 
-
-
-
-
-
-
 #include "stdio.h"
 #include "quipu/photo.h"
 

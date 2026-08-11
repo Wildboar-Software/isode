@@ -1,11 +1,5 @@
 /* acsapaddr.c - application entity information -- lookup */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

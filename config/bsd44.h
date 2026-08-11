@@ -1,9 +1,5 @@
 /* bsd44.h - site configuration file for 4.4BSD UNIX */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

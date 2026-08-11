@@ -1,11 +1,5 @@
 /* miscellany.c - fred miscellaneous functions */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include "fred.h"
 

@@ -1,9 +1,5 @@
 /* util.h - various useful utility definitions */
 
-
-
-
-
 #ifndef _DIDUTIL_
 
 #define _DIDUTIL_

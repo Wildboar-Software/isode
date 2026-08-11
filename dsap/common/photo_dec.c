@@ -1,11 +1,5 @@
 /* decode.c - the generic photo decoder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "quipu/photo.h"

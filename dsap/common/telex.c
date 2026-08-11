@@ -1,11 +1,5 @@
 /* telex.c - Telex attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		telex ::= <printablestring> '$' <printablestring>

@@ -28,11 +28,6 @@ struct yysvf {
 struct yysvf *yyestate;
 extern struct yysvf yysvec[], *yybgin;
 
-
-
-
-
-
 struct table {
 	char   *t_keyword;
 	int	    t_value;

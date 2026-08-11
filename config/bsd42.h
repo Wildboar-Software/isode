@@ -1,9 +1,5 @@
 /* bsd42.h - site configuration file for 4.2BSD UNIX */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

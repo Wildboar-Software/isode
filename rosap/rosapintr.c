@@ -1,11 +1,5 @@
 /* rosapintr.c - ROPM: invoke (interruptable) */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rosap.h"

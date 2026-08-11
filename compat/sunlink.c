@@ -1,7 +1,5 @@
 /* sunlink.c - X.25 abstractions for SunLink X25 */
 
-
-
 /*
  * 
  *
@@ -15,8 +13,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "general.h"

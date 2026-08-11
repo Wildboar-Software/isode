@@ -1,8 +1,5 @@
 
 
-
-
-
 #include "general.h"
 #include <sys/types.h>
 #include "sequence.h"

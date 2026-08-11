@@ -1,11 +1,5 @@
 /* ftamd-manage.c - FTAM responder -- management */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ftamsystem.h"
 

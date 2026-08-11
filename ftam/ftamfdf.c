@@ -1,11 +1,5 @@
 /* ftamfdf.c - FDF support */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

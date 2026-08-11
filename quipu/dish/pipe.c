@@ -1,11 +1,5 @@
 /* pipe.c - */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <stdio.h>
 #include <errno.h>

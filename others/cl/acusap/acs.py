@@ -32,12 +32,9 @@ static char *rcsid = "";
 #endif
 %}
 
-
-
 BEGIN
 
 -- ACSE-1 refers to ACSE version 1
-
 
 -- HULA begins cheating
 -- HULA is cheating by sticking A-UNIT-DATA here in this module
@@ -45,7 +42,6 @@ BEGIN
 -- to prevent dozens of duplicate encode/decode routines 
 --
 -- ISO-8650/AD2-ACSE-1 refers to ISO 8650/AD2 Version 1
-
 
 AUDT-apdu ::=
     [APPLICATION 0]
@@ -104,7 +100,6 @@ AUDT-apdu ::=
 
 -- HULA ends cheating
 
-
 ACSE-apdu ::=
         CHOICE {
             aarq
@@ -122,7 +117,6 @@ ACSE-apdu ::=
             abrt
                 ABRT-apdu
         }
-
 
 AARQ-apdu ::=
     [APPLICATION 0]
@@ -177,7 +171,6 @@ AARQ-apdu ::=
                 OPTIONAL
         }
 
-
 AARE-apdu ::=
     [APPLICATION 1]
         IMPLICIT SEQUENCE {
@@ -226,7 +219,6 @@ AARE-apdu ::=
                 OPTIONAL
         }
 
-
 RLRQ-apdu ::=
     [APPLICATION 2]
         IMPLICIT SEQUENCE {
@@ -243,7 +235,6 @@ RLRQ-apdu ::=
                 IMPLICIT Association-information
                 OPTIONAL
         }
-
 
 RLRE-apdu ::=
     [APPLICATION 3]
@@ -262,7 +253,6 @@ RLRE-apdu ::=
                 OPTIONAL
         }
 
-
 ABRT-apdu ::=
     [APPLICATION 4]
         IMPLICIT SEQUENCE {
@@ -272,7 +262,6 @@ ABRT-apdu ::=
 	             acse-service-user(0),	--* *--
 	             acse-service-provider(1)	--* *--
 	         },				--* *--
-
 
             user-information[30]
                 IMPLICIT Association-information
@@ -285,10 +274,8 @@ ABRT-source ::=
             acse-service-provider(1)
         }
 
-
 Application-context-name ::=
         OBJECT IDENTIFIER
-
 
 AP-title ::=
         ANY
@@ -327,7 +314,6 @@ AE-invocation-id ::=
 
 AP-invocation-id ::=
         INTEGER
-
 
 Associate-result ::=
         INTEGER {

@@ -1,11 +1,5 @@
 /* tp0ts.c - TPM: TP0 engine */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>

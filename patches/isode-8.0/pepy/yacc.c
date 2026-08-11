@@ -4,11 +4,6 @@ static char yysccsid[] = "@(#)yaccpar	1.8 (Berkeley) 01/20/90";
 #define YYBYACC 1
 #line 5 "yacc.y"
 
-
-
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "pepy.h"

@@ -1,11 +1,5 @@
 /* conn_init.c - deal with incoming association requests */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "tsap.h"
 #include "quipu/util.h"

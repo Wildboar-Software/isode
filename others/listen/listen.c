@@ -1,11 +1,5 @@
 /* listen.c -- responder for listen demo */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "listen.h"
 

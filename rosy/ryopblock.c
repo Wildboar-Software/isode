@@ -1,11 +1,5 @@
 /* ryopblock.c - manage operation blocks */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

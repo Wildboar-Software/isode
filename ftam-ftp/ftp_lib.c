@@ -1,7 +1,5 @@
 /* ftp_lib.c - FTP subroutines */
 
-
-
 /*
  *				  NOTICE
  *

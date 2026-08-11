@@ -1,7 +1,5 @@
 /* deufn.c - some de specific ufn routines */
 
-
-
 /*
  * 
  *
@@ -12,8 +10,6 @@
  *
  */
 /*
-
-
 
 #include <stdio.h>
 #include <ctype.h>

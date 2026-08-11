@@ -1,11 +1,5 @@
 /* sys_init.c - System tailoring initialisation */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "tailor.h"
 

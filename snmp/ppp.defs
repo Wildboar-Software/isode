@@ -115,4 +115,3 @@ pppPAPOutAcks        pppPAPEntry.5    Counter         read-only       mandatory
 pppPAPInNaks         pppPAPEntry.6    Counter         read-only       mandatory
 pppPAPOutNaks        pppPAPEntry.7    Counter         read-only       mandatory
 
-

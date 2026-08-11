@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 #include <stdio.h>
 #ifdef __linux__
 #include <linux/termios.h>

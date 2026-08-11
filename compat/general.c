@@ -1,11 +1,5 @@
 /* general.c - general utilities for emulation of 4.2BSD */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"

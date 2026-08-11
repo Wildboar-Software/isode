@@ -1,11 +1,5 @@
 /* oper_act.c - routines to handle operation activity blocks */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 

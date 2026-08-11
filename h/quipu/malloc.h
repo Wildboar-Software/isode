@@ -1,9 +1,5 @@
 /* malloc.h - Quipu specific mallocing */
 
-
-
-
-
 #ifndef _QUIPUMALLOC_
 #define _QUIPUMALLOC_
 

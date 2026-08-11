@@ -65,4 +65,3 @@ rptrAddrPortID       rptrAddrTrackEntry.3 INTEGER         read-only       mandat
 rptrAddrLastSourceAddress rptrAddrTrackEntry.4 OctetString     read-only       mandatory
 rptrAddrSourceAddrChanges rptrAddrTrackEntry.5 Counter         read-only       mandatory
 
-

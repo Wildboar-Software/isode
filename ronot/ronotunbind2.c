@@ -1,11 +1,5 @@
 /* ronotunbind2.c - RONOT: ABSTRACT-BIND mapping onto A-RELEASE.RESPONSE */
 
-
-
-
-
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"

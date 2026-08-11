@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 /****************************************************************************
 
   init.c - Do some initialising

@@ -1,11 +1,5 @@
 /* unbind.c - dish shell unbind and squid commands */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <errno.h>
 #include "quipu/util.h"

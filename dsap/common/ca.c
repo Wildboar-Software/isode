@@ -1,11 +1,5 @@
 /* ca.c - General Directory Name routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "quipu/dsargument.h"

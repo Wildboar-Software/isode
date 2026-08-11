@@ -1,11 +1,5 @@
 /* acsaplose.c - ACPM: you lose */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "ACS-types.h"

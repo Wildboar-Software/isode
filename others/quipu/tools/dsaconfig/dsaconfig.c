@@ -1,11 +1,5 @@
 /* dsaconfig.c - build a database directory for a Level-1 DSA */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <errno.h>
 #include <grp.h>

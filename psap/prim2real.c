@@ -1,7 +1,5 @@
 /* prim2real.c - presentation element to real */
 
-
-
 /*
  * 
  *
@@ -15,8 +13,6 @@
  *
  *
  */
-
-
 
 #include "psap.h"
 

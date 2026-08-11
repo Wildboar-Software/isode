@@ -16,10 +16,6 @@
  *
  */
 
-
-
-
-
 #include <ctype.h>
 #include "general.h"
 #include <stdio.h>

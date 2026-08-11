@@ -1,11 +1,5 @@
 /* xface.c - face agent for X windows */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "imagesbr.h"

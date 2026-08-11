@@ -55,4 +55,3 @@ dot3CollIndex        dot3CollEntry.1  INTEGER         read-only       mandatory
 dot3CollCount        dot3CollEntry.2  INTEGER         read-only       mandatory
 dot3CollFrequency    dot3CollEntry.3  Counter         read-only       mandatory
 
-

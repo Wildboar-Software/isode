@@ -1,11 +1,5 @@
 /* rt2psabort.c - RTPM: user abort */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "RTS-types.h"

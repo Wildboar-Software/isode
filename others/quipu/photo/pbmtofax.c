@@ -1,11 +1,5 @@
 /* pbmtofax.c - pbm to FAX filter */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "pbm.h"

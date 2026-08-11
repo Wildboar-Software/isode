@@ -1,11 +1,5 @@
 /* ssapinitiate.c - SPM: initiator */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

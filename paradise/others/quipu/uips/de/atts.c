@@ -1,10 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"

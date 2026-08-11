@@ -1,9 +1,5 @@
 /* susaptest.c - test out -lsusap for session unit data service  */
 
-
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "spkt.h"

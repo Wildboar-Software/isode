@@ -1,11 +1,5 @@
 /* compare.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/compare.h"
 #include "pepsy.h"

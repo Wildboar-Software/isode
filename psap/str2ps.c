@@ -1,11 +1,5 @@
 /* str2ps.c - string-backed abstraction for PStreams */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

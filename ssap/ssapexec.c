@@ -1,11 +1,5 @@
 /* ssapexec.c - SPM: exec */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "spkt.h"
 #include "isoservent.h"

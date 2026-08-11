@@ -1,9 +1,5 @@
 /* nrs_info.h - attribute structure for representing NRS information */
 
-
-
-
-
 #ifndef QUIPUNRSINFO
 #define QUIPUNRSINFO
 

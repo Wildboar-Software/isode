@@ -1,11 +1,5 @@
 /* qos.c - DSA/DIT QoS handling */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 

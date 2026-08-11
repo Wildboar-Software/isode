@@ -1,11 +1,5 @@
 /* ts2xli.c - XTI OSI TP interface */
 
-
-
-
-
-
-
 /* This should be considered Alpha test code at this stage... */
 
 #include <stdio.h>

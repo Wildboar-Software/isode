@@ -1,9 +1,5 @@
 /* tsap.h - include file for transport users (TS-USER) */
 
-
-
-
-
 #ifndef	_TSAP_
 #define	_TSAP_
 

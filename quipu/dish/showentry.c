@@ -1,11 +1,5 @@
 /* showentry.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/entry.h"

@@ -1,11 +1,5 @@
 /* guide.c - Search Guide handling */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		Guide ::= [<objectclass> '#'] <Criteria>

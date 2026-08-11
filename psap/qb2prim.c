@@ -1,11 +1,5 @@
 /* qb2prim.c - octet string to primitive */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

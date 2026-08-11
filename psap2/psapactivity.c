@@ -1,11 +1,5 @@
 /* psapactivity.c - PPM: activities */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

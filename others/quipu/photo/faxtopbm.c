@@ -1,11 +1,5 @@
 /* faxtopbm.c - FAX to pbm filter */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "sys.file.h"

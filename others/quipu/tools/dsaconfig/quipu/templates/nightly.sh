@@ -28,7 +28,6 @@ cd $D
     echo "" ; \
     cat stats.log) | /bin/mail wpp-stats@nisc.psi.net
 
-
 : second, cycle the logs
 
 rm -f iso.*.log ros.*.log [0-9]*.log dish.log xquipu.log

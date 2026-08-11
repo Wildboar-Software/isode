@@ -1,9 +1,5 @@
 /* ds_search.h - structures for searching */
 
-
-
-
-
 #ifndef QUIPUSRCH
 #define QUIPUSRCH
 

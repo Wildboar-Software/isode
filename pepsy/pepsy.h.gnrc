@@ -25,9 +25,6 @@
  *
  */
 
-
-
-
 #include "psap.h"
 
 struct tuple {
@@ -105,7 +102,6 @@ typedef struct ypv {
 
 YV	new_value (), add_value (), copy_value ();
 
-
 typedef struct ypt {
     PElementClass   yt_class;
 
@@ -114,7 +110,6 @@ typedef struct ypt {
 #define	NULLYT	((YT) 0)
 
 YT	new_tag (PElementClass), copy_tag ();
-
 
 typedef struct ype {
     int     yp_code;
@@ -263,7 +258,6 @@ typedef struct yop {
 }		yop, *YO;
 #define	NULLYO	((YO) 0)
 
-
 typedef struct yerr {
     char   *ye_name;
 
@@ -274,7 +268,6 @@ typedef struct yerr {
     int	    ye_offset;
 }	    yerr, *YE;
 #define	NULLYE	((YE) 0)
-
 
 %BEGIN(PEPSY)%
 extern char *pepsyversion;

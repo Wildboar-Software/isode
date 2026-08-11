@@ -1,11 +1,5 @@
 /* t4014.c - display on tetronix 4014 terminals */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "manifest.h"

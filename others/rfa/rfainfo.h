@@ -17,8 +17,6 @@
  *
  */
 
-
-
 #include <sys/types.h>
 
 struct RfaInfo {

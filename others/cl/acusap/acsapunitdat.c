@@ -44,8 +44,6 @@
 /* modified from ISODE's acsapinitiat.c and acsaprespond.c */
 /* acsapinitiat.c - ACPM: initiator */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

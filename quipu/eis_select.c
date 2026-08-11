@@ -1,11 +1,5 @@
 /* eis_select.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"

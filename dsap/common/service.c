@@ -1,11 +1,5 @@
 /* service.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/commonarg.h"

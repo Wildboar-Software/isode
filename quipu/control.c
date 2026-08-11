@@ -1,11 +1,5 @@
 /* control.c - */
 
-
-
-
-
-
-
 /* the routine dsa_control is called when the modifyentry operation
    is performed, with and 'add attribute' request and the attribute type
    is 'control'.  The value decides what to control

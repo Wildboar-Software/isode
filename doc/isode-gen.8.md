@@ -30,7 +30,6 @@ SYNOPSIS
      `% ./make everything`  
      `# ./make inst-everything`  
 
-
 DESCRIPTION
      This is a description of how one can bring up the ISODE.  It
      is  assumed  that you have super-user privileges in order to
@@ -42,21 +41,9 @@ CONFIGURATION
 
           % cd config
 
-
-
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      Select the Makefile and include-file  skeletons  which  most
      closely match your system.  The current choices are:
@@ -112,18 +99,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           LINTDIR  /usr/lib/lint/       where to install lint libraries
           SYSTEM                        directs how to create loader libraries
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
           MANDIR   /usr/man/            where to install man pages
           MANOPTS                       see compat/inst-man.sh for details
@@ -178,18 +156,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
   ENTITIES DATABASE
      Typically, sites run with  the  default  application  entity
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      database  used by the stub-directory service.  However, once
      things are running, sites should use the  OSI  Directory  to
@@ -244,18 +213,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      which overrides the default TSEL in the  support/services.db
      file.
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
   MACROS DATABASE
      Typically, sites run with the default macros  database.   In
@@ -310,18 +270,9 @@ GENERATION
 
      Similarly, you may need to increase the stacksize limitation
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      on other systems.  For example, some users of the RT, report
      needing to use
@@ -376,18 +327,9 @@ INSTALLATION
      Note that installing the software from an NFS-mounted parti-
      tion requires that  you  perform  the  installation  as  the
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      super-user on the target system after changing to the source
      directory on the source system.
@@ -441,19 +383,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      to the /etc/services file. Alternatively, some  systems  may
      have a definition of the form
 
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
           iso-tsap    102/tcp
 
@@ -474,7 +406,6 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      edited followed by the command
 
           % crontab root
-
 
      There are two each-time activities:
 
@@ -508,18 +439,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      you should not clean-up the source tree until after you  are
      finished dealing with these.
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      If your system is configured for TCP/IP,  and  you  are  not
      already running an SNMP agent, then you are URGED to immedi-
@@ -574,18 +496,9 @@ REGISTERING OSI APPLICATION SERVICES
      the stub ufnrc file installed during the ISODE  installation
      phase.
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      Once your DSA is running, you should build the DMD for  your
      organization.   Underneath  the entry for your organization,
@@ -640,18 +553,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      tions.  By default, only the address for the  Internet  com-
      munity  (RFC1006)  is  set.  If the end-system is configured
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      for other OSI communities, then this line should be  changed
      accordingly, e.g.,
@@ -666,7 +570,6 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
           % bind -u <<DN of DSA Manager>>
           % moveto "ou=Research and Development@ou=Santa Clara"
           % sh run.sh
-
 
      Following this, you need to arrange  for  iaed  rather  than
      _t_s_a_p_d  to run when the machine goes multi-user.  On Berkeley
@@ -706,18 +609,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      Next, arrange for dased to be started when the machine  goes
      multi-user.   On  Berkeley  UNIX systems, add these lines to
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      the /etc/rc.local file:
 
@@ -772,18 +666,9 @@ FTAM/FTP gateway
      Hence, if you wish to run such a service, you will  have  to
      install  it  manually.   The  entry  might be something like
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      this:
 
@@ -815,7 +700,6 @@ FILE TRANSFER, ACCESS AND MANAGEMENT
 
           % ./make all-ftam
 
-
      This will cause a complete generation of the FTAM  libraries
      and  programs.  If all goes well, proceed with the installa-
      tion.  If not, complain as there "should be no problems"  at
@@ -837,19 +721,9 @@ FILE TRANSFER, ACCESS AND MANAGEMENT
 
      instead.
 
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
 FTAM/FTP GATEWAY
      In addition, if you are running the ISODE on a  Berkeley  or
@@ -867,7 +741,6 @@ FTAM/FTP GATEWAY
      directory and type:
 
           % ./make all-ftam-ftp
-
 
      This will cause a complete generation of  the  gateway.   If
      all  goes well, proceed with the installation.  If not, com-
@@ -896,7 +769,6 @@ FTAM/FTP GATEWAY
 
           ftp-ftam  stream  tcp  nowait  root  $(SBINDIR)in.ftpd-ftam  in.ftpd-ftam
 
-
      Finally, add this line to your /etc/services file:
 
           ftp-ftam      531/tcp
@@ -904,18 +776,9 @@ FTAM/FTP GATEWAY
 VIRTUAL TERMINAL
      In addition, if you are running the ISODE on a Berkeley UNIX
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      system,  there  is also an implementation of the ISO VT.  VT
      is the OSI terminal service.  The implementation provided is
@@ -925,7 +788,6 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      type:
 
           % ./make all-vt
-
 
      This will cause a complete generation of  the  VT  initiator
      and  responder programs.  If all goes well, proceed with the
@@ -962,26 +824,14 @@ DIRECTORY SERVICES
 
           % ./make all-quipu
 
-
      This will cause a complete generation of  the  DSAP  library
      and  the  DSA.  If all goes well, proceed with the installa-
      tion.  If not, complain as there "should be no problems"  at
      this step.
 
-
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
   QUIPU INSTALLATION
      You will need to be the super-user to install QUIPU:
@@ -1035,19 +885,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      the  GB branch of the Directory tree.  Then delete the exam-
      ple structure for O=University College London.
 
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
   QUIPU TAILORING
      If you choose to run a local DSA, now configure it.  The DSA
@@ -1102,18 +942,9 @@ NETWORK MANAGEMENT
      Although this is not the  OSI  network  management  service,
      Inasmuch as the continued survival of the Internet hinges on
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      all nodes becoming  network  manageable,  this  package  was
      developed  using  the  ISODE and is being freely distributed
@@ -1128,7 +959,6 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
      and type:
 
           % ./make all-snmp
-
 
      This will cause a complete generation of the SNMP agent  and
      the  minimal  SNMP  initiator  program.   If  all goes well,
@@ -1156,7 +986,6 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
               (echo -n ' smux-unix') > /dev/console
           fi
 
-
      You will need to be the super-user to install SNMP:
 
           # ./make install-snmp
@@ -1167,19 +996,9 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
           # ./make inst-snmp
 
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      instead.
 
@@ -1212,7 +1031,6 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
 
           % ./make all-lpp
 
-
      This will cause a complete generation of the LPP library and
      support  programs.   If  all  goes  well,  proceed  with the
      installation.  If not, complain as there "should be no prob-
@@ -1233,19 +1051,9 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
               (echo -n ' lpp') > /dev/console
           fi
 
-
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      On other systems, a similar procedure is followed.
 
@@ -1300,18 +1108,9 @@ GENERATING DOCUMENTATION
      If you received this distribution from the network, then the
      directory  doc/ps/  does  not  contain any PostScript files.
 
-
-
 Sun
 
-
-
-
-
-
 ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
-
-
 
      There should be a separate compressed tar  file,  containing
      only  PostScript  files,  available on the machine where you
@@ -1328,47 +1127,5 @@ AUTHOR
      with assistance from a cast of thousands (read  the  Preface
      in the User's Manual)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Sun
-
-
 

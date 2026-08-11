@@ -1,11 +1,5 @@
 /* modify.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>

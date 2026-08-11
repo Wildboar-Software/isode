@@ -1,7 +1,5 @@
 /* udp.c - MIB realization of the UDP group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <string.h>

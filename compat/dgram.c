@@ -1,10 +1,5 @@
 /* dgram.c - datagram (CL-mode TS) abstractions */
 
-
-
-
-
-
 #ifdef	CLTS
 #include <string.h>
 #endif

@@ -1,10 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 #include "util.h"

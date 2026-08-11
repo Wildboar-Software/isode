@@ -1,11 +1,5 @@
 /* fax.c - facsimileTelephoneNumber attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		fax ::= <printablestring> [ <parameters> ]

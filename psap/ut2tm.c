@@ -1,11 +1,5 @@
 /* ut2tm.c - time string to tm */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <time.h>
 #include "psap.h"

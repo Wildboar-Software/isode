@@ -5,7 +5,6 @@ SalaryDefs DEFINITIONS ::=
 
 #define PEPYPARM struct salary_record *
 
-
 static char *myname = "salary";
 
 static struct salary_record {
@@ -13,10 +12,7 @@ static struct salary_record {
     int     salary;
 }                           salary;
 
-
 static void	adios (char *, char *, ...);
-
-
 
 main (argc, argv, envp)
 int     argc;
@@ -67,13 +63,11 @@ END
 
 %{
 
-
 #include <stdarg.h>
 #include <unistd.h>
 
 #ifndef	lint
 static void	_advise ();
-
 
 static void  adios (char *what, char *fmt, ...)
 {
@@ -97,7 +91,6 @@ char   *what,
     adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static void  _advise (char *what, char *fmt, va_list ap)

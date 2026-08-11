@@ -16,10 +16,6 @@
  *
  */
 
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <pwd.h>

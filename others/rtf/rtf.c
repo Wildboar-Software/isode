@@ -1,11 +1,5 @@
 /* rtf.c - RT-file transfer utility -- initiator */
 
-
-
-
-
-
-
 #include "RTF-types.h"
 #include "rtf.h"
 #include "isoservent.h"

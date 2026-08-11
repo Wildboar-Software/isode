@@ -1,8 +1,5 @@
 /* attrvalue.h - */
 
-
-
-
 #ifndef ATTRVALUE
 #define ATTRVALUE
 #include "quipu/name.h"

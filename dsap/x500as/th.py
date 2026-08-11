@@ -10,9 +10,6 @@
 --
 --
 
-
-
-
 Thorn
 	{
 	ccitt

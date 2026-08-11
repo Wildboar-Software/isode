@@ -9,9 +9,6 @@
 --
 -- 
 
-
-
-
 OACS DEFINITIONS ::=
 
 BEGIN
@@ -121,7 +118,6 @@ AdditionalReferenceInformation ::=
 SSAPAddress ::=
 	T61String
 
-
 RefuseReason ::=
 	INTEGER {
 	    busy(0),
@@ -129,7 +125,6 @@ RefuseReason ::=
 	    validationFailure(2),
 	    unacceptableDialogueMode(3)
 	}				
-
 
 -- similarly, this is used during a provider-initiated abort
 
@@ -157,7 +152,6 @@ AbortReason ::=
 
 	    protocolError(4)		-- ACS level protocol error
 	}				
-
 
 -- these are definitions from CCITT X.410
 

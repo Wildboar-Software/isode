@@ -1,7 +1,5 @@
 /* rosapapdu.c - ROPM: interpret APDU */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

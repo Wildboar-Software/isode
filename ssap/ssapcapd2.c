@@ -1,11 +1,5 @@
 /* ssapcapd2.c - SPM: read capability data */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

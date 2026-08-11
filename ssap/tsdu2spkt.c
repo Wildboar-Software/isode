@@ -1,11 +1,5 @@
 /* tsdu2spkt.c - read/write a SPDU to a TSDU */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "spkt.h"

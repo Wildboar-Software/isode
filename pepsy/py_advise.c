@@ -1,11 +1,5 @@
 /* py_advise.c - standard "advise" routine for pepsy/pepy */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 

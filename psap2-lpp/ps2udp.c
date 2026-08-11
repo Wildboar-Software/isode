@@ -1,7 +1,5 @@
 /* ps2udp.c - PPM: UDP backing */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <errno.h>
 #include <stdio.h>

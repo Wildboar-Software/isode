@@ -1,11 +1,5 @@
 /* dish.c - dish main routine */
 
-
-
-
-
-
-
 #include "manifest.h"
 #include "quipu/util.h"
 

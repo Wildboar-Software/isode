@@ -1,11 +1,5 @@
 /* ftamabort.c - FPM: user abort */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

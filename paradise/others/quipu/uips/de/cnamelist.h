@@ -1,8 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
 struct cnamelist {
 	char *shortname;
 	char *longname;

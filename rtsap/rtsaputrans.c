@@ -1,11 +1,5 @@
 /* rtsaputrans.c - RTPM: set uptrans upcall */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

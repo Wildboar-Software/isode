@@ -1,11 +1,5 @@
 /* ps_get_abs.c - get absolute length */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

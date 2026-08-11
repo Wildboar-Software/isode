@@ -1,7 +1,5 @@
 /* idist.c - remote distribution - initiator */
 
-
-
 /*
  * 
  *

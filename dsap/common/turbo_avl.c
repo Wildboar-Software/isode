@@ -1,11 +1,5 @@
 /* turbo_avl.c */
 
-
-
-
-
-
-
 #include <sys/types.h>
 
 #include "manifest.h"

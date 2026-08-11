@@ -10,8 +10,6 @@
  *
  */
 
-
-
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif

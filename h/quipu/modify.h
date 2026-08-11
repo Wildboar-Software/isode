@@ -1,9 +1,5 @@
 /* modify.h - */
 
-
-
-
-
 #ifndef QUIPUMOD
 #define QUIPUMOD
 

@@ -1,11 +1,5 @@
 /* fred.c - FRont-End to Dish */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>

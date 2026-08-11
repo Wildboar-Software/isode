@@ -1,11 +1,5 @@
 /* ssapexpd.c - SPM: write expedited data */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

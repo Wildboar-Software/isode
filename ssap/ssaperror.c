@@ -1,11 +1,5 @@
 /* ssaperror.c - return SSAP error code in string form */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ssap.h"
 

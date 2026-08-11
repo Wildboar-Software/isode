@@ -1,7 +1,5 @@
 /* rosapureject.c - ROPM: user reject */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

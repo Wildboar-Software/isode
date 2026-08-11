@@ -1,10 +1,5 @@
 /* imisc.c - miscellaneous network service -- initiator */
 
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <pwd.h>

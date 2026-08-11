@@ -1,7 +1,5 @@
 /* clns.c - MIB realization of the experimental CLNS group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "mib.h"

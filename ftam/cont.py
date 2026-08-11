@@ -10,9 +10,6 @@
 --
 --
 
-
-
-
 --* ISO8571-CONTENTS *-- CONT DEFINITIONS ::=
 
 %{

@@ -1,11 +1,5 @@
 /* pe_error.c - presentation element error to string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

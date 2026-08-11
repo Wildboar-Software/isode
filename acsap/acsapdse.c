@@ -1,11 +1,5 @@
 /* acsapdse.c - application entity info -- directory service interface */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "DSE-types.h"
 #include "psap.h"

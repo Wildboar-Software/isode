@@ -1,11 +1,5 @@
 /* prim2flag.c - presentation element to boolean */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

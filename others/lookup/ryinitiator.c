@@ -1,11 +1,5 @@
 /* ryinitiator.c - generic interactive initiator */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>

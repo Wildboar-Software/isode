@@ -1,11 +1,5 @@
 /* lexnequ.c - Compare two strings ignoring case upto n octets */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 

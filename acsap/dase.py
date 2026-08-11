@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 DASE DEFINITIONS ::=
 
 %{
@@ -105,7 +102,6 @@ Query-RSP ::=
 		IA5String
 		OPTIONAL
 	}
-
 
 -- auxiliary types to make coding easier
 

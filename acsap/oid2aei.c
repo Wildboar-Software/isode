@@ -1,11 +1,5 @@
 /* oid2aei.c - application entity titles -- OID to AE info  */
 
-
-
-
-
-
-
 #include "psap.h"
 #include "isoaddrs.h"
 

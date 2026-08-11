@@ -1,7 +1,5 @@
 /* main.c - main routine for pod */
 
-
-
 /*
  * 
  */

@@ -1,11 +1,5 @@
 /* acsapreleas3.c - ACPM: interpret release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

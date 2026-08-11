@@ -32,4 +32,3 @@ bgpPathAttrASPath    bgpPathAttrEntry.4 OctetString     read-only       mandator
 bgpPathAttrNextHop   bgpPathAttrEntry.5 IpAddress       read-only       mandatory
 bgpPathAttrInterASMetric bgpPathAttrEntry.6 IpAddress       read-only       mandatory
 
-

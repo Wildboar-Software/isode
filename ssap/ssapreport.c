@@ -1,11 +1,5 @@
 /* ssapreport.c - SPM: exception reports */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

@@ -1,11 +1,5 @@
 /* ro2ssthorn.c - ROPM: interface for THORN */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"

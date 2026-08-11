@@ -13,9 +13,6 @@
 --
 --
 
-
-
-
 --* Remote-Operations-APDUs *-- ROS
 --*   { joint-iso-ccitt remote-operations(4) apdus(1) } *--
 DEFINITIONS ::=
@@ -27,7 +24,6 @@ static char *rcsid = "";
 
 #include <stdio.h>
 #include "ropkt.h"
-
 
 int	rosap_operation;
 int	rosap_error;
@@ -63,7 +59,6 @@ Operation ::=
 Error ::=
 	INTEGER
 
-
 -- APDUs
 -- Types and values of operations and errors are defined in an ROSE-user
 -- protocol specification using the RO-notation.  Operation values are either
@@ -89,7 +84,6 @@ ROSEapdus ::=
 	    rorj-apdu [4] 
 		IMPLICIT RORJapdu
 	}
-
 
 -- APDU types
 
@@ -211,7 +205,6 @@ ReturnErrorProblem ::=
 	    mistypedParameter(4)
 	}
 
-
 -- Note that although ISO 9072-2 uses different names for types, the syntax
 -- and semantics are nearly identical to the specifications in ECMA TR/31
 -- and CCITT recommendation X.410 which are used here
@@ -228,7 +221,6 @@ OPDU ::=
 
 	    [4] Reject
 	}
-
 
 -- OPDU types
 

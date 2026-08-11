@@ -1,11 +1,5 @@
 /* seq_del.c - delete a member from a sequence */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

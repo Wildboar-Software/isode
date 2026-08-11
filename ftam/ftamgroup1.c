@@ -1,11 +1,5 @@
 /* ftamgroup1.c - FPM: initiate a grouped transaction */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

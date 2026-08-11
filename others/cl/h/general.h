@@ -1,8 +1,5 @@
 /* general.h - general compatibility */
 
-
-
-
 #ifndef	_GENERAL_
 #define	_GENERAL_
 

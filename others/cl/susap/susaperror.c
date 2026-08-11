@@ -2,8 +2,6 @@
 
 /* kad */
 
-
-
 #include <stdio.h>
 #include "ssap.h"
 #include "uderrors.h"

@@ -1,9 +1,5 @@
 /* config.h - compile time configuration parameters */
 
-
-
-
-
 /*
  * OPTIONS:-
  *

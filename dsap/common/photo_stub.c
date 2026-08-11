@@ -1,10 +1,5 @@
 /* photo_stub.c */
 
-
-
-
-
-
 #include "unistd.h"
 #include "stdio.h"
 #include "quipu/photo.h"

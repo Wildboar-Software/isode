@@ -1,11 +1,5 @@
 /* pe_pullup.c - "pullup" a presentation element */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

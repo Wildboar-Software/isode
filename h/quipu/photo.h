@@ -1,9 +1,5 @@
 /* photo.h - */
 
-
-
-
-
 typedef  struct {
 	char length;            /* number of bits in the pattern  */
 	short pattern;          /* the bit pattern

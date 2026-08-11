@@ -1,11 +1,5 @@
 /* ds_ext.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/common.h"
 

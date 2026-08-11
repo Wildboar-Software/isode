@@ -58,4 +58,3 @@ q           to quit the Directory Service, when given in response to a
             request for a person's name. q typed at the other prompts asks
             the user to confirm that they wish to quit.
 
-

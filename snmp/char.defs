@@ -45,4 +45,3 @@ charSessOutCharacters charSessEntry.8  Counter         read-only       mandatory
 charSessConnectionId charSessEntry.9  ObjectID        read-only       mandatory
 charSessStartTime    charSessEntry.10 TimeTicks       read-only       mandatory
 
-

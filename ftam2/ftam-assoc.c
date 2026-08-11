@@ -1,11 +1,5 @@
 /* ftam-assoc.c - interactive initiator FTAM -- association management */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ftamuser.h"
 

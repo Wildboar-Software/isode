@@ -1,11 +1,5 @@
 /* ftamselect.c - FPM: map descriptors */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

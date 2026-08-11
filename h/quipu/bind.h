@@ -1,9 +1,5 @@
 /* bind.h - bind parameters */
 
-
-
-
-
 #ifndef QUIPUBIND
 #define QUIPUBIND
 #include "quipu/name.h"

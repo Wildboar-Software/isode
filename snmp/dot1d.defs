@@ -84,4 +84,3 @@ dot1dStaticReceivePort dot1dStaticEntry.2 INTEGER         read-write      mandat
 dot1dStaticAllowedToGoTo dot1dStaticEntry.3 OctetString     read-write      mandatory
 dot1dStaticStatus    dot1dStaticEntry.4 INTEGER         read-write      mandatory
 
-

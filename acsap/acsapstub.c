@@ -1,7 +1,5 @@
 /* acsapstub.c - application entity titles -- stub directory service */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <ctype.h>
 #include <string.h>

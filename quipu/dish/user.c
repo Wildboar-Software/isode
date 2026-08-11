@@ -1,11 +1,5 @@
 /* user.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/sequence.h"

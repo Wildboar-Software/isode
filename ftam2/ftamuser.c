@@ -1,11 +1,5 @@
 /* ftamuser.c - FTAM initiator routines */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>

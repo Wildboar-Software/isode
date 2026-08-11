@@ -1,9 +1,5 @@
 /* pepsy.h */
 
-
-
-
-
 #ifndef PEPSY_DEFINITIONS
 #define PEPSY_DEFINITIONS
 

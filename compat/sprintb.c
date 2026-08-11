@@ -1,11 +1,5 @@
 /* sprintb.c - sprintf on bits */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

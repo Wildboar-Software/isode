@@ -217,4 +217,3 @@ logIndex             logEntry.2       INTEGER         read-only       mandatory
 logTime              logEntry.3       TimeTicks       read-only       mandatory
 logDescription       logEntry.4       DisplayString   read-only       mandatory
 
-

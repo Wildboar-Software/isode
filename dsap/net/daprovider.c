@@ -1,11 +1,5 @@
 /* daprovider.c - DAP: Support for DAP Actions */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/dap2.h"
 #include "tailor.h"

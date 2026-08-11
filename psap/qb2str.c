@@ -1,11 +1,5 @@
 /* qb2str.c - qbuf to string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

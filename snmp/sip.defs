@@ -61,4 +61,3 @@ erroredL3PDUSourceAddress sipL3PDUErrorEntry.3 OctetString     read-only       m
 erroredL3PDUDestinationAddress sipL3PDUErrorEntry.4 OctetString     read-only       mandatory
 sipL3PDUErrorTimeStamp sipL3PDUErrorEntry.5 TimeTicks       read-only       mandatory
 
-

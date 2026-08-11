@@ -1,9 +1,5 @@
 /* common.h - */
 
-
-
-
-
 #ifndef COMH
 #define COMH
 

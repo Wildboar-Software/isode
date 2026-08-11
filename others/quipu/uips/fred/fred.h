@@ -1,9 +1,5 @@
 /* fred.h - definitions for fred */
 
-
-
-
-
 #include <stdio.h>
 #include <errno.h>
 #include "general.h"

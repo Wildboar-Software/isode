@@ -1,11 +1,5 @@
 /* post.c - postal address handling */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		address = <address_component>

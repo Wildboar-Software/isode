@@ -1,7 +1,5 @@
 /* syntax.c - SMI syntax handling */
 
-
-
 /*
  * 
  *
@@ -16,7 +14,6 @@
  *
  *
  */
-
 
 #include <stdio.h>
 #include "SNMP-types.h"

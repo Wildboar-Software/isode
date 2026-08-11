@@ -1,8 +1,5 @@
 /* logger.h - logging routines */
 
-
-
-
 #ifndef	_LOGGER_
 #define	_LOGGER_
 

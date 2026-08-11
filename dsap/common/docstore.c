@@ -1,11 +1,5 @@
 /* docstore.c - documentStore syntax */
 
-
-
-
-
-
-
 /*
 	documentStoreSyntax ATTRIBUTE-SYNTAX
 	    SEQUENCE {

@@ -1,9 +1,5 @@
 /* abandon.h - */
 
-
-
-
-
 #ifndef QUIPUABANDON
 #define QUIPUABANDON
 

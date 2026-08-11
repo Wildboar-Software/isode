@@ -1,11 +1,5 @@
 /* mailbox.c - otherMailbox attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		mailbox ::= <printablestring> '$' <IA5String>

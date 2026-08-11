@@ -15,8 +15,6 @@
  *
  */
 
-
-
 #include "internet.h"
 #include <net/if.h>
 #include <netinet/if_ether.h>		/* to get struct arpcom */

@@ -1,9 +1,5 @@
 
 
-
-
-
-
 #include <stdio.h>
 
 int	mem_heap;

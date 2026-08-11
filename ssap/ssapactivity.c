@@ -1,11 +1,5 @@
 /* ssapactitivity.c - SPM: activities */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

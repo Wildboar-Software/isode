@@ -1,7 +1,5 @@
 /* rosapasync.c - ROPM: set asynchronous events */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

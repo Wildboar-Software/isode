@@ -10,8 +10,6 @@
  *
  */
 
-
-
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 

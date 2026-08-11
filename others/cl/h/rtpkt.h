@@ -1,8 +1,5 @@
 /* rtpkt.h - include file for reliable transfer providers (RtS-PROVIDER) */
 
-
-
-
 #ifndef	_RtSAP_
 #include "rtsap.h"		/* definitions for RtS-USERs */
 #endif

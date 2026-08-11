@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 NDQPDU DEFINITIONS ::=
 
 %{
@@ -102,7 +99,6 @@ ObjectUpdate
 		},
 		control [1] IMPLICIT COupdate [[p (PEPYPARM)&(arg->updates.co_list)]]
 }
-
 
 DOupdate 
 %{

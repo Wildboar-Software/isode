@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 ASQPDU DEFINITIONS ::=
 
 %{
@@ -438,7 +435,6 @@ char *what, *fmt, *a, *b, *c, *d, *e, *f, *g, *h, *i, *j;
 		(void) fputc('\n',stderr);
 	(void)fflush(stderr);
 }
-
 
 testdebug(pe,words)
 PE pe;			/*Not Really, but pretend*/

@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 -- Remote-Operations-Notation {joint-iso-ccitt remote-operations(4) notation(0)}
 RONOT
 

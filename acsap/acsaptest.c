@@ -1,11 +1,5 @@
 /* acsaptest.c - test out -lacsap */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #define	ACSE

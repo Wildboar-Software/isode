@@ -1,7 +1,5 @@
 /* cygwin.h - site configuration file for Cygwin */
 
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

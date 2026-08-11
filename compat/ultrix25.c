@@ -1,9 +1,5 @@
 /* ultrix25.c - X.25 abstractions for Ultrix X25 */
 
-
-
-
-
 /*
  * 
  *

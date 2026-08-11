@@ -54,4 +54,3 @@ ds1FracIndex         ds1FracEntry.1   INTEGER         read-only       mandatory
 ds1FracNumber        ds1FracEntry.2   INTEGER         read-only       mandatory
 ds1FracIfIndex       ds1FracEntry.3   INTEGER         read-only       mandatory
 
-

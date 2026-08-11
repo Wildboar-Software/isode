@@ -1,11 +1,5 @@
 /* ftam-get.c - interactive initiator FTAM -- "get" */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "ftamuser.h"

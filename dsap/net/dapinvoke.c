@@ -1,11 +1,5 @@
 /* dapinvoke.c - DAP : Invoke DAP operations */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/util.h"

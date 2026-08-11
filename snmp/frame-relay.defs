@@ -39,4 +39,3 @@ frErrType            frErrEntry.2     INTEGER         read-only       mandatory
 frErrData            frErrEntry.3     OctetString     read-only       mandatory
 frErrTime            frErrEntry.4     TimeTicks       read-only       mandatory
 
-

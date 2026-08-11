@@ -1,11 +1,5 @@
 /* ssapmajor1.c - SPM: initiate majorsyncs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

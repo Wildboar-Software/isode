@@ -1,9 +1,5 @@
 /* oid.h - object identifier stuff */
 
-
-
-
-
 #ifndef QUIPUOID
 #define QUIPUOID
 

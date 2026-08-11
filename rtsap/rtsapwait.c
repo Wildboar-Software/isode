@@ -1,11 +1,5 @@
 /* rtsapwait.c - RTPM: wait for an indication */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

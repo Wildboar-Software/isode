@@ -23,7 +23,6 @@ BEGIN
 
 -- operations
 
-
 getFileData  OPERATION
     ARGUMENT	GetFileDataArg
     RESULT	GetFileDataRes
@@ -59,8 +58,6 @@ RequestMasterArg ::= SEQUENCE {
 
 RequestMasterRes ::= INTEGER  -- modification time
 
-
-
 listDir	OPERATION
     ARGUMENT	FileName
     RESULT 	FileInfoList
@@ -89,8 +86,6 @@ FileInfo ::= SEQUENCE {
 
 FileInfoList ::= SEQUENCE OF FileInfo
 
-
-
 syncTime	OPERATION
     ARGUMENT	SyncTimeArg
     RESULT 	SyncTimeRes
@@ -109,7 +104,6 @@ SyncTimeRes ::= SEQUENCE {
 	time	INTEGER		-- contains clock of master if role was slave
 				-- otherwise the time diff at slave
 }
-
 
 -- errors
 
@@ -143,7 +137,6 @@ StatusErrorParm ::= SEQUENCE {
 }
 
 -- types
-
 
 Initiate ::= SEQUENCE {
     user	IA5String,

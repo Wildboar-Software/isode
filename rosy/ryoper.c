@@ -1,11 +1,5 @@
 /* ryoperation.c - ROSY: operations */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

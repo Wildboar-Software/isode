@@ -1,11 +1,5 @@
 /* ftamrespond.c - FPM: responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

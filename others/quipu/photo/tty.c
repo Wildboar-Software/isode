@@ -1,11 +1,5 @@
 /* tty.c - display on any terminal */
 
-
-
-
-
-
-
 #include "stdio.h"
 #include "quipu/photo.h"
 

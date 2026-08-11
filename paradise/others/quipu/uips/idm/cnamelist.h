@@ -14,8 +14,6 @@
  *
  */
 
-
-
 struct cnamelist {
 	char *shortname;
 	char *longname;

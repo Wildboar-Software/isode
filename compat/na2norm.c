@@ -1,11 +1,5 @@
 /* na2norm.c - normalize NSAPaddr */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

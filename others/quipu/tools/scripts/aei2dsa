@@ -16,7 +16,6 @@ BEGIN {
 	if ( $1 == "" )
 		next
 
-
 	if ( last != $1 ) {
 		last = $1
 		dn = "\"cn=" $1 "\""

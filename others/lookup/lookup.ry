@@ -9,9 +9,6 @@
 --
 -- 
 
-
-
-
 PasswordLookup DEFINITIONS ::=
 
 BEGIN
@@ -32,7 +29,6 @@ lookupUID OPERATION
 	ERRORS		{ noSuchUser, congested }
 	::=		1
 
-
 -- errors
 
 			-- no matching user in the database
@@ -42,7 +38,6 @@ noSuchUser ERROR
 			-- congestion at responder
 congested ERROR
 	::=		1
-
 
 -- types
 

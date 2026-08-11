@@ -1,11 +1,5 @@
 /* build_trees.c - build photo decode trees */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/photo.h"
 #include "general.h"

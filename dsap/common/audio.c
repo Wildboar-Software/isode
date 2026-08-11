@@ -1,11 +1,5 @@
 /* audio.c - play a sound */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "quipu/util.h"

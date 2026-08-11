@@ -1,6 +1,5 @@
 [ mh-patches - Tue Jul 18 00:47:38 1989 - WP patches to MH - /mtr ]
 
-
 Here are patches to MH 6.5 to allow send/whom to expand names into addresses.
 
 	NOTE WELL: These are very different from the patches supplied earlier

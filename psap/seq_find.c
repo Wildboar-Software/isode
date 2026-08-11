@@ -1,11 +1,5 @@
 /* seq_find.c - find an element in a sequence */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

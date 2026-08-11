@@ -1,11 +1,5 @@
 /* shadow.c - spot shadowing of entries */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/dua.h"

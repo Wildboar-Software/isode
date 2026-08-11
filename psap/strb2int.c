@@ -1,11 +1,5 @@
 /* converts a bit string - output of bitstr2strb() - to an integer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

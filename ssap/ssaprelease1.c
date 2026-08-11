@@ -1,11 +1,5 @@
 /* ssaprelease1.c - SPM: initiate release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

@@ -1,9 +1,5 @@
 /* sequence.h - */
 
-
-
-
-
 struct dua_sequence {
 	char * ds_name;
 	struct dua_seq_entry *ds_data;

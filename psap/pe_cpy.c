@@ -1,11 +1,5 @@
 /* pe_cpy.c - copy a presentation element */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

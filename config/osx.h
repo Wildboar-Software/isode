@@ -1,9 +1,5 @@
 /* osx.h - site configuration file for Olivetti LSX 30xx */
 
-
-
-
-
 #ifndef _CONFIG_
 #define _CONFIG_
 

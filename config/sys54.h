@@ -1,9 +1,5 @@
 /* sys54.h - site configuration file for generic SVR4 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

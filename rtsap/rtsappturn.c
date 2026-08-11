@@ -1,11 +1,5 @@
 /* rtsappturn.c - RTPM: turn please */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

@@ -46,4 +46,3 @@ viewTargetName       viewTranEntry.3  ObjectID        read-write      mandatory
 viewTargetSubtree    viewTranEntry.4  ObjectID        read-write      mandatory
 viewTranType         viewTranEntry.5  INTEGER         read-write      mandatory
 
-

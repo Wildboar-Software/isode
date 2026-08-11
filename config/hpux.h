@@ -1,9 +1,5 @@
 /* hpux.h - site configuration file for HP-UX */
 
-
-
-
-
 #ifndef _CONFIG_
 #define _CONFIG_
 

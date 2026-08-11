@@ -135,7 +135,6 @@ case $M in
 	    fi
             ;;
 
-
     AIX)    if [ "x$SHD" = xT ]; then
 		
 		exit 1

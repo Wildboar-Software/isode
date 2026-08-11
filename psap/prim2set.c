@@ -1,11 +1,5 @@
 /* prim2flag.c - presentation element to set */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

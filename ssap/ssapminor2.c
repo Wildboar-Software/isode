@@ -1,11 +1,5 @@
 /* ssapminor2.c - SPM: respond to minorsyncs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

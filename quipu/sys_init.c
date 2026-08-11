@@ -1,11 +1,5 @@
 /* sys_init.c - System tailoring initialisation */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <errno.h>
 #include "quipu/oid.h"

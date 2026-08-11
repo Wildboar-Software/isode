@@ -1,7 +1,5 @@
 /* rosaperror.c - return RoSAP error code in string form */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "rosap.h"

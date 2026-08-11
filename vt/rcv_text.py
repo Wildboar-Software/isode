@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 NDQPDU DEFINITIONS ::=
 
 %{

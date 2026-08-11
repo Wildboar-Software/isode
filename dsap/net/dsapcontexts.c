@@ -1,11 +1,5 @@
 /* dsapcontexts.c - Directory context checking routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"

@@ -1,9 +1,5 @@
 /* sys52-exos.h - site configuration file for SVR2 with EXOS 8044 card */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

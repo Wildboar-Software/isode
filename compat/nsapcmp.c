@@ -1,11 +1,5 @@
 /* nsapcmp.c - compare NSAPs */
 
-
-
-
-
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"

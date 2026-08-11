@@ -14,7 +14,6 @@
 # By Stephen Gildea <gildea@bbn.com> based on
 #  XConsortium: lndir.sh,v 1.1 88/10/20 17:37:16 jim Exp
 
-
 USAGE="Usage: $0 fromdir [todir]"
 
 if [ $# -lt 1 -o $# -gt 2 ]

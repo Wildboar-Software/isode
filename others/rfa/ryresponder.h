@@ -8,8 +8,6 @@
  *
  */
 
-
-
 #include "rosy.h"
 #include "logger.h"
 

@@ -1,11 +1,5 @@
 /* lookupd.c - password lookup service -- responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <pwd.h>
 #include "ryresponder.h"	/* for generic idempotent responders */

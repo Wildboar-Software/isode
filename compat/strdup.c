@@ -1,11 +1,5 @@
 /* strdup.c - create a duplicate copy of the given string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

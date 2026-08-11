@@ -1,11 +1,5 @@
 /* acsapreleas1.c - ACPM: initiate release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

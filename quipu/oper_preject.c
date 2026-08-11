@@ -1,11 +1,5 @@
 /* oper_preject.c - deal with preject of an operation */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

@@ -1,11 +1,5 @@
 /* isoaddrs.c - simple parsing of ISODE addresses */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

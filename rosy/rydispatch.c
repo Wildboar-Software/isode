@@ -1,11 +1,5 @@
 /* rydispatch.c - ROSY: dispatch  */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

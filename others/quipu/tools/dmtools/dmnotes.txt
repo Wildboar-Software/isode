@@ -1,10 +1,5 @@
 
 
-
-
-
-
-
 1  Outline
 
 Several approaches to updating information in a DSA -
@@ -23,7 +18,6 @@ all have their problems
 
 Whatever the merits of the tools, we should be moving
 towards doing all database management over DAP.
-
 
 2  Are there really alternatives to data management
    tools?
@@ -49,14 +43,8 @@ towards doing all database management over DAP.
 
  o  Conclusions
 
-
                            1
 
-
-
-
-
-
 
     --  Initially one can ``get away with'' data
         modification by editing EDB files
@@ -71,7 +59,6 @@ towards doing all database management over DAP.
 
  o  Can thwart replication mechanism (which looks at
     the times EDBs last updated)
-
 
 Before stopping a DSA, it is considerate to see if
 there are currently any users.  Look at the file
@@ -102,14 +89,8 @@ data.
     Edit or replace .../c=GB/o=ABC@ou=DEF/EDB
     dsacontrol -refresh "c=GB@o=ABC@ou=DEF"
 
-
                            2
 
-
-
-
-
-
 
     dsacontrol -unlock "c=GB@o=ABC@ou=DEF"
 
@@ -140,7 +121,6 @@ data.
 
     --  Deletes entries
 
-
 6  How the tools work
 
  o  Uses very similar syntax to EDB files
@@ -155,14 +135,8 @@ data.
  o  Run the script - entries not in the Directory are
     added, those in the Directory are modified or
 
-
                            3
 
-
-
-
-
-
 
     deleted in line with the changes indicated
 
@@ -206,16 +180,8 @@ _______________________________________________________________
 
 |___________________________|collection_of_subtrees____________|
 
-
-
-
                            4
 
-
-
-
-
-
 
 8  dmformat - syntax
 
@@ -261,14 +227,8 @@ objectClass=organizationalPerson & quipuObject & ...
 # value and delete the second
 cn=Steve Kille
 
-
                            5
 
-
-
-
-
-
 
 telephoneNumber=+44 71 380 7294
 !telephoneNumber=+44 71 380 1234
@@ -283,11 +243,9 @@ telephoneNumber=+44 71 380 7294
 # in the DIT
 rootedAt= c=gb@o=UCL@ou=Physics
 
-
 10  Using the tools
 
  o  Can be used to load the database initially
-
 
     --  Produce a file `newfile'' of entries to be
         loaded
@@ -310,18 +268,12 @@ rootedAt= c=gb@o=UCL@ou=Physics
     --  Apply the updates
         sh modfile
 
-
 11  An outline Makefile for using the dm tools
 
 Thanks to Colin Robbins who wrote this for UCL-CS
 
                            6
 
-
-
-
-
-
 
 Processes data in source file dbdata, and applies
 changes to the directory.
@@ -341,7 +293,6 @@ new.EDB:    dbdata
         echo "rootedAt=c=GB@o=UCL@ou=CS" > $@
         echo >> $@
         sort $? | db2quipu >> $@
-
 
 12  Creating organisational unit entries
 
@@ -371,11 +322,6 @@ nawk ' BEGIN {
                            7
 
 
-
-
-
-
-
     print "masterDSA= ", dsaname
     print "objectClass= ", objectclass
     print ""
@@ -386,7 +332,6 @@ To load ou data using dm tools
 
 crmods < oudata.dm
 sh modfile
-
 
 13  Modifying organisational unit entries
 
@@ -419,15 +364,8 @@ CAVEATS:
     first, as deletion of OUs only possible if they
     contain no children
 
-
-
                            8
 
-
-
-
-
-
 
  o  If the OUs have associated replication information,
     need to modify DSA entries - use dish to edit
@@ -437,7 +375,6 @@ CAVEATS:
 
 The tools will work more efficiently if the following
 guidelines are followed:
-
 
  o  Attribute type strings in dm files should be the
     same as those written out by dish when using
@@ -473,14 +410,8 @@ guidelines are followed:
     case-independent.
     In practice this is not too much of a problem
 
-
                            9
 
-
-
-
-
-
 
     --  At worst, it means that too many
         ``differences'' are discovered
@@ -492,7 +423,6 @@ guidelines are followed:
     creating a new entry.
     You may thus discard attribute information which
     has been loaded from another source.
-
 
 16  Some specific shortcomings of the dm tools (cont)
 
@@ -525,15 +455,8 @@ guidelines are followed:
     difficult - no support for merging data from
     different sources, or for consistent deletion.
 
-
-
                           10
 
-
-
-
-
-
 
  o  No framework for discrimination between quality of
     data sources - this must be handled manually
@@ -550,7 +473,6 @@ maintaining the Directory database.  This administrator
 should be aware of at least the following problems
 
  o  Two sources may name an entity differently
-
 
     source one: P Barker
     source two: Paul Barker
@@ -579,14 +501,8 @@ should be aware of at least the following problems
     For example, the UCL telephone directory database
     has the following two departments
 
-
                           11
 
-
-
-
-
-
 
    BIOLOGY (DARWIN)
    BIOLOGY (MEDAWAR)
@@ -600,37 +516,5 @@ o  Need to be careful when joining departments in this
    solution is to name entries with multiple value
    RDN.
    cn=Fred Bloggs%ou=Biology (Medawar)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                          12

@@ -1,9 +1,5 @@
 /* remove.h - */
 
-
-
-
-
 #ifndef QUIPUREMOVE
 #define QUIPUREMOVE
 

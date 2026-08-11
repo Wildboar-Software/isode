@@ -1,11 +1,5 @@
 /* ds_remove.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/remove.h"

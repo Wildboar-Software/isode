@@ -1,9 +1,5 @@
 /* mpkt.h - defines the report format for management */
 
-
-
-
-
 #include "isoaddrs.h"
 
 struct MReport {

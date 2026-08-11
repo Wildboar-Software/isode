@@ -1,11 +1,5 @@
 /* searchacl.c - Search and List Access Control routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "cmd_srch.h"

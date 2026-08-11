@@ -1,11 +1,5 @@
 /* ftamd.c - FTAM -- responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>

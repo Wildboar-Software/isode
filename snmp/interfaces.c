@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 
-
 /*
  * 
  *
@@ -19,7 +18,6 @@
  *
  *
  */
-
 
 #include <stdio.h>
 #include <string.h>

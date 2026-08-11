@@ -1,11 +1,5 @@
 /* pl_tables.c - tables for presentation lists */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

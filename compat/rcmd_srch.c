@@ -1,11 +1,5 @@
 /* rcmd_srch.c: search a lookup table: return string value */
 
-
-
-
-
-
-
 #include "manifest.h"
 #include "cmd_srch.h"
 

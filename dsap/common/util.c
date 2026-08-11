@@ -1,11 +1,5 @@
 /* util.c - General utility routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/malloc.h"

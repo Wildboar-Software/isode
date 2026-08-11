@@ -16,10 +16,6 @@
  *
  */
 
-
-
-
-
 #include <stdio.h>
 #include <sys/types.h>
 #include "RFA-ops.h"        /* operation definitions */

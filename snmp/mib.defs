@@ -205,4 +205,3 @@ snmpOutGetResponses  snmp.28          Counter         read-only       mandatory
 snmpOutTraps         snmp.29          Counter         read-only       mandatory
 snmpEnableAuthenTraps snmp.30          INTEGER         read-write      mandatory
 
-

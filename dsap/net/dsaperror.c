@@ -1,11 +1,5 @@
 /* dsaperror.c - DSAP : Return operation errors */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"

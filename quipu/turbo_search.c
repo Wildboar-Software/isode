@@ -1,11 +1,5 @@
 /* turbo_search.c - DSA search of the directory using attribute index */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/list.h"

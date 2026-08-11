@@ -1,9 +1,5 @@
 /* sector1.h - VTPM: sector 1 definitions */
 
-
-
-
-
 #define MAXSPARGS	2	/*Max Special Profile Arguments (2 for TLENET)*/
 #define MAXCDSOBJ	2	/*Max Display Objects (2 for TRANSPARENT)*/
 #define MAXCSSOBJ	1	/*Max Control Objects to negotiate*/

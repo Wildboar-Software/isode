@@ -1,7 +1,5 @@
 /* ts2tli.c - TPM: TLI OSI TP interface */
 
-
-
 /*
  * This module written by X-Tel Serviecs Ltd, UK.
  * for Boldon James Limited UK. There donation
@@ -9,8 +7,6 @@
  *
  * ICL options later added by X-Tel Serviecs Ltd, UK.
  */
-
-
 
 #include <stdio.h>
 #include "tpkt.h"

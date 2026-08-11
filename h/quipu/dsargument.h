@@ -1,9 +1,5 @@
 /* dsargument.h - structures for argument and result */
 
-
-
-
-
 #ifndef QUIPUDSARG
 #define QUIPUDSARG
 

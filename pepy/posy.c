@@ -23,12 +23,6 @@
 	SEQUENCE/SET OF Type should have Type be an ID for nicer naming
  */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>

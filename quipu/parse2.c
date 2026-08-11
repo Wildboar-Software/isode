@@ -1,11 +1,5 @@
 /* parse2.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/config.h"

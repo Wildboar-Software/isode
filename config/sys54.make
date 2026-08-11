@@ -14,8 +14,6 @@
 #
 ###############################################################################
 
-
-
 ###############################################################################
 #
 # Donated to ISODE by X-Tel Services Ltd
@@ -51,7 +49,6 @@ LIBDSAP	=	$(TOPDIR)libdsap.a
 SYSTEM	=	-sys5r4
 MANDIR	=	/usr/man/
 MANOPTS	=	-sys5
-
 
 ###############################################################################
 # Shared libraries
@@ -105,7 +102,6 @@ LN	=	ln
 
 # You won't need -lsocket or -nsl if you have SVR4_UCB defined.
 LSOCKET	=	-lsocket -lnsl $(KRBLIB)
-
 
 ###############################################################################
 # Generation Rules for library modules

@@ -1,11 +1,5 @@
 /* seq_addon.c - add a member to the end of a sequence (efficiency hack) */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -1,11 +1,5 @@
 /* isoalias.c - application entity info --  directory service utilities */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

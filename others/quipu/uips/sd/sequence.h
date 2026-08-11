@@ -12,8 +12,6 @@
  *    at GEC Research, Hirst Research Centre.
  */
 
-
-
 #ifndef STRINGSEQ
 #define STRINGSEQ
 

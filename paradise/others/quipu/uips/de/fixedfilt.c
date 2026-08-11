@@ -2,8 +2,6 @@
 /* this version contains a patch for ufn generated filters -
    discard this file in next release of ISODE */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  * *** empty log message ***
  *
  */
-
-
 
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

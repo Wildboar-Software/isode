@@ -1,11 +1,5 @@
 /* ps_error.c - presentation stream error to string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

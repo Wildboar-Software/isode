@@ -1,11 +1,5 @@
 /* pe_free.c - free a presentation element */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

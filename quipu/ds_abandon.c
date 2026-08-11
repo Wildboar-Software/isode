@@ -1,11 +1,5 @@
 /* ds_abandon.c -  */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/abandon.h"

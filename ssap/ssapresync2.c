@@ -1,11 +1,5 @@
 /* ssapresync2.c - SPM: respond to resyncs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

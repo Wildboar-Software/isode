@@ -1,11 +1,5 @@
 /* str2tpkt.c - read/write a TPDU thru a string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "tpkt.h"

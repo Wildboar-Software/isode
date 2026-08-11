@@ -1,11 +1,5 @@
 /* rygenid.c - ROSY: generate unique invoke ID */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

@@ -1,11 +1,5 @@
 /* baduser.c - check file of bad users */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

@@ -1,11 +1,5 @@
 /* rtsaptrans.c - RTPM: transfer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

@@ -1,9 +1,5 @@
 /* cmd_srch.h - command search structure */
 
-
-
-
-
 #ifndef _CMD_SRCH_
 #define _CMD_SRCH_
 

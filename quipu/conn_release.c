@@ -1,11 +1,5 @@
 /* conn_release.c - normal association release */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

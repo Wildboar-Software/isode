@@ -1,11 +1,5 @@
 /* protected.c - ProtectedPassword attribute syntax */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/attr.h"

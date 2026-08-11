@@ -1,11 +1,5 @@
 /* main.c */
 
-
-
-
-
-
-
 #include	<stdio.h>
 #include	<ctype.h>
 #include "config.h"

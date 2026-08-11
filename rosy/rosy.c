@@ -1,11 +1,5 @@
 /* rosy.c - RO stub-generator (yacc-based) */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>

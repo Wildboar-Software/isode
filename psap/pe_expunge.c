@@ -1,11 +1,5 @@
 /* pe_expunge.c - expunge a PE */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

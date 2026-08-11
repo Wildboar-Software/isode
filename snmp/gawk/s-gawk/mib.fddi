@@ -190,7 +190,6 @@ function aclass_type(f) {
     return (f ? f : "unknown");
 }
 
-
 BEGIN {
 	binary[1] = "true";
 	binary[2] = "false";

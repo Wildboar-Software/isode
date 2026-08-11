@@ -1,11 +1,5 @@
 /* oper_error.c - deal with return of error to an operation */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

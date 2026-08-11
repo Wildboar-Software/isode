@@ -1,11 +1,5 @@
 /* aetdap.c - DAP-based DSE */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/read.h"

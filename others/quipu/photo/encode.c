@@ -1,11 +1,5 @@
 /* encode.c - implement encoding routines */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "general.h"

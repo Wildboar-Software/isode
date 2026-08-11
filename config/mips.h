@@ -1,9 +1,5 @@
 /* mips.h - site configuration file for RISC/OS */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

@@ -1,11 +1,5 @@
 /* sel2str.c - selector to string */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "general.h"

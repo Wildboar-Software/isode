@@ -1,11 +1,5 @@
 /* rt2ps.c - RTPM: AcSAP/PSAP interface */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "rtpkt.h"

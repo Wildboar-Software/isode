@@ -1,11 +1,5 @@
 /* ftamlose.c - FPM: you lose */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "fpkt.h"

@@ -25,9 +25,6 @@
  *
  */
 
-
-
-
 #include <errno.h>
 #include "psap.h"
 
@@ -116,7 +113,6 @@ typedef struct ypv {
 
 YV	new_value (), add_value (), copy_value ();
 
-
 typedef struct ypt {
     PElementClass   yt_class;
 
@@ -167,9 +163,7 @@ extern int	e_actions, d_actions, p_actions;
 #define ER_NORMAL	1	/* Implicit works normally */
 #define ER_EXPLICIT	2	/* Implicit should be translated to explicit */
 
-
 %END(PEPSY)%
-
 
 typedef struct ype {
     int     yp_code;
@@ -333,7 +327,6 @@ typedef struct yop {
 }		yop, *YO;
 #define	NULLYO	((YO) 0)
 
-
 typedef struct yerr {
     char   *ye_name;
 
@@ -354,7 +347,6 @@ typedef struct modlist {
     struct modlist *md_next;
 }             modlist, *MD;
 #define       NULLMD  ((MD) 0)
-
 
 %BEGIN(PEPSY)%
 extern char *pepsyversion;

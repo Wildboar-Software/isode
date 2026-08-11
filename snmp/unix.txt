@@ -6,7 +6,6 @@ UNIX-MIB DEFINITIONS ::= BEGIN
 --		Michael Davidson/UTK	<davidson@cs.utk.edu>
 --		for Keith Sklower/UCB	<sklower@okeeffe.berkeley.edu>
 
-
 IMPORTS
 	enterprises, Counter, IpAddress
 		FROM RFC1155-SMI
@@ -19,9 +18,7 @@ IMPORTS
 	clnpRouteDest
 		FROM CLNS-MIB;
 
-
 unix	      OBJECT IDENTIFIER	::= { enterprises 4 }
-
 
 -- the agents group
 
@@ -53,7 +50,6 @@ agentAction OBJECT-TYPE
 
 		 coldStart - initiate a coldStart (restart the agent)"
 	::= { agents 3 }
-
 
 -- the mbuf group
 
@@ -165,7 +161,6 @@ mbufSpaces	OBJECT-TYPE
 		"The number of interface pages obtained from the page pool."
 	::= { mbuf 9 }
 
-
 -- the SMUX peer group
 
 peers	OBJECT IDENTIFIER ::=	{ unix 3 }
@@ -175,7 +170,6 @@ unixd	OBJECT IDENTIFIER ::=	{ peers 1 }
 -- unixd.1:		mbufs
 -- unixd.2:		add print/users, remove mbufs
 -- unixd.3:		add unixFs
-
 
 -- the SMUX protocol group
 
@@ -323,7 +317,6 @@ smuxTstatus	OBJECT-TYPE
 		 object."
 	::= { smuxTreeEntry 4 }
 
-
 -- the NETSTAT group
 
 netstat	OBJECT IDENTIFIER ::=	{ unix 5 }
@@ -380,7 +373,6 @@ unixTcpConnRecvQ OBJECT-TYPE
 	DESCRIPTION
 		"The number of octets queued for reading from this TCP socket."
 	::= { unixTcpConnEntry 2 }
-
 
 -- the UNIX UDP listener table
 
@@ -627,7 +619,6 @@ unixClnpRouteUses OBJECT-TYPE
 
 	::= { unixClnpRouteEntry 3 }
 
-
 -- the print group
 
 print	OBJECT IDENTIFIER ::= { unix 6 }
@@ -759,7 +750,6 @@ printQAction OBJECT-TYPE
 			completes printing"
 	::= { printQEntry 5 }
 
-
 -- the printer job table
 
 printJTable OBJECT-TYPE
@@ -868,7 +858,6 @@ printJAction OBJECT-TYPE
 
 		remove - remove this job from the queue"
 	::= { printJEntry 6 }
-
 
 -- the user-admin group
 
@@ -1152,7 +1141,6 @@ grUserStatus OBJECT-TYPE
 		 currently in use.  Proper interpretation of such entries
 		 requires examination of the relative grUserStatus object."
 	::= { grUserEntry 1 }
-
 
 -- unix file-system group
 

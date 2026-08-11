@@ -1,9 +1,5 @@
 /* connection.h - directory internal structures */
 
-
-
-
-
 #ifndef QUIPUCON
 #define QUIPUCON
 

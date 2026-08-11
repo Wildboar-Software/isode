@@ -1,11 +1,5 @@
 /* cilist.c - Case Ignore List */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		list = <list_component> | <list_component> '$' <list>

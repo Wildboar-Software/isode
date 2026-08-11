@@ -1,11 +1,5 @@
 /* dsapbind2.c - DSAP: DirectoryBind mapping onto ABSTRACT-BIND */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "tailor.h"
 #include "quipu/dsap.h"

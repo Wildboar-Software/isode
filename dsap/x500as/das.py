@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 DAS
 	{
 	joint-iso-ccitt
@@ -1020,7 +1017,6 @@ SearchArgument [[P struct ds_search_arg *]]
 		}
 	}
 
-
 SearchResultData [[P struct ds_search_result *]]
 	::=
 	CHOICE <D<(*parm)->srr_correlated>>
@@ -1061,7 +1057,6 @@ SearchResultData [[P struct ds_search_result *]]
 	if ((*parm)->srr_correlated == 2)
 	   (*parm)->srr_correlated = 0;
 %}
-
 
 -- Pespy temp
 -- If uncorrelated this will fail
@@ -1454,9 +1449,7 @@ UpdateErrorParm [[P struct DSE_update *]]
 		[0] UpdateProblem [[i DSE_up_problem]]
 	}
 
-
 END
-
 
 %{
 

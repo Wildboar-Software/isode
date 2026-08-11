@@ -1,7 +1,5 @@
 /* ro2ssreleas2.c - respond to release */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

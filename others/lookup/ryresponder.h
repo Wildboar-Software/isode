@@ -1,9 +1,5 @@
 /* ryresponder.h - include file for the generic idempotent responder */
 
-
-
-
-
 #ifndef PEPSY_VERSION
 #define PEPSY_VERSION 1
 #endif

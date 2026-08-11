@@ -1,11 +1,5 @@
 /* list.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/list.h"
 #include "quipu/sequence.h"

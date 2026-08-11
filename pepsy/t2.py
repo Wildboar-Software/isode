@@ -7,17 +7,11 @@
 --
 --
 
-
-
-
-
 T2 DEFINITIONS ::=
-
 
 BEGIN
 
 -- Embedded Sequences test
-
 
 SECTIONS enc dec prnt
 

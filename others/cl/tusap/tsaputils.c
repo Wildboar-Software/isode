@@ -1,7 +1,5 @@
 /* tsaputils.c - common service routines to tsap unit data */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"

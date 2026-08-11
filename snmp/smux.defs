@@ -57,4 +57,3 @@ unixClnpRouteFlags   unixClnpRouteEntry.1 INTEGER         read-only       mandat
 unixClnpRouteRefCnt  unixClnpRouteEntry.2 INTEGER         read-only       mandatory
 unixClnpRouteUses    unixClnpRouteEntry.3 Counter         read-only       mandatory
 
-

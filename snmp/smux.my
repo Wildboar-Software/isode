@@ -1,21 +1,11 @@
 -- smux.my - SMUX MIB
 
--- 
 --
 -- Contributed by NYSERNet Inc.  This work was partially supported by the
 -- U.S. Defense Advanced Research Projects Agency and the Rome Air Development
 -- Center of the U.S. Air Force Systems Command under contract number
 -- F30602-88-C-0016.
 --
---
--- 
---
---
---
---
-
-
-
 
 SMUX-MIB DEFINITIONS ::= BEGIN
 
@@ -31,7 +21,6 @@ IMPORTS
 		FROM RFC1213-MIB
 	clnpRouteDest
 		FROM CLNS-MIB;
-
 
 -- the mbuf group
 
@@ -142,7 +131,6 @@ mbufSpaces	OBJECT-TYPE
 	DESCRIPTION
 		"The number of interface pages obtained from the page pool."
 	::= { mbuf 9 }
-
 
 -- the SMUX protocol group
 
@@ -290,7 +278,6 @@ smuxTstatus	OBJECT-TYPE
 		 object."
 	::= { smuxTreeEntry 4 }
 
-
 -- the NETSTAT group
 
 netstat	OBJECT IDENTIFIER ::=	{ unix 5 }
@@ -347,7 +334,6 @@ unixTcpConnRecvQ OBJECT-TYPE
 	DESCRIPTION
 		"The number of octets queued for reading from this TCP socket."
 	::= { unixTcpConnEntry 2 }
-
 
 -- the UNIX UDP listener table
 
@@ -593,6 +579,5 @@ unixClnpRouteUses OBJECT-TYPE
 		"The number of times this IP routing entry has been used."
 
 	::= { unixClnpRouteEntry 3 }
-
 
 END

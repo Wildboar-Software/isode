@@ -1,7 +1,5 @@
 /* tcp.c - MIB realization of the TCP group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <string.h>

@@ -1,11 +1,5 @@
 /* task_act.c - routines to manipulate task activity blocks */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 

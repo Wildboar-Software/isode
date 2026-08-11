@@ -1,11 +1,5 @@
 /* sys_tai.c - System tailoring routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/policy.h"
 #include "cmd_srch.h"

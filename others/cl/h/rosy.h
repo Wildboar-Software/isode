@@ -1,8 +1,5 @@
 /* rosy.h - include file for ROSY users */
 
-
-
-
 #ifndef	_ROSY_
 #define	_ROSY_
 

@@ -1,11 +1,5 @@
 /* net_init.c - Init network section of DSA process */
 
-
-
-
-
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include "rosap.h"

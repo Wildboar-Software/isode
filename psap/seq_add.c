@@ -1,11 +1,5 @@
 /* seq_add.c - add an element to a sequence */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

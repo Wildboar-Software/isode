@@ -1,11 +1,5 @@
 /* isoentity.c - application entity titles -- sequential lookup utilities  */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

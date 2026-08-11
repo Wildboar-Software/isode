@@ -1,11 +1,5 @@
 /* snmp-g.c - SNMP group */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "mib.h"
 #include "snmp-g.h"

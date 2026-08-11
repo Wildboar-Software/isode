@@ -12,7 +12,6 @@
 # 
 ###############################################################################
 
-
 area			"@c=@(country)@o=@(organization)"
 area	organization	"@c=@(country)"
 area	unit		"@c=@(country)@o=@(organization)"

@@ -104,7 +104,6 @@ BEGIN {
 	if (!didone && DIAGNOSTIC)
 	    printf "primitive views: %s\n", DIAGNOSTIC;
 
-
 	didone = 0;
 	for (i in viewAclView) {
 	    if (!didone) {
@@ -128,7 +127,6 @@ BEGIN {
 	if (!didone && DIAGNOSTIC)
 	    printf "access policies: %s\n", DIAGNOSTIC;
 
-
 	didone = 0;
 	for (i in viewTrapView) {
 	    if (!didone) {
@@ -149,7 +147,6 @@ BEGIN {
 	}
 	if (!didone && DIAGNOSTIC)
 	    printf "traps destinations: %s\n", DIAGNOSTIC;
-
 
 	didone = 0;
 	for (i in smuxPindex) {
@@ -174,7 +171,6 @@ BEGIN {
 	if (!didone && DIAGNOSTIC)
 	    printf "smux peers: %s\n", DIAGNOSTIC;
 
-
 	didone = 0;
 	for (i in smuxTsubtree) {
 	    if (!didone) {
@@ -195,7 +191,6 @@ BEGIN {
 	}
 	if (!didone && DIAGNOSTIC)
 	    printf "smux peers: %s\n", DIAGNOSTIC;
-
 
 	if ((j = exprNumber) == 0)
 	    exit (0);

@@ -1,10 +1,5 @@
 /* dn_seq.c - General Directory Name Sequence routines */
 
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 

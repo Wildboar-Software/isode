@@ -1,7 +1,5 @@
 /* rosapinvoke.c - ROPM: invoke */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

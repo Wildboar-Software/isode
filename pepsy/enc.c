@@ -1,11 +1,5 @@
 /* enc.c */
 
-
-
-
-
-
-
 #include	<stdio.h>
 #include	<ctype.h>
 #include	"pepsy-driver.h"

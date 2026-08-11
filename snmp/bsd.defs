@@ -10,4 +10,3 @@ unixd                peers.1
 
 agentAction          agents.3         INTEGER         read-write      mandatory
 
-

@@ -20,7 +20,6 @@
 #
 ###############################################################################
 
-
 searchpath : 1 :
 	("c=gb@o=brunel university@ou=manufacturing and engineering systems",
 	 "c=gb@o=brunel university@ou=computing and media services",

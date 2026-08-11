@@ -1,11 +1,5 @@
 /* code_word.c - define code words for one dimensional encoding */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 

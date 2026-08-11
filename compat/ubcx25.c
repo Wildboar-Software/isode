@@ -1,7 +1,5 @@
 /* ubcx25.c - X.25 abstractions for UBC X25 */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <errno.h>
 #include <stdio.h>

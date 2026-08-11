@@ -1,7 +1,5 @@
 /* rosapresult.c - ROPM: result */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

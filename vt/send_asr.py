@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 ASRPDU DEFINITIONS ::=
 
 %{

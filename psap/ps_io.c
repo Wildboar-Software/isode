@@ -1,11 +1,5 @@
 /* ps_io.c - presentation stream I/O dispatch */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

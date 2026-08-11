@@ -1,7 +1,5 @@
 /* objects.c - SMI object handling */
 
-
-
 /*
  * 
  *
@@ -16,7 +14,6 @@
  *
  *
  */
-
 
 #include <ctype.h>
 #include <errno.h>

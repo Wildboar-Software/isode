@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 VT DEFINITIONS ::=
 
 BEGIN

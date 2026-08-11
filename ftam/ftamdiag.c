@@ -1,11 +1,5 @@
 /* ftamdiag.c - FPM: encode/decode diagnostics */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

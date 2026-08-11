@@ -1,11 +1,5 @@
 /* teletex.c - Teletex attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		teletex ::= <printablestring> '$' <printablestring>

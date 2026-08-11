@@ -14,9 +14,6 @@
 --
 --
 
-
-
-
 --* ISO8571-FADU *-- FADU DEFINITIONS ::=
 
 %{

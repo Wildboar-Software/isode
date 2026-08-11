@@ -1,6 +1,5 @@
 
 
-
 struct mapphonelist {
 	char *mapfrom;
 	char *mapto;

@@ -1,10 +1,5 @@
 /* aetdase.c - DASE-based DSE */
 
-
-
-
-
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>

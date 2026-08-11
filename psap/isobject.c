@@ -1,11 +1,5 @@
 /* isobject.c - lookup Object IDentifiers/DEscriptors */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "psap.h"

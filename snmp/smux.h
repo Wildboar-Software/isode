@@ -15,8 +15,6 @@
  *
  */
 
-
-
 #ifndef	PEPYPATH
 #include <isode/pepsy/SNMP-types.h>
 #else

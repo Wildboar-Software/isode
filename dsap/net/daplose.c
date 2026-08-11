@@ -1,11 +1,5 @@
 /* daplose.c - DAP: Support for directory protocol mappings */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

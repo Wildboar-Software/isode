@@ -1,11 +1,5 @@
 /* text2tpkt.c - test utilities for use with TPDU packets */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "tpkt.h"

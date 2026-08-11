@@ -1,9 +1,5 @@
 /* name.h - */
 
-
-
-
-
 #ifndef QUIPUNAME
 #define QUIPUNAME
 

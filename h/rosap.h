@@ -13,8 +13,6 @@
  *
  */
 
-
-
 #ifndef	_RoSAP_
 #define	_RoSAP_
 

@@ -1,11 +1,5 @@
 /* add_alias.c -  a mutilated add.c*/
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/add.h"

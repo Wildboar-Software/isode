@@ -1,11 +1,5 @@
 /* ftamd-trans.c - FTAM responder -- transfer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>

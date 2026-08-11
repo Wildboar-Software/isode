@@ -1,11 +1,5 @@
 /* isore.c - help out ISODE TSAP programs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>

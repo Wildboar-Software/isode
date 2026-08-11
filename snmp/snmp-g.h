@@ -1,9 +1,5 @@
 /* snmp-g.h - SNMP group */
 
-
-
-
-
 #include "psap.h"
 
 struct snmpstat {

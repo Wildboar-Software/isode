@@ -1,9 +1,5 @@
 /* ftamsbr.h - include file for FTAM initiator/responder subroutines */
 
-
-
-
-
 #include "ftam.h"		/* definitions for FS-USERs */
 #include "DOCS-types.h"
 #ifdef	NULL

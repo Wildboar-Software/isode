@@ -1,11 +1,5 @@
 /* ssaptyped.c - SPM: write typed data */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

@@ -1,11 +1,5 @@
 /* objectbyname.c - getisobjectbyoid */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

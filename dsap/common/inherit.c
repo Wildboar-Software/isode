@@ -1,11 +1,5 @@
 /* inherit.c - inherit attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		inherit ::= [<objectclass> '$'] ["ALWAYS $"] <attribute>

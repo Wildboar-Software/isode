@@ -1,10 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
 #include <stdio.h>
 #include <sys/termio.h>
 

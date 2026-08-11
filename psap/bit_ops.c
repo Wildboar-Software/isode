@@ -1,11 +1,5 @@
 /* bit_opts.c - operations on bit strings */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

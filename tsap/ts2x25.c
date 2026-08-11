@@ -1,11 +1,5 @@
 /* ts2x25.c - TPM: X.25 interface */
 
-
-
-
-
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>

@@ -1,11 +1,5 @@
 /* jpeg2asn.c - your comments here */
 
-
-
-
-
-
-
 /*
  *
  * jpeg2asn - takes a file, and adds the ASN-1 stuff to the beginning

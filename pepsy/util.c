@@ -1,11 +1,5 @@
 /* util.c */
 
-
-
-
-
-
-
 #include	<stdio.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"

@@ -1,7 +1,5 @@
 /* get_dsa_info.c - Get DSA info given its distinguished name */
 
-
-
 /*
  * 
  *
@@ -20,8 +18,6 @@
  *
  *
  */
-
-
 
 #include "quipu/util.h"
 #include "quipu/read.h"

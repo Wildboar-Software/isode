@@ -1,11 +1,5 @@
 /* dapread.c - */
 
-
-
-
-
-
-
 #include "tailor.h"
 #include "quipu/util.h"
 #include "quipu/dap2.h"

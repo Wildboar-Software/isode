@@ -1,11 +1,5 @@
 /* set_find.c - find member of a set */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

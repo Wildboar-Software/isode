@@ -1,11 +1,5 @@
 /* jpegphoto.c - your comments here */
 
-
-
-
-
-
-
 /*
  *
  * jpegphoto- Read standard input and pipe output to correct displayer

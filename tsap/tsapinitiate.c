@@ -1,11 +1,5 @@
 /* tsapinitiate.c - TPM: initiator */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "tpkt.h"

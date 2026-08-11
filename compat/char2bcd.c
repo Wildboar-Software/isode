@@ -1,10 +1,5 @@
 /* char2bcd.c - convert to BCD (for X.25 and others) */
 
-
-
-
-
-
 #include "general.h"
 
 int char2bcd (char *s, int n, u_char *d) {

@@ -1,8 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
 struct mapnamelist {
 	char *tablename;
 	char *nicename;

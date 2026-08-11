@@ -1,9 +1,5 @@
 /* demsb.h - DEC DEMSA router interface (part a!) */
 
-
-
-
-
 /* read write and error handlers, defined in compat/select.c */
 void xhandler();
 void rhandler();

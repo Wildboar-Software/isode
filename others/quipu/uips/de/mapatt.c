@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "util.h"
 #include "mapatts.h"

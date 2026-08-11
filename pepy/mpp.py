@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 MPP DEFINITIONS   ::=
 
 %{
@@ -21,10 +18,8 @@ static char *rcsid = "";
 
 #include <stdio.h>
 
-
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
-
 
 static char *myname = "mpp";
 
@@ -32,11 +27,8 @@ static enum { ps2mpp, pl2mpp } mode = ps2mpp;
 
 static enum format { p1, p2, sfd, ean, eanp2 } topfmt = ean;
 
-
 static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-
-
 
 main (argc, argv, envp)
 int	argc;
@@ -99,7 +91,6 @@ char  **argv,
 
     exit (status);		/* NOTREACHED */
 }
-
 
 static int  process (file, fp)
 register char *file;
@@ -175,7 +166,6 @@ register FILE *fp;
     }
 }
 
-
 %}
 
 BEGIN
@@ -184,13 +174,11 @@ END
 
 %{
 
-
 #include <stdarg.h>
 #include <unistd.h>
 
 #ifndef	lint
 static void	_advise ();
-
 
 static void	adios (char *what, char *fmt, ...)
 {
@@ -214,7 +202,6 @@ char   *what,
     adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static void  _advise (char *what, char *fmt, va_list ap)

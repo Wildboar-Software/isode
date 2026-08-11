@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 IF
 	{
 	joint-iso-ccitt
@@ -45,7 +42,6 @@ BEGIN
 -- 	RelativeDistinguishedName,
 --	DistinguishedName,
 --	Name;
-
 
 AttributeType [[P oid_table_attr *]] ::=
     OBJECT IDENTIFIER [[ O oa_ot.ot_oid ]] [[ D dec_at ]] [[ F free_at_dummy ]]

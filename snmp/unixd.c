@@ -1,7 +1,5 @@
 /* unixd.c - daemon for UNIX MIB */
 
-
-
 /*
  * 
  *
@@ -16,7 +14,6 @@
  *
  *
  */
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

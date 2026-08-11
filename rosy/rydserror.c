@@ -1,11 +1,5 @@
 /* rydserror.c - ROSY: return error to invocation */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

@@ -1,9 +1,5 @@
 /* sys.file.h - system independent sys/file.h */
 
-
-
-
-
 #ifndef _ISODE_SYS_FILE_H
 #define _ISODE_SYS_FILE_H
 

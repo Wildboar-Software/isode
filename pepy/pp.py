@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 PRETTY DEFINITIONS ::=
 
 %{
@@ -19,7 +16,6 @@ PRETTY DEFINITIONS ::=
 static char *rcsid = "";
 #endif
 %}
-
 
 BEGIN
 

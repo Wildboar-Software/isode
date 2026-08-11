@@ -1,11 +1,5 @@
 /* dsapinvoke.c - DSAP : Invoke DAP operations */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"

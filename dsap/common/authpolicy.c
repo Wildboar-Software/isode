@@ -1,11 +1,5 @@
 /* authpolicy.c - authentication policy routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"

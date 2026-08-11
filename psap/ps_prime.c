@@ -1,11 +1,5 @@
 /* ps_prime.c - prime a presentation stream */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

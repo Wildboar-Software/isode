@@ -1,11 +1,5 @@
 /* hexphoto.c - your comments here */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/photo.h"
 #include "psap.h"

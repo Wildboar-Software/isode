@@ -1,11 +1,5 @@
 /* chrcnv.c - character conversion table */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 

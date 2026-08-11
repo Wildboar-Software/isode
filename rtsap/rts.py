@@ -10,9 +10,6 @@
 --
 --
 
-
-
-
 --* Reliable-Transfer-APDUs *-- RTS
 --*  { joint-iso-ccitt reliable-transfer(3) apdus(0) } *--
 DEFINITIONS ::=
@@ -24,7 +21,6 @@ static char *rcsid = "";
 
 #include <stdio.h>
 #include "rtpkt.h"
-
 
 int	rtsap_priority;
 

@@ -12,7 +12,6 @@
 # 
 ###############################################################################
 
-
 # this line must occur first
 oidtable	@(ETCDIR)oidtable
 

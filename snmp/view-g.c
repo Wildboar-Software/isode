@@ -1,11 +1,5 @@
 /* view-g.c - VIEW group */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "mib.h"
 #include "view-g.h"

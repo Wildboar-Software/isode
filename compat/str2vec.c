@@ -1,11 +1,5 @@
 /* str2vec.c - string to vector */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

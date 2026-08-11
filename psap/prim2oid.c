@@ -1,11 +1,5 @@
 /* prim2oid.c - presentation element to object identifier */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -6,13 +6,11 @@
 # The patch can be absolute, or relative to the defined ETCDIR as in this case.
 oidtable	oidtable
 
-
 # Name of the DSA to start, there must be an entry of a similar name in ./EDB
 mydsaname	c=GB@cn=toucan
 
 # default tree directory (This directory = `.')
 treedir		./
-
 
 # DSA to contact if we need a referral to a parent.
 # Giant Tortoise is held at University of London Computer Centre
@@ -24,7 +22,6 @@ parent "cn=alpaca"	   '0101'H/Internet=130.117.128.2+17007|Int-X25(80)=311060700
 parent "cn=eel"		   \'0101\'H/Internet=129.240.2.51+2005|Int-X25(80)=242211000163+PID+03018100
 parent "cn=anaconda" 	   \'0101\'H/Int-X25(80)=5052334300013+PID+03018100
 
-
 # write logs in this directory.
 logdir		/tmp/
 
@@ -33,9 +30,6 @@ logdir		/tmp/
 # by placing a '#' in front of the entry, if full logging is not required.
 # NOTE Full logging slows the DSA down.
 dsaplog		level=all sflags=tty
-
-
-
 
 # Don't want slaves updated from another DSA (yet!)
 update 		off

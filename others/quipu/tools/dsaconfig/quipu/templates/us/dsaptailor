@@ -2,7 +2,6 @@
 # dsaptailor - ISODE DSAP Specific Tailoring File
 ###############################################################################
 
-
 # this line must occur first
 oidtable	oidtable
 

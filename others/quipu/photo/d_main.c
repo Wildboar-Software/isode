@@ -1,11 +1,5 @@
 /* d_main.c - make the decode routine into a stand alone program */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "sys.file.h"

@@ -1,11 +1,5 @@
 /* norm2na.c - normalize NSAPaddr to NSAP struct */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

@@ -1,11 +1,5 @@
 /* tsapd.c - OSI transport listener */
 
-
-
-
-
-
-
 #include <stdlib.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

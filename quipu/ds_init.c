@@ -1,11 +1,5 @@
 /* ds_init.c - initialise the DSA */
 
-
-
-
-
-
-
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/read.h"

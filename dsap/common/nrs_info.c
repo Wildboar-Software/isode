@@ -1,11 +1,5 @@
 /* nrs_info.c - nRSInformation attribute */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 	nrs_info ::= <context> "$" <addr_sp_id> "$" <routes>

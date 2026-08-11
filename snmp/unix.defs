@@ -56,4 +56,3 @@ fsBlocksAvailable    fsTableEntry.9   INTEGER         read-only       mandatory
 fsInodeCount         fsTableEntry.10  INTEGER         read-only       mandatory
 fsInodesAvailable    fsTableEntry.11  INTEGER         read-only       mandatory
 
-

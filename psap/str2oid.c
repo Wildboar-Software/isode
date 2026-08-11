@@ -1,11 +1,5 @@
 /* str2oid.c - string to object identifier */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

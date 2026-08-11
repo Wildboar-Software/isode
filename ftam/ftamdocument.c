@@ -1,11 +1,5 @@
 /* ftamdocument.c - FTAM document database */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ftam.h"
 #include "tailor.h"

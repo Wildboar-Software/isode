@@ -1,11 +1,5 @@
 /* psapexec.c - PPM: exec */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "PS-types.h"
 #include "ppkt.h"

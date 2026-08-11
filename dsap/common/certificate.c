@@ -1,11 +1,5 @@
 /* certificate.c - Attribute Syntax for certificates */
 
-
-
-
-
-
-
 #include <stdio.h>
 
 #include "quipu/util.h"

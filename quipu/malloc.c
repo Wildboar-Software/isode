@@ -1,11 +1,5 @@
 /* malloc.c - Quipu DSA specific memory management */
 
-
-
-
-
-
-
 #include <stdio.h>
 #ifdef	__linux__
 #include <values.h>

@@ -1,11 +1,5 @@
 /* psaprovider.c - implement the presentation protocol */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "PS-types.h"

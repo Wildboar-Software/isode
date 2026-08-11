@@ -1,7 +1,5 @@
 /* ip.c - MIB realization of the IP (and Address Translation) group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <string.h>

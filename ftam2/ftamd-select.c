@@ -1,11 +1,5 @@
 /* ftamd-select.c - FTAM responder -- selection regime */
 
-
-
-
-
-
-
 #include <grp.h>
 #include <stdio.h>
 #include <pwd.h>

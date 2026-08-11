@@ -1,11 +1,5 @@
 /* ssapselect.c - SPM: map descriptors */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

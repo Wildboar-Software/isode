@@ -1,11 +1,5 @@
 /* sprintoid.c - object identifier to string */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

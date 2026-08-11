@@ -1,11 +1,5 @@
 /* ftampass.c - FPM: encode/decode access passwords */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

@@ -1,7 +1,5 @@
 /* smuxentry.c - smuxEntry routines */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "smux.h"

@@ -1,11 +1,5 @@
 /* qb_pullup.c - "pullup" a list of qbufs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

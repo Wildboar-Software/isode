@@ -1,11 +1,5 @@
 /* ftamchrg.c - FPM: encode/decode charging */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

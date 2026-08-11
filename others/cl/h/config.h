@@ -1,8 +1,5 @@
 /* sys52-exos.h - site configuration file for SYS5 release 2 with EXOS 8044 */
 
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

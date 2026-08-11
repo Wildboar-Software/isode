@@ -1,9 +1,5 @@
 /* query.h - main information structure */
 
-
-
-
-
 #ifndef _query_h
 #define _query_h
 

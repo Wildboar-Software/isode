@@ -1,11 +1,5 @@
 /* actions5.c - VTPM: FSM sector 5 actions */
 
-
-
-
-
-
-
 #include "vtpm.h"
 #include "sector1.h"
 

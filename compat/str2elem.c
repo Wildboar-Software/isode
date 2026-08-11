@@ -1,11 +1,5 @@
 /* str2elem.c - string to list of integers */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdlib.h>
 #include "general.h"

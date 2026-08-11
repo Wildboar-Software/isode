@@ -1,11 +1,5 @@
 /* template.c - your comments here */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <signal.h>
 #include "demanifest.h"

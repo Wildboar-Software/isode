@@ -1,11 +1,5 @@
 /* dsapabort.c - DSAP: Lose the binding identified by the descriptor */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/dsap.h"
 

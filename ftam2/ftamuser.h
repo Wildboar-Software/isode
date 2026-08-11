@@ -1,9 +1,5 @@
 /* ftamuser.h - include file for interactive FTAM initiator */
 
-
-
-
-
 #include "ftamsbr.h"
 
 extern int  ontty;

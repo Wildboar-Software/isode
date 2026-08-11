@@ -1,11 +1,5 @@
 /* servbyport.c - getisoserventbyport */
 
-
-
-
-
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"

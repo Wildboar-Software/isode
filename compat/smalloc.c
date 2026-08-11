@@ -1,11 +1,5 @@
 /* smalloc.c - error checking malloc */
 
-
-
-
-
-
-
 #include <unistd.h>
 #include "general.h"
 #include "manifest.h"

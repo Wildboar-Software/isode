@@ -14,9 +14,6 @@
 --
 --
 
-
-
-
 UNIX-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
@@ -29,26 +26,20 @@ IMPORTS
 	OBJECT-TYPE
 		FROM RFC-1212;
 
-
 -- the agents group (defined in 4bsd.my)
 -- agents OBJECT IDENTIFIER ::=	{ unix 1 }
-
 
 -- the mbuf group (defined in smux.my)
 -- mbuf OBJECT IDENTIFIER ::= { unix 2 }
 
-
 -- the SMUX peer group (defined in 4bsd.my)
 -- peers OBJECT IDENTIFIER ::=	{ unix 3 }
-
 
 -- the SMUX protocol group (defined in smux.my)
 -- smux OBJECT IDENTIFIER ::=	{ unix 4 }
 
-
 -- the NETSTAT group (defined in smux.my)
 -- netstat OBJECT IDENTIFIER ::= { unix 5 }
-
 
 -- the print group
 
@@ -181,7 +172,6 @@ printQAction OBJECT-TYPE
 			completes printing"
 	::= { printQEntry 5 }
 
-
 -- the printer job table
 
 printJTable OBJECT-TYPE
@@ -290,7 +280,6 @@ printJAction OBJECT-TYPE
 
 		remove - remove this job from the queue"
 	::= { printJEntry 6 }
-
 
 -- the user-admin group
 

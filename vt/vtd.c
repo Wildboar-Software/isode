@@ -1,11 +1,5 @@
 /* vtd.c - VT responder */
 
-
-
-
-
-
-
 #undef MAP_BACKSPACE	/*Map backspace character to VT ERASE CHAR*/
 
 #include <signal.h>

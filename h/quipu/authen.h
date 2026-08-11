@@ -1,8 +1,5 @@
 /* authen.h - parameters for strong authentication */
 
-
-
-
 #ifndef QUIPUAUTHEN
 #define QUIPUAUTHEN
 #include "quipu/name.h"

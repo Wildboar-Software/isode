@@ -1,11 +1,5 @@
 /* tailor.c - ISODE tailoring */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

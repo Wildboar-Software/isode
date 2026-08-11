@@ -1,11 +1,5 @@
 /* conf.c - DSAP Configuration */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "tailor.h"
 

@@ -1,11 +1,5 @@
 /* rt2ssreleas2.c - RTPM: respond to release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

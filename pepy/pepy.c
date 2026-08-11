@@ -1,11 +1,5 @@
 /* pepy.c - PE parser (yacc-based) */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>

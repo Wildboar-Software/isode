@@ -1,7 +1,5 @@
 /* smux.c - SMUX initiator library */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <stdarg.h>

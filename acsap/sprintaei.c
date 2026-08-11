@@ -1,11 +1,5 @@
 /* sprintaei.c - manage AE info */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

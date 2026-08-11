@@ -1,11 +1,5 @@
 /* country.c - search for a country */
 
-
-
-
-
-
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

@@ -1,7 +1,5 @@
 /* mib.c - MIB realization */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "mib.h"

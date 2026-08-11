@@ -1,11 +1,5 @@
 /* psaprespond.c - PPM: responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "PS-types.h"
 #include "ppkt.h"

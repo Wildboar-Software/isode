@@ -1,11 +1,5 @@
 /* set_add.c - add member to set */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

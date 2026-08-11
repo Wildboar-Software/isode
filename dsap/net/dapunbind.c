@@ -1,11 +1,5 @@
 /* dapunbind.c - DAP unbind operation */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dap.h"

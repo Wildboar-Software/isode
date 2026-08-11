@@ -1,9 +1,5 @@
 /* psap.h - include file for presentation users (PS-USER) */
 
-
-
-
-
 #ifndef	_PSAP_
 #define	_PSAP_
 

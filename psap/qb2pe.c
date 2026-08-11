@@ -1,11 +1,5 @@
 /* qb2pe.c - create a variable-depth Inline CONStructor PElement */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

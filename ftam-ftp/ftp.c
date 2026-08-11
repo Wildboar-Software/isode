@@ -1,9 +1,5 @@
 /* ftp.c - FTP client */
 
-
-
-
-
 /*
  *				  NOTICE
  *

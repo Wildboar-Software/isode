@@ -1,11 +1,5 @@
 /* security.c - Check security parameters */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/ds_error.h"
 #include "quipu/commonarg.h"

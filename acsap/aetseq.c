@@ -1,11 +1,5 @@
 /* aetseq.c - application entity titles -- sequential lookup */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"

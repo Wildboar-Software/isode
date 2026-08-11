@@ -1,11 +1,5 @@
 /* rtsapgturn.c - RTPM: give turn */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

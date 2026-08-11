@@ -1,11 +1,5 @@
 /* ftaminitiate.c - FPM: initiator */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

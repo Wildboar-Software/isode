@@ -1,9 +1,5 @@
 /* attr.h - directory service interface definition */
 
-
-
-
-
 #ifndef QUIPUATTR
 #define QUIPUATTR
 

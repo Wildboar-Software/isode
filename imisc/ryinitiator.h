@@ -1,9 +1,5 @@
 /* ryinitiator.h - include file for the generic interactive initiator */
 
-
-
-
-
 #ifndef PEPSY_VERSION
 #define PEPSY_VERSION 1
 #endif

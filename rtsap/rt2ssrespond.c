@@ -1,11 +1,5 @@
 /* rt2ssrespond.c - RTPM: responder */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "OACS-types.h"

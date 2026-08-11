@@ -1,7 +1,5 @@
 /* osilookup.c - convert entry in /etc/osi.hosts to isoentities format */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include "config.h"
 #include <stdio.h>

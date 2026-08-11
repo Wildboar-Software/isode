@@ -1,11 +1,5 @@
 /* oper_result.c - deal with result of an operation */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

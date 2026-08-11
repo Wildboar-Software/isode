@@ -1,11 +1,5 @@
 /* pepy_undo.c - PE parser (yacc-based) building routines */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "pepy.h"

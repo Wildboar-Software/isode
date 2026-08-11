@@ -1,10 +1,5 @@
 /* select.c - select() abstractions */
 
-
-
-
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>

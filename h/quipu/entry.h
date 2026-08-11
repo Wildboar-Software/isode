@@ -1,9 +1,5 @@
 /* entry.h - */
 
-
-
-
-
 #ifndef QUIPUENTRY
 #define QUIPUENTRY
 

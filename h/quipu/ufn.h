@@ -1,9 +1,5 @@
 /* ufn.h - user-friendly naming routines */
 
-
-
-
-
 #ifndef _QUIPUUFN_
 #define _QUIPUUFN_
 

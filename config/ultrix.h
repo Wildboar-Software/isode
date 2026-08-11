@@ -1,9 +1,5 @@
 /* ultrix.h - site configuration file for Ultrix version greater than 3.1 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

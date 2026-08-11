@@ -1,11 +1,5 @@
 /* psapminor2.c - PPM: respond to minorsyncs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

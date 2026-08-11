@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 SA
 	{
 	joint-iso-ccitt
@@ -135,7 +132,6 @@ CriteriaItem [[P struct CriteriaItem *]]
                 
         }
 
-
 Criteria [[P struct Criteria *]]
     ::=
         CHOICE <<offset>>
@@ -154,8 +150,6 @@ Criteria [[P struct Criteria *]]
             not[3]
                 Criteria [[p parm -> un.not ]]
         }
-
-
 
 Guide [[ P struct Guide *]]
     ::=

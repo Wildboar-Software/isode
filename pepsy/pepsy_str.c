@@ -1,11 +1,5 @@
 /* pepy_strings.c - constant strings used in pepy */
 
-
-
-
-
-
-
 #ifndef lint
 char	*pepy_strings[] = {
 	"bad ",				/* PEPY_ERR_BAD */

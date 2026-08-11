@@ -1,10 +1,5 @@
 /* vprint.c - pepy printer support */
 
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>

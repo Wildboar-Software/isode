@@ -1,9 +1,5 @@
 /* test_table.h */
 
-
-
-
-
 /*
  * This contains the information about each test case necessary to test it
  * e.g. size, name

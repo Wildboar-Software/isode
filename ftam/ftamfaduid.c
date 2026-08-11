@@ -1,11 +1,5 @@
 /* ftamfaduid.c - FPM: encode/decode FADU identities */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

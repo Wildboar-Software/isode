@@ -1,11 +1,5 @@
 /* rydiscard.c - ROSY: discard invocation in progress */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

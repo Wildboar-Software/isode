@@ -1,11 +1,5 @@
 /* asn_ext.c - ASN.1 code pepsy can't quite do yet */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/common.h"

@@ -1,11 +1,5 @@
 /* conn_abort.c - abort association */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

@@ -7,11 +7,7 @@
 --
 --
 
-
-
-
 T1 { joint-iso-ccitt rubbish(999) modid(1) } DEFINITIONS ::=
-
 
 BEGIN
 
@@ -33,7 +29,6 @@ IMPORTS
 
 -- Embedded Sequences test
 
-
     -- Test of Embedded Strings
 Emb-Strings ::= SEQUENCE {
 	atest INTEGER,
@@ -46,7 +41,6 @@ Emb-Strings ::= SEQUENCE {
 	    em-bit BIT STRING
 	}
     }
-
 
 Strings ::= SEQUENCE { -- Test Octet strings, bit strings and character
 		       -- Strings in general
@@ -143,7 +137,6 @@ Seqof-Test ::= SEQUENCE {
 	i-test2 INTEGER
     }
 
-
    -- Test data for the Choice type
 Choice-Test ::= SET {
 	c1 CHOICE {
@@ -183,7 +176,6 @@ Choice-Test ::= SET {
 		}
 	    }
 	}
-
 
     }
 
@@ -253,7 +245,6 @@ E-ref	::= SEQUENCE {
     e-ref [APPLICATION 33] IMPLICIT T2.Info OPTIONAL
     }
 
-
 -- Simple type optimisations of POSY/PEPY
 
  Bstring ::= [APPLICATION 8] BIT STRING
@@ -269,7 +260,6 @@ E-ref	::= SEQUENCE {
  Sany ::= ANY
 
  Soid ::= OBJECT IDENTIFIER
-
 
 Optimised ::= SEQUENCE {
     o1 Bstring,

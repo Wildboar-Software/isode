@@ -1,11 +1,5 @@
 /* ftambits.c - FPM: encode/decode BIT STRINGs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

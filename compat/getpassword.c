@@ -1,11 +1,5 @@
 /* getpassword.c - generic read-the-password-from-the-tty */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <stdio.h>
 #include "general.h"

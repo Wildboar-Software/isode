@@ -1,11 +1,5 @@
 /* dsapbind1.c - DSAP : Bind for Directory protocols DAP, DSP and QSP */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"

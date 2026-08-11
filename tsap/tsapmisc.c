@@ -1,11 +1,5 @@
 /* tsapmisc.c - miscellany tsap functions */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"

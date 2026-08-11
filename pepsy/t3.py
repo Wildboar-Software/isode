@@ -7,10 +7,6 @@
 --
 --
 
-
-
-
-
 T3 DEFINITIONS ::=
 
 %{
@@ -21,8 +17,6 @@ T3 DEFINITIONS ::=
 %}
 
 BEGIN
-
-
 
 Pepy-refs [[ P struct pepy_refs * ]] ::= SEQUENCE {
     [1] IMPLICIT INTEGER [[ i parm->t_int ]],

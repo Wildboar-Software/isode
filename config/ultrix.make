@@ -15,9 +15,6 @@
 #
 ###############################################################################
 
-
-
-
 ###############################################################################
 # Ultrix 4.2 and X Windows DUAs
 ###############################################################################
@@ -38,7 +35,6 @@
 # /usr/local/lib/libXext.a to get the MIT version of the library.
 # Alternatively, modify Makefile link commands to use -lXext-mit 
 # instead of -lXext.
-
 
 ###############################################################################
 # Options
@@ -68,7 +64,6 @@ SYSTEM	=	-bsd42
 MANDIR	=	/usr/man/
 MANOPTS	=	-bsd42
 
-
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
@@ -95,7 +90,6 @@ LN	=	ln
 
 # Add -lx25 -ldnet to LSOCKET below for the DEMSA X.25 router
 LSOCKET	=	$(KRBLIB)
-
 
 ###############################################################################
 # Generation Rules for library modules

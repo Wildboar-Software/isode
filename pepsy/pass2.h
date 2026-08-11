@@ -1,9 +1,5 @@
 /* pass2.h */
 
-
-
-
-
 /* Change the version number only important features change - so people can
  * #ifdef on the version number. Also used to provide backwards compatible
  * macro definitions for posy/pepy.

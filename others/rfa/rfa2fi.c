@@ -16,10 +16,6 @@
  *
  */
 
-
-
-
-
 #include <stdio.h>
 #include "rfa.h"
 #include "RFA-types.h"

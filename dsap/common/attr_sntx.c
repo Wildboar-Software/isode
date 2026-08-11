@@ -1,11 +1,5 @@
 /* attr_sntx.c - Attribute Attribute syntax! */
 
-
-
-
-
-
-
 /*
  *	SYNTAX:
  *

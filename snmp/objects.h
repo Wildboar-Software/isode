@@ -15,8 +15,6 @@
  *
  */
 
-
-
 #include <stdint.h>
 #ifndef	PEPYPATH
 #include <isode/psap.h>

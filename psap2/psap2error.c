@@ -1,11 +1,5 @@
 /* psap2error.c - return PSAP error code in string form */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap2.h"
 

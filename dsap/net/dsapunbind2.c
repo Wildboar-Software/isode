@@ -1,11 +1,5 @@
 /* dsapunbind2.c - DSAP: maps D-UNBIND mapping onto RO-UNBIND */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 
 /* D-UNBIND.ACCEPT */

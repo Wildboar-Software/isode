@@ -25,7 +25,6 @@ pepy|asn1|asn.1|ASN1|ASN.1|x409|x.409|X409|X.409:\
 	OBJECT-TYPE SYNTAX ACCESS STATUS\
 	DECODER ENCODER PRINTER SECTIONS %{ %} [[ ]] << >>:
 
-
 bnf:\
 	:pb=^\d?\p\d?\:\:\=:tl:\
 	:cb=--:ce=--|$:sb="|':se="|':\

@@ -1,9 +1,5 @@
 /* sys52-win.h - site configuration file for SVR2 with WIN/TCP */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

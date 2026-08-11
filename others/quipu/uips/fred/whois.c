@@ -1,11 +1,5 @@
 /* whois.c - fred whois function */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <signal.h>
 #include "fred.h"

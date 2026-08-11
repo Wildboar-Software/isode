@@ -1,11 +1,5 @@
 /* str2saddr.c - string value to SSAPaddr */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

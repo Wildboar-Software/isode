@@ -1,9 +1,5 @@
 /* eventmsg.h - VTPM: states */
 
-
-
-
-
 char	*eventname[] = {
 	"* NOT USED *",
 	"VASSreq",

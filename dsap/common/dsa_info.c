@@ -1,11 +1,5 @@
 /* dsa_info.c - DSA Operational Information */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"

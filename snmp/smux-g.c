@@ -1,11 +1,5 @@
 /* smux-g.c - SMUX group */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "mib.h"
 #ifdef	TCP

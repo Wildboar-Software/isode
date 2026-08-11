@@ -1,11 +1,5 @@
 /* ronotlose.c - RONOT: Support for ABSTRACT-BIND mappings */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

@@ -1,9 +1,5 @@
 /* vtpm.h - VTPM: definitions */
 
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 

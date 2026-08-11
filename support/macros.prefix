@@ -15,7 +15,6 @@
 # 
 ###############################################################################
 
-
 ###############################################################################
 #
 # Syntax:
@@ -27,19 +26,16 @@
 #
 ###############################################################################
 
-
 # standard macros, defined in "A string encoding of Presentation Address"
 
 Int-X25(80)	TELEX+00728722+X.25(80)+01+
 Janet		TELEX+00728722+X.25(80)+02+
 Internet-RFC-1006 TELEX+00728722+RFC-1006+03+
 
-
 # ISODE standard macros
 
 X25(80)		TELEX+00728722+X.25(80)+
 TCP		TELEX+00728722+RFC-1006+
-
 
 # Interim Community Names
 
@@ -62,5 +58,4 @@ NSAP		NS+
 # UK CONS addresses
 # UKNS		DCC+826+d
 # JanetNS		UKNS=11000
-
 

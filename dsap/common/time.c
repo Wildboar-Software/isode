@@ -1,11 +1,5 @@
 /* time.c - */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		time ::= 'yymmddhhmmssz'

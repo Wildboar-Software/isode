@@ -1,11 +1,5 @@
 /* pa2str.c - pretty-print PSAPaddr */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

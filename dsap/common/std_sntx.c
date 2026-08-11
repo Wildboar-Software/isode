@@ -1,11 +1,5 @@
 /* std_sntx.c - invoke standard syntax handlers */
 
-
-
-
-
-
-
 int standard_syntaxes (void) {
 	string_syntaxes ();
 	cilist_syntax ();

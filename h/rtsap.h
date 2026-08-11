@@ -1,9 +1,5 @@
 /* rtsap.h - include file for reliable transfer users (RtS-USER) */
 
-
-
-
-
 #ifndef	_RtSAP_
 #define	_RtSAP_
 

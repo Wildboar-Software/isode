@@ -1,9 +1,5 @@
 /* ronote.h - Additions to properly support ABSTRACT-BIND */
 
-
-
-
-
 #ifndef	_RoNot_
 #define	_RoNot_
 

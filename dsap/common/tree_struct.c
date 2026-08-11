@@ -1,11 +1,5 @@
 /* tree_struct.c - Tree Structure utility routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"

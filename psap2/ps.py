@@ -14,9 +14,6 @@
 --
 --
 
-
-
-
 --* ISO8823-PRESENTATION *-- PS DEFINITIONS ::=
 
 %{
@@ -103,7 +100,6 @@ CPC-type ::=
 -- This shall be the same set of presentation data values which were contained
 -- in the CP-type.
 
-
 -- The SS-user data parameter value of the S-CONNECT response and confirm
 -- session-service primitives shall be a CPA-PPDU value when the Result
 -- parameter value is "accept".
@@ -152,7 +148,6 @@ CPA-type ::=
                 OPTIONAL
 		-- Shall be used for normal mode only.
         }
-
 
 -- The SS-user data parameter value of the S-CONNECT response and confirm
 -- session-service primitives shall be a CPR-PPDU value when the Result
@@ -206,7 +201,6 @@ CPR-type ::=
 		-- Shall be used for normal mode only.
         }
 
-
 -- The SS-user data parameter of the S-U-ABORT request and indication sevice
 -- primitives shall be an Abort-type value.
 
@@ -251,7 +245,6 @@ ARP-PPDU ::=
                 IMPLICIT Event-identifier
                 OPTIONAL
         }
-
 
 -- The SS-user data parameter of the S-TYPED-DATA request and indication sevice
 -- primitives shall be an Typed-data-type value.
@@ -300,7 +293,6 @@ ACA-PPDU ::=
                 OPTIONAL
         }
 
-
 -- The SS-user data parameter of the S-RESYNCHRONIZE request and indication
 -- sevice primitives shall be an RS-PPDU value.
 
@@ -329,7 +321,6 @@ RSA-PPDU ::=
                 OPTIONAL
         }
 
-
 -- The SS-user data parameter of the S-DATA, S-CAPABILITY-DATA,
 -- S-EXPEDITED-DATA request and indication session-sevice primitives and
 -- S-CAPABILITY-DATA response and confirm session-service primitives
@@ -337,7 +328,6 @@ RSA-PPDU ::=
 
 -- The SS-user data parameter values of all other session-service primitives
 -- not described above shall be of type User-data.
-
 
 Abort-reason ::=
         INTEGER {
@@ -367,7 +357,6 @@ Context-list ::=
 
 		abstract-syntax --* *--
                     Abstract-syntax-name,
-
 
 		transfer-syntax-list --* *--
                     SEQUENCE OF

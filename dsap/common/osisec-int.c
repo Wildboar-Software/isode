@@ -1,11 +1,5 @@
 /* osisec-int.c - minimal OSI Security Package */
 
-
-
-
-
-
-
 #include "config.h"
 #include "psap.h"
 #include "pepsy.h"

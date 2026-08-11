@@ -6,10 +6,6 @@
  * (Utterly Horrible Hack.)
  */
 
-
-
-
-
 #include <fcntl.h>
 #include <signal.h>
 #include <pwd.h>

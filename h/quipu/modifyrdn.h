@@ -1,9 +1,5 @@
 /* modifyrdn.h - */
 
-
-
-
-
 #ifndef QUIPUMODRDN
 #define QUIPUMODRDN
 

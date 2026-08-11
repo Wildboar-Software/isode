@@ -1,11 +1,5 @@
 /* uvec2ps.c - uvec-backed abstraction for PStreams */
 
-
-
-
-
-
-
 #include "psap.h"
 #include "tailor.h"
 

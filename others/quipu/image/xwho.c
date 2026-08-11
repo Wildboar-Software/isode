@@ -1,11 +1,5 @@
 /* xwho.c - who for X windows */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "imagesbr.h"
 #include <X11/Xlib.h>

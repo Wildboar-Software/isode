@@ -1,9 +1,5 @@
 /* sunlink4.h - site configuration file for SunLink OSI 6.0 on SunOS 4 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

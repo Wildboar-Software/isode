@@ -1,11 +1,5 @@
 /* dapsearch.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"

@@ -1,10 +1,5 @@
-#ifndef lint
-static char *rcsid_xinit_c = "$XConsortium: xinit.c,v 11.32 88/10/05 09:27:45 jim Exp $";
-#endif /* lint */
 #include <X11/copyright.h>
-
 /* Copyright    Massachusetts Institute of Technology    1986	*/
-
 #include <X11/Xos.h>
 #include <X11/Xlib.h>
 #include <stdio.h>

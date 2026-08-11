@@ -1,11 +1,5 @@
 /* dapwait.c - DAP: Deal with incoming activity */
 
-
-
-
-
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dap2.h"

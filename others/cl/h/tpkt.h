@@ -1,8 +1,5 @@
 /* tpkt.h - include file for transport providers (TS-PROVIDER) */
 
-
-
-
 #ifndef	_TSAP_
 #include "tsap.h"		/* definitions for TS-USERs */
 

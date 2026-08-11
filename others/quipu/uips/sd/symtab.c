@@ -1,8 +1,5 @@
 
 
-
-
-
 #include "general.h"
 #include "symtab.h"
 

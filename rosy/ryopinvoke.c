@@ -1,11 +1,5 @@
 /* ryopinvoke.c - ROSY: invoke */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

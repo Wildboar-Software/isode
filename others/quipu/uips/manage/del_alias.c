@@ -1,11 +1,5 @@
 /* del_alias.c -  */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/remove.h"

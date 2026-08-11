@@ -1,11 +1,5 @@
 /* lexequ.c - Compare two strings ignoring case */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 

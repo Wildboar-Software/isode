@@ -1,9 +1,5 @@
 /* read.h - read operation */
 
-
-
-
-
 #ifndef QUIPUREAD
 #define QUIPUREAD
 

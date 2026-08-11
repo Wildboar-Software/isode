@@ -1,11 +1,5 @@
 /* ftamgroup2.c - FPM: respond to a grouped transaction */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

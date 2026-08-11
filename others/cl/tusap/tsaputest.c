@@ -1,9 +1,5 @@
 /* udptest.c - test out -ltsap for unit data service over UDP */
 
-
-
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "tpkt.h"

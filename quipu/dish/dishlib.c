@@ -1,11 +1,5 @@
 /* dish.c - */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>

@@ -1,9 +1,5 @@
 /* listen.h - listen demo definitions */
 
-
-
-
-
 #include "psap2.h"
 #include "ssap.h"
 #include "tsap.h"

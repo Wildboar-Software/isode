@@ -1,9 +1,5 @@
 /* add.h - */
 
-
-
-
-
 #ifndef QUIPUADD
 #define QUIPUADD
 

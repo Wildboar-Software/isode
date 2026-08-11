@@ -1,11 +1,5 @@
 /* pepy_misc.c - PE parser (yacc-based) misc routines */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "pepsydefs.h"

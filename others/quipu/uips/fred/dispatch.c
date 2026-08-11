@@ -1,11 +1,5 @@
 /* dispatch.c - fred dispatch */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include "fred.h"
 #ifdef	BSD42

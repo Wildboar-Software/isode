@@ -1,11 +1,5 @@
 /* pepy_do.c - PE parser (yacc-based) building routines */
 
-
-
-
-
-
-
 #include "pepy.h"
 #include <ctype.h>
 #include <stdio.h>

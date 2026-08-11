@@ -1,11 +1,5 @@
 /* soundex.c - compare a filter and attribute value */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

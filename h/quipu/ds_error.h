@@ -1,9 +1,5 @@
 /* ds_error.h - directory service errors */
 
-
-
-
-
 #ifndef DSERRORH
 #define DSERRORH
 

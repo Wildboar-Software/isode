@@ -1,11 +1,5 @@
 /* get_ava.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 

@@ -1,9 +1,5 @@
 
 
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "psap.h"

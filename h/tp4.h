@@ -1,9 +1,5 @@
 /* tp4.h - TP4 abstractions */
 
-
-
-
-
 #ifndef	_TP4_
 #define	_TP4_
 

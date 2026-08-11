@@ -1,11 +1,5 @@
 /* correlate.c - correlate search results */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/list.h"      /* to get LSR # defs */
 #include "quipu/ds_search.h"

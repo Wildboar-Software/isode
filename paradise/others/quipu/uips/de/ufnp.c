@@ -3,7 +3,6 @@
    Major mod is to only return up to maxPersons leaf matches - otherwise
    interact routine is called */
 
-
 /*
  * 
  *
@@ -13,8 +12,6 @@
  * *** empty log message ***
  *
  */
-
-
 
 #include "quipu/ufn.h"
 #include "tailor.h"

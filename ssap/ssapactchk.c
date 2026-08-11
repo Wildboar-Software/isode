@@ -1,11 +1,5 @@
 /* ssapactchk.c - SPM: check activity constraints */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "spkt.h"
 

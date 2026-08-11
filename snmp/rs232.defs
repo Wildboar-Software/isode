@@ -45,4 +45,3 @@ rs232OutSigName      rs232OutSigEntry.2 INTEGER         read-only       mandator
 rs232OutSigState     rs232OutSigEntry.3 INTEGER         read-only       mandatory
 rs232OutSigChanges   rs232OutSigEntry.4 Counter         read-only       mandatory
 
-

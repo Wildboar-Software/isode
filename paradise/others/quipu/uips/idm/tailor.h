@@ -1,9 +1,5 @@
 /* tailor.h - ISODE tailoring */
 
-
-
-
-
 #ifndef	_TAILOR_
 #define	_TAILOR_
 

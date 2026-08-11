@@ -1,7 +1,5 @@
 /* values.c - encode values */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "SNMP-types.h"

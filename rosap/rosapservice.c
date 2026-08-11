@@ -1,7 +1,5 @@
 /* rosapservice.c - ROPM: hack loader */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

@@ -1,7 +1,5 @@
 /* ro2ss.c - ROPM: SSAP interface */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "ROS-types.h"

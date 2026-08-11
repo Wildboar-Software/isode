@@ -1,11 +1,5 @@
 /* tai_init.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "tailor.h"
 

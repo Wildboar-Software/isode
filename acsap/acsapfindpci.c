@@ -1,11 +1,5 @@
 /* acsapfindpci.c - find PCI for ACSE */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #define	ACSE

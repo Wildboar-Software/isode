@@ -1,11 +1,5 @@
 /* ftamattr.c - FPM: encode/decode attributes */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

@@ -1,11 +1,5 @@
 /* ronotabort.c - RONOT: bail-out routine which logs abort to rosap log */
 
-
-
-
-
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "rosap.h"

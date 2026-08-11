@@ -1,9 +1,5 @@
 /* rtf.h - definitions for RT-file transfer utility */
 
-
-
-
-
 #include <stdio.h>
 #include "rtsap.h"
 #include "logger.h"

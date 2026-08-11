@@ -1,11 +1,5 @@
 /* imagesbr.c - image subroutines */
 
-
-
-
-
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>

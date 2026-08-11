@@ -1,11 +1,5 @@
 /* ps2pe.c - presentation stream to presentation element */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

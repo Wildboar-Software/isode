@@ -1,11 +1,5 @@
 /* qbuf2pe.c - read a PE from a SSDU */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #undef	qbuf2pe

@@ -1,11 +1,5 @@
 /* dsa_wait.c - accept and process events listened for */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "tsap.h"
 

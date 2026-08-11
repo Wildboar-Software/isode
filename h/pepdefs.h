@@ -1,9 +1,5 @@
 /* pepdefs.h */
 
-
-
-
-
 #ifndef PEPDEF_DEFINITIONS
 #define PEPDEF_DEFINITIONS
 /*

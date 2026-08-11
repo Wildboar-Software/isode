@@ -1,7 +1,5 @@
 /* snmpi.c - really minimal SNMP initiator */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <setjmp.h>
 #include <signal.h>

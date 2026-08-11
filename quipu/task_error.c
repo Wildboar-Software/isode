@@ -1,11 +1,5 @@
 /* task_error.c - */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

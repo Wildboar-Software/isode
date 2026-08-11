@@ -1,11 +1,5 @@
 /* ssdu2pe.c - read a PE from SSDU */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

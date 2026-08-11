@@ -1,11 +1,5 @@
 /* ds_error.c - Directory Operation Errors */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/dsp.h"

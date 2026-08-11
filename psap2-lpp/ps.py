@@ -12,9 +12,6 @@
 --
 --
 
-
-
-
 --* RFC1085-PS *-- PS DEFINITIONS ::=
 
 %{
@@ -94,7 +91,6 @@ PresentationSelector ::=
     [1]
 	IMPLICIT OCTET STRING
 
-
 -- connect response PDU
 
 ConnectResponse-PDU ::=
@@ -126,7 +122,6 @@ Rejection-reason ::=
             protocol-version-not-supported(4)
         }
 
-
 -- release request PDU
 
 ReleaseRequest-PDU ::=
@@ -139,7 +134,6 @@ ReleaseRequest-PDU ::=
 	    user-data
                 UserData-PDU
         }
-
 
 -- release response PDU
 
@@ -182,14 +176,12 @@ Abort-reason ::=
 	    reference-mismatch(9)
         }
 
-
 -- data PDU
 
 UserData-PDU ::=
     [5]					-- this is the ASN.1 object
 	ANY				-- if it is a top-level PDU, it
 					-- is in PCI #1, otherwise PCI #3
-
 
 -- data PDU for the udp-based service
 

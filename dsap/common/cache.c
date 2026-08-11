@@ -1,11 +1,5 @@
 /* cache.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"

@@ -1,7 +1,5 @@
 /* support.c - remote distribution -- support routines */
 
-
-
 /*
  * 
  *

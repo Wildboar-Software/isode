@@ -1,11 +1,5 @@
 /* oid.c - Object Identifier routines */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"

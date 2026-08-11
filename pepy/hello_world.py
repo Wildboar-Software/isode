@@ -3,15 +3,11 @@ HelloWorldDefs DEFINITIONS ::=
 %{
 #include <stdio.h>
 
-
 static char *text;
 static char *myname = "hello_world";
 
-
 static void adios (char *, char *, ...);
 void advise (char *, char *, ...);
-
-
 
 main (argc, argv, envp)
 int     argc;
@@ -39,7 +35,6 @@ ENCODER	build
 MyStruct ::=
 	PrintableString [[s "Hello World" ]]
 
-
 DECODER	unbuild
 
 MyStruct ::=
@@ -50,13 +45,11 @@ END
 
 %{
 
-
 #include <stdarg.h>
 #include <unistd.h>
 
 #ifndef	lint
 static void	_advise ();
-
 
 static void  adios (char *what, char *fmt, ...)
 {
@@ -80,7 +73,6 @@ char   *what,
     adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static void  _advise (char *what, char *fmt, va_list ap)

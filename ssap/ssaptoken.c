@@ -1,11 +1,5 @@
 /* ssaptoken.c - SPM: tokens */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

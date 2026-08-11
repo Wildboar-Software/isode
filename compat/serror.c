@@ -1,11 +1,5 @@
 /* serror.c - get system error */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

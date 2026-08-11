@@ -1,11 +1,5 @@
 /* isonsapsnpa.c - look-up ISODE NSAP->SNP binding */
 
-
-
-
-
-
-
 #include <string.h>
 #include <stdio.h>
 #include "general.h"

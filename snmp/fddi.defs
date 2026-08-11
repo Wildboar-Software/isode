@@ -107,4 +107,3 @@ snmpFddiATTACHMENTIMaxExpiration snmpFddiATTACHMENTEntry.5 INTEGER         read-
 snmpFddiATTACHMENTInsertedStatus snmpFddiATTACHMENTEntry.6 INTEGER         read-only       mandatory
 snmpFddiATTACHMENTInsertPolicy snmpFddiATTACHMENTEntry.7 INTEGER         read-write      mandatory
 
-

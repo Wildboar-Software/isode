@@ -56,4 +56,3 @@ dot5TimerErrorReport dot5TimerEntry.9 INTEGER         read-only       mandatory
 dot5TimerBeaconTransmit dot5TimerEntry.10 INTEGER         read-only       mandatory
 dot5TimerBeaconReceive dot5TimerEntry.11 INTEGER         read-only       mandatory
 
-

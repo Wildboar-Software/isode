@@ -1,11 +1,5 @@
 /* set_addon.c - add member to end of a set */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

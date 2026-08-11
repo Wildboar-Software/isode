@@ -1,9 +1,5 @@
 /* fpkt.h - include file for FTAM provider (FS-PROVIDER) */
 
-
-
-
-
 #include "FTAM-types.h"
 
 #ifndef	_FTAM_

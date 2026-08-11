@@ -1,7 +1,5 @@
 /* ts2sunlink.c - TPM: SunLink OSI TP4 interface */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

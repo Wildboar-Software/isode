@@ -1,9 +1,5 @@
 /* dsap.h - include file for directory service users (DS-USER) */
 
-
-
-
-
 #ifndef	_DSAP_
 #define	_DSAP_
 

@@ -1,11 +1,5 @@
 /* ds_bind.c - BindArgument Checking and Authentication */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/commonarg.h"

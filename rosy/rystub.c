@@ -1,11 +1,5 @@
 /* rystub.c - ROSY: stubs */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <stdio.h>
 #include "rosy.h"

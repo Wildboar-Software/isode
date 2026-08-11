@@ -1,11 +1,5 @@
 /* dsaprovider.c - DSAP: Support for DSAP Actions */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/dsap.h"
 #include "tailor.h"

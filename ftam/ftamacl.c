@@ -1,11 +1,5 @@
 /* ftamacl.c - FPM: encode/decode access control lists (SETs of AC elements) */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

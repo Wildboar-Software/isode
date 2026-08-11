@@ -1,8 +1,5 @@
 /* ftam.h - include file for FTAM users (FS-USER) */
 
-
-
-
 #ifndef	_FTAM_
 #define	_FTAM_
 

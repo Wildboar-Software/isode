@@ -1,9 +1,5 @@
 /* internet.h - TCP/IP abstractions */
 
-
-
-
-
 #ifndef	_INTERNET_
 #define	_INTERNET_
 

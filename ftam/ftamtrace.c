@@ -1,11 +1,5 @@
 /* ftamtrace.c - FPM: tracing */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

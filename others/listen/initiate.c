@@ -1,11 +1,5 @@
 /* initiate.c -- initiator for listen demo */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "listen.h"
 

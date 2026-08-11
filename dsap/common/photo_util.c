@@ -1,11 +1,5 @@
 /* interface.c - photo bit manipulation utility routines */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 

@@ -1,11 +1,5 @@
 /* acsaprovider.c - implement the association control protocol */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

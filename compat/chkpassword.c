@@ -1,11 +1,5 @@
 /* chkpassword.c - check the password */
 
-
-
-
-
-
-
 //#define _XOPEN_SOURCE
 //#include <unistd.h>
 #include <stdio.h>

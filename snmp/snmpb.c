@@ -1,7 +1,5 @@
 /* snmpb.c - snmpi bulk load */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <string.h>

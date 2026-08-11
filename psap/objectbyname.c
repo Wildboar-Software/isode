@@ -1,11 +1,5 @@
 /* objectbyname.c - getisobjectbyname */
 
-
-
-
-
-
-
 #include <string.h>
 #include "psap.h"
 #include "tailor.h"

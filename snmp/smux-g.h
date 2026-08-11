@@ -1,9 +1,5 @@
 /* smux-g.h - SMUX group */
 
-
-
-
-
 #include "internet.h"
 #include "psap.h"
 

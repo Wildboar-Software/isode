@@ -1,11 +1,5 @@
 /* psaplose.c - PPM: you lose */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "PS-types.h"

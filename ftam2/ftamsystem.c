@@ -1,11 +1,5 @@
 /* ftamsystem.c - FTAM responder routines */
 
-
-
-
-
-
-
 #if	defined(DEBUG) && !defined(NULL_INITIATOR)
 #define	NULL_INITIATOR
 #endif

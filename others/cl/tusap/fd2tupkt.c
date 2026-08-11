@@ -1,10 +1,5 @@
 /* fd2tpkt.c - read/write a TPDU thru a socket */
 
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"

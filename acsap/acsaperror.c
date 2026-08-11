@@ -1,11 +1,5 @@
 /* acsaperror.c - return AcSAP error code in string form */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "acsap.h"
 

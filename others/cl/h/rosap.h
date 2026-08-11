@@ -8,7 +8,6 @@
 #ifndef	_RoSAP_
 #define	_RoSAP_
 
-
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif

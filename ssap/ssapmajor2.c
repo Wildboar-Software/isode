@@ -1,11 +1,5 @@
 /* ssapmajor2.c - SPM: respond to majorsyncs */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

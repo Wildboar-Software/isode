@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 DOCS DEFINITIONS ::=
 
 %{
@@ -67,7 +64,6 @@ FTAM-1-Datatype1 ::=
                 GeneralString
         }
 
-
 -- FTAM-3: ISO FTAM unstructured binary
 
 FTAM-3-Parameters ::=
@@ -87,7 +83,6 @@ FTAM-3-Parameters ::=
 
 FTAM-3-Datatype1 ::=
         OCTET STRING
-
 
 -- NBS-9: NBS-9 FTAM file directory
 

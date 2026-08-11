@@ -54,7 +54,6 @@ if [ $archive = "TRUE" ]; then
         fi
 fi
 
-
 if [ $grandtot = "TRUE" ]; then
 	noreport="FALSE"
 	savetotals="FALSE"
@@ -824,7 +823,6 @@ END {
 	else
 		printf "*Real* usage by organisation\n"
 	printf "%9s%10s\n", "No. users", "No. binds"
-
 
 	for (name in userorgnames)
 		if (userorgnames[name] != 0)

@@ -1,11 +1,5 @@
 /* rtsapasync.c - RTPM: set asynchronous events */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

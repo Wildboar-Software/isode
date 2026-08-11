@@ -1,7 +1,5 @@
 /* psapinitiate.c - PPM: initiator */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

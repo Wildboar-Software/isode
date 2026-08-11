@@ -1,9 +1,5 @@
 /* dgram.h - datagram (CL-mode TS) abstractions */
 
-
-
-
-
 #ifndef	_DGRAM_
 #define	_DGRAM_
 

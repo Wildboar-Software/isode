@@ -1,11 +1,5 @@
 /* addr2ref.c - manage encoded session addresses */
 
-
-
-
-
-
-
 #include <time.h>
 #include <string.h>
 #include "psap.h"

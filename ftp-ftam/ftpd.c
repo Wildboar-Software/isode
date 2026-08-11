@@ -1,7 +1,5 @@
 /* ftpd.c - FTAM/FTP gateway */
 
-
-
 /*
  * 
  *

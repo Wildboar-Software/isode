@@ -1,11 +1,5 @@
 /* rt2ss.c - RTPM: SSAP interface */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "OACS-types.h"

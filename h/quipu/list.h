@@ -1,9 +1,5 @@
 /* list.h - */
 
-
-
-
-
 #ifndef QUIPULIST
 #define QUIPULIST
 

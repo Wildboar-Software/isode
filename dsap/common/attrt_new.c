@@ -1,8 +1,5 @@
 
 
-
-
-
 #include <ctype.h>
 #include <string.h>
 #include "quipu/util.h"

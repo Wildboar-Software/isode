@@ -1,7 +1,5 @@
 /* dsp_cache.c - */
 
-
-
 /*
  * 
  *
@@ -23,8 +21,6 @@
  *
  *
  */
-
-
 
 #include "quipu/util.h"
 #include "quipu/dua.h"

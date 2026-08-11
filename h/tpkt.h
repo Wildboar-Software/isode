@@ -10,8 +10,6 @@
  *
  */
 
-
-
 #include "tsap.h"		/* definitions for TS-USERs */
 #include "logger.h"
 

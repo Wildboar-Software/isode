@@ -1,11 +1,5 @@
 /* ftam-mgmt.c - interactive initiator FTAM -- file management */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "ftamuser.h"
 

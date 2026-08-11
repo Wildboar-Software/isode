@@ -1,7 +1,5 @@
 /* lppd.c - lpp listen and dispatch daemon  */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

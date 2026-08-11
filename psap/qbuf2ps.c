@@ -1,11 +1,5 @@
 /* qbuf2ps.c - qbuf-backed abstractions for PStreams */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -1,21 +1,11 @@
 -- smi.my - Internet-standard SMI definitions
 
--- 
 --
 -- Contributed by NYSERNet Inc.  This work was partially supported by the
 -- U.S. Defense Advanced Research Projects Agency and the Rome Air Development
 -- Center of the U.S. Air Force Systems Command under contract number
 -- F30602-88-C-0016.
 --
---
--- 
---
---
---
---
-
-
-
 
 RFC1155-SMI DEFINITIONS ::= BEGIN
 
@@ -39,7 +29,6 @@ experimental  OBJECT IDENTIFIER ::= { internet 3 }
 private       OBJECT IDENTIFIER ::= { internet 4 }
 enterprises   OBJECT IDENTIFIER ::= { private 1 }
 
-
 -- definition of object types
 
 -- OBJECT-TYPE MACRO ::=
@@ -58,7 +47,6 @@ enterprises   OBJECT IDENTIFIER ::= { private 1 }
 -- 		    | "obsolete"
 -- 		    | "deprecated"
 -- END
-
 
 -- names of objects in the MIB
 
@@ -117,7 +105,6 @@ ApplicationSyntax ::=
 -- other application-wide types, as they are
 -- defined, will be added here
     }
-
 
 -- application-wide types
 

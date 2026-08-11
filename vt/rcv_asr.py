@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 ASRPDU DEFINITIONS ::=
 
 %{
@@ -114,7 +111,6 @@ PE pe;
 
 #endif
 
-
 #define	bitstr2int(arg,val,cnt) \
 { \
     char   *cp; \
@@ -209,7 +205,6 @@ ArgumValueList
 	ARG_VAL_LIST	*arg = (ARG_VAL_LIST *)parm;
 %}
 	::= SET OF %{q = arg->num_sp_param;%} Squat [[p parm]]
-
 
 Squat ::= CHOICE
 {
@@ -501,6 +496,5 @@ CHOICE
 END
 
 %{
-
 
 %}

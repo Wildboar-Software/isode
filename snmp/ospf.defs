@@ -111,4 +111,3 @@ ospfVirtNbrState     ospfVirtNbrEntry.5 INTEGER         read-only       mandator
 ospfVirtNbrEvents    ospfVirtNbrEntry.6 Counter         read-only       mandatory
 ospfVirtNbrLSRetransQLen ospfVirtNbrEntry.7 Gauge           read-only       mandatory
 
-

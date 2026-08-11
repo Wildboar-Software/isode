@@ -1,11 +1,5 @@
 /* acserver2.c - generic server dispatch */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "psap.h"

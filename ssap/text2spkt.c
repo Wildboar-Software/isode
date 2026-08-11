@@ -1,11 +1,5 @@
 /* text2spkt.c - read/write a SPDU thru a debug filter */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "spkt.h"
 #include "logger.h"

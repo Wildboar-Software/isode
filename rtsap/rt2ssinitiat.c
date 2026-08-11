@@ -1,11 +1,5 @@
 /* rt2ssinitiat.c - RTPM: initiator */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "RTS-types.h"

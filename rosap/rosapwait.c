@@ -1,7 +1,5 @@
 /* rosapwait.c - ROPM: wait for an indication */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

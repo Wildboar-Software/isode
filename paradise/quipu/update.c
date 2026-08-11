@@ -1,7 +1,5 @@
 /* update.c - write EDB back to disk after modify */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

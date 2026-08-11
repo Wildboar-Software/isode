@@ -1,11 +1,5 @@
 /* conn_finish.c - deal with request to finish the association */
 
-
-
-
-
-
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

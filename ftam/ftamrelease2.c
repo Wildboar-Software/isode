@@ -1,11 +1,5 @@
 /* ftamrelease2.c - FPM: respond to release */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

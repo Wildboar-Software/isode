@@ -1,11 +1,5 @@
 /* responder.c -- responder for callback demo */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "callback.h"
 

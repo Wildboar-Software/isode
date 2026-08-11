@@ -1,11 +1,5 @@
 /* pe_cmp.c - compare two presentation elements */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

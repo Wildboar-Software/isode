@@ -1,11 +1,5 @@
 /* prim2num.c - presentation element to integer */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

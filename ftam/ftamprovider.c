@@ -1,11 +1,5 @@
 /* ftamprovider.c - implement the FTAM protocol */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"

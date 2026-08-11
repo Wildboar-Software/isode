@@ -1,11 +1,5 @@
 /* rtfs.c - RT-file transfer utility -- common subroutines */
 
-
-
-
-
-
-
 #include "rtf.h"
 #include <stdarg.h>
 #include <unistd.h>

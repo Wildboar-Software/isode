@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 BigTest DEFINITIONS ::=
 
 %{
@@ -25,11 +22,8 @@ static int  count;
 
 static char *myname = "bigpepytest";
 
-
 static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-
-
 
 main (argc, argv, envp)
 int	argc;
@@ -54,7 +48,6 @@ char  **argv,
 %}
 
 BEGIN
-
 
 ENCODER	encoder
 
@@ -387,7 +380,6 @@ ObjectA ::=
 	BOOLEAN
 	[[b rnd(2)]]
 
-
 SECTIONS none decoder printer
 
 Test1 ::=
@@ -626,7 +618,6 @@ SetB ::=
 ObjectA ::=
 	BOOLEAN
 
-
 END
 
 %{
@@ -647,7 +638,6 @@ int	rand ();
 
 long	time ();
 
-
 static int rnd(n)
 int	n;
 {
@@ -667,7 +657,6 @@ int	n;
 
 #ifndef	lint
 static void	_advise ();
-
 
 static void  adios (char *what, char *fmt, ...)
 {
@@ -691,7 +680,6 @@ char   *what,
     adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static void  _advise (char *what, char *fmt, va_list ap)

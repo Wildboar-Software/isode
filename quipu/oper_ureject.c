@@ -1,11 +1,5 @@
 /* oper_ureject.c - deal with user rejection of an operation */
 
-
-
-
-
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

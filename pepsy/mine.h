@@ -1,9 +1,5 @@
 /* mine.h */
 
-
-
-
-
 #define TABLESIZE 29
 
 typedef struct ID_TABLE {

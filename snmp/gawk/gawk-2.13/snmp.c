@@ -1,10 +1,5 @@
 /* snmp.c - SNMP changes for gawk */
 
-
-
-
-
-
 #ifdef	SNMP
 #include "awk.h"
 #ifdef	HUGE

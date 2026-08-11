@@ -1,11 +1,5 @@
 /* oid2ode.c - object identifier to object descriptor  */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

@@ -1,11 +1,5 @@
 /* psapreport.c - PPM: exception reports */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

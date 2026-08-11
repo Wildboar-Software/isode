@@ -1,11 +1,5 @@
 /* ps_alloc.c - allocate a presentation stream */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

@@ -17,8 +17,6 @@
  *
  */
 
-
-
 #include <errno.h>
 #include <unistd.h>
 #include "defs.h"

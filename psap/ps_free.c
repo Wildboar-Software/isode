@@ -1,11 +1,5 @@
 /* ps_free.c - free a presentation stream */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

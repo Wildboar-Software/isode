@@ -1,11 +1,5 @@
 /* acsapinitiat.c - ACPM: initiator */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"

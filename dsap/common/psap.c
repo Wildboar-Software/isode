@@ -1,11 +1,5 @@
 /* psap.c - General PSAP utility routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"

@@ -14,9 +14,6 @@
 --
 -- 
 
-
-
-
 EVAL-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
@@ -25,9 +22,7 @@ IMPORTS
 	DisplayString
 		FROM RFC1158-MIB;
 
-
 snmpResearch OBJECT IDENTIFIER ::= { enterprises 99 }
-
 
 -- the functions group
 
@@ -129,7 +124,6 @@ functNot OBJECT-TYPE
 	STATUS	mandatory
 	::= { functions 16 }
 
-
 -- the expressions group
 
 expressions OBJECT IDENTIFIER ::= { snmpResearch 4 }
@@ -139,7 +133,6 @@ exprNumber OBJECT-TYPE
 	ACCESS	read-only
 	STATUS	mandatory
 	::= { expressions 1 }
-
 
 -- the expressions table
 

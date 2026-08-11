@@ -24,4 +24,3 @@ paraOutSigName       paraOutSigEntry.2 INTEGER         read-only       mandatory
 paraOutSigState      paraOutSigEntry.3 INTEGER         read-only       mandatory
 paraOutSigChanges    paraOutSigEntry.4 Counter         read-only       mandatory
 
-

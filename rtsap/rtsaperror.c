@@ -1,11 +1,5 @@
 /* rtsaperror.c - return RtSAP error code in string form */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rtsap.h"
 

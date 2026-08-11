@@ -6,8 +6,6 @@
 	clnp es-is table
  */
 
-
-
 /*
  * 
  *
@@ -22,7 +20,6 @@
  *
  *
  */
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

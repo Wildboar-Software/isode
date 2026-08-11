@@ -1,7 +1,5 @@
 /* system.c - MIB realization of the System group */
 
-
-
 /*
  * 
  *
@@ -16,8 +14,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "mib.h"

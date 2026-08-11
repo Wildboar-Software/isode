@@ -2,12 +2,6 @@
 
  	donated by Michael Davidson/UTK  <davidson@cs.utk.edu> */
 
-
-
-
-
-
-
 /* PRINT */
 
 #include <ctype.h>

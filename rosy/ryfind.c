@@ -1,11 +1,5 @@
 /* ryfind.c - ROSY: find operations and errors by numbers and names */
 
-
-
-
-
-
-
 #include <string.h>
 #include "rosy.h"
 

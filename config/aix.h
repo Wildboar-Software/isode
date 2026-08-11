@@ -1,9 +1,5 @@
 /* aix.h - site configuration file for IBM AIX 3.2 on RS6000 Workstation */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

@@ -1,11 +1,5 @@
 /* time2prim.c - time string to presentation element */
 
-
-
-
-
-
-
 #include <string.h>
 #include "psap.h"
 

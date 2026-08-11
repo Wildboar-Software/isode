@@ -1,11 +1,5 @@
 /* tsaplose.c - TPM: you lose */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

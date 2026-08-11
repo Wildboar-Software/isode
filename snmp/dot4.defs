@@ -62,4 +62,3 @@ dot4StatsFrameTooLongs dot4StatsEntry.11 Counter         read-only       mandato
 dot4StatsOverRuns    dot4StatsEntry.12 Counter         read-only       mandatory
 dot4StatsDupAddresses dot4StatsEntry.13 Counter         read-only       mandatory
 
-

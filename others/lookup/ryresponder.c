@@ -1,11 +1,5 @@
 /* ryresponder.c - generic idempotent responder */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <stdio.h>
 #include <setjmp.h>

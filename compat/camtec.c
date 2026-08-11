@@ -1,7 +1,5 @@
 /* camtec.c - X.25, CONS abstractions for CAMTEC CCL  */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <errno.h>
 #include <stdio.h>

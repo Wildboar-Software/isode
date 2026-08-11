@@ -1,11 +1,5 @@
 /* fred.c - DiSH support for FrED */
 
-
-
-
-
-
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>

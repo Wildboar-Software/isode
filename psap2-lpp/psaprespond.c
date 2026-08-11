@@ -1,7 +1,5 @@
 /* psaprespond.c - PPM: responder */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #define	LPP

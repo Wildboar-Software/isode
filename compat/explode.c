@@ -1,11 +1,5 @@
 /* explode.c - explode octets into ascii */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

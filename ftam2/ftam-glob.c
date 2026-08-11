@@ -1,11 +1,5 @@
 /* ftam-glob.c - interactive initiator FTAM -- globbing */
 
-
-
-
-
-
-
 /*
  * C-shell glob for random programs.
  *

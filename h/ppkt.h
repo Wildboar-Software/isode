@@ -12,8 +12,6 @@
  *
  */
 
-
-
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif

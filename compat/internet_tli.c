@@ -1,16 +1,10 @@
 /* internet.c - TCP/IP abstractions for TLI */
 
-
-
-
-
 /*
  * This module contributed by X-Tel Services from work done on behalf
  * of Boldon-James LTD, UK. There contribution to ISODE of this work
  * is gratefully acknowledged.
  */
-
-
 
 #include <ctype.h>
 #include <errno.h>

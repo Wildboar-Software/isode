@@ -1,9 +1,5 @@
 /* isoservent.h - ISODE services database access routines */
 
-
-
-
-
 #ifndef	_ISOSERVENT_
 #define	_ISOSERVENT_
 

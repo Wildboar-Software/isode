@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 UDQPDU DEFINITIONS ::=
 
 %{
@@ -33,7 +30,6 @@ UDQpdu ::= CHOICE <<1>>
 {
 	udqpdu [7] IMPLICIT COupdate [[p (PEPYPARM)parm]]
 }
-
 
 COupdate 
 %{

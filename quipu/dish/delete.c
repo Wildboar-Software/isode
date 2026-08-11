@@ -1,11 +1,5 @@
 /* delete.c - */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/remove.h"
 #include "pepsy.h"

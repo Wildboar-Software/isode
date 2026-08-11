@@ -1,11 +1,5 @@
 /* ode2oid.c - object descriptor to object identifier */
 
-
-
-
-
-
-
 #ifdef FIXME
 #include <psap.h>
 OID	ode2oid (char* descriptor) {

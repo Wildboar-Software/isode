@@ -119,4 +119,3 @@ esisISHouts          es-is.4          Counter         read-only       mandatory
 esisRDUins           es-is.5          Counter         read-only       mandatory
 esisRDUouts          es-is.6          Counter         read-only       mandatory
 
-

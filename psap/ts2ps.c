@@ -1,12 +1,6 @@
 /* ts2ps.c - TSDU-backed abstraction for PStreams
  		(really just a refinement of datagram-backed PStreams) */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tsap.h"

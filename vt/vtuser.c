@@ -1,11 +1,5 @@
 /* vtuser.c - VT user routines */
 
-
-
-
-
-
-
 #include "vtpm.h"
 #include "sector1.h"
 #include "sector5.h"

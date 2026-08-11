@@ -1,9 +1,5 @@
 /* turbo.h - your comments here */
 
-
-
-
-
 #ifndef QUIPUTURBO
 #define QUIPUTURBO
 

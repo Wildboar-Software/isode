@@ -7,7 +7,6 @@ static char *rcsid = "";
  * 
  */
 
-
 #include "general.h"
 #include <stdio.h>
 #include <ctype.h>
@@ -70,7 +69,6 @@ extern filt_struct *filt_arr[];
 	      | filter				{$$ = $1;}
   	      |					{$$ = (filt_struct *) 0;}
 	      ;
-
 
  match        : APPROX				{$$ = $1;}
 	      | EQUAL				{$$ = $1;}

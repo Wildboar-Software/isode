@@ -1,11 +1,5 @@
 /* pdm.c - preferred delivery method handling */
 
-
-
-
-
-
-
 /*
 	SYNTAX:
 		pdm = <pdm_component> | <pdm_component> '$' <pdm>

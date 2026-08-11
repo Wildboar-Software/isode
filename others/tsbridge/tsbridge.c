@@ -1,7 +1,5 @@
 /* tsbridge.c: transport bridge - jpo version ! */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

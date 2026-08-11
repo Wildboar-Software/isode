@@ -1,11 +1,5 @@
 /* nochrcnv.c - character conversion table, no case folding */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "general.h"
 

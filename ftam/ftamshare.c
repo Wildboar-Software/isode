@@ -1,11 +1,5 @@
 /* ftamshare.c - FPM: encode/decode shared ASE information */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

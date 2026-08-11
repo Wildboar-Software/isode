@@ -1,11 +1,5 @@
 /* quipu_sntx.c - invoke quipu syntax handlers */
 
-
-
-
-
-
-
 void quipu_syntaxes (void) {
 	static char done = 0;
 

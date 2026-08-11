@@ -1,11 +1,5 @@
 /* string.c - printable string handling */
 
-
-
-
-
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

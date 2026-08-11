@@ -1,11 +1,5 @@
 /* is2taddr.c - old-style T-ADDR lookup */
 
-
-
-
-
-
-
 #include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"

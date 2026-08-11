@@ -1,11 +1,5 @@
 /* rydsblock.c - manage dispatch blocks */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "rosy.h"
 

@@ -1,10 +1,5 @@
 /* ou.c - search for an org unit */
 
-
-
-
-
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"

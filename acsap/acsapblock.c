@@ -1,11 +1,5 @@
 /* acsapblock.c - manage association blocks */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "acpkt.h"
 

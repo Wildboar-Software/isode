@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 PEPYTEST DEFINITIONS   ::=
 
 %{
@@ -120,7 +117,6 @@ static int process (char *file, FILE *fp) {
     }
 }
 
-
 %}
 
 BEGIN
@@ -151,7 +147,6 @@ PersonnelRecord
     		    DEFAULT {}
 	    }
 
-
 ChildInformation ::=
 	SET {
 		Name,
@@ -159,7 +154,6 @@ ChildInformation ::=
 	    dateofBirth[0]
 		Date
 	}
-
 
 Name ::=
 	[APPLICATION 1]
@@ -174,11 +168,9 @@ Name ::=
 		    VisibleString
 	    }
 
-
 EmployeeNumber ::=
 	[APPLICATION 2]
 	    IMPLICIT INTEGER
-
 
 Date ::=
 	[APPLICATION 3]
@@ -187,7 +179,6 @@ Date ::=
 END
 
 %{
-
 
 #include <stdarg.h>
 #include <unistd.h>

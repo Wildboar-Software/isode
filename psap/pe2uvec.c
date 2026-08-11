@@ -1,11 +1,5 @@
 /* pe2uvec.c - write a PE to a udvec */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"

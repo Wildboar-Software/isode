@@ -8,10 +8,6 @@
 --
 --
 
-
-
-
-
 DO
 	{
 	joint-iso-ccitt
@@ -228,7 +224,6 @@ ChainedListResult [[P struct ds_op_res *]]
 			BIT STRING [[ x dcr_bit $ dcr_len ]]
 		}
 }
-
 
 ChainedListResultData [[P struct ds_op_res *]]
 	::=

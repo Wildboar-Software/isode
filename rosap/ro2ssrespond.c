@@ -1,7 +1,5 @@
 /* ro2ssrespond.c - responder */
 
-
-
 /*
  * 
  *
@@ -14,8 +12,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include "../acsap/OACS-types.h"

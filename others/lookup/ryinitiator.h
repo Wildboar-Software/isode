@@ -1,9 +1,5 @@
 /* ryinitiator.h - include file for the generic interactive initiator */
 
-
-
-
-
 #include "rosy.h"
 
 static struct dispatch {

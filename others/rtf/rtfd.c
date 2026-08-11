@@ -1,11 +1,5 @@
 /* rtfd.c - RT-file transfer utility -- responder */
 
-
-
-
-
-
-
 #include "RTF-types.h"
 #include "rtf.h"
 #include <pwd.h>

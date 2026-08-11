@@ -1,11 +1,5 @@
 /* dse-c.c - DSE wrapper for pepsy */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "isoaddrs.h"

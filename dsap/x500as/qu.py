@@ -9,9 +9,6 @@
 --
 --
 
-
-
-
 Quipu
 	{
 	ccitt
@@ -143,7 +140,6 @@ AttributeACL [[P struct acl_attr *]]
                     -- DEFAULT {{other , read}, {entry, write}}
                     OPTIONAL <E<test_acl_default(parm->aa_acl) != OK>><D<0>>
         }
-
 
 ACLSyntax [[P struct acl *]]
         ::=
@@ -356,7 +352,6 @@ ProtectedPassword [[P struct protected_password *]]
 			OPTIONAL <<is_protected $ 1>>,
 		password [2] OCTET STRING [[o passwd $ n_octets]]
 	}
-
 
 InheritedList [[P struct attrcomp * ]]
 	::= 

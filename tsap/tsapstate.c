@@ -1,11 +1,5 @@
 /* tsapstate.c - TPM: hack state */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <string.h>
 #include "tpkt.h"

@@ -1,11 +1,5 @@
 /* cstrings.c - */
 
-
-
-
-
-
-
 #include <string.h>
 #include "psap.h"
 

@@ -12,7 +12,6 @@
 # 
 ###############################################################################
 
-
 # format:-
 #
 # name:				oid	       :syntax
@@ -198,7 +197,6 @@ supplementaryInformation:	nadfAttributeType.8	:CaseIgnoreString
 namingLink:			nadfAttributeType.9	:DN
 reciprocalNamingLink:		nadfAttributeType.10	:DN
 
-
 # MHS routing stuff
 
 # Tables
@@ -228,7 +226,6 @@ supportingMTA:	mhs-ds-routing-at.33		:DN
 
 mTAName:	mhs-ds-routing-at.19		:caseIgnoreIA5String
 globalDomainID:	mhs-ds-tables-at.10		:GlobalDomainIdentifier
-
 
 # Routing information of a Node
 
@@ -279,7 +276,6 @@ responderPullingAuthenticationRequirements:\
 	mhs-ds-routing-at.25:AuthenticationRequirements
 initiatorPullingAuthenticationRequirements:\
 	mhs-ds-routing-at.14:AuthenticationRequirements
-
 
 # MTA Authentication Parameters
 

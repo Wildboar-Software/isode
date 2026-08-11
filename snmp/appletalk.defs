@@ -95,4 +95,3 @@ nbpState             nbpEntry.5       INTEGER         read-write      mandatory
 atechoRequests       atecho.1         Counter         read-only       mandatory
 atechoReplies        atecho.2         Counter         read-only       mandatory
 
-

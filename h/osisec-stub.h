@@ -1,9 +1,5 @@
 /* osisec-stub.h - minimal OSI Security Package Interface Definitions */
 
-
-
-
-
 #ifndef SECURITYSERVICES
 #define SECURITYSERVICES
 

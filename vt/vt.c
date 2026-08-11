@@ -1,11 +1,5 @@
 /* vt.c - VT initiator */
 
-
-
-
-
-
-
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>

@@ -1,11 +1,5 @@
 /* prim2qb.c - presentation element to qbuf */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "psap.h"
 

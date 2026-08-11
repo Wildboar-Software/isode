@@ -1,11 +1,5 @@
 /* pingpong.c - listen and call out at the same time */
 
-
-
-
-
-
-
 #include "manifest.h"
 #include <stdio.h>
 #include "isoaddrs.h"

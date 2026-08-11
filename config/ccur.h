@@ -1,9 +1,5 @@
 /* ccur.h - site configuration for Concurrent RTU 6.0 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

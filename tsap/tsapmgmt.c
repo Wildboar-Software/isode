@@ -1,11 +1,5 @@
 /* tsapmgmt.c - management info reporting routines */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "tpkt.h"

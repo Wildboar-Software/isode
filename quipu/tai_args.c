@@ -1,11 +1,5 @@
 /* tai_args.c - Argument processing routines */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #ifdef	TCP

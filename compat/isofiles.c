@@ -1,11 +1,5 @@
 /* isofiles.c - ISODE files */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

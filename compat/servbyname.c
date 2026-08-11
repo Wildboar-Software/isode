@@ -1,11 +1,5 @@
 /* servbyname.c - getisoserventbyname */
 
-
-
-
-
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"

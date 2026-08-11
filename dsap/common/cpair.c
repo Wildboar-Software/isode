@@ -1,11 +1,5 @@
 /* cpair.c - CertificatePair attribute syntax */
 
-
-
-
-
-
-
 #include "quipu/util.h"
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"

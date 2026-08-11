@@ -1,7 +1,5 @@
 /* psapselect.c - PPM: map descriptors */
 
-
-
 /*
  * 
  *
@@ -13,8 +11,6 @@
  *
  *
  */
-
-
 
 #include <stdio.h>
 #include <signal.h>

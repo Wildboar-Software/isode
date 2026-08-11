@@ -1,9 +1,5 @@
 /* sys53.h - site configuration file for generic SVR3 */
 
-
-
-
-
 #ifndef	_CONFIG_
 #define	_CONFIG_
 

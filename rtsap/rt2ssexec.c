@@ -1,11 +1,5 @@
 /* rt2ssexec.c - RTPM: exec */
 
-
-
-
-
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
