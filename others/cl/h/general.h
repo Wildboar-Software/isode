@@ -1,21 +1,7 @@
 /* general.h - general compatibility */
 
-/*
- * $Header: /f/iso/h/RCS/general.h,v 5.0 88/07/21 14:38:59 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_GENERAL_
 #define	_GENERAL_

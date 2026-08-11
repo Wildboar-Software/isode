@@ -3,27 +3,19 @@
 
 
 /*
- * $Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.1 1992/07/28 12:56:29 isode Exp $
+ * 
  *
  *
- * $Log: update.c,v $
- * Revision 9.1  1992/07/28  12:56:29  isode
+ * 
+ *
  * Random core dump during get_edb (initiator)
  *
- * Revision 9.0  1992/06/16  12:34:01  isode
- * Release 8.0
+ *
+ *
  *
  */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

@@ -4,28 +4,14 @@
 
 ###############################################################################
 #
-# $Header$
-#
 # Contributed by NYSERNet Inc.  This work was partially supported by the
 # U.S. Defense Advanced Research Projects Agency and the Rome Air Development
 # Center of the U.S. Air Force Systems Command under contract number
 # F30602-88-C-0016.
-#
-#
-# $Log$
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 AWKDIR	=	/usr/local/lib/awk/
 
@@ -33,9 +19,7 @@ SHELLS	=	s-netstat s-traceroute
 AWKS	=	mib.*
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:
 inst-all:	inst-scripts manuals

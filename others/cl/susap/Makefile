@@ -13,9 +13,7 @@ HFILES	=	$(HDIR)spkt.h $(HDIR)ssap.h $(HDIR)tsap.h $(HDIR)isoaddrs.h \
 		$(HDIR)general.h $(HDIR)manifest.h  $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		libsusap susaptest
 inst-all:	inst-libssap manuals

@@ -1,21 +1,7 @@
 /* spkt.h - include file for session providers (SS-PROVIDER) */
 
-/*
- * $Header: /f/iso/h/RCS/spkt.h,v 5.0 88/07/21 14:39:32 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */

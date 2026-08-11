@@ -1,7 +1,7 @@
 /* main.c -- driver for the client program */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/main.c,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * Major changes to this file have been the ripping out of the server
  * code. This is entirely the client part now. Also changed are the
@@ -11,9 +11,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: main.c,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

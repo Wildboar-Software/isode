@@ -1,7 +1,7 @@
 /* mib.h - MIB realization */
 
 /*
- * $Header: /xtel/isode/isode/snmp/RCS/mib.h,v 9.0 1992/06/16 12:38:11 isode Rel $
+ * 
  *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development
@@ -9,21 +9,13 @@
  * F30602-88-C-0016.
  *
  *
- * $Log: mib.h,v $
- * Revision 9.0  1992/06/16  12:38:11  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef __linux__
 #include <nlist.h>

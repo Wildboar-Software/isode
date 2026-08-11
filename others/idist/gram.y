@@ -1,6 +1,6 @@
 %{
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/gram.y,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * The grammer - unchanged from the original UCB version - only lint
  * fixes etc. have been applied.
@@ -9,9 +9,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: gram.y,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
@@ -37,7 +37,7 @@
 
 #ifndef lint
 static char sccsid[] = "@(#)gram.y      5.6 (Berkeley) 6/1/90";
-static	char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/gram.y,v 9.0 1992/06/16 12:42:00 isode Rel $";
+static	char *rcsid = "
 #endif
 
 #include "defs.h"

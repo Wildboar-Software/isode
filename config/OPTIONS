@@ -22,10 +22,10 @@
 #define aiws			    AIX Workstation
 
 #define	SYS5			AT&T UNIX
-#define SVR4			    System V Release 4
+#define SVR4			    System V
 #define SVR4_UCB		    SVR4 with ucb extensions
 #define SHADOW_PW		    Use shadow password file
-#define	SVR3			    System V Release 3
+#define	SVR3			    System V
 #define	HPUX			    SVR2 with HP's enhancements
 #define	AIX			    SVR2 with IBM's enhancements
 #define	AUX			    SVR2 with Apple's enhancements

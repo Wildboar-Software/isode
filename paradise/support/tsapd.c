@@ -3,30 +3,22 @@
 
 
 /*
- * $Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/07/27 10:24:25 isode Exp $
+ * 
  *
  *
- * $Log: tsapd.c,v $
- * Revision 9.2  1992/07/27  10:24:25  isode
+ * 
+ *
  * -T flags
  *
- * Revision 9.1  1992/06/24  15:20:57  isode
+ *
  * iaed service selection fix
  *
- * Revision 9.0  1992/06/16  12:40:09  isode
- * Release 8.0
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <errno.h>
 #include <signal.h>

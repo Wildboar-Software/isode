@@ -1,16 +1,4 @@
-###############################################################################
-#
 # fredrc - System-wide fred tailoring file
-# 
-# $Header$
-#
-#
-# $Log$
-# 
-# 
-###############################################################################
-
-
 area			"@@(dnprefix)"
 area	organization	"@c=@(country)"
 area	unit		"@@(dnprefix)"

@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/ftam2/RCS/Makefile,v 9.0 1992/06/16 12:15:43 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:15:43  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH
@@ -48,9 +39,7 @@ HFILES	=	$(HDIR)ftam.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		ftamd ftam
 inst-all:	inst-ftamd inst-ftam manuals

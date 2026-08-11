@@ -32,9 +32,7 @@ HFILES	=	listen.h
 CFILES	=	listen.c initiate.c
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		listen initiate
 inst-all:	inst-listen inst-initiate

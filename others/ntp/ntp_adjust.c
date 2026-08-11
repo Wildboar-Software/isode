@@ -1,15 +1,15 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/ntp/RCS/ntp_adjust.c,v 9.0 1992/06/16 12:42:48 isode Rel $
+ * 
  *
  * This module implemenets the logical Local Clock, as described in section
  * 5. of the NTP specification.
  * based on the ntp 3.4 code, but modified for OSI etc.
  *
- * $Log: ntp_adjust.c,v $
- * Revision 9.0  1992/06/16  12:42:48  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

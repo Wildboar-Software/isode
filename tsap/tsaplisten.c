@@ -3,26 +3,18 @@
 
 
 /*
- * $Header: /xtel/isode/isode/tsap/RCS/tsaplisten.c,v 9.0 1992/06/16 12:40:39 isode Rel $
+ * 
  *
  * RFC1085 (LPP) support contributed by the Wollongong Group, Inc.
  *
  *
- * $Log: tsaplisten.c,v $
- * Revision 9.0  1992/06/16  12:40:39  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <errno.h>
 #include <stdio.h>

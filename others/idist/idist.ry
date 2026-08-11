@@ -1,6 +1,6 @@
 -- idist.ry - IDIST protocol
 
--- $Header: /xtel/isode/isode/others/idist/RCS/idist.ry,v 9.0 1992/06/16 12:42:00 isode Rel $
+-- 
 --
 -- The UCB rdist protocol as rewritten in terms of ISO OPERATIONS.
 -- This comes out quite a lot cleaner than the original! It could come
@@ -10,22 +10,14 @@
 -- Nottingham University Computer Science
 --
 --
--- $Log: idist.ry,v $
--- Revision 9.0  1992/06/16  12:42:00  isode
--- Release 8.0
+-- 
+--
+--
 --
 -- 
 -- 
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 Idist DEFINITIONS ::=

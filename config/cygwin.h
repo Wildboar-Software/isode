@@ -1,14 +1,6 @@
 /* cygwin.h - site configuration file for Cygwin */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_CONFIG_
 #define	_CONFIG_

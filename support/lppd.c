@@ -3,26 +3,18 @@
 
 
 /*
- * $Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/06/16 12:40:09 isode Rel $
+ * 
  *
  * Contributed by The Wollongong Group, Inc.
  *
  *
- * $Log: lppd.c,v $
- * Revision 9.0  1992/06/16  12:40:09  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

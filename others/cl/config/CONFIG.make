@@ -5,25 +5,16 @@
 
 ###############################################################################
 #
-# $Header: /f/iso/config/RCS/sys52-exos.make,v 5.0 88/07/21 14:31:23 mrose Rel $
+# 
 #
 #
-# $Log:	sys52-exos.make,v $
-# Revision 5.0  88/07/21  14:31:23  mrose
-# Release 4.0
+# 
+#
+#
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 ###############################################################################

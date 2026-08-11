@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/ops.c,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * This file is entirely new, and handles the dispatching of the
  * remote operations to the server. It tries hard to remove all hint
@@ -13,9 +13,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: ops.c,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

@@ -47,7 +47,7 @@ CONFIGURATION
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  1
+Sun
 
 
 
@@ -114,7 +114,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  2
+Sun
 
 
 
@@ -180,7 +180,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  3
+Sun
 
 
 
@@ -246,7 +246,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  4
+Sun
 
 
 
@@ -312,7 +312,7 @@ GENERATION
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  5
+Sun
 
 
 
@@ -378,7 +378,7 @@ INSTALLATION
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  6
+Sun
 
 
 
@@ -444,7 +444,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  7
+Sun
 
 
 
@@ -510,7 +510,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  8
+Sun
 
 
 
@@ -576,7 +576,7 @@ REGISTERING OSI APPLICATION SERVICES
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                  9
+Sun
 
 
 
@@ -642,7 +642,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 10
+Sun
 
 
 
@@ -708,7 +708,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 11
+Sun
 
 
 
@@ -774,7 +774,7 @@ FTAM/FTP gateway
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 12
+Sun
 
 
 
@@ -840,7 +840,7 @@ FILE TRANSFER, ACCESS AND MANAGEMENT
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 13
+Sun
 
 
 
@@ -906,7 +906,7 @@ VIRTUAL TERMINAL
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 14
+Sun
 
 
 
@@ -972,7 +972,7 @@ DIRECTORY SERVICES
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 15
+Sun
 
 
 
@@ -1038,7 +1038,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 16
+Sun
 
 
 
@@ -1104,7 +1104,7 @@ NETWORK MANAGEMENT
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 17
+Sun
 
 
 
@@ -1170,7 +1170,7 @@ ISODE-GEN(8)          MAINTENANCE COMMANDS           ISODE-GEN(8)
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 18
+Sun
 
 
 
@@ -1236,7 +1236,7 @@ LIGHTWEIGHT PRESENTATION PROTOCOL
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 19
+Sun
 
 
 
@@ -1302,7 +1302,7 @@ GENERATING DOCUMENTATION
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 20
+Sun
 
 
 
@@ -1368,7 +1368,7 @@ AUTHOR
 
 
 
-Sun Release 4.1    Last change: 19th June 1992                 21
+Sun
 
 
 

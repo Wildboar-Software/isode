@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/pepy/RCS/Makefile,v 9.0 1992/06/16 12:25:01 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:25:01  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH=\".:$(PEPYDIRM)\" 
@@ -45,9 +36,7 @@ HFILES	=	$(HDIR)psap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		xpepy xposy libpepy # pepytest pp
 inst-all:	inst-pepy inst-posy inst-headers manuals # inst-libpepy

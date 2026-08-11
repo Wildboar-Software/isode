@@ -5,24 +5,16 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/fixedfilt.c,v 9.1 1992/08/25 15:52:32 isode Exp $
+ * 
  *
  *
- * $Log: fixedfilt.c,v $
- * Revision 9.1  1992/08/25  15:52:32  isode
+ * 
+ *
  * *** empty log message ***
  *
  */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

@@ -1,11 +1,11 @@
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/symtab.h,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 /*
- * $Log: symtab.h,v $
- * Revision 9.0  1992/06/16  12:45:08  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

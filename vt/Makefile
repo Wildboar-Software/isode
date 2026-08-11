@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/vt/RCS/Makefile,v 9.0 1992/06/16 12:41:08 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:41:08  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 .SUFFIXES:	.py .c .o
@@ -50,9 +41,7 @@ PYFILES-O=	BK_CONTENT.o RCV_ASQ.o RCV_ASR.o RCV_TEXT.o RCV_UDQ.o \
 		SEND_ASQ.o SEND_ASR.o SEND_TEXT.o SEND_UDQ.o PRINT_VT.o
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		vtd vt
 inst-all:	inst-vtd inst-vt manuals

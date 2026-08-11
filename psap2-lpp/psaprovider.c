@@ -3,26 +3,18 @@
 
 
 /*
- * $Header: /xtel/isode/isode/psap2-lpp/RCS/psaprovider.c,v 9.0 1992/06/16 12:31:57 isode Rel $
+ * 
  *
  * Contributed by The Wollongong Group, Inc.
  *
  *
- * $Log: psaprovider.c,v $
- * Revision 9.0  1992/06/16  12:31:57  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <stdio.h>
 #include <signal.h>

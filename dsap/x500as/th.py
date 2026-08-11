@@ -1,24 +1,16 @@
 -- th-enc.py -  Thorn and RARE defined attribute sytaxes
 --		(Now COSINE/Internet !)
 
--- $Header: /xtel/isode/isode/dsap/x500as/RCS/th.py,v 9.0 1992/06/16 12:14:33 isode Rel $
+-- 
 --
 --
--- $Log: th.py,v $
--- Revision 9.0  1992/06/16  12:14:33  isode
--- Release 8.0
+-- 
+--
+--
 --
 --
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 Thorn

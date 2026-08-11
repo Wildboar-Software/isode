@@ -3,36 +3,28 @@
 
 
 /*
- * $Header: /xtel/isode/isode/quipu/RCS/ds_read.c,v 9.3 1992/08/19 14:48:35 isode Exp $
+ * 
  *
  *
- * $Log: ds_read.c,v $
- * Revision 9.3  1992/08/19  14:48:35  isode
+ * 
+ *
  * "complete" caching problem -> reverse logic
  *
- * Revision 9.2  1992/07/21  17:20:55  isode
+ *
  * oops wrong long entry ... XT-DUA exposed caching BUG
  *
- * Revision 9.1  1992/07/21  17:17:56  isode
+ *
  * Add entry problem with remote non-leaf objects
  *
- * Revision 9.1  1992/07/21  17:17:56  isode
+ *
  * Add entry problem with remote non-leaf objects
  *
- * Revision 9.0  1992/06/16  12:34:01  isode
- * Release 8.0
+ *
+ *
  *
  */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

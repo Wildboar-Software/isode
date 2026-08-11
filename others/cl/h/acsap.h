@@ -1,21 +1,7 @@
 /* acsap.h - include file for association control users (AcS-USER) */
 
-/*
- * $Header: /f/iso/h/RCS/acsap.h,v 5.0 88/07/21 14:38:46 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_AcSAP_
 #define	_AcSAP_

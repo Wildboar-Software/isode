@@ -1,21 +1,7 @@
 /* ftam.h - include file for FTAM users (FS-USER) */
 
-/*
- * $Header: /f/iso/h/RCS/ftam.h,v 5.0 88/07/21 14:38:56 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_FTAM_
 #define	_FTAM_

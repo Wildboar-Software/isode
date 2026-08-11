@@ -1,14 +1,6 @@
 
 
-/*
- * $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/calls.c,v 9.0 1992/06/16 12:44:54 isode Rel $
- *
- *
- * $Log: calls.c,v $
- * Revision 9.0  1992/06/16  12:44:54  isode
- * Release 8.0
- *
- */
+
 
 #include "quipu/util.h"
 #include "quipu/common.h"

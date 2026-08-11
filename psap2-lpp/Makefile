@@ -4,28 +4,19 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/psap2-lpp/RCS/Makefile,v 9.0 1992/06/16 12:31:57 isode Rel $
+# 
 #
 # Contributed by The Wollongong Group, Inc.
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:31:57  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH
@@ -35,9 +26,7 @@ HFILES	=	$(HDIR)psap2.h $(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h  $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		libpsap2 libisode-lpp
 inst-all:	inst-libisode-lpp # inst-libpsap2 manuals

@@ -1,4 +1,4 @@
-.\"$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/sd.1c,v 9.0 1992/06/16 12:45:08 isode Rel $"
+.\"
 .TH SD 1C "16 Jan 1909"
 .SH NAME
 sd \- Full-screen directory user agent.

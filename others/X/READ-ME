@@ -197,7 +197,7 @@ probably happen anyway...
 ***********************WARNING*******************************
 This has not been extensively tested. It is a sort of existence proof
 implementation rather than a proper port. I have tested it under
-Sun OS 4.0 on a Sun 3/60C and a Sun 4/330, using ISODE Release 6 beta,
+Sun OS 4.0 on a Sun 3/60C and a Sun 4/330, using ISODE
 with TService over TCP and over Sunlink X.25 6.0 and over raw TCP
 ! I havnt tested any X clients other than the
 ones with subdirectories here! 

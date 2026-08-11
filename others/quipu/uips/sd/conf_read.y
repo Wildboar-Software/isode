@@ -1,10 +1,10 @@
 %{
 #ifndef lint
-static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/conf_read.y,v 9.0 1992/06/16 12:45:08 isode Rel $";
+static char *rcsid = "";
 #endif
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/conf_read.y,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 #include "general.h"

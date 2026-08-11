@@ -1,11 +1,11 @@
 -- imisc.ry - IMISC remote operations definitions
 
--- $Header: /f/iso/imisc/RCS/imisc.ry,v 5.0 88/07/21 14:42:02 mrose Rel $
+-- 
 --
 --
--- $Log:	imisc.ry,v $
--- Revision 5.0  88/07/21  14:42:02  mrose
--- Release 4.0
+-- 
+--
+--
 -- 
 
 IMISC DEFINITIONS ::=

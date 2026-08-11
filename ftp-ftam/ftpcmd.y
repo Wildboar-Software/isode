@@ -1,23 +1,15 @@
 /* ftpcmd.y - grammar for FTP commands */
 
 /* 
- * $Header: /xtel/isode/isode/ftp-ftam/RCS/ftpcmd.y,v 9.0 1992/06/16 12:17:24 isode Rel $
+ * 
  *
- * $Log: ftpcmd.y,v $
- * Revision 9.0  1992/06/16  12:17:24  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 
 /*
@@ -32,7 +24,7 @@
 %{
 
 #ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ftp-ftam/RCS/ftpcmd.y,v 9.0 1992/06/16 12:17:24 isode Rel $";
+static char *rcsid = "";
 #endif
 
 #include "config.h"

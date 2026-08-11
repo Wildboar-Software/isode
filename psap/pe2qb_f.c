@@ -1,15 +1,4 @@
 /* pe2qb_f.c - presentation element to qbuf, the qbuf must be one piece. */
-
-/*
- *                                NOTICE
- *
- * Acquisition, use, and distribution of this module and related
- * materials are subject to the restrictions of a license agreement.
- * Consult the Preface in the User's Manual for the full terms of
- * this agreement.
- *
- */
-
 #include "psap.h"
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \

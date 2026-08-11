@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0 1992/06/16 14:38:53 isode Rel $
+ * 
  *
  * Idist daemon - this module handles the remote operations as they
  * are received. It runs as a state machine for file transfer
@@ -20,9 +20,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: idistd.c,v $
- * Revision 9.0  1992/06/16  14:38:53  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  *
  */

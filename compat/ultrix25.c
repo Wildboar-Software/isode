@@ -2,18 +2,10 @@
 
 
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 /*
- * $Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 1992/06/16 12:07:00 isode Rel $
+ * 
  *
  * DEMSA X25 contributed by Arnold Krechel, GMD
  *
@@ -26,9 +18,9 @@
  *   written by DEC NAC here in Australia
  *
  *
- * $Log: ultrix25.c,v $
- * Revision 9.0  1992/06/16  12:07:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

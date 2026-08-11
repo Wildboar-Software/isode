@@ -3,21 +3,13 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/widget.c,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 /*    This file has been modified by Damanjit Mahl @ Brunel University
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 /*****************************************************************************/
 /* File:	widget.c

@@ -4,37 +4,26 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/RCS/Makefile,v 9.2 1992/08/28 13:52:37 isode Exp $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.2  1992/08/28  13:52:37  isode
+# 
+#
 # PARADISE
 #
-# Revision 9.1  1992/07/22  09:25:14  isode
+#
 # XT-QUIPU unifdef
 #
-# Revision 9.0  1992/06/16  12:05:01  isode
-# Release 8.0
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
 
 
-##################################################################
-# Here it is...
-##################################################################
+
+
 
 LIBDIRS	=	h compat dirent tsap ssap psap pepsy pepy psap2 \
 		acsap rosap rtsap ronot rosy 

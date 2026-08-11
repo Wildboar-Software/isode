@@ -1,13 +1,13 @@
 .TH LIBROSAP 3N "21 Aug 1986"
-.\" $Header: /xtel/isode/isode/rosap/RCS/librosap.3n,v 9.0 1992/06/16 12:37:02 isode Rel $
+.\" 
 .\"
 .\" Based on an TCP-based implementation by George Michaelson of University
 .\" College London.
 .\"
 .\"
-.\" $Log: librosap.3n,v $
-.\" Revision 9.0  1992/06/16  12:37:02  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

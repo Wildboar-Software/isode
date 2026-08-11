@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/main.c,v 9.0 1992/06/16 12:44:54 isode Rel $
+ * 
  */
 
 #include "quipu/util.h"

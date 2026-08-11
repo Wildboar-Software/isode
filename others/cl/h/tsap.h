@@ -1,20 +1,7 @@
 /* tsap.h - include file for transport users (TS-USER) */
 
-/*
- * $Header: /f/iso/h/RCS/tsap.h,v 5.0 88/07/21 14:39:41 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- */
+
 
 #ifndef	_TSAP_
 #define	_TSAP_

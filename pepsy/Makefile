@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/pepsy/RCS/Makefile,v 9.0 1992/06/16 12:24:03 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:24:03  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH -DPEPSYPATH=\".:$(PEPSYDIRM)\" 
@@ -52,9 +43,7 @@ OFILES	=	$(LIBFILES) main.o
 T_FILES =	T1_tables.c T2_tables.c T3_tables.c
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		pepsy libpepsy # peptest
 inst-all:	inst-pepsy inst-headers manuals # inst-libpepsy

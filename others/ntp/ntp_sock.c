@@ -1,11 +1,11 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/ntp/RCS/ntp_sock.c,v 9.0 1992/06/16 12:42:48 isode Rel $
+ * 
  * Ntp UDP specific code (mainly) based on the 3.4 ntp but heavily modified.
- * $Log: ntp_sock.c,v $
- * Revision 9.0  1992/06/16  12:42:48  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

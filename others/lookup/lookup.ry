@@ -1,23 +1,15 @@
 -- lookup.ry - the ISODE password lookup demo
 
--- $Header: /xtel/isode/isode/others/lookup/RCS/lookup.ry,v 9.0 1992/06/16 12:42:23 isode Rel $
+-- 
 --
 --
--- $Log: lookup.ry,v $
--- Revision 9.0  1992/06/16  12:42:23  isode
--- Release 8.0
+-- 
+--
+--
 --
 -- 
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 PasswordLookup DEFINITIONS ::=

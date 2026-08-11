@@ -1,7 +1,7 @@
 /* docmd.c -- driver for the whole thing */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/docmd.c,v 9.0 1992/06/16 14:38:53 isode Rel $
+ * 
  *
  * The major alterations to this file are the replacing of the
  * connection stuff with the ISODE functions necessary. These new
@@ -11,9 +11,9 @@
  * Nottingham University, Computer Science.
  *
  *
- * $Log: docmd.c,v $
- * Revision 9.0  1992/06/16  14:38:53  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  *
  */

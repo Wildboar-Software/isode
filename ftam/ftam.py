@@ -5,33 +5,19 @@
 --	    - more commentary-tags for POSY
 --	    - minor patches for POSY
 
--- $Header: /xtel/isode/isode/ftam/RCS/ftam.py,v 9.0 1992/06/16 12:14:55 isode Rel $
+-- 
 --
 --
--- $Log: ftam.py,v $
--- Revision 9.0  1992/06/16  12:14:55  isode
--- Release 8.0
+-- 
+--
+--
 --
 --
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 --* ISO8571-FTAM *-- FTAM DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftam.py,v 9.0 1992/06/16 12:14:55 isode Rel $";
-#endif
-%}
 
 BEGIN
 

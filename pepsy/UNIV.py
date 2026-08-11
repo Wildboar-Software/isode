@@ -1,30 +1,22 @@
 -- ASN.1 UNIVERSAL defined types
 
--- $Header: /xtel/isode/isode/pepsy/RCS/UNIV.py,v 9.0 1992/06/16 12:24:03 isode Rel $
+-- 
 --
 --
--- $Log: UNIV.py,v $
--- Revision 9.0  1992/06/16  12:24:03  isode
--- Release 8.0
+-- 
+--
+--
 --
 --
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 UNIV DEFINITIONS ::=
 
 %{
 #ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/UNIV.py,v 9.0 1992/06/16 12:24:03 isode Rel $";
+static char *rcsid = "";
 #endif
 %}
 

@@ -2,26 +2,6 @@
 #   Instructions to Make, for compilation of ISODE header files
 ###############################################################################
 
-###############################################################################
-#
-# $Header$
-#
-#
-# $Log$
-#
-###############################################################################
-
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
-
 DIRS	=	$(QUIPU) empty
 
 HEADERS	=	config.h \
@@ -39,9 +19,7 @@ HEADERS	=	config.h \
 		sys.dirent.h dirent.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \

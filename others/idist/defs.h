@@ -1,7 +1,7 @@
 /* defs.h - general definitions for idist stuff */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/defs.h,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * General definitions used in the server & client parts of the idist
  * updating tools. This file not changed much from the original UCB rdist one.
@@ -10,21 +10,13 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: defs.h,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 /*
  * Copyright (c) 1983 Regents of the University of California.

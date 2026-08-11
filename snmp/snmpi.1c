@@ -1,5 +1,5 @@
 .TH SNMPI 1C "14 Sep 1989"
-.\" $Header: /xtel/isode/isode/snmp/RCS/snmpi.1c,v 9.0 1992/06/16 12:38:11 isode Rel $
+.\" 
 .\"
 .\" Contributed by NYSERNet Inc.  This work was partially supported by the
 .\" U.S. Defense Advanced Research Projects Agency and the Rome Air Development
@@ -7,9 +7,9 @@
 .\" F30602-88-C-0016.
 .\"
 .\"
-.\" $Log: snmpi.1c,v $
-.\" Revision 9.0  1992/06/16  12:38:11  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

@@ -1,10 +1,10 @@
 .TH FTAMD-FTP 8C "16 Jun 1988"
-.\" $Header: /xtel/isode/isode/ftam-ftp/RCS/ftamd-ftp.8c,v 9.0 1992/06/16 12:15:29 isode Rel $
+.\" 
 .\"
 .\"
-.\" $Log: ftamd-ftp.8c,v $
-.\" Revision 9.0  1992/06/16  12:15:29  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

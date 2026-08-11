@@ -1,4 +1,4 @@
-/* $Header: /xtel/isode/isode/others/quipu/uips/doog/query/RCS/types.h,v 9.0 1992/06/16 12:45:27 isode Rel $ */
+/* 
 
 #ifndef _query_types_h_
 #define _query_types_h_

@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/dsap/RCS/Makefile,v 9.0 1992/06/16 12:12:26 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:12:26  isode
-# Release 8.0
+# 
+#
+#
 #
 #
 ###############################################################################
 
-###############################################################################
-#
-#                                NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 #PEPYPATH=	-DPEPYPATH
@@ -32,9 +23,7 @@ DIRS	=	x500as common net
 LIBES   =       libcommon.a libnet.a libx500as.a
 LLIBS   =       llib-lcommon llib-lnet llib-lx500as
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		sub-all libdsap ufnrc
 inst-all:       inst-libdsap inst-dsaptailor inst-oidtable inst-ufnrc

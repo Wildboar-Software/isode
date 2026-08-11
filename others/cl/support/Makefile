@@ -2,26 +2,6 @@
 #   Instructions to Make, for compilation of ISODE HULA support processes
 ###############################################################################
 
-###############################################################################
-#
-# $Header$
-#
-#
-# $Log$
-# 
-###############################################################################
-
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
-
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
 
 
@@ -48,9 +28,7 @@ HFILES	=	$(HDIR)tsap.h $(HDIR)tusap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 ##################################################################
 # tsapud    TSAP UNIT DATA DAEMON

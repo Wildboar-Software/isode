@@ -1,25 +1,8 @@
 /* tailor.h - ISODE tailoring */
 
-/*
- * $Header: /a/vulcan/xtel/isode/isode-master/h/RCS/tailor.h,v 8.0 91/07/17 12:33:57 isode Rel $
- *
- *
- * $Log:	tailor.h,v $
- * Revision 8.0  91/07/17  12:33:57  isode
- * Release 7.0
- *
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 #ifndef	_TAILOR_
 #define	_TAILOR_

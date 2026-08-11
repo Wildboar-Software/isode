@@ -1,11 +1,11 @@
 
 
-/* $Header: /xtel/isode/isode/others/quipu/uips/doog/query/RCS/read.c,v 9.0 1992/06/16 12:45:27 isode Rel $ */
+/* 
 
 /*
- * $Log: read.c,v $
- * Revision 9.0  1992/06/16  12:45:27  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

@@ -5,26 +5,6 @@
 #
 ###############################################################################
 
-###############################################################################
-#
-# $Header$
-#
-#
-# $Log$
-# 
-###############################################################################
-
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
-
 LIBES	=	libtusap.a  /usr/lib/libcompat.a /usr/lib/libisode.a 
 
 #/usr/lib/libisode.a \
@@ -36,9 +16,7 @@ HFILES	=	$(HDIR)tsap.h $(HDIR)isoaddrs.h $(HDIR)tusap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		libtusap udptest
 test:		libtusap tsaputest		

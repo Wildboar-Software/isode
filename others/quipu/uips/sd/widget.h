@@ -1,18 +1,10 @@
 /* widget.h - definition of the widget structure and assorted constants */
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/widget.h,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 /*****************************************************************************/
 /*This file has been modified;

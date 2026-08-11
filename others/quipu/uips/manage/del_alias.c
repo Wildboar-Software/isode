@@ -2,25 +2,9 @@
 
 
 
-/*
- * $Header: /xtel/isode/isode/others/quipu/uips/manage/RCS/del_alias.c,v 9.0 1992/06/16 12:44:45 isode Rel $
- *
- *
- * $Log: del_alias.c,v $
- * Revision 9.0  1992/06/16  12:44:45  isode
- * Release 8.0
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

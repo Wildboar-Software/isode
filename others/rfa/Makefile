@@ -14,26 +14,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/others/rfa/RCS/Makefile,v 9.0 1992/06/16 12:47:25 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:47:25  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 ###############################################################################
@@ -61,9 +52,7 @@ HFILES	=	$(HDIR)rosy.h $(HDIR)rosap.h $(HDIR)acsap.h $(HDIR)psap2.h \
 		$(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		rfad rfa rfatime llock
 inst-all:	inst-rfad inst-rfa inst-rfatime inst-llock manuals inst-tailor

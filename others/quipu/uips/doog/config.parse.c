@@ -7,12 +7,12 @@
 
 #line 1 "config.b"
 
-/* $Header: /xtel/isode/isode/others/quipu/uips/doog/RCS/config.parse.c,v 9.0 1992/06/16 12:45:18 isode Rel $ */
+/* 
 
 /*
- * $Log: config.parse.c,v $
- * Revision 9.0  1992/06/16  12:45:18  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

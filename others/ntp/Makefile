@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/others/ntp/RCS/Makefile,v 9.0 1992/06/16 12:42:48 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:42:48  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 ###############################################################################
@@ -53,9 +44,7 @@ CFILES	=	ntp.c ntp.c ntp_adjust.c ntp_osi.c ntp_proto.c ntp_sock.c \
 RYFILES	=	ntp.ry
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		ntpd ntp ntpdc ntq ntest
 inst-all:	inst-ntpd inst-ntp inst-ntpdc inst-ntq manuals

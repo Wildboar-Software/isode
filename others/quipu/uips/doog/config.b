@@ -1,25 +1,25 @@
 %{
-/* $Header: /xtel/isode/isode/others/quipu/uips/doog/RCS/config.b,v 9.0 1992/06/16 12:45:18 isode Rel $ */
+/* 
 
 /*
- * $Log: config.b,v $
- * Revision 9.0  1992/06/16  12:45:18  isode
- * Release 8.0
+ * 
  *
- * Revision 8.4  1992/04/03  08:20:14  isode
+ *
+ *
+ *
  * sync
  *
- * Revision 8.3  1992/02/26  13:41:43  isode
+ *
  * rel7_2
  *
- * Revision 8.2  1992/02/05  10:05:00  isode
+ *
  * "Release
  *
- * Revision 8.1  1991/12/11  09:09:08  isode
+ *
  * AIX
  *
- * Revision 8.0  91/07/17  13:21:28  isode
- * Release 7.0
+ *
+ *
  * 
  *
  */

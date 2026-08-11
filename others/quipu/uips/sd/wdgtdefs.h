@@ -1,5 +1,5 @@
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/wdgtdefs.h,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 #include "widget.h"

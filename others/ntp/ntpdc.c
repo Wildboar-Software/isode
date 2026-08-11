@@ -1,12 +1,12 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/ntp/RCS/ntpdc.c,v 9.0 1992/06/16 12:42:48 isode Rel $
+ * 
  * NTP query program - useful fro debugging - no major changes yet
  * for OSI.
- * $Log: ntpdc.c,v $
- * Revision 9.0  1992/06/16  12:42:48  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

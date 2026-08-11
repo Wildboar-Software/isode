@@ -1,7 +1,7 @@
 /* idistd2.c -- the non remote operations parts of the protocol */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/idistd2.c,v 9.0 1992/06/16 14:38:53 isode Rel $
+ * 
  *
  * Parts of the idist server which are not mixed up with remote
  * operations but depend on the defined types.
@@ -10,9 +10,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: idistd2.c,v $
- * Revision 9.0  1992/06/16  14:38:53  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  *
  */

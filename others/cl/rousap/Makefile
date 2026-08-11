@@ -18,14 +18,6 @@
 #								#
 #################################################################
 
-
-###############################################################################
-#
-# $Header$
-#
-#
-# $Log$
-# 
 ###############################################################################
 #   Instructions to Make, for compilation of ISODE RoSAP processes
 #   To use the A-UNIT-DATA service
@@ -45,9 +37,7 @@ HFILES	=	$(HDIR)rosap.h $(HDIR)acusap.h $(HDIR)pusap2.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		librousap
 inst-all:	inst-librosap manuals

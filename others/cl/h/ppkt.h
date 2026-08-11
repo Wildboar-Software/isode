@@ -1,21 +1,7 @@
 /* ppkt.h - include file for presentation providers (PS-PROVIDER) */
 
-/*
- * $Header: /f/iso/h/RCS/ppkt.h,v 5.0 88/07/21 14:39:10 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */

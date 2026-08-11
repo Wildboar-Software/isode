@@ -1,7 +1,7 @@
 /* expand.c -- various expanisions of shell type patterns */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/expand.c,v 9.0 1992/06/16 14:38:53 isode Rel $
+ * 
  *
  * Expansion primitives for wild card names. The tilde expansion stuff
  * has been moved out as both sides require that whilst only the
@@ -11,9 +11,9 @@
  * Nottingham University Computer Science
  *
  *
- * $Log: expand.c,v $
- * Revision 9.0  1992/06/16  14:38:53  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  *
  */

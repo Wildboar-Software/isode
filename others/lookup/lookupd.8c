@@ -1,10 +1,10 @@
 .TH LOOKUPD 8C "03 Jul 1988"
-.\" $Header: /xtel/isode/isode/others/lookup/RCS/lookupd.8c,v 9.0 1992/06/16 12:42:23 isode Rel $
+.\" 
 .\"
 .\"
-.\" $Log: lookupd.8c,v $
-.\" Revision 9.0  1992/06/16  12:42:23  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

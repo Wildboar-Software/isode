@@ -1,25 +1,8 @@
 /* logger.h - logging routines */
 
-/*
- * $Header: /a/vulcan/xtel/isode/isode-master/h/RCS/logger.h,v 8.0 91/07/17 12:33:46 isode Rel $
- *
- *
- * $Log:	logger.h,v $
- * Revision 8.0  91/07/17  12:33:46  isode
- * Release 7.0
- *
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 #ifndef	_LOGGER_
 #define	_LOGGER_

@@ -1,5 +1,5 @@
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/sequence.h,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 /* This file contains code to implement the list storage facilities
@@ -12,15 +12,7 @@
  *    at GEC Research, Hirst Research Centre.
  */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef STRINGSEQ
 #define STRINGSEQ

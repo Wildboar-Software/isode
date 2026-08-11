@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,v 9.0 1992/06/16 14:38:53 isode Rel $
+ * 
  *
  * Severely hacked to give embedded functionality for client.
  *
@@ -11,9 +11,9 @@
  * Nottingham University Computer Science
  *
  *
- * $Log: ryinitiator.c,v $
- * Revision 9.0  1992/06/16  14:38:53  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

@@ -10,14 +10,14 @@
  */
 
 /*
- * $Header: /xtel/isode/isode/others/ntp/RCS/ntp_proto.c,v 9.0 1992/06/16 12:42:48 isode Rel $
+ * 
  *
  *
  * Based on the ntp 3.4 code - but modified for use with OSI.
  *
- * $Log: ntp_proto.c,v $
- * Revision 9.0  1992/06/16  12:42:48  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

@@ -23,9 +23,7 @@ LLIBS   =
 HFILES	=	$(HDIR)usr.dirent.h $(HDIR)sys.dirent.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		libdirent testdir
 inst-all:	# inst-libdirent manuals

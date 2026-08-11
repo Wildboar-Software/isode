@@ -1,7 +1,7 @@
 /* lookup.c -- maintains the symbol table */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/lookup.c,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * This file largely untouched from the original UCB sources.
  *
@@ -9,9 +9,9 @@
  * Nottingham University Computer Science.
  *
  *
- * $Log: lookup.c,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

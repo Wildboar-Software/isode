@@ -1,5 +1,5 @@
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/sequence.h,v 9.0 1992/06/16 12:44:54 isode Rel $
+ * 
  */
 
 #ifndef SEQ

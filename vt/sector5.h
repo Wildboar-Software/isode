@@ -1,24 +1,8 @@
 /* sector5.h - VTPM: FSM sector 5 definitions */
 
-/*
- * $Header: /xtel/isode/isode/vt/RCS/sector5.h,v 9.0 1992/06/16 12:41:08 isode Rel $
- *
- *
- * $Log: sector5.h,v $
- * Revision 9.0  1992/06/16  12:41:08  isode
- * Release 8.0
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 typedef struct expl_ptr {
 #define NULLCOORD  -1

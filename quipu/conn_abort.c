@@ -2,25 +2,9 @@
 
 
 
-/*
- * $Header: /xtel/isode/isode/quipu/RCS/conn_abort.c,v 9.0 1992/06/16 12:34:01 isode Rel $
- *
- *
- * $Log: conn_abort.c,v $
- * Revision 9.0  1992/06/16  12:34:01  isode
- * Release 8.0
- *
- */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 #include "quipu/dsap.h"
 #include "quipu/util.h"

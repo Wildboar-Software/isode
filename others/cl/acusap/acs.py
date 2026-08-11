@@ -23,18 +23,12 @@
 
 -- acs.py - AcSAP definitions
 --	lifted directly from ISO8650
-    
--- $Header: /f/iso/acsap/RCS/acs.py,v 5.0 88/07/21 14:21:02 mrose Rel $
---
---
--- $Log$
--- 
 
 --* ACSE-1 *-- ACS DEFINITIONS ::=
 
 %{
 #ifndef	lint
-static char *rcsid = "$Header: /f/iso/acsap/RCS/acs.py,v 5.0 88/07/21 14:21:02 mrose Rel $";
+static char *rcsid = "";
 #endif
 %}
 

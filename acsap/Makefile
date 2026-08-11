@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/acsap/RCS/Makefile,v 9.0 1992/06/16 12:05:59 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:05:59  isode
-# Release 8.0
+# 
+#
+#
 #
 #
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH
@@ -39,9 +30,7 @@ HFILES	=	$(HDIR)acsap.h $(HDIR)psap2.h $(HDIR)psap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		libacsap acsaptest
 inst-all:	inst-headers # inst-libacsap manuals

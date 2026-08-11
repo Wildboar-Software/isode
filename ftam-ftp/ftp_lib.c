@@ -1,14 +1,6 @@
 /* ftp_lib.c - FTP subroutines */
 
-/*
- * $Header: /xtel/isode/isode/ftam-ftp/RCS/ftp_lib.c,v 9.0 1992/06/16 12:15:29 isode Rel $
- *
- *
- * $Log: ftp_lib.c,v $
- * Revision 9.0  1992/06/16  12:15:29  isode
- * Release 8.0
- *
- */
+
 
 /*
  *				  NOTICE

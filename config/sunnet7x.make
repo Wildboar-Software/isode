@@ -5,26 +5,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/config/RCS/sunnet7x.make,v 9.0 1992/06/16 12:08:13 isode Rel $
+# 
 #
 #
-# $Log: sunnet7x.make,v $
-# Revision 9.0  1992/06/16  12:08:13  isode
-# Release 8.0
+# 
+#
+#
 #
 #
 ##############################################################################
 
-##############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 #    See sunos4.make for shared library options
 

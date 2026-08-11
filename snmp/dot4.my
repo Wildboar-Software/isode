@@ -1,23 +1,15 @@
 -- tokenbus.my - Token Bus MIB
 
--- $Header: /xtel/isode/isode/snmp/RCS/dot4.my,v 9.0 1992/06/16 12:38:11 isode Rel $
+-- 
 --
 -- 
--- $Log: dot4.my,v $
--- Revision 9.0  1992/06/16  12:38:11  isode
--- Release 8.0
+-- 
+--
+--
 --
 --
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
           RFC1230-MIB DEFINITIONS ::= BEGIN
@@ -449,7 +441,7 @@
                      ACCESS  read-only
                      STATUS  mandatory
                      DESCRIPTION
-                             "The Revision number of the 802.4 standard
+                             "The
                              implemented by this station."
                      ::= { dot4Entry 19 }
 

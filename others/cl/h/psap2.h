@@ -1,21 +1,7 @@
 /* psap2.h - include file for presentation users (PS-USER) continued  */
 
-/*
- * $Header: /f/iso/h/RCS/psap2.h,v 5.0 88/07/21 14:39:16 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_PSAP2_
 #define	_PSAP2_

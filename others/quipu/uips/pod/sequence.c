@@ -1,15 +1,7 @@
 
 
 
-/*
- * $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/sequence.c,v 9.0 1992/06/16 12:44:54 isode Rel $
- *
- *
- * $Log: sequence.c,v $
- * Revision 9.0  1992/06/16  12:44:54  isode
- * Release 8.0
- *
- */
+
 
 #include "general.h"
 #include <sys/types.h>

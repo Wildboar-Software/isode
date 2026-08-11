@@ -2,22 +2,8 @@
 
 
 
-/*
- * $Header: /xtel/isode/RCS/fd2tpkt.c,v 8.2 1992/02/26 13:48:42 isode Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <stdio.h>
 #include <signal.h>

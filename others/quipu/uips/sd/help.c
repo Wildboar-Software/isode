@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/help.c,v 9.0 1992/06/16 12:45:08 isode Rel $
+ * 
  */
 
 #include "sequence.h"

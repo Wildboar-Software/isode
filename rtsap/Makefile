@@ -4,26 +4,17 @@
 
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/rtsap/RCS/Makefile,v 9.0 1992/06/16 12:37:45 isode Rel $
+# 
 #
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:37:45  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
 
-###############################################################################
-#
-#				 NOTICE
-#
-#    Acquisition, use, and distribution of this module and related
-#    materials are subject to the restrictions of a license agreement.
-#    Consult the Preface in the User's Manual for the full terms of
-#    this agreement.
-#
-###############################################################################
+
 
 
 PEPYPATH=	-DPEPYPATH
@@ -38,9 +29,7 @@ HFILES	=	$(HDIR)rtsap.h $(HDIR)acsap.h $(HDIR)psap2.h $(HDIR)psap.h \
 		$(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-##################################################################
-# Here it is...
-##################################################################
+
 
 all:		librtsap
 inst-all:	inst-librtsap manuals

@@ -3,27 +3,19 @@
 
 
 /*
- * $Header: /xtel/isode/isode/dsap/net/RCS/dapbind.c,v 9.1 1992/07/22 08:05:00 isode Exp $
+ * 
  *
  *
- * $Log: dapbind.c,v $
- * Revision 9.1  1992/07/22  08:05:00  isode
+ * 
+ *
  * Freeing in dap_bind
  *
- * Revision 9.0  1992/06/16  12:14:05  isode
- * Release 8.0
+ *
+ *
  *
  */
 
-/*
- *                                NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include "quipu/util.h"
 #include "quipu/oid.h"

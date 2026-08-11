@@ -31,10 +31,6 @@
 	to always work, you shouldn't be using this source file at all.
 */
 
-#ifndef	lint			/* for strings... */
-static char *rcsid="$Header: /xtel/isode/isode/dirent/RCS/getdents.c,v 9.0 1992/06/16 12:12:04 isode Rel $";
-#endif
-
 #include "config.h"
 
 #if	!defined(SVR3) && !defined(apollo) && !defined(GETDENTS)

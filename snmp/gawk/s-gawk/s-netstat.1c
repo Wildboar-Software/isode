@@ -1,14 +1,10 @@
 .TH S-NETSTAT 1C "29 Aug 1990"
-.\" $Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk/s-gawk/RCS/s-netstat.1c,v 8.5 1992/04/03 08:27:11 isode Exp $
 .\"
 .\" Contributed by NYSERNet Inc.  This work was partially supported by the
 .\" U.S. Defense Advanced Research Projects Agency and the Rome Air Development
 .\" Center of the U.S. Air Force Systems Command under contract number
 .\" F30602-88-C-0016.
 .\"
-.\"
-.\" $Log$
-.\" 
 .SH NAME
 s-netstat \- SNMP-based network status
 .SH SYNOPSIS

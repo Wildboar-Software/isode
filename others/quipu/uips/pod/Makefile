@@ -1,10 +1,10 @@
 ###############################################################################
 #
-# $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/Makefile,v 9.0 1992/06/16 12:44:54 isode Rel $
+# 
 #
-# $Log: Makefile,v $
-# Revision 9.0  1992/06/16  12:44:54  isode
-# Release 8.0
+# 
+#
+#
 #
 # 
 ###############################################################################
@@ -38,9 +38,7 @@ TESTOFILES =	y.tab.o testcalls.o main.o pod.o filt.o sequence.o \
 
 YFILES  =       conf_read.y
 
-###############################################################################
-# Here it is...
-###############################################################################
+##########################
 
 all:            xpod
 inst-all:       inst-pod manuals help appdefs config

@@ -1,27 +1,19 @@
 /* ropkt.h - include file for remote operation providers (RoS-PROVIDER) */
 
 /*
- * $Header: /xtel/isode/isode/h/RCS/ropkt.h,v 9.0 1992/06/16 12:17:57 isode Rel $
+ * 
  *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
  *
  *
- * $Log: ropkt.h,v $
- * Revision 9.0  1992/06/16  12:17:57  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_RoSAP_
 #include "rosap.h"		/* definitions for RoS-USERs */

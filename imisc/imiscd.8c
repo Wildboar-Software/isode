@@ -1,10 +1,10 @@
 .TH IMISCD 8C "31 May 1988"
-.\" $Header: /xtel/isode/isode/imisc/RCS/imiscd.8c,v 9.0 1992/06/16 12:23:43 isode Rel $
+.\" 
 .\"
 .\"
-.\" $Log: imiscd.8c,v $
-.\" Revision 9.0  1992/06/16  12:23:43  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

@@ -5,31 +5,23 @@
 --	    - more commentary-tags for POSY
 --	    - shortening some names to make loader symbols unique to 24 bytes
 
--- $Header: /xtel/isode/isode/psap2/RCS/ps.py,v 9.0 1992/06/16 12:29:42 isode Rel $
+-- 
 --
 --
--- $Log: ps.py,v $
--- Revision 9.0  1992/06/16  12:29:42  isode
--- Release 8.0
+-- 
+--
+--
 --
 --
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 --* ISO8823-PRESENTATION *-- PS DEFINITIONS ::=
 
 %{
 #ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/ps.py,v 9.0 1992/06/16 12:29:42 isode Rel $";
+static char *rcsid = "";
 #endif
 %}
 

@@ -29,17 +29,11 @@
 --	    - more commentary-tags for POSY
 --	    - shortening some names to make loader symbols unique to 24 bytes
 
--- $Header: /f/iso/psap2/RCS/ps.py,v 5.0 88/07/21 14:42:49 mrose Rel $
---
---
--- $Log$
--- 
-
 --* ISO8823-PRESENTATION *-- PS DEFINITIONS ::=
 
 %{
 #ifndef	lint
-static char *rcsid = "$Header: /f/iso/psap2/RCS/ps.py,v 5.0 88/07/21 14:42:49 mrose Rel $";
+static char *rcsid = "";
 #endif
 %}
 

@@ -1,24 +1,8 @@
 /* listen.h - listen demo definitions */
 
-/*
- * $Header: /xtel/isode/isode/others/listen/RCS/listen.h,v 9.0 1992/06/16 12:42:15 isode Rel $
- *
- *
- * $Log: listen.h,v $
- * Revision 9.0  1992/06/16  12:42:15  isode
- * Release 8.0
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 #include "psap2.h"
 #include "ssap.h"

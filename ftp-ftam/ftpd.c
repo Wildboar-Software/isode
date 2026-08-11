@@ -3,7 +3,7 @@
 
 
 /*
- * $Header: /xtel/isode/isode/ftp-ftam/RCS/ftpd.c,v 9.0 1992/06/16 12:17:24 isode Rel $
+ * 
  *
  * Author:	John A. Scott		<Scott@GATEWAY.MITRE.ORG>
  *		The MITRE Corporation
@@ -12,9 +12,9 @@
  *		Mclean, Virginia 22102
  *		+1-703-883-5915
  *
- * $Log: ftpd.c,v $
- * Revision 9.0  1992/06/16  12:17:24  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 

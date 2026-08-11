@@ -1,21 +1,7 @@
 /* tp4.h - TP4 abstractions */
 
-/*
- * $Header: /f/iso/h/RCS/tp4.h,v 5.0 88/07/21 14:39:38 mrose Rel $
- *
- *
- * $Log$
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #ifndef	_TP4_
 #define	_TP4_

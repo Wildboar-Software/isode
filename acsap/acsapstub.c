@@ -3,26 +3,18 @@
 
 
 /*
- * $Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 1992/06/16 12:05:59 isode Rel $
+ * 
  *
  * RFC1085 (LPP) support contributed by the Wollongong Group, Inc.
  *
  *
- * $Log: acsapstub.c,v $
- * Revision 9.0  1992/06/16  12:05:59  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
 
 #include <ctype.h>
 #include <string.h>

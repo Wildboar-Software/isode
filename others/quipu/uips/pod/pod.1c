@@ -1,4 +1,4 @@
-.\"$Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/pod.1c,v 9.0 1992/06/16 12:44:54 isode Rel $"
+.\"
 .TH Pod 1C "16 Jan 1909"
 .SH NAME
 Pod \- X-windows based directory user agent.

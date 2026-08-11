@@ -45,12 +45,6 @@
 
 
 
-/*
- * $Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14:42:56 mrose Rel $
- *
- *
- * $Log$
- */
 
 #include <stdio.h>
 #include <stdarg.h>

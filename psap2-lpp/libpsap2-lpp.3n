@@ -1,12 +1,12 @@
 .TH LIBPSAP2\-LPP 3N "31 May 1988"
-.\" $Header: /xtel/isode/isode/psap2-lpp/RCS/libpsap2-lpp.3n,v 9.0 1992/06/16 12:31:57 isode Rel $
+.\" 
 .\"
 .\" Contributed by The Wollongong Group, Inc.
 .\"
 .\"
-.\" $Log: libpsap2-lpp.3n,v $
-.\" Revision 9.0  1992/06/16  12:31:57  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME

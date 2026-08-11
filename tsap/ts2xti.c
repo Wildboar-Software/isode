@@ -2,25 +2,9 @@
 
 
 
-/*
- * $Header: /xtel/isode/isode/tsap/RCS/ts2xti.c,v 9.0 1992/06/16 12:40:39 isode Rel $
- *
- *
- * $Log: ts2xti.c,v $
- * Revision 9.0  1992/06/16  12:40:39  isode
- * Release 8.0
- *
- */
 
-/*
- *				  NOTICE
- *
- *    Acquisition, use, and distribution of this module and related
- *    materials are subject to the restrictions of a license agreement.
- *    Consult the Preface in the User's Manual for the full terms of
- *    this agreement.
- *
- */
+
+
 
 /* This should be considered Alpha test code at this stage... */
 

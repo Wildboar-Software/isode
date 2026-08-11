@@ -1,25 +1,25 @@
 .TH LIBSSAP 3N "31 May 1988"
-.\" $Header: /xtel/isode/isode/ssap/RCS/libssap.3n,v 9.0 1992/06/16 12:39:41 isode Rel $
+.\" 
 .\"
 .\"
-.\" $Log: libssap.3n,v $
-.\" Revision 9.0  1992/06/16  12:39:41  isode
-.\" Release 8.0
+.\" 
 .\"
-.\" Revision 8.4  1992/04/03  08:27:17  isode
+.\"
+.\"
+.\"
 .\" sync
 .\"
-.\" Revision 8.3  1992/02/26  13:47:58  isode
+.\"
 .\" rel7_2
 .\"
-.\" Revision 8.2  1992/02/05  10:12:12  isode
+.\"
 .\" "Release
 .\"
-.\" Revision 8.1  1991/09/10  13:16:44  jpo
+.\"
 .\" awy conformance fixes
 .\"
-.\" Revision 8.0  91/07/17  13:01:31  isode
-.\" Release 7.0
+.\"
+.\"
 .\" 
 .\" 
 .SH NAME

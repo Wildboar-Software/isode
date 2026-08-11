@@ -1,31 +1,23 @@
 -- acs.py - AcSAP definitions
 --	lifted directly from ISO8650
     
--- $Header: /xtel/isode/isode/acsap/RCS/acs.py,v 9.0 1992/06/16 12:05:59 isode Rel $
+-- 
 --
 --
--- $Log: acs.py,v $
--- Revision 9.0  1992/06/16  12:05:59  isode
--- Release 8.0
+-- 
+--
+--
 --
 -- 
 
---
---				  NOTICE
---
---    Acquisition, use, and distribution of this module and related
---    materials are subject to the restrictions of a license agreement.
---    Consult the Preface in the User's Manual for the full terms of
---    this agreement.
---
---
+
 
 
 --* ACSE-1 *-- ACS DEFINITIONS ::=
 
 %{
 #ifndef	lint
-static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acs.py,v 9.0 1992/06/16 12:05:59 isode Rel $";
+static char *rcsid = "";
 #endif
 %}
 

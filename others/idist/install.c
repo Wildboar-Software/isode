@@ -1,7 +1,7 @@
 /* install.c - installation of files on remote host */
 
 /*
- * $Header: /xtel/isode/isode/others/idist/RCS/install.c,v 9.0 1992/06/16 12:42:00 isode Rel $
+ * 
  *
  * Installation of files on remote host - the routines here drive the
  * protocol for installation, comparision and deletion etc. The
@@ -15,9 +15,9 @@
  * Nottingham University Computer Science
  *
  *
- * $Log: install.c,v $
- * Revision 9.0  1992/06/16  12:42:00  isode
- * Release 8.0
+ * 
+ *
+ *
  *
  */
 
@@ -42,7 +42,7 @@
 
 #ifndef lint
 static char sccsid[] = "@(#)server.c    5.12 (Berkeley) 6/1/90";
-static char rcsid[] = "$Header: /xtel/isode/isode/others/idist/RCS/install.c,v 9.0 1992/06/16 12:42:00 isode Rel $";
+static char rcsid[] = "
 #endif
 
 #include "defs.h"

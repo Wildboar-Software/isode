@@ -1,12 +1,12 @@
 .TH TSBRIDGE 8C "08 March 1989"
-.\" $Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.8c,v 9.0 1992/06/16 12:48:17 isode Rel $
+.\" 
 .\"
 .\" Contributed by Julian Onions, Nottingham University in the UK.
 .\"
 .\"
-.\" $Log: tsbridge.8c,v $
-.\" Revision 9.0  1992/06/16  12:48:17  isode
-.\" Release 8.0
+.\" 
+.\"
+.\"
 .\"
 .\" 
 .SH NAME
