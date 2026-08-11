@@ -68,8 +68,7 @@ int getreply ();
  * ftp_login: establish command connection with remote host
  * then execute login process.
  */
-int
-ftp_login(host,user,passwd,acct)
+int ftp_login(host,user,passwd,acct)
 char *host, *user, *passwd, *acct;
 {
 
@@ -88,8 +87,7 @@ char *host, *user, *passwd, *acct;
 /*
  * ftp_quit: send quit command and shutdown communications link.
  */
-int
-ftp_quit() {
+int ftp_quit() {
 
 	extern FILE *cout;
 	extern int data;
@@ -108,8 +106,7 @@ ftp_quit() {
 /*
  * ftp_abort: send abort command
  */
-int
-ftp_abort() {
+int ftp_abort() {
 	int n;
 
 	if (!connected) return NOTOK;
@@ -130,8 +127,7 @@ ftp_abort() {
  * insensitive scan then falling back on record counts in the case of
  * directories.
  */
-int
-ftp_exist(filename)
+int ftp_exist(filename)
 char *filename;
 {
 	int n, count;
@@ -182,8 +178,7 @@ char *filename;
 /* Basicly set transfer type to ascii and issue NLST command
  * and returning the socket descriptor for the data stream.
  */
-int
-ftp_ls(dir)
+int ftp_ls(dir)
 char *dir;
 {
 	int fd;
@@ -198,8 +193,7 @@ char *dir;
 
 	return(fd);
 }
-int
-ftp_delete(file)
+int ftp_delete(file)
 char *file;
 {
 
@@ -215,8 +209,7 @@ char *file;
 
 }
 
-int
-ftp_mkdir(dir)
+int ftp_mkdir(dir)
 char *dir;
 {
 
@@ -228,8 +221,7 @@ char *dir;
 
 }
 
-int
-ftp_rename(from,to)
+int ftp_rename(from,to)
 char *from, *to;
 {
 	int n;
@@ -244,8 +236,7 @@ char *from, *to;
 
 }
 
-int
-ftp_write(file)
+int ftp_write(file)
 char *file;
 {
 
@@ -253,8 +244,7 @@ char *file;
 
 	return(sendrequest("STOR",file));
 }
-int
-ftp_append(file)
+int ftp_append(file)
 char *file;
 {
 	if (!connected) return NOTOK;
@@ -262,8 +252,7 @@ char *file;
 	return(sendrequest("APPE",file));
 }
 
-int
-ftp_read(file)
+int ftp_read(file)
 char *file;
 {
 
@@ -272,8 +261,7 @@ char *file;
 	return(recvrequest("RETR", file));
 }
 
-int
-ftp_type(modeX)
+int ftp_type(modeX)
 int modeX;
 {
 	int n;
@@ -310,8 +298,7 @@ int modeX;
 
 }
 
-int
-ftp_reply() {
+int ftp_reply() {
 	int n;
 
 	/* process an FTP response */
@@ -321,8 +308,7 @@ ftp_reply() {
 	return NOTOK;
 }
 
-int
-ftp_create(filename)
+int ftp_create(filename)
 char *filename;
 {
 	int fd,n;

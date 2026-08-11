@@ -109,8 +109,7 @@ char	Password[LINESIZE] ;
 char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
-int
-main () {
+int main () {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
 	struct	stat	buf ;
@@ -640,8 +639,7 @@ AttributeType ent_mod_at;
 	return (em);
 }
 
-int
-ems_part_free (struct entrymod *emp) {
+int ems_part_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_part_free(emp->em_next);

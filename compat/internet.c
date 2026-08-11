@@ -309,8 +309,7 @@ int close_tcp_socket (int fd) {
    and we must prematurely bind the sockets to IP addresses. */
 
 
-int
-start_tcp_client (struct sockaddr_in *sock, int priv) {
+int start_tcp_client (struct sockaddr_in *sock, int priv) {
 	int    port;
 	int     sd;
 	struct hostent *hp;
@@ -347,8 +346,7 @@ start_tcp_client (struct sockaddr_in *sock, int priv) {
 }
 
 
-int
-start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
+int start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
 	int     sd;
 	struct hostent *hp;
@@ -578,8 +576,7 @@ getservbyname (char *name, char *proto) {
 
 #define	s2a(b)	(((int) (b)) & 0xff)
 
-char *
-inet_ntoa (struct in_addr in) {
+char *inet_ntoa (struct in_addr in) {
 	char  *s = (char *) &in;
 	static char addr[4 * 3 + 3 + 1];
 

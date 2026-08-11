@@ -92,8 +92,7 @@ static	log_utmp ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    eof,
 			status,
 			vecp;
@@ -498,8 +497,7 @@ arginit (char **vec) {
 
 /* INTERACTIVE */
 
-int
-_getline (char *prompt, char *buffer) {
+int _getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -682,15 +680,13 @@ again:
 #else
 /* VARARGS */
 
-int
-ask (char *fmt) {
+int ask (char *fmt) {
 	return ask (fmt);
 }
 #endif
 
 
-int
-str2vecY (char *buffer, char **vec) {
+int str2vecY (char *buffer, char **vec) {
 	int	    i;
 	char *cp,
 		 *dp;

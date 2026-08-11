@@ -206,8 +206,7 @@ findacublk (
 
 
 /*---------------------------------------------------------------------------*/
-int
-freeacublk (
+int freeacublk (
 	/*---------------------------------------------------------------------------*/
 	struct assocblk *acb
 ) {
@@ -239,8 +238,7 @@ freeacublk (
 /*---------------------------------------------------------------------------*/
 /*    PSAP interface */
 /*---------------------------------------------------------------------------*/
-int
-ps2aculose (
+int ps2aculose (
 	/*---------------------------------------------------------------------------*/
 	struct assocblk *acb,
 	struct AcSAPindication *aci,
@@ -315,8 +313,7 @@ int	acusaplose (struct AcSAPindication *aci, ...)
 }
 #else
 /* VARARGS */
-int
-acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
+int acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 	return acusaplose (aci, reason, what, fmt);
 }
 #endif
@@ -392,8 +389,7 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 
 /*---------------------------------------------------------------------------*/
-char *
-AcuErrString (
+char *AcuErrString (
 	/*---------------------------------------------------------------------------*/
 	int code
 ) {

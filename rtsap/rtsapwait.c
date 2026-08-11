@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapwait.c,v 9.0 199
 
 /*    RT-WAIT.REQUEST (pseudo) */
 
-int
-RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
+int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -52,8 +51,7 @@ RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
 }
 
 
-int
-RtWaitRequestAux (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
+int RtWaitRequestAux (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	if (!trans && (acb -> acb_flags & ACB_PLEASE)) {
 		acb -> acb_flags &= ~ACB_PLEASE;
 

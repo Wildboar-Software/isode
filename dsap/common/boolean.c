@@ -62,8 +62,7 @@ boolget (char *x) {
 	return (NULLCP);
 }
 
-int
-boolean_syntax (void) {
+int boolean_syntax (void) {
 	add_attribute_syntax ("boolean",
 						  boolenc,		booldec,
 						  boolget,		strprint,

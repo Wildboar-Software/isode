@@ -78,8 +78,7 @@ sigser (int sig) {
 
 #ifndef SVR4_UCB
 
-int
-sigblock (int mask) {
+int sigblock (int mask) {
 	int    sig,
 		   smask;
 	long    omask = blocked;
@@ -97,8 +96,7 @@ sigblock (int mask) {
 	return omask;
 }
 
-int
-sigsetmask (int mask) {
+int sigsetmask (int mask) {
 	int    sig,
 		   smask;
 	long    omask = blocked;

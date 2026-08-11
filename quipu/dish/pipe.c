@@ -51,8 +51,7 @@ int             fd, wfd;
 int parent_pid;
 extern int	errno;
 
-int
-init_pipe (void) {
+int init_pipe (void) {
 	char parent [BUFSIZ];
 	char   *cp;
 
@@ -133,8 +132,7 @@ init_pipe (void) {
 	return (OK);
 }
 
-int
-exit_pipe (void) {
+int exit_pipe (void) {
 #ifdef SOCKETS
 	close_tcp_socket (sd);
 #else
@@ -144,8 +142,7 @@ exit_pipe (void) {
 #endif
 }
 
-int
-read_pipe (char *buf, int len) {
+int read_pipe (char *buf, int len) {
 #ifdef SOCKETS
 	struct sockaddr_in sock;
 
@@ -163,8 +160,7 @@ read_pipe (char *buf, int len) {
 }
 
 
-int
-read_pipe_aux (char *buf, int len) {
+int read_pipe_aux (char *buf, int len) {
 	int res;
 #ifdef	SOCKETS
 	char *cp,
@@ -211,8 +207,7 @@ read_pipe_aux (char *buf, int len) {
 
 
 #ifdef	SOCKETS
-int
-read_pipe_aux2 (char **buf, int *len) {
+int read_pipe_aux2 (char **buf, int *len) {
 	int	    cc,
 			i,
 			j,
@@ -279,8 +274,7 @@ out:
 
 
 #ifndef	SOCKETS
-int
-send_pipe (char *buf) {
+int send_pipe (char *buf) {
 	send_pipe_aux (buf);
 
 	close (file);
@@ -323,8 +317,7 @@ void send_pipe_aux2 (char *buf, int i) {
 
 
 #ifdef SOCKETS
-int
-get_dish_sock (struct sockaddr_in *isock) {
+int get_dish_sock (struct sockaddr_in *isock) {
 	char * getenv ();
 	char * ptr;
 	char buffer [BUFSIZ];
@@ -374,8 +367,7 @@ get_dish_sock (struct sockaddr_in *isock) {
 
 #else
 
-int
-reopen_ret (void) {
+int reopen_ret (void) {
 	close (fd);
 	close (wfd);
 

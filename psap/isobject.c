@@ -40,8 +40,7 @@ static int  stayopen = 0;
 static struct isobject    ios;
 
 
-int
-setisobject (int f) {
+int setisobject (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isobjects, 0), "r");
 	else
@@ -52,8 +51,7 @@ setisobject (int f) {
 }
 
 
-int
-endisobject()  {
+int endisobject()  {
 	if (servf && !stayopen) {
 		fclose (servf);
 		servf = NULL;

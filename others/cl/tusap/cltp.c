@@ -105,8 +105,7 @@ struct TSAPdisconnect *td;
 
 /* returns header length */
 
-int
-T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdisconnect *td)
+int T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdisconnect *td)
 
 {
 	int		code;

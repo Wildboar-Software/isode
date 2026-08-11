@@ -48,8 +48,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
 
 
 
-int
-sstr2arg (
+int sstr2arg (
 	char *srcptr,  /* source data */
 	int maxpf,              /* maximum number of permitted fields */
 	char *argv[],           /* where to put the pointers */

@@ -66,8 +66,7 @@ static char *reason_err8[] = {
 static int reason_err8_cnt = sizeof reason_err8 / sizeof reason_err8[0];
 
 
-char *
-SReportString (int code) {
+char *SReportString (int code) {
 	int    fcode;
 	static char buffer[BUFSIZ];
 
@@ -175,8 +174,7 @@ ryr_advise (char *what, char *fmt) {
 #ifdef	lint
 /* VARARGS4 */
 
-int
-rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif
@@ -221,8 +219,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 long	times ();
 
 
-int
-timer (int cc) {
+int timer (int cc) {
 	long    ms;
 	float   bs;
 	long    stop,

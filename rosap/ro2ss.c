@@ -58,8 +58,7 @@ qbuf2pe_local (struct qbuf *qb, int len, int *result) {
 
 /*    bind underlying service */
 
-int
-RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
+int RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & (ACB_ACS | ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
 						  "not an association descriptor for ROS on session");
@@ -81,8 +80,7 @@ RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 
 
-int
-ro2ssasync (
+int ro2ssasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RoSAPindication *roi),
 	struct RoSAPindication *roi
@@ -119,8 +117,7 @@ ro2ssasync (
 /*    map association descriptors for select() */
 
 
-int
-ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
+int ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;
 
@@ -140,8 +137,7 @@ ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication
 
 /*    protocol-level abort */
 
-int
-ro2sslose (struct assocblk *acb, int result) {
+int ro2sslose (struct assocblk *acb, int result) {
 	int     len;
 	char   *base;
 	PE	    pe;
@@ -170,8 +166,7 @@ ro2sslose (struct assocblk *acb, int result) {
 
 /*    SSAP interface */
 
-int
-ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
+int ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
 	int     result;
 	struct SSAPdata sxs;
 	struct SSAPdata   *sx = &sxs;
@@ -245,8 +240,7 @@ ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 
 
 
-int
-ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
+int ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
 	int     result;
 	PE	    pe;
 	struct SSAPdata sxs;
@@ -353,8 +347,7 @@ out:
 
 
 
-int
-ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
+int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct udvec *vv;
 	struct udvec *uv;
@@ -534,8 +527,7 @@ doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication 
 }
 
 
-int
-ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi) {
+int ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi) {
 	int	    result;
 	PE	pe;
 	struct type_OACS_AbortInformation *pabort

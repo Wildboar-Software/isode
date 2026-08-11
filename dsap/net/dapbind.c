@@ -39,8 +39,7 @@ struct PSAPaddr   dsa_bound;
 
 static char * qlocalhost = "DAP";	/* DAP bind speed up */
 
-int
-ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
+int ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
 	/* reverse compatability for bind */
 	arg->dba_auth_type = DBA_AUTH_SIMPLE;
 	arg->dba_time1 = NULLCP;
@@ -49,8 +48,7 @@ ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_ar
 	return (secure_ds_bind (arg,error,result));
 }
 
-int
-secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
+int secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result) {
 	struct PSAPaddr             *addr;
 
 	if (!dsa_address || ((addr = str2paddr (dsa_address)) == NULLPA)) {
@@ -72,8 +70,7 @@ secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_
 	return(dap_bind(&(dsap_ad), arg, error, result, addr));
 }
 
-int
-dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr) {
+int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr) {
 	int				  ret;
 	struct DAPconnect         dc_s;
 	struct DAPconnect         *dc = &dc_s;
@@ -230,8 +227,7 @@ int			  async;
 	return (result);
 }
 
-int
-DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async) {
+int DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async) {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
 	struct QOStype		  qos;
@@ -253,8 +249,7 @@ DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, st
 							   bindarg, &qos, dc, di, async));
 }
 
-int
-DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di) {
+int DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -275,8 +270,7 @@ DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPind
 	return (result);
 }
 
-int
-DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni) {
+int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni) {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
 

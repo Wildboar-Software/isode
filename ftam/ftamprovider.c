@@ -149,8 +149,7 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 
 /*    F-WAIT.REQUEST (pseudo) */
 
-int
-FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
+int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -176,8 +175,7 @@ static int  doPSreport ();
 static int  doPSfinish ();
 static int  doPSabort ();
 
-int
-FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {
+int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -1837,8 +1835,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 #define	e(i)	(indication ? (i) : NULL)
 
 
-int
-FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
+int FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;
@@ -1881,8 +1878,7 @@ FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 
 /*    AcSAP interface */
 
-int
-acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
+int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
 	int     observer,
 			reason;
 	char   *cp,
@@ -1941,8 +1937,7 @@ acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, stru
 }
 
 
-int
-acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti) {
+int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti) {
 	int     peer;
 	PE	    pe;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -2010,8 +2005,7 @@ out:
 
 /*    PSAP interface */
 
-int
-ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
+int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
 	int     observer,
 			reason;
 	char   *cp,

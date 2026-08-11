@@ -90,8 +90,7 @@ struct group *gr;
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int initiate ();
 	oumask = umask (0);
 

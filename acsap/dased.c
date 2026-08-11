@@ -92,8 +92,7 @@ PE	grab_pe ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    vecp;
 	char   *vec[4];
 	struct TSAPdisconnect   tds;

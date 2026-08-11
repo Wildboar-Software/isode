@@ -39,8 +39,7 @@ int	susaplose (struct SSAPindication *si, ...) {
 #else
 /* VARARGS */
 
-int
-susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
+int susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return susaplose (si, reason, what, fmt);
 }
 #endif
@@ -76,8 +75,7 @@ _susaplose (	/* what, fmt, args ... */
 
 
 
-int
-ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td) {
+int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

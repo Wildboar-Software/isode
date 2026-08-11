@@ -30,8 +30,7 @@ VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int
-listPRRs(parentstr, thisstr, listp)
+int listPRRs(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -113,8 +112,7 @@ freePRRSearchArgs() {
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int
-listAllPRRs(parentstr, listp)
+int listAllPRRs(parentstr, listp)
 char * parentstr;
 struct namelist ** listp;
 {
@@ -132,8 +130,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-listMatchingPRRs(parentstr, thisstr, listp)
+int listMatchingPRRs(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -172,8 +169,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int
-listExactPRRs(objectstr, listp)
+int listExactPRRs(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
@@ -186,8 +182,7 @@ struct namelist ** listp;
 	alarmCleanUp();
 	return ret;
 }
-int
-listExactPRRcn(objectstr, listp)
+int listExactPRRcn(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
@@ -201,8 +196,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-listXctCpPRRcn(objectstr, listp)
+int listXctCpPRRcn(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
@@ -216,8 +210,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-makeListPRRs(listp, parentstr)
+int makeListPRRs(listp, parentstr)
 struct namelist ** listp;
 char * parentstr;
 {

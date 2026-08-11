@@ -61,8 +61,7 @@ char padding[20];
 
 static PS ps = NULLPS;
 
-char *
-val2str (av)
+char *val2str (av)
 AttributeValue  av;
 {
 	char       *cp;
@@ -88,8 +87,7 @@ AttributeValue  av;
 }
 
 
-int
-printDetails (int objectType, struct namelist *lp) {
+int printDetails (int objectType, struct namelist *lp) {
 	Attr_Sequence at;
 	AV_Sequence av;
 	char * cp;
@@ -142,8 +140,7 @@ printDetails (int objectType, struct namelist *lp) {
 	linewrapOff();
 }
 
-int
-printPersonOneLiner (struct namelist *lp, int number) {
+int printPersonOneLiner (struct namelist *lp, int number) {
 	Attr_Sequence at;
 	char * cp;
 	char mail[LINESIZE], phone[LINESIZE];
@@ -747,8 +744,7 @@ PE	pe;
 }
 
 
-int
-specialSyntaxHandlers () {
+int specialSyntaxHandlers () {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

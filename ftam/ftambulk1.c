@@ -36,8 +36,7 @@ static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMin
 /*    F-{READ,WRITE}.REQUEST */
 static int  FReadWriteRequestAux (), FTransEndRequestAux ();
 
-int
-FReadWriteRequest (
+int FReadWriteRequest (
 	int sd,
 	int operation,
 	struct FADUidentity *identity,
@@ -224,8 +223,7 @@ out:
 
 /* F-TRANSFER-END.REQUEST */
 
-int
-FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
+int FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;

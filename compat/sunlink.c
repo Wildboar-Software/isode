@@ -56,8 +56,7 @@ static int  log_x25_facilities ();
 
 
 
-int
-start_x25_client (struct NSAPaddr *local, int priv) {
+int start_x25_client (struct NSAPaddr *local, int priv) {
 	int     sd;
 
 	if ((sd = socket (AF_X25, SOCK_STREAM, 0)) == NOTOK) {
@@ -81,8 +80,7 @@ start_x25_client (struct NSAPaddr *local, int priv) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	CONN_DB     sbuf,
 				xbuf;
 	CONN_DB     *sock = &sbuf,
@@ -183,8 +181,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 }
 
 
-int
-join_x25_server (int fd, struct NSAPaddr *remote) {
+int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
 	int nfd;
@@ -230,8 +227,7 @@ join_x25_server (int fd, struct NSAPaddr *remote) {
 }
 
 
-int
-join_x25_client (int fd, struct NSAPaddr *remote) {
+int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
 	int     len = sizeof *sock;
@@ -289,8 +285,7 @@ int	sun_fixed_thruput = 0;
    things up, if your /etc/x25params has not been properly
    localised as is normally the case.  */
 
-int
-set_x25_facilities (int sd, int coc, char *caption) {
+int set_x25_facilities (int sd, int coc, char *caption) {
 	FACILITY_DB facilities;
 
 	bzero ((char *) &facilities, sizeof facilities);
@@ -370,8 +365,7 @@ set_x25_facilities (int sd, int coc, char *caption) {
 }
 
 
-int
-log_cause_and_diag (int fd) {
+int log_cause_and_diag (int fd) {
 	X25_CAUSE_DIAG      diag;
 
 	if (ioctl(fd, X25_RD_CAUSE_DIAG, (char *) &diag) == NOTOK) {
@@ -645,8 +639,7 @@ print_send:
 }
 #endif
 #else
-int
-_sunlink_stub2()  {}
+int _sunlink_stub2()  {}
 #endif
 #else
 int _sunlink_stub(void) {}

@@ -136,8 +136,7 @@ expand (struct namelist *list, int wh) {
 	return(list);
 }
 
-int
-expstr (char *s) {
+int expstr (char *s) {
 	char *cp, *cp1;
 	struct namelist *tp;
 	char *tail;
@@ -246,8 +245,7 @@ argcmp (char **a1, char **a2) {
  * If there are any Shell meta characters in the name,
  * expand into a list, after searching directory
  */
-int
-expsh (char *s) {
+int expsh (char *s) {
 	char *cp;
 	char *spathp, *oldcp;
 	struct stat stb;
@@ -282,8 +280,7 @@ endit:
 	*pathp = '\0';
 }
 
-int
-matchdir (char *pattern) {
+int matchdir (char *pattern) {
 	struct stat stb;
 	struct dirent *dp;
 	DIR *dirp;
@@ -321,8 +318,7 @@ patherr2:
 	yyerror(path);
 }
 
-int
-execbrc (char *p, char *s) {
+int execbrc (char *p, char *s) {
 	char restbuf[BUFSIZ + 2];
 	char *pe, *pm, *pl;
 	int brclev = 0;
@@ -399,8 +395,7 @@ doit:
 	return (0);
 }
 
-int
-match (char *s, char *p) {
+int match (char *s, char *p) {
 	int c;
 	char *sentp;
 	char sexpany = expany;
@@ -415,8 +410,7 @@ match (char *s, char *p) {
 	return (c);
 }
 
-int
-amatch (char *s, char *p) {
+int amatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	char *spathp;
@@ -501,8 +495,7 @@ slash:
 	}
 }
 
-int
-smatch (char *s, char *p) {
+int smatch (char *s, char *p) {
 	int scc;
 	int ok, lc;
 	int c, cc;
@@ -557,8 +550,7 @@ smatch (char *s, char *p) {
 	}
 }
 
-int
-Cat (char *s1, char *s2) {
+int Cat (char *s1, char *s2) {
 	int len = strlen(s1) + strlen(s2) + 1;
 	char *s;
 
@@ -576,8 +568,7 @@ Cat (char *s1, char *s2) {
 		;
 }
 
-int
-addpath (int c) {
+int addpath (int c) {
 
 	if (pathp >= lastpathp)
 		yyerror("Pathname too long");

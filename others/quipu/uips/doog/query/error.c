@@ -95,8 +95,7 @@ QE_error_code code;
  *
  *
  */
-char *
-ds_error_message (struct DSError *error) {
+char *ds_error_message (struct DSError *error) {
 	PS ps;
 	char buffer[LINESIZE];
 	char *str, *message;

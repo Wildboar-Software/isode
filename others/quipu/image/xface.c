@@ -89,8 +89,7 @@ char   *getenv ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char    buffer[BUFSIZ],
 			*vec[NVEC + 1];
 
@@ -493,8 +492,7 @@ unmap:
 
 /* SOCKET */
 
-int
-startsocket (int portno) {
+int startsocket (int portno) {
 	struct sockaddr_in in_socket;
 	struct sockaddr_in *isock = &in_socket;
 
@@ -510,8 +508,7 @@ startsocket (int portno) {
 }
 
 
-int
-readsocket (char *buffer) {
+int readsocket (char *buffer) {
 	int     cc;
 
 	for (;;) {

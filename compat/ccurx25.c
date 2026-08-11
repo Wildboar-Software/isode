@@ -83,8 +83,7 @@ typedef union N_indication_t {
 static fd_set	inprogress;
 
 
-char *
-npierr2str (int n) {
+char *npierr2str (int n) {
 	static char buf[20];
 	switch (n) {
 	case NBADADDR:
@@ -146,8 +145,7 @@ npierr2str (int n) {
 }
 
 
-char *
-npiev2str (int n) {
+char *npiev2str (int n) {
 	static char buf[10];
 
 	switch (n) {
@@ -214,8 +212,7 @@ npiev2str (int n) {
 }
 
 
-int
-get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd) {
+int get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd) {
 	N_error_ack_t * err;
 	int res;
 
@@ -262,8 +259,7 @@ get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int e
 }
 
 
-int
-start_x25_client (struct NSAPaddr *local) {
+int start_x25_client (struct NSAPaddr *local) {
 	int     sd;
 
 	/* should use local address to see if sub-address on local bind
@@ -281,8 +277,7 @@ start_x25_client (struct NSAPaddr *local) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd;
 	int	    flags;
 	struct {
@@ -355,8 +350,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 }
 
 
-int
-join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local) {
+int join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local) {
 	int			flags;
 	char		pbuf[CONTROL_BUF_SIZE];
 	char		dbuf[128];
@@ -442,8 +436,7 @@ join_x25_client (int fd, struct NSAPaddr *remote, struct NSAPaddr *local) {
 }
 
 
-int
-join_x25_server (int fd, struct NSAPaddr *remote) {
+int join_x25_server (int fd, struct NSAPaddr *remote) {
 	struct {
 		N_conn_req_t req;
 		CONN_DB addr;
@@ -695,9 +688,7 @@ int fd;
 }
 
 #else
-int
-_ccurx25_stub() {}
+int _ccurx25_stub() {}
 #endif  /* CCUR_X25 */
-int
-_ccurx25_stub2()  {}
+int _ccurx25_stub2()  {}
 #endif  /* X25 */

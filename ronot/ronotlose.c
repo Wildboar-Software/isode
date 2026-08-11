@@ -53,8 +53,7 @@ int	ronotlose (struct RoNOTindication* rni, ...) {
 #else
 /* VARARGS4 */
 
-int
-ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
+int ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
 	return ronotlose (rni, reason, what, fmt);
 }
 #endif
@@ -84,8 +83,7 @@ _ronotlose (  /* what, fmt, args ... */
 
 /*    ACSAP interface */
 
-int
-acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {
+int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {
 
 	char	* cp;
 

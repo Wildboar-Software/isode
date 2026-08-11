@@ -99,8 +99,7 @@ Filter search_filter;
 FILE *config_file;
 char *file_names[MAXTYPES];
 
-char *
-get_strioid (char *ptr) {
+char *get_strioid (char *ptr) {
 	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
@@ -1348,8 +1347,7 @@ goto_addr () {
 	rd_start();
 }
 
-int
-isleafnode (char *name) {
+int isleafnode (char *name) {
 	struct ds_list_arg list_arg;
 	struct ds_list_result   list_result;
 
@@ -1407,8 +1405,7 @@ int size;
 	ps_free(ps);
 }
 
-int
-issubstr (char *str, char *substr) {
+int issubstr (char *str, char *substr) {
 	char *sptr;
 	char c;
 	int substrlen = strlen(substr);
@@ -1431,8 +1428,7 @@ issubstr (char *str, char *substr) {
 	}
 }
 
-int
-indexstring (char *string, char *substring) {
+int indexstring (char *string, char *substring) {
 	char *sub, *str;
 	char c, s;
 	int indx = 0;
@@ -1539,15 +1535,13 @@ sort_attrs (struct attrcomp *entry_attrs) {
 }
 
 
-char *
-GetSurname (char *name) {
+char *GetSurname (char *name) {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
-char *
-GetWholeRelName (char *name) {
+char *GetWholeRelName (char *name) {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
 	while (!isalpha(*name)) name++;

@@ -32,8 +32,7 @@ LLog * log_dsap;
 LLog * log_stat;
 #endif
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	extern IFP unrav_fn;
 	extern IFP schema_fn;
 	int real_unravel_attribute ();
@@ -81,8 +80,7 @@ main (int argc, char *argv[]) {
 
 int refreshing = FALSE;
 
-int
-shadow_entry (Entry eptr) {
+int shadow_entry (Entry eptr) {
 	;
 }
 

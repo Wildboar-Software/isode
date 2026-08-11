@@ -331,8 +331,7 @@ void warning (char* fmt, ...) {
 }
 #else
 /* VARARGS1 */
-int
-warning (char *fmt) {
+int warning (char *fmt) {
 	warning (fmt);
 }
 #endif

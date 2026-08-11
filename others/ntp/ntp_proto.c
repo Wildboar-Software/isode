@@ -713,10 +713,8 @@ poll_update (struct ntp_peer *peer, int new_hpoll) {
 
 /* 3.4.9 Authentication Procedures */
 #if	0
-int
-encrypt () {}
-int
-decrypt () {}
+int encrypt () {}
+int decrypt () {}
 #endif
 
 /* 4.1 Clock Filter Procedure */
@@ -1031,8 +1029,7 @@ select_clock () {
 	}
 }
 
-int
-sanity_check (struct ntp_peer *peer) {
+int sanity_check (struct ntp_peer *peer) {
 	TRACE (7, ("Checking peer %s stratum %d",
 			   paddr (&peer->src), peer->stratum));
 

@@ -41,8 +41,7 @@ static	bit	black, white;
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char   *cp;
 	char   *data;
 	int     fd;
@@ -164,8 +163,7 @@ static	bit    *bitrow, *bP;
 
 
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
 	x = y = 0;
@@ -175,8 +173,7 @@ photo_start (char *name) {
 
 
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	if (passno == 1) {
 		int	i;
 
@@ -201,8 +198,7 @@ photo_end (char *name) {
 }
 
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	if (passno == 2) {
 		int	i;
 
@@ -215,8 +211,7 @@ photo_black (int length) {
 }
 
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	if (passno == 2)
 		bP += length;
 

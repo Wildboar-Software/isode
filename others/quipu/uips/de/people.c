@@ -58,8 +58,7 @@ VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int
-listPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
+int listPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == PERSON)
@@ -126,14 +125,12 @@ freePRRs (struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-int
-freePRRSearchArgs () {
+int freePRRSearchArgs () {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int
-listAllPRRs (char *parentstr, struct namelist **listp) {
+int listAllPRRs (char *parentstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgs(parentstr, SRA_WHOLESUBTREE);
@@ -148,8 +145,7 @@ listAllPRRs (char *parentstr, struct namelist **listp) {
 	return ret;
 }
 
-int
-listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
+int listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -185,8 +181,7 @@ listMatchingPRRs (char *parentstr, char *thisstr, struct namelist **listp) {
 	return OK;
 }
 
-int
-listExactPRRs (char *objectstr, struct namelist **listp) {
+int listExactPRRs (char *objectstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgs(objectstr, SRA_BASEOBJECT);
@@ -197,8 +192,7 @@ listExactPRRs (char *objectstr, struct namelist **listp) {
 	return ret;
 }
 
-int
-makeListPRRs (struct namelist **listp, char *parentstr) {
+int makeListPRRs (struct namelist **listp, char *parentstr) {
 	entrystruct * x;
 	int retval;
 	void onalarm();
@@ -296,8 +290,7 @@ fillMostPRRSearchArgs (char *parentstr, int searchdepth) {
 	return (&arg);
 }
 
-int
-makeAllPRRFilter (struct s_filter **fpp) {
+int makeAllPRRFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -306,8 +299,7 @@ makeAllPRRFilter (struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-int
-makeExactPRRFilter (struct s_filter **fpp) {
+int makeExactPRRFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();

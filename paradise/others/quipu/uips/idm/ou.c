@@ -33,8 +33,7 @@ void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};
 
-int
-listOUs(parentstr, thisstr, listp)
+int listOUs(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -98,8 +97,7 @@ freeOUSearchArgs() {
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int
-listAllOUs(parentstr, listp)
+int listAllOUs(parentstr, listp)
 char * parentstr;
 struct namelist ** listp;
 {
@@ -125,8 +123,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-listMatchingOUs(parentstr, thisstr, listp)
+int listMatchingOUs(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -199,8 +196,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int
-readExactOU(oustr, olistp)
+int readExactOU(oustr, olistp)
 char * oustr;
 struct namelist ** olistp;
 {
@@ -211,8 +207,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int
-reallyMakeListOUs(olistp)
+int reallyMakeListOUs(olistp)
 struct namelist ** olistp;
 {
 	struct subordinate * x;
@@ -253,8 +248,7 @@ struct namelist ** olistp;
 
 
 
-int
-listExactOUs(objectstr, listp)
+int listExactOUs(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {
@@ -268,8 +262,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-makeListOUs(listp)
+int makeListOUs(listp)
 struct namelist ** listp;
 {
 	entrystruct * x;
@@ -301,8 +294,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int
-readOU(ostr, olistp)
+int readOU(ostr, olistp)
 char * ostr;
 struct namelist ** olistp;
 {

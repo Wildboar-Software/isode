@@ -46,8 +46,7 @@ char   *myname = "ftamd";
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int     result;
 	char   *ap;
 	struct FTAMstart    ftss;

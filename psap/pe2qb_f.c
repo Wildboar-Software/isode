@@ -37,8 +37,7 @@ char *Qcp, *Ecp;
 int Len;
 
 
-int
-pe2qb_f (PE pe) {
+int pe2qb_f (PE pe) {
 	PE	    p;
 	int elm_len;
 	byte    elmbuffer[1 + sizeof(PElementLen)];

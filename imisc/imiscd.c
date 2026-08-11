@@ -92,8 +92,7 @@ char   *ctime ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
 				 dispatches, table_IMISC_Operations, NULLIFP, NULLIFP);
 

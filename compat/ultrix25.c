@@ -94,8 +94,7 @@ static     char	enc_buf[1024];
 static     int	enc_buf_len;
 
 
-int
-start_x25_client (struct NSAPaddr *local) {
+int start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
 
 	if (local != NULLNA)
@@ -122,8 +121,7 @@ start_x25_client (struct NSAPaddr *local) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
 	CONN_DB     zsck;
 	CONN_DB     *sck = &zsck;
@@ -181,8 +179,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 }
 
 
-int
-join_x25_client (int fd, struct NSAPaddr *remote) {
+int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB		zsck;
 	CONN_DB		*sck = &zsck;
 	sockaddr_x25	filter;
@@ -250,8 +247,7 @@ join_x25_client (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-int
-join_x25_server (int fd, struct NSAPaddr *remote) {
+int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
 	sockaddr_x25 template;
@@ -334,8 +330,7 @@ int	fd;
 	close(fd);
 }
 
-int
-log_call_status (int fd) {
+int log_call_status (int fd) {
 	struct	X25PortStatus	sbuf;
 	struct	X25PortStatus	*stats = &sbuf;
 	int 			sbl	= sizeof(sbuf);
@@ -435,8 +430,7 @@ log_call_status (int fd) {
 	return;
 }
 
-int
-log_call_clear (int fd, int type) {
+int log_call_clear (int fd, int type) {
 	struct	X25ClearData	cbuf;
 	struct	X25ClearData	*cdata = &cbuf;
 	int 			cbl	= sizeof(cbuf);
@@ -652,8 +646,7 @@ static struct {
 	0,	 0, 0,
 };
 
-int
-print_x25_facilities (int fd, int coc, char *caption) {
+int print_x25_facilities (int fd, int coc, char *caption) {
 	int		numitems,stat,baud,i,j;
 	char	cbuf[128];
 	int		cbl = sizeof(cbuf);
@@ -774,8 +767,7 @@ char *s;
 	}
 }
 
-int
-compose_text (char *xudatap, char *pid, char *cudf) {
+int compose_text (char *xudatap, char *pid, char *cudf) {
 	strcpy(xudatap,pid);
 	strcat(xudatap,DELIMITER);
 	strcat(xudatap,cudf);
@@ -966,8 +958,7 @@ int event_received;
 /* an incoming call will spawn the process who accepts the call */
 /* you will have to change the listeners (DAEMONS)              */
 
-int
-start_x25_client (struct NSAPaddr *local) {
+int start_x25_client (struct NSAPaddr *local) {
 	int     error;
 	int     our_sd;
 	int     our_count;
@@ -1022,8 +1013,7 @@ start_x25_client (struct NSAPaddr *local) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	X25vc   vci;
 	X25vc * vcip = &vci;
 
@@ -1247,8 +1237,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 
 
-int
-join_x25_client (int sd, struct NSAPaddr *rremote) {
+int join_x25_client (int sd, struct NSAPaddr *rremote) {
 	int error;
 	X25vc  vci;
 
@@ -1274,8 +1263,7 @@ join_x25_client (int sd, struct NSAPaddr *rremote) {
 
 }
 
-int
-join_x25_server (int sd, struct NSAPaddr *rremote) {
+int join_x25_server (int sd, struct NSAPaddr *rremote) {
 
 	X25vc   vci;
 
@@ -1369,8 +1357,7 @@ loop:
 
 /* standard  case of running and waiting listener */
 
-int
-start_x25_client (struct NSAPaddr *local) {
+int start_x25_client (struct NSAPaddr *local) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1424,8 +1411,7 @@ start_x25_client (struct NSAPaddr *local) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1536,8 +1522,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 
 
-int
-join_x25_client (int sd, struct NSAPaddr *rremote) {
+int join_x25_client (int sd, struct NSAPaddr *rremote) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/******************************************************************/
@@ -1741,8 +1726,7 @@ join_x25_client (int sd, struct NSAPaddr *rremote) {
 
 }
 
-int
-join_x25_server (int sd, struct NSAPaddr *rremote) {
+int join_x25_server (int sd, struct NSAPaddr *rremote) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
 	/* (should be the supported version)                              */
@@ -1954,14 +1938,12 @@ int     sd;
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */
-int
-_ultrix25_stub2()  {
+int _ultrix25_stub2()  {
 	;
 }
 #endif  /* ULTRIX_X25 */
 #else	/* X25 */
-int
-_ultrix25_stub(void) {
+int _ultrix25_stub(void) {
 	;
 }
 #endif  /* X25 */

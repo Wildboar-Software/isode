@@ -36,8 +36,7 @@ extern LLog	* log_dsap;
 /* D-BIND.INDICATION */
 
 
-int
-DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
+int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -244,8 +243,7 @@ struct DSAPindication	* di;
 
 /* D-BIND.REJECT */
 
-int
-DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di) {
+int DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPstart	* acs = &(ds->ds_start);
 	struct RoNOTindication	  rni_s;

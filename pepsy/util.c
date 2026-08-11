@@ -46,8 +46,7 @@ extern void exit(int);
 #ifdef lint
 /* VARARGS4 */
 
-int
-pepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
+int pepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 	return pepsylose (module, p, pe, str);
 }
 
@@ -98,8 +97,7 @@ int	pepsylose (modtyp*module, ...) {
 #ifdef lint
 /* VARARGS4 */
 
-int
-ppepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
+int ppepsylose (modtyp *module, ptpe *p, PE pe, char *str) {
 	return ppepsylose (module, p, pe, str);
 }
 
@@ -149,8 +147,7 @@ int	ppepsylose (modtyp*module, ...) {
  * print out the message and if the arguement is greater than 0
  * terminate
  */
-int
-ferr (int n, char *mesg) {
+int ferr (int n, char *mesg) {
 	printf(mesg);
 	if (n > 0)
 		exit(n);
@@ -159,8 +156,7 @@ ferr (int n, char *mesg) {
  * print out the message and number and if the arguement is greater
  * than 0 terminate
  */
-int
-ferrd (int n, char *mesg, int d) {
+int ferrd (int n, char *mesg, int d) {
 	printf(mesg, d);
 	if (n > 0)
 		exit(n);

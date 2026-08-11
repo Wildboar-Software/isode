@@ -54,8 +54,7 @@ char   *getenv ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    result,
 			sd;
 	char   *file;

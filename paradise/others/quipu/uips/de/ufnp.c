@@ -97,8 +97,7 @@ DN base;
 	return NULLATTR;
 }
 
-int
-countMatches(dns)
+int countMatches(dns)
 DNS dns;
 {
 	int i;

@@ -46,8 +46,7 @@ static int  process (char *file, FILE *fp, IFP pfx);
 
 
 
-int
-PY_pp (int argc, char **argv, char **envp, IFP pfx) {
+int PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 	int    status = 0;
 	char  *cp;
 	FILE  *fp;

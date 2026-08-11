@@ -53,8 +53,7 @@ VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
 
 extern void pageprint(char *, ...);
 
-int
-makeRootCountry (struct namelist **clistp) {
+int makeRootCountry (struct namelist **clistp) {
 	*clistp = list_alloc();
 	(*clistp)->name = copy_string("root");
 	(*clistp)->ats = NULLATTR;
@@ -63,8 +62,7 @@ makeRootCountry (struct namelist **clistp) {
 }
 
 
-int
-listCos (char *cstr, struct namelist **clistp) {
+int listCos (char *cstr, struct namelist **clistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == COUNTRY)
@@ -113,8 +111,7 @@ freeCoSearchArgs () {
 	dn_free(sarg.sra_baseobject);
 }
 
-int
-listAllCos (struct namelist **clistp) {
+int listAllCos (struct namelist **clistp) {
 	int ret;
 
 	sarg = * fillMostCountrySearchArgs(NULLCP, SRA_ONELEVEL);
@@ -130,8 +127,7 @@ listAllCos (struct namelist **clistp) {
 	return ret;
 }
 
-int
-listMatchingCos (char *cstr, struct namelist **clistp) {
+int listMatchingCos (char *cstr, struct namelist **clistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -165,8 +161,7 @@ listMatchingCos (char *cstr, struct namelist **clistp) {
 	return OK;
 }
 
-int
-listExactCos (char *objectstr, struct namelist **clistp) {
+int listExactCos (char *objectstr, struct namelist **clistp) {
 	int ret;
 
 	sarg = * fillMostCountrySearchArgs(objectstr, SRA_BASEOBJECT);
@@ -177,8 +172,7 @@ listExactCos (char *objectstr, struct namelist **clistp) {
 	return ret;
 }
 
-int
-makeListCountries (struct namelist **clistp) {
+int makeListCountries (struct namelist **clistp) {
 	entrystruct * x;
 	int retval;
 
@@ -226,8 +220,7 @@ fillMostCountrySearchArgs (char *objectstr, int searchdepth) {
 	return (&arg);
 }
 
-int
-makeAllCoFilter (struct s_filter **fpp) {
+int makeAllCoFilter (struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();

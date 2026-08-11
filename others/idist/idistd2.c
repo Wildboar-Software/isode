@@ -44,8 +44,7 @@ extern	struct type_Idist_FileSpec *makefs ();
 extern	struct type_Idist_QueryResult *query ();
 extern	struct type_Idist_FileList *do_listcdir ();
 
-int
-doexec (char *cmd) {
+int doexec (char *cmd) {
 	int fd[2], status, pid, i;
 	char	buf[BUFSIZ];
 
@@ -85,8 +84,7 @@ doexec (char *cmd) {
 	return OK;
 }
 
-int
-do_symlink (struct type_Idist_FileSpec *fs) {
+int do_symlink (struct type_Idist_FileSpec *fs) {
 	char	*new, old[BUFSIZ], *linkname;
 	int	i;
 
@@ -156,8 +154,7 @@ cannon (char *name) {
 /*
  * Check to see if parent directory exists and create one if not.
  */
-int
-chkparent (char *name) {
+int chkparent (char *name) {
 	char *cp;
 	struct stat stb;
 
@@ -179,8 +176,7 @@ chkparent (char *name) {
 	return(-1);
 }
 
-int
-do_rfile (struct type_Idist_FileSpec *fs) {
+int do_rfile (struct type_Idist_FileSpec *fs) {
 	char	*name, *p;
 
 	p = qb2str (fs -> filename);
@@ -199,8 +195,7 @@ do_rfile (struct type_Idist_FileSpec *fs) {
 	return OK;
 }
 
-int
-do_hardlink (struct type_Idist_FileSpec *fs) {
+int do_hardlink (struct type_Idist_FileSpec *fs) {
 	char 	*new;
 	char	*cp;
 	char	old[BUFSIZ];
@@ -244,8 +239,7 @@ do_hardlink (struct type_Idist_FileSpec *fs) {
 	return OK;
 }
 
-int
-do_direct (struct type_Idist_FileSpec *fs) {
+int do_direct (struct type_Idist_FileSpec *fs) {
 	char	*cp, *name;
 	struct stat stb;
 
@@ -308,8 +302,7 @@ do_direct (struct type_Idist_FileSpec *fs) {
  * Remove a file or directory (recursively) and send back an acknowledge
  * or an error message.
  */
-int
-i_remove (char *str) {
+int i_remove (char *str) {
 	DIR *d;
 	struct dirent *dp;
 	struct stat stb;
@@ -361,8 +354,7 @@ i_remove (char *str) {
 }
 
 
-int
-addtoia5 (char *str, int len) {
+int addtoia5 (char *str, int len) {
 	struct type_Idist_IA5List **ia5p;
 
 	for (ia5p = &ia5list; *ia5p; ia5p = &(*ia5p) -> next)
@@ -477,8 +469,7 @@ struct type_Idist_FileList *
 	return base;
 }
 
-int
-fixup () {
+int fixup () {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;

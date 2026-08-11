@@ -120,8 +120,7 @@ convtime (struct type_Idist_FileTime *fm) {
  * user's home directory path name. Return a pointer in buf to the
  * part corresponding to `file'.
  */
-char *
-exptilde (char buf[], char *file) {
+char *exptilde (char buf[], char *file) {
 	char *s1, *s2, *s3;
 	extern char homedir[];
 

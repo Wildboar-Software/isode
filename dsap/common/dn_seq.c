@@ -26,8 +26,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_seq.c,v 9.0 
 #include "quipu/util.h"
 #include "quipu/entry.h"
 
-int
-dn_seq_free (struct dn_seq *dnseq) {
+int dn_seq_free (struct dn_seq *dnseq) {
 	struct dn_seq * ptr;
 	struct dn_seq * next;
 

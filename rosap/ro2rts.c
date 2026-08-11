@@ -45,8 +45,7 @@ static int  doRTSabort ();
 
 /*    bind underlying service */
 
-int
-RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
+int RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 	if (!(acb -> acb_flags & ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
 						  "not an association descriptor for ROS on reliable transfer");
@@ -69,8 +68,7 @@ RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 
 
-int
-ro2rtsasync (
+int ro2rtsasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RoSAPindication *roi),
 	struct RoSAPindication *roi
@@ -105,8 +103,7 @@ ro2rtsasync (
 /*    map association descriptors for select() */
 
 
-int
-ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
+int ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
 	struct RtSAPabort *rta = &rtis.rti_abort;
 
@@ -129,8 +126,7 @@ ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindicatio
 #define	doRTSdata(a,i,t,r)	acb2osdu ((a), (i), (t) -> rtt_data, (r))
 
 
-int
-ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
+int ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
 	int     result;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
@@ -215,8 +211,7 @@ ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindicatio
 
 
 
-int
-ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
+int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct RtSAPindication  rtis;
 	struct RtSAPabort *rta = &rtis.rti_abort;
@@ -363,8 +358,7 @@ static void rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 		(*handler) (sd, roi);
 }
 
-int
-ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
+int ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;

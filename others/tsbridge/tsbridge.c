@@ -79,8 +79,7 @@ static void ts_close (), ts_discon ();
 static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct TSAPaddr tas, *ta = &tas;

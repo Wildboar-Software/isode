@@ -99,8 +99,7 @@ out:
 }
 
 
-int
-fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
+int fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
 	struct FTAMacelement *fc,
 			   **fl;
 	struct type_FTAM_Access__Control__Element *ace;

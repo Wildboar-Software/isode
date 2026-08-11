@@ -136,8 +136,7 @@ static	snarf ();
 
 /* DISPATCH */
 
-int
-fredloop (char **vec, int error) {
+int fredloop (char **vec, int error) {
 	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -649,8 +648,7 @@ getvar (char *name) {
 static int helpwidth;
 
 
-int
-f_help (char **vec) {
+int f_help (char **vec) {
 	int    i,
 		   j,
 		   w;
@@ -719,8 +717,7 @@ f_help (char **vec) {
 
 /* MISCELLANY */
 
-int
-rcinit () {
+int rcinit () {
 	int    w;
 	char **cp,
 	*dp;
@@ -835,8 +832,7 @@ set_variable:
 }
 
 
-int
-rcfile (char *file, int op, int isystem) {
+int rcfile (char *file, int op, int isystem) {
 	char *cp;
 	char    buffer[BUFSIZ + 1],
 			*vec[NVEC + 1];
@@ -892,8 +888,7 @@ FILE *fp;
 }
 
 
-int
-f_version (char **vec) {
+int f_version (char **vec) {
 	if (*++vec != NULL)
 		if (strcmp (*vec, "-fred") == 0) {
 			printf ("version: %s\n", isodeversion);

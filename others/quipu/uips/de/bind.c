@@ -60,8 +60,7 @@ static int triedBackup = FALSE;
 static int bindStarted = FALSE;
 static int boundOnce = FALSE;
 
-int
-tryBackup () {
+int tryBackup () {
 	if (triedBackup == TRUE)
 		return NOTOK;
 	if (backup_dsa_address == NULLCP)
@@ -78,8 +77,7 @@ tryBackup () {
  * bind_to_ds - Bind to directory
  *
  */
-int
-init_bind_to_ds (int *assoc) {
+int init_bind_to_ds (int *assoc) {
 	struct ds_bind_arg bind_arg;
 	struct PSAPaddr             *addr;
 	void exit();
@@ -122,8 +120,7 @@ try_bind:
 }
 
 
-int
-wait_bind_to_ds (int assoc, int wantToBlock) {
+int wait_bind_to_ds (int assoc, int wantToBlock) {
 	struct PSAPindication   pi_s;
 	struct PSAPindication   * pi = &(pi_s);
 	int     nfds, nevents;

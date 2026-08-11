@@ -34,8 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprespond.c,v 9.0 
 
 /* A-ASSOCIATE.INDICATION */
 
-int
-AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci) {
+int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication *aci) {
 	int    i;
 	int	    ctx,
 			result;
@@ -221,8 +220,7 @@ out1:
 
 /* A-ASSOCIATE.RESPONSE */
 
-int
-AcAssocResponse (int sd, int status, int reason, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct AcSAPindication *aci) {
+int AcAssocResponse (int sd, int status, int reason, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct AcSAPindication *aci) {
 	int	    pstatus,
 			result;
 	PE	    pe;

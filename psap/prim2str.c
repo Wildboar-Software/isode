@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/
    a primitive.  The string is null-terminated, though pe_len specifically
    does NOT reflect this. */
 
-char *
-prim2str (PE pe, int *len) {
+char *prim2str (PE pe, int *len) {
 	int    i,
 		   k;
 	int     j;

@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaptrans.c,v 9.0 19
 
 /* RT-TRANSFER.REQUEST */
 
-int
-RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti) {
+int RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

@@ -63,8 +63,7 @@ void    print_x25_facilities ();
 
 
 
-int
-start_x25_client (struct NSAPaddr *local, int priv) {
+int start_x25_client (struct NSAPaddr *local, int priv) {
 	int     sd, pgrp;
 
 	if ((sd = socket (AF_CCITT, SOCK_STREAM, 0)) == NOTOK) {
@@ -82,8 +81,7 @@ start_x25_client (struct NSAPaddr *local, int priv) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	CONN_DB	sbuf;
 	CONN_DB	*sock;
 	int		sd, onoff, pgrp;
@@ -169,8 +167,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 }
 
 
-int
-join_x25_server (int fd, struct NSAPaddr *remote) {
+int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
 	int nfd;
@@ -203,8 +200,7 @@ join_x25_server (int fd, struct NSAPaddr *remote) {
 }
 
 
-int
-join_x25_client (int fd, struct NSAPaddr *remote) {
+int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
 	int     len = sizeof *sock;
@@ -230,8 +226,7 @@ join_x25_client (int fd, struct NSAPaddr *remote) {
 }
 
 
-int
-fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
+int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	int	i, j;
 	int			returncode = OK;
 
@@ -344,8 +339,7 @@ fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 }
 
 
-int
-set_x25_facilities (int sd, int coc, char *caption) {
+int set_x25_facilities (int sd, int coc, char *caption) {
 	FACILITY_DB		facilities;
 	CCITT_FACILITY_DB	ccitt_facilities;
 
@@ -478,8 +472,7 @@ set_x25_facilities (int sd, int coc, char *caption) {
 }
 
 
-int
-log_cause_and_diag (int fd) {
+int log_cause_and_diag (int fd) {
 	char buf [MAX_EVENT_SIZE];
 	int	buflen;
 	char flags = 0;
@@ -869,8 +862,7 @@ print_send:
 }
 #endif
 #else
-int
-_hpuxx25_stub2()  {
+int _hpuxx25_stub2()  {
 	;
 }
 #endif

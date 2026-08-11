@@ -35,8 +35,7 @@ extern LLog	* log_dsap;
 
 
 
-int
-DUAbortRequest (int sd, struct DSAPindication *di) {
+int DUAbortRequest (int sd, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication    rni_s;
 	struct RoNOTindication  * rni = &(rni_s);

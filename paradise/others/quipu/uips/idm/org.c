@@ -35,8 +35,7 @@ void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};
 VFP normalOrg[] = {orgFilter1, orgFilter2, orgFilter3, orgFilter4, NULLVFP};
 
-int
-listOrgs(cstr, ostr, olistp)
+int listOrgs(cstr, ostr, olistp)
 char * cstr, * ostr;
 struct namelist ** olistp;
 {
@@ -112,8 +111,7 @@ freeOrgSearchArgs() {
 }
 
 
-int
-listAllOrgs(cstr, olistp)
+int listAllOrgs(cstr, olistp)
 char * cstr;
 struct namelist ** olistp;
 {
@@ -138,8 +136,7 @@ struct namelist ** olistp;
 }
 
 
-int
-readOrg(ostr, olistp)
+int readOrg(ostr, olistp)
 char * ostr;
 struct namelist ** olistp;
 {
@@ -193,8 +190,7 @@ char * str;
 }
 
 
-int
-readExactOrg(ostr, olistp)
+int readExactOrg(ostr, olistp)
 char * ostr;
 struct namelist ** olistp;
 {
@@ -205,8 +201,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int
-reallyMakeListOrgs(olistp)
+int reallyMakeListOrgs(olistp)
 struct namelist ** olistp;
 {
 	struct subordinate * x;
@@ -252,8 +247,7 @@ list_orgs:
 }
 
 
-int
-listMatchingOrgs(cstr, ostr, olistp)
+int listMatchingOrgs(cstr, ostr, olistp)
 char * cstr, * ostr;
 struct namelist ** olistp;
 {
@@ -299,8 +293,7 @@ struct namelist ** olistp;
 	return OK;
 }
 
-int
-listExactOrgs(ostr, olistp)
+int listExactOrgs(ostr, olistp)
 char * ostr;
 struct namelist ** olistp;
 {
@@ -314,8 +307,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int
-makeListOrganisations(olistp)
+int makeListOrganisations(olistp)
 struct namelist ** olistp;
 {
 	entrystruct * x;

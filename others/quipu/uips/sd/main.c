@@ -33,8 +33,7 @@ void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
 
 void exit();
 
-int
-main (unsigned int argc, char *argv[]) {
+int main (unsigned int argc, char *argv[]) {
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
 

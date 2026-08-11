@@ -36,8 +36,7 @@ static SFD	intrser ();
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 
-int
-RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
+int RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
 	int	    nfds,
 			result;
 	fd_set  rfds;

@@ -43,8 +43,7 @@ extern char *shortTime();
 /*--------------------------------------------------------------*/
 /*  Print Error							*/
 /*--------------------------------------------------------------*/
-int
-printError (int error, caddr_t param, int *rc) {
+int printError (int error, caddr_t param, int *rc) {
 	time_t t;
 	struct type_RFA_StatusErrorParm *se =
 		(struct type_RFA_StatusErrorParm *)param;

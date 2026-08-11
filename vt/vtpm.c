@@ -82,8 +82,7 @@ void	advise (int, char *, char *, ...);
 /*		this PE from the network				    */
 /****************************************************************************/
 
-int
-get_event (int dd, PE *pe) {
+int get_event (int dd, PE *pe) {
 	int	result, event;
 	PE	nullpe;
 
@@ -250,8 +249,7 @@ int	((**sectors[])()) = {s0, s1, s2, s3, s4, s5};
 unsigned	state = 0,
 			sector = 1;
 
-int
-do_event (int event, PE pe) {
+int do_event (int event, PE pe) {
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,
 			   "in do_event, sector is %d, state is %d, event is %d (%s)",
@@ -264,8 +262,7 @@ do_event (int event, PE pe) {
 	return(sectors[sector][state](event, pe));
 }
 
-int
-pn_ind ( /* sync indications */
+int pn_ind ( /* sync indications */
 	int dd,
 	struct PSAPsync *psync
 ) {
@@ -319,8 +316,7 @@ pn_ind ( /* sync indications */
 /*									     */
 /*****************************************************************************/
 
-int
-p_data (PE pdu) {
+int p_data (PE pdu) {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
@@ -344,8 +340,7 @@ p_data (PE pdu) {
 /*									    */
 /****************************************************************************/
 
-int
-p_maj_sync_req (PE pdu) {
+int p_maj_sync_req (PE pdu) {
 	long ssn;
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
@@ -369,8 +364,7 @@ p_maj_sync_req (PE pdu) {
 /*									    */
 /****************************************************************************/
 
-int
-p_maj_sync_resp (PE pdu) {
+int p_maj_sync_resp (PE pdu) {
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
 	if (PMajSyncResponse(sd, &pdu, 1, &pi) != OK)
@@ -392,8 +386,7 @@ p_maj_sync_resp (PE pdu) {
 /*									   */
 /***************************************************************************/
 
-int
-p_typed_data (PE pdu) {
+int p_typed_data (PE pdu) {
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 
@@ -414,8 +407,7 @@ p_typed_data (PE pdu) {
 /*			outgoing events that are mapped to P_RESYNC.REQUEST) */
 /*****************************************************************************/
 
-int
-p_resync_req (PE pdu, int type) {
+int p_resync_req (PE pdu, int type) {
 
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
@@ -446,8 +438,7 @@ p_resync_req (PE pdu, int type) {
 /*									    */
 /****************************************************************************/
 
-int
-p_resync_resp (PE pdu) {
+int p_resync_resp (PE pdu) {
 
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
@@ -470,8 +461,7 @@ p_resync_resp (PE pdu) {
 /*	RETURNS:		OK					    */
 /****************************************************************************/
 
-int
-asr (PE pe, int status) {
+int asr (PE pe, int status) {
 
 	/*	include "pe" as user data on the AcAssocResponse
 	*/
@@ -516,8 +506,7 @@ asr (PE pe, int status) {
 
 
 
-int
-send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
+int send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 			  ASR-FailureReason using the reason parameter
 			  (0 means no reason).
 			*/
@@ -546,8 +535,7 @@ send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 }
 
 
-int
-send_rlr (	/*Send RLR (Release Response) PDU to peer.  The RLR is
+int send_rlr (	/*Send RLR (Release Response) PDU to peer.  The RLR is
 		  built by vrelrsp().  It is sent by a call to Association
 		  Control.
 		*/
@@ -559,8 +547,7 @@ send_rlr (	/*Send RLR (Release Response) PDU to peer.  The RLR is
 }
 
 
-int
-clear_vte (void) {	/*Clear VT Environment.  */
+int clear_vte (void) {	/*Clear VT Environment.  */
 
 	/*Nothing to do for now since we have no formalized environment
 	  and we exit VTP when association ends.
@@ -568,23 +555,20 @@ clear_vte (void) {	/*Clear VT Environment.  */
 }
 
 
-int
-vgvt_ind (void) {	/*Indication to User that peer has given the token*/
+int vgvt_ind (void) {	/*Indication to User that peer has given the token*/
 
 	/*Don't know how to indicate this to user yet*/
 }
 
 
-int
-vrtq_ind (void) {	/*Indicate to User that peer has requested token*/
+int vrtq_ind (void) {	/*Indicate to User that peer has requested token*/
 
 	/*Don't know how to give indication to user.
 	  Synchronous?  Asynch interrupt??? */
 }
 
 
-int
-give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
+int give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 		  at once so no need to discriminate between them.
 		*/
 {
@@ -600,8 +584,7 @@ give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 }
 
 
-int
-request_token (void) {	/*Request Tokens from peer*/
+int request_token (void) {	/*Request Tokens from peer*/
 
 	int vt_tokens;
 	struct PSAPindication vt_pi;
@@ -613,8 +596,7 @@ request_token (void) {	/*Request Tokens from peer*/
 		ps_adios (&vt_pi.pi_abort, "P-PLEASE-TOKENS.REQUEST");
 }
 
-int
-send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
+int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 

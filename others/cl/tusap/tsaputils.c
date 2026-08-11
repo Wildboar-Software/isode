@@ -69,8 +69,7 @@ struct tsapblk *
 }
 
 
-int
-freetublk (struct tsapblk *tb) {
+int freetublk (struct tsapblk *tb) {
 	SBV     smask;
 	struct qbuf *qb,
 			   *qp;

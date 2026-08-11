@@ -49,8 +49,7 @@ extern int optlen;
 */
 char * encode_t4 ();
 
-int
-main (int argc, char **argv)
+int main (int argc, char **argv)
 
 {
 	int     k_param = 1;

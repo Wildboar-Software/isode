@@ -71,8 +71,7 @@ char		*dirname;	/* name of directory */
 	return dirp;
 }
 #else
-int
-_opendir_stub()  {
+int _opendir_stub()  {
 	;
 }
 #endif

@@ -70,8 +70,7 @@ static int fix_mem(char **parm, ptpe *p);
  * decode the specified type of the specified module into the given
  * pe
  */
-int
-dec_f (
+int dec_f (
 		int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE pe,

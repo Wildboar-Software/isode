@@ -71,8 +71,7 @@ struct sub_ch_list *sub_ch_list_cpy() ;
 static        int         chain_list_print() ;
 static        int         sub_ch_list_print() ;
 
-int
-dsa_control_syntax (void) {
+int dsa_control_syntax (void) {
 	add_attribute_syntax
 	("DSAControl",
 	 dsa_control_enc,    dsa_control_decode,/* Encoder and decoder */
@@ -237,8 +236,7 @@ static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 	return(new_item) ;
 }
 
-int
-dsa_control_cmp (struct dsa_control *a, struct dsa_control *b) {
+int dsa_control_cmp (struct dsa_control *a, struct dsa_control *b) {
 	return (2) ;
 }
 
@@ -425,8 +423,7 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 	return (item) ;
 }
 
-int
-optional_dn_free (struct optional_dn *item_to_free) {
+int optional_dn_free (struct optional_dn *item_to_free) {
 	if (item_to_free->offset == DN_PRESENT) {
 		dn_free(item_to_free->un.selectedDN) ;
 	}
@@ -434,8 +431,7 @@ optional_dn_free (struct optional_dn *item_to_free) {
 }
 
 
-int
-quipu_call_syntax (void) {
+int quipu_call_syntax (void) {
 	add_attribute_syntax
 	("Call",
 	 quipu_call_enc,    quipu_call_decode,     /* Encoder and decoder */
@@ -749,8 +745,7 @@ sub_ch_list_cpy (struct sub_ch_list *item) {
 	return (new_item) ;
 }
 
-int
-quipu_call_cmp (struct quipu_call *a, struct quipu_call *b) {
+int quipu_call_cmp (struct quipu_call *a, struct quipu_call *b) {
 	return (2) ;
 }
 
@@ -789,8 +784,7 @@ quipu_call_free (struct quipu_call *item_to_free) {
 	free((char *)item_to_free) ;
 }
 
-int
-op_list_free (struct op_list *elem) {
+int op_list_free (struct op_list *elem) {
 	struct op_list * tmp_elem ;
 
 	while (elem != (struct op_list *) 0) {
@@ -802,8 +796,7 @@ op_list_free (struct op_list *elem) {
 	}
 }
 
-int
-ops_free (struct ops *elem) {
+int ops_free (struct ops *elem) {
 	dn_free(elem->base_object) ;
 	if (elem->start_time)
 		free((char *)elem->start_time) ;
@@ -820,8 +813,7 @@ ops_free (struct ops *elem) {
 	free((char *)elem) ;
 }
 
-int
-chain_list_free (struct chain_list *elem) {
+int chain_list_free (struct chain_list *elem) {
 	struct chain_list * tmp_elem ;
 
 	while (elem != (struct chain_list *) 0) {

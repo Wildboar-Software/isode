@@ -67,8 +67,7 @@ static int decimation = 2;
 
 extern int two_passes;
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	x = y = 0;
 	if (passno == 1) {
 		maxx = 0;
@@ -78,8 +77,7 @@ photo_start (char *name) {
 }
 
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 
 	/* Decoding has finished - display the photo */
 	char buff[128];
@@ -191,13 +189,11 @@ photo_end (char *name) {
 	return 0;
 }
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	x += length;
 }
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	int x1;
 	int x2;
 	int y1;

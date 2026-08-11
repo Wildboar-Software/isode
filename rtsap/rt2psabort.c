@@ -37,8 +37,7 @@ static int  RtUAbortRequestAux ();
 
 /* RT-U-ABORT.REQUEST */
 
-int
-RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
+int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;

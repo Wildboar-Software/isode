@@ -51,8 +51,7 @@ extern int bindTimeout;
 extern void pageprint(char *, ...);
 void onint1();
 
-int
-listlen (struct namelist *lp) {
+int listlen (struct namelist *lp) {
 	int len;
 
 	for (len = 0; lp != NULLLIST; lp = lp->next, len++) {};
@@ -107,8 +106,7 @@ stopUnbindTimer () {
 	alarm(0);
 }
 
-char *
-copy_string (char *string) {
+char *copy_string (char *string) {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;
@@ -150,8 +148,7 @@ DN	dn;
 
 /* determine wildcard type of already validated string */
 
-int
-starstring (char *istr, char **ostr1, char **ostr2) {
+int starstring (char *istr, char **ostr1, char **ostr2) {
 	char * lastcp, *cp;
 
 	lastcp = istr + strlen(istr) - 1;
@@ -214,8 +211,7 @@ printLastComponent (int indent, char *dnstr, int objectType, int printNumber) {
 	free(savestring);
 }
 
-char *
-lastComponent (char *dnstr, int objectType) {
+char *lastComponent (char *dnstr, int objectType) {
 	char * cp, * cp2, *cp3, * savestring;
 	int gotmatch;
 
@@ -279,8 +275,7 @@ lastComponent (char *dnstr, int objectType) {
 	return cp;
 }
 
-char *
-removeLastRDN (char *dnstr) {
+char *removeLastRDN (char *dnstr) {
 	char * cp;
 
 	cp = copy_string(dnstr);
@@ -288,8 +283,7 @@ removeLastRDN (char *dnstr) {
 	return cp;
 }
 
-char *
-lastRDN (char *dnstr) {
+char *lastRDN (char *dnstr) {
 	char * cp;
 
 	cp = rindex(dnstr, '@');
@@ -315,8 +309,7 @@ setProblemFlags (struct ds_search_result sresult) {
 }
 
 
-int
-showAnyProblems (char *str) {
+int showAnyProblems (char *str) {
 	if (limitProblem == TRUE) {
 		pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
 		pageprint("listing of all the entries in the Directory beyond this point.  Try and\n");

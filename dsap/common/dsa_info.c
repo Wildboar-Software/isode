@@ -218,8 +218,7 @@ struct edb_info * ei;
 	return (ret_pe);
 }
 
-int
-edbinfo_syntax (void) {
+int edbinfo_syntax (void) {
 	add_attribute_syntax ("edbinfo",
 						  edb_info_enc,	edb_info_decode,
 						  str2update,	edb_info_print,

@@ -19,8 +19,7 @@ extern char origDefaultCo[], origDefaultOrg[], co[], org[];
 extern int deLogLevel;
 extern int alarmCount;
 
-int
-listlen(lp)
+int listlen(lp)
 struct namelist * lp;
 {
 	int len;
@@ -55,8 +54,7 @@ alarmCleanUp() {
 	}
 }
 
-char *
-copy_string(string)
+char *copy_string(string)
 char *string;
 {
 	char *new_string;
@@ -179,8 +177,7 @@ int printNumber;
 	free(cp2);
 }
 
-char *
-lastComponent(dnstr, objectType)
+char *lastComponent(dnstr, objectType)
 char * dnstr;
 int objectType;
 {
@@ -247,8 +244,7 @@ int objectType;
 	return cp;
 }
 
-char *
-removeLastRDN(dnstr)
+char *removeLastRDN(dnstr)
 char * dnstr;
 {
 	char * cp;
@@ -258,8 +254,7 @@ char * dnstr;
 	return cp;
 }
 
-char *
-lastRDN(dnstr)
+char *lastRDN(dnstr)
 char * dnstr;
 {
 	char * cp;

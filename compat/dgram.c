@@ -333,8 +333,7 @@ int read_dgram_socket (int fd, struct qbuf **q) {
 	return qb -> qb_len;
 }
 
-int
-hack_dgram_socket (int fd, struct sockaddr *sock) {
+int hack_dgram_socket (int fd, struct sockaddr *sock) {
 	struct dgramblk *up;
 
 	if (fd < 0
@@ -644,7 +643,6 @@ static void action (char *s, int fd, struct sockaddr *sock) {
 #else
 
 
-int
-dgram_dummy () {}
+int dgram_dummy () {}
 
 #endif

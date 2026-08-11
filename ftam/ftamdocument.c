@@ -39,8 +39,7 @@ static int   stayopen = 0;
 static struct isodocument ids;
 
 
-int
-setisodocument (int f) {
+int setisodocument (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isodocuments, 0), "r");
 	else
@@ -51,8 +50,7 @@ setisodocument (int f) {
 }
 
 
-int
-endisodocument (void) {
+int endisodocument (void) {
 	if (servf && !stayopen) {
 		fclose (servf);
 		servf = NULL;

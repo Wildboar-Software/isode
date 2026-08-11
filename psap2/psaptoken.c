@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaptoken.c,v 9.0 199
 
 /* P-TOKEN-GIVE.REQUEST */
 
-int
-PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
+int PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -67,8 +66,7 @@ out1:
 
 /* P-TOKEN-PLEASE.REQUEST */
 
-int
-PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi) {
+int PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

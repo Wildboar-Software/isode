@@ -35,8 +35,7 @@ int	null_result (), ia5_result (), query_result ();
 
 int	result_value;
 
-int
-initdir (int flag, char *dest) {
+int initdir (int flag, char *dest) {
 	struct qbuf *qb;
 	struct type_Idist_InitDir *idp;
 
@@ -76,8 +75,7 @@ char	*uname, *group, *name, *lname;
 }
 
 
-int
-terminate (int type, int status) {
+int terminate (int type, int status) {
 	struct type_Idist_TermStatus *ts;
 	struct type_Idist_FileType	*makeftype ();
 
@@ -91,8 +89,7 @@ terminate (int type, int status) {
 				   basic_error);
 }
 
-int
-tran_data (char *data, int len) {
+int tran_data (char *data, int len) {
 	struct type_Idist_Data *dat;
 
 	dat = str2qb (data, len, 1);
@@ -103,8 +100,7 @@ tran_data (char *data, int len) {
 				   basic_error);
 }
 
-int
-runspecial (char *cmd) {
+int runspecial (char *cmd) {
 	struct type_UNIV_IA5String *ia5;
 
 	ia5 = str2qb (cmd, strlen(cmd), 1);
@@ -146,8 +142,7 @@ unsigned short *mode;
 	}
 }
 
-int
-query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi) {
+int query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi) {
 	long	convtime ();
 
 	result_value = OK;
@@ -179,8 +174,7 @@ query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, stru
 }
 
 static int copts;
-int
-rmchk (int opts) {
+int rmchk (int opts) {
 	int	listcdir_result ();
 
 	copts = opts;
@@ -190,8 +184,7 @@ rmchk (int opts) {
 				   basic_error);
 }
 
-int
-listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi) {
+int listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi) {
 	struct type_Idist_FileList *fl;
 	char	buf[BUFSIZ];
 	char	*name;
@@ -214,8 +207,7 @@ listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, s
 	return OK;
 }
 
-int
-deletefile (char *str, int mode) {
+int deletefile (char *str, int mode) {
 	struct type_UNIV_IA5String *ia5;
 	char	buffer[BUFSIZ];
 

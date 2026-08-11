@@ -90,8 +90,7 @@ int	ropktlose (struct assocblk*acb, ...) {
 #else
 /* VARARGS5 */
 
-int
-ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
+int ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return ropktlose (acb, roi, reason, what, fmt);
 }
 #endif
@@ -126,8 +125,7 @@ int	rosapreject (struct assocblk*acb, ...) {
 #else
 /* VARARGS5 */
 
-int
-rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
+int rosapreject (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosapreject (acb, roi, reason, what, fmt);
 }
 #endif
@@ -152,8 +150,7 @@ int	rosaplose (struct RoSAPindication*roi, ...) {
 #else
 /* VARARGS4 */
 
-int
-rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
+int rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif

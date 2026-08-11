@@ -101,8 +101,7 @@ static	SFD incdebug(), decdebug();
 
 struct ntp_peer *find_peer ();
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	int	cc;
 	extern char *optarg;
 	int i;
@@ -213,8 +212,7 @@ main (int argc, char *argv[]) {
 	return 0;
 }
 
-int
-doit () {
+int doit () {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -418,8 +416,7 @@ make_new_peer (struct ntp_peer *peer) {
 /*
  *  This procedure is called to delete a peer from our list of peers.
  */
-int
-demobilize (struct list *l, struct ntp_peer *peer) {
+int demobilize (struct list *l, struct ntp_peer *peer) {
 	extern struct ntp_peer dummy_peer;
 
 	if (keepallpeers) {
@@ -484,8 +481,7 @@ dropit:
 	return 1;
 }
 
-int
-enqueue (struct list *l, struct ntp_peer *peer) {
+int enqueue (struct list *l, struct ntp_peer *peer) {
 	l->members++;
 	if (l->tail == NULL) {
 		/* insertion into empty list */
@@ -701,8 +697,7 @@ CMD_TABLE	config_tbl[] = {
 	"",	-1
 };
 
-int
-config_line (char *argv[], int argc) {
+int config_line (char *argv[], int argc) {
 	int	result;
 	struct Naddr addr;
 	int	i;
@@ -965,8 +960,7 @@ CMD_TABLE tbl_peer_flags[] = {
 	NULLCP,		-1
 };
 
-int
-other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
+int other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
 	while (argc > 0) {
 		switch (cmd_srch (argv[0], tbl_peer_flags)) {
 		case TBLPEER_VERSION:
@@ -985,8 +979,7 @@ other_peer_fields (struct ntp_peer *peer, char **argv, int argc) {
 	}
 }
 
-int
-ynorint (char *s) {
+int ynorint (char *s) {
 	if (*s == 'y' || *s == 'Y')
 		return 1;
 	if (*s == 'n' || *s == 'N')
@@ -1142,8 +1135,7 @@ init_kern_vars () {
  * addresses that have characters or byte values > 255.
  */
 
-int
-GetHostName (char *name, struct Naddr *addr) {
+int GetHostName (char *name, struct Naddr *addr) {
 	long HostAddr;
 	struct hostent *hp;
 	char	*cp;
@@ -1286,8 +1278,7 @@ int init_clock_local(), read_clock_local();
 int init_clock_psti(), read_clock_psti();
 #endif PSTI
 
-int
-init_clock (char *name, char *type) {
+int init_clock (char *name, char *type) {
 	struct refclock *r;
 	int (*reader)();
 	int cfd;
@@ -1317,8 +1308,7 @@ init_clock (char *name, char *type) {
 	return(cfd);
 }
 
-int
-read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
+int read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 	struct refclock *r;
 
 	for (r = refclocks; r; r = r->next)
@@ -1328,15 +1318,13 @@ read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 }
 #endif
 
-int
-create_listeners () {
+int create_listeners () {
 	create_sockets(servport);
 
 	create_osilisten (osiaddress);
 }
 
-char *
-paddr (struct Naddr *addr) {
+char *paddr (struct Naddr *addr) {
 	static char buf[128];
 
 	switch (addr -> type) {
@@ -1355,8 +1343,7 @@ paddr (struct Naddr *addr) {
 	}
 }
 
-int
-envinit () {
+int envinit () {
 	int s;
 
 	if (!debug) {
@@ -1443,8 +1430,7 @@ advise (int code, char *what, char *fmt) {
 }
 #endif
 
-int
-addr_compare (struct Naddr *pa1, struct Naddr *pa2) {
+int addr_compare (struct Naddr *pa1, struct Naddr *pa2) {
 	if (pa1 -> type != pa2 -> type)
 		return 0;
 	switch (pa1 -> type) {
@@ -1462,8 +1448,7 @@ addr_compare (struct Naddr *pa1, struct Naddr *pa2) {
 	}
 }
 
-int
-psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2) {
+int psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2) {
 	char	*ps1, *ps2;
 
 	if ((ps1 = _paddr2str (pa1, NULLNA, -1)) == NULLCP)

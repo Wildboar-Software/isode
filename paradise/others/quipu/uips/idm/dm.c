@@ -689,8 +689,7 @@ SFD cleanupok() {
 	cleanup(0);
 }
 
-int
-cleanup(exitCode)
+int cleanup(exitCode)
 int exitCode;
 {
 	if (boundToDSA == TRUE)

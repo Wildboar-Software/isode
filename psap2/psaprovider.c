@@ -78,15 +78,13 @@ static int  doFINISH ();
 
 /*    P-[*-]DATA.REQUEST */
 
-int
-PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
+int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 	return PDataRequestAux (sd, data, ndata, pi, "user", SDataRequest,
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
 }
 
 
-int
-PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu) {
+int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu) {
 	SBV	    smask;
 	int     i,
 			len,
@@ -160,8 +158,7 @@ out1:
 
 /*    P-READ.REQUEST (pseudo) */
 
-int
-PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
+int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -394,8 +391,7 @@ doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi) 
 	return DONE;
 }
 
-int
-ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi) {
+int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi) {
 	int	    result,
 			ppdu;
 	PE	    pe;
@@ -484,8 +480,7 @@ out:
 #define	e(i)	(data ? (i) : 0)
 
 
-int
-PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct PSAPindication *pi) {
+int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct PSAPindication *pi) {
 	SBV     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
@@ -980,8 +975,7 @@ out:
 	return NULL;
 }
 
-int
-ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu) {
+int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu) {
 	int    i,
 		   j;
 	int	    ctx,
@@ -1089,8 +1083,7 @@ ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__d
 #ifndef	DEBUG
 #endif
 
-int
-info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu) {
+int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1184,8 +1177,7 @@ serialize:
 #ifndef	DEBUG
 #endif
 
-int
-ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu) {
+int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu) {
 	int    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1310,8 +1302,7 @@ punch_it:
 #ifndef	DEBUG
 #endif
 
-int
-qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu) {
+int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct qbuf *qp;
@@ -1483,8 +1474,7 @@ out_f:
 }
 
 
-int
-qb2info (struct qbuf *qb, PE *pe) {
+int qb2info (struct qbuf *qb, PE *pe) {
 	int	    result;
 #ifdef	DEBUG
 	int	    len;

@@ -69,8 +69,7 @@ extern char *getstring ();
  * destdir = 1 if destination should be a directory
  * (i.e., more than one source is being copied to the same destination).
  */
-int
-install (char *src, char *dest, int destdir, int opts) {
+int install (char *src, char *dest, int destdir, int opts) {
 	char *rname;
 	char destcopy[BUFSIZ];
 
@@ -136,8 +135,7 @@ install (char *src, char *dest, int destdir, int opts) {
  * Transfer the file or directory in target[].
  * rname is the name of the file on the remote host.
  */
-int
-sendf (char *rname, int opts) {
+int sendf (char *rname, int opts) {
 	struct subcmd *sc;
 	struct stat stb;
 	int sizerr, f, u, len;
@@ -386,8 +384,7 @@ savelink (struct stat *sp, int opts) {
 	return(NULL);
 }
 
-int
-update (char *rname, int opts, struct stat *sp) {
+int update (char *rname, int opts, struct stat *sp) {
 	off_t size;
 	time_t mtime;
 	unsigned short mode;
@@ -472,8 +469,7 @@ SFD cleanup() {
 	exit(1);
 }
 
-int
-query (char *mess, int mode, char *name) {
+int query (char *mess, int mode, char *name) {
 	char	buf[BUFSIZ];
 	char	*cp;
 

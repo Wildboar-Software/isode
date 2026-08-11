@@ -714,8 +714,7 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 extern unsigned char isode_x25_err[2];
 extern char isode_x25_errflag;		/* From asprintf.c ! */
 
-int
-elucidate_x25_err (int flags, unsigned char *pkt) {
+int elucidate_x25_err (int flags, unsigned char *pkt) {
 	char * cp;
 
 	isode_x25_err[0] = pkt[0];

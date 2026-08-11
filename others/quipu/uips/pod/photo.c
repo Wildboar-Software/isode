@@ -32,16 +32,14 @@ int px, py, maxx;
 int two_passes;
 
 /*ARGSUSED*/
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	x = y = 0;
 	if (passno == 1)
 		maxx = 0, two_passes = 1;
 	return 0;
 }
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	Pixel fore, back;
 	Arg args[MAXARGS];
 	int count;
@@ -111,8 +109,7 @@ bit_string *line;
 	return 0;
 }
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	if (passno == 1) {
 		x += length;
 		return 0;
@@ -121,8 +118,7 @@ photo_black (int length) {
 	return 0;
 }
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	if (passno == 1) {
 		x += length;
 		return 0;

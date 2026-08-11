@@ -74,8 +74,7 @@ extern char  *quipuversion;
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char    buffer[BUFSIZ];
 
 	arginit (argv);
@@ -711,8 +710,7 @@ hit:
 }
 
 
-int
-generate_sed () {
+int generate_sed () {
 	FILE   *fp;
 	struct pair *p;
 	int fd;

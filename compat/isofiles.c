@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isofiles.c,v 9.0 199
 #include "tailor.h"
 
 
-char *
-_isodefile (char *path, char *file) {
+char *_isodefile (char *path, char *file) {
 	static char buffer[BUFSIZ];
 
 	isodetailor (NULLCP, 0);	/* not really recursive */

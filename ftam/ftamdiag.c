@@ -141,8 +141,7 @@ bad_dp:
 }
 
 
-int
-fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti) {
+int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti) {
 	int    i;
 	struct FTAMdiagnostic *dp;
 	struct diag_element *f3;

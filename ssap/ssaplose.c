@@ -128,8 +128,7 @@ int	spktlose (int sd, ...) {
 #else
 /* VARARGS5 */
 
-int
-spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt) {
+int spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return spktlose (sd, si, reason, what, fmt);
 }
 #endif
@@ -148,8 +147,7 @@ int	ssaplose (struct SSAPindication*si, ...) {
 #else
 /* VARARGS4 */
 
-int
-ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
+int ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return ssaplose (si, reason, what, fmt);
 }
 #endif

@@ -69,8 +69,7 @@ static int	t_test = 1;	/* Iteration of the test */
 
 #define NullParm	((char	*) 0)
 /*ARGSUSED*/
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	int	i;
 	int succ, fail;
 	extern int optind;
@@ -129,8 +128,7 @@ main (int argc, char **argv) {
 /*
  * Perform a test of encoding/decoding on type number tynum
  */
-int
-ed_tst (int tynum) {
+int ed_tst (int tynum) {
 	PE	pe;
 	char *parm1, *parm2;
 
@@ -198,8 +196,7 @@ ed_tst (int tynum) {
 /*
  * fill in some test data for the given type
  */
-char *
-fill (int tynum) {
+char *fill (int tynum) {
 	char	*parm;
 	static int count;
 	int		i;
@@ -1111,8 +1108,7 @@ fill (int tynum) {
  * compare two structures for differences of fields indicating an
  * error
  */
-int
-tcmp (int tynum, char *parm1, char *parm2) {
+int tcmp (int tynum, char *parm1, char *parm2) {
 	int	d;
 	int	i;
 
@@ -3457,8 +3453,7 @@ tcmp (int tynum, char *parm1, char *parm2) {
  * Doesn't work for a qbuf which doesn't have a head ! Don't really know what
  * is the proper form of a queue buf. MArshall's doco doesn't say
  */
-int
-qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
+int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 	struct	qbuf	*qp1, *qp2;
 	char	*po1, *po2;
 	int	len1, len2;
@@ -3514,8 +3509,7 @@ qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
  * compare two bitstrings. Including the little bits left at the end but
  * not the bits not in the strings
  */
-int
-bit_cmp (PE b1, PE b2) {
+int bit_cmp (PE b1, PE b2) {
 	int	len1, len2;
 	char	*cp1, *cp2;
 
@@ -3562,8 +3556,7 @@ fail:
 /*
  * compare to strings of given number of bits for equality
  */
-int
-bitstr_cmp (char *cp1, int len1, char *cp2, int len2) {
+int bitstr_cmp (char *cp1, int len1, char *cp2, int len2) {
 	int i;
 	int	mask;
 
@@ -3727,8 +3720,7 @@ mkext (int i) {
  * compare two external types to see if they are identical - return zero if
  * they are and non zero if they are different
  */
-int
-ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2) {
+int ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2) {
 	if (e1->direct__reference != NULLOID && e2->direct__reference != NULLOID) {
 		if (oid_cmp(e1->direct__reference, e2->direct__reference))
 			return (1);
@@ -3786,8 +3778,7 @@ ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2) {
 /*
  * print the PE structure pointed to by pe
  */
-int
-print_pe (PE pe, int n) {
+int print_pe (PE pe, int n) {
 
 	if (pe == NULL)
 		return;
@@ -4152,8 +4143,7 @@ mkrep_elem (int cnt) {
  * return non zero if the to lists are different - also
  * prints a message about the difference found
  */
-int
-ri_cmp (struct rep_int *p1, struct rep_int *p2) {
+int ri_cmp (struct rep_int *p1, struct rep_int *p2) {
 	int	cnt;
 
 
@@ -4182,8 +4172,7 @@ ri_cmp (struct rep_int *p1, struct rep_int *p2) {
  * return non zero if the to lists are different - also
  * prints a message about the difference found
  */
-int
-re_cmp (struct rep_elem *p1, struct rep_elem *p2) {
+int re_cmp (struct rep_elem *p1, struct rep_elem *p2) {
 	int	cnt;
 
 

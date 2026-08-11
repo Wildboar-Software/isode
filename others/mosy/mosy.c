@@ -150,8 +150,7 @@ static OT	lookup_object ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
 
@@ -260,8 +259,7 @@ usage:
 }
 
 
-int
-yyerror (char *s) {
+int yyerror (char *s) {
 	yyerror_aux (s);
 
 	if (delay) {
@@ -295,8 +293,7 @@ warning (char *fmt, ...) {
 #else
 
 /* VARARGS1 */
-int
-warning (char *fmt) {
+int warning (char *fmt) {
 	warning (fmt);
 }
 #endif
@@ -332,8 +329,7 @@ myyerror (char *fmt, ...) {
 #endif
 
 
-int
-yywrap () {
+int yywrap () {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -342,8 +338,7 @@ yywrap () {
 
 
 
-int
-yyprint (char *s, int f, int top) {
+int yyprint (char *s, int f, int top) {
 }
 
 static
@@ -380,8 +375,7 @@ yyprint_aux (char *s, char *mode) {
 
 /* PASS1 */
 
-int
-pass1 () {
+int pass1 () {
 	printf ("-- object definitions compiled from %s", mymodule);
 	if (mymoduleid)
 		printf (" %s", oidprint(mymoduleid));
@@ -532,8 +526,7 @@ YP	yp;
 
 /* PASS2 */
 
-int
-pass2 () {
+int pass2 () {
 	SY	    sy;
 
 	if (!sflag)
@@ -1277,8 +1270,7 @@ PElementClass	class;
 
 /* STRINGS */
 
-char *
-new_string (char *s) {
+char *new_string (char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)

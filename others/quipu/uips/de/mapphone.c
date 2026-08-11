@@ -62,8 +62,7 @@ addPhoneNode (char *from, char *to) {
 	mplp->next = NULLPHLIST;
 }
 
-char *
-mapPhone (char *from) {
+char *mapPhone (char *from) {
 	struct mapphonelist * mplp;
 	static char tophone[LINESIZE];
 

@@ -1565,8 +1565,7 @@ PE p_setpresent (PE head, ptpe *p, modtyp *mod) {
 /*
  * set the default value to that value in the structure
  */
-int
-setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
+int setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
 	int     len, i;
 	integer intval;
 	char   *ptr, *optr;

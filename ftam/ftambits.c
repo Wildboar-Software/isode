@@ -54,8 +54,7 @@ no_mem:
 
 
 
-int
-fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti) {
+int fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti) {
 	int    i;
 	int	bits_set=0;
 	struct pair *pp;

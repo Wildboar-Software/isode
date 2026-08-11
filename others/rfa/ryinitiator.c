@@ -55,8 +55,7 @@ extern char *myname;
 static int ryconnect ();
 
 
-int
-makeconn (char *thehost, char *password, char *user) {
+int makeconn (char *thehost, char *password, char *user) {
 	int	result;
 	PE	data;
 	struct type_RFA_Initiate *initial;
@@ -157,8 +156,7 @@ PE	data;
 	return OK;
 }
 
-int
-closeconn () {
+int closeconn () {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;

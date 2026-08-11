@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sel2str.c,v 9.0 1992
 #include "isoaddrs.h"
 
 
-char *
-sel2str (char *sel, int len, int quoted) {
+char *sel2str (char *sel, int len, int quoted) {
 	char *cp,
 		 *dp,
 		 *ep;

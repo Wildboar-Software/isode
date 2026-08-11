@@ -182,8 +182,7 @@ tstamp (struct l_fixedpt *stampp, struct timeval *tvp) {
  * so it can be invoked several times in a function parameter list.
  */
 
-char *
-ntoa (struct sockaddr_in *nsin) {
+char *ntoa (struct sockaddr_in *nsin) {
 	static int i = 0;
 	static char bufs[8][64];
 

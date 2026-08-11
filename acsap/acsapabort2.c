@@ -37,8 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
 
 /*    handle P-{U,P}-ABORT.INDICATION */
 
-int
-AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
+int AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -62,8 +61,7 @@ AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
 }
 
 
-int
-ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci) {
+int ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci) {
 	int	    result;
 	PE	    pe;
 	struct AcSAPabort *aca = &aci -> aci_abort;

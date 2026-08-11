@@ -49,8 +49,7 @@ static jmp_buf toplevel;
 
 
 
-int
-ros_init (int vecp, char **vec) {
+int ros_init (int vecp, char **vec) {
 	int	    reply,
 			result,
 			sd;
@@ -105,8 +104,7 @@ ros_init (int vecp, char **vec) {
 }
 
 
-int
-ros_work (int fd) {
+int ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -144,8 +142,7 @@ ros_work (int fd) {
 }
 
 
-int
-ros_indication (int sd, struct RoSAPindication *roi) {
+int ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -208,8 +205,7 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 }
 
 
-int
-ros_lose (struct TSAPdisconnect *td) {
+int ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
 			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
@@ -263,8 +259,7 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 /*--------------------------------------------------------------*/
 /* ureject */
 /*--------------------------------------------------------------*/
-int
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

@@ -192,8 +192,7 @@ PE dn_enc (DN dn)
 	return (ret_pe);
 }
 
-int
-dn_syntax (void) {
+int dn_syntax (void) {
 	syntax_dn = add_attribute_syntax ("dn",
 									  dn_enc, dn_dec,
 									  str2dnX, dn_print,

@@ -82,8 +82,7 @@ TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-int
-net_init (void) {
+int net_init (void) {
 	int	    ntries,
 			ontty;
 	struct TSAPdisconnect	  td_s;

@@ -292,8 +292,7 @@ usage:
 }
 
 
-int
-yyerror (char *s) {
+int yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -320,8 +319,7 @@ void warning (char*fmt, ...) {
 #else
 
 /* VARARGS1 */
-int
-warning (char *fmt) {
+int warning (char *fmt) {
 	warning (fmt);
 }
 #endif

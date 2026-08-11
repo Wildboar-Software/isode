@@ -63,8 +63,7 @@ extern	AV_Sequence open_call_avs ;
 #endif /* QUIPU_CONSOLE */
 
 
-int
-update_pseudo_attr (void) {
+int update_pseudo_attr (void) {
 	/*
 		Called just before dsa_pseudo_attr is referenced.
 		Any dynamic changes should be reflected.
@@ -234,8 +233,7 @@ update_pseudo_attr (void) {
 #endif /* QUIPU_CONSOLE */
 }
 
-int
-new_cacheEDB (DN dn) {
+int new_cacheEDB (DN dn) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;

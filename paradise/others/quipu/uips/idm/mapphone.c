@@ -40,8 +40,7 @@ char * from, * to;
 	mplp->next = NULLPHLIST;
 }
 
-char *
-mapPhone(from)
+char *mapPhone(from)
 char * from;
 {
 	struct mapphonelist * mplp;

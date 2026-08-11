@@ -58,8 +58,7 @@ int	dsaplose (struct DSAPindication *di, ...) {
 #else
 /* VARARGS4 */
 
-int
-dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
+int dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 	return dsaplose (di, reason, what, fmt);
 }
 #endif
@@ -109,8 +108,7 @@ int	dsapreject (struct DSAPindication *di, ...) {
 #else
 /* VARARGS4 */
 
-int
-dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt) {
+int dsapreject (struct DSAPindication *di, int reason, int id, char *what, char *fmt) {
 	return dsapreject (di, reason, id, what, fmt);
 }
 #endif

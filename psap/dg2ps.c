@@ -175,8 +175,7 @@ dg_check (int fd, caddr_t data) {
 }
 
 
-int
-dg_open (PS ps) {
+int dg_open (PS ps) {
 	ps -> ps_primeP = dg_prime;
 	ps -> ps_readP = dg_read;
 	ps -> ps_writeP = dg_write;
@@ -187,8 +186,7 @@ dg_open (PS ps) {
 }
 
 
-int
-dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx) {
+int dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx) {
 	struct ps_dg *pt;
 	struct ps_inout *po;
 	struct qbuf *qb;

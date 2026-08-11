@@ -36,8 +36,7 @@ char	LocalHostName[MAXHOSTNAMELEN+1];	/* our hostname */
 char	*LocalDomain;		/* our local domain name */
 
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	char *p;
 	int on = 48*1024;
 
@@ -96,8 +95,7 @@ usage:
 	return 0;
 }
 
-int
-answer (char *host) {
+int answer (char *host) {
 	struct ntpinfo *msg = (struct ntpinfo *) packet;
 	struct clockinfo *n;
 	struct sockaddr_in from;
@@ -166,8 +164,7 @@ answer (char *host) {
 		printf("Timed out waiting for replies\n");
 }
 
-int
-query (char *host) {
+int query (char *host) {
 	struct sockaddr_in watcher;
 	struct ntpdata *msg = (struct ntpdata *) packet;
 	struct hostent *hp;
@@ -210,8 +207,7 @@ SFD timeout() {
 	timedout = 1;
 }
 
-int
-print_terse (struct clockinfo *n) {
+int print_terse (struct clockinfo *n) {
 	int i;
 	double offset[PEER_SHIFT], delay[PEER_SHIFT], dsp,del,off;
 	char c;
@@ -245,8 +241,7 @@ print_terse (struct clockinfo *n) {
 		   ntohs(n->reach) & SHIFT_MASK, del, off, dsp);
 }
 
-int
-print_verbose (struct clockinfo *n) {
+int print_verbose (struct clockinfo *n) {
 	int i;
 	struct in_addr clock_host;
 	double offset[PEER_SHIFT], delay[PEER_SHIFT], dsp,del,off;
@@ -298,8 +293,7 @@ print_verbose (struct clockinfo *n) {
 /*
  * Return a printable representation of a host address.
  */
-char *
-cvthname (struct sockaddr_in *f) {
+char *cvthname (struct sockaddr_in *f) {
 	struct hostent *hp;
 	char *p;
 	extern char *inet_ntoa();

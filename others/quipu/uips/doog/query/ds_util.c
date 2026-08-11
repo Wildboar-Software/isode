@@ -311,8 +311,7 @@ Filter *ap_filter_ptr;
  * Return the attribute name of the RDN of the given entry name.
  *
  */
-char *
-get_entry_type_name (char *entry_name) {
+char *get_entry_type_name (char *entry_name) {
 	char *start, *end;
 	char *type_name;
 	char save;

@@ -34,8 +34,7 @@ static int  RtCloseRequestAux ();
 
 /* RT-CLOSE.REQUEST */
 
-int
-RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
+int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;

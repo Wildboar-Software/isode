@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapresync1.c,v 9.0 1
 
 /* P-RESYNCHRONIZE.REQUEST */
 
-int
-PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi) {
+int PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

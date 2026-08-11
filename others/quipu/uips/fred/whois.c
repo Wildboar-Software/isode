@@ -97,8 +97,7 @@ static int  f_ufn ();
 
 /* WHOIS */
 
-int
-f_whois (char **vec) {
+int f_whois (char **vec) {
 	if (strcmp (*vec, "whois") == 0)
 		vec++;
 
@@ -960,8 +959,7 @@ f_ufn (char **vec) {
 }
 
 
-int
-test_ufn (char *cp) {
+int test_ufn (char *cp) {
 	char *dp;
 
 	if (*(dp = cp) == '!')

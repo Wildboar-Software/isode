@@ -457,8 +457,7 @@ ResetWellKnownSockets () {
  * data, size = buffer
  * nonblock = NOTOK, blocks, OK, non blocks
  */
-int
-TReadFromClient (int client, char *data, int size, int nonblock) {
+int TReadFromClient (int client, char *data, int size, int nonblock) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	int ret;
@@ -616,8 +615,7 @@ int charsWanted;
 /*
  * Who's calling us?
  */
-int
-getISOpeername (int conn, struct TSAPaddr *from, int *alen) {
+int getISOpeername (int conn, struct TSAPaddr *from, int *alen) {
 	struct TSAPdisconnect td;
 	if (TGetAddresses (conn, from, NULLTA, &td) == NOTOK) {
 		Error(TErrString(td.td_reason));
@@ -646,8 +644,7 @@ getISOpeername (int conn, struct TSAPaddr *from, int *alen) {
  *
  *****************************************************************/
 
-int
-ClientAuthorized (
+int ClientAuthorized (
 	long conn,
 	int *pswapped,
 	char **reason   /* if authorization fails, put reason in here */

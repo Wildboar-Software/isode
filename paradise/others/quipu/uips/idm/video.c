@@ -40,8 +40,7 @@ initVideo() {
 	strcpy(term, cp);
 }
 
-char *
-checkSetTerm(termtype, defterm)
+char *checkSetTerm(termtype, defterm)
 char * termtype, * defterm;
 {
 	char * cp;

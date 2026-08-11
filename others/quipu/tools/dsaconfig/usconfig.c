@@ -1291,8 +1291,7 @@ make_usstates () {
 }
 
 /* timestamp () -- return timestamp to use as version on EDB file */
-char *
-timestamp () {
+char *timestamp () {
 	long clock;
 	struct UTCtime ut;
 	static char timestamp [32];

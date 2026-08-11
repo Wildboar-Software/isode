@@ -115,13 +115,11 @@ WIDGET	*thesewdgts;
 	rfrshwidgets(thesewdgts);
 }
 
-int
-linec () {
+int linec () {
 	return (int) LINES;
 }
 
-int
-gety () {
+int gety () {
 	int y,x;
 	getyx(Text, y, x);
 	/* Get rid of lint warning */
@@ -517,8 +515,7 @@ interact () {
 }
 
 /* Find a callback 'ch' from the currently active set of widgets */
-int
-findactiveinput (int ch) {
+int findactiveinput (int ch) {
 	int	indx;
 	WIDGET	*wdgts;
 
@@ -859,8 +856,7 @@ char	label[];
 /* MISCELLANEOUS FUNCTIONS */
 
 /* Try to locate the bottom of the last set of widgets displayed */
-int
-lowesty () {
+int lowesty () {
 	int		cnt = 0;
 	WIDGET		*wdgts;
 

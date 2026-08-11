@@ -83,8 +83,7 @@ extern struct namelist * orgatts;
 extern struct namelist * ouatts;
 extern struct namelist * prratts;
 
-int
-initialisations (int argc, char **argv) {
+int initialisations (int argc, char **argv) {
 	FILE *config_file;
 	char linebuf[LINESIZE], user_file[LINESIZE];
 	char * cp;
@@ -313,8 +312,7 @@ char *rtn;
 }
 */
 
-int
-welcome  {
+int welcome  {
 	FILE * welcome_file;
 	char linebuf[LINESIZE];
 

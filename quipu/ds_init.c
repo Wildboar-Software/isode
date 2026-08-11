@@ -57,8 +57,7 @@ time_t	timenow;
 
 static void set_context (Entry eptr);
 
-int
-dsa_init (void) {
+int dsa_init (void) {
 	Attr_Sequence as, get_cacheEDB();
 	AttributeType manager;
 	DN str2dn();

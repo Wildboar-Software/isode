@@ -469,8 +469,7 @@ out:
 /*      socket must have been previously bound by AcUnitDataBind() which */
 /*      bound both the application context and all valid p-contexts */
 /*---------------------------------------------------------------------------*/
-int
-AcUnitDataRead (
+int AcUnitDataRead (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct AcuSAPstart *acs,
@@ -586,8 +585,7 @@ no_good:
 /*    clear local binding for A-UNIT-DATA */
 /*      similar to AcUAbortRequest() */
 /*---------------------------------------------------------------------------*/
-int
-AcUnitDataUnbind (
+int AcUnitDataUnbind (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct AcSAPindication *aci
@@ -636,8 +634,7 @@ out1:
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local A-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
-int
-AcuSave (
+int AcuSave (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	int vecp,
@@ -781,8 +778,7 @@ struct  type_ACS_AUDT__apdu *pdu;
 
 
 /*---------------------------------------------------------------------------*/
-int
-ctx2block (
+int ctx2block (
 	/*---------------------------------------------------------------------------*/
 	struct PSAPctxlist *ctxlist,
 	struct assocblk *acb,
@@ -852,8 +848,7 @@ no_mem:
 
 
 /*---------------------------------------------------------------------------*/
-int
-validaudtctx (
+int validaudtctx (
 	/*---------------------------------------------------------------------------*/
 	int ctx,
 	struct assocblk *acb,
@@ -901,8 +896,7 @@ validaudtctx (
 
 
 /*---------------------------------------------------------------------------*/
-int
-pdu2start (
+int pdu2start (
 	/*---------------------------------------------------------------------------*/
 	struct type_ACS_AUDT__apdu *pdu,
 	struct AcuSAPstart *acs

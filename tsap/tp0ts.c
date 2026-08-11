@@ -679,8 +679,7 @@ static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 extern	int	errno;
 
 
-int
-tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
+int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	char   *p,
 		   *q;

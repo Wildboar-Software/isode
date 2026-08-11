@@ -149,8 +149,7 @@ void vprint (char *fmt, ...) {
 #else
 /* VARARGS */
 
-int
-vprint (char *fmt) {
+int vprint (char *fmt) {
 	vprint (fmt);
 }
 #endif

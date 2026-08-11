@@ -73,8 +73,7 @@ static struct dispatch dispatches[] = {
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_PasswordLookup_Operations, dispatches, do_quit);
 

@@ -153,8 +153,7 @@ AttributeType search_type;
 	curr_type->object_type = search_type;
 } /* set_search_attr */
 
-int
-test_init_ditmodel () {
+int test_init_ditmodel () {
 	entryList search_path;
 	AttributeType country, org, ou, loc, person;
 

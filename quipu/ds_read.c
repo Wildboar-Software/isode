@@ -46,8 +46,7 @@ extern unsigned strong_policy;
 extern DN mydsadn;
 extern struct di_block * di_alloc();
 
-int
-do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
 	Entry  entryptr;
 	int retval;
 #ifdef NOTUSED

@@ -49,8 +49,7 @@ SFD photo_quit () {
 	exit (0);
 }
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	putch (035);	/* Enter graphic mode */
 
 	openpl ();
@@ -64,8 +63,7 @@ photo_start (char *name) {
 }
 
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	/* Decoding has finished - display the photo */
 	move (0,Y_OFFSET - 100);
 	closepl();
@@ -78,13 +76,11 @@ photo_end (char *name) {
 		;
 }
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	;
 }
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }
 

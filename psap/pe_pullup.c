@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_pullup.c,v 9.0 1992
 static PElementData	pe_pullup_aux ();
 
 
-int
-pe_pullup (PE pe) {
+int pe_pullup (PE pe) {
 	PElementLen	    len;
 	PElementData dp;
 	PE	    p;

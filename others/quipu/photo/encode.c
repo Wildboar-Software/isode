@@ -71,8 +71,7 @@ int oldformat = 0;
 */
 
 
-char *
-encode_t4 (int k_param, char *inbuf, int eolnskip)
+char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 
 {
 	bit_string ref_line;            /* Reference line */

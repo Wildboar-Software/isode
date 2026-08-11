@@ -56,8 +56,7 @@ struct area_guide areas[] = {
 /* ALIAS */
 
 
-int
-f_alias (char **vec) {
+int f_alias (char **vec) {
 	char   *cp,
 		   buffer[BUFSIZ];
 
@@ -79,8 +78,7 @@ f_alias (char **vec) {
 
 /* AREA */
 
-int
-f_area (char **vec) {
+int f_area (char **vec) {
 	int	    status;
 	char   *cp,
 		   *dp,
@@ -172,8 +170,7 @@ f_area (char **vec) {
 
 /* DISH */
 
-int
-f_dish (char **vec) {
+int f_dish (char **vec) {
 	char *bp,
 		 *cp;
 	char    buffer[BUFSIZ];
@@ -201,8 +198,7 @@ f_dish (char **vec) {
 
 /* EDIT */
 
-int
-f_edit (char **vec) {
+int f_edit (char **vec) {
 	int	    result;
 	char    buffer[BUFSIZ];
 
@@ -240,8 +236,7 @@ f_edit (char **vec) {
 
 /* MANUAL */
 
-int
-f_manual (char **vec) {
+int f_manual (char **vec) {
 	char   buffer[BUFSIZ];
 	FILE  *fp;
 
@@ -267,8 +262,7 @@ f_manual (char **vec) {
 
 /* REPORT */
 
-int
-f_report (char **vec) {
+int f_report (char **vec) {
 	char   *bp;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -331,8 +325,7 @@ f_report (char **vec) {
 
 /* THISIS */
 
-int
-f_thisis (char **vec) {
+int f_thisis (char **vec) {
 	char   *bp;
 	char   *cp,
 		   buffer[BUFSIZ];

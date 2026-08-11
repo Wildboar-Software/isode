@@ -162,8 +162,7 @@ audio_parse (char *str) {
 		return str2qb (str, strlen (str), 1);
 }
 
-int
-audio_syntax (void) {
+int audio_syntax (void) {
 	add_attribute_syntax ("audio",
 						  r_octenc,		r_octsdec,
 						  audio_parse,	audio_print,

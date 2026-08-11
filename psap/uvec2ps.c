@@ -127,8 +127,7 @@ uvec_close (PS ps) {
 }
 
 
-int
-uvec_open (PS ps) {
+int uvec_open (PS ps) {
 	ps -> ps_writeP = uvec_write;
 	ps -> ps_flushP = uvec_flush;
 	ps -> ps_closeP = uvec_close;
@@ -137,8 +136,7 @@ uvec_open (PS ps) {
 }
 
 
-int
-uvec_setup (PS ps, int len) {
+int uvec_setup (PS ps, int len) {
 	struct udvec *uv;
 
 	ps -> ps_elems = NPSUV;
@@ -160,8 +158,7 @@ uvec_setup (PS ps, int len) {
 }
 
 
-int
-ps_get_plen (PE pe) {
+int ps_get_plen (PE pe) {
 	PElementLen len;
 	PE	    p;
 

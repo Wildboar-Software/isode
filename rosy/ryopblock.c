@@ -152,8 +152,7 @@ void loseopblk (int sd, int reason) {
 
 /* VARARGS */
 
-int
-rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
+int rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }
 #endif

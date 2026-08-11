@@ -43,8 +43,7 @@ Avlnode		*subtree_index;		/* array of subtree indexes */
 Avlnode		*sibling_index;		/* array of sibling indexes */
 int		optimized_only;		/* only allow indexed searches */
 
-char *
-strrev (char *s) {
+char *strrev (char *s) {
 	char	*start, *rev, *rsave;
 	int	len;
 

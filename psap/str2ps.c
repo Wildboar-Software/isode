@@ -93,8 +93,7 @@ str_close (PS ps) {
 }
 
 
-int
-str_open (PS ps) {
+int str_open (PS ps) {
 	ps -> ps_readP = str_read;
 	ps -> ps_writeP = str_write;
 	ps -> ps_closeP = str_close;
@@ -103,8 +102,7 @@ str_open (PS ps) {
 }
 
 
-int
-str_setup (PS ps, char *cp, int cc, int in_line) {
+int str_setup (PS ps, char *cp, int cc, int in_line) {
 	char  *dp;
 
 	if (in_line) {

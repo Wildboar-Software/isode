@@ -24,8 +24,7 @@ extern void receive();
 #ifdef	TEST
 
 
-int
-main () {
+int main () {
 	int i, cc, val;
 	char foo[10];
 
@@ -67,8 +66,7 @@ main () {
  *  If we can't determine the interface configuration, just listen with one
  *  socket at the INADDR_ANY address.
  */
-int
-create_sockets (unsigned int port) {
+int create_sockets (unsigned int port) {
 	struct intf *ap;
 	int	no;
 
@@ -101,8 +99,7 @@ create_sockets (unsigned int port) {
  *  Grab interface configuration, and create a socket for each interface
  *  address.
  */
-int
-create_sockets (unsigned int port) {
+int create_sockets (unsigned int port) {
 	char	buf[1024];
 	struct intf *ap;
 	struct	ifconf	ifc;
@@ -251,8 +248,7 @@ next:
 
 #endif
 
-int
-recv_inet (struct intf *ap, struct timeval *tvp) {
+int recv_inet (struct intf *ap, struct timeval *tvp) {
 	int	dstlen;
 	int	cc;
 	struct Naddr peers;
@@ -308,8 +304,7 @@ recv_inet (struct intf *ap, struct timeval *tvp) {
 	return 0;
 }
 
-int
-send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer) {
+int send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer) {
 	if (ap -> addr.type != AF_INET) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Bad address type in sent_inet");
@@ -332,8 +327,7 @@ send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer) {
 #define	N_NTP_PKTS \
       ((PKTBUF_SIZE - sizeof(struct ntpinfo))/(sizeof(struct clockinfo)))
 
-int
-query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap) {
+int query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap) {
 	extern struct list peer_list;
 	extern struct sysdata sys;
 	char packet[PKTBUF_SIZE];

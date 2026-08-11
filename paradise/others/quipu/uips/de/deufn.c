@@ -195,8 +195,7 @@ validNumber:
 	return(ptr);
 }
 
-int
-printUfnComponents(str)
+int printUfnComponents(str)
 char * str;
 {
 	char buf[BUFSIZ];

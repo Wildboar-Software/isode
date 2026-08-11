@@ -30,8 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2str.c,v 9.0 1992/06
 #include "psap.h"
 
 
-char *
-qb2str (struct qbuf *q) {
+char *qb2str (struct qbuf *q) {
 	int    len;
 	char  *b,
 		  *d;

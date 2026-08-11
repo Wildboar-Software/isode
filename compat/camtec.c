@@ -50,8 +50,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
 static char calling_dte[NSAP_DTELEN + 1];
 
 
-int
-start_x25_client (struct NSAPaddr *local) {
+int start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
 	CONN_DB l_iov;
 
@@ -75,8 +74,7 @@ start_x25_client (struct NSAPaddr *local) {
 }
 
 
-int
-start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
+int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
 	CONN_DB b_iov;
 	char param1[128];
@@ -122,8 +120,7 @@ start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 }
 
 
-int
-join_x25_client (int fd, struct NSAPaddr *remote) {
+int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sck;
 	struct iovec *iov;
 	int         i, len = 0;
@@ -150,8 +147,7 @@ join_x25_client (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-int
-join_x25_server (int fd, struct NSAPaddr *remote) {
+int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB zsck;
 	CONN_DB *sck = &zsck;
 	int r;
@@ -237,8 +233,7 @@ char    *buffer;
 	return count;
 }
 #else 	/* CAMTEC_CCL */
-int
-_camtec_sunlink_stub2()  {}
+int _camtec_sunlink_stub2()  {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
 int _camtec_sunlink_stub(void) {}

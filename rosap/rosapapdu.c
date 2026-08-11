@@ -43,8 +43,7 @@ static int  apdu_proc ();
 static int  opdu_proc ();
 
 
-int
-acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
+int acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
 	struct type_ROS_ROSEapdus *papdu;
 	struct type_ROS_OPDU	*popdu;
 	int rosap_type;

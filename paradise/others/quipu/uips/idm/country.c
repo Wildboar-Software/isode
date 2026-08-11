@@ -40,8 +40,7 @@ VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
 
 int listAtRoot = TRUE;
 
-int
-makeRootCountry(clistp)
+int makeRootCountry(clistp)
 struct namelist ** clistp;
 {
 	*clistp = list_alloc();
@@ -52,8 +51,7 @@ struct namelist ** clistp;
 }
 
 
-int
-listCos(cstr, clistp)
+int listCos(cstr, clistp)
 char * cstr;
 struct namelist ** clistp;
 {

@@ -32,8 +32,7 @@ char * mapPhone();
 
 static PS ps = NULLPS;
 
-char *
-val2str (av)
+char *val2str (av)
 AttributeValue  av;
 {
 	char       *cp;
@@ -57,8 +56,7 @@ AttributeValue  av;
 
 	return cp;
 }
-char *
-val2dnstr (av)
+char *val2dnstr (av)
 AttributeValue  av;
 {
 	char       *cp;

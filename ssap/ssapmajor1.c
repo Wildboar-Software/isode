@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor1.c,v 9.0 199
 
 /* S-MAJOR-SYNC.REQUEST */
 
-int
-SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
+int SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -54,8 +53,7 @@ SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *s
 }
 
 
-int
-SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si) {
+int SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si) {
 	int     result;
 
 	if (SDoActivityAux (sb, si, 0, 0) == NOTOK)

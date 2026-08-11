@@ -52,8 +52,7 @@ void	advise (int, char *, char *, ...);
    req: usr==>vtpm
    ind: vtpm==>usr
 */
-int
-ce_104 (	/* common event 104 */
+int ce_104 (	/* common event 104 */
 	PE pe
 ) {
 	/* if (vnt > 0) */
@@ -62,8 +61,7 @@ ce_104 (	/* common event 104 */
 	return(OK);
 }
 
-int
-ce_105 (void) {	/* common event 105 */
+int ce_105 (void) {	/* common event 105 */
 	/* if (vns > 0)  for(... */
 	if(p_ondq != NULLPE)
 		p_data(p_ondq);  /* send NDQ	*/
@@ -72,8 +70,7 @@ ce_105 (void) {	/* common event 105 */
 }
 
 
-int
-a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
+int a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 	/* V data request addressing sequenced trigger co */
 	PE pe
 ) {
@@ -84,8 +81,7 @@ a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 }
 
 
-int
-a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
+int a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 	/* V data request addressing sequenced trigger co */
 	PE pe
 ) {
@@ -98,8 +94,7 @@ a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 }
 
 
-int
-a5_2 (	/*NDQ-tr in states 400B, 420B */
+int a5_2 (	/*NDQ-tr in states 400B, 420B */
 	PE pe
 ) {
 	/*
@@ -113,8 +108,7 @@ a5_2 (	/*NDQ-tr in states 400B, 420B */
 }
 
 
-int
-a5_3 (	/*NDQ-ntr in states 400B, 420B */
+int a5_3 (	/*NDQ-ntr in states 400B, 420B */
 	PE pe
 ) {
 	/*
@@ -126,8 +120,7 @@ a5_3 (	/*NDQ-ntr in states 400B, 420B */
 	return(ce_104(pe));	/*Autonomous Event to Deliver to User*/
 }
 
-int
-a5_5 (	/* VBRKreq  */
+int a5_5 (	/* VBRKreq  */
 	PE pe
 ) {
 	vtok = 0; /* giving the token away */
@@ -139,8 +132,7 @@ a5_5 (	/* VBRKreq  */
 	return(OK);
 }
 
-int
-a5_6 (	/* VBRKrsp in state 62 */
+int a5_6 (	/* VBRKrsp in state 62 */
 	PE pe
 ) {
 	p_resync_resp(pe); /* send out break response */
@@ -157,8 +149,7 @@ a5_6 (	/* VBRKrsp in state 62 */
 	return(OK);
 }
 
-int
-a5_9 (	/*VDELreq in states 400B, 402B */
+int a5_9 (	/*VDELreq in states 400B, 402B */
 	PE pe
 ) {
 	if (dcno) { /* no delivery control */
@@ -176,8 +167,7 @@ a5_9 (	/*VDELreq in states 400B, 402B */
 	return(OK);
 }
 
-int
-a5_11 (	/*HDQ request in 400B*/
+int a5_11 (	/*HDQ request in 400B*/
 	PE pe
 ) {
 	p_typed_data(pe);
@@ -185,8 +175,7 @@ a5_11 (	/*HDQ request in 400B*/
 }
 
 /*ARGSUSED*/
-int
-a5_17 (	/*VRELreq in states 400B */
+int a5_17 (	/*VRELreq in states 400B */
 	PE pe
 ) {
 	/*	ce_105(); */
@@ -205,16 +194,14 @@ a5_17 (	/*VRELreq in states 400B */
 	return(OK);
 }
 
-int
-a5_28 (	/*UDQ request in 400B*/
+int a5_28 (	/*UDQ request in 400B*/
 	PE pe
 ) {
 	p_typed_data(pe);
 	return(OK);
 }
 
-int
-a5_31 (	/* BKR in 61 */
+int a5_31 (	/* BKR in 61 */
 	PE pe
 ) {
 	if (vsmd && vtok) state = S5_40T;
@@ -224,8 +211,7 @@ a5_31 (	/* BKR in 61 */
 	return(OK);
 }
 
-int
-a5_32 (	/* BKQ could occur in any state except 62 */
+int a5_32 (	/* BKQ could occur in any state except 62 */
 	PE pe
 ) {
 	vnt = 0;
@@ -241,16 +227,14 @@ a5_32 (	/* BKQ could occur in any state except 62 */
 	return(OK);
 }
 
-int
-a5_34 (	/*UDQ in 400B*/
+int a5_34 (	/*UDQ in 400B*/
 	PE pe
 ) {
 	if(pe != NULLPE) vudatind(pe);
 	return(OK);
 }
 
-int
-a5_35 (	/* DEL in states 400B, 420B */
+int a5_35 (	/* DEL in states 400B, 420B */
 	PE pe
 ) {
 
@@ -263,8 +247,7 @@ a5_35 (	/* DEL in states 400B, 420B */
 }
 
 
-int
-a5_38 (	/* RLQ in states 400B */
+int a5_38 (	/* RLQ in states 400B */
 	PE pe
 ) {
 
@@ -275,8 +258,7 @@ a5_38 (	/* RLQ in states 400B */
 	return(OK);
 }
 
-int
-a5_106 (PE pe) {
+int a5_106 (PE pe) {
 	if(pe != NULLPE) vhdatind(pe);
 	return(OK);
 }

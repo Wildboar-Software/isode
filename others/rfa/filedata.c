@@ -45,8 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/filedata.c,v 9.0
 /*--------------------------------------------------------------
  *  spawn compress
  *-------------------------------------------------------------*/
-int
-getCompressed (char *fn, struct qbuf **qbp) {
+int getCompressed (char *fn, struct qbuf **qbp) {
 	static int p[2];
 	int rc;
 
@@ -85,8 +84,7 @@ getCompressed (char *fn, struct qbuf **qbp) {
 /*--------------------------------------------------------------
  *  fd2qb - read data from fd and create qbuf list
  *-------------------------------------------------------------*/
-int
-fd2qb (int fd, struct qbuf **qbp) {
+int fd2qb (int fd, struct qbuf **qbp) {
 	struct qbuf *qb;
 	int c, tot, head = 1;
 	char buf[BUFSIZ * 100];
@@ -109,8 +107,7 @@ fd2qb (int fd, struct qbuf **qbp) {
 /*--------------------------------------------------------------
  *  op_getFileData - get mastership of a file
  *-------------------------------------------------------------*/
-int
-op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_RFA_GetFileDataArg *gfa = (struct type_RFA_GetFileDataArg *)in;
 	struct type_RFA_GetFileDataRes gfr;
 	struct RfaInfo *rfa, *rfalist;

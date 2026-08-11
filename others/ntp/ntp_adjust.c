@@ -69,8 +69,7 @@ init_logical_clock () {
  *  corrections to my code.
  */
 
-int
-adj_logical (double offset) {
+int adj_logical (double offset) {
 	struct timeval tv1, tv2;
 #ifdef	XADJTIME2
 	struct timeval delta, olddelta;

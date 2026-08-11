@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-assoc.c,v 9.0 19
 static struct PSAPaddr vfs_bound;
 
 
-int
-f_open (char **vec) {
+int f_open (char **vec) {
 	int    i;
 	int     manage;
 	char    passwd[BUFSIZ];

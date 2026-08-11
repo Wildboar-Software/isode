@@ -43,8 +43,7 @@ static int  doPSsync ();
 static int  doPStoken ();
 
 
-int
-rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
+int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -78,8 +77,7 @@ rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 }
 
 
-int
-rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
+int rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -104,8 +102,7 @@ rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 }
 
 
-int
-rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
+int rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
 	int    cc,
 		   size;
 	int     result,
@@ -320,8 +317,7 @@ out:
 }
 
 
-int
-rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
+int rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -391,8 +387,7 @@ rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 #define	e(i)	(indication ? (i) : 0)
 
 
-int
-rt2psasync (
+int rt2psasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
@@ -428,8 +423,7 @@ rt2psasync (
 
 /*    map association descriptors for select() */
 
-int
-rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
+int rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication  *pi = &pis;
 	struct PSAPabort   *pa = &pi -> pi_abort;
@@ -450,8 +444,7 @@ rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication
 
 /*    protocol-level abort */
 
-int
-rt2pslose (struct assocblk *acb, int result) {
+int rt2pslose (struct assocblk *acb, int result) {
 	PE	    pe;
 	struct AcSAPindication  acis;
 
@@ -471,8 +464,7 @@ rt2pslose (struct assocblk *acb, int result) {
 
 /*    AcSAP interface */
 
-int
-acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca) {
+int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -527,8 +519,7 @@ acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, str
 }
 
 
-int
-acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti) {
+int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct type_RTS_RTSE__apdus *rtpdu = NULL;

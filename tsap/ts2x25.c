@@ -66,8 +66,7 @@ int fd;
 
 /* N-CONNECT.REQUEST */
 
-int
-x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
+int x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
 	int    fd;
 	int     onoff;
 
@@ -289,8 +288,7 @@ read_nsdu_buffer (int fd, char *buffer, int cc) {
 
 
 
-char *
-x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td) {
+char *x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 	char tbuf1[NASIZE*2+1], tbuf2[NASIZE*2+1];
 #ifdef ULTRIX_X25_DEMSA
@@ -331,8 +329,7 @@ x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconne
 }
 
 
-int
-x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
+int x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char    dte1[NASIZE + 1],
 			dte2[NASIZE + 1];
@@ -391,8 +388,7 @@ x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 }
 
 #ifdef AEF_NSAP
-int
-x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
+int x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char    dte1[NASIZE*2 + 1],
 			dte2[NASIZE*2 + 1];
@@ -429,8 +425,7 @@ x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 #endif
 
 
-int
-XTService (struct tsapblk *tb) {
+int XTService (struct tsapblk *tb) {
 #ifndef	UBC_X25
 	int     maxnsdu = MAXNSDU;
 #else
@@ -459,8 +454,7 @@ XTService (struct tsapblk *tb) {
 	tp0init (tb);
 }
 #else
-int
-_ts2x25_stub() {
+int _ts2x25_stub() {
 	;
 }
 #endif

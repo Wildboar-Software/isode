@@ -69,8 +69,7 @@ int	fpktlose (struct ftamblk *fsb, ...) {
 #else
 /* VARARGS5 */
 
-int
-fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, char *fmt) {
+int fpktlose (struct ftamblk *fsb, struct FTAMindication *fti, int reason, char *what, char *fmt) {
 	return fpktlose (fsb, fti, reason, what, fmt);
 }
 #endif
@@ -98,8 +97,7 @@ int	ftamlose (struct FTAMindication *fti, ...) {
 #else
 /* VARARGS4 */
 
-int
-ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *fmt) {
+int ftamlose (struct FTAMindication *fti, int reason, int fatal, char *what, char *fmt) {
 	return ftamlose (fti, reason, fatal, what, fmt);
 }
 #endif
@@ -165,8 +163,7 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 #else
 /* VARARGS7 */
 
-int
-ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, char *fmt) {
+int ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, char *what, char *fmt) {
 	return ftamoops (fti, reason, fatal, observer, source, what, fmt);
 }
 #endif

@@ -486,8 +486,7 @@ static int	tailor_read ();
 static char   *tailor_value ();
 
 
-char *
-isodesetailor (char *file) {
+char *isodesetailor (char *file) {
 	char   *ofile = isotailor;
 
 	if ((isotailor = file) == NULLCP)
@@ -577,8 +576,7 @@ tailor_read (char *file) {
 }
 
 
-int
-isodesetvar (char *name, char *value, int dynamic) {
+int isodesetvar (char *name, char *value, int dynamic) {
 	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
@@ -994,8 +992,7 @@ events_value (struct pair *pairs, char *s, char *var) {
 
 
 #ifdef DEBUG
-int
-tailorfree () {
+int tailorfree () {
 	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
@@ -1025,8 +1022,7 @@ tailorfree () {
 }
 
 
-int
-ll_hdfree (LLog *lp) {
+int ll_hdfree (LLog *lp) {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);
 	lp -> ll_stat &= ~LLOGHDR;

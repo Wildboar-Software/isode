@@ -1143,8 +1143,7 @@ print_it:
 
 /* MISCELLANY */
 
-int
-rcinit (void) {
+int rcinit (void) {
 #ifndef	BRIDGE
 	int    w;
 	char **cp;
@@ -1277,8 +1276,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 long	times ();
 
 
-int
-timer (int cc, char *action) {
+int timer (int cc, char *action) {
 	long    ms;
 	float   bs;
 	long    stop,
@@ -1310,8 +1308,7 @@ timer (int cc, char *action) {
 
 #include <arpa/ftp.h>
 
-int
-f_type (int mode) {
+int f_type (int mode) {
 	switch(mode) {
 	case TYPE_A:
 		tmode = VFS_UTF;

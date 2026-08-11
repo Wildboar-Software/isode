@@ -68,8 +68,7 @@ initVideo () {
 	strcpy(term, cp);
 }
 
-char *
-checkSetTerm (char *termtype, char *defterm) {
+char *checkSetTerm (char *termtype, char *defterm) {
 	char * cp;
 	char buf[1024];
 	int n, ret;
@@ -150,8 +149,7 @@ soundBell () {
 		putchar(7);
 }
 
-int
-output (int c) {
+int output (int c) {
 	putchar(c);
 }
 
@@ -168,8 +166,7 @@ turnInverseVideoOff () {
 	inverseVideo = FALSE;
 }
 
-int
-writeInverse (char *str) {
+int writeInverse (char *str) {
 	if (inverseVideo == TRUE)
 		tputs(revVideoOn, 1, output);
 	fputs(str, stdout);
@@ -177,8 +174,7 @@ writeInverse (char *str) {
 		tputs(resetVideo, 1, output);
 }
 
-int
-clearLine () {
+int clearLine () {
 	int i;
 
 	if (startLine != NULLCP) {

@@ -308,8 +308,7 @@ you_lose:
 }
 
 
-int
-f_rm (char **vec) {
+int f_rm (char **vec) {
 #ifndef	BRIDGE
 	int     multi;
 	char    buffer[BUFSIZ];
@@ -426,8 +425,7 @@ you_lose:
 
 
 #ifndef	BRIDGE
-int
-f_chgrp (char **vec) {
+int f_chgrp (char **vec) {
 	int     multi;
 	char    group[8 + 1];
 	char    buffer[BUFSIZ];
@@ -564,8 +562,7 @@ you_lose:
 #endif
 
 
-int
-f_mkdir (char **vec) {
+int f_mkdir (char **vec) {
 #ifndef	BRIDGE
 	int	    multi;
 	char  *dir;

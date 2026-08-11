@@ -170,8 +170,7 @@ void addtableref (char *name, OID id, int lt) {
 		}
 }
 
-int
-print_expimp(void) {
+int print_expimp(void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;

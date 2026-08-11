@@ -36,8 +36,7 @@ extern LLog * log_dsap;
 extern Entry database_root;
 static int build_result(struct ds_list_arg *, Entry, struct ds_list_result *, struct DSError *, DN, char, int);
 
-int
-do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	int retval;
 	DN realtarget;
@@ -329,8 +328,7 @@ build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result,
 }
 
 
-int
-try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target) {
+int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target) {
 	struct list_cache *ptr;
 	struct subordinate * subord_cpy();
 

@@ -109,8 +109,7 @@ jmp_buf sjbuf;
 
 SFD cleanupok();
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	int res;
 
 	/*  pdu_dump_init("/tmp"); */
@@ -282,8 +281,7 @@ set_up_defaults:
 	/* and that's all for now */
 }
 
-int
-doCountry () {
+int doCountry () {
 
 	if ((strcmp(qinfo[COUNTRY].entered, qinfo[COUNTRY].defvalue) == 0) &&
 	(qinfo[COUNTRY].lp != NULLLIST) && (qinfo[COUNTRY].listlen == 1)) {
@@ -349,8 +347,7 @@ doCountry () {
 	}
 }
 
-int
-doOrganisation (char matchstring[]) {
+int doOrganisation (char matchstring[]) {
 
 	if ((strcmp(qinfo[ORG].entered, qinfo[ORG].defvalue) == 0) &&
 			(qinfo[ORG].lp != NULLLIST) && (qinfo[ORG].listlen == 1)) {
@@ -422,8 +419,7 @@ doOrganisation (char matchstring[]) {
 	}
 }
 
-int
-doOU (char matchstring[]) {
+int doOU (char matchstring[]) {
 
 	if ((strcmp(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].defvalue) == 0) &&
 			(qinfo[ORGUNIT].lp != NULLLIST) && (qinfo[ORGUNIT].listlen == 1)) {
@@ -502,8 +498,7 @@ doOU (char matchstring[]) {
 	}
 }
 
-int
-doPRR (char matchstring[], int searchparent) {
+int doPRR (char matchstring[], int searchparent) {
 
 	if ((strcmp(qinfo[PERSON].entered, qinfo[PERSON].defvalue) == 0) &&
 			(qinfo[PERSON].lp != NULLLIST) && (qinfo[PERSON].listlen == 1)) {
@@ -572,8 +567,7 @@ doPRR (char matchstring[], int searchparent) {
 }
 
 
-int
-printNames (int objectType) {
+int printNames (int objectType) {
 	switch (objectType) {
 	case COUNTRY:
 		printLastComponent(INDENTON, qinfo[COUNTRY].lp->name,
@@ -599,8 +593,7 @@ printNames (int objectType) {
 	}
 }
 
-int
-printCountry () {
+int printCountry () {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
@@ -620,8 +613,7 @@ matchFollowing () {
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
-int
-enterString (int objectType) {
+int enterString (int objectType) {
 	char prompt[LINESIZE];
 	static char prstr[] = ":-";
 	static char gotValue[LINESIZE] = "";
@@ -714,8 +706,7 @@ enterString (int objectType) {
 }
 
 
-int
-enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep) {
+int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep) {
 	char * cp, * cp2;
 	int i, n, isnum;
 
@@ -857,8 +848,7 @@ enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, s
 	free(cp);
 }
 
-char
-enterYesNo () {
+char enterYesNo () {
 	char buf[LINESIZE];
 	int i;
 
@@ -875,14 +865,12 @@ enterYesNo () {
 	}
 }
 
-int
-displayValidWildCards () {
+int displayValidWildCards () {
 	printf("The following wild-card formats are acceptable:\n");
 	printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
 
-int
-countryCodeMessage (int str) {
+int countryCodeMessage (int str) {
 	printf("<%s> is not a valid two-letter country code.\n", str);
 	printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
@@ -900,8 +888,7 @@ SFD cleanupok() {
 	cleanup(0);
 }
 
-int
-cleanup (int exitCode) {
+int cleanup (int exitCode) {
 	if (boundToDSA == TRUE)
 		de_unbind();
 #ifdef SPEC_MALL
@@ -932,8 +919,7 @@ onalarm () {
 	alarmCount++;
 }
 
-int
-searchFail (int objectType) {
+int searchFail (int objectType) {
 	int problem;
 	searchfail = TRUE;
 	if (abandoned) {

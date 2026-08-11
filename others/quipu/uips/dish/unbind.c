@@ -38,8 +38,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbi
 
 #include "internet.h"
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	int 			sd,res,status;
 	struct sockaddr_in	sin_buf;
 	struct sockaddr_in	* sin = &sin_buf;
@@ -119,8 +118,7 @@ main (int argc, char *argv[]) {
 char retfile [LINESIZE];
 int fd;
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	int res;
 	char buffer [BUFSIZ];
 	char sendfile [LINESIZE];

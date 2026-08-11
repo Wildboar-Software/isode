@@ -38,8 +38,7 @@ DIR		*dirp;	/* stream from opendir() */
 	lseek( dirfd(dirp), (off_t)0, SEEK_SET );	/* may set errno */
 }
 #else
-int
-_rewinddir_stub()  {
+int _rewinddir_stub()  {
 	;
 }
 #endif

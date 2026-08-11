@@ -323,8 +323,7 @@ cpy_as_comp_type (Attr_Sequence as) {
 
 
 
-int
-eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
+int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
 	Attr_Sequence temp;
 	Attr_Sequence as;
 	DN node;

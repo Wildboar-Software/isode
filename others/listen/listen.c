@@ -33,8 +33,7 @@ static char *mycontext = "isode listen demo";
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    secs,
 			vecp;
 	char   *vec[4];

@@ -126,8 +126,7 @@ cpair_cpy (struct certificate_list *parm) {
 }
 
 
-int
-cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
+int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 	int retval;
 
 	if (a->cert == (struct certificate *) 0) {
@@ -160,8 +159,7 @@ cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 	return (retval);
 }
 
-int
-cpair_free (struct certificate_list *parm) {
+int cpair_free (struct certificate_list *parm) {
 	if (parm->cert)
 		cert_free(parm->cert);
 	if (parm->reverse)
@@ -169,8 +167,7 @@ cpair_free (struct certificate_list *parm) {
 	free((char *) parm);
 }
 
-int
-certificate_pair_syntax (void) {
+int certificate_pair_syntax (void) {
 	add_attribute_syntax(
 		"CertificatePair",
 		cpair_enc,	cpair_dec,

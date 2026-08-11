@@ -93,8 +93,7 @@ int conn_release (struct connection *conn) {
 	return OK;
 }
 
-int
-conn_release_retry (struct connection *conn) {
+int conn_release_retry (struct connection *conn) {
 	int				  result;
 	struct DSAPrelease		  dr_s;
 	struct DSAPrelease		* dr = &(dr_s);

@@ -31,8 +31,7 @@ static void	adios (char *, char *, ...);
 static void	advise (char *, char *, ...);
 PE	build_bind_arg ();
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	extern char	*optarg;
 	extern int	optind;
 	int	opt;
@@ -61,8 +60,7 @@ main (int argc, char **argv) {
 }
 
 
-int
-ntp_monitor (char *host) {
+int ntp_monitor (char *host) {
 	int	sd;
 
 	sd = mk_connect (host);
@@ -75,8 +73,7 @@ ntp_monitor (char *host) {
 	}
 }
 
-int
-mk_connect (char *addr) {
+int mk_connect (char *addr) {
 	int sd;
 	struct SSAPref sfs;
 	struct SSAPref *sf;
@@ -151,8 +148,7 @@ mk_connect (char *addr) {
 	return sd;
 }
 
-int
-ac_failed (struct AcSAPconnect *acc) {
+int ac_failed (struct AcSAPconnect *acc) {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
@@ -202,8 +198,7 @@ ac_failed (struct AcSAPconnect *acc) {
 }
 
 
-int
-send_request (int sd) {
+int send_request (int sd) {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
 	struct RoSAPpreject *rop = &roi -> roi_preject;
@@ -230,8 +225,7 @@ send_request (int sd) {
 	}
 }
 
-int
-query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi) {
+int query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi) {
 	struct type_NTP_ClockInfo *clock;
 	char	*p, c;
 	int 	i;
@@ -278,8 +272,7 @@ query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, 
 }
 
 
-int
-query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
+int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {

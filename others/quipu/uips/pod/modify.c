@@ -737,8 +737,7 @@ AV_Sequence oc;
 }
 
 /*Big Bodge!*/
-char *
-modify_error (struct DSError *error) {
+char *modify_error (struct DSError *error) {
 	PS ps;
 	char buffer[RESBUF];
 	char *str, *message;

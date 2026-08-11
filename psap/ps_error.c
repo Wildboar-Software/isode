@@ -49,8 +49,7 @@ static char *ps_errorlist[] = {
 static int ps_maxerror = sizeof ps_errorlist / sizeof ps_errorlist[0];
 
 
-char *
-ps_error (int c) {
+char *ps_error (int c) {
 	char  *bp;
 	static char buffer[30];
 

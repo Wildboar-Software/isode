@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/str2tpkt.c,v 9.0 1992/
 static int	readfnx (), getfnx (), writefnx (), putfnx ();
 
 
-char *
-tpkt2str (struct tsapkt *t) {
+char *tpkt2str (struct tsapkt *t) {
 	int	    cc;
 	char    packet[BUFSIZ];
 	static char buffer[2 * sizeof packet + 1];

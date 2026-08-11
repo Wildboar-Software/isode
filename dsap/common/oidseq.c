@@ -31,8 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oidseq.c,v 9.0 
 
 extern int oidformat;
 
-int
-oid_seq_free (struct oid_seq *ptr) {
+int oid_seq_free (struct oid_seq *ptr) {
 	struct oid_seq * loop;
 	struct oid_seq * next;
 
@@ -43,8 +42,7 @@ oid_seq_free (struct oid_seq *ptr) {
 	}
 }
 
-int
-oid_seq_free_aux (struct oid_seq *ptr) {
+int oid_seq_free_aux (struct oid_seq *ptr) {
 	struct oid_seq * loop;
 	struct oid_seq * next;
 
@@ -116,8 +114,7 @@ oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 	return (result);
 }
 
-int
-oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
+int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
 	struct oid_seq	* aa1;
 	struct oid_seq	* aa2;
 

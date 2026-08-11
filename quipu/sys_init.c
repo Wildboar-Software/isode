@@ -46,8 +46,7 @@ extern char * treedir;
 
 static int rmFiles();
 
-int
-dsa_sys_init (int *acptr, char ***avptr) {
+int dsa_sys_init (int *acptr, char ***avptr) {
 	char *name;
 	char **ptr;
 	int cnt;

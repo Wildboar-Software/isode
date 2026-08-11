@@ -39,8 +39,7 @@ int	nfds = 0;
 int	doneit = 0;
 int	retry = 1;
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 
 	do_args (argc,argv);
 
@@ -59,8 +58,7 @@ main (int argc, char **argv) {
 	return 0;
 }
 
-int
-do_args (int argc, char **argv) {
+int do_args (int argc, char **argv) {
 	char * myname;
 
 	if (myname = rindex (argv[0], '/'))
@@ -87,8 +85,7 @@ do_args (int argc, char **argv) {
 }
 
 
-int
-start_listener () {
+int start_listener () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -98,8 +95,7 @@ start_listener () {
 	}
 }
 
-int
-ping_address () {
+int ping_address () {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -121,8 +117,7 @@ ping_address () {
 }
 
 
-int
-wait_for_result () {
+int wait_for_result () {
 	int	vecp = 0;
 	char    *vec[4];
 	int	i;
@@ -186,8 +181,7 @@ wait_for_result () {
 	}
 }
 
-int
-sink_data (int sd) {
+int sink_data (int sd) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	struct TSAPdata txs, *tx = &txs;
@@ -202,8 +196,7 @@ sink_data (int sd) {
 	return OK;
 }
 
-int
-progress_connection () {
+int progress_connection () {
 	struct TSAPdisconnect	td_s;
 	struct TSAPdisconnect	*td = &td_s;
 	struct TSAPconnect tcs;
@@ -238,8 +231,7 @@ progress_connection () {
 	}
 }
 
-int
-stop_nicely () {
+int stop_nicely () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -247,8 +239,7 @@ stop_nicely () {
 }
 
 
-int
-updatemask () {
+int updatemask () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -285,8 +276,7 @@ updatemask () {
 	}
 }
 
-int
-ts_advise (char *str, struct TSAPdisconnect *td) {
+int ts_advise (char *str, struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		printf ("%s : %s [%*.*s]\n", str, TErrString (td -> td_reason),
 				td -> td_cc, td -> td_cc, td -> td_data);

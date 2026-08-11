@@ -66,8 +66,7 @@ char padding[20];
 
 static PS ps = NULLPS;
 
-char *
-val2str (av)
+char *val2str (av)
 AttributeValue  av;
 {
 	char       *cp;

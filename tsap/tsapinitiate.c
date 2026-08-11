@@ -75,8 +75,7 @@ static struct TSAPaddr *maketsbaddr ();
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 
-int
-TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
+int TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
 	int  n;
 	SBV     smask;
 	int     result;
@@ -320,8 +319,7 @@ TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
 
 /*    T-ASYN-RETRY.REQUEST (pseudo) */
 
-int
-TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -399,8 +397,7 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 
 /*    T-ASYN-NEXT.REQUEST (pseudo) */
 
-int
-TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;

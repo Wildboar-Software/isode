@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaperror.c,v 9.0 
 
 extern  LLog    * log_dsap;
 
-int
-DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -66,8 +65,7 @@ DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di)
 	return (OK);
 }
 
-int
-DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -99,8 +97,7 @@ DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di)
 	return (OK);
 }
 
-int
-QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -132,8 +129,7 @@ QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di)
 	return (OK);
 }
 
-int
-DEncodeError (PE *pep, struct DSError *err) {
+int DEncodeError (PE *pep, struct DSError *err) {
 	int		success;
 
 	switch(err->dse_type) {
@@ -181,7 +177,6 @@ DEncodeError (PE *pep, struct DSError *err) {
 }
 
 
-int
-IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	return QspErrorRequest (sd, id, err, di);
 }

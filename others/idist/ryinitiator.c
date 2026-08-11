@@ -45,8 +45,7 @@ static int ryconnect ();
 
 /* INITIATOR */
 
-int
-makeconn (char *thehost) {
+int makeconn (char *thehost) {
 	int	result;
 	PE	data;
 	struct type_Idist_Initiate *initial;
@@ -182,8 +181,7 @@ PE	data;
 	return OK;
 }
 
-int
-closeconn () {
+int closeconn () {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -379,8 +377,7 @@ ryr_advise (char *what, char *fmt) {
 }
 #endif
 
-char *
-getstring (char *prompt) {
+char *getstring (char *prompt) {
 	static char buffer[BUFSIZ];
 	char	*cp;
 

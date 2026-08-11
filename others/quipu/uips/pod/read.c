@@ -241,8 +241,7 @@ Attr_Sequence attrs_to_read;
 	}
 }
 
-int
-read_print (int (*func), caddr_t ptr) {
+int read_print (int (*func), caddr_t ptr) {
 	PS ps;
 	char *str;
 
@@ -299,8 +298,7 @@ out:
 	}
 }
 
-int
-entry2str (caddr_t ptr, char *cptr, int size) {
+int entry2str (caddr_t ptr, char *cptr, int size) {
 	PS ps;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;

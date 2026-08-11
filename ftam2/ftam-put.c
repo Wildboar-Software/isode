@@ -41,8 +41,7 @@ static int  put (char*src, char*dst, int append);
 #endif
 
 
-int
-f_put (char **vec) {
+int f_put (char **vec) {
 	int     append;
 #ifdef	BRIDGE
 	int     result;

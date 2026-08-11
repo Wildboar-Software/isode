@@ -72,8 +72,7 @@ get_ca_ref (struct ds_op_arg *dsarg) {
 	return(ca);
 }
 
-int
-cha_loopdetected (struct chain_arg *cha) {
+int cha_loopdetected (struct chain_arg *cha) {
 	struct trace_info	  ti_elem_s;
 	struct trace_info	* ti_elem = &(ti_elem_s);
 
@@ -85,8 +84,7 @@ cha_loopdetected (struct chain_arg *cha) {
 	return(ti_is_elem(ti_elem, cha->cha_trace));
 }
 
-int
-ti_is_elem (struct trace_info *ti, struct trace_info *ti_list) {
+int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list) {
 	struct trace_info	* tip;
 
 	for(tip = ti_list; tip!=NULLTRACEINFO; tip=tip->ti_next) {

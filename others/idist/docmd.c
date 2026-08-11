@@ -58,8 +58,7 @@ SFD	lostconn();
 /*
  * Do the commands in cmds (initialized by yyparse).
  */
-int
-docmds (char **dhosts, int argc, char **argv) {
+int docmds (char **dhosts, int argc, char **argv) {
 	struct cmd *c;
 	struct namelist *f;
 	char **cpp;
@@ -110,8 +109,7 @@ found:
 /*
  * Process commands for sending files to other machines.
  */
-int
-doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds) {
+int doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds) {
 	struct namelist *f;
 	struct subcmd *sc;
 	char **cpp;
@@ -197,8 +195,7 @@ extern	char target[], *tp;
 /*
  * Process commands for comparing files to time stamp files.
  */
-int
-dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds) {
+int dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds) {
 	struct subcmd *sc;
 	struct namelist *f;
 	char **cpp;
@@ -258,8 +255,7 @@ found:
 /*
  * Compare the mtime of file to the list of time stamps.
  */
-int
-cmptime (char *name) {
+int cmptime (char *name) {
 	struct stat stb;
 
 	if (debug)
@@ -305,8 +301,7 @@ cmptime (char *name) {
 		log(tfp, "new: %s\n", name);
 }
 
-int
-rcmptime (struct stat *st) {
+int rcmptime (struct stat *st) {
 	DIR *d;
 	struct dirent *dp;
 	char *cp;
@@ -425,8 +420,7 @@ time_t lmod;
 /*
  * Return true if name is in the list.
  */
-int
-inlist (struct namelist *list, char *file) {
+int inlist (struct namelist *list, char *file) {
 	struct namelist *nl;
 
 	for (nl = list; nl != NULL; nl = nl->n_next)
@@ -438,8 +432,7 @@ inlist (struct namelist *list, char *file) {
 /*
  * Return TRUE if file is in the exception list.
  */
-int
-except (char *file) {
+int except (char *file) {
 	struct	subcmd *sc;
 	struct	namelist *nl;
 	char	*p, *re_comp ();
@@ -467,8 +460,7 @@ except (char *file) {
 	return(0);
 }
 
-char *
-colon (char *cp) {
+char *colon (char *cp) {
 
 	while (*cp) {
 		if (*cp == ':')

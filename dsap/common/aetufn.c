@@ -408,8 +408,7 @@ void set_lookup_ufn (char flag) {
 
 #ifdef STANDALONE_AET_TEST
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	char buffer [1024];
 	int ontty, n;
 	PE title, paddr;
@@ -449,8 +448,7 @@ main (int argc, char **argv) {
 	exit (0);
 }
 
-int
-advise (void) {
+int advise (void) {
 	;
 }
 

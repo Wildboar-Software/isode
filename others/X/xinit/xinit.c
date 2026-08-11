@@ -116,8 +116,7 @@ int serverpid = -1;
 int clientpid = -1;
 extern int	errno;
 
-int
-sigCatch (int sig) {
+int sigCatch (int sig) {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	Error("unexpected signal %d\r\n", sig);
@@ -126,8 +125,7 @@ sigCatch (int sig) {
 }
 
 #ifdef SYSV
-int
-sigAlarm (int sig) {
+int sigAlarm (int sig) {
 	signal (sig, sigAlarm);
 }
 #endif /* SYSV */
@@ -145,8 +143,7 @@ Execute (
 	return;
 }
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	char **sptr = server;
 	char **cptr = client;
 	char **ptr;
@@ -332,8 +329,7 @@ main (int argc, char **argv) {
  *	waitforserver - wait for X server to start up
  */
 
-int
-waitforserver (int serverpid) {
+int waitforserver (int serverpid) {
 	int	ncycles	 = 120;		/* # of cycles to wait */
 	int	cycles;			/* Wait cycle count */
 
@@ -358,8 +354,7 @@ waitforserver (int serverpid) {
 /*
  * return TRUE if we timeout waiting for pid to exit, FALSE otherwise.
  */
-int
-processTimeout (int pid, int timeout, char *string) {
+int processTimeout (int pid, int timeout, char *string) {
 	int	i = 0, pidfound = -1;
 	static char	*laststring;
 
@@ -397,8 +392,7 @@ _vError (char *fmt, va_list ap) {
 	vfprintf(stderr, fmt, ap);
 }
 
-int
-Error (char *fmt, ...) {
+int Error (char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt)
@@ -406,8 +400,7 @@ Error (char *fmt, ...) {
 	va_end (ap);
 }
 
-int
-Fatal (char *fmt, ...) {
+int Fatal (char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt)
 	_vError(fmt, ap);
@@ -415,8 +408,7 @@ Fatal (char *fmt, ...) {
 	exit(ERR_EXIT);
 }
 
-int
-startServer (char *server[]) {
+int startServer (char *server[]) {
 	int	serverpid;
 
 	serverpid = vfork();
@@ -494,8 +486,7 @@ startServer (char *server[]) {
 	return(serverpid);
 }
 
-int
-startClient (char *client[]) {
+int startClient (char *client[]) {
 	int	clientpid;
 
 	if ((clientpid = vfork()) == 0) {
@@ -581,8 +572,7 @@ shutdown (int serverpid, int clientpid) {
  * make a new copy of environment that has room for DISPLAY
  */
 
-int
-set_environment () {
+int set_environment () {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

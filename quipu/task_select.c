@@ -413,8 +413,7 @@ task_select (int *secs_p) {
 	return(ret_tk);
 }
 
-int
-timeout_task (struct task_act *tk) {
+int timeout_task (struct task_act *tk) {
 	struct oper_act	* on;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 	struct ds_search_task *tmp;
@@ -476,8 +475,7 @@ timeout_task (struct task_act *tk) {
 }
 
 
-int
-schedule_operation (struct oper_act *x) {
+int schedule_operation (struct oper_act *x) {
 	struct oper_act *y;
 	struct oper_act * on;
 	DN xdn;

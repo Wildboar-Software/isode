@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind2.c,v 9.0 19
 /* RO-BIND.INDICATION */
 
 
-int
-RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
+int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
@@ -68,8 +67,7 @@ RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication
 	return (result);
 }
 
-int
-ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
+int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acs->acs_ninfo == 0)
@@ -219,8 +217,7 @@ struct RoNOTindication	* rni;
 	return (result);
 }
 
-int
-RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni) {
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni) {
 	struct PSAPstart	* ps = &(acs->acs_start);
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

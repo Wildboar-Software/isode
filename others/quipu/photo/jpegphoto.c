@@ -41,8 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/jpegphot
 
 char            command[512];
 
-int
-mygetchar () {
+int mygetchar () {
 	char            c;
 
 	if (!read(0, &c, 1))

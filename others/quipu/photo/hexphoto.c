@@ -29,8 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/hexphoto
 #include "quipu/photo.h"
 #include "psap.h"
 
-int
-decode_t4 (char *picture, char *persons_name, int len) {
+int decode_t4 (char *picture, char *persons_name, int len) {
 	int i;
 
 	if (len == 0) len = photolen (picture);

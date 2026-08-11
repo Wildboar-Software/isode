@@ -457,8 +457,7 @@ yyerror(s)
 /*
  * Return a copy of the string.
  */
-char *
-makestr(str)
+char *makestr(str)
 	char *str;
 {
 	register char *cp, *s;

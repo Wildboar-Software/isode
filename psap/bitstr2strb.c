@@ -30,8 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bitstr2strb.c,v 9.0 19
 #include "psap.h"
 
 
-char *
-bitstr2strb (PE pe, int *k) {
+char *bitstr2strb (PE pe, int *k) {
 	int    i,
 		   j,
 		   len,

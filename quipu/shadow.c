@@ -279,8 +279,7 @@ void shadow_update (void) {
 }
 
 
-int
-shadow_fail_wakeup (struct oper_act *on) {
+int shadow_fail_wakeup (struct oper_act *on) {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
 	struct oper_act	**on_p;
@@ -346,14 +345,12 @@ shadow_fail_wakeup (struct oper_act *on) {
 	return TRUE;
 }
 
-int
-inherit_link (Entry e, Entry parent) {
+int inherit_link (Entry e, Entry parent) {
 	set_inheritance (e);
 	return(OK);
 }
 
-int
-process_shadow (struct oper_act *on) {
+int process_shadow (struct oper_act *on) {
 	Entry eptr, ne = NULLENTRY;
 	struct DSError err;
 	Attr_Sequence new_as, as, tas;

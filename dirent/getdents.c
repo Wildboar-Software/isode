@@ -175,8 +175,7 @@ sig_catch (
 }
 #endif
 
-int
-getdents (		/* returns # bytes read;
+int getdents (		/* returns # bytes read;
 					   0 on EOF, -1 on error */
 	int fildes,	/* directory file descriptor */
 	char *buf,	/* where to put the (struct dirent)s */
@@ -305,6 +304,5 @@ getdents (		/* returns # bytes read;
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int
-_getdents_stub()  {}
+int _getdents_stub()  {}
 #endif

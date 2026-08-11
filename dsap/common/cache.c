@@ -153,8 +153,7 @@ struct list_cache *find_list_cache (DN dn, int sizelimit)
 }
 
 
-int
-free_all_list_cache (void) {
+int free_all_list_cache (void) {
 	struct list_cache *ptr, *pn;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = pn)  {
 		pn = ptr->list_next;
@@ -354,8 +353,7 @@ int check_schema (Entry eptr, Attr_Sequence as, struct DSError *error)
 }
 
 
-char *
-new_version (void) {
+char *new_version (void) {
 	time_t clock;
 	struct UTCtime ut;
 	time (&clock);

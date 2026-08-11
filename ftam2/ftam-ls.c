@@ -69,8 +69,7 @@ static int filcmp (struct filent **a, struct filent **b);
 
 
 #ifndef	BRIDGE
-int
-f_fls (char **vec) {
+int f_fls (char **vec) {
 	int	    doingpipe,
 			result;
 #ifdef LINUX
@@ -132,8 +131,7 @@ f_fls (char **vec) {
 #endif
 
 
-int
-f_ls (char **vec) {
+int f_ls (char **vec) {
 	int     invis,
 			multi,
 			result;
@@ -524,8 +522,7 @@ static int fdfls (char *file) {
 
 
 
-int
-fdffnx (int fd, struct PSAPdata *px, int status) {
+int fdffnx (int fd, struct PSAPdata *px, int status) {
 	int    i;
 	PE	    pe,
 	 *pep;

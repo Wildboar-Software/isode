@@ -286,8 +286,7 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-int
-fatal (int f, char *msg) {
+int fatal (int f, char *msg) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s.\n", myname, msg);
@@ -295,8 +294,7 @@ fatal (int f, char *msg) {
 	adios (NULLCP, msg);
 }
 
-int
-fatalperror (int f, char *msg, int errnum) {
+int fatalperror (int f, char *msg, int errnum) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s", msg, strerror(errnum));
@@ -503,8 +501,7 @@ void interrupt(void) {
 #endif
 }
 
-int
-netflush (void) {
+int netflush (void) {
 	char *cp;
 	int n;
 	int i, j;

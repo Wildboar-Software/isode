@@ -211,16 +211,14 @@ int wantToBlock;
 	return NOTOK; /* exit this way if can't talk to access point(s) */
 } /* bind_to_ds */
 
-int
-rebind() {
+int rebind() {
 	if (boundToDSA == FALSE)
 		return(de_bind(TRUE));
 	else
 		return OK;
 }
 
-int
-de_bind(wantToBlock)
+int de_bind(wantToBlock)
 int wantToBlock;
 {
 	static int assoc;

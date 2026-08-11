@@ -92,8 +92,7 @@ void add_dish_command (char *name, int (*func)(int, char **), int len) {
 	num_cmd++;
 }
 
-int
-dish_cmd_init (void) {
+int dish_cmd_init (void) {
 	add_dish_command ("list", 	call_list,		1);
 	add_dish_command ("compare", 	call_compare,		1);
 	add_dish_command ("search", 	call_search,		2);
@@ -140,8 +139,7 @@ LLog   *dad_log = &_dad_log;
 
 char no_rcfile;
 
-int
-dish_init (int argc, char **argv) {
+int dish_init (int argc, char **argv) {
 	int             i;
 	char           *ttyname (), *getenv();
 	char	       *vec [1];
@@ -295,8 +293,7 @@ dish_init (int argc, char **argv) {
 	}
 }
 
-int
-unknown_cmd (int argc, char **argv) {
+int unknown_cmd (int argc, char **argv) {
 	if (frompipe)
 		ps_print (opt,"Serious dish error\n");
 	else {
@@ -331,8 +328,7 @@ gnu_gets (char *buf, int len) {
 #endif
 
 
-int
-do_dish (void) {
+int do_dish (void) {
 	char	       *brkset;
 	char           *command;
 	char		cmd_buf [LINESIZE];
@@ -585,8 +581,7 @@ tidy_up:
 	}
 }
 
-int
-call_quit (int argc, char **argv) {
+int call_quit (int argc, char **argv) {
 	/* can only get called if run interactively - dont worry about pipe */
 	signal (SIGINT, SIG_DFL);
 
@@ -602,8 +597,7 @@ call_quit (int argc, char **argv) {
 	exit (0);
 }
 
-int
-set_cmd_default (char *cmd, char *dflt) {
+int set_cmd_default (char *cmd, char *dflt) {
 	int x;
 
 	for (x = 0; Commands[x].command != 0; x++)

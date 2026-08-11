@@ -46,8 +46,7 @@ extern	DN	str2dn_aux();
 extern	Filter	get_filter();
 char  **NULLARGV = (char **) 0;
 
-int
-call_alias_chk (int argc, char **argv) {
+int call_alias_chk (int argc, char **argv) {
 	struct	ds_search_arg	search_arg;
 	struct	DSError		search_error;
 	struct	ds_search_result search_result;
@@ -214,8 +213,7 @@ call_alias_chk (int argc, char **argv) {
 	return(OK) ;
 }
 
-char
-verify_alias(alias_entry)
+char verify_alias(alias_entry)
 EntryInfo	*alias_entry ;
 {
 	static  char	       *nvec[2] = {"search"};
@@ -394,7 +392,6 @@ EntryInfo	*alias_entry ;
 	return (GoodAlias) ;
 }
 
-int
-shadow_entry () {
+int shadow_entry () {
 	;
 }

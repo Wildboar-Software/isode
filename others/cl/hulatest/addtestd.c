@@ -54,8 +54,7 @@ char	*getlocalhost();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
 				 dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
 

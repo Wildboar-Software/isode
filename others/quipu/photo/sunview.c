@@ -41,13 +41,11 @@ static int        sx=20,sy=20,x,y;
 extern int PIC_LINESIZE;
 
 
-int
-sigwinched () {
+int sigwinched () {
 	tool_sigwinch (tool);
 }
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	char * getenv ();
 
 	/* Initialise a window to recieve a photo of 'name' */
@@ -75,8 +73,7 @@ photo_start (char *name) {
 }
 
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	/* Decoding has finished - display the photo */
 
 	printf ("(See sunview window)");
@@ -90,13 +87,11 @@ photo_end (char *name) {
 	return (0);
 }
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	/* draw a black line of 'length' pixels */
 }
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	/* draw a white line of 'length' pixels */
 }
 

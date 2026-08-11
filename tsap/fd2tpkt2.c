@@ -330,8 +330,7 @@ readx (int fd, char *buffer, int n, IFP readfnx) {
 }
 
 
-int
-tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
+int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
 	int     i,
 			ilen,
 			ulen;
@@ -494,8 +493,7 @@ newtpkt (int code) {
 }
 
 
-int
-freetpkt (struct tsapkt *t) {
+int freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
 

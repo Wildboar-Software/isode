@@ -10,8 +10,7 @@
 #include "usr.dirent.h"
 #include <string.h>
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	DIR		*dirp;
 	struct dirent	*dp;
 	int			nerrs = 0;	/* total not found */

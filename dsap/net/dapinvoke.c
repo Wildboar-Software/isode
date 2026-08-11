@@ -42,8 +42,7 @@ extern	void	  ros_log();
 #define DUMP_ERR 	"err"
 #endif
 
-int
-DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn) {
+int DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn) {
 
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ARG,op);
@@ -69,8 +68,7 @@ DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int as
 	}
 }
 
-int
-DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -131,8 +129,7 @@ DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	return (OK);
 }
 
-int
-DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -196,8 +193,7 @@ DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	return (OK);
 }
 
-int
-DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -227,8 +223,7 @@ DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	return (OK);
 }
 
-int
-DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
+int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 	/*
 	* Abandoning. Trickier than it looks!
 	* Need to RoInvoke an abandon op, which will receive
@@ -523,8 +518,7 @@ void pdu_dump (PE pe, char *type, int op) {
 #endif
 
 #ifdef	HEAVY_DEBUG
-int
-pdu_arg_log (PE pe, int op) {
+int pdu_arg_log (PE pe, int op) {
 	/* PDU Level Logging */
 	switch (op) {
 	case OP_READ:
@@ -562,8 +556,7 @@ pdu_arg_log (PE pe, int op) {
 	}
 }
 
-int
-pdu_res_log (PE pe, int op) {
+int pdu_res_log (PE pe, int op) {
 	/* PDU Level Logging */
 	switch (op) {
 	case OP_READ:

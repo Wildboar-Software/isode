@@ -40,8 +40,7 @@ int	tusaplose (struct TSAPdisconnect *td, ...) {
 #else
 /* VARARGS */
 
-int
-tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
+int tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tusaplose (td, reason, what, fmt);
 }
 #endif

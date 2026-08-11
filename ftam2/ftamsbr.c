@@ -377,8 +377,7 @@ int	ftamfd;
  */
 
 
-int
-de2fd (int fd, PE pe, int text, int effector) {
+int de2fd (int fd, PE pe, int text, int effector) {
 	int    i,
 		   n;
 	char  *bp,

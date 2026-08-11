@@ -99,8 +99,7 @@ FILE *config_file;
 char *file_names[MAXTYPES];
 char dua_help_dir[SMALLSTRING];
 
-char *
-get_strioid (char *ptr) {
+char *get_strioid (char *ptr) {
 	char *end_ptr;
 
 	while(*ptr == '"') ptr++;
@@ -549,8 +548,7 @@ parse_duarc (char *options_path) {
 	}
 }
 
-char *
-cnnct_bind () {
+char *cnnct_bind () {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -846,8 +844,7 @@ make_friendly_rdn (char *friendly, char *object, char *base) {
 		make_friendly(friendly, object);
 }
 
-int
-goto_addr () {
+int goto_addr () {
 	char *str;
 	int count = 0;
 	void add_to_history();
@@ -869,15 +866,13 @@ goto_addr () {
 	}
 }
 
-int
-clear_dnseq () {
+int clear_dnseq () {
 	free_seq(dnseq);
 	dnseq = NULLDS;
 	dn_number = 0;
 }
 
-int
-is_dit_leaf (char *name) {
+int is_dit_leaf (char *name) {
 	struct ds_list_arg      list_arg;
 	struct ds_list_result   list_result;
 	struct list_cache       *cached_list;
@@ -937,15 +932,13 @@ is_dit_leaf (char *name) {
 	}
 }
 
-char *
-GetSurname (char *name) {
+char *GetSurname (char *name) {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
 	return ++name;
 }
 
-char *
-GetWholeRelName (char *name) {
+char *GetWholeRelName (char *name) {
 	while (*name!= '\0') name++;
 	while (*name != '=') name--;
 	while (!isalpha(*name)) name++;

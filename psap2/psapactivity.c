@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapactivity.c,v 9.0 
 
 /* P-CONTROL-GIVE.REQUEST */
 
-int
-PGControlRequest (int sd, struct PSAPindication *pi) {
+int PGControlRequest (int sd, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -67,8 +66,7 @@ out1:
 
 /* P-ACTIVITY-START.REQUEST */
 
-int
-PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi) {
+int PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -117,8 +115,7 @@ out1:
 
 /* P-ACTIVITY-RESUME.REQUEST */
 
-int
-PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
+int PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -168,8 +165,7 @@ out1:
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.REQUEST */
 
-int
-PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, char *stype) {
+int PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, char *stype) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -203,8 +199,7 @@ out1:
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.RESPONSE */
 
-int
-PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype) {
+int PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;

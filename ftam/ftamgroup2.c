@@ -37,20 +37,17 @@ static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struc
 
 /*    F-{MANAGE,BULK-{BEGIN,END}}.RESPONSE (group) */
 
-int
-FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_MANAGEMENT, FSB_INITIALIZED, fti);
 }
 
 
-int
-FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKBEGIN, FSB_DATAIDLE, fti);
 }
 
 
-int
-FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKEND, FSB_INITIALIZED, fti);
 }
 

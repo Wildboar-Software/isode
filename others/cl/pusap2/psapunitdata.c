@@ -224,8 +224,7 @@ out:
 /* ^L   BIND  ...  for P-UNIT-DATA.REQUEST and P-UNIT-DATA.INDICATION */
 /*      opens a socket for later, multiple reads and writes */
 /*---------------------------------------------------------------------------*/
-int
-PUnitDataBind (
+int PUnitDataBind (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct PSAPaddr *calling,
@@ -341,8 +340,7 @@ no_good:
 /*---------------------------------------------------------------------------*/
 /* ^L   ReBIND  ...  resets called address on binding */
 /*---------------------------------------------------------------------------*/
-int
-PUnitDataRebind (
+int PUnitDataRebind (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct PSAPaddr *called,
@@ -526,8 +524,7 @@ out:
 /*    get P-UNIT-DATA.INDICATON over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
 /*---------------------------------------------------------------------------*/
-int
-PUnitDataRead (
+int PUnitDataRead (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct PuSAPstart *ps,
@@ -651,8 +648,7 @@ out:
 /*---------------------------------------------------------------------------*/
 /*    clear local binding for P-UNIT-DATA */
 /*---------------------------------------------------------------------------*/
-int
-PUnitDataUnbind (
+int PUnitDataUnbind (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	struct PSAPindication *pi
@@ -698,8 +694,7 @@ out1:
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local P-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
-int
-PuSave (
+int PuSave (
 	/*---------------------------------------------------------------------------*/
 	int sd,
 	int vecp,
@@ -741,8 +736,7 @@ PuSave (
 
 
 /*---------------------------------------------------------------------------*/
-int
-addrs2block (
+int addrs2block (
 	/*---------------------------------------------------------------------------*/
 	struct PSAPaddr *callingaddr,
 	struct PSAPaddr *calledaddr,
@@ -780,8 +774,7 @@ no_mem:
 
 
 /*----------------------------------------------------------------------------*/
-int
-contexts2block (
+int contexts2block (
 	/*----------------------------------------------------------------------------*/
 	struct PSAPcontext *contexts,
 	int nctx,
@@ -838,8 +831,7 @@ out2:
 
 
 /*----------------------------------------------------------------------------*/
-int
-contexts2pdu (
+int contexts2pdu (
 	/*----------------------------------------------------------------------------*/
 	struct psapblk *pb,
 	struct type_PS_UD__type *pdu
@@ -886,8 +878,7 @@ no_mem:
 
 
 /*----------------------------------------------------------------------------*/
-int
-pdu2contexts (
+int pdu2contexts (
 	/*----------------------------------------------------------------------------*/
 	struct psapblk *pb,
 	struct type_PS_Definition__list *ctxdeflist,

@@ -41,8 +41,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/norm2na.c,v 9.0 1992
  */
 
 
-int
-norm2na (char *p, int len, struct NSAPaddr *na) {
+int norm2na (char *p, int len, struct NSAPaddr *na) {
 	na -> na_stack = NA_NSAP;
 
 	if ((len == 8) && ((p[0] == 0x36) || (p[0] == 0x37))) {

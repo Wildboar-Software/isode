@@ -122,8 +122,7 @@ static  update_X (), service_X (), init_X (), layout_X(), display_top (),
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    nfds;
 	fd_set  rfds;
 
@@ -149,8 +148,7 @@ main (int argc, char **argv, char **envp) {
 
 /* ARGINIT */
 
-int
-arginit (char **vec) {
+int arginit (char **vec) {
 	int	    n,
 			nhosts;
 	char  *ap,

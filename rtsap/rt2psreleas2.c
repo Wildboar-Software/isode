@@ -34,8 +34,7 @@ static int  RtCloseResponseAux ();
 
 /* RT-CLOSE.RESPONSE */
 
-int
-RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {
+int RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;

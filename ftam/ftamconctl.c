@@ -90,8 +90,7 @@ no_mem:
 
 
 
-int
-fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	FCINIT (fc);
 
 #define	dolock(s,t) \
@@ -145,8 +144,7 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 }
 
 
-int
-fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+int fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	int	    key;
 
 	FCINIT (fc);

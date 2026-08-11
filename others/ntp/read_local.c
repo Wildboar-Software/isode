@@ -12,8 +12,7 @@
 
 extern LLog *pgm_log;
 
-int
-init_clock_local (char *file) {
+int init_clock_local (char *file) {
 	struct intf *ap;
 	int	acount;
 
@@ -24,8 +23,7 @@ init_clock_local (char *file) {
 	return acount;	/* invalid if we ever use it */
 }
 
-int
-read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp) {
+int read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp) {
 	static struct timeval realtime, mytime;
 
 	TRACE (2, ("read_local_clock"));

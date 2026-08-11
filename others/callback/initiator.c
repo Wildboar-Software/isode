@@ -33,8 +33,7 @@ static char *mycontext = "isode callback demo";
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    vecp;
 	char   *taddr,
 		   *vec[4];

@@ -334,8 +334,7 @@ __yy_bcopy (char *from, char *to, int count) {
 #endif
 
 #line 160 "/usr/local/lib/bison.simple"
-int
-yyparse() {
+int yyparse() {
 	int yystate;
 	int yyn;
 	short *yyssp;
@@ -912,8 +911,7 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {
 	return 0;
 }
 
-int
-yyerror (char *err) {
+int yyerror (char *err) {
 	fprintf(stderr, "Line %d. ", config_line_num);
 	fprintf(stderr,
 			"Parse error in file `%s' at or near `%s'.\n",

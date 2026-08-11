@@ -83,8 +83,7 @@ int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 }
 
 
-int
-rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti) {
+int rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -109,8 +108,7 @@ rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 }
 
 
-int
-rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
+int rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
 	int    cc,
 		   size;
 	int     result,
@@ -311,8 +309,7 @@ out:
 }
 
 
-int
-rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
+int rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	int     result;
 	struct SSAPdata sxs;
 	struct SSAPdata   *sx = &sxs;
@@ -382,8 +379,7 @@ rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 #define	e(i)	(indication ? (i) : 0)
 
 
-int
-rt2ssasync (
+int rt2ssasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
@@ -419,8 +415,7 @@ rt2ssasync (
 
 /*    map association descriptors for select() */
 
-int
-rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
+int rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication  *si = &sis;
 	struct SSAPabort   *sa = &si -> si_abort;
@@ -441,8 +436,7 @@ rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication
 
 /*    protocol-level abort */
 
-int
-rt2sslose (struct assocblk *acb, int result) {
+int rt2sslose (struct assocblk *acb, int result) {
 	int     len;
 	char   *base;
 	PE	    pe;
@@ -931,8 +925,7 @@ out:
 }
 
 
-int
-ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti) {
+int ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct type_OACS_AbortInformation *pabi = 0;

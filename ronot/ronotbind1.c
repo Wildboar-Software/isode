@@ -135,8 +135,7 @@ int			  async;
 /* RO-BIND.RETRY */
 
 
-int
-RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni) {
+int RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &aci_s;
@@ -185,8 +184,7 @@ RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNO
 	return (result);
 }
 
-int
-ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) {
+int ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acc->acc_ninfo == 0)

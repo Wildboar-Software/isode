@@ -549,8 +549,7 @@ again:
 #else
 /* VARARGS */
 
-int
-ask (char *fmt) {
+int ask (char *fmt) {
 	return ask (fmt);
 }
 #endif

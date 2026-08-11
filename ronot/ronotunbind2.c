@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 
 /* RO-UNBIND.INDICATION */
 
 
-int
-RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
+int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
 	/*
 	* What is provided here is in-line handling of the
 	* (usually NULL) user data as an unbind argument value.
@@ -74,8 +73,7 @@ RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
 /* RO-UNBIND.RESULT */
 
 
-int
-RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
+int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -117,8 +115,7 @@ RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 /* RO-UNBIND.ERROR */
 
 
-int
-RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
+int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -159,8 +156,7 @@ RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 /* RO-UNBIND.REJECT */
 
 
-int
-RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni) {
+int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

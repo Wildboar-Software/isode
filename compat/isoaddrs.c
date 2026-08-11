@@ -54,8 +54,7 @@ static char *isomacros = "isomacros";
 
 /* this routine should be called with *p_n_colon=0 initially  */
 
-int
-dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
+int dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
 /*
 the destination DTE address in case of outgoing calls may be specified by
 a string between one and three components seperated by colons:

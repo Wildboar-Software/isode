@@ -65,8 +65,7 @@ static int  pe2pl_aux ();
 	return NOTOK
 
 
-int
-pe2pl (PS ps, PE pe) {
+int pe2pl (PS ps, PE pe) {
 	int     result;
 
 	if ((result = pe2pl_aux (ps, pe, 0)) != NOTOK)

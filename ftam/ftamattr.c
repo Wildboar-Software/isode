@@ -307,8 +307,7 @@ out:
 }
 
 
-int
-fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
+int fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
 	char   *cp;
 	UTC     u;
 

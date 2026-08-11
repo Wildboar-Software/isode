@@ -473,8 +473,7 @@ int format;
 	return 0;
 } /* photo2xbm */
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	if (photo_pass_two == FALSE) {
 		tmp_width = photo_width = photo_height = 0;
 		return 0;
@@ -486,8 +485,7 @@ photo_start (char *name) {
 	return 0;
 }
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	int byte_width;
 
 	if (photo_pass_two == FALSE) {
@@ -503,8 +501,7 @@ photo_end (char *name) {
 	return 0;
 }
 
-int
-photo_black (int line_length) {
+int photo_black (int line_length) {
 	unsigned char tmp_byte;
 	int count;
 
@@ -565,8 +562,7 @@ photo_black (int line_length) {
 	return 0;
 }
 
-int
-photo_white (int line_length) {
+int photo_white (int line_length) {
 	int count;
 
 	if (photo_pass_two == FALSE) {

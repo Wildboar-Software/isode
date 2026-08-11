@@ -34,8 +34,7 @@ static int  RtEndResponseAux ();
 
 /*    RT-END.RESPONSE (X.410 CLOSE.RESPONSE) */
 
-int
-RtEndResponse (int sd, struct RtSAPindication *rti) {
+int RtEndResponse (int sd, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

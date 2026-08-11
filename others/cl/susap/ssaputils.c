@@ -53,8 +53,7 @@ struct ssapblk *
 }
 
 
-int
-freesublk (struct ssapblk *sb) {
+int freesublk (struct ssapblk *sb) {
 	struct qbuf *qb,
 			   *qp;
 

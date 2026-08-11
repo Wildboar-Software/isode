@@ -144,8 +144,7 @@ char   *ctime ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_IMISC_Operations, dispatches, do_quit);
 

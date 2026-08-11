@@ -313,8 +313,7 @@ set_up_defaults:
 	/* and that's all for now */
 }
 
-int
-doCountry() {
+int doCountry() {
 	Attr_Sequence at;
 
 	/* if we already have the values set up, use the cached results */
@@ -391,8 +390,7 @@ doCountry() {
 	}
 }
 
-int
-doOrganisation(matchstring, searchUnder)
+int doOrganisation(matchstring, searchUnder)
 char matchstring [];
 int searchUnder;
 {
@@ -493,8 +491,7 @@ int searchUnder;
 	}
 }
 
-int
-searchOrgUnderLocality(costr)
+int searchOrgUnderLocality(costr)
 char * costr;
 {
 	int res, noLocs;
@@ -550,8 +547,7 @@ char * costr;
 	}
 }
 
-int
-doOU(matchstring)
+int doOU(matchstring)
 char matchstring [];
 {
 
@@ -634,8 +630,7 @@ char matchstring [];
 	}
 }
 
-int
-doPRR(matchstring, searchparent)
+int doPRR(matchstring, searchparent)
 char matchstring [];
 int searchparent;
 {
@@ -768,8 +763,7 @@ matchFollowing() {
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
-int
-enterString(objectType)
+int enterString(objectType)
 int objectType;
 {
 	char prompt[LINESIZE];
@@ -1079,8 +1073,7 @@ SFD cleanupok() {
 	cleanup(0);
 }
 
-int
-cleanup(exitCode)
+int cleanup(exitCode)
 int exitCode;
 {
 	if (boundToDSA == TRUE)

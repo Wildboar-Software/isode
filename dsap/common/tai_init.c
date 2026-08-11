@@ -37,8 +37,7 @@ extern  char    *tailfile;
 extern  LLog    *log_dsap;
 
 
-int
-dsap_tai_init (void) {
+int dsap_tai_init (void) {
 	FILE    *fp;
 	char    *cp;
 	char    buf[BUFSIZ];
@@ -63,8 +62,7 @@ dsap_tai_init (void) {
 }
 
 
-int
-tai_string (char *str) {
+int tai_string (char *str) {
 	char    *args[MAXTAIARGS];
 	char    *p;
 	int     ac;

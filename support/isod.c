@@ -155,8 +155,7 @@ static void ps_main (int argc, char **argv);
 static int  ss_main ();
 static int  ts_main ();
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char  *cp;
 
 	if (myname = rindex (argv[0], '/'))

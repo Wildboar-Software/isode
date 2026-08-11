@@ -116,8 +116,7 @@ int	tpktlose (struct tsapblk* tb, ...) {
 #else
 /* VARARGS5 */
 
-int
-tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
+int tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tpktlose (tb, td, reason, what, fmt);
 }
 #endif
@@ -143,8 +142,7 @@ int	tsaplose (struct TSAPdisconnect*td, ...) {
 #else
 /* VARARGS4 */
 
-int
-tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
+int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tsaplose (td, reason, what, fmt);
 }
 #endif

@@ -39,8 +39,7 @@ printtaddr();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	struct spkt *t;	                        /* Working packet pointer */
 	char sendbuf[1024];			        /* send buffer */
 	char recvbuf[1024];			        /* recv buffer */

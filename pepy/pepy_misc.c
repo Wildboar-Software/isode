@@ -140,8 +140,7 @@ OID	int2oid (int n)
 }
 
 
-int
-addtable (char *name, int lt) {
+int addtable (char *name, int lt) {
 	SYM		sp;
 
 	sp = (SYM)calloc (1, sizeof *sp);
@@ -165,8 +164,7 @@ void addtableref (char *name, OID id, int lt) {
 		}
 }
 
-int
-print_expimp(void) {
+int print_expimp(void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;
@@ -265,8 +263,7 @@ void check_impexp (YP yp)
 		}
 }
 
-int
-importedP (char *name) {
+int importedP (char *name) {
 	SYM		sp;
 
 	for (sp = symtab[TBL_IMPORT]; sp; sp = sp -> sym_next)
@@ -288,8 +285,7 @@ static struct oidtbl {
 	NULL,
 };
 
-int
-initoidtbl(void) {
+int initoidtbl(void) {
 	struct oidtbl *op;
 	OID		oid;
 

@@ -70,8 +70,7 @@ extern int Fatal (char *fmt, ...);
 /*
  * Convenience Routines
  */
-int
-TWriteToClient (int sd, char *buf, int len) {
+int TWriteToClient (int sd, char *buf, int len) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 
@@ -84,8 +83,7 @@ TWriteToClient (int sd, char *buf, int len) {
  * sd = transport descriptor
  * iov is iovec of iovcnt buffers
  */
-int
-TWritevToClient (int sd, struct iovec *iov, int iovcnt) {
+int TWritevToClient (int sd, struct iovec *iov, int iovcnt) {
 	int i, ret, tot = 0;
 	struct udvec uv[64], *uvp = uv;
 	struct TSAPdisconnect tds;
@@ -123,8 +121,7 @@ TWritevToClient (int sd, struct iovec *iov, int iovcnt) {
 	}
 }
 
-int
-TAcceptFromClient (int fd, int vecp, char **vec) {
+int TAcceptFromClient (int fd, int vecp, char **vec) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 	struct TSAPstart tsts;
@@ -145,8 +142,7 @@ TAcceptFromClient (int fd, int vecp, char **vec) {
 	return tst->ts_sd;
 }
 
-int
-TDiscFromClient (int fd) {
+int TDiscFromClient (int fd) {
 	struct TSAPdisconnect tds;
 
 	if (TDiscRequest(fd, NULLCP, 0, &tds)==NOTOK)
@@ -194,8 +190,7 @@ TDiscFromClient (int fd) {
 ConnectionInput inputBuffers[MAXSOCKS];    /* buffers for clients */
 
 /*ARGSUSED*/
-char *
-ReadRequestFromClient(who, status, oldbuf)
+char *ReadRequestFromClient(who, status, oldbuf)
 ClientPtr who;
 int *status;          /* read at least n from client */
 char *oldbuf;
@@ -612,8 +607,7 @@ SetCriticalOutputPending () {
  *    this routine as int.
  *****************/
 
-int
-WriteToClient (who, count, buf)
+int WriteToClient (who, count, buf)
 ClientPtr who;
 char *buf;
 int count;

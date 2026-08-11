@@ -31,8 +31,7 @@ VFP explicitPRRRm[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRRRm[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int
-listPRRRm(parentstr, thisstr, listp)
+int listPRRRm(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -46,8 +45,7 @@ struct namelist ** listp;
 		return (listMatchingPRRRm(parentstr, thisstr, listp));
 }
 
-int
-listAllPRRRm(parentstr, listp)
+int listAllPRRRm(parentstr, listp)
 char * parentstr;
 struct namelist ** listp;
 {
@@ -65,8 +63,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int
-listMatchingPRRRm(parentstr, thisstr, listp)
+int listMatchingPRRRm(parentstr, thisstr, listp)
 char * parentstr, * thisstr;
 struct namelist ** listp;
 {
@@ -105,8 +102,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int
-listExactPRRRm(objectstr, listp)
+int listExactPRRRm(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
 {

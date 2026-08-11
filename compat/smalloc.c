@@ -48,8 +48,7 @@ set_smalloc_handler (VFP fnx) {
 	return savefnx;
 }
 
-char *
-smalloc (int size) {
+char *smalloc (int size) {
 	char *ptr;
 
 	if ((ptr = malloc((unsigned) size)) == (char *)0) {

@@ -37,8 +37,7 @@ int	two_passes = 0;
 
 char   *getenv ();
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	char *data;
 	int   fd;
 	char *file = "<stdin>";

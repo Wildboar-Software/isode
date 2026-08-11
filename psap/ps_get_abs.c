@@ -35,8 +35,7 @@ static int  ps_get_id ();
 static int  ps_get_len ();
 
 
-int
-ps_get_abs (PE pe) {
+int ps_get_abs (PE pe) {
 	PElementLen len;
 	PE p;
 

@@ -35,8 +35,7 @@ static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentit
 /*    F-{LOCATE,ERASE}.REQUEST */
 static int  FAccessRequestAux ();
 
-int
-FAccessRequest (
+int FAccessRequest (
 	int sd,
 	int operation,
 	struct FADUidentity *identity,

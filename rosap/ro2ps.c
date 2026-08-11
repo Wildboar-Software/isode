@@ -51,8 +51,7 @@ static int  doPSabort ();
 
 /*    bind underlying service */
 
-int
-RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
+int RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 	if (!(acb -> acb_flags & ACB_ACS) || (acb -> acb_flags & ACB_RTS))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
 						  "not an association descriptor for ROS on presentation");
@@ -73,8 +72,7 @@ RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 
 
-int
-ro2psasync (
+int ro2psasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RoSAPindication *roi),
 	struct RoSAPindication *roi
@@ -110,8 +108,7 @@ ro2psasync (
 /*    map association descriptors for select() */
 
 
-int
-ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
+int ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct PSAPindication   pis;
 	struct PSAPabort   *pa = &pis.pi_abort;
 
@@ -174,8 +171,7 @@ acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct 
 
 /*    PSAP interface */
 
-int
-ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
+int ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -242,8 +238,7 @@ ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 
 
 
-int
-ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
+int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct PSAPindication   pis;
 	struct PSAPabort  *pa = &pis.pi_abort;

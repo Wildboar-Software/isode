@@ -96,8 +96,7 @@ void out_final_defs(FILE *fp)
 /*
  * return a copy of the string s with '-' replaced by '_'
  */
-char *
-notidtoid (char *s) {
+char *notidtoid (char *s) {
 
 	char   *t, *r;
 
@@ -140,8 +139,7 @@ char *my_strcat (char *s1, char *s2) {
 /*
  * a simple hash function
  */
-int
-hash_val (char *s) {
+int hash_val (char *s) {
 	int     i, sum;
 	char   *t;
 

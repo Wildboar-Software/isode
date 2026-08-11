@@ -32,8 +32,7 @@ fileattr_cpy (struct file_syntax *fs) {
 	return (fs);
 }
 
-int
-file_cmp (struct file_syntax *a, struct file_syntax *b) {
+int file_cmp (struct file_syntax *a, struct file_syntax *b) {
 	if ((a->fs_attr != NULLAttrV) && (b->fs_attr != NULLAttrV))
 		return (AttrV_cmp (a->fs_attr,b->fs_attr));
 

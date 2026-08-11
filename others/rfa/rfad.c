@@ -69,8 +69,7 @@ char homedir[BUFSIZ];
 
 /* MAIN */
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	int initiate ();
 	char buf[BUFSIZ];
 	struct dispatch   *ds;
@@ -136,8 +135,7 @@ main (int argc, char **argv) {
 }
 
 
-int
-cleanup () {
+int cleanup () {
 }
 
 

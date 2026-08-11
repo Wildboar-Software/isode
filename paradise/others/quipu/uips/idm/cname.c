@@ -44,8 +44,7 @@ char * shortname, * longname;
 	colp->next = NULLCNLIST;
 }
 
-char *
-mapCoName(shortname)
+char *mapCoName(shortname)
 char * shortname;
 {
 	struct cnamelist * cnlp;

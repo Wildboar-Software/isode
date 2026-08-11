@@ -31,8 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/sprintref.c,v 9.0 1992
 #include "ssap.h"
 
 
-char *
-sprintref (struct SSAPref *sr) {
+char *sprintref (struct SSAPref *sr) {
 	char  *cp;
 	static char buffer[BUFSIZ];
 

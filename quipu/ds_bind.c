@@ -460,8 +460,7 @@ out:
 	}
 }
 
-int
-bind_compare_result_wakeup (struct oper_act *on) {
+int bind_compare_result_wakeup (struct oper_act *on) {
 
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_result_wakeup()"));
 	if(on->on_bind_compare == NULLCONN) {

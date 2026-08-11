@@ -66,8 +66,7 @@ acs_log (struct AcSAPabort *aca, char *event) {
 		(*abort_vector) (-2);
 }
 
-int
-td_log (struct TSAPdisconnect *td, char *event) {
+int td_log (struct TSAPdisconnect *td, char *event) {
 	if(td->td_cc > 0) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("%s: [%s] %*.*s", event,
 										 TErrString(td->td_reason),
@@ -77,8 +76,7 @@ td_log (struct TSAPdisconnect *td, char *event) {
 	}
 }
 
-int
-SetROPS (int ad) {
+int SetROPS (int ad) {
 	struct RoSAPindication      roi_s;
 	struct RoSAPindication      *roi = &(roi_s);
 	struct RoSAPpreject         *rop = &(roi->roi_preject);

@@ -36,8 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
 extern LLog * log_dsap;
 extern char dsa_mode;
 
-char *
-SkipSpace (char *ptr) {
+char *SkipSpace (char *ptr) {
 	if (ptr == NULLCP)
 		return (NULLCP);
 
@@ -103,8 +102,7 @@ StripSpace2 (char *b)
 	*a = 0;
 }
 
-char *
-TidyString2 (char *a) {
+char *TidyString2 (char *a) {
 	char * b;
 	char * c;
 	int i = 0;
@@ -142,8 +140,7 @@ TidyString2 (char *a) {
 	return (c);
 }
 
-char *
-TidyString (char *a) {
+char *TidyString (char *a) {
 	char * b;
 	char * c;
 	int i = 0;
@@ -275,8 +272,7 @@ void pslog (LLog *lp, int event, char *str, int (*func) (/* ??? */), caddr_t ptr
 	ps->ps_ptr = ps->ps_base;
 }
 
-int
-stop_listeners (void) {
+int stop_listeners (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 

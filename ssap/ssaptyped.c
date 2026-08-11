@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaptyped.c,v 9.0 1992
 
 /* S-TYPED-DATA.REQUEST */
 
-int
-STypedRequest (int sd, char *data, int cc, struct SSAPindication *si) {
+int STypedRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct udvec uvs[2];

@@ -35,8 +35,7 @@ void read_bind_args(), read_args(), quit();
 
 void exit();
 
-int
-main (unsigned int argc, char **argv) {
+int main (unsigned int argc, char **argv) {
 	char **null_argv = (char **) NULL;
 	char *mess;
 

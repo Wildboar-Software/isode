@@ -44,8 +44,7 @@ static PElementData ffb (), ffb_aux ();
 static PE	ffb_pe ();
 
 
-int
-bit_on (PE pe, int i) {
+int bit_on (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -58,8 +57,7 @@ bit_on (PE pe, int i) {
 }
 
 
-int
-bit_off (PE pe, int i) {
+int bit_off (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -72,8 +70,7 @@ bit_off (PE pe, int i) {
 }
 
 
-int
-bit_test (PE pe, int i) {
+int bit_test (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
 

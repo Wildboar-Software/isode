@@ -115,8 +115,7 @@ extern struct sysdata sys;
 static void process_packet_osi ();
 static void terminate ();
 
-int
-transmit_osi (struct ntp_peer *peer) {
+int transmit_osi (struct ntp_peer *peer) {
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
 	struct RoSAPpreject   *rop = &roi -> roi_preject;
@@ -567,8 +566,7 @@ Refid	*rid;
 }
 
 
-int
-recv_osi (struct intf *ap, struct timeval *tvp) {
+int recv_osi (struct intf *ap, struct timeval *tvp) {
 	caddr_t out;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -711,8 +709,7 @@ iso_init (int vecp, char **vec, int fd) {
 	TRACE (1, ("Incoming Connection pending on %d", fd));
 }
 
-int
-iso_accept (struct intf *ap) {
+int iso_accept (struct intf *ap) {
 	int     result,
 			i,
 			sd;
@@ -950,8 +947,7 @@ bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg) {
 char	*mycontext = "ntp";
 char	*mypci = "ntp pci";
 
-int
-make_osi_conn (struct ntp_peer *peer, char *addr) {
+int make_osi_conn (struct ntp_peer *peer, char *addr) {
 	int	result = NOTOK;
 	struct intf *ap;
 	struct RoSAPindication rois;

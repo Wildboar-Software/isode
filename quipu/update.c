@@ -83,8 +83,7 @@ char * edbtmp_path = NULLCP;
 #ifndef TURBO_DISK
 /* routine name is historic - not significant */
 
-int
-journal (Entry myentry) {
+int journal (Entry myentry) {
 	char * filename, *dn2edbfile();
 	char savefile [LINESIZE], newfile[LINESIZE];
 	DN dn;

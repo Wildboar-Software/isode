@@ -31,8 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind2.c,v 9.
 /* D-UNBIND.ACCEPT */
 
 
-int
-DUnBindAccept (int sd, struct DSAPindication *di) {
+int DUnBindAccept (int sd, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -52,8 +51,7 @@ DUnBindAccept (int sd, struct DSAPindication *di) {
 /* D-UNBIND.REJECT */
 
 
-int
-DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
+int DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);

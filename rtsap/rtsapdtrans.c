@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapdtrans.c,v 9.0 1
 
 /*    set downtrans upcall */
 
-int
-RtSetDownTrans (
+int RtSetDownTrans (
 	int sd,
 	int (*fnx)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti),
 	struct RtSAPindication *rti

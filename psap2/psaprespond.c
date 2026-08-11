@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprespond.c,v 9.0 1
 
 /* P-CONNECT.INDICATION */
 
-int
-PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi) {
+int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi) {
 	int	    i,
 			len,
 			result,
@@ -299,8 +298,7 @@ out2:
 
 /* P-CONNECT.RESPONSE */
 
-int
-PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
+int PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
 	int	    i,
 			len,
 			result,

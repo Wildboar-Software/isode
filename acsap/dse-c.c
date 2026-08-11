@@ -42,8 +42,7 @@ static int  dse2psap ();
 static int  gstring ();
 
 
-int
-build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
+int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
@@ -110,8 +109,7 @@ losing:
 }
 
 
-int
-parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
+int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;

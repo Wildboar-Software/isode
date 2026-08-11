@@ -178,8 +178,7 @@ iso_conn (char *server) {
  * of the form hostname:number.screen ("::" if DECnet) is returned in a result
  * parameter. The screen number to use is also returned.
  */
-int
-_XConnectDisplay (
+int _XConnectDisplay (
 	char *display_name,
 	char *expanded_name,	/* return */
 	char *prop_name,		/* return */
@@ -495,8 +494,7 @@ _XConnectDisplay (
  * Disconnect from server.
  */
 
-int
-_XDisconnectDisplay (int server)
+int _XDisconnectDisplay (int server)
 
 {
 #ifdef ISOCONN

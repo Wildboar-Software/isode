@@ -30,8 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/lexnequ.c,v 9.0 1992
 #include "general.h"
 
 
-int
-lexnequ (char *str1, char *str2, int len) {
+int lexnequ (char *str1, char *str2, int len) {
 	int count = 1;
 
 	if (str1 == NULL)

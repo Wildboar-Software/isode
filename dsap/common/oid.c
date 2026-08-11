@@ -86,8 +86,7 @@ static char allow_single_oid = FALSE;
 int (*oc_load)(char *sep, char *newname) = NULL;
 int (*oc_macro_add)(char *buf, char *ptr) = NULL;
 
-int
-load_oid_table (char *table) {
+int load_oid_table (char *table) {
 	char * name;
 	char filename [FILNSIZE];
 	char * extension;
@@ -312,8 +311,7 @@ static int add_entry (char *newname, int towho) {
 	return TRUE;
 }
 
-char *
-get_oid (char *str) {
+char *get_oid (char *str) {
 	static char * buffer = NULLCP;
 	char * ptr;
 	char * dotptr;

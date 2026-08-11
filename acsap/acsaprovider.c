@@ -35,8 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
 
 /*    PSAP interface */
 
-int
-ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa) {
+int ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -146,8 +145,7 @@ out:
 
 
 
-int
-apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata) {
+int apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata) {
 	int    i;
 	PE	    pe;
 	struct type_UNIV_EXTERNAL *q;

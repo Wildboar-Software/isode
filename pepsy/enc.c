@@ -63,8 +63,7 @@ static int en_etype(char *parm, ptpe *p, modtyp *mod, PE *rpe);
  * encode the specified type of the specified module into the given
  * pe
  */
-int
-enc_f (
+int enc_f (
 		int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE *pe,

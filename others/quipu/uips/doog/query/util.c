@@ -15,8 +15,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 #include "util.h"
 #include "quipu/util.h"
 
-char *
-copy_string (char *string) {
+char *copy_string (char *string) {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;

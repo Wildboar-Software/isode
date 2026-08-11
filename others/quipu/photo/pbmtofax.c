@@ -55,8 +55,7 @@ extern int standardwidth;
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int     bitcount;
 	bit    *bitrow;
 	bit *bP;

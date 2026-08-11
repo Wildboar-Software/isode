@@ -288,8 +288,7 @@ leave:
 }
 
 #ifdef DEBUG
-int
-qbprintf()  {
+int qbprintf()  {
 	int len;
 	struct qbuf *qb;
 	char *cp;

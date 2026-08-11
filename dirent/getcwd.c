@@ -38,8 +38,7 @@ extern int	errno;			/* normally done by <errno.h> */
 #define	NAME_MAX	255		/* maximum directory entry size */
 #endif
 
-char	*
-getcwd( buf, size )			/* returns pointer to CWD pathname */
+char *getcwd( buf, size )			/* returns pointer to CWD pathname */
 char		*buf;		/* where to put name (NULL to malloc) */
 size_t		size;		/* size of buf[] or malloc()ed memory */
 {

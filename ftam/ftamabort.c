@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamabort.c,v 9.0 1992
 
 /* F-U-ABORT.REQUEST */
 
-int
-FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -63,8 +62,7 @@ FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, str
 }
 
 
-int
-FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;

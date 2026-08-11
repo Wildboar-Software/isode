@@ -81,8 +81,7 @@ void	advise (char *, char *, ...);
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char buffer[80], *bptr;
 
 	printf ("\n AcuSAP test driver for AUNITDATA\n");
@@ -155,8 +154,7 @@ main (int argc, char **argv, char **envp) {
 
 
 /*-------------------------------------*/
-int
-togglemode ()
+int togglemode ()
 /*-------------------------------------*/
 {
 	printf ("\n Current mode is ");
@@ -173,8 +171,7 @@ togglemode ()
 
 
 /*-------------------------------------*/
-int
-bind ()
+int bind ()
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
@@ -203,8 +200,7 @@ bind ()
 }
 
 /*-------------------------------------*/
-int
-initbindvars ()
+int initbindvars ()
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
@@ -231,8 +227,7 @@ initbindvars ()
 
 
 /*-------------------------------------*/
-int
-unbind ()
+int unbind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -252,8 +247,7 @@ unbind ()
 
 
 /*-------------------------------------*/
-int
-listenup ()
+int listenup ()
 /*-------------------------------------*/
 {
 	;
@@ -295,8 +289,7 @@ listenup ()
 }
 
 /*-------------------------------------*/
-int
-audtsendreq ()
+int audtsendreq ()
 /*-------------------------------------*/
 {
 	/*  first set binding variables: title, presentation address, and ctxlist */
@@ -325,8 +318,7 @@ audtsendreq ()
 }
 
 /*-------------------------------------*/
-int
-audtsend ()
+int audtsend ()
 /*-------------------------------------*/
 {
 	int	sum, result;
@@ -364,8 +356,7 @@ audtsend ()
 
 
 /*-------------------------------------*/
-int
-audtread ()
+int audtread ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE) {
@@ -409,8 +400,7 @@ rfail:
 }
 
 /*-------------------------------------*/
-int
-validbinding (
+int validbinding (
 	/*-------------------------------------*/
 	int sd,
 	struct AcuSAPstart *acs
@@ -443,8 +433,7 @@ validbinding (
 
 
 /*-------------------------------------*/
-int
-audtrebind ()
+int audtrebind ()
 /*-------------------------------------*/
 {
 	if (mode == CLIENT_MODE)

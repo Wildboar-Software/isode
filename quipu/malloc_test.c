@@ -29,8 +29,7 @@ int	mem_heap;
 
 int	start, finish;
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	int	times = 1000;
 	int	i;
 	char	*big;
@@ -57,8 +56,7 @@ main (int argc, char **argv) {
 	printf("Total memory growth is %d\n", finish - start );
 }
 
-int
-attempt_restart (void) {
+int attempt_restart (void) {
 	finish = (int) sbrk(0);
 	printf("trouble...sbrk is %d, total growth is %d\n", finish, finish - start);
 	exit(1);

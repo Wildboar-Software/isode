@@ -96,8 +96,7 @@ tailorHelp() {
 		}
 }
 
-char *
-findHelp(helpstr)
+char *findHelp(helpstr)
 char * helpstr;
 {
 	int i, n;

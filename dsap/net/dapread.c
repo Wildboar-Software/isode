@@ -33,8 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapread.c,v 9.0 19
 
 extern	LLog	*log_dsap;
 
-int
-dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result) {
+int dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
@@ -78,8 +77,7 @@ dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, struc
 	}
 }
 
-int
-DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, int asyn) {
+int DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_ReadArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

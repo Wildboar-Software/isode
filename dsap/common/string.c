@@ -308,8 +308,7 @@ static char * utf8dec (PE pe)
 #include "iso3166.h"
 #endif
 
-int
-check_3166 (char *a) {
+int check_3166 (char *a) {
 #ifdef STRICT_X500
 	int    bitno;
 #endif

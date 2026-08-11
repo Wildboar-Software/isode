@@ -101,8 +101,7 @@ int	TUNITDATAser ();
  ****************************************************************
  */
 
-int
-SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si)
+int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si)
 
 {
 
@@ -267,8 +266,7 @@ SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct Q
  ****************************************************************
  */
 
-int
-SUnitDataUnbind (int sd, struct SSAPindication *si)
+int SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 {
 
@@ -324,8 +322,7 @@ SUnitDataUnbind (int sd, struct SSAPindication *si)
  ****************************************************************
  */
 
-int
-SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
+int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 {
 
@@ -400,8 +397,7 @@ SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
  ****************************************************************
  */
 
-int
-SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
+int SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
 
 
 {
@@ -460,8 +456,7 @@ SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data,
  ****************************************************************
  */
 
-int
-SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
+int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 {
 
@@ -651,8 +646,7 @@ SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
  ****************************************************************
  */
 
-int
-SUnitDataWriteV (int sd, struct udvec *uv, int si)
+int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 
 {
@@ -883,8 +877,7 @@ SUnitDataWriteV (int sd, struct udvec *uv, int si)
  ****************************************************************
  */
 
-int
-SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
+int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
 

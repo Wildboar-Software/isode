@@ -58,8 +58,7 @@ static struct syment *hashtab[HASHSIZE];
 /*
  * Define a variable from a command line argument.
  */
-int
-define (char *name) {
+int define (char *name) {
 	char *cp, *s;
 	struct namelist *nl;
 	struct namelist *value;

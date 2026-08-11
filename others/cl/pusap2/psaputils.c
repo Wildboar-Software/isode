@@ -72,8 +72,7 @@ static  struct psapblk   *PuHead = &psapque;
 
 
 /*----------------------------------------------------------------------------*/
-int
-ppdu2data (
+int ppdu2data (
 	/*----------------------------------------------------------------------------*/
 	struct psapblk *pb,
 	struct PSAPindication *pi,
@@ -474,8 +473,7 @@ out:
 /*----------------------------------------------------------------------------*/
 /*    SSAP interface */
 /*----------------------------------------------------------------------------*/
-int
-ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
+int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -563,8 +561,7 @@ int	pusaplose (struct PSAPindication *pi, ...)
 }
 #else
 /* VARARGS */
-int
-pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
+int pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 	return pusaplose (pi, reason, what, fmt);
 }
 #endif
@@ -637,8 +634,7 @@ static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
 
 /*---------------------------------------------------------------------------*/
-char *
-PuErrString (
+char *PuErrString (
 	/*---------------------------------------------------------------------------*/
 	int code
 ) {
@@ -694,8 +690,7 @@ findpublk (
 
 
 /*----------------------------------------------------------------------------*/
-int
-freepublk (
+int freepublk (
 	/*----------------------------------------------------------------------------*/
 	struct psapblk *pb
 ) {

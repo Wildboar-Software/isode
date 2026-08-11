@@ -52,8 +52,7 @@ char   *str;
 
 #else
 
-int
-strdup_stub (void) {
+int strdup_stub (void) {
 	;
 }
 

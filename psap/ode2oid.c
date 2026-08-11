@@ -141,8 +141,7 @@ ode2oid (char *descriptor) {
 }
 
 #ifdef DEBUG
-int
-free_oid_cache()  {
+int free_oid_cache()  {
 	struct la_cache *cp;
 	int i;
 

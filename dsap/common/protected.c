@@ -111,8 +111,7 @@ int format;
 
 /* The reverse operation. Currently, hashes are always 4 octets long. */
 
-char *
-hash2str (unsigned long hash, int *len) {
+char *hash2str (unsigned long hash, int *len) {
 	char *result;
 	int i;
 
@@ -140,8 +139,7 @@ hash_passwd (unsigned long seed, char *str, int len) {
 	return (seed);
 }
 
-int
-check_guard (
+int check_guard (
 	char *pwd, /* This string is not null-terminated */
 	int pwd_len,
 	char *salt, /* Null-terminated salt */

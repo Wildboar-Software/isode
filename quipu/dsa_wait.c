@@ -55,8 +55,7 @@ extern LLog * tsap_log;
 
 extern time_t	timenow;
 
-int
-dsa_wait (int secs) {
+int dsa_wait (int secs) {
 	int                         vecp = 0;
 	char                        *vec[4];
 	fd_set                      iads;

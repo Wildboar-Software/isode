@@ -142,8 +142,7 @@ char	*str;
 static int  final_actions = 0;
 static int  start_actions = 0;
 
-char	*
-hex2bin (s, pi)
+char *hex2bin (s, pi)
 register char   *s;
 int	*pi;
 {
@@ -176,8 +175,7 @@ int	*pi;
 	return start;
 }
 
-char	*
-bit2bin (s, pi)
+char *bit2bin (s, pi)
 register char   *s;
 int	*pi;
 {
@@ -235,8 +233,7 @@ int     len;
 	return len;
 }
 
-int
-hex2int(s)
+int hex2int(s)
 register char	*s;
 {
 	register int	sum = 0;
@@ -256,8 +253,7 @@ register char	*s;
 	return (sum);
 }
 
-int
-bit2int(s)
+int bit2int(s)
 register char	*s;
 {
 	register int	sum = 0;

@@ -64,8 +64,7 @@ extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 
 /* N-CONNECT.REQUEST */
 
-int
-tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
+int tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
 	int     fd;
 #ifdef	FIONBIO
 	int	    onoff;
@@ -285,8 +284,7 @@ tcpinit (int fd, struct tsapkt *t) {
 
 
 
-char *
-tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
+char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d %s %s", NT_TCP, fd, cp1, cp2);
@@ -295,8 +293,7 @@ tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 }
 
 
-int
-tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
+int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],
@@ -354,8 +351,7 @@ tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 }
 
 
-int
-TTService (struct tsapblk *tb) {
+int TTService (struct tsapblk *tb) {
 	struct tsapkt *t;
 
 	tb -> tb_flags &= ~TB_STACKS;

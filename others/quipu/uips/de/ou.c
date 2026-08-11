@@ -54,8 +54,7 @@ extern void pageprint(char *, ...);
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};
 
-int
-listOUs (char *parentstr, char *thisstr, struct namelist **listp) {
+int listOUs (char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == ORGUNIT)
@@ -105,8 +104,7 @@ freeOUSearchArgs () {
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int
-listAllOUs (char *parentstr, struct namelist **listp) {
+int listAllOUs (char *parentstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostOUSearchArgs(parentstr, SRA_ONELEVEL);
@@ -121,8 +119,7 @@ listAllOUs (char *parentstr, struct namelist **listp) {
 	return ret;
 }
 
-int
-listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp) {
+int listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -183,8 +180,7 @@ listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp) {
 	return OK;
 }
 
-int
-listExactOUs (char *objectstr, struct namelist **listp) {
+int listExactOUs (char *objectstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostOUSearchArgs(objectstr, SRA_BASEOBJECT);
@@ -195,8 +191,7 @@ listExactOUs (char *objectstr, struct namelist **listp) {
 	return ret;
 }
 
-int
-makeListOUs (struct namelist **listp) {
+int makeListOUs (struct namelist **listp) {
 	entrystruct * x;
 	int retval;
 
@@ -259,8 +254,7 @@ fillMostOUSearchArgs (char *parentstr, int searchdepth) {
 	return (&arg);
 }
 
-int
-makeAllOUFilter (struct s_filter **fpp) {
+int makeAllOUFilter (struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
 }
 

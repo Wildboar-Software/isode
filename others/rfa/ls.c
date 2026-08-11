@@ -89,8 +89,7 @@ mode2str (int m, char *mstr) {
 		}
 }
 
-char *
-shortTime (long *t) {
+char *shortTime (long *t) {
 	char *s;
 
 	s = ctime(t);
@@ -102,8 +101,7 @@ shortTime (long *t) {
 }
 
 
-char *
-rfa2ls (struct RfaInfo *rfa) {
+char *rfa2ls (struct RfaInfo *rfa) {
 	static char buf[512], *bp;
 
 	*buf = '\0';

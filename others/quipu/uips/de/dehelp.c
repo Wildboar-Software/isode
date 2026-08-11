@@ -74,8 +74,7 @@ static struct {
 	NULLCP, NULLCP, 0
 };
 
-int
-tailorHelp () {
+int tailorHelp () {
 	int i;
 
 	if (controlCtoQuit)
@@ -87,8 +86,7 @@ tailorHelp () {
 		}
 }
 
-char *
-findHelp (char *helpstr) {
+char *findHelp (char *helpstr) {
 	int i, n;
 	char * cp;
 
@@ -106,8 +104,7 @@ findHelp (char *helpstr) {
 	return(helpstr);
 }
 
-int
-displayFile (char *filename, int help) {
+int displayFile (char *filename, int help) {
 	FILE *fname;
 	char linebuf[LINESIZE];
 	char str[LINESIZE];
@@ -149,8 +146,7 @@ static struct {
 	NULLCP, 0, 0, NULLCP, NULLCP
 };
 
-int
-displayHelp (char *helpstr) {
+int displayHelp (char *helpstr) {
 	SFD cleanupok();
 	void onint1();
 	int i, n, found;
@@ -261,8 +257,7 @@ resetSignal:
 		displayFile(helpstr, TRUE); /* TRUE says this is a help file */
 }
 
-int
-validateSetting (int type, char *value) {
+int validateSetting (int type, char *value) {
 	char * cp;
 	switch (type) {
 	case 1: /* look for non numeric chars */

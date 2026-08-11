@@ -40,8 +40,7 @@ static LLog _pgm_log = {
 static LLog *pgm_log = &_pgm_log;
 
 
-int
-reportailor (char *myname) {
+int reportailor (char *myname) {
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
 }

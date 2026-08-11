@@ -50,8 +50,7 @@ char    level[128];
 char    show[128];
 char    display[50][50];
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	char   *ptr,
 		   *getenv ();
 
@@ -92,8 +91,7 @@ photo_start (char *name) {
 	return (0);
 }
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	int     i,
 			j,
 			k;
@@ -188,8 +186,7 @@ photo_end (char *name) {
 
 }
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	int     i;
 
 	if (scale == 1) {
@@ -205,8 +202,7 @@ photo_black (int length) {
 	pos += length;
 }
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	int     i;
 
 	if (scale == 1) {

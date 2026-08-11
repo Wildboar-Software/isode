@@ -385,8 +385,7 @@ char *ll_preset (char* fmt, ...) {
 #else
 /* VARARGS1 */
 
-char *
-ll_preset (char *fmt) {
+char *ll_preset (char *fmt) {
 	return ll_preset (fmt);
 }
 #endif
@@ -440,8 +439,7 @@ error:
 /*
  * ll_defmhdr - Default "make header" routine.
  */
-int
-ll_defmhdr (
+int ll_defmhdr (
 	char *bufferp,		/* Buffer pointer */
 	char *headerp,		/* Static header string */
 	char *dheaderp		/* Dynamic header string */

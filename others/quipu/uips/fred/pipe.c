@@ -59,8 +59,7 @@ static int  da_response ();
 
 /* DISH */
 
-int
-dish (char *command, int silent) {
+int dish (char *command, int silent) {
 	int	    cc,
 			isarea,
 			isuser,
@@ -864,8 +863,7 @@ pagchar (int ch) {
 /* BIND */
 
 
-int
-f_bind (char **vec) {
+int f_bind (char **vec) {
 	if (didbind) {
 		didbind = 0;
 		return OK;
@@ -876,8 +874,7 @@ f_bind (char **vec) {
 
 /* QUIT */
 
-int
-f_quit (char **vec) {
+int f_quit (char **vec) {
 	if (vec && *++vec != NULL && strcmp (*vec, "-help") == 0) {
 		fprintf (stdfp, "quit\n");
 		fprintf (stdfp, "    terminate fred\n");
@@ -988,8 +985,7 @@ da_response () {
 }
 
 
-int
-sync_ufnrc () {
+int sync_ufnrc () {
 	char *bp;
 	char    buffer[BUFSIZ];
 	struct area_guide *ag;
@@ -1032,8 +1028,7 @@ sync_ufnrc () {
 }
 
 
-int
-init_ufnrc () {
+int init_ufnrc () {
 	int   i;
 	int	    inprogress;
 	char *bp,

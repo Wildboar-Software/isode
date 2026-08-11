@@ -34,8 +34,7 @@ static int  PRelRetryRequestAux ();
 
 /* P-RELEASE.REQUEST */
 
-int
-PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -82,8 +81,7 @@ out:
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int
-PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;

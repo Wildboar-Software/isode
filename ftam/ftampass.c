@@ -70,8 +70,7 @@ no_mem:
 }
 
 
-int
-fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti) {
+int fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti) {
 	struct qbuf *qb;
 
 	bzero ((char *) fp, sizeof *fp);

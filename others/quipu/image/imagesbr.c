@@ -518,8 +518,7 @@ out:
 
 
 
-int
-photo_start (char *name) {
+int photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
 	x = y = 0;
@@ -529,8 +528,7 @@ photo_start (char *name) {
 
 
 
-int
-photo_end (char *name) {
+int photo_end (char *name) {
 	int	    len;
 	struct qbuf *qb,
 			   *pb;
@@ -574,8 +572,7 @@ photo_end (char *name) {
 }
 
 
-int
-photo_black (int length) {
+int photo_black (int length) {
 	if (passno == 2) {
 		int    i,
 			   j;
@@ -598,8 +595,7 @@ photo_black (int length) {
 }
 
 
-int
-photo_white (int length) {
+int photo_white (int length) {
 	x += length;
 
 	return OK;

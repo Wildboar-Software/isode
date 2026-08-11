@@ -175,8 +175,7 @@ static  CMD_TABLE  authtab[] = {
  * do system wide initialisations
  */
 
-int
-dsa_sys_tai (int argc, char **argv) {
+int dsa_sys_tai (int argc, char **argv) {
 	char    *arg;
 
 	if(argc < 2)

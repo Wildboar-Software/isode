@@ -270,8 +270,7 @@ dumpalloid (void) {
 }
 
 
-int
-add_oc_macro (char *buf, char *ptr) {
+int add_oc_macro (char *buf, char *ptr) {
 	strcpy(macro[NumMacro].name,buf);
 	strcpy(macro[NumMacro++].value,ptr);
 }

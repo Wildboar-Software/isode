@@ -73,8 +73,7 @@ char * tablename, * nicename;
 	mnlp->next = NULLMNLIST;
 }
 
-char *
-mapAttName(tablename)
+char *mapAttName(tablename)
 char * tablename;
 {
 	struct mapnamelist * mnlp;

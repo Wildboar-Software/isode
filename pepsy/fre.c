@@ -50,8 +50,7 @@ static int fre_choice(char *parm, ptpe *p, modtyp *mod, int dofree);
  * first time freeing all the "children" of the data structure - then
  * the second time free the structure itself
  */
-int
-fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
+int fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
 
@@ -97,8 +96,7 @@ fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
  * fall back to this so we can put the code to free something just
  * here once and it will handle all the cases else where
  */
-int
-fre_type (
+int fre_type (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -653,8 +651,7 @@ static int fre_choice (
  * Basically we have to stop FN_CALL being tested by hasdata which will call
  * the decoding function which is illegal and gives rubbish.
  */
-int
-callsfn (ptpe *p, modtyp *mod) {
+int callsfn (ptpe *p, modtyp *mod) {
 
 	while (p->pe_type != PE_END) {
 		switch (p->pe_type) {

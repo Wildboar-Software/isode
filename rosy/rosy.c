@@ -145,8 +145,7 @@ static void yyerror_aux ();
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
 
@@ -294,8 +293,7 @@ usage:
 }
 
 
-int
-yyerror (char *s) {
+int yyerror (char *s) {
 	yyerror_aux (s);
 
 	if (*sysout)

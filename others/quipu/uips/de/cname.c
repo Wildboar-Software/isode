@@ -67,8 +67,7 @@ addCoNode (char *shortname, char *longname) {
 	colp->next = NULLCNLIST;
 }
 
-char *
-mapCoName (char *shortname) {
+char *mapCoName (char *shortname) {
 	struct cnamelist * cnlp;
 
 	for (cnlp = cnamelp; cnlp != NULLCNLIST; cnlp = cnlp->next)

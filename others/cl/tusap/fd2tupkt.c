@@ -517,8 +517,7 @@ newtpkt (int code) {
 }
 
 
-int
-freetpkt (struct tsapkt *t) {
+int freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
 

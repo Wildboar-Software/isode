@@ -48,8 +48,7 @@ char *val;
 	}
 }
 
-char *
-get_symbol_value(table, name)
+char *get_symbol_value(table, name)
 table_entry table;
 char *name;
 {

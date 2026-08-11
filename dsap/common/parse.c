@@ -286,8 +286,7 @@ static char *catphyline (FILE *file, char *str)
 
 }
 
-int
-free_phylinebuf (void) {
+int free_phylinebuf (void) {
 	free (parse_buffer);
 	parse_buffer = NULLCP;
 	parse_len = 0;

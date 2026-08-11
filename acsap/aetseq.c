@@ -36,8 +36,7 @@ static char objent[BUFSIZ];
 static struct isoentity ies;
 
 
-int
-str2aet_seq (char *designator, char *qualifier, struct isoentity *iep) {
+int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep) {
 	int     hitdes,
 			hitqual;
 	char    descriptor[BUFSIZ],

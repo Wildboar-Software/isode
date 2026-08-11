@@ -35,8 +35,7 @@ static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUident
 /*    F-{LOCATE,ERASE}.RESPONSE */
 static int  FAccessResponseAux ();
 
-int
-FAccessResponse (
+int FAccessResponse (
 	int sd,
 	int action,
 	struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */

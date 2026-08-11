@@ -107,8 +107,7 @@ extern	LLog	* log_dsap;
  */
 
 
-int
-substring_encode (struct filter_item *parm, PE *pe) {
+int substring_encode (struct filter_item *parm, PE *pe) {
 	int		subs_type;
 	AV_Sequence	avs_temp;
 	Filter_Substrings	*subs_temp;
@@ -346,8 +345,7 @@ substring_encode (struct filter_item *parm, PE *pe) {
  */
 
 
-int
-substring_decode (struct filter_item **pparm, PE pe) {
+int substring_decode (struct filter_item **pparm, PE pe) {
 	AV_Sequence	* avs_initial;
 	AV_Sequence	* avs_any;
 	AV_Sequence	* avs_final;
@@ -627,8 +625,7 @@ substring_decode (struct filter_item **pparm, PE pe) {
 	return OK;
 }
 
-int
-substring_free (struct filter_item *parm) {
+int substring_free (struct filter_item *parm) {
 	avs_free (parm->UNSUB.fi_sub_initial);
 	avs_free (parm->UNSUB.fi_sub_any);
 	avs_free (parm->UNSUB.fi_sub_final);
@@ -684,8 +681,7 @@ substring_free (struct filter_item *parm) {
  *
  */
 
-int
-treestruct_encode (struct tree_struct *parm, PE *pe) {
+int treestruct_encode (struct tree_struct *parm, PE *pe) {
 	OID     oid_tmp;
 	int	do_once;
 
@@ -875,8 +871,7 @@ treestruct_encode (struct tree_struct *parm, PE *pe) {
  */
 
 
-int
-treestruct_decode (struct tree_struct **parm, PE pe) {
+int treestruct_decode (struct tree_struct **parm, PE pe) {
 
 	AttributeType	  at_tmp;
 	OID     oid_tmp;
@@ -1150,8 +1145,7 @@ treestruct_decode (struct tree_struct **parm, PE pe) {
 	return OK;
 }
 
-int
-EDB_encode (struct getedb_result *parm, PE *pe) {
+int EDB_encode (struct getedb_result *parm, PE *pe) {
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
 	PE  p32_z = NULLPE;
@@ -1185,8 +1179,7 @@ EDB_encode (struct getedb_result *parm, PE *pe) {
 }
 
 
-int
-EDB_decode_force (struct getedb_result **pparm, PE pe) {
+int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 	Avlnode **tree;
 	struct entry *tmp;
 	int	entry_cmp();
@@ -1229,8 +1222,7 @@ EDB_decode_force (struct getedb_result **pparm, PE pe) {
 }
 
 
-int
-EDB_decode (struct getedb_result **pparm, PE pe) {
+int EDB_decode (struct getedb_result **pparm, PE pe) {
 
 	if (pe -> pe_class != PE_CLASS_UNIV
 			|| pe -> pe_form != PE_FORM_CONS
@@ -1248,8 +1240,7 @@ EDB_decode (struct getedb_result **pparm, PE pe) {
 	return OK;
 }
 
-int
-EDB_free (struct getedb_result *parm) {
+int EDB_free (struct getedb_result *parm) {
 	/* All done for us at some other time (hopefully) */
 	return OK;
 }

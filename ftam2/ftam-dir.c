@@ -72,8 +72,7 @@ int f_lcd (char **vec) {
 #endif
 
 
-int
-f_cd (char **vec) {
+int f_cd (char **vec) {
 	int	    silent;
 	char   *cp,
 		   cwd[MAXPATHLEN];
@@ -122,8 +121,7 @@ f_cd (char **vec) {
 }
 
 
-int
-isdir (char *dir, char *dp, int silent) {
+int isdir (char *dir, char *dp, int silent) {
 	int	    result;
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -228,8 +226,7 @@ you_lose:
 
 
 
-int
-f_pwd (char **vec) {
+int f_pwd (char **vec) {
 #ifndef	BRIDGE
 	char    cwd[MAXPATHLEN];
 
@@ -253,8 +250,7 @@ f_pwd (char **vec) {
 }
 
 
-char *
-str2file (char *s) {
+char *str2file (char *s) {
 	char  *bp;
 	static int  i = 0;
 	static char buffer1[BUFSIZ],

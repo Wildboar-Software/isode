@@ -100,8 +100,7 @@ struct query * a, * b;
 	*slp = NULLLIST;
 }
 
-int
-listLocs(cstr, lstr, llistp)
+int listLocs(cstr, lstr, llistp)
 char * cstr, * lstr;
 struct namelist ** llistp;
 {
@@ -182,8 +181,7 @@ freeLocSearchArgs() {
 }
 
 
-int
-listAllLocs(cstr, llistp)
+int listAllLocs(cstr, llistp)
 char * cstr;
 struct namelist ** llistp;
 {
@@ -209,8 +207,7 @@ struct namelist ** llistp;
 	return ret;
 }
 
-int
-listMatchingLocs(cstr, lstr, llistp)
+int listMatchingLocs(cstr, lstr, llistp)
 char * cstr, * lstr;
 struct namelist ** llistp;
 {
@@ -259,8 +256,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int
-readExactLoc(lstr, llistp)
+int readExactLoc(lstr, llistp)
 char * lstr;
 struct namelist ** llistp;
 {
@@ -271,8 +267,7 @@ struct namelist ** llistp;
 	return ret;
 }
 
-int
-reallyMakeListLocs(llistp)
+int reallyMakeListLocs(llistp)
 struct namelist ** llistp;
 {
 	struct subordinate * x;
@@ -313,8 +308,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int
-makeListLocanisations(llistp)
+int makeListLocanisations(llistp)
 struct namelist ** llistp;
 {
 	entrystruct * x;
@@ -348,8 +342,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int
-readLoc(lstr, llistp)
+int readLoc(lstr, llistp)
 char * lstr;
 struct namelist ** llistp;
 {

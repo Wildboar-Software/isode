@@ -30,8 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapactchk.c,v 9.0 199
 #include "spkt.h"
 
 
-int
-SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls) {
+int SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls) {
 	if (act) {
 		if (!(sb -> sb_requirements & SR_ACT_EXISTS))
 			return ssaplose (si, SC_OPERATION, NULLCP, "activity management service unavailable");

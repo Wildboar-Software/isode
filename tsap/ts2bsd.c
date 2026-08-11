@@ -76,8 +76,7 @@ sendCmsg (int fd, int cc, int type, char *data) {
 	return sendmsg (fd, msg, 0);
 }
 
-int
-tp4getCmsg (int fd, int *cc, int *type, char *data) {
+int tp4getCmsg (int fd, int *cc, int *type, char *data) {
 	int	    result;
 	struct msghdr *msg = &msgs;
 	union osi_control_msg *oc = &ocm;
@@ -834,8 +833,7 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 /*    LOWER HALF */
 
 
-int
-tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
+int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
 			onoff;
 	struct TSAPaddr tzs;
@@ -889,8 +887,7 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 
 
-char *
-tp4save (int fd, struct TSAPdisconnect *td) {
+char *tp4save (int fd, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d", NT_BSD, fd);
@@ -898,8 +895,7 @@ tp4save (int fd, struct TSAPdisconnect *td) {
 }
 
 
-int
-tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
+int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd, len, ucdlen;
 	union sockaddr_osi	sock;
 	struct sockaddr_iso	*ifaddr = &sock.osi_sockaddr;
@@ -932,8 +928,7 @@ tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 }
 
 
-int
-tp4init (struct tsapblk *tb) {
+int tp4init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
 
@@ -964,8 +959,7 @@ tp4init (struct tsapblk *tb) {
 
 
 
-int
-start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
+int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd,
 			onoff;
 	struct NSAPaddr *na = local_ta -> ta_addrs;
@@ -1011,8 +1005,7 @@ start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, st
 }
 
 
-int
-join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *td) {
+int join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *td) {
 	int	    len,
 			sd;
 	union sockaddr_osi	sock;
@@ -1070,8 +1063,7 @@ gen2tp4X (struct tsapADDR *generic, union sockaddr_osi *specific) {
 }
 
 
-int
-tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific) {
+int tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific) {
 	char *cp;
 	struct NSAPaddr *na = generic -> ta_addrs;
 	struct sockaddr_iso	*ifaddr = &specific -> osi_sockaddr;
@@ -1095,8 +1087,7 @@ tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific) {
 }
 
 
-int
-tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific) {
+int tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	int	    result;
 	struct TSAPaddr tas;
 
@@ -1106,6 +1097,5 @@ tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	return result;
 }
 #else
-int
-_ts2bsd_stub() {}
+int _ts2bsd_stub() {}
 #endif

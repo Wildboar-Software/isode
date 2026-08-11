@@ -136,8 +136,7 @@ bad_value:
 }
 
 
-int
-fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti) {
+int fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti) {
 	int    n;
 	char **ap;
 	struct name_element *f4;

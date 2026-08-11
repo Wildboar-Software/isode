@@ -120,8 +120,7 @@ static FamilyMap familyMap[] = {
  * for this fd and add them to the selfhosts list.
  * HPUX version - hpux does not have SIOCGIFCONF ioctl;
  */
-int
-DefineSelf (int fd) {
+int DefineSelf (int fd) {
 	int n;
 	int	len;
 	caddr_t	addr;
@@ -172,8 +171,7 @@ DefineSelf (int fd) {
 /* Define this host for access control.  Find all the hosts the OS knows about
  * for this fd and add them to the selfhosts list.
  */
-int
-DefineSelf (int fd) {
+int DefineSelf (int fd) {
 	char		buf[2048];
 	struct ifconf	ifc;
 	int	n;
@@ -257,8 +255,7 @@ DefineSelf (int fd) {
 #endif hpux
 
 /* Reset access control list to initial hosts */
-int
-ResetHosts (char *display) {
+int ResetHosts (char *display) {
 	HOST	*host, *self;
 	char 		hostname[120];
 	char		fname[32];
@@ -421,8 +418,7 @@ ClientPtr client;
 /* Add a host to the access control list.  This is the external interface
  * called from the dispatcher */
 
-int
-AddHost (client, family, length, pAddr)
+int AddHost (client, family, length, pAddr)
 ClientPtr		client;
 int                 family;
 unsigned            length;        /* of bytes in pAddr */
@@ -500,8 +496,7 @@ pointer	addr;
 
 /* Remove a host from the access control list */
 
-int
-RemoveHost (client, family, length, pAddr)
+int RemoveHost (client, family, length, pAddr)
 ClientPtr		client;
 int                 family;
 unsigned            length;        /* of bytes in pAddr */
@@ -539,8 +534,7 @@ pointer             pAddr;
 }
 
 /* Get all hosts in the access control list */
-int
-GetHosts (data, pnHosts, pEnabled)
+int GetHosts (data, pnHosts, pEnabled)
 pointer		*data;
 int			*pnHosts;
 BOOL		*pEnabled;
@@ -598,8 +592,7 @@ BOOL		*pEnabled;
  * Return address length.
  */
 
-int
-CheckFamily (int connection, int family) {
+int CheckFamily (int connection, int family) {
 #ifdef ISOCONN
 	struct TSAPaddr 	from;
 #else /* ISOCONN */
@@ -660,8 +653,7 @@ CheckFamily (int connection, int family) {
 /* Check if a host is not in the access control list.
  * Returns 1 if host is invalid, 0 if we've found it. */
 
-int
-#ifdef ISOCONN
+int #ifdef ISOCONN
 InvalidHost (struct TSAPaddr *saddr, int len)
 #else /* ISOCONN */
 InvalidHost (struct sockaddr *saddr, int len)
@@ -774,8 +766,7 @@ pointer			*addr;
 #endif /* ISOCONN */
 }
 
-int
-ChangeAccessControl(client, fEnabled)
+int ChangeAccessControl(client, fEnabled)
 ClientPtr client;
 int fEnabled;
 {

@@ -62,8 +62,7 @@ addAttNode (char *tablename, char *nicename) {
 	mnlp->next = NULLMNLIST;
 }
 
-char *
-mapAttName (char *tablename) {
+char *mapAttName (char *tablename) {
 	struct mapnamelist * mnlp;
 
 	for (mnlp = mapnamelp; mnlp != NULLMNLIST; mnlp = mnlp->next)

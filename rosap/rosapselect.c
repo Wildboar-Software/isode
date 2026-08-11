@@ -36,8 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1
 /*    map association descriptors for select() */
 
 
-int
-RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
+int RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

@@ -61,8 +61,7 @@ void clearDots();
 extern int dots;
 extern int dotsPrinted;
 
-int
-listlen(lp)
+int listlen(lp)
 struct namelist * lp;
 {
 	int len;
@@ -129,8 +128,7 @@ void stopUnbindTimer() {
 	alarm(0);
 }
 
-char *
-copy_string(string)
+char *copy_string(string)
 char *string;
 {
 	char *new_string;
@@ -280,8 +278,7 @@ int printNumber;
 	free(savestring);
 }
 
-char *
-lastComponent(dnstr, objectType)
+char *lastComponent(dnstr, objectType)
 char * dnstr;
 int objectType;
 {
@@ -358,8 +355,7 @@ int objectType;
 	return cp;
 }
 
-char *
-removeLastRDN(dnstr)
+char *removeLastRDN(dnstr)
 char * dnstr;
 {
 	char * cp, * cp2;
@@ -372,8 +368,7 @@ char * dnstr;
 	return cp;
 }
 
-char *
-lastRDN(dnstr)
+char *lastRDN(dnstr)
 char * dnstr;
 {
 	char * cp;

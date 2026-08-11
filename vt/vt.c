@@ -1466,12 +1466,10 @@ void advise (int code, char *what, char *fmt) {
 
 /* XXX -- why is this stubbed ? */
 #ifdef TERMIOS
-int
-ptyecho (int on) {
+int ptyecho (int on) {
 }
 #else
 /*ARGSUSED*/
-int
-setmode (int on, int off) {
+int setmode (int on, int off) {
 }
 #endif

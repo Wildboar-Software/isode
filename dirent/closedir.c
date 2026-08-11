@@ -20,8 +20,7 @@ extern int	errno;
 #define	NULL	0
 #endif
 
-int
-closedir( dirp )
+int closedir( dirp )
 DIR	*dirp;		/* stream from opendir() */
 {
 	int	fd;
@@ -37,8 +36,7 @@ DIR	*dirp;		/* stream from opendir() */
 	return close( fd );
 }
 #else
-int
-_closedir_stub()  {
+int _closedir_stub()  {
 	;
 }
 #endif

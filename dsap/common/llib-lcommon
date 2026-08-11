@@ -1985,8 +1985,7 @@ nullsigned(data, type, module)
 }
 
 
-int
-nullverify(data, type, module, sig, pubkey, keyparms, hashparms)
+int nullverify(data, type, module, sig, pubkey, keyparms, hashparms)
 	char           *data;
 	int             type;
 	modtyp         *module;
@@ -1998,8 +1997,7 @@ nullverify(data, type, module, sig, pubkey, keyparms, hashparms)
 return nullverify(data, type, module, sig, pubkey, keyparms, hashparms);
 }
 
-int
-null_ckpath(data, type, module, path, sig, nameptr)
+int null_ckpath(data, type, module, path, sig, nameptr)
 	caddr_t         data;
 	int             type;
 	modtyp         *module;
@@ -2028,8 +2026,7 @@ nullencrypted(concrete, type, module, publickey, parms)
 }
 
 
-int
-nulldecrypted(enc, type, module, concrete, privkey, parms)
+int nulldecrypted(enc, type, module, concrete, privkey, parms)
 	struct encrypted *enc;
 	int             type;
 	modtyp         *module;
@@ -2047,8 +2044,7 @@ nullmknonce(previous)
 	return nullmknonce(previous);
 }
 
-int
-nullcknonce(nonce)
+int nullcknonce(nonce)
 	struct Nonce *nonce;
 {
 	return nullcknonce(nonce);

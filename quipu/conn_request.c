@@ -54,8 +54,7 @@ extern unsigned watchdog_delta;
 *  If NOTOK is returned the connection block should be freed,
 *  alerting all the operations requesting it.
 */
-int
-conn_request (struct connection *cn) {
+int conn_request (struct connection *cn) {
 	struct DSAPconnect		* dc = &(cn->cn_connect.cc_dc);
 	struct DSAPindication	  di_s;
 	struct DSAPindication	* di = &(di_s);
@@ -164,8 +163,7 @@ conn_request (struct connection *cn) {
 * If NOTOK is returned the connection needs to be extracted, alerting any
 * waiting operations in the process.
 */
-int
-conn_req_aux (struct connection *cn) {
+int conn_req_aux (struct connection *cn) {
 
 	switch(cn->cn_connect.cc_dc.dc_result) {
 	case DS_RESULT:

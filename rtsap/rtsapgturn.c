@@ -32,8 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapgturn.c,v 9.0 19
 
 /* RT-TURN-GIVE.REQUEST */
 
-int
-RtGTurnRequest (int sd, struct RtSAPindication *rti) {
+int RtGTurnRequest (int sd, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

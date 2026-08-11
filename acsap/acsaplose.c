@@ -86,8 +86,7 @@ int	acpktlose (struct assocblk*acb, ...) {
 #else
 /* VARARGS5 */
 
-int
-acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt) {
+int acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt) {
 	return acpktlose (acb, aci, reason, what, fmt);
 }
 #endif

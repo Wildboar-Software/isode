@@ -82,8 +82,7 @@ struct	passwd *pw;	/* pointer to static area used by getpwent */
 struct	group *gr;	/* pointer to static area used by getgrent */
 char	*myname = "idist";
 
-int
-main (int argc, char *argv[]) {
+int main (int argc, char *argv[]) {
 	int cmdargs = 0;
 	char *dhosts[NHOSTS], **hp = dhosts;
 	extern	int optind;
@@ -215,8 +214,7 @@ main (int argc, char *argv[]) {
 	return(nerrs != 0);
 }
 
-int
-usage () {
+int usage () {
 	advise (NULLCP,
 	"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
 	myname);
@@ -227,8 +225,7 @@ usage () {
 /*
  * rcp like interface for distributing files.
  */
-int
-docmdargs (int nargs, char *args[]) {
+int docmdargs (int nargs, char *args[]) {
 	struct namelist *nl, *prev;
 	char *cp;
 	struct namelist *files, *hosts;
@@ -280,8 +277,7 @@ docmdargs (int nargs, char *args[]) {
 /*
  * Print a list of NAME blocks (mostly for debugging).
  */
-int
-prnames (struct namelist *nl) {
+int prnames (struct namelist *nl) {
 	printf("( ");
 	while (nl != NULL) {
 		printf("%s ", nl->n_name);

@@ -57,8 +57,7 @@ std_write (PS ps, PElementData data, PElementLen n, int in_line) {
 }
 
 
-int
-std_flush (PS ps) {
+int std_flush (PS ps) {
 	if (fflush ((FILE *) ps -> ps_addr) != EOF)
 		return OK;
 
@@ -66,8 +65,7 @@ std_flush (PS ps) {
 }
 
 
-int
-std_open (PS ps) {
+int std_open (PS ps) {
 	ps -> ps_readP = std_read;
 	ps -> ps_writeP = std_write;
 	ps -> ps_flushP = std_flush;

@@ -37,20 +37,17 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 
 /*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
 
-int
-FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_MANAGEMENT, FSB_MANAGEMENT, fti);
 }
 
 
-int
-FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKBEGIN, FSB_BULKBEGIN, fti);
 }
 
 
-int
-FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
 }
 

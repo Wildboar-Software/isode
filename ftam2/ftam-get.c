@@ -38,8 +38,7 @@ static int  getloop (int fd, char* dst, IFP wfnx);
 static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
 
-int
-f_get (char **vec) {
+int f_get (char **vec) {
 #ifndef	BRIDGE
 	int     sglobbed;
 	char  *bp;
@@ -277,8 +276,7 @@ static int check_get (char *dst) {
 #endif
 
 
-int
-getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx) {
+int getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx) {
 	int	    fd,
 			result;
 #ifdef	BRIDGE

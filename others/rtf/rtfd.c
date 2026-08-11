@@ -54,8 +54,7 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 
 
 
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    guest,
 			sd,
 			result,

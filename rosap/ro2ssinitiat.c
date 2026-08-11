@@ -41,8 +41,7 @@ static int  RoBeginRequestAux ();
 
 /* RO-BEGIN.REQUEST */
 
-int
-RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
+int RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
 	SBV     smask;
 	int     result;
 

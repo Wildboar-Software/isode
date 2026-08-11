@@ -397,8 +397,7 @@ ryr_advise (char *what, char *fmt) {
 
 #ifdef lint
 /* VARARGS1 */
-int
-note (char *fmt) {
+int note (char *fmt) {
 	note (fmt);
 }
 
@@ -420,8 +419,7 @@ note (char *fmt, ...) {
 
 #ifdef lint
 /* VARARGS2 */
-int
-nadvise (char *what, char *fmt) {
+int nadvise (char *what, char *fmt) {
 	nadvise (what, fmt);
 }
 #else

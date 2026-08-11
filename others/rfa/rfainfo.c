@@ -431,8 +431,7 @@ struct RfaInfo **rfap;
 /*------------------------------------------------------
  * getRfaInfoList - get file info list for "dir"
  *------------------------------------------------------*/
-int
-getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int locked) {
+int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int locked) {
 	struct RfaInfo *rfalist = NULL, **rfap = & rfalist;
 	DIR *dirp;
 	struct dirent *dp;
@@ -552,8 +551,7 @@ err_cleanup:
 /*------------------------------------------------------
  * putRfaInfoList - write RFA file info list to ".rfainfo"
  *------------------------------------------------------*/
-int
-putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
+int putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 	FILE *backup_f;
 	char buf[BUFSIZ];
 	struct LockEntry *le;

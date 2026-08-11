@@ -89,8 +89,7 @@ int	rtpktlose (struct assocblk*acb, ...) {
 #else
 /* VARARGS5 */
 
-int
-rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtpktlose (acb, rti, reason, what, fmt);
 }
 #endif
@@ -115,8 +114,7 @@ int	rtsaplose (struct RtSAPindication*rti, ...) {
 #else
 /* VARARGS4 */
 
-int
-rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif
