@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pass2.c,v 9.0 1992/06
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -366,7 +365,6 @@ void gen_dectbl(FILE *fp, SY sy) {
 	fprintf(fp, "\t};\n");
 	fprintf(fp, "\n");
 }
-
 
 void gen_prnttbl(FILE *fp, SY sy) {
 	fprintf(fp,"static ptpe %s%s[] = {\n",PTABLE, proc_name(sy->sy_name, 0));
@@ -726,7 +724,6 @@ struct univ_typ *simptyp(YP yp) {
 	case YP_IDEFINED:
 		strncpy(p->univ_tab, yp->yp_identifier, MSTRING);
 		return (&obj);
-
 
 	case YP_SEQLIST:
 	case YP_SETLIST:
@@ -1160,7 +1157,6 @@ int setvaltype(YP yp, char *str) {
 	yp->yp_param_type = strdup(str);
 	return (1);
 }
-
 
 /*
  * generate the functions that carry out the action statements

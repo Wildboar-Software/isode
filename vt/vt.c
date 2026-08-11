@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vt.c,v 9.0 1992/06/16 12
  *
  */
 
-
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
@@ -163,7 +162,6 @@ static struct dispatch dispatches[] = {
 
 	NULL
 };
-
 
 void intr(void), deadpeer(void);
 char	*control(int c);
@@ -466,8 +464,6 @@ struct dispatch *getds (char *name) {
 	}
 }
 
-
-
 void do_vt (void) {
 #ifdef LINUX
 	signal(SIGINT, (__sighandler_t)intr);
@@ -492,7 +488,6 @@ void do_vt (void) {
 		vt(fd);
 	adios (NULLCP, "association terminated by peer");
 }
-
 
 static int vt_close (char **vec) {
 	tmode(0);
@@ -599,7 +594,6 @@ static char *xsaplevels[] = {
 
 static struct var *getvar ();
 
-
 static int   echo = 0;
 static int   repertoire = 0;
 static int   verbose = 0;
@@ -667,7 +661,6 @@ static struct var vars[] = {
 
 	NULL
 };
-
 
 static int varwidth1;
 static int varwidth2;
@@ -1051,7 +1044,6 @@ static int vt_help (char **vec) {
 
 	return DONE;
 }
-
 
 #ifndef	TIOCGWINSZ
 #endif

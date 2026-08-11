@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprespond.c,v 9.0 19
  *
  */
 
-
-
 #include <string.h>
 #include "spkt.h"
 #include "tailor.h"

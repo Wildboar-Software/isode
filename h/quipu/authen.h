@@ -21,7 +21,6 @@
  *
  */
 
-
 #ifndef QUIPUAUTHEN
 #define QUIPUAUTHEN
 #include "quipu/name.h"
@@ -73,7 +72,6 @@ struct certificate {
 	struct key_info key;
 	struct signature sig;
 };
-
 
 struct certificate_list {
 	struct certificate *cert;

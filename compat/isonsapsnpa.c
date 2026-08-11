@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isonsapsnpa.c,v 9.0 
  *
  */
 
-
-
 #include <string.h>
 #include <stdio.h>
 #include "general.h"
@@ -54,7 +52,6 @@ int setisonsapsnpa (int f) {
 
 	return (servf != NULL);
 }
-
 
 int endisonsapsnpa(void) {
 	if (servf && !stayopen) {

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
  *
  */
 
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -41,10 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
 #include <sys/wait.h>
 #endif
 
-
 #include "internet.h"
 #include "tailor.h"
-
 
 static	int	debug = 0;
 static	int	nbits = FD_SETSIZE;
@@ -67,7 +64,6 @@ static	char   *myname = "dad";
 
 static	struct sockaddr_in lo_socket;
 
-
 static void	arginit (), envinit ();
 
 void	adios (char *, char *, ...);
@@ -85,8 +81,6 @@ static int  rcpipe ();
 #ifdef	SYS5
 struct passwd  *getpwnam ();
 #endif
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    nfds,
@@ -181,8 +175,6 @@ int main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-
-
 #ifdef	BSD42
 static SFD  dishser (sig, code, sc)
 int	sig;
@@ -217,8 +209,6 @@ int	i;
 		doomsday++;
 	}
 }
-
-
 
 static
 dadser (int fd, struct sockaddr_in *isock) {
@@ -360,7 +350,6 @@ were_history:
 	kill (dishpid, SIGKILL);
 }
 
-
 #ifndef	lint
 static int  _da_response ();
 
@@ -402,7 +391,6 @@ da_response (int fd, char *fmt) {
 	da_response (fd, fmt);
 }
 #endif
-
 
 static int
 start_dish (int binding) {
@@ -486,7 +474,6 @@ fork_again:
 	return (dishpid != NOTOK ? OK : NOTOK);
 }
 
-
 static
 rcfile () {
 	char   *bp;
@@ -532,7 +519,6 @@ failed:
 	if (rcpipe ("unbind -noquit\n") == NOTOK)
 		goto failed;
 }
-
 
 static int
 rcpipe (char *command) {
@@ -588,7 +574,6 @@ done:
 	return result;
 }
 
-
 #ifdef	BSD42
 
 static SFD  chldser (sig, code, sc)
@@ -606,7 +591,6 @@ struct sigcontext *sc;
 		continue;
 }
 #endif
-
 
 static void
 arginit (char **vec) {
@@ -662,7 +646,6 @@ arginit (char **vec) {
 			uid = pw -> pw_uid, gid = pw -> pw_gid;
 	}
 }
-
 
 static void
 envinit () {
@@ -733,7 +716,6 @@ envinit () {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -754,7 +736,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {

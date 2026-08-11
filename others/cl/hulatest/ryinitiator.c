@@ -42,7 +42,6 @@
 /* ryinitiator.c - generic interactive initiator */
 /* HULA modified for UNIT-DATA protocol stack */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
@@ -64,7 +63,6 @@
 #endif
 #endif
 
-
 static int count = 1;
 int	length = 536;
 
@@ -82,11 +80,9 @@ int	timing_result ();
 
 static char *myname = "ryinitiator";
 
-
 extern char *isodeversion;
 
 /* INITIATOR */
-
 
 ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
 int	argc;
@@ -402,7 +398,6 @@ _getline (char *buffer) {
 #define	NBBY	8
 #endif
 
-
 #ifndef	TMS
 static
 timer (int bytes, int pkts) {
@@ -431,7 +426,6 @@ timer (int bytes, int pkts) {
 	printf ("\n");
 }
 
-
 static
 tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 
@@ -442,7 +436,6 @@ tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 }
 #else
 long	times ();
-
 
 static
 timer (int bytes, int pkts) {
@@ -477,8 +470,6 @@ timer (int bytes, int pkts) {
 #endif
 #endif
 
-
-
 static int    timing_result (sd, id, dummy, result, roi)
 int	sd,
 	id,
@@ -489,14 +480,12 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -511,14 +500,12 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -537,10 +524,8 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -562,7 +547,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -573,7 +557,6 @@ void	advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
@@ -596,7 +579,6 @@ advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

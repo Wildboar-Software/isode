@@ -444,8 +444,6 @@ int update (char *rname, int opts, struct stat *sp) {
 	return(2);
 }
 
-
-
 /*VARARGS2*/
 log(fp, fmt, a1, a2, a3)
 FILE *fp;

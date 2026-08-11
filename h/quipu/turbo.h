@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUTURBO
 #define QUIPUTURBO
 

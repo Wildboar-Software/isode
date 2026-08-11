@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.1 1992/0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "tailor.h"
@@ -82,9 +81,7 @@ Also need to look as dsa_wait() calls in ds_search().
 
 */
 
-
 #endif
-
 
 char * edbtmp_path = NULLCP;
 
@@ -100,7 +97,6 @@ Entry myentry;
 	extern char * treedir;
 	extern char * parse_file;
 	Entry liststart;
-
 
 	if (myentry == NULLENTRY) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));
@@ -252,7 +248,6 @@ DN  a,b;
 		return FALSE;
 
 }
-
 
 do_get_edb (arg,error,result,binddn,fd)
 struct getedb_arg *arg;
@@ -538,7 +533,6 @@ DN dn,from;
 	/* NOTREACHED */
 }
 
-
 static Entry	g_parent;
 static int 	g_entry_cnt;
 
@@ -619,7 +613,6 @@ Avlnode *oldkids;
 
 	return(OK);
 }
-
 
 process_edb(on,newop)
 struct oper_act	* on;
@@ -713,7 +706,6 @@ struct oper_act	** newop;
 		/* ??? should we free newkids here ??? */
 		goto out;
 	}
-
 
 #ifdef USE_DSA_WAIT
 	dsa_wait (0);	/* progress any other connections before writing EDB */
@@ -971,7 +963,6 @@ out:
 			   ("How comes its not a seq !?!"));
 		goto out;
 	}
-
 
 	for (lpe = first_member (spe); lpe; lpe = next_member (spe, lpe)) {
 		if (pe2ps(fps, lpe) != OK) {
@@ -1346,7 +1337,6 @@ int n;
 
 	return OK;
 }
-
 
 set_edb_limit (oper)
 struct oper_act	* oper;

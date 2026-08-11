@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftaminitiate.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
-
 
 #define	FS_CTX		"iso ftam"
 #define	FS_ASN		"ftam pci"
@@ -108,7 +105,6 @@ not_enough:
 
 	return result;
 }
-
 
 static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	int	i;

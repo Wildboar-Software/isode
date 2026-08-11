@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/util.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include	<stdio.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"
@@ -312,7 +310,6 @@ void pr_entry (ptpe *p) {
 	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }
 
-
 /*
  * null function for what evr purposes
  */
@@ -598,7 +595,6 @@ o1string:
 		else
 			val = 0;
 		break;
-
 
 	default:
 		pepsylose (mod, typ, NULLPE, "same: %d not implemented\n",

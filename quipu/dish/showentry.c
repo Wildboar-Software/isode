@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/showentry.c,v 9.
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/entry.h"
@@ -123,7 +122,6 @@ void call_showentry (int argc, char **argv) {
 	}
 	if ((argc = read_cache (argc, argv)) < 0)
 		return;
-
 
 	if (argc != 1) {
 		ps_printf (OPT,"Unknown option %s\n",argv[1]);

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/shadow.c,v 9.0 1992/0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/dua.h"
@@ -278,7 +277,6 @@ void shadow_update (void) {
 	}
 }
 
-
 int shadow_fail_wakeup (struct oper_act *on) {
 #ifdef notanymore
 	struct oper_act	* on_tmp;
@@ -406,7 +404,6 @@ int process_shadow (struct oper_act *on) {
 		goto out;
 	}
 
-
 	DATABASE_HEAP;
 	ne = entry_cpy (eptr);
 	GENERAL_HEAP;
@@ -418,7 +415,6 @@ int process_shadow (struct oper_act *on) {
 		ne -> e_data = E_TYPE_CACHE_FROM_MASTER;
 		new_cacheEDB (dn);
 	}
-
 
 	if (unravel_attribute(ne, &err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: unravel failure",
@@ -500,5 +496,4 @@ out:
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
 
 }
-
 

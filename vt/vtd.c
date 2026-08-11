@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtd.c,v 9.0 1992/06/16 1
  *
  */
 
-
 #undef MAP_BACKSPACE	/*Map backspace character to VT ERASE CHAR*/
 
 #include <signal.h>
@@ -380,7 +379,6 @@ void vtd (int f, int p) {
 	erase_line = ottyb.sg_kill;
 	intr_char = otc.t_intrc;
 #endif
-
 
 	for (;;) {
 		fd_set    ibits, obits;

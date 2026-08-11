@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rygenid.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
 
 /*    generate unique invoke ID */
-
 
 int	RyGenID (sd)
 int	sd;

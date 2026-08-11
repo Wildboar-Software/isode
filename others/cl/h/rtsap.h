@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_RtSAP_
 #define	_RtSAP_
 
@@ -30,14 +29,12 @@
 
 #include "acsap.h"		/* definitions for AcS-USERs */
 
-
 struct RtSAPaddr {		/* RtSAP address (old-style) */
 	struct SSAPaddr rta_addr;
 
 	u_short	rta_port;
 };
 #define	NULLRtA			((struct RtSAPaddr *) 0)
-
 
 struct RtSAPstart {		/* RT-OPEN.INDICATION */
 	int	    rts_sd;		/* RTS descriptor */
@@ -65,7 +62,6 @@ struct RtSAPstart {		/* RT-OPEN.INDICATION */
     ACSFREE (&((rts) -> rts_start)); \
 }
 
-
 struct RtSAPconnect {		/* RT-OPEN.CONFIRMATION */
 	int	    rtc_sd;		/* RTS descriptor */
 
@@ -90,14 +86,12 @@ struct RtSAPconnect {		/* RT-OPEN.CONFIRMATION */
     ACCFREE (&((rtc) -> rtc_connect)); \
 }
 
-
 struct RtSAPturn {		/* RT-TURN-{GIVE,PLEASE}.INDICATION */
 	int	    rtu_please;		/* T   = RT-TURN-PLEASE.INDICATION
 				   NIL = RT-TURN-GIVE.INDICATION */
 
 	int	    rtu_priority;	/* priority, iff rtu_please == T */
 };
-
 
 struct RtSAPtransfer {		/* RT-TRANSFER.INDICATION */
 	PE	    rtt_data;
@@ -107,7 +101,6 @@ struct RtSAPtransfer {		/* RT-TRANSFER.INDICATION */
     if ((rtt) -> rtt_data) \
 	pe_free ((rtt) -> rtt_data), (rtt) -> rtt_data = NULLPE; \
 }
-
 
 struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
 	int     rta_peer;		/* T   = RT-U-ABORT.INDICATION
@@ -148,11 +141,9 @@ struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
 	pe_free ((rta) -> rta_udata), (rta) -> rta_udata = NULLPE; \
 }
 
-
 struct RtSAPclose {		/* RT-CLOSE.INDICATION */
 	int	    rtc_dummy;
 };
-
 
 struct RtSAPindication {
 	int	    rti_type;		/* the union element present */
@@ -175,7 +166,6 @@ struct RtSAPindication {
 #define	rti_close	rti_un.rti_un_close
 #define	rti_finish	rti_un.rti_un_finish
 };
-
 
 extern char *rtsapversion;
 

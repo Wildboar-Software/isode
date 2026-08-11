@@ -23,7 +23,6 @@
  *
  */
 
-
 #ifndef	_RoSAP_
 #include "rosap.h"		/* definitions for RoS-USERs */
 #endif
@@ -41,7 +40,6 @@
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
-
 
 #define	rosapPsig(acb, sd) \
 { \
@@ -140,7 +138,6 @@
 }
 #endif
 
-
 #ifndef	lint
 #ifndef	__STDC__
 #define	copyRoSAPdata(base,len,d) \
@@ -161,30 +158,23 @@
 #define	copyRoSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pylose() \
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s", PY_pepy)
-
 
 int	ropktlose (struct assocblk*acb, ...);
 int	rosapreject (struct assocblk*acb, ...);
 int	rosaplose (struct RoSAPindication*, ...);
 
-
 int	acb2osdu ();
-
 
 int	ro2rtswrite (), ro2rtswait (), ro2rtsready (), ro2rtsasync (),
 	ro2rtsmask ();
 
-
 int	ro2pswrite (), ro2pswait (), ro2psasync (), ro2psmask ();
-
 
 int	ss2roslose (), ss2rosabort ();
 int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 	ro2ssready ();
-
 
 /* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */
@@ -193,7 +183,6 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 #define	APDU_REJECT	4	/* Reject */
 
 #define	APDU_UNKNOWN	(-1)	/* anything other than the above */
-
 
 /* Reject APDU types */
 #define	REJECT_GENERAL	0	/* General Problem */

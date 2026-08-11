@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daplose.c,v 9.0 19
 static int  _daplose ();
 static int  _dapreject ();
 #endif
-
 
 #ifndef	lint
 int	daplose (struct DAPindication *di, ...) {
@@ -62,7 +59,6 @@ int daplose (struct DAPindication *di, int reason, char *what, char *fmt) {
 	return daplose (di, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int
@@ -119,7 +115,6 @@ int dapreject (struct DAPindication *di, int reason, int id, char *what, char *f
 	return dapreject (di, reason, id, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int

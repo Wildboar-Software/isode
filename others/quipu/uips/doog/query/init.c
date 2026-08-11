@@ -74,7 +74,6 @@ init_query_engine (int argc, char *argv[]) {
 
 	read_args(argc, argv);
 
-
 	/*
 	 *	Read `dsaptailor' file
 	 */
@@ -90,7 +89,6 @@ init_query_engine (int argc, char *argv[]) {
 
 		fclose(config_file);
 	}
-
 
 	/*
 	 *	Read users' .quipurc
@@ -114,7 +112,6 @@ init_query_engine (int argc, char *argv[]) {
 							 TRUE);
 } /* init_query_engine */
 
-
 /*
  * - read_quipurc() -
  *
@@ -128,17 +125,14 @@ read_quipurc () {
 	char *p, *part1, *part2;
 	FILE *config_file;
 
-
 	strcpy(quipurc_path, getenv("HOME"));
 	strcat(quipurc_path, quipurc_name);
-
 
 	if ((config_file = fopen (quipurc_path, "r")) == 0)
 		return;
 
 	while (fgets(line, LINESIZE, config_file) != 0) {
 		p = SkipSpace(line);
-
 
 		/* Ignore comments and blanks */
 
@@ -151,7 +145,6 @@ read_quipurc () {
 
 		*part2++ = '\0';
 		part2 = TidyString(part2);
-
 
 		/*
 		 *	Read users DN

@@ -33,16 +33,13 @@
 #include "ADD-ops.h"            /* ADD operation definitions */
 #include "ADD-types.h"		/* ADD type definitions */
 
-
 #ifdef	SYS5
 struct passwd *getpwuid ();
 #endif
 
-
 static char *myservice = "addtest";
 static char *mycontext = "addtest context";
 static char *mypci =     "addtest pci";
-
 
 extern int length;
 
@@ -54,7 +51,6 @@ int	addit_result ();
 int	addtest_error ();
 
 char    *getlocalhost();
-
 
 static struct dispatch dispatches[] = {
 
@@ -76,10 +72,7 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
 char   *ctime ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
@@ -88,9 +81,7 @@ int main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-
 /* ARGUMENTS */
-
 
 static int
 addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends) {
@@ -105,8 +96,6 @@ addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **p
 	return OK;
 }
 
-
-
 static int  do_help (sd, ds, args, dummy)
 int	sd;
 struct dispatch *ds;
@@ -119,8 +108,6 @@ caddr_t *dummy;
 
 	return NOTOK;
 }
-
-
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -137,10 +124,7 @@ caddr_t *dummy;
 	exit (0);
 }
 
-
-
 /* RESULTS */
-
 
 static int
 addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi) {
@@ -148,9 +132,6 @@ addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoS
 	printf ("\n");
 	return OK;
 }
-
-
-
 
 static int
 addtest_error (

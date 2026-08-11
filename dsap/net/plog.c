@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/plog.c,v 9.0 1992/
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"
@@ -33,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/plog.c,v 9.0 1992/
 extern	LLog	* log_dsap;
 
 SFP	abort_vector = NULL;
-
 
 void
 ros_log (struct RoSAPpreject *rop, char *event) {

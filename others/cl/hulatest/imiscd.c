@@ -21,7 +21,6 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imiscd.c,v 5.0 88/07/21 14:42:08
  *
  */
 
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -38,13 +37,10 @@ struct utmp *getutent ();
 #endif
 #include <sys/stat.h>
 
-
 static char *myservice = "isode miscellany";/* should be something else */
-
 
 static int execuid = 1;
 static int execgid = 1;
-
 
 /* OPERATIONS */
 int	op_utcTime (), op_genTime (), op_timeOfDay (), op_users (),
@@ -78,19 +74,13 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
 /* TYPES */
 struct type_IMISC_IA5List *str2ia5list ();
 
-
-
 char	*getlocalhost();
-
 
 long	time ();
 char   *ctime ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, dispatches,
@@ -100,7 +90,6 @@ int main (int argc, char **argv, char **envp) {
 }
 
 /* OPERATIONS */
-
 
 static int
 op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -138,8 +127,6 @@ op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 
 	return OK;
 }
-
-
 
 static int
 op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -194,9 +181,7 @@ op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 	return OK;
 }
 
-
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
-
 
 static int
 op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -225,7 +210,6 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 	return OK;
 }
 
-
 #ifdef	sun
 #define	BSD42
 #undef	SYS5
@@ -236,8 +220,6 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 #endif
 #define	LMAX	(sizeof (ut -> ut_line))
 #define	NMAX	(sizeof (ut -> ut_name))
-
-
 
 static int
 op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -331,11 +313,8 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 #define	NBYTES	512
 #define	LINSIZ	72
-
-
 
 static int
 op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -399,10 +378,7 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 #define	NPASS	6
-
-
 
 static int
 op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -447,7 +423,6 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 /* Based on an f77 algorithm supplied by Frank Wancho <Wancho@SIMTEL20>,
    which was based on a basic algorithm by Paul D. Merillat and Arthur A. Key.
 
@@ -458,7 +433,6 @@ congested:
    Not going into combinatorial analysis (with 7 characters the "possible"
    combinations exceed 20 million).
  */
-
 
 #define	TOT	54636577
 
@@ -494,7 +468,6 @@ static struct pair {
 
 	NULL, TOT
 };
-
 
 static char *Mx;
 static char *Nx =		/* XXX */
@@ -543,13 +516,11 @@ static struct web {
 	NULL, 0, 0, NULL, NULL
 };
 
-
 #define	ifix(f)		((int) ((float) (f) + 0.5))
 #define	nrand()		(((float) (rand ()) / (float) 2147483647))
 #define	rng(a,b)	if (((i = ifix (a * nrand ()) * b) ? i -= b : i) < 0\
 				|| i >= a * b + (1 - b))\
 			    return NOTOK;
-
 
 static int
 pwdgen (char *pw) {
@@ -612,7 +583,6 @@ pwdgen (char *pw) {
 	return OK;
 }
 
-
 static struct obj {
 	char   *o_string;
 	int     o_advance;
@@ -622,7 +592,6 @@ static struct obj {
 
 	NULL, 0
 };
-
 
 static int
 object (char *pw) {
@@ -643,7 +612,6 @@ object (char *pw) {
 	return OK;
 }
 
-
 #ifndef	FORTUNE
 #define	FORTUNE	"/usr/games/fortune"
 #endif
@@ -654,7 +622,6 @@ object (char *pw) {
 #define	RFINGER	"/usr/bin/finger"
 #endif
 #endif
-
 
 static int
 op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -828,8 +795,6 @@ out:
 	return result;
 }
 
-
-
 static int
 op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 #ifndef	SYS5
@@ -939,7 +904,6 @@ out:
 	return result;
 }
 
-
 static int
 do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
@@ -985,7 +949,6 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	fclose (fp);
 	_exit (0);			/* NOTREACHED */
 }
-
 
 static int
 op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {

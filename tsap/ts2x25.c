@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2x25.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -163,7 +161,6 @@ done:
 	return DONE;
 }
 
-
 static int
 x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int     onoff;
@@ -209,7 +206,6 @@ x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
 done:
 	;
 
-
 #ifdef	FIONBIO
 	ioctl (fd, FIONBIO, (onoff = 0, (char *) &onoff));
 #else
@@ -231,7 +227,6 @@ done:
 static char nsdu[MAXNSDU];
 static char *np;
 static int  bl;
-
 
 static int
 x25init (int fd, struct tsapkt *t) {
@@ -271,8 +266,6 @@ x25init (int fd, struct tsapkt *t) {
 	return OK;
 }
 
-
-
 static int
 read_nsdu_buffer (int fd, char *buffer, int cc) {
 	if (cc > bl)
@@ -285,8 +278,6 @@ read_nsdu_buffer (int fd, char *buffer, int cc) {
 
 	return cc;
 }
-
-
 
 char *x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
@@ -327,7 +318,6 @@ char *x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdi
 	}
 	return buffer;
 }
-
 
 int x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
@@ -423,7 +413,6 @@ int x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	return OK;
 }
 #endif
-
 
 int XTService (struct tsapblk *tb) {
 #ifndef	UBC_X25

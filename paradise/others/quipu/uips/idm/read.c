@@ -23,7 +23,6 @@ static struct namelist * plp = NULLLIST;
 
 void searchFail(), de_exit();
 
-
 int de_Read() {
 	char * more;
 	char * rdn;

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dec.c,v 9.0 1992/06/1
  *
  */
 
-
-
 #include	<stdio.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"
@@ -125,7 +123,6 @@ pr_obj (
 ) {
 	int     cnt = 0;
 
-
 	DLOG (psap_log, LLOG_DEBUG, ("Decode object %s.%s type %s",
 								 mod -> md_name, pname(p),
 								 pr_petype(p->pe_type)));
@@ -164,7 +161,6 @@ pr_obj (
 					|| (*mod->md_ducode) (parm, pe, p, 0) == NOTOK)
 				goto bad;
 			break;
-
 
 		default:
 			if (pr_type(expl, pe, parm, p, mod) == NOTOK)
@@ -553,7 +549,6 @@ pr_type (
 								  pe_error(pe->pe_errno));
 			break;
 
-
 		case OCTET_PTR:
 			if (p[1].pe_type != OCTET_LEN)
 				return pepsylose (mod, &p[1], NULLPE,
@@ -564,7 +559,6 @@ pr_type (
 				return pepsylose (mod, p, pe, "pr_type:bad octet string %s",
 								  pe_error(pe->pe_errno));
 			break;
-
 
 		case SBITSTRING:
 			if (pe != NULLPE) {
@@ -901,7 +895,6 @@ bad:
 	return (NOTOK);
 }
 
-
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
@@ -1157,7 +1150,6 @@ bad:
 	return (NOTOK);
 
 }
-
 
 /*
  * Parse a sequence of calling appropriate routines to parse each sub
@@ -1993,7 +1985,6 @@ pr_etype (
 bad:
 	return (NOTOK);
 }
-
 
 /*
  * determine if the given field is present in the data This is simple

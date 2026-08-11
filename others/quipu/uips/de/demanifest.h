@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef _demanifest_h
 #define _demanifest_h
 

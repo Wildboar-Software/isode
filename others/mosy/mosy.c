@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
  *
  */
 
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/mosy/RCS/mosy.c,v 9.0 19
 static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),
         check_objects (), print_yi (), print_yo (), print_yt (), print_type (),
         print_value ();
-
 
 int	Cflag = 0;		/* mosy */
 int	dflag = 0;
@@ -67,14 +65,12 @@ static char autogen[BUFSIZ];
 char *sysin = NULLCP;
 static char sysout[BUFSIZ];
 
-
 typedef struct yoi {
 	char   *yi_name;
 
 	YV	    yi_value;
 }		yoi, *OI;
 #define	NULLOI	((OI) 0)
-
 
 typedef struct yot {
 	char   *yo_name;
@@ -92,7 +88,6 @@ typedef struct yot {
 }		yot, *OT;
 #define	NULLOT	((OT) 0)
 
-
 typedef struct ytt {
 	char   *yt_name;
 
@@ -105,7 +100,6 @@ typedef struct ytt {
 	char   *yt_refer;
 }		ytt, *TT;
 #define	NULLTT	((TT) 0)
-
 
 typedef struct symlist {
 	char   *sy_encpref;
@@ -137,7 +131,6 @@ static	SY	myobjects = NULLSY;
 static	SY	mytraps = NULLSY;
 static	SY	mytypes = NULLSY;
 
-
 static SY	new_symbol (), add_symbol ();
 
 static char   *id2str ();
@@ -147,8 +140,6 @@ static char   *val2str ();
 
 static OI	lookup_identifier ();
 static OT	lookup_object ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -258,7 +249,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-
 int yyerror (char *s) {
 	yyerror_aux (s);
 
@@ -312,7 +302,6 @@ yyerror_aux (char *s) {
 		fprintf (stderr, "last token read was \"%s\"\n", yytext);
 }
 
-
 #ifndef	lint
 myyerror (char *fmt, ...) {
 	char    buffer[BUFSIZ];
@@ -328,15 +317,12 @@ myyerror (char *fmt, ...) {
 }
 #endif
 
-
 int yywrap () {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
 	return 1;
 }
-
-
 
 int yyprint (char *s, int f, int top) {
 }
@@ -382,7 +368,6 @@ int pass1 () {
 	printf ("\n\n");
 }
 
-
 pass1_oid (mod, id, value)
 char   *mod,
 	   *id;
@@ -412,7 +397,6 @@ YV	value;
 	myidentifiers = add_symbol (myidentifiers, sy);
 }
 
-
 pass1_obj (mod, id, syntax, value, aname, sname, descr, refer, idx, defval)
 char   *mod,
 	   *id,
@@ -427,7 +411,6 @@ YV	value,
 {
 	SY	    sy;
 	OT	    yo;
-
 
 	if ((yo = (OT) calloc (1, sizeof *yo)) == NULLOT)
 		yyerror ("out of memory");
@@ -456,7 +439,6 @@ YV	value,
 	sy -> sy_yo = yo;
 	myobjects = add_symbol (myobjects, sy);
 }
-
 
 pass1_trap (mod, id, enterprise, number, vars, descr, refer)
 char   *mod,
@@ -494,7 +476,6 @@ char   *descr,
 	sy -> sy_yt = yt;
 	mytraps = add_symbol (mytraps, sy);
 }
-
 
 pass1_type (encpref, decpref, prfpref, mod, id, yp)
 char  *encpref,
@@ -573,14 +554,10 @@ int pass2 () {
 	delay = 0;
 }
 
-
-
 static
 do_id (OI yi, char *id) {
 	printf ("%-20s %s\n", yi -> yi_name, id2str (yi -> yi_value));
 }
-
-
 
 static
 do_obj1 (OT yo, char *id) {
@@ -763,8 +740,6 @@ done_sequence:
 	}
 }
 
-
-
 static
 do_trap1 (TT yt, char *id) {
 	YV	    yv;
@@ -820,7 +795,6 @@ lookup_identifier (char *mod, char *id) {
 	return NULLOI;
 }
 
-
 static char *id2str (yv)
 YV	yv;
 {
@@ -860,7 +834,6 @@ lookup_object (char *mod, char *id) {
 
 	return NULLOT;
 }
-
 
 static	check_objects (yv, clause, typesOK)
 YV    yv;
@@ -979,7 +952,6 @@ print_yi (OI yi, int level) {
 	}
 }
 
-
 static
 print_yo (OT yo, int level) {
 	if (yo == NULLOT)
@@ -996,7 +968,6 @@ print_yo (OT yo, int level) {
 		print_value (yo -> yo_value, level + 1);
 	}
 }
-
 
 static
 print_yt (TT yt, int level) {
@@ -1015,7 +986,6 @@ print_yt (TT yt, int level) {
 		print_value (yt -> yt_vars, level + 1);
 	}
 }
-
 
 static	print_type (yp, level)
 YP	yp;
@@ -1103,7 +1073,6 @@ int	level;
 	}
 }
 
-
 static	print_value (yv, level)
 YV	yv;
 int	level;
@@ -1183,7 +1152,6 @@ new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
 	return sy;
 }
 
-
 static SY
 add_symbol (SY s1, SY s2) {
 	SY	    sy;
@@ -1212,7 +1180,6 @@ int	code;
 	return yp;
 }
 
-
 YP	add_type (yp1, yp2)
 YP	yp1,
  yp2;
@@ -1239,7 +1206,6 @@ int	code;
 
 	return yv;
 }
-
 
 YV	add_value (yp1, yp2)
 YV	yp1,

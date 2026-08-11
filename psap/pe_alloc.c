@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_alloc.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 /* A Presentation Element (or PElement) is an internal representation for
    a presentation type from ISO8825.  The fields of the structure are:
@@ -63,7 +60,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_alloc.c,v 9.0 1992/
 
 #define PE_LIST_CNT 100
 
-
 int	pe_allocs;
 int	pe_frees;
 int	pe_most;
@@ -72,7 +68,6 @@ PE	pe_list = NULLPE;
 #ifdef	DEBUG
 PE	pe_active = NULLPE;
 #endif
-
 
 PE
 pe_alloc (PElementClass class, PElementForm form, PElementID id) {

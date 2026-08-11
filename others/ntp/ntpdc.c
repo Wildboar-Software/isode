@@ -19,7 +19,6 @@ static char *RCSid = "$Header: /xtel/isode/isode/others/ntp/RCS/ntpdc.c,v 9.0 19
 #define	STIME	500000		/* usec to wait for another response */
 #define	MAXPACKETSIZE 1500
 
-
 int debug;
 int s;
 int timedout;
@@ -34,7 +33,6 @@ char packet[MAXPACKETSIZE];
 #endif
 char	LocalHostName[MAXHOSTNAMELEN+1];	/* our hostname */
 char	*LocalDomain;		/* our local domain name */
-
 
 int main (int argc, char *argv[]) {
 	char *p;

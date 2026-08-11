@@ -20,7 +20,6 @@
  *
  */
 
-
 #include "ftam.h"		/* definitions for FS-USERs */
 #include "DOCS-types.h"
 #ifdef	NULL
@@ -51,7 +50,6 @@
 #include <sys/stat.h>
 #include "usr.dirent.h"
 
-
 #ifndef	MAXPATHLEN
 #define	MAXPATHLEN	MAXNAMLEN
 #endif
@@ -64,7 +62,6 @@
 
 /*
    Used to calculate the estimated integral FADU size:
-
 
    FTAM-3 transfers -
 
@@ -101,7 +98,6 @@
     If the data portion is smaller, then the definite form might be used which
     requires 3 octets, not 4.
 
-
    FTAM-1 transfers -
 
 	FADUs are batched to the P-DATA service.  This means that the
@@ -128,7 +124,6 @@
 			}
 		    }
 
-
 		}
 
      4 + N*(4 + 3 + 4 + 4)
@@ -136,7 +131,6 @@
 #define	MAGIC_SINGLE	19
 #define	MAGIC_OCTET1	4
 #define	MAGIC_OCTET2	15
-
 
 struct vfsmap {
 	char   *vf_entry;		/* document entry */
@@ -175,7 +169,6 @@ struct vfsmap {
 
 struct vfsmap *st2vfs ();
 
-
 /* WATCHP is one pepsy people should use as the macro which is
  * not expansion order dependant
  */
@@ -201,18 +194,15 @@ struct vfsmap *st2vfs ();
 #endif
 #endif
 
-
 int	binarypeek (), textpeek (), fdfpeek ();
 
 int	binarycheck (), textcheck ();
-
 
 #define	FA_RDATTR \
     (FA_FILENAME | FA_ACTIONS | FA_CONTENTS | FA_ACCOUNT | FA_DATE_CREATE \
 	| FA_DATE_MODIFY | FA_DATE_READ | FA_DATE_ATTR | FA_ID_CREATE \
 	| FA_ID_MODIFY | FA_ID_READ | FA_ID_ATTR | FA_AVAILABILITY \
 	| FA_FILESIZE)
-
 
 #ifdef	BRIDGE
 extern int  ftp_default;

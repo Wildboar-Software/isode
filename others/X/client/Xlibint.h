@@ -83,7 +83,6 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 #define WORD64ALIGN
 #endif /* WORD64 */
 
-
 /*
  * GetReq - Get the next avilable X request packet in the buffer and
  * return it.
@@ -141,7 +140,6 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 	dpy->request++
 #endif
 
-
 /*
  * GetResReq is for those requests that have a resource ID
  * (Window, Pixmap, GContext, etc.) as their single argument.
@@ -198,7 +196,6 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
 	dpy->request++
 #endif
 
-
 #define SyncHandle() \
 	if (dpy->synchandler) (*dpy->synchandler)(dpy)
 
@@ -223,7 +220,6 @@ extern void Data();
 	} else\
 		_XSend(dpy, data, len)
 #endif /* DataRoutineIsProcedure */
-
 
 /* Allocate bytes from the buffer.  No padding is done, so if
  * the length is not a multiple of 4, the caller must be
@@ -269,7 +265,6 @@ extern void Data();
 				   a non-existant character with zero-value
 				   metrics, but requires drivers to output
 				   the default char in their place. */
-
 
 #ifdef MUSTCOPY
 

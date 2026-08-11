@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/psaptest.c,v 9.0 1992/
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -197,7 +196,6 @@ doit:
 		ps_free (ps);
 	}
 }
-
 
 static void ps_die (PS ps, char *s) {
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));

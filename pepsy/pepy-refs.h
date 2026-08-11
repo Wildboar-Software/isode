@@ -95,7 +95,6 @@ struct rep_int {
 };
 #define NULLREP_INT	(struct rep_int *)0
 
-
 struct repeats {
 	struct rep_int	*rp_sq1;	/* SEQUECE of INTEGER */
 	struct rep_elem	*rp_sq2;	/* SEQUENCE OF Rep-elem */

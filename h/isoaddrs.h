@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_ISOADDRS_
 #define	_ISOADDRS_
 
@@ -30,7 +29,6 @@
 #ifndef	_GENERAL_
 #include "general.h"
 #endif
-
 
 #ifdef	NULLPE
 typedef struct AEInfo {		/* "real" directory services! */
@@ -63,7 +61,6 @@ AEI	_str2aei ();
 
 char   *sprintaei ();
 #endif
-
 
 struct NSAPaddr {		/* this structure shouldn't have holes in it */
 	long     na_stack;			/* TS-stack */
@@ -176,7 +173,6 @@ struct TSAPaddr {
 };
 #define	NULLTA			((struct TSAPaddr *) 0)
 
-
 struct SSAPaddr {
 	struct TSAPaddr sa_addr;		/* transport address */
 
@@ -192,7 +188,6 @@ struct SSAPaddr {
 #define	sa_port		un_sa.sa_un_port
 };
 #define	NULLSA			((struct SSAPaddr *) 0)
-
 
 struct PSAPaddr {
 	struct SSAPaddr pa_addr;		/* session address */
@@ -212,13 +207,11 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 
-
 #ifdef	NULLPE
 char   *alias2name ();
 
 extern PE    (*acsap_lookup) ();
 #endif
-
 
 #ifdef	NULLOID
 struct isoentity {		/* for stub directory service */
@@ -241,7 +234,6 @@ struct PSAPaddr *is2paddr (char *host, char *service, struct isoservent *is);	/*
 struct SSAPaddr *is2saddr (char *host, char *service, struct isoservent *is);	/* service entry to SSAPaddr */
 struct TSAPaddr *is2taddr (char *host, char *service, struct isoservent *is);	/* service entry to TSAPaddr */
 
-
 struct PSAPaddr *str2paddr (char *str);  /* string encoding to PSAPaddr */
 struct SSAPaddr *str2saddr (char *str);  /* string encoding to SSAPaddr */
 struct TSAPaddr *str2taddr (char *str);  /* string encoding to TSAPaddr */
@@ -259,13 +251,11 @@ struct NSAPinfo *getnsapinfo ();/* info about an NSAP */
 char   *na2str ();		/* pretty-print NSAPaddr */
 char   *pa2str ();		/* pretty-print PSAPaddr */
 
-
 int	isodeserver ();		/* generic server dispatch */
 
 int	iserver_init ();	/* phase 1 */
 int	iserver_wait ();	/* phase 2 */
 fd_set	iserver_mask ();	/* linkage */
-
 
 /* all of this really should be in "isoqos.h" ... */
 

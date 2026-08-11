@@ -54,23 +54,19 @@ auth_bind_type auth_type;
 
 	int secure_ds_bind();
 
-
 	bind_arg.dba_version = DBA_VERSION_V1988;
 	bind_arg.dba_auth_type = DBA_AUTH_SIMPLE;
-
 
 	if (username != NULLCP || *username != '\0')
 		bind_arg.dba_dn = str2dn(username);
 	else
 		bind_arg.dba_dn = NULLDN;
 
-
 	if (dsa_address == NULLCP || isnull(*dsa_address)) {
 		fprintf(stderr,
 				"BIND ERROR - Cannot find name of DSA to bind to!\n");
 		return FALSE;
 	}
-
 
 	switch (auth_type) {
 	case EXTERNAL_AUTH:
@@ -79,7 +75,6 @@ auth_bind_type auth_type;
 
 		/* Not yet implemented */
 		return FALSE;
-
 
 	case SIMPLE_AUTH:
 
@@ -92,11 +87,9 @@ auth_bind_type auth_type;
 
 		break;
 
-
 	default:
 		break;
 	}
-
 
 	if (secure_ds_bind(&bind_arg, &bind_error, &bind_result) != DS_OK) {
 		if (bind_error.dbe_type == DBE_TYPE_SECURITY)
@@ -108,12 +101,10 @@ auth_bind_type auth_type;
 		return FALSE;
 	}
 
-
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE, ("bound (%s to %s)",
 								  username, dsa_address));
 #endif
-
 
 	return TRUE;
 } /* bind_to_ds */

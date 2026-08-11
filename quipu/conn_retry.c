@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_retry.c,v 9.0 19
  *
  */
 
-
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

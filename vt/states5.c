@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/states5.c,v 9.0 1992/06/
  *
  */
 
-
 #include "vtpm.h"
 
 #define	undefined(s1, e1) \
@@ -98,7 +97,6 @@ int s5_42T (int event, PE pe) {
 int s5_42N (int event, PE pe) {
 	undefined ("42N", event); /* NOTREACHED */
 }
-
 
 int s5_61 (int event, PE pe) {
 	switch (event) {

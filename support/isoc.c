@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -67,7 +66,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
 #define	ASYNC
 #endif
 
-
 #define	ISN(req) \
     (req & (SR_MINORSYNC | SR_MAJORSYNC | SR_RESYNC | SR_ACTIVITY)) \
 	? (long) ((getpid () % (SERIAL_MAX - SERIAL_MIN + 1)) + SERIAL_MIN) \
@@ -85,7 +83,6 @@ static int   isrts = 0;
 static int   status = 0;
 
 static char *myname = "isoc";
-
 
 void	adios (char* what, char* fmt, ...),
 		advise (char* what, char* fmt, ...);
@@ -124,7 +121,6 @@ static void ts_main (struct isoservent *is, char *addr);
 static int  qcmp ();
 static int  rts_event ();
 static void rts_transferequest ();
-
 
 long	lseek ();
 
@@ -318,7 +314,6 @@ static void ts_main (struct isoservent *is, char *addr) {
 #endif
 	fprintf (stderr, "connected\n");
 
-
 	if (getenv ("TEST_QUEUED_WRITES")) {
 		if (TSetQueuesOK (tc -> tc_sd, 1, td) == NOTOK)
 			ts_adios (td, "T-SET-QUEUES-OK");
@@ -423,7 +418,6 @@ static void  ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, event);
 	_exit (1);
 }
-
 
 static void  ts_advise (struct TSAPdisconnect *td, char *event) {
 	char    data[BUFSIZ];
@@ -1996,13 +1990,11 @@ static void ps_abort (int sd, char *reason) {
 	adios (NULLCP, "%s", reason);
 }
 
-
 static void  ps_adios ( struct PSAPabort *pa, char   *event) {
 	ps_advise (pa, event);
 
 	_exit (1);
 }
-
 
 static void  ps_advise ( struct PSAPabort *pa, char   *event) {
 	char    buffer[BUFSIZ];
@@ -2363,7 +2355,6 @@ static void rts_waitfor (int sd) {
 		}
 }
 
-
 static int  rts_event (sd, rti)
 int	sd;
 struct RtSAPindication *rti;
@@ -2393,7 +2384,6 @@ struct RtSAPindication *rti;
 	}
 }
 
-
 static void  rts_adios (rta, event)
 struct RtSAPabort *rta;
 char   *event;
@@ -2402,7 +2392,6 @@ char   *event;
 
 	_exit (1);
 }
-
 
 static void  rts_advise (rta, event)
 struct RtSAPabort *rta;
@@ -2774,8 +2763,6 @@ static void ros_invokerequest (int sd, PE pe) {
 	}
 }
 
-
-
 static void  ros_adios (rop, event)
 struct RoSAPpreject *rop;
 char   *event;
@@ -2784,7 +2771,6 @@ char   *event;
 
 	_exit (1);
 }
-
 
 static void  ros_advise (rop, event)
 struct RoSAPpreject *rop;
@@ -2808,7 +2794,6 @@ char   *event;
 #ifndef	NBBY
 #define	NBBY	8
 #endif
-
 
 #ifndef	TMS
 static void timer (int cc) {
@@ -2843,7 +2828,6 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 }
 #else
 long	times ();
-
 
 static	timer (cc)
 int	cc;

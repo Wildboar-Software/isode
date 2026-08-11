@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/org.c,
  *
  */
 
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
@@ -126,7 +125,6 @@ freeOrgListArgs() {
 	dn_free(larg.lsa_object);
 }
 
-
 void
 freeOrgSearchArgs() {
 	/*
@@ -143,7 +141,6 @@ freeOrgSearchArgs() {
 	}
 	*/
 }
-
 
 int listAllOrgs(cstr, olistp)
 char * cstr;

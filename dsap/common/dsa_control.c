@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_control.c,v
  *
  */
 
-
 #include <signal.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -39,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_control.c,v
 #include <sys/wait.h>
 #endif
 #include "quipu/syntaxes.h"
-
 
 extern struct qbuf *str2qb(char *str, int len, int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;
@@ -430,7 +428,6 @@ int optional_dn_free (struct optional_dn *item_to_free) {
 	free ((char *)item_to_free) ;
 }
 
-
 int quipu_call_syntax (void) {
 	add_attribute_syntax
 	("Call",
@@ -674,7 +671,6 @@ ops_cpy (struct ops *item) {
 	tmp_item->invoke_id = item->invoke_id ;
 	tmp_item->operation_id = item->operation_id ;
 	tmp_item->base_object = dn_cpy(item->base_object) ;
-
 
 	if (item->start_time) {
 		tmp_item->start_time = strdup(item->start_time) ;

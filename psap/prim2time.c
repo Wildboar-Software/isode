@@ -24,17 +24,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2time.c,v 9.0 1992
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "psap.h"
 
-
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
 static long	get_usec ();
-
 
 UTC
 prim2time (PE pe, int generalized) {
@@ -62,7 +58,6 @@ prim2time (PE pe, int generalized) {
 	return (u ? u : pe_seterr (pe, generalized ? PE_ERR_GENT : PE_ERR_UTCT,
 							   NULLUTC));
 }
-
 
 UTC
 str2utct (char *cp, int len) {
@@ -113,7 +108,6 @@ str2utct (char *cp, int len) {
 
 	return u;
 }
-
 
 UTC
 str2gent (char *cp, int len) {
@@ -219,7 +213,6 @@ get_zone:
 
 	return u;
 }
-
 
 /* not perfect, but what is? */
 

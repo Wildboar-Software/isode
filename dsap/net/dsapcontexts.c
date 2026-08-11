@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapcontexts.c,v 9
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"
@@ -34,7 +32,6 @@ extern LLog * log_dsap;
 #ifndef NO_STATS
 extern LLog * log_stat;
 #endif
-
 
 OID	acse_pci;
 OID	x500_da_as;

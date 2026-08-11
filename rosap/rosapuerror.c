@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapuerror.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
@@ -54,7 +52,6 @@ int RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, st
 
 	return result;
 }
-
 
 static int
 RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {

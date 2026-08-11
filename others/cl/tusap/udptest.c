@@ -4,7 +4,6 @@
 static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:04 mrose Rel $";
 #endif
 
-
 /*
  *				  NOTICE
  *
@@ -15,7 +14,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "tpkt.h"
@@ -25,19 +23,13 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
 #include "isoaddrs.h"
 #include "internet.h"
 
-
 char *gets (), *calloc ();
 
 printsrv();
 printtaddr();
 
-
 #define CLIENT_MODE  	0
 #define SERVER_MODE  	1
-
-
-
-
 
 int main (int argc, char **argv, char **envp) {
 	struct tsapkt *t;                           /* Working packet pointer */
@@ -59,7 +51,6 @@ int main (int argc, char **argv, char **envp) {
 	struct NSAPaddr   *na = ta -> ta_addrs;
 	struct TSAPdisconnect	td;
 
-
 #define	NTADDRS		FD_SETSIZE
 
 	static struct TSAPaddr *tz;
@@ -67,8 +58,6 @@ int main (int argc, char **argv, char **envp) {
 	int	    port;
 	struct NSAPaddr *tcp_na;
 	struct servent *sp;
-
-
 
 	printf ("\n UDP test driver for TUNITDATA\n");
 	printf ("\n running on host \"%s\"\n", TLocalHostName ());
@@ -102,7 +91,6 @@ int main (int argc, char **argv, char **envp) {
 	}
 	if (ta)
 		printtaddr(ta);
-
 
 	while (1) {
 		switch (toupper(*bptr)) {
@@ -174,7 +162,6 @@ int main (int argc, char **argv, char **envp) {
 			printf ("\n sending %d bytes of user data\n", cc);
 			printf ("\n here are the first 25 bytes \n");
 
-
 			for (data = 0; data < 25; data++)
 				printf (" %x ", sendbuf[data]);
 
@@ -219,8 +206,6 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-
-
 static
 printsrv (struct isoservent *is) {
 	int    n = is -> is_tail - is -> is_vec - 1;
@@ -235,8 +220,6 @@ printsrv (struct isoservent *is) {
 	printf ("\n");
 }
 
-
-
 static
 printtaddr (struct TSAPaddr *ta)
 
@@ -244,8 +227,6 @@ printtaddr (struct TSAPaddr *ta)
 
 	int    n = ta -> ta_naddr - 1;
 	struct NSAPaddr   *na = ta -> ta_addrs;
-
-
 
 	printf ("ADDR:    TSEL: %s\n",
 			sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));

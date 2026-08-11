@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992
  *
  */
 
-
-
 #include <signal.h>
 #ifndef	BADSIG
 #define	BADSIG	((SFP) -1)
 #endif
 #include "manifest.h"
-
 
 int	_iosignals_set = 0;
 
@@ -60,9 +57,7 @@ IFP	func;
 
 /*    AT&T UNIX: 5 */
 
-
 /* Probably a race condition or two in this code */
-
 
 static int blocked = 0;
 static int pending = 0;

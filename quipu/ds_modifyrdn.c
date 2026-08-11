@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_modifyrdn.c,v 9.0 
  *
  */
 
-
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -158,7 +157,6 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 			if (remove_attribute (entryptr, rdn->rdn_at, error, binddn, target, entryptr) != OK)
 				return (DS_ERROR_REMOTE);
 
-
 	/* must now add rdn as attribute */
 	for (rdn=arg->mra_newrdn; rdn!=NULLRDN; rdn=rdn->rdn_next) {
 		avs = avs_comp_new (AttrV_cpy(&rdn->rdn_av));
@@ -167,7 +165,6 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 			return (DS_ERROR_REMOTE);
 
 	}
-
 
 #ifdef TURBO_INDEX
 	/* delete the old one from the index */
@@ -216,7 +213,6 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 		turbo_add2index(entryptr);
 #endif
 
-
 #ifdef TURBO_DISK
 		/* add the new one to disk */
 		if (turbo_write(entryptr) != OK)
@@ -231,7 +227,6 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	}
 
 }
-
 
 int addrdn_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
 	Attr_Sequence as;

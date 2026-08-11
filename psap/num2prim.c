@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/num2prim.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE
 num2prim (integer i, int class, int id) {

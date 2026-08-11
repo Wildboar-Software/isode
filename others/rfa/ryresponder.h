@@ -21,7 +21,6 @@
 #include "rosy.h"
 #include "logger.h"
 
-
 static struct dispatch {
 	char   *ds_name;
 	int	    ds_operation;
@@ -29,13 +28,11 @@ static struct dispatch {
 	IFP	    ds_vector;
 };
 
-
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 void	acs_advise ();
 void	ros_adios (), ros_advise ();
 
 int	ryresponder ();
-
 
 extern int  debug;

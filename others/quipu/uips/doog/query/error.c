@@ -17,7 +17,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 
 *****************************************************************************/
 
-
 #include "types.h"
 #include "error.h"
 #include "util.h"
@@ -89,7 +88,6 @@ QE_error_code code;
 	return NULLCP;
 }
 
-
 /*
  * - char *get_message_from_ds_error() -
  *
@@ -105,7 +103,6 @@ char *ds_error_message (struct DSError *error) {
 
 	if ((ps = ps_alloc(str_open)) == NULLPS)
 		return NULLCP;
-
 
 	if (str_setup(ps, buffer, LINESIZE, 1) == NOTOK)
 		return NULLCP;
@@ -123,7 +120,6 @@ char *ds_error_message (struct DSError *error) {
 
 	return message;
 } /* get_message_from_ds_error */
-
 
 /*
  * - add_error_to_request_rec() -
@@ -146,7 +142,6 @@ struct DSError *error;
 
 	request->errors = new_err;
 } /* add_error_to_request_rec */
-
 
 QE_error_code get_log_error_type(error, task_id)
 struct DSError *error;
@@ -193,7 +188,6 @@ int task_id;
 		return QERR_ok;
 	}
 }
-
 
 /*
  * - error_list_free() -

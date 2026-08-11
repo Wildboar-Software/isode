@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_PSAP_
 #define	_PSAP_
 
@@ -276,11 +275,9 @@ integer	prim2num ();
 PE	num2prim ();
 #define	int2prim(i)		num2prim ((integer) (i), PE_CLASS_UNIV, PE_PRIM_INT)
 
-
 #define	prim2enum(i)		prim2num((i))
 #define enum2prim(a,b,c)	num2prim((a), (b), (c))
 #define enumint2prim(i)		enum2prim ((i), PE_CLASS_UNIV, PE_PRIM_ENUM)
-
 
 /* psap REAL parameters - tons of 'em */
 #define PE_REAL_FLAGS	0300	/* flag bits of real */
@@ -317,7 +314,6 @@ PE	num2prim ();
 double	prim2real ();
 PE	real2prim (double, PElementClass, PElementID);
 #define double2prim(i)		real2prim ((i), PE_CLASS_UNIV, PE_PRIM_REAL)
-
 
 char   *prim2str ();
 PE	str2prim (char *, int, PElementClass, PElementID);
@@ -381,9 +377,7 @@ PE	set_find (PE, PElementClass, PElementID);
 int	seq_add (), seq_addon (), seq_del ();
 PE	seq_find ();
 
-
 char   *pe_error ();
-
 
 #ifdef SVR4_UCB
 #ifdef PS	/* ucb define PS in sys/sparc/reg.h for "portability" !?! */
@@ -456,7 +450,6 @@ struct PStream {
 
 #define	ps_seterr(ps, e, v)	((ps) -> ps_errno = (e), (v))
 
-
 PS	ps_alloc ();
 void	ps_free ();
 
@@ -490,16 +483,13 @@ int	ts_read (), ts_write ();
 int	uvec_open ();
 int	uvec_setup ();
 
-
 #define	ps2pe(ps)		ps2pe_aux ((ps), 1, 1)
 PE	ps2pe_aux ();
 #define	pe2ps(ps, pe)		pe2ps_aux ((ps), (pe), 1)
 int	pe2ps_aux ();
 
-
 PE	pl2pe ();
 int	pe2pl ();
-
 
 extern int    ps_len_strategy;
 #define	PS_LEN_SPAG	0
@@ -507,7 +497,6 @@ extern int    ps_len_strategy;
 #define	PS_LEN_LONG	2
 
 int	ps_get_abs ();
-
 
 char   *ps_error ();
 

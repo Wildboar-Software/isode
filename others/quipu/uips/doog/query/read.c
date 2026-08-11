@@ -13,7 +13,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 
 /*****************************************************************************
 
-
 *****************************************************************************/
 
 #include "types.h"
@@ -167,7 +166,6 @@ int *task_id_ptr;
 	return QERR_ok;
 } /* start_read */
 
-
 /*
  * - process_read_ds_result() -
  *
@@ -212,7 +210,6 @@ struct DSResult *ds_result;
 
 	return RQ_results_returned;
 } /* process_read_ds_result */
-
 
 /*
  * - process_read_ds_error() -
@@ -436,7 +433,6 @@ int format;
 		}
 	}
 } /* get_read_attrs */
-
 
 /*
  * - photo2xbm() -

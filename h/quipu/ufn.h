@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef _QUIPUUFN_
 #define _QUIPUUFN_
 

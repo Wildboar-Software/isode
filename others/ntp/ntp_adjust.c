@@ -52,7 +52,6 @@ init_logical_clock () {
 	 */
 }
 
-
 /*
  *  5.0 Logical clock procedure
  *

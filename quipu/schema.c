@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/schema.c,v 9.0 1992/0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
@@ -67,7 +66,6 @@ int check_avs_schema (AttributeType at, AV_Sequence avs_oc) {
 	return OK;
 
 }
-
 
 int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 	Attr_Sequence at;
@@ -126,7 +124,6 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 			}
 		}
 	}
-
 
 	/* Now try the 'may' contain bits */
 	/* BUT not if "alias" */
@@ -208,7 +205,6 @@ int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error) {
 
 }
 
-
 int test_schema (AV_Sequence tree, AV_Sequence oc) {
 	AV_Sequence aptr, tavs;
 	struct tree_struct *tptr;
@@ -255,7 +251,6 @@ int test_hierarchy (    /* see if b in oc a */
 
 	return (NOTOK);
 }
-
 
 int check_oc_hierarchy (AV_Sequence avs) {
 	AV_Sequence avs1, avs2;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtuser.c,v 9.0 1992/06/1
  *
  */
 
-
 #include "vtpm.h"
 #include "sector1.h"
 #include "sector5.h"
@@ -41,7 +40,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/vtuser.c,v 9.0 1992/06/1
 
 #undef PEPYPARM
 #define PEPYPARM int *
-
 
 extern char peerhost[];
 extern struct PSAPaddr ts_bound;
@@ -748,7 +746,6 @@ int read_asq (PE pe) {
 		advise(LLOG_NOTICE,NULLCP,  "ASQ parse failure (%s)", PY_pepy);
 		return(0);
 	}
-
 
 	if(!ud.class) {
 		advise(LLOG_DEBUG, NULLCP,  "ASQ without Class");

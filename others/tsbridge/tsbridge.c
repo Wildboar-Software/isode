@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.c,
  *
  */
 
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>
@@ -38,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/tsbridge/RCS/tsbridge.c,
 #include "logger.h"
 #include "psap.h"
 #include "tailor.h"
-
 
 static int debug = 0;
 static int nbits = FD_SETSIZE;
@@ -77,7 +75,6 @@ static void	advise (int, char *, char *, ...);
 static void ts_adios (), ts_advise ();
 static void ts_close (), ts_discon ();
 static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
-
 
 int main (int argc, char **argv, char **envp) {
 	struct TSAPdisconnect   tds;
@@ -125,7 +122,6 @@ int main (int argc, char **argv, char **envp) {
 		}
 	}
 }
-
 
 static void
 tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
@@ -195,7 +191,6 @@ tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 	do_the_biz (sd, tc -> tc_sd);
 }
 
-
 static void
 do_the_biz (int sd1, int sd2) {
 	int nfds = 0;
@@ -220,7 +215,6 @@ do_the_biz (int sd1, int sd2) {
 			copy_tsdu (sd2, sd1);
 	}
 }
-
 
 static void
 copy_tsdu (int s1, int s2) {
@@ -291,7 +285,6 @@ copy_tsdu (int s1, int s2) {
 	}
 }
 
-
 static void
 ts_discon (struct TSAPdisconnect *td, int sd) {
 	ts_close (sd, "Normal Disconnect");
@@ -299,7 +292,6 @@ ts_discon (struct TSAPdisconnect *td, int sd) {
 
 	exit (0);
 }
-
 
 static void
 ts_close (int sd, char *event) {
@@ -313,14 +305,12 @@ ts_close (int sd, char *event) {
 		ts_advise (td, LLOG_EXCEPTIONS, "T-DISCONNECT.REQUEST");
 }
 
-
 static void
 ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
-
 
 static void
 ts_advise (struct TSAPdisconnect *td, int code, char *event) {
@@ -396,7 +386,6 @@ getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp) {
 
 	return &newta;
 }
-
 
 static struct TSAPaddr *
 maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
@@ -475,7 +464,6 @@ maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
 	return ta;
 }
 
-
 static ContTbl *
 find_connection (struct TSAPaddr *ta) {
 	ContTbl *ctp;
@@ -528,7 +516,6 @@ find_connection (struct TSAPaddr *ta) {
 	}
 	return NULL;
 }
-
 
 static void
 arginit (char **vec) {
@@ -588,7 +575,6 @@ arginit (char **vec) {
 		con_tbl_cnt = 1;
 	}
 }
-
 
 static void
 read_file (char *file) {
@@ -657,7 +643,6 @@ read_file (char *file) {
 		fclose (fp);
 }
 
-
 static void
 envinit () {
 	int     i,
@@ -721,7 +706,6 @@ envinit () {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-
 #ifndef lint
 static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -742,7 +726,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef lint
 static void    advise (int code, char *what, char *fmt, ...) {

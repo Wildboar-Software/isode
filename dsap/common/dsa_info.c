@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_info.c,v 9.
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
@@ -80,7 +78,6 @@ PE pe;
 	}
 	return (a);
 }
-
 
 static void edb_info_print (
 	PS ps,

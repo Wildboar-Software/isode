@@ -155,7 +155,6 @@ int format;
 		if (prefix != NULLCP)
 			ps_print (ps,prefix);
 
-
 		ps_print (ps,rcmd_srch (pdm->deliv,pdm_table));
 
 		if (format == READOUT)

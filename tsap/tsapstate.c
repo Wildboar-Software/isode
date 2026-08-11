@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapstate.c,v 9.0 1992
  *
  */
 
-
-
 #include <signal.h>
 #include <string.h>
 #include "tpkt.h"
 #include "manifest.h"
-
 
 int TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
 	SBV     smask;
@@ -61,7 +58,6 @@ int TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
 
 	return OK;
 }
-
 
 int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	struct tsapblk  tbs;

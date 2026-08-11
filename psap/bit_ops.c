@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bit_ops.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 /* the first octet indicates how many unused bits are in the last octet --
 
@@ -39,10 +36,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bit_ops.c,v 9.0 1992/0
 	bit_test  -	test a bit
  */
 
-
 static PElementData ffb (), ffb_aux ();
 static PE	ffb_pe ();
-
 
 int bit_on (PE pe, int i) {
 	int	    mask;
@@ -56,7 +51,6 @@ int bit_on (PE pe, int i) {
 	return OK;
 }
 
-
 int bit_off (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
@@ -69,7 +63,6 @@ int bit_off (PE pe, int i) {
 	return OK;
 }
 
-
 int bit_test (PE pe, int i) {
 	int	    mask;
 	PElementData bp;
@@ -79,7 +72,6 @@ int bit_test (PE pe, int i) {
 
 	return (*bp & mask ? 1 : 0);
 }
-
 
 static PElementData
 ffb (PE pe, int n, int *mask, int xtnd) {
@@ -139,7 +131,6 @@ ffb (PE pe, int n, int *mask, int xtnd) {
 	}
 }
 
-
 static PElementData
 ffb_aux (PE pe, int *n, int *mask) {
 	int    i,
@@ -165,7 +156,6 @@ ffb_aux (PE pe, int *n, int *mask) {
 
 	return NULLPED;
 }
-
 
 static PE
 ffb_pe (PE pe) {

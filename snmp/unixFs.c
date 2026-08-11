@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/unixFs.c,v 9.0 1992/06
  *
  */
 
-
 /* PRINT */
 
 #include <ctype.h>
@@ -103,7 +102,6 @@ struct mntent	*getmntent();
 #define INST_PTR(oid,ot)	(oid->oid_elements + ot->ot_name->oid_nelem)
 #define INST_SZ(oid,ot)		(oid->oid_nelem - ot->ot_name->oid_nelem)
 
-
 #define MAX_INST	3
 struct fs {
 	unsigned fs_instance[MAX_INST];
@@ -125,7 +123,6 @@ struct fs {
 };
 struct fs *fs_tbl = NULL ;
 
-
 extern int quantum;
 
 int init_unix_fs();
@@ -136,7 +133,6 @@ static int  get_fs_table();
 static void free_fs_table();
 static int  o_unix_fs();
 static void refresh_entry();
-
 
 /*-----------------------------------------------------------------
  * Come here to retreive any variable from this mib group
@@ -236,7 +232,6 @@ try_again:
 	}
 }
 
-
 /*-----------------------------------------------------------------
  * Initialize each node in the object identifier tree.
  *-----------------------------------------------------------------*/
@@ -290,7 +285,6 @@ int init_unix_fs() {
 	return(1);
 }
 
-
 /*-----------------------------------------------------------------
  * Perform commit/rollback operations. (this mib group has no
  * set operations so there are not commit/rollback operations)
@@ -306,7 +300,6 @@ integer	cor;
 		return(1);
 	}
 }
-
 
 /*-----------------------------------------------------------------
  * Find an entry in the file system table.
@@ -362,7 +355,6 @@ int isnext;
 	return(NULL);
 }
 
-
 /*-----------------------------------------------------------------
  * Simple insertion sort of file system table.
  *-----------------------------------------------------------------*/
@@ -397,7 +389,6 @@ struct fs *fsp;
 	}
 }
 
-
 #ifdef BSDSTRS
 /*-----------------------------------------------------------------
  * some systems (sun386) do not have this funtion
@@ -419,7 +410,6 @@ char *s1, *s2;
 }
 #endif
 
-
 /*-----------------------------------------------------------------
  * Fill the entire file system table. (call with fs_tbl == NULL)
  *-----------------------------------------------------------------*/
@@ -429,7 +419,6 @@ static int get_fs_table() {
 	struct mntent *mp;
 	struct fs *fsp, *lfsp=NULL;
 	char *p;
-
 
 	if( (mfile = setmntent(MNT_FILE, "r")) == NULL )
 		return(0);
@@ -494,7 +483,6 @@ static int get_fs_table() {
 	return(1);
 }
 
-
 /*-----------------------------------------------------------------
  * Get current statistics for this filesystem.
  *-----------------------------------------------------------------*/
@@ -540,7 +528,6 @@ struct fs *fsp;
 	}
 #endif
 }
-
 
 /*-----------------------------------------------------------------
  * Delete the file system table.

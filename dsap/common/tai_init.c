@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tai_init.c,v 9.
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "tailor.h"
 
@@ -35,7 +33,6 @@ extern  char    *tailfile;
 #define MAXTAIARGS      100
 
 extern  LLog    *log_dsap;
-
 
 int dsap_tai_init (void) {
 	FILE    *fp;
@@ -56,11 +53,9 @@ int dsap_tai_init (void) {
 			if (tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
 
-
 	fclose(fp);
 	return OK;
 }
-
 
 int tai_string (char *str) {
 	char    *args[MAXTAIARGS];

@@ -18,7 +18,6 @@
  *
  */
 
-
 #ifndef	_CONS_
 #define	_CONS_
 
@@ -62,12 +61,10 @@ int	select_cons_socket ();
 struct NSAPaddr *if2gen();
 CONN_DB *gen2if();
 
-
 #define	ADDR_LOCAL	0
 #define	ADDR_REMOTE	1
 #define	ADDR_LISTEN	2
 #define SEPARATOR ':'
-
 
 #define MAXNSDU	1024
 #endif

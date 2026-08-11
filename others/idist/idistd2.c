@@ -96,7 +96,6 @@ int do_symlink (struct type_Idist_FileSpec *fs) {
 	strcpy (old, new);
 	free (new);
 
-
 	if (symlink (old, linkname) < 0) {
 		if (errno != ENOENT || chkparent (linkname) < 0 ||
 				symlink (old, linkname) < 0) {
@@ -353,7 +352,6 @@ int i_remove (char *str) {
 	return result;
 }
 
-
 int addtoia5 (char *str, int len) {
 	struct type_Idist_IA5List **ia5p;
 
@@ -550,7 +548,6 @@ compare (char *f1, char *f2) {
 	fclose (fp2);
 	return n1 == 0 ? OK : NOTOK;
 }
-
 
 /*
  * Change owner, group and mode of file.

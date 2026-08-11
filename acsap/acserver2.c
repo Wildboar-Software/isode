@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acserver2.c,v 9.0 199
  *
  */
 
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "psap.h"
@@ -46,7 +44,6 @@ int iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdiscon
 	return iserver_initAux (argc, argv, pa, initfnx, NULLIFP, 0, td);
 }
 
-
 int iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
 	struct PSAPaddr *pa = NULLPA;
 
@@ -55,7 +52,6 @@ int iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx,
 						 "address translation failed");
 	return iserver_initAux (argc, argv, pa, initfnx, magicfnx, flag, td);
 }
-
 
 int iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
 	int	fd;

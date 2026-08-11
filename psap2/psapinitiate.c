@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapinitiate.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "PS-types.h"
@@ -81,7 +79,6 @@ int	PAsynConnRequest ( struct PSAPaddr *calling, struct PSAPaddr *called, struct
 
 	return result;
 }
-
 
 static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID	defctxname,
 								int prequirements, int	srequirements, long isn, int settings, struct SSAPref *ref, PE* data,
@@ -405,7 +402,6 @@ int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi
 
 	return result;
 }
-
 
 static int
 PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi) {

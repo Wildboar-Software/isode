@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/jpeg2asn
  *
  */
 
-
 /*
  *
  * jpeg2asn - takes a file, and adds the ASN-1 stuff to the beginning
@@ -50,8 +49,6 @@ int main (int argc, char *argv[]) {
 	FILE           *infile,
 				   *outfile;
 	struct stat     buf;
-
-
 
 	if (argc != 2) {
 		printf("Usage: jpeg2asn <input file>\n");
@@ -79,7 +76,6 @@ int main (int argc, char *argv[]) {
 
 	/* Has not been tested on a machine were net and host ordering is
 	 * different - e.g. a VAX */
-
 
 	/* time to put ASN-1 length down */
 

@@ -181,7 +181,6 @@ int op_requestMaster (
 		ros_adios (&roi -> roi_preject, "RESULT");
 	}
 
-
 	if (rfa->ri_mode & S_IFMT & S_IFREG)
 		if(makeFileReadOnly(fn, rfa) != OK)
 			advise(LLOG_EXCEPTIONS,NULLCP,"reqMaster: %s",rfaErrStr);

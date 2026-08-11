@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_RtSAP_
 #include "rtsap.h"		/* definitions for RtS-USERs */
 #endif
@@ -30,7 +29,6 @@
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
-
 
 #define	rtsapPsig(acb, sd) \
 { \
@@ -96,7 +94,6 @@
 }
 #endif
 
-
 #ifndef	lint
 #ifndef	__STDC__
 #define	copyRtSAPdata(base,len,d) \
@@ -117,10 +114,8 @@
 #define	copyRtSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pylose() \
 	rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP, "%s", PY_pepy)
-
 
 /* would really prefer to determine DEFAULT_CKPOINT dynamically, but can't
    since need to know it *before* doing the A-ASSOCIATE.REQUEST or
@@ -129,10 +124,8 @@
 #define	DEFAULT_CKPOINT	(65518 >> 10)
 #define	DEFAULT_WINDOW	PCONN_WD_DFLT
 
-
 #define	RTS_MYREQUIRE	(SR_EXCEPTIONS | SR_ACTIVITY | SR_HALFDUPLEX \
 			    | SR_MINORSYNC)
-
 
 #define	RT_ASN		"rtse pci version 1"
 
@@ -143,7 +136,6 @@
 #endif
 
 int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
-
 
 #define	SetPS2RtService(acb) \
 { \
@@ -159,7 +151,6 @@ int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
 int	acs2rtslose (), acs2rtsabort (), ps2rtslose ();
 int	rt2pspturn (), rt2psgturn (), rt2pstrans (), rt2pswait (),
 	rt2psasync (), rt2psmask (), rt2pslose ();
-
 
 #define	SetSS2RtService(acb) \
 { \

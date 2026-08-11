@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/set_find.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE
 set_find (PE pe, PElementClass class, PElementID id) {

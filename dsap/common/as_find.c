@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_find.c,v 9.0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
@@ -37,5 +36,4 @@ Attr_Sequence as_find_type (Attr_Sequence a, AttributeType b) {
 	}
 	return (NULLATTR);
 }
-
 

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/view-g.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include "mib.h"
 #include "view-g.h"
@@ -41,14 +40,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/view-g.c,v 9.0 1992/06
 
 #define	P_VALID		  1		/* viewPrimType */
 
-
 static int	viewmask = 0x1;
 static OID	localAgent = NULLOID;
 static OID	rfc1157Domain = NULLOID;
 
 static struct view *get_prent ();
 static int  str2sa ();
-
 
 static int  o_viewPrim (oi, v, offset)
 OI	oi;
@@ -160,7 +157,6 @@ int	offset;
 	}
 }
 
-
 static struct view *get_prent (ip, len, isnext)
 unsigned int *ip;
 int	len;
@@ -184,7 +180,6 @@ int	isnext;
 	return NULL;
 }
 
-
 #define	viewAclView	  0
 #define	viewAclCommunity  1
 #define	viewAclUser	  2
@@ -193,11 +188,9 @@ int	isnext;
 
 #define	A_VALID		  1		/* viewAclType */
 
-
 static struct community *CLex = NULL;
 
 static struct community *get_acent ();
-
 
 static int  o_viewAcl (oi, v, offset)
 OI	oi;
@@ -297,7 +290,6 @@ int	offset;
 	}
 }
 
-
 static struct community *get_acent (ip, len, isnext)
 unsigned int *ip;
 int	len;
@@ -317,7 +309,6 @@ int	isnext;
 	return NULL;
 }
 
-
 #define	viewTrapView	  0
 #define	viewTrapGenerics  1
 #define	viewTrapSpecifics 2
@@ -325,11 +316,9 @@ int	isnext;
 
 #define	T_VALID		  1		/* viewTrapType */
 
-
 static OID    trapview = NULLOID;
 
 static struct trap *get_trent ();
-
 
 static int  o_viewTrap (oi, v, offset)
 OI	oi;
@@ -428,7 +417,6 @@ int	offset;
 	}
 }
 
-
 static struct trap *get_trent (ip, len, isnext)
 unsigned int *ip;
 int	len;
@@ -451,7 +439,6 @@ int	isnext;
 
 	return NULL;
 }
-
 
 static int  view_compar (a, b)
 struct view **a,
@@ -476,7 +463,6 @@ struct trap **a,
 	return elem_cmp ((*a) -> t_instance, (*a) -> t_insize,
 					 (*b) -> t_instance, (*b) -> t_insize);
 }
-
 
 static struct wired {
 	char  *w_args1;
@@ -771,7 +757,6 @@ stuff_it:
 	}
 }
 
-
 int	f_community (char **vec) {
 	struct community *c;
 	struct NSAPaddr *na;
@@ -840,7 +825,6 @@ you_lose:
 
 	return NOTOK;
 }
-
 
 int	f_proxy (vec)
 char  **vec;
@@ -922,7 +906,6 @@ you_lose:
 
 	return NOTOK;
 }
-
 
 int	f_trap (vec)
 char  **vec;
@@ -1010,7 +993,6 @@ you_lose:
 
 	return NOTOK;
 }
-
 
 int  f_view (vec)
 char  **vec;
@@ -1114,11 +1096,9 @@ you_lose:
 	return NOTOK;
 }
 
-
 extern	int	tcpservice;
 extern	int	udport;
 extern	int	traport;
-
 
 static int  str2sa (s, na, sock, proxy)
 char   *s;

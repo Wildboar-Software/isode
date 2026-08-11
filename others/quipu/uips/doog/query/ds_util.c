@@ -194,7 +194,6 @@ char *match_str, *dn_str;
 	}
 } /* is_good_match */
 
-
 static QBool char_compare(a, b)
 char a, b;
 {
@@ -255,7 +254,6 @@ Filter *ap_filter_ptr;
 
 	return error;
 } /* make_typed_filter_items */
-
 
 /*
  * - make_filter_items() -

@@ -8,7 +8,6 @@
 #include "error.h"
 #include "sequence.h"
 
-
 /*
  *	Status return structure
  */
@@ -19,7 +18,6 @@ typedef struct _ufn_status {
 
 #define NULLUfnStatus (ufnStatus) NULL
 #define ufn_status_alloc() (ufnStatus) sizeof(ufn_status)
-
 
 /*
  *	Search path structures
@@ -38,7 +36,6 @@ typedef struct _search_path {
 
 #define NULLSearchPath (searchPath) NULL
 #define search_path_alloc() (searchPath) smalloc(sizeof(search_path))
-
 
 /*
  * name_part structs double up as search args and records for the

@@ -74,7 +74,6 @@ int main (int argc, char **argv) {
 }
 #endif STANDALONE
 
-
 init_clock_psti(timesource)
 char *timesource;
 {

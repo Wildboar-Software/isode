@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapresync2.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"

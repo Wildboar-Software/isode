@@ -25,7 +25,6 @@
  *
  */
 
-
 #ifndef __linux__
 #include <nlist.h>
 #endif
@@ -36,14 +35,11 @@
 #include "objects.h"
 #include "logger.h"
 
-
 #define	generr(offset)	((offset) == type_SNMP_PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
 
-
 #define	sysDescr	"4BSD/ISODE SNMP"
 #define	sysObjectID	"fourBSD-isode.5"
-
 
 #ifndef __linux__
 extern struct nlist nl[];
@@ -75,7 +71,6 @@ void fin_mib (void);
 void set_variable (char *name, char *newvalue);
 int	getkmem (), setkmem (), chekmem ();
 
-
 extern  int	nd;
 extern	int	quantum;
 
@@ -83,7 +78,6 @@ extern	struct timeval
 		my_boottime;
 
 extern	OID	nullSpecific;
-
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);

@@ -43,7 +43,6 @@ struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
 	struct dn_seq * ptr2;
 	struct dn_seq * result = NULLDNSEQ;
 
-
 	for (ptr=dnseq ; ptr!=NULLDNSEQ; ptr=ptr->dns_next ) {
 		ptr2 = dn_seq_alloc();
 		ptr2 -> dns_next = result;
@@ -52,7 +51,6 @@ struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
 	}
 	return (result);
 }
-
 
 int check_dnseq (struct dn_seq *dnseq, DN who)
 {

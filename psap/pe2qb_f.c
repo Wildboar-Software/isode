@@ -10,10 +10,7 @@
  *
  */
 
-
-
 #include "psap.h"
-
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \
 				 printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
@@ -35,7 +32,6 @@ static PElement pe_eoc = { PE_CLASS_UNIV, PE_FORM_PRIM, PE_UNIV_EOC, 0 };
 char *Qcp, *Ecp;
 
 int Len;
-
 
 int pe2qb_f (PE pe) {
 	PE	    p;
@@ -78,7 +74,6 @@ int pe2qb_f (PE pe) {
 		elm_len = bp - idbuffer;
 		moveit(idbuffer, elm_len);
 	}
-
 
 	/* Put the length into the qbuf */
 

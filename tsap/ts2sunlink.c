@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"
@@ -59,7 +57,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
 #define	MSG_OSI_OOB	MSG_OOB
 #endif
 
-
 /* A driver for SunLink OSI's TP4!
  *
  *	SunLink OSI TP4 user interface is very much like a ``datagram''
@@ -87,7 +84,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
  *    (class 0).
  *
  */
-
 
 /*    UPPER HALF */
 
@@ -150,7 +146,6 @@ out:
 
 	return result;
 }
-
 
 static int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -242,7 +237,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    cc,
@@ -295,8 +289,6 @@ out:
 	return result;
 }
 
-
-
 static int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
@@ -341,14 +333,12 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	return result;
 }
 
-
 /* life would be nice if we didn't have to worry about the maximum number of
    bytes that can be written in a single syscall() */
 
 #ifndef	MSG_MAXIOVLEN
 #define	MSG_MAXIOVLEN	NTPUV
 #endif
-
 
 static int
 TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
@@ -559,7 +549,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
@@ -637,7 +626,6 @@ out:
 	freetp4pkt (tp);
 	return result;
 }
-
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -730,7 +718,6 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-
 static int
 ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	TP_MSG_DISCONNECT tps, *tp = &tps;
@@ -751,7 +738,6 @@ ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	}
 	return (NOTOK);
 }
-
 
 static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
@@ -787,8 +773,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-
-
 static int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tp4pkt *tp;
@@ -806,7 +790,6 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 }
 
 /*    LOWER HALF */
-
 
 int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
@@ -844,8 +827,6 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-
-
 static int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
@@ -858,15 +839,12 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-
-
 char *tp4save (int fd, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d", NT_SUN, fd);
 	return buffer;
 }
-
 
 int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd;
@@ -880,7 +858,6 @@ int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 
 	return OK;
 }
-
 
 int tp4init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = TConnect;
@@ -911,8 +888,6 @@ int tp4init (struct tsapblk *tb) {
 	tb -> tb_selectfnx = select_tp4_socket;
 }
 
-
-
 int start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd;
 	OSI_ADDR	ifaddr;
@@ -937,7 +912,6 @@ int start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, st
 	return sd;
 }
 
-
 #ifndef	notdef
 #endif
 
@@ -960,7 +934,6 @@ int join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td) {
 
 	return sd;
 }
-
 
 /* SunLink OSI address encoding/decoding */
 
@@ -1051,7 +1024,6 @@ struct NSAPaddr	*template;
 	return OK;
 }
 
-
 static	int  gen2tp4X (generic, specific, template)
 struct tsapADDR *generic;
 OSI_ADDR	*specific;
@@ -1062,7 +1034,6 @@ struct NSAPaddr	*template;
 	copyTSAPaddrX (generic, &tas);
 	return gen2tp4 (&tas, specific, template);
 }
-
 
 int	tp42gen (generic, specific)
 struct TSAPaddr *generic;
@@ -1108,7 +1079,6 @@ OSI_ADDR	*specific;
 	return OK;
 }
 
-
 int	tp42genX (generic, specific)
 struct tsapADDR *generic;
 OSI_ADDR	*specific;
@@ -1121,7 +1091,6 @@ OSI_ADDR	*specific;
 
 	return result;
 }
-
 
 struct tp4pkt *newtp4pkt (code)
 TP_EVENT code;

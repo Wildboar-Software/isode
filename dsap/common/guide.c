@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/guide.c,v 9.0 1
 		NadfGuide ::= <objectclass> '#' <Criteria> '#' <subset>
 		subset ::= "baseObject" | "oneLevel" | "wholeSubtree"
 
-
 	EXAMPLE:
 		Person # commonName $ APPROX
 		( organization $ EQ ) @ (commonName $ SUBSTR)
@@ -46,7 +45,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/guide.c,v 9.0 1
 	NOTE:
 		Use of @ for "and" as '&' get filtered out earlier!!!
 */
-
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
@@ -107,7 +105,6 @@ static void free_CriteriaItem (struct CriteriaItem *arg) {
 	free ((char *) arg);
 }
 
-
 static void guidefree (struct Guide *arg) {
 	if (arg == NULL)
 		return;
@@ -135,7 +132,6 @@ static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg) {
 
 	return (res);
 }
-
 
 static struct Criteria *Criteria_cpy (struct Criteria *a) {
 	struct Criteria *b;
@@ -413,7 +409,6 @@ static struct Guide *nadfparse (char *str) {
 	return res;
 }
 
-
 static void CriteriaItem_print(
 	PS ps,
 	struct CriteriaItem * parm,
@@ -434,7 +429,6 @@ static void CriteriaItem_print(
 		AttrT_print (ps,parm->attrib,format);
 		ps_printf (ps,"$%s",ptr);
 	}
-
 
 }
 

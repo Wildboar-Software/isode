@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/get_ava.c,v 9.0 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 

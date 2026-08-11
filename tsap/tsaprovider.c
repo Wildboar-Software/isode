@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
@@ -37,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
 #include <sys/stat.h>
 #include <asm/socket.h>
 
-
 #define	selmask(fd,m,n) \
 { \
     FD_SET (fd, &(m)); \
@@ -45,17 +42,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
 	(n) = (fd) + 1; \
 }
 
-
 static int once_only = 0;
 static struct tsapblk tsapque;
 static struct tsapblk *THead = &tsapque;
 static int  TWakeUp ();
 
-
 #ifndef	SIGPOLL
 static int TPid = NOTOK;
 #endif
-
 
 extern	int	xselect_blocking_on_intr;
 
@@ -297,7 +291,6 @@ int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 
 static	SFD DATAser ();
 
-
 int TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td) {
 	SBV	    smask;
 	int     result;
@@ -465,7 +458,6 @@ struct sigcontext *sc;
 #endif
 }
 
-
 #ifndef	SIGPOLL
 static int
 TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -541,7 +533,6 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #else
 #include <sys/stropts.h>
 #endif
-
 
 static int
 TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -634,7 +625,6 @@ newtblk()  {
 	return tb;
 }
 
-
 void freetblk (struct tsapblk *tb) {
 	SBV     smask;
 #ifndef	SIGPOLL
@@ -692,7 +682,6 @@ void freetblk (struct tsapblk *tb) {
 	sigiomask (smask);
 }
 
-
 struct tsapblk *
 findtblk (int sd) {
 	struct tsapblk *tb;
@@ -707,7 +696,6 @@ findtblk (int sd) {
 	return NULL;
 }
 
-
 int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
 	bzero ((char *) out, sizeof *out);
 
@@ -719,7 +707,6 @@ int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
 		out -> ta_naddr = 1;
 	}
 }
-
 
 int copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out) {
 	bzero ((char *) out, sizeof *out);

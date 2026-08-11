@@ -24,13 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryinitiator.c
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include "PasswordLookup-types.h"
 #include "ryinitiator.h"
-
 
 static char *myname = "ryinitiator";
 
@@ -176,7 +174,6 @@ IFP	quit;
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-
 static
 invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 	int	    result;
@@ -215,7 +212,6 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 				 ds -> ds_mod, 1);
 }
 
-
 static int
 _getline (char *buffer) {
 	int    i;
@@ -251,14 +247,12 @@ _getline (char *buffer) {
 	return OK;
 }
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -273,14 +267,12 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -297,10 +289,8 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -322,7 +312,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -333,7 +322,6 @@ void	advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
@@ -356,7 +344,6 @@ advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

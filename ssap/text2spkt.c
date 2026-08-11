@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/text2spkt.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "spkt.h"
 #include "logger.h"
-
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn);
@@ -46,7 +43,6 @@ static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
 static void type_info (LLog *lp, char *fmt, int len, char *data);
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
-
 
 #define	SPDU_TYPE(e)	ll_printf (lp, "%sCODE/ %s\n", rw, e)
 
@@ -346,14 +342,12 @@ static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
-
 static void type_bits (LLog *lp, char *rw, char *s, u_char bits, int mask, char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
 	ll_printf (lp, "\n");
 }
-
 
 #define dotoken(requires,shift,bit,type) \
 { \
@@ -396,7 +390,6 @@ static void type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
 static void type_vrsn (LLog *lp, char *rw, u_char version) {
 	ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
-
 
 static void type_reason (LLog *lp, char *rw, int reason) {
 	ll_printf (lp, "%sREASON/ 0x%x: %s\n", rw, reason,

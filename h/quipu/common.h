@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef COMH
 #define COMH
 

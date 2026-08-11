@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/ip.c,v 9.0 1992/06/16 
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -74,7 +73,6 @@ struct	arptab {
 #include <sys/ioctl.h>
 #endif
 
-
 #define	FORW_GATEWAY	1		/* ipForwarding */
 #define	FORW_HOST	2
 static int	ipforwarding;
@@ -88,7 +86,6 @@ static void sort_arptab (void);
 int _read_snmp_stats ();
 int _file_printf (const char *path, const char *fmt, ...);
 #endif
-
 
 #define	ipForwarding	0
 #define	ipDefaultTTL	1
@@ -130,7 +127,6 @@ int _file_printf (const char *path, const char *fmt, ...);
 #undef	ipFragFails	17
 #undef	ipFragCreates	18
 #endif
-
 
 #ifdef LINUX
 static int _read_ip_stats ()
@@ -355,7 +351,6 @@ int	offset;
 	}
 }
 
-
 static int  s_ip (oi, v, offset)
 OI	oi;
 struct type_SNMP_VarBind *v;
@@ -457,14 +452,11 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-
 #ifndef	IP_MAXPACKET
 #define	IP_MAXPACKET	65535		/* ipAdEntReasmMaxSize */
 #endif
 
-
 #define	IFN_SIZE	4
-
 
 #define	ipAdEntAddr	0
 #define	ipAdEntIfIndex	1
@@ -579,7 +571,6 @@ int	offset;
 	}
 }
 
-
 #define	ipRouteDest	0
 #define	ipRouteIfIndex	1
 #define	ipRouteMetric1	2
@@ -596,7 +587,6 @@ int	offset;
 #define	unixIpRouteFlags 13
 #define	unixIpRouteRefCnt 14
 #define	unixIpRouteUses	15
-
 
 static int  o_ip_route (oi, v, offset)
 OI	oi;
@@ -787,7 +777,6 @@ try_again:
 	}
 }
 
-
 #ifndef	BSD44
 static int  s_ip_route (oi, v, offset)
 OI	oi;
@@ -859,7 +848,6 @@ bad_magic:
 			if (!rz)
 				goto bad_magic;
 		}
-
 
 		bcopy ((char *) ip, (char *) rt -> rt_instance,
 			   (rt -> rt_insize = i) * sizeof *ip);
@@ -1085,17 +1073,14 @@ losing_noop:
 #define	s_ip_route	NULLIFP
 #endif
 
-
 #ifndef LINUX
 static struct rtstat rtstat;
-
 
 #define	unixRouteBadRedirects 0
 #define	unixRouteCreatedByRedirects 1
 #define	unixRouteModifiedByRedirects 2
 #define	unixRouteLookupFails 3
 #define	unixRouteWildcardUses 4
-
 
 static int  o_ip_routing_stats (oi, v, offset)
 OI	oi;
@@ -1164,14 +1149,12 @@ int	offset;
 }
 #endif
 
-
 struct adrtab {
 #define	ADN_SIZE	(IFN_SIZE + 1)		/* IpAddress instance */
 	unsigned int    adn_instance[ADN_SIZE];
 	int	    adn_insize;
 
 	struct in_addr adn_address;			/* IpAddress */
-
 
 #define	ADM_SIZE	ADR_SIZE		/* PhysAddress instance */
 	unsigned int    adm_instance[ADM_SIZE];
@@ -1180,11 +1163,9 @@ struct adrtab {
 	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
 	u_char	adm_addrlen;			/* .. */
 
-
 #define	ADA_SIZE	(IFN_SIZE + 2)		/* AtEntry instance */
 	unsigned int    ada_instance[ADA_SIZE];
 	int	    ada_insize;
-
 
 	int	    adr_index;				/* ifIndex */
 
@@ -1210,9 +1191,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-
 static struct adrtab *get_arpent ();
-
 
 #define	atIfIndex	0
 #define	atPhysAddress	1
@@ -1222,7 +1201,6 @@ static struct adrtab *get_arpent ();
 #define	ipNetToMediaPhysAddress 4
 #define	ipNetToMediaNetAddress 5
 #define	ipNetToMediaType 6
-
 
 static int  o_address (oi, v, offset)
 OI	oi;
@@ -1376,7 +1354,6 @@ int	offset;
 		return int_SNMP_error__status_noSuchName;
 	}
 }
-
 
 static int  s_address (oi, v, offset)
 OI	oi;
@@ -1680,7 +1657,6 @@ losing_noop:
 	return int_SNMP_error__status_noError;
 }
 
-
 #ifdef LINUX
 static struct arptab *_read_arptab ()
 {
@@ -1866,12 +1842,10 @@ no_dice:
 	return OK;
 }
 
-
 static int adn_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
 }
-
 
 static int adm_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
@@ -1929,7 +1903,6 @@ static void sort_arptab (void) {
 
 	free ((char *) base);
 }
-
 
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
 unsigned int *ip;

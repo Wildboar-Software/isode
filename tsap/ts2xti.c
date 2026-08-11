@@ -24,10 +24,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2xti.c,v 9.0 1992/06
  *
  */
 
-
 /* This should be considered Alpha test code at this stage... */
-
-
 
 #include <stdio.h>
 #include "tpkt.h"
@@ -180,7 +177,6 @@ int T_delinfo (int fd) {
 		 ("Couldn't find transport descriptor %d to delete", fd));
 	return NOTOK;
 }
-
 
 int T_open (char *name, int oflag, struct t_info *info) {
 	int             fd;
@@ -528,7 +524,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	if (data)
 		bcopy(data, sndcall->udata.buf, sndcall->udata.len = (unsigned) cc);
 
-
 	/* use tb_cc to communicate to TRetry if the connect completed here */
 	if (t_connect(tb->tb_fd, sndcall, rcvcall) == NOTOK) {
 		T_free((char *) rcvcall, T_CALL_STR);
@@ -827,7 +822,6 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 			 ("t_snd(fd=%d, buf=0x%x, len=%d, NO_MORE) ret=%d",
 			  tb->tb_fd, qb->qb_data, qb->qb_len, nc));
 
-
 		if (async != NOTOK)
 			fcntl(tb->tb_fd, F_SETFL, async);
 
@@ -906,7 +900,6 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	if ((onoff = fcntl(tb->tb_fd, F_GETFL, 0)) != NOTOK)
 		fcntl(tb->tb_fd, F_SETFL, onoff | FNDELAY);
 
-
 	while ((qb = tb->tb_qwrites.qb_forw) != &tb->tb_qwrites) {
 
 		if ((nc = t_snd(tb->tb_fd, qb->qb_data, qb->qb_len, 0)) !=
@@ -946,7 +939,6 @@ out:
 }
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -1097,7 +1089,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 }
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 static int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct t_call  *call;
@@ -1119,7 +1110,6 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * LOWER HALF */
-
 
 int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int             fd, onoff;
@@ -1153,7 +1143,6 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
 static int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set          mask;
@@ -1166,10 +1155,7 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-
-
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 /*
  * Save string format: "fd.connection-sequence-number.expedited
@@ -1265,7 +1251,6 @@ int tp4init (struct tsapblk *tb) {
 }
 
 /*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 
 int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int             sd;

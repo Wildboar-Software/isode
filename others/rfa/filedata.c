@@ -80,7 +80,6 @@ int getCompressed (char *fn, struct qbuf **qbp) {
 	return rc;
 }
 
-
 /*--------------------------------------------------------------
  *  fd2qb - read data from fd and create qbuf list
  *-------------------------------------------------------------*/
@@ -102,7 +101,6 @@ int fd2qb (int fd, struct qbuf **qbp) {
 	}
 	return tot;
 }
-
 
 /*--------------------------------------------------------------
  *  op_getFileData - get mastership of a file

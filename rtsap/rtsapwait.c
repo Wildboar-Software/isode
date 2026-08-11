@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapwait.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
@@ -49,7 +47,6 @@ int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
 
 	return result;
 }
-
 
 int RtWaitRequestAux (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	if (!trans && (acb -> acb_flags & ACB_PLEASE)) {

@@ -429,7 +429,6 @@ int _XConnectDisplay (
 #endif
 			}
 
-
 			if (connect(fd, addr, addrlen) == -1) {
 				close (fd);
 				return(-1); 	    /* errno set by system call. */
@@ -596,7 +595,6 @@ Display *dpy;
 			return;
 	}
 }
-
 
 _XWaitForReadable(dpy)
 Display *dpy;

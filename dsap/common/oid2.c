@@ -131,7 +131,6 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 	return (result);
 }
 
-
 static int get_oc_bits (char *str) {
 	char * ptr;
 	char * ptr2;
@@ -249,8 +248,6 @@ static table_seq table_seq_new (char *str)
 
 }
 
-
-
 void
 dumpalloid (void) {
 	int i;
@@ -268,7 +265,6 @@ dumpalloid (void) {
 		printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
 
 }
-
 
 int add_oc_macro (char *buf, char *ptr) {
 	strcpy(macro[NumMacro].name,buf);
@@ -320,5 +316,4 @@ free_oid_table (void) {
 	free_oid_buckets();
 
 }
-
 

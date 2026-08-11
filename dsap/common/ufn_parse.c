@@ -139,7 +139,6 @@ int dnSelect (char *s, DNS *dlist, DNS (*interact) (/* ??? */), DNS el)
 		}
 	}
 
-
 	if (exact) {
 		NOTIFY (("Found exact match(es) for '%s'",s));
 		*dlist = exact;
@@ -498,7 +497,6 @@ static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (/* ??? */), 
 					   filt, result, v, interact, el);
 }
 
-
 static int purportedMatch(DN base, int c, char **v, DNS (*interact) (/* ??? */), DNS el, DNS *result)
 {
 	char * s;
@@ -575,7 +573,6 @@ static int purportedMatch(DN base, int c, char **v, DNS (*interact) (/* ??? */),
 			return FALSE;
 		else
 			NOTIFY (("Remote failure: Not all subtrees searched"));
-
 
 	return matches;
 }
@@ -710,7 +707,6 @@ envlist read_envlist(void) {
 	fclose (file);
 	return top;
 }
-
 
 int ufn_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el)
 {

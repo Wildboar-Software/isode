@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/tai_init.c,v 9.0 1992
  *
  */
 
-
 #include "quipu/util.h"
 #include "tailor.h"
 
@@ -33,7 +32,6 @@ extern  char    *dsatailfile;
 #define MAXTAIARGS      100
 
 extern  LLog    *log_dsap;
-
 
 int dsa_tai_init (char *name) {
 	FILE    *fp;
@@ -57,7 +55,6 @@ int dsa_tai_init (char *name) {
 	isodexport(NULLCP);
 	return OK;
 }
-
 
 int dsa_tai_string (char *str) {
 	char    *args[MAXTAIARGS];

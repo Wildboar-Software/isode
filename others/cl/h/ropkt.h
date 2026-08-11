@@ -24,7 +24,6 @@
 #include "rosap.h"		/* definitions for RoS-USERs */
 #endif
 
-
 #ifdef HULA
 #define ACSE
 #include "acupkt.h"		/* definitions for AcS-PROVIDERs */
@@ -32,7 +31,6 @@
 #ifndef _AcuSAP_
 #include "acusap.h"
 #endif
-
 
 #else
 #include "acpkt.h"		/* definitions for AcS-PROVIDERs */
@@ -49,7 +47,6 @@
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
 #endif
-
 
 #ifdef HULA
 #define	rosapPsig(acb, sd) \
@@ -197,14 +194,12 @@
 
 #endif
 
-
 #define	missingP(p) \
 { \
     if (p == NULL) \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
-
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -226,14 +221,11 @@
 #define	copyRoSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pylose() \
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s", PY_pepy)
 
-
 int	ropktlose (struct assocblk *acb, ...);
 int rosaplose (struct RoSAPindication *roi, ...);
-
 
 int	acb2osdu ();
 
@@ -251,7 +243,6 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 	ro2ssready ();
 #endif
 
-
 /* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */
 #define	APDU_RESULT	2	/* Return result */
@@ -259,7 +250,6 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 #define	APDU_REJECT	4	/* Reject */
 
 #define	APDU_UNKNOWN	(-1)	/* anything other than the above */
-
 
 /* Reject APDU types */
 #define	REJECT_GENERAL	0	/* General Problem */
@@ -271,7 +261,6 @@ int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 #define	REJECT_ERROR	3	/* Return Error Problem */
 #define	  REJECT_ERROR_BASE	ROS_REP_UNRECOG
 #define	REJECT_COMPLETE	4	/* more Invoke Problem codes */
-
 
 extern int rosap_operation;
 extern int rosap_error;

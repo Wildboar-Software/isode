@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_TP4_
 #define	_TP4_
 
@@ -38,7 +37,6 @@ extern int   t_errno;
 
 int	t_close ();
 
-
 #define	TLIMAXCONN	1
 #endif
 
@@ -54,9 +52,7 @@ int	t_close ();
 #include <netosi/osi_error.h>
 #include <netosi/tp_event.h>
 
-
 #define	MSG_OOB         0x1	/* process out-of-band data */
-
 
 struct tp4pkt {
 	union {
@@ -80,7 +76,6 @@ struct tp4pkt *newtp4pkt ();
 
 int	gen2tp4 (), tp42gen ();
 #endif
-
 
 #ifdef	TLI
 #define	close_tp4_socket	t_close

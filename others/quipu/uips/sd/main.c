@@ -8,7 +8,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/main.c
  * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/main.c,v 9.0 1992/06/16 12:45:08 isode Rel $
  */
 
-
 #include <signal.h>
 #include <stdio.h>
 #define IP _IP
@@ -129,7 +128,6 @@ void
 int_quit (int sig) {
 	quit("\n", sig);
 }
-
 
 advise (int code, char *what, char *fmt, ...) {
 	va_list ap;

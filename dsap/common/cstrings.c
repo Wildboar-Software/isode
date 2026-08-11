@@ -50,7 +50,6 @@ int print_arg_error (PS opt)
 		return (NOTOK);
 }
 
-
 int test_arg (char *x, char *y, int c) {
 	int count = 0;
 	char * top, *topx;

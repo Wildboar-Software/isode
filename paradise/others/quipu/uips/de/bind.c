@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/bind.c
  *
  */
 
-
 /*****************************************************************************
 
   bind.c -
@@ -136,7 +135,6 @@ try_bind:
 	return OK;
 }
 
-
 int wait_bind_to_ds(assoc, wantToBlock)
 int assoc;
 int wantToBlock;
@@ -146,7 +144,6 @@ int wantToBlock;
 	int     nfds, nevents;
 	fd_set  rfds;
 	fd_set  wfds;
-
 
 	while ((bindres == CONNECTING_1) || (bindres == CONNECTING_2)) {
 

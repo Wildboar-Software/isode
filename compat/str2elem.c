@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2elem.c,v 9.0 199
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdlib.h>
 #include "general.h"
 #include "manifest.h"
-
 
 int str2elem (char *s, unsigned int elements[]) {
 	int    i;

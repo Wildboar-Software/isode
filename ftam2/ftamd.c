@@ -24,12 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include "ftamsystem.h"
-
 
 int	ftamfd = NOTOK;
 
@@ -37,14 +35,12 @@ int	cflag = 0;
 int	debug = 0;
 char   *myname = "ftamd";
 
-
 #define	SMASK	"\020\01UNCONS\02MANAGE\03TRANSFER\04TM\05ACCESS"
 
 #define	UMASK	"\020\01READ\02WRITE\03ACCESS\04LIMITED\05ENHANCED\06GROUPING\
 \07FADULOCK\08RECOVERY\00RESTART"
 
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
-
 
 int main (int argc, char **argv, char **envp) {
 	int     result;
@@ -145,7 +141,6 @@ int main (int argc, char **argv, char **envp) {
 		}
 }
 
-
 void
 ftam_adios (struct FTAMabort *fta, char *event) {
 	struct FTAMindication   ftis;
@@ -161,7 +156,6 @@ ftam_adios (struct FTAMabort *fta, char *event) {
 	_exit (1);
 }
 
-
 void
 ftam_advise (struct FTAMabort *fta, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: failed", event);
@@ -174,11 +168,9 @@ ftam_advise (struct FTAMabort *fta, char *event) {
 	}
 }
 
-
 static char *entity[] = {
 	"UNK", "IFSU", "IFPM", "VFS", "RFPM", "RFSU"
 };
-
 
 void
 ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
@@ -266,7 +258,6 @@ ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
 	}
 }
 
-
 #ifndef	lint
 void	adios (char* what, char* fmt, ...) {
 	struct FTAMindication   ftis;
@@ -293,7 +284,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (int code, char* what, char* fmt, ...) {

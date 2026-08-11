@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 
  *
  */
 
-
-
 #include "logger.h"
 #include "tailor.h"
 #include "quipu/dsap.h"
@@ -34,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 
 extern LLog	* log_dsap;
 
 /* D-BIND.INDICATION */
-
 
 int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
 	int			  result;
@@ -138,7 +135,6 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 	return (result);
 }
 
-
 /* D-BIND.RESULT */
 
 int	  DBindResult (sd, context, respondtitle,
@@ -189,7 +185,6 @@ struct DSAPindication	* di;
 	return (result);
 }
 
-
 /* D-BIND.ERROR */
 
 int	  DBindError (sd, context, respondtitle, respondaddr, ctxlist,
@@ -239,7 +234,6 @@ struct DSAPindication	* di;
 
 	return (result);
 }
-
 
 /* D-BIND.REJECT */
 

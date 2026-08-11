@@ -39,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/parse.c,v 9.0 1
 
 #define	CONT_CHAR	'\\'	/* Continueation character */
 
-
 Entry database_root = NULLENTRY;
 int local_master_size = 0;
 int local_slave_size = 0;
@@ -162,7 +161,6 @@ GDBM_FILE	db;
 char *getnextline () {
 	return _getline (save_db);
 }
-
 
 #endif /* TURBO_DISK */
 
@@ -371,7 +369,6 @@ char *unesc_cont (char *ptr, int len) {
 
 }
 
-
 /*
  * write no more than wl characters of the line out escaping any
  * characters at the end to a file pointer.
@@ -554,7 +551,6 @@ Attr_Sequence get_attributes (FILE *file)
 	return (get_attributes_aux (file));
 }
 
-
 Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 #ifdef TURBO_DISK
          	     
@@ -633,7 +629,6 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 	return (eptr);
 }
 
-
 Entry get_entry (FILE *file, Entry parent, int dtype)
 #ifdef TURBO_DISK
          	     
@@ -651,7 +646,6 @@ Entry get_entry (FILE *file, Entry parent, int dtype)
 
 	return (get_entry_aux (file,parent,dtype));
 }
-
 
 Entry new_constructor (Entry parent)
 {

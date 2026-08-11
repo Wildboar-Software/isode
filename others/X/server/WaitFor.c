@@ -41,7 +41,6 @@ SOFTWARE.
 #include "osdep.h"
 #include "dixstruct.h"
 
-
 extern long AllSockets[];
 extern long AllClients[];
 extern long LastSelectMask[];
@@ -61,8 +60,6 @@ extern Bool AnyClientsWriteBlocked;
 
 extern void CheckConnections();
 extern void EstablishNewConnections();
-
-
 
 int isItTimeToYield = 1;
 
@@ -321,6 +318,4 @@ int *nnew;
 		}
 	}
 }
-
-
 

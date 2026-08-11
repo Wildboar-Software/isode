@@ -31,7 +31,6 @@
  ****************************************************************
  */
 
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -60,7 +59,6 @@
 #endif
 #include "tpkt.h"
 
-
 #ifdef	TCP
 #include "internet.h"
 #endif
@@ -78,8 +76,6 @@
 #include "tailor.h"
 #include "tusap.h"
 
-
-
 static int  debug = 1;
 static int  nbits = FD_SETSIZE;
 
@@ -93,22 +89,14 @@ static int	consservice = 0;
 static int	bridgeservice = 0;
 static int	tp4service = 0;
 
-
 #define	NTADDRS		FD_SETSIZE
 
 static struct TSAPaddr *tz;
 static struct TSAPaddr  tas[NTADDRS];
 
-
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 void	ts_advise ();
-
-
-
-
-
-
 
 main (argc, argv, envp)
 int     argc;
@@ -127,8 +115,6 @@ char  **argv,
 	struct TSAPdisconnect  *td = &tds;
 	int	    pid;
 	char buffer1[BUFSIZ];
-
-
 
 	arginit (argv);
 	envinit ();
@@ -216,10 +202,8 @@ char  **argv,
 	}
 }
 
-
 static char buffer1[4096];
 static char buffer2[32768];
-
 
 static int
 tsapud (int vecp, char **vec) {
@@ -290,7 +274,6 @@ out:
 	exit (1);
 }
 
-
 static void
 ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
@@ -304,8 +287,6 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
-
-
 
 static
 arginit (char **vec) {
@@ -360,7 +341,6 @@ arginit (char **vec) {
 	tz++;
 #endif
 
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -383,7 +363,6 @@ arginit (char **vec) {
 				continue;
 #endif
 
-
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
@@ -397,7 +376,6 @@ arginit (char **vec) {
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", ap);
 }
-
 
 static
 envinit () {
@@ -457,10 +435,8 @@ envinit () {
 	advise (LOG_INFO, NULLCP, "starting");
 }
 
-
 #ifndef	lint
 static void  _advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -482,7 +458,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...)
 {
@@ -494,7 +469,6 @@ void	advise (int code, char *what, char *fmt, ...)
 
 	va_end (ap);
 }
-
 
 static void  _advise (int code, char *what, char *fmt, ap) {
 	char    buffer[BUFSIZ];

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_work.c,v 9.0 1992
  *
  */
 
-
 #include "acsap.h"
 #include "quipu/util.h"
 #include "quipu/common.h"
@@ -69,7 +68,6 @@ void dsa_work (struct task_act *tk) {
 
 		return;
 	}
-
 
 	if(tk->tk_conn->cn_ctx == DS_CTX_X500_DAP) {
 		orig = tk->tk_conn->cn_dn;
@@ -147,7 +145,6 @@ void dsa_work (struct task_act *tk) {
 		dsp = TRUE;
 
 	}
-
 
 	DLOG (log_dsap,LLOG_TRACE,( "Apply operation"));
 
@@ -322,7 +319,6 @@ void search_continue (struct task_act *tk) {
 		tk->tk_state = TK_ACTIVE;
 	}
 }
-
 
 #ifndef NO_STATS
 void log_x500_event (

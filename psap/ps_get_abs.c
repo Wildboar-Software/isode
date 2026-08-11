@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_get_abs.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 int	ps_len_strategy = PS_LEN_SPAG;
 static int  ps_get_id ();
 static int  ps_get_len ();
-
 
 int ps_get_abs (PE pe) {
 	PElementLen len;
@@ -75,7 +71,6 @@ int ps_get_abs (PE pe) {
 	return (ps_get_id (pe) + ps_get_len (pe) + len);
 }
 
-
 static int
 ps_get_id (PE pe) {
 	int    i;
@@ -88,7 +83,6 @@ ps_get_id (PE pe) {
 		i++;
 	return i;
 }
-
 
 static int
 ps_get_len (PE pe) {

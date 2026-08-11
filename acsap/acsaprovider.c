@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"
@@ -103,7 +101,6 @@ int ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, 
    Owing to laziness on our part, we use only ASN.1 transfer syntax.
  */
 
-
 struct type_ACS_Association__information *
 info2apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata) {
 	PE	    pe;
@@ -142,8 +139,6 @@ out:
 
 	return NULL;
 }
-
-
 
 int apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata) {
 	int    i;

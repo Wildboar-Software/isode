@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_preject.c,v 9.0 
  *
  */
 
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

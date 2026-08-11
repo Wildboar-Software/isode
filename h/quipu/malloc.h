@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef _QUIPUMALLOC_
 #define _QUIPUMALLOC_
 

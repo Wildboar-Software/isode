@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease1.c,v 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #define	LPP
@@ -75,7 +73,6 @@ struct PSAPindication *pi;
 
 	return result;
 }
-
 
 static int  PRelRequestAux (pb, data, pr, pi)
 struct psapblk *pb;
@@ -263,8 +260,6 @@ out:
 
 	return result;
 }
-
-
 
 int	PRelRetryRequest (sd, secs, pr, pi)
 int	sd;

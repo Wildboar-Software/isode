@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapbind.c,v 9.0 19
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/oid.h"
 #include "quipu/dap2.h"
@@ -114,7 +112,6 @@ int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, str
 
 /* DAP-BIND.REQUEST */
 
-
 int	  DapAsynBindReqAux (callingtitle, calledtitle, callingaddr,
 						 calledaddr, prequirements, srequirements, isn, settings,
 						 sf, bindarg, qos, dc, di, async)
@@ -178,7 +175,6 @@ int			  async;
 	pc->pc_ctx[1].pc_id = DIR_ACSE_PC_ID;
 	pc->pc_ctx[1].pc_asn = acse_pci;
 	pc->pc_ctx[1].pc_atn = NULLOID;
-
 
 	/* Encode Bind Argument */
 	if (encode_DAS_DirectoryBindArgument (&bindargpe, 1, 0, NULLCP, bindarg) != OK) {
@@ -350,7 +346,6 @@ int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOT
 		dc->dc_un.dc_bind_err.dbe_cc = rni->rni_cc;
 		bcopy (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc);
 		dc->dc_result = DC_REJECT;
-
 
 		return (NOTOK);
 

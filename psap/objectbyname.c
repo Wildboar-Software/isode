@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/objectbyname.c,v 9.0 1
  *
  */
 
-
-
 #include <string.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 struct isobject *
 getisobjectbyname (char *descriptor) {

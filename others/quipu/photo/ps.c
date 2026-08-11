@@ -41,7 +41,6 @@ int photo_start (char *name) {
 	return 0;
 }
 
-
 int photo_end (char *name) {
 	/* Decoding has finished - display the image */
 
@@ -58,7 +57,6 @@ int photo_black (int length) {
 int photo_white (int length) {
 	x += length;
 }
-
 
 photo_line_end (line)
 bit_string * line;

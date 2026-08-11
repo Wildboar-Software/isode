@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/hpuxx25.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "general.h"
@@ -56,12 +54,9 @@ static struct fdl_st *fdl = NULL;
 static void setup_sigurg ();
 static void clear_sigurg ();
 
-
 #ifdef  DEBUG
 void    print_x25_facilities ();
 #endif
-
-
 
 int start_x25_client (struct NSAPaddr *local, int priv) {
 	int     sd, pgrp;
@@ -79,7 +74,6 @@ int start_x25_client (struct NSAPaddr *local, int priv) {
 
 	return sd;
 }
-
 
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	CONN_DB	sbuf;
@@ -166,7 +160,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	return sd;
 }
 
-
 int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
@@ -199,7 +192,6 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-
 int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sbuf;
 	CONN_DB     *sock = &sbuf;
@@ -224,7 +216,6 @@ int join_x25_client (int fd, struct NSAPaddr *remote) {
 
 	return nfd;
 }
-
 
 int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	int	i, j;
@@ -285,7 +276,6 @@ int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	return (returncode);
 }
 
-
 void
 fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 	int	i;
@@ -337,7 +327,6 @@ fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 		ccitt->x25_fac [i++] = hp->t_44 && 0xff;
 	}
 }
-
 
 int set_x25_facilities (int sd, int coc, char *caption) {
 	FACILITY_DB		facilities;
@@ -471,7 +460,6 @@ int set_x25_facilities (int sd, int coc, char *caption) {
 	return OK;
 }
 
-
 int log_cause_and_diag (int fd) {
 	char buf [MAX_EVENT_SIZE];
 	int	buflen;
@@ -521,7 +509,6 @@ int log_cause_and_diag (int fd) {
 		elucidate_x25_err (flags, &buf [2]);
 	}
 }
-
 
 void
 sigurg (int sig, int code, struct sigcontext *scp) {
@@ -587,8 +574,6 @@ int fd;
 	return (close (fd));
 };
 
-
-
 #ifdef  DEBUG
 
 static int
@@ -606,7 +591,6 @@ log_x25_facilities (int fd, int coc, char *caption) {
 
 	return OK;
 }
-
 
 static void
 print_x25_facilities (FACILITY_DB *hp, int coc, char *caption) {

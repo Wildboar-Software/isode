@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-mgmt.c,v 9.0 199
  *
  */
 
-
 #include <stdio.h>
 #include "ftamuser.h"
 
@@ -32,7 +31,6 @@ static int mv (char *src, char *dst, int multi);
 static int rm (char *file, int multi);
 static int chgrp (char *group, char *file, int multi);
 static int makedir (char *dir, int multi);
-
 
 int f_mv (char **vec) {
 #ifdef	BRIDGE
@@ -226,7 +224,6 @@ out:
 #endif
 }
 
-
 static int mv (char *src, char *dst, int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
@@ -307,7 +304,6 @@ you_lose:
 	return NOTOK;
 }
 
-
 int f_rm (char **vec) {
 #ifndef	BRIDGE
 	int     multi;
@@ -359,7 +355,6 @@ out:
 	return OK;
 #endif
 }
-
 
 static int rm (char *file, int multi) {
 	struct FTAMgroup    ftgs;
@@ -423,7 +418,6 @@ you_lose:
 	return NOTOK;
 }
 
-
 #ifndef	BRIDGE
 int f_chgrp (char **vec) {
 	int     multi;
@@ -479,7 +473,6 @@ out:
 
 	return OK;
 }
-
 
 static int chgrp (char *group, char *file, int multi) {
 	struct FTAMgroup    ftgs;
@@ -561,7 +554,6 @@ you_lose:
 }
 #endif
 
-
 int f_mkdir (char **vec) {
 #ifndef	BRIDGE
 	int	    multi;
@@ -593,7 +585,6 @@ int f_mkdir (char **vec) {
 	return OK;
 #endif
 }
-
 
 static int makedir (char *dir, int multi) {
 	struct FTAMgroup    ftgs;

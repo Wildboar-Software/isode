@@ -40,9 +40,6 @@
  ****************************************************************
  */
 
-
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
@@ -52,24 +49,12 @@
 #include "uderrors.h"
 #include "tailor.h"
 
-
-
 #ifdef HULA
-
-
-
-
-
-
 
 #define SSAP_NOT_ASYNC 	0
 #define SSAP_ASYNC 	1
 
-
-
 int	TUNITDATAser ();
-
-
 
 /*
  ****************************************************************
@@ -128,7 +113,6 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 						  NULLCP,
 						  SuErrString (UDERR_MISSING_PARAMETER));
 
-
 	/*
 	 *  Check if we need to create a new socket or just
 	 *  reuse (essentially "rebind") the current socket
@@ -184,7 +168,6 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 #endif
 	}
 
-
 	/*
 	 *  Set up the addresses if not specified.
 	 */
@@ -229,7 +212,6 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 
 	sb -> sb_flags = SB_CLNS;		/* connectionless service */
 
-
 #if FALSE
 	sb -> sb_tsdu_us = 0;
 #endif
@@ -246,11 +228,6 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 	return fd;
 
 }
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -275,11 +252,9 @@ int SUnitDataUnbind (int sd, struct SSAPindication *si)
 	SBV      smask;			 	/* signal save mask */
 	struct  TSAPdisconnect  td;
 
-
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataUnbind \n");
 #endif
-
 
 	/*
 	 *  Find the correct session block and set the signal mask.
@@ -308,7 +283,6 @@ int SUnitDataUnbind (int sd, struct SSAPindication *si)
 
 }
 
-
 /*
  ****************************************************************
  *								*
@@ -332,10 +306,8 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 	int	     result;
 	SBV      smask;			 	/* signal save mask */
 
-
 	missing_udP (vec);
 	missing_udP (si);
-
 
 	/*
 	 *  Check if we need to create a new socket or just
@@ -368,7 +340,6 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 	}
 
-
 	/*
 	 *  Now pass thru the request to TSAP.
 	 */
@@ -379,9 +350,6 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 	return result;
 
 }
-
-
-
 
 /*
  ****************************************************************
@@ -399,16 +367,13 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 
 int SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si)
 
-
 {
 
 	int	sd;
 
-
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataRequest \n");
 #endif
-
 
 	/*
 	 *  Create the socket on the fly.  We do the bind here because
@@ -436,10 +401,6 @@ int SUnitDataRequest (struct SSAPaddr *calling, struct SSAPaddr *called, char *d
 	return OK;
 
 }
-
-
-
-
 
 /*
  ****************************************************************
@@ -470,7 +431,6 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 	struct TSAPdisconnect *td = &tds;
 	struct udvec vvs[3];
 	struct udvec  *vv, *xv;
-
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataWrite \n");
@@ -574,8 +534,6 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 		printf ( " %x ", *(vv->uv_base + j) );
 #endif
 
-
-
 	/*
 	 *  Now copy the user data to the work udvec.  The SPDU UD header
 	 *  was encoded and put as the 1st base element so put the user
@@ -619,17 +577,9 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 	else
 		return OK;
 
-
 }
 
-
-
-
-
-
-
 #define	NSPUV	12	/* really should be MSG_MAXIOVLEN - 4 */
-
 
 /*
  ****************************************************************
@@ -648,7 +598,6 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
-
 {
 
 	int 	 n, cc, len, j;
@@ -661,7 +610,6 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 	struct TSAPdisconnect *td = &tds;
 	struct udvec vvs[NSPUV];
 	struct udvec  *vv, *xv;
-
 
 #ifdef HULADEBUG
 	printf ("\n     in SUnitDataWriteV \n");
@@ -692,7 +640,6 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 						  SC_PARAMETER,
 						  NULLCP,
 						  SuErrString(UDERR_ILLEGAL_UD_SIZE));
-
 
 	/*
 	 *  Block any signals while we do the write.
@@ -774,8 +721,6 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 		printf ( " %x ", *(vv->uv_base + j) );
 #endif
 
-
-
 	/*
 	 *  Now copy the user udvec to the work udvec.  The SPDU UD header
 	 *  was encoded and put as the 1st base element so start the copy
@@ -856,12 +801,7 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 	else
 		return OK;
 
-
 }
-
-
-
-
 
 /*
  ****************************************************************
@@ -926,11 +866,6 @@ int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindicati
 
 }
 
-
-
-
-
-
 /*
  ****************************************************************
  *								*
@@ -947,7 +882,6 @@ int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindicati
 
 static int
 SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud)
-
 
 {
 	struct ssapkt *s;
@@ -1006,7 +940,6 @@ SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct S
 				   &sud -> ss_called.sa_addr,
 				   sizeof (sud -> ss_called.sa_addr) );
 
-
 			/*
 			     *  Copy the SSAP selectors.
 			 */
@@ -1060,10 +993,6 @@ SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct S
 
 	return NOTOK;
 }
-
-
-
-
 
 #if FALSE
 
@@ -1123,11 +1052,6 @@ struct SSAPindication *si;
 }
 
 #endif
-
-
-
-
-
 
 struct ssapkt *
 sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPunitdata *tud)
@@ -1206,12 +1130,7 @@ sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPu
 
 }
 
-
-
-
 #if FALSE
-
-
 
 /*
  ****************************************************************
@@ -1285,11 +1204,5 @@ TUNITDATAser (int sd, int tud) {
 }
 
 #endif
-
-
-
-
-
-
 
 #endif

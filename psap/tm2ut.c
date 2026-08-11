@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/tm2ut.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include <time.h>
 #include "psap.h"
@@ -33,9 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/tm2ut.c,v 9.0 1992/06/
 #include <sys/time.h>
 #endif
 
-
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 
 void
 tm2ut (struct tm *tm, UTC ut) {

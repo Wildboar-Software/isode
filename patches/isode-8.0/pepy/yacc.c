@@ -27,13 +27,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/yacc.y.gnrc,v 9.0 1992
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "pepy.h"
 
 #define	YYSTYPE	YYSTKTYPE
-
 
 #define	YYDEBUG	1
 

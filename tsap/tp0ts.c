@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tp0ts.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
@@ -39,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tp0ts.c,v 9.0 1992/06/
 #endif
 
 #if	defined(TCP) || defined(X25)
-
 
 static int
 TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
@@ -99,7 +96,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 	return OK;
 }
-
 
 static int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -248,7 +244,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    len,
@@ -318,8 +313,6 @@ out:
 	return result;
 }
 
-
-
 static int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
@@ -378,7 +371,6 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 
 	return result;
 }
-
 
 static int
 TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
@@ -451,8 +443,6 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 
 	return OK;
 }
-
-
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -573,7 +563,6 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-
 static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int     result;
@@ -675,9 +664,7 @@ static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 #define	NODELAY
 #endif
 
-
 extern	int	errno;
-
 
 int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
@@ -941,7 +928,6 @@ out:
 
 	return cc;
 }
-
 
 #ifdef	NODELAY
 static int

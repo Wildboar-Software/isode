@@ -17,14 +17,12 @@
  *
  */
 
-
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
 #ifndef	_CONFIG_
 #include "config.h"		/* system-specific configuration */
 #endif
-
 
 /* target-dependent defines:
 
@@ -39,7 +37,6 @@
 #define	BSDSIGS
 #endif
 
-
 #ifdef	ROS
 #undef	SYS5NLY
 #define	BSDSIGS
@@ -49,7 +46,6 @@
 #endif
 
 #endif
-
 
 #ifdef	SYS5
 #define	SYS5NLY
@@ -78,14 +74,12 @@
 #define	BSDSIGS
 #define	SIGEMT	SIGUSR1
 
-
 int   (*_signal ()) ();
 
 #define	signal	_signal
 #endif
 
 #endif
-
 
 #ifdef	NSIG
 
@@ -127,13 +121,11 @@ typedef	int	SBV;
 #define	DONE		1
 #endif
 
-
 #ifndef	NULLCP
 typedef char *CP;
 #define	NULLCP		((char *) 0)
 #define	NULLVP		((char **) 0)
 #endif
-
 
 #ifndef	makedev
 #include <sys/types.h>
@@ -157,7 +149,6 @@ typedef unsigned long	u_long;
 #endif
 #endif
 
-
 #ifndef FD_SET
 #define	FD_SETSIZE	    (sizeof (fd_set) * 8)
 
@@ -169,18 +160,14 @@ typedef unsigned long	u_long;
 
 #define	NULLFD		((fd_set *) 0)
 
-
 typedef int	*IP;
 #define	NULLIP		((IP) 0)
-
 
 typedef	int	(*IFP) ();
 #define	NULLIFP		((IFP) 0)
 
-
 typedef void   (*VFP) ();
 #define	NULLVFP		((VFP) 0)
-
 
 #ifndef	S5R3
 #define	SFP	IFP
@@ -188,14 +175,12 @@ typedef void   (*VFP) ();
 #define	SFP	VFP
 #endif
 
-
 struct udvec {			/* looks like a BSD iovec... */
 	caddr_t uv_base;
 	int	    uv_len;
 
 	int	    uv_inline;
 };
-
 
 struct qbuf {
 	struct qbuf *qb_forw;	/* doubly-linked list */
@@ -218,12 +203,10 @@ struct qbuf {
     } \
 }
 
-
 #ifndef	min
 #define	min(a, b)	((a) < (b) ? (a) : (b))
 #define	max(a, b)	((a) > (b) ? (a) : (b))
 #endif
-
 
 #ifdef SYS5
 

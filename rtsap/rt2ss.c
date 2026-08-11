@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ss.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
@@ -82,7 +80,6 @@ int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 	return result;
 }
 
-
 int rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
@@ -106,7 +103,6 @@ int rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 
 	return OK;
 }
-
 
 int rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
 	int    cc,
@@ -308,7 +304,6 @@ out:
 	return NOTOK;
 }
 
-
 int rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	int     result;
 	struct SSAPdata sxs;
@@ -377,7 +372,6 @@ int rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication
 /*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
-
 
 int rt2ssasync (
 	struct assocblk *acb,
@@ -451,7 +445,6 @@ int rt2sslose (struct assocblk *acb, int result) {
 
 		PLOGP (rtsap_log,OACS_AbortInformation, pe, "AbortInformation",
 			   0);
-
 
 		pe_free (pe);
 	}
@@ -549,7 +542,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti) {
 	int     result;
@@ -643,7 +635,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
@@ -693,7 +684,6 @@ out:
 
 	return NOTOK;
 }
-
 
 static int
 doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti) {
@@ -843,7 +833,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
@@ -890,8 +879,6 @@ out1:
 	return NOTOK;
 }
 
-
-
 static int
 doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti) {
 	SFFREE (sf);
@@ -923,7 +910,6 @@ out:
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 int ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti) {
 	int     result;

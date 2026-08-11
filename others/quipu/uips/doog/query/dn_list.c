@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/doog/query/RC
 #include "util.h"
 #include "dn_list.h"
 
-
-
 /*
  * - dn_list_insert -
  * Insert a new entry name into an unsorted listed of entry names.

@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef PEPSY_DEFINITIONS
 #define PEPSY_DEFINITIONS
 
@@ -155,7 +154,6 @@ typedef struct	{
 #define FL_CONTEXT	PE_CLASS_CONT
 #define FL_PRIVATE	PE_CLASS_PRIV
 
-
 #define FL_IMPLICIT	0100
 #define FL_DEFAULT	0200
 #define FL_OPTIONAL	0400
@@ -170,7 +168,6 @@ typedef struct	{
 #define FL_USELECT	02000	/* user code selects */
 
 #define IF_USELECT(p)		((p) -> pe_flags & FL_USELECT)
-
 
 #define CLASS(p)	((PElementClass)((p)->pe_flags & FL_CLASS))
 #define TAG(p)		((PElementID)((p)->pe_tag))
@@ -209,9 +206,7 @@ typedef	struct	{
 }	modtyp;
 #define NULLMODTYP	((modtyp *)0)
 
-
 #define	LOTSOFBITS	128
-
 
 int	enc_f (), dec_f (), fre_obj ();
 #endif

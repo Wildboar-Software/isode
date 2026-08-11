@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/pe.c,v 9.0 1992
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "psap.h"
 #include "quipu/attr.h"               /* for defn of READOUT */

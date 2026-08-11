@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0
 #include "ryresponder.h"      /* for generic idempotent responders */
 #include "defs.h"
 
-
 static char *myservice = "isode idist";
 static char *mycontext = "isode idist";
 
@@ -87,8 +86,6 @@ char homedir[BUFSIZ];
 char user[100];
 struct passwd *pw;
 struct group *gr;
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int initiate ();
@@ -455,7 +452,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
 /* ERROR */
 
 static int  error (sd, err, param, rox, roi)
@@ -487,7 +483,6 @@ syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }
-
 
 /* U-REJECT */
 
@@ -583,7 +578,6 @@ char	*str;
 	(*pe) -> pe_context = 3;	/* magic!! - don't ask me why */
 	return type;
 }
-
 
 #define SIZEOFQB(qb)  (sizeof (struct qbuf) +  (qb && qb->qb_data ? qb->qb_len \
 				: 0))

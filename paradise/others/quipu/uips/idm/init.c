@@ -21,7 +21,6 @@ extern int print_parse_errors;          /* Quipu variable to disable
 
 extern LLog * de_log;
 
-
 extern char *oidtable,   /* Name of oidtable to use */
 	   *tailfile,   /* Name of dsaptailor file to use*/
 	   username[],
@@ -134,7 +133,6 @@ char ** argv;
 	addToList(&coatts, "masterDSA");
 	addToList(&coatts, DE_COUNTRY_NAME);
 
-
 	/* Read in dsaptailor file */
 	if ((config_file = fopen(isodefile(tailfile, 0), "r")) == (FILE *) NULL) {
 		fprintf(stderr, dsap_notOpen);
@@ -220,7 +218,6 @@ char ** argv;
 				/* let's show bravado - carry on regardless!!! */
 			}
 	}
-
 
 	printf("%*s%s\n\n", (80 - strlen(welcomeMessage)) / 2, "",
 		   welcomeMessage);

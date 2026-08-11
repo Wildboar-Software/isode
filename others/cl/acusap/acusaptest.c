@@ -19,7 +19,6 @@
  ****************************************************************
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -34,12 +33,10 @@
 #include "ssap.h"
 #include "susap.h"
 
-
 static char *myhost = "loopback";
 static char *myservice = "acusaptest";
 static char *mycontext = "acusaptest context";
 static char *mypci = "acusaptest pci";
-
 
 char *gets (), *calloc ();
 
@@ -78,8 +75,6 @@ void acs_adios();
 void acs_advise();
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char buffer[80], *bptr;
@@ -152,7 +147,6 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-
 /*-------------------------------------*/
 int togglemode ()
 /*-------------------------------------*/
@@ -168,7 +162,6 @@ int togglemode ()
 		printf ("\n Changing to SERVER\n");
 	}
 }
-
 
 /*-------------------------------------*/
 int bind ()
@@ -225,7 +218,6 @@ int initbindvars ()
 	pc -> pc_ctx[0].pc_atn = NULLOID;
 }
 
-
 /*-------------------------------------*/
 int unbind ()
 /*-------------------------------------*/
@@ -244,7 +236,6 @@ int unbind ()
 			printf ( "unbind worked");
 	}
 }
-
 
 /*-------------------------------------*/
 int listenup ()
@@ -354,7 +345,6 @@ int audtsend ()
 		printf ("\n write successful\n");
 }
 
-
 /*-------------------------------------*/
 int audtread ()
 /*-------------------------------------*/
@@ -411,7 +401,6 @@ int validbinding (
     (pe_cmp ((aei1) -> aei_ap_title, (aei2) -> aei_ap_title) \
   || pe_cmp ((aei1) -> aei_ae_qualifier, (aei2) -> aei_ae_qualifier))
 
-
 	if ( (acb = findacublk (sd)) == NULL ) {
 		printf ("\n cannot find assocblk\n");
 		return NOTOK;
@@ -430,7 +419,6 @@ int validbinding (
 		return NOTOK;
 	return OK;
 }
-
 
 /*-------------------------------------*/
 int audtrebind ()
@@ -462,7 +450,6 @@ int audtrebind ()
 	}
 }
 
-
 /*-------------------------------------*/
 static
 printsrv (
@@ -480,7 +467,6 @@ printsrv (
 		printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
 	printf ("\n");
 }
-
 
 /*-------------------------------------*/
 static
@@ -536,16 +522,12 @@ printpaddr (
 
 }
 
-
-
-
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -561,7 +543,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
-
 
 #ifndef	lint
 static void	_advise ();
@@ -581,7 +562,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
@@ -609,7 +589,6 @@ advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

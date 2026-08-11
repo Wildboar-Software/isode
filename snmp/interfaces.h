@@ -25,7 +25,6 @@
  *
  */
 
-
 #include "internet.h"
 #include <net/if.h>
 #include <netinet/if_ether.h>		/* to get struct arpcom */
@@ -52,7 +51,6 @@ struct	arpcom {
 };
 #endif
 
-
 extern	int	ifNumber;
 
 struct interface {
@@ -77,10 +75,8 @@ struct interface {
 
 extern struct interface *ifs;
 
-
 void set_interface (char *name, char *ava);
 int	sort_interface (void);
-
 
 union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	    sa;
@@ -90,7 +86,6 @@ union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr_iso	    un_iso;
 #endif
 };
-
 
 struct address {
 #define	ADR_SIZE	(20 + 1 + 1)	/* object instance */
@@ -111,9 +106,7 @@ extern struct address *afs_inet;
 extern struct address *afs_iso;
 #endif
 
-
 struct address *get_addrent ();
-
 
 #if	defined(BSD44) || defined(BSD43_Tahoe) || defined(RT) || defined(MIPS) || defined(ultrix) || defined(__NeXT__) || defined(LINUX)
 #define	NEW_AT

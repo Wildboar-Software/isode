@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaplose.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaplose.c,v 9.0 1
 static int  _dsaplose ();
 static int  _dsapreject ();
 #endif
-
 
 #ifndef	lint
 int	dsaplose (struct DSAPindication *di, ...) {
@@ -62,7 +59,6 @@ int dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 	return dsaplose (di, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* what, fmt, args ... */
@@ -112,7 +108,6 @@ int dsapreject (struct DSAPindication *di, int reason, int id, char *what, char 
 	return dsapreject (di, reason, id, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int

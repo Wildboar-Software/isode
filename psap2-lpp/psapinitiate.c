@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapinitiate.c,v 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #define	LPP
@@ -119,7 +117,6 @@ struct PSAPindication *pi;
 
 	return result;
 }
-
 
 static int  PConnRequestAux (calling, called, ctxlist, ref, data, qos, pc, pi,
 							 async)
@@ -292,9 +289,7 @@ out1:
 	return NOTOK;
 }
 
-
 #define	QOS_RELIABLE_DFLT	HIGH_QUALITY
-
 
 int	tcpopen (), udpopen ();
 
@@ -315,7 +310,6 @@ static struct nsapent {
 
 	0
 };
-
 
 static int  PConnRequestAux2 (pb, calling, called, qos, pi, async)
 struct psapblk *pb;
@@ -423,7 +417,6 @@ struct PSAPindication *pi;
 
 	return result;
 }
-
 
 static int  PAsynRetryAux (pb, pc, pi)
 struct psapblk *pb;
@@ -597,7 +590,6 @@ out:
 }
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
-
 
 int	PAsynNextRequest (sd, pc, pi)
 int	sd;

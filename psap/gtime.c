@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include <time.h>
 #include "psap.h"
@@ -35,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
 #ifdef	notdef
 #include <sys/timeb.h>
 #endif
-
 
 /* gtime(): the inverse of localtime().
 	This routine was supplied by Mike Accetta at CMU many years ago.
@@ -53,7 +50,6 @@ int	dmsize[] = {
 	(((y) % 4) ? 365 : (((y) % 100) ? 366 : (((y) % 400) ? 365 : 366)))
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 
 long
 gtime (struct tm *tm) {

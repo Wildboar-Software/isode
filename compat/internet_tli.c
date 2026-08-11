@@ -20,8 +20,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
  * is gratefully acknowledged.
  */
 
-
-
 /*
  *				  NOTICE
  *
@@ -32,8 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
  *
  */
 
-
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -41,14 +37,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
 #include "manifest.h"
 #include "tailor.h"
 
-
 #ifdef	TCP
 #include "internet.h"
 
-
 extern int t_nerr, t_errno;
 extern char *t_errlist[];
-
 
 #ifdef	TLI_TCP
 
@@ -184,7 +177,6 @@ int	priv;
 	return sd;
 }
 
-
 int	start_tcp_server (sock, backlog, opt1, opt2)
 struct sockaddr_in *sock;
 int	backlog,
@@ -197,7 +189,6 @@ int	backlog,
 	if ((sd = t_open (DEVTLI, O_RDWR, NULL)) == NOTOK)
 		return tli_lose (sd, "t_open");
 	FD_CLR (sd, &inprogress);
-
 
 	/* WARNING: This option-setting code may be implementation specific */
 	if (opt1 || opt2) {
@@ -269,7 +260,6 @@ int	backlog,
 	return sd;
 }
 
-
 int	join_tcp_client (fd, sock)
 int	fd;
 struct sockaddr_in *sock;
@@ -321,7 +311,6 @@ disconnect:
 	t_snddis(fd, call);
 	goto out;
 }
-
 
 int	join_tcp_server (fd, sock)
 int	fd;

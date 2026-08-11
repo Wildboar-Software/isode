@@ -130,7 +130,6 @@ QCardinal **id_ptr;
 	}
 } /* directory_wait */
 
-
 /*
  * - _request_invoked() -
  * Add invoked user request to request array and pass back identifier.
@@ -258,7 +257,6 @@ QCardinal *return_id_ptr;
 
 	return QERR_ok;
 } /* _request_invoked */
-
 
 /*
  * - _request_complete() -

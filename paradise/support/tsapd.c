@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/
  *
  */
 
-
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
@@ -81,7 +80,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.2 1992/
 #endif
 #include "tailor.h"
 
-
 static int  debug = 0;
 static int  foreground = 0;
 static int  nbits = FD_SETSIZE;
@@ -108,7 +106,6 @@ static int 	x2584service = 1;
 static int     *services[] = {
 	&tp4service, &tcpservice, &x25service, &x2584service
 };
-
 
 #define	NTADDRS	FD_SETSIZE
 
@@ -149,9 +146,7 @@ struct IAEntry {
 static	struct IAEntry *iz;
 static	struct IAEntry  iae[NENTRIES];
 
-
 int	str2dnY ();
-
 
 extern	int	dsa_ad;
 extern	int	dsa_dead;
@@ -160,7 +155,6 @@ extern	struct PSAPaddr dsa_bound;
 
 extern	int	as_print (), de_print (), fi_print ();
 #endif
-
 
 void	adios (char *, char *, ...)
 		advise (int, char *, char *, ...);
@@ -284,7 +278,6 @@ int main (int argc, char **argv, char **envp) {
 static char buffer1[4096];
 static char buffer2[32768];
 
-
 static void tsapd (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
@@ -390,7 +383,6 @@ out:
 	exit (1);
 }
 
-
 static int  setperms (is)
 #ifndef	IAE
 struct isoservent *is;
@@ -409,7 +401,6 @@ struct IAEntry *is;
 	}
 }
 
-
 static void  ts_advise (td, code, event)
 struct TSAPdisconnect *td;
 int	code;
@@ -426,7 +417,6 @@ char   *event;
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
-
 
 #ifndef	NOGOSIP
 static int  ssapd (is, td)
@@ -465,11 +455,9 @@ struct TSAPdisconnect *td;
 	return DONE;
 }
 
-
 #define	RMASK \
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
 \07ACTIVITY\010NEGOTIATED\011CAPABILITY\012EXCEPTIONS\013TYPEDATA"
-
 
 static int  psapd (is, si)
 struct isoservent *is;
@@ -541,7 +529,6 @@ struct SSAPindication *si;
 	return DONE;
 }
 #endif
-
 
 #ifndef	IAE
 static	arginit (vec)
@@ -757,7 +744,6 @@ char	**vec;
 			}
 #endif
 
-
 #if defined(X25) || defined (TP4)
 			case 'N':
 #ifdef AEF_NSAP
@@ -813,7 +799,6 @@ char	**vec;
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", ap);
 }
-
 
 #else
 static	arginit (vec)
@@ -1022,7 +1007,6 @@ char	**vec;
 		search_directory (1);
 	}
 }
-
 
 static	search_directory (firstime)
 int	firstime;
@@ -1353,7 +1337,6 @@ losing_iae:
 	nextime += IAETIME;
 }
 
-
 static	bind_to_directory () {
 	struct ds_bind_arg bind_arg,
 			   bind_result;
@@ -1392,7 +1375,6 @@ static	bind_to_directory () {
 	isbound = 1;
 }
 
-
 static int  rebind_to_directory () {
 	if (referral_dsa != NOTOK) {
 		if (debug)
@@ -1409,7 +1391,6 @@ static int  rebind_to_directory () {
 	return (isbound ? OK : NOTOK);
 }
 
-
 static	int	make_bind_args (ba, br, be)
 struct ds_bind_arg *ba,
 		   *br;
@@ -1425,7 +1406,6 @@ struct ds_bind_error *be;
 	if (ba -> dba_passwd_len = strlen (passwd))
 		strcpy (ba -> dba_passwd, passwd);
 }
-
 
 static int  unbind_from_directory () {
 	int	    wasbound;
@@ -1448,7 +1428,6 @@ static int  unbind_from_directory () {
 
 	return wasbound;
 }
-
 
 static int  do_error (de)
 struct DSError *de;
@@ -1517,7 +1496,6 @@ struct DSError *de;
 	return NOTOK;
 }
 
-
 int	str2dnY (str, dn)
 char   *str;
 DN     *dn;
@@ -1529,7 +1507,6 @@ DN     *dn;
 
 	return ((*dn = str2dn (str)) != NULLDN ? OK : NOTOK);
 }
-
 
 #ifdef	BSD42
 #endif
@@ -1640,7 +1617,6 @@ static  envinit () {
 #endif
 }
 
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -1663,7 +1639,6 @@ char   *what,
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {

@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/post.c,v 9.0 19
 	Maximum of 6 (UB_POSTAL_LINE) <address_component>'s
 */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
@@ -168,7 +167,6 @@ static struct postaddr *addrparse (char *str) {
 			}
 		}
 
-
 		if (result == (struct postaddr *) NULL)
 			result = a;
 		else
@@ -212,7 +210,6 @@ static struct postaddr *addrparse (char *str) {
 	return (result);
 }
 
-
 int	postal_indent = -1;
 
 static void addrprint (ps,addr,format)
@@ -246,7 +243,6 @@ int format;
 			prefix = " $ ";
 	}
 }
-
 
 static PE addrenc (m)
 struct postaddr * m;

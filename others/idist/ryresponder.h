@@ -20,10 +20,8 @@
  *
  */
 
-
 #include "rosy.h"
 #include "logger.h"
-
 
 static struct dispatch {
 	char   *ds_name;
@@ -32,9 +30,7 @@ static struct dispatch {
 	IFP	    ds_vector;
 };
 
-
 extern int  debug;
-
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);

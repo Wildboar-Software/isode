@@ -47,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/dased.c,v 9.0 1992/06
 #define	STATS
 #endif
 
-
 static int debug = 0;
 static int nbits = FD_SETSIZE;
 
@@ -73,7 +72,6 @@ static	char	passwd[DBA_MAX_PASSWD_LEN];
 static	PS	ps;
 static	PS	nps;
 
-
 static int	dns_compar ();
 static DNS	dase_interact (), just_say_no ();
 static PE	name2psap ();
@@ -89,8 +87,6 @@ static int	bind_to_dsa ();
 
 char   *dn2str ();
 PE	grab_pe ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    vecp;
@@ -229,7 +225,6 @@ static void dased (int vecp, char **vec) {
 
 	exit (0);
 }
-
 
 static void dase_aux (struct type_DASE_Query__REQ *req) {
 	int    i;
@@ -649,7 +644,6 @@ out:
 	return dns;
 }
 
-
 static int
 dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	int	    i;
@@ -665,15 +659,12 @@ dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-
-
 static DNS
 just_say_no (DNS dns, DN dn, char *s) {
 	dn_seq_free (dns);
 
 	return NULL;
 }
-
 
 static PE
 name2psap (DN dn) {
@@ -891,7 +882,6 @@ static void envinit(void)  {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-
 #ifndef lint
 static void    adios (char *what, char *fmt, ...)
 {
@@ -914,7 +904,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef lint
 static void    advise (int code, char *what, char *fmt, ...)
 {
@@ -935,14 +924,12 @@ advise (int code, char *what, char *fmt) {
 }
 #endif
 
-
 static void
 ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
-
 
 static void
 ts_advise (struct TSAPdisconnect *td, int code, char *event) {

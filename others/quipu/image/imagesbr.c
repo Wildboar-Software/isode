@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr
  *
  */
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -46,7 +45,6 @@ static LLog _pgm_log = {
 };
 LLog *pgm_log = &_pgm_log;
 
-
 /* AKA */
 
 struct aka {
@@ -62,20 +60,16 @@ struct aka {
 static struct aka akas;
 static struct aka *AHead = &akas;
 
-
 static int  stay_bound = 0;
 
 DN	local_dn;
 
-
 static struct dn_seq *dm2dn_seq ();
-
 
 extern char *local_dit;
 struct dn_seq *dn_seq_push ();
 int	dn_seq_print ();
 PE	grab_pe ();
-
 
 void
 init_aka (char *pgm, int stayopen, char *dit) {
@@ -115,7 +109,6 @@ init_aka (char *pgm, int stayopen, char *dit) {
 			== NULLDN)
 		adios (NULLCP, "local_dit invalid: \"%s\"", cp);
 }
-
 
 static struct aka *
 mbox2ak (char *local, char *domain) {
@@ -167,7 +160,6 @@ static int dlevel = 0;
 static struct dn_seq *dm2dn_seq_aux ();
 static  do_bind ();
 
-
 static struct dn_seq *
 dm2dn_seq (char *dm) {
 	char *dp;
@@ -183,7 +175,6 @@ dm2dn_seq (char *dm) {
 
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
 }
-
 
 static struct dn_seq *dm2dn_seq_aux (dm, dn, dlist)
 char   *dm;
@@ -311,7 +302,6 @@ free_filter:
 	return dlist;
 }
 
-
 static  PE  image_search (ak)
 struct aka *ak;
 {
@@ -415,7 +405,6 @@ free_filter:
 	return pe;
 }
 
-
 static
 do_bind () {
 	struct ds_bind_arg bind_arg,
@@ -449,7 +438,6 @@ static int    passno;
 static int    x, y, maxx;
 
 static struct type_IMAGE_Image *im = NULL;
-
 
 struct type_IMAGE_Image *
 fetch_image (char *local, char *domain) {
@@ -516,8 +504,6 @@ out:
 	return (ak -> ak_image = im);
 }
 
-
-
 int photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
@@ -525,8 +511,6 @@ int photo_start (char *name) {
 
 	return OK;
 }
-
-
 
 int photo_end (char *name) {
 	int	    len;
@@ -571,7 +555,6 @@ int photo_end (char *name) {
 	return OK;
 }
 
-
 int photo_black (int length) {
 	if (passno == 2) {
 		int    i,
@@ -594,14 +577,11 @@ int photo_black (int length) {
 	return OK;
 }
 
-
 int photo_white (int length) {
 	x += length;
 
 	return OK;
 }
-
-
 
 photo_line_end (line)
 caddr_t line;
@@ -613,10 +593,8 @@ caddr_t line;
 	return OK;
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -638,7 +616,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -649,7 +626,6 @@ void	advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap)
 {

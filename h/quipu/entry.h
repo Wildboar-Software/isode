@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUENTRY
 #define QUIPUENTRY
 
@@ -97,7 +96,6 @@ typedef struct entry {
 	DN          e_alias;        /* if present, entry is alias           */
 
 	struct dsa_info *e_dsainfo; /* only present if entry represents DSA */
-
 
 	/* Second block refer to children of    */
 	/* entry                                */
@@ -257,6 +255,5 @@ struct getedb_arg {
 };
 
 #define NULL_GETARG (struct getedb_arg *) NULL
-
 
 #endif

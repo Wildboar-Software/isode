@@ -21,15 +21,11 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "spkt.h"
 
-
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
-
 
 #define	SPDU_TYPE(e)	fprintf (fp, "%sCODE/ %s\n", rw, e)
 
@@ -41,8 +37,6 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:
 #define	SMASK	"\020\01NOEND"
 #define	TMASK	"\020\01DATA\03SYNC\05ACTIVITY\07RELEASE"
 #define	YMASK	"\020\01NOEXPLICIT"
-
-
 
 void	spkt2text (fp, s, read)
 FILE	*fp;
@@ -338,7 +332,6 @@ int	read;
 	fprintf (fp, "%s)\n", rw);
 }
 
-
 static	type_id (fp, type, rw, selector, len)
 FILE   *fp;
 char   *type,
@@ -353,7 +346,6 @@ int	len;
 	fprintf (fp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-
 static	type_ssn (fp, rw, what, ssn)
 FILE   *fp;
 char   *rw,
@@ -362,7 +354,6 @@ u_long	ssn;
 {
 	fprintf (fp, "%s%s/ %d\n", rw, what, ssn);
 }
-
 
 static	type_bits (fp, rw, s, bits, mask, t)
 FILE   *fp;
@@ -377,7 +368,6 @@ u_char  bits,
 		fprintf (fp, ": illegal use of %s", sprintc (bits & ~mask, t));
 	fprintf (fp, "\n");
 }
-
 
 #define dotoken(requires,shift,bit,type) \
 { \
@@ -402,7 +392,6 @@ u_char  settings;
 
 #undef	dotoken
 
-
 static	type_tsdu (fp, rw, init, resp)
 FILE   *fp;
 char   *rw;
@@ -412,7 +401,6 @@ u_short	init,
 	fprintf (fp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 			 rw, init, resp);
 }
-
 
 static	type_ref (fp, rw, ref)
 FILE   *fp;
@@ -433,7 +421,6 @@ struct SSAPref *ref;
 	fprintf (fp, ">\n");
 }
 
-
 static	type_vrsn (fp, rw, version)
 FILE   *fp;
 char   *rw;
@@ -441,7 +428,6 @@ u_char	version;
 {
 	fprintf (fp, "%sVERSION/ 0x%x\n", rw, version);
 }
-
 
 static	type_reason (fp, rw, reason)
 FILE   *fp;
@@ -451,7 +437,6 @@ int	reason;
 	fprintf (fp, "%sREASON/ 0x%x: %s\n", rw, reason,
 			 SErrString ((int) reason));
 }
-
 
 static	type_prepare (fp, rw, type)
 FILE   *fp;
@@ -478,7 +463,6 @@ u_char  type;
 	}
 	fprintf (fp, "\n");
 }
-
 
 static	type_error (fp, rw, reason)
 FILE   *fp;
@@ -512,7 +496,6 @@ u_char  reason;
 	fprintf (fp, "\n");
 }
 
-
 static	type_resync (fp, rw, type)
 FILE   *fp;
 char   *rw;
@@ -536,7 +519,6 @@ u_char  type;
 	fprintf (fp, "\n");
 }
 
-
 static	type_data (fp, type, rw, len, data)
 FILE   *fp;
 char   *type,
@@ -548,7 +530,6 @@ int	len;
 	type_info (fp, "%d", len, data);
 	fprintf (fp, "\n");
 }
-
 
 static	type_info (fp, fmt, len, data)
 FILE   *fp;
@@ -564,8 +545,6 @@ int	len;
 		fprintf (fp, " %s", buffer);
 	}
 }
-
-
 
 void
 text2spkt (struct ssapkt *s) {

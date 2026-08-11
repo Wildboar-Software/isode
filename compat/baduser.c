@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/baduser.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
-
 
 int baduser (char *file, char *user) {
 	int     hit,
@@ -68,7 +65,6 @@ int baduser (char *file, char *user) {
 
 		fclose (fp);
 	}
-
 
 	return hit;
 }

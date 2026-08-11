@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/x25addr.c,v 9.0 1992
  *
  */
 
-
-
 /*
  * for *really* generic address translation
  */
@@ -50,7 +48,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/x25addr.c,v 9.0 1992
 #ifdef _AIX
 extern char * aix_x25_linkname;
 #endif
-
 
 /*
  * convert from the generic X25 structure to interface specific
@@ -158,7 +155,6 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 		  ("gen2if %s -> %s, %d octets; PID %s",
 		   generic -> na_dte, dte, dtelen,
 		   sel2str (generic -> na_pid, (int) generic -> na_pidlen,1)));
-
 
 #if !defined(CAMTEC_CCL) && !defined(HPUX_X25)
 	bzero ((char *)specific, sizeof *specific);
@@ -436,7 +432,6 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	return(specific);
 }
 
-
 /*
  * convert from interface specific format to generic X.25 structure
  */
@@ -527,7 +522,6 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 			   generic -> na_cudflen = specific -> cudf.x25_cud_len);
 	}
 #endif
-
 
 #ifdef CAMTEC_CCL
 	switch (context) {
@@ -683,7 +677,6 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	}
 #endif
 
-
 	if (x25_dnic_prefix[0] && *x25_dnic_prefix[0]) {
 		int    i;
 
@@ -709,7 +702,6 @@ if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 
 	return(generic);
 }
-
 
 extern unsigned char isode_x25_err[2];
 extern char isode_x25_errflag;		/* From asprintf.c ! */
@@ -1514,7 +1506,6 @@ done:
 	;
 	return OK;
 };
-
 
 #if defined(SUN_X25) || defined(CCUR_X25)
 #ifdef AEF_NSAP

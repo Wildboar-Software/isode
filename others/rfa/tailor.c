@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/tailor.c,v 9.0 1
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "general.h"
@@ -76,8 +75,6 @@ char *cut (char *s) {
 		*(s1+1) = '\0';
 	return s;
 }
-
-
 
 int tailor (char *fn) {
 	FILE *f;

@@ -98,7 +98,6 @@ stringCell *sequence;
 	}
 } /* delete_from_seq */
 
-
 /*
  * - free_string_seq() -
  * Free a string sequence.
@@ -118,6 +117,4 @@ stringCell *sequence;
 
 	*sequence = NULLStrCell;
 } /* free_string_seq */
-
-
 

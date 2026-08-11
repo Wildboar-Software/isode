@@ -24,10 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamconctl.c,v 9.0 199
  *
  */
 
-
 #include <stdio.h>
 #include "fpkt.h"
-
 
 static int fc2lock[] = {
 	int_FTAM_Lock_shared, int_FTAM_Lock_exclusive,
@@ -37,7 +35,6 @@ static int fc2lock[] = {
 static int lock2fc[] = {
 	FLOCK_NOTREQD, FLOCK_SHARED, FLOCK_EXCLUSIVE, FLOCK_NOACCESS
 };
-
 
 #define FCON_NOTREQD	0x01
 #define FCON_SHARED     0x02
@@ -51,7 +48,6 @@ struct pair fconctl_pairs [] = {
 	FCON_NOACCESS, bit_FTAM_Concurrency__Key_no__access,
 	0, 0
 };
-
 
 struct type_FTAM_Concurrency__Control *
 conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
@@ -88,8 +84,6 @@ no_mem:
 	return fpm;
 }
 
-
-
 int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	FCINIT (fc);
 
@@ -109,7 +103,6 @@ int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm,
 
 	return OK;
 }
-
 
 struct type_FTAM_Concurrency__Access *
 conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
@@ -142,7 +135,6 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 
 	return fpm;
 }
-
 
 int fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	int	    key;

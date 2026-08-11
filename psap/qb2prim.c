@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2prim.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 
@@ -34,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2prim.c,v 9.0 1992/0
 	qb2prim  -	octet string (via qbufs) to presentation element
 
  */
-
 
 PE
 qb2prim_aux (struct qbuf *qb, PElementClass class, PElementID id, int in_line) {

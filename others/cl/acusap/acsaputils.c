@@ -39,7 +39,6 @@
 
 /* modified from ISODE's acsaprovider.c, acsaplose.c and acsap2error.c */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "ACS-types.h"
@@ -49,11 +48,9 @@
 #include "isoservent.h"
 #include "tailor.h"
 
-
 static int  once_only = 0;
 static struct assocblk assocque;
 static struct assocblk *AcuHead = &assocque;
-
 
 /* INTERNAL */
 
@@ -96,8 +93,6 @@ out:
 	return NULL;
 }
 
-
-
 /*---------------------------------------------------------------------------*/
 int	apdu2_info (acb, aci, info, data, ndata)
 /*---------------------------------------------------------------------------*/
@@ -129,7 +124,6 @@ int    *ndata;
 	*ndata = i;
 	return OK;
 }
-
 
 #ifdef	DEBUG
 
@@ -164,7 +158,6 @@ int	rw;
 }
 #endif
 
-
 /*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
 struct assocblk *
@@ -186,7 +179,6 @@ struct assocblk *
 	return acb;
 }
 
-
 /*---------------------------------------------------------------------------*/
 struct assocblk *
 findacublk (
@@ -203,7 +195,6 @@ findacublk (
 			return acb;
 	return NULL;
 }
-
 
 /*---------------------------------------------------------------------------*/
 int freeacublk (
@@ -232,8 +223,6 @@ int freeacublk (
 	remque (acb);
 	free ((char *) acb);
 }
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    PSAP interface */
@@ -293,8 +282,6 @@ int ps2aculose (
 						   *cp ? cp + 1 : cp);
 }
 
-
-
 #ifndef	lint
 static int  _acusaplose ();
 
@@ -317,8 +304,6 @@ int acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) 
 	return acusaplose (aci, reason, what, fmt);
 }
 #endif
-
-
 
 #ifndef	lint
 
@@ -350,8 +335,6 @@ _acusaplose (  /* what, fmt, args ... */
 	return NOTOK;
 }
 #endif
-
-
 
 /* stolen from acsap2error.c - return AcuSAP error code in string form */
 
@@ -386,7 +369,6 @@ static char *reject_err0[] = {
 };
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
-
 
 /*---------------------------------------------------------------------------*/
 char *AcuErrString (

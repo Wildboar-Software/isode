@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tcp.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -44,9 +42,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tcp.c,v 9.0 1992/06
 #include <fcntl.h>
 #endif
 
-
 #define	MAX1006		2048		/* could be as high as TPKT_MAXLEN */
-
 
 #if	defined(FIONBIO) || defined(O_NDELAY)
 #define	NODELAY
@@ -190,7 +186,6 @@ done:
 	return DONE;
 }
 
-
 #ifndef	NODELAY
 #endif
 
@@ -282,8 +277,6 @@ tcpinit (int fd, struct tsapkt *t) {
 	return OK;
 }
 
-
-
 char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
@@ -291,7 +284,6 @@ char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 
 	return buffer;
 }
-
 
 int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
@@ -349,7 +341,6 @@ int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 
 	return OK;
 }
-
 
 int TTService (struct tsapblk *tb) {
 	struct tsapkt *t;

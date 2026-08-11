@@ -75,7 +75,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/tsapd.c,v 9.0 1992/
 #endif
 #include "tailor.h"
 
-
 static int  debug = 0;
 static int  foreground = 0;
 static int  nbits = FD_SETSIZE;
@@ -102,7 +101,6 @@ static int 	x2584service = 1;
 static int     *services[] = {
 	&tp4service, &tcpservice, &x25service, &x2584service
 };
-
 
 #define	NTADDRS	FD_SETSIZE
 
@@ -143,9 +141,7 @@ struct IAEntry {
 static	struct IAEntry *iz;
 static	struct IAEntry  iae[NENTRIES];
 
-
 int	str2dnY ();
-
 
 extern	int	dsa_ad;
 extern	int	dsa_dead;
@@ -154,7 +150,6 @@ extern	struct PSAPaddr dsa_bound;
 
 extern	int	as_print (), de_print (), fi_print ();
 #endif
-
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char*, ...);
@@ -282,7 +277,6 @@ int main (int argc, char **argv, char **envp) {
 static char buffer1[4096];
 static char buffer2[32768];
 
-
 static void tsapd (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
@@ -396,7 +390,6 @@ static int setperms (struct IAEntry *is)
 	}
 }
 
-
 static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 	char    buffer[BUFSIZ];
 
@@ -409,7 +402,6 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
-
 
 #ifndef	NOGOSIP
 static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
@@ -441,11 +433,9 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-
 #define	RMASK \
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
 \07ACTIVITY\010NEGOTIATED\011CAPABILITY\012EXCEPTIONS\013TYPEDATA"
-
 
 static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 	struct SSAPstart    sss;
@@ -718,7 +708,6 @@ static void arginit (char **vec) {
 				continue;
 			}
 #endif
-
 
 #if defined(X25) || defined (TP4)
 			case 'N':
@@ -1340,7 +1329,6 @@ static void bind_to_directory (void) {
 	isbound = 1;
 }
 
-
 static int  rebind_to_directory () {
 	if (referral_dsa != NOTOK) {
 		if (debug)
@@ -1357,7 +1345,6 @@ static int  rebind_to_directory () {
 	return (isbound ? OK : NOTOK);
 }
 
-
 static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
@@ -1369,7 +1356,6 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 	if (ba -> dba_passwd_len = strlen (passwd))
 		strcpy (ba -> dba_passwd, passwd);
 }
-
 
 static int  unbind_from_directory () {
 	int	    wasbound;
@@ -1392,7 +1378,6 @@ static int  unbind_from_directory () {
 
 	return wasbound;
 }
-
 
 static int  do_error ( struct DSError *de )
 {
@@ -1460,7 +1445,6 @@ pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
 	return NOTOK;
 }
 
-
 int	str2dnY (str, dn)
 char   *str;
 DN     *dn;
@@ -1472,7 +1456,6 @@ DN     *dn;
 
 	return ((*dn = str2dn (str)) != NULLDN ? OK : NOTOK);
 }
-
 
 #ifdef	BSD42
 #endif

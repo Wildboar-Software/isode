@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/sunview.
  *
  */
 
-
 /* sunview display process */
 
 #include <stdio.h>
@@ -39,7 +38,6 @@ static struct tool *tool;
 static struct toolsw *gfx_sw;
 static int        sx=20,sy=20,x,y;
 extern int PIC_LINESIZE;
-
 
 int sigwinched () {
 	tool_sigwinch (tool);
@@ -72,7 +70,6 @@ int photo_start (char *name) {
 	return (0);
 }
 
-
 int photo_end (char *name) {
 	/* Decoding has finished - display the photo */
 
@@ -95,7 +92,6 @@ int photo_white (int length) {
 	/* draw a white line of 'length' pixels */
 }
 
-
 photo_line_end (line)
 bit_string * line;
 {
@@ -109,5 +105,4 @@ bit_string * line;
 	sy++;
 
 }
-
 

@@ -139,7 +139,6 @@ int wantToBlock;
 	fd_set  rfds;
 	fd_set  wfds;
 
-
 	while ((bindres == CONNECTING_1) || (bindres == CONNECTING_2)) {
 
 		FD_ZERO (&rfds);

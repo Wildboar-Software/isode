@@ -2,7 +2,6 @@
  * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/wdgtdefs.h,v 9.0 1992/06/16 12:45:08 isode Rel $
  */
 
-
 #include "widget.h"
 
 /* REMEMBER TO NULL-TERMINATE ALL OF THESE STRUCTURE ARRAYS     */
@@ -31,7 +30,6 @@ WIDGET mainwdgts[] = {
 	{SCROLLBAR, "",                 '%', scrollbar, 0,0,3,0},
 	{FINISH,  "", 0,NULLFN}
 } ;
-
 
 /*--------------------------------------------------------------*/
 

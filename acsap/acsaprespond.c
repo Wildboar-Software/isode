@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprespond.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include "ACS-types.h"
 #define	ACSE

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
  *
  */
 
-
 #include "rtf.h"
 #include <stdarg.h>
 #include <unistd.h>
@@ -35,16 +34,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
 static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 #endif
 
-
 static LLog _pgm_log = {
 	"rtf.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
 	LLOG_FATAL, -1, LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
 LLog *pgm_log = &_pgm_log;
 
-
 #define	RC_BASE	0x80
-
 
 static char *reason_err0[] = {
 	"no specific reason stated",
@@ -58,13 +54,11 @@ static char *reason_err0[] = {
 
 static int reason_err0_cnt = sizeof reason_err0 / sizeof reason_err0[0];
 
-
 static char *reason_err8[] = {
 	"demand data token"
 };
 
 static int reason_err8_cnt = sizeof reason_err8 / sizeof reason_err8[0];
-
 
 char *SReportString (int code) {
 	int    fcode;
@@ -84,14 +78,12 @@ char *SReportString (int code) {
 	return buffer;
 }
 
-
 void
 rts_adios (struct RtSAPabort *rta, char *event) {
 	rts_advise (rta, event);
 
 	_exit (1);
 }
-
 
 void
 rts_advise (struct RtSAPabort *rta, char *event) {
@@ -105,7 +97,6 @@ rts_advise (struct RtSAPabort *rta, char *event) {
 
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
-
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...)
@@ -129,7 +120,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
@@ -148,7 +138,6 @@ advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...)
@@ -170,7 +159,6 @@ ryr_advise (char *what, char *fmt) {
 }
 #endif
 
-
 #ifdef	lint
 /* VARARGS4 */
 
@@ -179,11 +167,9 @@ int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	NBBY
 #define	NBBY	8
 #endif
-
 
 #ifndef	TMS
 void timer (int cc) {
@@ -217,7 +203,6 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 
 #else
 long	times ();
-
 
 int timer (int cc) {
 	long    ms;

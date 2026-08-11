@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/audio.c,v 9.0 1
  *
  */
 
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "quipu/util.h"
@@ -77,7 +75,6 @@ void audio_print (
 #else
 	SFP	    pstat;
 #endif
-
 
 	if (format != READOUT) {
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw)

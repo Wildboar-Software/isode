@@ -139,7 +139,6 @@ OID	int2oid (int n)
 	return noid;
 }
 
-
 int addtable (char *name, int lt) {
 	SYM		sp;
 

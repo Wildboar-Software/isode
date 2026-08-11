@@ -61,13 +61,11 @@ extern int commandMode;
 int retcode;
 int quit_command = 0;
 
-
 /*--------------------------------------------------------------*/
 /* getLocalFileRfaInfo */
 /*--------------------------------------------------------------*/
 int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg) {
 	int rc;
-
 
 	/*--- expand symbolic links in fn ---*/
 	if((*fn = getRfaContext(cwd_remote, *fn)) == NULL) {
@@ -107,7 +105,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*/
 /*  Local List Dir						*/
@@ -176,7 +173,6 @@ int do_listDir (char **av) {
 	RETURN;
 }
 
-
 /*--------------------------------------------------------------*/
 /*  getRemoteRfaInfoList
 /*--------------------------------------------------------------*/
@@ -184,7 +180,6 @@ int getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap) {
 	struct type_RFA_FileName *arg;
 	struct type_RFA_FileInfoList *fil;
 	int res, rc;
-
 
 	if (getConnection() != OK)
 		return NOTOK_REMOTE_ERROR;
@@ -207,7 +202,6 @@ int getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap) {
 	}
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*/
 /*  Get File							*/
@@ -315,7 +309,6 @@ int do_getFile (char **av) {
 	RETURN;
 }
 
-
 /*--------------------------------------------------------------*/
 /* unlockFile */
 /*--------------------------------------------------------------*/
@@ -359,7 +352,6 @@ int do_unlockFile (char **av) {
 	}
 	RETURN;
 }
-
 
 /*--------------------------------------------------------------*/
 /* lockFile */
@@ -753,7 +745,6 @@ int do_unregister(char **av) {
 	RETURN;
 }
 
-
 /*--------------------------------------------------------------*/
 /* rsyncdir */
 /*--------------------------------------------------------------*/
@@ -782,7 +773,6 @@ int do_rsyncdir (char **av) {
 	}
 	RETURN;
 }
-
 
 /*--------------------------------------------------------------*/
 /* syncdir */
@@ -814,7 +804,6 @@ int do_syncdir (char **av) {
 	}
 	RETURN;
 }
-
 
 /*--------------------------------------------------------------*/
 /* settransfer */
@@ -853,7 +842,6 @@ int do_settransfer (char **av, int mode) {
 	}
 	RETURN;
 }
-
 
 /*--------------------------------------------------------------*/
 /*  Print WD							*/
@@ -960,7 +948,6 @@ int do_quit (char **av) {
 	quit_command++;
 }
 
-
 /*--------------------------------------------------------------*/
 /*  Execute Command						*/
 /*--------------------------------------------------------------*/
@@ -1042,7 +1029,6 @@ int executeCommand (char *cmd) {
 		{ NULL,		NULL,		NULL			}
 	}, *cmdp, *fc;
 
-
 	aps[0] = strtok (cmd, " ");
 	for (ap = aps+1; *ap = strtok(NULL," "); ap++)
 		;
@@ -1083,7 +1069,6 @@ int executeCommand (char *cmd) {
 int cleanup () {
 }
 
-
 int getConnection () {
 	if (connected)
 		return OK;
@@ -1095,7 +1080,6 @@ int getConnection () {
 	connected = 1;
 	return OK;
 }
-
 
 int main (int ac, char **av) {
 	char c, buf[BUFSIZ];
@@ -1176,6 +1160,4 @@ int main (int ac, char **av) {
 		closeconn();
 	exit (0);
 }
-
-
 

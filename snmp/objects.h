@@ -69,7 +69,6 @@ OS	text2syn ();
 
 typedef struct object_instance object_instance, *OI;
 
-
 typedef struct object_type {
 	char   *ot_text;			/* OBJECT DESCRIPTOR */
 	char   *ot_id;			/* OBJECT IDENTIFIER */
@@ -111,13 +110,11 @@ typedef struct object_type {
 }		object_type, *OT;
 #define	NULLOT	((OT) 0)
 
-
 int	readobjects ();
 int	add_objects ();
 OT	name2obj (), text2obj ();
 OID	text2oid ();
 char   *oid2ode_aux ();
-
 
 struct object_instance {
 	OID	    oi_name;			/* instance OID */
@@ -128,9 +125,7 @@ struct object_instance {
 
 OI	name2inst (), next2inst (), text2inst ();
 
-
 extern	IFP	o_advise;
-
 
 int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
 int s_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -148,7 +143,6 @@ int	o_specific ();
 #define	o_clnpaddr(oi,v,value)	o_specific ((oi), (v), (caddr_t) (value))
 #endif
 
-
 int	mediaddr2oid ();
 #define	ipaddr2oid(ip,addr) \
 	mediaddr2oid ((ip), (u_char*) (addr), sizeof (struct in_addr), 0)
@@ -161,9 +155,7 @@ int	mediaddr2oid ();
 
 OID	oid_extend (), oid_normalize ();
 
-
 extern	int	debug;
 extern	char	PY_pepy[BUFSIZ];
-
 
 char   *strdup ();

@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUOID
 #define QUIPUOID
 
@@ -138,7 +137,6 @@ typedef struct {
 	short		oa_syntax;
 } oid_table_attr;
 #define NULLTABLE_ATTR ((oid_table_attr *)0)
-
 
 typedef struct seq_tab {
 	oid_table_attr * ts_oa;

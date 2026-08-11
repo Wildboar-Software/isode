@@ -44,7 +44,6 @@ int ch_set = 0;
 
 extern int soundex_match (struct filter_item *fitem, AV_Sequence avs);
 
-
 static unsigned char escapes[16][17] = {
 	'A','C','E','I','N','O','U','Y',
 	'a','c','e','i','n','o','u','y', ' ',
@@ -229,7 +228,6 @@ static PE nstrenc (char *x)
 	return (nums2prim(x,strlen(x)));
 }
 
-
 /*
  * Real octet strings encode (r_*)
  */
@@ -328,7 +326,6 @@ int check_3166 (char *a) {
 #endif
 }
 
-
 static char * cntydec (PE pe)
 {
 	char *a;
@@ -347,7 +344,6 @@ losing:
 		free (a);
 		return (NULLCP);
 	}
-
 
 	if (islower ((u_char) a[0]))
 		a[0] = toupper (a[0]);
@@ -409,7 +405,6 @@ static char * numsdec (PE pe)
 	else
 		return (NULLCP);
 }
-
 
 static char * t61dec (PE pe)
 {
@@ -679,7 +674,6 @@ char *octparse (char *str) {
 	return (strdup(buffer));
 }
 
-
 #define prtparse_aux(z)	(check_print_string(z) ? strdup(z) : NULLCP)
 
 char *prtparse (char *str) {
@@ -736,7 +730,6 @@ static char *t61parse (char *str) {
 	} else
 		return (res);
 }
-
 
 char *cryptstring (char *str) {
 	char * p;
@@ -938,7 +931,6 @@ void r_octprint (PS ps, struct qbuf *qb, int format)
 	int	cnt;
 	struct qbuf *qp;
 
-
 	for (qp = qb->qb_forw; qp != qb; qp = qp->qb_forw) {
 		for (str = qp->qb_data, cnt = qp->qb_len; cnt > 0; str++, cnt--) {
 again:
@@ -1027,7 +1019,6 @@ void octprint (PS ps, char *str, int format)
 	if (optr > buf)
 		ps_write (ps, (PElementData)buf, optr - buf);
 }
-
 
 /*
  * Compare two possible null qbuf lists and return non zero if they are
@@ -1162,7 +1153,6 @@ void part_print (PS ps, char *p, int len)
 	char	*pend = buf + MAXLINE;
 	char	*optr = buf;
 
-
 	for (str = p; len > 0; len--, str++) {
 again:
 		if (isascii(*str) && isprint(*str)) {
@@ -1284,7 +1274,6 @@ int telephone_match (short sntx) {
 	return( sntx == tel_sntx );
 }
 
-
 void string_syntaxes (void) {
 	/* Don't change ordering here unless you know
 	   the side effects !!! */
@@ -1357,7 +1346,6 @@ void string_syntaxes (void) {
 						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
-
 
 	/* Not really strings at all (yet!) */
 	add_attribute_syntax ("octetstring",

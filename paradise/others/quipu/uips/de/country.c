@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/countr
  *
  */
 
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
@@ -82,7 +81,6 @@ struct namelist ** clistp;
 	(*clistp)->next = NULLLIST;
 	return OK;
 }
-
 
 int listCos(cstr, clistp)
 char * cstr;

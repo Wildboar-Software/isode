@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
  *
  */
 
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -434,7 +432,6 @@ error:
 	return OK;
 #endif
 }
-
 
 /*
  * ll_defmhdr - Default "make header" routine.

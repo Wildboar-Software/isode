@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oc.c,v 9.0 1992
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "tailor.h"
@@ -151,7 +149,6 @@ static void add_hierarchy (objectclass *oc, AV_Sequence *avsp)
 	}
 }
 
-
 static int in_hierarchy (AV_Sequence a, AV_Sequence b)
 {
 	struct oc_seq * oidseq;
@@ -247,7 +244,6 @@ static PE oc_enc (objectclass *oc)
 	return (oid2prim(oc->oc_ot.ot_oid));
 }
 
-
 static objectclass * oc_dec (PE pe)
 {
 	OID oid;
@@ -264,8 +260,6 @@ static objectclass * oc_dec (PE pe)
 
 	return (oc_add(oid));
 }
-
-
 
 void oc_print (PS ps, objectclass *oc, int format)
 {

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
 #include "isoaddrs.h"
 #include "internet.h"
 #include "tailor.h"
-
 
 static void read_macros (void);
 static void read_file (char *file);
@@ -135,7 +132,6 @@ name2macro (char *name) {
 	return m;
 }
 
-
 static struct macro *
 value2macro (char *value) {
 	int   i,
@@ -168,7 +164,6 @@ value2macro (char *value) {
 	return p;
 }
 
-
 static void read_macros(void)  {
 	char *hp;
 	char    buffer[BUFSIZ];
@@ -186,7 +181,6 @@ static void read_macros(void)  {
 	sprintf (buffer, "%s/.isode_macros", hp);
 	read_file (buffer);
 }
-
 
 static void read_file (char *file) {
 	char *cp;
@@ -210,7 +204,6 @@ static void read_file (char *file) {
 	}
 	fclose (fp);
 }
-
 
 static int
 add_macro (char *name, char *value) {
@@ -254,7 +247,6 @@ add_macro (char *name, char *value) {
 
 	return OK;
 }
-
 
 char *macro2str (char *name) {
 	struct macro *m = name2macro (name);
@@ -312,7 +304,6 @@ loslab: ; \
 	goto loslab; \
     (intres) = implode ((u_char *) (octres), y, z); \
 }
-
 
 struct PSAPaddr *str2paddr (char *str) {
 	int    state,
@@ -806,7 +797,6 @@ next:
 	return pa;
 }
 
-
 int macro2comm (char *name, struct ts_interim *ts) {
 	int	    j,
 			len;
@@ -1027,7 +1017,6 @@ static char *SEL2STR (char *sel, int len) {
 	return buffer;
 }
 
-
 char *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact) {
 	int   n;
 	int	    first;
@@ -1183,7 +1172,6 @@ bad_pa:
 			}
 			break;
 
-
 		case NA_TCP:
 			strcpy (cp, na -> na_domain);
 			cp += strlen (cp);
@@ -1246,7 +1234,6 @@ bad_pa:
 
 	return bp;
 }
-
 
 #ifdef DEBUG
 void free_macros(void)  {

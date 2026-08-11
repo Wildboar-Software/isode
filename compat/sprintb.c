@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sprintb.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"

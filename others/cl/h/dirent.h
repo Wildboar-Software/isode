@@ -36,10 +36,8 @@ extern int		closedir();
 #define	NULL	0			/* DAG -- added for convenience */
 #endif
 
-
 #define	getcwd		_getcwd
 
 extern char             *getcwd ();
-
 
 extern char *direntversion;

@@ -295,7 +295,6 @@ CreateWellKnownSockets () {
 	else
 		whichByteIsFirst = 'B';
 
-
 #ifdef TCPCONN
 
 	tcpportReg = atoi (display);
@@ -1035,7 +1034,6 @@ CheckConnections() {
 	}
 }
 
-
 /*****************
  * CloseDownConnection
  *    Delete client from AllClients and free resources
@@ -1053,14 +1051,12 @@ ClientPtr client;
 	xfree(client->osPrivate);
 }
 
-
 AddEnabledDevice(fd)
 int fd;
 {
 	EnabledDevices |= (1<<fd);
 	BITSET(AllSockets, fd);
 }
-
 
 RemoveEnabledDevice(fd)
 int fd;
@@ -1118,5 +1114,4 @@ ListenToAllClients() {
 		GrabDone = FALSE;
 	}
 }
-
 

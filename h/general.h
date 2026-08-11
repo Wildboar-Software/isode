@@ -20,14 +20,12 @@
  *
  */
 
-
 #ifndef	_GENERAL_
 #define	_GENERAL_
 
 #ifndef	_CONFIG_
 #include "config.h"		/* system-specific configuration */
 #endif
-
 
 /* target-dependent defines:
 
@@ -48,7 +46,6 @@
 #ifdef	EXOS
 #define	SWABLIB
 #endif
-
 
 #ifdef	BSD42
 #define	BSDFORK
@@ -165,7 +162,6 @@ int free();
 #endif /* defined BSD44 */
 #endif
 
-
 #ifndef	BSDSTRS
 #define	index	strchr
 #define	rindex	strrchr
@@ -221,7 +217,6 @@ int	baduser ();
 
 extern char chrcnv[], nochrcnv[];
 
-
 int	lexequ (), lexnequ ();
 
 int	log_tai ();
@@ -245,7 +240,6 @@ char   *sys_errname ();
 void    asprintf(char*bp, va_list ap);            /* fmt, args, ... */
 #endif
 void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
-
 
 /* time */
 
@@ -271,7 +265,6 @@ void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ..
 #ifndef __STDC__
 extern time_t time ();
 #endif
-
 
 /*  ntohs etc */
 #ifndef SWABLIB

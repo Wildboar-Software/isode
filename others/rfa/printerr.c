@@ -39,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/printerr.c,v 9.0
 extern FILE *err;
 extern char *shortTime();
 
-
 /*--------------------------------------------------------------*/
 /*  Print Error							*/
 /*--------------------------------------------------------------*/

@@ -24,7 +24,6 @@ static char    *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_search.c,v 9.0 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/list.h"		/* to get LSR # defs */
@@ -1691,7 +1690,6 @@ int attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 	}
 	return (str1 - top);
 }
-
 
 int subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di) {
 	/* turn query into a referral */

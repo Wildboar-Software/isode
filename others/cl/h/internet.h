@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_INTERNET_
 #define	_INTERNET_
 
@@ -31,7 +30,6 @@
 #include <HULA/solsocket.h>
 #include <HULA/ex_errno.h>
 
-
 #ifndef	SOMAXCONN
 #define	SOMAXCONN	5
 #endif
@@ -41,7 +39,6 @@
 #else
 #include "sys/in.h"
 #endif
-
 
 int	start_tcp_client ();
 int	start_tcp_server ();
@@ -93,13 +90,11 @@ int	write_udp_socket ();
 int	close_udp_socket ();
 int	select_udp_socket ();
 
-
 /* NETDB */
 
 #ifdef	NATIVE
 #include <netdb.h>
 #endif
-
 
 #ifdef	EXOS
 struct hostent {
@@ -117,11 +112,9 @@ struct servent {
 	char   *s_proto;		/* protocol beneath service */
 };
 
-
 struct hostent *gethostbyaddr (), *gethostbyname ();
 struct servent *getservbyname ();
 #endif
-
 
 struct hostent *gethostbystring ();
 

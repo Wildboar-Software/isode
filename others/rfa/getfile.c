@@ -81,7 +81,6 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 		return rc;
 	}
 
-
 	/*-- set file characteristics in rfa --*/
 	rfa->ri_mode = gfr->fileinfo->mode;
 	rfa->ri_modTime = gfr->fileinfo->modTime;
@@ -136,7 +135,6 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 	free_RFA_GetFileDataRes(gfr);
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*
  *  instfile - install file

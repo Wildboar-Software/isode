@@ -24,14 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/listen/RCS/listen.c,v 9.
  *
  */
 
-
 #include <stdio.h>
 #include "listen.h"
 
-
 static char *mycontext = "isode listen demo";
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    secs,

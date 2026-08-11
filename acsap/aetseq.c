@@ -24,17 +24,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/aetseq.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"
 
-
 static char objent[BUFSIZ];
 static struct isoentity ies;
-
 
 int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep) {
 	int     hitdes,

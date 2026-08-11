@@ -4,7 +4,6 @@
 static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:04 mrose Rel $";
 #endif
 
-
 /*
  *				  NOTICE
  *
@@ -15,7 +14,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "spkt.h"
@@ -25,19 +23,13 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
 #include "isoaddrs.h"
 #include "internet.h"
 
-
 char *gets (), *calloc ();
 
 printsrv();
 printtaddr();
 
-
 #define CLIENT_MODE  	0
 #define SERVER_MODE  	1
-
-
-
-
 
 int main (int argc, char **argv, char **envp) {
 	struct spkt *t;	                        /* Working packet pointer */
@@ -59,7 +51,6 @@ int main (int argc, char **argv, char **envp) {
 	struct SSAPindication si;
 	struct SSAPindication *sptr;
 
-
 #define	NTADDRS		FD_SETSIZE
 
 	struct TSAPaddr   *ta;
@@ -69,7 +60,6 @@ int main (int argc, char **argv, char **envp) {
 	static struct TSAPaddr  tas[NTADDRS];
 	int	    port;
 	struct NSAPaddr *tcp_na;
-
 
 	printf ("\n SuSAP test driver for SUNITDATA\n");
 	printf ("\n running on host \"%s\"\n", SLocalHostName ());
@@ -141,7 +131,6 @@ int main (int argc, char **argv, char **envp) {
 			}
 			break;
 
-
 		case 'B':
 			printf ("\n Binding the service\n");
 #ifdef UDP
@@ -193,7 +182,6 @@ int main (int argc, char **argv, char **envp) {
 			printf ("\n Send a datagram \n");
 			printf ("\n sending %d bytes of user data\n", cc);
 			printf ("\n here are the first 100 bytes \n");
-
 
 			for (data = 0; data < 100; data++)
 				printf (" %x ", sendbuf[data]);
@@ -266,8 +254,6 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-
-
 static
 printsrv (struct isoservent *is) {
 	int    n = is -> is_tail - is -> is_vec - 1;
@@ -282,8 +268,6 @@ printsrv (struct isoservent *is) {
 	printf ("\n");
 }
 
-
-
 static
 printsaddr (struct SSAPaddr *sa)
 
@@ -292,7 +276,6 @@ printsaddr (struct SSAPaddr *sa)
 	struct TSAPaddr   *ta = &(sa -> sa_addr);
 	struct NSAPaddr   *na = ta -> ta_addrs;
 	int    n = 1;
-
 
 	printf ("ADDR:    SSEL: %s\n",
 			sel2str (sa -> sa_selector, sa -> sa_selectlen, 1));
@@ -334,7 +317,6 @@ printsaddr (struct SSAPaddr *sa)
 
 }
 
-
 static
 printtaddr (struct TSAPaddr *ta)
 
@@ -342,8 +324,6 @@ printtaddr (struct TSAPaddr *ta)
 
 	int    n;
 	struct NSAPaddr   *na;
-
-
 
 	n = ta -> ta_naddr - 1;
 	na = ta -> ta_addrs;

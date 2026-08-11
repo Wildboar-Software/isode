@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/ptabs.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -193,7 +192,6 @@ void tprnt_typ(FILE *fp, YP yp, char *id, char *type) {
 		if (yp->yp_varexp || (yp->yp_strexp && !noindirect(f)))
 			break;
 		ferr(1, "tdec_typ:INT: couldn't determine type\n");
-
 
 	case YP_BITLIST:
 		ptr_tblidx = addptr (modsym(mymodule,
@@ -639,7 +637,6 @@ YP tprnt_loop(FILE *fp, YP yp, char *id, char *type) {
 		tprnt_typ(fp, yp, id, type);
 	}
 }
-
 
 void ddflt(FILE *fp, YP yp) {
 	switch (yp->yp_code) {

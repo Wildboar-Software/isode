@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 
  *
  */
 
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/dua.h"
 #include "quipu/bind.h"
 #include "tailor.h"
-
 
 static char bound = FALSE;
 static char unbind = FALSE;

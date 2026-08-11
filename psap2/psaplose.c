@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaplose.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "PS-types.h"
@@ -119,7 +117,6 @@ int ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppd
 }
 #endif
 
-
 #ifndef	lint
 int	psaplose (struct PSAPindication*pi, ...) {
 	int     reason,
@@ -143,7 +140,6 @@ int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 	return psaplose (pi, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */

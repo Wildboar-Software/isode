@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imiscd.c,v 9.0 1992/0
  *
  */
 
-
 #include <errno.h>
 #include <time.h>
 #include <ctype.h>
@@ -37,12 +36,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imiscd.c,v 9.0 1992/0
 #include <utmp.h>
 #include <sys/stat.h>
 
-
 static char *myservice = "isode miscellany";	/* should be something else */
 
 static int execuid = 1;
 static int execgid = 1;
-
 
 /* OPERATIONS */
 static int	op_utcTime (), op_genTime (), op_timeOfDay (), op_users (),
@@ -76,7 +73,6 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
 /* TYPES */
 struct type_IMISC_IA5List *str2ia5list ();
 
@@ -86,11 +82,7 @@ static int  do_the_tell ();
 static int  object ();
 static int  pwdgen ();
 
-
-
 char   *ctime ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
@@ -100,7 +92,6 @@ int main (int argc, char **argv, char **envp) {
 }
 
 /* OPERATIONS */
-
 
 static int  op_utcTime (sd, ryo, rox, in, roi)
 int	sd;
@@ -142,8 +133,6 @@ struct RoSAPindication *roi;
 
 	return OK;
 }
-
-
 
 static int  op_genTime (sd, ryo, rox, in, roi)
 int	sd;
@@ -202,9 +191,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
-
 
 static int  op_timeOfDay (sd, ryo, rox, in, roi)
 int	sd;
@@ -237,7 +224,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
 #ifdef	sun
 #define	BSD42
 #undef	SYS5
@@ -257,8 +243,6 @@ struct RoSAPindication *roi;
 #ifdef	SYS5
 struct utmp *getutent ();
 #endif
-
-
 
 static int  op_users (sd, ryo, rox, in, roi)
 int	sd;
@@ -356,17 +340,13 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 #ifdef	bsd43_ut_host
 #define	BSD42
 #undef	SYS5
 #endif
 
-
 #define	NBYTES	512
 #define	LINSIZ	72
-
-
 
 static int  op_charGen (sd, ryo, rox, in, roi)
 int	sd;
@@ -434,10 +414,7 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 #define	NPASS	6
-
-
 
 static int  op_pwdGen (sd, ryo, rox, in, roi)
 int	sd;
@@ -486,7 +463,6 @@ congested:
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
-
 /* Based on an f77 algorithm supplied by Frank Wancho <Wancho@SIMTEL20>,
    which was based on a basic algorithm by Paul D. Merillat and Arthur A. Key.
 
@@ -497,7 +473,6 @@ congested:
    Not going into combinatorial analysis (with 7 characters the "possible"
    combinations exceed 20 million).
  */
-
 
 #define	TOT	54636577
 
@@ -533,7 +508,6 @@ static struct pair {
 
 	NULL, TOT
 };
-
 
 static char *Mx;
 static char *Nx =		/* XXX */
@@ -582,7 +556,6 @@ static struct web {
 	0, 0, 0, NULL, NULL
 };
 
-
 #define	ifix(f)		((int) ((float) (f) + 0.5))
 #ifndef	SYS5
 #define	nrand()		(((float) (random ()) / (float) 2147483647))
@@ -598,7 +571,6 @@ int	rand (), srand ();
 #define	rng(a,b)	if (((i = ifix (a * nrand ()) * b) ? i -= b : i) < 0 \
 				|| i >= a * b + (1 - b)) \
 			    return NOTOK;
-
 
 static int
 pwdgen (char *pw) {
@@ -665,7 +637,6 @@ pwdgen (char *pw) {
 	return OK;
 }
 
-
 static struct obj {
 	char   *o_string;
 	int     o_advance;
@@ -675,7 +646,6 @@ static struct obj {
 
 	NULL, 0
 };
-
 
 static int
 object (char *pw) {
@@ -696,7 +666,6 @@ object (char *pw) {
 	return OK;
 }
 
-
 #ifndef	FORTUNE
 #define	FORTUNE	"/usr/games/fortune"
 #endif
@@ -707,7 +676,6 @@ object (char *pw) {
 #define	RFINGER	"/usr/bin/finger"
 #endif
 #endif
-
 
 static int  op_exec (sd, ryo, rox, in, roi)
 int	sd;
@@ -884,8 +852,6 @@ out:
 	return result;
 }
 
-
-
 static int  op_tellUser (sd, ryo, rox, in, roi)
 int	sd;
 struct RyOperation *ryo;
@@ -999,7 +965,6 @@ out:
 	return result;
 }
 
-
 static int
 do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
@@ -1045,7 +1010,6 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	fclose (fp);
 	_exit (0);			/* NOTREACHED */
 }
-
 
 static int  op_data (sd, ryo, rox, in, roi)
 int	sd;

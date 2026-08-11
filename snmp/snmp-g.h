@@ -20,9 +20,7 @@
  *
  */
 
-
 #include "psap.h"
-
 
 struct snmpstat {
 	integer	s_inpkts;

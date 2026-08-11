@@ -628,7 +628,6 @@ void do_type (YP yp, int level, char *id, char *arg)
 	}
 }
 
-
 static char *add_point (char *arg) {
 	char    buffer[BUFSIZ];
 	sprintf (buffer, "(*%s)", arg);
@@ -809,8 +808,6 @@ static void do_components_seq (YP yp, int level, int last, char *id, char *arg, 
 	}
 	return;
 }
-
-
 
 static void do_components_set (YP yp, int level, char *arg, char *id, char *narg) {
 	YP	newyp, y;

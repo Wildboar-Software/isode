@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk1.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
@@ -94,7 +92,6 @@ int FReadWriteRequest (
 
 	return result;
 }
-
 
 static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti) {
 	int     result;
@@ -241,8 +238,6 @@ int FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
 	return result;
 }
 
-
-
 static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {
 	int	    result;
 	PE	    pe;
@@ -292,7 +287,6 @@ out:
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);

@@ -30,7 +30,6 @@ typedef struct _modify_value {
 #define NULLModifyValue (modifyValue) NULL
 #define modify_value_alloc() (modifyValue) smalloc(sizeof(modify_value))
 
-
 typedef struct _modify_attr {
 	char *attr_name;
 	AttributeType attr_type;
@@ -44,7 +43,6 @@ typedef struct _modify_attr {
 
 #define NULLModifyAttr (modifyAttr) NULL
 #define modify_attr_alloc() (modifyAttr) smalloc(sizeof(modify_attr))
-
 
 /* Modify result structure */
 
@@ -67,7 +65,6 @@ typedef struct _modify_rec {
 
 #define NULLModifyRec (modifyRec) NULL
 #define modify_rec_alloc() (modifyRec) smalloc(sizeof(modify_rec))
-
 
 /*
  *	Structures and data types for `make entry template' requests.
@@ -95,7 +92,6 @@ typedef struct _make_template_result {
 #define template_result_alloc() (makeTemplateResult) \
                                 smalloc(sizeof(make_template_result))
 
-
 /*
  *	Make template request record
  */
@@ -115,7 +111,6 @@ typedef struct _make_template_rec {
 #define NULLTemplateRec (makeTemplateRec) NULL
 #define template_rec_alloc() (makeTemplateRec) \
   			      smalloc(sizeof(make_template_rec))
-
 
 /*
  *	Public procedures

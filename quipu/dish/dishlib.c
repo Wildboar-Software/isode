@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dishlib.c,v 9.0 
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>
@@ -327,7 +326,6 @@ gnu_gets (char *buf, int len) {
 }
 #endif
 
-
 int do_dish (void) {
 	char	       *brkset;
 	char           *command;
@@ -376,7 +374,6 @@ int do_dish (void) {
 
 			if (read_pipe (inbuf,sizeof inbuf) == -1)
 				continue;
-
 
 			signal (SIGALRM, SIG_IGN);
 			/* unset alarm */

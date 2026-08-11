@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapselect.c,v 9.
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #define	LPP

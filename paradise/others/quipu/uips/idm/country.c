@@ -50,7 +50,6 @@ struct namelist ** clistp;
 	return OK;
 }
 
-
 int listCos(cstr, clistp)
 char * cstr;
 struct namelist ** clistp;
@@ -107,7 +106,6 @@ void
 freeCoSearchArgs() {
 	dn_free(sarg.sra_baseobject);
 }
-
 
 listMatchingCos(cstr, clistp)
 char * cstr;
@@ -377,7 +375,6 @@ char * objectstr;
 	return (&arg);
 }
 
-
 readCo(objectstr, clistp)
 char * objectstr;
 struct namelist ** clistp;
@@ -399,7 +396,6 @@ read_country:
 	return OK;
 
 }
-
 
 void
 freeCoListArgs() {

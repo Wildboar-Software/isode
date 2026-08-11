@@ -56,7 +56,6 @@ int changeTimeWithRfatime (long dt) {
 	char dtbuf[BUFSIZ];
 	int p[2];
 
-
 	if (pipe(p) == -1) {
 		sprintf(rfaErrStr, "can't set remote time (%s)",sys_errname(errno));
 		return NOTOK;
@@ -112,7 +111,6 @@ int changeTimeWithRfatime (long dt) {
 
 }
 
-
 /*--------------------------------------------------------------
  *  op_syncTime - synchronize time with peer
  *-------------------------------------------------------------*/
@@ -164,10 +162,4 @@ int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 
 	return OK;
 }
-
-
-
-
-
-
 

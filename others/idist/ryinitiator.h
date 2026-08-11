@@ -26,7 +26,6 @@
 
 #include "rosy.h"
 
-
 static struct dispatch {
 	char   *ds_name;
 	int	    ds_operation;
@@ -40,7 +39,6 @@ static struct dispatch {
 
 	char   *ds_help;
 };
-
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);

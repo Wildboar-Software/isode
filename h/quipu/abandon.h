@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUABANDON
 #define QUIPUABANDON
 

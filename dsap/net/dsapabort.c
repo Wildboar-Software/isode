@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapabort.c,v 9.0 
  *
  */
 
-
-
 #include "logger.h"
 #include "quipu/dsap.h"
 
 extern LLog	* log_dsap;
 
 /* RO-ABORT.REQUEST */
-
-
 
 int DUAbortRequest (int sd, struct DSAPindication *di) {
 	int			  result;

@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2sel.c,v 9.0 1992
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdlib.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
-
 
 #define	QUOTE	'\\'
 

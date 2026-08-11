@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl2pe.c,v 9.0 1992/06/
  *
  */
 
-
 /* Presentation lists are a human-readable, unambiguous way of describing
    a presentation element.
 
@@ -51,13 +50,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl2pe.c,v 9.0 1992/06/
 		(sizeof (int)) bytes.
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"
-
 
 typedef struct PList {
 	u_char pl_code;
@@ -74,7 +70,6 @@ typedef struct PList {
 #define	pl_num	pl_un.un_pl_num
 }			PList, *PL;
 
-
 static PE  pl2pe_aux ();
 static int pl_read_class ();
 static int pl_read_id ();
@@ -83,7 +78,6 @@ static int  pl_read_cons ();
 static int  pl_read_prim ();
 static int  pl_read_lex ();
 static int pl_read ();
-
 
 PE
 pl2pe (PS ps) {
@@ -100,7 +94,6 @@ pl2pe (PS ps) {
 
 	return pl2pe_aux (ps, pl);
 }
-
 
 static PE
 pl2pe_aux (PS ps, PL pl) {
@@ -143,7 +136,6 @@ you_lose:
 	return NULLPE;
 }
 
-
 static int
 pl_read_class (PS ps, PL pl, PElementClass *class) {
 	int    i;
@@ -159,7 +151,6 @@ pl_read_class (PS ps, PL pl, PElementClass *class) {
 	*class = i;
 	return OK;
 }
-
 
 static int
 pl_read_id (PS ps, PL pl, int class, PElementID *id) {
@@ -200,7 +191,6 @@ pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	return OK;
 }
 
-
 static int
 pl_read_name (char *name, char **list, int n) {
 	int    i;
@@ -212,7 +202,6 @@ pl_read_name (char *name, char **list, int n) {
 
 	return NOTOK;
 }
-
 
 static int
 pl_read_cons (PS ps, PL pl, PE *pe) {
@@ -240,7 +229,6 @@ pl_read_cons (PS ps, PL pl, PE *pe) {
 		}
 	}
 }
-
 
 static int
 pl_read_prim (PS ps, PL pl, PE pe) {
@@ -278,7 +266,6 @@ out:
 	return OK;
 }
 
-
 #ifdef	XXX
 static int
 pl_read_lex (PS ps, PL pl) {
@@ -315,7 +302,6 @@ pl_read_lex (PS ps, PL pl) {
 
 #define	pl_read_lex	pl_read_lex_aux
 #endif
-
 
 static int  pl_read_lex (ps, pl)
 PS	ps;
@@ -428,7 +414,6 @@ PL	pl;
 		}
 	}
 }
-
 
 static int
 pl_read (PS ps, byte *c) {

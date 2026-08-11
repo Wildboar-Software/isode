@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/d_main.c
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "sys.file.h"
@@ -101,7 +99,6 @@ int main (int argc, char **argv) {
 	return (0);
 }
 
-
 static ps_die (ps, s)
 PS	 ps;
 char   *s;
@@ -109,7 +106,6 @@ char   *s;
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
-
 
 static pe_die (pe, s)
 PE	 pe;

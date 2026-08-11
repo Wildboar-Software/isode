@@ -40,7 +40,6 @@ static char *myservice = "isode miscellany";/* should be something other
 static char *mycontext = "isode miscellany";
 static char *mypci = "isode miscellany pci";
 
-
 extern int length;
 static type_IMISC_Data *data = NULLPE;
 
@@ -127,7 +126,6 @@ static struct dispatch dispatches[] = {
 
 	NULL
 };
-
 
 char *ctime ();
 

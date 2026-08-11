@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydiscard.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
-
 
 #ifdef __STDC__
 #define missingP(p) \
@@ -45,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydiscard.c,v 9.0 1992
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
 #endif
-
 
 static int	do_response ();
 
@@ -69,8 +65,6 @@ struct RoSAPindication *roi;
 
 	return OK;
 }
-
-
 
 static int
 do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {

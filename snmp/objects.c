@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/objects.c,v 9.0 1992/0
 #include "objects.h"
 #include "tailor.h"
 
-
 #define	TBUCKETS	0x80
 
 static	int	compile_flag;
@@ -772,7 +771,6 @@ void dump_objects_by_xxx (void) {
 	printf ("///////\n");
 }
 
-
 static void dump_object (OT ot, int i) {
 	printf ("%*.*s%s %s %s %s %d %d 0x%x\n", i, i, "",
 			ot -> ot_text, ot -> ot_id, sprintoid (ot -> ot_name),
@@ -791,7 +789,6 @@ char *strdup (const char *s) {
 	return p;
 }
 #endif
-
 
 void flobjects (FILE *fp) {
 	int    i;

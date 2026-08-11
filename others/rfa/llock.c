@@ -56,7 +56,6 @@ char cwd_remote[512];
 int interactive = 1;
 int retcode;
 
-
 int cleanup () {}
 
 /*--------------------------------------------------------------*/
@@ -74,7 +73,6 @@ char *errMsg (int type) {
 /*--------------------------------------------------------------*/
 int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg) {
 	int rc;
-
 
 	/*--- expand symbolic links in fn ---*/
 	if((*fn = getRfaContext(cwd_remote, *fn)) == NULL) {
@@ -116,7 +114,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 	return OK;
 }
 
-
 /*--------------------------------------------------------------*/
 /* unlockFile */
 /*--------------------------------------------------------------*/
@@ -152,7 +149,6 @@ int do_lunlock (char *fn) {
 	releaseRfaInfoList(dirname(fn), rfalist);
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*/
 /* lockFile */
@@ -191,7 +187,6 @@ int do_llock (char *fn) {
 	/*-- here we will need help from Big-Brother "rfa" --*/
 	return NOTOK_LOCAL_LOCK;
 }
-
 
 int main (int ac, char **av) {
 	char c, *cwd, buf[BUFSIZ];
@@ -246,6 +241,4 @@ int main (int ac, char **av) {
 
 	exit (rc);
 }
-
-
 

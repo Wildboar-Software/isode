@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/get_filter.c,v 9
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 
@@ -121,7 +120,6 @@ char           *str;
 	return (result);
 }
 
-
 Filter          get_filter (str)
 char           *str;
 {
@@ -137,7 +135,6 @@ char           *str;
 	return (f);
 
 }
-
 
 int getop (char *str, char *ch) {
 	int             i,

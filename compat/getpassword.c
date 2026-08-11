@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
  *
  */
 
-
-
 #include <signal.h>
 #include <stdio.h>
 #include "general.h"
@@ -40,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
 #ifdef	BSD44
 char   *getpass ();
 #endif
-
 
 /* roll our own since want to get past UNIX's limit of 8 octets... */
 

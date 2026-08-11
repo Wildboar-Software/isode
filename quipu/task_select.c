@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/task_select.c,v 9.0 1
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 
@@ -44,7 +43,6 @@ static time_t last_log_close = (time_t)0;
 #define LOGOPENTIME 5*60	/* Close once every 5 minutes */
 
 #endif
-
 
 struct task_act *
 task_select (int *secs_p) {
@@ -473,7 +471,6 @@ int timeout_task (struct task_act *tk) {
 	}
 
 }
-
 
 int schedule_operation (struct oper_act *x) {
 	struct oper_act *y;

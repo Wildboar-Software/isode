@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/sock
  *
  */
 
-
 #include <stdio.h>
 #include "quipu/util.h"
 #include "tailor.h"
@@ -76,7 +75,6 @@ int	pid,
 		setenv ("DISHPARENT", prnt = parent);
 	}
 
-
 	if (sscanf (prnt, "%d", &pid) != 1) {
 		fprintf (stderr,"DISHPARENT malformed");
 		return (-1);
@@ -104,7 +102,6 @@ int	pid,
 }
 
 #else	/* USE UNIX NAMED PIPES */
-
 
 void
 dummy () {

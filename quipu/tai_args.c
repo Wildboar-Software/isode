@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/tai_args.c,v 9.0 1992
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #ifdef	TCP

@@ -39,7 +39,6 @@ int dm_List() {
 	noEntries  = 0;
 	highNumber = 0;
 
-
 	plp = (struct namelist *) malloc(sizeof(struct namelist));
 	plp = NULLLIST;
 	plp2 = (struct namelist *) malloc(sizeof(struct namelist));

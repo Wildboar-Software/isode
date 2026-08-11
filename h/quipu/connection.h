@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUCON
 #define QUIPUCON
 

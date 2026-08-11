@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotabort.c,v 9.0 19
  *
  */
 
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "rosap.h"
 #include "ronot.h"
 
 /* RO-ABORT.REQUEST */
-
 
 int RoBindUAbort (int sd, struct RoNOTindication *rni) {
 	int			  result;

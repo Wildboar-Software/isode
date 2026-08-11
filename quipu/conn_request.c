@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_request.c,v 9.0 
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"
@@ -61,7 +59,6 @@ int conn_request (struct connection *cn) {
 	int				  inv_ret;
 	struct oper_act		* on;
 	char			  abandon = TRUE;
-
 
 	LLOG(log_dsap, LLOG_TRACE, ("conn_request: Calling: %s", paddr2str(&(cn->cn_addr),NULLNA)));
 

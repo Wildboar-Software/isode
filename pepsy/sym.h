@@ -20,7 +20,6 @@
  *
  */
 
-
 typedef struct symlist {
 	char   *sy_encpref;
 	char   *sy_decpref;

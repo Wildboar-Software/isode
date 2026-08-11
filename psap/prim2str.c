@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2str.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 /* Similar to pe_pullup.  Returns a newly allocated string, composed of
    of any sub-elements in pe, whereas pe_pullup always reverts "pe" to

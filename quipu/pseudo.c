@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/pseudo.c,v 9.0 1992/0
 #include <sys/stat.h>
 #include <errno.h>
 
-
 #define cacheEDB  "0.9.2342.19200300.99.1.29"
 
 Attr_Sequence dsa_pseudo_attr = NULLATTR;
@@ -61,7 +60,6 @@ extern	PS	opt ;
 extern	AV_Sequence open_call_avs ;
 
 #endif /* QUIPU_CONSOLE */
-
 
 int update_pseudo_attr (void) {
 	/*
@@ -109,7 +107,6 @@ int update_pseudo_attr (void) {
 	}
 	AttrT_free(att) ;
 
-
 	att = AttrT_new("slaveEntries") ;
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
 		av = AttrV_alloc() ;
@@ -124,7 +121,6 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = local_slave_size ;
 	}
 	AttrT_free(att) ;
-
 
 	att = AttrT_new("cacheEntries") ;
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
@@ -185,7 +181,6 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = (num_of_ops / 5) ;
 	}
 	AttrT_free(att) ;
-
 
 	att = AttrT_new("openCall") ;
 	as = as_find_type(dsa_pseudo_attr, att) ;

@@ -20,9 +20,7 @@
  *
  */
 
-
 #include "ftamsbr.h"
-
 
 extern int  ontty;
 extern int  interrupted;
@@ -34,7 +32,6 @@ int getftamline(char* prompt, char* buffer);
 #ifndef	BRIDGE
 int	ask (char *fmt, ...), _getline ();
 #endif
-
 
 extern int  ftamfd;
 #ifdef	BRIDGE
@@ -73,11 +70,9 @@ extern int  realstore;
 extern char *rs_unknown;
 extern char *rs_support;
 
-
 extern char *rcwd;
 
 extern struct QOStype myqos;
-
 
 char   *str2file ();
 
@@ -99,14 +94,12 @@ struct dispatch {
 	char   *ds_help;
 };
 
-
 struct dispatch *getds ();
 
 /* FTAM */
 
 #define	UMASK	"\020\01READ\02WRITE\03ACCESS\04LIMITED\05ENHANCED\06GROUPING\
 \07RECOVERY\08RESTART"
-
 
 extern OID context;
 extern int fqos;
@@ -115,7 +108,6 @@ extern int units;
 extern int attrs;
 extern int fadusize;
 
-
 extern struct vfsmap vfs[];	/* ordering depends on char *tmodes[] */
 #define	VFS_DEF	0		/* try to default it */
 #define	VFS_UBF	1		/* offset to unstructured binary file */
@@ -123,7 +115,6 @@ extern struct vfsmap vfs[];	/* ordering depends on char *tmodes[] */
 #define	VFS_FDF	3		/*   ..	     file directory file */
 
 extern struct vfsmap *myvf;
-
 
 void	ftam_advise (), ftam_chrg (), ftam_diag (), ftam_watch ();
 
@@ -143,7 +134,6 @@ extern int  toomany;
 extern int  nfilent;
 extern struct filent *filents;
 
-
 int	fdffnx ();
 
 /* GLOB */
@@ -156,7 +146,6 @@ char  **blkcpy ();
 
 char   *xglob1val ();
 char  **xglob ();
-
 
 extern int  errno;
 extern char *isodeversion;

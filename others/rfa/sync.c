@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/sync.c,v 9.0 199
  *
  */
 
-
 #include <ctype.h>
 #include "general.h"
 #include <stdio.h>
@@ -100,7 +99,6 @@ int createEmptyFile (char *dir, struct RfaInfo *rfa) {
 int removeDir (char *dir) {
 	struct dirent *dp;
 	DIR *dirp;
-
 
 	/*--- dir is a directory name, so open dir ---*/
 	if ((dirp = opendir(makeFN(dir))) ==  NULL) {
@@ -175,7 +173,6 @@ int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp) 
 					incstr, rrfa->ri_filename);
 			return NOTOK;
 		}
-
 
 	/*-- checks if file exists at both sides --*/
 	switch (RI_STATUS(rfa->ri_status)) {
@@ -354,7 +351,6 @@ int handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa
 
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*/
 /* syncDir */

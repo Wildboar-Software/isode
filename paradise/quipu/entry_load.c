@@ -84,7 +84,6 @@ char * fname;
 
 	DLOG (log_dsap,LLOG_DEBUG,("File %s is not a directory",fname));
 
-
 	return FALSE;
 }
 
@@ -425,7 +424,6 @@ int     offset;
 	return(OK);
 }
 
-
 static entry_load_kids (entryptr,offset)
 Avlnode	*entryptr;	/* in this case, entryptr is really a tree of kids */
 int offset;
@@ -435,7 +433,6 @@ int offset;
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
 	*ps->ps_ptr = 0;
-
 
 	if (entryptr == NULLAVL)
 		return(OK);
@@ -514,7 +511,6 @@ DN dn;
 	Entry	akid;
 	int	entry_free();
 
-
 	got_subtree = TRUE;
 
 	if ((parent != NULLENTRY) && (parent->e_children != NULLAVL)) {
@@ -565,7 +561,6 @@ DN dn;
 			parent->e_allchildrenpresent = 2;
 
 		parent->e_children = treetop;
-
 
 		ps_free (ps);
 		parent->e_children = treetop;

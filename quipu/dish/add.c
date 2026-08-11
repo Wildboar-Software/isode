@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/add.c,v 9.0 1992
  *
  */
 
-
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"
@@ -89,7 +88,6 @@ void call_add (int argc, char **argv) {
 		if (test_arg (argv[x], "-template", 1)) {
 			int	i;
 			FILE *in, *out;
-
 
 			draft_flag = 1;
 			if (++x == argc) {
@@ -234,7 +232,6 @@ void make_old (char *file, char commit) {
 		rename (file, newname);
 	}
 }
-
 
 Attr_Sequence make_template_as (AV_Sequence oc)
 {

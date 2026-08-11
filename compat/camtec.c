@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -38,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
 #include "x25.h"
 #include "isoaddrs.h"
 
-
 #ifdef  CAMTEC_CCL
 
 #include "tailor.h"
@@ -46,9 +43,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
 
 /*    4.[23] UNIX: CCL X25 */
 
-
 static char calling_dte[NSAP_DTELEN + 1];
-
 
 int start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
@@ -72,7 +67,6 @@ int start_x25_client (struct NSAPaddr *local) {
 
 	return sd;
 }
-
 
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
@@ -118,7 +112,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	close (sd);
 	return NOTOK;
 }
-
 
 int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sck;

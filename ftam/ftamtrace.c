@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamtrace.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
-
 
 LLog _ftam_log = {
 	"ftam.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
@@ -86,7 +83,6 @@ int FHookRequest (int sd, IFP tracing, struct FTAMindication *fti) {
 }
 
 /*    user-defined tracing */
-
 
 int FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw) {
 	if (event)

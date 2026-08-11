@@ -74,7 +74,6 @@ char	*uname, *group, *name, *lname;
 				   basic_error);
 }
 
-
 int terminate (int type, int status) {
 	struct type_Idist_TermStatus *ts;
 	struct type_Idist_FileType	*makeftype ();
@@ -239,7 +238,6 @@ int deletefile (char *str, int mode) {
 				   basic_error);
 }
 
-
 static int
 basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
@@ -261,7 +259,6 @@ basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, st
 	result_value = NOTOK;
 	return OK;
 }
-
 
 static null_result (sd, id, dummy, result, roi)
 int     sd,

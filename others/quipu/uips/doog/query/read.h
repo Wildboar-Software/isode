@@ -28,7 +28,6 @@ typedef struct _attr_val_list {
 #define NULLAVList (attrValList) NULL
 #define av_list_alloc() (attrValList) smalloc(sizeof(attr_val_list))
 
-
 typedef struct _read_results {
 	char *base_object;
 	attrValList entry;
@@ -37,7 +36,6 @@ typedef struct _read_results {
 
 #define NULLReadResults (readResults) NULL
 #define read_res_alloc() (readResults) smalloc(sizeof(read_results))
-
 
 typedef struct _read_rec {
 	QCardinal request_id;
@@ -51,7 +49,6 @@ typedef struct _read_rec {
 
 #define NULLReadRec (readRec) NULL
 #define read_rec_alloc() (readRec) smalloc(sizeof(read_rec))
-
 
 typedef struct _read_dn_attr_rec {
 	QCardinal request_id;

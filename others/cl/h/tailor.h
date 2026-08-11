@@ -36,9 +36,7 @@ extern	char   *isodelog;
 #define	ISODELOG_DEBUG		(1 << 2)	/* full debugging */
 #define	ISODELOG_MASK		"\020\01EXCEPTIONS\02PDUS\03DEBUG"
 
-
 void	xsprintf (), _xsprintf ();
-
 
 extern	int	compatlevel;
 extern	char   *compatfile;
@@ -126,12 +124,10 @@ extern char    *cons_listen_str;
 #endif
 #endif
 
-
 #ifdef	DSAP
 extern char	dua_enabled;
 extern char    *dua_address;
 #endif
-
 
 void	isodetailor ();
 char   *isodefile ();

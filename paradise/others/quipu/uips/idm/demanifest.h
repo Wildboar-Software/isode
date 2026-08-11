@@ -24,7 +24,6 @@
  *
  */
 
-
 #ifndef _demanifest_h
 #define _demanifest_h
 
@@ -63,6 +62,5 @@
 
 #define LIST_OK "ok"
 #define LIST_ERROR "error"
-
 
 #endif _demanifest_h

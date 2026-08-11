@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/isoentity.c,v 9.0 199
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -54,7 +52,6 @@ int setisoentity (int f) {
 
 	return (servf != NULL);
 }
-
 
 int endisoentity(void) {
 	if (servf && !stayopen) {

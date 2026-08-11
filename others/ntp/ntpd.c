@@ -51,7 +51,6 @@ unsigned long clock_watchdog;
 
 double WayTooBig = WAYTOOBIG;
 
-
 struct list	peer_list;
 struct timeval 	tv;
 struct ntpdata	ntpframe;
@@ -71,7 +70,6 @@ LLog *pgm_log = &_pgm_log;
 
 static int priority = -10;
 static int ticked;
-
 
 static void timeout();
 static void init_ntp();
@@ -187,8 +185,6 @@ int main (int argc, char *argv[]) {
 			servport = htons (NTP_PORT);
 		else	servport = sp -> s_port;
 	}
-
-
 
 	peer_list.head = peer_list.tail = NULL;
 	peer_list.members = 0;
@@ -951,7 +947,6 @@ int config_line (char *argv[], int argc) {
 	return OK;
 }
 
-
 CMD_TABLE tbl_peer_flags[] = {
 #define TBLPEER_VERSION	1
 	"version",	TBLPEER_VERSION,
@@ -1121,7 +1116,6 @@ init_kern_vars () {
 				sys.precision, kern_hz);
 	}
 }
-
 
 /*
  * Given host or net name or internet address in dot notation assign the
@@ -1407,7 +1401,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...)

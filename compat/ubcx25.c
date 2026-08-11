@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ubcx25.c,v 9.0 1992/
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -45,7 +43,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ubcx25.c,v 9.0 1992/
 
 #define         X25_MBIT        0x40
 #define         X25_QBIT        0x80
-
 
 int start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
@@ -65,7 +62,6 @@ int start_x25_client (struct NSAPaddr *local) {
 
 	return sd;
 }
-
 
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
@@ -106,7 +102,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 		return NOTOK;
 	}
 
-
 #ifdef	notyet		/* not sure if these are supported... */
 #ifndef	BSD43
 	if (opt1)
@@ -126,7 +121,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 	return sd;
 }
-
 
 int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sck;

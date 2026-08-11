@@ -88,7 +88,6 @@ XFamily (int af) {
 	return -1;
 }
 
-
 main(argc, argv)
 int argc;
 char **argv;
@@ -123,7 +122,6 @@ char **argv;
 	}
 
 	XSetErrorHandler(local_xerror);
-
 
 	if (argc == 1) {
 #ifdef DNETCONN
@@ -182,8 +180,6 @@ char **argv;
 	XCloseDisplay (dpy);  /* does an XSync first */
 	exit(0);
 }
-
-
 
 /*
  * change_host - edit the list of hosts that may connect to the server;
@@ -345,7 +341,6 @@ Bool add;
 	}
 	/* NOTREACHED */
 }
-
 
 /*
  * get_hostname - Given an internet address, return a name (CHARON.MIT.EDU)

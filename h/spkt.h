@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
@@ -322,11 +321,9 @@
 	} \
 }
 
-
 #define	NULLTX	((struct TSAPdata *) 0)
 #define	NULLSD	((struct SSAPactid *) 0)
 #define	NULLSR	((struct SSAPref *) 0)
-
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -362,16 +359,12 @@
 #define	copySPKTdata(s,d)	bcopy (s -> s_udata, (char *) d, s -> s_ulen)
 #endif
 
-
 #define	AB_TIM		30	/* drain for 30 seconds on ABORTs */
 #define	RF_TIM		30	/* drain for 30 seconds on REFUSEs */
 
-
 #define	SC_REFUSE	(SC_BASE << 1)	/* larger than any sc_reason */
 
-
 int	spktlose (int sd, ...), ssaplose (struct SSAPindication*si, ...);
-
 
 struct ssapblk {
     struct ssapblk *sb_forw;	/* doubly-linked list */
@@ -643,7 +636,6 @@ struct ssapkt {
 #define AA_BASE_SIZE	0
 #define	SMASK_SPDU_AA	0x0001	/* to distinguish between AA and AIA SPDUs */
 
-
 				/* DATA TRANSFER SPDU */
 #define	DT_SIZE		65535
 #define	DT_MINSIZE	64	/* don't segment if MSS < this */
@@ -815,7 +807,6 @@ struct ssapkt {
 #define	AIA_SIZE	0
 #define AIA_BASE_SIZE	0
 
-
 	struct {		/* ACTIVITY DISCARD SPDU */
 #define	SMASK_AD_REASON	0x0001
 	    u_char	un_ad_reason;
@@ -897,7 +888,6 @@ struct ssapkt {
 
 #define	s_ad_reason	s_un.un_ad.un_ad_reason
 
-
 #define	SMASK_ENCLOSE	0x2000
     u_char    s_enclose;
 #define	ENCL_BEGIN	0x01	/* beginning of SSDU */
@@ -920,7 +910,6 @@ struct ssapkt {
     int	    s_qlen;		/* .. */
 };
 #define	NULLSPKT	((struct ssapkt *) 0)
-
 
 void freespkt (struct ssapkt *s);
 struct ssapkt *newspkt (int code);

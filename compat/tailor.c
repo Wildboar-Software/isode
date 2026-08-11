@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/tailor.c,v 9.0 1992/
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,15 +42,12 @@ static int  events_value ();
 				   sites (i.e., leading zero not req'd) */
 #endif
 
-
 struct pair {
 	char   *p_name;
 	int	    p_value;
 };
 
-
 static char   *isotailor = "isotailor";
-
 
 char   *isodename = "";
 
@@ -60,7 +55,6 @@ char   *isodebinpath = BINPATH;
 char   *isodesbinpath = SBINPATH;
 char   *isodetcpath = ETCPATH;
 char   *isodelogpath = LOGPATH;
-
 
 int	_tailor_logging_only = 0;
 
@@ -139,7 +133,6 @@ LLog _rosap_log = {
 	LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
 LLog *rosap_log = &_rosap_log;
-
 
 #define	TS_MASK	"\020\01TCP\02X25\04TP4\05X2584"
 
@@ -342,7 +335,6 @@ char *xti_tp0_ident = "TOSITP0";
 #endif
 #endif	/* TP4 */
 
-
 static char *_ses_ab_timer = "30";    /* drain for 30 seconds on ABORTs */
 int	ses_ab_timer = 30;
 
@@ -352,12 +344,10 @@ int	ses_dn_timer = 30;
 static char *_ses_rf_timer = "30";    /* drain for 30 seconds on REFUSEs */
 int	ses_rf_timer = 30;
 
-
 char	ns_enabled = 0;
 static char *usens = "off";
 
 char   *ns_address = "undefined";
-
 
 static struct bind {
 	char   *b_key;
@@ -489,7 +479,6 @@ static struct bind {
 static int	tailor_read ();
 static char   *tailor_value ();
 
-
 char *isodesetailor (char *file) {
 	char   *ofile = isotailor;
 
@@ -498,7 +487,6 @@ char *isodesetailor (char *file) {
 
 	return ofile;
 }
-
 
 void
 isodetailor (char *myname, int wantuser) {
@@ -531,7 +519,6 @@ isodetailor (char *myname, int wantuser) {
 
 	isodexport (myname);
 }
-
 
 static int
 tailor_read (char *file) {
@@ -579,7 +566,6 @@ tailor_read (char *file) {
 	}
 }
 
-
 int isodesetvar (char *name, char *value, int dynamic) {
 	struct bind   *b;
 
@@ -593,7 +579,6 @@ int isodesetvar (char *name, char *value, int dynamic) {
 
 	return NOTOK;
 }
-
 
 void
 isodexport (char *myname) {
@@ -905,9 +890,7 @@ isodexport (char *myname) {
 	ns_enabled = !strcmp (usens, "on");
 }
 
-
 #define	QUOTE	'\\'
-
 
 static char *
 tailor_value (char *s) {
@@ -967,7 +950,6 @@ tailor_value (char *s) {
 	return bp;
 }
 
-
 static int
 events_value (struct pair *pairs, char *s, char *var) {
 	int     value;
@@ -993,7 +975,6 @@ events_value (struct pair *pairs, char *s, char *var) {
 
 	return value;
 }
-
 
 #ifdef DEBUG
 int tailorfree()  {
@@ -1024,7 +1005,6 @@ int tailorfree()  {
 	free_oid ();
 #endif
 }
-
 
 int ll_hdfree (LLog *lp) {
 	if (lp -> ll_stat & LLOGHDR)

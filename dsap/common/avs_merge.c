@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_merge.c,v 9
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/dsp.h"        /* for ds_error.h */
@@ -100,7 +99,6 @@ AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b)
 
 	return (result);
 }
-
 
 AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequence d)
 {
@@ -181,5 +179,4 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 
 	return (result);
 }
-
 

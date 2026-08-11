@@ -327,7 +327,6 @@ time_t cache_age;
 	return(tree);
 }
 
-
 Avlnode *get_entries (file,parent,version,dtype)
 #ifdef TURBO_DISK
 GDBM_FILE	file;

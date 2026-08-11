@@ -77,7 +77,6 @@ char *host, *user, *passwd, *acct;
 	ftp_init(); /* initialize control state structures */
 	if (hookup(host,FTP_PORT) == NOTOK) return NOTOK;
 
-
 	/* execute login process */
 	if (login(user,passwd,acct) == NOTOK) return NOTOK;
 
@@ -196,7 +195,6 @@ char *dir;
 int ftp_delete(file)
 char *file;
 {
-
 
 	if (!connected) return NOTOK;
 

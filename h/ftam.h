@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_FTAM_
 #define	_FTAM_
 
@@ -44,12 +43,10 @@
 #define OLDNBS9_OID	"1.3.9999.1.5.9"
 #endif /* COMPAT_OLD_NBS9OID */
 
-
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
 #include "logger.h"
-
 
 /* FTAM-QoS */
 #define	FQOS_NORECOVERY	0	/* no-recovery */
@@ -57,7 +54,6 @@
 #define	FQOS_CLASS2	2	/* class-2-recovery */
 #define	FQOS_CLASS3	3	/* class-3-recovery */
 #define	MY_FQOS		FQOS_NORECOVERY
-
 
 /* Service-Class */
 #define	FCLASS_UNCONS	0x01	/* unconstrained-class */
@@ -86,7 +82,6 @@
 #define	FATTR_PRIVATE	0x04	/* private */
 #define	MY_FATTR	(FATTR_STORAGE | FATTR_SECURITY)
 
-
 /* State-Result */
 #define	FSTATE_SUCCESS	0	/* success */
 #define	FSTATE_FAILURE	1	/* failure */
@@ -96,7 +91,6 @@
 #define	FACTION_TRANS	1	/* transient-error */
 #define	FACTION_PERM	2	/* permanent-error */
 
-
 struct FTAMcontent {
 	OID	    fc_dtn;		/* Document-Type-Name */
 
@@ -105,14 +99,12 @@ struct FTAMcontent {
 	int	    fc_result;		/* status */
 };
 
-
 struct FTAMcontentlist {	/* Contents-Type-List */
 	int	    fc_ncontent;	/* number of contents */
 
 #define	NFCONT	(NPCTX - 2)	/* not-so-arbitrary */
 	struct FTAMcontent fc_contents[NFCONT];
 };
-
 
 struct FTAMdiagnostic {		/* Diagnostic */
 	int	    ftd_type;		/* diagnostic-type */
@@ -314,7 +306,6 @@ struct FTAMdiagnostic {		/* Diagnostic */
 	char    ftd_data[FTD_SIZE];	/* data */
 };
 
-
 struct FTAMcharging {		/* Charging */
 	int	    fc_ncharge;		/* number of charges */
 
@@ -325,7 +316,6 @@ struct FTAMcharging {		/* Charging */
 		int	fc_value;	/* charging-value */
 	}	    fc_charges[NFCHRG];
 };
-
 
 struct FTAMpasswords {		/* Access-Passwords */
 	char   *fp_read;		/* read-password */
@@ -374,7 +364,6 @@ struct FTAMpasswords {		/* Access-Passwords */
 	free (FP -> fp_delete), FP -> fp_delete = NULL; \
 }
 
-
 struct FTAMconcurrency {	/* Concurrency-Control/Concurrency-Access */
 #define	FLOCK_SHARED	00	/* shared */
 #define	FLOCK_EXCLUSIVE	01	/* exclusive */
@@ -404,7 +393,6 @@ struct FTAMconcurrency {	/* Concurrency-Control/Concurrency-Access */
     (fc) -> fc_chngattrlock = FLOCK_NOTREQD; \
     (fc) -> fc_deletelock = FLOCK_NOTREQD; \
 }
-
 
 struct FTAMacelement {		/* SET OF Access-Control-Element */
 	int	    fe_actions;		/* action-list */
@@ -450,7 +438,6 @@ struct FTAMacelement {		/* SET OF Access-Control-Element */
 	free ((char *) FE); \
     } \
 }
-
 
 struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 	long    fa_present;		/* values present */
@@ -526,7 +513,6 @@ struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 
 void	FAFREE ();
 
-
 struct FADUidentity {		/* FADU-Identity */
 	int	    fa_type;
 #define	FA_FIRSTLAST	0	/* first-last */
@@ -579,7 +565,6 @@ struct FADUidentity {		/* FADU-Identity */
 	if ((fu) -> fa_names[FUI]) \
 	    free ((fu) -> fa_names[FUI]), (fu) -> fa_names[FUI] = NULL; \
 }
-
 
 struct FTAMstart {		/* F-INITIALIZE.INDICATION */
 	int	    fts_sd;		/* FTAM descriptor */
@@ -639,7 +624,6 @@ struct FTAMstart {		/* F-INITIALIZE.INDICATION */
 	free ((fts) -> fts_password), (fts) -> fts_password = NULL; \
 }
 
-
 struct FTAMconnect {		/* F-INITIALIZE.CONFIRMATION */
 	int	    ftc_sd;		/* FTAM descriptor */
 
@@ -690,7 +674,6 @@ struct FTAMconnect {		/* F-INITIALIZE.CONFIRMATION */
     (ftc) -> ftc_contents.fc_ncontent = 0; \
 }
 
-
 struct FTAMfinish {		/* F-TERMINATE.INDICATION */
 	PE	    ftf_sharedASE;	/* shared-ASE-information */
 };
@@ -724,7 +707,6 @@ struct FTAMrelease {		/* F-TERMINATE.CONFIRMATION */
     (ftr) -> ftr_charges.fc_ncharge = 0; \
 }
 
-
 struct FTAMabort {		/* F-{U,P}-ABORT.INDICATION */
 	int	    fta_peer;		/* T   = F-U-ABORT.INDICATION
 				   NIL = F-P-ABORT.INDICATION */
@@ -734,7 +716,6 @@ struct FTAMabort {		/* F-{U,P}-ABORT.INDICATION */
 	int	    fta_ndiag;		/* diagnostic */
 	struct FTAMdiagnostic fta_diags[NFDIAG];
 };
-
 
 struct FTAMselect {		/* F-SELECT.* */
 	/* RESPONSE only */
@@ -772,7 +753,6 @@ struct FTAMselect {		/* F-SELECT.* */
 	free ((ftse) -> ftse_account), (ftse) -> ftse_account = NULLCP; \
 }
 
-
 struct FTAMdeselect {		/* F-DESELECT.* */
 	/* RESPONSE only */
 	int     ftde_action;	/* action-result */
@@ -802,7 +782,6 @@ struct FTAMdeselect {		/* F-DESELECT.* */
     if ((ftde) -> ftde_sharedASE) \
 	pe_free ((ftde) -> ftde_sharedASE), (ftde) -> ftde_sharedASE = NULLPE; \
 }
-
 
 struct FTAMcreate {		/* F-CREATE.* */
 	/* RESPONSE only */
@@ -852,7 +831,6 @@ struct FTAMcreate {		/* F-CREATE.* */
 	free ((ftce) -> ftce_account), (ftce) -> ftce_account = NULLCP; \
 }
 
-
 struct FTAMdelete {		/* F-DELETE.* */
 	/* RESPONSE only */
 	int	    ftxe_action;	/* action-result */
@@ -884,7 +862,6 @@ struct FTAMdelete {		/* F-DELETE.* */
     (ftxe) -> ftxe_charges.fc_ncharge = 0; \
 }
 
-
 struct FTAMreadattr {		/* F-READ-ATTRIB.* */
 	/* RESPONSE only */
 	int	    ftra_action;	/* action-result */
@@ -901,7 +878,6 @@ struct FTAMreadattr {		/* F-READ-ATTRIB.* */
 { \
     FAFREE (&((ftra) -> ftra_attrs)); \
 }
-
 
 struct FTAMchngattr {		/* F-CHANGE-ATTRIB.* */
 	/* RESPONSE only */
@@ -920,7 +896,6 @@ struct FTAMchngattr {		/* F-CHANGE-ATTRIB.* */
 { \
     FAFREE (&((ftca) -> ftca_attrs)); \
 }
-
 
 struct FTAMopen {		/* F-OPEN.* */
 	/* RESPONSE only */
@@ -957,7 +932,6 @@ struct FTAMopen {		/* F-OPEN.* */
 	pe_free ((ftop) -> ftop_sharedASE), (ftop) -> ftop_sharedASE = NULLPE; \
 }
 
-
 struct FTAMclose {		/* F-CLOSE.* */
 	int	    ftcl_action;	/* action-result */
 
@@ -971,7 +945,6 @@ struct FTAMclose {		/* F-CLOSE.* */
     if ((ftcl) -> ftcl_sharedASE) \
 	pe_free ((ftcl) -> ftcl_sharedASE), (ftcl) -> ftcl_sharedASE = NULLPE; \
 }
-
 
 struct FTAMgroup {
 	int     ftg_threshold;	/* threshold */
@@ -1042,7 +1015,6 @@ struct FTAMgroup {
 		FTOPFREE (&((ftg) -> ftg_open)); \
 }
 
-
 struct FTAMaccess {		/* F-{LOCATE,ERASE}.{INDICATION,CONFIRMATION} */
 	int	    ftac_operation;
 #define	FA_OPS_LOCATE	0	/* locate */
@@ -1066,7 +1038,6 @@ struct FTAMaccess {		/* F-{LOCATE,ERASE}.{INDICATION,CONFIRMATION} */
 { \
     FUFREE (&((ftac) -> ftac_identity)); \
 }
-
 
 struct FTAMreadwrite {		/* F-{READ,WRITE}.INDICATION */
 	int	    ftrw_operation;	/* fadu-operation */
@@ -1096,14 +1067,12 @@ struct FTAMreadwrite {		/* F-{READ,WRITE}.INDICATION */
     FUFREE (&((ftrw) -> ftrw_identity)); \
 }
 
-
 struct FTAMdataend {		/* F-DATA-END.INDICATION */
 	int	    ftda_action;	/* action-result */
 
 	int     ftda_ndiag;		/* diagnostic */
 	struct FTAMdiagnostic   ftda_diags[NFDIAG];
 };
-
 
 struct FTAMtransend {		/* F-TRANSFER-END.{INDICATION,CONFIRMATION} */
 	/* RESPONSE only */
@@ -1121,7 +1090,6 @@ struct FTAMtransend {		/* F-TRANSFER-END.{INDICATION,CONFIRMATION} */
 	pe_free ((ftre) -> ftre_sharedASE), (ftre) -> ftre_sharedASE = NULLPE; \
 }
 
-
 struct FTAMcancel {		/* F-CANCEL.{INDICATION,CONFIRMATION} */
 	int	    ftcn_action;	/* action-result */
 
@@ -1135,7 +1103,6 @@ struct FTAMcancel {		/* F-CANCEL.{INDICATION,CONFIRMATION} */
     if ((ftcn) -> ftcn_sharedASE) \
 	pe_free ((ftcn) -> ftcn_sharedASE), (ftcn) -> ftcn_sharedASE = NULLPE; \
 }
-
 
 struct FTAMindication {
 	int     fti_type;		/* the union element present */
@@ -1191,11 +1158,9 @@ struct FTAMindication {
 #define	FADU_ENTERTREE	1	/* Enter-Subtree-Data-Element */
 #define	FADU_EXITREE	2	/* Exit-Subtree-Data-Element */
 
-
 extern char *ftamversion;
 
 extern LLog _ftam_log, *ftam_log;
-
 
 int	FInit ();		/* F-INITIALIZE.INDICATION */
 int	FInitializeResponse ();	/* F-INITIALIZE.RESPONSE */
@@ -1231,7 +1196,6 @@ int	FHookRequest ();	/* set tracing */
 int	FTraceHook ();		/* user-defined tracing */
 
 char   *FErrString ();		/* return FTAM error code in string form */
-
 
 struct isodocument {
 	char   *id_entry;

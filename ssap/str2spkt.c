@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/str2spkt.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "spkt.h"
 #include "tailor.h"
-
 
 char *spkt2str (struct ssapkt *s) {
 	int     i,

@@ -38,7 +38,6 @@ attrTypeList *list_ptr;
 	return FALSE;
 } /* add_type_to_list */
 
-
 /*
  * - delete_type_from_list() -
  */

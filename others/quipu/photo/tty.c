@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/tty.c,v 
  *
  */
 
-
-
 #include "stdio.h"
 #include "quipu/photo.h"
 
@@ -53,7 +51,6 @@ char    display[50][50];
 int photo_start (char *name) {
 	char   *ptr,
 		   *getenv ();
-
 
 	if ((ptr = getenv ("photo_invert")) != (char *) NULL)
 		if (strcmp (ptr, "true") == 0)
@@ -251,7 +248,6 @@ bit_string *line;
 			}
 			if (cnt == (scalediv * 16))
 				cnt--;
-
 
 			if (invert)
 				putc (mapping[cnt / scalediv],stdout);

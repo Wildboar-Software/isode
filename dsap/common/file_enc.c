@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_enc.c,v 9.
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
@@ -70,7 +69,6 @@ static char *readfile (FILE *file)
 
 	/* NOTREACHED */
 }
-
 
 PE grab_filepe (AttributeValue av)
 {

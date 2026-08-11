@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydserror.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
-
 
 #ifdef __STDC__
 #define missingP(p) \

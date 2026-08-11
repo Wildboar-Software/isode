@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsaperror.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"
@@ -175,7 +173,6 @@ int DEncodeError (PE *pep, struct DSError *err) {
 
 	return(success);
 }
-
 
 int IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	return QspErrorRequest (sd, id, err, di);

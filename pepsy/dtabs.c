@@ -126,7 +126,6 @@ void tdec_typ(FILE *fp, YP yp, char *id, char *type)
 		}
 	}
 
-
 	if ((yp->yp_flags & YP_PARMVAL) && yp->yp_parm) {
 		if ((f = getfield(yp->yp_parm)) == NULLCP) {
 			fprintf(stderr, "\ntdec_typ: can't extract field from %s\n",
@@ -221,7 +220,6 @@ void tdec_typ(FILE *fp, YP yp, char *id, char *type)
 		}
 		ferr(1, "tdec_typ:REAL: couldn't determine type\n");
 		break;
-
 
 	case YP_BIT:
 	case YP_BITLIST:
@@ -557,7 +555,6 @@ out:
 		if (y = yp->yp_type) {
 			char *t1;
 
-
 			if (yp->yp_param_type) {
 				/* we have a [[ P type ]] specification */
 				if ((t1 = rm_indirect(yp->yp_param_type)) == NULLCP) {
@@ -632,7 +629,6 @@ out:
 
 			if (!type || !noindirect(f))
 				genmalloc(fp, yp);
-
 
 			if (yp -> yp_control_act && yp->yp_control_act->yal_dec) {
 				fprintf (fp, "\t{ SCTRL, %d, 0, FL_USELECT, %s },\n",

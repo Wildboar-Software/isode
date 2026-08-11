@@ -24,18 +24,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookup.c,v 9.
  *
  */
 
-
 #include <stdio.h>
 #include "PasswordLookup-types.h"	/* type definitions */
 #include "ryinitiator.h"		/* for generic interctive initiators */
 #include "PasswordLookup-ops.h"		/* operation definitions */
 
-
 static char *myservice = "passwdstore";
 
 static char *mycontext = "isode passwd lookup demo";
 static char *mypci = "isode passwd lookup demo pci";
-
 
 /* ARGUMENTS */
 int	do_lookupUser (), do_lookupUID (), do_help (), do_quit ();
@@ -45,7 +42,6 @@ int	lookup_result ();
 
 /* ERRORS */
 int	lookup_error ();
-
 
 static struct dispatch dispatches[] = {
 	"lookupUser", operation_PasswordLookup_lookupUser,
@@ -71,8 +67,6 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
-
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_PasswordLookup_Operations, dispatches, do_quit);
@@ -81,7 +75,6 @@ int main (int argc, char **argv, char **envp) {
 }
 
 /* ARGUMENTS */
-
 
 static int
 do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg) {
@@ -97,8 +90,6 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLoo
 
 	return OK;
 }
-
-
 
 static int
 do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg) {
@@ -118,8 +109,6 @@ do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLook
 	return OK;
 }
 
-
-
 static int  do_help (sd, ds, args, dummy)
 int	sd;
 struct dispatch *ds;
@@ -132,8 +121,6 @@ caddr_t *dummy;
 
 	return NOTOK;
 }
-
-
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -162,7 +149,6 @@ caddr_t *dummy;
 
 /* RESULTS */
 
-
 static int
 lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi) {
 	print_qb (result -> name);
@@ -179,7 +165,6 @@ lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *res
 	return OK;
 }
 
-
 static
 print_qb (struct qbuf *q) {
 	struct qbuf *p;
@@ -190,8 +175,6 @@ print_qb (struct qbuf *q) {
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
-
-
 
 static int  lookup_error (sd, id, error, parameter, roi)
 int	sd,

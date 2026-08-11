@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl_tables.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 char   *pe_classlist[] = {
 	"UNIV",
@@ -38,7 +35,6 @@ char   *pe_classlist[] = {
 };
 
 int	pe_maxclass = sizeof pe_classlist / sizeof pe_classlist[0];
-
 
 char   *pe_univlist[] = {
 	"EOC",
@@ -73,7 +69,6 @@ char   *pe_univlist[] = {
 };
 
 int	pe_maxuniv = sizeof pe_univlist / sizeof pe_univlist[0];
-
 
 int	pe_maxappl = 0;
 char  **pe_applist = NULL;

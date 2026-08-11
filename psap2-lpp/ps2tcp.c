@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
  *
  */
 
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -46,14 +44,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
 static int  tcpready ();
 static int  PTservice ();
 
-
 #ifdef	FIONBIO
 static  fd_set  inprogress;
 static struct sockaddr_in *peers = NULL;
 #endif
-
-
-
 
 int	tcpopen (
 	struct psapblk *pb,
@@ -175,8 +169,6 @@ done:
 	return DONE;
 }
 
-
-
 char   *tcpsave (fd, cp1, cp2, td)
 int	fd;
 char   *cp1,
@@ -189,7 +181,6 @@ struct TSAPdisconnect *td;
 
 	return buffer;
 }
-
 
 int	tcprestore (pb, buffer, pi)
 struct psapblk *pb;
@@ -234,8 +225,6 @@ struct PSAPindication *pi;
 
 	return OK;
 }
-
-
 
 static int  tcpretry (pb, reason, pi)
 struct psapblk *pb;
@@ -296,7 +285,6 @@ done:
 #endif
 }
 
-
 static int  tcpready (pb, pi)
 struct psapblk *pb;
 struct PSAPindication *pi;
@@ -321,10 +309,8 @@ struct PSAPindication *pi;
 	return OK;
 }
 
-
 #define	tcpclose	close_tcp_socket
 #define	tcpselect	select_tcp_socket
-
 
 static int  PTservice (pb, fd)
 struct psapblk *pb;

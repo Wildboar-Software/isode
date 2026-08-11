@@ -20,7 +20,6 @@
  *
  */
 
-
 /*
  * OPTIONS:-
  *
@@ -70,7 +69,6 @@
  *		Undocumented pre-alpha test feature.
  *
  */
-
 
 # ifndef QUIPU_CONFIG
 # define QUIPU_CONFIG

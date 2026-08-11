@@ -24,12 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2ps.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
-
 
 static int
 qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -59,7 +55,6 @@ qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	return cc;
 }
-
 
 static int qbuf_close (PS ps) {
 	struct qbuf *qb;

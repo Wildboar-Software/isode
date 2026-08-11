@@ -52,7 +52,6 @@ struct Nonce {
 	struct alg_id non_alg;
 };
 
-
 #endif
 
 #ifndef GENERICALGTYPES
@@ -66,7 +65,6 @@ struct GenericHash;
 struct GenericHashParameters;
 struct GenericHashKey;
 #endif
-
 
 struct SecurityServices {
 	char           			*serv_name;

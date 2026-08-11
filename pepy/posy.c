@@ -8,19 +8,15 @@
 
 	Abort a CHOICE encoding if the structure is empty
 
-
 				  HEURISTICS
 
    1. LANGUAGE SIMPLIFICATIONS:
 
-
 	Pull-up uni-member SEQUENCEs/SETs/CHOICEs
-
 
    2. LANGUAGE ASSUMPTIONS:
 
 	Unique tags to avoid conflicts for internal structures (-h1 option)
-
 
    3. STYLE ISSUES:
 
@@ -51,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/posy.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
@@ -60,10 +55,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/posy.c,v 9.0 1992/06/1
 #include <unistd.h>
 #include "pepy.h"
 
-
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
-
 
 static int aflag = 0;
 int	Cflag = 0;		/* posy */
@@ -291,7 +284,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-
 int yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
@@ -346,7 +338,6 @@ void myyerror (char*fmt, ...) {
 	yyerror (buffer);
 }
 #endif
-
 
 #ifndef	lint
 static void pyyerror (YP yp, char *fmt, ...) {
@@ -2676,7 +2667,6 @@ YP new_type (int code) {
 	yp -> yp_code = code;
 	return yp;
 }
-
 
 YP	add_type (YP y, YP z) {
 	YP	    yp;

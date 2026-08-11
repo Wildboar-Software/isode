@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapinvoke.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ROS-types.h"
@@ -65,7 +63,6 @@ int RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *link
 
 	return result;
 }
-
 
 static int
 RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_add.c,v 9.0 1992/0
  *
  */
 
-
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"

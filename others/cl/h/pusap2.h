@@ -11,10 +11,6 @@
 #include "isoaddrs.h"		/* definitions of ISO addresses */
 #endif
 
-
-
-
-
 #define	NPDATA		25	/* arbitrary */
 
 struct PSAPcontext {		/* presentation context */
@@ -35,8 +31,6 @@ struct PSAPctxlist {		/* list of presentation contexts */
 	struct PSAPcontext pc_ctx[NPCTX];
 };
 #define	NULLPC	((struct PSAPctxlist *) 0)
-
-
 
 struct PuSAPstart {		/* P-UNIT-DATA.INDICATION */
 	int	    ps_sd;		/* PRESENTATION descriptor */
@@ -111,7 +105,6 @@ struct PuSAPstart {		/* P-UNIT-DATA.INDICATION */
     (ps) -> ps_ninfo = 0; \
 }
 
-
 struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
 	int	    pa_peer;		/* T   = P-U-ABORT.INDICATION:
 					    pa_info/pa_ninfo is meaningful
@@ -140,7 +133,6 @@ struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
     (pa) -> pa_ninfo = 0; \
 }
 
-
 struct PSAPindication {
 	int	    pi_type;		/* union for compatiblity with connections */
 #define	PI_ABORT	0x06
@@ -149,8 +141,6 @@ struct PSAPindication {
 	}	pi_un;
 #define	pi_abort	pi_un.pi_un_abort
 };
-
-
 
 extern char *psap2version;
 

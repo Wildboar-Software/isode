@@ -20,7 +20,6 @@
  *
  */
 
-
 #include "isoaddrs.h"
 #include "internet.h"
 #include "psap.h"
@@ -40,7 +39,6 @@ struct subtree {
 
 	OID	    s_subtree;		/* subtree */
 };
-
 
 struct view {
 	struct view *v_forw;	/* doubly-linked list */

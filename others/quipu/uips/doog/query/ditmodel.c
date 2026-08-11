@@ -69,7 +69,6 @@ QBool need_subtree;
 	}
 } /* set_relation */
 
-
 /*
  * - get_child_list() -
  *
@@ -330,7 +329,6 @@ AttributeType at;
 
 	return (srchlist == NULLSearchInfo? NULLCP : srchlist->type_label);
 }
-
 
 /*
  * - set_default_path() -

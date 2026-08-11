@@ -28,8 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sunlink.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
@@ -48,13 +46,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sunlink.c,v 9.0 1992
 #define CALLED  1
 #define	PROBE	(-1)
 
-
 #ifdef  DEBUG
 void    print_x25_facilities ();
 static int  log_x25_facilities ();
 #endif
-
-
 
 int start_x25_client (struct NSAPaddr *local, int priv) {
 	int     sd;
@@ -78,7 +73,6 @@ int start_x25_client (struct NSAPaddr *local, int priv) {
 #endif
 	return sd;
 }
-
 
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	CONN_DB     sbuf,
@@ -180,7 +174,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	return sd;
 }
 
-
 int join_x25_server (int fd, struct NSAPaddr *remote) {
 	CONN_DB sbuf;
 	CONN_DB *sock = &sbuf;
@@ -225,7 +218,6 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 
 	return nfd;
 }
-
 
 int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB     sbuf;
@@ -273,7 +265,6 @@ int join_x25_client (int fd, struct NSAPaddr *remote) {
 
 	return nfd;
 }
-
 
 /* There is a bug whereby if the thruput is set, calls fail. pb@cl.cam.ac.uk */
 
@@ -364,7 +355,6 @@ int set_x25_facilities (int sd, int coc, char *caption) {
 	return OK;
 }
 
-
 int log_cause_and_diag (int fd) {
 	X25_CAUSE_DIAG      diag;
 
@@ -376,7 +366,6 @@ int log_cause_and_diag (int fd) {
 	return elucidate_x25_err ((int) diag.flags, diag.data);
 
 }
-
 
 #ifdef  DEBUG
 
@@ -393,7 +382,6 @@ log_x25_facilities (int fd, int coc, char *caption) {
 
 	return OK;
 }
-
 
 static void
 print_x25_facilities (FACILITY_DB f, int coc, char *caption) {

@@ -440,7 +440,6 @@ int *task_id_ptr;
 		}
 	}
 
-
 	if (entrymods == NULLMOD) {
 		error = error_alloc();
 		error->next = NULLError;
@@ -452,7 +451,6 @@ int *task_id_ptr;
 		return error;
 	}
 
-
 	get_default_service(&mod_arg.mea_common);
 
 	mod_arg.mea_common.ca_servicecontrol.svc_options =
@@ -460,7 +458,6 @@ int *task_id_ptr;
 
 	mod_arg.mea_object = str2dn(baseobject);
 	mod_arg.mea_changes = entrymods;
-
 
 	if (_task_invoked(MODIFY_TASK, baseobject, request_id, &task_id) != QERR_ok) {
 		error = error_alloc();
@@ -472,7 +469,6 @@ int *task_id_ptr;
 
 		return error;
 	}
-
 
 	*task_id_ptr = task_id;
 
@@ -487,14 +483,12 @@ int *task_id_ptr;
 		return error;
 	}
 
-
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE,
 		  ("MODIFY +%s, task %d",
 		   baseobject,
 		   task_id));
 #endif
-
 
 	return NULLError;
 } /* start_modify */
@@ -615,7 +609,6 @@ modifyAttr *attr_list;
 	template_rec->base_object = copy_string(baseobject);
 	template_rec->request_id = *id_ptr;
 
-
 	/*
 	 * 	Make sure to read objectClass
 	 */
@@ -632,7 +625,6 @@ modifyAttr *attr_list;
 
 	template_rec->include_attrs = curr_attr;
 
-
 	/*
 	 *	Perform the read (reading all attributes)
 	 */
@@ -646,7 +638,6 @@ modifyAttr *attr_list;
 
 	return error_code;
 } /* do_make_template */
-
 
 /*
  * - process_template_ds_result() -
@@ -678,9 +669,7 @@ struct DSResult *ds_result;
 	if ((task_rec = _get_task_of_id(task_id)) == NULLDsTask)
 		return RQ_processing;
 
-
 	read_result = &ds_result->res_rd;
-
 
 	/*
 	 *	Log receipt of results
@@ -692,13 +681,11 @@ struct DSResult *ds_result;
 		  ("READ RESULT +%s, task %d", task_rec->baseobject, task_id));
 #endif
 
-
 	/*
 	 *	Put the results into the entry_template linked list.
 	 */
 
 	get_template_attrs(read_result->rdr_entry.ent_attr, entry_template);
-
 
 	/*
 	 *	Get the object class field, and check that all other attributes
@@ -711,7 +698,6 @@ struct DSResult *ds_result;
 	oclass_attr->next = NULLModifyAttr;
 
 	last_attr = NULLModifyAttr;
-
 
 	/*
 	 *	Pick out the must attributes
@@ -827,7 +813,6 @@ struct DSResult *ds_result;
 		}
 	}
 
-
 	/*
 	 *	Check for attribute overlaps and copies in the attribute lists
 	 */
@@ -846,7 +831,6 @@ struct DSResult *ds_result;
 	may_out = remove_common_attrs(may_in, may_out);
 
 	may_out = remove_common_attrs(must_out, may_out);
-
 
 	/*
 	 *	Put the results structure into the request record
@@ -899,14 +883,12 @@ struct DSError *error;
 
 	if (task_rec == NULLDsTask) return RQ_processing;
 
-
 	/*
 	 *	Save error and log it
 	 */
 
 	error_type = get_log_error_type(error, task_id);
 	add_error_to_request_rec(request, task_rec->baseobject, error_type, error);
-
 
 	/*
 	 *	Put the results structure into the request record
@@ -927,7 +909,6 @@ struct DSError *error;
 
 	temprec->result->may_request = NULLModifyAttr;
 	temprec->result->must_exc = NULLModifyAttr;
-
 
 	/*
 	 *	Remove invocation record for this task
@@ -1036,7 +1017,6 @@ modifyAttr *mod_attr_list_ptr;
 	*mod_attr_list_ptr = NULLModifyAttr;
 } /* free_mod_attr_list */
 
-
 void free_mod_val_list(mod_val_list_ptr)
 modifyValue *mod_val_list_ptr;
 {
@@ -1074,7 +1054,6 @@ modifyResult *result_ptr;
 	*result_ptr = NULLModifyResult;
 } /* free_modify_result */
 
-
 void modify_rec_free(record)
 modifyRec record;
 {
@@ -1087,7 +1066,6 @@ modifyRec record;
 	if (record->result != NULLModifyResult)
 		free_modify_result(&record->result);
 } /* free_modify_rec */
-
 
 void free_make_template_result(result_ptr)
 makeTemplateResult *result_ptr;
@@ -1133,7 +1111,6 @@ makeTemplateRec record;
 
 	free((char *) record);
 } /* free_make_template_rec */
-
 
 /*
  * Miscellaneous modify procedures.
@@ -1203,7 +1180,6 @@ attrValList attr_list;
 
 	return head;
 } /* avList2modifyAttr */
-
 
 /*
  * - remove_common_attrs() -

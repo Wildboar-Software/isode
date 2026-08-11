@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2pe.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #undef	qbuf2pe
 #include "tailor.h"
-
 
 #ifndef	DEBUG
 #endif

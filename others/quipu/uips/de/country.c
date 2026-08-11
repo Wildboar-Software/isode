@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/countr
  *
  */
 
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
@@ -60,7 +59,6 @@ int makeRootCountry (struct namelist **clistp) {
 	(*clistp)->next = NULLLIST;
 	return OK;
 }
-
 
 int listCos (char *cstr, struct namelist **clistp) {
 	clearProblemFlags();

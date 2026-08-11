@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
  *
  */
 
-
 #include <ctype.h>
 #include <errno.h>
 #include <grp.h>
@@ -38,12 +37,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/tools/dsaconfig/RC
 #include "psap.h"
 #include "tailor.h"
 
-
 #ifdef	SYS5
 struct group *getgrnam ();
 struct passwd *getpwnam (), *getpwuid ();
 #endif
-
 
 static int debug =0;
 
@@ -54,7 +51,6 @@ static char *myname = "dsaconfig";
 
 static char *wildlife = NULL;
 static char sedfil[BUFSIZ];
-
 
 static void	adios (char *what, char *fmt, ...);
 static void	advise (char *what, char *fmt, ...);
@@ -67,12 +63,7 @@ static read_config (), read_psap (), build_root (), build_TLC (),
        make_file (), build_dsap (), build_fred (), fudge_file (),
        arginit (), parse_3166 (), table_3166 ();
 
-
-
-
 extern char  *quipuversion;
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char    buffer[BUFSIZ];
@@ -135,7 +126,6 @@ struct country {
 };
 
 static struct country *read_country ();
-
 
 struct pair {
 	char   *p_name;
@@ -238,7 +228,6 @@ static struct pair pairs[] = {
 };
 
 static struct pair *n2p ();
-
 
 static
 read_config () {
@@ -556,7 +545,6 @@ postal_problem:
 	}
 }
 
-
 static struct country *
 read_country (char *code) {
 	int	    vecp;
@@ -653,7 +641,6 @@ read_country (char *code) {
 	return c;
 }
 
-
 static
 read_psap (char *dsa, char **addr) {
 	int	    i;
@@ -709,7 +696,6 @@ hit:
 	fclose (fp);
 }
 
-
 int generate_sed () {
 	FILE   *fp;
 	struct pair *p;
@@ -730,7 +716,6 @@ int generate_sed () {
 	fclose (fp);
 }
 
-
 static struct pair *
 n2p (char *name, int any) {
 	struct pair *p;
@@ -744,7 +729,6 @@ n2p (char *name, int any) {
 	/* NOTREACHED */
 }
 
-
 static	munge (fp, entries)
 FILE   *fp;
 char   *entries[];
@@ -756,7 +740,6 @@ char   *entries[];
 		   **pp;
 	char    buffer[BUFSIZ];
 	struct pair *p;
-
 
 	for (pp = entries; cp = *pp; pp++) {
 		bp = buffer;
@@ -798,7 +781,6 @@ build_root () {
 
 	make_file ("root.edb", "EDB", 0600, 0);
 }
-
 
 static char *c_TLC[] = {
 	"o=@(organization)",
@@ -854,7 +836,6 @@ static char *c_TLC[] = {
 	NULL
 };
 
-
 static
 build_TLC () {
 	char    buffer[BUFSIZ];
@@ -863,7 +844,6 @@ build_TLC () {
 	n2p ("country", 1) -> p_value);
 	make_edb (buffer, "SLAVE", "0000000000Z", c_TLC);
 }
-
 
 static char *o_I[] = {
 	"cn=Manager",
@@ -895,7 +875,6 @@ static char *o_I[] = {
 	NULL
 };
 
-
 static
 build_organization () {
 	char    buffer[BUFSIZ];
@@ -905,7 +884,6 @@ build_organization () {
 	n2p ("organization", 1) -> p_value);
 	make_edb (buffer, "MASTER", version (), o_I);
 }
-
 
 static char *u_J[] = {
 	"cn=@(firstname) @(lastname)",
@@ -932,7 +910,6 @@ static char *u_J[] = {
 	NULL
 };
 
-
 static
 build_unit () {
 	char    buffer[BUFSIZ];
@@ -943,7 +920,6 @@ build_unit () {
 	n2p ("unit", 1) -> p_value);
 	make_edb (buffer, "MASTER", version (), u_J);
 }
-
 
 static
 make_edb (char *dir, char *type, char *date, char *entries[]) {
@@ -970,7 +946,6 @@ make_edb (char *dir, char *type, char *date, char *entries[]) {
 
 	chmod (edb, 0600);
 }
-
 
 static char *
 version () {
@@ -1001,7 +976,6 @@ static
 build_nightly () {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
-
 
 static
 make_file (char *infile, char *outfile, int mode, int dosed) {
@@ -1039,7 +1013,6 @@ build_fred () {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
-
 
 static
 fudge_file (char *name) {
@@ -1115,7 +1088,6 @@ usage:
 	if (!wildlife)
 		goto usage;
 }
-
 
 static
 parse_3166 () {
@@ -1195,7 +1167,6 @@ parse_3166 () {
 	fclose (fp);
 }
 
-
 static
 table_3166 () {
 	char *cp,
@@ -1254,10 +1225,8 @@ table_3166 () {
 	fclose (fp);
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 static void  adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -1279,7 +1248,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 static void  advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -1290,7 +1258,6 @@ static void  advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];

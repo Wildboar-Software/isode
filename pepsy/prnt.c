@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/prnt.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include	<stdio.h>
 #include	<ctype.h>
 #include	<stdarg.h>
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/prnt.c,v 9.0 1992/06/
 
 #define PRINT_TYPES	0
 #define	CHOICE_PUSH
-
 
 extern PE p_setpresent(PE head, ptpe *p, modtyp *mod);
 extern IFP vfnx;
@@ -81,7 +78,6 @@ static int vnamelock = 0;
 #define VUNKNOWN(x)	vnamelock = 0, vunknown(x)
 #define VPUSH		vnamelock = 0, vpush
 #define VPOP		vnamelock = 0, vpop
-
 
 /*
  * Print out ASN data given in pe using the information given in the tables
@@ -169,7 +165,6 @@ static int p_pr_obj (
 					|| (*mod->md_pucode) (pe, p) == NOTOK)
 				goto bad;
 			break;
-
 
 		default:
 			if (p_pr_type(expl, pe, p, mod) == NOTOK)
@@ -355,7 +350,6 @@ static int p_pr_type (
 			}
 			break;
 
-
 		case ANY:
 			if (pe != NULLPE) {
 				if (pe->pe_errno != PE_ERR_NONE) {
@@ -481,7 +475,6 @@ static int p_pr_seq (
 	p++;
 	if (p->pe_type == DFLT_B)
 		p++;
-
 
 	pe = first_member(head);
 	while (p->pe_type != PE_END) {
@@ -816,7 +809,6 @@ static int p_pr_seqof (
 		p++;
 
 	start = p;
-
 
 	pe = first_member(head);
 	while (pe != NULLPE) {
@@ -1242,7 +1234,6 @@ static int p_pr_etype (
 	if (p->pe_type != ETAG)
 		return (ppepsylose (mod, p, pe, "p_pr_etype: missing ETAG\n"));
 
-
 	if (PRINT_TAG(p))
 		VTAG (CLASS (p), TAG (p));
 
@@ -1376,7 +1367,6 @@ static int p_pr_etype (
 		break;
 #endif
 
-
 	case BOOLEAN:
 		if (pe != NULLPE) {
 			if ((i= prim2flag(pe)) == NOTOK)
@@ -1500,7 +1490,6 @@ int p_ismatch (
 		}
 		return (0);
 
-
 	case SANY:
 		return (1);
 
@@ -1577,7 +1566,6 @@ int setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
 		intval = IVAL(mod, dflt);
 		(*vfnx) (vfp, "%d (DEFAULT INTEGER)\n", intval);
 		break;
-
 
 #ifdef	PEPSY_REALS
 	case REALTYPE:

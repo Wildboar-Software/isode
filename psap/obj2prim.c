@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/obj2prim.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE	obj2prim (o, class, id)
 OID	o;

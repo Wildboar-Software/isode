@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmp-g.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include "mib.h"
 #include "snmp-g.h"

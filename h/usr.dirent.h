@@ -55,7 +55,6 @@ extern int		closedir();
 
 extern char             *getcwd ();
 
-
 #define	scandir	_scandir
 #define	alphasort _alphasort
 #endif	/* not GETDENTS */

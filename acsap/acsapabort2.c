@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"
@@ -59,7 +57,6 @@ int AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
 
 	return result;
 }
-
 
 int ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci) {
 	int	    result;

@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamprovider.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
-
 
 struct pair fclass_pairs[] = {
 	FCLASS_UNCONS, bit_FTAM_Service__Class_unconstrained__class,
@@ -124,7 +121,6 @@ struct pair fpermitted_pairs[] = {
 
 	0, 0
 };
-
 
 static int  once_only = 0;
 static struct ftamblk ftamque;
@@ -249,7 +245,6 @@ do_data:
 		}
 	}
 }
-
 
 static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti) {
 	int     next;
@@ -1542,7 +1537,6 @@ out:
 	return NOTOK;
 }
 
-
 static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected token indication (0x%x)", pt -> pt_type);
@@ -1551,7 +1545,6 @@ static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMind
 	freefsblk (fsb);
 	return NOTOK;
 }
-
 
 static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindication *fti) {
 	int i;
@@ -1620,7 +1613,6 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 	return doPSdata (fsb, px, fti);
 }
 
-
 static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected activity indication (0x%x)", pv -> pv_type);
@@ -1630,7 +1622,6 @@ static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FT
 	return NOTOK;
 }
 
-
 static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected exception report indication (0x%x)", pp -> pp_peer);
@@ -1639,7 +1630,6 @@ static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMin
 	freefsblk (fsb);
 	return NOTOK;
 }
-
 
 static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMindication *fti) {
 	PE	    pe;
@@ -1709,7 +1699,6 @@ out1:
 	return NOTOK;
 }
 
-
 static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindication *fti) {
 	struct AcSAPindication  acis;
 	struct AcSAPabort *aca = &acis.aci_abort;
@@ -1755,7 +1744,6 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 		(*handler) (sd, fti);
 }
 
-
 static void psSYNCser (int sd, struct PSAPsync *pn) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
@@ -1769,7 +1757,6 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 	if (doPSsync (fsb, pn, fti) != OK)
 		(*handler) (sd, fti);
 }
-
 
 static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	IFP	    handler;
@@ -1785,7 +1772,6 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 		(*handler) (sd, fti);
 }
 
-
 static void psREPORTser (int sd, struct PSAPreport *pp) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
@@ -1800,7 +1786,6 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 		(*handler) (sd, fti);
 }
 
-
 static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	IFP	    handler;
 	struct ftamblk   *fsb;
@@ -1814,7 +1799,6 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	if (doPSfinish (fsb, pf, fti) != OK)
 		(*handler) (sd, fti);
 }
-
 
 static void psABORTser (int sd, struct PSAPabort *pa) {
 	IFP	    handler;
@@ -1833,7 +1817,6 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 /*    define vector for INDICATION events */
 
 #define	e(i)	(indication ? (i) : NULL)
-
 
 int FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 	SBV     smask;
@@ -1935,7 +1918,6 @@ int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, 
 		return ftamoops (fti, reason, ACS_FATAL (aca -> aca_reason), observer,
 						 EREF_NONE, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
-
 
 int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti) {
 	int     peer;
@@ -2121,7 +2103,6 @@ void freefsblk (struct ftamblk *fsb) {
 
 	free ((char *) fsb);
 }
-
 
 struct ftamblk *
 findfsblk (int sd) {

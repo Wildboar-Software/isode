@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/ufnp.c
  *
  */
 
-
 #include "quipu/ufn.h"
 #include "tailor.h"
 #include "quipu/list.h"
@@ -165,7 +164,6 @@ int leafFlag;
 			bad = tmp;
 		}
 	}
-
 
 	if (exact) {
 		NOTIFY (("Found exact match(es) for '%s'",s));
@@ -565,7 +563,6 @@ DNS * result;
 					   filt, result, v, interact, el, FALSE);
 }
 
-
 static purportedMatch(base,c,v,interact,el,result)
 DN base;
 int c;
@@ -648,7 +645,6 @@ DNS * result;
 			return FALSE;
 		else
 			NOTIFY (("Remote failure: Not all subtrees searched"));
-
 
 	return matches;
 }
@@ -802,7 +798,6 @@ envlist read_envlist() {
 
 	return top;
 }
-
 
 ufn_match (c,v,interact,result,el)
 int c;

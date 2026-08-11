@@ -89,7 +89,6 @@ again:
 	return result;
 }
 
-
 static DNS just_say_no (dns,dn,s)
 DNS dns;
 DN dn;
@@ -148,7 +147,6 @@ DN dn;
 	struct DSError  error;
 	struct ds_read_result result;
 
-
 	if (! bound) {
 		if (! bind_to_dsa())
 			goto out;
@@ -194,7 +192,6 @@ out:
 
 static char unbind = FALSE;
 static envlist el = NULLEL;
-
 
 static PE  name2value_ufn (name, context, ontty, userdn, passwd, real_name)
 char   *name,
@@ -323,7 +320,6 @@ all_done:
 	return addr;
 }
 
-
 static void set_el (void) {
 	envlist  en,
 			 *ep;
@@ -404,7 +400,6 @@ void set_lookup_ufn (char flag) {
 	if (el == NULLEL)
 		set_el ();
 }
-
 
 #ifdef STANDALONE_AET_TEST
 

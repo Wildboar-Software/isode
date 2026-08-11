@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprespond.c,v 9.0 19
  *
  */
 
-
-
 #include <string.h>
 #include "tpkt.h"
 #include "tailor.h"
@@ -70,7 +68,6 @@ int TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td
 #else
 		goto not_supported;
 #endif
-
 
 	case NT_X2584:
 #ifdef AEF_NSAP

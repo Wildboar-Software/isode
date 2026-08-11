@@ -24,11 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtf.c,v 9.0 1992
  *
  */
 
-
 #include "RTF-types.h"
 #include "rtf.h"
 #include "isoservent.h"
-
 
 static char *myname = "rtf";
 
@@ -49,10 +47,7 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);
 static arginit (char **vec);
 
-
 char   *getenv ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    result,
@@ -211,7 +206,6 @@ int main (int argc, char **argv, char **envp) {
 
 /* TRANSFER */
 
-
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti) {
 	int    cc;
 	int	    n;
@@ -274,8 +268,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 
 	return OK;
 }
-
-
 
 static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 {
@@ -370,7 +362,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 	return OK;
 }
-
 
 static arginit (char **vec) {
 	char *ap;

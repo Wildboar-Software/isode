@@ -24,11 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfd.c,v 9.0 199
  *
  */
 
-
 #include "RTF-types.h"
 #include "rtf.h"
 #include <pwd.h>
-
 
 #ifdef	SYS5
 struct passwd *getpwnam ();
@@ -39,11 +37,9 @@ struct passwd *getpwnam ();
 #define	ANON	"ftp"
 #endif
 
-
 static int debug = 0;
 
 static char *myname = "rtfd";
-
 
 static int    fd;
 static int    nbytes;
@@ -51,8 +47,6 @@ static char  *destination;
 
 static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti);
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    guest,
@@ -281,7 +275,6 @@ no_dice:
 
 /* TRANSFER */
 
-
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti)
 {
 	int    cc;
@@ -346,8 +339,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 
 	return OK;
 }
-
-
 
 static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 {

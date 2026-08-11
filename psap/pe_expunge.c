@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE
 pe_expunge (PE pe, PE r) {

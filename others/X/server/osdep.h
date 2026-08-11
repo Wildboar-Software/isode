@@ -165,7 +165,6 @@ extern int isodexbug;
 
 #define FamilyIso 3
 
-
 #define UNIX_IO 0
 #define ISODE_IO 1
 
@@ -185,7 +184,6 @@ extern int (*writefn[])();
 extern int (*readvfn[])();
 extern int (*writevfn[])();
 extern int (*closefn[])();
-
 
 #define SAccept(fd, a, b) \
 acceptfn[fd2family[fd]]((fd), (a), (b))

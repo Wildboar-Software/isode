@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUREMOVE
 #define QUIPUREMOVE
 

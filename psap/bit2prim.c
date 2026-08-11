@@ -24,14 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/bit2prim.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 
-
 static PE	bit2prim_aux ();
-
 
 PE
 bit2prim (PE pe) {
@@ -56,7 +52,6 @@ bit2prim (PE pe) {
 
 	return pe;
 }
-
 
 static PE
 bit2prim_aux (PE pe) {

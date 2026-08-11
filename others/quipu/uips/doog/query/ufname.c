@@ -58,7 +58,6 @@ QCardinal request_id;
 
 } /* get_ufn_status */
 
-
 /*
  * - get_ufn_results() -
  * Copy and return results for the identified ufn request, then delete all
@@ -236,7 +235,6 @@ ufnameRec ufnrec;
 
 	return QERR_ok;
 } /* process_ufn_search */
-
 
 /*
  *
@@ -463,7 +461,6 @@ ufnameRec ufnrec;
 									 as_comp_new(attr_type,
 												 NULLAV,
 												 NULLACL_INFO));
-
 
 				if (make_filter_items(attr_type,
 									  search_value,
@@ -879,7 +876,6 @@ namePart *name;
 
 	*name = NULLNamePart;
 } /* name_part_free */
-
 
 /*
  * - str2ufname() -
@@ -1384,7 +1380,6 @@ struct DSResult *ds_result;
 	return RQ_processing;
 } /* process_ufn_ds_result */
 
-
 /*
  * - process_ufn_ds_error() -
  *
@@ -1441,7 +1436,6 @@ struct DSError *error;
 		return RQ_processing;
 	}
 
-
 	/* Save error and log it */
 
 	error_type = get_log_error_type(error, task_id);
@@ -1449,18 +1443,15 @@ struct DSError *error;
 
 	ufnrec->tasks_failed++;
 
-
 	/* Remove invocation record for this task */
 
 	_task_complete(task_id);
 	ufn_task_array[aindex] = NO_TASK;
 
-
 	if (is_exact_match_error)
 		ufnrec->exact_task_count--;
 	else
 		ufnrec->approx_task_count--;
-
 
 	if (ufnrec->exact_task_count == 0 && ufnrec->approx_task_count == 0) {
 		ufnResults results = ufn_res_alloc();
@@ -1471,7 +1462,6 @@ struct DSError *error;
 		results->matches = NULLEntryList;
 		results->unresolved_part = results->resolved_part = NULLCP;
 		results->errors = NULLError;
-
 
 		if (name_comp->exact_match_num > 0 ||
 				name_comp->good_match_num > 0)
@@ -1504,7 +1494,6 @@ struct DSError *error;
 				return RQ_processing;
 			}
 		}
-
 
 		/*
 		 * If final component of name has been matched, then return
@@ -1605,7 +1594,6 @@ struct DSError *error;
 	return RQ_processing;
 } /* process_ufn_ds_error */
 
-
 /*
  *
  *
@@ -1655,8 +1643,6 @@ ufnameRec ufnrec;
 		return TRUE;
 }
 
-
-
 /*
  *
  *	Procedures for UFN search path configuration
@@ -1679,7 +1665,6 @@ entryList path;
 
 	curr_path->path = path;
 } /* add_ufn_path_element */
-
 
 entryList get_ufn_path(comp_num)
 int comp_num;

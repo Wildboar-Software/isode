@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/tsdu2spkt.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "spkt.h"
@@ -70,7 +68,6 @@ static void put2spdu (int code, int li, char *value, struct local_buf *c);
 #define PMASK_PGI			0x400000	/* PGI has nested PIs */
 #define PMASK_VARLEN		0x800000	/* PI is Variable Len */
 #define PMASK_NOTSUPPORTED	-1		/* Type not supported */
-
 
 static int si_table[] = {
 	PMASK_REFLECT,				/* 0x00: SPDU_ER */
@@ -198,7 +195,6 @@ static int si_table[] = {
 };
 #define	SI_TABLE_LEN		((sizeof si_table) / (sizeof si_table[0]))
 
-
 #define	PGI_CN_ID		1
 #define		PI_CALLED_SS	9
 #define		PI_CALLING_SS	10
@@ -234,7 +230,6 @@ static int si_table[] = {
 #define	PI_SSAP_CALLED		52
 #define	PI_UDATA		193
 #define	PI_XDATA		194
-
 
 static int pi_table[] = {
 	0,					/* 0x00 */
@@ -277,7 +272,6 @@ static int pi_table[] = {
 	PMASK_VARLEN | PMASK_CN_ITEMS		/* 0x17: 2nd initial s/n */
 };
 #define	PI_TABLE_LEN		((sizeof pi_table) / (sizeof pi_table[0]))
-
 
 static int pi_length[PI_TABLE_LEN] = {
 	0,							/* 0x00 */
@@ -326,7 +320,6 @@ static int pi_length[PI_TABLE_LEN] = {
 	0, 0,						/* 0x35-36 */
 	SIZE_CN_ISN,				/* 0x37: 2nd initial s/n */
 };
-
 
 #define	If_Set(flag)	if (s -> s_mask & (flag))
 #define If_Reset(flag)	if (!(s -> s_mask & (flag)))
@@ -501,7 +494,6 @@ static void start_pgi (unsigned char code, struct local_buf *c) {
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
-
 
 static void end_pgi (struct local_buf *c) {
 	if (c -> len)

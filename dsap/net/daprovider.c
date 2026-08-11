@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daprovider.c,v 9.0
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/dap2.h"
 #include "tailor.h"

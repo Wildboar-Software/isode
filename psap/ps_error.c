@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_error.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 static char *ps_errorlist[] = {
 	"Error 0",
@@ -47,7 +44,6 @@ static char *ps_errorlist[] = {
 };
 
 static int ps_maxerror = sizeof ps_errorlist / sizeof ps_errorlist[0];
-
 
 char *ps_error (int c) {
 	char  *bp;

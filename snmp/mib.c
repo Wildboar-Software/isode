@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/mib.c,v 9.0 1992/06/16
  *
  */
 
-
 #include <stdio.h>
 #include "mib.h"
 #include "sys.file.h"
@@ -40,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/mib.c,v 9.0 1992/06/16
 #define L_SET SEEK_SET
 #endif
 #endif
-
 
 static	int	kd;
 static	int	wd;
@@ -81,7 +79,6 @@ struct nlist nl[] = {
 	nlist_item(NULL)
 };
 #endif
-
 
 struct	timeval	my_boottime;
 
@@ -166,7 +163,6 @@ void set_variable (char *name, char *newvalue) {
 	ot -> ot_info = value;
 }
 
-
 #ifndef LINUX
 int	getkmem (n, buffer, cc)
 struct nlist *n;
@@ -194,7 +190,6 @@ int	cc;
 	return OK;
 }
 
-
 int	setkmem (n, buffer, cc)
 struct nlist *n;
 caddr_t	buffer;
@@ -211,7 +206,6 @@ int	cc;
 
 	return OK;
 }
-
 
 int	chekmem (n)
 struct nlist *n;

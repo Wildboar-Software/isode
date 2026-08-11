@@ -1,6 +1,5 @@
 /* template.c - your comments here */
 
-
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mapatts.h,v 8.1 1991/09/13 14:36:41 isode Exp $
  *
@@ -24,7 +23,6 @@
  *    this agreement.
  *
  */
-
 
 struct mapnamelist {
 	char *tablename;

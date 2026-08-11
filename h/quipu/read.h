@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUREAD
 #define QUIPUREAD
 

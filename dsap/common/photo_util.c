@@ -71,8 +71,6 @@ char get_bit (bit_string *lineptr)
 	return ( (char) result );
 }
 
-
-
 /* ROUTINE:   Set_bit                                                   */
 /*                                                                      */
 /* SYNOPSIS:  Sets the next bit of the bit string pointed to by         */

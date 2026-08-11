@@ -26,7 +26,6 @@
  *
  */
 
-
 #include "config.h"
 
 #ifndef OK
@@ -52,7 +51,6 @@
 #define NOTOK_SYS			18
 #define NOTOK_INCONSISTENCY		19
 #define NOTOK_NOT_ALLOWED		20
-
 
 extern char *makeFN2();
 extern char *makeFN();

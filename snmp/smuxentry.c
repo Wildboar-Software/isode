@@ -29,12 +29,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smuxentry.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "smux.h"
 #include "tailor.h"
-
 
 static char *smuxEntries = "snmpd.peers";
 
@@ -42,7 +39,6 @@ static FILE *servf = NULL;
 static int  stayopen = 0;
 
 static struct smuxEntry    ses;
-
 
 int	setsmuxEntry (f)
 int	f;
@@ -56,7 +52,6 @@ int	f;
 	return (servf != NULL);
 }
 
-
 int	endsmuxEntry () {
 	if (servf && !stayopen) {
 		fclose (servf);
@@ -65,7 +60,6 @@ int	endsmuxEntry () {
 
 	return 1;
 }
-
 
 struct smuxEntry  *getsmuxEntry () {
 	int	    vecp;
@@ -105,7 +99,6 @@ struct smuxEntry  *getsmuxEntry () {
 	return NULL;
 }
 
-
 struct smuxEntry *getsmuxEntrybyname (name)
 char   *name;
 {
@@ -119,7 +112,6 @@ char   *name;
 
 	return se;
 }
-
 
 struct smuxEntry *getsmuxEntrybyidentity (identity)
 OID	identity;

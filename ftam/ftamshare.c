@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamshare.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "fpkt.h"
-
 
 struct type_FTAM_Shared__ASE__Information *shared2fpm (fsb, sharedASE, fti)
 struct ftamblk *fsb;
@@ -51,7 +48,6 @@ struct FTAMindication *fti;
 
 	return fpm;
 }
-
 
 int	fpm2shared (fsb, fpm, sharedASE, fti)
 struct ftamblk *fsb;

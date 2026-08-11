@@ -27,7 +27,6 @@
 #include "general.h"
 #endif
 
-
 #ifdef	NULLPE
 typedef struct AEInfo {		/* "real" directory services! */
 	PE	    aei_ap_title;
@@ -55,7 +54,6 @@ AEI	str2aei ();
 
 char   *sprintaei ();
 #endif
-
 
 struct NSAPaddr {
 	long     na_type;	/* this structure shouldn't have holes in it */
@@ -124,7 +122,6 @@ struct NSAPaddr {
 };
 #define	NULLNA			((struct NSAPaddr *) 0)
 
-
 struct TSAPaddr {
 #define	NTADDR	3
 	struct NSAPaddr ta_addrs[NTADDR];	/* choice of network addresses */
@@ -144,7 +141,6 @@ struct TSAPaddr {
 };
 #define	NULLTA			((struct TSAPaddr *) 0)
 
-
 struct SSAPaddr {
 	struct TSAPaddr sa_addr;		/* transport address */
 
@@ -160,7 +156,6 @@ struct SSAPaddr {
 #define	sa_port		un_sa.sa_un_port
 };
 #define	NULLSA			((struct SSAPaddr *) 0)
-
 
 struct PSAPaddr {
 	struct SSAPaddr pa_addr;		/* session address */
@@ -179,7 +174,6 @@ struct PSAPaddr {
 #define	NULLPA			((struct PSAPaddr *) 0)
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
-
 
 #ifdef	NULLPE
 struct dse_service {
@@ -215,19 +209,16 @@ struct isoentity *getisoentity ();
 AEI	oid2aei ();
 #endif
 
-
 /* old-style */
 struct PSAPaddr *is2paddr ();	/* service entry to PSAPaddr */
 struct SSAPaddr *is2saddr ();	/* service entry to SSAPaddr */
 struct TSAPaddr *is2taddr ();	/* service entry to TSAPaddr */
-
 
 struct PSAPaddr *asn2paddr ();	/* ASN.1 value to PSAPaddr */
 struct TSAPaddr *asn2taddr ();	/* ASN.1 value to TSAPaddr */
 
 char   *paddr2asn ();		/* PSAPaddr to ASN.1 value */
 char   *taddr2asn ();		/* TSAPaddr to ASN.1 value */
-
 
 struct nsap_entry {
 	char   *ns_service;
@@ -237,7 +228,6 @@ struct nsap_entry {
 
 extern struct nsap_entry _nsap_entries[];
 
-
 struct PSAPaddr *str2paddr ();  /* string encoding to PSAPaddr */
 struct TSAPaddr *str2taddr ();  /* string encoding to TSAPaddr */
 
@@ -246,9 +236,7 @@ char   *taddr2str ();		/* TSAPaddr to string encoding */
 
 char   *na2str ();		/* pretty-print NSAPaddr */
 
-
 int	isodeserver ();		/* generic server dispatch */
-
 
 /* all of this really should be in "isoqos.h" ... */
 

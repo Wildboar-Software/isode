@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/filter.c,v 9.0 
  *
  */
 
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
@@ -78,7 +76,6 @@ void filter_append (Filter a, Filter b)
 	trail->flt_next = b;
 }
 
-
 Filter strfilter (AttributeType at, char *s, char type)
 {
 	Filter filt;
@@ -125,7 +122,6 @@ Filter strfilter (AttributeType at, char *s, char type)
 								str2avs (dp, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 						return NULLFILTER;
 
-
 				do {
 					if (dp = index (s, '*'))
 						*dp++ = 0;
@@ -135,7 +131,6 @@ Filter strfilter (AttributeType at, char *s, char type)
 						if ((any = str2avs (s,
 											filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 							return NULLFILTER;
-
 
 						if (any_end) {
 							any_end -> avseq_next = any;
@@ -210,7 +205,6 @@ void fi_print (PS ps, Filter fi, int format)
 {
 	print_filter (ps, fi, 0);
 }
-
 
 void print_filter (PS nps, Filter fi, int level)
 {

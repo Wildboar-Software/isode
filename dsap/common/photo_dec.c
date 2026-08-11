@@ -153,7 +153,6 @@ int decode_t4 (char *data, char *name, int size) {
 
 	return res;
 
-
 }
 
 /*
@@ -206,7 +205,6 @@ static int uc_black_pels [] = {
 /* dimensionally, when it will be used as a reference.
 /*
 */
-
 
 int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	bit_string code_line,      /* output line */
@@ -304,8 +302,6 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 
 }
 
-
-
 /* ROUTINE:     find_node
  *
  * SYNOPSIS:    Reads a sequence of bits from a source line and traverses
@@ -337,8 +333,6 @@ static node *find_node (bit_string *lineptr, node *tree_top)
 
 	return (ptr);
 }
-
-
 
 /* ROUTINE:     next_run
  *
@@ -390,8 +384,6 @@ run_type next_run (bit_string *lineptr, char xcolour)
 	result.r_type = ptr->n_type;
 	return (result);
 }
-
-
 
 /* ROUTINE:     decode_one
 /*
@@ -455,8 +447,6 @@ int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 
 	return (done);
 }
-
-
 
 /* ROUTINE:     decode_two
 /*
@@ -534,7 +524,6 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 
 	return (0);
 }
-
 
 /* ROUTINE:     undo_uncompressed_mode
 /*
@@ -780,7 +769,6 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 		else
 			for (i = 0; i < l / 8; i++)
 				*lineptr->dbuf++ = 0xff;
-
 
 		/* put the last few bits into the next byte */
 

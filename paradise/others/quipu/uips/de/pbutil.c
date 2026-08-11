@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/pbutil
  *
  */
 
-
 #include <signal.h>
 #include "config.h"
 #include "demanifest.h"
@@ -124,7 +123,6 @@ char *string;
 	return new_string;
 }
 
-
 static PS ps = NULLPS;
 
 char   *dn2pstr (dn)
@@ -179,9 +177,6 @@ RDN	rdn;
 	return cp;
 }
 
-
-
-
 /* determine wildcard type of already validated string */
 
 int starstring(istr, ostr1, ostr2)
@@ -209,7 +204,6 @@ char * istr, ** ostr1, ** ostr2;
 		return LEADANDTRAIL;
 	}
 }
-
 
 /* print last component of a dn string - optionally indented by type */
 void printLastComponent(indent, dnstr, objectType, printNumber)
@@ -371,7 +365,6 @@ struct ds_search_result sresult;
 		notAllReached = TRUE;
 }
 
-
 showAnyProblems(str)
 char * str;
 {
@@ -392,7 +385,6 @@ char * str;
 		}
 	}
 }
-
 
 void
 logSearchSuccess(outcome, objecttype, string, searchNumber, noMatches)

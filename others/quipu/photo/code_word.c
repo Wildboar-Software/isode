@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/code_wor
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 
@@ -38,7 +36,6 @@ extern int PIC_LINESIZE;
 /* The declarations are made this way so that the arays are made at compile
 /* time as opposed to run time.
 */
-
 
 /* White terminal run lengths */
 
@@ -251,9 +248,6 @@ static code_word bl_make [] = {
 	{ 12, 0x24   },         /* 1984: 000000010010  */
 	{ 12, 0x26   },         /* 2048: 000000010011  */
 };
-
-
-
 
 /* ROUTINE:     Get_code ()                                             */
 /*                                                                      */

@@ -469,7 +469,6 @@ void set_inheritance (Entry eptr) {
 
 }
 
-
 Attr_Sequence entry_find_type (Entry a, AttributeType b) {
 	int i;
 	Attr_Sequence ptr;

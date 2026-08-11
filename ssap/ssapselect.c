@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapselect.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"

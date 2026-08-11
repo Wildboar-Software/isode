@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/strb2bitstr.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE
 strb2bitstr (char *cp, int len, PElementClass class, PElementID id) {

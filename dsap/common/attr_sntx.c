@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attr_sntx.c,v 9
  *
  */
 
-
 /*
  *	SYNTAX:
  *
@@ -121,7 +120,6 @@ char   *str;
 	if ( *str != AS_START_DELIMITER)
 		parse_error ("Starting delimeter missing",NULLCP);
 
-
 	for (;;) { /* break out */
 
 #ifdef TURBO_DISK
@@ -163,7 +161,6 @@ char * buf;
 	return(str2attrSntx(cp));
 }
 #define str2AttrList(buf)	str2attrSeq(buf)
-
 
 static PE avs_enc(avs)
 AV_Sequence avs;

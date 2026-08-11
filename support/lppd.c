@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/0
  *
  */
 
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -330,7 +329,6 @@ static void envinit (void) {
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
-
 
 #ifndef	lint
 void  adios (char *what, char *fmt, ...)

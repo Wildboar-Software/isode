@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUATTR
 #define QUIPUATTR
 
@@ -47,7 +46,6 @@ typedef oid_table_attr * AttributeType;
 #define grab_oid(x)  (x ? x->oa_ot.ot_oid : NULLOID)
 
 AttributeType AttrT_new();
-
 
 #define str2AttrT(x) AttrT_new(x)
 

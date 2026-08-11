@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
@@ -53,7 +52,6 @@
 #define	BSDSIGS
 #endif 
 
-
 #ifdef	ROS
 #undef	SYS5NLY
 #define	BSDSIGS
@@ -63,7 +61,6 @@
 #endif
 
 #endif
-
 
 #ifdef	SYS5
 #define	SYS5NLY
@@ -109,7 +106,6 @@
 #define	BSDSIGS
 #define	SIGEMT	SIGUSR1
 
-
 int   (*_signal ()) ();
 
 #define	signal	_signal
@@ -126,7 +122,6 @@ int   (*_signal ()) ();
 #define SVR3
 #endif
 #endif
-
 
 #ifdef	NSIG
 
@@ -238,23 +233,18 @@ typedef unsigned long	u_long;
 
 #define	NULLFD		((fd_set *) 0)
 
-
 #undef	IP
 typedef ssize_t	*IP;
 #define	NULLIP		((IP) NULL)
 
-
 typedef	ssize_t	(*IFP) ();
 #define	NULLIFP		((IFP) NULL)
-
 
 typedef void   (*VFP) ();
 #define	NULLVFP		((VFP) NULL)
 
-
 typedef	void * (*PFP) ();
 #define	NULLPFP		((PFP) NULL)
-
 
 #ifndef	SFD
 #if !defined(SVR3) && !defined(SUNOS4) && !defined(BSD44) && !defined(ultrix)
@@ -266,14 +256,12 @@ typedef	void * (*PFP) ();
 #endif
 #endif
 
-
 struct udvec {			/* looks like a BSD iovec... */
     char *uv_base;
     int	    uv_len;
 
     int	    uv_inline;
 };
-
 
 struct qbuf {
     struct qbuf *qb_forw;	/* doubly-linked list */
@@ -296,12 +284,10 @@ struct qbuf {
     } \
 }
 
-
 #ifndef	min
 #define	min(a, b)	((a) < (b) ? (a) : (b))
 #define	max(a, b)	((a) > (b) ? (a) : (b))
 #endif
-
 
 #if	defined(RT) || defined (HPUX)
 #define	ntohs(x)	(x)

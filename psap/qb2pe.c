@@ -24,15 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qb2pe.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
 
-
 static PE	qb2pe_aux ();
-
 
 PE
 qb2pe (struct qbuf *qb, int len, int depth, int *result) {
@@ -76,7 +72,6 @@ qb2pe (struct qbuf *qb, int len, int depth, int *result) {
 
 	return pe;
 }
-
 
 static PE
 qb2pe_aux (char *s, int len, int depth, int *result) {

@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
@@ -92,7 +90,6 @@ int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct Ro
 
 	return result;
 }
-
 
 int RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi) {
 	PE pe,

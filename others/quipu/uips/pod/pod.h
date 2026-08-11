@@ -29,11 +29,8 @@
 #include <X11/Xaw/Dialog.h>
 #include <X11/Xaw/List.h>
 
-
 #define FONTHEIGHT(f) ((f)->max_bounds.ascent + \
 		       (f)->max_bounds.descent )
 
-
 #define FONTWIDTH(f) ((f)->max_bounds.width)
-
 

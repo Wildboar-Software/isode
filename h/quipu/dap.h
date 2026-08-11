@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUDAP
 #define QUIPUDAP
 

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/turbo_disk.c,v 9.0 19
  *
  */
 
-
 #include <stdio.h>
 #include "quipu/config.h"
 #include "quipu/entry.h"

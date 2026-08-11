@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dfns.c,v 9.0 1992/06/
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -25,8 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"
@@ -45,10 +43,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06
 #define	MAXTP4		1024	/* until we have a dynamic estimate... */
 #define	TP4SLOP		  12	/* estimate of largest DT PCI */
 
-
 STATIC struct msghdr msgs;
 STATIC union osi_control_msg ocm;
-
 
 int tp4_disconnect_reason;
 
@@ -189,7 +185,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	return DONE;
 }
 
-
 STATIC int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	int	    len,
@@ -248,7 +243,6 @@ TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdiscon
 			}
 		break;
 	}
-
 
 	if (async)
 		ioctl (tb -> tb_fd, FIONBIO, (onoff = 0, (char *) &onoff));
@@ -318,7 +312,6 @@ out:
 	return NOTOK;
 }
 
-
 STATIC int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    i,
@@ -358,8 +351,6 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
 
 	return OK;
 }
-
-
 
 STATIC int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
@@ -402,14 +393,12 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	return OK;
 }
 
-
 /* life would be nice if we didn't have to worry about the maximum number of
    bytes that can be written in a single syscall() */
 
 #ifndef	MSG_MAXIOVLEN
 #define	MSG_MAXIOVLEN	NTPUV
 #endif
-
 
 STATIC int
 TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
@@ -568,7 +557,6 @@ done:
 	return OK;
 }
 
-
 STATIC int
 TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
@@ -632,8 +620,6 @@ out:
 
 	return result;
 }
-
-
 
 STATIC int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -792,7 +778,6 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-
 STATIC int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
@@ -807,7 +792,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 
 	return result;
 }
-
 
 STATIC int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
@@ -831,7 +815,6 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 }
 
 /*    LOWER HALF */
-
 
 int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
@@ -871,8 +854,6 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-
-
 STATIC int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
@@ -885,15 +866,12 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-
-
 char *tp4save (int fd, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d", NT_BSD, fd);
 	return buffer;
 }
-
 
 int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd, len, ucdlen;
@@ -927,7 +905,6 @@ int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-
 int tp4init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = TConnect;
 	tb -> tb_retryPfnx = TRetry;
@@ -956,8 +933,6 @@ int tp4init (struct tsapblk *tb) {
 	tb -> tb_closefnx = close_tp4_socket;
 	tb -> tb_selectfnx = select_tp4_socket;
 }
-
-
 
 int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd,
@@ -1004,7 +979,6 @@ int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2
 	return sd;
 }
 
-
 int join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *td) {
 	int	    len,
 			sd;
@@ -1020,7 +994,6 @@ int join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *
 
 	return sd;
 }
-
 
 STATIC int
 gen2tp4 (struct TSAPaddr *generic, union sockaddr_osi *specific) {
@@ -1052,8 +1025,6 @@ gen2tp4 (struct TSAPaddr *generic, union sockaddr_osi *specific) {
 	return OK;
 }
 
-
-
 STATIC int
 gen2tp4X (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	struct TSAPaddr tas;
@@ -1061,7 +1032,6 @@ gen2tp4X (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	copyTSAPaddrX (generic, &tas);
 	return gen2tp4 (&tas, specific);
 }
-
 
 int tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific) {
 	char *cp;
@@ -1085,7 +1055,6 @@ int tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific) {
 
 	return OK;
 }
-
 
 int tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	int	    result;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/atts.c
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
@@ -53,11 +52,8 @@ extern int telcmp();
 extern void pageprint(char *, ...);
 extern char *strdup();
 
-
-
 int greyBook = FALSE;
 char padding[20];
-
 
 static PS ps = NULLPS;
 
@@ -85,7 +81,6 @@ AttributeValue  av;
 
 	return cp;
 }
-
 
 int printDetails (int objectType, struct namelist *lp) {
 	Attr_Sequence at;
@@ -268,7 +263,6 @@ de_addrparse (char *str) {
 			}
 		}
 
-
 		if (result == (struct postaddr *) NULL)
 			result = a;
 		else
@@ -374,7 +368,6 @@ char *x;
 	return (ia5s2prim(x,strlen(x)));
 }
 
-
 static char * de_ia5sdec (pe)
 PE pe;
 {
@@ -466,7 +459,6 @@ int  format;
 	}
 }
 
-
 de_phone_print (xps,str,format)
 PS xps;
 char * str;
@@ -490,7 +482,6 @@ int format;
 			ps_print (xps,mapPhone(str));
 	}
 }
-
 
 static PE de_strenc (x)
 char *x;
@@ -526,12 +517,10 @@ PE pe;
 	return (NULLCP);
 }
 
-
 struct pair {
 	char   *p_name;
 	int     p_value;
 };
-
 
 static struct pair pairs[] = {
 	"twoDimensional", 8,
@@ -543,7 +532,6 @@ static struct pair pairs[] = {
 	"uncompressed", 30,
 	NULL
 };
-
 
 static
 de_fax_free (struct fax *f) {
@@ -742,7 +730,6 @@ PE	pe;
 
 	return f;
 }
-
 
 int specialSyntaxHandlers () {
 	AttributeType at;

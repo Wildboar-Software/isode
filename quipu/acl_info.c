@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/acl_info.c,v 9.0 1992
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 
@@ -87,7 +86,6 @@ int check_acl (DN who, int mode, struct acl_info *acl, DN node) {
 
 	return (NOTOK);
 }
-
 
 int manager (DN dn) {
 	AV_Sequence avs;

@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopblock.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
-
 
 static int  once_only = 0;
 static struct opsblk opsque;
@@ -83,7 +80,6 @@ void freeopblk (struct opsblk *opb) {
 	free ((char *) opb);
 }
 
-
 struct opsblk   *findopblk (sd, id, flags)
 int	sd,
 	id,
@@ -103,7 +99,6 @@ int	sd,
 
 	return NULL;
 }
-
 
 struct opsblk   *firstopblk (sd)
 int	sd;
@@ -146,7 +141,6 @@ void loseopblk (int sd, int reason) {
 		}
 	}
 }
-
 
 #ifdef	lint
 

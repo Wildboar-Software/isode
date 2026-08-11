@@ -24,23 +24,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/dse-c.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "DSE-types.h"
 
-
 #define advise	PY_advise
-
 
 static struct type_DSE_PSAPaddr *psap2dse ();
 
 static int  dse2psap ();
 static int  gstring ();
-
 
 int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
 	int	    result;
@@ -56,7 +51,6 @@ int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 
 	return result;
 }
-
 
 static struct type_DSE_PSAPaddr *
 psap2dse (struct PSAPaddr *pa) {
@@ -108,7 +102,6 @@ losing:
 	return dse;
 }
 
-
 int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
@@ -123,7 +116,6 @@ int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm
 
 	return result;
 }
-
 
 static int
 dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
@@ -160,7 +152,6 @@ dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 
 	return OK;
 }
-
 
 static int
 gstring (char *buf, int buflen, struct qbuf *qb, char *w) {

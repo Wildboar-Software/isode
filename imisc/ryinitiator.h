@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef PEPSY_VERSION
 #define PEPSY_VERSION 1
 #endif

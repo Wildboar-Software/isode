@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/update.c,v 9.0 1992/0
  *
  */
 
-
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -90,7 +89,6 @@ int journal (Entry myentry) {
 	extern char * treedir;
 	extern char * parse_file;
 	Entry liststart;
-
 
 	if (myentry == NULLENTRY) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));
@@ -236,7 +234,6 @@ static int allowed_to_send (DN a, DN b) {
 	else
 		return FALSE;
 }
-
 
 int do_get_edb (
 	struct getedb_arg *arg,
@@ -515,7 +512,6 @@ int send_get_edb (char *version, DN dn, DN from) {
 	/* NOTREACHED */
 }
 
-
 static Entry	g_parent;
 static int 	g_entry_cnt;
 
@@ -581,7 +577,6 @@ static int link_child (Entry e, Avlnode *oldkids) {
 		e->e_edbversion = strdup(old_entry->e_edbversion);
 	return(OK);
 }
-
 
 void process_edb (struct oper_act *on, struct oper_act **newop) {
 	extern DN mydsadn;
@@ -672,7 +667,6 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		/* ??? should we free newkids here ??? */
 		goto out;
 	}
-
 
 	dsa_wait (0);	/* progress any other connections before writing EDB */
 
@@ -917,7 +911,6 @@ out:
 			   ("How comes its not a seq !?!"));
 		goto out;
 	}
-
 
 	for (lpe = first_member (spe); lpe; lpe = next_member (spe, lpe)) {
 		if (pe2ps(fps, lpe) != OK) {
@@ -1250,7 +1243,6 @@ static int read_part_edb (PS ps, PE *pep, int n) {
 
 	return OK;
 }
-
 
 void set_edb_limit (struct oper_act *oper) {
 	oper->on_req.dca_dsarg.arg_ge.ga_maxEntries = split_size;

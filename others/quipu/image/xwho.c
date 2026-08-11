@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xwho.c,v
  *
  */
 
-
 #include <stdio.h>
 #include "imagesbr.h"
 #include <X11/Xlib.h>
@@ -36,9 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xwho.c,v
 #include "sys.file.h"
 #include "usr.dirent.h"
 
-
 #define	NHOSTS	100
-
 
 int	debug = 0;
 int	errsw = 0;
@@ -50,10 +47,8 @@ static int    dont_list = 0;
 
 static char *myname = "xwho";
 
-
 static char *display = NULL;
 static char *geometry = NULL;
-
 
 typedef struct _frame {
 	short x, y;
@@ -82,7 +77,6 @@ static unsigned long xswattrs_mask;
 static unsigned long backpix, bdrpix;
 static GC  forepix, highpix;
 
-
 struct face {
 	char    f_name[8 + 1];
 	int	    f_active;
@@ -95,7 +89,6 @@ struct face {
 
 	struct face *f_next;
 };
-
 
 struct host {
 	char    h_name[32 + 1];
@@ -119,8 +112,6 @@ static struct host *hosts;
 
 static  update_X (), service_X (), init_X (), layout_X(), display_top (),
         display_host (), display_face (), read_X (), display_this_host ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    nfds;
@@ -344,7 +335,6 @@ update_X () {
 	service_X ();
 }
 
-
 static int
 service_X () {
 	int	    wh,
@@ -421,7 +411,6 @@ service_X () {
 	}
 }
 
-
 static
 init_X () {
 	char    def[BUFSIZ];
@@ -467,7 +456,6 @@ init_X () {
 	XMapWindow (DISP, mywindow);
 	mapped = 0;
 }
-
 
 static
 layout_X () {
@@ -550,13 +538,11 @@ layout_X () {
 	largest_h = h;
 }
 
-
 static
 display_top () {
 	if (debug)
 		fprintf (stderr, "top window\n");
 }
-
 
 static
 display_host (struct host *hp) {
@@ -566,7 +552,6 @@ display_host (struct host *hp) {
 	XDrawImageString (DISP, hp -> h_window, hp -> h_gc, 0, hp -> h_ascent,
 					  hp -> h_string, strlen (hp -> h_string));
 }
-
 
 static
 display_face (struct face *fp) {
@@ -607,18 +592,15 @@ display_face (struct face *fp) {
 	XDestroyImage (image);
 }
 
-
 static int
 facecmp (struct face **f1, struct face **f2) {
 	return strcmp ((*f1) -> f_name, (*f2) -> f_name);
 }
 
-
 static int
 hostcmp (struct host **h1, struct host **h2) {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
-
 
 static
 read_X () {
@@ -792,7 +774,6 @@ read_X () {
 out:
 	;
 }
-
 
 static int
 display_this_host (char *n) {

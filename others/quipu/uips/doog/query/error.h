@@ -50,7 +50,6 @@ typedef struct _QE_error {
 	char *error_message;
 } QE_error;
 
-
 typedef struct _error_list {
 	char *baseobject;
 	QE_error_code error_type;

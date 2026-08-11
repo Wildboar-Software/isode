@@ -37,7 +37,6 @@
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-
 #ifndef lint
 static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/docmd.c,v 9.0 1992/06/16 14:38:53 isode Rel $";
 static char sccsid[] = "@(#)docmd.c	5.6 (Berkeley) 6/1/90";
@@ -179,14 +178,12 @@ done:
 	}
 }
 
-
 SFD lostconn(sig)
 int sig;
 {
 	log(lfp, "idist: lost connection\n");
 	longjmp(env, 1);
 }
-
 
 time_t	lastmod;
 FILE	*tfp;

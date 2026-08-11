@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/get_dsa_info.c,v 9.0 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"
@@ -72,7 +71,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 		err->dse_un.dse_un_service.DSE_sv_problem = DSE_SV_DITERROR;
 		return(DS_X500_ERROR);
 	}
-
 
 	(*di_p) = di_alloc();
 	(*di_p)->di_type = DI_TASK;

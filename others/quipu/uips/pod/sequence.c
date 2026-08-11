@@ -13,7 +13,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/seque
  *
  */
 
-
 #include "general.h"
 #include <sys/types.h>
 #include "sequence.h"

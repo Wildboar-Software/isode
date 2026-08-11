@@ -41,7 +41,6 @@ static char lexeme[255];
 
 void exit();
 
-
 #line 40 "config.b"
 typedef union {
 	int number;
@@ -70,8 +69,6 @@ yyltype;
 #ifndef __STDC__
 #define const
 #endif
-
-
 
 #define	YYFINAL		29
 #define	YYFLAG		-32768
@@ -159,9 +156,7 @@ static const short yypgoto[] = {-32768,
 								17,-32768,-32768,-32768,   -17
 							   };
 
-
 #define	YYLAST		22
-
 
 static const short yytable[] = {    11,
 									22,     6,    23,    24,     8,    12,     1,     9,     4,    18,
@@ -195,7 +190,6 @@ static const short yycheck[] = {     4,
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
-
 
 #ifndef alloca
 #ifdef __GNUC__
@@ -585,7 +579,6 @@ yyreduce:
 	}
 #endif
 
-
 	switch (yyn) {
 
 	case 4:
@@ -815,7 +808,6 @@ yyerrhandle:
 	goto yynewstate;
 }
 #line 100 "config.b"
-
 
 static int
 yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {

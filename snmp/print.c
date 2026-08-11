@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/print.c,v 9.0 1992/06/
  *
  */
 
-
 /* PRINT */
 
 #include <errno.h>
@@ -34,21 +33,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/print.c,v 9.0 1992/06/
 #include "objects.h"
 #include "logger.h"
 
-
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
-
 
 extern	int	quantum;
 
 void	advise (int, char *, char *, ...);
 
-
 #include "pathnames.h"
 #include "sys.file.h"
 #include "usr.dirent.h"
 #include <sys/stat.h>
-
 
 struct pq {
 #define	PQ_SIZE	20
@@ -89,7 +84,6 @@ struct pq {
 static	struct pq *pq_head = NULL;
 static	struct stat pq_st;
 
-
 struct pj {
 #define	PJ_SIZE	(PQ_SIZE + 1)
 	unsigned int  pj_instance[PJ_SIZE];
@@ -111,7 +105,6 @@ struct pj {
 };
 
 static	struct pj *pj_head = NULL;
-
 
 #ifdef LINUX
 #define pgetstr tgetstr
@@ -360,7 +353,6 @@ static int get_pj (int offset) {
 
 	return OK;
 }
-
 
 static void free_pj (void) {
 	if (pj_head)

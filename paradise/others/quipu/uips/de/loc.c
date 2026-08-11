@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/loc.c,
  *
  */
 
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
@@ -63,7 +62,6 @@ static struct query savelocinfo;
 
 void makeExplicitLocFilter();
 void locFilter1(), locFilter2(), locFilter3(), locFilter4();
-
 
 VFP explicitLoc[] = {makeExplicitLocFilter, NULLVFP};
 VFP normalLoc[] = {locFilter1, locFilter2, locFilter3, locFilter4, NULLVFP};
@@ -162,7 +160,6 @@ freeLocListArgs() {
 	dn_free(larg.lsa_object);
 }
 
-
 void
 freeLocSearchArgs() {
 	/*
@@ -179,7 +176,6 @@ freeLocSearchArgs() {
 	}
 	*/
 }
-
 
 int listAllLocs(cstr, llistp)
 char * cstr;

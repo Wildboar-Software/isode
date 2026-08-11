@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/deufn.
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include <pwd.h>
@@ -116,7 +115,6 @@ doUfnSearch() {
 	strcpy(qinfo[PERSON].defvalue, qinfo[PERSON].entered);
 	return;
 }
-
 
 DNS ufn_interact (dns, dn, s)
 DNS dns;

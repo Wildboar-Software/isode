@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsp_cache.c,v 9.0 199
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/list.h"
@@ -140,8 +139,6 @@ cache_dsp_entry (EntryInfo *ptr) {
 	}
 	return (eptr);
 }
-
-
 
 int dsp_cache (struct DSArgument *arg, struct DSResult *res, char ctx, DN binddn) {
 	EntryInfo *ptr;

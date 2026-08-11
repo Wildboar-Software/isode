@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux-g.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include "mib.h"
 #ifdef	TCP
@@ -43,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux-g.c,v 9.0 1992/06
 #define	PB_VALID	1		/* smuxPstatus */
 #define	PB_INVALID	2		/* .. */
 #define	PB_CONNECTING	3		/* .. */
-
 
 static int  o_smuxPeer (oi, v, offset)
 OI	oi;
@@ -133,7 +131,6 @@ again:
 	}
 }
 
-
 static int  s_smuxPeer (oi, v, offset)
 OI	oi;
 struct type_SNMP_VarBind *v;
@@ -207,7 +204,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-
 #define	smuxTsubtree	0
 #define	smuxTpriority	1
 #define	smuxTindex	2
@@ -217,7 +213,6 @@ int	offset;
 #define	TB_INVALID	2		/* .. */
 
 static struct smuxTree *get_tbent ();
-
 
 static int  o_smuxTree (oi, v, offset)
 OI	oi;
@@ -312,7 +307,6 @@ int	offset;
 		return int_SNMP_error__status_noSuchName;
 	}
 }
-
 
 static int  s_smuxTree (oi, v, offset)
 OI	oi;

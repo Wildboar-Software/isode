@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamuser.c,v 9.0 1992
  *
  */
 
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -37,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamuser.c,v 9.0 1992
 #ifdef	BSD42
 #include <sys/ioctl.h>
 #endif
-
 
 int   ftamfd = NOTOK;
 
@@ -75,7 +73,6 @@ int   verbose = 0;
 int   watch = 0;
 #endif
 
-
 char *myuser = NULLCP;
 char *myhome = NULLCP;
 
@@ -88,7 +85,6 @@ int realstore = 0;
 char *rs_unknown =
 	"type of remote realstore is unknown; use \"set realstore\"";
 char *rs_support = "operation not supported on remote realstore";
-
 
 char *rcwd = NULL;
 
@@ -138,7 +134,6 @@ int f_quite();
 int f_rm();
 int f_status();
 int f_quit();
-
 
 #ifndef	BRIDGE
 static struct dispatch  dispatches[] = {
@@ -207,7 +202,6 @@ static struct dispatch  dispatches[] = {
 
 	NULL
 };
-
 
 struct dispatch *getds (name)
 char *name;
@@ -377,12 +371,10 @@ static struct var vars[] = {
 	NULL
 };
 
-
 static int varwidth1;
 static int varwidth2;
 
 static char    **getval ();
-
 
 static int f_set (char **vec) {
 	int    i,
@@ -602,7 +594,6 @@ char *default_prompt (void) {
 	return(DEFAULT_PROMPT);
 }
 
-
 static void set_prompt (struct var *v) {
 	char	*new = *(v->v_dvalue);
 	if(!new || !lexequ(new, DEFAULT_PROMPT_STR)) {
@@ -633,8 +624,6 @@ static void set_trace (struct var *v) {
 		ftam_advise (&fti -> fti_abort, "F-HOOK.REQUEST");
 }
 
-
-
 static void set_type (struct var *v) {
 	struct vfsmap *vf;
 
@@ -649,7 +638,6 @@ static void set_type (struct var *v) {
 		tmode = VFS_DEF;
 	}
 }
-
 
 static char ** getval (char *name, char **choices) {
 	int    longest,
@@ -693,7 +681,6 @@ static char ** getval (char *name, char **choices) {
 		return NULL;
 	}
 }
-
 
 static struct var * getvar (char *name) {
 	int    longest,
@@ -741,7 +728,6 @@ static struct var * getvar (char *name) {
 /* HELP */
 
 static int helpwidth;
-
 
 static int f_help (char **vec) {
 	int    i,
@@ -819,7 +805,6 @@ int	units;
 int	attrs;
 int	fadusize;
 
-
 struct vfsmap vfs[] = {
 	/* VFS_DEF */
 	"default", NULLOID, NULLCP, VF_NULL, 0, 0, NULL, ' ', VFS_XXX,
@@ -860,7 +845,6 @@ int	vfs_fdf = VFS_FDF;
 #endif
 
 struct vfsmap *myvf;
-
 
 void
 ftam_advise (struct FTAMabort *fta, char *event) {
@@ -930,7 +914,6 @@ ftam_advise (struct FTAMabort *fta, char *event) {
 	}
 }
 
-
 void
 ftam_chrg (struct FTAMcharging *charges) {
 	int    i;
@@ -950,7 +933,6 @@ ftam_chrg (struct FTAMcharging *charges) {
 #endif
 }
 
-
 static char *entity[] = {
 	"unknown",
 	"initiator",
@@ -959,7 +941,6 @@ static char *entity[] = {
 	"responder's FPM",
 	"responder"
 };
-
 
 void
 ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
@@ -1216,7 +1197,6 @@ int rcinit (void) {
 #endif
 }
 
-
 #ifndef	TIOCGWINSZ
 #endif
 
@@ -1235,11 +1215,9 @@ FILE *fp;
 	return 80;
 }
 
-
 #ifndef	NBBY
 #define	NBBY	8
 #endif
-
 
 #ifndef	TMS
 void timer (int cc, char *action) {
@@ -1259,7 +1237,6 @@ void timer (int cc, char *action) {
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-
 static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
@@ -1272,9 +1249,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 #define	HZ	60
 #endif
 
-
 long	times ();
-
 
 int timer (int cc, char *action) {
 	long    ms;
@@ -1301,7 +1276,6 @@ int timer (int cc, char *action) {
 			cc, action, secs, msecs / 10, bs / 1024);
 }
 #endif
-
 
 #ifdef	BRIDGE
 /* FTP TYPE Function */

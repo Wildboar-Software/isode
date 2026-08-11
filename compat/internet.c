@@ -205,7 +205,6 @@ int	join_tcp_client (int fd, struct sockaddr_in *sock)
 	int our_count;
 #endif
 
-
 	if ((result = accept (fd, (struct sockaddr *) sock, &len)) == NOTOK) {
 		eindex = errno;
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("accept"));
@@ -228,7 +227,6 @@ int	join_tcp_client (int fd, struct sockaddr_in *sock)
 		list_of_conn_desc[result].descriptor           = result;
 	}
 #endif
-
 
 	return result;
 }
@@ -308,7 +306,6 @@ int close_tcp_socket (int fd) {
    of the binding until connect time.  But since we don't, our hand is forced
    and we must prematurely bind the sockets to IP addresses. */
 
-
 int start_tcp_client (struct sockaddr_in *sock, int priv) {
 	int    port;
 	int     sd;
@@ -344,7 +341,6 @@ int start_tcp_client (struct sockaddr_in *sock, int priv) {
 		}
 	}
 }
-
 
 int start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 	int    port;
@@ -436,7 +432,6 @@ struct hostent *gethostbystring (char *s) {
 long	rhost ();
 char   *raddr ();
 
-
 struct hostent *
 gethostbyaddr (char *addr, int len, int type) {
 	long    iaddr;
@@ -463,7 +458,6 @@ gethostbyaddr (char *addr, int len, int type) {
 	return h;
 }
 
-
 struct hostent *
 gethostbyname (char *name) {
 	static long iaddr;
@@ -486,7 +480,6 @@ gethostbyname (char *name) {
 	return h;
 
 }
-
 
 /* really only need the "tsap" entry in this table... but why not? */
 
@@ -554,8 +547,6 @@ static struct servent   services[] = {
 	NULL, &empty, 0, NULL
 };
 
-
-
 struct servent *
 getservbyname (char *name, char *proto) {
 	struct servent *s;
@@ -585,7 +576,6 @@ char *inet_ntoa (struct in_addr in) {
 
 	return addr;
 }
-
 
 u_long
 inet_addr (char *cp) {

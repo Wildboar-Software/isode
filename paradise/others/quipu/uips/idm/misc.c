@@ -394,7 +394,6 @@ prompt_value2:
 	return OK;
 }
 
-
 int is_postal_address(str)
 char * str;
 {
@@ -407,7 +406,6 @@ char * str;
 		return FALSE;
 	}
 }
-
 
 int is_dn(str)
 char * str;
@@ -453,7 +451,6 @@ char * str;
 		return FALSE;
 	}
 }
-
 
 int ask_dnhnc(str, attr_name)
 char * str;  /* Should have been malloc'd before */
@@ -632,7 +629,6 @@ prompt_dn:
 		}
 	}
 }
-
 
 int get_posdn(posdn, new)
 char posdn[];

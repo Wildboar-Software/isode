@@ -24,15 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/unbi
  *
  */
 
-
 #include <stdio.h>
 #include <errno.h>
 #include "quipu/util.h"
 #include "tailor.h"
 #include "general.h"
-
-
-
 
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */
 
@@ -107,7 +103,6 @@ int main (int argc, char *argv[]) {
 	return status;
 }
 
-
 #else	/* USE UNIX NAMED PIPES */
 
 #include <fcntl.h>
@@ -171,7 +166,6 @@ int main (int argc, char **argv) {
 		exit (-2);
 	}
 	close (fd);
-
 
 	/* get results */
 	if (( fd = open (retfile,O_RDONLY)) < 0) {

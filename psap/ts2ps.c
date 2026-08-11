@@ -25,13 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ts2ps.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tsap.h"
 #include "tailor.h"
-
 
 int ts_read (int fd, struct qbuf **q) {
 	struct qbuf *qb;
@@ -72,7 +69,6 @@ int ts_read (int fd, struct qbuf **q) {
 
 	return qb -> qb_len;
 }
-
 
 int ts_write (int fd, struct qbuf *qb) {
 	struct TSAPdisconnect  tds;

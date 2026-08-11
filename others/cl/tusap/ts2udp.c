@@ -27,7 +27,6 @@
  ****************************************************************
  */
 
-
 /*
  *				  NOTICE
  *
@@ -37,8 +36,6 @@
  *    this agreement.
  *
  */
-
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -50,17 +47,10 @@
 #include "tsap.h"
 #include "uderrors.h"
 
-
-
-
 #ifdef	HULA
 #ifdef  UDP
 
 #include "internet.h"
-
-
-
-
 
 /* this structure is allocated for each socket device */
 
@@ -70,12 +60,8 @@ struct udpconn {
 	struct qbuf 	udp_queue;
 };
 
-
 static int	maxpeers = 0;
 static struct udpconn *peers = NULL;
-
-
-
 
 /*
  **********************************************************
@@ -95,7 +81,6 @@ int udpinit (struct tsapblk *tb)
 	printf ("\n          in udpinit \n");
 #endif
 
-
 	tb -> tb_flags |= (TB_CLNS | TB_UDP);
 
 	tb -> tb_tsdusize = MAXUDP;
@@ -111,11 +96,7 @@ int udpinit (struct tsapblk *tb)
 	tb -> tb_UnitDataSelect = NULLIFP;
 	tb -> tb_UnitDataClose = udp_close;
 
-
 }
-
-
-
 
 /*
  **********************************************************
@@ -155,7 +136,6 @@ int udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remot
 		 */
 
 		bzero ((char *) lsock, sizeof *lsock);
-
 
 		if (local && local -> na_domain[0]) {
 
@@ -201,7 +181,6 @@ int udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remot
 		tb -> tb_fd = fd;
 
 	} /* end TUNITDATA_START */
-
 
 	/*
 	 *  If the remote host was specified, BIND the address pair.
@@ -263,10 +242,6 @@ int udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remot
 
 }
 
-
-
-
-
 /*
  **********************************************************
  *                                                        *
@@ -292,9 +267,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 	struct hostent *hp;
 	struct udpconn *up;
 
-
-
-
 #ifdef HULADEBUG
 	printf ("\n          in start udp client \n");
 #endif
@@ -319,7 +291,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 		if (peers == NULL)
 			return NOTOK;
 
-
 #ifdef HULADEBUG
 		printf ("\n          initializing the peers array \n");
 #endif
@@ -331,7 +302,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 		}
 
 	}
-
 
 	/*
 	 *  Create the local DATAGRAM socket.  Implies UDP/IP protocol
@@ -361,7 +331,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 #endif
 
 	}
-
 
 	if (sock -> sin_port != 0) {
 		/*
@@ -398,7 +367,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 		printf ("\n          generate unique port # \n");
 #endif
 
-
 		for (port = IPPORT_RESERVED ;; port++) {
 
 			sock -> sin_port = htons ((u_short) port);
@@ -412,7 +380,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 					sock -> sin_addr.s_lh,
 					sock -> sin_addr.s_impno);
 #endif
-
 
 			if ((sd = socket (SOCK_DGRAM,
 							  (struct sockproto *) 0,
@@ -451,10 +418,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 }
 
-
-
-
-
 /*
  **********************************************************
  *                                                        *
@@ -470,7 +433,6 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 int udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 {
-
 
 	/*
 	 *  Bind the socket to the socket name.  The socket name is
@@ -509,14 +471,11 @@ int udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2)
 
 	return NOTOK;
 
-
 }
 
 #endif /* if EXOS */
 
-
 #if FALSE
-
 
 /*
  **********************************************************
@@ -572,9 +531,6 @@ int join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 #endif  /* if FALSE */
 
-
-
-
 /*
  **********************************************************
  *                                                        *
@@ -591,7 +547,6 @@ int join_udp_aux (int fd, struct sockaddr_in *sock, int newfd)
 
 int udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock, struct TSAPdisconnect *td)
 
-
 {
 	int		cc;
 	int	    	nfds;
@@ -604,11 +559,9 @@ int udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *froms
 	char 			*rbufptr;
 	int 			i;
 
-
 #ifdef HULADEBUG
 	printf ("\n          in udp read socket \n");
 #endif
-
 
 	/*
 	 *  Check for valid socket descriptor and set the udpconn struct ptr.
@@ -688,7 +641,6 @@ int udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *froms
 	q -> qb_data = qb -> qb_data;
 	q -> qb_base[0] = qb -> qb_base[0];
 
-
 #ifdef HULADEBUG
 	printf ("\n qb_data = \n");
 	for (cc=0; cc<25; cc++)
@@ -707,9 +659,6 @@ int udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *froms
 	return qb -> qb_len;
 
 }
-
-
-
 
 /*
  **********************************************************
@@ -766,11 +715,7 @@ int udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td)
 				 data,			/* buffer   */
 				 cc);			/* buf size */
 
-
 }
-
-
-
 
 int udp_close (int fd) {
 	struct qbuf *qb,
@@ -781,7 +726,6 @@ int udp_close (int fd) {
 #ifdef HULADEBUG
 	printf ("\n          close socket: %d", fd);
 #endif
-
 
 #if FALSE
 
@@ -806,10 +750,6 @@ int udp_close (int fd) {
 
 	return close (fd);
 }
-
-
-
-
 
 /*
  **********************************************************
@@ -856,17 +796,14 @@ int	secs;
 	struct sockaddr_in *sock;
 	char   *recvptr;
 
-
 #ifdef HULADEBUG
 	printf ("\n          in udp select socket \n");
 #endif
-
 
 	/*
 	 *  Check if the read mask is set.  Then check if any read masks
 	 *  are set on each socket descriptor in the udpconn array.
 	 */
-
 
 	if (rfds) {
 		jfds = *rfds;
@@ -890,13 +827,11 @@ int	secs;
 
 	}  /* end if rfds */
 
-
 	/*
 	 *  Now do the real select to enable reading the socket.
 	 *  The 'selsocket' routine is a front end routine that
 	 *  implements the semantics of the Berkley select.
 	 */
-
 
 #ifdef HULADEBUG
 	printf ("\n          doing the select on the read mask \n");
@@ -1000,7 +935,6 @@ int	secs;
 
 			continue;
 
-
 			/*
 			 *	    If not for the current udpconn struct, then search the
 			 *          peers array for the matching socket address and queue
@@ -1023,7 +957,6 @@ int	secs;
 #endif
 
 			insque (qb, vp -> udp_queue.qb_back);
-
 
 		} /* end if FDSET */
 

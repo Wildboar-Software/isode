@@ -13,11 +13,9 @@
  ****************************************************************
  */
 
-
 #ifndef _UDERRORS_
 #define _UDERRORS_
 #endif
-
 
 #define UD_BASE 	20
 
@@ -49,12 +47,7 @@
 #define UDERR_NO_REMOTE_ADDR		(UD_BASE + 25)
 #define UDERR_BAD_INIT_VECTOR		(UD_BASE + 26)
 
-
 int uderror();
-
-
-
-
 
 char *uderror_text[]
 
@@ -97,14 +90,7 @@ char *uderror_text[]
 #else
 ;
 
-
 #define UDERR_MAX	( (sizeof(uderror_text)) / (sizeof(uderror_text[0])) )
 
-
 #endif
-
-
-
-
-
 

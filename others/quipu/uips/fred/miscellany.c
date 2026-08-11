@@ -24,10 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/misc
  *
  */
 
-
 #include <ctype.h>
 #include "fred.h"
-
 
 int	area_quantum = 0;
 
@@ -54,7 +52,6 @@ struct area_guide areas[] = {
 };
 
 /* ALIAS */
-
 
 int f_alias (char **vec) {
 	char   *cp,
@@ -304,7 +301,6 @@ int f_report (char **vec) {
 	sprintf (bp, " \"%s\" \"%s\"",
 			 *vec ? *vec : "White Pages report", cp);
 	bp += strlen (bp);
-
 
 	fprintf (stdfp, "End report with CTRL-D%s.\n",
 			 readonly ? ", it will then take 30 seconds to post message" : "");

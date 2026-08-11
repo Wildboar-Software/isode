@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_list.c,v 9.0 1992/
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "quipu/list.h"
@@ -309,7 +308,6 @@ build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result,
 	size = g_size;
 	result->lsr_subordinates = g_sub;
 
-
 	if ( rc != AVL_NOMORE )
 		/* stopped look up due to size limit */
 		/* need to send continuation reference */
@@ -326,7 +324,6 @@ build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result,
 	dn_free (dn);
 	rdn_free (dnrdn);
 }
-
 
 int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target) {
 	struct list_cache *ptr;

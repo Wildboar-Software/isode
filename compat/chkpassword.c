@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 
  *
  */
 
-
-
 //#define _XOPEN_SOURCE
 //#include <unistd.h>
 #include <stdio.h>
@@ -33,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chkpassword.c,v 9.0 
 #include "manifest.h"
 
 char* crypt(const char* key, const char* salt);
-
 
 #ifdef	KRB_PASSWD
 #include <krb.h>

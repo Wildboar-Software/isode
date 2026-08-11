@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992
  *
  */
 
-
-
 #include "quipu/attrvalue.h"
 #include "logger.h"
 #include "quipu/entry.h"

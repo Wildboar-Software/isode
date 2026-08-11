@@ -14,8 +14,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 199
  *
  */
 
-
-
 /*
  * $Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 1992/06/16 12:07:00 isode Rel $
  *
@@ -35,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 199
  * Release 8.0
  *
  */
-
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -93,7 +90,6 @@ extern int X25Encode();
 static     char	enc_buf[1024];
 static     int	enc_buf_len;
 
-
 int start_x25_client (struct NSAPaddr *local) {
 	int     sd, pgrp;
 
@@ -119,7 +115,6 @@ int start_x25_client (struct NSAPaddr *local) {
 
 	return sd;
 }
-
 
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	int     sd, pgrp;
@@ -177,7 +172,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	}
 	return sd;
 }
-
 
 int join_x25_client (int fd, struct NSAPaddr *remote) {
 	CONN_DB		zsck;
@@ -522,7 +516,6 @@ int log_call_clear (int fd, int type) {
 	return;
 }
 
-
 #ifdef  DEBUG
 
 static int
@@ -545,7 +538,6 @@ log_x25_facilities (int fd, int coc, char *caption) {
 
 	return OK;
 }
-
 
 void *
 epl_prtstr (char *fmt, char *val, int vallen) {
@@ -773,7 +765,6 @@ int compose_text (char *xudatap, char *pid, char *cudf) {
 	strcat(xudatap,cudf);
 }
 
-
 char * Kloppenburgs_x25_ErrorCause( what, vci)
 /* only called after clear and reset events */
 /* adapted from kloppenburgs's ean x25 access module */
@@ -874,7 +865,6 @@ X25vc		vci;
 	return result;
 
 }
-
 
 int check_x25_event(event_expected,event_received,vci)
 X25vc vci;
@@ -1012,7 +1002,6 @@ int start_x25_client (struct NSAPaddr *local) {
 
 }
 
-
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	X25vc   vci;
 	X25vc * vcip = &vci;
@@ -1050,7 +1039,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 					str2sel (x25_local_pid, -1, local->na_pid, NPSIZE);
 		}
 	}
-
 
 #ifdef DEBUG
 	DLOG (compat_log,LLOG_DEBUG,("start_x25_server: X25TakeCall"));
@@ -1235,8 +1223,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 
 }
 
-
-
 int join_x25_client (int sd, struct NSAPaddr *rremote) {
 	int error;
 	X25vc  vci;
@@ -1309,7 +1295,6 @@ loop:
 	sprintf(&our_buffer[(int)rremote->na_cudflen],"=remote cud in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
 
-
 	bcopy( rremote->na_pid, our_buffer, (int) rremote->na_pidlen);
 	sprintf(&our_buffer[(int) rremote->na_pidlen],"=remote pid in join_x25_server");
 	DLOG (compat_log,LLOG_DEBUG,(our_buffer));
@@ -1325,7 +1310,6 @@ loop:
 					rremote->na_fac,  (int) rremote->na_faclen,
 					x25_interface.x25_cudf,
 					(int) x25_interface.x25_cudflen, NULL );
-
 
 	if (error < 0) {
 		SLOG (compat_log,LLOG_EXCEPTIONS,
@@ -1410,7 +1394,6 @@ int start_x25_client (struct NSAPaddr *local) {
 
 }
 
-
 int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	/******************************************************************/
 	/* SOURCE for DAEMON (tsapd not spawned by DECNET object spawner) */
@@ -1449,7 +1432,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 					str2sel (x25_local_pid, -1, local->na_pid, NPSIZE);
 		}
 	}
-
 
 #ifdef DEBUG
 	DLOG (compat_log,LLOG_DEBUG,("start_x25_server: X25TakeCall"));
@@ -1507,7 +1489,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	list_of_conn_desc[our_sd].TCP_IP_OR_X25_SOCKET = our_X25_SOCKET;
 	list_of_conn_desc[our_sd].descriptor           = vci;
 
-
 	if (X25Listen(vci,decnet_destination,backlog) < NULL ) {
 		DLOG (compat_log,LLOG_DEBUG,(CAT("start_x25_server:",
 										 X25ErrorText(vci,error))));
@@ -1519,8 +1500,6 @@ int start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2) {
 	return our_sd;
 
 }
-
-
 
 int join_x25_client (int sd, struct NSAPaddr *rremote) {
 	/******************************************************************/
@@ -1564,7 +1543,6 @@ int join_x25_client (int sd, struct NSAPaddr *rremote) {
 		DLOG (compat_log,LLOG_DEBUG,
 			  ("join_x25_client:Call available so X25TakeCall"));
 #endif
-
 
 		error = X25TakeCall(vci_l,vcip);
 
@@ -1832,7 +1810,6 @@ char    *buffer;
 	int event, count;
 	int retry = 0;
 
-
 	DLOG (compat_log,LLOG_DEBUG,("--> read x25 socket"));
 
 	vci =  our_get_vci(sd,"read_x25_socket");
@@ -1864,7 +1841,6 @@ char    *buffer;
 	return count;
 
 }
-
 
 int     write_x25_socket (sd, buffer, len)
 int     sd;
@@ -1934,7 +1910,6 @@ int     sd;
 	DLOG (compat_log,LLOG_DEBUG,("<--close x25 socket"));
 
 }
-
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */

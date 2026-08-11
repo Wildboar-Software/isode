@@ -26,7 +26,6 @@
  *
  */
 
-
 /*--- default root for RFA tree (can be changed at runtime) ---*/
 #define FS_BASE		"/usr/something"
 

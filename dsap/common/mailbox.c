@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
  *
  */
 
-
 /*
 	SYNTAX:
 		mailbox ::= <printablestring> '$' <IA5String>
@@ -32,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 	EXAMPLE:
 		internet $ quipu-support@cs.ucl.ac.uk
 */
-
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

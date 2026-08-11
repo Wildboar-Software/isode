@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas1.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
@@ -55,7 +53,6 @@ int RoEndRequest (int sd, int priority, struct RoSAPindication *roi) {
 	return result;
 
 }
-
 
 static int
 RoEndRequestAux (struct assocblk *acb, int priority, struct RoSAPindication *roi) {

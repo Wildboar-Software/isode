@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_ROSY_
 #define	_ROSY_
 
@@ -34,7 +33,6 @@
 #ifndef	_RoSAP_
 #include "rosap.h"		/* definitions for RoS-USERs */
 #endif
-
 
 #ifdef PEPSY_VERSION
 #include "pepsy.h"
@@ -73,8 +71,6 @@ struct RyOperation {
 	struct RyError **ryo_errors;/* errors possible */
 };
 
-
-
 struct RyError {
 	char   *rye_name;		/* error name */
 	int	    rye_err;		/* error code */
@@ -88,7 +84,6 @@ struct RyError {
 	IFP	    rye_param_free;	/* frees     .. */
 #endif
 };
-
 
 struct opsblk {
 	struct opsblk *opb_forw;	/* doubly-linked list */
@@ -121,9 +116,6 @@ struct opsblk {
 };
 #define	NULLOPB		((struct opsblk *) 0)
 
-
-
-
 struct dspblk {
 	struct dspblk *dsb_forw;	/* doubly-linked list */
 	struct dspblk *dsb_back;	/* .. */
@@ -136,8 +128,6 @@ struct dspblk {
 	IFP	    dsb_vector;		/* dispatch vector */
 };
 #define	NULLDSB		((struct dspblk *) 0)
-
-
 
 #define	RY_RESULT	(-1)	/* distinguishes RESULTs from ERRORs */
 #define	RY_REJECT	(-2)	/* distinguishes REJECTs from ERRORs */

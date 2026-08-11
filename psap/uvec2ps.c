@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/uvec2ps.c,v 9.0 1992/0
  *
  */
 
-
-
 #include "psap.h"
 #include "tailor.h"
-
 
 #define	NPSUV		10     	/* really should be NSPUV - 2 */
 
 #define	PSDU_MAGIC	64	/* threshold for scattering */
-
 
 static int
 uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -92,7 +88,6 @@ uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	return n;
 }
 
-
 static int
 uvec_flush (PS ps) {
 	if (ps -> ps_cur) {
@@ -107,7 +102,6 @@ uvec_flush (PS ps) {
 
 	return OK;
 }
-
 
 static int
 uvec_close (PS ps) {
@@ -126,7 +120,6 @@ uvec_close (PS ps) {
 	return OK;
 }
 
-
 int uvec_open (PS ps) {
 	ps -> ps_writeP = uvec_write;
 	ps -> ps_flushP = uvec_flush;
@@ -134,7 +127,6 @@ int uvec_open (PS ps) {
 
 	return OK;
 }
-
 
 int uvec_setup (PS ps, int len) {
 	struct udvec *uv;
@@ -156,7 +148,6 @@ int uvec_setup (PS ps, int len) {
 
 	return OK;
 }
-
 
 int ps_get_plen (PE pe) {
 	PElementLen len;

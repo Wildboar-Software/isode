@@ -20,7 +20,6 @@
  *
  */
 
-
 #include <stdio.h>
 #include "rtsap.h"
 #include "logger.h"
@@ -35,9 +34,7 @@
 #include "sys.file.h"
 #include <sys/stat.h>
 
-
 extern LLog *pgm_log;
-
 
 char   *SReportString ();
 

@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <signal.h>
 #include <stdio.h>
 #include "rosy.h"
-
 
 #ifdef __STDC__
 #define missingP(p) \
@@ -46,7 +43,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
 #endif
-
 
 static int interrupted;
 static SFD	intrser ();
@@ -167,8 +163,6 @@ again:
 
 	return result;
 }
-
-
 
 static SFD
 intrser (int sig) {

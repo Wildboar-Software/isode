@@ -53,5 +53,3 @@ read_doog_args (int argc, char *argv[]) {
 			}
 }
 
-
-

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/disp
  *
  */
 
-
 #include <ctype.h>
 #include "fred.h"
 #ifdef	BSD42
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/disp
 
 #define	UFN_ALL		0x03
 #define	UFN_MASK	"\020\01approximate-matching\02full-wildcarding"
-
 
 int	bflag = 1;
 int	boundP = 0;
@@ -81,14 +79,12 @@ static void _init_fp ()
 }
 #endif
 
-
 static int	f_set ();
 int	f_help ();
 int	f_alias (), f_area (), f_dish (), f_edit (), f_manual (), f_report (),
 	f_thisis ();
 int	f_bind (), f_quit ();
 int	f_version (), f_whois ();
-
 
 static struct dispatch dispatches[] = {
 	"alias", f_alias, DS_SYOK,
@@ -163,7 +159,6 @@ int fredloop (char **vec, int error) {
 	}
 }
 
-
 static struct dispatch *
 getds (char *name) {
 	int    longest,
@@ -233,7 +228,6 @@ static char *ufnoptions[] = {
 	"none", "approx", "wild", NULL
 };
 
-
 struct var {
 	char   *v_name;
 	IP	    v_value;
@@ -251,7 +245,6 @@ struct var {
 };
 
 static struct var *getvar ();
-
 
 static struct var vars[] = {
 	"bell", &bflag, "ring bell at end of screen", bool,
@@ -296,12 +289,10 @@ static struct var vars[] = {
 	NULL
 };
 
-
 static int varwidth1;
 static int varwidth2;
 
 static char    **getval ();
-
 
 static int
 f_set (char **vec) {
@@ -502,7 +493,6 @@ out_of_range:
 	return OK;
 }
 
-
 static
 printvar (struct var *v) {
 	int	    i;
@@ -541,7 +531,6 @@ printvar (struct var *v) {
 	}
 	printf ("    - %s\n", v -> v_dname);
 }
-
 
 static char **
 getval (char *name, char **choices) {
@@ -587,11 +576,9 @@ getval (char *name, char **choices) {
 	}
 }
 
-
 static char *ignore[] = {
 	"level", "listings", "verify", NULL
 };
-
 
 static struct var *
 getvar (char *name) {
@@ -646,7 +633,6 @@ getvar (char *name) {
 /* HELP */
 
 static int helpwidth;
-
 
 int f_help (char **vec) {
 	int    i,
@@ -772,7 +758,6 @@ int rcinit () {
 	}
 }
 
-
 static
 snarf (char *file, char *name, char **variable) {
 	int	    i;
@@ -831,7 +816,6 @@ set_variable:
 	}
 }
 
-
 int rcfile (char *file, int op, int isystem) {
 	char *cp;
 	char    buffer[BUFSIZ + 1],
@@ -868,7 +852,6 @@ int rcfile (char *file, int op, int isystem) {
 	fclose (fp);
 }
 
-
 #ifndef	TIOCGWINSZ
 #endif
 
@@ -886,7 +869,6 @@ FILE *fp;
 
 	return 80;
 }
-
 
 int f_version (char **vec) {
 	if (*++vec != NULL)

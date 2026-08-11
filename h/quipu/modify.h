@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUMOD
 #define QUIPUMOD
 

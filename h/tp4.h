@@ -20,10 +20,8 @@
  *
  */
 
-
 #ifndef	_TP4_
 #define	_TP4_
-
 
 #ifdef	BSD_TP4
 #ifndef	SOCK_STREAM
@@ -48,7 +46,6 @@ union osi_control_msg {
 };
 
 int	gen2tp4 (), tp42gen ();
-
 
 #define	CLTS			/* have CL-mode transport service */
 
@@ -95,9 +92,7 @@ int	start_clts_server ();
 #include <netosi/osi_error.h>
 #include <netosi/tp_event.h>
 
-
 #define	MSG_OOB         0x1	/* process out-of-band data */
-
 
 struct tp4pkt {
 	union {
@@ -131,7 +126,6 @@ int	gen2tp4 (), tp42gen ();
 #include <tiuser.h>
 #define select_tp4_socket selsocket
 #endif
-
 
 #ifdef	BSD_TP4
 #define	close_tp4_socket	close

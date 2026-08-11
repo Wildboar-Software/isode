@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psreleas1.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
@@ -52,7 +50,6 @@ int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struc
 
 	return result;
 }
-
 
 static int
 RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {

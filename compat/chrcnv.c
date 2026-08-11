@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/chrcnv.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "general.h"
-
 
 char                                   /* character conversion table   */
 chrcnv[] =                     /*   lower to upper case letters */

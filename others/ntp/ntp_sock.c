@@ -23,7 +23,6 @@ extern void receive();
 
 #ifdef	TEST
 
-
 int main () {
 	int i, cc, val;
 	char foo[10];
@@ -213,7 +212,6 @@ next:
 		if (fcntl(addrs[i].fd, F_SETFL, FNDELAY) < 0)
 			adios ("failed", "fcntl(FNDELAY) fails");
 
-
 		/*
 		 * finally, bind the local address address.
 		 */
@@ -256,7 +254,6 @@ int recv_inet (struct intf *ap, struct timeval *tvp) {
 	extern int debug;
 	struct ntpdata pkts;
 	struct ntpdata *pkt = &pkts;
-
 
 	peer -> type = AF_INET;
 	dstlen = sizeof(struct sockaddr_in);
@@ -319,7 +316,6 @@ int send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer) {
 	}
 	return 0;
 }
-
 
 #define	PKTBUF_SIZE	536
 

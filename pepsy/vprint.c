@@ -108,7 +108,6 @@ void vname (char *name) {
 	didname = 1;
 }
 
-
 void vtag (int class, int id) {
 	char *bp;
 	static char buffer[BUFSIZ];
@@ -530,7 +529,6 @@ void vpushpp (
 void vpopp(void)  {
 	vfp = stdout, vfnx = (IFP) fprintf;
 }
-
 
 void vpushquipu (PS ps) {
 	vps = ps;

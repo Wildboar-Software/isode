@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_SSAP_
 #define	_SSAP_
 
@@ -30,7 +29,6 @@
 #ifndef	_ISOADDRS_
 #include "isoaddrs.h"
 #endif
-
 
 struct SSAPactid {		/* Activity Identifier */
 #define	SID_DATA_SIZE	6
@@ -64,7 +62,6 @@ struct SSAPref {		/* SSAP reference */
 #define	sr_called_len	sr_vlen
 };
 
-
 struct SSAPstart {		/* S-CONNECT.INDICATION */
 	int	    ss_sd;		/* SESSION descriptor */
 
@@ -92,7 +89,6 @@ struct SSAPstart {		/* S-CONNECT.INDICATION */
     if ((ss) -> ss_data) \
 	free ((ss) -> ss_data), (ss) -> ss_data = NULL; \
 }
-
 
 struct SSAPconnect {		/* S-CONNECT.CONFIRMATION */
 	int	    sc_sd;		/* SESSION descriptor */
@@ -167,7 +163,6 @@ struct SSAPconnect {		/* S-CONNECT.CONFIRMATION */
 	    free ((sc) -> sc_data), (sc) -> sc_data = NULL; \
 }
 
-
 /* SESSION requirements */
 #define	SR_HALFDUPLEX	0x0001	/* half-duplex */
 #define	SR_DUPLEX	0x0002	/* full-duplex */
@@ -224,7 +219,6 @@ struct SSAPconnect {		/* S-CONNECT.CONFIRMATION */
     dotoken (SR_DAT_EXISTS, ST_DAT_SHIFT, ST_DAT_TOKEN, "data"); \
 }
 
-
 struct SSAPdata {		/* S-READ.INDICATION */
 	int	    sx_type;		/* type of indication */
 #define	SX_NORMAL	0x00	/* S-DATA.INDICATION */
@@ -240,7 +234,6 @@ struct SSAPdata {		/* S-READ.INDICATION */
 	struct qbuf sx_qbuf;	/*   chained data */
 };
 #define	SXFREE(sx)	QBFREE (&((sx) -> sx_qbuf))
-
 
 struct SSAPtoken {		/* S-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	int	    st_type;		/* type of indication */
@@ -266,7 +259,6 @@ struct SSAPtoken {		/* S-{TOKEN-*,GIVE-CONTROL}.INDICATION */
     if ((st) -> st_data) \
 	free ((st) -> st_data), (st) -> st_data = NULL; \
 }
-
 
 struct SSAPsync {		/* S-*-SYNC.{INDICATION,CONFIRMATION} */
 	int	    sn_type;		/* type of indication/confirmation */
@@ -304,7 +296,6 @@ struct SSAPsync {		/* S-*-SYNC.{INDICATION,CONFIRMATION} */
 	free ((sn) -> sn_data), (sn) -> sn_data = NULL; \
 }
 
-
 struct SSAPactivity {		/* S-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 	int	    sv_type;		/* type of indication/confirmation */
 #define	SV_START	0x00	/* S-ACTIVITY-START.INDICATION */
@@ -337,7 +328,6 @@ struct SSAPactivity {		/* S-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 	free ((sv) -> sv_data), (sv) -> sv_data = NULL; \
 }
 
-
 struct SSAPreport {		/* S-{U,P}-EXCEPTION-REPORT.INDICATION */
 	int	    sp_peer;		/* T   = S-U-EXCEPTION-REPORT.INDICATION:
 					sp_reason/sp_data both meaningful
@@ -367,7 +357,6 @@ struct SSAPreport {		/* S-{U,P}-EXCEPTION-REPORT.INDICATION */
 	free ((sp) -> sp_data), (sp) -> sp_data = NULL; \
 }
 
-
 struct SSAPfinish {		/* S-RELEASE.INDICATION */
 	/* release DATA from peer */
 #define	SF_SIZE		512
@@ -379,7 +368,6 @@ struct SSAPfinish {		/* S-RELEASE.INDICATION */
     if ((sf) -> sf_data) \
 	free ((sf) -> sf_data), (sf) -> sf_data = NULL; \
 }
-
 
 struct SSAPrelease {		/* S-RELEASE.CONFIRMATION */
 	int	    sr_affirmative;	/* T   = connection released
@@ -395,7 +383,6 @@ struct SSAPrelease {		/* S-RELEASE.CONFIRMATION */
     if ((sr) -> sr_data) \
 	free ((sr) -> sr_data), (sr) -> sr_data = NULL; \
 }
-
 
 struct SSAPabort {		/* S-{U,P}-ABORT.INDICATION */
 	int	    sa_peer;		/* T   = S-U-ABORT.INDICATION:
@@ -420,7 +407,6 @@ struct SSAPabort {		/* S-{U,P}-ABORT.INDICATION */
     if ((sa) -> sa_realinfo) \
 	free ((sa) -> sa_realinfo), (sa) -> sa_realinfo = NULL; \
 }
-
 
 struct SSAPindication {
 	int	    si_type;		/* the union element present */
@@ -457,9 +443,7 @@ struct SSAPindication {
 
 };
 
-
 extern char *ssapversion;
-
 
 int	SExec ();		/* SERVER only */
 int	SInit ();		/* S-CONNECT.INDICATION */

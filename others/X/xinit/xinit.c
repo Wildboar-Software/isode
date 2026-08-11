@@ -237,7 +237,6 @@ int main (int argc, char **argv) {
 	}
 	*sptr = NULL;
 
-
 	strcat(displayname, displayNum);
 
 	/*
@@ -294,7 +293,6 @@ int main (int argc, char **argv) {
 		}
 	}
 
-
 	/*
 	 * put the display name into the environment
 	 */
@@ -323,7 +321,6 @@ int main (int argc, char **argv) {
 		exit(ERR_EXIT);
 	exit(OK_EXIT);
 }
-
 
 /*
  *	waitforserver - wait for X server to start up
@@ -566,7 +563,6 @@ shutdown (int serverpid, int clientpid) {
 	fprintf (stderr, "\r\n");
 	return;
 }
-
 
 /*
  * make a new copy of environment that has room for DISPLAY

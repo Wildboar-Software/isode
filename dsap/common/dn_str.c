@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_str.c,v 9.0 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 
@@ -69,7 +68,6 @@ DN str2dn (char *str)
 		val = *save;
 		*save = 0;
 
-
 		if ((rfcformat == 0) && (dn == NULLDN)) {
 			/* try str as an alias */
 			if ((aliasptr = alias2name (SkipSpace(str))) != NULLCP) {
@@ -104,7 +102,6 @@ DN str2dn (char *str)
 		*save = val;
 		str = ptr;
 	}
-
 
 	/* try str as an alias */
 	if ((rfcformat == 0) && (dn == NULLDN)) {
@@ -200,6 +197,4 @@ int dn_syntax (void) {
 									  dn_free,	NULLCP,
 									  NULLIFP,	TRUE );
 }
-
-
 

@@ -53,7 +53,6 @@ char *basename (char *fn) {
 		return fn;
 }
 
-
 char *dirname (char *fn) {
 	static char buf[MAXPATHLEN];
 	char *f;
@@ -66,7 +65,6 @@ char *dirname (char *fn) {
 	} else
 		return "/";
 }
-
 
 char *makeFN (char *fn) {
 	return makeFN2("", fn);
@@ -95,13 +93,11 @@ char *makeFN2 (char *dir, char *fn) {
 	return p;
 }
 
-
 char *getRelativeFN (char *fn) {
 	if (strncmp(fsBase, fn, strlen(fsBase)))
 		return NULL;
 	return fn + strlen(fsBase);
 }
-
 
 char *expandSymLinks (char *path) {
 	static char exp[MAXPATHLEN];
@@ -120,7 +116,6 @@ char *expandSymLinks (char *path) {
 	}
 	return r;
 }
-
 
 char *realPath3 (char *dir, char *path1, char *path2) {
 	char *s, *s1, *rp;
@@ -171,11 +166,9 @@ char *realPath3 (char *dir, char *path1, char *path2) {
 	return realp;
 }
 
-
 char *realPath (char *dir, char *path) {
 	return realPath3("", dir, path);
 }
-
 
 /*--------------------------------------------------------------*/
 /* getRfaContext */
@@ -202,5 +195,4 @@ char *getRfaContext (char *cwd, char *fn) {
 
 	return rp;
 }
-
 

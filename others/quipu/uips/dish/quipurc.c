@@ -249,7 +249,6 @@ int main () {
 		fatal (-67, "std_setup 2 failed");
 	}
 
-
 	/* Sorting out the bind section */
 	quipu_syntaxes() ;		/* set up the needed function pointers */
 	dsap_init(&i, &vecptr) ;
@@ -292,7 +291,6 @@ int main () {
 	search_arg.sra_filter->flt_next = NULLFILTER;
 	search_arg.sra_filter->flt_type = FILTER_ITEM;
 	search_arg.sra_filter->FUFILT = NULLFILTER;
-
 
 	if (*localptr == '@') {
 		localptr++;
@@ -634,7 +632,6 @@ AttributeType ent_mod_at;
 		if (em_new != NULLMOD)
 			em = ems_append (em,em_new);
 	}
-
 
 	return (em);
 }

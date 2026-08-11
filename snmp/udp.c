@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/udp.c,v 9.0 1992/06/16
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include "mib.h"
@@ -70,11 +69,9 @@ struct socket {
 };
 #endif
 
-
 static struct udpstat udpstat;
 
 static int  get_listeners ();
-
 
 #if defined(BSD44) || defined(LINUX)
 #define	udpInDatagrams	1
@@ -84,7 +81,6 @@ static int  get_listeners ();
 #if defined(BSD44) || defined(LINUX)
 #define	udpOutDatagrams 4
 #endif
-
 
 #ifdef LINUX
 int _read_snmp_stats ();
@@ -196,7 +192,6 @@ int	offset;
 	}
 }
 
-
 struct udptab {
 #define	UT_SIZE	5			/* object instance */
 	unsigned int   ut_instance[UT_SIZE];
@@ -212,9 +207,7 @@ static struct udptab *uts = NULL;
 
 static	int	flush_udp_cache = 0;
 
-
 static struct udptab *get_udpent ();
-
 
 #define	udpLocalAddress 0
 #define	udpLocalPort 1
@@ -374,7 +367,6 @@ int	offset;
 	}
 }
 
-
 static int  ut_compar (a, b)
 struct udptab **a,
 		   **b;
@@ -382,7 +374,6 @@ struct udptab **a,
 	return elem_cmp ((*a) -> ut_instance, UT_SIZE,
 					 (*b) -> ut_instance, UT_SIZE);
 }
-
 
 static int  get_listeners (offset)
 int	offset;
@@ -509,7 +500,6 @@ int	offset;
 
 	return OK;
 }
-
 
 static struct udptab *get_udpent (ip, isnext)
 unsigned int *ip;

@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapblock.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "acpkt.h"
-
 
 static int  once_only = 0;
 static struct assocblk assocque;

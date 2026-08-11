@@ -89,7 +89,6 @@ create_osilisten (char *addr) {
 	if ((pa = str2paddr (addr)) == NULLPA)
 		adios (NULLCP, "Address translation failed for %s", addr);
 
-
 	if (TNetListenAux (&pa -> pa_addr.sa_addr, TMagic, td) == NOTOK)
 		adios (NULLCP, "Address listen failed");
 
@@ -507,7 +506,6 @@ struct type_NTP_ClockIdentifier *ci;
 	return &rid;
 }
 
-
 struct type_NTP_TimeStamp *
 sstamp (struct l_fixedpt *ts) {
 	struct type_NTP_TimeStamp *nts;
@@ -564,7 +562,6 @@ Refid	*rid;
 	}
 	return ci;
 }
-
 
 int recv_osi (struct intf *ap, struct timeval *tvp) {
 	caddr_t out;
@@ -1232,7 +1229,6 @@ struct ntp_peer *peer;
 	return pe;
 }
 
-
 static int
 acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi) {
 	struct AcSAPconnect accs;
@@ -1472,7 +1468,6 @@ Refid refid;
 	}
 	return rid;
 }
-
 
 struct type_NTP_ClockInfo *
 peer2clock (struct ntp_peer *peer) {

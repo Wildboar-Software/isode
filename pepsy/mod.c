@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/mod.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "pepsydefs.h"

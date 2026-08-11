@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/rawinp
  *
  */
 
-
 #include <stdio.h>
 #ifdef __linux__
 #include <linux/termios.h>

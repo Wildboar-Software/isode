@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapinvoke.c,v 9.0
  *
  */
 
-
-
 #include <stdio.h>
 #include "logger.h"
 #include "quipu/dsap.h"
@@ -251,7 +249,6 @@ int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return(success);
 }
 
-
 int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	return QspInvokeRequest (sd, id, arg, di);
 }
@@ -259,5 +256,4 @@ int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 int IspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return QspEncodeInvoke (pep, arg);
 }
-
 

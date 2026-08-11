@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/task_invoke.c,v 9.0 1
  *
  */
 
-
-
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

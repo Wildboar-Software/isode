@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oid.c,v 9.0 199
  *
  */
 
-
-
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -48,7 +46,6 @@ oid_table       OIDTable [TABLESIZE];
 oid_table_attr  attrOIDTable [TABLESIZE];
 objectclass     ocOIDTable [TABLESIZE];
 
-
 int NumEntries          = 0;
 int attrNumEntries      = 0;
 int ocNumEntries        = 0;
@@ -58,7 +55,6 @@ unsigned attr_index = 0;
 #define GEN  1
 #define ATTR 2
 #define OC   3
-
 
 #define	PBUCKETS	128
 #define	PHASH(nm) \
@@ -484,7 +480,6 @@ get_entry (void) {
 
 	}
 
-
 }
 
 oid_table_attr *name2attr(char *nodename)
@@ -597,7 +592,6 @@ objectclass *name2oc(char *nodename)
 	return (NULLOBJECTCLASS);
 }
 
-
 objectclass *oid2oc(OID oid)
 {
 	int i;
@@ -612,7 +606,6 @@ objectclass *oid2oc(OID oid)
 
 	return (NULLOBJECTCLASS);
 }
-
 
 static char *full_gen (oid_table *ot)
 {
@@ -725,7 +718,6 @@ char *attr2name(oid_table_attr *oa, int format)
 		return (NULLCP);
 	}
 }
-
 
 char *oc2name(objectclass *oc, int format)
 {
@@ -875,7 +867,6 @@ void free_oid_buckets (void) {
 		}
 
 }
-
 
 void oid_syntax (void) {
 	add_attribute_syntax ("oid",

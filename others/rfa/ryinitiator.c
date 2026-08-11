@@ -36,24 +36,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/ryinitiator.c,v 
 #include "RFA-ops.h"
 #include "RFA-types.h"
 
-
 void	errexit (char *, char *, ...);
 void	errmsg (char *, char *, ...);
 void	ros_adios (), ros_errmsg (),
 		acs_errmsg (), acs_errexit ();
-
 
 static char *myservice = "rfa";
 
 static char *mycontext = "rfa";
 static char *mypci = "rfa pci";
 
-
 extern char *isodeversion;
 extern char *myname;
 
 static int ryconnect ();
-
 
 int makeconn (char *thehost, char *password, char *user) {
 	int	result;
@@ -78,7 +74,6 @@ int makeconn (char *thehost, char *password, char *user) {
 
 	return result;
 }
-
 
 static	int	ry_sd = NOTOK;
 
@@ -177,8 +172,6 @@ int closeconn () {
 	ACRFREE (acr);
 }
 
-
-
 invoke (op, arg, res, err)
 int	op;
 caddr_t	arg, *res;
@@ -216,7 +209,6 @@ int *err;
 	return result;
 }
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_errmsg (rop, event);
@@ -225,7 +217,6 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 
 	_exit (1);
 }
-
 
 void
 ros_errmsg (struct RoSAPpreject *rop, char *event) {
@@ -240,7 +231,6 @@ ros_errmsg (struct RoSAPpreject *rop, char *event) {
 	errmsg (NULLCP, "%s: %s", event, buffer);
 }
 
-
 void
 acs_errexit (struct AcSAPabort *aca, char *event) {
 	acs_errmsg (aca, event);
@@ -248,7 +238,6 @@ acs_errexit (struct AcSAPabort *aca, char *event) {
 	cleanup ();
 	_exit (1);
 }
-
 
 void
 acs_errmsg (struct AcSAPabort *aca, char *event) {
@@ -265,10 +254,8 @@ acs_errmsg (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-
 #ifndef	lint
 static void	_errmsg ();
-
 
 void	errexit (char *what, char *fmt, ...) {
 	va_list ap;
@@ -292,7 +279,6 @@ errexit (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	errmsg (char *what, char *fmt, ...) {
 	va_list ap;
@@ -303,7 +289,6 @@ void	errmsg (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _errmsg (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
@@ -326,7 +311,6 @@ errmsg (char *what, char *fmt) {
 	errmsg (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_errmsg (char *what, char *fmt, ...) {

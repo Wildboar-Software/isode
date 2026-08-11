@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/util.c,v 9.0 19
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/malloc.h"
@@ -349,7 +347,6 @@ int quipu_pe_cmp (PE a, PE b)
 
 	}
 }
-
 
 IFP acl_fn = NULLIFP;
 

@@ -49,7 +49,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
 #include <net/if_arp.h>
 #endif
 
-
 #define	TYPE_MIN	1		/* ifType */
 #define	TYPE_OTHER	1
 #define	TYPE_ETHER	6
@@ -57,13 +56,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/interfaces.c,v 9.0 199
 #define	TYPE_P80	13
 #define	TYPE_MAX	28
 
-
 #define	ADMIN_MIN	1		/* ifAdminStatus */
 #define	ADMIN_MAX	3
 
 #define	OPER_UP		1		/* ifOperStatus */
 #define	OPER_DOWN	2
-
 
 /* we assume that all interfaces are present at startup time and that they
    don't move around in memory... */
@@ -796,7 +793,6 @@ static int adr_compar (const void *ap, const void *ab) {
 	return elem_cmp ((*a) -> adr_instance, (*a) -> adr_insize,
 					 (*b) -> adr_instance, (*b) -> adr_insize);
 }
-
 
 int	get_interfaces (int offset) {
 	int	    adrNumber = 0;

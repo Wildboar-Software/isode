@@ -60,7 +60,6 @@ str2cpair (char *str) {
 	if (result == (struct certificate_list *) 0)
 		return (result);
 
-
 	/* If there isn't a '|', the pair is technically illegal. However,
 	 * allow this case to mean : "the string contains a certificate,
 	 * which is the forward cross certificate".
@@ -124,7 +123,6 @@ cpair_cpy (struct certificate_list *parm) {
 
 	return (result);
 }
-
 
 int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 	int retval;

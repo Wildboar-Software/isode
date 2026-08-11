@@ -585,7 +585,6 @@ abort_command () {
 	longjmp(env, 0);
 }
 
-
 static void
 uprint (char *printstring) {
 	fprintf(stderr, "%s", printstring);

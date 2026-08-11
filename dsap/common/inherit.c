@@ -24,12 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/inherit.c,v 9.0
  *
  */
 
-
 /*
 	SYNTAX:
 		inherit ::= [<objectclass> '$'] ["ALWAYS $"] <attribute>
 */
-
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
@@ -82,7 +80,6 @@ InheritAttr b;
 
 	return (as_cmp (a->i_default,b->i_default));
 }
-
 
 static void inherit_print (ps,inherit,format)
 PS ps;

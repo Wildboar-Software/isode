@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include "IMISC-ops.h"
 
-
 /* OPERATIONS */
 
 /* OPERATION utcTime */
@@ -14,13 +13,11 @@ static struct RyError *errors_IMISC_utcTime[] = {
 	&table_IMISC_Errors[1]
 };
 
-
 /* OPERATION timeOfDay */
 static struct RyError *errors_IMISC_timeOfDay[] = {
 	&table_IMISC_Errors[0],
 	&table_IMISC_Errors[1]
 };
-
 
 /* OPERATION users */
 static struct RyError *errors_IMISC_users[] = {
@@ -28,12 +25,10 @@ static struct RyError *errors_IMISC_users[] = {
 	&table_IMISC_Errors[2]
 };
 
-
 /* OPERATION charGen */
 static struct RyError *errors_IMISC_charGen[] = {
 	&table_IMISC_Errors[0]
 };
-
 
 /* OPERATION qotd */
 static struct RyError *errors_IMISC_qotd[] = {
@@ -44,7 +39,6 @@ static struct RyError *errors_IMISC_qotd[] = {
 	&table_IMISC_Errors[6]
 };
 
-
 /* OPERATION finger */
 static struct RyError *errors_IMISC_finger[] = {
 	&table_IMISC_Errors[0],
@@ -54,19 +48,16 @@ static struct RyError *errors_IMISC_finger[] = {
 	&table_IMISC_Errors[6]
 };
 
-
 /* OPERATION pwdGen */
 static struct RyError *errors_IMISC_pwdGen[] = {
 	&table_IMISC_Errors[0]
 };
-
 
 /* OPERATION genTime */
 static struct RyError *errors_IMISC_genTime[] = {
 	&table_IMISC_Errors[0],
 	&table_IMISC_Errors[1]
 };
-
 
 /* OPERATION tellUser */
 static struct RyError *errors_IMISC_tellUser[] = {
@@ -75,24 +66,20 @@ static struct RyError *errors_IMISC_tellUser[] = {
 	&table_IMISC_Errors[7]
 };
 
-
 /* OPERATION ping */
 static struct RyError *errors_IMISC_ping[] = {
 	&table_IMISC_Errors[0]
 };
-
 
 /* OPERATION sink */
 static struct RyError *errors_IMISC_sink[] = {
 	&table_IMISC_Errors[0]
 };
 
-
 /* OPERATION echo */
 static struct RyError *errors_IMISC_echo[] = {
 	&table_IMISC_Errors[0]
 };
-
 
 struct RyOperation table_IMISC_Operations[] = {
 	/* OPERATION utcTime */
@@ -205,7 +192,6 @@ struct RyOperation table_IMISC_Operations[] = {
 
 	NULL
 };
-
 
 /* ERRORS */
 

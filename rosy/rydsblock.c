@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsblock.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
-
 
 static int  once_only = 0;
 static struct dspblk dspque;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/docstore.c,v 9.
  *
  */
 
-
 /*
 	documentStoreSyntax ATTRIBUTE-SYNTAX
 	    SEQUENCE {
@@ -42,7 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/docstore.c,v 9.
 		    IA5String
 	    }
 	    MATCHES FOR EQUALITY
-
 
 	SYNTAX:
 		documentStore ::= [ "ftp" | "ftam" ]
@@ -72,7 +70,6 @@ static void documentStore_free (struct documentStore *a) {
 	free ((char *) a);
 }
 
-
 static struct documentStore *documentStore_cpy (struct documentStore *a) {
 	struct documentStore *b;
 	b = (struct documentStore *) smalloc (sizeof *b);
@@ -96,7 +93,6 @@ static int documentStore_cmp (struct documentStore *a, struct documentStore *b) 
 	return lexequ (a -> ds_host, b -> ds_host);
 }
 
-
 static void documentStore_print (PS ps, struct documentStore *a, int format) {
 	if (format == READOUT) {
 		ps_printf (ps, "use %s to %s and get %s",
@@ -109,7 +105,6 @@ static void documentStore_print (PS ps, struct documentStore *a, int format) {
 				   a -> ds_method ? "ftam" : "ftp", a -> ds_host,
 				   a -> ds_dir ? a -> ds_dir : "", a -> ds_file);
 }
-
 
 static struct documentStore *str2documentStore (char *str) {
 	int method;

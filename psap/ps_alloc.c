@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 /* A Presentatation Stream (or PStream) is the second generation of
    "generic" I/O stream-based handling.  (For the first attempt,
@@ -62,7 +59,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_alloc.c,v 9.0 1992/
    structure that are in use.  ps_free() will then free the allocated
    memory.
  */
-
 
 PS
 ps_alloc (IFP io) {

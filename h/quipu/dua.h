@@ -20,7 +20,6 @@
  *
  */
 
-
 #define default_common_args \
 	{ \
 		{       /* service controls */ \

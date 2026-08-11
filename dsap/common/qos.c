@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/qos.c,v 9.0 199
  *
  */
 
-
 /*
 	SYNTAX:
 
@@ -319,7 +318,6 @@ static struct attrQoS *str2attrQoS (char *str) {
 	return a;
 }
 
-
 static struct ditQoS *
 str2ditQoS (char *str) {
 	char   *ptr,
@@ -452,7 +450,6 @@ void QoS_syntax (void) {
 						  ditQoS_free,
 						  NULLCP, NULLIFP, TRUE);
 }
-
 
 #undef	cmd_srch
 static int  CMD_SRCH (char *str, CMD_TABLE *cmd)

@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_addon.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 int seq_addon (PE pe, PE last, PE new) {
 	if (pe == NULLPE)

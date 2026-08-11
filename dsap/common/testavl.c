@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/testavl.c,v 9.0
  *
  */
 
-
 #include <sys/types.h>
 #include <stdio.h>
 

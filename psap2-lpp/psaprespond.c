@@ -26,14 +26,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9
  *
  */
 
-
-
 #include <stdio.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
-
 
 #define	AC_ASN		"acse pci version 1"
 
@@ -91,8 +88,6 @@ out:
 
 	return NOTOK;
 }
-
-
 
 static int  PInitAux (pb, vec, vecp, ps, pi)
 struct psapblk *pb;

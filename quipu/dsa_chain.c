@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_chain.c,v 9.0 199
  *
  */
 
-
 #include "acsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
@@ -300,7 +299,6 @@ int link_op_to_conn (struct oper_act *on) {
 					conn_ctx = DS_CTX_QUIPU_DSP;
 				}
 			}
-
 
 			DLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - make conn block from entry"));
 
@@ -1358,7 +1356,6 @@ void subtask_dsa_info_wakeup (struct di_block *di) {
 	task_extract(tk);
 }
 
-
 void add_cref2poq (struct ds_search_result *res, ContinuationRef cref) {
 	ContinuationRef cr;
 	if (res->CSR_cr == NULLCONTINUATIONREF) {
@@ -1405,7 +1402,6 @@ int relay_dsa (struct oper_act *on) {
 				tip!=NULLTRACEINFO; tip=tip->ti_next)
 			if(dn_cmp((DN)avs->avseq_av.av_struct, tip->ti_dsa) == 0)
 				continue;
-
 
 		switch(get_dsa_info((DN)avs->avseq_av.av_struct, dn_stack,
 							&err, di_trail)) {

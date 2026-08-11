@@ -599,7 +599,6 @@ out:
 	return top;
 }
 
-
 static SFD intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);

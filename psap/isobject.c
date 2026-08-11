@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/isobject.c,v 9.0 1992/
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 static char *isobjects = "isobjects";
 
@@ -38,7 +35,6 @@ static FILE *servf = NULL;
 static int  stayopen = 0;
 
 static struct isobject    ios;
-
 
 int setisobject (int f) {
 	if (servf == NULL)
@@ -50,7 +46,6 @@ int setisobject (int f) {
 	return (servf != NULL);
 }
 
-
 int endisobject()  {
 	if (servf && !stayopen) {
 		fclose (servf);
@@ -59,7 +54,6 @@ int endisobject()  {
 
 	return 1;
 }
-
 
 struct isobject *
 getisobject()  {

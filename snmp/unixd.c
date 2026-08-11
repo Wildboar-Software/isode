@@ -488,7 +488,6 @@ out:
 	}
 }
 
-
 #ifndef	lint
 void adios (char *what, char *fmt, ...) {
 	va_list ap;

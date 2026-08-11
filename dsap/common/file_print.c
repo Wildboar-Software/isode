@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/file_print.c,v 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/malloc.h"
@@ -134,8 +133,6 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 
 	return (OK);
 }
-
-
 
 void fileattr_print (PS ps, AttributeValue y, int format)
 {

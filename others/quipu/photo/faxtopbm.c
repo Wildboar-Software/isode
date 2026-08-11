@@ -24,12 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm
  *
  */
 
-
 #include <stdio.h>
 #include "psap.h"
 #include "sys.file.h"
 #include "pbm.h"
-
 
 /* If your pbm_writepbminit() and pbm_writepbmrow() routines only have  */
 /* 3 parameters (look in pbm/pbm.h!) you should remove the next line... */
@@ -38,8 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm
 #define ALLOCATION_SIZE 16384L
 
 static	bit	black, white;
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char   *cp;
@@ -136,7 +132,6 @@ usage:
 	exit (0);
 }
 
-
 static ps_die (ps, s)
 PS	 ps;
 char   *s;
@@ -144,7 +139,6 @@ char   *s;
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
-
 
 static pe_die (pe, s)
 PE	 pe;
@@ -161,8 +155,6 @@ static	int	x, y, maxx;
 
 static	bit    *bitrow, *bP;
 
-
-
 int photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
@@ -170,8 +162,6 @@ int photo_start (char *name) {
 
 	return OK;
 }
-
-
 
 int photo_end (char *name) {
 	if (passno == 1) {
@@ -197,7 +187,6 @@ int photo_end (char *name) {
 	return OK;
 }
 
-
 int photo_black (int length) {
 	if (passno == 2) {
 		int	i;
@@ -210,7 +199,6 @@ int photo_black (int length) {
 
 }
 
-
 int photo_white (int length) {
 	if (passno == 2)
 		bP += length;
@@ -218,8 +206,6 @@ int photo_white (int length) {
 	x += length;
 
 }
-
-
 
 photo_line_end (line)
 caddr_t line;

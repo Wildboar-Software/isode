@@ -55,9 +55,7 @@ struct	icmpstat {
 };
 #endif
 
-
 static struct icmpstat icmpstat;
-
 
 #define	icmpInMsgs	0
 #define	icmpInErrors	1
@@ -85,7 +83,6 @@ static struct icmpstat icmpstat;
 #define	icmpOutTimestampReps 23
 #define	icmpOutAddrMasks 24
 #define	icmpOutAddrMaskReps 25
-
 
 #ifdef LINUX
 int _read_snmp_stats ();
@@ -161,7 +158,6 @@ static int _read_icmp_stats ()
 	return OK;
 }
 #endif
-
 
 static int  o_icmp (oi, v, offset)
 OI	oi;

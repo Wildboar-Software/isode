@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/ou.c,v
  *
  */
 
-
 #include <signal.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
@@ -286,8 +285,6 @@ struct namelist ** olistp;
 	return OK;
 }
 
-
-
 int listExactOUs(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
@@ -397,8 +394,6 @@ char * str;
 	arg.lsa_object = str2dn(str);
 	return (&arg);
 }
-
-
 
 struct ds_search_arg *
 fillMostOUSearchArgs(parentstr, searchdepth)

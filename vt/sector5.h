@@ -20,7 +20,6 @@
  *
  */
 
-
 typedef struct expl_ptr {
 #define NULLCOORD  -1
 	int xval;	/* if they don't exist = NULLCOORD */
@@ -34,7 +33,6 @@ typedef struct bkq_content {
 	int token_val; /* 0 initiator, 1 acceptor, 2 accChoice or nobktok */
 	EXPL_PTR ExplPtr;
 } BKQ_content;
-
 
 typedef struct bkr_content {
 	int token_val; /* 0 initiator, 1 acceptor or nobktok */

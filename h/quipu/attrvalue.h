@@ -21,7 +21,6 @@
  *
  */
 
-
 #ifndef ATTRVALUE
 #define ATTRVALUE
 #include "quipu/name.h"
@@ -187,7 +186,6 @@ struct pref_deliv {
 	struct pref_deliv * pd_next;
 };
 
-
 struct Guide {
 	OID objectClass;
 	struct Criteria * criteria;
@@ -221,7 +219,6 @@ struct CriteriaItem {
 #define	choice_approximateMatch	5
 	AttributeType attrib;
 };
-
 
 /* Upper bounds */
 #define UB_POSTAL_LINE		6

@@ -362,7 +362,6 @@ static int  counter_encode (u_long *x, PE *pe) {
 	return OK;
 }
 
-
 static int counter_decode (u_long **x, PE pe) {
 	u_long	i = prim2ulong (pe);
 

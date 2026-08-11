@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/clns.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <stdio.h>
 #include "mib.h"
 #include "interfaces.h"
@@ -44,13 +43,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/clns.c,v 9.0 1992/06/1
 #include <netiso/clnp_stat.h>
 #include <netiso/esis.h>
 
-
 #define	FORW_IS		1		/* clnpForwarding */
 #define	FORW_ES		2
 static	int	iso_systype;
 
 struct clnp_stat clnp_stat;
-
 
 #define	clnpForwarding	0
 #define	clnpDefaultLifeTime 1
@@ -122,7 +119,6 @@ struct clnp_stat clnp_stat;
 #define	clnpOutErrUnsSRs (100 + 43)
 #define	clnpOutErrUnsRRs (100 + 44)
 #define	clnpOutErrInterferences	(100 + 45)
-
 
 static int  o_clnp (oi, v, offset)
 OI	oi;
@@ -400,7 +396,6 @@ int	offset;
 	}
 }
 
-
 static int  clnp_er_index (p)
 u_char p;
 {
@@ -412,7 +407,6 @@ u_char p;
 
 	return (CLNP_ERRORS + 1);
 }
-
 
 static int  s_clnp (oi, v, offset)
 OI	oi;
@@ -511,10 +505,8 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-
 #define	CLNP_MAXPACKET	65535		/* clnpAdEntReasmMaxSize */
 /* equivalent of IP_MAXPACKET */
-
 
 #define	clnpAdEntAddr	0
 #define	clnpAdEntIfIndex 1
@@ -620,7 +612,6 @@ int	offset;
 	}
 }
 
-
 #define	clnpRouteDest	0
 #define	clnpRouteIfIndex 1
 #define	clnpRouteMetric1 2
@@ -636,7 +627,6 @@ int	offset;
 #define	unixClnpRouteFlags 12
 #define	unixClnpRouteRefCnt 13
 #define	unixClnpRouteUses 14
-
 
 static int  o_clnp_route (oi, v, offset)
 OI	oi;
@@ -780,14 +770,12 @@ try_again:
 	}
 }
 
-
 struct adrtab {
 #define	ADN_SIZE	ADR_SIZE		/* ClnpAddress instance */
 	unsigned int    adn_instance[ADN_SIZE];
 	int	    adn_insize;
 
 	struct iso_addr adn_address;		/* ClnpAddress */
-
 
 #define	ADM_SIZE	ADR_SIZE		/* PhysAddress instance */
 	unsigned int    adm_instance[ADM_SIZE];
@@ -796,14 +784,12 @@ struct adrtab {
 	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
 	u_char	adm_addrlen;			/* .. */
 
-
 	int	    adr_index;				/* ifIndex */
 
 	int	    adr_type;				/* clnpNetToMediaType */
 	/* clnpMediaToNetType */
 #define	DYNAMIC_MAPPING	3
 #define	STATIC_MAPPING	4
-
 
 	struct adrtab *adn_next;			/* next ClnpAddress */
 	struct adrtab *adm_next;    		/* next PhysAddress */
@@ -814,9 +800,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-
 static struct adrtab *get_arpent ();
-
 
 #define	clnpNetToMediaIfIndex 0
 #define	clnpNetToMediaPhysAddress 1
@@ -831,7 +815,6 @@ static struct adrtab *get_arpent ();
 #define	clnpMediaToNetType 9
 #undef	clnpMediaToNetAge /* 10		/* NOT IMPLEMENTED */
 #undef	clnpMediaToNetHoldTime /* 11	/* NOT IMPLEMENTED */
-
 
 static int  o_address (oi, v, offset)
 OI	oi;
@@ -966,7 +949,6 @@ int	offset;
 	}
 }
 
-
 static int  adn_compar (a, b)
 struct adrtab **a,
 		   **b;
@@ -975,7 +957,6 @@ struct adrtab **a,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
 }
 
-
 static int  adm_compar (a, b)
 struct adrtab **a,
 		   **b;
@@ -983,7 +964,6 @@ struct adrtab **a,
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
 					 (*b) -> adm_instance, (*b) -> adm_insize);
 }
-
 
 #define	ROUND(a)	(1 + (((a) - 1) | (sizeof (long) - 1)))
 
@@ -1137,7 +1117,6 @@ int	offset;
 }
 #undef	ROUND
 
-
 static struct adrtab *get_arpent (ip, len, isnpa, isnext)
 unsigned int *ip;
 int	len;
@@ -1180,9 +1159,7 @@ out:
 	return NULL;
 }
 
-
 static	struct esis_stat esis_stat;
-
 
 #define	esisESHins	0
 #define	esisESHouts	1
@@ -1190,7 +1167,6 @@ static	struct esis_stat esis_stat;
 #define	esisISHouts	3
 #define	esisRDUins	4
 #define	esisRDUouts	5
-
 
 static int  o_esis (oi, v, offset)
 OI	oi;
@@ -1261,7 +1237,6 @@ int	offset;
 		return int_SNMP_error__status_noSuchName;
 	}
 }
-
 
 init_clns () {
 	OT	    ot;

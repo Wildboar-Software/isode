@@ -34,7 +34,6 @@ int photo_start (char * name) {
 	return (-1);
 }
 
-
 int photo_end (char * name) {
 	printf ("PHOTO: NYI (2)");
 	fflush (stdout);

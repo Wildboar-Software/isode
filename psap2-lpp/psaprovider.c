@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprovider.c,v 9
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #define	LPP
@@ -38,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprovider.c,v 9
 static int  qb_cmp ();
 static int  PReadRequestAux ();
 static int  _PDataRequestAux ();
-
 
 static int  once_only = 0;
 static struct psapblk psapque;
@@ -356,7 +353,6 @@ struct psapblk  *newpblk () {
 	insque (pb, PHead -> pb_back);
 	return pb;
 }
-
 
 void freepblk (struct psapblk *pb) {
 #ifdef	notdef

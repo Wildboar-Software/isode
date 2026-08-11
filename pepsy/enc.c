@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/enc.c,v 9.0 1992/06/1
  *
  */
 
-
-
 #include	<stdio.h>
 #include	<ctype.h>
 #include	"pepsy-driver.h"
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/enc.c,v 9.0 1992/06/1
 #ifndef	PEPYPARM
 #define PEPYPARM	char *
 #endif
-
 
 extern ptpe *next_tpe(ptpe *p), *fdflt_f(ptpe *p);
 extern char *pr_petype(int type);
@@ -375,7 +372,6 @@ en_type (
 			DLOG (psap_log, LLOG_DEBUG,
 				  ("Encode NULL %S.%S",
 				   mod -> md_name, pname(p)));
-
 
 			if ((pe = pe_alloc(CLASS(p), PE_FORM_PRIM,
 							   TAG(p))) == NULLPE)
@@ -717,7 +713,6 @@ bad:
 	return (NOTOK);
 }
 
-
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
@@ -862,7 +857,6 @@ en_set (
 				goto bad;
 			break;
 
-
 		case SCHOICE_START:
 			if (en_choice((char *) (parm + p->pe_ucode), p, mod, &pe) == NOTOK)
 				goto bad;
@@ -906,7 +900,6 @@ next:
 bad:
 	return (NOTOK);
 }
-
 
 /*
  * Parse a sequence of calling appropriate routines to parse each sub
@@ -1011,7 +1004,6 @@ en_seqof (
 						== NOTOK)
 					goto bad;
 				break;
-
 
 			case SCHOICE_START:
 				if (en_choice((char *) (parm + p->pe_ucode), p, mod, &pe) == NOTOK)
@@ -1161,7 +1153,6 @@ en_setof (
 					goto bad;
 				break;
 
-
 			case SCHOICE_START:
 				if (en_choice((char *) (parm + p->pe_ucode), p, mod, &pe) == NOTOK)
 					goto bad;
@@ -1208,7 +1199,6 @@ en_setof (
 	}
 
 	return (RET_OK(rpe, head));
-
 
 bad:
 	return (NOTOK);
@@ -1271,7 +1261,6 @@ en_choice (
 
 	return pepsylose (mod, p, NULLPE, "en_choice: no choice taken");
 }
-
 
 /*
  * check to see if the object is present or not

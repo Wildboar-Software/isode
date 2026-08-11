@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/time.c,v 9.0 19
  *
  */
 
-
 /*
 	SYNTAX:
 		time ::= 'yymmddhhmmssz'
@@ -63,7 +62,6 @@ static UTC	qstr2utct (char *s, int len)
 
 #define	str2utct	qstr2utct
 
-
 static PE timeenc (char *x)
 {
 	PE ret_pe = NULLPE;
@@ -91,7 +89,6 @@ void utcprint (PS ps, char *xtime, int format)
 	} else
 		ps_printf (ps, "%s", xtime);
 }
-
 
 static int utccmp (char *a, char *b) {
 	long a_time, mdiff;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/find_entry.c,v 9.0 19
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
@@ -411,7 +410,6 @@ int really_find_entry (
 					return(DS_ERROR_LOCAL);
 				}
 
-
 			} else if ( dn->dn_parent == NULLDN) {
 				DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: ?1"));
 				if (aliasdn)
@@ -431,7 +429,6 @@ int really_find_entry (
 					dn_free (aliasdn);
 				return (DS_X500_ERROR);
 			}
-
 
 		if (dn->dn_parent == NULLDN) {
 			DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: ?2"));
@@ -459,7 +456,6 @@ int really_find_entry (
 	}
 	/* NOTREACHED */
 }
-
 
 int referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, char chain) {
 	int ret;

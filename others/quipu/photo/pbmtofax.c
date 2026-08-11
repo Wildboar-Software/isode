@@ -24,19 +24,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/pbmtofax
  *
  */
 
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "pbm.h"
 #include "general.h"
-
 
 int	PIC_LINESIZE, STOP, NUMLINES;
 
 extern	int	optlen;
 
 char   *encode_t4 ();
-
 
 /*
  *   G3-Fax nonbasic parameters.
@@ -52,8 +49,6 @@ extern int uncompressed;
 extern int nopreamble;
 extern int oldformat;
 extern int standardwidth;
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int     bitcount;

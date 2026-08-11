@@ -27,14 +27,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapselect.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
 
 /*    map association descriptors for select() */
-
 
 int RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	SBV	    smask;

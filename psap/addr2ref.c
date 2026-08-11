@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/addr2ref.c,v 9.0 1992/
  *
  */
 
-
-
 #include <time.h>
 #include <string.h>
 #include "psap.h"
@@ -66,7 +64,6 @@ addr2ref (char *addr) {
 
 	return sr;
 }
-
 
 static int
 stuff (PE pe, char *dbase, u_char *dlen) {

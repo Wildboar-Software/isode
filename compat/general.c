@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -53,7 +51,6 @@ struct qelem {
 	char	    q_data[1];	/* extensible */
 };
 
-
 insque (elem, pred)
 struct qelem   *elem,
 		   *pred;
@@ -64,7 +61,6 @@ struct qelem   *elem,
 	elem -> q_back = pred;
 	pred -> q_forw = elem;
 }
-
 
 remque (elem)
 struct qelem   *elem;
@@ -83,7 +79,6 @@ struct qelem   *elem;
 #ifdef	SYS5
 #include <fcntl.h>
 #endif
-
 
 int     dup2 (d1, d2)
 int    d1,
@@ -108,7 +103,6 @@ int    d1,
 	errno = 0;
 	return NOTOK;
 }
-
 
 #ifndef	F_DUPFD
 dup2_aux (d1, d2)

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/report.c,v 
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <unistd.h>
@@ -32,19 +31,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/report.c,v 
 #include "manifest.h"
 #include "logger.h"
 
-
 static LLog _pgm_log = {
 	"callback.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
 	LLOG_FATAL, -1, LLOGCLS | LLOGCRT | LLOGZER, NOTOK
 };
 static LLog *pgm_log = &_pgm_log;
 
-
 int reportailor (char *myname) {
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
 }
-
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
@@ -66,7 +62,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...)

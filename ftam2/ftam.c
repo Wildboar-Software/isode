@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
  *
  */
 
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
 #include <unistd.h>
 #include "ftamuser.h"
 #include "tailor.h"
-
 
 #ifndef	BRIDGE
 static char *myname = "ftam";
@@ -47,7 +45,6 @@ static int   fflag = 0;
 static char *hflag = NULL;
 static char *uflag = NULL;
 
-
 static char ringring = 0x07;
 
 int	ontty;
@@ -56,7 +53,6 @@ static int	armed;
 static jmp_buf	intrenv;
 #endif
 int	interrupted;
-
 
 static int ftamloop (char **vec, int error);
 static SFD intrser (int sig);
@@ -462,9 +458,7 @@ int getftamline (char *prompt, char *buffer) {
 }
 #endif
 
-
 #ifndef	BRIDGE
-
 
 static SFD intrser (int sig) {
 #ifndef	BSDSIGS
@@ -477,7 +471,6 @@ static SFD intrser (int sig) {
 	interrupted++;
 }
 #endif
-
 
 #ifndef	BRIDGE
 #ifndef	lint
@@ -555,7 +548,6 @@ int ask (char *fmt) {
 #endif
 #endif
 
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...)
 {
@@ -588,7 +580,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...)
 {
@@ -600,7 +591,6 @@ void	advise (char *what, char *fmt, ...)
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap)
 {

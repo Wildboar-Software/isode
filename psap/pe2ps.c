@@ -24,18 +24,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ps.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 static PElement pe_eoc = { PE_CLASS_UNIV, PE_FORM_PRIM, PE_UNIV_EOC, 0 };
 static int  pe2ps_aux2 ();
 int  ps_write_id ();
 int  ps_write_len ();
-
 
 int pe2ps_aux (PS ps, PE pe, int eval) {
 	int     result;
@@ -56,7 +52,6 @@ int pe2ps_aux (PS ps, PE pe, int eval) {
 
 	return result;
 }
-
 
 static int
 pe2ps_aux2 (PS ps, PE pe, int eval) {
@@ -96,7 +91,6 @@ pe2ps_aux2 (PS ps, PE pe, int eval) {
 	return OK;
 }
 
-
 int ps_write_id (PS ps, PE pe) {
 	byte    buffer[1 + sizeof (PElementID)];
 	byte  *bp = buffer;
@@ -133,7 +127,6 @@ int ps_write_id (PS ps, PE pe) {
 
 	return OK;
 }
-
 
 /* probably should integrate the non-PE_LEN_SMAX case with the algorithm in
    num2prim() for a single, unified routine */

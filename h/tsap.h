@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_TSAP_
 #define	_TSAP_
 
@@ -33,7 +32,6 @@
 #ifndef	_ISOADDRS_
 #include "isoaddrs.h"
 #endif
-
 
 struct TSAPstart {		/* T-CONNECT.INDICATON */
 	int     ts_sd;		/* TRANSPORT descriptor */
@@ -53,7 +51,6 @@ struct TSAPstart {		/* T-CONNECT.INDICATON */
 	char    ts_data[TS_SIZE];	/* data */
 };
 
-
 struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
 	int     tc_sd;		/* TRANSPORT descriptor */
 
@@ -71,7 +68,6 @@ struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
 	char    tc_data[TC_SIZE];	/* data */
 };
 
-
 struct TSAPdata {		/* T-READ.INDICATION */
 	int     tx_expedited;
 
@@ -81,7 +77,6 @@ struct TSAPdata {		/* T-READ.INDICATION */
 	struct qbuf tx_qbuf;	/*   chained data */
 };
 #define	TXFREE(tx)	QBFREE (&((tx) -> tx_qbuf))
-
 
 struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 	int     td_reason;		/* reason for DISCONNECT, from ISO8072: */
@@ -155,9 +150,7 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 	char    td_data[TD_SIZE];	/* data */
 };
 
-
 extern char *tsapversion;
-
 
 int	TInit ();		/* T-CONNECT.INDICATION */
 

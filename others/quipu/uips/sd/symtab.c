@@ -12,7 +12,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/symtab
  *
  */
 
-
 #include "general.h"
 #include "symtab.h"
 
@@ -57,7 +56,6 @@ char *name;
 		return table->val;
 	return (char *) 0;
 }
-
 
 free_table(table)
 table_entry table;

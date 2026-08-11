@@ -24,13 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookupd.c,v 9
  *
  */
 
-
 #include <stdio.h>
 #include <pwd.h>
 #include "ryresponder.h"	/* for generic idempotent responders */
 #include "PasswordLookup-ops.h"		/* operation definitions */
 #include "PasswordLookup-types.h"	/* type definitions */
-
 
 #define	xalloc(p, type) \
 	((p) = (type) calloc (1, sizeof *(p)))
@@ -38,16 +36,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookupd.c,v 9
 #define	salloc(s) \
 	str2qb ((s), strlen (s), 1)
 
-
 #ifdef	SYS5
 struct passwd *getpwnam (), *getpwuid ();
 #endif
 
-
 static char *myservice = "passwdstore";
 
 static char *mycontext = "isode passwd lookup demo";
-
 
 /* OPERATIONS */
 int	op_lookupUser (), op_lookupUID ();
@@ -59,8 +54,6 @@ static struct dispatch dispatches[] = {
 
 	NULL
 };
-
-
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
@@ -105,7 +98,6 @@ struct RoSAPindication *roi;
 	return result;
 }
 
-
 static int  op_lookupUID (sd, ryo, rox, in, roi)
 int	sd;
 struct RyOperation *ryo;
@@ -128,7 +120,6 @@ struct RoSAPindication *roi;
 
 	return lookup (sd, getpwuid (arg -> parm), rox, roi);
 }
-
 
 static int
 lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

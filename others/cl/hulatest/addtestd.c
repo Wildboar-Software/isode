@@ -34,7 +34,6 @@
 #include "ADD-ops.h"	        /* ADD operation definitions */
 #include "ADD-types.h"	        /* ADD type definitions */
 
-
 static char *myservice = "addtest";
 static char *mycontext = "addtest context";
 static char *mypci     = "addtest pci";
@@ -51,9 +50,6 @@ static struct dispatch dispatches[] = {
 
 char	*getlocalhost();
 
-
-
-
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
 				 dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
@@ -61,10 +57,7 @@ int main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-
-
 /* OPERATIONS */
-
 
 static int  op_addit (sd, ryo, rox, in, roi)
 int	sd;
@@ -101,7 +94,6 @@ struct RoSAPindication *roi;
 
 	return OK;
 }
-
 
 /* ERROR */
 

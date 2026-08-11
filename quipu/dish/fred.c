@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
  *
  */
 
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -44,12 +43,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/fred.c,v 9.0 199
 #define	X_OK	1
 #endif
 
-
 #define	OPT	(!frompipe || rps -> ps_byteno == 0 ? opt : rps)
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
 extern	char	frompipe;
 extern	PS	opt, rps;
-
 
 extern	char	dad_flag;
 #ifndef	NO_STATS
@@ -68,7 +65,6 @@ char		fred_phone;
 char		fred_photo;
 char		fred_sequence;
 char		fred_subdisplay;
-
 
 static short	s_dn;
 static short	s_photo;
@@ -358,7 +354,6 @@ free_filter:
 			ps_free (nps);
 	}
 }
-
 
 static struct dn_seq *dm2dn_seq (char *dm) {
 	char *dp;
@@ -688,7 +683,6 @@ losing:
 		ps_printf (RPS, "\n");
 	}
 }
-
 
 #ifndef	SOCKETS
 extern	char	search_result;
@@ -1678,7 +1672,6 @@ out:
 
 	return nchild;
 }
-
 
 static int fred_children (DN parentdn, struct subordinate *ptr, int prob) {
 	int	    i,

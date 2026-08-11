@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUADD
 #define QUIPUADD
 

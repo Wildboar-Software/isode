@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_ROSY_
 #define	_ROSY_
 
@@ -29,7 +28,6 @@
 #endif
 
 #include "rosap.h"		/* definitions for RoS-USERs */
-
 
 struct RyOperation {
 	char   *ryo_name;		/* operation name */
@@ -49,7 +47,6 @@ struct RyOperation {
 
 struct RyOperation *findopbyop (), *findopbyname ();
 
-
 struct RyError {
 	char   *rye_name;		/* error name */
 	int	    rye_err;		/* error code */
@@ -60,7 +57,6 @@ struct RyError {
 };
 
 struct RyError *finderrbyerr (), *finderrbyname ();
-
 
 struct opsblk {
 	struct opsblk *opb_forw;	/* doubly-linked list */
@@ -88,10 +84,8 @@ struct opsblk {
 };
 #define	NULLOPB		((struct opsblk *) 0)
 
-
 void freeopblk (), loseopblk ();
 struct opsblk *newopblk (), *findopblk (), *firstopblk ();
-
 
 struct dspblk {
 	struct dspblk *dsb_forw;	/* doubly-linked list */
@@ -106,14 +100,11 @@ struct dspblk {
 };
 #define	NULLDSB		((struct dspblk *) 0)
 
-
 void	freedsblk (), losedsblk ();
 struct dspblk *newdsblk (), *finddsblk ();
 
-
 #define	RY_RESULT	(-1)	/* distinguishes RESULTs from ERRORs */
 #define	RY_REJECT	(-2)	/* distinguishes REJECTs from ERRORs */
-
 
 int	RyWait ();		/* WAIT */
 

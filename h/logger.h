@@ -20,13 +20,11 @@
  *
  */
 
-
 #ifndef	_LOGGER_
 #define	_LOGGER_
 
 #include "manifest.h"
 #include <stdarg.h>
-
 
 typedef struct  ll_struct {
     char   *ll_file;		/* path name to logging file */
@@ -64,7 +62,6 @@ typedef struct  ll_struct {
     int     ll_fd;		/* file descriptor */
 } LLog;
 
-
 #define	SLOG(lp,event,what,args) \
 if (lp -> ll_events & (event)) { \
     (void) ll_log (lp, event, what, "%s", ll_preset args); \
@@ -80,7 +77,6 @@ else
 #else
 #define	DLOG(lp,event,args)
 #endif
-
 
 #ifdef	DEBUG
 
@@ -146,7 +142,6 @@ else
 #define	PLOG(lp,fnx,pe,text,rw)
 #define	PLOGP(lp,args,pe,text,rw)
 #endif
-
 
 int	ll_log (LLog*, ...);
 int	ll_printf (LLog*, ...);

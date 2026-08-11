@@ -375,7 +375,6 @@ static int load_a_kid (Entry e, int offset) {
 	return(OK);
 }
 
-
 static int entry_load_kids (
 	Avlnode *entryptr,	/* in this case, entryptr is really a tree of kids */
 	int offset

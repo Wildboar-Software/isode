@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tli.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include "tpkt.h"
 
@@ -90,7 +89,6 @@ extern char *icl_tli_responder;
 
 /* why do we need this ? */
 #define	TP4SLOP		  12	/* estimate of largest DT PCI */
-
 
 extern int t_nerr, t_errno;
 extern char *t_errlist[];
@@ -401,7 +399,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	if (data)
 		bcopy (data, sndcall -> udata.buf, sndcall -> udata.len = (unsigned)cc);
 
-
 	/* use tb_cc to communicate to TRetry if the connect completed here */
 	if (t_connect (tb -> tb_fd, sndcall, rcvcall) == NOTOK) {
 		t_free ((char *)rcvcall, T_CALL);
@@ -466,7 +463,6 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 
 	return DONE;
 }
-
 
 static int
 TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -558,7 +554,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    i;
@@ -582,7 +577,6 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
 
 	return OK;
 }
-
 
 /*
  * This is a tricky one. We have to pass over a dup'd transport descriptor
@@ -652,7 +646,6 @@ reject: {
 	}
 }
 
-
 static int
 TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int cc;
@@ -711,7 +704,6 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 		DLOG (tsap_log, LLOG_TRACE,
 			  ("t_snd(fd=%d, buf=0x%x, len=%d, NO_MORE) ret=%d",
 			   tb -> tb_fd, qb -> qb_data, qb -> qb_len, nc));
-
 
 		if (async != NOTOK)
 			fcntl (tb -> tb_fd, F_SETFL, async);
@@ -810,7 +802,6 @@ done:
 	return OK;
 }
 
-
 static int
 TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
@@ -820,7 +811,6 @@ TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 	if ((onoff = fcntl (tb -> tb_fd, F_GETFL, 0)) != NOTOK)
 		fcntl (tb -> tb_fd, F_SETFL, onoff | FNDELAY);
-
 
 	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
 
@@ -862,8 +852,6 @@ out:
 
 	return result;
 }
-
-
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -988,7 +976,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result = OK;
@@ -1008,7 +995,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 
 	return result;
 }
-
 
 static int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
@@ -1030,7 +1016,6 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 }
 
 /*    LOWER HALF */
-
 
 int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int	    fd,
@@ -1075,8 +1060,6 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-
-
 static int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
@@ -1088,10 +1071,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 	return DONE;
 }
-
-
-
-
 
 /*
  * Save string format:
@@ -1109,7 +1088,6 @@ char *tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsa
 			 taddr2str(&calling), taddr2str(&called));
 	return buffer;
 }
-
 
 int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int	    fd, exp;
@@ -1148,7 +1126,6 @@ int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-
 int tp4init (struct tsapblk *tb) {
 
 	tb -> tb_connPfnx = TConnect;
@@ -1177,8 +1154,6 @@ int tp4init (struct tsapblk *tb) {
 	tb -> tb_selectfnx = select_tp4_socket;
 }
 
-
-
 int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int	    sd;
 
@@ -1187,7 +1162,6 @@ int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2
 
 	return sd;
 }
-
 
 int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td) {
 	struct t_call *call;
@@ -1227,7 +1201,6 @@ int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int
 		  ("t_listen: CON-IND from %s now on %d", taddr2str(remote_ta), sd));
 	return sd;
 }
-
 
 /*
  *	Default is a pretty common format for TLI addresses:
@@ -1332,7 +1305,6 @@ out_space:
 
 			for (i = na -> na_addrlen +1 ; i < (int) ICL_NSAP_LEN; i++)
 				*cp++ = 0x0;
-
 
 #ifdef ADD_DTE2NSAP
 
@@ -1450,7 +1422,6 @@ out_space:
 
 #endif
 }
-
 
 int tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {
 	char *cp;

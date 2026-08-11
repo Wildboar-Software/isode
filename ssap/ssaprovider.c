@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprovider.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
-
 
 static int  once_only = 0;
 static struct ssapblk ssapque;

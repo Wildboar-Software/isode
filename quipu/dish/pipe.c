@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/pipe.c,v 9.0 199
  *
  */
 
-
 #include <signal.h>
 #include <stdio.h>
 #include <errno.h>
@@ -65,7 +64,6 @@ int init_pipe (void) {
 		sprintf (parent, "%d", getppid ());
 		setenv ("DISHPARENT", cp = parent);
 	}
-
 
 	if (sscanf (cp, "%d", &parent_pid) != 1) {
 		fprintf (stderr,"DISHPARENT malformed");
@@ -159,7 +157,6 @@ int read_pipe (char *buf, int len) {
 	return (read_pipe_aux(buf,len));
 }
 
-
 int read_pipe_aux (char *buf, int len) {
 	int res;
 #ifdef	SOCKETS
@@ -204,7 +201,6 @@ int read_pipe_aux (char *buf, int len) {
 	return (res);
 #endif
 }
-
 
 #ifdef	SOCKETS
 int read_pipe_aux2 (char **buf, int *len) {
@@ -272,7 +268,6 @@ out:
 }
 #endif
 
-
 #ifndef	SOCKETS
 int send_pipe (char *buf) {
 	send_pipe_aux (buf);
@@ -314,7 +309,6 @@ void send_pipe_aux2 (char *buf, int i) {
 		buf += res, i -= res;
 	}
 }
-
 
 #ifdef SOCKETS
 int get_dish_sock (struct sockaddr_in *isock) {

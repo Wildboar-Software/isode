@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbysel.c,v 9.0 19
  *
  */
 
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoservent.h"
 #include "tailor.h"
-
 
 struct isoservent *
 getisoserventbyselector (char *provider, char *selector, int selectlen) {

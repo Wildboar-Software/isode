@@ -8,7 +8,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/widget
  * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/widget.c,v 9.0 1992/06/16 12:45:08 isode Rel $
  */
 
-
 /*    This file has been modified by Damanjit Mahl @ Brunel University
  */
 
@@ -21,7 +20,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/widget
  *    this agreement.
  *
  */
-
 
 /*****************************************************************************/
 /* File:	widget.c
@@ -732,7 +730,6 @@ WIDGET	*wdgt;
 	free(blanks);
 }
 
-
 void setdialogstr(wdgt, dstr, maxlen)
 char	*dstr;
 WIDGET	*wdgt;
@@ -932,6 +929,4 @@ endwidgets () {
 	refresh();
 	endwin();
 }
-
-
 

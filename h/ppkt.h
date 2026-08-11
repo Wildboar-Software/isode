@@ -22,13 +22,11 @@
  *
  */
 
-
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
 
 #include "ssap.h"		/* definitinos for SS-USERs */
-
 
 #define	psapPsig(pb, sd) \
 { \
@@ -124,11 +122,8 @@
 #define	copyPSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pylose(p) \
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
-
-
 
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	BER
@@ -143,7 +138,6 @@
 
 #define	atn_is_ok(pb,atn)	atn_is_ber ((pb), (atn))
 #define	atn_is_ber(pb,atn)	(!oid_cmp (pb -> pb_ber, atn))
-
 
 struct psapblk {
 	struct psapblk *pb_forw;	/* doubly-linked list */
@@ -233,7 +227,6 @@ int	psaplose (struct PSAPindication*, ...);
 #define	PC_REASON_BASE \
 	(PC_ABSTRACT - int_PS_provider__reason_abstract__syntax__not__supported)
 
-
 struct type_PS_User__data *info2ppdu ();
 int	ppdu2info ();
 
@@ -246,7 +239,6 @@ struct type_PS_Identifier__list *silly_list ();
 
 int	ss2pslose (), ss2psabort ();
 
-
 struct pair {
 	int	    p_mask;
 	int	    p_bitno;
@@ -254,7 +246,6 @@ struct pair {
 
 extern struct pair preq_pairs[], sreq_pairs[];
 #endif
-
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 
@@ -281,12 +272,10 @@ extern struct pair preq_pairs[], sreq_pairs[];
 
 #define	NULLRF	((struct type_PS_SessionConnectionIdentifier *) 0)
 
-
 #define	pslose(pi,reason) \
     (reason != PS_ERR_NONE && reason != PS_ERR_IO \
 	? psaplose ((pi), PC_CONGEST, NULLCP, "%s", ps_error (reason)) \
 	: psaplose ((pi), PC_SESSION, NULLCP, NULLCP))
-
 
 void pdu2sel (char *sel, int *len, int i, struct qbuf *pb);
 int refcmp (struct type_PS_SessionConnectionIdentifier *ref1, struct type_PS_SessionConnectionIdentifier *ref2);

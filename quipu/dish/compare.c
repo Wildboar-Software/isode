@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/compare.c,v 9.0 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/compare.h"
 #include "pepsy.h"

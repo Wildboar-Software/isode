@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/entry.c,v 9.0 1
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/turbo.h"
@@ -35,7 +34,6 @@ AttributeType at_objectclass;
 extern int local_master_size;
 extern int local_slave_size;
 extern int local_cache_size;
-
 
 void directory_free (Entry directory)
 {
@@ -136,7 +134,6 @@ void check_known_oids (void) {
 	at_objectclass = AttrT_new (OBJECTCLASS_OID);
 	at_alias = AttrT_new (ALIAS_OID);
 }
-
 
 int entryrdn_cmp(RDN rdn, Entry ent)
 {

@@ -27,11 +27,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosaperror.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosap.h"
-
 
 static char *reject_err0[] = {
 	"Authentication failure",
@@ -75,7 +72,6 @@ static char *reject_err0[] = {
 };
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
-
 
 char *RoErrString (int code) {
 	static char buffer[50];

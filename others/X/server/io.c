@@ -61,7 +61,6 @@ static int timesThisConnection = 0;
 extern int Error (char *fmt, ...);
 extern int Fatal (char *fmt, ...);
 
-
 #define request_length(req, cli) ((cli->swapped ? \
 	lswaps((req)->length) : (req)->length) << 2)
 #define MAX_TIMES_PER         10
@@ -373,7 +372,6 @@ char *oldbuf;
 #undef YieldControlNoInput
 #undef YieldControl
 }
-
 
 /* lookup table for adding padding bytes to data that is read from
 	or written to the X socket.  */

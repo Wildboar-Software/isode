@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapapdu.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ROS-types.h"
@@ -37,11 +35,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapapdu.c,v 9.0 199
 #include "tailor.h"
 #endif
 
-
 static int	prob2num ();
 static int  apdu_proc ();
 static int  opdu_proc ();
-
 
 int acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
 	struct type_ROS_ROSEapdus *papdu;
@@ -86,7 +82,6 @@ int acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication
 
 	return result;
 }
-
 
 /*
  * Process an APDU. This separates out all the differences between
@@ -181,7 +176,6 @@ apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindicat
 	return DONE;
 }
 
-
 /*
  * Process an OPDU. A separate function is used for this type of PDU to
  * simpilfy matters. What is an OPDU - an Old PDU ??
@@ -268,7 +262,6 @@ opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *
 	return DONE;
 }
 
-
 static int Gprob[] = { ROS_GP_UNRECOG, ROS_GP_MISTYPED, ROS_GP_STRUCT };
 static int Iprob[] = { ROS_IP_DUP, ROS_IP_UNRECOG, ROS_IP_MISTYPED,
 					   ROS_IP_LIMIT, ROS_IP_RELEASE, ROS_IP_UNLINKED,
@@ -309,7 +302,6 @@ prob2num (struct choice_ROS_3 *prob) {
 			goto out;
 		num = RRprob[num];
 		break;
-
 
 	case choice_ROS_3_4:
 		if ((num = prob -> un.choice_ROS_7 -> parm) < 0

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/user.c,v 9.0 199
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/sequence.h"
@@ -168,7 +167,6 @@ int dish_error (PS ps, struct DSError * error) {
 		ds_error (ps,error);
 		return (0);
 	}
-
 
 	if (error->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
 		ps_print (ps,"*** Referral error (but no reference !!!) ***\n");

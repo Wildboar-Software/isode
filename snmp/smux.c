@@ -29,28 +29,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux.c,v 9.0 1992/06/1
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "smux.h"
 #include "tailor.h"
 
-
 #include <errno.h>
 #include "internet.h"
 #include "sys.file.h"
 
-
 integer	smux_errno;
 char    smux_info[BUFSIZ];
-
 
 static	int	sd = NOTOK;
 static	PS	ps = NULLPS;
 
 static	struct sockaddr_in in_socket;
-
 
 static	int	smux_debug = 0;
 static	PE	smux_pe = NULL;
@@ -60,7 +54,6 @@ static struct type_SNMP_NetworkAddress *smux_addr = NULL;
 static struct type_SNMP_TimeTicks *smux_stamp = NULL;
 
 static	struct timeval my_boottime;
-
 
 extern	int	errno;
 
@@ -133,7 +126,6 @@ int	debug;
 
 	return sd;
 }
-
 
 static int  smuxalloc () {
 	int	    len;
@@ -247,7 +239,6 @@ no_mem:
 
 	return result;
 }
-
 
 static int  smuxsend (pdu)
 struct type_SNMP_SMUX__PDUs *pdu;
@@ -552,7 +543,6 @@ char   *what,
 	return smuxlose (reason, what, fmt);
 }
 #endif
-
 
 static char *errors_up[] = {
 	"goingDown",

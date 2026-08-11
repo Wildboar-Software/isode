@@ -52,7 +52,6 @@ static char *RCSid = "$Header: /xtel/isode/isode/pepy/RCS/lex.l.gnrc,v 9.0 1992/
  *
  */
 
-
 struct table {
 	char   *t_keyword;
 	int	    t_value;

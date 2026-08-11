@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/is2paddr.c,v 9.0 1992
  *
  */
 
-
-
 #include <string.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "isoservent.h"
-
 
 struct PSAPaddr* is2paddr (char *host, char *service, struct isoservent *is) {
 	AEI	    aei;

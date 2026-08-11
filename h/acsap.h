@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_AcSAP_
 #define	_AcSAP_
 
@@ -34,7 +33,6 @@
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
-
 
 #define	NACDATA		3	/* arbitrary */
 
@@ -69,7 +67,6 @@ struct AcSAPstart {		/* A-CONNECT.INDICATION */
 		(acs) -> acs_info[ACSI] = NULLPE; \
     (acs) -> acs_ninfo = 0; \
 }
-
 
 struct AcSAPconnect {
 	int	    acc_sd;		/* association descriptor */
@@ -142,8 +139,6 @@ struct AcSAPconnect {
     (acc) -> acc_ninfo = 0; \
 }
 
-
-
 struct AcSAPfinish {		/* A-RELEASE.INDICATION */
 	int	    acf_reason;		/* reason for release */
 #define	ACF_NORMAL	0	/* normal */
@@ -164,7 +159,6 @@ struct AcSAPfinish {		/* A-RELEASE.INDICATION */
 		(acf) -> acf_info[ACFI] = NULLPE; \
     (acf) -> acf_ninfo = 0; \
 }
-
 
 struct AcSAPrelease {		/* A-RELEASE.CONFIRMATION */
 	int	    acr_affirmative;	/* T   = connection released
@@ -189,7 +183,6 @@ struct AcSAPrelease {		/* A-RELEASE.CONFIRMATION */
 		(acr) -> acr_info[ACRI] = NULLPE; \
     (acr) -> acr_ninfo = 0; \
 }
-
 
 struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
 	int	    aca_source;		/* abort source */
@@ -219,7 +212,6 @@ struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
     (aca) -> aca_ninfo = 0; \
 }
 
-
 struct AcSAPindication {
 	int	    aci_type;		/* the union element present */
 #define	ACI_FINISH	0x00
@@ -233,9 +225,7 @@ struct AcSAPindication {
 #define	aci_abort	aci_un.aci_un_abort
 };
 
-
 extern char *acsapversion;
-
 
 int	AcInit ();		/* A-ASSOCIATE.INDICATION */
 

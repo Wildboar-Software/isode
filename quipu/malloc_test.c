@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/malloc_test.c,v 9.0 1
  *
  */
 
-
 #include <stdio.h>
 
 int	mem_heap;

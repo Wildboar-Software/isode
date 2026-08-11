@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrespond.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "fpkt.h"
 

@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef _xdua_util_h_
 #define _xdua_util_h_
 

@@ -8,19 +8,15 @@
 
 	Abort a CHOICE encoding if the structure is empty
 
-
 				  HEURISTICS
 
    1. LANGUAGE SIMPLIFICATIONS:
 
-
 	Pull-up uni-member SEQUENCEs/SETs/CHOICEs
-
 
    2. LANGUAGE ASSUMPTIONS:
 
 	Unique tags to avoid conflicts for internal structures (-h1 option)
-
 
    3. STYLE ISSUES:
 
@@ -52,7 +48,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy.c,v 9.0 1992/06
  *
  */
 
-
 #include <errno.h>
 #include <string.h>
 #include <stdio.h>
@@ -60,10 +55,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy.c,v 9.0 1992/06
 #include "pepsydefs.h"
 #include "pass2.h"
 
-
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
-
 
 static int aflag = 0;
 int	Aflag = 0;	/* Don't so all modes by default */
@@ -224,8 +217,6 @@ YT lookup_tag (YP yp);
 void pepsy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg);
 int addextmod (char *p);
 
-
-
 int main (int argc, char **argv, char **envp) {
 	int	    i;
 	char  *cp,
@@ -342,7 +333,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-
 void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
@@ -429,7 +419,6 @@ int yywrap(void) {
 	return 1;
 }
 
-
 void yyprint (char *s, int f, int top) {
 	int     len;
 	static int  nameoutput = 0;
@@ -467,7 +456,6 @@ void yyprint (char *s, int f, int top) {
 		section (YP_ENCODER, yyencpref);
 		section (YP_DECODER, yydecpref);
 		section (YP_PRINTER, yyprfpref);
-
 
 		fprintf (stderr, ":");
 		linepos += 2;
@@ -556,7 +544,6 @@ void pass2(void) {
 		myyerror ("unable to write %s", sysdef);
 	if (!Cflag)
 		hprologue (fdef);
-
 
 	if (!Cflag) {
 		if (mflag) {
@@ -2006,7 +1993,6 @@ static void xalloc (
 	}
 }
 
-
 static void balloc (YP yp, char *var, char *action2, int level) {
 	printf ("\n%*s%%{\n", level * 4, "");
 	level++;
@@ -2483,7 +2469,6 @@ static SY new_symbol (
 	return sy;
 }
 
-
 static SY add_symbol (SY s1, SY s2) {
 	SY	    sy;
 
@@ -2537,7 +2522,6 @@ YP new_type (int code, int lineno) {
 
 	return yp;
 }
-
 
 YP add_type (YP y, YP z) {
 	YP	    yp;
@@ -2663,7 +2647,6 @@ YP copy_type (YP yp) {
 		y -> yp_aft_alist = yp -> yp_aft_alist;
 	}
 
-
 	if (yp -> yp_next)
 		y -> yp_next = copy_type (yp -> yp_next);
 
@@ -2681,7 +2664,6 @@ YV new_value (int code) {
 
 	return yv;
 }
-
 
 YV add_value (YV y, YV z) {
 	YV	    yv;
@@ -3049,7 +3031,6 @@ static void write_ph_file(void) {
 #define	PEPSYPATH	""
 #endif
 
-
 static FILE *open_ph_file (char *fn, char *fnoid, char *mode) {
 	char  *dst,
 		  *path;
@@ -3182,7 +3163,6 @@ char *pstrip (char *p) {
 	return (p);
 }
 
-
 /*
  * produce a #include on the given file descriptor according to what ever
  * rules are in fashion today. Unfortunately these keep changing so to
@@ -3234,7 +3214,6 @@ static char *stand_f[] = {
 	"UNIV_pre_defs.h",
 	(char *)0	/* terminating NULL pointer */
 };
-
 
 /*
  * determine if the given (after stripping any path) file is a standard

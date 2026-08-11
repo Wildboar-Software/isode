@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaptest.c,v 9.0 199
  *
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #define	ACSE
@@ -35,9 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaptest.c,v 9.0 199
 #include "DSE-types.h"
 #include "UNIV-types.h"
 
-
 #define	NULLIE	((struct isoentity *) 0)
-
 
 char   *macro2str ();
 struct TSAPaddr *ta2norm ();

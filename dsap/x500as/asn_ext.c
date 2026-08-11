@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/x500as/RCS/asn_ext.c,v 9.0
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/common.h"
@@ -37,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/x500as/RCS/asn_ext.c,v 9.0
 #define	advise	PY_advise
 
 extern	LLog	* log_dsap;
-
 
 /* Encoding substring filters */
 /*
@@ -106,7 +103,6 @@ extern	LLog	* log_dsap;
  *
  */
 
-
 int substring_encode (struct filter_item *parm, PE *pe) {
 	int		subs_type;
 	AV_Sequence	avs_temp;
@@ -135,7 +131,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 	if (encode_IF_AttributeType (p91, 0, 0, NULLCP, subs_temp->fi_sub_type) == NOTOK)
 		return NOTOK;
 
-
 	if ((*p91) != NULLPE)
 		if (seq_add ((*pe), (*p91), -1) == NOTOK) {
 			advise (NULLCP, "substrings %s%s", PEPY_ERR_BAD_SEQ,
@@ -162,7 +157,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 				case 1: {	/* initial */
 					if (encode_IF_AttributeValue (p93, 0, 0, NULLCP, &avs_temp->avseq_av) == NOTOK)
 						return NOTOK;
-
 
 					{
 
@@ -192,7 +186,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 				case 2: {	/* any */
 					if (encode_IF_AttributeValue (p93, 0, 0, NULLCP, &avs_temp->avseq_av) == NOTOK)
 						return NOTOK;
-
 
 					{
 
@@ -242,7 +235,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 					return NOTOK;
 				}
 
-
 			}
 			seq_addon ((*p91), p92, (*p93));
 			p92 = (*p93);
@@ -273,7 +265,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 
 	return OK;
 }
-
 
 /*  substring decoding
  *
@@ -344,7 +335,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
  *
  */
 
-
 int substring_decode (struct filter_item **pparm, PE pe) {
 	AV_Sequence	* avs_initial;
 	AV_Sequence	* avs_any;
@@ -379,7 +369,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 
 	{
 		PE p115;
-
 
 		if (p113 -> pe_class != PE_CLASS_UNIV
 				|| p113 -> pe_form != PE_FORM_CONS
@@ -615,7 +604,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 
 		}
 
-
 		if (p113 -> pe_cardinal > 2) {
 			advise (NULLCP, "substrings %s(2): %d", PEPY_ERR_TOO_MANY_ELEMENTS,
 					p113 -> pe_cardinal);
@@ -632,8 +620,6 @@ int substring_free (struct filter_item *parm) {
 
 	return OK;
 }
-
-
 
 /* TreeStructureSyntax encode */
 /*
@@ -869,7 +855,6 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
  *
  *
  */
-
 
 int treestruct_decode (struct tree_struct **parm, PE pe) {
 
@@ -1161,7 +1146,6 @@ int EDB_encode (struct getedb_result *parm, PE *pe) {
 		return NOTOK;
 	}
 
-
 	for (ent_tmp = (Entry) avl_getfirst(parm->gr_edb);
 			ent_tmp != NULLENTRY;
 			ent_tmp = (Entry) avl_getnext()) {
@@ -1177,7 +1161,6 @@ int EDB_encode (struct getedb_result *parm, PE *pe) {
 
 	return OK;
 }
-
 
 int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 	Avlnode **tree;
@@ -1217,10 +1200,8 @@ int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("Bad EDB update (contains duplicates)"));
 	}
 
-
 	return OK;
 }
-
 
 int EDB_decode (struct getedb_result **pparm, PE pe) {
 

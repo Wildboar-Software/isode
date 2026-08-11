@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/pipe
  *
  */
 
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -34,8 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/dish/RCS/pipe
 #include "tailor.h"
 #include "general.h"
 #include "usr.dirent.h"
-
-
 
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */
 
@@ -221,7 +218,6 @@ err_recv:
 	}
 }
 
-
 #else	/* USE UNIX NAMED PIPES */
 
 #include <signal.h>
@@ -244,7 +240,6 @@ char          **argv;
 	int             i;
 	char           *ptr, *getenv(), *sprintf(), *getpassword ();
 	void            pipe_quit ();
-
 
 	umask (0);
 	sprintf (retfile, "/tmp/dish%d", getpid ());

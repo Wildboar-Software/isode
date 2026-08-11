@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_INTERNET_
 #define	_INTERNET_
 
@@ -140,14 +139,12 @@ int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 #endif
 #endif
 
-
 #if	defined(BIND) && !defined(h_addr)
 #define	h_addr	h_addr_list[0]
 #endif
 
 #define	inaddr_copy(hp,sin) \
     bcopy ((hp) -> h_addr, (char *) &((sin) -> sin_addr), (hp) -> h_length)
-
 
 #ifdef	EXOS
 struct hostent {
@@ -165,11 +162,9 @@ struct servent {
 	char   *s_proto;		/* protocol beneath service */
 };
 
-
 struct hostent *gethostbyaddr (), *gethostbyname ();
 struct servent *getservbyname ();
 #endif
-
 
 struct hostent *gethostbystring ();
 

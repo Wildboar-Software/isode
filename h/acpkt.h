@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_AcSAP_
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
@@ -36,7 +35,6 @@
 #ifndef	_RtSAP_
 #include "rtsap.h"		/* definitions for RT-SE users */
 #endif
-
 
 #ifdef	ACSE
 
@@ -141,18 +139,14 @@
 #define	copyAcSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	ACS_USER_BASE	ACS_USER_NULL
 #define	ACS_PROV_BASE	ACS_PROV_NULL
-
-
 
 int	ps2acslose ();
 
 struct type_ACS_Association__information *info2apdu ();
 int	apdu2info ();
 #endif
-
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -253,13 +247,11 @@ struct assocblk {
     (acb) -> acb_realbase = (acb) -> acb_base = NULL, (acb) -> acb_len = 0; \
 }
 
-
 void freeacblk (struct assocblk *acb);
 struct assocblk *newacblk (), *findacblk ();
 
 int	acpktlose (struct assocblk*acb, ...);
 int	acsaplose (struct AcSAPindication*aci, ...);
-
 
 #ifndef	ACSE
 
@@ -278,7 +270,6 @@ int	acsaplose (struct AcSAPindication*aci, ...);
 #define	  PCONN_DATA_AP	4	/*   Application Protocol */
 #define	    PCONN_AP_DFLT 1
 
-
 /* PAccept Types */
 #define	PACC_DTS	0	/* Data Transfer Syntax */
 #define	PACC_DATA	1	/* User Data */
@@ -288,27 +279,22 @@ int	acsaplose (struct AcSAPindication*aci, ...);
 #define	    PACC_WD_DFLT 3
 #define   PACC_DATA_CN  2	/*   Connection Data */
 
-
 /* PRefuse Types */
 #define	PREF_REASON	0	/* Refuse Reason */
-
 
 /* Data Transfer Syntax Types */
 #define	DTS_SYNTAX	0	/* IMPLICIT INTEGER */
 #define SYN_X409	0	/* x.409 */
 
-
 /* Connection Data Types */
 #define CN_OPEN		0	/* Open */
 #define	CN_RECOVER	1	/* Recover */
-
 
 /* Refuse codes */
 #define	REFUSE_BUSY	0	/* Busy */
 #define	REFUSE_RECOVER	1	/* Cannot recover */
 #define	REFUSE_VALIDATE	2	/* Validation failure */
 #define	REFUSE_MODE	3	/* Unacceptable dialogue mode */
-
 
 /* Abort codes */
 #define	ABORT_LSP	0	/* Local system problem */

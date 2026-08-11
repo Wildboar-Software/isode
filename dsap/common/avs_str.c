@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_str.c,v 9.0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
@@ -84,7 +83,6 @@ AV_Sequence str2avs (char *str, AttributeType at)
 	return (avs_merge (avs,newavs));
 
 }
-
 
 AV_Sequence fast_str2avs (char *str, AttributeType at)
 {

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ut2tm.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include <time.h>
 #include "psap.h"
@@ -33,14 +31,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ut2tm.c,v 9.0 1992/06/
 #include <sys/time.h>
 #endif
 
-
 #define	UNYEAR(y)	((y) < 1900 || (y) > 1999 ? (y) : (y) - 1900)
 #define isleap(y)       \
         (((y) % 4) ? 0 : (((y) % 100) ? 1 : (((y) % 400) ? 0 : 1)))
 
 extern int dmsize[];
 static  int makewkday ();
-
 
 struct tm *
 ut2tm (UTC ut) {
@@ -63,7 +59,6 @@ ut2tm (UTC ut) {
 		tm -> tm_hour--, tm -> tm_min += 60;
 	else if (tm -> tm_min > 59)
 		tm -> tm_hour++, tm -> tm_min -= 60;
-
 
 	if (tm -> tm_hour < 0) {
 		tm -> tm_mday--, tm -> tm_hour += 24;
@@ -91,12 +86,10 @@ ut2tm (UTC ut) {
 	return tm;
 }
 
-
 #define	dysize(y)	\
 	(((y) % 4) ? 365 : (((y) % 100) ? 366 : (((y) % 400) ? 365 : 366)))
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
 
 static int
 makewkday (UTC ut) {

@@ -288,7 +288,6 @@ void call_modify (int argc, char **argv) {
 			mod_arg.mea_changes = ems_append (mod_arg.mea_changes,emnew);
 	}
 
-
 	if (mod_arg.mea_changes == NULLMOD) {
 		ps_print (RPS, "The draft entry and the entry for ");
 		dn_print (RPS, dn, EDBOUT);
@@ -345,7 +344,6 @@ void call_modify (int argc, char **argv) {
 
 	make_old (fname,draft_flag);
 }
-
 
 struct entrymod *
 ems_append (struct entrymod *a, struct entrymod *b) {

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/main.c,v 9.0 1992/06/
  *
  */
 
-
 #include	<stdio.h>
 #include	<ctype.h>
 #include "config.h"
@@ -37,8 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/main.c,v 9.0 1992/06/
 #include	"T1-types.h"
 #include	"T2-types.h"
 #include	"T3-types.h"
-
-
 
 #include "test_table.h"
 /* compactly generate the new item of data */
@@ -135,7 +132,6 @@ int ed_tst (int tynum) {
 	if (tynum < 0 || tynum >= MAXTCASE)
 		ferrd(1, "ed_tst illegal type %d\n", tynum);
 
-
 	if ((parm1 = fill(tynum)) == NULL) {
 		ferr(1, "calloc did not work\n");
 	}
@@ -148,7 +144,6 @@ int ed_tst (int tynum) {
 			   PY_pepy);
 		return(NOTOK);
 	}
-
 
 #define decode(tynum, x, parm)	\
 	dec_f(t_case[tynum].tst_entry, &_ZT1_mod, (x), 1, (int *) 0, (char **)NULL, (parm))
@@ -175,8 +170,6 @@ int ed_tst (int tynum) {
 		exit(2);
 	}
 #endif
-
-
 
 #define fre_space(tynum, parm)	\
 	fre_obj(parm, _ZT1_mod.md_dtab[t_case[tynum].tst_entry], &_ZT1_mod, 1)
@@ -788,11 +781,9 @@ char *fill (int tynum) {
 			Xparm->parm = int_T1_Enum__type_beef;
 			break;
 
-
 		case 2:
 			Xparm->parm = int_T1_Enum__type_chicken;
 			break;
-
 
 		case 3:
 			Xparm->parm = int_T1_Enum__type_lamb;
@@ -1323,7 +1314,6 @@ int tcmp (int tynum, char *parm1, char *parm2) {
 #undef Xparm1
 #undef Xparm2
 		break;
-
 
 	case TY_SEQOF:
 #define Xparm1	((struct type_T1_Seqof__Test *)parm1)
@@ -2225,7 +2215,6 @@ int tcmp (int tynum, char *parm1, char *parm2) {
 		break;
 #undef Xparm1
 #undef Xparm2
-
 
 	case TY_ETAGOBJ:
 #define Xparm1	((struct type_T1_Etags *)parm1)
@@ -3667,7 +3656,6 @@ mkoid (int i) {
 	oid->oid_elements[0] = 1;
 	oid->oid_elements[1] = 17;
 
-
 	return (oid);
 }
 
@@ -3818,7 +3806,6 @@ int print_pe (PE pe, int n) {
 		case PE_PRIM_NULL:
 			break;
 
-
 		case PE_DEFN_NUMS:
 		case PE_DEFN_PRTS:
 		case PE_DEFN_T61S:
@@ -3830,7 +3817,6 @@ int print_pe (PE pe, int n) {
 		case PE_DEFN_CHRS:
 			prntstr(pe);
 			break;
-
 
 		case PE_PRIM_OID:
 		case PE_CONS_EXTN:
@@ -3887,7 +3873,6 @@ clname (int cl) {
 	}
 	return (p);
 }
-
 
 /*
  * return the string describing that identity or the number itself
@@ -4146,7 +4131,6 @@ mkrep_elem (int cnt) {
 int ri_cmp (struct rep_int *p1, struct rep_int *p2) {
 	int	cnt;
 
-
 	for (cnt = 1; p1 && p2; cnt++) {
 		if (p1->i != p2->i) {
 			printf("ri_cmp: Integers differ in %d item (%d != %d)\n",
@@ -4174,7 +4158,6 @@ int ri_cmp (struct rep_int *p1, struct rep_int *p2) {
  */
 int re_cmp (struct rep_elem *p1, struct rep_elem *p2) {
 	int	cnt;
-
 
 	for (cnt = 1; p1 && p2; cnt++) {
 		if (p1->r_int != p2->r_int) {

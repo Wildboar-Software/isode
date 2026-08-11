@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_cpy.c,v 9
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/malloc.h"
@@ -38,5 +37,4 @@ AttributeType x;
 {
 	return x;
 }
-
 

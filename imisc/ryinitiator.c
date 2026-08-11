@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryinitiator.c,v 9.0 1
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -44,10 +43,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryinitiator.c,v 9.0 1
 #endif
 #endif
 
-
 static int count = 1;
 int	length = 536;
-
 
 #ifdef	TIMER
 #define	DS_RESULT(ds)	(timing ? timing_result : (ds) -> ds_result)

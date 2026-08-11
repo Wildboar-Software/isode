@@ -24,13 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-put.c,v 9.0 1992
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include "ftamuser.h"
 
 static int  put (),  putaux ();
-
 
 #ifdef	BRIDGE
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
@@ -39,7 +37,6 @@ static int  put (char*dst, int append);
 static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
 static int  put (char*src, char*dst, int append);
 #endif
-
 
 int f_put (char **vec) {
 	int     append;
@@ -251,7 +248,6 @@ out:
 #endif
 }
 
-
 #ifdef	BRIDGE
 static int  put (char*dst, int append)
 #else
@@ -377,7 +373,6 @@ you_lose:
 
 	return result;
 }
-
 
 #ifdef	BRIDGE
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
@@ -932,7 +927,6 @@ you_lose:
 	FTGFREE (ftg);
 	return NOTOK;
 }
-
 
 int	de2fadu (pe, concat)
 PE	pe;

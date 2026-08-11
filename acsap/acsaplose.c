@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaplose.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acpkt.h"
 #include "tailor.h"
-
 
 int	acsaplose (struct AcSAPindication*aci, ...);
 
@@ -90,7 +87,6 @@ int acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, ch
 	return acpktlose (acb, aci, reason, what, fmt);
 }
 #endif
-
 
 int	acsaplose (struct AcSAPindication*aci, ...) {
 	int	    reason,

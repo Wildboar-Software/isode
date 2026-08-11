@@ -24,7 +24,6 @@
  *
  */
 
-
 struct s_filter * andfilter();
 struct s_filter * orfilter();
 struct s_filter * eqfilter();

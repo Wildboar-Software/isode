@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/video.
  *
  */
 
-
 #include <stdio.h>
 #include "quipu/util.h"
 

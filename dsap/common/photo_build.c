@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/photo_build.c,v
  *
  */
 
-
 #include <string.h>
 #include "quipu/photo.h"
 #include "general.h"
@@ -299,7 +298,6 @@ node *get_node (void)
 	return (mem);
 }
 
-
 /* ROUTINE:     build_trees.
 /*
 /* SYNOPSIS:    build the decode tree.
@@ -382,7 +380,6 @@ int build_trees (void) {
  * @param root top of the tree string should be added to
 */
 void add_tree (char *string, int run, char mode, node *root)
-
 
 {
 

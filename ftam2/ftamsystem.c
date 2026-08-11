@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamsystem.c,v 9.0 19
  *
  */
 
-
 #if	defined(DEBUG) && !defined(NULL_INITIATOR)
 #define	NULL_INITIATOR
 #endif
@@ -154,7 +153,6 @@ int  mylock;			/* current concurrency control */
 struct FTAMconcurrency myconctl;/* .. */
 
 int  mylockstyle;		/* current locking style */
-
 
 int  mycontext;			/* current access context */
 int  mylevel;			/* .. */
@@ -338,7 +336,6 @@ void ftam_start (struct FTAMstart *fts) {
 				pw->pw_passwd = shad_res->sp_pwdp;
 	}
 #endif /* SHADOW_PW */
-
 
 	if ((!guest && fts -> fts_password == NULL)
 			|| *pw -> pw_passwd == NULL

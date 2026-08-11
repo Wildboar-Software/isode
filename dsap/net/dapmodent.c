@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapmodent.c,v 9.0 
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"

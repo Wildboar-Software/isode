@@ -25,8 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/fdx2ps.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 
@@ -47,7 +45,6 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-
 extern	IFP	set_check_fd ();
 
 /* */
@@ -59,8 +56,6 @@ fdx_prime (PS ps, int waiting) {
 
 	return (waiting > 0 && pi -> pio_cnt > 0 ? DONE : OK);
 }
-
-
 
 static int
 fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -90,8 +85,6 @@ fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	return cc;
 }
-
-
 
 static int
 fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -124,7 +117,6 @@ fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	return n;
 }
 
-
 static int  fdx_flush (ps)
 PS	ps;
 {
@@ -142,7 +134,6 @@ PS	ps;
 
 	return OK;
 }
-
 
 static int  fdx_close (ps)
 PS	ps;
@@ -164,14 +155,12 @@ PS	ps;
 	return OK;
 }
 
-
 static int  fdx_check (fd, data)
 int	fd;
 caddr_t	data;
 {
 	return (ps_prime ((PS) data, 1) > 0 ? DONE : OK);
 }
-
 
 int	fdx_open (ps)
 PS	ps;
@@ -184,7 +173,6 @@ PS	ps;
 
 	return OK;
 }
-
 
 int	fdx_setup (ps, fd)
 PS	ps;
@@ -217,7 +205,6 @@ int	fd;
 
 	return OK;
 }
-
 
 int	fdx_reset (ps)
 PS	ps;

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/net_init.c,v 9.0 1992
  *
  */
 
-
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include "rosap.h"
@@ -91,7 +89,6 @@ int net_init (void) {
 	Attr_Sequence 		  as, entry_find_type();
 	struct NSAPaddr *na;
 	int				  x, *ip;
-
 
 	DLOG(log_dsap, LLOG_TRACE, ("Net Starting"));
 	isodetailor("server", 0);

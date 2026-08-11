@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsappturn.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"

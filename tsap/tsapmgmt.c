@@ -24,25 +24,20 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmgmt.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "tpkt.h"
 #include "mpkt.h"
-
 
 #ifdef  MGMT
 #include "internet.h"
 
 #define LOCALTHLD 128		/* local threshold for reporting (bytes) */
 
-
 static long pid = OK;
 static int ManSoc;
 static struct MReport TsapInfo;
 static struct qbuf data;
-
 
 /* VARARGS2 */
 
@@ -79,9 +74,7 @@ int	TManGen (unsigned int type, ...) {
 	return result;
 }
 
-
 #define SendMReport()		write_udp_socket (ManSoc, &data)
-
 
 static int
 TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
@@ -162,7 +155,6 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 	}
 	return SendMReport ();
 }
-
 
 static int
 ManInit () {

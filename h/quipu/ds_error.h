@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef DSERRORH
 #define DSERRORH
 
@@ -53,7 +52,6 @@ struct DSE_attribute {
 	struct DSE_at_problem DSE_at_plist;
 } ;
 
-
 struct DSE_name {
 	int DSE_na_problem;
 #define DSE_NA_NOSUCHOBJECT             1
@@ -62,7 +60,6 @@ struct DSE_name {
 #define DSE_NA_ALIASDEREFERENCE         4
 	DN DSE_na_matched;
 };
-
 
 struct DSE_referral {
 	ContinuationRef DSE_ref_candidates;
@@ -137,8 +134,6 @@ struct DSError {
 		struct DSE_update dse_un_update;
 	}   dse_un;
 };
-
-
 
 /* THIS SECTION DEFINES THE PROCEDURE CALLS */
 

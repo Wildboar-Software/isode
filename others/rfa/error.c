@@ -49,7 +49,6 @@ int aux_error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct R
 	return OK;
 }
 
-
 /*--------------------------------------------------------------*/
 /*  str_error							*/
 /*--------------------------------------------------------------*/
@@ -65,14 +64,12 @@ int str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAP
 	return r;
 }
 
-
 /*--------------------------------------------------------------*/
 /* syserror */
 /*--------------------------------------------------------------*/
 int syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	return str_error (sd, err, sys_errname (errno), rox, roi);
 }
-
 
 /*--------------------------------------------------------------*/
 /* error */
@@ -84,7 +81,6 @@ int error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindic
 		return syserror(sd, err, rox, roi);
 }
 
-
 /*--------------------------------------------------------------*/
 /* errMsg */
 /*--------------------------------------------------------------*/
@@ -94,8 +90,6 @@ char *errMsg (int type) {
 	else
 		return sys_errname(errno);
 }
-
-
 
 /*--------------------------------------------------------------*/
 /* statusError */

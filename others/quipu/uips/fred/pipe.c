@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/pipe
  *
  */
 
-
 #include <ctype.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -38,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/pipe
 #ifdef	BSD42
 #include <sys/wait.h>
 #endif
-
 
 static int	dish_running = NOTOK;
 
@@ -468,7 +466,6 @@ stuff_it:
 	return status;
 }
 
-
 static
 do_edit (int sd, char *octets) {
 	int	    cc,
@@ -623,7 +620,6 @@ nearly_done:
 	return DONE;
 }
 
-
 paginate (fp, buffer, cc)
 FILE   *fp;
 char   *buffer;
@@ -746,7 +742,6 @@ no_pager:
 		fwrite (buffer, sizeof buffer[0], cc, fp);
 }
 
-
 /* if you start a command and then background fred, if your pager is less,
    then for some reason, less gets the terminal modes/process groups messed up.
 
@@ -777,12 +772,10 @@ foreground () {
 #endif
 }
 
-
 static	int	cols;
 static	int	rows;
 static	int	length = 0;
 static	int	width = 0;
-
 
 static	mypager (fp)
 FILE   *fp;
@@ -810,7 +803,6 @@ FILE   *fp;
 
 	fflush (stdout);
 }
-
 
 static
 pagchar (int ch) {
@@ -861,7 +853,6 @@ pagchar (int ch) {
 }
 
 /* BIND */
-
 
 int f_bind (char **vec) {
 	if (didbind) {
@@ -942,7 +933,6 @@ da_command (char *fmt) {
 }
 #endif
 
-
 static int
 da_response () {
 	char *cp,
@@ -983,7 +973,6 @@ da_response () {
 		/* NOTREACHED */
 	}
 }
-
 
 int sync_ufnrc () {
 	char *bp;
@@ -1026,7 +1015,6 @@ int sync_ufnrc () {
 
 	return dish (buffer, 1);
 }
-
 
 int init_ufnrc () {
 	int   i;

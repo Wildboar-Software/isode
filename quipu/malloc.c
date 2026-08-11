@@ -88,7 +88,6 @@ off_t lseek();
 
 #endif	/* MALLOCSTACK */
 
-
 #define MAXHEAP		100		/* Number of heaps */
 #ifndef	BSD42
 #define PAGESIZE	0x2000		/* The systems memory page size */
@@ -99,7 +98,6 @@ off_t lseek();
 #define ALIGN(x)	(((x) + (sizeof(char *) - 1)) & ~(sizeof(char *) - 1))
 #define PAGEALIGN(x)	(((x) + pageminusone) & pagemask)
 #define SMALLMAX	smallmax  /* largest block a short can reference */
-
 
 struct header {
 	union {

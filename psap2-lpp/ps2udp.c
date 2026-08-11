@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #define	LPP
@@ -42,11 +40,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
 static int  udpretry ();
 static int  PUservice ();
 
-
-
 #define	MAXTRIES	 3		/* should be tailorable... */
 #define	WAITRIES	30		/* .. */
-
 
 int	udpopen (pb, calling, called, pi, async)
 struct psapblk *pb;
@@ -136,8 +131,6 @@ int	async;
 		}
 }
 
-
-
 char   *udpsave (fd, cp1, cp2, td)
 int	fd;
 char   *cp1,
@@ -150,7 +143,6 @@ struct TSAPdisconnect *td;
 
 	return buffer;
 }
-
 
 int	udprestore (pb, buffer, pi)
 struct psapblk *pb;
@@ -199,7 +191,6 @@ struct PSAPindication *pi;
 
 	return OK;
 }
-
 
 static int  udpretry (pb, reason, pi)
 struct psapblk *pb;
@@ -251,7 +242,6 @@ struct PSAPindication *pi;
 	return DONE;
 }
 
-
 static int  udpcheck (pb, pi)
 struct psapblk *pb;
 struct PSAPindication *pi;
@@ -269,10 +259,8 @@ struct PSAPindication *pi;
 	return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
 }
 
-
 #define	udpclose	close_udp_socket
 #define	udpselect	select_udp_socket
-
 
 static int  PUservice (pb, fd)
 struct psapblk *pb;

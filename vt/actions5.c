@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions5.c,v 9.0 1992/06
  *
  */
 
-
 #include "vtpm.h"
 #include "sector1.h"
 
@@ -47,7 +46,6 @@ void	advise (int, char *, char *, ...);
 
 /* T = got token, N = no got token */
 
-
 /*
    req: usr==>vtpm
    ind: vtpm==>usr
@@ -69,7 +67,6 @@ int ce_105 (void) {	/* common event 105 */
 	return(OK);
 }
 
-
 int a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 	/* V data request addressing sequenced trigger co */
 	PE pe
@@ -79,7 +76,6 @@ int a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 		==> SAMESTATE;
 	*/
 }
-
 
 int a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 	/* V data request addressing sequenced trigger co */
@@ -93,7 +89,6 @@ int a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 	return(ce_105());	/*Autonomous Event to Ship it*/
 }
 
-
 int a5_2 (	/*NDQ-tr in states 400B, 420B */
 	PE pe
 ) {
@@ -106,7 +101,6 @@ int a5_2 (	/*NDQ-tr in states 400B, 420B */
 	==> SAMESTATE
 	*/
 }
-
 
 int a5_3 (	/*NDQ-ntr in states 400B, 420B */
 	PE pe
@@ -245,7 +239,6 @@ int a5_35 (	/* DEL in states 400B, 420B */
 	state = (vra) ? state + 2 : state;
 	return(OK);
 }
-
 
 int a5_38 (	/* RLQ in states 400B */
 	PE pe

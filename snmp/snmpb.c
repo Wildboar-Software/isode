@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include "SNMP-types.h"
@@ -74,7 +73,6 @@ struct binding {
 	struct binding *b_next;
 };
 
-
 /* INVOCATION INFORMATION */
 static	int	last_id = 0;
 
@@ -97,7 +95,6 @@ static	int	totreqs = 0;
 static	int	totretr = 0;
 static	int	totrsps = 0;
 static	int	totdups = 0;
-
 
 /* THREAD INFORMATION */
 struct thread {
@@ -136,7 +133,6 @@ static	int	nilthreads = 0;
 static  int	dedthreads = 0;
 
 static  int     threadlimit = MAXTHREADS;
-
 
 /* REQUEST INFORMATION */
 struct request {

@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_RoSAP_
 #define	_RoSAP_
 
@@ -37,7 +36,6 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
 
-
 struct RoSAPaddr {		/* RoSAP address (old-style)*/
 	struct SSAPaddr roa_addr;
 
@@ -45,9 +43,7 @@ struct RoSAPaddr {		/* RoSAP address (old-style)*/
 };
 #define	NULLRoA			((struct RoSAPaddr *) 0)
 
-
 #define	ROS_MYREQUIRE	SR_DUPLEX/* for direct users of ACSE */
-
 
 struct RoSAPstart {		/* RO-BEGIN.INDICATION */
 	int	    ros_sd;		/* ROS descriptor */
@@ -133,14 +129,12 @@ struct RoSAPconnect {		/* RO-BEGIN.CONFIRMATION */
 	pe_free ((roc) -> roc_data), (roc) -> roc_data = NULLPE; \
 }
 
-
 /* Operation Classes */
 #define	ROS_SYNC	0	/* synchronous mode with result or error */
 #define	ROS_ASYNC	1	/* asynchronous mode with result or error */
 
 /* APDU priorities */
 #define	ROS_NOPRIO	0	/* no priority */
-
 
 struct RoSAPinvoke {		/* RO-INVOKE.INDICATION */
 	int	    rox_id;		/* invokeID */
@@ -157,7 +151,6 @@ struct RoSAPinvoke {		/* RO-INVOKE.INDICATION */
 	pe_free ((rox) -> rox_args), (rox) -> rox_args = NULLPE; \
 }
 
-
 struct RoSAPresult {		/* RO-RESULT.INDICATION */
 	int	    ror_id;		/* invokeID */
 
@@ -169,7 +162,6 @@ struct RoSAPresult {		/* RO-RESULT.INDICATION */
     if ((ror) -> ror_result) \
 	pe_free ((ror) -> ror_result), (ror) -> ror_result = NULLPE; \
 }
-
 
 struct RoSAPerror {		/* RO-ERROR.INDICATION */
 	int	    roe_id;		/* invokeID */
@@ -183,14 +175,12 @@ struct RoSAPerror {		/* RO-ERROR.INDICATION */
 	pe_free ((roe) -> roe_param), (roe) -> roe_param = NULLPE; \
 }
 
-
 struct RoSAPureject {		/* RO-U-REJECT.INDICATION */
 	int	    rou_id;		/* invokeID */
 	int	    rou_noid;		/*     .. is not present */
 
 	int	    rou_reason;		/*   reason (same as roc_result) */
 };
-
 
 struct RoSAPpreject {		/* RO-P-REJECT.INDICATION */
 	int	    rop_reason;		/*   reason (same as roc_result) */
@@ -210,11 +200,9 @@ struct RoSAPpreject {		/* RO-P-REJECT.INDICATION */
 	pe_free ((rop) -> rop_apdu), (rop) -> rop_apdu = NULLPE; \
 }
 
-
 struct RoSAPend {		/* RO-END.INDICATION */
 	int	    roe_dummy;		/*   not used */
 };
-
 
 struct RoSAPindication {
 	int	    roi_type;		/* the union element present */
@@ -246,7 +234,6 @@ struct RoSAPindication {
 #define	roi_end		roi_un.roi_un_end
 #define	roi_finish	roi_un.roi_un_finish
 };
-
 
 extern char *rosapversion;
 

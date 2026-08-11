@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxx.c,v
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
-
 
 /* It appears that window manager writers have problems */
 
@@ -75,7 +72,6 @@ int photo_start (char *name) {
 	}
 	return 0;
 }
-
 
 int photo_end (char *name) {
 
@@ -206,7 +202,6 @@ int photo_white (int length) {
 	}
 	x += length;
 }
-
 
 photo_line_end (line)
 bit_string * line;

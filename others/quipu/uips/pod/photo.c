@@ -6,7 +6,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/photo
  * $Header: /xtel/isode/isode/others/quipu/uips/pod/RCS/photo.c,v 9.0 1992/06/16 12:44:54 isode Rel $
  */
 
-
 #include "quipu/photo.h"
 #include "pod.h"
 

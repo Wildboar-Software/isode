@@ -27,17 +27,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ss.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "ROS-types.h"
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
 
-
 #define	doSSabort	ss2rosabort
-
 
 static void	ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
 		ssREPORTser (), ssFINISHser (), ssABORTser ();
@@ -78,8 +74,6 @@ int RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 #define	e(i)	(indication ? (i) : 0)
 
-
-
 int ro2ssasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RoSAPindication *roi),
@@ -108,14 +102,12 @@ int ro2ssasync (
 		}
 	}
 
-
 	return OK;
 }
 
 #undef	e
 
 /*    map association descriptors for select() */
-
 
 int ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct SSAPindication   sis;
@@ -238,8 +230,6 @@ int ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindica
 	return NOTOK;
 }
 
-
-
 int ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
 	int     result;
 	PE	    pe;
@@ -345,8 +335,6 @@ out:
 	return NOTOK;
 }
 
-
-
 int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct udvec *vv;
@@ -382,7 +370,6 @@ int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-
 static int
 doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
 	int     result;
@@ -411,7 +398,6 @@ out:
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 static int
 doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi) {
@@ -467,7 +453,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -478,7 +463,6 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 static int
 doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi) {
@@ -491,7 +475,6 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindicat
 	return NOTOK;
 }
 
-
 static int
 doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -502,7 +485,6 @@ doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication 
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 static int
 doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi) {
@@ -525,7 +507,6 @@ doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication 
 
 	return DONE;
 }
-
 
 int ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi) {
 	int	    result;

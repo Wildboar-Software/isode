@@ -24,15 +24,11 @@
  ****************************************************************
  */
 
-
-
-
 /*
  *  Cause the message array to get allocated
  */
 
 #define	UDERR_ALLOCATE  1
-
 
 #include <stdio.h>
 #include <signal.h>
@@ -41,12 +37,8 @@
 #include "tailor.h"
 #include "uderrors.h"
 
-
-
-
 int	uderror (int err)
 {
-
 
 }
 

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamgroup1.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
@@ -41,11 +39,9 @@ int FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_MANAGEMENT, FSB_MANAGEMENT, fti);
 }
 
-
 int FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKBEGIN, FSB_BULKBEGIN, fti);
 }
-
 
 int FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
@@ -72,7 +68,6 @@ static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, st
 
 	return result;
 }
-
 
 static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
@@ -140,7 +135,6 @@ out:
 
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
-
 
 static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	int     i,
@@ -438,7 +432,6 @@ finish_create:
 
 	return OK;
 }
-
 
 static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     i;

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
 #ifndef	lint
 static int  _ronotlose ();
 #endif
-
 
 #ifndef	lint
 int	ronotlose (struct RoNOTindication* rni, ...) {
@@ -57,7 +54,6 @@ int ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
 	return ronotlose (rni, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int

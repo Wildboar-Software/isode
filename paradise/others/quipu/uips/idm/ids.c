@@ -539,7 +539,6 @@ prompt_person:
 		goto prompt_person;
 	}
 
-
 prompt_individual:
 	enterString(USER, person, plp);
 	if (strlen(person) == 0) {

@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_LOGGER_
 #define	_LOGGER_
 

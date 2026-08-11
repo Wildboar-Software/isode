@@ -20,7 +20,6 @@
  *
  */
 
-
 #define MAXSPARGS	2	/*Max Special Profile Arguments (2 for TLENET)*/
 #define MAXCDSOBJ	2	/*Max Display Objects (2 for TRANSPARENT)*/
 #define MAXCSSOBJ	1	/*Max Control Objects to negotiate*/
@@ -29,7 +28,6 @@
 #define MAXREPS		1	/*Maximum Repertoires*/
 #define MAXEMPS		1	/*Max Background Emphasis*/
 #define MAXCOLORS	1	/*Aw C'mon*/
-
 
 /* ASQ PDU Fields*/
 #define ASQ_basic	0
@@ -340,7 +338,6 @@ typedef struct fail_reason {
 	int provider_reason;	/* 1,2,3,or 4*/
 } FAIL_REASON;
 
-
 typedef struct font_value {	/*Repertoire Font Value*/
 	int rep_type;		/*1 = NULL; 2 = SEQUENCE....*/
 	char *rep_assign;	/*0 value for pointer means not used*/
@@ -450,5 +447,4 @@ typedef struct asr_msg {
 	int valid_coll;		/*Is collision_winner valid?*/
 	int coll_winner;	/*Optional (0,1,2)*/
 } ASR_MSG;
-
 

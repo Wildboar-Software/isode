@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamgroup2.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
@@ -41,11 +39,9 @@ int FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) 
 	return FGroupResponse (sd, ftg, FTI_MANAGEMENT, FSB_INITIALIZED, fti);
 }
 
-
 int FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKBEGIN, FSB_DATAIDLE, fti);
 }
-
 
 int FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupResponse (sd, ftg, FTI_BULKEND, FSB_INITIALIZED, fti);
@@ -72,7 +68,6 @@ static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, s
 
 	return result;
 }
-
 
 static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int state, struct FTAMindication *fti) {
 	int    i;
@@ -154,7 +149,6 @@ out:
 
 	return OK;
 }
-
 
 static int frgrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti) {
 	if (fsb -> fsb_flags & FSB_INIT)
@@ -429,7 +423,6 @@ wrong_state:
 
 	return OK;
 }
-
 
 static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     flags,

@@ -47,7 +47,6 @@ extern double s_fixed_to_double(), ul_fixed_to_double();
 extern void make_new_peer(), double_to_s_fixed(), tstamp(), receive ();
 extern int demobilize();
 
-
 char actions[5][5] = {
 
 	/*      Sym Act   Sym Pas    Client     Server     Broadcast  |Host /       */
@@ -59,7 +58,6 @@ char actions[5][5] = {
 	{ACT_PKT,  ACT_ERROR, ACT_RECV,  ACT_ERROR, ACT_ERROR},	/* Server    */
 	{ACT_PKT,  ACT_ERROR, ACT_RECV,  ACT_ERROR, ACT_ERROR}
 };/* Broadcast */
-
 
 #ifdef	REFCLOCK
 void	refclock_input();
@@ -132,7 +130,6 @@ transmit (struct ntp_peer *peer) {
 #ifdef	REFCLOCK
 	} else if (peer->flags & PEER_FL_REFCLOCK) {
 		/* Special version of code below, adjusted for refclocks */
-
 
 		peer->pkt_sent++;
 		i = peer->reach;	/* save a copy */
@@ -676,7 +673,6 @@ clear (struct ntp_peer *peer) {
 	if (sys.peer != NULL)
 		poll_update(sys.peer, NTP_MINPOLL);
 }
-
 
 /* 3.4.8 Poll Update Procedure */
 void

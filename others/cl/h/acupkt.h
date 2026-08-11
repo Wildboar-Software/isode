@@ -12,7 +12,6 @@
 #include "pusap2.h"		/* definitions for PS-USERs */
 #endif
 
-
 #define	AC_ASN		"acse pci version 1"
 
 #define	toomuchP(b,n,m,p) \
@@ -34,7 +33,6 @@
 
 #endif /* ifdef ACSE */
 
-
 #ifndef	lint
 #ifndef	__STDC__
 #define	copyAcSAPdata(base,len,d) \
@@ -55,7 +53,6 @@
 #define	copyAcSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	ACS_USER_BASE	ACS_USER_NULL
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
@@ -64,8 +61,6 @@ int     ps2aculose ();
 
 struct type_ACS_Association__information *info2_apdu ();
 int	apdu2_info ();
-
-
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -128,5 +123,4 @@ struct assocblk {
 };
 #define	NULLACB		((struct assocblk *) 0)
 int     freeacublk ();
-
 

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"

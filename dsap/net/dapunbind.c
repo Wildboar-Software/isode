@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapunbind.c,v 9.0 
  *
  */
 
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dap.h"
@@ -66,14 +64,12 @@ int dap_unbind (int ad) {
 	return(DS_OK);
 }
 
-
 int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
-
 
 	result = RoUnBindRequest (sd, NULLPE, secs, acr, rni);
 
@@ -92,7 +88,6 @@ int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindicat
 }
 
 /* D-UNBIND.RETRY */
-
 
 int DapUnBindRetry (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di) {
 	int			  result;

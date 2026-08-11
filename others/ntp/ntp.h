@@ -144,7 +144,6 @@ struct list {
 	(((a) == UNSPECIFIED ? NTP_INFIN+1 : a) cond \
 	 ((b) == UNSPECIFIED ? NTP_INFIN+1 : (b)))
 
-
 /*
  *  Definitions outlined in the NTP spec
  */
@@ -180,7 +179,6 @@ struct list {
 #define	PEER_SHIFT	8
 #define	NTP_WINDOW_SHIFT_MASK 0xff
 #endif
-
 
 /*
  *  5.1 Uniform Phase Adjustments
@@ -320,7 +318,6 @@ struct ntpdata {
 #define	PRIM_REF	1	/* radio clock */
 #define	INFO_QUERY	62	/* **** THIS implementation dependent **** */
 #define	INFO_REPLY	63	/* **** THIS implementation dependent **** */
-
 
 /* =================  table 3.2 Peer Variables	================= */
 struct ntp_peer {

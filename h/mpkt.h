@@ -22,7 +22,6 @@
 
 #include "isoaddrs.h"
 
-
 struct MReport {
 	u_short type;
 #define OPREQIN         1

@@ -64,7 +64,6 @@ LLog    _de_log = {
 };
 LLog *de_log = &_de_log;
 
-
 extern char *TidyString();
 extern char *findHelp();
 void onint1(), de_exit();
@@ -102,7 +101,6 @@ int alarmLeft = 0;
 int dots;
 int dotsPrinted;
 
-
 struct cnamelist * cnamelp = NULLCNLIST;
 struct mapnamelist * mapnamelp = NULLMNLIST;
 struct mapphonelist * mapphonelp = NULLPHLIST;
@@ -119,7 +117,6 @@ char origDefaultCo[LINESIZE], origDefaultOrg[LINESIZE],
 	 welcomeMessage[LINESIZE] = "Welcome to the Directory Service",
 								matched[LINESIZE],
 								callingDteNumber[LINESIZE];
-
 
 char * username, * backup_dsa_address, * password;
 jmp_buf sjbuf;
@@ -175,7 +172,6 @@ char *argv[];
 			doUfnSearch();
 			continue;
 		}
-
 
 		if (boundToDSA == FALSE)
 			if (de_bind(FALSE) == NOTOK) /* don`t block */
@@ -701,7 +697,6 @@ int searchparent;
 	return START_NEW_QUERY;
 }
 
-
 printNames(objectType)
 int objectType;
 {
@@ -758,8 +753,6 @@ matchFollowing() {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
-
-
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
@@ -870,7 +863,6 @@ int objectType;
 	}
 	return numEnt;
 }
-
 
 enterAndValidate(prompt, buf, objectType, defaultValue, lp, nep)
 char * prompt, * buf;

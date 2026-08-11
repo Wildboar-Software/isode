@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/nrs_info.c,v 9.
  *
  */
 
-
 /*
 	SYNTAX:
 	nrs_info ::= <context> "$" <addr_sp_id> "$" <routes>
@@ -69,7 +68,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/nrs_info.c,v 9.
 	applic_relay ::= <vis_str_seq>
 	vis_str_seq ::= <visible_string> | <str_seq> "$" <visible_string>
 */
-
 
 #include "quipu/util.h"
 #include "quipu/attr.h"		/* Def.s for READOUT etc */

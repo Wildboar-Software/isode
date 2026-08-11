@@ -256,7 +256,6 @@ user_tailor () {
 	strcat(options_path, options);
 	parse_duarc(options_path);
 
-
 	if (testing) {
 		strcpy(read_path, "./Xd/duaconfig/");
 		strcat(read_path, readTypes);
@@ -686,7 +685,6 @@ make_friendly (char *fstr, char *str) {
 	int count, rdn_count = 0;
 	str_seq rdns = NULLDS;
 
-
 	if (str == NULLCP || *str == '\0') {
 		*fstr = '\0';
 		return;
@@ -731,7 +729,6 @@ make_friendly (char *fstr, char *str) {
 	free_seq(rdns);
 }
 
-
 static void
 make_friendly_aux (char *fstr, char *rdn) {
 	char *start, *end, *string;
@@ -740,7 +737,6 @@ make_friendly_aux (char *fstr, char *rdn) {
 	int count, seqnum;
 
 	extern char *SkipSpace();
-
 
 	/* First check the attribute type alias */
 	start = end = SkipSpace(rdn);
@@ -801,7 +797,6 @@ make_friendly_aux (char *fstr, char *rdn) {
 		strcat(fstr, ")");
 	}
 }
-
 
 void
 make_friendly_rdn (char *friendly, char *object, char *base) {

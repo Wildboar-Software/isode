@@ -7,7 +7,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/filt.c
  * $Header: /xtel/isode/isode/others/quipu/uips/sd/RCS/filt.c,v 9.0 1992/06/16 12:45:08 isode Rel $
  */
 
-
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "quipu/entry.h"
@@ -343,7 +342,6 @@ Filter make_attr_filter() {
 		return NULLFILTER;
 	}
 }
-
 
 Filter make_filter(filt)
 filt_struct *filt;

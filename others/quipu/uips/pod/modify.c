@@ -46,7 +46,6 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 	return a;
 }
 
-
 dsErrorStruct modify_entry(mods)
 dirEntry mods;
 {
@@ -704,7 +703,6 @@ AttributeType at;
 	*buffer = '\0';
 }
 
-
 Attr_Sequence make_template_as(oc)
 AV_Sequence oc;
 {
@@ -762,7 +760,6 @@ char *modify_error (struct DSError *error) {
 
 	return message;
 }
-
 
 static void my_as_comp_print (ps,as,format)
 PS   ps;
@@ -846,5 +843,4 @@ Attr_Sequence as;
 	as->attr_link = without_vals;
 	return with_vals;
 }
-
 

@@ -24,22 +24,18 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-ls.c,v 9.0 1992/
  *
  */
 
-
 #include <signal.h>
 #include <stdio.h>
 #include "FTAM-types.h"
 #include "ftamuser.h"
 #include "general.h"
 
-
 static int dashl;
 static int didrecurse;
 static int silent;
 
-
 static long  now;
 static long  longtimeago;
-
 
 int	toomany;
 
@@ -59,14 +55,12 @@ static void _init_fp ()
 }
 #endif
 
-
 char   *ctime ();
 FILE   *popen ();
 
 static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
 static int fdfls (char *file);
 static int filcmp (struct filent **a, struct filent **b);
-
 
 #ifndef	BRIDGE
 int f_fls (char **vec) {
@@ -129,7 +123,6 @@ int f_fls (char **vec) {
 	return result;
 }
 #endif
-
 
 int f_ls (char **vec) {
 	int     invis,
@@ -208,7 +201,6 @@ int f_ls (char **vec) {
 
 	return result;
 }
-
 
 static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi) {
 	int	    recurse;
@@ -383,7 +375,6 @@ you_lose:
 	return NOTOK;
 }
 
-
 static int fdfls (char *file) {
 	int    i,
 		   j,
@@ -520,8 +511,6 @@ static int fdfls (char *file) {
 	return OK;
 }
 
-
-
 int fdffnx (int fd, struct PSAPdata *px, int status) {
 	int    i;
 	PE	    pe,
@@ -632,7 +621,6 @@ int fdffnx (int fd, struct PSAPdata *px, int status) {
 
 	return status;
 }
-
 
 static int filcmp (struct filent **a, struct filent **b) {
 	return strcmp ((*a) -> fi_entry, (*b) -> fi_entry);

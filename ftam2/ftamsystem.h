@@ -20,11 +20,9 @@
  *
  */
 
-
 #include <errno.h>
 #include "ftamsbr.h"
 #include "logger.h"
-
 
 #define	SCPYN(a,b)	strncpy ((a), (b), sizeof (a))
 
@@ -35,7 +33,6 @@ extern int  ftamfd;
 extern int  cflag;
 extern int  debug;
 extern char *myname;
-
 
 void	ftam_adios (), ftam_advise (), ftam_diag ();
 
@@ -61,7 +58,6 @@ extern ino_t null_ino;
 #else
 #define	NACCT	(NGROUPS + 20)
 #endif
-
 
 extern struct vfsmap vfs[];	/* ordering affects default action in st2vfs()
 				   put preferential entries towards the end */
@@ -110,10 +106,8 @@ extern struct FTAMconcurrency myconctl;/* .. */
 
 extern int mylockstyle;		/* current locking style */
 
-
 extern int  mycontext;		/* current access context */
 extern int  mylevel;		/* .. */
-
 
 #ifndef	SYS5
 #define	unlock()	if (mylock) (void) flock (myfd, LOCK_UN); else
@@ -130,9 +124,7 @@ extern int  mylevel;		/* .. */
     else
 #endif
 
-
 extern int  errno;
-
 
 #ifdef	BRIDGE
 /* FTP interface routines and variables */

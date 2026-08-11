@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/dg2ps.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include "psap.h"
 
 struct ps_dg {
@@ -44,9 +42,7 @@ struct ps_dg {
 	IFP	    ps_check;
 };
 
-
 extern	IFP	set_check_fd ();
-
 
 static int
 dg_prime (PS ps, int waiting) {
@@ -90,8 +86,6 @@ dg_prime (PS ps, int waiting) {
 	return OK;
 }
 
-
-
 static int
 dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
@@ -109,8 +103,6 @@ dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	return cc;
 }
 
-
-
 static int
 dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
@@ -124,7 +116,6 @@ dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	return n;
 }
-
 
 static int
 dg_flush (PS ps) {
@@ -140,7 +131,6 @@ dg_flush (PS ps) {
 
 	return OK;
 }
-
 
 static int
 dg_close (PS ps) {
@@ -161,7 +151,6 @@ dg_close (PS ps) {
 	return OK;
 }
 
-
 static int
 dg_check (int fd, caddr_t data) {
 	int	    n;
@@ -174,7 +163,6 @@ dg_check (int fd, caddr_t data) {
 	return (ps_prime (ps, 1) > 0 ? DONE : OK);
 }
 
-
 int dg_open (PS ps) {
 	ps -> ps_primeP = dg_prime;
 	ps -> ps_readP = dg_read;
@@ -184,7 +172,6 @@ int dg_open (PS ps) {
 
 	return OK;
 }
-
 
 int dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx) {
 	struct ps_dg *pt;

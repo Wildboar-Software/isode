@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/tcp.c,v 9.0 1992/06/16
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include "mib.h"
@@ -100,19 +99,16 @@ struct tcpcb {
 #define	TCP_NSTATES	11
 #endif
 
-
 #define	RTOA_OTHER	1		/* tcpRtoAlgorithm */
 #define	RTOA_VANJ	4		/* .. */
 
 #define	MXCN_NONE	(-1)		/* tcpMaxConn */
-
 
 static struct tcpstat tcpstat;
 
 static int tcpConnections;
 
 static int  get_connections ();
-
 
 #define	tcpRtoAlgorithm	0
 #define	tcpRtoMin	1
@@ -186,7 +182,6 @@ static int _read_tcp_stats ()
 	return OK;
 }
 #endif
-
 
 static int  o_tcp (oi, v, offset)
 OI	oi;
@@ -343,9 +338,7 @@ int	offset;
 	}
 }
 
-
 static	int	tcp_states[TCP_NSTATES];
-
 
 struct tcptab {
 #define	TT_SIZE	10			/* object instance */
@@ -364,9 +357,7 @@ static struct tcptab *tts = NULL;
 
 static	int	flush_tcp_cache = 0;
 
-
 static struct tcptab *get_tcpent ();
-
 
 #define	tcpConnState	0
 #define	tcpConnLocalAddress 1
@@ -424,7 +415,6 @@ static struct tcptab *_read_tcp_connections(int *len)
 	return tt;
 }
 #endif
-
 
 static int  o_tcp_conn (oi, v, offset)
 OI	oi;
@@ -544,7 +534,6 @@ try_again:
 	}
 }
 
-
 static int  tt_compar (a, b)
 struct tcptab **a,
 		   **b;
@@ -552,7 +541,6 @@ struct tcptab **a,
 	return elem_cmp ((*a) -> tt_instance, TT_SIZE,
 					 (*b) -> tt_instance, TT_SIZE);
 }
-
 
 static int  get_connections (offset)
 int	offset;
@@ -670,7 +658,6 @@ int	offset;
 	return OK;
 }
 
-
 static struct tcptab *get_tcpent (ip, isnext)
 unsigned int *ip;
 int	isnext;
@@ -699,12 +686,10 @@ out:
 
 /* UNIX */
 
-
 static	int	unixNetstat = 1;
 
 #ifndef LINUX
 static	struct mbstat mbstat;
-
 
 #define	mbufs		0
 #define	mbufClusters	1
@@ -720,7 +705,6 @@ static	struct mbstat mbstat;
 #ifdef	SUNOS41
 #define	mbufSpaces	7
 #endif
-
 
 static int  o_mbuf (oi, v, offset)
 OI	oi;
@@ -805,10 +789,8 @@ int	offset;
 	}
 }
 
-
 #define	mbufType	0
 #define	mbufAllocates	1
-
 
 static int  o_mbufType (oi, v, offset)
 OI	oi;

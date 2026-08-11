@@ -24,12 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2ps.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
-
 
 static int
 str_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -45,8 +41,6 @@ str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	return cc;
 }
-
-
 
 static int
 str_write (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -83,7 +77,6 @@ partial:
 	return n;
 }
 
-
 static int
 str_close (PS ps) {
 	if (ps -> ps_base && !ps -> ps_inline)
@@ -92,7 +85,6 @@ str_close (PS ps) {
 	return OK;
 }
 
-
 int str_open (PS ps) {
 	ps -> ps_readP = str_read;
 	ps -> ps_writeP = str_write;
@@ -100,7 +92,6 @@ int str_open (PS ps) {
 
 	return OK;
 }
-
 
 int str_setup (PS ps, char *cp, int cc, int in_line) {
 	char  *dp;

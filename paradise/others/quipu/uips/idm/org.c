@@ -110,7 +110,6 @@ freeOrgSearchArgs() {
 	*/
 }
 
-
 int listAllOrgs(cstr, olistp)
 char * cstr;
 struct namelist ** olistp;
@@ -134,7 +133,6 @@ struct namelist ** olistp;
 	alarmCleanUp();
 	return ret;
 }
-
 
 int readOrg(ostr, olistp)
 char * ostr;
@@ -188,7 +186,6 @@ char * str;
 	arg.lsa_object = str2dn(str);
 	return (&arg);
 }
-
 
 int readExactOrg(ostr, olistp)
 char * ostr;
@@ -245,7 +242,6 @@ list_orgs:
 	/* free something else */
 	return OK;
 }
-
 
 int listMatchingOrgs(cstr, ostr, olistp)
 char * cstr, * ostr;

@@ -12,7 +12,6 @@
 #ifndef SYMTAB
 #define SYMTAB
 
-
 typedef struct tab_entry {
 	char *val;
 	char *name;

@@ -161,7 +161,6 @@ PodLoop () {
 	String window_name = "Directory",
 	icon_name = "Directory";
 
-
 	XtRealizeWidget(toplevel);
 
 	icon_pixmap = XCreatePixmapFromBitmapData(dpy, XtWindow(toplevel),
@@ -467,7 +466,6 @@ Widget parent;
 	count = 0;
 	TypeForm = XtCreateManagedWidget("TypeForm", formWidgetClass,
 									 parent, args, count);
-
 
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "Searching For");
@@ -1167,7 +1165,6 @@ static Widget createReadPopup() {
 	PhotoWindow = 0;
 	return ReadPopup;
 }
-
 
 static void AddNewList(list_widget, list_seq, list_size)
 Widget list_widget;
@@ -2494,7 +2491,6 @@ XtPointer closure, calldata;
 	XtPopdown(history_popup);
 }
 
-
 /*ARGSUSED*/
 static void ChangeHelp(w, event, params, num_params)
 Widget w;
@@ -2660,7 +2656,6 @@ XtPointer object, calldata;
 	}
 }
 
-
 /*ARGSUSED*/
 static void closeModify(w, clientdata, calldata)
 Widget w;
@@ -2722,7 +2717,6 @@ XtPointer attrValue, calldata;
 	val->attr->mod_flag = TRUE;
 }
 
-
 /*ARGSUSED*/
 static void submitModif(w, closure, calldata)
 Widget w;
@@ -2783,7 +2777,6 @@ XtPointer closure, calldata;
 		free(mod_error.err_mess);
 	}
 }
-
 
 XtCallbackRec modCallbacks[] = {
 	{modUpdate, (XtPointer) NULL},
@@ -3694,7 +3687,6 @@ char *entry_name;
 	return(modifyPopup);
 }
 
-
 /*ARGSUSED*/
 static void freeEntry(w, closure, calldata)
 Widget w;
@@ -3752,7 +3744,6 @@ char *istring;
 	free(string);
 	return (max_width + FONTWIDTH(font));
 }
-
 
 static int GetTextHeight(widget, string)
 Widget widget;
@@ -3910,5 +3901,4 @@ XtGrabKind grab_kind;
 	count++;
 	XtSetValues(label_widget, args, count);
 }
-
 

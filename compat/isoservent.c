@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"
@@ -33,14 +31,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1
 #include "isoservent.h"
 #include "tailor.h"
 
-
 static char *isoservices = "isoservices";
 
 static FILE *servf = NULL;
 static int  stayopen = 0;
 
 static struct isoservent    iss;
-
 
 int setisoservent (int f) {
 	if (servf == NULL)
@@ -52,7 +48,6 @@ int setisoservent (int f) {
 	return (servf != NULL);
 }
 
-
 int endisoservent (void) {
 	if (servf && !stayopen) {
 		(void) fclose (servf);
@@ -61,7 +56,6 @@ int endisoservent (void) {
 
 	return 1;
 }
-
 
 struct isoservent *
 getisoservent (void) {
@@ -107,7 +101,6 @@ getisoservent (void) {
 
 	return NULL;
 }
-
 
 #ifdef	DEBUG
 int _printsrv (struct isoservent *is) {

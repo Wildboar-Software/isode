@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/turbo_avl.c,v 9
  *
  */
 
-
 #include <sys/types.h>
 
 #include "manifest.h"
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/turbo_avl.c,v 9
 #include "quipu/turbo.h"
 
 extern LLog * log_dsap;
-
 
 #define ROTATERIGHT(x)	{ \
 	Avlnode *tmp;\
@@ -56,7 +54,6 @@ extern LLog * log_dsap;
 	tmp->avl_left = *x;\
 	*x = tmp;\
 }
-
 
 static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP fdup, int depth)
         	        

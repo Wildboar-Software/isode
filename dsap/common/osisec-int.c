@@ -37,7 +37,6 @@ use_serv_null (void) {
 	return (&null_serv);
 }
 
-
 struct signature *nullsigned(char *data, int type, modtyp *module)
 {
 	struct signature *result = (struct signature *) calloc((unsigned)1, sizeof(*result));
@@ -51,7 +50,6 @@ struct signature *nullsigned(char *data, int type, modtyp *module)
 	}
 	return (struct signature *)0;
 }
-
 
 int nullverify(char *data, int type, modtyp *module, struct signature *sig, struct GenericPublicKey *pubkey, struct GenericParameters *keyparms, struct GenericHashParameters *hashparms)
 {
@@ -72,7 +70,6 @@ struct encrypted *nullencrypted(char *concrete, int type, modtyp *module, struct
 {
 	return (struct encrypted *)0;
 }
-
 
 int nulldecrypted(struct encrypted *enc, int type, modtyp *module, char **concrete, struct GenericSecretKey *privkey, struct GenericParameters *parms)
 {

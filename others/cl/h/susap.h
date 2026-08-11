@@ -18,7 +18,6 @@
  *
  */
 
-
 #ifndef	_SuSAP_
 #define	_SuSAP_
 
@@ -31,8 +30,6 @@
 #ifndef	_ISOADDRS_
 #include "isoaddrs.h"
 #endif
-
-
 
 #ifdef HULA
 
@@ -65,7 +62,6 @@ struct SuSAPstart {
 
 #endif
 
-
 #ifdef HULA
 int	SUnitDataBind();	/* bind local to a remote address */
 int	SUnitDataUnbind();	/* unbind local from a remote address */
@@ -77,6 +73,5 @@ int	SUnitDataRequest();	/* UNITDATA.request (without handle) */
 int	SUnitDataSelectMask();	/* set the select mask for async */
 int	SuSave();		/* save unitdata buffer */
 #endif
-
 
 #endif

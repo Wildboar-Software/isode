@@ -71,7 +71,6 @@ int de_Add() {
 
 	ask_objectType(option, object_to_work);
 
-
 	while ((strcmp(object_to_work, quit_String))) {
 
 		sprintf(tmp, "\n%s %s %s\n\n", enter_msg, quit_String, to_quit_anytime);
@@ -122,7 +121,6 @@ int de_Add() {
 	}
 
 }
-
 
 int prompt_atts(object, atts)
 int object;
@@ -474,7 +472,6 @@ char * initial_dsa_address;
 	return OK;
 }
 
-
 int de_Add_person() {
 	char * already_in;
 	char * first_name;
@@ -735,8 +732,6 @@ prompt_cn:
 	}
 }
 
-
-
 int de_Add_role() {
 
 	char * already_in;
@@ -892,7 +887,6 @@ int de_Add_role() {
 	}
 
 }
-
 
 int de_Add_room() {
 	char * already_in;

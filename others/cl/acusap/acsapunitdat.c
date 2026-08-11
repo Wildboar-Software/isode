@@ -48,8 +48,6 @@
 static char *rcsid = "$Header: /f/iso/acsap/RCS/acsapinitiat.c,v 5.0 88/07/21 14:21:35 mrose Rel $";
 #endif
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"
@@ -59,12 +57,8 @@ static char *rcsid = "$Header: /f/iso/acsap/RCS/acsapinitiat.c,v 5.0 88/07/21 14
 #include "isoservent.h"
 #include "tailor.h"
 
-
 #define	BER		"asn.1 basic encoding"
 #define NULLACC		((struct AcSAPconnect *)0)
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /* A-UNIT-DATA.REQUEST */
@@ -110,7 +104,6 @@ struct  AcSAPindication *aci;
 					"illegal number of ASDUs (%d)", ndata );
 	missingP (aci);
 
-
 	smask = sigioblock ();
 
 	if ((acb = newacublk ()) == NULL) {
@@ -143,17 +136,14 @@ struct  AcSAPindication *aci;
 		goto no_good;
 	}
 
-
 	pp = NULLPC;
 	if ( ctx2block (ctxlist, acb, &pp, aci) == NOTOK ) /* set AUDT p-context */
 		goto no_good;
 	pe -> pe_context = acb -> acb_id;
 
-
 #ifdef	DEBUG
 	if (acsaplevel & ISODELOG_PDUS) ACU_print (pe, "AUDT-apdu", 0);
 #endif
-
 
 	result = PUnitDataRequest (callingaddr, calledaddr,
 							   ctxlist, &pe, 1, qos, pi);
@@ -173,7 +163,6 @@ struct  AcSAPindication *aci;
 	}
 	goto out;
 
-
 no_good:
 	;
 	result = NOTOK;
@@ -190,9 +179,6 @@ out:
 	sigiomask (smask);
 	return result;
 }
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    set a local binding for AcUnitDataWrite() and AcUnitDataRead()       */
@@ -240,7 +226,6 @@ struct  AcSAPindication *aci;
 	/*  Bind remembers the input parameters, not the processed AUDT PE */
 	/*  necessary to unhook the AUDT PE from user space. */
 
-
 	if ( sd == NOTOK ) {
 		if ((acb = newacublk ()) == NULL) {
 			sigiomask (smask);
@@ -262,10 +247,8 @@ struct  AcSAPindication *aci;
 		goto no_good;
 	}
 
-
 	if ( titles2block ( callingtitle, calledtitle, acb, aci ) == NOTOK )
 		goto no_good;
-
 
 	{
 		pp = NULLPC;
@@ -284,7 +267,6 @@ struct  AcSAPindication *aci;
 		}
 	}
 
-
 	if ( result == NOTOK ) {
 		ps2aculose (NULLACB, aci, "PUnitDataBind", pa);
 		goto no_good;
@@ -302,14 +284,12 @@ struct  AcSAPindication *aci;
 	sigiomask (smask);
 	return result;
 
-
 no_good:
 	;
 	freeacublk (acb);
 	sigiomask (smask);
 	return NOTOK;
 }
-
 
 /*---------------------------------------------------------------------------*/
 /*    reset a local binding for new called addr and called title           */
@@ -361,15 +341,11 @@ struct  AcSAPindication *aci;
 	sigiomask (smask);
 	return OK;
 
-
 no_good:
 	;
 	sigiomask (smask);
 	return NOTOK;
 }
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    set off A-UNIT-DATA.REQUEST over locally bound association */
@@ -392,7 +368,6 @@ struct  AcSAPindication *aci;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort *pa = &pi -> pi_abort;
 	struct type_ACS_AUDT__apdu *pdu;
-
 
 	missingP (data);
 	toomuchP (data, ndata, NACDATA, "user");
@@ -418,9 +393,7 @@ struct  AcSAPindication *aci;
 
 	pdu -> application__context__name = acb -> acb_context;
 
-
 	titles2pdu ( acb -> acb_callingtitle,  acb -> acb_calledtitle, pdu );
-
 
 	/*  Unfortunately info2_apdu() below only does fully encoded data */
 	/*  Will change to allow simple encoding later */
@@ -439,7 +412,6 @@ struct  AcSAPindication *aci;
 	if ( (result = PUnitDataWrite ( sd, &pe, 1, pi ))  ==  NOTOK )
 		ps2aculose (NULLACB, aci, "PUnitDataWrite", pa);
 	goto out;
-
 
 no_good:
 	;
@@ -460,9 +432,6 @@ out:
 	sigiomask (smask);
 	return result;
 }
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    implements A-UNIT-DATA.INDICATION on locally bound association */
@@ -487,7 +456,6 @@ int AcUnitDataRead (
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
 	struct type_ACS_AUDT__apdu *pdu;
-
 
 	isodetailor ("acsap");
 
@@ -569,7 +537,6 @@ int AcUnitDataRead (
 	free_ACS_AUDT__apdu (pdu);
 	return OK;
 
-
 no_good:
 	;
 	if (pdu)
@@ -578,8 +545,6 @@ no_good:
 	/*  freeacublk (acb); ? */
 	return NOTOK;
 }
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    clear local binding for A-UNIT-DATA */
@@ -628,9 +593,6 @@ out1:
 	return result;
 }
 
-
-
-
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local A-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
@@ -666,7 +628,6 @@ int AcuSave (
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 
-
 	if ( (result = PuSave ( sd, vecp, vec, pi) ) == NOTOK) {
 		ps2aculose (NULLACB, aci, "PuSave", pa);
 		if ( sd == NOTOK ) freeacublk (acb);
@@ -676,8 +637,6 @@ int AcuSave (
 	acb->acb_fd = result;
 	return result;
 }
-
-
 
 /*---------------------------------------------------------------------------*/
 int	titles2block ( callingtitle, calledtitle, acb, aci )
@@ -741,8 +700,6 @@ no_mem:
 	return NOTOK;
 }
 
-
-
 /*---------------------------------------------------------------------------*/
 int	titles2pdu ( callingtitle, calledtitle, pdu )
 /*---------------------------------------------------------------------------*/
@@ -775,7 +732,6 @@ struct  type_ACS_AUDT__apdu *pdu;
 				&callingtitle -> aei_ae_id;
 	}
 }
-
 
 /*---------------------------------------------------------------------------*/
 int ctx2block (
@@ -845,8 +801,6 @@ no_mem:
 	return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 }
 
-
-
 /*---------------------------------------------------------------------------*/
 int validaudtctx (
 	/*---------------------------------------------------------------------------*/
@@ -892,8 +846,6 @@ int validaudtctx (
 						   "wrong ASN for ACSE");
 	return OK;
 }
-
-
 
 /*---------------------------------------------------------------------------*/
 int pdu2start (

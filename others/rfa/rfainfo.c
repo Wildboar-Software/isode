@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfainfo.c,v 9.0 
  *
  */
 
-
 #include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -174,7 +173,6 @@ mallocRfaInfo (char *fn) {
 	return rfa;
 }
 
-
 /*------------------------------------------------------
  * freeRfaInfoList - free list elements
  *------------------------------------------------------*/
@@ -196,7 +194,6 @@ freeRfaInfoList (struct RfaInfo *rfa) {
 	}
 }
 
-
 /*------------------------------------------------------
  * lock_timeout - handler for lock timeout
  *------------------------------------------------------*/
@@ -205,7 +202,6 @@ int sig;
 {
 	timedout++;
 }
-
 
 /*------------------------------------------------------
  * lckRfainfo
@@ -285,7 +281,6 @@ closeAndUnlockRfainfo (char *fn) {
 	return NOTOK;
 }
 
-
 /*------------------------------------------------------
  * releaseRfaInfoList - unlock list and free it
  *------------------------------------------------------*/
@@ -356,7 +351,6 @@ statFile (char *fn, struct RfaInfo *rfa) {
 	return OK;
 }
 
-
 /*------------------------------------------------------
  * getRfaInfo - read RFA file info from ".rfainfo"
  *------------------------------------------------------*/
@@ -415,7 +409,6 @@ struct RfaInfo **rfap;
 			rfa->ri_lckname = strdup(buf);
 		else
 			rfa->ri_lckname = NULL;
-
 
 		while (isspace(*s))
 			s++;
@@ -596,7 +589,6 @@ int putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 	return OK;
 }
 
-
 /*------------------------------------------------------
  * extractRfaInfo - extract RFA file info by filename
  *------------------------------------------------------*/
@@ -656,6 +648,4 @@ sortRfaInfoList (struct RfaInfo **rfap) {
 	}
 	*rfap = sorted;
 }
-
-
 

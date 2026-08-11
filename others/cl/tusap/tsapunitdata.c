@@ -38,8 +38,6 @@
  ****************************************************************
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
@@ -51,9 +49,7 @@
 #include "internet.h"
 #include "uderrors.h"
 
-
 struct TSAPaddr *newtuaddr ();
-
 
 #define	selmask(fd,m,n) \
 { \
@@ -62,12 +58,9 @@ struct TSAPaddr *newtuaddr ();
 	(n) = (fd) + 1; \
 }
 
-
 #ifdef HULA
 
-
 /*    STATIC DATA */
-
 
 #ifdef WITHOUTCONS
 
@@ -85,11 +78,6 @@ static struct tsapblk *THead = &tsapque;
 #ifndef	SIGPOLL
 static int TPid = NOTOK;
 #endif
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -114,11 +102,9 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 	struct NSAPaddr *la;
 	struct tsapblk *tb;
 
-
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataListen \n");
 #endif
-
 
 	/*
 	 *  Check for missing parms.
@@ -197,7 +183,6 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 		break;
 	}   /* end of for number of net addresses */
 
-
 	if (tb -> tb_fd == NOTOK) {
 		freetublk (tb);
 		return NOTOK;
@@ -206,12 +191,6 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 	return (tb -> tb_fd);
 
 }
-
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -247,7 +226,6 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 
 int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct TSAPdisconnect *td)
 
-
 {
 
 	int      result;
@@ -258,7 +236,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	struct tsapblk *tb;
 	int	 option;
 	SBV      smask;			 	/* signal save mask */
-
 
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataBind \n");
@@ -319,7 +296,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 
 	}
 
-
 	if (calling == NULLTA) {
 		static struct TSAPaddr tas_calling;
 
@@ -346,7 +322,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 		calling -> ta_port = htons ((u_short) (0x8000 | (getpid () & 0x7fff)));
 		calling -> ta_selectlen = sizeof calling -> ta_port;
 	}
-
 
 	/*
 	 *  Set the network address from the called address if it is specified
@@ -382,7 +357,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	 *  If the called service address has no network address,
 	 *  then we will default to the local network address.
 	 */
-
 
 	for (na = called -> ta_addrs; n >= 0; na++, n--) {
 		for (l = calling -> ta_naddr - 1, la = calling -> ta_addrs;
@@ -445,7 +419,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 
 	}   /* end of for number of net addresses */
 
-
 	if (tb -> tb_fd == NOTOK) {
 		freetublk (tb);
 		return NOTOK;
@@ -454,11 +427,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	return (tb -> tb_fd);
 
 }
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -486,7 +454,6 @@ int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 	printf ("\n     in TUnitDataUnbind \n");
 #endif
 
-
 	/*
 	 *  Find the correct transport block and set the signal mask.
 	 */
@@ -506,9 +473,6 @@ int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 	return OK;
 
 }
-
-
-
 
 /*
  ****************************************************************
@@ -538,14 +502,12 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 	int	     result;
 	SBV      smask;			 	/* signal save mask */
 
-
 	if (vecp < 3)
 		return tusaplose (td, DR_PARAMETER, NULLCP,
 						  TuErrString(UDERR_BAD_INIT_VECTOR));
 
 	missing_udP (vec);
 	missing_udP (td);
-
 
 	/*
 	 *  Check if we need to create a new socket or just
@@ -618,7 +580,6 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 	bcopy ( vec[1], &tb -> tb_hold_tpdu, strlen (vec[1]) );
 
-
 	bzero (vec[0], strlen (vec[0]));
 
 	bzero (vec[1], strlen (vec[1]));
@@ -628,10 +589,6 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 	return (tb -> tb_fd);
 
 }
-
-
-
-
 
 /*
  ****************************************************************
@@ -649,17 +606,13 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct udvec *uv, struct TSAPdisconnect *td)
 
-
-
 {
 
 	int	sd;
 
-
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataRequest \n");
 #endif
-
 
 	/*
 	 *  Create the socket on the fly.
@@ -674,7 +627,6 @@ int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct 
 	 *  Now do the datagram send.
 	 */
 
-
 	if ( TUnitDataWrite (sd, uv, td) == NOTOK)
 		return NOTOK;
 
@@ -687,11 +639,6 @@ int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct 
 	return OK;
 
 }
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -710,7 +657,6 @@ int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct 
 
 int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
-
 {
 
 	int 	 n, cc, hlen;
@@ -719,8 +665,6 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 	struct udvec	*vv;   		/* udvec            */
 	struct tsapblk *tb;	 	/* transport blk ptr*/
 	char	 *data, *buffer, *hptr;	        /* data buffer ptr  */
-
-
 
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataWrite \n");
@@ -773,7 +717,6 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 	hlen = 0;
 
 	hlen = T_UnitDataWrite (tb, uv, &hptr, td);
-
 
 	/*
 	 *  Now check if we have to allocate a contiguous buffer
@@ -840,7 +783,6 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 #endif
 	}
 
-
 	/*
 	 *  Do the unit data write over the real transport service.
 	 *  The service entry point is in the transport block service
@@ -853,17 +795,13 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 		printf (" %x", *(data+n) );
 #endif
 
-
-
 	if (*tb -> tb_UnitDataWrite)
 		result = (*tb -> tb_UnitDataWrite) (sd, data, cc, td);
 	else
 		result = 0;
 
-
 	if (data == uv -> uv_base)
 		free ((char *) data);
-
 
 	/*
 	 *  Restore the mask.
@@ -883,13 +821,6 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 		return NOTOK;
 
 }
-
-
-
-
-
-
-
 
 /*
  ****************************************************************
@@ -916,8 +847,6 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 	struct sockaddr_in 	    socket;
 	struct hostent *hp;
 	struct NSAPaddr *na;
-
-
 
 #ifdef HULADEBUG
 	int	j;
@@ -979,7 +908,6 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 		printf (" %x ", *((tud -> tud_qbuf.qb_data) + j) );
 #endif
 
-
 	/*
 	 *  Format the tsap unit data structure.
 	 */
@@ -1005,10 +933,8 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 	tud -> tud_calling.ta_naddr = 1;
 	tud -> tud_calling.ta_selectlen = 0;
 
-
 	tud -> tud_cc = cc;
 	tud -> tud_base = tud -> tud_qbuf.qb_data;
-
 
 	/*
 	 *  Strip off the ISO T-UNITDATA header.  For prototype purposes
@@ -1022,9 +948,7 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 
 }
 
-
 #if FALSE
-
 
 /*
  ****************************************************************
@@ -1087,9 +1011,6 @@ IFP	data;
 	return result;
 }
 
-
-
-
 /*
  ****************************************************************
  *  map transport descriptors for select()
@@ -1137,14 +1058,11 @@ int    *nfds;
 
 	selmask (tb -> tb_fd, *mask, *nfds);
 
-
 	sigiomask (smask);
 
 	return OK;
 
 }
-
-
 
 /*
  ****************************************************************
@@ -1157,7 +1075,6 @@ int    *nfds;
  *								*
  ****************************************************************
  */
-
 
 static int
 UNITDATAser (int sig, long code, struct sigcontext *sc)
@@ -1246,9 +1163,6 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 }
 
-
-
-
 #ifndef	SIGPOLL
 
 static int
@@ -1335,7 +1249,6 @@ TUnitDataWakeUp (struct tsapblk *tb)
 #include <sys/stropts.h>
 #endif
 
-
 static int  TUnitDataWakeUp (tb)
 
 struct tsapblk *tb;
@@ -1392,9 +1305,6 @@ struct tsapblk *tb;
 }
 #endif
 
-
-
-
 int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 
 {
@@ -1426,8 +1336,6 @@ int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 }
 
 #endif /* if FALSE */
-
-
 
 static struct TSAPaddr *
 newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na) {

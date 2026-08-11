@@ -27,13 +27,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2rts.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "ROS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
-
 
 static int	rtslose ();
 static void rtsINDICATIONser ();
@@ -65,8 +62,6 @@ int RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 /*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
-
-
 
 int ro2rtsasync (
 	struct assocblk *acb,
@@ -102,7 +97,6 @@ int ro2rtsasync (
 
 /*    map association descriptors for select() */
 
-
 int ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
 	struct RtSAPabort *rta = &rtis.rti_abort;
@@ -124,7 +118,6 @@ int ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindic
 /*    RtSAP interface */
 
 #define	doRTSdata(a,i,t,r)	acb2osdu ((a), (i), (t) -> rtt_data, (r))
-
 
 int ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
 	int     result;
@@ -209,8 +202,6 @@ int ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindic
 	return NOTOK;
 }
 
-
-
 int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct RtSAPindication  rtis;
@@ -242,7 +233,6 @@ int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 	return NOTOK;
 }
 
-
 static int
 doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
@@ -256,8 +246,6 @@ doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *
 
 	return OK;
 }
-
-
 
 static int
 doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi) {
@@ -278,7 +266,6 @@ doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication
 	return DONE;
 }
 
-
 static int
 doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & ACB_INIT) {
@@ -294,7 +281,6 @@ doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindicati
 
 	return DONE;
 }
-
 
 static int
 doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi) {

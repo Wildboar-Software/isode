@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/control.c,v 9.0 1992/
  *
  */
 
-
 /* the routine dsa_control is called when the modifyentry operation
    is performed, with and 'add attribute' request and the attribute type
    is 'control'.  The value decides what to control
@@ -172,7 +171,6 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
 	return (DS_ERROR_REMOTE);
 }
-
 
 #ifdef QUIPU_CONSOLE
 

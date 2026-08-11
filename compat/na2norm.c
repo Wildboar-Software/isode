@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2norm.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "general.h"
@@ -40,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2norm.c,v 9.0 1992
 	S.E. Kille, January 16, 1989
 
  */
-
 
 struct NSAPaddr *
 na2norm (struct NSAPaddr *na) {

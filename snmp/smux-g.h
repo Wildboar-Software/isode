@@ -20,10 +20,8 @@
  *
  */
 
-
 #include "internet.h"
 #include "psap.h"
-
 
 struct smuxPeer {
 	struct smuxPeer *pb_forw;		/* doubly-linked list */
@@ -48,7 +46,6 @@ struct smuxPeer {
 };
 
 extern	struct smuxPeer *PHead;
-
 
 struct smuxTree {
 	struct smuxTree *tb_forw;		/* doubly-linked list */

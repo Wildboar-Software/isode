@@ -519,7 +519,6 @@ static int writev (
 
 #define PACKBUFFERSIZE 4096
 
-
 	/*
 	 * _XRead32 - Read bytes from the socket unpacking each 32 bits
 	 *            into a long (64 bits on a CRAY computer).
@@ -565,8 +564,6 @@ static int writev (
 		}
 		_doXRead32 (dpy, data, len, packbuffer);
 	}
-
-
 
 	/*
 	 * _XRead16 - Read bytes from the socket unpacking each 16 bits
@@ -628,7 +625,6 @@ static int writev (
 		}
 	}
 #endif /* WORD64 */
-
 
 	/*
 	 * _XReadPad - Read bytes from the socket taking into account incomplete
@@ -934,7 +930,6 @@ static int writev (
 			}
 		}
 	}
-
 
 	/* Read and discard "n" 32-bit words. */
 
@@ -1365,7 +1360,6 @@ static int writev (
 		return(True);
 	}
 
-
 	/*
 	 * _XIOError - Default fatal system error reporting routine.  Called when
 	 * an X internal system error is encountered.
@@ -1529,7 +1523,6 @@ static int writev (
 	}
 #endif /* DataRoutineIsProcedure */
 
-
 #ifdef WORD64
 
 	/*
@@ -1651,8 +1644,6 @@ static int writev (
 
 #endif /* WORD64 */
 
-
-
 	/*
 	 * _XFreeQ - free the queue of events, called by XCloseDisplay when there are
 	 * no more displays left on the display list
@@ -1670,5 +1661,4 @@ static int writev (
 		_qfree = NULL;
 		return;
 	}
-
 

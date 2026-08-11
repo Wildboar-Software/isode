@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamchrg.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "fpkt.h"
-
 
 struct type_FTAM_Charging *
 chrg2fpm (struct ftamblk *fsb, struct FTAMcharging *charging, struct FTAMindication *fti) {
@@ -82,7 +79,6 @@ out:
 
 	return fpmp;
 }
-
 
 int fpm2chrg (struct ftamblk *fsb, struct type_FTAM_Charging *fpm, struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int    i;

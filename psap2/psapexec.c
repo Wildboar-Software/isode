@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapexec.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "PS-types.h"
 #include "ppkt.h"

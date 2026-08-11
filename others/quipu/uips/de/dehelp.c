@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/dehelp
  *
  */
 
-
 #include <ctype.h>
 #include <signal.h>
 #include "demanifest.h"

@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_PSAP_
 #define	_PSAP_
 
@@ -35,14 +34,12 @@
 #endif
 #endif
 
-
 typedef struct OIDentifier {
 	int	    oid_nelem;		/* number of sub-identifiers */
 
 	unsigned int *oid_elements;	/* the (ordered) list of sub-identifiers */
 }			OIDentifier, *OID;
 #define	NULLOID	((OID) 0)
-
 
 OID	ode2oid ();
 int	oid_cmp ();
@@ -51,7 +48,6 @@ int	oid_free ();
 char   *oid2ode ();
 char   *sprintoid ();
 OID	str2oid ();
-
 
 typedef	u_char	   PElementClass;
 
@@ -63,7 +59,6 @@ typedef u_short    PElementID;	/* 0..16383 are meaningful (14 bits) */
 	((int) ((((code) & 0x3fff) << 2) | ((class) & 0x0003)))
 
 typedef	int	   PElementLen;
-
 
 typedef u_char	  byte, *PElementData;
 #define	NULLPED	((PElementData) 0)
@@ -80,7 +75,6 @@ typedef u_char	  byte, *PElementData;
 
 #define	PEDcpy(b1, b2, length)	\
 			bcopy ((char *) (b1), (char *) (b2), (int) (length))
-
 
 typedef struct PElement {
 	int	    pe_errno;		/* Error codes */
@@ -166,7 +160,6 @@ typedef struct PElement {
 #define PE_DEFN_OID_IRI		0x023	/* OID-IRI */
 #define PE_DEFN_ROID_IRI	0x024	/* RELATIVE-OID-IRI */
 
-
 	PElementLen	pe_len;
 #define	PE_LEN_XTND	0x80	/* long or indefinite form */
 #define	PE_LEN_SMAX	127	/* largest short form */
@@ -203,7 +196,6 @@ typedef struct PElement {
 
 #define	pe_seterr(pe, e, v)	((pe) -> pe_errno = (e), (v))
 
-
 PE	pe_alloc ();
 int	pe_free ();
 int	pe_cmp ();
@@ -227,7 +219,6 @@ extern char **pe_applist;
 extern int    pe_maxpriv;
 extern char **pe_privlist;
 
-
 typedef struct UTCtime {
 	int	    ut_year;
 	int	    ut_mon;
@@ -248,14 +239,11 @@ typedef struct UTCtime {
 }			UTCtime, *UTC;
 #define	NULLUTC	((UTC) 0)
 
-
 void	tm2ut ();
 long	gtime ();
 struct tm *ut2tm ();
 
-
 extern char *psapversion;
-
 
 int	prim2flag ();
 PE	flag2prim ();
@@ -264,7 +252,6 @@ PE	flag2prim ();
 int	prim2num ();
 PE	num2prim ();
 #define	int2prim(i)		num2prim ((i), PE_CLASS_UNIV, PE_PRIM_INT)
-
 
 #define	prim2enum(i)		prim2num((i))
 #define enum2prim(a,b,c)	num2prim((a), (b), (c))
@@ -323,7 +310,6 @@ char   *time2str ();
 #define	utct2str(u)		time2str ((u), 0)
 #define	gent2str(u)		time2str ((u), 1)
 
-
 PE	prim2set ();
 #define	set2prim(pe)		(pe)
 int	set_add (), set_addon (), set_del ();
@@ -336,9 +322,7 @@ PE	set_find ();
 int	seq_add (), seq_addon (), seq_del ();
 PE	seq_find ();
 
-
 char   *pe_error ();
-
 
 typedef struct {
 	int	    ps_errno;		/* Error codes */
@@ -402,7 +386,6 @@ typedef struct {
 
 #define	ps_seterr(ps, e, v)	((ps) -> ps_errno = (e), (v))
 
-
 PS	ps_alloc ();
 void	ps_free ();
 
@@ -432,16 +415,13 @@ int	qbuf_open ();
 int	uvec_open ();
 int	uvec_setup ();
 
-
 #define	ps2pe(ps)		ps2pe_aux ((ps), 1)
 PE	ps2pe_aux ();
 #define	pe2ps(ps, pe)		pe2ps_aux ((ps), (pe), 1)
 int	pe2ps_aux ();
 
-
 PE	pl2pe ();
 int	pe2pl ();
-
 
 extern int    ps_len_strategy;
 #define	PS_LEN_SPAG	0
@@ -450,9 +430,7 @@ extern int    ps_len_strategy;
 
 int	ps_get_abs ();
 
-
 char   *ps_error ();
-
 
 struct isobject {
 	char   *io_descriptor;
@@ -466,7 +444,6 @@ struct isobject *getisobject ();
 
 struct isobject *getisobjectbyname ();
 struct isobject *getisobjectbyoid ();
-
 
 PE	qbuf2pe ();
 char   *qb2str ();
@@ -485,7 +462,6 @@ int	strb2int ();
 
 PE	strb2bitstr ();
 char   *bitstr2strb ();
-
 
 extern char PY_pepy[];
 

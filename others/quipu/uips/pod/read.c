@@ -72,7 +72,6 @@ Attr_Sequence entry_attrs;
 		return first;
 }
 
-
 Attr_Sequence get_sorted_attrs(entry_attrs, wanted_attrs)
 Attr_Sequence entry_attrs, wanted_attrs;
 {

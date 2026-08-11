@@ -84,7 +84,6 @@ int do_args (int argc, char **argv) {
 	}
 }
 
-
 int start_listener () {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
@@ -115,7 +114,6 @@ int ping_address () {
 	else
 		retry = 0;
 }
-
 
 int wait_for_result () {
 	int	vecp = 0;
@@ -237,7 +235,6 @@ int stop_nicely () {
 
 	TNetClose (&pongaddr->pa_addr.sa_addr, td);
 }
-
 
 int updatemask () {
 	struct TSAPdisconnect	  td_s;

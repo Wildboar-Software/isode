@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/edit.c,v 9.0 199
  *
  */
 
-
 #include <errno.h>
 #include "manifest.h"
 #include "quipu/util.h"
@@ -93,7 +92,6 @@ int editentry (int argc, char **argv) {
 		char *cp, *dp;
 		FILE *fp;
 		struct stat st;
-
 
 		if ((fp = fopen (fname, "r+")) == NULL) {
 			ps_printf (OPT, "unable to open %s for rw: %s\n",

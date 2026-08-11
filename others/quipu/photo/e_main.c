@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/e_main.c
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include <pixrect/pixrect_hs.h>
@@ -94,10 +92,8 @@ int main (int argc, char **argv)
 		argc--;
 	}
 
-
 	if ((pix = pr_load (stdin, NULL)) == (struct pixrect *)NULL)
 		fprintf (stderr,"Not a pixrect.\n");
-
 
 	PIC_LINESIZE = pix->pr_size.x;
 	STOP  = PIC_LINESIZE + 1;

@@ -23,7 +23,6 @@
  *
  */
 
-
 #ifndef _X25_
 #define _X25_
 
@@ -159,7 +158,6 @@ typedef       struct facility_dB_S {
 } FACILITY_DB;
 #endif
 
-
 #include <sys/errno.h>
 
 #ifndef CCUR_X25
@@ -204,7 +202,6 @@ typedef struct cb_call_struct CONN_DB;
 typedef struct ccliovec CONN_DB;
 #endif
 
-
 #ifdef UBC_X25
 #include <netccitt/x25_sockaddr.h>
 #ifdef BSD44
@@ -215,7 +212,6 @@ typedef struct ccliovec CONN_DB;
 
 typedef struct x25_sockaddr CONN_DB;
 #endif
-
 
 #ifdef	ULTRIX_X25
 #ifdef	ULTRIX_X25_DEMSA
@@ -304,12 +300,10 @@ int     select_x25_socket ();
 struct NSAPaddr *if2gen();
 CONN_DB *gen2if();
 
-
 #define ADDR_LOCAL      0
 #define ADDR_REMOTE     1
 #define ADDR_LISTEN     2
 #define SEPARATOR ':'
-
 
 #define MAXNSDU 2048			/* must be equal to largest TP0 TPDU */
 #endif

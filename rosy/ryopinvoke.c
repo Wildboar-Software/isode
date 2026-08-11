@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopinvoke.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include "rosy.h"
 

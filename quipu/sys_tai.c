@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/sys_tai.c,v 9.0 1992/
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/policy.h"
 #include "cmd_srch.h"
@@ -169,7 +168,6 @@ static  CMD_TABLE  authtab[] = {
 	"STRONG",	4,
 	0,              0,
 };
-
 
 /*
  * do system wide initialisations

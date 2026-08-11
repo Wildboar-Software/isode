@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/picture.c,v 9.0
  *
  */
 
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "quipu/util.h"
@@ -82,7 +80,6 @@ char *show_picture (char *picture, char *picture_process, int len) {
 		close (pd[0]);
 		return ("ERROR: could not create 2nd pipe");
 	}
-
 
 	pstat = signal (SIGPIPE, SIG_IGN);
 
@@ -167,7 +164,6 @@ char *show_picture (char *picture, char *picture_process, int len) {
 	/* NOTREACHED */
 }
 
-
 void exec_print (
 	PS ps,
 	AttributeValue av,
@@ -196,7 +192,6 @@ void exec_print (
 	ps_free (sps);
 
 }
-
 
 int hide_picture (void) {
 	int	    pid;

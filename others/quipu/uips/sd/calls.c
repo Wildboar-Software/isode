@@ -1036,7 +1036,6 @@ char * cptr;
 	strcpy(cptr, buffer);
 }
 
-
 void read_print(func,ptr)
 int (*func) ();
 caddr_t ptr;
@@ -1534,7 +1533,6 @@ sort_attrs (struct attrcomp *entry_attrs) {
 		return first;
 }
 
-
 char *GetSurname (char *name) {
 	while (*name != '\0') name++;
 	while (*name != ' ' && *name != '=') name--;
@@ -1623,5 +1621,4 @@ str_seq list;
 	}
 	return sortedList;
 }
-
 

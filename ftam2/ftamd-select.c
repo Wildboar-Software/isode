@@ -24,33 +24,27 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-select.c,v 9.0 
  *
  */
 
-
 #include <grp.h>
 #include <stdio.h>
 #include <pwd.h>
 #include <unistd.h>
 #include "ftamsystem.h"
 
-
 #define	NUID	400
 #define	NGID	400
 
-
 #define	FA_CHATTR \
     (FA_FILENAME | FA_ACCOUNT)
-
 
 #define	FA_PERM_WRITE	(FA_PERM_INSERT | FA_PERM_REPLACE | FA_PERM_EXTEND \
 				| FA_PERM_ERASE)
 #define	FA_PERM_OWNER	FA_PERM_CHNGATTR
 #define	FA_PERM_PARENT	FA_PERM_DELETE
 
-
 #ifdef	SYS5
 struct group  *getgrnam ();
 struct passwd *getpwnam (), *getpwent (), *getpwuid ();
 #endif
-
 
 static char mvfile[MAXPATHLEN];
 static PE   rdparam = NULLPE;
@@ -62,7 +56,6 @@ static char *getfile (char*file);
 static char *getuser (int uid);
 static char *getgroup (int gid);
 #endif
-
 
 #ifdef	SYS5
 #define	EACCESS	access
@@ -837,7 +830,6 @@ done_open:
 	}
 }
 
-
 #ifdef	BRIDGE
 #endif
 
@@ -959,7 +951,6 @@ bad_concur:
 	return result;
 }
 
-
 static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags) {
 	int     id,
 			result;
@@ -1030,7 +1021,6 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 	*diags = dp;
 	return result;
 }
-
 
 int	readattrs (attrnames, fa, proposed, parameter, file, st, diags)
 int	attrnames;
@@ -1234,7 +1224,6 @@ bad_param:
 	return OK;
 }
 
-
 static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
 	int     gid,
@@ -1344,7 +1333,6 @@ no_change:
 	return OK;
 }
 
-
 static char *getfile (char*file) {
 	char  *bp;
 #ifndef	BRIDGE
@@ -1426,7 +1414,6 @@ trunc:
 #endif
 }
 
-
 #ifndef	BRIDGE
 /* originally used algorithms similar to those in /bin/ls; Don Preuss of
    Apollo suggested these algorithms as they work better with distributed
@@ -1439,7 +1426,6 @@ static char *getuser (int uid) {
 		pw = getpwuid (uid);
 	return (pw ? pw -> pw_name : NULL);
 }
-
 
 static char *getgroup (int gid) {
 	struct group *gr;
@@ -1456,7 +1442,6 @@ static char *getgroup (int gid) {
 
 	return my_name;
 }
-
 
 int	findgid (group)
 char   *group;
@@ -1492,7 +1477,6 @@ char   *group;
 }
 #endif
 
-
 #ifndef	SYS5
 #ifndef	BRIDGE
 static int  EACCESS ( char   *file, int	mode) {
@@ -1508,7 +1492,6 @@ static int  EACCESS ( char   *file, int	mode) {
 }
 #endif
 #else
-
 
 static int  chgrp ( char   *file, int	gid) {
 	int     i,
@@ -1543,7 +1526,6 @@ static int  chgrp ( char   *file, int	gid) {
 	}
 }
 
-
 static int  mkdir ( char   *dir, int	mode) {
 	int     i,
 			pid,
@@ -1576,7 +1558,6 @@ static int  mkdir ( char   *dir, int	mode) {
 	}
 }
 
-
 static int  rmdir (char* dir) {
 	int     i,
 			pid,
@@ -1606,7 +1587,6 @@ static int  rmdir (char* dir) {
 	}
 }
 
-
 static int  truncate ( char   *file, int	length) {
 	int	    fd;
 
@@ -1622,8 +1602,6 @@ static int  truncate ( char   *file, int	length) {
 	return OK;
 }
 
-
-
 int	ftruncate (int fd, int length) {	/* works only 'cause we're lucky */
 	return truncate (myfile, length);
 }
@@ -1633,7 +1611,6 @@ int	ftruncate (int fd, int length) {	/* works only 'cause we're lucky */
 
 #if	defined(FTAMDEBUG) && defined(BSD42)
 #include <syscall.h>
-
 
 static int  unlink (char* file) {
 	if (debug) {
@@ -1666,7 +1643,6 @@ again:
 	return syscall (SYS_unlink, file);
 }
 
-
 static int  rmdir (char* dir) {
 	if (debug) {
 		int     i,
@@ -1697,7 +1673,6 @@ again:
 
 	return syscall (SYS_rmdir, dir);
 }
-
 
 /* VARARGS2 */
 
@@ -1730,7 +1705,6 @@ again:
 	return syscall (SYS_open, file, flags, mode);
 }
 
-
 static int  mkdir (char* dir, iint mode) {
 	if (debug) {
 		int     i,
@@ -1761,7 +1735,6 @@ again:
 
 	return syscall (SYS_mkdir, dir, mode);
 }
-
 
 static int  chown (char* file, int uid, int gid) {
 	if (debug) {
@@ -1794,7 +1767,6 @@ again:
 	return syscall (SYS_chown, file, uid, gid);
 }
 
-
 static int  fchown (int fd, int uid, int gid) {
 	if (debug) {
 		int     i,
@@ -1825,7 +1797,6 @@ again:
 
 	return syscall (SYS_fchown, fd, uid, gid);
 }
-
 
 static int  truncate (file, length)
 char   *file;
@@ -1861,7 +1832,6 @@ again:
 	return syscall (SYS_truncate, file, length);
 }
 
-
 static int  rename (old, new)
 char   *old;
 char   *new;
@@ -1895,7 +1865,6 @@ again:
 
 	return syscall (SYS_rename, old, new);
 }
-
 
 static int  flock (fd, operation)
 int	fd,

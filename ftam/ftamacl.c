@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamacl.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "fpkt.h"
-
 
 struct type_FTAM_Access__Control__List *
 acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti) {
@@ -97,7 +94,6 @@ out:
 
 	return fpmp;
 }
-
 
 int fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti) {
 	struct FTAMacelement *fc,

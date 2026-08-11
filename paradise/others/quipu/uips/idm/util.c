@@ -67,7 +67,6 @@ char *string;
 	return new_string;
 }
 
-
 static PS ps = NULLPS;
 
 char   *dn2pstr (dn)
@@ -123,7 +122,6 @@ char * istr, ** ostr1, ** ostr2;
 		return LEADANDTRAIL;
 	}
 }
-
 
 /* print last component of a dn string - optionally indented by type */
 void printLastComponent(indent, dnstr, objectType, printNumber)
@@ -283,7 +281,6 @@ struct ds_search_result sresult;
 		notAllReached = TRUE;
 }
 
-
 showAnyProblems()
 /*char * str; */
 {
@@ -306,7 +303,6 @@ showAnyProblems()
 		}
 	}
 }
-
 
 void
 logSearchSuccess(outcome, objecttype, string, searchNumber, noMatches)

@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryfind.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <string.h>
 #include "rosy.h"
-
 
 struct RyOperation *findopbyop (ryo, op)
 struct RyOperation *ryo;
@@ -44,7 +41,6 @@ int	op;
 	return NULL;
 }
 
-
 struct RyOperation *findopbyname (ryo, name)
 struct RyOperation *ryo;
 char   *name;
@@ -59,7 +55,6 @@ char   *name;
 	return NULL;
 }
 
-
 struct RyError *finderrbyerr (rye, err)
 struct RyError *rye;
 int	err;
@@ -73,7 +68,6 @@ int	err;
 
 	return NULL;
 }
-
 
 struct RyError *finderrbyname (rye, name)
 struct RyError *rye;

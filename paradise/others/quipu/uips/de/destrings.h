@@ -27,7 +27,6 @@
  *
  */
 
-
 #ifndef _destrings_h
 #define _destrings_h
 

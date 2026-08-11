@@ -24,14 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xface.c,
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include "imagesbr.h"
 #include "internet.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-
 
 static int  sd = NOTOK;
 int	debug = 0;
@@ -47,16 +45,13 @@ static int   (*eventfx)() = NULL;
 
 static int   (*alarmfx)() = NULL;
 
-
 static char *display = NULL;
 static char *geometry = NULL;
-
 
 static Display *DISP;
 static int	SCRN;
 
 static struct type_IMAGE_Image *myim = NULL;
-
 
 typedef struct _frame {
 	short x, y;
@@ -66,13 +61,11 @@ typedef struct _frame {
 	unsigned long background;
 }	Frame;
 
-
 static int    mapped;
 static int    parent;
 
 static Window mywindow = 0;
 static Frame myframe;
-
 
 static unsigned long backpix, bdrpix;
 static GC  forepix, highpix;
@@ -82,12 +75,7 @@ static int  _getline ();
 static	fetch_face (), arginit (), envinit (), display_X (),
         Redisplay (), ALRMser (), XWINser ();
 
-
-
-
 char   *getenv ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char    buffer[BUFSIZ],
@@ -120,7 +108,6 @@ int main (int argc, char **argv, char **envp) {
 	return (0);
 }
 
-
 static
 fetch_face (char *host, char *user) {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
@@ -130,7 +117,6 @@ fetch_face (char *host, char *user) {
 	if (mywindow != NULL || myim)
 		display_X ();
 }
-
 
 static int
 _getline (char *buffer) {
@@ -243,7 +229,6 @@ arginit (char **vec) {
 	SCRN = DefaultScreen (DISP);
 }
 
-
 static
 envinit () {
 	int     i,
@@ -265,7 +250,6 @@ envinit () {
 
 	ll_hdinit (pgm_log, myname);
 }
-
 
 static
 display_X () {
@@ -360,7 +344,6 @@ display_X () {
 	XWINser (0);
 }
 
-
 static
 Redisplay () {
 	int     sx,
@@ -403,7 +386,6 @@ Redisplay () {
 	XDestroyImage (image);
 }
 
-
 static int
 ALRMser () {
 	if (mywindow && mapped) {
@@ -416,8 +398,6 @@ ALRMser () {
 	if (myim)
 		myim = NULL;
 }
-
-
 
 static int
 XWINser (int io) {
@@ -506,7 +486,6 @@ int startsocket (int portno) {
 	if (bind (sd, (struct sockaddr *) isock, sizeof *isock) == NOTOK)
 		adios ("socket", "unable to bind");
 }
-
 
 int readsocket (char *buffer) {
 	int     cc;

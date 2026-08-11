@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/turbo/RCS/edb2dbm.c,v 9.0
  *
  */
 
-
 #include <stdio.h>
 #include <gdbm.h>
 #include "sys.file.h"
@@ -134,7 +133,6 @@ char	**argv;
 	gdbm_close(db);
 	return(0);
 }
-
 
 char * TidyString (a)
 char * a;

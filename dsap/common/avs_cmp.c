@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/avs_cmp.c,v 9.0
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/dsp.h"        /* for ds_error.h */

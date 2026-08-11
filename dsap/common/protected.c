@@ -102,12 +102,10 @@ int format;
 	free(cp);
 }
 
-
 /* Portable conversion from OCTET STRING to whatever structure is
  * used to hold a hash. This is currently an unsigned long, which limits the
  * length of a hash.
  */
-
 
 /* The reverse operation. Currently, hashes are always 4 octets long. */
 

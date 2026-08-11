@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssrespond.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"

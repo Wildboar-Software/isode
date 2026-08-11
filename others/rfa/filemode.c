@@ -42,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/filemode.c,v 9.0
 #include "rfa.h"
 #include "rfainfo.h"
 
-
 static int runAsRoot = 0;  /* we started with effective uid of root */
 
 /*--------------------------------------------------------------*/
@@ -67,7 +66,6 @@ int initUserId (int uid, int gid, char *user) {
 	}
 	return OK;
 }
-
 
 /*--------------------------------------------------------------*/
 /* getFileOwner */
@@ -178,7 +176,6 @@ int changeFileMode (char *fn, int mode, char *errmsg) {
 		setreuid(-1, getuid());
 	return rc;
 }
-
 
 /*--------------------------------------------------------------*/
 /* makeFileReadOnly */

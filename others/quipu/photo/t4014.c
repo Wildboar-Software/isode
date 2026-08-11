@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/t4014.c,
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "manifest.h"
@@ -62,7 +60,6 @@ int photo_start (char *name) {
 	return (0);
 }
 
-
 int photo_end (char *name) {
 	/* Decoding has finished - display the photo */
 	move (0,Y_OFFSET - 100);
@@ -83,7 +80,6 @@ int photo_black (int length) {
 int photo_white (int length) {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }
-
 
 photo_line_end (line)
 bit_string * line;

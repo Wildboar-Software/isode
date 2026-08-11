@@ -17,13 +17,11 @@
  *
  */
 
-
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
 
 #include "tsap.h"		/* definitions for TS-USERs */
-
 
 #define	ssapPsig(sb, sd) \
 { \
@@ -250,7 +248,6 @@
     } \
 }
 
-
 #ifdef HULA
 
 #define	ssap_udPsig(sb, sd) \
@@ -272,8 +269,6 @@
 }
 
 #endif
-
-
 
 #define	missingP(p) \
 { \
@@ -311,11 +306,9 @@
 	} \
 }
 
-
 #define	NULLTX	((struct TSAPdata *) 0)
 #define	NULLSD	((struct SSAPactid *) 0)
 #define	NULLSR	((struct SSAPref *) 0)
-
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -351,16 +344,12 @@
 #define	copySPKTdata(s,d)	bcopy (s -> s_udata, (char *) d, s -> s_ulen)
 #endif
 
-
 #define	AB_TIM		30	/* drain for 30 seconds on ABORTs */
 #define	RF_TIM		30	/* drain for 30 seconds on REFUSEs */
 
-
 #define	SC_REFUSE	(SC_BASE << 1)	/* larger than any sc_reason */
 
-
 int	spktlose (), ssaplose ();
-
 
 struct ssapblk {
 	struct ssapblk *sb_forw;	/* doubly-linked list */
@@ -460,7 +449,6 @@ struct ssapblk *newsublk (), *findsublk ();
 
 int	freesblk ();
 struct ssapblk *newsblk (), *findsblk ();
-
 
 int	ts2sslose ();
 
@@ -636,12 +624,10 @@ struct ssapkt {
 #define	SMASK_SPDU_AB	0x0004
 		/* to distinguish between AB and AI SPDUs */
 
-
 		/* ABORT ACCEPT SPDU */
 #define	AA_SIZE		0
 #define AA_BASE_SIZE	0
 #define	SMASK_SPDU_AA	0x0001	/* to distinguish between AA and AIA SPDUs */
-
 
 		/* DATA TRANSFER SPDU */
 #define	DT_SIZE		65535
@@ -674,7 +660,6 @@ struct ssapkt {
 #define GT_BASE_SIZE	3
 #define	SMASK_SPDU_GT	0x0002	/* to distinguish between DT and GT SPDUs */
 
-
 #ifdef HULA
 
 		struct {		/* UNITDATA SPDU */
@@ -694,7 +679,6 @@ struct ssapkt {
 
 		/* endif HULA */
 #endif
-
 
 		struct {		/* PLEASE TOKENS SPDU */
 #define	SMASK_PT_TOKEN	0x0001
@@ -836,7 +820,6 @@ struct ssapkt {
 #define	AIA_SIZE	0
 #define AIA_BASE_SIZE	0
 
-
 		struct {		/* ACTIVITY DISCARD SPDU */
 #define	SMASK_AD_REASON	0x0001
 			u_char	un_ad_reason;
@@ -856,7 +839,6 @@ struct ssapkt {
 #define	AEA_SIZE	MAA_SIZE
 #define AEA_BASE_SIZE	MAA_BASE_SIZE
 	}	s_un;
-
 
 #define	s_cn_reference	s_un.un_cn.un_cn_reference
 #define	s_options	s_un.un_cn.un_cn_item.un_cn_options
@@ -931,7 +913,6 @@ struct ssapkt {
 
 #define	s_ad_reason	s_un.un_ad.un_ad_reason
 
-
 #define	SMASK_ENCLOSE	0x2000
 	u_char    s_enclose;
 #define	ENCL_BEGIN	0x01	/* beginning of SSDU */
@@ -954,7 +935,6 @@ struct ssapkt {
 	int	    s_qlen;		/* .. */
 };
 #define	NULLSPKT	((struct ssapkt *) 0)
-
 
 int	freespkt ();
 struct ssapkt *newspkt ();

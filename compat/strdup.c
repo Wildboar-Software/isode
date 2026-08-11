@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/strdup.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"

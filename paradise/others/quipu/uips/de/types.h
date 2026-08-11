@@ -27,7 +27,6 @@
  *
  */
 
-
 #ifndef _query_types_h_
 #define _query_types_h_
 

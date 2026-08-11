@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsp_cache.c,v 9.3 199
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/list.h"
@@ -154,8 +153,6 @@ char complete;
 	}
 	return (eptr);
 }
-
-
 
 dsp_cache (arg,res,ctx,binddn)
 struct DSArgument *arg;

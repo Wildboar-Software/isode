@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_PSAP2_
 #define	_PSAP2_
 
@@ -34,9 +33,7 @@
 #include "isoaddrs.h"		/* definitions of ISO addresses */
 #endif
 
-
 #define	NPDATA		125	/* arbitrary */
-
 
 struct PSAPcontext {		/* presentation context */
 	int	    pc_id;		/* identifier */
@@ -57,7 +54,6 @@ struct PSAPctxlist {		/* list of presentation contexts */
 };
 #define	NULLPC	((struct PSAPctxlist *) 0)
 
-
 #define	BER		"basic encoding of a single asn.1 type"
 
 #if	USE_BUILTIN_OIDS
@@ -66,15 +62,12 @@ struct PSAPctxlist {		/* list of presentation contexts */
 #define BER_OID		ode2oid (BER)
 #endif
 
-
 struct SSAPref *addr2ref ();	/* address to session reference */
 
 char   *sprintref ();		/* return session reference in string form */
 
-
 struct PSAPstart {		/* P-CONNECT.INDICATION */
 	int	    ps_sd;		/* PRESENTATION descriptor */
-
 
 	struct PSAPaddr ps_calling;	/* address of peer calling */
 	struct PSAPaddr ps_called;	/* address of peer called */
@@ -118,7 +111,6 @@ struct PSAPstart {		/* P-CONNECT.INDICATION */
 	    pe_free ((ps) -> ps_info[PSI]), (ps) -> ps_info[PSI] = NULLPE; \
     (ps) -> ps_ninfo = 0; \
 }
-
 
 struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 	int	    pc_sd;		/* PRESENTATION descriptor */
@@ -202,13 +194,11 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
     (pc) -> pc_ninfo = 0; \
 }
 
-
 /* PRESENTATION requirements */
 #define	PR_MANAGEMENT	0x0001	/* context management */
 #define	PR_RESTORATION	0x0002	/* context restoration */
 
 #define	PR_MYREQUIRE	0x0000
-
 
 struct PSAPdata {		/* P-READ.INDICATION */
 	int	    px_type;		/* type of indication */
@@ -227,7 +217,6 @@ struct PSAPdata {		/* P-READ.INDICATION */
     (px) -> px_ninfo = 0; \
 }
 
-
 struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	int	    pt_type;		/* type of indication */
 	/* same values as st_type */
@@ -236,7 +225,6 @@ struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	/* same values as st_tokens */
 
 	u_char  pt_owned;		/* tokens owned by user */
-
 
 	/* PLEASE TOKEN only */
 	int	    pt_ninfo;		/*   number of elements */
@@ -251,7 +239,6 @@ struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	    pe_free ((pt) -> pt_info[PTI]), (pt) -> pt_info[PTI] = NULLPE; \
     (pt) -> pt_ninfo = 0; \
 }
-
 
 struct PSAPsync {		/* P-*-SYNC.{INDICATION,CONFIRMATION} */
 	int	    pn_type;		/* type of indication/confirmation */
@@ -278,7 +265,6 @@ struct PSAPsync {		/* P-*-SYNC.{INDICATION,CONFIRMATION} */
 	    pe_free ((pn) -> pn_info[PNI]), (pn) -> pn_info[PNI] = NULLPE; \
     (pn) -> pn_ninfo = 0; \
 }
-
 
 struct PSAPactivity {		/* P-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 	int	    pv_type;		/* type of indication/confirmation */
@@ -308,7 +294,6 @@ struct PSAPactivity {		/* P-ACTIVITY-*.{INDICATION,CONFIRMATION} */
     (pv) -> pv_ninfo = 0; \
 }
 
-
 struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
 	int	    pp_peer;		/* T   = P-U-EXCEPTION-REPORT.INDICATION:
 					pp_reason/pp_info both meaningful
@@ -331,7 +316,6 @@ struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
     (pp) -> pp_ninfo = 0; \
 }
 
-
 struct PSAPfinish {		/* P-RELEASE.INDICATION */
 	/* release DATA from peer */
 	int	    pf_ninfo;		/*   number of elements */
@@ -346,7 +330,6 @@ struct PSAPfinish {		/* P-RELEASE.INDICATION */
 	    pe_free ((pf) -> pf_info[PFI]), (pf) -> pf_info[PFI] = NULLPE; \
     (pf) -> pf_ninfo = 0; \
 }
-
 
 struct PSAPrelease {		/* P-RELEASE.CONFIRMATION */
 	int	    pr_affirmative;	/* T   = connection released
@@ -365,7 +348,6 @@ struct PSAPrelease {		/* P-RELEASE.CONFIRMATION */
 	    pe_free ((pr) -> pr_info[PRI]), (pr) -> pr_info[PRI] = NULLPE; \
     (pr) -> pr_ninfo = 0; \
 }
-
 
 struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
 	int	    pa_peer;		/* T   = P-U-ABORT.INDICATION:
@@ -395,7 +377,6 @@ struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
     (pa) -> pa_ninfo = 0; \
 }
 
-
 struct PSAPindication {
 	int	    pi_type;		/* the union element present */
 #define	PI_DATA		0x00
@@ -424,9 +405,7 @@ struct PSAPindication {
 #define	pi_abort	pi_un.pi_un_abort
 };
 
-
 extern char *psap2version;
-
 
 int	PExec ();		/* SERVER only */
 int	PInit ();		/* P-CONNECT.INDICATION */

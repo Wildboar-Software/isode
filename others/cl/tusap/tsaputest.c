@@ -4,7 +4,6 @@
 static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:04 mrose Rel $";
 #endif
 
-
 /*
  *				  NOTICE
  *
@@ -15,7 +14,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "tpkt.h"
@@ -24,7 +22,6 @@ static char *rcsid = "$Header: /f/iso/tsap/RCS/tsaptest.c,v 5.0 88/07/21 15:00:0
 #include "isoservent.h"
 #include "isoaddrs.h"
 #include "internet.h"
-
 
 main ()
 
@@ -39,5 +36,4 @@ main ()
 	TUnitDataWakeUp();	/* Sync wakeup routine on kill */
 
 }
-
 

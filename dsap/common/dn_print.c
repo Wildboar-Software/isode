@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_print.c,v 9.
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 
@@ -95,7 +94,6 @@ void ufn_dn_print (PS ps, DN dn, int multiline)
 	ufn_dn_print_aux (ps,dn,localdn,multiline);
 }
 
-
 int	ufn_indent = 16;
 
 int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
@@ -126,7 +124,6 @@ int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
 	}
 	return ++res;
 }
-
 
 void ufn_rdn_print (PS ps, RDN rdn)
 {

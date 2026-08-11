@@ -27,8 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include "ROS-types.h"
 #include "../acsap/OACS-types.h"

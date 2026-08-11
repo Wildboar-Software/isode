@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprelease1.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
@@ -103,7 +101,6 @@ int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindic
 
 	return result;
 }
-
 
 static int
 PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {

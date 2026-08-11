@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/boolean.c,v 9.0
  *
  */
 
-
 /*
 	SYNTAX:
 		boolean ::= "TRUE" | "FALSE"

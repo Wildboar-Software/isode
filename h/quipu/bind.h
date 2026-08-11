@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUBIND
 #define QUIPUBIND
 #include "quipu/name.h"

@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamerror.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "ftam.h"
-
 
 static char *diag_gen[] = {
 	"No reason",
@@ -47,7 +44,6 @@ static char *diag_gen[] = {
 };
 
 static int diag_gen_cnt = sizeof diag_gen / sizeof diag_gen[0];
-
 
 static char *diag_pro[] = {
 	"Conflicting parameter values",
@@ -71,7 +67,6 @@ static char *diag_pro[] = {
 };
 
 static int diag_pro_cnt = sizeof diag_pro / sizeof diag_pro[0];
-
 
 static char *diag_acs[] = {
 	"Association with user not allowed",
@@ -99,7 +94,6 @@ static char *diag_acs[] = {
 };
 
 static int diag_acs_cnt = sizeof diag_acs / sizeof diag_acs[0];
-
 
 static char *diag_sel[] = {
 	"Filename not found",
@@ -137,7 +131,6 @@ static char *diag_sel[] = {
 
 static int diag_sel_cnt = sizeof diag_sel / sizeof diag_sel[0];
 
-
 static char *diag_mgt[] = {
 	"Attribute non-existant",
 	"Attribute cannot be read",
@@ -150,7 +143,6 @@ static char *diag_mgt[] = {
 };
 
 static int diag_mgt_cnt = sizeof diag_mgt / sizeof diag_mgt[0];
-
 
 static char *diag_acc[] = {
 	"Bad FADU (unspecific)",
@@ -199,7 +191,6 @@ static char *diag_acc[] = {
 
 static int diag_acc_cnt = sizeof diag_acc / sizeof diag_acc[0];
 
-
 static char *diag_rvy[] = {
 	"Bad checkpoint (unspecific)",
 	"Activity not unique",
@@ -222,7 +213,6 @@ static char *diag_rvy[] = {
 };
 
 static int diag_rvy_cnt = sizeof diag_rvy / sizeof diag_rvy[0];
-
 
 char *FErrString (int code) {
 	int    offset;

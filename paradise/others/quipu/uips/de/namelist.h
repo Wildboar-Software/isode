@@ -1,6 +1,5 @@
 /* template.c - your comments here */
 
-
 /*
  * $Header: /xtel/isode/isode/others/quipu/uips/de/RCS/namelist.h,v 9.1 1992/08/25 15:50:26 isode Exp $
  *
@@ -27,7 +26,6 @@
  *    this agreement.
  *
  */
-
 
 #include <stdio.h>
 #include "quipu/attrvalue.h"

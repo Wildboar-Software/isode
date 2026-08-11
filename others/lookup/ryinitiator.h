@@ -20,9 +20,7 @@
  *
  */
 
-
 #include "rosy.h"
-
 
 static struct dispatch {
 	char   *ds_name;
@@ -37,7 +35,6 @@ static struct dispatch {
 
 	char   *ds_help;
 };
-
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);

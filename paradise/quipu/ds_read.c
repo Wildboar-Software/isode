@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_read.c,v 9.3 1992/
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/read.h"
@@ -341,7 +340,6 @@ char dfltacl;
 
 }
 
-
 static Attr_Sequence  dsa_control_info() {
 	extern int slave_edbs;
 	extern int master_edbs;
@@ -396,9 +394,6 @@ struct ds_read_result       *result;
 
 	return TRUE;
 }
-
-
-
 
 need_pseudo_dsa (eptr,arg)
 Entry eptr;

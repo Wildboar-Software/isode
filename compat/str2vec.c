@@ -24,17 +24,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2vec.c,v 9.0 1992
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
 
-
 #define	QUOTE	'\\'
-
 
 int str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) {
 	int    i;

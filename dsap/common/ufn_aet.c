@@ -40,7 +40,6 @@ extern Filter joinfilter (Filter f, char type);
 extern char PY_pepy[];
 void	PY_advise (char *, char *, ...);
 
-
 static Filter aet_filter (char *context)
 {
 	Filter a,b;
@@ -117,7 +116,6 @@ static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 
 	return TRUE;
 }
-
 
 int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el, char *context)
 {

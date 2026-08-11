@@ -17,14 +17,12 @@
  *
  */
 
-
 #ifndef	_GENERAL_
 #define	_GENERAL_
 
 #ifndef	_CONFIG_
 #include "config.h"		/* system-specific configuration */
 #endif
-
 
 /* target-dependent defines:
 
@@ -41,7 +39,6 @@
 #ifdef	EXOS
 #define	SWABLIB
 #endif
-
 
 #ifdef	BSD42
 #define	BSDFORK
@@ -85,7 +82,6 @@
 #ifdef	pyr
 #undef	SWABLIB
 #endif
-
 
 #ifndef	BSDFORK
 #define	vfork	fork
@@ -138,7 +134,6 @@ char   *sprintb ();
 #define	NVEC	100
 #define	NSLACK	10
 
-
 #define	str2vec(s,v)	str2vecX ((s), (v), 0, NULLIP, 0)
 
 int	str2vecX ();
@@ -162,7 +157,6 @@ char   *sys_errname ();
 #define	insque(e,p)	INSQUE ((char *) (e), (char *) (p))
 #define	remque(e)	REMQUE ((char *) (e))
 #endif
-
 
 void	asprintf (), _asprintf ();
 

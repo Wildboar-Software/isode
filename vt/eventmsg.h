@@ -20,7 +20,6 @@
  *
  */
 
-
 char	*eventname[] = {
 	"* NOT USED *",
 	"VASSreq",

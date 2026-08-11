@@ -29,13 +29,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/routes.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include "mib.h"
 #include "interfaces.h"
 #include "routes.h"
-
 
 int routeNumber = 0;
 struct rtetab  *rts = NULL;
@@ -50,7 +48,6 @@ static	int	first_time = 1;
 int	flush_rt_cache = 0;
 
 static int  get_route ();
-
 
 #ifdef LINUX
 static int _read_routes()
@@ -217,7 +214,6 @@ int	offset;
 		advise (LLOG_EXCEPTIONS, "failed", "read routing table");
 #endif
 
-
 #ifdef	BSD44
 sort_routes:
 	;
@@ -252,7 +248,6 @@ out1:
 	return NOTOK;
 }
 
-
 static int  rt_compar (a, b)
 struct rtetab **a,
 		   **b;
@@ -265,7 +260,6 @@ struct rtetab **a,
 	return elem_cmp ((*a) -> rt_instance, (*a) -> rt_insize,
 					 (*b) -> rt_instance, (*b) -> rt_insize);
 }
-
 
 void sort_rtetab (void) {
 	struct rtetab  *rt,
@@ -324,8 +318,6 @@ void sort_rtetab (void) {
 
 	free ((char *) base);
 }
-
-
 
 static int  get_route (re)
 struct rtentry *re;
@@ -421,7 +413,6 @@ struct rtentry *re;
 	return OK;
 }
 
-
 #ifdef	BSD44
 static int  get_radix_nodes () {
 	struct radix_node_head *rnh,
@@ -448,7 +439,6 @@ static int  get_radix_nodes () {
 
 	return OK;
 }
-
 
 static int  get_radix_node (rn)
 struct radix_node *rn;
@@ -487,7 +477,6 @@ struct radix_node *rn;
 	}
 }
 #endif
-
 
 struct rtetab *get_rtent (ip, len, head, isnext)
 unsigned int *ip;

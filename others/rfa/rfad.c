@@ -41,7 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfad.c,v 9.0 199
 #include "tsap.h"
 #include "rfa.h"
 
-
 static char *myservice = "rfa";
 static char *mycontext = "rfa";
 
@@ -51,7 +50,6 @@ extern int op_init ();
 extern int ros_init (), ros_work (), ros_indication (), ros_lose ();
 extern IFP startfnx, stopfnx;
 extern char *isodetcpath;
-
 
 extern int op_getFileData(), op_requestMaster(), op_listDir(), op_syncTime();
 static struct dispatch dispatches[] = {
@@ -118,7 +116,6 @@ int main (int argc, char **argv) {
 	startfnx = initiate;
 	stopfnx = NULLIFP;
 
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
 	if (isodeserver (argc, argv, aei, ros_init, ros_work, ros_lose, td)
 			== NOTOK) {
@@ -134,10 +131,8 @@ int main (int argc, char **argv) {
 	exit(0);
 }
 
-
 int cleanup () {
 }
-
 
 initiate (sd, acs, pe)
 int sd;

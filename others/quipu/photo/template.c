@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/template
  *
  */
 
-
 #include "stdio.h"
 #include "quipu/photo.h"
 
@@ -39,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/template
 		fprintf (stderr,"PHOTO: not implemented yet");
 		return (-1);
 	}
-
 
 	int
 	photo_end (char *name) {
@@ -61,7 +59,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/template
 	photo_white (int length) {
 		/* draw a white line of 'length' pixels */
 	}
-
 
 	photo_line_end (line)
 	bit_string * line;

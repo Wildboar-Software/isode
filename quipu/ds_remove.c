@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_remove.c,v 9.0 199
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/remove.h"
@@ -126,7 +125,6 @@ int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_REMOTE);
 	}
-
 
 	if (avl_onenode(entryptr->e_parent->e_children)) {
 

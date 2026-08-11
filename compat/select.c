@@ -37,7 +37,6 @@ int	xselect_blocking_on_intr = 0;
 
 #include <sys/time.h>
 
-
 /* Synchronous multiplexing:
 	< 0 :	block indefinately
 	= 0 :	poll
@@ -215,7 +214,6 @@ int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 }
 #endif
 
-
 #ifdef	EXOS
 
 #ifdef	SYS5
@@ -227,7 +225,6 @@ int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 */
 
 #include "sys/soioctl.h"
-
 
 int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int    fd;
@@ -345,7 +342,6 @@ again:
 
 static IFP	sfnx[FD_SETSIZE] = { NULL };
 static caddr_t	sdata[FD_SETSIZE] = { NULL };
-
 
 IFP	set_check_fd (int fd, IFP fnx, caddr_t data)
 {

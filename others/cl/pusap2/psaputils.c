@@ -54,8 +54,6 @@ static char *rcsid = "$Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14
  * $Log$
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <signal.h>
@@ -69,7 +67,6 @@ static char *rcsid = "$Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14
 static 	int    once_only = 0;
 static  struct psapblk   psapque;
 static  struct psapblk   *PuHead = &psapque;
-
 
 /*----------------------------------------------------------------------------*/
 int ppdu2data (
@@ -176,7 +173,6 @@ int ppdu2data (
 	return OK;
 }
 
-
 /*----------------------------------------------------------------------------*/
 int	qb2_info (qb, pe)
 /*----------------------------------------------------------------------------*/
@@ -236,7 +232,6 @@ PE     *pe;
 
 	return result;
 }
-
 
 /*----------------------------------------------------------------------------*/
 struct qbuf *info2_qb (pe, qp, pi)
@@ -468,8 +463,6 @@ out:
 	return NULL;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /*    SSAP interface */
 /*----------------------------------------------------------------------------*/
@@ -540,8 +533,6 @@ int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 						  *cp ? cp + 1 : cp);
 }
 
-
-
 #ifndef	lint
 static int  _pusaplose ();
 
@@ -597,7 +588,6 @@ _pusaplose (	/* what, fmt, args ... */
 }
 #endif
 
-
 /* stolen from psap2error.c */
 /*----------------------------------------------------------------------------*/
 static char *reject_err0[] = {
@@ -632,7 +622,6 @@ static char *reject_err0[] = {
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
-
 /*---------------------------------------------------------------------------*/
 char *PuErrString (
 	/*---------------------------------------------------------------------------*/
@@ -645,7 +634,6 @@ char *PuErrString (
 	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }
-
 
 /* INTERNAL */
 /*----------------------------------------------------------------------------*/
@@ -669,7 +657,6 @@ struct psapblk *
 	return pb;
 }
 
-
 /*----------------------------------------------------------------------------*/
 struct psapblk *
 findpublk (
@@ -687,7 +674,6 @@ findpublk (
 
 	return NULL;
 }
-
 
 /*----------------------------------------------------------------------------*/
 int freepublk (
@@ -716,12 +702,9 @@ int freepublk (
 	if (pb -> pb_asn) oid_free (pb -> pb_asn);
 	if (pb -> pb_atn) oid_free (pb -> pb_atn);
 
-
 	remque (pb);
 	free ((char *) pb);
 }
-
-
 
 #ifdef	DEBUG
 /*----------------------------------------------------------------------------*/

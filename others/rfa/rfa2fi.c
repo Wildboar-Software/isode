@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfa2fi.c,v 9.0 1
  *
  */
 
-
 #include <stdio.h>
 #include "rfa.h"
 #include "RFA-types.h"
@@ -147,5 +146,4 @@ fi2rfa (struct type_RFA_FileInfoList *fil) {
 	}
 	return rfa;
 }
-
 

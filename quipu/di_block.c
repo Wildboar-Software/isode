@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/di_block.c,v 9.0 1992
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "tsap.h"
@@ -74,7 +73,6 @@ void di_free (struct di_block *di) {
 
 	if(di->di_accesspoints != NULLACCESSPOINT)
 		aps_free(di->di_accesspoints);
-
 
 	di->di_state = -1;
 
@@ -496,7 +494,6 @@ static int common_address (struct di_block *a, struct TSAPaddr *tb) {
 	}
 	return FALSE;
 }
-
 
 struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk) {
 	struct di_block *best;

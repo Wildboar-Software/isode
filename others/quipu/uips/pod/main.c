@@ -165,7 +165,6 @@ quit (int sig) {
 	exit(sig);
 }
 
-
 advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 	extern LLog * log_dsap;

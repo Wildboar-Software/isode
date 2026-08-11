@@ -69,7 +69,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpd.c,v 9.0 1992/06/
 #define	MAXSNMP		484
 #define	IDLE_TIME	(3 * 60)
 
-
 int	debug = 0;
 static	int	tooBig = MAXSNMP;
 static	int	nbits = FD_SETSIZE;
@@ -641,7 +640,6 @@ char   *event;
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-
 #ifdef	CLTS
 static	doit_clts (pd)
 int	pd;
@@ -672,7 +670,6 @@ int	pd;
 		close_clts_socket (fd);
 }
 #endif
-
 
 #ifdef	COTS
 static int  start_tsap (vecp, vec)
@@ -706,7 +703,6 @@ char  **vec;
 
 	return ts -> ts_sd;
 }
-
 
 static	doit_cots (fd)
 int	fd;
@@ -1406,7 +1402,6 @@ out:
 	return DONE;
 }
 
-
 #ifdef	COTS
 static	proxy_clear (fd)
 int	fd;
@@ -1976,7 +1971,6 @@ try_it_again:
 
 		goto lost_peer;
 	}
-
 
 	rsp = NULL;
 

@@ -43,7 +43,6 @@ static LLog _pgm_log = {
 };
 LLog *pgm_log = &_pgm_log;
 
-
 void
 initLog (char *myname) {
 	/*    if (isatty (fileno (stderr)))
@@ -60,7 +59,6 @@ initLog (char *myname) {
 		ll_hdinit (pgm_log, myname);
 	}
 }
-
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
@@ -104,8 +102,6 @@ advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
-
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

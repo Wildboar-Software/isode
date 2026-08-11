@@ -1,6 +1,5 @@
 /* tsaputils.c - common service routines to tsap unit data */
 
-
 /*
  *				  NOTICE
  *
@@ -11,8 +10,6 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "tpkt.h"
@@ -21,7 +18,6 @@
 #include "isoservent.h"
 #include "tailor.h"
 
-
 #define	selmask(fd,m,n) \
 { \
     FD_SET (fd, &(m)); \
@@ -29,20 +25,17 @@
 	(n) = (fd) + 1; \
 }
 
-
 #ifdef HULA
 
 static int tu_once_only = 0;
 static struct tsapblk tusapque;
 static struct tsapblk *TuHead = &tusapque;
 
-
 #ifndef	SIGPOLL
 #ifndef TPid
 static int TPid = NOTOK;
 #endif
 #endif
-
 
 /* INTERNAL */
 
@@ -67,7 +60,6 @@ struct tsapblk *
 
 	return tb;
 }
-
 
 int freetublk (struct tsapblk *tb) {
 	SBV     smask;
@@ -127,7 +119,6 @@ int freetublk (struct tsapblk *tb) {
 	sigiomask (smask);
 }
 
-
 struct tsapblk *
 findtublk (int sd) {
 	struct tsapblk *tb;
@@ -141,7 +132,5 @@ findtublk (int sd) {
 
 	return NULL;
 }
-
-
 
 #endif

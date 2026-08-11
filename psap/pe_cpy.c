@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_cpy.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
-
 
 PE
 pe_cpy (PE pe) {

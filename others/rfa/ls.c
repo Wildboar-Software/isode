@@ -100,7 +100,6 @@ char *shortTime (long *t) {
 	return s;
 }
 
-
 char *rfa2ls (struct RfaInfo *rfa) {
 	static char buf[512], *bp;
 

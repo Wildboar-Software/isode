@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssinitiat.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "RTS-types.h"
@@ -76,7 +74,6 @@ int RtBeginRequest2 (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mo
 
 	return result;
 }
-
 
 static int
 RtBeginRequestAux (struct RtSAPaddr *called, struct RtSAPaddr *calling, int mode, int turn, PE data, struct RtSAPconnect *rtc, struct RtSAPindication *rti) {

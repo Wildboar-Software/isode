@@ -10,13 +10,10 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include "tpkt.h"
-
 
 #ifndef	lint
 static int _tusaplose ();
@@ -44,7 +41,6 @@ int tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tusaplose (td, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int

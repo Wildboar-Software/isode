@@ -30,20 +30,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/rfatime.c,v 9.0 
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/time.h>
-
-
 
 int main (int ac, char **av) {
 
 	struct timeval tv;
 	time_t dt;
 	int err;
-
 
 	if (ac < 2) {
 		fprintf(stderr,

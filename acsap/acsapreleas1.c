@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas1.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "ACS-types.h"
@@ -143,7 +141,6 @@ int AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPi
 
 	return result;
 }
-
 
 static int
 AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {

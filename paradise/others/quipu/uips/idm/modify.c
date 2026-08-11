@@ -51,7 +51,6 @@ int de_Modify() {
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
 
-
 	more		= malloc(LINESIZE);
 	rdn		= malloc(LINESIZE);
 	highNumber = 0;
@@ -557,7 +556,6 @@ next_value:
 	return OK;
 }
 
-
 int fillMostModArg() {
 	modarg.mea_common.ca_servicecontrol.svc_options = SVC_OPT_CHAININGPROHIBIT;
 	modarg.mea_common.ca_servicecontrol.svc_prio = SVC_PRIO_MED;
@@ -671,8 +669,6 @@ char dlrstr[];
 	return OK;
 }
 
-
-
 int new_at(atcount, objectType)
 int * atcount;
 int objectType;
@@ -731,7 +727,6 @@ int objectType;
 
 	return OK;
 }
-
 
 int existing_at(rdn, atcount, objectType, numbers)
 char * rdn;
@@ -915,7 +910,6 @@ int * count;
 	objatts = saveprr;
 }
 
-
 int get_new_attr(dn, at_number)
 char * dn;
 int at_number;
@@ -1052,7 +1046,6 @@ prompt_attr:
 	return OK;
 }
 
-
 int prompt_new_value(attr_name, new_value)
 char attr_name[];
 int * new_value;
@@ -1145,7 +1138,6 @@ int * new_value;
 	return OK;
 }
 
-
 int get_objectClass(rdn,objectType)
 char * rdn;
 int * objectType;
@@ -1190,8 +1182,6 @@ int * objectType;
 	    return NOTOK; */
 }
 
-
-
 get_objectClassPRR(lp, objectType)
 struct namelist * lp;
 int * objectType;
@@ -1230,7 +1220,6 @@ int * objectType;
 	return NOTOK;
 }
 
-
 int dm_ModifyOrg() {
 
 	char * cp;
@@ -1247,7 +1236,6 @@ int dm_ModifyOrg() {
 
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
-
 
 	more		= malloc(LINESIZE);
 	rdn		= malloc(LINESIZE);

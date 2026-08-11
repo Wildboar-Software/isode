@@ -57,7 +57,6 @@ str_seq seq_ptr;
 		return 0;
 }
 
-
 void free_seq (seq_ptr)
 str_seq seq_ptr;
 {

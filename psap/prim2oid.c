@@ -24,15 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2oid.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 
-
 static	int	once_only = 1;
 static	OIDentifier oid;
-
 
 OID	prim2oid (pe)
 PE	pe;
@@ -91,7 +87,6 @@ PE	pe;
 
 	return o;
 }
-
 
 #ifdef DEBUG
 int free_static_oid()  {

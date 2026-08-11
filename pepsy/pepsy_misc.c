@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy_misc.c,v 9.0 19
  *
  */
 
-
 #include <stdio.h>
 #include <string.h>
 #include "pepsydefs.h"
@@ -47,10 +46,8 @@ typedef struct symtable {
 } symtable, *SYM;
 #define NULLSYM ((SYM)0)
 
-
 static OP	myoids;
 static SYM	symtab[MAX_TBLS];
-
 
 OID	addoid (OID o1, OID o2)
 {
@@ -139,7 +136,6 @@ OID	int2oid (int n) {
 	noid -> oid_elements[0] = n;
 	return noid;
 }
-
 
 void addtable (
 	char *name,

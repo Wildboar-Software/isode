@@ -24,26 +24,21 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprovider.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
-
 static int  once_only = 0;
 static struct psapblk psapque;
 static struct psapblk *PHead = &psapque;
-
 
 struct pair preq_pairs[] = {
 	PR_MANAGEMENT, bit_PS_Presentation__requirements_context__management,
 	PR_RESTORATION, bit_PS_Presentation__requirements_restoration,
 	0, 0
 };
-
 
 struct pair sreq_pairs[] = {
 	SR_HALFDUPLEX, bit_PS_User__session__requirements_half__duplex,
@@ -60,13 +55,10 @@ struct pair sreq_pairs[] = {
 	0, 0
 };
 
-
 #define	doABORT		ss2psabort
-
 
 static void DATAser (), TOKENser (), SYNCser (), ACTIVITYser (), REPORTser (),
 		FINISHser (), ABORTser ();
-
 
 static int  PReadRequestAux ();
 static int  doDATA ();
@@ -82,7 +74,6 @@ int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 	return PDataRequestAux (sd, data, ndata, pi, "user", SDataRequest,
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
 }
-
 
 int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu) {
 	SBV	    smask;
@@ -177,7 +168,6 @@ int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *
 	return result;
 }
 
-
 static int
 PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
 	int	    result;
@@ -232,7 +222,6 @@ PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPi
 	return NOTOK;
 }
 
-
 static int
 doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
 	int     ppdu,
@@ -284,7 +273,6 @@ out:
 	return result;
 }
 
-
 static int
 doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
 	int	    result;
@@ -303,7 +291,6 @@ doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
 
 	return (result != NOTOK ? DONE : NOTOK);
 }
-
 
 static int
 doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
@@ -333,7 +320,6 @@ doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
 
 	return (result != NOTOK ? DONE : NOTOK);
 }
-
 
 static int
 doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi) {
@@ -478,7 +464,6 @@ out:
 /*    define vectors for INDICATION events */
 
 #define	e(i)	(data ? (i) : 0)
-
 
 int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct PSAPindication *pi) {
 	SBV     smask;
@@ -1079,7 +1064,6 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 	return OK;
 }
 
-
 #ifndef	DEBUG
 #endif
 
@@ -1172,7 +1156,6 @@ serialize:
 
 	return OK;
 }
-
 
 #ifndef	DEBUG
 #endif
@@ -1298,7 +1281,6 @@ punch_it:
 	return result;
 }
 
-
 #ifndef	DEBUG
 #endif
 
@@ -1420,7 +1402,6 @@ out:
 	return NOTOK;
 }
 
-
 struct qbuf *
 info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 	int           len, qlen;
@@ -1443,7 +1424,6 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 			goto out_f;
 		}
 	}
-
 
 	Qcp = qb->qb_data;
 	Ecp = Qcp + len;
@@ -1472,7 +1452,6 @@ out_f:
 
 	return NULL;
 }
-
 
 int qb2info (struct qbuf *qb, PE *pe) {
 	int	    result;
@@ -1510,7 +1489,6 @@ int qb2info (struct qbuf *qb, PE *pe) {
 
 	return result;
 }
-
 
 struct type_PS_Identifier__list *
 silly_list (struct psapblk *pb, struct PSAPindication *pi) {

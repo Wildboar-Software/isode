@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/servbyport.c,v 9.0 1
  *
  */
 
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoservent.h"
 #include "tailor.h"
 #include "internet.h"
-
 
 struct isoservent *
 getisoserventbyport (char *provider, unsigned short port) {

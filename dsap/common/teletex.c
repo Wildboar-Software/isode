@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
  *
  */
 
-
 /*
 	SYNTAX:
 		teletex ::= <printablestring> '$' <printablestring>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
 	REPRESENTING:
 		terminal $ graphic $ control $ page $ misc $ private
 */
-
 
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -195,7 +193,6 @@ static struct teletex *str2teletex (char *str) {
 	if (mark != NULLCP)
 		*mark = ' ';
 
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("3rd seperator missing in teletex '%s'",str);
@@ -213,7 +210,6 @@ static struct teletex *str2teletex (char *str) {
 	if (mark != NULLCP)
 		*mark = ' ';
 
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("4th seperator missing in teletex '%s'",str);
@@ -230,7 +226,6 @@ static struct teletex *str2teletex (char *str) {
 	*ptr++ = '$';
 	if (mark != NULLCP)
 		*mark = ' ';
-
 
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {

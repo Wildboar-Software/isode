@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/util.c
  *
  */
 
-
 #include <signal.h>
 #include "config.h"
 #include "demanifest.h"
@@ -117,7 +116,6 @@ char *copy_string (char *string) {
 	return new_string;
 }
 
-
 static PS ps = NULLPS;
 
 char   *dn2pstr (dn)
@@ -171,7 +169,6 @@ int starstring (char *istr, char **ostr1, char **ostr2) {
 		return LEADANDTRAIL;
 	}
 }
-
 
 /* print last component of a dn string - optionally indented by type */
 void
@@ -308,7 +305,6 @@ setProblemFlags (struct ds_search_result sresult) {
 		notAllReached = TRUE;
 }
 
-
 int showAnyProblems (char *str) {
 	if (limitProblem == TRUE) {
 		pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
@@ -327,7 +323,6 @@ int showAnyProblems (char *str) {
 		}
 	}
 }
-
 
 void
 logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {

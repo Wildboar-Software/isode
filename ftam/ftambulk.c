@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
@@ -54,7 +52,6 @@ int FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
 
 	return result;
 }
-
 
 static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	int    i;
@@ -143,7 +140,6 @@ int FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag
 
 	return result;
 }
-
 
 static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
@@ -259,7 +255,6 @@ int FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag
 
 	return result;
 }
-
 
 static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result,
@@ -393,7 +388,6 @@ int FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic dia
 
 	return result;
 }
-
 
 int FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;

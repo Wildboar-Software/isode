@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/init.c
  *
  */
 
-
 /****************************************************************************
 
   init.c - Do some initialising
@@ -173,7 +172,6 @@ int initialisations (int argc, char **argv) {
 			}
 	}
 
-
 	printf("%*s%s\n\n", (80 - (int)strlen(welcomeMessage)) / 2, "",
 		   welcomeMessage);
 
@@ -301,8 +299,6 @@ read_de_option (char *line) {
 		deLogLevel = atoi(part2);
 	}
 } /* read_de_option */
-
-
 
 /* might want this at some point
 Usage (rtn)

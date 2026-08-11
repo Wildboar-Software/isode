@@ -1,6 +1,5 @@
 /* ssaputils.c - comon session utilities */
 
-
 /*
  *				  NOTICE
  *
@@ -11,22 +10,16 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
 
-
 #ifdef HULA
-
 
 static int  su_once_only = 0;
 static struct ssapblk susapque;
 static struct ssapblk *SuHead = &susapque;
-
-
 
 /* INTERNAL */
 
@@ -51,7 +44,6 @@ struct ssapblk *
 
 	return sb;
 }
-
 
 int freesublk (struct ssapblk *sb) {
 	struct qbuf *qb,
@@ -81,7 +73,6 @@ int freesublk (struct ssapblk *sb) {
 
 	free ((char *) sb);
 }
-
 
 struct ssapblk *
 findsublk (int sd) {

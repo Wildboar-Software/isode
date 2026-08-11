@@ -20,14 +20,12 @@
  *
  */
 
-
 #ifndef	_TAILOR_
 #define	_TAILOR_
 
 #ifndef	_LOGGER_
 #include "logger.h"
 #endif
-
 
 /* SYSTEM AREAS */
 
@@ -36,7 +34,6 @@ extern char    *isodebinpath;
 extern char    *isodesbinpath;
 extern char    *isodetcpath;
 extern char    *isodelogpath;
-
 
 /* LOGGING */
 
@@ -51,7 +48,6 @@ extern LLog *rtsap_log, _rtsap_log;
 extern LLog *rosap_log, _rosap_log;
 
 extern	int	_tailor_logging_only;
-
 
 /* TRANSPORT-SWITCH */
 
@@ -86,8 +82,6 @@ extern char *tsb_addresses[];
 extern int tsb_communities[];
 
 extern char *tsb_default_address;
-
-
 
 /* X.25 */
 
@@ -131,19 +125,16 @@ extern char     *x25_default_class;
 #endif
 #endif
 
-
 /* SESSION */
 
 extern int	ses_ab_timer;
 extern int	ses_dn_timer;
 extern int	ses_rf_timer;
 
-
 /* USER-FRIENDLY NAMESERVICE */
 
 extern char	ns_enabled;
 extern char    *ns_address;
-
 
 /* ROUTINES */
 

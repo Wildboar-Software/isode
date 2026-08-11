@@ -246,7 +246,6 @@ out:
 	return OK;
 }
 
-
 static void fill_pw (struct passwd *pwp) {
 	char  *cp,
 		  *dp;
@@ -280,7 +279,6 @@ static void fill_pw (struct passwd *pwp) {
 	*dp++ = 0;
 	pwp -> pw_shell = dp;
 }
-
 
 static void free_pw (void) {
 	struct pw *pw;
@@ -480,7 +478,6 @@ out:
 	return OK;
 }
 
-
 static void fill_gr (struct group *grp) {
 	char *cp, *dp;
 	if (dp = index (cp = grp -> gr_name + strlen (grp -> gr_name) + 1, '\n'))
@@ -490,7 +487,6 @@ static void fill_gr (struct group *grp) {
 	*dp++ = 0;
 	grp -> gr_gid = atoi (dp);
 }
-
 
 static void free_gr (void) {
 	struct gr *gr;
@@ -681,7 +677,6 @@ static struct gu *get_guent (unsigned int *ip, int len, int isnext) {
 #define	userHome	7
 #define	userShell	8
 #define	userStatus	9
-
 
 static int  o_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -1626,7 +1621,6 @@ bad_value:
 		return int_SNMP_error__status_noSuchName;
 	}
 }
-
 
 static char itoa64[] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

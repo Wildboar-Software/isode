@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryresponder.c,
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 
-
 int	debug = 0;
 
 static LLog _pgm_log = {
@@ -39,15 +38,12 @@ static char *myname = "ryresponder";
 
 static jmp_buf toplevel;
 
-
 static IFP	startfnx;
 static IFP	stopfnx;
 
 int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 SFD cleanup ();
-
-
 
 /* RESPONDER */
 
@@ -119,7 +115,6 @@ IFP	start,
 	return 0;
 }
 
-
 static int
 ros_init (int vecp, char **vec) {
 	int	    reply,
@@ -175,7 +170,6 @@ ros_init (int vecp, char **vec) {
 	return sd;
 }
 
-
 static int
 ros_work (int fd) {
 	int	    result;
@@ -213,7 +207,6 @@ ros_work (int fd) {
 
 	return OK;
 }
-
 
 static int
 ros_indication (int sd, struct RoSAPindication *roi) {
@@ -278,7 +271,6 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 	}
 }
 
-
 static int
 ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
@@ -289,7 +281,6 @@ ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
@@ -298,7 +289,6 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 
 	longjmp (toplevel, NOTOK);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -312,7 +302,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -328,7 +317,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
-
 
 #ifndef	lint
 
@@ -354,7 +342,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
@@ -374,8 +361,6 @@ advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
-
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

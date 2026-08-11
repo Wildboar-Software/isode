@@ -38,15 +38,11 @@
 static char *rcsid = "$Header: /f/iso/rosap/RCS/ro2ps.c,v 5.0 88/07/21 14:55:50 mrose Rel $";
 #endif
 
-
-
 #include <stdio.h>
 #include "ropkt.h"
 #include "tailor.h"
 
-
 int	aculose ();
-
 
 /*---------------------------------------------------------------------------*/
 /*    bind underlying service */
@@ -71,8 +67,6 @@ int RoAcuService (
 	return OK;
 }
 
-
-
 /* leave this here for the future when we add async */
 /*
 *    define vectors for INDICATION events *
@@ -85,7 +79,6 @@ struct RoSAPindication *roi;
 {
 #undef	e
 */
-
 
 /* leave this here until we add ROS_INTR and async */
 /*
@@ -114,8 +107,6 @@ struct RoSAPindication *roi;
     return OK;
 }
 */
-
-
 
 /*---------------------------------------------------------------------------*/
 int ro2acuwait (
@@ -175,9 +166,6 @@ int ro2acuwait (
 	}
 }
 
-
-
-
 /*---------------------------------------------------------------------------*/
 int	ro2acuwrite (acb, pe, fe, priority, roi)
 /*---------------------------------------------------------------------------*/
@@ -231,7 +219,6 @@ struct RoSAPindication *roi;
 	return result;
 }
 
-
 /*---------------------------------------------------------------------------*/
 int ValidBinding (
 	/*---------------------------------------------------------------------------*/
@@ -242,7 +229,6 @@ int ValidBinding (
 #define	AEICMP(aei1,aei2) \
     (pe_cmp ((aei1) -> aei_ap_title, (aei2) -> aei_ap_title) \
   || pe_cmp ((aei1) -> aei_ae_qualifier, (aei2) -> aei_ae_qualifier))
-
 
 	if ( oid_cmp (acb -> acb_context, acs -> acs_context) )
 		return NOTOK;
@@ -257,7 +243,6 @@ int ValidBinding (
 		return NOTOK;
 	return OK;
 }
-
 
 /*---------------------------------------------------------------------------*/
 /*    AcSAP interface */

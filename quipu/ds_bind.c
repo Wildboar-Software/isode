@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_bind.c,v 9.0 1992/
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/commonarg.h"
@@ -77,7 +76,6 @@ int ds_bind_init (struct connection *cn) {
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_bind_init"));
 
-
 	if ( (arg->dba_version != DBA_VERSION_V1988) || quipu_shutdown) {
 		error->dbe_version = DBA_VERSION_V1988;
 		error->dbe_type = DBE_TYPE_SERVICE;
@@ -100,7 +98,6 @@ int ds_bind_init (struct connection *cn) {
 	/* If password is present, but zero length, treat as though absent */
 	if ((arg->dba_auth_type == DBA_AUTH_SIMPLE) && (arg->dba_passwd_len == 0))
 		arg->dba_auth_type = DBA_AUTH_NONE;
-
 
 	switch (arg->dba_auth_type) {
 	case DBA_AUTH_NONE:
@@ -381,7 +378,6 @@ out:
 			cma->cma_purported.ava_value->av_struct = (caddr_t) pp;
 		}
 
-
 		on->on_dsas = dsas;
 		for(di_tmp=on->on_dsas; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 			di_tmp->di_type = DI_OPERATION;
@@ -590,7 +586,6 @@ void do_ds_unbind (struct connection *conn) {
 	} else if (errno != EBADF)
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("*** fd %d: errno=%d ***", conn->cn_ad, errno));
-
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_un_bind"));
 }

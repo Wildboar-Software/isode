@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/ds_types.c,v 9.0 1
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/bind.h"
 #include "quipu/common.h"
@@ -54,7 +52,6 @@ void op_arg_free (struct ds_op_arg *arg) {
 		return;
 
 	DLOG(log_dsap, LLOG_TRACE, ("op_arg_free() - for real"));
-
 
 	switch (arg->dca_dsarg.arg_type) {
 	case OP_ABANDON:

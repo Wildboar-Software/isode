@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrelease2.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
@@ -55,7 +53,6 @@ int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, str
 
 	return result;
 }
-
 
 static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int     result;

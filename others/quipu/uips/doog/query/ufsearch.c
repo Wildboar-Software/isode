@@ -980,7 +980,6 @@ struct DSError *error;
 
 	if (task_rec == NULLDsTask) return RQ_processing;
 
-
 	/*
 	 *	Check if result comes from a search using exact or approx match.
 	 */
@@ -989,7 +988,6 @@ struct DSError *error;
 			ufs_task_array[aindex] != task_id && aindex < MaxUfsearchTasks;
 			aindex++)
 		;
-
 
 	/*
 	 *	Not an exact search, so must have been an approx search.
@@ -1005,7 +1003,6 @@ struct DSError *error;
 	} else
 		is_exact_match_error = TRUE;
 
-
 	/*
 	 *	  If not an approx search, then something's wrong!
 	 */
@@ -1015,7 +1012,6 @@ struct DSError *error;
 		return RQ_processing;
 	}
 
-
 	/*
 	 *	Save error and log it
 	 */
@@ -1024,7 +1020,6 @@ struct DSError *error;
 	add_error_to_request_rec(request, task_rec->baseobject, error_type, error);
 
 	ufsrec->tasks_failed++;
-
 
 	/*
 	 *  Remove invocation record for this task
@@ -1037,7 +1032,6 @@ struct DSError *error;
 		ufsrec->exact_task_count--;
 	else
 		ufsrec->approx_task_count--;
-
 
 	/*
 	 *	Check if this stage of matching has been completed
@@ -1137,7 +1131,6 @@ struct DSError *error;
 	return RQ_processing;
 } /* process_ufs_ds_result */
 
-
 /*
  * - ufsearch_result_free() -
  *
@@ -1186,7 +1179,6 @@ QCardinal id;
 	return result;
 } /* get_ufn_results */
 
-
 /*
  * - ufsearch_rec_free() -
  *
@@ -1205,7 +1197,6 @@ ufsearchRec record;
 
 	free((char *) record);
 } /* ufsearch_rec_free */
-
 
 void search_pair_list_free(list)
 searchPair *list;

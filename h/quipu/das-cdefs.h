@@ -18,7 +18,6 @@
  *
  */
 
-
 #ifdef PEPYPATH
 
 #include "quipu/util.h"

@@ -35,7 +35,6 @@ int main (int argc, char **argv) {
 	exit(0);
 }
 
-
 int test1 () {
 	int i;
 	double l_fixed_to_double();

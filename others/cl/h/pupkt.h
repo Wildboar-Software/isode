@@ -2,15 +2,12 @@
 /* pupkt.h - include file for Unit Data presentation providers (PS-PROVIDER) */
 /* subject to ISODE license agreement */
 
-
 #ifndef	_PUSAP2_
 #include "pusap2.h"		/* definitions for PS-USERs */
 #endif
 
 #include "ssap.h"		/* definitinos for SS-USERs */
 #include "susap.h"		/* definitinos for SS-USERs */
-
-
 
 #define toomuchP(b,n,m,p) \
 { \
@@ -51,15 +48,11 @@
 
 int	pusaplose ();
 
-
-
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	"iso asn.1 abstract transfer"
 
-
 #define	atn_is_ok(pb,atn)	((atn) ? 1 : 0) /* it's all ISO8825, right? */
 #define	atn_is_asn1(atn)	((atn) ? 1 : 0)	/* .. */
-
 
 struct psapblk {
 	struct psapblk *pb_forw;	/* doubly-linked list */
@@ -120,9 +113,6 @@ struct type_PS_User__data *info2_ppdu ();
 int	print_PS_UD__type (), print_PS_User__data (),
 	print_PS_Fully__encoded__data ();
 int	vunknown ();
-
-
-
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 #define	PPDU_UD        14

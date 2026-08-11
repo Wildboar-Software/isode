@@ -27,13 +27,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ps.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "ROS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
-
 
 static int	acslose ();
 
@@ -70,8 +67,6 @@ int RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 #define	e(i)	(indication ? (i) : 0)
 
-
-
 int ro2psasync (
 	struct assocblk *acb,
 	int (*indication)(int sd, struct RoSAPindication *roi),
@@ -106,7 +101,6 @@ int ro2psasync (
 #undef	e
 
 /*    map association descriptors for select() */
-
 
 int ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
 	struct PSAPindication   pis;
@@ -236,8 +230,6 @@ int ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindica
 	return NOTOK;
 }
 
-
-
 int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	struct PSAPindication   pis;
@@ -260,7 +252,6 @@ int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-
 static int
 doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
 	PE	    pe;
@@ -280,7 +271,6 @@ doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAP
 	return acb2osdu (acb, invokeID, pe, roi);
 }
 
-
 static int
 doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -290,7 +280,6 @@ doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 static int
 doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi) {
@@ -302,7 +291,6 @@ doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi
 	return NOTOK;
 }
 
-
 static int
 doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -313,7 +301,6 @@ doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindicat
 	return NOTOK;
 }
 
-
 static int
 doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
@@ -323,8 +310,6 @@ doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication 
 	freeacblk (acb);
 	return NOTOK;
 }
-
-
 
 static int
 doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi) {
@@ -351,7 +336,6 @@ doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication 
 
 	return DONE;
 }
-
 
 static int
 doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi) {
@@ -386,7 +370,6 @@ out:
 	return NOTOK;
 }
 
-
 static void psDATAser (int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
@@ -400,7 +383,6 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 	if (doPSdata (acb, NULL, px, roi) != OK)
 		(*handler) (sd, roi);
 }
-
 
 static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RoSAPindication *roi);

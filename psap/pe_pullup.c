@@ -24,14 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_pullup.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 
-
 static PElementData	pe_pullup_aux ();
-
 
 int pe_pullup (PE pe) {
 	PElementLen	    len;
@@ -53,7 +49,6 @@ int pe_pullup (PE pe) {
 
 	return OK;
 }
-
 
 static PElementData
 pe_pullup_aux (PE pe, int *len) {

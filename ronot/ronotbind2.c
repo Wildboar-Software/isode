@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind2.c,v 9.0 19
  *
  */
 
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"
 #include "RONOT-types.h"
 
-
 /* RO-BIND.INDICATION */
-
 
 int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	int			  result;
@@ -120,7 +116,6 @@ struct RoNOTindication	* rni;
 	struct AcSAPindication	* aci = &(aci_s);
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
-
 	/* Wrap the user data with the remote operations BIND RESULT tag */
 
 	if (bindrespe != NULLPE) {
@@ -181,7 +176,6 @@ struct RoNOTindication	* rni;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
 	struct AcSAPabort	* aca = &(aci->aci_abort);
-
 
 	/* Wrap the user data with the remote operations BIND ARGUMENT tag */
 

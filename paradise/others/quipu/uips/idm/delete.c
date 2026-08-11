@@ -62,7 +62,6 @@ int de_Delete() {
 		}
 		printf("\n");
 
-
 		if (noEntries > 0) {
 			freePRRs(&plp);
 		}
@@ -142,7 +141,6 @@ int dm_Delete_entry() {
 	int status;
 
 	struct DSError error;
-
 
 	fillMostRmArg();
 	rmarg.rma_object = str2dn(plp->name);

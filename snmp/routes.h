@@ -25,7 +25,6 @@
  *
  */
 
-
 #ifdef	BSD44
 #include <sys/param.h>
 #endif
@@ -51,13 +50,11 @@ struct rtentry {
 };
 #endif
 
-
 #define	METRIC_NONE	(-1)			/* ipRouteMetric[1234] */
 
 #define	PROTO_OTHER	1			/* ipRouteProto */
 #define	PROTO_ICMP	4
 #define	PROTO_ESIS	10
-
 
 struct rtetab {
 #define	RT_SIZE		20			/* object instance */
@@ -92,7 +89,6 @@ extern struct rtetab *rts_inet;
 #ifdef	BSD44
 extern struct rtetab *rts_iso;
 #endif
-
 
 int	get_routes ();
 struct rtetab *get_rtent ();

@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/encode.c
  *
  */
 
-
-
 #include <stdio.h>
 #include "quipu/photo.h"
 #include "general.h"
@@ -53,7 +51,6 @@ int forcesize = 0;
 int nopreamble = 0;
 int oldformat = 0;
 
-
 /* ROUTINE:     encode_t4
 /*
 /* SYNOPSIS:    Implements CCITT recommendation T.4.
@@ -69,7 +66,6 @@ int oldformat = 0;
 /* are kept.  This is the used as the reference.
 /*
 */
-
 
 char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 
@@ -155,8 +151,6 @@ char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 	return (t4_line.dbuf_top);
 }
 
-
-
 /* ROUTINE:     code_one
 /*
 /* SYNOPSIS:    codes one line of a bit map into t4
@@ -220,11 +214,6 @@ bit_string * t4_lineptr;        /* output line */
 		put_code (t4_lineptr, code.term);            /* the terminal code */
 	}
 }
-
-
-
-
-
 
 /* ROUTINE:     code_two
 /*
@@ -304,7 +293,6 @@ bit_string * t4_lineptr;        /* output line    */
 	} while (a0 < STOP);
 }
 
-
 /* ROUTINE:     Pass_mode
 /*
 /* SYNOPSIS:    Encodes pass_mode
@@ -322,7 +310,6 @@ bit_string * t4_lineptr;
 	put_code (t4_lineptr,code);
 	a0 = b2;
 }
-
 
 /* ROUTINE:     Vertical_mode
 /*
@@ -351,9 +338,6 @@ bit_string * t4_lineptr;
 	put_code (t4_lineptr, code[a1 - b1 + 3]);
 	a0 = a1;
 }
-
-
-
 
 /* ROUTINE:     Horizontal_mode
 /*
@@ -403,7 +387,6 @@ char    colour;
 	a0 = a2;
 }
 
-
 /* ROUTINE:     Put_code ()                                             */
 /*                                                                      */
 /* SYNOPSIS:    appends the code word to the 'line'.                    */
@@ -430,9 +413,6 @@ code_word       code;
 	}
 }
 
-
-
-
 /* ROUTINE:     put_eoln                                                */
 /*                                                                      */
 /* SYNOPSIS:    Puts an end of line marker at the end of a t4 line.     */
@@ -451,8 +431,6 @@ bit_string    * lineptr;
 
 	set_bit (lineptr);
 }
-
-
 
 /* ROUTINE:     get_runs
  *
@@ -496,8 +474,6 @@ bit_string * lineptr;
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
 }
-
-
 
 /* ROUTINE:     flush_output;
  *
@@ -643,7 +619,6 @@ bit_string * lineptr;
 
 	optlen = lineptr->dbuf - lineptr->dbuf_top;
 }
-
 
 /* ROUTINE:     set_input;
 /*

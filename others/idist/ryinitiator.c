@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,
 #include "Idist-ops.h"
 #include "defs.h"
 
-
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 void	ros_adios (), ros_advise (), acs_advise (), acs_adios ();
@@ -37,7 +36,6 @@ static char *myservice = "isode idist";
 
 static char *mycontext = "isode idist";
 static char *mypci = "isode idist pci";
-
 
 extern char *isodeversion;
 
@@ -102,7 +100,6 @@ int makeconn (char *thehost) {
 
 	return result == OK ? 1 : 0;
 }
-
 
 static	int	ry_sd = NOTOK;
 
@@ -202,7 +199,6 @@ int closeconn () {
 	ACRFREE (acr);
 }
 
-
 invoke (op, arg, mod, ind, rfx, efx)
 int	op;
 modtyp	*mod;		/* encoding/decoding table for Idist */
@@ -243,8 +239,6 @@ IFP	rfx, efx;
 	return result_value;
 }
 
-
-
 SFD cleanup ();
 
 void
@@ -255,7 +249,6 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 
 	_exit (1);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -270,7 +263,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-
 void
 acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
@@ -278,7 +270,6 @@ acs_adios (struct AcSAPabort *aca, char *event) {
 	cleanup ();
 	_exit (1);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -295,10 +286,8 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -322,7 +311,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -333,7 +321,6 @@ void	advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
@@ -356,7 +343,6 @@ advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdocument.c,v 9.0 1
  *
  */
 
-
-
 #include <stdio.h>
 #include "ftam.h"
 #include "tailor.h"
-
 
 static char *isodocuments = "isodocuments";
 
@@ -37,7 +34,6 @@ static FILE *servf = NULL;
 static int   stayopen = 0;
 
 static struct isodocument ids;
-
 
 int setisodocument (int f) {
 	if (servf == NULL)
@@ -49,7 +45,6 @@ int setisodocument (int f) {
 	return (servf != NULL);
 }
 
-
 int endisodocument (void) {
 	if (servf && !stayopen) {
 		fclose (servf);
@@ -58,7 +53,6 @@ int endisodocument (void) {
 
 	return 1;
 }
-
 
 struct isodocument *
 getisodocument (void) {
@@ -142,7 +136,6 @@ free1:
 	return NULL;
 }
 
-
 struct isodocument *
 getisodocumentbyentry (char *entry) {
 	struct isodocument *id;
@@ -155,7 +148,6 @@ getisodocumentbyentry (char *entry) {
 
 	return id;
 }
-
 
 struct isodocument *getisodocumentbytype (type)
 OID	type;

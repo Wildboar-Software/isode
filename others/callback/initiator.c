@@ -24,14 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/initiator.c
  *
  */
 
-
 #include <stdio.h>
 #include "callback.h"
 
-
 static char *mycontext = "isode callback demo";
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    vecp;

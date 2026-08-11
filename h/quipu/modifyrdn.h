@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUMODRDN
 #define QUIPUMODRDN
 

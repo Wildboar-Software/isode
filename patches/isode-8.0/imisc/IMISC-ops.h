@@ -5,7 +5,6 @@
 #endif
 #include "rosy.h"
 
-
 					/* OPERATIONS */
 
 extern struct RyOperation table_IMISC_Operations[];
@@ -45,7 +44,6 @@ extern struct RyOperation table_IMISC_Operations[];
 
 					/* OPERATION echo */
 #define operation_IMISC_echo	11
-
 
 #ifndef	lint
 
@@ -145,7 +143,6 @@ RyStub ((sd), table_IMISC_Operations, operation_IMISC_echo, (id), NULLIP,\
 RyOperation ((sd), table_IMISC_Operations, operation_IMISC_echo,\
 	(caddr_t) (in), (out), (rsp), (roi))
 #endif
-
 
 					/* ERRORS */
 

@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapdse.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "DSE-types.h"
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"
-
 
 static AEInfo aeis;
 static struct PSAPaddr pas;
@@ -39,7 +36,6 @@ static struct PSAPaddr pas;
 extern	PE    name2value_dase ();
 
 PE	(*acsap_lookup) () = name2value_dase;
-
 
 AEI
 str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd) {
@@ -83,7 +79,6 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 
 	return (aei -> aei_ap_title ? aei : NULLAEI);
 }
-
 
 struct PSAPaddr *
 aei2addr_dse (AEI aei) {

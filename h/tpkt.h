@@ -91,12 +91,10 @@
 #define	copyTSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 struct tsapblk;
 struct TSAPdisconnect;
 
 int	tpktlose(struct tsapblk*, ...), tsaplose (struct TSAPdisconnect*, ...);
-
 
 struct tsapADDR {
     struct NSAPaddr ta_addr;
@@ -204,7 +202,6 @@ struct tsapblk {
 #endif
 };
 #define	NULLBP		((struct tsapblk *) 0)
-
 
 void freetblk (struct tsapblk *tb);
 struct tsapblk *newtblk (), *findtblk ();
@@ -388,7 +385,6 @@ struct tsapkt {
 };
 #define	NULLPKT		((struct tsapkt *) 0)
 
-
 void freetpkt (struct tsapkt *t);
 struct tsapkt *newtpkt (int code);
 
@@ -447,12 +443,10 @@ struct tsapkt  *str2tpkt ();
 					/* for ER TPDUs */
 #define	VDAT_INVALID	0xc1		/* invalid TPDU */
 
-
 /* TP0 is the protocol */
 
 int	tp0init ();
 int	tp0write ();
-
 
 /* TCP is NS-provider */
 
@@ -461,14 +455,12 @@ int	tcpopen ();
 char   *tcpsave ();
 int	tcprestore ();
 
-
 /* X.25 is NS-provider */
 
 int	x25open ();
 
 char   *x25save ();
 int	x25restore ();
-
 
 /* Bridge is NS-provider */
 
@@ -477,7 +469,6 @@ int	bridgediscrim ();
 
 char	*bridgesave ();
 int	bridgerestore ();
-
 
 /* TP4 is the protocol and the TS-provider */
 

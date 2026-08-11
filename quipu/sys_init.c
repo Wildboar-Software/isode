@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/sys_init.c,v 9.0 1992
  *
  */
 
-
 #include <stdio.h>
 #include <errno.h>
 #include "quipu/oid.h"
@@ -41,8 +40,6 @@ extern time_t retry_timeout;
 extern time_t slave_timeout;
 extern char * edbtmp_path;
 extern char * treedir;
-
-
 
 static int rmFiles();
 
@@ -87,7 +84,6 @@ int dsa_sys_init (int *acptr, char ***avptr) {
 		slave_timeout = cache_timeout;
 
 }
-
 
 void
 mk_dsa_tmp_dir (void) {
@@ -137,5 +133,4 @@ struct dirent *entry;
 
 	return 0;
 }
-
 

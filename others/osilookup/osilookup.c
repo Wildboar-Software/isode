@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
  *
  */
 
-
 #include "config.h"
 #include <stdio.h>
 #include <sys/types.h>
@@ -47,8 +46,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
 #include <netosi/osi.h>
 #include <netosi/osi_addr.h>
 #include <sunosi/mapds_user.h>
-
-
 
 main (int argc, char **argv, char **envp) {
 	int	    len,
@@ -101,7 +98,6 @@ static char nib2hex[0x10] = {
 	'0', '1', '2', '3', '4', '5', '6', '7',
 	'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 };
-
 
 static int  explode (a, b, n)
 char  *a;

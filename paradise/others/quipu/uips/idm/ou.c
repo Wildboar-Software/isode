@@ -246,8 +246,6 @@ struct namelist ** olistp;
 	return OK;
 }
 
-
-
 int listExactOUs(objectstr, listp)
 char * objectstr;
 struct namelist ** listp;
@@ -353,8 +351,6 @@ char * str;
 	arg.lsa_object = str2dn(str);
 	return (&arg);
 }
-
-
 
 struct ds_search_arg *
 fillMostOUSearchArgs(parentstr, searchdepth)

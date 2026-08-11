@@ -42,15 +42,12 @@
 /* psapunitdata.c - PPM: initiator and responder */
 /* stolen from psapinitiate.c in ISODE's /psap2 library */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "pupkt.h"
 #include "isoservent.h"
 #include "tailor.h"
-
 
 /*---------------------------------------------------------------------------*/
 /* ^L   P-UNIT-DATA.REQUEST */
@@ -155,7 +152,6 @@ struct	PSAPindication *pi;
 		goto no_good;
 	}
 
-
 	if (ctxlist && ctxlist -> pc_nctx > 0) {
 
 		if ( contexts2block ( ctxlist -> pc_ctx, ctxlist -> pc_nctx, pb, pi )
@@ -166,12 +162,10 @@ struct	PSAPindication *pi;
 			goto no_mem;
 	}
 
-
 	if (data && ndata > 0
 			&& (pdu -> user__data = info2_ppdu (pb, pi, data, ndata,
 									PPDU_UD)) == NULL)
 		goto no_good;
-
 
 	pe = NULLPE;
 	if (encode_PS_UD__type (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
@@ -180,12 +174,10 @@ struct	PSAPindication *pi;
 		goto no_good;
 	}
 
-
 #ifdef	DEBUG
 	if (psap2level & ISODELOG_PDUS)
 		PS_print (pe, "UD-type", 0, print_PS_UD__type);
 #endif
-
 
 	if (pe2ssdu (pe, &pb -> pb_retry, &len) == NOTOK)
 		goto no_mem;
@@ -202,7 +194,6 @@ struct	PSAPindication *pi;
 	}
 	goto out;
 
-
 no_mem:
 	;
 	pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
@@ -218,7 +209,6 @@ out:
 	sigiomask (smask);
 	return result;
 }
-
 
 /*---------------------------------------------------------------------------*/
 /* ^L   BIND  ...  for P-UNIT-DATA.REQUEST and P-UNIT-DATA.INDICATION */
@@ -286,7 +276,6 @@ int PUnitDataBind (
 	if ( addrs2block ( calling, called, pb, pi ) == NOTOK )
 		goto no_good;
 
-
 	/*  Ignore this comment for initial testing !!!! */
 	/*  We do need to specify a "default" context for code that exists */
 
@@ -310,7 +299,6 @@ int PUnitDataBind (
 		goto no_good;
 	}
 
-
 	if (ctxlist && ctxlist -> pc_nctx > 0)
 		if ( contexts2block ( ctxlist -> pc_ctx, ctxlist -> pc_nctx, pb, pi )
 				== NOTOK )
@@ -328,14 +316,12 @@ int PUnitDataBind (
 	sigiomask (smask);
 	return result;
 
-
 no_good:
 	;
 	freepublk (pb);
 	sigiomask (smask);
 	return NOTOK;
 }
-
 
 /*---------------------------------------------------------------------------*/
 /* ^L   ReBIND  ...  resets called address on binding */
@@ -397,9 +383,6 @@ int PUnitDataRebind (
 	return OK;
 }
 
-
-
-
 /*---------------------------------------------------------------------------*/
 /*    send P-UNIT-DATA.REQUEST over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
@@ -423,7 +406,6 @@ struct  PSAPindication *pi;
 	struct type_PS_User__data *info;
 	struct PSAPaddr *calling;
 	struct PSAPaddr *called;
-
 
 	missingP (data);
 	toomuchP (data, ndata, NPDATA, "user");
@@ -460,17 +442,14 @@ struct  PSAPindication *pi;
 			== NULL)
 		goto no_mem;
 
-
 	if ( pb -> pb_ncontext > 0 )
 		if ( contexts2pdu ( pb, pdu ) == NOTOK )
 			goto no_mem;
-
 
 	if (data && ndata > 0
 			&& (pdu -> user__data = info2_ppdu (pb, pi, data, ndata,
 									PPDU_UD)) == NULL)
 		goto no_good;
-
 
 	pe = NULLPE;
 	if (encode_PS_UD__type (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
@@ -479,12 +458,10 @@ struct  PSAPindication *pi;
 		goto no_good;
 	}
 
-
 #ifdef	DEBUG
 	if (psap2level & ISODELOG_PDUS)
 		PS_print (pe, "UD-type", 0, print_PS_UD__type);
 #endif
-
 
 	if (pe2ssdu (pe, &pb -> pb_retry, &len) == NOTOK)
 		goto no_mem;
@@ -498,8 +475,6 @@ struct  PSAPindication *pi;
 	if ((result = SUnitDataWrite ( sd, pb -> pb_retry, len, si )) == NOTOK )
 		ss2pulose (NULLPB, pi, "SUnitDataWrite", sa);
 	goto out;
-
-
 
 no_mem:
 	;
@@ -515,10 +490,6 @@ out:
 	sigiomask (smask);
 	return result;
 }
-
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /*    get P-UNIT-DATA.INDICATON over locally bound association */
@@ -588,7 +559,6 @@ int PUnitDataRead (
 	pe_free (pe);
 	pe = ps -> ps_info[0] = NULLPE;
 
-
 	/*  build PuSAPstart structure */
 
 	ps -> ps_sd = pb -> pb_fd;
@@ -643,8 +613,6 @@ out:
 	return result;
 }
 
-
-
 /*---------------------------------------------------------------------------*/
 /*    clear local binding for P-UNIT-DATA */
 /*---------------------------------------------------------------------------*/
@@ -689,8 +657,6 @@ out1:
 	return result;
 }
 
-
-
 /*---------------------------------------------------------------------------*/
 /*    save magic args (TPDU) for local P-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
@@ -723,7 +689,6 @@ int PuSave (
 		return pusaplose (pi, PC_PARAMETER, NULLCP,
 						  "invalid presentation descriptor");
 
-
 	if ( (result = SuSave ( sd, vecp, vec, si) ) == NOTOK) {
 		ss2pulose (NULLPB, pi, "PuSave", sa);
 		if ( sd == NOTOK ) freepublk (pb);
@@ -733,7 +698,6 @@ int PuSave (
 	pb->pb_fd = result;
 	return result;
 }
-
 
 /*---------------------------------------------------------------------------*/
 int addrs2block (
@@ -771,7 +735,6 @@ no_mem:
 	pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 	return NOTOK;
 }
-
 
 /*----------------------------------------------------------------------------*/
 int contexts2block (
@@ -820,7 +783,6 @@ int contexts2block (
 	}
 	return OK;
 
-
 no_mem:
 	;
 	pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
@@ -828,7 +790,6 @@ out2:
 	;
 	return NOTOK;
 }
-
 
 /*----------------------------------------------------------------------------*/
 int contexts2pdu (
@@ -874,8 +835,6 @@ no_mem:
 	;
 	return NOTOK;
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 int pdu2contexts (

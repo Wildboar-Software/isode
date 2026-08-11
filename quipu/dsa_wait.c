@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/dsa_wait.c,v 9.0 1992
  *
  */
 
-
 #include "rosap.h"
 #include "tsap.h"
 
@@ -262,8 +261,6 @@ int dsa_wait (int secs) {
 
 } /* dsa_wait */
 
-
-
 #ifdef QUIPU_CONSOLE
 static void
 connecting_analyse (struct connection *cn) {
@@ -469,7 +466,6 @@ opening_analyse (struct connection *cn) {
 		avs_merge(open_call_avs, avs_comp_new(oc_av)) ;
 	}
 }
-
 
 void
 closing_analyse (struct connection *cn) {

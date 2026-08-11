@@ -29,8 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ccurx25.c,v 9.0 1992
  *
  */
 
-
-
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -257,7 +255,6 @@ int get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, i
 		close(close_fd);
 	return NOTOK;
 }
-
 
 int start_x25_client (struct NSAPaddr *local) {
 	int     sd;
@@ -512,7 +509,6 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 				 (int)sizeof(N_bind_ack_t), NOTOK) == NOTOK)
 		return NOTOK;
 
-
 	bzero((char *)&con, sizeof(con));
 	gen2if (remote, &con.addr, ADDR_REMOTE);
 	con.req.PRIM_type = N_CONN_REQ;
@@ -578,7 +574,6 @@ char    *buffer;
 	char pbuf[CONTROL_BUF_SIZE];
 	struct strbuf control, data;
 	int			async = NOTOK, flags, count = 0, more;
-
 
 	data.buf = buffer;
 	data.maxlen = len;

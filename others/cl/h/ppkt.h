@@ -17,13 +17,11 @@
  *
  */
 
-
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
 
 #include "ssap.h"		/* definitinos for SS-USERs */
-
 
 #define	psapPsig(pb, sd) \
 { \
@@ -100,10 +98,8 @@
 #define	copyPSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pylose(p) \
 	ppktlose (pb, pi, PC_UNRECOGNIZED, (p), NULLCP, "%s", PY_pepy)
-
 
 #ifdef HULA
 #define psaplose pusaplose
@@ -114,15 +110,11 @@ struct psapblk;
 int	psaplose (struct PSAPindication*, ...);
 int	ppktlose (struct psapblk*pb, ...);
 
-
-
 #define	DFLT_ASN	"iso asn.1 abstract syntax"
 #define	DFLT_ATN	"iso asn.1 abstract transfer"
 
-
 #define	atn_is_ok(pb,atn)	((atn) ? 1 : 0) /* it's all ISO8825, right? */
 #define	atn_is_asn1(atn)	((atn) ? 1 : 0)	/* .. */
-
 
 struct psapblk {
 	struct psapblk *pb_forw;	/* doubly-linked list */
@@ -189,7 +181,6 @@ struct psapblk *newpublk (), *findpublk ();
 #define	PC_REASON_BASE \
 	(PC_ABSTRACT - int_PS_provider__reason_abstract__syntax__not__supported)
 
-
 struct type_PS_User__data *info2ppdu ();
 
 #ifdef HULA
@@ -207,7 +198,6 @@ struct qbuf *info2_qb ();
 int	qb2_info ();
 #endif
 
-
 struct type_PS_Identifier__list *silly_list ();
 
 int	ss2pslose (), ss2psabort ();
@@ -218,14 +208,12 @@ int	print_PS_CP__type (), print_PS_CPA__type (), print_PS_CPR__type (),
 	print_PS_Fully__encoded__data ();
 int	vunknown ();
 
-
 struct pair {
 	int	    p_mask;
 	int	    p_bitno;
 };
 
 extern struct pair preq_pairs[], sreq_pairs[];
-
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 

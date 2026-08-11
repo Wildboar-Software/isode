@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include "manifest.h"
 #include "general.h"
 #include <errno.h>
-
 
 /*
    stash a pointer to each field into the passed array. any common seperators
@@ -44,9 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sstr2arg.c,v 9.0 199
 	characters.
 
 */
-
-
-
 
 int sstr2arg (
 	char *srcptr,  /* source data */

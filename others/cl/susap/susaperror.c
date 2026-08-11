@@ -12,22 +12,15 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include "ssap.h"
 #include "uderrors.h"
-
 
 /*
  *  Cause the message array to get allocated
  */
 
 #define	UDERR_ALLOCATE  1
-
-
-
-
 
 static char *reject_uerr0[] = {
 	"Reason not specified",
@@ -36,7 +29,6 @@ static char *reject_uerr0[] = {
 };
 
 static int reject_uerr0_cnt = sizeof reject_uerr0 / sizeof reject_uerr0[0];
-
 
 static char *reject_uerr8[] = {
 	"unknown error code 0x80",
@@ -56,8 +48,6 @@ static char *reject_uerr8[] = {
 };
 
 static int reject_uerr8_cnt = sizeof reject_uerr8 / sizeof reject_uerr8[0];
-
-
 
 char *SuErrString (int code) {
 	int    fcode;

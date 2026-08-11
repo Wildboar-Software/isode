@@ -243,7 +243,6 @@ no_copy:
 		fatal(-15,"Couldn't start the DSA!!");
 	}
 
-
 #ifdef QUIPU_MALLOC
 #ifdef DEBUG
 	start_malloc_trace (NULLCP);
@@ -354,7 +353,6 @@ signal (SIGUSR2, list_status2);
 	} /* forever */
 } /* main */
 
-
 static int restart = 0;
 
 SFD
@@ -398,7 +396,6 @@ check_conns (int secs) {
 			return result;
 		}
 #endif
-
 
 	void dsa_abort(xrestart)
 	int	xrestart;
@@ -544,7 +541,6 @@ check_conns (int secs) {
 	}
 #endif
 
-
 #ifdef	SIGUSR2
 	
 	SFD	list_status2 (sig)
@@ -644,7 +640,6 @@ fork_ok:
 #endif
 	}
 
-
 	/* ERRORS */
 
 #ifndef	lint
@@ -694,8 +689,6 @@ fork_ok:
 		advise (code, what, fmt);
 	}
 #endif
-
-
 
 	static void setdsauid (void) {
 		struct stat buf;
@@ -902,8 +895,6 @@ fork_ok:
 
 #endif /* QUIPU_CONSOLE */
 
-
-
 	static void osisecinit(argc, argv, fn)
 	int             *argc;
 	char          ***argv;
@@ -946,5 +937,4 @@ fork_ok:
 
 #endif
 	}
-
 

@@ -55,7 +55,6 @@ LLog    _de_log = {
 };
 LLog *de_log = &_de_log;
 
-
 extern char *TidyString();
 extern char *findHelp();
 void onint1(), de_exit();
@@ -102,7 +101,6 @@ char origDefaultCo[LINESIZE], origDefaultOrg[LINESIZE],
 	 welcomeMessage[LINESIZE] = "Welcome to the Directory Service",
 								matched[LINESIZE],
 								callingDteNumber[LINESIZE];
-
 
 char * username, * backup_dsa_address;
 jmp_buf sjbuf;
@@ -566,7 +564,6 @@ int doPRR (char matchstring[], int searchparent) {
 	return START_NEW_QUERY;
 }
 
-
 int printNames (int objectType) {
 	switch (objectType) {
 	case COUNTRY:
@@ -608,8 +605,6 @@ matchFollowing () {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
-
-
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
@@ -704,7 +699,6 @@ int enterString (int objectType) {
 	}
 	return numEnt;
 }
-
 
 int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep) {
 	char * cp, * cp2;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
  *
  */
 
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -39,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
 #ifndef	R_OK
 #define	R_OK	4
 #endif
-
 
 static char *myname = "fred";
 
@@ -68,7 +66,6 @@ LLog    _fred_log = {
 };
 LLog *fred_log = &_fred_log;
 
-
 static char *from = NULL;
 static char *reply_to = NULL;
 static char *sender = NULL;
@@ -89,8 +86,6 @@ static	arginit ();
 static int  fetchline ();
 static	rcmap ();
 static	log_utmp ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	int	    eof,
@@ -553,11 +548,9 @@ int _getline (char *prompt, char *buffer) {
 	return OK;
 }
 
-
 #ifndef	IAC
 #define	IAC	255
 #endif
-
 
 static int  fetchline (s, n, iop)
 char  *s;
@@ -585,8 +578,6 @@ FILE  *iop;
 	return OK;
 }
 
-
-
 static	SFD alrmser (sig)
 int	sig;
 {
@@ -596,8 +587,6 @@ int	sig;
 
 	longjmp (alrmenv, NOTOK);
 }
-
-
 
 static	SFD intrser (sig)
 int	sig;
@@ -611,7 +600,6 @@ int	sig;
 
 	interrupted++;
 }
-
 
 #ifndef	lint
 int	ask (char *fmt, ...)
@@ -684,7 +672,6 @@ int ask (char *fmt) {
 	return ask (fmt);
 }
 #endif
-
 
 int str2vecY (char *buffer, char **vec) {
 	int	    i;
@@ -786,10 +773,8 @@ done:
 	setuid (getuid ());
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -821,7 +806,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (char *what, char *fmt, ...) {
 	va_list ap;
@@ -832,7 +816,6 @@ void	advise (char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap)
 {
@@ -858,7 +841,6 @@ advise (char *what, char *fmt) {
 }
 #endif
 
-
 #include <utmp.h>
 
 #ifdef	sun
@@ -880,13 +862,11 @@ advise (char *what, char *fmt) {
 #define SCPYN(a, b)	strncpy(a, b, sizeof (a))
 #define SCMPN(a, b)	strncmp(a, b, sizeof (a))
 
-
 #ifdef	SYS5
 struct utmp *getutent ();
 #endif
 
 char *ttyname ();
-
 
 static	log_utmp () {
 #ifndef	SYS5
@@ -931,7 +911,6 @@ static	log_utmp () {
 	endutent ();
 #endif
 }
-
 
 #ifdef	bsd43_ut_host
 #define	BSD42

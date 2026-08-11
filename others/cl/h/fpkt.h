@@ -17,14 +17,12 @@
  *
  */
 
-
 #ifndef	_FTAM_
 #include "ftam.h"		/* definitions for FS-USERs */
 #endif
 #ifndef	_AcSAP_
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
-
 
 #define	FS_GEN(fsb) \
 	((fsb -> fsb_flags & FSB_INIT) ? FS_GEN_INITIATOR : FS_GEN_RESPONDER)
@@ -104,7 +102,6 @@
 #define	copyFTAMdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	pyinit(dtns,diags,chrgs,attrs,passwd) \
 { \
     ftam_state = FSTATE_SUCCESS, ftam_action = FACTION_SUCCESS; \
@@ -181,9 +178,7 @@
 #define	pylose() \
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, "%s", PY_pepy)
 
-
 int	ftamlose (), fpktlose (), ftamoops ();
-
 
 struct ftamblk {
 	struct ftamblk *fsb_forw;	/* doubly-linked list */
@@ -264,7 +259,6 @@ struct ftamblk *newfsblk (), *findfsblk ();
 #define	fsbtrace(fsb,a)	FTraceHook a
 #endif
 
-
 struct pair {
 	int	    p_mask;
 	int	    p_bitno;
@@ -273,7 +267,6 @@ struct pair {
 extern struct pair funit_pairs[],
 		fattr_pairs[],
 		faction_pairs[];
-
 
 /* Application wide types */
 #define	FTAM_AET	0	/* Application-Entity-Title */
@@ -297,7 +290,6 @@ extern struct pair funit_pairs[],
 #define	FTAM_ACCONTEXT	18	/* Access-Context */
 #define	FTAM_FADUID	19	/* FADU-Identity */
 #define	FTAM_C2CONTROL	20	/* Commitmenet-Control */
-
 
 /* FTAM Regime PDUs */
 #define	F_INITIALIZE_REQ	0	/* F-INITIALIZE-Request */
@@ -362,7 +354,6 @@ extern struct pair funit_pairs[],
 #define	F_RESTART_REQ		39
 #define	F_RESTART_RSP		40
 
-
 extern int  ftam_state;
 extern int  ftam_action;
 extern int  ftam_manage;
@@ -379,7 +370,6 @@ extern int  ftam_passlen;
 extern struct FTAMpasswords *ftam_fp;
 
 extern struct FTAMconcurrency *ftam_fc;
-
 
 extern int  ftam_threshold;
 
@@ -405,7 +395,6 @@ extern int ftam_faduop;
 extern struct FADUidentity *ftam_faduid;
 
 extern char *fadu_nodename;
-
 
 int	attr2pe (), conctl2pe (), diag2pe (), faduid2pe ();
 

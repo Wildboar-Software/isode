@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUNRSINFO
 #define QUIPUNRSINFO
 

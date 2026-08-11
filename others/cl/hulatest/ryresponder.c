@@ -36,7 +36,6 @@
 /* ryresponder.c - generic idempotent responder */
 /* modified for UNIT-DATA protocol stack */
 
-
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
@@ -48,22 +47,16 @@
 
 /*  #include "tsap.h"  for listening */
 
-
 int	debug = 0;
 
 static char *myname = "ryresponder";
 
-
 static jmp_buf toplevel;
-
 
 static IFP	startfnx;
 static IFP	stopfnx;
 
 int	ros_init (), ros_work (), ros_indication (), ros_lose ();
-
-
-
 
 /* RESPONDER */
 
@@ -158,14 +151,12 @@ IFP	start,
 		return NOTOK;
 	}
 
-
 	/*  dynamic invocation by tsap daemon must save tpdu for later read */
 	if ( argc > 1 )
 		if ( AcuSave ( sd, argc, argv, aci ) == NOTOK ) {
 			acs_advise (aca, "A-UNIT-DATA SAVE");
 			return NOTOK;
 		}
-
 
 	if (RoSetService (sd, RoAcuService, roi) == NOTOK)
 		ros_adios (rop, "set RO/Acu fails");
@@ -174,7 +165,6 @@ IFP	start,
 		ros_work (sd);
 
 	/* end of HULA inserted */
-
 
 	startfnx = start;
 	stopfnx = stop;
@@ -196,7 +186,6 @@ IFP	start,
 
 	exit (0);
 }
-
 
 /*
 ****************** removed for connectionless *************
@@ -258,7 +247,6 @@ char  **vec;
 *****************************************************
 */
 
-
 static int
 ros_work (int fd) {
 	int	    result;
@@ -296,7 +284,6 @@ ros_work (int fd) {
 
 	return OK;
 }
-
 
 static int
 ros_indication (int sd, struct RoSAPindication *roi) {
@@ -380,14 +367,12 @@ struct TSAPdisconnect *td;
 }
 */
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	longjmp (toplevel, NOTOK);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -401,7 +386,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 
 	advise (LOG_INFO, NULLCP, "%s: %s", event, buffer);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -418,10 +402,8 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 			aca -> aca_source);
 }
 
-
 #ifndef	lint
 static void	_advise ();
-
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -443,7 +425,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
@@ -454,7 +435,6 @@ void	advise (int code, char *what, char *fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (int code, char *what, va_list ap) {
 	char    buffer[BUFSIZ];
@@ -479,7 +459,6 @@ advise (int code, char *what, char *fmt) {
 	advise (code, what, , fmt);
 }
 #endif
-
 
 #ifndef	lint
 void	ryr_advise (char *what, char *fmt, ...) {

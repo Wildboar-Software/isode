@@ -152,7 +152,6 @@ struct list_cache *find_list_cache (DN dn, int sizelimit)
 	return (NULLCACHE);
 }
 
-
 int free_all_list_cache (void) {
 	struct list_cache *ptr, *pn;
 	for (ptr = list_top; ptr != NULLCACHE; ptr = pn)  {
@@ -313,7 +312,6 @@ Entry local_find_entry_aux (DN object, char deref)
 	/* NOTREACHED */
 }
 
-
 DN get_copy_dn (Entry entryptr)
 {
 	DN dn;
@@ -351,7 +349,6 @@ int check_schema (Entry eptr, Attr_Sequence as, struct DSError *error)
 	else
 		return ((*schema_fn)(eptr,as,error));
 }
-
 
 char *new_version (void) {
 	time_t clock;

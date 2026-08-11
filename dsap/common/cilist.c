@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cilist.c,v 9.0 
  *
  */
 
-
 /*
 	SYNTAX:
 		list = <list_component> | <list_component> '$' <list>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cilist.c,v 9.0 
 	EXAMPLE:
 		An example $ of a case ignore list $ syntax attribute
 */
-
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

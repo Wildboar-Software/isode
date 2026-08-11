@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPULIST
 #define QUIPULIST
 
@@ -64,7 +63,6 @@ struct ds_list_result {
 /* added in to do the secure stuff      */
 /* in a distributed manner              */
 /* this also applies to search          */
-
 
 struct list_cache {
 	DN              list_dn;

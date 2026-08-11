@@ -17,7 +17,6 @@
  *
  */
 
-
 #ifndef	_AcSAP_
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
@@ -25,7 +24,6 @@
 #ifndef	_PSAP_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
-
 
 #ifdef	ACSE
 
@@ -106,15 +104,12 @@
 #define	copyAcSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 #define	ACS_USER_BASE	ACS_USER_NULL
 #define	ACS_PROV_BASE	ACS_PROV_NULL
-
 
 #ifdef  HULA
 int	acusaplose (struct AcSAPindication *aci, ...);
 #endif
-
 
 int	ps2acslose ();
 #ifdef  HULA
@@ -124,7 +119,6 @@ int     ps2aculose ();
 struct type_ACS_Association__information *info2apdu ();
 int	apdu2info ();
 #endif
-
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -232,14 +226,12 @@ struct assocblk {
     (acb) -> acb_realbase = (acb) -> acb_base = NULL, (acb) -> acb_len = 0; \
 }
 
-
 int	freeacblk ();
 struct assocblk *newacblk (), *findacblk ();
 #ifdef  HULA
 int     freeacublk ();
 struct assocblk *newacublk (), *findacublk ();
 #endif
-
 
 #ifndef	ACSE
 
@@ -257,7 +249,6 @@ struct assocblk *newacublk (), *findacublk ();
 #define	  PCONN_DATA_CN	3	/*   Connection Data */
 #define	  PCONN_DATA_AP	4	/*   Application Protocol */
 
-
 /* PAccept Types */
 #define	PACC_DTS	0	/* Data Transfer Syntax */
 #define	PACC_DATA	1	/* User Data */
@@ -267,27 +258,22 @@ struct assocblk *newacublk (), *findacublk ();
 #define	    PACC_WD_DFLT 3
 #define   PACC_DATA_CN  2	/*   Connection Data */
 
-
 /* PRefuse Types */
 #define	PREF_REASON	0	/* Refuse Reason */
-
 
 /* Data Transfer Syntax Types */
 #define	DTS_SYNTAX	0	/* IMPLICIT INTEGER */
 #define SYN_X409	0	/* x.409 */
 
-
 /* Connection Data Types */
 #define CN_OPEN		0	/* Open */
 #define	CN_RECOVER	1	/* Recover */
-
 
 /* Refuse codes */
 #define	REFUSE_BUSY	0	/* Busy */
 #define	REFUSE_RECOVER	1	/* Cannot recover */
 #define	REFUSE_VALIDATE	2	/* Validation failure */
 #define	REFUSE_MODE	3	/* Unacceptable dialogue mode */
-
 
 /* Abort codes */
 #define	ABORT_LSP	0	/* Local system problem */
@@ -298,7 +284,6 @@ struct assocblk *newacublk (), *findacublk ();
 #define	ABORT_PERM	5	/* Permanent problem */
 #define	ABORT_USER	6	/* User abort */
 #define	ABORT_TRANS	7	/* Transfer completed */
-
 
 extern int acsap_application;
 extern int acsap_ckpoint;

@@ -33,7 +33,6 @@ LLog    _de_log = {
 };
 LLog *de_log = &_de_log;
 
-
 extern char *TidyString();
 extern char *findHelp();
 void searchFail(), onint1(), onint2(), de_exit();
@@ -261,7 +260,6 @@ int de_Action() {
 
 		enterString(OPTION2, default_option2, option2lp);
 
-
 		if (!(strcmp(option2, "1")))
 			return_status = dm_List();
 		else if (!(strcmp(option2, "2")))
@@ -456,7 +454,6 @@ struct namelist * lp;
 		break;
 	}
 }
-
 
 enterAndValidate(prompt, buf, objectType, defaultValue, lp)
 char * prompt, * buf;

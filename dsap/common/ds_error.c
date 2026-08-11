@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ds_error.c,v 9.
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/dsp.h"
@@ -98,7 +96,6 @@ static char * update [] = {
 	"Affects multiple DSAs",
 	"Object class modifications Prohibited"
 };
-
 
 void de_print (PS ps, struct DSError *err, int format)
 {
@@ -197,7 +194,6 @@ void ds_error (PS ps, struct DSError *err)
 
 	ds_error_free (err);
 }
-
 
 void log_ds_error (struct DSError *err) {
 	struct DSE_at_problem *at_prob;
@@ -325,7 +321,6 @@ void ds_error_free (struct DSError *err) {
 
 	err->dse_type = DSE_NOERROR;
 }
-
 
 void ds_bind_error_aux (PS ps, struct ds_bind_error *err, int mode)
 {

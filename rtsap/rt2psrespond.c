@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psrespond.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "rtpkt.h"

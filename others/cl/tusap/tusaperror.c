@@ -12,14 +12,9 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include "tsap.h"
 #include "uderrors.h"
-
-
-
 
 static char *disc_uerr0[] = {
 	"Reason not specified or Successful Return",
@@ -29,7 +24,6 @@ static char *disc_uerr0[] = {
 };
 
 static int  disc_uerr0_cnt = sizeof disc_uerr0 / sizeof disc_uerr0[0];
-
 
 static char *disc_uerr8[] = {
 	"Normal disconnect initiated by session entity",
@@ -51,7 +45,6 @@ static char *disc_uerr8[] = {
 };
 
 static int  disc_uerr8_cnt = sizeof disc_uerr8 / sizeof disc_uerr8[0];
-
 
 char *TuErrString (int code) {
 	int    fcode;

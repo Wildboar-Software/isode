@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUCOMP
 #define QUIPUCOMP
 

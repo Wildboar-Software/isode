@@ -20,7 +20,6 @@
  *
  */
 
-
 typedef  struct {
 	char length;            /* number of bits in the pattern  */
 	short pattern;          /* the bit pattern
@@ -48,14 +47,12 @@ typedef struct {
 	int   run_length;       /* a run_length         */
 } run_type;
 
-
 typedef struct nd {
 	char n_type;            /* describe the type of node */
 	struct nd * one;        /* one branch */
 	struct nd * zero;       /* zero branch */
 	int     value;          /* value arrived at */
 } node ;
-
 
 /* now some constant definitions */
 #define MSB_MASK 010000  /* octal. Mask to get at first bit

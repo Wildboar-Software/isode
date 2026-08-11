@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_free.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 void pe_free (PE pe) {
 	PE p, q;

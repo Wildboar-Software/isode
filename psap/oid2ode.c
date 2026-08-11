@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/oid2ode.c,v 9.0 1992/0
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
-
 
 char   *oid2ode_aux (identifier, quoted)
 OID	identifier;

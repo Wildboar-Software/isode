@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
  *
  */
 
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -41,7 +40,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
 #include "OACS-types.h"
 #include "internet.h"
 
-
 static int debug = 0;
 static int isacs = 0;
 static int isrts = 0;
@@ -54,7 +52,6 @@ LLog *pgm_log = &_pgm_log;
 
 static char *myname = "isod";
 
-
 static enum mode { echo, sink, XXX } mymode = XXX;
 
 struct dispatch {
@@ -63,10 +60,8 @@ struct dispatch {
 	enum mode ds_mode;
 };
 
-
 void	adios (char *, char *, ...),
 		advise (int, char *, char *, ...);
-
 
 static void	ts_adios (), ts_advise ();
 static int	ts_dataindication (), ts_discindication ();
@@ -78,7 +73,6 @@ static struct dispatch  ts_dispatches[] = {
 	NULLCP, XXX
 };
 
-
 static void	ss_adios (), ss_advise ();
 static int	ss_dataindication (), ss_tokenindication (), ss_syncindication (),
 		ss_actindication (), ss_reportindication (), ss_finishindication (),
@@ -86,14 +80,12 @@ static int	ss_dataindication (), ss_tokenindication (), ss_syncindication (),
 
 static struct dispatch *ss_dispatches = ts_dispatches;
 
-
 static void	ps_adios (), ps_advise ();
 static void ps_dataindication (), ps_tokenindication (), ps_syncindication (),
 		ps_actindication (), ps_reportindication (), ps_finishindication (),
 		ps_abortindication ();
 
 static struct dispatch *ps_dispatches = ts_dispatches;
-
 
 static void	acs_adios (), acs_advise ();
 
@@ -103,7 +95,6 @@ static struct dispatch  acs_dispatches[] = {
 
 	NULLCP, XXX
 };
-
 
 static void	rts_adios (), rts_advise ();
 static int	rts_indication ();
@@ -127,7 +118,6 @@ static struct dispatch  rtse_dispatches[] = {
 };
 
 static PE  apdupe = NULLPE;
-
 
 static void	ros_adios (), ros_advise ();
 static int	ros_indication ();
@@ -284,7 +274,6 @@ ts_main (int argc, char **argv) {
 	}
 }
 
-
 static int
 ts_dataindication (int sd, struct TSAPdata *tx) {
 	struct TSAPdisconnect   tds;
@@ -310,8 +299,6 @@ ts_dataindication (int sd, struct TSAPdata *tx) {
 	TXFREE (tx);
 }
 
-
-
 static int
 ts_discindication (int sd, struct TSAPdisconnect *td) {
 	if (td -> td_reason != DR_NORMAL)
@@ -325,14 +312,12 @@ ts_discindication (int sd, struct TSAPdisconnect *td) {
 	exit (0);
 }
 
-
 static void
 ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, event);
 
 	_exit (1);
 }
-
 
 static void
 ts_advise (struct TSAPdisconnect *td, char *event) {
@@ -355,7 +340,6 @@ ts_advise (struct TSAPdisconnect *td, char *event) {
 \07ACTIVITY\010NEGOTIATED\011CAPABILITY\012EXCEPTIONS\013TYPEDATA"
 
 #define	TMASK	"\020\01DATA\03SYNC\05ACTIVITY\07RELEASE"
-
 
 #define dotoken(requires,shift,bit,type) \
 { \
@@ -382,13 +366,11 @@ ts_advise (struct TSAPdisconnect *td, char *event) {
 	} \
 }
 
-
 static int  requirements = 0;
 static int  owned = 0;
 
 static struct SSAPdata hxs;
 static struct SSAPdata *hx = &hxs;
-
 
 static int
 ss_main (int argc, char **argv) {
@@ -531,7 +513,6 @@ ss_main (int argc, char **argv) {
 
 #undef	dotoken
 
-
 static int
 ss_dataindication (int sd, struct SSAPdata *sx) {
 	char   *p,
@@ -635,7 +616,6 @@ ss_dataindication (int sd, struct SSAPdata *sx) {
 		free (p);
 }
 
-
 static int
 ss_tokenindication (int sd, struct SSAPtoken *st) {
 	struct SSAPindication   sis;
@@ -690,7 +670,6 @@ ss_tokenindication (int sd, struct SSAPtoken *st) {
 
 	STFREE (st);
 }
-
 
 static int
 ss_syncindication (int sd, struct SSAPsync *sn) {
@@ -802,7 +781,6 @@ ss_syncindication (int sd, struct SSAPsync *sn) {
 	SNFREE (sn);
 }
 
-
 static int
 ss_actindication (int sd, struct SSAPactivity *sv) {
 	struct SSAPindication   sis;
@@ -906,7 +884,6 @@ ss_actindication (int sd, struct SSAPactivity *sv) {
 	SVFREE (sv);
 }
 
-
 static int
 ss_reportindication (int sd, struct SSAPreport *sp) {
 	struct SSAPindication   sis;
@@ -934,7 +911,6 @@ ss_reportindication (int sd, struct SSAPreport *sp) {
 	SPFREE (sp);
 }
 
-
 static int
 ss_finishindication (int sd, struct SSAPfinish *sf) {
 	struct SSAPindication   sis;
@@ -956,8 +932,6 @@ ss_finishindication (int sd, struct SSAPfinish *sf) {
 	exit (0);
 }
 
-
-
 static int
 ss_abortindication (int sd, struct SSAPabort *sa) {
 	if (!sa -> sa_peer)
@@ -971,14 +945,12 @@ ss_abortindication (int sd, struct SSAPabort *sa) {
 	exit (1);
 }
 
-
 static void
 ss_adios (struct SSAPabort *sa, char *event) {
 	ss_advise (sa, event);
 
 	_exit (1);
 }
-
 
 static void
 ss_advise (struct SSAPabort *sa, char *event) {
@@ -1025,7 +997,6 @@ ss_advise (struct SSAPabort *sa, char *event) {
 		break; \
 	} \
 }
-
 
 static int  prequirements = 0;
 #define	srequirements	requirements
@@ -1718,7 +1689,6 @@ static void ps_adios (struct PSAPabort *pa, char *event) {
 	_exit (1);
 }
 
-
 static void ps_advise (struct PSAPabort *pa, char *event) {
 	char    buffer[BUFSIZ];
 
@@ -1739,7 +1709,6 @@ static void acs_adios (struct AcSAPabort *aca, char *event) {
 
 	_exit (1);
 }
-
 
 static void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
@@ -1975,7 +1944,6 @@ accept:
 			adios (NULLCP, "unknown return from RtWaitRequest=%d", result);
 		}
 }
-
 
 static int
 rts_indication (int sd, struct RtSAPindication *rti) {
@@ -2372,7 +2340,6 @@ adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void advise (int code, char *what, char *fmt, ...)

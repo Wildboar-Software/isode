@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind1.c,v 9.0 
  *
  */
 
-
-
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"
 #include "RONOT-types.h"
 
-
 /* RO-UNBIND.REQUEST */
-
 
 int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;
@@ -43,7 +39,6 @@ int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr,
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &aci_s;
 	struct AcSAPabort	* aca = &(aci->aci_abort);
-
 
 	if (unbindargpe != NULLPE) {
 		if (encode_RONOT_UnBindArgumentValue (user_data_p, 1, 0, NULLCP, unbindargpe) == NOTOK) {
@@ -87,7 +82,6 @@ int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr,
 }
 
 /* RO-UNBIND.RETRY */
-
 
 int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	int			  result;

@@ -61,7 +61,6 @@ struct local_buf {
 #define PMASK_VARLEN		0x800000	/* PI is Variable Len */
 #define PMASK_NOTSUPPORTED	-1		/* Type not supported */
 
-
 static int si_table[] = {
 	PMASK_REFLECT,				/* 0x00: SPDU_ER */
 	PMASK_ENCLOSE				/* 0x01: SPDU_GT & SPDU_DT */
@@ -197,7 +196,6 @@ static int si_table[] = {
 
 #define	SI_TABLE_LEN		((sizeof si_table) / (sizeof si_table[0]))
 
-
 #define	PGI_CN_ID		1
 #define		PI_CALLED_SS	9
 #define		PI_CALLING_SS	10
@@ -233,7 +231,6 @@ static int si_table[] = {
 #define	PI_SSAP_CALLED		52
 #define	PI_UDATA		193
 #define	PI_XDATA		194
-
 
 static int pi_table[] = {
 	0,					/* 0x00 */
@@ -275,7 +272,6 @@ static int pi_table[] = {
 	PMASK_VARLEN | PMASK_CN_ITEMS		/* 0x17: 2nd initial s/n */
 };
 #define	PI_TABLE_LEN		((sizeof pi_table) / (sizeof pi_table[0]))
-
 
 static int pi_length[PI_TABLE_LEN] = {
 	0,					/* 0x00 */
@@ -324,7 +320,6 @@ static int pi_length[PI_TABLE_LEN] = {
 	0, 0,					/* 0x35-36 */
 	SIZE_CN_ISN,				/* 0x37: 2nd initial s/n */
 };
-
 
 #define	If_Set(flag)	if (s -> s_mask & (flag))
 #define If_Reset(flag)	if (!(s -> s_mask & (flag)))
@@ -508,7 +503,6 @@ static void start_pgi (int code, struct local_buf *c) {
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
-
 
 static void end_pgi (struct local_buf *c) {
 	if (c -> len)
@@ -1036,7 +1030,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-
 static u_long str2ssn (s, n)
 char  *s;
 int	n;
@@ -1048,7 +1041,6 @@ int	n;
 
 	return u;
 }
-
 
 /* this is used to pull PCI, not user data... */
 
@@ -1103,7 +1095,6 @@ pullqb (struct qbuf *qb, int n) {
 
 	return buffer;
 }
-
 
 struct ssapkt *
 tsdu2spkt (struct qbuf *qb, int len, int *cc) {
@@ -1813,7 +1804,6 @@ do_pgi:
 	return s;
 }
 
-
 #ifdef HULA
 
 struct ssapkt *
@@ -1828,7 +1818,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 	unsigned char   code,
 			 si;
 	struct ssapkt  *s;
-
 
 	/*
 	 *  Get si.
@@ -1856,7 +1845,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		nread++;
 	}
 
-
 	pktlen = s -> s_li;
 
 	/*
@@ -1875,7 +1863,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
-
 
 	if ((si >= SI_TABLE_LEN) || ((pmask = si_table[si]) == PMASK_NOTSUPPORTED)) {
 		s -> s_errno = SC_PROTOCOL;
@@ -1933,7 +1920,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 			}
 		}
 
-
 		switch (code) {
 		case PI_VERSION:
 			switch (si) {
@@ -1977,7 +1963,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 
 	/* NB: caller responsible for mapping user info to s -> s_qbuf */
 
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
@@ -2017,9 +2002,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 
 #endif
 
-
-
-
 struct ssapkt *
 newspkt (int code) {
 	struct ssapkt *s;
@@ -2033,7 +2015,6 @@ newspkt (int code) {
 
 	return s;
 }
-
 
 int freespkt (struct ssapkt *s) {
 	struct qbuf *qb,

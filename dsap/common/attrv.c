@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrv.c,v 9.0 1
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
@@ -431,7 +429,6 @@ void AttrV_cpy_enc (AttributeValue x, AttributeValue y) {
 		y->av_struct = NULL;
 	return;
 }
-
 
 int rdn_cmp (RDN a, RDN b) {
 	int i;

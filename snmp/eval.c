@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/eval.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include "mib.h"
@@ -38,7 +37,6 @@ static int  eval_expr (), read_tl (), read_long (), read_oid (), get_var_value (
 static	integer	*tos;
 static	integer	*roof;
 static	integer	 fstack[NSTACK + 1];
-
 
 #define	NEXPR	10
 
@@ -75,7 +73,6 @@ static struct expr exprs[NEXPR];
 static struct expr *curexpr = NULL;
 static struct expr *roofexpr;
 
-
 #define	functAdd	 0
 #define	functSub	 1
 #define	functMul	 2
@@ -92,7 +89,6 @@ static struct expr *roofexpr;
 #define	functAnd	13
 #define	functOr		14
 #define	functNot	15
-
 
 static int  o_funct (oi, v, offset)
 OI	oi;
@@ -244,7 +240,6 @@ int	offset;
 	return o_integer (oi, v, arg1);
 }
 
-
 /* assumes that exprEval occurs first in variable-bindings of get... */
 
 #define	exprIndex	0
@@ -252,7 +247,6 @@ int	offset;
 #define	exprExpr	2
 #define	exprStatus	3
 #define	exprHints	4
-
 
 static int  o_expressions (oi, v, offset)
 OI	oi;
@@ -340,7 +334,6 @@ int	offset;
 	}
 }
 
-
 static int  eval_expr (e)
 struct expr *e;
 {
@@ -425,7 +418,6 @@ struct expr *e;
 	return OK;
 }
 
-
 static int  read_tl (e, class, form, id, len)
 struct expr *e;
 PElementClass *class;
@@ -450,7 +442,6 @@ PElementLen   *len;
 
 	return OK;
 }
-
 
 static int  read_long (e, base, len, form, result)
 struct expr *e;
@@ -482,7 +473,6 @@ integer *result;
 
 	return OK;
 }
-
 
 static int  read_oid (e, base, len, form, ox)
 struct expr *e;
@@ -554,7 +544,6 @@ OID   *ox;
 
 	return OK;
 }
-
 
 static int  get_var_value (e, oid, i)
 struct expr *e;
@@ -633,7 +622,6 @@ losing:
 	return OK;
 }
 
-
 static int  s_expressions (oi, v, offset)
 OI	oi;
 struct type_SNMP_VarBind *v;
@@ -711,7 +699,6 @@ int	offset;
 
 	return int_SNMP_error__status_noError;
 }
-
 
 void init_eval (void) {
 	OT	    ot;

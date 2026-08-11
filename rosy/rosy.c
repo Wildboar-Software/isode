@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rosy.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -116,7 +115,6 @@ static	SY	myerrors = NULLSY;
 
 static	SY	mytypes = NULLSY;
 
-
 static char   *modsym ();
 static char   *cmodsym ();
 static char   *csymmod ();
@@ -142,8 +140,6 @@ static void do_err1 ();
 static void do_op2 ();
 static void do_op1 ();
 static void yyerror_aux ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -291,7 +287,6 @@ usage:
 
 	exit (yyparse ());		/* NOTREACHED */
 }
-
 
 int yyerror (char *s) {
 	yyerror_aux (s);
@@ -1525,7 +1520,6 @@ static void act2prf (char *cp, int level, char *e1, char *e2) {
 		}
 	}
 
-
 	printf ("\n");
 	l4 = (level + 1) * 4;
 	for (; *dp; dp = fp) {
@@ -1554,7 +1548,6 @@ out:
 	if (e2)
 		printf (e2, level * 4, "");
 }
-
 
 static int expand (char *dp, char *ep, char **gp) {
 	int    i;
@@ -1773,7 +1766,6 @@ static SY new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, ch
 	return sy;
 }
 
-
 static SY add_symbol (SY s1, SY s2) {
 	SY	    sy;
 
@@ -1796,7 +1788,6 @@ YP new_type (int code) {
 
 	return yp;
 }
-
 
 YP add_type (YP y, YP z) {
 	YP	    yp;
@@ -1929,7 +1920,6 @@ static char *cmodsym (char *module, char *id, char *prefix, char *realid) {
 
 	return buffer;
 }
-
 
 /* like cmodsym except we put identifier (sym) then the module (mod) hence its
  * name symmod

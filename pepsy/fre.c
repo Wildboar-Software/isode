@@ -24,9 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/fre.c,v 9.0 1992/06/1
  *
  */
 
-
-
-
 /*
  * These routines are the driving routines for freeing of the data
  */
@@ -34,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/fre.c,v 9.0 1992/06/1
 #include	"pepsy-driver.h" /* for PEPSY_VERSION defn */
 #include	"psap.h"
 #include	"pepsy.h"
-
 
 extern ptpe *next_tpe(ptpe *p);
 extern int pepsylose (modtyp *module, ...);

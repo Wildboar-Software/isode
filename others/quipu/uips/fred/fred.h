@@ -20,13 +20,11 @@
  *
  */
 
-
 #include <stdio.h>
 #include <errno.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
-
 
 extern int  interrupted;
 extern int  oneshot;
@@ -36,12 +34,10 @@ extern	SFP	qstat;
 
 extern LLog _fred_log, *fred_log;
 
-
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 int	ask (char *, ...), _getline ();
 char   *strdup ();
-
 
 extern int	bflag;
 extern int	boundP;
@@ -75,10 +71,8 @@ extern char    *mydn;
 extern char    *myhome;
 extern char    *myuser;
 
-
 extern FILE    *stdfp;
 extern FILE    *errfp;
-
 
 #define	EOLN	(network && !mail ? "\r\n" : "\n")
 
@@ -122,7 +116,6 @@ extern struct area_guide areas[];
 /* WHOIS */
 
 extern char *whois_help[];
-
 
 extern int  errno;
 

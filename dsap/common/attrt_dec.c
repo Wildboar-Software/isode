@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_dec.c,v 9
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/syntaxes.h"

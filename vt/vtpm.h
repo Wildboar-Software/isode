@@ -20,7 +20,6 @@
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 
@@ -170,8 +169,6 @@
 #define NDQ_x_tr		83
 #define NDQ_x_ntr		84
 
-
-
 /* Sector 1 States */
 
 #define S1_01			0	/*No Association*/
@@ -188,7 +185,6 @@
 #define S1_51N			11	/*Release -- Awaiting User*/
 #define S1_51T			12	/*Release -- Awaiting Peer*/
 
-
 /* Sector 5 States */
 
 #define S5_400B			0	/*Data Transfer*/
@@ -202,12 +198,9 @@
 #define S5_61			8	/*Break Request rcv'd from User*/
 #define S5_62			9	/*Break Request rcv'd from Peer*/
 
-
 #define	INITIATOR		0
 #define	ACCEPTOR		1
 #define	ACHOICE			2
-
-
 
 /*  PDU Types  (Table 4, ISO 9041) */
 
@@ -254,7 +247,6 @@ extern char	*myname;
 extern PE	p_ondq;
 extern LLog _vt_log, *vt_log;
 
-
 extern int errno;
 extern unsigned	state, sector;
 
@@ -300,7 +292,6 @@ extern int		vns,
 		waci,		/* boolean, this VTPM is assigned the waci right */
 		del_cont;	/* type of delivery control		*/
 
-
 /*
 	profile is name of the profile. This is also used for the draft profile.
 */
@@ -329,7 +320,6 @@ int 	s5_400B(),
 		s5_42T(),
 		s5_61(),
 		s5_62();
-
 
 extern struct SSAPref sfs;
 extern struct SSAPref *sf;

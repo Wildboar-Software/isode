@@ -17,7 +17,6 @@
  *    this agreement.
  */
 
-
 #ifndef	_TuSAP_
 #define	_TuSAP_
 
@@ -31,10 +30,7 @@
 #include "isoaddrs.h"
 #endif
 
-
-
 #ifdef HULA
-
 
 struct TSAPunitdata {			/* T-UNITDATA.INDICATION */
 	int     tud_sd;			/* TRANSPORT descriptor */

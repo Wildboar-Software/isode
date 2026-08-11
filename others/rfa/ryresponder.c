@@ -39,15 +39,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/ryresponder.c,v 
 #include "tsap.h"		/* for listening */
 #include "rfa.h"
 
-
 int	debug = 0;
 IFP	startfnx;
 IFP	stopfnx;
 
 static jmp_buf toplevel;
-
-
-
 
 int ros_init (int vecp, char **vec) {
 	int	    reply,
@@ -103,7 +99,6 @@ int ros_init (int vecp, char **vec) {
 	return sd;
 }
 
-
 int ros_work (int fd) {
 	int	    result;
 	caddr_t out;
@@ -140,7 +135,6 @@ int ros_work (int fd) {
 
 	return OK;
 }
-
 
 int ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
@@ -204,7 +198,6 @@ int ros_indication (int sd, struct RoSAPindication *roi) {
 	}
 }
 
-
 int ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
@@ -214,7 +207,6 @@ int ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
@@ -223,7 +215,6 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 
 	longjmp (toplevel, NOTOK);
 }
-
 
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
@@ -237,7 +228,6 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
-
 
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
@@ -253,8 +243,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
-
-
 
 /*--------------------------------------------------------------*/
 /* ureject */

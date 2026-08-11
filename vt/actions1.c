@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/actions1.c,v 9.0 1992/06
  *
  */
 
-
 #include "vtpm.h"
 #include "sector1.h"
 
@@ -224,7 +223,6 @@ int a1_8 (	/*VRELreq in 10T*/
 int a1_9 (	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
 	PE pe
 ) {
-
 
 	/*	vrsl = -1;
 	/*	for(p = first_member(pe); p; p = next_member(pe,p) )

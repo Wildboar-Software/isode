@@ -32,11 +32,8 @@
  ****************************************************************
  */
 
-
 #include <stdio.h>
 #include "tpkt.h"
-
-
 
 /* returns ptr to header and header len */
 
@@ -52,7 +49,6 @@ struct TSAPdisconnect *td;
 		   *liptr;
 
 	int	   n;
-
 
 	/*
 	 *  Format the ISO T-UNITDATA header
@@ -89,19 +85,12 @@ struct TSAPdisconnect *td;
 		*liptr += 2 + tb -> tb_responding.ta_selectlen;
 	}
 
-
 	/*
 	 *  LI field doesn't include itself so bump up the actual
 	 */
 
 	return ( (*liptr) + 1 );
 }
-
-
-
-
-
-
 
 /* returns header length */
 
@@ -111,7 +100,6 @@ int T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdis
 	int		code;
 	char	*vptr;			/* to variable data */
 	int	   	len, vlen, savelen;
-
 
 	vptr = (char*) tud -> tud_qbuf.qb_data;
 
@@ -197,6 +185,4 @@ int T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdis
 	return (savelen + 1);
 
 }
-
-
 

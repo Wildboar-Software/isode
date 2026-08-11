@@ -191,7 +191,6 @@ int get_event (int dd, PE *pe) {
 }
 
 
-
 #define SECTORS	6
 
 /* number of states in each sector */
@@ -449,7 +448,6 @@ int p_resync_resp (PE pdu) {
 	return(OK);
 }
 
-
 
 /****************************************************************************/
 /*	ASR - generate an ASR event. (that is send an ASR PDU which is	    */
@@ -600,7 +598,6 @@ int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
-
 static void  acs_advise ();
 
 void
@@ -611,7 +608,6 @@ acs_adios (struct AcSAPabort *aa, char *event) {
 
 	_exit (1);
 }
-
 
 static void
 acs_advise (struct AcSAPabort *aa, char *event) {
@@ -628,7 +624,6 @@ acs_advise (struct AcSAPabort *aa, char *event) {
 			aa -> aca_source);
 }
 
-
 static void
 ps_adios (struct PSAPabort *pab, char *event) {
 	ps_advise (pab, event);
@@ -637,7 +632,6 @@ ps_adios (struct PSAPabort *pab, char *event) {
 
 	_exit (1);
 }
-
 
 static void
 ps_advise (struct PSAPabort *pab, char *event) {

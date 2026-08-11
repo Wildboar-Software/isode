@@ -24,14 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sel2str.c,v 9.0 1992
  *
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
-
 
 char *sel2str (char *sel, int len, int quoted) {
 	char *cp,

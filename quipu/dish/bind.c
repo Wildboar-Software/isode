@@ -259,7 +259,6 @@ int call_bind (int argc, char **argv) {
 		}
 	}
 
-
 	if (noconnect)
 		return (OK);
 
@@ -671,7 +670,6 @@ int user_tailor (void) {
 
 	set_cmd_default ("modify","-dontusecopy");
 	/* we dont want to make templates with copies */
-
 
 	bzero ((char *)&bindarg, sizeof bindarg);
 	bindarg.dba_version = DBA_VERSION_V1988;

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/de/RCS/mappho
  *
  */
 
-
 #include <stdio.h>
 #include "util.h"
 #include "mapphone.h"

@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/log_tai.c,v 9.0 1992
  *
  */
 
-
-
 #include <string.h>
 #include <stdlib.h>
 #include "cmd_srch.h"
 #include "general.h"
 #include "manifest.h"
 #include "logger.h"
-
 
 #define	LG_FILE         1
 #define	LG_SFLAGS       2
@@ -75,7 +72,6 @@ static CMD_TABLE log_flgtbl[] = {
 	"TTY",          LLOGTTY,
 	0,              -1
 };
-
 
 int log_tai ( /* for now only alter the level - files etc later */
 	LLog *lgptr,

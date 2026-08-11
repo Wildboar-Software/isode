@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_dump.c,v 9.0 19
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include <errno.h>
@@ -63,7 +62,6 @@ static void entry_print (PS psa, Entry entryptr) {
 	as_print (psa,entryptr->e_attributes,EDBOUT);
 	parse_rdn = NULLRDN;
 }
-
 
 static void entry_block_print (PS psa, Entry block) {
 	Entry ptr;

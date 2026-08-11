@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-assoc.c,v 9.0 19
  *
  */
 
-
 #include <stdio.h>
 #include "ftamuser.h"
 
-
 static struct PSAPaddr vfs_bound;
-
 
 int f_open (char **vec) {
 	int    i;
@@ -299,8 +296,6 @@ int f_open (char **vec) {
 	return (ftamfd != NOTOK ? OK : NOTOK);
 }
 
-
-
 int	f_close (vec)
 char  **vec;
 {
@@ -337,7 +332,6 @@ char  **vec;
 	return OK;
 }
 
-
 int	f_quit (vec)
 char  **vec;
 {
@@ -347,10 +341,7 @@ char  **vec;
 	return DONE;
 }
 
-
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
-
-
 
 #ifndef	BRIDGE
 int	f_status (vec)

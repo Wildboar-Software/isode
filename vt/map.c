@@ -24,11 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/vt/RCS/map.c,v 9.0 1992/06/16 1
  *
  */
 
-
 #define DO_LOCAL_ECHO
 #undef PEPYPARM
 #define PEPYPARM int *
-
 
 #include "vtpm.h"
 #include "sector1.h"

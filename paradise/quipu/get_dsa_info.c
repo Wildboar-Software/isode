@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/get_dsa_info.c,v 9.2 
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"
@@ -86,7 +85,6 @@ struct di_block	**di_p;
 		err->dse_un.dse_un_service.DSE_sv_problem = DSE_SV_DITERROR;
 		return(DS_X500_ERROR);
 	}
-
 
 	(*di_p) = di_alloc();
 	(*di_p)->di_type = DI_TASK;
@@ -217,7 +215,6 @@ struct di_block	**di_p;
 		return(DS_X500_ERROR);
 	}
 }
-
 
 dsa_info_result_wakeup(on)
 struct oper_act	* on;
@@ -364,7 +361,6 @@ struct oper_act	* on;
 		return;
 	}
 }
-
 
 dsa_info_fail_wakeup(on)
 struct oper_act	* on;
@@ -624,7 +620,6 @@ Entry ptr;
 
 	return res;
 }
-
 
 quipu_version_7(eptr)
 Entry eptr;

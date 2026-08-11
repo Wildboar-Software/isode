@@ -24,18 +24,15 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamsbr.c,v 9.0 1992/
  *
  */
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include "ftamsbr.h"
-
 
 #ifdef	BRIDGE
 extern int vfs_fdf;
 #endif
 
 extern struct vfsmap vfs[];
-
 
 #ifdef	BRIDGE
 #endif
@@ -129,7 +126,6 @@ int	ftamfd;
 #endif
 }
 
-
 int	binarycheck (void *param, char *data)
 {
 	struct type_DOCS_FTAM__3__Parameters *p3 = param;
@@ -152,10 +148,8 @@ int	binarycheck (void *param, char *data)
 		return NOTOK;
 	}
 
-
 	return OK;
 }
-
 
 int	textcheck (param, data)
 caddr_t param;
@@ -200,11 +194,8 @@ char   *data;
 		return NOTOK;
 	}
 
-
 	return OK;
 }
-
-
 
 int	binarypeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;
@@ -235,7 +226,6 @@ int	ftamfd;
 	return DONE;
 }
 
-
 /* Various textual repetories.  In addition to the prohibited characters, on
    UNIX we disallow CRs.  This avoids funny CR-LF mappings. */
 
@@ -251,10 +241,7 @@ int	ftamfd;
 
 */
 
-
 #define	isIA5(c) (isprint ((u_char) c) || (isspace ((u_char)c) && (c) != '\r'))
-
-
 
 int	textpeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;
@@ -343,8 +330,6 @@ int	ftamfd;
 #endif
 }
 
-
-
 int	fdfpeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;
 int	fd;
@@ -369,13 +354,11 @@ int	ftamfd;
 	return DONE;
 }
 
-
 /* If text, then need to worry about ESCape sequences for the various
    repetoires (thank you, Digital!)  For now, we'll recognize G0 and G1 from
    the 8859-1 (latin) alphabet.  Note that when sending a file, we do not
    generate escape sequences...
  */
-
 
 int de2fd (int fd, PE pe, int text, int effector) {
 	int    i,
@@ -471,7 +454,6 @@ outside:
 
 	return n;
 }
-
 
 /* right from MH's sbr/path.c... */
 

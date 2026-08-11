@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 199
  *
  */
 
-
 /*
  * C-shell glob for random programs.
  *
@@ -40,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 199
 #include <sys/types.h>
 #include <dirent.h>
 #include "ftamuser.h"
-
 
 #define	QUOTE 0200
 #define	TRIM 0177
@@ -642,7 +640,6 @@ static int getldir (char *hdir) {
 }
 
 #undef	isdir
-
 
 int	xglobbed;
 

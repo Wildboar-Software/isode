@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/dish.c,v 9.0 199
  *
  */
 
-
 #include "manifest.h"
 #include "quipu/util.h"
 
@@ -72,7 +71,6 @@ int main (int argc, char **argv) {
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
-
 
 #ifdef OSISEC
 

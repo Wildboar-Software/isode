@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/text2tpkt.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include <ctype.h>
 #include "tpkt.h"

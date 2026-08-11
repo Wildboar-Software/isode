@@ -56,8 +56,6 @@ char oldfile[BUFSIZ];			/* file name (as above) with suffix */
 void adios (char *what, char *fmt, ...);
 void advise (char *what, char *fmt, ...);
 
-
-
 extern char *isodetcpath;
 extern char *isodebinpath;
 extern char *isodesbinpath;
@@ -222,7 +220,6 @@ struct edbdir topdirs[] = {
 #define DIRPERM			0711		/* directory permissions */
 #define SEDFILE			"sed.tmp"	/* sed filename */
 #define USDN			"c=US"		/* DN for the US */
-
 
 /* main () -- main function for program */
 void

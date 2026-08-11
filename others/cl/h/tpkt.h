@@ -7,7 +7,6 @@
  * $Log$
  */
 
-
 /*
  *				  NOTICE
  *
@@ -17,7 +16,6 @@
  *    this agreement.
  *
  */
-
 
 #ifndef	_TSAP_
 #include "tsap.h"		/* definitions for TS-USERs */
@@ -29,8 +27,6 @@
 #endif
 
 #endif
-
-
 
 #define	tsapPsig(tb, sd) \
 { \
@@ -45,7 +41,6 @@
 			    "transport descriptor not connected"); \
     } \
 }
-
 
 #define	missingP(p) \
 { \
@@ -113,9 +108,7 @@
 #define	copyTSAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-
 int	tpktlose (), tsaplose ();
-
 
 /* network type codes:
 	must be outside [0-9A-Fa-f] */
@@ -131,7 +124,6 @@ int	tpktlose (), tsaplose ();
 #define NT_UDP  'U'             /* UDP */
 #endif
 #endif
-
 
 struct tsapblk {
 	struct tsapblk *tb_forw;	/* doubly-linked list */
@@ -224,7 +216,6 @@ struct tsapblk {
 };
 #define	NULLBP		((struct tsapblk *) 0)
 
-
 #ifdef HULA
 int	freetublk ();
 struct tsapblk *newtublk (), *findtublk ();
@@ -232,7 +223,6 @@ struct tsapblk *newtublk (), *findtublk ();
 
 int	freetblk ();
 struct tsapblk *newtblk (), *findtblk ();
-
 
 /*    TPKT datastructure */
 
@@ -416,7 +406,6 @@ struct tsapkt {
 };
 #define	NULLPKT		((struct tsapkt *) 0)
 
-
 int	freetpkt ();
 struct tsapkt *newtpkt ();
 
@@ -474,11 +463,9 @@ struct tsapkt  *str2tpkt ();
 /* for ER TPDUs */
 #define	VDAT_INVALID	0xc1		/* invalid TPDU */
 
-
 /* TP0 is the protocol */
 
 int	tp0init ();
-
 
 /* TCP is NS-provider */
 
@@ -487,14 +474,12 @@ int	tcpopen ();
 char   *tcpsave ();
 int	tcprestore ();
 
-
 /* X.25 is NS-provider */
 
 int	x25open ();
 
 char   *x25save ();
 int	x25restore ();
-
 
 /* CONS is NS-provider */
 
@@ -503,7 +488,6 @@ int     consopen ();
 char   *conssave ();
 int     consrestore ();
 
-
 /* Bridge is NS-provider */
 
 int	bridgeopen ();
@@ -511,7 +495,6 @@ int	bridgediscrim ();
 
 char	*bridgesave ();
 int	bridgerestore ();
-
 
 /* TP4 is the protocol and the TS-provider */
 

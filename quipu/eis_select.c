@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/eis_select.c,v 9.0 19
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
@@ -175,7 +174,6 @@ got_always:
 	return (result);
 }
 
-
 Attr_Sequence
 attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 	Attr_Sequence result = NULLATTR;
@@ -233,7 +231,6 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 	}
 	return (result);
 }
-
 
 Attr_Sequence
 dsa_eis_select (
@@ -304,7 +301,6 @@ cpy_as_comp (Attr_Sequence as) {
 	return (ptr);
 }
 
-
 static Attr_Sequence
 cpy_as_comp_type (Attr_Sequence as) {
 	Attr_Sequence ptr;
@@ -320,8 +316,6 @@ cpy_as_comp_type (Attr_Sequence as) {
 	ptr->attr_acl = NULLACL_INFO;
 	return (ptr);
 }
-
-
 
 int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
 	Attr_Sequence temp;

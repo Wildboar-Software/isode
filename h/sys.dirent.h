@@ -6,7 +6,6 @@
 	prerequisite:	<sys/types.h>
 */
 
-
 /* The following nonportable ugliness could have been avoided by defining
    DIRENTSIZ and DIRENTBASESIZ to also have (struct dirent *) arguments. */
 #define	DIRENTBASESIZ		(((struct dirent *)0)->d_name \
@@ -20,7 +19,6 @@
 #ifndef NAME_MAX
 #define	NAME_MAX	(MAXNAMLEN - 1)	/* DAG -- added for POSIX */
 #endif
-
 
 #ifdef	dirent
 #undef	dirent

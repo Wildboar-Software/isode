@@ -24,12 +24,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/implode.c,v 9.0 1992
  *
  */
 
-
-
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
-
 
 char	hex2nib[0x80] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -49,7 +46,6 @@ char	hex2nib[0x80] = {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0
 };
-
 
 int implode (u_char *a, char *b, int n) {
 	int    i;

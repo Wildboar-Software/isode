@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapinitiate.c,v 9.0 1
  *
  */
 
-
-
 #include <signal.h>
 #include <unistd.h>
 #include "tpkt.h"
@@ -111,7 +109,6 @@ int TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int exp
 	return result;
 }
 
-
 static int
 TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
 	int	    result;
@@ -186,7 +183,6 @@ out:
 
 	return NOTOK;
 }
-
 
 static int
 TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
@@ -463,7 +459,6 @@ int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 	return result;
 }
 
-
 static struct TSAPaddr *
 newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
 	static struct TSAPaddr tzs;
@@ -480,7 +475,6 @@ newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
 
 	return tz;
 }
-
 
 struct TSAPaddr *
 ta2norm (struct TSAPaddr *ta) {
@@ -531,7 +525,6 @@ ta2norm (struct TSAPaddr *ta) {
 
 	return tz;
 }
-
 
 static struct TSAPaddr *
 maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta) {

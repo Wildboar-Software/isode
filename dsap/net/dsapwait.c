@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapwait.c,v 9.0 1
  *
  */
 
-
-
 #include <signal.h>
 #include "logger.h"
 #include "quipu/util.h"

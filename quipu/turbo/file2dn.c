@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/turbo/RCS/file2dn.c,v 9.0
  *
  */
 
-
 #include "general.h"
 #include <stdio.h>
 

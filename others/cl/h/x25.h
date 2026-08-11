@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_X25_
 #define	_X25_
 
@@ -72,14 +71,12 @@ typedef struct	ccontrolp CONN_DB;
 typedef struct ccliovec CONN_DB;
 #endif
 
-
 #ifdef UBC_X25
 #include <netccitt/x25_sockaddr.h>
 
 typedef struct x25_sockaddr CONN_DB;
 
 #endif
-
 
 #ifdef	SUN_X25
 #define close_x25_socket     close
@@ -105,12 +102,10 @@ int	select_x25_socket ();
 struct NSAPaddr *if2gen();
 CONN_DB *gen2if();
 
-
 #define	ADDR_LOCAL	0
 #define	ADDR_REMOTE	1
 #define	ADDR_LISTEN	2
 #define SEPARATOR ':'
-
 
 #define MAXNSDU	1024
 #endif

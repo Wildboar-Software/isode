@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/etabs.c,v 9.0 1992/06
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -358,7 +357,6 @@ void tenc_typ(FILE *fp, YP yp, char *id, char *type) {
 		fprintf(fp, "\t{ SOBJID, 0, %s, %s, %s },\n",
 				c_tag(yp), c_class(yp), genstrform(yp));
 		break;
-
 
 	case YP_SEQ:
 	case YP_SET:
@@ -1329,7 +1327,6 @@ void gdflt(FILE *fp, YP yp, int which)
 	struct univ_typ     *p;
 	int         code;
 
-
 	if (which == G_ENC)
 		ndflt = "DFLT_F";
 	else
@@ -1821,7 +1818,6 @@ void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f)
 {
 	char	*p1;
 	char	s = oyp->yp_prfexp;	/* type of value passing */
-
 
 	if (noindirect(f) && s != 'q' && s != 'a')
 		ferrs(1,

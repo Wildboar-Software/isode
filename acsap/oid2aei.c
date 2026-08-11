@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/oid2aei.c,v 9.0 1992/
  *
  */
 
-
-
 #include "psap.h"
 #include "isoaddrs.h"
 

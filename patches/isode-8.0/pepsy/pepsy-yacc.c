@@ -27,13 +27,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/yacc.y.gnrc,v 9.0 199
  *
  */
 
-
 #include <stdio.h>
 #include <ctype.h>
 #include "pepsydefs.h"
 
 #define	YYSTYPE	YYSTKTYPE
-
 
 #define	YYDEBUG	1
 
@@ -74,7 +72,6 @@ clrfn() {
 		ffn = NULLCP;
 	}
 }
-
 
 static YA  new_action (text, lineno)
 char   *text;
@@ -151,7 +148,6 @@ int	*pi;
 	register int    c,
 			 i;
 
-
 	if ((d = malloc((unsigned)strlen(s)/2 + 2)) == NULLCP)
 		yyerror ("out of memory");
 	start = d;
@@ -184,7 +180,6 @@ int	*pi;
 	register int    c,
 			 shft,
 			 i;
-
 
 	if ((d = malloc((unsigned)strlen(s)/8 + 2)) == NULLCP)
 		yyerror ("out of memory");

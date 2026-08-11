@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUNAME
 #define QUIPUNAME
 

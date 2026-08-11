@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef _DIDUTIL_
 
 #define _DIDUTIL_

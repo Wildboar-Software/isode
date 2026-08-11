@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
  *
  */
 
-
 /*
 	SYNTAX:
 		telex ::= <printablestring> '$' <printablestring>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 	REPRESENTING
 		number $ country $ answerback
 */
-
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

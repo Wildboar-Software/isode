@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaperror.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "acsap.h"
-
 
 static char *reject_err0[] = {
 	"Accepted",
@@ -60,7 +57,6 @@ static char *reject_err0[] = {
 };
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
-
 
 char *AcErrString (int code) {
 	static char buffer[50];

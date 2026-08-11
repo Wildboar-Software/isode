@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef QUIPUSRCH
 #define QUIPUSRCH
 
@@ -208,7 +207,6 @@ struct ds_search_task {
 /* character used to mark T.61 strings */
 #define T61_MARK '$'
 
-
 /* used by search to pass info to routines called by avl routines */
 struct search_kid_arg {
 	EntryInfo               **ska_einfo;
@@ -224,6 +222,5 @@ struct search_kid_arg {
 	int			ska_saclerror;
 	char			ska_authtype;
 };
-
 
 #endif

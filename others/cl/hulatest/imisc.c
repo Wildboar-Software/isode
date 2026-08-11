@@ -21,7 +21,6 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imisc.c,v 5.0 88/07/21 14:41:57 
  *
  */
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include <pwd.h>
@@ -30,17 +29,14 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imisc.c,v 5.0 88/07/21 14:41:57 
 #include "IMISC-ops.h"          /* IMISC operation definitions */
 #include "IMISC-types.h"	/* IMISC type definitions */
 
-
 #ifdef	SYS5
 struct passwd *getpwuid ();
 #endif
-
 
 static char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
 static char *mycontext = "isode miscellany";
 static char *mypci = "isode miscellany pci";
-
 
 extern int length;
 static type_IMISC_Data *data = NULLPE;
@@ -48,10 +44,8 @@ static type_IMISC_Data *data = NULLPE;
 /* TYPES */
 struct type_IMISC_IA5List *vec2ia5list ();
 
-
 /* ARGUMENTS */
 int	do_finger (), do_tell (), do_data (), do_help (), do_quit ();
-
 
 /* RESULTS */
 #define	gentime_result	utctime_result
@@ -63,7 +57,6 @@ int	utctime_result (), timeofday_result (), ia5_result (), tell_result (),
 int	imisc_error ();
 
 char    *getlocalhost();
-
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
@@ -139,10 +132,7 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
 char   *ctime ();
-
-
 
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
@@ -175,7 +165,6 @@ vec2ia5list (char **vec) {
 	return ia5;
 }
 
-
 static
 print_ia5list (struct type_IMISC_IA5List *ia5) {
 	struct qbuf *p,
@@ -191,15 +180,12 @@ print_ia5list (struct type_IMISC_IA5List *ia5) {
 
 /* ARGUMENTS */
 
-
 static int
 do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	*ia5 = vec2ia5list (args);
 
 	return OK;
 }
-
-
 
 static int
 do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
@@ -233,8 +219,6 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	return OK;
 }
 
-
-
 static int
 do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
 	char   *cp;
@@ -255,8 +239,6 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 	return OK;
 }
 
-
-
 static int  do_help (sd, ds, args, dummy)
 int	sd;
 struct dispatch *ds;
@@ -269,8 +251,6 @@ caddr_t *dummy;
 
 	return NOTOK;
 }
-
-
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -304,7 +284,6 @@ caddr_t *dummy;
 
 /* RESULTS */
 
-
 static int
 utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
 	struct qbuf *q;
@@ -316,8 +295,6 @@ utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, 
 	return OK;
 }
 
-
-
 static int
 timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
 	long	s;
@@ -328,16 +305,12 @@ timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *resul
 	return OK;
 }
 
-
-
 static int
 ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
 	print_ia5list (result);
 
 	return OK;
 }
-
-
 
 static int  tell_result (sd, id, dummy, result, roi)
 int	sd,
@@ -351,8 +324,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
-
 static int  null_result (sd, id, dummy, result, roi)
 int	sd,
 	id,
@@ -363,8 +334,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-
-
 static int
 echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
 	if (pe_cmp (result, data))
@@ -372,8 +341,6 @@ echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct R
 
 	return OK;
 }
-
-
 
 static int
 imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {

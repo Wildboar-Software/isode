@@ -24,14 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/delete.c,v 9.0 1
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/remove.h"
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 
 #include "osisec-stub.h"
-
 
 extern DN       dn;
 

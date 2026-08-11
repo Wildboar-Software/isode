@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef	_DGRAM_
 #define	_DGRAM_
 

@@ -24,15 +24,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapreject.c,v 9.0
  *
  */
 
-
-
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 
-
 extern LLog	* log_dsap;
-
 
 int DRejectRequest (int sd, int reason, int id) {
 	int	  result;

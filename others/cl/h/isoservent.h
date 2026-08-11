@@ -17,10 +17,8 @@
  *
  */
 
-
 #ifndef	_ISOSERVENT_
 #define	_ISOSERVENT_
-
 
 struct isoservent {
 	char         *is_entity;	/* name of entity */
@@ -38,7 +36,6 @@ struct isoservent {
 	char        **is_vec;	/* exec vector */
 	char        **is_tail;	/* next free slot in vector */
 };
-
 
 int	setisoservent (), endisoservent ();
 

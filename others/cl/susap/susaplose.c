@@ -10,13 +10,10 @@
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include "spkt.h"
 #include "tailor.h"
-
 
 #ifndef	lint
 static int _susaplose ();
@@ -43,7 +40,6 @@ int susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return susaplose (si, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int
@@ -72,8 +68,6 @@ _susaplose (	/* what, fmt, args ... */
 	return NOTOK;
 }
 #endif
-
-
 
 int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td) {
 	int     reason;

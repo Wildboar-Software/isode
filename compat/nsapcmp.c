@@ -24,13 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/nsapcmp.c,v 9.0 1992
  *
  */
 
-
-
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
-
 
 int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {
 	if (na1 -> na_stack != na2 -> na_stack)

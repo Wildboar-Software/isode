@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/sys_init.c,v 9.
  *
  */
 
-
-
 #include "quipu/util.h"
 #include "tailor.h"
 

@@ -221,7 +221,6 @@ char * parentstr;
 	void onalarm();
 	char *cp, *cp2;
 
-
 	rfrl_msg = TRUE;
 search_again:
 	retval = ds_search(&sarg, &serror, &sresult);
@@ -404,7 +403,6 @@ struct s_filter ** fpp;
 	fp = fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROLE);
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
-
 
 void
 prrFilter1(prrstr, fpp)

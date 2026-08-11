@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psabort.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include <signal.h>
 #include "RTS-types.h"
@@ -54,7 +52,6 @@ int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
 
 	return result;
 }
-
 
 static int
 RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti) {

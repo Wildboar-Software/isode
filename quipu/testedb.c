@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/testedb.c,v 9.0 1992/
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "psap.h"
@@ -41,7 +40,6 @@ int main (int argc, char *argv[]) {
 	extern char dsa_mode;
 	Entry thedb;
 	Avlnode	*treetop;
-
 
 	dsa_mode = TRUE;
 
@@ -83,5 +81,4 @@ int refreshing = FALSE;
 int shadow_entry (Entry eptr) {
 	;
 }
-
 

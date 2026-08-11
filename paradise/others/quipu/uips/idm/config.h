@@ -24,7 +24,6 @@
  *
  */
 
-
 #ifndef _deconfig_h
 #define _deconfig_h
 

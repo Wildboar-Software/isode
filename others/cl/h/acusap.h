@@ -19,7 +19,6 @@
  *
  */
 
-
 #ifndef	_AcuSAP_
 #define	_AcuSAP_
 
@@ -32,9 +31,7 @@
 
 #include "pusap2.h"		/* definitions for PS-USERs */
 
-
 #define	NACDATA		3	/* arbitrary */
-
 
 struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 	int	    acs_sd;		/* association descriptor */
@@ -107,7 +104,6 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
     (acs) -> acs_ninfo = 0; \
 }
 
-
 struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
 	int	    aca_source;		/* abort source */
 #define	ACA_USER	0	/* service-user */
@@ -136,7 +132,6 @@ struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
     (aca) -> aca_ninfo = 0; \
 }
 
-
 struct AcSAPindication {
 	int	    aci_type;		/* union for compatability with ACSE */
 #define	ACI_ABORT	0x01
@@ -145,8 +140,6 @@ struct AcSAPindication {
 	}	aci_un;
 #define	aci_abort	aci_un.aci_un_abort
 };
-
-
 
 extern char  *acsapversion;
 char   *AcuErrString ();        /* return AcuSAP error in string form*/

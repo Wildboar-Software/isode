@@ -24,16 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/str2tpkt.c,v 9.0 1992/
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "tpkt.h"
 #include "tailor.h"
 
-
 static int	readfnx (), getfnx (), writefnx (), putfnx ();
-
 
 char *tpkt2str (struct tsapkt *t) {
 	int	    cc;
@@ -57,7 +53,6 @@ char *tpkt2str (struct tsapkt *t) {
 	return buffer;
 }
 
-
 struct tsapkt *
 str2tpkt (char *buffer) {
 	char    packet[BUFSIZ];
@@ -72,7 +67,6 @@ str2tpkt (char *buffer) {
 
 	return t;
 }
-
 
 static int
 getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
@@ -97,7 +91,6 @@ getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 	return OK;
 }
 
-
 static int
 readfnx (int fd, char *buffer, int n) {
 	int    i;
@@ -117,7 +110,6 @@ readfnx (int fd, char *buffer, int n) {
 
 	return i;
 }
-
 
 static int
 putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
@@ -150,7 +142,6 @@ putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 
 	return cc;
 }
-
 
 static int
 writefnx (struct tsapblk *tb, char *buffer, int n) {

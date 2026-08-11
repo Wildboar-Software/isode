@@ -59,7 +59,6 @@ int main (int argc, char **argv) {
 	return 0;
 }
 
-
 int ntp_monitor (char *host) {
 	int	sd;
 
@@ -197,7 +196,6 @@ int ac_failed (struct AcSAPconnect *acc) {
 		   AcErrString (acc -> acc_result));
 }
 
-
 int send_request (int sd) {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
@@ -271,7 +269,6 @@ int query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *resu
 	return OK;
 }
 
-
 int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
@@ -320,7 +317,6 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 	_exit (1);
 }
 
-
 void
 ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
@@ -343,7 +339,6 @@ acs_adios (struct AcSAPabort *aca, char *event) {
 	_exit (1);
 }
 
-
 void
 acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
@@ -361,7 +356,6 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 
 #ifndef lint
 void    _advise ();
-
 
 static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -393,7 +387,6 @@ static void    advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-
 static void  _advise (char *what, char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
@@ -415,7 +408,6 @@ static void    advise (char *what, char *fmt) {
     advise (what, fmt);
 }
 #endif
-
 
 #ifndef lint
 void    ryr_advise (char *what, char *fmt, ...) {

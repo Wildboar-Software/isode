@@ -70,7 +70,6 @@ int *task_id_ptr;
 	return QERR_ok;
 } /* _task_invoked */
 
-
 /*
  * - _task_complete() -
  *  A task has been completed. Remove it from the outstanding list.
@@ -152,6 +151,4 @@ DsTask task;
 
 	free((char *) task);
 } /* ds_task_free */
-
-
 

@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-trans.c,v 9.0 1
 #define	TMS
 #endif
 
-
 static int  nbytes;
 
 static int uxfget (struct FTAMdiagnostic **diags);
@@ -498,7 +497,6 @@ error_return:
 			} else
 				WATCHP (DOCS_FTAM__3__Datatype1, de, 0);
 
-
 		switch (cancelled = de2fadu (de, pe != de ? 1 : 0)) {
 		case NOTOK:
 			dp -> ftd_type = DIAG_PERM;
@@ -630,7 +628,6 @@ error_return:
 		*diags = dp;
 		return NOTOK;
 	}
-
 
 	p9 = (struct type_DOCS_NBS__9__Parameters *) myparam;
 	if (fdf_p2names (ftamfd, p9, &names, fti) == NOTOK) {
@@ -1028,11 +1025,9 @@ void ftam_bulkendindication (struct FTAMgroup *ftg) {
 	FTGFREE (ftg);
 }
 
-
 #ifndef	NBBY
 #define	NBBY	8
 #endif
-
 
 #ifndef	TMS
 void timer (int cc, char *action) {

@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_modify.c,v 9.0 199
  *
  */
 
-
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -420,7 +419,6 @@ int remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN re
 		as_delnext (trail);
 	return (OK);
 }
-
 
 static int check_remove_type (RDN rdn, AttributeType at) {
 	if ( AttrT_cmp (at,at_objectclass) == 0) {

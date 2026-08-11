@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/
  *
  */
 
-
 /* Presentation lists are a human-readable, unambiguous way of describing
    a presentation element.
 
@@ -51,8 +50,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/
 		(sizeof (int)) bytes.
  */
 
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -64,7 +61,6 @@ static int  pe2pl_aux ();
     if (ps_write (ps, (PElementData) buffer, (PElementLen) strlen (buffer)) == NOTOK) \
 	return NOTOK
 
-
 int pe2pl (PS ps, PE pe) {
 	int     result;
 
@@ -73,7 +69,6 @@ int pe2pl (PS ps, PE pe) {
 
 	return result;
 }
-
 
 static int
 pe2pl_aux (PS ps, PE pe, int level) {

@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_merge.c,v 9.
  *
  */
 
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 

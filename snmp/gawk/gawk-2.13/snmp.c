@@ -21,7 +21,6 @@ static char *rcsid = "$Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/
  *
  */
 
-
 #ifdef	SNMP
 #include "awk.h"
 #ifdef	HUGE
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/
 #include <isode/isoaddrs.h>
 #include <isode/tailor.h>
 #include <stdarg.h>
-
 
 int	debug = 0;
 
@@ -69,7 +67,6 @@ static	struct type_SNMP_PDU		parms;
 static	struct type_SNMP_VarBindList	vps;
 static	struct type_SNMP_VarBind	vs;
 
-
 struct snmp_search {
 	OT	    s_parent;
 
@@ -95,16 +92,13 @@ struct snmp_search {
 static struct snmp_search *head = NULL;
 static struct snmp_search *tail = NULL;
 
-
 static	snmp_onceonly (), snmp_get_next (), snmp_get_next_aux (), req_ready (),
 		snmp_ready (), snmp_map ();
 static void snmp_diag (char *, char *, ...);
 
 char   *snmp_error (), *snmp_variable ();
 
-
 NODE   *node ();
-
 
 #ifndef	SYS5
 long	random ();
@@ -135,12 +129,10 @@ char  **value;
 	return 0;
 }
 
-
 int	e_integer (), e_octets (), e_display (), e_objectID (), e_null (),
 	e_counter (), e_gauge (), e_timeticks (), e_ipaddr (),  e_clnpaddr ();
 int	d_integer (), d_octets (), d_display (), d_objectID (), d_null (),
 	d_ulong (),   d_ipaddr (), d_clnpaddr ();
-
 
 static struct pair {
 	char   *pp_name;
@@ -164,7 +156,6 @@ static struct pair {
 
 	NULL
 };
-
 
 static	snmp_onceonly () {
 	int	    i;
@@ -601,7 +592,6 @@ struct search *lookat;
 	snmp_assoc_next (lookat, 0);
 }
 
-
 void	snmp_assoc_next (lookat, alldone)
 struct search *lookat;
 int	alldone;
@@ -661,7 +651,6 @@ int	alldone;
 	cp = sprintoid (&oids);
 	lookat -> retval = make_string (cp, strlen (cp));
 }
-
 
 static int  snmp_get_next (s)
 struct snmp_search *s;
@@ -749,7 +738,6 @@ struct snmp_search *s;
 
 	return OK;
 }
-
 
 static int  snmp_get_next_aux (s)
 struct snmp_search *s;
@@ -961,7 +949,6 @@ out:
 
 	return NOTOK;
 }
-
 
 static int  req_ready (sr, do_val)
 struct snmp_req *sr;
@@ -1270,7 +1257,6 @@ PE     *pe;
 	return OK;
 }
 
-
 extern char 	hex2nib[];
 
 static int  e_octets (x, pe)
@@ -1311,7 +1297,6 @@ PE     *pe;
 	return OK;
 }
 
-
 static int  e_display (x, pe)
 NODE   *x;
 PE     *pe;
@@ -1326,7 +1311,6 @@ PE     *pe;
 
 	return OK;
 }
-
 
 static int  e_objectID (x, pe)
 NODE   *x;
@@ -1360,8 +1344,6 @@ bad_oid:
 	return OK;
 }
 
-
-
 static int  e_null (x, pe)
 NODE   *x;
 PE     *pe;
@@ -1374,7 +1356,6 @@ PE     *pe;
 
 	return OK;
 }
-
 
 static int  e_ipaddr (x, pe)
 NODE   *x;
@@ -1402,7 +1383,6 @@ PE     *pe;
 	return OK;
 }
 
-
 extern	PE ulong2prim ();
 
 static int  e_ulong (x, pe, id)
@@ -1419,14 +1399,12 @@ PElementID id;
 	return OK;
 }
 
-
 static int  e_counter (x, pe)
 NODE   *x;
 PE     *pe;
 {
 	return e_ulong (x, pe, 1);
 }
-
 
 static int  e_gauge (x, pe)
 NODE   *x;
@@ -1435,14 +1413,12 @@ PE     *pe;
 	return e_ulong (x, pe, 2);
 }
 
-
 static int  e_timeticks (x, pe)
 NODE   *x;
 PE     *pe;
 {
 	return e_ulong (x, pe, 3);
 }
-
 
 static int  e_clnpaddr (x, pe)
 NODE   *x;
@@ -1483,7 +1459,6 @@ int	len;
 	return r;
 }
 
-
 static int  d_integer (x, pe)
 NODE  **x;
 PE	pe;
@@ -1499,7 +1474,6 @@ PE	pe;
 
 	return OK;
 }
-
 
 static int  d_octets (x, pe)
 NODE  **x;
@@ -1520,7 +1494,6 @@ PE	pe;
 	return OK;
 }
 
-
 static int  d_display (x, pe)
 NODE  **x;
 PE	pe;
@@ -1540,7 +1513,6 @@ PE	pe;
 	return OK;
 }
 
-
 static int  d_objectID (x, pe)
 NODE  **x;
 PE	pe;
@@ -1559,8 +1531,6 @@ PE	pe;
 	return OK;
 }
 
-
-
 static int  d_null (x, pe)
 NODE  **x;
 PE	pe;
@@ -1569,7 +1539,6 @@ PE	pe;
 
 	return OK;
 }
-
 
 static int  d_ipaddr (x, pe)
 NODE  **x;
@@ -1604,7 +1573,6 @@ PE	pe;
 	return OK;
 }
 
-
 extern	u_long prim2ulong ();
 
 static int  d_ulong (x, pe)
@@ -1622,7 +1590,6 @@ PE	pe;
 
 	return OK;
 }
-
 
 static int  d_clnpaddr (x, pe)
 NODE  **x;
@@ -1788,7 +1755,6 @@ got_host:
 	return OK;
 }
 
-
 /* Reads an IP address to community mapping file.  Use UNIX modes for
    protection of information therein...
 
@@ -1869,7 +1835,6 @@ done:
 	return result;
 }
 
-
 #ifndef	lint
 static	void snmp_diag (char *what, char *fmt, ...) {
 	char   buffer[BUFSIZ];
@@ -1898,18 +1863,15 @@ char   *what,
 }
 #endif
 
-
 char   *snmp_name (ptr)
 NODE   *ptr;
 {
 	return ((OT) (ptr -> magic)) -> ot_text;
 }
 
-
 static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"
 };
-
 
 static char *snmp_error (i)
 int	i;
@@ -1922,7 +1884,6 @@ int	i;
 
 	return buffer;
 }
-
 
 static char *snmp_variable (parm, idx)
 struct type_SNMP_PDU *parm;
@@ -1938,7 +1899,6 @@ integer	idx;
 
 	return oid2ode (vp -> VarBind -> name);
 }
-
 
 static	OID	str2oid (s)
 char    *s;

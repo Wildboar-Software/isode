@@ -24,11 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psap2error.c,v 9.0 19
  *
  */
 
-
-
 #include <stdio.h>
 #include "psap2.h"
-
 
 static char *reject_err0[] = {
 	"Rejected by peer",
@@ -60,7 +57,6 @@ static char *reject_err0[] = {
 };
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
-
 
 char *PErrString (int code) {
 	static char buffer[50];

@@ -160,5 +160,3 @@ dsEnqError list_start() {
 	return return_error;
 }
 
-
-

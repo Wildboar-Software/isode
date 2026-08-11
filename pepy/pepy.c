@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy.c,v 9.0 1992/06/1
  *
  */
 
-
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy.c,v 9.0 1992/06/1
 #include <string.h>
 #include <unistd.h>
 #include "pepy.h"
-
 
 static char *aflag = NULL;
 int	Cflag = 1;		/* pepy */
@@ -103,7 +101,6 @@ typedef struct symlist {
 #define	NULLSY	((SY) 0)
 
 static	SY	mysymbols = NULLSY;
-
 
 char   *gensym (void), *modsym (char *module, char *id, int direct);
 static MD	lookup_module (char *module, OID oid);
@@ -309,7 +306,6 @@ static void prologue(void) {
 	printf ("void\tadvise (char *what, char *fmt, ...);\n");
 }
 
-
 int yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
@@ -358,7 +354,6 @@ void myyerror (char* fmt, ...) {
 	yyerror (buffer);
 }
 #endif
-
 
 #ifndef	lint
 void pyyerror (YP yp, char* fmt, ...) {
@@ -1315,7 +1310,6 @@ static SY new_symbol (
 	sy -> sy_type = type;
 	return sy;
 }
-
 
 static SY add_symbol (SY s1, SY s2) {
 	SY sy;

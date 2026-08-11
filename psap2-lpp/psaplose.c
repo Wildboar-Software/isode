@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #define	LPP
@@ -36,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
 #include "tailor.h"
 
 static int  _psaplose ();
-
 
 #ifndef	lint
 int	ppktlose (struct psapblk *pb, ...) {
@@ -134,7 +131,6 @@ char   *what,
 }
 #endif
 
-
 #ifndef	lint
 int	psaplose (struct PSAPindication *pi, ...) {
 	int     reason, result;
@@ -162,7 +158,6 @@ char   *what,
 	return psaplose (pi, reason, what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 static int  _psaplose (pi, reason, ap)	/* what, fmt, args ... */

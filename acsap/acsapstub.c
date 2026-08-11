@@ -26,8 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 199
  *
  */
 
-
-
 #include <ctype.h>
 #include <string.h>
 #include "psap.h"
@@ -35,16 +33,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 199
 #include "internet.h"
 #include "tailor.h"
 
-
 #define	fetch_aet	str2aet_seq
 
 #ifdef	LPP
 static int  lpp_aet ();
 #endif
 
-
 static struct isoentity ies;
-
 
 AEI
 str2aei_stub (char *designator, char *qualifier) {
@@ -202,11 +197,9 @@ found_it:
 	return oid2aei (&ie -> ie_identifier);
 }
 
-
 #ifdef	LPP
 static unsigned int elements[NELEM + 1];
 static char objent[BUFSIZ];
-
 
 static int
 lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
@@ -262,7 +255,6 @@ lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 }
 #endif
 
-
 struct PSAPaddr *
 aei2addr_stub (AEI aei) {
 	struct isoentity  *ie = &ies;
@@ -283,7 +275,6 @@ aei2addr_stub (AEI aei) {
 	return (pa -> pa_addr.sa_addr.ta_naddr > 0 ? pa : NULLPA);
 }
 
-
 #ifdef	LPP
 
 AEI
@@ -292,8 +283,6 @@ str2aei_dse (char *designator, char *qualifier, char *context, int interactive) 
 		  ("DSE lookup not supported for LPP"));
 	return NULLAEI;
 }
-
-
 
 struct PSAPaddr *
 aei2addr_dse (AEI aei) {

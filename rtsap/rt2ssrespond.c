@@ -24,15 +24,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssrespond.c,v 9.0 
  *
  */
 
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"
 #include "internet.h"
-
 
 extern int acsap_conntype;
 

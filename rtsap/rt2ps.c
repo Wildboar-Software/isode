@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ps.c,v 9.0 1992/06
  *
  */
 
-
-
 #include <stdio.h>
 #include "RTS-types.h"
 #include "rtpkt.h"
@@ -41,7 +39,6 @@ static int  doPSreport ();
 static int  doPSactivity ();
 static int  doPSsync ();
 static int  doPStoken ();
-
 
 int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result;
@@ -76,7 +73,6 @@ int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti)
 	return result;
 }
 
-
 int rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -100,7 +96,6 @@ int rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti) {
 
 	return OK;
 }
-
 
 int rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti) {
 	int    cc,
@@ -316,7 +311,6 @@ out:
 	return NOTOK;
 }
 
-
 int rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti) {
 	int     result;
 	struct PSAPdata pxs;
@@ -385,7 +379,6 @@ int rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication
 /*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
-
 
 int rt2psasync (
 	struct assocblk *acb,
@@ -517,7 +510,6 @@ int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event,
 	else
 		return rtsaplose (rti, reason, NULLCP, "%s", cp);
 }
-
 
 int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti) {
 	int     result;
@@ -700,7 +692,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti) {
 	PE	    pe;
@@ -790,7 +781,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
@@ -840,7 +830,6 @@ out:
 
 	return NOTOK;
 }
-
 
 static int
 doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti) {
@@ -989,7 +978,6 @@ out:
 	return NOTOK;
 }
 
-
 static int
 doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
@@ -1036,7 +1024,6 @@ out1:
 	freeacblk (acb);
 	return NOTOK;
 }
-
 
 static int
 doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti) {

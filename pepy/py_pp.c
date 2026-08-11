@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/py_pp.c,v 9.0 1992/06/
  *
  */
 
-
-
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"
@@ -33,18 +31,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/py_pp.c,v 9.0 1992/06/
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
 
-
 static char *myname = "pp";
 
 static enum { ps2pp, pl2pp } mode = ps2pp;
-
 
 static void	adios (char* what, char* fmt, ...),
 			advise (char* what, char* fmt, ...);
 
 static int  process (char *file, FILE *fp, IFP pfx);
-
-
 
 int PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 	int    status = 0;
@@ -85,7 +79,6 @@ int PY_pp (int argc, char **argv, char **envp, IFP pfx) {
 
 	return status;
 }
-
 
 static int  process (char *file, FILE *fp, IFP pfx)
 {
@@ -135,13 +128,11 @@ done:
 	}
 }
 
-
 #include <stdarg.h>
 #include <unistd.h>
 
 #ifndef	lint
 static void	_advise (char*, char*, va_list);
-
 
 static void  adios (char* what, char* fmt, ...) {
 	va_list ap;
@@ -163,7 +154,6 @@ adios (char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 static void  advise (char* what, char* fmt, ...) {
 	va_list ap;
@@ -174,7 +164,6 @@ static void  advise (char* what, char* fmt, ...) {
 
 	va_end (ap);
 }
-
 
 static void  _advise (char* what, char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];

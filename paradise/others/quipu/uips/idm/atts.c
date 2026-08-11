@@ -25,7 +25,6 @@ extern int ch_set;
 extern int telcmp();
 extern struct namelist * prratts;
 
-
 int greyBook = FALSE;
 char padding[20];
 char * mapPhone();
@@ -80,7 +79,6 @@ AttributeValue  av;
 
 	return cp;
 }
-
 
 printDetails(objectType, lp)
 int objectType;
@@ -314,7 +312,6 @@ char * str;
 			}
 		}
 
-
 		if (result == (struct postaddr *) NULL)
 			result = a;
 		else
@@ -420,7 +417,6 @@ char *x;
 	return (ia5s2prim(x,strlen(x)));
 }
 
-
 static char * de_ia5sdec (pe)
 PE pe;
 {
@@ -512,7 +508,6 @@ int  format;
 	}
 }
 
-
 de_phone_print (ps,str,format)
 PS ps;
 char * str;
@@ -536,7 +531,6 @@ int format;
 			ps_print (ps,mapPhone(str));
 	}
 }
-
 
 static PE de_strenc (x)
 char *x;
@@ -572,12 +566,10 @@ PE pe;
 	return (NULLCP);
 }
 
-
 struct pair {
 	char   *p_name;
 	int     p_value;
 };
-
 
 static struct pair pairs[] = {
 	"twoDimensional", 8,
@@ -589,7 +581,6 @@ static struct pair pairs[] = {
 	"uncompressed", 30,
 	NULL
 };
-
 
 static	de_fax_free (f)
 struct fax *f;
@@ -793,7 +784,6 @@ PE	pe;
 
 	return f;
 }
-
 
 specialSyntaxHandlers() {
 	AttributeType at;

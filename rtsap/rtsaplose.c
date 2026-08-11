@@ -24,8 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
  *
  */
 
-
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -35,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaplose.c,v 9.0 199
 #ifndef	lint
 static int  _rtsaplose ();
 #endif
-
 
 #ifndef	lint
 int	rtpktlose (struct assocblk*acb, ...) {
@@ -94,7 +91,6 @@ int rtpktlose (struct assocblk *acb, struct RtSAPindication *rti, int reason, ch
 }
 #endif
 
-
 #ifndef	lint
 int	rtsaplose (struct RtSAPindication*rti, ...) {
 	int	    reason,
@@ -119,7 +115,6 @@ int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 }
 #endif
 
-
 #ifndef	lint
 static int
 _rtsaplose (  /* what, fmt, args ... */
@@ -131,7 +126,6 @@ _rtsaplose (  /* what, fmt, args ... */
 	char    buffer[BUFSIZ];
 	struct RtSAPabort *rta;
     char   *what, *fmt;
-
 
 	if (rti) {
 		bzero ((char *) rti, sizeof *rti);

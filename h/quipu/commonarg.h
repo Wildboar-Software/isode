@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef COMMONARG
 #define COMMONARG
 
@@ -68,7 +67,6 @@ typedef struct common_args {    /* Common arguments for operations      */
 } common_args, CommonArgs;
 #define NULL_COMMONARG ((struct common_args *) NULL)
 
-
 typedef struct common_results {
 	DN          cr_requestor;
 	/* Secuity stuff to go here.  The       */
@@ -82,7 +80,6 @@ typedef struct common_results {
 	char * 	cr_tmp;
 	int 	cr_len;
 } common_results, CommonResults;
-
 
 typedef struct entrystruct {   /* Represents EntryInformation           */
 	DN                  ent_dn;
