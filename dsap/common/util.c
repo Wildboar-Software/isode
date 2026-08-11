@@ -209,45 +209,29 @@ int test_prim_pe (PE pe, PElementClass class, PElementID id)
 }
 
 #ifndef lint
-ps_printf (PS ps, char *fmt, ...) {
+void ps_printf (PS ps, char *fmt, ...) {
 	extern int std_flush ();
 	va_list ap;
-
 	va_start (ap, fmt);
-
 #ifdef VSPRINTF
-
 	if (ps->ps_flushP == std_flush) {
-
 		if (vfprintf ((FILE *)ps->ps_addr, fmt, ap) == EOF)
 			ps->ps_errno = PS_ERR_IO;
-
 	} else
 #endif
-
 	{
 		char buffer [8192]; 	/* How big should this go !!! */
-		
 		_asprintf (buffer,NULLCP, fmt,ap);
-
 		ps_print (ps,buffer);
 	}
-
-
-	va_end (ap) ;
+	va_end (ap);
 }
 #else
-
 /* VARARGS2 */
-ps_printf (ps,fmt)
-PS ps;
-char * fmt;
-{
-	ps_printf (ps,fmt) ;
+void ps_printf (PS ps, char *fmt) {
+	ps_printf (ps,fmt);
 }
-
 #endif
-
 
 void fatal (int code, char *fmt) {
 	if (dsa_mode)

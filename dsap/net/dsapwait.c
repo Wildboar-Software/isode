@@ -975,7 +975,7 @@ IspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 IFP restart_fn = NULLIFP;
 
 static char * watch_dog_where;
-static watchdogfinal = FALSE;
+static int watchdogfinal = FALSE;
 
 int
 watch_dog_final (

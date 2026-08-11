@@ -133,7 +133,7 @@ int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 	case type_SNMP_PDUs_set__request:
 		if (ot -> ot_save)
 			(*os -> os_free) (ot -> ot_save), ot -> ot_save = NULL;
-		if ((*os -> os_decode) (&ot -> ot_save, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&ot -> ot_save, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		if (os -> os_data2) {
 			integer	value = *((integer *) ot -> ot_save);

@@ -31,12 +31,16 @@
  * SUCH DAMAGE.
  */
 
+#include <fcntl.h>
+#include <stdlib.h>
 #ifndef lint
 static char sccsid[] = "@(#)printcap.c	5.7 (Berkeley) 3/4/91";
 #endif /* not lint */
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include "pathnames.h"
 
 #ifndef BUFSIZ
@@ -58,8 +62,6 @@ static char sccsid[] = "@(#)printcap.c	5.7 (Berkeley) 3/4/91";
  * doesn't, and because living w/o it is not hard.
  */
 
-char   *strcpy ();
-
 #ifndef __linux__
 #define PRINTCAP
 #endif
@@ -80,18 +82,17 @@ char   *strcpy ();
 static	FILE *pfp = NULL;	/* printcap data base file pointer */
 static	char *tbuf;
 static	int hopcount;		/* detect infinite loops in termcap, init 0 */
-static char	*tskip();
-char	*tgetstr();
-static char	*tdecode();
-char	*getenv();
+static char	*tskip(char *bp);
+char	*tgetstr(char *id, char **area);
+static char	*tdecode(char *str, char **area);
+int tnchktc(void);
+int tnamatch(char *np);
 
 /*
  * Similar to tgetent except it returns the next enrty instead of
  * doing a lookup.
  */
-getprent(bp)
-char *bp;
-{
+int getprent(char *bp) {
 	int c, skip = 0;
 
 	if (pfp == NULL && (pfp = fopen(_PATH_PRINTCAP, "r")) == NULL)
@@ -130,7 +131,7 @@ char *bp;
 	}
 }
 
-endprent() {
+void endprent(void) {
 	if (pfp != NULL)
 		fclose(pfp);
 }
@@ -140,9 +141,7 @@ endprent() {
  * from the termcap file.  Parse is very rudimentary;
  * we just notice escaped newlines.
  */
-tgetent(bp, name)
-char *bp, *name;
-{
+int tgetent(char *bp, char *name) {
 	char *cp;
 	int c;
 	int i = 0, cnt = 0;
@@ -224,7 +223,7 @@ char *bp, *name;
  * entries to say "like an HP2621 but doesn't turn on the labels".
  * Note that this works because of the left to right scan.
  */
-tnchktc() {
+int tnchktc(void) {
 	char *p, *q;
 	char tcname[16];	/* name of similar terminal */
 	char tcbuf[BUFSIZ];
@@ -270,9 +269,7 @@ tnchktc() {
  * against each such name.  The normal : terminator after the last
  * name (before the first field) stops us.
  */
-tnamatch(np)
-char *np;
-{
+int tnamatch(char *np) {
 	char *Np, *Bp;
 
 	Bp = tbuf;
@@ -296,11 +293,7 @@ char *np;
  * knowing about \: escapes or any such.  If necessary, :'s can be put
  * into the termcap file in octal.
  */
-static char *
-tskip(bp)
-char *bp;
-{
-
+static char *tskip(char *bp) {
 	while (*bp && *bp != ':')
 		bp++;
 	if (*bp == ':')
@@ -316,9 +309,7 @@ char *bp;
  * a # character.  If the option is not found we return -1.
  * Note that we handle octal numbers beginning with 0.
  */
-tgetnum(id)
-char *id;
-{
+int tgetnum(char *id) {
 	int i, base;
 	char *bp = tbuf;
 
@@ -349,9 +340,7 @@ char *id;
  * of the buffer.  Return 1 if we find the option, or 0 if it is
  * not given.
  */
-tgetflag(id)
-char *id;
-{
+int tgetflag(char *id) {
 	char *bp = tbuf;
 
 	for (;;) {
@@ -375,10 +364,7 @@ char *id;
  * placed in area, which is a ref parameter which is updated.
  * No checking on area overflow.
  */
-char *
-tgetstr(id, area)
-char *id, **area;
-{
+char *tgetstr(char *id, char **area) {
 	char *bp = tbuf;
 
 	for (;;) {
@@ -400,11 +386,7 @@ char *id, **area;
  * Tdecode does the grung work to decode the
  * string capability escapes.
  */
-static char *
-tdecode(str, area)
-char *str;
-char **area;
-{
+static char *tdecode(char *str, char **area) {
 	char *cp;
 	int c;
 	char *dp;

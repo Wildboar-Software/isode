@@ -32,6 +32,13 @@ DEFINITIONS ::=
 
 %{
 #include "quipu/malloc.h"
+
+void pe_print (PS ps, PE pe, int format);
+extern void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
 %}
 
 PREFIXES encode decode print
@@ -74,8 +81,6 @@ Attribute [[P attrcomp *]] ::=
 		   AV_Sequence avs;
 		   AV_Sequence avs_next;
 		   AV_Sequence newavs = NULLAV;
-		   extern pe_print ();
-		   extern AttrT_print ();
 		   extern LLog * log_dsap;
 		   PE mype;
 
@@ -127,8 +132,6 @@ RelativeDistinguishedName [[P rdncomp * ]]
 		   RDN rdn;
 		   RDN rdn_next;
 		   RDN newrdn = NULLRDN;
-		   extern AttrT_print ();
-		   extern pe_print ();
 		   extern LLog * log_dsap;
 		   PE mype;
 		   
@@ -175,45 +178,30 @@ END
 
 PE grab_pe();
 
-grab_pe1 (parm,ppe)
-attrVal *parm;
-PE *ppe;
-{
+int grab_pe1 (attrVal *parm, PE *ppe) {
 	if (*ppe = grab_pe (parm))
 		return OK;
 	else
 		return NOTOK;
 }
 
-grab_pe2 (parm,ppe)
-avseqcomp * parm;
-PE *ppe;
-{
+int grab_pe2 (avseqcomp *parm, PE *ppe) {
 	if (*ppe = grab_pe (&parm->avseq_av))
 		return OK;
 	else
 		return NOTOK;
 }
 
-grab_pe3 (parm,ppe)
-rdncomp * parm;
-PE *ppe;
-{ 
+int grab_pe3 (rdncomp *parm, PE *ppe) { 
   	if (*ppe = grab_pe (&parm->rdn_av))
 		return OK;
 	else
 		return NOTOK;
 }
 
-
-dec_av1 (parm,pe)
-AVA ** parm;
-PE pe;
-{
-int res;
-extern AttrT_print ();
-extern pe_print ();
-extern LLog * log_dsap;
+int dec_av1 (AVA **parm, PE pe) {
+	int res;
+	extern LLog * log_dsap;
 
 	(*parm)->ava_value = AttrV_alloc ();
 	(*parm)->ava_value->av_syntax = 0;
@@ -232,13 +220,9 @@ extern LLog * log_dsap;
         return res;
 }
 
-dec_at (parm,pe)
-oid_table_attr ** parm;
-PE pe;
-{
-OID oid;
-oid_table_attr * AttrT_decode_aux();
-
+int dec_at (oid_table_attr **parm, PE pe) {
+	OID oid;
+	oid_table_attr * AttrT_decode_aux();
     if (oid = prim2oid (pe)) {
        oid = oid_cpy (oid);
        *parm = AttrT_decode_aux (oid);
@@ -247,111 +231,109 @@ oid_table_attr * AttrT_decode_aux();
     return OK;
 }
 
-/* ARGSUSED */
-free_at_dummy (parm)	/* Make sure nothing happens */
-oid_table_attr * parm;
+/* Make sure nothing happens */
+int free_at_dummy (oid_table_attr *parm)
 {
 	return OK;
 }
 
-
 #ifndef lint
 
 #undef encode_IF_AttributeType
-int	encode_IF_AttributeType(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_IF_AttributeType *parm;
-{
+int	encode_IF_AttributeType(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_AttributeType *parm
+) {
   return (enc_f(_ZAttributeTypeIF, &_ZIF_mod, pe, top, len, buffer,
 		(char *) parm));
 }
 
 #undef decode_IF_AttributeType
-int	decode_IF_AttributeType(pe, top, len, buffer, parm)
-PE	pe;
-int	top,
-       *len;
-char  **buffer;
-struct type_IF_AttributeType **parm;
-{
+int	decode_IF_AttributeType(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_AttributeType *parm
+) {
   return (dec_f(_ZAttributeTypeIF, &_ZIF_mod, pe, top, len, buffer,
 		(char **) parm));
 }
 
 #undef encode_IF_AttributeValue
-int	encode_IF_AttributeValue(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_IF_AttributeValue *parm;
-{
+int	encode_IF_AttributeValue(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_AttributeValue *parm
+) {
   return (enc_f(_ZAttributeValueIF, &_ZIF_mod, pe, top, len, buffer,
 		(char *) parm));
 }
 
 #undef decode_IF_AttributeValue
-int	decode_IF_AttributeValue(pe, top, len, buffer, parm)
-PE	pe;
-int	top,
-       *len;
-char  **buffer;
-struct type_IF_AttributeValue **parm;
-{
+int	decode_IF_AttributeValue(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_AttributeValue *parm
+) {
   return (dec_f(_ZAttributeValueIF, &_ZIF_mod, pe, top, len, buffer,
 		(char **) parm));
 }
 
 #undef encode_IF_DistinguishedName
-int	encode_IF_DistinguishedName(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_IF_DistinguishedName *parm;
-{
+int	encode_IF_DistinguishedName(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_DistinguishedName *parm
+) {
   return (enc_f(_ZDistinguishedNameIF, &_ZIF_mod, pe, top, len, buffer,
 		(char *) parm));
 }
 
 #undef decode_IF_DistinguishedName
-int	decode_IF_DistinguishedName(pe, top, len, buffer, parm)
-PE	pe;
-int	top,
-       *len;
-char  **buffer;
-struct type_IF_DistinguishedName **parm;
-{
+int	decode_IF_DistinguishedName(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_DistinguishedName *parm
+) {
   return (dec_f(_ZDistinguishedNameIF, &_ZIF_mod, pe, top, len, buffer,
 		(char **) parm));
 }
+
 #undef encode_IF_Name
-int	encode_IF_Name(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_IF_Name *parm;
-{
+int	encode_IF_Name(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_Name *parm
+) {
   return (enc_f(_ZNameIF, &_ZIF_mod, pe, top, len, buffer,
 		(char *) parm));
 }
 
 #undef decode_IF_Name
-int	decode_IF_Name(pe, top, len, buffer, parm)
-PE	pe;
-int	top,
-       *len;
-char  **buffer;
-struct type_IF_Name **parm;
-{
+int	decode_IF_Name(
+	PE *pe,
+	int top,
+	int len,
+	char* buffer,
+	struct type_IF_Name *parm
+) {
   return (dec_f(_ZNameIF, &_ZIF_mod, pe, top, len, buffer,
 		(char **) parm));
 }
-
 
 #endif
 

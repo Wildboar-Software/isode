@@ -41,10 +41,7 @@ extern	PS	opt, rps;
 Filter          get_filter ();
 char           *TidyString ();
 
-filteritem (str, fltr)
-char           *str;
-Filter          fltr;
-{
+int filteritem (char *str, Filter fltr) {
 
 	char           *ptr;
 	AttributeValue  av;

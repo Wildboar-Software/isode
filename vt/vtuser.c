@@ -75,6 +75,16 @@ void	advise (int, char *, char *, ...);
 
 int		putch (char);
 
+void vtsend (void);
+void vtdata (PE ndq);
+void vdelreq (int ack);
+void vdelind (PE del_pe, int ack);
+void vdatind (int type, PE pe);
+void vhdatind (PE pe);
+void vudatind (PE pe);
+int con_req (void);
+int read_asq (PE pe);
+
 /*************************************************************************/
 /* VASS_REQ - create an ASQ PDU and generate a VASSreq event to 	 */
 /*			send it.					 */
@@ -87,11 +97,7 @@ int		putch (char);
 /*									 */
 /*		PROFILE - designator of the VT profile to request	 */
 /*************************************************************************/
-/* ARGSUSED */
-vass_req(class, acc_ri, profile)
-int class, acc_ri;
-VT_PROFILE *profile;
-{
+int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 	PE		a_req;
 	ASQ_MSG		ud;
 	char		my_version, my_fu;
@@ -189,8 +195,7 @@ VT_PROFILE *profile;
 /*		RESULT - SUCCESS or FAILURE				      */
 /******************************************************************************/
 
-int
-vass_resp (int result) {
+int vass_resp (int result) {
 	PE	a_resp;
 	char	my_version, my_fu;
 	ASR_MSG ud;
@@ -267,7 +272,6 @@ vass_resp (int result) {
 	return(do_event(VASSrsp, a_resp));
 }
 
-
 /*************************************************************************/
 /*	"pe" will be to store NDQ contents that could not be mapped to   */
 /*	the cbuf because of lack of buffer space.  There is only one,    */
@@ -277,21 +281,18 @@ vass_resp (int result) {
 
 PE	pe_buf = NULLPE;
 
-
 /************************************************************************/
 /*  VRELREQ - Generate a VRELREQ to VT State Machine		        */
 /* 									*/
 /*     PARAMETERS - none						*/
 /************************************************************************/
 
-int
-vrelreq (void) {
+void vrelreq (void) {
 	PE  r_req;
-
 	r_req = NULLPE;
 	do_event(VRELreq,r_req);
 }
-
+
 /*************************************************************************/
 /*  VRELRSP - create an RLR PDU and send it and generate a VRELRSP-S	 */
 /* 									 */
@@ -301,21 +302,17 @@ vrelreq (void) {
 /*									 */
 /*************************************************************************/
 
-int
-vrelrsp (int result) {
+void vrelrsp (int result) {
 
 	int offset = 0;
 	PE  r_rsp, r_result, r_coll;
 
 	if ((r_rsp = pe_alloc(PE_CLASS_CONT, PE_FORM_CONS, RLR_PDU)) == NULLPE)
 		adios (NULLCP, "RLR build failure (out of memory)");
-
 	if ((r_result = num2prim((integer)result,PE_CLASS_CONT,0)) == NULLPE)
 		adios (NULLCP, "RLR build failure (out of memory)");
-
 	if (seq_add(r_rsp,r_result,offset) == NOTOK)
 		adios (NULLCP, "RLR build failure (%s)", pe_error(r_rsp -> pe_errno));
-
 	if(result == COLL_DET) {
 		if((r_coll = num2prim((integer)0,PE_CLASS_CONT,2)) == NULLPE)
 			adios (NULLCP, "RLR build failure (out of memory)");
@@ -326,31 +323,23 @@ vrelrsp (int result) {
 	if (seq2prim(r_rsp) == NULLPE)
 		adios(NULLCP, "RLR encode error, seq2prim: (%s)", PY_pepy);
 	do_event(VRELrsp,r_rsp);
-
 	pe_free(r_coll);
 	pe_free(r_result);
 	pe_free(r_rsp);
-
 }
-
 
-int
-vrelcnf (void) {
+void vrelcnf (void) {
 	if (debug)
 		advise(LLOG_DEBUG, NULLCP,  "Release Confirmed");
 }
-
 
-int
-vrelind (void) {
+int vrelind (void) {
 	if (AcFINISHser(sd,pf,aci) == NOTOK)
 		acs_adios (&aci->aci_abort, "A-RELEASE.INDICATION");
 
 	vrelrsp(SUCCESS);
 	return(OK);
 }
-
-
 
 PE	p_ondq = NULLPE;  /* the current "ndq" being prepared for sending*/
 PE	p_ovtsdi = NULLPE; 	/* the current "vtsdi"	*/
@@ -384,13 +373,11 @@ int	cur_emode = NOT_ECHO_NOW; /* echo mode (ECHO_NOW or NOT_ECHO_NOW)*/
 /*		LEN - Number of characters in the string.		 */
 /*************************************************************************/
 
-int
-vt_text (char *str, int len) {
+int vt_text (char *str, int len) {
 	TEXT_UPDATE ud;
 
 	if (debug > 6) {
 		int i;
-
 		ll_log(vt_log, LLOG_DEBUG, NULLCP,  ("vt_text sending"));
 		ll_printf (vt_log, "<<");
 		for(i=0; i<len; i++)
@@ -398,7 +385,6 @@ vt_text (char *str, int len) {
 		ll_printf (vt_log,  ">>\n");
 		ll_sync (vt_log);
 	}
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = 0;		/*Display object*/
@@ -407,18 +393,12 @@ vt_text (char *str, int len) {
 	ud.updates.do_list.do_cmd.text_ud.text_ptr = str;
 	ud.updates.do_list.do_cmd.text_ud.text_count = len;
 	send_queue(ud);
-
 	return(OK);
 }
-
 
-int
-send_queue (		/*Build NDQ with update supplied in ud structure*/
-	TEXT_UPDATE ud
-) {
-
+/*Build NDQ with update supplied in ud structure*/
+int send_queue (TEXT_UPDATE ud) {
 	PE vtsdip;
-
 	if(p_ondq == NULLPE) {	/*Nothing waiting to be sent*/
 		if(build_NDQPDU_NDQpdu(&p_ondq,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
 			adios(NULLCP,"NDQ build failure (%s)", PY_pepy);
@@ -433,17 +413,13 @@ send_queue (		/*Build NDQ with update supplied in ud structure*/
 	}
 }
 
-
-
 /* SETEMODE - set echo mode
 
 	PARAMETERS -
 
 		MODE - ECHO_NOW or NOT_ECHO_NOW
 */
-
-int
-setemode (int mode) {
+int setemode (int mode) {
 	if (mode != ECHO_NOW && mode != NOT_ECHO_NOW)
 		return(NOTOK);
 	if (cur_emode != mode) {
@@ -455,12 +431,10 @@ setemode (int mode) {
 	}
 	return(OK);
 }
-
 
 /* this data structure will buffer character output
    that is ready to be read by the application or terminal.
 */
-
 #define CBUFSIZE	10240
 
 struct char_buffer {
@@ -478,9 +452,7 @@ struct char_buffer	cbuf = { CBUFSIZE, 0 };
 /*	RETURNS - the character, NOTOK if no data, or an error code (<0)*/
 /************************************************************************/
 
-
-int
-getch (void) {
+int getch (void) {
 	int		c;
 
 	if (data_pending() == FALSE) {
@@ -512,7 +484,6 @@ getch (void) {
    If the cbuf fills up in the process of doing this, the PE containing the
    remaining updates should be put in a queue of pending PEs.
 */
-
 
 /* This macro does the same thing as PXFREE except it does not free
    the PEs in the px_info array.  We will use this instead of PXFREE
@@ -541,70 +512,48 @@ getch (void) {
 		(px) -> px_ninfo = 0; \
     } \
 }
-
 
-int
-data_pending (void) {
+int data_pending (void) {
 	int	result;
 	PE	*peptr = NULLPEP;
 
 	if (queued())
-		return(TRUE);
-
-	/* something was already in the cbuf
-	*/
-
+		return(TRUE); /* something was already in the cbuf */
 	if (pe_buf != NULLPE) {
-
-		/* there seems to be something to map
-		*/
-
+		/* there seems to be something to map */
 		map(pe_buf);
 		if (queued())
 			return(TRUE);
 	}
 	result = get_event(sd, peptr);
-
-	/* if there was no network event
-	*/
+	// if there was no network event
 	if (result == NOTOK)
 		return(FALSE);
-
-	/* get_event may have resulted in data being read and mapped to the
-	   cbuf
-	*/
-
+	// get_event may have resulted in data being read and mapped to the cbuf
 	if (queued())
 		return(TRUE);
 
-	/* if there is no data left and get_event resulted in the association
-	   being released
-	*/
+	/* if there is no data left and get_event resulted in the association being
+	released */
 	if (!connected) {
 		putch(EOF);
 		return(TRUE);
 	}
-
-	/* there's nothing to read right now, but we're still connected
-	*/
+	// there's nothing to read right now, but we're still connected
 	return(FALSE);
 }
-
 
-int
-queued (void) {
+int queued (void) {
 	return(cbuf.queued);
 }
 
-
 /*************************************************************************/
 /* 	PUTCH - put a character on the buffer to be read by the		 */
 /*			application					 */
 /*									 */
 /*	RETURNS - OK on success, NOTOK otherwise			 */
 /*************************************************************************/
-int
-putch (char c) {
+int putch (char c) {
 	if (debug > 1) {
 		advise(LLOG_DEBUG, NULLCP,  "in putch, queued is %d, c is %c", cbuf.queued, c);
 		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %p, cbuf.head is %p, cbuf.tail is %p", cbuf.buf, cbuf.head, cbuf.tail);
@@ -628,12 +577,10 @@ putch (char c) {
 	return(OK);
 }
 
-
 /*************************************************************************/
 /*	VTSEND - send the updates that have been put into the PE	 */
 /*			called "p_ondq".				 */
 /*************************************************************************/
-
 void vtsend (void) {
 	if(p_ondq == NULLPE) return;
 	vtdata(p_ondq);
@@ -653,7 +600,6 @@ void vtsend (void) {
 /*									*/
 /*		NDQ - a presentation element containing an NDQ.		*/
 /************************************************************************/
-
 void vtdata (PE ndq) {
 	if (ndq == NULLPE)
 		return;
@@ -682,7 +628,6 @@ PE mkdeliver (int ack) {
 /* VDELREQ - create a deliver request PE and generate a VDELreq		  */
 /*			event to send it.				  */
 /**************************************************************************/
-
 void vdelreq (int ack) {
 	PE	p_dlq;
 
@@ -690,11 +635,9 @@ void vdelreq (int ack) {
 		adios(NULLCP,
 			  "ACK requests in deliver PDUs not supported at this time");
 	p_dlq = mkdeliver(FALSE);
-
 	do_event(VDELreq,p_dlq);
 }
 
-
 /**************************************************************************/
 /* VDELIND - we queue up data to go to the terminal when the NDQ	  */
 /*			is received, so there's really nothing		  */
@@ -704,7 +647,6 @@ void vdelreq (int ack) {
 /*			ACK - TRUE or FALSE according to whether 	  */
 /*			acknowledgement is requested or not.		  */
 /**************************************************************************/
-
 void vdelind (PE del_pe, int ack) {
 	if (ack) {
 		if (debug)
@@ -712,7 +654,7 @@ void vdelind (PE del_pe, int ack) {
 	}
 	pe_free(del_pe);
 }
-
+
 /************************************************************************/
 /* VDATIND - On receiving a data indication we will go ahead and	*/
 /* map the contents onto the character buffer to go to the terminal	*/
@@ -720,7 +662,6 @@ void vdelind (PE del_pe, int ack) {
 /* PARAMETERS - "type" can be SEQUENCED or NONSEQUENCED			*/
 /*				only SEQUENCED is implemented now	*/
 /************************************************************************/
-
 void vdatind (int type, PE pe) {
 	if (type != SEQUENCED)
 		adios(NULLCP, "unimplemented NDQ type %d", type);
@@ -755,7 +696,6 @@ void vudatind (PE pe) {
 /*	structure is same as the file descriptor for the network socket used */
 /*	by the association.						     */
 /*****************************************************************************/
-
 int con_req (void) {
 	int	uevent;
 
@@ -791,16 +731,15 @@ int con_req (void) {
 	else return(-1);
 }
 
-int read_asq (	/*Unwrap ASQ PDU.  Use information it contains to fill in
-		  some global values (profile_id,G_Func_Units,vcwa).
-		  Return 0 if ASQ is improperly formatted or missing a
-		  required field.  For now, only the more obvious fields are
-		  checked  and only transparent and telnet profiles
-		  are handled.  Return PROFILE_NG if profile is not
-		  supported.  Return 1 if ASQ is valid.
-		*/
-	PE pe
-) {
+/*Unwrap ASQ PDU.  Use information it contains to fill in
+some global values (profile_id,G_Func_Units,vcwa).
+Return 0 if ASQ is improperly formatted or missing a
+required field.  For now, only the more obvious fields are
+checked  and only transparent and telnet profiles
+are handled.  Return PROFILE_NG if profile is not
+supported.  Return 1 if ASQ is valid.
+*/
+int read_asq (PE pe) {
 	int i,n, D;
 	ASQ_MSG ud;
 

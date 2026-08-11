@@ -338,9 +338,7 @@ int	offset;
 	}
 }
 
-/*  */
-
-init_icmp () {
+void init_icmp (void) {
 	OT	    ot;
 
 	if (ot = text2obj ("icmpInMsgs"))

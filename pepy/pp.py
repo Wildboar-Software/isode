@@ -26,9 +26,6 @@ PRETTY DEFINITIONS ::=
 #ifndef	lint
 static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pp.py,v 9.0 1992/06/16 12:25:01 isode Rel $";
 #endif
-
-/*  */
-
 %}
 
 
@@ -43,17 +40,9 @@ END
 
 %{
 
-/*  */
-
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-      **envp;
-{
+int main (int argc, char **argv, char **envp) {
     exit (PY_pp (argc, argv, envp, print_PRETTY_Printer));
     return 0;
 }
-
-/*  */
 
 %}

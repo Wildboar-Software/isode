@@ -237,7 +237,7 @@
 #define PEPYPARM int *
 
 extern PE	pre, pwe;
-extern PE	mkdeliver();
+extern PE	mkdeliver(int ack);
 extern int	fd,
 	readfds,
 	writefds,

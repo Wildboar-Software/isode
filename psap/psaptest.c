@@ -32,20 +32,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/psaptest.c,v 9.0 1992/
 #include "tailor.h"
 #include <sys/stat.h>
 
-/*  */
-
 static enum {
 	ps2pl, ps2ps, pl2pl, pl2ps
 } mode;
 
-static ps_die ();
+static void ps_die (PS ps, char *s);
 
-/*  */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char   *cp;
 	PE pe;
 	PS ps;
@@ -207,8 +200,7 @@ doit:
 
 /*    ERRORS */
 
-static
-ps_die (PS ps, char *s) {
+static void ps_die (PS ps, char *s) {
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }

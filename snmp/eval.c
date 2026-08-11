@@ -628,7 +628,7 @@ losing:
 		return NOTOK;
 	}
 
-	if ((*os -> os_decode) (&result, v -> value) == NOTOK) {
+	if ((*os -> os_decode) ((void **)&result, v -> value) == NOTOK) {
 		e -> e_status = E_other;
 		sprintf (e -> e_hints, "%s: decoding error!", oid2ode (oid));
 		goto losing;
@@ -689,7 +689,7 @@ int	offset;
 	case type_SNMP_PDUs_set__request:
 		if (e -> e_save.expr)
 			free (e -> e_save.expr), e -> e_save.expr = NULL;
-		if ((*os -> os_decode) ((caddr_t *) &qb, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&qb, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		e -> e_save.expr = qb2str (qb);
 		e -> e_save.size = qb -> qb_len;
@@ -722,7 +722,7 @@ int	offset;
 
 /*  */
 
-init_eval () {
+void init_eval (void) {
 	OT	    ot;
 
 	roof = (tos = fstack) + (sizeof fstack / sizeof fstack[0]);
@@ -816,11 +816,7 @@ init_eval () {
 			  ot -> ot_info = (caddr_t) exprHints;
 }
 
-/*  */
-
-int	f_expression (vec)
-char  **vec;
-{
+int	f_expression (char **vec) {
 	int	    i;
 	char *cp;
 	struct expr *e;

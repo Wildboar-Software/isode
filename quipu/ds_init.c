@@ -55,7 +55,7 @@ extern AttributeType at_version;
 extern SFD attempt_restart ();
 time_t	timenow;
 
-static set_context ();
+static void set_context (Entry eptr);
 
 int
 dsa_init (void) {
@@ -263,14 +263,12 @@ load_dsa_cache_entry (DN dn) {
 	return res;
 }
 
-static
-set_context (Entry eptr) {
+static void set_context (Entry eptr) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;
 	Attr_Sequence as, entry_find_type();
 	extern int	  no_last_mod;
-
 	/* DAP */
 	at = AttrT_new (APPLCTX_OID);
 	av = AttrV_alloc ();
@@ -278,7 +276,6 @@ set_context (Entry eptr) {
 	av->av_struct = (caddr_t) oid_cpy (DIR_ACCESS_AC);
 	avs = avs_comp_new(av);
 	as = as_comp_new (at,avs,NULLACL_INFO);
-
 	/* DSP */
 	at = AttrT_new (APPLCTX_OID);
 	av = AttrV_alloc ();
@@ -286,7 +283,6 @@ set_context (Entry eptr) {
 	av->av_struct = (caddr_t) oid_cpy (DIR_SYSTEM_AC);
 	avs = avs_comp_new(av);
 	as = as_merge (as,as_comp_new (at,avs,NULLACL_INFO));
-
 	/* QSP */
 	at = AttrT_new (APPLCTX_OID);
 	av = AttrV_alloc ();
@@ -294,7 +290,6 @@ set_context (Entry eptr) {
 	av->av_struct = (caddr_t) oid_cpy (DIR_QUIPU_AC);
 	avs = avs_comp_new(av);
 	as = as_merge (as,as_comp_new (at,avs,NULLACL_INFO));
-
 	/* ISP */
 	at = AttrT_new (APPLCTX_OID);
 	av = AttrV_alloc ();
@@ -302,9 +297,7 @@ set_context (Entry eptr) {
 	av->av_struct = (caddr_t) oid_cpy (DIR_INTERNET_AC);
 	avs = avs_comp_new(av);
 	as = as_merge (as,as_comp_new (at,avs,NULLACL_INFO));
-
 	eptr->e_attributes = as_merge (eptr->e_attributes,as);
-
 	if (quipu_ctx_supported(eptr) != 5)
 		fatal (-1, "Setting application context botch");
 }

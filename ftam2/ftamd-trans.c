@@ -25,6 +25,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-trans.c,v 9.0 1
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include "FTAM-types.h"
 #include "ftamsystem.h"
 #if	defined(SYS5) && !defined(HPUX)
@@ -36,19 +38,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-trans.c,v 9.0 1
 
 static int  nbytes;
 
-long	lseek ();
-static	uxfget ( struct FTAMdiagnostic **diags);
-static	fdfget ( struct FTAMdiagnostic **diags);
-static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
-static int  de2fadu (PE pe, int concat);
-
-static	uxfget (), fdfget (), tvsub ();
-static int	de2fadu ();
+static int uxfget (struct FTAMdiagnostic **diags);
+static int fdfget (struct FTAMdiagnostic **diags);
+static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
+static int de2fadu (PE pe, int concat);
 
 /*    TRANSFER */
 
-int
-ftam_bulkbeginindication (struct FTAMgroup *ftg) {
+void ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 	int	    state;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
@@ -78,8 +75,6 @@ ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 	FTGFREE (ftg);
 }
 
-/*  */
-
 /* we really pay the price here for not keeping more constraint set
    information in the vfs structure...
 
@@ -95,7 +90,6 @@ ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 
    are sent.
 */
-
 
 void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 	int	    result;
@@ -245,9 +239,7 @@ do_cancel:
 	}
 }
 
-/*  */
-
-static	uxfget ( struct FTAMdiagnostic **diags) {
+static int uxfget (struct FTAMdiagnostic **diags) {
 	int    n;
 	int	    bsize,
 			effector,
@@ -565,9 +557,7 @@ error_return:
 	return n;
 }
 
-/*  */
-
-static	fdfget ( struct FTAMdiagnostic **diags) {
+static int fdfget (struct FTAMdiagnostic **diags) {
 	int	    names,
 			len,
 			n;
@@ -789,9 +779,7 @@ error_return:
 	}
 }
 
-/*  */
-
-static int  de2fadu (PE pe, int concat) {
+static int de2fadu (PE pe, int concat) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -872,11 +860,7 @@ static int  de2fadu (PE pe, int concat) {
 	return DONE;
 }
 
-/*  */
-
-int	ftam_dataindication (px)
-struct PSAPdata *px;
-{
+void ftam_dataindication (struct PSAPdata *px) {
 	int    i;
 	int	    effector,
 			n;
@@ -990,30 +974,18 @@ struct PSAPdata *px;
 		}
 		break;
 	}
-
 	PXFREE (px);
 }
 
-/*  */
-
-/* ARGSUSED */
-
-int	ftam_dataendindication (ftda)
-struct FTAMdataend *ftda;
-{
+void ftam_dataendindication (struct FTAMdataend *ftda) {
 	timer (nbytes, "received");
-
 #if     !defined(SYS5) || defined(SVR4)
 	if (ftda -> ftda_action == FACTION_SUCCESS)
 		fsync (myfd);
 #endif
 }
 
-/*  */
-
-int	ftam_cancelindication (ftcn)
-struct FTAMcancel *ftcn;
-{
+void ftam_cancelindication (struct FTAMcancel *ftcn) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1021,19 +993,12 @@ struct FTAMcancel *ftcn;
 			ftcn -> ftcn_action);
 	ftam_diag (ftcn -> ftcn_diags, ftcn -> ftcn_ndiag);
 	FTCNFREE (ftcn);
-
 	if (FCancelResponse (ftamfd, FACTION_SUCCESS, NULLPE,
 						 (struct FTAMdiagnostic *) 0, 0, fti) == NOTOK)
 		ftam_adios (&fti -> fti_abort, "F-CANCEL.RESPONSE");
 }
 
-/*  */
-
-/* ARGSUSED */
-
-int	ftam_transendindication (ftre)
-struct FTAMtransend *ftre;
-{
+void ftam_transendindication (struct FTAMtransend *ftre) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1042,18 +1007,13 @@ struct FTAMtransend *ftre;
 		ftam_adios (&fti -> fti_abort, "F-TRANSFER-END.RESPONSE");
 }
 
-/*  */
-
-int	ftam_bulkendindication (ftg)
-struct FTAMgroup *ftg;
-{
+void ftam_bulkendindication (struct FTAMgroup *ftg) {
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
 	ftam_selection (ftg, ftm);
-
 	if (myfd != NOTOK) {
 #ifdef	BRIDGE
 		close (myfd);
@@ -1064,10 +1024,8 @@ struct FTAMgroup *ftg;
 #endif
 		myfd = NOTOK;
 	}
-
 	if (FBulkEndResponse (ftamfd, ftm, fti) == NOTOK)
 		ftam_adios (&fti -> fti_abort, "F-BULK-END.RESPONSE");
-
 	FTGFREE (ftg);
 }
 
@@ -1101,9 +1059,7 @@ void timer (int cc, char *action) {
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-
-static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
-
+static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)
@@ -1115,9 +1071,7 @@ static  tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
 #define	HZ	60
 #endif
 
-
 long	times ();
-
 
 static	timer (cc, action)
 int	cc;

@@ -29,9 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_cpy.c,v 9.0 
 
 extern LLog * log_dsap;
 
-Attr_Sequence  as_comp_cpy (as)
-Attr_Sequence  as;
-{
+Attr_Sequence as_comp_cpy (Attr_Sequence as) {
 	Attr_Sequence ptr;
 
 	if (as==NULLATTR) {

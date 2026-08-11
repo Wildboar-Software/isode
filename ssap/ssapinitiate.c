@@ -34,9 +34,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapinitiate.c,v 9.0 1
 
 /*    S-(ASYN-)CONNECT.REQUEST */
 
-static int  SConnRequestAux ();
-static int  SAsynRetryAux1 ();
-static int  SAsynRetryAux2 ();
+static int  SConnRequestAux (
+	struct SSAPref *ref,
+	struct SSAPaddr *calling,
+	struct SSAPaddr *called,
+	int requirements,
+	int settings,
+	long int isn,
+	char *data,
+	int cc,
+	struct QOStype *qos,
+	struct SSAPconnect *sc,
+	struct SSAPindication *si,
+	int async
+);
+static int  SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
+static int  SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si);
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -52,10 +65,20 @@ static int  SAsynRetryAux2 ();
 	} \
 }
 
-/*  */
-
-int
-SAsynConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async) {
+int SAsynConnRequest (
+	struct SSAPref *ref,
+	struct SSAPaddr *calling,
+	struct SSAPaddr *called,
+	int requirements,
+	int settings,
+	long int isn,
+	char *data,
+	int cc,
+	struct QOStype *qos,
+	struct SSAPconnect *sc,
+	struct SSAPindication *si,
+	int async
+) {
 	SBV     smask;
 	int     result;
 
@@ -113,10 +136,20 @@ SAsynConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr
 
 #undef	dotoken
 
-/*  */
-
-static int
-SConnRequestAux (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, int async) {
+static int SConnRequestAux (
+	struct SSAPref *ref,
+	struct SSAPaddr *calling,
+	struct SSAPaddr *called,
+	int requirements,
+	int settings,
+	long isn,
+	char *data,
+	int cc,
+	struct QOStype *qos,
+	struct SSAPconnect *sc,
+	struct SSAPindication *si,
+	int async
+) {
 	int     result;
 	struct ssapkt *s;
 	struct ssapblk *sb;
@@ -229,8 +262,7 @@ out1:
 
 /*    S-ASYN-RETRY.REQUEST (pseudo) */
 
-int
-SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
+int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;
 	int     result;
 	struct ssapblk *sb;
@@ -281,14 +313,12 @@ SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 		}
 
 	sigiomask (smask);
-
 	return result;
 }
 
 /*    S-ASYN-NEXT.REQUEST (pseudo) */
 
-int
-SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;
 	int     result;
 	struct ssapblk *sb;
@@ -299,9 +329,7 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 
 	missingP (sc);
 	missingP (si);
-
 	smask = sigioblock ();
-
 	if ((sb = findsblk (sd)) == NULL) {
 		sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP,
@@ -313,7 +341,6 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 						 "session descriptor connected");
 	}
 	sb -> sb_flags &= ~SB_TS_CONN;
-
 	switch (result = TAsynNextRequest (sb -> sb_fd, tc, td)) {
 	case NOTOK:
 		ts2sslose (si, "TAsynNextRequest", td);
@@ -326,22 +353,16 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 		result = DONE;
 		freesblk (sb);
 		break;
-
 	case CONNECTING_1:
 	case CONNECTING_2:
 		break;
-
 	case DONE:
 		result = SAsynRetryAux1 (sb, tc, sc, si);
 		break;
 	}
-
 	sigiomask (smask);
-
 	return result;
 }
-
-/*  */
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -378,10 +399,12 @@ SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
     } \
 }
 
-/*  */
-
-static int
-SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
+static int SAsynRetryAux1 (
+	struct ssapblk *sb,
+	struct TSAPconnect *tc,
+	struct SSAPconnect *sc,
+	struct SSAPindication *si
+) {
 	int	    result;
 	struct ssapkt *s;
 
@@ -435,8 +458,7 @@ SAsynRetryAux1 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 	return SAsynRetryAux2 (sb, tc, sc, si);
 }
 
-static int
-SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
+static int SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
 	int	    len,
 			result;
 	struct ssapkt *s;
@@ -460,22 +482,16 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 	case SPDU_AC:
 		sc -> sc_sd = sb -> sb_fd;
 		sc -> sc_result = SC_ACCEPT;
-
 		if (s -> s_mask & SMASK_CN_REF)
 			sc -> sc_connect = s -> s_cn_reference;	/* struct copy */
-
 		if (s -> s_mask & SMASK_CN_OPT)
 			sb -> sb_options = s -> s_options;
-
 		if (!(s -> s_mask & SMASK_CN_TSDU))
 			s -> s_tsdu_init = s -> s_tsdu_resp = 0;
-
 		if (s -> s_tsdu_init < sb -> sb_tsdu_us)
 			sb -> sb_tsdu_us = s -> s_tsdu_init;
-
 		if (s -> s_tsdu_resp < sb -> sb_tsdu_them)
 			sb -> sb_tsdu_them = s -> s_tsdu_resp;
-
 		if (BAD_TSDU_SIZE (sb -> sb_tsdu_us)) {
 			result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP, "perposterous TSDU size (%d) for initiator", sb -> sb_tsdu_us);
 			goto out;
@@ -493,7 +509,6 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 			sb -> sb_vrsnmask &= s -> s_cn_version;
 		}
 		sb -> sb_version = (sb -> sb_vrsnmask & (1 << SB_VRSN2)) ? SB_VRSN2 : SB_VRSN1;
-
 		if (s -> s_mask & SMASK_CN_ISN)
 			sc -> sc_isn = sb -> sb_V_A = sb -> sb_V_M = s -> s_isn;
 		else
@@ -560,10 +575,8 @@ SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SSAPconnect *
 		sc -> sc_qos.qos_sversion = sb -> sb_version + 1;
 		sc -> sc_qos.qos_extended = (sb -> sb_flags & SB_EXPD) ? 1 : 0;
 		copySPKTdata (s, sc);
-
 		freespkt (s);
 		sb -> sb_flags |= SB_CONN | SB_INIT;
-
 		return DONE;
 
 	case SPDU_RF: 		/* ignore s -> s_rf_disconnect */
@@ -625,7 +638,6 @@ out:
 	;
 	freespkt (s);
 	freesblk (sb);
-
 	return result;
 }
 

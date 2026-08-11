@@ -21,36 +21,32 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_new.c,v 9
  *    this agreement.
  *
  */
-
-
+#include <ctype.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-AttributeType AttrT_new (name)
-char * name;
-{
+char *get_oid (char *str);
+int add_entry_aux (char *a, caddr_t b, int c, char *d);
+extern int attrNumEntries;
+extern oid_table_attr attrOIDTable [];
+
+AttributeType AttrT_new (char *name) {
 	oid_table * Current;
-	extern oid_table_attr attrOIDTable [];
 	oid_table_attr  *res;
-	extern attrNumEntries;
-	char * get_oid ();
 
-	while ( isascii(*name) && isspace (*name))
+	while (isascii(*name) && isspace (*name))
 		name++;
-
 	if ((res = name2attr (name)) == NULLTABLE_ATTR) {
 		/* attribute not in tables, add as "ASN" if possible */
 		char * ptr;
 		OID oid;
-
 		if ((ptr = get_oid (name)) == NULLCP)
 			return (NULLTABLE_ATTR);
-
 		Current = &attrOIDTable[attrNumEntries].oa_ot;
 		Current->ot_name = strdup(name);
 		add_entry_aux (Current->ot_name,(caddr_t)&attrOIDTable[attrNumEntries],2,NULLCP);
 		Current->ot_stroid = strdup(ptr);
-
 		oid = str2oid (Current->ot_stroid);
 		if (oid == NULLOID)
 			Current->ot_oid = NULLOID;
@@ -61,4 +57,3 @@ char * name;
 	}
 	return (res);
 }
-

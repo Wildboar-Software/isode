@@ -31,12 +31,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapminor1.c,v 9.0 199
 #include <signal.h>
 #include "spkt.h"
 
-static int  SMinSyncRequestAux ();
+static int SMinSyncRequestAux (struct ssapblk *sb, int type, long int *ssn, char *data, int cc, struct SSAPindication *si);
 
 /*    S-MINOR-SYNC.REQUEST */
 
-int
-SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
+int SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -52,45 +51,32 @@ SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPind
 	}
 	missingP (ssn);
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
 	toomuchP (sb, data, cc, SN_SIZE, "minorsync");
-
 	result = SMinSyncRequestAux (sb, type, ssn, data, cc, si);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-/*  */
-
-static int
-SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
+static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MINORSYNC))
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "minor synchronize service unavailable");
-
 	if ((sb -> sb_requirements & SR_DAT_EXISTS)
 			&& !(sb -> sb_owned & ST_DAT_TOKEN))
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "data token not owned by you");
-
 	if (!(sb -> sb_owned & ST_MIN_TOKEN))
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "minorsync token not owned by you");
-
 	if ((sb -> sb_requirements & SR_ACTIVITY)
 			&& !(sb -> sb_flags & SB_Vact))
 		return ssaplose (si, SC_OPERATION, NULLCP, "no activity in progress");
-
 	if (sb -> sb_flags & SB_MAA)
 		return ssaplose (si, SC_OPERATION, "awaiting your majorsync response");
-
 	if ((result = SWriteRequestAux (sb, SPDU_MIP, data, cc, type,
 									*ssn = sb -> sb_V_M, 0, NULLSD, NULLSD, NULLSR, si)) == NOTOK)
 		freesblk (sb);
@@ -101,6 +87,5 @@ SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc,
 		}
 		sb -> sb_V_M++;
 	}
-
 	return result;
 }

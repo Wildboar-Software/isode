@@ -35,35 +35,27 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/psap.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-int
-psap_free (struct PSAPaddr *psap) {
+void psap_free (struct PSAPaddr *psap) {
 	free ((char *)psap) ;
 }
 
-struct PSAPaddr *
-psap_cpy (struct PSAPaddr *a) {
+struct PSAPaddr *psap_cpy (struct PSAPaddr *a) {
 	struct PSAPaddr * r;
-
 	r = (struct PSAPaddr *) smalloc (sizeof (struct PSAPaddr));
 	bzero ((char *) r,sizeof (struct PSAPaddr));
-
 	*r = *a;        /* struct copy */
-
 	return (r);
 }
 
-int
-psap_dup (struct PSAPaddr *r, struct PSAPaddr *a) {
+void psap_dup (struct PSAPaddr *r, struct PSAPaddr *a) {
 	*r = *a;    /* struct copy */
 }
 
-static
-psap_cmp (struct PSAPaddr *r, struct PSAPaddr *a) {
+static int psap_cmp (struct PSAPaddr *r, struct PSAPaddr *a) {
 	return (bcmp ((char *) r, (char *) a, sizeof *a) ? (-1) : 0);
 }
 
-static PE
-psap_enc (struct PSAPaddr *p) {
+static PE psap_enc (struct PSAPaddr *p) {
 	PE ret_pe;
 
 	if (build_DSE_PSAPaddr (&ret_pe,0,0,NULLCP,p) == NOTOK ) {
@@ -73,22 +65,18 @@ psap_enc (struct PSAPaddr *p) {
 	return (ret_pe);
 }
 
-static struct PSAPaddr *
-psap_dec (PE pe) {
+static struct PSAPaddr *psap_dec (PE pe) {
 	struct PSAPaddr *psap;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-
 	if (parse_DSE_PSAPaddr (pe,1,NULLIP,NULLVP,psap) == NOTOK) {
 		free ((char *)psap);
 		return (NULLPA);
 	}
-
 	return (psap);
 }
 
-static struct PSAPaddr *
-psap_parse (char *s) {
+static struct PSAPaddr *psap_parse (char *s) {
 	struct PSAPaddr *pa;
 	struct PSAPaddr *psap;
 
@@ -103,8 +91,7 @@ psap_parse (char *s) {
 	}
 }
 
-static
-psap_print (PS ps, struct PSAPaddr *p, int format) {
+static void psap_print (PS ps, struct PSAPaddr *p, int format) {
 	if (format != READOUT)
 		ps_printf (ps, "%s", _paddr2str(p,NULLNA,-1));
 	else
@@ -112,8 +99,7 @@ psap_print (PS ps, struct PSAPaddr *p, int format) {
 
 }
 
-int
-psap_syntax (void) {
+void psap_syntax (void) {
 	add_attribute_syntax ("presentationAddress",
 						  psap_enc,		psap_dec,
 						  psap_parse,	psap_print,

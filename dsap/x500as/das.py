@@ -30,6 +30,14 @@ DAS
 
 DEFINITIONS ::=
 
+%{
+extern void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
+%}
+
 PREFIXES encode decode print
 
 BEGIN
@@ -1397,7 +1405,6 @@ AttributeErrorParm [[P struct DSE_attribute *]]
 			value
 				[2] AttributeValue [[p DSE_at_value]]
 				    %D{
-				    extern AttrT_print ();
 				    extern LLog * log_dsap;
 
 				    if ((*parm)->DSE_at_value)
@@ -1462,130 +1469,114 @@ END
 %{
 
 /* same as int2strb but with a real buffer */
-char   *int2strb_alloc (n, len)
-register int    n;
-int     len;
-{
-    register int    i;
+char *int2strb_alloc (int n, int len) {
+    int    i;
     static char *buffer;
-
     buffer = calloc (1,sizeof (int) + 1);
-
     for (i = 0; i < len; i++)
 	if (n & (1 << i))
 	    buffer[i / 8] |= (1 << (7 - (i % 8)));
-
     return buffer;
 }
-
 
 #ifndef lint
 
 #undef encode_DAS_TokenToSign
-int	encode_DAS_TokenToSign(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_TokenToSign *parm;
-{
-  return (enc_f(_ZTokenToSignDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_TokenToSign(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_TokenToSign *parm
+) {
+  	return (enc_f(_ZTokenToSignDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_ReadArgumentData
-int	encode_DAS_ReadArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_ReadArgumentData *parm;
-{
-  return (enc_f(_ZReadArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_ReadArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_ReadArgumentData *parm
+) {
+  	return (enc_f(_ZReadArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_CompareArgumentData
-int	encode_DAS_CompareArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_CompareArgumentData *parm;
-{
-  return (enc_f(_ZCompareArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_CompareArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_CompareArgumentData *parm
+) {
+  	return (enc_f(_ZCompareArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 #undef encode_DAS_ListArgumentData
-int	encode_DAS_ListArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_ListArgumentData *parm;
-{
-  return (enc_f(_ZListArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_ListArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_ListArgumentData *parm
+) {
+  	return (enc_f(_ZListArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_SearchArgumentData
-int	encode_DAS_SearchArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_SearchArgumentData *parm;
-{
-  return (enc_f(_ZSearchArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_SearchArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_SearchArgumentData *parm
+) {
+  	return (enc_f(_ZSearchArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_AddEntryArgumentData
-int	encode_DAS_AddEntryArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_AddEntryArgumentData *parm;
-{
-  return (enc_f(_ZAddEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_AddEntryArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_AddEntryArgumentData *parm
+) {
+  	return (enc_f(_ZAddEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_RemoveEntryArgumentData
-int	encode_DAS_RemoveEntryArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_RemoveEntryArgumentData *parm;
-{
-  return (enc_f(_ZRemoveEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_RemoveEntryArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_RemoveEntryArgumentData *parm
+) {
+  	return (enc_f(_ZRemoveEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_ModifyEntryArgumentData
-int	encode_DAS_ModifyEntryArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_ModifyEntryArgumentData *parm;
-{
-  return (enc_f(_ZModifyEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_ModifyEntryArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_ModifyEntryArgumentData *parm
+) {
+  	return (enc_f(_ZModifyEntryArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #undef encode_DAS_ModifyRDNArgumentData
-int	encode_DAS_ModifyRDNArgumentData(pe, top, len, buffer, parm)
-PE     *pe;
-int	top,
-	len;
-char   *buffer;
-struct type_DAS_ModifyRDNArgumentData *parm;
-{
-  return (enc_f(_ZModifyRDNArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer,
-		(char *) parm));
+int	encode_DAS_ModifyRDNArgumentData(
+	PE *pe,
+	int top,
+	int len,
+	char *buffer,
+	struct type_DAS_ModifyRDNArgumentData *parm
+) {
+  	return (enc_f(_ZModifyRDNArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 
 #endif 

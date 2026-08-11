@@ -42,16 +42,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaptest.c,v 9.0 199
 char   *macro2str ();
 struct TSAPaddr *ta2norm ();
 
-static	printent ();
-static	printobj ();
-static	printsrv ();
+static	void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa);
+static	void printobj (struct isobject *io);
+static	void printsrv (struct isoservent *is);
 
-/*  */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	AEI	    aei;
 	struct PSAPaddr *pa;
 	struct isoentity  *ie;
@@ -132,10 +127,7 @@ you_lose:
 	exit (1);			/* NOTREACHED */
 }
 
-/*  */
-
-static
-printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa) {
+static void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa) {
 	if (ie)
 		printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
 				oid2ode (&ie -> ie_identifier));
@@ -191,25 +183,18 @@ dont_touch:
 		printf ("\n");
 }
 
-/*  */
-
-static
-printobj (struct isobject *io) {
+static void printobj (struct isobject *io) {
 	printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
 			sprintoid (&io -> io_identity));
 }
 
-/*  */
-
-static
-printsrv (struct isoservent *is) {
+static void printsrv (struct isoservent *is) {
 	int    n = is -> is_tail - is -> is_vec - 1;
 	char **ap = is -> is_vec;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
 			sel2str (is -> is_selector, is -> is_selectlen, 1));
-
 	for (; n >= 0; ap++, n--)
 		printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
 	printf ("\n");

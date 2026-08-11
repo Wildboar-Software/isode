@@ -270,7 +270,7 @@ struct rtetab **a,
 }
 
 
-sort_rtetab () {
+void sort_rtetab (void) {
 	struct rtetab  *rt,
 			   **base,
 			   **rte;

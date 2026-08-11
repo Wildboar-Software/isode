@@ -44,28 +44,24 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
 
 extern LLog * log_dsap;
 
-static
-teletex_free (struct teletex *ptr) {
+static void teletex_free (struct teletex *ptr) {
 	nfree (ptr->terminal);
 	nfree (ptr->graphic);
 	nfree (ptr->control);
 	nfree (ptr->page);
 	nfree (ptr->misc);
 	nfree (ptr->t_private);
-
 	free ((char *) ptr);
 }
 
-static char *
-xstrdup (char *a) {
+static char *xstrdup (char *a) {
 	if (( a == NULLCP) || (*a == NULL))
 		return (NULLCP);
 	else
 		return (strdup (a));
 }
 
-static struct teletex *
-teletex_cpy (struct teletex *a) {
+static struct teletex *teletex_cpy (struct teletex *a) {
 	struct teletex * result;
 
 	result = (struct teletex *) smalloc (sizeof (struct teletex));
@@ -78,8 +74,7 @@ teletex_cpy (struct teletex *a) {
 	return (result);
 }
 
-static
-teletex_cmp (struct teletex *a, struct teletex *b) {
+static int teletex_cmp (struct teletex *a, struct teletex *b) {
 	int res;
 
 	if (a == (struct teletex *) NULL)
@@ -87,7 +82,6 @@ teletex_cmp (struct teletex *a, struct teletex *b) {
 			return (0);
 		else
 			return (-1);
-
 	if ( (res = lexequ(a->terminal,b->terminal)) != 0)
 		return (res);
 	if ( (res = lexequ(a->graphic,b->graphic)) != 0)
@@ -103,8 +97,7 @@ teletex_cmp (struct teletex *a, struct teletex *b) {
 	return (0);
 }
 
-
-static teletex_print (ps,teletex,format)
+static void teletex_print (ps,teletex,format)
 PS ps;
 struct   teletex* teletex;
 int format;
@@ -155,9 +148,7 @@ int format;
 
 }
 
-
-static struct teletex *
-str2teletex (char *str) {
+static struct teletex *str2teletex (char *str) {
 	struct teletex * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -291,8 +282,7 @@ PE pe;
 	return (m);
 }
 
-int
-teletex_syntax (void) {
+void teletex_syntax (void) {
 	add_attribute_syntax ("TeletexTerminalIdentifier",
 						  teletex_enc,		teletex_dec,
 						  str2teletex,		teletex_print,

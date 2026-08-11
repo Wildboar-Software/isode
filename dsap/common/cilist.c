@@ -40,8 +40,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cilist.c,v 9.0 
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 
-static
-cilistfree (struct CIList *cilist) {
+static void cilistfree (struct CIList *cilist) {
 	struct CIList * next;
 	for (; cilist != NULLCILIST; cilist = next) {
 		next = cilist->l_next;
@@ -50,24 +49,20 @@ cilistfree (struct CIList *cilist) {
 	}
 }
 
-static
-cilistcmp (struct CIList *a, struct CIList *b) {
+static int cilistcmp (struct CIList *a, struct CIList *b) {
 	int res;
 
 	for (; (a != NULLCILIST) && (b != NULLCILIST) ;
 			a = a->l_next, b=b->l_next)
 		if ((res = lexequ (a->l_str, b->l_str)) != 0)
 			return (res);
-
-	if ( a != b)
+	if (a != b)
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-
 }
 
-static struct CIList *
-cilistcpy (struct CIList *a) {
+static struct CIList *cilistcpy (struct CIList *a) {
 	struct CIList * b, *c, *result = NULLCILIST;
 
 	c = result; /* to keep lint quiet ! */
@@ -88,8 +83,7 @@ cilistcpy (struct CIList *a) {
 	return (result);
 }
 
-static struct CIList *
-cilistparse (char *str) {
+static struct CIList *cilistparse (char *str) {
 	struct CIList * result = NULLCILIST;
 	struct CIList * a, *b;
 	char * ptr;
@@ -173,7 +167,7 @@ cilistparse (char *str) {
 	return (result);
 }
 
-static cilistprint (ps,cilist,format)
+static void cilistprint (ps,cilist,format)
 PS ps;
 struct CIList * cilist;
 int format;
@@ -198,7 +192,6 @@ int format;
 	}
 }
 
-
 static PE cilistenc (m)
 struct CIList * m;
 {
@@ -219,14 +212,11 @@ PE pe;
 	return (m);
 }
 
-int
-cilist_syntax (void) {
+void cilist_syntax (void) {
 	add_attribute_syntax ("CaseIgnoreList",
 						  cilistenc,	cilistdec,
 						  cilistparse,	cilistprint,
 						  cilistcpy,	cilistcmp,
 						  cilistfree,	NULLCP,
 						  NULLIFP,	TRUE);
-
 }
-

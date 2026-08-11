@@ -314,36 +314,27 @@ yyerror (char *s) {
 }
 
 #ifndef lint
-warning (char*fmt, ...) {
+void warning (char*fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	sprintf (buffer2, "Warning: %s", buffer);
 	yyerror_aux (buffer2);
 }
 
 #else
-
 /* VARARGS1 */
-int
-warning (char *fmt) {
+void warning (char *fmt) {
 	warning (fmt);
 }
 #endif
-
-static
-yyerror_aux (char *s) {
+static void yyerror_aux (char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
-
 	if (eval)
 		fprintf (stderr, "%s %s: ", yymode, eval);
 	else
@@ -353,19 +344,13 @@ yyerror_aux (char *s) {
 		fprintf (stderr, "last token read was \"%s\"\n", yytext);
 }
 
-/*  */
-
 #ifndef	lint
-myyerror (char* fmt, ...) {
+void myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	yyerror (buffer);
 }
 #endif
@@ -375,16 +360,11 @@ myyerror (char* fmt, ...) {
 static        pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	register YP       yp;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	yyerror_aux (buffer);
 	print_type (yp, 0);
-
 	if (*sysout)
 		unlink (sysout);
 	if (*sysdef)
@@ -393,14 +373,11 @@ static        pyyerror (YP yp, char* fmt, ...) {
 		unlink (systbl);
 	if (*systub)
 		unlink (systub);
-
 	exit (1);
 }
 #else
 /* VARARGS */
-+
-static
-pyyerror (YP yp, char *fmt) {
+static void pyyerror (YP yp, char *fmt) {
 	pyyerror (yp, fmt);
 }
 #endif

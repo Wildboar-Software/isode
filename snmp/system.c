@@ -110,7 +110,7 @@ static struct sys_pair {
 };
 
 
-init_system () {
+void init_system (void) {
 	char    buffer[BUFSIZ];
 	OT	    ot;
 	struct sys_pair *sp;
@@ -125,8 +125,7 @@ init_system () {
 
 			if (sp -> s_text)
 				if (ot -> ot_syntax)
-					(*ot -> ot_syntax -> os_parse) ((struct qbuf **)
-													&ot -> ot_info,
+					(*ot -> ot_syntax -> os_parse) ((void **)&ot -> ot_info,
 													sp -> s_text);
 				else
 					advise (LLOG_EXCEPTIONS, NULLCP, "%s: no syntax",

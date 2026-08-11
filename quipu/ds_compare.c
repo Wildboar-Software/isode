@@ -35,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_compare.c,v 9.0 19
 extern LLog * log_dsap;
 extern Attr_Sequence entry_find_type();
 
-static attribute_not_cached ();
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level);
 
 int
 do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
@@ -231,9 +231,7 @@ invalid_matching (AttributeType at, struct DSError *error, DN dn) {
 	return (DS_ERROR_REMOTE);
 }
 
-
-static
-attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level) {
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 

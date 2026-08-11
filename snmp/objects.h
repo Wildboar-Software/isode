@@ -33,24 +33,38 @@
 #endif
 #include "SNMP-types.h"
 
-/*  */
+typedef struct object_syntax object_syntax, *OS;
 
-typedef struct object_syntax {
+struct object_syntax {
 	char   *os_name;			/* syntax name */
 
-	IFP	    os_encode;			/* data -> PE */
-	IFP	    os_decode;			/* PE -> data */
-	IFP	    os_free;			/* free data */
+	int (*os_encode)(void *x, PE *pe);			/* data -> PE */
+	int (*os_decode)(void **x, PE pe);			/* PE -> data */
+	void (*os_free)(void *x);			/* free data */
 
-	IFP	    os_parse;			/* str -> data */
-	IFP	    os_print;			/* data -> tty */
+	int (*os_parse)(void **x, char *s);			/* str -> data */
+	void (*os_print)(void *x, OS os);			/* data -> tty */
 
 	char  **os_data1;			/* for moresyntax() in snmpi... */
 	int	    os_data2;			/*   .. */
-}		object_syntax, *OS;
+};
 #define	NULLOS	((OS) 0)
 
-int	readsyntax (), add_syntax ();
+typedef	int	(*EncoderFunction) (void *x, PE *pe);
+typedef	int	(*DecoderFunction) (void **x, PE pe);
+typedef	void (*FreeFunction) (void *x);
+typedef	int	(*ParseFunction) (void **x, char *s);
+typedef	void (*PrintFunction) (void *x, OS os);
+
+void readsyntax (void);
+int	add_syntax (
+	char *name,
+	EncoderFunction f_encode,
+	DecoderFunction f_decode,
+	FreeFunction f_free,
+	ParseFunction f_parse,
+	PrintFunction f_print
+);
 OS	text2syn ();
 
 typedef struct object_instance object_instance, *OI;

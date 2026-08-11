@@ -11053,9 +11053,7 @@ static OT _Tbuckets[128] = {
 extern	int	once_only_Tbuckets;
 extern	OT	Tbuckets[];
 
-loadobjects (file)
-char   *file;
-{
+int loadobjects (char *file) {
     int	    i;
     struct _syntax *sy;
     OT	    ot;

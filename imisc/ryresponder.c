@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryresponder.c,v 9.0 1
  *    this agreement.
  *
  */
-
-
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
@@ -34,8 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryresponder.c,v 9.0 1
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 #include "tailor.h"
-
-/*    DATA */
 
 int	debug = 0;
 
@@ -48,32 +44,27 @@ LLog *pgm_log = &_pgm_log;
 
 static char *myname = "ryresponder";
 
-
 static jmp_buf toplevel;
-
 
 static IFP	startfnx;
 static IFP	stopfnx;
 
-static int	ros_init (), ros_work (), ros_indication (), ros_lose ();
+static int ros_init (int vecp, char **vec);
+static int ros_work (int fd);
+static void ros_indication (int sd, struct RoSAPindication *roi);
+static void ros_lose (struct TSAPdisconnect *td);
 
-
-
-
-/*    RESPONDER */
-
-ryresponder (argc, argv, host, myservice, mycontext, dispatches, ops,
-			 start, stop)
-int	argc;
-char  **argv,
-	  *host,
-	  *myservice,
-	  *mycontext;
-struct dispatch *dispatches;
-struct RyOperation *ops;
-IFP	start,
-	stop;
-{
+void ryresponder (
+	int argc,
+	char **argv,
+	char *host,
+	char *myservice,
+	char *mycontext,
+	struct dispatch *dispatches,
+	struct RyOperation *ops,
+	IFP start,
+	IFP stop
+) {
 	struct dispatch   *ds;
 	AEI	    aei;
 	struct TSAPdisconnect   tds;
@@ -130,10 +121,7 @@ IFP	start,
 	exit (0);
 }
 
-/*  */
-
-static int
-ros_init (int vecp, char **vec) {
+static int ros_init (int vecp, char **vec) {
 	int	    reply,
 			result,
 			sd;
@@ -185,10 +173,7 @@ ros_init (int vecp, char **vec) {
 	return sd;
 }
 
-/*  */
-
-static int
-ros_work (int fd) {
+static int ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -225,10 +210,7 @@ ros_work (int fd) {
 	return OK;
 }
 
-/*  */
-
-static int
-ros_indication (int sd, struct RoSAPindication *roi) {
+static void ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -291,10 +273,7 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 	}
 }
 
-/*  */
-
-static int
-ros_lose (struct TSAPdisconnect *td) {
+static void ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
 			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,
@@ -303,33 +282,22 @@ ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-/*    ERRORS */
-
-void
-ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	longjmp (toplevel, NOTOK);
 }
 
-
-void
-ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
-
 	if (rop -> rop_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
-
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -338,50 +306,35 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
 
-/*  */
-
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
 /* VARARGS2 */
-
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
-
 #ifndef	lint
 void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
 /* VARARGS3 */
-
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

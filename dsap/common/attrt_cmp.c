@@ -21,8 +21,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_cmp.c,v 9
  *    this agreement.
  *
  */
-
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 
@@ -30,19 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrt_cmp.c,v 9
 #undef AttrT_cmp
 #endif
 
-AttrT_cmp_old (x,y)
-AttributeType x,y;
-{
+int AttrT_cmp_old (AttributeType x, AttributeType y) {
 	if ( x == NULLAttrT )
 		return (y ? -1 : 0);
 	if ( y == NULLAttrT )
 		return (1);
-
 	if (x == y)
 		return (0);
-
 	return (x > y) ? 1 : -1;
 }
-
-
-

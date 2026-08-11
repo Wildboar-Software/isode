@@ -436,7 +436,7 @@ static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 	return (0);
 }
 
-static addr_info_print (ps, info, format)
+static void addr_info_print (ps, info, format)
 PS		  ps;
 struct addr_info	* info;
 int			  format;

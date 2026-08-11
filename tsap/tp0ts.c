@@ -29,6 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tp0ts.c,v 9.0 1992/06/
 
 #include <stdio.h>
 #include <signal.h>
+#include <unistd.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"
@@ -618,10 +619,7 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-/*  */
-
-static
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tsapkt  *t;
 
 	switch (reason) {
@@ -637,17 +635,14 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 		t -> t_dr.dr_reason = reason;
 		copyTPKTdata (t, td -> td_data, td -> td_cc);
 		break;
-
 	default:
 		if ((t = newtpkt (TPDU_ER)) == NULLPKT)
 			break;
-
 		t -> t_er.er_dstref = tb -> tb_dstref;
 		switch (reason) {
 		case DR_PROTOCOL:
 			t -> t_er.er_reject = ER_REJ_TPDU;
 			break;
-
 		default:
 			t -> t_er.er_reject = ER_REJ_NOTSPECIFIED;
 			break;
@@ -659,8 +654,6 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 		freetpkt (t);
 	}
 }
-
-/*  */
 
 /* at present, used by TCP and X.25 back-ends... */
 
@@ -1050,10 +1043,7 @@ out:
 }
 #endif
 
-/*  */
-
-int
-tp0init (struct tsapblk *tb) {
+int tp0init (struct tsapblk *tb) {
 	tb -> tb_connPfnx = (IFP)TConnect;
 	tb -> tb_retryPfnx = (IFP)TRetry;
 

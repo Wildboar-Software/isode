@@ -50,8 +50,8 @@ typedef struct OIDentifier {
 #define	NULLOID	((OID) 0)
 
 OID	ode2oid ();
-int	oid_cmp (), elem_cmp ();
-OID	oid_cpy ();
+int	oid_cmp (OID p, OID q), elem_cmp (unsigned int *ip, int i, unsigned int *jp, int j);
+OID	oid_cpy (OID oid);
 void oid_free (OID oid);
 #define	oid2ode(i)	oid2ode_aux ((i), 1)
 char   *oid2ode_aux ();
@@ -560,10 +560,10 @@ extern struct qbuf *Qb;
 #define qbuf2pe(qb, len, result) (Byteno = 0, Hqb = qb, \
                                         Fqb = (Qb = (qb) -> qb_forw), \
                                         qbuf2pe_f (result))
-PE	qbuf2pe_f ();
-char   *qb2str ();
-struct qbuf *str2qb ();
-int	qb_free ();
+PE qbuf2pe_f (int *result);
+char *qb2str ();
+struct qbuf *str2qb (char *s, int len, int head) ;
+void qb_free (struct qbuf *qb);
 
 int	pe2ssdu ();
 PE	ssdu2pe ();
@@ -577,8 +577,6 @@ int	strb2int ();
 
 PE	strb2bitstr (char *, int, PElementClass, PElementID);
 char   *bitstr2strb ();
-
-/*  */
 
 extern char PY_pepy[];
 

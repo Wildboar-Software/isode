@@ -37,7 +37,6 @@ PE cert_enc(parm)
 struct certificate *parm;
 {
 	PE pe;
-
 	encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
 	return (pe);
 }
@@ -52,30 +51,23 @@ PE pe;
 	return (result);
 }
 
-int
-alg_cpy (struct alg_id *a, struct alg_id *b) {
+int alg_cpy (struct alg_id *a, struct alg_id *b) {
 	a->algorithm = oid_cpy(b->algorithm);
-
 	if (b->asn)
 		a->asn = pe_cpy(b->asn);
-
 	a->p_type = b->p_type;
-
 	if (b->p_type == ALG_PARM_NUMERIC)
 		a->un.numeric = b->un.numeric;
 }
 
-struct certificate *
-cert_cpy (struct certificate *parm) {
+struct certificate *cert_cpy (struct certificate *parm) {
 	struct certificate *result;
 
 	result = (struct certificate *) calloc(1, sizeof(struct certificate));
-
 	alg_cpy(&(result->sig.alg), &(parm->sig.alg));
 	result->sig.n_bits = parm->sig.n_bits;
 	result->sig.encrypted = malloc((unsigned)(parm->sig.n_bits+7)/8);
 	bcopy(parm->sig.encrypted, result->sig.encrypted, (parm->sig.n_bits+7)/8);
-
 	alg_cpy(&(result->alg), &(parm->alg));
 	alg_cpy(&(result->key.alg), &(parm->key.alg));
 	result->serial = parm->serial;
@@ -90,52 +82,41 @@ cert_cpy (struct certificate *parm) {
 	result->key.value = malloc((unsigned)(parm->key.n_bits+7)/8);
 	bcopy(parm->key.value, result->key.value,
 		  (parm->key.n_bits+7)/8);
-
 	return (result);
 }
 
-int
-cert_free (struct certificate *parm) {
+void cert_free (struct certificate *parm) {
 	dn_free(parm->issuer);
 	dn_free(parm->subject);
 
 	if (parm->sig.alg.algorithm)
 		oid_free (parm->sig.alg.algorithm);
 	parm->sig.alg.algorithm = NULLOID;
-
 	if (parm->alg.algorithm)
 		oid_free (parm->alg.algorithm);
 	parm->alg.algorithm = NULLOID;
-
 	if (parm->key.alg.algorithm)
 		oid_free (parm->key.alg.algorithm);
 	parm->key.alg.algorithm = NULLOID;
-
 	if (parm->sig.encrypted)
 		free (parm->sig.encrypted);
 	parm->sig.encrypted = NULLCP;
-
 	if (parm->key.value)
 		free (parm->key.value);
 	parm->key.value = NULLCP;
-
 	if (parm->valid.not_before)
 		free (parm->valid.not_before);
 	parm->valid.not_before = NULLCP;
-
 	if (parm->valid.not_after)
 		free (parm->valid.not_after);
 	parm->valid.not_after = NULLCP;
-
 	if (parm->key.alg.p_type == ALG_PARM_UNKNOWN)
 		pe_free (parm->key.alg.asn);
 	parm->key.alg.asn = NULLPE;
-
 	free((char *) parm);
 }
 
-int
-str2alg (char *str, struct alg_id *alg) {
+int str2alg (char *str, struct alg_id *alg) {
 	PE asn2pe();
 
 	if ((str == NULLCP) || (*str == '\0')) {
@@ -151,14 +132,13 @@ str2alg (char *str, struct alg_id *alg) {
 	}
 }
 
-int
-str2encrypted (char *str, char **cp, int *len) {
+int str2encrypted (char *str, char **cp, int *len) {
 	int i;
 	int l;
 	int k = 0;
 	int tmp;
 
-	l=strlen(str);
+	l = strlen(str);
 	if (str[l-1] == '#') l--;
 	if ((l>2) && str[l-2] == '-') {
 		k = atoi(&(str[l-1]));
@@ -172,9 +152,7 @@ str2encrypted (char *str, char **cp, int *len) {
 	}
 }
 
-
-struct certificate *
-str2cert (char *str) {
+struct certificate *str2cert (char *str) {
 	struct certificate *result;
 	char *ptr;
 	OID oid;
@@ -361,7 +339,7 @@ str2cert (char *str) {
 	return (result);
 }
 
-print_algid(ps, parm, format)
+void print_algid(ps, parm, format)
 PS ps;
 struct alg_id *parm;
 int format;
@@ -399,7 +377,7 @@ int format;
 	}
 }
 
-print_encrypted(ps, str, n_bits, format)
+void print_encrypted(ps, str, n_bits, format)
 PS ps;
 char *str;
 int n_bits;
@@ -417,21 +395,18 @@ int format;
 		}
 		if ((i = (n_bits % 8)) != 0)
 			ps_printf(ps, "-%d", 8-i);
-
 		ps_printf(ps, "#");
 	}
 
 }
 
-
-printcert(ps, parm, format)
+void printcert(ps, parm, format)
 PS ps;
 struct certificate *parm;
 int format;
 {
 	print_algid(ps, &(parm->sig.alg), format);
 	print_encrypted(ps, parm->sig.encrypted, parm->sig.n_bits, format);
-
 	dn_print(ps, parm->issuer, EDBOUT);
 	ps_printf(ps, "#\\\n");
 	dn_print(ps, parm->subject, EDBOUT);
@@ -439,48 +414,39 @@ int format;
 	print_algid(ps, &(parm->alg), format);
 	ps_printf(ps, "%d#", parm->version);
 	ps_printf(ps, "%d#", parm->serial);
-
 	utcprint(ps, parm->valid.not_before, format);
 	ps_printf(ps, "#");
 	utcprint(ps, parm->valid.not_after, format);
 	ps_printf(ps, "#\\\n");
-
 	print_algid(ps, &(parm->key.alg), format);
 	print_encrypted(ps, parm->key.value,
 					parm->key.n_bits, format);
 }
 
-int
-cert_cmp (struct certificate *a, struct certificate *b) {
+int cert_cmp (struct certificate *a, struct certificate *b) {
 	int ret;
 
 	ret = dn_cmp(a->issuer, b->issuer);
 	if (ret != 0)
 		return (ret);
-
 	ret = dn_cmp(a->subject, b->subject);
 	if (ret != 0)
 		return (ret);
-
 	if (a->version > b->version)
 		return (1);
 	if (a->version < b->version)
 		return (-1);
-
 	if (a->serial > b->serial)
 		return (1);
 	if (a->serial < b->serial)
 		return (-1);
-
 	/* issuer, subject, version and serial should uniquely identify the
 	 * certificate.
 	 */
-
 	return (0);
 }
 
-int
-certificate_syntax (void) {
+void certificate_syntax (void) {
 	add_attribute_syntax(
 		"Certificate",
 		cert_enc, cert_dec,

@@ -434,7 +434,6 @@ void renamecmd(char *from, char *to) {
 	vec[1] = from;
 	vec[2] = to;
 	vec[3] = NULL;
-
 	if (f_mv(vec) == NOTOK) {
 		reply(550, "rename: %s.", ftam_error);
 		return;
@@ -462,30 +461,25 @@ void dolog(struct sockaddr_in *sin) {
 		return;
 	advise(NULLCP,"connection from %s at %s", remotehost, ctime(&t));
 }
-directory(how,name)
-char *how, *name;
-{
 
+/* f_ls does a directory contents transfer.  The first arguement
+* determines whether a name list (NLST) or long list (LIST) is returned.
+* Results:
+* OK    -- list transfered without error
+* NOTOK -- list transfer error
+* DONE  -- Problem opening TCP connection for transfer
+*          Error response made by dataconn routine.
+*/
+int directory(char *how, char *name) {
 	int result;
-	/* f_ls does a directory contents transfer.  The first arguement
-	 * determines whether a name list (NLST) or long list (LIST) is returned.
-	 * Results:
-	 * OK    -- list transfered without error
-	 * NOTOK -- list transfer error
-	 * DONE  -- Problem opening TCP connection for transfer
-	 *          Error response made by dataconn routine.
-	 */
-
 	vec[0] = strcmp(how,"NLST") ? "dir" : "ls";
 	vec[1] = name;
 	vec[2] = NULL;
-
 	if ((result = f_ls(vec)) == OK)
 		reply(226, "Transfer complete.");
 	else if (result == NOTOK)
 		reply(500, ftam_error);
 	data = -1;
-
 }
 
 /*

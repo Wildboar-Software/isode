@@ -20,11 +20,8 @@
  *
  */
 
-
 #include "tsap.h"		/* definitions for TS-USERs */
-
-/*  */
-
+#include "logger.h"
 
 #define	tsapPsig(tb, sd) \
 { \
@@ -396,7 +393,8 @@ struct tsapkt {
 void freetpkt (struct tsapkt *t);
 struct tsapkt *newtpkt (int code);
 
-void	text2tpkt (), tpkt2text ();
+void text2tpkt (struct tsapkt *t);
+void tpkt2text (LLog *lp, struct tsapkt *t, int isread);
 
 int	tpkt2fd ();
 struct tsapkt  *fd2tpkt ();

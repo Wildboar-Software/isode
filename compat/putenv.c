@@ -32,31 +32,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/putenv.c,v 9.0 1992/
 #include "general.h"
 #include "manifest.h"
 
-/*  */
+extern char **environ;
+static int nvmatch (const char *s1, const char *s2);
 
-extern  char **environ;
-static nvmatch ();
-
-/*  */
-
-int
-setenv (const char *name, const char *value, int overwrite) {
+int setenv (const char *name, const char *value, int overwrite) {
 	int    i;
-	char **ep,
-		 **nep,
-		 *cp;
+	char **ep, **nep, *cp;
 
 	if ((cp = malloc ((unsigned) (strlen (name) + strlen (value) + 2)))
 			== NULL)
 		return 1;
 	sprintf (cp, "%s=%s", name, value);
-
 	for (ep = environ, i = 0; *ep; ep++, i++)
 		if (nvmatch (name, *ep)) {
 			*ep = cp;
 			return 0;
 		}
-
 	if ((nep = (char **) malloc ((unsigned) ((i + 2) * sizeof *nep)))
 			== NULL) {
 		free (cp);
@@ -70,10 +61,7 @@ setenv (const char *name, const char *value, int overwrite) {
 	return 0;
 }
 
-/*  */
-
-int
-unsetenv (const char *name) {
+int unsetenv (const char *name) {
 	char  **ep,
 		  **nep;
 
@@ -90,13 +78,9 @@ unsetenv (const char *name) {
 	return 0;
 }
 
-/*  */
-
-static
-nvmatch (char *s1, char *s2) {
+static int nvmatch (const char *s1, const char *s2) {
 	while (*s1 == *s2++)
 		if (*s1++ == '=')
 			return 1;
-
 	return (*s1 == '\0' && *--s2 == '=');
 }

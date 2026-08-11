@@ -1273,7 +1273,7 @@ void timer (int cc, char *action) {
 }
 
 
-static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

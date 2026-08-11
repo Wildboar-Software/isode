@@ -690,42 +690,29 @@ END
 
 %{
 
-enc_ipa (parm,ppe)
-struct access_point *parm;
-PE *ppe;
-{
+int enc_ipa (struct access_point *parm, PE *ppe) {
 	return build_DSE_PSAPaddr (ppe, 0, 0, NULLCP, (char *)parm->ap_address);
 }
 
-dec_ipa (parm,pe)
-struct access_point ** parm;
-PE pe;
-{
-struct PSAPaddr *psap;
-int res;
+int dec_ipa (struct access_point **parm, PE pe) {
+	struct PSAPaddr *psap;
+	int res;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-
 	if ((res = parse_DSE_PSAPaddr (pe, 0, NULLIP, NULLVP, psap)) == NOTOK) {
 	   free ((char *) psap);
 	   return res;
 	}
-
 	(*parm)->ap_address = psap;
 	return res;
 }
 
-fr_ipa (parm)
-struct access_point *parm;
-{
+int fr_ipa (struct access_point *parm) {
 	if (parm && parm->ap_address) {
 		free ((char *)parm->ap_address);
 		parm->ap_address = NULLPA;
 	}
 	return OK;
-	
 }
-
-
 
 %}

@@ -84,11 +84,7 @@ static struct {
 } Commands[MAXARGS];
 static int num_cmd = 0;
 
-add_dish_command (name,func,len)
-char * name;
-int (*func)(int, char **);
-int len;
-{
+void add_dish_command (char *name, int (*func)(int, char **), int len) {
 	Commands[num_cmd].command = name;
 	Commands[num_cmd].handler = func;
 	Commands[num_cmd].unique  = (len == 0 ? strlen(name) : len);

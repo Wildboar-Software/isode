@@ -519,8 +519,6 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 }
 #endif
 
-/*  */
-
 #ifndef	IAE
 static void arginit (char **vec) {
 	int	    rflag;
@@ -782,12 +780,8 @@ static void arginit (char **vec) {
 		adios (NULLCP, "%s not owned by root", ap);
 }
 
-/*  */
-
 #else
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	int	    argp,
 			options;
 	char *ap;

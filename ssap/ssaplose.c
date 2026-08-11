@@ -23,20 +23,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaplose.c,v 9.0 1992/
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*  */
-
 #ifndef	lint
-static int  _ssaplose ();
+static int  _ssaplose (struct SSAPindication *si, int reason, va_list ap);
 #endif
 
 #ifndef	lint
@@ -57,17 +51,13 @@ int	spktlose (int sd, ...) {
 	va_list ap;
 
 	va_start (ap, sd);
-
 	si = va_arg (ap, struct SSAPindication *);
 	if (si == NULL)
 		si = &sis;
-
 	reason = va_arg (ap, int);
 	value = reason & SC_REFUSE;
 	reason &= ~SC_REFUSE;
-
 	result = _ssaplose (si, reason, ap);
-
 	va_end (ap);
 
 	if ((sa = &si -> si_abort) -> sa_cc > 0) {
@@ -120,11 +110,9 @@ int	spktlose (int sd, ...) {
 
 	value = spkt2sd (s, sd,
 					 (sb = findsblk (sd)) && (sb -> sb_flags & SB_EXPD), si);
-
 	freespkt (s);
 	if (value == NOTOK)
 		return result;
-
 	if (secs >= 0)
 		switch (TReadRequest (sd, tx, secs, td)) {
 		case OK:
@@ -135,7 +123,6 @@ int	spktlose (int sd, ...) {
 		case NOTOK:
 			break;
 		}
-
 	return result;
 }
 #else
@@ -147,22 +134,15 @@ spktlose (int sd, struct SSAPindication *si, int reason, char *what, char *fmt) 
 }
 #endif
 
-/*  */
-
 #ifndef	lint
 int	ssaplose (struct SSAPindication*si, ...) {
 	int	    reason,
 			result;
 	va_list ap;
-
 	va_start (ap, si);
-
 	reason = va_arg (ap, int);
-
 	result = _ssaplose (si, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -173,8 +153,6 @@ ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 	return ssaplose (si, reason, what, fmt);
 }
 #endif
-
-/*  */
 
 #ifndef	lint
 static int
@@ -193,15 +171,12 @@ _ssaplose (	/* what, fmt, args ... */
 		bzero ((char *) si, sizeof *si);
 		si -> si_type = SI_ABORT;
 		sa = &si -> si_abort;
-
 		what = va_arg(ap, char*);
 		fmt  = va_arg(ap, char*);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		sa -> sa_peer = 0;
 		sa -> sa_reason = reason;
-
 		if ((sa -> sa_cc = min (bp - buffer, sizeof sa -> sa_prdata)) > 0)
 			bcopy (buffer, sa -> sa_prdata, sa -> sa_cc);
 	}

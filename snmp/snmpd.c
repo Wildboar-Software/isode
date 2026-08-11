@@ -297,11 +297,7 @@ static void doit_udp (int pd) {
 }
 #endif
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	int	    failed,
 			listening,
 			nfds;
@@ -2379,11 +2375,7 @@ static void do_traps (
 #endif
 #else	/* SNMPT */
 
-static int process (ps, msg, na, size)
-PS	ps;
-struct type_SNMP_Message *msg;
-struct NSAPaddr *na;
-{
+static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size) {
 	char   *cp;
 	long    now;
 	PE	    pe,

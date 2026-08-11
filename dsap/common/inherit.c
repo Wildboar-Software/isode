@@ -36,16 +36,14 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/inherit.c,v 9.0
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 
-static inherit_free (ptr)
+static void inherit_free (ptr)
 InheritAttr ptr;
 {
 	oid_free (ptr->i_oid);
 	as_free  (ptr->i_default);
 	as_free  (ptr->i_always);
-
 	free ((char *) ptr);
 }
-
 
 static InheritAttr inherit_cpy (a)
 InheritAttr a;
@@ -59,7 +57,7 @@ InheritAttr a;
 	return (result);
 }
 
-static inherit_cmp (a,b)
+static int inherit_cmp (a,b)
 InheritAttr a;
 InheritAttr b;
 {
@@ -87,7 +85,7 @@ InheritAttr b;
 }
 
 
-static inherit_print (ps,inherit,format)
+static void inherit_print (ps,inherit,format)
 PS ps;
 InheritAttr inherit;
 int format;
@@ -139,16 +137,14 @@ int format;
 
 static char * nextline = NULLCP;
 
-int
-setAttributeLine (char *str) {
+int setAttributeLine (char *str) {
 	/* Recusion ? */
 
 	if ((nextline = index (str,'\n')) != NULLCP)
 		*nextline++ = 0;
 }
 
-char *
-nextAttributeLine (char *str) {
+char *nextAttributeLine (char *str) {
 	char * ptr;
 
 #ifdef TURBO_DISK
@@ -331,8 +327,7 @@ PE pe;
 	return (m);
 }
 
-int
-inherit_syntax (void) {
+void inherit_syntax (void) {
 	extern short inherit_sntx;
 
 	inherit_sntx = add_attribute_syntax ("InheritedAttribute",

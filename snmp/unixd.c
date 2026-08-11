@@ -81,11 +81,7 @@ static	fd_set	ofds;
 void adios (char *, char *, ...);
 void advise (int, char *, char *, ...);
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	int	    nfds;
 
 	arginit (argv);

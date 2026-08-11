@@ -31,10 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2pe_f.c,v 9.0 1992
 #include "psap.h"
 #include "tailor.h"
 
-/*  */
-
-static	int  qb_read_cons ();
-static	qbuf2data();
+static int qb_read_cons (PE *pe, PElementLen len, int *cresult);
+static int qbuf2data(PElementData data, PElementLen len);
 
 /*
  * The following macro takes one byte from a qbuf, stuffs it in c,
@@ -70,10 +68,7 @@ struct qbuf    *Qb = (struct qbuf *) NULL;
 
 static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 
-/*  */
-
-PE
-qbuf2pe_f (int *result) {
+PE qbuf2pe_f (int *result) {
 	PE	pe;
 	struct qbuf *qp;
 	byte c, d;
@@ -90,9 +85,7 @@ qbuf2pe_f (int *result) {
 	 * Just take the qbuf directly and build PEs.
 	 * First, decode the id.
 	 */
-
 	qbuf2char(c);
-
 	class = ((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT;
 	form = ((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT;
 	j = (c & PE_CODE_MASK);
@@ -117,17 +110,13 @@ qbuf2pe_f (int *result) {
 		}
 
 	id = j;
-
 	DLOG (psap_log, LLOG_DEBUG,
 		  ("class=%d form=%d id=%d", class, form, id));
-
 	if ((pe = pe_alloc (class, form, id)) == NULLPE) {
 		*result = PS_ERR_NMEM;
 		return (NULLPE);
 	}
-
 	qbuf2char(c);
-
 	if ((i = c) & PE_LEN_XTND) {
 		if ((i &= PE_LEN_MASK) > sizeof (PElementLen)) {
 #ifdef DEBUG
@@ -159,7 +148,6 @@ qbuf2pe_f (int *result) {
 	pe -> pe_len = len;
 
 	/* Now get the value.  */
-
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
 		if (len == PE_LEN_INDF) {
@@ -201,7 +189,6 @@ qbuf2pe_f (int *result) {
 			goto you_lose;
 		break;
 	}
-
 	return pe;
 
 you_lose:
@@ -215,17 +202,13 @@ you_lose:
 	return NULLPE;
 }
 
-/*  */
-
-static int
-qb_read_cons (PE *pe, PElementLen len, int *cresult) {
+static int qb_read_cons (PE *pe, PElementLen len, int *cresult) {
 	int    cc;
 	PE    p, q;
 	int result;
 
 	*pe = NULLPE;
 	cc = Byteno + len;
-
 	if ((p = qbuf2pe_f (&result)) == NULLPE) {
 no_cons:
 		;
@@ -281,10 +264,7 @@ no_cons:
 	}
 }
 
-/*  */
-
-static
-qbuf2data (PElementData data, PElementLen len) {
+static int qbuf2data (PElementData data, PElementLen len) {
 	struct qbuf *qp;
 	int i, cc;
 
@@ -307,8 +287,6 @@ leave:
 	Byteno += cc;
 	return cc;
 }
-
-/*  */
 
 #ifdef DEBUG
 int

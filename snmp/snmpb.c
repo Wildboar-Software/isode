@@ -31,6 +31,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/
 
 
 #include <stdio.h>
+#include <string.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "tailor.h"
@@ -49,8 +50,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/
 #define	MAXBOUNDS	10
 #define	MINBOUNDS	 3
 
-/*  */
-
 /* TIMING INFORMATION */
 static	long	timeout;
 static	u_long	timenow;
@@ -59,11 +58,6 @@ static	long	timemax;
 static	int	timelap;
 static	int	timelap2;
 static  int     RTTperthread = MAXTIME;
-
-static int  wait_for_action (), new_thread (), next_thread (),
-            bulk2_aux (), new_bound ();
-static  print_bulk (), free_thread (), free_request (),
-        free_bound (), push_requests ();
 
 /* BINDING INFORMATION (results) */
 struct binding {
@@ -170,6 +164,12 @@ struct request {
 #define	r_curinvokes  r_invoke.i_curinvokes
 };
 
+static int  wait_for_action (int sd, PS ps), new_thread (PS ps, struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop), next_thread (struct thread *t, PS ps, int next),
+            bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBindList *vb, char *community), new_bound (char *community, OID start, OID stop);
+static  void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, int partial), free_thread (struct thread *t), free_request (struct request *r),
+        free_bound (struct bound *b);
+static int push_requests (PS ps, char *community, int onemore);
+
 static struct request rque;	/* active request list */
 static struct request *RHead = &rque;
 
@@ -182,10 +182,8 @@ static	int	dedrequests = 0;
 
 static	int	boundlimit = MAXBOUNDS;
 
-
 /* MISCELLANEOUS INFORMATION */
 static OID	oid_median (), oid_copy ();
-
 
 extern	int	debug;
 extern	int	watch;
@@ -200,12 +198,7 @@ char   *snmp_error ();
    support...
  */
 
-bulk1 (ps, sd, vb, community)
-PS	ps;
-int	sd;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-{
+void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 	int	    backoff,
 			rows;
 	struct thread *t;
@@ -367,7 +360,6 @@ char   *community;
 losing:
 		;
 		advise (NULLCP, "aborting bulk retrieval...");
-
 		while ((t = THead -> t_forw) != THead)
 			free_thread (t);
 	}
@@ -395,12 +387,7 @@ losing:
 	print_bulk (bl, vb, dedthreads);
 }
 
-/*  */
-
-static int  wait_for_action (sd, ps)
-int	sd;
-PS	ps;
-{
+static int  wait_for_action (int sd, PS ps) {
 	int	    backoff,
 			n,
 			nfds,
@@ -759,25 +746,16 @@ outta_time:
 	return backoff;
 }
 
-/*  */
-
-static	print_bulk (bl, vb, partial)
-struct binding *bl;
-struct type_SNMP_VarBindList *vb;
-int	partial;
-{
+static void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, int partial) {
 	int	    i;
-	struct binding *bv,
-			   *bz;
+	struct binding *bv, *bz;
 
 	if (partial)
 		printf ("partial results only...\n");
-
 	i = strlen ("row");
 	for (bv = bl; bv; bv = bv -> b_next) {
 		int    j;
 		char   *cp = sprintoid (bv -> b_name);
-
 		if (i < (j = strlen (cp)))
 			i = j;
 	}
@@ -789,54 +767,36 @@ int	partial;
 	for (bv = bl; bv; bv = bz) {
 		struct binding *bp,
 				   *bq;
-
 		bz = bv -> b_next;
-
 		printf ("\n%-*s", i, sprintoid (bv -> b_name));
-
 		for (bp = bv -> b_cols; bp; bp = bq) {
 			bq = bp -> b_next;
-
 			printf ("\t");
-
 			if (bp -> b_value) {
 				caddr_t	value;
 				OI	oi;
 				OS	os;
-
 				if ((oi = name2inst (bp -> b_name)) == NULL
 						|| (os = oi -> oi_type -> ot_syntax) == NULL
-						|| (*os -> os_decode) (&value, bp -> b_value) == NOTOK)
+						|| (*os -> os_decode) ((void **)&value, bp -> b_value) == NOTOK)
 					vunknown (bp -> b_value);
 				else {
-					(*os -> os_print) (value, os);
-					(*os -> os_free) (value);
+					(*os -> os_print) ((void *)value, os);
+					(*os -> os_free) ((void *)value);
 				}
-
 				pe_free (bp -> b_value);
 			} else
 				printf ("NULL");
-
 			oid_free (bp -> b_name);
-
 			free ((char *) bp);
 		}
-
 		oid_free (bv -> b_name);
-
 		free ((char *) bv);
 	}
 	printf ("\n");
 }
 
-/*  */
-
-static struct type_SNMP_Message *new_message (arg, vb, community, next)
-OID	arg;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-int	next;
-{
+static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindList *vb, char *community, int next) {
 	struct type_SNMP_Message *msg;
 	struct type_SNMP_PDUs *pdu;
 	struct type_SNMP_PDU *parm;
@@ -844,124 +804,80 @@ int	next;
 
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	msg -> version = int_SNMP_version_version__1;
-
 	if ((msg -> community = str2qb (community, strlen (community), 1)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
 		adios (NULLCP, "out of memory");
 	msg -> data = pdu;
-
 	pdu -> offset = next ? type_SNMP_PDUs_get__next__request
 					: type_SNMP_PDUs_get__request;
-
 	/* for now, always a PDU... */
-
 	if ((parm = (struct type_SNMP_PDU *) calloc (1, sizeof *parm)) == NULL)
 		adios (NULLCP, "out of memory");
 	pdu -> un.get__request = parm;
-
 	for (vp = &parm -> variable__bindings; vb; vb = vb -> next) {
 		struct type_SNMP_VarBindList *bind;
 		struct type_SNMP_VarBind *v;
-
 		if ((bind = (struct type_SNMP_VarBindList *) calloc (1, sizeof *bind))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		*vp = bind, vp = &bind -> next;
-
 		if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v)) == NULL)
 			adios (NULLCP, "out of memory");
 		bind -> VarBind = v;
-
 		v -> name = oid_copy (arg);
 		bcopy ((char *) vb -> VarBind -> name -> oid_elements,
 			   (char *) v -> name -> oid_elements,
 			   vb -> VarBind -> name -> oid_nelem
 			   * sizeof *v -> name -> oid_elements);
-
 		if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 				== NULL)
 			adios (NULLCP, "out of memory");
 	}
-
 	return msg;
 }
 
-/*    THREADS */
-
-static int  new_thread (ps, vb, community, start, stop)
-PS	ps;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-OID	start,
-	stop;
-{
+static int new_thread (PS ps, struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop) {
 	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
 	if (t == NULL)
 		adios (NULLCP, "new_thread: out of memory");
-
 	t -> t_rid = last_id;
 	t -> t_mid = (last_id += MAXSPACE);
-
 	t -> t_lo = oid_copy (start);
 	t -> t_arg = oid_copy (start);
 	t -> t_hi = oid_copy (stop);
-
 	t -> t_msg = new_message (t -> t_arg, vb, community, 1);
-
 	if (once_only == 0) {
 		THead -> t_forw = THead -> t_back = THead;
 		RHead -> r_forw = RHead -> r_back = RHead;
 		once_only++;
 	}
-
 	insque (t, THead -> t_back);
-
 	curthreads++;
 	tothreads++;
-
 	return next_thread (t, ps, 1);
 }
 
-/*  */
-
-static int  new_string (ps, vb, community, bp)
-PS	ps;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-struct binding *bp;
-{
+static int  new_string (PS ps, struct type_SNMP_VarBindList *vb, char *community, struct binding *bp) {
 	struct thread *t;
 
 	t = (struct thread *) calloc (1, sizeof *t);
 	if (t == NULL)
 		adios (NULLCP, "new_thread: out of memory");
-
 	t -> t_rid = last_id;
 	t -> t_mid = (last_id += MAXSPACE);
-
 	t -> t_binding = bp;
-
 	t -> t_msg = new_message (bp -> b_cols -> b_name, vb, community, 0);
-
 	insque (t, THead -> t_back);
-
 	curthreads++;
 	tothreads++;
-
 	return next_thread (t, ps, 0);
 }
 
-/*  */
-
-static	free_thread (t)
-struct thread *t;
-{
+static void free_thread (struct thread *t) {
 	if (debug && t -> t_lo) {
 		fprintf (stderr, "thread from %s to ", oid2ode (t -> t_lo));
 		fprintf (stderr, "%s did %d get-nexts\n", oid2ode (t -> t_hi),
@@ -970,44 +886,30 @@ struct thread *t;
 	curthreads--;
 	if (t -> t_gns <= 1)
 		nilthreads++;
-
 	if (t -> t_pe)
 		pe_free (t -> t_pe);
-
 	oid_free (t -> t_lo);
 	oid_free (t -> t_arg);
 	oid_free (t -> t_hi);
-
 	if (t -> t_msg)
 		free_SNMP_Message (t -> t_msg);
-
 	remque (t);
 	free ((char *) t);
 }
 
-/*  */
-
-static int  next_thread (t, ps, next)
-struct thread *t;
-PS	ps;
-int	next;
-{
+static int next_thread (struct thread *t, PS ps, int next) {
 	if (++t -> t_rid >= t -> t_mid)
 		t -> t_rid = t -> t_mid - MAXSPACE;
-
 	t -> t_info = 0;
 	t -> t_msg -> data -> offset =
 		next ? type_SNMP_PDUs_get__next__request : type_SNMP_PDUs_get__request;
 	t -> t_msg -> data -> un.get__response -> request__id = t -> t_rid;
-
 	if (t -> t_pe)
 		pe_free (t -> t_pe), t -> t_pe = NULL;
-
 	if (encode_SNMP_Message (&t -> t_pe, 1, 0, NULLCP, t -> t_msg) == NOTOK) {
 		advise (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 		return NOTOK;
 	}
-
 	if (pe2ps (ps, t -> t_pe) == NOTOK) {
 		advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 		return NOTOK;
@@ -1018,22 +920,13 @@ int	next;
 		fflush (stdout);
 	}
 	totreqs++;
-
 	t -> t_lastime = timenow;
 	t -> t_curinvokes = curthreads ? curthreads : 1;
 	t -> t_gns++;
-
 	return OK;
 }
 
-/*    BULK2 */
-
-bulk2 (ps, sd, vb, community)
-PS	ps;
-int	sd;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-{
+void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 	int	    backoff,
 			evalreq,
 			rows;
@@ -1048,54 +941,40 @@ char   *community;
 
 	timeout = 2 * 1000L;
 	timemin = timemax = timeout;
-
 	currequests = maxrequests = totbounds = maxbounds = dedrequests = 0;
 	nilbounds = 0;
-
 	threadlimit = MAXTHREADS;
 	boundlimit = MAXBOUNDS;
 	RTTperthread = MAXTIME;
-
 	totreqs = totretr = totrsps = totdups = 0;
-
 	gettimeofday (&tvs, (struct timezone *) 0);
 	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
-
 	a = oid_copy (arg = vb -> VarBind -> name);
 	a -> oid_elements[a -> oid_nelem++] = 127;
 	new_bound (community, arg, a);
-
 	b = oid_copy (arg);
 	b -> oid_elements[b -> oid_nelem++] = 192;
 	new_bound (community, a, b);
-
 	a -> oid_elements[(--a -> oid_nelem) - 1]++;
 	new_bound (community, b, a);
-
 	oid_free (a);
 	oid_free (b);
-
 	if (push_requests (ps, community, 0) == NOTOK)
 		goto losing;
-
 	bp = &bl, bl = NULL, rows = 0;
 	for (timelap = 0; RHead -> r_forw != RHead; timelap++) {
 		struct request *u;
-
 		if ((backoff = wait_for_action (sd, ps)) == NOTOK)
 			goto losing;
-
 		for (r = RHead -> r_forw; r != RHead; r = u) {
 			struct bound  *br,
 					   *bz,
 					   **bb;
 			struct type_SNMP_VarBindList  *vr,
 					   **vv;
-
 			u = r -> r_forw;
 			if (r -> r_info < 1)
 				continue;
-
 			bb = &r -> r_bounds;
 			vv = &r -> r_msg -> data -> un.get__request -> variable__bindings;
 			evalreq = 0;
@@ -1103,30 +982,25 @@ char   *community;
 				struct binding *bv,
 						   *bv2;
 				struct OIDentifier oids;
-
 				if ((vr = *vv) == NULL) {
 					advise (NULLCP,
 							"missing variable in response, continuing");
 					dedrequests++;
-
 					do {
 						bz = br -> r_next;
 						free_bound (br);
 						r -> r_nbound--;
 					} while (br = bz);
 					*bb = NULL;
-
 					break;
 				}
 
 				if (oid_cmp (br -> r_arg, b = vr -> VarBind -> name) >= 0) {
 					char    buffer[BUFSIZ];
-
 					strcpy (buffer, oid2ode (br -> r_arg));
 					advise (NULLCP,
 							"agent botched get-next (%s -> %s), continuing",
 							oid2ode (b));
-
 					dedrequests++;
 					goto drop_bound;
 				}
@@ -1139,31 +1013,24 @@ drop_bound:
 					*bb = br -> r_next;
 					free_bound (br);
 					r -> r_nbound--;
-
 					*vv = vr -> next;
 					vr -> next = NULL;
 					free_SNMP_VarBindList (vr);
-
 					continue;
 				}
 				evalreq++;
 				oid_free (br -> r_arg);
 				br -> r_arg = oid_copy (b);
-
 				oids.oid_nelem = b -> oid_nelem - arg -> oid_nelem;
 				oids.oid_elements = b -> oid_elements + arg -> oid_nelem;
-
 				if ((bv = (struct binding *) calloc (1, sizeof *bv)) == NULL)
 					adios (NULLCP, "out of memory");
 				*bp = bv, bp = &bv -> b_next;
-
 				bv -> b_name = oid_copy (&oids);
 				rows++;
-
 				if ((bv2 = (struct binding *) calloc (1, sizeof *bv2)) == NULL)
 					adios (NULLCP, "out of memory");
 				bv -> b_cols = bv2;
-
 				bv2 -> b_name = oid_copy (b);
 				bv2 -> b_value = vr -> VarBind -> value;
 				if ((vr -> VarBind -> value = pe_alloc (PE_CLASS_UNIV,
@@ -1171,12 +1038,10 @@ drop_bound:
 														PE_PRIM_NULL))
 						== NULLPE)
 					adios (NULLCP, "out of memory");
-
 				bb = &br -> r_next, vv = &vr -> next;
 			}
 			if (vr = *vv) {
 				advise (NULLCP, "too many variables in response");
-
 				free_SNMP_VarBindList (vr);
 				*vv = NULL;
 			}
@@ -1194,7 +1059,6 @@ drop_bound:
 losing:
 		;
 		advise (NULLCP, "aborting bulk retrieval...");
-
 		while ((r = RHead -> r_forw) != RHead)
 			free_request (r);
 	}
@@ -1224,21 +1088,10 @@ losing:
 	advise (NULLCP, "timeouts: min=%d.%03d fin=%d.%03d max=%d.%03d seconds",
 			timemin / 1000, timemin % 1000, timeout / 1000, timeout % 1000,
 			timemax / 1000, timemax % 1000);
-
 	print_bulk (bl, vb, dedrequests || dedthreads);
 }
 
-/*  */
-
-/*  */
-
-static int  bulk2_aux (ps, sd, bl, vb, community)
-PS	ps;
-int	sd;
-struct binding *bl;
-struct type_SNMP_VarBindList *vb;
-char   *community;
-{
+static int bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBindList *vb, char *community) {
 	int	    backoff;
 	struct thread *t;
 
@@ -1247,7 +1100,6 @@ char   *community;
 
 	if (bl == NULL || (vb = vb -> next) == NULL)
 		return OK;
-
 	while (bl)
 		if (curthreads < threadlimit) {
 			if (new_string (ps, vb, community, bl) == NOTOK)
@@ -1255,25 +1107,19 @@ char   *community;
 			bl = bl -> b_next;
 		} else
 			break;
-
 	for (; THead -> t_forw != THead; timelap2++) {
 		struct thread *u;
-
 		if ((backoff = wait_for_action (sd, ps)) == NOTOK)
 			break;
-
 		for (t = THead -> t_forw; t != THead; t = u) {
 			struct binding  *bv,
 					   **bz;
 			struct type_SNMP_VarBindList *vp;
-
 			u = t -> t_forw;
 			if (!t -> t_info)
 				continue;
-
 			bv = t -> t_binding;
 			bz = &bv -> b_cols -> b_next;
-
 			for (vp = t -> t_msg -> data -> un.get__response
 					  -> variable__bindings;
 					vp;
@@ -1290,14 +1136,12 @@ char   *community;
 						== NULLPE)
 					adios (NULLCP, "out of memory");
 			}
-
 			if (curthreads < threadlimit && !backoff && bl) {
 				if (new_string (ps, vb, community, bl) == NOTOK)
 					goto losing;
 				bl = bl -> b_next;
 				backoff = 1;
 			}
-
 			free_thread (t);
 			if (bl) {
 				if (new_string (ps, vb, community, bl) == NOTOK)
@@ -1313,67 +1157,42 @@ losing:
 		while ((t = THead -> t_forw) != THead)
 			free_thread (t);
 	}
-
 	return backoff;
 }
 
-/*    REQUESTS */
-
-static struct request *new_request (community)
-char   *community;
-{
+static struct request *new_request (char *community) {
 	struct request *r;
 
 	r = (struct request *) calloc (1, sizeof *r);
 	if (r == NULL)
 		adios (NULLCP, "new_request: out of memory");
-
 	r -> r_rid = last_id;
 	r -> r_mid = (last_id += MAXSPACE);
-
 	r -> r_info = -1;
 	r -> r_msg = new_message (NULLOID, (struct type_SNMP_VarBindList *) NULL,
 							  community, 1);
-
 	insque (r, RHead -> r_back);
-
 	currequests++;
-
 	return r;
 }
 
-/*  */
-
-static	free_request (r)
-struct request *r;
-{
-	struct bound *bp,
-			   *bq;
+static void free_request (struct request *r) {
+	struct bound *bp, *bq;
 
 	currequests--;
-
 	if (r -> r_pe)
 		pe_free (r -> r_pe);
-
 	for (bp = r -> r_bounds; bp; bp = bq) {
 		bq = bp -> r_next;
 		free_bound (bp);
 	}
-
 	if (r -> r_msg)
 		free_SNMP_Message (r -> r_msg);
-
 	remque (r);
 	free ((char *) r);
 }
 
-/*  */
-
-static int  new_bound (community, start, stop)
-char   *community;
-OID	start,
-	stop;
-{
+static int  new_bound (char *community, OID start, OID stop) {
 	struct request *r;
 	struct bound *b;
 	struct type_SNMP_VarBindList *vb;
@@ -1387,62 +1206,43 @@ OID	start,
 
 	if ((r = RHead -> r_forw) == RHead)
 		r = new_request (community);
-
 	if ((b = (struct bound *) calloc (1, sizeof *b)) == NULL)
 		adios (NULLCP, "new_bound: out of memory");
 	b -> r_next = r -> r_bounds, r -> r_bounds = b;
-
 	b -> b_gns = 0;
 	b -> r_lo = oid_copy (start);
 	b -> r_arg = oid_copy (start);
 	b -> r_hi = oid_copy (stop);
 	totbounds++;
-
 	if ((vb = (struct type_SNMP_VarBindList *) calloc (1, sizeof *vb)) == NULL)
 		adios (NULLCP, "new_bound: out of memory");
 	vb -> next = r -> r_msg -> data -> un.get__request -> variable__bindings,
 		  r -> r_msg -> data -> un.get__request -> variable__bindings = vb;
-
 	if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v)) == NULL)
 		adios (NULLCP, "new_bound: out of memory");
 	vb -> VarBind = v;
-
 	v -> name = oid_copy (start);
 	if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 			== NULL)
 		adios (NULLCP, "new_bound: out of memory");
-
 	r -> r_nbound++;
 }
 
-/*  */
-
-static	free_bound (b)
-struct bound *b;
-{
+static void free_bound (struct bound *b) {
 	if (debug && b -> r_lo)  {
 		fprintf (stderr, "%d get-nexts on bound: %s to",
 				 b -> b_gns, oid2ode (b -> r_lo));
 		fprintf (stderr, " %s\n", oid2ode (b -> r_hi));
 	}
-
 	oid_free (b -> r_lo);
 	oid_free (b -> r_arg);
 	oid_free (b -> r_hi);
-
 	if (b -> b_gns <= 1)
 		nilbounds++;
-
 	free ((char *) b);
 }
 
-/*  */
-
-static	push_requests (ps, community, onemore)
-PS	ps;
-char   *community;
-int	onemore;
-{
+static int push_requests (PS ps, char *community, int onemore) {
 	int    nbound,
 		   nrequest,
 		   tbound;
@@ -1467,7 +1267,6 @@ int	onemore;
 			continue;
 		}
 		nrequest++;
-
 		if (*bp = r -> r_bounds) {
 			for (bz = *bp; bz; bz = bz -> r_next)
 				if (bz -> r_next == NULL)
@@ -1476,22 +1275,18 @@ int	onemore;
 			r -> r_bounds = NULL;
 			nbound += r -> r_nbound;
 		}
-
 		if (*vp = r -> r_msg -> data -> un.get__request -> variable__bindings) {
 			for (vz = *vp; vz; vz = vz -> next)
 				if (vz -> next == NULL)
 					vp = &vz -> next;
-
 			r -> r_msg -> data -> un.get__request -> variable__bindings = NULL;
 		}
-
 		r -> r_nbound = 0;
 	}
 	if ((tbound += nbound) > maxbounds)
 		maxbounds = tbound;
 	if (nrequest == 0)
 		return OK;
-
 	if ((new = (nbound + (boundlimit - 1)) / boundlimit - nrequest) <= 0
 			&& onemore)
 		new = 1;
@@ -1499,29 +1294,22 @@ int	onemore;
 		new_request (community);
 	if ((new = nrequest * boundlimit) > (wen = nbound << 1))
 		new = wen;
-
 	for (new -= nbound, bn = b; (new > 0) && bn; new--, bn = bn -> r_next) {
 		OID	mid;
-
 		if ((mid = oid_median (bn -> r_arg, bn -> r_hi)) == NULLOID)
 			continue;
-
 		if ((bz = (struct bound *) calloc (1, sizeof *bz)) == NULL)
 			adios (NULLCP, "push_requests: out of memory");
 		*bp = bz, bp = &bz -> r_next;
-
 		bz -> r_lo = oid_copy (mid);
 		bz -> r_arg = oid_copy (mid);
 		bz -> r_hi = bn -> r_hi;
 		tbound++, totbounds++;
-
 		bn -> r_hi = mid;
-
 		if ((vz = (struct type_SNMP_VarBindList *) calloc (1, sizeof *vz))
 				== NULL)
 			adios (NULLCP, "push_requests: out of memory");
 		*vp = vz, vp = &vz -> next;
-
 		if ((vz -> VarBind = (struct type_SNMP_VarBind *)
 							 calloc (1, sizeof *v)) == NULL)
 			adios (NULLCP, "push_requests: out of memory");
@@ -1533,28 +1321,22 @@ int	onemore;
 	}
 	if (tbound > maxbounds)
 		maxbounds = tbound;
-
 	if (b == NULL)
 		goto send_them;
 	for (r = RHead -> r_forw; r != RHead; r = r -> r_forw) {
 		int	i;
 		struct bound **inb;
 		struct type_SNMP_VarBindList **inv;
-
 		if (!r -> r_info)
 			continue;
-
 		inb = &r -> r_bounds;
 		inv = &r -> r_msg -> data -> un.get__request -> variable__bindings;
 		for (i = boundlimit; i > 0; i--) {
 			bz = b -> r_next, vz = v -> next;
-
 			*inb = b, inb = &b -> r_next, b -> r_next = NULL;
 			*inv = v, inv = &v -> next, v -> next = NULL;
-
 			b -> b_gns++;
 			r -> r_nbound++;
-
 			if ((b = bz) == NULL)
 				goto send_them;
 			v = vz;
@@ -1580,7 +1362,6 @@ send_them:
 
 		if (++r -> r_rid >= r -> r_mid)
 			r -> r_rid = r -> r_mid - MAXSPACE;
-
 		r -> r_info = 0;
 		r -> r_msg -> data -> offset = type_SNMP_PDUs_get__next__request;
 		r -> r_msg -> data -> un.get__response -> request__id = r -> r_rid;
@@ -1593,7 +1374,6 @@ send_them:
 			advise (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 			return NOTOK;
 		}
-
 		if (pe2ps (ps, r -> r_pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			return NOTOK;
@@ -1604,7 +1384,6 @@ send_them:
 			fflush (stdout);
 		}
 		totreqs++;
-
 		r -> r_lastime = timenow;
 		r -> r_curinvokes = currequests ? currequests : 1;
 	}
@@ -1612,12 +1391,7 @@ send_them:
 	return OK;
 }
 
-/*    OIDS */
-
-static OID  oid_median (a, b)
-OID	a,
-	b;
-{
+static OID oid_median (OID a, OID b) {
 	int    i;
 	unsigned int *ap,
 			 *bp;
@@ -1625,7 +1399,6 @@ OID	a,
 
 	if (oid_cmp (a, b) >= 0) {
 		char    buffer[BUFSIZ];
-
 		strcpy (buffer, sprintoid (a));
 		adios (NULLCP, "oid_median(%s <= %s)", buffer, sprintoid (b));
 	}
@@ -1641,16 +1414,13 @@ OID	a,
 			c -> oid_elements[(c -> oid_nelem = i) - 1] = *bp >> 1;
 			break;
 		}
-
 		if (*ap == *bp)
 			continue;
-
 		c = oid_copy (a);
 		if ((c -> oid_elements[(c -> oid_nelem = i) - 1] =
 					*ap + ((*bp - *ap) >> 1))
 				== *ap) {
 			bp = &c -> oid_elements[c -> oid_nelem++];
-
 			if (a -> oid_nelem <= i)
 				*bp = 127;
 			else {
@@ -1711,24 +1481,16 @@ losing:
 	return c;
 }
 
-/*  */
-
-static OID  oid_copy (a)
-OID	a;
-{
+static OID oid_copy (OID a) {
 	OID	    b;
-
 	if ((b = oid_cpy (a)) == NULL)
 		adios (NULLCP, "oid_copy: out of memory");
-
 	return b;
 }
 
 #else
 
-/*    DUMMY */
-
-bulk_dummy () {}
+void bulk_dummy (void) {}
 
 #endif
 

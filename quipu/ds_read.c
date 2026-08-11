@@ -38,8 +38,8 @@ extern LLog * log_dsap;
 Attr_Sequence eis_select ();
 Attr_Sequence dsa_eis_select ();
 extern Attr_Sequence entry_find_type();
-static cant_use_cache();
-static attribute_not_cached (Entry, DN, OID, DN, int, char);
+static int cant_use_cache(Entry ptr, DN dn, EntryInfoSelection eis, DN target);
+static int attribute_not_cached (Entry, DN, OID, DN, int, char);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;
@@ -232,8 +232,7 @@ out:
 
 }
 
-static
-cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
+static int cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
 	Attr_Sequence as;
 	char dfltacl = FALSE;
 
@@ -284,8 +283,7 @@ cant_use_cache (Entry ptr, DN dn, EntryInfoSelection eis, DN target) {
 	return FALSE;
 }
 
-static
-attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dfltacl) {
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dfltacl) {
 	struct acl_attr * aa;
 	struct oid_seq * oidptr;
 
@@ -307,9 +305,7 @@ attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dflta
 
 }
 
-
-static Attr_Sequence
-dsa_control_info (void) {
+static Attr_Sequence dsa_control_info (void) {
 	extern int slave_edbs;
 	extern int master_edbs;
 	extern int local_master_size;
@@ -333,59 +329,41 @@ dsa_control_info (void) {
 	return (as);
 }
 
-int
-dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
-
+int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
 	if ((arg->rda_eis.eis_allattributes) ||
 			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
-
 	if ((arg->rda_eis.eis_select == NULLATTR)
 			|| (arg->rda_eis.eis_select->attr_link != NULLATTR))
 		return FALSE;
-
 	if (AttrT_cmp (at_control,arg->rda_eis.eis_select->attr_type) != 0)
 		return FALSE;
-
 	if ((result->rdr_entry.ent_attr = dsa_control_info()) == NULLATTR)
 		return FALSE;
-
 	/* Fiddle DN - for DUA caching !!! */
 	result->rdr_entry.ent_dn = dn_cpy (mydsadn);
-
 	result->rdr_entry.ent_iscopy = FALSE;
 	result->rdr_entry.ent_age = (time_t) 0;
 	result->rdr_entry.ent_next = NULLENTRYINFO;
 	result->rdr_common.cr_requestor = NULLDN;
 	result->rdr_common.cr_aliasdereferenced = FALSE;
-
 	return TRUE;
 }
 
-
-
-
-int
-need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
+int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
 	Attr_Sequence as;
 
 	if (quipu_ctx_supported (eptr) <= 2)
 		return FALSE;
-
 	if (!quipu_version_7 (eptr))
 		return FALSE;
-
 	if ((arg->rda_common.ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) != 0)
 		return TRUE;
-
 	if (arg->rda_eis.eis_allattributes)
 		return FALSE;
-
 	for (as = arg->rda_eis.eis_select; as!= NULLATTR; as=as->attr_link) {
 		if (check_avs_schema (as->attr_type, eptr->e_oc) != OK)
 			return TRUE;
 	}
-
 	return FALSE;
 }
-

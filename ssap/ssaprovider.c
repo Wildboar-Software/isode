@@ -38,7 +38,7 @@ static int  once_only = 0;
 static struct ssapblk ssapque;
 static struct ssapblk *SHead = &ssapque;
 
-static int  SReadRequestAux ();
+static int  SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx);
 
 static void TDATAser (int sd, struct TSAPdata *tx);
 static void TDISCser (int sd, struct TSAPdisconnect *td);
@@ -68,18 +68,12 @@ int SSendRequest (
 		return ssaplose (si, SC_PARAMETER, NULLCP,
 						 "illegal value for SSDU length (%d)", cc);
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
-
 	uv -> uv_base = data, uv -> uv_len = cc, uv++;
 	uv -> uv_base = NULL;
-
 	result = SDataRequestAux (sb, SPDU_DT, uvs, begin, end, si);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -97,19 +91,12 @@ int SWriteRequest (
 
 	missingP (uv);
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
-
 	result = SDataRequestAux (sb, typed ? SPDU_TD : SPDU_DT, uv, 1, 1, si);
-
 	sigiomask (smask);
-
 	return result;
 }
-
-/*  */
 
 #define	NSPUV	12	/* really should be MSG_MAXIOVLEN - 4 */
 
@@ -261,9 +248,7 @@ int SReadRequest (
 
 	missingP (sx);
 	missingP (si);
-
 	smask = sigioblock ();
-
 	if ((sb = findsblk (sd)) == NULL) {
 		sigiomask (smask);
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid session descriptor");
@@ -276,15 +261,10 @@ int SReadRequest (
 		sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "session descriptor finishing");
 	}
-
 	result = SReadRequestAux (sb, sx, secs, si, 0, NULLTX);
-
 	sigiomask (smask);
-
 	return result;
 }
-
-/*  */
 
 static int SReadRequestAux (
 	struct ssapblk *sb,
@@ -1243,38 +1223,28 @@ int SDoCollideAux (
 		  ("collide: local<%d,%ld,%s> remote<%d,%ld,%s>",
 		   localop, localssn, init ? "initiator" : "responder",
 		   remoteop, remotessn, init ? "responder" : "initiator"));
-
 	if (localop == SYNC_DISC)
 		return OK;
-
 	if (remoteop == SYNC_DISC)
 		return NOTOK;
-
 	if (localop == SYNC_INTR)
 		return OK;
-
 	if (remoteop == SYNC_INTR)
 		return NOTOK;
-
 	if (localop == SYNC_ABANDON) {
 		if (remoteop != SYNC_ABANDON)
 			return OK;
-
 		return (init ? OK : NOTOK);
 	} else if (remoteop == SYNC_ABANDON)
 		return NOTOK;
-
 	if (localop == SYNC_SET) {
 		if (remoteop != SYNC_SET)
 			return OK;
-
 		return (init ? OK : NOTOK);
 	} else if (remoteop == SYNC_SET)
 		return NOTOK;
-
 	if (localssn == remotessn)
 		return (init ? OK : NOTOK);
-
 	return (localssn < remotessn ? OK : NOTOK);
 }
 
@@ -1306,11 +1276,8 @@ int SSetIndications (
 		missingP (abort);
 	}
 	_iosignals_set = 1;
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
-
 	if (sb -> sb_DataIndication = data)
 		sb -> sb_flags |= SB_ASYN;
 	else
@@ -1329,9 +1296,7 @@ int SSetIndications (
 		else
 			return ts2sslose (si, "TSetIndications", td);
 	}
-
 	sigiomask (smask);
-
 	return OK;
 }
 
@@ -1401,7 +1366,6 @@ struct ssapkt *sb2spkt (
 
 		return s;
 	}
-
 	if (sb -> sb_spdu) {	/* get previous category 0 SPDU */
 		SLOG (ssap_log, LLOG_EXCEPTIONS, NULLCP, ("returning category 0 SPDU previously buffered"));
 		s = sb -> sb_spdu;
@@ -1409,7 +1373,6 @@ struct ssapkt *sb2spkt (
 
 		return s;
 	}
-
 	if (ty) {
 		*tx = *ty;		/* struct copy */
 		tx -> tx_qbuf.qb_forw -> qb_back = tx -> tx_qbuf.qb_back -> qb_forw = &tx -> tx_qbuf;
@@ -1423,9 +1386,7 @@ struct ssapkt *sb2spkt (
 
 		return NULL;
 	}
-
 	DLOG (ssap_log, LLOG_DEBUG, ("read TSDU, size %d", tx -> tx_cc));
-
 	if ((s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, (cc = 1, &cc))) == NULL || s -> s_errno != SC_ACCEPT) {
 		spktlose (sb -> sb_fd, si, s ? s -> s_errno : SC_CONGEST, NULLCP, NULLCP);
 bad1:
@@ -1438,7 +1399,6 @@ bad1:
 	if (tx -> tx_expedited)
 		s -> s_mask |= SMASK_SPDU_EXPD;
 	tx -> tx_cc -= cc;
-
 	switch (s -> s_code) {
 	case SPDU_GT: 		/* category 0 SPDUs */
 	case SPDU_PT:
@@ -1573,8 +1533,6 @@ bad2:
 	return s;
 }
 
-/*  */
-
 static void TDATAser (int sd, struct TSAPdata *tx) {
 	IFP	    abort;
 	struct ssapblk *sb;
@@ -1631,8 +1589,6 @@ static void TDATAser (int sd, struct TSAPdata *tx) {
 			break;
 	}
 }
-
-/*  */
 
 static void TDISCser (int sd, struct TSAPdisconnect *td) {
 	IFP	    abort;
@@ -1701,7 +1657,7 @@ int ts2sslose (
 
 /*    INTERNAL */
 
-struct ssapblk *newsblk() {
+struct ssapblk *newsblk(void) {
 	struct ssapblk *sb;
 
 	sb = (struct ssapblk   *) calloc (1, sizeof *sb);
@@ -1759,17 +1715,13 @@ void freesblk (struct ssapblk *sb) {
 	free ((char *) sb);
 }
 
-/*  */
-
 struct ssapblk *findsblk (int sd) {
 	struct ssapblk *sb;
 
 	if (once_only == 0)
 		return NULL;
-
 	for (sb = SHead -> sb_forw; sb != SHead; sb = sb -> sb_forw)
 		if (sb -> sb_fd == sd)
 			return sb;
-
 	return NULL;
 }

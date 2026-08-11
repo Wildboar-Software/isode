@@ -543,9 +543,7 @@ out:
 	return NULL;
 }
 
-/*  */
-
-init_udp () {
+void init_udp (void) {
 	OT	    ot;
 
 #ifdef	udpInDatagrams

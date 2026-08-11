@@ -29,11 +29,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmp-g.c,v 9.0 1992/06
 #include "mib.h"
 #include "snmp-g.h"
 
-static int  set_hint ();
+static void set_hint (OT ot, int hi);
 
 /*    SNMP GROUP */
 
-init_snmp () {
+void init_snmp (void) {
 	OT	    ot;
 
 	bzero ((char *) &snmpstat, sizeof snmpstat);
@@ -118,19 +118,13 @@ init_snmp () {
 		adios (NULLCP, "unable to resolve agentAction");
 }
 
-/*  */
-
-static int  set_hint (ot, hi)
-OT	ot;
-int	hi;
-{
+static void set_hint (OT ot, int hi) {
 	char   *name;
 	OS	    os;
 
 	if ((os = ot -> ot_syntax) == NULL)
 		adios (NULLCP, "no syntax defined for object \"%s\"", ot -> ot_text);
 	name = os -> os_name;
-
 	add_syntax (ot -> ot_text, os -> os_encode, os -> os_decode,
 				os -> os_free, os -> os_parse, os -> os_print);
 	if ((os = text2syn (ot -> ot_text)) == NULL)

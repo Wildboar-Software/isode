@@ -557,8 +557,8 @@ struct tab *lookup(char *cmd) {
  * _getline - a hacked up version of fgets to ignore TELNET escape codes.
  */
 static char *_getline(char *s, int n, FILE *iop) {
-	register c;
-	register char *cs;
+	int c;
+	char *cs;
 
 	cs = s;
 	while (--n > 0 && (c = getc(iop)) >= 0) {
@@ -592,7 +592,7 @@ static SFD toolong(int sd) {
 	dologout(1);
 }
 
-yylex()
+int yylex()
 {
 	static char cbuf[512];
 	static int cpos, state;

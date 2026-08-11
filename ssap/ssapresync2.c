@@ -31,34 +31,25 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync2.c,v 9.0 19
 #include <signal.h>
 #include "spkt.h"
 
-static int SReSyncResponseAux ();
+static int SReSyncResponseAux (struct ssapblk *sb, long int ssn, int settings, char *data, int cc, struct SSAPindication *si);
 
 /*    S-RESYNCHRONIZE.RESPONSE */
 
-int
-SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
+int SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapRsig (sb, sd);
 	toomuchP (sb, data, cc, SN_SIZE, "resync");
-
 	result = SReSyncResponseAux (sb, ssn, settings, data, cc, si);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-/*  */
-
-static int
-SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
+static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_RESYNC))
@@ -67,16 +58,13 @@ SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int 
 	if (!(sb -> sb_flags & SB_RA))
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "no resync in progress");
-
 	switch (sb -> sb_rs) {
 	case SYNC_RESTART:
 		ssn = sb -> sb_rsn;
 		break;
-
 	case SYNC_ABANDON:
 		ssn = sb -> sb_V_A;
 		break;
-
 	case SYNC_SET:
 		break;
 	}

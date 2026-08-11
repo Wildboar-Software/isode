@@ -82,8 +82,10 @@ static PE	name2psap ();
 static void	adios (char *, char *, ...);
 static void	advise (int, char *, char *, ...);
 static void	ts_adios (), ts_advise ();
-static void	dased (), dase_aux (), make_bind_args (),
-            arginit (), envinit ();
+static void	dased (int, char **),
+dase_aux (struct type_DASE_Query__REQ *),
+make_bind_args (struct ds_bind_arg *, struct ds_bind_arg *, struct ds_bind_error *),
+arginit (char **), envinit (void);
 static int	bind_to_dsa ();
 
 char   *dn2str ();
@@ -459,10 +461,7 @@ send_rsp:
 		dn_seq_free (dns);
 }
 
-/*  */
-
-static
-bind_to_dsa () {
+static int bind_to_dsa (void) {
 	struct ds_bind_arg ba;
 	struct ds_bind_arg br;
 	struct ds_bind_error be;
@@ -498,10 +497,7 @@ bind_to_dsa () {
 	return NOTOK;
 }
 
-/*  */
-
-static void
-make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
+static void make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -513,10 +509,7 @@ make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_e
 		strcpy (ba -> dba_passwd, passwd);
 }
 
-/*  */
-
-static DNS
-dase_interact (DNS dns, DN dn, char *s) {
+static DNS dase_interact (DNS dns, DN dn, char *s) {
 	int i;
 	struct type_DASE_Callback__REQ *req = NULL;
 	struct element_DASE_3 **dp;
@@ -845,10 +838,7 @@ static void arginit (char **vec) {
 		adios (NULLCP, "str_setup: %s", ps_error (ps -> ps_errno));
 }
 
-/*  */
-
-static
-envinit()  {
+static void envinit(void)  {
 	int     i,
 	sd;
 

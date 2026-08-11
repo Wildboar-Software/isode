@@ -52,22 +52,7 @@ char            flag_show;
 char 		key_flag;
 char		print_format;
 
-int
-read_cache (int argc, char **argv) {
-	extern char	doneget;
-
-	if (doneget)
-		return (argc);
-
-	return (read_cache_aux (argc,argv,TRUE, (CommonArgs *) 0));
-}
-
-read_cache_aux (argc, argv, ali, ca)
-int             argc;
-char          **argv;
-char 		ali;
-CommonArgs     *ca;
-{
+int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 	Entry           read_entry;
 	int             x = 1;
 	char            noread_flag = FALSE;
@@ -187,9 +172,15 @@ CommonArgs     *ca;
 	return (argc);
 }
 
+int read_cache (int argc, char **argv) {
+	extern char	doneget;
 
-int
-set_read_flags (int argc, char **argv) {
+	if (doneget)
+		return (argc);
+	return (read_cache_aux (argc,argv,TRUE, (CommonArgs *) 0));
+}
+
+int set_read_flags (int argc, char **argv) {
 	int x;
 	AttributeType at;
 	extern char allow_move;

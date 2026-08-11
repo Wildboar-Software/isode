@@ -77,7 +77,7 @@ str2prot (char *str) {
 	return (result);
 }
 
-static prot_print (ps, parm, format)
+static void prot_print (ps, parm, format)
 PS ps;
 struct protected_password *parm;
 int format;
@@ -221,20 +221,17 @@ prot_cpy (struct protected_password *parm) {
 	return (result);
 }
 
-static
-prot_free (struct protected_password *parm) {
+static void prot_free (struct protected_password *parm) {
 	if (parm->passwd != NULLCP)
 		free(parm->passwd);
 	if (parm->time1 != NULLCP)
 		free(parm->time1);
 	if (parm->time2 != NULLCP)
 		free(parm->time2);
-
 	free((char *) parm);
 }
 
-int
-protected_password_syntax (void) {
+void protected_password_syntax (void) {
 	add_attribute_syntax ("ProtectedPassword",
 						  prot_enc,	prot_dec,
 						  str2prot,	prot_print,

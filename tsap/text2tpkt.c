@@ -33,19 +33,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/text2tpkt.c,v 9.0 1992
 #include "logger.h"
 #include "internet.h"
 
-/*  */
-
-char *fgets ();
-static	type_id ();
-static	type_data ();
-
-/*  */
+static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
+static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
 
 #define	TPKT_TYPE(e)	 ll_printf (lp, "%sCODE/ %s\n", rw, e)
 
-
-void
-tpkt2text (LLog *lp, struct tsapkt *t, int isread) {
+void tpkt2text (LLog *lp, struct tsapkt *t, int isread) {
 	char   *rw = isread ? "<--- " : "---> ";
 	struct udvec *uv;
 
@@ -109,20 +102,13 @@ tpkt2text (LLog *lp, struct tsapkt *t, int isread) {
 	ll_sync (lp);
 }
 
-/*  */
-
-static
-type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
+static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
-
 	buffer[explode (buffer, (u_char *) selector, len)] = 0;
-
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-
-static
-type_data (LLog *lp, char *type, char *rw, int len, char *data) {
+static void type_data (LLog *lp, char *type, char *rw, int len, char *data) {
 	char    buffer[BUFSIZ];
 	char *cp;
 	int i;
@@ -140,10 +126,7 @@ type_data (LLog *lp, char *type, char *rw, int len, char *data) {
 	ll_printf (lp, "\n");
 }
 
-/*  */
-
-void
-text2tpkt (struct tsapkt *t) {
+void text2tpkt (struct tsapkt *t) {
 	char buffer[80],                            /* Working input buffer */
 		 *bptr;                                 /* Pointer to our buffer */
 	int data;

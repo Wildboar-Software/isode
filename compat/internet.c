@@ -294,12 +294,7 @@ struct sockaddr_in *sock;
 	return result;
 }
 
-/*  */
-
-close_tcp_socket (fd)
-int	fd;
-{
-
+int close_tcp_socket (int fd) {
 #ifdef ULTRIX_X25_DEMSA
 	if( fd >= our_TABLE_SIZE ) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, "close_tcp_socket",
@@ -311,24 +306,19 @@ int	fd;
 			  ("list_of_conn_desc[fd].TCP_IP_OR_X25_SOCKET=!our_TCP_IP_SOCKET"));
 		return NOTOK;
 	}
-
 	list_of_conn_desc[fd].TCP_IP_OR_X25_SOCKET = NOTOK;
 	list_of_conn_desc[fd].descriptor           = NOTOK;
-
 	X25RegisterFD(fd,NULL,NULL,NULL,NULL);
 #endif
-
 #ifdef	never_do_this_if_from_join_tcp_client
 	shutdown (fd, 2);
 #endif
-
 	return (close (fd));
 }
 
 #endif
 
 /*    AT&T UNIX: 5r3 using TLI */
-
 
 /*    AT&T UNIX: 5 with EXOS 8044 TCP/IP card */
 

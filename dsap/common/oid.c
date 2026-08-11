@@ -40,8 +40,8 @@ extern LLog * log_dsap;
 FILE * f_table;
 
 static char * get_entry (void);
-static add_entry (char *newname, int towho);
-char * get_oid(char *str);
+static int add_entry (char *newname, int towho);
+char *get_oid(char *str);
 static char * name2gen (char *nodename);
 int add_entry_aux (char *a, caddr_t b, int c, char *d);
 
@@ -208,9 +208,7 @@ int add_entry_aux (char *a, caddr_t b, int c, char *d)
 	return TRUE;
 }
 
-
-static
-add_entry (char *newname, int towho) {
+static int add_entry (char *newname, int towho) {
 	char *nptr, *ptr, *sep;
 	OID oid;
 	oid_table * Current;

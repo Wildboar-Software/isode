@@ -638,9 +638,7 @@ check_dgram_socket (int fd) {
 #ifdef	TCP
 #include "isoaddrs.h"
 
-
-static
-inetprint (struct sockaddr_in *sin, char *bp) {
+static void inetprint (struct sockaddr_in *sin, char *bp) {
 	sprintf (bp, "Internet=%s+%d+%d", inet_ntoa (sin -> sin_addr),
 			 (int) ntohs (sin -> sin_port), NA_TSET_UDP);
 }

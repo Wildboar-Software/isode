@@ -81,7 +81,7 @@ static  char *myname;
 void    adios (char *, char *, ...);
 void    advise (int, char *, char *, ...);
 void    mk_dsa_tmp_dir();
-static  envinit (), setdsauid();
+static  void envinit (void), setdsauid(void);
 SFD attempt_restart();
 extern int print_parse_errors;
 extern int parse_line;
@@ -573,7 +573,7 @@ check_conns (int secs) {
 	}
 #endif
 
-	static  envinit () {
+	static void envinit (void) {
 		int     i,
 				sd;
 
@@ -700,20 +700,16 @@ fork_ok:
 
 
 
-	static setdsauid () {
+	static void setdsauid (void) {
 		struct stat buf;
 		extern char * treedir;
 
 		stat (treedir,&buf);
-
 		if (setgid (buf.st_gid) == -1)
 			LLOG (log_dsap,LLOG_NOTICE,("Can't set gid %d (database directory \"%s\")",buf.st_uid,treedir));
-
 		if (setuid (buf.st_uid) == -1)
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("Can't set uid %d (database directory \"%s\")",buf.st_uid,treedir));
 	}
-
-
 
 #define	RESTART_TIME	30	/* for connections to clear... */
 #ifdef  SO_REUSEADDR
@@ -764,9 +760,7 @@ fork_ok:
 		do_restart (sig);
 	}
 
-	do_restart (sig)
-	int     sig;
-	{
+	int do_restart (int sig) {
 		int fpid, sd;
 		unsigned int secs;
 		extern char * mydsaname;

@@ -31,12 +31,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapminor2.c,v 9.0 199
 #include <signal.h>
 #include "spkt.h"
 
-static int  SMinSyncResponseAux ();
+static int  SMinSyncResponseAux (struct ssapblk *sb, long int ssn, char *data, int cc, struct SSAPindication *si);
 
 /*    S-MINOR-SYNC.RESPONSE */
 
-int
-SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si) {
+int SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -44,23 +43,15 @@ SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *s
 	if (SERIAL_MIN > ssn || ssn > SERIAL_MAX)
 		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid serial number");
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
 	toomuchP (sb, data, cc, SN_SIZE, "minorsync");
-
 	result = SMinSyncResponseAux (sb, ssn, data, cc, si);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-/*  */
-
-static int
-SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si) {
+static int SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MINORSYNC))
@@ -72,12 +63,10 @@ SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SS
 	if (ssn < sb -> sb_V_A)
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "bad choice for minor ssn, should be >= %ld", sb -> sb_V_A);
-
 	if ((result = SWriteRequestAux (sb, SPDU_MIA, data, cc, 0, ssn, 0, NULLSD,
 									NULLSD, NULLSR, si)) == NOTOK)
 		freesblk (sb);
 	else
 		sb -> sb_V_A = ssn + 1;
-
 	return result;
 }

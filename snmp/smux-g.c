@@ -178,7 +178,7 @@ int	offset;
 
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		pb -> pb_newstatus = *((int *) value);
 		(*os -> os_free) (value);
@@ -360,7 +360,7 @@ int	offset;
 
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		tb -> tb_newstatus = *((int *) value);
 		(*os -> os_free) (value);
@@ -386,8 +386,6 @@ int	offset;
 	return int_SNMP_error__status_noError;
 }
 
-/*  */
-
 static struct smuxTree *get_tbent (ip, len, isnext)
 unsigned int *ip;
 int	len;
@@ -411,9 +409,7 @@ int	isnext;
 	return NULL;
 }
 
-/*  */
-
-init_smux () {
+void init_smux (void) {
 	OT	    ot;
 
 	if (ot = text2obj ("smuxPindex"))
@@ -446,6 +442,6 @@ init_smux () {
 }
 #else
 
-init_smux () {}
+void init_smux (void) {}
 
 #endif

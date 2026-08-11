@@ -43,8 +43,8 @@ extern DN	mydsadn;
 struct oper_act	* oper_alloc();
 extern char quipu_shutdown;
 
-static check_prefix_list ();
-static check_dn_length ();
+static int check_prefix_list (DN dn);
+static int check_dn_length (DN dn);
 
 #ifndef NO_STATS
 extern LLog * log_stat;
@@ -611,7 +611,6 @@ void reject_prefix (char *str) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid reject name %s",str));
 		return;
 	}
-
 	if (reject_prefix_list == NULLDNSEQ)
 		reject_prefix_list = dsa;
 	else {
@@ -628,7 +627,6 @@ void accept_prefix (char *str) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Invalid accept name %s",str));
 		return;
 	}
-
 	if (accept_prefix_list == NULLDNSEQ)
 		accept_prefix_list = dsa;
 	else {
@@ -658,9 +656,7 @@ static int check_dn_length (DN dn) {
 
 	for (tmp = dn; tmp != NULLDN ; tmp=tmp->dn_parent)
 		i++;
-
 	if ( i <= reject_len )
 		return FALSE;
-
 	return TRUE;
 }

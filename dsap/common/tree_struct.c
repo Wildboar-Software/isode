@@ -34,46 +34,32 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
 extern int oidformat;
 
 /* ARGSUSED */
-int
-tree_struct_free (struct tree_struct *ptr) {
+void tree_struct_free (struct tree_struct *ptr) {
 	/* don't free objectclass - in static table */
 	free ((char *)ptr);
 }
 
-
 static struct tree_struct *
 	tree_struct_cpy (struct tree_struct *a) {
 	struct tree_struct * result;
-
 	result = tree_struct_alloc ();
 	result->tree_object = a->tree_object;
 	return (result);
 }
 
-static
-tree_struct_cmp (struct tree_struct *a, struct tree_struct *b) {
+static int tree_struct_cmp (struct tree_struct *a, struct tree_struct *b) {
 	if (a == NULLTREE)
-		return (b==NULLTREE ? 0 : -1 );
-
+		return (b == NULLTREE ? 0 : -1 );
 	if (b == NULLTREE)
 		return (1);
-
-	return (  objclass_cmp(a->tree_object,b->tree_object));
+	return (objclass_cmp(a->tree_object,b->tree_object));
 }
 
-
-/* ARGSUSED */
-static tree_struct_print (ps,tree,format)
-PS ps;
-struct   tree_struct * tree;
-int format;
-{
+static void tree_struct_print (PS ps, struct tree_struct *tree, int format) {
 	ps_printf (ps,"%s",oc2name(tree->tree_object,oidformat));
 }
 
-
-static struct tree_struct *
-str2schema (char *str) {
+static struct tree_struct *str2schema (char *str) {
 	struct tree_struct * ts;
 	objectclass * str2oc();
 
@@ -86,29 +72,20 @@ str2schema (char *str) {
 	return (ts);
 }
 
-static PE ts_enc (ts)
-struct tree_struct * ts;
-{
+static PE ts_enc (struct tree_struct *ts) {
 	PE ret_pe;
-
 	encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
-
 	return (ret_pe);
 }
 
-static struct tree_struct * ts_dec (pe)
-PE pe;
-{
+static struct tree_struct * ts_dec (PE pe) {
 	struct tree_struct * ts;
-
 	if (decode_Quipu_TreeStructureSyntax(pe,1,NULLIP,NULLVP,&ts) == NOTOK)
 		return (struct tree_struct *)NULL;
-
 	return (ts);
 }
 
-int
-schema_syntax (void) {
+void schema_syntax (void) {
 	add_attribute_syntax ("schema",
 						  ts_enc,		ts_dec,
 						  str2schema,	tree_struct_print,

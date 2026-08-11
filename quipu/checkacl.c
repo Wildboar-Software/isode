@@ -36,13 +36,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/checkacl.c,v 9.0 1992
 extern int 	selector_rank[];
 extern LLog	*log_dsap;
 
-static
-common_prefix_len (char *a, char *b) {
+static int common_prefix_len (char *a, char *b) {
 	int	i;
 
 	for ( i = 0; *a && *a++ == *b++; i++ )
 		;	/* NULL */
-
 	return( i );
 }
 
@@ -52,7 +50,6 @@ common_prefix_len (char *a, char *b) {
  * a running total of the minimum common prefix of <= and >= filters.
  * This information is used later when checking search acls.
  */
-
 void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 	Ftypelist	new, tmp;
 	int		i, plen;

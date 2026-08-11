@@ -54,30 +54,22 @@ static struct edb_info *edb_info_cpy (struct edb_info *a) {
 	return (result);
 }
 
-static
-edb_info_cmp (struct edb_info *a, struct edb_info *b) {
+static int edb_info_cmp (struct edb_info *a, struct edb_info *b) {
 	int i;
 
 	if (a == NULLEDB)
 		return ( b == NULLEDB ? 0 : -1 );
-
 	if (b == NULLEDB)
 		return (1);
-
 	if ( (i = dn_cmp (a->edb_name,b->edb_name)) != 0)
 		return (i);
-
 	if ( (i = dn_cmp (a->edb_getfrom,b->edb_getfrom)) != 0)
 		return (i);
-
 	if ( (i = dn_seq_cmp (a->edb_sendto,b->edb_sendto)) != 0)
 		return (i);
-
 	if ( (i = dn_seq_cmp (a->edb_allowed,b->edb_allowed)) != 0)
 		return (i);
-
 	return (0);
-
 }
 
 static struct edb_info * edb_info_decode (pe)

@@ -46,8 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/post.c,v 9.0 19
 
 extern LLog * log_dsap;
 
-static
-addrfree (struct postaddr *addr) {
+static void addrfree (struct postaddr *addr) {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -56,23 +55,19 @@ addrfree (struct postaddr *addr) {
 	}
 }
 
-static
-addrcmp (struct postaddr *a, struct postaddr *b) {
+static int addrcmp (struct postaddr *a, struct postaddr *b) {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
 		if ((res = lexequ (a->addrcomp, b->addrcomp)) != 0)
 			return (res);
-
 	if ( a != b)
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-
 }
 
-static struct postaddr *
-addrcpy (struct postaddr *a) {
+static struct postaddr *addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
@@ -93,8 +88,7 @@ addrcpy (struct postaddr *a) {
 	return (result);
 }
 
-static struct postaddr *
-addrparse (char *str) {
+static struct postaddr *addrparse (char *str) {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
 	char * ptr;
@@ -222,7 +216,7 @@ addrparse (char *str) {
 
 int	postal_indent = -1;
 
-static addrprint (ps,addr,format)
+static void addrprint (ps,addr,format)
 PS ps;
 struct postaddr * addr;
 int format;
@@ -307,8 +301,7 @@ PE pe;
 	return (m);
 }
 
-int
-post_syntax (void) {
+void post_syntax (void) {
 	add_attribute_syntax ("PostalAddress",
 						  addrenc,		addrdec,
 						  addrparse,	addrprint,

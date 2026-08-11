@@ -33,10 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/tsdu2spkt.c,v 9.0 1992
 #include "tailor.h"
 #include "internet.h"
 
-/*  */
-
-static	void put2spdu ();
-
 struct	local_buf {
 	char *top;				/* Top of buffer */
 	char *ptr;				/* Pointer to working buffer */
@@ -47,7 +43,7 @@ struct	local_buf {
 	int len;				/* Current buffer size */
 };
 
-/*  */
+static void put2spdu (int code, int li, char *value, struct local_buf *c);
 
 #define PMASK_NODATA		0x000000
 #define	PMASK_CN_ID			0x000001	/*   1: Connection ID */
@@ -401,10 +397,7 @@ static int pi_length[PI_TABLE_LEN] = {
     } \
 }
 
-/*  */
-
-static
-start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
+static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 	if (s -> s_udata)
 		switch (s -> s_code) {
 		case SPDU_DT: 	/* caller responsible for this... */
@@ -480,10 +473,7 @@ start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 		c -> ptr = c -> top + 2;
 }
 
-/*  */
-
-static int
-end_spdu (unsigned char code, struct local_buf *c) {
+static int end_spdu (unsigned char code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
@@ -510,29 +500,21 @@ end_spdu (unsigned char code, struct local_buf *c) {
 	return NOTOK;
 }
 
-/*  */
-
-static
-start_pgi (unsigned char code, struct local_buf *c) {
+static void start_pgi (unsigned char code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len)
 		c -> pgi = (c -> ptr - c -> top - 1);
 }
 
 
-static
-end_pgi (struct local_buf *c) {
+static void end_pgi (struct local_buf *c) {
 	if (c -> len)
 		*(c -> top + c -> pgi) = (c -> len - c -> left) - (c -> pgi + 1);
 }
 
-/*  */
-
-static
-void put2spdu (int code, int li, char *value, struct local_buf *c) {
+static void put2spdu (int code, int li, char *value, struct local_buf *c) {
 	int     cl = li;
-	char   *p1,
-		   *p2;
+	char   *p1, *p2;
 
 	if (c -> len) {
 		cl += (li < 255) ? 2 : 4;
@@ -1671,7 +1653,6 @@ do_pgi:
 
 		if ((qp = qb -> qb_forw) != qb && qp -> qb_len <= 0) {
 			remque (qp);
-
 			free ((char *) qp);
 		}
 	}
@@ -1745,38 +1726,31 @@ do_pgi:
 	if (ssap_log -> ll_events & LLOG_PDUS)
 		spkt2text (ssap_log, s, 1);
 #endif
-
 	return s;
 }
 
 struct ssapkt *newspkt (int code) {
 	struct ssapkt *s;
-
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)
 		return NULL;
-
 	s -> s_code = code;
 	s -> s_qbuf.qb_forw = s -> s_qbuf.qb_back = &s -> s_qbuf;
-
 	return s;
 }
 
 void freespkt (struct ssapkt *s) {
 	if (s == NULL)
 		return;
-
 	switch (s -> s_code) {
 	case SPDU_RF:
 		if (s -> s_rdata)
 			free (s -> s_rdata);/* and fall... */
-
 	default:
 		if (s -> s_udata)
 			free (s -> s_udata);
 		QBFREE (&s -> s_qbuf);
 		break;
 	}
-
 	free ((char *) s);
 }

@@ -31,6 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/authpolicy.c,v 
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
+extern void sfree(char *x);
+
 /*
  * These routines implement the AuthenticationPolicySyntax.  The EDB
  * representation of this syntax is as follows:
@@ -49,68 +51,45 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/authpolicy.c,v 
 
 short authp_sntx;
 
-authp_cmp( a, b )
-Authpolicy	a;
-Authpolicy	b;
-{
+int authp_cmp( Authpolicy a, Authpolicy b ) {
 	if ( a == NULLAUTHP && b == NULLAUTHP )
 		return( 0 );
-
 	if ( a == NULLAUTHP )
 		return( 1 );
-
 	if ( b == NULLAUTHP )
 		return( -1 );
-
 	if ( a->ap_modification != b->ap_modification )
 		return( a->ap_modification > b->ap_modification ? 1 : -1 );
-
 	if ( a->ap_readandcompare != b->ap_readandcompare )
 		return( a->ap_readandcompare > b->ap_readandcompare ? 1 : -1 );
-
 	if ( a->ap_listandsearch != b->ap_listandsearch )
 		return( a->ap_listandsearch > b->ap_listandsearch ? 1 : -1 );
-
 	return( 0 );
 }
 
-static Authpolicy authp_cpy( ap )
-Authpolicy	ap;
-{
-	Authpolicy	new;
-
-	new = authp_alloc();
+static Authpolicy authp_cpy( Authpolicy ap ) {
+	Authpolicy new = authp_alloc();
 	*new = *ap;
-
-	return( new );
+	return new;
 }
 
-static Authpolicy authp_decode( pe )
-PE	pe;
-{
+static Authpolicy authp_decode( PE pe ) {
 	Authpolicy	ap;
 
 	if ( decode_Quipu_AuthenticationPolicySyntax( pe, 1, NULLIP, NULLVP,
 			&ap ) == NOTOK ) {
 		return( NULLAUTHP );
 	}
-
 	return( ap );
 }
 
-static PE authp_enc( ap )
-Authpolicy ap;
-{
+static PE authp_enc( Authpolicy ap ) {
 	PE ret_pe;
-
-	encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP,
-			ap );
-
+	encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP, ap );
 	return( ret_pe );
 }
 
-static
-get_policy (char *str) {
+static int get_policy (char *str) {
 	/* get modification policy */
 	if ( lexnequ( str, "trust", 5 ) == 0 ) {
 		return( AP_TRUST );
@@ -124,10 +103,7 @@ get_policy (char *str) {
 	}
 }
 
-
-static Authpolicy str2authp( str )
-char	*str;
-{
+static Authpolicy str2authp( char *str ) {
 	Authpolicy	new;
 	char		save, *s;
 
@@ -176,11 +152,7 @@ static char *policy[] = {
 	"strong"
 };
 
-authp_print( ps, ap, format )
-PS		ps;
-Authpolicy	ap;
-int		format;
-{
+void authp_print (PS ps, Authpolicy ap, int format) {
 	if ( format == READOUT ) {
 		ps_printf( ps, "modification policy: %s\n",
 				   policy[ap->ap_modification] );
@@ -195,10 +167,7 @@ int		format;
 	}
 }
 
-int
-authp_syntax (void) {
-	extern	sfree();
-
+void authp_syntax (void) {
 	authp_sntx = add_attribute_syntax ("AuthenticationPolicySyntax",
 									   authp_enc,	authp_decode,
 									   str2authp,	authp_print,

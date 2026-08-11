@@ -107,8 +107,7 @@ char * s;
 static DN username = NULLDN;
 static char password[DBA_MAX_PASSWD_LEN] = "";
 
-static
-bind_to_dsa (void) {
+static int bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;

@@ -27,10 +27,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_del.c,v 9.0 
 #include "quipu/attrvalue.h"
 
 extern LLog * log_dsap;
+void as_comp_free (Attr_Sequence as);
 
-as_delnext (as)
-Attr_Sequence  as;
-{
+void as_delnext (Attr_Sequence as) {
 	Attr_Sequence ptr;
 
 	if (as == NULLATTR)
@@ -45,4 +44,3 @@ Attr_Sequence  as;
 		}
 	}
 }
-

@@ -43,10 +43,8 @@ struct dispatch {
 	char   *ds_help;
 };
 
+void adios (char* what, char* fmt, ...), advise (char* what, char* fmt, ...);
+void acs_adios (), acs_advise ();
+void ros_adios (), ros_advise ();
 
-void	adios (char* what, char* fmt, ...),
-		advise (char* what, char* fmt, ...);
-void	acs_adios (), acs_advise ();
-void	ros_adios (), ros_advise ();
-
-int	ryinitiator ();
+void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, IFP quit);

@@ -29,6 +29,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy.c,v 9.0 1992/06/1
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "pepy.h"
 
 /*    DATA */
@@ -121,12 +124,7 @@ static int  pp (void);
 static void print_value (YV yv, int level);
 static void modsym_aux (char *name, char *bp);
 
-/*    MAIN */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	char  *cp,
 		  *sp;
 	struct section *sectp;
@@ -285,12 +283,10 @@ usage:
 		prologue ();
 
 	initoidtbl ();
-
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-static
-prologue(void) {
+static void prologue(void) {
 	char *cp;
 
 	if (cp = index (pepyversion, ')'))
@@ -313,37 +309,29 @@ prologue(void) {
 		printf ("#define\tadvise\t%s\n\n", aflag);
 	printf ("void\tadvise (char *what, char *fmt, ...);\n");
 }
+
 /*    ERRORS */
 
-int
-yyerror (char *s) {
+int yyerror (char *s) {
 	yyerror_aux (s);
-
 	if (*sysout)
 		unlink (sysout);
-
 	exit (1);
 }
 
 #ifndef lint
-warning (char* fmt, ...) {
+void warning (char* fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
 	va_list	ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	sprintf (buffer2, "Warning: %s", buffer);
 	yyerror_aux (buffer2);
 }
-
 #else
-
 /* VARARGS1 */
 int
 warning (char *fmt) {
@@ -351,11 +339,9 @@ warning (char *fmt) {
 }
 #endif
 
-int
-yyerror_aux (char *s) {
+void yyerror_aux (char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
-
 	if (eval)
 		fprintf (stderr, "type %s: ", eval);
 	else
@@ -365,50 +351,34 @@ yyerror_aux (char *s) {
 		fprintf (stderr, "last token read was \"%s\"\n", yytext);
 }
 
-/*  */
-
-
 #ifndef	lint
-myyerror (char* fmt, ...) {
+void myyerror (char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	yyerror (buffer);
 }
 #endif
 
 
 #ifndef	lint
-pyyerror (YP yp, char* fmt, ...) {
+void pyyerror (YP yp, char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 	yyerror_aux (buffer);
 	print_type (yp, 0);
-
 	if (*sysout)
 		unlink (sysout);
-
 	exit (1);
 }
 #else
 /* VARARGS */
-pyyerror (yp, fmt)
-YP	yp;
-char   *fmt;
-{
+void pyyerror (YP yp, char* fmt, ...) {
 	pyyerror (yp, fmt);
 }
 #endif
@@ -427,21 +397,17 @@ void yyprint (char *s, int f, int top) {
 
 	if (sflag)
 		return;
-
 	if (f && didf == 0) {
 		if (linepos)
 			fprintf (stderr, "\n\n");
-
 		fprintf (stderr, "%s:", mymodule);
 		linepos = (nameoutput = strlen (mymodule) + 1) + 1;
-
 		didf = 1;
 	}
 
 	if (!nameoutput || top) {
 		if (linepos)
 			fprintf (stderr, "\n\n");
-
 		fprintf (stderr, "%s", mymodule);
 		nameoutput = (linepos = strlen (mymodule)) + 1;
 
@@ -475,29 +441,25 @@ void yyprint (char *s, int f, int top) {
 
 /*    PASS1 */
 
-int
-pass1(void) {
+void pass1(void) {
 	if (!bflag)
 		prologue3 ();
 }
 
-static
-prologue3(void) {
+static void prologue3(void) {
 	printf ("\n/* Generated from module %s", mymodule);
 	if (mymoduleid)
 		printf (", Object Identifier %s", sprintoid (mymoduleid));
 	printf (" */\n");
 }
-/*  */
 
-pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
 	SY	    sy;
 
 	if (pepydebug) {
 		if (linepos)
 			fprintf (stderr, "\n"), linepos = 0;
-
 		fprintf (stderr, "%s.%s\n", mod ? mod : mymodule, id);
 		print_type (yp, 0);
 		fprintf (stderr, "--------\n");
@@ -508,20 +470,14 @@ pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP
 	mysymbols = add_symbol (mysymbols, sy);
 }
 
-/*    PASS2 */
-
-int
-pass2(void) {
+void pass2(void) {
 	SY	    sy;
 	YP	    yp;
 
 	if (!sflag)
 		fflush (stderr);
-
 	if (bflag) {
-		int    i,
-			   j;
-
+		int    i, j;
 		i = 2, j = 10;
 		for (sy = mysymbols; sy; sy = sy -> sy_next)
 			if (!(sy -> sy_type -> yp_flags & YP_IMPORTED))
@@ -529,10 +485,8 @@ pass2(void) {
 					bwidth++, j *= 10;
 	} else
 		prologue2 ();
-
 	if (strcmp (mymodule, "UNIV"))
 		lookup_module ("UNIV", NULLOID);
-
 	for (sy = mysymbols; sy; sy = sy -> sy_next) {
 		eval = sy -> sy_name;
 		yp = sy -> sy_type;
@@ -540,7 +494,6 @@ pass2(void) {
 			yyerror ("no module name associated with symbol");
 		if (yp -> yp_flags & YP_IMPORTED)
 			continue;
-
 		if (yp -> yp_direction & YP_ENCODER) {
 			if (bflag)
 				init_new_file ();
@@ -590,14 +543,11 @@ pass2(void) {
 	write_ph_file ();
 }
 
-static
-prologue2(void) {
+static void prologue2(void) {
 	printf("\n#ifndef PEPYPARM\n#define PEPYPARM char *\n");
 	printf ("#endif /* PEPYPARM */\n"); /* keep ansi happy ... */
 	printf("extern PEPYPARM NullParm;\n");
 }
-
-/*  */
 
 struct tuple tuples[] = {
 	YP_BOOL, "PE_CLASS_UNIV", "PE_FORM_PRIM", "PE_PRIM_BOOL",
@@ -632,27 +582,16 @@ struct tuple tuples[] = {
 	PE_CLASS_UNIV, PE_PRIM_ENUM,
 	YP_REAL,     "PE_CLASS_UNIV", "PE_FORM_PRIM", "PE_PRIM_REAL",
 	PE_CLASS_UNIV, PE_PRIM_REAL,
-
 	YP_UNDF
 };
 
-/*    PULLUP */
-
-choice_pullup (YP yp, int partial)
-  	   
-   	        	/* pullup fully, or just enough? */
-{
-	YP	   *x,
-	 y,
-	 z,
-	 *z1,
-	 z2,
-	 z3;
+/* partial: pullup fully, or just enough? */
+void choice_pullup (YP yp, int partial) {
+	YP *x, y, z, *z1, z2, z3;
 
 	for (x = &yp -> yp_type; y = *x; x = &y -> yp_next) {
 		if (y -> yp_flags & (YP_TAG | YP_BOUND))
 			continue;
-
 		switch (y -> yp_code) {
 		case YP_IDEFINED:
 			if (partial)
@@ -661,14 +600,11 @@ choice_pullup (YP yp, int partial)
 					== NULLYP
 					|| z -> yp_code != YP_CHOICE)
 				continue;
-
 			choice_pullup (z2 = copy_type (z), partial);
 			break;
-
 		case YP_CHOICE:
 			choice_pullup (z2 = copy_type (y), partial);
 			break;
-
 		default:
 			continue;
 		}
@@ -681,9 +617,7 @@ choice_pullup (YP yp, int partial)
 	}
 }
 
-/*  */
-
-tag_pullup (YP yp, int level, char *arg, char *whatsit)
+void tag_pullup (YP yp, int level, char *arg, char *whatsit)
 {
 	char   *narg;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
@@ -691,7 +625,6 @@ tag_pullup (YP yp, int level, char *arg, char *whatsit)
 	printf ("%*s{\t/* %s TAG PULLUP */\n%*sPE %s;\n\n",
 			level * 4, "", whatsit, (level + 1) * 4, "", narg = gensym ());
 	level++;
-
 	printf ("%*sif ((%s = prim2set (%s)) == NULLPE) {\n",
 			level * 4, "", narg, arg);
 	printf ("%*sadvise (NULLCP, \"%s %%s%s: %%s\", PEPY_ERR_BAD,\n",
@@ -711,8 +644,7 @@ tag_pullup (YP yp, int level, char *arg, char *whatsit)
 			level * 4, "", arg, narg, (level - 1) * 4, "");
 }
 
-
-tag_pushdown (YP yp, int level, char *arg, char *whatsit)
+void tag_pushdown (YP yp, int level, char *arg, char *whatsit)
 {
 	char   *narg;
 
@@ -720,7 +652,6 @@ tag_pushdown (YP yp, int level, char *arg, char *whatsit)
 			level * 4, "", whatsit, (level + 1) * 4, "", narg = gensym ());
 	level++;
 	printf ("%*sPE *%s = &%s_z;\n\n", level * 4, "", narg, narg);
-
 	printf ("%*sif ((*%s = pe_alloc (PE_CLASS_%s, PE_FORM_CONS, %d)) == NULLPE) {\n",
 			level * 4, "", narg, pe_classlist[yp -> yp_tag -> yt_class],
 			val2int (yp -> yp_tag -> yt_value));
@@ -729,7 +660,6 @@ tag_pushdown (YP yp, int level, char *arg, char *whatsit)
 	printf ("%*sreturn NOTOK;\n%*s}\n", (level + 1) * 4, "", level * 4, "");
 	printf ("%*s(*%s) -> pe_cons = %s;\n", level * 4, "", narg, arg);
 	printf ("%*s%s = *%s;\n", level * 4, "", arg, narg);
-
 	level--;
 	printf ("%*s}\n", level * 4, "");
 }
@@ -776,7 +706,6 @@ void tag_type (YP yp) {
 			}
 		break;
 	}
-
 	pyyerror (yp, "don't know how to do a set/choice member that isn't tagged or bound");
 }
 
@@ -859,19 +788,14 @@ int is_any_type (YP yp) {
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_flags & YP_TAG)
 			return 0;
-
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
 			lookup_module (yp -> yp_module, yp -> yp_modid);
-
 		if (z = lookup_type (yp -> yp_module, yp -> yp_identifier)) {
 			yp = z;
-
 			continue;
 		}
-
 		break;
 	}
-
 	return (yp -> yp_code == YP_ANY && !(yp -> yp_flags & YP_TAG));
 }
 
@@ -882,19 +806,14 @@ int is_nonimplicit_type (YP yp) {
 		if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) ==
 				(YP_TAG))
 			return 0;
-
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
 			lookup_module (yp -> yp_module, yp -> yp_modid);
-
 		if (z = lookup_type (yp -> yp_module, yp -> yp_identifier)) {
 			yp = z;
-
 			continue;
 		}
-
 		break;
 	}
-
 	if (yp -> yp_code == YP_CHOICE || yp -> yp_code == YP_ANY) {
 		if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT)) ==
 				YP_TAG)
@@ -910,7 +829,6 @@ void uniqint (YV yv) {
 
 	for (; yv; yv = yv -> yv_next) {
 		i = val2int (yv);
-
 		for (y = yv -> yv_next; y; y = y -> yv_next)
 			if (i == val2int (y)) {
 				warning ("non-unique values in list");
@@ -933,9 +851,7 @@ void uniqtag (YP y, YP z) {
 	for (; y != z; y = y -> yp_next) {
 		if ((yt = lookup_tag (y)) == NULLYT)
 			continue;
-
 		id = PE_ID (yt -> yt_class, i = val2int (yt -> yt_value));
-
 		for (yp = y -> yp_next; yp != z; yp = yp -> yp_next) {
 			if ((yt = lookup_tag (yp)) == NULLYT)
 				continue;
@@ -959,20 +875,15 @@ int val2int (YV yv) {
 	case YV_BOOL:
 	case YV_NUMBER:
 		return yv -> yv_number;
-
 	case YV_STRING:
 		yyerror ("need an integer, not a string");
-
 	case YV_IDEFINED:
 	case YV_IDLIST:
 		yyerror ("haven't written symbol table for values yet");
-
 	case YV_VALIST:
 		yyerror ("need an integer, not a list of values");
-
 	case YV_NULL:
 		yyerror ("need an integer, not NULL");
-
 	default:
 		myyerror ("unknown value: %d", yv -> yv_code);
 	}
@@ -1007,10 +918,8 @@ static void read_ph_file (char *module, OID oid) {
 				 file, p ? "/" : "", p ? p : "");
 		return;
 	}
-
 	if (strcmp (module, "UNIV"))
 		yyprint (module, 1, 0);
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (sscanf (buffer, "%d/%d/%d: %s",
 					&class, &value, &direction, id) !=4) {
@@ -1026,7 +935,6 @@ static void read_ph_file (char *module, OID oid) {
 				ep = new_string (encpref);
 			}
 		}
-
 		yp = new_type (YP_ANY);
 		yp -> yp_flags = YP_IMPORTED;
 		if (class >= 0) {
@@ -1039,7 +947,6 @@ static void read_ph_file (char *module, OID oid) {
 		pass1_type (ep, dp, ppp, new_string (module),
 					new_string (id), yp);
 	}
-
 	fclose (fp);
 }
 
@@ -1141,7 +1048,6 @@ static FILE *open_ph_file (char *fn, char *fnoid, char *mode) {
 		if ((fp = fopen (fnb, mode)) != NULL)
 			break;
 	} while (*path++);
-
 	return fp;
 }
 
@@ -1346,14 +1252,11 @@ static void print_value (YV yv, int level) {
 
 	if (yv == NULLYV)
 		return;
-
 	fprintf (stderr, "%*scode=0x%x flags=%s\n", level * 4, "",
 			 yv -> yv_code, sprintb (yv -> yv_flags, YVBITS));
-
 	if (yv -> yv_action)
 		fprintf (stderr, "%*saction at line %d=\"%s\"\n", level * 4, "",
 				 yv -> yv_act_lineno, yv -> yv_action);
-
 	if (yv -> yv_flags & YV_ID)
 		fprintf (stderr, "%*sid=\"%s\"\n", level * 4, "", yv -> yv_id);
 
@@ -1371,12 +1274,10 @@ static void print_value (YV yv, int level) {
 		fprintf (stderr, "%*snumber=0x%x\n", level * 4, "",
 				 yv -> yv_number);
 		break;
-
 	case YV_STRING:
 		fprintf (stderr, "%*sstring=\"%s\"\n", level * 4, "",
 				 yv -> yv_string);
 		break;
-
 	case YV_IDEFINED:
 		if (yv -> yv_flags & YV_BOUND)
 			fprintf (stderr, "%*smodule=\"%s\" identifier=\"%s\"\n",
@@ -1385,7 +1286,6 @@ static void print_value (YV yv, int level) {
 			fprintf (stderr, "%*sbound identifier=\"%s\"\n",
 					 level * 4, "", yv -> yv_identifier);
 		break;
-
 	case YV_IDLIST:
 	case YV_VALIST:
 		for (y = yv -> yv_idlist; y; y = y -> yv_next) {
@@ -1393,7 +1293,6 @@ static void print_value (YV yv, int level) {
 			fprintf (stderr, "%*s----\n", (level + 1) * 4, "");
 		}
 		break;
-
 	default:
 		break;
 	}
@@ -1417,7 +1316,6 @@ static SY new_symbol (
 	sy -> sy_module = mod;
 	sy -> sy_name = id;
 	sy -> sy_type = type;
-
 	return sy;
 }
 
@@ -1442,9 +1340,7 @@ static MD  lookup_module (char *module, OID oid)
 		if (oid && md -> md_oid && oid_cmp(oid, md->md_oid) == 0)
 			return md;
 	}
-
 	read_ph_file (module, oid);
-
 	if ((md = (MD) calloc (1, sizeof *md)) == NULLMD)
 		yyerror ("out of memory");
 	md -> md_module = new_string (module);
@@ -1452,10 +1348,8 @@ static MD  lookup_module (char *module, OID oid)
 		md -> md_oid = oid_cpy(oid);
 	else
 		md -> md_oid = NULLOID;
-
 	if (mymodules != NULLMD)
 		md -> md_next = mymodules;
-
 	return (mymodules = md);
 }
 
@@ -1467,7 +1361,6 @@ YP	new_type (int code) {
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
 	yp -> yp_code = code;
-
 	return yp;
 }
 
@@ -1477,7 +1370,6 @@ YP	add_type (YP y, YP z) {
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
 		continue;
 	yp -> yp_next = z;
-
 	return y;
 }
 
@@ -1486,10 +1378,8 @@ YP	copy_type (YP yp) {
 
 	if (yp == NULLYP)
 		return NULLYP;
-
 	y = new_type (yp -> yp_code);
 	y -> yp_direction = yp -> yp_direction;
-
 	switch (yp -> yp_code) {
 	case YP_IDEFINED:
 		if (yp -> yp_module)
@@ -1497,7 +1387,6 @@ YP	copy_type (YP yp) {
 		y -> yp_identifier = new_string (yp -> yp_identifier);
 		y -> yp_modid = oid_cpy (yp -> yp_modid);
 		break;
-
 	case YP_SEQTYPE:
 	case YP_SEQLIST:
 	case YP_SETTYPE:
@@ -1505,12 +1394,10 @@ YP	copy_type (YP yp) {
 	case YP_CHOICE:
 		y -> yp_type = copy_type (yp -> yp_type);
 		break;
-
 	case YP_INTLIST:
 	case YP_BITLIST:
 		y -> yp_value = copy_value (yp -> yp_value);
 		break;
-
 	default:
 		break;
 	}
@@ -1518,72 +1405,53 @@ YP	copy_type (YP yp) {
 	y -> yp_intexp = yp -> yp_intexp;
 	y -> yp_strexp = yp -> yp_strexp;
 	y -> yp_prfexp = yp -> yp_prfexp;
-
 	y -> yp_declexp = yp -> yp_declexp;
 	y -> yp_varexp = yp -> yp_varexp;
-
 	if (yp -> yp_structname)
 		y -> yp_structname = new_string (yp -> yp_structname);
 	if (yp -> yp_ptrname)
 		y -> yp_ptrname = new_string (yp -> yp_ptrname);
-
 	if (yp -> yp_param_type)
 		y -> yp_param_type = new_string (yp -> yp_param_type);
-
 	if (yp -> yp_action0) {
 		y -> yp_action0 = new_string (yp -> yp_action0);
 		y -> yp_act0_lineno = yp -> yp_act0_lineno;
 	}
-
 	if (yp -> yp_action05) {
 		y -> yp_action05 = new_string (yp -> yp_action05);
 		y -> yp_act05_lineno = yp -> yp_act05_lineno;
 	}
-
 	if (yp -> yp_action1) {
 		y -> yp_action1 = new_string (yp -> yp_action1);
 		y -> yp_act1_lineno = yp -> yp_act1_lineno;
 	}
-
 	if (yp -> yp_action2) {
 		y -> yp_action2 = new_string (yp -> yp_action2);
 		y -> yp_act2_lineno = yp -> yp_act2_lineno;
 	}
-
 	if (yp -> yp_action3) {
 		y -> yp_action3 = new_string (yp -> yp_action3);
 		y -> yp_act3_lineno = yp -> yp_act3_lineno;
 	}
-
 	y -> yp_flags = yp -> yp_flags;
-
 	if (yp -> yp_flags & YP_DEFAULT)
 		y -> yp_default = copy_value (yp -> yp_default);
-
 	if (yp -> yp_flags & YP_ID)
 		y -> yp_id = new_string (yp -> yp_id);
-
 	if (yp -> yp_flags & YP_TAG)
 		y -> yp_tag = copy_tag (yp -> yp_tag);
-
 	if (yp -> yp_flags & YP_BOUND)
 		y -> yp_bound = new_string (yp -> yp_bound);
-
 	if (yp -> yp_flags & YP_PARMVAL)
 		y -> yp_parm = new_string (yp -> yp_parm);
-
 	if (yp -> yp_flags & YP_CONTROLLED)
 		y -> yp_control = new_string (yp -> yp_control);
-
 	if (yp -> yp_flags & YP_OPTCONTROL)
 		y -> yp_optcontrol = new_string (yp -> yp_optcontrol);
-
 	if (yp -> yp_offset)
 		y -> yp_offset = new_string (yp -> yp_offset);
-
 	if (yp -> yp_next)
 		y -> yp_next = copy_type (yp -> yp_next);
-
 	return y;
 }
 
@@ -1593,7 +1461,6 @@ YV new_value (int code) {
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
 	yv -> yv_code = code;
-
 	return yv;
 }
 
@@ -1615,52 +1482,40 @@ YV copy_value (YV yv) {
 
 	if (yv == NULLYV)
 		return NULLYV;
-
 	y = new_value (yv -> yv_code);
 	y -> yv_flags = yv -> yv_flags;
-
 	if (yv -> yv_action) {
 		y -> yv_action = new_string (yv -> yv_action);
 		y -> yv_act_lineno = yv -> yv_act_lineno;
 	}
-
 	if (yv -> yv_flags & YV_ID)
 		y -> yv_id = new_string (yv -> yv_id);
-
 	if (yv -> yv_flags & YV_NAMED)
 		y -> yv_named = new_string (yv -> yv_named);
-
 	if (yv -> yv_flags & YV_TYPE)
 		y -> yv_type = copy_type (yv -> yv_type);
-
 	switch (yv -> yv_code) {
 	case YV_NUMBER:
 	case YV_BOOL:
 		y -> yv_number = yv -> yv_number;
 		break;
-
 	case YV_STRING:
 		y -> yv_string = new_string (yv -> yv_string);
 		break;
-
 	case YV_IDEFINED:
 		if (yv -> yv_module)
 			y -> yv_module = new_string (yv -> yv_module);
 		y -> yv_identifier = new_string (yv -> yv_identifier);
 		break;
-
 	case YV_IDLIST:
 	case YV_VALIST:
 		y -> yv_idlist = copy_value (yv -> yv_idlist);
 		break;
-
 	default:
 		break;
 	}
-
 	if (yv -> yv_next)
 		y -> yv_next = copy_value (yv -> yv_next);
-
 	return y;
 }
 
@@ -1670,7 +1525,6 @@ YT new_tag (PElementClass class) {
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
 		yyerror ("out of memory");
 	yt -> yt_class = class;
-
 	return yt;
 }
 
@@ -1679,11 +1533,8 @@ YT copy_tag (YT yt) {
 
 	if (yt == NULLYT)
 		return NULLYT;
-
 	y = new_tag (yt -> yt_class);
-
 	y -> yt_value = copy_value (yt -> yt_value);
-
 	return y;
 }
 
@@ -1697,20 +1548,15 @@ YT lookup_tag (YP yp) {
 
 	if (yp -> yp_flags & YP_TAG)
 		return yp -> yp_tag;
-
 	while (yp -> yp_code == YP_IDEFINED) {
 		if (yp -> yp_module && strcmp (yp -> yp_module, mymodule))
 			lookup_module (yp -> yp_module, yp -> yp_modid);
-
 		if (z = lookup_type (yp -> yp_module, yp -> yp_identifier)) {
 			yp = z;
-
 			if (yp -> yp_flags & YP_TAG)
 				return yp -> yp_tag;
-
 			continue;
 		}
-
 		break;
 	}
 
@@ -1720,10 +1566,8 @@ YT lookup_tag (YP yp) {
 			yt -> yt_value = yv;
 			yv -> yv_code = YV_NUMBER;
 			yv -> yv_number = t -> t_idnum;
-
 			return yt;
 		}
-
 	return NULLYT;
 }
 
@@ -1732,7 +1576,6 @@ char *new_string (char *s) {
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
-
 	strcpy (p, s);
 	return p;
 }
@@ -1758,7 +1601,6 @@ static struct triple {
 	"GeneralString", PE_CLASS_UNIV, PE_DEFN_GENS,
 	"EXTERNAL", PE_CLASS_UNIV, PE_CONS_EXTN,
 	"ObjectDescriptor", PE_CLASS_UNIV, PE_PRIM_ODE,
-
 	NULL
 };
 
@@ -1797,7 +1639,6 @@ char *modsym (char *module, char *id, int direct) {
 	modsym_aux (module ? module : mymodule, buf2);
 	modsym_aux (id, buf3);
 	sprintf (buffer, "%s_%s_%s", buf1, buf2, buf3);
-
 	return buffer;
 }
 
@@ -1822,7 +1663,6 @@ static void modsym_aux (char *name, char *bp) {
 char *gensym(void) {
 	char    buffer[BUFSIZ];
 	static int  i = 0;
-
 	sprintf (buffer, "p%d", i++);
 	return new_string (buffer);
 }
@@ -1836,13 +1676,10 @@ void init_new_file(void) {
 		fprintf (stderr, "unable to write "), perror (buffer);
 		exit (1);
 	}
-
 	prologue ();
 	prologue3 ();
-
 	if (module_actions)
 		fputs (module_actions, stdout);
-
 	prologue2 ();
 }
 

@@ -26,16 +26,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/as_free.c,v 9.0
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-as_comp_free (as)
-Attr_Sequence as;
-{
+void as_comp_free (Attr_Sequence as) {
 	avs_free (as->attr_value);
 	free ((char *) as);
 }
 
-as_free (as)
-Attr_Sequence as;
-{
+void as_free (Attr_Sequence as) {
 	Attr_Sequence eptr;
 	Attr_Sequence next;
 

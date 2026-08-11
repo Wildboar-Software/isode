@@ -83,7 +83,7 @@ static int	ipforwarding;
 static struct ipstat ipstat;
 
 static int  get_arptab ();
-static  sort_arptab ();
+static void sort_arptab (void);
 
 #ifdef LINUX
 int _read_snmp_stats ();
@@ -399,7 +399,7 @@ int	offset;
 		case type_SNMP_PDUs_set__request:
 			if (ot -> ot_save)
 				(*os -> os_free) (ot -> ot_save), ot -> ot_save = NULL;
-			if ((*os -> os_decode) (&ot -> ot_save, v -> value)
+			if ((*os -> os_decode) ((void **)&ot -> ot_save, v -> value)
 					== NOTOK
 					|| *((integer *) ot -> ot_save) != MAXTTL)
 				return int_SNMP_error__status_badValue;
@@ -427,7 +427,7 @@ int	offset;
 		if (access ("/proc/sys/net/ipv4/ip_forward", W_OK) != 0)
 #endif
 			return int_SNMP_error__status_genErr;
-		if ((*os -> os_decode) (&ot -> ot_save, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&ot -> ot_save, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		switch (*((integer *) ot -> ot_save)) {
 		case FORW_GATEWAY:
@@ -914,7 +914,7 @@ bad_magic:
 	case type_SNMP_PDUs_set__request:
 		switch (ifvar) {
 		case ipRouteDest:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			{
 				struct in_addr addr;
@@ -932,7 +932,7 @@ bad_magic:
 			break;
 
 		case ipRouteIfIndex:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			i = *((integer *) value);
 			(*os -> os_free) (value);
@@ -957,7 +957,7 @@ bad_magic:
 		case ipRouteMetric3:
 		case ipRouteMetric4:
 		case ipRouteMetric5:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			i = *((integer *) value);
 			(*os -> os_free) (value);
@@ -966,7 +966,7 @@ bad_magic:
 			break;
 
 		case ipRouteNextHop:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			rt -> rt_oldgwy = rt -> rt_gateway;	    /* struct copy */
 			((struct sockaddr_in *) &rt -> rt_gateway) -> sin_addr =
@@ -979,7 +979,7 @@ bad_magic:
 			break;
 
 		case ipRouteType:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			i = *((integer *) value);
 			(*os -> os_free) (value);
@@ -1005,7 +1005,7 @@ bad_magic:
 		case ipRouteMask: {
 			struct in_addr mask;
 
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			mask = ((struct sockaddr_in *) value)
 				   -> sin_addr;/* struct copy */
@@ -1507,7 +1507,7 @@ int	offset;
 		switch (ifvar) {
 		case atIfIndex:
 		case ipNetToMediaIfIndex:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			i = *((integer *) value);
 			(*os -> os_free) (value);
@@ -1517,7 +1517,7 @@ int	offset;
 
 		case atPhysAddress:
 		case ipNetToMediaPhysAddress:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			{
 				int	len;
@@ -1564,7 +1564,7 @@ bad_value:
 
 		case atNetAddress:
 		case ipNetToMediaNetAddress:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			{
 				struct in_addr addr;
@@ -1580,7 +1580,7 @@ bad_value:
 			break;
 
 		case ipNetToMediaType:
-			if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			i = *((integer *) value);
 			(*os -> os_free) (value);
@@ -1897,7 +1897,7 @@ static int ada_compar (struct adrtab **a, struct adrtab **b) {
 					 (*b) -> ada_instance, (*b) -> ada_insize);
 }
 
-static	sort_arptab () {
+static void sort_arptab (void) {
 	struct adrtab *at,
 			   **base,
 			   **afe,
@@ -2011,9 +2011,7 @@ out:
 	return NULL;
 }
 
-/*  */
-
-init_ip () {
+void init_ip (void) {
 	OT	    ot;
 
 	if (ot = text2obj ("ipForwarding"))

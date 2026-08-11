@@ -59,7 +59,7 @@ static jmp_buf	intrenv;
 int	interrupted;
 
 
-static ftamloop (char **vec, int error);
+static int ftamloop (char **vec, int error);
 static SFD intrser (int sig);
 
 void	adios (char *what, char *fmt, ...);
@@ -71,22 +71,13 @@ static SFD	intrser ();
 #endif
 
 extern char* command_prompt;
-extern char* default_prompt();
-
-static	ftamloop (), arginit ();
-
-/*    MAIN */
-
-/* ARGSUSED */
+extern char* default_prompt(void);
+static void arginit (char **vec);
 
 #ifndef	BRIDGE
-static int arginit (char **vec);
 
-int
-main (int argc, char **argv, char **envp) {
-	int     eof,
-			status,
-			vecp;
+int main (int argc, char **argv, char **envp) {
+	int eof, status, vecp;
 #ifdef LINUX
 	__sighandler_t istat;
 #else
@@ -98,14 +89,11 @@ main (int argc, char **argv, char **envp) {
 	FILE   *fp;
 
 	arginit (argv);
-
 	runcom = 1;
-
 	/* The lower layers get a SIGPIPE if the remote end dies while
 	 * we are sending. The SIGPIPE is followed by a DISCONNECT Request.
 	 */
 	signal(SIGPIPE, SIG_IGN);
-
 	rcinit ();
 	sprintf (buffer, "%s/.ftamrc", myhome);
 
@@ -254,10 +242,8 @@ main (int argc, char **argv, char **envp) {
 }
 #endif
 
-/*  */
-
 #ifndef	BRIDGE
-static ftamloop (char **vec, int error) {
+static int ftamloop (char **vec, int error) {
 	struct dispatch   *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -317,7 +303,7 @@ static ftamloop (char **vec, int error) {
 /*    ARGINIT */
 
 #ifndef	BRIDGE
-static arginit (char **vec) {
+static void arginit (char **vec) {
 	char  *ap,
 		  *pp;
 

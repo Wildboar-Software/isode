@@ -101,8 +101,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 	AttributeType at;
 	AV_Sequence   avs;
 	struct acl * acl = (struct acl *) NULL;
-	extern oid_cmp ();
-	int rdn_print();
 
 	/* take rdn's and make sure an attribute, if not add it in */
 	for (new_rdn = eptr->e_name; new_rdn != NULLRDN; new_rdn = new_rdn->rdn_next) {

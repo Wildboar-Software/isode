@@ -41,7 +41,7 @@ void	acs_advise ();
 void	ros_adios (), ros_advise ();
 void	ryr_advise (char*, ...);
 
-int	ryresponder ();
+void	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops, IFP start, IFP stop);
 
 
 extern int  debug;

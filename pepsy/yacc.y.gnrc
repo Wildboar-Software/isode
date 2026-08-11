@@ -71,8 +71,7 @@ static	char	*efn, *dfn, *pfn, *ffn;
 /*
  * clear the ?fn variables for the next coding functions
  */
-clrfn()
-{
+void clrfn (void) {
     if (efn) {
 	efn = NULLCP;
     }
@@ -89,18 +88,12 @@ clrfn()
 
 %END(PEPSY)%
 
-static YA  new_action (text, lineno)
-char   *text;
-int	lineno;
-{
-    register YA	    ya;
-
+static YA  new_action (char *text, int lineno) {
+    YA	    ya;
     if ((ya = (YA) calloc (1, sizeof *ya)) == NULLYA)
 	yyerror ("out of memory");
-
     ya -> ya_text = text;
     ya -> ya_lineno = lineno;
-
     return ya;
 }
 #define	free_action(ya)	(void) free ((char *) (ya))
@@ -111,9 +104,7 @@ typedef struct	{
 } ysa, *YS;
 #define NULLYS ((YS) 0)
 
-static YS new_ys (str)
-char	*str;
-{
+static YS new_ys (char *str) {
     register YS	ys;
     register char *p, *q;
     char c;
@@ -156,16 +147,10 @@ char	*str;
 static int  final_actions = 0;
 static int  start_actions = 0;
 
-char	*
-hex2bin (s, pi)
-register char   *s;
-int	*pi;
-{
+char *hex2bin (char *s, int *pi) {
     register char *d;
     char	*start;
-    register int    c,
-		    i;
-
+    register int    c, i;
 
     if ((d = malloc((unsigned)strlen(s)/2 + 2)) == NULLCP)
 	yyerror ("out of memory");
@@ -192,17 +177,10 @@ int	*pi;
     return start;
 }
 
-char	*
-bit2bin (s, pi)
-register char   *s;
-int	*pi;
-{
+char *bit2bin (char *s, int *pi) {
     register char *d;
     char	*start;
-    register int    c,
-		    shft,
-		    i;
-
+    int c, shft, i;
 
     if ((d = malloc((unsigned)strlen(s)/8 + 2)) == NULLCP)
 	yyerror ("out of memory");
@@ -226,11 +204,7 @@ int	*pi;
     return start;
 }
 
-bin2hex (s, d, len)
-register    u_char *s;
-register char  *d;
-int     len;
-{
+int bin2hex (u_char *s, char *d, int len) {
     register int    i,
 		    g;
 
@@ -251,10 +225,7 @@ int     len;
     return len;
 }
 
-int
-hex2int(s)
-register char	*s;
-{
+int hex2int(char *s) {
     register int	sum = 0;
     register int		i;
 
@@ -272,10 +243,7 @@ register char	*s;
     return (sum);
 }
 
-int
-bit2int(s)
-register char	*s;
-{
+int bit2int(char *s) {
     register int	sum = 0;
 
     while (*s) {

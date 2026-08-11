@@ -37,11 +37,11 @@ typedef struct avseqcomp {      /* attribute may have multiple values   */
 #define avs_comp_print(x,y,z)	AttrV_print (x,&(y)->avseq_av,z)
 #define avs_cmp_comp(x,y)	AttrV_cmp (&x->avseq_av ,&y->avseq_av)
 
-AV_Sequence  avs_comp_new ();
-AV_Sequence  avs_comp_cpy ();
-AV_Sequence  avs_cpy ();
-AV_Sequence  avs_merge ();
-AV_Sequence  str2avs ();
+AV_Sequence avs_comp_new (AttributeValue pe);
+AV_Sequence avs_comp_cpy (AV_Sequence avs);
+AV_Sequence avs_cpy (AV_Sequence avs);
+AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b);
+AV_Sequence str2avs (char *str, AttributeType at);
 
 typedef struct attrcomp {       /* A sequence of attributes             */
 	/* represents Attribute                 */
@@ -59,13 +59,15 @@ typedef struct attrcomp {       /* A sequence of attributes             */
 #define as_comp_alloc()          (Attr_Sequence) smalloc(sizeof(attrcomp))
 #define as_comp_cmp(x,y)      (((oid_cmp (&x->attr_type ,&y->attr_type) == OK) && (avs_cmp (x->attr_value ,y->attr_value) == OK)) ? OK : NOTOK)
 
-Attr_Sequence  as_comp_new ();
-Attr_Sequence  as_comp_cpy ();
-Attr_Sequence  as_cpy ();
-Attr_Sequence  as_find_type ();
-Attr_Sequence  as_merge ();
-Attr_Sequence  str2as();
+Attr_Sequence as_comp_new (AttributeType at, AV_Sequence as, struct acl_info *acl);
+Attr_Sequence as_comp_cpy (Attr_Sequence as);
+Attr_Sequence as_cpy (Attr_Sequence as);
+Attr_Sequence as_find_type (Attr_Sequence a, AttributeType b);
+Attr_Sequence as_merge (Attr_Sequence a, Attr_Sequence b);
+Attr_Sequence str2as(char *str);
 
+void as_free(Attr_Sequence as);
+int as_cmp(Attr_Sequence a, Attr_Sequence b);
 
 /* ACL is defined here as it is         */
 /* referenced.   it is only used by     */

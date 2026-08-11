@@ -26,7 +26,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_control.c,v
 
 
 #include <signal.h>
-
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 /* #include "quipu/dsa_control.h"*/
 #include "quipu/attr.h"
@@ -39,17 +41,17 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dsa_control.c,v
 #include "quipu/syntaxes.h"
 
 
-extern struct qbuf        *str2qb() ;
-extern struct qbuf        *qb_cpy() ;
+extern struct qbuf *str2qb(char *str, int len, int head) ;
+extern struct qbuf *qb_cpy(struct qbuf *qb) ;
 
-static        PE          dsa_control_enc() ;
+static PE dsa_control_enc(struct dsa_control * control_option) ;
 static struct dsa_control * dsa_control_decode() ;
-int	  dsa_control_print() ;
-static struct dsa_control * dsa_control_cpy() ;
-int	  dsa_control_cmp() ;
-void	  dsa_control_free();
-struct dsa_control * str2dsa_control() ;
-static struct dsa_control * str2dsa_control_aux() ;
+void dsa_control_print(PS ps, struct dsa_control * dsa_controlptr, int format) ;
+static struct dsa_control * dsa_control_cpy(struct dsa_control *dsa_c_ptr) ;
+int dsa_control_cmp(struct dsa_control *a, struct dsa_control *b) ;
+void dsa_control_free(struct dsa_control *item_to_free) ;
+struct dsa_control * str2dsa_control(char *str) ;
+static struct dsa_control * str2dsa_control_aux(char *str, struct dsa_control *item) ;
 
 static        PE          quipu_call_enc() ;
 static struct quipu_call *quipu_call_decode() ;
@@ -100,11 +102,7 @@ PE pe;
 	return (dsa_controlptr);
 }
 
-dsa_control_print (ps, dsa_controlptr, format)
-PS ps;
-struct dsa_control * dsa_controlptr;
-int format;
-{
+void dsa_control_print (PS ps, struct dsa_control * dsa_controlptr, int format) {
 	if (format == READOUT) {
 		ps_printf(ps, "Write attribute only - No READ printing. SPT\n") ;
 		switch (dsa_controlptr->dsa_control_option) {
@@ -158,8 +156,7 @@ int format;
 	}
 }
 
-static struct dsa_control *
-dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
+static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 	struct dsa_control * new_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
 
 	new_item->dsa_control_option = dsa_c_ptr->dsa_control_option ;
@@ -281,8 +278,7 @@ dsa_control_free (struct dsa_control *item_to_free) {
 	free ((char *)item_to_free) ;
 }
 
-struct dsa_control *
-str2dsa_control (char *str) {
+struct dsa_control *str2dsa_control (char *str) {
 	struct dsa_control * the_item;
 
 	the_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
@@ -292,8 +288,7 @@ str2dsa_control (char *str) {
 	return ((struct dsa_control *) 0);
 }
 
-static struct dsa_control *
-str2dsa_control_aux (char *str, struct dsa_control *item) {
+static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *item) {
 	/*	format: number $ string */
 
 	char * ptr_to_num, *ptr_to_string ;

@@ -28,6 +28,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/entry_dump.c,v 9.0 19
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include <errno.h>
+#include <unistd.h>
 #include "tailor.h"
 
 extern LLog * log_dsap;
@@ -37,8 +38,7 @@ extern LLog * log_dsap;
 extern RDN parse_rdn;
 extern char * new_version();
 
-static
-header_print (PS psa, Entry edb) {
+static void header_print (PS psa, Entry edb) {
 	switch (edb->e_data) {
 	case E_DATA_MASTER:
 		ps_print (psa,"MASTER\n");
@@ -56,8 +56,7 @@ header_print (PS psa, Entry edb) {
 		ps_printf (psa,"%s\n",new_version());
 }
 
-static
-entry_print (PS psa, Entry entryptr) {
+static void entry_print (PS psa, Entry entryptr) {
 	rdn_print (psa,entryptr->e_name,EDBOUT);
 	parse_rdn = entryptr->e_name;
 	ps_print (psa,"\n");
@@ -66,12 +65,10 @@ entry_print (PS psa, Entry entryptr) {
 }
 
 
-static
-entry_block_print (PS psa, Entry block) {
+static void entry_block_print (PS psa, Entry block) {
 	Entry ptr;
 
 	header_print (psa,block);
-
 	if (block != NULLENTRY) {
 		for ( ptr = (Entry) avl_getfirst(block->e_parent->e_children); ptr != NULLENTRY;
 				ptr = (Entry) avl_getnext()) {
@@ -83,13 +80,11 @@ entry_block_print (PS psa, Entry block) {
 	}
 }
 
-int
-write_edb (Entry ptr, char *filename) {
+int write_edb (Entry ptr, char *filename) {
 	int um;
 	FILE * fptr;
 	PS entryps;
 	extern char * parse_file;
-
 
 	um = umask (0177);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
@@ -97,7 +92,6 @@ write_edb (Entry ptr, char *filename) {
 		return NOTOK;
 	}
 	umask (um);
-
 	if ((entryps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 		fclose (fptr);
@@ -108,18 +102,14 @@ write_edb (Entry ptr, char *filename) {
 		fclose (fptr);
 		return NOTOK;
 	}
-
 	parse_file = filename;
-
 	entry_block_print (entryps,ptr);
-
 	if (entryps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb ps error: %s",ps_error(entryps->ps_errno)));
 		fclose (fptr);
 		return NOTOK;
 	}
 	ps_free (entryps);
-
 	if (fflush (fptr) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb flush error: %d",errno));
 		fclose (fptr);
@@ -138,16 +128,13 @@ write_edb (Entry ptr, char *filename) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb EDB close error: %d",errno));
 		return NOTOK;
 	}
-
 	LLOG (log_dsap,LLOG_TRACE,("Written %s",filename));
-
 	return (OK);
 }
 
 #else
 
-int
-write_edb (void) {
+void write_edb (void) {
 	LLOG (log_dsap,LLOG_FATAL,("write_edb implementation error"));
 }
 

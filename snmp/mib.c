@@ -154,7 +154,7 @@ void set_variable (char *name, char *newvalue) {
 				ot -> ot_text);
 		return;
 	}
-	if ((*os -> os_parse) (&value, newvalue) == NOTOK) {
+	if ((*os -> os_parse) ((void **)&value, newvalue) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"invalid value for variable \"%s.0\": \"%s\"",
 				ot -> ot_text, newvalue);

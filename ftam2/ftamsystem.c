@@ -31,6 +31,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamsystem.c,v 9.0 19
 
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include <grp.h>
 #include <pwd.h>
 #include "ftamsystem.h"
@@ -65,19 +67,14 @@ char  myhome[MAXPATHLEN];
 dev_t	null_dev;
 ino_t	null_ino;
 
-
 static int   wtmp = NOTOK;
 
 static long  clok;
 
-
 struct utmp  uts;
 
-
-long	lseek ();
-
-static ftam_finishindication (struct FTAMfinish *ftf);
-static ftam_abortindication (struct FTAMabort *fta);
+static void ftam_finishindication (struct FTAMfinish *ftf);
+static void ftam_abortindication (struct FTAMabort *fta);
 
 /*    VFS DATA */
 
@@ -510,53 +507,41 @@ bad1:
 	exit (1);
 }
 
-/*  */
-static ftam_finishindication();
-static ftam_abortindication();
+static void ftam_finishindication(struct FTAMfinish *ftf);
+static void ftam_abortindication(struct FTAMabort *fta);
 
-int
-ftam_indication (struct FTAMindication *fti) {
+int ftam_indication (struct FTAMindication *fti) {
 	switch (fti -> fti_type) {
 	case FTI_FINISH:
 		ftam_finishindication (&fti -> fti_finish);
 		break;
-
 	case FTI_ABORT:
 		ftam_abortindication (&fti -> fti_abort);
 		break;
-
 	case FTI_BULKBEGIN:
 		ftam_bulkbeginindication (&fti -> fti_group);
 		break;
-
 	case FTI_READWRITE:
 		ftam_readwriteindication (&fti -> fti_readwrite);
 		break;
-
 	case FTI_DATA:
 		ftam_dataindication (&fti -> fti_data);
 		break;
-
 	case FTI_DATAEND:
 		ftam_dataendindication (&fti -> fti_dataend);
 		break;
-
 	case FTI_CANCEL:
 		ftam_cancelindication (&fti -> fti_cancel);
 		break;
-
 	case FTI_TRANSEND:
 		ftam_transendindication (&fti -> fti_transend);
 		break;
-
 	case FTI_BULKEND:
 		ftam_bulkendindication (&fti -> fti_group);
 		break;
-
 	case FTI_MANAGEMENT:
 		ftam_managementindication (&fti -> fti_group);
 		break;
-
 	default:
 		adios (NULLCP, "unknown indication type=%d", fti -> fti_type);
 	}
@@ -564,9 +549,7 @@ ftam_indication (struct FTAMindication *fti) {
 
 /*    TERMINATION */
 
-/* ARGSUSED */
-
-static ftam_finishindication (struct FTAMfinish *ftf) {
+static void ftam_finishindication (struct FTAMfinish *ftf) {
 #ifdef	DEBUG
 	long    now;
 	struct FTAMcharging fcs;
@@ -579,38 +562,27 @@ static ftam_finishindication (struct FTAMfinish *ftf) {
 #ifdef	BRIDGE
 	ftp_quit ();
 #endif
-
 	advise (LLOG_NOTICE, NULLCP, "F-TERMINATE.INDICATION");
-
 #ifdef	DEBUG
 	fc -> fc_ncharge = 0;
 	if (account) {
 		time (&now);
-
 		fc -> fc_charges[fc -> fc_ncharge].fc_resource = "elapsed time";
 		fc -> fc_charges[fc -> fc_ncharge].fc_unit = "seconds";
 		fc -> fc_charges[fc -> fc_ncharge++].fc_value = (int) (now - clok);
 	}
 #endif
-
 	if (FTerminateResponse (ftamfd, NULLPE, fc, fti) == NOTOK)
 		ftam_adios (&fti -> fti_abort, "F-TERMINATE.RESPONSE");
-
 	FTFFREE (ftf);
-
 	closewtmp ();
-
 	exit (0);
 }
 
-
-int
-closewtmp (void) {
+int closewtmp (void) {
 #if	!defined(SYS5) && !defined(bsd43_ut_host)
 	long    now;
-
 	time (&now);
-
 	if (wtmp != NOTOK) {
 		lseek (wtmp, 0L, L_XTND);
 		SCPYN (uts.ut_name, "");
@@ -624,9 +596,8 @@ closewtmp (void) {
 
 /*    ABORT */
 
-static ftam_abortindication (struct FTAMabort *fta) {
+static void ftam_abortindication (struct FTAMabort *fta) {
 	struct FTAMindication   ftis;
-
 	advise (LLOG_NOTICE, NULLCP, "F-%s-ABORT.INDICATION %d",
 			fta -> fta_peer ? "U" : "P", fta -> fta_action);
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag);
@@ -634,12 +605,9 @@ static ftam_abortindication (struct FTAMabort *fta) {
 	ftp_abort ();
 	ftp_quit ();
 #endif
-
 	if (fta -> fta_action != FACTION_PERM && !fta -> fta_peer)
 		FUAbortRequest (ftamfd, FACTION_PERM,
 						(struct FTAMdiagnostic *) 0, 0, &ftis);
-
 	closewtmp ();
-
 	exit (1);
 }

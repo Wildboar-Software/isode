@@ -23,10 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/aetdase.c,v 9.0 1992/
  *    this agreement.
  *
  */
-
-
-/* LINTLIBRARY */
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -37,25 +33,22 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/aetdase.c,v 9.0 1992/
 #include "dgram.h"
 #include "tailor.h"
 
+static int stayopen = 0;
 
-/*    DATA */
-
-static	int	stayopen = 0;
-
-static	struct TSAPconnect tcs;
-static	PS	ps = NULLPS;
+static struct TSAPconnect tcs;
+static PS ps = NULLPS;
 
 
-static	int	armed = 0;
-static	int	interrupted;
-static	jmp_buf	intrenv;
+static int armed = 0;
+static int interrupted;
+static jmp_buf intrenv;
 
-static SFD	intrser ();
+static SFD intrser (int sig);
 
-static int  dase_init ();
-static int  dase_callback ();
-static int  yesno ();
-static print_qb ();
+static int dase_init (void);
+static int dase_callback (struct type_DASE_Callback__REQ *arg);
+static int yesno (void);
+static void print_qb (struct qbuf *q);
 
 static struct element_DASE_1 *read_el ();
 
@@ -262,10 +255,7 @@ out:
 	return result;
 }
 
-/*  */
-
-static int
-dase_init()  {
+static int dase_init(void)  {
 	int	    i,
 			nfds;
 	fd_set  ifds;
@@ -348,10 +338,7 @@ oops:
 	return OK;
 }
 
-/*  */
-
-static int
-dase_callback (struct type_DASE_Callback__REQ *arg) {
+static int dase_callback (struct type_DASE_Callback__REQ *arg) {
 	int i,
 		j;
 	int	    result;
@@ -438,10 +425,7 @@ out:
 	return result;
 }
 
-/*  */
-
-static int
-yesno()  {
+static int yesno(void) {
 	int     x,
 			y,
 			result;
@@ -494,19 +478,13 @@ again:
 	return result;
 }
 
-
-static
-print_qb (struct qbuf *q) {
+static void print_qb (struct qbuf *q) {
 	struct qbuf *p;
-
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
 
-/*  */
-
-static struct element_DASE_1 *
-read_el()  {
+static struct element_DASE_1 *read_el(void)  {
 	int   i;
 	char *bp,
 		 *cp;
@@ -625,12 +603,8 @@ out:
 	return top;
 }
 
-/*  */
 
-/* ARGSUSED */
-
-static SFD
-intrser (int sig) {
+static SFD intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif
@@ -641,10 +615,7 @@ intrser (int sig) {
 	interrupted++;
 }
 
-/*  */
-
-int
-set_lookup_dase (char flag) {
+int set_lookup_dase (char flag) {
 	if (!(stayopen = flag) && ps) {
 		struct TSAPdisconnect tds;
 

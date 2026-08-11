@@ -33,10 +33,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprespond.c,v 9.0 19
 
 /*    S-CONNECT.INDICATION */
 
-static int  refuse ();
+static int  refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si);
 
-int
-SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
+int SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 	int	    len;
 	struct ssapblk *sb;
 	struct ssapkt *s;
@@ -46,21 +45,17 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 	struct TSAPdisconnect *td = &tds;
 
 	isodetailor (NULLCP, 0);
-
 	if (vecp < 2)
 		return ssaplose (si, SC_PARAMETER, NULLCP, "bad initialization vector");
 	missingP (vec);
 	missingP (ss);
 	missingP (si);
-
 	if ((sb = newsblk ()) == NULL)
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
-
 	if (vecp == 2 || TInit (vecp, vec, ts, td) != NOTOK) {
 		int	sd;
 		struct TSAPdata txs;
 		struct TSAPdata *tx = &txs;
-
 		if (vecp == 2) {
 			if (TRestoreState (vec[1], ts, td) == NOTOK) {
 				ts2sslose (si, "TRestoreState", td);
@@ -78,30 +73,24 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 			}
 		}
 		sd = ts -> ts_sd;
-
 		if (TReadRequest (sb -> sb_fd = sd, tx, NOTOK, td) == NOTOK) {
 			ts2sslose (si, "TReadRequest", td);
 			goto out1;
 		}
-
-		s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, NULLIP);
+		s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, NULL);
 		TXFREE (tx);
-
 		if (s == NULL || s -> s_errno != SC_ACCEPT) {
 			spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, NULLCP);
 			goto out2;
 		}
-
 		if (s -> s_code != SPDU_CN) {
 			spktlose (sd, si, (s ? s -> s_errno : SC_CONGEST) | SC_REFUSE, NULLCP, "session protocol mangled: expected 0x%x, got 0x%x", SPDU_CN, s -> s_code);
 			goto out2;
 		}
-
 		if (s -> s_mask & SMASK_CN_VRSN	&& !(s -> s_cn_version & SB_ALLVRSNS)) {
 			spktlose (sd, si, SC_VERSION | SC_REFUSE, NULLCP, "version mismatch: expecting something in 0x%x, got 0x%x",				 SB_ALLVRSNS, s -> s_cn_version);
 			goto out2;
 		}
-
 		if ((s -> s_mask & SMASK_CN_REQ) &&
 				(((s -> s_cn_require & SR_EXCEPTIONS) && !(s -> s_cn_require & SR_HALFDUPLEX))
 				 ||
@@ -113,7 +102,6 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 			spktlose (sd, si, SC_PROTOCOL, NULLCP, "proposed session requirements error: got 0x%x", s -> s_cn_require);
 			goto out2;
 		}
-
 		if ((s -> s_mask & SMASK_CN_REQ) &&
 				((s -> s_cn_require & (SR_MINORSYNC | SR_MAJORSYNC | SR_RESYNC))
 				 ? (!(s -> s_cn_require & SR_ACTIVITY)
@@ -125,7 +113,6 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 		}
 	} else {
 		int	reason;
-
 		vec += vecp - 2;
 		s = NULL;
 		if ((reason = td -> td_reason) != DR_PARAMETER
@@ -143,7 +130,6 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 		bzero (vec[1], strlen (vec[1]));
 		*vec = NULL;
 	}
-
 	sb -> sb_fd = ts -> ts_sd;
 	sb -> sb_version =
 		(s -> s_mask & SMASK_CN_VRSN)
@@ -153,7 +139,6 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 		? SB_VRSN2 : SB_VRSN1;
 	if (ts -> ts_expedited)
 		sb -> sb_flags |= SB_EXPD;
-
 	bzero ((char *) ss, sizeof *ss);
 	ss -> ss_sd = sb -> sb_fd;
 	if (s -> s_mask & SMASK_CN_REF)
@@ -174,7 +159,6 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 		sb -> sb_tsdu_us = s -> s_tsdu_resp;
 	if (sb -> sb_version >= SB_VRSN2)		/* XXX */
 		sb -> sb_tsdu_them = sb -> sb_tsdu_us = 0;
-
 	if (s -> s_mask & SMASK_CN_SET)
 		sb -> sb_settings = ss -> ss_settings = s -> s_settings;
 	sb -> sb_requirements = (s -> s_mask & SMASK_CN_REQ ? s -> s_cn_require
@@ -206,19 +190,14 @@ SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
 	ss -> ss_qos.qos_sversion = sb -> sb_version + 1;
 	ss -> ss_qos.qos_extended = (sb -> sb_flags & SB_EXPD) ? 1 : 0;
 	copySPKTdata (s, ss);
-
 	freespkt (s);
-
 	return OK;
-
 out2:
 	;
 	freespkt(s);
-
 out1:
 	;
 	freesblk (sb);
-
 	return NOTOK;
 }
 
@@ -262,10 +241,18 @@ out1:
 	} \
 }
 
-/*  */
-
-int
-SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int status, int requirements, int settings, long isn, char *data, int cc, struct SSAPindication *si) {
+int SConnResponse (
+	int sd,
+	struct SSAPref *ref,
+	struct SSAPaddr *responding,
+	int status,
+	int requirements,
+	int settings,
+	long isn,
+	char *data,
+	int cc,
+	struct SSAPindication *si
+) {
 	int     result,
 			please;
 	struct ssapkt *s;
@@ -363,18 +350,15 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 	s -> s_cn_reference = *ref;	/* struct copy */
 	s -> s_options = CR_OPT_NULL;
 	s -> s_cn_version = 1 << sb -> sb_version;
-
 	if (isn != SERIAL_NONE) {
 		s -> s_mask |= SMASK_CN_ISN;
 		s -> s_isn = isn;
 	}
-
 	if (sb -> sb_tsdu_us || sb -> sb_tsdu_them) {
 		s -> s_mask |= SMASK_CN_TSDU;
 		s -> s_tsdu_resp = GET_TSDU_SIZE (sb -> sb_tsdu_us);
 		s -> s_tsdu_init = GET_TSDU_SIZE (sb -> sb_tsdu_them);
 	}
-
 	s -> s_mask |= SMASK_CN_REQ;
 	if ((s -> s_cn_require = sb -> sb_requirements) & SR_TOKENS) {
 		s -> s_mask |= SMASK_CN_SET;
@@ -388,40 +372,31 @@ SConnResponse (int sd, struct SSAPref *ref, struct SSAPaddr *responding, int sta
 		s -> s_mask |= SMASK_CN_CALLED;
 		bcopy (sb -> sb_responding.sa_selector, s -> s_called, s -> s_calledlen = sb -> sb_responding.sa_selectlen);
 	}
-
 	if (cc > 0) {
 		s -> s_mask |= SMASK_UDATA_PGI;
 		s -> s_udata = data, s -> s_ulen = cc;
 	} else
 		s -> s_udata = NULL, s -> s_ulen = 0;
-
 	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
 		freesblk (sb);
 	else
 		sb -> sb_flags |= SB_CONN;
 	s -> s_mask &= ~SMASK_UDATA_PGI;
 	s -> s_udata = NULL, s -> s_ulen = 0;
-
 	freespkt(s);
-
 	return result;
-
 out2:
 	;
 	freespkt (s);
 out1:
 	;
 	freesblk (sb);
-
 	return NOTOK;
 }
 
 #undef	dotoken
 
-/*  */
-
-static int
-refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si) {
+static int refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si) {
 	int     result;
 	struct TSAPdata txs;
 	struct TSAPdata   *tx = &txs;
@@ -430,13 +405,10 @@ refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si) {
 
 	s -> s_mask |= SMASK_RF_DISC;
 	s -> s_rf_disconnect |= RF_DISC_RELEASE;
-
 	result = spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD ? 1 : 0, si);
-
 	freespkt (s);
 	if (result == NOTOK)
 		return NOTOK;
-
 	if (ses_rf_timer >= 0)
 		switch (TReadRequest (sb -> sb_fd, tx, ses_rf_timer, td)) {
 		case OK:
@@ -448,6 +420,5 @@ refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si) {
 			sb -> sb_fd = NOTOK;
 			break;
 		}
-
 	return OK;
 }

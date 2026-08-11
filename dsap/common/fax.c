@@ -64,52 +64,34 @@ static struct pair pairs[] = {
 	NULL
 };
 
-/*  */
-
-static
-fax_free (struct fax *f) {
+static void fax_free (struct fax *f) {
 	free (f -> number);
-
 	if (f -> bits)
 		pe_free (f -> bits);
-
 	free ((char *) f);
 }
 
-/*  */
-
-static struct fax *
-fax_cpy (struct fax *a) {
+static struct fax *fax_cpy (struct fax *a) {
 	struct fax *f;
-
 	f = (struct fax *) smalloc (sizeof *f);
-
 	f -> number = strdup (a -> number);
 	f -> bits = a -> bits ? pe_cpy (a -> bits) : NULLPE;
-
 	return f;
 }
 
-/*  */
-
-static int
-fax_cmp (struct fax *a, struct fax *b) {
+static int fax_cmp (struct fax *a, struct fax *b) {
 	int	    i;
 
 	if (a == (struct fax *) NULL)
 		return (b ? -1 : 0);
 	else if  (b == (struct fax *) NULL)
 		return 1;
-
 	if (i = telcmp (a -> number, b -> number))
 		return i;
-
 	return pe_cmp (a -> bits, b -> bits);
 }
 
-/*  */
-
-static	fax_print (ps, f, format)
+static void fax_print (ps, f, format)
 PS ps;
 struct fax *f;
 int	format;
@@ -160,10 +142,7 @@ int	format;
 	}
 }
 
-/*  */
-
-static struct fax *
-str2fax (char *str) {
+static struct fax *str2fax (char *str) {
 	int	    value;
 	char  *ptr,
 		  **ap;
@@ -239,8 +218,6 @@ no_allocate:
 	return f;
 }
 
-/*  */
-
 static PE  fax_enc (f)
 struct fax *f;
 {
@@ -255,8 +232,6 @@ struct fax *f;
 
 	return pe;
 }
-
-/*  */
 
 static struct fax *fax_dec (pe)
 PE	pe;
@@ -283,10 +258,7 @@ PE	pe;
 	return f;
 }
 
-/*  */
-
-int
-fax_syntax (void) {
+void fax_syntax (void) {
 	add_attribute_syntax ("FacsimileTelephoneNumber",
 						  fax_enc,		fax_dec,
 						  str2fax,		fax_print,

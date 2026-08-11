@@ -79,10 +79,7 @@ spkt2str (struct ssapkt *s) {
 	return buffer;
 }
 
-/*  */
-
-struct ssapkt *
-str2spkt (char *buffer) {
+struct ssapkt *str2spkt (char *buffer) {
 	int	    cc;
 	char    packet[CONNECT_MAX + BUFSIZ];
 	struct ssapkt *s;
@@ -99,7 +96,7 @@ str2spkt (char *buffer) {
 	else {
 		bcopy (packet, qp -> qb_data = qp -> qb_base, qp -> qb_len = cc);
 		insque (qp, qb -> qb_back);
-		s = tsdu2spkt (qb, cc, NULLIP);
+		s = tsdu2spkt (qb, cc, NULL);
 		QBFREE (qb);
 	}
 

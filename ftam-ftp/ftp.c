@@ -42,7 +42,8 @@ static	char *rcsid = "$Header: /xtel/isode/isode/ftam-ftp/RCS/ftp.c,v 9.0 1992/0
 #include <stdio.h>
 #include <errno.h>
 #include <stdarg.h>
-
+#include <string.h>
+#include <unistd.h>
 #include "ftp_var.h"
 #include "logger.h"
 void	advise (int, char *, char *, ...);
@@ -60,11 +61,10 @@ struct	sockaddr_in myctladdr;
 
 FILE	*cin, *cout;
 int	dataconn();
+static void lostpeer(void);
 
-
-ftp_init() {
+void ftp_init(void) {
 	/* default ftp communication values */
-
 	strcpy(typename, "ascii"), type = TYPE_A;
 	strcpy(formname, "non-print"), form = FORM_N;
 	strcpy(modename, "stream"), mode = MODE_S;
@@ -75,13 +75,10 @@ ftp_init() {
 	verbose = isatty (fileno (stderr));
 }
 
-int getreply ();
+int getreply (int expecteof);
 int command (char *fmt, ...);
 
-hookup(host, port)
-char *host;
-int port;
-{
+int hookup(char *host, int port) {
 	struct hostent *hp;
 	int s, len;
 
@@ -156,9 +153,7 @@ bad:
 	return (NOTOK);
 }
 
-login(user,pass,acct)
-char *user, *pass, *acct;
-{
+int login(char *user, char *pass, char *acct) {
 	int n;
 
 	if (!user) {
@@ -188,31 +183,24 @@ char *user, *pass, *acct;
 }
 
 #ifndef	lint
-static int _command ();
+static int _command (char *fmt, va_list ap);
 
 int command(char *fmt, ...) {
 	int	    val;
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	val = _command (fmt, ap);
-
 	va_end (ap);
-
 	return val;
 }
 
-static int _command(char *fmt, va_list ap)
-{
+static int _command(char *fmt, va_list ap) {
 	char buffer[BUFSIZ];
-
 	if (cout == NULL) {
 		sprintf(ftp_error,"No control connection for command %s",
 					strerror(errno));
 		return (NOTOK);
 	}
-
 	_asprintf (buffer, NULLCP, fmt, ap);
 	fprintf (cout, "%s\r\n", buffer);
 	fflush(cout);
@@ -222,10 +210,7 @@ static int _command(char *fmt, va_list ap)
 }
 #else
 /* VARARGS1 */
-
-command (fmt)
-char   *fmt;
-{
+int command (char *fmt) {
 	return command (fmt);
 }
 #endif
@@ -279,10 +264,7 @@ int getreply(int expecteof) {
  *  The FTAM code treats this as though it were a local file (which
  *  is about what FTP does)
  */
-int
-sendrequest(cmd, /* local, */ remote)
-char *cmd, /* *local, */ *remote;
-{
+int sendrequest(char *cmd, char *remote) {
 	int dout;
 	int expectingreply = 0;
 
@@ -345,7 +327,7 @@ bad:
  */
 int sendport = -1;
 
-initconn() {
+int initconn(void) {
 	char *p, *a;
 	int result, len;
 #ifdef	BSD43
@@ -418,11 +400,7 @@ bad:
 	return (NOTOK);
 }
 
-/*ARGSUSED */
-int
-dataconn(modeX)
-char *modeX;
-{
+int dataconn(char *modeX) {
 	struct sockaddr_in from;
 	int s, fromlen = sizeof (from);
 
@@ -438,8 +416,7 @@ char *modeX;
 	return (data);
 }
 
-lostpeer() {
-
+static void lostpeer(void) {
 	if (connected) {
 		if (cout != NULL) {
 			shutdown(fileno(cout), 1+1);

@@ -1620,6 +1620,6 @@ init_clns () {
 }
 #else
 
-init_clns () {}
+void init_clns (void) {}
 
 #endif

@@ -33,7 +33,7 @@ extern char chrcnv [];
 extern LLog * log_dsap;
 int load_obj_hier(char *sep, char *newname);
 int add_oc_macro(char *buf, char *ptr);
-static get_oc_bits (char *str);
+static int get_oc_bits (char *str);
 
 extern oid_table OIDTable[];
 extern objectclass ocOIDTable[];
@@ -132,8 +132,7 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 }
 
 
-static
-get_oc_bits (char *str) {
+static int get_oc_bits (char *str) {
 	char * ptr;
 	char * ptr2;
 	struct oc_seq * oidseq = NULLOCSEQ, *oidseqptr = oidseq;

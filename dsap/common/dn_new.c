@@ -21,17 +21,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/dn_new.c,v 9.0 
  *    this agreement.
  *
  */
-
-
 #include "quipu/util.h"
 #include "quipu/name.h"
 
-DN  dn_comp_new (RDN rdn)
-{
+DN  dn_comp_new (RDN rdn) {
 	DN ptr;
 	ptr = dn_comp_alloc ();
 	dn_comp_fill (ptr,rdn);
 	ptr->dn_parent = NULLDN;
 	return (ptr);
 }
-

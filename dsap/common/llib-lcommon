@@ -937,7 +937,7 @@ caddr_t b;
 int c; 
 char * d; 
 {
-	(void) add_entry_aux(a,b,c,d);
+	add_entry_aux(a,b,c,d);
 } 
 
 char * get_oid (str) 

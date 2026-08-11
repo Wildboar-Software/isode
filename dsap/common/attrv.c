@@ -36,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/attrv.c,v 9.0 1
 
 extern int oidformat;
 extern struct PSAPaddr * psap_cpy ();
-extern str2asn (), pe_print() ;
+extern void pe_print (PS ps, PE pe, int format);
 AttributeValue str2file ();
 extern LLog * log_dsap;
 PE asn2pe();

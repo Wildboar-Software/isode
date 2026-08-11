@@ -997,7 +997,7 @@ you_lose:
 	pw_touched++;
 	switch (ifvar) {
 	case userPasswd:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK) {
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK) {
 bad_value:
 			;
 			result = int_SNMP_error__status_badValue;
@@ -1020,7 +1020,7 @@ bad_value:
 		return int_SNMP_error__status_noError;
 
 	case userID:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		pwp -> pw_uid = *((integer *) value);
 		(*os -> os_free) (value);
@@ -1029,7 +1029,7 @@ bad_value:
 		return int_SNMP_error__status_noError;
 
 	case userGroup:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		cp = qb2str ((struct qbuf *) value);
 		(*os -> os_free) (value);
@@ -1061,7 +1061,7 @@ done_gid:
 
 	case userQuota:
 #ifdef PW_QUOTA
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		pwp -> pw_quota = *((integer *) value);
 		(*os -> os_free) (value);
@@ -1082,7 +1082,7 @@ done_gid:
 		ap = &pwp -> pw_dir;
 do_string:
 		;
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		cp = qb2str ((struct qbuf *) value);
 		(*os -> os_free) (value);
@@ -1113,7 +1113,7 @@ do_string:
 		goto do_string;
 
 	case userStatus:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		i = *((integer *) value);
 		(*os -> os_free) (value);
@@ -1371,7 +1371,7 @@ you_lose:
 	gr_touched++;
 	switch (ifvar) {
 	case groupPasswd:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK) {
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK) {
 bad_value:
 			;
 			result = int_SNMP_error__status_badValue;
@@ -1394,14 +1394,14 @@ bad_value:
 		return int_SNMP_error__status_noError;
 
 	case groupID:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		grp -> gr_gid = *((integer *) value);
 		(*os -> os_free) (value);
 		return int_SNMP_error__status_noError;
 
 	case groupStatus:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
 		i = *((integer *) value);
 		(*os -> os_free) (value);
@@ -1602,7 +1602,7 @@ no_mem:
 	gr_touched++;
 	switch (ifvar) {
 	case grUserStatus:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK) {
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK) {
 bad_value:
 			;
 			free_gr ();

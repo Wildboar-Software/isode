@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/aetdap.c,v 9.0 
 
 /* LINTLIBRARY */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/dua.h"
@@ -40,10 +41,7 @@ static char unbind = FALSE;
 static DN username = NULLDN;
 static char password[DBA_MAX_PASSWD_LEN] = "";
 
-/*  */
-
-static
-bind_to_dsa (void) {
+static int bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -57,14 +55,10 @@ bind_to_dsa (void) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
 				   binderr.dbe_type == DBE_TYPE_SECURITY ? "security error"
 				   : "DSA unavailable");
-
 		return FALSE;
 	}
-
 	return TRUE;
 }
-
-/*  */
 
 static struct mapping {
 	char   *m_key;
@@ -82,10 +76,7 @@ static struct mapping {
 	NULL
 };
 
-
-/* ARGSUSED */
-
-static PE  name2value_dap (name, context, ontty, userdn, passwd, real_name)
+static PE name2value_dap (name, context, ontty, userdn, passwd, real_name)
 char   *name,
 	   *context,
 	   *userdn,
@@ -210,21 +201,15 @@ out:
 	}
 }
 
-/*  */
-
-int
-set_lookup_dap (
-	char flag		/* if TRUE always unbind */
-) {
+/* flag: if TRUE always unbind */
+int set_lookup_dap (int flag) {
 	extern char * oidtable;
 
 	if ((unbind = flag) && bound) {
 		bound = FALSE;
 		ds_unbind ();
 	}
-
 	acsap_lookup = name2value_dap;
-
 	string_syntaxes();
 	if (dsap_tai_init () != OK || load_oid_table (oidtable) != OK)
 		LLOG (addr_log,LLOG_EXCEPTIONS,("DAP initialization failed"));

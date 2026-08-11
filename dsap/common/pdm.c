@@ -34,9 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/pdm.c,v 9.0 199
 	EXAMPLE:
 		mhs $ physical $ telex $ telephone
 */
-
-/* LINTLIBRARY */
-
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "cmd_srch.h"
@@ -57,9 +54,7 @@ static CMD_TABLE pdm_table [] = {
 	0,		-1
 };
 
-
-static
-pdmfree (struct pref_deliv *pdm) {
+static void pdmfree (struct pref_deliv *pdm) {
 	struct pref_deliv *next;
 
 	for (; pdm != (struct pref_deliv *) NULL; pdm = next)  {
@@ -68,8 +63,7 @@ pdmfree (struct pref_deliv *pdm) {
 	}
 }
 
-static
-pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
+static int pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
 	/* matching here is a bit dubious !!! */
 
 	for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
@@ -84,8 +78,7 @@ pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
 
 }
 
-static struct pref_deliv *
-pdmcpy (struct pref_deliv *a) {
+static struct pref_deliv *pdmcpy (struct pref_deliv *a) {
 	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
 	c = result; /* to keep lint happy */
@@ -105,8 +98,7 @@ pdmcpy (struct pref_deliv *a) {
 	return (result);
 }
 
-static struct pref_deliv *
-pdmparse (char *str) {
+static struct pref_deliv *pdmparse (char *str) {
 	struct pref_deliv * result = (struct pref_deliv *) NULL;
 	struct pref_deliv * a, *b;
 	char * ptr;
@@ -152,7 +144,7 @@ pdmparse (char *str) {
 	return (result);
 }
 
-static pdmprint (ps,pdm,format)
+static void pdmprint (ps,pdm,format)
 PS ps;
 struct pref_deliv * pdm;
 int format;
@@ -172,7 +164,6 @@ int format;
 			prefix = " $ ";
 	}
 }
-
 
 static PE pdmenc (m)
 struct pref_deliv * m;
@@ -194,14 +185,12 @@ PE pe;
 	return (m);
 }
 
-int
-pref_deliv_syntax (void) {
+void pref_deliv_syntax (void) {
 	add_attribute_syntax ("DeliveryMethod",
 						  pdmenc,		pdmdec,
 						  pdmparse,		pdmprint,
 						  pdmcpy,		pdmcmp,
 						  pdmfree,	NULLCP,
 						  NULLIFP,	TRUE);
-
 }
 

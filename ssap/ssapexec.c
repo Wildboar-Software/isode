@@ -48,7 +48,7 @@ SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms) 
 	if (TReadRequest (sd = ts -> ts_sd, tx, NOTOK, td) == NOTOK)
 		return ts2sslose (si, "TReadRequest", td);
 
-	s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, NULLIP);
+	s = tsdu2spkt (&tx -> tx_qbuf, tx -> tx_cc, NULL);
 	TXFREE (tx);
 
 	if (s == NULL || s -> s_errno != SC_ACCEPT) {

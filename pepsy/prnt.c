@@ -68,7 +68,7 @@ static int p_pr_etype(PE pe, ptpe *p, modtyp *mod);
  * to guarentee the rules that vname and a vprint-type routine are called
  * alternatively. Basically can't have two vname's in a row
  */
-static vnamelock = 0;
+static int vnamelock = 0;
 /* if vnamelock > 0 don't call vname */
 #define VNAME(x)  if (vnamelock++ <= 0) vname(x); else
 #define VTAG(class, tag)	if (vnamelock++ <= 0)  \
@@ -87,8 +87,7 @@ static vnamelock = 0;
 /*
  * Print out ASN data given in pe using the information given in the tables
  */
-int
-prnt_f (
+int prnt_f (
 	/* ARGSUSED */
 	int typ,			/* which type it is */
 	modtyp *mod,			/* ASN Module it is from */
@@ -104,13 +103,10 @@ prnt_f (
 	if (typ < 0 || typ >= mod->md_nentries) {
 		return (ppepsylose (mod, NULLPTPE, pe, "prnt_f:Illegal type %d\n",typ));
 	}
-
 	p = mod->md_ptab[typ];
-
 	if (p->pe_type != PE_START) {
 		return (ppepsylose (mod, p, pe, "prnt_f: missing PE_START\n"));
 	}
-
 #if EXTRA_BRACKETS
 	if (explicit) {
 		if (p->pe_typename)
@@ -118,8 +114,6 @@ prnt_f (
 	}
 	VPUSH();
 #endif
-
-
 	if (p_pr_obj(explicit, pe, p, mod) == NOTOK) {
 #if EXTRA_BRACKETS
 		VPOP();
@@ -137,8 +131,7 @@ prnt_f (
  * offset field which makes it different to pr_type routine which
  * must assume that it has an offset.
  */
-static int
-p_pr_obj (
+static int p_pr_obj (
 	int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
@@ -200,13 +193,11 @@ bad:
 	return (NOTOK);
 }
 
-
 /*
  * Parse a single type. If a basic type parse it, if a compound type
  * call the appropriate parsing routine
  */
-static int
-p_pr_type (
+static int p_pr_type (
 	int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
@@ -471,8 +462,7 @@ bad:
  * Parse a sequence, calling appropriate routines to parse each sub
  * type
  */
-static int
-p_pr_seq (
+static int p_pr_seq (
 	PE head,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -632,12 +622,10 @@ bad:
 	return (NOTOK);
 }
 
-
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int
-p_pr_set (
+static int p_pr_set (
 	PE head,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -800,14 +788,11 @@ bad:
 	return (NOTOK);
 }
 
-
 /*
  * Parse a sequence of calling appropriate routines to parse each sub
  * type
  */
-
-static int
-p_pr_seqof (
+static int p_pr_seqof (
 	PE head,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -962,8 +947,7 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int
-p_pr_setof (
+static int p_pr_setof (
 	PE head,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -1111,8 +1095,7 @@ bad:
 /*
  * parse a choice field. This means find which choice is taken
  */
-static int
-p_pr_choice (
+static int p_pr_choice (
 	PE head,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -1168,8 +1151,7 @@ p_pr_choice (
  * Calculate the next ptpe entry in the sequence. Count a sequence as
  * one element
  */
-ptpe *
-next_ptpe (ptpe *p) {
+ptpe *next_ptpe (ptpe *p) {
 	int     level;
 
 	level = 0;
@@ -1251,8 +1233,7 @@ again:
  * Parse a single type for explicit tag If a basic type parse it, if
  * a compound type call the appropriate parsing routine
  */
-static int
-p_pr_etype (
+static int p_pr_etype (
 	PE pe,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -1488,8 +1469,7 @@ bad:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-int
-p_ismatch (
+int p_ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
 	unsigned int cl,
@@ -1545,8 +1525,7 @@ p_ismatch (
  * object is a CHOICE there are more than one possible tag that could
  * match and in this case we must try to match each one of them.
  */
-PE
-p_setpresent (PE head, ptpe *p, modtyp *mod) {
+PE p_setpresent (PE head, ptpe *p, modtyp *mod) {
 	PE      pe;
 	modtyp	*nmod;
 
@@ -1692,8 +1671,7 @@ setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
 /*
  * return non zero if we can print out the string
  */
-int
-printable (char *strptr, int len) {
+int printable (char *strptr, int len) {
 	if (strptr == NULL || *strptr == '\0') {
 		return (0);
 	}

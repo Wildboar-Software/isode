@@ -35,8 +35,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_modify.c,v 9.0 199
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
 
-static check_remove_values ();
-static check_remove_type ();
+static int check_remove_values (RDN rdn, Attr_Sequence as);
+static int check_remove_type (RDN rdn, AttributeType at);
 extern Entry database_root;
 extern LLog * log_dsap;
 extern Attr_Sequence entry_find_type();
@@ -47,19 +47,18 @@ extern AttributeType at_control;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
-static int inherit_set();
+static int inherit_set(Entry e, struct DSError *error);
 
 Entry  nulledb;
 
 static AttributeValue nonleafav = NULLAttrV;
-static inherit_link();
+static int inherit_link(Entry e, struct DSError *error);
 
 struct	acl *acl_list;
 
 int updateerror;
 
-int
-do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;
@@ -74,16 +73,12 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 #ifdef QUIPU_CONSOLE
 	extern AttributeType at_dsa_control ;
 #endif /* QUIPU_CONSOLE */
-
 	DLOG (log_dsap,LLOG_TRACE,("ds_modifyentry"));
-
 	if (!dsp)
 		target = arg->mea_object;
-
 	/* stop aliases being dereferenced */
 	arg->mea_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
-
 	/* check for control sequence */
 	if (!dsp && arg->mea_changes
 			&& (arg->mea_changes->em_type == EM_ADDATTRIBUTE)) {
@@ -107,14 +102,12 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 				return (res);
 			}
 	}
-
 	if (target == NULLDN) {
 		error->dse_type = DSE_NAMEERROR;
 		error->ERR_NAME.DSE_na_problem = DSE_NA_NOSUCHOBJECT;
 		error->ERR_NAME.DSE_na_matched = NULLDN;
 		return (DS_ERROR_REMOTE);
 	}
-
 	switch(find_entry(target,&(arg->mea_common),binddn,NULLDNSEQ,
 					  TRUE,&(real_entry), error, di_p, OP_MODIFYENTRY)) {
 	case DS_OK:
@@ -133,7 +126,6 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 			 ("do_ds_modify() - find_entry failed"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
 									   _ZModifyEntryArgumentDataDAS,
@@ -144,46 +136,37 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
 	}
-
 	if (read_only || real_entry->e_parent->e_lock) {
 		error->dse_type = DSE_SERVICEERROR;
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
 		return (DS_ERROR_REMOTE);
 	}
-
 	/* not prepared to accept operation over DSP */
 	if (dsp) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_AUTHENTICATION;
 		return (DS_ERROR_REMOTE);
 	}
-
 	DATABASE_HEAP;
 	entryptr = entry_cpy (real_entry);
 	acl_list = real_entry->e_acl;
 	GENERAL_HEAP;
-
 	authp = real_entry->e_authp ? real_entry->e_authp->ap_modification :
 			AP_SIMPLE;
 	if (!manager(binddn))
 		effdn = (authtype % 3) >= authp ? binddn : NULLDN;
 	else
 		effdn = binddn;
-
 	if (check_acl (effdn, ACL_ADD, acl_list->ac_entry,target) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		entry_free (entryptr);
 		return (DS_ERROR_REMOTE);
 	}
-
 	if (check_acl (effdn, ACL_WRITE, acl_list->ac_entry,target) == OK)
 		remove = OK;
-
 	nulledb = NULLENTRY;
-
 	for (eptr = arg->mea_changes; eptr!=NULLMOD; eptr=eptr->em_next) {
-
 #ifdef STRICT_X500
 		if ( AttrT_cmp (eptr->em_what->attr_type,at_objectclass) == 0) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS,
@@ -273,7 +256,6 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 			entry_free (entryptr);
 			return (DS_ERROR_REMOTE);
 		}
-
 	DATABASE_HEAP;
 	modify_attr (entryptr,binddn);
 	if (unravel_attribute (entryptr,error) != OK) {
@@ -291,7 +273,6 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 
 		/* Check user has not prevented further
 		   modification by themselves ! */
-
 		if ((acl_list != entryptr->e_acl)
 				&& (acl_cmp (acl_list,entryptr->e_acl) != 0)) {
 			if ((as = entry_find_type (entryptr,at_acl)) ==
@@ -318,29 +299,22 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 				return (DS_ERROR_REMOTE);
 			}
 		}
-
-
 		if (nulledb) {
 			AV_Sequence avs;
-
 			for (avs = entryptr->e_master; avs != NULLAV;
 					avs=avs->avseq_next) {
 				if (avs->avseq_av.av_struct == NULL)
 					continue;
-
 				if (dn_cmp ((DN)avs->avseq_av.av_struct,
 							mydsadn) == 0) {
 					create_null_edb (nulledb);
 					break;
 				}
 			}
-
 			if (avs == NULLAV)
 				entryptr->e_allchildrenpresent = FALSE;
 		}
-
 		write_dsa_entry (entryptr);
-
 		/*
 		 * changes made OK, so add new entry into tree.
 		 * instead of inserting entryptr (the ptr to the
@@ -349,12 +323,10 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 		 * new data.  this saves us from having to update
 		 * all parent pointers in child nodes.
 		 */
-
 #ifdef TURBO_INDEX
 		/* delete old entry from index first */
 		turbo_index_delete(real_entry);
 #endif
-
 		if (entryptr->e_parent == NULLENTRY) {
 			entry_replace(database_root, entryptr);
 		} else {
@@ -362,27 +334,21 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 		}
 		entry_free (entryptr);
 		entryptr = real_entry;
-
 		if (unravel_attribute(real_entry, error) != OK)
 			return(DS_ERROR_REMOTE);
-
 		if (real_entry->e_parent != NULLENTRY) {
 			if (real_entry->e_parent->e_edbversion)
 				free (real_entry->e_parent->e_edbversion);
 			real_entry->e_parent->e_edbversion = new_version();
 		}
-
 		if (avl_apply(real_entry->e_children, inherit_set,
 					  (caddr_t)error, NOTOK, AVL_PREORDER) == NOTOK)
 			return(DS_ERROR_REMOTE);
 		/* May need recursion */
-
 #ifdef TURBO_INDEX
 		/* add the new modified entry to the index */
 		turbo_add2index(real_entry);
 #endif
-
-
 #ifdef TURBO_DISK
 		if (turbo_write(entryptr) != OK)
 			fatal (-33,"modify rewrite failed - check database");
@@ -390,7 +356,6 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 		if (journal (entryptr) != OK)
 			fatal (-33,"modify rewrite failed - check database");
 #endif
-
 		return (DS_OK);
 	} else {
 		entry_free (entryptr);
@@ -398,27 +363,19 @@ do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN bin
 	}
 }
 
-
-/* ARGSUSED */
-static
-inherit_set (Entry e, struct DSError *error) {
+static int inherit_set (Entry e, struct DSError *error) {
 	set_inheritance (e);
-
 	if (e->e_data == E_TYPE_CONSTRUCTOR)
 		return(OK);
-
 	if (unravel_attribute(e, error) != OK)
 		return(NOTOK);
-
 	return(OK);
 }
 
-int
-remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+int remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, trail= NULLATTR, real_as;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute"));
-
 	for  (as=eptr->e_attributes; as!=NULLATTR; as=as->attr_link) {
 		if ((AttrT_cmp (as->attr_type,at)) == 0)
 			break;
@@ -450,47 +407,38 @@ remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN reques
 #endif
 		}
 	}
-
 	if (check_acl(requestor,ACL_WRITE,real_as->attr_acl,dn) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_REMOTE);
 	}
-
 	if (trail == NULLATTR) {
 		/* first in sequence */
 		eptr->e_attributes = as->attr_link;
 		as_comp_free (as);
 	} else
 		as_delnext (trail);
-
 	return (OK);
 }
 
 
-static
-check_remove_type (RDN rdn, AttributeType at) {
-
+static int check_remove_type (RDN rdn, AttributeType at) {
 	if ( AttrT_cmp (at,at_objectclass) == 0) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("no objectclass mods"));
 		updateerror = DSE_UP_NOOBJECTCLASSMODS;
 		return (NOTOK);
 	}
-
 	/* check attribute type is not distinguished */
-
 	for (; rdn!=NULLRDN; rdn=rdn->rdn_next)
 		if (AttrT_cmp (rdn->rdn_at,at) == 0) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("no remove from RDN"));
 			updateerror = DSE_UP_NOTONRDN;
 			return (NOTOK);
 		}
-
 	return (OK);
 }
 
-static
-check_remove_values (RDN rdn, Attr_Sequence as) {
+static int check_remove_values (RDN rdn, Attr_Sequence as) {
 	AV_Sequence as_avs;
 
 	/* check that the value trying to remove is not distinguished */
@@ -502,7 +450,6 @@ check_remove_values (RDN rdn, Attr_Sequence as) {
 					updateerror = DSE_UP_NOTONRDN;
 					return (NOTOK);
 				}
-
 #ifdef STRICT_X500
 	if (as->attr_type == 0) {
 		/* X.501 9.6.2 ! */
@@ -511,14 +458,10 @@ check_remove_values (RDN rdn, Attr_Sequence as) {
 		updateerror = DSE_UP_NAMINGVIOLATION;
 	}
 #endif
-
 	return (OK);
 }
 
-
-
-int
-remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, realas;
 	AV_Sequence rmavs,avs,trail = NULLAV;
 	int i;
@@ -627,8 +570,7 @@ remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requesto
 	return (OK);
 }
 
-int
-add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
+int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
 	struct acl_attr * aa;
 	struct acl_info * ai = NULLACL_INFO;
 	struct oid_seq * oidptr;
@@ -670,25 +612,19 @@ add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 		DLOG (log_dsap,LLOG_DEBUG,("add acl failed"));
 		return (NOTOK);
 	}
-
 	DATABASE_HEAP;
 	eptr->e_attributes = as_merge (as_cpy(newas),eptr->e_attributes);
 	GENERAL_HEAP;
-
 	return (OK);
 }
 
-
-int
-mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+int mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
 	Attr_Sequence as, realas;
 	AV_Sequence avs;
 	char * dn2edbfile();
 
 	DLOG (log_dsap,LLOG_DEBUG,("add value"));
-
 	realas = entry_find_type (real_entry,newas->attr_type);
-
 	if ( (as = entry_find_type (eptr,newas->attr_type)) == NULLATTR)
 		if ( realas == NULLATTR ) {
 			error->dse_type = DSE_ATTRIBUTEERROR;
@@ -703,7 +639,6 @@ mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 			return (NOTOK);
 		} else
 			as = realas;
-
 	if (realas && realas->attr_acl &&
 			check_acl(requestor,ACL_WRITE,realas->attr_acl,dn) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -711,7 +646,6 @@ mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 		DLOG (log_dsap,LLOG_DEBUG,("add acl failed"));
 		return (NOTOK);
 	}
-
 	for (avs=as->attr_value; avs != NULLAV; avs=avs->avseq_next)
 		if (AttrV_cmp(&avs->avseq_av,&newas->attr_value->avseq_av) == 0) {
 			error->dse_type = DSE_ATTRIBUTEERROR;
@@ -727,50 +661,38 @@ mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN reques
 			DLOG (log_dsap,LLOG_DEBUG,("add value exists error"));
 			return (NOTOK);
 		}
-
 	if (nonleafav == NULLAttrV)
 		nonleafav = str2AttrV(NONLEAFOBJECT,
 							  str2syntax("objectClass"));
-
 	if ((AttrT_cmp(as->attr_type, at_objectclass) == 0) &&
 			AttrV_cmp(&newas->attr_value->avseq_av, nonleafav) == 0)
 		/* will sort out the EDB file later if needed */
 		nulledb = eptr;
-
 	DATABASE_HEAP;
 	eptr->e_attributes = as_merge (as_cpy(newas),eptr->e_attributes);
 	GENERAL_HEAP;
-
 	return (OK);
 }
 
-
-int
-create_null_edb (Entry eptr) {
+int create_null_edb (Entry eptr) {
 	DN	save_dn ;
 	char   *filename, *dn2edbfile();
 	Entry	empty_entry;
 #ifdef TURBO_DISK
 	char	gfname[1024];
 #endif
-
 	eptr->e_leaf = FALSE ;
 	eptr->e_children = NULLAVL ;
 	eptr->e_allchildrenpresent = 2 ;
-
 	empty_entry = get_default_entry (eptr);
 	empty_entry->e_data = E_DATA_MASTER ;
-
 	if (eptr->e_parent->e_edbversion)
 		free (eptr->e_parent->e_edbversion);
 	eptr->e_parent->e_edbversion = new_version();
-
 	if (eptr->e_edbversion)
 		free (eptr->e_edbversion);
 	eptr->e_edbversion = new_version();
-
 	save_dn = get_copy_dn(eptr) ;
-
 	if ((filename = dn2edbfile(save_dn)) == NULLCP) {
 		fatal(-33, "SPT: ds_modify: 1 creating new NLN out failed.\n");
 	}
@@ -786,7 +708,6 @@ create_null_edb (Entry eptr) {
 		fatal(-33, "SPT: ds_modify: 2 writing new NLN out failed.\n") ;
 	}
 #endif
-
 	dn_free (save_dn);
 	free ((char *)empty_entry);
 }

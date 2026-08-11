@@ -23,8 +23,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imisc.c,v 9.0 1992/06
  *    this agreement.
  *
  */
-
-
 #include <ctype.h>
 #include <stdio.h>
 #include <pwd.h>
@@ -32,12 +30,9 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imisc.c,v 9.0 1992/06
 #include "IMISC-ops.h"		/* IMISC operation definitions */
 #include "IMISC-types.h"	/* IMISC type definitions */
 
-
 #ifdef	SYS5
 struct passwd *getpwuid ();
 #endif
-
-/*    DATA */
 
 static char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
@@ -49,23 +44,15 @@ static char *mypci = "isode miscellany pci";
 extern int length;
 static type_IMISC_Data *data = NULLPE;
 
-/* TYPES */
 struct type_IMISC_IA5List *vec2ia5list ();
-
-
-/* ARGUMENTS */
 static int	do_finger (), do_tell (), do_data (), do_help (), do_quit ();
 
-
-/* RESULTS */
 #define	gentime_result	utctime_result
 
 static int	utctime_result (), timeofday_result (), ia5_result (), tell_result (),
 		null_result (), echo_result ();
 
-/* ERRORS */
 static int imisc_error ();
-
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
@@ -142,50 +129,33 @@ static struct dispatch dispatches[] = {
 };
 
 
-char   *ctime ();
+char *ctime ();
 
-/*    MAIN */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
-				 table_IMISC_Operations, dispatches, do_quit);
-
+				 table_IMISC_Operations, dispatches, (IFP)do_quit);
 	exit (0);			/* NOTREACHED */
 }
 
-/*    TYPES */
-
-struct type_IMISC_IA5List *
-vec2ia5list (char **vec) {
+struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 	struct type_IMISC_IA5List  *ia5;
 	struct type_IMISC_IA5List **ia5p;
 
 	ia5 = NULL;
 	ia5p = &ia5;
-
 	for (; *vec; vec++) {
 		if ((*ia5p = (struct type_IMISC_IA5List *) calloc (1, sizeof **ia5p))
 				== NULL)
 			adios (NULLCP, "out of memory");
-
 		if (((*ia5p) -> IA5String = str2qb (*vec, strlen (*vec), 1)) == NULL)
 			adios (NULLCP, "out of memory");
-
 		ia5p = &((*ia5p) -> next);
 	}
-
 	return ia5;
 }
 
-/*  */
-
-static
-print_ia5list (struct type_IMISC_IA5List *ia5) {
-	struct qbuf *p,
-			   *q;
+static void print_ia5list (struct type_IMISC_IA5List *ia5) {
+	struct qbuf *p, *q;
 
 	for (; ia5; ia5 = ia5 -> next) {
 		p = ia5 -> IA5String;
@@ -195,23 +165,12 @@ print_ia5list (struct type_IMISC_IA5List *ia5) {
 	}
 }
 
-/*    ARGUMENTS */
-
-/* ARGSUSED */
-
-static int
-do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	*ia5 = vec2ia5list (args);
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	char   *cp,
 		   *dp,
 		   buffer[BUFSIZ];
@@ -238,18 +197,11 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	/* kludge this arg onto front of list - HACK ATTACK */
 	ia52 -> next = *ia5;
 	*ia5 = ia52;
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
+static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
 	char   *cp;
-
 	if (data == NULLPE) {
 		if (length > 0) {
 			if ((cp = malloc ((unsigned) length)) == NULL)
@@ -261,30 +213,18 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 		if (cp)
 			free (cp);
 	}
-
 	*pep = data;
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
+static int do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
-
 	return NOTOK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
+static int do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -293,109 +233,61 @@ do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
-
 	if (!acr -> acr_affirmative) {
 		AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
-
 	ACRFREE (acr);
-
 	exit (0);
 }
 
-/*    RESULTS */
-
-/* ARGSUSED */
-
-static int
-utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
+static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
 	struct qbuf *q;
-
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
 		printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
 	printf ("\n");
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
+static int timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
 	long	s;
-
 	s = result -> parm - 2208988800L;	/* UNIX epoch */
 	printf ("%s", ctime (&s));
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
+static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
 	print_ia5list (result);
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
+static int tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	printf ("told.\n");
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
+static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
+static int echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
 	if (pe_cmp (result, data))
 		advise (NULLCP, "data mismatch");
-
 	return OK;
 }
 
-/*    ERRORS */
-
-/* ARGSUSED */
-
-static int
-imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
+static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((ssize_t) parameter));
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_IMISC_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	if (parameter)
 		print_ia5list (parameter);
-
 	return OK;
 }

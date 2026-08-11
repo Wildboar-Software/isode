@@ -45,9 +45,7 @@ extern int dn_free();
 extern PE dn_enc();
 extern DN dn_dec();
 extern DN str2dnX();
-extern as_free(), as_cmp();
-extern Attr_Sequence as_cpy();
-Attr_Sequence attrSntx_dec();
+
 char * find_nest();
 
 static int indent = 0;
@@ -82,11 +80,7 @@ find_nest (char *str) {
 	return(ptr2);
 }
 
-static	attrSntx_print (ps, a, format)
-PS	ps;
-Attr_Sequence a;
-int	format;
-{
+static void attrSntx_print (PS ps, Attr_Sequence a, int format) {
 	char buf[LINESIZE];
 	Attr_Sequence  atl;
 	AV_Sequence avs;

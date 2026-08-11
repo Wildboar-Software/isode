@@ -33,11 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/dish/RCS/get_ava.c,v 9.0 
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-get_ava (avasert, type, value)
-AVA            *avasert;
-char           *type;
-char           *value;
-{
+int get_ava (AVA *avasert, char *type, char *value) {
 	char           *TidyString ();
 
 	if (type == NULLCP || *type == 0)

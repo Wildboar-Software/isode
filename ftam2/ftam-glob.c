@@ -34,6 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-glob.c,v 9.0 199
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <errno.h>
 #include <pwd.h>
 #include <sys/types.h>
@@ -70,12 +71,12 @@ static int getrdir (char *hdir);
 static void fatal (char *s);
 
 static char ** glob (char *v);
-static ginit (char **agargv);
+static void ginit (char **agargv);
 static	char **gargv;		/* Pointer to the (stack) arglist */
 static	int    gargc;		/* Number args in gargv */
 static	int    gnleft;
 static	int    gflag;
-static	int tglob(char);
+static	int tglob(char c);
 char	*globerr;
 static char *home;
 struct	passwd *getpwnam();
@@ -91,8 +92,7 @@ static	int globbed;
 static	char *entp;
 static	char **sortbas;
 
-
-static int chkldir ( char   *path, struct stat *st);
+static int chkldir (char *path, struct stat *st);
 static int (*chkdir) () = chkldir;
 
 int	getrdir ();
@@ -134,8 +134,7 @@ static char ** glob (char *v) {
 		return (gargv = copyblk(gargv));
 }
 
-static ginit (char **agargv) {
-
+static void ginit (char **agargv) {
 	agargv[0] = 0;
 	gargv = agargv;
 	sortbas = agargv;
@@ -449,7 +448,7 @@ slash:
 	}
 }
 
-static chkldir ( char   *path, struct stat *st) {
+static int chkldir ( char   *path, struct stat *st) {
 	return (stat (path, st) == 0 && (st -> st_mode & S_IFMT) == S_IFDIR);
 }
 
@@ -555,8 +554,7 @@ static scan (char **t, int (*f)(char)) {
 }
 #endif
 
-static tglob (char c) {
-
+static int tglob (char c) {
 	if (any(c, globchars))
 		gflag |= c == '{' ? 2 : 1;
 	return (c);
@@ -569,15 +567,15 @@ static trim (char c) {
 }
 #endif
 
-static letter (char c) {
+static int letter (char c) {
 	return (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_');
 }
 
-static digit (char c) {
+static int digit (char c) {
 	return (c >= '0' && c <= '9');
 }
 
-static any (int c, char *s) {
+static int any (int c, char *s) {
 	while (*s)
 		if (*s++ == c)
 			return(1);
@@ -635,7 +633,7 @@ static char *strend (char *cp) {
  * user whose home directory is sought is currently.
  * We write the home directory of the user back there.
  */
-static getldir (char *hdir) {
+static int getldir (char *hdir) {
 	struct passwd *pp = getpwnam(hdir);
 	if (pp == 0)
 		return (1);

@@ -33,6 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/0
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "manifest.h"
 #include "internet.h"
 #include "sys.file.h"
@@ -46,12 +47,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/lppd.c,v 9.0 1992/0
 #include "logger.h"
 #include "tailor.h"
 
-static int   lppd ();
-static void  envinit ();
-static void  ts_advise ();
-static void  arginit ();
-
-/*  */
+static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+static void envinit (void);
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event);
+static void arginit (char **vec);
 
 static int  debug = 0;
 static int  nbits = FD_SETSIZE;
@@ -65,12 +64,10 @@ LLog *pgm_log = &_pgm_log;
 static char *myname = "lppd";
 static char myhost[BUFSIZ];
 
-
 #define	NTADDRS		FD_SETSIZE
 
 static struct TSAPaddr *tz;
 static struct TSAPaddr  tas[NTADDRS];
-
 
 struct dispatch {
 	char       *dp_entity;
@@ -81,21 +78,11 @@ struct dispatch {
 static struct dispatch *dz;
 static struct dispatch  dps[NTADDRS];
 
+void adios  (char *, char *, ...);
+void advise (int, char *, char *, ...);
+void ts_advise (struct TSAPdisconnect *td, int code, char *event);
 
-void  adios  (char *, char *, ...);
-void  advise (int, char *, char *, ...);
-
-void	ts_advise ();
-
-
-
-
-/*  */
-
-/* ARGSUSED */
-
-int
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    listening,
 			vecp;
 	char   *vec[4];
@@ -116,39 +103,30 @@ main (int argc, char **argv, char **envp) {
 			adios (NULLCP, "unexpected network type 0x%x", na -> na_stack);
 		if (na -> na_tset != NA_TSET_TCP)
 			adios (NULLCP, "unexpected transport base 0x%x", na -> na_tset);
-
 		advise (LLOG_NOTICE, NULLCP, "listening on %s for \"%s\"",
 				taddr2str (ta), dp -> dp_entity);
-
 		if (TNetListen (ta, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetListen failed");
 			_exit (1);
 		}
-
 		listening++;
 	}
-
 	if (!listening)
 		adios (NULLCP, "no network services selected");
-
 	for (ta = tas;;) {
 		if (TNetAcceptAux (&vecp, vec, NULLIP, ta, 0, NULLFD, NULLFD, NULLFD,
 						   NOTOK, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetAccept failed");
 			continue;
 		}
-
 		if (vecp <= 0)
 			continue;
-
 		if (debug)
 			break;
-
 		switch (TNetFork (vecp, vec, td)) {
 		case OK:
 			ll_hdinit (pgm_log, myname);
 			break;
-
 		case NOTOK:
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetFork failed");
 		default:
@@ -156,18 +134,11 @@ main (int argc, char **argv, char **envp) {
 		}
 		break;
 	}
-
 	lppd (vecp, vec, ta);
-
 	return 0;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static int
-lppd (int vecp, char **vec, struct TSAPaddr *ta) {
+static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
 	u_short port = ta -> ta_addrs[0].na_port;
 	struct dispatch *dp;
 	struct isoservent *is;
@@ -195,10 +166,7 @@ lppd (int vecp, char **vec, struct TSAPaddr *ta) {
 	adios (*is -> is_vec, "unable to exec");
 }
 
-/*  */
-
-static void
-ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -211,10 +179,7 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-/*  */
-
-static
-arginit (char **vec) {
+static void arginit (char **vec) {
 	int    n;
 	char  *ap;
 	struct stat st;
@@ -312,25 +277,18 @@ no_more:
 	endisoservent ();
 }
 
-/*  */
-
-static
-envinit () {
-	int     i,
-	sd;
+static void envinit (void) {
+	int     i, sd;
 
 	nbits = getdtablesize ();
-
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
 			case NOTOK:
 				sleep (5);
 				continue;
-
 			case OK:
 				break;
-
 			default:
 				_exit (0);
 			}
@@ -338,14 +296,12 @@ envinit () {
 		}
 
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	SETSID
 		if (setsid () == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -370,9 +326,7 @@ envinit () {
 		if (pgm_log -> ll_fd != sd)
 			close (sd);
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
@@ -383,41 +337,27 @@ envinit () {
 void  adios (char *what, char *fmt, ...)
 {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
-/* VARARGS */
-
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
-
 
 #ifndef	lint
 void  advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
-/* VARARGS */
-
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

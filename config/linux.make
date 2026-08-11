@@ -19,7 +19,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-OPTIONS +=  -std=gnu17 -fcommon -Wno-error=return-mismatch -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=implicit-int -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS +=  -std=gnu17 -fcommon -Wno-error=implicit-function-declaration -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
 
 HDIR	=	$(TOPDIR)h/

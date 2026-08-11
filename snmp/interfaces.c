@@ -355,7 +355,7 @@ static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		i = *((integer *) value);
 		(*os -> os_free) (value);

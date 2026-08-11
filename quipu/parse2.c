@@ -27,6 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/parse2.c,v 9.0 1992/0
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/config.h"
+#include "quipu/name.h"
 #include "cmd_srch.h"
 #include "quipu/malloc.h"
 #ifdef TURBO_DISK
@@ -38,8 +39,6 @@ Avlnode *getentry_block();
 Entry get_entry_aux();
 extern LLog * log_dsap;
 char * _getline ();
-static test_duplicate ();
-int rdn_print ();
 int master_edbs = 0;
 int slave_edbs = 0;
 
@@ -247,11 +246,7 @@ char		**versionptr;
 
 #else
 
-get_header (file,typeptr,versionptr)
-FILE * file;
-int * typeptr;
-char ** versionptr;
-{
+int get_header (FILE * file, int * typeptr, char ** versionptr) {
 	char * ptr;
 	static CMD_TABLE cmd_header [] = {
 		"MASTER",	E_DATA_MASTER,

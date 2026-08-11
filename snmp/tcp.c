@@ -898,9 +898,7 @@ again:
 }
 #endif
 
-/*  */
-
-init_tcp () {
+void init_tcp (void) {
 	OT	    ot;
 
 	if (ot = text2obj ("tcpRtoAlgorithm"))

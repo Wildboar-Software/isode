@@ -39,17 +39,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static
-mailbox_free (struct mailbox *ptr) {
+static void mailbox_free (struct mailbox *ptr) {
 	free (ptr->mbox);
 	free (ptr->mtype);
-
 	free ((char *) ptr);
 }
 
-
-static struct mailbox *
-mailbox_cpy (struct mailbox *a) {
+static struct mailbox *mailbox_cpy (struct mailbox *a) {
 	struct mailbox * result;
 
 	result = (struct mailbox *) smalloc (sizeof (struct mailbox));
@@ -58,8 +54,7 @@ mailbox_cpy (struct mailbox *a) {
 	return (result);
 }
 
-static
-mailbox_cmp (struct mailbox *a, struct mailbox *b) {
+static int mailbox_cmp (struct mailbox *a, struct mailbox *b) {
 	int res;
 
 	if (a == (struct mailbox *) NULL)
@@ -67,7 +62,6 @@ mailbox_cmp (struct mailbox *a, struct mailbox *b) {
 			return (0);
 		else
 			return (-1);
-
 	if ( (res = lexequ(a->mbox,b->mbox)) != 0)
 		return (res);
 	if ( (res = lexequ(a->mtype,b->mtype)) != 0)
@@ -75,8 +69,7 @@ mailbox_cmp (struct mailbox *a, struct mailbox *b) {
 	return (0);
 }
 
-
-static mailbox_print (ps,mail,format)
+static void mailbox_print (ps,mail,format)
 PS ps;
 struct   mailbox* mail;
 int format;
@@ -87,9 +80,7 @@ int format;
 		ps_printf (ps,"%s $ %s",mail->mtype, mail->mbox);
 }
 
-
-static struct mailbox *
-str2mailbox (char *str) {
+static struct mailbox *str2mailbox (char *str) {
 	struct mailbox * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -137,8 +128,7 @@ PE pe;
 	return (m);
 }
 
-int
-mailbox_syntax (void) {
+void mailbox_syntax (void) {
 	add_attribute_syntax ("Mailbox",
 						  mail_enc,		mail_dec,
 						  str2mailbox,	mailbox_print,

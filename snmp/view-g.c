@@ -497,9 +497,7 @@ static struct wired {
 	NULL
 };
 
-/*  */
-
-init_view () {
+void init_view (void) {
 	char	buffer[BUFSIZ],
 			*vec[4];
 	OT	    ot;
@@ -578,9 +576,7 @@ init_view () {
 			  ot -> ot_info = (caddr_t) viewTrapType;
 }
 
-/*  */
-
-fin_view () {
+void fin_view (void) {
 	int    i;
 	char   *vec[3];
 	struct community *c;

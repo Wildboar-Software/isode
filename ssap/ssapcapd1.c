@@ -33,32 +33,23 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapcapd1.c,v 9.0 1992
 
 /*    S-CAPABILITY-DATA.REQUEST */
 
-static  int SCapdRequestAux ();
+static int SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
 
-int
-SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
+int SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
 	missingP (si);
-
 	smask = sigioblock ();
-
 	ssapPsig (sb, sd);
 	toomuchP (sb, data, cc, SX_CDSIZE, "capability");
-
 	result = SCapdRequestAux (sb, data, cc, si);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-/*  */
-
-static int
-SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {
+static int SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_CAPABILITY))
@@ -70,10 +61,8 @@ SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *
 		return ssaplose (si, SC_OPERATION, NULLCP,
 						 "capability data request in progress");
 	sb -> sb_flags |= SB_CD;
-
 	if ((result = SWriteRequestAux (sb, SPDU_CD, data, cc, 0, 0L, 0, NULLSD,
 									NULLSD, NULLSR, si)) == NOTOK)
 		freesblk (sb);
-
 	return result;
 }

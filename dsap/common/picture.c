@@ -220,7 +220,7 @@ hide_picture (void) {
 	rootChildList = NULL;
 }
 
-picture_print (ps,pe,format)
+void picture_print (ps,pe,format)
 PS ps;
 PE pe;
 int format;

@@ -61,21 +61,23 @@ typedef struct dncomp {         /* DN is sequence of RDNs.              */
 #define dn_comp_fill(x,y)     x -> dn_rdn = y
 #define dn_comp_cmp(x,y)      ((rdn_cmp (x->dn_rdn ,y->dn_rdn) == OK) ? OK : NOTOK )
 
-DN  dn_comp_new ();
-DN  dn_comp_cpy ();
-DN  dn_cpy ();
-DN  str2dn ();
+DN dn_comp_new (RDN rdn);
+DN dn_comp_cpy (DN dn);
+RDN rdn_cpy (RDN rdn);
+DN dn_cpy (DN dn);
+DN str2dn (char *str);
 
-char *dn2str ();
-char *dn2ufn ();
-char *dn2rfc ();
+char *dn2str (DN dn);
+char *dn2ufn (DN dn, int multiline);
+char *dn2rfc (DN dn, char *sep);
 
-void dn_print ();
-void dn_rfc_print ();
-void ufn_dn_print ();
-void ufn_rdn_print ();
+void rdn_print (PS ps, RDN rdn, int format);
+void dn_print (PS ps, DN dn, int format);
+void dn_rfc_print (PS ps, DN dn, char *sep);
+void ufn_dn_print (PS ps, DN dn, int multiline);
+void ufn_rdn_print (PS ps, RDN rdn);
 
-int ufn_dn_print_aux ();
+int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline);
 
 extern int ufn_indent;
 

@@ -594,7 +594,7 @@ static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	switch (ifvar) {
 	case printQAction:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		i = *((integer *) value);
 		(*os -> os_free) (value);
@@ -837,7 +837,7 @@ static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	switch (ifvar) {
 	case printJAction:
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK)
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		i = *((integer *) value);
 		(*os -> os_free) (value);

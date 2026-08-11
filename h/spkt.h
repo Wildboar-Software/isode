@@ -26,9 +26,7 @@
 #endif
 
 #include "tsap.h"		/* definitions for TS-USERs */
-
-
-/*  */
+#include "logger.h"
 
 #define	ssapPsig(sb, sd) \
 { \
@@ -926,12 +924,13 @@ struct ssapkt {
 
 
 void freespkt (struct ssapkt *s);
-struct ssapkt *newspkt ();
+struct ssapkt *newspkt (int code);
 
-void	text2spkt (), spkt2text ();
+void text2spkt (struct ssapkt *s);
+void spkt2text (LLog *lp, struct ssapkt *s, int read);
 
 int	spkt2tsdu (struct ssapkt *s, char **base, int *len);
-struct ssapkt *tsdu2spkt ();
+struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc);
 
 char   *spkt2str ();
 struct ssapkt *str2spkt ();

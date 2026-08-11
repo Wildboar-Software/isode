@@ -27,6 +27,7 @@ NDQPDU DEFINITIONS ::=
 #include "sector1.h"
 
 void	adios (char *, char *, ...);
+size_t enq(TEXT_UPDATE **qhp, TEXT_UPDATE *elem);
 
 #undef PEPYPARM
 #define PEPYPARM int *
@@ -41,25 +42,19 @@ extern TEXT_UPDATE *ndq_queue;
 
 TEXT_UPDATE ud;
 
-rcv_text(pe)
-PE pe;
-{
-
+void rcv_text(PE pe) {
 	ud.echo_sw = ud.type_sw = -1;
 	ud.updates.do_list.do_name = "\0";
 	ud.updates.do_list.do_type = -1;
 	ud.updates.do_list.do_cmd.text_ud.text_count = 0;
-
 	if(unbuild_NDQPDU_NDQpdu(pe,1,NULLIP,NULLVP,&ud) == NOTOK) 
 		return;
-
 	(void)printf("Echo = %d; Type = %d; D.O. Name = %s; D. O. Update Type = %d\n", ud.echo_sw,ud.type_sw,ud.updates.do_list.do_name, ud.updates.do_list.do_type);
 	if(ud.updates.do_list.do_cmd.text_ud.text_count) 
 		(void)printf("Text = %s\n",ud.updates.do_list.do_cmd.text_ud.text_ptr);
 }
 
 #endif
-
 
 #define	bitstr2int(arg,val,cnt) \
 { \
@@ -318,12 +313,8 @@ END
  *		q head points to last entry in queue
  */
 
-TEXT_UPDATE *
-deq( qhp )
-register TEXT_UPDATE **qhp;
-{
-	register TEXT_UPDATE *elem;
-
+TEXT_UPDATE *deq(TEXT_UPDATE **qhp) {
+	TEXT_UPDATE *elem;
 
 	if( (elem = (*qhp)) != 0 )
 	{
@@ -337,39 +328,28 @@ register TEXT_UPDATE **qhp;
 }
 
 /*
- * enq			enter something in a queue
- *			queue format is same as deq above
+ * enq enter something in a queue
+ * queue format is same as deq above
  */
-
-enq( qhp,elem )
-register TEXT_UPDATE **qhp;
-register TEXT_UPDATE *elem;
-{
-	register TEXT_UPDATE *liq;
-
+size_t enq(TEXT_UPDATE **qhp, TEXT_UPDATE *elem) {
+	TEXT_UPDATE *liq;
 	if( (liq = (*qhp)) == 0 )
 		(*qhp) = elem;
 	elem->ndq_elem = (*qhp)->ndq_elem;
 	(*qhp)->ndq_elem = elem;
 	(*qhp) = elem;
-
-	return ( (size_t) liq );	/* last-in-queue zero, says queue was empty */
+	/* last-in-queue zero, says queue was empty */
+	return ( (size_t) liq );
 }
 
 /*
  * fiq			get the first in queue - no delinking
  *			return zero if nothing in queue
  */
-
-TEXT_UPDATE *
-fiq( qhp )
-register TEXT_UPDATE **qhp;
-{
-	register TEXT_UPDATE *e;
-
+TEXT_UPDATE *fiq(TEXT_UPDATE **qhp) {
+	TEXT_UPDATE *e;
 	if( (e = *qhp) != 0 )		/* something in queue */
-		e = e->ndq_elem;		/* get first in queue */
-
+		e = e->ndq_elem;		/* get first in queue */
 	return( e );			/* return that value */
 }
 %}

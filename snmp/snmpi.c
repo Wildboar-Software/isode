@@ -58,8 +58,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpi.c,v 9.0 1992/06/
 #endif
 #endif
 
-/*    DATA */
-
 int	debug = 0;
 static	int	verbose = 0;
 int	watch = 0;
@@ -79,8 +77,7 @@ static __sighandler_t istat;
 static	SFP	istat;
 #endif
 
-static SFD	intrser ();
-
+static void intrser (int sig);
 
 static	char   *defs = NULLCP;
 
@@ -93,31 +90,32 @@ static	struct TSAPaddr  snmp_ta;
 char   *snmp_error ();
 static struct type_SNMP_Message *new_message ();
 
-
 void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
 
-/*  */
-
 struct dispatch {
-	char   *ds_name;		/* command name */
-	int	    (*ds_fnx)(char **vec);		/* dispatch */
-
-	char   *ds_help;		/* help string */
+	char   *ds_name;		      /* command name */
+	int    (*ds_fnx)(char **vec); /* dispatch */
+	char   *ds_help;		      /* help string */
 };
 static struct dispatch *getds ();
 
-
-static int	f_audit ();
+static int	f_audit (char **vec);
 #ifdef	BSD42
-static int	f_bulk ();
+static int	f_bulk (char **vec);
 #endif
-static int	f_compile (), f_dump ();
-static int	f_get (), f_get_next (), f_set ();
-static int	f_help (), f_quit (), f_status ();
-
-static int  get_ava (), process (), ncols ();
-static  arginit (); 
+static int f_compile (char **vec);
+static int f_dump (char **vec);
+static int f_get (char **vec);
+static int f_get_next (char **vec);
+static int f_set (char **vec);
+static int f_help (char **vec);
+static int f_quit (char **vec);
+static int f_status (char **vec);
+static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset);
+static int process (struct type_SNMP_Message *msg);
+static int ncols (FILE *fp);
+static void arginit (char **argv); 
 
 static struct dispatch dispatches[] = {
 	"audit", f_audit, "audit traps",
@@ -145,7 +143,6 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-
 static	int	helpwidth;
 static int  _getline (), snmploop ();
 
@@ -154,15 +151,7 @@ long	random ();
 #endif
 long	time ();
 
-/*    MAIN */
-
-/* ARGSUSED */
-
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	int	    eof,
 			status,
 			vecp;
@@ -235,38 +224,25 @@ were_out_of_here:
 			TDiscRequest (sd, NULLCP, 0, &tds);
 	}
 #endif
-
 	exit (status);		/* NOTREACHED */
 }
 
-/*  */
-
-static int  snmploop (vec, error)
-char  **vec;
-int	error;
-{
+static int  snmploop (char **vec, int error) {
 	struct dispatch *ds;
-
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
 	switch ((*ds -> ds_fnx) (vec)) {
 	case NOTOK:
 		return error;
-
 	case OK:
 	default:
 		return OK;
-
 	case DONE:
 		return DONE;
 	}
 }
 
-/*  */
-
-static struct dispatch *getds (name)
-char   *name;
-{
+static struct dispatch *getds (char *name) {
 	int    longest,
 		   nmatches;
 	char  *p,
@@ -312,9 +288,7 @@ char   *name;
 
 /*    OPERATIONS */
 
-static int  f_audit (vec)
-char  **vec;
-{
+static int  f_audit (char **vec) {
 	int	    follow,
 			forever,
 			i;
@@ -486,11 +460,8 @@ out:
 		pe_free (p);
 	if (au)
 		free_SNMP_Audit (au);
-
 	return OK;
 }
-
-/*  */
 
 #ifdef	BSD42
 int	bulk1 (
@@ -507,9 +478,7 @@ int bulk2 (
 	char   *community
 );
 
-static int  f_bulk (vec)
-char  **vec;
-{
+static int f_bulk (char **vec) {
 	int	    result;
 	int	    (*fnx)(PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) = bulk1;
 	struct type_SNMP_VarBindList **vp;
@@ -620,8 +589,6 @@ out:
 }
 #endif
 
-/*  */
-
 static char *access_t[] = { "not-accessible",
 							"read-only",
 							"write-only",
@@ -634,10 +601,7 @@ static char *status_t[] = { "obsolete",
 							"deprecated"
 						  };
 
-
-static int  f_compile (vec)
-char  **vec;
-{
+static int f_compile (char **vec) {
 	int    i,
 		   j,
 		   k;
@@ -810,15 +774,10 @@ char  **vec;
 	if (!fast)
 		advise (NULLCP, "%d objects written to %s", i,
 				file ? sysout : "stdout");
-
 	return OK;
 }
 
-/*  */
-
-static int  f_dump (vec)
-char  **vec;
-{
+static int f_dump (char **vec) {
 	int	    request_id,
 			rows,
 			timing = 0;
@@ -835,7 +794,6 @@ char  **vec;
 		printf ("dump [object]\n");
 		printf ("    with no arguments, dump entire MIB\n");
 		printf ("    with an argument, dump a portion of the MIB\n");
-
 		return OK;
 	}
 	if (*vec && strcmp (*vec, "-time") == 0) {
@@ -934,21 +892,19 @@ try_again:
 
 		if (timing)
 			continue;
-
 		printf ("%s=", oid2ode (vp -> VarBind -> name));
 		if ((oi = name2inst (v -> name)) == NULL
 				|| (os = oi -> oi_type -> ot_syntax) == NULL
-				|| (*os -> os_decode) (&value, v -> value) == NOTOK)
+				|| (*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			vunknown (v -> value);
 		else {
-			(*os -> os_print) (value, os);
+			(*os -> os_print) ((void *)value, os);
 			printf ("\n");
 
-			(*os -> os_free) (value);
+			(*os -> os_free) ((void *)value);
 		}
 	}
 	rows++;
-
 	if (pe)
 		pe_free (pe);
 	msg -> data -> offset = type_SNMP_PDUs_get__next__request;
@@ -963,7 +919,6 @@ out:
 		pe_free (pe);
 	if (msg)
 		free_SNMP_Message (msg);
-
 	if (timing) {
 		gettimeofday (&now, (struct timezone *) 0);
 		now.tv_sec -= tvs.tv_sec;
@@ -973,59 +928,34 @@ out:
 				"%d entr%s retrieved in %d.%06d seconds",
 				rows, rows != 1 ? "ies" : "y", now.tv_sec, now.tv_usec);
 	}
-
 	return OK;
 }
 
-/*  */
-
-static int  f_get (vec)
-char  **vec;
-{
-	process (new_message (type_SNMP_PDUs_get__request, vec));
+static int f_get (char **vec) {
+	return process (new_message (type_SNMP_PDUs_get__request, vec));
 }
 
-/*  */
-
-static int  f_get_next (vec)
-char  **vec;
-{
-	process (new_message (type_SNMP_PDUs_get__next__request, vec));
+static int f_get_next (char **vec) {
+	return process (new_message (type_SNMP_PDUs_get__next__request, vec));
 }
 
-/*  */
-
-static int  f_set (vec)
-char  **vec;
-{
-	process (new_message (type_SNMP_PDUs_set__request, vec));
+static int f_set (char **vec) {
+	return process (new_message (type_SNMP_PDUs_set__request, vec));
 }
-
-/*  */
 
 static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"
 };
 
-
-char   *snmp_error (i)
-integer	i;
-{
+char *snmp_error (int i) {
 	static char buffer[BUFSIZ];
-
 	if (0 < i && i < sizeof errors / sizeof errors[0])
 		return errors[i];
 	sprintf (buffer, "error %d", i);
-
 	return buffer;
 }
 
-/*  */
-
-static struct type_SNMP_Message *new_message (offset, vec)
-int	offset;
-char  **vec;
-{
+static struct type_SNMP_Message *new_message (int offset, char **vec) {
 	struct type_SNMP_Message *msg;
 	struct type_SNMP_PDUs *pdu;
 	struct type_SNMP_PDU *parm;
@@ -1038,15 +968,11 @@ char  **vec;
 
 	if ((msg -> community = str2qb (community, strlen (community), 1)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
 		adios (NULLCP, "out of memory");
 	msg -> data = pdu;
-
 	pdu -> offset = offset;
-
 	/* for now, always a PDU... */
-
 	if ((parm = (struct type_SNMP_PDU *) calloc (1, sizeof *parm)) == NULL)
 		adios (NULLCP, "out of memory");
 	pdu -> un.get__request = parm;
@@ -1056,7 +982,6 @@ char  **vec;
 #else
 	parm -> request__id = ((int) rand ()) & 0x7fffffff;
 #endif
-
 	vp = &parm -> variable__bindings;
 	for (vec++; *vec; vec++) {
 		struct type_SNMP_VarBindList *bind;
@@ -1076,17 +1001,10 @@ char  **vec;
 			return NULL;
 		}
 	}
-
 	return msg;
 }
 
-/*  */
-
-static int  get_ava (v, ava, offset)
-struct type_SNMP_VarBind *v;
-char   *ava;
-int	offset;
-{
+static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset) {
 	int	    result;
 	caddr_t value;
 	char *cp;
@@ -1116,7 +1034,6 @@ int	offset;
 
 	if ((v -> name = oid_cpy (oi ? oi -> oi_name : oid)) == NULLOID)
 		adios (NULLCP, "out of memory");
-
 	if (cp == NULLCP) {
 		if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 				== NULLPE)
@@ -1126,15 +1043,13 @@ int	offset;
 			advise (NULLCP, "no syntax defined for object \"%s\"", ava);
 			return NOTOK;
 		}
-
-		if ((*os -> os_parse) (&value, cp) == NOTOK) {
+		if ((*os -> os_parse) ((void **)&value, cp) == NOTOK) {
 			advise (NULLCP, "invalid value for variable \"%s\": \"%s\"",
 					ava, cp);
 			return NOTOK;
 		}
-		result = (*os -> os_encode) (value, &v -> value);
-		(*os -> os_free) (value);
-
+		result = (*os -> os_encode) ((void *)value, &v -> value);
+		(*os -> os_free) ((void *)value);
 		if (result == NOTOK) {
 			advise (NULLCP, "encoding error for variable \"%s\"", ava);
 			return NOTOK;
@@ -1143,15 +1058,10 @@ int	offset;
 
 	if (oi == NULL)
 		oid_free (oid);
-
 	return OK;
 }
 
-/*  */
-
-static int  process (msg)
-struct type_SNMP_Message *msg;
-{
+static int process (struct type_SNMP_Message *msg) {
 	int	    request_id;
 	PE	    pe;
 	struct type_SNMP_PDU *parm;
@@ -1232,17 +1142,17 @@ no_dice:
 					oi -> oi_type -> ot_text);
 			goto no_dice;
 		}
-		if ((*os -> os_decode) (&value, v -> value) == NOTOK) {
+		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK) {
 			advise (NULLCP, "decode error for variable \"%s\"",
 					oid2ode (v -> name));
 			goto no_dice;
 		}
 
 		printf ("%s=", oid2ode (v -> name));
-		(*os -> os_print) (value, os);
+		(*os -> os_print) ((void *)value, os);
 		printf ("\n");
 
-		(*os -> os_free) (value);
+		(*os -> os_free) ((void *)value);
 	}
 
 out:
@@ -1251,15 +1161,10 @@ out:
 		pe_free (pe);
 	if (msg)
 		free_SNMP_Message (msg);
-
 	return OK;
 }
 
-/*  */
-
-static int  f_help (vec)
-char  **vec;
-{
+static int f_help (char **vec) {
 	int    i,
 		   j,
 		   w;
@@ -1277,7 +1182,6 @@ char  **vec;
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
 		lines = ((es - dispatches) + columns - 1) / columns;
-
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -1291,7 +1195,6 @@ char  **vec;
 					putchar ('\t');
 			}
 		printf ("\n");
-
 		return OK;
 	}
 
@@ -1299,7 +1202,6 @@ char  **vec;
 		printf ("help [commands ...]\n");
 		printf ("    with no arguments, lists operations which may be invoked\n");
 		printf ("    otherwise prints help for each operation given\n");
-
 		return OK;
 	}
 
@@ -1307,44 +1209,29 @@ char  **vec;
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
 				printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 			break;
 		} else if (ds = getds (*vec))
 			printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 	return OK;
 }
 
-/*  */
-
-static int  f_quit (vec)
-char  **vec;
-{
+static int f_quit (char **vec) {
 	if (vec && *++vec != NULL && strcmp (*vec, "-help") == 0) {
 		printf ("quit\n");
 		printf ("    terminate fred\n");
-
 		return OK;
 	}
-
 	return DONE;
 }
 
-/*  */
-
-static int  f_status (vec)
-char  **vec;
-{
+static int f_status (char **vec) {
 	if (*++vec != NULL && strcmp (*vec, "-help") == 0) {
 		printf ("status\n");
 		printf ("    report status\n");
-
 		return OK;
 	}
-
 	printf ("Connected to %s using community \"%s\"\n",
 			taddr2str (&snmp_ta), community);
-
 	return OK;
 }
 
@@ -1406,7 +1293,6 @@ static char *enabled[] = {
 	"enabled", "disabled"
 };
 
-
 static char *status[] = {
 	"valid", "invalid"
 };
@@ -1414,7 +1300,6 @@ static char *status[] = {
 static char *smuxPstatus[] = {
 	"valid", "invalid", "connecting"
 };
-
 
 static struct ivar {
 	char   *iv_object;
@@ -1473,12 +1358,7 @@ static struct ivar {
 	NULL
 };
 
-/*  */
-
-static int  enum_print (x, os)
-integer *x;
-OS	os;
-{
+static void enum_print (integer *x, OS os) {
 	int	    i = *x;
 
 	if (i <= 0 || i > os -> os_data2)
@@ -1487,10 +1367,7 @@ OS	os;
 		printf ("%s(%d)", os -> os_data1[i - 1], i);
 }
 
-
-static	moresyntax (check)
-int	check;
-{
+static void moresyntax (int check) {
 	struct ivar *iv;
 	OT	   ot;
 	OS	   os;
@@ -1498,17 +1375,15 @@ int	check;
 	for (iv = ivars; iv -> iv_object; iv++)
 		if (ot = text2obj (iv -> iv_object)) {
 			char   *name;
-
 			if ((os = ot -> ot_syntax) == NULL) {
 				advise (NULLCP, "no syntax defined for object \"%s\"",
 						iv -> iv_object);
 				continue;
 			}
 			name = os -> os_name;
-
 			add_syntax (iv -> iv_object, os -> os_encode,
 						os -> os_decode, os -> os_free, os -> os_parse,
-						enum_print);
+						(PrintFunction)enum_print);
 			if ((os = text2syn (iv -> iv_object)) == NULL)
 				adios (NULLCP, "lost syntax for object \"%s\"",
 					   iv -> iv_object);
@@ -1522,9 +1397,7 @@ int	check;
 
 /*    MISCELLANY */
 
-static	arginit (vec)
-char    **vec;
-{
+static	void arginit (char **vec) {
 	int	    w;
 	char  *ap,
 		  *pp;
@@ -1544,15 +1417,11 @@ char    **vec;
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	isodetailor (myname, 1);
-
 	if (ontty = isatty (fileno (stdin)))
 		verbose++;
-
 	if ((sp = getservbyname ("snmp", "udp")) == NULL)
 		advise (NULLCP, "udp/snmp: unknown service");
-
 	bzero ((char *) ta, sizeof *ta);
 #ifdef	TCP
 	na -> na_stack = NA_TCP;
@@ -1788,9 +1657,7 @@ cots:
 #else
 	srandom ((int) time ((long *) 0));
 #endif
-
 	ps_len_strategy = PS_LEN_LONG;
-
 	if (loadobjects (defs) == NOTOK)
 		adios (NULLCP, "loadobjects: %s", PY_pepy);
 	if (defs && (ap = rindex (defs, '/')))
@@ -1802,30 +1669,22 @@ cots:
 
 /*    INTERACTIVE */
 
-static int  _getline (prompt, buffer)
-char   *prompt,
-	   *buffer;
-{
+static int  _getline (char *prompt, char *buffer) {
 	int    i;
-	char  *cp,
-		  *ep;
+	char  *cp, *ep;
 	static int  sticky = 0;
-
 	if (interrupted) {
 		interrupted = 0;
 		return NOTOK;
 	}
-
 	if (sticky) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	switch (setjmp (intrenv)) {
 	case OK:
 		armed++;
 		break;
-
 	case NOTOK:
 		if (ontty)
 			printf ("\n");	/* and fall */
@@ -1833,12 +1692,10 @@ char   *prompt,
 		armed = 0;
 		return NOTOK;
 	}
-
 	if (ontty) {
 		printf (prompt, myname);
 		fflush (stdout);
 	}
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			if (ontty)
@@ -1850,43 +1707,28 @@ char   *prompt,
 			sticky++;
 			break;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	armed = 0;
-
 	return OK;
 }
 
-/*  */
-
-/* ARGSUSED */
-
-static	SFD intrser (sig)
-int	sig;
-{
+static void intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif
-
 	if (armed)
 		longjmp (intrenv, NOTOK);
-
 	interrupted++;
 }
-
-/*  */
 
 #ifndef	TIOCGWINSZ
 /* ARGSUSED */
 #endif
 
-static int  ncols (fp)
-FILE *fp;
-{
+static int  ncols (FILE *fp) {
 #ifdef	TIOCGWINSZ
 	int	    i;
 	struct winsize ws;
@@ -1895,72 +1737,47 @@ FILE *fp;
 			&& (i = ws.ws_col) > 0)
 		return i;
 #endif
-
 	return 80;
 }
-
-/*    ERRORS */
 
 #ifndef	lint
 static void	_advise ();
 
-
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
 /* VARARGS */
-
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
-{
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
-
 #ifndef	lint
-void	advise (char *what, char *fmt, ...) {
+void advise (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
-
 
 static void  _advise (char *what, char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
-
 	_asprintf (buffer, what, fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
 /* VARARGS */
-
-void	advise (what, fmt)
-char   *what,
-	   *fmt;
-{
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
