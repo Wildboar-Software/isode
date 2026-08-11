@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapinitiat.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -38,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapinitiat.c,v 9.0 
 static int AcAssocRequestAux ();
 static int  AcAsynRetryAux ();
 
-/*    A-(ASYN-)ASSOCIATE.REQUEST */
+/*    A-(ASYN-)ASSOCIATE.REQUEST */
 
 int
 AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
@@ -263,7 +262,7 @@ out:
 	return result;
 }
 
-/*    A-ASYN-RETRY.REQUEST (pseudo) */
+/*    A-ASYN-RETRY.REQUEST (pseudo) */
 
 int
 AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
@@ -502,7 +501,7 @@ out:
 	return result;
 }
 
-/*    A-ASYN-NEXT.REQUEST (pseudo) */
+/*    A-ASYN-NEXT.REQUEST (pseudo) */
 
 int
 AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {

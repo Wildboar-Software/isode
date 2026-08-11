@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/na2str.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
 
-/*    Network Address to String */
+/*    Network Address to String */
 
 char *
 na2str (struct NSAPaddr *na) {

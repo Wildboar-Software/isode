@@ -38,7 +38,6 @@ extern struct vfsmap vfs[];
 
 
 #ifdef	BRIDGE
-/* ARGSUSED */
 #endif
 
 long	lseek ();
@@ -206,7 +205,6 @@ char   *data;
 }
 
 
-/* ARGSUSED */
 
 int	binarypeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;
@@ -257,7 +255,6 @@ int	ftamfd;
 #define	isIA5(c) (isprint ((u_char) c) || (isspace ((u_char)c) && (c) != '\r'))
 
 
-/* ARGSUSED */
 
 int	textpeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;
@@ -347,7 +344,6 @@ int	ftamfd;
 }
 
 
-/* ARGSUSED */
 
 int	fdfpeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;

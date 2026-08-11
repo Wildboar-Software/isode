@@ -72,7 +72,6 @@ ce_105 (void) {	/* common event 105 */
 }
 
 
-/* ARGSUSED */
 int
 a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 	/* V data request addressing sequenced trigger co */
@@ -85,7 +84,6 @@ a5_0 (	/*VDATreq-sqtr in states 400B or 402B */
 }
 
 
-/* ARGSUSED */
 int
 a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 	/* V data request addressing sequenced trigger co */

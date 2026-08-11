@@ -92,7 +92,7 @@ struct NSAPaddr {
 
 #define	NPSIZE	4
 			char    na_x25_pid[NPSIZE];	/* X.25 protocol id */
-			char    na_x25_pidlen;	/*   .. */
+			char    na_x25_pidlen;	/* .. */
 
 #define	CUDFSIZE 16
 			char    na_x25_cudf[CUDFSIZE];/* call user data field */
@@ -102,7 +102,7 @@ struct NSAPaddr {
 			 */
 #define	FACSIZE	6
 			char    na_x25_fac[FACSIZE];	/* X.25 facilities */
-			char    na_x25_faclen;		/*   .. */
+			char    na_x25_faclen;		/* .. */
 		}               un_na_x25;
 	}               na_un;
 

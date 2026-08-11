@@ -39,7 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpb.c,v 9.0 1992/06/
 #ifdef	BSD42
 
 #define	MAXTIME		(60 * 1000L)	/* in milli-seconds */
-#define	MINTIME		 1		/*   .. */
+#define	MINTIME		 1		/* .. */
 
 #define	SETTLETIME	30		/* # of iterations to gauge RTT */
 
@@ -102,7 +102,7 @@ static	int	totdups = 0;
 /* THREAD INFORMATION */
 struct thread {
 	struct thread *t_forw;	/* doubly-linked list */
-	struct thread *t_back;	/*   .. */
+	struct thread *t_back;	/* .. */
 
 	OID	    t_lo;		/* inclusive lower-bound */
 	OID	    t_arg;		/* current pointer */
@@ -141,7 +141,7 @@ static  int     threadlimit = MAXTHREADS;
 /* REQUEST INFORMATION */
 struct request {
 	struct request *r_forw;	/* doubly-linked list */
-	struct request *r_back;	/*   .. */
+	struct request *r_back;	/* .. */
 
 	int	    r_nbound;		/* number of bounds active */
 	struct bound {
@@ -192,7 +192,7 @@ void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 char   *snmp_error ();
 
-/*    BULK1 */
+/* BULK1 */
 
 /* algorithm assumes that first variable in VarBind has ubiquitous agent
    support...

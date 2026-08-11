@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psinitiat.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -35,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psinitiat.c,v 9.0 
 
 static int  RtOpenRequestAux ();
 
-/*    RT-OPEN.REQUEST */
+/* RT-OPEN.REQUEST */
 
 int	RtOpenRequest2 (mode, turn, context, callingtitle, calledtitle,
 					callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,

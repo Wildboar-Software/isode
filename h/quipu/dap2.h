@@ -89,8 +89,8 @@ struct DAPrelease {		/* DAP-UNBIND.CONFIRMATION */
 
 struct DAPabort {		/* DAP-ABORT.INDICATION */
 	int	    da_source;		/* abort source */
-#define	DA_USER		0	/*   DAP-user */
-#define	DA_PROVIDER	1	/*   DAP-provider */
+#define	DA_USER		0	/* DAP-user */
+#define	DA_PROVIDER	1	/* DAP-provider */
 #define	DA_LOCAL	2	/*   DAP interface internal error */
 
 	int	    da_reason;		/* reason for failure */
@@ -106,8 +106,8 @@ struct DAPabort {		/* DAP-ABORT.INDICATION */
 
 	/* diagnostics from provider */
 #define	DA_SIZE	512
-	int	    da_cc;		/*   length */
-	char    da_data[DA_SIZE];	/*   data */
+	int	    da_cc;		/* length */
+	char    da_data[DA_SIZE];	/* data */
 };
 
 struct DAPresult {
@@ -142,8 +142,8 @@ struct DAPpreject {
 
 	/* diagnostics from provider */
 #define	DP_SIZE	512
-	int	    dp_cc;		/*   length */
-	char    dp_data[DP_SIZE];	/*   data */
+	int	    dp_cc;		/* length */
+	char    dp_data[DP_SIZE];	/* data */
 };
 
 struct DAPindication {

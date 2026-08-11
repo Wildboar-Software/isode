@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/time2prim.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <string.h>
 #include "psap.h"

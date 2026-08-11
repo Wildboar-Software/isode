@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapcontexts.c,v 9
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/dsap.h"
@@ -77,7 +76,6 @@ OID			  app_ctx;
 	return (NOTOK);
 }
 
-/* ARGSUSED */
 int
 judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxlist) {
 	int			  ctxlist_notok = OK;

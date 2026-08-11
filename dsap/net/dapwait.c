@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapwait.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include "logger.h"
 #include "quipu/util.h"
@@ -45,7 +44,6 @@ extern LLog	* log_dsap;
 * Wait routine for a DAP initiator.
 */
 
-/* ARGSUSED */
 
 int
 DapInitWaitRequest (int sd, int secs, struct DAPindication *di) {

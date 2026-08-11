@@ -25,7 +25,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "general.h"
 #include "manifest.h"

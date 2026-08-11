@@ -11,11 +11,9 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "psap.h"
 
-/*    DATA */
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \
 				 printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \

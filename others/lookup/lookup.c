@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookup.c,v 9.
 #include "ryinitiator.h"		/* for generic interctive initiators */
 #include "PasswordLookup-ops.h"		/* operation definitions */
 
-/*    DATA */
 
 static char *myservice = "passwdstore";
 
@@ -72,9 +71,7 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -84,9 +81,8 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    ARGUMENTS */
+/* ARGUMENTS */
 
-/* ARGSUSED */
 
 static int
 do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg) {
@@ -104,7 +100,6 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLoo
 }
 
 
-/* ARGSUSED */
 
 static int
 do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg) {
@@ -125,7 +120,6 @@ do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLook
 }
 
 
-/* ARGSUSED */
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
@@ -141,7 +135,6 @@ caddr_t *dummy;
 }
 
 
-/* ARGSUSED */
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -168,9 +161,8 @@ caddr_t *dummy;
 	exit (0);
 }
 
-/*    RESULTS */
+/* RESULTS */
 
-/* ARGSUSED */
 
 static int
 lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi) {
@@ -200,9 +192,7 @@ print_qb (struct qbuf *q) {
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
 
-/*    ERRORS */
 
-/* ARGSUSED */
 
 static int  lookup_error (sd, id, error, parameter, roi)
 int	sd,

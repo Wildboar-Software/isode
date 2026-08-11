@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapunbind1.c,v 9.
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/dsap.h"
 
-/*    D-UNBIND.REQUEST */
+/* D-UNBIND.REQUEST */
 
-/* ARGSUSED */
 
 int
 DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
@@ -59,9 +57,8 @@ DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication 
 	return (result);
 }
 
-/*    D-UNBIND.RETRY */
+/* D-UNBIND.RETRY */
 
-/* ARGSUSED */
 
 int
 DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di) {

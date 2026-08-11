@@ -29,7 +29,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/eval.c,v 9.0 1992/06/1
 #include <stdio.h>
 #include "mib.h"
 
-/*    FUNCTION MIB */
+/*    FUNCTION MIB */
 
 static int  eval_expr (), read_tl (), read_long (), read_oid (), get_var_value ();
 

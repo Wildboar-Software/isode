@@ -49,8 +49,8 @@ struct TSAPstart {		/* T-CONNECT.INDICATON */
 
 	/* initial DATA from peer */
 #define	TS_SIZE		32
-	int	    ts_cc;		/*   length */
-	char    ts_data[TS_SIZE];	/*   data */
+	int	    ts_cc;		/* length */
+	char    ts_data[TS_SIZE];	/* data */
 };
 
 
@@ -67,8 +67,8 @@ struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
 
 	/* initial DATA from peer */
 #define	TC_SIZE		32
-	int	    tc_cc;		/*   length */
-	char    tc_data[TC_SIZE];	/*   data */
+	int	    tc_cc;		/* length */
+	char    tc_data[TC_SIZE];	/* data */
 };
 
 
@@ -151,8 +151,8 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 
 	/* disconnect DATA from peer */
 #define	TD_SIZE		64
-	int	    td_cc;		/*   length */
-	char    td_data[TD_SIZE];	/*   data */
+	int	    td_cc;		/* length */
+	char    td_data[TD_SIZE];	/* data */
 };
 
 

@@ -264,7 +264,6 @@ do_event (int event, PE pe) {
 	return(sectors[sector][state](event, pe));
 }
 
-/* ARGSUSED */
 int
 pn_ind ( /* sync indications */
 	int dd,

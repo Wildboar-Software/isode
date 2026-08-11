@@ -52,14 +52,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl2pe.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "psap.h"
 
-/*    DATA */
 
 typedef struct PList {
 	u_char pl_code;

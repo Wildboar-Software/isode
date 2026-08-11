@@ -57,7 +57,7 @@ struct passwd *getpwnam ();
 #define	ANON	"ftp"
 #endif
 
-/*    UNIX DATA */
+/*    UNIX DATA */
 
 int   myuid;
 
@@ -76,7 +76,7 @@ struct utmp  uts;
 static void ftam_finishindication (struct FTAMfinish *ftf);
 static void ftam_abortindication (struct FTAMabort *fta);
 
-/*    VFS DATA */
+/*    VFS DATA */
 
 struct vfsmap vfs[] = {
 	/* VFS_UBF */
@@ -110,7 +110,7 @@ struct vfsmap vfs[] = {
 int	vfs_fdf = VFS_FDF;
 #endif
 
-/*    REGIME DATA */
+/*    REGIME DATA */
 
 int     fqos;
 int     ftam_class;
@@ -120,7 +120,7 @@ int     attrs = FATTR_STORAGE;
 
 int     fadusize = 0;
 
-/*    ACTIVITY DATA */
+/*    ACTIVITY DATA */
 
 int     myfd = NOTOK;		/* handle to file */
 char   *myfile;
@@ -128,7 +128,7 @@ struct stat myst;
 int     statok;
 
 struct vfsmap   *myvf;		/* active contents type */
-caddr_t myparam;		/*   .. */
+caddr_t myparam;		/* .. */
 
 int  myaccess;			/* current access request */
 
@@ -140,7 +140,7 @@ static int null_initiator = 0;	/*   none given, do EurOSInet style */
 struct FADUidentity  mylocation;/* current location */
 
 int  mymode;			/* current processing mode */
-int  myoperation;		/*   .. */
+int  myoperation;		/* .. */
 
 #ifdef	notdef
 AEI	mycalling;		/* current calling AET */
@@ -151,13 +151,13 @@ char *account;			/* current account */
 int  mygid;			/* "inner" account */
 
 int  mylock;			/* current concurrency control */
-struct FTAMconcurrency myconctl;/*   .. */
+struct FTAMconcurrency myconctl;/* .. */
 
 int  mylockstyle;		/* current locking style */
 
 
 int  mycontext;			/* current access context */
-int  mylevel;			/*   .. */
+int  mylevel;			/* .. */
 
 #ifdef	BRIDGE
 static char *RemoteHost;
@@ -166,7 +166,7 @@ static char *password;
 int	ftp_default = VFS_UBF;
 #endif
 
-/*    REGIME */
+/* REGIME */
 
 #ifdef	BRIDGE
 #define	seterr(id,ob,so,des) \
@@ -547,7 +547,7 @@ int ftam_indication (struct FTAMindication *fti) {
 	}
 }
 
-/*    TERMINATION */
+/* TERMINATION */
 
 static void ftam_finishindication (struct FTAMfinish *ftf) {
 #ifdef	DEBUG
@@ -594,7 +594,7 @@ int closewtmp (void) {
 #endif
 }
 
-/*    ABORT */
+/* ABORT */
 
 static void ftam_abortindication (struct FTAMabort *fta) {
 	struct FTAMindication   ftis;

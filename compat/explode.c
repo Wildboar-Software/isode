@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/explode.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 
-/*    DATA */
 
 static char nib2hex[0x10] = {
 	'0', '1', '2', '3', '4', '5', '6', '7',

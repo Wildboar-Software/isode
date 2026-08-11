@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydispatch.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -46,7 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydispatch.c,v 9.0 199
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
 #endif
-/*    DISPATCH */
+/* DISPATCH */
 
 int	RyDispatch (sd, ryo, op, fnx, roi)
 int	sd;

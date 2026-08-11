@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux.c,v 9.0 1992/06/1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -42,7 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux.c,v 9.0 1992/06/1
 #include "internet.h"
 #include "sys.file.h"
 
-/*    DATA */
 
 integer	smux_errno;
 char    smux_info[BUFSIZ];
@@ -69,7 +67,7 @@ extern	int	errno;
 static int  smuxlose (int, char *, char *, ...);
 static int  smuxalloc (), smuxsend ();
 
-/*    INIT */
+/* INIT */
 
 int	smux_init (debug)
 int	debug;
@@ -167,7 +165,7 @@ you_lose:
 	return OK;
 }
 
-/*    SIMPLE OPEN */
+/*    SIMPLE OPEN */
 
 int	smux_simple_open (identity, description, commname, commlen)
 OID	identity;
@@ -292,7 +290,7 @@ out:
 	return OK;
 }
 
-/*    CLOSE */
+/* CLOSE */
 
 int	smux_close (reason)
 int	reason;
@@ -341,7 +339,7 @@ int	reason;
 	return result;
 }
 
-/*    REGISTER */
+/* REGISTER */
 
 int	smux_register (subtree, priority, operation)
 OID	subtree;
@@ -387,7 +385,7 @@ no_mem:
 	return result;
 }
 
-/*    WAIT */
+/* WAIT */
 
 int	smux_wait (event, secs)
 struct type_SNMP_SMUX__PDUs **event;
@@ -452,7 +450,7 @@ out:
 	return (sd = NOTOK);
 }
 
-/*    RESPONSE */
+/* RESPONSE */
 
 int	smux_response (event)
 struct type_SNMP_GetResponse__PDU *event;
@@ -473,7 +471,7 @@ struct type_SNMP_GetResponse__PDU *event;
 	return smuxsend (&pdu);
 }
 
-/*    TRAP */
+/* TRAP */
 
 int	smux_trap (generic, specific, bindings)
 int	generic,
@@ -526,7 +524,7 @@ struct type_SNMP_VarBindList *bindings;
 	return result;
 }
 
-/*    LOSE */
+/* LOSE */
 
 #ifndef	lint
 static int  smuxlose (int reason, char *what, char *fmt, ...)

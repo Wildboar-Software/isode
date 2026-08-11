@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapabort.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapabort.c,v 9.0 199
 #include "ppkt.h"
 #include "tailor.h"
 
-/*    P-U-ABORT.REQUEST */
+/* P-U-ABORT.REQUEST */
 
 int
 PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {

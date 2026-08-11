@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/getpassword.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include <stdio.h>

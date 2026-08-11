@@ -21,7 +21,7 @@
 #ifndef	_TP4_
 #define	_TP4_
 
-/*    TLI */
+/* TLI */
 
 #if	defined (WIN)
 #define	TLI
@@ -42,7 +42,7 @@ int	t_close ();
 #define	TLIMAXCONN	1
 #endif
 
-/*    SunLink OSI */
+/*    SunLink OSI */
 
 #ifdef SUN_TP4
 #include <sys/ieee802.h>

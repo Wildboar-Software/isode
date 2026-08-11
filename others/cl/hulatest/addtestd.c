@@ -34,7 +34,6 @@
 #include "ADD-ops.h"	        /* ADD operation definitions */
 #include "ADD-types.h"	        /* ADD type definitions */
 
-/*    DATA */
 
 static char *myservice = "addtest";
 static char *mycontext = "addtest context";
@@ -53,9 +52,7 @@ static struct dispatch dispatches[] = {
 char	*getlocalhost();
 
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -67,9 +64,8 @@ main (int argc, char **argv, char **envp) {
 
 
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
-/* ARGSUSED */
 
 static int  op_addit (sd, ryo, rox, in, roi)
 int	sd;
@@ -108,7 +104,7 @@ struct RoSAPindication *roi;
 }
 
 
-/*    ERROR */
+/* ERROR */
 
 static int  error (sd, err, param, rox, roi)
 int	sd,
@@ -123,7 +119,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*    U-REJECT */
+/* U-REJECT */
 
 static int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

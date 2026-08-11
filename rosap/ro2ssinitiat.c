@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssinitiat.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -40,7 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssinitiat.c,v 9.0 
 
 static int  RoBeginRequestAux ();
 
-/*    RO-BEGIN.REQUEST */
+/* RO-BEGIN.REQUEST */
 
 int
 RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {

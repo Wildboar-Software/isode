@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/initiator.c
 static char *mycontext = "isode callback demo";
 
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {

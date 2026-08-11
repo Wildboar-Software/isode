@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include "quipu/util.h"
@@ -803,7 +802,6 @@ AttributeValue x;
 }
 
 #ifndef SYS5
-/* ARGSUSED */
 #endif
 int dflt_attr_file (at,x,full) 
 AttributeType at; 

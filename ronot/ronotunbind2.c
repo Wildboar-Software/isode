@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include "tailor.h"
 #include "logger.h"
@@ -33,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind2.c,v 9.0 
 #include "RONOT-types.h"
 
 
-/* 	RO-UNBIND.INDICATION */
+/* RO-UNBIND.INDICATION */
 
-/* ARGSUSED */
 
 int
 RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
@@ -73,9 +71,8 @@ RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
 	return (OK);
 }
 
-/*    RO-UNBIND.RESULT */
+/* RO-UNBIND.RESULT */
 
-/* ARGSUSED */
 
 int
 RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
@@ -117,9 +114,8 @@ RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 	return (result);
 }
 
-/*    RO-UNBIND.ERROR */
+/* RO-UNBIND.ERROR */
 
-/* ARGSUSED */
 
 int
 RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
@@ -160,9 +156,8 @@ RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 	return (result);
 }
 
-/*    RO-UNBIND.REJECT */
+/* RO-UNBIND.REJECT */
 
-/* ARGSUSED */
 
 int
 RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni) {

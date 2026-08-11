@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaplose.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>

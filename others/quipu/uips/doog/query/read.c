@@ -443,7 +443,6 @@ int format;
  *
  *
  */
-/* ARGSUSED */
 int photo2xbm(ps, picture, format)
 PS ps;
 PE picture;
@@ -474,7 +473,6 @@ int format;
 	return 0;
 } /* photo2xbm */
 
-/* ARGSUSED */
 int
 photo_start (char *name) {
 	if (photo_pass_two == FALSE) {
@@ -488,7 +486,6 @@ photo_start (char *name) {
 	return 0;
 }
 
-/* ARGSUSED */
 int
 photo_end (char *name) {
 	int byte_width;
@@ -591,7 +588,6 @@ photo_white (int line_length) {
 	return 0;
 }
 
-/* ARGSUSED */
 int photo_line_end(line)
 bit_string *line;
 {

@@ -406,7 +406,7 @@ CreateWellKnownSockets () {
 	WellKnownConnections |= (1 << request);
 	DefineSelf (request);
 	fd2family[request] = ISODE_IO;
-#endif /*  ISOCONN */
+#endif /* ISOCONN */
 	if (WellKnownConnections == 0)
 		Error ("No Listeners, nothing to do");
 	signal (SIGPIPE, SIG_IGN);

@@ -128,7 +128,7 @@
 #define	vfork	fork
 #endif
 
-/*    STRINGS */
+/* STRINGS */
 
 #if defined(SVR4) || defined (__NeXT__)
 #include <stdio.h>
@@ -181,15 +181,15 @@ int free();
 #define	bcmp(b1,b2,length)	memcmp ((b1), (b2), (length))
 #define	bzero(b,length)		(void) memset ((b), 0, (length))
 #endif
-/*    HEXIFY */
+/* HEXIFY */
 
 int	explode (), implode ();
 
-/*    SPRINTB */
+/* SPRINTB */
 
 char   *sprintb ();
 
-/*    STR2VEC */
+/* STR2VEC */
 
 #define	NVEC	100
 #define	NSLACK	10
@@ -198,26 +198,26 @@ char   *sprintb ();
 
 int	str2vecX (char *, char **, int,  int *, char,  int);
 
-/*    STR2ELEM */
+/* STR2ELEM */
 
 #define	NELEM	100
 
 int	str2elem ();
 
-/*    STR2SEL */
+/* STR2SEL */
 
 int	str2sel ();
 char   *sel2str ();
 
-/*    GETPASS */
+/* GETPASS */
 
 char   *getpassword ();
 
-/*    BADUSER */
+/* BADUSER */
 
 int	baduser ();
 
-/*   UTILITIES */
+/* UTILITIES */
 
 extern char chrcnv[], nochrcnv[];
 
@@ -231,7 +231,7 @@ int	sstr2arg ();
 void	(*set_smalloc_handler()) ();
 char    *smalloc ();
 
-/*    MISC */
+/* MISC */
 
 char   *sys_errname ();
 
@@ -247,7 +247,7 @@ void    asprintf(char*bp, va_list ap);            /* fmt, args, ... */
 void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
 
 
-/*  time */
+/* time */
 
 #ifdef LINUX
 #include <time.h>
@@ -273,7 +273,7 @@ extern time_t time ();
 #endif
 
 
-/*  ntohs etc */
+/*  ntohs etc */
 #ifndef SWABLIB
 #ifndef	ntohs
 unsigned short	ntohs ();

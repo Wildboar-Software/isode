@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor2.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-MAJOR-SYNC.RESPONSE */
+/* S-MAJOR-SYNC.RESPONSE */
 
 int
 SMajSyncResponse (int sd, char *data, int cc, struct SSAPindication *si) {

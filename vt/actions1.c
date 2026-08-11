@@ -178,7 +178,6 @@ a1_4 (	/*VASSrsp from user in state 03S (Associate -- Awaiting user)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_5 (		/*RTQ (Token Request) in state 10B
 			  (Environment not agreed)*/
@@ -189,7 +188,6 @@ a1_5 (		/*RTQ (Token Request) in state 10B
 }
 
 
-/* ARGSUSED */
 int
 a1_6 (	/*VGVTreq from user in 10T*/
 	PE pe
@@ -200,7 +198,6 @@ a1_6 (	/*VGVTreq from user in 10T*/
 }
 
 
-/* ARGSUSED */
 int
 a1_7 (	/*VRELreq from user in state 10B (Env. not agreed)*/
 	/*GTQ in 50B*/
@@ -221,7 +218,6 @@ a1_7 (	/*VRELreq from user in state 10B (Env. not agreed)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_8 (	/*VRELreq in 10T*/
 	PE pe
@@ -289,7 +285,6 @@ a1_9 (	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_10 (	/*VRQTreq(request token) n state 10N*/
 	PE pe
@@ -305,7 +300,6 @@ a1_10 (	/*VRQTreq(request token) n state 10N*/
 }
 
 
-/* ARGSUSED */
 int
 a1_11 (	/*VSNEGreq (User Start Negotiation)*/
 	PE pe
@@ -318,7 +312,6 @@ a1_11 (	/*VSNEGreq (User Start Negotiation)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_12 (	/*VSNEGreq*/
 	PE pe
@@ -331,7 +324,6 @@ a1_12 (	/*VSNEGreq*/
 }
 
 
-/* ARGSUSED */
 int
 a1_13 (	/*VSWPreq (User Switch profile request)*/
 	PE pe
@@ -344,7 +336,6 @@ a1_13 (	/*VSWPreq (User Switch profile request)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_14 (	/*VSWPreq*/
 	PE pe
@@ -477,7 +468,6 @@ a1_18 (	/*UDQ (uncontrolled data) in 51T (Release Awaiting Peer)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_19 (	/*GTQ in 10N or VRTQreq in 10T*/
 	PE pe
@@ -562,7 +552,6 @@ a1_21 (	/*DLQ (Deliver Request) in 50B or 51Q (Release Awaiting Peer)*/
 }
 
 
-/* ARGSUSED */
 int
 a1_22 (	/*RLQ (Release Request) in 50B*/
 	PE pe
@@ -583,7 +572,6 @@ a1_22 (	/*RLQ (Release Request) in 50B*/
 }
 
 
-/* ARGSUSED */
 int
 a1_23 (	/*SNQ (Start negotiation) in 50B*/
 	PE pe
@@ -595,7 +583,6 @@ a1_23 (	/*SNQ (Start negotiation) in 50B*/
 }
 
 
-/* ARGSUSED */
 int
 a1_24 (		/*SPQ (Switch Profile Request) in state 50B*/
 	PE pe
@@ -607,7 +594,6 @@ a1_24 (		/*SPQ (Switch Profile Request) in state 50B*/
 }
 
 
-/* ARGSUSED */
 int
 a1_25 (	/*RLQ (Release Request) in 10B (Environment not agreed) */
 	PE pe
@@ -617,7 +603,6 @@ a1_25 (	/*RLQ (Release Request) in 10B (Environment not agreed) */
 	return(OK);
 }
 
-/* ARGSUSED */
 int
 a1_26 (	/*RLQ (Release Request) in state 10N*/
 	PE pe
@@ -629,7 +614,6 @@ a1_26 (	/*RLQ (Release Request) in state 10N*/
 }
 
 
-/* ARGSUSED */
 int
 a1_27 (	/*RTQ (Request Token) in state 10T*/
 	PE pe
@@ -643,7 +627,6 @@ a1_27 (	/*RTQ (Request Token) in state 10T*/
 }
 
 
-/* ARGSUSED */
 int
 a1_28 (	/*SNQ (Start Negotiation) in 10N*/
 	PE pe
@@ -655,7 +638,6 @@ a1_28 (	/*SNQ (Start Negotiation) in 10N*/
 }
 
 
-/* ARGSUSED */
 int
 a1_29 (	/*SNQ (Start Negotiation) in 10B*/
 	PE pe
@@ -667,7 +649,6 @@ a1_29 (	/*SNQ (Start Negotiation) in 10B*/
 }
 
 
-/* ARGSUSED */
 int
 a1_30 (	/*SPQ (Switch Profile Request) in 10B & 10N*/
 	PE pe
@@ -679,7 +660,6 @@ a1_30 (	/*SPQ (Switch Profile Request) in 10B & 10N*/
 }
 
 
-/* ARGSUSED */
 
 int
 a1_100 (	/*APQ (VT-P-ABORT -- Abort from VTPM) in any state*/
@@ -690,7 +670,6 @@ a1_100 (	/*APQ (VT-P-ABORT -- Abort from VTPM) in any state*/
 }
 
 
-/* ARGSUSED */
 
 int
 a1_101 (	/*AUQ (VT-U-ABORT -- Abort from VT User) in any state*/
@@ -702,7 +681,6 @@ a1_101 (	/*AUQ (VT-U-ABORT -- Abort from VT User) in any state*/
 
 
 
-/* ARGSUSED */
 int
 a1_102 (	/*VUABreq (Abort by User) in any state*/
 	PE pe
@@ -723,7 +701,6 @@ a1_102 (	/*VUABreq (Abort by User) in any state*/
 }
 
 
-/* ARGSUSED */
 int
 a1_103 (	/*VTAB (Irrecoverable exception condition) in any state*/
 	PE pe
@@ -747,7 +724,6 @@ a1_103 (	/*VTAB (Irrecoverable exception condition) in any state*/
 }
 
 
-/* ARGSUSED */
 int
 a1_107 (		/*Generic Action*/
 	PE pe

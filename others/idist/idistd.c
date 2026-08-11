@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/idistd.c,v 9.0
 #include "ryresponder.h"      /* for generic idempotent responders */
 #include "defs.h"
 
-/*    DATA */
 
 static char *myservice = "isode idist";
 static char *mycontext = "isode idist";
@@ -89,9 +88,7 @@ char user[100];
 struct passwd *pw;
 struct group *gr;
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -107,7 +104,7 @@ main (int argc, char **argv, char **envp) {
 	exit (0);		/* NOTREACHED */
 }
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
 static int  op_init (sd, ryo, rox, in, roi)
 int	sd;
@@ -429,7 +426,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/* ARGSUSED */
 op_listcdir (sd, ryo, rox, in, roi)
 int	sd;
 struct RyOperation *ryo;
@@ -461,7 +457,7 @@ struct RoSAPindication *roi;
 }
 
 
-/*    ERROR */
+/* ERROR */
 
 static int  error (sd, err, param, rox, roi)
 int	sd,
@@ -494,7 +490,7 @@ syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 }
 
 
-/*    U-REJECT */
+/* U-REJECT */
 
 static int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -504,9 +500,8 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 	return OK;
 }
 
-/*  Initialisation stuff */
+/*  Initialisation stuff */
 
-/* ARGSUSED */
 initiate (sd, acs, pe)
 int	sd;
 struct AcSAPstart *acs;

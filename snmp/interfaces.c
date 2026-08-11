@@ -891,8 +891,8 @@ int	get_interfaces (int offset) {
 
 			as -> adr_address.sa = ifn -> if_addr;	      /* struct copy */
 			if (ifn -> if_addr.sa_family == AF_INET)
-				as -> adr_broadaddr.sa = ifn -> if_broadaddr; /*   .. */
-			as -> adr_netmask.sa = ifreq.ifr_addr;	      /*   .. */
+				as -> adr_broadaddr.sa = ifn -> if_broadaddr; /* .. */
+			as -> adr_netmask.sa = ifreq.ifr_addr;	      /* .. */
 			as -> adr_indexmask = is -> ifn_indexmask;
 
 			switch (ifn -> if_addr.sa_family) {
@@ -979,7 +979,7 @@ int	get_interfaces (int offset) {
 				as -> adr_address = *ia;		/* struct copy */
 				if (ia -> sa.sa_family == AF_INET)
 					as -> adr_broadaddr = *ib;		/* struct copy */
-				as -> adr_netmask = *ic;		/*   .. */
+				as -> adr_netmask = *ic;		/* .. */
 
 				as -> adr_indexmask = is -> ifn_indexmask;
 

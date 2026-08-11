@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/pbmtofax
 #include "pbm.h"
 #include "general.h"
 
-/*    DATA */
 
 int	PIC_LINESIZE, STOP, NUMLINES;
 
@@ -54,9 +53,7 @@ extern int nopreamble;
 extern int oldformat;
 extern int standardwidth;
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {

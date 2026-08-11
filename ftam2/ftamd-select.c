@@ -51,7 +51,6 @@ struct group  *getgrnam ();
 struct passwd *getpwnam (), *getpwent (), *getpwuid ();
 #endif
 
-/*    DATA */
 
 static char mvfile[MAXPATHLEN];
 static PE   rdparam = NULLPE;
@@ -82,7 +81,7 @@ static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiag
 
 static int  EACCESS ( char   *file, int	mode);
 
-/*    SELECTION REGIME */
+/*    SELECTION REGIME */
 
 void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 	int     action,
@@ -758,7 +757,7 @@ bad_param:
 #endif
 
 		myconctl = ftg -> ftg_open.ftop_conctl;	/* struct copy */
-		ftm -> ftg_open.ftop_conctl = myconctl;	/*   .. */
+		ftm -> ftg_open.ftop_conctl = myconctl;	/* .. */
 		mylockstyle = ftg -> ftg_open.ftop_locking;
 
 		if (chkaccess (myfd, mymode, &myconctl, &dp) == NOTOK) {
@@ -840,7 +839,6 @@ done_open:
 
 
 #ifdef	BRIDGE
-/* ARGSUSED */
 #endif
 
 static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
@@ -1625,14 +1623,13 @@ static int  truncate ( char   *file, int	length) {
 }
 
 
-/* ARGSUSED */
 
 int	ftruncate (int fd, int length) {	/* works only 'cause we're lucky */
 	return truncate (myfile, length);
 }
 #endif
 
-/*    DEBUG */
+/* DEBUG */
 
 #if	defined(FTAMDEBUG) && defined(BSD42)
 #include <syscall.h>

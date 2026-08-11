@@ -25,14 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprovider.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct ssapblk ssapque;
@@ -43,7 +41,7 @@ static int  SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, 
 static void TDATAser (int sd, struct TSAPdata *tx);
 static void TDISCser (int sd, struct TSAPdisconnect *td);
 
-/*    S-DATA.REQUEST */
+/* S-DATA.REQUEST */
 
 int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	return SSendRequest (sd, data, cc, 1, 1, si);
@@ -77,7 +75,7 @@ int SSendRequest (
 	return result;
 }
 
-/*    S-WRITE.REQUEST (pseudo; write user data vectors) */
+/*    S-WRITE.REQUEST (pseudo; write user data vectors) */
 
 int SWriteRequest (
 	int sd,
@@ -234,7 +232,7 @@ out1:
 	return NOTOK;
 }
 
-/*    S-READ.REQUEST (pseudo; synchronous read) */
+/*    S-READ.REQUEST (pseudo; synchronous read) */
 
 int SReadRequest (
 	int sd,
@@ -1248,7 +1246,7 @@ int SDoCollideAux (
 	return (localssn < remotessn ? OK : NOTOK);
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 int SSetIndications (
 	int sd,
@@ -1300,7 +1298,7 @@ int SSetIndications (
 	return OK;
 }
 
-/*    TSAP interface */
+/*    TSAP interface */
 
 int spkt2sd (
 	struct ssapkt *s,
@@ -1655,7 +1653,7 @@ int ts2sslose (
 		return ssaplose (si, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
 
-/*    INTERNAL */
+/* INTERNAL */
 
 struct ssapblk *newsblk(void) {
 	struct ssapblk *sb;

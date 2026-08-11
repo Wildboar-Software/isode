@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotlose.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -83,7 +82,7 @@ _ronotlose (  /* what, fmt, args ... */
 }
 #endif
 
-/*    ACSAP interface */
+/*    ACSAP interface */
 
 int
 acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {

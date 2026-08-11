@@ -24,10 +24,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/fre.c,v 9.0 1992/06/1
  *
  */
 
-/* LINTLIBRARY */
 
 
-/* LINTLIBRARY */
 
 /*
  * These routines are the driving routines for freeing of the data

@@ -28,14 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2rts.c,v 9.0 1992/0
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ROS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static int	rtslose ();
 static void rtsINDICATIONser ();
@@ -45,7 +43,7 @@ static int  doRTSclose ();
 static int  doRTSfinish ();
 static int  doRTSabort ();
 
-/*    bind underlying service */
+/*    bind underlying service */
 
 int
 RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
@@ -65,12 +63,11 @@ RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 	return OK;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
 
 
-/* ARGSUSED */
 
 int
 ro2rtsasync (
@@ -105,9 +102,8 @@ ro2rtsasync (
 
 #undef	e
 
-/*    map association descriptors for select() */
+/*    map association descriptors for select() */
 
-/* ARGSUSED */
 
 int
 ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
@@ -128,7 +124,7 @@ ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindicatio
 	return OK;
 }
 
-/*    RtSAP interface */
+/*    RtSAP interface */
 
 #define	doRTSdata(a,i,t,r)	acb2osdu ((a), (i), (t) -> rtt_data, (r))
 
@@ -218,7 +214,6 @@ ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindicatio
 }
 
 
-/* ARGSUSED */
 
 int
 ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
@@ -268,7 +263,6 @@ doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *
 }
 
 
-/* ARGSUSED */
 
 static int
 doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi) {

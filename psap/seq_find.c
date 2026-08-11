@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/seq_find.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"

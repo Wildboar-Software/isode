@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaptyped.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-TYPED-DATA.REQUEST */
+/* S-TYPED-DATA.REQUEST */
 
 int
 STypedRequest (int sd, char *data, int cc, struct SSAPindication *si) {

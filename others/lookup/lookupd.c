@@ -43,7 +43,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/lookupd.c,v 9
 struct passwd *getpwnam (), *getpwuid ();
 #endif
 
-/*    DATA */
 
 static char *myservice = "passwdstore";
 
@@ -61,9 +60,7 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -74,7 +71,7 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
 static int  op_lookupUser (sd, ryo, rox, in, roi)
 int	sd;
@@ -183,7 +180,7 @@ lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindicati
 	return result;
 }
 
-/*    ERROR */
+/* ERROR */
 
 static int  error (sd, err, param, rox, roi)
 int	sd,
@@ -198,7 +195,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*    U-REJECT */
+/* U-REJECT */
 
 static int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

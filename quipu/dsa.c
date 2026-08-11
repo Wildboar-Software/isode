@@ -357,7 +357,6 @@ signal (SIGUSR2, list_status2);
 
 static int restart = 0;
 
-/* ARGSUSED */
 SFD
 clean_exit (int x) {
 	if (restart)
@@ -480,8 +479,7 @@ check_conns (int secs) {
 	}
 
 #ifdef	SIGUSR1
-	/* ARGSUSED */
-
+	
 	SFD	list_status (sig)
 	int	sig;
 	{
@@ -548,8 +546,7 @@ check_conns (int secs) {
 
 
 #ifdef	SIGUSR2
-	/* ARGSUSED */
-
+	
 	SFD	list_status2 (sig)
 	int	sig;
 	{
@@ -648,7 +645,7 @@ fork_ok:
 	}
 
 
-	/* 	ERRORS */
+	/* ERRORS */
 
 #ifndef	lint
 	void    adios (char *what, char *fmt, ...) {
@@ -716,7 +713,7 @@ fork_ok:
 #define CLEAR_TIME	300	/* Was RESTART_TIME, but SO_REUSEADDR */
 	/* may not be working yet! */
 #else
-#define	CLEAR_TIME	300	/*   .. */
+#define	CLEAR_TIME	300	/* .. */
 #endif
 
 	SFD attempt_restart (int sig)

@@ -70,7 +70,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/nrs_info.c,v 9.
 	vis_str_seq ::= <visible_string> | <str_seq> "$" <visible_string>
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/attr.h"		/* Def.s for READOUT etc */

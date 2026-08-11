@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapmisc.c,v 9.0 1992/
 #include <sys/ioctl.h>
 #endif
 
-/*    estimate of octets that might be returned */
+/*    estimate of octets that might be returned */
 
 int	TSelectOctets (sd, nbytes, td)
 int	sd;
@@ -86,7 +85,7 @@ struct TSAPdisconnect *td;
 	return result;
 }
 
-/*    get TSAPs */
+/*    get TSAPs */
 
 int
 TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td) {
@@ -109,7 +108,7 @@ TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding,
 	return OK;
 }
 
-/*    define transport manager */
+/*    define transport manager */
 
 #ifdef	MGMT
 int

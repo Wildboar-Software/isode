@@ -200,7 +200,6 @@ freeRfaInfoList (struct RfaInfo *rfa) {
 /*------------------------------------------------------
  * lock_timeout - handler for lock timeout
  *------------------------------------------------------*/
-/* ARGSUSED */
 SFD lock_timeout(sig)
 int sig;
 {

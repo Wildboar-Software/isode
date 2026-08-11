@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2ps.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static PElement pe_eoc = { PE_CLASS_UNIV, PE_FORM_PRIM, PE_UNIV_EOC, 0 };
 static int  pe2ps_aux2 ();

@@ -52,7 +52,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2pl.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>

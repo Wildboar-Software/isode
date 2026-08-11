@@ -37,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/imiscd.c,v 9.0 1992/0
 #include <utmp.h>
 #include <sys/stat.h>
 
-/*    DATA */
 
 static char *myservice = "isode miscellany";	/* should be something else */
 
@@ -91,9 +90,7 @@ static int  pwdgen ();
 
 char   *ctime ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -103,9 +100,8 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
-/* ARGSUSED */
 
 static int  op_utcTime (sd, ryo, rox, in, roi)
 int	sd;
@@ -149,7 +145,6 @@ struct RoSAPindication *roi;
 }
 
 
-/* ARGSUSED */
 
 static int  op_genTime (sd, ryo, rox, in, roi)
 int	sd;
@@ -211,7 +206,6 @@ struct RoSAPindication *roi;
 
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
 
-/* ARGSUSED */
 
 static int  op_timeOfDay (sd, ryo, rox, in, roi)
 int	sd;
@@ -266,7 +260,6 @@ struct utmp *getutent ();
 #endif
 
 
-/* ARGSUSED */
 
 static int  op_users (sd, ryo, rox, in, roi)
 int	sd;
@@ -375,7 +368,6 @@ congested:
 #define	LINSIZ	72
 
 
-/* ARGSUSED */
 
 static int  op_charGen (sd, ryo, rox, in, roi)
 int	sd;
@@ -447,7 +439,6 @@ congested:
 #define	NPASS	6
 
 
-/* ARGSUSED */
 
 static int  op_pwdGen (sd, ryo, rox, in, roi)
 int	sd;
@@ -895,7 +886,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int  op_tellUser (sd, ryo, rox, in, roi)
 int	sd;
@@ -1082,7 +1072,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*    ERROR */
+/* ERROR */
 
 static int
 error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -1092,7 +1082,7 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 	return OK;
 }
 
-/*    U-REJECT */
+/* U-REJECT */
 
 static int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -1102,7 +1092,7 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 	return OK;
 }
 
-/*    TYPES */
+/* TYPES */
 
 struct type_IMISC_IA5List *
 str2ia5list (char *s) {

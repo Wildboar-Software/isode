@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/dg2ps.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include "psap.h"
 
@@ -92,7 +91,6 @@ dg_prime (PS ps, int waiting) {
 }
 
 
-/* ARGSUSED */
 
 static int
 dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -112,7 +110,6 @@ dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 }
 
 
-/* ARGSUSED */
 
 static int
 dg_write (PS ps, PElementData data, PElementLen n, int in_line) {

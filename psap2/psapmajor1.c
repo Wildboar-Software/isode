@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapmajor1.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-/*    P-{MAJOR-SYNC,ACTIVITY-END}.REQUEST */
+/*    P-{MAJOR-SYNC,ACTIVITY-END}.REQUEST */
 
 int
 PMajSyncRequestAux (int sd, long *ssn, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype) {

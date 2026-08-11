@@ -24,12 +24,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamconctl.c,v 9.0 199
  *
  */
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "fpkt.h"
 
-/*    DATA */
 
 static int fc2lock[] = {
 	int_FTAM_Lock_shared, int_FTAM_Lock_exclusive,
@@ -91,7 +89,6 @@ no_mem:
 }
 
 
-/* ARGSUSED */
 
 int
 fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {

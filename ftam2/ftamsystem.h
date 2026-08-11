@@ -28,7 +28,7 @@
 
 #define	SCPYN(a,b)	strncpy ((a), (b), sizeof (a))
 
-/*    SERVER */
+/* SERVER */
 
 extern int  ftamfd;
 
@@ -42,7 +42,7 @@ void	ftam_adios (), ftam_advise (), ftam_diag ();
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
-/*    UNIX DATA */
+/*    UNIX DATA */
 
 extern int  myuid;
 
@@ -52,7 +52,7 @@ extern char myhome[];
 extern dev_t null_dev;
 extern ino_t null_ino;
 
-/*    VFS DATA */
+/*    VFS DATA */
 
 #define	NMAX	8		/* too painful to get right! */
 
@@ -70,7 +70,7 @@ extern struct vfsmap vfs[];	/* ordering affects default action in st2vfs()
 #define	VFS_FDF	2		/*  ..       NIST-9 */
 #define VFS_FDF_OLD 3		/*  ..       NBS-9 with old OID (prov.) */
 
-/*    REGIME DATA */
+/*    REGIME DATA */
 
 extern int level;
 extern int ftam_class;
@@ -78,7 +78,7 @@ extern int units;
 extern int attrs;
 extern int fadusize;
 
-/*    ACTIVITY DATA */
+/*    ACTIVITY DATA */
 
 extern int  myfd;
 extern char *myfile;
@@ -86,7 +86,7 @@ extern struct stat  myst;
 extern int  statok;
 
 extern struct vfsmap   *myvf;	/* active contents type */
-extern caddr_t myparam;		/*   .. */
+extern caddr_t myparam;		/* .. */
 
 extern int  myaccess;		/* current access request */
 
@@ -95,7 +95,7 @@ extern char *initiator;		/* current initiator identity */
 extern struct FADUidentity mylocation;/* current location */
 
 extern int  mymode;		/* current processing mode */
-extern int  myoperation;	/*   .. */
+extern int  myoperation;	/* .. */
 
 #ifdef	notdef
 extern AEI mycalling;		/* current calling AET */
@@ -112,7 +112,7 @@ extern int mylockstyle;		/* current locking style */
 
 
 extern int  mycontext;		/* current access context */
-extern int  mylevel;		/*   .. */
+extern int  mylevel;		/* .. */
 
 
 #ifndef	SYS5

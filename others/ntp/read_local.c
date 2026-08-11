@@ -12,7 +12,6 @@
 
 extern LLog *pgm_log;
 
-/* ARGSUSED */
 int
 init_clock_local (char *file) {
 	struct intf *ap;
@@ -25,7 +24,6 @@ init_clock_local (char *file) {
 	return acount;	/* invalid if we ever use it */
 }
 
-/* ARGSUSED */
 int
 read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp) {
 	static struct timeval realtime, mytime;

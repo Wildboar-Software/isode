@@ -43,7 +43,6 @@
 /* stolen from psapinitiate.c in ISODE's /psap2 library */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -404,7 +403,7 @@ PUnitDataRebind (
 
 
 /*---------------------------------------------------------------------------*/
-/*    send P-UNIT-DATA.REQUEST over locally bound association */
+/*    send P-UNIT-DATA.REQUEST over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
 /*---------------------------------------------------------------------------*/
 int	PUnitDataWrite ( sd, data, ndata, pi )
@@ -524,7 +523,7 @@ out:
 
 
 /*---------------------------------------------------------------------------*/
-/*    get P-UNIT-DATA.INDICATON over locally bound association */
+/*    get P-UNIT-DATA.INDICATON over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
 /*---------------------------------------------------------------------------*/
 int
@@ -650,7 +649,7 @@ out:
 
 
 /*---------------------------------------------------------------------------*/
-/*    clear local binding for P-UNIT-DATA */
+/*    clear local binding for P-UNIT-DATA */
 /*---------------------------------------------------------------------------*/
 int
 PUnitDataUnbind (
@@ -697,7 +696,7 @@ out1:
 
 
 /*---------------------------------------------------------------------------*/
-/*    save magic args (TPDU) for local P-UNIT-DATA binding                 */
+/*    save magic args (TPDU) for local P-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
 int
 PuSave (

@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprespond.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <string.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*    S-CONNECT.INDICATION */
+/* S-CONNECT.INDICATION */
 
 static int  refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si);
 
@@ -201,7 +200,7 @@ out1:
 	return NOTOK;
 }
 
-/*    S-CONNECT.RESPONSE */
+/* S-CONNECT.RESPONSE */
 
 #define	dotoken(requires,shift,bit,type) \
 { \

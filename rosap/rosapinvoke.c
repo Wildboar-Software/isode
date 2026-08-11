@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapinvoke.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -37,7 +36,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapinvoke.c,v 9.0 1
 
 static int  RoInvokeRequestAux ();
 
-/*    RO-INVOKE.REQUEST */
+/* RO-INVOKE.REQUEST */
 
 int
 RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {

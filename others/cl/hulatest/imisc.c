@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /f/iso/imisc/RCS/imisc.c,v 5.0 88/07/21 14:41:57 
 struct passwd *getpwuid ();
 #endif
 
-/*    DATA */
 
 static char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
@@ -143,9 +142,7 @@ static struct dispatch dispatches[] = {
 
 char   *ctime ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -155,7 +152,7 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    TYPES */
+/* TYPES */
 
 struct type_IMISC_IA5List *
 vec2ia5list (char **vec) {
@@ -193,9 +190,8 @@ print_ia5list (struct type_IMISC_IA5List *ia5) {
 	}
 }
 
-/*    ARGUMENTS */
+/* ARGUMENTS */
 
-/* ARGSUSED */
 
 static int
 do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
@@ -205,7 +201,6 @@ do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List *
 }
 
 
-/* ARGSUSED */
 
 static int
 do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
@@ -240,7 +235,6 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 }
 
 
-/* ARGSUSED */
 
 static int
 do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
@@ -263,7 +257,6 @@ do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep)
 }
 
 
-/* ARGSUSED */
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
@@ -279,7 +272,6 @@ caddr_t *dummy;
 }
 
 
-/* ARGSUSED */
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -311,9 +303,8 @@ caddr_t *dummy;
 }
 */
 
-/*    RESULTS */
+/* RESULTS */
 
-/* ARGSUSED */
 
 static int
 utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
@@ -327,7 +318,6 @@ utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, 
 }
 
 
-/* ARGSUSED */
 
 static int
 timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
@@ -340,7 +330,6 @@ timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *resul
 }
 
 
-/* ARGSUSED */
 
 static int
 ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
@@ -350,7 +339,6 @@ ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct
 }
 
 
-/* ARGSUSED */
 
 static int  tell_result (sd, id, dummy, result, roi)
 int	sd,
@@ -365,7 +353,6 @@ struct RoSAPindication *roi;
 }
 
 
-/* ARGSUSED */
 
 static int  null_result (sd, id, dummy, result, roi)
 int	sd,
@@ -378,7 +365,6 @@ struct RoSAPindication *roi;
 }
 
 
-/* ARGSUSED */
 
 static int
 echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
@@ -388,9 +374,7 @@ echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct R
 	return OK;
 }
 
-/*    ERRORS */
 
-/* ARGSUSED */
 
 static int
 imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {

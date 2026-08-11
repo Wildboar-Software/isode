@@ -35,7 +35,6 @@ static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),
         check_objects (), print_yi (), print_yo (), print_yt (), print_type (),
         print_value ();
 
-/*    DATA */
 
 int	Cflag = 0;		/* mosy */
 int	dflag = 0;
@@ -149,9 +148,7 @@ static char   *val2str ();
 static OI	lookup_identifier ();
 static OT	lookup_object ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -225,7 +222,7 @@ usage:
 	case 2:
 		yydebug++;		/* fall */
 	case 1:
-		sflag++;		/*   .. */
+		sflag++;		/* .. */
 	case 0:
 		break;
 	}
@@ -262,7 +259,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-/*    ERRORS */
 
 int
 yyerror (char *s) {
@@ -345,7 +341,6 @@ yywrap () {
 }
 
 
-/* ARGSUSED */
 
 int
 yyprint (char *s, int f, int top) {
@@ -383,7 +378,7 @@ yyprint_aux (char *s, char *mode) {
 	linepos += len;
 }
 
-/*    PASS1 */
+/* PASS1 */
 
 int
 pass1 () {
@@ -535,7 +530,7 @@ YP	yp;
 	mytypes = add_symbol (mytypes, sy);
 }
 
-/*    PASS2 */
+/* PASS2 */
 
 int
 pass2 () {
@@ -586,7 +581,6 @@ pass2 () {
 }
 
 
-/* ARGSUSED */
 
 static
 do_id (OI yi, char *id) {
@@ -594,7 +588,6 @@ do_id (OI yi, char *id) {
 }
 
 
-/* ARGSUSED */
 
 static
 do_obj1 (OT yo, char *id) {
@@ -778,7 +771,6 @@ done_sequence:
 }
 
 
-/* ARGSUSED */
 
 static
 do_trap1 (TT yt, char *id) {
@@ -814,7 +806,7 @@ done_enterprise:
 		check_objects (yt -> yt_vars, "VARIABLES", 0);
 }
 
-/*    IDENTIFIER HANDLING */
+/*    IDENTIFIER HANDLING */
 
 static OI
 lookup_identifier (char *mod, char *id) {
@@ -855,7 +847,7 @@ YV	yv;
 	return buffer;
 }
 
-/*    OBJECT HANDLING */
+/*    OBJECT HANDLING */
 
 static OT
 lookup_object (char *mod, char *id) {
@@ -917,7 +909,7 @@ not_a_type:
 	}
 }
 
-/*    TYPE HANDLING */
+/*    TYPE HANDLING */
 
 static YP  lookup_type (mod, id)
 char *mod,
@@ -940,7 +932,7 @@ char *mod,
 	return NULLYP;
 }
 
-/*    VALUE HANDLING */
+/*    VALUE HANDLING */
 
 static char *val2str (yv)
 YV	yv;
@@ -979,7 +971,7 @@ YV	yv;
 	/* NOTREACHED */
 }
 
-/*    DEBUG */
+/* DEBUG */
 
 static
 print_yi (OI yi, int level) {
@@ -1181,7 +1173,7 @@ int	level;
 	}
 }
 
-/*    SYMBOLS */
+/* SYMBOLS */
 
 static SY
 new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id) {
@@ -1213,7 +1205,7 @@ add_symbol (SY s1, SY s2) {
 	return s1;
 }
 
-/*    TYPES */
+/* TYPES */
 
 YP	new_type (code)
 int	code;
@@ -1241,7 +1233,7 @@ YP	yp1,
 	return yp1;
 }
 
-/*    VALUES */
+/* VALUES */
 
 YV	new_value (code)
 int	code;
@@ -1269,7 +1261,7 @@ YV	yp1,
 	return yp1;
 }
 
-/*    TAGS */
+/* TAGS */
 
 YT	new_tag (class)
 PElementClass	class;
@@ -1283,7 +1275,7 @@ PElementClass	class;
 	return yt;
 }
 
-/*    STRINGS */
+/* STRINGS */
 
 char *
 new_string (char *s) {

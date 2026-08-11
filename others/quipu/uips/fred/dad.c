@@ -45,7 +45,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/dad.
 #include "internet.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static	int	debug = 0;
 static	int	nbits = FD_SETSIZE;
@@ -87,9 +86,7 @@ static int  rcpipe ();
 struct passwd  *getpwnam ();
 #endif
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -186,7 +183,6 @@ main (int argc, char **argv, char **envp) {
 }
 
 
-/* ARGSUSED */
 
 #ifdef	BSD42
 static SFD  dishser (sig, code, sc)
@@ -224,7 +220,6 @@ int	i;
 }
 
 
-/* ARGSUSED */
 
 static
 dadser (int fd, struct sockaddr_in *isock) {
@@ -596,7 +591,6 @@ done:
 
 
 #ifdef	BSD42
-/* ARGSUSED */
 
 static SFD  chldser (sig, code, sc)
 int	sig;
@@ -740,7 +734,6 @@ envinit () {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {

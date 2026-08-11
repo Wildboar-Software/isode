@@ -261,7 +261,7 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 
 
 /*--------------------------------------------------------------*/
-/*  ureject							*/
+/* ureject */
 /*--------------------------------------------------------------*/
 int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

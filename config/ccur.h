@@ -27,7 +27,7 @@
 #define	DEBUG	2
 #define	SYS5
 #define	WRITEV
-#define	VSPRINTF		/*   varargs */
+#define	VSPRINTF		/* varargs */
 
 #define	TCP			/* has TCP/IP (of course) */
 #define	TLI_TCP			/*   provided by TLI */

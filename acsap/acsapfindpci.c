@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapfindpci.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>

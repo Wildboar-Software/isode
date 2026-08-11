@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/filter.c,v 9.1 
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
@@ -218,7 +217,6 @@ char type;
 	return filt;
 }
 
-/* ARGSUSED */
 
 int	fi_print (ps, fi, format)
 PS	ps;

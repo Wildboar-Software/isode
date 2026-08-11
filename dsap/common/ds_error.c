@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/ds_error.c,v 9.
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/name.h"
@@ -100,7 +99,6 @@ static char * update [] = {
 	"Object class modifications Prohibited"
 };
 
-/* ARGSUSED */
 
 void de_print (PS ps, struct DSError *err, int format)
 {

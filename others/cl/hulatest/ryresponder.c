@@ -48,7 +48,6 @@
 
 /*  #include "tsap.h"  for listening */
 
-/*    DATA */
 
 int	debug = 0;
 
@@ -66,7 +65,7 @@ int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 
 
-/*    RESPONDER */
+/* RESPONDER */
 
 /* HULA changed call */
 /* ryresponder (argc, argv, host, myservice, dispatches, ops, start, stop) */
@@ -381,7 +380,6 @@ struct TSAPdisconnect *td;
 }
 */
 
-/*    ERRORS */
 
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {

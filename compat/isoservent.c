@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <string.h>
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoservent.c,v 9.0 1
 #include "isoservent.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static char *isoservices = "isoservices";
 

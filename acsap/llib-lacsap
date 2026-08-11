@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "acsap.h"
 #include "tsap.h"

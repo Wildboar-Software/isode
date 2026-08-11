@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync1.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync1.c,v 9.0 19
 
 static int  SReSyncRequestAux (struct ssapblk *sb, int type, long int ssn, int settings, char *data, int cc, struct SSAPindication *si);
 
-/*    S-RESYNCHRONIZE.REQUEST */
+/* S-RESYNCHRONIZE.REQUEST */
 
 #define	dotoken(requires,shift,bit,type) \
 { \

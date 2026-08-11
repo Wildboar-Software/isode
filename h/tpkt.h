@@ -119,7 +119,7 @@ struct tsapADDR {
 
 struct tsapblk {
     struct tsapblk *tb_forw;	/* doubly-linked list */
-    struct tsapblk *tb_back;	/*   .. */
+    struct tsapblk *tb_back;	/* .. */
 
     int     tb_fd;		/* file descriptor */
 
@@ -145,7 +145,7 @@ struct tsapblk {
     int    tb_cc;		/* saved user data count */
     char   tb_expedited;	/* saved expedited */
     struct TSAPaddr *tb_called;	/* saved addresses */
-    struct TSAPaddr *tb_calling;/*   .. */
+    struct TSAPaddr *tb_calling;/* .. */
 
     struct tsapkt *tb_retry;	/* initial tpkt */
 
@@ -153,7 +153,7 @@ struct tsapblk {
     u_short tb_dstref;		/* destination reference */
 
     int	    tb_tsdusize;	/* maximum TSDU size */
-    int	    tb_tpduslop;	/*   .. */
+    int	    tb_tpduslop;	/* .. */
     int	    tb_tpdusize;	/* for tp0ts */
 
     int	    tb_sent;		/* TPDU bytes sent */
@@ -162,7 +162,7 @@ struct tsapblk {
     struct QOStype tb_qos;	/* quality of service */
 
     struct qbuf tb_qbuf;	/* for segmented TSDUs */
-    int	    tb_len;		/*   .. */
+    int	    tb_len;		/* .. */
 
     int	    tb_seq;		/* TLI sequence number */
     
@@ -193,7 +193,7 @@ struct tsapblk {
     IFP	    tb_nreadfnx;	/* estimate of octets waiting to be read */
 
     IFP	    tb_DataIndication;	/* INDICATION handlers */
-    IFP     tb_DiscIndication;	/*   .. */
+    IFP     tb_DiscIndication;	/* .. */
 
 #ifdef  MGMT
     IFP     tb_manfnx;          /* for management reports */
@@ -209,7 +209,7 @@ struct tsapblk {
 void freetblk (struct tsapblk *tb);
 struct tsapblk *newtblk (), *findtblk ();
 
-/*    TPKT datastructure */
+/*    TPKT datastructure */
 
 struct tsapkt {
     int		t_errno;
@@ -401,19 +401,19 @@ struct tsapkt  *fd2tpkt ();
 char   *tpkt2str ();
 struct tsapkt  *str2tpkt ();
 
-/*    VARIABLE DATA codes, from ISO8073: */
+/*    VARIABLE DATA codes, from ISO8073: */
 
 					/* for CR/CC TPDUs */
 #define	VDAT_TSAP_SRV	0xc2		/* TSAP ID of the calling TSAP */
 #define	VDAT_TSAP_CLI	0xc1		/* TSAP ID of the called TSAP */
 #define	VDAT_SIZE	0xc0		/* TPDU SIZE */
-#define	  SIZE_8K	0x0d		/*   8192 */
-#define	  SIZE_4K	0x0c		/*   4096 */
-#define	  SIZE_2K	0x0b		/*   2048 */
-#define	  SIZE_1K	0x0a		/*   1024 */
-#define	  SIZE_512	0x09		/*    512 */
-#define	  SIZE_256	0x08		/*    256 */
-#define	  SIZE_128	0x07		/*    128 */
+#define	  SIZE_8K	0x0d		/* 8192 */
+#define	  SIZE_4K	0x0c		/* 4096 */
+#define	  SIZE_2K	0x0b		/* 2048 */
+#define	  SIZE_1K	0x0a		/* 1024 */
+#define	  SIZE_512	0x09		/* 512 */
+#define	  SIZE_256	0x08		/* 256 */
+#define	  SIZE_128	0x07		/* 128 */
 #define	  SIZE_DFLT	SIZE_128
 #define	  SIZE_MAXTP0	SIZE_2K
 #define	VDAT_VRSN	0xc4		/* Version number */

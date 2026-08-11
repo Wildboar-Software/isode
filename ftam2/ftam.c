@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam.c,v 9.0 1992/06/
 #include "ftamuser.h"
 #include "tailor.h"
 
-/*    DATA */
 
 #ifndef	BRIDGE
 static char *myname = "ftam";
@@ -300,7 +299,7 @@ static int ftamloop (char **vec, int error) {
 }
 #endif
 
-/*    ARGINIT */
+/* ARGINIT */
 
 #ifndef	BRIDGE
 static void arginit (char **vec) {
@@ -397,7 +396,7 @@ static void arginit (char **vec) {
 }
 #endif
 
-/*    INTERACTIVE */
+/* INTERACTIVE */
 
 #ifndef	BRIDGE
 int getftamline (char *prompt, char *buffer) {
@@ -466,7 +465,6 @@ int getftamline (char *prompt, char *buffer) {
 
 #ifndef	BRIDGE
 
-/* ARGSUSED */
 
 static SFD intrser (int sig) {
 #ifndef	BSDSIGS
@@ -558,7 +556,6 @@ ask (char *fmt) {
 #endif
 #endif
 
-/*    ERRORS */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...)

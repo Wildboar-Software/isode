@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapmajor1.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-MAJOR-SYNC.REQUEST */
+/* S-MAJOR-SYNC.REQUEST */
 
 int
 SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {

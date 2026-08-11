@@ -81,7 +81,6 @@ main (int argc, char *argv[]) {
 
 int refreshing = FALSE;
 
-/* ARGSUSED */
 int
 shadow_entry (Entry eptr) {
 	;

@@ -90,7 +90,6 @@ intquit () {
 	}
 }
 
-/* ARGSUSED */
 void
 quitfn (char *params) {
 	uprint("\nOK, exiting.\n");
@@ -445,7 +444,6 @@ entryList entries;
 	}
 }
 
-/* ARGSUSED */
 void
 printcommands (char *params) {
 	char buffer[LINESIZE];
@@ -514,7 +512,6 @@ ufnResults results;
 	results->matches = NULLEntryList;
 }
 
-/* ARGSUSED */
 void
 looklist (char *params) {
 	signal(SIGINT, abort_command);

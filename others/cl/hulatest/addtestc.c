@@ -38,7 +38,6 @@
 struct passwd *getpwuid ();
 #endif
 
-/*    DATA */
 
 static char *myservice = "addtest";
 static char *mycontext = "addtest context";
@@ -80,9 +79,7 @@ static struct dispatch dispatches[] = {
 
 char   *ctime ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -93,9 +90,8 @@ main (int argc, char **argv, char **envp) {
 }
 
 
-/*    ARGUMENTS */
+/* ARGUMENTS */
 
-/* ARGSUSED */
 
 static int
 addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends) {
@@ -111,7 +107,6 @@ addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **p
 }
 
 
-/* ARGSUSED */
 
 static int  do_help (sd, ds, args, dummy)
 int	sd;
@@ -127,7 +122,6 @@ caddr_t *dummy;
 }
 
 
-/* ARGSUSED */
 
 static int  do_quit (sd, ds, args, dummy)
 int	sd;
@@ -146,9 +140,8 @@ caddr_t *dummy;
 
 
 
-/*    RESULTS */
+/* RESULTS */
 
-/* ARGSUSED */
 
 static int
 addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi) {
@@ -158,9 +151,7 @@ addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoS
 }
 
 
-/*    ERRORS */
 
-/* ARGSUSED */
 
 static int
 addtest_error (

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas2.c,v 9.0 
 #include "acpkt.h"
 #include "tailor.h"
 
-/*    A-RELEASE.RESPONSE */
+/* A-RELEASE.RESPONSE */
 
 int
 AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci) {

@@ -1245,8 +1245,7 @@ hourly () {
 		drift_count++;
 	}
 }
-/* Debugging stuff */
-/* ARGSUSED */
+/* Debugging stuff */
 #if	defined(DEBUG) && defined(SIGUSR1) && defined(SIGUSR2)
 static SFD incdebug(sig)
 int sig;
@@ -1257,7 +1256,6 @@ int sig;
 	advise (LLOG_DEBUG, NULLCP, "DEBUG LEVEL %d", debug);
 }
 
-/* ARGSUSED */
 static SFD
 decdebug(sig)
 int sig;
@@ -1269,7 +1267,6 @@ int sig;
 }
 #endif
 
-/* ARGSUSED */
 static SFD
 finish(sig)
 int sig;

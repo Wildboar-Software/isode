@@ -67,7 +67,7 @@ char	*host;
 int groupid, userid;
 char homedir[BUFSIZ];
 
-/*   MAIN */
+/* MAIN */
 
 int
 main (int argc, char **argv) {
@@ -141,7 +141,6 @@ cleanup () {
 }
 
 
-/* ARGSUSED */
 initiate (sd, acs, pe)
 int sd;
 struct AcSAPstart *acs;

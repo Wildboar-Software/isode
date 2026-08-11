@@ -186,7 +186,7 @@ realPath (char *dir, char *path) {
 
 
 /*--------------------------------------------------------------*/
-/*  getRfaContext						*/
+/* getRfaContext */
 /*--------------------------------------------------------------*/
 char *
 getRfaContext (char *cwd, char *fn) {

@@ -45,7 +45,7 @@ struct RtSAPstart {		/* RT-OPEN.INDICATION */
 	struct RtSAPaddr rts_initiator;/* address */
 
 	int	    rts_mode;		/* dialogue mode */
-#define	RTS_MONOLOGUE	0	/*   monologue */
+#define	RTS_MONOLOGUE	0	/* monologue */
 #define	RTS_TWA		1	/*   two-way alternate */
 
 	int	    rts_turn;		/* initial turn */
@@ -139,8 +139,8 @@ struct RtSAPabort {		/* RT-{U,P}-ABORT.INDICATION */
 
 	/* additional failure data from provider */
 #define	RTA_SIZE	512
-	int	    rta_cc;		/*   length */
-	char    rta_data[RTA_SIZE];	/*   data */
+	int	    rta_cc;		/* length */
+	char    rta_data[RTA_SIZE];	/* data */
 };
 #define	RTAFREE(rta) \
 { \

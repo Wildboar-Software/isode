@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapaddr.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <string.h>
@@ -42,7 +41,6 @@ struct PSAPaddr *aei2addr_stub (AEI aei);
 AEI	str2aei_dse ();
 struct PSAPaddr *aei2addr_dse ();
 
-/*    DATA */
 
 #ifndef	NOSTUB
 static char fallback1[BUFSIZ],

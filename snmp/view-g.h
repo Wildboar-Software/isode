@@ -25,7 +25,7 @@
 #include "internet.h"
 #include "psap.h"
 
-/*    VIEWS */
+/* VIEWS */
 
 #define	inSubtree(tree,object) \
     	((tree) -> oid_nelem <= (object) -> oid_nelem \
@@ -44,7 +44,7 @@ struct subtree {
 
 struct view {
 	struct view *v_forw;	/* doubly-linked list */
-	struct view *v_back;	/*   .. */
+	struct view *v_back;	/* .. */
 
 	OID	    v_name;		/* view name */
 	u_long  v_mask;		/* view mask */
@@ -55,16 +55,16 @@ struct view {
 	struct sockaddr v_sa;
 
 	unsigned int *v_instance;	/* object instance */
-	int	    v_insize;		/*   .. */
+	int	    v_insize;		/* .. */
 };
 
 extern struct view *VHead;
 
-/*    COMMUNITIES */
+/* COMMUNITIES */
 
 struct community {
 	struct community *c_forw;	/* doubly-linked list */
-	struct community *c_back;	/*   .. */
+	struct community *c_back;	/* .. */
 
 	char   *c_name;		/* community name */
 	struct NSAPaddr c_addr;	/* network address */
@@ -73,30 +73,30 @@ struct community {
 #define	OT_YYY	0x08
 
 	OID	    c_vu;		/* associated view */
-	struct view *c_view;	/*   .. */
+	struct view *c_view;	/* .. */
 
 	unsigned int *c_instance;	/* object instance */
-	int	    c_insize;		/*   .. */
+	int	    c_insize;		/* .. */
 	struct community *c_next;	/* next in lexi-order */
 };
 
 extern struct community *CHead;
 
-/*    TRAPS */
+/* TRAPS */
 
 struct trap {
 	struct trap *t_forw;	/* doubly-linked list */
-	struct trap *t_back;	/*   .. */
+	struct trap *t_back;	/* .. */
 
 	char   *t_name;		/* trap name */
 
 	struct view  t_vu;		/* associated view */
-	struct view *t_view;	/*   .. */
+	struct view *t_view;	/* .. */
 
 	u_long  t_generics;		/* generic traps enabled */
 
 	unsigned int *t_instance;	/* object instance */
-	int	    t_insize;		/*   .. */
+	int	    t_insize;		/* .. */
 };
 
 extern struct trap *UHead;

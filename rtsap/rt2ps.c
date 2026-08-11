@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ps.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "RTS-types.h"
@@ -387,7 +386,7 @@ rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rt
 	return NOTOK;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
 
@@ -427,7 +426,7 @@ rt2psasync (
 
 #undef	e
 
-/*    map association descriptors for select() */
+/*    map association descriptors for select() */
 
 int
 rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
@@ -449,7 +448,7 @@ rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication
 	return OK;
 }
 
-/*    protocol-level abort */
+/*    protocol-level abort */
 
 int
 rt2pslose (struct assocblk *acb, int result) {
@@ -470,7 +469,7 @@ rt2pslose (struct assocblk *acb, int result) {
 	/* end RTAB APDU */
 }
 
-/*    AcSAP interface */
+/*    AcSAP interface */
 
 int
 acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca) {
@@ -618,7 +617,7 @@ out:
 	return NOTOK;
 }
 
-/*    PSAP interface */
+/*    PSAP interface */
 
 static int
 doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti) {

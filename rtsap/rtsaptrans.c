@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaptrans.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    RT-TRANSFER.REQUEST */
+/* RT-TRANSFER.REQUEST */
 
 int
 RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti) {

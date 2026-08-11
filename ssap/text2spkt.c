@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/text2spkt.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "spkt.h"

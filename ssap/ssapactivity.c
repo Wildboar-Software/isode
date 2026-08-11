@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapactivity.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-CONTROL-GIVE.REQUEST */
+/* S-CONTROL-GIVE.REQUEST */
 
 static int  SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long int ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si);
 static int  SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindication *si);
@@ -70,7 +69,7 @@ static int SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si) {
 	return result;
 }
 
-/*    S-ACTIVITY-START.REQUEST */
+/* S-ACTIVITY-START.REQUEST */
 
 int SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
@@ -109,7 +108,7 @@ static int SActStartRequestAux (
 	return result;
 }
 
-/*    S-ACTIVITY-RESUME.REQUEST */
+/* S-ACTIVITY-RESUME.REQUEST */
 
 int SActResumeRequest (
 	int sd,
@@ -171,7 +170,7 @@ static int SActResumeRequestAux (
 	return result;
 }
 
-/*    S-ACTIVITY-INTERRUPT.REQUEST */
+/* S-ACTIVITY-INTERRUPT.REQUEST */
 
 int SActIntrRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
@@ -221,7 +220,7 @@ static int SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct 
 	return result;
 }
 
-/*    S-ACTIVITY-INTERRUPT.RESPONSE */
+/* S-ACTIVITY-INTERRUPT.RESPONSE */
 
 int SActIntrResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
@@ -258,7 +257,7 @@ static int SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindicat
 	return result;
 }
 
-/*    S-ACTIVITY-DISCARD.REQUEST */
+/* S-ACTIVITY-DISCARD.REQUEST */
 
 int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
@@ -279,7 +278,7 @@ int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 	return result;
 }
 
-/*    S-ACTIVITY-DISCARD.RESPONSE */
+/* S-ACTIVITY-DISCARD.RESPONSE */
 
 int SActDiscResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
@@ -294,7 +293,7 @@ int SActDiscResponse (int sd, struct SSAPindication *si) {
 	return result;
 }
 
-/*    S-ACTIVITY-END.REQUEST */
+/* S-ACTIVITY-END.REQUEST */
 
 int SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
@@ -311,7 +310,7 @@ int SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication
 	return result;
 }
 
-/*    S-ACTIVITY-END.RESPONSE */
+/* S-ACTIVITY-END.RESPONSE */
 
 int SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;

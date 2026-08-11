@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapreject.c,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 #include "logger.h"
 #include "quipu/util.h"
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapreject.c,v 9.0
 
 extern LLog	* log_dsap;
 
-/* ARGSUSED */
 
 int
 DRejectRequest (int sd, int reason, int id) {

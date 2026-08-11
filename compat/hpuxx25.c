@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/hpuxx25.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/hpuxx25.c,v 9.0 1992
 #include "manifest.h"
 #include "tailor.h"
 
-/*    HP UNIX: X25/9000 */
+/*    HP UNIX: X25/9000 */
 
 #ifdef  X25
 
@@ -63,7 +62,6 @@ void    print_x25_facilities ();
 #endif
 
 
-/* ARGSUSED */
 
 int
 start_x25_client (struct NSAPaddr *local, int priv) {

@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/x25addr.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 /*
  * for *really* generic address translation
@@ -56,7 +55,6 @@ extern char * aix_x25_linkname;
 /*
  * convert from the generic X25 structure to interface specific
  */
-/* ARGSUSED */
 CONN_DB *
 gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	int     dtelen;
@@ -442,7 +440,6 @@ gen2if (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 /*
  * convert from interface specific format to generic X.25 structure
  */
-/* ARGSUSED */
 struct NSAPaddr *
 if2gen (struct NSAPaddr *generic, CONN_DB *specific, int context) {
 	int     dtelen;

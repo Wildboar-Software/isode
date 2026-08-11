@@ -27,7 +27,7 @@
 
 struct smuxPeer {
 	struct smuxPeer *pb_forw;		/* doubly-linked list */
-	struct smuxPeer *pb_back;		/*   .. */
+	struct smuxPeer *pb_back;		/* .. */
 
 	int	    pb_index;			/* smuxPindex */
 
@@ -52,7 +52,7 @@ extern	struct smuxPeer *PHead;
 
 struct smuxTree {
 	struct smuxTree *tb_forw;		/* doubly-linked list */
-	struct smuxTree *tb_back;		/*   .. */
+	struct smuxTree *tb_back;		/* .. */
 
 #define	TB_SIZE	30			/* object instance */
 	unsigned int    tb_instance[TB_SIZE + 1];

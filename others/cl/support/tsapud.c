@@ -109,7 +109,6 @@ void	ts_advise ();
 
 
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int     argc;
@@ -458,7 +457,6 @@ envinit () {
 	advise (LOG_INFO, NULLCP, "starting");
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 static void  _advise ();

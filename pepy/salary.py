@@ -17,7 +17,6 @@ static struct salary_record {
 static void	adios (char *, char *, ...);
 
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int     argc;
@@ -68,7 +67,6 @@ END
 
 %{
 
-/*    ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

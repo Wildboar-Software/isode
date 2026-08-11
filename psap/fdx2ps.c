@@ -26,13 +26,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/fdx2ps.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 
 static int  fdx_flush ();
-/*    DATA */
 
 struct ps_fdx {
 	int	    ps_fd;
@@ -52,7 +50,7 @@ struct ps_fdx {
 
 extern	IFP	set_check_fd ();
 
-/* */
+/* */
 
 static int
 fdx_prime (PS ps, int waiting) {
@@ -63,7 +61,6 @@ fdx_prime (PS ps, int waiting) {
 }
 
 
-/* ARGSUSED */
 
 static int
 fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -95,7 +92,6 @@ fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 }
 
 
-/* ARGSUSED */
 
 static int
 fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -169,7 +165,6 @@ PS	ps;
 }
 
 
-/* ARGSUSED */
 static int  fdx_check (fd, data)
 int	fd;
 caddr_t	data;

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk1.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk1.c,v 9.0 1992
 static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti);
 static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
 
-/*    F-{READ,WRITE}.REQUEST */
+/*    F-{READ,WRITE}.REQUEST */
 static int  FReadWriteRequestAux (), FTransEndRequestAux ();
 
 int
@@ -43,7 +42,7 @@ FReadWriteRequest (
 	int operation,
 	struct FADUidentity *identity,
 	int context,		/* F-READ.REQUEST only */
-	int level,			/*   .. */
+	int level,			/* .. */
 	int lock,
 	struct FTAMindication *fti
 ) {
@@ -223,7 +222,7 @@ out:
 	return OK;
 }
 
-/*    F-TRANSFER-END.REQUEST */
+/* F-TRANSFER-END.REQUEST */
 
 int
 FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {

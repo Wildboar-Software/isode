@@ -270,7 +270,7 @@ YYSTYPE	yylval;			/*  the semantic value of the		*/
 
 #ifdef YYLSP_NEEDED
 YYLTYPE yylloc;			/*  location data for the lookahead	*/
-/*  symbol				*/
+/* symbol */
 #endif
 
 int yynerrs;			/*  number of parse errors so far       */
@@ -372,7 +372,7 @@ yyparse() {
 
 	YYSTYPE yyval;		/*  the variable used to return		*/
 	/*  semantic values from the action	*/
-	/*  routines				*/
+	/* routines */
 
 	int yylen;
 
@@ -912,7 +912,6 @@ yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {
 	return 0;
 }
 
-/* ARGSUSED */
 int
 yyerror (char *err) {
 	fprintf(stderr, "Line %d. ", config_line_num);

@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/mailbox.c,v 9.0
 		internet $ quipu-support@cs.ucl.ac.uk
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

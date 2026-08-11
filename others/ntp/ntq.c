@@ -230,7 +230,6 @@ send_request (int sd) {
 	}
 }
 
-/* ARGSUSED */
 int
 query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi) {
 	struct type_NTP_ClockInfo *clock;
@@ -279,7 +278,6 @@ query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, 
 }
 
 
-/* ARGSUSED */
 int
 query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;

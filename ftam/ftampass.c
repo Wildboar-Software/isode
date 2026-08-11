@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftampass.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "fpkt.h"

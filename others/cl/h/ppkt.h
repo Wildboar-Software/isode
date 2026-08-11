@@ -121,12 +121,12 @@ int	ppktlose (struct psapblk*pb, ...);
 
 
 #define	atn_is_ok(pb,atn)	((atn) ? 1 : 0) /* it's all ISO8825, right? */
-#define	atn_is_asn1(atn)	((atn) ? 1 : 0)	/*   .. */
+#define	atn_is_asn1(atn)	((atn) ? 1 : 0)	/* .. */
 
 
 struct psapblk {
 	struct psapblk *pb_forw;	/* doubly-linked list */
-	struct psapblk *pb_back;	/*   .. */
+	struct psapblk *pb_back;	/* .. */
 
 	int	    pb_fd;		/* session descriptor */
 
@@ -152,7 +152,7 @@ struct psapblk {
 
 	OID	    pb_asn;		/* default: abstract syntax name */
 	OID	    pb_atn;		/*   ..     abstract transfer name */
-	int	    pb_result;		/* 	    response */
+	int	    pb_result;		/* response */
 
 	int	    pb_prequirements;	/* presentation requirements */
 
@@ -165,12 +165,12 @@ struct psapblk {
 	struct PSAPaddr pb_responding;	/* responder */
 
 	IFP	    pb_DataIndication;		/* INDICATION handlers */
-	IFP	    pb_TokenIndication;		/*   .. */
-	IFP	    pb_SyncIndication;		/*   .. */
-	IFP	    pb_ActivityIndication;	/*   .. */
-	IFP	    pb_ReportIndication;	/*   .. */
-	IFP	    pb_ReleaseIndication;	/*   .. */
-	IFP	    pb_AbortIndication;		/*   .. */
+	IFP	    pb_TokenIndication;		/* .. */
+	IFP	    pb_SyncIndication;		/* .. */
+	IFP	    pb_ActivityIndication;	/* .. */
+	IFP	    pb_ReportIndication;	/* .. */
+	IFP	    pb_ReleaseIndication;	/* .. */
+	IFP	    pb_AbortIndication;		/* .. */
 
 };
 #define	NULLPB		((struct psapblk *) 0)

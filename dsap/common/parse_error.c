@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/parse_error.c,v
  */
 
 
-/* LINTLIBRARY */
 
 #include <string.h>
 #include "quipu/util.h"

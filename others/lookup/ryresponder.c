@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryresponder.c
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 
-/*    DATA */
 
 int	debug = 0;
 
@@ -57,7 +56,7 @@ int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 
 
-/*    RESPONDER */
+/* RESPONDER */
 
 int	ryresponder (argc, argv, host, myservice, mycontext, dispatches, ops,
 				 start, stop)
@@ -295,7 +294,6 @@ ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-/*    ERRORS */
 
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {

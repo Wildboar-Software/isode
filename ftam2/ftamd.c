@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd.c,v 9.0 1992/06
 #include <unistd.h>
 #include "ftamsystem.h"
 
-/*    DATA */
 
 int	ftamfd = NOTOK;
 
@@ -38,7 +37,6 @@ int	cflag = 0;
 int	debug = 0;
 char   *myname = "ftamd";
 
-/*    MAIN */
 
 #define	SMASK	"\020\01UNCONS\02MANAGE\03TRANSFER\04TM\05ACCESS"
 
@@ -47,7 +45,6 @@ char   *myname = "ftamd";
 
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {

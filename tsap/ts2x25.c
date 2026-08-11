@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2x25.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -65,7 +64,7 @@ int fd;
 #endif
 #endif
 
-/*    N-CONNECT.REQUEST */
+/* N-CONNECT.REQUEST */
 
 int
 x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
@@ -228,7 +227,7 @@ done:
 	return DONE;
 }
 
-/*    init for read from network */
+/*    init for read from network */
 
 static char nsdu[MAXNSDU];
 static char *np;
@@ -274,7 +273,6 @@ x25init (int fd, struct tsapkt *t) {
 }
 
 
-/* ARGSUSED */
 
 static int
 read_nsdu_buffer (int fd, char *buffer, int cc) {
@@ -290,7 +288,6 @@ read_nsdu_buffer (int fd, char *buffer, int cc) {
 }
 
 
-/* ARGSUSED */
 
 char *
 x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td) {

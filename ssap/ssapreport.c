@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapreport.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapreport.c,v 9.0 199
 
 static int  SUReportRequestAux (struct ssapblk *sb, int reason, char *data, int cc, struct SSAPindication *si);
 
-/*    S-U-EXCEPTION-REPORT.REQUEST */
+/* S-U-EXCEPTION-REPORT.REQUEST */
 
 int SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;

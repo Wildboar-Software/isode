@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamabort.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
 
-/*    F-U-ABORT.REQUEST */
+/* F-U-ABORT.REQUEST */
 
 int
 FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {

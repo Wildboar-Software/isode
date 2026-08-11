@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psreleas2.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psreleas2.c,v 9.0 
 
 static int  RtCloseResponseAux ();
 
-/*    RT-CLOSE.RESPONSE */
+/* RT-CLOSE.RESPONSE */
 
 int
 RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {

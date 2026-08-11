@@ -346,7 +346,6 @@ shadow_fail_wakeup (struct oper_act *on) {
 	return TRUE;
 }
 
-/* ARGSUSED */
 int
 inherit_link (Entry e, Entry parent) {
 	set_inheritance (e);

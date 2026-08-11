@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/listen/RCS/listen.c,v 9.
 static char *mycontext = "isode listen demo";
 
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {

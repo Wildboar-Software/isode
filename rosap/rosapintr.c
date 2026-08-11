@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapintr.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -35,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapintr.c,v 9.0 199
 static int interrupted;
 static SFD	intrser ();
 
-/*    RO-INVOKE.REQUEST (interruptable) */
+/*    RO-INVOKE.REQUEST (interruptable) */
 
 int
 RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
@@ -79,7 +78,6 @@ RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priorit
 }
 
 
-/* ARGSUSED */
 
 static SFD
 intrser (int sig) {

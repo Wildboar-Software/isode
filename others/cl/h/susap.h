@@ -50,8 +50,8 @@ struct SuSAPstart {
 
 	/* UNITDATA from peer */
 
-	int	    ss_cc;		/*   length */
-	char   *ss_data;		/*   data */
+	int	    ss_cc;		/* length */
+	char   *ss_data;		/* data */
 
 	char   *ss_base;		/*   base ptr for free */
 

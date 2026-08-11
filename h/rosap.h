@@ -144,13 +144,13 @@ struct RoSAPconnect {		/* RO-BEGIN.CONFIRMATION */
 
 
 struct RoSAPinvoke {		/* RO-INVOKE.INDICATION */
-	int	    rox_id;		/*   invokeID */
+	int	    rox_id;		/* invokeID */
 
-	int	    rox_linkid;		/*   linkedID */
+	int	    rox_linkid;		/* linkedID */
 	int     rox_nolinked;	/*   non-zero if no linkedID present */
 
-	int	    rox_op;		/*   operation */
-	PE	    rox_args;		/*   arguments */
+	int	    rox_op;		/* operation */
+	PE	    rox_args;		/* arguments */
 };
 #define	ROXFREE(rox) \
 { \
@@ -160,10 +160,10 @@ struct RoSAPinvoke {		/* RO-INVOKE.INDICATION */
 
 
 struct RoSAPresult {		/* RO-RESULT.INDICATION */
-	int	    ror_id;		/*   invokeID */
+	int	    ror_id;		/* invokeID */
 
-	int	    ror_op;		/*   operation */
-	PE	    ror_result;		/*   result */
+	int	    ror_op;		/* operation */
+	PE	    ror_result;		/* result */
 };
 #define	RORFREE(ror) \
 { \
@@ -173,10 +173,10 @@ struct RoSAPresult {		/* RO-RESULT.INDICATION */
 
 
 struct RoSAPerror {		/* RO-ERROR.INDICATION */
-	int	    roe_id;		/*   invokeID */
+	int	    roe_id;		/* invokeID */
 
-	int	    roe_error;		/*   error */
-	PE	    roe_param;		/*   parameter */
+	int	    roe_error;		/* error */
+	PE	    roe_param;		/* parameter */
 };
 #define	ROEFREE(roe) \
 { \
@@ -186,7 +186,7 @@ struct RoSAPerror {		/* RO-ERROR.INDICATION */
 
 
 struct RoSAPureject {		/* RO-U-REJECT.INDICATION */
-	int	    rou_id;		/*   invokeID */
+	int	    rou_id;		/* invokeID */
 	int	    rou_noid;		/*     .. is not present */
 
 	int	    rou_reason;		/*   reason (same as roc_result) */
@@ -197,13 +197,13 @@ struct RoSAPpreject {		/* RO-P-REJECT.INDICATION */
 	int	    rop_reason;		/*   reason (same as roc_result) */
 
 	/* APDU not transferred (reason is ROS_APDU) */
-	int	    rop_id;		/*   invokeID */
-	PE	    rop_apdu;		/*   APDU */
+	int	    rop_id;		/* invokeID */
+	PE	    rop_apdu;		/* APDU */
 
 	/*   additional failure data from provider */
 #define	ROP_SIZE	512
-	int	    rop_cc;		/*   length */
-	char    rop_data[ROP_SIZE];	/*   data */
+	int	    rop_cc;		/* length */
+	char    rop_data[ROP_SIZE];	/* data */
 };
 #define	ROPFREE(rop) \
 { \

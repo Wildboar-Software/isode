@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/disp
 #define	UFN_ALL		0x03
 #define	UFN_MASK	"\020\01approximate-matching\02full-wildcarding"
 
-/*    DATA */
 
 int	bflag = 1;
 int	boundP = 0;
@@ -135,7 +134,7 @@ static struct dispatch *getds ();
 static printvar ();
 static	snarf ();
 
-/*    DISPATCH */
+/* DISPATCH */
 
 int
 fredloop (char **vec, int error) {
@@ -221,7 +220,7 @@ getds (char *name) {
 	}
 }
 
-/*    VARIABLES */
+/* VARIABLES */
 
 static char *bool[] = {
 	"off", "on", NULL
@@ -645,7 +644,7 @@ getvar (char *name) {
 	}
 }
 
-/*    HELP */
+/* HELP */
 
 static int helpwidth;
 
@@ -718,7 +717,7 @@ f_help (char **vec) {
 	return OK;
 }
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 int
 rcinit () {
@@ -875,7 +874,6 @@ rcfile (char *file, int op, int isystem) {
 
 
 #ifndef	TIOCGWINSZ
-/* ARGSUSED */
 #endif
 
 int	ncols (fp)

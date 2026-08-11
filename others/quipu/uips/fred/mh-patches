@@ -467,8 +467,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + }
 + 
 + 
-+ /* ARGSUSED */
-+ 
++ + 
 + static int  intrser (i)
 + int	i;
 + {
@@ -527,8 +526,7 @@ diff -c zotnet/mts/client.c.orig	zotnet/mts/client.c
 + 
   long	lseek (), time ();
   
-  /*    MAIN */
-***************
+  ***************
 *** 486,491 ****
 --- 499,511 ----
   		    snoop++;

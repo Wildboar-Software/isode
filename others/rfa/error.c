@@ -69,7 +69,7 @@ str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindi
 
 
 /*--------------------------------------------------------------*/
-/*  syserror							*/
+/* syserror */
 /*--------------------------------------------------------------*/
 int
 syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -78,7 +78,7 @@ syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi)
 
 
 /*--------------------------------------------------------------*/
-/*  error							*/
+/* error */
 /*--------------------------------------------------------------*/
 int
 error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -90,7 +90,7 @@ error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindicatio
 
 
 /*--------------------------------------------------------------*/
-/*  errMsg							*/
+/* errMsg */
 /*--------------------------------------------------------------*/
 char *
 errMsg (int type) {
@@ -103,7 +103,7 @@ errMsg (int type) {
 
 
 /*--------------------------------------------------------------*/
-/*  statusError							*/
+/* statusError */
 /*--------------------------------------------------------------*/
 int
 statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {

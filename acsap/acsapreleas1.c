@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas1.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas1.c,v 9.0 
 
 static int  AcRelRetryRequestAux ();
 
-/*    A-RELEASE.REQUEST */
+/* A-RELEASE.REQUEST */
 
 int
 AcRelRequest (int sd, int reason, PE *data, int ndata, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
@@ -121,7 +120,7 @@ out1:
 	return result;
 }
 
-/*    A-RELEASE-RETRY.REQUEST (pseudo) */
+/*    A-RELEASE-RETRY.REQUEST (pseudo) */
 
 int
 AcRelRetryRequest (int sd, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {

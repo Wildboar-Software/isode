@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/cilist.c,v 9.0 
 		An example $ of a case ignore list $ syntax attribute
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

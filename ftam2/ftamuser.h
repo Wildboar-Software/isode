@@ -23,7 +23,6 @@
 
 #include "ftamsbr.h"
 
-/*    MAIN */
 
 extern int  ontty;
 extern int  interrupted;
@@ -36,7 +35,6 @@ int getftamline(char* prompt, char* buffer);
 int	ask (char *fmt, ...), _getline ();
 #endif
 
-/*    DATA */
 
 extern int  ftamfd;
 #ifdef	BRIDGE
@@ -83,7 +81,7 @@ extern struct QOStype myqos;
 
 char   *str2file ();
 
-/*    DISPATCH */
+/* DISPATCH */
 
 struct dispatch {
 	char   *ds_name;
@@ -104,7 +102,7 @@ struct dispatch {
 
 struct dispatch *getds ();
 
-/*    FTAM */
+/* FTAM */
 
 #define	UMASK	"\020\01READ\02WRITE\03ACCESS\04LIMITED\05ENHANCED\06GROUPING\
 \07RECOVERY\08RESTART"
@@ -129,7 +127,7 @@ extern struct vfsmap *myvf;
 
 void	ftam_advise (), ftam_chrg (), ftam_diag (), ftam_watch ();
 
-/*    FILES */
+/* FILES */
 
 struct filent {
 	char   *fi_name;
@@ -148,7 +146,7 @@ extern struct filent *filents;
 
 int	fdffnx ();
 
-/*    GLOB */
+/* GLOB */
 
 extern int   xglobbed;
 extern char *globerr;

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/tree_struct.c,v
 
 extern int oidformat;
 
-/* ARGSUSED */
 void tree_struct_free (struct tree_struct *ptr) {
 	/* don't free objectclass - in static table */
 	free ((char *)ptr);

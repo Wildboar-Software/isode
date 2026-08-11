@@ -28,13 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapservice.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
 
-/*    bind underlying service */
+/*    bind underlying service */
 
 int
 RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi) {

@@ -25,12 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamrespond.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "fpkt.h"
 
-/*    F-INITIALIZE.INDICATION */
+/* F-INITIALIZE.INDICATION */
 
 int
 FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAMindication *fti) {
@@ -412,7 +411,7 @@ carry_on:
 	return NOTOK;
 }
 
-/*    F-INITIALIZE.RESPONSE */
+/* F-INITIALIZE.RESPONSE */
 
 int
 FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {

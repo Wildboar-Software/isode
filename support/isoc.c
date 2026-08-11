@@ -67,7 +67,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isoc.c,v 9.0 1992/0
 #define	ASYNC
 #endif
 
-/*    DATA */
 
 #define	ISN(req) \
     (req & (SR_MINORSYNC | SR_MAJORSYNC | SR_RESYNC | SR_ACTIVITY)) \
@@ -2802,7 +2801,7 @@ char   *event;
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-/*    TIMER */
+/* TIMER */
 
 #ifdef	TIMER
 

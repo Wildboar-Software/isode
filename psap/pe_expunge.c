@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe_expunge.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"

@@ -37,7 +37,6 @@ extern char dsa_mode;
 static char used_temp;
 
 #ifndef SYS5
-/* ARGSUSED */
 #endif
 
 int dflt_attr_file (AttributeType at, AttributeValue x, char full)

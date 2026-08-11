@@ -37,7 +37,6 @@ use_serv_null (void) {
 	return (&null_serv);
 }
 
-/* LINTLIBRARY */
 
 struct signature *nullsigned(char *data, int type, modtyp *module)
 {

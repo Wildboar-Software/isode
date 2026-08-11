@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind1.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include "tailor.h"
 #include "logger.h"
@@ -33,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind1.c,v 9.0 19
 #include "RONOT-types.h"
 
 
-/*    RO-BIND.REQUEST */
+/* RO-BIND.REQUEST */
 
-/* ARGSUSED */
 
 int	  RoAsynBindRequest (context, callingtitle, calledtitle,
 						 callingaddr, calledaddr, ctxlist, defctxname,
@@ -134,9 +132,8 @@ int			  async;
 	return (result);
 }
 
-/*    RO-BIND.RETRY */
+/* RO-BIND.RETRY */
 
-/* ARGSUSED */
 
 int
 RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct RoNOTindication *rni) {

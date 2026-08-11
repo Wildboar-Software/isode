@@ -64,14 +64,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/pepsy.c,v 9.0 1992/06
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
 
-/*    DATA */
 
 static int aflag = 0;
 int	Aflag = 0;	/* Don't so all modes by default */
 int	Cflag = 1;      /* combine H files */
 int	dflag = 0;
 int	Pflag = 0;		/* pepy compat ... */
-char    *bflag = NULL;		/*  .. */
+char    *bflag = NULL;		/* .. */
 char	*iflag = NULL;		/* -i file => #include users file */
 char    *module_actions = NULL;
 int	pepydebug = 0;
@@ -225,9 +224,7 @@ YT lookup_tag (YP yp);
 void pepsy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg);
 int addextmod (char *p);
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int main (int argc, char **argv, char **envp) {
 	int	    i;
@@ -309,7 +306,7 @@ usage:
 	case 2:
 		yydebug++;		/* fall */
 	case 1:
-		sflag++;		/*   .. */
+		sflag++;		/* .. */
 	case 0:
 		break;
 	}
@@ -345,7 +342,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-/*    ERRORS */
 
 void yyerror (char *s) {
 	yyerror_aux (s);
@@ -433,7 +429,6 @@ int yywrap(void) {
 	return 1;
 }
 
-/* ARGSUSED */
 
 void yyprint (char *s, int f, int top) {
 	int     len;
@@ -1453,7 +1448,7 @@ static void do_type1 (
 	}
 }
 
-/*    TYPE HANDLING */
+/*    TYPE HANDLING */
 
 YP lookup_type (char *mod, char *id) {
 	SY	    sy;
@@ -2144,7 +2139,7 @@ static void components_pullup (YP yp) {
 	}
 }
 
-/*    VALUE HANDLING */
+/*    VALUE HANDLING */
 
 static int val2int (YV yv) {
 	switch (yv -> yv_code) {
@@ -2464,7 +2459,7 @@ static void print_value (YV yv, int level) {
 	}
 }
 
-/*    SYMBOLS */
+/* SYMBOLS */
 
 static SY new_symbol (
 	char *encpref,
@@ -2502,7 +2497,7 @@ static SY add_symbol (SY s1, SY s2) {
 	return s1;
 }
 
-/*    MODULES */
+/* MODULES */
 
 MD lookup_module (char *module, OID oid) {
 	MD	    md;
@@ -2530,7 +2525,7 @@ MD lookup_module (char *module, OID oid) {
 	return (mymodules = md);
 }
 
-/*    TYPES */
+/* TYPES */
 
 YP new_type (int code, int lineno) {
 	YP    yp;
@@ -2675,7 +2670,7 @@ YP copy_type (YP yp) {
 	return y;
 }
 
-/*    VALUES */
+/* VALUES */
 
 YV new_value (int code) {
 	YV    yv;
@@ -2752,7 +2747,7 @@ YV copy_value (YV yv) {
 	return y;
 }
 
-/*    TAGS */
+/* TAGS */
 
 YT	new_tag (PElementClass class) {
 	YT    yt;
@@ -2776,7 +2771,7 @@ YT copy_tag (YT yt) {
 	return y;
 }
 
-/*    STRINGS */
+/* STRINGS */
 
 char *new_string (char *s) {
 	char  *p;
@@ -2791,7 +2786,7 @@ char *new_string (char *s) {
 	return p;
 }
 
-/*    SYMBOLS */
+/* SYMBOLS */
 
 static struct triple {
 	char	   *t_name;

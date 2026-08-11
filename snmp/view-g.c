@@ -30,7 +30,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/view-g.c,v 9.0 1992/06
 #include "view-g.h"
 #include "tailor.h"
 
-/*    VIEW GROUP */
+/*    VIEW GROUP */
 
 #define	viewPrimName	  0
 #define	viewPrimTDomain   1

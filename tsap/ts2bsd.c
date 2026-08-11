@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -46,7 +45,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2bsd.c,v 9.0 1992/06
 #define	MAXTP4		1024	/* until we have a dynamic estimate... */
 #define	TP4SLOP		  12	/* estimate of largest DT PCI */
 
-/*    DATA */
 
 STATIC struct msghdr msgs;
 STATIC union osi_control_msg ocm;
@@ -121,7 +119,7 @@ tp4getCmsg (int fd, int *cc, int *type, char *data) {
 	return (result);
 }
 
-/*    UPPER HALF */
+/*    UPPER HALF */
 
 STATIC int
 TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
@@ -363,7 +361,6 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
 }
 
 
-/* ARGSUSED */
 
 STATIC int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
@@ -638,7 +635,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 STATIC int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -813,7 +809,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-/* ARGSUSED */
 
 STATIC int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
@@ -836,9 +831,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 			  ("unable to send"));
 }
 
-/*    LOWER HALF */
+/*    LOWER HALF */
 
-/* ARGSUSED */
 
 int
 tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
@@ -880,7 +874,6 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 }
 
 
-/* ARGSUSED */
 
 STATIC int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -895,7 +888,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 }
 
 
-/* ARGSUSED */
 
 char *
 tp4save (int fd, struct TSAPdisconnect *td) {
@@ -971,7 +963,6 @@ tp4init (struct tsapblk *tb) {
 }
 
 
-/* ARGSUSED */
 
 int
 start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {

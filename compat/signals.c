@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #ifndef	BADSIG
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/signals.c,v 9.0 1992
 
 int	_iosignals_set = 0;
 
-/*    Berkeley UNIX: 4.2 */
+/*    Berkeley UNIX: 4.2 */
 
 #ifndef	XOS_2
 #ifdef	BSDSIGS
@@ -59,7 +58,7 @@ IFP	func;
 
 #else
 
-/*    AT&T UNIX: 5 */
+/*    AT&T UNIX: 5 */
 
 
 /* Probably a race condition or two in this code */

@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dapbind.c,v 9.1 19
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/oid.h"
@@ -130,9 +129,8 @@ struct PSAPaddr             *addr;
 
 }
 
-/* 	DAP-BIND.REQUEST */
+/* DAP-BIND.REQUEST */
 
-/* ARGSUSED */
 
 int	  DapAsynBindReqAux (callingtitle, calledtitle, callingaddr,
 						 calledaddr, prequirements, srequirements, isn, settings,

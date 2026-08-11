@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapexec.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "spkt.h"
 #include "isoservent.h"
 #include "tailor.h"
 
-/*    SERVER only */
+/*    SERVER only */
 
 int
 SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms) {

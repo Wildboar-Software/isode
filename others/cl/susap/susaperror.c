@@ -13,7 +13,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ssap.h"

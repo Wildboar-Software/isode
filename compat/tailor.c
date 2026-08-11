@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/tailor.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -45,7 +44,6 @@ static int  events_value ();
 				   sites (i.e., leading zero not req'd) */
 #endif
 
-/*    DATA */
 
 struct pair {
 	char   *p_name;

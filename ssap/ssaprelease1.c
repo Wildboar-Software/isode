@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprelease1.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprelease1.c,v 9.0 1
 static int  SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 static int  SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 
-/*    S-RELEASE.REQUEST */
+/* S-RELEASE.REQUEST */
 
 int SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
@@ -99,7 +98,7 @@ static int SRelRequestAux (
 
 #undef	dotoken
 
-/*    S-RELEASE-RETRY.REQUEST (pseudo) */
+/*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
 int SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;

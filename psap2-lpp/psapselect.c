@@ -27,14 +27,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapselect.c,v 9.
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #define	LPP
 #include "ppkt.h"
 
-/*    map presentation descriptors for select() */
+/*    map presentation descriptors for select() */
 
 int	PSelectMask (sd, mask, nfds, pi)
 int	sd;

@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamtrace.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
 
-/*    DATA */
 
 LLog _ftam_log = {
 	"ftam.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
@@ -67,7 +65,7 @@ static char *ftam_appls[] = {
 
 static int ftam_nappl = sizeof ftam_appls / sizeof ftam_appls[0];
 
-/*    set tracing */
+/*    set tracing */
 
 int
 FHookRequest (int sd, IFP tracing, struct FTAMindication *fti) {
@@ -88,9 +86,8 @@ FHookRequest (int sd, IFP tracing, struct FTAMindication *fti) {
 	return OK;
 }
 
-/*    user-defined tracing */
+/*    user-defined tracing */
 
-/* ARGSUSED */
 
 int
 FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw) {

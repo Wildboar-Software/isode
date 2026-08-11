@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/daprovider.c,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "quipu/dap2.h"
 #include "tailor.h"
 
-/*    BIND interface */
+/*    BIND interface */
 
 int	  ronot2daplose (di, event, rni)
 struct DAPindication	* di;
@@ -58,7 +57,7 @@ struct RoNOTindication	* rni;
 		return (daplose (di, DA_RONOT, NULLCP, "%s", cp));
 }
 
-/*    ROS interface */
+/*    ROS interface */
 
 int
 ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop) {

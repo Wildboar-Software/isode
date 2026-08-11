@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapexec.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "PS-types.h"
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapexec.c,v 9.0 1992
 #include "isoservent.h"
 #include "tailor.h"
 
-/*    SERVER only */
+/*    SERVER only */
 
 int
 PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, IFP hook, IFP setperms) {

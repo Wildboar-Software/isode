@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy.c,v 9.0 1992/06/1
 #include <unistd.h>
 #include "pepy.h"
 
-/*    DATA */
 
 static char *aflag = NULL;
 int	Cflag = 1;		/* pepy */
@@ -256,7 +255,7 @@ usage:
 	case 2:
 		yydebug++;		/* fall */
 	case 1:
-		sflag++;		/*   .. */
+		sflag++;		/* .. */
 	case 0:
 		break;
 	}
@@ -310,7 +309,6 @@ static void prologue(void) {
 	printf ("void\tadvise (char *what, char *fmt, ...);\n");
 }
 
-/*    ERRORS */
 
 int yyerror (char *s) {
 	yyerror_aux (s);
@@ -439,7 +437,7 @@ void yyprint (char *s, int f, int top) {
 	linepos += len;
 }
 
-/*    PASS1 */
+/* PASS1 */
 
 void pass1(void) {
 	if (!bflag)
@@ -664,7 +662,7 @@ void tag_pushdown (YP yp, int level, char *arg, char *whatsit)
 	printf ("%*s}\n", level * 4, "");
 }
 
-/*    TYPE HANDLING */
+/*    TYPE HANDLING */
 
 void tag_type (YP yp) {
 	struct tuple *t;
@@ -1353,7 +1351,7 @@ static MD  lookup_module (char *module, OID oid)
 	return (mymodules = md);
 }
 
-/*    TYPES */
+/* TYPES */
 
 YP	new_type (int code) {
 	YP yp;

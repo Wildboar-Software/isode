@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapinitiate.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*    S-(ASYN-)CONNECT.REQUEST */
+/*    S-(ASYN-)CONNECT.REQUEST */
 
 static int  SConnRequestAux (
 	struct SSAPref *ref,
@@ -260,7 +259,7 @@ out1:
 	return result;
 }
 
-/*    S-ASYN-RETRY.REQUEST (pseudo) */
+/*    S-ASYN-RETRY.REQUEST (pseudo) */
 
 int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;
@@ -316,7 +315,7 @@ int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si
 	return result;
 }
 
-/*    S-ASYN-NEXT.REQUEST (pseudo) */
+/*    S-ASYN-NEXT.REQUEST (pseudo) */
 
 int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;

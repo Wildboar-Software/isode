@@ -1178,7 +1178,7 @@ struct adrtab {
 	int	    adm_insize;
 
 	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
-	u_char	adm_addrlen;			/*   .. */
+	u_char	adm_addrlen;			/* .. */
 
 
 #define	ADA_SIZE	(IFN_SIZE + 2)		/* AtEntry instance */
@@ -1196,7 +1196,7 @@ struct adrtab {
 
 	int	    adr_touched;			/* set request'd */
 	u_char  adr_oldphys[ADM_SIZE];		/*   .. PhysAddress */
-	u_char  adr_physlen;			/*        .. */
+	u_char  adr_physlen;			/* .. */
 
 	struct adrtab *adn_next;			/* next IpAddress */
 	struct adrtab *adm_next;    		/* next PhysAddress */

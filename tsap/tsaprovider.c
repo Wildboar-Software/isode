@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -46,7 +45,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprovider.c,v 9.0 19
 	(n) = (fd) + 1; \
 }
 
-/*    DATA */
 
 static int once_only = 0;
 static struct tsapblk tsapque;
@@ -61,7 +59,7 @@ static int TPid = NOTOK;
 
 extern	int	xselect_blocking_on_intr;
 
-/*    T-DATA.REQUEST */
+/* T-DATA.REQUEST */
 
 int
 TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
@@ -105,7 +103,7 @@ TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    T-EXPEDITED-DATA.REQUEST */
+/* T-EXPEDITED-DATA.REQUEST */
 
 int
 TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
@@ -154,7 +152,7 @@ TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    T-WRITE.REQUEST (pseudo; write user data vectors) */
+/*    T-WRITE.REQUEST (pseudo; write user data vectors) */
 
 int
 TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
@@ -197,7 +195,7 @@ TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    T-READ.REQUEST (pseudo; synchronous read) */
+/*    T-READ.REQUEST (pseudo; synchronous read) */
 
 int
 TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
@@ -275,7 +273,7 @@ out:
 	return result;
 }
 
-/*    T-DISCONNECT.REQUEST */
+/* T-DISCONNECT.REQUEST */
 
 int
 TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
@@ -300,7 +298,7 @@ TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    set asynchronous event indications */
+/*    set asynchronous event indications */
 
 static	SFD DATAser ();
 
@@ -345,7 +343,7 @@ TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    map transport descriptors for select() */
+/*    map transport descriptors for select() */
 
 int
 TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
@@ -375,7 +373,7 @@ TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-/*    NSAP interface: N-DATA.INDICATION */
+/*    NSAP interface: N-DATA.INDICATION */
 
 #ifdef SVR4
 
@@ -384,7 +382,6 @@ int     sig;
 
 #else
 
-/* ARGSUSED */
 static	SFD DATAser (sig, code, sc)
 int	sig;
 long	code;
@@ -619,7 +616,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 }
 #endif
 
-/*    INTERNAL */
+/* INTERNAL */
 
 struct tsapblk *
 newtblk()  {

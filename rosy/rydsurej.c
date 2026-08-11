@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsurej.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -47,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsurej.c,v 9.0 1992/
 }
 #endif
 
-/*    U-REJECT */
+/* U-REJECT */
 
 int	RyDsUReject (sd, id, reason, priority, roi)
 int	sd;

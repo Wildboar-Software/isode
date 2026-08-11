@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/pepy_misc.c,v 9.0 1992
 #include <string.h>
 #include "pepy.h"
 
-/*  Oid manipulation */
+/*  Oid manipulation */
 
 typedef struct oidlist {
 	OID		op_oid;

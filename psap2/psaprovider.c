@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprovider.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprovider.c,v 9.0 1
 #include "ppkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct psapblk psapque;
@@ -78,7 +76,7 @@ static int  doACTIVITY ();
 static int  doREPORT ();
 static int  doFINISH ();
 
-/*    P-[*-]DATA.REQUEST */
+/*    P-[*-]DATA.REQUEST */
 
 int
 PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
@@ -160,7 +158,7 @@ out1:
 	return result;
 }
 
-/*    P-READ.REQUEST (pseudo) */
+/*    P-READ.REQUEST (pseudo) */
 
 int
 PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
@@ -481,7 +479,7 @@ out:
 	return NOTOK;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 #define	e(i)	(data ? (i) : 0)
 
@@ -542,7 +540,7 @@ PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP repor
 
 #undef	e
 
-/*    SSAP interface */
+/*    SSAP interface */
 
 int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
 	int     reason;
@@ -1089,7 +1087,6 @@ ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__d
 
 
 #ifndef	DEBUG
-/* ARGSUSED */
 #endif
 
 int
@@ -1185,7 +1182,6 @@ serialize:
 
 
 #ifndef	DEBUG
-/* ARGSUSED */
 #endif
 
 int
@@ -1312,7 +1308,6 @@ punch_it:
 
 
 #ifndef	DEBUG
-/* ARGSUSED */
 #endif
 
 int

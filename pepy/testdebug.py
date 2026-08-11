@@ -27,7 +27,6 @@ TESTDEBUG DEFINITIONS ::=
 static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/testdebug.py,v 9.0 1992/06/16 12:25:01 isode Rel $";
 #endif
 
-/* LINTLIBRARY */
 
 
 #include <stdio.h>

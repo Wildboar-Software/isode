@@ -12,14 +12,12 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 #ifdef HULA
 
@@ -30,7 +28,7 @@ static struct ssapblk *SuHead = &susapque;
 
 
 
-/*    INTERNAL */
+/* INTERNAL */
 
 struct ssapblk *
 	newsublk () {

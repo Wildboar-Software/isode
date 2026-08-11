@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-ls.c,v 9.0 1992/
 #include "ftamuser.h"
 #include "general.h"
 
-/*     DATA */
 
 static int dashl;
 static int didrecurse;
@@ -524,7 +523,6 @@ static int fdfls (char *file) {
 }
 
 
-/* ARGSUSED */
 
 int
 fdffnx (int fd, struct PSAPdata *px, int status) {

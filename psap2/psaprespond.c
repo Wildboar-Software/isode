@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psaprespond.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
-/*    P-CONNECT.INDICATION */
+/* P-CONNECT.INDICATION */
 
 int
 PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi) {
@@ -298,7 +297,7 @@ out2:
 	return NOTOK;
 }
 
-/*    P-CONNECT.RESPONSE */
+/* P-CONNECT.RESPONSE */
 
 int
 PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {

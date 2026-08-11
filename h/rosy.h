@@ -92,7 +92,7 @@ struct RyError {
 
 struct opsblk {
 	struct opsblk *opb_forw;	/* doubly-linked list */
-	struct opsblk *opb_back;	/*   .. */
+	struct opsblk *opb_back;	/* .. */
 
 	short	opb_flags;	/* our state */
 #define	OPB_NULL	0x0000
@@ -126,7 +126,7 @@ struct opsblk {
 
 struct dspblk {
 	struct dspblk *dsb_forw;	/* doubly-linked list */
-	struct dspblk *dsb_back;	/*   .. */
+	struct dspblk *dsb_back;	/* .. */
 
 	int	    dsb_fd;		/* association descriptor */
 	/* NOTOK-valued is wildcard for RyWait */

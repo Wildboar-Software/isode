@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease2.c,v 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -38,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprelease2.c,v 
 
 static int  PRelResponseAux ();
 
-/*    P-RELEASE.RESPONSE */
+/* P-RELEASE.RESPONSE */
 
 int	PRelResponse (sd, status, data, ndata, pi)
 int	sd;

@@ -549,7 +549,7 @@ int queued (void) {
 
 /*************************************************************************/
 /* 	PUTCH - put a character on the buffer to be read by the		 */
-/*			application					 */
+/* application */
 /*									 */
 /*	RETURNS - OK on success, NOTOK otherwise			 */
 /*************************************************************************/

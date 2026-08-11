@@ -116,8 +116,8 @@ struct DSAPrelease {		/* D-UNBIND.CONFIRMATION */
 
 struct DSAPabort {		/* D-ABORT.INDICATION */
 	int	    da_source;		/* abort source */
-#define	DA_USER		0	/*   directory-user */
-#define	DA_PROVIDER	1	/*   directory-provider */
+#define	DA_USER		0	/* directory-user */
+#define	DA_PROVIDER	1	/* directory-provider */
 #define	DA_LOCAL	2	/*   local DPM */
 
 	int	    da_reason;		/* reason for failure */
@@ -135,8 +135,8 @@ struct DSAPabort {		/* D-ABORT.INDICATION */
 
 	/* diagnostics from provider */
 #define	DA_SIZE	512
-	int	    da_cc;		/*   length */
-	char    da_data[DA_SIZE];	/*   data */
+	int	    da_cc;		/* length */
+	char    da_data[DA_SIZE];	/* data */
 };
 
 struct DSAPinvoke {
@@ -178,8 +178,8 @@ struct DSAPpreject {
 
 	/* diagnostics from provider */
 #define	DP_SIZE	512
-	int	    dp_cc;		/*   length */
-	char    dp_data[DP_SIZE];	/*   data */
+	int	    dp_cc;		/* length */
+	char    dp_data[DP_SIZE];	/* data */
 };
 
 struct DSAPfinish {

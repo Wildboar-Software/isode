@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapselect.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-/*    map presentation descriptors for select() */
+/*    map presentation descriptors for select() */
 
 int
 PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi) {

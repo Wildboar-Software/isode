@@ -78,7 +78,6 @@ static void ts_adios (), ts_advise ();
 static void ts_close (), ts_discon ();
 static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -723,7 +722,6 @@ envinit () {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-/*    ERRORS */
 
 #ifndef lint
 static void    adios (char *what, char *fmt, ...) {

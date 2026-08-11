@@ -46,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rfa/RCS/filemode.c,v 9.0
 static int runAsRoot = 0;  /* we started with effective uid of root */
 
 /*--------------------------------------------------------------*/
-/*  initUserId							*/
+/* initUserId */
 /*		called when rfa or rfad is started. Even if     */
 /*		they are started with effective uid of root	*/
 /*		they are running with eff. uid of user until    */
@@ -71,7 +71,7 @@ initUserId (int uid, int gid, char *user) {
 
 
 /*--------------------------------------------------------------*/
-/*  getFileOwner                                                */
+/* getFileOwner */
 /*--------------------------------------------------------------*/
 int
 getFileOwner (char *fn, int *uidp, int *gidp) {
@@ -86,7 +86,7 @@ getFileOwner (char *fn, int *uidp, int *gidp) {
 }
 
 /*--------------------------------------------------------------*/
-/*  changeFileOwner                                             */
+/* changeFileOwner */
 /*--------------------------------------------------------------*/
 int
 changeFileOwner (char *fn, struct RfaInfo *rfa) {
@@ -143,7 +143,7 @@ changeFileOwner (char *fn, struct RfaInfo *rfa) {
 }
 
 /*--------------------------------------------------------------*/
-/*  changeFileMode                                              */
+/* changeFileMode */
 /*--------------------------------------------------------------*/
 int
 changeFileMode (char *fn, int mode, char *errmsg) {
@@ -185,7 +185,7 @@ changeFileMode (char *fn, int mode, char *errmsg) {
 
 
 /*--------------------------------------------------------------*/
-/*  makeFileReadOnly						*/
+/* makeFileReadOnly */
 /*--------------------------------------------------------------*/
 int
 makeFileReadOnly (char *fn, struct RfaInfo *rfa) {
@@ -197,7 +197,7 @@ makeFileReadOnly (char *fn, struct RfaInfo *rfa) {
 }
 
 /*--------------------------------------------------------------*/
-/*  makeFileReadWrite						*/
+/* makeFileReadWrite */
 /*--------------------------------------------------------------*/
 int
 makeFileReadWrite (char *fn, struct RfaInfo *rfa) {

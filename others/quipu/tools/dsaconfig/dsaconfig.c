@@ -44,7 +44,6 @@ struct group *getgrnam ();
 struct passwd *getpwnam (), *getpwuid ();
 #endif
 
-/*    DATA */
 
 static int debug =0;
 
@@ -73,9 +72,7 @@ static read_config (), read_psap (), build_root (), build_TLC (),
 
 extern char  *quipuversion;
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -121,7 +118,7 @@ main (int argc, char **argv, char **envp) {
 	exit (0);
 }
 
-/*    CONFIG */
+/* CONFIG */
 
 struct country {
 	char   *c_code;
@@ -792,7 +789,7 @@ no_match:
 	}
 }
 
-/*    EDB */
+/* EDB */
 
 static
 build_root () {
@@ -990,7 +987,7 @@ version () {
 	return buffer;
 }
 
-/*    FILES */
+/* FILES */
 
 static
 build_tailor () {
@@ -1032,7 +1029,7 @@ make_file (char *infile, char *outfile, int mode, int dosed) {
 	chmod (buffer, mode);
 }
 
-/*    SED */
+/* SED */
 
 static
 build_dsap () {
@@ -1074,7 +1071,7 @@ fudge_file (char *name) {
 		adios (file, "unable to rename %s to", tmpfil);
 }
 
-/*    ARGINIT */
+/* ARGINIT */
 
 static
 arginit (char **vec) {
@@ -1259,7 +1256,6 @@ table_3166 () {
 	fclose (fp);
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 static void	_advise ();
@@ -1320,7 +1316,7 @@ advise (char *what, char *fmt) {
 }
 #endif
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 #ifndef	lint
 static char *

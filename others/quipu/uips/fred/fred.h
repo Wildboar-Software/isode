@@ -27,7 +27,6 @@
 #include "manifest.h"
 #include "tailor.h"
 
-/*    MAIN */
 
 extern int  interrupted;
 extern int  oneshot;
@@ -43,7 +42,6 @@ void	advise (char *, char *, ...);
 int	ask (char *, ...), _getline ();
 char   *strdup ();
 
-/*    DATA */
 
 extern int	bflag;
 extern int	boundP;
@@ -84,7 +82,7 @@ extern FILE    *errfp;
 
 #define	EOLN	(network && !mail ? "\r\n" : "\n")
 
-/*    DISPATCH */
+/* DISPATCH */
 
 struct dispatch {
 	char   *ds_name;
@@ -98,7 +96,7 @@ struct dispatch {
 	char   *ds_help;
 };
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 struct area_guide {
 	int	    ag_record;
@@ -121,7 +119,7 @@ struct area_guide {
 extern int  area_quantum;
 extern struct area_guide areas[];
 
-/*    WHOIS */
+/* WHOIS */
 
 extern char *whois_help[];
 

@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapminor1.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-/*    P-MINOR-SYNC.REQUEST */
+/* P-MINOR-SYNC.REQUEST */
 
 int
 PMinSyncRequest (int sd, int type, long *ssn, PE *data, int ndata, struct PSAPindication *pi) {

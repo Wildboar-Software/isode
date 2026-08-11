@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssexec.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "RTS-types.h"
@@ -35,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssexec.c,v 9.0 199
 #include "tailor.h"
 #include "internet.h"
 
-/*    SERVER only */
+/*    SERVER only */
 
 int
 RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms) {

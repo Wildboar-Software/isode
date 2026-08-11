@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsaputrans.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    set uptrans upcall */
+/*    set uptrans upcall */
 
 int
 RtSetUpTrans (

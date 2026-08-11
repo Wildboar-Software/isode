@@ -112,7 +112,7 @@ PE	grab_pe ();
 sntx_table *get_syntax_table ();
 struct dn_seq *dn_seq_push ();
 
-/*    FRED BACK-END */
+/*    FRED BACK-END */
 
 void call_fred (int argc, char **argv) {
 	static int did_ufnas = 0;
@@ -177,7 +177,7 @@ usage:
 	Usage (argv[0]);
 }
 
-/*    DM2DN SUPPORT */
+/*    DM2DN SUPPORT */
 
 static	int	dlevel = 0;
 static	int	dsa_status;

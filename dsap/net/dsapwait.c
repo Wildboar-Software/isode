@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapwait.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include "logger.h"
@@ -994,7 +993,6 @@ watch_dog_final (
 	}
 }
 
-/* ARGSUSED */
 #ifdef LINUX
 void
 #else
@@ -1017,7 +1015,6 @@ watch_dog_activate (int sd) {
 	exit(-1);
 }
 
-/* ARGSUSED */
 #ifdef LINUX
 void
 #else

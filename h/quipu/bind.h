@@ -66,8 +66,8 @@ struct ds_bind_error {
 	int    dbe_vlen;    /* pepsy */
 
 #define DBE_SIZE 512
-	int	    dbe_cc;			/*   length */
-	char    dbe_data[DBE_SIZE];		/*   data */
+	int	    dbe_cc;			/* length */
+	char    dbe_data[DBE_SIZE];		/* data */
 
 };
 

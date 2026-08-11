@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "smux.h"
@@ -39,7 +38,7 @@ int	smux_simple_open (identity, description, commname, commlen)
 OID	identity;		/* identity of SMUX initiator */
 char   *description;		/* implementation-specific string */
 char   *commname;			/* password, may be zero-length */
-int	commlen;		/*   .. */
+int	commlen;		/* .. */
 {
     return smux_simple_open (identity, description, commname, commlen);
 }

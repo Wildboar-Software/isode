@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapasync.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 int
 RtSetIndications (int sd, IFP indication, struct RtSAPindication *rti) {

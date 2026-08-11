@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/task_ureject.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include "rosap.h"
 #include "quipu/util.h"

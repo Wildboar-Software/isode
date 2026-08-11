@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <string.h>
@@ -43,7 +42,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapstub.c,v 9.0 199
 static int  lpp_aet ();
 #endif
 
-/*    DATA */
 
 static struct isoentity ies;
 
@@ -287,7 +285,6 @@ aei2addr_stub (AEI aei) {
 
 
 #ifdef	LPP
-/* ARGSUSED */
 
 AEI
 str2aei_dse (char *designator, char *qualifier, char *context, int interactive) {
@@ -297,7 +294,6 @@ str2aei_dse (char *designator, char *qualifier, char *context, int interactive) 
 }
 
 
-/* ARGSUSED */
 
 struct PSAPaddr *
 aei2addr_dse (AEI aei) {

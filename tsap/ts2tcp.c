@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tcp.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <string.h>
 #include <stdlib.h>
@@ -48,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tcp.c,v 9.0 1992/06
 
 #define	MAX1006		2048		/* could be as high as TPKT_MAXLEN */
 
-/*    DATA */
 
 #if	defined(FIONBIO) || defined(O_NDELAY)
 #define	NODELAY
@@ -64,7 +62,7 @@ static struct sockaddr_in *peers = NULL;
 extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 #endif
 
-/*    N-CONNECT.REQUEST */
+/* N-CONNECT.REQUEST */
 
 int
 tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async) {
@@ -195,7 +193,6 @@ done:
 
 
 #ifndef	NODELAY
-/* ARGSUSED */
 #endif
 
 static int
@@ -257,7 +254,7 @@ done:
 #endif
 }
 
-/*    init for read from network */
+/*    init for read from network */
 
 static int
 tcpinit (int fd, struct tsapkt *t) {
@@ -287,7 +284,6 @@ tcpinit (int fd, struct tsapkt *t) {
 }
 
 
-/* ARGSUSED */
 
 char *
 tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {

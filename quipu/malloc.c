@@ -162,7 +162,6 @@ static char * malloc_fname = (char *)0;
 #endif
 
 #ifndef MALLOCTRACE
-/* ARGSUSED */
 #endif
 
 #endif	/* QUIPU_MALLOC */
@@ -309,7 +308,6 @@ print_free_list (size_t heap) {
 #ifdef MALLOCSTACK
 
 #ifdef sun4
-/* ARGSUSED */
 #endif
 
 static write_stack (x)

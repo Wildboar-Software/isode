@@ -38,7 +38,6 @@ struct utmp *getutent ();
 #endif
 #include <sys/stat.h>
 
-/*    DATA */
 
 static char *myservice = "isode miscellany";/* should be something else */
 
@@ -91,9 +90,7 @@ char	*getlocalhost();
 long	time ();
 char   *ctime ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -103,9 +100,8 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
-/* ARGSUSED */
 
 static int
 op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -145,7 +141,6 @@ op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 }
 
 
-/* ARGSUSED */
 
 static int
 op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -203,7 +198,6 @@ op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
 
-/* ARGSUSED */
 
 static int
 op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -245,7 +239,6 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 #define	NMAX	(sizeof (ut -> ut_name))
 
 
-/* ARGSUSED */
 
 static int
 op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -344,7 +337,6 @@ congested:
 #define	LINSIZ	72
 
 
-/* ARGSUSED */
 
 static int
 op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -412,7 +404,6 @@ congested:
 #define	NPASS	6
 
 
-/* ARGSUSED */
 
 static int
 op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -839,7 +830,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int
 op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -1017,7 +1007,7 @@ op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, s
 	return OK;
 }
 
-/*    ERROR */
+/* ERROR */
 
 static int
 error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -1027,7 +1017,7 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 	return OK;
 }
 
-/*    U-REJECT */
+/* U-REJECT */
 
 static int
 ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
@@ -1037,7 +1027,7 @@ ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *ro
 	return OK;
 }
 
-/*    TYPES */
+/* TYPES */
 
 struct type_IMISC_IA5List *
 str2ia5list (char *s) {

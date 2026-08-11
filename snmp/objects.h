@@ -46,7 +46,7 @@ struct object_syntax {
 	void (*os_print)(void *x, OS os);			/* data -> tty */
 
 	char  **os_data1;			/* for moresyntax() in snmpi... */
-	int	    os_data2;			/*   .. */
+	int	    os_data2;			/* .. */
 };
 #define	NULLOS	((OS) 0)
 
@@ -73,7 +73,7 @@ typedef struct object_instance object_instance, *OI;
 typedef struct object_type {
 	char   *ot_text;			/* OBJECT DESCRIPTOR */
 	char   *ot_id;			/* OBJECT IDENTIFIER */
-	OID	    ot_name;			/*   .. */
+	OID	    ot_name;			/* .. */
 
 	OS	    ot_syntax;			/* SYNTAX */
 
@@ -105,7 +105,7 @@ typedef struct object_type {
 	struct object_type *ot_chain;	/* hash-bucket for text2obj */
 
 	struct object_type *ot_sibling;	/* linked-list for name2obj */
-	struct object_type *ot_children;	/*   .. */
+	struct object_type *ot_children;	/* .. */
 
 	struct object_type *ot_next;	/* linked-list for get-next */
 }		object_type, *OT;

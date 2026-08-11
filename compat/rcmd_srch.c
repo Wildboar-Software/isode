@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/rcmd_srch.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include "manifest.h"
 #include "cmd_srch.h"

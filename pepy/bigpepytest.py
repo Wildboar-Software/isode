@@ -38,7 +38,6 @@ static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int	argc;
@@ -640,7 +639,7 @@ END
 
 %{
 
-/* 	MISC */
+/* MISC */
 
 #ifdef BSD42
 #define SRAND(s)	srandom ((int) (s))
@@ -669,7 +668,7 @@ int	n;
     return (RAND () % n);
 }
 
-/* 	ERRORS */
+/* ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

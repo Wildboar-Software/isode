@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/teletex.c,v 9.0
 		terminal $ graphic $ control $ page $ misc $ private
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

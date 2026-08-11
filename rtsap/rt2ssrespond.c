@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssrespond.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "RTS-types.h"
@@ -34,11 +33,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2ssrespond.c,v 9.0 
 #include "tailor.h"
 #include "internet.h"
 
-/*    DATA */
 
 extern int acsap_conntype;
 
-/*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
+/*    RT-BEGIN.INDICATION (X.410 OPEN.INDICATION) */
 
 int
 RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti) {
@@ -198,7 +196,7 @@ out1:
 	return NOTOK;
 }
 
-/*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
+/*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
 
 int
 RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti) {

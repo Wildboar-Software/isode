@@ -39,9 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/photo/RCS/faxtopbm
 
 static	bit	black, white;
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -139,7 +137,6 @@ usage:
 	exit (0);
 }
 
-/*    ERRORS */
 
 static ps_die (ps, s)
 PS	 ps;
@@ -158,7 +155,7 @@ char   *s;
 	exit (1);
 }
 
-/*    PHOTO */
+/* PHOTO */
 
 static	int	passno = 1;
 static	int	x, y, maxx;
@@ -166,7 +163,6 @@ static	int	x, y, maxx;
 static	bit    *bitrow, *bP;
 
 
-/* ARGSUSED */
 
 int
 photo_start (char *name) {
@@ -178,7 +174,6 @@ photo_start (char *name) {
 }
 
 
-/* ARGSUSED */
 
 int
 photo_end (char *name) {
@@ -230,7 +225,6 @@ photo_white (int length) {
 }
 
 
-/* ARGSUSED */
 
 photo_line_end (line)
 caddr_t line;

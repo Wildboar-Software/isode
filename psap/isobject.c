@@ -25,14 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/isobject.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static char *isobjects = "isobjects";
 

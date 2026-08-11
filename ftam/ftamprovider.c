@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamprovider.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
 
-/*    DATA */
 
 struct pair fclass_pairs[] = {
 	FCLASS_UNCONS, bit_FTAM_Service__Class_unconstrained__class,
@@ -149,7 +147,7 @@ static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMin
 static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindication *fti);
 static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindication *fti);
 
-/*    F-WAIT.REQUEST (pseudo) */
+/*    F-WAIT.REQUEST (pseudo) */
 
 int
 FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
@@ -1834,7 +1832,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 		(*handler) (sd, fti);
 }
 
-/*    define vector for INDICATION events */
+/*    define vector for INDICATION events */
 
 #define	e(i)	(indication ? (i) : NULL)
 
@@ -1881,7 +1879,7 @@ FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 
 #undef	e
 
-/*    AcSAP interface */
+/*    AcSAP interface */
 
 int
 acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
@@ -2010,7 +2008,7 @@ out:
 	return NOTOK;
 }
 
-/*    PSAP interface */
+/*    PSAP interface */
 
 int
 ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
@@ -2061,7 +2059,7 @@ ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struc
 						 EREF_NONE, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
 
-/*    INTERNAL */
+/* INTERNAL */
 
 struct ftamblk *
 newfsblk (void) {

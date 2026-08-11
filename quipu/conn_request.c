@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/conn_request.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/dsap.h"

@@ -493,7 +493,6 @@ void do_vt (void) {
 	adios (NULLCP, "association terminated by peer");
 }
 
-/* ARGSUSED */
 
 static int vt_close (char **vec) {
 	tmode(0);
@@ -1055,7 +1054,6 @@ static int vt_help (char **vec) {
 
 
 #ifndef	TIOCGWINSZ
-/* ARGSUSED */
 #endif
 
 static int ncols (FILE *fp) {

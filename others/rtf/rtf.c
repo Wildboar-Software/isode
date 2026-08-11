@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtf.c,v 9.0 1992
 #include "rtf.h"
 #include "isoservent.h"
 
-/*    DATA */
 
 static char *myname = "rtf";
 
@@ -53,9 +52,7 @@ static arginit (char **vec);
 
 char   *getenv ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -213,9 +210,8 @@ main (int argc, char **argv, char **envp) {
 	exit (0);
 }
 
-/*     TRANSFER */
+/* TRANSFER */
 
-/* ARGSUSED */
 
 static int downtrans (int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti) {
 	int    cc;
@@ -281,7 +277,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 }
 
 
-/* ARGSUSED */
 
 static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 {

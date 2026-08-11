@@ -66,7 +66,7 @@ struct TSAPaddr *newtuaddr ();
 #ifdef HULA
 
 
-/*    STATIC DATA */
+/*    STATIC DATA */
 
 
 #ifdef WITHOUTCONS

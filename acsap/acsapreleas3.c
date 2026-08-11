@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas3.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapreleas3.c,v 9.0 
 #include "tailor.h"
 #endif
 
-/*    handle P-RELEASE.INDICATION */
+/*    handle P-RELEASE.INDICATION */
 
 int
 AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci) {

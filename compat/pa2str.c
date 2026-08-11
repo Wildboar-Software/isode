@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/pa2str.c,v 9.0 1992/
 #include "manifest.h"
 #include "isoaddrs.h"
 
-/*    Presentation Address to String */
+/*    Presentation Address to String */
 
 char *
 pa2str (struct PSAPaddr *px) {

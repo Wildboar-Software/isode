@@ -119,7 +119,7 @@ typedef	int	SBV;
 
 #endif
 
-/*    TYPES */
+/* TYPES */
 
 #ifndef	NOTOK
 #define	NOTOK		(-1)
@@ -199,7 +199,7 @@ struct udvec {			/* looks like a BSD iovec... */
 
 struct qbuf {
 	struct qbuf *qb_forw;	/* doubly-linked list */
-	struct qbuf *qb_back;	/*   .. */
+	struct qbuf *qb_back;	/* .. */
 
 	int	    qb_len;		/* length of data */
 	char   *qb_data;		/* current pointer into data */

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/logger.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))

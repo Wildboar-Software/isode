@@ -31,12 +31,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isore.c,v 9.0 1992/
 #include "general.h"
 #include "manifest.h"
 
-/*    MAIN */
 
 static SFD	EMTser ();
 
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -83,9 +81,8 @@ main (int argc, char **argv, char **envp) {
 	}
 }
 
-/*    SIGNALS */
+/* SIGNALS */
 
-/* ARGSUSED */
 #ifdef SVR4
 static  SFD EMTser (sig)
 int	sig;

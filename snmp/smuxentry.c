@@ -30,13 +30,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smuxentry.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "smux.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static char *smuxEntries = "snmpd.peers";
 

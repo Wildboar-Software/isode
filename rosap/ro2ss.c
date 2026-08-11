@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ss.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ROS-types.h"
@@ -36,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ss.c,v 9.0 1992/06
 #include "ropkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 #define	doSSabort	ss2rosabort
 
@@ -51,14 +49,14 @@ static int  doSSactivity ();
 static int  doSSreport ();
 static int  doSSfinish ();
 
-/*    local stub routine for psap/qbuf2pe */
+/*    local stub routine for psap/qbuf2pe */
 
 static PE
 qbuf2pe_local (struct qbuf *qb, int len, int *result) {
 	return(qbuf2pe(qb, len, result));
 }
 
-/*    bind underlying service */
+/*    bind underlying service */
 
 int
 RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
@@ -77,12 +75,11 @@ RoSService (struct assocblk *acb, struct RoSAPindication *roi) {
 	return OK;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
 
 
-/* ARGSUSED */
 
 int
 ro2ssasync (
@@ -119,9 +116,8 @@ ro2ssasync (
 
 #undef	e
 
-/*    map association descriptors for select() */
+/*    map association descriptors for select() */
 
-/* ARGSUSED */
 
 int
 ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
@@ -142,7 +138,7 @@ ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication
 	return OK;
 }
 
-/*    protocol-level abort */
+/*    protocol-level abort */
 
 int
 ro2sslose (struct assocblk *acb, int result) {
@@ -172,7 +168,7 @@ ro2sslose (struct assocblk *acb, int result) {
 		free (base);
 }
 
-/*    SSAP interface */
+/*    SSAP interface */
 
 int
 ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
@@ -248,7 +244,6 @@ ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 }
 
 
-/* ARGSUSED */
 
 int
 ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
@@ -357,7 +352,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 int
 ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {

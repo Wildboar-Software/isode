@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -47,7 +46,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2tcp.c,v 9.0 19
 static int  tcpready ();
 static int  PTservice ();
 
-/*    DATA */
 
 #ifdef	FIONBIO
 static  fd_set  inprogress;
@@ -178,7 +176,6 @@ done:
 }
 
 
-/* ARGSUSED */
 
 char   *tcpsave (fd, cp1, cp2, td)
 int	fd;
@@ -239,7 +236,6 @@ struct PSAPindication *pi;
 }
 
 
-/* ARGSUSED */
 
 static int  tcpretry (pb, reason, pi)
 struct psapblk *pb;

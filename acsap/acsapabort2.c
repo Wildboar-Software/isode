@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort2.c,v 9.0 1
 #include "tailor.h"
 #endif
 
-/*    handle P-{U,P}-ABORT.INDICATION */
+/*    handle P-{U,P}-ABORT.INDICATION */
 
 int
 AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {

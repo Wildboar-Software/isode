@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/asprintf.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>

@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftam-dir.c,v 9.0 1992
 #include <unistd.h>
 #include "ftamuser.h"
 
-/*    DATA */
 
 #ifndef	BRIDGE
 static char *lcwd = NULL;
@@ -228,7 +227,6 @@ you_lose:
 }
 
 
-/* ARGSUSED */
 
 int
 f_pwd (char **vec) {

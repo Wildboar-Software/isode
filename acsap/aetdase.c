@@ -38,7 +38,6 @@ static int stayopen = 0;
 static struct TSAPconnect tcs;
 static PS ps = NULLPS;
 
-
 static int armed = 0;
 static int interrupted;
 static jmp_buf intrenv;
@@ -52,12 +51,9 @@ static void print_qb (struct qbuf *q);
 
 static struct element_DASE_1 *read_el ();
 
-/*    LOOKUP */
+/* LOOKUP */
 
-/* ARGSUSED */
-
-PE
-name2value_dase (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name) {
+PE name2value_dase (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name) {
 	int	    done,
 			err,
 			nfds,

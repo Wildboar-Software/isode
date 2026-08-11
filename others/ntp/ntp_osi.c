@@ -241,7 +241,6 @@ transmit_osi (struct ntp_peer *peer) {
 struct s_fixedpt gfixed ();
 struct l_fixedpt gstamp ();
 
-/* ARGSUSED */
 int result_func (sd, ryo, rox, in, roi)
 int     sd;
 struct RyOperation *ryo;
@@ -1046,7 +1045,6 @@ make_osi_conn (struct ntp_peer *peer, char *addr) {
 	return result == DONE ? OK : NOTOK;
 }
 
-/* ARGSUSED */
 static int
 acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi) {
 	int	    sd;
@@ -1200,7 +1198,6 @@ check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer) 
 	return DONE;
 }
 
-/* ARGSUSED */
 static PE build_bind_arg (psap, peer)
 struct PSAPaddr *psap;
 struct ntp_peer *peer;
@@ -1530,7 +1527,6 @@ peer2clock (struct ntp_peer *peer) {
 	return ci;
 }
 
-/* ARGSUSED */
 int query_func (sd, ryo, rox, in, roi)
 int     sd;
 struct RyOperation *ryo;

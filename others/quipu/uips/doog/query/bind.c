@@ -41,7 +41,6 @@ extern char username[], userpassword[];
  * bind_to_ds - Bind to directory using indicated degree of authentication.
  *
  */
-/* ARGSUSED */
 QBool bind_to_ds(argc, argv, auth_type)
 int argc;
 char *argv[];
@@ -124,7 +123,6 @@ auth_bind_type auth_type;
  * Get association descriptor for a particular request.
  *
  */
-/* ARGSUSED */
 int get_association_descriptor(request_id)
 QCardinal request_id;
 {

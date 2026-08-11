@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopinvoke.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -46,7 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopinvoke.c,v 9.0 199
 }
 #endif
 
-/*    INVOKE */
+/* INVOKE */
 
 int	RyOpInvoke (sd, ryo, op, in, out, rfx, efx, class, invokeID, linkedID,
 				priority, roi)

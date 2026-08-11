@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <time.h>
@@ -37,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/gtime.c,v 9.0 1992/06/
 #include <sys/timeb.h>
 #endif
 
-/*    DATA */
 
 /* gtime(): the inverse of localtime().
 	This routine was supplied by Mike Accetta at CMU many years ago.

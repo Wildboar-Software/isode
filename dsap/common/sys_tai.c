@@ -24,7 +24,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/sys_tai.c,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "cmd_srch.h"

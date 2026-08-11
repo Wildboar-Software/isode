@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psrespond.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "RTS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"
 
-/*    RT-OPEN.INDICATION */
+/* RT-OPEN.INDICATION */
 
 int	RtInit_Aux (vecp, vec, rts, rti, dctx)
 int	vecp;
@@ -220,7 +219,7 @@ out:
 	return NOTOK;
 }
 
-/*    RT-OPEN.RESPONSE */
+/* RT-OPEN.RESPONSE */
 
 int	RtOpenResponse (sd, status, context, respondtitle, respondaddr,
 					ctxlist, defctxresult, data, rti)

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssthorn.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -37,7 +36,7 @@ qb2Rpe (struct qbuf *qb, int len, int *result) {
 	return qb2pe (qb, len, 2, result);
 }
 
-/*    modify underling service */
+/*    modify underling service */
 
 int
 RoSetThorn (int sd, struct RoSAPindication *roi) {

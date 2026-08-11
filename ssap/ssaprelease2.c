@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprelease2.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaprelease2.c,v 9.0 1
 
 static int  SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si);
 
-/*    S-RELEASE.RESPONSE */
+/* S-RELEASE.RESPONSE */
 
 int SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
@@ -49,7 +48,7 @@ int SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication 
 	return result;
 }
 
-/*    S-RELEASE.RESPONSE */
+/* S-RELEASE.RESPONSE */
 
 static int SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si) {
 	int     code,

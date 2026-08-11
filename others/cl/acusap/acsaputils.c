@@ -39,7 +39,6 @@
 
 /* modified from ISODE's acsaprovider.c, acsaplose.c and acsap2error.c */
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -56,8 +55,7 @@ static struct assocblk assocque;
 static struct assocblk *AcuHead = &assocque;
 
 
-/*    INTERNAL */
-/* ARGSUSED */
+/* INTERNAL */
 
 /*---------------------------------------------------------------------------*/
 struct type_ACS_Association__information *info2_apdu (acb, aci, data, ndata)
@@ -99,7 +97,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 /*---------------------------------------------------------------------------*/
 int	apdu2_info (acb, aci, info, data, ndata)
@@ -168,7 +165,7 @@ int	rw;
 #endif
 
 
-/*    ASSOCIATION BLOCKS */
+/*    ASSOCIATION BLOCKS */
 /*---------------------------------------------------------------------------*/
 struct assocblk *
 	newacublk () {
@@ -240,7 +237,7 @@ freeacublk (
 
 
 /*---------------------------------------------------------------------------*/
-/*    PSAP interface */
+/*    PSAP interface */
 /*---------------------------------------------------------------------------*/
 int
 ps2aculose (

@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/text2spkt.c,v 5.0 88/07/21 14:58:
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>
@@ -567,7 +566,6 @@ int	len;
 }
 
 
-/* ARGSUSED */
 
 void
 text2spkt (struct ssapkt *s) {

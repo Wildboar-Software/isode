@@ -72,7 +72,6 @@ subord_cpy (struct subordinate *x) {
 	return (top);
 }
 
-/* ARGSUSED */
 void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit)
 {
 	struct list_cache *cache;

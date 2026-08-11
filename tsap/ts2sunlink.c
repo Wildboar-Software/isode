@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -89,9 +88,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2sunlink.c,v 9.0 199
  *
  */
 
-/*    DATA */
 
-/*    UPPER HALF */
+/*    UPPER HALF */
 
 static int
 TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
@@ -298,7 +296,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
@@ -791,7 +788,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 }
 
 
-/* ARGSUSED */
 
 static int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
@@ -809,9 +805,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	}
 }
 
-/*    LOWER HALF */
+/*    LOWER HALF */
 
-/* ARGSUSED */
 
 int
 tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
@@ -851,7 +846,6 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 }
 
 
-/* ARGSUSED */
 
 static int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -866,7 +860,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 }
 
 
-/* ARGSUSED */
 
 char *
 tp4save (int fd, struct TSAPdisconnect *td) {
@@ -923,7 +916,6 @@ tp4init (struct tsapblk *tb) {
 }
 
 
-/* ARGSUSED */
 
 int
 start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
@@ -952,7 +944,6 @@ start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct
 
 
 #ifndef	notdef
-/* ARGSUSED */
 #endif
 
 int
@@ -980,7 +971,6 @@ join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td) {
 /* SunLink OSI address encoding/decoding */
 
 #ifdef	SUNLINK_5_2
-/* ARGSUSED */
 #endif
 
 static int  gen2tp4 (generic, specific, template)

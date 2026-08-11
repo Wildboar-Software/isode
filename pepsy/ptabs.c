@@ -876,7 +876,6 @@ void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 /*
  * print an table entry for Universal type with the given entry
  */
-/* ARGSUSED */
 void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
 	char	*type;
 	int		tag;

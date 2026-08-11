@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort1.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapabort1.c,v 9.0 1
 #include "acpkt.h"
 #include "tailor.h"
 
-/*    A-ABORT.REQUEST */
+/* A-ABORT.REQUEST */
 
 int
 AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci) {

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapabort.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -93,7 +92,7 @@ out1:
 	return result;
 }
 
-/*    S-U-ABORT.REQUEST */
+/* S-U-ABORT.REQUEST */
 
 int SUAbortRequest (
 	int sd,

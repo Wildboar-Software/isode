@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/addr2ref.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <time.h>
 #include <string.h>

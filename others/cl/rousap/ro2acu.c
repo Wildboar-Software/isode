@@ -39,19 +39,17 @@ static char *rcsid = "$Header: /f/iso/rosap/RCS/ro2ps.c,v 5.0 88/07/21 14:55:50 
 #endif
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ropkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 int	aculose ();
 
 
 /*---------------------------------------------------------------------------*/
-/*    bind underlying service */
+/*    bind underlying service */
 /*---------------------------------------------------------------------------*/
 int
 RoAcuService (
@@ -181,7 +179,6 @@ ro2acuwait (
 
 
 
-/* ARGSUSED */
 
 /*---------------------------------------------------------------------------*/
 int	ro2acuwrite (acb, pe, fe, priority, roi)
@@ -266,7 +263,7 @@ ValidBinding (
 
 
 /*---------------------------------------------------------------------------*/
-/*    AcSAP interface */
+/*    AcSAP interface */
 /*---------------------------------------------------------------------------*/
 static int
 aculose (

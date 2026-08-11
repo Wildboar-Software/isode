@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapdse.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "DSE-types.h"
@@ -33,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapdse.c,v 9.0 1992
 #include "isoaddrs.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static AEInfo aeis;
 static struct PSAPaddr pas;

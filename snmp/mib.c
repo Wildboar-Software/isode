@@ -41,7 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/mib.c,v 9.0 1992/06/16
 #endif
 #endif
 
-/*    DATA */
 
 static	int	kd;
 static	int	wd;

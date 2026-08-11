@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas2.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssreleas2.c,v 9.0 
 
 static int  RoEndResponseAux ();
 
-/*    RO-END.RESPONSE */
+/* RO-END.RESPONSE */
 
 int
 RoEndResponse (int sd, struct RoSAPindication *roi) {

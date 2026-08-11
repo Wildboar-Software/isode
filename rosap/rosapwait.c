@@ -28,13 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapwait.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
 
-/*    RO-WAIT.REQUEST (pseudo) */
+/*    RO-WAIT.REQUEST (pseudo) */
 
 int
 RoWaitRequest (int sd, int secs, struct RoSAPindication *roi) {

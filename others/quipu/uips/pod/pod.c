@@ -1899,7 +1899,6 @@ Brunel University";
 	CreateBackgroundPixmap(piccy, work_bits, work_width, work_height);
 }
 
-/* ARGSUSED */
 static void ShowVersion(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -1966,7 +1965,6 @@ XtPointer closure, calldata;
 	XRaiseWindow(dpy, XtWindow(version_popup));
 }
 
-/* ARGSUSED */
 static void HideVersion(w, event, params, num_params)
 Widget w;
 XEvent *event;

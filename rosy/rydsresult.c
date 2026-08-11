@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsresult.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -47,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsresult.c,v 9.0 199
 }
 #endif
 
-/*    RESULT */
+/* RESULT */
 
 int	RyDsResult (sd, id, out, priority, roi)
 int	sd;

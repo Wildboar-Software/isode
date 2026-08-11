@@ -34,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/imagesbr
 #include "quipu/ds_search.h"
 #include "quipu/entry.h"
 
-/*    GENERAL */
+/* GENERAL */
 
 static char *myname = "image";
 
@@ -47,7 +47,7 @@ static LLog _pgm_log = {
 LLog *pgm_log = &_pgm_log;
 
 
-/*    AKA */
+/* AKA */
 
 struct aka {
 	struct aka *ak_forw;
@@ -155,7 +155,7 @@ mbox2ak (char *local, char *domain) {
 	return ak;
 }
 
-/*    DIRECTORY */
+/* DIRECTORY */
 
 #define	ADOMAIN	"associatedDomain"
 #define	PHOTO	"photo"
@@ -443,7 +443,7 @@ do_bind () {
 	return OK;
 }
 
-/*    IMAGE */
+/* IMAGE */
 
 static int    passno;
 static int    x, y, maxx;
@@ -517,7 +517,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 int
 photo_start (char *name) {
@@ -529,7 +528,6 @@ photo_start (char *name) {
 }
 
 
-/* ARGSUSED */
 
 int
 photo_end (char *name) {
@@ -608,7 +606,6 @@ photo_white (int length) {
 }
 
 
-/* ARGSUSED */
 
 photo_line_end (line)
 caddr_t line;
@@ -620,7 +617,6 @@ caddr_t line;
 	return OK;
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 static void	_advise ();

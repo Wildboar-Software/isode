@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include "logger.h"
 #include "tailor.h"
@@ -34,9 +33,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/net/RCS/dsapbind2.c,v 9.0 
 
 extern LLog	* log_dsap;
 
-/*    D-BIND.INDICATION */
+/* D-BIND.INDICATION */
 
-/* ARGSUSED */
 
 int
 DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di) {
@@ -141,9 +139,8 @@ DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di
 	return (result);
 }
 
-/* ARGSUSED */
 
-/*    D-BIND.RESULT */
+/* D-BIND.RESULT */
 
 int	  DBindResult (sd, context, respondtitle,
 				   respondaddr, ctxlist, defctxresult, prequirements,
@@ -193,9 +190,8 @@ struct DSAPindication	* di;
 	return (result);
 }
 
-/* ARGSUSED */
 
-/*    D-BIND.ERROR */
+/* D-BIND.ERROR */
 
 int	  DBindError (sd, context, respondtitle, respondaddr, ctxlist,
 				  defctxresult, prequirements, srequirements, isn, settings,
@@ -245,9 +241,8 @@ struct DSAPindication	* di;
 	return (result);
 }
 
-/* ARGSUSED */
 
-/*    D-BIND.REJECT */
+/* D-BIND.REJECT */
 
 int
 DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di) {

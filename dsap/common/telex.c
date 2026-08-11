@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/telex.c,v 9.0 1
 		number $ country $ answerback
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

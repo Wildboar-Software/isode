@@ -39,16 +39,16 @@
 struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 	int	    acs_sd;		/* association descriptor */
 	int	    acs_result;		/* result */
-#define	ACS_ACCEPT	0	/*   Accepted */
+#define	ACS_ACCEPT	0	/* Accepted */
 #define	ACS_REJECT	(-1)	/*   Release rejected */
 	/*   Rejected by responder: */
-#define	ACS_PERMANENT	1	/*     Permanent */
-#define	ACS_TRANSIENT	2	/*     Transient */
+#define	ACS_PERMANENT	1	/* Permanent */
+#define	ACS_TRANSIENT	2	/* Transient */
 
 	int	    acs_diagnostic;	/* source-diagnostic */
 	/*  needs updating for strictly connectionsless */
 	/* service-user */
-#define	ACS_USER_NULL	3	/*   null */
+#define	ACS_USER_NULL	3	/* null */
 #define	ACS_USER_NOREASON 4	/*   no reason given */
 #define	ACS_CONTEXT	5	/*   application context name not supported*/
 #define	ACS_CALLING_AP_TITLE 6	/*   calling AP title not recognized */
@@ -60,7 +60,7 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 #define	ACS_CALLED_AE_QUAL 12	/*   called AE qualifier not recognized */
 #define	ACS_CALLED_AE_ID 13	/*   called AE invocation-ID not recognized */
 	/* service-provider */
-#define	ACS_PROV_NULL	14	/*   null */
+#define	ACS_PROV_NULL	14	/* null */
 #define	ACS_PROV_NOREASON 15	/*   no reason given */
 #define	ACS_VERSION	16	/*   no common acse version */
 
@@ -88,7 +88,7 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 
 	/* initial information from peer */
 	int	    acs_ninfo;		/*   number of elements */
-	PE	    acs_info[NACDATA];	/*   data */
+	PE	    acs_info[NACDATA];	/* data */
 };
 
 #define	ACSFREE(acs) { \
@@ -110,20 +110,20 @@ struct AcuSAPstart {		/* A-UNIT-DATA.INDICATION */
 
 struct AcSAPabort {		/* A-{U,P}-ABORT.INDICATION */
 	int	    aca_source;		/* abort source */
-#define	ACA_USER	0	/*   service-user */
-#define	ACA_PROVIDER	1	/*   service-provider */
+#define	ACA_USER	0	/* service-user */
+#define	ACA_PROVIDER	1	/* service-provider */
 #define	ACA_LOCAL	2	/*   local ACPM (UNOFFICIAL) */
 
 	int	    aca_reason;		/* same codes as acc_result */
 
 	/* abort information from peer */
 	int	    aca_ninfo;		/*   number of elements */
-	PE	    aca_info[NACDATA];	/*   data */
+	PE	    aca_info[NACDATA];	/* data */
 
 	/* diagnostics from provider */
 #define	ACA_SIZE	512
-	int	    aca_cc;		/*   length */
-	char    aca_data[ACA_SIZE];	/*   data */
+	int	    aca_cc;		/* length */
+	char    aca_data[ACA_SIZE];	/* data */
 };
 #define	ACAFREE(aca) \
 { \

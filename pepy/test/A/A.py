@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/*    DATA */
 
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
@@ -19,9 +18,7 @@ static enum { ps2test, pl2test } mode = ps2test;
 
 void	adios ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int	argc;
@@ -139,7 +136,7 @@ register FILE *fp;
 
 
 %{
-/*    DEBUG */
+/* DEBUG */
 
 #ifdef	DEBUG
 char   *getenv ();
@@ -176,7 +173,6 @@ register char *s;
 }
 #endif
 
-/*    ERRORS */
 
 /* VARARGS2 */
 

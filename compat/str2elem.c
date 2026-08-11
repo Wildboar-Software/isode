@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2elem.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdlib.h>

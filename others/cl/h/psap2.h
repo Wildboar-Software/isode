@@ -84,7 +84,7 @@ struct PSAPstart {		/* P-CONNECT.INDICATION */
 
 	/* initial data from peer */
 	int	    ps_ninfo;		/*   number of elements */
-	PE	    ps_info[NPDATA];	/*   data */
+	PE	    ps_info[NPDATA];	/* data */
 };
 #define	PSFREE(ps) \
 { \
@@ -170,7 +170,7 @@ struct PSAPconnect {		/* P-CONNECT.CONFIRMATION */
 
 	/* initial data from peer */
 	int	    pc_ninfo;		/*   number of elements */
-	PE	    pc_info[NPDATA];	/*   data */
+	PE	    pc_info[NPDATA];	/* data */
 };
 #define	PCFREE(pc) \
 { \
@@ -227,7 +227,7 @@ struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 
 	/* PLEASE TOKEN only */
 	int	    pt_ninfo;		/*   number of elements */
-	PE	    pt_info[NPDATA];	/*   data */
+	PE	    pt_info[NPDATA];	/* data */
 };
 #define	PTFREE(pt) \
 { \
@@ -254,7 +254,7 @@ struct PSAPsync {		/* P-*-SYNC.{INDICATION,CONFIRMATION} */
 
 	/* sync data from peer */
 	int	    pn_ninfo;		/*   number of elements */
-	PE	    pn_info[NPDATA];	/*   data */
+	PE	    pn_info[NPDATA];	/* data */
 };
 #define	PNFREE(pn) \
 { \
@@ -283,7 +283,7 @@ struct PSAPactivity {		/* P-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 
 	/* activity DATA from peer */
 	int	    pv_ninfo;		/*   number of elements */
-	PE	    pv_info[NPDATA];	/*   data */
+	PE	    pv_info[NPDATA];	/* data */
 };
 #define	PVFREE(pv) \
 { \
@@ -306,7 +306,7 @@ struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
 
 	/* report DATA from peer */
 	int	    pp_ninfo;		/*   number of elements */
-	PE	    pp_info[NPDATA];	/*   data */
+	PE	    pp_info[NPDATA];	/* data */
 };
 #define	PPFREE(pp) \
 { \
@@ -322,7 +322,7 @@ struct PSAPreport {		/* P-{U,P}-EXCEPTION-REPORT.INDICATION */
 struct PSAPfinish {		/* P-RELEASE.INDICATION */
 	/* release DATA from peer */
 	int	    pf_ninfo;		/*   number of elements */
-	PE	    pf_info[NPDATA];	/*   data */
+	PE	    pf_info[NPDATA];	/* data */
 };
 #define	PFFREE(pf) \
 { \
@@ -341,7 +341,7 @@ struct PSAPrelease {		/* P-RELEASE.CONFIRMATION */
 
 	/* release DATA from peer */
 	int	    pr_ninfo;		/*   number of elements */
-	PE	    pr_info[NPDATA];	/*   data */
+	PE	    pr_info[NPDATA];	/* data */
 };
 #define	PRFREE(pr) \
 { \
@@ -365,12 +365,12 @@ struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
 
 	/* abort information from peer */
 	int	    pa_ninfo;		/*   number of elements */
-	PE	    pa_info[NPDATA];	/*   data */
+	PE	    pa_info[NPDATA];	/* data */
 
 	/* diagnostics from provider */
 #define	PA_SIZE		512
-	int	    pa_cc;		/*   length */
-	char    pa_data[PA_SIZE];	/*   data */
+	int	    pa_cc;		/* length */
+	char    pa_data[PA_SIZE];	/* data */
 };
 #define	PAFREE(pa) \
 { \

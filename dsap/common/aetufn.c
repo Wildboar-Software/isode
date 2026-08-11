@@ -89,7 +89,6 @@ again:
 	return result;
 }
 
-/* ARGSUSED */
 
 static DNS just_say_no (dns,dn,s)
 DNS dns;
@@ -196,7 +195,6 @@ out:
 static char unbind = FALSE;
 static envlist el = NULLEL;
 
-/* ARGSUSED */
 
 static PE  name2value_ufn (name, context, ontty, userdn, passwd, real_name)
 char   *name,

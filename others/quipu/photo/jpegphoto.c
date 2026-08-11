@@ -124,7 +124,6 @@ DoJPEG () {
 	/*NOTREACHED*/
 }
 
-/* ARGSUSED */
 void
 main (int argc, char **argv, char **envp) {
 	unsigned char   firstChar;

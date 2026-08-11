@@ -131,7 +131,6 @@ hash2str (unsigned long hash, int *len) {
 
 /* insecure hash function for testing purposes */
 
-/* ARGSUSED */
 unsigned long
 hash_passwd (unsigned long seed, char *str, int len) {
 	seed = 0;
@@ -141,7 +140,6 @@ hash_passwd (unsigned long seed, char *str, int len) {
 	return (seed);
 }
 
-/* ARGSUSED */
 int
 check_guard (
 	char *pwd, /* This string is not null-terminated */

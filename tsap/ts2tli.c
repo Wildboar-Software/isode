@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/ts2tli.c,v 9.0 1992/06
  *
  */
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "tpkt.h"
@@ -121,7 +120,7 @@ struct opts {
 #define OPTS_SIZE 6
 #endif
 
-/*    Utility Routines */
+/*    Utility Routines */
 
 static char *sys_terrname (te)
 int te;
@@ -339,7 +338,7 @@ out:
 	return NOTOK;
 }
 
-/*    UPPER HALF */
+/*    UPPER HALF */
 
 static int
 TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
@@ -592,7 +591,6 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
  * on, but by the end it is the one we accepted dup'd into the old slot.
  * ISODE doesn't quite fit the TLI model here....
  */
-/* ARGSUSED */
 
 static int
 TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
@@ -866,7 +864,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int
 TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
@@ -1012,7 +1009,6 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-/* ARGSUSED */
 
 static int
 TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
@@ -1033,9 +1029,8 @@ TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	}
 }
 
-/*    LOWER HALF */
+/*    LOWER HALF */
 
-/* ARGSUSED */
 
 int
 tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
@@ -1082,7 +1077,6 @@ tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_n
 }
 
 
-/* ARGSUSED */
 
 static int
 retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
@@ -1099,7 +1093,6 @@ retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 
 
-/* ARGSUSED */
 
 /*
  * Save string format:
@@ -1189,7 +1182,6 @@ tp4init (struct tsapblk *tb) {
 }
 
 
-/* ARGSUSED */
 
 int
 start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
@@ -1253,7 +1245,6 @@ join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *se
  *	Your format may be different - take the ICL_TLI case for example...
  */
 
-/* ARGSUSED */
 int
 gen2tp4 ( /* dependant on Addressing */
 	struct TSAPaddr *generic,

@@ -182,7 +182,6 @@ done:
 }
 
 
-/* ARGSUSED */
 SFD lostconn(sig)
 int sig;
 {

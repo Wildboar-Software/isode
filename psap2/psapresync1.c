@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapresync1.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-/*    P-RESYNCHRONIZE.REQUEST */
+/* P-RESYNCHRONIZE.REQUEST */
 
 int
 PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi) {

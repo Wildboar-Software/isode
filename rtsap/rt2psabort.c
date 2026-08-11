@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psabort.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rt2psabort.c,v 9.0 19
 
 static int  RtUAbortRequestAux ();
 
-/*    RT-U-ABORT.REQUEST */
+/* RT-U-ABORT.REQUEST */
 
 int
 RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {

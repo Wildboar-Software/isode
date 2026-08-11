@@ -31,7 +31,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/lookup/RCS/ryinitiator.c
 #include "PasswordLookup-types.h"
 #include "ryinitiator.h"
 
-/*    DATA */
 
 static char *myname = "ryinitiator";
 
@@ -39,7 +38,7 @@ static int _getline(char *);
 
 extern char *isodeversion;
 
-/*    INITIATOR */
+/* INITIATOR */
 
 ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
 int	argc;

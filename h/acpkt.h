@@ -156,7 +156,7 @@ int	apdu2info ();
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
-	struct assocblk *acb_back;	/*   .. */
+	struct assocblk *acb_back;	/* .. */
 
 	int	    acb_fd;		/* session/presentation descriptor */
 
@@ -177,7 +177,7 @@ struct assocblk {
 #define	ACB_RTS		0x0400	/* RTS   .. */
 #define	ACB_ACS		0x0800	/* ACS   .. */
 #define	ACB_CLOSING	0x1000	/* waiting to close */
-#define	ACB_FINISH	0x2000	/*   .. */
+#define	ACB_FINISH	0x2000	/* .. */
 #define	ACB_STICKY	0x4000	/* ROS using RTS (ugh!) */
 #define	ACB_RELEASE	0x8000	/* release in progress */
 
@@ -219,8 +219,8 @@ struct assocblk {
 	struct AcSAPfinish acb_finish;
 
 	char   *acb_realbase;	/* APDU in transit */
-	char   *acb_base;		/*   .. */
-	int	    acb_len;		/*   .. */
+	char   *acb_base;		/* .. */
+	int	    acb_len;		/* .. */
 
 	int (*acb_uptrans)(int sd, int type, caddr_t addr, struct RtSAPindication *rti);	/* upcall for up-transfer */
 	int (*acb_downtrans)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti);	/* upcall for down-transfer */
@@ -270,8 +270,8 @@ int	acsaplose (struct AcSAPindication*aci, ...);
 #define	    PCONN_CK_DFLT 0
 #define	  PCONN_DATA_WD	1	/*   Window Size */
 #define	    PCONN_WD_DFLT 3
-#define	  PCONN_DATA_DM	2	/*   Dialogue-mode */
-#define	    PCONN_DM_MONO 0	/*     monologue */
+#define	  PCONN_DATA_DM	2	/* Dialogue-mode */
+#define	    PCONN_DM_MONO 0	/* monologue */
 #define	    PCONN_DM_TWA  1	/*     two-way alternate */
 #define	    PCONN_DM_DFLT PCONN_DM_MONO
 #define	  PCONN_DATA_CN	3	/*   Connection Data */

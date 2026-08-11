@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsapinitiate.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include <unistd.h>
@@ -74,7 +73,7 @@ struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
 static struct TSAPaddr *newtaddr ();
 static struct TSAPaddr *maketsbaddr ();
 
-/*    T-(ASYN-)CONNECT.REQUEST */
+/*    T-(ASYN-)CONNECT.REQUEST */
 
 int
 TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
@@ -299,9 +298,9 @@ TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
 		struct NSAPaddr ns;
 
 		ns = calling -> ta_addrs[0];	/* struct copy */
-		calling -> ta_addrs[0] = *la;	/*   .. */
-		*la = ns;			/*   .. */
-		la = calling -> ta_addrs;	/*   .. */
+		calling -> ta_addrs[0] = *la;	/* .. */
+		*la = ns;			/* .. */
+		la = calling -> ta_addrs;	/* .. */
 	}
 
 	bcopy (realcalled -> ta_selector, tb -> tb_responding.ta_selector,
@@ -319,7 +318,7 @@ TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
 	return result;
 }
 
-/*    T-ASYN-RETRY.REQUEST (pseudo) */
+/*    T-ASYN-RETRY.REQUEST (pseudo) */
 
 int
 TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
@@ -398,7 +397,7 @@ TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    T-ASYN-NEXT.REQUEST (pseudo) */
+/*    T-ASYN-NEXT.REQUEST (pseudo) */
 
 int
 TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {

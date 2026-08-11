@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/inherit.c,v 9.0
 		inherit ::= [<objectclass> '$'] ["ALWAYS $"] <attribute>
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

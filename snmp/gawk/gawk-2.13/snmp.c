@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /a/vulcan/xtel/isode/isode-master/snmp/gawk-2.11/
 #include <isode/tailor.h>
 #include <stdarg.h>
 
-/*    DATA */
 
 int	debug = 0;
 
@@ -111,7 +110,7 @@ NODE   *node ();
 long	random ();
 #endif
 
-/*    INIT */
+/* INIT */
 
 int	snmp_init (value)
 char  **value;
@@ -246,7 +245,7 @@ static	snmp_onceonly () {
 #endif
 }
 
-/*    CHECK */
+/* CHECK */
 
 int	snmp_check (r, name)
 NODE   *r;
@@ -270,7 +269,7 @@ char   *name;
 	*cp = c;
 }
 
-/*    GET */
+/* GET */
 
 int	snmp_get (ptr, instname)
 NODE   *ptr;
@@ -498,7 +497,7 @@ out:
 	ERROR_node -> var_value = make_number ((AWKNUM) status);
 }
 
-/*    SCAN */
+/* SCAN */
 
 void	snmp_assoc_scan (symbol, lookat, instance)
 NODE   *symbol,
@@ -1000,7 +999,7 @@ int	do_val;
 	return encode_SNMP_Message (&sr -> r_pe, 1, 0, NULLCP, &msgs);
 }
 
-/*    SET */
+/* SET */
 
 void	snmp_set () {
 	int	    gotone,
@@ -1257,7 +1256,7 @@ out:
 	}
 }
 
-/*    ENCODE */
+/* ENCODE */
 
 static int  e_integer (x, pe)
 NODE   *x;
@@ -1362,7 +1361,6 @@ bad_oid:
 }
 
 
-/* ARGSUSED */
 
 static int  e_null (x, pe)
 NODE   *x;
@@ -1457,7 +1455,7 @@ PE     *pe;
 	return OK;
 }
 
-/*    DECODE */
+/* DECODE */
 
 static NODE *make_octet_node (base, len)
 char   *base;
@@ -1562,7 +1560,6 @@ PE	pe;
 }
 
 
-/* ARGSUSED */
 
 static int  d_null (x, pe)
 NODE  **x;
@@ -1653,7 +1650,7 @@ PE	pe;
 	return OK;
 }
 
-/*    MISC */
+/* MISC */
 
 static	snmp_ready (do_id)
 int	do_id;

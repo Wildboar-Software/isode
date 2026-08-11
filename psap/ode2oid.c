@@ -30,7 +30,6 @@ OID	ode2oid (char* descriptor) {
 	return NULLOID;
 }
 #else
-/* LINTLIBRARY */
 
 #include <string.h>
 #include "psap.h"

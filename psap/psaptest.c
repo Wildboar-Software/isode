@@ -198,7 +198,6 @@ doit:
 	}
 }
 
-/*    ERRORS */
 
 static void ps_die (PS ps, char *s) {
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));

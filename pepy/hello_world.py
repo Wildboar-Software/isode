@@ -12,7 +12,6 @@ static void adios (char *, char *, ...);
 void advise (char *, char *, ...);
 
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int     argc;
@@ -51,7 +50,6 @@ END
 
 %{
 
-/*    ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

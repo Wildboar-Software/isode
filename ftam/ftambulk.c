@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambulk.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -35,7 +34,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
-/*    F-DATA.REQUEST */
+/* F-DATA.REQUEST */
 static int  FDataRequestAux (), FDataEndRequestAux (), FCancelRequestAux ();
 
 int
@@ -115,7 +114,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 	return OK;
 }
 
-/*    F-DATA-END.REQUEST */
+/* F-DATA-END.REQUEST */
 
 int
 FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
@@ -232,7 +231,7 @@ out:
 	return OK;
 }
 
-/*    F-CANCEL.REQUEST */
+/* F-CANCEL.REQUEST */
 
 int
 FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
@@ -367,7 +366,7 @@ out:
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
 
-/*    F-CANCEL.RESPONSE */
+/* F-CANCEL.RESPONSE */
 
 int
 FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {

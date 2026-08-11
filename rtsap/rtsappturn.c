@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsappturn.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    RT-TURN-PLEASE.REQUEST */
+/* RT-TURN-PLEASE.REQUEST */
 
 int
 RtPTurnRequest (int sd, int priority, struct RtSAPindication *rti) {

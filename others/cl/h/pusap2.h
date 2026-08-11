@@ -92,7 +92,7 @@ struct PuSAPstart {		/* P-UNIT-DATA.INDICATION */
 	/* initial data from peer */
 
 	int	    ps_ninfo;		/*   number of elements */
-	PE	    ps_info[NPDATA];	/*   data */
+	PE	    ps_info[NPDATA];	/* data */
 };
 #define	PUSFREE(ps) \
 { \
@@ -123,12 +123,12 @@ struct PSAPabort {		/* P-{U,P}-ABORT.INDICATION */
 
 	/* abort information from peer */
 	int	    pa_ninfo;		/*   number of elements */
-	PE	    pa_info[NPDATA];	/*   data */
+	PE	    pa_info[NPDATA];	/* data */
 
 	/* diagnostics from provider */
 #define	PA_SIZE		512
-	int	    pa_cc;		/*   length */
-	char    pa_data[PA_SIZE];	/*   data */
+	int	    pa_cc;		/* length */
+	char    pa_data[PA_SIZE];	/* data */
 };
 #define	PAFREE(pa) \
 { \

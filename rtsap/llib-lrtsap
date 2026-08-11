@@ -21,11 +21,10 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "rtsap.h"
 
-/*    RTSE primitives */
+/*    RTSE primitives */
 
 /* RT-OPEN.INDICATION */
 
@@ -115,7 +114,7 @@ struct RtSAPindication *rti;
     return RtUAbortRequest (sd, data, rti);
 }
 
-/*    X.410 primitives */
+/*    X.410 primitives */
 
 /* SERVER only */
 

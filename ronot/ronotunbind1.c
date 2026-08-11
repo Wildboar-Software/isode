@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind1.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include "tailor.h"
 #include "logger.h"
@@ -33,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotunbind1.c,v 9.0 
 #include "RONOT-types.h"
 
 
-/*    RO-UNBIND.REQUEST */
+/* RO-UNBIND.REQUEST */
 
-/* ARGSUSED */
 
 int
 RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
@@ -89,9 +87,8 @@ RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, str
 	return (result);
 }
 
-/*    RO-UNBIND.RETRY */
+/* RO-UNBIND.RETRY */
 
-/* ARGSUSED */
 
 int
 RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rylose.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -47,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rylose.c,v 9.0 1992/06
 }
 #endif
 
-/*    clean-up after association termination */
+/*    clean-up after association termination */
 
 int	RyLose (sd, roi)
 int	sd;

@@ -41,7 +41,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/support/RCS/isod.c,v 9.0 1992/0
 #include "OACS-types.h"
 #include "internet.h"
 
-/*    DATA */
 
 static int debug = 0;
 static int isacs = 0;
@@ -200,7 +199,7 @@ main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-/*    TSAP */
+/* TSAP */
 
 static int
 ts_main (int argc, char **argv) {
@@ -313,7 +312,6 @@ ts_dataindication (int sd, struct TSAPdata *tx) {
 }
 
 
-/* ARGSUSED */
 
 static int
 ts_discindication (int sd, struct TSAPdisconnect *td) {
@@ -351,7 +349,7 @@ ts_advise (struct TSAPdisconnect *td, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
-/*    SSAP */
+/* SSAP */
 
 #define	RMASK \
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
@@ -960,7 +958,6 @@ ss_finishindication (int sd, struct SSAPfinish *sf) {
 }
 
 
-/* ARGSUSED */
 
 static int
 ss_abortindication (int sd, struct SSAPabort *sa) {
@@ -1000,7 +997,7 @@ ss_advise (struct SSAPabort *sa, char *event) {
 	SAFREE (sa);
 }
 
-/*    PSAP */
+/* PSAP */
 
 #define	PMASK \
 	"\020\01MANAGEMENT\02RESTORATION"
@@ -1736,7 +1733,7 @@ static void ps_advise (struct PSAPabort *pa, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
-/*    AcSAP */
+/* AcSAP */
 
 static void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
@@ -2096,7 +2093,7 @@ rts_advise (struct RtSAPabort *rta, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
-/*    RoSAP */
+/* RoSAP */
 
 static int ros_main (int argc, char **argv) {
 	int     async,

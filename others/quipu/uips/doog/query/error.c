@@ -149,7 +149,6 @@ struct DSError *error;
 } /* add_error_to_request_rec */
 
 
-/* ARGSUSED */
 QE_error_code get_log_error_type(error, task_id)
 struct DSError *error;
 int task_id;

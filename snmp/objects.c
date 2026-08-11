@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/objects.c,v 9.0 1992/0
 #include "objects.h"
 #include "tailor.h"
 
-/*    DATA */
 
 #define	TBUCKETS	0x80
 
@@ -55,7 +54,7 @@ static int  read_name (), read_type (), add_objects_aux ();
 static void dump_object (OT ot, int i);
 extern	int	errno;
 
-/*    OBJECTS */
+/* OBJECTS */
 
 int	THASH (const char *name) {
 	char    c;
@@ -725,7 +724,7 @@ OI	text2inst (const char *text) {
 	return oi;
 }
 
-/*    DUMP */
+/* DUMP */
 
 #define	DEBUG
 #ifdef	DEBUG
@@ -782,7 +781,7 @@ static void dump_object (OT ot, int i) {
 }
 #endif
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 #ifndef SVR4
 char *strdup (const char *s) {

@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/prim2time.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
 #include "psap.h"
 
-/*    DATA */
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 

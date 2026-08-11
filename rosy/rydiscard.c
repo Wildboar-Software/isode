@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydiscard.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -50,7 +49,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydiscard.c,v 9.0 1992
 
 static int	do_response ();
 
-/*    DISCARD */
+/* DISCARD */
 
 int	RyDiscard (sd, id, roi)
 int	sd,
@@ -72,7 +71,6 @@ struct RoSAPindication *roi;
 }
 
 
-/* ARGSUSED */
 
 static int
 do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {

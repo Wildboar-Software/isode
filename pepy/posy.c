@@ -64,13 +64,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/posy.c,v 9.0 1992/06/1
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
 
-/*    DATA */
 
 static int aflag = 0;
 int	Cflag = 0;		/* posy */
 int	dflag = 0;
 int	Pflag = 0;		/* pepy compat ... */
-char    *bflag = NULL;		/*  .. */
+char    *bflag = NULL;		/* .. */
 char    *module_actions = NULL;
 int	pepydebug = 0;
 int	doexternals = 1;
@@ -256,7 +255,7 @@ usage:
 	case 2:
 		yydebug++;		/* fall */
 	case 1:
-		sflag++;		/*   .. */
+		sflag++;		/* .. */
 	case 0:
 		break;
 	}
@@ -292,7 +291,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-/*    ERRORS */
 
 int
 yyerror (char *s) {
@@ -1492,7 +1490,7 @@ static void do_type1 (YP yp, int top, int level, char *id, char *var, char *acti
 	}
 }
 
-/*    TYPE HANDLING */
+/*    TYPE HANDLING */
 
 static YP lookup_type (char *mod, char *id)
 {

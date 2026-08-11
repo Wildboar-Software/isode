@@ -45,8 +45,8 @@ struct TSAPstart {		/* T-CONNECT.INDICATON */
 
 	/* initial DATA from peer */
 #define	TS_SIZE		32
-	int	    ts_cc;		/*   length */
-	char    ts_data[TS_SIZE];	/*   data */
+	int	    ts_cc;		/* length */
+	char    ts_data[TS_SIZE];	/* data */
 };
 
 
@@ -63,8 +63,8 @@ struct TSAPconnect {		/* T-CONNECT.CONFIRMATION */
 
 	/* initial DATA from peer */
 #define	TC_SIZE		32
-	int	    tc_cc;		/*   length */
-	char    tc_data[TC_SIZE];	/*   data */
+	int	    tc_cc;		/* length */
+	char    tc_data[TC_SIZE];	/* data */
 };
 
 
@@ -121,8 +121,8 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 
 	/* disconnect DATA from peer */
 #define	TD_SIZE		64
-	int	    td_cc;		/*   length */
-	char    td_data[TD_SIZE];	/*   data */
+	int	    td_cc;		/* length */
+	char    td_data[TD_SIZE];	/* data */
 };
 
 
@@ -133,13 +133,13 @@ extern char *tsapversion;
 int	T_TCP_Exec ();		/* SERVER only */
 #endif
 #ifdef	X25
-int	T_X25_Exec ();		/*   .. */
+int	T_X25_Exec ();		/* .. */
 #endif
 #ifdef	BRIDGE_X25
-int	T_Bridge_Exec ();		/*   .. */
+int	T_Bridge_Exec ();		/* .. */
 #endif
 #ifdef	TP4
-int	T_TP4_Exec ();			/*   .. */
+int	T_TP4_Exec ();			/* .. */
 #endif
 int	TInit ();		/* T-CONNECT.INDICATION */
 

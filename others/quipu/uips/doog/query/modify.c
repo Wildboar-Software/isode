@@ -504,7 +504,6 @@ int *task_id_ptr;
  *
  *
  */
-/* ARGSUSED */
 request_state process_modify_ds_result(request, task_id, ds_result)
 requestRec request;
 int task_id;

@@ -281,7 +281,6 @@ WIDGET	*thesewdgts;
 /* This should check that the number of active widgets is not excessive, or
  * have the activelist really as a linked list.
  */
-/* ARGSUSED */
 void activewidget(wdgts, text)
 WIDGET	wdgts[];
 WINDOW	*text;
@@ -876,7 +875,6 @@ lowesty () {
 }
 
 /* This satisfies the generalised printing structure */
-/* ARGSUSED */
 void wprint(here, fmt, a,b,c,d,e,f,g,h,i,j)
 WINDOW	*here;
 char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;

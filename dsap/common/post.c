@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/post.c,v 9.0 19
 	Maximum of 6 (UB_POSTAL_LINE) <address_component>'s
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

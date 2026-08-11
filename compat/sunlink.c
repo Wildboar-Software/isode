@@ -29,14 +29,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/sunlink.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
 
-/*    SUN UNIX: SunLink X25 */
+/*    SUN UNIX: SunLink X25 */
 
 #ifdef  X25
 
@@ -56,7 +55,6 @@ static int  log_x25_facilities ();
 #endif
 
 
-/* ARGSUSED */
 
 int
 start_x25_client (struct NSAPaddr *local, int priv) {
@@ -291,7 +289,6 @@ int	sun_fixed_thruput = 0;
    things up, if your /etc/x25params has not been properly
    localised as is normally the case.  */
 
-/* ARGSUSED */
 int
 set_x25_facilities (int sd, int coc, char *caption) {
 	FACILITY_DB facilities;

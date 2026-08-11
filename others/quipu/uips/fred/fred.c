@@ -40,7 +40,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/fred
 #define	R_OK	4
 #endif
 
-/*    DATA */
 
 static char *myname = "fred";
 
@@ -91,9 +90,7 @@ static int  fetchline ();
 static	rcmap ();
 static	log_utmp ();
 
-/*    MAIN */
 
-/* ARGSUSED  */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -415,7 +412,7 @@ were_out_of_here:
 	exit (mail ? 0 : status);		/* NOTREACHED */
 }
 
-/*    ARGINIT */
+/* ARGINIT */
 
 static
 arginit (char **vec) {
@@ -499,7 +496,7 @@ arginit (char **vec) {
 		log_utmp ();
 }
 
-/*    INTERACTIVE */
+/* INTERACTIVE */
 
 int
 _getline (char *prompt, char *buffer) {
@@ -591,7 +588,6 @@ FILE  *iop;
 }
 
 
-/* ARGSUSED */
 
 static	SFD alrmser (sig)
 int	sig;
@@ -604,7 +600,6 @@ int	sig;
 }
 
 
-/* ARGSUSED */
 
 static	SFD intrser (sig)
 int	sig;
@@ -724,7 +719,7 @@ normal:
 	return 2;
 }
 
-/*    MAPPING */
+/* MAPPING */
 
 /* reads fred's IP-address to DN mapping file.
 
@@ -795,7 +790,6 @@ done:
 	setuid (getuid ());
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 static void	_advise ();

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/oper_invoke.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include "rosap.h"
 #include "quipu/util.h"

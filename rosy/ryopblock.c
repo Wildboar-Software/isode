@@ -25,18 +25,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/ryopblock.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct opsblk opsque;
 static struct opsblk *OPHead = &opsque;
 
-/*    OPERATION BLOCKS */
+/*    OPERATION BLOCKS */
 
 struct opsblk  *newopblk (sd, id)
 int	sd,

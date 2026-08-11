@@ -375,13 +375,13 @@ int	spktlose (int sd, ...), ssaplose (struct SSAPindication*si, ...);
 
 struct ssapblk {
     struct ssapblk *sb_forw;	/* doubly-linked list */
-    struct ssapblk *sb_back;	/*   .. */
+    struct ssapblk *sb_back;	/* .. */
 
     int     sb_fd;		/* transport descriptor */
 
     int	    sb_version;		/* version number of protocol */
-#define	SB_VRSN1	0	/*   1 */
-#define	SB_VRSN2	1	/*   2 */
+#define	SB_VRSN1	0	/* 1 */
+#define	SB_VRSN2	1	/* 2 */
 #define	SB_ALLVRSNS	((1 << SB_VRSN1) | (1 << SB_VRSN2))
     int	    sb_vrsnmask;	/* for initiating SPM... */
 
@@ -433,8 +433,8 @@ struct ssapblk {
     struct ssapkt *sb_spdu;	/* for concatenated SPDUs */
 
     struct qbuf sb_qbuf;	/* for segmented (T)SSDUs */
-    int	    sb_len;		/*   .. */
-    int	    sb_code;		/*   .. */
+    int	    sb_len;		/* .. */
+    int	    sb_code;		/* .. */
 
     u_char  sb_options;		/* connect options */
     u_char  sb_settings;	/* tokens settings on connect */
@@ -453,12 +453,12 @@ struct ssapblk {
     int	    sb_maxtime;		/* for SPM response during S-CONNECT */
 
     IFP	    sb_DataIndication;		/* INDICATION handlers */
-    IFP	    sb_TokenIndication;		/*   .. */
-    IFP	    sb_SyncIndication;		/*   .. */
-    IFP	    sb_ActivityIndication;	/*   .. */
-    IFP	    sb_ReportIndication;	/*   .. */
-    IFP	    sb_ReleaseIndication;	/*   .. */
-    IFP	    sb_AbortIndication;		/*   .. */
+    IFP	    sb_TokenIndication;		/* .. */
+    IFP	    sb_SyncIndication;		/* .. */
+    IFP	    sb_ActivityIndication;	/* .. */
+    IFP	    sb_ReportIndication;	/* .. */
+    IFP	    sb_ReleaseIndication;	/* .. */
+    IFP	    sb_AbortIndication;		/* .. */
 };
 #define	NULLBP		((struct ssapblk *) 0)
 
@@ -476,7 +476,7 @@ struct ssapkt *sb2spkt (
 	struct TSAPdata *ty
 );
 
-/*    SPKT datastructure */
+/*    SPKT datastructure */
 
 struct ssapkt {
     int	    s_errno;
@@ -912,12 +912,12 @@ struct ssapkt {
 
 #define	SMASK_UDATA_PGI	0x4000
     char   *s_udata;		/* user data PGI */
-    int	    s_ulen;		/*   .. */
+    int	    s_ulen;		/* .. */
 
 #define	SMASK_SPDU_EXPD	0x8000	/* SPDU arrived on the expedited connection */
 
     struct qbuf s_qbuf;		/* user info */
-    int	    s_qlen;		/*   .. */
+    int	    s_qlen;		/* .. */
 };
 #define	NULLSPKT	((struct ssapkt *) 0)
 

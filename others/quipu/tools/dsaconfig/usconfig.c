@@ -223,7 +223,6 @@ struct edbdir topdirs[] = {
 #define SEDFILE			"sed.tmp"	/* sed filename */
 #define USDN			"c=US"		/* DN for the US */
 
-/* ARGSUSED */
 
 /* main () -- main function for program */
 void

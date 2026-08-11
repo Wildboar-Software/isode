@@ -286,7 +286,7 @@ static struct dispatch *getds (char *name) {
 	}
 }
 
-/*    OPERATIONS */
+/* OPERATIONS */
 
 static int  f_audit (char **vec) {
 	int	    follow,
@@ -1235,7 +1235,7 @@ static int f_status (char **vec) {
 	return OK;
 }
 
-/*    SYNTAX */
+/* SYNTAX */
 
 static char *ifType[] = {
 	"other", "regular1822", "hdh1822", "ddn-x25", "rfc877-x25",
@@ -1395,7 +1395,7 @@ static void moresyntax (int check) {
 			advise (NULLCP, "no \"%s\" object", iv -> iv_object);
 }
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 static	void arginit (char **vec) {
 	int	    w;
@@ -1667,7 +1667,7 @@ cots:
 	moresyntax (strcmp (ap, "objects.defs") == 0);
 }
 
-/*    INTERACTIVE */
+/* INTERACTIVE */
 
 static int  _getline (char *prompt, char *buffer) {
 	int    i;
@@ -1725,7 +1725,6 @@ static void intrser (int sig) {
 }
 
 #ifndef	TIOCGWINSZ
-/* ARGSUSED */
 #endif
 
 static int  ncols (FILE *fp) {

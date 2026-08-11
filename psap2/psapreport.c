@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2/RCS/psapreport.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-/*    P-U-EXCEPTION-REPORT.REQUEST */
+/* P-U-EXCEPTION-REPORT.REQUEST */
 
 int
 PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi) {

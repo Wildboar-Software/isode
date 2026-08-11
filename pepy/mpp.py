@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/mpp.py,v 9.0 1992/06/1
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
 
-/*    DATA */
 
 static char *myname = "mpp";
 
@@ -45,9 +44,7 @@ static enum format { p1, p2, sfd, ean, eanp2 } topfmt = ean;
 static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int	argc;
@@ -195,7 +192,6 @@ END
 
 %{
 
-/*    ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssaptoken.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-TOKEN-GIVE.REQUEST */
+/* S-TOKEN-GIVE.REQUEST */
 
 static int  SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si);
 static int  SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc, struct SSAPindication *si);
@@ -92,7 +91,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindicat
 
 #undef	dotoken
 
-/*    S-TOKEN-PLEASE.REQUEST */
+/* S-TOKEN-PLEASE.REQUEST */
 
 #define	dotoken(requires,shift,bit,type) \
 { \

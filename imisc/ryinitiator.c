@@ -44,7 +44,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/imisc/RCS/ryinitiator.c,v 9.0 1
 #endif
 #endif
 
-/*    DATA */
 
 static int count = 1;
 int	length = 536;

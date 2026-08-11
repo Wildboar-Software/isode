@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapwait.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    RT-WAIT.REQUEST (pseudo) */
+/*    RT-WAIT.REQUEST (pseudo) */
 
 int
 RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {

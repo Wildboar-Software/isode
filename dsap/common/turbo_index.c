@@ -203,7 +203,6 @@ static void index_free(Index *pindex)
 	free( (char *) pindex );
 }
 
-/* ARGSUSED */
 static int i_dup(Index *a)
 {
 	return( NOTOK );
@@ -269,7 +268,6 @@ static Index *new_index(DN dn)
 
 #ifdef notdef
 
-/* ARGSUSED */
 static print_soundex_node( n, ps )
 Index_node	*n;
 int		ps;

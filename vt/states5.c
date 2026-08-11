@@ -69,19 +69,16 @@ s5_400B (			/* sector 5, state 400B	*/
 	}
 }
 
-/* ARGSUSED */
 int
 s5_402B (int event, PE pe) {
 	undefined ("402B", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_420B (int event, PE pe) {
 	undefined ("420B", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_422B (			/* sector 5, state 422B	*/
 	int event,
@@ -90,25 +87,21 @@ s5_422B (			/* sector 5, state 422B	*/
 	undefined ("422B", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_40N (int event, PE pe) {
 	undefined ("40N", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_40T (int event, PE pe) {
 	undefined ("40T", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_42T (int event, PE pe) {
 	undefined ("42T", event); /* NOTREACHED */
 }
 
-/* ARGSUSED */
 int
 s5_42N (int event, PE pe) {
 	undefined ("42N", event); /* NOTREACHED */

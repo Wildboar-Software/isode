@@ -52,7 +52,7 @@ char actions[5][5] = {
 
 	/*      Sym Act   Sym Pas    Client     Server     Broadcast  |Host /       */
 	/*      --------   --------  --------   ---------  ---------  |    / Peer   */
-	/*                                                            ------------  */
+	/* ------------ */
 	{ACT_PKT,  ACT_PKT,   ACT_RECV,  ACT_XMIT,  ACT_XMIT},	/* Sym Act   */
 	{ACT_PKT,  ACT_ERROR, ACT_RECV,  ACT_ERROR, ACT_ERROR},	/* Sym Pas   */
 	{ACT_XMIT, ACT_XMIT,  ACT_ERROR, ACT_XMIT,  ACT_XMIT},	/* Client    */

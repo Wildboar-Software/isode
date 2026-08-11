@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapcapd2.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-CAPABILITY-DATA.RESPONSE */
+/* S-CAPABILITY-DATA.RESPONSE */
 
 static  int  SCapdResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
 

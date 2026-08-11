@@ -55,7 +55,6 @@ static char *rcsid = "$Header: /f/iso/psap2/RCS/psapinitiate.c,v 5.0 88/07/21 14
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -473,7 +472,7 @@ out:
 
 
 /*----------------------------------------------------------------------------*/
-/*    SSAP interface */
+/*    SSAP interface */
 /*----------------------------------------------------------------------------*/
 int
 ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
@@ -652,7 +651,7 @@ PuErrString (
 }
 
 
-/*   INTERNAL */
+/* INTERNAL */
 /*----------------------------------------------------------------------------*/
 struct psapblk *
 	newpublk ()

@@ -28,7 +28,7 @@
 #include "manifest.h"
 #endif
 
-/*    SOCKETS */
+/* SOCKETS */
 
 #include "sys/socket.h"
 #include "asm/socket.h"
@@ -105,7 +105,7 @@ int	close_tcp_socket ();
 
 int	select_tcp_socket ();
 
-/*    UDP */
+/* UDP */
 
 #ifdef	SOCKETS
 #ifndef	_DGRAM_
@@ -128,7 +128,7 @@ int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 #define	check_udp_socket	check_dgram_socket
 #endif
 
-/*    NETDB */
+/* NETDB */
 
 #if	defined(SOCKETS) || defined (WINTLI) || defined (WIN)
 #if     defined(_AIX) && defined(n_name)	/* different def in nlist.h clashes with netdb.h */
@@ -173,7 +173,7 @@ struct servent *getservbyname ();
 
 struct hostent *gethostbystring ();
 
-/*    INET */
+/* INET */
 
 /* under BSD42, we could simply include <arpa/inet.h> instead.  However,
    the definition of inet_addr contained therein causes problems with some

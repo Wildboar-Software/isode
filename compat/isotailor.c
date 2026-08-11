@@ -22,7 +22,6 @@ static char *rcsid = "$Header$";
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -41,7 +40,6 @@ static int  events_value ();
 				   sites (i.e., leading zero not req'd) */
 #endif
 
-/*    DATA */
 
 struct pair {
 	char   *p_name;

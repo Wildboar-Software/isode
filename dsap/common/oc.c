@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/oc.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -238,7 +237,6 @@ int check_in_oc (OID oid, AV_Sequence avs)
 	return (FALSE);
 }
 
-/* ARGSUSED */
 static void oc_free (objectclass *oc)
 {
 	;	/* static table !!! */

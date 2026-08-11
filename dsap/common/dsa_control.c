@@ -237,7 +237,6 @@ static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 	return(new_item) ;
 }
 
-/* ARGSUSED */
 int
 dsa_control_cmp (struct dsa_control *a, struct dsa_control *b) {
 	return (2) ;
@@ -477,7 +476,6 @@ str2quipu_call (char *str) {
 	return ((struct quipu_call *) 0);
 }
 
-/* ARGSUSED */
 static struct quipu_call *
 str2quipu_call_aux (char *str, struct quipu_call *item) {
 	/* SPT: Forget it! The structure is horrible
@@ -609,7 +607,6 @@ int format ;
 	}
 }
 
-/* ARGSUSED */
 static int
 sub_ch_list_print(ps, item, format)
 PS ps ;
@@ -752,7 +749,6 @@ sub_ch_list_cpy (struct sub_ch_list *item) {
 	return (new_item) ;
 }
 
-/* ARGSUSED */
 int
 quipu_call_cmp (struct quipu_call *a, struct quipu_call *b) {
 	return (2) ;

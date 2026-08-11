@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psapinitiate.c,v 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -40,10 +39,9 @@ static int  PAsynRetryAux ();
 static int  PConnRequestAux ();
 static int  PConnRequestAux2 ();
 
-/*    P-(ASYN-)CONNECT.REQUEST */
+/*    P-(ASYN-)CONNECT.REQUEST */
 
 #ifndef	notdef
-/* ARGSUSED */
 #endif
 
 int	PAsynConnRequest (calling, called, ctxlist, defctxname, prequirements,
@@ -380,7 +378,7 @@ int	async;
 	return (pb -> pb_fd != NOTOK ? result : NOTOK);
 }
 
-/*    P-ASYN-RETRY.REQUEST (pseudo) */
+/*    P-ASYN-RETRY.REQUEST (pseudo) */
 
 int	PAsynRetryRequest (sd, pc, pi)
 int	sd;
@@ -598,9 +596,8 @@ out:
 	return result;
 }
 
-/*    P-ASYN-NEXT.REQUEST (pseudo) */
+/*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-/* ARGSUSED */
 
 int	PAsynNextRequest (sd, pc, pi)
 int	sd;

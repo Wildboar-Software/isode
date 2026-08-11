@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/prnt.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include	<stdio.h>
 #include	<ctype.h>
@@ -88,8 +87,7 @@ static int vnamelock = 0;
  * Print out ASN data given in pe using the information given in the tables
  */
 int prnt_f (
-	/* ARGSUSED */
-	int typ,			/* which type it is */
+		int typ,			/* which type it is */
 	modtyp *mod,			/* ASN Module it is from */
 	PE pe,
 	int explicit,	/* nonzero means we are call top level

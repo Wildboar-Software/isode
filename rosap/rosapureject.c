@@ -28,13 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/rosapureject.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "ropkt.h"
 
-/*    RO-U-REJECT.REQUEST */
+/* RO-U-REJECT.REQUEST */
 
 int
 RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi);

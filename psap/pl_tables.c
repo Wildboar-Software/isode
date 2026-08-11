@@ -25,12 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pl_tables.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 
-/*    DATA */
 
 char   *pe_classlist[] = {
 	"UNIV",

@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/callback/RCS/responder.c
 #include "callback.h"
 
 
-/* ARGSUSED */
 
 main (argc, argv, envp)
 int	argc;

@@ -276,7 +276,6 @@ int get_header (FILE * file, int * typeptr, char ** versionptr) {
 
 #endif
 
-/* ARGSUSED */
 Avlnode *get_entries_aux (file,parent,version,dtype,cache_age)
 #ifdef TURBO_DISK
 GDBM_FILE	file;

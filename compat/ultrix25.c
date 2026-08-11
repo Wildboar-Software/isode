@@ -36,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 199
  *
  */
 
-/* LINTLIBRARY */
 
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -47,7 +46,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ultrix25.c,v 9.0 199
 #include "tailor.h"
 #include "tpkt.h"
 
-/*    Ultrix: X25 */
+/*    Ultrix: X25 */
 
 #ifdef  X25
 #ifdef  ULTRIX_X25
@@ -731,7 +730,7 @@ CONN_DB x25_interface;
 CONN_DB * p_x25_interface = &x25_interface;
 #endif
 
-/*    4.[23] UNIX: DEC X25 */
+/*    4.[23] UNIX: DEC X25 */
 
 #include <sys/uio.h>
 

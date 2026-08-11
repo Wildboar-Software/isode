@@ -38,7 +38,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamuser.c,v 9.0 1992
 #include <sys/ioctl.h>
 #endif
 
-/*    DATA */
 
 int   ftamfd = NOTOK;
 
@@ -101,7 +100,7 @@ char	ftam_error[BUFSIZ];
 
 struct QOStype myqos;
 
-/*    DISPATCH */
+/* DISPATCH */
 
 static int f_set (char **vec);
 static char ** getval (char *name, char **choices);
@@ -256,7 +255,7 @@ char *name;
 }
 #endif
 
-/*    VARIABLES */
+/* VARIABLES */
 
 #ifndef	BRIDGE
 static char *bool[] = {
@@ -635,7 +634,6 @@ static void set_trace (struct var *v) {
 }
 
 
-/* ARGSUSED */
 
 static void set_type (struct var *v) {
 	struct vfsmap *vf;
@@ -740,7 +738,7 @@ static struct var * getvar (char *name) {
 	}
 }
 
-/*    HELP */
+/* HELP */
 
 static int helpwidth;
 
@@ -795,7 +793,7 @@ static int f_help (char **vec) {
 }
 #endif
 
-/*    FTAM */
+/* FTAM */
 
 /* When going from an FADU to an SSDU via FTAM, we are talking about:
 
@@ -1143,7 +1141,7 @@ print_it:
 #endif
 }
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 int
 rcinit (void) {
@@ -1221,7 +1219,6 @@ rcinit (void) {
 
 
 #ifndef	TIOCGWINSZ
-/* ARGSUSED */
 #endif
 
 int	ncols (fp)

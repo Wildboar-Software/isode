@@ -295,7 +295,6 @@ dish_init (int argc, char **argv) {
 	}
 }
 
-/* ARGSUSED */
 int
 unknown_cmd (int argc, char **argv) {
 	if (frompipe)
@@ -586,7 +585,6 @@ tidy_up:
 	}
 }
 
-/* ARGSUSED */
 int
 call_quit (int argc, char **argv) {
 	/* can only get called if run interactively - dont worry about pipe */
@@ -620,7 +618,6 @@ set_cmd_default (char *cmd, char *dflt) {
 
 }
 
-/* ARGSUSED */
 SFD dish_intr (sd)
 int sd;
 {

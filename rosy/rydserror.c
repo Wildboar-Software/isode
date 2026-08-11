@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydserror.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
@@ -46,7 +45,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydserror.c,v 9.0 1992
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
 #endif
-/*    ERROR */
+/* ERROR */
 
 int	RyDsError (sd, id, err, out, priority, roi)
 int	sd;

@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>
@@ -45,7 +44,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/camtec.c,v 9.0 1992/
 #include "tailor.h"
 #include "tpkt.h"
 
-/*    4.[23] UNIX: CCL X25 */
+/*    4.[23] UNIX: CCL X25 */
 
 
 static char calling_dte[NSAP_DTELEN + 1];

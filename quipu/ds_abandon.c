@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/quipu/RCS/ds_abandon.c,v 9.0 19
 #include "quipu/connection.h"
 
 extern LLog * log_dsap;
-/* ARGSUSED */
 
 int
 do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {

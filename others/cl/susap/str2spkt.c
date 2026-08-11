@@ -22,7 +22,6 @@ static char *rcsid = "$Header: /f/iso/ssap/RCS/str2spkt.c,v 5.0 88/07/21 14:58:2
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "spkt.h"

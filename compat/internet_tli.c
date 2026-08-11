@@ -33,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet_tli.c,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <errno.h>

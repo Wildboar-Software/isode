@@ -25,18 +25,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsapblock.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "acpkt.h"
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct assocblk assocque;
 static struct assocblk *ACHead = &assocque;
 
-/*    ASSOCIATION BLOCKS */
+/*    ASSOCIATION BLOCKS */
 
 struct assocblk *newacblk(void) {
 	struct assocblk *acb;

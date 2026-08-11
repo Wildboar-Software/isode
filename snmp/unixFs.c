@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/unixFs.c,v 9.0 1992/06
  */
 
 
-/*    PRINT */
+/* PRINT */
 
 #include <ctype.h>
 #include <errno.h>

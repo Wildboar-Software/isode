@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ROS-types.h"
@@ -38,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssexec.c,v 9.0 199
 #include "tailor.h"
 #include "internet.h"
 
-/*    SERVER only */
+/*    SERVER only */
 
 int
 RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, IFP hook, IFP setperms) {

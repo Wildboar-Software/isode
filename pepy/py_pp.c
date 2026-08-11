@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/py_pp.c,v 9.0 1992/06/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <string.h>
@@ -34,7 +33,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepy/RCS/py_pp.c,v 9.0 1992/06/
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
 
-/*    DATA */
 
 static char *myname = "pp";
 
@@ -47,7 +45,6 @@ static void	adios (char* what, char* fmt, ...),
 static int  process (char *file, FILE *fp, IFP pfx);
 
 
-/* ARGSUSED */
 
 int
 PY_pp (int argc, char **argv, char **envp, IFP pfx) {
@@ -139,7 +136,6 @@ done:
 	}
 }
 
-/*    ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

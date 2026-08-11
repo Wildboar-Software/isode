@@ -32,7 +32,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xface.c,
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-/*    DATA */
 
 static int  sd = NOTOK;
 int	debug = 0;
@@ -88,9 +87,7 @@ static	fetch_face (), arginit (), envinit (), display_X (),
 
 char   *getenv ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -170,7 +167,7 @@ _getline (char *buffer) {
 	return OK;
 }
 
-/*    ARGINIT */
+/* ARGINIT */
 
 static
 arginit (char **vec) {
@@ -422,7 +419,6 @@ ALRMser () {
 }
 
 
-/* ARGSUSED */
 
 static int
 XWINser (int io) {
@@ -495,7 +491,7 @@ unmap:
 	}
 }
 
-/*    SOCKET */
+/* SOCKET */
 
 int
 startsocket (int portno) {

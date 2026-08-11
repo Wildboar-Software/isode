@@ -47,7 +47,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/guide.c,v 9.0 1
 		Use of @ for "and" as '&' get filtered out earlier!!!
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"

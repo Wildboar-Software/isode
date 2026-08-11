@@ -51,7 +51,6 @@ struct SecurityServices *dsap_security = (struct SecurityServices *) 0;
  * Check security parameters - return 0 or the number of the security error.
  */
 
-/* ARGSUSED */
 int check_security_parms(data, type, module, sp, sig, nameptr)
 caddr_t data;
 int type;

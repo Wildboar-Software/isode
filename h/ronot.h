@@ -61,8 +61,8 @@ struct RoNOTindication {
 
 	/* diagnostics from provider */
 #define	RB_SIZE	512
-	int	    rni_cc;		/*   length */
-	char    rni_data[RB_SIZE];	/*   data */
+	int	    rni_cc;		/* length */
+	char    rni_data[RB_SIZE];	/* data */
 };
 
 #ifndef	lint

@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/qbuf2ps.c,v 9.0 1992/0
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 
 
-/* ARGSUSED */
 
 static int
 qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {

@@ -25,14 +25,13 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/general.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
 #include "manifest.h"
 
-/*    Berkeley UNIX: 4.2 */
+/*    Berkeley UNIX: 4.2 */
 
 #ifdef	BSD42
 
@@ -42,7 +41,7 @@ int	_general_stub (void) {};
 
 #endif
 
-/*    non-Berkeley UNIX */
+/*    non-Berkeley UNIX */
 
 #if	!defined(BSDLIBC) || defined(BSD44)
 
@@ -78,7 +77,7 @@ struct qelem   *elem;
 #endif
 #endif
 
-/*    DUP2 */
+/* DUP2 */
 
 #ifndef	BSD42
 #ifdef	SYS5
@@ -131,7 +130,7 @@ int	d1,
 #endif
 #endif
 
-/*     BYTEORDER */
+/* BYTEORDER */
 
 #ifndef	SWABLIB
 

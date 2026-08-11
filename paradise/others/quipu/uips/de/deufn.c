@@ -118,7 +118,6 @@ doUfnSearch() {
 }
 
 
-/* ARGSUSED */
 DNS ufn_interact (dns, dn, s)
 DNS dns;
 DN dn;

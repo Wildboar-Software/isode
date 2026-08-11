@@ -196,7 +196,6 @@ END
 
 %{
 
-/*    ERRORS */
 
 #include <stdarg.h>
 #include <unistd.h>

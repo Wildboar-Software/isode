@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rtsap/RCS/rtsapselect.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "rtpkt.h"
 
-/*    map association descriptors for select() */
+/*    map association descriptors for select() */
 
 int
 RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti) {

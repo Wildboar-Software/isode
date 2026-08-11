@@ -80,7 +80,6 @@ void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {

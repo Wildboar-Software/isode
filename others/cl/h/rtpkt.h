@@ -161,11 +161,11 @@ int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 
 /* RTORQ apdu */
 #define	RTORQ_CKPOINT	0	/* checkpointSize tag */
-#define	  RTORQ_CK_DFLT	0	/*   default */
+#define	  RTORQ_CK_DFLT	0	/* default */
 #define	RTORQ_WINDOW	1	/* windowSize tag */
-#define	  RTORQ_WD_DFLT	3	/*   default */
+#define	  RTORQ_WD_DFLT	3	/* default */
 #define	RTORQ_DIALOGUE	2	/* dialogueMode tag */
-#define	  RTORQ_DM_MONO 0	/*   monologue */
+#define	  RTORQ_DM_MONO 0	/* monologue */
 #define	  RTORQ_DM_TWA	1	/*   two-way alternate */
 #define	  RTORQ_DM_DFLT	RTORQ_DM_MONO
 #define	RTORQ_CONNDATA	3	/* connectionDataRQ tag */
@@ -174,9 +174,9 @@ int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
 
 /* RTOAC apdu */
 #define	RTOAC_CKPOINT	0	/* checkpointSize tag */
-#define	  RTOAC_CK_DFLT	0	/*   default */
+#define	  RTOAC_CK_DFLT	0	/* default */
 #define	RTOAC_WINDOW	1	/* windowSize tag */
-#define	  RTOAC_WD_DFLT	3	/*   default */
+#define	  RTOAC_WD_DFLT	3	/* default */
 #define	RTOAC_CONNDATA	2	/* connectionDataAC */
 #define	  RTOAC_CD_OPEN	0	/*   open tag */
 #define	  RTOAC_CD_RCVR	1	/*   recover tag */

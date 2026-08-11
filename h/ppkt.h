@@ -147,7 +147,7 @@
 
 struct psapblk {
 	struct psapblk *pb_forw;	/* doubly-linked list */
-	struct psapblk *pb_back;	/*   .. */
+	struct psapblk *pb_back;	/* .. */
 
 	int	    pb_fd;		/* session descriptor */
 
@@ -184,7 +184,7 @@ struct psapblk {
 	OID	    pb_asn;		/* default: abstract syntax name */
 	OID	    pb_atn;		/*   ..     abstract transfer name */
 	int	    pb_dctxid;		/*   ..	    id */
-	int	    pb_result;		/* 	    response */
+	int	    pb_result;		/* response */
 
 	OID	    pb_ber;		/* BER */
 
@@ -202,12 +202,12 @@ struct psapblk {
 	struct PSAPaddr pb_responding;	/* responder */
 
 	IFP	    pb_DataIndication;		/* INDICATION handlers */
-	IFP	    pb_TokenIndication;		/*   .. */
-	IFP	    pb_SyncIndication;		/*   .. */
-	IFP	    pb_ActivityIndication;	/*   .. */
-	IFP	    pb_ReportIndication;	/*   .. */
-	IFP	    pb_ReleaseIndication;	/*   .. */
-	IFP	    pb_AbortIndication;		/*   .. */
+	IFP	    pb_TokenIndication;		/* .. */
+	IFP	    pb_SyncIndication;		/* .. */
+	IFP	    pb_ActivityIndication;	/* .. */
+	IFP	    pb_ReportIndication;	/* .. */
+	IFP	    pb_ReleaseIndication;	/* .. */
+	IFP	    pb_AbortIndication;		/* .. */
 
 #ifdef	LPP
 	int	    (*pb_retryfnx)(struct psapblk *pb, int reason, struct PSAPindication *pi);

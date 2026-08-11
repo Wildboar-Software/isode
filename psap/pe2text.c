@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/0
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <string.h>
@@ -36,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/pe2text.c,v 9.0 1992/0
 
 /* logfile-backed abstract for PStreams */
 
-/* ARGSUSED */
 
 static int
 ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {

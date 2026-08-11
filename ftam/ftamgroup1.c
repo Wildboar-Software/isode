@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamgroup1.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -36,7 +35,7 @@ static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int sta
 static int figrpchk (struct ftamblk *fsb, struct FTAMgroup *ftg, int type, struct FTAMindication *fti);
 static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti);
 
-/*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
+/*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
 
 int
 FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
@@ -55,7 +54,7 @@ FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
 }
 
-/*    F-GROUP.REQUEST (group) */
+/*    F-GROUP.REQUEST (group) */
 
 static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti) {
 	SBV	    smask;

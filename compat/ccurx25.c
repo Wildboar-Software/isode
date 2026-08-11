@@ -30,7 +30,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/ccurx25.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>

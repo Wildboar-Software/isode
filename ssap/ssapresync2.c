@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync2.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -33,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapresync2.c,v 9.0 19
 
 static int SReSyncResponseAux (struct ssapblk *sb, long int ssn, int settings, char *data, int cc, struct SSAPindication *si);
 
-/*    S-RESYNCHRONIZE.RESPONSE */
+/* S-RESYNCHRONIZE.RESPONSE */
 
 int SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;

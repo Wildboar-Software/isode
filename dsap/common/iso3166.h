@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/iso3166.h,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 
 /* The idea for this comes from EWOS/EGDIR/90/156

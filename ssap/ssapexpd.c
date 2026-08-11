@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ssap/RCS/ssapexpd.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
 
-/*    S-EXPEDITED-DATA.REQUEST */
+/* S-EXPEDITED-DATA.REQUEST */
 
 static int  SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
 

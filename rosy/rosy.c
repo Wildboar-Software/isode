@@ -143,9 +143,7 @@ static void do_op2 ();
 static void do_op1 ();
 static void yyerror_aux ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -258,7 +256,7 @@ usage:
 	case 2:
 		yydebug++;		/* fall */
 	case 1:
-		sflag++;		/*   .. */
+		sflag++;		/* .. */
 	case 0:
 		break;
 	}
@@ -295,7 +293,6 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-/*    ERRORS */
 
 int
 yyerror (char *s) {

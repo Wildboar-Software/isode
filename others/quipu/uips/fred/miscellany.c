@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/misc
 #include <ctype.h>
 #include "fred.h"
 
-/*    DATA */
 
 int	area_quantum = 0;
 
@@ -54,9 +53,8 @@ struct area_guide areas[] = {
 	NULL
 };
 
-/*    ALIAS */
+/* ALIAS */
 
-/* ARGSUSED */
 
 int
 f_alias (char **vec) {
@@ -79,7 +77,7 @@ f_alias (char **vec) {
 	return dish (buffer, runcom);
 }
 
-/*    AREA */
+/* AREA */
 
 int
 f_area (char **vec) {
@@ -172,7 +170,7 @@ f_area (char **vec) {
 	return status;
 }
 
-/*    DISH */
+/* DISH */
 
 int
 f_dish (char **vec) {
@@ -201,7 +199,7 @@ f_dish (char **vec) {
 	return dish (buffer, runcom);
 }
 
-/*    EDIT */
+/* EDIT */
 
 int
 f_edit (char **vec) {
@@ -240,7 +238,7 @@ f_edit (char **vec) {
 	return OK;
 }
 
-/*    MANUAL */
+/* MANUAL */
 
 int
 f_manual (char **vec) {
@@ -267,7 +265,7 @@ f_manual (char **vec) {
 	return OK;
 }
 
-/*    REPORT */
+/* REPORT */
 
 int
 f_report (char **vec) {
@@ -331,7 +329,7 @@ f_report (char **vec) {
 	return OK;
 }
 
-/*    THISIS */
+/* THISIS */
 
 int
 f_thisis (char **vec) {

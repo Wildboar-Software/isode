@@ -61,7 +61,7 @@ int
 cleanup () {}
 
 /*--------------------------------------------------------------*/
-/*  errMsg                                                      */
+/* errMsg */
 /*--------------------------------------------------------------*/
 char *
 errMsg (int type) {
@@ -72,7 +72,7 @@ errMsg (int type) {
 }
 
 /*--------------------------------------------------------------*/
-/*  getLocalFileRfaInfo						*/
+/* getLocalFileRfaInfo */
 /*--------------------------------------------------------------*/
 int
 getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg) {
@@ -121,7 +121,7 @@ getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int r
 
 
 /*--------------------------------------------------------------*/
-/*  unlockFile							*/
+/* unlockFile */
 /*--------------------------------------------------------------*/
 int
 do_lunlock (char *fn) {
@@ -159,7 +159,7 @@ do_lunlock (char *fn) {
 
 
 /*--------------------------------------------------------------*/
-/*  lockFile							*/
+/* lockFile */
 /*--------------------------------------------------------------*/
 int
 do_llock (char *fn) {

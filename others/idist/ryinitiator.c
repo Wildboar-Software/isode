@@ -26,7 +26,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/idist/RCS/ryinitiator.c,
 #include "Idist-ops.h"
 #include "defs.h"
 
-/*    DATA */
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
@@ -44,7 +43,7 @@ extern char *isodeversion;
 
 static int ryconnect ();
 
-/*    INITIATOR */
+/* INITIATOR */
 
 int
 makeconn (char *thehost) {

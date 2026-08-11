@@ -49,7 +49,6 @@ SFD photo_quit () {
 	exit (0);
 }
 
-/* ARGSUSED */
 int
 photo_start (char *name) {
 	putch (035);	/* Enter graphic mode */
@@ -65,7 +64,6 @@ photo_start (char *name) {
 }
 
 
-/* ARGSUSED */
 int
 photo_end (char *name) {
 	/* Decoding has finished - display the photo */
@@ -80,7 +78,6 @@ photo_end (char *name) {
 		;
 }
 
-/* ARGSUSED */
 int
 photo_black (int length) {
 	;
@@ -92,7 +89,6 @@ photo_white (int length) {
 }
 
 
-/* ARGSUSED */
 photo_line_end (line)
 bit_string * line;
 {

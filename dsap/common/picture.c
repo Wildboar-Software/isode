@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/picture.c,v 9.0
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include <unistd.h>

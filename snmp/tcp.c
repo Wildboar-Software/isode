@@ -102,7 +102,7 @@ struct tcpcb {
 
 
 #define	RTOA_OTHER	1		/* tcpRtoAlgorithm */
-#define	RTOA_VANJ	4		/*   ..  */
+#define	RTOA_VANJ	4		/* .. */
 
 #define	MXCN_NONE	(-1)		/* tcpMaxConn */
 
@@ -274,7 +274,7 @@ int	offset;
 #else
 #ifdef	TCPTV_REXMTMAX
 	case tcpRtoMax:
-		return o_integer (oi, v, TCPTV_REXMTMAX * 100); /*   .. */
+		return o_integer (oi, v, TCPTV_REXMTMAX * 100); /* .. */
 #endif
 #endif
 
@@ -697,7 +697,7 @@ out:
 	return NULL;
 }
 
-/*    UNIX */
+/* UNIX */
 
 
 static	int	unixNetstat = 1;

@@ -28,14 +28,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ps.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ROS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static int	acslose ();
 
@@ -51,7 +49,7 @@ static int  doPSreport ();
 static int  doPSfinish ();
 static int  doPSabort ();
 
-/*    bind underlying service */
+/*    bind underlying service */
 
 int
 RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
@@ -69,12 +67,11 @@ RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 	return OK;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 #define	e(i)	(indication ? (i) : 0)
 
 
-/* ARGSUSED */
 
 int
 ro2psasync (
@@ -110,9 +107,8 @@ ro2psasync (
 
 #undef	e
 
-/*    map association descriptors for select() */
+/*    map association descriptors for select() */
 
-/* ARGSUSED */
 
 int
 ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
@@ -133,7 +129,7 @@ ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication
 	return OK;
 }
 
-/*    AcSAP interface */
+/*    AcSAP interface */
 
 static int
 acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca) {
@@ -176,7 +172,7 @@ acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct 
 		return ropktlose (acb, roi, reason, NULLCP, "%s", cp);
 }
 
-/*    PSAP interface */
+/*    PSAP interface */
 
 int
 ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi) {
@@ -245,7 +241,6 @@ ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication
 }
 
 
-/* ARGSUSED */
 
 int
 ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi) {
@@ -335,7 +330,6 @@ doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication 
 }
 
 
-/* ARGSUSED */
 
 static int
 doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi) {

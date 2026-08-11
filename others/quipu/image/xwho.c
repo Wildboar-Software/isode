@@ -39,7 +39,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/image/RCS/xwho.c,v
 
 #define	NHOSTS	100
 
-/*    DATA */
 
 int	debug = 0;
 int	errsw = 0;
@@ -121,9 +120,7 @@ static struct host *hosts;
 static  update_X (), service_X (), init_X (), layout_X(), display_top (),
         display_host (), display_face (), read_X (), display_this_host ();
 
-/*    MAIN */
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -150,7 +147,7 @@ main (int argc, char **argv, char **envp) {
 	}
 }
 
-/*    ARGINIT */
+/* ARGINIT */
 
 int
 arginit (char **vec) {
@@ -268,7 +265,7 @@ arginit (char **vec) {
 	myfont = XLoadQueryFont (DISP, fontname);
 }
 
-/*    XWINDOWS */
+/* XWINDOWS */
 
 static
 update_X () {

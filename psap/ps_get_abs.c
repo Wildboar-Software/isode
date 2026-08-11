@@ -25,12 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/ps_get_abs.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 
-/*    DATA */
 
 int	ps_len_strategy = PS_LEN_SPAG;
 static int  ps_get_id ();

@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <varargs.h>
 #include "manifest.h"
@@ -40,7 +39,7 @@
 #endif
 
 
-/*    EMULATION */
+/* EMULATION */
 
 #ifdef	SYS5
 int	dup2 (d1, d2)
@@ -237,7 +236,7 @@ int	mask;
 }
 #endif
 
-/*    UTILITY */
+/* UTILITY */
 
 void	asprintf (bp, ap)
 char   *bp;
@@ -486,7 +485,7 @@ char   *myname;
 }
 
 
-/*    ISOSERVENT */
+/* ISOSERVENT */
 
 int     setisoservent (f)
 int     f;
@@ -529,7 +528,7 @@ unsigned short port;
     return getisoserventbyport (provider, port);
 }
 
-/*    NETWORK */
+/* NETWORK */
 
 struct PSAPaddr *str2paddr (str)
 char   *str;
@@ -597,7 +596,7 @@ struct PSAPaddr *pa;
     return pa2str (pa);
 }
 
-/*    TCP */
+/* TCP */
 
 #ifdef	TCP
 
@@ -677,7 +676,7 @@ char   *cp;
 
 #endif
 
-/*    DGRAM */
+/* DGRAM */
 
 #if	defined(SOCKETS) && (defined(TCP) || defined(CLTS))
 
@@ -756,7 +755,7 @@ int	secs;
 }
 #endif
 
-/*    X.25 */
+/* X.25 */
 
 #ifdef	X25
 CONN_DB *gen2if (generic, specific, context)

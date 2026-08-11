@@ -794,7 +794,7 @@ struct adrtab {
 	int	    adm_insize;
 
 	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
-	u_char	adm_addrlen;			/*   .. */
+	u_char	adm_addrlen;			/* .. */
 
 
 	int	    adr_index;				/* ifIndex */

@@ -11,13 +11,11 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "ronot.h"
 
 /* ^L   RO-BIND.INDICATION */
 
-/* ARGSUSED */
 
 int       RoBindInit (vecp, vec, acs, rni)
 int                       vecp;
@@ -37,7 +35,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-BIND.RESULT */
 
-/* ARGSUSED */
 
 int       RoBindResult (sd, context, respondtitle, respondaddr, ctxlist,
                 defctxresult, prequirements, srequirements, isn, settings,
@@ -63,7 +60,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-BIND.ERROR */
 
-/* ARGSUSED */
 
 int       RoBindError (sd, context, respondtitle,
                 respondaddr, ctxlist, defctxresult, prequirements,
@@ -89,7 +85,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-BIND.REJECT */
 
-/* ARGSUSED */
 
 int       RoBindReject (acs, status, reason, rni)
 struct AcSAPstart       * acs;
@@ -100,9 +95,8 @@ struct RoNOTindication  * rni;
 	return ( RoBindReject (acs, status, reason, rni) );
 }
 
-/*  RO-BIND.REQUEST */
+/* RO-BIND.REQUEST */
 
-/* ARGSUSED */
 
 int	RoAsynBindRequest (context, callingtitle, calledtitle,
 		callingaddr, calledaddr, ctxlist, defctxname,
@@ -134,7 +128,6 @@ int                       async;
 
 /* ^L   RO-BIND.RETRY */
 
-/* ARGSUSED */
 
 int       RoAsynBindRetry (ad, do_next_nsap, acc, rni)
 int                       ad;
@@ -145,7 +138,6 @@ struct RoNOTindication  * rni;
 	return ( RoAsynBindRetry (ad, do_next_nsap, acc, rni) );
 }
 
-/* ARGSUSED */
 
 int       ParseRoBindResponse (acc, rni)
 struct AcSAPconnect *acc;
@@ -156,7 +148,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-UNBIND.REQUEST */
 
-/* ARGSUSED */
 
 int       RoUnBindRequest (sd, unbindargpe, secs, acr, rni)
 int                       sd;
@@ -170,7 +161,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-UNBIND.RETRY */
 
-/* ARGSUSED */
 
 int       RoUnBindRetry (sd, secs, acr, rni)
 int                       sd;
@@ -181,7 +171,6 @@ struct RoNOTindication  * rni;
 	return ( RoUnBindRetry (sd, secs, acr, rni) );
 }
 
-/* ARGSUSED */
 
 int       ParseRoUnBindResponse (acr, rni)
 struct AcSAPrelease     * acr;
@@ -192,7 +181,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-UNBIND.RESULT */
 
-/* ARGSUSED */
 
 int       RoUnBindResult (sd, unbindrespe, rni)
 int                       sd;
@@ -204,7 +192,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-UNBIND.ERROR */
 
-/* ARGSUSED */
 
 int       RoUnBindError (sd, unbinderrpe, rni)
 int                       sd;
@@ -216,7 +203,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   RO-UNBIND.REJECT */
 
-/* ARGSUSED */
 
 int       RoUnBindReject (sd, status, reason, rni)
 int                       sd;
@@ -229,7 +215,6 @@ struct RoNOTindication  * rni;
 
 /* ^L   ACSAP interface */
 
-/* ARGSUSED */
 
 int       acs2roblose (rni, event, aca)
 struct RoNOTindication  * rni;

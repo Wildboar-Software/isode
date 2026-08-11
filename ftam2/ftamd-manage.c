@@ -27,7 +27,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-manage.c,v 9.0 
 #include <stdio.h>
 #include "ftamsystem.h"
 
-/*    MANAGEMENT */
+/* MANAGEMENT */
 
 int
 ftam_managementindication (struct FTAMgroup *ftg) {

@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "ftam.h"
 
@@ -247,7 +246,7 @@ int	sd;
 int	operation;
 struct FADUidentity *identity;
 int	context,		/* F-READ.REQUEST only */
-	level,			/*   .. */
+	level,			/* .. */
     	lock;
 struct FTAMindication *fti;
 {

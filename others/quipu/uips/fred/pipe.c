@@ -57,7 +57,7 @@ static int  _da_command ();
 #endif
 static int  da_response ();
 
-/*    DISH */
+/* DISH */
 
 int
 dish (char *command, int silent) {
@@ -861,9 +861,8 @@ pagchar (int ch) {
 		putc (ch, stdout);
 }
 
-/*    BIND */
+/* BIND */
 
-/* ARGSUSED */
 
 int
 f_bind (char **vec) {
@@ -875,7 +874,7 @@ f_bind (char **vec) {
 	return dish ("bind", 0);
 }
 
-/*    QUIT */
+/* QUIT */
 
 int
 f_quit (char **vec) {
@@ -898,7 +897,7 @@ f_quit (char **vec) {
 	return DONE;
 }
 
-/*    DA */
+/* DA */
 
 #ifndef	lint
 static int  da_command (char *fmt, ...) {

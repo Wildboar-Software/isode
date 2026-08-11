@@ -12,7 +12,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -30,7 +29,6 @@
 	(n) = (fd) + 1; \
 }
 
-/*    DATA */
 
 #ifdef HULA
 
@@ -46,7 +44,7 @@ static int TPid = NOTOK;
 #endif
 
 
-/*    INTERNAL */
+/* INTERNAL */
 
 struct tsapblk *
 	newtublk () {

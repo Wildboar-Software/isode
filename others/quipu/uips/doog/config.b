@@ -216,7 +216,6 @@ static int yylex(lvalp, llocp)
   return 0;
 }
 
-/* ARGSUSED */
 int yyerror(err)
      char *err;
 {

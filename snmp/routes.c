@@ -353,7 +353,7 @@ struct rtentry *re;
 #ifndef	BSD44
 	rt -> rt_dst.sa = re -> rt_dst;		/* struct copy */
 
-	rt -> rt_gateway.sa = re -> rt_gateway;	/*   .. */
+	rt -> rt_gateway.sa = re -> rt_gateway;	/* .. */
 #else
 	rt -> rt_dst = rtsock;			/* struct copy */
 

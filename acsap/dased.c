@@ -91,7 +91,6 @@ char   *dn2str ();
 PE	grab_pe ();
 
 
-/* ARGSUSED */
 
 int
 main (int argc, char **argv, char **envp) {
@@ -173,7 +172,7 @@ main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-/*    DASE */
+/* DASE */
 
 static void dased (int vecp, char **vec) {
 	int	    sd;
@@ -668,7 +667,6 @@ dns_compar (struct dn_seq **a, struct dn_seq **b) {
 }
 
 
-/* ARGSUSED */
 
 static DNS
 just_say_no (DNS dns, DN dn, char *s) {
@@ -727,7 +725,7 @@ name2psap (DN dn) {
 	return pe;
 }
 
-/*    INIT */
+/* INIT */
 
 static void arginit (char **vec) {
 	int	    argp;
@@ -894,7 +892,6 @@ static void envinit(void)  {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-/*    ERRORS */
 
 #ifndef lint
 static void    adios (char *what, char *fmt, ...)

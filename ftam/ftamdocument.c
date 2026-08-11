@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamdocument.c,v 9.0 1
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ftam.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static char *isodocuments = "isodocuments";
 

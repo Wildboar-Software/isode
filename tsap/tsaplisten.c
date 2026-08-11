@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplisten.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>
@@ -62,7 +61,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaplisten.c,v 9.0 199
 #undef	MGMT
 #endif
 
-/*    DATA */
 
 union naddr {
 #ifdef	TCP
@@ -83,7 +81,7 @@ union naddr {
 
 struct listenblk {
 	struct listenblk *lb_forw;	/* doubly-linked list */
-	struct listenblk *lb_back;	/*   .. */
+	struct listenblk *lb_back;	/* .. */
 
 	int	    lb_fd;		/* network handle */
 #define LISTEN_EXCEPTED	(-2)	/* magic value */
@@ -215,7 +213,7 @@ u_short	_lpp_lastport;		/* MOBY HACK */
 #endif
 
 #ifdef	SO_REUSEADDR
-int	_listen_opts = 0;	/*   .. */
+int	_listen_opts = 0;	/* .. */
 #endif
 
 
@@ -843,7 +841,6 @@ struct TSAPdisconnect *td;
 
 #include <sys/wait.h>
 
-/* ARGSUSED */
 
 #ifdef LINUX
 static	SFD chldser (sig, code, sc)
@@ -865,7 +862,6 @@ struct sigcontext *sc;
 #ifdef HPUX
 #include <sys/wait.h>
 
-/* ARGSUSED */
 
 static        SFD chldser (sig, code, sc)
 int   sig;
@@ -880,7 +876,6 @@ struct sigcontext *sc;
 
 
 #ifdef	LPP
-/* ARGSUSED */
 #endif
 
 #ifdef ULTRIX_X25
@@ -1138,7 +1133,7 @@ struct TSAPdisconnect *td;
 	return OK;
 }
 
-/*    TCP */
+/* TCP */
 
 #ifdef	TCP
 static int  tcplisten (lb, ta, td)
@@ -1449,11 +1444,10 @@ struct TSAPdisconnect *td;
 }
 #endif
 
-/*    X.25 */
+/* X.25 */
 
 #ifdef	X25
 
-/* ARGSUSED */
 
 static int  x25listen (lb, ta, td)
 struct listenblk *lb;
@@ -1627,14 +1621,13 @@ struct TSAPdisconnect *td;
 }
 #endif
 
-/*    TP4 */
+/* TP4 */
 
 #ifdef	TP4
 
-/*    TP from TLI */
+/*    TP from TLI */
 
 #if defined(TLI_TP) || defined(XTI_TP)
-/* ARGSUSED */
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
@@ -1754,7 +1747,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int  tp4unique (ta, td)
 struct TSAPaddr *ta;
@@ -1769,10 +1761,9 @@ struct TSAPdisconnect *td;
 }
 #endif
 
-/*    TP4 from 4.4BSD */
+/*    TP4 from 4.4BSD */
 
 #ifdef	BSD_TP4
-/* ARGSUSED */
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
@@ -1898,7 +1889,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int  tp4unique (ta, td)
 struct TSAPaddr *ta;
@@ -1914,10 +1904,9 @@ struct TSAPdisconnect *td;
 }
 #endif
 
-/*    TP4 from SunLink OSI */
+/*    TP4 from SunLink OSI */
 
 #ifdef	SUN_TP4
-/* ARGSUSED */
 
 static int  tp4listen (lb, ta, td)
 struct listenblk *lb;
@@ -2051,7 +2040,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int  tp4unique (ta, td)
 struct TSAPaddr *ta;
@@ -2064,7 +2052,7 @@ struct TSAPdisconnect *td;
 
 #endif
 
-/*    INTERNAL */
+/* INTERNAL */
 
 static struct listenblk  *newlblk (type, ta)
 int	type;
@@ -2167,7 +2155,7 @@ char   *what,
 #endif
 #endif
 
-/*    queued writes */
+/*    queued writes */
 
 #ifndef	LPP
 static int  TNetQueue (tb, insert, td)

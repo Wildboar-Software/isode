@@ -21,14 +21,13 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 #include "ssap.h"
 #include "logger.h"
 
-/*    Primitives (Built-in Types) <-> Data */
+/*    Primitives (Built-in Types) <-> Data */
 
 int     prim2flag (pe)
 PE	pe;
@@ -112,7 +111,7 @@ int	in_line;
     return qb2prim_aux (qb, class, id, in_line);
 }
 
-/*    BITSTRING manipulation */
+/*    BITSTRING manipulation */
 
 PE	prim2bit (pe)
 PE	pe;
@@ -151,7 +150,7 @@ int     i;
     return bit_test (pe, i);
 }
 
-/*    Routines for pepy */
+/*    Routines for pepy */
 
 char   *int2strb (n, len)
 int	n,
@@ -187,7 +186,7 @@ int    *len;
 }
 
 
-/*    Primitives (Defined Types) <-> Data */
+/*    Primitives (Defined Types) <-> Data */
 
 OID	prim2oid (pe)
 PE	pe;
@@ -270,7 +269,7 @@ int	len;
     return str2gent (cp, len);
 }
 
-/*    LIST manipulation */
+/*    LIST manipulation */
 
 PE	prim2set (pe)
 PE	pe;
@@ -342,7 +341,7 @@ int     i;
     return seq_find (pe, i);
 }
 
-/*    PElement manipulation */
+/*    PElement manipulation */
 
 PE	pe_alloc (class, form, id)
 PElementClass class;
@@ -418,7 +417,7 @@ int	len,
 }
 
 
-/*    PStream manipulation */
+/*    PStream manipulation */
 
 PS	ps_alloc (io)
 IFP	io;
@@ -433,7 +432,7 @@ PS	ps;
     ps_free (ps);
 }
 
-/*    PStream I/O */
+/*    PStream I/O */
 
 int     ps_io (ps, io, data, n, in_line)
 PS	ps;
@@ -553,7 +552,7 @@ register struct qbuf *qb;
     return ts_write(fd, qb);
 }
 
-/*    PStream <-> PElement */
+/*    PStream <-> PElement */
 
 PE	ps2pe_aux (ps, top, all)
 PS	ps;
@@ -572,7 +571,7 @@ int	eval;
     return pe2ps_aux (ps, pe, eval);
 }
 
-/*    PList <-> PElement */
+/*    PList <-> PElement */
 
 PE	pl2pe (ps)
 PS	ps;
@@ -595,7 +594,7 @@ PE	pe;
     return ps_get_abs (pe);
 }
 
-/*    Diagnostics */
+/* Diagnostics */
 
 char   *pe_error (c)
 int     c;
@@ -609,7 +608,7 @@ int     c;
     return ps_error (c);
 }
 
-/*    Object IDentifiers */
+/*    Object IDentifiers */
 
 OID	ode2oid (descriptor)
 char   *descriptor;

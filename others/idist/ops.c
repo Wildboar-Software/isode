@@ -146,7 +146,6 @@ unsigned short *mode;
 	}
 }
 
-/* ARGSUSED */
 int
 query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi) {
 	long	convtime ();
@@ -191,7 +190,6 @@ rmchk (int opts) {
 				   basic_error);
 }
 
-/* ARGSUSED */
 int
 listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi) {
 	struct type_Idist_FileList *fl;
@@ -250,7 +248,6 @@ deletefile (char *str, int mode) {
 }
 
 
-/* ARGSUSED */
 static int
 basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
@@ -273,7 +270,6 @@ basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, st
 	return OK;
 }
 
-/* ARGSUSED */
 
 static null_result (sd, id, dummy, result, roi)
 int     sd,
@@ -286,7 +282,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/* ARGSUSED */
 static int ia5_result (sd, id, parameter, result, roi)
 int     sd,
 		id,

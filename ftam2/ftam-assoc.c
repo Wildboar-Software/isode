@@ -301,7 +301,6 @@ f_open (char **vec) {
 }
 
 
-/* ARGSUSED */
 
 int	f_close (vec)
 char  **vec;
@@ -353,7 +352,6 @@ char  **vec;
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
 
 
-/* ARGSUSED */
 
 #ifndef	BRIDGE
 int	f_status (vec)

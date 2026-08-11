@@ -54,7 +54,7 @@ extern int interactive;
 char *incstr = "\t*** INCONSISTENCY : ";
 
 /*--------------------------------------------------------------*/
-/*  createEmptyFile						*/
+/* createEmptyFile */
 /*--------------------------------------------------------------*/
 int
 createEmptyFile (char *dir, struct RfaInfo *rfa) {
@@ -273,7 +273,7 @@ checkMasterSlave (struct RfaInfo *m, struct RfaInfo *s, char *ms, char *ss) {
 }
 
 /*--------------------------------------------------------------*/
-/*  handleDir							*/
+/* handleDir */
 /*--------------------------------------------------------------*/
 int
 handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa, int rec, int *wrp) {
@@ -362,7 +362,7 @@ handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa, in
 
 
 /*--------------------------------------------------------------*/
-/*  syncDir							*/
+/* syncDir */
 /*--------------------------------------------------------------*/
 int
 syncDir (char *dir, int rec) {
@@ -551,7 +551,7 @@ syncDir (char *dir, int rec) {
 }
 
 /*--------------------------------------------------------------*/
-/*  rfaMake							*/
+/* rfaMake */
 /*--------------------------------------------------------------*/
 int
 rfaMake (char *dir, char *fns) {

@@ -21,7 +21,6 @@
  */
 
 
-/* LINTLIBRARY */
 
 #include "quipu/AF-types.h"
 #include "quipu/DO-types.h"
@@ -59,7 +58,6 @@ struct type_AF_Version **parm;
 }
 
 #undef print_AF_Version
-/* ARGSUSED */
 int	print_AF_Version(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -95,7 +93,6 @@ struct type_AF_CertificateSerialNumber **parm;
 }
 
 #undef print_AF_CertificateSerialNumber
-/* ARGSUSED */
 int	print_AF_CertificateSerialNumber(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -131,7 +128,6 @@ struct type_AF_Validity **parm;
 }
 
 #undef print_AF_Validity
-/* ARGSUSED */
 int	print_AF_Validity(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -167,7 +163,6 @@ struct type_AF_AlgorithmIdentifier **parm;
 }
 
 #undef print_AF_AlgorithmIdentifier
-/* ARGSUSED */
 int	print_AF_AlgorithmIdentifier(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -203,7 +198,6 @@ struct type_AF_SubjectPublicKeyInfo **parm;
 }
 
 #undef print_AF_SubjectPublicKeyInfo
-/* ARGSUSED */
 int	print_AF_SubjectPublicKeyInfo(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -239,7 +233,6 @@ struct type_AF_CertificateToSign **parm;
 }
 
 #undef print_AF_CertificateToSign
-/* ARGSUSED */
 int	print_AF_CertificateToSign(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -275,7 +268,6 @@ struct type_AF_Certificate **parm;
 }
 
 #undef print_AF_Certificate
-/* ARGSUSED */
 int	print_AF_Certificate(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -311,7 +303,6 @@ struct type_AF_CrossCertificates **parm;
 }
 
 #undef print_AF_CrossCertificates
-/* ARGSUSED */
 int	print_AF_CrossCertificates(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -347,7 +338,6 @@ struct type_AF_ForwardCertificationPath **parm;
 }
 
 #undef print_AF_ForwardCertificationPath
-/* ARGSUSED */
 int	print_AF_ForwardCertificationPath(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -383,7 +373,6 @@ struct type_AF_Certificates **parm;
 }
 
 #undef print_AF_Certificates
-/* ARGSUSED */
 int	print_AF_Certificates(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -419,7 +408,6 @@ struct type_AF_CertificatePair **parm;
 }
 
 #undef print_AF_CertificatePair
-/* ARGSUSED */
 int	print_AF_CertificatePair(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -455,7 +443,6 @@ struct type_AF_CertificationPath **parm;
 }
 
 #undef print_AF_CertificationPath
-/* ARGSUSED */
 int	print_AF_CertificationPath(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -491,7 +478,6 @@ struct type_AF_RevokedCertificatesToSign **parm;
 }
 
 #undef print_AF_RevokedCertificatesToSign
-/* ARGSUSED */
 int	print_AF_RevokedCertificatesToSign(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -527,7 +513,6 @@ struct type_AF_RevokedCertificates **parm;
 }
 
 #undef print_AF_RevokedCertificates
-/* ARGSUSED */
 int	print_AF_RevokedCertificates(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -563,7 +548,6 @@ struct type_AF_CertificateListToSign **parm;
 }
 
 #undef print_AF_CertificateListToSign
-/* ARGSUSED */
 int	print_AF_CertificateListToSign(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -599,7 +583,6 @@ struct type_AF_CertificateList **parm;
 }
 
 #undef print_AF_CertificateList
-/* ARGSUSED */
 int	print_AF_CertificateList(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -611,7 +594,6 @@ char  **buffer,
 }
 
 #undef print_IF_AttributeType
-/* ARGSUSED */
 int	print_IF_AttributeType(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -647,7 +629,6 @@ struct type_IF_AttributeValue **parm;
 }
 
 #undef print_IF_AttributeValue
-/* ARGSUSED */
 int	print_IF_AttributeValue(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -683,7 +664,6 @@ struct type_IF_AttributeValueAssertion **parm;
 }
 
 #undef print_IF_AttributeValueAssertion
-/* ARGSUSED */
 int	print_IF_AttributeValueAssertion(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -719,7 +699,6 @@ struct type_IF_Attribute **parm;
 }
 
 #undef print_IF_Attribute
-/* ARGSUSED */
 int	print_IF_Attribute(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -755,7 +734,6 @@ struct type_IF_D__AValues **parm;
 }
 
 #undef print_IF_D__AValues
-/* ARGSUSED */
 int	print_IF_D__AValues(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -791,7 +769,6 @@ struct type_IF_RelativeDistinguishedName **parm;
 }
 
 #undef print_IF_RelativeDistinguishedName
-/* ARGSUSED */
 int	print_IF_RelativeDistinguishedName(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -827,7 +804,6 @@ struct type_IF_RDNSequence **parm;
 }
 
 #undef print_IF_RDNSequence
-/* ARGSUSED */
 int	print_IF_RDNSequence(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -863,7 +839,6 @@ DN *parm;
 }
 
 #undef print_IF_DistinguishedName
-/* ARGSUSED */
 int	print_IF_DistinguishedName(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -899,7 +874,6 @@ struct type_IF_Name **parm;
 }
 
 #undef print_IF_Name
-/* ARGSUSED */
 int	print_IF_Name(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -911,7 +885,6 @@ char  **buffer,
 }
 
 #undef print_Quipu_AccessSelector
-/* ARGSUSED */
 int	print_Quipu_AccessSelector(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -947,7 +920,6 @@ struct type_Quipu_AccessCategories **parm;
 }
 
 #undef print_Quipu_AccessCategories
-/* ARGSUSED */
 int	print_Quipu_AccessCategories(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -983,7 +955,6 @@ struct type_Quipu_ACLInfo **parm;
 }
 
 #undef print_Quipu_ACLInfo
-/* ARGSUSED */
 int	print_Quipu_ACLInfo(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1019,7 +990,6 @@ struct type_Quipu_AttributeACL **parm;
 }
 
 #undef print_Quipu_AttributeACL
-/* ARGSUSED */
 int	print_Quipu_AttributeACL(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1055,7 +1025,6 @@ struct type_Quipu_ACLSyntax **parm;
 }
 
 #undef print_Quipu_ACLSyntax
-/* ARGSUSED */
 int	print_Quipu_ACLSyntax(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1091,7 +1060,6 @@ struct type_Quipu_NameList **parm;
 }
 
 #undef print_Quipu_NameList
-/* ARGSUSED */
 int	print_Quipu_NameList(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1127,7 +1095,6 @@ struct type_Quipu_EDBInfoSyntax **parm;
 }
 
 #undef print_Quipu_EDBInfoSyntax
-/* ARGSUSED */
 int	print_Quipu_EDBInfoSyntax(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1163,7 +1130,6 @@ struct type_Quipu_RelativeEntry **parm;
 }
 
 #undef print_Quipu_RelativeEntry
-/* ARGSUSED */
 int	print_Quipu_RelativeEntry(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1199,7 +1165,6 @@ struct type_Quipu_TreeStructureSyntax **parm;
 }
 
 #undef print_Quipu_TreeStructureSyntax
-/* ARGSUSED */
 int	print_Quipu_TreeStructureSyntax(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1235,7 +1200,6 @@ struct type_Quipu_EntryDataBlock **parm;
 }
 
 #undef print_Quipu_EntryDataBlock
-/* ARGSUSED */
 int	print_Quipu_EntryDataBlock(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1271,7 +1235,6 @@ struct type_Quipu_EDBVersion **parm;
 }
 
 #undef print_Quipu_EDBVersion
-/* ARGSUSED */
 int	print_Quipu_EDBVersion(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1307,7 +1270,6 @@ struct type_Quipu_GetEntryDataBlockArgument **parm;
 }
 
 #undef print_Quipu_GetEntryDataBlockArgument
-/* ARGSUSED */
 int	print_Quipu_GetEntryDataBlockArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1343,7 +1305,6 @@ struct type_Quipu_GetEntryDataBlockResult **parm;
 }
 
 #undef print_Quipu_GetEntryDataBlockResult
-/* ARGSUSED */
 int	print_Quipu_GetEntryDataBlockResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1379,7 +1340,6 @@ struct type_Quipu_ProtectedPassword **parm;
 }
 
 #undef print_Quipu_ProtectedPassword
-/* ARGSUSED */
 int	print_Quipu_ProtectedPassword(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1415,7 +1375,6 @@ struct type_Quipu_InheritedList **parm;
 }
 
 #undef print_Quipu_InheritedList
-/* ARGSUSED */
 int	print_Quipu_InheritedList(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1451,7 +1410,6 @@ struct type_Quipu_InheritedAttribute **parm;
 }
 
 #undef print_Quipu_InheritedAttribute
-/* ARGSUSED */
 int	print_Quipu_InheritedAttribute(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1463,7 +1421,6 @@ char  **buffer,
 }
 
 #undef print_SA_FacsimileTelephoneNumber
-/* ARGSUSED */
 int	print_SA_FacsimileTelephoneNumber(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1499,7 +1456,6 @@ struct postaddr **parm;
 }
 
 #undef print_SA_PostalAddress
-/* ARGSUSED */
 int	print_SA_PostalAddress(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1535,7 +1491,6 @@ struct type_SA_TelexNumber **parm;
 }
 
 #undef print_SA_TelexNumber
-/* ARGSUSED */
 int	print_SA_TelexNumber(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1571,7 +1526,6 @@ struct type_SA_TeletexTerminalIdentifier **parm;
 }
 
 #undef print_SA_TeletexTerminalIdentifier
-/* ARGSUSED */
 int	print_SA_TeletexTerminalIdentifier(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1607,7 +1561,6 @@ struct type_SA_PreferredDeliveryMethod **parm;
 }
 
 #undef print_SA_PreferredDeliveryMethod
-/* ARGSUSED */
 int	print_SA_PreferredDeliveryMethod(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1643,7 +1596,6 @@ struct type_SA_CriteriaItem **parm;
 }
 
 #undef print_SA_CriteriaItem
-/* ARGSUSED */
 int	print_SA_CriteriaItem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1679,7 +1631,6 @@ struct type_SA_Criteria **parm;
 }
 
 #undef print_SA_Criteria
-/* ARGSUSED */
 int	print_SA_Criteria(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1715,7 +1666,6 @@ struct type_SA_Guide **parm;
 }
 
 #undef print_SA_Guide
-/* ARGSUSED */
 int	print_SA_Guide(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1751,7 +1701,6 @@ struct type_SA_CaseIgnoreList **parm;
 }
 
 #undef print_SA_CaseIgnoreList
-/* ARGSUSED */
 int	print_SA_CaseIgnoreList(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1787,7 +1736,6 @@ struct type_Thorn_MailBox **parm;
 }
 
 #undef print_Thorn_MailBox
-/* ARGSUSED */
 int	print_Thorn_MailBox(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1823,7 +1771,6 @@ struct type_DO_ChainedReadArgument **parm;
 }
 
 #undef print_DO_ChainedReadArgument
-/* ARGSUSED */
 int	print_DO_ChainedReadArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1859,7 +1806,6 @@ struct type_DO_ChainedReadArgumentData **parm;
 }
 
 #undef print_DO_ChainedReadArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedReadArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1895,7 +1841,6 @@ struct type_DO_ChainedReadResult **parm;
 }
 
 #undef print_DO_ChainedReadResult
-/* ARGSUSED */
 int	print_DO_ChainedReadResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1931,7 +1876,6 @@ struct type_DO_ChainedReadResultData **parm;
 }
 
 #undef print_DO_ChainedReadResultData
-/* ARGSUSED */
 int	print_DO_ChainedReadResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -1967,7 +1911,6 @@ struct type_DO_ChainedCompareArgument **parm;
 }
 
 #undef print_DO_ChainedCompareArgument
-/* ARGSUSED */
 int	print_DO_ChainedCompareArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2003,7 +1946,6 @@ struct type_DO_ChainedCompareArgumentData **parm;
 }
 
 #undef print_DO_ChainedCompareArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedCompareArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2039,7 +1981,6 @@ struct type_DO_ChainedCompareResult **parm;
 }
 
 #undef print_DO_ChainedCompareResult
-/* ARGSUSED */
 int	print_DO_ChainedCompareResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2075,7 +2016,6 @@ struct type_DO_ChainedCompareResultData **parm;
 }
 
 #undef print_DO_ChainedCompareResultData
-/* ARGSUSED */
 int	print_DO_ChainedCompareResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2111,7 +2051,6 @@ struct type_DO_ChainedAbandonArgument **parm;
 }
 
 #undef print_DO_ChainedAbandonArgument
-/* ARGSUSED */
 int	print_DO_ChainedAbandonArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2147,7 +2086,6 @@ struct type_DO_ChainedAbandonResult **parm;
 }
 
 #undef print_DO_ChainedAbandonResult
-/* ARGSUSED */
 int	print_DO_ChainedAbandonResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2183,7 +2121,6 @@ struct type_DO_ChainedListArgument **parm;
 }
 
 #undef print_DO_ChainedListArgument
-/* ARGSUSED */
 int	print_DO_ChainedListArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2219,7 +2156,6 @@ struct type_DO_ChainedListArgumentData **parm;
 }
 
 #undef print_DO_ChainedListArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedListArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2255,7 +2191,6 @@ struct type_DO_ChainedListResult **parm;
 }
 
 #undef print_DO_ChainedListResult
-/* ARGSUSED */
 int	print_DO_ChainedListResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2291,7 +2226,6 @@ struct type_DO_ChainedListResultData **parm;
 }
 
 #undef print_DO_ChainedListResultData
-/* ARGSUSED */
 int	print_DO_ChainedListResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2327,7 +2261,6 @@ struct type_DO_ChainedSearchArgument **parm;
 }
 
 #undef print_DO_ChainedSearchArgument
-/* ARGSUSED */
 int	print_DO_ChainedSearchArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2363,7 +2296,6 @@ struct type_DO_ChainedSearchArgumentData **parm;
 }
 
 #undef print_DO_ChainedSearchArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedSearchArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2399,7 +2331,6 @@ struct type_DO_ChainedSearchResult **parm;
 }
 
 #undef print_DO_ChainedSearchResult
-/* ARGSUSED */
 int	print_DO_ChainedSearchResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2435,7 +2366,6 @@ struct type_DO_ChainedSearchResultData **parm;
 }
 
 #undef print_DO_ChainedSearchResultData
-/* ARGSUSED */
 int	print_DO_ChainedSearchResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2471,7 +2401,6 @@ struct type_DO_ChainedAddEntryArgument **parm;
 }
 
 #undef print_DO_ChainedAddEntryArgument
-/* ARGSUSED */
 int	print_DO_ChainedAddEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2507,7 +2436,6 @@ struct type_DO_ChainedAddEntryArgumentData **parm;
 }
 
 #undef print_DO_ChainedAddEntryArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedAddEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2543,7 +2471,6 @@ struct type_DO_ChainedAddEntryResult **parm;
 }
 
 #undef print_DO_ChainedAddEntryResult
-/* ARGSUSED */
 int	print_DO_ChainedAddEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2579,7 +2506,6 @@ struct type_DO_ChainedAddEntryResultData **parm;
 }
 
 #undef print_DO_ChainedAddEntryResultData
-/* ARGSUSED */
 int	print_DO_ChainedAddEntryResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2615,7 +2541,6 @@ struct type_DO_ChainedRemoveEntryArgument **parm;
 }
 
 #undef print_DO_ChainedRemoveEntryArgument
-/* ARGSUSED */
 int	print_DO_ChainedRemoveEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2651,7 +2576,6 @@ struct type_DO_ChainedRemoveEntryArgumentData **parm;
 }
 
 #undef print_DO_ChainedRemoveEntryArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedRemoveEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2687,7 +2611,6 @@ struct type_DO_ChainedRemoveEntryResult **parm;
 }
 
 #undef print_DO_ChainedRemoveEntryResult
-/* ARGSUSED */
 int	print_DO_ChainedRemoveEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2723,7 +2646,6 @@ struct type_DO_ChainedRemoveEntryResultData **parm;
 }
 
 #undef print_DO_ChainedRemoveEntryResultData
-/* ARGSUSED */
 int	print_DO_ChainedRemoveEntryResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2759,7 +2681,6 @@ struct type_DO_ChainedModifyEntryArgument **parm;
 }
 
 #undef print_DO_ChainedModifyEntryArgument
-/* ARGSUSED */
 int	print_DO_ChainedModifyEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2795,7 +2716,6 @@ struct type_DO_ChainedModifyEntryArgumentData **parm;
 }
 
 #undef print_DO_ChainedModifyEntryArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedModifyEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2831,7 +2751,6 @@ struct type_DO_ChainedModifyEntryResult **parm;
 }
 
 #undef print_DO_ChainedModifyEntryResult
-/* ARGSUSED */
 int	print_DO_ChainedModifyEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2867,7 +2786,6 @@ struct type_DO_ChainedModifyEntryResultData **parm;
 }
 
 #undef print_DO_ChainedModifyEntryResultData
-/* ARGSUSED */
 int	print_DO_ChainedModifyEntryResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2903,7 +2821,6 @@ struct type_DO_ChainedModifyRDNArgument **parm;
 }
 
 #undef print_DO_ChainedModifyRDNArgument
-/* ARGSUSED */
 int	print_DO_ChainedModifyRDNArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2939,7 +2856,6 @@ struct type_DO_ChainedModifyRDNArgumentData **parm;
 }
 
 #undef print_DO_ChainedModifyRDNArgumentData
-/* ARGSUSED */
 int	print_DO_ChainedModifyRDNArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -2975,7 +2891,6 @@ struct type_DO_ChainedModifyRDNResult **parm;
 }
 
 #undef print_DO_ChainedModifyRDNResult
-/* ARGSUSED */
 int	print_DO_ChainedModifyRDNResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3011,7 +2926,6 @@ struct type_DO_ChainedModifyRDNResultData **parm;
 }
 
 #undef print_DO_ChainedModifyRDNResultData
-/* ARGSUSED */
 int	print_DO_ChainedModifyRDNResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3047,7 +2961,6 @@ struct type_DO_DSAReferralParm **parm;
 }
 
 #undef print_DO_DSAReferralParm
-/* ARGSUSED */
 int	print_DO_DSAReferralParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3083,7 +2996,6 @@ struct type_DO_ChainingArgument **parm;
 }
 
 #undef print_DO_ChainingArgument
-/* ARGSUSED */
 int	print_DO_ChainingArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3119,7 +3031,6 @@ struct type_DO_ChainingResult **parm;
 }
 
 #undef print_DO_ChainingResult
-/* ARGSUSED */
 int	print_DO_ChainingResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3155,7 +3066,6 @@ struct type_DO_CrossReference **parm;
 }
 
 #undef print_DO_CrossReference
-/* ARGSUSED */
 int	print_DO_CrossReference(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3191,7 +3101,6 @@ struct type_DO_ReferenceType **parm;
 }
 
 #undef print_DO_ReferenceType
-/* ARGSUSED */
 int	print_DO_ReferenceType(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3227,7 +3136,6 @@ struct type_DO_TraceInformation **parm;
 }
 
 #undef print_DO_TraceInformation
-/* ARGSUSED */
 int	print_DO_TraceInformation(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3263,7 +3171,6 @@ struct type_DO_TraceItem **parm;
 }
 
 #undef print_DO_TraceItem
-/* ARGSUSED */
 int	print_DO_TraceItem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3299,7 +3206,6 @@ struct type_DO_OperationProgress **parm;
 }
 
 #undef print_DO_OperationProgress
-/* ARGSUSED */
 int	print_DO_OperationProgress(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3335,7 +3241,6 @@ struct type_DO_DomainInfo **parm;
 }
 
 #undef print_DO_DomainInfo
-/* ARGSUSED */
 int	print_DO_DomainInfo(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3371,7 +3276,6 @@ struct type_DO_ContinuationReference **parm;
 }
 
 #undef print_DO_ContinuationReference
-/* ARGSUSED */
 int	print_DO_ContinuationReference(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3407,7 +3311,6 @@ struct type_DO_AccessPoint **parm;
 }
 
 #undef print_DO_AccessPoint
-/* ARGSUSED */
 int	print_DO_AccessPoint(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3443,7 +3346,6 @@ struct type_DO_ISODEPresentationAddress **parm;
 }
 
 #undef print_DO_ISODEPresentationAddress
-/* ARGSUSED */
 int	print_DO_ISODEPresentationAddress(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3479,7 +3381,6 @@ struct type_DO_InvokeID **parm;
 }
 
 #undef print_DO_InvokeID
-/* ARGSUSED */
 int	print_DO_InvokeID(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3515,7 +3416,6 @@ struct type_DAS_SimpleCredentials **parm;
 }
 
 #undef print_DAS_SimpleCredentials
-/* ARGSUSED */
 int	print_DAS_SimpleCredentials(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3551,7 +3451,6 @@ struct type_DAS_TAlgorithmIdentifier **parm;
 }
 
 #undef print_DAS_TAlgorithmIdentifier
-/* ARGSUSED */
 int	print_DAS_TAlgorithmIdentifier(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3587,7 +3486,6 @@ struct type_DAS_TBitString **parm;
 }
 
 #undef print_DAS_TBitString
-/* ARGSUSED */
 int	print_DAS_TBitString(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3623,7 +3521,6 @@ struct type_DAS_TokenToSign **parm;
 }
 
 #undef print_DAS_TokenToSign
-/* ARGSUSED */
 int	print_DAS_TokenToSign(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3659,7 +3556,6 @@ struct type_DAS_Token **parm;
 }
 
 #undef print_DAS_Token
-/* ARGSUSED */
 int	print_DAS_Token(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3695,7 +3591,6 @@ struct type_DAS_StrongCredentials **parm;
 }
 
 #undef print_DAS_StrongCredentials
-/* ARGSUSED */
 int	print_DAS_StrongCredentials(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3731,7 +3626,6 @@ struct type_DAS_Credentials **parm;
 }
 
 #undef print_DAS_Credentials
-/* ARGSUSED */
 int	print_DAS_Credentials(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3767,7 +3661,6 @@ struct type_DAS_Versions **parm;
 }
 
 #undef print_DAS_Versions
-/* ARGSUSED */
 int	print_DAS_Versions(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3803,7 +3696,6 @@ struct type_DAS_SecurityProblem **parm;
 }
 
 #undef print_DAS_SecurityProblem
-/* ARGSUSED */
 int	print_DAS_SecurityProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3839,7 +3731,6 @@ struct type_DAS_ServiceProblem **parm;
 }
 
 #undef print_DAS_ServiceProblem
-/* ARGSUSED */
 int	print_DAS_ServiceProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3875,7 +3766,6 @@ struct type_DAS_EntryInformationSelection **parm;
 }
 
 #undef print_DAS_EntryInformationSelection
-/* ARGSUSED */
 int	print_DAS_EntryInformationSelection(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3911,7 +3801,6 @@ struct type_DAS_ServiceControls **parm;
 }
 
 #undef print_DAS_ServiceControls
-/* ARGSUSED */
 int	print_DAS_ServiceControls(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3947,7 +3836,6 @@ struct type_DAS_ProtectionRequest **parm;
 }
 
 #undef print_DAS_ProtectionRequest
-/* ARGSUSED */
 int	print_DAS_ProtectionRequest(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -3983,7 +3871,6 @@ struct type_DAS_DBitString **parm;
 }
 
 #undef print_DAS_DBitString
-/* ARGSUSED */
 int	print_DAS_DBitString(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4019,7 +3906,6 @@ struct type_DAS_SecurityParameters **parm;
 }
 
 #undef print_DAS_SecurityParameters
-/* ARGSUSED */
 int	print_DAS_SecurityParameters(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4055,7 +3941,6 @@ struct type_DAS_Extension **parm;
 }
 
 #undef print_DAS_Extension
-/* ARGSUSED */
 int	print_DAS_Extension(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4091,7 +3976,6 @@ struct type_DAS_EntryInformation **parm;
 }
 
 #undef print_DAS_EntryInformation
-/* ARGSUSED */
 int	print_DAS_EntryInformation(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4127,7 +4011,6 @@ struct type_DAS_LimitProblem **parm;
 }
 
 #undef print_DAS_LimitProblem
-/* ARGSUSED */
 int	print_DAS_LimitProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4163,7 +4046,6 @@ struct type_DAS_PartialOutcomeQualifier **parm;
 }
 
 #undef print_DAS_PartialOutcomeQualifier
-/* ARGSUSED */
 int	print_DAS_PartialOutcomeQualifier(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4199,7 +4081,6 @@ struct type_DAS_FilterItem **parm;
 }
 
 #undef print_DAS_FilterItem
-/* ARGSUSED */
 int	print_DAS_FilterItem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4235,7 +4116,6 @@ struct type_DAS_Filter **parm;
 }
 
 #undef print_DAS_Filter
-/* ARGSUSED */
 int	print_DAS_Filter(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4271,7 +4151,6 @@ struct type_DAS_TAttributeType **parm;
 }
 
 #undef print_DAS_TAttributeType
-/* ARGSUSED */
 int	print_DAS_TAttributeType(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4307,7 +4186,6 @@ struct type_DAS_EntryModification **parm;
 }
 
 #undef print_DAS_EntryModification
-/* ARGSUSED */
 int	print_DAS_EntryModification(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4343,7 +4221,6 @@ struct type_DAS_AbandonProblem **parm;
 }
 
 #undef print_DAS_AbandonProblem
-/* ARGSUSED */
 int	print_DAS_AbandonProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4379,7 +4256,6 @@ struct type_DAS_AttributeProblem **parm;
 }
 
 #undef print_DAS_AttributeProblem
-/* ARGSUSED */
 int	print_DAS_AttributeProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4415,7 +4291,6 @@ struct type_DAS_NameProblem **parm;
 }
 
 #undef print_DAS_NameProblem
-/* ARGSUSED */
 int	print_DAS_NameProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4451,7 +4326,6 @@ struct type_DAS_UpdateProblem **parm;
 }
 
 #undef print_DAS_UpdateProblem
-/* ARGSUSED */
 int	print_DAS_UpdateProblem(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4487,7 +4361,6 @@ struct type_DAS_DirectoryBindArgument **parm;
 }
 
 #undef print_DAS_DirectoryBindArgument
-/* ARGSUSED */
 int	print_DAS_DirectoryBindArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4523,7 +4396,6 @@ struct type_DAS_DirectoryBindResult **parm;
 }
 
 #undef print_DAS_DirectoryBindResult
-/* ARGSUSED */
 int	print_DAS_DirectoryBindResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4559,7 +4431,6 @@ struct type_DAS_ReadArgumentData **parm;
 }
 
 #undef print_DAS_ReadArgumentData
-/* ARGSUSED */
 int	print_DAS_ReadArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4595,7 +4466,6 @@ struct type_DAS_ReadArgument **parm;
 }
 
 #undef print_DAS_ReadArgument
-/* ARGSUSED */
 int	print_DAS_ReadArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4631,7 +4501,6 @@ struct type_DAS_ReadResultData **parm;
 }
 
 #undef print_DAS_ReadResultData
-/* ARGSUSED */
 int	print_DAS_ReadResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4667,7 +4536,6 @@ struct type_DAS_ReadResult **parm;
 }
 
 #undef print_DAS_ReadResult
-/* ARGSUSED */
 int	print_DAS_ReadResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4703,7 +4571,6 @@ struct type_DAS_CompareArgumentData **parm;
 }
 
 #undef print_DAS_CompareArgumentData
-/* ARGSUSED */
 int	print_DAS_CompareArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4739,7 +4606,6 @@ struct type_DAS_CompareArgument **parm;
 }
 
 #undef print_DAS_CompareArgument
-/* ARGSUSED */
 int	print_DAS_CompareArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4775,7 +4641,6 @@ struct type_DAS_CompareResultData **parm;
 }
 
 #undef print_DAS_CompareResultData
-/* ARGSUSED */
 int	print_DAS_CompareResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4811,7 +4676,6 @@ struct type_DAS_CompareResult **parm;
 }
 
 #undef print_DAS_CompareResult
-/* ARGSUSED */
 int	print_DAS_CompareResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4847,7 +4711,6 @@ struct type_DAS_TInvokeID **parm;
 }
 
 #undef print_DAS_TInvokeID
-/* ARGSUSED */
 int	print_DAS_TInvokeID(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4883,7 +4746,6 @@ struct type_DAS_AbandonArgument **parm;
 }
 
 #undef print_DAS_AbandonArgument
-/* ARGSUSED */
 int	print_DAS_AbandonArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4919,7 +4781,6 @@ struct type_DAS_AbandonResult **parm;
 }
 
 #undef print_DAS_AbandonResult
-/* ARGSUSED */
 int	print_DAS_AbandonResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4955,7 +4816,6 @@ struct type_DAS_ListArgumentData **parm;
 }
 
 #undef print_DAS_ListArgumentData
-/* ARGSUSED */
 int	print_DAS_ListArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -4991,7 +4851,6 @@ struct type_DAS_ListArgument **parm;
 }
 
 #undef print_DAS_ListArgument
-/* ARGSUSED */
 int	print_DAS_ListArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5027,7 +4886,6 @@ struct type_DAS_ListResultData **parm;
 }
 
 #undef print_DAS_ListResultData
-/* ARGSUSED */
 int	print_DAS_ListResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5063,7 +4921,6 @@ struct type_DAS_ListResult **parm;
 }
 
 #undef print_DAS_ListResult
-/* ARGSUSED */
 int	print_DAS_ListResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5099,7 +4956,6 @@ struct type_DAS_SearchArgumentData **parm;
 }
 
 #undef print_DAS_SearchArgumentData
-/* ARGSUSED */
 int	print_DAS_SearchArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5135,7 +4991,6 @@ struct type_DAS_SearchArgument **parm;
 }
 
 #undef print_DAS_SearchArgument
-/* ARGSUSED */
 int	print_DAS_SearchArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5171,7 +5026,6 @@ struct type_DAS_SearchResultData **parm;
 }
 
 #undef print_DAS_SearchResultData
-/* ARGSUSED */
 int	print_DAS_SearchResultData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5207,7 +5061,6 @@ struct type_DAS_SAlgorithmIdentifier **parm;
 }
 
 #undef print_DAS_SAlgorithmIdentifier
-/* ARGSUSED */
 int	print_DAS_SAlgorithmIdentifier(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5243,7 +5096,6 @@ struct type_DAS_SBitString **parm;
 }
 
 #undef print_DAS_SBitString
-/* ARGSUSED */
 int	print_DAS_SBitString(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5279,7 +5131,6 @@ struct type_DAS_SearchResult **parm;
 }
 
 #undef print_DAS_SearchResult
-/* ARGSUSED */
 int	print_DAS_SearchResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5315,7 +5166,6 @@ struct type_DAS_AddEntryArgumentData **parm;
 }
 
 #undef print_DAS_AddEntryArgumentData
-/* ARGSUSED */
 int	print_DAS_AddEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5351,7 +5201,6 @@ struct type_DAS_AddEntryArgument **parm;
 }
 
 #undef print_DAS_AddEntryArgument
-/* ARGSUSED */
 int	print_DAS_AddEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5387,7 +5236,6 @@ struct type_DAS_AddEntryResult **parm;
 }
 
 #undef print_DAS_AddEntryResult
-/* ARGSUSED */
 int	print_DAS_AddEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5423,7 +5271,6 @@ struct type_DAS_RemoveEntryArgumentData **parm;
 }
 
 #undef print_DAS_RemoveEntryArgumentData
-/* ARGSUSED */
 int	print_DAS_RemoveEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5459,7 +5306,6 @@ struct type_DAS_RemoveEntryArgument **parm;
 }
 
 #undef print_DAS_RemoveEntryArgument
-/* ARGSUSED */
 int	print_DAS_RemoveEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5495,7 +5341,6 @@ struct type_DAS_RemoveEntryResult **parm;
 }
 
 #undef print_DAS_RemoveEntryResult
-/* ARGSUSED */
 int	print_DAS_RemoveEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5531,7 +5376,6 @@ struct type_DAS_ModifyEntryArgumentData **parm;
 }
 
 #undef print_DAS_ModifyEntryArgumentData
-/* ARGSUSED */
 int	print_DAS_ModifyEntryArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5567,7 +5411,6 @@ struct type_DAS_ModifyEntryArgument **parm;
 }
 
 #undef print_DAS_ModifyEntryArgument
-/* ARGSUSED */
 int	print_DAS_ModifyEntryArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5603,7 +5446,6 @@ struct type_DAS_ModifyEntryResult **parm;
 }
 
 #undef print_DAS_ModifyEntryResult
-/* ARGSUSED */
 int	print_DAS_ModifyEntryResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5639,7 +5481,6 @@ struct type_DAS_ModifyRDNArgumentData **parm;
 }
 
 #undef print_DAS_ModifyRDNArgumentData
-/* ARGSUSED */
 int	print_DAS_ModifyRDNArgumentData(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5675,7 +5516,6 @@ struct type_DAS_ModifyRDNArgument **parm;
 }
 
 #undef print_DAS_ModifyRDNArgument
-/* ARGSUSED */
 int	print_DAS_ModifyRDNArgument(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5711,7 +5551,6 @@ struct type_DAS_ModifyRDNResult **parm;
 }
 
 #undef print_DAS_ModifyRDNResult
-/* ARGSUSED */
 int	print_DAS_ModifyRDNResult(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5747,7 +5586,6 @@ struct type_DAS_DirectoryBindError **parm;
 }
 
 #undef print_DAS_DirectoryBindError
-/* ARGSUSED */
 int	print_DAS_DirectoryBindError(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5783,7 +5621,6 @@ struct type_DAS_AbandonFailedParm **parm;
 }
 
 #undef print_DAS_AbandonFailedParm
-/* ARGSUSED */
 int	print_DAS_AbandonFailedParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5819,7 +5656,6 @@ struct type_DAS_AttributeErrorParm **parm;
 }
 
 #undef print_DAS_AttributeErrorParm
-/* ARGSUSED */
 int	print_DAS_AttributeErrorParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5855,7 +5691,6 @@ struct type_DAS_NameErrorParm **parm;
 }
 
 #undef print_DAS_NameErrorParm
-/* ARGSUSED */
 int	print_DAS_NameErrorParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5891,7 +5726,6 @@ struct type_DAS_ReferralParm **parm;
 }
 
 #undef print_DAS_ReferralParm
-/* ARGSUSED */
 int	print_DAS_ReferralParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5927,7 +5761,6 @@ struct type_DAS_SecurityErrorParm **parm;
 }
 
 #undef print_DAS_SecurityErrorParm
-/* ARGSUSED */
 int	print_DAS_SecurityErrorParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5963,7 +5796,6 @@ struct type_DAS_ServiceErrorParm **parm;
 }
 
 #undef print_DAS_ServiceErrorParm
-/* ARGSUSED */
 int	print_DAS_ServiceErrorParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -5999,7 +5831,6 @@ struct type_DAS_UpdateErrorParm **parm;
 }
 
 #undef print_DAS_UpdateErrorParm
-/* ARGSUSED */
 int	print_DAS_UpdateErrorParm(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -6035,7 +5866,6 @@ struct type_NRS_Context **parm;
 }
 
 #undef print_NRS_Context
-/* ARGSUSED */
 int	print_NRS_Context(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -6071,7 +5901,6 @@ struct type_NRS_Address__space__id **parm;
 }
 
 #undef print_NRS_Address__space__id
-/* ARGSUSED */
 int	print_NRS_Address__space__id(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -6107,7 +5936,6 @@ struct type_NRS_Route__cost **parm;
 }
 
 #undef print_NRS_Route__cost
-/* ARGSUSED */
 int	print_NRS_Route__cost(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -6143,7 +5971,6 @@ struct type_NRS_Addressing__info **parm;
 }
 
 #undef print_NRS_Addressing__info
-/* ARGSUSED */
 int	print_NRS_Addressing__info(pe, top, len, buffer, parm)
 PE	pe;
 int	top,
@@ -6179,7 +6006,6 @@ struct type_NRS_NRSInformation **parm;
 }
 
 #undef print_NRS_NRSInformation
-/* ARGSUSED */
 int	print_NRS_NRSInformation(pe, top, len, buffer, parm)
 PE	pe;
 int	top,

@@ -52,57 +52,57 @@
 
 
 /* FTAM-QoS */
-#define	FQOS_NORECOVERY	0	/*   no-recovery */
-#define	FQOS_CLASS1	1	/*   class-1-recovery */
-#define	FQOS_CLASS2	2	/*   class-2-recovery */
-#define	FQOS_CLASS3	3	/*   class-3-recovery */
+#define	FQOS_NORECOVERY	0	/* no-recovery */
+#define	FQOS_CLASS1	1	/* class-1-recovery */
+#define	FQOS_CLASS2	2	/* class-2-recovery */
+#define	FQOS_CLASS3	3	/* class-3-recovery */
 #define	MY_FQOS		FQOS_NORECOVERY
 
 
 /* Service-Class */
-#define	FCLASS_UNCONS	0x01	/*   unconstrained-class */
-#define	FCLASS_MANAGE	0x02	/*   management-class */
-#define	FCLASS_TRANSFER	0x04	/*   transfer-class */
-#define	FCLASS_TM	0x08	/*   transfer-and-management-class */
-#define	FCLASS_ACCESS	0x10	/*   access-class */
+#define	FCLASS_UNCONS	0x01	/* unconstrained-class */
+#define	FCLASS_MANAGE	0x02	/* management-class */
+#define	FCLASS_TRANSFER	0x04	/* transfer-class */
+#define	FCLASS_TM	0x08	/* transfer-and-management-class */
+#define	FCLASS_ACCESS	0x10	/* access-class */
 
 /* Functional-Units */
-#define	FUNIT_READ	0x001	/*   read */
-#define	FUNIT_WRITE	0x002	/*   write */
-#define	FUNIT_ACCESS	0x004	/*   file-access */
-#define	FUNIT_LIMITED	0x008	/*   limited-file-managment */
-#define	FUNIT_ENHANCED	0x010	/*   enhanced-file-management */
-#define	FUNIT_GROUPING	0x020	/*   grouping */
-#define	FUNIT_FADULOCK	0x040	/*   fadu-locking */
-#define	FUNIT_RECOVERY	0x080	/*   recovery */
-#define	FUNIT_RESTART	0x100	/*   restart-data-transfer */
+#define	FUNIT_READ	0x001	/* read */
+#define	FUNIT_WRITE	0x002	/* write */
+#define	FUNIT_ACCESS	0x004	/* file-access */
+#define	FUNIT_LIMITED	0x008	/* limited-file-managment */
+#define	FUNIT_ENHANCED	0x010	/* enhanced-file-management */
+#define	FUNIT_GROUPING	0x020	/* grouping */
+#define	FUNIT_FADULOCK	0x040	/* fadu-locking */
+#define	FUNIT_RECOVERY	0x080	/* recovery */
+#define	FUNIT_RESTART	0x100	/* restart-data-transfer */
 #define	MY_FUNIT	(FUNIT_READ | FUNIT_WRITE | FUNIT_ACCESS \
 				| FUNIT_LIMITED | FUNIT_ENHANCED \
 				| FUNIT_GROUPING | FUNIT_FADULOCK)
 
 /* Attribute-Groups */
-#define	FATTR_STORAGE	0x01	/*   storage */
-#define	FATTR_SECURITY	0x02	/*   security */
-#define	FATTR_PRIVATE	0x04	/*   private */
+#define	FATTR_STORAGE	0x01	/* storage */
+#define	FATTR_SECURITY	0x02	/* security */
+#define	FATTR_PRIVATE	0x04	/* private */
 #define	MY_FATTR	(FATTR_STORAGE | FATTR_SECURITY)
 
 
 /* State-Result */
-#define	FSTATE_SUCCESS	0	/*   success */
-#define	FSTATE_FAILURE	1	/*   failure */
+#define	FSTATE_SUCCESS	0	/* success */
+#define	FSTATE_FAILURE	1	/* failure */
 
 /* Action-Result */
-#define	FACTION_SUCCESS	0	/*   success */
-#define	FACTION_TRANS	1	/*   transient-error */
-#define	FACTION_PERM	2	/*   permanent-error */
+#define	FACTION_SUCCESS	0	/* success */
+#define	FACTION_TRANS	1	/* transient-error */
+#define	FACTION_PERM	2	/* permanent-error */
 
 
 struct FTAMcontent {
 	OID	    fc_dtn;		/* Document-Type-Name */
 
 	/* associated presentation context info */
-	int	    fc_id;		/*   identifier */
-	int	    fc_result;		/*   status */
+	int	    fc_id;		/* identifier */
+	int	    fc_result;		/* status */
 };
 
 
@@ -116,9 +116,9 @@ struct FTAMcontentlist {	/* Contents-Type-List */
 
 struct FTAMdiagnostic {		/* Diagnostic */
 	int	    ftd_type;		/* diagnostic-type */
-#define	DIAG_INFORM	0	/*   informative */
-#define	DIAG_TRANS	1	/*   transient */
-#define	DIAG_PERM	2	/*   permanent */
+#define	DIAG_INFORM	0	/* informative */
+#define	DIAG_TRANS	1	/* transient */
+#define	DIAG_PERM	2	/* permanent */
 
 	int	    ftd_identifier;	/* error-identifier */
 #define	FS_CODE2OFF(c)	((c) % 1000)
@@ -298,20 +298,20 @@ struct FTAMdiagnostic {		/* Diagnostic */
 
 	int	    ftd_observer;	/* error-observer */
 	int	    ftd_source;		/* error-source */
-#define	EREF_NONE	0	/*   no-categorizaton-possible */
-#define	EREF_IFSU	1	/*   initiating-file-service-user */
-#define	EREF_IFPM	2	/*   initiating-file-protocol-machine */
-#define	EREF_SERV	3	/*   service-supporting-the-file-protocol-machine */
-#define	EREF_RFPM	4	/*   responding-file-protocol-machine */
-#define	EREF_RFSU	5	/*   responding-file-service-user */
+#define	EREF_NONE	0	/* no-categorizaton-possible */
+#define	EREF_IFSU	1	/* initiating-file-service-user */
+#define	EREF_IFPM	2	/* initiating-file-protocol-machine */
+#define	EREF_SERV	3	/* service-supporting-the-file-protocol-machine */
+#define	EREF_RFPM	4	/* responding-file-protocol-machine */
+#define	EREF_RFSU	5	/* responding-file-service-user */
 
 	int	    ftd_delay;		/* suggested-delay */
 #define	DIAG_NODELAY	(-1)
 
 	/* further-details */
 #define	FTD_SIZE	512	/* should be unlimited... */
-	int	    ftd_cc;		/*   length */
-	char    ftd_data[FTD_SIZE];	/*   data */
+	int	    ftd_cc;		/* length */
+	char    ftd_data[FTD_SIZE];	/* data */
 };
 
 
@@ -484,7 +484,7 @@ struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 
 #define	NFFILE	5		/* arbitrary */
 	int	    fa_nfile;		/* filename */
-	char   *fa_files[NFFILE];	/*   .. */
+	char   *fa_files[NFFILE];	/* .. */
 
 	int	    fa_permitted;	/* permitted-actions,
 				   same as fe_actions, plus: */
@@ -512,8 +512,8 @@ struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 	char   *fa_id_attribute;
 
 	int	    fa_availability;	/* file-availability */
-#define	FA_AVAIL_IMMED	0	/*   immediate */
-#define	FA_AVAIL_DEFER	1	/*   deferred */
+#define	FA_AVAIL_IMMED	0	/* immediate */
+#define	FA_AVAIL_DEFER	1	/* deferred */
 
 	int	    fa_filesize;	/* filesize */
 	int	    fa_futuresize;	/* future-filesize */
@@ -608,7 +608,7 @@ struct FTAMstart {		/* F-INITIALIZE.INDICATION */
 	char   *fts_initiator;	/* initiator-identity */
 	char   *fts_account;	/* account */
 	char   *fts_password;	/* filestore-password */
-	int	    fts_passlen;	/*   .. */
+	int	    fts_passlen;	/* .. */
 
 	int	    fts_ssdusize;	/* largest atomic SSDU */
 
@@ -824,7 +824,7 @@ struct FTAMcreate {		/* F-CREATE.* */
 
 	/* REQUEST only */
 	char   *ftce_create;	/* create-password */
-	int	    ftce_crelen;	/*   .. */
+	int	    ftce_crelen;	/* .. */
 	int	    ftce_access;	/* requested-access */
 	/* access-passwords */
 	struct FTAMpasswords ftce_pwds;
@@ -933,7 +933,7 @@ struct FTAMopen {		/* F-OPEN.* */
 				| FA_PERM_EXTEND | FA_PERM_ERASE)
 
 	OID	    ftop_contents;	/* contents-type */
-	PE	    ftop_parameter;	/*   .. */
+	PE	    ftop_parameter;	/* .. */
 	/* concurrency-control */
 	struct FTAMconcurrency ftop_conctl;
 	PE	    ftop_sharedASE;	/* shared-ASE-information */
@@ -1071,22 +1071,22 @@ struct FTAMaccess {		/* F-{LOCATE,ERASE}.{INDICATION,CONFIRMATION} */
 struct FTAMreadwrite {		/* F-{READ,WRITE}.INDICATION */
 	int	    ftrw_operation;	/* fadu-operation */
 #define	FA_OPS_READ	(-1)	/*   read (pseudo) */
-#define	FA_OPS_INSERT	0	/*   insert */
-#define	FA_OPS_REPLACE	1	/*   replace */
-#define	FA_OPS_EXTEND	2	/*   extend */
+#define	FA_OPS_INSERT	0	/* insert */
+#define	FA_OPS_REPLACE	1	/* replace */
+#define	FA_OPS_EXTEND	2	/* extend */
 
 	/* fadu-identity */
 	struct FADUidentity	ftrw_identity;
 
 	/* F-READ.INDICATION only */
 	int	    ftrw_context;	/* access-context */
-#define	FA_ACC_HA	0	/*   hierarchical-all-data-units */
-#define	FA_ACC_HN	1	/*   hierarchical-no-data-units */
-#define	FA_ACC_FA	2	/*   flat-all-data-units */
-#define	FA_ACC_FL	3	/*   flat-one-level-data-units */
-#define	FA_ACC_FS	4	/*   flat-single-data-unit */
-#define	FA_ACC_UA	5	/*   unstructured-all-data-units */
-#define	FA_ACC_US	6	/*   unstructured-single-data-unit */
+#define	FA_ACC_HA	0	/* hierarchical-all-data-units */
+#define	FA_ACC_HN	1	/* hierarchical-no-data-units */
+#define	FA_ACC_FA	2	/* flat-all-data-units */
+#define	FA_ACC_FL	3	/* flat-one-level-data-units */
+#define	FA_ACC_FS	4	/* flat-single-data-unit */
+#define	FA_ACC_UA	5	/* unstructured-all-data-units */
+#define	FA_ACC_US	6	/* unstructured-single-data-unit */
 	int	    ftrw_level;		/* level for FL */
 
 	int	    ftrw_locking;	/* fadu-lock */

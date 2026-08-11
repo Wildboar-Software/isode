@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprovider.c,v 9
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -40,13 +39,12 @@ static int  qb_cmp ();
 static int  PReadRequestAux ();
 static int  _PDataRequestAux ();
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct psapblk psapque;
 static struct psapblk *PHead = &psapque;
 
-/*    P-DATA.REQUEST */
+/* P-DATA.REQUEST */
 
 int	PDataRequest (sd, data, ndata, pi)
 int	sd;
@@ -120,7 +118,7 @@ struct PSAPindication *pi;
 	return result;
 }
 
-/*    P-READ.REQUEST (pseudo; synchronous read) */
+/*    P-READ.REQUEST (pseudo; synchronous read) */
 
 int	PReadRequest (sd, px, secs, pi)
 int	sd;
@@ -327,7 +325,7 @@ out:
 	return result;
 }
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 int	PSetIndications (sd, data, tokens, sync, activity, report, finish,
 					 abort, pi)

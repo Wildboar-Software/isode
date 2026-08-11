@@ -50,7 +50,6 @@ char    level[128];
 char    show[128];
 char    display[50][50];
 
-/* ARGSUSED */
 int
 photo_start (char *name) {
 	char   *ptr,
@@ -93,7 +92,6 @@ photo_start (char *name) {
 	return (0);
 }
 
-/* ARGSUSED */
 int
 photo_end (char *name) {
 	int     i,
@@ -224,7 +222,6 @@ photo_white (int length) {
 	pos += length;
 }
 
-/* ARGSUSED */
 photo_line_end (line)
 bit_string *line;
 {

@@ -35,7 +35,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/rtf/RCS/rtfsbr.c,v 9.0 1
 static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 #endif
 
-/*    DATA */
 
 static LLog _pgm_log = {
 	"rtf.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprespond.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <string.h>
 #include "tpkt.h"
@@ -35,7 +34,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/tsap/RCS/tsaprespond.c,v 9.0 19
 #include "x25.h"
 #endif
 
-/*    T-CONNECT.INDICATION */
+/* T-CONNECT.INDICATION */
 
 int
 TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td) {
@@ -145,7 +144,7 @@ out:
 	return NOTOK;
 }
 
-/*    T-CONNECT.RESPONSE */
+/* T-CONNECT.RESPONSE */
 
 int
 TConnResponse (int sd, struct TSAPaddr *responding, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {

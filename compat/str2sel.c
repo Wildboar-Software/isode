@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2sel.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/str2sel.c,v 9.0 1992
 
 #define	QUOTE	'\\'
 
-/*    STR2SEL */
+/* STR2SEL */
 
 int
 str2sel (char *s, int quoted, char *sel, int n) {

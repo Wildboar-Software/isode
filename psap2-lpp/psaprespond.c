@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #define	LPP
@@ -40,7 +39,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/psaprespond.c,v 9
 
 static int  PInitAux ();
 
-/*    P-CONNECT.INDICATION */
+/* P-CONNECT.INDICATION */
 
 int	PInit (vecp, vec, ps, pi)
 int	vecp;
@@ -94,7 +93,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 static int  PInitAux (pb, vec, vecp, ps, pi)
 struct psapblk *pb;
@@ -221,7 +219,7 @@ out:
 	return result;
 }
 
-/*    P-CONNECT.RESPONSE */
+/* P-CONNECT.RESPONSE */
 
 int	PConnResponse (sd, status, responding, ctxlist, defctxresult,
 				   prequirements, srequirements, isn, settings, ref, data, ndata, pi)

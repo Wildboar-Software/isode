@@ -43,7 +43,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/internet.c,v 9.0 199
 #ifdef	TCP
 #include "internet.h"
 
-/*    Berkeley UNIX: 4.2 */
+/*    Berkeley UNIX: 4.2 */
 
 #if 	defined(SOCKETS) && !defined(TLI_TCP)
 
@@ -298,9 +298,9 @@ int close_tcp_socket (int fd) {
 
 #endif
 
-/*    AT&T UNIX: 5r3 using TLI */
+/*    AT&T UNIX: 5r3 using TLI */
 
-/*    AT&T UNIX: 5 with EXOS 8044 TCP/IP card */
+/*    AT&T UNIX: 5 with EXOS 8044 TCP/IP card */
 
 #ifdef	EXOS
 
@@ -386,7 +386,7 @@ start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2) {
 
 #endif
 
-/*    GETHOSTENT PLUS */
+/*    GETHOSTENT PLUS */
 
 static char *empty = NULL;
 #ifdef	h_addr
@@ -431,7 +431,7 @@ struct hostent *gethostbystring (char *s) {
 	return h;
 }
 
-/*    AT&T UNIX: 5 with EXOS 8044 TCP/IP card */
+/*    AT&T UNIX: 5 with EXOS 8044 TCP/IP card */
 
 #ifdef	EXOS
 

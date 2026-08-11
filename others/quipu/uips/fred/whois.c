@@ -29,7 +29,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/quipu/uips/fred/RCS/whoi
 #include <signal.h>
 #include "fred.h"
 
-/*    DATA */
 
 struct whois {
 	char   *w_input;
@@ -96,7 +95,7 @@ static whois_aux ();
 static int  test_arg ();
 static int  f_ufn ();
 
-/*    WHOIS */
+/* WHOIS */
 
 int
 f_whois (char **vec) {

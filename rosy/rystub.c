@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <signal.h>
 #include <stdio.h>
@@ -52,7 +51,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rystub.c,v 9.0 1992/06
 static int interrupted;
 static SFD	intrser ();
 
-/*    stub */
+/* stub */
 
 int	RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi)
 int	sd;
@@ -170,7 +169,6 @@ again:
 }
 
 
-/* ARGSUSED */
 
 static SFD
 intrser (int sig) {

@@ -49,7 +49,6 @@ static char *rcsid = "$Header: /f/iso/acsap/RCS/acsapinitiat.c,v 5.0 88/07/21 14
 #endif
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -68,7 +67,7 @@ static char *rcsid = "$Header: /f/iso/acsap/RCS/acsapinitiat.c,v 5.0 88/07/21 14
 
 
 /*---------------------------------------------------------------------------*/
-/*    A-UNIT-DATA.REQUEST */
+/* A-UNIT-DATA.REQUEST */
 /*      opens and closes a socket for each request */
 /*---------------------------------------------------------------------------*/
 int	AcUnitDataRequest ( context, callingtitle, calledtitle,
@@ -196,7 +195,7 @@ out:
 
 
 /*---------------------------------------------------------------------------*/
-/*    set a local binding for AcUnitDataWrite() and AcUnitDataRead()       */
+/*    set a local binding for AcUnitDataWrite() and AcUnitDataRead()       */
 /*      a socket is created and bound if sd is NOTOK on input                */
 /*---------------------------------------------------------------------------*/
 int	AcUnitDataBind ( sd, binding, context, callingtitle, calledtitle,
@@ -313,7 +312,7 @@ no_good:
 
 
 /*---------------------------------------------------------------------------*/
-/*    reset a local binding for new called addr and called title           */
+/*    reset a local binding for new called addr and called title           */
 /*---------------------------------------------------------------------------*/
 int	AcUnitDataRebind ( sd, calledtitle, calledaddr, aci )
 /*---------------------------------------------------------------------------*/
@@ -373,7 +372,7 @@ no_good:
 
 
 /*---------------------------------------------------------------------------*/
-/*    set off A-UNIT-DATA.REQUEST over locally bound association */
+/*    set off A-UNIT-DATA.REQUEST over locally bound association */
 /*      socket must have been previously bound by AcUnitDataBind() */
 /*---------------------------------------------------------------------------*/
 int	AcUnitDataWrite ( sd, data, ndata, aci )
@@ -466,7 +465,7 @@ out:
 
 
 /*---------------------------------------------------------------------------*/
-/*    implements A-UNIT-DATA.INDICATION on locally bound association */
+/*    implements A-UNIT-DATA.INDICATION on locally bound association */
 /*      socket must have been previously bound by AcUnitDataBind() which */
 /*      bound both the application context and all valid p-contexts */
 /*---------------------------------------------------------------------------*/
@@ -584,7 +583,7 @@ no_good:
 
 
 /*---------------------------------------------------------------------------*/
-/*    clear local binding for A-UNIT-DATA */
+/*    clear local binding for A-UNIT-DATA */
 /*      similar to AcUAbortRequest() */
 /*---------------------------------------------------------------------------*/
 int
@@ -635,7 +634,7 @@ out1:
 
 
 /*---------------------------------------------------------------------------*/
-/*    save magic args (TPDU) for local A-UNIT-DATA binding                 */
+/*    save magic args (TPDU) for local A-UNIT-DATA binding                 */
 /*---------------------------------------------------------------------------*/
 int
 AcuSave (

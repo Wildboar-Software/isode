@@ -86,7 +86,7 @@ typedef u_char	  byte, *PElementData;
 typedef struct PElement {
 	int	    pe_errno;		/* Error codes */
 #define	PE_ERR_NONE	0	/*   No error */
-#define	PE_ERR_OVER	1	/*   Overflow */
+#define	PE_ERR_OVER	1	/* Overflow */
 #define	PE_ERR_NMEM	2	/*   Out of memory */
 #define	PE_ERR_BIT	3	/*   No such bit */
 #define	PE_ERR_UTCT	4	/*   Malformed universal timestring */
@@ -119,19 +119,19 @@ typedef struct PElement {
 #define	PE_CODE_SHIFT	0
 
 	PElementClass	pe_class;
-#define	PE_CLASS_UNIV	0x0	/*   Universal */
-#define	PE_CLASS_APPL	0x1	/*   Application-wide */
-#define	PE_CLASS_CONT	0x2	/*   Context-specific */
-#define	PE_CLASS_PRIV	0x3	/*   Private-use */
+#define	PE_CLASS_UNIV	0x0	/* Universal */
+#define	PE_CLASS_APPL	0x1	/* Application-wide */
+#define	PE_CLASS_CONT	0x2	/* Context-specific */
+#define	PE_CLASS_PRIV	0x3	/* Private-use */
 
 	PElementForm	pe_form;
-#define	PE_FORM_PRIM	0x0	/*   PRIMitive */
-#define	PE_FORM_CONS	0x1	/*   CONStructor */
+#define	PE_FORM_PRIM	0x0	/* PRIMitive */
+#define	PE_FORM_CONS	0x1	/* CONStructor */
 #define	PE_FORM_ICONS	0x2	/*   internal: Inline CONStructor */
 
 	PElementID pe_id;		/* should be extensible, 14 bits for now */
 	/* Pseudo Types */
-#define	PE_UNIV_EOC	0x000	/*   End-of-contents */
+#define	PE_UNIV_EOC	0x000	/* End-of-contents */
 
 #define	PE_PRIM_BOOL		0x001	/* Boolean */
 #define	PE_PRIM_INT			0x002	/* Integer */
@@ -194,7 +194,7 @@ typedef struct PElement {
 #define	pe_nbits	pe_un2.un_pe_nbits
 
 	int	    pe_inline;		/* for "ultra-efficient" PElements */
-	char   *pe_realbase;	/*   .. */
+	char   *pe_realbase;	/* .. */
 
 	int	    pe_offset;		/* offset of element in sequence */
 
@@ -403,11 +403,11 @@ struct PStream {
 #define	PS_ERR_EOFID	 5	/*   End of file reading extended ID */
 #define	PS_ERR_EOFLEN	 6	/*   End of file reading extended length */
 #define	PS_ERR_LEN	 7	/*   Length mismatch */
-#define	PS_ERR_TRNC	 8	/*   Truncated */
+#define	PS_ERR_TRNC	 8	/* Truncated */
 #define	PS_ERR_INDF	 9	/*   Indefinite length in primitive form */
 #define	PS_ERR_IO	10	/*   I/O error */
 #define	PS_ERR_EXTRA	11	/*   Extraneous octets */
-#define	PS_ERR_XXX	12	/*   XXX */
+#define	PS_ERR_XXX	12	/* XXX */
 
 	union {
 		char *un_ps_addr;

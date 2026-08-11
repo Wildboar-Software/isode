@@ -69,7 +69,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/snmpd.c,v 9.0 1992/06/
 #define	MAXSNMP		484
 #define	IDLE_TIME	(3 * 60)
 
-/*    DATA */
 
 int	debug = 0;
 static	int	tooBig = MAXSNMP;
@@ -840,7 +839,7 @@ out:
 #endif
 }
 
-/*    PROCESS */
+/* PROCESS */
 
 #ifndef	SNMPT
 static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size) {
@@ -1246,7 +1245,7 @@ static void gc_set (void) {
 #endif
 }
 
-/*    PROXY */
+/* PROXY */
 
 static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm) {
 	int	    result;
@@ -1434,7 +1433,7 @@ again:
 }
 #endif
 
-/*    SMUX */
+/* SMUX */
 
 #ifdef	SMUX
 #include "smux.h"
@@ -2136,7 +2135,7 @@ mark_it:
 		}
 }
 
-/*    COMMUNITIES */
+/* COMMUNITIES */
 
 static struct community *str2comm (char *name, struct NSAPaddr *na) {
 	struct community *c, *d;
@@ -2190,7 +2189,7 @@ static struct community *str2comm (char *name, struct NSAPaddr *na) {
 	return d;
 }
 
-/*    TRAPS */
+/* TRAPS */
 
 static void start_trap (void) {
 #ifdef	TCP
@@ -2259,7 +2258,6 @@ out:
 }
 
 #ifndef	TCP
-/* ARGSUSED */
 #endif
 
 static void do_trap (

@@ -187,7 +187,7 @@ int	ftamlose (), fpktlose (), ftamoops ();
 
 struct ftamblk {
 	struct ftamblk *fsb_forw;	/* doubly-linked list */
-	struct ftamblk *fsb_back;	/*   .. */
+	struct ftamblk *fsb_back;	/* .. */
 
 	int	    fsb_fd;		/* association descriptor */
 
@@ -203,8 +203,8 @@ struct ftamblk {
 #define	FSB_COLLIDE	0x0080	/* collision */
 
 	short   fsb_state;		/* more state */
-#define	FSB_INITIALIZED	0	/*   initialized */
-#define	FSB_MANAGEMENT	1	/*   management */
+#define	FSB_INITIALIZED	0	/* initialized */
+#define	FSB_MANAGEMENT	1	/* management */
 #define	FSB_BULKBEGIN	2	/*   bulk data begin */
 #define	FSB_BULKEND	3	/*   bulk data end */
 #define	FSB_DATAIDLE	4	/*   data transfer idle */
@@ -213,7 +213,7 @@ struct ftamblk {
 #define	FSB_DATAREAD	7	/*   data transfer read */
 #define	FSB_DATAWRITE	8	/*   data transfer write */
 #define	FSB_DATAFIN1	9	/*   data transfer done */
-#define	FSB_DATAFIN2	10	/*     .. */
+#define	FSB_DATAFIN2	10	/* .. */
 #define	FSB_DATACANCEL	11	/*   cancel in progress */
 
 	int	    fsb_group;		/* group flags */
@@ -316,8 +316,8 @@ extern struct pair funit_pairs[],
 #define	FINIT_ROLLBACK		6	/* rollback-availability */
 #define	  ROLLBACK_DEFAULT	0
 #define	FINIT_CONTENTS		7	/* contents-type-list */
-#define	  CONTENTS_DOCUMENTS	0	/*   document-types */
-#define	  CONTENTS_CONSTRAINTS	0	/*   contraint-sets-and-abstract-syntaxes */
+#define	  CONTENTS_DOCUMENTS	0	/* document-types */
+#define	  CONTENTS_CONSTRAINTS	0	/* contraint-sets-and-abstract-syntaxes */
 
 #define	F_TERMINATE_REQ		2
 #define	F_TERMINATE_RSP		3

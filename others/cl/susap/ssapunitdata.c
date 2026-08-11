@@ -42,7 +42,6 @@
 
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -59,7 +58,6 @@
 
 
 
-/*    DATA */
 
 
 
@@ -1076,7 +1074,7 @@ SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct S
 
 #if FALSE
 
-/*    define vectors for INDICATION events */
+/*    define vectors for INDICATION events */
 
 int	SSetIndications (sd, data, tokens, sync, activity, report, finish,
 					 abort, si)

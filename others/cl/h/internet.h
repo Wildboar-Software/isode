@@ -25,7 +25,7 @@
 #include "manifest.h"
 #endif
 
-/*    SOCKETS */
+/* SOCKETS */
 
 #include "sys/socket.h"
 #include <HULA/solsocket.h>
@@ -77,7 +77,7 @@ int	close_tcp_socket ();
 
 int	select_tcp_socket ();
 
-/*    UDP */
+/* UDP */
 
 #define	MAXUDP	8192
 
@@ -94,7 +94,7 @@ int	close_udp_socket ();
 int	select_udp_socket ();
 
 
-/*    NETDB */
+/* NETDB */
 
 #ifdef	NATIVE
 #include <netdb.h>
@@ -125,7 +125,7 @@ struct servent *getservbyname ();
 
 struct hostent *gethostbystring ();
 
-/*    INET */
+/* INET */
 
 /* under BSD42, we could simply include <arpa/inet.h> instead.  However,
    the definition of inet_addr contained therein causes problems with some

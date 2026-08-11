@@ -1475,7 +1475,6 @@ DN     *dn;
 
 
 #ifdef	BSD42
-/* ARGSUSED */
 #endif
 
 static SFD  hupser (sig)

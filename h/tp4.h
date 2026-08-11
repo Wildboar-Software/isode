@@ -72,7 +72,7 @@ int	start_clts_server ();
 #define	check_clts_socket	check_dgram_socket
 #endif
 
-/*    SunLink OSI */
+/*    SunLink OSI */
 
 #ifdef SUN_TP4
 #if	defined(SUNLINK_6_0) && !defined(SUNLINK_5_2)

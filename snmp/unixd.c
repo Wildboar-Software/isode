@@ -102,7 +102,7 @@ int main (int argc, char **argv, char **envp) {
 		secs = NOTOK;
 
 		rfds = ifds;	/* struct copy */
-		wfds = ofds;	/*   .. */
+		wfds = ofds;	/* .. */
 
 		if (smux_fd == NOTOK && !dont_bother_anymore)
 			secs = 5 * 60L;
@@ -134,7 +134,7 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-/*    MISCELLANY */
+/* MISCELLANY */
 
 static void arginit (char **vec) {
 	char  *ap;
@@ -237,7 +237,7 @@ static void envinit (void) {
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
-/*    MIB */
+/* MIB */
 
 int	quantum = 0;
 
@@ -488,7 +488,6 @@ out:
 	}
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 void adios (char *what, char *fmt, ...) {

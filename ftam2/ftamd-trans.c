@@ -34,7 +34,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam2/RCS/ftamd-trans.c,v 9.0 1
 #define	TMS
 #endif
 
-/*    DATA */
 
 static int  nbytes;
 
@@ -43,7 +42,7 @@ static int fdfget (struct FTAMdiagnostic **diags);
 static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
 static int de2fadu (PE pe, int concat);
 
-/*    TRANSFER */
+/* TRANSFER */
 
 void ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 	int	    state;

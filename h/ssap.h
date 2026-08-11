@@ -86,8 +86,8 @@ struct SSAPstart {		/* S-CONNECT.INDICATION */
 
 	/* initial DATA from peer */
 #define	SS_SIZE		512
-	int	    ss_cc;		/*   length */
-	char   *ss_data;		/*   data */
+	int	    ss_cc;		/* length */
+	char   *ss_data;		/* data */
 };
 #define	SSFREE(ss) \
 { \
@@ -154,8 +154,8 @@ struct SSAPconnect {		/* S-CONNECT.CONFIRMATION */
 #undef	SC_SIZE
 #endif
 #define	SC_SIZE		512
-	int	    sc_cc;		/*   length */
-	char   *sc_data;		/*   data */
+	int	    sc_cc;		/* length */
+	char   *sc_data;		/* data */
 	char   *sc_realdata;	/*   real head of data */
 };
 #define	SCFREE(sc) \
@@ -259,8 +259,8 @@ struct SSAPtoken {		/* S-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	u_char  st_owned;		/* tokens owned by user */
 
 #define	ST_SIZE		512	/* PLEASE TOKEN only */
-	int	    st_cc;		/*   length */
-	char   *st_data;		/*   data */
+	int	    st_cc;		/* length */
+	char   *st_data;		/* data */
 };
 #define	STFREE(st) \
 { \
@@ -296,8 +296,8 @@ struct SSAPsync {		/* S-*-SYNC.{INDICATION,CONFIRMATION} */
 
 	/* sync data from peer */
 #define	SN_SIZE		512
-	int	    sn_cc;		/*   length */
-	char   *sn_data;		/*   data */
+	int	    sn_cc;		/* length */
+	char   *sn_data;		/* data */
 };
 #define	SNFREE(sn) \
 { \
@@ -329,8 +329,8 @@ struct SSAPactivity {		/* S-ACTIVITY-*.{INDICATION,CONFIRMATION} */
 
 	/* activity DATA from peer */
 #define	SV_SIZE		512
-	int	    sv_cc;		/*   length */
-	char   *sv_data;		/*   data */
+	int	    sv_cc;		/* length */
+	char   *sv_data;		/* data */
 };
 #define	SVFREE(sv) \
 { \
@@ -359,8 +359,8 @@ struct SSAPreport {		/* S-{U,P}-EXCEPTION-REPORT.INDICATION */
 
 	/* report DATA from peer */
 #define	SP_SIZE		512
-	int	    sp_cc;		/*   length */
-	char   *sp_data;		/*   data */
+	int	    sp_cc;		/* length */
+	char   *sp_data;		/* data */
 };
 #define	SPFREE(sp) \
 { \
@@ -372,8 +372,8 @@ struct SSAPreport {		/* S-{U,P}-EXCEPTION-REPORT.INDICATION */
 struct SSAPfinish {		/* S-RELEASE.INDICATION */
 	/* release DATA from peer */
 #define	SF_SIZE		512
-	int	    sf_cc;		/*   length */
-	char   *sf_data;		/*   data */
+	int	    sf_cc;		/* length */
+	char   *sf_data;		/* data */
 };
 #define	SFFREE(sf) \
 { \
@@ -388,8 +388,8 @@ struct SSAPrelease {		/* S-RELEASE.CONFIRMATION */
 
 	/* release DATA from peer */
 #define	SR_SIZE		512
-	int	    sr_cc;		/*   length */
-	char   *sr_data;		/*   data */
+	int	    sr_cc;		/* length */
+	char   *sr_data;		/* data */
 };
 #define	SRFREE(sr) \
 { \
@@ -411,7 +411,7 @@ struct SSAPabort {		/* S-{U,P}-ABORT.INDICATION */
 #define	SA_SIZE		512	/* N.B.: the ISO DIS says 9, but we use
 				   512 instead so ASE-level aborts will work
 				   reasonably */
-	int	    sa_cc;		/*   length */
+	int	    sa_cc;		/* length */
 	char   *sa_info;		/*   data (from the peer) */
 	char   *sa_realinfo;	/*   real head of data */
 	char    sa_prdata[512];	/*   data (for messages from provider) */

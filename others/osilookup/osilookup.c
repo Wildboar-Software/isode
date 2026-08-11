@@ -37,7 +37,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
 
 #if defined(SUNLINK_5_2) || defined(SUNLINK_6_0) || defined(SUNLINK_7_0)
 
-/*    SunLink OSI */
+/*    SunLink OSI */
 
 #ifndef	SUNLINK_6_0
 #include <sys/ieee802.h>
@@ -49,7 +49,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/others/osilookup/RCS/osilookup.
 #include <sunosi/mapds_user.h>
 
 
-/* ARGSUSED */
 
 main (int argc, char **argv, char **envp) {
 	int	    len,
@@ -124,7 +123,7 @@ int    n;
 
 #else
 
-/*   Not SunLink OSI */
+/*   Not SunLink OSI */
 
 main (argc, argv, envp)
 int	argc;

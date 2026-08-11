@@ -27,7 +27,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap2-lpp/RCS/ps2udp.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include <errno.h>
 #include <stdio.h>
@@ -46,7 +45,7 @@ static int  PUservice ();
 
 
 #define	MAXTRIES	 3		/* should be tailorable... */
-#define	WAITRIES	30		/*   .. */
+#define	WAITRIES	30		/* .. */
 
 
 int	udpopen (pb, calling, called, pi, async)
@@ -138,7 +137,6 @@ int	async;
 }
 
 
-/* ARGSUSED */
 
 char   *udpsave (fd, cp1, cp2, td)
 int	fd;

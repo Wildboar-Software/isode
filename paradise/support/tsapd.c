@@ -1532,7 +1532,6 @@ DN     *dn;
 
 
 #ifdef	BSD42
-/* ARGSUSED */
 #endif
 
 static SFD  hupser (sig)
@@ -1641,7 +1640,6 @@ static  envinit () {
 #endif
 }
 
-/*    ERRORS */
 
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <ctype.h>
 #include <stdio.h>
@@ -37,7 +36,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/compat/RCS/isoaddrs.c,v 9.0 199
 #include "internet.h"
 #include "tailor.h"
 
-/*    DATA */
 
 static void read_macros (void);
 static void read_file (char *file);
@@ -115,7 +113,7 @@ struct macro {
 static int inited = 0;
 static struct macro *Mbuckets[MBUCKETS];
 
-/*    MACROS */
+/* MACROS */
 
 static struct macro *
 name2macro (char *name) {
@@ -265,7 +263,7 @@ char *macro2str (char *name) {
 	return (m ? m -> m_value : NULLCP);
 }
 
-/*    STR2PADDR */
+/* STR2PADDR */
 
 #define	PS_INIT	0	/* <selector> or <network-address> */
 #define	PS_SEL1	1	/*   .. got one selector already */
@@ -991,7 +989,7 @@ out:
 	return OK;
 }
 
-/*    PADDR2STR */
+/* PADDR2STR */
 
 static char *SEL2STR (char *sel, int len) {
 	char  *cp,

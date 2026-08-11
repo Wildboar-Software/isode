@@ -69,7 +69,7 @@ int	apdu2_info ();
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
-	struct assocblk *acb_back;	/*   .. */
+	struct assocblk *acb_back;	/* .. */
 
 	int	    acb_fd;		/* session/presentation descriptor */
 
@@ -92,7 +92,7 @@ struct assocblk {
 #define	ACB_RTS		0x0400	/* RTS   .. */
 #define	ACB_ACS		0x0800	/* ACS   .. */
 #define	ACB_CLOSING	0x1000	/* waiting to close */
-#define	ACB_FINISH	0x2000	/*   .. */
+#define	ACB_FINISH	0x2000	/* .. */
 
 #define ACB_AUDT	0x8000  /* ROS maps to A.UNIT.DATA */
 

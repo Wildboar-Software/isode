@@ -91,7 +91,7 @@
 #define	vfork	fork
 #endif
 
-/*    STRINGS */
+/* STRINGS */
 
 #ifndef	BSDSTRS
 #define	index	strchr
@@ -125,15 +125,15 @@ char   *calloc (), *malloc (), *realloc ();
 #define	bzero(b,length)		(void) memset ((b), 0, (length))
 #endif
 
-/*    HEXIFY */
+/* HEXIFY */
 
 int	explode (), implode ();
 
-/*    SPRINTB */
+/* SPRINTB */
 
 char   *sprintb ();
 
-/*    STR2VEC */
+/* STR2VEC */
 
 #define	NVEC	100
 #define	NSLACK	10
@@ -143,18 +143,18 @@ char   *sprintb ();
 
 int	str2vecX ();
 
-/*    STR2ELEM */
+/* STR2ELEM */
 
 #define	NELEM	20
 
 int	str2elem ();
 
-/*    STR2SEL */
+/* STR2SEL */
 
 int	str2sel ();
 char   *sel2str ();
 
-/*    MISC */
+/* MISC */
 
 char   *sys_errname ();
 

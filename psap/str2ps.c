@@ -25,13 +25,11 @@ static char *rcsid = "$Header: /xtel/isode/isode/psap/RCS/str2ps.c,v 9.0 1992/06
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "psap.h"
 
 
-/* ARGSUSED */
 
 static int
 str_read (PS ps, PElementData data, PElementLen n, int in_line) {
@@ -49,7 +47,6 @@ str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 }
 
 
-/* ARGSUSED */
 
 static int
 str_write (PS ps, PElementData data, PElementLen n, int in_line) {

@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/pepsy/RCS/dec.c,v 9.0 1992/06/1
  */
 
 
-/* LINTLIBRARY */
 
 #include	<stdio.h>
 #include	"pepsy-driver.h"
@@ -73,8 +72,7 @@ static int fix_mem(char **parm, ptpe *p);
  */
 int
 dec_f (
-	/* ARGSUSED */
-	int typ,			/* which type it is */
+		int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE pe,
 	int explicit,

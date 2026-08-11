@@ -25,12 +25,10 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamerror.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "ftam.h"
 
-/*    DATA */
 
 static char *diag_gen[] = {
 	"No reason",

@@ -65,7 +65,6 @@ static int x, y, maxx;
 
 extern int two_passes;
 
-/* ARGSUSED */
 int
 photo_start (char *name) {
 	x = y = 0;
@@ -207,7 +206,6 @@ photo_white (int length) {
 }
 
 
-/* ARGSUSED */
 photo_line_end (line)
 bit_string * line;
 {
@@ -217,7 +215,6 @@ bit_string * line;
 	y++;
 }
 
-/* ARGSUSED */
 static int *silentExit (dis)
 Display *dis;
 {

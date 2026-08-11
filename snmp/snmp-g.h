@@ -47,7 +47,7 @@ struct snmpstat {
 	integer	s_generrs;
 	caddr_t    *s_enableauthentraps;
 #define	TRAPS_ENABLED	1			/* snmpEnableAuthenTraps */
-#define	TRAPS_DISABLED	2			/*   .. */
+#define	TRAPS_DISABLED	2			/* .. */
 #define	TRAPS_MAXVALUE	TRAPS_DISABLED
 };
 

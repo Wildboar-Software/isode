@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
@@ -34,7 +33,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/acsap/RCS/acsaprovider.c,v 9.0 
 #include "acpkt.h"
 #include "tailor.h"
 
-/*    PSAP interface */
+/*    PSAP interface */
 
 int
 ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa) {
@@ -99,13 +98,12 @@ ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, char *event, stru
 	}
 }
 
-/*    INTERNAL */
+/* INTERNAL */
 
 /*
    Owing to laziness on our part, we use only ASN.1 transfer syntax.
  */
 
-/* ARGSUSED */
 
 struct type_ACS_Association__information *
 info2apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata) {
@@ -147,7 +145,6 @@ out:
 }
 
 
-/* ARGSUSED */
 
 int
 apdu2info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata) {

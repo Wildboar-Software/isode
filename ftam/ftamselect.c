@@ -25,13 +25,12 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftamselect.c,v 9.0 199
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
 
-/*    map ftam descriptors for select() */
+/*    map ftam descriptors for select() */
 
 int
 FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti) {

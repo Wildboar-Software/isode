@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ftam/RCS/ftambits.c,v 9.0 1992/
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "fpkt.h"
@@ -54,7 +53,6 @@ no_mem:
 }
 
 
-/* ARGSUSED */
 
 int
 fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti) {

@@ -64,7 +64,6 @@
 #endif
 #endif
 
-/*    DATA */
 
 static int count = 1;
 int	length = 536;
@@ -86,9 +85,8 @@ static char *myname = "ryinitiator";
 
 extern char *isodeversion;
 
-/*    INITIATOR */
+/* INITIATOR */
 
-/* ARGSUSED */
 
 ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
 int	argc;
@@ -285,7 +283,7 @@ IFP	quit;
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-/*    INVOKE */
+/* INVOKE */
 
 static
 invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
@@ -359,7 +357,7 @@ out:
 		(*ds -> ds_free) (in);
 }
 
-/*    INTERACTIVE */
+/* INTERACTIVE */
 
 static int
 _getline (char *buffer) {
@@ -396,7 +394,7 @@ _getline (char *buffer) {
 	return OK;
 }
 
-/*    TIMER */
+/* TIMER */
 
 #ifdef	TIMER
 
@@ -480,7 +478,6 @@ timer (int bytes, int pkts) {
 #endif
 
 
-/* ARGSUSED */
 
 static int    timing_result (sd, id, dummy, result, roi)
 int	sd,
@@ -492,7 +489,6 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-/*    ERRORS */
 
 void
 ros_adios (struct RoSAPpreject *rop, char *event) {

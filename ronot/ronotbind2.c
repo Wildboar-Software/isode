@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind2.c,v 9.0 19
  */
 
 
-/* LINTLIBRARY */
 
 #include "tailor.h"
 #include "logger.h"
@@ -33,9 +32,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/ronot/RCS/ronotbind2.c,v 9.0 19
 #include "RONOT-types.h"
 
 
-/*    RO-BIND.INDICATION */
+/* RO-BIND.INDICATION */
 
-/* ARGSUSED */
 
 int
 RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
@@ -97,7 +95,7 @@ ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	return (OK);
 }
 
-/*    RO-BIND.RESULT */
+/* RO-BIND.RESULT */
 
 int	  RoBindResult (sd, context, respondtitle, respondaddr, ctxlist,
 					defctxresult, prequirements, srequirements, isn, settings,
@@ -159,7 +157,7 @@ struct RoNOTindication	* rni;
 	return (result);
 }
 
-/*    RO-BIND.ERROR */
+/* RO-BIND.ERROR */
 
 int	  RoBindError (sd, context, respondtitle,
 				   respondaddr, ctxlist, defctxresult, prequirements,

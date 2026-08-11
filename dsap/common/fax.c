@@ -37,7 +37,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/dsap/common/RCS/fax.c,v 9.0 199
 		123-4567 $ twoDimensional
 */
 
-/* LINTLIBRARY */
 
 #include "quipu/util.h"
 #include "quipu/entry.h"

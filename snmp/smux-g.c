@@ -32,7 +32,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux-g.c,v 9.0 1992/06
 #endif
 #include "smux-g.h"
 
-/*    SMUX GROUP */
+/*    SMUX GROUP */
 
 #ifdef	SMUX
 #define	smuxPindex	0
@@ -41,8 +41,8 @@ static char *rcsid = "$Header: /xtel/isode/isode/snmp/RCS/smux-g.c,v 9.0 1992/06
 #define	smuxPstatus	3
 
 #define	PB_VALID	1		/* smuxPstatus */
-#define	PB_INVALID	2		/*   .. */
-#define	PB_CONNECTING	3		/*   .. */
+#define	PB_INVALID	2		/* .. */
+#define	PB_CONNECTING	3		/* .. */
 
 
 static int  o_smuxPeer (oi, v, offset)
@@ -214,7 +214,7 @@ int	offset;
 #define	smuxTstatus	3
 
 #define	TB_VALID	1		/* smuxTstatus */
-#define	TB_INVALID	2		/*   .. */
+#define	TB_INVALID	2		/* .. */
 
 static struct smuxTree *get_tbent ();
 

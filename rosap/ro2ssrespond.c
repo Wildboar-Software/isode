@@ -28,7 +28,6 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssrespond.c,v 9.0 
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "../acsap/OACS-types.h"
@@ -36,7 +35,7 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosap/RCS/ro2ssrespond.c,v 9.0 
 #include "tailor.h"
 #include "internet.h"
 
-/*    RO-BEGIN.INDICATION */
+/* RO-BEGIN.INDICATION */
 
 int
 RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi) {
@@ -137,7 +136,7 @@ out1:
 	return NOTOK;
 }
 
-/*    RO-BEGIN.RESPONSE */
+/* RO-BEGIN.RESPONSE */
 
 int
 RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi) {

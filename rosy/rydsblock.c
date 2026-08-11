@@ -25,18 +25,16 @@ static char *rcsid = "$Header: /xtel/isode/isode/rosy/RCS/rydsblock.c,v 9.0 1992
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include "rosy.h"
 
-/*    DATA */
 
 static int  once_only = 0;
 static struct dspblk dspque;
 static struct dspblk *DSHead = &dspque;
 
-/*    DISPATCH BLOCKS */
+/*    DISPATCH BLOCKS */
 
 struct dspblk  *newdsblk (sd, ryo)
 int	sd;

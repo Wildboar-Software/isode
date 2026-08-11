@@ -25,7 +25,6 @@ static char *rcsid = "$Header: /f/iso/rosap/RCS/rosaplose.c,v 5.0 88/07/21 14:56
  */
 
 
-/* LINTLIBRARY */
 
 #include <stdio.h>
 #include <stdarg.h>
