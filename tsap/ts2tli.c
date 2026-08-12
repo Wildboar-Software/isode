@@ -117,8 +117,7 @@ int te;
 	return tbuf;
 }
 
-static
-tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str) {
+static tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str) {
 	int eindex = errno;
 	int tindex = t_errno;
 	tsaplose (td, reason, sys_terrname (t_errno), str);
@@ -130,8 +129,7 @@ tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str) {
 }
 
 #ifdef RTnet_R02
-static int
-tp4err2gen (int err) {
+static int tp4err2gen (int err) {
 	int ret;
 
 	switch (err & 0xff) {
@@ -170,8 +168,7 @@ tp4err2gen (int err) {
 #endif
 
 /* open and bind an endpoint */
-static int
-tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context) {
+static int tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context) {
 	int fd;
 	char * tli_dev = tli_clts_dev;
 	struct NSAPinfo *ni;
@@ -259,8 +256,7 @@ out:
  *	whether t_getinfo() return defaults or current values once a
  *	connection is established.
  */
-static int
-tp4info (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int tp4info (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	struct t_info info;
 	int	    len;
 
@@ -294,8 +290,7 @@ tp4info (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-static int
-tp4getdis (int fd, struct TSAPdisconnect *td) {
+static int tp4getdis (int fd, struct TSAPdisconnect *td) {
 	struct t_discon *discon;
 
 	discon = (struct t_discon *)t_alloc (fd, T_DIS, T_ALL);
@@ -324,8 +319,7 @@ out:
 
 /*    UPPER HALF */
 
-static int
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	struct t_call *sndcall;
 	struct t_call *rcvcall;
 	struct TSAPaddr ta;
@@ -450,8 +444,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	return DONE;
 }
 
-static int
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	struct t_call *call;
 
 	if (tb->tb_cc == -1) { /* call not yet connected */
@@ -540,8 +533,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    i;
 
 	DLOG (tsap_log, LLOG_DEBUG, ("TStart: \"%s\"", cp));
@@ -572,8 +564,7 @@ TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnec
  * ISODE doesn't quite fit the TLI model here....
  */
 
-static int
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	struct t_call *call;
 	int result;
 
@@ -632,8 +623,7 @@ reject: {
 	}
 }
 
-static int
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int cc;
 	int	async;
 	int	    flags;
@@ -788,8 +778,7 @@ done:
 	return OK;
 }
 
-static int
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;
@@ -839,8 +828,7 @@ out:
 	return result;
 }
 
-static int
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int	    cc;
 	struct qbuf *qb;
 	static struct qbuf *spare_qb = 0;
@@ -962,8 +950,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result = OK;
 	struct t_call *call;
 
@@ -982,8 +969,7 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-static int
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
+static int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct t_call *call;
 
 	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
@@ -1046,8 +1032,7 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-static int
-retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
 
 	FD_ZERO (&mask);

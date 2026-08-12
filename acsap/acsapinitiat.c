@@ -55,8 +55,7 @@ int AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct P
 	return result;
 }
 
-static int
-AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
+static int AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
 	int    i;
 	int	    result;
 	PE	    pe;
@@ -286,8 +285,7 @@ int AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication
 	return result;
 }
 
-static int
-AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
+static int AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
 	int    i;
 	int	    result;
 	PE	    pe;

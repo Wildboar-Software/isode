@@ -46,8 +46,7 @@ int pe2pl (PS ps, PE pe) {
 	return result;
 }
 
-static int
-pe2pl_aux (PS ps, PE pe, int level) {
+static int pe2pl_aux (PS ps, PE pe, int level) {
 	int    i,
 		   ia5,
 		   ia5ok;

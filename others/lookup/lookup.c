@@ -52,8 +52,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* ARGUMENTS */
 
-static int
-do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg) {
+static int do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg) {
 	char   *cp;
 
 	if ((cp = *args++) == NULL) {
@@ -67,8 +66,7 @@ do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLoo
 	return OK;
 }
 
-static int
-do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg) {
+static int do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg) {
 	char   *cp;
 
 	if ((cp = *args++) == NULL) {
@@ -125,8 +123,7 @@ caddr_t *dummy;
 
 /* RESULTS */
 
-static int
-lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi) {
+static int lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi) {
 	print_qb (result -> name);
 	putchar (':');
 	print_qb (result -> passwd);
@@ -141,8 +138,7 @@ lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *res
 	return OK;
 }
 
-static
-print_qb (struct qbuf *q) {
+static print_qb (struct qbuf *q) {
 	struct qbuf *p;
 
 	if (q == NULL)

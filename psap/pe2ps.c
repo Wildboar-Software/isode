@@ -29,8 +29,7 @@ int pe2ps_aux (PS ps, PE pe, int eval) {
 	return result;
 }
 
-static int
-pe2ps_aux2 (PS ps, PE pe, int eval) {
+static int pe2ps_aux2 (PS ps, PE pe, int eval) {
 	PE	    p;
 
 	if (pe -> pe_form == PE_FORM_ICONS) {

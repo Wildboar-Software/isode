@@ -435,8 +435,7 @@ struct sigcontext *sc;
 }
 
 #ifndef	SIGPOLL
-static int
-TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int     i,
 			nfds;
 	fd_set  mask;
@@ -510,8 +509,7 @@ TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #include <sys/stropts.h>
 #endif
 
-static int
-TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    result;
 #ifndef	SUNOS4
 	int	    pgrp;

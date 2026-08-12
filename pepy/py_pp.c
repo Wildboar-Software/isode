@@ -124,8 +124,7 @@ static void  adios (char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-static void
-adios (char *what, char *fmt) {
+static void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -157,8 +156,7 @@ static void  _advise (char* what, char* fmt, va_list ap) {
 #else
 /* VARARGS */
 
-static void
-advise (char *what, char *fmt) {
+static void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

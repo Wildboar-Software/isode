@@ -496,8 +496,7 @@ isodetailor (char *myname, int wantuser) {
 	isodexport (myname);
 }
 
-static int
-tailor_read (char *file) {
+static int tailor_read (char *file) {
 	char  *bp,
 		  *cp;
 	char    buffer[BUFSIZ];
@@ -926,8 +925,7 @@ tailor_value (char *s) {
 	return bp;
 }
 
-static int
-events_value (struct pair *pairs, char *s, char *var) {
+static int events_value (struct pair *pairs, char *s, char *var) {
 	int     value;
 	char  *cp,
 		  **ap;

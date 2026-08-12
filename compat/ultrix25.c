@@ -504,8 +504,7 @@ int log_call_clear (int fd, int type) {
 
 #ifdef  DEBUG
 
-static int
-log_x25_facilities (int fd, int coc, char *caption) {
+static int log_x25_facilities (int fd, int coc, char *caption) {
 	int	stat;
 
 	enc_buf_len = sizeof(enc_buf);

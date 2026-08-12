@@ -32,8 +32,7 @@ int ronotlose (struct RoNOTindication *rni, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_ronotlose (  /* what, fmt, args ... */
+static int _ronotlose (  /* what, fmt, args ... */
 	struct RoNOTindication *rni,
 	int reason,
 	va_list ap

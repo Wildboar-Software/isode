@@ -238,8 +238,7 @@ int dsa_wait (int secs) {
 } /* dsa_wait */
 
 #ifdef QUIPU_CONSOLE
-static void
-connecting_analyse (struct connection *cn) {
+static void connecting_analyse (struct connection *cn) {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
 	AttributeValue oc_av ;
@@ -498,8 +497,7 @@ closing_analyse (struct connection *cn) {
 #endif
 }
 
-static void
-print_connlist (struct connection *conn) {
+static void print_connlist (struct connection *conn) {
 	fprintf(stderr, "***** SPT: ctx %d\n", conn->cn_ctx) ;
 }
 #endif /* QUIPU_CONSOLE */

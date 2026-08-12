@@ -39,8 +39,7 @@ static struct la_cache {
 	OID	oid;
 } Cache[ODECACHESIZE];
 
-static void
-preloadcache (char *str) {
+static void preloadcache (char *str) {
 	struct la_cache *cp = &Cache[0];
 	struct isobject *io;
 

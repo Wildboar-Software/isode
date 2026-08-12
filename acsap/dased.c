@@ -620,8 +620,7 @@ out:
 	return dns;
 }
 
-static int
-dns_compar (struct dn_seq **a, struct dn_seq **b) {
+static int dns_compar (struct dn_seq **a, struct dn_seq **b) {
 	int	    i;
 	DN	    adn,
 	 bdn;
@@ -874,8 +873,7 @@ static void    adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void
-adios (char *what, char *fmt) {
+static void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -894,21 +892,18 @@ static void    advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void
-advise (int code, char *what, char *fmt) {
+static void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
-static void
-ts_adios (struct TSAPdisconnect *td, char *event) {
+static void ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
 
-static void
-ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)

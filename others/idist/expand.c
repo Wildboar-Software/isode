@@ -233,8 +233,7 @@ int expstr (char *s) {
 	sort();
 }
 
-static
-argcmp (char **a1, char **a2) {
+static argcmp (char **a1, char **a2) {
 
 	return (strcmp(*a1, *a2));
 }

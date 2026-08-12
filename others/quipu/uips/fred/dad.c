@@ -186,8 +186,7 @@ int	i;
 	}
 }
 
-static
-dadser (int fd, struct sockaddr_in *isock) {
+static dadser (int fd, struct sockaddr_in *isock) {
 	int	    i,
 			nfds;
 	char   buffer[BUFSIZ],
@@ -362,14 +361,12 @@ static int  _da_response (char *fmt, va_list ap)
 #else
 /* VARARGS1 */
 
-static
-da_response (int fd, char *fmt) {
+static da_response (int fd, char *fmt) {
 	da_response (fd, fmt);
 }
 #endif
 
-static int
-start_dish (int binding) {
+static int start_dish (int binding) {
 	int	    ntries,
 			vecp;
 	char    buffer[BUFSIZ],
@@ -450,8 +447,7 @@ fork_again:
 	return (dishpid != NOTOK ? OK : NOTOK);
 }
 
-static
-rcfile () {
+static rcfile () {
 	char   *bp;
 	char    buffer[BUFSIZ],
 	command[BUFSIZ],
@@ -496,8 +492,7 @@ failed:
 		goto failed;
 }
 
-static int
-rcpipe (char *command) {
+static int rcpipe (char *command) {
 	int	    cc,
 			len,
 			result,
@@ -568,8 +563,7 @@ struct sigcontext *sc;
 }
 #endif
 
-static void
-arginit (char **vec) {
+static void arginit (char **vec) {
 	int	    port;
 	char  *ap;
 	struct sockaddr_in *lsock = &lo_socket;
@@ -623,8 +617,7 @@ arginit (char **vec) {
 	}
 }
 
-static void
-envinit () {
+static void envinit () {
 	int     i,
 	sd;
 

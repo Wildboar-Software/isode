@@ -37,8 +37,7 @@ int daplose (struct DAPindication *di, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_daplose (  /* what, fmt, args ... */
+static int _daplose (  /* what, fmt, args ... */
 	struct DAPindication *di,
 	int reason,
 	va_list ap
@@ -93,8 +92,7 @@ int dapreject (struct DAPindication *di, int reason, int id, char *what, char *f
 #endif
 
 #ifndef	lint
-static int
-_dapreject (  /* what, fmt, args ... */
+static int _dapreject (  /* what, fmt, args ... */
 	struct DAPindication *di,
 	int reason,
 	int id,

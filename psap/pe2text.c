@@ -8,8 +8,7 @@
 
 /* logfile-backed abstract for PStreams */
 
-static int
-ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
+static int ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	LLog    *lp = (LLog *) ps -> ps_addr;
 
 	if (lp -> ll_stat & LLOGTTY) {
@@ -30,8 +29,7 @@ ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	return write (lp -> ll_fd, (char *) data, (int) n);
 }
 
-static int
-ll_psopen (PS ps) {
+static int ll_psopen (PS ps) {
 	ps -> ps_writeP = ll_pswrite;
 
 	return OK;

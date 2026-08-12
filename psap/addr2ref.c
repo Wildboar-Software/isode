@@ -41,8 +41,7 @@ addr2ref (char *addr) {
 	return sr;
 }
 
-static int
-stuff (PE pe, char *dbase, u_char *dlen) {
+static int stuff (PE pe, char *dbase, u_char *dlen) {
 	int     len;
 	char   *base;
 

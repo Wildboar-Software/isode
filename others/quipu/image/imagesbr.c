@@ -381,8 +381,7 @@ free_filter:
 	return pe;
 }
 
-static
-do_bind () {
+static do_bind () {
 	struct ds_bind_arg bind_arg,
 		bind_result;
 	struct ds_bind_arg *ba = &bind_arg,

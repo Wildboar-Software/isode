@@ -40,8 +40,7 @@ static struct pair facc[] = { { 01, "--x" }, { 02, "-w-" }, { 03, "-wx" },
 	{ 07, "rwx" }, { 00, "---" }
 };
 
-static void
-mode2str (int m, char *mstr) {
+static void mode2str (int m, char *mstr) {
 	u_short v;
 	struct pair *pp;
 

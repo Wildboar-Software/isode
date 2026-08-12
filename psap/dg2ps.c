@@ -20,8 +20,7 @@ struct ps_dg {
 
 extern	IFP	set_check_fd ();
 
-static int
-dg_prime (PS ps, int waiting) {
+static int dg_prime (PS ps, int waiting) {
 	struct qbuf *qb;
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
@@ -62,8 +61,7 @@ dg_prime (PS ps, int waiting) {
 	return OK;
 }
 
-static int
-dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
+static int dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
@@ -79,8 +77,7 @@ dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	return cc;
 }
 
-static int
-dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
+static int dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	struct ps_inout *po = &pt -> ps_output;
 
@@ -93,8 +90,7 @@ dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	return n;
 }
 
-static int
-dg_flush (PS ps) {
+static int dg_flush (PS ps) {
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 	struct ps_inout *po = &pt -> ps_output;
 	struct qbuf *qb = po -> pio_qb;
@@ -108,8 +104,7 @@ dg_flush (PS ps) {
 	return OK;
 }
 
-static int
-dg_close (PS ps) {
+static int dg_close (PS ps) {
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;
 
 	if (pt == NULL)
@@ -127,8 +122,7 @@ dg_close (PS ps) {
 	return OK;
 }
 
-static int
-dg_check (int fd, caddr_t data) {
+static int dg_check (int fd, caddr_t data) {
 	int	    n;
 	PS	    ps = (PS) data;
 	struct ps_dg *pt = (struct ps_dg *) ps -> ps_addr;

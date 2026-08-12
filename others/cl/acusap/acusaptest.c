@@ -451,8 +451,7 @@ int audtrebind ()
 }
 
 /*-------------------------------------*/
-static
-printsrv (
+static printsrv (
 	/*-------------------------------------*/
 	struct isoservent *is
 ) {
@@ -469,8 +468,7 @@ printsrv (
 }
 
 /*-------------------------------------*/
-static
-printpaddr (
+static printpaddr (
 	/*-------------------------------------*/
 	struct PSAPaddr *pa
 ) {

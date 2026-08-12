@@ -93,8 +93,7 @@ int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm
 	return result;
 }
 
-static int
-dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
+static int dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	struct SSAPaddr *sa = &pa -> pa_addr;
 	struct TSAPaddr *ta = &sa -> sa_addr;
 	struct member_DSE_0 *nDSE;
@@ -129,8 +128,7 @@ dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	return OK;
 }
 
-static int
-gstring (char *buf, int buflen, struct qbuf *qb, char *w) {
+static int gstring (char *buf, int buflen, struct qbuf *qb, char *w) {
 	char   *p;
 
 	if (qb == NULL || qb -> qb_len <= 0)

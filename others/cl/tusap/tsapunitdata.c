@@ -1076,8 +1076,7 @@ int    *nfds;
  ****************************************************************
  */
 
-static int
-UNITDATAser (int sig, long code, struct sigcontext *sc)
+static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 {
 
@@ -1165,8 +1164,7 @@ UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 #ifndef	SIGPOLL
 
-static int
-TUnitDataWakeUp (struct tsapblk *tb)
+static int TUnitDataWakeUp (struct tsapblk *tb)
 
 {
 	int     i,

@@ -181,8 +181,7 @@ static void read_file (char *file) {
 	fclose (fp);
 }
 
-static int
-add_macro (char *name, char *value) {
+static int add_macro (char *name, char *value) {
 	int	    i;
 	char  *cp;
 	char    buffer[BUFSIZ];

@@ -205,8 +205,7 @@ static struct pair pairs[] = {
 
 static struct pair *n2p ();
 
-static
-read_config () {
+static read_config () {
 	int	    lineno;
 	char *cp,
 	*dp;
@@ -617,8 +616,7 @@ read_country (char *code) {
 	return c;
 }
 
-static
-read_psap (char *dsa, char **addr) {
+static read_psap (char *dsa, char **addr) {
 	int	    i;
 	char *cp,
 		 *dp;
@@ -748,8 +746,7 @@ no_match:
 
 /* EDB */
 
-static
-build_root () {
+static build_root () {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)
@@ -812,8 +809,7 @@ static char *c_TLC[] = {
 	NULL
 };
 
-static
-build_TLC () {
+static build_TLC () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s", wildlife,
@@ -851,8 +847,7 @@ static char *o_I[] = {
 	NULL
 };
 
-static
-build_organization () {
+static build_organization () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s", wildlife,
@@ -886,8 +881,7 @@ static char *u_J[] = {
 	NULL
 };
 
-static
-build_unit () {
+static build_unit () {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
@@ -897,8 +891,7 @@ build_unit () {
 	make_edb (buffer, "MASTER", version (), u_J);
 }
 
-static
-make_edb (char *dir, char *type, char *date, char *entries[]) {
+static make_edb (char *dir, char *type, char *date, char *entries[]) {
 	char    edb[BUFSIZ];
 	FILE   *fp;
 
@@ -938,23 +931,19 @@ version () {
 
 /* FILES */
 
-static
-build_tailor () {
+static build_tailor () {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
-static
-build_startup () {
+static build_startup () {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
-static
-build_nightly () {
+static build_nightly () {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
-static
-make_file (char *infile, char *outfile, int mode, int dosed) {
+static make_file (char *infile, char *outfile, int mode, int dosed) {
 	char    buffer[BUFSIZ];
 
 	if (dosed)
@@ -979,19 +968,16 @@ make_file (char *infile, char *outfile, int mode, int dosed) {
 
 /* SED */
 
-static
-build_dsap () {
+static build_dsap () {
 	fudge_file ("dsaptailor");
 }
 
-static
-build_fred () {
+static build_fred () {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
 
-static
-fudge_file (char *name) {
+static fudge_file (char *name) {
 	char   buffer[BUFSIZ],
 		   file[BUFSIZ],
 		   oldfil[BUFSIZ],
@@ -1020,8 +1006,7 @@ fudge_file (char *name) {
 
 /* ARGINIT */
 
-static
-arginit (char **vec) {
+static arginit (char **vec) {
 	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
@@ -1065,8 +1050,7 @@ usage:
 		goto usage;
 }
 
-static
-parse_3166 () {
+static parse_3166 () {
 	int	    bitno;
 	unsigned int bits_size;
 	char *cp,
@@ -1143,8 +1127,7 @@ parse_3166 () {
 	fclose (fp);
 }
 
-static
-table_3166 () {
+static table_3166 () {
 	char *cp,
 	*dp;
 	char    d,
@@ -1218,8 +1201,7 @@ static void  adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void
-adios (char *what, char *fmt) {
+static void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -1251,8 +1233,7 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-static void
-advise (char *what, char *fmt) {
+static void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

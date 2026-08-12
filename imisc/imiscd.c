@@ -548,8 +548,7 @@ int	rand (), srand ();
 				|| i >= a * b + (1 - b)) \
 			    return NOTOK;
 
-static int
-pwdgen (char *pw) {
+static int pwdgen (char *pw) {
 	int    i,
 		   j;
 	char   c,
@@ -623,8 +622,7 @@ static struct obj {
 	NULL, 0
 };
 
-static int
-object (char *pw) {
+static int object (char *pw) {
 	int    n;
 	char  *f,
 		  *s;
@@ -941,8 +939,7 @@ out:
 	return result;
 }
 
-static int
-do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
+static int do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
 			pid;
 	char   *bp,
@@ -1013,8 +1010,7 @@ struct RoSAPindication *roi;
 
 /* ERROR */
 
-static int
-error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -1023,8 +1019,7 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 
 /* U-REJECT */
 
-static int
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

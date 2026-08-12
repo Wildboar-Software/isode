@@ -40,8 +40,7 @@ int RoResultRequest (int sd, int invokeID, int op, PE result, int priority, stru
 	return status;
 }
 
-static int
-RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
+static int RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
 	PE pe,
 	p,
 	q;

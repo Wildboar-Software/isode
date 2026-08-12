@@ -113,8 +113,7 @@ init_query_engine (int argc, char *argv[]) {
  *
  *
  */
-static void
-read_quipurc () {
+static void read_quipurc () {
 	extern char *SkipSpace(), *TidyString(), *getenv();
 	char quipurc_path[LINESIZE], line[LINESIZE];
 	char *quipurc_name = "/.quipurc";
@@ -188,8 +187,7 @@ read_quipurc () {
  * Parse command line args.
  *
  */
-static void
-read_args (int argc, char *argv[]) {
+static void read_args (int argc, char *argv[]) {
 	char *argstr;
 
 	if (argc <= 1) return;

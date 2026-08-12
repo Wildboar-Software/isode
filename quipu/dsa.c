@@ -341,8 +341,7 @@ clean_exit (int x) {
 
 #ifdef NOT_ANY_MORE
 
-static int
-check_conns (int secs) {
+static int check_conns (int secs) {
 	struct connection		* cn;
 	int result = TRUE;
 	struct PSAPaddr * pa;

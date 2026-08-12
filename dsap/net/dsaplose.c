@@ -86,8 +86,7 @@ int dsapreject (struct DSAPindication *di, int reason, int id, char *what, char 
 #endif
 
 #ifndef	lint
-static int
-_dsapreject (  /* what, fmt, args ... */
+static int _dsapreject (  /* what, fmt, args ... */
 	struct DSAPindication *di,
 	int reason,
 	int id,

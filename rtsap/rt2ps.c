@@ -578,8 +578,7 @@ out:
 
 /*    PSAP interface */
 
-static int
-doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti) {
+static int doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti) {
 	unsigned int    i;
 	char  *dp;
 	PE	    pe;
@@ -668,8 +667,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti) {
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti) {
 	PE	    pe;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -757,8 +755,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti) {
+static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -807,8 +804,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti) {
+static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -954,8 +950,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti) {
+static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -1001,8 +996,7 @@ out1:
 	return NOTOK;
 }
 
-static int
-doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti) {
+static int doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti) {
 	struct AcSAPindication acis;
 	struct AcSAPabort *aca = &acis.aci_abort;
 
@@ -1039,8 +1033,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti) {
+static int doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti) {
 	struct AcSAPindication  acis;
 	struct AcSAPabort *aca = &acis.aci_abort;
 

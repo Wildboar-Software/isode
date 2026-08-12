@@ -130,8 +130,7 @@ int ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_ssaplose (	/* what, fmt, args ... */
+static int _ssaplose (	/* what, fmt, args ... */
 	struct SSAPindication *si,
 	int reason,
 	va_list ap

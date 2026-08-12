@@ -84,8 +84,7 @@ int main (int argc, char **argv, char **envp) {
 	return (0);
 }
 
-static
-fetch_face (char *host, char *user) {
+static fetch_face (char *host, char *user) {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
 		LLOG (pgm_log, LLOG_NOTICE,
 			  ("no image for \"%s\" \"%s\"", user, host));
@@ -94,8 +93,7 @@ fetch_face (char *host, char *user) {
 		display_X ();
 }
 
-static int
-_getline (char *buffer) {
+static int _getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -130,8 +128,7 @@ _getline (char *buffer) {
 
 /* ARGINIT */
 
-static
-arginit (char **vec) {
+static arginit (char **vec) {
 	int	    n;
 	char  *ap,
 		  *cp;
@@ -205,8 +202,7 @@ arginit (char **vec) {
 	SCRN = DefaultScreen (DISP);
 }
 
-static
-envinit () {
+static envinit () {
 	int     i,
 	pid;
 
@@ -227,8 +223,7 @@ envinit () {
 	ll_hdinit (pgm_log, myname);
 }
 
-static
-display_X () {
+static display_X () {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -320,8 +315,7 @@ display_X () {
 	XWINser (0);
 }
 
-static
-Redisplay () {
+static Redisplay () {
 	int     sx,
 	sy,
 	dx,
@@ -362,8 +356,7 @@ Redisplay () {
 	XDestroyImage (image);
 }
 
-static int
-ALRMser () {
+static int ALRMser () {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);
@@ -375,8 +368,7 @@ ALRMser () {
 		myim = NULL;
 }
 
-static int
-XWINser (int io) {
+static int XWINser (int io) {
 	int	    ww,
 			wh;
 	XEvent   xevent;

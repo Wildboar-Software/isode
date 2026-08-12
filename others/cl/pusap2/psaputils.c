@@ -546,8 +546,7 @@ int pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 
 #ifndef	lint
 /*----------------------------------------------------------------------------*/
-static int
-_pusaplose (	/* what, fmt, args ... */
+static int _pusaplose (	/* what, fmt, args ... */
 	/*----------------------------------------------------------------------------*/
 	struct PSAPindication *pi,
 	int reason,

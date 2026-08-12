@@ -296,8 +296,7 @@ int yydebug;			/*  nonzero means print parse trace	*/
 
 /* This is the most reliable way to avoid incompatibilities
    in available built-in functions on various systems.  */
-static void
-__yy_bcopy (from, to, count)
+static void __yy_bcopy (from, to, count)
 char *from;
 char *to;
 int count;
@@ -314,8 +313,7 @@ int count;
 
 /* This is the most reliable way to avoid incompatibilities
    in available built-in functions on various systems.  */
-static void
-__yy_bcopy (char *from, char *to, int count) {
+static void __yy_bcopy (char *from, char *to, int count) {
 	char *f = from;
 	char *t = to;
 	int i = count;
@@ -808,8 +806,7 @@ yyerrhandle:
 }
 #line 100 "config.b"
 
-static int
-yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {
+static int yylex (YYSTYPE *lvalp, YYLTYPE *llocp) {
 	int c;
 	QCardinal count = 0;
 	FILE *lexfile = config_file;

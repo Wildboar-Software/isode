@@ -40,8 +40,7 @@ static PE build_bind_arg ();
 static int check_accept ();
 static int handle_reject ();
 
-static int
-TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
+static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	int     sd;
 	struct TSAPstart tss;
 	struct TSAPstart  *ts = &tss;
@@ -341,8 +340,7 @@ struct RoSAPindication *roi;
 
 /* 3.4.3 Packet procedure */
 
-static void
-process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer) {
+static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer) {
 	double t1, t2, t3, t4, offset, delay;
 	short duplicate, bogus;
 
@@ -573,8 +571,7 @@ int recv_osi (struct intf *ap, struct timeval *tvp) {
 	return 0;
 }
 
-static void
-ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi) {
+static void ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi) {
 	int	    result;
 
 	switch (roi -> roi_type) {
@@ -638,8 +635,7 @@ ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi) {
 	}
 }
 
-static void
-terminate (struct intf *ap, struct RoSAPindication *roi) {
+static void terminate (struct intf *ap, struct RoSAPindication *roi) {
 	struct AcSAPindication  acsis;
 	extern struct list peer_list;
 	struct ntp_peer *peer;
@@ -889,8 +885,7 @@ int iso_accept (struct intf *ap) {
 	return OK;
 }
 
-static int
-bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg) {
+static int bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg) {
 	PE	pe;
 	struct PSAPstart *ps = &acs -> acs_start;
 	struct type_NTP_BindError *binderr;
@@ -1025,8 +1020,7 @@ int make_osi_conn (struct ntp_peer *peer, char *addr) {
 	return result == DONE ? OK : NOTOK;
 }
 
-static int
-acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi) {
+static int acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi) {
 	int	    sd;
 	struct SSAPref sfs;
 	struct SSAPref *sf;
@@ -1124,8 +1118,7 @@ acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi) {
 	return NOTOK;
 }
 
-static int
-check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer) {
+static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer) {
 	struct RoSAPindication rois;
 	struct RoSAPindication *roi = &rois;
 	struct RoSAPpreject *rop = &roi -> roi_preject;
@@ -1216,8 +1209,7 @@ struct ntp_peer *peer;
 	return pe;
 }
 
-static int
-acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi) {
+static int acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi) {
 	struct AcSAPconnect accs;
 	struct AcSAPconnect   *acc = &accs;
 	struct AcSAPindication  acis;
@@ -1252,8 +1244,7 @@ acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi) {
 	return NOTOK;
 }
 
-static int
-handle_reject (struct AcSAPconnect *acc, struct intf *ap) {
+static int handle_reject (struct AcSAPconnect *acc, struct intf *ap) {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
@@ -1405,8 +1396,7 @@ ul_fixed_to_doublep (struct l_fixedpt *t) {
 }
 
 #ifdef	SUN_FLT_BUG
-static void
-tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
+static void tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
 	int tt;
 	double dd;
 
@@ -1416,8 +1406,7 @@ tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
 	stampp->fraction = tt << 1;
 }
 #else
-static void
-tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
+static void tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
 	stampp->int_part = JAN_1970 + tvp->tv_sec;
 	stampp->fraction = (float) tvp->tv_usec * 4294.967295;
 }

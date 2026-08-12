@@ -100,8 +100,7 @@ IFP	start,
 	return 0;
 }
 
-static int
-ros_init (int vecp, char **vec) {
+static int ros_init (int vecp, char **vec) {
 	int	    reply,
 			result,
 			sd;
@@ -155,8 +154,7 @@ ros_init (int vecp, char **vec) {
 	return sd;
 }
 
-static int
-ros_work (int fd) {
+static int ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -193,8 +191,7 @@ ros_work (int fd) {
 	return OK;
 }
 
-static int
-ros_indication (int sd, struct RoSAPindication *roi) {
+static int ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -256,8 +253,7 @@ ros_indication (int sd, struct RoSAPindication *roi) {
 	}
 }
 
-static int
-ros_lose (struct TSAPdisconnect *td) {
+static int ros_lose (struct TSAPdisconnect *td) {
 	if (td -> td_cc > 0)
 		adios (NULLCP, "TNetAccept: [%s] %*.*s",
 			   TErrString (td -> td_reason), td -> td_cc, td -> td_cc,

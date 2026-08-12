@@ -57,8 +57,7 @@ str2pe (char *s, int len, int *advance, int *result) {
 	return pe;
 }
 
-static int
-str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result) {
+static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result) {
 	int i,
 		len;
 	char *s;

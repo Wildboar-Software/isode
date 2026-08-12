@@ -142,8 +142,7 @@ int printPersonOneLiner (struct namelist *lp, int number) {
 /* actually we only want a special handler for the printing, but static
    declarations in dsap/common/post.c force us to do all this */
 
-static
-de_addrfree (struct postaddr *addr) {
+static de_addrfree (struct postaddr *addr) {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -152,8 +151,7 @@ de_addrfree (struct postaddr *addr) {
 	}
 }
 
-static
-de_addrcmp (struct postaddr *a, struct postaddr *b) {
+static de_addrcmp (struct postaddr *a, struct postaddr *b) {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
@@ -509,8 +507,7 @@ static struct pair pairs[] = {
 	NULL
 };
 
-static
-de_fax_free (struct fax *f) {
+static de_fax_free (struct fax *f) {
 	free (f -> number);
 
 	if (f -> bits)
@@ -531,8 +528,7 @@ de_fax_cpy (struct fax *a) {
 	return f;
 }
 
-static int
-de_fax_cmp (struct fax *a, struct fax *b) {
+static int de_fax_cmp (struct fax *a, struct fax *b) {
 	int	    i;
 
 	if (a == (struct fax *) NULL)

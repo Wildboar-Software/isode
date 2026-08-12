@@ -232,8 +232,7 @@ int arginit (char **vec) {
 
 /* XWINDOWS */
 
-static
-update_X () {
+static update_X () {
 	struct host   *hp;
 	struct face   *fp;
 	XGCValues gcvalues;
@@ -311,8 +310,7 @@ update_X () {
 	service_X ();
 }
 
-static int
-service_X () {
+static int service_X () {
 	int	    wh,
 	ww;
 	Window w;
@@ -387,8 +385,7 @@ service_X () {
 	}
 }
 
-static
-init_X () {
+static init_X () {
 	char    def[BUFSIZ];
 
 	myframe.bdrwidth = bwidth;
@@ -433,8 +430,7 @@ init_X () {
 	mapped = 0;
 }
 
-static
-layout_X () {
+static layout_X () {
 	int     h;
 	struct face   *fp;
 	struct host   *hp;
@@ -514,14 +510,12 @@ layout_X () {
 	largest_h = h;
 }
 
-static
-display_top () {
+static display_top () {
 	if (debug)
 		fprintf (stderr, "top window\n");
 }
 
-static
-display_host (struct host *hp) {
+static display_host (struct host *hp) {
 	if (debug)
 		fprintf (stderr, "%s:\n", hp -> h_name);
 
@@ -529,8 +523,7 @@ display_host (struct host *hp) {
 					  hp -> h_string, strlen (hp -> h_string));
 }
 
-static
-display_face (struct face *fp) {
+static display_face (struct face *fp) {
 	int     sx,
 			sy,
 			dx,
@@ -568,18 +561,15 @@ display_face (struct face *fp) {
 	XDestroyImage (image);
 }
 
-static int
-facecmp (struct face **f1, struct face **f2) {
+static int facecmp (struct face **f1, struct face **f2) {
 	return strcmp ((*f1) -> f_name, (*f2) -> f_name);
 }
 
-static int
-hostcmp (struct host **h1, struct host **h2) {
+static int hostcmp (struct host **h1, struct host **h2) {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
 
-static
-read_X () {
+static read_X () {
 	int	    fd,
 	n;
 	long    now;
@@ -751,8 +741,7 @@ out:
 	;
 }
 
-static int
-display_this_host (char *n) {
+static int display_this_host (char *n) {
 	char **ap;
 
 	if (host_list == host_end)

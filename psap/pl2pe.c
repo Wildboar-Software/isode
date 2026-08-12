@@ -112,8 +112,7 @@ you_lose:
 	return NULLPE;
 }
 
-static int
-pl_read_class (PS ps, PL pl, PElementClass *class) {
+static int pl_read_class (PS ps, PL pl, PElementClass *class) {
 	int    i;
 
 	if (pl_read_lex (ps, pl) == NOTOK)
@@ -128,8 +127,7 @@ pl_read_class (PS ps, PL pl, PElementClass *class) {
 	return OK;
 }
 
-static int
-pl_read_id (PS ps, PL pl, int class, PElementID *id) {
+static int pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	int    i;
 	char **list;
 
@@ -167,8 +165,7 @@ pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	return OK;
 }
 
-static int
-pl_read_name (char *name, char **list, int n) {
+static int pl_read_name (char *name, char **list, int n) {
 	int    i;
 	char  *bp;
 
@@ -179,8 +176,7 @@ pl_read_name (char *name, char **list, int n) {
 	return NOTOK;
 }
 
-static int
-pl_read_cons (PS ps, PL pl, PE *pe) {
+static int pl_read_cons (PS ps, PL pl, PE *pe) {
 	PE	    p,
 	 q;
 
@@ -206,8 +202,7 @@ pl_read_cons (PS ps, PL pl, PE *pe) {
 	}
 }
 
-static int
-pl_read_prim (PS ps, PL pl, PE pe) {
+static int pl_read_prim (PS ps, PL pl, PE pe) {
 	int    i,
 		   len,
 		   n;
@@ -243,8 +238,7 @@ out:
 }
 
 #ifdef	XXX
-static int
-pl_read_lex (PS ps, PL pl) {
+static int pl_read_lex (PS ps, PL pl) {
 	int     i = pl_read_lex_aux (ps, pl);
 
 	fprintf (stderr, "pl_read_lex returns ");
@@ -391,8 +385,7 @@ PL	pl;
 	}
 }
 
-static int
-pl_read (PS ps, byte *c) {
+static int pl_read (PS ps, byte *c) {
 	if (ps -> ps_scratch) {
 		*c = ps -> ps_scratch;
 		ps -> ps_scratch = 0;

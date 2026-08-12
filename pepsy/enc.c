@@ -78,8 +78,7 @@ int enc_f (
  * use en_type to handle this which must always assume the field can
  * have an offset.
  */
-static int
-en_obj (
+static int en_obj (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -143,8 +142,7 @@ bad:
  * Encode a single type. If a basic type encode it, if a compound
  * type call the appropriate encoding routine
  */
-static int
-en_type (
+static int en_type (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -503,8 +501,7 @@ bad:
  * Build a sequence, calling appropriate routines to build each sub
  * type
  */
-static int
-en_seq (
+static int en_seq (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -692,8 +689,7 @@ bad:
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int
-en_set (
+static int en_set (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -881,8 +877,7 @@ bad:
  * Parse a sequence of calling appropriate routines to parse each sub
  * type
  */
-static int
-en_seqof (
+static int en_seqof (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -1032,8 +1027,7 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int
-en_setof (
+static int en_setof (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -1184,8 +1178,7 @@ bad:
  * encode a choice field. This means find which choice is taken and
  * call en_type to encode it
  */
-static int
-en_choice (
+static int en_choice (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
@@ -1241,8 +1234,7 @@ en_choice (
 /*
  * check to see if the object is present or not
  */
-static int
-chkobj (modtyp *mod, ptpe *p, PE head) {
+static int chkobj (modtyp *mod, ptpe *p, PE head) {
 
 	for (; p->pe_type != PE_END; NEXT_TPE(p)) {
 		if (!ISDTYPE(p))
@@ -1268,8 +1260,7 @@ chkobj (modtyp *mod, ptpe *p, PE head) {
  * routine. Similar to en_type except we do the indirection on the
  * ucode field
  */
-static int
-en_etype (
+static int en_etype (
 	PEPYPARM parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */

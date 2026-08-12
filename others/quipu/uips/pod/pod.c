@@ -950,8 +950,7 @@ Widget parent;
 
 }
 
-static void
-displayReadPopup () {
+static void displayReadPopup () {
 	if (curr_read_popup) {
 		XtPopup(curr_read_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_read_popup));
@@ -1789,8 +1788,7 @@ XtPointer closure, calldata;
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 }
 
-static void
-CreateMessagePopup () {
+static void CreateMessagePopup () {
 	int count;
 	Arg args[MAXARGS];
 
@@ -1808,8 +1806,7 @@ CreateMessagePopup () {
 	XtRealizeWidget(standby);
 }
 
-static void
-CreateVersionPopup () {
+static void CreateVersionPopup () {
 	Widget title, piccy, version_label, text_form;
 	Arg args[MAXARGS];
 	int count;
@@ -1950,8 +1947,7 @@ Cardinal num_params;
 	XtPopdown(version_popup);
 }
 
-static void
-CreateErrorPopup () {
+static void CreateErrorPopup () {
 	Widget text;
 	int count;
 	Arg args[MAXARGS];
@@ -2095,8 +2091,7 @@ XtPointer closure, calldata;
 	kill_error();
 }
 
-static void
-kill_error () {
+static void kill_error () {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2167,8 +2162,7 @@ kill_message () {
 		XFreePixmap(dpy, pixmap_resource);
 }
 
-static void
-CreateHelpPopup () {
+static void CreateHelpPopup () {
 	Widget popup_help, popup_help_button, popup_quit_button,
 	popup_help_form, popup_help_scrolwin;
 

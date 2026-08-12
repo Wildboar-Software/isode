@@ -436,8 +436,7 @@ int rt2sslose (struct assocblk *acb, int result) {
 
 /*    SSAP interface */
 
-static int
-doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti) {
+static int doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti) {
 	struct qbuf *qb;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
@@ -518,8 +517,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti) {
+static int doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct SSAPindication   sis;
@@ -611,8 +609,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti) {
+static int doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -661,8 +658,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti) {
+static int doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct SSAPindication   sis;
@@ -809,8 +805,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti) {
+static int doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -855,8 +850,7 @@ out1:
 	return NOTOK;
 }
 
-static int
-doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti) {
+static int doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti) {
 	SFFREE (sf);
 
 	if (((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_TWA))

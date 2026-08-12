@@ -526,8 +526,7 @@ void quipu_call_print(PS ps, struct quipu_call *item, int format)
 	op_list_print(ps, item->invoked_ops, format) ;
 }
 
-static int
-op_list_print(ps, item, format)
+static int op_list_print(ps, item, format)
 PS ps ;
 struct op_list * item ;
 int format ;
@@ -539,8 +538,7 @@ int format ;
 	}
 }
 
-static int
-ops_print(ps, item, format)
+static int ops_print(ps, item, format)
 PS ps ;
 struct ops * item ;
 int format ;
@@ -561,8 +559,7 @@ int format ;
 	ps_print(ps, "\n") ;
 }
 
-static int
-chain_list_print(ps, item, format)
+static int chain_list_print(ps, item, format)
 PS ps ;
 struct chain_list * item ;
 int format ;
@@ -576,8 +573,7 @@ int format ;
 	}
 }
 
-static int
-sub_ch_list_print(ps, item, format)
+static int sub_ch_list_print(ps, item, format)
 PS ps ;
 struct sub_ch_list * item ;
 int format ;

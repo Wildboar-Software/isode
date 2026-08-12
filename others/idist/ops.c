@@ -234,8 +234,7 @@ int deletefile (char *str, int mode) {
 				   basic_error);
 }
 
-static int
-basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi) {
+static int basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
@@ -279,8 +278,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static void
-print_ia5list (struct type_Idist_IA5List *ia5) {
+static void print_ia5list (struct type_Idist_IA5List *ia5) {
 	struct qbuf *p,
 			   *q;
 

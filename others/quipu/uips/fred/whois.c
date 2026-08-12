@@ -76,8 +76,7 @@ int f_whois (char **vec) {
 	return (nametype > 1 ? f_ufn (vec) : f_whois_aux (vec));
 }
 
-static int
-f_whois_aux (char **vec) {
+static int f_whois_aux (char **vec) {
 	int	    c,
 			mailbox,
 			multiple,
@@ -614,8 +613,7 @@ out:
 	return OK;
 }
 
-static
-whois_aux (struct whois *w) {
+static whois_aux (struct whois *w) {
 	char *bp,
 		 *cp;
 	char   *handle,
@@ -792,8 +790,7 @@ options:
 	return dish (buffer, 0);
 }
 
-static int
-test_arg (char *user, char *full, int minlen) {
+static int test_arg (char *user, char *full, int minlen) {
 	int	    i;
 
 	if ((i = strlen (user)) < minlen
@@ -892,8 +889,7 @@ char   *command;
 	return fp;
 }
 
-static int
-f_ufn (char **vec) {
+static int f_ufn (char **vec) {
 	char   *cp,
 		   buffer[BUFSIZ];
 	static int lastq = -1;

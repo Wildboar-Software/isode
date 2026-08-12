@@ -92,8 +92,7 @@ int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_rtsaplose (  /* what, fmt, args ... */
+static int _rtsaplose (  /* what, fmt, args ... */
 	struct RtSAPindication *rti,
 	int reason,
 	va_list ap

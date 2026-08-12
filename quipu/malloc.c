@@ -174,8 +174,7 @@ int stop_malloc_trace (void) {
 #ifdef QUIPU_MALLOC
 #ifdef MALLOCTRACE
 
-static
-write_string (char *p) {
+static write_string (char *p) {
 	char *q;
 
 	if (!malloc_file)
@@ -187,8 +186,7 @@ write_string (char *p) {
 	write(malloc_file, p, q-p-1);
 }
 
-static
-write_addr (char *addr) {
+static write_addr (char *addr) {
 	char buf[20];
 	static char hex[] = "0123456789abcdef";
 	char *ptr;
@@ -215,8 +213,7 @@ write_addr (char *addr) {
 	write (malloc_file," ",1);
 }
 
-static
-write_int (unsigned x) {
+static write_int (unsigned x) {
 	char buf[20];
 	static char dec[] = "0123456789";
 	char *ptr;
@@ -239,8 +236,7 @@ write_int (unsigned x) {
 	write (malloc_file," ",1);
 }
 
-static
-log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
+static log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
 	write_string ("realloc of ");
 	write_int (oldlen);
 	write_string ("at ");
@@ -258,8 +254,7 @@ log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
 	write_stack("x");
 }
 
-static
-print_free_list (size_t heap) {
+static print_free_list (size_t heap) {
 	int i;
 	struct freelist * top;
 	struct freelist * ptr;

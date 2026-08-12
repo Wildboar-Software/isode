@@ -123,8 +123,7 @@ int check_guard (
 	return (2);
 }
 
-static int
-prot_cmp (struct protected_password *a, struct protected_password *b) {
+static int prot_cmp (struct protected_password *a, struct protected_password *b) {
 	int retval;
 
 	if (a->is_protected[0] == (char) 0) {

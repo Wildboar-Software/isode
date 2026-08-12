@@ -379,8 +379,7 @@ int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi
 	return result;
 }
 
-static int
-PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi) {
+static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	int	    i,
 			result;
 	PE	    pe;

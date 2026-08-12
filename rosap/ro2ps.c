@@ -108,8 +108,7 @@ int ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindica
 
 /*    AcSAP interface */
 
-static int
-acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca) {
+static int acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -238,8 +237,7 @@ int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int
-doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
+static int doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
 	PE	    pe;
 
 	if (px -> px_type != SX_NORMAL) {
@@ -257,8 +255,7 @@ doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAP
 	return acb2osdu (acb, invokeID, pe, roi);
 }
 
-static int
-doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi) {
+static int doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
@@ -267,8 +264,7 @@ doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *
 	return NOTOK;
 }
 
-static int
-doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi) {
+static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected sync indication (0x%x)", pn -> pn_type);
 	PNFREE (pn);
@@ -277,8 +273,7 @@ doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi
 	return NOTOK;
 }
 
-static int
-doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi) {
+static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
@@ -287,8 +282,7 @@ doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindicat
 	return NOTOK;
 }
 
-static int
-doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi) {
+static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
@@ -297,8 +291,7 @@ doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication 
 	return NOTOK;
 }
 
-static int
-doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi) {
+static int doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi) {
 	struct AcSAPindication acis;
 	struct AcSAPabort *aca = &acis.aci_abort;
 
@@ -323,8 +316,7 @@ doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication 
 	return DONE;
 }
 
-static int
-doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi) {
+static int doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi) {
 	struct AcSAPindication acis;
 	struct AcSAPabort *aca = &acis.aci_abort;
 	struct RoSAPpreject *rop = &roi -> roi_preject;

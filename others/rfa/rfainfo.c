@@ -241,8 +241,7 @@ FILE *fp;
 /*------------------------------------------------------
  * closeAndUnlockRfainfo
  *------------------------------------------------------*/
-static int
-closeAndUnlockRfainfo (char *fn) {
+static int closeAndUnlockRfainfo (char *fn) {
 	struct LockEntry *le, **lep;
 
 	for (lep = &lockList; *lep; lep = &((*lep)->le_next))
@@ -279,8 +278,7 @@ releaseRfaInfoList (char *fn, struct RfaInfo *rfa) {
 /*------------------------------------------------------
  * statFile - return RfaInfo with results of stat(2) for "fn"
  *------------------------------------------------------*/
-static int
-statFile (char *fn, struct RfaInfo *rfa) {
+static int statFile (char *fn, struct RfaInfo *rfa) {
 	struct stat st;
 	struct group *gr, *getgrgid();
 	struct passwd *pw, *getpwuid();

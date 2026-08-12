@@ -264,8 +264,7 @@ int warning (char *fmt) {
 }
 #endif
 
-static
-yyerror_aux (char *s) {
+static yyerror_aux (char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -303,8 +302,7 @@ int yywrap () {
 int yyprint (char *s, int f, int top) {
 }
 
-static
-yyprint_aux (char *s, char *mode) {
+static yyprint_aux (char *s, char *mode) {
 	int	    len;
 	static int nameoutput = 0;
 	static int outputlinelen = 79;
@@ -530,13 +528,11 @@ int pass2 () {
 	delay = 0;
 }
 
-static
-do_id (OI yi, char *id) {
+static do_id (OI yi, char *id) {
 	printf ("%-20s %s\n", yi -> yi_name, id2str (yi -> yi_value));
 }
 
-static
-do_obj1 (OT yo, char *id) {
+static do_obj1 (OT yo, char *id) {
 	YP	    yp,
 	 yz;
 	YV	    yv;
@@ -716,8 +712,7 @@ done_sequence:
 	}
 }
 
-static
-do_trap1 (TT yt, char *id) {
+static do_trap1 (TT yt, char *id) {
 	YV	    yv;
 
 	if ((yv = yt -> yt_enterprise) == NULLYV) {
@@ -915,8 +910,7 @@ YV	yv;
 
 /* DEBUG */
 
-static
-print_yi (OI yi, int level) {
+static print_yi (OI yi, int level) {
 	if (yi == NULLOI)
 		return;
 
@@ -928,8 +922,7 @@ print_yi (OI yi, int level) {
 	}
 }
 
-static
-print_yo (OT yo, int level) {
+static print_yo (OT yo, int level) {
 	if (yo == NULLOT)
 		return;
 
@@ -945,8 +938,7 @@ print_yo (OT yo, int level) {
 	}
 }
 
-static
-print_yt (TT yt, int level) {
+static print_yt (TT yt, int level) {
 	if (yt == NULLTT)
 		return;
 

@@ -205,8 +205,7 @@ char  **argv,
 static char buffer1[4096];
 static char buffer2[32768];
 
-static int
-tsapud (int vecp, char **vec) {
+static int tsapud (int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 	struct isoservent *is;
 	struct tsapblk *tb;
@@ -274,8 +273,7 @@ out:
 	exit (1);
 }
 
-static void
-ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -288,8 +286,7 @@ ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
-static
-arginit (char **vec) {
+static arginit (char **vec) {
 	int	    rflag;
 	char  *ap;
 #ifdef	TCP
@@ -377,8 +374,7 @@ arginit (char **vec) {
 		adios (NULLCP, "%s not owned by root", ap);
 }
 
-static
-envinit () {
+static envinit () {
 	int     i,
 	sd;
 

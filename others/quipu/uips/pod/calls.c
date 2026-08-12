@@ -715,8 +715,7 @@ make_friendly (char *fstr, char *str) {
 	free_seq(rdns);
 }
 
-static void
-make_friendly_aux (char *fstr, char *rdn) {
+static void make_friendly_aux (char *fstr, char *rdn) {
 	char *start, *end, *string;
 	char save;
 	short int mapped;

@@ -355,8 +355,7 @@ int log_cause_and_diag (int fd) {
 
 #ifdef  DEBUG
 
-static int
-log_x25_facilities (int fd, int coc, char *caption) {
+static int log_x25_facilities (int fd, int coc, char *caption) {
 	FACILITY_DB f;
 
 	if (ioctl (fd, X25_RD_FACILITY, (char *) &f) == NOTOK) {
@@ -369,8 +368,7 @@ log_x25_facilities (int fd, int coc, char *caption) {
 	return OK;
 }
 
-static void
-print_x25_facilities (FACILITY_DB f, int coc, char *caption) {
+static void print_x25_facilities (FACILITY_DB f, int coc, char *caption) {
 	int     baud;
 
 	DLOG (compat_log, LLOG_DEBUG, ("%s X.25 Facilities:", caption));

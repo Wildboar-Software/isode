@@ -47,8 +47,7 @@ int ps_get_abs (PE pe) {
 	return (ps_get_id (pe) + ps_get_len (pe) + len);
 }
 
-static int
-ps_get_id (PE pe) {
+static int ps_get_id (PE pe) {
 	int    i;
 	PElementID id;
 
@@ -60,8 +59,7 @@ ps_get_id (PE pe) {
 	return i;
 }
 
-static int
-ps_get_len (PE pe) {
+static int ps_get_len (PE pe) {
 	int    i;
 	PElementLen len;
 

@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static int
-qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
+static int qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int cc,
 		i;
 	struct qbuf *qb,

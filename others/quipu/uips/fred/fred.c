@@ -384,8 +384,7 @@ were_out_of_here:
 
 /* ARGINIT */
 
-static
-arginit (char **vec) {
+static arginit (char **vec) {
 	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
@@ -695,8 +694,7 @@ normal:
 
  */
 
-static
-rcmap (struct sockaddr_in *isock) {
+static rcmap (struct sockaddr_in *isock) {
 	u_long	hostaddr,
 			netmask,
 			netaddr;

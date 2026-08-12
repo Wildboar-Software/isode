@@ -50,8 +50,7 @@ int RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *link
 	return result;
 }
 
-static int
-RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
+static int RoInvokeRequestAux (struct assocblk *acb, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi) {
 	PE	pe;
 
 	struct type_ROS_ROSEapdus	papdu;

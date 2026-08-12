@@ -7,8 +7,7 @@
 
 #define	PSDU_MAGIC	64	/* threshold for scattering */
 
-static int
-uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
+static int uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	struct udvec *uv;
 
 	if (in_line && n < PSDU_MAGIC)
@@ -64,8 +63,7 @@ uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	return n;
 }
 
-static int
-uvec_flush (PS ps) {
+static int uvec_flush (PS ps) {
 	if (ps -> ps_cur) {
 		if (ps -> ps_cur -> uv_base)
 			ps -> ps_cur++;
@@ -79,8 +77,7 @@ uvec_flush (PS ps) {
 	return OK;
 }
 
-static int
-uvec_close (PS ps) {
+static int uvec_close (PS ps) {
 	struct udvec *uv;
 
 	if (ps -> ps_head) {

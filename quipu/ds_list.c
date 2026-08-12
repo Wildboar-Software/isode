@@ -141,8 +141,7 @@ static int			g_security;
 static DN                       g_dn;
 static DN                       g_dnend;
 
-static int
-build_list (Entry e, DN dn) {
+static int build_list (Entry e, DN dn) {
 	struct subordinate      *sub;
 
 	if (g_size != SVC_NOSIZELIMIT && g_count >= g_size)
@@ -207,8 +206,7 @@ build_list (Entry e, DN dn) {
 	return(0);
 }
 
-static int
-build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result, struct DSError *error, DN binddn, char dsp, int laclsizelimit) {
+static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_result *result, struct DSError *error, DN binddn, char dsp, int laclsizelimit) {
 	DN dn;
 	DN dnend;
 	int size;

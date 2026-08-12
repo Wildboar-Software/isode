@@ -32,8 +32,7 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	return t;
 }
 
-static int
-fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
+static int fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	int    code, len, vlen;
 	char  *vptr;
 
@@ -280,8 +279,7 @@ fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	return OK;
 }
 
-static int
-readx (int fd, char *buffer, int n, IFP readfnx) {
+static int readx (int fd, char *buffer, int n, IFP readfnx) {
 	int    i,
 		   cc;
 	char   *bp;

@@ -52,8 +52,7 @@ int	TManGen (unsigned int type, ...) {
 
 #define SendMReport()		write_udp_socket (ManSoc, &data)
 
-static int
-TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
+static int TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 	if (pid == NOTOK)
 		return NOTOK;
 
@@ -132,8 +131,7 @@ TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b) {
 	return SendMReport ();
 }
 
-static int
-ManInit () {
+static int ManInit () {
 	struct sockaddr_in sin;
 	struct sockaddr_in *sock = &sin;
 	struct servent *sp;

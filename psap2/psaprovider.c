@@ -144,8 +144,7 @@ int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *
 	return result;
 }
 
-static int
-PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
+static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
 	int	    result;
 	struct SSAPdata sxs;
 	struct SSAPdata   *sx = &sxs;
@@ -198,8 +197,7 @@ PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPi
 	return NOTOK;
 }
 
-static int
-doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
+static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
 	int     ppdu,
 			result;
 	char   *text;
@@ -249,8 +247,7 @@ out:
 	return result;
 }
 
-static int
-doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
+static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPtoken  *pt = &pi -> pi_token;
 
@@ -268,8 +265,7 @@ doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int
-doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
+static int doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPsync   *pn = &pi -> pi_sync;
 
@@ -297,8 +293,7 @@ doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int
-doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi) {
+static int doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPactivity   *pv = &pi -> pi_activity;
 
@@ -323,8 +318,7 @@ doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int
-doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) {
+static int doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPreport *pp = &pi -> pi_report;
 
@@ -339,8 +333,7 @@ doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) 
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int
-doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi) {
+static int doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPfinish *pf = &pi -> pi_finish;
 	pi -> pi_type = PI_FINISH;

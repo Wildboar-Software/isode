@@ -442,8 +442,7 @@ stuff_it:
 	return status;
 }
 
-static
-do_edit (int sd, char *octets) {
+static do_edit (int sd, char *octets) {
 	int	    cc,
 			i,
 			j,
@@ -725,8 +724,7 @@ no_pager:
    it forks less.  there is still a critical window, but it is very small...
  */
 
-static
-foreground () {
+static foreground () {
 #ifdef	TIOCGPGRP
 	int     pgrp,
 	tpgrp;
@@ -780,8 +778,7 @@ FILE   *fp;
 	fflush (stdout);
 }
 
-static
-pagchar (int ch) {
+static pagchar (int ch) {
 	char    buffer[BUFSIZ];
 
 	switch (ch) {
@@ -903,14 +900,12 @@ static int  _da_command (char *fmt, va_list ap)
 #else
 /* VARARGS1 */
 
-static int
-da_command (char *fmt) {
+static int da_command (char *fmt) {
 	return da_command (fmt);
 }
 #endif
 
-static int
-da_response () {
+static int da_response () {
 	char *cp,
 	*ep;
 

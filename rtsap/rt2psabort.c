@@ -29,8 +29,7 @@ int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
 	return result;
 }
 
-static int
-RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti) {
+static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti) {
 	int	    result;
 	PE	    pe,
 	 p;

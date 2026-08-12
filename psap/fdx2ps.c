@@ -26,16 +26,14 @@ extern	IFP	set_check_fd ();
 
 /* */
 
-static int
-fdx_prime (PS ps, int waiting) {
+static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
 
 	return (waiting > 0 && pi -> pio_cnt > 0 ? DONE : OK);
 }
 
-static int
-fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
+static int fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *pi = &pt -> ps_input;
@@ -63,8 +61,7 @@ fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	return cc;
 }
 
-static int
-fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
+static int fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    cc;
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *po = &pt -> ps_output;

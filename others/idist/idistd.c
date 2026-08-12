@@ -467,23 +467,20 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static int
-i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	addtoia5 (str, strlen(str));
 
 	return error (sd, err, (caddr_t)ia5list, rox, roi);
 }
 
-static int
-syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }
 
 /* U-REJECT */
 
-static int
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

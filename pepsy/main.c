@@ -3961,8 +3961,7 @@ idname (int id) {
 /*
  * Print out the value of a bits string
  */
-static
-prntbits (PE pe) {
+static prntbits (PE pe) {
 	int     len, i;
 
 	if ((len = pe->pe_nbits) < 0) {
@@ -3982,8 +3981,7 @@ prntbits (PE pe) {
  * Print out a given length of octets as hex (with the ASCII
  * characters given if they have any
  */
-static
-pclen (char *s, int len) {
+static pclen (char *s, int len) {
 	int cnt = 0;
 
 	while (len-- > 0) {
@@ -4002,8 +4000,7 @@ pclen (char *s, int len) {
 /*
  * print out an octet string
  */
-static
-prntos (PE pe) {
+static prntos (PE pe) {
 	struct qbuf *qb;
 
 	if ((qb = prim2qb(pe)) == NULL) {
@@ -4024,8 +4021,7 @@ bad:
 /*
  * print out a string which should be printable
  */
-static
-prntstr (PE pe) {
+static prntstr (PE pe) {
 	struct qbuf *qb;
 
 	if ((qb = prim2qb(pe)) == NULL) {

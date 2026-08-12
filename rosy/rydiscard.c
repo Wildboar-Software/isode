@@ -35,7 +35,6 @@ int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
 	return OK;
 }
 
-static int
-do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {
+static int do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {
 	return OK;
 }

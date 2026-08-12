@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static int
-str_read (PS ps, PElementData data, PElementLen n, int in_line) {
+static int str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int    cc;
 
 	if (ps -> ps_base == NULLCP || (cc = ps -> ps_cnt) <= 0)
@@ -18,8 +17,7 @@ str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	return cc;
 }
 
-static int
-str_write (PS ps, PElementData data, PElementLen n, int in_line) {
+static int str_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int    cc;
 	char  *cp;
 
@@ -53,8 +51,7 @@ partial:
 	return n;
 }
 
-static int
-str_close (PS ps) {
+static int str_close (PS ps) {
 	if (ps -> ps_base && !ps -> ps_inline)
 		free (ps -> ps_base);
 

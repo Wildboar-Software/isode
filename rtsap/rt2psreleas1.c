@@ -27,8 +27,7 @@ int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struc
 	return result;
 }
 
-static int
-RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
+static int RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	int	    result;
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;

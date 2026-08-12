@@ -161,8 +161,7 @@ int initialisations (int argc, char **argv) {
  * Read in an option from detailor or derc file.
  *
  */
-static void
-read_de_option (char *line) {
+static void read_de_option (char *line) {
 	char *part1, *part2;
 	extern char *TidyString(), *SkipSpace();
 	int n;

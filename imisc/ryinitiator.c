@@ -325,8 +325,7 @@ static int getlines (char *buffer) {
 #endif
 
 #ifndef	TMS
-static void
-timer (int bytes, int pkts) {
+static void timer (int bytes, int pkts) {
 	long    ms;
 	float   bs,
 			ps;

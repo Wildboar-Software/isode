@@ -26,8 +26,7 @@ int RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {
 	return result;
 }
 
-static int
-RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti) {
+static int RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti) {
 	int	    result;
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;

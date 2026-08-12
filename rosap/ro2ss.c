@@ -356,8 +356,7 @@ int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int
-doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
+static int doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
 	int     result;
 	PE	    pe;
 
@@ -385,8 +384,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi) {
+static int doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi) {
 	int     result = DONE;
 	struct SSAPindication   sis;
 	struct SSAPindication  *si = &sis;
@@ -439,8 +437,7 @@ out:
 	return NOTOK;
 }
 
-static int
-doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi) {
+static int doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected sync indication (0x%x)", sn -> sn_type);
 
@@ -450,8 +447,7 @@ doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi
 	return NOTOK;
 }
 
-static int
-doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi) {
+static int doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected activity indication (0x%x)", sv -> sv_type);
 
@@ -461,8 +457,7 @@ doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindicat
 	return NOTOK;
 }
 
-static int
-doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi) {
+static int doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected exception report indication (0x%x)", sp -> sp_peer);
 
@@ -472,8 +467,7 @@ doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication 
 	return NOTOK;
 }
 
-static int
-doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi) {
+static int doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi) {
 	SFFREE (sf);
 
 	if (acb -> acb_flags & ACB_INIT) {

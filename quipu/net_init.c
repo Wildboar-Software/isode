@@ -35,8 +35,7 @@ extern  struct PSAPaddr		* dsaladdr;
 extern	struct PSAPaddr		* psap_cpy();
 int	max_conns;
 
-static int
-TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
+static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart  *ts = &tss;

@@ -32,8 +32,7 @@ int main (int argc, char *argv[]) {
 	return 0;
 }
 
-static void
-read_doog_args (int argc, char *argv[]) {
+static void read_doog_args (int argc, char *argv[]) {
 	char *arg;
 	int count;
 

@@ -219,8 +219,7 @@ int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 	return NOTOK;
 }
 
-static int
-doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi) {
+static int doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
 	struct RtSAPabort *rta = &rti -> rti_abort;
@@ -233,8 +232,7 @@ doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *
 	return OK;
 }
 
-static int
-doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi) {
+static int doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & ACB_INIT) {
 		ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 				   "association management botched");
@@ -252,8 +250,7 @@ doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication
 	return DONE;
 }
 
-static int
-doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi) {
+static int doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & ACB_INIT) {
 		ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 				   "association management botched");
@@ -268,8 +265,7 @@ doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindicati
 	return DONE;
 }
 
-static int
-doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi) {
+static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi) {
 	if (!rta -> rta_peer) {
 		if (rta -> rta_reason == RTS_TIMER)
 			return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
@@ -417,8 +413,7 @@ out:
 	return NOTOK;
 }
 
-static int
-rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta) {
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

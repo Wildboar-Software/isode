@@ -187,8 +187,7 @@ found_it:
 static unsigned int elements[NELEM + 1];
 static char objent[BUFSIZ];
 
-static int
-lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
+static int lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 	int    nelem;
 	int	    tcp_port,
 			udp_port;

@@ -585,8 +585,7 @@ acs_adios (struct AcSAPabort *aa, char *event) {
 	_exit (1);
 }
 
-static void
-acs_advise (struct AcSAPabort *aa, char *event) {
+static void acs_advise (struct AcSAPabort *aa, char *event) {
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
@@ -600,8 +599,7 @@ acs_advise (struct AcSAPabort *aa, char *event) {
 			aa -> aca_source);
 }
 
-static void
-ps_adios (struct PSAPabort *pab, char *event) {
+static void ps_adios (struct PSAPabort *pab, char *event) {
 	ps_advise (pab, event);
 
 	finalbye ();
@@ -609,8 +607,7 @@ ps_adios (struct PSAPabort *pab, char *event) {
 	_exit (1);
 }
 
-static void
-ps_advise (struct PSAPabort *pab, char *event) {
+static void ps_advise (struct PSAPabort *pab, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)

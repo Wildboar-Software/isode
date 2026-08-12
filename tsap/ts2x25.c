@@ -137,8 +137,7 @@ done:
 	return DONE;
 }
 
-static int
-x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int x25retry (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int     onoff;
 	int     fd = tb -> tb_fd;
 	fd_set  mask;
@@ -204,8 +203,7 @@ static char nsdu[MAXNSDU];
 static char *np;
 static int  bl;
 
-static int
-x25init (int fd, struct tsapkt *t) {
+static int x25init (int fd, struct tsapkt *t) {
 	int    cc;
 
 	/* XXX: cc should be set to the maximum acceptable NSDU length.
@@ -242,8 +240,7 @@ x25init (int fd, struct tsapkt *t) {
 	return OK;
 }
 
-static int
-read_nsdu_buffer (int fd, char *buffer, int cc) {
+static int read_nsdu_buffer (int fd, char *buffer, int cc) {
 	if (cc > bl)
 		cc = bl;
 

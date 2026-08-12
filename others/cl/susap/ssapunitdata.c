@@ -880,8 +880,7 @@ int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindicati
  ****************************************************************
  */
 
-static int
-SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud)
+static int SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud)
 
 {
 	struct ssapkt *s;
@@ -1145,8 +1144,7 @@ sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPu
  ****************************************************************
  */
 
-static int
-TUNITDATAser (int sd, int tud) {
+static int TUNITDATAser (int sd, int tud) {
 	IFP	    abort;
 	struct ssapblk *sb;
 	struct SSAPdata sxs;

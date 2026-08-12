@@ -192,8 +192,7 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-static
-printsrv (struct isoservent *is) {
+static printsrv (struct isoservent *is) {
 	int    n = is -> is_tail - is -> is_vec - 1;
 	char **ap = is -> is_vec;
 
@@ -206,8 +205,7 @@ printsrv (struct isoservent *is) {
 	printf ("\n");
 }
 
-static
-printtaddr (struct TSAPaddr *ta)
+static printtaddr (struct TSAPaddr *ta)
 
 {
 

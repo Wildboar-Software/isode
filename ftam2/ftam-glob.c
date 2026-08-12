@@ -58,8 +58,7 @@ static	char *strspl(), **copyblk(), *strend();
 
 static	int globcnt;
 
-static
-char	*globchars = "`{[*?";
+static char	*globchars = "`{[*?";
 
 static	char *gpath, *gpathp, *lastgpathp;
 static	int globbed;

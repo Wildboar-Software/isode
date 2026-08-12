@@ -32,8 +32,7 @@ int susaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_susaplose (	/* what, fmt, args ... */
+static int _susaplose (	/* what, fmt, args ... */
 	struct SSAPindication *si,
 	int reason,
 	va_list ap

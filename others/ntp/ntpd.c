@@ -492,8 +492,7 @@ int enqueue (struct list *l, struct ntp_peer *peer) {
 }
 
 
-static void
-timeout (int n) {
+static void timeout (int n) {
 	static int periodic = 0;
 	struct ntp_peer *peer;
 #ifndef	XADJTIME2
@@ -556,8 +555,7 @@ timeout (int n) {
 #endif
 }
 
-static void
-do_peer (struct ntp_peer *peer) {
+static void do_peer (struct ntp_peer *peer) {
 	if (peer -> flags & PEER_FL_SNOOZE)
 		return;
 	peer->stopwatch = 0;
@@ -601,8 +599,7 @@ do_peer (struct ntp_peer *peer) {
  */
 int precision;
 
-static void
-init_ntp (char *config) {
+static void init_ntp (char *config) {
 	struct Naddr addr;
 	char buffer[BUFSIZ];
 	FILE *fp;
@@ -986,8 +983,7 @@ static int kern_hz, kern_tick;
 #define n_name n_un.n_name
 #endif
 
-static void
-init_kern_vars () {
+static void init_kern_vars () {
 #ifdef __linux__
 	kern_hz = HZ;
 
@@ -1173,8 +1169,7 @@ int GetHostName (char *name, struct Naddr *addr) {
 	return (NOTOK);
 }
 /* every hour, dump some useful information to the log */
-static void
-hourly () {
+static void hourly () {
 	char buf[200];
 	int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };

@@ -165,8 +165,7 @@ done:
 #ifndef	NODELAY
 #endif
 
-static int
-tcpretry (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int tcpretry (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #ifdef	NODELAY
 #ifdef	FIONBIO
 	int	    onoff;
@@ -226,8 +225,7 @@ done:
 
 /*    init for read from network */
 
-static int
-tcpinit (int fd, struct tsapkt *t) {
+static int tcpinit (int fd, struct tsapkt *t) {
 	int    cc,
 		   i;
 	char  *bp;

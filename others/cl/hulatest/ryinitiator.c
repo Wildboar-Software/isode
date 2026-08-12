@@ -280,8 +280,7 @@ IFP	quit;
 
 /* INVOKE */
 
-static
-invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
+static invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 	int    i;
 	int	    cc,
 			result;
@@ -354,8 +353,7 @@ out:
 
 /* INTERACTIVE */
 
-static int
-_getline (char *buffer) {
+static int _getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -398,8 +396,7 @@ _getline (char *buffer) {
 #endif
 
 #ifndef	TMS
-static
-timer (int bytes, int pkts) {
+static timer (int bytes, int pkts) {
 	long    ms;
 	float   bs,
 			ps;
@@ -425,8 +422,7 @@ timer (int bytes, int pkts) {
 	printf ("\n");
 }
 
-static
-tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
@@ -436,8 +432,7 @@ tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
 #else
 long	times ();
 
-static
-timer (int bytes, int pkts) {
+static timer (int bytes, int pkts) {
 	long    ms;
 	float   bs,
 			ps;

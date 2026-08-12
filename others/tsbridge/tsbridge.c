@@ -109,8 +109,7 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-static void
-tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
+static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -177,8 +176,7 @@ tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 	do_the_biz (sd, tc -> tc_sd);
 }
 
-static void
-do_the_biz (int sd1, int sd2) {
+static void do_the_biz (int sd1, int sd2) {
 	int nfds = 0;
 	fd_set rmask, imask;
 	struct TSAPdisconnect   tds;
@@ -202,8 +200,7 @@ do_the_biz (int sd1, int sd2) {
 	}
 }
 
-static void
-copy_tsdu (int s1, int s2) {
+static void copy_tsdu (int s1, int s2) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
 	struct TSAPdata txs;
@@ -271,16 +268,14 @@ copy_tsdu (int s1, int s2) {
 	}
 }
 
-static void
-ts_discon (struct TSAPdisconnect *td, int sd) {
+static void ts_discon (struct TSAPdisconnect *td, int sd) {
 	ts_close (sd, "Normal Disconnect");
 	ts_advise (td, LLOG_NOTICE, "T-DISCONNECT.INDICATION");
 
 	exit (0);
 }
 
-static void
-ts_close (int sd, char *event) {
+static void ts_close (int sd, char *event) {
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
 
@@ -291,15 +286,13 @@ ts_close (int sd, char *event) {
 		ts_advise (td, LLOG_EXCEPTIONS, "T-DISCONNECT.REQUEST");
 }
 
-static void
-ts_adios (struct TSAPdisconnect *td, char *event) {
+static void ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
 
-static void
-ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -503,8 +496,7 @@ find_connection (struct TSAPaddr *ta) {
 	return NULL;
 }
 
-static void
-arginit (char **vec) {
+static void arginit (char **vec) {
 	char   *ap;
 	struct TSAPaddr *ta;
 
@@ -562,8 +554,7 @@ arginit (char **vec) {
 	}
 }
 
-static void
-read_file (char *file) {
+static void read_file (char *file) {
 	FILE	*fp;
 	char	buf[BUFSIZ];
 	char	*vec[50];
@@ -629,8 +620,7 @@ read_file (char *file) {
 		fclose (fp);
 }
 
-static void
-envinit () {
+static void envinit () {
 	int     i,
 	sd;
 
@@ -707,8 +697,7 @@ static void    adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void
-adios (char *what, char *fmt) {
+static void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -726,8 +715,7 @@ static void    advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void
-advise (int code, char *what, char *fmt) {
+static void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

@@ -125,8 +125,7 @@ int rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_rosaplose (  /* what, fmt, args ... */
+static int _rosaplose (  /* what, fmt, args ... */
 	struct RoSAPindication *roi,
 	int reason,
 	va_list ap

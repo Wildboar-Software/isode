@@ -307,8 +307,7 @@ int acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt) 
 #ifndef	lint
 
 /*---------------------------------------------------------------------------*/
-static int
-_acusaplose (  /* what, fmt, args ... */
+static int _acusaplose (  /* what, fmt, args ... */
 	/*---------------------------------------------------------------------------*/
 	struct AcSAPindication *aci,
 	int reason,

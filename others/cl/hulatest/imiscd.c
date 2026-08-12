@@ -70,8 +70,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* OPERATIONS */
 
-static int
-op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long    clock;
 	char   *cp;
 	struct tm *tm;
@@ -107,8 +106,7 @@ op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 	return OK;
 }
 
-static int
-op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long    clock;
 	char   *cp;
 #if	defined(BSD42) || defined (HPUX)
@@ -162,8 +160,7 @@ op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in
 
 /* Return the number of seconds since 00:00 (midnight) 1 January 1900 GMT */
 
-static int
-op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	long	clock;
 	struct type_IMISC_TimeResult trs;
 	struct type_IMISC_TimeResult *tr = &trs;
@@ -200,8 +197,7 @@ op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 #define	LMAX	(sizeof (ut -> ut_line))
 #define	NMAX	(sizeof (ut -> ut_name))
 
-static int
-op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 #ifndef	SYS5
 	int	    ud;
 #endif
@@ -295,8 +291,7 @@ congested:
 #define	NBYTES	512
 #define	LINSIZ	72
 
-static int
-op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int    i,
 		   j;
 	char  *dp,
@@ -359,8 +354,7 @@ congested:
 
 #define	NPASS	6
 
-static int
-op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int    i;
 	char    buffer[BUFSIZ];
 	struct type_IMISC_IA5List *ia5;
@@ -501,8 +495,7 @@ static struct web {
 				|| i >= a * b + (1 - b))\
 			    return NOTOK;
 
-static int
-pwdgen (char *pw) {
+static int pwdgen (char *pw) {
 	int    i,
 		   j;
 	char   c,
@@ -572,8 +565,7 @@ static struct obj {
 	NULL, 0
 };
 
-static int
-object (char *pw) {
+static int object (char *pw) {
 	int    n;
 	char  *f,
 		  *s;
@@ -602,8 +594,7 @@ object (char *pw) {
 #endif
 #endif
 
-static int
-op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int     fd,
 			i,
 			result,
@@ -774,8 +765,7 @@ out:
 	return result;
 }
 
-static int
-op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 #ifndef	SYS5
 	int     ud;
 #endif
@@ -883,8 +873,7 @@ out:
 	return result;
 }
 
-static int
-do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
+static int do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	int     i,
 			pid;
 	char   *bp,
@@ -929,8 +918,7 @@ do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	_exit (0);			/* NOTREACHED */
 }
 
-static int
-op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
+static int op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	if (rox -> rox_nolinked == 0) {
 		advise (LOG_INFO, NULLCP,
 				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
@@ -950,8 +938,7 @@ op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, s
 
 /* ERROR */
 
-static int
-error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -960,8 +947,7 @@ error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindi
 
 /* U-REJECT */
 
-static int
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

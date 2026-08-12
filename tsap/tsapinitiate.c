@@ -85,8 +85,7 @@ int TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int exp
 	return result;
 }
 
-static int
-TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
+static int TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
 	int	    result;
 	struct tsapblk *tb;
 
@@ -160,8 +159,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
+static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
 	int   n;
 	int	    didone,
 			l,

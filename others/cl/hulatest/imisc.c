@@ -144,8 +144,7 @@ vec2ia5list (char **vec) {
 	return ia5;
 }
 
-static
-print_ia5list (struct type_IMISC_IA5List *ia5) {
+static print_ia5list (struct type_IMISC_IA5List *ia5) {
 	struct qbuf *p,
 			   *q;
 
@@ -159,15 +158,13 @@ print_ia5list (struct type_IMISC_IA5List *ia5) {
 
 /* ARGUMENTS */
 
-static int
-do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	*ia5 = vec2ia5list (args);
 
 	return OK;
 }
 
-static int
-do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	char   *cp,
 		   *dp,
 		   buffer[BUFSIZ];
@@ -198,8 +195,7 @@ do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **i
 	return OK;
 }
 
-static int
-do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
+static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
 	char   *cp;
 
 	if (data == NULLPE) {
@@ -263,8 +259,7 @@ caddr_t *dummy;
 
 /* RESULTS */
 
-static int
-utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
+static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
 	struct qbuf *q;
 
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
@@ -274,8 +269,7 @@ utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, 
 	return OK;
 }
 
-static int
-timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
+static int timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
 	long	s;
 
 	s = result -> parm - 2208988800L;	/* UNIX epoch */
@@ -284,8 +278,7 @@ timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *resul
 	return OK;
 }
 
-static int
-ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
+static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
 	print_ia5list (result);
 
 	return OK;
@@ -313,16 +306,14 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-static int
-echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
+static int echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
 	if (pe_cmp (result, data))
 		advise (NULLCP, "data mismatch");
 
 	return OK;
 }
 
-static int
-imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
+static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {

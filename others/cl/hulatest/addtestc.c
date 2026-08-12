@@ -82,8 +82,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* ARGUMENTS */
 
-static int
-addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends) {
+static int addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends) {
 	struct type_ADD_Addends *paddends;
 
 	if ((paddends = (struct type_ADD_Addends *) calloc (1, sizeof *paddends))
@@ -125,15 +124,13 @@ caddr_t *dummy;
 
 /* RESULTS */
 
-static int
-addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi) {
+static int addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi) {
 	printf ("\n sum = %d\n", result->parm );
 	printf ("\n");
 	return OK;
 }
 
-static int
-addtest_error (
+static int addtest_error (
 	int sd,
 	int id,
 	int error,

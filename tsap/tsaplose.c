@@ -118,8 +118,7 @@ int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_tsaplose (	/* what, fmt, args ... */
+static int _tsaplose (	/* what, fmt, args ... */
 	struct TSAPdisconnect *td,
 	int reason,
 	va_list ap

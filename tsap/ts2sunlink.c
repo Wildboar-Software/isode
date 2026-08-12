@@ -73,8 +73,7 @@
 
 /*    UPPER HALF */
 
-static int
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *t;
 #ifdef SUNLINK_7_0   /* 13-Jun-91: added by Dave D. for SunNet OSI 7.0 bug */
@@ -133,8 +132,7 @@ out:
 	return result;
 }
 
-static int
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	int	    cc,
 			header_len,
 			onoff;
@@ -223,8 +221,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    cc,
 			i,
 			result;
@@ -275,8 +272,7 @@ out:
 	return result;
 }
 
-static int
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
 #ifdef LINUX
@@ -326,8 +322,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 #define	MSG_MAXIOVLEN	NTPUV
 #endif
 
-static int
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int	    cc,
 			flags,
 			j,
@@ -535,8 +530,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;
@@ -613,8 +607,7 @@ out:
 	return result;
 }
 
-static int
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int	    cc,
 			header_len;
 	struct qbuf *qb;
@@ -704,8 +697,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-static int
-ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	TP_MSG_DISCONNECT tps, *tp = &tps;
 	int header_len = sizeof (*tp);
 	int cc;
@@ -725,8 +717,7 @@ ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return (NOTOK);
 }
 
-static int
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tp4pkt *tp;
 #ifdef LINUX
@@ -759,8 +750,7 @@ TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) 
 	return result;
 }
 
-static int
-TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
+static int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tp4pkt *tp;
 
 	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));
@@ -813,8 +803,7 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-static int
-retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set  mask;
 
 	FD_ZERO (&mask);

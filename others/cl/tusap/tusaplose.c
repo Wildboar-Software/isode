@@ -33,8 +33,7 @@ int tusaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int
-_tusaplose (	/* what, fmt, args ... */
+static int _tusaplose (	/* what, fmt, args ... */
 	struct TSAPdisconnect *td,
 	int reason,
 	va_list ap

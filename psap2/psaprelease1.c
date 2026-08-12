@@ -78,8 +78,7 @@ int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindic
 	return result;
 }
 
-static int
-PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
+static int PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	int	    result;
 	char   *id = pb -> pb_flags & PB_RELEASE ? "SRelRetryRequest"
 				 : "SRelRequest";

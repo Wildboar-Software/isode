@@ -72,8 +72,7 @@ initialize () {
 	read_quipurc();
 }
 
-static void
-read_quipurc () {
+static void read_quipurc () {
 	char quipurc[LINESIZE];
 	char *quipurc_name = "/.quipurc";
 	char *SkipSpace(), *TidyString();

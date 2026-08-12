@@ -14,8 +14,7 @@
 
 #if	defined(TCP) || defined(X25)
 
-static int
-TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	struct tsapkt *t;
 
 	if (!(tb -> tb_flags & TB_TCP)) {
@@ -73,8 +72,7 @@ TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisc
 	return OK;
 }
 
-static int
-TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	int	    len;
 	struct tsapkt *t;
 
@@ -220,8 +218,7 @@ out:
 	return NOTOK;
 }
 
-static int
-TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int	    len,
 			result;
 	struct tsapkt *t;
@@ -289,8 +286,7 @@ out:
 	return result;
 }
 
-static int
-TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tsapkt *t;
 
@@ -348,8 +344,7 @@ TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype 
 	return result;
 }
 
-static int
-TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int	    cc,
 			j,
 			len,
@@ -420,8 +415,7 @@ TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconne
 	return OK;
 }
 
-static int
-TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int     eot;
 	struct tsapkt *t = NULL;
 
@@ -539,8 +533,7 @@ TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int a
 	return NOTOK;
 }
 
-static int
-TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int     result;
 #ifdef	TCP
 	struct tsapkt *t;
@@ -906,8 +899,7 @@ out:
 }
 
 #ifdef	NODELAY
-static int
-TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int	    nc,
 			onoff,
 			result;

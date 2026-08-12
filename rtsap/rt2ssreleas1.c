@@ -26,8 +26,7 @@ int RtEndRequest (int sd, struct RtSAPindication *rti) {
 	return result;
 }
 
-static int
-RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti) {
+static int RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti) {
 	int     result;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

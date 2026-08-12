@@ -13,8 +13,7 @@ int decode_t4 (char *picture, char *persons_name, int len) {
 		fprintf (stderr,"%02x",*picture++ & 255);
 
 }
-static
-photolen (char *s1) {
+static photolen (char *s1) {
 	int length=0,cnt,i;
 	char * temp;
 

@@ -247,8 +247,7 @@ char  **vec;
 *****************************************************
 */
 
-static int
-ros_work (int fd) {
+static int ros_work (int fd) {
 	int	    result;
 	caddr_t out;
 	struct AcSAPindication  acis;
@@ -285,8 +284,7 @@ ros_work (int fd) {
 	return OK;
 }
 
-static int
-ros_indication (int sd, struct RoSAPindication *roi) {
+static int ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 

@@ -89,8 +89,7 @@ bad:
  * offset field which makes it different to pr_type routine which
  * must assume that it has an offset.
  */
-static int
-pr_obj (
+static int pr_obj (
 	int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
@@ -160,8 +159,7 @@ bad:
  * Parse a single type. If a basic type parse it, if a compound type
  * call the appropriate parsing routine
  */
-static int
-pr_type (
+static int pr_type (
 	int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
@@ -615,8 +613,7 @@ bad:
  * Parse a sequence, calling appropriate routines to parse each sub
  * type
  */
-static int
-pr_seq (
+static int pr_seq (
 	PE head,
 	char **parm,
 	ptpe *p,
@@ -874,8 +871,7 @@ bad:
 /*
  * Parse a set, calling appropriate routines to parse each sub type
  */
-static int
-pr_set (
+static int pr_set (
 	PE head,
 	char **parm,
 	ptpe *p,
@@ -1131,8 +1127,7 @@ bad:
  * Parse a sequence of calling appropriate routines to parse each sub
  * type
  */
-static int
-pr_seqof (
+static int pr_seqof (
 	PE head,
 	char **parm,
 	ptpe *p,
@@ -1331,8 +1326,7 @@ bad:
 /*
  * Parse a setof, calling appropriate routines to parse each sub type
  */
-static int
-pr_setof (
+static int pr_setof (
 	PE head,
 	char **parm,
 	ptpe *p,
@@ -1525,8 +1519,7 @@ bad:
 /*
  * parse a choice field. This means find which choice is taken
  */
-static int
-pr_choice (
+static int pr_choice (
 	PE head,
 	char **parm,
 	ptpe *p,
@@ -1597,8 +1590,7 @@ bad:
  * Parse a single type for explicit tag If a basic type parse it, if
  * a compound type call the appropriate parsing routine
  */
-static int
-pr_etype (
+static int pr_etype (
 	PE pe,
 	char **parm,
 	ptpe *p,
@@ -2010,8 +2002,7 @@ setpresent (PE head, ptpe *p, modtyp *mod) {
 /*
  * set the default value to that value in the structure
  */
-static int
-setdval (ptpe *typ, ptpe *dflt, char **parm, modtyp *mod) {
+static int setdval (ptpe *typ, ptpe *dflt, char **parm, modtyp *mod) {
 	char	*p;
 	integer	i;
 	int		no;	/* number of octets */
@@ -2156,8 +2147,7 @@ again:
  * this is present because it then believes the object is present and
  * tries to process it ...
  */
-static int
-fix_mem (char **parm, ptpe *p) {
+static int fix_mem (char **parm, ptpe *p) {
 	if (p->pe_type != SOBJECT || p[-1].pe_type != MEMALLOC
 			|| p[1].pe_type != PE_END)
 		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP, ("fix_mem:inconsistency"));

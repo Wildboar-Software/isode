@@ -166,8 +166,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* TSAP */
 
-static int
-ts_main (int argc, char **argv) {
+static int ts_main (int argc, char **argv) {
 	int     async,
 			sd;
 	char    buffer[BUFSIZ];
@@ -250,8 +249,7 @@ ts_main (int argc, char **argv) {
 	}
 }
 
-static int
-ts_dataindication (int sd, struct TSAPdata *tx) {
+static int ts_dataindication (int sd, struct TSAPdata *tx) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;
 
@@ -275,8 +273,7 @@ ts_dataindication (int sd, struct TSAPdata *tx) {
 	TXFREE (tx);
 }
 
-static int
-ts_discindication (int sd, struct TSAPdisconnect *td) {
+static int ts_discindication (int sd, struct TSAPdisconnect *td) {
 	if (td -> td_reason != DR_NORMAL)
 		ts_adios (td, "T-DISCONNECT.INDICATION");
 
@@ -288,15 +285,13 @@ ts_discindication (int sd, struct TSAPdisconnect *td) {
 	exit (0);
 }
 
-static void
-ts_adios (struct TSAPdisconnect *td, char *event) {
+static void ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, event);
 
 	_exit (1);
 }
 
-static void
-ts_advise (struct TSAPdisconnect *td, char *event) {
+static void ts_advise (struct TSAPdisconnect *td, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -348,8 +343,7 @@ static int  owned = 0;
 static struct SSAPdata hxs;
 static struct SSAPdata *hx = &hxs;
 
-static int
-ss_main (int argc, char **argv) {
+static int ss_main (int argc, char **argv) {
 	int     async,
 			result,
 			sd;
@@ -489,8 +483,7 @@ ss_main (int argc, char **argv) {
 
 #undef	dotoken
 
-static int
-ss_dataindication (int sd, struct SSAPdata *sx) {
+static int ss_dataindication (int sd, struct SSAPdata *sx) {
 	char   *p,
 		   buffer[BUFSIZ];
 	struct SSAPindication   sis;
@@ -592,8 +585,7 @@ ss_dataindication (int sd, struct SSAPdata *sx) {
 		free (p);
 }
 
-static int
-ss_tokenindication (int sd, struct SSAPtoken *st) {
+static int ss_tokenindication (int sd, struct SSAPtoken *st) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort *sa = &si -> si_abort;
@@ -647,8 +639,7 @@ ss_tokenindication (int sd, struct SSAPtoken *st) {
 	STFREE (st);
 }
 
-static int
-ss_syncindication (int sd, struct SSAPsync *sn) {
+static int ss_syncindication (int sd, struct SSAPsync *sn) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -757,8 +748,7 @@ ss_syncindication (int sd, struct SSAPsync *sn) {
 	SNFREE (sn);
 }
 
-static int
-ss_actindication (int sd, struct SSAPactivity *sv) {
+static int ss_actindication (int sd, struct SSAPactivity *sv) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -860,8 +850,7 @@ ss_actindication (int sd, struct SSAPactivity *sv) {
 	SVFREE (sv);
 }
 
-static int
-ss_reportindication (int sd, struct SSAPreport *sp) {
+static int ss_reportindication (int sd, struct SSAPreport *sp) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -887,8 +876,7 @@ ss_reportindication (int sd, struct SSAPreport *sp) {
 	SPFREE (sp);
 }
 
-static int
-ss_finishindication (int sd, struct SSAPfinish *sf) {
+static int ss_finishindication (int sd, struct SSAPfinish *sf) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort *sa = &si -> si_abort;
@@ -908,8 +896,7 @@ ss_finishindication (int sd, struct SSAPfinish *sf) {
 	exit (0);
 }
 
-static int
-ss_abortindication (int sd, struct SSAPabort *sa) {
+static int ss_abortindication (int sd, struct SSAPabort *sa) {
 	if (!sa -> sa_peer)
 		ss_adios (sa, "S-P-ABORT.INDICATION");
 
@@ -921,15 +908,13 @@ ss_abortindication (int sd, struct SSAPabort *sa) {
 	exit (1);
 }
 
-static void
-ss_adios (struct SSAPabort *sa, char *event) {
+static void ss_adios (struct SSAPabort *sa, char *event) {
 	ss_advise (sa, event);
 
 	_exit (1);
 }
 
-static void
-ss_advise (struct SSAPabort *sa, char *event) {
+static void ss_advise (struct SSAPabort *sa, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (sa -> sa_cc > 0)
@@ -1921,8 +1906,7 @@ accept:
 		}
 }
 
-static int
-rts_indication (int sd, struct RtSAPindication *rti) {
+static int rts_indication (int sd, struct RtSAPindication *rti) {
 	switch (rti -> rti_type) {
 	case RTI_TURN:
 		rts_turn (sd, &rti -> rti_turn);
@@ -2025,8 +2009,7 @@ static void rts_adios (struct RtSAPabort *rta, char *event) {
 	_exit (1);
 }
 
-static void
-rts_advise (struct RtSAPabort *rta, char *event) {
+static void rts_advise (struct RtSAPabort *rta, char *event) {
 	char    buffer[BUFSIZ];
 	if (rta -> rta_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RtErrString (rta -> rta_reason),

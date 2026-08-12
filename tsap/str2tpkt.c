@@ -44,8 +44,7 @@ str2tpkt (char *buffer) {
 	return t;
 }
 
-static int
-getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
+static int getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 	static int  cc;
 
 	if (fd == NOTOK) {
@@ -67,8 +66,7 @@ getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 	return OK;
 }
 
-static int
-readfnx (int fd, char *buffer, int n) {
+static int readfnx (int fd, char *buffer, int n) {
 	int    i;
 	static int  cc;
 	static char *bp;
@@ -87,8 +85,7 @@ readfnx (int fd, char *buffer, int n) {
 	return i;
 }
 
-static int
-putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
+static int putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	struct udvec  *uv;
 
@@ -119,8 +116,7 @@ putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	return cc;
 }
 
-static int
-writefnx (struct tsapblk *tb, char *buffer, int n) {
+static int writefnx (struct tsapblk *tb, char *buffer, int n) {
 	static int  cc;
 	static char *bp;
 

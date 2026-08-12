@@ -111,8 +111,7 @@ struct RoSAPindication *roi;
 
 /* U-REJECT */
 
-static int
-ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

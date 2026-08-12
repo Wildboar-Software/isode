@@ -270,8 +270,7 @@ static int varwidth2;
 
 static char    **getval ();
 
-static int
-f_set (char **vec) {
+static int f_set (char **vec) {
 	int    i,
 		   j;
 	int     value,
@@ -469,8 +468,7 @@ out_of_range:
 	return OK;
 }
 
-static
-printvar (struct var *v) {
+static printvar (struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -734,8 +732,7 @@ int rcinit () {
 	}
 }
 
-static
-snarf (char *file, char *name, char **variable) {
+static snarf (char *file, char *name, char **variable) {
 	int	    i;
 	char   *bp,
 		   *dp,

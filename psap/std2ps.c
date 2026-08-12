@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static int
-std_read (PS ps, PElementData data, PElementLen n, int in_line) {
+static int std_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    i;
 
 	if ((i = fread ((char *) data, sizeof *data, (int) n,
@@ -14,8 +13,7 @@ std_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	return i;
 }
 
-static int
-std_write (PS ps, PElementData data, PElementLen n, int in_line) {
+static int std_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    i;
 
 	if ((i = fwrite ((char *) data, sizeof *data, (int) n,

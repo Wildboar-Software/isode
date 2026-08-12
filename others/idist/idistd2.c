@@ -515,8 +515,7 @@ int fixup () {
 	return OK;
 }
 
-static int
-compare (char *f1, char *f2) {
+static int compare (char *f1, char *f2) {
 	FILE	*fp1, *fp2;
 	char	buf1[BUFSIZ], buf2[BUFSIZ];	/* these two had
 						   better be identical */

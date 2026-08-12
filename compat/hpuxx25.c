@@ -562,8 +562,7 @@ int fd;
 
 #ifdef  DEBUG
 
-static int
-log_x25_facilities (int fd, int coc, char *caption) {
+static int log_x25_facilities (int fd, int coc, char *caption) {
 	FACILITY_DB        hp;
 	CCITT_FACILITY_DB  ccitt;
 
@@ -578,8 +577,7 @@ log_x25_facilities (int fd, int coc, char *caption) {
 	return OK;
 }
 
-static void
-print_x25_facilities (FACILITY_DB *hp, int coc, char *caption) {
+static void print_x25_facilities (FACILITY_DB *hp, int coc, char *caption) {
 	int     i, baud;
 
 	DLOG (x25_log, LLOG_DEBUG, ("%s X.25 Facilities:", caption));
