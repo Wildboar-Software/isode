@@ -1,5 +1,4 @@
 /* ryopblock.c - manage operation blocks */
-
 #include <stdio.h>
 #include "rosy.h"
 
@@ -7,37 +6,28 @@ static int  once_only = 0;
 static struct opsblk opsque;
 static struct opsblk *OPHead = &opsque;
 
-/*    OPERATION BLOCKS */
+/* OPERATION BLOCKS */
 
-struct opsblk  *newopblk (sd, id)
-int	sd,
-	id;
-{
+struct opsblk *newopblk (int sd, int id) {
 	struct opsblk *opb;
 
 	opb = (struct opsblk   *) calloc (1, sizeof *opb);
 	if (opb == NULL)
 		return NULL;
-
 	opb -> opb_flags |= OPB_INITIATOR;
-
 	opb -> opb_fd = sd;
 	opb -> opb_id = id;
-
 	if (once_only == 0) {
 		OPHead -> opb_forw = OPHead -> opb_back = OPHead;
 		once_only++;
 	}
-
 	insque (opb, OPHead -> opb_back);
-
 	return opb;
 }
 
 void freeopblk (struct opsblk *opb) {
 	if (opb == NULL)
 		return;
-
 #ifdef PEPSY_DEFINITIONS
 	if (opb -> opb_out && opb -> opb_free_mod)
 		fre_obj (opb -> opb_out,
@@ -47,44 +37,31 @@ void freeopblk (struct opsblk *opb) {
 	if (opb -> opb_out && opb -> opb_free)
 		(*opb -> opb_free) (opb -> opb_out);
 #endif
-
 	if (opb -> opb_pe)
 		pe_free (opb -> opb_pe);
-
 	remque (opb);
-
 	free ((char *) opb);
 }
 
-struct opsblk   *findopblk (sd, id, flags)
-int	sd,
-	id,
-	flags;
-{
+struct opsblk *findopblk (int sd, int id, int flags) {
 	struct opsblk *opb;
 
 	if (once_only == 0)
 		return NULL;
-
 	flags &= OPB_INITIATOR | OPB_RESPONDER;
 	for (opb = OPHead -> opb_forw; opb != OPHead; opb = opb -> opb_forw)
 		if (opb -> opb_fd == sd
 				&& opb -> opb_id == id
 				&& (opb -> opb_flags & flags))
 			return opb;
-
 	return NULL;
 }
 
-struct opsblk   *firstopblk (sd)
-int	sd;
-{
-	struct opsblk *opb,
-			   *op2;
+struct opsblk *firstopblk (int sd) {
+	struct opsblk *opb, *op2;
 
 	if (once_only == 0)
 		return NULL;
-
 	op2 = NULLOPB;
 	for (opb = OPHead -> opb_forw; opb != OPHead; opb = opb -> opb_forw)
 		if (opb -> opb_fd == sd && (opb -> opb_flags & OPB_INITIATOR)) {
@@ -93,7 +70,6 @@ int	sd;
 			if (op2 == NULLOPB)
 				op2 = opb;
 		}
-
 	return op2;
 }
 
@@ -104,24 +80,18 @@ void loseopblk (int sd, int reason) {
 
 	if (once_only == 0)
 		return;
-
 	for (opb = OPHead -> opb_forw; opb != OPHead; opb = op2) {
 		op2 = opb -> opb_forw;
-
 		if (opb -> opb_fd == sd) {
 			if (opb -> opb_errfnx)
 				(*opb -> opb_errfnx) (sd, opb -> opb_id, RY_REJECT,
 									  (caddr_t) (size_t) reason, &rois);
-
 			freeopblk (opb);
 		}
 	}
 }
 
 #ifdef	lint
-
-/* VARARGS */
-
 int rosaplose (struct RoSAPindication *roi, int reason, char *what, char *fmt) {
 	return rosaplose (roi, reason, what, fmt);
 }

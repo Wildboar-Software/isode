@@ -1,6 +1,4 @@
 /* ryoperation.c - ROSY: operations */
-
-#include <stdio.h>
 #include "rosy.h"
 
 #ifdef __STDC__
@@ -18,17 +16,16 @@
 			    "mandatory parameter \"%s\" missing", "p"); \
 }
 #endif
-/* OPERATION */
 
-int	RyOperation (sd, ryo, op, in, out, response, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-	*response;
-caddr_t	in,
-		*out;
-struct RoSAPindication *roi;
-{
+int	RyOperation (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	caddr_t in,
+	caddr_t *out,
+	int *response,
+	struct RoSAPindication *roi
+) {
 	int     result;
 
 #ifdef	notdef			/* let RyOpInvoke check these as necessary */
@@ -38,41 +35,32 @@ struct RoSAPindication *roi;
 	missingP (out);
 	missingP (response);
 	missingP (roi);
-
-	switch (result = RyOpInvoke (sd, ryo, op, in, out, NULLIFP, NULLIFP,
+	switch (result = RyOpInvoke (sd, ryo, op, in, out, NULL, NULL,
 								 ROS_SYNC, RyGenID (sd),
-								 NULLIP, ROS_NOPRIO, roi)) {
+								 NULL, ROS_NOPRIO, roi)) {
 	case NOTOK:
 		return NOTOK;
-
 	case OK:
 		switch (roi -> roi_type) {
 		case ROI_RESULT:
 			*response = RY_RESULT;
 			return OK;
-
 		case ROI_ERROR: {	/* XXX: hope roe -> roe_error != NOTOK */
 			struct RoSAPerror  *roe = &roi -> roi_error;
-
 			*response = roe -> roe_error;
 			return OK;
 		}
-
 		case ROI_UREJECT: {
 			struct RoSAPureject *rou = &roi -> roi_ureject;
-
 			return rosaplose (roi, rou -> rou_reason, NULLCP,
 							  NULLCP);
 		}
-
 		default:
 			return rosaplose (roi, ROS_PROTOCOL, NULLCP,
 							  "unknown indication type=%d", roi -> roi_type);
 		}
-
 	case DONE:
 		return DONE;
-
 	default:
 		return rosaplose (roi, ROS_PROTOCOL, NULLCP,
 						  "unknown return from RyInvoke=%d", result);

@@ -1,6 +1,5 @@
 /* ryopinvoke.c - ROSY: invoke */
-
-#include <stdio.h>
+#include <sys/types.h>
 #include "rosy.h"
 
 #ifdef __STDC__
@@ -21,38 +20,34 @@
 
 /* INVOKE */
 
-int	RyOpInvoke (sd, ryo, op, in, out, rfx, efx, class, invokeID, linkedID,
-				priority, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-	class,
-	invokeID,
-	*linkedID,
-	priority;
-caddr_t	in,
-		*out;
-IFP	rfx,
-	efx;
-struct RoSAPindication *roi;
-{
+int	RyOpInvoke (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	caddr_t in,
+	caddr_t *out,
+	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	int class,
+	int invokeID,
+	int *linkedID,
+	int priority,
+	struct RoSAPindication *roi
+) {
 	int	    result;
 	PE	    pe;
 	struct opsblk *opb;
 
 	missingP (ryo);
 	missingP (roi);
-
 	if (opb = findopblk (sd, invokeID, OPB_INITIATOR))
 		return rosaplose (roi, ROS_IP_DUP, NULLCP, NULLCP);
-
 	for (; ryo -> ryo_name; ryo++)
 		if (ryo -> ryo_op == op)
 			break;
 	if (!ryo -> ryo_name)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "unknown operation code %d", op);
-
 #ifdef PEPSY_DEFINITIONS
 	if (ryo -> ryo_arg_mod) {
 #else
@@ -76,10 +71,8 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_PARAMETER, NULLCP,
 							  "argument not permitted with operation %s/%d",
 							  ryo -> ryo_name, ryo -> ryo_op);
-
 		pe = NULLPE;
 	}
-
 	if (ryo -> ryo_result || ryo -> ryo_errors) {
 		if (out) {
 			if (rfx || efx)
@@ -91,13 +84,11 @@ struct RoSAPindication *roi;
 			}
 			missingP (efx);
 		}
-
 		if ((opb = newopblk (sd, invokeID)) == NULLOPB) {
 			if (pe)
 				pe_free (pe);
 			return rosaplose (roi, ROS_CONGEST, NULLCP, NULLCP);
 		}
-
 		opb -> opb_ryo = ryo;
 		opb -> opb_resfnx = rfx, opb -> opb_errfnx = efx;
 	} else {
@@ -108,33 +99,25 @@ struct RoSAPindication *roi;
 							  "ASYNC class must be used with operation %s/%d",
 							  ryo -> ryo_name, ryo -> ryo_op);
 		}
-
 		opb = NULLOPB;
 	}
-
 	result = RoInvokeRequest (sd, ryo -> ryo_op, class, pe, invokeID, linkedID,
 							  priority, roi);
-
 	if (pe)
 		pe_free (pe);
-
 	switch (result) {
 	case NOTOK:
 	case DONE:
 		break;
-
 	case OK:
 		if (class == ROS_ASYNC)
 			return OK;
 		return RyWaitAux (sd, opb, out, NOTOK, roi);
-
 	default:
 		result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
 							"unknown return from RoInvokeRequest=%d", result);
 		break;
 	}
-
 	freeopblk (opb);
-
 	return result;
 }

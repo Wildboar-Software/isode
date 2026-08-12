@@ -78,8 +78,8 @@ struct opsblk {
 	int	    opb_fd;		/* association descriptor */
 	int	    opb_id;		/* invoke ID */
 
-	IFP	    opb_resfnx;		/* result vector */
-	IFP	    opb_errfnx;		/* error vector */
+	int (*opb_resfnx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);		/* result vector */
+	int (*opb_errfnx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);		/* error vector */
 
 	struct RyOperation *opb_ryo;/* entry in operation table */
 
@@ -103,9 +103,9 @@ struct dspblk {
 	int	    dsb_fd;		/* association descriptor */
 	/* NOTOK-valued is wildcard for RyWait */
 
-	struct RyOperation *dsb_ryo;/* entry in operation table */
+	struct RyOperation *dsb_ryo; /* entry in operation table */
 
-	IFP	    dsb_vector;		/* dispatch vector */
+	int (*dsb_vector)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi); /* dispatch vector */
 };
 #define	NULLDSB		((struct dspblk *) 0)
 
@@ -140,32 +140,93 @@ struct dspblk {
 #define newopblk		Pnewopblk
 #endif
 
-int	RyWait ();		/* WAIT */
+/* WAIT */
+int	RyWait (
+	int sd,
+	int *id,
+	caddr_t *out,
+	int secs,
+	struct RoSAPindication *roi
+);
+
+int	RyWaitAux (
+	int sd,
+	struct opsblk *opb,
+	caddr_t *out,
+	int secs,
+	struct RoSAPindication *roi
+);
 
 /* Initiator */
-int	RyStub ();		/* STUB */
+/* STUB */
+int	RyStub (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	int id,
+	int *linked,
+	caddr_t in,
+	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	int class,
+	struct RoSAPindication *roi
+);
 #define	ROS_INTR	2	/*   invoke stub but return on interrupt */
 int	RyDiscard ();		/* DISCARD */
-int	RyOperation ();		/* OPERATION */
-int	RyOpInvoke ();		/* INVOKE */
-int	RyGenID ();		/* generate unique invoke ID */
+
+/* OPERATION */
+int	RyOperation (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	caddr_t in,
+	caddr_t *out,
+	int *response,
+	struct RoSAPindication *roi
+);
+
+/* INVOKE */
+int	RyOpInvoke (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	caddr_t in,
+	caddr_t *out,
+	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	int class,
+	int invokeID,
+	int *linkedID,
+	int priority,
+	struct RoSAPindication *roi
+);
+int	RyGenID (int sd);		/* generate unique invoke ID */
 
 /* Responder */
-int	RyDispatch ();		/* DISPATCH */
-int	RyDsResult ();		/* RESULT */
-int	RyDsError ();		/* ERROR */
-int	RyDsUReject ();		/* U-REJECT */
+/* DISPATCH */
+int	RyDispatch (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	int (*fnx)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi),
+	struct RoSAPindication *roi
+);
+int	RyDsResult (int sd, int id, caddr_t out, int priority, struct RoSAPindication *roi);		/* RESULT */
+int	RyDsError (int sd, int id, int err, caddr_t out, int priority, struct RoSAPindication *roi);		/* ERROR */
+int	RyDsUReject (int sd, int id, int reason, int priority, struct RoSAPindication *roi);		/* U-REJECT */
 
-int	RyLose ();		/* clean-up after association termination */
+int	RyLose (int sd, struct RoSAPindication *roi);		/* clean-up after association termination */
 
-struct RyOperation *findopbyop (), *findopbyname ();
+struct RyOperation *findopbyop (struct RyOperation *ryo, int op), *findopbyname (struct RyOperation *ryo, char *name);
 
-struct RyError *finderrbyerr (), *finderrbyname ();
+struct RyError *finderrbyerr (struct RyError *rye, int err), *finderrbyname (struct RyError *rye, char *name);
 
-void freeopblk (), loseopblk ();
-struct opsblk *newopblk (), *findopblk (), *firstopblk ();
+void freeopblk (struct opsblk *opb);
+void loseopblk (int sd, int reason);
+struct opsblk *newopblk (int sd, int id), *findopblk (int sd, int id, int flags), *firstopblk (int sd);
 
-void freedsblk (), losedsblk ();
-struct dspblk *newdsblk (), *finddsblk ();
+void freedsblk (struct dspblk *dsb);
+void losedsblk (int sd);
+struct dspblk *newdsblk (int sd, struct RyOperation *ryo), *finddsblk (int sd, int op);
 
 #endif

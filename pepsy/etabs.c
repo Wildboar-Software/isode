@@ -13,25 +13,25 @@ s_table *head;
 
 extern s_table *lookup_list(), *proc_def();
 
-extern char *genstrform ();
+extern char *genstrform (YP yp);
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp);
 extern char *strip_last(char *s);
 extern char *get_val(char **s), *get_comp(char **s), *get_string(char *s, int direction);
 extern s_table *get_offset();
-extern char *my_strcat(), *strp2name(char *s1, char *s2);
-extern char *my_new_str();
+extern char *my_strcat(char *s1, char *s2), *strp2name(char *s1, char *s2);
+extern char *my_new_str(char *s);
 extern char *mymodule;
-extern char *modsym();
-extern char *concat();
+extern char *modsym(char *module, char *id, char *prefix);
+extern char *concat(char *s1, char *s2);
 extern char *genlabel(char *name, YP yp);
-extern char *notidtoid();
+extern char *notidtoid(char *s);
 extern char *code2name(int code);
 extern char *yp2name(YP yp);
 extern YV calc_yv(YP yp, char *id);
-extern SY syfind();
+extern SY syfind(char *name);
 static s_table *en_ptr;
-extern char	*rm_indirect();
+extern char	*rm_indirect(char *p);
 extern char	*getfield(char *);
 extern char	*setfield(char *p);
 

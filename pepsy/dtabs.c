@@ -8,11 +8,11 @@
 #include "mine.h"
 #include <ctype.h>
 
-extern char *c_tag(), *c_class();
-extern char *ec_tag(), *ec_class();
-extern char *strip_last();
+extern char *c_tag(YP yp), *c_class(YP yp);
+extern char *ec_tag(YP yp), *ec_class(YP yp);
+extern char *strip_last(char *s);
 extern char *str_yp_code[];
-extern char *get_val(), *get_comp(), *strp2name();
+extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
 extern s_table *lookup_list(), *get_offset();
 extern YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
 
@@ -20,7 +20,7 @@ extern char *concat(char *s1, char *s2);
 extern char *my_strcat(char *s1, char *s2);
 extern char	*rm_indirect(char *p);
 extern char	*getfield(char *p);
-extern char	*setfield();
+extern char	*setfield(char *p);
 extern char	*modsym (char *module, char *id, char *prefix);
 extern char	*genstrform (YP yp);
 extern int	gen_sentry();

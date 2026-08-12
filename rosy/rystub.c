@@ -1,7 +1,7 @@
 /* rystub.c - ROSY: stubs */
 
 #include <signal.h>
-#include <stdio.h>
+#include <sys/types.h>
 #include "rosy.h"
 
 #ifdef __STDC__
@@ -21,22 +21,22 @@
 #endif
 
 static int interrupted;
-static SFD	intrser ();
+static SFD	intrser (int sig);
 
 /* stub */
 
-int	RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-	id,
-	*linked,
-	class;
-caddr_t	in;
-IFP	rfx,
-	efx;
-struct RoSAPindication *roi;
-{
+int	RyStub (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	int id,
+	int *linked,
+	caddr_t in,
+	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	int class,
+	struct RoSAPindication *roi
+) {
 	int     firstime,
 			opclass,
 			result;
@@ -53,18 +53,14 @@ struct RoSAPindication *roi;
 	missingP (efx);
 #endif
 	missingP (roi);
-
 	if ((opclass = class) == ROS_INTR) {
 		interrupted = 0;
 		istat = signal (SIGINT, (__sighandler_t)intrser);
-
 		opclass = ROS_ASYNC;
 	}
-
 	result = RyOpInvoke (sd, ryo, op, in, (caddr_t *) NULL, rfx, efx,
 						 opclass, id, linked, ROS_NOPRIO, roi);
 	firstime = 1;
-
 again:
 	;
 	switch (result) {
@@ -136,7 +132,6 @@ again:
 
 	if (class == ROS_INTR)
 		signal (SIGINT, (__sighandler_t)istat);
-
 	return result;
 }
 
@@ -145,6 +140,5 @@ intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif
-
 	interrupted++;
 }

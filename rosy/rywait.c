@@ -23,13 +23,13 @@
 
 /* WAIT */
 
-int	RyWait (sd, id, out, secs, roi)
-int	sd,
-	*id,
-	secs;
-caddr_t *out;
-struct RoSAPindication *roi;
-{
+int	RyWait (
+	int sd,
+	int *id,
+	caddr_t *out,
+	int secs,
+	struct RoSAPindication *roi
+) {
 	int     reason,
 			result;
 	struct opsblk *opb;
@@ -38,7 +38,6 @@ struct RoSAPindication *roi;
 	missingP (out);
 #endif
 	missingP (roi);
-
 	if (id) {
 		if ((opb = findopblk (sd, *id, OPB_INITIATOR)) == NULLOPB)
 			return rosaplose (roi, ROS_PARAMETER, NULLCP,
@@ -46,50 +45,43 @@ struct RoSAPindication *roi;
 							  *id, sd);
 	} else
 		opb = firstopblk (sd);
-
 	if (out && opb && (opb -> opb_flags & OPB_EVENT)) {
 		*out = opb -> opb_out;
 		*roi = opb -> opb_event;	/* struct copy */
 		opb -> opb_out = NULL;
 		freeopblk (opb);
-
 		return OK;
 	}
 
 	if (!id)
 		opb = NULLOPB;
-
 	switch (result = RoWaitRequest (sd, secs, roi)) {
 	case NOTOK:
 		reason = roi -> roi_preject.rop_reason;
 		if (ROS_FATAL (reason))
 			loseopblk (sd, reason);
 		break;
-
 	case DONE:
 		loseopblk (sd, ROS_IP_RELEASE);
 		break;
-
 	case OK:
 		result = RyWaitAux (sd, opb, out, secs, roi);
 		break;
-
 	default:
 		result = rosaplose (roi, ROS_PROTOCOL, NULLCP,
 							"unknown return from RoWaitRequest=%d", result);
 		break;
 	}
-
 	return result;
 }
 
-int	RyWaitAux (sd, opb, out, secs, roi)
-int	sd;
-struct opsblk *opb;
-int	secs;
-caddr_t *out;
-struct RoSAPindication *roi;
-{
+int	RyWaitAux (
+	int sd,
+	struct opsblk *opb,
+	caddr_t *out,
+	int secs,
+	struct RoSAPindication *roi
+) {
 	int     id,
 			reason,
 			result;

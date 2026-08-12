@@ -4,7 +4,6 @@
 #define PEPSY_VERSION 1
 #endif
 #include "rosy.h"
-#include "IMISC-types.h"
 
 struct dispatch {
 	char   *ds_name;
@@ -16,8 +15,8 @@ struct dispatch {
 	modtyp *ds_fr_mod;        /* pointer to table for arguement type */
 	int     ds_fr_index;      /* index to entry in tables */
 
-	int (*ds_result)(int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi);
-	int (*ds_error)(int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
+	int (*ds_result)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+	int (*ds_error)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);
 
 	char   *ds_help;
 };

@@ -1,6 +1,4 @@
 /* rylose.c - ROSY: clean-up after association termination */
-
-#include <stdio.h>
 #include "rosy.h"
 
 #ifdef __STDC__
@@ -21,14 +19,9 @@
 
 /*    clean-up after association termination */
 
-int	RyLose (sd, roi)
-int	sd;
-struct RoSAPindication *roi;
-{
+int	RyLose (int sd, struct RoSAPindication *roi) {
 	missingP (roi);
-
 	loseopblk (sd, ROS_DONE);
 	losedsblk (sd);
-
 	return OK;
 }

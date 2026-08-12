@@ -19,26 +19,19 @@
 }
 #endif
 
-static int	do_response ();
+static int	do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi);
 
 /* DISCARD */
 
-int	RyDiscard (sd, id, roi)
-int	sd,
-	id;
-struct RoSAPindication *roi;
+int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
 {
 	struct opsblk *opb;
-
 	missingP (roi);
-
 	if ((opb = findopblk (sd, id, OPB_INITIATOR)) == NULLOPB)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invocation %d not in progress on association %d",
 						  id, sd);
-
-	opb -> opb_resfnx = opb -> opb_errfnx = (IFP)do_response;
-
+	opb -> opb_resfnx = opb -> opb_errfnx = do_response;
 	return OK;
 }
 

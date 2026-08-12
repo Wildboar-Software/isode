@@ -20,43 +20,30 @@
 #endif
 /* ERROR */
 
-int	RyDsError (sd, id, err, out, priority, roi)
-int	sd;
-int	id,
-	err,
-	priority;
-caddr_t	out;
-struct RoSAPindication *roi;
-{
+int	RyDsError (int sd, int id, int err, caddr_t out, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	PE	    pe;
 	struct opsblk *opb;
-	struct RyError **ryep,
-			   *rye;
+	struct RyError **ryep, *rye;
 	struct RyOperation *ryo;
 
 	missingP (roi);
-
 	if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invocation %d not in progress on association %d",
 						  id, sd);
-
 	ryo = opb -> opb_ryo;
 	if (!(ryep = ryo -> ryo_errors))
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "error not permitted with operation %s/%d",
 						  ryo -> ryo_name, ryo -> ryo_op);
-
 	for (; *ryep; ryep++)
 		if ((*ryep) -> rye_err == err)
 			break;
-
 	if (!(rye = *ryep))
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "error %d not permitted with operation %s/%d",
 						  err, ryo -> ryo_name, ryo -> ryo_op);
-
 #ifdef PEPSY_DEFINITIONS
 	if (rye -> rye_param_mod) {
 #else
@@ -84,13 +71,10 @@ struct RoSAPindication *roi;
 
 		pe = NULLPE;
 	}
-
 	if ((result = RoErrorRequest (sd, id, err, pe, priority, roi)) != NOTOK)
 		freeopblk (opb);
-
 	if (pe)
 		pe_free (pe);
-
 	return result;
 
 }

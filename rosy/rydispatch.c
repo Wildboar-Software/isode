@@ -20,35 +20,30 @@
 #endif
 /* DISPATCH */
 
-int	RyDispatch (sd, ryo, op, fnx, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op;
-IFP	fnx;
-struct RoSAPindication *roi;
-{
+int	RyDispatch (
+	int sd,
+	struct RyOperation *ryo,
+	int op,
+	int (*fnx)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi),
+	struct RoSAPindication *roi
+) {
 	struct dspblk *dsb;
 
 	missingP (roi);
-
 	if ((dsb = finddsblk (sd, op)) == NULLDSB) {
 		missingP (ryo);
 		missingP (fnx);
-
 		for (; ryo -> ryo_name; ryo++)
 			if (ryo -> ryo_op == op)
 				break;
 		if (!ryo -> ryo_name)
 			return rosaplose (roi, ROS_PARAMETER, NULLCP,
 							  "unknown operation code %d", op);
-
 		if ((dsb = newdsblk (sd, ryo)) == NULLDSB)
 			return rosaplose (roi, ROS_CONGEST, NULLCP, NULLCP);
 	} else if (ryo)
 		dsb -> dsb_ryo = ryo;
-
 	if ((dsb -> dsb_vector = fnx) == NULLIFP)
 		freedsblk (dsb);
-
 	return OK;
 }

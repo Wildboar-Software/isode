@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include <unistd.h>
 #include "PasswordLookup-types.h"
 #include "ryinitiator.h"
@@ -14,7 +15,7 @@ extern char *isodeversion;
 
 /* INITIATOR */
 
-ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
+void ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
 int	argc;
 char  **argv,
 	  *myservice,
@@ -122,10 +123,8 @@ IFP	quit;
 
 	sd = acc -> acc_sd;
 	ACCFREE (acc);
-
 	if (RoSetService (sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
-
 	if (iloop) {
 		for (;;) {
 			if (_getline (buffer) == NOTOK)
@@ -146,12 +145,10 @@ IFP	quit;
 		}
 	} else
 		invoke (sd, ops, ds, argv + 3);
-
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-static
-invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
+static int invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 	int	    result;
 	caddr_t in;
 	struct RoSAPindication  rois;
@@ -162,7 +159,7 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 	if (ds -> ds_argument && (*ds -> ds_argument) (sd, ds, args, &in) == NOTOK)
 		return;
 
-	switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd), NULLIP,
+	switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd), NULL,
 							 in, ds -> ds_result, ds -> ds_error, ROS_SYNC,
 							 roi)) {
 	case NOTOK:		/* failure */
@@ -188,8 +185,7 @@ invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args) {
 				 ds -> ds_mod, 1);
 }
 
-static int
-_getline (char *buffer) {
+static int _getline (char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -223,15 +219,12 @@ _getline (char *buffer) {
 	return OK;
 }
 
-void
-ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	_exit (1);
 }
 
-void
-ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
@@ -239,19 +232,15 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-void
-acs_adios (struct AcSAPabort *aca, char *event) {
+void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
-
 	_exit (1);
 }
 
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -268,34 +257,25 @@ acs_advise (struct AcSAPabort *aca, char *event) {
 #ifndef	lint
 static void	_advise ();
 
-void	adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
 /* VARARGS */
-
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char *what, char *fmt, ...) {
+void advise (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -303,39 +283,29 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
 /* VARARGS */
-
-void
-advise (char *what, char *fmt) {
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	ryr_advise (char *what, char *fmt, ...) {
+void ryr_advise (char *what, char *fmt, ...) {
     va_list ap;
-
     va_start (ap, fmt);
-
     _advise (what, fmt, ap);
-
 	va_end (ap);
 }
 #else
 /* VARARGS */
-
-void
-ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

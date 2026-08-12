@@ -1,6 +1,4 @@
 /* rydsresult.c - ROSY: return result to invocation */
-
-#include <stdio.h>
 #include "rosy.h"
 
 #ifdef __STDC__
@@ -19,33 +17,22 @@
 }
 #endif
 
-/* RESULT */
-
-int	RyDsResult (sd, id, out, priority, roi)
-int	sd;
-int	id,
-	priority;
-caddr_t out;
-struct RoSAPindication *roi;
-{
+int	RyDsResult (int sd, int id, caddr_t out, int priority, struct RoSAPindication *roi) {
 	int	    result;
 	PE	    pe;
 	struct opsblk *opb;
 	struct RyOperation *ryo;
 
 	missingP (roi);
-
 	if ((opb = findopblk (sd, id, OPB_RESPONDER)) == NULLOPB)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invocation %d not in progress on association %d",
 						  id, sd);
-
 	ryo = opb -> opb_ryo;
 	if (!ryo -> ryo_result)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "result not permitted with operation %s/%d",
 						  ryo -> ryo_name, ryo -> ryo_op);
-
 #ifdef PEPSY_DEFINITIONS
 	if (ryo -> ryo_res_mod) {
 #else
@@ -69,16 +56,12 @@ struct RoSAPindication *roi;
 			return rosaplose (roi, ROS_PARAMETER, NULLCP,
 							  "result value not permitted with operation %s/%d",
 							  ryo -> ryo_name, ryo -> ryo_op);
-
 		pe = NULLPE;
 	}
-
 	if ((result = RoResultRequest (sd, id, ryo -> ryo_op, pe, priority, roi))
 			!= NOTOK)
 		freeopblk (opb);
-
 	if (pe)
 		pe_free (pe);
-
 	return result;
 }

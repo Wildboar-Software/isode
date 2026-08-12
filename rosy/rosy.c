@@ -91,31 +91,31 @@ static	SY	myerrors = NULLSY;
 
 static	SY	mytypes = NULLSY;
 
-static char   *modsym ();
-static char   *cmodsym ();
-static char   *csymmod ();
-static SY	new_symbol (), add_symbol ();
+static char   *modsym (char *module, char *id, char *prefix);
+static char   *cmodsym (char *module, char *id, char *prefix, char *realid);
+static char   *csymmod (char *module, char *id, char *prefix);
+static SY	new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id), add_symbol (SY s1, SY s2);
 
-static YE	lookup_err ();
-static YP	lookup_type ();
+static YE	lookup_err (YV yv);
+static YP	lookup_type (char *mod, char *id);
 
-static void cmodsym_aux ();
-static void modsym_aux ();
-static void print_value ();
-static void print_err ();
-static void print_op ();
-static int expand ();
-static void act2prf ();
-static void dump_real ();
-static void val2prf ();
-static int val2int ();
-static void normalize ();
-static void do_type ();
-static void do_err2 ();
-static void do_err1 ();
-static void do_op2 ();
-static void do_op1 ();
-static void yyerror_aux ();
+static void cmodsym_aux (char *name, char *bp);
+static void modsym_aux (char *name, char *bp);
+static void print_value (YV yv, int level);
+static void print_err (YE ye, int level);
+static void print_op (YO yo, int level);
+static int expand (char *dp, char *ep, char **gp);
+static void act2prf (char *cp, int level, char *e1, char *e2);
+static void dump_real (double r);
+static void val2prf (YV yv, int level);
+static int val2int (YV yv);
+static void normalize (YP *yp, char *id);
+static void do_type (YP yp, int level, char *id);
+static void do_err2 (YE ye, char *id);
+static void do_err1 (YE ye, char *id);
+static void do_op2 (YO yo, char *id);
+static void do_op1 (YO yo, char *id);
+static void yyerror_aux (char *s);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -349,7 +349,7 @@ static void pyyerror (YP yp, char *fmt) {
 #endif
 #endif
 
-int yywrap() {
+int yywrap(void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	return 1;
@@ -388,7 +388,7 @@ static void yyprint_aux (char *s, char *mode) {
 	linepos += len;
 }
 
-void pass1()  {
+void pass1(void) {
 	printf ("%s ", mymodule);
 	if (mymoduleid)
 		printf ("%s ", oidprint(mymoduleid));
@@ -1433,7 +1433,7 @@ static void val2prf (YV yv, int level) {
 
 static void dump_real (double r) {
 #ifndef	BSD44
-	extern char *ecvt ();
+	extern char *ecvt (double, int, int *, int *);
 	char	*cp;
 	char	sbuf[128];
 	int	decpt, sign;

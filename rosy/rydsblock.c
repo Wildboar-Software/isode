@@ -9,26 +9,20 @@ static struct dspblk *DSHead = &dspque;
 
 /*    DISPATCH BLOCKS */
 
-struct dspblk  *newdsblk (sd, ryo)
-int	sd;
-struct RyOperation *ryo;
+struct dspblk  *newdsblk (int sd, struct RyOperation *ryo)
 {
 	struct dspblk *dsb;
 
 	dsb = (struct dspblk   *) calloc (1, sizeof *dsb);
 	if (dsb == NULL)
 		return NULL;
-
 	dsb -> dsb_fd = sd;
 	dsb -> dsb_ryo = ryo;
-
 	if (once_only == 0) {
 		DSHead -> dsb_forw = DSHead -> dsb_back = DSHead;
 		once_only++;
 	}
-
 	insque (dsb, DSHead -> dsb_back);
-
 	return dsb;
 }
 
@@ -50,8 +44,7 @@ struct dspblk *finddsblk (int sd, int op) {
 }
 
 void losedsblk (int sd) {
-	struct dspblk *dsb,
-			   *ds2;
+	struct dspblk *dsb, *ds2;
 	if (once_only == 0)
 		return;
 	for (dsb = DSHead -> dsb_forw; dsb != DSHead; dsb = ds2) {
