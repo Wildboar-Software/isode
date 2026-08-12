@@ -144,7 +144,6 @@ int a5_11 (	/*HDQ request in 400B*/
 	return(OK);
 }
 
-/*ARGSUSED*/
 int a5_17 (	/*VRELreq in states 400B */
 	PE pe
 ) {

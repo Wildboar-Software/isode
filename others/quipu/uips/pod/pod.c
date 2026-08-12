@@ -277,7 +277,6 @@ print_photo () {
 	photo_pixmap = (Pixmap) 0;
 }
 
-/*ARGSUSED*/
 static void FreeWidgetPixmap(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -666,7 +665,6 @@ Widget PosWindow;
 	}
 }
 
-/*ARGSUSED*/
 static void StartSearch(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -850,7 +848,6 @@ Widget parent;
 	return menu_mgr;
 }
 
-/*ARGSUSED*/
 static void SetType(w, indx, calldata)
 Widget w;
 XtPointer indx, calldata;
@@ -1013,7 +1010,6 @@ setReadEntryName (char *entry_name) {
 	}
 }
 
-/*ARGSUSED*/
 static void cannotModify(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -1416,7 +1412,6 @@ char *entry_ptr;
 	XawFormDoLayout(entry_form, TRUE);
 }
 
-/*ARGSUSED*/
 static void Quit(widget, closure, callData)
 Widget widget;
 XtPointer closure, callData;
@@ -1426,7 +1421,6 @@ XtPointer closure, callData;
 	quit(0);
 }
 
-/*ARGSUSED*/
 static void TSearch(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1436,7 +1430,6 @@ Cardinal num_params;
 	StartSearch((Widget) 0, (XtPointer) 0, (XtPointer) 0);
 }
 
-/*ARGSUSED*/
 static void ClearSearchArea(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1450,7 +1443,6 @@ Cardinal num_params;
 	XtSetValues(w, args, count);
 }
 
-/*ARGSUSED*/
 static void ReadAll(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -1478,7 +1470,6 @@ XtPointer closure, calldata;
 	curr_read_popup = temp_read_popup;
 }
 
-/*ARGSUSED*/
 static void Read(w, data, calldata)
 Widget w;
 XtPointer data, calldata;
@@ -1521,7 +1512,6 @@ Widget search_area;
 	print_search_area(search_area);
 }
 
-/*ARGSUSED*/
 static void List(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -1610,7 +1600,6 @@ XtPointer closure, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void ListSelect(w, object, calldata)
 Widget w;
 XtPointer object, calldata;
@@ -1634,7 +1623,6 @@ XtPointer object, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void ListSelectMove(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1660,7 +1648,6 @@ Click on this window to continue");
 	}
 }
 
-/*ARGSUSED*/
 static void ListSelectList(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1689,7 +1676,6 @@ Click on this window to continue");
 	}
 }
 
-/*ARGSUSED*/
 static void DnList(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1718,7 +1704,6 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-/*ARGSUSED*/
 static void DnMove(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -1748,7 +1733,6 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-/*ARGSUSED*/
 static void DnMoveRead(w, rdnlevel, calldata)
 Widget w;
 XtPointer rdnlevel, calldata;
@@ -1787,7 +1771,6 @@ XtPointer rdnlevel, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void Move(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2105,7 +2088,6 @@ String mess;
 	PopupMessage(error_popup, (Widget) 0, text, mess, XtGrabExclusive);
 }
 
-/*ARGSUSED*/
 static void killError(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2246,7 +2228,6 @@ CreateHelpPopup () {
 	}
 }
 
-/*ARGSUSED*/
 static void Help(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2261,7 +2242,6 @@ XtPointer closure, calldata;
 	help_up = TRUE;
 }
 
-/*ARGSUSED*/
 static void QuitFromHelp(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2274,7 +2254,6 @@ XtPointer closure, calldata;
 	HideVersion((Widget) NULL, (XEvent *) NULL, (String *) NULL, 0);
 }
 
-/*ARGSUSED*/
 static void InsertHelp(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2377,7 +2356,6 @@ Cardinal width, height;
 				  FreeWidgetPixmap, (XtPointer) bitmap);
 }
 
-/*ARGSUSED*/
 static void ListDestroy(w, list_seq, calldata)
 Widget w;
 XtPointer calldata, list_seq;
@@ -2385,7 +2363,6 @@ XtPointer calldata, list_seq;
 	free_seq((str_seq) list_seq);
 }
 
-/*ARGSUSED*/
 static void destroyList(w, shellwidget, calldata)
 Widget w;
 XtPointer shellwidget, calldata;
@@ -2398,7 +2375,6 @@ XtPointer shellwidget, calldata;
 	XFlush(dpy);
 }
 
-/*ARGSUSED*/
 static void keepList(w, shellwidget, calldata)
 Widget w;
 XtPointer calldata, shellwidget;
@@ -2464,7 +2440,6 @@ char *mess;
 		CreateBackgroundPixmap(HistoryForm, gray_bits, gray_width, gray_height);
 }
 
-/*ARGSUSED*/
 static void popupHistory(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2476,7 +2451,6 @@ XtPointer closure, calldata;
 	XRaiseWindow(dpy, XtWindow(history_popup));
 }
 
-/*ARGSUSED*/
 static void popdownHistory(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2487,7 +2461,6 @@ XtPointer closure, calldata;
 	XtPopdown(history_popup);
 }
 
-/*ARGSUSED*/
 static void ChangeHelp(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -2500,7 +2473,6 @@ Cardinal num_params;
 	}
 }
 
-/*ARGSUSED*/
 static void buttonPress(w, event, params, num_params)
 Widget w;
 XEvent *event;
@@ -2584,7 +2556,6 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-/*ARGSUSED*/
 static void readDestroy(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2620,7 +2591,6 @@ XtPointer closure, calldata;
 	XtDestroyWidget((Widget) closure);
 }
 
-/*ARGSUSED*/
 static void keepRead(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2631,7 +2601,6 @@ XtPointer closure, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void modifyEntry(w, object, calldata)
 Widget w;
 XtPointer object, calldata;
@@ -2652,7 +2621,6 @@ XtPointer object, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void closeModify(w, clientdata, calldata)
 Widget w;
 XtPointer clientdata, calldata;
@@ -2693,7 +2661,6 @@ XtPointer clientdata, calldata;
 	if (modifyPopup == curr_modify_popup) curr_modify_popup = (Widget) 0;
 }
 
-/*ARGSUSED*/
 static void keepModify(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2703,7 +2670,6 @@ XtPointer closure, calldata;
 	}
 }
 
-/*ARGSUSED*/
 static void modUpdate(w, attrValue, calldata)
 Widget w;
 XtPointer attrValue, calldata;
@@ -2713,7 +2679,6 @@ XtPointer attrValue, calldata;
 	val->attr->mod_flag = TRUE;
 }
 
-/*ARGSUSED*/
 static void submitModif(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2779,7 +2744,6 @@ XtCallbackRec modCallbacks[] = {
 	{(XtCallbackProc) NULL, (XtPointer) NULL},
 };
 
-/*ARGSUSED*/
 static void deleteVal(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -2892,7 +2856,6 @@ XtPointer closure, calldata;
 	XawFormDoLayout(form, TRUE);
 }
 
-/*ARGSUSED*/
 static void addValField(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -3021,7 +2984,6 @@ XtPointer closure, calldata;
 	XawFormDoLayout(form, TRUE);
 }
 
-/*ARGSUSED*/
 static void UndoAttrChanges(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -3041,7 +3003,6 @@ XtPointer closure, calldata;
 	XFlush(dpy);
 }
 
-/*ARGSUSED*/
 static void UndoValChanges(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -3683,7 +3644,6 @@ char *entry_name;
 	return(modifyPopup);
 }
 
-/*ARGSUSED*/
 static void freeEntry(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -3691,7 +3651,6 @@ XtPointer closure, calldata;
 	free_dir_entry((dirEntry) closure);
 }
 
-/*ARGSUSED*/
 static void freeSpace(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;
@@ -3770,7 +3729,6 @@ char *string;
 	return ((FONTHEIGHT(font) * lines) + font->ascent);
 }
 
-/*ARGSUSED*/
 static bool ConvSel(w, selection, target, type, value, length, format)
 Widget w;
 Atom *selection, *target, *type;
@@ -3792,7 +3750,6 @@ int *format;
 		return FALSE;
 }
 
-/*ARGSUSED*/
 static void CutString(w, closure, calldata)
 Widget w;
 XtPointer closure, calldata;

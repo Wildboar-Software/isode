@@ -1,9 +1,4 @@
-/*
-	closedir -- close a directory stream
-
-	last edit:	25-Apr-1987	D A Gwyn
-*/
-
+/* closedir -- close a directory stream */
 #include	<sys/errno.h>
 #include	<sys/types.h>
 #include	"usr.dirent.h"
@@ -12,7 +7,7 @@
 typedef char	*pointer;		/* (void *) if you have it */
 
 extern void	free();
-extern int	close();
+extern int close(int fd);
 
 extern int	errno;
 
@@ -20,9 +15,7 @@ extern int	errno;
 #define	NULL	0
 #endif
 
-int closedir( dirp )
-DIR	*dirp;		/* stream from opendir() */
-{
+int closedir(DIR *dirp) {
 	int	fd;
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
@@ -36,7 +29,7 @@ DIR	*dirp;		/* stream from opendir() */
 	return close( fd );
 }
 #else
-int _closedir_stub()  {
+int _closedir_stub(void) {
 	;
 }
 #endif

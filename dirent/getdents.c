@@ -134,19 +134,16 @@ extern int	errno;
 	Thanks to Richard Todd for pointing this out.
 */
 
-static int
-NameLen (				/* return # chars in embedded name */
-	char name[]		/* -> name embedded in struct direct */
-) {
-	char	*s;		/* -> name[.] */
-	char	*stop = &name[DIRSIZ];	/* -> past end of name field */
-
+/* return # chars in embedded name */
+/* -> name embedded in struct direct */
+static int NameLen (char name[]) {
+	char *s;		/* -> name[.] */
+	char *stop = &name[DIRSIZ];	/* -> past end of name field */
 	for ( s = &name[1];		/* (empty names are impossible) */
 			*s != '\0'		/* not NUL terminator */
 			&& ++s < stop;		/* < DIRSIZ characters scanned */
 		)
 		;
-
 	return s - name;		/* # valid characters in name */
 }
 
@@ -159,27 +156,30 @@ extern int	strlen();
 #endif
 
 #ifdef UNK
-static enum	{ maybe, no, yes }	state = maybe;
-/* does _getdents() work? */
-
-/*ARGSUSED*/
-static void
-sig_catch (
-	int sig			/* must be SIGSYS */
-) {
-	state = no;			/* attempted _getdents() faulted */
+static enum	{ maybe, no, yes } state = maybe;
+/**
+ * does _getdents() work?
+ * @param sig must be SIGSYS
+ */
+static void sig_catch (int sig) {
+	state = no; /* attempted _getdents() faulted */
 }
 #endif
 
-int getdents (		/* returns # bytes read;
-					   0 on EOF, -1 on error */
-	int fildes,	/* directory file descriptor */
-	char *buf,	/* where to put the (struct dirent)s */
-	unsigned nbyte	/* size of buf[] */
+/**
+ * @returns # bytes read; 0 on EOF, -1 on error
+ * @param fildes directory file descriptor
+ * @param buf where to put the (struct dirent)s
+ * @param nbyte size of buf[]
+ * */
+int getdents (		
+	int fildes,	
+	char *buf,	
+	unsigned nbyte	
 ) {
-	int			serrno;	/* entry errno */
-	off_t			offset;	/* initial directory file offset */
-	struct stat		statb;	/* fstat() info */
+	int	errno;	/* entry errno */
+	off_t offset;	/* initial directory file offset */
+	struct stat statb;	/* fstat() info */
 	union	{
 		char		dblk[DIRBLKSIZ];
 		/* directory file block buffer */
@@ -190,27 +190,22 @@ int getdents (		/* returns # bytes read;
 
 #ifdef UNK
 	switch ( state ) {
-		void		(*shdlr)();	/* entry SIGSYS handler */
+		void (*shdlr)();	/* entry SIGSYS handler */
 		int	retval;	/* return from _getdents() if any */
-
 	case yes:			/* _getdents() is known to work */
 		return _getdents( fildes, buf, nbyte );
-
 	case maybe:			/* first time only */
 		shdlr = signal( SIGSYS, sig_catch );
 		retval = _getdents( fildes, buf, nbyte );	/* try it */
 		signal( SIGSYS, shdlr );
-
 		if ( state == maybe ) {	/* SIGSYS did not occur */
 			state = yes;	/* so _getdents() must have worked */
 			return retval;
 		}
 		/* else fall through into emulation */
-
-		/*	case no:	/* fall through into emulation */
+		/* case no: fall through into emulation */
 	}
 #endif
-
 	if ( buf == NULL
 #ifdef ATT_SPEC
 			|| (unsigned long)buf % sizeof(long) != 0	/* ugh */
@@ -219,37 +214,28 @@ int getdents (		/* returns # bytes read;
 		errno = EFAULT;		/* invalid pointer */
 		return -1;
 	}
-
 	if ( fstat( fildes, &statb ) != 0 )
 		return -1;		/* errno set by fstat() */
-
 	if ( !S_ISDIR( statb.st_mode ) ) {
 		errno = ENOTDIR;	/* not a directory */
 		return -1;
 	}
-
 	if ( (offset = lseek( fildes, (off_t)0, SEEK_CUR )) < 0 )
 		return -1;		/* errno set by lseek() */
-
 #ifdef BFS				/* no telling what remote hosts do */
 	if ( (unsigned long)offset % DIRBLKSIZ != 0 ) {
 		errno = ENOENT;		/* file pointer probably misaligned */
 		return -1;
 	}
 #endif
-
 	serrno = errno;			/* save entry errno */
-
 	for ( bp = (struct dirent *)buf; bp == (struct dirent *)buf; ) {
 		/* convert next directory block */
 		int	size;
-
 		do	size = GetBlock( fildes, u.dblk, DIRBLKSIZ );
 		while ( size == -1 && errno == EINTR );
-
 		if ( size <= 0 )
 			return size;	/* EOF or error (EBADF) */
-
 		for ( dp = (struct direct *)u.dblk;
 				(char *)dp < &u.dblk[size];
 				dp = (struct direct *)((char *)dp + RecLen( dp ))
@@ -260,17 +246,14 @@ int getdents (		/* returns # bytes read;
 				return -1;
 			}
 #endif
-
 			if ( dp->d_fileno != 0 ) {
 				/* non-empty; copy to user buffer */
 				int	reclen =
 					DIRENTSIZ( NameLen( dp->d_name ) );
-
 				if ( (char *)bp + reclen > &buf[nbyte] ) {
 					errno = EINVAL;
 					return -1;	/* buf too small */
 				}
-
 				bp->d_ino = dp->d_fileno;
 				bp->d_off = offset + ((char *)dp - u.dblk);
 				bp->d_reclen = reclen;
@@ -283,7 +266,6 @@ int getdents (		/* returns # bytes read;
 						 reclen - DIRENTBASESIZ );
 				/* adds NUL padding */
 #endif
-
 				bp = (struct dirent *)((char *)bp + reclen);
 			}
 		}
@@ -295,10 +277,9 @@ int getdents (		/* returns # bytes read;
 		}
 #endif
 	}
-
 	errno = serrno;			/* restore entry errno */
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int _getdents_stub()  {}
+int _getdents_stub(void) {}
 #endif

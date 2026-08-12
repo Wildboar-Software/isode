@@ -17,10 +17,11 @@ extern int	errno;
 #define	NULL	0
 #endif
 
-struct dirent *
-readdir( dirp )
-DIR		*dirp;	/* stream from opendir() */
-{
+/**
+ * @param dirp stream from opendir()
+ * @returns directory data
+ */
+struct dirent *readdir( DIR *dirp ) {
 	struct dirent	*dp;	/* -> directory data */
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
@@ -46,7 +47,7 @@ DIR		*dirp;	/* stream from opendir() */
 	return dp;
 }
 #else
-int _readdir_stub()  {
+int _readdir_stub(void) {
 	;
 }
 #endif

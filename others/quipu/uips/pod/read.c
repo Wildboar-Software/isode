@@ -263,7 +263,6 @@ int read_print (int (*func), caddr_t ptr) {
 	free(str);
 }
 
-/*ARGSUSED*/
 podphoto(ps, picture, format)
 PS ps;
 PE picture;

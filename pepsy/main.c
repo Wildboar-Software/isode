@@ -41,7 +41,6 @@ extern void	exit();
 static int	t_test = 1;	/* Iteration of the test */
 
 #define NullParm	((char	*) 0)
-/*ARGSUSED*/
 int main (int argc, char **argv) {
 	int	i;
 	int succ, fail;

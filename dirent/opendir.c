@@ -34,23 +34,22 @@ extern int	errno;
 #define	S_ISDIR( mode )		(((mode) & S_IFMT) == S_IFDIR)
 #endif
 
-DIR *
-opendir( dirname )
-char		*dirname;	/* name of directory */
-{
+/**
+ * @param dirname name of directory
+ * @returns directory pointer
+ */
+DIR *opendir(char *dirname) {
 	DIR	*dirp;		/* -> malloc'ed storage */
 	int	fd;		/* file descriptor for read */
 	struct stat	sbuf;		/* result of fstat() */
 
 	if ( (fd = open( dirname, O_RDONLY )) < 0 )
 		return NULL;		/* errno set by open() */
-
 	if ( fstat( fd, &sbuf ) != 0 || !S_ISDIR( sbuf.st_mode ) ) {
 		close( fd );
 		errno = ENOTDIR;
 		return NULL;		/* not a directory */
 	}
-
 	if ( (dirp = (DIR *)malloc( sizeof(DIR) )) == NULL
 			|| (dirp->dd_buf = (char *)malloc( (unsigned)DIRBUF )) == NULL
 	   )	{
@@ -64,14 +63,12 @@ char		*dirname;	/* name of directory */
 		errno = serrno;
 		return NULL;		/* not enough memory */
 	}
-
 	dirfd(dirp) = fd;
 	dirp->dd_loc = dirp->dd_size = 0;	/* refill needed */
-
 	return dirp;
 }
 #else
-int _opendir_stub()  {
+int _opendir_stub(void) {
 	;
 }
 #endif

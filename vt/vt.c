@@ -1437,7 +1437,6 @@ void advise (int code, char *what, char *fmt) {
 int ptyecho (int on) {
 }
 #else
-/*ARGSUSED*/
 int setmode (int on, int off) {
 }
 #endif

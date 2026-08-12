@@ -1,8 +1,6 @@
 /*
 	seekdir -- reposition a directory stream
 
-	last edit:	24-May-1987	D A Gwyn
-
 	An unsuccessful seekdir() will in general alter the current
 	directory position; beware.
 
@@ -31,11 +29,11 @@ typedef int	bool;			/* Boolean data type */
 #define	false	0
 #define	true	1
 
-void
-seekdir( dirp, loc )
-DIR	*dirp;		/* stream from opendir() */
-off_t	loc;		/* position from telldir() */
-{
+/**
+ * @param dirp stream from opendir()
+ * @param loc position from telldir()
+ */
+void seekdir( DIR *dirp, off_t loc ) {
 	bool	rewind;		/* "start over when stymied" flag */
 
 	if ( dirp == NULL || dirp->dd_buf == NULL ) {
@@ -107,7 +105,7 @@ off_t	loc;		/* position from telldir() */
 	}
 }
 #else
-int _seekdir_stub()  {
+int _seekdir_stub(void) {
 	;
 }
 #endif

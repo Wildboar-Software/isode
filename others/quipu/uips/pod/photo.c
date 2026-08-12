@@ -26,7 +26,6 @@ static int x, y;
 int px, py, maxx;
 int two_passes;
 
-/*ARGSUSED*/
 int photo_start (char *name) {
 	x = y = 0;
 	if (passno == 1)
@@ -90,7 +89,6 @@ int photo_end (char *name) {
 	return 0;
 }
 
-/*ARGSUSED*/
 int photo_line_end(line)
 bit_string *line;
 {
