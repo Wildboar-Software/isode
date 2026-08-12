@@ -40,12 +40,12 @@ static struct nsapent {
 extern char isode_x25_errflag;
 #endif
 
-static int  TConnRequestAux ();
-static int  TConnAttempt ();
+static int  TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async);
+static int  TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async);
 
 struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
-static struct TSAPaddr *newtaddr ();
-static struct TSAPaddr *maketsbaddr ();
+static struct TSAPaddr *newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n);
+static struct TSAPaddr *maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta);
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 

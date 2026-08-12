@@ -21,7 +21,7 @@
 static int once_only = 0;
 static struct tsapblk tsapque;
 static struct tsapblk *THead = &tsapque;
-static int  TWakeUp ();
+static int  TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td);
 
 #ifndef	SIGPOLL
 static int TPid = NOTOK;
@@ -265,9 +265,14 @@ int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 
 /*    set asynchronous event indications */
 
-static	SFD DATAser ();
+static	SFD DATAser (int sig, long int code, struct sigcontext *sc);
 
-int TSetIndications (int sd, IFP data, IFP disc, struct TSAPdisconnect *td) {
+int TSetIndications (
+	int sd,
+	void (*data)(int sd, struct TSAPdata *tx),
+	void (*disc)(int sd, struct TSAPdisconnect *td),
+	struct TSAPdisconnect *td
+) {
 	SBV	    smask;
 	int     result;
 	struct tsapblk *tb;
@@ -338,17 +343,9 @@ int TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
 /*    NSAP interface: N-DATA.INDICATION */
 
 #ifdef SVR4
-
-static  SFD DATAser (sig)
-int     sig;
-
+static  SFD DATAser (int sig)
 #else
-
-static	SFD DATAser (sig, code, sc)
-int	sig;
-long	code;
-struct sigcontext *sc;
-
+static	SFD DATAser (int sig, long int code, struct sigcontext *sc)
 #endif
 {
 	int     n,
@@ -362,7 +359,7 @@ struct sigcontext *sc;
 #ifndef	BSDSIGS
 	SBV	    smask;
 #endif
-	IFP	    disc;
+	void (*disc)(int sd, struct TSAPdisconnect *td);
 	struct tsapblk *tb,
 			   *tb2;
 	struct TSAPdata txs;
@@ -577,7 +574,7 @@ static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 /* INTERNAL */
 
 struct tsapblk *
-newtblk()  {
+newtblk(void) {
 	struct tsapblk *tb;
 
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);

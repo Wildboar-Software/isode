@@ -1079,5 +1079,5 @@ TP_EVENT code;
 	return tp;
 }
 #else
-int _ts2sunlink_stub() {}
+int _ts2sunlink_stub(void) {}
 #endif

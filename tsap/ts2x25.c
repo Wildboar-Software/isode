@@ -416,7 +416,7 @@ int XTService (struct tsapblk *tb) {
 	tp0init (tb);
 }
 #else
-int _ts2x25_stub() {
+int _ts2x25_stub(void) {
 	;
 }
 #endif

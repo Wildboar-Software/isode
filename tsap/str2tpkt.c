@@ -5,7 +5,7 @@
 #include "tpkt.h"
 #include "tailor.h"
 
-static int	readfnx (), getfnx (), writefnx (), putfnx ();
+static int	readfnx (int fd, char *buffer, int n), getfnx (int fd, struct tsapkt *t, char *buffer, int n), writefnx (struct tsapblk *tb, char *buffer, int n), putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
 
 char *tpkt2str (struct tsapkt *t) {
 	int	    cc;

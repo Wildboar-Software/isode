@@ -1504,7 +1504,7 @@ int	fd;
 }
 
 #else
-int _ts2tli_stub() {
+int _ts2tli_stub(void) {
 	;
 }
 #endif

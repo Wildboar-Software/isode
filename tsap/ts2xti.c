@@ -1340,7 +1340,7 @@ int             fd;
 }
 
 #else
-int _ts2xti_stub() {
+int _ts2xti_stub(void) {
 	;
 }
 #endif

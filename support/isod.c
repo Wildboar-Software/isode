@@ -39,8 +39,8 @@ struct dispatch {
 void	adios (char *, char *, ...),
 		advise (int, char *, char *, ...);
 
-static void	ts_adios (), ts_advise ();
-static int	ts_dataindication (), ts_discindication ();
+static void ts_adios (struct TSAPdisconnect *td, char *message), ts_advise (struct TSAPdisconnect *td, char *event);
+static void ts_dataindication (int sd, struct TSAPdata *tx), ts_discindication (int sd, struct TSAPdisconnect *td);
 
 static struct dispatch  ts_dispatches[] = {
 	"echo", echo,
@@ -249,13 +249,12 @@ static int ts_main (int argc, char **argv) {
 	}
 }
 
-static int ts_dataindication (int sd, struct TSAPdata *tx) {
+static void ts_dataindication (int sd, struct TSAPdata *tx) {
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;
 
 	if (mymode == echo) {
 		char *p = qb2str (&tx -> tx_qbuf);
-
 		if ((tx -> tx_expedited
 				? TExpdRequest (sd, p, tx -> tx_cc, td)
 				: TDataRequest (sd, p, tx -> tx_cc, td))
@@ -266,28 +265,23 @@ static int ts_dataindication (int sd, struct TSAPdata *tx) {
 			ts_adios (td, tx -> tx_expedited ? "T-EXPEDITED-DATA.REQUEST"
 					  : "T-DATA.REQUEST");
 		}
-
 		free (p);
 	}
-
 	TXFREE (tx);
 }
 
-static int ts_discindication (int sd, struct TSAPdisconnect *td) {
+static void ts_discindication (int sd, struct TSAPdisconnect *td) {
 	if (td -> td_reason != DR_NORMAL)
 		ts_adios (td, "T-DISCONNECT.INDICATION");
-
 	if (td -> td_cc > 0)
 		ts_advise (td, "T-DISCONNECT.INDICATION");
 	else
 		advise (LLOG_NOTICE, NULLCP, "T-DISCONNECT.INDICATION");
-
 	exit (0);
 }
 
 static void ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, event);
-
 	_exit (1);
 }
 
@@ -300,7 +294,6 @@ static void ts_advise (struct TSAPdisconnect *td, char *event) {
 				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
 		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
-
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 

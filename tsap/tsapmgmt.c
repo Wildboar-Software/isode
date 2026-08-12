@@ -158,5 +158,5 @@ static int ManInit () {
 	return OK;
 }
 #else
-int _tsapmgmt_stub()  {}
+int _tsapmgmt_stub(void) {}
 #endif

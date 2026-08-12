@@ -180,8 +180,8 @@ struct tsapblk {
     IFP	    tb_checkfnx;	/* check network prior to select */
     IFP	    tb_nreadfnx;	/* estimate of octets waiting to be read */
 
-    IFP	    tb_DataIndication;	/* INDICATION handlers */
-    IFP     tb_DiscIndication;	/* .. */
+    void (*tb_DataIndication)(int sd, struct TSAPdata *tx);	/* INDICATION handlers */
+    void (*tb_DiscIndication)(int sd, struct TSAPdisconnect *td);	/* .. */
 
 #ifdef  MGMT
     IFP     tb_manfnx;          /* for management reports */

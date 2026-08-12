@@ -12,10 +12,12 @@
 #endif
 
 #ifndef	lint
-static int  _tsaplose ();
-#endif
+static int _tsaplose (
+	struct TSAPdisconnect *td,
+	int reason,
+	va_list ap
+);
 
-#ifndef	lint
 int	tpktlose (struct tsapblk* tb, ...) {
 	int	    reason,
 			result;
@@ -118,7 +120,7 @@ int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int _tsaplose (	/* what, fmt, args ... */
+static int _tsaplose (
 	struct TSAPdisconnect *td,
 	int reason,
 	va_list ap

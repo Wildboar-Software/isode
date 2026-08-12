@@ -146,22 +146,30 @@ int	TExpdRequest ();	/* T-EXPEDITED-DATA.REQUEST */
 int	TReadRequest ();	/* T-READ.REQUEST (pseudo) */
 int	TDiscRequest ();	/* T-DISCONNECT.REQUEST */
 
-int	TSetIndications ();	/* define vectors for INDICATION events */
-int	TSelectMask ();		/* map transport descriptors for select() */
-int	TSelectOctets ();	/* estimate of octets that might be returned */
-int	TGetAddresses ();	/* get TSAPs */
-int	TSetManager ();		/* defining transport manager */
+/* define vectors for INDICATION events */
+int TSetIndications (
+	int sd,
+	void (*data)(int sd, struct TSAPdata *tx),
+	void (*disc)(int sd, struct TSAPdisconnect *td),
+	struct TSAPdisconnect *td
+);
+int	TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td);		/* map transport descriptors for select() */
+int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td);	/* estimate of octets that might be returned */
+int	TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td);	/* get TSAPs */
+int	TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td);		/* defining transport manager */
 
 char   *TErrString ();		/* return TSAP error code in string form */
 
-int	TNetListen ();		/* start listenting on an TSAP */
-int	TNetUnique ();		/* start listenting on a set of unique TSAPs */
+int	TNetListen (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* start listenting on an TSAP */
+int	TNetUnique (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* start listenting on a set of unique TSAPs */
 #define	TNetAccept(p,v,n,r,w,e,s,t) \
 	TNetAcceptAux ((p), (v), NULLIP, NULLTA, (n), (r), (w), (e), (s), (t))
 int	TNetAcceptAux ();	/* accept a call on an TSAP */
 int	TNetClose ();		/* stop listening on an TSAP */
 int	TSetQueuesOK ();	/* enable/disable queued (non-blocking)
 				   writes */
+
+typedef int (*MagicFunction)(int *vecp, char **vec, struct TSAPdisconnect *td);
 
 #define	TLocalHostName	getlocalhost
 char   *TLocalHostName ();	/* return name of local host (sigh) */

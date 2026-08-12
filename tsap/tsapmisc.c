@@ -11,10 +11,7 @@
 
 /*    estimate of octets that might be returned */
 
-int	TSelectOctets (sd, nbytes, td)
-int	sd;
-long   *nbytes;
-struct TSAPdisconnect *td;
+int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td)
 {
 	int	    result;
 	long    value;
