@@ -1,29 +1,12 @@
 ###############################################################################
-#   Instructions to Make, for compilation of ISODE RoSAP processes
-###############################################################################
-
-###############################################################################
-#
-# 
-#
+# Instructions to Make, for compilation of ISODE RoSAP processes
 # Based on an TCP-based implementation by George Michaelson of University
 # College London.
-#
-#
-# 
-#
-#
-#
-# 
 ###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
-
 
 LIBES	=	librosap.a
 LLIBS   =	$(TOPDIR)llib-lrtsap $(TOPDIR)llib-lacsap \
@@ -34,13 +17,10 @@ HFILES	=	$(HDIR)rosap.h $(HDIR)rtsap.h $(HDIR)acsap.h $(HDIR)psap2.h \
 		$(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
 all:		librosap
 inst-all:	# inst-librosap manuals
 install:	inst-all clean
 lint:		l-librosap
-
 
 ################################################################
 # librosap
@@ -101,14 +81,12 @@ ROS_tables.o:	ROS_tables.c ROS-types.h
 ROS_tables.c ROS-types.h: ros.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m ros.py
 
-
 rosapvrsn.c:	$(OFILES) ROS_tables.o
 		@$(UTILDIR)version.sh rosap > $@
 
 l-librosap:	ROS_tables.c true
 		$(LINT) $(LFLAGS) $(CFILES) ROS_tables.c rosapvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 rosaperror.o:	$(HFILES)
 rosapinvoke.o:	$(HDIR)ropkt.h $(HDIR)acpkt.h $(HFILES) ROS-types.h
@@ -142,7 +120,6 @@ ro2ss.o:	$(HDIR)ropkt.h $(HDIR)acpkt.h $(HFILES) $(HDIR)tailor.h \
 			$(HDIR)logger.h ROS-types.h
 ro2ssthorn.o:	$(HDIR)ropkt.h $(HDIR)acpkt.h $(HFILES)
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -151,7 +128,6 @@ MANUALS	=	librosap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

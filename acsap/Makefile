@@ -2,25 +2,9 @@
 #   Instructions to Make, for compilation of ISODE AcSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-#
-###############################################################################
-
-
-
-
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
-
 
 LIBES	=	libacsap.a $(TOPDIR)libpepy.a $(TOPDIR)libpepsy.a \
 		$(TOPDIR)libpsap.a $(TOPDIR)libtsap.a $(TOPDIR)libcompat.a
@@ -28,9 +12,6 @@ LLIBS   =	$(TOPDIR)llib-lpsap2 $(TOPDIR)llib-lpsap  $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)acsap.h $(HDIR)psap2.h $(HDIR)psap.h \
 		$(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
-
-
-
 
 all:		libacsap acsaptest
 inst-all:	inst-headers # inst-libacsap manuals
@@ -193,7 +174,6 @@ acsold.o:	acsold.c
 acsold.c:	acsold.py
 dse-c.o:	DSE-types.h
 
-
 ################################################################
 # acsaptest
 ################################################################
@@ -207,7 +187,6 @@ acsaptest.o:	$(HFILES) $(HDIR)isoservent.h $(HDIR)tailor.h $(HDIR)logger.h \
 
 l-acsaptest:;	$(LINT) $(LFLAGS) acsaptest.c llib-lacsap $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ################################################################
 # dased
@@ -241,7 +220,6 @@ l-dased:;	$(LINT) $(LFLAGS) dased.c $(TOPDIR)llib-ldsap llib-lacsap \
 man-dased:;	@$(UTILDIR)inst-man.sh $(MANOPTS) dased.8c
 		-@echo ""
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -250,7 +228,6 @@ MANUALS	=	libacsap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

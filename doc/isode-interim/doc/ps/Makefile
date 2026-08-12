@@ -2,9 +2,6 @@
 #   Instructions to Make, for PostScript documentation library
 ##########################################################################
 
-
-
-
 all:;
 
 inst-all:;

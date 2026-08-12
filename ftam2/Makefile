@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE FTAM2 processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 LIBD	=	$(TOPDIR)libftam.a $(TOPDIR)libisode.a 
 LIBES	=	$(TOPDIR)libftam.a $(LIBISODE) -lcrypt
@@ -38,14 +23,10 @@ HFILES	=	$(HDIR)ftam.h \
 		$(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		ftamd ftam
 inst-all:	inst-ftamd inst-ftam manuals
 install:	inst-all clean
 lint:		l-ftamd l-ftam
-
 
 ##################################################################
 # ftamd
@@ -81,7 +62,6 @@ ftamd-manage.o:	ftamsystem.h ftamsbr.h DOCS-types.h $(HFILES)
 ftamd-select.o:	ftamsystem.h ftamsbr.h DOCS-types.h $(HFILES)
 ftamd-trans.o:	ftamsystem.h ftamsbr.h DOCS-types.h $(HFILES) \
 			$(HDIR)usr.dirent.h $(HDIR)sys.dirent.h
-
 
 ##################################################################
 # ftam
@@ -126,7 +106,6 @@ ftam-ls.o:	ftamuser.h ftamsbr.h DOCS-types.h $(HFILES)
 ftam-mgmt.o:	ftamuser.h ftamsbr.h DOCS-types.h $(HFILES)
 ftam-put.o:	ftamuser.h ftamsbr.h DOCS-types.h $(HFILES)
 
-
 ##################################################################
 # ftamsbr/DOCS
 ##################################################################
@@ -138,7 +117,6 @@ DOCS_tables.o:	DOCS_tables.c DOCS-types.h
 DOCS_tables.c DOCS-types.h: docs.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m docs.py
 
-
 ##################################################################
 # manual pages
 ##################################################################
@@ -147,7 +125,6 @@ MANUALS	=	ftamd.8c ftam.1c ftamusers.5
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##################################################################
 # clean

@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE PEPSY process
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH -DPEPSYPATH=\".:$(PEPSYDIRM)\" 
 
@@ -42,14 +28,10 @@ OFILES	=	$(LIBFILES) main.o
 
 T_FILES =	T1_tables.c T2_tables.c T3_tables.c
 
-
-
-
 all:		pepsy libpepsy # peptest
 inst-all:	inst-pepsy inst-headers manuals # inst-libpepsy
 install:	inst-all clean
 lint:		l-pepsy l-libpepsy
-
 
 ##################################################################
 # pepsy
@@ -78,7 +60,6 @@ xpepsy:		pepsyvrsn.o $(PEPSYLIBES)
 
 pepsy.o:	pepsy.c pepsydefs.h $(HFILES)
 		$(CC) $(CFLAGS) -c pepsy.c
-
 
 pepsyvrsn.c:	$(PEPSY-O)
 		$(UTILDIR)version.sh pepsy > $@
@@ -119,7 +100,6 @@ dfns.o:		dfns.c
 		$(CC) $(CFLAGS) -c dfns.c
 mod.o:		mod.c
 		$(CC) $(CFLAGS) -c mod.c
-
 
 l-pepsy:	$(PEPSY-C) pepsydefs.h pepsyvrsn.c true
 		$(LINT) $(LFLAGS) -DPEPSYPATH=\".:$(PEPSYDIRM)\" $(PEPSY-C) \
@@ -169,7 +149,6 @@ l-libpepsy:	$(CFILES) $(T_FILES) true
 
 vprint.o:	vprint.c UNIV-types.h $(HDIR)psap.h $(HDIR)general.h \
 		$(HDIR)manifest.h $(HDIR)logger.h
-
 
 ##################################################################
 # pep
@@ -289,7 +268,6 @@ T3_tables.c T3-types.h:	t3.py xpepsy
 prt.o:		prnt.c $(TOPDIR)h/pepsy.h
 		$(CC) $(CFLAGS) -Dprintf=vprint -o $@ prnt.c
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -298,7 +276,6 @@ MANUALS	=	pepsy.1 # libpepsy.3
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

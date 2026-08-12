@@ -2,24 +2,10 @@
 #   Instructions to Make, for compilation of ISODE ROSY processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 .SUFFIXES:	.ry .py .c .o
 
 .ry.py:;	./xrosy $(RYFLAGS) $<
-
 
 PEPYLIBES=	$(TOPDIR)psap/sprintoid.o \
 		$(TOPDIR)psap/oid_cmp.o $(TOPDIR)psap/oid_cpy.o \
@@ -35,14 +21,10 @@ PEPSYFILES=	$(HDIR)pepsy.h $(TOPDIR)pepsy/xpepsy
 RYHFILES=	rosy-defs.h $(HDIR)psap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		xrosy librosy
 inst-all:	inst-rosy manuals # inst-librosy
 install:	inst-all clean
 lint:		l-rosy l-librosy
-
 
 ##################################################################
 # rosy
@@ -97,7 +79,6 @@ l-rosy:		yacc.c lex.c true
 		$(LINT) $(LFLAGS) rosy.c yacc.c $(TOPDIR)pepy/pepy_misc.c \
 			rosyvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ################################################################
 # librosy
@@ -239,7 +220,6 @@ p-rylose.o:	$(HFILES) $(PEPSYFILES) rylose.c
 		$(CC) $(LIBCFLAGS) -DPEPSY_VERSION=2 -c p-rylose.c
 		-@rm -f p-rylose.c
 
-
 rystub.o:	$(HFILES)
 rydiscard.o:	$(HFILES)
 ryoper.o:	$(HFILES)
@@ -257,7 +237,6 @@ rylose.o:	$(HFILES)
 
 true:;
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -266,7 +245,6 @@ MANUALS	=	rosy.1 # librosy.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

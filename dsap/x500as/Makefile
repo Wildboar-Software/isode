@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of QUIPU protocol stuff
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH= 	-DPEPYPATH
 
 UPDIR   =       ../
 
 LLIBS	=	$(TOPDIR)llib-lisode
-
 
 #############################################################
 # Here it is...
@@ -32,7 +17,6 @@ all:            libx500as
 inst-all:	libx500as
 install:        inst-all clean
 lint:           l-libx500as
-
 
 #############################################################
 # libx500as
@@ -71,7 +55,6 @@ x500asvrsn.c:	PEPSY.O $(HAND-O)
 
 l-libx500as:;	$(LINT) $(LFLAGS) $(CFILES) $(PEPY-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 #######################################################
 # saber
@@ -188,7 +171,6 @@ grind:;         iprint Makefile
 		tgrind -lc $(CFILES) llib-lx500as
 
 true:;
-
 
 # DO NOT DELETE THIS LINE
 # Dependencies follow

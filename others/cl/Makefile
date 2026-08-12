@@ -10,15 +10,12 @@
 #								#
 #################################################################
 
-
-
 DIRS	=	tusap susap pusap2 acusap rousap
 
 all clean:;	@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) $@"; \
 			      cd $$i; $(MAKE) $@); \
 		    done
-
 
 lint:;
 

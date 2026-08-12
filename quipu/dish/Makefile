@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE QUIPU Directory Server
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 LIBES   =       $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
@@ -54,7 +40,6 @@ inst-all:       inst-dish inst-editentry inst-libdish manuals
 install:        inst-all clean
 lint:           l-dish
 
-
 ###################################################################
 # dish
 ###################################################################
@@ -79,7 +64,6 @@ xdish:		libdish.a dish.o $(LIBES)
 l-dish:         $(CFILES) dish.c true
 		$(LINT) $(LFLAGS) $(CFILES) dish.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ###################################################################
 # saber
@@ -144,7 +128,6 @@ l-libdish:     $(CFILES) true
 		$(LINT) $(LFLAGS) $(CFILES) dishvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ################################################################
 # edit entry
 ################################################################
@@ -159,7 +142,6 @@ $(BINDIR)editentry: editentry
 		-@ls -gls $@
 		-@echo ""
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -168,7 +150,6 @@ MANUALS =       dish.1c
 
 manuals:;       @$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##############################################################
 # clean

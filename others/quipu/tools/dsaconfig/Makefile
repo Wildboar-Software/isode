@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE QUIPU DSA configurator
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
 ###############################################################################
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 ###############################################################################
 # Programs and Libraries
@@ -32,13 +17,11 @@ LIBD	=	$(TOPDIR)libisode.a  $(TOPDIR)quipu/quipuvrsn.o
 LIBES	=	$(LIBISODE)  $(TOPDIR)quipu/quipuvrsn.o
 LLIBS   =	$(TOPDIR)llib-lisode 
 
-
 ###############################################################################
 # FILES
 ###############################################################################
 
 CFILES  =       dsaconfig.c usconfig.c
-
 
 ##############################################################
 # Here it is...
@@ -48,7 +31,6 @@ all:            dsaconfig usconfig
 inst-all:       inst-pilot inst-dsaconfig inst-usconfig manuals
 install:        inst-all clean
 lint:           l-dsaconfig
-
 
 ###################################################################
 # pilot
@@ -66,7 +48,6 @@ $(ETCDIR)dsaptailor: dsaptailor $(TOPDIR)dsap/dsaptailor.root-dsas
 		    then rm -f $@; cat dsaptailor $(TOPDIR)dsap/dsaptailor.root-dsas > $@; ls -gls $@; \
 		    else exit 0; \
 		fi
-
 
 ###################################################################
 # dsaconfig
@@ -90,7 +71,6 @@ xdsaconfig:	dsaconfig.o $(LIBD)
 l-dsaconfig:;	$(LINT) $(LFLAGS) dsaconfig.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ###################################################################
 # usconfig
 ###################################################################
@@ -113,7 +93,6 @@ xusconfig:	usconfig.o $(LIBD)
 l-usconfig:;	$(LINT) $(LFLAGS) usconfig.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -122,7 +101,6 @@ MANUALS	=	dsaconfig.8 usconfig.8
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##############################################################
 # clean

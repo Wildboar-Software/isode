@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE DSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -23,7 +9,6 @@ UPDIR   =       ../
 
 LIBES   =       libcommon.a $(UPDIR)libcommon.a
 LLIBS   =       $(TOPDIR)llib-lisode
-
 
 #############################################################
 # Here it is...
@@ -33,7 +18,6 @@ all:            libnet
 inst-all:	libnet
 install:        inst-all clean
 lint:           l-libnet
-
 
 #############################################################
 # libnet
@@ -63,7 +47,6 @@ OFILES  =       dsapbind1.o dsapbind2.o dsapcontexts.o \
 		ds_types.o \
 		plog.o 
 
-
 libnet:         libnet.a
 
 libnet.a:       netvrsn.o
@@ -82,7 +65,6 @@ netvrsn.c:      $(OFILES)
 l-libnet:       $(CFILES) true
 		$(LINT) $(LFLAGS) $(CFILES) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 #############################################################
 # clean

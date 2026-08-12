@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE DSAP common processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -23,7 +9,6 @@ UPDIR   =       ../
 
 LIBES   =       libcommon.a $(UPDIR)libcommon.a
 LLIBS   =       $(TOPDIR)llib-lisode
-
 
 #######################################################################
 # Here is it...
@@ -33,7 +18,6 @@ all:            libcommon
 inst-all:	libcommon
 install:        inst-all clean
 lint:           l-libcommon
-
 
 #######################################################################
 # libcommon
@@ -68,7 +52,6 @@ CFILES  =       acl.c attrv.c ca.c \
 		photo_dec.c photo_build.c photo_util.c photo_stub.c \
 		dsa_control.c osisec-int.c \
 		searchacl.c authpolicy.c
-
 
 OFILES  =       acl.o attrv.o ca.o \
 		dn_seq.o ds_error.o dsa_info.o \
@@ -130,7 +113,6 @@ TESTAVLOBJ =    testavl.o turbo_avl.o conf.o
 
 testavl:        $(TESTAVLOBJ)
 		$(LDCC) $(LDFLAGS) -o $@ $(TESTAVLOBJ) $(LIBISODE)
-
 
 ############################################################
 # Saber

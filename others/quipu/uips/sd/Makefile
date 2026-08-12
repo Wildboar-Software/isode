@@ -2,19 +2,6 @@
 #   Instructions to Make, for compilation of ISODE QUIPU Directory Server
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 LIBES   =       $(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 LLIBS   =       $(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode
@@ -34,11 +21,9 @@ inst-all:       inst-sd manuals help config
 install:        inst-all clean
 lint:           l-sd
 
-
 ###################################################################
 # sd
 ###################################################################
-
 
 inst-sd:    $(BINDIR)sd 
 		-mkdir $(ETCDIR)sd
@@ -92,7 +77,6 @@ help:
 		-mkdir $(ETCDIR)sd/helpdir
 		cp sd/helpdir/* $(ETCDIR)sd/helpdir
 		-@echo ""
-
 
 ##############################################################
 # clean

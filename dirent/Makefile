@@ -2,7 +2,6 @@
 #   Instructions to Make, for compilation of UNIX compatibility library
 ###############################################################################
 
-
 ###############################################################################
 #
 # This package was generously supplied by Doug Gwyn.  It is a public domain
@@ -22,14 +21,10 @@ LIBES	=	libdirent.a $(TOPDIR)libcompat.a
 LLIBS   =
 HFILES	=	$(HDIR)usr.dirent.h $(HDIR)sys.dirent.h
 
-
-
-
 all:		libdirent testdir
 inst-all:	# inst-libdirent manuals
 install:	install
 lint:		l-libdirent l-testdir
-
 
 ################################################################
 # libdirent
@@ -39,7 +34,6 @@ CFILES	=	closedir.c getdents.c opendir.c readdir.c rewinddir.c \
 		seekdir.c telldir.c getcwd.c scandir.c
 OFILES	=	closedir.o getdents.o opendir.o readdir.o rewinddir.o \
 		seekdir.o telldir.o getcwd.o scandir.o
-
 
 inst-libdirent:	$(LIBDIR)libdirent.a $(LINTDIR)llib-ldirent
 
@@ -88,7 +82,6 @@ telldir.o:	$(HFILES)
 getcwd.o:	$(HFILES)
 scandir.o:	$(HFILES)
 
-
 ################################################################
 # testdir
 ################################################################
@@ -102,7 +95,6 @@ testdir.o:	$(HFILES)
 l-testdir:;	$(LINT) $(LFLAGS) testdir.c llib-ldirent \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -111,7 +103,6 @@ MANUALS	=	directory.3c dirent.4 getdents.2
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

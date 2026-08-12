@@ -2,25 +2,10 @@
 #   Instructions to Make, for compilation of ISODE FTAM processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
-
 
 LIBES	=	libftam.a $(TOPDIR)libisode.a
 LLIBS	=	$(TOPDIR)llib-lisode
@@ -31,14 +16,10 @@ HFILES	=	$(HDIR)ftam.h \
 HXFILES	=	$(HFILES) $(HDIR)fpkt.h CONT-types.h FADU-types.h \
 		FTAM-types.h 
 
-
-
-
 all:		libftam
 inst-all:	inst-libftam documents manuals
 install:	inst-all clean
 lint:		l-libftam
-
 
 ##################################################################
 # libftam
@@ -127,7 +108,6 @@ CONT_tables.o:	CONT_tables.c CONT-types.h
 CONT_tables.c CONT-types.h: cont.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m cont.py
 
-
 ftamvrsn.c:	$(OFILES) CONT_tables.o FADU_tables.o FTAM_tables.o
 		@$(UTILDIR)version.sh ftam > $@
 
@@ -165,7 +145,6 @@ ftamlose.o:	$(HXFILES)
 ftamdocument.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 ftamfdf.o:	$(HXFILES)
 
-
 ################################################################
 # documents
 ################################################################
@@ -178,7 +157,6 @@ $(ETCDIR)isodocuments:	isodocuments
 		-@ls -gls $@
 		-@echo ""
 
-
 ##################################################################
 # manual pages
 ##################################################################
@@ -187,7 +165,6 @@ MANUALS	=	libftam.3n isodocuments.5
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##################################################################
 # clean

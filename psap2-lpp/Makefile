@@ -1,23 +1,7 @@
 ###############################################################################
-#   Instructions to Make, for compilation of ISODE LPP processes
-###############################################################################
-
-###############################################################################
-#
-# 
-#
+# Instructions to Make, for compilation of ISODE LPP processes
 # Contributed by The Wollongong Group, Inc.
-#
-#
-# 
-#
-#
-#
-# 
 ###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -25,14 +9,10 @@ LLIBS   =	$(TOPDIR)llib-lpsap $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)psap2.h $(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h  $(HDIR)config.h
 
-
-
-
 all:		libpsap2 libisode-lpp
 inst-all:	inst-libisode-lpp # inst-libpsap2 manuals
 install:	inst-all clean
 lint:		l-libpsap2
-
 
 ################################################################
 # libpsap2-lpp
@@ -88,7 +68,6 @@ PS_tables.o:	PS_tables.c PS-types.h
 PS_tables.c PS-types.h:	ps.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m ps.py
 
-
 psap2vrsn.c:	$(OFILES) PS_tables.o
 		@$(UTILDIR)version.sh psap2 '(lightweight)' > $@
 
@@ -133,7 +112,6 @@ acsapstublpp.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h \
 		$(CC) $(CFLAGS) -DLPP -c $(TOPDIR)acsap/acsapstub.c
 		mv acsapstub.o acsapstublpp.o
 
-
 ################################################################
 # libisode-lpp
 ################################################################
@@ -145,7 +123,6 @@ LIBES	=	$(TOPDIR)librosy.a $(TOPDIR)librosap.a $(TOPDIR)libacsap.a \
 LLLIBS	=	$(TOPDIR)llib-lrosy $(TOPDIR)llib-lrosap $(TOPDIR)llib-lacsap \
 		llib-lpsap2-lpp $(TOPDIR)llib-lpsap $(TOPDIR)llib-ldirent \
 		$(TOPDIR)llib-lcompat
-
 
 inst-libisode-lpp:	$(LIBDIR)libisode-lpp.a $(LINTDIR)llib-lisode-lpp
 
@@ -191,11 +168,9 @@ llib-lisode-lpp:	$(LLLIBS)
 		-@rm -f $(TOPDIR)llib-lisode-lpp
 		-@$(LN) llib-lisode-lpp $(TOPDIR)llib-lisode-lpp
 
-
 isodevrsn.o:	$(LIBES)
 		@cd $(TOPDIR)support; $(UTILDIR)version.sh isode > $(TOPDIR)psap2-lpp/isodevrsn.c
 		$(CC) $(CFLAGS) -c isodevrsn.c
-
 
 ################################################################
 # manual pages
@@ -205,7 +180,6 @@ MANUALS	=	libpsap2-lpp.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

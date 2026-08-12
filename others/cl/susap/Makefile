@@ -12,14 +12,10 @@ LLIBS	=	$(TOPDIR)llib-lhula $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)spkt.h $(HDIR)ssap.h $(HDIR)tsap.h $(HDIR)isoaddrs.h \
 		$(HDIR)general.h $(HDIR)manifest.h  $(HDIR)config.h
 
-
-
-
 all:		libsusap susaptest
 inst-all:	inst-libssap manuals
 install:	inst-all clean
 lint:		l-libssap l-susaptest
-
 
 ################################################################
 # libsusap
@@ -28,11 +24,8 @@ lint:		l-libssap l-susaptest
 CFILES	=	ssapunitdata.c str2spkt.c text2spkt.c tsdu2spkt.c ssaputils.c \
 		susaperror.c susaplose.c
 
-
 OFILES	=	ssapunitdata.o str2spkt.o text2spkt.o tsdu2spkt.o ssaputils.o \
 		susaperror.o susaplose.o $(OSTRINGS)
-
-
 
 $(LIBDIR)libsusap.a:	libsusap.a
 		-rm -f $@
@@ -75,7 +68,6 @@ str2spkt.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)susap.h $(HDIR)uderrors.h
 text2spkt.o:	$(HFILES) $(HDIR)susap.h $(HDIR)uderrors.h
 tsdu2spkt.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)susap.h $(HDIR)uderrors.h
 
-
 ################################################################
 # susaptest
 ################################################################
@@ -88,7 +80,6 @@ susaptest.o:	$(HFILES)
 
 l-susaptest:;	$(LINT) $(LFLAGS) susaptest.c llib-lssap $(LLIBS)
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -97,7 +88,6 @@ MANUALS	=	libssap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

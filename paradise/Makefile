@@ -1,36 +1,14 @@
 ##########################################################################
-#   Instructions to Make, for compilation of ISODE processes
-##########################################################################
-
-###############################################################################
-#
-# 
-#
-#
-# 
-#
+# Instructions to Make, for compilation of ISODE processes
 # PARADISE
-#
-#
 # XT-QUIPU unifdef
-#
-#
-#
-#
-# 
 ###############################################################################
-
-
-
-
-
 
 LIBDIRS	=	h compat dirent tsap ssap psap pepsy pepy psap2 \
 		acsap rosap rtsap ronot rosy 
 DIRS	=	$(LIBDIRS) support imisc
 OTHERS	=	dsap ftam ftam2 ftam-ftp ftp-ftam others psap2-lpp quipu \
 		snmp vt
-
 
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -94,7 +72,6 @@ inst-partial:;	cd h; $(MAKE) inst-all
 		cd pepy; $(MAKE) inst-all
 		cd support; $(MAKE) macros inst-libisode
 
-
 ##################################################################
 # everything
 ##################################################################
@@ -115,13 +92,11 @@ lint-everything: lint true
 
 true:;
 
-
 ##################################################################
 # ftam
 ##################################################################
 
 FTAM	=	ftam ftam2
-
 
 all-ftam:;	@for i in $(FTAM); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -143,13 +118,11 @@ lint-ftam:;	@for i in $(FTAM); \
 			      cd $$i; $(MAKE) lint); \
 		    done
 
-
 ##################################################################
 # ftam-ftp
 ##################################################################
 
 FTAM-FTP=	ftam-ftp ftp-ftam
-
 
 all-ftam-ftp:;	@for i in $(FTAM-FTP); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -171,13 +144,11 @@ lint-ftam-ftp:;	@for i in $(FTAM-FTP); \
 			      cd $$i; $(MAKE) lint); \
 		    done
 
-
 ##################################################################
 # vt
 ##################################################################
 
 VT	=	vt
-
 
 all-vt:;	@for i in $(VT); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -199,13 +170,11 @@ lint-vt:;	@for i in $(VT); \
 			      cd $$i; $(MAKE) lint); \
 		    done
 
-
 ##################################################################
 # quipu
 ##################################################################
 
 QUIPU	=	dsap quipu
-
 
 all-quipu:;	cd h/quipu; $(MAKE) all
 		@for i in $(QUIPU); \
@@ -239,13 +208,11 @@ lint-quipu:;	cd h/quipu; $(MAKE) lint
 		cd acsap; $(MAKE) l-dased
 		cd support; $(MAKE) l-iaed
 
-
 ##################################################################
 # snmp
 ##################################################################
 
 SNMP	=	snmp
-
 
 all-snmp:;	@for i in $(SNMP); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -267,14 +234,12 @@ lint-snmp:;	@for i in $(SNMP); \
 			      cd $$i; $(MAKE) lint); \
 		    done
 
-
 ##################################################################
 # lpp
 ##################################################################
 
 LPP	=	h compat psap pepsy pepy acsap rosap ronot rosy psap2-lpp
 LPP-AUX	=	support imisc
-
 
 all-lpp:;	@for i in $(LPP); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -311,7 +276,6 @@ lint-lpp:;	@for i in $(LPP); \
 		    do (echo "cd $$i; $(MAKE) lint-lpp"; \
 			      cd $$i; $(MAKE) lint-lpp); \
 		    done
-
 
 ##################################################################
 # COSINE PARADISE project
@@ -389,7 +353,6 @@ image:;		find . -name RCS -a -exec rm -rf {} \; -a -prune
 		-unifdef -UXTQUIPU < /tmp/xtel.c \
 			> quipu/task_select.c
 		rm -f /tmp/protected.c
-
 
 ##################################################################
 # zap

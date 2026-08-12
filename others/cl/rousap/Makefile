@@ -36,14 +36,10 @@ HFILES	=	$(HDIR)rosap.h $(HDIR)acusap.h $(HDIR)pusap2.h \
 		$(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		librousap
 inst-all:	inst-librosap manuals
 install:	inst-all clean
 lint:		l-librosap
-
 
 ################################################################
 # librosap
@@ -98,7 +94,6 @@ rousapvrsn.c:	$(OFILES)
 l-librousap:	ros.c true
 		$(LINT) $(LFLAGS) $(CFILES) ros.c rousapvrsn.c $(LLIBS)
 
-
 rosaperror.o:	$(HFILES)
 rosapinvoke.o:	$(HDIR)ropkt.h $(HDIR)acupkt.h $(HFILES)
 rosapresult.o:	$(HDIR)ropkt.h $(HDIR)acupkt.h $(HFILES)
@@ -133,7 +128,6 @@ vros.o:		vros.c
 vros.c:		ros.py $(TOPDIR)pepy/xpepy
 		$(TOPDIR)pepy/xpepy -a PY_advise -m -d -S PRINT -o $@ $(PYFLAGS) ros.py
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -142,7 +136,6 @@ MANUALS	=	librosap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

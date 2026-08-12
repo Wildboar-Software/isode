@@ -2,34 +2,16 @@
 #   Instructions to Make, for compilation of ISODE TSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 LIBES	=	libtsap.a $(TOPDIR)libcompat.a
 LLIBS	=	$(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)tsap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		libtsap
 inst-all:	# inst-libtsap manuals
 install:	inst-all clean
 lint:		l-libtsap
-
 
 ################################################################
 # libtsap
@@ -48,7 +30,6 @@ OFILES	=	tsaprovider.o tsaperror.o tsapstate.o \
 		tp0ts.o ts2tcp.o ts2x25.o \
 		ts2bsd.o ts2sunlink.o ts2tli.o ts2xti.o $(OTSAP) \
 		$(OSTRINGS)
-
 
 inst-libtsap:	$(LIBDIR)libtsap.a $(LINTDIR)llib-ltsap
 
@@ -113,7 +94,6 @@ ts2x25.o:	$(HDIR)tpkt.h $(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 ts2bsd.o:	$(HDIR)tpkt.h $(HFILES) $(HDIR)tp4.h $(HDIR)mpkt.h
 ts2sunlink.o:	$(HDIR)tpkt.h $(HFILES) $(HDIR)tp4.h $(HDIR)mpkt.h
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -122,7 +102,6 @@ MANUALS	=	libtsap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

@@ -2,30 +2,14 @@
 #   Instructions to Make, for compilation of ISODE image programs
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
 
 LLIBS   =	$(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode # -lX11
-
 
 ###############################################################################
 # Files
@@ -34,14 +18,10 @@ LLIBS   =	$(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode # -lX11
 HFILES	=	imagesbr.h
 CFILES	=	xface.c xwho.c imagesbr.c
 
-
-
-
 all:		xface xwho
 inst-all:	inst-xface inst-xwho manuals
 install:	inst-all clean
 lint:		l-xface l-xwho
-
 
 ##################################################################
 # xface
@@ -67,7 +47,6 @@ l-xface:;	$(LINT) $(LFLAGS) xface.c imagesbr.c $(LLIBS) \
 xface.o:	imagesbr.h
 imagesbr.o:	imagesbr.h
 
-
 ##################################################################
 # xwho
 ##################################################################
@@ -91,7 +70,6 @@ l-xwho:;	$(LINT) $(LFLAGS) xwho.c imagesbr.c $(LLIBS) \
 
 xwho.o:		imagesbr.h
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -100,7 +78,6 @@ MANUALS	=	xface.1c xwho.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

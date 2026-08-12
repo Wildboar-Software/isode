@@ -2,25 +2,10 @@
 #   Instructions to Make, for compilation of ISODE RtSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
-
 
 LIBES	=	librtsap.a
 LLIBS   =	$(TOPDIR)llib-lacsap $(TOPDIR)llib-lpsap2 $(TOPDIR)llib-lpsap \
@@ -29,13 +14,10 @@ HFILES	=	$(HDIR)rtsap.h $(HDIR)acsap.h $(HDIR)psap2.h $(HDIR)psap.h \
 		$(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
 all:		librtsap
 inst-all:	inst-librtsap manuals
 install:	inst-all clean
 lint:		l-librtsap
-
 
 ################################################################
 # librtsap
@@ -96,7 +78,6 @@ RTS_tables.o:	RTS_tables.c RTS-types.h
 RTS_tables.c RTS-types.h: rts.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m rts.py
 
-
 rtsapvrsn.c:	$(OFILES) RTS_tables.o 
 		@$(UTILDIR)version.sh rtsap > $@
 
@@ -136,7 +117,6 @@ rt2ssreleas2.o:	$(HDIR)rtpkt.h $(HDIR)acpkt.h $(HFILES)
 rt2ss.o:	$(HDIR)rtpkt.h $(HDIR)acpkt.h $(HFILES) $(HDIR)tailor.h \
 			$(HDIR)logger.h RTS-types.h
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -145,7 +125,6 @@ MANUALS	=	librtsap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

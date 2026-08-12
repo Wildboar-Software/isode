@@ -11,21 +11,15 @@
 # 
 ###############################################################################
 
-
-
 AWKDIR	=	/usr/local/lib/awk/
 
 SHELLS	=	s-netstat s-traceroute
 AWKS	=	mib.*
 
-
-
-
 all:
 inst-all:	inst-scripts manuals
 install:	inst-all clean
 lint:;
-
 
 ##################################################################
 # scripts
@@ -45,7 +39,6 @@ $(BINDIR)$(TARGET):	$(TARGET)
 		-@ls -gls $@
 		-@echo ""
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -54,7 +47,6 @@ MANUALS	=	s-netstat.1c s-traceroute.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

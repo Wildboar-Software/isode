@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE QUIPU include files
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 HEADERS =       abandon.h add.h attr.h attrvalue.h bind.h \
 		common.h commonarg.h compare.h config.h \

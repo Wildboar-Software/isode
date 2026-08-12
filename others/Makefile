@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of other ISODE programs
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 DIRS	=	quipu/photo quipu/image mosy tsbridge
 
 ALL	=	callback idist listen lookup ntp osilookup pingpong quipu 
 
 OTHERS	=	$(ALL) rfa rtf cl
-
-
 
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -31,14 +16,12 @@ all:;		@for i in $(DIRS); \
 		cd quipu/photo; $(MAKE) Xphoto xfax
 		cd quipu; $(MAKE) pilot
 
-
 everything:;	@for i in $(DIRS) $(ALL); \
 		    do (echo "cd $$i; $(MAKE) all"; \
 			      cd $$i; $(MAKE) all); \
 		    done
 		cd quipu/photo; $(MAKE) Xphoto xfax
 		cd quipu; $(MAKE) pilot
-
 
 inst-all:;	@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) inst-all"; \

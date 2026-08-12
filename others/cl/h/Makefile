@@ -18,9 +18,6 @@ HEADERS	=	config.h \
 		fpkt.h ftam.h \
 		sys.dirent.h dirent.h
 
-
-
-
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \
 			      cd $$i; $(MAKE) all); \
@@ -32,7 +29,6 @@ inst-all:;	-mkdir $(INCDIRM)
 		    do (echo "cd $$i; $(MAKE) inst-all"; \
 			      cd $$i; $(MAKE) inst-all); \
 		    done
-
 
 inst-target:	$(INCDIR)$(TARGET)
 

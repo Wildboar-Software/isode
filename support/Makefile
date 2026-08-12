@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE support processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -25,7 +11,6 @@ LIBES   =       $(TOPDIR)librosy.a  $(TOPDIR)libronot.a $(TOPDIR)librosap.a \
 		$(TOPDIR)libssap.a  $(TOPDIR)libtsap.a  $(TOPDIR)libdirent.a \
 		$(TOPDIR)libcompat.a \
 		$(TP4LIBES)
-
 
 LLIBS   =       $(TOPDIR)llib-lrosy $(TOPDIR)llib-lronot $(TOPDIR)llib-lrosap \
 		$(TOPDIR)llib-lrtsap $(TOPDIR)llib-lacsap $(TOPDIR)llib-lpsap2 \
@@ -37,9 +22,6 @@ HFILES	=	$(HDIR)rosap.h $(HDIR)rtsap.h $(HDIR)acsap.h $(HDIR)psap2.h \
 		$(HDIR)psap.h $(HDIR)ssap.h $(HDIR)tsap.h \
 		$(HDIR)isoaddrs.h $(HDIR)isoservent.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
-
-
-
 
 all:		libisode tsapd isore isod isoc \
 		isoaliases isoentities isomacros isobjects isoservices
@@ -56,7 +38,6 @@ lint-lpp:	l-lppd
 inst-:;
 man-:;
 l-:;
-
 
 ##################################################################
 # tsapd
@@ -81,7 +62,6 @@ l-tsapd:;	$(LINT) $(LFLAGS) tsapd.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
 tsapd.o:	$(HFILES) $(HDIR)x25.h $(HDIR)logger.h $(HDIR)tailor.h
-
 
 inst-iaed:	$(SBINDIR)iaed
 
@@ -140,7 +120,6 @@ xisore:		isore.o
 l-isore:;	$(LINT) $(LFLAGS) isore.c \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ##################################################################
 # isod
 ##################################################################
@@ -175,7 +154,6 @@ l-isod:;	$(LINT) $(LFLAGS) isod.c $(LLIBS) \
 
 isod.o:		$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 
-
 ##################################################################
 # isoc
 ##################################################################
@@ -199,7 +177,6 @@ l-isoc:;	$(LINT) $(LFLAGS) isoc.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
 isoc.o:		$(HFILES) $(HDIR)internet.h
-
 
 ################################################################
 # libisode
@@ -279,7 +256,6 @@ llib-lisode:	$(LLIBS)
 isodevrsn.c:	$(LIBES)
 		@$(UTILDIR)version.sh isode > $@
 
-
 ################################################################
 # aliases/entities/macros/objects/services/tailor
 ################################################################
@@ -296,7 +272,6 @@ $(ETCDIR)isoaliases:	isoaliases
 isoaliases:	aliases.local aliases.db
 		cat aliases.local aliases.db > $@
 
-
 entities:	$(ETCDIR)isoentities
 
 $(ETCDIR)isoentities:	isoentities
@@ -312,7 +287,6 @@ $(ETCDIR)isoentities:	isoentities
 isoentities:	entities.prefix entities.local entities.db
 		cat entities.prefix entities.local entities.db > $@
 
-
 macros:		$(ETCDIR)isomacros
 
 $(ETCDIR)isomacros:	isomacros
@@ -324,7 +298,6 @@ $(ETCDIR)isomacros:	isomacros
 
 isomacros:	macros.prefix macros.local macros.db
 		cat macros.prefix macros.local macros.db > $@
-
 
 objects:	$(ETCDIR)isobjects
 
@@ -338,7 +311,6 @@ $(ETCDIR)isobjects:	isobjects
 isobjects:	objects.local objects.db
 		cat objects.local objects.db > $@
 
-
 services:	$(ETCDIR)isoservices
 
 $(ETCDIR)isoservices:	isoservices
@@ -351,7 +323,6 @@ $(ETCDIR)isoservices:	isoservices
 isoservices:	services.local services.db
 		cat services.local services.db > $@
 
-
 tailor:		$(ETCDIR)isotailor
 
 $(ETCDIR)isotailor:	isotailor
@@ -360,7 +331,6 @@ $(ETCDIR)isotailor:	isotailor
 		-chmod a+r $@
 		-@ls -gls $@
 		-@echo ""
-
 
 ################################################################
 # lppd
@@ -389,13 +359,11 @@ l-lppd:;	$(LINT) $(LFLAGS) lppd.c $(LPP-LLIBS) \
 
 lppd.o:		$(HFILES)
 
-
 MANUALS-LPP=	isoentities.5 isobjects.5 isoservices.5 isotailor.5 \
 		lppd.8c isonspasnpa.5
 
 manuals-lpp:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS-LPP)
 		-@echo ""
-
 
 ################################################################
 # manual pages
@@ -406,7 +374,6 @@ MANUALS	=	isoc.1c isoaliases.5 isoentities.5 isomacros.5 isobjects.5 \
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean
@@ -428,7 +395,6 @@ grind:		isoaliases isoentities isomacros isobjects isoservices \
 
 true:;
 
-
 ################################################################
 # testing...
 ################################################################
@@ -436,7 +402,6 @@ true:;
 HOST	=	127.0.0.1
 FILE1	=	/etc/mtab
 FILE2	=	/etc/fstab
-
 
 test:;		-./xisoc $(HOST) tsap echo < $(FILE1)
 		-./xisoc $(HOST) ssap echo < $(FILE1)

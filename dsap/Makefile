@@ -2,28 +2,12 @@
 #   Instructions to Make, for compilation of ISODE DSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-#
-###############################################################################
-
-
-
 
 #PEPYPATH=	-DPEPYPATH
 
 DIRS	=	x500as common net
 LIBES   =       libcommon.a libnet.a libx500as.a
 LLIBS   =       llib-lcommon llib-lnet llib-lx500as
-
-
 
 all:		sub-all libdsap ufnrc
 inst-all:       inst-libdsap inst-dsaptailor inst-oidtable inst-ufnrc
@@ -141,7 +125,6 @@ llib-ldsap:     $(LLIBS)
 dsapvrsn.c:     $(LIBES)
 		@$(UTILDIR)version.sh dsap > $@
 
-
 ###################################################################
 # dsaptailor/oidtable
 ###################################################################
@@ -182,7 +165,6 @@ $(ETCDIR)oidtable.oc: oidtable.oc oidtable.oc.local
 		-chmod a+r $@
 		-@ls -gls $@
 		-@echo ""
-
 
 ###################################################################
 # ufnrc

@@ -29,7 +29,6 @@
 
 .py.c:;		$(TOPDIR)pepy/xpepy -a PY_advise -m $(PYFLAGS) $<
 
-
 LIBES	=	libpusap2.a
 
 LIBES1	=	/usr/fromkurt/libsusap.a /usr/fromkurt/libtusap.a\
@@ -42,9 +41,6 @@ LLIBS   =	$(TOPDIR)llib-lpsap $(TOPDIR)llib-lssap $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)pusap2.h $(HDIR)psap2.h $(HDIR)psap.h $(HDIR)ssap.h \
 		$(HDIR)isoaddrs.h $(HDIR)manifest.h $(HDIR)general.h \
 		$(HDIR)config.h $(HDIR)susap.h
-
-
-
 
 all:		libpusap2
 inst-all:	inst-libpusap2 manuals
@@ -137,7 +133,6 @@ PS-types.py:	ps.py $(TOPDIR)pepy/xposy
 PS-print.c:	ps.py $(TOPDIR)pepy/xpepy
 		$(TOPDIR)pepy/xpepy -a PY_advise -d -m -S PRINT -o $@ $(PYFLAGS) ps.py
 
-
 ################################################################
 # pusap2test
 ################################################################
@@ -149,8 +144,6 @@ pusap2test:	pusap2test.o libpusap2.a
 pusap2test.o:   $(HFILES)
 		$(CC) $(CFLAGS) -g -c $*.c
 
-
-
 ################################################################
 # manual pages
 ################################################################
@@ -159,7 +152,6 @@ MANUALS	=	libpsap2.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

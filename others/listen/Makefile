@@ -8,13 +8,11 @@
 
 BINDIR	=	/usr/new/
 
-
 ###############################################################################
 # Generation Rules for program modules
 ###############################################################################
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 ###############################################################################
 # Programs and Libraries
@@ -23,7 +21,6 @@ BINDIR	=	/usr/new/
 LIBES	=	$(LIBISODE)
 LLIBS   =	$(TOPDIR)llib-lisode
 
-
 ###############################################################################
 # Files
 ###############################################################################
@@ -31,14 +28,10 @@ LLIBS   =	$(TOPDIR)llib-lisode
 HFILES	=	listen.h
 CFILES	=	listen.c initiate.c
 
-
-
-
 all:		listen initiate
 inst-all:	inst-listen inst-initiate
 install:	inst-all clean
 lint:		l-listen l-initiate
-
 
 ##################################################################
 # listen
@@ -68,7 +61,6 @@ listen.o:	$(HFILES)
 report.o:	../callback/report.c
 		$(CC) $(CFLAGS) -c ../callback/report.c
 
-
 ##################################################################
 # initiate
 ##################################################################
@@ -92,9 +84,7 @@ xinitiate:	initiate.o report.o
 l-initiate:;	$(LINT) $(LFLAGS) initiate.c ../callback/report.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 initiate.o:	$(HFILES)
-
 
 ##################################################################
 # clean

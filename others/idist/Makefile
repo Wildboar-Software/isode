@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE idist utility
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
@@ -25,14 +11,12 @@ PEPYPATH=	-DPEPYPATH
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
 
-
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
 
 LIBES	=	$(LIBISODE)
 LLIBS   =	$(TOPDIR)llib-lisode
-
 
 ###############################################################################
 # Files
@@ -43,14 +27,10 @@ CFILES	=	docmd.c expand.c idistd.c idistd2.c install.c lookup.c \
 			main.c ops.c ryinitiator.c ryresponder.c support.c
 RYFILES	=	idist.ry
 
-
-
-
 all:		idistd idist
 inst-all:	inst-idistd inst-idist manuals
 install:	inst-all clean
 lint:		l-idistd l-idist
-
 
 ##################################################################
 # idistd
@@ -87,7 +67,6 @@ l-idistd:	$(IDISTDC) Idist_tables.c true
 		$(LINT) $(LFLAGS) -DPERFORMER $(IDISTDC) \
 			Idist_tables.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ##################################################################
 # idist
@@ -136,7 +115,6 @@ l-idist:	$(IDISTC) Idist-ops.c Idist_tables.c true
 			$(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ################################################################
 # libidist
 ################################################################
@@ -152,7 +130,6 @@ Idist-ops.c:	idist.ry
 Idist-ops.h:	idist.ry
 Idist-stubs.c:	idist.ry
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -161,7 +138,6 @@ MANUALS	=	idistd.8c idist.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

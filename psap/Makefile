@@ -2,34 +2,16 @@
 #   Instructions to Make, for compilation of ISODE PSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 LIBES	=	libpsap.a $(TOPDIR)libcompat.a
 LLIBS   =	$(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)psap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		libpsap psaptest hex2pe dec2pe
 inst-all:	# inst-libpsap manuals
 install:	inst-all clean
 lint:		l-libpsap l-psaptest
-
 
 ################################################################
 # libpsap
@@ -194,7 +176,6 @@ ts2ps.o:	$(HFILES) $(HDIR)tsap.h $(HDIR)tailor.h $(HDIR)logger.h
 ut2tm.o:	$(HFILES)
 uvec2ps.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 
-
 ################################################################
 # psaptest
 ################################################################
@@ -207,7 +188,6 @@ psaptest.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h psaptest.c
 
 l-psaptest:;	$(LINT) $(LFLAGS) psaptest.c llib-lpsap $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 tests:
 		psaptest ps2pl < test/test1.pe
@@ -225,13 +205,11 @@ hex2pe:		hex2pe.o
 hex2pe.o:	$(HFILES) hex2pe.c
 		$(CC) $(CFLAGS) -c hex2pe.c
 
-
 dec2pe:		dec2pe.o
 		$(LDCC) $(LDFLAGS) -o $@ dec2pe.o
 
 dec2pe.o:	$(HFILES) dec2pe.c
 		$(CC) $(CFLAGS) -c dec2pe.c
-
 
 ################################################################
 # manual pages
@@ -241,7 +219,6 @@ MANUALS	=	libpsap.3
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

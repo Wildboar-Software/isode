@@ -3,24 +3,11 @@
 ###############################################################################
 
 ###############################################################################
-#
-# 
-#
 # Contributed by NYSERNet Inc.  This work was partially supported by the
 # U.S. Defense Advanced Research Projects Agency and the Rome Air Development
 # Center of the U.S. Air Force Systems Command under contract number
 # F30602-88-C-0016.
-#
-#
-# 
-#
-#
-#
-# 
 ###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -31,7 +18,6 @@ GCCFLAGS=
 .SUFFIXES:	.py .c .o
 
 .c.o:;		$(CC) $(CFLAGS) $(GCCFLAGS) -c $*.c
-
 
 LIBD   =	libisnmp.a $(TOPDIR)libisode.a
 LIBES   =	libisnmp.a $(LIBISODE) -lcrypt
@@ -52,16 +38,12 @@ PYFILES	=	snmp.py
 HFILES	=	$(HDIR)psap.h $(HDIR)manifest.h $(HDIR)general.h \
 		$(HDIR)config.h
 
-
-
-
 all:		snmpd snmpc snmpt unixd snmpi runcom peers objects
 inst-all:	inst-snmpd inst-snmpt inst-unixd inst-snmpi \
 			inst-runcom inst-peers inst-objects inst-headers \
 			inst-libisnmp manuals # inst-snmpc
 install:	inst-all clean
 lint:		l-snmpd l-snmpc l-snmpt l-unixd l-snmpi
-
 
 ##################################################################
 # snmpd
@@ -107,7 +89,6 @@ snmp-g.o:	snmp-g.h
 view-g.o:	view-g.h $(HDIR)isoaddrs.h $(HDIR)internet.h
 smux-g.o:	smux-g.h $(HDIR)internet.h
 
-
 ##################################################################
 # snmpc
 ##################################################################
@@ -140,7 +121,6 @@ snmpc.o:	SNMP-types.h mib.h objects.h smux.h $(HFILES) $(HDIR)tailor.h \
 			snmpd.c
 		$(CC) $(CFLAGS) -DSNMPC -o snmpc.o -c snmpd.c
 
-
 ##################################################################
 # snmpt
 ##################################################################
@@ -170,7 +150,6 @@ snmpt.o:	SNMP-types.h mib.h objects.h smux.h $(HFILES) $(HDIR)tailor.h \
 			$(HDIR)dgram.h $(HDIR)internet.h $(HDIR)tp4.h \
 			snmpd.c
 		$(CC) $(CFLAGS) -DSNMPT -o snmpt.o -c snmpd.c
-
 
 ##################################################################
 # unixd
@@ -209,7 +188,6 @@ print.o:	SNMP-types.h objects.h smux.h $(HFILES) $(HDIR)logger.h \
 printcap.o:	pathnames.h
 unixFs.o:	SNMP-types.h objects.h smux.h $(HFILES) $(HDIR)logger.h
 
-
 ##################################################################
 # snmpi
 ##################################################################
@@ -241,7 +219,6 @@ snmpi.o:	SNMP-types.h objects.h $(HFILES) $(HDIR)tailor.h \
 snmpb.o:	SNMP-types.h objects.h $(HFILES) $(HDIR)tailor.h \
 			$(HDIR)logger.h
 
-
 ################################################################
 # headers
 ################################################################
@@ -272,7 +249,6 @@ $(PEPSYDIR)SNMP.ph: SNMP.ph
 		cp SNMP.ph $@
 		-@ls -gls $@
 		-@echo ""
-
 
 ################################################################
 # libisnmp
@@ -320,7 +296,6 @@ smux.o:		smux.h SNMP-types.h $(HDIR)tailor.h $(HDIR)logger.h \
 smuxentry.o:	smux.h SNMP-types.h $(HDIR)tailor.h
 loadobjects.o:	objects.h
 
-
 ##################################################################
 # files
 ##################################################################
@@ -339,7 +314,6 @@ $(ETCDIR)snmpd.rc:	snmpd.rc
 
 runcom:;
 
-
 inst-peers:	$(ETCDIR)snmpd.peers
 
 $(ETCDIR)snmpd.peers:	snmpd.peers
@@ -351,7 +325,6 @@ $(ETCDIR)snmpd.peers:	snmpd.peers
 		-@echo ""
 
 peers:;
-
 
 DEFS	=	objects.defs snmpd.defs unixd.defs # snmpc.defs
 DEFS2	=	smi.defs \
@@ -411,7 +384,6 @@ loadobjects.c:  $(DEFS2)
 		if [ -f ./xsnmpi ]; then \
 			./xsnmpi -f objects.defs compile -s loadobjects; fi
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -420,7 +392,6 @@ MANUALS	=	snmpd.8c snmpc.8c snmpt.8c unixd.8c snmpi.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

@@ -2,19 +2,6 @@
 #   Instructions to Make, for compilation of QUIPU photo programs
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 # Select you display type(s)...
 # should really go in config/CONFIG.make
@@ -108,7 +95,6 @@ pbmtofax:	pbmtofax.o encode.o code_word.o $(TOPDIR)libdsap.a $(LIBPBM)
 pbmtofax.o:	pbmtofax.c
 		$(CC) $(CFLAGS) $(PBMINC) -c pbmtofax.c
 
-
 #####################################################################
 #    Installation...
 #####################################################################
@@ -166,8 +152,6 @@ clean:
 		pr2pe Xphoto xfax t4014 \
 		faxtopbm pbmtofax \
 		fax2ps jpeg2asn xjpeg
-
-
 
 # depend
 code_word.o: ../../../h/quipu/photo.h

@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE VT processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 .SUFFIXES:	.py .c .o
 
 .c.o:;		$(CC) $(CFLAGS) $(INCLUDES) -c $*.c
 
 .py.c:;		$(TOPDIR)pepy/xpepy -a PY_advise -m $(PYFLAGS) $<
-
 
 LIBES	=	$(TOPDIR)libisode.a
 LLIBS	=	$(TOPDIR)llib-lisode
@@ -40,14 +25,10 @@ PYFILES-C=	BK_CONTENT.c RCV_ASQ.c RCV_ASR.c RCV_TEXT.c RCV_UDQ.c \
 PYFILES-O=	BK_CONTENT.o RCV_ASQ.o RCV_ASR.o RCV_TEXT.o RCV_UDQ.o \
 		SEND_ASQ.o SEND_ASR.o SEND_TEXT.o SEND_UDQ.o PRINT_VT.o
 
-
-
-
 all:		vtd vt
 inst-all:	inst-vtd inst-vt manuals
 install:	inst-all clean
 lint:		l-vtd l-vt
-
 
 ##################################################################
 # vtd
@@ -84,7 +65,6 @@ l-vtd:		$(PYFILES-C) true
 		$(LINT) $(LFLAGS) vtd.c $(CFILES) $(PYFILES-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ##################################################################
 # vt
 ##################################################################
@@ -110,7 +90,6 @@ vt.o:		$(VTH) sector1.h $(HDIR)tailor.h
 l-vt:		$(PYFILES-C) true
 		$(LINT) $(LFLAGS) vt.c $(CFILES) $(PYFILES-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ##################################################################
 # libvt
@@ -162,7 +141,6 @@ PRINT_VT.c:	print_vt.py $(TOPDIR)pepy/xpepy
 		$(TOPDIR)pepy/xpepy -a PY_advise -m $(PYFLAGS) -o $@ \
 			print_vt.py
 
-
 ##################################################################
 # manual pages
 ##################################################################
@@ -171,7 +149,6 @@ MANUALS	=	vtd.8c vt.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##################################################################
 # clean

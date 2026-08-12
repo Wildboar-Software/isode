@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of the ISODE callback demo
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Options
@@ -23,13 +9,11 @@
 
 BINDIR	=	/usr/new/
 
-
 ###############################################################################
 # Generation Rules for program modules
 ###############################################################################
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 ###############################################################################
 # Programs and Libraries
@@ -38,7 +22,6 @@ BINDIR	=	/usr/new/
 LIBES	=	$(LIBISODE)
 LLIBS   =	$(TOPDIR)llib-lisode
 
-
 ###############################################################################
 # Files
 ###############################################################################
@@ -46,14 +29,10 @@ LLIBS   =	$(TOPDIR)llib-lisode
 HFILES	=	callback.h
 CFILES	=	initiator.c responder.c report.c
 
-
-
-
 all:		initiator responder
 inst-all:	inst-initiator inst-responder
 install:	inst-all clean
 lint:		l-initiator l-responder
-
 
 ##################################################################
 # initiator
@@ -80,7 +59,6 @@ l-initiator:;	$(LINT) $(LFLAGS) initiator.c report.c $(LLIBS) \
 
 initiator.o:	$(HFILES)
 
-
 ##################################################################
 # responder
 ##################################################################
@@ -105,7 +83,6 @@ l-responder:;	$(LINT) $(LFLAGS) responder.c report.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
 responder.o:	$(HFILES)
-
 
 ##################################################################
 # clean

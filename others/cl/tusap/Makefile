@@ -15,15 +15,11 @@ LLIBS	=	$(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)tsap.h $(HDIR)isoaddrs.h $(HDIR)tusap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		libtusap udptest
 test:		libtusap tsaputest		
 inst-all:	inst-libtusap manuals
 install:	inst-all clean
 lint:		l-libtusap l-udptest
-
 
 ################################################################
 # libtusap
@@ -51,7 +47,6 @@ OFILES	=	tsapunitdata.o tsaputils.o uderror.o ts2udp.o \
 #		ts2udp.o tp0ts.o ts2tcp.o ts2x25.o ts2cons.o \
 #		ts2bridge.o ts2sunlink.o $(OTSAP) \
 #		$(OSTRINGS)
-
 
 inst-libtusap:	$(LIBDIR)libtusap.a $(LINTDIR)llib-ltusap
 
@@ -96,7 +91,6 @@ tusaplose.o:	$(HDIR)tpkt.h $(HFILES)
 tusaperror.o:	$(HFILES)
 ts2udp.o:	$(HDIR)tpkt.h $(HDIR)tsap.h $(HFILES)
 
-
 ################################################################
 # tsaptest
 ################################################################
@@ -114,7 +108,6 @@ udptest.o:	$(HFILES)
 
 l-udptest:;	$(LINT) $(LFLAGS) udptest.c llib-ltusap $(LLIBS)
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -123,7 +116,6 @@ MANUALS	=	libtsap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

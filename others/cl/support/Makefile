@@ -4,7 +4,6 @@
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
 
-
 LIBES   =	$(TOPDIR)librosy.a $(TOPDIR)librosap.a $(TOPDIR)librtsap.a \
 		$(TOPDIR)libacsap.a $(TOPDIR)libpsap2.a $(TOPDIR)libpepy.a \
 		$(TOPDIR)libpsap.a $(TOPDIR)libssap.a $(TOPDIR)libtsap.a \
@@ -27,9 +26,6 @@ HFILES	=	$(HDIR)tsap.h $(HDIR)tusap.h \
 		$(HDIR)isoaddrs.h $(HDIR)isoservent.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 ##################################################################
 # tsapud    TSAP UNIT DATA DAEMON
 ##################################################################
@@ -50,7 +46,6 @@ xtsapud:	tsapud.o
 		$(LDCC) $(LDFLAGS) -o $@ tsapud.o $(UDLIBES) $(LSOCKET)
 
 tsapud.o:	$(HFILES) $(HDIR)logger.h $(HDIR)tailor.h
-
 
 ################################################################
 # clean

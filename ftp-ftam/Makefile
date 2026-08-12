@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of MITRE FTP/FTAM gateway
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
@@ -27,7 +13,6 @@ PEPYPATH=	-DPEPYPATH
 
 .c.o:;		$(CC) $(CFLAGS) -DBRIDGE -I$(FTAM) -c $*.c
 
-
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
@@ -35,7 +20,6 @@ PEPYPATH=	-DPEPYPATH
 LIBD	=	$(TOPDIR)libftam.a $(TOPDIR)libisode.a
 LIBES	=	$(TOPDIR)libftam.a $(LIBISODE)
 LLIBS	=	$(TOPDIR)llib-lftam $(TOPDIR)llib-lisode
-
 
 ###############################################################################
 # Files
@@ -53,14 +37,10 @@ OFILES	=	ftam.o ftamuser.o ftam-assoc.o ftam-dir.o ftam-get.o \
 DOCS-O	=	$(FTAM)DOCS_tables.o
 DOCS-C	=	$(FTAM)DOCS_tables.c
 
-
-
-
 all:		ftpd-ftam
 inst-all:	inst-ftpd-ftam manuals
 install:	inst-all clean
 lint:		l-ftpd-ftam
-
 
 ##################################################################
 # ftpd-ftam
@@ -120,7 +100,6 @@ ftam-put.o:	$(HFILES) $(FTAM)ftam-put.c
 ftamsbr.o:	$(HFILES) $(FTAM)ftamsbr.c
 		$(CC) $(CFLAGS) -DBRIDGE  -I$(FTAM) -c $(FTAM)ftamsbr.c
 
-
 #################################################################
 # manual pages
 ##################################################################
@@ -129,7 +108,6 @@ MANUALS	=	ftpd-ftam.8c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##################################################################
 # clean

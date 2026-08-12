@@ -3,41 +3,11 @@
 ###############################################################################
 
 ###############################################################################
-#
-# 
-#
-#
-# 
-#
-# PARADISE release
-#
-#
-# rel7_2
-#
-#
-# "Release
-#
-#
-# PARADISE Upgrade release
-#
-#
-# PARADISE Upgrade release
-#
-#
-#
-# 
-# 
-###############################################################################
-
-
-
-###############################################################################
 # Programs and Libraries
 ###############################################################################
 
 LIBES	=	$(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 LLIBS   =	$(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode
-
 
 ###############################################################################
 # FILES
@@ -59,7 +29,6 @@ DEFILES =       debrowse decricket deex2 deorginfo dewelcome decommands \
                 dedept dehelp deperson dewildcards decountry deex1 deorg \
        		detailor determtypes
 
-
 ##############################################################
 # Here it is...
 ##############################################################
@@ -68,7 +37,6 @@ all:            de
 inst-all:       inst-de help
 install:        inst-all clean
 lint:           l-de
-
 
 ###################################################################
 # de

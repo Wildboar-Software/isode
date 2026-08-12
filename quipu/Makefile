@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE QUIPU Directory Server
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -75,7 +61,6 @@ lint:           l-quipu sub-lint l-testedb
 
 dish:		sub-all
 
-
 ##############################################################
 # saber
 ##############################################################
@@ -83,7 +68,6 @@ dish:		sub-all
 saber_src:;	#load -C $(OPTIONS) $(CFILES) quipuvrsn.c
 
 saber_obj:;	#load $(OFILES) quipuvrsn.o
-
 
 ##############################################################
 # quipu
@@ -130,7 +114,6 @@ qmalloc.o:	malloc.c
 quipuvrsn.c:	$(OFILES)
 		@$(UTILDIR)version.sh quipu > $@
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -139,7 +122,6 @@ MANUALS =       quipu.8c quiputailor.5
 
 manuals:;       @$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ##############################################################
 # quiputailor
@@ -157,7 +139,6 @@ $(ETCDIR)quiputailor: quiputailor
 		    else exit 0; \
 		fi
 
-
 ##############################################################
 # clean
 ##############################################################
@@ -173,7 +154,6 @@ grind:		sub-grind
 			tr " " "\012" | \
 			sed -e "s%.*%itroff -man &%" | \
 			sh -ve
-
 
 ################################################################
 # sub directories
@@ -225,9 +205,7 @@ sub-grind:;	@for i in $(DIRS); \
 			      cd $$i; $(MAKE) grind); \
 		    done
 
-
 true:;
-
 
 # DO NOT DELETE THIS LINE
 # Dependencies follow

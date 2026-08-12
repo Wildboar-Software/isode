@@ -2,39 +2,20 @@
 #   Instructions to Make, for compilation of ISODE PSAP2 processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.py .c .o
-
 
 LIBES	=	libpsap2.a
 LLIBS   =	$(TOPDIR)llib-lpsap $(TOPDIR)llib-lssap $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)psap2.h $(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h  $(HDIR)config.h
 
-
-
-
 all:		libpsap2
 inst-all:	# inst-libpsap2 manuals
 install:	inst-all clean
 lint:		l-libpsap2
-
 
 ################################################################
 # libpsap2
@@ -91,7 +72,6 @@ PS_tables.o:	PS_tables.c PS-types.h
 PS_tables.c PS-types.h: ps.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m ps.py
 
-
 psap2vrsn.c:	$(OFILES) PS_tables.o
 		@$(UTILDIR)version.sh psap2 > $@
 
@@ -125,7 +105,6 @@ psapselect.o:	$(HDIR)ppkt.h $(HFILES)
 psaplose.o:	PS-types.h $(HDIR)ppkt.h $(HFILES) $(HDIR)tailor.h \
 			$(HDIR)logger.h
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -134,7 +113,6 @@ MANUALS	=	libpsap2.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

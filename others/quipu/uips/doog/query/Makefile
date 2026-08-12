@@ -38,7 +38,6 @@ OFILES  =	attrt_list.o \
                 ufsearch.o \
                 util.o
 
-
 INCLUDE =	-I$(TOPDIR)h
 
 #ARFLAGS	=	q

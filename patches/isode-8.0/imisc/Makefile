@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ROS-based miscellaneous services
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
 .SUFFIXES:	.ry .py .c .o
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 LIBES   =	$(TOPDIR)libisode$(LPP).a
 LLIBS   =	$(TOPDIR)llib-lisode$(LPP)
@@ -34,9 +19,6 @@ HFILES	=	$(HDIR)rosy.h $(HDIR)rosap.h $(HDIR)acsap.h $(HDIR)psap2.h \
 
 ROS	=	ros.
 
-
-
-
 all:		ximiscd ximisc
 inst-all:	inst-imiscd inst-imisc manuals
 install:	inst-all clean
@@ -46,7 +28,6 @@ all-lpp:;	$(MAKE) LPP=-lpp all
 inst-lpp:;	$(MAKE) LPP=-lpp ROS=lpp. inst-all
 install-lpp:;	$(MAKE) LPP=-lpp ROS=lpp. install
 lint-lpp:;	$(MAKE) LPP=-lpp lint
-
 
 ##################################################################
 # imiscd
@@ -81,7 +62,6 @@ IMISC-Rops.o:	IMISC-ops.c IMISC-ops.h $(HFILES)
 
 ryresponder.o:	ryresponder.h $(HFILES) $(HDIR)tailor.h
 
-
 ##################################################################
 # imisc
 ##################################################################
@@ -114,7 +94,6 @@ IMISC-Iops.o:	IMISC-ops.c IMISC-ops.h $(HFILES)
 
 ryinitiator.o:	ryinitiator.h $(HFILES)
 
-
 ################################################################
 # libimisc
 ################################################################
@@ -129,7 +108,6 @@ IMISC-ops.c:
 IMISC-ops.h:
 IMISC-stubs.c:
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -138,7 +116,6 @@ MANUALS	=	imiscd.8c imisc.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

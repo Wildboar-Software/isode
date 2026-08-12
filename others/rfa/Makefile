@@ -12,20 +12,6 @@
 #
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
@@ -51,8 +37,6 @@ LLIBS   =	$(TOPDIR)llib-lisode
 HFILES	=	$(HDIR)rosy.h $(HDIR)rosap.h $(HDIR)acsap.h $(HDIR)psap2.h \
 		$(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
-
-
 
 all:		rfad rfa rfatime llock
 inst-all:	inst-rfad inst-rfa inst-rfatime inst-llock manuals inst-tailor
@@ -86,7 +70,6 @@ xllock:		$(LLOCKO)
 l-llock:;	$(LINT) $(LFLAGS) $(LLOCKC) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ##################################################################
 # rfatime
 ##################################################################
@@ -110,7 +93,6 @@ xrfatime:	rfatime.o
 
 l-rfatime:;	$(LINT) $(LFLAGS) rfatime.c \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ##################################################################
 # rfad
@@ -152,7 +134,6 @@ RFA-Rops.o:	RFA-ops.c RFA-ops.h $(HFILES)
 
 ryresponder.o:	ryresponder.h RFA-ops.h $(HFILES) $(HDIR)tailor.h
 
-
 ##################################################################
 # rfa
 ##################################################################
@@ -193,7 +174,6 @@ RFA-Iops.o:	RFA-ops.c RFA-ops.h $(HFILES)
 
 ryinitiator.o:	$(HFILES)
 
-
 ################################################################
 # librfa
 ################################################################
@@ -209,7 +189,6 @@ RFA-ops.c:    rfa.ry
 RFA-ops.h:    rfa.ry
 RFA-stubs.c:  rfa.ry
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -218,7 +197,6 @@ MANUALS	=	rfad.8c rfa.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # tailoring file

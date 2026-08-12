@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE NTP over ROS
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
@@ -25,14 +11,12 @@ PEPYPATH=	-DPEPYPATH
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
 
-
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
 
 LIBES	=	$(LIBISODE)
 LLIBS   =	$(TOPDIR)llib-lisode
-
 
 ###############################################################################
 # Files
@@ -43,14 +27,10 @@ CFILES	=	ntp.c ntp.c ntp_adjust.c ntp_osi.c ntp_proto.c ntp_sock.c \
 		ntpd.c ntpdc.c ntpsubs.c ntq.c read_local.c read_psti.c test.c
 RYFILES	=	ntp.ry
 
-
-
-
 all:		ntpd ntp ntpdc ntq ntest
 inst-all:	inst-ntpd inst-ntp inst-ntpdc inst-ntq manuals
 install:	inst-all clean
 lint: 		l-ntpd l-ntp l-ntpdc l-ntq
-
 
 #################################################################
 # ntpd
@@ -60,7 +40,6 @@ NTPDOBJ= ntpd.o ntpsubs.o ntp_proto.o ntp_sock.o ntp_adjust.o read_local.o \
 	read_psti.o ntp_osi.o NTP-ops.o NTP-stubs.o NTP-types.o NTP-print.o
 NTPDSRC= ntpd.c ntpsubs.c ntp_proto.c ntp_sock.c ntp_adjust.c read_local.c \
 	read_psti.c ntp_osi.c NTP-ops.c NTP-stubs.c NTP-types.c NTP-print.c
-
 
 inst-ntpd:	$(SBINDIR)ntpd
 
@@ -81,14 +60,12 @@ l-ntpd: 	$(NTPDSRC)
 		$(LINT) $(LFLAGS) ${NTPDSRC} ${LLIBS} \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 #################################################################
 # ntp
 #################################################################
 
 NTPOBJ	= ntp.o ntpsubs.o
 NTPSRC	= ntp.c ntpsubs.c
-
 
 inst-ntp:	$(BINDIR)ntp
 
@@ -109,14 +86,12 @@ l-ntp: 		$(NTPSRC)
 		$(LINT) $(LFLAGS) $(NTPSRC) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 #################################################################
 # ntpdc
 #################################################################
 
 NTPDCOBJ	= ntpdc.o
 NTPDCSRC	= ntpdc.c
-
 
 inst-ntpdc:	$(SBINDIR)ntpdc
 
@@ -137,14 +112,12 @@ l-ntpdc: 	$(NTPDCSRC)
 		$(LINT) $(LFLAGS) $(NTPDCSRC) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 #################################################################
 # ntq
 #################################################################
 
 NTQOBJ	= NTP-types.o NTP-stubs.o NTP-ops.o ntq.o
 NTQSRC	= NTP-types.c NTP-stubs.c NTP-ops.c ntq.c
-
 
 inst-ntq:	$(BINDIR)ntq
 
@@ -165,7 +138,6 @@ l-ntq: 		$(NTQSRC)
 		$(LINT) $(LFLAGS) $(NTQSRC) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 #################################################################
 # misc
 #################################################################
@@ -176,7 +148,6 @@ ntest:		test.o ntpsubs.o
 sock_test:	ntp_sock.c
 		$(LDCC) $(LDFLAGS) -DTEST -o sock_test ntp_sock.c $(LIBES)
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -185,7 +156,6 @@ MANUALS	=	ntp.8 ntpd.8 ntpdc.8
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean
@@ -202,7 +172,6 @@ grind:;		iprint READ-ME Makefile
 			sh -ve
 
 true:;
-
 
 #################################################################
 # dependencies

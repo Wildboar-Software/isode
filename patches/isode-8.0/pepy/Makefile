@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE PEPY processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH=\".:$(PEPYDIRM)\" 
 
 .SUFFIXES:	.py .c .o
 
 .py.c:;		./xpepy -a PY_advise -m $(PYFLAGS) $<
-
 
 # to prevent a lot of unnecessary re-loading
 PEPYLIBES=	$(TOPDIR)psap/sprintoid.o $(TOPDIR)psap/pl_tables.o \
@@ -34,9 +19,6 @@ LIBES   =	$(TOPDIR)libpepsy.a $(TOPDIR)libpsap.a $(TOPDIR)libcompat.a
 LLIBS   =	$(TOPDIR)llib-lpsap $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)psap.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
-
-
-
 
 all:		xpepy xposy libpepy # pepytest pp
 inst-all:	inst-pepy inst-posy inst-headers manuals # inst-libpepy
@@ -54,7 +36,6 @@ tests:		pepytest pp mpp salary hello_world bigpepytest true
 lint:		l-pepy l-posy l-libpepy 
 
 lint-all:	lint l-pepytest l-pp l-mpp l-salary l-hello_world l-bigpepytest
-
 
 ##################################################################
 # pepy
@@ -116,7 +97,6 @@ l-pepy:		pepy.h yacc.c lex.c pepyvrsn.c true
 			pepy_misc.c  pepyvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ##################################################################
 # posy
 ##################################################################
@@ -143,7 +123,6 @@ l-posy:		yacc.c lex.c true
 		$(LINT) $(LFLAGS) posy.c yacc.c pepy_misc.c \
 			pepyvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ################################################################
 # libpepy
@@ -218,7 +197,6 @@ l-libpepy:	$(CFILES) UNIV-C true
 
 testdebug.c:	testdebug.py xpepy
 
-
 py_pp.o:	py_pp.c $(HDIR)psap.h $(HDIR)general.h $(HDIR)manifest.h
 
 ##################################################################
@@ -237,7 +215,6 @@ l-pepytest:	pepytest.c $(CFILES) UNIV-C true
 		$(LINT) $(LFLAGS) pepytest.c $(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ##################################################################
 # pp
 ##################################################################
@@ -252,7 +229,6 @@ pp.c:		pp.py xpepy
 l-pp:		pp.c $(CFILES) UNIV-C true
 		$(LINT) $(LFLAGS) pp.c $(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ##################################################################
 # tests
@@ -288,7 +264,6 @@ l-mpp:		mpp.c P1.c P2.c P3.c SFD.c T73.c EAN.c $(CFILES) UNIV-C true
 			$(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 salary:		salary.o
 		$(LDCC) $(LDFLAGS) -o $@ salary.o libpepy.a $(LIBES) \
 			$(LSOCKET)
@@ -298,7 +273,6 @@ salary.c:	salary.py xpepy
 l-salary:	salary.c $(CFILES) UNIV-C true
 		$(LINT) $(LFLAGS) salary.c $(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 hello_world:	hello_world.o
 		$(LDCC) $(LDFLAGS) -o $@ hello_world.o libpepy.a \
@@ -310,7 +284,6 @@ l-hello_world:	hello_world.c $(CFILES) UNIV-C true
 		$(LINT) $(LFLAGS) hello_world.c $(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 bigpepytest:	bigpepytest.o
 		$(LDCC) $(LDFLAGS) -o $@ bigpepytest.o libpepy.a $(LIBES) \
 			$(LSOCKET)
@@ -321,7 +294,6 @@ l-bigpepytest:	bigpepytest.c $(CFILES) UNIV-C true
 		$(LINT) $(LFLAGS) bigpepytest.c $(CFILES) $(UNIV-C) $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -330,7 +302,6 @@ MANUALS	=	pepy.1 posy.1 # libpepy.3
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

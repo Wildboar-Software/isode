@@ -2,33 +2,15 @@
 #   Instructions to Make, for compilation of UNIX compatibility library
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 LIBES	=	libcompat.a
 LLIBS   =
 HFILES	=	$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		libcompat mandefs
 inst-all:	inst-mandefs inst-isologs # inst-libcompat manuals
 install:	inst-all clean
 lint:		l-libcompat
-
 
 ################################################################
 # libcompat
@@ -197,7 +179,6 @@ $(UTILDIR)inst-man.sh: inst-man.sh Makefile $(TOPDIR)config/CONFIG.make
 		-@ls -gls $@
 		-@echo ""
 
-
 ################################################################
 # isologs
 ################################################################
@@ -213,7 +194,6 @@ $(SBINDIR)isologs: isologs.sh Makefile
 		-@ls -gls $@
 		-@echo ""
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -222,7 +202,6 @@ MANUALS	=	libicompat.3
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

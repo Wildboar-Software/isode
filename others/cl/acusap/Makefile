@@ -30,7 +30,6 @@
 
 .py.c:;		$(TOPDIR)pepy/xpepy -a PY_advise -m $(PYFLAGS) $<
 
-
 LIBES	=	libacusap.a
 
 # LIBES	=	libacusap.a $(TOPDIR)libpepy.a $(TOPDIR)libpsap.a \
@@ -50,7 +49,6 @@ LIBES2  =	$(TOPDIR)libpusap2.a \
 		$(TOPDIR)libpsap.a \
 		/usr/lib/libisode.a
 
-
 LLIBS   =	$(TOPDIR)llib-lpsap2 $(TOPDIR)llib-lpsap $(TOPDIR)llib-lcompat\
 		$(TOPDIR)llib-lpusap2 $(TOPDIR)llib-lacsap
 
@@ -58,15 +56,11 @@ HFILES	=	$(HDIR)acusap.h $(HDIR)pusap2.h $(HDIR)psap.h \
 		$(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
-
-
 all:		libacusap
 inst-all:	inst-libacusap manuals
 install:	inst-all clean
 lint:		l-libacusap l-acusaptest
 test:		acusaptest
-
 
 ################################################################
 # libacusap
@@ -216,7 +210,6 @@ acsold.o:	vacsold.c
 vacsold.c:	acsold.py $(TOPDIR)pepy/xpepy
 		$(TOPDIR)pepy/xpepy -a PY_advise -m -d -S PRINT -o $@ $(PYFLAGS) acsold.py
 
-
 ################################################################
 # acusaptest
 ################################################################
@@ -251,7 +244,6 @@ ADD-types.py:	add.py $(TOPDIR)pepy/xposy
 ADD-asn.py:	add.ry $(TOPDIR)rosy/xrosy
 		$(TOPDIR)rosy/xrosy -m $(RYFLAGS) -o $@ add.ry
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -260,7 +252,6 @@ MANUALS	=	libacsap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

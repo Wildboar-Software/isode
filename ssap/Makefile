@@ -2,34 +2,16 @@
 #   Instructions to Make, for compilation of ISODE SSAP processes
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 LIBES	=	libssap.a $(TOPDIR)libcompat.a
 LLIBS	=	$(TOPDIR)llib-ltsap $(TOPDIR)llib-lcompat
 HFILES	=	$(HDIR)spkt.h $(HDIR)ssap.h $(HDIR)tsap.h $(HDIR)isoaddrs.h \
 		$(HDIR)general.h $(HDIR)manifest.h  $(HDIR)config.h
 
-
-
-
 all:		libssap
 inst-all:	# inst-libssap manuals
 install:	inst-all clean
 lint:		l-libssap
-
 
 ################################################################
 # libssap
@@ -119,7 +101,6 @@ ssapactchk.o:	$(HFILES)
 ssapselect.o:	$(HFILES)
 ssaplose.o:	$(HFILES) $(HDIR)tailor.h $(HDIR)logger.h
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -128,7 +109,6 @@ MANUALS	=	libssap.3n
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

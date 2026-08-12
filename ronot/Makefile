@@ -2,20 +2,6 @@
 #   Instructions to Make, for compilation of ISODE RONOT library
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 PEPYPATH=	-DPEPYPATH
 
@@ -25,7 +11,6 @@ HFILES	=	$(HDIR)ronot.h $(HDIR)rosap.h $(HDIR)acsap.h \
 		$(HDIR)psap2.h $(HDIR)psap.h $(HDIR)ssap.h $(HDIR)isoaddrs.h \
 		$(HDIR)manifest.h $(HDIR)general.h $(HDIR)config.h
 
-
 #############################################################
 # Here it is...
 #############################################################
@@ -34,7 +19,6 @@ all:            libronot
 inst-all:	# inst-libronot
 install:        inst-all clean
 lint:           l-libronot
-
 
 #############################################################
 # libronot
@@ -86,12 +70,10 @@ l-libronot:	true
 		$(LINT) $(LFLAGS) $(CFILES) ronotvrsn.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 RONOT_tables.o:  RONOT_tables.c RONOT-types.h
 
 RONOT_tables.c RONOT-types.h:	ronot.py $(TOPDIR)pepsy/xpepsy
 		$(TOPDIR)pepsy/xpepsy -A -f -h -m ronot.py
-
 
 #############################################################
 # clean

@@ -2,19 +2,6 @@
 #   Instructions to Make, for compilation of Management dish
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 LIBDISH =       $(TOPDIR)quipu/dish/libdish.a
 # sharded options...
@@ -39,7 +26,6 @@ all:            dish
 inst-all:       inst-dish manuals # inst-shelldish
 install:        inst-all clean
 lint:           l-dish
-
 
 ###################################################################
 # dish
@@ -152,7 +138,6 @@ grind:;         iprint Makefile
 			sh -ve
 
 true:;
-
 
 # depend
 add_alias.o: ../../../../h/config.h

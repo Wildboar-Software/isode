@@ -2,19 +2,6 @@
 #   Instructions to Make, for compilation of other QUIPU programs
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
 
 ALLDIR  =	photo image
 EVERYDIR=	uips 
@@ -22,8 +9,6 @@ EXTRA	=       tools/dsastats
 OTHERS	=	tools
 
 DIRS	=	$(ALLDIR) $(EVERYDIR)
-
-
 
 all:;		@for i in $(DIRS); \
 		    do (echo "cd $$i; $(MAKE) all"; \
@@ -74,7 +59,6 @@ grind:;		@for i in $(DIRS); \
 			      cd $$i; $(MAKE) grind); \
 		    done
 
-
 ##################################################################
 # pilot
 ##################################################################
@@ -83,7 +67,6 @@ pilot:;		@for i in uips/dish uips/fred tools/dsaconfig; \
 		    do (echo "cd $$i; $(MAKE) all"; \
 			      cd $$i; $(MAKE) all); \
 		    done
-
 
 inst-pilot:;	@for i in uips/dish uips/fred tools/dsaconfig; \
 		    do (echo "cd $$i; $(MAKE) inst-all"; \

@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE password lookup demo
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Options
 ###############################################################################
 
 BINDIR	=	/usr/new/
-
 
 ###############################################################################
 # Generation Rules for program modules
@@ -32,14 +17,12 @@ PEPYPATH=	-DPEPYPATH
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
 
-
 ###############################################################################
 # Programs and Libraries
 ###############################################################################
 
 LIBES	=	$(LIBISODE)
 LLIBS   =	$(TOPDIR)llib-lisode
-
 
 ###############################################################################
 # Files
@@ -49,14 +32,10 @@ HFILES	=	ryinitiator.h ryresponder.h
 CFILES	=	lookupd.c lookup.c ryinitiator.c ryresponder.c
 RYFILES	=	lookup.ry
 
-
-
-
 all:		lookupd lookup
 inst-all:	inst-lookupd inst-lookup manuals
 install:	inst-all clean
 lint:		l-lookupd l-lookup
-
 
 ##################################################################
 # lookupd
@@ -92,7 +71,6 @@ PasswordLookup-Rops.o:	PasswordLookup-ops.c PasswordLookup-ops.h
 
 ryresponder.o:	ryresponder.h
 
-
 ##################################################################
 # lookup
 ##################################################################
@@ -126,7 +104,6 @@ PasswordLookup-Iops.o:	PasswordLookup-ops.c PasswordLookup-ops.h
 
 ryinitiator.o:	ryinitiator.h
 
-
 ################################################################
 # liblookup
 ################################################################
@@ -143,7 +120,6 @@ PasswordLookup-ops.c:	lookup.ry
 PasswordLookup-ops.h:	lookup.ry
 PasswordLookup-stubs.c:	lookup.ry
 
-
 ################################################################
 # manual pages
 ################################################################
@@ -152,7 +128,6 @@ MANUALS	=	lookupd.8c lookup.1c
 
 manuals:;	@$(UTILDIR)inst-man.sh $(MANOPTS) $(MANUALS)
 		-@echo ""
-
 
 ################################################################
 # clean

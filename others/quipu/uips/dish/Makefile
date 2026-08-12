@@ -2,27 +2,12 @@
 #   Instructions to Make, for compilation of ISODE QUIPU Directory Server
 ###############################################################################
 
-###############################################################################
-#
-# 
-#
-#
-# 
-#
-#
-#
-# 
-###############################################################################
-
-
-
 
 ###############################################################################
 # Generation Rules for program modules
 ###############################################################################
 
 .c.o:;		$(CC) $(CFLAGS) -c $*.c
-
 
 ###############################################################################
 # Programs and Libraries
@@ -31,14 +16,12 @@
 LIBES	=	$(TOPDIR)libdsap.a $(TOPDIR)libisode.a
 LLIBS   =	$(TOPDIR)llib-ldsap $(TOPDIR)llib-lisode
 
-
 ###############################################################################
 # FILES
 ###############################################################################
 
 HFILES	=	
 CFILES  =       pipe.c unbind.c socket.c quipurc.c
-
 
 ##############################################################
 # Here it is...
@@ -48,7 +31,6 @@ all:            xpipe xunbind xquipurc
 inst-all:       inst-pipe inst-unbind inst-dishinit inst-quipurc
 install:        inst-all clean
 lint:           l-pipe l-unbind l-quipurc
-
 
 ###################################################################
 # pipe, et. al.
@@ -92,7 +74,6 @@ xpipe:		pipe.o socket.o $(LIBES)
 l-pipe:;	$(LINT) $(LFLAGS) pipe.c socket.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ###################################################################
 # unbind
 ###################################################################
@@ -115,7 +96,6 @@ xunbind:	unbind.o socket.o $(LIBES)
 l-unbind:;	$(LINT) $(LFLAGS) unbind.c socket.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
 
-
 ###################################################################
 # dishinit
 ###################################################################
@@ -129,7 +109,6 @@ $(SBINDIR)dishinit: dishinit
 		chmod 600 $@
 		-@ls -gls $@
 		-@echo ""
-
 
 ###################################################################
 # quipurc
@@ -154,7 +133,6 @@ xquipurc:	quipurc.o $(LIBES)
 
 l-quipurc:;	$(LINT) $(LFLAGS) quipurc.c $(LLIBS) \
 			| grep -v "warning: possible pointer alignment problem"
-
 
 ###################################################################
 # SID
