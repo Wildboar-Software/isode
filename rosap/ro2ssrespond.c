@@ -50,7 +50,7 @@ int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication
 	}
 
 	acb -> acb_fd = ss -> ss_sd;
-	acb -> acb_uabort = SUAbortRequest;
+	acb -> acb_uabort = (UAAbortFunction)SUAbortRequest;
 
 	acb -> acb_requirements = ss -> ss_requirements & SR_BCSUBSET;
 	if (acb -> acb_requirements & SR_DUPLEX)

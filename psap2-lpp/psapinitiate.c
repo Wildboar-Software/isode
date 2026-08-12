@@ -1,56 +1,58 @@
 /* psapinitiate.c - PPM: initiator */
-
-/*
- * 
- *
- * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
- */
-
-#include <stdio.h>
+/* Contributed by The Wollongong Group, Inc. */
 #include <signal.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
-static int  PAsynRetryAux ();
-static int  PConnRequestAux ();
-static int  PConnRequestAux2 ();
+static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSAPindication *pi);
+static int PConnRequestAux (
+	struct PSAPaddr *calling,
+	struct PSAPaddr *called,
+	struct PSAPctxlist *ctxlist,
+	struct SSAPref *ref,
+	PE data,
+	struct QOStype *qos,
+	struct PSAPconnect *pc,
+	struct PSAPindication *pi,
+	int async
+);
+static int PConnRequestAux2 (
+	struct psapblk *pb,
+	struct TSAPaddr *calling,
+	struct TSAPaddr *called,
+	struct QOStype *qos,
+	struct PSAPindication *pi,
+	int async
+);
 
 /*    P-(ASYN-)CONNECT.REQUEST */
 
 #ifndef	notdef
 #endif
 
-int	PAsynConnRequest (calling, called, ctxlist, defctxname, prequirements,
-					  srequirements, isn, settings, ref, data, ndata, qos, pc, pi, async)
-struct PSAPaddr *calling,
-		   *called;
-int	prequirements,
-	srequirements,
-	settings,
-	ndata,
-	async;
-long	isn;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-struct SSAPref *ref;
-PE    *data;
-struct QOStype *qos;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-{
+int	PAsynConnRequest (
+	struct PSAPaddr *calling,
+	struct PSAPaddr *called,
+	struct PSAPctxlist *ctxlist,
+	OID defctxname,
+	int prequirements,
+	int srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE *data,
+	int ndata,
+	struct QOStype *qos,
+	struct PSAPconnect *pc,
+	struct PSAPindication *pi,
+	int async
+) {
 	SBV     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);
-
 #ifdef	notdef
 	missingP (calling);
 #endif
@@ -93,29 +95,24 @@ struct PSAPindication *pi;
 						 "wrong context for initial user data");
 	missingP (pc);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	result = PConnRequestAux (calling, called, ctxlist, ref, data[0], qos,
 							  pc, pi, async);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-static int  PConnRequestAux (calling, called, ctxlist, ref, data, qos, pc, pi,
-							 async)
-struct PSAPaddr *calling,
-		   *called;
-struct PSAPctxlist *ctxlist;
-struct SSAPref *ref;
-PE	data;
-struct QOStype *qos;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-int	async;
-{
+static int PConnRequestAux (
+	struct PSAPaddr *calling,
+	struct PSAPaddr *called,
+	struct PSAPctxlist *ctxlist,
+	struct SSAPref *ref,
+	PE data,
+	struct QOStype *qos,
+	struct PSAPconnect *pc,
+	struct PSAPindication *pi,
+	int async
+) {
 	int	    result;
 	OID     asn;
 	struct psapblk *pb;
@@ -188,16 +185,13 @@ no_mem:
 						  pp -> pc_id);
 				goto out2;
 			}
-
 			if (pp -> pc_atn && !atn_is_ok (pb, pp -> pc_atn)) {
 				psaplose (pi, PC_TRANSFER, NULLCP,
 						  "unknown transfer syntax given for context %d",
 						  pp -> pc_id);
 				goto out2;
 			}
-
 			qp -> pc_result = PC_ACCEPT;
-
 			pb -> pb_ncontext++;
 		}
 	}
@@ -205,11 +199,9 @@ no_mem:
 		psaplose (pi, PC_PARAMETER, NULLCP, "PCI for SASE not present");
 		goto out2;
 	}
-
 	if ((pdu = (struct type_PS_ConnectRequest__PDU *) malloc (sizeof *pdu))
 			== NULL)
 		goto no_mem;
-
 	pdu -> version = int_PS_version_version__1;
 	pdu -> reference = pref;
 	if (calling && calling -> pa_selectlen > 0) {
@@ -225,10 +217,8 @@ no_mem:
 			goto no_mem;
 	} else
 		pdu -> called = NULL;
-
 	if ((pdu -> asn = oid_cpy (asn)) == NULLOID)
 		goto no_mem;
-
 	pdu -> user__data = data;
 
 	pb -> pb_retry = NULLPE;
@@ -271,7 +261,6 @@ out2:
 out1:
 	;
 	freepblk (pb);
-
 	return NOTOK;
 }
 
@@ -297,14 +286,14 @@ static struct nsapent {
 	0
 };
 
-static int  PConnRequestAux2 (pb, calling, called, qos, pi, async)
-struct psapblk *pb;
-struct TSAPaddr *calling,
-		   *called;
-struct QOStype *qos;
-struct PSAPindication *pi;
-int	async;
-{
+static int  PConnRequestAux2 (
+	struct psapblk *pb,
+	struct TSAPaddr *calling,
+	struct TSAPaddr *called,
+	struct QOStype *qos,
+	struct PSAPindication *pi,
+	int async
+) {
 	int	    reliability,
 			result;
 	int n = called -> ta_naddr - 1;
@@ -319,17 +308,14 @@ int	async;
 
 		if (na -> na_stack != NA_TCP)
 			continue;
-
 		if (na -> na_tset == 0)
 			na -> na_tset = NA_TSET_TCP;
-
 		for (ns = nsaps; ns -> ns_open; ns++)
 			if (ns -> ns_reliability == reliability
 					&& (ns -> ns_tset & na -> na_tset))
 				break;
 		if (!ns -> ns_open)
 			continue;
-
 		if (calling) {
 			for (l = calling -> ta_naddr - 1, la = calling -> ta_addrs;
 					l >= 0;
@@ -350,7 +336,6 @@ int	async;
 
 	{
 		struct TSAPaddr *ta = &pb -> pb_responding.pa_addr.sa_addr;
-
 		ta -> ta_addrs[0] = *na;	/* struct copy */
 		ta -> ta_naddr = 1;
 	}
@@ -360,11 +345,7 @@ int	async;
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int	PAsynRetryRequest (sd, pc, pi)
-int	sd;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-{
+int	PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;
@@ -373,7 +354,6 @@ struct PSAPindication *pi;
 	missingP (pi);
 
 	smask = sigioblock ();
-
 	if ((pb = findpblk (sd)) == NULL) {
 		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
@@ -384,74 +364,55 @@ struct PSAPindication *pi;
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "presentation descriptor connected");
 	}
-
 	switch (result = (*pb -> pb_retryfnx) (pb, PC_REFUSED, pi)) {
 	case NOTOK:
 		pb -> pb_fd = NOTOK;
 		freepblk (pb);
 		break;
-
 	case OK:
 		break;
-
 	case DONE:
 		result = PAsynRetryAux (pb, pc, pi);
 		break;
 	}
-
 	sigiomask (smask);
-
 	return result;
 }
 
-static int  PAsynRetryAux (pb, pc, pi)
-struct psapblk *pb;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-{
+static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	struct type_PS_PDUs *pdu;
 
 	pdu = NULL;
 	result = decode_PS_PDUs (pb -> pb_response, 1, NULLIP, NULLVP, &pdu);
-
 #ifdef	DEBUG
 	if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 		pvpdu (psap2_log, print_PS_PDUs_P, pb -> pb_response, "PDU", 1);
 #endif
-
 	if (pb -> pb_retry) {
 		pe_free (pb -> pb_retry);
 		pb -> pb_retry = NULLPE;
 	}
-
 	pe_free (pb -> pb_response);
 	pb -> pb_response = NULL;
-
 	if (result == NOTOK) {
 		ppktlose (pb, pi, PC_UNRECOGNIZED, NULLRF, NULLCP,
 				  "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	bzero ((char *) pc, sizeof *pc);
-
 	switch (pdu -> offset) {
 	case type_PS_PDUs_connectResponse: {
-		struct type_PS_ConnectResponse__PDU *cr =
-				pdu -> un.connectResponse;
-
+		struct type_PS_ConnectResponse__PDU *cr = pdu -> un.connectResponse;
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, cr -> reference)) {
 			result = ppktlose (pb, pi, PC_SESSION, cr -> reference,
 							   NULLCP, "reference mismatch");
 			goto out;
 		}
-
 		if (cr -> reason == NULL) {
 			pb -> pb_flags |= PB_CONN;
-
 			pc -> pc_sd = pb -> pb_fd;
 			pc -> pc_result = PC_ACCEPT;
 			pc -> pc_qos.qos_reliability = pb -> pb_reliability;
@@ -460,18 +421,15 @@ struct PSAPindication *pi;
 			pc -> pc_sd = NOTOK;
 			pc -> pc_result = cr -> reason -> parm;
 		}
-
 		pdu2sel (pb -> pb_responding.pa_selector,
 				 &pb -> pb_responding.pa_selectlen,
 				 sizeof pb -> pb_responding.pa_selector,
 				 cr -> responding);
 		pc -> pc_responding = pb -> pb_responding;	/* struct copy */
-
 		pc -> pc_defctxresult = pb -> pb_result = PC_ACCEPT;
 		{
 			int	i;
-			struct PSAPcontext *pp,
-					   *qp;
+			struct PSAPcontext *pp, *qp;
 
 			i = pb -> pb_ncontext;
 			for (pp = pb -> pb_contexts, qp = pc -> pc_ctxlist.pc_ctx;
@@ -483,43 +441,34 @@ struct PSAPindication *pi;
 			}
 			pc -> pc_ctxlist.pc_nctx = pb -> pb_ncontext;
 		}
-
 		pc -> pc_prequirements = PR_KERNEL;
 		pc -> pc_srequirements = SR_DUPLEX;
-
 		pc -> pc_isn = SERIAL_NONE;
-
 		pc -> pc_connect = *pdu2ref (pb -> pb_reference); /* struct copy */
-
 		pe = cr -> user__data, cr -> user__data = NULLPE;
 		if (pc -> pc_info[0] = pe) {
 			pe -> pe_context = PCI_ACSE;
 			pc -> pc_ninfo = 1;
 		}
-
 		free_PS_PDUs (pdu);
-
 		return DONE;
 	}
 
 	case type_PS_PDUs_abort: {
 		struct PSAPabort *pa = &pi -> pi_abort;
 		struct type_PS_Abort__PDU *ab = pdu -> un.abort;
-
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, ab -> reference)) {
 			result = psaplose (pi, PC_SESSION, NULLCP,
 							   "reference mismatch");
 			goto out;
 		}
-
 		if (ab -> reason) {
 			switch (ab -> reason -> parm) {
 			case int_PS_Abort__reason_reason__not__specified:
 			default:
 				result = PC_NOTSPECIFIED;
 				break;
-
 			case int_PS_Abort__reason_unrecognized__ppdu:
 			case int_PS_Abort__reason_unexpected__ppdu:
 			case int_PS_Abort__reason_unrecognized__ppdu__parameter:
@@ -527,11 +476,9 @@ struct PSAPindication *pi;
 						 + (ab -> reason -> parm
 							- int_PS_Abort__reason_unrecognized__ppdu);
 				break;
-
 			case int_PS_Abort__reason_invalid__ppdu__parameter:
 				result = PC_INVALID;
 				break;
-
 			case int_PS_Abort__reason_reference__mismatch:
 				result = PC_SESSION;
 				break;
@@ -543,17 +490,14 @@ struct PSAPindication *pi;
 
 		pi -> pi_type = PI_ABORT;
 		bzero ((char *) pa, sizeof *pa);
-
 		pa -> pa_peer = 1;
 		pa -> pa_reason = PC_ABORTED;
 		if (pa -> pa_info[0] = pe) {
 			pe -> pe_context = PCI_ACSE;
 			pa -> pa_ninfo = 1;
 		}
-
 		pc -> pc_sd = NOTOK;
 		pc -> pc_result = PC_ABORTED;
-
 		result = DONE;
 	}
 	break;
@@ -571,17 +515,12 @@ out:
 	if (pdu)
 		free_PS_PDUs (pdu);
 	freepblk (pb);
-
 	return result;
 }
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int	PAsynNextRequest (sd, pc, pi)
-int	sd;
-struct PSAPconnect *pc;
-struct PSAPindication *pi;
-{
+int	PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	return psaplose (pi, PC_OPERATION, NULLCP,
 					 "operation not supported with lightweight presentation");
 }

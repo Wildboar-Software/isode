@@ -9,7 +9,7 @@ static int  once_only = 0;
 static struct ssapblk ssapque;
 static struct ssapblk *SHead = &ssapque;
 
-static int  SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx);
+static int SReadRequestAux (struct ssapblk *sb, struct SSAPdata *sx, int secs, struct SSAPindication *si, int async, struct TSAPdata *tx);
 
 static void TDATAser (int sd, struct TSAPdata *tx);
 static void TDISCser (int sd, struct TSAPdisconnect *td);

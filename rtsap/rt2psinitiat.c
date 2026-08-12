@@ -291,7 +291,7 @@ ready:
 	}
 
 	acb -> acb_flags |= ACB_RTS | ACB_INIT;
-	acb -> acb_uabort = AcUAbortRequest;
+	acb -> acb_uabort = (UAAbortFunction)AcUAbortRequest;
 	SetPS2RtService (acb);
 	if (turn == RTS_INITIATOR)
 		acb -> acb_flags |= ACB_TURN;

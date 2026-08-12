@@ -1,29 +1,11 @@
 /* psapselect.c - PPM: map descriptors */
-
-/*
- * 
- *
- * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
- */
-
-#include <stdio.h>
+/* Contributed by The Wollongong Group, Inc. */
 #include <signal.h>
 #define	LPP
 #include "ppkt.h"
 
-/*    map presentation descriptors for select() */
-
-int	PSelectMask (sd, mask, nfds, pi)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct PSAPindication *pi;
+/* map presentation descriptors for select() */
+int	PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int	    reason,
@@ -33,15 +15,12 @@ struct PSAPindication *pi;
 	missingP (mask);
 	missingP (nfds);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	if ((pb = findpblk (sd)) == NULL) {
 		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
-
 	result = pb -> pb_checkfnx ? (*pb -> pb_checkfnx) (pb, pi) : OK;
 	if (result == NOTOK && (reason = pi -> pi_abort.pa_reason) != PC_TIMER) {
 		if (PC_FATAL (reason))
@@ -51,8 +30,6 @@ struct PSAPindication *pi;
 		if (pb -> pb_fd > *nfds)
 			*nfds = pb -> pb_fd + 1;
 	}
-
 	sigiomask (smask);
-
 	return result;
 }

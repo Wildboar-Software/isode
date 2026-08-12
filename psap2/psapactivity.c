@@ -14,11 +14,8 @@ int PGControlRequest (int sd, struct PSAPindication *pi) {
 	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = SGControlRequest (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, "SGControlRequest", sa);
@@ -28,13 +25,11 @@ int PGControlRequest (int sd, struct PSAPindication *pi) {
 		}
 	else
 		pb -> pb_owned = 0;
-
 	if (result == NOTOK)
 		freepblk (pb);
 out1:
 	;
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -52,15 +47,11 @@ int PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct 
 
 	toomuchP (data, ndata, NPDATA, "activity start");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-ACTIVITY-START user-data", PPDU_NONE)) != OK)
 		goto out2;
-
 	if ((result = SActStartRequest (sd, id, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, "SActStartRequest", sa);
@@ -68,7 +59,6 @@ int PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct 
 			ss2pslose (NULLPB, pi, "SActStartRequest", sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -81,9 +71,7 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -101,15 +89,11 @@ int PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long
 
 	toomuchP (data, ndata, NPDATA, "activity resume");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-ACTIVITY-RESUME user-data", PPDU_NONE)) != OK)
 		goto out2;
-
 	if ((result = SActResumeRequest (sd, id, oid, ssn, ref, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
@@ -118,7 +102,6 @@ int PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long
 			ss2pslose (NULLPB, pi, "SActResumeRequest", sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -131,15 +114,19 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.REQUEST */
 
-int PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc, char *stype) {
+int PActIntrRequestAux (
+	int sd,
+	int reason,
+	struct PSAPindication *pi,
+	int (*sfunc)(int sd, int reason, struct SSAPindication *si),
+	char *stype
+) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -149,11 +136,8 @@ int PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc
 	missingP (pi);
 	missingP (sfunc);
 	missingP (stype);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = (*sfunc) (sd, reason, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, stype, sa);
@@ -161,19 +145,22 @@ int PActIntrRequestAux (int sd, int reason, struct PSAPindication *pi, IFP sfunc
 			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
-
 	if (result == NOTOK)
 		freepblk (pb);
 out1:
 	;
 	sigiomask (smask);
-
 	return result;
 }
 
 /*    P-ACTIVITY-{INTERRUPT,DISCARD}.RESPONSE */
 
-int PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *stype) {
+int PActIntrResponseAux (
+	int sd,
+	struct PSAPindication *pi,
+	int (*sfunc)(int sd, struct SSAPindication *si),
+	char *stype
+) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -183,11 +170,8 @@ int PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *sty
 	missingP (pi);
 	missingP (sfunc);
 	missingP (stype);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = (*sfunc) (sd, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, stype, sa);
@@ -195,12 +179,10 @@ int PActIntrResponseAux (int sd, struct PSAPindication *pi, IFP sfunc, char *sty
 			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
-
 	if (result == NOTOK)
 		freepblk (pb);
 out1:
 	;
 	sigiomask (smask);
-
 	return result;
 }

@@ -1,6 +1,4 @@
 /* psapabort.c - PPM: user abort */
-
-#include <stdio.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "ppkt.h"
@@ -18,18 +16,14 @@ int PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;
 	struct type_PS_ARU__PPDU *pdu;
-
 	toomuchP (data, ndata, NPDATA, "abort");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	if ((pb = findpblk (sd)) == NULL) {
 		sigiomask (smask);
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "invalid presentation descriptor");
 	}
-
 	pe = NULLPE;
 	base = NULLCP;
 	result = NOTOK;
@@ -56,18 +50,14 @@ no_mem:
 				== NULL)
 			goto out2;
 	}
-
 	if (encode_PS_ARU__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 				  PY_pepy);
 		goto out2;
 	}
-
 	PLOGP (psap2_log,PS_ARU__PPDU, pe, "ARU-PPDU", 0);
-
 	if (pe2ssdu (pe, &base, &len) == NOTOK)
 		goto no_mem;
-
 	if ((result = SUAbortRequest (pb -> pb_fd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason)) {
 			ss2pslose (pb, pi, "SUAbortRequest", sa);
@@ -76,14 +66,11 @@ no_mem:
 			ss2pslose (NULLPB, pi, "SUAbortRequest", sa);
 			goto out1;
 		}
-
 	result = OK;
 	pb -> pb_fd = NOTOK;
-
 out2:
 	;
 	freepblk (pb);
-
 out1:
 	;
 	if (pdu)
@@ -92,8 +79,6 @@ out1:
 		pe_free (pe);
 	if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }

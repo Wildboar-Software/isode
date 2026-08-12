@@ -4,10 +4,9 @@
 #include "psap.h"
 #include "tailor.h"
 
-static PE	qb2pe_aux ();
+static PE	qb2pe_aux (char *s, int len, int depth, int *result);
 
-PE
-qb2pe (struct qbuf *qb, int len, int depth, int *result) {
+PE qb2pe (struct qbuf *qb, int len, int depth, int *result) {
 	char   *sp;
 	struct qbuf *qp;
 	PE	    pe;
@@ -15,67 +14,53 @@ qb2pe (struct qbuf *qb, int len, int depth, int *result) {
 	*result = PS_ERR_NONE;
 	if (depth <= 0)
 		return NULLPE;
-
 	if ((qp = qb -> qb_forw) != qb && qp -> qb_forw == qb)
 		sp = qp -> qb_data;
 	else {
 		qp = NULL;
-
 		if ((sp = qb2str (qb)) == NULL) {
 			*result = PS_ERR_NMEM;
 			return NULLPE;
 		}
 	}
-
 	if (pe = qb2pe_aux (sp, len, depth, result)) {
 		if (qp) {
 			pe -> pe_realbase = (char *) qp;
-
 			remque (qp);
 		} else {
 			pe -> pe_realbase = sp;
-
 			QBFREE (qb);
 		}
 		pe -> pe_inline = 0;
 	} else if (qp == NULL)
 		free (sp);
-
 #ifdef	DEBUG
 	if (pe && (psap_log -> ll_events & LLOG_PDUS))
 		pe2text (psap_log, pe, 1, len);
 #endif
-
 	return pe;
 }
 
-static PE
-qb2pe_aux (char *s, int len, int depth, int *result) {
+static PE qb2pe_aux (char *s, int len, int depth, int *result) {
 	int	    i;
 	PElementData data;
-	PE	    pe,
-	 p,
-	 q;
-	PE	    *r,
-	 *rp;
+	PE	    pe, p, q;
+	PE	    *r, *rp;
 
 	depth--;
 
 	if ((pe = str2pe (s, len, &i, result)) == NULLPE)
 		return NULLPE;
-
 	if (pe -> pe_form == PE_FORM_ICONS) {
 		pe -> pe_form = PE_FORM_CONS;
 		pe -> pe_prim = NULLPED, pe -> pe_inline = 0;
 		pe -> pe_len -= pe -> pe_ilen;
-
 		p = NULLPE, r = &pe -> pe_cons;
 		for (s += pe -> pe_ilen, len -= pe -> pe_ilen;
 				len > 0;
 				s += i, len -= i) {
 			if ((p = str2pe (s, len, &i, result)) == NULLPE)
 				goto out;
-
 			if (p -> pe_form == PE_FORM_ICONS) {
 				if (depth > 0) {
 					if ((q = qb2pe_aux ((char *) p -> pe_prim, i, depth,
@@ -92,18 +77,14 @@ qb2pe_aux (char *s, int len, int depth, int *result) {
 					p -> pe_prim = data, p -> pe_inline = 0;
 				}
 			}
-
 			*r = p, rp = r, r = &p -> pe_next;
 		}
-
 		if (p && p -> pe_class == PE_CLASS_UNIV && p -> pe_id == PE_UNIV_EOC) {
 			pe_free (p);
 			*rp = NULLPE;
 		}
 	}
-
 	return pe;
-
 out:
 	;
 	pe_free (pe);

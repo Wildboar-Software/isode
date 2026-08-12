@@ -204,7 +204,7 @@ ready:
 
 	acb -> acb_fd = pc -> pc_sd;
 	acb -> acb_flags |= ACB_ACS;
-	acb -> acb_uabort = PUAbortRequest;
+	acb -> acb_uabort = (UAAbortFunction)PUAbortRequest;
 
 	if (async) {
 		switch (result) {

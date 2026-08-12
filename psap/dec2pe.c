@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int main() {
+int main(void) {
 	unsigned int i;
 	char buf[1];
 	int result, count;

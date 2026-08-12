@@ -1,27 +1,14 @@
 /* psaprovider.c - PPM: implement the pseudo-presentation protocol */
-
-/*
- * 
- *
- * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
- */
-
-#include <stdio.h>
+/* Contributed by The Wollongong Group, Inc. */
 #include <signal.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
 
-static int  qb_cmp ();
-static int  PReadRequestAux ();
-static int  _PDataRequestAux ();
+static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
+static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, struct PSAPindication *pi);
+static int _PDataRequestAux (struct psapblk *pb, PE data, struct PSAPindication *pi);
 
 static int  once_only = 0;
 static struct psapblk psapque;
@@ -29,12 +16,7 @@ static struct psapblk *PHead = &psapque;
 
 /* P-DATA.REQUEST */
 
-int	PDataRequest (sd, data, ndata, pi)
-int	sd;
-PE     *data;
-int	ndata;
-struct PSAPindication *pi;
-{
+int	PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 	int	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -53,11 +35,7 @@ struct PSAPindication *pi;
 	return result;
 }
 
-static int  _PDataRequestAux (pb, data, pi)
-struct psapblk *pb;
-PE	data;
-struct PSAPindication *pi;
-{
+static int _PDataRequestAux (struct psapblk *pb, PE data, struct PSAPindication *pi) {
 	int	    result;
 #ifdef	DEBUG
 	char   *cp;
@@ -103,12 +81,7 @@ struct PSAPindication *pi;
 
 /*    P-READ.REQUEST (pseudo; synchronous read) */
 
-int	PReadRequest (sd, px, secs, pi)
-int	sd;
-struct PSAPdata *px;
-int	secs;
-struct PSAPindication *pi;
-{
+int	PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
 	int	    smask;
 	int	    nfds,
 			result;
@@ -123,7 +96,6 @@ struct PSAPindication *pi;
 	FD_ZERO (&mask);
 	FD_SET (pb -> pb_fd, &mask);
 	nfds = pb -> pb_fd + 1;
-
 	for (;;) {
 		fd_set	 ifds, efds;
 		PS 	ps = pb -> pb_stream;
@@ -147,11 +119,7 @@ struct PSAPindication *pi;
 	return result;
 }
 
-static int  PReadRequestAux (pb, px, pi)
-struct psapblk *pb;
-struct PSAPdata *px;
-struct PSAPindication *pi;
-{
+static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS      ps;
@@ -167,7 +135,6 @@ struct PSAPindication *pi;
 		pvpdu (psap2_log, print_PS_PDUs_P, pe, "PDU", 1);
 #endif
 	pe_free (pe);
-
 	if (result == NOTOK) {
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref2;
@@ -175,13 +142,11 @@ struct PSAPindication *pi;
 				  "error decoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	switch (pdu -> offset) {
 	case type_PS_PDUs_releaseRequest: {
 		struct PSAPfinish *pf = &pi -> pi_finish;
 		struct type_PS_ReleaseRequest__PDU *rr =
 				pdu -> un.releaseRequest;
-
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = rr -> reference))) {
 bad_ref1:
@@ -203,7 +168,6 @@ bad_ref2:
 		result = DONE;
 	}
 	break;
-
 	case type_PS_PDUs_abort: {
 		struct PSAPabort *pa = &pi -> pi_abort;
 		struct type_PS_Abort__PDU *ab = pdu -> un.abort;
@@ -211,14 +175,12 @@ bad_ref2:
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = ab -> reference)))
 			goto bad_ref2;
-
 		if (ab -> reason) {
 			switch (ab -> reason -> parm) {
 			case int_PS_Abort__reason_reason__not__specified:
 			default:
 				result = PC_NOTSPECIFIED;
 				break;
-
 			case int_PS_Abort__reason_unrecognized__ppdu:
 			case int_PS_Abort__reason_unexpected__ppdu:
 			case int_PS_Abort__reason_unrecognized__ppdu__parameter:
@@ -226,11 +188,9 @@ bad_ref2:
 						 + (ab -> reason -> parm
 							- int_PS_Abort__reason_unrecognized__ppdu);
 				break;
-
 			case int_PS_Abort__reason_invalid__ppdu__parameter:
 				result = PC_INVALID;
 				break;
-
 			case int_PS_Abort__reason_reference__mismatch:
 				result = PC_SESSION;
 				break;
@@ -252,15 +212,11 @@ bad_ref2:
 	case type_PS_PDUs_userData: {
 		if (pb -> pb_reliability == LOW_QUALITY)
 			goto bad_ref2;
-
 		pe = pdu -> un.userData, pdu -> un.userData = NULLPE;
-
 		bzero ((char *) px, sizeof *px);
-
 		px -> px_type = SX_NORMAL;
 		(px -> px_info[0] = pe) -> pe_context = PCI_ROSE;
 		px -> px_ninfo = 1;
-
 		result = OK;
 	}
 	break;
@@ -268,19 +224,14 @@ bad_ref2:
 	case type_PS_PDUs_cL__userData: {
 		struct type_PS_CL__UserData__PDU *cl =
 				pdu -> un.cL__userData;
-
 		if (pb -> pb_reliability == LOW_QUALITY
 				&& refcmp (pb -> pb_reference, (pref = cl -> reference)))
 			goto bad_ref1;
-
 		pe = cl -> user__data, cl -> user__data = NULLPE;
-
 		bzero ((char *) px, sizeof *px);
-
 		px -> px_type = SX_NORMAL;
 		(px -> px_info[0] = pe) -> pe_context = PCI_ROSE;
 		px -> px_ninfo = 1;
-
 		result = OK;
 	}
 	break;
@@ -304,31 +255,29 @@ out:
 	;
 	if (pdu)
 		free_PS_PDUs (pdu);
-
 	return result;
 }
 
 /*    define vectors for INDICATION events */
 
-int	PSetIndications (sd, data, tokens, sync, activity, report, finish,
-					 abort, pi)
-int	sd;
-IFP	data,
-	tokens,
-	sync,
-	activity,
-	report,
-	finish,
-	abort;
-struct PSAPindication *pi;
-{
+int PSetIndications (
+	int sd,
+	void (*data)(int sd, struct PSAPdata *sx),
+	void (*tokens)(int sd, struct PSAPtoken *st),
+	void (*sync)(int sd, struct PSAPsync *sn),
+	void (*activity)(int sd, struct PSAPactivity *sv),
+	void (*report)(int sd, struct PSAPreport *sp),
+	void (*finish)(int sd, struct PSAPfinish *sf),
+	void (*abort)(int sd, struct PSAPabort *sa),
+	struct PSAPindication *pi
+) {
 	missingP (pi);
 	return psaplose (pi, PC_OPERATION, NULLCP, NULLCP);
 }
 
 struct psapblk  *newpblk () {
 	struct psapblk *pb;
-	pb = (struct psapblk   *) calloc (1, sizeof *pb);
+	pb = (struct psapblk *) calloc (1, sizeof *pb);
 	if (pb == NULL)
 		return NULL;
 	pb -> pb_fd = NOTOK;

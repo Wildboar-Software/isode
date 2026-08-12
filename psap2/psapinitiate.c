@@ -15,19 +15,31 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 
 /*    P-(ASYN-)CONNECT.REQUEST */
 
-int	PAsynConnRequest ( struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
-					   int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE*data,
-					   int ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int async) {
+int	PAsynConnRequest (
+	struct PSAPaddr *calling,
+	struct PSAPaddr *called,
+	struct PSAPctxlist *ctxlist,
+	OID defctxname,
+	int prequirements,
+	int srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE *data,
+	int ndata,
+	struct QOStype *qos,
+	struct PSAPconnect *pc,
+	struct PSAPindication *pi,
+	int async
+) {
 	SBV     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);
-
 #ifdef	notdef
 	missingP (calling);
 #endif
 	missingP (called);
-
 	if (ctxlist && ctxlist -> pc_nctx > NPCTX)
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "only %d proposed presentation contexts supported", NPCTX);
@@ -38,21 +50,15 @@ int	PAsynConnRequest ( struct PSAPaddr *calling, struct PSAPaddr *called, struct
 			&& !(prequirements & PR_MANAGEMENT))
 		return psaplose (pi, PC_PARAMETER, NULLCP,
 						 "context restoration service requires context management service");
-
 	/* let session provider catch errors in session parameters */
-
 	toomuchP (data, ndata, NPDATA, "initial");
 	missingP (pc);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	result = PAsynConnRequestAux (calling, called, ctxlist, defctxname,
 								  prequirements, srequirements, isn, settings, ref, data, ndata,
 								  qos, pc, pi, async);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -72,18 +78,14 @@ static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *calle
 
 	if ((pb = newpblk ()) == NULL)
 		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
-
 	pb -> pb_srequirements = pb -> pb_urequirements = srequirements;
-
 #ifdef	notdef
 	if (called -> pa_selectlen > 0) {
 		if (calling == NULLPA) {
 			static struct PSAPaddr pas;
-
 			calling = &pas;
 			bzero ((char *) calling, sizeof *calling);
 		}
-
 		if (calling -> pa_selectlen == 0) {
 			calling -> pa_port =
 				htons ((u_short) (0x8000 | (getpid () & 0x7fff)));
@@ -91,7 +93,6 @@ static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *calle
 		}
 	}
 #endif
-
 	pe = NULLPE;
 	if ((pdu = (struct type_PS_CP__type *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -134,7 +135,6 @@ no_mem:
 		goto no_mem;
 	if ((pb -> pb_ber = oid_cpy (pb -> pb_atn)) == NULLOID)
 		goto no_mem;
-
 	if (ctxlist && ctxlist -> pc_nctx > 0) {
 		struct type_PS_Definition__list *cd,
 				   **cp;
@@ -194,7 +194,6 @@ no_mem:
 				goto no_mem;
 
 			qp -> pc_result = PC_ACCEPT;
-
 			pb -> pb_ncontext++;
 		}
 	}
@@ -213,7 +212,6 @@ no_mem:
 				|| (normal -> default__context -> transfer__syntax =
 						oid_cpy (pb -> pb_atn)) == NULLOID)
 			goto no_mem;
-
 		pb -> pb_flags |= PB_DFLT;
 		pb -> pb_dctxid = NOTOK;
 		for (pp = pb -> pb_contexts, i = 0; i < pb -> pb_ncontext;
@@ -225,7 +223,6 @@ no_mem:
 			}
 	}
 	pb -> pb_result = PC_ACCEPT;
-
 	if ((pb -> pb_prequirements = prequirements) != PR_MYREQUIRE) {
 		struct pair *pp;
 
@@ -234,13 +231,11 @@ no_mem:
 										  PE_PRIM_BITS)))
 				== NULL)
 			goto no_mem;
-
 		for (pp = preq_pairs; pp -> p_mask; pp++)
 			if ((pb -> pb_prequirements & pp -> p_mask)
 					&& bit_on (normal -> presentation__fu, pp -> p_bitno)
 					== NOTOK)
 				goto no_mem;
-
 		if (bit2prim (normal -> presentation__fu) == NULLPE)
 			goto no_mem;
 	}
@@ -249,18 +244,15 @@ no_mem:
 		pb -> pb_srequirements |= SR_TYPEDATA;
 	if (pb -> pb_urequirements != pb -> pb_srequirements) {
 		struct pair *pp;
-
 		if ((normal -> session__fu = prim2bit (pe_alloc (PE_CLASS_UNIV,
 											   PE_FORM_PRIM,
 											   PE_PRIM_BITS)))
 				== NULL)
 			goto no_mem;
-
 		for (pp = sreq_pairs; pp -> p_mask; pp++)
 			if ((pb -> pb_urequirements & pp -> p_mask)
 					&& bit_on (normal -> session__fu, pp -> p_bitno) == NOTOK)
 				goto no_mem;
-
 		if (bit2prim (normal -> session__fu) == NULLPE)
 			goto no_mem;
 	}
@@ -281,27 +273,20 @@ no_mem:
 	}
 
 	PLOGP (psap2_log,PS_CP__type, pe, "CP-type", 0);
-
 	if (pe2ssdu (pe, &pb -> pb_retry, &len) == NOTOK)
 		goto no_mem;
-
 	free_PS_CP__type (pdu);
 	pdu = NULL;
-
 	pe_free (pe);
 	pe = NULLPE;
-
 	bzero ((char *) sa, sizeof *sa);
-
 	if ((result = SAsynConnRequest (ref, calling ? &calling -> pa_addr
 									: NULLSA, &called -> pa_addr, pb -> pb_srequirements, settings,
 									isn, pb -> pb_retry, len, qos, sc, si, async)) == NOTOK) {
 		ss2pslose (NULLPB, pi, "SAsynConnRequest", sa);
 		goto out1;
 	}
-
 	pb -> pb_fd = sc -> sc_sd;
-
 	if (async) {
 		switch (result) {
 		case CONNECTING_1:
@@ -313,14 +298,12 @@ no_mem:
 	if ((result = PAsynRetryAux (pb, sc, si, pc, pi)) == DONE && !async)
 		result = OK;
 	return result;
-
 out2:
 	;
 	if (pe)
 		pe_free (pe);
 	if (pdu)
 		free_PS_CP__type (pdu);
-
 out1:
 	;
 	freepblk (pb);

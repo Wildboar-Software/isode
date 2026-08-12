@@ -14,11 +14,8 @@ int PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
 	struct SSAPabort  *sa = &sis.si_abort;
 
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = SGTokenRequest (sd, tokens, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, "SGTokenRequest", sa);
@@ -28,13 +25,11 @@ int PGTokenRequest (int sd, int tokens, struct PSAPindication *pi) {
 		}
 	else
 		pb -> pb_owned &= ~tokens;
-
 	if (result == NOTOK)
 		freepblk (pb);
 out1:
 	;
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -52,15 +47,11 @@ int PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindicati
 
 	toomuchP (data, ndata, NPDATA, "token");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-TOKEN-PLEASE user-data", PPDU_NONE)) != OK)
 		goto out2;
-
 	if ((result = SPTokenRequest (sd, tokens, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, "SPTokenRequest", sa);
@@ -68,7 +59,6 @@ int PPTokenRequest (int sd, int tokens, PE *data, int ndata, struct PSAPindicati
 			ss2pslose (NULLPB, pi, "SPTokenRequest", sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -81,8 +71,6 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }

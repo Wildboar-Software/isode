@@ -18,15 +18,11 @@ int PMinSyncResponse (int sd, long ssn, PE *data, int ndata, struct PSAPindicati
 
 	toomuchP (data, ndata, NPDATA, "minorsync");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-MINOR-SYNC user-data", PPDU_NONE)) != OK)
 		goto out2;
-
 	if ((result = SMinSyncResponse (sd, ssn, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, "SMinSyncResponse", sa);
@@ -34,7 +30,6 @@ int PMinSyncResponse (int sd, long ssn, PE *data, int ndata, struct PSAPindicati
 			ss2pslose (NULLPB, pi, "SMinSyncResponse", sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -47,8 +42,6 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }

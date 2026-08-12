@@ -4,8 +4,8 @@
 #include "psap.h"
 
 int	ps_len_strategy = PS_LEN_SPAG;
-static int  ps_get_id ();
-static int  ps_get_len ();
+static int  ps_get_id (PE pe);
+static int  ps_get_len (PE pe);
 
 int ps_get_abs (PE pe) {
 	PElementLen len;
@@ -15,12 +15,10 @@ int ps_get_abs (PE pe) {
 	case PE_FORM_PRIM:
 		len = pe -> pe_len;
 		break;
-
 	case PE_FORM_CONS:
 		len = 0;
 		for (p = pe -> pe_cons; p; p = p -> pe_next)
 			len += ps_get_abs (p);
-
 		switch (ps_len_strategy) {
 		case PS_LEN_SPAG:
 		default:
@@ -28,22 +26,18 @@ int ps_get_abs (PE pe) {
 				pe -> pe_len = len;
 				break;
 			}		/* else fall */
-
 		case PS_LEN_INDF:
 			pe -> pe_len = PE_LEN_INDF;
 			len += 2;	/* for EOC */
 			break;
-
 		case PS_LEN_LONG:
 			pe -> pe_len = len;
 			break;
 		}
 		break;
-
 	case PE_FORM_ICONS:
 		return pe -> pe_len;
 	}
-
 	return (ps_get_id (pe) + ps_get_len (pe) + len);
 }
 
@@ -53,7 +47,6 @@ static int ps_get_id (PE pe) {
 
 	if ((id = pe -> pe_id) < PE_ID_XTND)
 		return 1;
-
 	for (i = 1; id != 0; id >>= PE_ID_SHIFT)
 		i++;
 	return i;
@@ -65,7 +58,6 @@ static int ps_get_len (PE pe) {
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF || len <= PE_LEN_SMAX)
 		return 1;
-
 	for (i = 1; len > 0; len >>= 8)
 		i++;
 	return i;

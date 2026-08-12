@@ -62,12 +62,12 @@ static char *myname = "isoc";
 
 void	adios (char* what, char* fmt, ...),
 		advise (char* what, char* fmt, ...);
-static void	ts_adios (), ts_advise ();
-static void	ss_adios (), ss_advise ();
-static void	ps_adios (), ps_advise ();
-static void	acs_adios (), acs_advise ();
-static void	rts_adios (), rts_advise ();
-static void	ros_adios (), ros_advise ();
+static void	ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, char *event);
+static void	ss_adios (struct SSAPabort *sa, char *event), ss_advise (struct SSAPabort *sa, char *event);
+static void	ps_adios (struct PSAPabort *pa, char *event), ps_advise (struct PSAPabort *pa, char *event);
+static void	acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
+static void	rts_adios (struct RtSAPabort *rta, char *event), rts_advise (struct RtSAPabort *rta, char *event);
+static void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 
 #ifdef	TCP
 static void raw_main (char *service, char *addr);
@@ -94,11 +94,11 @@ static void ss_datarequest (int sd, char *data, int cc, int dm, int sync);
 static void ss_main (struct isoservent *is, char *addr);
 static void ts_datarequest (int sd, char *data, int cc, int expedited);
 static void ts_main (struct isoservent *is, char *addr);
-static int  qcmp ();
-static int  rts_event ();
-static void rts_transferequest ();
+static int  qcmp (char *b, struct qbuf *qb, int l);
+static int  rts_event (int sd, struct RtSAPindication *rti);
+static void rts_transferequest (int sd, PE pe);
 
-long	lseek ();
+long	lseek (int, off_t, int);
 
 #define	chkacs()	if (isacs) \
 			    adios (NULLCP, "no association control for %s", \
@@ -2331,9 +2331,7 @@ static void rts_waitfor (int sd) {
 		}
 }
 
-static int  rts_event (sd, rti)
-int	sd;
-struct RtSAPindication *rti;
+static int  rts_event (int sd, struct RtSAPindication *rti)
 {
 	struct RtSAPabort *rta = &rti -> rti_abort;
 	struct RtSAPturn  *rtu = &rti -> rti_turn;
@@ -2360,18 +2358,14 @@ struct RtSAPindication *rti;
 	}
 }
 
-static void  rts_adios (rta, event)
-struct RtSAPabort *rta;
-char   *event;
+static void  rts_adios (struct RtSAPabort *rta, char *event)
 {
 	rts_advise (rta, event);
 
 	_exit (1);
 }
 
-static void  rts_advise (rta, event)
-struct RtSAPabort *rta;
-char   *event;
+static void  rts_advise (struct RtSAPabort *rta, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -2739,18 +2733,14 @@ static void ros_invokerequest (int sd, PE pe) {
 	}
 }
 
-static void  ros_adios (rop, event)
-struct RoSAPpreject *rop;
-char   *event;
+static void  ros_adios (struct RoSAPpreject *rop, char *event)
 {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
 
-static void  ros_advise (rop, event)
-struct RoSAPpreject *rop;
-char   *event;
+static void  ros_advise (struct RoSAPpreject *rop, char *event)
 {
 	char    buffer[BUFSIZ];
 
@@ -2805,9 +2795,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 #else
 long	times ();
 
-static	timer (cc)
-int	cc;
-{
+static	void timer (int cc) {
 	int	    bytes;
 	long    ms;
 	float   bs;
@@ -2863,7 +2851,7 @@ static int qcmp (char *b, struct qbuf *qb, int l) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void adios (char* what, char* fmt, ...) {
 	va_list ap;
@@ -2874,11 +2862,7 @@ void adios (char* what, char* fmt, ...) {
 }
 #else
 /* VARARGS */
-
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
-{
+void	adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif

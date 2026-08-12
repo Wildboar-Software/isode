@@ -1,6 +1,4 @@
 /* qbuf2pe.c - build PE(s) from an SSDU assumed to be in qbuf(s) */
-
-#include "stdio.h"
 #include "psap.h"
 #include "tailor.h"
 
@@ -51,7 +49,6 @@ PE qbuf2pe_f (int *result) {
 	PElementLen   len;
 	int    i;
 	PElementLen j;
-
 	pe = NULLPE;
 
 	/*
@@ -62,7 +59,6 @@ PE qbuf2pe_f (int *result) {
 	class = ((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT;
 	form = ((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT;
 	j = (c & PE_CODE_MASK);
-
 	if (j == PE_ID_XTND)
 		for (j = 0;; j <<= PE_ID_SHIFT) {
 			qbuf2char(d);
@@ -105,7 +101,6 @@ PE qbuf2pe_f (int *result) {
 			*result = PS_ERR_OVERLEN;
 			return (NULLPE);
 		}
-
 		if (i) {
 			for (j = 0; i-- > 0;) {
 				qbuf2char(c);
@@ -116,10 +111,8 @@ PE qbuf2pe_f (int *result) {
 			len = PE_LEN_INDF;
 	} else
 		len = i;
-
 	SLOG (psap_log, LLOG_DEBUG, NULLCP, ("len=%d", len));
 	pe -> pe_len = len;
-
 	/* Now get the value.  */
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -155,7 +148,6 @@ PE qbuf2pe_f (int *result) {
 			}
 		}
 		break;
-
 	case PE_FORM_CONS:
 		if ((len == PE_LEN_INDF || len > 0) &&
 				qb_read_cons (&pe -> pe_cons, len, result) == NOTOK)
@@ -170,7 +162,6 @@ you_lose:
 		LLOG (psap_log, LLOG_PDUS, ("PE read thus far"));
 		pe2text (psap_log, pe, 1, *result);
 	}
-
 	pe_free (pe);
 	return NULLPE;
 }
@@ -195,19 +186,16 @@ no_cons:
 				  ("error building cons, stream at %d, wanted %d: %s",
 				   Byteno, cc, ps_error (result)));
 #endif
-
 		*cresult = result;
 		return NOTOK;
 	}
 	*pe = p;
-
 	if (len == PE_LEN_INDF) {
 		if (p->pe_class == PE_CLASS_UNIV && p->pe_id == PE_UNIV_EOC) {
 			pe_free (p);
 			*pe = NULLPE;
 			return OK;
 		}
-
 		for(q = p; p = qbuf2pe_f(&result); q = q->pe_next = p) {
 			if (p->pe_class == PE_CLASS_UNIV &&
 					p->pe_id == PE_UNIV_EOC) {
@@ -217,7 +205,6 @@ no_cons:
 		}
 		goto no_cons;
 	}
-
 	for (q = p;; q = q -> pe_next = p) {
 		if (cc < Byteno) {
 #ifdef DEBUG
@@ -244,10 +231,8 @@ static int qbuf2data (PElementData data, PElementLen len) {
 	for (qp = Qb, cc = 0; len > 0; data += i, cc += i, len -= i) {
 		if (qp == Hqb)
 			goto leave;
-
 		i = min (qp -> qb_len, len);
 		bcopy (qp -> qb_data, (char *) data, i);
-
 		qp -> qb_len -= i;
 		if (qp -> qb_len <= 0) {
 			if(!(Qb = (qp = qp->qb_forw)))
@@ -255,14 +240,13 @@ static int qbuf2data (PElementData data, PElementLen len) {
 		} else
 			qp->qb_data += i;
 	}
-
 leave:
 	Byteno += cc;
 	return cc;
 }
 
 #ifdef DEBUG
-int qbprintf()  {
+int qbprintf(void) {
 	int len;
 	struct qbuf *qb;
 	char *cp;

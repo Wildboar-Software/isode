@@ -51,7 +51,7 @@ int RoPService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : 0)
+#define	e(i)	(indication ? (i) : NULL)
 
 int ro2psasync (
 	struct assocblk *acb,

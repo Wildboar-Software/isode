@@ -18,15 +18,11 @@ int PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndat
 
 	toomuchP (data, ndata, NPDATA, "resync");
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-RESYNCHRONIZE user-data", PPDU_RS)) != OK)
 		goto out2;
-
 	if ((result = SReSyncRequest (sd, type, ssn, settings, base, len, &sis))
 			== NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
@@ -35,7 +31,6 @@ int PReSyncRequest (int sd, int type, long ssn, int settings, PE *data, int ndat
 			ss2pslose (NULLPB, pi, "SReSyncRequest", sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -48,8 +43,6 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }

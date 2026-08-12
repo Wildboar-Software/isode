@@ -44,7 +44,7 @@ OID	dctx;
 		goto out;
 	}
 	acb -> acb_flags |= ACB_RTS;
-	acb -> acb_uabort = AcUAbortRequest;
+	acb -> acb_uabort = (UAAbortFunction)AcUAbortRequest;
 	SetPS2RtService (acb);
 
 	acb -> acb_connect = ps -> ps_connect;	/* struct copy */

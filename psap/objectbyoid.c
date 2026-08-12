@@ -1,11 +1,8 @@
 /* objectbyname.c - getisobjectbyoid */
-
-#include <stdio.h>
 #include "psap.h"
 #include "tailor.h"
 
-struct isobject *getisobjectbyoid (oid)
-OID	oid;
+struct isobject *getisobjectbyoid (OID oid)
 {
 	struct isobject   *io;
 
@@ -14,13 +11,11 @@ OID	oid;
 	SLOG (addr_log, LLOG_TRACE, NULLCP,
 		  ("getisobjectbyoid %s", sprintoid (oid)));
 #endif
-
 	setisobject (0);
 	while (io = getisobject ())
 		if (oid_cmp (oid, &io -> io_identity) == 0)
 			break;
 	endisobject ();
-
 	if (io) {
 #ifdef	DEBUG
 		SLOG (addr_log, LLOG_DEBUG, NULLCP,
@@ -30,6 +25,5 @@ OID	oid;
 	} else
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 			  ("lookup of object %s failed", sprintoid (oid)));
-
 	return io;
 }

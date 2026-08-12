@@ -22,37 +22,29 @@ int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication
 	struct type_ACS_AARQ__apdu *aarq;
 
 	isodetailor (NULLCP, 0);
-
 	missingP (vec);
 	missingP (acs);
 	missingP (aci);
-
 	ps = &acs -> acs_start;
 	if ((acb = newacblk ()) == NULL)
 		return acsaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
-
 	bzero ((char *) acs, sizeof *acs);
-
 	if (PInit (vecp, vec, ps, pi) == NOTOK) {
 		ps2acslose (acb, aci, "PInit", pa);
 		goto out1;
 	}
-
 	acb -> acb_flags |= ACB_ACS;
 	acb -> acb_fd = ps -> ps_sd;
 	acb -> acb_sversion = ps -> ps_qos.qos_sversion;
-	acb -> acb_uabort = PUAbortRequest;
-
+	acb -> acb_uabort = (UAAbortFunction)PUAbortRequest;
 	pdu = NULL;
 	if (ps -> ps_ninfo < 1) {
 		acsaplose (aci, ACS_PROTOCOL, NULLCP,
 				   "no user-data on P-CONNECT");
 		goto out2;
 	}
-
 	result = decode_ACS_ACSE__apdu (pe = ps -> ps_info[0], 1, NULLIP, NULLVP,
 									&pdu);
-
 #ifdef	DEBUG
 	if (result == OK) {
 		if (acsap_log -> ll_events & LLOG_PDUS) {
@@ -62,31 +54,24 @@ int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication
 		LLOG (acsap_log, LLOG_EXCEPTIONS, ("ACSE APDU decoding failure (code %d)", result));
 	}
 #endif
-
 	ctx = pe -> pe_context;
-
 	pe_free (pe);
 	pe = ps -> ps_info[0] = NULLPE;
-
 	if (result == NOTOK) {
 		acsaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto out2;
 	}
-
 	if (pdu -> offset != type_ACS_ACSE__apdu_aarq) {
 		acsaplose (aci, ACS_PROTOCOL, NULLCP,
 				   "unexpected PDU %d on P-CONNECT", pdu -> offset);
 		goto out2;
 	}
-
 	aarq = pdu -> un.aarq;
-
 	if ((acb -> acb_context = oid_cpy (aarq -> application__context__name))
 			== NULLOID) {
 		acsaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto out2;
 	}
-
 	{
 		OID	oid;
 		struct PSAPcontext *pp;
@@ -111,24 +96,19 @@ int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication
 							   "PCI for ACSE not accepted");
 					goto out2;
 				}
-
 				acb -> acb_id = ctx;
 			} else if (acb -> acb_rosid == PE_DFLT_CTX)
 				acb -> acb_rosid = pp -> pc_id;
-
 		if (acb -> acb_id == PE_DFLT_CTX) {
 			acsaplose (aci, ACS_PROTOCOL, NULLCP,
 					   "unable to find PCI for ACSE");
 			goto out2;
 		}
 	}
-
 	acs -> acs_sd = acb -> acb_fd;
-
 	if (apdu2info (acb, aci, aarq -> user__information, acs -> acs_info,
 				   &acs -> acs_ninfo) == NOTOK)
 		goto out2;
-
 	acs -> acs_context = aarq -> application__context__name;
 	aarq -> application__context__name = NULLOID;
 	acs -> acs_callingtitle.aei_ap_title = aarq -> calling__AP__title;
@@ -168,33 +148,43 @@ int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication
 			ps -> ps_info[i] = NULL;
 		}
 	ps -> ps_ninfo = 0;
-
 	free_ACS_ACSE__apdu (pdu);
-
 	return OK;
-
 out2:
 	;
 	if (pdu)
 		free_ACS_ACSE__apdu (pdu);
-
 	/* XXX: should do AARE APDU, but can't given any useful info... */
 	PConnResponse (ps -> ps_sd, PC_REJECTED, NULLPA, &ps -> ps_ctxlist,
 				   ps -> ps_defctxresult, 0, 0, SERIAL_NONE, 0,
 				   &ps -> ps_connect, NULLPEP, 0, &pis);
-
 	PSFREE (ps);
-
 out1:
 	;
 	freeacblk (acb);
-
 	return NOTOK;
 }
 
 /* A-ASSOCIATE.RESPONSE */
 
-int AcAssocResponse (int sd, int status, int reason, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct AcSAPindication *aci) {
+int AcAssocResponse (
+	int sd,
+	int status,
+	int reason,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int defctxresult,
+	int prequirements,
+	int srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE *data,
+	int ndata,
+	struct AcSAPindication *aci
+) {
 	int	    pstatus,
 			result;
 	PE	    pe;
@@ -249,7 +239,6 @@ bad_reason:
 #endif
 
 	/* let presentation provider catch errors in presentation parameters */
-
 	toomuchP (data, ndata, NACDATA, "initial");
 	if (data) {	    /* XXX: probably should have a more intensive check... */
 		int    i;
@@ -262,7 +251,6 @@ bad_reason:
 								  pep - data);
 	}
 	missingP (aci);
-
 	pe = NULLPE;
 	if ((pdu = (struct type_ACS_AARE__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
@@ -298,21 +286,17 @@ no_mem:
 			&& (pdu -> user__information = info2apdu (acb, aci, data, ndata))
 			== NULL)
 		goto out2;
-
 	result = encode_ACS_AARE__apdu (&pe, 1, 0, NULLCP, pdu);
-
 	free_ACS_Associate__source__diagnostic (pdu -> result__source__diagnostic);
 	if (pdu -> user__information)
 		free_ACS_Association__information (pdu -> user__information);
 	free ((char *) pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		acsaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 				   PY_pepy);
 		goto out2;
 	}
-
 	if (ctxlist) {
 		int	i;
 		struct PSAPcontext *pp;
@@ -321,7 +305,6 @@ no_mem:
 			acsaplose (aci, ACS_PARAMETER, NULLCP, "too many contexts");
 			goto out1;
 		}
-
 		for (pp = ctxlist -> pc_ctx, i = ctxlist -> pc_nctx - 1;
 				i >= 0;
 				i--, pp++)
@@ -335,16 +318,12 @@ no_mem:
 				acb -> acb_rosid = pp -> pc_id;
 	}
 	pe -> pe_context = acb -> acb_id;
-
 	PLOGP (acsap_log,ACS_ACSE__apdu, pe, "AARE-apdu", 0);
-
 	result = PConnResponse (acb -> acb_fd, pstatus, respondaddr,
 							ctxlist, defctxresult, prequirements, srequirements, isn,
 							settings, ref, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
-
 	if (result == NOTOK) {
 		ps2acslose (acb, aci, "PConnResponse", pa);
 		if (PC_FATAL (pa -> pa_reason))
@@ -352,14 +331,12 @@ no_mem:
 		else
 			goto out1;
 	}
-
 	if (status == ACS_ACCEPT)
 		acb -> acb_flags |= ACB_CONN;
 	else {
 		acb -> acb_fd = NOTOK;
 		freeacblk (acb);
 	}
-
 	return OK;
 
 out2:
@@ -376,6 +353,5 @@ out1:
 	}
 	if (pe)
 		pe_free (pe);
-
 	return NOTOK;
 }

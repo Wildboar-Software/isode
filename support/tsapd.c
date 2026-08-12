@@ -143,7 +143,11 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td);
 static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
 
-static int  setperms ();
+#ifndef	IAE
+static int setperms (struct isoservent *is);
+#else
+static int setperms (struct IAEntry *is);
+#endif
 static void tsapd (int vecp, char **vec);
 static void envinit (void);
 static void arginit (char **vec);
@@ -161,7 +165,6 @@ int main (int argc, char **argv, char **envp) {
 
 	arginit (argv);
 	envinit ();
-
 	failed = 0;
 
 	for (ta = tas; ta < tz; ta++) {
@@ -198,7 +201,6 @@ int main (int argc, char **argv, char **envp) {
 
 		time (&now);
 		now++;
-
 		if ((secs = (int) (nextime - now)) <= 0) {
 			search_directory (0);
 
@@ -207,20 +209,16 @@ int main (int argc, char **argv, char **envp) {
 #else
 #define	secs	NOTOK
 #endif
-
 		if (TNetAccept (&vecp, vec, 0, NULLFD, NULLFD, NULLFD, secs, td)
 				== NOTOK) {
 			if (errno != EINTR)
 				ts_advise (td, LLOG_EXCEPTIONS, "TNetAccept failed");
 			continue;
 		}
-
 		if (vecp <= 0)
 			continue;
-
 		if (debug)
 			break;
-
 #ifdef SYS5
 #ifdef HPUX
 		signal(SIGCHLD, cldser);
@@ -244,9 +242,7 @@ int main (int argc, char **argv, char **envp) {
 		}
 		break;
 	}
-
 	tsapd (vecp, vec);
-
 	return 0;
 }
 
@@ -276,7 +272,6 @@ static void tsapd (int vecp, char **vec) {
 		ts_advise (td, LLOG_EXCEPTIONS, "T-CONNECT.INDICATION");
 		return;
 	}
-
 	/* used to print this in ssapd()... */
 	advise (LLOG_NOTICE, NULLCP,
 			"T-CONNECT.INDICATION: <%d, %s, %s, %d, %d>",
@@ -316,7 +311,6 @@ static void tsapd (int vecp, char **vec) {
 		is -> is_tail[1] = buffer2;
 		is -> is_tail[2] = NULL;
 #endif
-
 	if (tb = findtblk (ts -> ts_sd))
 		tb -> tb_fd = NOTOK;
 	switch (hook ? (*hook) (is, td) : OK) {
@@ -325,7 +319,6 @@ static void tsapd (int vecp, char **vec) {
 	case DONE:
 		exit (1);
 	/* NOTREACHED */
-
 	case OK:
 	default:
 		setperms (is);
@@ -345,7 +338,6 @@ out:
 	if ((int)strlen (buffer) >= TD_SIZE)
 		buffer[0] = 0;
 	TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
-
 	exit (1);
 }
 
@@ -375,7 +367,6 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
 		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
-
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -389,15 +380,11 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 
 	if (strcmp (is -> is_entity, "session") || strcmp (is -> is_provider, "tsap"))
 		return OK;
-
 	if (TInit (is -> is_tail - is -> is_vec, is -> is_vec, ts, td) == NOTOK)
 		return NOTOK;
-
 	sd = ts -> ts_sd;
-
 	if (TConnResponse (sd, &ts -> ts_called, ts -> ts_expedited, NULLCP, 0, NULLQOS, td) == NOTOK)
 		return NOTOK;
-
 	if (SExec (ts, &sis, psapd, setperms) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "service not started at ssap: %s",	SErrString (sa -> sa_reason));
 		if (sa -> sa_cc > 0)
@@ -405,7 +392,6 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 
 		SAFREE (sa);
 	}
-
 	return DONE;
 }
 
@@ -425,12 +411,10 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 
 	if (strcmp (is -> is_provider, "ssap"))
 		return OK;
-
 	if (strcmp (is -> is_entity, "presentation")
 			&& strcmp (is -> is_entity, "rts")
 			&& strcmp (is -> is_entity, "ros"))
 		return OK;
-
 	/* begin UGLY */
 	strcpy (buffer1, *(is -> is_tail - 2));
 	strcpy (buffer2, *(is -> is_tail - 1));
@@ -443,7 +427,6 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 			saddr2str (&ss -> ss_calling), saddr2str (&ss -> ss_called),
 			sprintb (ss -> ss_requirements, RMASK), ss -> ss_isn,
 			ss -> ss_ssdusize);
-
 	if (strcmp (is -> is_entity, "presentation") == 0) {
 		if (PExec (ss, &pis, buffer1, buffer2, NULLIFP, setperms) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -456,7 +439,6 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 
 		return DONE;
 	}
-
 	if (strcmp (is -> is_entity, "rts") == 0) {
 		if (RtExec (ss, &rtis, buffer1, buffer2, NULLIFP, setperms) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -476,7 +458,6 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 						rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 		}
 	}
-
 	return DONE;
 }
 #endif
@@ -507,17 +488,12 @@ static void arginit (char **vec) {
 		pgmname++;
 	if (pgmname == NULL || *pgmname == NULL)
 		pgmname = *vec;
-
 	isodetailor (pgmname, 0);
 	ll_hdinit (pgm_log, pgmname);
-
 	rflag = 0;
-
 	strcpy (myhost, TLocalHostName ());
-
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
-
 #ifdef	TCP
 	if (!(ts_stacks & TS_TCP))
 		tcpservice = 0;
@@ -538,7 +514,6 @@ static void arginit (char **vec) {
 #ifdef	X25
 	if (!(ts_stacks & TS_X25))
 		x25service = 0;
-
 	x25_na = tz -> ta_addrs;
 	x25_na -> na_stack = NA_X25;
 	x25_na -> na_community = ts_comm_x25_default;
@@ -550,7 +525,6 @@ static void arginit (char **vec) {
 		x25_na -> na_pidlen =
 			str2sel (x25_local_pid, -1, x25_na -> na_pid, NPSIZE);
 	tz -> ta_naddr = 1;
-
 	tz++;
 #ifdef AEF_NSAP
 	if (!(ts_stacks & TS_X2584))
@@ -582,18 +556,15 @@ static void arginit (char **vec) {
 					|| access (*is -> is_vec, X_OK) != NOTOK)) {
 			if (strcmp (is -> is_entity, "isore") == 0)
 				continue;
-
 			if (tz >= tas + NTADDRS) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"too many services, starting with %s",
 						is -> is_entity);
 				break;
 			}
-
 			bcopy (is -> is_selector, tz -> ta_selector,
 				   tz -> ta_selectlen = is -> is_selectlen);
 			tz -> ta_naddr = 0;
-
 			tz++;
 			tp4_na_end = tz;
 		}
@@ -1421,24 +1392,18 @@ pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
 	return NOTOK;
 }
 
-int	str2dnY (str, dn)
-char   *str;
-DN     *dn;
-{
+int	str2dnY (char *str, DN *dn) {
 	if (*str == NULL) {
 		*dn = NULLDN;
 		return OK;
 	}
-
 	return ((*dn = str2dn (str)) != NULLDN ? OK : NOTOK);
 }
 
 #ifdef	BSD42
 #endif
 
-static SFD  hupser (sig)
-int	sig;
-{
+static SFD  hupser (int sig) {
 #ifndef	BSD42
 #ifdef LINUX
 	signal (sig, (__sighandler_t)hupser);
@@ -1446,15 +1411,12 @@ int	sig;
 	signal (sig, hupser);
 #endif
 #endif
-
 	search_directory (0);
 }
 #endif
 
 #ifdef SYS5
-static SFD  cldser (sig)
-int   sig;
-{
+static SFD cldser (int sig) {
 	int status;
 	int pid;
 
@@ -1465,7 +1427,6 @@ int   sig;
 #else
 	pid = wait(&status);
 #endif /* HPUX */
-
 	signal(sig, cldser);
 }
 #endif /* SYS5 */
@@ -1535,12 +1496,9 @@ static void envinit (void) {
 		if (pgm_log -> ll_fd != sd)
 			close (sd);
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, pgmname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
-
 #ifdef	IAE
 #ifdef LINUX
 	signal (SIGHUP, (__sighandler_t)hupser);
@@ -1553,7 +1511,6 @@ static void envinit (void) {
 #ifndef	lint
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
 	va_end (ap);

@@ -6,7 +6,7 @@
 #include "general.h"
 #include "manifest.h"
 
-static SFD	EMTser ();
+static SFD	EMTser (int sig, long int code, struct sigcontext *sc);
 
 int main (int argc, char **argv, char **envp) {
 	int	    fd,
@@ -58,10 +58,10 @@ int main (int argc, char **argv, char **envp) {
 static  SFD EMTser (sig)
 int	sig;
 #else
-static  SFD EMTser (sig, code, sc)
-int	sig;
-long	code;
-struct sigcontext *sc;
+static  SFD EMTser (int sig, long int code, struct sigcontext *sc)
+   	    
+    	     
+                      
 #endif
 {
 #ifndef	BSDSIGS

@@ -43,7 +43,7 @@ int RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindicatio
 	}
 
 	acb -> acb_fd = ss -> ss_sd;
-	acb -> acb_uabort = SUAbortRequest;
+	acb -> acb_uabort = (UAAbortFunction)SUAbortRequest;
 
 	base = NULLCP, len = 0;
 	acb -> acb_connect = ss -> ss_connect;	/* struct copy */

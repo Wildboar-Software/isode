@@ -1,10 +1,8 @@
 /* psaprelease1.c - PPM: initiate release */
-
-#include <stdio.h>
 #include <signal.h>
 #include "ppkt.h"
 
-static int  PRelRetryRequestAux ();
+static int  PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease *pr, struct PSAPindication *pi);
 
 /* P-RELEASE.REQUEST */
 
@@ -16,11 +14,8 @@ int PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, 
 	toomuchP (data, ndata, NPDATA, "release");
 	missingP (pr);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	switch (result = info2ssdu (pb, pi, data, ndata, &pb -> pb_realbase,
 								&pb -> pb_retry, &pb -> pb_len,
 								"P-RELEASE user-data", PPDU_NONE)) {
@@ -28,16 +23,13 @@ int PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, 
 	default:
 		result = PRelRetryRequestAux (pb, secs, pr, pi);
 		goto out;
-
 	case NOTOK:
 		freepblk (pb), pb = NULLPB;
 		break;
-
 	case DONE:
 		result = NOTOK;
 		break;
 	}
-
 	if (pb) {
 		if (pb -> pb_realbase)
 			free (pb -> pb_realbase);
@@ -45,11 +37,9 @@ int PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, 
 			free (pb -> pb_retry);
 		pb -> pb_realbase = pb -> pb_retry = NULL;
 	}
-
 out:
 	;
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -62,9 +52,7 @@ int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindic
 
 	missingP (pr);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	if ((pb = findpblk (sd)) == NULL)
 		result = psaplose (pi, PC_PARAMETER, NULLCP,
 						   "invalid session descriptor");
@@ -72,9 +60,7 @@ int PRelRetryRequest (int sd, int secs, struct PSAPrelease *pr, struct PSAPindic
 		result = psaplose (pi, PC_OPERATION, "release not in progress");
 	else
 		result = PRelRetryRequestAux (pb, secs, pr, pi);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -86,9 +72,7 @@ static int PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease
 	struct SSAPrelease   *sr = &srs;
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;
-
 	bzero ((char *) sr, sizeof *sr);
-
 	if ((result = (pb -> pb_flags & PB_RELEASE)
 				  ? SRelRetryRequest (pb -> pb_fd, secs, sr, &sis)
 				  : SRelRequest (pb -> pb_fd, pb -> pb_retry,
@@ -96,10 +80,8 @@ static int PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease
 			== NOTOK) {
 		if (sa -> sa_reason == SC_TIMER) {
 			pb -> pb_flags |= PB_RELEASE;
-
 			return ss2pslose (NULLPB, pi, id, sa);
 		}
-
 		if (sa -> sa_peer) {
 			ss2psabort (pb, sa, pi);
 			goto out1;
@@ -112,19 +94,15 @@ static int PRelRetryRequestAux (struct psapblk *pb, int secs, struct PSAPrelease
 			goto out1;
 		}
 	}
-
 	bzero ((char *) pr, sizeof *pr);
-
 	if ((result = ssdu2info (pb, pi, sr -> sr_data, sr -> sr_cc, pr -> pr_info,
 							 &pr -> pr_ninfo, "P-RELEASE user-data", PPDU_NONE)) == NOTOK)
 		goto out2;
-
 	if (pr -> pr_affirmative = sr -> sr_affirmative) {
 		pb -> pb_fd = NOTOK;
 		result = OK;
 	} else
 		result = DONE;
-
 out2:
 	;
 	if (result == DONE)
@@ -141,6 +119,5 @@ out1:
 			free (pb -> pb_retry);
 		pb -> pb_realbase = pb -> pb_retry = NULL;
 	}
-
 	return result;
 }

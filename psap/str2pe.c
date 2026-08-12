@@ -4,13 +4,12 @@
 #include "psap.h"
 #include "tailor.h"
 
-static PElementLen	str_get_len ();
-static int  str_get_start ();
+static PElementLen	str_get_len (char *s, int len, int *result);
+static int  str_get_start (char **sp, int *n, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *plen, int *result);
 
 #define	seterr(e,v)		(*result = (e), (v))
 
-PE
-str2pe (char *s, int len, int *advance, int *result) {
+PE str2pe (char *s, int len, int *advance, int *result) {
 #ifdef	DEBUG
 	int	    n = len;
 #endif
@@ -22,38 +21,29 @@ str2pe (char *s, int len, int *advance, int *result) {
 	PE	    pe;
 
 	*result = PS_ERR_NONE;
-
 	sp = s;
 	if (str_get_start (&sp, &len, &class, &form, &id, &plen, result) == NOTOK)
 		return NULLPE;
-
 	if (form == PE_FORM_CONS)
 		form = PE_FORM_ICONS;
-
 	if (plen == PE_LEN_INDF
 			&& (plen = str_get_len (sp, len, result)) == PE_LEN_INDF)
 		return NULLPE;
-
 	if ((pe = pe_alloc (class, form, id)) == NULLPE)
 		return seterr (PS_ERR_NMEM, NULLPE);
-
 	pe -> pe_ilen = sp - s;
 	if (form == PE_FORM_ICONS) {
 		pe -> pe_len = pe -> pe_ilen + plen;
 		pe -> pe_prim = (PElementData) s;
 	} else if (pe -> pe_len = plen)
 		pe -> pe_prim = (PElementData) sp;
-
 	pe -> pe_inline = 1;
-
 	if (advance)
 		*advance = pe -> pe_ilen + plen;
-
 #ifdef	DEBUG
 	if (psap_log -> ll_events & LLOG_PDUS)
 		pe2text (psap_log, pe, 1, n);
 #endif
-
 	return pe;
 }
 
@@ -70,7 +60,6 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 	if (len-- <= 0)
 		return seterr (PS_ERR_EOF, NOTOK);
 	c = *s++;
-
 	*class = ((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT;
 	*form = ((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT;
 	if ((jd = (c & PE_CODE_MASK)) == PE_ID_XTND)
@@ -90,15 +79,12 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 	SLOG (psap_log, LLOG_DEBUG, NULLCP,
 		  ("class=%d form=%d id=%d", *class, *form, *id));
 #endif
-
 	if (len-- <= 0)
 		return seterr (PS_ERR_EOFLEN, NOTOK);
 	c = *s++;
-
 	if ((i = c) & PE_LEN_XTND) {
 		if ((i &= PE_LEN_MASK) > sizeof (PElementLen))
 			return seterr (PS_ERR_OVERLEN, NOTOK);
-
 		if (i) {
 			for (qlen = 0; i-- > 0;) {
 				if (len-- <= 0)
@@ -118,14 +104,11 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 #ifdef	DEBUG
 	SLOG (psap_log, LLOG_DEBUG, NULLCP, ("len=%d", *plen));
 #endif
-
 	*sp = s, *n = len;
-
 	return OK;
 }
 
-static PElementLen
-str_get_len (char *s, int len, int *result) {
+static PElementLen str_get_len (char *s, int len, int *result) {
 	char   *sp;
 	PElementClass class;
 	PElementForm form;
@@ -136,14 +119,11 @@ str_get_len (char *s, int len, int *result) {
 		if (str_get_start (&sp, &len, &class, &form, &id, &plen, result)
 				== NOTOK)
 			return PE_LEN_INDF;
-
 		if (class == PE_CLASS_UNIV && id == PE_UNIV_EOC)
 			return ((PElementLen) (sp - s));
-
 		if (plen == PE_LEN_INDF
 				&& (plen = str_get_len (sp, len, result)) == PE_LEN_INDF)
 			return PE_LEN_INDF;
-
 		sp += plen, len -= plen;
 	}
 }

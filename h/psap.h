@@ -30,9 +30,9 @@ int	oid_cmp (OID p, OID q), elem_cmp (unsigned int *ip, int i, unsigned int *jp,
 OID	oid_cpy (OID oid);
 void oid_free (OID oid);
 #define	oid2ode(i)	oid2ode_aux ((i), 1)
-char   *oid2ode_aux ();
-char   *sprintoid ();
-OID	str2oid ();
+char *oid2ode_aux ();
+char *sprintoid (OID oid);
+OID	str2oid (char *s);
 
 typedef	u_char	   PElementClass;
 
@@ -202,12 +202,12 @@ PE	pe_alloc (PElementClass, PElementForm, PElementID);
 void pe_free (PE pe);
 int	pe_cmp ();
 PE	pe_cpy ();
-int	pe_pullup ();
+int	pe_pullup (PE pe);
 PE	pe_expunge ();
 int	pe_extract ();
 
-PE	str2pe ();
-PE	qb2pe ();
+PE str2pe (char *s, int len, int *advance, int *result);
+PE qb2pe (struct qbuf *qb, int len, int depth, int *result);
 
 extern int    pe_maxclass;
 extern char  *pe_classlist[];
@@ -291,7 +291,7 @@ PE	num2prim ();
 #define PE_REAL_INFINITY	HUGE
 #endif
 
-double	prim2real ();
+double	prim2real (PE pe);
 PE	real2prim (double, PElementClass, PElementID);
 #define double2prim(i)		real2prim ((i), PE_CLASS_UNIV, PE_PRIM_REAL)
 
@@ -333,7 +333,7 @@ OID	prim2oid ();
 PE	obj2prim ();
 #define	oid2prim(o)		obj2prim ((o), PE_CLASS_UNIV, PE_PRIM_OID)
 
-UTC	prim2time ();
+UTC	prim2time (PE pe, int generalized);
 #define	prim2utct(pe)		prim2time ((pe), 0)
 #define	prim2gent(pe)		prim2time ((pe), 1)
 PE	time2prim (UTC, int, PElementClass, PElementID);
@@ -342,7 +342,7 @@ PE	time2prim (UTC, int, PElementClass, PElementID);
 char   *time2str ();
 #define	utct2str(u)		time2str ((u), 0)
 #define	gent2str(u)		time2str ((u), 1)
-UTC	str2utct (), str2gent ();
+UTC	str2utct (char *cp, int len), str2gent (char *cp, int len);
 
 PE	prim2set ();
 #define	set2prim(pe)		(pe)
@@ -450,8 +450,8 @@ int	str_setup ();
 int	dg_open ();
 int	dg_setup ();
 
-int	fdx_open ();
-int	fdx_setup ();
+int	fdx_open (PS ps);
+int	fdx_setup (PS ps, int fd);
 
 int	qbuf_open ();
 #define	qbuf_setup(ps, qb)	((ps) -> ps_addr = (char *) (qb), OK)
@@ -466,17 +466,17 @@ int	uvec_setup ();
 #define	ps2pe(ps)		ps2pe_aux ((ps), 1, 1)
 PE	ps2pe_aux ();
 #define	pe2ps(ps, pe)		pe2ps_aux ((ps), (pe), 1)
-int	pe2ps_aux ();
+int	pe2ps_aux (PS ps, PE pe, int eval);
 
-PE	pl2pe ();
-int	pe2pl ();
+PE	pl2pe (PS ps);
+int	pe2pl (PS ps, PE pe);
 
 extern int    ps_len_strategy;
 #define	PS_LEN_SPAG	0
 #define	PS_LEN_INDF	1
 #define	PS_LEN_LONG	2
 
-int	ps_get_abs ();
+int	ps_get_abs (PE pe);
 
 char   *ps_error ();
 
@@ -491,7 +491,7 @@ int	setisobject (),	endisobject ();
 struct isobject *getisobject ();
 
 struct isobject *getisobjectbyname ();
-struct isobject *getisobjectbyoid ();
+struct isobject *getisobjectbyoid (OID oid);
 
 extern	int	Len;
 extern	char   *Qcp;

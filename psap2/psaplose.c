@@ -26,15 +26,11 @@ int	ppktlose (struct psapblk*pb, ...) {
 	va_list ap;
 
 	va_start (ap, pb);
-
 	pi = va_arg (ap, struct PSAPindication *);
 	reason = va_arg (ap, int);
 	ppdu = va_arg (ap, int);
-
 	result = _psaplose (pi, reason, ap);
-
 	va_end (ap);
-
 	if ((pa = &pi -> pi_abort) -> pa_cc > 0) {
 		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
 			  ("ppktlose [%s] %*.*s", PErrString (pa -> pa_reason),
@@ -42,16 +38,13 @@ int	ppktlose (struct psapblk*pb, ...) {
 	} else
 		SLOG (psap2_log, LLOG_EXCEPTIONS, NULLCP,
 			  ("ppktlose [%s]", PErrString (pa -> pa_reason)));
-
 	if (pb -> pb_fd == NOTOK)
 		return result;
-
 	switch (reason) {
 	case PC_NOTSPECIFIED:
 	default:
 		reason = int_PS_Abort__reason_reason__not__specified;
 		break;
-
 	case PC_UNRECOGNIZED:
 	case PC_UNEXPECTED:
 	case PC_SSPRIMITIVE:
@@ -66,23 +59,18 @@ int	ppktlose (struct psapblk*pb, ...) {
 	pdu -> event = ppdu != PPDU_NONE
 				   ? (struct type_PS_Event__identifier *) &ppdu
 				   : NULL;
-
 	pe = NULLPE;
 	base = NULL, len = 0;
 	if (encode_PS_ARP__PPDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		PLOGP (psap2_log,PS_ARP__PPDU, pe, "ARP-PPDU", 0);
-
 		pe2ssdu (pe, &base, &len);
 	}
 	if (pe)
 		pe_free (pe);
-
 	if (SUAbortRequest (pb -> pb_fd, base, len, &sis) != NOTOK)
 		pb -> pb_fd = NOTOK;
-
 	if (base)
 		free (base);
-
 	return result;
 }
 #else
@@ -98,20 +86,13 @@ int	psaplose (struct PSAPindication*pi, ...) {
 	int     reason,
 			result;
 	va_list ap;
-
 	va_start (ap, pi);
-
 	reason = va_arg (ap, int);
-
 	result = _psaplose (pi, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
-/* VARARGS4 */
-
 int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 	return psaplose (pi, reason, what, fmt);
 }
@@ -119,32 +100,26 @@ int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 
 #ifndef	lint
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */
-
 	char  *bp;
 	char  *what;
 	char  *fmt;
 	char    buffer[BUFSIZ];
 
 	struct PSAPabort *pa;
-
 	what = va_arg(ap, char*);
 	fmt = va_arg(ap, char*);
 	if (pi) {
 		bzero ((char *) pi, sizeof *pi);
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
-
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		pa -> pa_peer = 0;
 		pa -> pa_reason = reason;
 		pa -> pa_ninfo = 0;
 		copyPSAPdata (buffer, bp - buffer, pa);
 	}
-
 	va_end(ap);
-
 	return NOTOK;
 }
 #endif

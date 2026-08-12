@@ -26,56 +26,39 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 	struct type_PS_CPR__type *cpr;
 
 	isodetailor (NULLCP, 0);
-
 	missingP (vec);
 	missingP (ps);
 	missingP (pi);
-
 	if ((pb = newpblk ()) == NULL)
 		return psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
-
 	cp = NULL, cpr = NULL;
-
 	if (SInit (vecp, vec, ss, si) == NOTOK) {
 		ss2pslose (pb, pi, "SInit", sa);
 		goto out2;
 	}
-
 	pb -> pb_fd = ss -> ss_sd;
-
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result)) == NULLPE) {
 		if (result == PS_ERR_NMEM)
 			goto congest;
-
 		ppktlose (pb, pi, PC_PROTOCOL, PPDU_CP, NULLCP, "%s", ps_error (result));
 		goto out1;
 	}
-
 	SSFREE (ss);
-
 	pb -> pb_srequirements = ss -> ss_requirements;
-
 	pb -> pb_ssdusize = ss -> ss_ssdusize;
-
 	bzero ((char *) ps, sizeof *ps);
-
 	if (decode_PS_CP__type (pe, 1, NULLIP, NULLVP, &cp) == NOTOK) {
 		ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s", PY_pepy);
 		goto out1;
 	}
-
 	PLOGP (psap2_log,PS_CP__type, pe, "CP-type", 1);
-
 	if (cp -> mode -> parm != int_PS_Mode__selector_normal__mode) {
 		ppktlose (pb, pi, PC_INVALID, PPDU_CP, NULLCP, "X.410-mode not supported");
 		goto out1;
 	}
 	cp_normal = cp -> normal__mode;
-
 	ps -> ps_sd = pb -> pb_fd;
-
 	ps -> ps_connect = ss -> ss_connect;	/* struct copy */
-
 	ps -> ps_calling.pa_addr = ss -> ss_calling;/* struct copy */
 	if (cp_normal -> calling) {
 		if ((base = qb2str (cp_normal -> calling)) == NULLCP)
@@ -94,7 +77,6 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 		bcopy (base, ps -> ps_called.pa_selector,  ps -> ps_called.pa_selectlen = len);
 		free (base);
 	}
-
 	if ((pb -> pb_asn = DFLT_ASN_OID) == NULLOID)  {
 		ppktlose (pb, pi, PC_ABSTRACT, PPDU_CP, NULLCP, "%s: unknown", DFLT_ASN);
 		goto out1;
@@ -109,7 +91,6 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 		goto congest;
 	if ((pb -> pb_ber = oid_cpy (pb -> pb_atn)) == NULLOID)
 		goto congest;
-
 	{
 		struct PSAPcontext *pp,	*qp;
 		struct type_PS_Definition__list *lp;
@@ -122,15 +103,12 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 				lp = lp -> next, pp++, qp++, i++) {
 			struct element_PS_6 *pctx = lp -> element_PS_5;
 			struct element_PS_7 *atn;
-
 			pp -> pc_id = qp -> pc_id = pctx -> identifier;
-
 			pp -> pc_result = PC_ACCEPT;
 			pp -> pc_asn = pctx -> abstract__syntax;
 			pctx -> abstract__syntax = NULLOID;
 			if ((qp -> pc_asn = oid_cpy (pp -> pc_asn)) == NULLOID)
 				goto congest;
-
 			for (atn = pctx -> transfer__syntax__list; atn; atn = atn -> next)
 				if (atn_is_ok (pb, atn -> Transfer__syntax__name)) {
 					qp -> pc_atn = atn -> Transfer__syntax__name;
@@ -140,16 +118,12 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 			if (atn == NULL)
 				pp -> pc_result = PC_TRANSFER;
 			pp -> pc_atn = NULLOID;
-
 			qp -> pc_result = pp -> pc_result;
 		}
-
 		ps -> ps_ctxlist.pc_nctx = pb -> pb_ncontext = i;
 	}
-
 	if (ppdu2info (pb, pi, cp_normal -> user__data, ps -> ps_info, &ps -> ps_ninfo, PPDU_CP) == NOTOK)
 		goto out1;
-
 	ps -> ps_defctxresult = PC_ACCEPT;
 	if (cp_normal -> default__context) {
 		struct PSAPcontext *pp;
@@ -158,13 +132,11 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 		cp_normal -> default__context -> abstract__syntax = NULLOID;
 		if ((ps -> ps_defctx = oid_cpy (pb -> pb_asn)) == NULLOID)
 			goto congest;
-
 		oid_free (pb -> pb_atn);
 		pb -> pb_atn = cp_normal -> default__context -> transfer__syntax;
 		cp_normal -> default__context -> transfer__syntax = NULLOID;
 		if (!atn_is_ok (pb, pb -> pb_atn))
 			ps -> ps_defctxresult = PC_TRANSFER;
-
 		pb -> pb_flags |= PB_DFLT;
 		pb -> pb_dctxid = NOTOK;
 		for (pp = pb -> pb_contexts, i = 0; i < pb -> pb_ncontext; i++, pp++)
@@ -174,53 +146,40 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 			}
 	}
 	pb -> pb_result = ps -> ps_defctxresult;
-
 	if (cp_normal -> presentation__fu) {
 		struct pair *pp;
-
 		if (!(pb -> pb_srequirements & SR_TYPEDATA)) {
 			bit_off (cp_normal -> presentation__fu, bit_PS_Presentation__requirements_context__management);
 			bit_off (cp_normal -> presentation__fu, bit_PS_Presentation__requirements_restoration);
 		}
-
 		for (pp = preq_pairs; pp -> p_mask; pp++)
 			if (bit_test (cp_normal -> presentation__fu, pp -> p_bitno) == 1)
 				pb -> pb_prequirements |= pp -> p_mask;
 	}
 	ps -> ps_prequirements = (pb -> pb_prequirements &= PR_MYREQUIRE);
-
 	if (cp_normal -> session__fu) {
 		struct pair *pp;
-
 		for (pp = sreq_pairs; pp -> p_mask; pp++)
 			if (bit_test (cp_normal -> session__fu, pp -> p_bitno) == 1)
 				pb -> pb_urequirements |= pp -> p_mask;
 	} else
 		pb -> pb_urequirements = pb -> pb_srequirements;
 	ps -> ps_srequirements = (pb -> pb_urequirements & pb -> pb_srequirements);
-
 	ps -> ps_settings = ss -> ss_settings;
 	ps -> ps_isn = ss -> ss_isn;
-
 	ps -> ps_ssdusize = ss -> ss_ssdusize;
-
 	ps -> ps_qos = ss -> ss_qos;	/* struct copy */
-
 	pe_free (pe);
 	free_PS_CP__type (cp);
-
 	return OK;
-
 congest:
 	;
 	result = SC_CONGESTION;
 	psaplose (pi, result2 = PC_CONGEST, NULLCP, NULLCP);
-
 	if (pe) {
 		pe_free (pe);
 		pe = NULLPE;
 	}
-
 	if (cpr = (struct type_PS_CPR__type *) calloc (1, sizeof *cpr)) {
 		if (cp && cp -> mode && cp -> mode -> parm == int_PS_Mode__selector_x410__1984__mode) {
 			cpr -> offset = type_PS_CPR__type_x410__mode;
@@ -230,7 +189,6 @@ congest:
 			}
 		} else {
 			struct element_PS_2 *cpr_normal;
-
 			cpr -> offset = type_PS_CPR__type_normal__mode;
 			if (cpr_normal = (struct element_PS_2 *) calloc (1, sizeof *cpr_normal)) {
 				cpr -> un.normal__mode = cpr_normal;
@@ -239,21 +197,17 @@ congest:
 			}
 		}
 	}
-
 	if (encode_PS_CPR__type (&pe, 1, 0, NULLCP, cpr) != NOTOK) {
 		PLOGP (psap2_log,PS_CPR__type, pe, "CPR-type", 0);
-
 		if (pe)
 			pe2ssdu (pe, &base, &len);
 	} else
 		base = NULL, len = 0;
-
 	bzero ((char *) &ref, sizeof ref);
 	SConnResponse (ss -> ss_sd, &ref, NULLSA, result, 0, 0,  SERIAL_NONE, base, len, si);
 	if (base)
 		free (base);
 	psaplose (pi, result2, NULLCP, NULLCP);
-
 out1:
 	;
 	SSFREE (ss);
@@ -266,13 +220,26 @@ out1:
 out2:
 	;
 	freepblk (pb);
-
 	return NOTOK;
 }
 
 /* P-CONNECT.RESPONSE */
 
-int PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
+int PConnResponse (
+	int sd,
+	int status,
+	struct PSAPaddr *responding,
+	struct PSAPctxlist *ctxlist,
+	int defctxresult,
+	int prequirements,
+	int srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE *data,
+	int ndata,
+	struct PSAPindication *pi
+) {
 	int	    i,
 			len,
 			result,

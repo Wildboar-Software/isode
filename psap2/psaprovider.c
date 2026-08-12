@@ -36,13 +36,13 @@ struct pair sreq_pairs[] = {
 static void DATAser (), TOKENser (), SYNCser (), ACTIVITYser (), REPORTser (),
 		FINISHser (), ABORTser ();
 
-static int  PReadRequestAux ();
-static int  doDATA ();
-static int  doTOKEN ();
-static int  doSYNC ();
-static int  doACTIVITY ();
-static int  doREPORT ();
-static int  doFINISH ();
+static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi);
+static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi);
+static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi);
+static int doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi);
+static int doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi);
+static int doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi);
+static int doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi);
 
 /*    P-[*-]DATA.REQUEST */
 
@@ -51,7 +51,17 @@ int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
 }
 
-int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype, char *text, int ppdu) {
+int PDataRequestAux (
+	int sd,
+	PE *data,
+	int ndata,
+	struct PSAPindication *pi,
+	char *dtype,
+	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
+	char *stype,
+	char *text,
+	int ppdu
+) {
 	SBV	    smask;
 	int     i,
 			len,
@@ -61,23 +71,18 @@ int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, cha
 	struct psapblk *pb;
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;
-	PE	   *d,
-	 p;
+	PE	   *d, p;
 
 	missingP (data);
 	toomuchP (data, ndata, NPDATA, dtype);
 	if (ndata <= 0)
-		return psaplose (pi, PC_PARAMETER, NULLCP,
-						 "illegal number of PDVs (%d)", ndata);
+		return psaplose (pi, PC_PARAMETER, NULLCP, "illegal number of PDVs (%d)", ndata);
 	missingP (pi);
 	missingP (sfunc);
 	missingP (stype);
 	missingP (text);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if (ppdu == PPDU_TE) {
 		for (d = data, i = 0; i < ndata; i++)
 			if ((p = *d++) && p -> pe_context != PE_DFLT_CTX) {
@@ -86,17 +91,14 @@ int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, cha
 								 "defined context not permited with expedited service");
 			}
 	}
-
 	if (ppdu == PPDU_TTD && !(pb -> pb_urequirements & SR_TYPEDATA)) {
 		sigiomask (smask);
 		return psaplose (pi, PC_OPERATION, NULLCP,
 						 "typed data service unavailable");
 	}
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len, text,
 							 ppdu)) != OK)
 		goto out2;
-
 	if ((result = (*sfunc) (sd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, stype, sa);
@@ -104,7 +106,6 @@ int PDataRequestAux (int sd, PE *data, int ndata, struct PSAPindication *pi, cha
 			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -117,9 +118,7 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -132,15 +131,10 @@ int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *
 
 	missingP (px);
 	missingP (pi);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	result = PReadRequestAux (pb, px, secs, pi);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -153,31 +147,23 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, s
 
 	bzero ((char *) px, sizeof *px);
 	bzero ((char *) pi, sizeof *pi);
-
 	switch (result = SReadRequest (pb -> pb_fd, sx, secs, si)) {
 	case NOTOK:
 		return doABORT (pb, &si -> si_abort, pi);
-
 	case OK:
 		return doDATA (pb, sx, px, pi);
-
 	case DONE:
 		switch (si -> si_type) {
 		case SI_TOKEN:
 			return doTOKEN (pb, &si -> si_token, pi);
-
 		case SI_SYNC:
 			return doSYNC (pb, &si -> si_sync, pi);
-
 		case SI_ACTIVITY:
 			return doACTIVITY (pb, &si -> si_activity, pi);
-
 		case SI_REPORT:
 			return doREPORT (pb, &si -> si_report, pi);
-
 		case SI_FINISH:
 			return doFINISH (pb, &si -> si_finish, pi);
-
 		default:
 			ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE,
 					  NULLCP,
@@ -186,13 +172,11 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, s
 			break;
 		}
 		break;
-
 	default:
 		ppktlose (pb, pi, PC_PROTOCOL, PPDU_NONE, NULLCP,
 				  "unexpected return from SReadRequest=%d", result);
 		break;
 	}
-
 	freepblk (pb);
 	return NOTOK;
 }
@@ -434,7 +418,17 @@ out:
 
 #define	e(i)	(data ? (i) : 0)
 
-int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct PSAPindication *pi) {
+int PSetIndications (
+	int sd,
+	void (*data)(int sd, struct PSAPdata *sx),
+	void (*tokens)(int sd, struct PSAPtoken *st),
+	void (*sync)(int sd, struct PSAPsync *sn),
+	void (*activity)(int sd, struct PSAPactivity *sv),
+	void (*report)(int sd, struct PSAPreport *sp),
+	void (*finish)(int sd, struct PSAPfinish *sf),
+	void (*abort)(int sd, struct PSAPabort *sa),
+	struct PSAPindication *pi
+) {
 	SBV     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
@@ -450,11 +444,8 @@ int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP r
 		missingP (abort);
 	}
 	_iosignals_set = 1;
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if (pb -> pb_DataIndication = data)
 		pb -> pb_flags |= PB_ASYN;
 	else
@@ -465,7 +456,6 @@ int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP r
 	pb -> pb_ReportIndication = report;
 	pb -> pb_ReleaseIndication = finish;
 	pb -> pb_AbortIndication = abort;
-
 	if (SSetIndications (pb -> pb_fd, e (DATAser), e (TOKENser),
 						 e (SYNCser), e (ACTIVITYser), e (REPORTser), e (FINISHser),
 						 e (ABORTser), &sis) == NOTOK) {
@@ -474,7 +464,6 @@ int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP r
 		case SC_WAITING:
 			sigiomask (smask);
 			return psaplose (pi, PC_WAITING, NULLCP, NULLCP);
-
 		default:
 			ss2pslose (pb, pi, "SSetIndications", sa);
 			freepblk (pb);
@@ -483,7 +472,6 @@ int PSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP r
 		}
 	}
 	sigiomask (smask);
-
 	return OK;
 }
 
@@ -501,7 +489,6 @@ int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 			  (sa -> sa_cc > 0 ? "%s: %s [%*.*s]": "%s: %s", event,
 			   SErrString (sa -> sa_reason), sa -> sa_cc, sa -> sa_cc,
 			   sa -> sa_prdata));
-
 	cp = "";
 	switch (sa -> sa_reason) {
 	case SC_SSAPID:
@@ -509,20 +496,16 @@ int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 	case SC_ADDRESS:
 		reason = PC_ADDRESS;
 		break;
-
 	case SC_REFUSED:
 		reason = PC_REFUSED;
 		break;
-
 	case SC_CONGEST:
 		reason = PC_CONGEST;
 		break;
-
 	case SC_TRANSPORT:
 	case SC_ABORT:
 		reason = PC_SESSION;
 		break;
-
 	default:
 		reason = PC_SESSION;
 		if (pb == NULLPB)
@@ -566,7 +549,7 @@ int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 }
 
 static void DATAser (int sd, struct SSAPdata *sx) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -574,11 +557,9 @@ static void DATAser (int sd, struct SSAPdata *sx) {
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) px, sizeof *px);
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if (doDATA (pb, sx, px, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -586,17 +567,15 @@ static void DATAser (int sd, struct SSAPdata *sx) {
 }
 
 static void TOKENser (int sd, struct SSAPtoken *st) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if  (doTOKEN (pb, st, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -604,17 +583,15 @@ static void TOKENser (int sd, struct SSAPtoken *st) {
 }
 
 static void SYNCser (int sd, struct SSAPsync *sn) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if  (doSYNC (pb, sn, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -622,17 +599,15 @@ static void SYNCser (int sd, struct SSAPsync *sn) {
 }
 
 static void ACTIVITYser (int sd, struct SSAPactivity *sv) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if  (doACTIVITY (pb, sv, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -640,17 +615,15 @@ static void ACTIVITYser (int sd, struct SSAPactivity *sv) {
 }
 
 static void REPORTser (int sd, struct SSAPreport *sp) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if  (doREPORT (pb, sp, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -658,17 +631,15 @@ static void REPORTser (int sd, struct SSAPreport *sp) {
 }
 
 static void FINISHser (int sd, struct SSAPfinish *sf) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	if  (doFINISH (pb, sf, pi) == NOTOK)
 		(*abort) (sd, &pi -> pi_abort);
 	else
@@ -676,17 +647,15 @@ static void FINISHser (int sd, struct SSAPfinish *sf) {
 }
 
 static void ABORTser (int sd, struct SSAPabort *sa) {
-	IFP	    abort;
+	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 
 	if ((pb = findpblk (sd)) == NULL)
 		return;
-
 	bzero ((char *) pi, sizeof *pi);
 	abort = pb -> pb_AbortIndication;
-
 	doABORT (pb, sa, pi);
 	(*abort) (sd, &pi -> pi_abort);
 }
@@ -697,16 +666,12 @@ struct psapblk *newpblk(void)  {
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
 	if (pb == NULL)
 		return NULL;
-
 	pb -> pb_fd = NOTOK;
-
 	if (once_only == 0) {
 		PHead -> pb_forw = PHead -> pb_back = PHead;
 		once_only++;
 	}
-
 	insque (pb, PHead -> pb_back);
-
 	return pb;
 }
 
@@ -716,18 +681,14 @@ void freepblk (struct psapblk *pb) {
 
 	if (pb == NULL)
 		return;
-
 	if (pb -> pb_fd != NOTOK) {
 		struct SSAPindication   sis;
-
 		SUAbortRequest (pb -> pb_fd, NULLCP, 0, &sis);
 	}
-
 	if (pb -> pb_realbase)
 		free (pb -> pb_realbase);
 	else if (pb -> pb_retry)
 		free (pb -> pb_retry);
-
 	for (qp = pb -> pb_contexts, i = pb -> pb_ncontext - 1;
 			i >= 0;
 			qp++, i--) {
@@ -744,12 +705,9 @@ void freepblk (struct psapblk *pb) {
 		oid_free (pb -> pb_asn);
 	if (pb -> pb_atn)
 		oid_free (pb -> pb_atn);
-
 	if (pb -> pb_ber)
 		oid_free (pb -> pb_ber);
-
 	remque (pb);
-
 	free ((char *) pb);
 }
 
@@ -758,11 +716,9 @@ struct psapblk *findpblk (int sd) {
 
 	if (once_only == 0)
 		return NULL;
-
 	for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 		if (pb -> pb_fd == sd)
 			return pb;
-
 	return NULL;
 }
 
@@ -882,7 +838,6 @@ no_mem:
 						(struct choice_PS_0 *)
 						calloc (1, sizeof (struct choice_PS_0))) == NULL)
 				goto no_mem;
-
 			for (q = d, j = i + 1; j < ndata; q++, j++)
 				if ((*q) -> pe_context != pe -> pe_context)
 					break;
@@ -895,7 +850,6 @@ no_mem:
 				 un.single__ASN1__type = pe) -> pe_refcnt++;
 			} else {
 				struct qbuf *qb2;
-
 				full -> PDV__list -> presentation__data__values ->
 				offset = choice_PS_0_octet__aligned;
 				if ((qb2 = (struct qbuf *) malloc (sizeof *qb2)) == NULL)
@@ -918,14 +872,11 @@ no_mem:
 		qb -> qb_len = simple -> qb_len;
 		qb -> qb_data = qb -> qb_base;
 	}
-
 	return pdu;
-
 out:
 	;
 	if (pdu)
 		free_PS_User__data (pdu);
-
 	return NULL;
 }
 
@@ -941,7 +892,6 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 	*ndata = 0;
 	if (info == NULL)
 		return OK;
-
 	i = 0;
 	switch (info -> offset) {
 	case type_PS_User__data_simple:
@@ -964,14 +914,12 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 							 : PC_CONGEST, ppdu, NULLCP, "%s",
 							 ps_error (result));
 		break;
-
 	case type_PS_User__data_complex:
 		allctx = OK;
 		for (full = info -> un.complex; full; full = full -> next) {
 			struct qbuf *qb;
 			struct PSAPcontext *qp;
 			struct type_PS_PDV__list *pdv = full -> PDV__list;
-
 			ctx = pdv -> identifier;
 			if (allctx == OK)
 				allctx = ctx;
@@ -996,7 +944,6 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 				un.single__ASN1__type = NULLPE;
 				(*data++ = pe) -> pe_context = ctx;
 				break;
-
 			case choice_PS_0_octet__aligned:
 				qb = pdv -> presentation__data__values ->
 					 un.octet__aligned;
@@ -1029,7 +976,6 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 		break;
 	}
 	*ndata = i;
-
 	return OK;
 }
 
@@ -1044,10 +990,8 @@ int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndat
 	*realbase = *base = NULLCP, *len = 0;
 	if (data == NULLPEP || ndata <= 0)
 		return OK;
-
 	if ((info = info2ppdu (pb, pi, data, ndata, ppdu)) == NULL)
 		return (PC_FATAL (pi -> pi_abort.pa_reason) ? NOTOK : DONE);
-
 	if (ppdu == PPDU_TTD) {
 		pe = NULLPE;
 		if ((result = encode_PS_User__data (&pe, 1, 0, NULLCP, info))
@@ -1058,44 +1002,33 @@ losing:
 			return psaplose (pi, PC_CONGEST, NULLCP, "error encoding PDU: %s",
 							 PY_pepy);
 		}
-
 		PLOGP (psap2_log,PS_User__data, pe, text, 0);
-
 		goto serialize;
 	} else if (ppdu == PPDU_RS || ppdu == PPDU_RSA) {
 		/* this works 'cause RS-PPDU == RSA-PPDU */
 		struct type_PS_RS__PPDU rss;
 		struct type_PS_RS__PPDU *rs = &rss;
-
 		if ((rs -> context__list = silly_list (pb, pi)) == NULL)
 			return (PC_FATAL (pi -> pi_abort.pa_reason) ? NOTOK : DONE);
 		rs -> user__data = info;
-
 		pe = NULLPE;
 		if ((result = encode_PS_RS__PPDU (&pe, 1, 0, NULLCP, rs))
 				== NOTOK) {
 			free_PS_Identifier__list (rs -> context__list);
 			goto losing;
 		}
-
 		PLOGP (psap2_log,PS_RS__PPDU, pe, text, 0);
-
 		free_PS_Identifier__list (rs -> context__list);
-
 		goto serialize;
 	}
 
 	if (info -> offset == type_PS_User__data_simple) {
 		struct qbuf *qb;
-
 		qb = info -> un.simple;
 		*len = qb -> qb_len;
-
 		qb = qb -> qb_forw;
 		remque (qb);
-
 		*realbase = (char *) qb, *base = qb -> qb_base;
-
 #ifdef	DEBUG
 		if (psap2_log -> ll_events & LLOG_PDUS)
 			while (ndata-- > 0)
@@ -1113,16 +1046,13 @@ losing:
 serialize:
 		;
 		result = pe2ssdu (pe, base, len);
-
 		pe_free (pe);
-
 		if (result == NOTOK) {
 			free_PS_User__data (info);
 			return psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 		}
 	}
 	free_PS_User__data (info);
-
 	return OK;
 }
 
@@ -1262,24 +1192,19 @@ int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, i
 	*ndata = 0;
 	if (qb == NULL || len <= 0)
 		return OK;
-
 	if (ppdu == PPDU_TTD) {
 		if ((pe = qbuf2pe (qb, len, &result)) == NULLPE)
 			return ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
 							 : PC_PROTOCOL, ppdu, NULLCP, "%s",
 							 ps_error (result));
-
 		info = NULL;
 		result = decode_PS_User__data (pe, 1, NULLIP, NULLVP, &info);
-
 #ifdef	DEBUG
 		if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 			pvpdu (psap2_log, print_PS_User__data_P, pe, text, 1);
 #endif
-
 		goto punch_it;
 	}
-
 	if ((info = (struct type_PS_User__data *) calloc (1, sizeof *info))
 			== NULL) {
 no_mem:
@@ -1287,15 +1212,12 @@ no_mem:
 		psaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
-
 	if (ppdu == PPDU_TE ||
 			(*qb -> qb_forw -> qb_data & (PE_CLASS_MASK|PE_CODE_MASK)) ==
 			((PE_CLASS_APPL << PE_CLASS_SHIFT) |
 			 (PE_FORM_PRIM << PE_FORM_SHIFT) |
 			 (0))) {
-		struct qbuf *qbp,
-				   *qpp;
-
+		struct qbuf *qbp, *qpp;
 		info -> offset = type_PS_User__data_simple;
 		if ((qp = (struct qbuf *) malloc (sizeof *qp)) == NULL)
 			goto no_mem;
@@ -1304,13 +1226,11 @@ no_mem:
 		qp -> qb_data = NULL, qp -> qb_len = len;
 		for (qp = qb -> qb_forw; qp != qb; qp = qbp) {
 			qbp = qp -> qb_forw;
-
 			remque (qp);
 			insque (qp, qpp -> qb_back);
 		}
 	} else {
 		info -> offset = type_PS_User__data_complex;
-
 		if ((pe = qbuf2pe (qb, len, &result)) == NULLPE) {
 			ppktlose (pb, pi, result == PS_ERR_NMEM ? PC_CONGEST
 					  : PC_PROTOCOL, ppdu, NULLCP, "%s",
@@ -1336,43 +1256,34 @@ no_mem:
 punch_it:
 		;
 		pe_free (pe);
-
 		if (result == NOTOK) {
-			ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s",
-					  PY_pepy);
+			ppktlose (pb, pi, PC_UNRECOGNIZED, ppdu, NULLCP, "%s", PY_pepy);
 			goto out;
 		}
 	}
-
 	if ((result = ppdu2info (pb, pi, info, data, ndata, ppdu)) == NOTOK)
 		result = PC_FATAL (pi -> pi_abort.pa_reason) ? NOTOK : DONE;
-
 #ifdef	DEBUG
 	if (result == OK
 			&& ppdu != PPDU_TTD
 			&& info -> offset == type_PS_User__data_simple
 			&& (psap2_log -> ll_events & LLOG_PDUS)) {
 		int	i;
-
 		for (i = *ndata; i > 0; i--)
 			pvpdu (psap2_log, vunknown_P, *data++, text, 1);
 	}
 #endif
-
 	free_PS_User__data (info);
-
 	return result;
 
 out:
 	;
 	if (info)
 		free_PS_User__data (info);
-
 	return NOTOK;
 }
 
-struct qbuf *
-info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
+struct qbuf *info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 	int           len, qlen;
 	struct qbuf *qb;
 
@@ -1383,7 +1294,6 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 			psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out_f;
 		}
-
 		qb -> qb_data = qb -> qb_base, qb -> qb_len = len;
 	} else {
 		len = ps_get_abs (pe);
@@ -1401,24 +1311,20 @@ info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 		psaplose (pi, PC_CONGEST, NULLCP, "error encoding user-info");
 		goto out_f;
 	}
-
 	if (qp)
 		qp -> qb_data += qlen, qp -> qb_len -= qlen;
 	else
 		qb -> qb_len = qlen;
-
 #ifdef	DEBUG
 	if (psap_log -> ll_events & LLOG_PDUS)
 		pe2text (psap_log, pe, 0, qlen);
 #endif
-
 	return qb;
 
 out_f:
 	;
 	if (qb && qb != qp)
 		free ((char *) qb);
-
 	return NULL;
 }
 
@@ -1431,7 +1337,6 @@ int qb2info (struct qbuf *qb, PE *pe) {
 	PS	    ps;
 
 	*pe = NULLPE;
-
 	if ((ps = ps_alloc (qbuf_open)) == NULLPS)
 		return PS_ERR_NMEM;
 #ifdef	DEBUG
@@ -1444,23 +1349,19 @@ int qb2info (struct qbuf *qb, PE *pe) {
 		result = PS_ERR_NONE;
 		*pe = p;
 	}
-
 	ps -> ps_addr = NULL;	/* so ps_free doesn't free remainder of qbuf */
 #ifdef	DEBUG
 	len = ps -> ps_byteno - len;
 #endif
 	ps_free (ps);
-
 #ifdef	DEBUG
 	if (p && (psap_log -> ll_events & LLOG_PDUS))
 		pe2text (psap_log, p, 1, len);
 #endif
-
 	return result;
 }
 
-struct type_PS_Identifier__list *
-silly_list (struct psapblk *pb, struct PSAPindication *pi) {
+struct type_PS_Identifier__list *silly_list (struct psapblk *pb, struct PSAPindication *pi) {
 	int    j;
 	struct PSAPcontext *qp;
 	struct type_PS_Identifier__list *list;
@@ -1469,7 +1370,6 @@ silly_list (struct psapblk *pb, struct PSAPindication *pi) {
 
 	list = NULL;
 	mp = &list;
-
 	for (j = 0, qp = pb -> pb_contexts;
 			j < pb -> pb_ncontext;
 			j++, qp++) {
@@ -1490,6 +1390,5 @@ no_mem:
 			goto no_mem;
 		lp -> element_PS_10 -> identifier = qp -> pc_id;
 	}
-
 	return list;
 }

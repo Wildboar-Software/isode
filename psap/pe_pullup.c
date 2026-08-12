@@ -1,9 +1,7 @@
 /* pe_pullup.c - "pullup" a presentation element */
-
-#include <stdio.h>
 #include "psap.h"
 
-static PElementData	pe_pullup_aux ();
+static PElementData	pe_pullup_aux (PE pe, int *len);
 
 int pe_pullup (PE pe) {
 	PElementLen	    len;
@@ -12,22 +10,17 @@ int pe_pullup (PE pe) {
 
 	if (pe -> pe_form != PE_FORM_CONS)
 		return OK;
-
 	if ((dp = pe_pullup_aux (pe, &len)) == NULLPED)
 		return NOTOK;
-
 	for (p = pe -> pe_cons; p; p = p -> pe_next)
 		pe_free (p);
-
 	pe -> pe_form = PE_FORM_PRIM;
 	pe -> pe_len = len;
 	pe -> pe_prim = dp;
-
 	return OK;
 }
 
-static PElementData
-pe_pullup_aux (PE pe, int *len) {
+static PElementData pe_pullup_aux (PE pe, int *len) {
 	int    i,
 		   k;
 	int     j;
@@ -44,7 +37,6 @@ pe_pullup_aux (PE pe, int *len) {
 			return NULLPED;
 		PEDcpy (pe -> pe_prim, dp, i);
 		break;
-
 	case PE_FORM_CONS:
 		dp = NULLPED, i = 0;
 		class = pe -> pe_class, id = pe -> pe_id;
@@ -67,11 +59,9 @@ pe_pullup_aux (PE pe, int *len) {
 				dp = ep, i += j;
 		}
 		break;
-
 	case PE_FORM_ICONS:
 		return NULLPED;
 	}
-
 	*len = i;
 	return (dp);
 }

@@ -6,10 +6,9 @@
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
-static long	get_usec ();
+static long	get_usec (char **cp, int *len);
 
-UTC
-prim2time (PE pe, int generalized) {
+UTC prim2time (PE pe, int generalized) {
 	int     len;
 	char  *cp;
 	UTC    u;
@@ -22,7 +21,6 @@ prim2time (PE pe, int generalized) {
 			return pe_seterr (pe, PE_ERR_PRIM, NULLUTC);
 		u = (*aux) ((char *) pe -> pe_prim, (int) pe -> pe_len);
 		break;
-
 	case PE_FORM_CONS:
 		if ((cp = prim2str (pe, &len)) == NULLCP)
 			return NULLUTC;
@@ -30,13 +28,11 @@ prim2time (PE pe, int generalized) {
 		free (cp);
 		break;
 	}
-
 	return (u ? u : pe_seterr (pe, generalized ? PE_ERR_GENT : PE_ERR_UTCT,
 							   NULLUTC));
 }
 
-UTC
-str2utct (char *cp, int len) {
+UTC str2utct (char *cp, int len) {
 	int     year,
 			hours,
 			mins;
@@ -45,26 +41,22 @@ str2utct (char *cp, int len) {
 	UTC    u = &ut;
 
 	bzero ((char *) u, sizeof *u);
-
 	if (sscanf (cp, "%2d%2d%2d%2d%2d", &year, &u -> ut_mon,
 				&u -> ut_mday, &u -> ut_hour, &u -> ut_min) != 5)
 		return NULLUTC;
 	cp += 10, len -= 10;
 	u -> ut_year = YEAR (year);
-
 	if (len > 0 && isdigit ((u_char) *cp)) {
 		if (sscanf (cp, "%2d", &u -> ut_sec) != 1)
 			return NULLUTC;
 		u -> ut_flags |= UT_SEC;
 		cp += 2, len -= 2;
 	}
-
 	if (len > 0) {
 		switch (*cp) {
 		case 'Z':
 			cp++, len--;
 			break;
-
 		case '+':
 		case '-':
 			if (sscanf (cp + 1, "%2d%2d", &hours, &mins) != 2)
@@ -73,7 +65,6 @@ str2utct (char *cp, int len) {
 			u -> ut_zone = *cp == '+' ? zone : -zone;
 			cp += 5, len -= 5;
 			break;
-
 		default:
 			return NULLUTC;
 		}
@@ -81,12 +72,10 @@ str2utct (char *cp, int len) {
 	}
 	if (len != 0)
 		return NULLUTC;
-
 	return u;
 }
 
-UTC
-str2gent (char *cp, int len) {
+UTC str2gent (char *cp, int len) {
 	int     hours,
 			mins;
 	long    usec;
@@ -95,12 +84,10 @@ str2gent (char *cp, int len) {
 	UTC      u = &ut;
 
 	bzero ((char *) u, sizeof *u);
-
 	if (sscanf (cp, "%4d%2d%2d%2d", &u -> ut_year, &u -> ut_mon,
 				&u -> ut_mday, &u -> ut_hour) != 4)
 		return NULLUTC;
 	cp += 10, len -= 10;
-
 	if (len > 0)
 		switch (*cp) {
 		case '.':
@@ -113,7 +100,6 @@ str2gent (char *cp, int len) {
 			u -> ut_usec = usec % 1000000;
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
-
 		default:
 			if (isdigit ((u_char) *cp)) {
 				if (sscanf (cp, "%2d", &u -> ut_min) != 1)
@@ -122,7 +108,6 @@ str2gent (char *cp, int len) {
 			}
 			break;
 		}
-
 	if (len > 0)
 		switch (*cp) {
 		case '.':
@@ -135,7 +120,6 @@ str2gent (char *cp, int len) {
 			u -> ut_usec = usec % 1000000;
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
-
 		default:
 			if (isdigit ((u_char) *cp)) {
 				if (sscanf (cp, "%2d", &u -> ut_sec) != 1)
@@ -145,7 +129,6 @@ str2gent (char *cp, int len) {
 			}
 			break;
 		}
-
 	if (len > 0)
 		switch (*cp) {
 		case '.':
@@ -161,7 +144,6 @@ str2gent (char *cp, int len) {
 		default:
 			break;
 		}
-
 get_zone:
 	;
 	if (len > 0) {
@@ -169,7 +151,6 @@ get_zone:
 		case 'Z':
 			cp++, len--;
 			break;
-
 		case '+':
 		case '-':
 			if (sscanf (cp + 1, "%2d%2d", &hours, &mins) != 2)
@@ -178,7 +159,6 @@ get_zone:
 			u -> ut_zone = *cp == '+' ? zone : -zone;
 			cp += 5, len -= 5;
 			break;
-
 		default:
 			return NULLUTC;
 		}
@@ -186,14 +166,10 @@ get_zone:
 	}
 	if (len != 0)
 		return NULLUTC;
-
 	return u;
 }
 
-/* not perfect, but what is? */
-
-static long
-get_usec (char **cp, int *len) {
+static long get_usec (char **cp, int *len) {
 	int    j;
 	long   i;
 	char  *dp;
@@ -202,11 +178,8 @@ get_usec (char **cp, int *len) {
 	for (dp = *cp, j = 0; isdigit ((u_char) *dp); dp++, j++)
 		if (j < 6)
 			i = i * 10L + (long) (*dp - '0');
-
 	*cp = dp, *len -= j;
-
 	while (j++ < 6)
 		i *= 10L;
-
 	return i;
 }

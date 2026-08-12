@@ -8,7 +8,18 @@
 
 /*    SERVER only */
 
-int PExec (struct SSAPstart *ss, struct PSAPindication *pi, char *arg1, char *arg2, IFP hook, IFP setperms) {
+int PExec (
+	struct SSAPstart *ss,
+	struct PSAPindication *pi,
+	char *arg1,
+	char *arg2,
+	IFP hook,
+#ifndef	IAE
+	int (*setperms)(struct isoservent *is)
+#else
+	int (*setperms)(struct IAEntry *is)
+#endif
+) {
 	int	    len,
 			result,
 			result2;

@@ -16,10 +16,9 @@
 
 #include "psap.h"
 
-static double decode_binary (), decode_decimal ();
+static double decode_binary (PE pe), decode_decimal (PE pe);
 
-double
-prim2real (PE pe) {
+double prim2real (PE pe) {
 	if (pe -> pe_form != PE_FORM_PRIM)
 		return pe_seterr (pe, PE_ERR_PRIM, NOTOK);
 	if (pe -> pe_len == 0)
@@ -55,8 +54,7 @@ prim2real (PE pe) {
 	/* NOTREACHED */
 }
 
-static double
-decode_binary (PE pe) {
+static double decode_binary (PE pe) {
 	int	sign, base, factor;
 	int	exponent, i;
 	double	mantissa, di;
@@ -79,9 +77,7 @@ decode_binary (PE pe) {
 	default:
 		return pe_seterr(pe, PE_ERR_NOSUPP, NOTOK);
 	}
-
 	factor = ((int)(*dp & PE_REAL_B_F)) >> 2;
-
 	exponent = (dp[1] & 0x80) ? (-1) : 0;
 	switch (*dp++ & PE_REAL_B_EXP) {
 	case PE_REAL_B_EF3:
@@ -105,13 +101,11 @@ decode_binary (PE pe) {
 		di *= 1 << 8;	;
 		di += (int)(*dp++ & 0xff);
 	}
-
 	mantissa = sign * di * (1 << factor);
 	return mantissa * pow ((double)base, (double)exponent);
 }
 
-static double
-decode_decimal (PE pe) {
+static double decode_decimal (PE pe) {
 	/* sorry - don't have the standard ! */
 	return pe_seterr (pe, PE_ERR_NOSUPP, NOTOK);
 }

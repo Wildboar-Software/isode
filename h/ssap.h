@@ -429,9 +429,24 @@ int	SConnRequest ();	/* S-CONNECT.REQUEST (backwards-compatible) */
 	SAsynConnRequest (a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,0)
 int	SAsynConnRequest ();	/* S-(ASYN-)CONNECT.REQUEST */
 int	SAsynRetryRequest ();	/* S-ASYN-RETRY.REQUEST (pseudo) */
-int	SDataRequest ();	/* S-DATA.REQUEST */
-int	SSendRequest ();	/* S-SEND.REQUEST (segmented) */
-int	SWriteRequest ();	/* S-WRITE.REQUEST (pseudo) */
+/* S-DATA.REQUEST */
+int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si);
+/* S-SEND.REQUEST (segmented) */
+int SSendRequest (
+	int sd,
+	char *data,
+	int cc,
+	int begin,
+	int end,
+	struct SSAPindication *si
+);
+/* S-WRITE.REQUEST (pseudo) */
+int SWriteRequest (
+	int sd,
+	int typed,
+	struct udvec *uv,
+	struct SSAPindication *si
+);
 int	SExpdRequest ();	/* S-EXPEDITED-DATA.REQUEST */
 int	STypedRequest ();	/* S-TYPED-DATA.REQUEST */
 int	SCapdRequest ();	/* S-CAPABILITY-DATA.REQUEST */
@@ -439,21 +454,32 @@ int	SCapdResponse ();	/* S-CAPABILITY-DATA.RESPONSE */
 int	SReadRequest ();	/* S-READ.REQUEST (pseudo) */
 int	SGTokenRequest ();	/* S-TOKEN-GIVE.REQUEST */
 int	SPTokenRequest ();	/* S-TOKEN-PLEASE.REQUEST */
-int	SGControlRequest ();	/* S-CONTROL-GIVE.REQUEST */
+int SGControlRequest (int sd, struct SSAPindication *si);	/* S-CONTROL-GIVE.REQUEST */
 int	SMajSyncRequest ();	/* S-MAJOR-SYNC.REQUEST */
 int	SMajSyncResponse ();	/* S-MAJOR-SYNC.RESPONSE */
 int	SMinSyncRequest ();	/* S-MINOR-SYNC.REQUEST */
 int	SMinSyncResponse ();	/* S-MINOR-SYNC.RESPONSE */
 int	SReSyncRequest ();	/* S-RESYNCHRONIZE.REQUEST */
 int	SReSyncResponse ();	/* S-RESYNCHRONIZE.RESPONSE */
-int	SActStartRequest ();	/* S-ACTIVITY-START.REQUEST */
-int	SActResumeRequest ();	/* S-ACTIVITY-RESUME.REQUEST */
-int	SActIntrRequest ();	/* S-ACTIVITY-INTERRUPT.REQUEST */
-int	SActIntrResponse ();	/* S-ACTIVITY-INTERRUPT.RESPONSE */
-int	SActDiscRequest ();	/* S-ACTIVITY-DISCARD.REQUEST */
-int	SActDiscResponse ();	/* S-ACTIVITY-DISCARD.RESPONSE */
-int	SActEndRequest ();	/* S-ACTIVITY-END.REQUEST */
-int	SActEndResponse ();	/* S-ACTIVITY-END.RESPONSE */
+int SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-START.REQUEST */
+
+/* S-ACTIVITY-RESUME.REQUEST */
+int SActResumeRequest (
+	int sd,
+	struct SSAPactid *id,
+	struct SSAPactid *oid,
+	long ssn,
+	struct SSAPref *ref,
+	char *data,
+	int cc,
+	struct SSAPindication *si
+);
+int SActIntrRequest (int sd, int reason, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.REQUEST */
+int SActIntrResponse (int sd, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.RESPONSE */
+int SActDiscRequest (int sd, int reason, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.REQUEST */
+int SActDiscResponse (int sd, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.RESPONSE */
+int SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.REQUEST */
+int SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.RESPONSE */
 int	SUAbortRequest ();	/* S-U-ABORT.REQUEST */
 int	SUReportRequest ();	/* S-U-EXCEPTION-REPORT.REQUEST */
 int	SRelRequest ();		/* S-RELEASE.REQUEST */

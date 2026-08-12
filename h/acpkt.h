@@ -128,6 +128,8 @@ struct type_ACS_Association__information *info2apdu ();
 int	apdu2info ();
 #endif
 
+typedef int (*UAAbortFunction)(int sd, PE *data, int ndata, void *pi);
+
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
 	struct assocblk *acb_back;	/* .. */
@@ -163,7 +165,7 @@ struct assocblk {
 	int	    acb_settings;	/* initial settings */
 	int	    acb_ssdusize;	/* largest atomic SSDU */
 
-	int(*acb_uabort)(int sd, PE *data, int ndata, void *);		/* disconnect underlying service */
+	UAAbortFunction acb_uabort;		/* disconnect underlying service */
 
 	/* ACSE */
 	int	    acb_sversion;	/* session service version number */

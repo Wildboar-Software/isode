@@ -31,7 +31,7 @@
 #include <string.h>
 #include "psap.h"
 
-static int  pe2pl_aux ();
+static int  pe2pl_aux (PS ps, PE pe, int level);
 
 #define	bf_write()	\
     if (ps_write (ps, (PElementData) buffer, (PElementLen) strlen (buffer)) == NOTOK) \
@@ -42,7 +42,6 @@ int pe2pl (PS ps, PE pe) {
 
 	if ((result = pe2pl_aux (ps, pe, 0)) != NOTOK)
 		result = ps_flush (ps);
-
 	return result;
 }
 
@@ -62,7 +61,6 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 	sprintf (buffer, "%*s( %s ",
 			 level * 4, "", pe_classlist[pe -> pe_class]);
 	bf_write ();
-
 	switch (pe -> pe_class) {
 	case PE_CLASS_UNIV:
 		if ((int)(id = pe -> pe_id) < pe_maxuniv && (bp = pe_univlist[id])) {
@@ -72,7 +70,6 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 		} else
 			goto no_code;
 		break;
-
 	case PE_CLASS_APPL:
 		if ((int)(id = pe -> pe_id) < pe_maxappl && (bp = pe_applist[id])) {
 			if (ps_write (ps, (PElementData) bp, (PElementLen) strlen (bp))
@@ -80,14 +77,12 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 				return NOTOK;
 		} else
 			goto no_code;
-
 	case PE_CLASS_PRIV:
 		if ((int)(id = pe -> pe_id) < pe_maxpriv && (bp = pe_privlist[id])) {
 			if (ps_write (ps, (PElementData) bp, (PElementLen) strlen (bp))
 					== NOTOK)
 				return NOTOK;
 		}			/* else fall */
-
 	case PE_CLASS_CONT:
 no_code:
 		;
@@ -95,7 +90,6 @@ no_code:
 		bf_write ();
 		break;
 	}
-
 	level++;
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
@@ -103,7 +97,6 @@ no_code:
 		sprintf (buffer, " 0x%x%c",
 				 pe -> pe_len, pe -> pe_len ? '\n' : ' ');
 		bf_write ();
-
 		if (pe -> pe_len) {
 			ia5ok = 0;
 			if (pe -> pe_form == PE_FORM_PRIM
@@ -123,11 +116,9 @@ no_code:
 				case PE_DEFN_GENS:
 					ia5ok = 1;
 					break;
-
 				default:
 					break;
 				}
-
 			for (ep = (dp = pe -> pe_prim) + pe -> pe_len; dp < ep;) {
 				i = min (ep - dp, sizeof (int));
 				if (ia5 = ia5ok) {
@@ -161,7 +152,6 @@ no_code:
 		} else
 			level = 1;
 		break;
-
 	case PE_FORM_CONS:
 		if (p = pe -> pe_cons) {
 			if (ps_write (ps, (PElementData) "\n", (PElementLen) 1)
@@ -179,9 +169,7 @@ no_code:
 		break;
 	}
 	level--;
-
 	sprintf (buffer, "%*s)\n", level * 4, "");
 	bf_write ();
-
 	return OK;
 }

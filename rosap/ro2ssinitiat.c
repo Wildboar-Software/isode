@@ -144,7 +144,7 @@ no_mem:
 
 	if (sc -> sc_result == SC_ACCEPT) {
 		acb -> acb_fd = sc -> sc_sd;
-		acb -> acb_uabort = SUAbortRequest;
+		acb -> acb_uabort = (UAAbortFunction)SUAbortRequest;
 	} else if (sc -> sc_result == SC_ABORT) {
 		acb -> acb_fd = NOTOK;
 

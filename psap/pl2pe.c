@@ -46,17 +46,16 @@ typedef struct PList {
 #define	pl_num	pl_un.un_pl_num
 }			PList, *PL;
 
-static PE  pl2pe_aux ();
-static int pl_read_class ();
-static int pl_read_id ();
-static int  pl_read_name ();
-static int  pl_read_cons ();
-static int  pl_read_prim ();
-static int  pl_read_lex ();
-static int pl_read ();
+static PE  pl2pe_aux (PS ps, PL pl);
+static int pl_read_class (PS ps, PL pl, PElementClass *class);
+static int pl_read_id (PS ps, PL pl, int class, PElementID *id);
+static int  pl_read_name (char *name, char **list, int n);
+static int  pl_read_cons (PS ps, PL pl, PE *pe);
+static int  pl_read_prim (PS ps, PL pl, PE pe);
+static int  pl_read_lex (PS ps, PL pl);
+static int pl_read (PS ps, byte *c);
 
-PE
-pl2pe (PS ps) {
+PE pl2pe (PS ps) {
 	struct PList    pls;
 	PL	    pl = &pls;
 
@@ -67,12 +66,10 @@ pl2pe (PS ps) {
 	}
 	if (pl -> pl_code != PL_CODE_LPAR)
 		return ps_seterr (ps, PS_ERR_XXX, NULLPE);
-
 	return pl2pe_aux (ps, pl);
 }
 
-static PE
-pl2pe_aux (PS ps, PL pl) {
+static PE pl2pe_aux (PS ps, PL pl) {
 	PElementClass   class;
 	PElementID	    id;
 	PE	    pe;
@@ -81,10 +78,8 @@ pl2pe_aux (PS ps, PL pl) {
 		return NULLPE;
 	if (pl_read_id (ps, pl, class, &id) == NOTOK)
 		return NULLPE;
-
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return ps_seterr (ps, PS_ERR_NMEM, NULLPE);
-
 	if (pl_read_lex (ps, pl) == NOTOK)
 		return NULLPE;
 	switch (pl -> pl_code) {
@@ -94,18 +89,15 @@ pl2pe_aux (PS ps, PL pl) {
 	case PL_CODE_RPAR:
 		pe -> pe_form = PE_FORM_CONS;
 		break;
-
 	case PL_CODE_NUM:
 		if (pl_read_prim (ps, pl, pe) == NOTOK)
 			goto you_lose;
 		break;
-
 	default:
 		ps -> ps_errno = PS_ERR_XXX;
 		goto you_lose;
 	}
 	return pe;
-
 you_lose:
 	;
 	pe_free (pe);
@@ -119,10 +111,8 @@ static int pl_read_class (PS ps, PL pl, PElementClass *class) {
 		return NOTOK;
 	if (pl -> pl_code != PL_CODE_NAME)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-
 	if ((i = pl_read_name (pl -> pl_name, pe_classlist, pe_maxclass)) == NOTOK)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-
 	*class = i;
 	return OK;
 }
@@ -152,15 +142,12 @@ static int pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 		if ((i = pl_read_name (pl -> pl_name, list, i)) == NOTOK)
 			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 		break;
-
 	case PL_CODE_NUM:
 		i = pl -> pl_num;
 		break;
-
 	default:
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 	}
-
 	*id = i;
 	return OK;
 }
@@ -172,7 +159,6 @@ static int pl_read_name (char *name, char **list, int n) {
 	for (i = n; i > 0; i--)
 		if ((bp = *list++) && strcmp (bp, name) == 0)
 			return (n - i);
-
 	return NOTOK;
 }
 
@@ -183,7 +169,6 @@ static int pl_read_cons (PS ps, PL pl, PE *pe) {
 	if ((p = pl2pe_aux (ps, pl)) == NULLPE)
 		return NOTOK;
 	*pe = p;
-
 	for (q = p;; q = q -> pe_next = p) {
 		if (pl_read_lex (ps, pl) == NOTOK)
 			return NOTOK;
@@ -192,10 +177,8 @@ static int pl_read_cons (PS ps, PL pl, PE *pe) {
 			if ((p = pl2pe_aux (ps, pl)) == NULLPE)
 				return NOTOK;
 			break;
-
 		default:
 			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-
 		case PL_CODE_RPAR:
 			return OK;
 		}
@@ -213,9 +196,7 @@ static int pl_read_prim (PS ps, PL pl, PE pe) {
 		goto out;
 	if ((dp = PEDalloc (len)) == NULLPED)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
-
 	pe -> pe_prim = dp, pe -> pe_len = len;
-
 	for (ep = dp + len; dp < ep;) {
 		i = min (ep - dp, sizeof (int));
 		if (pl_read_lex (ps, pl) == NOTOK)
@@ -226,14 +207,12 @@ static int pl_read_prim (PS ps, PL pl, PE pe) {
 		while (i-- > 0)
 			*dp++ = (n >> (i * 8)) & 0xff;
 	}
-
 out:
 	;
 	if (pl_read_lex (ps, pl) == NOTOK)
 		return NOTOK;
 	if (pl -> pl_code != PL_CODE_RPAR)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-
 	return OK;
 }
 
@@ -266,16 +245,13 @@ static int pl_read_lex (PS ps, PL pl) {
 	fprintf (stderr, "\n");
 	if (pl -> pl_code == PL_CODE_RPAR)
 		sleep(1);
-
 	return i;
 }
 
 #define	pl_read_lex	pl_read_lex_aux
 #endif
 
-static int  pl_read_lex (ps, pl)
-PS	ps;
-PL	pl;
+static int  pl_read_lex (PS ps, PL pl)
 {
 	int    base,
 		   n;
@@ -286,7 +262,6 @@ PL	pl;
 		if (pl_read (ps, &c) == NOTOK)
 			return NOTOK;
 	} while (isspace ((u_char) c));
-
 	switch (c) {
 	case '(':
 		pl -> pl_code = PL_CODE_LPAR;
@@ -294,14 +269,12 @@ PL	pl;
 	case ')':
 		pl -> pl_code = PL_CODE_RPAR;
 		return OK;
-
 	case ';':
 		do {
 			if (pl_read (ps, &c) == NOTOK)
 				return NOTOK;
 		} while (c != '\n');
 		return pl_read_lex (ps, pl);
-
 	default:
 		if (isalpha ((u_char) c)) {
 			pl -> pl_code = PL_CODE_NAME;
@@ -315,7 +288,6 @@ PL	pl;
 			ps -> ps_scratch = c;
 			return OK;
 		}
-
 		if (c == '"') {
 			pl -> pl_code = PL_CODE_NUM;
 			for (n = 0;;) {
@@ -328,10 +300,8 @@ PL	pl;
 				n = (n << 8) | (c & 0xff);
 			}
 		}
-
 		if (!isdigit ((u_char) c))
 			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-
 		pl -> pl_code = PL_CODE_NUM;
 		if (c == '0') {
 			if (pl_read (ps, &c) == NOTOK)
@@ -350,7 +320,6 @@ PL	pl;
 			}
 		} else
 			base = 10;
-
 		for (n = 0;;) {
 			switch (base) {
 			case 10:
@@ -391,6 +360,5 @@ static int pl_read (PS ps, byte *c) {
 		ps -> ps_scratch = 0;
 		return OK;
 	}
-
 	return ps_read (ps, c, 1);
 }

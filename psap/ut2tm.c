@@ -12,15 +12,13 @@
         (((y) % 4) ? 0 : (((y) % 100) ? 1 : (((y) % 400) ? 0 : 1)))
 
 extern int dmsize[];
-static  int makewkday ();
+static  int makewkday (UTC ut);
 
-struct tm *
-ut2tm (UTC ut) {
+struct tm *ut2tm (UTC ut) {
 	static struct tm   tms;
 	struct tm *tm = &tms;
 
 	bzero ((char *) tm, sizeof *tm);
-
 	tm -> tm_sec = ut -> ut_sec;
 	tm -> tm_min = ut -> ut_min;
 	tm -> tm_hour = ut -> ut_hour;
@@ -29,13 +27,11 @@ ut2tm (UTC ut) {
 	tm -> tm_year = UNYEAR (ut -> ut_year);
 	tm -> tm_wday = makewkday (ut);
 	tm -> tm_yday = tm -> tm_isdst = 0;
-
 	tm -> tm_hour -= ut -> ut_zone / 60, tm -> tm_min -= ut -> ut_zone % 60;
 	if (tm -> tm_min < 0)
 		tm -> tm_hour--, tm -> tm_min += 60;
 	else if (tm -> tm_min > 59)
 		tm -> tm_hour++, tm -> tm_min -= 60;
-
 	if (tm -> tm_hour < 0) {
 		tm -> tm_mday--, tm -> tm_hour += 24;
 		if (tm -> tm_mday < 1) {
@@ -45,7 +41,6 @@ ut2tm (UTC ut) {
 			if (tm -> tm_mon < 0)
 				tm -> tm_year--, tm -> tm_mon = 11;
 		}
-
 	} else if (tm -> tm_hour > 23) {
 		int mdays;
 		tm -> tm_mday++, tm -> tm_hour -= 24;
@@ -58,7 +53,6 @@ ut2tm (UTC ut) {
 				tm -> tm_year++, tm -> tm_mon = 0;
 		}
 	}
-
 	return tm;
 }
 
@@ -68,14 +62,11 @@ ut2tm (UTC ut) {
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
 static int makewkday (UTC ut) {
-	int     d,
-			mon,
-			year;
+	int     d, mon, year;
 
 	mon = ut -> ut_mon;
 	year = YEAR (ut -> ut_year);
 	d = 4 + year + (year + 3) / 4;
-
 	if (year > 1800) {
 		d -= (year - 1701) / 100;
 		d += (year - 1601) / 400;
@@ -87,6 +78,5 @@ static int makewkday (UTC ut) {
 	while (--mon > 0)
 		d += dmsize[mon - 1];
 	d += ut -> ut_mday - 1;
-
 	return (d % 7);
 }

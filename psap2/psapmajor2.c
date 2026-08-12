@@ -6,7 +6,15 @@
 
 /*    P-{MAJOR-SYNC,ACTIVITY-END}.RESPONSE */
 
-int PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi, char *dtype, IFP sfunc, char *stype) {
+int PMajSyncResponseAux (
+	int sd,
+	PE *data,
+	int ndata,
+	struct PSAPindication *pi,
+	char *dtype,
+	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
+	char *stype
+) {
 	SBV	    smask;
 	int     len,
 			result;
@@ -20,16 +28,12 @@ int PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi,
 	missingP (pi);
 	missingP (sfunc);
 	missingP (stype);
-
 	smask = sigioblock ();
-
 	psapPsig (pb, sd);
-
 	if ((result = info2ssdu (pb, pi, data, ndata, &realbase, &base, &len,
 							 "P-MAJOR-SYNC (ACTIVITY-END) user-data",
 							 PPDU_NONE)) != OK)
 		goto out2;
-
 	if ((result = (*sfunc) (sd, base, len, &sis)) == NOTOK)
 		if (SC_FATAL (sa -> sa_reason))
 			ss2pslose (pb, pi, stype, sa);
@@ -37,7 +41,6 @@ int PMajSyncResponseAux (int sd, PE *data, int ndata, struct PSAPindication *pi,
 			ss2pslose (NULLPB, pi, stype, sa);
 			goto out1;
 		}
-
 out2:
 	;
 	if (result == NOTOK)
@@ -50,8 +53,6 @@ out1:
 		free (realbase);
 	else if (base)
 		free (base);
-
 	sigiomask (smask);
-
 	return result;
 }

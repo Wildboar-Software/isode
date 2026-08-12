@@ -185,13 +185,13 @@ struct psapblk {
 #endif
 	struct PSAPaddr pb_responding;	/* responder */
 
-	IFP	    pb_DataIndication;		/* INDICATION handlers */
-	IFP	    pb_TokenIndication;		/* .. */
-	IFP	    pb_SyncIndication;		/* .. */
-	IFP	    pb_ActivityIndication;	/* .. */
-	IFP	    pb_ReportIndication;	/* .. */
-	IFP	    pb_ReleaseIndication;	/* .. */
-	IFP	    pb_AbortIndication;		/* .. */
+	void (*pb_DataIndication)(int sd, struct PSAPdata *sx);		/* INDICATION handlers */
+	void (*pb_TokenIndication)(int sd, struct PSAPtoken *st);		/* .. */
+	void (*pb_SyncIndication)(int sd, struct PSAPsync *sn);		/* .. */
+	void (*pb_ActivityIndication)(int sd, struct PSAPactivity *sv);	/* .. */
+	void (*pb_ReportIndication)(int sd, struct PSAPreport *sp);	/* .. */
+	void (*pb_ReleaseIndication)(int sd, struct PSAPfinish *sf);	/* .. */
+	void (*pb_AbortIndication)(int sd, struct PSAPabort *sa);		/* .. */
 
 #ifdef	LPP
 	int	    (*pb_retryfnx)(struct psapblk *pb, int reason, struct PSAPindication *pi);
@@ -206,7 +206,8 @@ int	ppktlose (struct psapblk*pb, ...);
 int	psaplose (struct PSAPindication*pi, ...);
 
 void freepblk (struct psapblk *pb);
-struct psapblk *newpblk (), *findpblk ();
+struct psapblk *newpblk (void);
+struct psapblk *findpblk (int sd);
 
 int	psaplose (struct PSAPindication*, ...);
 
@@ -217,17 +218,20 @@ int	psaplose (struct PSAPindication*, ...);
 #define	PC_REASON_BASE \
 	(PC_ABSTRACT - int_PS_provider__reason_abstract__syntax__not__supported)
 
-struct type_PS_User__data *info2ppdu ();
-int	ppdu2info ();
+struct type_PS_User__data *info2ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu);
+int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu);
 
-int	info2ssdu (), ssdu2info (), qbuf2info ();
+int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu);
+int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu);
+int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu);
 
 struct qbuf *info2qb ();
 int	qb2info ();
 
 struct type_PS_Identifier__list *silly_list ();
 
-int	ss2pslose (), ss2psabort ();
+int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi);
+int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa);
 
 struct pair {
 	int	    p_mask;
