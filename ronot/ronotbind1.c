@@ -57,16 +57,13 @@ int			  async;
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcAsynAssocRequest (context, callingtitle, calledtitle,
 								 callingaddr, calledaddr, ctxlist, defctxname,
 								 prequirements, srequirements, isn, settings, ref,
 								 user_data_p, ndata, qos, acc, aci, async);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : RoAsynBindRequest failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
@@ -74,7 +71,6 @@ int			  async;
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	if (((!async) && (result == OK)) || (async && (result == DONE))) {
 		if (acc->acc_result == ACS_ACCEPT) {
 			struct RoSAPindication	  roi_s;
@@ -90,17 +86,14 @@ int			  async;
 				ACAFREE (aca);
 				return result;
 			}
-
 			return (ronotlose (rni, RBI_ACSE, NULLCP, NULLCP));
 		}
-
 		if (ParseRoBindResponse (acc, rni) != OK) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.REQUEST : ParseRoBindResponse failed"));
 			ACCFREE (acc);
 			return (NOTOK);
 		}
 	}
-
 	return (result);
 }
 
@@ -113,20 +106,17 @@ int RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct 
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 	bzero ((char *)aci, sizeof (*aci));
-
 	if (do_next_nsap) {
 		result = AcAsynNextRequest (ad, acc, aci);
 	} else {
 		result = AcAsynRetryRequest (ad, acc, aci);
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.RETRY : AcAsynRetryRequest failed"));
 		acs2ronotlose (rni, "RO-BIND.RETRY", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	if (result == DONE) {
 		if (acc->acc_result == ACS_ACCEPT) {
 			struct RoSAPindication	  roi_s;
@@ -144,14 +134,12 @@ int RoAsynBindRetry (int ad, int do_next_nsap, struct AcSAPconnect *acc, struct 
 			}
 			return (ronotlose (rni, RBI_ACSE, NULLCP, NULLCP));
 		}
-
 		if (ParseRoBindResponse (acc, rni) != OK) {
 			LLOG (rosap_log, LLOG_NOTICE, ("RO-BIND.RETRY : ParseRoBindResponse failed"));
 			ACCFREE (acc);
 			return (NOTOK);
 		}
 	}
-
 	return (result);
 }
 
@@ -160,13 +148,10 @@ int ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) 
 
 	if (acc->acc_ninfo == 0)
 		return (OK);
-
 	if (acc->acc_ninfo != 1)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	if (acc->acc_info[0] == NULLPE)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	pe = acc->acc_info[0];
 	acc->acc_info[0] = NULLPE;
 	if (acc->acc_result == ACS_ACCEPT) {
@@ -186,6 +171,5 @@ int ParseRoBindResponse (struct AcSAPconnect *acc, struct RoNOTindication *rni) 
 		}
 	}
 	pe_free (pe);
-
 	return (OK);
 }

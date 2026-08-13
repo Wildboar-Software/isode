@@ -14,7 +14,6 @@ int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindica
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 	result = AcInit (vecp, vec, acs, aci);
-
 	if (result != OK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindInit: RO-BIND.INDICATION: failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
@@ -28,14 +27,12 @@ int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindica
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindInit: RoSetService failed"));
 			return (ronotlose (rni, RBI_SET_ROSE_PRES, NULLCP, NULLCP));
 		}
-
 		if (ParseRoBindArgument (acs, rni) != OK) {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindInit: ParseRoBindArgument failed"));
 			ACSFREE (acs);
 			return (NOTOK);
 		}
 	}
-
 	return (result);
 }
 
@@ -44,13 +41,10 @@ int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 
 	if (acs->acs_ninfo == 0)
 		return (OK);
-
 	if (acs->acs_ninfo != 1)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	if (acs->acs_info[0] == NULLPE)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	pe = acs->acs_info[0];
 	acs->acs_info[0] = NULLPE;
 	if (decode_RONOT_BindArgumentValue (pe, 1, NULLIP, NULLVP, &acs->acs_info[0]) != OK) {
@@ -61,7 +55,6 @@ int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 		return (ronotlose (rni, RBI_DEC_BIND_ARG, NULLCP, NULLCP));
 	}
 	pe_free (pe);
-
 	return (OK);
 }
 
@@ -103,16 +96,13 @@ int	RoBindResult (
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcAssocResponse (sd, ACS_ACCEPT, ACS_USER_NULL, context,
 							  respondtitle, respondaddr, ctxlist, defctxresult,
 							  prequirements, srequirements, isn, settings, ref,
 							  user_data_p, ndata, aci);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindResult: AcAssocResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
@@ -120,7 +110,6 @@ int	RoBindResult (
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	return (result);
 }
 
@@ -162,16 +151,13 @@ int RoBindError (
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcAssocResponse (sd, ACS_PERMANENT, ACS_USER_NOREASON,
 							  context, respondtitle, respondaddr, ctxlist, defctxresult,
 							  prequirements, srequirements, isn, settings, ref,
 							  user_data_p, ndata, aci);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoBindError: AcAssocResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
@@ -179,7 +165,6 @@ int RoBindError (
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	return (result);
 }
 
@@ -190,7 +175,6 @@ int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTin
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 	LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-BIND.REJECT called on %d", acs->acs_sd));
-
 	if (AcAssocResponse (acs->acs_sd, status,
 						 reason, acs->acs_context, NULLAEI,
 						 NULLPA, &(ps->ps_ctxlist), ps->ps_defctxresult,

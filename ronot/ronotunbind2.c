@@ -22,13 +22,10 @@ int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) 
 
 	if (acf->acf_ninfo == 0)
 		return (OK);
-
 	if (acf->acf_ninfo != 1)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	if (acf->acf_info[0] == NULLPE)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	pe = acf->acf_info[0];
 	acf->acf_info[0] = NULLPE;
 	if (decode_RONOT_UnBindArgumentValue (pe, 1, NULLIP, NULLVP, &(acf->acf_info[0])) != OK) {
@@ -38,7 +35,6 @@ int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) 
 		return (ronotlose (rni, RBI_DEC_BIND_ARG, NULLCP, NULLCP));
 	}
 	pe_free (pe);
-
 	return (OK);
 }
 
@@ -64,13 +60,10 @@ int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcRelResponse (sd, ACS_ACCEPT, ACF_NORMAL, user_data_p, ndata, aci);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindResult: AcRelResponse failed"));
 		/* Have an AcSAPindication, need to return RoNOTindication */
@@ -78,7 +71,6 @@ int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	return (result);
 }
 
@@ -104,20 +96,16 @@ int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcRelResponse (sd, ACS_REJECT, ACR_NOTFINISHED, user_data_p, ndata, aci);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindError: AcRelResponse failed"));
 		acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	return (result);
 }
 
@@ -130,15 +118,12 @@ int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni)
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 	LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindReject: RO-UNBIND.REJECT called on %d", sd));
-
 	result = AcRelResponse (sd, status, reason, NULLPEP, 0, aci);
-
 	if (result == NOTOK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RoUnBindReject: AcRelResponse failed"));
 		acs2ronotlose (rni, "RO-UNBIND.ERROR", aca);
 		ACAFREE (aca);
 		return (NOTOK);
 	}
-
 	return (result);
 }

@@ -27,13 +27,10 @@ int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr,
 		(*user_data_p) = NULLPE;
 		ndata = 0;
 	}
-
 	result = AcRelRequest (sd, ACF_NORMAL, user_data_p, ndata, secs, acr, aci);
-
 	if ((*user_data_p) != NULLPE) {
 		pe_free ((*user_data_p));
 	}
-
 	if (result == NOTOK) {
 		if (aci->aci_abort.aca_reason == ACS_TIMER) {
 			/* ADT: Watch this !! */
@@ -53,7 +50,6 @@ int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr,
 			return (NOTOK);
 		}
 	}
-
 	return (result);
 }
 
@@ -66,7 +62,6 @@ int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindic
 	struct AcSAPabort	* aca = &(aci->aci_abort);
 
 	result = AcRelRetryRequest (sd, secs, acr, aci);
-
 	if (result == NOTOK) {
 		if (aci->aci_abort.aca_reason == ACS_TIMER) {
 			/* ADT: Watch out for this */
@@ -86,7 +81,6 @@ int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindic
 			return (NOTOK);
 		}
 	}
-
 	return (result);
 }
 
@@ -95,10 +89,8 @@ int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni
 
 	if (acr->acr_ninfo == 0)
 		return (OK);
-
 	if (acr->acr_ninfo != 1)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
-
 	if (acr->acr_info[0] == NULLPE)
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
 
@@ -121,6 +113,5 @@ int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni
 		}
 	}
 	pe_free (pe);
-
 	return (OK);
 }

@@ -47,7 +47,6 @@ static int _ronotlose (  /* what, fmt, args ... */
 		bp += strlen (bp);
 		copyRoNOTdata (buffer, bp - buffer, rni);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -55,7 +54,6 @@ static int _ronotlose (  /* what, fmt, args ... */
 /*    ACSAP interface */
 
 int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca) {
-
 	char	* cp;
 
 	/*
