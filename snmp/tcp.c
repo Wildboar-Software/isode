@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "mib.h"
 
@@ -42,19 +43,19 @@
 #include <netinet/tcp_var.h>
 #else
 struct	tcpstat {
-	u_long	tcps_rtoalgorithm;	/*  */
-	u_long	tcps_rtomin;	/*  */
-	u_long	tcps_rtomax;	/*  */
-	u_long	tcps_maxconn;	/*  */
-	u_long	tcps_outsegs;	/*  */
-	u_long	tcps_ierrors;	/*  */
-	u_long	tcps_orsts;  	/*  */
-	u_long	tcps_connattempt;	/* connections initiated */
-	u_long	tcps_accepts;		/* connections accepted */
-	u_long	tcps_drops;		/* connections dropped */
-	u_long	tcps_conndrops;		/* embryonic connections dropped */
-	u_long	tcps_sndrexmitpack;	/* data packets retransmitted */
-	u_long	tcps_rcvtotal;		/* total packets received */
+	uint32_t	tcps_rtoalgorithm;	/*  */
+	uint32_t	tcps_rtomin;	/*  */
+	uint32_t	tcps_rtomax;	/*  */
+	uint32_t	tcps_maxconn;	/*  */
+	uint32_t	tcps_outsegs;	/*  */
+	uint32_t	tcps_ierrors;	/*  */
+	uint32_t	tcps_orsts;  	/*  */
+	uint32_t	tcps_connattempt;	/* connections initiated */
+	uint32_t	tcps_accepts;		/* connections accepted */
+	uint32_t	tcps_drops;		/* connections dropped */
+	uint32_t	tcps_conndrops;		/* embryonic connections dropped */
+	uint32_t	tcps_sndrexmitpack;	/* data packets retransmitted */
+	uint32_t	tcps_rcvtotal;		/* total packets received */
 };
 struct inpcb {
 	struct	inpcb *inp_next;

@@ -299,8 +299,8 @@ static void add_netaddr (void) {
 }
 
 /* also used in SNMP-capable gawk... */
-u_long prim2ulong (PE pe) {
-	u_long   i;
+uint32_t prim2ulong (PE pe) {
+	uint32_t   i;
 	PElementData dp, ep;
 
 	if (pe -> pe_form != PE_FORM_PRIM || (dp = pe -> pe_prim) == NULLPED)
@@ -319,10 +319,10 @@ u_long prim2ulong (PE pe) {
 }
 
 /* also used in SNMP-capable gawk... */
-PE  ulong2prim (u_long i, PElementClass class, PElementID id) {
+PE  ulong2prim (uint32_t i, PElementClass class, PElementID id) {
 	int	    extend;
 	int    n;
-	u_long mask;
+	uint32_t mask;
 	PElementData dp;
 	PE	    pe;
 
@@ -343,40 +343,40 @@ PE  ulong2prim (u_long i, PElementClass class, PElementID id) {
 	return pe;
 }
 
-static int  counter_encode (u_long *x, PE *pe) {
+static int  counter_encode (uint32_t *x, PE *pe) {
 	if ((*pe = ulong2prim (*x, PE_CLASS_APPL, 1)) == NULLPE)
 		return NOTOK;
 
 	return OK;
 }
 
-static int counter_decode (u_long **x, PE pe) {
-	u_long	i = prim2ulong (pe);
+static int counter_decode (uint32_t **x, PE pe) {
+	uint32_t	i = prim2ulong (pe);
 
 	if (i == 0 && pe -> pe_errno != PE_ERR_NONE)
 		return NOTOK;
-	if ((*x = (u_long *) malloc (sizeof **x)) == NULL)
+	if ((*x = (uint32_t *) malloc (sizeof **x)) == NULL)
 		return NOTOK;
 	**x = i;
 	return OK;
 }
 
-static void counter_free (u_long *x) {
+static void counter_free (uint32_t *x) {
 	free ((char *) x);
 }
 
-static int counter_parse (u_long **x, char *s) {
-	u_long  i;
+static int counter_parse (uint32_t **x, char *s) {
+	uint32_t  i;
 
 	if (sscanf (s, "%U", &i) != 1)
 		return NOTOK;
-	if ((*x = (u_long *) malloc (sizeof **x)) == NULL)
+	if ((*x = (uint32_t *) malloc (sizeof **x)) == NULL)
 		return NOTOK;
 	**x = i;
 	return OK;
 }
 
-static void counter_print (u_long *x, OS os) {
+static void counter_print (uint32_t *x, OS os) {
 	printf ("%U", *x);
 }
 
@@ -385,7 +385,7 @@ static void add_counter (void) {
 				(ParseFunction)counter_parse, (PrintFunction)counter_print);
 }
 
-static int  gauge_encode (u_long *x, PE *pe) {
+static int  gauge_encode (uint32_t *x, PE *pe) {
 	if ((*pe = ulong2prim (*x, PE_CLASS_APPL, 2)) == NULLPE)
 		return NOTOK;
 	return OK;
@@ -396,14 +396,14 @@ static void add_gauge (void) {
 				(ParseFunction)counter_parse, (PrintFunction)counter_print);
 }
 
-static int timeticks_encode (u_long *x, PE *pe) {
+static int timeticks_encode (uint32_t *x, PE *pe) {
 	if ((*pe = ulong2prim (*x, PE_CLASS_APPL, 3)) == NULLPE)
 		return NOTOK;
 	return OK;
 }
 
-static void timeticks_print (u_long *x, OS os) {
-	u_long  d,
+static void timeticks_print (uint32_t *x, OS os) {
+	uint32_t  d,
 			h,
 			m,
 			s,

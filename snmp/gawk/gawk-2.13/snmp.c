@@ -1370,7 +1370,7 @@ NODE   *x;
 PE     *pe;
 PElementID id;
 {
-	if ((*pe = ulong2prim ((u_long) force_number (x), PE_CLASS_APPL, id))
+	if ((*pe = ulong2prim ((uint32_t) force_number (x), PE_CLASS_APPL, id))
 			== NULL) {
 		strcpy (PY_pepy, "ulong2prim failed");
 		return NOTOK;
@@ -1553,13 +1553,13 @@ PE	pe;
 	return OK;
 }
 
-extern	u_long prim2ulong ();
+extern	uint32_t prim2ulong ();
 
 static int  d_ulong (x, pe)
 NODE  **x;
 PE	pe;
 {
-	u_long    i = prim2ulong (pe);
+	uint32_t    i = prim2ulong (pe);
 
 	if (i == 0 && pe -> pe_errno != PE_ERR_NONE) {
 		strcpy (PY_pepy, pe_error (pe -> pe_errno));
@@ -1751,7 +1751,7 @@ static	snmp_map (isock)
 struct sockaddr_in *isock;
 {
 	int	    result = NOTOK;
-	u_long	hostaddr,
+	uint32_t	hostaddr,
 			netmask,
 			netaddr;
 	char *cp;

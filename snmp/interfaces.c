@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "mib.h"
 #include "interfaces.h"
 #ifdef	BSD44
@@ -389,7 +390,7 @@ static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 void set_interface (char *name, char *ava) {
 	int	    i;
-	u_long  l;
+	uint32_t  l;
 	char   *cp;
 	struct interface *is;
 

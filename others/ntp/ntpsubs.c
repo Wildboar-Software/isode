@@ -1,12 +1,5 @@
-lint
-
 /*
- * 
  * subroutines for ntp - based on 3.4 ntp code.
- * 
- *
- *
- *
  */
 
 #include <errno.h>
@@ -166,10 +159,11 @@ tstamp (struct l_fixedpt *stampp, struct timeval *tvp) {
 	stampp->fraction = ntohl((tt << 1));
 }
 #else
+#include <stdint.h>
 void
 tstamp (struct l_fixedpt *stampp, struct timeval *tvp) {
-	stampp->int_part = ntohl((u_long) (JAN_1970 + tvp->tv_sec));
-	stampp->fraction = ntohl((u_long) ((float) tvp->tv_usec * 4294.967295));
+	stampp->int_part = ntohl((uint32_t) (JAN_1970 + tvp->tv_sec));
+	stampp->fraction = ntohl((uint32_t) ((float) tvp->tv_usec * 4294.967295));
 }
 #endif
 

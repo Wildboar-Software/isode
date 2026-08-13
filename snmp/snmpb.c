@@ -1,21 +1,14 @@
 /* snmpb.c - snmpi bulk load */
 
 /*
- * 
- *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development
  * Center of the U.S. Air Force Systems Command under contract number
  * F30602-88-C-0016.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "SNMP-types.h"
 #include "objects.h"
@@ -37,7 +30,7 @@
 
 /* TIMING INFORMATION */
 static	long	timeout;
-static	u_long	timenow;
+static	uint32_t	timenow;
 static	long	timemin;
 static	long	timemax;
 static	int	timelap;
@@ -73,7 +66,7 @@ struct invocation {
 
 	PE	    i_pe;		/* message to retry */
 	int	    i_retries;		/* number of times request retried */
-	u_long  i_lastime;		/* time last request sent */
+	uint32_t  i_lastime;		/* time last request sent */
 	int     i_curinvokes;       /* current # threads when last request sent */
 };
 
@@ -375,7 +368,7 @@ static int  wait_for_action (int sd, PS ps) {
 			nfds,
 			request_id;
 	long    maxrtt;
-	u_long  lastime;
+	uint32_t  lastime;
 	fd_set  rfds;
 	struct timeval tvs;
 	struct type_SNMP_Message *msg;
@@ -421,7 +414,7 @@ static int  wait_for_action (int sd, PS ps) {
 		maxrtt = 0;
 	if (debug && maxrtt < timeout)
 		fprintf (stderr, "timeout reduced from %u to %u (delta %d)\n",
-				 timeout, (u_long) maxrtt, (int) (timeout - maxrtt));
+				 timeout, (uint32_t) maxrtt, (int) (timeout - maxrtt));
 	tvs.tv_sec = maxrtt / 1000L, tvs.tv_usec = (maxrtt % 1000) * 1000L;
 	maxrtt = 0;
 

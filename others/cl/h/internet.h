@@ -3,6 +3,8 @@
 #ifndef	_INTERNET_
 #define	_INTERNET_
 
+#include <stdint.h>
+
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -84,7 +86,7 @@ struct hostent {
 	char   *h_name;		/* official name */
 	char  **h_aliases;		/* alias list */
 	int     h_addrtype;		/* address type: AF_INET */
-	int     h_length;		/* address length: sizeof (u_long) == 4 */
+	int     h_length;		/* address length: sizeof (uint32_t) == 4 */
 	char   *h_addr;		/* address value: (struct in_addr *) */
 };
 
@@ -109,7 +111,7 @@ struct hostent *gethostbystring ();
 
 char   *inet_ntoa ();
 #ifndef	DG
-u_long	inet_addr ();
+uint32_t	inet_addr ();
 #else
 struct in_addr inet_addr ();
 #endif

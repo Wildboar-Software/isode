@@ -4,6 +4,7 @@
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <unistd.h>
 #include "fred.h"
@@ -695,7 +696,7 @@ normal:
  */
 
 static rcmap (struct sockaddr_in *isock) {
-	u_long	hostaddr,
+	uint32_t	hostaddr,
 			netmask,
 			netaddr;
 	char *cp;

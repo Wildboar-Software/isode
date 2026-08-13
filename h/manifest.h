@@ -204,7 +204,7 @@ typedef struct fd_set { int fds_bits[1]; } fd_set;
 typedef unsigned char	uint8_t;
 typedef unsigned short	uint16_t;
 typedef unsigned int	u_int;
-typedef unsigned long	u_long;
+typedef unsigned long	uint32_t;
 #endif
 #endif
 

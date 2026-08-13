@@ -1,23 +1,16 @@
 /* snmpi.c - really minimal SNMP initiator */
 
 /*
- * 
- *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development
  * Center of the U.S. Air Force Systems Command under contract number
  * F30602-88-C-0016.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include "SNMP-types.h"
@@ -712,7 +705,7 @@ static int f_compile (char **vec) {
 				fprintf (fp, "%d", ot -> ot_syntax - first);
 			else
 				fprintf (fp, "-1");
-			fprintf (fp, ", %d, (u_long) 0, %d,\n",
+			fprintf (fp, ", %d, (uint32_t) 0, %d,\n",
 					 ot -> ot_access & OT_RDWRITE,
 					 ot -> ot_status & OT_DEPRECATED);
 			fprintf (fp,

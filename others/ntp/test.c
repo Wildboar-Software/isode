@@ -1,10 +1,4 @@
-/*
- * 
- *
- *
- *
- */
-
+#include <stdint.h>
 #include "ntp.h"
 
 #define	TRUE	1
@@ -104,9 +98,9 @@ int test4 (int v) {
 	double dbl = 1024.0 * 1024.0 * 1024.0;	/* 2^30 */
 #ifdef SUN_FLT_BUG
 	int l = 1.5 * dbl;
-	u_long ul = (l<<1);
+	uint32_t ul = (l<<1);
 #else
-	u_long ul = 3.0 * dbl;			/* between 2^31 and 2^32 */
+	uint32_t ul = 3.0 * dbl;			/* between 2^31 and 2^32 */
 #endif
 	if (v)
 		printf("test4: 3.0*1024.0*1024.0*1024.0 = 0x%08x\n", ul);

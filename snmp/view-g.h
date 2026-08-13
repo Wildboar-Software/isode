@@ -1,5 +1,5 @@
 /* view-g.h - VIEW group */
-
+#include <stdint.h>
 #include "isoaddrs.h"
 #include "internet.h"
 #include "psap.h"
@@ -25,7 +25,7 @@ struct view {
 	struct view *v_back;	/* .. */
 
 	OID	    v_name;		/* view name */
-	u_long  v_mask;		/* view mask */
+	uint32_t  v_mask;		/* view mask */
 
 	struct subtree v_subtree;	/* list of subtrees */
 
@@ -71,7 +71,7 @@ struct trap {
 	struct view  t_vu;		/* associated view */
 	struct view *t_view;	/* .. */
 
-	u_long  t_generics;		/* generic traps enabled */
+	uint32_t  t_generics;		/* generic traps enabled */
 
 	unsigned int *t_instance;	/* object instance */
 	int	    t_insize;		/* .. */

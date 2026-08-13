@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "mib.h"
 
@@ -35,11 +36,11 @@
 #else
 struct	udpstat {
 				/* input statistics: */
-	u_long	udps_ipackets;		/* total input packets */
-	u_long	udps_ierrors;		/* total input errors */
-	u_long	udps_noport;		/* no socket on port */
+	uint32_t	udps_ipackets;		/* total input packets */
+	uint32_t	udps_ierrors;		/* total input errors */
+	uint32_t	udps_noport;		/* no socket on port */
 				/* output statistics: */
-	u_long	udps_opackets;		/* total output packets */
+	uint32_t	udps_opackets;		/* total output packets */
 };
 struct inpcb {
 	struct	inpcb *inp_next;

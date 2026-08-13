@@ -72,7 +72,7 @@ typedef struct object_type {
 #define	OT_WRONLY	0x02
 #define	OT_RDWRITE	(OT_RDONLY | OT_WRONLY)
 
-	u_long  ot_views;			/* for views */
+	uint32_t  ot_views;			/* for views */
 
 	int	    ot_status;			/* STATUS */
 #define	OT_OBSOLETE	0x00

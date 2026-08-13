@@ -1,14 +1,10 @@
 /*
- * 
  * NTP query program - useful fro debugging - no major changes yet
  * for OSI.
- * 
- *
- *
- *
  */
 
 #include <errno.h>
+#include <stdint.h>
 #include "ntp.h"
 
 #define	WTIME	10		/* Time to wait for all responses */
@@ -168,7 +164,7 @@ int query (char *host) {
 	bzero((char *) &watcher, sizeof(watcher));
 	watcher.sin_family = AF_INET;
 	HostAddr = inet_addr (host);
-	watcher.sin_addr.s_addr = (u_long) HostAddr;
+	watcher.sin_addr.s_addr = (uint32_t) HostAddr;
 	if (HostAddr == -1) {
 		hp = gethostbyname(host);
 		if (hp == 0) {
@@ -231,7 +227,7 @@ int print_terse (struct clockinfo *n) {
 	isock.sin_addr.s_addr = n->my_address;
 	printf("%-16.16s %2d %4d  %03o  %8.1f %8.1f %8.1f\n",
 		   isock.sin_addr.s_addr ? inet_ntoa(isock.sin_addr) : "wildcard",
-		   n->stratum, (int)ntohl((u_long)n->timer),
+		   n->stratum, (int)ntohl((uint32_t)n->timer),
 		   ntohs(n->reach) & SHIFT_MASK, del, off, dsp);
 }
 
@@ -262,7 +258,7 @@ int print_verbose (struct clockinfo *n) {
 	if (n->stratum == 1 || n->stratum == 0) {
 		printf("Reference clock ID: %.4s", (char *)&n->refid);
 	} else {
-		clock_host.s_addr = (u_long) n->refid;
+		clock_host.s_addr = (uint32_t) n->refid;
 		printf("Reference clock ID: [%s]", inet_ntoa(clock_host));
 	}
 	printf(" timestamp: %08lx.%08lx\n", ntohl(n->reftime.int_part),
@@ -270,7 +266,7 @@ int print_verbose (struct clockinfo *n) {
 
 	printf("hpoll: %d, ppoll: %d, timer: %d, sent: %d received: %d\n",
 		   n->hpoll, n->ppoll,
-		   (int)ntohl((u_long)n->timer),
+		   (int)ntohl((uint32_t)n->timer),
 		   (int)ntohl(n->pkt_sent),
 		   (int)ntohl(n->pkt_rcvd));
 	printf("Delay(ms)  ");

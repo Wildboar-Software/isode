@@ -503,7 +503,7 @@ struct ssapkt {
 #define	SPDU_AE		SPDU_MAP/* ACTIVITY END */
 #define	SPDU_AEA	SPDU_MAA/* ACTIVITY END ACK */
 
-    u_long    s_li;
+    uint32_t    s_li;
 #define	SPDU_MAXLEN	65535	/* segment if SSDU larger */
 
 /* A nice magic number:
@@ -537,7 +537,7 @@ struct ssapkt {
 
 #define	SMASK_CN_ISN	0x0010
 #define	SIZE_CN_ISN	6
-		u_long	un_cn_isn;
+		uint32_t	un_cn_isn;
 
 #define	SMASK_CN_SET	0x0020
 		uint8_t  un_settings;
@@ -680,14 +680,14 @@ struct ssapkt {
 #define	MIP_SYNC_MASK	MIP_SYNC_NOEXPL
 
 #define	SMASK_MIP_SERIAL 0x0002
-	    u_long	un_mip_serial;
+	    uint32_t	un_mip_serial;
 	}	un_mip;
 #define	MIP_SIZE	512
 #define MIP_BASE_SIZE	14
 
 	struct {		/* MINOR SYNC ACK SPDU */
 #define	SMASK_MIA_SERIAL 0x0001
-	    u_long	un_mia_serial;
+	    uint32_t	un_mia_serial;
 	}	un_mia;
 #define	MIA_SIZE	512
 #define MIA_BASE_SIZE	11
@@ -699,14 +699,14 @@ struct ssapkt {
 #define	MAP_SYNC_MASK	MAP_SYNC_NOEND
 
 #define	SMASK_MAP_SERIAL 0x0002
-	    u_long	un_map_serial;
+	    uint32_t	un_map_serial;
 	}	un_map;
 #define	MAP_SIZE	512
 #define MAP_BASE_SIZE	14
 
 	struct {		/* MAJOR SYNC ACK SPDU */
 #define	SMASK_MAA_SERIAL 0x0001
-	    u_long	un_maa_serial;
+	    uint32_t	un_maa_serial;
 	}	un_maa;
 #define	MAA_SIZE	512
 #define MAA_BASE_SIZE	11
@@ -720,7 +720,7 @@ struct ssapkt {
 #define	SYNC_OK(r)	(((unsigned) (r)) <= SYNC_SET)
 
 #define	SMASK_RS_SSN	0x0004
-	    u_long	un_rs_serial;
+	    uint32_t	un_rs_serial;
     }	    un_rs;
 #define	RS_SIZE		512
 #define RS_BASE_SIZE	17
@@ -730,7 +730,7 @@ struct ssapkt {
 	    uint8_t	un_ra_settings;
 
 #define	SMASK_RA_SSN	0x0002
-	    u_long	un_ra_serial;
+	    uint32_t	un_ra_serial;
 	}    un_ra;
 #define	RA_SIZE		512
 #define RA_BASE_SIZE	14
@@ -778,7 +778,7 @@ struct ssapkt {
 		struct SSAPactid un_ar_oid;
 
 #define	SMASK_AR_SSN	0x0004
-		u_long	un_ar_serial;
+		uint32_t	un_ar_serial;
 	    }	un_ar_link;
 
 #define	SMASK_AR_ID	0x0008

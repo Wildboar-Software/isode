@@ -79,7 +79,7 @@ typedef struct Refid {
 #define RID_PSAP 3
 	union {
 		char un_rid_string[5];
-		u_long un_rid_inet;
+		uint32_t un_rid_inet;
 		struct PSAPaddr un_rid_psap;
 	} un;
 #define rid_string un.un_rid_string
@@ -211,8 +211,8 @@ struct list {
  *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 */
 struct l_fixedpt {
-	u_long int_part;
-	u_long fraction;
+	uint32_t int_part;
+	uint32_t fraction;
 };
 
 struct s_fixedpt {
@@ -257,18 +257,18 @@ struct ntpdata {
 	int precision:8;
 	struct s_fixedpt distance;
 	struct s_fixedpt dispersion;
-	u_long refid;
+	uint32_t refid;
 	struct l_fixedpt reftime;
 	struct l_fixedpt org;
 	struct l_fixedpt rec;
 	struct l_fixedpt xmt;
 #ifdef notdef
 	/* Not Yet in this version... */
-	u_long keyid;
+	uint32_t keyid;
 	struct l_fixedpt mac;
 #endif
 };
-#define MAC_LEN         (sizeof(l_fp) + sizeof(u_long))
+#define MAC_LEN         (sizeof(l_fp) + sizeof(uint32_t))
 #define LEN_PKT_MAC     (sizeof(struct pkt))
 #define LEN_PKT_NOMAC   (sizeof(struct pkt) - MAC_LEN)
 
@@ -352,9 +352,9 @@ struct ntp_peer {
 	struct	l_fixedpt org;		/* receive, clear */
 	struct	l_fixedpt rec;		/* receive, clear */
 	struct	l_fixedpt xmt;		/* transmit, clear */
-	u_long	reach;			/* receive, transmit, clear */
-	u_long	valid;			/* packet, transmit, clear */
-	u_long	timer;			/* receive, transmit, poll update */
+	uint32_t	reach;			/* receive, transmit, clear */
+	uint32_t	valid;			/* packet, transmit, clear */
+	uint32_t	timer;			/* receive, transmit, poll update */
 	long	stopwatch;		/* <<local>> for timing */
 	/*
 	 * first order offsets
@@ -369,9 +369,9 @@ struct ntp_peer {
 	double	estoffset;		/* filter */
 	double	estdisp;		/* filter */
 
-	u_long	pkt_sent;		/* <<local>> */
-	u_long 	pkt_rcvd;		/* <<local>> */
-	u_long	pkt_dropped;		/* <<local>> */
+	uint32_t	pkt_sent;		/* <<local>> */
+	uint32_t 	pkt_rcvd;		/* <<local>> */
+	uint32_t	pkt_dropped;		/* <<local>> */
 	int	backoff;		/* <<local>> */
 };
 
@@ -399,14 +399,14 @@ struct sysdata {			/* procedure */
  *  NTP specification.
  */
 struct clockinfo {
-	u_long net_address;
-	u_long my_address;
+	uint32_t net_address;
+	uint32_t my_address;
 	uint16_t port;
 	uint16_t flags;
-	u_long pkt_sent;
-	u_long pkt_rcvd;
-	u_long pkt_dropped;
-	u_long timer;
+	uint32_t pkt_sent;
+	uint32_t pkt_rcvd;
+	uint32_t pkt_dropped;
+	uint32_t timer;
 	uint8_t leap;
 	uint8_t stratum;
 	uint8_t ppoll;
@@ -419,7 +419,7 @@ struct clockinfo {
 	long	estdisp;			/* scaled by 1000 */
 	long	estdelay;			/* in milliseconds */
 	long	estoffset;			/* in milliseconds */
-	u_long refid;
+	uint32_t refid;
 	struct l_fixedpt reftime;
 	struct info_filter {
 		short index;

@@ -55,7 +55,7 @@ struct interface {
 	char    ifn_descr[IFNAMSIZ];	/* e.g., "lo0" */
 
 	int	    ifn_type;			/* ifType */
-	u_long  ifn_speed;			/* ifSpeed */
+	uint32_t  ifn_speed;			/* ifSpeed */
 
 	int	    ifn_admin;			/* ifAdminStatus */
 	int	    ifn_touched;		/*   .. new value */

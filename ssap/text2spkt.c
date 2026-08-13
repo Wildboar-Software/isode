@@ -6,7 +6,7 @@
 #include "logger.h"
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
-static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn);
+static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn);
 static void type_bits (LLog *, char *, char *, uint8_t,  int,  char *);
 static void type_settings (LLog *, char *, uint8_t);
 static void type_tsdu (LLog *, char *, uint16_t,  uint16_t);
@@ -315,7 +315,7 @@ static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn) {
+static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 

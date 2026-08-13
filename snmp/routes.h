@@ -1,20 +1,11 @@
 /* routes.h - support for MIB support of the routing tables */
-
 /*
- * 
- *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development
  * Center of the U.S. Air Force Systems Command under contract number
  * F30602-88-C-0016.
- *
- *
- * 
- *
- *
- *
  */
-
+#include <stdint.h>
 #ifdef	BSD44
 #include <sys/param.h>
 #endif
@@ -35,7 +26,7 @@ struct rtentry {
 	struct	sockaddr rt_gateway;	/* value */
 	uint16_t	rt_flags;		/* up/down?, host/net */
 	uint16_t	rt_refcnt;		/* # held references */
-	u_long	rt_use;			/* raw # packets forwarded */
+	uint32_t	rt_use;			/* raw # packets forwarded */
 	struct	ifnet *rt_ifp;		/* the answer: interface to use */
 };
 #endif

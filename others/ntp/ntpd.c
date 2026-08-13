@@ -351,7 +351,7 @@ dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 		printf(" (%.4s)\n", (char *)&pkt->refid);
 		break;
 	default:
-		clock_host.inet_ad.sin_addr.s_addr = (u_long) pkt->refid;
+		clock_host.inet_ad.sin_addr.s_addr = (uint32_t) pkt->refid;
 		clock_host.type = AF_INET;
 		printf(" [%s]\n", paddr (&clock_host));
 		break;
@@ -1143,7 +1143,7 @@ int GetHostName (char *name, struct Naddr *addr) {
 		addr->type = AF_INET;
 
 	if (addr->type == AF_INET && (HostAddr = inet_addr(name)) != -1) {
-		addr->inet_ad.sin_addr.s_addr = (u_long) HostAddr;
+		addr->inet_ad.sin_addr.s_addr = (uint32_t) HostAddr;
 		addr->inet_ad.sin_family = AF_INET;
 		addr->inet_ad.sin_port = servport;
 		return OK;

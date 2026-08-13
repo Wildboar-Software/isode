@@ -1,15 +1,3 @@
-lint
-
-/*
- *  
- *
- *
- *  
- *
- *
- *
- */
-
 /*
  * This program expects a list of host names.  It will send off a
  * network time protocol packet and print out the replies on the
@@ -111,7 +99,7 @@ int main (int argc, char *argv[]) {
 
 		hp = NULL;
 		HostAddr = inet_addr(argv[host]);
-		dst.sin_addr.s_addr = (u_long) HostAddr;
+		dst.sin_addr.s_addr = (uint32_t) HostAddr;
 		if (HostAddr == -1) {
 			hp = gethostbyname(argv[host]);
 			if (hp == NULL) {
@@ -196,7 +184,7 @@ int main (int argc, char *argv[]) {
 				printf(" (%s)\n", ref_clock);
 				break;
 			default:
-				clock_host.s_addr = (u_long) pkt->refid;
+				clock_host.s_addr = (uint32_t) pkt->refid;
 				printf(" [%s]\n", inet_ntoa(clock_host));
 				break;
 			}

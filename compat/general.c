@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -121,13 +122,13 @@ uint16_t	htons (hostshort) uint16_t hostshort;
 }
 
 #undef	ntohl
-u_long	ntohl (netlong) u_long netlong;
+uint32_t	ntohl (netlong) uint32_t netlong;
 {
 	return netlong;
 }
 
 #undef	htonl
-u_long	htonl (hostlong) u_long hostlong;
+uint32_t	htonl (hostlong) uint32_t hostlong;
 {
 	return hostlong;
 }

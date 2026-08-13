@@ -3,6 +3,7 @@
 #ifdef	DG
 #include <string.h>
 #endif
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -555,13 +556,13 @@ char *inet_ntoa (struct in_addr in) {
 	return addr;
 }
 
-u_long
+uint32_t
 inet_addr (char *cp) {
 	int    base;
 	char   c;
-	u_long val;
-	u_long	parts[4];
-	u_long *pp = parts;
+	uint32_t val;
+	uint32_t	parts[4];
+	uint32_t *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;
@@ -625,13 +626,13 @@ inet_addr (char *cp) {
 	return htonl (val);
 }
 
-u_long
+uint32_t
 inet_network (char *cp) {
 	int    base;
 	char   c;
-	u_long val;
-	u_long	parts[4];
-	u_long *pp = parts;
+	uint32_t val;
+	uint32_t	parts[4];
+	uint32_t *pp = parts;
 
 	for (;;) {
 		val = 0, base = 10;

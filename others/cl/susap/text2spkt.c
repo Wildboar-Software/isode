@@ -330,7 +330,7 @@ static	type_ssn (fp, rw, what, ssn)
 FILE   *fp;
 char   *rw,
 	   *what;
-u_long	ssn;
+uint32_t	ssn;
 {
 	fprintf (fp, "%s%s/ %d\n", rw, what, ssn);
 }

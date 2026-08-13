@@ -542,7 +542,7 @@ int	offset;
 		return o_ipaddr (oi, v, (struct sockaddr_in *) &as -> adr_netmask);
 
 	case ipAdEntBcastAddr: {	/* beyond belief! */
-		u_long a =  (((struct sockaddr_in *) &as -> adr_netmask)
+		uint32_t a =  (((struct sockaddr_in *) &as -> adr_netmask)
 					 -> sin_addr.s_addr)
 					& ~(((struct sockaddr_in *) &as
 						 -> adr_broadaddr) -> sin_addr.s_addr);
@@ -730,7 +730,7 @@ try_again:
 		bzero ((char *) &mask, sizeof mask);
 
 		if (rt -> rt_rt.rt_flags & RTF_HOST)
-			mask.sin_addr.s_addr = (u_long) 0xffffffff;
+			mask.sin_addr.s_addr = (uint32_t) 0xffffffff;
 		else if (sin -> sin_addr.s_addr != 0L) {
 			/* XXX - BSD44 shouldn't use this code, it has a */
 			/* mask associated with each route, but I don't */
@@ -978,7 +978,7 @@ bad_magic:
 			mask = ((struct sockaddr_in *) value)
 				   -> sin_addr;/* struct copy */
 			(*os -> os_free) (value);
-			if (mask.s_addr == (u_long) 0xffffffff)
+			if (mask.s_addr == (uint32_t) 0xffffffff)
 				rt -> rt_rt.rt_flags |= RTF_HOST;
 			else
 				rt -> rt_rt.rt_flags &= ~RTF_HOST;

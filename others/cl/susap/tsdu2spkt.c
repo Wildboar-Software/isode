@@ -555,7 +555,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 			If_Set (SMASK_CN_OPT)
 			Put_Item (PI_PROTOCOL_OPT, (char *) &s -> s_options);
 			If_Set (SMASK_CN_TSDU) {
-				u_long tsdu_maxsize = (s -> s_tsdu_init & 0xffff) << 16
+				uint32_t tsdu_maxsize = (s -> s_tsdu_init & 0xffff) << 16
 									  | s -> s_tsdu_resp & 0xffff;
 				tsdu_maxsize = htonl (tsdu_maxsize);
 				Put_Item (PI_TSDU_MAXSIZ, (char *) &tsdu_maxsize);
@@ -591,7 +591,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 			If_Set (SMASK_CN_OPT)
 			Put_Item (PI_PROTOCOL_OPT, (char *) &s -> s_options);
 			If_Set (SMASK_CN_TSDU) {
-				u_long tsdu_maxsize = (s -> s_tsdu_init & 0xffff) << 16
+				uint32_t tsdu_maxsize = (s -> s_tsdu_init & 0xffff) << 16
 									  | s -> s_tsdu_resp & 0xffff;
 				tsdu_maxsize = htonl (tsdu_maxsize);
 				Put_Item (PI_TSDU_MAXSIZ, (char *) &tsdu_maxsize);
@@ -1010,11 +1010,11 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-static u_long str2ssn (s, n)
+static uint32_t str2ssn (s, n)
 char  *s;
 int	n;
 {
-	u_long u;
+	uint32_t u;
 
 	for (u = 0L; n > 0; n--)
 		u = u * 10 + *s++ - '0';
@@ -1332,7 +1332,7 @@ do_pgi:
 			break;
 
 		case PI_TSDU_MAXSIZ: {
-			u_long tsdu_maxsize;
+			uint32_t tsdu_maxsize;
 			bcopy (base, (char *) &tsdu_maxsize,
 				   pi_length[PI_TSDU_MAXSIZ]);
 			tsdu_maxsize = ntohl (tsdu_maxsize);
