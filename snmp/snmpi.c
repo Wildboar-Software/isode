@@ -1,5 +1,4 @@
 /* snmpi.c - really minimal SNMP initiator */
-
 /*
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development

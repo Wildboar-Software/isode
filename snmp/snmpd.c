@@ -5,20 +5,11 @@
 	clnp route table
 	clnp es-is table
  */
-
 /*
- * 
- *
  * Contributed by NYSERNet Inc.  This work was partially supported by the
  * U.S. Defense Advanced Research Projects Agency and the Rome Air Development
  * Center of the U.S. Air Force Systems Command under contract number
  * F30602-88-C-0016.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <unistd.h>
