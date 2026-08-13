@@ -1,6 +1,7 @@
 /* ssapexec.c - SPM: exec */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "spkt.h"
 #include "isoservent.h"
 #include "tailor.h"
@@ -39,7 +40,7 @@ int SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setper
 			if ((is = getisoserventbyselector ("ssap", s -> s_called, s -> s_calledlen)) == NULL) {
 				char buffer[BUFSIZ];
 
-				buffer[explode (buffer, (u_char *) s -> s_called, s-> s_calledlen)] = 0;
+				buffer[explode (buffer, (uint8_t *) s -> s_called, s-> s_calledlen)] = 0;
 				spktlose (sd, si, SC_SSAPID | SC_REFUSE, NULLCP, "ISO service ssap/%s not found", buffer);
 				break;
 			}

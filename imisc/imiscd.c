@@ -4,6 +4,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <errno.h>
 #include "IMISC-types.h"	/* IMISC type definitions */
@@ -354,7 +355,7 @@ struct RoSAPindication *roi;
 
 	re = ring;
 	for (i = 0; i < 0x80; i++)
-		if (isprint ((u_char) i))
+		if (isprint ((uint8_t) i))
 			*re++ = i;
 
 	ia5 = NULL;

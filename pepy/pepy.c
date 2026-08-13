@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <unistd.h>
 #include "pepy.h"
@@ -1046,7 +1047,7 @@ static int pp(void) {
 				s = S4;
 			else if (c == '[')
 				s = S7;
-			else if (isspace ((u_char) c))
+			else if (isspace ((uint8_t) c))
 				*bp++ = c;
 			else {
 flush:

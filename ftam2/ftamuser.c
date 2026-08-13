@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "ftamuser.h"
 #include "tailor.h"
@@ -452,7 +453,7 @@ static int f_set (char **vec) {
 			if (strncmp (dp, "0x", 2) == 0)
 				dp += 2;
 			for (j = sscanf (dp, "%x", &value); *dp; dp++)
-				if (!isxdigit ((u_char) *dp)) {
+				if (!isxdigit ((uint8_t) *dp)) {
 					j = 0;
 					break;
 				}

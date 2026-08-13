@@ -1,6 +1,6 @@
 /* implode.c - explode ascii into octets */
 
-#include <stdio.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -23,7 +23,7 @@ char	hex2nib[0x80] = {
 	0, 0, 0, 0, 0, 0, 0, 0
 };
 
-int implode (u_char *a, char *b, int n) {
+int implode (uint8_t *a, char *b, int n) {
 	int    i;
 
 	for (i = 0; i < n; i += 2) {

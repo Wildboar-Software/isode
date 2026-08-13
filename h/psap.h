@@ -35,9 +35,9 @@ char *oid2ode_aux ();
 char *sprintoid (OID oid);
 OID	str2oid (char *s);
 
-typedef	u_char	   PElementClass;
+typedef	uint8_t	   PElementClass;
 
-typedef	u_char	   PElementForm;
+typedef	uint8_t	   PElementForm;
 
 typedef uint16_t    PElementID;	/* 0..16383 are meaningful (14 bits) */
 #define	PE_ID_BITS	14
@@ -47,7 +47,7 @@ typedef uint16_t    PElementID;	/* 0..16383 are meaningful (14 bits) */
 
 typedef	int	   PElementLen;
 
-typedef u_char	  byte, *PElementData;
+typedef uint8_t	  byte, *PElementData;
 #define	NULLPED	((PElementData) 0)
 
 #define	PEDalloc(s)		((PElementData) malloc ((unsigned int) (s)))

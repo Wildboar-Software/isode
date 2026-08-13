@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "tailor.h"
@@ -490,7 +491,7 @@ char   *s;
 	if ((isock = (struct sockaddr_iso *) calloc (1, sizeof *isock)) == NULL)
 		return NOTOK;
 	isock -> siso_family = AF_ISO;
-	isock -> siso_nlen = implode ((u_char *) isock -> siso_data, s,
+	isock -> siso_nlen = implode ((uint8_t *) isock -> siso_data, s,
 								  strlen (s));
 	*x = isock;
 	return OK;
@@ -498,7 +499,7 @@ char   *s;
 
 static void clnpaddr_print (struct sockaddr_iso *x, OS os) {
 	char    buffer[sizeof x -> siso_data * 2 + 1];
-	buffer[explode (buffer, (u_char *) x -> siso_data, (int) x -> siso_nlen)] = 0;
+	buffer[explode (buffer, (uint8_t *) x -> siso_data, (int) x -> siso_nlen)] = 0;
 	printf ("NS+%s", buffer);
 }
 

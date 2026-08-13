@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
@@ -32,7 +33,7 @@ char *sel2str (char *sel, int len, int quoted) {
 #endif
 
 		for (ep = (dp = sel) + len; dp < ep; dp++)
-			if (!isprint ((u_char) *dp))
+			if (!isprint ((uint8_t) *dp))
 				goto ugly;
 
 		if (len > NASIZE * 2)
@@ -45,7 +46,7 @@ ugly:
 		if (len > NASIZE)	/* XXX */
 			len = NASIZE;
 
-		cp[explode (cp, (u_char *) sel, len)] = 0;
+		cp[explode (cp, (uint8_t *) sel, len)] = 0;
 	}
 #ifndef	NOGOSIP
 out:

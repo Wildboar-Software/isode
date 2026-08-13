@@ -14,25 +14,26 @@
  *
  *
  */
+#include <stdint.h>
 
 #ifndef	BSD44
 #define	AF_ISO	AF_MAX		/* any value will do */
 
 struct iso_addr {
-	u_char	isoa_len;	    /* length in octets */
+	uint8_t	isoa_len;	    /* length in octets */
 	char	isoa_genaddr[20];   /* general opaque address */
 };
 
 struct sockaddr_iso {
-	u_char	siso_len;	/* length */
-	u_char	siso_family;	/* address family */
-	u_char	siso_plen;	/* psel length */
-	u_char	siso_slen;	/* ssel length */
-	u_char	siso_tlen;	/* tsel length */
+	uint8_t	siso_len;	/* length */
+	uint8_t	siso_family;	/* address family */
+	uint8_t	siso_plen;	/* psel length */
+	uint8_t	siso_slen;	/* ssel length */
+	uint8_t	siso_tlen;	/* tsel length */
 
 	struct iso_addr siso_addr;	/* network address */
 
-	u_char	siso_pad[6];	/* space for gosip v2 sels */
+	uint8_t	siso_pad[6];	/* space for gosip v2 sels */
 };
 #define	siso_nlen	siso_addr.isoa_len
 #define	siso_data	siso_addr.isoa_genaddr

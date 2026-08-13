@@ -65,84 +65,84 @@ typedef       struct facility_dB_S {
 #define CCITT_FAST_SELECT     0x80
 #define       CCITT_FAST_ACPT_CLR     0x80
 #define       CCITT_FAST_CLR_ONLY     0xC0
-	u_char    t_01;
+	uint8_t    t_01;
 	/* Bit 0:       rev-charge allowed                      */
 	/* Bit 7:       restricted fast-select (CLR only)       */
 	/* Bit 8:       fast-select allowd                      */
 
-	u_char    t_02;
+	uint8_t    t_02;
 	/* Bits 0-3:    send-thruput                            */
 	/* Bits 4-7:    recv-thruput                            */
 
 #define CCITT_CUG             1
 #define CCITT_CUG_EXTENDED    3
-	u_char    t_03_sel;
+	uint8_t    t_03_sel;
 	uint16_t   t_03;
 	/* closed user group in 2- or 4-digit BCD               */
 
 #define REQ_CHARGE_INF                1
-	u_char    t_04;
+	uint8_t    t_04;
 	/* Bit 0:       charging information requested          */
 
 #define ACK_EXPECTED  0x01
 #define NACK_EXPECTED 0x02
-	u_char    t_07;
+	uint8_t    t_07;
 	/* Bit 0:       send ACK                                */
 	/* Bit 1:       send NACK                               */
 
-	u_char    t_08;
+	uint8_t    t_08;
 	/* called line address modified notification            */
 #define CCITT_OUTCUG_EXTENDED 3
-	u_char    t_09_sel;
+	uint8_t    t_09_sel;
 	uint16_t   t_09;
 	/* closed user group in 2- or 4-digit BCD               */
 
-	u_char    t_41_sel;
+	uint8_t    t_41_sel;
 	uint16_t   t_41;
 	/* bilateral closed user group in 4-digit BCD           */
 
-	u_char    t_42 [2];
+	uint8_t    t_42 [2];
 	/* Byte 0:      recv-pcktsize (log2)                    */
 	/* Byte 1:      send-pcktsize (log2)                    */
 
-	u_char    t_43 [2];
+	uint8_t    t_43 [2];
 	/* Byte 0:      recv-windowsize                         */
 	/* Byte 1:      send-windowsize                         */
 
 #define CCITT_RPOA            1
-	u_char    t_44_sel;
+	uint8_t    t_44_sel;
 	uint16_t   t_44;
 	/* RPOA transit number                                  */
 
-	u_char    t_49_sel;
+	uint8_t    t_49_sel;
 	uint16_t   t_49;
 	/* Transit delay selection and indication               */
 
-	u_char    *t_c1;
+	uint8_t    *t_c1;
 	/* call duration charge-information                     */
 	/* Byte 0:      length of fac. parm. field              */
-	u_char    *t_c2;
+	uint8_t    *t_c2;
 	/* segment count charge-information                     */
 	/* Byte 0:      length of fac. parm. field              */
 
-	u_char    *t_c3;
+	uint8_t    *t_c3;
 	/* call deflection/restriction notification             */
 	/* Byte 0:      length of fac. parm. field              */
 	/* Byte 1:      deflection reason                       */
 
-	u_char    *t_c4;
+	uint8_t    *t_c4;
 	/* RPOA extended format                                 */
 	/* Byte 0:      length of fac. parm. field              */
 
-	u_char    *t_c5;
+	uint8_t    *t_c5;
 	/* monetary unit charge-information                     */
 	/* Byte 0:      length of fac. parm. field              */
 
-	u_char    *t_c6;
+	uint8_t    *t_c6;
 	/* NUI selection                                        */
 	/* Byte 0:      length of fac. parm. field              */
 
-	u_char    *t_d1;
+	uint8_t    *t_d1;
 	/* CALL deflection                                      */
 	/* Byte 0:      length of fac. parm. field              */
 	/* Byte 1:      deflection reason from remote DTE       */

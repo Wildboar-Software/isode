@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <string.h>
+#include <stdint.h>
 #include "tpkt.h"
 #include "manifest.h"
 
@@ -22,7 +23,7 @@ int TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
 		return tsaplose (td, DR_WAITING, NULLCP, NULLCP);
 	}
 
-	buffer[explode (buffer, (u_char *) tb, sizeof *tb)] = 0;
+	buffer[explode (buffer, (uint8_t *) tb, sizeof *tb)] = 0;
 	*vec++ = buffer;
 	*vec = NULL;
 
@@ -45,7 +46,7 @@ int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td
 	if ((tb = newtblk ()) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 
-	if (implode ((u_char *) &tbs, buffer, strlen (buffer)) != sizeof tbs) {
+	if (implode ((uint8_t *) &tbs, buffer, strlen (buffer)) != sizeof tbs) {
 		tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
 		goto out1;
 	}

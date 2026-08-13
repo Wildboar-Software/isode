@@ -12,7 +12,7 @@
 		listQuality ::= <list> '$' <list> <listQuality>
 		list ::=        <attribute> '+' <attrQuality>
  */
-
+#include <stdint.h>
 #include "quipu/util.h"
 #include "cmd_srch.h"
 #define	cmd_srch	CMD_SRCH
@@ -359,7 +359,7 @@ out2:
 		}
 		*rtr = 0;
 		for (utr = qtr + strlen (qtr) - 1;
-				utr >= qtr && isspace ((u_char) *utr);
+				utr >= qtr && isspace ((uint8_t) *utr);
 				utr--)
 			continue;
 		utr++;
@@ -434,7 +434,7 @@ static int  CMD_SRCH (char *str, CMD_TABLE *cmd)
 	char    c;
 	char *p;
 
-	for (p = str + strlen (str) - 1; p >= str && isspace ((u_char) *p); p--)
+	for (p = str + strlen (str) - 1; p >= str && isspace ((uint8_t) *p); p--)
 		continue;
 	p++;
 	if ((c = *p) == NULL || p == str)

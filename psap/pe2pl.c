@@ -29,6 +29,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "psap.h"
 
 static int  pe2pl_aux (PS ps, PE pe, int level);
@@ -129,8 +130,8 @@ no_code:
 						case '"':
 							break;
 						default:
-							if (iscntrl ((u_char) *fp)
-									|| isspace ((u_char) *fp)
+							if (iscntrl ((uint8_t) *fp)
+									|| isspace ((uint8_t) *fp)
 									|| (*fp & 0x80))
 								break;
 							continue;

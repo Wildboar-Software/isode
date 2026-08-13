@@ -5,6 +5,7 @@ static char yysccsid[] = "@(#)yaccpar	1.8 (Berkeley) 01/20/90";
 #line 5 "yacc.y"
 
 #include <stdio.h>
+#include <stdint.h>
 #include <ctype.h>
 #include "pepy.h"
 
@@ -61,8 +62,8 @@ char	*str;
 	if((ys = (YS) malloc (sizeof *ys)) == NULLYS)
 		yyerror ("out of memory");
 	q = str;
-	while (isspace ((u_char)*q)) q++;
-	for (p = q; isalnum((u_char)*p) || *p == '_'; p++)
+	while (isspace ((uint8_t)*q)) q++;
+	for (p = q; isalnum((uint8_t)*p) || *p == '_'; p++)
 		continue;
 	if (*p != '\0') {
 		c = *p;
@@ -82,8 +83,8 @@ char	*str;
 			return ys;
 		}
 	q++;
-	while (isspace ((u_char)*q)) q++;
-	for (p = q; isalnum((u_char)*p) || *p == '_'; p++)
+	while (isspace ((uint8_t)*q)) q++;
+	for (p = q; isalnum((uint8_t)*p) || *p == '_'; p++)
 		continue;
 	*p = '\0';
 	ys -> ys_ptrname = new_string (q);

@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"
@@ -20,13 +21,13 @@ int str2sel (char *s, int quoted, char *sel, int n) {
 
 	if (quoted <= 0) {
 		for (cp = s; *cp; cp++)
-			if (!isxdigit ((u_char) *cp))
+			if (!isxdigit ((uint8_t) *cp))
 				break;
 
 		if (*cp == 0 && (i = (cp - s)) >= 2 && (i & 0x01) == 0) {
 			if (i > (r = n * 2))
 				i = r;
-			i = implode ((u_char *) sel, s, i);
+			i = implode ((uint8_t *) sel, s, i);
 			if ((r = (n - i)) > 0)
 				bzero (sel + i, r);
 			return i;
@@ -70,13 +71,13 @@ int str2sel (char *s, int quoted, char *sel, int n) {
 				break;
 
 			default:
-				if (!isdigit ((u_char) *s)) {
+				if (!isdigit ((uint8_t) *s)) {
 					*cp++ = QUOTE;
 					*cp = *s;
 					break;
 				}
 				r = *s != '0' ? 10 : 8;
-				for (i = 0; isdigit ((u_char) *s); s++)
+				for (i = 0; isdigit ((uint8_t) *s); s++)
 					i = i * r + *s - '0';
 				s--;
 				*cp = toascii (i);

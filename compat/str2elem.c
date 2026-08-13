@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -16,7 +17,7 @@ int str2elem (char *s, unsigned int elements[]) {
 
 	ip = elements, i = 0;
 	for (cp = s; *cp && i <= NELEM; cp = ++dp) {
-		for (dp = cp; isdigit ((u_char) *dp); dp++)
+		for (dp = cp; isdigit ((uint8_t) *dp); dp++)
 			continue;
 		if ((cp == dp) || (*dp && *dp != '.'))
 			break;

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "spkt.h"
 #include "tailor.h"
 #include "internet.h"
@@ -1033,19 +1034,19 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	if ((base = pullqb (qb, nread = 2)) == NULL || (s = newspkt ((int) (si = *base++))) == NULL)
 		return NULLSPKT;
 
-	if (*((u_char *) base) == 255) {
+	if (*((uint8_t *) base) == 255) {
 		if ((base = pullqb (qb, 2)) == NULL) {
 			s -> s_errno = SC_PROTOCOL;
 			return s;
 		}
 		nread += 2;
-		s -> s_li = (*((u_char *) base) << 8) + *((u_char *) (base + 1));
+		s -> s_li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 		if (s -> s_li < 255) {
 			s -> s_errno = SC_PROTOCOL;
 			return s;
 		}
 	} else
-		s -> s_li = *((u_char *) base);
+		s -> s_li = *((uint8_t *) base);
 
 	pgilen = pktlen = s -> s_li;
 
@@ -1081,17 +1082,17 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	while (pktlen && (s -> s_errno == SC_ACCEPT)) {
 		advance (2);
 		code = *base++;
-		if (*((u_char *) base) == 255) {
+		if (*((uint8_t *) base) == 255) {
 			base++;
 			advance (2);
-			li = (*((u_char *) base) << 8) + *((u_char *) (base + 1));
+			li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 			xlen = 2;
 			if (li < 255) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 		} else {
-			li = *((u_char *) base);
+			li = *((uint8_t *) base);
 			xlen = 1;
 		}
 		base += xlen;

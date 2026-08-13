@@ -269,7 +269,7 @@ static char *sels[3] = {
     char *zp = y + z; \
  \
     while (zp-- > y) \
-	if (!isxdigit ((u_char) *zp)) { \
+	if (!isxdigit ((uint8_t) *zp)) { \
 loslab: ; \
 	    SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, \
 		  ("invalid hexstring: \"%*.*s\"", \
@@ -278,7 +278,7 @@ loslab: ; \
 	} \
     if (z % 2) \
 	goto loslab; \
-    (intres) = implode ((u_char *) (octres), y, z); \
+    (intres) = implode ((uint8_t *) (octres), y, z); \
 }
 
 struct PSAPaddr *str2paddr (char *str) {
@@ -335,7 +335,7 @@ struct PSAPaddr *str2paddr (char *str) {
 
 			case '#':		/* '#' <digitstring> */
 				j = 0;
-				for (cp++; isdigit ((u_char) *cp); cp++)
+				for (cp++; isdigit ((uint8_t) *cp); cp++)
 					j = j * 10 + *cp - '0';
 				if (j > 0xffff) {
 					SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -478,7 +478,7 @@ too_many:
 				else
 					*ep++ = 0;
 				for (fp = dp; *fp; fp++)
-					if (!isdigit ((u_char) *fp))
+					if (!isdigit ((uint8_t) *fp))
 						break;
 				if (*fp) {
 					SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -663,7 +663,7 @@ invalid_dte:
 							goto invalid_dte;
 #else
 						for (np = dp; *np; np++)
-							if (!isdigit ((u_char) *np)) {
+							if (!isdigit ((uint8_t) *np)) {
 invalid_dte:
 								;
 								SLOG (addr_log, LLOG_EXCEPTIONS,
@@ -828,7 +828,7 @@ int macro2comm (char *name, struct ts_interim *ts) {
 		*ep++ = 0;
 
 	for (fp = dp; *fp; fp++)
-		if (!isdigit ((u_char) *fp))
+		if (!isdigit ((uint8_t) *fp))
 			break;
 	if (*fp) {
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
@@ -975,10 +975,10 @@ static char *SEL2STR (char *sel, int len) {
 			break;
 
 		default:
-			if (!isalnum ((u_char) *dp)) {
+			if (!isalnum ((uint8_t) *dp)) {
 				cp = buffer;
 				*cp++ = '\'';
-				cp += explode (cp, (u_char *) sel, len);
+				cp += explode (cp, (uint8_t *) sel, len);
 				strcpy (cp, "'H");
 				return buffer;
 			}
@@ -1067,7 +1067,7 @@ bad_pa:
 				goto bad_pa;
 			strcpy (cp, "NS+");
 			cp += strlen (cp);
-			cp += explode (cp, (u_char *) ca -> na_address, ca -> na_addrlen);
+			cp += explode (cp, (uint8_t *) ca -> na_address, ca -> na_addrlen);
 			*cp = 0;
 			continue;
 		}
@@ -1100,7 +1100,7 @@ bad_pa:
 			strcpy (cp = dp, "NS+");
 			cp += strlen (cp);
 
-			cp += explode (cp, (u_char *) na -> na_address, na -> na_addrlen);
+			cp += explode (cp, (uint8_t *) na -> na_address, na -> na_addrlen);
 			*cp = 0;
 
 			/* Use afi_info to pretty print as AFI+IDI+DSP */
@@ -1176,13 +1176,13 @@ bad_pa:
 					strcpy (cp, "+PID+");
 					cp += strlen (cp);
 
-					cp += explode (cp, (u_char *) na -> na_pid,
+					cp += explode (cp, (uint8_t *) na -> na_pid,
 								   (int) na -> na_pidlen);
 				} else if (na -> na_cudflen > 0) {
 					strcpy (cp, "+CUDF+");
 					cp += strlen (cp);
 
-					cp += explode (cp, (u_char *) na -> na_cudf,
+					cp += explode (cp, (uint8_t *) na -> na_cudf,
 								   (int) na -> na_cudflen);
 				}
 				*cp = 0;

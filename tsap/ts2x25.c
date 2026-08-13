@@ -1,5 +1,6 @@
 /* ts2x25.c - TPM: X.25 interface */
 
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -265,8 +266,8 @@ char *x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdi
 
 	switch (loc -> na_stack) {
 	case NA_NSAP:
-		explode (tbuf1, (u_char *)loc -> na_address, loc -> na_addrlen);
-		explode (tbuf2, (u_char *)rem -> na_address, rem -> na_addrlen);
+		explode (tbuf1, (uint8_t *)loc -> na_address, loc -> na_addrlen);
+		explode (tbuf2, (uint8_t *)rem -> na_address, rem -> na_addrlen);
 #ifdef ULTRIX_X25_DEMSA
 		sprintf (buffer, "%c%d %d %s %s", NT_X2584,
 				 fd, vci, tbuf1, tbuf2);
@@ -367,7 +368,7 @@ int x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na = &ta -> ta_addr;
 	na -> na_stack = NA_NSAP;
 	na -> na_community = ts_comm_nsap_default;
-	na->na_addrlen = implode ((u_char *)na->na_address, dte1, strlen(dte1));
+	na->na_addrlen = implode ((uint8_t *)na->na_address, dte1, strlen(dte1));
 
 	tb -> tb_fd = fd;
 	XTService (tb);
@@ -377,7 +378,7 @@ int x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td)
 	na = &ta -> ta_addr;
 	na -> na_stack = NA_NSAP;
 	na -> na_community = ts_comm_nsap_default;
-	na -> na_addrlen = implode ((u_char *)na -> na_address, dte2, strlen(dte2));
+	na -> na_addrlen = implode ((uint8_t *)na -> na_address, dte2, strlen(dte2));
 
 #ifdef  SUN_X25
 	set_x25_facilities (tb -> tb_fd, -1, "Negotiated");

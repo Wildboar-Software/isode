@@ -1,7 +1,7 @@
 /* str2vec.c - string to vector */
 
 #include <ctype.h>
-#include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
@@ -21,7 +21,7 @@ int str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) 
 			if (i > 0 && *s == brk)
 				*s++ = 0;
 		} else
-			while (isspace ((u_char) *s) || *s == comma)
+			while (isspace ((uint8_t) *s) || *s == comma)
 				*s++ = 0;
 		if (*s == 0)
 			break;
@@ -48,7 +48,7 @@ int str2vecX (char *s, char **vec, int nmask, int *mask, char brk, int docomma) 
 				for (s++; *s != 0 && *s != brk; s++)
 					continue;
 		} else
-			for (s++; *s != 0 && !isspace ((u_char) *s) && *s != comma; s++)
+			for (s++; *s != 0 && !isspace ((uint8_t) *s) && *s != comma; s++)
 				continue;
 	}
 	vec[i] = NULLCP;

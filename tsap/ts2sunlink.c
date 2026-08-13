@@ -14,6 +14,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdint.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "af_osi.h"
@@ -236,7 +237,7 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 		goto out;
 	}
 
-	cc = 2 * implode ((u_char *) tp, cp, cc);
+	cc = 2 * implode ((uint8_t *) tp, cp, cc);
 	cp += cc, i -= cc;
 
 	if (tp -> tp4_expedited)
@@ -258,7 +259,7 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 			goto out;
 		}
 
-		ts -> ts_cc = implode ((u_char *) ts -> ts_data, cp, i);
+		ts -> ts_cc = implode ((uint8_t *) ts -> ts_data, cp, i);
 	} else
 		ts -> ts_cc = 0;
 

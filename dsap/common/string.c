@@ -1,5 +1,6 @@
 /* string.c - printable string handling */
 
+#include <stdint.h>
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
@@ -290,15 +291,15 @@ int check_3166 (char *a) {
 	if (strlen (a) != 2)
 		return 0;
 
-	if (islower ((u_char) a[0]))
+	if (islower ((uint8_t) a[0]))
 		a[0] = toupper (a[0]);
-	if (islower ((u_char) a[1]))
+	if (islower ((uint8_t) a[1]))
 		a[1] = toupper (a[1]);
 
 #ifdef STRICT_X500
-	return (isupper ((u_char) a[0]) && isupper ((u_char) a[1]) && is3166 (a));
+	return (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a));
 #else
-	return (isupper ((u_char) a[0]) && isupper ((u_char) a[1]));
+	return (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]));
 #endif
 }
 
@@ -321,15 +322,15 @@ losing:
 		return (NULLCP);
 	}
 
-	if (islower ((u_char) a[0]))
+	if (islower ((uint8_t) a[0]))
 		a[0] = toupper (a[0]);
-	if (islower ((u_char) a[1]))
+	if (islower ((uint8_t) a[1]))
 		a[1] = toupper (a[1]);
 
 #ifdef STRICT_X500
-	if (isupper ((u_char) a[0]) && isupper ((u_char) a[1]) && is3166 (a))
+	if (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a))
 #else
-	if (isupper ((u_char) a[0]) && isupper ((u_char) a[1]))
+	if (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]))
 #endif
 		return (a);
 

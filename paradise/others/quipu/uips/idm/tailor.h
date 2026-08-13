@@ -72,17 +72,17 @@ extern char     x25_intl_zero;
 extern char     x25_strip_dnic;
 extern char    *x25_dnic_prefix;
 
-extern u_char   reverse_charge;
+extern uint8_t   reverse_charge;
 extern uint16_t  recvpktsize;
 extern uint16_t  sendpktsize;
-extern u_char   recvwndsize;
-extern u_char   sendwndsize;
-extern u_char   recvthruput;
-extern u_char   sendthruput;
-extern u_char   cug_req;
-extern u_char   cug_index;
-extern u_char   fast_select_type;
-extern u_char   rpoa_req;
+extern uint8_t   recvwndsize;
+extern uint8_t   sendwndsize;
+extern uint8_t   recvthruput;
+extern uint8_t   sendthruput;
+extern uint8_t   cug_req;
+extern uint8_t   cug_index;
+extern uint8_t   fast_select_type;
+extern uint8_t   rpoa_req;
 extern uint16_t  rpoa;
 
 extern LLog *x25_log, _x25_log;

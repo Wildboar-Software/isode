@@ -251,9 +251,9 @@ struct s_fixedpt {
  *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 */
 struct ntpdata {
-	u_char status;		/* status of local clock and leap info */
-	u_char stratum;		/* Stratum level */
-	u_char ppoll;		/* poll value */
+	uint8_t status;		/* status of local clock and leap info */
+	uint8_t stratum;		/* Stratum level */
+	uint8_t ppoll;		/* poll value */
 	int precision:8;
 	struct s_fixedpt distance;
 	struct s_fixedpt dispersion;
@@ -335,15 +335,15 @@ struct ntp_peer {
 #define PEER_FL_CONNSTATE	(PEER_FL_CONINP2|PEER_FL_CONINP1|PEER_FL_CONNECTED)
 	int	sock;			/* index into sockets to derive
 					   peer.dstadr and peer.dstport */
-	u_char	leap;			/* receive */
-	u_char	hmode;			/* receive */
-	u_char	stratum;		/* receive */
-	u_char	ppoll;			/* receive */
-	u_char	hpoll;			/* poll update */
-	u_char	vers;			/* version */
+	uint8_t	leap;			/* receive */
+	uint8_t	hmode;			/* receive */
+	uint8_t	stratum;		/* receive */
+	uint8_t	ppoll;			/* receive */
+	uint8_t	hpoll;			/* poll update */
+	uint8_t	vers;			/* version */
 #define PEERMODE_NORMAL	1
 #define PEERMODE_QUERY  2
-	u_char  mode;			/* mode */
+	uint8_t  mode;			/* mode */
 	short	precision;		/* receive */
 	struct	s_fixedpt distance;	/* receive */
 	struct	s_fixedpt dispersion;	/* receive */
@@ -378,8 +378,8 @@ struct ntp_peer {
 /* ================= table 3.1:  System Variables ================= */
 
 struct sysdata {			/* procedure */
-	u_char leap;			/* clock update */
-	u_char stratum;			/* clock update */
+	uint8_t leap;			/* clock update */
+	uint8_t stratum;			/* clock update */
 	short precision;		/* system */
 	struct s_fixedpt distance;	/* clock update */
 	struct s_fixedpt dispersion;	/* clock update */
@@ -388,7 +388,7 @@ struct sysdata {			/* procedure */
 	int hold;			/* clock update */
 	struct ntp_peer *peer;		/* selection */
 	int maxpeers;			/* <<local>> */
-	u_char filler;		/* put here for %&*%$$ SUNs */
+	uint8_t filler;		/* put here for %&*%$$ SUNs */
 };
 
 #define	NTPDC_VERSION	2
@@ -407,13 +407,13 @@ struct clockinfo {
 	u_long pkt_rcvd;
 	u_long pkt_dropped;
 	u_long timer;
-	u_char leap;
-	u_char stratum;
-	u_char ppoll;
+	uint8_t leap;
+	uint8_t stratum;
+	uint8_t ppoll;
 	int precision:8;
 
-	u_char hpoll;
-	u_char filler1;
+	uint8_t hpoll;
+	uint8_t filler1;
 	uint16_t reach;
 
 	long	estdisp;			/* scaled by 1000 */
@@ -430,15 +430,15 @@ struct clockinfo {
 };
 
 struct ntpinfo {
-	u_char version;
-	u_char type;		/* request type (stratum in ntp packets) */
-	u_char count;		/* number of entries in this packet */
-	u_char seq;		/* sequence number of this packet */
+	uint8_t version;
+	uint8_t type;		/* request type (stratum in ntp packets) */
+	uint8_t count;		/* number of entries in this packet */
+	uint8_t seq;		/* sequence number of this packet */
 
-	u_char npkts;		/* total number of packets */
-	u_char peers;
-	u_char fill3;
-	u_char fill4;
+	uint8_t npkts;		/* total number of packets */
+	uint8_t peers;
+	uint8_t fill3;
+	uint8_t fill4;
 };
 
 extern int selfds;

@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "mib.h"
 #include "interfaces.h"
 #include "routes.h"
@@ -383,9 +384,9 @@ int	offset;
 }
 
 static int  clnp_er_index (p)
-u_char p;
+uint8_t p;
 {
-	u_char *cp = clnp_er_codes + CLNP_ERRORS;
+	uint8_t *cp = clnp_er_codes + CLNP_ERRORS;
 
 	while (cp-- > clnp_er_codes)
 		if (*cp == p)
@@ -767,8 +768,8 @@ struct adrtab {
 	unsigned int    adm_instance[ADM_SIZE];
 	int	    adm_insize;
 
-	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
-	u_char	adm_addrlen;			/* .. */
+	uint8_t	adm_address[ADM_SIZE];		/* PhysAddress */
+	uint8_t	adm_addrlen;			/* .. */
 
 	int	    adr_index;				/* ifIndex */
 

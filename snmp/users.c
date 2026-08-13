@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"
@@ -849,7 +850,7 @@ static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > PW_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
+			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 
@@ -1250,7 +1251,7 @@ static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > GR_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
+			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 
@@ -1506,7 +1507,7 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		for (cp = group; i-- > 0; ip++, cp++) {
 			if (*ip == 0)
 				break;
-			else if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
+			else if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		}
 		*cp = 0, ip++;
@@ -1518,7 +1519,7 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > PW_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = user; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((u_char) (*cp = *ip & 0xff)))
+			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 		if (cp == user)

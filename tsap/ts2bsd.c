@@ -2,6 +2,7 @@
 #define STATIC /**/
 
 #include <stdio.h>
+#include <stdint.h>
 #include <signal.h>
 #include "tpkt.h"
 
@@ -317,7 +318,7 @@ STATIC int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 			return tsaplose (td, DR_CONNECT, NULLCP,
 							 "too much initial user data");
 
-		ts -> ts_cc = implode ((u_char *) ts -> ts_data, cp, i);
+		ts -> ts_cc = implode ((uint8_t *) ts -> ts_data, cp, i);
 	} else
 		ts -> ts_cc = 0;
 

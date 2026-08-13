@@ -5,6 +5,7 @@ static char yysccsid[] = "@(#)yaccpar	1.8 (Berkeley) 01/20/90";
 #line 5 "pepsy-yacc.y"
 
 #include <stdio.h>
+#include <stdint.h>
 #include <ctype.h>
 #include "pepsydefs.h"
 
@@ -181,7 +182,7 @@ int	*pi;
 }
 
 bin2hex (s, d, len)
-register    u_char *s;
+register    uint8_t *s;
 register char  *d;
 int     len;
 {

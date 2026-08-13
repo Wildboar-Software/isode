@@ -321,7 +321,7 @@ int	len;
 {
 	char    buffer[BUFSIZ];
 
-	buffer[explode (buffer, (u_char *) selector, len)] = 0;
+	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
 
 	fprintf (fp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
@@ -340,7 +340,7 @@ FILE   *fp;
 char   *rw,
 	   *s,
 	   *t;
-u_char  bits,
+uint8_t  bits,
 		mask;
 {
 	fprintf (fp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
@@ -361,7 +361,7 @@ u_char  bits,
 static	type_settings (fp, rw, settings)
 FILE   *fp;
 char   *rw;
-u_char  settings;
+uint8_t  settings;
 {
 	int     token;
 
@@ -404,7 +404,7 @@ struct SSAPref *ref;
 static	type_vrsn (fp, rw, version)
 FILE   *fp;
 char   *rw;
-u_char	version;
+uint8_t	version;
 {
 	fprintf (fp, "%sVERSION/ 0x%x\n", rw, version);
 }
@@ -421,7 +421,7 @@ int	reason;
 static	type_prepare (fp, rw, type)
 FILE   *fp;
 char   *rw;
-u_char  type;
+uint8_t  type;
 {
 	fprintf (fp, "%sTYPE/ ", rw);
 	switch (type) {
@@ -447,7 +447,7 @@ u_char  type;
 static	type_error (fp, rw, reason)
 FILE   *fp;
 char   *rw;
-u_char  reason;
+uint8_t  reason;
 {
 	fprintf (fp, "%sREASON/ ", rw);
 	switch (reason) {
@@ -479,7 +479,7 @@ u_char  reason;
 static	type_resync (fp, rw, type)
 FILE   *fp;
 char   *rw;
-u_char  type;
+uint8_t  type;
 {
 	fprintf (fp, "%sTYPE/ ", rw);
 	switch (type) {
@@ -521,7 +521,7 @@ int	len;
 
 	fprintf (fp, fmt, len);
 	if (0 < len && len < sizeof buffer / 2) {
-		buffer[explode (buffer, (u_char *) data, len)] = 0;
+		buffer[explode (buffer, (uint8_t *) data, len)] = 0;
 		fprintf (fp, " %s", buffer);
 	}
 }

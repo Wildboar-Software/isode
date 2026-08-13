@@ -29,10 +29,11 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "psap.h"
 
 typedef struct PList {
-	u_char pl_code;
+	uint8_t pl_code;
 #define	PL_CODE_LPAR	0
 #define	PL_CODE_NAME	1
 #define	PL_CODE_NUM	2
@@ -261,7 +262,7 @@ static int  pl_read_lex (PS ps, PL pl)
 	do {
 		if (pl_read (ps, &c) == NOTOK)
 			return NOTOK;
-	} while (isspace ((u_char) c));
+	} while (isspace ((uint8_t) c));
 	switch (c) {
 	case '(':
 		pl -> pl_code = PL_CODE_LPAR;
@@ -276,10 +277,10 @@ static int  pl_read_lex (PS ps, PL pl)
 		} while (c != '\n');
 		return pl_read_lex (ps, pl);
 	default:
-		if (isalpha ((u_char) c)) {
+		if (isalpha ((uint8_t) c)) {
 			pl -> pl_code = PL_CODE_NAME;
 			bp = pl -> pl_name;
-			while (isalnum ((u_char) c) || c == '-') {
+			while (isalnum ((uint8_t) c) || c == '-') {
 				*bp++ = c;
 				if (pl_read (ps, &c) == NOTOK)
 					return NOTOK;
@@ -300,7 +301,7 @@ static int  pl_read_lex (PS ps, PL pl)
 				n = (n << 8) | (c & 0xff);
 			}
 		}
-		if (!isdigit ((u_char) c))
+		if (!isdigit ((uint8_t) c))
 			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 		pl -> pl_code = PL_CODE_NUM;
 		if (c == '0') {
@@ -345,7 +346,7 @@ static int  pl_read_lex (PS ps, PL pl)
 			n = (n * base) + c - '0';
 			if (pl_read (ps, &c) == NOTOK)
 				return NOTOK;
-			if (!isxdigit ((u_char) c)) {
+			if (!isxdigit ((uint8_t) c)) {
 				pl -> pl_num = n;
 				ps -> ps_scratch = c;
 				return OK;

@@ -3,6 +3,7 @@
 /* This should be considered Alpha test code at this stage... */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "tpkt.h"
 
 #ifdef  TP4
@@ -651,7 +652,7 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 		if (i > 2 * TS_SIZE)
 			return tsaplose(td, DR_CONNECT, NULLCP,
 							"too much initial user data");
-		ts->ts_cc = implode((u_char *) ts->ts_data, cp, i);
+		ts->ts_cc = implode((uint8_t *) ts->ts_data, cp, i);
 	} else
 		ts->ts_cc = 0;
 

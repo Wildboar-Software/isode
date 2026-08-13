@@ -73,14 +73,14 @@ str2aei_stub (char *designator, char *qualifier) {
 				&& cp[0] == '4' && cp[2] == '0' && cp[3] == '0') {
 			na -> na_stack = NA_NSAP;
 			na -> na_community = ts_comm_nsap_default;
-			na -> na_addrlen = implode ((u_char *) na -> na_address,
+			na -> na_addrlen = implode ((uint8_t *) na -> na_address,
 										cp, strlen (cp));
 			goto found_it;
 		}
 
 		if (i <= NSAP_DTELEN + 1)
 			for (; *cp; cp++)
-				if (!isxdigit ((u_char) *cp))
+				if (!isxdigit ((uint8_t) *cp))
 					break;
 		if (*cp) {
 			struct hostent *hp = gethostbystring (designator);

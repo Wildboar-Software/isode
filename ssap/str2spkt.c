@@ -1,6 +1,7 @@
 /* str2spkt.c - read/write a SPDU thru a string */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "spkt.h"
 #include "tailor.h"
@@ -34,7 +35,7 @@ char *spkt2str (struct ssapkt *s) {
 			break;
 		}
 
-	buffer[explode (buffer, (u_char *) base, len)] = 0;
+	buffer[explode (buffer, (uint8_t *) base, len)] = 0;
 	if (len > 0)
 		free (base);
 
@@ -60,7 +61,7 @@ struct ssapkt *str2spkt (char *buffer) {
 	bzero ((char *) qb, sizeof *qb);
 	qb -> qb_forw = qb -> qb_back = qb;
 
-	cc = implode ((u_char *) packet, buffer, strlen (buffer));
+	cc = implode ((uint8_t *) packet, buffer, strlen (buffer));
 	if ((qp = (struct qbuf *) malloc (sizeof *qp + (unsigned) cc)) == NULL)
 		s = NULLSPKT;
 	else {

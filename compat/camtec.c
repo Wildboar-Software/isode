@@ -14,6 +14,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -159,7 +160,7 @@ int     read_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-	static u_char mode;
+	static uint8_t mode;
 	int cc, count = 0, total = len;
 	char *p = buffer;
 

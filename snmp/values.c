@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "logger.h"
@@ -282,7 +283,7 @@ caddr_t	value;
 
 int	mediaddr2oid (ip, addr, len, islen)
 unsigned int *ip;
-u_char *addr;
+uint8_t *addr;
 int	len,
 	islen;
 {

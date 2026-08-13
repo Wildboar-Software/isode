@@ -135,11 +135,11 @@ int	o_specific ();
 
 int	mediaddr2oid ();
 #define	ipaddr2oid(ip,addr) \
-	mediaddr2oid ((ip), (u_char*) (addr), sizeof (struct in_addr), 0)
+	mediaddr2oid ((ip), (uint8_t*) (addr), sizeof (struct in_addr), 0)
 #ifdef	BSD44
 #define	clnpaddr2oid(ip,addr) \
 	mediaddr2oid ((ip), \
-		      (u_char *) (addr) -> isoa_genaddr, \
+		      (uint8_t *) (addr) -> isoa_genaddr, \
 		      (int) (addr) -> isoa_len, 1)
 #endif
 

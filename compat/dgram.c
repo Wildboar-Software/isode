@@ -45,7 +45,7 @@ struct dgramblk {
 	int	    dgram_parent;
 	union sockaddri_un dgram_peer;
 #ifdef	BSD44
-	u_char  dgram_addrlen;
+	uint8_t  dgram_addrlen;
 #endif
 
 	struct qbuf dgram_queue;
@@ -136,7 +136,7 @@ int start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2
 #ifdef	BSD43
 	int	    onoff;
 #endif
-	u_char *cp;
+	uint8_t *cp;
 	struct dgramblk *up,
 			   *vp;
 	struct sockaddr_iso *ifaddr = &sock -> osi_sockaddr;
@@ -167,12 +167,12 @@ int start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2
 		ifaddr -> siso_family = AF_ISO;
 	{
 		int	pid;
-		u_char *dp,
+		uint8_t *dp,
 			   *ep,
 			   *fp;
 		pid = getpid ();
-		cp = fp = (u_char *) ifaddr -> siso_data + ifaddr -> siso_nlen;
-		for (ep = (dp = (u_char *) &pid) + sizeof pid; dp < ep; dp++)
+		cp = fp = (uint8_t *) ifaddr -> siso_data + ifaddr -> siso_nlen;
+		for (ep = (dp = (uint8_t *) &pid) + sizeof pid; dp < ep; dp++)
 			*cp++ = *dp;
 		ifaddr -> siso_tlen = (cp - fp) + 1;
 		ifaddr -> siso_slen = ifaddr -> siso_plen = 0;
@@ -412,7 +412,7 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 	for (fd = 0, up = peers; fd < mfds; fd++, up++)
 		if (FD_ISSET (fd, &ifds)) {
 			int	    slen;
-			u_char  len;
+			uint8_t  len;
 			char   *data;
 
 			FD_CLR (fd, &ifds);
@@ -566,8 +566,8 @@ static void isoprint (struct sockaddr_iso *siso, char *bp) {
 	hexprint (bp, siso -> siso_nlen, siso -> siso_data, "NS+", "");
 }
 
-static void hexprint (char *bp, int n, u_char *buf, char *start, char *stop) {
-	u_char *in = buf, *top = in + n;
+static void hexprint (char *bp, int n, uint8_t *buf, char *start, char *stop) {
+	uint8_t *in = buf, *top = in + n;
 
 	if (n == 0)
 		return;

@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "ftamsbr.h"
 
 #ifdef	BRIDGE
@@ -217,7 +218,7 @@ int	ftamfd;
 
 */
 
-#define	isIA5(c) (isprint ((u_char) c) || (isspace ((u_char)c) && (c) != '\r'))
+#define	isIA5(c) (isprint ((uint8_t) c) || (isspace ((uint8_t)c) && (c) != '\r'))
 
 int	textpeek (vf, fd, file, st, ftamfd)
 struct vfsmap *vf;

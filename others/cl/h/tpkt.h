@@ -214,10 +214,10 @@ struct tsapkt {
 	int		t_errno;
 
 	struct {
-		u_char    pk_vrsn;
+		uint8_t    pk_vrsn;
 #define	TPKT_VRSN	3
 
-		u_char    pk_rsrvd;
+		uint8_t    pk_rsrvd;
 
 		uint16_t   pk_length;
 #define	TPKT_MAXLEN	0xffff
@@ -230,7 +230,7 @@ struct tsapkt {
 			    + sizeof ((t) -> t_code))
 
 	struct {
-		u_char    tp_li;
+		uint8_t    tp_li;
 #ifndef	lint
 #ifndef	__STDC__
 #define	TPDU_MINLEN(t,c)	(c/* */_SIZE(t) + sizeof ((t) -> t_code))
@@ -247,7 +247,7 @@ struct tsapkt {
 	((t) -> t_length - sizeof ((t) -> t_pkthdr) \
 			 - sizeof ((t) -> t_li) - (t) -> t_li)
 
-		u_char    tp_code;
+		uint8_t    tp_code;
 #define	TPDU_CODE(t)	((t) -> t_code & 0xf0)
 #define	TPDU_CR		0xe0	/* CONNECTION REQUEST */
 #define	TPDU_CC		0xd0	/* CONNECTION CONFIRMATION */
@@ -269,7 +269,7 @@ struct tsapkt {
 				uint16_t   un_cr_dstref;
 				uint16_t   un_cr_srcref;
 
-				u_char    un_cr_class;
+				uint8_t    un_cr_class;
 #define	CR_CLASS(t)	((t) -> t_cr.cr_class & 0xf0)
 #define	CR_CLASS_TP0	0x00	/* class 0 */
 #define	CR_CLASS_TP1	0x10	/*   ..  1 */
@@ -286,11 +286,11 @@ struct tsapkt {
 				char	  un_cr_calling[TSSIZE];
 				int	  un_cr_callinglen;
 
-				u_char    un_cr_tpdusize;
+				uint8_t    un_cr_tpdusize;
 
 				uint16_t	  un_cr_options;
 
-				u_char	  un_cr_alternate;
+				uint8_t	  un_cr_alternate;
 			}       un_cr;
 #define	cr_dstref	un_cr_dstref
 #define	cr_srcref	un_cr_srcref
@@ -312,7 +312,7 @@ struct tsapkt {
 				/* FIXED part */
 				uint16_t   un_dr_dstref;
 				uint16_t   un_dr_srcref;
-				u_char    un_dr_reason;
+				uint8_t    un_dr_reason;
 			}       un_dr;
 #define	dr_dstref	un_dr_dstref
 #define	dr_srcref	un_dr_srcref
@@ -321,7 +321,7 @@ struct tsapkt {
 
 			struct {
 				/* FIXED part */
-				u_char   un_dt_nr;
+				uint8_t   un_dt_nr;
 #define	DT_EOT		0x80
 			}       un_dt;
 #define	dt_nr		un_dt_nr
@@ -339,7 +339,7 @@ struct tsapkt {
 			struct {
 				/* FIXED part */
 				uint16_t	   un_er_dstref;
-				u_char	   un_er_reject;
+				uint8_t	   un_er_reject;
 #define	ER_REJ_NOTSPECIFIED	0x00	/* Reason not specified */
 #define	ER_REJ_CODE		0x01	/* Invalid parameter code */
 #define	ER_REJ_TPDU		0x02	/* Invalid TPDU type */

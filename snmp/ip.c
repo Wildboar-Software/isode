@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include "mib.h"
@@ -51,8 +52,8 @@ struct	ipstat {
 };
 struct	arptab {
 	struct	in_addr at_iaddr;	/* internet address */
-	u_char	at_enaddr[6];		/* ethernet address */
-	u_char	at_flags;		/* flags */
+	uint8_t	at_enaddr[6];		/* ethernet address */
+	uint8_t	at_flags;		/* flags */
 };
 #endif
 #ifndef SVR4_UCB
@@ -840,14 +841,14 @@ bad_magic:
 
 		rt -> rt_rt.rt_flags |= RTF_UP;
 		{
-			u_char *cp;
+			uint8_t *cp;
 			unsigned int *jp,
 					 *kp;
 			struct sockaddr_in *sin;
 
 			sin = (struct sockaddr_in *) &rt -> rt_dst;
 			sin -> sin_family = AF_INET;
-			cp = (u_char *) &sin -> sin_addr;
+			cp = (uint8_t *) &sin -> sin_addr;
 			for (kp = (jp = ip) + IFN_SIZE; jp < kp; )
 				*cp++ = *jp++ & 0xff;
 			rt -> rt_rt.rt_dst = *((struct sockaddr *) &rt -> rt_dst);
@@ -1146,8 +1147,8 @@ struct adrtab {
 	unsigned int    adm_instance[ADM_SIZE];
 	int	    adm_insize;
 
-	u_char	adm_address[ADM_SIZE];		/* PhysAddress */
-	u_char	adm_addrlen;			/* .. */
+	uint8_t	adm_address[ADM_SIZE];		/* PhysAddress */
+	uint8_t	adm_addrlen;			/* .. */
 
 #define	ADA_SIZE	(IFN_SIZE + 2)		/* AtEntry instance */
 	unsigned int    ada_instance[ADA_SIZE];
@@ -1162,8 +1163,8 @@ struct adrtab {
 #define	STATIC_MAPPING	4
 
 	int	    adr_touched;			/* set request'd */
-	u_char  adr_oldphys[ADM_SIZE];		/*   .. PhysAddress */
-	u_char  adr_physlen;			/* .. */
+	uint8_t  adr_oldphys[ADM_SIZE];		/*   .. PhysAddress */
+	uint8_t  adr_physlen;			/* .. */
 
 	struct adrtab *adn_next;			/* next IpAddress */
 	struct adrtab *adm_next;    		/* next PhysAddress */
@@ -1418,11 +1419,11 @@ int	offset;
 		at -> adr_type = DYNAMIC_MAPPING;
 
 		{
-			u_char *cp;
+			uint8_t *cp;
 			unsigned int *jp,
 					 *kp;
 
-			cp = (u_char *) &at -> adn_address;
+			cp = (uint8_t *) &at -> adn_address;
 			for (kp = (jp = ip) + IFN_SIZE; jp < kp; )
 				*cp++ = *jp++ & 0xff;
 		}
@@ -1472,7 +1473,7 @@ int	offset;
 				return int_SNMP_error__status_badValue;
 			{
 				int	len;
-				u_char *d;
+				uint8_t *d;
 				struct qbuf *q,
 						   *p;
 
@@ -1667,7 +1668,7 @@ static struct arptab *_read_arptab ()
 	head = tail = prev = NULL;
 
 	for (i = 0; fgets(line, sizeof(line), f); i++) {
-		u_char *h, *ip;
+		uint8_t *h, *ip;
 
 		prev = tail;
 		if ((tail = calloc(1, sizeof(*tail))) == NULL)
@@ -1677,8 +1678,8 @@ static struct arptab *_read_arptab ()
 		if (prev)
 			prev -> next = tail;
 
-        h = (u_char *) &tail -> arptab.at_enaddr;
-		ip = (u_char *) &tail -> arptab.at_iaddr;
+        h = (uint8_t *) &tail -> arptab.at_enaddr;
+		ip = (uint8_t *) &tail -> arptab.at_iaddr;
         sscanf(line, "%hhd.%hhd.%hhd.%hhd 0x%*x 0x%hhx %hhx:%hhx:%hhx:%hhx:%hhx:%hhx %*[^ ] %*s\n",
 			   &ip[0], &ip[1], &ip[2], &ip[3],
 			   &tail -> arptab.at_flags,

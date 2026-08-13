@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
@@ -48,7 +49,7 @@ char *pa2str (struct PSAPaddr *px) {
 		for (ep = (dp = ta -> ta_selector) + ta -> ta_selectlen, *ep = 0;
 				dp < ep;
 				dp++)
-			if (!isprint ((u_char) *dp) && *dp != ' ')
+			if (!isprint ((uint8_t) *dp) && *dp != ' ')
 				break;
 		if (dp >= ep && (tz = str2taddr (ta -> ta_selector))) {
 			pa -> pa_addr.sa_addr = *tz;	    /* struct copy */

@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include <string.h>
+#include <stdint.h>
 #include "psap.h"
 #include "ssap.h"
 
@@ -41,7 +42,7 @@ addr2ref (char *addr) {
 	return sr;
 }
 
-static int stuff (PE pe, char *dbase, u_char *dlen) {
+static int stuff (PE pe, char *dbase, uint8_t *dlen) {
 	int     len;
 	char   *base;
 

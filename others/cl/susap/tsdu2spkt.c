@@ -1100,16 +1100,16 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 			|| (s = newspkt ((int) (si = *base++))) == NULL)
 		return NULLSPKT;
 
-	if (*((u_char *) base) == 255) {
+	if (*((uint8_t *) base) == 255) {
 		if ((base = pullqb (qb, 2)) == NULL) {
 			s -> s_errno = SC_PROTOCOL;
 			return s;
 		}
 		nread += 2;
 		s -> s_li =
-			(*((u_char *) base) << 8) + *((u_char *) (base + 1));
+			(*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 	} else
-		s -> s_li = *((u_char *) base);
+		s -> s_li = *((uint8_t *) base);
 	pgilen = pktlen = s -> s_li;
 
 	if (cat0)
@@ -1153,13 +1153,13 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	while (pktlen && (s -> s_errno == SC_ACCEPT)) {
 		advance (2);
 		code = *base++;
-		if (*((u_char *) base) == 255) {
+		if (*((uint8_t *) base) == 255) {
 			base++;
 			advance (2);
-			li = (*((u_char *) base) << 8) + *((u_char *) (base + 1));
+			li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 			xlen = 2;
 		} else {
-			li = *((u_char *) base);
+			li = *((uint8_t *) base);
 			xlen = 1;
 		}
 		base += xlen;
@@ -1814,14 +1814,14 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 	 *  Get li.
 	 */
 
-	if (*((u_char *) base) == 255) {
+	if (*((uint8_t *) base) == 255) {
 		base += 2;
 
 		nread += 2;
 		s -> s_li =
-			(*((u_char *) base) << 8) + *((u_char *) (base + 1));
+			(*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 	} else {
-		s -> s_li = *((u_char *) base);
+		s -> s_li = *((uint8_t *) base);
 		nread++;
 	}
 
@@ -1864,11 +1864,11 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		printf ("\n     code = %x \n", code);
 #endif
 
-		if (*((u_char *) base) == 255) {
-			li = (*((u_char *) base) << 8) + *((u_char *) (base + 1));
+		if (*((uint8_t *) base) == 255) {
+			li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 			xlen = 2;
 		} else {
-			li = *((u_char *) base);
+			li = *((uint8_t *) base);
 			xlen = 1;
 		}
 

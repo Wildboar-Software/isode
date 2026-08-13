@@ -201,7 +201,7 @@ typedef struct fd_set { int fds_bits[1]; } fd_set;
 #endif
 
 #ifdef	SYS5NLY
-typedef unsigned char	u_char;
+typedef unsigned char	uint8_t;
 typedef unsigned short	uint16_t;
 typedef unsigned int	u_int;
 typedef unsigned long	u_long;

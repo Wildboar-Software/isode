@@ -3,6 +3,8 @@
 #ifndef	_PSAP2_
 #define	_PSAP2_
 
+#include <stdint.h>
+
 #ifndef	_PSAP_
 #include "psap.h"		/* definitions for PS-USERs */
 #endif
@@ -201,10 +203,10 @@ struct PSAPtoken {		/* P-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 	int	    pt_type;		/* type of indication */
 	/* same values as st_type */
 
-	u_char  pt_tokens;		/* tokens offered/wanted */
+	uint8_t  pt_tokens;		/* tokens offered/wanted */
 	/* same values as st_tokens */
 
-	u_char  pt_owned;		/* tokens owned by user */
+	uint8_t  pt_owned;		/* tokens owned by user */
 
 	/* PLEASE TOKEN only */
 	int	    pt_ninfo;		/*   number of elements */

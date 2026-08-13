@@ -1,20 +1,21 @@
 /* text2spkt.c - read/write a SPDU thru a debug filter */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "spkt.h"
 #include "logger.h"
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn);
-static void type_bits (LLog *, char *, char *, u_char,  int,  char *);
-static void type_settings (LLog *, char *, u_char);
+static void type_bits (LLog *, char *, char *, uint8_t,  int,  char *);
+static void type_settings (LLog *, char *, uint8_t);
 static void type_tsdu (LLog *, char *, uint16_t,  uint16_t);
 static void type_ref (LLog *lp, char *rw, struct SSAPref *ref);
-static void type_vrsn (LLog *, char *, u_char);
+static void type_vrsn (LLog *, char *, uint8_t);
 static void type_reason (LLog *lp, char *rw, int reason);
-static void type_prepare (LLog *, char *, u_char);
-static void type_error (LLog *, char *, u_char);
-static void type_resync (LLog *, char *, u_char);
+static void type_prepare (LLog *, char *, uint8_t);
+static void type_error (LLog *, char *, uint8_t);
+static void type_resync (LLog *, char *, uint8_t);
 static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
 static void type_info (LLog *lp, char *fmt, int len, char *data);
 
@@ -309,7 +310,7 @@ void spkt2text (LLog *lp, struct ssapkt *s, int read) {
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
-	buffer[explode (buffer, (u_char *) selector, len)] = 0;
+	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
 
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
@@ -318,7 +319,7 @@ static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
-static void type_bits (LLog *lp, char *rw, char *s, u_char bits, int mask, char *t) {
+static void type_bits (LLog *lp, char *rw, char *s, uint8_t bits, int mask, char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));
@@ -334,7 +335,7 @@ static void type_bits (LLog *lp, char *rw, char *s, u_char bits, int mask, char 
 	: "reserved"); \
 }
 
-static void type_settings (LLog *lp, char *rw, u_char settings) {
+static void type_settings (LLog *lp, char *rw, uint8_t settings) {
 	int     token;
 	ll_printf (lp, "%sSETTINGS/", rw);
 	dotokens ();
@@ -363,7 +364,7 @@ static void type_ref (LLog *lp, char *rw, struct SSAPref *ref) {
 	ll_printf (lp, ">\n");
 }
 
-static void type_vrsn (LLog *lp, char *rw, u_char version) {
+static void type_vrsn (LLog *lp, char *rw, uint8_t version) {
 	ll_printf (lp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
@@ -372,7 +373,7 @@ static void type_reason (LLog *lp, char *rw, int reason) {
 			   SErrString ((int) reason));
 }
 
-static void type_prepare (LLog *lp, char *rw, u_char type) {
+static void type_prepare (LLog *lp, char *rw, uint8_t type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
@@ -394,7 +395,7 @@ static void type_prepare (LLog *lp, char *rw, u_char type) {
 	ll_printf (lp, "\n");
 }
 
-static void type_error (LLog *lp, char *rw, u_char reason) {
+static void type_error (LLog *lp, char *rw, uint8_t reason) {
 	ll_printf (lp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
@@ -422,7 +423,7 @@ static void type_error (LLog *lp, char *rw, u_char reason) {
 	ll_printf (lp, "\n");
 }
 
-static void type_resync (LLog *lp, char *rw, u_char type) {
+static void type_resync (LLog *lp, char *rw, uint8_t type) {
 	ll_printf (lp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:
@@ -452,7 +453,7 @@ static void type_info (LLog *lp, char *fmt, int len, char *data) {
 
 	ll_printf (lp, fmt, len);
 	if (0 < len && len < sizeof buffer / 2) {
-		buffer[explode (buffer, (u_char *) data, len)] = 0;
+		buffer[explode (buffer, (uint8_t *) data, len)] = 0;
 		ll_printf (lp, " %s", buffer);
 	}
 }

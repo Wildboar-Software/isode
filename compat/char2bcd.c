@@ -1,8 +1,9 @@
 /* char2bcd.c - convert to BCD (for X.25 and others) */
 
+#include <stdint.h>
 #include "general.h"
 
-int char2bcd (char *s, int n, u_char *d) {
+int char2bcd (char *s, int n, uint8_t *d) {
 	int c, i;
 
 	for (i = 0; *s && n-- > 0; i++) {

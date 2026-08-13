@@ -272,7 +272,8 @@ unsigned long	htonl ();
 #endif
 #endif
 
-int	char2bcd (char *s, int n, u_char *d);
-int	bcd2char (u_char *s, char *d, int len);
+#include <stdint.h>
+int	char2bcd (char *s, int n, uint8_t *d);
+int	bcd2char (uint8_t *s, char *d, int len);
 
 #endif

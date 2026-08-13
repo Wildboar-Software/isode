@@ -14,7 +14,7 @@
  *
  *
  */
-
+#include <stdint.h>
 #include "internet.h"
 #include <net/if.h>
 #include <netinet/if_ether.h>		/* to get struct arpcom */
@@ -37,7 +37,7 @@ struct ifnet {
 };
 struct	arpcom {
 	struct	ifnet ac_if;	/* network-visible interface */
-	u_char	ac_enaddr[6];	/* ethernet hardware address */
+	uint8_t	ac_enaddr[6];	/* ethernet hardware address */
 };
 #endif
 

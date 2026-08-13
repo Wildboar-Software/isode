@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <stdint.h>
 #include <unistd.h>
 #include "tailor.h"
 #include "tpkt.h"
@@ -1541,7 +1542,7 @@ static int  tp4accept1 (struct listenblk *lb, struct TSAPdisconnect *td) {
 		tb -> tb_flags |= TB_EXPD;
 	else
 		tb -> tb_flags &= ~TB_EXPD;
-	tb -> tb_cc = explode (buffer, (u_char *)udata, cc);
+	tb -> tb_cc = explode (buffer, (uint8_t *)udata, cc);
 	buffer[tb -> tb_cc] = 0;
 	tb -> tb_data = buffer;
 	tp4init (tb);
@@ -1673,7 +1674,7 @@ static int  tp4accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAP
 		goto out;
 	len = 0;
 	if (cc > 0)
-		len += explode (buffer + len, (u_char *) udata, cc);
+		len += explode (buffer + len, (uint8_t *) udata, cc);
 	buffer[len] = 0;
 	vec[2] = buffer;
 	vec[*vecp = 3] = NULLCP;
@@ -1781,9 +1782,9 @@ static int tp4accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPd
 	vec[0] = "tsaplisten";		/* any value will do */
 	if ((vec[1] = tp4save (tb -> tb_fd, td)) == NULL)
 		goto out;
-	len = explode (buffer, (u_char *) tp, sizeof (TP_MSG_CONNECT));
+	len = explode (buffer, (uint8_t *) tp, sizeof (TP_MSG_CONNECT));
 	if (cc > 0)
-		len += explode (buffer + len, (u_char *) data, cc);
+		len += explode (buffer + len, (uint8_t *) data, cc);
 	buffer[len] = 0;
 	vec[2] = buffer;
 	vec[*vecp = 3] = NULLCP;

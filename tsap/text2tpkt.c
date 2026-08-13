@@ -1,6 +1,7 @@
 /* text2tpkt.c - test utilities for use with TPDU packets */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <ctype.h>
 #include "tpkt.h"
 #include "logger.h"
@@ -77,7 +78,7 @@ void tpkt2text (LLog *lp, struct tsapkt *t, int isread) {
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
-	buffer[explode (buffer, (u_char *) selector, len)] = 0;
+	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
@@ -91,7 +92,7 @@ static void type_data (LLog *lp, char *type, char *rw, int len, char *data) {
 		i = (sizeof buffer - 1) / 2;
 		if (len < i)
 			i = len;
-		buffer[explode (buffer, (u_char *) cp, i)] = 0;
+		buffer[explode (buffer, (uint8_t *) cp, i)] = 0;
 		ll_printf (lp, "%s", buffer);
 		cp += i;
 		len -= i;
@@ -122,7 +123,7 @@ void text2tpkt (struct tsapkt *t) {
 	printf("TPDU Code [%02x]: ", data = t -> t_code);
 	fflush(stdout);
 	bptr = fgets(buffer, sizeof buffer, stdin);
-	while (isspace((u_char) *bptr) && (*bptr != '\0')) ++bptr;
+	while (isspace((uint8_t) *bptr) && (*bptr != '\0')) ++bptr;
 	if (toupper(*bptr) == 'C') {
 		if (toupper(*(bptr + 1)) == 'R') {
 			data = 0xE0;

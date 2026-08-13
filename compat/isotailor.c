@@ -180,7 +180,7 @@ char	*x25_dnic_prefix[LOCALDNIC_MAX + 1];
  * 1 = reverse charge request/allowed
  */
 static char *reverse_charge_default = "0";
-u_char reverse_charge = 0;
+uint8_t reverse_charge = 0;
 
 /* 0= default recv packet size.
  * 16, 32, 64, 128,
@@ -198,11 +198,11 @@ uint16_t sendpktsize = 0;
  * 7, 127 ( in decimal )
  */
 static char *recvwndsize_default = "0";
-u_char recvwndsize = 0;
+uint8_t recvwndsize = 0;
 
 /* same as above, but for send window size */
 static char *sendwndsize_default = "0";
-u_char sendwndsize = 0;
+uint8_t sendwndsize = 0;
 
 /* 0= default recv throughtput.
  * 3= 75    8= 2400
@@ -213,23 +213,23 @@ u_char sendwndsize = 0;
  * ( bps in decimal )
  */
 static char *recvthruput_default = "0";
-u_char recvthruput = 0;
+uint8_t recvthruput = 0;
 
 /* same as above, but for send throughput */
 /* 1 = use closed user group in cug_index */
 static char *sendthruput_default = "0";
-u_char sendthruput = 0;
+uint8_t sendthruput = 0;
 
 /* 0 = no closed user group. */
 /* 1 = use closed user group in cug_index */
 static char *cug_req_default = "0";
-u_char cug_req = 0;
+uint8_t cug_req = 0;
 
 /* valid when cug_req= 1.
  * 0x00 ~ 0x99 ( closed user group in BCD)
  */
 static char *cug_index_default = "0";
-u_char     cug_index = 0;
+uint8_t     cug_index = 0;
 
 /* 0= don't use fast select
  * 1= clear is fast select response
@@ -237,13 +237,13 @@ u_char     cug_index = 0;
  *    is fast select response
  */
 static char *fast_select_type_default = "0";
-u_char fast_select_type = 0;
+uint8_t fast_select_type = 0;
 
 /* 0= no RPOA transit request
  * 1= use RPOA transit request in rpoa
  */
 static char *rpoa_req_default = "0";
-u_char rpoa_req = 0;
+uint8_t rpoa_req = 0;
 
 /* valid when rpoa_req= 1 */
 /* 0x0000 ~ 0x9999 (RPOA transit group in BCD) */
@@ -517,17 +517,17 @@ static int tailor_read (char *file) {
 				break;
 			}
 			for (cp = bp - 1; cp >= buffer; cp--)
-				if (isspace ((u_char) *cp))
+				if (isspace ((uint8_t) *cp))
 					*cp = 0;
 				else
 					break;
 
 			*bp++ = 0;
-			while (isspace ((u_char) *bp))
+			while (isspace ((uint8_t) *bp))
 				*bp++ = 0;
 
 			for (cp = bp + strlen (bp) - 1; cp >= bp; cp--)
-				if (isspace ((u_char) *cp))
+				if (isspace ((uint8_t) *cp))
 					*cp = 0;
 				else
 					break;
@@ -763,7 +763,7 @@ isodexport (char *myname) {
 					  ("community %s value \"%s\" subnet %d syntax %d",
 					   ts -> ts_name, ts -> ts_value ? ts -> ts_value : "",
 					   ts -> ts_subnet, ts -> ts_syntax));
-				buffer[explode(buffer, (u_char *) ts -> ts_prefix,
+				buffer[explode(buffer, (uint8_t *) ts -> ts_prefix,
 							   ts -> ts_length)] = 0;
 				LLOG (addr_log, LLOG_DEBUG,
 					  ("    prefix \"%s\" (%d octets)", buffer,
@@ -837,16 +837,16 @@ isodexport (char *myname) {
 	}
 
 #ifdef	X25
-	reverse_charge = (u_char) atoi (reverse_charge_default);
+	reverse_charge = (uint8_t) atoi (reverse_charge_default);
 	recvpktsize = (uint16_t) atoi (recvpktsize_default);
 	sendpktsize = (uint16_t) atoi (sendpktsize_default);
-	recvwndsize = (u_char) atoi (recvwndsize_default);
-	sendwndsize = (u_char) atoi (sendwndsize_default);
-	recvthruput = (u_char) atoi (recvthruput_default);
-	sendthruput = (u_char) atoi (sendthruput_default);
-	cug_req = (u_char) atoi (cug_req_default);
-	cug_index = (u_char) atoi (cug_index_default);
-	fast_select_type = (u_char) atoi (fast_select_type_default);
+	recvwndsize = (uint8_t) atoi (recvwndsize_default);
+	sendwndsize = (uint8_t) atoi (sendwndsize_default);
+	recvthruput = (uint8_t) atoi (recvthruput_default);
+	sendthruput = (uint8_t) atoi (sendthruput_default);
+	cug_req = (uint8_t) atoi (cug_req_default);
+	cug_index = (uint8_t) atoi (cug_index_default);
+	fast_select_type = (uint8_t) atoi (fast_select_type_default);
 	rpoa_req = atoi (rpoa_req_default);
 	rpoa = (uint16_t) atoi (rpoa_default);
 
@@ -905,13 +905,13 @@ tailor_value (char *s) {
 				break;
 
 			default:
-				if (!isdigit ((u_char) *s)) {
+				if (!isdigit ((uint8_t) *s)) {
 					*bp++ = QUOTE;
 					*bp = *s;
 					break;
 				}
 				r = *s != '0' ? 10 : 8;
-				for (i = 0; isdigit ((u_char) *s); s++)
+				for (i = 0; isdigit ((uint8_t) *s); s++)
 					i = i * r + *s - '0';
 				s--;
 				*bp = toascii (i);

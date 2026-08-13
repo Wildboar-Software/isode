@@ -408,7 +408,7 @@ struct ssapblk {
 #define	SYNC_INTR	3	/* Activity Interrupt */
 #define	SYNC_DISC	4	/* Activity Discard */
     long    sb_rsn;		/* resync serial number */
-    u_char  sb_rsettings;	/* proposed token settings */
+    uint8_t  sb_rsettings;	/* proposed token settings */
 
     int	    sb_pr;		/* SPDU to prepare for (an SPDU code) */
     struct ssapkt *sb_xspdu;	/* saved expedited SPDU
@@ -420,15 +420,15 @@ struct ssapblk {
     int	    sb_len;		/* .. */
     int	    sb_code;		/* .. */
 
-    u_char  sb_options;		/* connect options */
-    u_char  sb_settings;	/* tokens settings on connect */
+    uint8_t  sb_options;		/* connect options */
+    uint8_t  sb_settings;	/* tokens settings on connect */
 
     uint16_t sb_tsdu_us;		/* our max TSDU size */
     uint16_t sb_tsdu_them;	/* their max TSDU size */
 #define	BAD_TSDU_SIZE(s)	((s) ? (s) < DT_MINSIZE : 0)
 #define	GET_TSDU_SIZE(s)	((s) < DT_MINSIZE ? 0 : (s))
 
-    u_char  sb_owned;		/* tokens we own */
+    uint8_t  sb_owned;		/* tokens we own */
     uint16_t sb_requirements;	/* functional units selected */
 
     struct SSAPaddr sb_initiating;	/* initiator */
@@ -467,7 +467,7 @@ struct ssapkt {
 
     int	    s_mask;
 
-    u_char    s_code;
+    uint8_t    s_code;
 #define	SPDU_CN		0x0d	/* CONNECT */
 #define	SPDU_AC		0x0e	/* ACCEPT */
 #define	SPDU_RF		0x0c	/* REFUSE */
@@ -521,7 +521,7 @@ struct ssapkt {
 
 	    struct {
 #define	SMASK_CN_OPT	0x0002
-		u_char	un_cn_options;
+		uint8_t	un_cn_options;
 #define	CR_OPT_NULL	0x00
 #define	CR_OPT_EXTD	0x01	/* will receive extended concatenated SPDUs,
 				   this implementation DOESN'T; segmenting is
@@ -533,18 +533,18 @@ struct ssapkt {
 		uint16_t	un_cn_tsdu_resp;
 
 #define	SMASK_CN_VRSN	0x0008
-		u_char  un_cn_version;
+		uint8_t  un_cn_version;
 
 #define	SMASK_CN_ISN	0x0010
 #define	SIZE_CN_ISN	6
 		u_long	un_cn_isn;
 
 #define	SMASK_CN_SET	0x0020
-		u_char  un_settings;
+		uint8_t  un_settings;
 	    }	un_cn_item;
 
 #define	SMASK_AC_TOKEN	0x0040
-	    u_char	un_ac_token;/* ACCEPT SPDU only */
+	    uint8_t	un_ac_token;/* ACCEPT SPDU only */
 
 #define	SMASK_CN_REQ	0x0080
 	    uint16_t	un_cn_requirements;
@@ -569,7 +569,7 @@ struct ssapkt {
 	    struct SSAPref un_rf_reference;
 
 #define	SMASK_RF_DISC	0x0002
-	    u_char	un_rf_disconnect;
+	    uint8_t	un_rf_disconnect;
 #define	RF_DISC_RELEASE	0x01	/* release transport connection */
 #define	RF_DISC_MASK	RF_DISC_RELEASE
 
@@ -577,7 +577,7 @@ struct ssapkt {
 	    uint16_t	un_rf_requirements;
 
 #define	SMASK_RF_VRSN	0x0008
-	    u_char	un_rf_version;
+	    uint8_t	un_rf_version;
 
 	    char       *un_rf_rdata;
 	    int		un_rf_rlen;
@@ -587,7 +587,7 @@ struct ssapkt {
 	
 	struct {		/* FINISH SPDU */
 #define	SMASK_FN_DISC	0x0001
-	    u_char	un_fn_disconnect;
+	    uint8_t	un_fn_disconnect;
 #define	FN_DISC_RELEASE	0x01	/* release transport connection */
 #define	FN_DISC_MASK	FN_DISC_RELEASE
 	}	un_fn;
@@ -604,7 +604,7 @@ struct ssapkt {
 
 	struct {		/* ABORT SPDU */
 #define	SMASK_AB_DISC	0x0001
-	    u_char	un_ab_disconnect;
+	    uint8_t	un_ab_disconnect;
 #define	AB_DISC_RELEASE	0x01	/* release transport connection */
 #define	AB_DISC_USER	0x02	/* user abort */
 #define	AB_DISC_PROTO	0x04	/* protocol error */
@@ -614,7 +614,7 @@ struct ssapkt {
 
 #define	SMASK_AB_REFL	0x0002
 #define	AB_REFL_SIZE	9
-	    u_char	un_ab_reflect[AB_REFL_SIZE];
+	    uint8_t	un_ab_reflect[AB_REFL_SIZE];
 	}	un_ab;
 #define	AB_SIZE		9
 #define AB_BASE_SIZE	17
@@ -652,7 +652,7 @@ struct ssapkt {
 
 	struct {		/* GIVE TOKENS SPDU */
 #define	SMASK_GT_TOKEN	0x0001
-	    u_char	un_gt_token;
+	    uint8_t	un_gt_token;
 	}	un_gt;
 #define	GT_SIZE		0
 #define GT_BASE_SIZE	3
@@ -660,7 +660,7 @@ struct ssapkt {
 	
 	struct {		/* PLEASE TOKENS SPDU */
 #define	SMASK_PT_TOKEN	0x0001
-	    u_char	un_pt_token;
+	    uint8_t	un_pt_token;
 	}	un_pt;
 #define	PT_SIZE		512
 #define PT_BASE_SIZE	6
@@ -675,7 +675,7 @@ struct ssapkt {
 
 	struct {		/* MINOR SYNC POINT SPDU */
 #define	SMASK_MIP_SYNC	0x0001
-	    u_char	un_mip_sync;
+	    uint8_t	un_mip_sync;
 #define	MIP_SYNC_NOEXPL	0x01	/* NO EXPLICIT ACK REQUIRED */
 #define	MIP_SYNC_MASK	MIP_SYNC_NOEXPL
 
@@ -694,7 +694,7 @@ struct ssapkt {
 
 	struct {		/* MAJOR SYNC POINT SPDU */
 #define	SMASK_MAP_SYNC	0x0001
-	    u_char	un_map_sync;
+	    uint8_t	un_map_sync;
 #define	MAP_SYNC_NOEND	0x01	/* ACTIVITY NOT ENDED (i.e., MAP not AE) */
 #define	MAP_SYNC_MASK	MAP_SYNC_NOEND
 
@@ -713,10 +713,10 @@ struct ssapkt {
 
 	struct {		/* RESYNCHRONIZE SPDU */
 #define	SMASK_RS_SET	0x0001
-	    u_char	un_rs_settings;
+	    uint8_t	un_rs_settings;
 
 #define	SMASK_RS_TYPE	0x0002
-	    u_char	un_rs_type;
+	    uint8_t	un_rs_type;
 #define	SYNC_OK(r)	(((unsigned) (r)) <= SYNC_SET)
 
 #define	SMASK_RS_SSN	0x0004
@@ -727,7 +727,7 @@ struct ssapkt {
 
 	struct {		/* RESYNCHRONIZE ACK SPDU */
 #define	SMASK_RA_SET	0x0001
-	    u_char	un_ra_settings;
+	    uint8_t	un_ra_settings;
 
 #define	SMASK_RA_SSN	0x0002
 	    u_long	un_ra_serial;
@@ -737,7 +737,7 @@ struct ssapkt {
 
 	struct {		/* PREPARE SPDU */
 #define	SMASK_PR_TYPE	0x0001
-	    u_char	    un_pr_type;
+	    uint8_t	    un_pr_type;
 #define	PR_MAA		1	/* expect SPDU_MAA */
 #define	PR_RS		2	/* expect SPDU_RS */
 #define	PR_RA		3	/* expect SPDU_RA */
@@ -753,7 +753,7 @@ struct ssapkt {
 
 	struct {		/* EXCEPTION DATA SPDU */
 #define	SMASK_ED_REASON	0x0001
-	    u_char	un_ed_reason;
+	    uint8_t	un_ed_reason;
 #define	SP_OK(r)	(((r) < SP_PROCEDURAL \
 				&& (r) != SP_RSVD1 \
 				&& (r) != SP_RSVD2) \
@@ -789,7 +789,7 @@ struct ssapkt {
 
 	struct {		/* ACTIVITY INTERRUPT (ABORT) SPDU */
 #define	SMASK_AI_REASON	0x0001	/* don't collide with SMASK_AB_DISC */
-	    u_char	un_ai_reason;
+	    uint8_t	un_ai_reason;
 	}    un_ai;
 #define	AI_SIZE		0
 #define AI_BASE_SIZE	3
@@ -800,7 +800,7 @@ struct ssapkt {
 
 	struct {		/* ACTIVITY DISCARD SPDU */
 #define	SMASK_AD_REASON	0x0001
-	    u_char	un_ad_reason;
+	    uint8_t	un_ad_reason;
 	}    un_ad;
 #define	AD_SIZE		0
 #define AD_BASE_SIZE	3
@@ -880,7 +880,7 @@ struct ssapkt {
 #define	s_ad_reason	s_un.un_ad.un_ad_reason
 
 #define	SMASK_ENCLOSE	0x2000
-    u_char    s_enclose;
+    uint8_t    s_enclose;
 #define	ENCL_BEGIN	0x01	/* beginning of SSDU */
 #define	ENCL_END	0x02	/* end of SSDU */
 #define	ENCL_MASK	(ENCL_BEGIN | ENCL_END)

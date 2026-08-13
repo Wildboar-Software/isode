@@ -3,6 +3,8 @@
 #ifndef	_SSAP_
 #define	_SSAP_
 
+#include <stdint.h>
+
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -15,28 +17,28 @@
 
 struct SSAPactid {		/* Activity Identifier */
 #define	SID_DATA_SIZE	6
-	u_char  sd_len;
+	uint8_t  sd_len;
 	char    sd_data[SID_DATA_SIZE];
 };
 
 struct SSAPref {		/* SSAP reference */
 	/* USER reference */
 #define	SREF_USER_SIZE		64
-	u_char  sr_ulen;
+	uint8_t  sr_ulen;
 	char    sr_udata[SREF_USER_SIZE];
 
 	/* COMMON reference */
 #define	SREF_COMM_SIZE		64
-	u_char  sr_clen;
+	uint8_t  sr_clen;
 	char    sr_cdata[SREF_COMM_SIZE];
 
 	/* ADDITIONAL reference */
 #define	SREF_ADDT_SIZE	4
-	u_char  sr_alen;
+	uint8_t  sr_alen;
 	char    sr_adata[SREF_ADDT_SIZE];
 
 	/* for S-ACTIVITY-RESUME */
-	u_char  sr_vlen;
+	uint8_t  sr_vlen;
 	char    sr_vdata[SREF_USER_SIZE];
 
 #define	sr_calling	sr_udata
@@ -224,14 +226,14 @@ struct SSAPtoken {		/* S-{TOKEN-*,GIVE-CONTROL}.INDICATION */
 #define	ST_PLEASE	0x01	/* S-TOKEN-PLEASE.INDICATION */
 #define	ST_CONTROL	0x02	/* S-GIVE-CONTROL.INDICATION */
 
-	u_char  st_tokens;		/* tokens offered/wanted */
+	uint8_t  st_tokens;		/* tokens offered/wanted */
 #define	ST_RLS_TOKEN	(0x01 << ST_RLS_SHIFT)
 #define	ST_MAJ_TOKEN	(0x01 << ST_MAJ_SHIFT)
 #define	ST_ACT_TOKEN	(0x01 << ST_ACT_SHIFT)
 #define	ST_MIN_TOKEN	(0x01 << ST_MIN_SHIFT)
 #define	ST_DAT_TOKEN	(0x01 << ST_DAT_SHIFT)
 
-	u_char  st_owned;		/* tokens owned by user */
+	uint8_t  st_owned;		/* tokens owned by user */
 
 #define	ST_SIZE		512	/* PLEASE TOKEN only */
 	int	    st_cc;		/* length */

@@ -16,6 +16,7 @@
  * for *really* generic address translation
  */
 
+#include <stdint.h>
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -1505,7 +1506,7 @@ AEF *aef;
 	if (nsap -> na_stack != NA_NSAP)
 		return NOTOK;
 	aef -> aef_type = AEF_NSAP;
-	len = explode (buf, (u_char *) nsap -> na_address, nsap -> na_addrlen);
+	len = explode (buf, (uint8_t *) nsap -> na_address, nsap -> na_addrlen);
 	aef -> aef_len = char2bcd (buf, len, aef -> aef);
 	return OK;
 }
@@ -1524,7 +1525,7 @@ struct NSAPaddr *nsap;
 
 	nsap -> na_stack = NA_NSAP;
 	len = bcd2char (aef -> aef, buf, (int)aef -> aef_len);
-	nsap -> na_addrlen = implode ((u_char *) nsap -> na_address, buf, len);
+	nsap -> na_addrlen = implode ((uint8_t *) nsap -> na_address, buf, len);
 	return OK;
 }
 #endif

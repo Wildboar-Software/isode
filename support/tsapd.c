@@ -1,5 +1,6 @@
 /* tsapd.c - OSI transport listener */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -666,7 +667,7 @@ static void arginit (char **vec) {
 						vec--;
 
 				x2584_na -> na_addrlen =
-					implode ((u_char *)x2584_na -> na_address,
+					implode ((uint8_t *)x2584_na -> na_address,
 							 ap, strlen(ap));
 				continue;
 #endif
@@ -683,7 +684,7 @@ static void arginit (char **vec) {
 					for (loop_na = tp4_na_start;
 							loop_na != tp4_na_end; loop_na++) {
 						loop_na -> ta_addrs -> na_addrlen =
-							implode ((u_char *)loop_na -> ta_addrs ->
+							implode ((uint8_t *)loop_na -> ta_addrs ->
 									 na_address, ap, strlen(ap));
 						loop_na -> ta_naddr = 1;
 						loop_na -> ta_addrs -> na_stack = NA_NSAP;

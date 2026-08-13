@@ -570,10 +570,10 @@ inet_addr (char *cp) {
 		if (*cp == 'x' || *cp == 'X')
 			base = 16, cp++;
 
-		for (; isxdigit ((u_char) (c = *cp)); cp++)
+		for (; isxdigit ((uint8_t) (c = *cp)); cp++)
 			if (base == 16)
-				val = (val << 4) + (c + 10 - (islower ((u_char) c) ? 'a' : 'A'));
-			else if (isdigit ((u_char) c))
+				val = (val << 4) + (c + 10 - (islower ((uint8_t) c) ? 'a' : 'A'));
+			else if (isdigit ((uint8_t) c))
 				val = (val * base) + (c - '0');
 			else
 				break;
@@ -586,7 +586,7 @@ inet_addr (char *cp) {
 			continue;
 
 		default:
-			if (*cp && !isspace ((u_char) *cp))
+			if (*cp && !isspace ((uint8_t) *cp))
 				return NOTOK;
 			*pp++ = val;
 			break;
@@ -640,10 +640,10 @@ inet_network (char *cp) {
 		if (*cp == 'x' || *cp == 'X')
 			base = 16, cp++;
 
-		for (; isxdigit ((u_char) (c = *cp)); cp++)
+		for (; isxdigit ((uint8_t) (c = *cp)); cp++)
 			if (base == 16)
-				val = (val << 4) + (c + 10 - (islower ((u_char) c) ? 'a' : 'A'));
-			else if (isdigit ((u_char) c))
+				val = (val << 4) + (c + 10 - (islower ((uint8_t) c) ? 'a' : 'A'));
+			else if (isdigit ((uint8_t) c))
 				val = (val * base) + (c - '0');
 			else
 				break;
@@ -656,7 +656,7 @@ inet_network (char *cp) {
 			continue;
 
 		default:
-			if (*cp && !isspace ((u_char) *cp))
+			if (*cp && !isspace ((uint8_t) *cp))
 				return NOTOK;
 			*pp++ = val;
 			break;

@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "psap.h"
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
@@ -46,7 +47,7 @@ UTC str2utct (char *cp, int len) {
 		return NULLUTC;
 	cp += 10, len -= 10;
 	u -> ut_year = YEAR (year);
-	if (len > 0 && isdigit ((u_char) *cp)) {
+	if (len > 0 && isdigit ((uint8_t) *cp)) {
 		if (sscanf (cp, "%2d", &u -> ut_sec) != 1)
 			return NULLUTC;
 		u -> ut_flags |= UT_SEC;
@@ -101,7 +102,7 @@ UTC str2gent (char *cp, int len) {
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
-			if (isdigit ((u_char) *cp)) {
+			if (isdigit ((uint8_t) *cp)) {
 				if (sscanf (cp, "%2d", &u -> ut_min) != 1)
 					return NULLUTC;
 				cp += 2, len -= 2;
@@ -121,7 +122,7 @@ UTC str2gent (char *cp, int len) {
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
-			if (isdigit ((u_char) *cp)) {
+			if (isdigit ((uint8_t) *cp)) {
 				if (sscanf (cp, "%2d", &u -> ut_sec) != 1)
 					return NULLUTC;
 				u -> ut_flags |= UT_SEC;
@@ -175,7 +176,7 @@ static long get_usec (char **cp, int *len) {
 	char  *dp;
 
 	i = 0L;
-	for (dp = *cp, j = 0; isdigit ((u_char) *dp); dp++, j++)
+	for (dp = *cp, j = 0; isdigit ((uint8_t) *dp); dp++, j++)
 		if (j < 6)
 			i = i * 10L + (long) (*dp - '0');
 	*cp = dp, *len -= j;

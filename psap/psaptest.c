@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include "psap.h"
 #include "tailor.h"
@@ -97,7 +98,7 @@ no_pe:
 			if (*buffer == ' ')
 				strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
 			else
-				i = implode ((u_char *) packet, buffer, strlen (buffer) - 1);
+				i = implode ((uint8_t *) packet, buffer, strlen (buffer) - 1);
 			fwrite (packet, sizeof *packet, i, stdout);
 		}
 

@@ -1,22 +1,16 @@
 /* osilookup.c - convert entry in /etc/osi.hosts to isoentities format */
 
 /*
- * 
- *
  * Contributed by John A. Scott, the MITRE Corporation
  *
  * N.B.:	I whipped up this code quickly to fill a need I had.  I
  *		do not, it any way, shape, or form, warrant its output.
- *
- *
- * 
- *
- *
- *
+
  */
 
 #include "config.h"
 #include <stdio.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -59,7 +53,7 @@ main (int argc, char **argv, char **envp) {
 		exit (1);
 	}
 
-	buf2[explode (buf2, (u_char *) buf, len)]= NULL;
+	buf2[explode (buf2, (uint8_t *) buf, len)]= NULL;
 	switch (paddr_type) {
 	case AF_NBS:
 		prefix = "49";
@@ -87,11 +81,11 @@ static char nib2hex[0x10] = {
 
 static int  explode (a, b, n)
 char  *a;
-u_char *b;
+uint8_t *b;
 int    n;
 {
 	int    i;
-	u_char c;
+	uint8_t c;
 
 	for (i = 0; i < n; i++) {
 		c = *b++;

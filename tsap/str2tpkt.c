@@ -1,6 +1,7 @@
 /* str2tpkt.c - read/write a TPDU thru a string */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "tpkt.h"
 #include "tailor.h"
@@ -21,7 +22,7 @@ char *tpkt2str (struct tsapkt *t) {
 		bcopy (t -> t_qbuf -> qb_data, packet + cc, t -> t_qbuf -> qb_len);
 		cc += t -> t_qbuf -> qb_len;
 	}
-	buffer[explode (buffer, (u_char *) packet, cc)] = 0;
+	buffer[explode (buffer, (uint8_t *) packet, cc)] = 0;
 
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("write %d bytes, \"%s\"", strlen (buffer), buffer));
@@ -38,7 +39,7 @@ str2tpkt (char *buffer) {
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 
 	getfnx (NOTOK, NULLPKT, packet,
-			implode ((u_char *) packet, buffer, strlen (buffer)));
+			implode ((uint8_t *) packet, buffer, strlen (buffer)));
 	t = fd2tpkt (0, getfnx, readfnx);
 
 	return t;

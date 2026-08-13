@@ -12,6 +12,7 @@
  *
  */
 
+#include <stdint.h>
 #include <errno.h>
 #include <stdio.h>
 #include "general.h"
@@ -136,7 +137,7 @@ int     read_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-	static u_char mode;
+	static uint8_t mode;
 	static struct iovec iov[2] = {
 		(char *)&mode, 1,
 		"", 0
@@ -192,7 +193,7 @@ int     write_x25_socket (fd, buffer, len)
 int     fd, len;
 char    *buffer;
 {
-	static u_char mode;
+	static uint8_t mode;
 	static struct iovec iov[2] = {
 		(char *)&mode, 1,
 		"", 0
