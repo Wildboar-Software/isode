@@ -165,11 +165,9 @@ int vt_break (char **vec) {
 	vbrkreq();
 #else
 	TEXT_UPDATE ud;
-
 	mask = BRK_OBJ;
 	kb_image ^= BRK_OBJ;	/*Can Only be called by User side*/
 	image = kb_image;
-
 	bzero ((char *) ud, sizeof *ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = CTRL_OBJ;
@@ -235,7 +233,6 @@ void vt_repertoire (int repertoire) {
 		advise (LLOG_NOTICE,NULLCP, "not using TELNET profile");
 		return;
 	}
-
 	if (repertoire != transparent) {
 		if (repertoire)
 			ni_image |= (DISP_BIN|KBD_BIN);

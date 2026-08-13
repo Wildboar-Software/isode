@@ -11,7 +11,6 @@ extern LLog * log_dsap;
 
 int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {
 	DLOG (log_dsap,LLOG_TRACE,("ds_abandon"));
-
 	error->dse_type = DSE_ABANDON_FAILED;
 	error->ERR_ABANDON_FAIL.DSE_ab_problem = DSE_AB_CANNOTABANDON;
 	error->ERR_ABANDON_FAIL.DSE_ab_invokeid = 0;
@@ -25,12 +24,10 @@ int perform_abandon (struct task_act *tk) {
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 
 	DLOG(log_dsap, LLOG_TRACE, ("perform_abandon"));
-
 	tk_p = &(tk->tk_conn->cn_tasklist);
 	for(tk_tmp = (*tk_p); tk_tmp!=NULLTASK; tk_tmp=tk_tmp->tk_next) {
 		if(tk_tmp->tk_dx.dx_id == ab_id)
 			break;
-
 		tk_p = &(tk_tmp->tk_next);
 	}
 	if(tk_tmp == NULLTASK) {
@@ -41,10 +38,8 @@ int perform_abandon (struct task_act *tk) {
 		return(NOTOK);
 	} else {
 		DLOG(log_dsap, LLOG_DEBUG, ("perform_abandon - found task to abandon"));
-
 		/* Slice out task to abandon */
 		(*tk_p) = tk_tmp->tk_next;
-
 		if(task_abandon(tk_tmp) != OK) {
 			DLOG(log_dsap, LLOG_DEBUG, ("perform_abandon - task_abandon NOTOK"));
 			err->dse_type = DSE_ABANDON_FAILED;
@@ -64,7 +59,6 @@ int task_abandon (struct task_act *tk) {
 	struct oper_act	* on;
 
 	DLOG(log_dsap, LLOG_TRACE, ("task_abandon"));
-
 	for(on = tk->tk_operlist; on != NULLOPER; on = on->on_next_task) {
 		on->on_state = ON_ABANDONED;
 		on->on_task = NULLTASK;
@@ -73,10 +67,8 @@ int task_abandon (struct task_act *tk) {
 			on -> on_dsas = NULL_DI_BLOCK;
 		}
 	}
-
 	ds_error_free (&tk->tk_resp.di_error.de_err);
 	tk->tk_resp.di_error.de_err.dse_type = DSE_ABANDONED;
 	task_error(tk);
-
 	return(OK);
 }

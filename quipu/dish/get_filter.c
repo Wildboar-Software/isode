@@ -104,12 +104,10 @@ char           *str;
 
 	if (*str == 0)
 		return (NULLFILTER);
-
 	ptr = strdup (str);
 	f = get_filter_aux (ptr);
 	free (ptr);
 	return (f);
-
 }
 
 int getop (char *str, char *ch) {

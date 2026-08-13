@@ -43,7 +43,6 @@ int load_obj_hier (char *sep, char *newname) {
 		LLOG (log_dsap,LLOG_FATAL,("(%s)",newname));
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -55,7 +54,6 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 		return (b);
 	if ( b == NULLOCSEQ )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (objclass_cmp (a,b)) {
 	case 0: /* equal */
@@ -75,10 +73,8 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLOCSEQ) && (bptr != NULLOCSEQ) ) {
-
 		switch (objclass_cmp (aptr,bptr)) {
 		case 0: /* equal */
 			trail->os_next = aptr;
@@ -103,7 +99,6 @@ oc_seq_merge (struct oc_seq *a, struct oc_seq *b) {
 		trail->os_next = bptr;
 	else
 		trail->os_next = aptr;
-
 	return (result);
 }
 
@@ -118,7 +113,6 @@ static int get_oc_bits (char *str) {
 		return (NOTOK);
 	}
 	*ptr++ = 0;
-
 	while (( ptr2 = index (str,COMMA)) != 0) {
 		*ptr2++ = 0;
 		oidseqptr = (struct oc_seq *) smalloc (sizeof (struct oc_seq));
@@ -144,17 +138,14 @@ static int get_oc_bits (char *str) {
 		ocOIDTable[ocNumEntries].oc_hierachy = oidseq;
 	} else
 		ocOIDTable[ocNumEntries].oc_hierachy = NULLOCSEQ;
-
 	str = ptr;
 	if ((ptr = index (str,SEPERATOR)) == 0) {
 		LLOG (log_dsap,LLOG_FATAL,("may element missing"));
 		return (NOTOK);
 	}
 	*ptr++ = 0;
-
 	ocOIDTable[ocNumEntries].oc_may  = table_seq_new (ptr);
 	ocOIDTable[ocNumEntries].oc_must = table_seq_new (str);
-
 	return (OK);
 }
 
@@ -167,7 +158,6 @@ static table_seq undo_macro (table_seq top, char *ptr)
 
 	if (*ptr == 0)
 		return (top);
-
 	for (i=0; i<NumMacro; i++)
 		if (lexequ (macro[i].name,ptr) == 0) {
 			tab_top= table_seq_new (macro[i].value);
@@ -179,7 +169,6 @@ static table_seq undo_macro (table_seq top, char *ptr)
 			} else
 				return (top);
 		}
-
 	LLOG (log_dsap,LLOG_FATAL,("can't interpret %s in must/may field",ptr));
 	return (top);
 }
@@ -193,7 +182,6 @@ static table_seq table_seq_new (char *str)
 
 	if (*str == 0)
 		return (NULLTABLE_SEQ);
-
 	while ((ptr = index (str,COMMA)) != 0) {
 		*ptr = 0;
 		if ((at = name2attr (str)) == NULLTABLE_ATTR)
@@ -208,7 +196,6 @@ static table_seq table_seq_new (char *str)
 		*ptr = COMMA;
 		str = ptr + 1;
 	}
-
 	if (str != 0) {
 		if ((at = name2attr (str)) == NULLTABLE_ATTR)
 			return (undo_macro (top,str));
@@ -221,7 +208,6 @@ static table_seq table_seq_new (char *str)
 		}
 	} else
 		return (NULLTABLE_SEQ);
-
 }
 
 void
@@ -233,13 +219,10 @@ dumpalloid (void) {
 
 	for (i=0; i<ocNumEntries; i++,oc++)
 		printf("\"%s\"\t\t%s\n", oc->oc_ot.ot_name, oc->oc_ot.ot_stroid);
-
 	for (i=0; i<attrNumEntries; i++,at++)
 		printf("\"%s\"\t\t%s\n", at->oa_ot.ot_name, at->oa_ot.ot_stroid);
-
 	for (i=0; i<NumEntries; i++,oi++)
 		printf("\"%s\"\t\t%s\n", oi->ot_name, oi->ot_stroid);
-
 }
 
 int add_oc_macro (char *buf, char *ptr) {
@@ -255,7 +238,6 @@ void table_seq_free (table_seq ts)
 		tptr = ts -> ts_next;
 		free ((char *) ts);
 	}
-
 }
 
 void
@@ -274,21 +256,17 @@ free_oid_table (void) {
 		table_seq_free (oc->oc_must);
 		/* Nothing in hierarchy to free */
 	}
-
 	for (i=0; i<attrNumEntries; i++,at++) {
 		free (at->oa_ot.ot_stroid);
 		if (at->oa_ot.ot_aliasoid)
 			oid_free (at->oa_ot.ot_aliasoid);
 		oid_free (at->oa_ot.ot_oid);
 	}
-
 	for (i=0; i<NumEntries; i++,oi++) {
 		free (oi->ot_stroid);
 		if (oi->ot_aliasoid)
 			oid_free (oi->ot_aliasoid);
 		oid_free (oi->ot_oid);
 	}
-
 	free_oid_buckets();
-
 }

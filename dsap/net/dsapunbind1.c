@@ -14,18 +14,15 @@ int DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindicat
 	watch_dog ("RoUnBindRequest");
 	result = RoUnBindRequest (sd, NULLPE, secs, acr, rni);
 	watch_dog_reset();
-
 	if (result == OK) {
 		dr->dr_affirmative = acr->acr_affirmative;
 		dr->dr_reason = acr->acr_reason;
 		ACRFREE(acr);
 		return (OK);
 	}
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "D-UNBIND.REQUEST", rni));
 	}
-
 	return (result);
 }
 
@@ -41,17 +38,14 @@ int DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindicatio
 	watch_dog ("RoUnBindRetry");
 	result = RoUnBindRetry (sd, secs, acr, rni);
 	watch_dog_reset();
-
 	if (result == OK) {
 		dr->dr_affirmative = acr->acr_affirmative;
 		dr->dr_reason = acr->acr_reason;
 		ACRFREE (acr);
 		return (OK);
 	}
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "D-UNBIND.RETRY", rni));
 	}
-
 	return (result);
 }

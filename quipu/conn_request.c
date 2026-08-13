@@ -37,17 +37,14 @@ int conn_request (struct connection *cn) {
 	char			  abandon = TRUE;
 
 	LLOG(log_dsap, LLOG_TRACE, ("conn_request: Calling: %s", paddr2str(&(cn->cn_addr),NULLNA)));
-
 	/* check op has not been abandoned */
 	for(on=cn->cn_operlist; on!=NULLOPER; on=on->on_next_conn)
 		if (on->on_state != ON_ABANDONED) {
 			abandon = FALSE;
 			break;
 		}
-
 	if (abandon && cn->cn_operlist)
 		return NOTOK;
-
 	switch(cn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Making DAP connections illegal for DSA"));
@@ -77,9 +74,7 @@ int conn_request (struct connection *cn) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unknown connection context"));
 		return(NOTOK);
 	}
-
 	cn->cn_last_used = timenow;
-
 	switch(inv_ret) {
 	case NOTOK:
 #ifndef NO_STATS
@@ -137,7 +132,6 @@ int conn_request (struct connection *cn) {
 * waiting operations in the process.
 */
 int conn_req_aux (struct connection *cn) {
-
 	switch(cn->cn_connect.cc_dc.dc_result) {
 	case DS_RESULT:
 		DLOG(log_dsap, LLOG_TRACE, ("D-BIND.RETRY(ASYNC) RESULT"));
@@ -158,16 +152,12 @@ int conn_req_aux (struct connection *cn) {
 		cn->cn_ad = 0;
 		LLOG (log_dsap,LLOG_TRACE,( "Association rejected"));
 		break;
-
 	} /* switch acc->acc_result */
-
 	if(cn->cn_state == CN_OPEN) {
 		struct TSAPdisconnect       td_s;
 		struct TSAPdisconnect       *td = &td_s;
-
 		if (TSetQueuesOK (cn->cn_ad, 1, td) == NOTOK)
 			td_log (td, "TSetQueuesOK (outgoing)");
-
 		cn->cn_last_used = timenow;
 		dsa_reliable (cn,TRUE,cn->cn_last_used);
 #ifndef NO_STATS
@@ -182,6 +172,5 @@ int conn_req_aux (struct connection *cn) {
 #endif
 		return(OK);
 	}
-
 	return(NOTOK);
 }

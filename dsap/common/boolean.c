@@ -21,7 +21,6 @@ static char * booldec (PE pe)
 {
 	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_BOOL))
 		return (NULLCP);
-
 	if (prim2flag (pe) == 1)
 		return (strdup ("TRUE"));
 	else
@@ -32,7 +31,6 @@ static char *
 boolget (char *x) {
 	if ((lexequ (x,"TRUE") == 0) || (lexequ (x,"FALSE") == 0))
 		return (strdup(x));
-
 	parse_error ("TRUE or FALSE expected (%s)",x);
 	return (NULLCP);
 }

@@ -86,12 +86,10 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 
 	PE	p91_z = NULLPE;
 	PE *p91 = &p91_z;
-
 	if (((*pe) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 		advise (NULLCP, "substrings: %s", PEPY_ERR_NOMEM);
 		return NOTOK;
 	}
-
 	subs_temp = &(parm->UNSUB);
 	subs_type = 1;
 	if((avs_temp = subs_temp->fi_sub_initial) == NULLAV) {
@@ -101,12 +99,9 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 			avs_temp = subs_temp->fi_sub_final;
 		}
 	}
-
 	(*p91) = NULLPE;
-
 	if (encode_IF_AttributeType (p91, 0, 0, NULLCP, subs_temp->fi_sub_type) == NOTOK)
 		return NOTOK;
-
 	if ((*p91) != NULLPE)
 		if (seq_add ((*pe), (*p91), -1) == NOTOK) {
 			advise (NULLCP, "substrings %s%s", PEPY_ERR_BAD_SEQ,
@@ -114,13 +109,11 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 			return NOTOK;
 		}
 	(*p91) = NULLPE;
-
 	{
 		/* strings */
 		PE	p92 = NULLPE;
 		PE	p93_z = NULLPE;
 		PE *p93 = &p93_z;
-
 		if (((*p91) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 			advise (NULLCP, "strings: %s", PEPY_ERR_NOMEM);
 			return NOTOK;
@@ -128,14 +121,11 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 		for (; avs_temp != NULLAV;) {
 			{
 				int	p94;
-
 				switch (p94 = (subs_type)) {
 				case 1: {	/* initial */
 					if (encode_IF_AttributeValue (p93, 0, 0, NULLCP, &avs_temp->avseq_av) == NOTOK)
 						return NOTOK;
-
 					{
-
 						if((avs_temp = avs_temp->avseq_next) == NULLAV) {
 							++subs_type;
 							if((avs_temp = subs_temp->fi_sub_any) == NULLAV) {
@@ -143,13 +133,11 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 								avs_temp = subs_temp->fi_sub_final;
 							}
 						}
-
 					}
 					{
 						/* initial TAG PUSHDOWN */
 						PE p95_z;
 						PE *p95 = &p95_z;
-
 						if ((*p95 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 0)) == NULLPE) {
 							advise (NULLCP, "initial: %s", PEPY_ERR_NOMEM);
 							return NOTOK;
@@ -162,20 +150,16 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 				case 2: {	/* any */
 					if (encode_IF_AttributeValue (p93, 0, 0, NULLCP, &avs_temp->avseq_av) == NOTOK)
 						return NOTOK;
-
 					{
-
 						if((avs_temp = avs_temp->avseq_next) == NULLAV) {
 							++subs_type;
 							avs_temp = subs_temp->fi_sub_final;
 						}
-
 					}
 					{
 						/* any TAG PUSHDOWN */
 						PE p96_z;
 						PE *p96 = &p96_z;
-
 						if ((*p96 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 1)) == NULLPE) {
 							advise (NULLCP, "any: %s", PEPY_ERR_NOMEM);
 							return NOTOK;
@@ -188,13 +172,11 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 				case 3: {	/* final */
 					if (encode_IF_AttributeValue (p93, 0, 0, NULLCP, &avs_temp->avseq_av) == NOTOK)
 						return NOTOK;
-
 					avs_temp = avs_temp->avseq_next;
 					{
 						/* final TAG PUSHDOWN */
 						PE p97_z;
 						PE *p97 = &p97_z;
-
 						if ((*p97 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 2)) == NULLPE) {
 							advise (NULLCP, "final: %s", PEPY_ERR_NOMEM);
 							return NOTOK;
@@ -210,21 +192,17 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 							p94);
 					return NOTOK;
 				}
-
 			}
 			seq_addon ((*p91), p92, (*p93));
 			p92 = (*p93);
 		}
-
 	}
-
 	if ((*p91) != NULLPE)
 		if (seq_add ((*pe), (*p91), -1) == NOTOK) {
 			advise (NULLCP, "substrings %s%s", PEPY_ERR_BAD_SEQ,
 					pe_error ((*pe) -> pe_errno));
 			return NOTOK;
 		}
-
 	/*
 	 *	{	/* substrings TAG PUSHDOWN */
 	/*	    PE p98_z;
@@ -238,7 +216,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
 	 *	    (*pe) = *p98;
 	 *	}
 	 */
-
 	return OK;
 }
 
@@ -320,14 +297,11 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 	struct filter_item *parm;
 
 	PE p113 = pe;
-
 	parm = *pparm;
-
 #ifdef NOTANYMORE
 	{
 		/* substrings TAG PULLUP */
 		PE p114;
-
 		if ((p114 = prim2set (p113)) == NULLPE) {
 			advise (NULLCP, "substrings %ssubstrings: %s", PEPY_ERR_BAD,
 					pe_error (p113 -> pe_errno));
@@ -339,13 +313,10 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 			return NOTOK;
 		}
 		p113 = first_member (p114);
-
 	}
 #endif
-
 	{
 		PE p115;
-
 		if (p113 -> pe_class != PE_CLASS_UNIV
 				|| p113 -> pe_form != PE_FORM_CONS
 				|| p113 -> pe_id != PE_CONS_SEQ) {
@@ -353,7 +324,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 					pe_classlist[p113 -> pe_class], p113 -> pe_form, p113 -> pe_id);
 			return NOTOK;
 		}
-
 		{
 			parm->fi_type = FILTERITEM_SUBSTRINGS;
 			subs_next = &(parm->fi_un.fi_un_substrings);
@@ -363,7 +333,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 			avs_initial = &(subs_next->fi_sub_initial);
 			avs_any = &(subs_next->fi_sub_any);
 			avs_final = &(subs_next->fi_sub_final);
-
 		}
 		if ((p115 = prim2seq (p113)) == NULLPE) {
 			advise (NULLCP, "substrings %s%s", PEPY_ERR_BAD_SEQ,
@@ -371,19 +340,15 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 			return NOTOK;
 		}
 		p113 = p115;
-
 		{
 			PE p116;
-
 			if ((p116 = first_member (p113)) != NULLPE) {
 				p115 = p116;
-
 				{
 					/* type */
 #ifdef DEBUG
 					testdebug (p116, "type");
 #endif
-
 					if (decode_IF_AttributeType (p116, 1, (int *)0, NULLVP, &subs_next->fi_sub_type) == NOTOK)
 						return NOTOK;
 				}
@@ -391,23 +356,17 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 				advise (NULLCP, "substrings %stype element", PEPY_ERR_MISSING);
 				return NOTOK;
 			}
-
 		}
-
 		{
 			PE p117;
-
 			if ((p117 = (p113 != p115 ? next_member (p113, p115) : first_member (p113))) != NULLPE) {
 				p115 = p117;
-
 				{
 					/* strings */
 					PE p118;
-
 #ifdef DEBUG
 					testdebug (p117, "strings");
 #endif
-
 					if (p117 -> pe_class != PE_CLASS_UNIV
 							|| p117 -> pe_form != PE_FORM_CONS
 							|| p117 -> pe_id != PE_CONS_SEQ) {
@@ -415,14 +374,12 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 								pe_classlist[p117 -> pe_class], p117 -> pe_form, p117 -> pe_id);
 						return NOTOK;
 					}
-
 					if ((p118 = prim2seq (p117)) == NULLPE) {
 						advise (NULLCP, "strings %s%s", PEPY_ERR_BAD_SEQ,
 								pe_error (p117 -> pe_errno));
 						return NOTOK;
 					}
 					p117 = p118;
-
 					for (p118 = first_member (p117); p118; p118 = next_member (p117, p118)) {
 						{
 #ifdef DEBUG
@@ -430,15 +387,12 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 #endif
 							av_next = AttrV_alloc();
 							av_next->av_syntax = 0;
-
 							switch (PE_ID (p118 -> pe_class, p118 -> pe_id)) {
 							case PE_ID (PE_CLASS_CONT, 0): {	/* initial */
 								PE p119 = p118;
-
 								{
 									/* initial TAG PULLUP */
 									PE p120;
-
 									if ((p120 = prim2set (p119)) == NULLPE) {
 										advise (NULLCP, "initial %sinitial: %s", PEPY_ERR_BAD,
 												pe_error (p119 -> pe_errno));
@@ -455,7 +409,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 #ifdef DEBUG
 									testdebug (p119, "initial");
 #endif
-
 									/*
 														if (decode_IF_AttributeValue (p119, 1, NULLINTP, NULLVP, &av_next) == NOTOK)
 														    return NOTOK;
@@ -463,7 +416,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 									av_next->av_struct = (caddr_t)p119;
 									p119->pe_refcnt++;
 									{
-
 										if (AttrV_decode (subs_next->fi_sub_type,av_next) != OK) {
 											LLOG (log_dsap,LLOG_EXCEPTIONS,("invalid initial value"));
 											return NOTOK;
@@ -471,18 +423,15 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 										(*avs_initial) = avs_comp_new(av_next);
 										avs_initial = &((*avs_initial)->avseq_next);
 										(*avs_initial) = NULLAV;
-
 									}
 								}
 							}
 							break;
 							case PE_ID (PE_CLASS_CONT, 1): {	/* any */
 								PE p121 = p118;
-
 								{
 									/* any TAG PULLUP */
 									PE p122;
-
 									if ((p122 = prim2set (p121)) == NULLPE) {
 										advise (NULLCP, "any %sany: %s", PEPY_ERR_BAD,
 												pe_error (p121 -> pe_errno));
@@ -506,7 +455,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 									av_next->av_struct = (caddr_t)p121;
 									p121->pe_refcnt++;
 									{
-
 										if (AttrV_decode (subs_next->fi_sub_type,av_next) != OK) {
 											LLOG (log_dsap,LLOG_EXCEPTIONS,("invalid any value"));
 											return NOTOK;
@@ -514,18 +462,15 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 										(*avs_any) = avs_comp_new(av_next);
 										avs_any = &((*avs_any)->avseq_next);
 										(*avs_any) = NULLAV;
-
 									}
 								}
 							}
 							break;
 							case PE_ID (PE_CLASS_CONT, 2): {	/* final */
 								PE p123 = p118;
-
 								{
 									/* final TAG PULLUP */
 									PE p124;
-
 									if ((p124 = prim2set (p123)) == NULLPE) {
 										advise (NULLCP, "final %sfinal: %s", PEPY_ERR_BAD,
 												pe_error (p123 -> pe_errno));
@@ -549,9 +494,7 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 									*/
 									av_next->av_struct = (caddr_t)p123;
 									p123->pe_refcnt++;
-
 									{
-
 										if (AttrV_decode (subs_next->fi_sub_type,av_next) != OK) {
 											LLOG (log_dsap,LLOG_EXCEPTIONS,("invalid final value"));
 											return NOTOK;
@@ -559,7 +502,6 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 										(*avs_final) = avs_comp_new(av_next);
 										avs_final = &((*avs_final)->avseq_next);
 										(*avs_final) = NULLAV;
-
 									}
 								}
 							}
@@ -577,9 +519,7 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 				advise (NULLCP, "substrings %sstrings element", PEPY_ERR_MISSING);
 				return NOTOK;
 			}
-
 		}
-
 		if (p113 -> pe_cardinal > 2) {
 			advise (NULLCP, "substrings %s(2): %d", PEPY_ERR_TOO_MANY_ELEMENTS,
 					p113 -> pe_cardinal);
@@ -593,7 +533,6 @@ int substring_free (struct filter_item *parm) {
 	avs_free (parm->UNSUB.fi_sub_initial);
 	avs_free (parm->UNSUB.fi_sub_any);
 	avs_free (parm->UNSUB.fi_sub_final);
-
 	return OK;
 }
 
@@ -649,13 +588,11 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 
 	PE	p23_z = NULLPE;
 	PE *p23 = &p23_z;
-
 	if (((*pe) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) == NULLPE) {
 		advise (NULLCP, "TreeStructureSyntax: %s", PEPY_ERR_NOMEM);
 		return NOTOK;
 	}
 	{
-
 		if (parm->tree_object == NULLOBJECTCLASS) {
 			DLOG(log_dsap, LLOG_DEBUG, ("NULL OID in tree structure"));
 			oid_tmp = NULLOID;
@@ -663,28 +600,22 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 			oid_tmp = oid_cpy(parm->tree_object->oc_ot.ot_oid);
 			DLOG(log_dsap, LLOG_DEBUG, ("oc encodes as oid: %s", sprintoid(oid_tmp)));
 		}
-
 	}
 	(*p23) = NULLPE;
-
 	{
 		PE	p24 = NULLPE;
 		PE	p25_z = NULLPE;
 		PE *p25 = &p25_z;
-
 		if (((*p23) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) == NULLPE) {
 			advise (NULLCP, "mandatoryObjectClasses: %s", PEPY_ERR_NOMEM);
 			return NOTOK;
 		}
 		for (do_once = 1; do_once != 0; do_once = 0) {
 			{
-
 				DLOG(log_dsap, LLOG_DEBUG, ("Another mandatory oc"));
-
 			}
 			{
 				OID p26;
-
 				p26 = oid_tmp;
 				if (p26 == NULLOID) {
 					advise (NULLCP, "member %s", PEPY_ERR_INIT_FAILED);
@@ -694,25 +625,20 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 					advise (NULLCP, "member: %s", PEPY_ERR_NOMEM);
 					return NOTOK;
 				}
-
 #ifdef DEBUG
 				testdebug ((*p25), "member");
 #endif
-
 			}
 			set_addon ((*p23), p24, (*p25));
 			p24 = (*p25);
 		}
-
 #ifdef DEBUG
 		testdebug ((*p23), "mandatoryObjectClasses");
 #endif
-
 		{
 			/* mandatoryObjectClasses TAG PUSHDOWN */
 			PE p27_z;
 			PE *p27 = &p27_z;
-
 			if ((*p27 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 1)) == NULLPE) {
 				advise (NULLCP, "mandatoryObjectClasses: %s", PEPY_ERR_NOMEM);
 				return NOTOK;
@@ -728,7 +654,6 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 			return NOTOK;
 		}
 	(*p23) = NULLPE;
-
 	if ((*p23) != NULLPE)
 		if (set_add ((*pe), (*p23)) == NOTOK) {
 			advise (NULLCP, "TreeStructureSyntax %s%s", PEPY_ERR_BAD_SET,
@@ -736,22 +661,18 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 			return NOTOK;
 		}
 	(*p23) = NULLPE;
-
 	{
 		if (((*p23) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SET)) == NULLPE) {
 			advise (NULLCP, "permittedRDNs: %s", PEPY_ERR_NOMEM);
 			return NOTOK;
 		}
-
 #ifdef DEBUG
 		testdebug ((*p23), "permittedRDNs");
 #endif
-
 		{
 			/* permittedRDNs TAG PUSHDOWN */
 			PE p30_z;
 			PE *p30 = &p30_z;
-
 			if ((*p30 = pe_alloc (PE_CLASS_CONT, PE_FORM_CONS, 3)) == NULLPE) {
 				advise (NULLCP, "permittedRDNs: %s", PEPY_ERR_NOMEM);
 				return NOTOK;
@@ -766,18 +687,13 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
 					pe_error ((*pe) -> pe_errno));
 			return NOTOK;
 		}
-
 #ifdef DEBUG
 	testdebug ((*pe), "Quipu.TreeStructureSyntax");
 #endif
-
 	{
-
 		if(oid_tmp != NULLOID)
 			oid_free (oid_tmp);
-
 	}
-
 	return OK;
 }
 
@@ -833,7 +749,6 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
  */
 
 int treestruct_decode (struct tree_struct **parm, PE pe) {
-
 	AttributeType	  at_tmp;
 	OID     oid_tmp;
 	int	is_first;
@@ -842,11 +757,9 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 
 	int p34_count = 0;
 	PE p34;
-
 #ifdef DEBUG
 	testdebug (pe, "Quipu.TreeStructureSyntax");
 #endif
-
 	if (explicit) {
 		if (pe -> pe_class != PE_CLASS_UNIV
 				|| pe -> pe_form != PE_FORM_CONS
@@ -859,11 +772,8 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		advise (NULLCP, "TreeStructureSyntax bad form: %d", pe -> pe_form);
 		return NOTOK;
 	}
-
 	{
-
 		is_first = 1;
-
 	}
 	if ((p34 = prim2set (pe)) == NULLPE) {
 		advise (NULLCP, "TreeStructureSyntax %s%s", PEPY_ERR_BAD_SET,
@@ -871,14 +781,11 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		return NOTOK;
 	}
 	pe = p34;
-
 	if (p34 = set_find (pe, PE_CLASS_CONT, 1)) {
 		PE p35 = p34;
-
 		{
 			/* mandatoryObjectClasses TAG PULLUP */
 			PE p36;
-
 			if ((p36 = prim2set (p35)) == NULLPE) {
 				advise (NULLCP, "mandatoryObjectClasses %smandatoryObjectClasses: %s", PEPY_ERR_BAD,
 						pe_error (p35 -> pe_errno));
@@ -893,11 +800,9 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		}
 		{
 			PE p37;
-
 #ifdef DEBUG
 			testdebug (p35, "mandatoryObjectClasses");
 #endif
-
 			if (p35 -> pe_class != PE_CLASS_UNIV
 					|| p35 -> pe_form != PE_FORM_CONS
 					|| p35 -> pe_id != PE_CONS_SET) {
@@ -905,21 +810,17 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 						pe_classlist[p35 -> pe_class], p35 -> pe_form, p35 -> pe_id);
 				return NOTOK;
 			}
-
 			if ((p37 = prim2set (p35)) == NULLPE) {
 				advise (NULLCP, "mandatoryObjectClasses %s%s", PEPY_ERR_BAD_SET,
 						pe_error (p35 -> pe_errno));
 				return NOTOK;
 			}
 			p35 = p37;
-
 			for (p37 = first_member (p35); p37; p37 = next_member (p35, p37)) {
 				OID p38;
-
 #ifdef DEBUG
 				testdebug (p37, "member");
 #endif
-
 				if (p37 -> pe_class != PE_CLASS_UNIV
 						|| p37 -> pe_form != PE_FORM_PRIM
 						|| p37 -> pe_id != PE_PRIM_OID) {
@@ -927,19 +828,16 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 							pe_classlist[p37 -> pe_class], p37 -> pe_form, p37 -> pe_id);
 					return NOTOK;
 				}
-
 				if ((p38 = prim2oid (p37)) == NULLOID) {
 					advise (NULLCP, "member %s%s", PEPY_ERR_BAD_OID,
 							pe_error (p37 -> pe_errno));
 					return NOTOK;
 				}
-
 				/* Spurious copy noticed by Jim Reed
 				                oid_tmp = oid_cpy (p38);
 				*/
 				oid_tmp = p38;
 				{
-
 					if(is_first != 0) {
 						(*parm) = tree_struct_alloc();
 						if (((*parm)->tree_object = oid2oc(oid_tmp)) == NULLOBJECTCLASS)
@@ -948,7 +846,6 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 					} else {
 						LLOG(log_dsap, LLOG_EXCEPTIONS, ("Multiple mandatory object classes"));
 					}
-
 				}
 			}
 		}
@@ -957,14 +854,11 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		advise (NULLCP, "mandatoryObjectClasses %s mandatoryObjectClasses member", PEPY_ERR_MISSING);
 		return NOTOK;
 	}
-
 	if (p34 = set_find (pe, PE_CLASS_CONT, 2)) {
 		PE p39 = p34;
-
 		{
 			/* optionalObjectClasses TAG PULLUP */
 			PE p40;
-
 			if ((p40 = prim2set (p39)) == NULLPE) {
 				advise (NULLCP, "optionalObjectClasses %soptionalObjectClasses: %s", PEPY_ERR_BAD,
 						pe_error (p39 -> pe_errno));
@@ -979,11 +873,9 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		}
 		{
 			PE p41;
-
 #ifdef DEBUG
 			testdebug (p39, "optionalObjectClasses");
 #endif
-
 			if (p39 -> pe_class != PE_CLASS_UNIV
 					|| p39 -> pe_form != PE_FORM_CONS
 					|| p39 -> pe_id != PE_CONS_SET) {
@@ -991,19 +883,16 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 						pe_classlist[p39 -> pe_class], p39 -> pe_form, p39 -> pe_id);
 				return NOTOK;
 			}
-
 			if ((p41 = prim2set (p39)) == NULLPE) {
 				advise (NULLCP, "optionalObjectClasses %s%s", PEPY_ERR_BAD_SET,
 						pe_error (p39 -> pe_errno));
 				return NOTOK;
 			}
 			p39 = p41;
-
 			for (p41 = first_member (p39); p41; p41 = next_member (p39, p41)) {
 #ifdef DEBUG
 				testdebug (p41, "member");
 #endif
-
 				if (p41 -> pe_class != PE_CLASS_UNIV
 						|| p41 -> pe_form != PE_FORM_PRIM
 						|| p41 -> pe_id != PE_PRIM_OID) {
@@ -1011,7 +900,6 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 							pe_classlist[p41 -> pe_class], p41 -> pe_form, p41 -> pe_id);
 					return NOTOK;
 				}
-
 				if (prim2oid (p41) == NULLOID) {
 					advise (NULLCP, "member %s%s", PEPY_ERR_BAD_OID,
 							pe_error (p41 -> pe_errno));
@@ -1023,11 +911,9 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	}
 	if (p34 = set_find (pe, PE_CLASS_CONT, 3)) {
 		PE p42 = p34;
-
 		{
 			/* permittedRDNs TAG PULLUP */
 			PE p43;
-
 			if ((p43 = prim2set (p42)) == NULLPE) {
 				advise (NULLCP, "permittedRDNs %spermittedRDNs: %s", PEPY_ERR_BAD,
 						pe_error (p42 -> pe_errno));
@@ -1042,11 +928,9 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		}
 		{
 			PE p44;
-
 #ifdef DEBUG
 			testdebug (p42, "permittedRDNs");
 #endif
-
 			if (p42 -> pe_class != PE_CLASS_UNIV
 					|| p42 -> pe_form != PE_FORM_CONS
 					|| p42 -> pe_id != PE_CONS_SET) {
@@ -1054,21 +938,17 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 						pe_classlist[p42 -> pe_class], p42 -> pe_form, p42 -> pe_id);
 				return NOTOK;
 			}
-
 			if ((p44 = prim2set (p42)) == NULLPE) {
 				advise (NULLCP, "permittedRDNs %s%s", PEPY_ERR_BAD_SET,
 						pe_error (p42 -> pe_errno));
 				return NOTOK;
 			}
 			p42 = p44;
-
 			for (p44 = first_member (p42); p44; p44 = next_member (p42, p44)) {
 				PE p45;
-
 #ifdef DEBUG
 				testdebug (p44, "member");
 #endif
-
 				if (p44 -> pe_class != PE_CLASS_UNIV
 						|| p44 -> pe_form != PE_FORM_CONS
 						|| p44 -> pe_id != PE_CONS_SET) {
@@ -1076,19 +956,16 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 							pe_classlist[p44 -> pe_class], p44 -> pe_form, p44 -> pe_id);
 					return NOTOK;
 				}
-
 				if ((p45 = prim2set (p44)) == NULLPE) {
 					advise (NULLCP, "member %s%s", PEPY_ERR_BAD_SET,
 							pe_error (p44 -> pe_errno));
 					return NOTOK;
 				}
 				p44 = p45;
-
 				for (p45 = first_member (p44); p45; p45 = next_member (p44, p45)) {
 #ifdef DEBUG
 					testdebug (p45, "member");
 #endif
-
 					if (decode_IF_AttributeType (p45, 1, (int *)0, NULLVP, & at_tmp) == NOTOK)
 						return NOTOK;
 				}
@@ -1099,10 +976,8 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 		advise (NULLCP, "permittedRDNs %s permittedRDNs member", PEPY_ERR_MISSING);
 		return NOTOK;
 	}
-
 	if (p34_count != pe -> pe_cardinal)
 		advise (NULLCP, "%s", PEPY_ERR_EXTRA_MEMBERS);
-
 	return OK;
 }
 
@@ -1116,25 +991,20 @@ int EDB_encode (struct getedb_result *parm, PE *pe) {
 		*pe = parm->gr_pe;
 		return OK;
 	}
-
 	if (((*pe) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 		advise (NULLCP, "EntryDataBlock: %s", PEPY_ERR_NOMEM);
 		return NOTOK;
 	}
-
 	for (ent_tmp = (Entry) avl_getfirst(parm->gr_edb);
 			ent_tmp != NULLENTRY;
 			ent_tmp = (Entry) avl_getnext()) {
 		if ((ent_tmp -> e_data != E_DATA_MASTER) && (ent_tmp -> e_data != E_TYPE_SLAVE))
 			continue;
-
 		if (encode_Quipu_RelativeEntry (p32, 0, NULL, NULLCP, ent_tmp) == NOTOK)
 			return NOTOK;
-
 		seq_addon ((*pe), p31, (*p32));
 		p31 = (*p32);
 	}
-
 	return OK;
 }
 
@@ -1151,23 +1021,18 @@ int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 				pe_classlist[pe -> pe_class], pe -> pe_form, pe -> pe_id);
 		return NOTOK;
 	}
-
 	if ((p46 = prim2seq (pe)) == NULLPE) {
 		advise (NULLCP, "EntryDataBlock %s%s", PEPY_ERR_BAD_SEQ,
 				pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
-
 	pe = p46;
-
 	(*pparm)->gr_encoded = FALSE;
 	(*pparm)->gr_edb = NULLAVL;
 	tree = &((*pparm)->gr_edb);
-
 	for (p46 = first_member (pe); p46; p46 = next_member (pe, p46)) {
 		if (decode_Quipu_RelativeEntry (p46, 1, NULLIP, NULLVP, &tmp)== NOTOK)
 			return NOTOK;
-
 		tmp->e_leaf = TRUE;
 		tmp->e_complete = TRUE;
 		tmp->e_data = E_TYPE_SLAVE;
@@ -1175,12 +1040,10 @@ int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 					   avl_dup_error) == NOTOK)
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("Bad EDB update (contains duplicates)"));
 	}
-
 	return OK;
 }
 
 int EDB_decode (struct getedb_result **pparm, PE pe) {
-
 	if (pe -> pe_class != PE_CLASS_UNIV
 			|| pe -> pe_form != PE_FORM_CONS
 			|| pe -> pe_id != PE_CONS_SEQ) {
@@ -1188,12 +1051,9 @@ int EDB_decode (struct getedb_result **pparm, PE pe) {
 				pe_classlist[pe -> pe_class], pe -> pe_form, pe -> pe_id);
 		return NOTOK;
 	}
-
 	(*pparm)->gr_pe = pe;
 	pe -> pe_refcnt++;
-
 	(*pparm)->gr_encoded = TRUE;
-
 	return OK;
 }
 

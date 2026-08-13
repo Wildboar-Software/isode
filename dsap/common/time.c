@@ -32,7 +32,6 @@ static UTC	qstr2utct (char *s, int len)
 			&& strncmp (s, "1989", 4) == 0
 			&& (ut = str2utct (s + 2, len - 2)))
 		return ut;
-
 	return str2utct (s, len);
 }
 

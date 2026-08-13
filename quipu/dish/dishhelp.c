@@ -87,10 +87,8 @@ void Usage (char *rtn) {
 	dn_free (dn);
 	dn = savename;
 	savename = NULLDN;
-
 	if (print_arg_error (OPT) == OK)
 		return;
-
 	for (i = 0; help_info[i].command != 0; i++)
 		if (strcmp (help_info[i].command, rtn) == 0) {
 			if (help_info[i].serv) {
@@ -136,7 +134,6 @@ void print_service (void) {
 	ps_print (RPS,"[-sizelimit n] [-nosizelimit]\n");
 	ps_print (RPS,"[-strong] [-[no]refer]\n");
 	ps_print (RPS,"[-[no]localscope] [-help]\n");
-
 }
 
 void call_help (void) {

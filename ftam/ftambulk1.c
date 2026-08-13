@@ -56,16 +56,11 @@ int FReadWriteRequest (
 							 "bad value for context parameter");
 		}
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FReadWriteRequestAux (fsb, state, operation, identity, context,
 								   level, lock, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -84,7 +79,6 @@ static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, 
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
 	if (fsb -> fsb_state != FSB_DATAIDLE)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
-
 	switch (state) {
 	case FSB_DATAREAD:
 		if (!(fsb -> fsb_units & FUNIT_READ))
@@ -98,7 +92,6 @@ static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, 
 							 "writing not allowed");
 		break;
 	}
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -121,7 +114,6 @@ out:
 			goto no_mem;
 		pdu -> un.f__write__request = wr;
 		fpdu = "F-WRITE-request";
-
 		wr -> file__access__data__unit__operation = operation;
 		if ((wr -> file__access__data__unit__identity =
 					faduid2fpm (fsb, identity, fti)) == NULL)
@@ -141,7 +133,6 @@ out:
 			goto no_mem;
 		pdu -> un.f__read__request = rd;
 		fpdu = "F-READ-request";
-
 		if ((rd -> file__access__data__unit__identity =
 					faduid2fpm (fsb, identity, fti)) == NULL)
 			goto out;
@@ -156,7 +147,6 @@ out:
 				opt_FTAM_Access__Context_level__number;
 			rd -> access__context -> level__number = level;
 		}
-
 		if (fsb -> fsb_units & FUNIT_FADULOCK) {
 			if ((rd -> fadu__lock = (struct type_FTAM_FADU__Lock *)
 									calloc (1, sizeof *wr -> fadu__lock))
@@ -166,31 +156,23 @@ out:
 									   : int_FTAM_FADU__Lock_off;
 		}
 	}
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", fpdu, pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = state;
-
 	return OK;
 }
 
@@ -202,15 +184,10 @@ int FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
 	struct ftamblk *fsb;
 
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FTransEndRequestAux (fsb, sharedASE, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -226,7 +203,6 @@ static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMin
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not initiator");
 	if (fsb -> fsb_state != FSB_DATAFIN1)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
@@ -245,31 +221,23 @@ out:
 			&& (pdu -> un.f__transfer__end__request =
 					shared2fpm (fsb, sharedASE, fti)) == NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", "F-TRANSFER-END-request",
 					pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = FSB_DATAFIN2;
-
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }

@@ -22,13 +22,10 @@ int find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack,
 
 	DLOG (log_dsap,LLOG_TRACE,("find_entry"));
 	err->dse_type = DSE_NOERROR;
-
 	if ((ca->ca_servicecontrol.svc_options & SVC_OPT_DONTDEREFERENCEALIAS) == 0)
 		deref = TRUE;
-
 	if ((ca->ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) != 0)
 		master = TRUE;
-
 	switch(really_find_entry(object,deref,dn_stack,master,ent_p,err,di_p)) {
 	case DS_OK:
 		DLOG(log_dsap, LLOG_DEBUG, ("find_entry - rfe: OK"));
@@ -53,9 +50,7 @@ int find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack,
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("really_find_entry failed in find_entry 1"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	dn_found = get_copy_dn (*ent_p);
-
 	/* if the returned entry is a CONSTRUCTOR, return a referral */
 	if ((*ent_p)->e_data == E_TYPE_CONSTRUCTOR) {
 		DLOG(log_dsap, LLOG_DEBUG, ("find_entry - constructor"));
@@ -63,10 +58,8 @@ int find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack,
 		dn_free (dn_found);
 		return (res);
 	}
-
 	/* if the returned entry is a COPY, - check service controls */
 	if (((*ent_p)->e_data != E_DATA_MASTER) && (master)) {
-
 		/* DSAs are special for read/modify */
 		if ((optype == OP_READ) ||
 				(optype == OP_MODIFYRDN) ||
@@ -89,23 +82,18 @@ mk_ref:
 				return DS_CONTINUE;
 			}
 		}
-
 		DLOG(log_dsap, LLOG_DEBUG, ("find_entry - slave master needed"));
 		res = constructor_dsa_info(dn_found,dn_stack,TRUE,(*ent_p),err,di_p);
 		dn_free (dn_found);
 		return (res);
-
 	} else if ( ((optype == OP_MODIFYRDN) || (optype == OP_MODIFYENTRY)) &&
 				(quipu_ctx_supported (*ent_p) > 2) &&
 				quipu_version_7 (*ent_p) &&
 				(dn_cmp (dn_found, mydsadn) != 0))
 		goto mk_ref;
-
 #ifdef WRONG_BEHAVIOUR
-
 	/* if this is right, we need to make sure that dsa_info */
 	/* pick ups the correct external reference */
-
 	if ((*ent_p)->e_external &&
 			((*ent_p)->e_reftype != RT_NONSPECIFICSUBORDINATE)) {
 		res = constructor_dsa_info(dn_found,dn_stack,TRUE,(*ent_p),err,di_p);
@@ -113,7 +101,6 @@ mk_ref:
 		return (res);
 	}
 #endif
-
 	if (((*ent_p)->e_data == E_TYPE_CACHE_FROM_MASTER) &&
 			(timenow - (*ent_p)->e_age > cache_timeout)) {
 		DLOG(log_dsap, LLOG_DEBUG, ("find_entry - cache timed out"));
@@ -122,28 +109,23 @@ mk_ref:
 		dn_free (dn_found);
 		return (res);
 	}
-
 out:
 	;
 	dn_free (dn_found);
-
 	if ((*ent_p)->e_parent == NULLENTRY) {
 		DLOG(log_dsap, LLOG_DEBUG, ("find_entry: (*ent_p)->e_parent is NULLENTRY"));
 		return (DS_OK);     /* no acl for root entry */
 	}
-
 	if (check_acl (acl_who,ACL_DETECT, (*ent_p)->e_parent->e_acl->ac_child, object) == NOTOK) {
 		err->dse_type = DSE_SECURITYERROR;
 		err->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_X500_ERROR);
 	}
-
 	if (check_acl (acl_who,ACL_DETECT, (*ent_p)->e_acl->ac_entry, object) == NOTOK) {
 		err->dse_type = DSE_SECURITYERROR;
 		err->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_X500_ERROR);
 	}
-
 	return (DS_OK);
 }
 
@@ -157,13 +139,10 @@ int find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_
 
 	DLOG (log_dsap,LLOG_DEBUG,("find_child_entry"));
 	err->dse_type = DSE_NOERROR;
-
 	if ((ca->ca_servicecontrol.svc_options & SVC_OPT_DONTDEREFERENCEALIAS) == 0)
 		deref = TRUE;
-
 	if ((ca->ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) != 0)
 		master = TRUE;
-
 	switch(really_find_entry(object,deref,dn_stack,master,ent_p,err,di_p)) {
 	case DS_OK:
 		DLOG(log_dsap, LLOG_DEBUG, ("find_child_entry - rfe: OK"));
@@ -188,7 +167,6 @@ int find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("really_find_entry failed in find_entry 1"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	/* check to see if children OK */
 	if ((*ent_p)->e_children != NULLAVL && (*ent_p)->e_allchildrenpresent
 			!= FALSE) {
@@ -222,13 +200,11 @@ int find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_
 		dn_free (dn_found);
 		return (res);
 	}
-
 	if (check_acl (acl_who,ACL_DETECT, (*ent_p)->e_acl->ac_child, object) == NOTOK) {
 		err->dse_type = DSE_SECURITYERROR;
 		err->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_X500_ERROR);
 	}
-
 	return (DS_OK);
 }
 
@@ -251,7 +227,6 @@ int really_find_entry (
 	int rdns, aliases;
 
 	DLOG (log_dsap,LLOG_TRACE,("really find entry"));
-
 	if (deref == -2) {
 		/* alias loop */
 		err->dse_type = DSE_NAMEERROR;
@@ -259,26 +234,21 @@ int really_find_entry (
 		err->ERR_NAME.DSE_na_matched = NULLDN;
 		return (DS_X500_ERROR);
 	}
-
 	if (database_root == NULLENTRY) {
 		LLOG (log_dsap,LLOG_NOTICE,("null root !!!"));
 		return(dsa_info_parent(object, err, di_p, master));
 	}
-
 	if ((dn = object) == NULLDN) {
 		DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: database_root"));
 		(*ent_p) = database_root;
 		return (DS_OK);
 	}
-
 	b_rdn = dn->dn_rdn;
 	if ((kids = database_root->e_children) == NULLAVL) {
 		DLOG(log_dsap, LLOG_DEBUG, ("database->e_child == NULLENTRY"));
 		return (no_reply_child (object,dn,dn_stack,master,database_root,err,di_p));
 	}
-
 	parent = database_root;
-
 	for(rdns = 1, aliases = 0 ; ; rdns++ ) { /* break or return out */
 		*ent_p = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp);
 		if ( *ent_p == NULLENTRY ) {
@@ -290,14 +260,12 @@ int really_find_entry (
 				dn_free (aliasdn);
 			return res;
 		}
-
 		if ( (*ent_p)->e_alias != NULLDN )
 			/* got an alias entry */
 			if (deref != FALSE) {
 				Entry	  new_entry;
 				int	  new_deref;
 				DN 	  t_aliasdn;
-
 				err->dse_type = DSE_NAMEERROR;
 				new_deref = (deref == -1) ? -2 : -1;
 				switch(really_find_entry ((*ent_p)->e_alias,new_deref,dn_stack,master,&(new_entry),err,di_p)) {
@@ -309,7 +277,6 @@ int really_find_entry (
 					aliases = 0;
 					for (tdn=aliasdn; tdn != NULLDN; tdn=tdn->dn_parent)
 						aliases++;
-
 					tdn = dn->dn_parent;
 					if (aliasdn == NULLDN)
 						dn = aliasdn = dn_cpy(tdn);
@@ -322,7 +289,6 @@ int really_find_entry (
 					}
 					if (t_aliasdn)
 						dn_free (t_aliasdn);
-
 					object = aliasdn;
 					break;
 				case DS_CONTINUE:
@@ -335,7 +301,6 @@ int really_find_entry (
 					aliases = 0;
 					for (tdn=aliasdn; tdn != NULLDN; tdn=tdn->dn_parent)
 						aliases++;
-
 					tdn = dn->dn_parent;
 					if (aliasdn == NULLDN)
 						dn = aliasdn = dn_cpy(tdn);
@@ -348,9 +313,7 @@ int really_find_entry (
 					}
 					if (t_aliasdn)
 						dn_free (t_aliasdn);
-
 					di_rdns (*di_p,rdns,aliases,aliasdn);
-
 					if (aliasdn)
 						dn_free (aliasdn);
 					return(DS_CONTINUE);
@@ -385,7 +348,6 @@ int really_find_entry (
 					DLOG(log_dsap, LLOG_DEBUG, ("rfe:rfe:localerror"));
 					return(DS_ERROR_LOCAL);
 				}
-
 			} else if ( dn->dn_parent == NULLDN) {
 				DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: ?1"));
 				if (aliasdn)
@@ -405,28 +367,23 @@ int really_find_entry (
 					dn_free (aliasdn);
 				return (DS_X500_ERROR);
 			}
-
 		if (dn->dn_parent == NULLDN) {
 			DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: ?2"));
 			if (aliasdn)
 				dn_free (aliasdn);
 			return (DS_OK);
 		}
-
 		if ((*ent_p)->e_children == NULLAVL) {
 			int res = no_reply_child (object,dn,dn_stack,master,(*ent_p),err,di_p);
 			if (res == DS_CONTINUE)
 				di_rdns (*di_p,rdns,aliases,NULLDN);
-
 			if (aliasdn)
 				dn_free (aliasdn);
 			return res;
 		}
-
 		dn_trail = dn;
 		dn = dn->dn_parent;
 		b_rdn = dn->dn_rdn;
-
 		kids = (*ent_p)->e_children;
 		parent = *ent_p;
 	}
@@ -439,17 +396,13 @@ int referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr
 
 	DLOG (log_dsap,LLOG_TRACE,("referral dsa_info"));
 	/* generate a referral to a DUA if possible */
-
 	if (ptr != NULLENTRY)
 		ptr=ptr->e_parent;
-
 	if ((ret = constructor_dsa_info_aux(object,dn_stack,master,ptr,err,di_p)) != DS_CONTINUE)
 		return ret;
-
 	/* Try to make a referral - if not schedule a chain !!! */
 	if (chain)
 		return DS_CONTINUE;
-
 	/* PROBLEM: The following will get the best referral from our point
 	 * of view.  This may not be the same from the DUAs point of view !!!
 	     */
@@ -457,28 +410,22 @@ int referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr
 	for(di_tmp= *di_p; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 		if(di_tmp->di_state == DI_DEFERRED)
 			continue;
-
 		if(di2cref(di_tmp, err, DS_CTX_X500_DAP) == OK)
 			return (DS_X500_ERROR);	/* return the referral !! */
 	}
 	return DS_CONTINUE;
-
 }
 
 int constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("constructor dsa_info"));
-
 	if (ptr != NULLENTRY)
 		ptr=ptr->e_parent;
-
 	return(constructor_dsa_info_aux(object,dn_stack,master,ptr,err,di_p));
 }
 
 int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("construct dsa_info aux"));
-
 	/* follow entry back, until something that is not a CONSTRUCTOR */
-
 	for (; ptr!= NULLENTRY; ptr=ptr->e_parent)
 		if ((ptr->e_data == E_DATA_MASTER) ||
 				(ptr->e_data == E_TYPE_SLAVE) ||
@@ -488,7 +435,6 @@ int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, En
 				continue ;
 			return(dsa_info_new(object,dn_stack,master,ptr,err,di_p));
 		}
-
 	return(dsa_info_parent(object,err,di_p,master));
 }
 
@@ -504,7 +450,6 @@ int no_reply_child (
 	DN dn_tmp;
 
 	DLOG (log_dsap,LLOG_TRACE,("no reply child"));
-
 	if (isleaf(entryptr)) {
 		DLOG (log_dsap,LLOG_DEBUG,("definate NO"));
 		if (dn != NULLDN) {
@@ -517,10 +462,8 @@ int no_reply_child (
 		err->ERR_NAME.DSE_na_matched = dn_cpy (object);
 		if (dn != NULLDN)
 			dn->dn_parent = dn_tmp;
-
 		return(DS_X500_ERROR);
 	}
-
 	return(constructor_dsa_info_aux (object, dn_stack, master, entryptr, err, di_p));
 }
 
@@ -537,7 +480,6 @@ int no_reply_edb (
 	Entry akid;
 
 	DLOG (log_dsap,LLOG_TRACE,("no reply edb"));
-
 	if (isleaf(entryptr)) {
 		DLOG (log_dsap,LLOG_DEBUG,("definate NO"));
 		if (dn != NULLDN) {
@@ -550,14 +492,11 @@ int no_reply_edb (
 		err->ERR_NAME.DSE_na_matched = dn_cpy (object);
 		if (dn != NULLDN)
 			dn->dn_parent = dn_tmp;
-
 		return(DS_X500_ERROR);
 	}
-
 	if (entryptr->e_children == NULLAVL) {
 		return(constructor_dsa_info(object,dn_stack,master,entryptr,err,di_p));
 	}
-
 	akid = (Entry) avl_getone(entryptr->e_children);
 	if ((akid->e_data == E_DATA_MASTER)
 			|| ((! master) && (akid->e_data == E_TYPE_SLAVE)) ) {
@@ -574,7 +513,6 @@ int no_reply_edb (
 			dn->dn_parent = dn_tmp;
 		return(DS_X500_ERROR);
 	}
-
 	/* build a referral */
 	return(constructor_dsa_info_aux(object,dn_stack,master,entryptr,err,di_p));
 }

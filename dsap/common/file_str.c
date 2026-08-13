@@ -24,17 +24,14 @@ int str2file_aux (char *str, AttributeType at, AttributeValue x)
 	x->av_struct = (caddr_t) fs;
 	if ((fs->fs_real_syntax = at->oa_syntax) >= AV_WRITE_FILE)
 		fs->fs_real_syntax -= AV_WRITE_FILE;
-
 	if (*str != 0 && *str == '/' ) {
 		fs->fs_mode = 0;
 		fs->fs_name = strdup (str);
 	} else {
 		if (dflt_attr_file (at,x,1) == NOTOK)
 			return (NOTOK);
-
 		if (*str != 0) {
 			char *p;
-
 			if ((p = rindex(fs->fs_name, '/')) == NULLCP)
 				p = fs->fs_name;
 			else
@@ -47,11 +44,9 @@ int str2file_aux (char *str, AttributeType at, AttributeValue x)
 					return NOTOK;
 			strcpy(p, str);
 			fs->fs_mode = 0;
-
 		} else
 			fs->fs_mode = FS_DEFAULT;
 	}
-
 #ifdef CHECK_FILE_ATTRIBUTES
 	/* now check the file is OK */
 	if (stat(fs->fs_name,&filestat) != -1)
@@ -64,7 +59,6 @@ int str2file_aux (char *str, AttributeType at, AttributeValue x)
 #else
 	return (OK);
 #endif
-
 }
 
 AttributeValue str2file (char *str, AttributeType at)

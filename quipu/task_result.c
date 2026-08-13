@@ -20,7 +20,6 @@ void task_result (struct task_act *task) {
 
 #ifndef NO_STATS
 	extern LLog * log_stat;
-
 	if (log_stat -> ll_events & LLOG_DEBUG)
 		LLOG (log_stat, LLOG_DEBUG,("Result sent (%d) [%d]",
 									task->tk_conn->cn_ad,
@@ -28,18 +27,14 @@ void task_result (struct task_act *task) {
 	else
 		LLOG (log_stat, LLOG_TRACE,("Result sent (%d)",
 									task->tk_conn->cn_ad));
-
 #endif
-
 	DLOG(log_dsap, LLOG_TRACE, ("task_result"));
 	if(task == NULLTASK) {
 		LLOG(log_dsap, LLOG_FATAL, ("Task memerr 5"));
 		return;
 	}
-
 	res = task->tk_result;
 	task->tk_resp.di_type = DI_RESULT;
-
 	switch (cn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		result = DapResultRequest (cn->cn_ad, task->tk_dx.dx_id,
@@ -58,7 +53,6 @@ void task_result (struct task_act *task) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("task_result(): Unknown context %d", cn->cn_ctx));
 		break;
 	}
-
 	if (result != OK) {
 		if(di->di_type == DI_ABORT) {
 			LLOG(log_dsap, LLOG_FATAL, ("D-RESULT.REQUEST: fatal reject - fail the connection"));
@@ -67,7 +61,6 @@ void task_result (struct task_act *task) {
 			send_ro_ureject(cn->cn_ad, &(task->tk_dx.dx_id), ROS_IP_RELEASE);
 		}
 	}
-
 	if(cn->cn_state == CN_FAILED) {
 		DLOG(log_dsap, LLOG_DEBUG, ("task_result(): extracting conn:"));
 		conn_log(cn,LLOG_DEBUG);

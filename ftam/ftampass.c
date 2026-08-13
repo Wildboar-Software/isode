@@ -16,7 +16,6 @@ no_mem:
 			free_FTAM_Access__Passwords (fpm);
 		return NULL;
 	}
-
 #define	dopass(s,t,u) \
 { \
     if ((fpm -> s = (struct type_FTAM_Password *) \
@@ -27,7 +26,6 @@ no_mem:
     if ((fpm -> s -> un.binary = str2qb (fp -> t, fp -> u, 1)) == NULL) \
 	goto no_mem; \
 }
-
 	dopass (read__password, fp_read, fp_readlen);
 	dopass (insert__password, fp_insert, fp_insertlen);
 	dopass (replace__password, fp_replace, fp_replacelen);
@@ -36,9 +34,7 @@ no_mem:
 	dopass (read__attribute__password, fp_readattr, fp_readattrlen);
 	dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
 	dopass (delete__password, fp_delete, fp_deletelen);
-
 #undef	dopass
-
 	return fpm;
 }
 
@@ -46,7 +42,6 @@ int fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, stru
 	struct qbuf *qb;
 
 	bzero ((char *) fp, sizeof *fp);
-
 	/* both choices of this structure are qbuf's, so... */
 #define	dopass(s,t,u) \
 { \
@@ -56,7 +51,6 @@ int fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, stru
 	goto no_mem; \
     fp -> u = qb -> qb_len; \
 }
-
 	dopass (read__password, fp_read, fp_readlen);
 	dopass (insert__password, fp_insert, fp_insertlen);
 	dopass (replace__password, fp_replace, fp_replacelen);
@@ -65,11 +59,8 @@ int fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, stru
 	dopass (read__attribute__password, fp_readattr, fp_readattrlen);
 	dopass (change__attribute__password, fp_chngattr, fp_chngattrlen);
 	dopass (delete__password, fp_delete, fp_deletelen);
-
 #undef	dopass
-
 	return OK;
-
 no_mem:
 	;
 	FPFREE (fp);

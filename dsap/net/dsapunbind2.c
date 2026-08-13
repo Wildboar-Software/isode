@@ -12,12 +12,10 @@ int DUnBindAccept (int sd, struct DSAPindication *di) {
 	watch_dog ("RoUnBindResult");
 	result = RoUnBindResult (sd, NULLPE, rni);
 	watch_dog_reset();
-
 	if (result == NOTOK) {
 		ronot2dsaplose (di, "D-UNBIND.ACCEPT", rni);
 		return (NOTOK);
 	}
-
 	return (result);
 }
 
@@ -31,11 +29,9 @@ int DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
 	watch_dog ("DUnBindReject");
 	result = RoUnBindReject (sd, status, reason, rni);
 	watch_dog_reset ();
-
 	if (result == NOTOK) {
 		ronot2dsaplose (di, "D-UNBIND.REJECT", rni);
 		return (NOTOK);
 	}
-
 	return (result);
 }

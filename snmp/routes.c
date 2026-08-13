@@ -49,15 +49,11 @@ static int _read_routes()
 		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/route");
 		return NOTOK;
 	}
-
 	fgets(line, sizeof(line), f); /* header */
-
 	rts = NULL; rtp = &rts;
-
 	result = OK;
 	while (fgets(line, sizeof(line), f)) {
 		struct interface *is;
-
 		sscanf(line, "%20s %x %x %hx %hx %lx",
 				ifname,
 				&((struct sockaddr_in *) &re.rt_dst)->sin_addr.s_addr,
@@ -65,22 +61,18 @@ static int _read_routes()
 				&re.rt_flags,
 				&re.rt_refcnt,
 				&re.rt_use);
-
 		for (is = ifs; is; is = is -> ifn_next) {
 			if (strncmp (is -> ifn_interface.ac_if.if_name, ifname, sizeof (ifname)) == 0) {
 				re.rt_ifp = &is -> ifn_interface.ac_if;
 				break;
 			}
 		}
-
 		if (get_route (&re) == NOTOK) {
 			result = NOTOK;
 			break;
 		}
 	}
-
 	fclose (f);
-
 	return result;
 }
 #endif
@@ -115,27 +107,22 @@ int	offset;
 		return OK;
 	}
 	lastq = quantum, flush_rt_cache = 0;
-
 	for (rt = rts; rt; rt = rp) {
 		rp = rt -> rt_next;
-
 		free ((char *) rt);
 	}
 	rts = rts_inet = NULL;
 #ifdef	BSD44
 	rts_iso = NULL;
 #endif
-
 	rtp = &rts, routeNumber = 0;
 #ifdef	BSD44
 	if (nl[N_RADIX_NODE_HEAD].n_value) {
 		if (get_radix_nodes () == NOTOK)
 			goto out1;
-
 		goto sort_routes;
 	}
 #endif
-
 #ifndef LINUX
 	if (getkmem (nl + N_RTHASHSIZE, (caddr_t) &rthashsize, sizeof rthashsize)
 			== NOTOK)
@@ -156,14 +143,12 @@ int	offset;
 	if (getkmem (nl + N_RTNET, (caddr_t) rtnet, tblsize) == NOTOK
 			|| getkmem (nl + N_RTHOST, (caddr_t) rthost, tblsize) == NOTOK)
 		goto out2;
-
 	nz -> n_name = "struct route";
 	for (rtaddr = rtnet; rtaddr; rtaddr = rthost, rthost = NULL) {
 		for (i = 0; i < rthashsize; i++) {
 #ifdef	ultrix
 			struct rtentry ree;
 			struct rtentry *re;
-
 			for (re = rtaddr[i];
 					nz -> n_value = (unsigned long) re;
 					re = ree.rt_next) {
@@ -175,13 +160,11 @@ int	offset;
 			struct mbuf *m;
 			struct mbuf    ms;
 			struct rtentry *re;
-
 			for (m = rtaddr[i];
 					nz -> n_value = (unsigned long) m;
 					m = ms.m_next) {
 				if (getkmem (nz, (char *) &ms, sizeof ms) == NOTOK)
 					goto out2;
-
 #ifndef	BSD44
 				re = mtod (&ms, struct rtentry *);
 #else
@@ -192,45 +175,38 @@ int	offset;
 #endif
 			}
 		}
-
 		free ((char *) rtaddr);
 	}
 #else
 	if (_read_routes() != OK)
 		advise (LLOG_EXCEPTIONS, "failed", "read routing table");
 #endif
-
 #ifdef	BSD44
 sort_routes:
 	;
 #endif
 	if (routeNumber > 1)
 		sort_rtetab ();
-
 	first_time = 0;
 	return OK;
-
 out2:
 	;
 #ifndef LINUX
 	free ((char *) rtnet);
 	free ((char *) rthost);
 #endif
-
 #ifdef	BSD44
 out1:
 	;
 #endif
 	for (rt = rts; rt; rt = rp) {
 		rp = rt -> rt_next;
-
 		free ((char *) rt);
 	}
 	rts = rts_inet = NULL;
 #ifdef	BSD44
 	rts_iso = NULL;
 #endif
-
 	return NOTOK;
 }
 
@@ -242,7 +218,6 @@ struct rtetab **a,
 
 	if ((i = (*a) -> rt_dst.sa.sa_family - (*b) -> rt_dst.sa.sa_family))
 		return (i > 0 ? 1 : -1);
-
 	return elem_cmp ((*a) -> rt_instance, (*a) -> rt_insize,
 					 (*b) -> rt_instance, (*b) -> rt_insize);
 }
@@ -256,13 +231,10 @@ void sort_rtetab (void) {
 				malloc ((unsigned) (routeNumber * sizeof *base)))
 			== NULL)
 		adios (NULLCP, "out of memory");
-
 	rte = base;
 	for (rt = rts; rt; rt = rt -> rt_next)
 		*rte++ = rt;
-
 	qsort ((char *) base, routeNumber, sizeof *base, (IFP) rt_compar);
-
 	rtp = base;
 	rt = rts = *rtp++;
 	rts_inet = NULL;
@@ -275,7 +247,6 @@ void sort_rtetab (void) {
 			if (rts_inet == NULL)
 				rts_inet = rt;
 			break;
-
 #ifdef	BSD44
 		case AF_ISO:
 			if (rts_iso == NULL)
@@ -283,7 +254,6 @@ void sort_rtetab (void) {
 			break;
 #endif
 		}
-
 		rt -> rt_next = *rtp;
 		rt = *rtp++;
 	}
@@ -292,7 +262,6 @@ void sort_rtetab (void) {
 		if (rts_inet == NULL)
 			rts_inet = rt;
 		break;
-
 #ifdef	BSD44
 	case AF_ISO:
 		if (rts_iso == NULL)
@@ -301,7 +270,6 @@ void sort_rtetab (void) {
 #endif
 	}
 	rt -> rt_next = NULL;
-
 	free ((char *) base);
 }
 
@@ -323,18 +291,14 @@ struct rtentry *re;
 	if (getkmem (nz, (caddr_t) &rtsock, sizeof rtsock) == NOTOK)
 		return NOTOK;
 #endif
-
 	if ((rt = (struct rtetab *) calloc (1, sizeof *rt)) == NULL)
 		adios (NULLCP, "out of memory");
 	rt -> rt_rt = *re;	    /* struct copy */
-
 #ifndef	BSD44
 	rt -> rt_dst.sa = re -> rt_dst;		/* struct copy */
-
 	rt -> rt_gateway.sa = re -> rt_gateway;	/* .. */
 #else
 	rt -> rt_dst = rtsock;			/* struct copy */
-
 	nz -> n_name = "union sockaddr_un",
 		  nz -> n_value = (unsigned long) re -> rt_gateway;
 	if (getkmem (nz, (caddr_t) &rt -> rt_gateway, sizeof rt -> rt_gateway)
@@ -343,7 +307,6 @@ struct rtentry *re;
 #endif
 	rt -> rt_type = (rt -> rt_rt.rt_flags & RTF_GATEWAY)
 					? TYPE_REMOTE : TYPE_DIRECT;
-
 	switch (rt -> rt_dst.sa.sa_family) {
 	case AF_INET:
 		rt -> rt_insize =
@@ -351,7 +314,6 @@ struct rtentry *re;
 		if (rts_inet == NULL)	/* in case routeNumber == 1 */
 			rts_inet = rt;
 		break;
-
 #ifdef	BSD44
 	case AF_ISO:
 		rt -> rt_insize =
@@ -367,7 +329,6 @@ struct rtentry *re;
 		rt -> rt_insize = 0;
 		break;
 	}
-
 	for (rz = rts; rz; rz = rz -> rt_next)
 		if (rz -> rt_dst.sa.sa_family == rt -> rt_dst.sa.sa_family
 				&& elem_cmp (rz -> rt_instance, rz -> rt_insize,
@@ -381,12 +342,9 @@ struct rtentry *re;
 					"duplicate routes for destination %d/%s",
 					rt -> rt_dst.sa.sa_family, sprintoid (&oids));
 		}
-
 		rt -> rt_instance[rt -> rt_insize++] = ++rz -> rt_magic;
 	}
-
 	*rtp = rt, rtp = &rt -> rt_next, routeNumber++;
-
 	if (debug && first_time) {
 		oids.oid_elements = rt -> rt_instance;
 		oids.oid_nelem = rt -> rt_insize;
@@ -395,7 +353,6 @@ struct rtentry *re;
 				rt -> rt_dst.sa.sa_family, sprintoid (&oids), re -> rt_ifp,
 				re -> rt_flags);
 	}
-
 	return OK;
 }
 
@@ -408,21 +365,17 @@ static int  get_radix_nodes () {
 
 	if (getkmem (nl + N_RADIX_NODE_HEAD, (caddr_t) &rnh, sizeof rnh) == NOTOK)
 		return NOTOK;
-
 	while (rnh) {
 		nz -> n_name = "struct radix_node_head",
 			  nz -> n_value = (unsigned long) rnh;
 		if (getkmem (nz, (caddr_t) &head, sizeof head) == NOTOK)
 			return NOTOK;
 		rnh = head.rnh_next;
-
 		if (head.rnh_af == AF_UNSPEC)
 			continue;
-
 		if (get_radix_node (head.rnh_treetop) == NOTOK)
 			return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -439,18 +392,15 @@ struct radix_node *rn;
 			  nz -> n_value = (unsigned long) rn;
 		if (getkmem (nz, (caddr_t) &rnode, sizeof rnode) == NOTOK)
 			return NOTOK;
-
 		if (rnode.rn_b < 0) {
 			if (!(rnode.rn_flags & RNF_ROOT)) {
 				nz -> n_name = "struct rtentry",
 					  nz -> n_value = (unsigned long) rn;
 				if (getkmem (nz, (caddr_t) &rtentry, sizeof rtentry) == NOTOK)
 					return NOTOK;
-
 				if (get_route (&rtentry) == NOTOK)
 					return NOTOK;
 			}
-
 			if (rn = rnode.rn_dupedkey)
 				continue;
 		} else {
@@ -458,7 +408,6 @@ struct radix_node *rn;
 					|| get_radix_node (rnode.rn_r) == NOTOK)
 				return NOTOK;
 		}
-
 		return OK;
 	}
 }
@@ -491,10 +440,8 @@ int	isnext;
 			case 1:
 				return (isnext ? rt : NULL);
 			}
-
 out:
 	;
 	flush_rt_cache = 1;
-
 	return NULL;
 }

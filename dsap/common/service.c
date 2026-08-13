@@ -28,7 +28,6 @@ int set_default_service (PS opt)
 		serv_argc = 0;
 		return (OK);
 	}
-
 	if ((serv_argc = sstr2arg (default_service, MAXSERV, serv_vec, " \t")) == -1) {
 		ps_print (opt,"Invalid default service controls");
 		return (NOTOK);
@@ -49,40 +48,32 @@ int get_default_service (CommonArgs *ca)
 	*ca = sca;  /* struct copy */
 	ca->ca_servicecontrol.svc_sizelimit = sizelimit;
 	ca->ca_servicecontrol.svc_timelimit = timelimit;
-
 	if ((opt = ps_alloc (str_open)) == NULLPS) {
 		fprintf (stderr,"ps_alloc error\n");
 		return (NOTOK);
 	}
-
 	if (str_setup (opt, buffer, LINESIZE, 1) == NOTOK) {
 		fprintf (stderr,"ps_setup error\n");
 		return (NOTOK);
 	}
-
 	if (! default_serv_set)
 		if (set_default_service (opt) != OK) {
 			fprintf (stderr,"error (1) - %s\n",buffer);
 			ps_free (opt);
 			return (NOTOK);
-
 		}
-
 	do_shuffle = FALSE;
-
 	if (do_service_control (opt,serv_argc, serv_vec, ca) < 0) {
 		fprintf (stderr,"error (2) - %s\n",buffer);
 		ps_free (opt);
 		return (NOTOK);
 	}
-
 	ps_free (opt);
 	return (OK);
 }
 
 int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
-
 	if (get_default_service (ca) != OK) {
 		ps_print (opt,"default service error - check quipurc\n");
 		return (-1);
@@ -93,7 +84,6 @@ int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 
 int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
-
 	ServiceControl  *sc;
 	void shuffle_up (int argc, char **argv, int start);
 	int             x;
@@ -101,20 +91,16 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 
 	sc = &(ca->ca_servicecontrol);
 	copy_flag = TRUE;
-
 	for (x = 0; x < argc; x++) {
 		shuffle = do_shuffle;
-
 		if (test_arg (argv[x], "-preferchain",3))
 			sc->svc_options |= SVC_OPT_PREFERCHAIN;
 		else if (test_arg (argv[x], "-nopreferchain",5))
 			sc->svc_options &= ~SVC_OPT_PREFERCHAIN;
-
 		else if (test_arg (argv[x], "-localscope",3))
 			sc->svc_options |= SVC_OPT_LOCALSCOPE;
 		else if (test_arg (argv[x], "-nolocalscope",3))
 			sc->svc_options &= (~SVC_OPT_LOCALSCOPE);
-
 		else if (test_arg (argv[x], "-dontusecopy",5)) {
 			copy_flag = FALSE;
 			sc->svc_options |= SVC_OPT_DONTUSECOPY;
@@ -122,19 +108,16 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 			copy_flag = TRUE;
 			sc->svc_options &= (~SVC_OPT_DONTUSECOPY);
 		}
-
 		else if (test_arg (argv[x], "-dontdereferencealias",5))
 			sc->svc_options |= SVC_OPT_DONTDEREFERENCEALIAS;
 		else if (test_arg (argv[x], "-dereferencealias",3))
 			sc->svc_options &= (~SVC_OPT_DONTDEREFERENCEALIAS);
-
 		else if (test_arg (argv[x], "-low",3))
 			sc->svc_prio = SVC_PRIO_LOW;
 		else if (test_arg (argv[x], "-medium",2))
 			sc->svc_prio = SVC_PRIO_MED;
 		else if (test_arg (argv[x], "-high",1))
 			sc->svc_prio = SVC_PRIO_HIGH;
-
 		else if (test_arg (argv[x], "-timelimit",2)) {
 			if (x + 1 == argc) {
 				ps_printf (opt, "We need a number for timelimit.\n");
@@ -144,7 +127,6 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 					shuffle_up (argc--, argv, x);
 				else
 					x++;
-
 				if ((sc->svc_timelimit = atoi (argv[x])) < -1) {
 					ps_printf (opt, "We need a posative number for timelimit.\n");
 					return (-1);
@@ -152,7 +134,6 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 			}
 		} else if (test_arg (argv[x], "-notimelimit",4))
 			sc->svc_timelimit = -1;
-
 		else if (test_arg (argv[x], "-sizelimit",3)) {
 			if (x + 1 == argc) {
 				ps_printf (opt, "We need a number for sizelimit.\n");
@@ -162,7 +143,6 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 					shuffle_up (argc--, argv, x);
 				else
 					x++;
-
 				if ((sc->svc_sizelimit = atoi (argv[x])) < -1) {
 					ps_printf (opt, "We need a posative number for sizelimit.\n");
 					return (-1);
@@ -170,21 +150,17 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 			}
 		} else if (test_arg (argv[x], "-nosizelimit",4))
 			sc->svc_sizelimit = -1;
-
 		else if (test_arg (argv[x], "-nochaining",4))
 			sc->svc_options |= SVC_OPT_CHAININGPROHIBIT;
 		else if (test_arg (argv[x], "-chaining",3))
 			sc->svc_options &= (~SVC_OPT_CHAININGPROHIBIT);
-
 		else if (test_arg (argv[x], "-norefer",5))
 			chase_flag = 1;
 		else if (test_arg (argv[x], "-refer",3))
 			chase_flag = 2;
-
 		else if (test_arg(argv[x], "-strong", 3)) {
 			char *new_version(void);
 			struct certificate *cert_cpy();
-
 			ca->ca_security = (struct security_parms *)
 							  calloc(1, sizeof(struct security_parms));
 			ca->ca_security->sp_name = NULLDN;
@@ -194,7 +170,6 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 				ca->ca_security->sp_path =
 					(dsap_security->serv_mkpath)();
 		}
-
 		else if (test_arg (argv[x], "-sequence",3)) {
 			if (x + 1 == argc) {
 				ps_printf (opt, "We need a sequence name.\n");
@@ -219,18 +194,15 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 			}
 		} else if (test_arg (argv[x], "-nosequence",5))
 			unset_sequence();
-
 		else if (do_shuffle)
 			shuffle = FALSE;
 		else {
 			ps_printf (opt,"unknown service option %s\n",argv[x]);
 			return (-1);
 		}
-
 		if (shuffle)
 			shuffle_up (argc--, argv, x--);
 	}
-
 	return (argc);
 }
 
@@ -262,13 +234,11 @@ void set_sequence (char *str) {
 		current_sequence->ds_last = NULL_DE;
 		return;
 	}
-
 	for (ptr = top_sequence; ptr != NULL_DS; ptr=ptr->ds_next)
 		if (lexequ (ptr->ds_name,str) == 0) {
 			current_sequence = ptr;
 			return;
 		}
-
 	ptr = ds_alloc();
 	ptr->ds_name = strdup (str);
 	ptr->ds_data = NULL_DE;
@@ -289,11 +259,9 @@ int add_sequence (DN adn)
 
 	if (current_sequence == NULL_DS)
 		return (0);
-
 	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next,x++)
 		if (dn_cmp (adn,ptr->de_name) == 0)
 			return (x);
-
 	ptr = de_alloc();
 	ptr->de_name = dn_cpy (adn);
 	ptr->de_next = NULL_DE;
@@ -302,7 +270,6 @@ int add_sequence (DN adn)
 	else
 		current_sequence->ds_last->de_next = ptr;
 	current_sequence->ds_last = ptr;
-
 	return (x);
 }
 
@@ -313,12 +280,10 @@ DN sequence_dn(int y)
 
 	if (current_sequence == NULL_DS)
 		return (NULLDN);
-
 	for (ptr=current_sequence->ds_data;
 			(ptr != NULL_DE) && (x<y);
 			ptr=ptr->de_next,x++)
 		;
-
 	if (ptr == NULL_DE)
 		return (NULLDN);
 	if ( x == y )
@@ -333,16 +298,13 @@ void show_sequence (PS RPS, char *str, char ufn)
 
 	if (str != NULLCP)
 		set_sequence (str);
-
 	if (current_sequence == NULL_DS) {
 		ps_print (RPS,"No sequence set!\n");
 		return;
 	}
-
 	if (strcmp (current_sequence -> ds_name, "default"))
 		ps_printf (RPS,"Sequence %s contains:-\n",
 				   current_sequence->ds_name);
-
 	for (ptr=current_sequence->ds_data; ptr != NULL_DE; ptr=ptr->de_next, x++) {
 		ps_printf (RPS,"%-3d%s",x,ufn ? " " : " @");
 		if (ufn)

@@ -22,27 +22,20 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 	missingP (vec);
 	missingP (fts);
 	missingP (fti);
-
 	if ((fsb = newfsblk ()) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP, "out of memory");
 	fsb -> fsb_trace = tracing;
-
 	bzero ((char *) fts, sizeof *fts);
-
 	pdu = NULL;
-
 	if (AcInit (vecp, vec, acs, aci) == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcInit", aca);
 		goto out1;
 	}
-
 	fsb -> fsb_fd = acs -> acs_sd;
-
 	fsb -> fsb_srequirements = ps -> ps_srequirements;
 	fsb -> fsb_srequirements &= ~SR_RESYNC;	/* XXX */
 	if (!(fsb -> fsb_srequirements & (SR_MINORSYNC | SR_RESYNC)))
 		ps -> ps_isn = SERIAL_NONE;
-
 	fsb -> fsb_settings = ps -> ps_settings;
 #define dotoken(requires,shift,bit,type) \
 { \
@@ -75,13 +68,11 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 	fsb -> fsb_ssdusize = ps -> ps_ssdusize;
 	fsb -> fsb_connect = ps -> ps_connect;	/* struct copy */
 	fsb -> fsb_prequirements = ps -> ps_prequirements;
-
 	if (acs -> acs_ninfo < 1 || (pe = acs -> acs_info[0]) == NULLPE) {
 		ftamoops (fti, FS_PRO_ERR, 1, EREF_RFPM, EREF_IFPM, NULLCP,
 				  NULLCP);
 		goto out2;
 	}
-
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
 		ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
 				  NULLCP, "unable to parse PDU: %s", PY_pepy);
@@ -94,12 +85,9 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 		goto out3;
 	}
 	req = pdu -> un.f__initialize__request;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.INDICATION",
 					"F-INITIALIZE-request", pe, 1));
-
 	fsb -> fsb_id = pe -> pe_context;
-
 	if (req -> presentation__context__management) {
 		if (!(fsb -> fsb_prequirements & PR_MANAGEMENT)) {
 			req -> presentation__context__management = 0;
@@ -113,7 +101,6 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 			goto out3;
 	} else
 		fsb -> fsb_class = FCLASS_TRANSFER;
-
 	if (fpm2bits (fsb, funit_pairs, req -> functional__units,
 				  &fsb -> fsb_units, fti) == NOTOK)
 		goto out3;
@@ -157,7 +144,6 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 		goto out3;
 	}
 #endif
-
 	fts -> fts_sd = fsb -> fsb_fd;
 	fts -> fts_callingtitle = acs -> acs_callingtitle;	/* struct copy */
 	bzero ((char *) &acs -> acs_callingtitle, sizeof acs -> acs_callingtitle);
@@ -183,10 +169,8 @@ no_mem:
 						   &fts -> fts_sharedASE, fti) == NOTOK)
 		goto out3;
 	fts -> fts_fqos = fsb -> fsb_fqos = MY_FQOS;
-
 	if (ps -> ps_ctxlist.pc_nctx > 1) {
 #define	PC_XXX	(-2)		/* unique code */
-
 		int	acsid;
 		struct type_FTAM_Contents__Type__List *dtn;
 		struct FTAMcontent *fx,
@@ -196,17 +180,12 @@ no_mem:
 #ifdef COMPAT_OLD_NBS9OID
 		int			    nbs9_marked = 0;
 #endif /* COMPAT_OLD_NBS9OID */
-
 		fsb -> fsb_contexts = ps -> ps_ctxlist;/* struct copy */
 		bzero ((char *) &ps -> ps_ctxlist, sizeof ps -> ps_ctxlist);
-
 		fx = fts -> fts_contents.fc_contents;
-
 		AcFindPCI (fsb -> fsb_fd, &acsid, aci);
-
 		fx2 = fsb -> fsb_contents.fc_contents;
 		fsb -> fsb_contents.fc_ncontent = 0;
-
 		for (px = fsb -> fsb_contexts.pc_ctx,
 				i = fsb -> fsb_contexts.pc_nctx - 1;
 				i >= 0;
@@ -215,7 +194,6 @@ no_mem:
 					&& px -> pc_id != acsid
 					&& px -> pc_result == PC_ACCEPT)
 				px -> pc_result = PC_XXX;
-
 		for (dtn = req -> contents__type__list; dtn; dtn = dtn -> next) {
 			if ((id = getisodocumentbytype (dtn -> Document__Type__Name))
 					== NULL)
@@ -229,16 +207,13 @@ no_mem:
 			 */
 			if (!oid_cmp (id -> id_type, str2oid(NEWNBS9_OID)))
 				nbs9_marked++;	/* marking new one as proposed */
-
 			if (!oid_cmp (id -> id_type, str2oid(OLDNBS9_OID))) {
-
 				/*
 				 * Old one proposed, searching for new one...
 				 */
 				struct isodocument			*id2;
 				struct type_FTAM_Contents__Type__List	*dtn2;
 				int					found_nbs9 = 0;
-
 				if (nbs9_marked)
 					/*
 					 * new one already proposed, drop old one
@@ -273,10 +248,8 @@ no_mem:
 					continue;
 				break;
 			}
-
 			if (i < 0)
 				continue;
-
 			if ((fx2 -> fc_dtn = oid_cpy (dtn -> Document__Type__Name))
 					== NULLOID
 					|| (fx -> fc_dtn = oid_cpy (dtn -> Document__Type__Name))
@@ -286,25 +259,21 @@ no_mem:
 			if (px -> pc_result == PC_XXX)
 				px -> pc_result = PC_ACCEPT;
 			fx2 -> fc_result = fx -> fc_result = px -> pc_result;
-
 			fx++, fts -> fts_contents.fc_ncontent++;
 			fx2++, fsb -> fsb_contents.fc_ncontent++;
 		}
-
 		for (px = fsb -> fsb_contexts.pc_ctx,
 				i = fsb -> fsb_contexts.pc_nctx - 1;
 				i >= 0;
 				px++, i--)
 			if (px -> pc_result == PC_XXX)
 				px -> pc_result = PC_REJECTED;
-
 #undef	PC_XXX
 	} else if (req -> contents__type__list) {
 		ftamoops (fti, FS_PRO_ERRPROC, 1, EREF_RFPM, EREF_IFPM,
 				  NULLCP, "content types management botched");
 		goto out3;
 	}
-
 	if (req -> initiator__identity
 			&& (fts -> fts_initiator = qb2str (req -> initiator__identity))
 			== NULL)
@@ -314,28 +283,22 @@ no_mem:
 		goto no_mem;
 	if (req -> filestore__password) {	/* both choices are qbufs... */
 		struct qbuf *qb = req -> filestore__password -> un.graphic;
-
 		if ((fts -> fts_password = qb2str (qb)) == NULL)
 			goto no_mem;
 		fts -> fts_passlen = qb -> qb_len;
 	}
 	fts -> fts_ssdusize = fsb -> fsb_ssdusize;
 	fts -> fts_qos = ps -> ps_qos;	/* struct copy */
-
 	free_FTAM_PDU (pdu);
 	ACSFREE (acs);
-
 	return OK;
-
 out3:
 	;
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 out2:
 	;
 	ACSFREE (acs);
-
 out1:
 	;
 	pe = NULLPE;
@@ -360,15 +323,12 @@ out1:
 		rsp -> ftam__quality__of__service -> parm = MY_FQOS;
 	rsp -> diagnostic = diag2fpm (fsb, 1, fti -> fti_abort.fta_diags, 1, fti);
 	rsp -> checkpoint__window = 1;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) != NOTOK)
 		pe -> pe_context = fsb -> fsb_id;
-
 carry_on:
 	;
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
-
 	AcAssocResponse (acs -> acs_sd, ACS_TRANSIENT, ACS_USER_NOREASON,
 					 NULLOID, NULLAEI, NULLPA, NULLPC, ps -> ps_defctxresult, 0, 0,
 					 SERIAL_NONE, 0, &ps -> ps_connect, pe ? &pe : NULLPEP,
@@ -377,10 +337,8 @@ carry_on:
 		pe_free (pe);
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 	fsb -> fsb_fd = NOTOK;
 	freefsblk (fsb);
-
 	return NOTOK;
 }
 
@@ -403,7 +361,6 @@ int FInitializeResponse (int sd, int state, int action, OID context, AEI respond
 	if ((fsb = findfsblk (sd)) == NULL || (fsb -> fsb_flags & FSB_CONN))
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "invalid ftam descriptor");
-
 	switch (state) {
 	case FSTATE_SUCCESS:
 		status = ACS_ACCEPT;
@@ -527,11 +484,9 @@ too_many:
 	if (contents) {
 		int	acsid;
 		struct FTAMcontent *fx = contents -> fc_contents;
-
 		if (contents -> fc_ncontent != pl -> fc_ncontent)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "proposed/resulting content types mismatch");
-
 		AcFindPCI (fsb -> fsb_fd, &acsid, aci);
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;
 				i >= 0;
@@ -559,14 +514,11 @@ invalid_result:
 					goto invalid_result;
 				break;
 			}
-
 			fx++;
 		}
 	}
-
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
 		;
@@ -621,7 +573,6 @@ no_mem:
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *fpm;
 		struct type_FTAM_Contents__Type__List **fpc;
-
 		fpc = &rsp -> contents__type__list;
 		for (px = pl -> fc_contents, i = pl -> fc_ncontent - 1;
 				i >= 0;
@@ -631,31 +582,25 @@ no_mem:
 						   calloc (1, sizeof *fpm)) == NULL)
 					goto no_mem;
 				*fpc = fpm;
-
 				if ((fpm -> Document__Type__Name = oid_cpy (px -> fc_dtn))
 						== NULLOID)
 					goto no_mem;
 				fpc = &fpm -> next;
 			}
 	}
-
 	if (ndiag > 0
 			&& (rsp -> diagnostic = diag2fpm (fsb, 0, diag, ndiag, fti))
 			== NULL)
 		goto out;
 	rsp -> checkpoint__window = 1;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE",
 					"F-INITIALIZE-response", pe, 0));
-
 	result = AcAssocResponse (fsb -> fsb_fd, status, status != ACS_ACCEPT
 							  ? ACS_USER_NOREASON : ACS_USER_NULL,
 							  context ? context : fsb -> fsb_context, respondtitle,
@@ -663,27 +608,22 @@ no_mem:
 							  fsb -> fsb_prequirements, fsb -> fsb_srequirements,
 							  fsb -> fsb_ssn, fsb -> fsb_settings, &fsb -> fsb_connect,
 							  &pe, 1, aci);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcAssocResponse", aca);
 		goto out;
 	}
-
 	fsb -> fsb_flags |= FSB_CONN;
 	return OK;
-
 out:
 	;
 	if (pe)
 		pe_free (pe);
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu))
 			== NULL)
@@ -707,15 +647,12 @@ out:
 		rsp -> ftam__quality__of__service -> parm = MY_FQOS;
 	rsp -> diagnostic = diag2fpm (fsb, 1, fti -> fti_abort.fta_diags, 1, fti);
 	rsp -> checkpoint__window = 1;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) != NOTOK)
 		pe -> pe_context = fsb -> fsb_id;
-
 carry_on:
 	;
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.RESPONSE(reject)",
 					"F-INITIALIZE-response", pe, 0));
-
 	AcAssocResponse (fsb -> fsb_fd, ACS_TRANSIENT, ACS_USER_NOREASON,
 					 NULLOID, NULLAEI, NULLPA, NULLPC, PC_ACCEPT, 0, 0, SERIAL_NONE,
 					 0, &fsb -> fsb_connect, pe ? &pe : NULLPEP, pe ? 1 : 0, aci);
@@ -723,9 +660,7 @@ carry_on:
 		pe_free (pe);
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 	fsb -> fsb_fd = NOTOK;
 	freefsblk (fsb);
-
 	return NOTOK;
 }

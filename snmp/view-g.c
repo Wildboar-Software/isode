@@ -152,7 +152,6 @@ int	isnext;
 		case 1:
 			return (isnext ? v : NULL);
 		}
-
 	return NULL;
 }
 
@@ -281,7 +280,6 @@ int	isnext;
 		case 1:
 			return (isnext ? c : NULL);
 		}
-
 	return NULL;
 }
 
@@ -412,7 +410,6 @@ int	isnext;
 		case 1:
 			return (isnext ? t : NULL);
 		}
-
 	return NULL;
 }
 
@@ -461,27 +458,22 @@ void init_view (void) {
 	CHead -> c_forw = CHead -> c_back = CHead;
 	UHead -> t_forw = UHead -> t_back = UHead;
 	VHead -> v_forw = VHead -> v_back = VHead;
-
 	vec[0] = "view";
 	for (w = wired; w -> w_args1; w++) {
 		vec[1] = w -> w_args1;
 		if (vec[2] = w -> w_args2)
 			vec[3] = NULL;
-
 		if (f_view (vec) == NOTOK)
 			adios (NULLCP, "you lose");
 	}
-
 	strcpy (buffer, "defViewTrapDest.0");
 	if ((trapview = text2oid (buffer)) == NULLOID)
 		adios (NULLCP, "unknown OID \"defViewTrapDest.0\" for traps");
 	trapview -> oid_nelem--;
-
 	if ((localAgent = text2oid ("localAgent")) == NULLOID)
 		adios (NULLCP, "unknown OID \"localAgent\"");
 	if ((rfc1157Domain = text2oid ("rfc1157Domain")) == NULLOID)
 		adios (NULLCP, "unknown OID \"rfc1157Domain\"");
-
 	if (ot = text2obj ("viewPrimName"))
 		ot -> ot_getfnx = o_viewPrim,
 			  ot -> ot_info = (caddr_t) viewPrimName;
@@ -500,7 +492,6 @@ void init_view (void) {
 	if (ot = text2obj ("viewPrimType"))
 		ot -> ot_getfnx = o_viewPrim,
 			  ot -> ot_info = (caddr_t) viewPrimType;
-
 	if (ot = text2obj ("viewAclView"))
 		ot -> ot_getfnx = o_viewAcl,
 			  ot -> ot_info = (caddr_t) viewAclView;
@@ -516,7 +507,6 @@ void init_view (void) {
 	if (ot = text2obj ("viewAclType"))
 		ot -> ot_getfnx = o_viewAcl,
 			  ot -> ot_info = (caddr_t) viewAclType;
-
 	if (ot = text2obj ("viewTrapView"))
 		ot -> ot_getfnx = o_viewTrap,
 			  ot -> ot_info = (caddr_t) viewTrapView;
@@ -542,10 +532,8 @@ void fin_view (void) {
 		vec[0] = "community";
 		vec[1] = "public";
 		vec[2] = NULL;
-
 		f_community (vec);
 	}
-
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
 		for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
 			if (oid_cmp (v -> v_name, c -> c_vu) == 0) {
@@ -557,7 +545,6 @@ void fin_view (void) {
 					"no such view as %s for community \"%s\"",
 					sprintoid (c -> c_vu), c -> c_name);
 	}
-
 	i = 0;
 	for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
 		i++;
@@ -565,7 +552,6 @@ void fin_view (void) {
 		struct view **base,
 				   **bp,
 				   **ep;
-
 		if ((base = (struct view **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
 			adios (NULLCP, "out of memory");
@@ -575,7 +561,6 @@ void fin_view (void) {
 			unsigned int *ip,
 					 *jp;
 			OID	    oid = v -> v_name;
-
 			v -> v_insize = 1 + (j = oid -> oid_nelem);
 			if ((v -> v_instance =
 						(unsigned int *) calloc ((unsigned) v -> v_insize,
@@ -586,21 +571,16 @@ void fin_view (void) {
 					j > 0;
 					j--)
 				*ip++ = *jp++;
-
 			remque (*ep++ = v);
 		}
 		VHead -> v_forw = VHead -> v_back = VHead;
-
 		if (i > 1)
 			qsort ((char *) base, i, sizeof *base, (IFP)view_compar);
-
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, VHead -> v_back);
-
 		free ((char *) base);
 	}
-
 	i = 0;
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw)
 		i++;
@@ -609,7 +589,6 @@ void fin_view (void) {
 		struct community **base,
 				   **bp,
 				   **ep;
-
 		if ((base = (struct community **)
 					malloc ((unsigned) (i * sizeof *base))) == NULL)
 			adios (NULLCP, "out of memory");
@@ -618,7 +597,6 @@ void fin_view (void) {
 			char *cp,
 				 *dp;
 			unsigned int *ip;
-
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
 				j = 4;
@@ -636,18 +614,15 @@ void fin_view (void) {
 				j = 0;
 				break;
 			}
-
 			c -> c_insize = 1 + strlen (c -> c_name) + 1 + j;
 			if ((c -> c_instance =
 						(unsigned int *) calloc ((unsigned) c -> c_insize,
 												 sizeof *c -> c_instance)) == NULL)
 				adios (NULLCP, "out of memory");
 			ip = c -> c_instance;
-
 			*ip++ = strlen (c -> c_name);
 			for (cp = c -> c_name; *cp; cp++)
 				*ip++ = *cp & 0xff;
-
 			*ip++ = j;
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
@@ -670,13 +645,10 @@ stuff_it:
 			default:
 				break;
 			}
-
 			*ep++ = c;
 		}
-
 		if (i > 1)
 			qsort ((char *) base, i, sizeof *base, (IFP)comm_compar);
-
 		bp = base;
 		c = CLex = *bp++;
 		while (bp < ep) {
@@ -684,11 +656,9 @@ stuff_it:
 			c = *bp++;
 		}
 		c -> c_next = NULL;
-
 		free ((char *) base);
 	} else
 		CLex = NULL;
-
 	i = 0;
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw)
 		i++;
@@ -696,7 +666,6 @@ stuff_it:
 		struct trap **base,
 				   **bp,
 				   **ep;
-
 		if ((base = (struct trap **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
 			adios (NULLCP, "out of memory");
@@ -706,7 +675,6 @@ stuff_it:
 			unsigned int *ip,
 					 *jp;
 			OID	    oid = t -> t_view -> v_name;
-
 			t -> t_insize = 1 + (j = oid -> oid_nelem);
 			if ((t -> t_instance =
 						(unsigned int *) calloc ((unsigned) t -> t_insize,
@@ -717,18 +685,14 @@ stuff_it:
 					j > 0;
 					j--)
 				*ip++ = *jp++;
-
 			remque (*ep++ = t);
 		}
 		UHead -> t_forw = UHead -> t_back = UHead;
-
 		if (i > 1)
 			qsort ((char *) base, i, sizeof *base, (IFP)trap_compar);
-
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, UHead -> t_back);
-
 		free ((char *) base);
 	}
 }
@@ -738,25 +702,21 @@ int	f_community (char **vec) {
 	struct NSAPaddr *na;
 
 	vec++;
-
 	if ((c = (struct community *) calloc (1, sizeof *c)) == NULL
 			|| (c -> c_name = strdup (*vec)) == NULL)
 		adios (NULLCP, "out of memory");
 	vec++;
-
 	na = &c -> c_addr;
 	if (*vec) {
 		if (str2sa (*vec, na, (struct sockaddr *) NULL, 0) == NOTOK)
 			adios (NULLCP, "unknown address \"%s\" for community \"%s\"",
 				   *vec, c -> c_name);
-
 		vec++;
 	} else {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
 		strcpy (na -> na_domain, "0.0.0.0");
 	}
-
 	if (*vec) {
 		if (lexequ (*vec, "readOnly") == 0)
 			c -> c_permission = OT_RDONLY;
@@ -769,36 +729,28 @@ int	f_community (char **vec) {
 					"invalid access mode \"%s\"", *vec);
 			goto you_lose;
 		}
-
 		vec++;
 	} else
 		c -> c_permission = OT_RDONLY;
-
 	if (*vec) {
 		char    buffer[BUFSIZ];
-
 		strcpy (buffer, *vec);
 		if ((c -> c_vu = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
 		}
-
 		if (*++vec)
 			goto you_lose;
 	} else if ((c -> c_vu = text2oid ("defViewWholeRO")) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"defViewWholeRO\"");
 		goto you_lose;
 	}
-
 	insque (c, CHead -> c_back);
-
 	return OK;
-
 you_lose:
 	;
 	free (c -> c_name);
 	free ((char *) c);
-
 	return NOTOK;
 }
 
@@ -818,7 +770,6 @@ char  **vec;
 		adios (NULLCP, "out of memory");
 	c -> c_permission = OT_YYY;
 	vec++;
-
 	strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
@@ -835,40 +786,32 @@ char  **vec;
 			goto you_lose;
 		}
 	vec++;
-
 	if (lexequ (*vec, "rfc1157")) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unsupported proxy domain \"%s\"",
 				*vec);
 		goto you_lose;
 	}
 	vec++;
-
 	na = &c -> c_addr;
 	if (*vec) {
 		if (str2sa (*vec, na, &v -> v_sa, 1) == NOTOK)
 			adios (NULLCP, "unknown address \"%s\" for proxy %s",
 				   *vec, oid2ode (v -> v_name));
-
 		vec++;
 	} else
 		goto you_lose;
-
 	if (*vec) {
 		if ((v -> v_community = str2qb (*vec, strlen (*vec), 1)) == NULL)
 			adios (NULLCP, "out of memory");
 		if ((c -> c_name = strdup (*vec)) == NULL)
 			adios (NULLCP, "out of memory");
-
 		if (*++vec)
 			goto you_lose;
 	} else
 		goto you_lose;
-
 	insque (v, VHead -> v_back);
 	insque (c, CHead -> c_back);
-
 	return OK;
-
 you_lose:
 	;
 	if (c -> c_name)
@@ -879,7 +822,6 @@ you_lose:
 	if (v -> v_community)
 		qb_free (v -> v_community);
 	free ((char *) v);
-
 	return NOTOK;
 }
 
@@ -893,7 +835,6 @@ char  **vec;
 	static int trapno = 1;
 
 	vec++;
-
 	if ((t = (struct trap *) calloc (1, sizeof *t)) == NULL
 			|| (t -> t_name = strdup (*vec)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -901,32 +842,26 @@ char  **vec;
 	v -> v_subtree.s_forw = v -> v_subtree.s_back = &v -> v_subtree;
 	t -> t_generics = 0xfe;
 	vec++;
-
 	trapview -> oid_elements[trapview -> oid_nelem++] = trapno;
 	v -> v_name = oid_cpy (trapview);
 	trapview -> oid_nelem--;
 	if (v -> v_name == NULLOID)
 		adios (NULLCP, "out of memory");
-
 	if ((v -> v_community = str2qb (t -> t_name, strlen (t -> t_name), 1))
 			== NULL)
 		adios (NULLCP, "out of memory");
-
 	bzero ((char *) na, sizeof *na);
 	if (*vec) {
 		if (str2sa (*vec, na, &v -> v_sa, 0) == NOTOK)
 			adios (NULLCP, "unknown address \"%s\" for trap sink \"%s\"",
 				   *vec, t -> t_name);
-
 		vec++;
 	} else
 		goto you_lose;
-
 	if (*vec) {
 		char    buffer[BUFSIZ];
 		OID	name;
 		struct view *u;
-
 		strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
@@ -934,7 +869,6 @@ char  **vec;
 		}
 		oid_free (v -> v_name);
 		v -> v_name = name;
-
 		for (u = VHead -> v_forw; u != VHead; u = u -> v_forw)
 			if (oid_cmp (u -> v_name, v -> v_name) == 0) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
@@ -942,31 +876,24 @@ char  **vec;
 						*vec, t -> t_name);
 				goto you_lose;
 			}
-
 		vec++;
 	} else
 		trapno++;
-
 	if (*vec) {
 		if (sscanf (*vec, "%lx", &t -> t_generics) != 1)
 			goto you_lose;
-
 		if (*++vec)
 			goto you_lose;
 	}
-
 	insque (t, UHead -> t_back);
 	insque (v, VHead -> v_back);
-
 	return OK;
-
 you_lose:
 	;
 	oid_free (v -> v_name);
 	qb_free (v -> v_community);
 	free (t -> t_name);
 	free ((char *) t);
-
 	return NOTOK;
 }
 
@@ -985,13 +912,11 @@ char  **vec;
 				"too many views starting with \"%s\"", *vec);
 		return NOTOK;
 	}
-
 	if ((v = (struct view *) calloc (1, sizeof *v)) == NULL)
 		adios (NULLCP, "out of memory");
 	s = &v -> v_subtree;
 	v -> v_subtree.s_forw = v -> v_subtree.s_back = s;
 	vec++;
-
 	strcpy (buffer, *vec);
 	if ((v -> v_name = text2oid (buffer)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
@@ -1006,22 +931,18 @@ char  **vec;
 			advise (LLOG_EXCEPTIONS, NULLCP, "duplicate view \"%s\"", *vec);
 			goto you_lose;
 		}
-
 	for (vec++; *vec; vec++) {
 		struct subtree *z;
 		OID	name;
-
 		strcpy (buffer, *vec);
 		if ((name = text2oid (buffer)) == NULLOID) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown OID \"%s\"", *vec);
 			goto you_lose;
 		}
-
 		for (x = s -> s_forw; x != s; x = y) {
 			int    i,
 				   j;
 			y = x -> s_forw;
-
 			if (bcmp ((char *) x -> s_subtree -> oid_elements,
 					  (char *) name -> oid_elements,
 					  ((i = x -> s_subtree -> oid_nelem)
@@ -1034,33 +955,26 @@ char  **vec;
 						oid2ode (x -> s_subtree));
 				if (i <= j)
 					goto another;
-
 				remque (x);
 				oid_free (x -> s_subtree);
 				free ((char *) x);
 			}
 		}
-
 		if ((z = (struct subtree *) calloc (1, sizeof *z)) == NULL)
 			adios (NULLCP, "out of memory");
 		z -> s_subtree = name;
-
 		insque (z, s -> s_back);
 another:
 		;
 	}
-
 	v -> v_mask = viewmask;
 	viewmask <<= 1;
 	insque (v, VHead -> v_back);
-
 	return OK;
-
 you_lose:
 	;
 	for (x = s -> s_forw; x != s; x = y) {
 		y = x -> s_forw;
-
 		remque (x);
 		oid_free (x -> s_subtree);
 		free ((char *) x);
@@ -1068,7 +982,6 @@ you_lose:
 	if (v -> v_name)
 		oid_free (v -> v_name);
 	free ((char *) v);
-
 	return NOTOK;
 }
 

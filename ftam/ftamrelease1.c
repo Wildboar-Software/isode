@@ -16,15 +16,10 @@ int FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTA
 
 	missingP (ftr);
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FTerminateRequestAux (fsb, sharedASE, ftr, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -44,10 +39,8 @@ static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMr
 	if (fsb -> fsb_state != FSB_INITIALIZED)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "not in the initialized state");
-
 	bzero ((char *) acr, sizeof *acr);
 	bzero ((char *) ftr, sizeof *ftr);
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
@@ -66,45 +59,35 @@ out:
 			&& (pdu -> un.f__terminate__request =
 					shared2fpm (fsb, sharedASE, fti)) == NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-RELEASE.REQUEST", "F-TERMINATE-request",
 					pe, 0));
-
 	result = AcRelRequest (fsb -> fsb_fd, ACF_NORMAL, &pe, 1, NOTOK, acr, aci);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		if (aca -> aca_source == ACA_USER)
 			return acs2ftamabort (fsb, aca, fti);
-
 		acs2ftamlose (fsb, fti, "AcRelRequest", aca);
 		goto out;
 	}
-
 	if (!acr -> acr_affirmative) {
 		result = fpktlose (fsb, fti, FS_ACS_MGMT, NULLCP,
 						   "other side refused to release association");
 		goto done;
 	}
 	fsb -> fsb_fd = NOTOK;
-
 	if (acr -> acr_ninfo < 1 || (pe = acr -> acr_info[0]) == NULLPE) {
 		result = fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto done;
 	}
-
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK)
 		result = fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 						   "unable to parse PDU: %s", PY_pepy);
@@ -116,11 +99,9 @@ out:
 			goto done;
 		}
 		rsp = pdu -> un.f__terminate__response;
-
 		fsbtrace (fsb,
 				  (fsb -> fsb_fd, "A-RELEASE.CONFIRMATION",
 				   "F-TERMINATE-response", pe, 1));
-
 		if (rsp -> shared__ASE__information
 				&& fpm2shared (fsb, rsp -> shared__ASE__information,
 							   &ftr -> ftr_sharedASE, fti) == NOTOK)
@@ -129,16 +110,13 @@ out:
 				&& fpm2chrg (fsb, rsp -> charging, &ftr -> ftr_charges, fti)
 				== NOTOK)
 			goto done;
-
 		result = OK;
 	}
-
 done:
 	;
 	if (pdu)
 		free_FTAM_PDU (pdu);
 	ACRFREE (acr);
 	freefsblk (fsb);
-
 	return result;
 }

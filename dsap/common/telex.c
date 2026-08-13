@@ -19,7 +19,6 @@ static void telex_free (struct telex *ptr) {
 	free (ptr->telexnumber);
 	free (ptr->countrycode);
 	free (ptr->answerback);
-
 	free ((char *) ptr);
 }
 
@@ -41,7 +40,6 @@ static int telex_cmp (struct telex *a, struct telex *b) {
 			return (0);
 		else
 			return (-1);
-
 	if ( (res = lexequ(a->telexnumber,b->telexnumber)) != 0)
 		return (res);
 	if ( (res = lexequ(a->countrycode,b->countrycode)) != 0)
@@ -72,7 +70,6 @@ static struct telex *str2telex (char *str) {
 		parse_error ("seperator missing in telex '%s'",str);
 		return ((struct telex *) NULL);
 	}
-
 	result = (struct telex *) smalloc (sizeof (struct telex));
 	*ptr--= 0;
 	if (isspace (*ptr)) {
@@ -86,43 +83,32 @@ static struct telex *str2telex (char *str) {
 		parse_error ("telexnumber too big",NULLCP);
 		return ((struct telex *) NULL);
 	}
-
 	*ptr++ = '$';
-
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	str = SkipSpace(ptr);
-
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("2nd seperator missing in telex '%s'",str);
 		return ((struct telex *) NULL);
 	}
-
 	*ptr--= 0;
 	if (isspace (*ptr)) {
 		*ptr = 0;
 		mark = ptr;
 	} else
 		mark = NULLCP;
-
 	ptr++;
-
 	if ((result->countrycode = prtparse(str)) == NULLCP)
 		return ((struct telex *) NULL);
 	if ((int)strlen (result->countrycode) > UB_COUNTRY_CODE) {
 		parse_error ("countrycode too big",NULLCP);
 		return ((struct telex *) NULL);
 	}
-
 	*ptr++ = '$';
-
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	if ((result->answerback = prtparse(SkipSpace(ptr))) == NULLCP)
 		return ((struct telex *) NULL);
-
 	return (result);
 }
 
@@ -132,7 +118,6 @@ struct telex * m;
 	PE ret_pe;
 
 	encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 

@@ -17,15 +17,10 @@ int	daplose (struct DAPindication *di, ...) {
 			result;
 
 	va_list ap;
-
 	va_start (ap, di);
-
 	reason = va_arg (ap, int);
-
 	result = _daplose (di, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -51,15 +46,12 @@ static int _daplose (  /* what, fmt, args ... */
 		di->di_type = DI_ABORT;
 		da = &(di->di_abort);
 		da->da_reason = reason;
-
 		what = va_arg (ap, char *);
 		fmt = va_arg (ap, char *);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		copyDAPdata (buffer, bp - buffer, da);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -71,16 +63,11 @@ int	dapreject (struct DAPindication *di, ...) {
 			result;
 
 	va_list ap;
-
 	va_start (ap, di);
-
 	reason = va_arg (ap, int);
 	id = va_arg (ap, int);
-
 	result = _dapreject (di, reason, id, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -108,15 +95,12 @@ static int _dapreject (  /* what, fmt, args ... */
 		dp = &(di->di_preject);
 		dp->dp_id = id;
 		dp->dp_reason = reason;
-
 		what = va_arg (ap, char *);
 		fmt = va_arg (ap, char *);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		copyDAPdata (buffer, bp - buffer, dp);
 	}
-
 	return (NOTOK);
 }
 #endif

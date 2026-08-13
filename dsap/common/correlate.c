@@ -12,19 +12,15 @@ void correlate_search_results (struct ds_search_result *sr_res) {
 	struct ds_search_result	* sr_last;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("correlate_search_results() "));
-
 	if(sr_res->srr_correlated) {
 		DLOG(log_dsap, LLOG_DEBUG, ("Already correlated! "));
 		return;
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Not yet correlated! "));
-
 	for(sr_tmp = sr_res->srr_un.srr_parts; sr_tmp != NULLSRR; sr_tmp = sr_tmp->srr_next) {
 		DLOG(log_dsap, LLOG_DEBUG, ("correlate_search_results(A Result Part)"));
 		correlate_search_results(sr_tmp);
 	}
-
 	sr_tmp = sr_res->srr_un.srr_parts;
 	sr_res->srr_correlated = TRUE;
 	sr_res->srr_un.srr_unit = (struct ds_search_unit *) malloc(sizeof(struct ds_search_unit));
@@ -34,7 +30,6 @@ void correlate_search_results (struct ds_search_result *sr_res) {
 	sr_res->CSR_cr = NULLCONTINUATIONREF;
 	sr_res->CSR_common.cr_requestor = NULLDN;
 	sr_res->CSR_common.cr_aliasdereferenced = FALSE;
-
 	while(sr_tmp != NULLSRR) {
 		merge_search_results(sr_res, sr_tmp);
 		sr_last = sr_tmp;
@@ -50,10 +45,8 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 	ContinuationRef		cr_tmp;
 
 	DLOG(log_dsap, LLOG_DEBUG, ("merge_search_results"));
-
 	if(sr_tmp == NULLSRR)
 		return;
-
 	if (sr_res->CSR_entries == NULLENTRYINFO) {
 		DLOG(log_dsap, LLOG_DEBUG, ("Before inserting entries"));
 		sr_res->CSR_entries = sr_tmp->CSR_entries;
@@ -64,14 +57,10 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 		entryinfo_merge (sr_res->CSR_entries,sr_tmp->CSR_entries,0);
 	}
 	sr_tmp->CSR_entries = NULLENTRYINFO;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Before merging limitproblems"));
-
 	if(sr_res->CSR_limitproblem == LSR_NOLIMITPROBLEM)
 		sr_res->CSR_limitproblem = sr_tmp->CSR_limitproblem;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Before merging ContinuationRefs"));
-
 	if(sr_tmp->CSR_cr != NULLCONTINUATIONREF) {
 		for(cr_tmp = sr_tmp->CSR_cr; cr_tmp->cr_next != NULLCONTINUATIONREF; cr_tmp = cr_tmp->cr_next) {
 #ifdef	DEBUG
@@ -89,7 +78,6 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 	} else {
 		DLOG(log_dsap, LLOG_DEBUG, ("No new references to merge"));
 	}
-
 #ifdef DEBUG
 	if(sr_res->CSR_cr != NULLCONTINUATIONREF) {
 		for(cr_tmp = sr_res->CSR_cr; cr_tmp != NULLCONTINUATIONREF; cr_tmp = cr_tmp->cr_next) {
@@ -105,12 +93,10 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 
 void search_result_free (struct ds_search_result *arg) {
 	DLOG(log_dsap, LLOG_DEBUG, ("search_result_free"));
-
 	if(arg == NULLSRR) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Lost part of search structure somewhere!"));
 		return;
 	}
-
 	if(arg->srr_correlated) {
 		DLOG(log_dsap, LLOG_DEBUG, ("search_result_free - correlated"));
 		dn_free (arg->CSR_common.cr_requestor);
@@ -123,15 +109,11 @@ void search_result_free (struct ds_search_result *arg) {
 		search_result_free(arg->srr_un.srr_parts);
 		free((char *)arg->srr_un.srr_parts);
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("After freeing parts"));
-
 	if(arg->srr_next != NULLSRR) {
 		search_result_free(arg->srr_next);
 		free((char *)arg->srr_next);
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("After freeing next"));
-
 	return;
 }

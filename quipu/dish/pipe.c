@@ -36,21 +36,17 @@ int init_pipe (void) {
 	struct sockaddr_in      *sin = &sin_buf;
 #else
 #endif
-
 	if ((cp = getenv ("DISHPARENT")) == NULLCP) {
 		sprintf (parent, "%d", getppid ());
 		setenv ("DISHPARENT", cp = parent);
 	}
-
 	if (sscanf (cp, "%d", &parent_pid) != 1) {
 		fprintf (stderr,"DISHPARENT malformed");
 		return (NOTOK);
 	}
-
 #ifdef SOCKETS
 	if (get_dish_sock (sin) != 0)
 		return (NOTOK);
-
 	if ((sd = start_tcp_server (sin, SOMAXCONN, 0, 0)) == NOTOK) {
 		perror ("start_tcp_server");
 		return NOTOK;
@@ -59,15 +55,12 @@ int init_pipe (void) {
 	ioctl (sd, FIOCLEX, NULLCP);
 #endif
 #else
-
 	if ((cp = getenv ("DISHPROC")) == NULL) {
 		fprintf (stderr, "no DISHPROC in environment\n");
 		return (NOTOK);
 	}
-
 	strcpy (retpipe, cp);
 	umask (0);
-
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
 		mknod (retpipe, S_IFIFO | 0600, 0);
 		if ((fd = open (retpipe, O_RDONLY)) < 0) {
@@ -76,7 +69,6 @@ int init_pipe (void) {
 			return (NOTOK);
 		}
 	}
-
 	if ((wfd = open (retpipe, O_WRONLY)) < 0) {
 		fprintf (stderr, "wr open failed\n");
 		unlink (retpipe);
@@ -84,14 +76,12 @@ int init_pipe (void) {
 		return (NOTOK);
 	}
 #endif
-
 #ifdef	SETSID
 	setsid ();
 #endif
 #ifdef	TIOCNOTTY
 	{
 		int	    xsd;
-
 		if ((xsd = open ("/dev/tty", O_RDWR)) != NOTOK) {
 			ioctl (xsd, TIOCNOTTY, NULLCP);
 			close (xsd);
@@ -165,7 +155,6 @@ int read_pipe_aux (char *buf, int len) {
 		break;
 	}
 	*cp = 0;
-
 	return (cp - buf);
 #else
 	if ((res = read (fd, buf, len)) <= 0) {
@@ -174,7 +163,6 @@ int read_pipe_aux (char *buf, int len) {
 		return (-1);
 	}
 	*(buf + res) = 0;
-
 	return (res);
 #endif
 }
@@ -191,7 +179,6 @@ int read_pipe_aux2 (char **buf, int *len) {
 	char    buffer[BUFSIZ];
 
 	*buf = NULL, *len = 0;
-
 	switch (res = read_pipe_aux (buffer, sizeof buffer)) {
 	case NOTOK:
 	case OK:
@@ -211,7 +198,6 @@ int read_pipe_aux2 (char **buf, int *len) {
 			return NOTOK;
 		}
 		*buf = cp, *len = cc;
-
 		dp = cp, j = cc;
 		if (ep = index (buffer + 1, '\n')) {
 			strcpy (dp, ++ep);
@@ -220,7 +206,6 @@ int read_pipe_aux2 (char **buf, int *len) {
 		}
 		break;
 	}
-
 	for (; j > 0; dp += i, j -= i)
 		switch (i = recv (sd_current, dp, j, 0)) {
 		case NOTOK:
@@ -240,7 +225,6 @@ out:
 			break;
 		}
 	*dp = 0;
-
 	return res;
 }
 #endif
@@ -248,7 +232,6 @@ out:
 #ifndef	SOCKETS
 int send_pipe (char *buf) {
 	send_pipe_aux (buf);
-
 	close (file);
 	reopen_ret ();
 }
@@ -268,7 +251,6 @@ void send_pipe_aux2 (char *buf, int i) {
 		return;
 	}
 #endif
-
 	while (i > 0) {
 #ifdef	SOCKETS
 		if ( (res= send(sd_current, buf, i, 0)) == -1) {
@@ -314,26 +296,21 @@ int get_dish_sock (struct sockaddr_in *isock) {
 #endif
 		setenv ("DISHPROC", ptr = buffer);
 	}
-
 	if ((dp = index (ptr, ' ')) == NULLCP || sscanf (dp + 1, "%d", &portno) != 1) {
 		fprintf (stderr,"DISHPROC malformed");
 		return (-1);
 	}
 	*dp = 0;
-
 	if ((hp = gethostbystring (ptr)) == NULL) {
 		fprintf (stderr,"%s: unknown host in DISHPROC", ptr);
 		return (-1);
 	}
 	*dp = ' ';
-
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp -> h_addrtype;
 	isock -> sin_port = htons ((uint16_t) portno);
 	inaddr_copy (hp, isock);
-
 	return (0);
-
 }
 
 #else
@@ -341,7 +318,6 @@ int get_dish_sock (struct sockaddr_in *isock) {
 int reopen_ret (void) {
 	close (fd);
 	close (wfd);
-
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
 		if ( errno == EINTR ) {
 			reopen_ret ();

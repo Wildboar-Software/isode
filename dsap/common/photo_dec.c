@@ -40,7 +40,6 @@ int decode_t4 (char *data, char *name, int size) {
 	 *  If the first byte does not indicate that the data is an ASN.1-encoded
 	 *  SET or BIT STRING, attempt to convert the data as a non-ASN.1 image.
 	 */
-
 	if ((unsigned char)*data != 0xa3 && *data != 0x03) {
 		if (((unsigned char)*data == 0x05) &&
 				((unsigned char)*(data + 1) == 0x00)) {
@@ -50,7 +49,6 @@ int decode_t4 (char *data, char *name, int size) {
 		return decode_t4_aux (data, name, (int)size, twoDimensional);
 	}
 	/* attempt to decode the source */
-
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
 		fprintf (stderr, "ps_alloc: unable to allocate presentation stream\n");
 		return (-1);
@@ -63,7 +61,6 @@ int decode_t4 (char *data, char *name, int size) {
 		ps_free (ps);
 		return decode_t4_aux (data, name, (int)size, 1);
 	}
-
 	if (pe->pe_class == PE_CLASS_UNIV && pe->pe_form == PE_FORM_PRIM &&
 			pe->pe_id == PE_PRIM_BITS) { /* old  BIT STRING-like form */
 		if (pe_pullup (pe) == NOTOK) {
@@ -74,9 +71,7 @@ int decode_t4 (char *data, char *name, int size) {
 		res = decode_t4_aux ((char *)pe -> pe_prim, name, ps_get_abs (pe), 1);
 	} else if (pe->pe_class == PE_CLASS_CONT && pe->pe_form == PE_FORM_CONS &&
 			   pe->pe_id == 3) {
-
 		/* first member must be SET which describes G3-Fax options */
-
 		set = first_member (pe);
 		if (!set || set->pe_class != PE_CLASS_UNIV ||
 				set->pe_form != PE_FORM_CONS || set->pe_id != PE_CONS_SET) {
@@ -85,7 +80,6 @@ int decode_t4 (char *data, char *name, int size) {
 			ps_free (ps);
 			return -1;
 		}
-
 		for (member = first_member (set); member; member = next_member (set, member)) {
 			if (member->pe_class == PE_CLASS_CONT &&
 					member->pe_form == PE_FORM_PRIM && member->pe_id == 1) {
@@ -97,9 +91,7 @@ int decode_t4 (char *data, char *name, int size) {
 				}
 			}
 		}
-
 		/* SEQUENCE of BIT STRING should follow SET */
-
 		seq = next_member (pe, set);
 		if (!seq || seq->pe_class != PE_CLASS_UNIV ||
 				seq->pe_form != PE_FORM_CONS || seq->pe_id != PE_CONS_SEQ) {
@@ -108,7 +100,6 @@ int decode_t4 (char *data, char *name, int size) {
 			ps_free (ps);
 			return -1;
 		}
-
 		for (member = first_member (seq); member; member = next_member (seq, member)) {
 			if (member->pe_class != PE_CLASS_UNIV ||
 					member->pe_form != PE_FORM_PRIM ||
@@ -123,12 +114,9 @@ int decode_t4 (char *data, char *name, int size) {
 		}
 	} else /* maybe its a non-ASN.1 image */
 		res = decode_t4_aux (data, name, (int)size, 1);
-
 	pe_free (pe);
 	ps_free (ps);
-
 	return res;
-
 }
 
 /*
@@ -191,15 +179,11 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	int	    *buffer1, *buffer2;
 	int      *run_buf1, *run_buf2;
 	char      oneDtag, tag;
-
 	seqerrs = 0;
-
 	if (photo_start (winname) == -1)
 		return (-1);
-
 	if (build_trees () == -1)
 		return (-1);
-
 	buffer1      = (int *) malloc (LINEBUF * sizeof(int));
 	buffer2      = (int *) malloc (LINEBUF * sizeof(int));
 	buffer1[0]   = 0;   /* to halt backtracting if needed at start of line */
@@ -208,16 +192,12 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	run_buf2     = buffer2;
 	ref_line.run_top  = ++run_buf1;
 	code_line.run_top = ++run_buf2;
-
 	code_line.dbuf_top = malloc (BUFSIZ);
 	t4_line.dbuf_top = inbuf;
-
 	if (set_dinput (&t4_line, length) == -1)
 		return (-1);
 	set_doutput (&code_line);
-
 	/* images must always start with a 1-d encoded line */
-
 	position = 1;
 	NUMLINES = 1;
 	done = decode_one (&code_line, &t4_line);
@@ -230,14 +210,11 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 		NUMLINES = 0;
 		done = 0;
 	}
-
 	if (twoDimensional)
 		oneDtag = tag = get_bit(&t4_line);
-
 	while ( done != 1 ) {
 		++NUMLINES;
 		position = 1;
-
 		if ( twoDimensional && tag != oneDtag ) {
 			if (code_line.run_top  == run_buf1) {
 				ref_line.run_top  = run_buf1;
@@ -250,32 +227,23 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 		} else {
 			done = decode_one (&code_line, &t4_line);
 		}
-
 		if (done == -1) return (-1);
-
 		flush_doutput (&code_line);
 		set_doutput (&code_line);
 		photo_line_end (&code_line);
-
 		if ( twoDimensional && done != 1 )
 			tag = get_bit (&t4_line);
-
 		if ( done == -2 && twoDimensional ) {
 			while ( tag != oneDtag ) {
 				resync (&t4_line);
 				tag = get_bit (&t4_line);
 			}
 		}
-
 	}
-
 	bitmap = code_line.dbuf_top;
-
 	free ((char *)buffer1);
 	free ((char *)buffer2);
-
 	return (photo_end (winname));
-
 }
 
 /* ROUTINE:     find_node
@@ -289,24 +257,19 @@ static node *find_node (bit_string *lineptr, node *tree_top)
 	node * ptr;
 
 	ptr = tree_top;
-
 	do {
-
 		if (get_bit (lineptr) == 0) {
 			ptr = ptr->zero;
 		} else {
 			ptr = ptr->one;
 		}
-
 		if (ptr == NULL) {
 			fprintf (stderr,
 					 "decode_fax: WARNING - sequencing error in line %d\n",
 					 NUMLINES);
 			return (NULL);
 		}
-
 	} while (ptr->n_type == INTERNAL);
-
 	return (ptr);
 }
 
@@ -321,24 +284,19 @@ static node *find_node (bit_string *lineptr, node *tree_top)
 
 run_type next_run (bit_string *lineptr, char xcolour)
 {
-
 	node *   ptr;
 	run_type result;
 
 	result.run_length = 0;
-
 	if (xcolour == BLACK)
 		ptr = find_node (lineptr, bl_tree_top);
 	else
 		ptr = find_node (lineptr, wt_tree_top);
-
 	if (ptr == NULL) {
 		result.r_type = ERR_RUN;
 		return (result);
 	}
-
 	/* if the above value was a make up code, now read the terminal code */
-
 	if (ptr->n_type == MAKE) {
 		if (ptr->value == -1) {
 			result.r_type = UNCOMPRESSED_1D;
@@ -349,13 +307,11 @@ run_type next_run (bit_string *lineptr, char xcolour)
 			ptr = find_node (lineptr, bl_tree_top);
 		else
 			ptr = find_node (lineptr, wt_tree_top);
-
 		if (ptr == NULL) {
 			result.r_type = ERR_RUN;
 			return (result);
 		}
 	}
-
 	result.run_length += ptr->value;
 	result.r_type = ptr->n_type;
 	return (result);
@@ -382,10 +338,8 @@ int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 	int  savelinesize;
 
 	lineptr->run_pos = lineptr->run_top;
-
 	savelinesize = PIC_LINESIZE;
 	PIC_LINESIZE = 0;
-
 	for (;;) {
 		run = next_run (t4_lineptr, xcolour);
 		if (run.r_type == ERR_RUN) {
@@ -407,20 +361,16 @@ int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 			xcolour = 1 - xcolour;
 		}
 	}
-
 	while (get_bit(t4_lineptr) != 01)
 		; /* skip fill characters */
-
 	if (lineptr->run_pos == lineptr->run_top) {
 		done = 1;
 		PIC_LINESIZE = savelinesize;
 	} else
 		done = 0;
-
 	STOP = PIC_LINESIZE + 1;
 	*lineptr->run_pos++ = STOP;
 	*lineptr->run_pos   = STOP;
-
 	return (done);
 }
 
@@ -444,10 +394,8 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 
 	ref_lineptr->run_pos = ref_lineptr->run_top;
 	code_lineptr->run_pos = code_lineptr->run_top;
-
 	colour = WHITE;
 	ref_colour = BLACK;
-
 	do {
 		ptr = find_node (t4_lineptr, two_tree_top);
 		if (ptr == NULL) {
@@ -459,7 +407,6 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 				return (-1);
 			}
 		}
-
 		switch (ptr->value) {
 
 		case -1:
@@ -485,19 +432,14 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 			break;
 		}
 	} while (ptr->n_type != EOLN);
-
 	/* fill to end of line with current colour */
-
 	length = (int)(PIC_LINESIZE - position + 1);
 	if (length != 0)
 		put_run (code_lineptr, length, colour);
-
 	while (get_bit (t4_lineptr) != 1)
 		;               /* skip fill characters */
-
 	*code_lineptr->run_pos++ = STOP;
 	*code_lineptr->run_pos   = STOP;
-
 	return (0);
 }
 
@@ -550,7 +492,6 @@ int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xco
 		}
 		if (!twoD)
 			PIC_LINESIZE += white_length + black_length;
-
 		if (zeros >= UC_EXIT) {
 			next_colour = (get_bit(t4_lineptr) == 01) ? BLACK : WHITE;
 			if (next_colour != xcolour)
@@ -573,12 +514,10 @@ void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 	int length;
 
 	goto_b1 (ref_lineptr);
-
 	if (*ref_lineptr->run_pos < STOP) {
 		++ref_lineptr->run_pos;
 		ref_colour = 1 - ref_colour;
 	}
-
 	length = (int)(*ref_lineptr->run_pos - position);
 	put_run (code_lineptr, length, colour);
 	--code_lineptr->run_pos;     /* don't count this as a change */
@@ -609,9 +548,7 @@ int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 			return (-1);
 		}
 	}
-
 	put_run (code_lineptr, run.run_length, colour);
-
 	run = next_run (t4_lineptr, 1 - colour);
 	if (run.r_type == ERR_RUN) {
 		if (++seqerrs < 10) {
@@ -622,9 +559,7 @@ int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 			return (-1);
 		}
 	}
-
 	put_run (code_lineptr, run.run_length, 1 - colour);
-
 	return (0);
 }
 
@@ -658,22 +593,18 @@ void goto_b1 (bit_string *lineptr)
 		--lineptr->run_pos;
 		ref_colour = 1 - ref_colour;
 	}
-
 	while (*lineptr->run_pos < position) {
 		++lineptr->run_pos;
 		ref_colour = 1 - ref_colour;
 	}
-
 	if (ref_colour == colour) {
 		++lineptr->run_pos;
 		ref_colour = 1 - ref_colour;
 	} else if (*lineptr->run_pos < STOP)
-
 		/* special case when b1 = a0, and the colours are different,
 		   move b1 to the next change of same colour,
 		   this must be allowed at the beginning of a line to get a run of
 		   zero, as every line must start with a white element */
-
 		if ((*lineptr->run_pos == position) && (*lineptr->run_pos > 1))
 			lineptr->run_pos += 2;
 }
@@ -713,14 +644,11 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 				length, NUMLINES);
 	    }
 	*/
-
 	if ( xcolour == WHITE)
 		photo_white (length);
 	else
 		photo_black (length);
-
 	/* now fill line buffer for purpose of decoding 2-d lines */
-
 	if (length > 16) {
 		l = length;
 		if (lineptr->mask != BIT_MASK) {        /* fill current byte */
@@ -729,25 +657,20 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 					clr_bit (lineptr);
 					--l;
 				} while (lineptr->mask != BIT_MASK);
-
 			else
 				do {
 					set_bit (lineptr);
 					--l;
 				} while (lineptr->mask != BIT_MASK);
 		}
-
 		/* write out the bytes */
-
 		if (xcolour == WHITE)
 			for (i = 0; i < l / 8; i++)
 				*lineptr->dbuf++ = 0;
 		else
 			for (i = 0; i < l / 8; i++)
 				*lineptr->dbuf++ = 0xff;
-
 		/* put the last few bits into the next byte */
-
 		if (xcolour == WHITE)
 			for (i = 0; i < l % 8; i++)
 				clr_bit (lineptr);
@@ -755,9 +678,7 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 			for (i = 0; i < l % 8; i++)
 				set_bit (lineptr);
 	}
-
 	/* length < 16 - can't optimise, so deal with bits */
-
 	else {
 		if (xcolour == WHITE) {
 			for (i = 0; i < length; i++) clr_bit (lineptr);
@@ -766,7 +687,6 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 				set_bit (lineptr);
 		}
 	}
-
 	position += length;
 	*lineptr->run_pos++ = position;
 }
@@ -807,7 +727,6 @@ int set_dinput (bit_string *lineptr, int length)
 	int i;
 
 	lineptr->dbuf = lineptr->dbuf_top;
-
 	if (length == 0) {
 		if (*lineptr->dbuf++ != 0x03) {
 			fputs ("decode_fax: input stream is not a BIT STRING\n",
@@ -825,7 +744,6 @@ int set_dinput (bit_string *lineptr, int length)
 				++lineptr->dbuf;
 		}
 	}
-
 	lineptr->pos = *lineptr->dbuf++;
 	lineptr->mask = BIT_MASK;
 	return (0);

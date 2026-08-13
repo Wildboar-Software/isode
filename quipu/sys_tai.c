@@ -155,7 +155,6 @@ int dsa_sys_tai (int argc, char **argv) {
 	if(argc < 2)
 		return(NOTOK);
 	arg = argv[1];
-
 	switch(cmd_srch(argv[0], cmdtab)) {
 	case MLOGDIR:
 		DLOG (log_dsap,LLOG_TRACE,( "Tailor LOGDIR %s", arg));

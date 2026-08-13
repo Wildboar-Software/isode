@@ -53,14 +53,12 @@ int dsa_wait (int secs) {
 	FD_ZERO(&wads);
 	ibp = ibuffer;
 	wbp = wbuffer;
-
 #ifdef QUIPU_CONSOLE
 #ifdef DEBUG
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_wait connections:"));
 	conn_list_log(connlist);
 #endif /* DEBUG */
 #endif /* QUIPU_CONSOLE */
-
 	for(cn=connlist; cn != NULLCONN; cn=cn->cn_next) {
 		if (cn->cn_state == CN_CONNECTING1) {
 			if (cn->cn_ad > 0)
@@ -79,23 +77,19 @@ int dsa_wait (int secs) {
 			sprintf(ibp, ", %d.", cn->cn_ad);
 			ibp += (strlen(ibp) - 1);
 		}
-
 		if(cn->cn_ad >= nads)
 			nads = cn->cn_ad + 1;
 	}
-
 	if(ibp == ibuffer) {
 		DLOG (log_dsap, LLOG_DEBUG, ("Listening for new associations"));
 	} else {
 		LLOG (log_dsap, LLOG_TRACE, ("Listening on ads: %s", (ibuffer+1)));
 	}
-
 	if(wbp == wbuffer) {
 		DLOG (log_dsap, LLOG_DEBUG, ("Not making new associations"));
 	} else {
 		LLOG (log_dsap, LLOG_TRACE, ("Making ads: %s", (wbuffer+1)));
 	}
-
 	if (secs != NOTOK) {
 		/* if secs == NOTOK we want to block, otherwise set watchdog, but
 		   beware of setting watchdog off accidentally !
@@ -105,12 +99,9 @@ int dsa_wait (int secs) {
 		else
 			watch_dog ("TNetAccept");
 	}
-
 	if(TNetAcceptAux(&vecp, vec, &newfd, NULLTA, nads, &iads, &wads, NULLFD, secs, td) == NOTOK) {
 		watch_dog_reset();
-
 		td_log (td, "TNetAccept");
-
 		/*
 		 *	if (td -> td_reason == DR_PROTOCOL || td -> td_reason == DR_NETWORK)
 		 */
@@ -118,12 +109,9 @@ int dsa_wait (int secs) {
 		/*
 		 *	attempt_restart (NOTOK);
 		 * 	exit (0);			*/ /* should not be reached */
-
 	}
 	watch_dog_reset();
-
 	time (&timenow);
-
 	if (vecp > 0) {
 		conn_pre_init (newfd,vecp,vec);
 		result = OK;
@@ -131,22 +119,18 @@ int dsa_wait (int secs) {
 		warn_conn_init (newfd);
 		result = OK;
 	}
-
 	for(cn = connlist; cn != NULLCONN; cn = next_cn) {
 		next_cn = cn->cn_next;
-
 		switch(cn->cn_state) {
 		case CN_CONNECTING1:
 			DLOG(log_dsap, LLOG_TRACE, ("Checking %d", cn->cn_ad));
 			if(FD_ISSET(cn->cn_ad, &wads)) {
 				DLOG(log_dsap, LLOG_DEBUG, ("Polling %d", cn->cn_ad));
-
 #ifdef QUIPU_CONSOLE
 				/* We must analyse first before calling conn_retry */
 				/* as there is a disasterous cn_free otherwise! */
 				connecting_analyse(cn) ;
 #endif /* QUIPU_CONSOLE */
-
 				conn_retry(cn,0);
 				result = OK;
 			}
@@ -156,13 +140,11 @@ int dsa_wait (int secs) {
 			DLOG (log_dsap, LLOG_TRACE, ("Checking %d (2)", cn ->cn_ad));
 			if (FD_ISSET(cn->cn_ad, &iads)) {
 				DLOG(log_dsap, LLOG_DEBUG, ("Polling %d (2)", cn->cn_ad));
-
 #ifdef QUIPU_CONSOLE
 				/* We must analyse first before calling conn_retry */
 				/* as there is a disasterous cn_free otherwise! */
 				connecting_analyse(cn) ;
 #endif /* QUIPU_CONSOLE */
-
 				conn_retry(cn,0);
 				result = OK;
 			}
@@ -178,11 +160,9 @@ int dsa_wait (int secs) {
 
 		case CN_CLOSING:
 			if (FD_ISSET (cn->cn_ad, &iads)) {
-
 #ifdef QUIPU_CONSOLE
 				closing_analyse(cn) ;
 #endif /* QUIPU_CONSOLE */
-
 				conn_release_retry(cn);
 				result = OK;
 			}
@@ -229,9 +209,7 @@ int dsa_wait (int secs) {
 			break;
 		}
 	} /* for each connection */
-
 	return result;
-
 } /* dsa_wait */
 
 #ifdef QUIPU_CONSOLE
@@ -247,7 +225,6 @@ static void connecting_analyse (struct connection *cn) {
 	/* First scan through the open_call_avs to see if this connection */
 	/* has already been made. If so, then do not add it again. */
 	/* Criteria: Same call number, not finished, same DN as a check. */
-
 	tmp_avs = open_call_avs ;
 	while(tmp_avs != NULLAV) {
 		tmp_oc = ((struct quipu_call *)tmp_avs->avseq_av.av_struct) ;
@@ -262,13 +239,10 @@ static void connecting_analyse (struct connection *cn) {
 		}
 		tmp_avs = tmp_avs->avseq_next ;
 	}
-
 	oc_att = AttrT_new("openCall") ;
-
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Ping!!! should have added a connecting_analyse call!\n") ;
 #endif
-
 	/* Fill out the open_call structure before merging it in. */
 	open_call = (struct quipu_call *) calloc (1, sizeof(struct quipu_call)) ;
 	switch (cn->cn_ctx) {
@@ -302,7 +276,6 @@ static void connecting_analyse (struct connection *cn) {
 	tm2ut(gmtime(&timenow), &ut) ;
 	open_call->start_time = strdup(utct2str(&ut)) ;
 	open_call->finish_time = (char *) 0 ;
-
 	switch (cn->cn_authen) {
 	case(DBA_AUTH_NONE): {
 		open_call->authorizationLevel->parm = AUTHLEVEL_NONE ;
@@ -328,7 +301,6 @@ static void connecting_analyse (struct connection *cn) {
 		open_call->authorizationLevel->parm = AUTHLEVEL_NONE ;
 	}
 	}
-
 	/* Now merge in the "struct quipu_call" with the rest in open_call_avs */
 	oc_av = AttrV_alloc() ;
 	oc_av->av_syntax = oc_att->oa_syntax ;
@@ -351,7 +323,6 @@ opening_analyse (struct connection *cn) {
 	UTCtime ut ;
 
 	tmp_avs = open_call_avs ;
-
 	while (tmp_avs != NULLAV) {
 		tmp_oc = (struct quipu_call *)(tmp_avs->avseq_av.av_struct) ;
 		if ((tmp_oc->assoc_id == cn->cn_ad) &&
@@ -363,12 +334,10 @@ opening_analyse (struct connection *cn) {
 		}
 		tmp_avs = tmp_avs->avseq_next ;
 	}
-
 	oc_att = AttrT_new("openCall") ;
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Ping!!! should have added a opening_analyse call!\n") ;
 #endif
-
 	/* Fill out the open_call structure before merging it in. */
 	open_call = (struct quipu_call *) calloc (1, sizeof(struct quipu_call)) ;
 	switch (cn->cn_ctx) {
@@ -401,7 +370,6 @@ opening_analyse (struct connection *cn) {
 	tm2ut(gmtime(&timenow), &ut) ;
 	open_call->start_time = strdup(utct2str(&ut)) ;
 	open_call->finish_time = (char *) 0 ;
-
 	switch (cn->cn_authen) {
 	case(DBA_AUTH_NONE): {
 		open_call->authorizationLevel->parm = AUTHLEVEL_NONE ;
@@ -427,7 +395,6 @@ opening_analyse (struct connection *cn) {
 		open_call->authorizationLevel->parm = AUTHLEVEL_NONE ;
 	}
 	}
-
 	/* Now merge in the "struct quipu_call" with the rest in open_call_avs */
 	oc_av = AttrV_alloc() ;
 	oc_av->av_syntax = oc_att->oa_syntax ;
@@ -447,21 +414,17 @@ closing_analyse (struct connection *cn) {
 
 	/* Move along our structure until we come to one with */
 	/* no finish time and the appropriate association number */
-
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Ping! We have a closing_analysis to do. Port %d, %d..\n",
 			cn->cn_start.cs_ds.ds_sd, cn->cn_ad) ;
 #endif
-
 	tmp_avs = open_call_avs ;
-
 	if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 		fprintf(stderr, "dsa_wait.c: Hey, got an closing analyse with no calls present. Error!\n") ;
 #endif
 		return ;
 	}
-
 	while (tmp_avs != (AV_Sequence) 0) {
 		if ((((struct quipu_call *)tmp_avs->avseq_av.av_struct)->assoc_id == cn->cn_start.cs_ds.ds_sd) &&
 				(((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time == (char *) 0)) {
@@ -473,7 +436,6 @@ closing_analyse (struct connection *cn) {
 		}
 		tmp_avs = tmp_avs->avseq_next ;
 	}
-
 	tmp_avs = open_call_avs ;
 	while (tmp_avs != (AV_Sequence) 0) {
 		if ((((struct quipu_call *)tmp_avs->avseq_av.av_struct)->assoc_id == cn->cn_ad) &&
@@ -488,7 +450,6 @@ closing_analyse (struct connection *cn) {
 	}
 	if (success == TRUE)
 		return ;
-
 #ifdef SPT_DEBUG
 	fprintf(stderr, "We have no closing match here. Odd. Check...\n") ;
 #endif

@@ -63,7 +63,6 @@ struct certificate *cert_cpy (struct certificate *parm) {
 void cert_free (struct certificate *parm) {
 	dn_free(parm->issuer);
 	dn_free(parm->subject);
-
 	if (parm->sig.alg.algorithm)
 		oid_free (parm->sig.alg.algorithm);
 	parm->sig.alg.algorithm = NULLOID;
@@ -133,7 +132,6 @@ struct certificate *str2cert (char *str) {
 	OID oid;
 
 	result = (struct certificate *) calloc(1, sizeof(*result));
-
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
 		parse_error("Algorithm not present (SIGNED Value)",NULLCP);
@@ -142,16 +140,13 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	oid = name2oid(SkipSpace(str));
 	if (oid == NULLOID) {
 		parse_error("Bad algorithm identifier (SIGNED Value)",NULLCP);
 		cert_free(result);
 		return (struct certificate *) 0;
 	}
-
 	result->sig.alg.algorithm = oid;
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -161,9 +156,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	str2alg(str, &(result->sig.alg));
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -173,9 +166,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	str2encrypted(str, &(result->sig.encrypted), &(result->sig.n_bits));
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -185,9 +176,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->issuer = str2dn(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -197,9 +186,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->subject = str2dn(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -209,16 +196,13 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	oid = name2oid(SkipSpace(str));
 	if (oid == NULLOID) {
 		parse_error("Bad algorithm identifier (\"signature\")",NULLCP);
 		cert_free(result);
 		return (struct certificate *) 0;
 	}
-
 	result->alg.algorithm = oid;
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -228,9 +212,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	str2alg(str, &(result->alg));
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -240,9 +222,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->version = atoi(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -252,9 +232,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->serial = atoi(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -264,9 +242,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->valid.not_before = strdup(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -276,9 +252,7 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	result->valid.not_after = strdup(str);
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -287,15 +261,12 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	oid = name2oid(SkipSpace(str));
 	if (oid == NULLOID) {
 		free((char*)result);
 		return (struct certificate *) 0;
 	}
-
 	result->key.alg.algorithm = oid;
-
 	str = ptr;
 	ptr = index(str, '#');
 	if (ptr == NULLCP) {
@@ -304,13 +275,9 @@ struct certificate *str2cert (char *str) {
 	}
 	*ptr = '\0';
 	ptr++;
-
 	str2alg(str, &(result->key.alg));
-
 	str = ptr;
-
 	str2encrypted(str, &(result->key.value), &(result->key.n_bits));
-
 	return (result);
 }
 
@@ -320,7 +287,6 @@ struct alg_id *parm;
 int format;
 {
 	ps_printf(ps, "%s#", oid2name (parm->algorithm, OIDPART));
-
 	switch(parm->p_type) {
 	case ALG_PARM_ABSENT:
 		if(parm->asn != NULLPE)
@@ -361,7 +327,6 @@ int format;
 	int i;
 
 	/* The end-user doesn't care what the signature is, so don't display it */
-
 	if (format != READOUT) {
 		for (i=0; i<(n_bits+7)/8; i++) {
 			ps_printf(ps, "%02x", str[i] & 255);
@@ -372,7 +337,6 @@ int format;
 			ps_printf(ps, "-%d", 8-i);
 		ps_printf(ps, "#");
 	}
-
 }
 
 void printcert(ps, parm, format)

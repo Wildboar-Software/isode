@@ -10,14 +10,11 @@ void dn_print (PS ps, DN dn, int format)
 			ps_print (ps,"NULL DN");
 		return ;
 	}
-
 	if (format == UFNOUT) {
 		ufn_dn_print (ps, dn, 1);
 		return;
 	}
-
 	dn_comp_print (ps,dn,format);
-
 	for (eptr = dn->dn_parent; eptr != NULLDN; eptr = eptr->dn_parent) {
 		switch (format) {
 		case DIROUT:
@@ -42,7 +39,6 @@ static void dn_rprint(PS ps, DN dn, char *sep)
 		dn_rprint(ps, dn -> dn_parent, sep);
 		ps_printf (ps,",%s",sep);
 	}
-
 	dn_comp_print (ps, dn, READOUT);
 }
 
@@ -52,7 +48,6 @@ void dn_rfc_print(PS ps, DN dn, char *sep)
 		ps_print (ps, "NULL DN");
 		return;
 	}
-
 	dn_rprint(ps, dn, sep);
 }
 
@@ -63,10 +58,8 @@ void ufn_dn_print (PS ps, DN dn, int multiline)
 {
 	if (dn == NULLDN)
 		return;
-
 	if (localdn == NULLDN)
 		localdn = str2dn (local_dit);
-
 	ufn_dn_print_aux (ps,dn,localdn,multiline);
 }
 
@@ -83,10 +76,8 @@ int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
 		if (dn->dn_parent != NULLDN)
 			this_one = FALSE;
 	}
-
 	if (dn->dn_parent != NULLDN)
 		res = ufn_dn_print_aux (ps,dn->dn_parent,next,multiline);
-
 	if (this_one) {
 		if (res) {
 			if (multiline < 0 || (multiline && res > 1)) {
@@ -107,15 +98,12 @@ void ufn_rdn_print (PS ps, RDN rdn)
 
 	if (rdn ==  NULLRDN)
 		return;
-
 	AttrV_print (ps,&rdn->rdn_av,READOUT);
-
 	if (rdn->rdn_next != NULLRDN)
 		for (eptr=rdn->rdn_next; eptr!=NULLRDN; eptr=eptr->rdn_next) {
 			ps_print (ps," + ");
 			AttrV_print (ps,&eptr->rdn_av,READOUT);
 		}
-
 }
 
 static PS ps = NULLPS;
@@ -129,19 +117,14 @@ char   *dn2str (DN dn)
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
-
 	dn_print (ps, dn, EDBOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }
 
@@ -154,19 +137,14 @@ char   *dn2ufn (DN dn, int multiline)
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
-
 	ufn_dn_print (ps, dn, multiline);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }
 
@@ -179,19 +157,14 @@ char   *dn2rfc (DN dn, char *sep)
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
-
 	ps_print (ps, "<");
 	dn_rfc_print (ps, dn, sep);
 	ps_print (ps, "> ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }

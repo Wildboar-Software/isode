@@ -30,13 +30,10 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_REMOTE);
 	}
-
 	str = (char *) as->attr_value->avseq_av.av_struct;
-
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("DSA control: %s",str));
 #endif
-
 	switch (*str) {
 	case 'd':	/* -dump <directory> */
 		str = SkipSpace (++str);
@@ -65,7 +62,6 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2= NULLDN;
 		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
-
 		if (refresh_from_disk (dn2) == OK)
 			return (DS_OK);
 		break;
@@ -75,7 +71,6 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2= NULLDN;
 		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
-
 		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY)
 #ifdef TURBO_DISK
 		{
@@ -97,7 +92,6 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2 = NULLDN;
 		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
-
 		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
 			theentry->e_lock = TRUE;
 			return (DS_OK);
@@ -109,7 +103,6 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2 = NULLDN;
 		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
-
 		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
 			theentry->e_lock = FALSE;
 			return (DS_OK);
@@ -125,24 +118,20 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			slave_update();
 			return DS_OK;
 		}
-
 		if (lexequ (str, "shadow") == 0) {
 			shadow_update();
 			return DS_OK;
 		}
-
 		if (lexequ (str, "root") == 0)
 			dn2 = NULLDN;
 		else if ((dn2 = str2dn (str)) == NULLDN)
 			break;
-
 		if (update_aux (dn2, dn2 == NULLDN) == OK)
 			return DS_OK;
 		break;
 	default:
 		break;
 	}
-
 	error->dse_type = DSE_SERVICEERROR;
 	error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
 	return (DS_ERROR_REMOTE);
@@ -164,9 +153,7 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_PROTECTIONREQUIRED ;
 		return (DS_ERROR_REMOTE) ;
 	}
-
 	item = (struct dsa_control *) as->attr_value->avseq_av.av_struct ;
-
 	switch (item->dsa_control_option) {
 	case (CONTROL_CHANGETAILOR) : {	/* -tailor <string> */
 		tmp_ptr = qb2str(item->un.changeTailor) ;
@@ -192,7 +179,6 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2 = item->un.resynch->un.selectedDN ;
 		else
 			break ;
-
 		if ((theentry = local_find_entry (dn2, FALSE)) != NULLENTRY)
 #ifdef TURBO_DISK
 		{
@@ -214,7 +200,6 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2 = item->un.resynch->un.selectedDN ;
 		else
 			break ;
-
 		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
 			theentry->e_lock = TRUE;
 			return (DS_OK);
@@ -226,7 +211,6 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 			dn2 = item->un.resynch->un.selectedDN ;
 		else
 			break ;
-
 		if ((theentry = local_find_entry (dn2,FALSE)) != NULLENTRY) {
 			theentry->e_lock = FALSE;
 			return (DS_OK);
@@ -245,24 +229,20 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 		 * operation has been scheduled, NOT that it has succeeded.
 		 */
 		tmp_ptr = qb2str(item->un.updateSlaveEDBs) ;
-
 		if (lexequ (tmp_ptr, "all") == 0) {
 			slave_update();
 			return DS_OK;
 		}
-
 		if (lexequ (tmp_ptr, "shadow") == 0) {
 			shadow_update();
 			return DS_OK;
 		}
-
 		if (lexequ (tmp_ptr, "root") == 0) {
 			dn2 = NULLDN;
 		} else {
 			if ((dn2 = str2dn (tmp_ptr)) == NULLDN)
 				break;
 		}
-
 		if (update_aux (dn2, dn2 == NULLDN) == OK)
 			return DS_OK;
 		break;
@@ -270,7 +250,6 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	default:
 		break;
 	}
-
 	error->dse_type = DSE_SERVICEERROR;
 	error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
 	return (DS_ERROR_REMOTE);

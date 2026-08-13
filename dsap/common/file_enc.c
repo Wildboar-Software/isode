@@ -18,7 +18,6 @@ static char *readfile (FILE *file)
 	curlen = 0;
 	buflen = parse_len = LINESIZE;
 	buf = parse_buffer = smalloc(LINESIZE);
-
 	for (;;) {
 		if ( buflen <= 100) {
 			parse_len += LINESIZE;
@@ -27,12 +26,10 @@ static char *readfile (FILE *file)
 				exit (2);	/* ??? */
 			buf = parse_buffer + curlen;
 		}
-
 		if (fgets (buf, buflen,file) == NULLCP) {
 			file_attr_length = curlen;
 			return (parse_buffer);
 		}
-
 		size = strlen(buf);
 		if (buf[size - 1] == '\n') {
 			buf[--size] = '\0';
@@ -40,9 +37,7 @@ static char *readfile (FILE *file)
 		buf += size;
 		buflen -= size;
 		curlen += size;
-
 	}
-
 	/* NOTREACHED */
 }
 
@@ -54,13 +49,10 @@ PE grab_filepe (AttributeValue av)
 	PE ret_pe = NULLPE, grab_pe();
 
 	fs = (struct file_syntax *) av->av_struct;
-
 	if (fs->fs_attr != NULLAttrV)
 		return (grab_pe (fs->fs_attr));
-
 	if (fs->fs_name == NULLCP)
 		goto out;	/* should never happen */
-
 	if ((fptr = fopen (fs->fs_name,"r")) != NULL) {
 		tbl = get_syntax_table (fs->fs_real_syntax);
 		if (tbl->s_parse == NULLIFP) { /* treat as pure asn */
@@ -84,9 +76,7 @@ PE grab_filepe (AttributeValue av)
 		} else {
 			char * buffer;
 			AttributeValue newav;
-
 			buffer = readfile (fptr);
-
 			if ((newav = str2AttrV (buffer,fs->fs_real_syntax)) == NULLAttrV) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("invalid format in file %s",fs->fs_name));
 			} else {
@@ -99,7 +89,6 @@ PE grab_filepe (AttributeValue av)
 		fclose (fptr);
 	} else
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Attribute file '%s' not found",fs->fs_name));
-
 out:
 	;
 	if ((ret_pe == NULLPE) && dsa_mode) {
@@ -114,7 +103,6 @@ out:
 		return (pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL));
 	}
 	return (ret_pe);
-
 }
 
 void file_decode (AttributeValue x)
@@ -128,11 +116,9 @@ void file_decode (AttributeValue x)
 		fs->fs_real_syntax -= AV_WRITE_FILE;
 	fs->fs_name = NULLCP;
 	fs->fs_mode = FS_DEFAULT;
-
 	fs->fs_attr = AttrV_alloc ();
 	fs->fs_attr->av_syntax = fs->fs_real_syntax;
 	fs->fs_attr->av_struct = x->av_struct;
-
 	x->av_syntax = AV_FILE;
 	x->av_struct = (caddr_t)fs;
 }

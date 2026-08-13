@@ -14,14 +14,12 @@ ros_log (struct RoSAPpreject *rop, char *event) {
 
 	if ((rop->rop_reason == ROS_TIMER) || (rop->rop_reason == ROS_ACS))
 		level = LLOG_DEBUG;
-
 	if(rop->rop_cc > 0)
 		LLOG(log_dsap, level, ("%s: [%s] %*.*s", event,
 							   RoErrString(rop->rop_reason), rop->rop_cc, rop->rop_cc,
 							   rop->rop_data));
 	else
 		LLOG(log_dsap, level, ("%s: [%s]", event, RoErrString(rop->rop_reason)));
-
 	if (rop -> rop_reason == ROS_CONGEST && abort_vector)
 		(*abort_vector) (-2);
 }
@@ -34,7 +32,6 @@ acs_log (struct AcSAPabort *aca, char *event) {
 										 aca->aca_cc, aca->aca_cc, aca->aca_data));
 	else
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("%s: [%s]", event, AcErrString(aca->aca_reason)));
-
 	if (aca -> aca_reason == ACS_CONGEST && abort_vector)
 		(*abort_vector) (-2);
 }

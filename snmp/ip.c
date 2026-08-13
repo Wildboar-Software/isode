@@ -116,7 +116,6 @@ static int _read_ip_stats ()
 
 	if (_read_snmp_stats ("ip", &labels, &values, &len) != OK)
 		return NOTOK;
-
 	for (i = 0; i < len; i++) {
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
@@ -159,7 +158,6 @@ static int _read_ip_stats ()
         else if (!strcmp ("FragCreates", label))
 			ipstat.ips_ofragments = value;
 	}
-
 	return OK;
 }
 #endif
@@ -186,11 +184,9 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = 0;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -201,7 +197,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case ipDefaultTTL:
 	case ipReasmTimeout:
@@ -210,7 +205,6 @@ int	offset;
 	default:
 		if (quantum != lastq) {
 			lastq = quantum;
-
 #ifndef LINUX
 			if (getkmem (nl + N_IPFORWARDING, (caddr_t) &ipforwarding,
 						 sizeof ipforwarding) == NOTOK
@@ -224,7 +218,6 @@ int	offset;
 		}
 		break;
 	}
-
 	switch (ifvar) {
 	case ipForwarding:
 		return o_integer (oi, v, ipforwarding ? FORW_GATEWAY : FORW_HOST);
@@ -235,7 +228,6 @@ int	offset;
 #else
 		return o_integer (oi, v, MAXTTL);
 #endif
-
 #ifdef	ipInReceives
 	case ipInReceives:
 		return o_integer (oi, v, ips -> ips_total);
@@ -251,32 +243,26 @@ int	offset;
 #else
 		return o_integer (oi, v, ips -> ips_inhdrerrors);
 #endif
-
 #ifdef	ipForwDatagrams
 	case ipForwDatagrams:
 		return o_integer (oi, v, ips -> ips_forward);
 #endif
-
 #ifdef	ipInUnknownProtos
 	case ipInUnknownProtos:
 		return o_integer (oi, v, ips -> ips_noproto);
 #endif
-
 #ifdef	ipInDelivers
 	case ipInDelivers:
 		return o_integer (oi, v, ips -> ips_delivered);
 #endif
-
 #ifdef	ipOutRequests
 	case ipOutRequests:
 		return o_integer (oi, v, ips -> ips_localout);
 #endif
-
 #ifdef	ipOutDiscards
 	case ipOutDiscards:
 		return o_integer (oi, v, ips -> ips_odropped);
 #endif
-
 #ifdef	ipOutNoRoutes
 	case ipOutNoRoutes:
 		return o_integer (oi, v, ips -> ips_cantforward);
@@ -288,17 +274,14 @@ int	offset;
 #else
 		return o_integer (oi, v, IPFRAGTTL);
 #endif
-
 #ifdef	ipReasmReqds
 	case ipReasmReqds:
 		return o_integer (oi, v, ips -> ips_fragments);
 #endif
-
 #ifdef	ipReasmOKs
 	case ipReasmOKs:
 		return o_integer (oi, v, ips -> ips_reassembled);
 #endif
-
 #ifdef	ipReasmFails
 #ifndef LINUX
 	case ipReasmFails:
@@ -308,17 +291,14 @@ int	offset;
 		return o_integer (oi, v, ips -> ips_reasmfails);
 #endif
 #endif
-
 #ifdef	ipFragOKs
 	case ipFragOKs:
 		return o_integer (oi, v, ips -> ips_fragmented);
 #endif
-
 #ifdef	ipFragFails
 	case ipFragFails:
 		return o_integer (oi, v, ips -> ips_cantfrag);
 #endif
-
 #ifdef	ipFragCreates
 	case ipFragCreates:
 		return o_integer (oi, v, ips -> ips_ofragments);
@@ -352,14 +332,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
-
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case ipForwarding:
 		break;
@@ -386,7 +363,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_noSuchName;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (ot -> ot_save)
@@ -426,7 +402,6 @@ int	offset;
 			(*os -> os_free) (ot -> ot_save), ot -> ot_save = NULL;
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -460,7 +435,6 @@ int	offset;
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -491,18 +465,15 @@ int	offset;
 			}
 		} else if (i > IFN_SIZE)
 			oid -> oid_nelem = ot -> ot_name -> oid_nelem + IFN_SIZE;
-
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((as = afs_inet) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, IFN_SIZE)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - IFN_SIZE;
 			jp = as -> adr_instance;
 			for (i = IFN_SIZE; i> 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -511,7 +482,6 @@ int	offset;
 										+ oid -> oid_nelem - IFN_SIZE,
 								   IFN_SIZE, afs_inet, 1)) == NULL)
 				return NOTOK;
-
 			jp = as -> adr_instance;
 			for (i = IFN_SIZE; i > 0; i--)
 				*ip++ = *jp++;
@@ -521,7 +491,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case ipAdEntAddr:
 		return o_ipaddr (oi, v, (struct sockaddr_in *) &as -> adr_address);
@@ -537,7 +506,6 @@ int	offset;
 					 -> sin_addr.s_addr)
 					& ~(((struct sockaddr_in *) &as
 						 -> adr_broadaddr) -> sin_addr.s_addr);
-
 		return o_integer (oi, v, a ? 1 : 0);
 	}
 
@@ -582,7 +550,6 @@ int	offset;
 
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -618,44 +585,36 @@ try_again:
 				v -> name = oid = new;
 			}
 		}
-
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((rt = rts_inet) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, rt -> rt_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - rt -> rt_insize;
 			jp = rt -> rt_instance;
 			for (i = rt -> rt_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((rt = get_rtent (ip = oid -> oid_elements
 									  + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem,
 								 rts_inet, 1)) == NULL)
 				return NOTOK;
-
 			if ((i = j - rt -> rt_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = rt -> rt_instance;
 			for (i = rt -> rt_insize; i > 0; i--)
@@ -666,14 +625,12 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case ipRouteDest:
 		return o_ipaddr (oi, v, (struct sockaddr_in *) &rt -> rt_dst);
 
 	case ipRouteIfIndex: {
 		struct interface *is;
-
 		if (get_interfaces (type_SNMP_PDUs_get__request) == NOTOK)
 			return generr (offset);
 		for (is = ifs; is; is = is -> ifn_next)
@@ -683,7 +640,6 @@ try_again:
 					return o_integer (oi, v, is -> ifn_index);
 				break;
 			}
-
 		if (offset == type_SNMP_PDUs_get__next__request)
 			goto try_again;
 		return int_SNMP_error__status_noSuchName;
@@ -719,14 +675,12 @@ try_again:
 		struct sockaddr_in *sin = (struct sockaddr_in *) &rt -> rt_dst
 								  ;
 		bzero ((char *) &mask, sizeof mask);
-
 		if (rt -> rt_rt.rt_flags & RTF_HOST)
 			mask.sin_addr.s_addr = (uint32_t) 0xffffffff;
 		else if (sin -> sin_addr.s_addr != 0L) {
 			/* XXX - BSD44 shouldn't use this code, it has a */
 			/* mask associated with each route, but I don't */
 			/* know how to locate it at the moment (jch) */
-
 			if (IN_CLASSA (sin -> sin_addr.s_addr))
 				mask.sin_addr.s_addr = IN_CLASSA_NET;
 			else if (IN_CLASSB (sin -> sin_addr.s_addr))
@@ -734,7 +688,6 @@ try_again:
 			else
 				mask.sin_addr.s_addr = IN_CLASSC_NET;
 		}
-
 		return o_ipaddr (oi, v, &mask);
 	}
 
@@ -789,7 +742,6 @@ int	offset;
 			break;
 		if (offset != type_SNMP_PDUs_set__request)
 			return int_SNMP_error__status_genErr;
-
 		switch (i) {
 		case IFN_SIZE:
 		case IFN_SIZE + 1:
@@ -799,16 +751,13 @@ int	offset;
 			return int_SNMP_error__status_noSuchName;
 		}
 		ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
-
 		if ((rt = (struct rtetab *) calloc (1, sizeof *rt)) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"out of memory creating new routing entry");
 			return int_SNMP_error__status_genErr;
 		}
-
 		if (i > IFN_SIZE) {
 			struct rtetab *rz;
-
 			for (rz = rts; rz; rz = rz -> rt_next)
 				if (rz -> rt_dst.sa.sa_family == AF_INET
 						&& elem_cmp (rz -> rt_instance, rz -> rt_insize,
@@ -819,24 +768,20 @@ bad_magic:
 						free ((char *) rt);
 						return int_SNMP_error__status_noSuchName;
 					}
-
 					rz -> rt_magic++;
 					break;
 				}
 			if (!rz)
 				goto bad_magic;
 		}
-
 		bcopy ((char *) ip, (char *) rt -> rt_instance,
 			   (rt -> rt_insize = i) * sizeof *ip);
-
 		rt -> rt_rt.rt_flags |= RTF_UP;
 		{
 			uint8_t *cp;
 			unsigned int *jp,
 					 *kp;
 			struct sockaddr_in *sin;
-
 			sin = (struct sockaddr_in *) &rt -> rt_dst;
 			sin -> sin_family = AF_INET;
 			cp = (uint8_t *) &sin -> sin_addr;
@@ -844,16 +789,13 @@ bad_magic:
 				*cp++ = *jp++ & 0xff;
 			rt -> rt_rt.rt_dst = *((struct sockaddr *) &rt -> rt_dst);
 			/* struct copy */
-
 			sin = (struct sockaddr_in *) &rt -> rt_gateway;
 			sin -> sin_family = AF_INET;
 			rt -> rt_rt.rt_gateway = *((struct sockaddr *)
 									   &rt -> rt_gateway);
 			/* struct copy */
 		}
-
 		rt -> rt_type = TYPE_OTHER;
-
 		rt -> rt_touched = -1;
 		rt -> rt_next = rts, rts = rt, routeNumber++;
 		sort_rtetab ();
@@ -862,13 +804,11 @@ bad_magic:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		switch (ifvar) {
@@ -877,12 +817,9 @@ bad_magic:
 				return int_SNMP_error__status_badValue;
 			{
 				struct in_addr addr;
-
 				addr = ((struct sockaddr_in *) value) -> sin_addr;
 				/* struct copy */
-
 				(*os -> os_free) (value);
-
 				if (addr.s_addr
 						!= ((struct sockaddr_in *) &rt -> rt_dst)
 						-> sin_addr.s_addr)
@@ -897,7 +834,6 @@ bad_magic:
 			(*os -> os_free) (value);
 			{
 				struct interface *is;
-
 				if (get_interfaces (type_SNMP_PDUs_get__request)
 						== NOTOK)
 					return int_SNMP_error__status_genErr;
@@ -963,7 +899,6 @@ bad_magic:
 
 		case ipRouteMask: {
 			struct in_addr mask;
-
 			if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 				return int_SNMP_error__status_badValue;
 			mask = ((struct sockaddr_in *) value)
@@ -987,10 +922,8 @@ bad_magic:
 		if (rt -> rt_touched) {
 			char   *s;
 			OIDentifier	oids;
-
 			if (rt -> rt_type == TYPE_INVALID) {
 				s = "SIOCDELRT";
-
 				if (rt -> rt_touched > 0) {
 					if (ioctl (nd, SIOCDELRT, &rt -> rt_rt) == NOTOK) {
 losing_ioctl:
@@ -1009,7 +942,6 @@ losing_ioctl:
 						-> sin_addr.s_addr == 0L
 						|| rt -> rt_type == TYPE_OTHER) {
 					s = "attempt to set incomplete routing entry on %s";
-
 losing_noop:
 					;
 					oids.oid_elements = rt -> rt_instance;
@@ -1021,22 +953,18 @@ losing_noop:
 						rt -> rt_rt.rt_gateway = *((struct sockaddr *)
 												   &rt -> rt_oldgwy);
 						/* struct copy */
-
 						s = "SIOCDELRT";
 						if (ioctl (nd, SIOCDELRT, &rt -> rt_rt) == NOTOK)
 							goto losing_ioctl;
-
 						rt -> rt_rt.rt_gateway = *((struct sockaddr *)
 												   &rt -> rt_gateway);
 						/* struct copy */
 					}
-
 					s = "SIOCADDRT";
 					if (ioctl (nd, SIOCADDRT, &rt -> rt_rt) == NOTOK)
 						goto losing_ioctl;
 				}
 			}
-
 			rt -> rt_touched = 0;
 		}
 	/* and fall... */
@@ -1044,7 +972,6 @@ losing_noop:
 		flush_rt_cache = 1;
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 #else
@@ -1366,7 +1293,6 @@ int	offset;
 	default:
 		return generr (offset);
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (get_arptab (offset) == NOTOK)
@@ -1385,35 +1311,28 @@ int	offset;
 			break;
 		if (offset != type_SNMP_PDUs_set__request)
 			return int_SNMP_error__status_genErr;
-
 		if (i != (isnpa < 0 ? ADA_SIZE : ADN_SIZE))
 			return int_SNMP_error__status_noSuchName;
 		ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
-
 		if (get_interfaces (type_SNMP_PDUs_get__request) == NOTOK)
 			return int_SNMP_error__status_genErr;
 		for (is = ifs; is; is = is -> ifn_next)
 			if (is -> ifn_ready && is -> ifn_index == *ip)
 				break;
-
 		if (!is || (isnpa < 0 && *++ip != 1))
 			return int_SNMP_error__status_noSuchName;
 		ip++;
-
 		if ((at = (struct adrtab *) calloc (1, sizeof *at)) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"out of memory creating new ARP entry");
 			return int_SNMP_error__status_genErr;
 		}
-
 		at -> adr_index = is -> ifn_index;
 		at -> adr_type = DYNAMIC_MAPPING;
-
 		{
 			uint8_t *cp;
 			unsigned int *jp,
 					 *kp;
-
 			cp = (uint8_t *) &at -> adn_address;
 			for (kp = (jp = ip) + IFN_SIZE; jp < kp; )
 				*cp++ = *jp++ & 0xff;
@@ -1422,14 +1341,12 @@ int	offset;
 		bcopy ((char *) ip, (char *) (at -> adn_instance + 1),
 			   IFN_SIZE * sizeof *ip);
 		at -> adn_insize += IFN_SIZE;
-
 		at -> ada_instance[0] = at -> adr_index;
 		at -> ada_instance[1] = 1;
 		at -> ada_insize = 2;
 		bcopy ((char *) ip, (char *) (at -> ada_instance + 2),
 			   IFN_SIZE * sizeof *ip);
 		at -> ada_insize += IFN_SIZE;
-
 		at -> adr_touched = -1;
 		at -> adn_next = adn, adn = at, adrNumber++;
 		sort_arptab ();
@@ -1438,13 +1355,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		switch (ifvar) {
@@ -1467,11 +1382,9 @@ int	offset;
 				uint8_t *d;
 				struct qbuf *q,
 						   *p;
-
 				p = (q = (struct qbuf *) value) -> qb_forw, len = 0;
 				do {
 					len += p -> qb_len;
-
 					p = p -> qb_forw;
 				} while (p != q);
 				if ((q -> qb_len = len) > sizeof at -> adm_address) {
@@ -1480,24 +1393,20 @@ bad_value:
 					(*os -> os_free) (value);
 					return int_SNMP_error__status_badValue;
 				}
-
 				if (len == 0) {
 					if (isnpa >= 0)
 						goto bad_value;
-
 					at -> adr_type = INVALID_MAPPING;
 				} else {
 					bcopy ((char *) at -> adm_address,
 						   (char *) at -> adr_oldphys,
 						   (int) (at -> adr_physlen
 								  = at -> adm_addrlen));
-
 					at -> adm_addrlen = len;
 					p = q -> qb_forw, d = at -> adm_address;
 					do {
 						bcopy (p -> qb_data, (char *) d, p -> qb_len);
 						d += p -> qb_len;
-
 						p = p -> qb_forw;
 					} while (p != q);
 				}
@@ -1511,12 +1420,9 @@ bad_value:
 				return int_SNMP_error__status_badValue;
 			{
 				struct in_addr addr;
-
 				addr = ((struct sockaddr_in *) value) -> sin_addr;
 				/* struct copy */
-
 				(*os -> os_free) (value);
-
 				if (addr.s_addr != at -> adn_address.s_addr)
 					return int_SNMP_error__status_badValue;
 			}
@@ -1552,21 +1458,17 @@ bad_value:
 			char   *s;
 			struct arpreq arpreq;
 			OIDentifier	oids;
-
 			bzero ((char *) &arpreq, sizeof arpreq);
 			{
 				struct sockaddr_in *netaddr
 					= (struct sockaddr_in *) &arpreq.arp_pa;
-
 				netaddr -> sin_family = AF_INET;
 				netaddr -> sin_addr = at -> adn_address;/* struct copy */
 			}
 			bcopy ((char *) at -> adm_address, arpreq.arp_ha.sa_data,
 				   (int) at -> adm_addrlen);
-
 			if (at -> adr_type == INVALID_MAPPING) {
 				s = "SIOCDARP";
-
 				if (at -> adr_touched > 0) {
 					if (ioctl (nd, SIOCDARP, &arpreq) == NOTOK) {
 losing_ioctl:
@@ -1583,7 +1485,6 @@ losing_ioctl:
 			} else {
 				if (at -> adm_addrlen == 0) {
 					s = "attempt to set incomplete ARP entry on %s";
-
 losing_noop:
 					;
 					oids.oid_elements = at -> adn_instance;
@@ -1594,20 +1495,16 @@ losing_noop:
 						bcopy ((char *) at -> adr_oldphys,
 							   arpreq.arp_ha.sa_data,
 							   (int) at -> adr_physlen);
-
 						/* initialize arpreq.arp_flags for ATF_PERM
 						   below... */
 						ioctl (nd, SIOCGARP, &arpreq);
-
 						s = "SIOCDARP";
 						if (ioctl (nd, SIOCDARP, &arpreq) == NOTOK)
 							goto losing_ioctl;
-
 						bcopy ((char *) at -> adm_address,
 							   arpreq.arp_ha.sa_data,
 							   (int) at -> adm_addrlen);
 					}
-
 					switch (at -> adr_type) {
 					case STATIC_MAPPING:
 						arpreq.arp_flags |= ATF_PERM;
@@ -1617,13 +1514,11 @@ losing_noop:
 						arpreq.arp_flags &= ~ATF_PERM;
 						break;
 					}
-
 					s = "SIOCSARP";
 					if (ioctl (nd, SIOCSARP, &arpreq) == NOTOK)
 						goto losing_ioctl;
 				}
 			}
-
 			at -> adr_touched = 0;
 		}
 	/* and fall... */
@@ -1631,7 +1526,6 @@ losing_noop:
 		flush_arp_cache = 1;
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -1647,20 +1541,15 @@ static struct arptab *_read_arptab ()
 		struct arptablist *next;
 		struct arptab arptab;
 	} *head, *tail, *prev, *node, *next;
-
 	f = fopen("/proc/net/arp", "r");
 	if (!f) {
 		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/arp");
 		return NULL;
 	}
-
 	fgets(line, sizeof(line), f); // skip header
-
 	head = tail = prev = NULL;
-
 	for (i = 0; fgets(line, sizeof(line), f); i++) {
 		uint8_t *h, *ip;
-
 		prev = tail;
 		if ((tail = calloc(1, sizeof(*tail))) == NULL)
 			adios (NULLCP, "out of memory");
@@ -1668,7 +1557,6 @@ static struct arptab *_read_arptab ()
 			head = tail;
 		if (prev)
 			prev -> next = tail;
-
         h = (uint8_t *) &tail -> arptab.at_enaddr;
 		ip = (uint8_t *) &tail -> arptab.at_iaddr;
         sscanf(line, "%hhd.%hhd.%hhd.%hhd 0x%*x 0x%hhx %hhx:%hhx:%hhx:%hhx:%hhx:%hhx %*[^ ] %*s\n",
@@ -1676,19 +1564,15 @@ static struct arptab *_read_arptab ()
 			   &tail -> arptab.at_flags,
                &h[0], &h[1], &h[2], &h[3], &h[4], &h[5]);
 	}
-
 	tblsize = i;
 	if ((arptab = calloc(1, sizeof(struct arptab) * tblsize)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	for (i = 0, node = head; node; (node = next), i++) {
 		next = node -> next;
 		arptab[i] = node -> arptab;
 		free (node);
 	}
-
 	fclose(f);
-
 	return arptab;
 }
 #endif
@@ -1717,14 +1601,11 @@ int	offset;
 		return OK;
 	}
 	lastq = quantum, flush_arp_cache = 0;
-
 	for (at = adn; at; at = ap) {
 		ap = at -> adn_next;
-
 		free ((char *) at);
 	}
 	adn = adm = ada = NULL, adrNumber = 0;
-
 #ifndef LINUX
 	if (getkmem (nl + N_ARPTAB_SIZE, (caddr_t) &arptab_size,
 				 sizeof arptab_size) == NOTOK)
@@ -1741,36 +1622,28 @@ no_dice:
 		free ((char *) arptab);
 		return NOTOK;
 	}
-
 	if (get_interfaces (type_SNMP_PDUs_get__request) == NOTOK)
 		goto no_dice;
-
 	afp = &adn;
 	for (ae = (ac = arptab) + arptab_size; ac < ae; ac++) {
 		int	type;
-
 		if (!(ac -> at_iaddr.s_addr) || !(ac -> at_flags & ATF_COM))
 			continue;
 		type = ac -> at_flags & ATF_PERM ? STATIC_MAPPING : DYNAMIC_MAPPING;
-
 		/* there appears to be no way to gather per-interface address translation
 		   tables, so we simply duplicate the arptable for each interface... */
 		for (is = ifs; is; is = is -> ifn_next) {
 			if (!is -> ifn_ready)
 				continue;
-
 			if ((at = (struct adrtab *) calloc (1, sizeof *at)) == NULL)
 				adios (NULLCP, "out of memory");
 			*afp = at, afp = &at -> adn_next, adrNumber++;
-
 			at -> adr_index = is -> ifn_index;
 			at -> adr_type = type;
-
 			at -> adn_address = ac -> at_iaddr;	/* struct copy */
 			at -> adn_instance[0] = at -> adr_index, at -> adn_insize = 1;
 			at -> adn_insize += ipaddr2oid (at -> adn_instance + 1,
 											&at -> adn_address);
-
 #ifdef	NEW_AT
 			bcopy ((char *) ac -> at_enaddr,
 				   (char *) at -> adm_address,
@@ -1785,17 +1658,14 @@ no_dice:
 			at -> adm_insize += mediaddr2oid (at -> adm_instance + 1,
 											  at -> adm_address,
 											  (int) at -> adm_addrlen, 0);
-
 			at -> ada_instance[0] = at -> adr_index;
 			at -> ada_instance[1] = 1;
 			at -> ada_insize = 2;
 			at -> ada_insize += ipaddr2oid (at -> ada_instance + 2,
 											&at -> adn_address);
-
 			if (debug && first_time) {
 				char    buffer[BUFSIZ];
 				OIDentifier	oids;
-
 				oids.oid_elements = at -> adn_instance + 1;
 				oids.oid_nelem = at -> adn_insize - 1;
 				strcpy (buffer, sprintoid (&oids));
@@ -1809,14 +1679,11 @@ no_dice:
 	}
 	first_time = 0;
 	free ((char *) arptab);
-
 	if (adrNumber <= 1) {
 		adm = ada = adn;
 		return OK;
 	}
-
 	sort_arptab ();
-
 	return OK;
 }
 
@@ -1844,13 +1711,10 @@ static void sort_arptab (void) {
 	if ((base = (struct adrtab **)
 				malloc ((unsigned) (adrNumber * sizeof *base))) == NULL)
 		adios (NULLCP, "out of memory");
-
 	afe = base;
 	for (at = adn; at; at = at -> adn_next)
 		*afe++ = at;
-
 	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adn_compar);
-
 	afp = base;
 	at = adn = *afp++;
 	while (afp < afe) {
@@ -1858,9 +1722,7 @@ static void sort_arptab (void) {
 		at = *afp++;
 	}
 	at -> adn_next = NULL;
-
 	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adm_compar);
-
 	afp = base;
 	at = adm = *afp++;
 	while (afp < afe) {
@@ -1868,9 +1730,7 @@ static void sort_arptab (void) {
 		at = *afp++;
 	}
 	at -> adm_next = NULL;
-
 	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) ada_compar);
-
 	afp = base;
 	at = ada = *afp++;
 	while (afp < afe) {
@@ -1878,7 +1738,6 @@ static void sort_arptab (void) {
 		at = *afp++;
 	}
 	at -> ada_next = NULL;
-
 	free ((char *) base);
 }
 
@@ -1939,11 +1798,9 @@ int	isnpa,
 			}
 		break;
 	}
-
 out:
 	;
 	flush_arp_cache = 1;
-
 	return NULL;
 }
 
@@ -2039,7 +1896,6 @@ void init_ip (void) {
 		ot -> ot_getfnx = o_ip,
 			  ot -> ot_info = (caddr_t) ipFragCreates;
 #endif
-
 	if (ot = text2obj ("ipAdEntAddr"))
 		ot -> ot_getfnx = o_ip_addr,
 			  ot -> ot_info = (caddr_t) ipAdEntAddr;
@@ -2055,7 +1911,6 @@ void init_ip (void) {
 	if (ot = text2obj ("ipAdEntReasmMaxSize"))
 		ot -> ot_getfnx = o_ip_addr,
 			  ot -> ot_info = (caddr_t) ipAdEntReasmMaxSize;
-
 	if (ot = text2obj ("ipRouteDest"))
 		ot -> ot_getfnx = o_ip_route,
 			  ot -> ot_setfnx = s_ip_route,
@@ -2108,7 +1963,6 @@ void init_ip (void) {
 	if (ot = text2obj ("ipRouteInfo"))
 		ot -> ot_getfnx = o_ip_route,
 			  ot -> ot_info = (caddr_t) ipRouteInfo;
-
 	if (ot = text2obj ("unixIpRouteFlags"))
 		ot -> ot_getfnx = o_ip_route,
 			  ot -> ot_info = (caddr_t) unixIpRouteFlags;
@@ -2118,7 +1972,6 @@ void init_ip (void) {
 	if (ot = text2obj ("unixIpRouteUses"))
 		ot -> ot_getfnx = o_ip_route,
 			  ot -> ot_info = (caddr_t) unixIpRouteUses;
-
 #ifndef LINUX
 	if (ot = text2obj ("unixRouteBadRedirects"))
 		ot -> ot_getfnx = o_ip_routing_stats,
@@ -2136,7 +1989,6 @@ void init_ip (void) {
 		ot -> ot_getfnx = o_ip_routing_stats,
 			  ot -> ot_info = (caddr_t) unixRouteWildcardUses;
 #endif
-
 	if (ot = text2obj ("atIfIndex"))
 		ot -> ot_getfnx = o_address,
 			  ot -> ot_setfnx = s_address,
@@ -2149,7 +2001,6 @@ void init_ip (void) {
 		ot -> ot_getfnx = o_address,
 			  ot -> ot_setfnx = s_address,
 					ot -> ot_info = (caddr_t) atNetAddress;
-
 	if (ot = text2obj ("ipNetToMediaIfIndex"))
 		ot -> ot_getfnx = o_address,
 			  ot -> ot_setfnx = s_address,
@@ -2180,15 +2031,12 @@ int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
 	int found = 0;
 
 	*labels = NULL; *values = NULL; *len = 0;
-
     f = fopen ("/proc/net/snmp", "r");
     if (!f) {
 		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/snmp");
 		return NOTOK;
     }
-
     header = malloc(512);
-
 	for (; fgets (header, sizeof (header), f) && fgets (stats, sizeof (stats), f);) {
         if (!(prefix = strtok (header, " ")))
             continue;
@@ -2208,14 +2056,11 @@ int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
         *len = i;
         break;
     }
-
     fclose (f);
-
 	if (!found) {
 		free (header);
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -2228,11 +2073,9 @@ int _file_printf (const char *path, const char *fmt, ...)
 		advise (LLOG_EXCEPTIONS, "failed", "open %s for write", path);
 		return NOTOK;
 	}
-
 	va_start (ap, fmt);
 	vfprintf(f, fmt, ap);
 	va_end (ap);
-
 	return OK;
 }
 #endif

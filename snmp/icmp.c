@@ -73,7 +73,6 @@ static int _read_icmp_stats ()
 
 	if (_read_snmp_stats ("icmp", &labels, &values, &len) != OK)
 		return NOTOK;
-
 	for (i = 0; i < len; i++) {
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
@@ -129,9 +128,7 @@ static int _read_icmp_stats ()
 		    icmpstat.icps_outhist[ICMP_MASKREQ] = value;
 		else if (!strcmp ("OutAddrMaskReps", label))
 		    icmpstat.icps_outhist[ICMP_MASKREPLY] = value;
-
 	}
-
 	return OK;
 }
 #endif
@@ -158,11 +155,9 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = 0;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -173,10 +168,8 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (quantum != lastq) {
 		lastq = quantum;
-
 #ifndef LINUX
 		if (getkmem (nl + N_ICMPSTAT, (caddr_t) icps, sizeof *icps) == NOTOK)
 			return generr (offset);
@@ -185,7 +178,6 @@ int	offset;
 			advise (LLOG_EXCEPTIONS, "failed", "read icmp stats");
 #endif
 	}
-
 	switch (ifvar) {
 	case icmpInMsgs:
 #ifndef LINUX

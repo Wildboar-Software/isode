@@ -51,18 +51,15 @@ int ds_bind_init (struct connection *cn) {
 	extern struct SecurityServices *dsap_security;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_bind_init"));
-
 	if ( (arg->dba_version != DBA_VERSION_V1988) || quipu_shutdown) {
 		error->dbe_version = DBA_VERSION_V1988;
 		error->dbe_type = DBE_TYPE_SERVICE;
 		error->dbe_value = DSE_SV_UNAVAILABLE;
 		return(DS_ERROR_CONNECT);
 	}
-
 	/* We don't support any bilaterally-defined authentication procedures.
 	 * Hence, if we get EXTERNAL credentials in the bind, reject them.
 	 */
-
 	if (arg->dba_auth_type == DBA_AUTH_EXTERNAL) {
 		DLOG(log_dsap, LLOG_EXCEPTIONS, ("EXTERNAL found in credentials"));
 		error->dbe_version = DBA_VERSION_V1988;
@@ -70,11 +67,9 @@ int ds_bind_init (struct connection *cn) {
 		error->dbe_value = DSE_SV_UNAVAILABLE;
 		return (DS_ERROR_CONNECT);
 	}
-
 	/* If password is present, but zero length, treat as though absent */
 	if ((arg->dba_auth_type == DBA_AUTH_SIMPLE) && (arg->dba_passwd_len == 0))
 		arg->dba_auth_type = DBA_AUTH_NONE;
-
 	switch (arg->dba_auth_type) {
 	case DBA_AUTH_NONE:
 		if (((arg->dba_dn == NULLDN) && auth_bind == 1) ||
@@ -107,7 +102,6 @@ out:
 	case DBA_AUTH_EXTERNAL:
 		goto out;
 	}
-
 	if (arg->dba_dn == NULLDN) {
 #ifndef NO_STATS
 		LLOG(log_stat, LLOG_NOTICE, ("Bind (%d) (anonymous)", cn->cn_ad));
@@ -116,9 +110,7 @@ out:
 		make_dsa_bind_arg(result);
 		return(DS_OK);
 	}
-
 	/* Now we're sure dba_dn contains a valid pointer, can decode it */
-
 	if ( ! check_prefix_list (arg->dba_dn)) {
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (reject - prefix)",cn->cn_ad);
@@ -130,7 +122,6 @@ out:
 		error->dbe_value = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_CONNECT);
 	}
-
 	if ((cn->cn_ctx == DS_CTX_X500_DAP) && !(check_dn_length(arg->dba_dn))) {
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (reject - DAP length)",cn->cn_ad);
@@ -142,13 +133,11 @@ out:
 		error->dbe_value = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_CONNECT);
 	}
-
 	switch (arg->dba_auth_type) {
 	case DBA_AUTH_NONE:
 		/* partially check DN - i.e see if we can say if DEFINATELY does */
 		/* not exist.  If it possibly exists - allow bind, checking it   */
 		/* runs the risk of livelock */
-
 		switch (res = really_find_entry(arg->dba_dn, TRUE, NULLDNSEQ,
 										FALSE, &(entryptr), &(err), &(dsas))) {
 		case DS_X500_ERROR:
@@ -203,7 +192,6 @@ out:
 		} else {
 			UTC ut;
 			long c_time, s_time, delta;
-
 			time(&s_time);
 			ut = str2utct(arg->dba_time1, strlen(arg->dba_time1));
 			if (ut == NULLUTC)
@@ -244,14 +232,12 @@ out:
 			int rc;
 			DN real_name;
 			struct Nonce nonce;
-
 			nonce.non_time1 = arg->dba_time1;
 			nonce.non_time2 = arg->dba_time2;
 			nonce.non_r1.n_bits = arg->dba_r1.n_bits;
 			nonce.non_r1.value = arg->dba_r1.value;
 			nonce.non_r2.n_bits = arg->dba_r2.n_bits;
 			nonce.non_r2.value = arg->dba_r2.value;
-
 			rc = (dsap_security->serv_cknonce)(&nonce);
 			if (rc != OK) {
 				error->dbe_version = DBA_VERSION_V1988;
@@ -293,9 +279,7 @@ out:
 			}
 		}
 	}
-
 	/* If we fall through to here, credentials are simple or protected simple */
-
 	if ((res = really_find_entry(arg->dba_dn, TRUE, NULLDNSEQ, FALSE, &(entryptr), &(err), &(dsas))) == DS_OK) {
 		/* is it really OK ??? */
 		if ((entryptr->e_data == E_TYPE_CONSTRUCTOR)
@@ -325,22 +309,17 @@ out:
 		cn->cn_start.cs_bind_compare = on = oper_alloc();/* cn knows about on */
 		on->on_type = ON_TYPE_BIND_COMPARE;
 		on->on_bind_compare = cn;			/* on knows about cn */
-
 		set_my_chain_args(&(on->on_req.dca_charg), arg->dba_dn);
 		on->on_req.dca_dsarg.arg_type = OP_COMPARE;
 		cma = &(on->on_req.dca_dsarg.arg_cm);
-
 		cma->cma_common = ca_def;	/* struct copy */
-
 		/* Set originator/requestor */
 		if (on->on_req.dca_charg.cha_originator)  /* set my set_my_chain_arg */
 			dn_free(on->on_req.dca_charg.cha_originator);
 		on->on_req.dca_charg.cha_originator = dn_cpy(arg->dba_dn);
 		cma->cma_common.ca_requestor = dn_cpy(arg->dba_dn);
 		cma->cma_common.ca_servicecontrol.svc_prio = SVC_PRIO_HIGH;
-
 		cma->cma_object = dn_cpy(arg->dba_dn);
-
 		if (arg->dba_auth_type == DBA_AUTH_SIMPLE) {
 			cma->cma_purported.ava_type = AttrT_cpy (at_password);
 			cma->cma_purported.ava_value =
@@ -353,23 +332,18 @@ out:
 				str2syntax("protectedPassword");
 			cma->cma_purported.ava_value->av_struct = (caddr_t) pp;
 		}
-
 		on->on_dsas = dsas;
 		for(di_tmp=on->on_dsas; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 			di_tmp->di_type = DI_OPERATION;
 			di_tmp->di_oper = on;
 		}
-
 		if(oper_chain(on) == OK)
 			return(DS_CONTINUE);
-
 		oper_extract(on);
 		cn->cn_start.cs_bind_compare = NULLOPER;
-
 		error->dbe_version = DBA_VERSION_V1988;
 		error->dbe_type = DBE_TYPE_SERVICE;
 		error->dbe_value = DSE_SV_UNAVAILABLE;
-
 		return(DS_ERROR_CONNECT);
 
 	case DS_X500_ERROR:
@@ -388,7 +362,6 @@ out:
 		error->dbe_value = DSE_SV_DITERROR;
 		return(DS_ERROR_CONNECT);
 	}
-
 	if ((as = as_find_type (entryptr->e_attributes,
 							(arg->dba_auth_type == DBA_AUTH_SIMPLE) ?
 							at_password : at_p_password)) == NULLATTR) {
@@ -401,7 +374,6 @@ out:
 		error->dbe_value = DSE_SC_AUTHENTICATION;
 		return (DS_ERROR_CONNECT);
 	}
-
 	if (arg->dba_auth_type == DBA_AUTH_SIMPLE) {
 		if (strlen ((char *)as->attr_value->avseq_av.av_struct) != arg->dba_passwd_len)
 			retval = -1;
@@ -417,7 +389,6 @@ out:
 					 arg->dba_time1,
 					 arg->dba_passwd,
 					 arg->dba_passwd_len);
-
 	if (retval == 0) {
 		/* Password OK! */
 		cn->cn_authen = arg->dba_auth_type;
@@ -433,7 +404,6 @@ out:
 }
 
 int bind_compare_result_wakeup (struct oper_act *on) {
-
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_result_wakeup()"));
 	if(on->on_bind_compare == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("bind_compare_result_wakeup - connection initiating compare already failed"));
@@ -461,13 +431,11 @@ void bind_compare_error_wakeup (struct oper_act *on) {
 	int errtype = DBE_TYPE_SERVICE;
 
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_error_wakeup()"));
-
 	/*
 	*  Check for referral and rechain if appropriate;
 	*  Otherwise check if error requires propagation
 	*  or another of the original di_blocks to be chained to.
 	*/
-
 	if(on->on_bind_compare == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("bind_compare_error_wakeup - connection initiating compare already failed"));
 	} else {
@@ -497,7 +465,6 @@ void bind_compare_error_wakeup (struct oper_act *on) {
 			DLOG(log_dsap, LLOG_DEBUG, ("bind_compare_error_wakeup() - assuming all errors finish operation!"));
 			break;
 		}
-
 		error->dbe_version = DBA_VERSION_V1988;
 		error->dbe_type = errtype;
 		error->dbe_value = errmsg;
@@ -509,7 +476,6 @@ void bind_compare_error_wakeup (struct oper_act *on) {
 
 void bind_compare_fail_wakeup (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_fail_wakeup()"));
-
 	/*
 	*  If there are any more "di_block"s to attempt it must be
 	*  worth a go (perhaps this depends on the failure which
@@ -519,17 +485,14 @@ void bind_compare_fail_wakeup (struct oper_act *on) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("bind_compare_fail_wakeup - connection initiating compare already failed"));
 	} else {
 		struct ds_bind_error * error = &(on->on_bind_compare->cn_start.cs_err);
-
 		if(on->on_dsas) {
 			if(oper_chain(on) == OK)
 				return;
 		}
-
 		if(on->on_dsas) {
 			/* oper_chain must be awaiting deferred di_blocks */
 			return;
 		}
-
 		error->dbe_version = DBA_VERSION_V1988;
 		error->dbe_type = DBE_TYPE_SERVICE;
 		error->dbe_value = DSE_SV_UNAVAILABLE;
@@ -551,7 +514,6 @@ void do_ds_unbind (struct connection *conn) {
 	}
 	pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)conn->cn_dn);
 #endif
-
 	if (fstat (conn->cn_ad, &st) != NOTOK) {
 		if (conn->cn_ad != log_dsap -> ll_fd)
 #ifndef NO_STATS
@@ -562,7 +524,6 @@ void do_ds_unbind (struct connection *conn) {
 	} else if (errno != EBADF)
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("*** fd %d: errno=%d ***", conn->cn_ad, errno));
-
 	DLOG (log_dsap,LLOG_TRACE,("ds_un_bind"));
 }
 

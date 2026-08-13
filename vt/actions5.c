@@ -57,7 +57,6 @@ int a5_1 (	/*VDATreq-n in states 400B, 402B or 40T */
 	/* V data request addressing sequenced trigger co */
 	PE pe
 ) {
-
 	/*
 	vns++;
 	==> SAMESTATE
@@ -71,7 +70,6 @@ int a5_2 (	/*NDQ-tr in states 400B, 420B */
 	/*
 	vnt++;
 	*/
-
 	return(ce_104(pe));
 	/*
 	==> SAMESTATE
@@ -131,7 +129,6 @@ int a5_9 (	/*VDELreq in states 400B, 402B */
 	/* send out dlq */
 	/* this will be replace by the new-fangled pepy schtuff;
 		will use this now for compatability */
-
 	p_data(pe);
 	state = (vra) ? state + 2 : state; /* pretty neeto eh? */
 	return(OK);
@@ -159,7 +156,6 @@ int a5_17 (	/*VRELreq in states 400B */
 		/*Need call to ISODE to request token*/
 		state = S1_50B;
 	}
-
 	return(OK);
 }
 
@@ -206,7 +202,6 @@ int a5_34 (	/*UDQ in 400B*/
 int a5_35 (	/* DEL in states 400B, 420B */
 	PE pe
 ) {
-
 	if ((vra = prim2flag(pe)) == NOTOK)
 		adios("a5_35: bogus PDU (%s)", pe_error (pe -> pe_errno));
 	ce_104(NULLPE);
@@ -218,7 +213,6 @@ int a5_35 (	/* DEL in states 400B, 420B */
 int a5_38 (	/* RLQ in states 400B */
 	PE pe
 ) {
-
 	ce_104(pe);
 	sector = 1;
 	state = S1_51R;

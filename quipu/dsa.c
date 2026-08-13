@@ -107,7 +107,6 @@ int main (int argc, char **argv) {
 	extern char	  startup_update;
 	extern time_t	timenow;
 	struct task_act	* task;
-
 #ifdef QUIPU_CONSOLE
 	extern Attr_Sequence dsa_pseudo_attr ;
 	extern char * dsa_address ; /* Added by SPT */
@@ -117,7 +116,6 @@ int main (int argc, char **argv) {
 				    of debugging. */
 	struct UTCtime ut ;
 #endif /* QUIPU_CONSOLE */
-
 	int		  secs;
 	char start_buf [LINESIZE];
 	/*
@@ -130,13 +128,11 @@ int main (int argc, char **argv) {
 #ifdef	SIGUSR2
 	SFD		 list_status2 ();
 #endif
-
 	{
 		int	i;
 		char  *cp,
 			  **ap,
 			  **sp;
-
 		i = 0;
 		for (ap = argv; cp = *ap; ap++)
 			if (*cp == '-' && *++cp == 'r') {
@@ -154,87 +150,63 @@ int main (int argc, char **argv) {
 	}
 no_copy:
 	;
-
 	if (myname = rindex (argv[0], '/'))
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	isodetailor (myname,0);
-
 	envinit();  /* detach */
-
 	quipu_syntaxes ();
-
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
-
 #ifdef OSISEC
 	dsap_security = use_serv_X509();
 	use_sig_md2withrsa();
 #else
 	dsap_security = use_serv_null();
 #endif /* OSISEC */
-
 	osisecinit(&argc,&argv, 0);
-
 	dsa_sys_init(&argc, &argv);
-
 	osisecinit((int*)0, (char***)0, 1);
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	setdsauid();
-
 	mk_dsa_tmp_dir();
-
 	print_parse_errors = FALSE;
-
 #ifndef NO_STATS
 	ll_hdinit (log_stat,myname);
 #endif
-
 	if ((opt = ps_alloc (std_open)) == NULLPS)
 		fatal (-12,"ps_alloc failed");
 	if (std_setup (opt,stdout) == NOTOK)
 		fatal (-13,"std_setup failed");
-
 	DLOG (log_dsap,LLOG_DEBUG,( "About to dsa_init()"));
-
 	chdir(treedir);
-
 #ifdef SBRK_DEBUG
 	proc_size = (unsigned) sbrk(0);
 	LLOG (log_dsap, LLOG_NOTICE, ("Process size = %d bytes", proc_size));
 #endif
-
 	if(dsa_init() == NOTOK) {
 		fatal(-14,"Couldn't initialise the DSA!!");
 	}
-
 	if(net_init() == NOTOK) {
 		fatal(-15,"Couldn't start the DSA!!");
 	}
-
 #ifdef QUIPU_MALLOC
 #ifdef DEBUG
 	start_malloc_trace (NULLCP);
 #endif
 #endif
-
 	if (startup_update) {
 		/* Will generate a list of EDB operations! */
 		time (&timenow);
 		slave_update();
 	}
-
 	{
 		char    filebuf[BUFSIZ];
 		FILE   *fp;
-
 		sprintf (filebuf, "%sPID", treedir);
 		if (fp = fopen (filebuf, "w")) {
 			fprintf (fp, "%d\n", getpid ());
@@ -242,16 +214,13 @@ no_copy:
 		} else
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("Can't open PID file %s",filebuf));
 	}
-
 	/*
 	* Do stop_dsa() on receiving a Ctrl-C
 	*/
-
 #ifdef LINUX
 	signal (SIGINT, (__sighandler_t)stop_dsa);
 	signal (SIGTERM,(__sighandler_t)stop_dsa);
 	signal (SIGHUP, (__sighandler_t)stop_dsa);
-
 	/* now started don't stop on core dumps !!! */
 	signal (SIGQUIT, (__sighandler_t)attempt_restart);
 	signal (SIGILL,  (__sighandler_t)attempt_restart);
@@ -269,7 +238,6 @@ no_copy:
 signal (SIGINT, stop_dsa);
 signal (SIGTERM,stop_dsa);
 signal (SIGHUP, stop_dsa);
-
 /* now started don't stop on core dumps !!! */
 signal (SIGQUIT, attempt_restart);
 signal (SIGILL,  attempt_restart);
@@ -284,26 +252,20 @@ signal (SIGUSR2, list_status2);
 #endif
 #endif
 #endif // LINUX
-
 	abort_vector = (SFP)attempt_restart;
 	parse_line = 0;
-
 	sprintf (start_buf,"DSA %s has started on %s",mydsaname,
 			 paddr2str(dsaladdr,NULLNA));
-
 	LLOG (log_dsap,LLOG_NOTICE,(start_buf));
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,(start_buf));
 #endif
-
 	if (debug)
 		fprintf (stderr,"%s\n",start_buf);
-
 #ifdef SBRK_DEBUG
 	proc_size = (unsigned) sbrk(0);
 	LLOG (log_dsap, LLOG_NOTICE, ("Start size = %d bytes", proc_size));
 #endif
-
 	for(;;) {
 		if((task = task_select(&secs)) == NULLTASK) {
 #ifdef SBRK_DEBUG
@@ -316,11 +278,9 @@ signal (SIGUSR2, list_status2);
 				}
 			}
 #endif
-
 #ifdef QUIPU_CONSOLE
 			open_call_avs_clearup() ;
 #endif /* QUIPU_CONSOLE */
-
 			dsa_wait(secs);	/* Check network with timeout of secs */
 		} else {
 			dsa_work(task);	/* Process the DSA task selected */
@@ -350,7 +310,6 @@ static int check_conns (int secs) {
 	/* Looks like connections are all inactive now.
 	   Wait 'till all DSP connections closed.
 	*/
-
 	for(cn=connlist; cn!=NULLCONN; cn=cn->cn_next)
 		switch (cn -> cn_state) {
 			if (cn -> cn_ad != NOTOK) {
@@ -360,14 +319,12 @@ static int check_conns (int secs) {
 						protocol = "DAP";
 					else
 						protocol = "DSP";
-
 					LLOG (log_dsap, LLOG_EXCEPTIONS,
 						  ("Waiting for TCP %s connection (%d) from %s to exit",
 						   protocol, cn->cn_ad, paddr2str(pa,NULLNA)));
 					result =  FALSE;
 				}
 			}
-
 			return result;
 		}
 #endif
@@ -385,22 +342,16 @@ static int check_conns (int secs) {
 #endif
 		if (been_here++)
 			return;
-
 		quipu_shutdown = TRUE;
 		restart = xrestart;
-
 #ifdef SBRK_DEBUG
 		proc_size = (unsigned) sbrk(0);
 		LLOG (log_dsap, LLOG_NOTICE, ("Stop size = %d bytes", proc_size));
 #endif
-
 		watch_dog_final(clean_exit);
 		/* Set 5 min timer to force death ! */
-
 		stop_listeners();
-
 #ifdef NOTANYMORE
-
 		for (;;) {
 			if ((task = task_select(&secs)) == NULLTASK) {
 				if (check_conns(secs)) {
@@ -413,20 +364,15 @@ static int check_conns (int secs) {
 				dsa_wait(0);
 			}
 		}
-
 #endif
 	}
 
 	SFD stop_dsa (sig)
 	int sig;
 	{
-
 		signal (sig, SIG_DFL); /* to stop recursion */
-
 		LLOG (log_dsap,LLOG_FATAL,("*** Stopping on signal %d ***",sig));
-
 		dsa_abort(0);
-
 		if (debug) {
 			fprintf (stderr,"DSA %s has Stopped\n",mydsaname);
 #ifdef DEBUG
@@ -446,7 +392,6 @@ static int check_conns (int secs) {
 			avs_free (super_user);
 #endif
 		}
-
 		exit (0);
 	}
 
@@ -466,12 +411,10 @@ static int check_conns (int secs) {
 #ifndef	BSD42
 		signal (SIGUSR1, list_status);
 #endif
-
 #ifdef SBRK_DEBUG
 		proc_size = (unsigned) sbrk(0);
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("size = %d bytes", proc_size));
 #endif
-
 		for (fd = getdtablesize () - 1; fd >= 0; fd--)
 			if (fstat (fd, &st) != NOTOK)
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
@@ -504,7 +447,6 @@ static int check_conns (int secs) {
 #else
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("logs dsap=%d", log_dsap -> ll_fd));
 #endif
-
 		time (&now);
 		for (cn = connlist; cn; cn = cn -> cn_next)
 			if (cn -> cn_ad != NOTOK)
@@ -529,12 +471,10 @@ static int check_conns (int secs) {
 #ifndef	BSD42
 		signal (SIGUSR2, list_status2);
 #endif
-
 #ifdef SBRK_DEBUG
 		proc_size = (unsigned) sbrk(0);
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("size = %d bytes", proc_size));
 #endif
-
 		for (cn = connlist; cn; cn = cn -> cn_next)
 			if (cn -> cn_ad != NOTOK)
 				conn_log(cn,LLOG_EXCEPTIONS);
@@ -546,7 +486,6 @@ static int check_conns (int secs) {
 				sd;
 
 		nbits = getdtablesize ();
-
 		if (!(debug = isatty (2))) {
 			for (i = 0; i < 5; i++) {
 				switch (fork ()) {
@@ -562,7 +501,6 @@ static int check_conns (int secs) {
 				}
 				break;
 			}
-
 fork_ok:
 			;
 			if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
@@ -571,7 +509,6 @@ fork_ok:
 				dup2 (sd, 0),  close (sd);
 			dup2 (0, 1);
 			dup2 (0, 2);
-
 #ifdef	SETSID
 			if (setsid () == NOTOK)
 				advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -594,7 +531,6 @@ fork_ok:
 		else
 			ll_dbinit (log_dsap, myname);
 #endif
-
 #ifndef	sun		/* damn YP... */
 		for (sd = 3; sd < nbits; sd++) {
 			if (log_dsap -> ll_fd == sd)
@@ -606,9 +542,7 @@ fork_ok:
 			close (sd);
 		}
 #endif
-
 		signal (SIGPIPE, SIG_IGN);
-
 		ll_hdinit (log_dsap, myname);
 #ifdef	DEBUG
 		advise (LLOG_TRACE, NULLCP, "starting");
@@ -622,11 +556,8 @@ fork_ok:
 		va_list ap;
 
 		va_start (ap, fmt);
-	
 		_ll_log (log_dsap, LLOG_FATAL, what, fmt, ap);
-
 		va_end (ap);
-
 		if (debug)
 			fprintf (stderr,"adios exit - see dsap.log\n");
 		dsa_abort(0);
@@ -648,9 +579,7 @@ fork_ok:
 		va_list ap;
 
 		va_start (ap, fmt);
-
 		_ll_log (log_dsap, code, what, fmt, ap);
-
 			va_end (ap);
 	}
 #else
@@ -692,7 +621,6 @@ fork_ok:
 		if (here_again) {
 			for (sd = 0; sd < NSIG ; sd++)
 				signal (sd, SIG_DFL); /* to stop recursion */
-
 			if (here_again++ > 1) {
 				fatal (1, "Signal looping");
 				exit (1);	/* We're in a real mess */
@@ -700,10 +628,8 @@ fork_ok:
 			do_restart (sig);
 		}
 		here_again++;
-
 		for (sd = 0; sd < NSIG ; sd++)
 			signal (sd, SIG_DFL); /* to stop recursion */
-
 #ifdef LINUX
 		signal (SIGQUIT, (__sighandler_t)attempt_restart);
 		signal (SIGILL,  (__sighandler_t)attempt_restart);
@@ -719,9 +645,7 @@ fork_ok:
 #endif
 		if (sig >= 0 && debug)
 			fprintf (stderr, "DSA %s encountered a problem, as indicated by signal: %d\n", mydsaname, sig);
-
 		dsa_abort (1);
-
 		do_restart (sig);
 	}
 
@@ -731,7 +655,6 @@ fork_ok:
 		extern char * mydsaname;
 
 		secs = sig != NOTOK ? CLEAR_TIME : RESTART_TIME;
-
 		for (sd = 3; sd < nbits; sd++) {
 			if (log_dsap -> ll_fd == sd)
 				continue;
@@ -741,7 +664,6 @@ fork_ok:
 #endif
 			close (sd);
 		}
-
 		if ( sig == -2 || (fpid = fork()) == 0) {
 			if (sig == -2) {		    /* restart due to congestion... */
 				LLOG (log_dsap,LLOG_FATAL, ("*** in-situ restart attempted ***"));
@@ -749,14 +671,11 @@ fork_ok:
 				LLOG (log_stat,LLOG_NOTICE,("RESTARTING (%s)",mydsaname));
 #endif
 			}
-
 			sleep (secs);	/* give connections time to clear */
 			execv (isodefile(sargv[0], 1),sargv);
 			exit (-19);
 		}
-
 		log_dsap -> ll_syslog = LLOG_FATAL;
-
 		if (fpid != -1) {
 			LLOG (log_dsap,LLOG_FATAL,("Quipu restart attempted in %d seconds (sig %d)", secs,sig));
 #ifndef NO_STATS
@@ -768,7 +687,6 @@ fork_ok:
 #endif
 			LLOG (log_dsap,LLOG_FATAL,("Quipu aborting - sig (%d)",sig));
 		}
-
 		abort ();
 		exit (-20);  /* abort should not return */
 	}
@@ -785,18 +703,14 @@ fork_ok:
 
 		if (open_call_avs == NULLAV)
 			return ;
-
 		if (open_call_avs->avseq_av.av_struct == (caddr_t) 0) {
 			fprintf(stderr, "This should never happen. Check the tidy routines!\n") ;
 			at = AttrT_new("openCall") ;
-
 			Remove_openCall_attribute() ;
-
 			free((char *)open_call_avs) ;
 			open_call_avs = NULLAV ;
 			return ;
 		}
-
 		while (tmp_avs != NULLAV) {
 			t2 = tmp_avs->avseq_next ;
 			tmp_oc = (struct quipu_call *) tmp_avs->avseq_av.av_struct ;
@@ -841,20 +755,17 @@ fork_ok:
 		Attr_Sequence as, trail = NULLATTR ;
 
 		at = AttrT_new("openCall") ;
-
 		for (as=dsa_pseudo_attr; as != NULLATTR; as=as->attr_link) {
 			if ((AttrT_cmp (as->attr_type,at)) == 0)
 				break;
 			trail = as;
 		}
-
 		if (as == NULLATTR) {     /* there is no attribute here to remove. */
 #ifdef SPT_DEBUG
 			fprintf(stderr, "SPT: dsa.c: Disaster! Should not get this ever!\n") ;
 #endif
 			return ;
 		}
-
 		if (trail == NULLATTR) {
 			/* first in sequence */
 			dsa_pseudo_attr = as->attr_link;
@@ -900,15 +811,12 @@ fork_ok:
 					default:
 						continue;
 					}
-
 				break;
 			}
 			args[argp] = NULLCP;
 		}
-
 #ifdef OSISEC
 		else
 			osisec_init (&argp, (argptr = args, &argptr));
-
 #endif
 	}

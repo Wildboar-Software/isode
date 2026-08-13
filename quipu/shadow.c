@@ -51,36 +51,26 @@ void shadow_entry (Entry eptr) {
 
 	/* All MASTER entries get passed through here. */
 	/* See if it need shadowing, if so, add to shades */
-
 	if (eptr->e_data == E_DATA_MASTER) {
 		if ((eptr->e_dsainfo) &&
 				(quipu_ctx_supported (eptr) > 2) &&
 				(quipu_version_7 (eptr))) {
 			/* Its a version 7 quipuDSA */
-
 			dn = get_copy_dn (eptr);
-
 			if (dn_cmp (dn, mydsadn) == 0) {
 				dn_free (dn);
 				return;  /* can't shadow myself ! */
 			}
-
 			if ( check_dnseq (shades, dn) == NOTOK)
 				shades = dn_seq_push (dn,shades);
-
 			dn_free (dn);
-
 		} else if ((eptr->e_external) && (eptr->e_reftype != RT_NONSPECIFICSUBORDINATE)) {
-
 			dn = get_copy_dn (eptr);
-
 			if ( check_dnseq (shades, dn) == NOTOK)
 				shades = dn_seq_push (dn,shades);
-
 			dn_free (dn);
 		}
 	}
-
 	for (as = eptr->e_attributes; as != NULLATTR; as=as->attr_link)
 		if (as->attr_type->oa_syntax == syntax_dn)
 			for (at = at_list; at != NULLATL; at=at->next)
@@ -138,7 +128,6 @@ void shadow_update (void) {
 	DN tdn;
 	struct access_point * aps;
 	struct DSError err;
-
 	DLOG(log_dsap, LLOG_TRACE, ("shadow_update"));
 	for (dnseq = dn_shades; dnseq != NULLDNSEQ; dnseq = dnseq -> dns_next) {
 		if ((eptr = local_find_entry (dnseq -> dns_dn,FALSE)) == NULLENTRY) {
@@ -162,17 +151,14 @@ void shadow_update (void) {
 						continue;
 					}
 		}
-
 		else if ((eptr->e_data == E_TYPE_SLAVE) ||
 				 (eptr->e_data == E_DATA_MASTER))
 			continue;
 		if ( check_dnseq (shades, dnseq -> dns_dn) == NOTOK)
 			shades = dn_seq_push (dnseq -> dns_dn,shades);
 	}
-
 	dn_seq_free (dn_shades);
 	dn_shades = NULLDNSEQ;
-
 	for (dnseq = shades; dnseq != NULLDNSEQ; dnseq = dnseq -> dns_next) {
 		if((op = oper_alloc()) == NULLOPER)
 			return;
@@ -260,62 +246,47 @@ int shadow_fail_wakeup (struct oper_act *on) {
 #endif
 
 	DLOG (log_dsap, LLOG_TRACE, ("Shadow fail wakeup"));
-
 	if (on -> on_resp.di_type == DI_ERROR) {
-
 		if (on->on_resp.di_error.de_err.dse_type == DSE_DSAREFERRAL)
 			if (oper_rechain(on) == OK)
 				return FALSE;
-
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote shadow error",
 			   (IFP)dn_print,
 			   (caddr_t) on -> on_req.dca_dsarg.arg_rd.rda_object);
 		log_ds_error (& on -> on_resp.di_error.de_err);
-
 		if (on->on_conn) {
 			time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
-
 	}
-
 #ifdef notanymore
-
 	on_p = &(get_edb_ops);
 	for(on_tmp = get_edb_ops; on_tmp != NULLOPER; on_tmp = on_tmp->on_next_task) {
 		if(on_tmp == on)
 			break;
-
 		on_p = &(on_tmp->on_next_task);
 	}
-
 	if(on_tmp != NULLOPER) {
 		(*on_p) = on_tmp->on_next_task;
 	} else {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
 			 ("subtask_fail_wakeup - op escaped from get_edb_ops (the global list)"));
 	}
-
 	/* Arrange for connection to shut in 30 seconds unless
 	   used by something else in that time
 	   Better than leaving it for 5 minutes
 	    */
-
 #else
-
 	if (get_edb_ops == on) {
 		pending_ops = get_edb_ops -> on_next_task;
 		get_edb_ops -> on_next_task = NULLOPER;
 		get_edb_ops = NULLOPER;
 	} else
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Failure is not current opertion"));
-
 #endif
-
 	oper_conn_extract(on);
 	oper_free(on);
-
 	return TRUE;
 }
 
@@ -331,9 +302,7 @@ int process_shadow (struct oper_act *on) {
 	DN dn;
 
 	DLOG (log_dsap, LLOG_TRACE, ("Process shadow"));
-
 	dn = on -> on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn;
-
 	if ((eptr = local_find_entry_aux (dn,FALSE)) == NULLENTRY)
 		/* aliases on route !!! */
 		if ((eptr = local_find_entry_aux (dn,TRUE)) == NULLENTRY) {
@@ -341,13 +310,10 @@ int process_shadow (struct oper_act *on) {
 				   (IFP)dn_print, (caddr_t) dn);
 			goto out;
 		}
-
 	new_as = on ->
 			 on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_attr;
-
 	if (eptr -> e_external) {
 		/* Add in Quipu attributes */
-
 		if (  ((as = entry_find_type (eptr, at_subord)) == NULLATTR)
 				&& ((as = entry_find_type (eptr, at_xref)) != NULLATTR)
 				&& ((as = entry_find_type (eptr, at_nssr)) != NULLATTR)) {
@@ -356,7 +322,6 @@ int process_shadow (struct oper_act *on) {
 			goto out;
 		}
 		new_as = as_merge (new_as, as_comp_cpy (as));
-
 		if ((as = as_find_type (new_as, at_objectclass)) == NULLATTR) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, (
 					  "no objectclass in shadow entry"));
@@ -364,34 +329,26 @@ int process_shadow (struct oper_act *on) {
 			dcr_dsres.res_rd.rdr_entry.ent_attr = new_as;
 			goto out;
 		}
-
 		tas = as_comp_new (AttrT_cpy(at_objectclass),
 						   str2avs(EXTERNOBJECT,at_objectclass),NULLACL_INFO);
 		new_as = as_merge (new_as,tas);
-
 		on -> on_resp.di_result.dr_res.
 		dcr_dsres.res_rd.rdr_entry.ent_attr = new_as;
-
 	}
-
 	if (as_cmp (eptr->e_attributes, new_as)	== 0) {
 		DLOG (log_dsap, LLOG_TRACE, ("Shadow: no change"));
 		eptr->e_age = timenow;
 		goto out;
 	}
-
 	DATABASE_HEAP;
 	ne = entry_cpy (eptr);
 	GENERAL_HEAP;
-
 	as_free ( ne -> e_attributes );
 	ne -> e_attributes = as_cpy ( new_as );
-
 	if (ne -> e_data == E_TYPE_CONSTRUCTOR) {
 		ne -> e_data = E_TYPE_CACHE_FROM_MASTER;
 		new_cacheEDB (dn);
 	}
-
 	if (unravel_attribute(ne, &err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: unravel failure",
 			   (IFP)dn_print, (caddr_t) dn);
@@ -406,7 +363,6 @@ int process_shadow (struct oper_act *on) {
 		entry_free (ne);
 		ne = NULLENTRY;
 		goto out;
-
 	} else if (check_schema (ne,NULLATTR,&err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: schema failure",
 			   (IFP)dn_print, (caddr_t) dn);
@@ -416,20 +372,16 @@ int process_shadow (struct oper_act *on) {
 		ne = NULLENTRY;
 		goto out;
 	}
-
 #ifdef TURBO_INDEX
 	turbo_index_delete(eptr);
 #endif
-
 	if (ne->e_parent == NULLENTRY) {
 		entry_replace(database_root, ne);
 	} else {
 		entry_replace(eptr, ne);
 	}
-
 	entry_free (ne);
 	ne = eptr;
-
 	if (unravel_attribute(eptr, &err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: 2nd unravel failure",
 			   (IFP)dn_print, (caddr_t) dn);
@@ -439,16 +391,13 @@ int process_shadow (struct oper_act *on) {
 	}
 	avl_apply(eptr->e_children, inherit_link,
 			  (caddr_t) eptr, NOTOK, AVL_PREORDER);
-
 	if (eptr->e_parent->e_edbversion)
 		free (eptr->e_parent->e_edbversion);
 	eptr->e_parent->e_edbversion = new_version();
-
 #ifdef TURBO_INDEX
 	/* add the new modified entry to the index */
 	turbo_add2index(eptr);
 #endif
-
 #ifdef TURBO_DISK
 	if (turbo_write(ne) != OK)
 		fatal (-33,"shadow rewrite failed - check database");
@@ -460,15 +409,11 @@ int process_shadow (struct oper_act *on) {
 	pslog (log_stat,LLOG_TRACE,"Shadow update",(IFP)dn_print, (caddr_t) on ->
 		   on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn);
 #endif
-
 out:
 	;
-
 	time (&timenow);
 	if (ne)
 		ne->e_age = timenow;
-
 	if (on->on_conn)
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
-
 }

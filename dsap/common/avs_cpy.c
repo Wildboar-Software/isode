@@ -40,7 +40,6 @@ AV_Sequence  avs_cpy (AV_Sequence avs)
 	}
 	start = avs_comp_cpy (avs);
 	ptr2 = start;
-
 	for(eptr = avs->avseq_next; eptr != NULLAV; eptr = eptr->avseq_next) {
 		ptr = avs_comp_cpy (eptr);
 		ptr2->avseq_next = ptr;
@@ -56,13 +55,11 @@ AV_Sequence  avs_cpy_enc (AV_Sequence avs)
 	AV_Sequence eptr;
 
 	/* an AVS, and encode at the same time */
-
 	if (avs == NULLAV ) {
 		return (NULLAV);
 	}
 	start = avs_comp_cpy_enc (avs);
 	ptr2 = start;
-
 	for(eptr = avs->avseq_next; eptr != NULLAV; eptr = eptr->avseq_next) {
 		ptr = avs_comp_cpy_enc (eptr);
 		ptr2->avseq_next = ptr;

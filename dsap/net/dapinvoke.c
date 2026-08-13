@@ -17,15 +17,12 @@ extern	void	  ros_log();
 #endif
 
 int DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn) {
-
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ARG,op);
 #endif
-
 #ifdef HEAVY_DEBUG
 	pdu_arg_log (pe, op);
 #endif
-
 	switch (asyn) {
 	case ROS_SYNC:
 		return (DapSyncInvokeRequest (sd, id, op, pe, di));
@@ -49,19 +46,15 @@ int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapSyncInvokeRequest()"));
-
 	result = RoInvokeRequest (sd, op, ROS_SYNC, pe,
 							  id, NULLIP, ROS_NOPRIO, roi);
-
 	if (pe)
 		pe_free (pe);
-
 	if (result != OK) {
 		if (roi->roi_type != ROI_PREJECT) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapSyncInvokeRequest(): Failed without rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest inconsistent result"));
 		}
-
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapSyncInvokeRequest(): Fatal rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest failed"));
@@ -70,7 +63,6 @@ int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 			return (dapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapSyncInvokeRequest: Invocation received"));
@@ -99,7 +91,6 @@ int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 		LLOG (log_dsap,LLOG_EXCEPTIONS,( "Unknown indication type : %d", roi->roi_type));
 		break;
 	}
-
 	return (OK);
 }
 
@@ -110,22 +101,17 @@ int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapIntrInvokeRequest()"));
-
 	result = RoIntrRequest (sd, op, pe, id, NULLIP, ROS_NOPRIO, roi);
-
 	if (pe)
 		pe_free (pe);
-
 	if (result != OK) {
 		if (roi->roi_type != ROI_PREJECT) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapIntrInvokeRequest(): Failed without rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest inconsistent result"));
 		}
-
 		if (rop->rop_reason == ROS_INTERRUPTED) {
 			return (DapInterrupt(sd, id, op, di));
 		}
-
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapIntrInvokeRequest(): Fatal rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest failed"));
@@ -134,7 +120,6 @@ int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 			return (dapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapIntrInvokeRequest: Invocation received"));
@@ -163,7 +148,6 @@ int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 		LLOG (log_dsap,LLOG_EXCEPTIONS,( "Unknown indication type : %d", roi->roi_type));
 		break;
 	}
-
 	return (OK);
 }
 
@@ -175,16 +159,13 @@ int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 
 	result = RoInvokeRequest (sd, op, ROS_ASYNC, pe,
 							  id, NULLIP, ROS_NOPRIO, roi);
-
 	if (pe)
 		pe_free (pe);
-
 	if (result != OK) {
 		if (roi->roi_type != ROI_PREJECT) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapAsynInvokeRequest(): Failed without rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest inconsistent result"));
 		}
-
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapAsynInvokeRequest(): Fatal rejection"));
 			return (daplose (di, DP_INVOKE, NULLCP, "RoInvokeRequest failed"));
@@ -193,7 +174,6 @@ int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 			return (dapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	return (OK);
 }
 
@@ -212,7 +192,6 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 	* Unless something goes wrong there should be 2 Ro events to
 	* collect before returning.
 	*/
-
 	/* abandon operation */
 	struct ds_abandon_arg	  ab_arg;
 	struct DSError		  ab_err;
@@ -231,21 +210,16 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 
 	ab_arg.aba_invokeid = old_id = id;
 	new_id = ++id;
-
 	if(encode_DAS_AbandonArgument(&ab_req_pe,1,0,NULLCP,&ab_arg) != OK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to encode an abandon operation"));
 		/* Go on listening for result or dump out ?? */
 		return(dapreject (di, DP_INVOKE, old_id, NULLCP, "DapInterrupt: Abandon argument encoding failed"));
 	} else {
 		DLOG(log_dsap, LLOG_DEBUG, ("Abandon invoke request"));
-
 		ret1 = RoInvokeRequest(sd,OP_ABANDON,ROS_SYNC,ab_req_pe,new_id,NULLIP,ROS_NOPRIO,roi1);
-
 		DLOG(log_dsap, LLOG_DEBUG, ("Abandon RoInvoke returns: %d", ret1));
-
 		if (ab_req_pe != NULLPE)
 			pe_free(ab_req_pe);
-
 		switch(ret1) {
 		case OK:
 			/* What have we got? */
@@ -266,7 +240,6 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 #ifdef PDU_DUMP
 				pdu_dump (roi1->roi_error.roe_param,DUMP_ERR,op);
 #endif
-
 				if(roi1->roi_error.roe_id == old_id) {
 					/* Ferret error away for later */
 					result_roi = roi1;
@@ -316,11 +289,8 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 			LLOG(log_dsap, LLOG_FATAL, ("Unknown return from RoInvokeRequest : %d", ret1));
 			return(daplose (di, DP_ROS, NULLCP, "RoInvokeRequest error"));
 		}
-
 		ret2 = RoWaitRequest(sd, NOTOK, roi2);
-
 		DLOG(log_dsap, LLOG_DEBUG, ("Abandon RoInvoke returns: %d", ret1));
-
 		switch(ret2) {
 		case OK:
 			/* What have we got? */
@@ -341,7 +311,6 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 #ifdef PDU_DUMP
 				pdu_dump (roi1->roi_error.roe_param,DUMP_ERR,op);
 #endif
-
 				if(roi2->roi_error.roe_id == old_id) {
 					/* Ferret error away for later */
 					result_roi = roi2;
@@ -350,7 +319,6 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 						LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to abandon correctly"));
 						return(dapreject (di, DP_INVOKE, roi2->roi_error.roe_id, NULLCP, "Error mistyped for abandon"));
 					} else {
-
 						struct DSE_abandon_fail * af;
 						if(decode_DAS_AbandonFailedParm (roi2->roi_error.roe_param, 1, NULLIP, NULLVP, &af) != OK) {
 							LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode abandonFailed"));
@@ -393,7 +361,6 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 			return(daplose (di, DP_ROS, NULLCP, "RoInvokeRequest error"));
 		}
 	}
-
 	switch(result_roi->roi_type) {
 	case ROI_RESULT:
 		return (DapDecodeResult (sd, &(result_roi->roi_result), di));
@@ -426,10 +393,8 @@ void pdu_dump (PE pe, char *type, int op) {
 
 	if ( pdu_count == -1)
 		return;
-
 	if (strcmp (type,DUMP_ARG) == 0)
 		pdu_count++;
-
 	switch (op) {
 	case OP_READ:
 		oper = "read";
@@ -465,29 +430,22 @@ void pdu_dump (PE pe, char *type, int op) {
 		oper = "bind";
 		break;
 	}
-
 	if (strcmp (type,DUMP_ERR) == 0)
 		oper = "oper";
-
 	sprintf (filename, "%s/%s_%s.%d",pdu_dir,oper,type,pdu_count);
 	DLOG (log_dsap,LLOG_DEBUG,("Writing PDU to file %s",filename));
-
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Cant open PDU file %s",filename));
 		return;
 	}
-
 	ps = ps_alloc (std_open);
 	if (std_setup (ps,fptr) != OK) {
 		fclose (fptr);
 		return;
 	}
-
 	pe2pl (ps,pe);
-
 	fclose (fptr);
 	ps_free (ps);
-
 }
 #endif
 

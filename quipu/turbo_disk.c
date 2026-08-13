@@ -89,10 +89,8 @@ GDBM_FILE	db;
 	datum		ent;
 
 	LLOG (log_dsap, LLOG_TRACE,("turbo: write_entry"));
-
 	if (buf == NULLCP)
 		buf = smalloc (10000);
-
 	/* allocate the string presentation stream to print to */
 	if ( (ps = ps_alloc(str_open)) == NULLPS ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("turbo: ps_alloc failed") );
@@ -104,31 +102,25 @@ GDBM_FILE	db;
 		return(NOTOK);
 	}
 	*ps->ps_ptr = 0;
-
 	parse_rdn = e->e_name;
 	rdn_print(ps, e->e_name, EDBOUT);
 	*ps->ps_ptr = '\0';
 	strcpy(kbuf, ps->ps_base);
-
 	rdn.dptr = kbuf;
 	rdn.dsize = strlen(rdn.dptr) + 1;
-
 	ps_print(ps, "\n");
 	as_print(ps, e->e_attributes, EDBOUT);
 	ps_print(ps, "\n");
 	*ps->ps_ptr = '\0';
 	parse_rdn = NULLRDN;
-
 	ent.dptr = ps->ps_base;
 	ent.dsize = strlen(ent.dptr) + 1;
-
 	if ( (rc = gdbm_store(db, rdn, ent, GDBM_REPLACE)) != 0 ) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("turbo: gdbm_store %d, gdbm_errno %d", rc, gdbm_errno));
 		ps_free(ps);
 		return(NOTOK);
 	}
-
 	ps_free(ps);
 	return(OK);
 }
@@ -145,15 +137,12 @@ int turbo_writeall (Entry e) {
 	Entry		akid;
 
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: writeall"));
-
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-
 	if ((db = turbo_open(e, 1, 1)) == NULL) {
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	akid = (Entry) avl_getone(e->e_children);
 	if (turbo_write_header(db, e, akid ? akid->e_data : e->e_data) != OK) {
 		gdbm_close(db);
@@ -161,7 +150,6 @@ int turbo_writeall (Entry e) {
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
-
 	if (avl_apply(e->e_children, turbo_write_entry, (caddr_t) db, NOTOK,
 				  AVL_PREORDER) != AVL_NOMORE) {
 		gdbm_close(db);
@@ -169,7 +157,6 @@ int turbo_writeall (Entry e) {
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
-
 	gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
@@ -188,29 +175,24 @@ int turbo_write (Entry e) {
 	int		save_heap;
 
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: write"));
-
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-
 	if ( (db = turbo_open(e->e_parent, 1, 0)) == NULL ) {
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
 		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
-
 	if ( turbo_write_entry(e, db) != OK ) {
 		gdbm_close(db);
 		mem_heap = save_heap;
 		parse_file = NULLCP;
 		return(NOTOK);
 	}
-
 	gdbm_close(db);
 	mem_heap = save_heap;
 	parse_file = NULLCP;
@@ -231,21 +213,17 @@ int turbo_delete (Entry e) {
 	int		save_heap;
 
 	LLOG (log_dsap, LLOG_TRACE,("turbo: delete"));
-
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-
 	if ( (db = turbo_open(e->e_parent, 0, 0)) == NULL ) {
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	if ( turbo_write_header(db, e->e_parent, e->e_data) != OK ) {
 		gdbm_close(db);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	/* allocate the string presentation stream to print the key to */
 	if ( (ps = ps_alloc(str_open)) == NULLPS ) {
 		mem_heap = save_heap;
@@ -257,12 +235,10 @@ int turbo_delete (Entry e) {
 		return(NOTOK);
 	}
 	*ps->ps_ptr = 0;
-
 	rdn_print(ps, e->e_name, EDBOUT);
 	*ps->ps_ptr = '\0';
 	key.dptr = ps->ps_base;
 	key.dsize = strlen(key.dptr) + 1;
-
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: deleting (%s)", key.dptr));
 	if ( (rc = gdbm_delete(db, key)) != 0 ) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
@@ -272,7 +248,6 @@ int turbo_delete (Entry e) {
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	ps_free(ps);
 	gdbm_close(db);
 	mem_heap = save_heap;
@@ -296,10 +271,8 @@ Entry		parent;
 	int		save_heap;
 
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: write_header"));
-
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-
 	switch (datatype) {
 	case E_DATA_MASTER:
 		type = "MASTER";
@@ -311,17 +284,13 @@ Entry		parent;
 		type = "CACHE";
 		break;
 	}
-
 	if (parent != NULLENTRY)
 		version = parent->e_edbversion;
 	else
 		version = new_version();
-
 	sprintf(hbuf, "%s\n%s\n", type, version);
-
 	newheader.dptr = hbuf;
 	newheader.dsize = strlen(newheader.dptr) + 1;
-
 	if ((rc = gdbm_store(db, turbo_header_key, newheader, GDBM_REPLACE))
 			!= 0) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,

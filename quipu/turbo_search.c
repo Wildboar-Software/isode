@@ -120,16 +120,13 @@ void turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
 	Index			*pindex;
 
 	*ska->ska_einfo = NULLENTRYINFO;
-
 	if ( e->e_leaf )
 		return;
-
 	if ( e->e_children == NULLAVL ) {
 		search_refer( ska->ska_arg, e, ska->ska_local, ska->ska_refer,
 					  ska->ska_ismanager );
 		return;
 	}
-
 	dn = get_copy_dn( e );
 	if ( (pindex = get_sibling_index( dn )) == NULLINDEX ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("Cannot find sibling index") );
@@ -137,27 +134,21 @@ void turbo_sibling_search (Entry e, struct search_kid_arg *ska) {
 		return;
 	}
 	dn_free( dn );
-
 	g_size_normalizer = 1;
 	list = turbo_filterkids( e, ska->ska_arg->sra_filter, ska, pindex, 1 );
-
 	apply_sacl( &list, e, ska );
-
 	/* security error coming back */
 	if ( ska->ska_saclerror < 0 ) {
 		entryinfo_free( list, 0 );
 		return;
 	}
-
 	if ( *ska->ska_einfo == NULLENTRYINFO )
 		*ska->ska_einfo = list;
 	else if ( list != NULLENTRYINFO )
 		entryinfo_append( *ska->ska_einfo, list );
-
 	/* sizelimit already exceeded */
 	if ( ska->ska_saclerror > 0 )
 		return;
-
 	if ( ska->ska_arg->sra_searchaliases && pindex->i_nonlocalaliases
 			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ )
@@ -209,7 +200,6 @@ void turbo_subtree_search (Entry e, struct search_kid_arg *ska) {
 			!= (Entry *) 0 ) {
 		for ( tmp = pindex->i_nonlocalaliases; *tmp; tmp++ ) {
 			int	i;
-
 			i = th_prefix( (*ska->ska_local)->st_originalbase,
 						   (*tmp)->e_alias );
 			if ( i > 0 ) {
@@ -248,7 +238,6 @@ static EntryInfo *turbo_filterkids(
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("bad turbo_filterkids pars") );
 		return( NULLENTRYINFO );
 	}
-
 	switch ( f->flt_type ) {
 	case FILTER_ITEM:
 		return( turbo_item( e, &f->FUITEM, ska, pindex, toplevel ) );
@@ -356,7 +345,6 @@ static int build_indexnode (Index_node *node, Index_node *bignode) {
 					high = mid - 1;
 				else
 					break;  /* found a duplicate */
-
 				mid = (low + high) / 2;
 			}
 			if ( bignode->in_entries[mid] == tmp1 )
@@ -376,7 +364,6 @@ static int build_indexnode (Index_node *node, Index_node *bignode) {
 			if ( dup )
 				continue;
 		}
-
 		/*
 		 * Realloc double the space we got last time.  This may waste
 		 * some space in the index, but it speeds things up, and cuts
@@ -444,7 +431,6 @@ static EntryInfo *turbo_item(
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("can't find index") );
 		return( NULLENTRYINFO );
 	}
-
 	eilist = NULLENTRYINFO;
 	g_ska = ska;
 	switch ( f->fi_type ) {
@@ -478,7 +464,6 @@ static EntryInfo *turbo_item(
 		 * now traverse the index (smartly) and build a giant
 		 * Index_node to be used below
 		 */
-
 		node = new_indexnode();
 		g_stopearly = 0;
 		avl_prefixapply(pindex[i].i_sroot,
@@ -516,13 +501,11 @@ static EntryInfo *turbo_item(
 			theindex = pindex[i].i_rroot;
 			thestring =
 				strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct);
-
 			/* no final substring so use initial */
 		} else if (f->UNSUB.fi_sub_final == NULLAV) {
 			theindex = pindex[i].i_root;
 			thestring =
 				strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
-
 			/* otherwise, use whichever is longest */
 		} else {
 			int	flen, ilen;
@@ -543,7 +526,6 @@ static EntryInfo *turbo_item(
 			len = telstrlen(thestring);
 		else
 			len = strlen(thestring);
-
 		node = new_indexnode();
 		g_stopearly = toplevel;	/* signifies top level or OR filter */
 		g_count = size * g_size_normalizer;
@@ -562,7 +544,6 @@ static EntryInfo *turbo_item(
 							build_indexnode, (caddr_t) node,
 							substring_prefix_case_cmp, (caddr_t)(size_t)len, NOTOK);
 		}
-
 		if (node->in_num == 0) {
 			free((char *) node);
 			break;
@@ -599,19 +580,16 @@ static EntryInfo *turbo_and(
 	for ( ; f != NULLFILTER; f = f->flt_next )
 		if ( optimized_filter( f ) )
 			break;
-
 	if ( f == NULLFILTER ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS,
 			  ("turbo_and - filter has no optimized component") );
 		return( NULLENTRYINFO );
 	}
-
 	/*
 	 * the level below takes care of making sure that the entries
 	 * selected match every component of the filter, not just this
 	 * one.
 	 */
-
 	return( turbo_filterkids( e, f, ska, pindex, 1 ) );
 }
 
@@ -663,14 +641,11 @@ static EntryInfo *eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 				break;
 			}
 		}
-
 		entryinfo_free(b, 0);
 		if ( rtail != NULLENTRYINFO )
 			rtail->ent_next = NULLENTRYINFO;
-
 		return( result );
 	}
-
 	if ( b == NULLENTRYINFO ) {
 		while ( a != NULLENTRYINFO ) {
 			next = a->ent_next;
@@ -698,7 +673,6 @@ static EntryInfo *eis_union (EntryInfo *a, EntryInfo *b, int toplevel) {
 		b->ent_next = NULLENTRYINFO;
 		eis_merge(b, &result, toplevel);
 		b = next;
-
 		if (toplevel && size <= 0)
 			break;
 	}

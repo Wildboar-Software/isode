@@ -17,26 +17,19 @@ int	fpktlose (struct ftamblk *fsb, ...) {
 	va_list	ap;
 
 	va_start (ap, fsb);
-
 	fti = va_arg (ap, struct FTAMindication *);
 	reason = va_arg (ap, int);
-
 	if (fsb -> fsb_flags & FSB_INIT)
 		observer = EREF_IFPM, source = EREF_RFPM;
 	else
 		observer = EREF_RFPM, source = EREF_IFPM;
-
 	result = _ftamoops (fti, reason, 1, observer, source, ap);
-
 	va_end (ap);
-
 	if (fsb -> fsb_fd == NOTOK)
 		return result;
-
 	FAbortRequestAux (fsb, type_FTAM_PDU_f__p__abort__request,
 					  FACTION_PERM, fti -> fti_abort.fta_diags, 1,
 					  &ftis);
-
 	return result;
 }
 #else
@@ -54,16 +47,11 @@ int	ftamlose (struct FTAMindication *fti, ...) {
 			result;
 
 	va_list	ap;
-
 	va_start (ap, fti);
-
 	reason = va_arg (ap, int);
 	fatal = va_arg (ap, int);
-
 	result = _ftamoops (fti, reason, fatal, EREF_NONE, EREF_NONE, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -83,18 +71,13 @@ int	ftamoops (struct FTAMindication *fti, ...) {
 			source;
 
 	va_list ap;
-
 	va_start (ap, fti);
-
 	reason = va_arg (ap, int);
 	fatal = va_arg (ap, int);
 	observer = va_arg (ap, int);
 	source = va_arg (ap, int);
-
 	result = _ftamoops (fti, reason, fatal, source, observer, ap);
-
 	va_end (ap);
-
 	return result;
 }
 
@@ -108,15 +91,12 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 		bzero ((char *) fti, sizeof *fti);
 		fti -> fti_type = FTI_ABORT;
 		fta = &fti -> fti_abort;
-
 		what = va_arg (ap, char *);
 		fmt = va_arg (ap, char *);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		fta -> fta_peer = 0;
 		fta -> fta_action = fatal ? FACTION_PERM : FACTION_TRANS;
-
 		ftd = &fta -> fta_diags[0];
 		ftd -> ftd_type = fatal ? DIAG_PERM : DIAG_TRANS;
 		ftd -> ftd_identifier = reason;
@@ -124,10 +104,8 @@ static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int obs
 		ftd -> ftd_source = source;
 		ftd -> ftd_delay = DIAG_NODELAY;
 		copyFTAMdata (buffer, bp - buffer, ftd);
-
 		fta -> fta_ndiag = 1;
 	}
-
 	return NOTOK;
 }
 #else

@@ -59,11 +59,9 @@ static int	ot_compar (const void *ap, const void *ab) {
 				|| !((*b) -> ot_access & OT_XXX))) {
 		OID	oid = (*a) -> ot_name;
 		unsigned int *ip = oid -> oid_elements;
-
 		/* XXX: 0.0 is a special case */
 		if (oid -> oid_nelem == 2 && ip[0] == 0 && ip[1] == 0)
 			return 0;
-
 		if (PY_pepy[0])
 			sprintf (PY_pepy + strlen (PY_pepy), ", ");
 		else
@@ -72,7 +70,6 @@ static int	ot_compar (const void *ap, const void *ab) {
 				 (*a) -> ot_text, (*b) -> ot_text);
 		(*a) -> ot_access |= OT_XXX, (*b) -> ot_access |= OT_XXX;
 	}
-
 	return i;
 }
 
@@ -95,28 +92,22 @@ int	readobjects (const char *file) {
 				 cp, sys_errname (errno));
 		return NOTOK;
 	}
-
 	if (once_only_Tbuckets == 0) {
 		bzero ((char *) Tbuckets, sizeof Tbuckets);
-
 		readsyntax ();
-
 		compile_flag = -1;
 		compile_heap1 = NULLOT,
 		compile_heap2 = NULL,
 		compile_heap3 = NULL,
 		compile_heap4 = NULL;
-
 		if (fgets (buffer, sizeof buffer, fp)
 				&& strncmp (buffer, "--* compiled",
 							sizeof "--* compiled" - 1) == 0) {
 			int	    i,
 					j,
 					k;
-
 			compile_flag = 1;
 			anchor = chain = NULL;
-
 			if (sscanf (buffer, "--* compiled %d %d %d", &i, &j, &k) == 3) {
 				if ((compile_heap1 = (OT) calloc ((unsigned) i,
 												  sizeof *compile_heap1))
@@ -125,13 +116,11 @@ int	readobjects (const char *file) {
 							 "out of memory allocating %d objects", i);
 					goto you_lose;
 				}
-
 				if ((compile_heap2 = malloc ((unsigned) j)) == NULL) {
 					sprintf (PY_pepy,
 							 "out of memory allocating %d octets", j);
 					goto you_lose;
 				}
-
 				if ((compile_heap3 = (unsigned int *)
 									 calloc ((unsigned) k, sizeof *compile_heap3))
 						== NULL) {
@@ -140,7 +129,6 @@ int	readobjects (const char *file) {
 							 k);
 					goto you_lose;
 				}
-
 				if ((compile_heap4 = (OID) calloc ((unsigned) i,
 												   sizeof *compile_heap4))
 						== NULL) {
@@ -157,7 +145,6 @@ int	readobjects (const char *file) {
 		} else {
 			compile_flag = 0;
 			rewind (fp);
-
 			for (ap = roots + (sizeof roots / sizeof roots[0]) - 1;
 					ap >= roots;
 					ap--) {
@@ -170,20 +157,17 @@ you_lose:
 				}
 			}
 		}
-
 		once_only_Tbuckets = 1;
 	} else if (compile_flag > 0) {
 		sprintf (PY_pepy, "only one compiled file is allowed");
 		goto you_lose;
 	}
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#' || strncmp (buffer, "--", 2) == 0)
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
 		strcpy (line, buffer);
-
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
 		case 0:
@@ -206,9 +190,7 @@ you_lose:
 			goto you_lose;
 		}
 	}
-
 	fclose (fp);
-
 	PY_pepy[0] = 0;
 	if (compile_flag < 1) {
 		int	again,
@@ -219,7 +201,6 @@ you_lose:
 		*ep;
 		OT     *base,
 		oz;
-
 		hit = 1, oz = NULLOT;
 		do {
 			if (!hit) {
@@ -227,9 +208,7 @@ you_lose:
 						 oz -> ot_text);
 				return NOTOK;
 			}
-
 			again = hit = 0;
-
 			for (i = 0; i < TBUCKETS; i++)
 				for (ot = Tbuckets[i];
 						ot && ot -> ot_text;
@@ -240,26 +219,20 @@ you_lose:
 						else
 							oz = ot, again = 1;
 		} while (again);
-
 		for (i = 0; i < TBUCKETS; i++)
 			for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain)
 				j++;
-
 		/* j > 1 ALWAYS */
-
 		if ((base = (OT *) malloc ((unsigned) (j * sizeof *base))) == NULL) {
 			sprintf (PY_pepy, "out of memory");
 			return NOTOK;
 		}
-
 		op = base;
 		for (i = 0; i < TBUCKETS; i++)
 			for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain)
 				*op++ = ot;
 		ep = op;
-
 		qsort ((char *) base, j, sizeof *base, (IFP)ot_compar);
-
 		op = base;
 		anchor = ot = *op++;
 		while (op < ep) {
@@ -267,14 +240,12 @@ you_lose:
 			ot = *op++;
 		}
 		(chain = ot) -> ot_next = NULL;
-
 		free ((char *) base);
 	} else {
 		for (ot = anchor; ot; ot = ot -> ot_next) {
 			int	    i;
 			unsigned int *ip;
 			OID	    oid;
-
 			if ((i = str2elem (ot -> ot_id, ip = compile_heap3)) < 1
 					|| ip[0] > 2
 					|| (i > 1 && ip[0] < 2 && ip[1] > 39)) {
@@ -286,14 +257,11 @@ you_lose:
 			compile_heap3 += i + 1;
 			oid = compile_heap4++;
 			oid -> oid_elements = ip, oid -> oid_nelem = i;
-
 			ot -> ot_name = oid;
 		}
-
 		if (add_objects_aux () == NOTOK)
 			return NOTOK;
 	}
-
 #ifdef	notdef
 #ifdef	DEBUG
 	dump_objects_by_tree ();
@@ -357,9 +325,7 @@ static int read_type (char **vec) {
 	Tbuckets[i] = ot;
 	chain -> ot_next = ot;
 	chain = ot;
-
 	goto get_rest;
-
 not_compiled:
 	;
 	if (text2obj (*vec)) {
@@ -377,7 +343,6 @@ not_compiled:
 	}
 	ot -> ot_chain = Tbuckets[i = THASH (ot -> ot_text)];
 	Tbuckets[i] = ot;
-
 get_rest:
 	;
 	if ((ot -> ot_syntax = text2syn (*vec)) == NULL
@@ -441,7 +406,6 @@ static int  add_objects_aux (void) {
 
 	for (ot = anchor; ot; ot = ot -> ot_next) {
 		OIDentifier oids;
-
 		if (ot -> ot_name -> oid_nelem <= 1)
 			continue;
 		ot2 = NULLOT;
@@ -473,7 +437,6 @@ OID	text2oid (const char *name) {
 
 	if ((name = strdup(name)) == NULL)
 		goto free_up;
-
 	for (cp = name + strlen (name) - 1; cp >= name; cp--)
 		if (!isdigit (*cp) && *cp != '.')
 			break;
@@ -482,7 +445,6 @@ OID	text2oid (const char *name) {
 		for (cp++; *cp; cp++)
 			if (*cp == '.')
 				break;
-
 	if (*cp == NULL)		/* name */
 		i = 0;
 	else if (cp == name) {	/* 1.3.6.1.2.1.1.1.0 */
@@ -491,7 +453,6 @@ OID	text2oid (const char *name) {
 	} else			/* name.numbers */
 		if ((i = str2elem (cp + 1, elements)) < 1)
 			goto free_up;
-
 	if (cp != name) {
 		*cp = 0;
 		if ((oid = resolve (name, NULLOT)) == NULLOID)
@@ -500,11 +461,9 @@ OID	text2oid (const char *name) {
 			new = oid;
 			goto free_up;
 		}
-
 		j = oid -> oid_nelem;
 	} else
 		oid = NULL, j = 0;
-
 	if ((new = (OID) malloc (sizeof *new)) == NULLOID) {
 		oid_free (oid);
 		goto free_up;
@@ -515,19 +474,15 @@ OID	text2oid (const char *name) {
 		free ((char *) new);
 	}
 	new -> oid_elements = ip, new -> oid_nelem = i + j;
-
 	if (oid) {
 		for (j = 0, jp = oid -> oid_elements; j < oid -> oid_nelem; j++, jp++)
 			*ip++ = *jp;
-
 		oid_free (oid);
 	}
 	if (i > 0)
 		for (j = 0, jp = elements; j < i; j++, jp++)
 			*ip++ = *jp;
-
 	new -> oid_nelem = ip - new -> oid_elements;
-
 free_up:
 	;
 	if (name)
@@ -544,7 +499,6 @@ static OID  resolve (const char *id, OT ot) {
 	OID   oid = &oids;
 
 	oid -> oid_elements = elements;
-
 	if (cp = index (id, '.'))
 		*cp = 0;
 	if (isdigit (*id)) {
@@ -559,13 +513,11 @@ static OID  resolve (const char *id, OT ot) {
 			*cp = '.';
 		if (ot2 == NULLOT || ot2 -> ot_name == NULLOID)
 			return NULLOID;
-
 		oid -> oid_nelem = ot2 -> ot_name -> oid_nelem;
 		bcopy ((char *) ot2 -> ot_name -> oid_elements,
 			   (char *) oid -> oid_elements,
 			   oid -> oid_nelem * sizeof *elements);
 	}
-
 	if (cp) {
 		if ((i = str2elem (++cp, oid -> oid_elements + oid -> oid_nelem)) < 1)
 			return NULLOID;
@@ -575,7 +527,6 @@ static OID  resolve (const char *id, OT ot) {
 			ot2 -> ot_children = ot;
 		}
 	}
-
 	return oid_cpy (oid);
 }
 
@@ -594,12 +545,10 @@ OT	name2obj (OID oid) {
 			>= (sizeof roots / sizeof roots[0])
 			|| (ot = text2obj (roots[i])) == NULL)
 		return NULLOT;
-
 	i = 0;
 	while (ot) {
 		if ((j = (nm = ot -> ot_name) -> oid_nelem) > oid -> oid_nelem)
 			return NULLOT;
-
 		if (bcmp ((char *) ip, (char *) (nm -> oid_elements + i),
 				  (j - i) * sizeof *ip))
 			ot = ot -> ot_sibling;
@@ -612,7 +561,6 @@ OT	name2obj (OID oid) {
 			ip = oid -> oid_elements + j, i = j;
 		}
 	}
-
 	return ot;
 }
 
@@ -773,15 +721,12 @@ void flobjects (FILE *fp) {
 	OT     ot;
 
 	fprintf (fp, "static OT _Tbuckets[%d] = {\n", TBUCKETS);
-
 	for (i = 0; i< TBUCKETS; i++)
 		if (ot = Tbuckets[i])
 			fprintf (fp, "    &_types[%d],\n", ot -> ot_views);
 		else
 			fprintf (fp, "    NULLOT,\n");
-
 	fprintf (fp, "};\n\n");
-
 	fprintf (fp, "extern	int	once_only_Tbuckets;\n\
 extern	OT	Tbuckets[];\n\
 \n\

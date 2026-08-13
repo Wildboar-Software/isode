@@ -22,7 +22,6 @@ static int bind_to_dsa (void) {
 	bindarg.dba_dn = username;
 	if (bindarg.dba_passwd_len = strlen (password))
 		strcpy (bindarg.dba_passwd, password);
-
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
 				   binderr.dbe_type == DBE_TYPE_SECURITY ? "security error"

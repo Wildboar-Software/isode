@@ -73,7 +73,6 @@ Entry entry_cpy (Entry entryptr)
 
 	if (entryptr == NULLENTRY)
 		return (NULLENTRY);
-
 	ptr = get_default_entry (entryptr->e_parent);
 	ptr->e_name = rdn_cpy (entryptr->e_name);
 	ptr->e_attributes = as_cpy (entryptr->e_attributes);
@@ -88,7 +87,6 @@ Entry entry_cpy (Entry entryptr)
 	ptr->e_data = entryptr->e_data;
 	ptr->e_lock = entryptr->e_lock;
 	ptr->e_allchildrenpresent = entryptr->e_allchildrenpresent;
-
 	/* rest must be set by calling unravel_attributes */
 	return (ptr);
 }

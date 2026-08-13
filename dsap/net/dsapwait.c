@@ -46,7 +46,6 @@ int DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
 			  ("DWaitRequest: unknown context id %d", ctx));
 		return (dsaplose (di, DA_APP_CONTEXT, "WAIT REQUEST"));
 	}
-
 	return (result);
 }
 
@@ -81,7 +80,6 @@ static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 		xtype = "provider reject";
 		break;
 	}
-
 	if (cc)
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("%s: cn=%d, op=%d %s (%s) %s",
@@ -90,7 +88,6 @@ static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("%s: cn=%d, op=%d %s (%s)",
 			   str, sd, op, xtype, err));
-
 	switch (roi->roi_type) {
 	case ROI_RESULT:
 		RORFREE (&roi->roi_result);
@@ -113,16 +110,13 @@ int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	struct RoSAPindication	* roi = &(roi_s);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapRespWaitRequest()"));
-
 	watch_dog("RoWaitRequest (DAP)");
 	result = RoWaitRequest(sd, secs, roi);
 	watch_dog_reset();
-
 	if (result == NOTOK) {
 		if (roi->roi_preject.rop_reason == ROS_TIMER) {
 			return (DONE);
 		}
-
 		if (ROS_FATAL (roi->roi_preject.rop_reason)) {
 			return (ros2dsaplose (di, "DapRespWaitRequest",
 								  &(roi->roi_preject)));
@@ -131,7 +125,6 @@ int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 								"DapRespWaitRequest: Non-fatal reject"));
 		}
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		return (DapDecodeInvoke (sd, &(roi->roi_invoke), di));
@@ -180,23 +173,19 @@ int DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	struct RoSAPindication	* roi = &(roi_s);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DspWaitRequest()"));
-
 	slack_watch_dog("RoWaitRequest (DSP)");
 	result = RoWaitRequest(sd, secs, roi);
 	watch_dog_reset();
-
 	if (result == NOTOK) {
 		if (roi->roi_preject.rop_reason == ROS_TIMER) {
 			return (DONE);
 		}
-
 		if (ROS_FATAL (roi->roi_preject.rop_reason)) {
 			return (ros2dsaplose (di, "DspRespWaitRequest", &(roi->roi_preject)));
 		} else {
 			return (dsapreject (di, DP_ROS, -1, NULLCP, "DspRespWaitRequest: Non-fatal reject"));
 		}
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		return (DspDecodeInvoke (sd, &(roi->roi_invoke), di));
@@ -239,16 +228,13 @@ int QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	struct RoSAPindication	* roi = &(roi_s);
 
 	DLOG (log_dsap,LLOG_TRACE,( "QspWaitRequest()"));
-
 	slack_watch_dog("RoWaitRequest (QSP)");
 	result = RoWaitRequest(sd, secs, roi);
 	watch_dog_reset();
-
 	if (result == NOTOK) {
 		if (roi->roi_preject.rop_reason == ROS_TIMER) {
 			return (DONE);
 		}
-
 		if (ROS_FATAL (roi->roi_preject.rop_reason)) {
 			return (ros2dsaplose (di, "QspRespWaitRequest",
 								  &(roi->roi_preject)));
@@ -257,7 +243,6 @@ int QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 								"QspRespWaitRequest: Non-fatal reject"));
 		}
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		return (QspDecodeInvoke (sd, &(roi->roi_invoke), di));
@@ -309,10 +294,8 @@ int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsapreject (di, DP_INVOKE, -1, NULLCP, "Link op"));
 	}
-
 	di->di_type = DI_INVOKE;
 	di->di_invoke.dx_id = rox->rox_id;
-
 	switch(arg->arg_type = rox->rox_op) {
 	case    OP_READ : {
 		struct ds_read_arg * dr;
@@ -384,7 +367,6 @@ int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsaplose (di, DP_INVOKE, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("DapDecodeInvoke(%d): Unable to parse argument",sd));
@@ -392,13 +374,11 @@ int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsapreject (di, DP_INVOKE, -1, NULLCP, "Undecodable argument"));
 	}
-
 	charg->cha_originator = NULLDN;
 	charg->cha_target = NULLDN;
 	charg->cha_domaininfo = NULLPE;
 	charg->cha_trace = NULLTRACEINFO;
 	charg->cha_timelimit = NULLCP;
-
 	ROXFREE (rox);
 	return(success);
 }
@@ -409,7 +389,6 @@ int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 
 	di->di_type = DI_INVOKE;
 	di->di_invoke.dx_id = rox->rox_id;
-
 	if (rox -> rox_nolinked == 0) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("DspDecodeInvoke: Linked operation (%d) %d",
@@ -489,7 +468,6 @@ int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsaplose (di, DP_INVOKE, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS,
 			  ("DspDecodeInvoke (%d): Unable to parse argument",sd));
@@ -497,11 +475,8 @@ int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsaplose (di, DP_INVOKE, NULLCP, "Undecodable argument"));
 	}
-
 	di->di_invoke.dx_arg.dca_dsarg.arg_type = rox->rox_op;
-
 	ROXFREE (rox);
-
 	return(success);
 }
 
@@ -511,7 +486,6 @@ int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 
 	di->di_type = DI_RESULT;
 	di->di_result.dr_id = ror->ror_id;
-
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *op;
@@ -584,18 +558,14 @@ int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspDecodeResult (%d): Unable to parse argument",sd));
 		DRejectRequest (sd, ROS_RRP_MISTYPED, ror->ror_id);
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Undecodable argument"));
 	}
-
 	di->di_result.dr_res.dcr_dsres.result_type = ror->ror_op;
-
 	RORFREE (ror);
-
 	return(success);
 }
 
@@ -609,10 +579,8 @@ int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsapreject (di, DP_INVOKE, -1, NULLCP, "Link op"));
 	}
-
 	di->di_type = DI_INVOKE;
 	di->di_invoke.dx_id = rox->rox_id;
-
 	switch(rox->rox_op) {
 	case    OP_READ : {
 		struct ds_op_arg *arg;
@@ -690,18 +658,14 @@ int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 		ROXFREE (rox);
 		return (dsaplose (di, DP_INVOKE, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspDecodeInvoke (%d): Unable to parse argument",sd));
 		DRejectRequest (sd, ROS_IP_MISTYPED, rox->rox_id);
 		ROXFREE (rox);
 		return (dsaplose (di, DP_INVOKE, NULLCP, "Undecodable argument"));
 	}
-
 	di->di_invoke.dx_arg.dca_dsarg.arg_type = rox->rox_op;
-
 	ROXFREE (rox);
-
 	return (success);
 }
 
@@ -711,7 +675,6 @@ int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 
 	di->di_type = DI_RESULT;
 	di->di_result.dr_id = ror->ror_id;
-
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *res;
@@ -790,16 +753,13 @@ int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspDecodeResult (%d): Unable to parse argument",sd));
 		DRejectRequest (sd, ROS_RRP_MISTYPED, ror->ror_id);
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Undecodable argument"));
 	}
-
 	di->di_result.dr_res.dcr_dsres.result_type = ror->ror_op;
-
 	RORFREE (ror);
 	return(success);
 }
@@ -812,10 +772,8 @@ int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ERR,roe->roe_id);
 #endif
-
 	di->di_type = DI_ERROR;
 	di->di_error.de_id = roe->roe_id;
-
 	switch(err->dse_type = roe->roe_error) {
 	case    DSE_ABANDON_FAILED : {
 		struct DSE_abandon_fail * de;
@@ -883,14 +841,12 @@ int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 		ROEFREE (roe);
 		return (dsaplose (di, DP_ERROR, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DDecodeError (%d): Unable to parse argument",sd));
 		DRejectRequest (sd, ROS_RRP_MISTYPED, roe->roe_id);
 		ROEFREE (roe);
 		return (dsaplose (di, DP_ERROR, NULLCP, "Undecodable argument"));
 	}
-
 	ROEFREE (roe);
 	return(success);
 }
@@ -905,13 +861,10 @@ int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
 		return (ronot2dsaplose (di, "RoUnBindInit", rni));
 	}
 	watch_dog_reset();
-
 	if (acf->acf_ninfo != 0)
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Unbind has argument present! sd=%d", sd));
-
 	di->di_type = DI_FINISH;
 	di->di_finish.df_reason = acf->acf_reason;
-
 	return (OK);
 }
 
@@ -944,7 +897,6 @@ int watch_dog_final (
 #endif
 ) {
 	watchdogfinal = TRUE;
-
 	if (dsa_mode) {
 		watch_dog_where = "FINAL";
 		signal (SIGALRM, fn);
@@ -970,7 +922,6 @@ watch_dog_activate (int sd) {
 		}
 	} else
 		LLOG (log_dsap, LLOG_FATAL, ("Repeated lower level blocking in %s", watch_dog_where));
-
 	exit(-1);
 }
 
@@ -983,7 +934,6 @@ slack_watch_dog_activate (int sd) {
 	LLOG (log_dsap, LLOG_EXCEPTIONS,
 		  ("Watchdog: blocking in %s, trying again...",
 		   watch_dog_where));
-
 	watch_dog (watch_dog_where);
 }
 

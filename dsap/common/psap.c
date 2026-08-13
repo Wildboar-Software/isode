@@ -69,7 +69,6 @@ static void psap_print (PS ps, struct PSAPaddr *p, int format) {
 		ps_printf (ps, "%s", _paddr2str(p,NULLNA,-1));
 	else
 		ps_printf (ps, "%s", paddr2str(p,NULLNA));
-
 }
 
 void psap_syntax (void) {

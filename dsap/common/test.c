@@ -18,7 +18,6 @@ int main (int argc, char **argv) {
 	char *oidtable = "oidtable";
 
 	isodetailor (myname = *argv, 1);
-
 	while((opt = getopt(argc, argv, "o:d")) != EOF)
 		switch (opt) {
 		case 'o':
@@ -36,41 +35,32 @@ int main (int argc, char **argv) {
 		}
 	argc -= optind;
 	argv += optind;
-
 	quipu_syntaxes ();
 	if (load_oid_table (oidtable) == NOTOK) {
 		fprintf (stderr, "%s: can't load oidtable %s\n",
 				 myname, oidtable);
 		exit (1);
 	}
-
 	parse_line = 0;
 	parse_error ("Attribute parser testing tool");
-
 	if (argc > 0) {
 		while (argc-- > 0)
 			do_parse (*argv++);
 	} else
 		for (;;) {
 			fprintf (stderr,"-> ");
-
 			if ((buffer = _getline(stdin)) == NULLCP)
 				break;
-
 			if (*buffer == 'q' && strlen(buffer) == 1)
 				break;
-
 			do_parse (buffer);
 		}
-
 #ifdef DEBUG
 	free_oid_table();
 	tailorfree();
 	free_isode_alias();
 #endif
-
 	exit (0);
-
 }
 
 int do_parse (char *str) {
@@ -82,11 +72,8 @@ int do_parse (char *str) {
 	extern PS _opt;
 
 	parse_status = 0;
-
 	as2 = as_combine (NULLATTR,TidyString(str),FALSE);
-
 	as = as_cpy (as2);
-
 	if (as == NULLATTR) {
 		fprintf (stderr,"NULL value\n");
 		return;
@@ -95,56 +82,39 @@ int do_parse (char *str) {
 		fprintf (stderr,"parse error - non null as\n");
 		return;
 	}
-
 	if (encode_IF_Attribute (&pe, 0, 0, NULLCP, as) == NOTOK) {
 		fprintf (stderr,"encode problem [%s]\n", PY_pepy);
 		return;
 	}
-
 	pe2pl (_opt,pe);
-
 	as_free (as);
-
 	if (decode_IF_Attribute (pe, 1, NULLIP, NULLVP, &as) == NOTOK) {
 		fprintf (stderr,"decode problem [%s]\n", PY_pepy);
 		return;
 	}
-
 	ps_print (_opt,"READOUT:\n");
 	as_print (_opt,as,READOUT);
-
 	if (as_cmp (as,as2) != 0)
 		fprintf (stderr,"*** Compare/Copy problem ***\n");
-
 	ps_print (_opt,"EDBOUT:\n");
 	as_print (_opt,as2,EDBOUT);
-
 	if (ps == NULL
 			&& ((ps = ps_alloc (str_open)) == NULLPS)
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		fprintf (stderr,"*** test Internal error ***\n");
 		return;
 	}
-
 	as_print (ps,as2,EDBOUT);
-
 	as_free (as2);
 	pe = NULLPE;
-
 	/* remove \n */
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	parse_status = 0;
-
 	quipu_faststart = TRUE;
-
 	as2 = as_combine (NULLATTR,ps->ps_base,FALSE);
-
 	quipu_faststart = FALSE;
-
 	if (as2 == NULLATTR) {
 		fprintf (stderr,"NULL value from 2nd parse\n");
 		return;
@@ -153,7 +123,6 @@ int do_parse (char *str) {
 		fprintf (stderr,"parse error 2nd time - non null as\n");
 		return;
 	}
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 }

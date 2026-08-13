@@ -32,14 +32,12 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 	Entry		  te = NULLENTRY;
 
 	DLOG (log_dsap,LLOG_TRACE,("get_dsa_info()"));
-
 	if (dn_in_dnseq(dn, dn_stack)) {
 		LLOG (log_dsap,LLOG_TRACE,("get_dsa_info - loop detected"));
 		err->dse_type = DSE_SERVICEERROR;
 		err->dse_un.dse_un_service.DSE_sv_problem = DSE_SV_LOOPDETECT;
 		return(DS_X500_ERROR);
 	}
-
 	/* if asking about me, use my cached entry */
 	if (dn_cmp (dn,mydsadn) == 0) {
 		LLOG (log_dsap,LLOG_NOTICE,("get_dsa_info - referring to self :-)"));
@@ -47,7 +45,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 		err->dse_un.dse_un_service.DSE_sv_problem = DSE_SV_DITERROR;
 		return(DS_X500_ERROR);
 	}
-
 	(*di_p) = di_alloc();
 	(*di_p)->di_type = DI_TASK;
 	(*di_p)->di_dn = dn_cpy(dn);
@@ -55,7 +52,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 	(*di_p)->di_reftype = RT_SUBORDINATE;
 	(*di_p)->di_rdn_resolved = CR_RDNRESOLVED_NOTDEFINED;
 	(*di_p)->di_aliasedRDNs = CR_NOALIASEDRDNS;
-
 	/*
 	*  Check for a GetDSAInfo operation already in the pipeline.
 	*/
@@ -63,14 +59,11 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 		if(dn_cmp(dn, di_tmp->di_dn) == 0) {
 			(*di_p)->di_state = DI_DEFERRED;
 			(*di_p)->di_entry = NULLENTRY;
-
 			/* link to the performing operation */
 			(*di_p)->di_perform = di_tmp->di_perform;
-
 			/* Add to wake list leaving global block first to be woken */
 			(*di_p)->di_wake_next = di_tmp->di_wake_next;
 			di_tmp->di_wake_next = (*di_p);
-
 			DLOG(log_dsap, LLOG_DEBUG, ("Found global deferred di_block:"));
 #ifdef DEBUG
 			di_list_log((*di_p));
@@ -78,7 +71,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 			return(DS_CONTINUE);
 		}
 	}
-
 	if ((res = really_find_entry(dn, TRUE, dn_stack, FALSE, &te,
 								 err, &(di_lookup))) == DS_OK)
 		/* is it really OK ??? */
@@ -95,7 +87,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 			(*di_p)->di_entry = te;
 			(*di_p)->di_entry->e_refcount++;
 		}
-
 	switch (res) {
 	case DS_OK:
 		/* really_find_entry has found the entry and placed it in di_entry */
@@ -126,7 +117,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 			err->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNABLETOPROCEED;
 			return(DS_X500_ERROR);
 		}
-
 		if(oper_chain(on) != OK) {
 			/* Flake out screaming */
 			LLOG(log_dsap, LLOG_TRACE, ("send_op failed for get_dsa_info"));
@@ -136,7 +126,6 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 			err->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNABLETOPROCEED;
 			return(DS_X500_ERROR);
 		}
-
 		di_tmp = di_alloc();
 		di_tmp->di_dn = dn_cpy(dn);
 		DLOG(log_dsap, LLOG_DEBUG, ("get_dsa_info allocates di_block with dn[%x]", di_tmp->di_dn));
@@ -144,17 +133,13 @@ int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di
 		di_tmp->di_type = DI_GLOBAL;
 		di_tmp->di_perform = on;
 		on->on_wake_list = di_tmp;	/* wake globals first */
-
 		(*di_p)->di_state = DI_DEFERRED;
 		(*di_p)->di_perform = on;
-
 		/* Add to wake list leaving global block first to be woken */
 		(*di_p)->di_wake_next = NULL_DI_BLOCK;
 		di_tmp->di_wake_next = (*di_p);
-
 		di_tmp->di_next = deferred_dis;
 		deferred_dis = di_tmp;
-
 		DLOG(log_dsap, LLOG_DEBUG, ("gdi DS_CONT: generated:"));
 #ifdef DEBUG
 		di_list_log((*di_p));
@@ -187,12 +172,10 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 	Entry		  cache_dsp_entry();
 
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup()"));
-
 	/*
 	*  Cache the entry returned, flake out if it is not unravellable,
 	*  otherwise grab a reference to the unravelled entry.
 	*/
-
 	ent_res = &(on->on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry);
 	if((di_ent = cache_dsp_entry (ent_res)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
@@ -204,9 +187,7 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 		dsa_info_error_wakeup(on);
 		return;
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup - cached dsa_info"));
-
 	/*
 	*  First block on the wake up list should be the global marker.
 	*  Verify this and remove it.
@@ -218,7 +199,6 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 		for(di = deferred_dis; di != NULL_DI_BLOCK; di=(*di_p)) {
 			if(di == on->on_wake_list)
 				break;
-
 			di_p = &(di->di_next);
 		}
 		if(di == NULL_DI_BLOCK) {
@@ -227,15 +207,12 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 			(*di_p)=di->di_next;
 		}
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup - dealt with global block"));
-
 	for(di = on->on_wake_list->di_wake_next; di != NULL_DI_BLOCK; di = next_di) {
 		next_di = di->di_wake_next;
 		di->di_state = DI_COMPLETE;
 		di->di_entry = di_ent;
 		di_ent->e_refcount++;
-
 		switch(di->di_type) {
 		case DI_OPERATION:
 			if (di->di_oper == NULLOPER) {
@@ -261,15 +238,12 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 			return;
 		}
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup - woke all blocks"));
-
 	/*
 	*  Everthing should have been woken up by now so the di_blocks on
 	*  the wake list and the operation itself can be extracted.
 	*/
 	di_free(on->on_wake_list);
-
 	oper_extract(on);
 }
 
@@ -283,7 +257,6 @@ void dsa_info_error_wakeup (struct oper_act *on) {
 	*    2) A referral error - follow the referral;
 	*    3) An error with the operation itself;
 	*/
-
 	switch(err->dse_type) {
 	case DSE_NOERROR:
 		LLOG(log_dsap, LLOG_TRACE, ("dsa_info_error_wakeup - No Error!"));
@@ -332,17 +305,14 @@ void dsa_info_fail_wakeup (struct oper_act *on) {
 			   (caddr_t) on -> on_req.dca_dsarg.arg_rd.rda_object);
 		log_ds_error (& on -> on_resp.di_error.de_err);
 	}
-
 	if(on->on_dsas) {
 		if(oper_chain(on) == OK)
 			return;
 	}
-
 	if(on->on_dsas) {
 		/* oper_chain must be awaiting deferred di_blocks */
 		return;
 	}
-
 	/*
 	*  There is nowhere left to chain this operation to so no way to get
 	*  the dsa info required. Walk through the wake up list extracting,
@@ -360,7 +330,6 @@ char *get_entry_passwd (Attr_Sequence as) {
 	if (at->attr_value->avseq_av.av_struct == NULL)
 		return (NULLCP);
 	return( (char *)at->attr_value->avseq_av.av_struct);
-
 }
 
 int make_dsa_bind_arg (struct ds_bind_arg *arg) {
@@ -372,7 +341,6 @@ int make_dsa_bind_arg (struct ds_bind_arg *arg) {
 	arg->dba_auth_type = DBA_AUTH_SIMPLE;
 	arg->dba_time1 = NULLCP;
 	arg->dba_time2 = NULLCP;
-
 	if ((my_entry = local_find_entry (mydsadn ,TRUE)) == NULLENTRY) {
 		arg->dba_dn = NULLDN;
 		arg->dba_auth_type = DBA_AUTH_NONE;
@@ -393,13 +361,10 @@ int make_dsa_bind_arg (struct ds_bind_arg *arg) {
 #ifdef OSISEC_DSP
 	extern struct SecurityServices *dsap_security;
 	struct Nonce *nonce;
-
 	if (dsap_security && dsap_security->serv_mknonce) {
 		arg->dba_version = DBA_VERSION_V1988;
 		arg->dba_auth_type = DBA_AUTH_STRONG;
-
 		nonce = (dsap_security->serv_mknonce)((struct Nonce *) 0);
-
 		arg->dba_time1 = nonce->non_time1;
 		arg->dba_time2 = nonce->non_time2;
 		arg->dba_r1.n_bits = nonce->non_r1.n_bits;
@@ -410,7 +375,6 @@ int make_dsa_bind_arg (struct ds_bind_arg *arg) {
 		arg->dba_alg.p_type = nonce->non_alg.p_type;
 		arg->dba_alg.asn = nonce->non_alg.asn;
 		free((char *) nonce);
-
 		if (dsap_security->serv_sign)
 			arg->dba_sig = (dsap_security->serv_sign)((char*)arg,
 						   _ZTokenToSignDAS, &_ZDAS_mod);
@@ -437,26 +401,20 @@ struct oper_act *make_get_dsa_info_op (DN dn, struct di_block *di) {
 	struct ds_read_arg	* arg;
 
 	DLOG(log_dsap, LLOG_TRACE, ("make_get_dsa_info_op"));
-
 	if((on_tmp = oper_alloc()) == NULLOPER) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("make_get_dsa_info_op - out of memory"));
 		return(NULLOPER);
 	}
-
 	on_tmp->on_type = ON_TYPE_GET_DSA_INFO;
 	set_my_chain_args(&(on_tmp->on_req.dca_charg), dn);
-
 	on_tmp->on_req.dca_dsarg.arg_type = OP_READ;
 	arg = &(on_tmp->on_req.dca_dsarg.arg_rd);
-
 	set_my_common_args(&(arg->rda_common));
 	arg->rda_common.ca_servicecontrol.svc_prio = SVC_PRIO_HIGH;
-
 	arg->rda_object = dn_cpy(dn);			/* The important bit */
 	arg->rda_eis.eis_allattributes = TRUE;
 	arg->rda_eis.eis_select = NULLATTR;
 	arg->rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 	on_tmp->on_dsas = di;
 	for(di_tmp=di; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 		di_tmp->di_type = DI_OPERATION;
@@ -511,23 +469,19 @@ int quipu_ctx_supported (Entry ptr) {
 	/* return 3 if "ptr" represents a dsa with quipu context */
 	/* return 5 if "ptr" represents a quipu dsa with Internet context */
 	/* return -1 if "ptr" represents a DAP only DSA */
-
 	/* Should we use QuipuDSP to a non-Quipu DSA, if is claims
 	 * to support it - currently implemented as "NO" ?
 	     */
-
 	if (dsp == NULLOID) {
 		/* will both be null first time around... */
 		dsp = oid_cpy (DIR_SYSTEM_AC);
 		quipu_dsp = oid_cpy (DIR_QUIPU_AC);
 		internet_dsp = oid_cpy (DIR_INTERNET_AC);
 	}
-
 	if (!check_in_oc (quipu_dsa_oid,ptr->e_oc)) {
 		/* not a Quipu DSA */
 		if (( as = entry_find_type (ptr,at_applctx)) == NULLATTR)
 			return 0;
-
 		for (avs=as->attr_value; avs != NULLAV; avs=avs->avseq_next) {
 			if (oid_cmp ((OID)avs->avseq_av.av_struct, internet_dsp) == 0 )
 				return 4;
@@ -536,13 +490,10 @@ int quipu_ctx_supported (Entry ptr) {
 		}
 		if (dap_only)
 			return -1;
-
 		return 0;
 	}
-
 	if (( as = entry_find_type (ptr,at_applctx)) == NULLATTR)
 		return 1;
-
 	for (avs=as->attr_value; avs != NULLAV; avs=avs->avseq_next) {
 		if ((oid_cmp ((OID)avs->avseq_av.av_struct, quipu_dsp) == 0 ))
 			res += 3;
@@ -551,10 +502,8 @@ int quipu_ctx_supported (Entry ptr) {
 		else if (oid_cmp ((OID)avs->avseq_av.av_struct, dsp) == 0 )
 			dap_only = FALSE;
 	}
-
 	if (dap_only)
 		return -1;
-
 	return res;
 }
 
@@ -564,37 +513,27 @@ int quipu_version_7 (Entry eptr) {
 	char * v;
 
 	/* return true is the string suggests quipu version 6.8 or more */
-
 	/* Format of string is typically...
 	 * quipu 6.8 #69 (trellis) of Thu Nov 15 15:58:24 GMT 1990
 	 */
-
 	if (!eptr || !eptr->e_dsainfo)
 		return FALSE;
-
 	if (((v = eptr->e_dsainfo->dsa_version) == NULLCP) ||
 			((p = index (v,' ')) == NULLCP ) ||
 			((t = index (p,'.')) == NULLCP ))
 		return FALSE;
-
 	if ((s = index (t,' ')) != NULLCP )
 		*s = 0;
-
 	*p++ = 0;
 	*t++ = 0;
-
 	vrsn = ( atoi (p) * 10 ) + atoi (t);
-
 	if ((strcmp (v,"quipu") == 0) && (vrsn >= 68))
 		res = TRUE;
 	else
 		res = FALSE;
-
 	*--p = ' ';
 	*--t = '.';
-
 	if (s)
 		*s = ' ';
-
 	return res;
 }

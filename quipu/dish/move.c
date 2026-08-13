@@ -67,7 +67,6 @@ void call_moveto (int argc, char **argv) {
 		dn_print (RPS, fixed_pos, EDBOUT);
 		ps_print (RPS, "\n");
 	}
-
 }
 
 void consolidate_move (void) {
@@ -94,24 +93,19 @@ int move (char *arg) {
 	char *		ptr;
 	char		alias = FALSE;
 	int		len;
-
 	print_parse_errors = FALSE;
-
 	if (*arg == '-') {
 		print_parse_errors = TRUE;
 		return (NOTOK);	   /* can't be a move if it starts with a minus */
 	}
-
 	if (*arg == '+')
 		arg++;  /* old style call */
-
 	ptr = arg;
 	while (*ptr != 0) {
 		if (! isdigit (*ptr))
 			break;
 		ptr++;
 	}
-
 	if (*ptr == 0) {
 		/* sequence move */
 		dn_free (dn);
@@ -123,17 +117,14 @@ int move (char *arg) {
 		} else
 			return (OK);
 	}
-
 	len = strlen(arg);
 	if ((arg[0] == '<') && ( arg[len-1] == '>')) {
 		dn_free(dn);
 		dn = str2dn(arg);
 		return (OK);
 	}
-
 	if ((ptr = index (arg,'@')) != NULLCP) {
 		*ptr = 0;
-
 		if (*arg == 0) {
 			/* from root */
 			dn_free (dn);
@@ -151,12 +142,10 @@ int move (char *arg) {
 		dn_free (dn);
 		dn = dn_cpy (fixed_pos);
 	}
-
 	if (strcmp (arg,"..") == 0) {
 		do {
 			DN              dnptr;
 			DN              trail;
-
 			if (dn == NULLDN) {
 				print_parse_errors = TRUE;
 				ps_print (OPT, "Can't go back past root\n");
@@ -168,7 +157,6 @@ int move (char *arg) {
 			} else {
 				for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 					trail = dnptr;
-
 				dn_comp_free (dnptr);
 				trail->dn_parent = NULLDN;
 			}
@@ -181,10 +169,8 @@ int move (char *arg) {
 				*ptr = 0;
 		} while (strcmp (arg,"..") == 0);
 	}
-
 	if (ptr != NULL)
 		*ptr = '@';
-
 	if ((tmpdn = str2dn_aux (arg,&alias)) != NULLDN) {
 		if (dn == NULLDN)
 			dn = tmpdn;
@@ -201,7 +187,6 @@ int move (char *arg) {
 		print_parse_errors = TRUE;
 		return (NOTOK);
 	}
-
 }
 
 int test_move_dn (void) {
@@ -209,9 +194,7 @@ int test_move_dn (void) {
 
 	/* Might do something else here... */
 	/* current policy is to read the entry and cache it ! */
-
 	if (dn == NULLDN)
 		return (TRUE);  /* assume root exists - read will fail */
-
 	return (read_cache (1,&name));
 }

@@ -133,7 +133,6 @@ static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 	struct dsa_control * new_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
 
 	new_item->dsa_control_option = dsa_c_ptr->dsa_control_option ;
-
 	switch (dsa_c_ptr->dsa_control_option) {
 	case (CONTROL_LOCKDSA): {
 		struct optional_dn * tmp_opt_dn = (struct optional_dn *)
@@ -261,7 +260,6 @@ struct dsa_control *str2dsa_control (char *str) {
 
 static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *item) {
 	/*	format: number $ string */
-
 	char * ptr_to_num, *ptr_to_string ;
 
 	ptr_to_num = str ;
@@ -305,7 +303,6 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 	case(CONTROL_REFRESH): {
 		struct optional_dn * tmp_opt_dn = (struct optional_dn *)
 										  calloc (1, sizeof (struct optional_dn)) ;
-
 		item->dsa_control_option = CONTROL_REFRESH ;
 		while ((*ptr_to_string != NULL) && (*ptr_to_string != '$'))
 			ptr_to_string++ ;
@@ -349,7 +346,6 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 	}
 	case(CONTROL_RESYNCH): {
 		struct optional_dn * tmp_opt_dn = (struct optional_dn *) malloc (sizeof (struct optional_dn)) ;
-
 		item->dsa_control_option = CONTROL_RESYNCH ;
 		while (! ((*ptr_to_string == NULL) || (*ptr_to_string == '$')))
 			ptr_to_string++ ;
@@ -459,10 +455,8 @@ void quipu_call_print(PS ps, struct quipu_call *item, int format)
 	/* When the DSA exits, we do not want to print this out */
 	/* as it really is irrelevant info, not to be reloaded */
 	/* upon start up. */
-
 	if (format == EDBOUT)
 		return ;
-
 	if (item->protocol == PROTOCOL_DAP) {
 		ps_printf(ps, "\tProtocol = DAP\n") ;
 	} else if (item->protocol == PROTOCOL_DSP) {
@@ -472,9 +466,7 @@ void quipu_call_print(PS ps, struct quipu_call *item, int format)
 	} else {
 		ps_printf(ps, "\tProtocol = Internet DSP\n") ;
 	}
-
 	ps_printf(ps, "\tAssociation ID = %d\n", item->assoc_id) ;
-
 	switch (item->authorizationLevel->parm) {
 	case(AUTHLEVEL_NONE): {
 		ps_print(ps, "\tAuth Level = NONE\n") ;
@@ -497,31 +489,25 @@ void quipu_call_print(PS ps, struct quipu_call *item, int format)
 		break ;
 	}
 	}
-
 	if (item->initiated_by_dsa == TRUE) {
 		ps_print(ps, "\tInitialised by DSA.\n") ;
 	} else {
 		ps_print(ps, "\tNot initialised by DSA.\n") ;
 	}
-
 	ps_print(ps, "\tUsers DN = ") ;
 	dn_print(ps, item->usersDN, format) ;
 	ps_print(ps, "\n") ;
-
 	ps_printf(ps, "\tNet Address: %s\n", item->net_address) ;
 	ps_print(ps, "\tStart: ") ;
 	utcprint(ps, item->start_time, format) ;
-
 	ps_print(ps, "   Finish: ") ;
 	if (item->finish_time) {
 		utcprint(ps, item->finish_time, format) ;
 	} else {
 		ps_print(ps, " <unknown>") ;
 	}
-
 	ps_print(ps, "\n\tPending Operations:\n") ;
 	op_list_print(ps, item->pending_ops, format) ;
-
 	ps_print(ps, "\tInvoked Operations:\n") ;
 	op_list_print(ps, item->invoked_ops, format) ;
 }
@@ -586,16 +572,13 @@ quipu_call_cpy (struct quipu_call *item) {
 	struct quipu_call * tmp_item = (struct quipu_call *) 0 ;
 
 	tmp_item = (struct quipu_call *) calloc (1, sizeof (struct quipu_call)) ;
-
 	tmp_item->protocol = item->protocol ;
 	tmp_item->assoc_id = item->assoc_id ;
 	if (item->authorizationLevel != (struct auth_level *) 0) {
 		tmp_item->authorizationLevel = (struct auth_level *) malloc (sizeof (struct auth_level)) ;
 		tmp_item->authorizationLevel->parm = item->authorizationLevel->parm ;
 	}
-
 	tmp_item->initiated_by_dsa = item->initiated_by_dsa ;
-
 	tmp_item->usersDN = dn_cpy(item->usersDN) ;
 	tmp_item->net_address = strdup(item->net_address) ;
 	tmp_item->start_time = strdup(item->start_time) ;
@@ -603,11 +586,9 @@ quipu_call_cpy (struct quipu_call *item) {
 		tmp_item->finish_time = strdup(item->finish_time) ;
 	else
 		item->finish_time = (char *) 0 ;
-
 	/*  tmp_item->net_address = strdup(item->net_address) ; */
 	tmp_item->pending_ops = op_list_cpy(item->pending_ops) ;
 	tmp_item->invoked_ops = op_list_cpy(item->invoked_ops) ;
-
 	return (tmp_item) ;
 }
 
@@ -620,12 +601,10 @@ op_list_cpy (struct op_list *item) {
 		tmp_item = (struct op_list *) malloc (sizeof (struct op_list)) ;
 		tmp_item->operation_list = ops_cpy(item->operation_list) ;
 		tmp_item->next = (struct op_list *) 0 ;
-
 		if (new_item == (struct op_list *) 0) {
 			new_item = tmp_item ;
 		} else {
 			struct op_list * tmp = new_item ;
-
 			while (tmp->next != (struct op_list * ) 0) {
 				tmp = tmp->next ;
 			}
@@ -643,7 +622,6 @@ ops_cpy (struct ops *item) {
 	tmp_item->invoke_id = item->invoke_id ;
 	tmp_item->operation_id = item->operation_id ;
 	tmp_item->base_object = dn_cpy(item->base_object) ;
-
 	if (item->start_time) {
 		tmp_item->start_time = strdup(item->start_time) ;
 	} else {
@@ -654,7 +632,6 @@ ops_cpy (struct ops *item) {
 	} else {
 		tmp_item->finish_time = (char *) 0 ;
 	}
-
 	/*  if (item->start_time)
 	  {
 	    tmp_item->start_time = malloc (strlen(item->start_time)+1) ;
@@ -687,18 +664,15 @@ chain_list_cpy (struct chain_list *item) {
 		tmp_item = (struct chain_list *) malloc (sizeof (struct chain_list)) ;
 		tmp_item->sub_chained_ops = sub_ch_list_cpy(item->sub_chained_ops) ;
 		tmp_item->next = (struct chain_list *) 0 ;
-
 		if (new_item == (struct chain_list *) 0) {
 			new_item = tmp_item ;
 		} else {
 			struct chain_list * tmp = new_item ;
-
 			while (tmp->next != (struct chain_list * ) 0) {
 				tmp = tmp->next ;
 			}
 			tmp->next = tmp_item ;
 		}
-
 		item = item->next ;
 	}
 	return (new_item) ;
@@ -721,16 +695,12 @@ void
 quipu_call_free (struct quipu_call *item_to_free) {
 	if (item_to_free->authorizationLevel)
 		auth_level_free(item_to_free->authorizationLevel) ;
-
 	if (item_to_free->usersDN)
 		dn_free(item_to_free->usersDN) ;
-
 	if (item_to_free->net_address)
 		free((char *)item_to_free->net_address) ;
-
 	if (item_to_free->start_time)
 		free((char *)item_to_free->start_time) ;
-
 	if (item_to_free->finish_time)
 		free((char *)item_to_free->finish_time) ;
 	/*
@@ -745,10 +715,8 @@ quipu_call_free (struct quipu_call *item_to_free) {
 	 */
 	if (item_to_free->pending_ops)
 		op_list_free(item_to_free->pending_ops) ;
-
 	if (item_to_free->invoked_ops)
 		op_list_free(item_to_free->invoked_ops) ;
-
 	free((char *)item_to_free) ;
 }
 
@@ -758,7 +726,6 @@ int op_list_free (struct op_list *elem) {
 	while (elem != (struct op_list *) 0) {
 		tmp_elem = elem ;
 		ops_free (tmp_elem->operation_list) ;
-
 		elem = tmp_elem->next ;
 		free ((char *)tmp_elem) ;
 	}
@@ -770,7 +737,6 @@ int ops_free (struct ops *elem) {
 		free((char *)elem->start_time) ;
 	if (elem->finish_time)
 		free((char *)elem->finish_time) ;
-
 	/*  if (elem->start_time)
 	    free((char *)elem->start_time) ;
 	  if (elem->finish_time)

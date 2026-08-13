@@ -51,7 +51,6 @@ void conn_dispatch (struct connection *cn) {
 			return;
 		}
 	}
-
 	switch(di->di_type) {
 	case DI_INVOKE:
 		if (task_invoke(cn, &(di->di_invoke)) != OK) {
@@ -87,20 +86,16 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Ping! We have a running_analysis to do...\n") ;
 #endif
-
 	/* SPT: Must do something in here for the other cases! */
 	if (di->di_type == DI_INVOKE) {
 		/* Move along the open_call_avs to find a matching address, DN and association ID */
-
 		tmp_avs = open_call_avs ;
-
 		if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 			fprintf(stderr, "dsa_wait.c: Hey, got a running analyse with no calls present. Error!\n") ;
 #endif
 			return ;
 		}
-
 		while (tmp_avs != (AV_Sequence) 0) {
 			if ((((struct quipu_call *)tmp_avs->avseq_av.av_struct)->assoc_id == cn->cn_start.cs_ds.ds_sd) &&
 					(((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time == (char *) 0)) {
@@ -109,18 +104,15 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 			}
 			tmp_avs = tmp_avs->avseq_next ;
 		}
-
 		if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 			fprintf(stderr, "We have no match here. Odd. Check...\n") ;
 #endif
 			return ;
 		}
-
 		/* Now we have the appropriate quipu_call structure, we can start filling out the op_list */
 		/* Note that we add them to the pending operations. Move them over to invoked operations */
 		/* in task_select() once they are chosen... */
-
 		/* Before that, move to the end of a possibly null op_list and add another op onto the end. */
 		if (((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops == (struct op_list *) 0) {
 			((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops =
@@ -129,17 +121,13 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 			tmp_op_list->operation_list = (struct ops *) calloc (1, sizeof(struct ops)) ;
 		} else {
 			tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops ;
-
 			while (tmp_op_list->next != (struct op_list *) 0)
 				tmp_op_list = tmp_op_list->next ;
-
 			tmp_op_list->next = (struct op_list *) calloc (1, sizeof (struct op_list)) ;
 			tmp_op_list = tmp_op_list->next ;
 			tmp_op_list->operation_list = (struct ops *) calloc (1, sizeof(struct ops)) ;
 		}
-
 		arg = &(di->di_invoke.dx_arg.dca_dsarg) ;
-
 		tmp_op_list->operation_list->operation_id = arg->arg_type ;
 		tmp_op_list->operation_list->invoke_id = di->di_invoke.dx_id ;
 		switch (arg->arg_type) {
@@ -190,14 +178,12 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 		tmp_op_list->operation_list->finish_time = (char *) 0 ;
 	} else if (di->di_type == DI_RESULT) {
 		tmp_avs = open_call_avs ;
-
 		if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 			fprintf(stderr, "dsa_wait.c: Hey, got a running analyse with no calls present. Error!\n") ;
 #endif
 			return ;
 		}
-
 		while (tmp_avs != (AV_Sequence) 0) {
 			if ((((struct quipu_call *)tmp_avs->avseq_av.av_struct)->assoc_id == cn->cn_ad) &&
 					(((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time == (char *) 0)) {
@@ -206,14 +192,12 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 			}
 			tmp_avs = tmp_avs->avseq_next ;
 		}
-
 		if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 			fprintf(stderr, "We have no match here. Odd. Check...\n") ;
 #endif
 			return ;
 		}
-
 		/* Before that, move to the end of a possibly null op_list and add another op onto the end. */
 		if (((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops == (struct op_list *) 0) {
 			((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops =
@@ -222,10 +206,8 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 			tmp_op_list->operation_list = (struct ops *) calloc (1, sizeof(struct ops)) ;
 		} else {
 			tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops ;
-
 			while (tmp_op_list->next != (struct op_list *) 0)
 				tmp_op_list = tmp_op_list->next ;
-
 			tmp_op_list->next = (struct op_list *) calloc (1, sizeof (struct op_list)) ;
 			tmp_op_list = tmp_op_list->next ;
 			tmp_op_list->operation_list = (struct ops *) calloc (1, sizeof(struct ops)) ;
@@ -240,7 +222,6 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 	} else if ((di->di_type == DI_FINISH) ||
 			   (di->di_type == DI_ABORT)) {
 		tmp_avs = open_call_avs ;
-
 		while (tmp_avs != (AV_Sequence) 0) {
 			if ((((struct quipu_call *)tmp_avs->avseq_av.av_struct)->assoc_id == cn->cn_ad) &&
 					(((struct quipu_call *)tmp_avs->avseq_av.av_struct)->finish_time == (char *) 0)) {
@@ -249,14 +230,12 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 			}
 			tmp_avs = tmp_avs->avseq_next ;
 		}
-
 		if (tmp_avs == (AV_Sequence) 0) {
 #ifdef SPT_DEBUG
 			fprintf(stderr, "We have no match here. Odd. Check...\n") ;
 #endif
 			return ;
 		}
-
 		/* Now fill out the finish time */
 		time(&timenow) ;
 		tm2ut(gmtime(&timenow), &ut) ;
@@ -264,7 +243,6 @@ static void running_analyse (struct connection *cn, struct DSAPindication *di) {
 #ifdef SPT_DEBUG
 		fprintf(stderr, "Finished Conn %d in conn_disp.c\n", cn->cn_ad) ;
 #endif
-
 	}
 #ifdef SPT_DEBUG
 	else {

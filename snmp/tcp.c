@@ -123,7 +123,6 @@ static int _read_tcp_stats ()
 
 	if (_read_snmp_stats ("tcp", &labels, &values, &len) != OK)
 		return NOTOK;
-
 	for (i = 0; i < len; i++) {
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
@@ -156,7 +155,6 @@ static int _read_tcp_stats ()
 		else if (!strcmp ("OutRsts", label))
 			tcpstat.tcps_orsts = value;
 	}
-
 	return OK;
 }
 #endif
@@ -183,11 +181,9 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = 0;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -198,7 +194,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 #ifndef LINUX
 	case tcpCurrEstab:
@@ -210,7 +205,6 @@ int	offset;
 	default:
 		if (quantum != lastq) {
 			lastq = quantum;
-
 #ifndef LINUX
 			if (getkmem (nl + N_TCPSTAT, (caddr_t) tcps, sizeof *tcps)
 					== NOTOK)
@@ -222,7 +216,6 @@ int	offset;
 		}
 		break;
 	}
-
 	switch (ifvar) {
 	case tcpRtoAlgorithm:
 #ifdef LINUX
@@ -241,7 +234,6 @@ int	offset;
 #else
 		return o_integer (oi, v, TCPTV_MIN * 100);	/* milliseconds */
 #endif
-
 #ifdef LINUX
 		return o_integer (oi, v, tcps -> tcps_rtomax);
 #else
@@ -257,7 +249,6 @@ int	offset;
 #else
 		return o_integer (oi, v, MXCN_NONE);
 #endif
-
 #if defined(LINUX) || defined(TCPTV_REXMTMAX)
 	case tcpActiveOpens:
 		return o_integer (oi, v, tcps -> tcps_connattempt);
@@ -274,7 +265,6 @@ int	offset;
 
 	case tcpCurrEstab:
 		return o_integer (oi, v, tcpConnections);
-
 #if defined(LINUX) || defined(TCPTV_REXMTMAX)
 	case tcpInSegs:
 		return o_integer (oi, v, tcps -> tcps_rcvtotal);
@@ -290,7 +280,6 @@ int	offset;
 	case tcpRetransSegs:
 		return o_integer (oi, v, tcps -> tcps_sndrexmitpack);
 #endif
-
 #ifdef	tcpInErrs
 	case tcpInErrs:
 #ifdef LINUX
@@ -303,7 +292,6 @@ int	offset;
 						  + tcps -> tcps_rcvshort);
 #endif
 #endif
-
 #ifdef LINUX
 #ifdef	tcpOutRsts
 	case tcpOutRsts:
@@ -355,41 +343,30 @@ static struct tcptab *_read_tcp_connections(int *len)
 	unsigned char *cp;
 
 	*len = 0;
-
 	f = fopen ("/proc/net/tcp", "r");
 	if (!f) {
 		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/tcp");
 		return NULL;
 	}
-
 	fgets(line, sizeof(line), f); /* header */
-
 	tp = &tt;
-
 	for (i = 0; fgets(line, sizeof(line), f); i++) {
-
 		if ((t = calloc (1, sizeof (struct tcptab))) == NULL)
 			adios (NULLCP, "out of memory");
-
 		sscanf(line, "%*d: %x:%hx %x:%hx %hx %hx:%hx",
 				&t -> tt_pcb.inp_laddr.s_addr, &t -> tt_pcb.inp_lport,
 				&t -> tt_pcb.inp_faddr.s_addr, &t -> tt_pcb.inp_fport,
 				&t -> tt_tcpb.t_state,
 				&t -> tt_socb.so_snd.sb_cc, &t -> tt_socb.so_rcv.sb_cc);
-
 		cp = (unsigned char *) t -> tt_instance;
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_laddr);
 		*cp++ = ntohs (t -> tt_pcb.inp_lport);
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_faddr);
 		*cp++ = ntohs (t -> tt_pcb.inp_fport);
-
 		*tp = t; tp = &t -> tt_next;
 	}
-
 	*len = i;
-
 	fclose (f);
-
 	return tt;
 }
 #endif
@@ -411,7 +388,6 @@ int	offset;
 
 	if (get_connections (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -444,29 +420,24 @@ try_again:
 			}
 		} else if (i > TT_SIZE)
 			oid -> oid_nelem = ot -> ot_name -> oid_nelem + TT_SIZE;
-
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((tt = tts) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, TT_SIZE)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - TT_SIZE;
 			jp = tt -> tt_instance;
 			for (i = TT_SIZE; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			if ((tt = get_tcpent (ip = oid -> oid_elements
 									   + oid -> oid_nelem - TT_SIZE, 1))
 					== NULL)
 				return NOTOK;
-
 			jp = tt -> tt_instance;
 			for (i = TT_SIZE; i > 0; i--)
 				*ip++ = *jp++;
@@ -476,7 +447,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case tcpConnState:
 		if ((i = tt -> tt_tcpb.t_state) < 0
@@ -547,19 +517,15 @@ int	offset;
 		return OK;
 	}
 	lastq = quantum, flush_tcp_cache = 0;
-
 #ifndef LINUX
 	for (ts = tts; ts; ts = tp) {
 		tp = ts -> tt_next;
-
 		free ((char *) ts);
 	}
 	tts = NULL;
-
 	if (getkmem (nl + N_TCB, (char *) &tcb, sizeof tcb) == NOTOK)
 		return NOTOK;
 	head = (struct inpcb *) nl[N_TCB].n_value;
-
 	tsp = &tts, i = 0;
 	ip = &tcb;
 	while (ip -> inp_next != head) {
@@ -567,35 +533,29 @@ int	offset;
 			adios (NULLCP, "out of memory");
 		/* no check needed for duplicate connections... */
 		*tsp = ts, tsp = &ts -> tt_next, i++;
-
 		nz -> n_name = "struct inpcb",
 			  nz -> n_value = (unsigned long) ip -> inp_next;
 		if (getkmem (nz, (caddr_t) &ts -> tt_pcb, sizeof ts -> tt_pcb)
 				== NOTOK)
 			return NOTOK;
 		ip = &ts -> tt_pcb;
-
 		nz ->n_name = "struct socket",
 			 nz -> n_value = (unsigned long) ip -> inp_socket;
 		if (getkmem (nz, (caddr_t) &ts -> tt_socb, sizeof ts -> tt_socb)
 				== NOTOK)
 			return NOTOK;
-
 		nz ->n_name = "struct tcb",
 			 nz -> n_value = (unsigned long) ip -> inp_ppcb;
 		if (getkmem (nz, (caddr_t) &ts -> tt_tcpb, sizeof ts -> tt_tcpb)
 				== NOTOK)
 			return NOTOK;
-
 		cp = ts -> tt_instance;
 		cp += ipaddr2oid (cp, &ip -> inp_laddr);
 		*cp++ = ntohs (ip -> inp_lport) & 0xffff;
 		cp += ipaddr2oid (cp, &ip -> inp_faddr);
 		*cp++ = ntohs (ip -> inp_fport) & 0xffff;
-
 		if (debug && first_time) {
 			OIDentifier	oids;
-
 			oids.oid_elements = ts -> tt_instance;
 			oids.oid_nelem = TT_SIZE;
 			advise (LLOG_DEBUG, NULLCP,
@@ -606,33 +566,25 @@ int	offset;
 #else
 	tts = _read_tcp_connections(&i);
 #endif
-
 	if ((tcpConnections = i) > 1) {
 		struct tcptab **base,
 				   **tse;
-
 		if ((base = (struct tcptab **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
 			adios (NULLCP, "out of memory");
-
 		tse = base;
 		for (ts = tts; ts; ts = ts -> tt_next)
 			*tse++ = ts;
-
 		qsort ((char *) base, i, sizeof *base, (IFP)tt_compar);
-
 		tsp = base;
 		ts = tts = *tsp++;
-
 		while (tsp < tse) {
 			ts -> tt_next = *tsp;
 			ts = *tsp++;
 		}
 		ts -> tt_next = NULL;
-
 		free ((char *) base);
 	}
-
 	return OK;
 }
 
@@ -654,11 +606,9 @@ int	isnext;
 		case 1:
 			return (isnext ? tt : NULL);
 		}
-
 out:
 	;
 	flush_tcp_cache = 1;
-
 	return NULL;
 }
 
@@ -797,25 +747,19 @@ again:
 		;
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			ifnum = 0;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for hack... */
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-
 			if ((ifnum = oid -> oid_elements[i] + 1)
 					>= sizeof m -> m_mtypes / sizeof m -> m_mtypes[0])
 				return NOTOK;
-
 			oid -> oid_elements[i] = ifnum;
 			oid -> oid_nelem = i + 1;
 		}
@@ -824,19 +768,15 @@ again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (quantum != lastq) {
 		lastq = quantum;
-
 		if (getkmem (nl + N_MBSTAT, (caddr_t) m, sizeof *m) == NOTOK)
 			return generr (offset);
 	}
-
 	/* hack to compress table size... */
 	if (offset == type_SNMP_PDUs_get__next__request
 			&& m -> m_mtypes[ifnum] == 0)
 		goto again;
-
 	switch (ifvar) {
 	case mbufType:
 		return o_integer (oi, v, ifnum);
@@ -905,7 +845,6 @@ void init_tcp (void) {
 		ot -> ot_getfnx = o_tcp,
 			  ot -> ot_info = (caddr_t) tcpOutRsts;
 #endif
-
 	if (ot = text2obj ("tcpConnState"))
 		ot -> ot_getfnx = o_tcp_conn,
 			  ot -> ot_info = (caddr_t) tcpConnState;
@@ -921,14 +860,12 @@ void init_tcp (void) {
 	if (ot = text2obj ("tcpConnRemPort"))
 		ot -> ot_getfnx = o_tcp_conn,
 			  ot -> ot_info = (caddr_t) tcpConnRemPort;
-
 	if (ot = text2obj ("unixTcpConnSendQ"))
 		ot -> ot_getfnx = o_tcp_conn,
 			  ot -> ot_info = (caddr_t) unixTcpConnSendQ;
 	if (ot = text2obj ("unixTcpConnRecvQ"))
 		ot -> ot_getfnx = o_tcp_conn,
 			  ot -> ot_info = (caddr_t) unixTcpConnRecvQ;
-
 	tcp_states[TCPS_CLOSED] = TCPS_CLOSED;
 	tcp_states[TCPS_LISTEN] = TCPS_LISTEN;
 	tcp_states[TCPS_SYN_SENT] = TCPS_SYN_SENT;
@@ -940,11 +877,9 @@ void init_tcp (void) {
 	tcp_states[TCPS_LAST_ACK] = TCPS_LAST_ACK;
 	tcp_states[TCPS_FIN_WAIT_2] = TCPS_FIN_WAIT_2;
 	tcp_states[TCPS_TIME_WAIT] = TCPS_TIME_WAIT;
-
 	if (ot = text2obj ("unixNetstat"))
 		ot -> ot_getfnx = o_generic,
 			  ot -> ot_info = (caddr_t) &unixNetstat;
-
 #ifndef LINUX
 	if (ot = text2obj ("mbufs"))
 		ot -> ot_getfnx = o_mbuf,

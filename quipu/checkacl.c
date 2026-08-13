@@ -42,7 +42,6 @@ void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 		}
 		return;
 	}
-
 	for ( tmp = *l; tmp != NULLFTL; tmp = tmp->ft_next ) {
 		/*
 		 * If we found the type, first check to see if the length of
@@ -54,7 +53,6 @@ void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 		 * ft_inequstrs) and possibly compute a new largest common
 		 * prefix length (same number as ft_len).
 		 */
-
 		if ( AttrT_cmp( tmp->ft_type, type ) == 0 ) {
 			/* substring length shorter? */
 			if ( len >= 0 && (len < tmp->ft_len || tmp->ft_len == -1) ) {
@@ -74,7 +72,6 @@ void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 				}
 				tmp->ft_inequstrs[tmp->ft_numstrs - 1] =
 					inequstr;
-
 				/* see if len needs updating */
 				for ( i = 0; i < tmp->ft_numstrs - 1; i++ ) {
 					if ( (plen = common_prefix_len(
@@ -129,7 +126,6 @@ static int oid_in_seq (AttributeType at, struct oid_seq *seq) {
 			return( 1 );
 		}
 	}
-
 	return( 0 );
 }
 
@@ -173,49 +169,39 @@ static int check_base_sacl (
 		binddn = (authtype % 3) >= e->e_authp->ap_listandsearch ?
 				 binddn : NULLDN;
 	}
-
 	/* for each type in the filter */
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;
 			ft = ft->ft_next ) {
-
 		/*
 		 * find the most restrictive sacl that applies to this
 		 * type and who, then check that it allows access.
 		 */
-
 		save = NULLSACL;
 		for ( avs = e->e_sacl; avs != NULLAV; avs = avs->avseq_next ) {
 			s = (Saclinfo) avs->avseq_av.av_struct;
-
 			/* right scope? */
 			if ( (s->sac_scope & SACL_BASEOBJECT) == 0 )
 				continue;
-
 			/* right type? */
 			if ( s->sac_types != NULLOIDSEQ &&
 					oid_in_seq( ft->ft_type, s->sac_types ) == 0 )
 				continue;
-
 			/* right who? */
 			if ( ! sacl_match( binddn, selfdn, s ) )
 				continue;
-
 			/*
 			 * We found a sacl that matches.  There may be
 			 * others that match.  We want to end up with the
 			 * most restrictive one, so save this one if it's
 			 * more restrictive than any found so far.
 			 */
-
 			/* first match */
 			if ( save == NULLSACL ) {
 				save = s;
-
 				/* more specific who match */
 			} else if ( selector_rank[s->sac_selector] <
 						selector_rank[save->sac_selector] ) {
 				save = s;
-
 				/* same who - more specific attribute */
 			} else if ( selector_rank[s->sac_selector] ==
 						selector_rank[save->sac_selector]
@@ -223,19 +209,15 @@ static int check_base_sacl (
 				save = s;
 			}
 		}
-
 		/* no sacls applicable to this type */
 		if ( save == NULLSACL )
 			continue;
-
 		/* we found an applicable sacl. check it allows access */
 		if ( save->sac_access == SACL_UNSEARCHABLE )
 			return( NOTOK );
-
 		if ( ft->ft_len >= 0 && ft->ft_len < save->sac_minkeylength )
 			return( NOTOK );
 	}
-
 	return( OK );
 }
 
@@ -256,7 +238,6 @@ static struct result_count *make_rc (
 	bzero( (char *) rc, sizeof(struct result_count) );
 	rc->rc_base = e;
 	save = NULLSACL;
-
 	/*
 	 * For each type that appears in the filter, look through the sacls
 	 * and find the most restrictive one that applies to this type and
@@ -278,7 +259,6 @@ static struct result_count *make_rc (
 			/* right who? */
 			if ( ! sacl_match( binddn, selfdn, s ) )
 				continue;
-
 			/*
 			 * We found a sacl that matches.  There may be
 			 * others that match.  We want to end up with the
@@ -299,7 +279,6 @@ static struct result_count *make_rc (
 				save = s;
 			}
 		}
-
 		/* no sacls applicable to this type */
 		if ( save == NULLSACL )
 			continue;
@@ -446,7 +425,6 @@ int check_ancestor_sacls (
 		return ( check_one_sacl( binddn, selfdn, e->e_parent, scope,
 								 local, saclerror, authtype ) );
 	}
-
 	/*
 	 * It's a subtree search.  Walk back up the tree, checking
 	 * ancestor sacls as we go.
@@ -461,7 +439,6 @@ int check_ancestor_sacls (
 			return( NOTOK );
 		}
 	}
-
 	if ( ancestor == database_root )
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("trouble in check_ancestor"));
 	return( OK );
@@ -490,11 +467,9 @@ int check_lacl (
 	tmp = save = NULLLISTACL;
 	for ( av = avs; av != NULLAV; av = av->avseq_next ) {
 		l = (Listacl) av->avseq_av.av_struct;
-
 		/* make sure this is the right kind */
 		if ( l->sac_scope != scope )
 			continue;
-
 		tmp = NULLLISTACL;
 		switch ( l->sac_selector ) {
 		case ACL_ENTRY:
@@ -523,7 +498,6 @@ int check_lacl (
 		}
 		if ( tmp == NULLLISTACL )
 			continue;
-
 		/* if it's more restrictive than the current one, save it */
 		if ( save != NULLLISTACL ) {
 			if ( selector_rank[ tmp->sac_selector ]
@@ -533,12 +507,9 @@ int check_lacl (
 			save = tmp;
 		}
 	}
-
 	if ( save == NULLLISTACL )
 		return( OK );	/* no acl applicable - access allowed */
-
 	*sizelimit = save->sac_maxresults;
-
 	if ( *sizelimit == 0 )
 		return( NOTOK );
 	else

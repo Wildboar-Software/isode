@@ -64,24 +64,18 @@ int main (int argc, char **argv, char **envp) {
 
 	arginit (argv);
 	envinit ();
-
 	FD_ZERO (&ifds);
 	FD_ZERO (&ofds);
 	nfds = 0;
-
 	/* set fd's for other purposes here... */
-
 	for (;;) {
 		int	n,
 			secs;
 		fd_set	rfds,
 				wfds;
-
 		secs = NOTOK;
-
 		rfds = ifds;	/* struct copy */
 		wfds = ofds;	/* .. */
-
 		if (smux_fd == NOTOK && !dont_bother_anymore)
 			secs = 5 * 60L;
 		else if (rock_and_roll)
@@ -90,12 +84,9 @@ int main (int argc, char **argv, char **envp) {
 			FD_SET (smux_fd, &wfds);
 		if (smux_fd >= nfds)
 			nfds = smux_fd + 1;
-
 		if ((n = xselect (nfds, &rfds, &wfds, NULLFD, secs)) == NOTOK)
 			adios ("failed", "xselect");
-
 		/* check fd's for other purposes here... */
-
 		if (smux_fd == NOTOK && !dont_bother_anymore) {
 			if (n == 0) {
 				if ((smux_fd = smux_init (debug)) == NOTOK)
@@ -123,10 +114,8 @@ static void arginit (char **vec) {
 		myname = *vec;
 	if (strncmp (myname, "smux.", 5) == 0 && myname[5] != NULL)
 		myname += 5;
-
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -137,7 +126,6 @@ static void arginit (char **vec) {
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
-
 		adios (NULLCP, "usage: %s [switches]", myname);
 	}
 }
@@ -149,7 +137,6 @@ static void envinit (void) {
 	FILE   *fp;
 
 	nbits = getdtablesize ();
-
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -165,16 +152,13 @@ static void envinit (void) {
 			}
 			break;
 		}
-
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	SETSID
 		if (setsid () == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -193,25 +177,19 @@ static void envinit (void) {
 #endif
 	} else
 		ll_dbinit (pgm_log, myname);
-
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
 			close (sd);
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, myname);
-
 	mibinit ();
-
 	sprintf (file, "/etc/%s.pid", myname);
 	if (fp = fopen (file, "w")) {
 		fprintf (fp, "%d\n", getpid ());
 		fclose (fp);
 	}
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
 
@@ -224,10 +202,8 @@ static void mibinit (void) {
 
 	if ((se = getsmuxEntrybyname ("unixd")) == NULL)
 		adios (NULLCP, "no SMUX entry for \"%s\"", "unixd");
-
 	if (readobjects ("unixd.defs") == NOTOK)
 		adios (NULLCP, "readobjects: %s", PY_pepy);
-
 	for (tc = triples; tc -> t_tree; tc++)
 		if (ot = text2obj (tc -> t_tree)) {
 			tc -> t_name = ot -> ot_name;
@@ -235,7 +211,6 @@ static void mibinit (void) {
 		} else
 			advise (LLOG_EXCEPTIONS, NULLCP, "text2obj (\"%s\") fails",
 					tc -> t_tree);
-
 	if ((smux_fd = smux_init (debug)) == NOTOK)
 		advise (LLOG_EXCEPTIONS, NULLCP, "smux_init: %s [%s]",
 				smux_error (smux_errno), smux_info);
@@ -277,7 +252,6 @@ static void doit_smux (void) {
 	if (smux_wait (&event, NOTOK) == NOTOK) {
 		if (smux_errno == inProgress)
 			return;
-
 		advise (LLOG_EXCEPTIONS, NULLCP, "smux_wait: %s [%s]",
 				smux_error (smux_errno), smux_info);
 losing:
@@ -285,14 +259,12 @@ losing:
 		smux_fd = NOTOK;
 		return;
 	}
-
 	switch (event -> offset) {
 	case type_SNMP_SMUX__PDUs_registerResponse:
 		if (!tc -> t_name)
 			goto unexpected;
 		{
 			struct type_SNMP_RRspPDU *rsp = event -> un.registerResponse;
-
 			if (rsp -> parm == int_SNMP_RRspPDU_failure)
 				advise (LLOG_NOTICE, NULLCP,
 						"SMUX registration of %s failed",
@@ -340,7 +312,6 @@ losing:
 
 	case type_SNMP_SMUX__PDUs_commitOrRollback: {
 		struct triple *tz;
-
 		for (tz = triples; tz -> t_tree; tz++)
 			if (tz -> t_name)
 				(*tz -> t_sync) (event -> un.commitOrRollback
@@ -378,21 +349,17 @@ static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset) {
 	object_instance ois;
 	struct type_SNMP_VarBindList *vp;
 	int	(*method)(OI oi, struct type_SNMP_VarBind *v, int offset);
-
 	quantum = pdu -> request__id;
 	idx = 0;
 	for (vp = pdu -> variable__bindings; vp; vp = vp -> next) {
 		OI	oi;
 		OT	ot;
 		struct type_SNMP_VarBind *v = vp -> VarBind;
-
 		idx++;
-
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request) {
 			if ((oi = name2inst (v -> name)) == NULLOI
 					&& (oi = next2inst (v -> name)) == NULLOI)
 				goto no_name;
-
 			if ((ot = oi -> oi_type) -> ot_getfnx == NULLIFP)
 				goto get_next;
 		} else {
@@ -407,7 +374,6 @@ no_name:
 				goto out;
 			}
 		}
-
 try_again:
 		;
 		switch (offset) {
@@ -429,7 +395,6 @@ try_again:
 		default:
 			goto no_name;
 		}
-
 		switch (status = (method) (oi, v, offset)) {
 		case NOTOK:	    /* get-next wants a bump */
 get_next:
@@ -455,7 +420,6 @@ get_next:
 		}
 	}
 	idx = 0;
-
 out:
 	;
 	pdu -> error__index = idx;

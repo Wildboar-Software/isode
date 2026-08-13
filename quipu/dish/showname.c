@@ -24,7 +24,6 @@ void call_showname (int argc, char **argv) {
 
 	if ((argc = read_cache (argc, argv)) < 0)
 		return;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-compact",2))  {	/* compact */
 			compact = TRUE;
@@ -44,11 +43,9 @@ void call_showname (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (compact) {
 		if (rel_dn != NULLDN) {
 			DN a,b;
-
 			a = rel_dn;
 			b = current_dn;
 			for (; a != NULLDN && b != NULLDN ; a = a->dn_parent, b = b->dn_parent)

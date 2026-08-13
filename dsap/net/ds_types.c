@@ -10,10 +10,8 @@ extern LLog * log_dsap;
 void bind_arg_free (struct ds_bind_arg *arg) {
 	if (arg->dba_time1 != NULLCP)
 		free (arg->dba_time1);
-
 	if (arg->dba_time2 != NULLCP)
 		free (arg->dba_time2);
-
 	dn_free (arg->dba_dn);
 	arg->dba_dn = NULLDN;
 	/* free signature */
@@ -22,16 +20,12 @@ void bind_arg_free (struct ds_bind_arg *arg) {
 
 void op_arg_free (struct ds_op_arg *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_arg_free()"));
-
 	if (arg->dca_dsarg.arg_type == -1 )
 		/* Already freed - argument part anyway */
 		return;
-
 	DLOG(log_dsap, LLOG_TRACE, ("op_arg_free() - for real"));
-
 	switch (arg->dca_dsarg.arg_type) {
 	case OP_ABANDON:
-
 		ds_arg_free (&(arg->dca_dsarg));
 		break;
 
@@ -44,7 +38,6 @@ void op_arg_free (struct ds_op_arg *arg) {
 	case OP_REMOVEENTRY:
 	case OP_MODIFYENTRY:
 	case OP_MODIFYRDN:
-
 		ch_arg_free (&(arg->dca_charg));
 		ds_arg_free (&(arg->dca_dsarg));
 		break;
@@ -56,23 +49,18 @@ void op_arg_free (struct ds_op_arg *arg) {
 
 void ch_arg_free (struct chain_arg *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("ch_arg_free(%x)",arg));
-
 	dn_free (arg->cha_originator);
 	arg->cha_originator = NULLDN;
-
 	dn_free (arg->cha_target);
 	arg->cha_target = NULLDN;
-
 	if (arg->cha_domaininfo != NULLPE) {
 		pe_free (arg->cha_domaininfo);
 		arg->cha_domaininfo = NULLPE;
 	}
-
 	if(arg->cha_trace != NULLTRACEINFO) {
 		trace_info_free (arg->cha_trace);
 		arg->cha_trace = NULLTRACEINFO;
 	}
-
 	if (arg->cha_timelimit != NULLCP) {
 		free (arg->cha_timelimit);
 		arg->cha_timelimit = NULLCP;
@@ -81,13 +69,10 @@ void ch_arg_free (struct chain_arg *arg) {
 
 void ds_arg_free (struct DSArgument *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("ds_arg_free()"));
-
 	if (arg->arg_type == -1 )
 		/* Already freed */
 		return;
-
 	DLOG(log_dsap, LLOG_TRACE, ("ds_arg_free() for real"));
-
 	/* free argument structure */
 	switch (arg->arg_type) {
 	case OP_READ:
@@ -122,7 +107,6 @@ void ds_arg_free (struct DSArgument *arg) {
 	default:
 		break;
 	}
-
 	/* indicate as freed */
 	arg->arg_type = -1;
 }
@@ -182,17 +166,13 @@ void getedb_arg_free (struct getedb_arg *arg) {
 
 void op_res_free (struct ds_op_res *res) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_res_free()"));
-
 	if (res->dcr_dsres.result_type == -1 )
 		/* Already freed - result part anyway */
 		return;
-
 	DLOG(log_dsap, LLOG_TRACE, ("op_res_free() - for real"));
-
 	switch (res->dcr_dsres.result_type) {
 	case OP_ABANDON:
 	case OP_GETEDB:
-
 		ds_res_free (&(res->dcr_dsres));
 		break;
 
@@ -204,7 +184,6 @@ void op_res_free (struct ds_op_res *res) {
 	case OP_REMOVEENTRY:
 	case OP_MODIFYENTRY:
 	case OP_MODIFYRDN:
-
 		ch_res_free (&(res->dcr_chres));
 		ds_res_free (&(res->dcr_dsres));
 		break;
@@ -212,7 +191,6 @@ void op_res_free (struct ds_op_res *res) {
 	default:
 		break;
 	}
-
 }
 
 void ch_res_free (struct chain_res *res) {
@@ -557,10 +535,8 @@ struct s_filter *filter_cpy (struct s_filter *flt) {
 
 	if (flt == (struct s_filter *) NULL)
 		return ((struct s_filter *) NULL);
-
 	if ((ret = (struct s_filter *) smalloc (sizeof (struct s_filter))) == (struct s_filter *) NULL)
 		return ((struct s_filter *) NULL);
-
 	switch (ret->flt_type = flt->flt_type) {
 	case FILTER_ITEM:
 		if (filter_item_dup (&(flt->flt_un.flt_un_item), &(ret->flt_un.flt_un_item)) != OK)
@@ -580,12 +556,10 @@ struct s_filter *filter_cpy (struct s_filter *flt) {
 		DLOG (log_dsap, LLOG_DEBUG, ("filter_cpy(): unknown filter type %d", flt->flt_type));
 		return ((struct s_filter *) NULL);
 	}
-
 	if (flt->flt_next == (struct s_filter *) NULL)
 		ret->flt_next = (struct s_filter *) NULL;
 	else if ((ret->flt_next = filter_cpy (flt->flt_next)) == (struct s_filter *) NULL)
 		return ((struct s_filter *) NULL);
-
 	return (ret);
 }
 
@@ -646,22 +620,17 @@ struct entrymod *ems_cpy (struct entrymod *em) {
 
 	if (em == (struct entrymod *) NULL)
 		return ((struct entrymod *) NULL);
-
 	if ((ret = (struct entrymod *) smalloc (sizeof (struct entrymod))) == (struct entrymod *) NULL)
 		return ((struct entrymod *) NULL);
-
 	ret->em_type = em->em_type;
-
 	if (em->em_what == NULLATTR)
 		ret->em_what = NULLATTR;
 	else if ((ret->em_what = as_cpy (em->em_what)) == NULLATTR)
 		return ((struct entrymod *) NULL);
-
 	if (em->em_next == (struct entrymod *) NULL)
 		ret->em_next = (struct entrymod *) NULL;
 	else if ((ret->em_next = ems_cpy (em->em_next)) == (struct entrymod *) NULL)
 		return ((struct entrymod *) NULL);
-
 	return (ret);
 }
 

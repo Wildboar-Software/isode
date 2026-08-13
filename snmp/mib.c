@@ -77,12 +77,10 @@ void init_mib (void) {
 		if (nz -> n_value == 0)
 			advise (LLOG_EXCEPTIONS, NULLCP, "\"%s\" not in %s (warning)",
 					nz -> n_name, VMUNIX);
-
 	if ((kd = open ("/dev/kmem", O_RDONLY)) == NOTOK)
 		adios ("/dev/kmem", "unable to read");
 	wd = NOTOK;
 #endif
-
 	if ((nullSpecific = text2oid ("0.0")) == NULLOID)
 		adios (NULLCP, "text2oid (\"0.0\") failed!");
 }
@@ -96,7 +94,6 @@ void fin_mib (void) {
 				&& ot -> ot_info == NULL)
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"variable \"%s.0\" has no value (warning)", ot -> ot_text);
-
 	if (gettimeofday (&my_boottime, (struct timezone *) 0) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "failed", "gettimeofday");
 		bzero ((char *) &my_boottime, sizeof my_boottime);
@@ -151,19 +148,16 @@ int	cc;
 				VMUNIX);
 		return NOTOK;
 	}
-
 	if (lseek (kd, (long) n -> n_value, L_SET) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "failed", "lseek of 0x%x for \"%s\" in kmem",
 				(long) n -> n_value, n -> n_name);
 		return NOTOK;
 	}
-
 	if (read (kd, buffer, cc) != cc) {
 		advise (LLOG_EXCEPTIONS, "failed", "read of \"%s\" from kmem",
 				n -> n_name);
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -174,13 +168,11 @@ int	cc;
 {
 	if (chekmem (n) == NOTOK)
 		return NOTOK;
-
 	if (write (wd, buffer, cc) != cc) {
 		advise (LLOG_EXCEPTIONS, "failed", "write of \"%s\" to kmem",
 				n -> n_name);
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -190,25 +182,20 @@ struct nlist *n;
 	if (n == NULL) {
 		if (wd != NOTOK)
 			close (wd), wd = NOTOK;
-
 		return OK;
 	}
-
 	if (n -> n_value == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "\"%s\" not in %s", n -> n_name,
 				VMUNIX);
 		return NOTOK;
 	}
-
 	if (wd == NOTOK && (wd = open ("/dev/kmem", O_RDWR)) == NOTOK)
 		advise (LLOG_EXCEPTIONS, "/dev/kmem", "unable to read");
-
 	if (lseek (wd, (long) n -> n_value, L_SET) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "failed", "lseek of 0x%x for \"%s\" in kmem",
 				(long) n -> n_value, n -> n_name);
 		return NOTOK;
 	}
-
 	return OK;
 }
 #endif

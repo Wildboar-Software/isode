@@ -167,7 +167,6 @@ void ds_error (PS ps, struct DSError *err)
 		ps_printf (ps,"*** Undefined error '%d' ***\n",err->dse_type);
 		break;
 	}
-
 	ds_error_free (err);
 }
 
@@ -253,7 +252,6 @@ void ds_error_free (struct DSError *err) {
 
 	if ((struct DSError *)0 == err)
 		return;
-
 	switch (err->dse_type) {
 	case DSE_ATTRIBUTEERROR:
 		dn_free (err->ERR_ATTRIBUTE.DSE_at_name);
@@ -267,7 +265,6 @@ void ds_error_free (struct DSError *err) {
 			AttrT_free (at_prob->DSE_at_type);
 			at_prob->DSE_at_type = NULLAttrT;
 		}
-
 		for (at_prob = at_prob->dse_at_next; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
 			if (at_prob->DSE_at_value != NULLAttrV)
 				AttrV_free (at_prob->DSE_at_value);
@@ -294,13 +291,11 @@ void ds_error_free (struct DSError *err) {
 	default:
 		break;
 	}
-
 	err->dse_type = DSE_NOERROR;
 }
 
 void ds_bind_error_aux (PS ps, struct ds_bind_error *err, int mode)
 {
-
 	switch (err->dbe_type) {
 	case DBE_TYPE_SERVICE:
 		ps_printf(ps, "*** Service error : %s ***\n",
@@ -335,18 +330,12 @@ char *print_bind_error (struct ds_bind_error *err, int mode) {
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
-
 	ds_bind_error_aux (ps, err, mode);
-
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }

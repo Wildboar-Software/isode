@@ -2,7 +2,6 @@
 #include "quipu/name.h"
 
 void rdn_comp_print (PS ps, RDN rdn, int format) {
-
 	if (rdn!=NULLRDN) {
 		AttrT_print (ps,rdn->rdn_at,format);
 		ps_print (ps,"=");

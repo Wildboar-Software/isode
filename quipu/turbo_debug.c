@@ -22,14 +22,11 @@ static void rsavl_print( Avlnode *root, IFP fn, FILE *fps, int depth ) {
 
 	if ( root == 0 )
 		return;
-
 	rsavl_print( root->avl_right, fn, fps, depth+1 );
-
 	for ( i = 0; i < depth; i++ )
 		(*fn)( fps, "  " );
 	(*fn)( fps, ((Index_node *)root->avl_data)->in_value );
 	(*fn)( fps, " %d\n", root->avl_bf );
-
 	rsavl_print( root->avl_left, fn, fps, depth+1 );
 }
 
@@ -192,16 +189,12 @@ void print_index( Index *pindex ) {
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		ps_printf( fps, "  Index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
-
 		avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
 				   NOTOK, AVL_INORDER );
-
 		ps_printf( fps, "  Soundex index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
-
 		avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
 				   NOTOK, AVL_INORDER );
-
 		ps_print( fps, "  Endof index\n" );
 	}
 	ps_print( fps, "*******\n" );

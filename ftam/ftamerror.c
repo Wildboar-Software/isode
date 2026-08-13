@@ -231,7 +231,6 @@ char *FErrString (int code) {
 			return diag_rvy[offset];
 		break;
 	}
-
 	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

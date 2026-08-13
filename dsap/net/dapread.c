@@ -12,17 +12,12 @@ int dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, s
 	struct DAPindication	* di = &(di_s);
 
 	DLOG(log_dsap, LLOG_TRACE, ("dap_read()"));
-
 	++(*id);
-
 	DapRead (ad, (*id), arg, di, ROS_INTR);
-
 	error->dse_type = DSE_NOERROR;
-
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-
 		/* Nasty struct copy */
 		(*result) = dr->dr_res.res_rd;      /* struct copy */
 		dr->dr_res.result_type = -1;        /* Prevent freeing */
@@ -32,7 +27,6 @@ int dap_read (int ad, int *id, struct ds_read_arg *arg, struct DSError *error, s
 
 	case DI_ERROR: {
 		struct DAPerror	* de = &(di->di_error);
-
 		(*error) = de->de_err;	/* struct copy */
 		return (DS_ERROR_REMOTE);
 	}
@@ -57,7 +51,5 @@ int DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, 
 	if(encode_DAS_ReadArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
 		return(dapreject (di, DP_INVOKE, id, NULLCP, "Read argument encoding failed"));
 	}
-
 	return (DapInvokeReqAux (ad, id, OP_READ, arg_pe, di, asyn));
-
 }

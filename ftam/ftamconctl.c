@@ -38,7 +38,6 @@ no_mem:
 			free_FTAM_Concurrency__Control (fpm);
 		return NULL;
 	}
-
 #define	dolock(s,t) \
 { \
     if ((fpm -> s = (struct type_FTAM_Lock *) \
@@ -56,13 +55,11 @@ no_mem:
 	dolock (change__attribute, fc_chngattrlock);
 	dolock (delete, fc_deletelock);
 #undef	dolock
-
 	return fpm;
 }
 
 int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	FCINIT (fc);
-
 #define	dolock(s,t) \
 { \
     fc -> t = lock2fc [fpm -> s -> parm]; \
@@ -76,7 +73,6 @@ int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm,
 	dolock (change__attribute, fc_chngattrlock);
 	dolock (delete, fc_deletelock);
 #undef	dolock
-
 	return OK;
 }
 
@@ -92,13 +88,11 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 			free_FTAM_Concurrency__Access (fpm);
 		return NULL;
 	}
-
 #define dolock(s,t) \
 { \
     key = (int) (fc -> t & FLOCK_MASK); \
     fpm -> s = bits2fpm (fsb, fconctl_pairs, key, fti); \
 }
-
 	dolock (read, fc_readlock);
 	dolock (insert, fc_insertlock);
 	dolock (replace, fc_replacelock);
@@ -108,7 +102,6 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 	dolock (change__attribute, fc_chngattrlock);
 	dolock (delete, fc_deletelock);
 #undef  dolock
-
 	return fpm;
 }
 
@@ -116,7 +109,6 @@ int fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, 
 	int	    key;
 
 	FCINIT (fc);
-
 #define dolock(s,t) \
 { \
     key = fc -> t; \
@@ -131,7 +123,5 @@ int fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, 
 	dolock (change__attribute, fc_chngattrlock);
 	dolock (delete, fc_deletelock);
 #undef  dolock
-
 	return OK;
-
 }

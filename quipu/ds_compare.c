@@ -24,17 +24,14 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 	int authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_compare"));
-
 	if (!dsp)
 		target = arg->cma_object;
-
 	if (target == NULLDN) {
 		error->dse_type = DSE_NAMEERROR;
 		error->ERR_NAME.DSE_na_problem = DSE_NA_NOSUCHOBJECT;
 		error->ERR_NAME.DSE_na_matched = NULLDN;
 		return (DS_ERROR_REMOTE);
 	}
-
 	switch(find_entry(target, &(arg->cma_common), binddn, NULLDNSEQ, FALSE, &(entryptr), error, di_p, OP_COMPARE)) {
 	case DS_OK:
 		/* Filled out entryptr - carry on */
@@ -51,7 +48,6 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_compare() - find_entry failed"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
 									   _ZCompareArgumentDataDAS,
@@ -62,18 +58,14 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
 	}
-
 	realtarget = get_copy_dn(entryptr);
-
 	if (arg->cma_purported.ava_type == NULLTABLE_ATTR) {
 		int res = invalid_matching (arg->cma_purported.ava_type,error,realtarget);
 		dn_free (realtarget);
 		return res;
 	}
-
 	authp = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare :
 			AP_SIMPLE;
-
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_COMPARE,
 				   entryptr->e_acl->ac_entry, realtarget) == NOTOK) {
 		if (dsp && (check_acl (binddn,ACL_COMPARE,entryptr->e_acl->ac_entry, realtarget) == OK)) {
@@ -88,7 +80,6 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 			return (DS_ERROR_REMOTE);
 		}
 	}
-
 	if ((as = as_find_type (entryptr->e_attributes,arg->cma_purported.ava_type)) == NULLATTR) {
 		if ((as = entry_find_type (entryptr, arg->cma_purported.ava_type)) == NULLATTR) {
 			if (attribute_not_cached (entryptr,binddn,grab_oid(arg->cma_purported.ava_type),realtarget,ACL_COMPARE)) {
@@ -97,7 +88,6 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 				dn_free (realtarget);
 				return res;
 			}
-
 			dn_free (realtarget);
 			error->dse_type = DSE_ATTRIBUTEERROR;
 			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn(entryptr);
@@ -119,16 +109,11 @@ int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_
 				}
 			}
 		}
-
 	}
-
 	result->cmr_object = NULLDN;
-
 again:
 	;
-
 	acl =  as->attr_acl;
-
 	if (check_acl ((authtype % 3) >= authtype ? binddn : NULLDN,
 				   ACL_COMPARE, acl,realtarget) == NOTOK) {
 		if (dsp && (check_acl (binddn,ACL_COMPARE, acl, realtarget) == OK)) {
@@ -143,10 +128,8 @@ again:
 			return (DS_ERROR_REMOTE);
 		}
 	}
-
 	result->cmr_iscopy = entryptr->e_data;
 	result->cmr_common.cr_requestor = NULLDN;
-
 	/* if no error and NOT SVC_OPT_DONTDEREFERENCEALIASES then */
 	/* the alias will have been derefeferenced -signified by   */
 	/* NO_ERROR !!! */
@@ -157,7 +140,6 @@ again:
 		if (result->cmr_object == NULLDN)
 			result->cmr_object = get_copy_dn (entryptr);
 	}
-
 	for (tmp = as->attr_value; tmp != NULLAV; tmp = tmp->avseq_next) {
 		i = AttrV_cmp (&tmp->avseq_av, arg->cma_purported.ava_value);
 		switch (i) {
@@ -180,18 +162,15 @@ again:
 			return (NOTOK);
 		}
 	}
-
 	if (ias) {
 		/* try again with inherited attribute */
 		as = ias;
 		ias = NULLATTR;
 		goto again;
 	}
-
 	dn_free (realtarget);
 	result->cmr_matched= FALSE;
 	return (DS_OK);
-
 }
 
 int invalid_matching (AttributeType at, struct DSError *error, DN dn) {
@@ -212,19 +191,15 @@ static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level)
 	 * PROBLEM: should it be ?
 	 * 	Return TRUE if yes.
 	     */
-
 #ifdef notanymore 	/* Not readable, but may be comparable ! */
 	if (dn == NULLDN)
 		return FALSE;	/* Not in cache implies not publicly readable... */
 #endif
-
 	if ((ptr->e_data == E_DATA_MASTER) || (ptr->e_data == E_TYPE_SLAVE))
 		return FALSE;
-
 	/* see if more than cached data is required */
 	if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 		return FALSE;
-
 	for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
 		for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 			if (oid_cmp (oidptr->oid_oid,at) == 0) {
@@ -235,11 +210,8 @@ static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level)
 				else
 					return TRUE;
 			}
-
 	if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
 		if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
 			return TRUE;
-
 	return FALSE;
-
 }

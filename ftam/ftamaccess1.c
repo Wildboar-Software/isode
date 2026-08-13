@@ -36,15 +36,10 @@ int FAccessRequest (
 	}
 	missingP (identity);
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FAccessRequestAux (fsb, state, identity, lock, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -64,7 +59,6 @@ static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentit
 	if (!(fsb -> fsb_units & FUNIT_ACCESS))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "file access not allowed");
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -98,32 +92,24 @@ out:
 		req -> fadu__lock -> parm = lock ? int_FTAM_FADU__Lock_on
 									: int_FTAM_FADU__Lock_off;
 	}
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST",
 					state == FSB_LOCATE ? "F-LOCATE-request"
 					: "F-ERASE-request", pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = state;
-
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }

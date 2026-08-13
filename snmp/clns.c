@@ -381,7 +381,6 @@ uint8_t p;
 	while (cp-- > clnp_er_codes)
 		if (*cp == p)
 			return (cp - clnp_er_codes);
-
 	return (CLNP_ERRORS + 1);
 }
 
@@ -408,14 +407,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
-
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case clnpForwarding:
 		break;
@@ -442,7 +438,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_noSuchName;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (ot -> ot_save)
@@ -478,7 +473,6 @@ int	offset;
 			(*os -> os_free) (ot -> ot_save), ot -> ot_save = NULL;
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -506,7 +500,6 @@ int	offset;
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -525,43 +518,35 @@ int	offset;
 			return NOTOK;
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((as = afs_iso) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, as -> adr_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - as -> adr_insize;
 			jp = as -> adr_instance;
 			for (i = as -> adr_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	j;
-
 			if ((as = get_addrent (oid -> oid_elements
 								   + ot -> ot_name -> oid_nelem,
 								   j = oid -> oid_nelem
 									   - ot -> ot_name -> oid_nelem,
 								   afs_iso, 1)) == NULL)
 				return NOTOK;
-
 			if ((i = j - as -> adr_insize) < 0) {
 				OID	    new;
-
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = as -> adr_instance;
 			for (i = as -> adr_insize; i > 0; i--)
@@ -572,7 +557,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case clnpAdEntAddr:
 		return o_clnpaddr (oi, v,
@@ -621,7 +605,6 @@ int	offset;
 
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -641,40 +624,33 @@ try_again:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((rt = rts_iso) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, rt -> rt_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - rt -> rt_insize;
 			jp = rt -> rt_instance;
 			for (i = rt -> rt_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((rt = get_rtent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem,
 								 rts_iso, 1)) == NULL)
 				return NOTOK;
-
 			if ((i = j - rt -> rt_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = rt -> rt_instance;
 			for (i = rt -> rt_insize; i > 0; i--)
@@ -685,7 +661,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case clnpRouteDest:
 		return o_clnpaddr (oi, v,
@@ -693,7 +668,6 @@ try_again:
 
 	case clnpRouteIfIndex: {
 		struct interface *is;
-
 		for (is = ifs; is; is = is -> ifn_next)
 			if ((caddr_t) is -> ifn_offset
 					== (caddr_t) rt -> rt_rt.rt_ifp) {
@@ -701,7 +675,6 @@ try_again:
 					return o_integer (oi, v, is -> ifn_index);
 				break;
 			}
-
 		if (offset == type_SNMP_PDUs_get__next__request)
 			goto try_again;
 		return int_SNMP_error__status_noSuchName;
@@ -972,14 +945,11 @@ int	offset;
 		return OK;
 	}
 	lastq = quantum, flush_arp_cache = 0;
-
 	for (at = adn; at; at = ap) {
 		ap = at -> adn_next;
-
 		free ((char *) at);
 	}
 	adn = adm = NULL;
-
 	if ((tblsize = getkerninfo (KINFO_RT_DUMP, NULLCP, NULLIP, 0)) == NOTOK)
 		return NOTOK;
 	if ((snpac = malloc ((unsigned) tblsize)) == NULL)
@@ -988,26 +958,21 @@ int	offset;
 		free (snpac);
 		return NOTOK;
 	}
-
 	afp = &adn;
 	for (se = (sc = snpac) + rlen; sc < se; sc += rtm -> rtm_msglen) {
 		struct sockaddr_dl *sdl;
 		struct sockaddr *sa;
 		struct iso_addr nsap;
-
 		rtm = (struct rt_msghdr *) sc;
 		sa = (struct sockaddr *) (rtm + 1);
 		if (sa -> sa_family != AF_ISO)
 			continue;
-
 		sdl = (struct sockaddr_dl *) (((caddr_t) sa) + ROUND (sa -> sa_len));
 		if (sdl -> sdl_family != AF_LINK)
 			continue;
-
 		nsap = ((struct sockaddr_iso *) sa) -> siso_addr;    /* struct copy */
 		if (nsap.isoa_len == 0)
 			continue;
-
 		for (is = ifs; is; is = is -> ifn_next)
 			if (is -> ifn_interface.ac_if.if_index == rtm -> rtm_index)
 				break;
@@ -1017,31 +982,25 @@ int	offset;
 						"unable to find interface for SNPA in cache");
 			continue;
 		}
-
 		if ((at = (struct adrtab *) calloc (1, sizeof *at)) == NULL)
 			adios (NULLCP, "out of memory");
 		*afp = at, afp = &at -> adn_next, adrNumber++;
-
 		at -> adr_index = is -> ifn_index;
 		at -> adr_type = rtm -> rtm_flags & RTF_DYNAMIC
 						 ? DYNAMIC_MAPPING : STATIC_MAPPING;
-
 		at -> adn_address = nsap;	/* struct copy */
 		at -> adn_instance[0] = at -> adr_index, at -> adn_insize = 1;
 		at -> adn_insize += clnpaddr2oid (at -> adn_instance + 1,
 										  &at -> adn_address);
-
 		bcopy ((char *) LLADDR (sdl), (char *) at -> adm_address,
 			   (int) (at -> adm_addrlen = sdl -> sdl_alen));
 		at -> adm_instance[0] = at -> adr_index, at -> adm_insize = 1;
 		at -> adm_insize += mediaddr2oid (at -> adm_instance + 1,
 										  at -> adm_address,
 										  (int) at -> adm_addrlen, 0);
-
 		if (debug && first_time) {
 			char    buffer[BUFSIZ];
 			OIDentifier	oids;
-
 			oids.oid_elements = at -> adn_instance + 1;
 			oids.oid_nelem = at -> adn_insize - 1;
 			strcpy (buffer, sprintoid (&oids));
@@ -1054,22 +1013,17 @@ int	offset;
 	}
 	first_time = 0;
 	free ((char *) snpac);
-
 	if (adrNumber <= 1) {
 		adm = adn;
 		return OK;
 	}
-
 	if ((base = (struct adrtab **)
 				malloc ((unsigned) (adrNumber * sizeof *base))) == NULL)
 		adios (NULLCP, "out of memory");
-
 	afe = base;
 	for (at = adn; at; at = at -> adn_next)
 		*afe++ = at;
-
 	qsort ((char *) base, adrNumber, sizeof *base, adn_compar);
-
 	afp = base;
 	at = adn = *afp++;
 	while (afp < afe) {
@@ -1077,9 +1031,7 @@ int	offset;
 		at = *afp++;
 	}
 	at -> adn_next = NULL;
-
 	qsort ((char *) base, adrNumber, sizeof *base, adm_compar);
-
 	afp = base;
 	at = adm = *afp++;
 	while (afp < afe) {
@@ -1087,9 +1039,7 @@ int	offset;
 		at = *afp++;
 	}
 	at -> adm_next = NULL;
-
 	free ((char *) base);
-
 	return OK;
 }
 #undef	ROUND
@@ -1128,11 +1078,9 @@ int	isnpa,
 			case 1:
 				return (isnext ? at : NULL);
 			}
-
 out:
 	;
 	flush_arp_cache = 1;
-
 	return NULL;
 }
 
@@ -1220,7 +1168,6 @@ init_clns () {
 
 	if (nl[N_ISO_SYSTYPE].n_value == 0)
 		return;
-
 	if (ot = text2obj ("clnpForwarding"))
 		ot -> ot_getfnx = o_clnp,
 			  ot -> ot_setfnx = s_clnp,
@@ -1302,7 +1249,6 @@ init_clns () {
 		ot -> ot_getfnx = o_clnp,
 			  ot -> ot_info = (caddr_t) clnpRoutingDiscards;
 #endif
-
 	if (ot = text2obj ("clnpAdEntAddr"))
 		ot -> ot_getfnx = o_clnp_addr,
 			  ot -> ot_info = (caddr_t) clnpAdEntAddr;
@@ -1312,7 +1258,6 @@ init_clns () {
 	if (ot = text2obj ("clnpAdEntReasmMaxSize"))
 		ot -> ot_getfnx = o_clnp_addr,
 			  ot -> ot_info = (caddr_t) clnpAdEntReasmMaxSize;
-
 	if (ot = text2obj ("clnpRouteDest"))
 		ot -> ot_getfnx = o_clnp_route,
 			  ot -> ot_info = (caddr_t) clnpRouteDest;
@@ -1343,7 +1288,6 @@ init_clns () {
 	if (ot = text2obj ("clnpRouteAge"))
 		ot -> ot_getfnx = o_clnp_route,
 			  ot -> ot_info = (caddr_t) clnpRouteAge;
-
 	if (ot = text2obj ("unixClnpRouteFlags"))
 		ot -> ot_getfnx = o_clnp_route,
 			  ot -> ot_info = (caddr_t) unixClnpRouteFlags;
@@ -1353,7 +1297,6 @@ init_clns () {
 	if (ot = text2obj ("unixClnpRouteUses"))
 		ot -> ot_getfnx = o_clnp_route,
 			  ot -> ot_info = (caddr_t) unixClnpRouteUses;
-
 	if (ot = text2obj ("clnpNetToMediaIfIndex"))
 		ot -> ot_getfnx = o_address,
 			  ot -> ot_info = (caddr_t) clnpNetToMediaIfIndex;
@@ -1398,7 +1341,6 @@ init_clns () {
 		ot -> ot_getfnx = o_address,
 			  ot -> ot_info = (caddr_t) clnpMediaToNetHoldTime;
 #endif
-
 	if (ot = text2obj ("clnpInErrors"))
 		ot -> ot_getfnx = o_clnp,
 			  ot -> ot_info = (caddr_t) clnpInErrors;
@@ -1537,7 +1479,6 @@ init_clns () {
 	if (ot = text2obj ("clnpOutErrInterferences"))
 		ot -> ot_getfnx = o_clnp,
 			  ot -> ot_info = (caddr_t) clnpOutErrInterferences;
-
 	if (ot = text2obj ("esisESHins"))
 		ot -> ot_getfnx = o_esis,
 			  ot -> ot_info = (caddr_t) esisESHins;

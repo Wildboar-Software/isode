@@ -23,13 +23,10 @@ int DapInitWaitRequest (int sd, int secs, struct DAPindication *di) {
 	struct RoSAPindication	* roi = &(roi_s);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapInitWaitRequest()"));
-
 	result = RoWaitRequest(sd, secs, roi);
-
 	if (result == NOTOK) {
 		return (ros2daplose (di, "RoBindWaitRequest", &(roi->roi_preject)));
 	}
-
 	switch(roi->roi_type) {
 	case ROI_INVOKE:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapInitWaitRequest: Invocation received"));
@@ -68,15 +65,12 @@ int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) 
 
 	di->di_type = DI_RESULT;
 	di->di_result.dr_id = ror->ror_id;
-
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_RES,ror->ror_op);
 #endif
-
 #ifdef	HEAVY_DEBUG
 	pdu_res_log (pe, ror->ror_op);
 #endif
-
 	switch(res->result_type = ror->ror_op) {
 	case    OP_READ : {
 		struct ds_read_result * rr;
@@ -112,7 +106,6 @@ int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) 
 	case    OP_MODIFYENTRY :
 	case    OP_MODIFYRDN :
 	case    OP_ABANDON :
-
 		if ( pe &&
 				(pe -> pe_form == PE_FORM_PRIM) &&
 				( PE_ID (pe -> pe_class, pe -> pe_id) ==
@@ -126,15 +119,12 @@ int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) 
 		DRejectRequest (sd, ROS_RRP_UNRECOG, ror->ror_id);
 		return (daplose (di, DP_RESULT, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapDecodeResult: Unable to parse argument"));
 		DRejectRequest (sd, ROS_RRP_MISTYPED, ror->ror_id);
 		return (daplose (di, DP_RESULT, NULLCP, "Undecodable argument"));
 	}
-
 	RORFREE (ror);
-
 	return(success);
 }
 
@@ -146,10 +136,8 @@ int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ERR,roe->roe_id);
 #endif
-
 	di->di_type = DI_ERROR;
 	di->di_error.de_id = roe->roe_id;
-
 	switch(err->dse_type = roe->roe_error) {
 	case    DSE_ABANDON_FAILED : {
 		struct DSE_abandon_fail * af;
@@ -216,14 +204,11 @@ int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
 		DRejectRequest (sd, ROS_REP_UNRECOG, roe->roe_id);
 		return (daplose (di, DP_ERROR, NULLCP, "Unknown operation identifier"));
 	}
-
 	if (success == NOTOK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapDecodeError: Unable to parse argument"));
 		DRejectRequest (sd, ROS_RRP_MISTYPED, roe->roe_id);
 		return (daplose (di, DP_ERROR, NULLCP, "Undecodable argument"));
 	}
-
 	ROEFREE (roe);
-
 	return(success);
 }

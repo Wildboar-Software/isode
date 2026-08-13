@@ -91,7 +91,6 @@ void display_ud (DO_UPDATE *doptr) {
 				advise(LLOG_NOTICE,NULLCP,  "DROPPED CHAR");
 			return;
 		}
-
 		if(my_right == INITIATOR) {
 			if(putch('\n') == NOTOK) /*Current Telnet only gives
 									   CR to PTY*/
@@ -210,7 +209,6 @@ void control_ud (CO_UPDATE *coptr) {
 	}
 	if(coptr->co_cmd.bool_update.mask_count == 0) active = 0xff;
 	else active = *coptr->co_cmd.bool_update.mask;
-
 	if(my_right == INITIATOR) {
 		if(!strcmp(coptr->co_name,"DI") ) {
 			if(active & AYT_OBJ)
@@ -252,7 +250,6 @@ void control_ud (CO_UPDATE *coptr) {
 			if(active & DM_OBJ) {
 				if( (di_image & DM_OBJ) !=
 						(DM_OBJ & *coptr->co_cmd.bool_update.value) )
-
 					/*Toggled DM Bit*/
 				{
 					if(debug)
@@ -572,11 +569,9 @@ void control_ud (CO_UPDATE *coptr) {
 						if(na_image & ECHO_OBJ) /*If no request pending*/
 							/*Must be request from user*/
 						{
-
 #ifdef DO_LOCAL_ECHO
 							if(showoptions)
 								printf("User requested Local Echo -- O.K.\n");
-
 							na_image &= ~ECHO_OBJ;
 							nego_state &= ~ECHO_OBJ;
 #ifdef TERMIOS
@@ -589,7 +584,6 @@ void control_ud (CO_UPDATE *coptr) {
 							if(showoptions)
 								printf("User requested Local Echo -- Denied\n");
 #endif
-
 							vt_set_nego(na_image,ECHO_OBJ);	/*Respond "WILL"*/
 						} else {
 							if(showoptions)
@@ -744,7 +738,6 @@ void control_ud (CO_UPDATE *coptr) {
 			}
 		}
 	}
-
 }
 
 /* Handle Write Attribute Display Object Update */
@@ -815,7 +808,6 @@ int tmode (int f) {
 #endif
 	if (fcntl (fileno(stdin), F_SETFL, onoff | O_NONBLOCK) == -1) {
 		perror ("fcntl");
-
 	}
 #else
 	if (ioctl(fileno(stdin), FIONBIO, (char*)&onoff) == -1) {
@@ -925,7 +917,6 @@ void def_echo (CO_UPDATE *coptr) {
 	char active = 0;
 	if(coptr->co_cmd.bool_update.mask_count == 0) active = 0xff;
 	else active = *coptr->co_cmd.bool_update.mask;
-
 	if (active & ECHO_OBJ) {
 		if(*coptr->co_cmd.bool_update.value & ECHO_OBJ)
 			/*True means do local echo*/

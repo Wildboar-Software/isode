@@ -13,7 +13,6 @@ AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b)
 		return (b);
 	if ( b == NULLAV )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (avs_cmp_comp (a,b)) {
 	default:
@@ -38,10 +37,8 @@ AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b)
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLAV) && (bptr != NULLAV) ) {
-
 		switch (avs_cmp_comp (aptr,bptr)) {
 		default:
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge (2)")) ;
@@ -72,7 +69,6 @@ AV_Sequence avs_merge (AV_Sequence a, AV_Sequence b)
 		trail->avseq_next = bptr;
 	else
 		trail->avseq_next = aptr;
-
 	return (result);
 }
 
@@ -84,7 +80,6 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 		return (b);
 	if ( b == NULLAV )
 		return (a);
-
 	if (quipu_faststart && (a == c) && d->avseq_next == NULLAV)
 #ifndef TURBO_DISK
 		if (avs_cmp_comp (d,b) == 1)
@@ -93,7 +88,6 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 			d->avseq_next = b;
 			return a;
 		}
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (avs_cmp_comp (a,b)) {
 	default:
@@ -118,10 +112,8 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLAV) && (bptr != NULLAV) ) {
-
 		switch (avs_cmp_comp (aptr,bptr)) {
 		default:
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("matching failed in avs_merge (2)")) ;
@@ -152,6 +144,5 @@ AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequ
 		trail->avseq_next = bptr;
 	else
 		trail->avseq_next = aptr;
-
 	return (result);
 }

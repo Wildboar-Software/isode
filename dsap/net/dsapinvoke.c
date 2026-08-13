@@ -19,10 +19,8 @@ int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindicat
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapInvokeRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation argument"));
 	}
-
 	result = RoInvokeRequest (sd, arg->arg_type, ROS_ASYNC, arg_pe,
 							  id, NULLIP, ROS_NOPRIO, roi);
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapInvokeRequest(): Fatal rejection"));
@@ -32,7 +30,6 @@ int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindicat
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	if (arg_pe != NULLPE)
 		pe_free (arg_pe);
 	return (OK);
@@ -74,7 +71,6 @@ int DapEncodeInvoke (PE *pep, struct DSArgument *arg) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DapEncodeInvoke(): unknown op type %d", arg->arg_type));
 		break;
 	}
-
 	return(success);
 }
 
@@ -89,12 +85,10 @@ int DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspInvokeRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation argument"));
 	}
-
 	watch_dog("RoInvokeRequest (DSP)");
 	result = RoInvokeRequest (sd, arg->dca_dsarg.arg_type, ROS_ASYNC, arg_pe,
 							  id, NULLIP, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspInvokeRequest(): Fatal rejection"));
@@ -104,7 +98,6 @@ int DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	if (arg_pe != NULLPE)
 		pe_free (arg_pe);
 	return (OK);
@@ -146,7 +139,6 @@ int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DspEncodeInvoke(): unknown op type %d", arg->dca_dsarg.arg_type));
 		break;
 	}
-
 	return(success);
 }
 
@@ -161,12 +153,10 @@ int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspInvokeRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation argument"));
 	}
-
 	watch_dog("RoInvokeRequest (QSP)");
 	result = RoInvokeRequest (sd, arg->dca_dsarg.arg_type, ROS_ASYNC, arg_pe,
 							  id, NULLIP, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspInvokeRequest(): Fatal rejection"));
@@ -176,7 +166,6 @@ int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoInvokeRequest failed"));
 		}
 	}
-
 	if (arg_pe != NULLPE)
 		pe_free (arg_pe);
 	return (OK);
@@ -221,7 +210,6 @@ int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("QspEncodeInvoke(): unknown op type %d", arg->dca_dsarg.arg_type));
 		break;
 	}
-
 	return(success);
 }
 

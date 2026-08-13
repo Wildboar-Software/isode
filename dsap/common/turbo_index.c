@@ -83,7 +83,6 @@ Index_node *new_indexnode(void) {
 	new->in_entries = (Entry *) 0;
 	new->in_num = 0;
 	new->in_max = 0;
-
 	return( new );
 }
 
@@ -98,9 +97,7 @@ static int index_dup(Index_node *node, Index_node *dup)
 	 * a binary search, otherwise a simple linear one.  This is just
 	 * a guess.  It seems to work pretty well, though.
 	 */
-
 	tmp1 = dup->in_entries[0];
-
 	if ( node->in_num > 20 ) {
 		low = 0;
 		high = node->in_num - 1;
@@ -112,10 +109,8 @@ static int index_dup(Index_node *node, Index_node *dup)
 				high = mid - 1;
 			else
 				break;	/* found a duplicates */
-
 			mid = (low + high) / 2;
 		}
-
 		if ( node->in_entries[mid] == tmp1 )
 			return( NOTOK );
 		else if ( node->in_entries[mid] < tmp1 )
@@ -128,13 +123,11 @@ static int index_dup(Index_node *node, Index_node *dup)
 				break;
 		}
 	}
-
 	/*
 	 * Realloc double the space we got last time.  This may waste
 	 * some space in the index, but it speeds things up, works
 	 * around the QUIPU_MALLOC problem, and cuts down on fragmentation.
 	 */
-
 	if (node->in_num >= node->in_max) {
 		if (node->in_max == 0)
 			node->in_max = 1;
@@ -145,14 +138,12 @@ static int index_dup(Index_node *node, Index_node *dup)
 									  (unsigned) (sizeof(struct entry *) * node->in_max));
 	}
 	node->in_num++;
-
 	tmp1 = dup->in_entries[0];
 	for (j = mid; j < node->in_num; j++) {
 		tmp2 = node->in_entries[j];
 		node->in_entries[j] = tmp1;
 		tmp1 = tmp2;
 	}
-
 	return( NOTOK );
 }
 
@@ -207,7 +198,6 @@ int th_prefix(DN a, DN b)
 	for ( ; a && b; a = a->dn_parent, b = b->dn_parent )
 		if ( dn_comp_cmp( a, b ) == NOTOK )
 			return( 2 );    /* neither is prefix */
-
 	if ( a == NULLDN && b == NULLDN )
 		return( 0 );            /* they are equal */
 	else if ( a == NULLDN && b->dn_parent == NULLDN )
@@ -224,7 +214,6 @@ static Index *new_index(DN dn)
 	int	i;
 
 	pindex = (Index *) malloc( (unsigned) (sizeof(Index) * turbo_index_num ));
-
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		pindex[ i ].i_attr = turbo_index_types[ i ];
 		pindex[ i ].i_count = 0;
@@ -237,7 +226,6 @@ static Index *new_index(DN dn)
 		pindex[ i ].i_nonlocalaliases = (struct entry **) 0;
 		pindex[ i ].i_dn = dn_cpy( dn );
 	}
-
 	return( pindex );
 }
 
@@ -270,13 +258,11 @@ static void add_nonlocalalias(struct entry *e, Index *pindex)
 
 	if ( pindex == NULLINDEX )
 		return;
-
 	if ( pindex->i_nonlocalaliases == (struct entry **) 0 ) {
 		pindex->i_nonlocalaliases = (struct entry **) malloc(
 										sizeof(struct entry *) * 2 );
 		pindex->i_nonlocalaliases[ 0 ] = (struct entry *) 0;
 	}
-
 	/* first, check for duplicates */
 	for ( i = 0, tmp = pindex->i_nonlocalaliases;
 			*tmp != (struct entry *) 0;
@@ -284,7 +270,6 @@ static void add_nonlocalalias(struct entry *e, Index *pindex)
 		if ( *tmp == e )
 			return;
 	}
-
 	pindex->i_nonlocalaliases = (struct entry **) realloc(
 									(char *)pindex->i_nonlocalaliases,
 									(unsigned) sizeof(struct entry *) * (i + 2) );
@@ -306,7 +291,6 @@ static void add_nonleafkid(struct entry *e, Index *pindex)
 		pindex->i_nonleafkids = (struct entry **) malloc(sizeof(Entry));
 		pindex->i_nonleafkids[ 0 ] = (Entry) 0;
 	}
-
 	/* first, check for duplicates */
 	for ( i = 0, tmp = pindex->i_nonleafkids; *tmp != NULLENTRY;
 			tmp++, i++ ) {
@@ -392,12 +376,10 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	for ( i = 0; i < turbo_index_num; i++ )
 		if ( AttrT_cmp( pindex[ i ].i_attr, attr ) == 0 )
 			break;
-
 	if ( i == turbo_index_num ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("turbo_attr_insert: cannot find optimized attribute") );
 		return;
 	}
-
 	substr = sub_string( attr->oa_syntax );
 	/* insert all values */
 	for ( av = values; av != NULLAV; av = av->avseq_next ) {
@@ -408,20 +390,17 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		imem->in_entries[ 0 ] = (struct entry *) e;
 		imem->in_num = 1;
 		imem->in_max = 1;
-
 		/*
 		 * Now we insert the entry into the appropriate index.
 		 * If the attribute has a soundex approximate matching
 		 * function, we insert the entry into the appropriate
 		 * soundex index for that attribute.
 		 */
-
 		/* a return of OK means it was the first one inserted */
 		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, index_cmp,
 						 index_dup ) == OK ) {
 			pindex[ i ].i_count++;
 			imem = NULLINDEXNODE;
-
 		} else if ( substr ) {
 			save = AttrV_cpy( &av->avseq_av );
 			savestr = (char *) save->av_struct;
@@ -436,7 +415,6 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		}
 		if ( substr && imem == NULLINDEXNODE ) {
 			imem = (Index_node *) malloc( sizeof(Index_node) );
-
 			save = AttrV_cpy( &av->avseq_av );
 			savestr = (char *) save->av_struct;
 			save->av_struct = strrev( savestr );
@@ -448,24 +426,20 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			imem->in_num = 1;
 			imem->in_max = 1;
 		}
-
 		/* insert into the reverse index, if appropriate */
 		if ( substr ) {
 			if ( avl_insert( &pindex[ i ].i_rroot, (caddr_t) imem,
 							 index_cmp, index_dup ) == OK ) {
 				pindex[ i ].i_rcount++;
 				imem = NULLINDEXNODE;
-
 			} else {
 				AttrV_free( (AttributeValue) imem->in_value );
 				free( (char *) imem->in_entries );
 				free( (char *) imem );
 			}
 		}
-
 		if ( approxfn( attr->oa_syntax ) != soundex_match )
 			continue;
-
 		for ( word = first_word((char *) av->avseq_av.av_struct);
 				word; word = next_word( word ) ) {
 			code = NULL;
@@ -477,7 +451,6 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			imem->in_entries[ 0 ] = (struct entry *) e;
 			imem->in_num = 1;
 			imem->in_max = 1;
-
 			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, sindex_cmp,
 							 index_dup ) == OK ) {
 				pindex[ i ].i_scount++;
@@ -510,34 +483,27 @@ void turbo_add2index(Entry e)
 
 	if ( sibling_index == (Avlnode *) 0 && subtree_index == (Avlnode *) 0 )
 		return;
-
 	nonleaf = !e->e_leaf;
-
 	parent = e->e_parent;
 	pdn = get_copy_dn( parent );
 	dn = get_copy_dn( e );
-
 	sibindex = get_sibling_index( pdn );
-
 	/* for each attribute in the entry... */
 	for ( as = e->e_attributes; as != NULLATTR; as = as->attr_link ) {
 		if ( turbo_isoptimized( as->attr_type ) == 0 )
 			continue;
 		SET_HEAP( as->attr_type );
-
 		/* sibling index */
 		if ( sibindex ) {
 			turbo_attr_insert( sibindex, e, as->attr_type,
 							   as->attr_value );
 		}
-
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
 				turbo_attr_insert( subindex, e,
 								   as->attr_type, as->attr_value );
 			}
-
 			for ( prevdn = NULLDN, tmpdn = dn;
 					tmpdn->dn_parent != NULLDN;
 					prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
@@ -549,18 +515,15 @@ void turbo_add2index(Entry e)
 		dn->dn_parent = savedn;
 	}
 	RESTORE_HEAP;
-
 	/* now add references in nonleafkids and nonlocalaliases... */
 	if ( sibindex )
 		if ( e->e_alias && th_prefix( sibindex->i_dn, e->e_alias ) != -2 )
 			add_nonlocalalias( e, sibindex );
-
 	if ( nonleaf == 0 && e->e_alias == NULLDN ) {
 		dn_free( dn );
 		dn_free( pdn );
 		return;
 	}
-
 	/* could be a subtree index with all parents & this node */
 	savedn = NULLDN;
 	while ( dn->dn_parent != NULLDN ) {
@@ -570,7 +533,6 @@ void turbo_add2index(Entry e)
 				if ( pcmp > 0 )
 					add_nonlocalalias(e, subindex);
 			}
-
 			if ( nonleaf )
 				add_nonleafkid(e, subindex);
 		}
@@ -583,10 +545,8 @@ void turbo_add2index(Entry e)
 		prevdn->dn_parent = NULLDN;
 	}
 	dn->dn_parent = savedn;
-
 	dn_free( dn );
 	dn_free( pdn );
-
 	return;
 }
 
@@ -607,33 +567,27 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	for ( i = 0; i < turbo_index_num; i++ )
 		if ( AttrT_cmp( pindex[ i ].i_attr, attr ) == 0 )
 			break;
-
 	if ( i == turbo_index_num ) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("turbo_attr_delete: cannot find optimized attribute") );
 		return;
 	}
-
 	/* delete all values */
 	for ( av = values; av != NULLAV; av = av->avseq_next ) {
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
 										(caddr_t) &av->avseq_av, (IFP)indexav_cmp );
-
 		if ( node == NULLINDEXNODE ) {
 			LLOG( log_dsap, LLOG_EXCEPTIONS, ("Optimized attribute value not found! (%s)\n", attr->oa_ot.ot_name) );
 			continue;
 		}
-
 		/* find the entry we want to delete */
 		p = node->in_entries;
 		for ( j = 0; j < node->in_num; j++, p++ )
 			if ( *p == (struct entry *) e )
 				break;
-
 		if ( j == node->in_num ) {
 			LLOG( log_dsap, LLOG_EXCEPTIONS, ("Optimized av entry not found") );
 			continue;
 		}
-
 		if ( --(node->in_num) == 0 ) {
 			imem = (Index_node *) avl_delete( &pindex[ i ].i_root,
 											  (caddr_t) &av->avseq_av, indexav_cmp );
@@ -649,48 +603,39 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 							   realloc( (char *) node->in_entries, (unsigned) node->in_num
 										* sizeof(struct entry *) );
 		}
-
 		/* if there's a soundex index, delete from that too */
 		if ( pindex[i].i_sroot == NULLAVL )
 			continue;
-
 		for ( word = first_word((char *)av->avseq_av.av_struct);
 				word != NULL; word = next_word( word ) ) {
 			code = NULL;
 			soundex( word, &code );
-
 			/*
 			 * not finding the node is ok if the entry happens
 			 * to be the only one with this code and was deleted
 			 * on a previous pass through this loop.  we hope.
 			 */
-
 			if ((imem = (Index_node *) avl_find(pindex[i].i_sroot,
 												code, index_soundex_cmp)) == NULLINDEXNODE) {
 				free(code);
 				continue;
 			}
-
 			/* find the entry */
 			p = imem->in_entries;
 			for ( j = 0; j < imem->in_num; j++, p++ )
 				if ( *p == (struct entry *) e )
 					break;
-
 			/*
 			 * not finding the entry is this is ok for the soundex
 			 * index since an entry can appear more than once and
 			 * might have already been deleted on a previous pass
 			 */
-
 			if ( j == imem->in_num )
 				continue;
-
 			if ( --(imem->in_num) == 0 ) {
 				imem = (Index_node *)
 					   avl_delete( &pindex[ i ].i_sroot,
 								   (caddr_t) code, index_soundex_cmp );
-
 				free( (char *) imem->in_value );
 				free( (char *) imem->in_entries );
 				free( (char *) imem );
@@ -698,7 +643,6 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 				for ( k = j; k < imem->in_num; k++ )
 					imem->in_entries[ k ] =
 						imem->in_entries[ k+1 ];
-
 				imem->in_entries = (struct entry **)
 								   realloc( (char *) imem->in_entries,
 											(unsigned) imem->in_num * sizeof(struct entry *) );
@@ -725,33 +669,26 @@ void turbo_index_delete(Entry e)
 
 	if ( subtree_index == NULLAVL && sibling_index == NULLAVL )
 		return;
-
 	nonleaf = (! isleaf(e));
-
 	parent = e->e_parent;
 	pdn = get_copy_dn( parent );
 	dn = get_copy_dn( e );
-
 	sibindex = get_sibling_index( pdn );
-
 	/* for each attribute in the entry... */
 	for ( as = e->e_attributes; as != NULLATTR; as = as->attr_link ) {
 		if ( turbo_isoptimized( as->attr_type ) == 0 )
 			continue;
-
 		/* sibling index */
 		if ( sibindex ) {
 			turbo_attr_delete( sibindex, e, as->attr_type,
 							   as->attr_value );
 		}
-
 		savedn = NULLDN;
 		while ( dn->dn_parent != NULLDN ) {
 			if ( subindex = get_subtree_index( dn ) ) {
 				turbo_attr_delete( subindex, e,
 								   as->attr_type, as->attr_value );
 			}
-
 			for ( prevdn = NULLDN, tmpdn = dn;
 					tmpdn->dn_parent != NULLDN;
 					prevdn = tmpdn, tmpdn = tmpdn->dn_parent )
@@ -762,18 +699,15 @@ void turbo_index_delete(Entry e)
 		}
 		dn->dn_parent = savedn;
 	}
-
 	/* now delete references in nonleafkids and nonlocalaliases... */
 	if ( sibindex && e->e_alias
 			&& th_prefix( sibindex->i_dn, e->e_alias ) != -2 )
 		delete_nonlocalalias( e, sibindex );
-
 	if ( nonleaf == 0 && e->e_alias == NULLDN ) {
 		dn_free( pdn );
 		dn_free( dn );
 		return;
 	}
-
 	/* could be a subtree index with all parents & this node */
 	savedn = NULLDN;
 	while ( dn->dn_parent != NULLDN ) {
@@ -783,7 +717,6 @@ void turbo_index_delete(Entry e)
 				if ( pcmp > 0 )
 					delete_nonlocalalias( e, subindex );
 			}
-
 			if ( nonleaf )
 				delete_nonleafkid( e, subindex );
 		}
@@ -796,10 +729,8 @@ void turbo_index_delete(Entry e)
 		prevdn->dn_parent = NULLDN;
 	}
 	dn->dn_parent = savedn;
-
 	dn_free( pdn );
 	dn_free( dn );
-
 	return;
 }
 
@@ -816,7 +747,6 @@ int turbo_isoptimized(AttributeType attr)
 		if ( AttrT_cmp( attr, turbo_index_types[ i ] ) == 0 )
 			return( 1 );
 	}
-
 	return( 0 );
 }
 
@@ -833,10 +763,8 @@ void turbo_optimize (char *attr) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Bad attribute type (%s)", attr));
 		return;
 	}
-
 	if ( subtree_index || sibling_index )
 		fatal( -99, "optimized attributes MUST be specified before subtree or sibling index" );
-
 	if ( turbo_index_types == (AttributeType *) 0 )
 		turbo_index_types = (AttributeType *) malloc(
 								sizeof(AttributeType *));
@@ -844,10 +772,8 @@ void turbo_optimize (char *attr) {
 		turbo_index_types = (AttributeType *) realloc(
 								(char *) turbo_index_types, (unsigned) (turbo_index_num + 1) *
 								sizeof(AttributeType *));
-
 	if ( turbo_index_types == (AttributeType *) 0 )
 		fatal(66, "turbo_optimize: malloc failed!\n");
-
 	turbo_index_types[ turbo_index_num ] = AttrT_cpy(a);
 	turbo_index_num++;
 	return;
@@ -868,7 +794,6 @@ void index_subtree (char *tree) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("WARNING: cannot index subtree - no attributes have been optimized"));
 		return;
 	}
-
 	pindex = new_index( dn );
 	dn_free( dn );
 	if ( avl_insert( &subtree_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
@@ -893,14 +818,12 @@ void index_siblings (char *parent) {
 		LLOG( log_dsap, LLOG_EXCEPTIONS, ("WARNING: cannot index siblings - no attributes have been optimized"));
 		return;
 	}
-
 	pindex = new_index( dn );
 	dn_free( dn );
 	if ( avl_insert( &sibling_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Sibling index for %s already exists\n", parent));
 		index_free( pindex );
 	}
-
 	return;
 }
 

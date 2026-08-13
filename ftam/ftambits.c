@@ -17,11 +17,9 @@ no_mem:
 			pe_free (fpm);
 		return NULLPE;
 	}
-
 	for (pp = pairs; pp -> p_mask; pp++)
 		if ((actions & pp -> p_mask) && bit_on (fpm, pp -> p_bitno) == NOTOK)
 			goto no_mem;
-
 	return fpm;
 }
 
@@ -36,7 +34,6 @@ int fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, st
 			i |= pp -> p_mask;
 			bits_set++;
 		}
-
 	*actions = i;
 	if (bits_set == 0)
 		return NOTOK;

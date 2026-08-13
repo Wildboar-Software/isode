@@ -252,17 +252,14 @@ static void doit_udp (int pd) {
 			return;
 		adios ("failed", "join_udp_client");
 	}
-
 	sprintf (source, "Internet=%s+%d+2",
 			 cp = inet_ntoa (isock -> sin_addr),
 			 (int) ntohs (isock -> sin_port));
-
 	bzero ((char *) na, sizeof *na);
 	na -> na_stack = NA_TCP;
 	na -> na_community = ts_comm_tcp_default;
 	strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
 	na -> na_port = isock -> sin_port;
-
 	doit_aux (fd, na, (IFP) read_udp_socket, (IFP) write_udp_socket, (IFP) check_udp_socket);
 #ifndef	SNMPT
 	if (pqr)
@@ -283,11 +280,9 @@ int main (int argc, char **argv, char **envp) {
 
 	arginit(argv);
 	envinit();
-
 	failed = listening = 0;
 	nfds = 0;
 	FD_ZERO (&ifds);
-
 	for (ta = tas; ta < tz; ta++) {
 		if (ta -> ta_naddr == 0) {
 			if (!tp4service)
@@ -297,7 +292,6 @@ int main (int argc, char **argv, char **envp) {
 #endif
 		} else {
 			struct NSAPaddr *na = ta -> ta_addrs;
-
 			switch (na -> na_stack) {
 			case NA_TCP:
 				if (!tcpservice)
@@ -306,11 +300,9 @@ int main (int argc, char **argv, char **envp) {
 				{
 					struct sockaddr_in lo_socket;
 					struct sockaddr_in *lsock = &lo_socket;
-
 					bzero ((char *) lsock, sizeof *lsock);
 					lsock -> sin_family = AF_INET;
 					lsock -> sin_port = na -> na_port;
-
 					if ((udp = start_udp_server (lsock, 0, 0, 0))
 							== NOTOK) {
 						advise (LLOG_EXCEPTIONS, "failed",
@@ -324,7 +316,6 @@ int main (int argc, char **argv, char **envp) {
 					FD_SET (udp, &ifds);
 					if (nd == NOTOK)
 						nd = udp;
-
 					advise (LLOG_NOTICE, NULLCP,
 							"listening on UDP port %d",
 							(int) ntohs (na -> na_port));
@@ -352,7 +343,6 @@ do_clts:
 				{
 					union sockaddr_osi lo_socket;
 					union sockaddr_osi *lsock = &lo_socket;
-
 					gen2tp4 (ta, lsock);
 					if ((clts = start_clts_server (lsock, 0, 0, 0))
 							== NOTOK) {
@@ -367,7 +357,6 @@ do_clts:
 					FD_SET (clts, &ifds);
 					if (nd == NOTOK)
 						nd = clts;
-
 					advise (LLOG_NOTICE, NULLCP,
 							"listening on %s", taddr2str (ta));
 					listening++;
@@ -382,25 +371,20 @@ do_clts:
 				/* NOT REACHED */
 			}
 		}
-
 		advise (LLOG_NOTICE, NULLCP, "listening on %s", taddr2str (ta));
-
 		if (TNetListen (ta, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "listen failed");
 			failed++;
 		} else
 			listening++;
 	}
-
 	if (!listening)
 		adios (NULLCP, failed ? "no successful listens"
 			   : "no network services selected");
-
 #ifndef	SNMPT
 	do_trap (int_SNMP_generic__trap_coldStart, 0,
 			 (struct type_SNMP_VarBindList *) 0);
 #endif
-
 #ifdef	SMUX
 	{
 		struct sockaddr_in lo_socket;
@@ -408,19 +392,16 @@ do_clts:
 		struct servent *sp;
 		struct smuxReserved *sr;
 		OT	ot;
-
 		PHead -> pb_forw = PHead -> pb_back = PHead;
 		THead -> tb_forw = THead -> tb_back = THead;
 		for (sr = reserved; sr -> rb_text; sr++)
 			if (ot = text2obj (sr -> rb_text))
 				sr -> rb_name = ot -> ot_name;
-
 		bzero ((char *) lsock, sizeof *lsock);
 		lsock -> sin_family = AF_INET;
 		lsock -> sin_port = (sp = getservbyname ("smux", "tcp"))
 							? sp -> s_port
 							: htons ((uint16_t) 199);
-
 		if (smux_enabled) {
 			if ((smux = start_tcp_server (lsock, SOMAXCONN, 0, 0)) == NOTOK)
 				adios ("failed", "start_tcp_server for SMUX");
@@ -430,14 +411,11 @@ do_clts:
 			FD_SET (smux, &ifds);
 		}
 	}
-
 	FD_ZERO (&sfds);
 #endif
-
 #ifdef	COTS
 	FD_ZERO (&cfds);
 #endif
-
 	for (;;) {
 		int	fd,
 			secs;
@@ -448,7 +426,6 @@ do_clts:
 		int	vecp;
 		fd_set  rfds;
 		char   *vec[4];
-
 		secs = NOTOK;
 #ifdef	COTS
 		for (fd = 0; fd < nfds; fd++)
@@ -457,19 +434,16 @@ do_clts:
 				break;
 			}
 #endif
-
 		rfds = ifds;	/* struct copy */
 		if (TNetAcceptAux (&vecp, vec, &fd, NULLTA, nfds, &rfds, NULLFD,
 						   NULLFD, secs, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetAccept failed");
 			continue;
 		}
-
 #ifdef	TCP
 		if (udp != NOTOK && FD_ISSET (udp, &rfds))
 			doit_udp (udp);
 #endif
-
 #ifdef	SMUX
 		if (smux != NOTOK
 				&& FD_ISSET (smux, &rfds)
@@ -480,17 +454,14 @@ do_clts:
 			FD_SET (fd, &ifds);
 			FD_SET (fd, &sfds);
 		}
-
 		for (fd = 0; fd < nfds; fd++)
 			if (FD_ISSET (fd, &rfds) && FD_ISSET (fd, &sfds))
 				doit_smux (fd);
 #endif
-
 #ifdef	CLTS
 		if (clts != NOTOK && FD_ISSET (clts, &rfds))
 			doit_clts (clts);
 #endif
-
 #ifdef	COTS
 		if (vecp > 0 && (fd = start_tsap (vecp, vec)) != NOTOK) {
 			ioctl (fd, FIOCLEX, NULLCP);
@@ -499,14 +470,11 @@ do_clts:
 			FD_SET (fd, &ifds);
 			FD_SET (fd, &cfds);
 		}
-
 		for (fd = 0; fd < nfds; fd++)
 			if (FD_ISSET (fd, &rfds) && FD_ISSET (fd, &cfds))
 				doit_cots (fd);
-
 		gettimeofday (tv, (struct timezone *) 0);
 		tv -> tv_sec -= (long) IDLE_TIME;
-
 		for (fd = 0; fd < nfds; fd++)
 			if (FD_ISSET (fd, &cfds)) {
 				if (timercmp (tv, &lru[fd], >)) {
@@ -514,19 +482,16 @@ do_clts:
 							"clearing connection from %d: %s", fd,
 							taddr2str (taddrs + fd));
 					TDiscRequest (fd, NULLCP, 0, td);
-
 					FD_CLR (fd, &ifds);
 					FD_CLR (fd, &cfds);
 					proxy_clear (fd);
 				}
 			}
-
 		for (fd = nfds - 1; fd >= 0; fd--)
 			if (FD_ISSET (fd, &ifds))
 				break;
 		nfds = fd + 1;
 #endif
-
 #ifndef	SNMPT
 		switch (*((integer *) *agentAction)) {
 		case AGENT_OTHER:
@@ -534,7 +499,6 @@ do_clts:
 
 		case AGENT_COLDSTART:
 			advise (LLOG_FATAL, NULLCP, "initiating coldStart...");
-
 #if	defined(COTS) || defined(SMUX)
 			secs = 0;
 #endif
@@ -567,18 +531,15 @@ do_clts:
 			{
 				struct smuxPeer *pb,
 						   *qb;
-
 				if (smux != NOTOK)
 					close_tcp_socket (smux), smux = NOTOK;
 				for (pb = PHead -> pb_forw; pb != PHead; pb = qb) {
 					qb = pb -> pb_forw;
-
 					pb_free (pb);
 					secs = 30;
 				}
 			}
 #endif
-
 #if	defined(COTS) || defined(SMUX)
 			if (secs) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
@@ -586,7 +547,6 @@ do_clts:
 				sleep ((unsigned int) secs);
 			}
 #endif
-
 			execv (spath, sargv);
 			adios (spath, "unable to execv");
 			break;
@@ -614,7 +574,6 @@ char   *event;
 				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
 		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
-
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -635,9 +594,7 @@ int	pd;
 		adios ("failed", "join_tcp_client");
 	}
 	tp42gen (ta, isock);
-
 	strcpy (source, taddr2str (ta));
-
 	doit_aux (fd, ta -> ta_addrs, read_clts_socket, write_clts_socket,
 			  check_clts_socket);
 #ifndef	SNMPT
@@ -663,22 +620,18 @@ char  **vec;
 		ts_advise (td, LLOG_EXCEPTIONS, "T-CONNECT.INDICATION");
 		return NOTOK;
 	}
-
 	advise (LLOG_XXX, NULLCP,
 			"T-CONNECT.INDICATION: <%d, %s, %s, %d, %d>",
 			ts -> ts_sd,
 			taddr2str (&ts -> ts_calling), taddr2str (&ts -> ts_called),
 			ts -> ts_expedited, ts -> ts_tsdusize);
-
 	if (TConnResponse (ts -> ts_sd, NULLTA, 0, NULLCP, 0, NULLQOS, td)
 			== NOTOK) {
 		ts_advise (td, LLOG_EXCEPTIONS, "T-CONNECT.RESPONSE");
 		return NOTOK;
 	}
-
 	taddrs[ts -> ts_sd] = ts -> ts_calling;	/* struct copy */
 	gettimeofday (lru + ts -> ts_sd, (struct timezone *) 0);
-
 	return ts -> ts_sd;
 }
 
@@ -691,7 +644,6 @@ int	fd;
 	if (pqr)
 		pqr -> pq_fd = fd, pqr -> pq_closefnx = NULLIFP;
 #endif
-
 	gettimeofday (lru + fd, (struct timezone *) 0);
 }
 #endif
@@ -706,7 +658,6 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 #ifdef	DEBUG
 	didhup = NOTOK;
 #endif
-
 	result = NOTOK;
 	pe = NULLPE;
 	msg = NULL;
@@ -721,10 +672,8 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 		else
 			advise (LLOG_EXCEPTIONS, NULLCP, "dg_setup: %s (%s)",
 					ps_error (ps -> ps_errno), source);
-
 		goto out;
 	}
-
 	size = ps -> ps_byteno;
 	if ((pe = ps2pe (ps)) == NULLPE) {
 #ifdef	COTS
@@ -732,7 +681,6 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 			FD_CLR (fd, &ifds);
 			FD_CLR (fd, &cfds);
 			proxy_clear (fd);
-
 			if (ps -> ps_errno == PS_ERR_NONE) {
 				advise (LLOG_XXX, NULLCP,
 						"T-DISCONNECT.INDICATION: %d (%s)", fd, source);
@@ -755,11 +703,9 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 	else
 #endif
 		advise (LLOG_XXX, NULLCP, "packet from %s", source);
-
 #ifndef	SNMPT
 	snmpstat.s_inpkts++;
 #endif
-
 	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "decode_SNMP_Message: %s (%s)",
 				PY_pepy, source);
@@ -769,12 +715,10 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 #ifdef	COTS
 		if (rfx == ts_read) {
 			struct TSAPdisconnect tds;
-
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"clearing connection from %d: %s", fd,
 					taddr2str (taddrs + fd));
 			TDiscRequest (fd, NULLCP, 0, &tds);
-
 			FD_CLR (fd, &ifds);
 			FD_CLR (fd, &cfds);
 			proxy_clear (fd);
@@ -782,32 +726,23 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 #endif
 		goto out;
 	}
-
 	PLOGP (pgm_log,SNMP_Message, pe, "Message", 1);
-
 	result = process (ps, msg, na, size);
-
 out:
 	;
 	if (msg) {
 		/* BEGIN MOBY PEPSY HACK... */
-
 		struct type_SNMP_VarBindList *vp =
 				msg -> data -> un.get__request -> variable__bindings;
-
 		free_SNMP_VarBindList (vp);
-
 		msg -> data -> un.get__request -> variable__bindings = NULL;
-
 		/* END MOBY PEPSY HACK... */
-
 		free_SNMP_Message (msg);
 	}
 	if (pe)
 		pe_free (pe);
 	if (result != OK && ps)
 		ps_free (ps);
-
 #ifdef	DEBUG
 	hupser (SIGHUP);
 #endif
@@ -828,12 +763,10 @@ static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, 
 		snmpstat.s_badversions++;
 		return DONE;
 	}
-
 	if ((commname = qb2str (msg -> community)) == NULLCP) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "qb2str: out of memory (%s)", source);
 		return DONE;
 	}
-
 	result = NOTOK;
 	if ((comm = str2comm (commname, na)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "badCommunity: %s (%s)",
@@ -844,15 +777,11 @@ static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, 
 					 (struct type_SNMP_VarBindList *) 0);
 		goto out;
 	}
-
 	if ((result = do_operation (ps, msg, comm, size)) != DONE)
 		goto out;
-
 	pe = NULLPE;
-
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) != NOTOK) {
 		PLOGP (pgm_log,SNMP_Message, pe, "Message", 0);
-
 		if (pe2ps (ps, pe) == NOTOK)
 			advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (%s)",
 					ps_error (ps -> ps_errno), source);
@@ -861,14 +790,11 @@ static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, 
 	} else
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_SNMP_Message: %s (%s)",
 				PY_pepy, source);
-
 	if (pe)
 		pe_free (pe);
-
 out:
 	;
 	free (commname);
-
 	return result;
 }
 
@@ -940,23 +866,18 @@ bad_operation:
 				"badOperation: %d (%s)", pdu -> offset, source);
 		return NOTOK;
 	}
-
 	if (vu -> v_community)
 		return proxy1 (ps, msg, comm);
-
 	offset = pdu -> offset;
 	pdu -> offset = type_SNMP_PDUs_get__response;
-
 	{
 		struct type_SNMP_VarBindList **opp;
-
 		opp = &op;
 		for (vp = msg -> data -> un.get__request -> variable__bindings;
 				vp;
 				vp = vp -> next) {
 			struct type_SNMP_VarBindList *bind;
 			struct type_SNMP_VarBind *v;
-
 			if ((bind = (struct type_SNMP_VarBindList *)
 						calloc (1, sizeof *bind)) == NULL) {
 no_mem:
@@ -964,25 +885,20 @@ no_mem:
 				free_SNMP_VarBindList (op);
 				op = NULL;
 				advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
-
 				parm -> error__status = int_SNMP_error__status_genErr;
 				goto out;
 			}
 			*opp = bind, opp = &bind -> next;
-
 			if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v))
 					== NULL)
 				goto no_mem;
 			bind -> VarBind = v;
-
 			if ((v -> name = oid_cpy (vp -> VarBind -> name)) == NULLOID)
 				goto no_mem;
 			(v -> value = vp -> VarBind -> value) -> pe_refcnt++;
 		}
 	}
-
 	quantum++;
-
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 	case type_SNMP_PDUs_get__next__request:
@@ -993,16 +909,13 @@ no_mem:
 	case type_SNMP_PDUs_set__request:
 		if (idx = do_pass (msg, offset, vu)) {
 			int	status = parm -> error__status;
-
 			do_pass (msg, type_SNMP_PDUs_rollback, vu);
-
 			parm -> error__status = status;
 		} else
 			do_pass (msg, type_SNMP_PDUs_commit, vu);
 		gc_set ();
 		break;
 	}
-
 out:
 	;
 	parm -> error__index = idx;
@@ -1017,7 +930,6 @@ out:
 				parm -> error__status = int_SNMP_error__status_tooBig;
 				goto out;
 			}
-
 		idx = 0;
 		for (vp = msg -> data -> un.get__request -> variable__bindings;
 				vp;
@@ -1066,7 +978,6 @@ losing:
 		break;
 	}
 	snmpstat.s_outgetresponses++;
-
 	return DONE;
 }
 
@@ -1078,7 +989,6 @@ static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu) 
 	struct type_SNMP_VarBindList *vp;
 	struct type_SNMP_GetResponse__PDU *parm = pdu -> un.get__response;
 	int	(*method)(OI oi, struct type_SNMP_VarBind *v, int offset);
-
 	idx = 0;
 	for (vp = msg -> data -> un.get__request -> variable__bindings;
 			vp;
@@ -1086,14 +996,11 @@ static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu) 
 		OI	oi;
 		OT	ot;
 		struct type_SNMP_VarBind *v = vp -> VarBind;
-
 		idx++;
-
 		if (offset == type_SNMP_PDUs_get__next__request) {
 			if ((oi = name2inst (v -> name)) == NULLOI
 					&& (oi = next2inst (v -> name)) == NULLOI)
 				goto no_name;
-
 			if ((ot = oi -> oi_type) -> ot_getfnx == NULLIFP
 					&& ot -> ot_smux == NULL)
 				goto get_next;
@@ -1110,7 +1017,6 @@ no_name:
 				return idx;
 			}
 		}
-
 try_again:
 		;
 		switch (offset) {
@@ -1138,7 +1044,6 @@ losing_name:
 			method = ot -> ot_setfnx;
 			break;
 		}
-
 #ifdef	SMUX
 		if (ot -> ot_smux)
 			status = smux_method (pdu, ot,
@@ -1148,7 +1053,6 @@ losing_name:
 		else
 #endif
 			status = (*method) (oi, v, offset);
-
 		switch (status) {
 		case NOTOK:	    /* get-next wants a bump */
 #ifdef SMUX
@@ -1159,7 +1063,6 @@ losing_name:
 			   'mounted over'. (EJP) */
 			if (ot -> ot_smux) {
 				int level = ot -> ot_name -> oid_nelem;
-
 				while (ot -> ot_next
 						&& ot -> ot_next -> ot_name -> oid_nelem
 						> level)
@@ -1188,7 +1091,6 @@ get_next:
 			return idx;
 		}
 	}
-
 	return 0;
 }
 
@@ -1201,19 +1103,15 @@ static void gc_set (void) {
 
 	for (pb = PHead -> pb_forw; pb != PHead; pb = qb) {
 		qb = pb -> pb_forw;
-
 		if (pb -> pb_invalid)
 			pb_free (pb);
 	}
-
 	for (tb = THead -> tb_forw; tb != THead; tb = ub) {
 		ub = tb -> tb_forw;
-
 		if (tb -> tb_invalid)
 			tb_free (tb);
 	}
 #endif
-
 #ifndef LINUX
 	chekmem ((struct nlist *) 0);
 #endif
@@ -1235,7 +1133,6 @@ static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm
 	}
 	if (pqs >= NPQ) {
 		struct proxyque *qp;
-
 		for (qp = (pq = pips) + NPQ; pq < qp; pq++)
 			if (pq -> pq_age < quantum) {
 				advise (LLOG_NOTICE, NULLCP, "proxy flush");
@@ -1254,7 +1151,6 @@ static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm
 		}
 	} else
 		pq = pips + pqs++;
-
 	pq -> pq_quantum = quantum;
 	pq -> pq_age = quantum + 20;	/* who knows what a good value is?!? */
 	pq -> pq_ps = psp;
@@ -1263,10 +1159,8 @@ static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm
 	insque (msg -> community -> qb_forw, &pq -> pq_community);
 	free ((char *) msg -> community);
 	pq -> pq_request = msg -> data -> un.get__request -> request__id;
-
 	msg -> community = v -> v_community;
 	msg -> data -> un.get__request -> request__id = pq -> pq_quantum;
-
 	result = NOTOK;
 	pe = NULLPE;
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) == NOTOK) {
@@ -1277,7 +1171,6 @@ static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm
 		goto out;
 	}
 	PLOGP (pgm_log,SNMP_Message, pe, "Message", 0);
-
 	if ((ps = ps_alloc (dg_open)) == NULLPS
 			|| dg_setup (ps, udp, MAXSNMP, read_udp_socket, write_udp_socket,
 						 check_udp_socket) == NOTOK) {
@@ -1295,34 +1188,27 @@ static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm
 				ps_error (ps -> ps_errno), source);
 	else {
 		result = OK;
-
 		if (hack_dgram_socket (udp, (struct sockaddr *) NULL) == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed",
 					"hack_dgram_socket(2) (proxy %s)", source);
 	}
-
 	pe_free (pe);
-
 	if (ps)
 		ps_free (ps);
-
 out:
 	;
 	msg -> community = NULL;
 	if (result == NOTOK) {
 		struct proxyque *qp = pips + --pqs;
-
 		if (pq -> pq_closefnx) {
 			ps_free (pq -> pq_ps);
 			(*pq -> pq_closefnx) (pq -> pq_fd);
 		}
 		QBFREE (&pq -> pq_community);
-
 		if (pq != qp)
 			*pq = *qp;		/* struct copy */
 	} else
 		pqr = pq;
-
 	return result;
 }
 
@@ -1340,11 +1226,9 @@ struct type_SNMP_Message *msg;
 			break;
 	if (pq >= qp)
 		return OK;
-
 	qb_free (msg -> community);
 	msg -> community = &pq -> pq_community;
 	msg -> data -> un.get__request -> request__id = pq -> pq_request;
-
 	pe = NULLPE;
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_SNMP_Message: %s (proxy %s)",
@@ -1354,29 +1238,22 @@ struct type_SNMP_Message *msg;
 		goto out;
 	}
 	PLOGP (pgm_log,SNMP_Message, pe, "Message", 0);
-
 	if (pe2ps (pq -> pq_ps, pe) == NOTOK)
 		advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (proxy %s)",
 				ps_error (pq -> pq_ps -> ps_errno), source);
 	snmpstat.s_outgetresponses++;
-
 	pe_free (pe);
-
 out:
 	;
 	msg -> community = NULL;
-
 	qp = pips + --pqs;
-
 	if (pq -> pq_closefnx) {
 		ps_free (pq -> pq_ps);
 		(*pq -> pq_closefnx) (pq -> pq_fd);
 	}
 	QBFREE (&pq -> pq_community);
-
 	if (pq != qp)
 		*pq = *qp;	/* struct copy */
-
 	return DONE;
 }
 
@@ -1392,13 +1269,11 @@ again:
 	for (qp = (pq = pips) + pqs; pq < qp; pq++)
 		if (pq -> pq_fd == fd) {
 			qp = pips + --pqs;
-
 			if (pq -> pq_closefnx) {
 				ps_free (pq -> pq_ps);
 				(*pq -> pq_closefnx) (pq -> pq_fd);
 			}
 			QBFREE (&pq -> pq_community);
-
 			if (pq != qp)
 				*pq = *qp;
 			goto again;
@@ -1423,7 +1298,6 @@ static int  start_smux (void) {
 			return NOTOK;
 		adios ("failed", "join_tcp_client");
 	}
-
 	if ((pb = (struct smuxPeer *) calloc (1, sizeof *pb)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "doit_smux: out of memory");
 out:
@@ -1431,16 +1305,13 @@ out:
 		close_tcp_socket (fd);
 		return NOTOK;
 	}
-
 	pb -> pb_address = *isock;		/* struct copy */
-
 	/* Format sockets consistantly with other places in this program,
 	   with a plus sign between the internet address and port number.  (EJP) */
 	sprintf (pb -> pb_source, "%s+%d",
 			 inet_ntoa (pb -> pb_address.sin_addr),
 			 (int) ntohs (pb -> pb_address.sin_port));
 	strcpy (source, pb -> pb_source);
-
 	if ((pb -> pb_ps = ps_alloc (fdx_open)) == NULLPS
 			|| fdx_setup (pb -> pb_ps, fd) == NOTOK) {
 		if (pb -> pb_ps == NULLPS)
@@ -1449,19 +1320,15 @@ out:
 		else
 			advise (LLOG_EXCEPTIONS, NULLCP, "fdx_setup: %s (SMUX %s)",
 					ps_error (pb -> pb_ps -> ps_errno), source);
-
 		pb_free (pb);
 		goto out;
 	}
-
 	/* Insert new smuxPeer structure at the end of the doubly-linked
 	   list anchored at PHead and assign it the next sequential index
 	   number for use as smuxPindex in o_smuxPeer() and smuxTindex in
 	   o_smuxTree().  (EJP) */
-
 	insque (pb, PHead -> pb_back);
 	pb -> pb_index = ++smux_peerno;
-
 	return (pb -> pb_fd = fd);
 }
 
@@ -1483,7 +1350,6 @@ static void doit_smux (int fd) {
 	if ((pe = ps2pe (pb -> pb_ps)) == NULLPE) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "ps2pe: %s (SMUX %s)",
 				ps_error (pb -> pb_ps -> ps_errno), source);
-
 out:
 		;
 		if (pe)
@@ -1518,30 +1384,25 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 			struct type_SNMP_SimpleOpen *simple =
 					pdu -> un.simple;
 			struct smuxEntry *se;
-
 			if (simple -> version != int_SNMP_version_version__1) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"badVersion: %d (SMUX %s)",
 						simple -> version, source);
 				return NOTOK;
 			}
-
 			pb -> pb_identity = simple -> identity;
 			simple -> identity = NULL;
-
 			if ((pb -> pb_description = qb2str (simple -> description))
 					== NULL) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"qb2str: out of memory (SMUX %s)", source);
 				return NOTOK;
 			}
-
 			if (qb_pullup (simple -> password) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"qb_pullup: out of memory (SMUX %s)", source);
 				return NOTOK;
 			}
-
 			if ((se = getsmuxEntrybyidentity (pb -> pb_identity)) == NULL
 					|| strcmp (se -> se_password,
 							   simple -> password -> qb_forw -> qb_data)) {
@@ -1555,10 +1416,8 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 							 0, (struct type_SNMP_VarBindList *) 0);
 				return NOTOK;
 			}
-
 			if ((pb -> pb_priority = se -> se_priority) < 0)
 				pb -> pb_priority = 0;
-
 			advise (LLOG_NOTICE, NULLCP,
 					"SMUX open: %d %s \"%s\" (%d/ %s)",
 					pb -> pb_index, oid2ode (pb -> pb_identity),
@@ -1588,7 +1447,6 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 			OID	oid = rreq -> subtree;
 			OT	ot = NULLOT;
 			PE	pe;
-
 			for (sr = reserved; sr -> rb_text; sr++)
 				if (sr -> rb_name
 						&& bcmp ((char *) sr -> rb_name -> oid_elements,
@@ -1608,7 +1466,6 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 							sr -> rb_text, source);
 					goto no_dice;
 				}
-
 			if ((ot = name2obj (oid)) == NULLOT) {
 				if (rreq -> operation == int_SNMP_operation_delete) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
@@ -1616,7 +1473,6 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 							oid2ode (oid), source);
 					goto no_dice;
 				}
-
 				if ((ot = (OT) calloc (1, sizeof *ot)) == NULL
 						|| (ot -> ot_text = ot -> ot_id =
 												strdup (sprintoid (oid)))
@@ -1632,7 +1488,6 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 				ot -> ot_access = rreq -> operation;
 				ot -> ot_status = OT_OPTIONAL;
 				export_view (ot);
-
 				add_objects (ot);
 			} else {
 				if (rreq -> operation == int_SNMP_operation_delete) {
@@ -1654,7 +1509,6 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 					}
 					goto no_dice;
 				}
-
 				if (ot -> ot_name -> oid_nelem > oid -> oid_nelem) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"badSubTree: %s (SMUX %s)",
@@ -1662,17 +1516,14 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 					ot = NULL;
 					goto no_dice;
 				}
-
 				export_view (ot);
 			}
-
 			if ((tb = (struct smuxTree *) calloc (1, sizeof *tb))
 					== NULL) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"out of memory (SMUX %s)", source);
 				return NOTOK;
 			}
-
 			if ((tb -> tb_priority = rreq -> priority) < pb -> pb_priority)
 				tb -> tb_priority = pb -> pb_priority;
 			for (qb = (struct smuxTree *) ot -> ot_smux;
@@ -1682,25 +1533,19 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 					break;
 				else if (qb -> tb_priority == tb -> tb_priority)
 					tb -> tb_priority++;
-
 			tb -> tb_peer = pb;
-
 no_dice:
 			;
 			bzero ((char *) &rsp, sizeof rsp);
 			rsp.offset = type_SNMP_SMUX__PDUs_registerResponse;
 			rsp.un.registerResponse = &rrsp;
-
 			bzero ((char *) &rrsp, sizeof rrsp);
 			rrsp.parm = tb ? tb -> tb_priority
 						: int_SNMP_RRspPDU_failure;
-
 			pe = NULLPE;
-
 			if (encode_SNMP_SMUX__PDUs (&pe, 1, 0, NULLCP, &rsp)
 					!= NOTOK) {
 				PLOGP (pgm_log,SNMP_SMUX__PDUs, pe, "SMUX Message", 0);
-
 				if (pe2ps (pb -> pb_ps, pe) == NOTOK) {
 					advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (SMUX %s)",
 							ps_error (pb -> pb_ps -> ps_errno), source);
@@ -1717,7 +1562,6 @@ no_dice:
 								oid2ode (ot -> ot_name),
 								rreq -> priority,
 								tb ? tb -> tb_priority : -1, source);
-
 					if (tb
 							&& rreq -> operation
 							!= int_SNMP_operation_delete) {
@@ -1725,14 +1569,11 @@ no_dice:
 						unsigned int *ip,
 								 *jp;
 						struct smuxTree **qpp;
-
 						tb -> tb_subtree = ot;
-
 						/* Insert the new element into the single-linked chain
 						   of smuxTree structures for this object type that is
 						   anchored in the object tree.  Elements are chained
 						   in order of increasing priority.  (EJP) */
-
 						for (qpp = (struct smuxTree **) &ot -> ot_smux;
 								qb = *qpp;
 								qpp = &qb -> tb_next)
@@ -1740,12 +1581,10 @@ no_dice:
 								break;
 						tb -> tb_next = qb;
 						*qpp = tb;
-
 						/* Fill in the tb_instance field of the new element
 						   with the concatenation of the size of the object name
 						   followed by the object name itself followed by
 						   its priority.  (EJP) */
-
 						ip = tb -> tb_instance;
 						jp = ot -> ot_name -> oid_elements;
 						*ip++ = ot -> ot_name -> oid_nelem;
@@ -1753,13 +1592,11 @@ no_dice:
 							*ip++ = *jp++;
 						*ip++ = tb -> tb_priority;
 						tb -> tb_insize = ip - tb -> tb_instance;
-
 						/* Insert the new element into the doubly-linked chain
 						   of all smuxTree structures that is anchored in THead.
 						   Elements are chained in lexicographic order of
 						   tb_instance so that the get_tbent() function will
 						   work correctly for 'get next' operations.  (EJP) */
-
 						for (qb = THead -> tb_forw;
 								qb != THead;
 								qb = qb -> tb_forw)
@@ -1776,7 +1613,6 @@ no_dice:
 						PY_pepy, source);
 				result = NOTOK;
 			}
-
 			if (pe)
 				pe_free (pe);
 		}
@@ -1792,19 +1628,15 @@ no_dice:
 			struct type_SNMP_PDUs datas;
 			struct type_SNMP_PDUs *data = &datas;
 			struct type_SNMP_Trap__PDU *parm = pdu -> un.trap;
-
 			advise (LLOG_NOTICE, NULLCP,
 					"SMUX trap: %d %d (%s)",
 					parm -> generic__trap, parm -> specific__trap, source);
-
 			bzero ((char *) msg, sizeof *msg);
 			msg -> version = int_SNMP_version_version__1;
 			msg -> data = data;
-
 			bzero ((char *) data, sizeof *data);
 			data -> offset = type_SNMP_PDUs_trap;
 			data -> un.trap = parm;
-
 			if (loopback_addr
 					&& qb_pullup (qb = parm -> agent__addr) != NOTOK
 					&& qb -> qb_len == loopback_addr -> qb_len
@@ -1834,7 +1666,6 @@ unexpected:
 				"badOperation: %d (SMUX %s)", pdu -> offset, source);
 		return NOTOK;
 	}
-
 	return result;
 }
 
@@ -1856,7 +1687,6 @@ static int smux_method (
 	PE	    pe;
 
 	status = int_SNMP_error__status_noError;
-
 	bzero ((char *) &req, sizeof req);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -1873,11 +1703,9 @@ stuff_pdu:
 		;
 		orig_id = pdu -> un.get__request -> request__id;
 		orig_bindings = pdu -> un.get__request -> variable__bindings;
-
 		req.un.get__request = pdu -> un.get__request;
 		bzero ((char *) &vps, sizeof vps);
 		vps.VarBind = v;
-
 		pdu -> un.get__request -> request__id = quantum;
 		pdu -> un.get__request -> variable__bindings = &vps;
 		pb -> pb_sendCoR = 1;
@@ -1898,17 +1726,13 @@ stuff_cor:
 		pb -> pb_sendCoR = 0;
 		break;
 	}
-
 	pe = NULLPE;
-
 	if (encode_SNMP_SMUX__PDUs (&pe, 1, 0, NULLCP, &req) != NOTOK) {
 		PLOGP (pgm_log,SNMP_SMUX__PDUs, pe, "SMUX Message", 0);
-
 		if (pe2ps (pb -> pb_ps, pe) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (%s, SMUX %s)",
 					ps_error (pb -> pb_ps -> ps_errno), source,
 					pb -> pb_source);
-
 lost_peer:
 			;
 			pb_free (pb);
@@ -1919,10 +1743,8 @@ lost_peer:
 				"encode_SNMP_SMUX__PDUs: %s (%s)", PY_pepy, source);
 		status = int_SNMP_error__status_genErr;
 	}
-
 	if (pe)
 		pe_free (pe);
-
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 	case type_SNMP_PDUs_get__next__request:
@@ -1934,38 +1756,30 @@ lost_peer:
 	default:
 		break;
 	}
-
 	if (status != int_SNMP_error__status_noError
 			|| offset == type_SNMP_PDUs_commit
 			|| offset == type_SNMP_PDUs_rollback)
 		return status;
-
 try_it_again:
 	;
 	if ((pe = ps2pe (pb -> pb_ps)) == NULLPE) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "ps2pe: %s (%s, SMUX %s)",
 				ps_error (pb -> pb_ps -> ps_errno), source,
 				pb -> pb_source);
-
 		goto lost_peer;
 	}
-
 	rsp = NULL;
-
 	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, &rsp) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"decode_SNMP_SMUX__PDUs: %s (%s, SMUX %s)", PY_pepy, source,
 				pb -> pb_source);
-
 lost_peer_again:
 		;
 		pb_free (pb);
 		status = int_SNMP_error__status_genErr;
 		goto out;
 	}
-
 	PLOGP (pgm_log,SNMP_SMUX__PDUs, pe, "SMUX Message", 1);
-
 	if (rsp -> offset != type_SNMP_SMUX__PDUs_get__response) {
 		if (rsp -> offset == type_SNMP_SMUX__PDUs_trap) {
 			if (smux_process (pb, rsp) == NOTOK)
@@ -1974,29 +1788,23 @@ lost_peer_again:
 			pe_free (pe), pe = NULL;
 			goto try_it_again;
 		}
-
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"unexpectedOperation: %d (%s, SMUX %s)", rsp -> offset,
 				source, pb -> pb_source);
-
 		goto lost_peer_again;
 	}
 	get = rsp -> un.get__response;
-
 	switch (status = get -> error__status) {
 	case int_SNMP_error__status_noError: {
 		struct type_SNMP_VarBindList *vp;
 		struct type_SNMP_VarBind *v2;
-
 		if ((vp = get -> variable__bindings) == NULL) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"missing variable in get response (%s, SMUX %s)",
 					source, pb -> pb_source);
-
 			goto lost_peer_again;
 		}
 		v2 = vp -> VarBind;
-
 		if (offset == type_SNMP_PDUs_get__next__request
 				&& (ot -> ot_name -> oid_nelem
 					> v2 -> name -> oid_nelem
@@ -2027,14 +1835,12 @@ lost_peer_again:
 	default:
 		break;
 	}
-
 out:
 	;
 	if (rsp)
 		free_SNMP_SMUX__PDUs (rsp);
 	if (pe)
 		pe_free (pe);
-
 	return status;
 }
 
@@ -2148,16 +1954,13 @@ static struct community *str2comm (char *name, struct NSAPaddr *na) {
 					/* NOTREACHED */
 				}
 			}
-
 			d = c;
 			break;
 		}
-
 	if (d) {
 		remque (d);
 		insque (d, CHead);
 	}
-
 	return d;
 }
 
@@ -2180,26 +1983,20 @@ out:
 		;
 		if (msg)
 			free_SNMP_Message (msg);
-
 		return;
 	}
 	msg -> version = int_SNMP_version_version__1;
-
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
 		goto no_mem;
 	msg -> data = pdu;
-
 	pdu -> offset = type_SNMP_PDUs_trap;
-
 	if ((parm = (struct type_SNMP_Trap__PDU *) calloc (1, sizeof *parm))
 			== NULL)
 		goto no_mem;
 	pdu -> un.trap = parm;
-
 	strcpy (myhost, TLocalHostName ());
 	if (hp = gethostbystring (myhost)) {
 		struct sockaddr_in sin;
-
 		inaddr_copy (hp, &sin);
 		if ((parm -> agent__addr = str2qb ((char *) &sin.sin_addr, 4, 1))
 				== NULL)
@@ -2209,17 +2006,13 @@ out:
 				"%s: unknown host, so no traps", myhost);
 		goto out;
 	}
-
 	if ((parm -> time__stamp = (struct type_SNMP_TimeTicks *)
 							   calloc (1, sizeof *parm -> time__stamp)) == NULL)
 		goto no_mem;
-
 	trap = msg;
-
 #ifdef	SMUX
 	if (hp = gethostbystring ("localhost")) {
 		struct sockaddr_in sin;
-
 		inaddr_copy (hp, &sin);
 		if ((loopback_addr = str2qb ((char *) &sin.sin_addr, 4, 1)) == NULL)
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -2257,7 +2050,6 @@ static void do_trap (
 				"sysObjectID");
 		return;
 	}
-
 	parm -> generic__trap = generic;
 	parm -> specific__trap = specific;
 	{
@@ -2288,12 +2080,9 @@ static void do_traps (
 		struct view *v = t -> t_view;
 		PE	pe;
 		PS	ps;
-
 		if (specific == 0 && !(t -> t_generics & mask))
 			continue;
-
 		msg -> community = v -> v_community;
-
 		pe = NULLPE;
 		if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
@@ -2303,7 +2092,6 @@ static void do_traps (
 			continue;
 		}
 		PLOGP (pgm_log,SNMP_Message, pe, "Message", 0);
-
 		if ((ps = ps_alloc (dg_open)) == NULLPS
 				|| dg_setup (ps, udp, MAXSNMP, read_udp_socket,
 							 write_udp_socket, check_udp_socket) == NOTOK) {
@@ -2322,16 +2110,13 @@ static void do_traps (
 				else {
 					snmpstat.s_outpkts++, snmpstat.s_outtraps++;
 				}
-
 				/* This function should always be called, regardless of whether
 				   pe2ps() succeeds or fails.  (EJP) */
 				if (hack_dgram_socket (udp, (struct sockaddr *) NULL) == NOTOK)
 					advise (LLOG_EXCEPTIONS, "failed", "hack_dgram_socket(2)");
 			}
 		}
-
 		pe_free (pe);
-
 		if (ps)
 			ps_free (ps);
 		else
@@ -2357,26 +2142,21 @@ static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, i
 				msg -> version, source);
 		return NOTOK;
 	}
-
 	if (pdu -> offset != type_SNMP_PDUs_trap) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"unexpectedOperation: %d (%s)", pdu -> offset, source);
 		return NOTOK;
 	}
-
 	pe = p = NULLPE;
 	au = NULL;
-
 	if (encode_SNMP_Message (&p, 1, 0, NULLCP, msg) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_SNMP_Message: %s (%s)",
 				PY_pepy, source);
 		goto out;
 	}
-
 	if ((au = (struct type_SNMP_Audit *) calloc (1, sizeof *au)) == NULL)
 		goto no_mem;
 	au -> sizeOfEncodingWhichFollows = ps_get_abs (p);
-
 	if ((au -> source = str2qb (source, strlen (source), 1)) == NULL) {
 no_mem:
 		;
@@ -2385,32 +2165,25 @@ no_mem:
 		goto out;
 	}
 	time (&now);
-
 	if (tm = gmtime (&now))
 		tm2ut (tm, ut);
 	else {
 		advise (LLOG_EXCEPTIONS, NULLCP, "gmtime failed");
-
 		bzero ((char *) ut, sizeof *ut);
 	}
-
 	if ((cp = gent2str (ut)) == NULL
 			|| (au -> dateAndTime = str2qb (cp, strlen (cp), 1)) == NULL)
 		goto no_mem;
-
 	if (encode_SNMP_Audit (&pe, 1, 0, NULLCP, au) != NOTOK) {
 		PLOGP (pgm_log,SNMP_Audit, pe, "Audit", 0);
 		PLOGP (pgm_log,SNMP_Message, p, "Message", 0);
-
 		if (pe2ps (audit, pe) == NOTOK || pe2ps (audit, p) == NOTOK)
 			advise (LLOG_EXCEPTIONS, NULLCP, "pe2ps: %s (%s)",
 					ps_error (audit -> ps_errno), source);
-
 		ps_flush (audit);
 	} else
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_SNMP_Audit: %s (%s)",
 				PY_pepy, source);
-
 out:
 	;
 	if (au)
@@ -2419,7 +2192,6 @@ out:
 		pe_free (pe);
 	if (p)
 		pe_free (p);
-
 	return DONE;
 }
 #endif	/* SNMPT */
@@ -2443,36 +2215,29 @@ static void arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
-
 #ifndef	SNMPT
 	sargv = vec;
 	if (*sargv[0] == '/')
 		spath = sargv[0];
 	else {
 		int	i = strlen (sargv[0]);
-
 		if (getcwd (sfile, sizeof sfile - (i + 1))) {
 			ap = sfile + strlen (sfile);
 			sprintf (ap, "%s%s", ap > sfile + 1 ? "/" : "", sargv[0]);
 		} else
 			strcpy (sfile, _isodefile (isodesbinpath, myname));
-
 		spath = sfile;
 	}
 #endif
-
 	bzero ((char *) tas, sizeof tas);
 	tz = tas;
-
 #ifdef	TCP
 	if (!(ts_stacks & TS_TCP))
 		tcpservice = 0;
 	if ((sp = getservbyname ("snmp", "udp")) == NULL)
 		advise (LLOG_EXCEPTIONS, NULLCP, "udp/snmp: unknown service");
-
 	tcp_na = tz -> ta_addrs;
 	tcp_na -> na_stack = NA_TCP;
 	tcp_na -> na_community = ts_comm_tcp_default;
@@ -2482,9 +2247,7 @@ static void arginit (char **vec) {
 	udport = tcp_na -> na_port;
 #endif
 	tz -> ta_naddr = 1;
-
 	tz++;
-
 	if ((sp = getservbyname ("snmp-trap", "udp")) == NULL)
 		advise (LLOG_EXCEPTIONS, NULLCP, "udp/snmp-trap: unknown service");
 #ifndef	SNMPT
@@ -2493,16 +2256,13 @@ static void arginit (char **vec) {
 	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 162);
 #endif
 #endif
-
 #ifdef	COTS
 	bzero ((char *) taddrs, sizeof taddrs);
 	bzero ((char *) lru, sizeof lru);
 #endif
-
 #ifdef	X25
 	if (!(ts_stacks & TS_X25))
 		x25service = 0;
-
 	x25_na = tz -> ta_addrs;
 	x25_na -> na_stack = NA_X25;
 	x25_na -> na_community = ts_comm_x25_default;
@@ -2516,14 +2276,11 @@ static void arginit (char **vec) {
 	x25_na -> na_pidlen = str2sel ("03019000", -1, x25_na -> na_pid, NPSIZE);
 #endif
 	tz -> ta_naddr = 1;
-
 	tz++;
 #endif
-
 #ifdef	TP4
 	if (!(ts_stacks & TS_TP4))
 		tp4service = 0;
-
 #ifndef	SNMPT
 	bcopy ("snmp", tz -> ta_selector, tz -> ta_selectlen = sizeof "snmp" - 1);
 #else
@@ -2531,10 +2288,8 @@ static void arginit (char **vec) {
 		   tz -> ta_selectlen = sizeof "snmp-trap" - 1);
 #endif
 	tz -> ta_naddr = 0;
-
 	tz++;
 #endif
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -2548,7 +2303,6 @@ static void arginit (char **vec) {
 			case 'd':
 				debug++;
 				continue;
-
 #ifndef	SNMPT
 			case 's':
 #ifdef	SMUX
@@ -2574,7 +2328,6 @@ static void arginit (char **vec) {
 				tp4service = 1;
 				tcpservice = x25service = 0;
 				continue;
-
 #ifndef	SNMPT
 			case 'r':
 				rflag = 1;
@@ -2585,7 +2338,6 @@ static void arginit (char **vec) {
 					adios (NULLCP, "usage: %s -f audit-file", myname);
 				continue;
 #endif
-
 #ifdef	TCP
 			case 'p':
 				if ((ap = *++vec) == NULL
@@ -2595,7 +2347,6 @@ static void arginit (char **vec) {
 				tcp_na -> na_port = htons ((uint16_t) port);
 				continue;
 #endif
-
 #ifdef X25
 			/* This permits listening on a specific subaddress. */
 			case 'a':
@@ -2604,7 +2355,6 @@ static void arginit (char **vec) {
 				strcpy (x25_na -> na_dte, ap);
 				x25_na -> na_dtelen = strlen (ap);
 				continue;
-
 			/* This permits listening on a specific protocol id.
 			   In fact, SunLink X.25 lets you listen on a protocol
 			   id mask, but let's keep it simple. */
@@ -2619,12 +2369,9 @@ static void arginit (char **vec) {
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
-
 		adios (NULLCP, "usage: %s [switches]", myname);
 	}
-
 	ps_len_strategy = PS_LEN_LONG;
-
 #ifdef	SNMPT
 	file = _isodefile (isodelogpath, file);
 	if ((fp = fopen (file, "a")) == NULL)
@@ -2650,7 +2397,6 @@ static void envinit (void) {
 	FILE   *fp;
 
 	nbits = getdtablesize ();
-
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -2666,16 +2412,13 @@ static void envinit (void) {
 			}
 			break;
 		}
-
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	SETSID
 		if (setsid () == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -2694,7 +2437,6 @@ static void envinit (void) {
 #endif
 	} else
 		ll_dbinit (pgm_log, myname);
-
 #ifndef	sun		/* damn YP... */
 #ifdef	SNMPT
 	ad = fileno ((FILE *) audit -> ps_addr);
@@ -2709,11 +2451,8 @@ static void envinit (void) {
 		close (sd);
 	}
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, myname);
-
 #ifndef	SNMPT
 #ifndef	SNMPC
 	cp = "snmpd.defs";
@@ -2722,7 +2461,6 @@ static void envinit (void) {
 #endif
 	if (readobjects (cp) == NOTOK)
 		adios (NULLCP, "readobjects: %s", PY_pepy);
-
 	init_mib ();
 #ifndef	SNMPC
 	init_system ();	    /* Internet-standard MIB */
@@ -2739,24 +2477,18 @@ static void envinit (void) {
 	init_smux ();
 #endif
 	init_eval ();
-
 	readconfig ();
-
 	fin_view ();
 	fin_mib ();
-
 	void start_trap (void);
 	start_view ();
-
 	o_advise = (IFP) advise;
 #endif
-
 	sprintf (file, "/etc/%s.pid", myname);
 	if (fp = fopen (file, "w")) {
 		fprintf (fp, "%d\n", getpid ());
 		fclose (fp);
 	}
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
 #ifdef	DEBUG
 #ifdef LINUX
@@ -2829,20 +2561,17 @@ static void readconfig (void) {
 	if ((fp = fopen (cp, "r")) == NULL
 			&& (fp = fopen (cp = isodefile (cp, 0), "r")) == NULL)
 		adios (cp, "unable to read");
-
 	if (!rflag
 			&& getuid () == 0
 			&& fstat (fileno (fp), &st) != NOTOK
 			&& st.st_uid != 0)
 		adios (NULLCP, "%s not owned by root", cp);
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
 		strcpy (line, buffer);
-
 		bzero ((char *) vec, sizeof vec);
 		if (str2vec (buffer, vec) < 1)
 			continue;
@@ -2857,7 +2586,6 @@ static void readconfig (void) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unknown directive: \"%s\"",
 					line);
 	}
-
 	fclose (fp);
 }
 
@@ -2872,11 +2600,9 @@ static int f_logging (char **vec) {
 static int f_variable (char **vec) {
 	if (*++vec == NULL)
 		return NOTOK;
-
 #ifndef	SNMPC
 	if (lexequ (*vec, "interface") == 0) {
 		char   *name;
-
 		if ((name = *++vec) == NULL)
 			return NOTOK;
 		for (vec++; *vec; vec++)

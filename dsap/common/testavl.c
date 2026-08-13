@@ -71,7 +71,6 @@ char	**argv;
 		default:
 			printf("Commands: insert, delete, print, new, quit\n");
 		}
-
 		printf( "> " );
 	}
 	/* NOTREACHED */
@@ -85,13 +84,10 @@ int	depth;
 
 	if ( root == 0 )
 		return;
-
 	ravl_print( root->avl_right, depth+1 );
-
 	for ( i = 0; i < depth; i++ )
 		printf( "   " );
 	printf( "%s %d\n", root->avl_data, root->avl_bf );
-
 	ravl_print( root->avl_left, depth+1 );
 }
 
@@ -99,11 +95,9 @@ myprint( root )
 Avlnode	*root;
 {
 	printf( "********\n" );
-
 	if ( root == 0 )
 		printf( "\tNULL\n" );
 	else
 		( void ) ravl_print( root, 0 );
-
 	printf( "********\n" );
 }

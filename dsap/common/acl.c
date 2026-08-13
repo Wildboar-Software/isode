@@ -87,19 +87,16 @@ int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
 
 	if((acl_info1 == NULLACL_INFO) && (acl_info2 == NULLACL_INFO))
 		return(0);
-
 	if(acl_info1 == NULLACL_INFO)
 		if (test_acl_default(acl_info2) == OK)
 			return(0);
 		else
 			return(-1);
-
 	if(acl_info2 == NULLACL_INFO)
 		if (test_acl_default(acl_info1) == OK)
 			return(0);
 		else
 			return(1);
-
 	for(ai1=acl_info1; ai1 != NULLACL_INFO; ai1=ai1->acl_next) {
 		for(ai2=acl_info2; ai2 != NULLACL_INFO; ai2=ai2->acl_next) {
 			if(acl_info_comp_cmp(ai1, ai2) == 0)
@@ -108,7 +105,6 @@ int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
 		if(ai2 == NULLACL_INFO)
 			return(1);
 	}
-
 	for(ai2=acl_info2; ai2 != NULLACL_INFO; ai2=ai2->acl_next) {
 		for(ai1=acl_info1; ai1 != NULLACL_INFO; ai1=ai1->acl_next) {
 			if(acl_info_comp_cmp(ai2, ai1) == 0)
@@ -117,7 +113,6 @@ int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2) {
 		if(ai1 == NULLACL_INFO)
 			return(-1);
 	}
-
 	return(0);
 }
 
@@ -146,7 +141,6 @@ static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2)
 		return(-1);
 	if(acl_attr2 == NULLACL_ATTR)
 		return(1);
-
 	for(aa1=acl_attr1; aa1 != NULLACL_ATTR; aa1=aa1->aa_next) {
 		for(aa2=acl_attr2; aa2 != NULLACL_ATTR; aa2=aa2->aa_next) {
 			if(acl_attr_comp_cmp(aa1, aa2) == 0)
@@ -155,7 +149,6 @@ static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2)
 		if(aa2 == NULLACL_ATTR)
 			return(1);
 	}
-
 	for(aa2=acl_attr2; aa2 != NULLACL_ATTR; aa2=aa2->aa_next) {
 		for(aa1=acl_attr1; aa1 != NULLACL_ATTR; aa1=aa1->aa_next) {
 			if(acl_attr_comp_cmp(aa1, aa2) == 0)
@@ -202,7 +195,6 @@ static struct acl_info *acl_info_cpy (struct acl_info *aclptr) {
 	if (test_acl_default(aclptr) == OK) {
 		return (defaultacl);
 	}
-
 	for (ptr=aclptr ; ptr!=NULLACL_INFO; ptr=ptr->acl_next ) {
 		ptr2 = acl_info_alloc();
 		ptr2 -> acl_next = result;
@@ -313,7 +305,6 @@ static struct acl_attr *acl_attr_merge (struct acl_attr *a, struct acl_attr *b) 
 
 	if (b == NULLACL_ATTR)
 		return (a);
-
 	for (c=a ; c!= NULLACL_ATTR; c=c->aa_next) {
 		if (oid_seq_cmp (c->aa_types,b->aa_types) == 0) {
 			b->aa_acl->acl_next = c->aa_acl;
@@ -324,7 +315,6 @@ static struct acl_attr *acl_attr_merge (struct acl_attr *a, struct acl_attr *b) 
 			return (a);
 		}
 	}
-
 	b->aa_next = a;
 	return (b);
 }
@@ -344,7 +334,6 @@ static struct acl_info *str2acl_info (char **strptr) {
 		"write",        ACL_WRITE,
 		0,              -1
 	} ;
-
 	static CMD_TABLE cmd_class [] = {
 		"SELF",		ACL_ENTRY,
 		"OTHERS",	ACL_OTHER,
@@ -352,12 +341,10 @@ static struct acl_info *str2acl_info (char **strptr) {
 		"PREFIX",	ACL_PREFIX,
 		0,              -1,
 	} ;
-
 	if ((ptr = index (*strptr,'#')) == 0) {
 		parse_error ("# missing in acl syntax '%s'",*strptr);
 		return (NULLACL_INFO);
 	}
-
 	save = ptr++;
 	if (**strptr == '#') {
 		parse_error ("acl class missing before first '#' ",NULLCP);
@@ -367,7 +354,6 @@ static struct acl_info *str2acl_info (char **strptr) {
 			save++;
 		val = *save;
 		*save = 0;
-
 		if (( class = cmd_srch (*strptr,cmd_class)) == -1) {
 			parse_error ("unknown acl class '%s'",*strptr);
 			*save = val;
@@ -375,13 +361,11 @@ static struct acl_info *str2acl_info (char **strptr) {
 		}
 		*save = val;
 	}
-
 	*strptr = SkipSpace(ptr);
 	if ((ptr = index (*strptr,'#')) == 0) {
 		parse_error ("2nd # missing in acl syntax ",NULLCP);
 		return (NULLACL_INFO);
 	}
-
 	if ( (class == ACL_GROUP) || (class == ACL_PREFIX) ) {  /* group or prefix */
 		save = ptr++;
 		if (**strptr == '#') {
@@ -392,10 +376,8 @@ static struct acl_info *str2acl_info (char **strptr) {
 				save++;
 			val = *save;
 			*save = 0;
-
 			if ((dnseq = str2dnseq (*strptr)) == NULLDNSEQ)
 				return (NULLACL_INFO);
-
 			*save = val;
 		}
 		*strptr = SkipSpace(ptr);
@@ -404,7 +386,6 @@ static struct acl_info *str2acl_info (char **strptr) {
 			return (NULLACL_INFO);
 		}
 	}
-
 	save = ptr++;
 	if (**strptr == '#') {
 		parse_error ("acl level missing",NULLCP);
@@ -414,7 +395,6 @@ static struct acl_info *str2acl_info (char **strptr) {
 			save++;
 		val = *save;
 		*save = 0;
-
 		if (( what = cmd_srch (*strptr,cmd_what)) == -1) {
 			parse_error ("unknown level '%s'",*strptr);
 			*save = val;
@@ -422,9 +402,7 @@ static struct acl_info *str2acl_info (char **strptr) {
 		}
 		*save = val;
 	}
-
 	*strptr = SkipSpace(ptr);
-
 	return (acl_info_new (what,class,dnseq));
 }
 
@@ -440,30 +418,23 @@ static struct acl *str2acl_aux (char *str, struct acl *the_acl) {
 		"default",      2,
 		0,              -1,
 	};
-
 	if ((info = str2acl_info (&str)) == NULLACL_INFO)
 		return ( (struct acl *) NULL );
-
 	/* this has left us with "string [#oidlist] [#]" */
-
 	if ((ptr = index (str,'#')) != 0) {
 		save = ptr++;
 		if (*ptr == 0)
 			oidlist = FALSE;
 		else
 			oidlist = TRUE;
-
 		if (! isspace (*--save))
 			save++;
 		val = *save;
 		*save = 0;
-
 	} else
 		oidlist = FALSE;
-
 	if (oidlist) {
 		struct acl_attr * at_acl;
-
 		if (lexequ (str,"attributes") != 0) {
 			parse_error ("\"attributes\" expected",NULLCP);
 			if (val != 0)
@@ -473,13 +444,11 @@ static struct acl *str2acl_aux (char *str, struct acl *the_acl) {
 		at_acl = acl_attr_alloc();
 		at_acl->aa_next = NULLACL_ATTR;
 		at_acl->aa_acl = info;
-
 		if ((str = rindex(ptr,'#')) != NULLCP) {
 			*str-- = 0;
 			if (isspace (*str))
 				*str = 0;
 		}
-
 		if ((at_acl->aa_types = str2oidseq (SkipSpace(ptr))) == NULLOIDSEQ) {
 			if (val != 0)
 				*save = val;
@@ -489,7 +458,6 @@ static struct acl *str2acl_aux (char *str, struct acl *the_acl) {
 		the_acl->ac_entry = NULLACL_INFO;
 		the_acl->ac_default = NULLACL_INFO;
 		the_acl->ac_attributes = at_acl;
-
 	} else {
 		int who;
 		if ((who = cmd_srch (str,cmd_who)) == -1) {
@@ -524,12 +492,9 @@ static void acl_merge (AV_Sequence a, char * str) {
 	struct acl * newacl;
 
 	bzero ((char*)&aclstr,sizeof(struct acl));
-
 	if ((newacl = str2acl_aux(str,&aclstr)) == NULLACL)
 		return;
-
 	aclptr = (struct acl *) a->avseq_av.av_struct;
-
 	if (newacl->ac_child != NULLACL_INFO) {
 		newacl->ac_child->acl_next = aclptr->ac_child;
 		aclptr->ac_child = newacl->ac_child;
@@ -600,9 +565,7 @@ static void acl_info_print (
 
 	if (dsa_mode && (test_acl_default(aclptr) == OK))
 		return;
-
 	for (ptr=aclptr ; ptr!=NULLACL_INFO; ptr=ptr->acl_next ) {
-
 		if (printed)
 			if (format != READOUT)
 				if (dsa_mode)
@@ -613,16 +576,13 @@ static void acl_info_print (
 				ps_print (ps,"\n\t\t\t");
 		else
 			printed = TRUE;
-
 		acl_info_comp_print (ps,ptr,format);
-
 		if (format == READOUT) {
 			if (oidseq != NULLOIDSEQ) {
 				ps_printf (ps,"the %s: ",acl_type);
 				oid_seq_print (ps,oidseq,format) ;
 			} else
 				ps_printf (ps,"the %s",acl_type);
-
 		} else {
 			ps_printf (ps,"# %s",acl_type);
 			if (oidseq != NULLOIDSEQ) {
@@ -641,7 +601,6 @@ static void acl_print (PS ps, struct acl * aclptr, int format) {
 		acl_info_print (ps,aclptr->ac_child,format, "child", NULLOIDSEQ);
 		printed = TRUE;
 	}
-
 	if ((!dsa_mode) || (test_acl_default(aclptr->ac_entry) != OK)) {
 		if (printed)
 			if (format != READOUT)
@@ -655,7 +614,6 @@ static void acl_print (PS ps, struct acl * aclptr, int format) {
 			printed = TRUE;
 		acl_info_print (ps,aclptr->ac_entry,format,"entry", NULLOIDSEQ);
 	}
-
 	if ( (!dsa_mode) || (test_acl_default(aclptr->ac_default) != OK)) {
 		if (printed)
 			if (format != READOUT)
@@ -670,14 +628,11 @@ static void acl_print (PS ps, struct acl * aclptr, int format) {
 		}
 		acl_info_print (ps,aclptr->ac_default,format,"default", NULLOIDSEQ);
 	}
-
 	for (ptr=aclptr->ac_attributes ; ptr!=NULLACL_ATTR; ptr=ptr->aa_next ) {
 		if (dsa_mode && (test_acl_default(ptr->aa_acl) == OK))
 			continue;
-
 		if (acl_info_cmp(ptr->aa_acl,aclptr->ac_default) == 0)
 			continue;
-
 		if (printed)
 			if (format != READOUT)
 				if (dsa_mode)
@@ -691,7 +646,6 @@ static void acl_print (PS ps, struct acl * aclptr, int format) {
 		}
 		acl_info_print (ps,ptr->aa_acl,format, "attributes", ptr->aa_types);
 	}
-
 	if (! printed)
 		if (format == READOUT)
 			ps_print (ps,"(default)");

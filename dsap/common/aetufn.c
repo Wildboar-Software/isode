@@ -30,7 +30,6 @@ static DNS ufn_interact (
 
 	if (dns == NULLDNS)
 		return NULLDNS;
-
 	printf ("Please select from the following (matching '%s'):\n",s);
 	while (dns != NULLDNS) {
 		printf ("  %s [y/n] ? ",dn2ufn(dns->dns_dn,FALSE));
@@ -42,7 +41,6 @@ again:
 			printf ("\n");
 			return result;
 		}
-
 		if ((buf[0] == NULL)
 				|| (strlen(buf) != 1)
 				|| ((buf[0] != 'y') && (buf[0] != 'n'))) {
@@ -50,7 +48,6 @@ again:
 			fflush (stdout);
 			goto again;
 		}
-
 		if (buf[0] == 'y') {
 			tmp = dns -> dns_next;
 			dns -> dns_next = result;
@@ -72,7 +69,6 @@ DN dn;
 char * s;
 {
 	/* we only want good hits ! */
-
 	dn_seq_free (dns);
 	SLOG (addr_log, LLOG_NOTICE, NULLCP,
 		  ("UFN asked for interactive response -- auto reply of NO"));
@@ -91,15 +87,12 @@ static int bind_to_dsa (void) {
 	bindarg.dba_dn = username;
 	if (bindarg.dba_passwd_len = strlen (password))
 		strcpy (bindarg.dba_passwd, password);
-
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
 				   binderr.dbe_type == DBE_TYPE_SECURITY ? "security error"
 				   : "DSA unavailable");
-
 		return FALSE;
 	}
-
 	return TRUE;
 }
 
@@ -312,17 +305,13 @@ static void set_el (void) {
 	}
 	if (el = read_envlist ())
 		return;
-
 	if (local_dn = str2dn (local_dit)) {
 		DN	dn = local_dn -> dn_parent;
-
 		local_dn -> dn_parent = NULLDN;
 		c_dn = dn_cpy (local_dn);
 		local_dn -> dn_parent = dn;
 	}
-
 	ep = &el;
-
 	if ((en = (envlist) calloc (1, sizeof **ep)) == NULL) {
 no_mem:
 		;
@@ -330,11 +319,9 @@ no_mem:
 		if (el) {
 			for (; el; el = en) {
 				en = el -> Next;
-
 				dn_seq_free (el -> Dns);
 				free ((char *) el);
 			}
-
 			el = NULLEL;
 		}
 		goto done;
@@ -344,7 +331,6 @@ no_mem:
 		dn_seq_push (local_dn,
 					 dn_seq_push (c_dn, dn_seq_push (NULLDN, NULLDNSEQ)));
 	en -> Upper = en -> Lower = 1;
-
 	if ((en = (envlist) calloc (1, sizeof **ep)) == NULL)
 		goto no_mem;
 	*ep = en, ep = &en -> Next;
@@ -352,7 +338,6 @@ no_mem:
 		dn_seq_push (c_dn,
 					 dn_seq_push (local_dn, dn_seq_push (NULLDN, NULLDNSEQ)));
 	en -> Upper = en -> Lower = 2;
-
 	if ((en = (envlist) calloc (1, sizeof **ep)) == NULL)
 		goto no_mem;
 	*ep = en, ep = &en -> Next;
@@ -360,7 +345,6 @@ no_mem:
 		dn_seq_push (NULLDN,
 					 dn_seq_push (c_dn, dn_seq_push (local_dn, NULLDNSEQ)));
 	en -> Upper = 32767, en -> Lower = 3;
-
 done:
 	;
 	dn_free (local_dn);
@@ -386,23 +370,17 @@ int main (int argc, char **argv) {
 	PE title, paddr;
 
 	buffer[0] = 0;
-
 	ontty = isatty (fileno (stdin));
 	for (n=1; n<argc; n++) {
 		strcat (buffer," ");
 		strcat (buffer, argv[n]);
 	}
-
 	isodetailor ("ufn_aet",1);
-
 	quipu_syntaxes ();
 	dsap_init ((int *)0,(char ***)0);
-
 	addr_log -> ll_events |= LLOG_ALL, addr_log -> ll_stat |= LLOGTTY;
-
 	if (pe = name2value_ufn (buffer, "iso ftam", ontty, &title)) {
 		struct PSAPaddr pas;
-
 		if (parse_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, (char *) &pas)
 				== NOTOK)
 			fprintf (stderr, "parse of presentation address failed: %s",
@@ -411,12 +389,10 @@ int main (int argc, char **argv) {
 			printf ("%s\n", paddr2str (&pas));
 	} else
 		fprintf (stderr, "directory returns no value");
-
 	if (title) {
 		printf ("AETitle\n");
 		vunknown (title);
 	}
-
 	exit (0);
 }
 

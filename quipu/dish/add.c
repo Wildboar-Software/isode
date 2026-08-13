@@ -45,7 +45,6 @@ void call_add (int argc, char **argv) {
 	char		noedit_flag = FALSE;
 	DN		moddn;
 	char	       *home;
-
 	if (home = getenv ("DISHDRAFT"))
 		strcpy (fname, home);
 	else if (dad_flag) {
@@ -56,15 +55,12 @@ void call_add (int argc, char **argv) {
 	else
 		strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
-
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
 		return;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-template", 1)) {
 			int	i;
 			FILE *in, *out;
-
 			draft_flag = 1;
 			if (++x == argc) {
 				ps_printf (OPT, "template file name missing\n");
@@ -122,63 +118,49 @@ void call_add (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (dad_flag && (draft_flag || noedit_flag)) {
 		ps_printf (OPT,
 				   "operation not allowed when using directory assistance server!\n");
 		return;
 	}
-
 	if ((!noedit_flag) && (draft_flag != 1)) { /* if no draft - create a template */
 		if (add_template (fname, O_class) != OK)
 			return;
 	}
-
 	if ( ! noedit_flag)
 		if (editentry (1, argv) != OK) {
 			make_old (fname,draft_flag);
 			return;
 		}
-
 	/* now parse the files */
-
 	if ((fd = fopen (fname, "r")) == (FILE *) NULL) {
 		ps_printf (OPT, "Can't open draft entry %s\n", fname);
 		return;
 	}
-
 	entry_ptr = get_default_entry (NULLENTRY);
 #ifdef TURBO_DISK
 	entry_ptr->e_attributes = fget_attributes (fd);
 #else
 	entry_ptr->e_attributes = get_attributes (fd);
 #endif
-
 	fclose (fd);
 	if (parse_status != 0)
 		return ;
-
 	add_arg.ada_object = dn;
-
 	for (moddn = dn ; moddn->dn_parent != NULLDN; moddn=moddn->dn_parent)
 		;
 	entry_ptr->e_name = rdn_cpy (moddn->dn_rdn);
-
 	add_arg.ada_entry = entry_ptr->e_attributes;
-
 	if (rebind () != OK) {
 		entry_free (entry_ptr);
 		return;
 	}
-
 	/* Strong authentication */
 	if (add_arg.ada_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		add_arg.ada_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&add_arg, _ZAddEntryArgumentDataDAS, &_ZDAS_mod);
 	}
-
 	while (ds_addentry (&add_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0) {
 			entry_free (entry_ptr);
@@ -189,12 +171,9 @@ void call_add (int argc, char **argv) {
 	ps_print (RPS, "Added ");
 	dn_print (RPS, dn, EDBOUT);
 	ps_print (RPS, "\n");
-
 	delete_list_cache (dn);
 	entry_free (entry_ptr);
-
 	make_old (fname,draft_flag);
-
 }
 
 void make_old (char *file, char commit) {
@@ -226,7 +205,6 @@ Attr_Sequence make_template_as (AV_Sequence oc)
 			as = as_merge (as,newas);
 		}
 	}
-
 	for (avs = oc; avs != NULLAV; avs = avs->avseq_next) {
 		ocp = (objectclass *) avs->avseq_av.av_struct;
 		for (optr=ocp->oc_may; optr!=NULLTABLE_SEQ;  optr=optr->ts_next) {
@@ -235,7 +213,6 @@ Attr_Sequence make_template_as (AV_Sequence oc)
 			as = as_merge (as,newas);
 		}
 	}
-
 	return (as);
 }
 

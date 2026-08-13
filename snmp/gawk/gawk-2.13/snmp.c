@@ -151,16 +151,12 @@ static	snmp_onceonly () {
 
 	Ndot_string = make_string (".", 1);
 	Ndot_string -> flags |= PERM;
-
 	SET_node = SET_inst = NULL;
-
 	{
 		char   *cp = getenv ("MIBDEFS");
-
 		if (loadobjects (cp) == NOTOK)
 			fatal ("loadobjects: %s", PY_pepy);
 	}
-
 	/* mark entries that are actually columns! */
 	for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
 		if (ot -> ot_syntax
@@ -179,7 +175,6 @@ static	snmp_onceonly () {
 				fprintf (stderr, "no syntax for columnar object \"%s\"\n",
 						 ot -> ot_text);
 	}
-
 	for (pp = pairs; pp -> pp_name; pp++)
 		if ((os = text2syn (pp -> pp_name)) == NULL)
 			fatal ("lost syntax for \"%s\"", pp -> pp_name);
@@ -187,28 +182,21 @@ static	snmp_onceonly () {
 			os -> os_encode = pp -> pp_encode;
 			os -> os_decode = pp -> pp_decode;
 		}
-
 	bzero ((char *) msg, sizeof *msg);
 	msg -> version = int_SNMP_version_version__1;
 	msg -> data = pdu;
-
 	bzero ((char *) pdu, sizeof *pdu);
 	pdu -> offset = type_SNMP_PDUs_get__request;
 	pdu -> un.get__request = parm;
-
 	bzero ((char *) parm, sizeof *parm);
 	parm -> variable__bindings = vp;
-
 	bzero ((char *) vp, sizeof *vp);
 	vp -> VarBind = v;
-
 	bzero ((char *) v, sizeof *v);
 	if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 			== NULLPE)
 		fatal ("pe_alloc: out of memory");
-
 	ps_len_strategy = PS_LEN_LONG;
-
 #ifndef	SYS5
 	srandom (getpid ());
 #else
@@ -261,17 +249,13 @@ char   *instname;
 
 	if (snmp_ready (1) == NOTOK)
 		goto out;
-
 	parm -> request__id = snmp_id;
 	if (v -> name)
 		free_SNMP_ObjectName (v -> name), v -> name = NULL;
-
 	if (instname == NULL) {
 		struct snmp_search *s;
-
 		for (s = tail; s; s = s -> s_prev) {
 			struct snmp_req *sr;
-
 			if (ot -> ot_name -> oid_nelem
 					!= (oid = s -> s_parent -> ot_name) -> oid_nelem + 1
 					|| bcmp ((char *) ot -> ot_name -> oid_elements,
@@ -281,7 +265,6 @@ char   *instname;
 				continue;
 			for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
 				struct type_SNMP_VarBindList *vp;
-
 				for (vp = sr -> r_bindings; vp; vp = vp -> next) {
 					if (ot -> ot_name -> oid_nelem
 							>= (v = vp -> VarBind) -> name -> oid_nelem)
@@ -291,7 +274,6 @@ char   *instname;
 							  ot -> ot_name -> oid_nelem
 							  * sizeof ot -> ot_name -> oid_elements[0]))
 						continue;
-
 					goto get_value;
 				}
 			}
@@ -303,7 +285,6 @@ char   *instname;
 					   "can't use SNMP array variable as scalar unless within for-in construct");
 			goto out;
 		}
-
 		if ((oid = v -> name = oid_extend (ot -> ot_name, 1)) == NULL) {
 no_mem_for_inst:
 			;
@@ -316,7 +297,6 @@ no_mem_for_inst:
 		unsigned int *ip,
 				 *jp;
 		OID	inst = str2oid (instname);
-
 		if (inst == NULL) {
 			snmp_diag (NULLCP, "str2oid: bad instance identifier \"%s\"",
 					   instname);
@@ -330,17 +310,14 @@ no_mem_for_inst:
 		for (i = inst -> oid_nelem; i > 0; i--)
 			*ip++ = *jp++;
 	}
-
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) == NOTOK) {
 		snmp_diag (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
-
 	msg = NULL, gotone = 0;
 	for (retries = snmp_retries; retries > 0; ) {
 		int	len;
 		fd_set	rfds;
-
 		if (debug > 1)
 			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
 		len = ps -> ps_byteno;
@@ -350,10 +327,8 @@ no_mem_for_inst:
 		}
 		if (debug > 0 && (len = ps -> ps_byteno - len) > 484)
 			fprintf (stderr, "sent message of %d octets\n", len);
-
 		FD_ZERO (&rfds);
 		FD_SET (snmp_fd, &rfds);
-
 		switch (xselect (snmp_fd + 1, &rfds, NULLFD, NULLFD, snmp_timeout)) {
 		case NOTOK:
 			snmp_diag ("failed", "xselect");
@@ -369,7 +344,6 @@ no_mem_for_inst:
 			retries--;
 			continue;
 		}
-
 		if ((p = ps2pe (ps)) == NULLPE) {
 			snmp_diag (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			goto error_x;
@@ -380,25 +354,20 @@ no_mem_for_inst:
 		}
 		if (debug > 1)
 			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
-
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);
 			goto out;
 		}
-
 		if ((parm = msg -> data -> un.get__response) -> request__id == snmp_id)
 			break;
-
 		if (debug > 0)
 			fprintf (stderr, "bad ID (got %ld, wanted %ld)\n",
 					 (long) parm -> request__id, (long) snmp_id);
-
 		if (msg)
 			free_SNMP_Message (msg), msg = NULL;
 		if (p)
 			pe_free (p), p = NULLPE;
-
 		gotone++;
 	}
 	if (retries <= 0) {
@@ -409,15 +378,12 @@ no_mem_for_inst:
 				   snmp_timeout, snmp_timeout != 1 ? "s" : "");
 		goto out;
 	}
-
 	if ((status = parm -> error__status) != int_SNMP_error__status_noError) {
 		char   *cp = snmp_variable (parm, parm -> error__index);
-
 		snmp_diag (NULLCP, cp ? "%s at position %d (%s)" : "%s at position %d",
 				   snmp_error (status), parm -> error__index, cp);
 		goto out;
 	}
-
 	if (parm -> variable__bindings == NULL
 			|| (v = parm -> variable__bindings -> VarBind) == NULL) {
 		snmp_diag (NULLCP, "missing variable in response");
@@ -426,16 +392,13 @@ no_mem_for_inst:
 	if (debug > 0 && parm -> variable__bindings -> next)
 		fprintf (stderr, "too many responses starting with: %s\n",
 				 oid2ode (parm -> variable__bindings -> next -> VarBind -> name));
-
 	if (oid_cmp (oid, v -> name)) {
 		char    buffer[BUFSIZ];
-
 		strcpy (buffer, oid2ode (v -> name));
 		snmp_diag (NULLCP, "wrong variable returned (got %s, wanted %s)",
 				   buffer, oid2ode (oid));
 		goto out;
 	}
-
 get_value:
 	;
 	if ((*ot -> ot_syntax -> os_decode) (&value, v -> value) == NOTOK) {
@@ -443,16 +406,13 @@ get_value:
 				   oid2ode (v -> name), PY_pepy);
 		goto out;
 	}
-
 	goto out;
-
 error_x:
 	;
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
 		close_udp_socket (snmp_fd), snmp_fd = NOTOK;
-
 out:
 	;
 	if (msg && msg != &msgs)
@@ -461,10 +421,8 @@ out:
 		pe_free (p);
 	if (pe)
 		pe_free (pe);
-
 	unref (ptr -> var_value);
 	ptr -> var_value = value ? value : Nnull_string;
-
 	ERROR_node -> var_value = make_number ((AWKNUM) status);
 }
 
@@ -485,37 +443,29 @@ struct search *lookat;
 	if (!ot -> ot_getfnx && instance)
 		fatal ("can't use SNMP scalar variable \"%s\" as control for for-in",
 			   ot -> ot_text);
-
 	if (instance) {
 		char   *instname;
 		NODE   *r;
-
 		if ((r = instance) -> type != Node_val)
 			r = r_tree_eval (instance);
-
 		if ((inst = str2oid (instname = force_string (r) -> stptr)) == NULL) {
 			snmp_diag (NULLCP, "str2oid: bad instance identifier \"%s\"",
 					   instname);
 			free_temp (r);
 			return;
 		}
-
 		if (r != instance)
 			free_temp (r);
 	} else
 		inst = NULL;
 	emalloc (s, struct snmp_search *, sizeof *s, "snmp_assoc_scan1");
 	bzero ((char *) s, sizeof *s);
-
 	ot -> ot_name -> oid_nelem--;
 	s -> s_parent = name2obj (ot -> ot_name);
 	ot -> ot_name -> oid_nelem++;
-
 	if ((ot = s -> s_parent) == NULL)
 		fatal ("unable to find parent for \"%s\"", snmp_name (symbol));
-
 	s -> s_prototype = NULL;
-
 	vp = &s -> s_reqs[0].r_bindings, vp2 = &s -> s_prototype;
 	for (ot = ot -> ot_children; ot; ot = ot -> ot_sibling) {
 		int    i;
@@ -524,14 +474,12 @@ struct search *lookat;
 		struct type_SNMP_VarBindList *bind;
 		struct type_SNMP_VarBind *v,
 				   *v2;
-
 		if (!ot -> ot_syntax)
 			continue;
 		emalloc (bind, struct type_SNMP_VarBindList *, sizeof *bind,
 				 "snmp_assoc_scan2");
 		*vp = bind, vp = &bind -> next;
 		bind -> next = NULL;
-
 		emalloc (v, struct type_SNMP_VarBind *, sizeof *v, "snmp_assoc_scan3");
 		bind -> VarBind = v;
 		if (inst) {
@@ -546,12 +494,10 @@ struct search *lookat;
 		} else if ((v -> name = oid_cpy (ot -> ot_name)) == NULL)
 			fatal ("oid_cpy: out of memory");
 		v -> value = NULL;
-
 		emalloc (bind, struct type_SNMP_VarBindList *, sizeof *bind,
 				 "snmp_assoc_scan4");
 		*vp2 = bind, vp2 = &bind -> next;
 		bind -> next = NULL;
-
 		emalloc (v2, struct type_SNMP_VarBind *, sizeof *v2,
 				 "snmp_assoc_scan5");
 		bind -> VarBind = v2;
@@ -559,7 +505,6 @@ struct search *lookat;
 			fatal ("oid_cpy: out of memory");
 		v2 -> value = NULL;
 	}
-
 	if (head == NULL)
 		head = tail = s;
 	else {
@@ -567,7 +512,6 @@ struct search *lookat;
 		s -> s_prev = tail;
 		tail = s;
 	}
-
 	lookat -> snmp = (caddr_t) s;
 	snmp_assoc_next (lookat, 0);
 }
@@ -586,12 +530,10 @@ int	alldone;
 
 	unref (lookat -> retval);
 	lookat -> retval = NULL;
-
 	if (alldone
 			|| snmp_get_next (s) == NOTOK
 			|| s -> s_reqs[0].r_bindings == NULL) {
 		struct snmp_req *sr;
-
 		if (s -> s_prototype)
 			free_SNMP_VarBindList (s -> s_prototype);
 		for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
@@ -603,18 +545,15 @@ int	alldone;
 			if (sr -> r_pe)
 				pe_free (sr -> r_pe);
 		}
-
 		if (tail != s)
 			fatal ("snmp_assoc_next: internal error1");
 		if (tail = s -> s_prev)
 			tail -> s_next = NULL;
 		else
 			head = NULL;
-
 		free ((char *) s);
 		return;
 	}
-
 	if ((v = s -> s_reqs[0].r_bindings -> VarBind) == NULL
 			|| (oid = v -> name) == NULL)
 		fatal ("snmp_assoc_next: internal error2");
@@ -624,10 +563,8 @@ int	alldone;
 					 ot -> ot_name -> oid_nelem
 					 * sizeof oid -> oid_elements[0]))
 		fatal ("snmp_assoc_next: internal error3");
-
 	oids.oid_nelem = oid -> oid_nelem - (i = ot -> ot_name -> oid_nelem + 1);
 	oids.oid_elements = oid -> oid_elements + i;
-
 	cp = sprintoid (&oids);
 	lookat -> retval = make_string (cp, strlen (cp));
 }
@@ -644,15 +581,12 @@ struct snmp_search *s;
 
 	if (snmp_ready (0) == NOTOK || snmp_get_next_aux (s) == NOTOK)
 		return NOTOK;
-
 	vpp = &s -> s_prototype, vp = NULL;
 	for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
 		vpp2 = &sr -> r_msg -> data -> un.get__request -> variable__bindings;
-
 		while ((vp = *vpp) && (vp2 = *vpp2)) {
 			OID	    v = vp -> VarBind -> name,
 					v2 = vp2 -> VarBind -> name;
-
 			if (v -> oid_nelem > v2 -> oid_nelem
 					|| bcmp ((char *) v -> oid_elements,
 							 (char *) v2 -> oid_elements,
@@ -661,14 +595,12 @@ struct snmp_search *s;
 				*vpp = vp -> next;
 				vp -> next = NULL;
 				free_SNMP_VarBindList (vp);
-
 				*vpp2 = vp2 -> next;
 				vp2 -> next = NULL;
 				free_SNMP_VarBindList (vp2);
 			} else
 				vpp = &vp -> next, vpp2 = &vp2 -> next;
 		}
-
 		if (vp == NULL && (vp2 = *vpp)) {
 			snmp_diag (NULLCP, "too many responses starting with: %s\n",
 					   oid2ode (vp2 -> VarBind -> name));
@@ -679,34 +611,27 @@ struct snmp_search *s;
 		snmp_diag (NULLCP, "missing variable in response");
 		return NOTOK;
 	}
-
 	for (sp = s -> s_reqs; sp < sr; sp++) {
 		if (sp -> r_bindings)
 			free_SNMP_VarBindList (sp -> r_bindings);
 		if (sp -> r_pb)
 			pe_free (sp -> r_pb);
-
 		if (sp -> r_bindings
 				&& sp -> r_msg -> data -> un.get__request
 				-> variable__bindings) {
 			sp -> r_bindings = sp -> r_msg -> data -> un.get__request
 							   -> variable__bindings;
 			sp -> r_msg -> data -> un.get__request -> variable__bindings =NULL;
-
 			sp -> r_pb = sp -> r_pe, sp -> r_pe = NULL;
-
 			free_SNMP_Message (sp -> r_msg), sp -> r_msg = NULL;
 			continue;
 		}
-
 		if (sp -> r_msg)
 			free_SNMP_Message (sp -> r_msg);
 		if (sp -> r_pe)
 			pe_free (sp -> r_pe);
-
 		bzero ((char *) sp, sizeof *sp);
 	}
-
 	for (sr--; sr >= s -> s_reqs; sr--)
 		if (sr -> r_bindings)
 			for (sp = s -> s_reqs; sp < sr; sp++)
@@ -715,7 +640,6 @@ struct snmp_search *s;
 					bzero ((char *) sr, sizeof *sr);
 					break;
 				}
-
 	return OK;
 }
 
@@ -739,21 +663,17 @@ struct snmp_search *s;
 			break;
 	msgs.data -> un.get__request -> variable__bindings = vp;
 	msgs.data -> offset = type_SNMP_PDUs_get__request;
-
 	if (result == NOTOK) {
 		snmp_diag (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 		return NOTOK;
 	}
-
 	msg = NULL, gotone = 0;
 	for (retries = snmp_retries; retries > 0; ) {
 		int	len;
 		fd_set	rfds;
-
 		for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
 			if (sr -> r_msg)
 				continue;
-
 			if (debug > 1)
 				print_SNMP_Message (sr -> r_pe, 1, NULLIP, NULLVP, NULLCP);
 			len = ps -> ps_byteno;
@@ -765,10 +685,8 @@ struct snmp_search *s;
 					&& debug > 0)
 				fprintf (stderr, "sent message of %d octets\n", len);
 		}
-
 		FD_ZERO (&rfds);
 		FD_SET (snmp_fd, &rfds);
-
 		switch (xselect (snmp_fd + 1, &rfds, NULLFD, NULLFD, snmp_timeout)) {
 		case NOTOK:
 			snmp_diag ("failed", "xselect");
@@ -785,7 +703,6 @@ struct snmp_search *s;
 			retries--;
 			continue;
 		}
-
 again:
 		;
 		if ((p = ps2pe (ps)) == NULLPE) {
@@ -798,14 +715,12 @@ again:
 		}
 		if (debug > 1)
 			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
-
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);
 			goto out;
 		}
 		gotone++;
-
 		parm = msg -> data -> un.get__response;
 		for (sr = s -> s_reqs; sr -> r_bindings; sr++)
 			if (parm -> request__id == sr -> r_id)
@@ -821,7 +736,6 @@ again:
 				pe_free (p), p = NULLPE;
 			goto check;
 		}
-
 		switch (status = parm -> error__status) {
 		case int_SNMP_error__status_noError:
 			break;
@@ -831,7 +745,6 @@ again:
 			struct type_SNMP_VarBindList **vpp;
 			struct snmp_req *sp;
 			struct snmp_req *sz;
-
 make_smaller:
 			;
 			i = 0;
@@ -854,13 +767,11 @@ make_smaller:
 			for (sz = sr + 1; sp > sz; sp--)
 				*sp = *(sp - 1);	/* struct copy */
 			bzero ((char *) sp, sizeof *sp);
-
 			for (vpp = &sr -> r_bindings;
 					i-- > 0;
 					vpp = &((*vpp) -> next))
 				continue;
 			sp -> r_bindings = *vpp, *vpp = NULL;
-
 			vp = msgs.data -> un.get__request -> variable__bindings;
 			msgs.data -> offset = type_SNMP_PDUs_get__next__request;
 			if ((result = req_ready (sr, 0)) != NOTOK)
@@ -871,40 +782,32 @@ make_smaller:
 				snmp_diag (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 				goto out;
 			}
-
 			retries = snmp_retries;
 		}
 		goto check;
 
 		default: {
 			char   *cp = snmp_variable (parm, parm -> error__index);
-
 			snmp_diag (NULLCP, cp ? "%s at position %d (%s)"
 					   : "%s at position %d",
 					   snmp_error (status), parm -> error__index, cp);
 		}
 		goto out;
 		}
-
 		pe_free (sr -> r_pe);
 		sr -> r_pe = p, p = NULLPE;
-
 		sr -> r_msg = msg, msg = NULL;
-
 		for (sr = s -> s_reqs; sr -> r_bindings; sr++)
 			if (!sr -> r_msg)
 				break;
 		if (!sr -> r_bindings) {
 			ERROR_node -> var_value = make_number ((AWKNUM) status);
-
 			return OK;
 		}
-
 check:
 		;
 		FD_ZERO (&rfds);
 		FD_SET (snmp_fd, &rfds);
-
 		if (select_dgram_socket (snmp_fd + 1, &rfds, NULLFD, NULLFD, 1) > OK)
 			goto again;
 	}
@@ -914,19 +817,16 @@ check:
 			   gotone ? "up to " : "", snmp_timeout,
 			   snmp_timeout != 1 ? "s" : "");
 	return NOTOK;
-
 error_x:
 	;
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
 		close_udp_socket (snmp_fd), snmp_fd = NOTOK;
-
 out:
 	;
 	if (p)
 		pe_free (p);
-
 	return NOTOK;
 }
 
@@ -939,10 +839,8 @@ int	do_val;
 
 	if (do_val) {
 		struct type_SNMP_VarBindList *vp;
-
 		for (vp = sr -> r_bindings; vp; vp = vp -> next) {
 			struct type_SNMP_VarBind *v = vp -> VarBind;
-
 			if (v -> value)
 				pe_free (v -> value);
 			if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
@@ -950,19 +848,15 @@ int	do_val;
 				fatal ("pe_alloc: out of memory");
 		}
 	}
-
 	if (snmp_id >= 0x7fffffff)
 		snmp_id = 0;
 	snmp_id++;
-
 	parm -> request__id = sr -> r_id = snmp_id;
 	parm -> variable__bindings = sr -> r_bindings;
-
 	if (sr -> r_msg)
 		free_SNMP_Message (sr -> r_msg), sr -> r_msg = NULL;
 	if (sr -> r_pe)
 		pe_free (sr -> r_pe), sr -> r_pe = NULL;
-
 	return encode_SNMP_Message (&sr -> r_pe, 1, 0, NULLCP, &msgs);
 }
 
@@ -988,17 +882,13 @@ void	snmp_set () {
 	SET_node = NULL;
 	if (snmp_ready (1) == NOTOK)
 		goto out;
-
 	parm -> request__id = snmp_id;
 	if (v -> name)
 		free_SNMP_ObjectName (v -> name), v -> name = NULL;
-
 	if (!SET_inst) {
 		struct snmp_search *s;
-
 		for (s = tail; s; s = s -> s_prev) {
 			struct snmp_req *sr;
-
 			if (ot -> ot_name -> oid_nelem
 					!= (oid = s -> s_parent -> ot_name) -> oid_nelem + 1
 					|| bcmp ((char *) ot -> ot_name -> oid_elements,
@@ -1008,10 +898,8 @@ void	snmp_set () {
 				continue;
 			for (sr = s -> s_reqs; sr -> r_bindings; sr++) {
 				struct type_SNMP_VarBindList *vp;
-
 				for (vp = sr -> r_bindings; vp; vp = vp -> next) {
 					struct type_SNMP_VarBind *vv;
-
 					if (ot -> ot_name -> oid_nelem
 							>= (vv = vp -> VarBind) -> name -> oid_nelem)
 						fatal ("snmp_set: internal error");
@@ -1020,7 +908,6 @@ void	snmp_set () {
 							  ot -> ot_name -> oid_nelem
 							  * sizeof ot -> ot_name -> oid_elements[0]))
 						continue;
-
 					if ((oid = v -> name = oid_cpy (vv -> name)) == NULL)
 						goto no_mem_for_inst;
 					pep = &vv -> value;
@@ -1035,7 +922,6 @@ void	snmp_set () {
 					   "can't use SNMP array variable as scalar unless within for-in construct");
 			goto out;
 		}
-
 		if ((oid = v -> name = oid_extend (ot -> ot_name, 1)) == NULL) {
 no_mem_for_inst:
 			;
@@ -1049,7 +935,6 @@ no_mem_for_inst:
 				 *jp;
 		char   *instname = force_string (SET_inst) -> stptr;
 		OID	inst = str2oid (instname);
-
 		if (inst == NULL) {
 			snmp_diag (NULLCP, "str2oid: bad instance identifier \"%s\"",
 					   instname);
@@ -1065,13 +950,11 @@ no_mem_for_inst:
 	}
 set_value:
 	;
-
 	if ((*ot -> ot_syntax -> os_encode) (ptr -> var_value, &pe) == NOTOK) {
 		snmp_diag (NULLCP, "encode error for variable \"%s\": %s",
 				   oid2ode (v -> name), PY_pepy);
 		goto out;
 	}
-
 	msgs.data -> offset = type_SNMP_PDUs_set__request;
 	p = v -> value, v -> value = pe, pe = NULL;
 	result = encode_SNMP_Message (&pe, 1, 0, NULLCP, msg);
@@ -1081,12 +964,10 @@ set_value:
 		snmp_diag (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
-
 	msg = NULL, gotone = 0;
 	for (retries = snmp_retries; retries > 0; ) {
 		int	len;
 		fd_set	rfds;
-
 		if (debug > 1)
 			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
 		len = ps -> ps_byteno;
@@ -1096,10 +977,8 @@ set_value:
 		}
 		if (debug > 0 && (len = ps -> ps_byteno - len) > 484)
 			fprintf (stderr, "sent message of %d octets\n", len);
-
 		FD_ZERO (&rfds);
 		FD_SET (snmp_fd, &rfds);
-
 		switch (xselect (snmp_fd + 1, &rfds, NULLFD, NULLFD, snmp_timeout)) {
 		case NOTOK:
 			snmp_diag ("failed", "xselect");
@@ -1115,7 +994,6 @@ set_value:
 			retries--;
 			continue;
 		}
-
 		if ((p = ps2pe (ps)) == NULLPE) {
 			snmp_diag (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			goto error_x;
@@ -1126,25 +1004,20 @@ set_value:
 		}
 		if (debug > 1)
 			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
-
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);
 			goto out;
 		}
-
 		if ((parm = msg -> data -> un.get__response) -> request__id == snmp_id)
 			break;
-
 		if (debug > 0)
 			fprintf (stderr, "bad ID (got %ld, wanted %ld)\n",
 					 (long) parm -> request__id, (long) snmp_id);
-
 		if (msg)
 			free_SNMP_Message (msg), msg = NULL;
 		if (p)
 			pe_free (p), p = NULLPE;
-
 		gotone++;
 	}
 	if (retries <= 0) {
@@ -1155,15 +1028,12 @@ set_value:
 				   snmp_timeout, snmp_timeout != 1 ? "s" : "");
 		goto out;
 	}
-
 	if ((status = parm -> error__status) != int_SNMP_error__status_noError) {
 		char   *cp = snmp_variable (parm, parm -> error__index);
-
 		snmp_diag (NULLCP, cp ? "%s at position %d (%s)" : "%s at position %d",
 				   snmp_error (status), parm -> error__index, cp);
 		goto out;
 	}
-
 	if (parm -> variable__bindings == NULL
 			|| (v = parm -> variable__bindings -> VarBind) == NULL) {
 		snmp_diag (NULLCP, "missing variable in response");
@@ -1172,16 +1042,13 @@ set_value:
 	if (debug > 0 && parm -> variable__bindings -> next)
 		fprintf (stderr, "too many responses starting with: %s\n",
 				 oid2ode (parm -> variable__bindings -> next -> VarBind -> name));
-
 	if (oid_cmp (oid, v -> name)) {
 		char    buffer[BUFSIZ];
-
 		strcpy (buffer, oid2ode (v -> name));
 		snmp_diag (NULLCP, "wrong variable returned (got %s, wanted %s)",
 				   buffer, oid2ode (oid));
 		goto out;
 	}
-
 	/* needed in case of x = y = value, where "y" is an SNMP variable */
 	if ((*ot -> ot_syntax -> os_decode) (&value, v -> value) == NOTOK) {
 		snmp_diag (NULLCP, "decode error for variable \"%s\": %s",
@@ -1192,16 +1059,13 @@ set_value:
 		pe_free (*pep);
 		*pep = v -> value, v -> value = NULL;
 	}
-
 	goto out;
-
 error_x:
 	;
 	if (ps)
 		ps_free (ps), ps = NULLPS;
 	if (snmp_fd != NOTOK)
 		close_udp_socket (snmp_fd), snmp_fd = NOTOK;
-
 out:
 	;
 	if (msg && msg != &msgs)
@@ -1210,13 +1074,10 @@ out:
 		pe_free (p);
 	if (pe)
 		pe_free (pe);
-
 	unref (ptr -> var_value);
 	/* needed in case of x = y = value, where "y" is an SNMP variable */
 	ptr -> var_value = value ? value : Nnull_string;
-
 	ERROR_node -> var_value = make_number ((AWKNUM) status);
-
 	if (SET_inst) {
 		unref (SET_inst);
 		SET_inst = NULL;
@@ -1233,7 +1094,6 @@ PE     *pe;
 		strcpy (PY_pepy, "int2prim failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1288,7 +1148,6 @@ PE     *pe;
 		strcpy (PY_pepy, "str2prim failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1315,12 +1174,10 @@ bad_oid:
 				&& oid -> oid_elements[1] < 39))
 		goto bad_oid;
 #endif
-
 	if ((*pe = oid2prim (oid)) == NULLPE) {
 		strcpy (PY_pepy, "oid2prim failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1333,7 +1190,6 @@ PE     *pe;
 		strcpy (PY_pepy, "pe_alloc failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1353,13 +1209,11 @@ PE     *pe;
 	bzero ((char *) lsock, sizeof *lsock);
 	lsock -> sin_family = hp -> h_addrtype;
 	inaddr_copy (hp, lsock);
-
 	if ((*pe = str2prim ((char *) &lsock -> sin_addr, 4, PE_CLASS_APPL, 0))
 			== NULLPE) {
 		strcpy (PY_pepy, "str2prim failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1375,7 +1229,6 @@ PElementID id;
 		strcpy (PY_pepy, "ulong2prim failed");
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -1407,7 +1260,6 @@ PE     *pe;
 	if (e_octets (x, pe) == NOTOK)
 		return NOTOK;
 	(*pe) -> pe_class = PE_CLASS_APPL, (*pe) -> pe_id = 5;
-
 	return OK;
 }
 
@@ -1435,7 +1287,6 @@ int	len;
 	r -> stlen = bp - r -> stptr;
 	r -> stref = 1;
 	r -> flags |= STR | MALLOC;
-
 	return r;
 }
 
@@ -1449,9 +1300,7 @@ PE	pe;
 		strcpy (PY_pepy, pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
-
 	*x = make_number ((AWKNUM) i);
-
 	return OK;
 }
 
@@ -1466,11 +1315,8 @@ PE	pe;
 				: pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
-
 	*x = make_octet_node (qb -> qb_forw -> qb_data, qb -> qb_forw -> qb_len);
-
 	qb_free (qb);
-
 	return OK;
 }
 
@@ -1485,11 +1331,8 @@ PE	pe;
 				: pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
-
 	*x = make_string (qb -> qb_forw -> qb_data, qb -> qb_forw -> qb_len);
-
 	qb_free (qb);
-
 	return OK;
 }
 
@@ -1505,9 +1348,7 @@ PE	pe;
 		return NOTOK;
 	}
 	cp = sprintoid (oid);
-
 	*x = make_string (cp, strlen (cp));
-
 	return OK;
 }
 
@@ -1516,7 +1357,6 @@ NODE  **x;
 PE	pe;
 {
 	*x = make_string ("NULL", 4);
-
 	return OK;
 }
 
@@ -1545,11 +1385,8 @@ PE	pe;
 	sprintf (ipaddr, "%d.%d.%d.%d",
 			 qb -> qb_data[0] & 0xff, qb -> qb_data[1] & 0xff,
 			 qb -> qb_data[2] & 0xff, qb -> qb_data[3] & 0xff);
-
 	*x = make_string (ipaddr, strlen (ipaddr));
-
 	free_SNMP_IpAddress (ip);
-
 	return OK;
 }
 
@@ -1565,9 +1402,7 @@ PE	pe;
 		strcpy (PY_pepy, pe_error (pe -> pe_errno));
 		return NOTOK;
 	}
-
 	*x = make_number ((AWKNUM) i);
-
 	return OK;
 }
 
@@ -1589,11 +1424,8 @@ PE	pe;
 	qb = clnp -> qb_forw;
 	if ((len = qb -> qb_data[0] & 0xff) >= qb -> qb_len)
 		len = qb -> qb_len - 1;
-
 	*x = make_octet_node (qb -> qb_data + 1, len);
-
 	free_SNMP_ClnpAddress (clnp);
-
 	return OK;
 }
 
@@ -1613,39 +1445,30 @@ int	do_id;
 
 	unref (DIAGNOSTIC_node -> var_value);
 	DIAGNOSTIC_node -> var_value = Nnull_string;
-
 	if ((snmp_retries = (int) RETRIES_node -> var_value -> numbr) <= 0)
 		snmp_retries = 1;
 	if ((snmp_timeout = (int) TIMEOUT_node -> var_value -> numbr) <= 0)
 		snmp_timeout = 1;
-
 	if (do_id) {
 		if (snmp_id >= 0x7fffffff)
 			snmp_id = 0;
 		snmp_id++;
 	}
-
 	if (snmp_fd == NOTOK || ps == NULLPS)
 		changed++;
-
 	tmp = force_string (AGENT_node -> var_value);
 	if (snmp_agent == NULL || strcmp (snmp_agent, tmp -> stptr)) {
 		if (snmp_agent)
 			free (snmp_agent), snmp_agent = NULL;
-
 		emalloc (snmp_agent, char *, strlen (tmp -> stptr) + 1, "snmp_ready1");
 		strcpy (snmp_agent, tmp -> stptr);
-
 		changed++;
 	}
-
 	tmp = force_string (COMMUNITY_node -> var_value);
 	if (snmp_community == NULL || strcmp (snmp_community, tmp -> stptr)) {
 		struct type_SNMP_Message *msg = &msgs;
-
 		if (snmp_community)
 			free (snmp_community), snmp_community = NULL;
-
 		emalloc (snmp_community, char *, strlen (tmp -> stptr) + 1,
 				 "snmp_ready2");
 		strcpy (snmp_community, tmp -> stptr);
@@ -1656,7 +1479,6 @@ int	do_id;
 			return NOTOK;
 		}
 	}
-
 	if (changed) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
@@ -1664,7 +1486,6 @@ int	do_id;
 			close_udp_socket (snmp_fd), snmp_fd = NOTOK;
 	} else
 		return OK;
-
 	bzero ((char *) lsock, sizeof *lsock);
 	if ((hp = gethostbystring (pp = strcmp (snmp_agent, "localhost")
 									? getlocalhost () : "localhost"))
@@ -1678,20 +1499,16 @@ int	do_id;
 		snmp_diag ("failed", "start_udp_server");
 		return NOTOK;
 	}
-
 	if ((hp = gethostbystring (pp = snmp_agent)) == NULL) {
 		struct TSAPaddr *ta;
 		struct NSAPaddr *na;
-
 		if ((ta = str2taddr (snmp_agent))
 				&& ta -> ta_naddr > 0
 				&& (na = ta -> ta_addrs) -> na_stack == NA_TCP) {
 			snmp_portno = na -> na_port;
-
 			if (hp = gethostbystring (pp = na -> na_domain))
 				goto got_host;
 		}
-
 		snmp_diag (NULLCP, "%s: unknown host", pp);
 		return NOTOK;
 	}
@@ -1701,20 +1518,16 @@ got_host:
 		snmp_portno = (sp = getservbyname ("snmp", "udp"))
 					  ? sp -> s_port
 					  : htons ((uint16_t) 161);
-
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp -> h_addrtype;
 	inaddr_copy (hp, isock);
 	isock -> sin_port = snmp_portno;
-
 	if (*snmp_community == '/' && snmp_map (isock) == NOTOK)
 		return NOTOK;
-
 	if (join_udp_server (snmp_fd, isock) == NOTOK) {
 		snmp_diag ("failed", "join_udp_server");
 		return NOTOK;
 	}
-
 	if ((ps = ps_alloc (dg_open)) == NULLPS
 			|| dg_setup (ps, snmp_fd, MAXDGRAM, read_udp_socket,
 						 write_udp_socket, check_udp_socket) == NOTOK) {
@@ -1722,16 +1535,13 @@ got_host:
 			snmp_diag (NULLCP, "ps_alloc: out of memory");
 		else
 			snmp_diag (NULLCP, "dg_setup: %s", ps_error (ps -> ps_errno));
-
 		return NOTOK;
 	}
-
 #ifndef	SYS5
 	snmp_id = ((int) random ()) & 0x7fffffff;
 #else
 	snmp_id = ((int) rand ()) & 0x7fffffff;
 #endif
-
 	return OK;
 }
 
@@ -1763,9 +1573,7 @@ struct sockaddr_in *isock;
 		snmp_diag (snmp_community, "unable to read");
 		return NOTOK;
 	}
-
 	hostaddr = isock -> sin_addr.s_addr;
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#')
 			continue;
@@ -1796,22 +1604,18 @@ struct sockaddr_in *isock;
 		netaddr = htonl (netaddr);
 		if ((hostaddr & netmask) != netaddr)
 			continue;
-
 		if ((msgs.community = str2qb (cp, strlen (cp), 1)) == NULL) {
 			snmp_diag (NULLCP, "str2qb: out of memory");
 			goto done;
 		}
-
 		result = OK;
 		break;
 	}
 	if (result == NOTOK)
 		snmp_diag (NULLCP, "no match for IP-address in %s", snmp_community);
-
 done:
 	;
 	fclose (fp);
-
 	return result;
 }
 
@@ -1821,14 +1625,10 @@ static	void snmp_diag (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_asprintf (buffer, what, fmt, ap);
-
 	va_end (ap);
-
 	if (debug > 0)
 		fprintf (stderr, "%s\n", buffer);
-
 	unref (DIAGNOSTIC_node -> var_value);
 	DIAGNOSTIC_node -> var_value = make_string (buffer, strlen (buffer));
 }
@@ -1876,7 +1676,6 @@ integer	idx;
 	for (idx--; idx > 0; idx--)
 		if ((vp = vp -> next) == NULL)
 			return NULL;
-
 	return oid2ode (vp -> VarBind -> name);
 }
 
@@ -1896,9 +1695,7 @@ char    *s;
 	if ((i = str2elem (s, elements)) < 1)
 		return NULLOID;
 #endif
-
 	oids.oid_elements = elements, oids.oid_nelem = i;
-
 	return (&oids);
 }
 #endif	/* SNMP */

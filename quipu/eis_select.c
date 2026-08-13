@@ -31,21 +31,16 @@ eis_select (
 	Attr_Sequence eptr;
 
 	DLOG (log_dsap,LLOG_TRACE,("eis_select"));
-
 	if (eis.eis_allattributes || qctx) {
-
 		for(temp=entryptr->e_attributes; temp != NULLATTR; temp=temp->attr_link) {
-
 			if ( ! (qctx && (AttrT_cmp (at_acl,temp->attr_type) == 0)))
 				if ( (temp->attr_acl != NULLACL_INFO) &&
 						(check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 					continue;
-
 			if ((eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY) && !qctx)
 				temp2 = cpy_as_comp_type (temp);
 			else
 				temp2 = cpy_as_comp (temp);
-
 			if (result == NULLATTR) {
 				result = temp2;
 				trail = result;
@@ -54,21 +49,17 @@ eis_select (
 				trail = temp2;
 			}
 		}
-
 		if (entryptr->e_iattr) {
 			for (temp = entryptr->e_iattr->i_default; temp != NULLATTR; temp=temp->attr_link) {
 				if ( ! as_find_type (entryptr->e_attributes,temp->attr_type)) {
-
 					if ( ! (qctx && (AttrT_cmp (at_acl,temp->attr_type) == 0)))
 						if ( (temp->attr_acl != NULLACL_INFO) &&
 								(check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 							continue;
-
 					if ((eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY) && !qctx)
 						temp2 = cpy_as_comp_type (temp);
 					else
 						temp2 = cpy_as_comp (temp);
-
 					if (result == NULLATTR) {
 						result = temp2;
 						trail = result;
@@ -78,20 +69,16 @@ eis_select (
 					}
 				}
 			}
-
 			if (entryptr->e_iattr->i_always) {
 				if ((eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY) && !qctx)
 					temp = as_cpy_type (entryptr->e_iattr->i_always);
 				else
 					temp = as_cpy_enc (entryptr->e_iattr->i_always,dn,node,qctx);
-
 				result = as_merge (result, temp);
 			}
 		}
-
 	} else {
 		for(eptr=EIS_SELECT; eptr != NULLATTR; eptr=eptr->attr_link) {
-
 			if ((temp = as_find_type (entryptr->e_attributes,eptr->attr_type)) == NULLATTR) {
 				if (entryptr->e_iattr) {
 					if (entryptr->e_iattr->i_default)
@@ -99,21 +86,17 @@ eis_select (
 							goto got_default;
 					if (entryptr->e_iattr->i_always)
 						goto got_always;
-
 				}
 				continue;
 			}
-
 got_default:
 			;
 			if ( (temp->attr_acl != NULLACL_INFO)&& (check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 				continue;
-
 			if (eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY)
 				temp2 = cpy_as_comp_type (temp);
 			else
 				temp2 = cpy_as_comp (temp);
-
 			if (result == NULLATTR) {
 				result = temp2;
 				trail = result;
@@ -123,18 +106,14 @@ got_default:
 			}
 got_always:
 			;
-
 			if (entryptr->e_iattr) {
 				if ((temp = as_find_type (entryptr->e_iattr->i_always,eptr->attr_type)) != NULLATTR) {
-
 					if ( (temp->attr_acl != NULLACL_INFO)&& (check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 						continue;
-
 					if (eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY)
 						temp2 = cpy_as_comp_type (temp);
 					else
 						temp2 = cpy_as_comp (temp);
-
 					if (result == NULLATTR) {
 						result = temp2;
 						trail = result;
@@ -144,7 +123,6 @@ got_always:
 					}
 				}
 			}
-
 		}
 	}
 	return (result);
@@ -159,11 +137,8 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 	Attr_Sequence eptr;
 
 	DLOG (log_dsap,LLOG_TRACE,("attr_eis_select"));
-
 	if (eis.eis_allattributes) {
-
 		for(temp=as; temp != NULLATTR; temp=temp->attr_link) {
-
 			if ( (temp->attr_acl != NULLACL_INFO) &&
 					(check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 				continue;
@@ -171,7 +146,6 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 				temp2 = cpy_as_comp_type (temp);
 			else
 				temp2 = cpy_as_comp (temp);
-
 			if (result == NULLATTR) {
 				result = temp2;
 				trail = result;
@@ -180,22 +154,17 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 				trail = temp2;
 			}
 		}
-
 	} else {
 		for(eptr=EIS_SELECT; eptr != NULLATTR; eptr=eptr->attr_link) {
-
 			if ((temp = as_find_type (as,eptr->attr_type)) == NULLATTR)
 				continue;
-
 			if ( (temp->attr_acl != NULLACL_INFO) &&
 					(check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 				continue;
-
 			if (eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY)
 				temp2 = cpy_as_comp_type (temp);
 			else
 				temp2 = cpy_as_comp (temp);
-
 			if (result == NULLATTR) {
 				result = temp2;
 				trail = result;
@@ -224,31 +193,23 @@ dsa_eis_select (
 	extern AttributeType at_acl;
 
 	DLOG (log_dsap,LLOG_TRACE,("dsa_eis_select"));
-
 	/* Only send attributes asked for - even if Quipu context. */
 	/* Don't want this stuff cached */
-
 	if (eis.eis_allattributes)
 		return eis_select (eis,entryptr,dn, qctx, node);
-
 	update_pseudo_attr ();
-
 	for(eptr=EIS_SELECT; eptr != NULLATTR; eptr=eptr->attr_link) {
-
 		if ((temp = as_find_type (entryptr->e_attributes,
 								  eptr->attr_type)) == NULLATTR)
 			if ((temp = as_find_type (dsa_pseudo_attr,
 									  eptr->attr_type)) == NULLATTR)
 				continue;
-
 		if ( (temp->attr_acl != NULLACL_INFO)&& (check_acl(dn,ACL_READ,temp->attr_acl,node ) != OK ))
 			continue;
-
 		if (eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY)
 			temp2 = cpy_as_comp_type (temp);
 		else
 			temp2 = cpy_as_comp (temp);
-
 		if (result == NULLATTR) {
 			result = temp2;
 			trail = result;
@@ -273,7 +234,6 @@ cpy_as_comp (Attr_Sequence as) {
 	ptr->attr_value = avs_cpy_enc (as->attr_value);
 	ptr->attr_link = NULLATTR;
 	ptr->attr_acl = NULLACL_INFO;
-
 	return (ptr);
 }
 
@@ -299,9 +259,7 @@ int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
 	DN node;
 
 	DLOG (log_dsap,LLOG_TRACE,("eis_check"));
-
 	node = get_copy_dn (entryptr);
-
 	if (eis.eis_allattributes) {
 		for(temp=entryptr->e_attributes; temp != NULLATTR; temp=temp->attr_link)
 			if (temp->attr_acl != NULLACL_INFO)
@@ -334,7 +292,6 @@ as_cpy_type (Attr_Sequence as) {
 
 	start = cpy_as_comp_type (as);
 	ptr2 = start;
-
 	for(eptr = as->attr_link; eptr != NULLATTR; eptr=eptr->attr_link) {
 		ptr = cpy_as_comp_type (eptr);
 		ptr2->attr_link = ptr;
@@ -352,13 +309,11 @@ as_cpy_enc (Attr_Sequence as, DN dn, DN node, char qctx) {
 
 	start = cpy_as_comp (as);
 	ptr2 = start;
-
 	for(eptr = as->attr_link; eptr != NULLATTR; eptr=eptr->attr_link) {
 		if ( ! (qctx && (AttrT_cmp (at_acl,eptr->attr_type) == 0)))
 			if ( (eptr->attr_acl != NULLACL_INFO) &&
 					(check_acl(dn,ACL_READ,eptr->attr_acl,node) != OK ))
 				continue;
-
 		ptr = cpy_as_comp (eptr);
 		ptr2->attr_link = ptr;
 		ptr2 = ptr;

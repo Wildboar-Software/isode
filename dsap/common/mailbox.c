@@ -62,7 +62,6 @@ static struct mailbox *str2mailbox (char *str) {
 		parse_error ("seperator missing in mailbox '%s'",str);
 		return ((struct mailbox *) NULL);
 	}
-
 	result = (struct mailbox *) smalloc (sizeof (struct mailbox));
 	*ptr--= 0;
 	if (isspace (*ptr)) {
@@ -73,10 +72,8 @@ static struct mailbox *str2mailbox (char *str) {
 	result->mtype = strdup (str);
 	*ptr++ = '$';
 	result->mbox = strdup (SkipSpace(ptr));
-
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	return (result);
 }
 
@@ -86,7 +83,6 @@ struct mailbox * m;
 	PE ret_pe;
 
 	encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 

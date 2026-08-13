@@ -78,7 +78,6 @@ int hookup(char *host, int port) {
 		static struct hostent def;
 		static struct in_addr defaddr;
 		static char namebuf[128];
-
 		defaddr.s_addr = inet_addr(host);
 		if (defaddr.s_addr == -1) {
 			sprintf(ftp_error, "%s: Unknown host.", host);
@@ -267,7 +266,6 @@ int sendrequest(char *cmd, char *remote) {
 	if (dout == NOTOK)
 		goto bad;
 	return(dout);
-
 bad:
 	if (data >= 0)
 		close(data), data = -1;

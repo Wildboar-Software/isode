@@ -217,47 +217,36 @@ int init_unix_fs() {
 	if (ot = text2obj("fsIdentifier"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsIdentifier;
-
 	if (ot = text2obj("fsName"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsName;
-
 	if (ot = text2obj("fsMountPoint"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsMountPoint;
-
 	if (ot = text2obj("fsMountType"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsMountType;
-
 	if (ot = text2obj("fsMountOptions"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsMountOptions;
-
 	if (ot = text2obj("fsBlockSize"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsBlockSize;
-
 	if (ot = text2obj("fsBlockCount"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info = (caddr_t)fsBlockCount;
-
 	if (ot = text2obj("fsBlocksFree"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsBlocksFree;
-
 	if (ot = text2obj("fsBlocksAvailable"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsBlocksAvailable;
-
 	if (ot = text2obj("fsInodeCount"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsInodeCount;
-
 	if (ot = text2obj("fsInodesAvailable"))
 		ot->ot_getfnx = o_unix_fs,
 			ot->ot_info   = (caddr_t)fsInodesAvailable;
-
 	return(1);
 }
 
@@ -302,7 +291,6 @@ int isnext;
 		}
 	}
 	lastq = quantum;
-
 	for(fsp = fs_tbl; fsp != NULL; fsp = fsp->next ) {
 		switch(elem_cmp(fsp->fs_instance, fsp->fs_insize, ip, len) ) {
 		case 0:
@@ -311,11 +299,9 @@ int isnext;
 					refresh_entry(fsp);
 				return(fsp);
 			}
-
 			fsp = fsp->next;
 			if( fsp == NULL )
 				return(NULL);
-
 		/* else fall */
 		case 1:
 			if( isnext ) {
@@ -323,11 +309,9 @@ int isnext;
 					refresh_entry(fsp);
 				return(fsp);
 			}
-
 			return(NULL);
 		}
 	}
-
 	return(NULL);
 }
 
@@ -346,7 +330,6 @@ struct fs *fsp;
 			fsp->next = NULL;
 			return;
 		}
-
 		switch( elem_cmp(cur->fs_instance, cur->fs_insize,
 						 fsp->fs_instance, fsp->fs_insize) ) {
 		case 0:
@@ -359,7 +342,6 @@ struct fs *fsp;
 			fsp->next = cur;
 			return;
 		}
-
 		last = &(cur->next);
 		cur  = cur->next;
 	}
@@ -376,7 +358,6 @@ char *s1, *s2;
 
 	if (s2len == 0)
 		return (s1);
-
 	while (strlen(s1) >= s2len) {
 		if (strncmp(s1, s2, s2len) == 0)
 			return (s1);
@@ -398,21 +379,18 @@ static int get_fs_table() {
 
 	if( (mfile = setmntent(MNT_FILE, "r")) == NULL )
 		return(0);
-
 	while( (mp = getmntent(mfile)) != NULL ) {
 		fsp = (struct fs *)malloc( sizeof(struct fs) );
 		if( fsp == NULL ) {
 			endmntent(mfile);
 			return(0);
 		}
-
 		fsp->fs_Name = (char *)malloc( strlen(mp->mnt_fsname)+1 );
 		if( fsp->fs_Name == NULL ) {
 			endmntent(mfile);
 			free(fsp);
 			return(0);
 		}
-
 		fsp->fs_MountPoint = (char *)malloc( strlen(mp->mnt_dir)+1 );
 		if( fsp->fs_MountPoint == NULL ) {
 			endmntent(mfile);
@@ -420,7 +398,6 @@ static int get_fs_table() {
 			free(fsp);
 			return(0);
 		}
-
 		fsp->fs_MountType = (char *)malloc( strlen(mp->mnt_type)+1 );
 		if( fsp->fs_MountType == NULL ) {
 			endmntent(mfile);
@@ -429,7 +406,6 @@ static int get_fs_table() {
 			free(fsp);
 			return(0);
 		}
-
 		fsp->fs_MountOptions = (char *)malloc( strlen(mp->mnt_opts)+1 );
 		if( fsp->fs_MountOptions == NULL ) {
 			endmntent(mfile);
@@ -439,22 +415,17 @@ static int get_fs_table() {
 			free(fsp);
 			return(0);
 		}
-
 		strcpy(fsp->fs_Name, mp->mnt_fsname);
 		strcpy(fsp->fs_MountPoint, mp->mnt_dir);
 		strcpy(fsp->fs_MountType, mp->mnt_type);
 		strcpy(fsp->fs_MountOptions, mp->mnt_opts);
-
 		p = strstr(mp->mnt_opts, "dev=");
 		fsp->fs_Identifier = (p == NULL) ? ++fake_dev%100 : atoi(p+4);
-
 		fsp->fs_instance[0] = fsp->fs_Identifier;
 		fsp->fs_insize =  1;
-
 		refresh_entry(fsp);
 		insert_entry(fsp);
 	}
-
 	endmntent(mfile);
 	return(1);
 }
@@ -465,7 +436,6 @@ static int get_fs_table() {
 static void refresh_entry(fsp)
 struct fs *fsp;
 {
-
 #if	!(defined(ultrix) && defined(mips))
 	struct statfs  fss;
 
@@ -486,7 +456,6 @@ struct fs *fsp;
 	}
 #else
 	struct fs_data  fss;
-
 	if( statfs(fsp->fs_MountPoint, &fss) == -1 ) {
 		fsp->fs_BlockSize	= -1;
 		fsp->fs_BlockCount	= -1;
@@ -514,14 +483,12 @@ static void free_fs_table() {
 	while( fs != NULL ) {
 		bye = fs;
 		fs = bye->next;
-
 		free(bye->fs_Name);
 		free(bye->fs_MountPoint);
 		free(bye->fs_MountType);
 		free(bye->fs_MountOptions);
 		free(bye);
 	}
-
 	fs_tbl = NULL;
 }
 

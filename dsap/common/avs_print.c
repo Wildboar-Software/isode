@@ -21,7 +21,6 @@ void avs_print (PS ps, AV_Sequence avs, int format)
 		ps_print (ps,"\n");
 		return;
 	}
-
 	if ((format == READOUT) && (avs->avseq_av.av_syntax == oc_sntx))
 		(*oc_avsprint)(ps,avs,format);
 	else
@@ -35,11 +34,9 @@ void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep)
 
 	if (avs == NULLAV)
 		return;
-
 	avs_count = 1;
 	avs_comp_print (ps,avs,format);
 	avs_count++;
-
 	for(eptr = avs->avseq_next; eptr != NULLAV; eptr = eptr->avseq_next, avs_count++) {
 		ps_print (ps,sep);
 		AttrV_print (ps,&eptr->avseq_av,format);

@@ -14,13 +14,11 @@ void as_comp_print (PS ps, Attr_Sequence as, int format) {
 
 	last_at = as->attr_type;
 	avs_count = 1;
-
 	if (format == READOUT) {
 		sprintf (buffer,"%s",attr2name (as->attr_type,oidformat));
 		ptr = buffer;
 	} else
 		ptr = attr2name_aux (as->attr_type);
-
 	if (split_attr (as))
 		if (as->attr_value == NULLAV)
 			if (format != READOUT)
@@ -51,7 +49,6 @@ void as_comp_print (PS ps, Attr_Sequence as, int format) {
 			ps_printf (ps, "%s= ", ptr);
 		avs_print (ps,as->attr_value,format);
 	}
-
 	avs_count = 1;
 }
 

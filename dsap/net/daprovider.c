@@ -11,7 +11,6 @@ struct DAPindication	* di;
 char			* event;
 struct RoNOTindication	* rni;
 {
-
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
@@ -23,7 +22,6 @@ struct RoNOTindication	* rni;
 				rni->rni_cc, rni->rni_data));
 	*/
 	sprintf (cp = buffer, " (Error in RO-BIND)");
-
 	if (rni->rni_cc > 0)
 		return (daplose (di, DA_RONOT, NULLCP, "%*.*s%s",
 						 rni->rni_cc, rni->rni_cc, rni->rni_data, cp));
@@ -45,7 +43,6 @@ int ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop
 				rop->rop_cc, rop->rop_data));
 	*/
 	sprintf (cp = buffer, " (Error in ROS)");
-
 	if (rop->rop_cc > 0)
 		return (daplose (di, DA_ROS, NULLCP, "%*.*s%s",
 						 rop->rop_cc, rop->rop_cc, rop->rop_data, cp));
@@ -58,7 +55,6 @@ int ros2dapreject (struct DAPindication *di, char *event, struct RoSAPureject *r
 	char	  buffer[BUFSIZ];
 
 	sprintf (cp = buffer, " (Reject at ROS)");
-
 	if (rou->rou_noid)
 		return (dapreject (di, DA_ROS, -1, NULLCP, " no op id, reason: %d%s", rou->rou_reason, cp));
 	else

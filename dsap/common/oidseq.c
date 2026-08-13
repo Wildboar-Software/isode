@@ -34,7 +34,6 @@ oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 		return (b);
 	if ( b == NULLOIDSEQ )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (oid_cmp (a->oid_oid,b->oid_oid)) {
 	case 0: /* equal */
@@ -55,10 +54,8 @@ oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLOIDSEQ) && (bptr != NULLOIDSEQ) ) {
-
 		switch (oid_cmp (aptr->oid_oid,bptr->oid_oid)) {
 		case 0: /* equal */
 			trail->oid_next = aptr;
@@ -84,7 +81,6 @@ oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 		trail->oid_next = bptr;
 	else
 		trail->oid_next = aptr;
-
 	return (result);
 }
 
@@ -94,13 +90,10 @@ int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
 
 	if((a == NULLOIDSEQ) && (b == NULLOIDSEQ))
 		return(0);
-
 	if(a == NULLOIDSEQ)
 		return(-1);
-
 	if(b == NULLOIDSEQ)
 		return(1);
-
 	for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next) {
 		for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next) {
 			if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
@@ -109,7 +102,6 @@ int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
 		if(aa2 == NULLOIDSEQ)
 			return(1);
 	}
-
 	for(aa2=b; aa2 != NULLOIDSEQ; aa2=aa2->oid_next) {
 		for(aa1=a; aa1 != NULLOIDSEQ; aa1=aa1->oid_next) {
 			if(oid_cmp(aa1->oid_oid, aa2->oid_oid) == 0)
@@ -118,7 +110,6 @@ int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b) {
 		if(aa1 == NULLOIDSEQ)
 			return(-1);
 	}
-
 	return(0);
 }
 
@@ -133,7 +124,6 @@ oid_seq_cpy (struct oid_seq *a) {
 	result -> oid_oid = oid_cpy (a->oid_oid);
 	result -> oid_next = NULLOIDSEQ;
 	b = result;
-
 	for (c=a->oid_next; c!=NULLOIDSEQ; c=c->oid_next) {
 		d = oid_seq_alloc ();
 		d-> oid_oid = oid_cpy (c->oid_oid);
@@ -189,7 +179,6 @@ struct oid_seq *str2oidseq (char *str) {
 		*save = val;
 		str = ptr;
 	}
-
 	newois = oid_seq_alloc();
 	if ((oid = name2oid (SkipSpace(str))) == NULLOID) {
 		parse_error ("invalid name in sequence (2) %s",str);
@@ -200,6 +189,5 @@ struct oid_seq *str2oidseq (char *str) {
 	newois->oid_oid = oid;
 	newois->oid_next = ois;
 	ois = newois;
-
 	return (ois);
 }

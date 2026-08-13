@@ -118,7 +118,6 @@ static void str_seq_print (
 				ps_printf (ps, "//");
 			else
 				ps_printf (ps, "$");
-
 		ps_printf (ps, "%s", ss->ss_str);
 	}
 }
@@ -137,9 +136,7 @@ static struct str_seq *str2str_seq (char *orig) {
 		*ptr_next = '\0';
 		ptr_next++;
 		(*ss) = (struct str_seq *) smalloc (sizeof (struct str_seq));
-
 		(*ss)->ss_str = strdup (ptr_prev);
-
 		ss = &((*ss)->ss_next);
 		ptr_prev = ptr_next;
 	}
@@ -184,9 +181,7 @@ static struct addr_info *addr_info_cpy (struct addr_info *arg) {
 
 	if (arg == (struct addr_info *)NULL)
 		return ((struct addr_info *)NULL);
-
 	ret = (struct addr_info *) calloc (1, sizeof (struct addr_info));
-
 	switch (ret->addr_info_type = arg->addr_info_type) {
 	case ADDR_INFO_DTE_ONLY:
 		ret->dte_number = strdup (arg->dte_number);
@@ -225,22 +220,18 @@ static struct addr_info *addr_info_cpy (struct addr_info *arg) {
 		ret->tselector = strdup (arg->tselector);
 		ret->sselector = strdup (arg->sselector);
 		ret->pselector = strdup (arg->pselector);
-
 		if (arg->place_holder == NULLPE)
 			ret->place_holder = NULLPE;
 		else
 			ret->place_holder = pe_cpy (arg->place_holder);
-
 		if (arg->application_title == NULLPE)
 			ret->application_title = NULLPE;
 		else
 			ret->application_title = pe_cpy (arg->application_title);
-
 		if (arg->per_app_context_info == NULLPE)
 			ret->per_app_context_info = NULLPE;
 		else
 			ret->per_app_context_info = pe_cpy (arg->per_app_context_info);
-
 		break;
 	case ADDR_INFO_OSI_NSAP_ONLY:
 		ret->nsap = strdup (arg->nsap);
@@ -259,28 +250,23 @@ static struct addr_info *addr_info_cpy (struct addr_info *arg) {
 		ret->tselector = strdup (arg->tselector);
 		ret->sselector = strdup (arg->sselector);
 		ret->pselector = strdup (arg->pselector);
-
 		if (arg->place_holder == NULLPE)
 			ret->place_holder = NULLPE;
 		else
 			ret->place_holder = pe_cpy (arg->place_holder);
-
 		if (arg->application_title == NULLPE)
 			ret->application_title = NULLPE;
 		else
 			ret->application_title = pe_cpy (arg->application_title);
-
 		if (arg->per_app_context_info == NULLPE)
 			ret->per_app_context_info = NULLPE;
 		else
 			ret->per_app_context_info = pe_cpy (arg->per_app_context_info);
-
 		break;
 	default:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("addr_info_cpy(): Unknown addressing info type %d", arg->addr_info_type));
 		break;
 	}
-
 	return (ret);
 }
 
@@ -292,16 +278,12 @@ static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 			return (0);
 		else
 			return (-1);
-
 	if (arg2 == (struct addr_info *)NULL)
 		return (1);
-
 	if (arg1->addr_info_type < arg2->addr_info_type)
 		return (-1);
-
 	if (arg1->addr_info_type > arg2->addr_info_type)
 		return (1);
-
 	switch (arg1->addr_info_type) {
 	case ADDR_INFO_DTE_ONLY:
 		if ((ret = lexequ (arg1->dte_number, arg2->dte_number)) != 0)
@@ -405,7 +387,6 @@ static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("addr_info_cmp(): Unknown addressing info type %d", arg1->addr_info_type));
 		break;
 	}
-
 	return (0);
 }
 
@@ -554,10 +535,8 @@ static struct addr_info *str2addr_info (char *orig) {
 	char			* eraser;
 
 	result = (struct addr_info *) calloc (1, sizeof (struct addr_info));
-
 	copy = strdup (orig);
 	ptr_prev = SkipSpace (copy);
-
 	if ( (ptr_next=index (ptr_prev, ':')) == NULLCP) {
 		parse_error ("first separator(:) missing in addr_info '%s'", orig);
 		free (copy);
@@ -565,15 +544,12 @@ static struct addr_info *str2addr_info (char *orig) {
 		return ((struct addr_info *) NULL);
 	}
 	*ptr_next = '\0';
-
 	/* Eliminate trailing spaces so that strcmp succeeds */
 	eraser = ptr_next;
 	for (eraser--; (*eraser) == ' '; eraser--) {
 		(*eraser) = '\0';
 	}
-
 	ptr_next++;
-
 	if (strcmp (ptr_prev, "dte_only") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_ONLY;
 		ptr_prev = SkipSpace (ptr_next);
@@ -589,11 +565,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_info = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_cudf") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_CUDF;
@@ -606,11 +579,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->cudf = strdup (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_cudf_applic_info") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_CUDF_APPLIC_INFO;
@@ -623,9 +593,7 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("third separator(#) missing in addr_info '%s'", orig);
@@ -635,11 +603,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->cudf = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_info = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_ybts") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_YBTS;
@@ -652,11 +617,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->ybts_string = strdup (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_ybts_applic_info") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_YBTS_APPLIC_INFO;
@@ -669,9 +631,7 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("third separator(#) missing in addr_info '%s'", orig);
@@ -681,11 +641,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->ybts_string = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_info = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_ybts_applic_relay") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_YBTS_APPLIC_RELAY;
@@ -698,9 +655,7 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("third separator(#) missing in addr_info '%s'", orig);
@@ -710,11 +665,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->ybts_string = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_relay = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "none_needed") == 0) {
 		result->addr_info_type = ADDR_INFO_NONE_NEEDED;
@@ -729,11 +681,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->nsap = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("third separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -742,11 +691,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->tselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("fourth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -755,11 +701,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->sselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("fifth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -768,11 +711,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->pselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("sixth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -781,11 +721,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->place_holder = asnstr2pe (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("seventh separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -794,11 +731,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->application_title = asnstr2pe (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		result->per_app_context_info = asnstr2pe (ptr_prev);
 	} else if (strcmp (ptr_prev, "osi_nsap_only") == 0) {
 		result->addr_info_type = ADDR_INFO_OSI_NSAP_ONLY;
@@ -815,11 +749,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->nsap = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_info = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "osi_nsap_applic_relay") == 0) {
 		result->addr_info_type = ADDR_INFO_OSI_NSAP_APPLIC_RELAY;
@@ -832,11 +763,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->nsap = strdup (ptr_prev);
-
 		ptr_prev = SkipSpace (ptr_next);
-
 		result->applic_relay = str2str_seq (ptr_prev);
 	} else if (strcmp (ptr_prev, "dte_ybts_osi_addressing") == 0) {
 		result->addr_info_type = ADDR_INFO_DTE_YBTS_OSI_ADDRESSING;
@@ -849,11 +777,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->dte_number = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("third separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -862,11 +787,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->ybts_string = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("fourth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -875,11 +797,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->tselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("fifth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -888,11 +807,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->sselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("sixth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -901,11 +817,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->pselector = strdup (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("seventh separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -914,11 +827,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->place_holder = asnstr2pe (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		if ( (ptr_next=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("eighth separator(#) missing in addr_info '%s'", orig);
 			free (copy);
@@ -927,11 +837,8 @@ static struct addr_info *str2addr_info (char *orig) {
 		}
 		*ptr_next = '\0';
 		ptr_next++;
-
 		result->application_title = asnstr2pe (ptr_prev);
-
 		ptr_prev = ptr_next;
-
 		result->per_app_context_info = asnstr2pe (ptr_prev);
 	} else {
 		parse_error ("unknown addr_info type: '%s'", ptr_prev);
@@ -939,7 +846,6 @@ static struct addr_info *str2addr_info (char *orig) {
 		free ((char *) result);
 		return ((struct addr_info *) NULL);
 	}
-
 	return (result);
 }
 
@@ -995,15 +901,11 @@ static void nrs_routes_print (
 	for (rt=routes; rt != (struct nrs_routes *)NULL; rt = rt->next) {
 		if (format == READOUT)
 			ps_printf (ps, "\n---> ");
-
 		if (rt->cost)
 			pe_print (ps, rt->cost, format);
-
 		ps_printf (ps, "#");
-
 		if (rt->addr_info)
 			addr_info_print (ps, rt->addr_info, format);
-
 		if (rt->next != (struct nrs_routes *)NULL)
 			ps_printf (ps, "|");
 	}
@@ -1018,22 +920,16 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 	char			* ptr_mid;
 
 	result = (struct nrs_routes *) smalloc (sizeof (struct nrs_routes));
-
 	ptr_prev = SkipSpace(orig);
-
 	if ((ptr_prev == NULLCP) || ((*ptr_prev) == '\0')) {
 		return ((struct nrs_routes *)NULL);
 	}
-
 	rt = &(result);
-
 	while ( (ptr_next=index (ptr_prev, '|')) != NULLCP) {
 		*ptr_next = '\0';
 		ptr_next++;
 		(*rt) = (struct nrs_routes *) smalloc (sizeof (struct nrs_routes));
-
 		copy = strdup (ptr_prev);
-
 		if ( (ptr_mid=index (ptr_prev, '#')) == NULLCP) {
 			parse_error ("separator(#) missing in nrs_route '%s'", copy);
 			free (copy);
@@ -1042,7 +938,6 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 		}
 		*ptr_mid = '\0';
 		ptr_mid++;
-
 		/*
 		* route-cost is not optional - use encoding of NULL
 		* when this element is absent
@@ -1055,19 +950,13 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 			free ((char *) result);
 			return ((struct nrs_routes *) NULL);
 		}
-
 		ptr_prev = SkipSpace (ptr_mid);
-
 		(*rt)->addr_info = str2addr_info (ptr_prev);
-
 		rt = &((*rt)->next);
 		ptr_prev = SkipSpace(ptr_next);
 	}
-
 	(*rt) = (struct nrs_routes *) smalloc (sizeof (struct nrs_routes));
-
 	copy = strdup (ptr_prev);
-
 	if ( (ptr_mid=index (ptr_prev, '#')) == NULLCP) {
 		parse_error ("separator(#) missing in nrs_route '%s'", copy);
 		free (copy);
@@ -1076,7 +965,6 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 	}
 	*ptr_mid = '\0';
 	ptr_mid++;
-
 	/*
 	* route-cost is not optional - use encoding of NULL
 	* when this element is absent
@@ -1089,23 +977,17 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 		free ((char *) result);
 		return ((struct nrs_routes *) NULL);
 	}
-
 	ptr_prev = SkipSpace (ptr_mid);
-
 	(*rt)->addr_info = str2addr_info (ptr_prev);
-
 	(*rt)->next = (struct nrs_routes *)NULL;
-
 	return (result);
 }
 
 static void nrs_info_free (struct nrs_info *arg) {
 	if (arg == (struct nrs_info *)NULL)
 		return;
-
 	if (arg->routes)
 		nrs_routes_free (arg->routes);
-
 	free ((char *) arg);
 }
 
@@ -1148,7 +1030,6 @@ static void context_print (
 		ps_printf (ps, "%d", ctx);
 		return;
 	}
-
 	switch(ctx) {
 	case NRS_Context_X29:
 		ps_printf (ps, "x29");
@@ -1210,7 +1091,6 @@ static void addr_sp_id_print (
 		ps_printf (ps, "%d", asi);
 		return;
 	}
-
 	switch(asi) {
 	case NRS_Address_Space_Id_PSS:
 		ps_printf (ps, "pss");
@@ -1250,12 +1130,10 @@ static int str2context (char *orig) {
 
 	str = SkipSpace(orig);
 	its_all_digits = 1;
-
 	if ((str == NULLCP) || ((*str) == '\0')) {
 		parse_error ("no context string", NULLCP);
 		return(-1);
 	}
-
 	/* Check for numeric-ness and strip trailing spaces */
 	for (cc=str; (*cc)!='\0'; cc++) {
 		if (isspace(*cc)) {
@@ -1263,19 +1141,16 @@ static int str2context (char *orig) {
 			cc++;
 			break;
 		}
-
 		if (!isdigit(*cc)) {
 			its_all_digits = 0;
 		}
 	}
-
 	while (isspace(*cc))
 		cc++;
 	if ((*cc) != '\0') {
 		parse_error ("malformed context string", NULLCP);
 		return(-1);
 	}
-
 	if (its_all_digits) {
 		return(atoi(str));
 	} else if (strcmp (str, "x29") == 0) {
@@ -1321,12 +1196,10 @@ static int str2addr_sp_id (char *orig) {
 
 	str = SkipSpace(orig);
 	its_all_digits = 1;
-
 	if ((str == NULLCP) || ((*str) == '\0')) {
 		parse_error ("no address space string", NULLCP);
 		return(-1);
 	}
-
 	/* Check for numeric-ness and strip trailing spaces */
 	for (cc=str; (*cc)!='\0'; cc++) {
 		if (isspace(*cc)) {
@@ -1334,19 +1207,16 @@ static int str2addr_sp_id (char *orig) {
 			cc++;
 			break;
 		}
-
 		if (!isdigit(*cc)) {
 			its_all_digits = 0;
 		}
 	}
-
 	while (isspace(*cc))
 		cc++;
 	if ((*cc) != '\0') {
 		parse_error ("malformed address space string", NULLCP);
 		return(-1);
 	}
-
 	if (its_all_digits) {
 		return(atoi(str));
 	} else if (strcmp (str, "pss") == 0) {
@@ -1370,10 +1240,8 @@ static struct nrs_info *str2nrs_info (char *orig) {
 	char		* ptr_next;
 
 	result = (struct nrs_info *) smalloc (sizeof (struct nrs_info));
-
 	copy = strdup (orig);
 	ptr_prev = copy;
-
 	if ( (ptr_next=index (ptr_prev, '$')) == NULLCP) {
 		parse_error ("first separator($) missing in nrs_info '%s'", orig);
 		free (copy);
@@ -1382,16 +1250,13 @@ static struct nrs_info *str2nrs_info (char *orig) {
 	}
 	*ptr_next = '\0';
 	ptr_next++;
-
 	if ((result->context = str2context (ptr_prev)) == -1) {
 		parse_error ("malformed context '%s'", orig);
 		free (copy);
 		free ((char *) result);
 		return ((struct nrs_info *) NULL);
 	}
-
 	ptr_prev = ptr_next;
-
 	if ( (ptr_next=index (ptr_prev, '$')) == NULLCP) {
 		parse_error ("second separator($) missing in nrs_info '%s'", orig);
 		free (copy);
@@ -1400,26 +1265,22 @@ static struct nrs_info *str2nrs_info (char *orig) {
 	}
 	*ptr_next = '\0';
 	ptr_next++;
-
 	if ((result->addr_sp_id = str2addr_sp_id (ptr_prev)) == -1) {
 		parse_error ("malformed context '%s'", orig);
 		free (copy);
 		free ((char *) result);
 		return ((struct nrs_info *) NULL);
 	}
-
 	if (((ptr_prev = SkipSpace (ptr_next)) == NULLCP) || ((*ptr_prev) == '\0')) {
 		result->routes = ((struct nrs_routes *)NULL);
 		return (result);
 	}
-
 	if ((result->routes = str2nrs_routes (ptr_prev)) == (struct nrs_routes *)NULL) {
 		parse_error ("unparseable routes in nrs_info '%s'", orig);
 		free (copy);
 		free ((char *) result);
 		return ((struct nrs_info *) NULL);
 	}
-
 	return (result);
 }
 
@@ -1428,7 +1289,6 @@ static PE nrs_info_enc (struct nrs_info * nrs) {
 
 	if (encode_NRS_NRSInformation (&ret_pe, 1, 0, NULLCP, nrs) != OK)
 		return (NULLPE);
-
 	return (ret_pe);
 }
 
@@ -1439,7 +1299,6 @@ static struct nrs_info * nrs_info_dec (PE pe)
 	if (decode_NRS_NRSInformation (pe, 1, NULLIP, NULLVP, &nrs) != OK) {
 		return ((struct nrs_info *) NULL);
 	}
-
 	return (nrs);
 }
 

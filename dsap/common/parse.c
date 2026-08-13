@@ -165,7 +165,6 @@ static char *getphyline (FILE *file)
 	buf = parse_buffer;
 	buflen = parse_len;
 	curlen = 0;
-
 	for (;;) {
 		if ( buflen <= MAXLINE) {
 			if (parse_len <= 0) {
@@ -179,10 +178,8 @@ static char *getphyline (FILE *file)
 				buf = parse_buffer + curlen;
 			}
 		}
-
 		if (fgets (buf, buflen,file) == NULLCP)
 			return (NULLCP);
-
 		size = strlen(buf);
 		ptr = buf + size - 1;
 		if ( *ptr == '\n') {
@@ -193,12 +190,9 @@ static char *getphyline (FILE *file)
 		buf += size;
 		buflen -= size;
 		curlen += size;
-
 	}
-
 	parse_line++;
 	return (parse_buffer);
-
 }
 
 /*
@@ -224,7 +218,6 @@ static char *catphyline (FILE *file, char *str)
 		buflen = parse_len;
 		curlen = 0;
 	}
-
 	for (;;) {
 		if ( buflen <= MAXLINE) {
 			if (parse_len <= 0) {
@@ -238,10 +231,8 @@ static char *catphyline (FILE *file, char *str)
 				buf = parse_buffer + curlen;
 			}
 		}
-
 		if (fgets (buf, buflen,file) == NULLCP)
 			return (NULLCP);
-
 		size = strlen(buf);
 		ptr = buf + size - 1;
 		if ( *ptr == '\n') {
@@ -252,12 +243,9 @@ static char *catphyline (FILE *file, char *str)
 		buf += size;
 		buflen -= size;
 		curlen += size;
-
 	}
-
 	parse_line++;
 	return (parse_buffer);
-
 }
 
 int free_phylinebuf (void) {
@@ -268,7 +256,6 @@ int free_phylinebuf (void) {
 	buflen = 0;
 	curlen = 0;
 	size = 0;
-
 }
 
 extern char	*unesc_cont(char *ptr, int len);
@@ -287,15 +274,11 @@ char * _getline (FILE *file)
 	char	*npart;
 
 	savefile = file;
-
 	do {
 		if ((p = getphyline(file)) == NULLCP)
 			return (NULLCP);
-
 	} while (*SkipSpace (buf) == '#');
-
 	len = curlen + size;
-
 	npart = p;
 	while ((npart = unesc_cont(npart, len))) {/* continued line keep going */
 		ocurlen = npart - p;
@@ -304,10 +287,8 @@ char * _getline (FILE *file)
 		len = curlen + size - ocurlen;
 		npart = p + ocurlen;
 	}
-
 	FAST_TIDY(p);
 	return p;
-
 }
 
 #ifdef TURBO_DISK
@@ -340,9 +321,7 @@ char *unesc_cont (char *ptr, int len) {
 		p += (cnt / 2) + 1;
 		*p = '\0';
 	}
-
 	return (cnt % 2 ? p : NULLCP);
-
 }
 
 /*
@@ -363,9 +342,7 @@ void fpwr_esc(FILE *fp, char *line, int wl)
 			pos = len;
 		else
 			pos = wl;
-
 		m = cnt_escp(line, pos);
-
 		if (m > 0) {
 			if (pos + 2*m <= wl) {	/* can fit them in the line */
 				n = m;	/* need an extra escape for each one */
@@ -403,9 +380,7 @@ void pswr_esc(PS ps, char *line, int wl)
 			pos = len;
 		else
 			pos = wl;
-
 		m = cnt_escp(line, pos);
-
 		if (m > 0) {
 			if (pos + 2*m <= wl) {	/* can fit them in the line */
 				n = m;	/* need an extra escape for each one */
@@ -419,7 +394,6 @@ void pswr_esc(PS ps, char *line, int wl)
 		ps_write(ps, (PElementData)line, pos);
 		if (n > 0) {
 			char nbuf[MAXLINE];
-
 			/* unlikely this will ever be run but just in case */
 			while (n + 1 > MAXLINE) {
 				for (i = MAXLINE - 2; i >= 0; i--)
@@ -470,7 +444,6 @@ FILE * file;
 
 	if ((ptr = fgetline (file)) == NULLCP)
 		return (NULLATTR);
-
 	while ( *ptr != 0 ) {
 		as = as_combine (as,ptr,FALSE);
 		if ((ptr = fgetline (file)) == NULLCP)
@@ -487,7 +460,6 @@ FILE * file;
 
 	parse_status = 0;
 	parse_line   = 0;
-
 	return (fget_attributes_aux (file));
 }
 
@@ -547,29 +519,23 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 	char check = TRUE;
 
 	DATABASE_HEAP;
-
 	if ((ptr = _getline (file)) == NULLCP) {
 		GENERAL_HEAP;
 		return (NULLENTRY);
 	}
-
 	while (*ptr == 0)
 		if ((ptr = _getline (file)) == NULLCP) {
 			GENERAL_HEAP;
 			return (NULLENTRY);
 		}
-
 	eptr = get_default_entry (parent);
 	eptr->e_data = dtype;
-
 	if ((eptr->e_name = str2rdn (ptr)) == NULLRDN) {
 		parse_error ("invalid rdn %s",ptr);
 		check = FALSE;
 	}
-
 	parse_rdn = eptr->e_name;
 	eptr->e_attributes = get_attributes_aux (file);
-
 	if (check) {
 		save = parse_line;
 		parse_line = 0;
@@ -586,9 +552,7 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 		parse_line = save;
 	}
 	parse_rdn = NULLRDN;
-
 	GENERAL_HEAP;
-
 	switch (dtype) {
 	case E_TYPE_SLAVE:
 		local_slave_size++;
@@ -601,7 +565,6 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 		local_cache_size++;
 		break;
 	}
-
 	return (eptr);
 }
 
@@ -619,7 +582,6 @@ Entry get_entry (FILE *file, Entry parent, int dtype)
 
 	parse_status = 0;
 	parse_line   = 0;
-
 	return (get_entry_aux (file,parent,dtype));
 }
 
@@ -629,7 +591,6 @@ Entry new_constructor (Entry parent)
 
 	if (dsa_mode && parent && (parent->e_leaf == TRUE))
 		return NULLENTRY;	/* Can't invent nodes */
-
 	constructor = get_default_entry (parent);
 	constructor->e_children = NULLAVL;
 	constructor->e_leaf = FALSE;
@@ -655,7 +616,6 @@ Entry make_path (DN dn)
 	if (database_root == NULLENTRY || database_root->e_children == NULLAVL) {
 		if ((database_root = new_constructor(NULLENTRY)) == NULLENTRY)
 			return NULLENTRY;
-
 		ptr = database_root;
 		for (; dn!= NULLDN; dn=dn->dn_parent) {
 			if ((new = new_constructor(ptr)) == NULLENTRY)
@@ -667,14 +627,11 @@ Entry make_path (DN dn)
 		return (ptr);
 	} else {
 		/* follow links as far as poss, then add new bits */
-
 		if (dn == NULLDN)
 			return (database_root);
-
 		kids = database_root->e_children;
 		parent = database_root;
 		b_rdn = dn->dn_rdn;
-
 		for(;;) { /* return out */
 			if ((ptr = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp))
 					== NULLENTRY ) {
@@ -689,13 +646,10 @@ Entry make_path (DN dn)
 				}
 				return(parent);
 			}
-
 			if (dn->dn_parent == NULLDN)
 				return (ptr);
-
 			dn = dn->dn_parent;
 			b_rdn = dn->dn_rdn;
-
 			if (ptr->e_children == NULLAVL) {
 				for (; dn!= NULLDN; dn=dn->dn_parent) {
 					if ((new = new_constructor(ptr)) ==
@@ -709,11 +663,9 @@ Entry make_path (DN dn)
 				}
 				return(ptr);
 			}
-
 			kids = ptr->e_children;
 			parent = ptr;
 		}
-
 	}
 	/* NOTREACHED */
 }

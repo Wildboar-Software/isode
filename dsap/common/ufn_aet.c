@@ -22,7 +22,6 @@ static Filter aet_filter (char *context)
 
 	if ((a = ocfilter ("ApplicationEntity")) == NULLFILTER)
 		return NULLFILTER;
-
 	b = filter_alloc ();
 	b->flt_next = a;
 	b->flt_type = FILTER_ITEM;
@@ -37,7 +36,6 @@ static Filter aet_filter (char *context)
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("'%s' unknown OID",context));
 		return NULLFILTER;
 	}
-
 	return joinfilter (b,FILTER_AND);
 }
 
@@ -61,24 +59,18 @@ static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 	search_arg.sra_eis.eis_infotypes = TRUE;
 	search_arg.sra_eis.eis_allattributes = TRUE;
 	search_arg.sra_eis.eis_select = NULLATTR;
-
 	if (ds_search (&search_arg, &err, &result) != DS_OK) {
 		log_ds_error (&err);
 		ds_error_free (&err);
 		return FALSE;
 	}
-
 	correlate_search_results (&result);
-
 	dn_free (result.CSR_object);
-
 	if ( (result.CSR_limitproblem != LSR_NOLIMITPROBLEM) || (result.CSR_cr != NULLCONTINUATIONREF)) {
 		crefs_free (result.CSR_cr);
-
 		if ( ! result.CSR_entries)
 			return FALSE;
 	}
-
 	for (ptr = result.CSR_entries; ptr != NULLENTRYINFO; ptr=ptr->ent_next) {
 		cache_entry (ptr,FALSE,TRUE);
 		newdns = dn_seq_alloc();
@@ -87,9 +79,7 @@ static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 		r = newdns;
 	}
 	entryinfo_free (result.CSR_entries,0);
-
 	*res = r;
-
 	return TRUE;
 }
 
@@ -105,7 +95,6 @@ int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlis
 	if (!ufn_match (c,v,interact,&ufnr,el)) {
 		if (PY_pepy[0]) {
 			char buffer[BUFSIZ];
-
 			sprintf (buffer, "ufn_match failed: %s", PY_pepy);
 			strcpy (PY_pepy, buffer);
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
@@ -113,9 +102,7 @@ int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlis
 		*result = NULLDNS;
 		return FALSE;
 	}
-
 	filt = aet_filter(context);
-
 	for (dns = ufnr; dns != NULLDNS; dns=dns->dns_next) {
 		newap = NULLDNS;
 		if (aet_search (dns->dns_dn,FALSE,filt,&newap))
@@ -123,7 +110,6 @@ int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlis
 		else
 			ok = FALSE;
 	}
-
 	if ((apps == NULLDNS) && ok) {
 		/* go deeper */
 		for (dns = ufnr; dns != NULLDNS; dns=dns->dns_next) {
@@ -137,19 +123,14 @@ int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlis
 				ok = FALSE;
 		}
 	}
-
 	if (!ok && !apps) {
 		PY_advise (NULLCP,
 				   "search for applicationEntity supporting \"%s\" failed",
 				   context);
 		SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP, ("%s", PY_pepy));
 	}
-
 	filter_free (filt);
-
 	dn_seq_free (ufnr);
-
 	*result = apps;
-
 	return ok;
 }

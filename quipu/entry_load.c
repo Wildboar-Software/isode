@@ -84,7 +84,6 @@ static int read_mapped_rdn (PS aps, char *name, char *file) {
 		*newname++ = 0;
 		while (isspace(*--tmp))
 			*tmp = 0;
-
 		if (lexequ (name,ptr) == 0) {
 			/* got it - replace in ps*/
 			i = strlen (name);
@@ -278,7 +277,6 @@ char *dn2edbfile (DN dn) {
 static int file_check (int offset, Entry entryptr) {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
-
 	if (rdn2filename (ps,entryptr->e_name,FALSE) == OK) {
 		if (*(ps->ps_ptr - 1) != '/')
 			ps_print (ps,"/EDB");
@@ -295,7 +293,6 @@ static int sibling_expected (Entry e) {
 
 	if (e->e_external)
 		return FALSE;
-
 	for (avs = e->e_master; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
@@ -403,7 +400,6 @@ static int merge_entry (Entry newentry, Avlnode *oldtree) {
 		newentry->e_children = p->e_children;
 		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
 				  NOTOK, AVL_PREORDER);
-
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
 	} else {
@@ -461,7 +457,6 @@ Entry subtree_load (Entry parent, DN dn) {
 		parent->e_children = treetop;
 		return(parent);
 	}
-
 	if (dn == NULLDN) {
 		parent = get_default_entry (NULLENTRY);
 		parent->e_leaf = FALSE;
@@ -499,10 +494,8 @@ int refresh_from_disk (DN dn) {
 
 	if ((parent = local_find_entry (dn,FALSE)) == NULLENTRY)
 		return (NOTOK);
-
 	if (parent->e_data != E_DATA_MASTER)
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("WARNING: refreshing SLAVE EDB file -- should not be needed"));
-
 	child = entry_cpy(parent);
 	child->e_parent = parent->e_parent;
 	child->e_children = parent->e_children;
@@ -515,7 +508,6 @@ int refresh_from_disk (DN dn) {
 	refreshing = FALSE;
 	if (tmp == NULLENTRY)
 		return (NOTOK);
-
 	if (dn == NULLDN) {
 		database_root = child;
 		directory_free (child);

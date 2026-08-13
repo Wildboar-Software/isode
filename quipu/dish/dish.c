@@ -37,37 +37,26 @@ int main (int argc, char **argv) {
 	extern struct SecurityServices *dsap_security;
 
 	quipu_syntaxes ();
-
 #ifdef OSISEC
 #ifdef REVOKE_SYNTAX
 	revoke_syntax();
 #endif
 #endif
-
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
-
 #ifdef OSISEC
-
 	dsap_security = use_serv_X509();
 	use_sig_md2withrsa();
-
 #else  /* OSISEC */
-
 	/* Needed for bootstrapping */
 	dsap_security = use_serv_null();
-
 #endif /* OSISEC */
-
 	osisecinit(&argc,&argv, 0);
-
 	dish_init (argc,argv);
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 #ifdef DONT_USE_PP_ANYMORE
 	add_dish_command ("lmnpq", call_dlist, 2);
 	add_dish_help    ("lmnpq",
@@ -75,7 +64,6 @@ int main (int argc, char **argv) {
 					  FALSE, FALSE,
 					  "List Manager Now using PP and Quipu,");
 #endif
-
 #ifdef MANAGE
 	add_dish_command ("add_alias", call_add_alias, 5);
 	add_dish_help	 ("add_alias", "<alias_name> <object>", FALSE, FALSE,
@@ -87,12 +75,9 @@ int main (int argc, char **argv) {
 	add_dish_help	 ("alias_chk", "<object>", FALSE, FALSE,
 					  "Check alias or all aliases below <object>,");
 #endif
-
 	add_dish_help ("quit","", FALSE, FALSE, "Quit the program.");
 	add_dish_help (NULLCP,NULLCP,0,0,NULLCP);
-
 	do_dish ();
-
 	return 0;
 }
 
@@ -122,17 +107,12 @@ int osisecinit (int *argc, char ***argv, int fn) {
 				default:
 					continue;
 				}
-
 			break;
 		}
 		args[argp] = NULLCP;
 	}
-
 #ifdef OSISEC
-
 	else
 		osisec_init (&argp, (argptr = args, &argptr));
-
 #endif
-
 }

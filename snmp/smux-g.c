@@ -50,21 +50,17 @@ again:
 		;
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((pb = PHead -> pb_forw) == PHead)
 				return NOTOK;
 			ifnum = pb -> pb_index;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-
 			ifnum = oid -> oid_elements[i];
 			for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 				if (pb -> pb_index >= ifnum)
@@ -74,7 +70,6 @@ again:
 						&& (pb = pb -> pb_forw) == PHead))
 				return NOTOK;
 			ifnum = pb -> pb_index;
-
 			oid -> oid_elements[i] = ifnum;
 			oid -> oid_nelem = i + 1;
 		}
@@ -86,7 +81,6 @@ again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case smuxPindex:
 		return o_integer (oi, v, pb -> pb_index);
@@ -140,14 +134,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
-
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
@@ -176,7 +167,6 @@ int	offset;
 	case type_SNMP_PDUs_rollback:
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -218,43 +208,35 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((tb = THead -> tb_forw) == THead)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, tb -> tb_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - tb -> tb_insize;
 			jp = tb -> tb_instance;
 			for (i = tb -> tb_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	j;
-
 			if ((tb = get_tbent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - tb -> tb_insize) < 0) {
 				OID	    new;
-
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = tb -> tb_instance;
 			for (i = tb -> tb_insize; i > 0; i--)
@@ -265,7 +247,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case smuxTsubtree:
 		return o_specific (oi, v, (caddr_t) tb -> tb_subtree -> ot_name);
@@ -317,14 +298,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
-
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
@@ -349,7 +327,6 @@ int	offset;
 	case type_SNMP_PDUs_rollback:
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -372,7 +349,6 @@ int	isnext;
 		case 1:
 			return (isnext ? tb : NULL);
 		}
-
 	return NULL;
 }
 
@@ -392,7 +368,6 @@ void init_smux (void) {
 		ot -> ot_getfnx = o_smuxPeer,
 			  ot -> ot_setfnx = s_smuxPeer,
 					ot -> ot_info = (caddr_t) smuxPstatus;
-
 	if (ot = text2obj ("smuxTsubtree"))
 		ot -> ot_getfnx = o_smuxTree,
 			  ot -> ot_info = (caddr_t) smuxTsubtree;

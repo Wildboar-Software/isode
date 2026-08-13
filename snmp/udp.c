@@ -72,7 +72,6 @@ static int _read_udp_stats ()
 
 	if (_read_snmp_stats ("udp", &labels, &values, &len) != OK)
 		return NOTOK;
-
 	for (i = 0; i < len; i++) {
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
@@ -85,7 +84,6 @@ static int _read_udp_stats ()
 		else if (!strcmp ("OutDatagrams", label))
 			udpstat.udps_opackets = value;
 	}
-
 	return OK;
 }
 #endif
@@ -112,11 +110,9 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = 0;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -127,10 +123,8 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (quantum != lastq) {
 		lastq = quantum;
-
 #ifndef LINUX
 		if (getkmem (nl + N_UDPSTAT, (caddr_t) udps, sizeof *udps) == NOTOK)
 			return generr (offset);
@@ -139,13 +133,11 @@ int	offset;
 			advise (LLOG_EXCEPTIONS, "failed", "read udp stats");
 #endif
 	}
-
 	switch (ifvar) {
 #ifdef	udpInDatagrams
 	case udpInDatagrams:
 		return o_integer (oi, v, udps -> udps_ipackets);
 #endif
-
 #ifdef	udpNoPorts
 	case udpNoPorts:
 		return o_integer (oi, v, udps -> udps_noport);
@@ -159,7 +151,6 @@ int	offset;
 #else
 		return o_integer (oi, v, udps -> udps_ierrors);
 #endif
-
 #ifdef	udpOutDatagrams
 	case udpOutDatagrams:
 		return o_integer (oi, v, udps -> udps_opackets);
@@ -204,38 +195,27 @@ static struct udptab *_read_udp_sockets(int *len)
 	unsigned char *cp;
 
 	*len = 0;
-
 	f = fopen ("/proc/net/udp", "r");
 	if (!f) {
 		advise (LLOG_EXCEPTIONS, "failed", "open /proc/net/udp");
 		return NULL;
 	}
-
 	fgets(line, sizeof(line), f); /* header */
-
 	tp = &ut;
-
 	for (i = 0; fgets(line, sizeof(line), f); i++) {
-
 		if ((t = calloc (1, sizeof (struct udptab))) == NULL)
 			adios (NULLCP, "out of memory");
-
 		sscanf(line, "%*d: %x:%hx %x:%hx %*x %hx:%hx",
 				&t -> ut_pcb.inp_laddr.s_addr, &t -> ut_pcb.inp_lport,
 				&t -> ut_pcb.inp_faddr.s_addr, &t -> ut_pcb.inp_fport,
 				&t -> ut_socb.so_snd.sb_cc, &t -> ut_socb.so_rcv.sb_cc);
-
 		cp = (unsigned char *) t -> ut_instance;
 		cp += ipaddr2oid (cp, &t -> ut_pcb.inp_laddr);
 		*cp++ = ntohs (t -> ut_pcb.inp_lport);
-
 		*tp = t; tp = &t -> ut_next;
 	}
-
 	*len = i;
-
 	fclose (f);
-
 	return ut;
 }
 #endif
@@ -257,7 +237,6 @@ int	offset;
 
 	if (get_listeners (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
@@ -288,18 +267,15 @@ int	offset;
 			}
 		} else if (i > UT_SIZE)
 			oid -> oid_nelem = ot -> ot_name -> oid_nelem + UT_SIZE;
-
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((ut = uts) == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, UT_SIZE)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - UT_SIZE;
 			jp = ut -> ut_instance;
 			for (i = UT_SIZE; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -308,7 +284,6 @@ int	offset;
 									   + oid -> oid_nelem - UT_SIZE, 1))
 					== NULL)
 				return NOTOK;
-
 			jp = ut -> ut_instance;
 			for (i = UT_SIZE; i > 0; i--)
 				*ip++ = *jp++;
@@ -318,7 +293,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case udpLocalAddress:
 		netaddr.sin_addr = ut -> ut_pcb.inp_laddr;	/* struct copy */
@@ -381,45 +355,36 @@ int	offset;
 		return OK;
 	}
 	lastq = quantum, flush_udp_cache = 0;
-
 #ifndef LINUX
 	for (us = uts; us; us = up) {
 		up = us -> ut_next;
-
 		free ((char *) us);
 	}
 	uts = NULL;
-
 	if (getkmem (nl + N_UDB, (char *) &udb, sizeof udb) == NOTOK)
 		return NOTOK;
 	head = (struct inpcb *) nl[N_UDB].n_value;
-
 	usp = &uts, i = 0;
 	ip = &udb;
 	while (ip -> inp_next != head) {
 		struct udptab *uz;
 		OIDentifier	oids;
-
 		if ((us = (struct udptab *) calloc (1, sizeof *us)) == NULL)
 			adios (NULLCP, "out of memory");
-
 		nz -> n_name = "struct inpcb",
 			  nz -> n_value = (unsigned long) ip -> inp_next;
 		if (getkmem (nz, (caddr_t) &us -> ut_pcb, sizeof us -> ut_pcb)
 				== NOTOK)
 			return NOTOK;
 		ip = &us -> ut_pcb;
-
 		nz ->n_name = "struct socket",
 			 nz -> n_value = (unsigned long) ip -> inp_socket;
 		if (getkmem (nz, (caddr_t) &us -> ut_socb, sizeof us -> ut_socb)
 				== NOTOK)
 			return NOTOK;
-
 		cp = us -> ut_instance;
 		cp += ipaddr2oid (cp, &ip -> inp_laddr);
 		*cp++ = ntohs (ip -> inp_lport) & 0xffff;
-
 		for (uz = uts; uz; uz = uz -> ut_next)
 			if (elem_cmp (uz -> ut_instance, UT_SIZE,
 						  us -> ut_instance, UT_SIZE) == 0)
@@ -431,13 +396,11 @@ int	offset;
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"duplicate listeners: %s", sprintoid (&oids));
 			}
-
 			*(ip = &zdb) = us -> ut_pcb;	/* struct copy */
 			free ((char *) us);
 			continue;
 		}
 		*usp = us, usp = &us -> ut_next, i++;
-
 		if (debug && first_time) {
 			oids.oid_elements = us -> ut_instance;
 			oids.oid_nelem = UT_SIZE;
@@ -449,33 +412,25 @@ int	offset;
 #else
 	uts = _read_udp_sockets(&i);
 #endif
-
 	if (i > 1) {
 		struct udptab **base,
 				   **use;
-
 		if ((base = (struct udptab **) malloc ((unsigned) (i * sizeof *base)))
 				== NULL)
 			adios (NULLCP, "out of memory");
-
 		use = base;
 		for (us = uts; us; us = us -> ut_next)
 			*use++ = us;
-
 		qsort ((char *) base, i, sizeof *base, (IFP)ut_compar);
-
 		usp = base;
 		us = uts = *usp++;
-
 		while (usp < use) {
 			us -> ut_next = *usp;
 			us = *usp++;
 		}
 		us -> ut_next = NULL;
-
 		free ((char *) base);
 	}
-
 	return OK;
 }
 
@@ -497,11 +452,9 @@ int	isnext;
 		case 1:
 			return (isnext ? ut : NULL);
 		}
-
 out:
 	;
 	flush_udp_cache = 1;
-
 	return NULL;
 }
 
@@ -526,14 +479,12 @@ void init_udp (void) {
 		ot -> ot_getfnx = o_udp,
 			  ot -> ot_info = (caddr_t) udpOutDatagrams;
 #endif
-
 	if (ot = text2obj ("udpLocalAddress"))
 		ot -> ot_getfnx = o_udp_listen,
 			  ot -> ot_info = (caddr_t) udpLocalAddress;
 	if (ot = text2obj ("udpLocalPort"))
 		ot -> ot_getfnx = o_udp_listen,
 			  ot -> ot_info = (caddr_t) udpLocalPort;
-
 	if (ot = text2obj ("unixUdpRemAddress"))
 		ot -> ot_getfnx = o_udp_listen,
 			  ot -> ot_info = (caddr_t) unixUdpRemAddress;

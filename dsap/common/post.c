@@ -45,19 +45,16 @@ static struct postaddr *addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
-
 	for (; a != (struct postaddr *) NULL; a = a->pa_next) {
 		b = (struct postaddr *) smalloc (sizeof (struct postaddr));
 		b -> addrtype = a->addrtype;
 		b -> addrcomp = strdup (a->addrcomp);
-
 		if (result == (struct postaddr *) NULL)
 			result = b;
 		else
 			c->pa_next = b;
 		c = b;
 	}
-
 	b->pa_next = (struct postaddr *) NULL;
 	return (result);
 }
@@ -74,18 +71,14 @@ static struct postaddr *addrparse (char *str) {
 	char * prtparse ();
 
 	b = result; /* to keep lint quiet */
-
 	if (t61_flag) {
 		t61_str = TRUE;
 		t61_flag = FALSE;  /* indicate recognition */
 	}
-
 	str = SkipSpace(str);
-
 	for (i=0; i < UB_POSTAL_LINE; i++) {
 		mark = NULLCP;
 		a = (struct postaddr *) smalloc (sizeof (struct postaddr));
-
 		if ( (ptr=index (str,'$')) != NULLCP) {
 			*ptr-- = 0;
 			if (isspace (*ptr)) {
@@ -94,7 +87,6 @@ static struct postaddr *addrparse (char *str) {
 			}
 			ptr++;
 		}
-
 		if (t61_str) {
 			a -> addrtype = 1;
 			if ((a -> addrcomp = octparse (str)) == NULLCP)
@@ -142,22 +134,18 @@ static struct postaddr *addrparse (char *str) {
 #endif
 			}
 		}
-
 		if (result == (struct postaddr *) NULL)
 			result = a;
 		else
 			b->pa_next = a;
 		b = a;
-
 		t61_str = FALSE;
-
 		if (ptr != NULLCP) {
 			*ptr++ = '$';
 			if (mark != NULLCP)
 				*mark = ' ';
 			str = (SkipSpace(ptr));
 			ptr = str;
-
 			if (*ptr++ == '{') {
 				if (( str = index (ptr,'}')) == 0) {
 					parse_error ("close bracket missing '%s'",--ptr);
@@ -176,13 +164,11 @@ static struct postaddr *addrparse (char *str) {
 		} else
 			break;
 	}
-
 	if (ptr != NULLCP) {
 		parse_error ("Too many address components",NULLCP);
 		return ((struct postaddr *) NULL);
 	}
 	a -> pa_next = (struct postaddr *) NULL ;
-
 	return (result);
 }
 
@@ -226,7 +212,6 @@ struct postaddr * m;
 	PE ret_pe;
 
 	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 
@@ -240,7 +225,6 @@ PE pe;
 
 	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
 		return ((struct postaddr *) NULL);
-
 	for (a=m; a != (struct postaddr *) NULL; a = a->pa_next, i++) {
 		if ((len=(int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {
 #ifndef STRICT_X500
@@ -262,13 +246,11 @@ PE pe;
 #endif
 		}
 	}
-
 	if ( i > UB_POSTAL_LINE ) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Postal Address too many comps"));
 		addrfree(m);
 		return ((struct postaddr *)NULL);
 	}
-
 	return (m);
 }
 
@@ -279,5 +261,4 @@ void post_syntax (void) {
 						  addrcpy,		addrcmp,
 						  addrfree,	NULLCP,
 						  NULLIFP,	TRUE);
-
 }

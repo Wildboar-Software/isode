@@ -17,15 +17,10 @@ int	dsaplose (struct DSAPindication *di, ...) {
 			result;
 
 	va_list ap;
-
 	va_start (ap, di);
-
 	reason = va_arg (ap, int);
-
 	result = _dsaplose (di, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -53,7 +48,6 @@ static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* 
 		bp += strlen (bp);
 		copyDSAPdata (buffer, bp - buffer, da);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -65,16 +59,11 @@ int	dsapreject (struct DSAPindication *di, ...) {
 			result;
 
 	va_list ap;
-
 	va_start (ap, di);
-
 	reason = va_arg (ap, int);
 	id = va_arg (ap, int);
-
 	result = _dsapreject (di, reason, id, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -108,7 +97,6 @@ static int _dsapreject (  /* what, fmt, args ... */
 		bp += strlen (bp);
 		copyDSAPdata (buffer, bp - buffer, dp);
 	}
-
 	return (NOTOK);
 }
 #endif

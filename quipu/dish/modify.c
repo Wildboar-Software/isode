@@ -57,11 +57,9 @@ void call_modify (int argc, char **argv) {
 	DN		moddn;
 	char	       *home;
 	RDN		new_rdn;
-
 	struct  list_element   *start = 0 ;
 	struct  list_element   *last ;
 	struct  list_element   *l_temp ;
-
 	/*	char	add = FALSE ;
 		char	rem = FALSE ;
 	 */
@@ -137,28 +135,23 @@ void call_modify (int argc, char **argv) {
 			shuffle_up (argc--,argv,x--);
 		}
 	}
-
 	if (dad_flag && (draft_flag || noedit_flag)) {
 		ps_printf (OPT,
 				   "operation not allowed when using directory assistance server!\n");
 		return;
 	}
-
 	/* read attributes we want to modify */
 	if ((argc = read_cache_aux (argc, argv, FALSE, &mod_arg.mea_common)) <0 )
 		return;
-
 	if (argc != 1) {
 		ps_printf (OPT,"Unknown option %s\n",argv[1]);
 		Usage (argv[0]);
 		return;
 	}
-
 	if (start != 0) {
 		if (build_modify(start, &mod_arg) == NOTOK) {
 			return ;
 		}
-
 		while (ds_modifyentry (&mod_arg, &error) != DS_OK) {
 			if (dish_error (OPT, &error) == 0) {
 				return ;
@@ -171,7 +164,6 @@ void call_modify (int argc, char **argv) {
 		delete_cache (dn);  /* re-cache when next read */
 		return ;
 	}
-
 	if (!draft_flag) {
 		if (mod_template (fname,noedit_flag) != OK)
 			return;
@@ -180,48 +172,39 @@ void call_modify (int argc, char **argv) {
 		new_draft = TRUE;	/* Ugh ! */
 		mod_template ("/dev/null",TRUE);
 	}
-
 	if (! noedit_flag)
 		if (editentry (1, argv) != OK) {
 			make_old (fname,draft_flag);
 			return;
 		}
-
 	/* now parse the files */
-
 	if ((fd = fopen (fname, "r")) == (FILE *) NULL) {
 		ps_printf (OPT, "Can't open draft entry %s\n", fname);
 		return;
 	}
-
 	entry_ptr = get_default_entry (NULLENTRY);
 #ifdef TURBO_DISK
 	entry_ptr->e_attributes = fget_attributes (fd);
 #else
 	entry_ptr->e_attributes = get_attributes (fd);
 #endif
-
 	fclose (fd);
 	if (parse_status != 0)
 		return;
-
 	mod_arg.mea_object = dn;
 	for (moddn = dn ; moddn->dn_parent != NULLDN; moddn=moddn->dn_parent)
 		;
 	entry_ptr->e_name = rdn_cpy (moddn->dn_rdn);
-
 	/* add rdn as attribute */
 	for (new_rdn = entry_ptr->e_name; new_rdn != NULLRDN; new_rdn = new_rdn->rdn_next) {
 		avst = avs_comp_new (AttrV_cpy (&new_rdn->rdn_av));
 		temp = as_comp_new (AttrT_cpy (new_rdn->rdn_at), avst, NULLACL_INFO);
 		entry_ptr->e_attributes = as_merge (entry_ptr->e_attributes, temp);
 	}
-
 	for (as = entry_ptr->e_attributes; as != NULLATTR; as = as->attr_link) {
 		emnew = NULLMOD;
 		trail = as->attr_link;
 		as->attr_link = NULLATTR;
-
 		temp = current_entry->e_attributes;
 		for (; temp != NULLATTR; temp = temp->attr_link)
 			if (AttrT_cmp (as->attr_type, temp->attr_type) == 0) {
@@ -230,40 +213,32 @@ void call_modify (int argc, char **argv) {
 					emnew = modify_avs (as->attr_value, temp->attr_value,as->attr_type);
 				break;
 			}
-
 		if (temp == NULLATTR) {
 			emnew = em_alloc ();
 			emnew->em_type = EM_ADDATTRIBUTE;
 			emnew->em_what = as_cpy(as);
 			emnew->em_next = NULLMOD;
 		}
-
 		if (emnew != NULLMOD)
 			mod_arg.mea_changes = ems_append (mod_arg.mea_changes,emnew);
-
 		as->attr_link = trail;
 	}
-
 	/* remove attribute missing in new entry */
 	for (as = current_entry->e_attributes; as != NULLATTR; as = as->attr_link) {
 		emnew = NULLMOD;
-
 		temp = entry_ptr->e_attributes;
 		for (; temp != NULLATTR; temp = temp->attr_link)
 			if (AttrT_cmp (as->attr_type, temp->attr_type) == 0)
 				break;
-
 		if (temp == NULLATTR) {
 			emnew = em_alloc ();
 			emnew->em_type = EM_REMOVEATTRIBUTE;
 			emnew->em_what = as_comp_new(as->attr_type,NULLAV,NULLACL_INFO);
 			emnew->em_next = NULLMOD;
 		}
-
 		if (emnew != NULLMOD)
 			mod_arg.mea_changes = ems_append (mod_arg.mea_changes,emnew);
 	}
-
 	if (mod_arg.mea_changes == NULLMOD) {
 		ps_print (RPS, "The draft entry and the entry for ");
 		dn_print (RPS, dn, EDBOUT);
@@ -272,7 +247,6 @@ void call_modify (int argc, char **argv) {
 		make_old (fname,draft_flag);
 		return;
 	}
-
 	if (rebind () != OK) {
 		entry_free (entry_ptr);
 		return;
@@ -282,27 +256,22 @@ void call_modify (int argc, char **argv) {
 	 * was editing the entry. Re-calculate the time-stamp. Modify is the only
 	 * dish command where this needs to be done.
 	 */
-
 	if ((mod_arg.mea_common.ca_security != (struct security_parms *) 0)
 			&& (mod_arg.mea_common.ca_security->sp_time != NULLCP)) {
 		char *new_version();
-
 		free(mod_arg.mea_common.ca_security->sp_time);
 		mod_arg.mea_common.ca_security->sp_time = new_version();
 	}
-
 	/* If security parameters are present, take this to mean that strong
 	 * authentication is required. This disallows 'parms + no signature'
 	 * (pointless) and 'signature + no parms' (security risk).
 	 */
 	if (mod_arg.mea_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		mod_arg.mea_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&mod_arg,
 									   _ZModifyEntryArgumentDataDAS, &_ZDAS_mod);
 	}
-
 	while (ds_modifyentry (&mod_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0) {
 			entry_free (entry_ptr);
@@ -314,10 +283,8 @@ void call_modify (int argc, char **argv) {
 	dn_print (RPS, dn, EDBOUT);
 	ps_print (RPS, "\n");
 	delete_cache (dn);	/* re-cache when next read */
-
 	entry_free (entry_ptr);
 	ems_part_free (mod_arg.mea_changes);
-
 	make_old (fname,draft_flag);
 }
 
@@ -327,10 +294,8 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 
 	if ((ptr = a) == NULLMOD)
 		return b;
-
 	for ( ; ptr->em_next != NULLMOD; ptr = ptr->em_next)
 		;
-
 	ptr->em_next = b;
 	return a;
 }
@@ -358,7 +323,6 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 		if (emnew != NULLMOD)
 			em = ems_append (em,emnew);
 	}
-
 	if (removed_all) {
 		ems_part_free (em);
 		emnew = em_alloc ();
@@ -370,7 +334,6 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 		emnew->em_next->em_next = NULLMOD;
 		return (emnew);
 	}
-
 	for (x=a; x != NULLAV; x=x->avseq_next) {
 		emnew = NULLMOD;
 		for (y=b; y != NULLAV; y=y->avseq_next)
@@ -382,7 +345,6 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 				objectclass * oc;
 				if (!top)
 					top = oid_cpy(str2oid (TOP_OC));
-
 				if (oc = (objectclass *) x->avseq_av.av_struct) 	/* assign */
 					if (oid_cmp(oc->oc_ot.ot_oid, top) == 0)
 						continue;
@@ -395,7 +357,6 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 		if (emnew != NULLMOD)
 			em = ems_append (em,emnew);
 	}
-
 	return (em);
 }
 
@@ -444,24 +405,20 @@ void dsa_control (int argc, char **argv) {
 		NULLATTR,
 		NULLMOD
 	};
-
 	static struct ds_modifyentry_arg mod_arg = {
 		default_common_args,
 		NULLDN,
 		&mod
 	};
-
 	AttributeType at;
 	struct DSError  error;
 	char            buffer[100];
 	char * 		msg = "Done\n";
 	char 		do_unbind = FALSE;
-
 	if (argc < 2) {
 		Usage(argv[0]);
 		return;
 	}
-
 	if (test_arg (argv[1], "-dump",1))
 		if (argc != 3) goto out;
 		else
@@ -507,12 +464,10 @@ void dsa_control (int argc, char **argv) {
 			sprintf (buffer, "s %s", foobar (argv[2]));
 	} else
 		argc = 1;	/* to force error */
-
 	if (raboof) {
 		raboof = 0;
 		return;
 	}
-
 	if (argc != 3) {
 out:
 		;
@@ -522,17 +477,14 @@ out:
 	mod_arg.mea_object = dn;
 	at = AttrT_new (CONTROL_OID);
 	mod_arg.mea_changes->em_what = as_comp_new (at, avs_comp_new (str_at2AttrV (buffer, at)), NULLACL_INFO);
-
 	if (rebind () != OK)
 		return;
-
 	if (ds_modifyentry (&mod_arg, &error) != DS_OK) {
 		/* deal with error */
 		dish_error (OPT, &error);
 	} else {
 		ps_print (RPS, msg);
 	}
-
 	if (do_unbind)
 		unbind_from_dsa();
 	/* as_free (mod_arg.mea_changes->em_what); */
@@ -549,7 +501,6 @@ void dsa_control_info (void) {
 	read_arg.rda_eis.eis_select = as_comp_new (AttrT_new (CONTROL_OID), NULLAV, NULLACL_INFO);
 	read_arg.rda_common = ca;	/* struct copy */
 	read_arg.rda_object = NULLDN;
-
 	if (rebind () != OK)
 		return;
 	if (ds_read (&read_arg, &error, &result) != DS_OK) {
@@ -580,9 +531,7 @@ int mod_template (char *name, char noedit) {
 					make_old (fname,FALSE);
 			} else
 				return (OK);	/* template already exists ! */
-
 		}
-
 	um = umask (0177);
 	if ((fptr = fopen (name, "w")) == NULL) {
 		ps_printf (OPT, "Can't open template entry %s\n", name);
@@ -621,18 +570,14 @@ int build_modify (
 	char   *ptr ;
 	int    num_attr_vals = 0 ;
 	int    attr_val_match = 0 ;
-
 	while (start) {
 		emnew = em_alloc() ;
-
 		ptr = start->mod;
-
 		while (*ptr != 0)
 			if (*ptr == '=')
 				break;
 			else
 				ptr++;
-
 		if (*ptr == 0) {
 			if ((a_t = AttrT_new (start->mod)) == NULLAttrT) {
 				ps_printf(OPT, "invalid attribute type '%s'",
@@ -641,17 +586,14 @@ int build_modify (
 			}
 			emnew->em_what = as_comp_new (a_t, NULLAV,
 										  NULLACL_INFO);
-
 		} else 	if ((emnew->em_what = str2as (start->mod)) ==
 					NULLATTR) {
 			ps_printf(OPT, "invalid attribute '%s' ",
 					  start->mod) ;
 			return (NOTOK) ;
 		}
-
 		emnew->em_type = -1 ;
 		a_t = emnew->em_what->attr_type;
-
 		for (eptr = current_entry->e_attributes; eptr != NULLATTR;
 				eptr = eptr->attr_link) {
 			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
@@ -662,7 +604,6 @@ int build_modify (
 						} else {
 							num_attr_vals = 0 ;
 							attr_val_match = 0 ;
-
 							for (tmp_avs = eptr->attr_value;
 									tmp_avs != NULLAV;
 									tmp_avs = tmp_avs->avseq_next) {
@@ -687,7 +628,6 @@ int build_modify (
 				}
 			}
 		}
-
 		if (emnew->em_type == -1) { /* No matches, so attrType is a new one */
 			if (start->add == 0) { /* Remove */
 				ps_print(OPT, "Removing attribute that is not present.\n") ;

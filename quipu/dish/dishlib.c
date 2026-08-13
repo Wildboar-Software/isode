@@ -125,7 +125,6 @@ int dish_init (int argc, char **argv) {
 #endif
 
 	dish_cmd_init ();
-
 #ifdef LINUX
 	signal (SIGHUP, (__sighandler_t)dish_quit);
 	signal (SIGQUIT, (__sighandler_t)dish_quit);
@@ -143,7 +142,6 @@ int dish_init (int argc, char **argv) {
 	signal (SIGSYS,	dish_quit);
 	signal (SIGTERM,	dish_quit);
 #endif
-
 #ifdef TURBO_DISK
 	fromfile = 1;
 #endif
@@ -169,12 +167,10 @@ int dish_init (int argc, char **argv) {
 				fatal (-62, "ps_alloc failed");
 			if (std_setup (opt, stderr) == NOTOK)
 				fatal (-63, "std_setup failed");
-
 			if ((rps = ps_alloc (std_open)) == NULLPS)
 				fatal (-64, "ps_alloc 2 failed");
 			if (std_setup (rps, stdout) == NOTOK)
 				fatal (-65, "std_setup 2 failed");
-
 			help_arg ("dish");
 			exit (0);
 		}
@@ -186,7 +182,6 @@ int dish_init (int argc, char **argv) {
 			shuffle_up (argc--, argv, i);
 		}
 	}
-
 	if ( (argc >1) && (test_arg (argv[1], "-pipe",3))) {
 		if (init_pipe () != OK)
 			exit (-61);
@@ -194,64 +189,47 @@ int dish_init (int argc, char **argv) {
 		opt = rps = NULLPS;
 	} else {
 		frompipe = FALSE;
-
 		if ((opt = ps_alloc (std_open)) == NULLPS)
 			fatal (-62, "ps_alloc failed");
 		if (std_setup (opt, stderr) == NOTOK)
 			fatal (-63, "std_setup failed");
-
 		if ((rps = ps_alloc (std_open)) == NULLPS)
 			fatal (-64, "ps_alloc 2 failed");
 		if (std_setup (rps, stdout) == NOTOK)
 			fatal (-65, "std_setup 2 failed");
-
 		printf ("Welcome to Dish (DIrectory SHell)\n");
 		fflush (stdout);
 	}
-
 	i = 1;
 	vec[0] = argv[0];
 	vecptr = vec;
-
 	want_oc_hierarchy ();	/* for add/modify ! */
-
 #ifndef NO_STATS
 	log_stat -> ll_file = "dish.log";
 	log_stat -> ll_stat &= ~LLOGCRT;
 #endif
 	log_dsap -> ll_stat &= ~LLOGCRT;
 	dsap_init (&i, &vecptr);
-
 #ifdef OSISEC
 	osisecinit((int*)0, (char***)0, 1);
 #endif
-
 #ifndef NO_STATS
 	ll_hdinit (log_stat,vec[0]);
 #endif
-
 	check_known_oids();
-
 	if (user_tailor () != OK) {
-
 		fprintf (stderr, "Tailoring failed\n");
-
 		if (frompipe)
 			exit_pipe ();
-
 		exit (-66);
 	}
-
 #ifdef OSISEC
 	osisec_tailor(".authrc", log_osisec);
 #endif
-
 	if (! frompipe) {
-
 #ifndef NO_STATS
 		char buf [LINESIZE];
 		*buf = 0;
-
 		for (i=0; i<argc; i++) {
 			strcat (buf,argv[i]);
 			strcat (buf," ");
@@ -262,7 +240,6 @@ int dish_init (int argc, char **argv) {
 #endif
 		if (setjmp (dish_env))
 			exit (-66);
-
 		if (call_bind (argc,argv) != OK)
 			exit (-67);
 	}
@@ -318,11 +295,9 @@ int do_dish (void) {
 	Commands[num_cmd].command = NULLCP;
 	Commands[num_cmd].handler = unknown_cmd;
 	Commands[num_cmd].unique  = 0;
-
 #ifdef GNUREADLINE
 	gnu_gets_setup ();
 #endif
-
 #ifdef LINUX
 	signal (SIGINT, (__sighandler_t)dish_intr);
 #else
@@ -330,7 +305,6 @@ int do_dish (void) {
 #endif
 	if (setjmp (dish_env) == 1)
 		goto tidy_up;
-
 	while (1) {
 		dish_state = IDLE;
 		if (dsa_dead) {
@@ -338,19 +312,15 @@ int do_dish (void) {
 			bound = FALSE;
 			dsa_dead = FALSE;
 		}
-
 		parse_line = 0;
 		reset_arg ();
 		set_current_pos();
 		remote_prob = FALSE;
 		doneget = FALSE;
-
 		if (frompipe) {
 			set_alarm ();
-
 			if (read_pipe (inbuf,sizeof inbuf) == -1)
 				continue;
-
 			signal (SIGALRM, SIG_IGN);
 			/* unset alarm */
 			if (dad_flag)
@@ -361,7 +331,6 @@ int do_dish (void) {
 			command = index (inbuf, ':');
 			*command++ = 0;
 #endif
-
 #ifdef	SOCKETS
 			if ((opt = ps_alloc (fdx_open)) == NULLPS) {
 				exit_pipe ();
@@ -372,7 +341,6 @@ int do_dish (void) {
 				fatal (-69, "fdx_setup failed");
 			}
 			(*opt -> ps_writeP) (opt, "2", 1, 0);
-
 			if ((rps = ps_alloc (fdx_open)) == NULLPS) {
 				exit_pipe ();
 				fatal (-70, "ps_alloc 2 failed");
@@ -392,7 +360,6 @@ int do_dish (void) {
 				fatal (-69, "str_setup failed");
 			}
 			opt->ps_ptr++, opt->ps_cnt--;
-
 			if ((rps = ps_alloc (str_open)) == NULLPS) {
 				exit_pipe ();
 				fatal (-70, "ps_alloc 2 failed");
@@ -429,14 +396,12 @@ int do_dish (void) {
 		savename = dn_cpy (dn);
 		hide_picture();
 		dish_state = BUSY;
-
 		ptr = command;
 		while (*ptr)
 			if (isspace (*ptr))
 				break;
 			else
 				ptr++;
-
 		if (*ptr == 0) {
 			noarg = TRUE;
 		} else {
@@ -446,10 +411,8 @@ int do_dish (void) {
 		for (x = 0; Commands[x].command != 0; x++)
 			if (test_arg (command, Commands[x].command, Commands[x].unique))
 				break;
-
 		if (! noarg)
 			*ptr++ = ' ';
-
 		if (* Commands[x].defaults != 0) {
 			if (noarg) {
 				sprintf (cmd_buf,"%s %s",Commands[x].command,Commands[x].defaults);
@@ -458,7 +421,6 @@ int do_dish (void) {
 			}
 			command = cmd_buf;
 		}
-
 		if (strncmp (command, "fred -ufn ",
 					 sizeof "fred -ufn " - 1) == 0) {
 			command[4] = command[9] = ',';
@@ -472,12 +434,9 @@ int do_dish (void) {
 			int y;
 #ifndef NO_STATS
 			char buf [LINESIZE];
-
 			buf[0] = 0;
 #endif
-
 			vector[0] = Commands[x].command;
-
 #ifndef NO_STATS
 			if (vector[0] != NULLCP) {
 				strcpy (buf,vector[0]);
@@ -485,11 +444,9 @@ int do_dish (void) {
 			}
 #endif
 			for (y=1; y<no_of_args; y++) {
-
 #ifndef NO_STATS
 				strcat (buf,vector[y]);
 				strcat (buf," ");
-
 				if (test_arg (vector[y], "-password",2) && y+1 < no_of_args) {
 					strcat (buf, "????");
 					y++;
@@ -516,11 +473,9 @@ int do_dish (void) {
 			if ( ! help_flag)
 				(*Commands[x].handler) (no_of_args, vector);
 		}
-
 		/* if from pipe, return results */
 tidy_up:
 		;
-
 		if (frompipe && !remote_prob) {
 #ifdef	SOCKETS
 			if (rps -> ps_byteno > 0) {
@@ -557,7 +512,6 @@ tidy_up:
 int call_quit (int argc, char **argv) {
 	/* can only get called if run interactively - dont worry about pipe */
 	signal (SIGINT, SIG_DFL);
-
 	DLOG (log_dsap, LLOG_DEBUG, ("Dish:- Exiting Dish successfully..."));
 	if (bound)
 		ds_unbind ();
@@ -566,7 +520,6 @@ int call_quit (int argc, char **argv) {
 	ps_free (rps);
 	hide_picture();
 	directory_free (database_root);	   /* clean /tmp files */
-
 	exit (0);
 }
 
@@ -580,9 +533,7 @@ int set_cmd_default (char *cmd, char *dflt) {
 			strcat (Commands[x].defaults, dflt);
 			return (OK);
 		}
-
 	return (NOTOK);
-
 }
 
 SFD dish_intr (sd)
@@ -591,14 +542,12 @@ int sd;
 #ifndef BSDSIGS
 	signal (SIGINT, dish_intr);
 #endif
-
 	if (dish_state == IDLE)
 		ps_printf (OPT, "\n");
 	else {
 		ps_printf (OPT, "(Interrupted)\n");
 		dish_state = IDLE;
 	}
-
 	longjmp (dish_env,2);
 }
 
@@ -607,8 +556,6 @@ void    advise (int code, char *what, char *fmt, ...) {
 	extern LLog    *log_dsap;
 
 	va_start (ap, fmt);
-
 	_ll_log (log_dsap, code, what, fmt, ap);
-
 	va_end (ap);
 }

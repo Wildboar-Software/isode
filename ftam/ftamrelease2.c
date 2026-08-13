@@ -18,15 +18,10 @@ int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, str
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "too many charges");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamFsig (fsb, sd);
-
 	result = FTerminateResponseAux (fsb, sharedASE, charging, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -67,33 +62,25 @@ out:
 			&& charging -> fc_ncharge > 0
 			&& (rsp -> charging = chrg2fpm (fsb, charging, fti)) == NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-RELEASE.RESPONSE",
 					"F-TERMINATE-response", pe, 0));
-
 	result = AcRelResponse (fsb -> fsb_fd, ACS_ACCEPT, ACR_NORMAL, &pe, 1,
 							aci);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcRelResponse", aca);
 		goto out;
 	}
-
 	fsb -> fsb_fd = NOTOK;
 	freefsblk (fsb);
-
 	return OK;
 }

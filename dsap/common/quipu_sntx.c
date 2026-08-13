@@ -5,7 +5,6 @@ void quipu_syntaxes (void) {
 
 	if (done++)
 		return;
-
 	standard_syntaxes ();
 	acl_syntax ();
 	edbinfo_syntax ();
@@ -16,7 +15,6 @@ void quipu_syntaxes (void) {
 	audio_syntax ();
 	ap_syntax ();
 	attribute_syntax ();
-
 	/* Thorn syntaxes */
 	mailbox_syntax ();
 	documentStore_syntax ();
@@ -24,7 +22,6 @@ void quipu_syntaxes (void) {
 	sacl_syntax();
 	lacl_syntax();
 	authp_syntax();
-
 	/* DSA control */
 	dsa_control_syntax();
 	quipu_call_syntax();

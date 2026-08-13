@@ -78,7 +78,6 @@ int format;
 	if (format == READOUT)
 		ps_print (ps,"terminal: ");
 	ps_print (ps,teletex->terminal);
-
 	if (format != READOUT)
 		ps_print (ps," $ ");
 	if (teletex->graphic != NULLCP) {
@@ -86,7 +85,6 @@ int format;
 			ps_print (ps,", graphic: ");
 		ps_print (ps,teletex->graphic);
 	}
-
 	if (format != READOUT)
 		ps_print (ps," $ ");
 	if (teletex->control != NULLCP) {
@@ -94,7 +92,6 @@ int format;
 			ps_print (ps,", control: ");
 		ps_print (ps,teletex->control);
 	}
-
 	if (format != READOUT)
 		ps_print (ps," $ ");
 	if (teletex->page != NULLCP) {
@@ -102,7 +99,6 @@ int format;
 			ps_print (ps,", page: ");
 		ps_print (ps,teletex->page);
 	}
-
 	if (format != READOUT)
 		ps_print (ps," $ ");
 	if (teletex->misc != NULLCP) {
@@ -110,7 +106,6 @@ int format;
 			ps_print (ps,", misc: ");
 		ps_print (ps,teletex->misc);
 	}
-
 	if (format != READOUT)
 		ps_print (ps," $ ");
 	if (teletex->t_private != NULLCP) {
@@ -118,7 +113,6 @@ int format;
 			ps_print (ps,", private: ");
 		ps_print (ps,teletex->t_private);
 	}
-
 }
 
 static struct teletex *str2teletex (char *str) {
@@ -131,7 +125,6 @@ static struct teletex *str2teletex (char *str) {
 		parse_error ("seperator missing in teletex '%s'",str);
 		return ((struct teletex *) NULL);
 	}
-
 	result = (struct teletex *) smalloc (sizeof (struct teletex));
 	*ptr--= 0;
 	if (isspace (*ptr)) {
@@ -141,17 +134,13 @@ static struct teletex *str2teletex (char *str) {
 	ptr++;
 	if ((result->terminal = prtparse(str)) == NULLCP)
 		return ((struct teletex *) NULL);
-
 	if ((int)strlen (result->terminal) > UB_TELETEX_TERMINAL_ID) {
 		parse_error ("teletex string too long",NULLCP);
 		return ((struct teletex *) NULL);
 	}
-
 	*ptr++ = '$';
-
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("2nd seperator missing in teletex '%s'",str);
@@ -168,7 +157,6 @@ static struct teletex *str2teletex (char *str) {
 	*ptr++ = '$';
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("3rd seperator missing in teletex '%s'",str);
@@ -185,7 +173,6 @@ static struct teletex *str2teletex (char *str) {
 	*ptr++ = '$';
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("4th seperator missing in teletex '%s'",str);
@@ -202,7 +189,6 @@ static struct teletex *str2teletex (char *str) {
 	*ptr++ = '$';
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	str = SkipSpace(ptr);
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("5th seperator missing in teletex '%s'",str);
@@ -219,9 +205,7 @@ static struct teletex *str2teletex (char *str) {
 	*ptr++ = '$';
 	if (mark != NULLCP)
 		*mark = ' ';
-
 	result->t_private = xstrdup(SkipSpace(ptr));
-
 	return (result);
 }
 
@@ -231,7 +215,6 @@ struct teletex * m;
 	PE ret_pe;
 
 	encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 
@@ -243,12 +226,10 @@ PE pe;
 	if (decode_SA_TeletexTerminalIdentifier (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
 		return ((struct teletex *) NULL);
 	}
-
 	if ((int)strlen (m->terminal) > UB_TELETEX_TERMINAL_ID) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("teletex string too big"));
 		return ((struct teletex *) NULL);
 	}
-
 	return (m);
 }
 

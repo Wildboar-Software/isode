@@ -23,13 +23,9 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 		return (ronot2dsaplose (di, "D-BIND.INDICATION", rni));
 	}
 	watch_dog_reset ();
-
 	/* ADT: Generalised context checking support would be useful */
-
 	/* Check application context and set flag in ds->ds_ctx */
-
 	ds->ds_sd = acs->acs_sd;
-
 	switch (ds->ds_ctx = select_context (acs->acs_context)) {
 	case DS_CTX_X500_DAP:
 		if ((ds->ds_pctx_id = check_dap_ctxlist (&(acs->acs_start.ps_ctxlist))) == NOTOK) {
@@ -79,13 +75,11 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 		watch_dog_reset ();
 		return (dsaplose (di, DA_APP_CONTEXT, NULLCP, "BIND INDICATION"));
 	}
-
 	/*
 	* Most applications would dispatch on the context established,
 	* but since all directory protocols have the same Bind Argument
 	* we just fall through...
 	*/
-
 	/* Decode bind argument */
 	if ((acs->acs_ninfo != 1) || (acs->acs_info[0] == NULLPE)) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Invalid ACSE user data."));
@@ -94,7 +88,6 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 		watch_dog_reset ();
 		return (dsaplose (di, DA_ARG_DEC, NULLCP, "BIND INDICATION"));
 	}
-
 	if (decode_DAS_DirectoryBindArgument (acs->acs_info[0],
 										  1, NULLCP, NULLIP, &bind_arg) != OK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode directory bind argument."));
@@ -103,11 +96,9 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 		watch_dog_reset ();
 		return (dsaplose (di, DA_ARG_DEC, NULLCP, "BIND INDICATION"));
 	}
-
 	ds->ds_bind_arg = *bind_arg; /* struct copy */
 	free ( (char *) bind_arg);
 	DLOG(log_dsap,LLOG_DEBUG, ("Bind Argument decoded"));
-
 	return (result);
 }
 
@@ -142,22 +133,18 @@ struct DSAPindication	* di;
 		return (dsaplose (di, DA_RES_ENC, NULLCP, "BIND RESULT"));
 	}
 	bindrespe->pe_context = pctx_id;
-
 	watch_dog ("RoBindResult");
 	result = RoBindResult (sd, context, respondtitle,
 						   respondaddr, ctxlist, defctxresult, prequirements,
 						   srequirements, isn, settings, ref, bindrespe, rni);
 	watch_dog_reset();
-
 	if (bindrespe != NULLPE) {
 		pe_free (bindrespe);
 	}
-
 	if (result == NOTOK) {
 		/* Have an RoNOTindication, need to return DSAPindication */
 		return (ronot2dsaplose (di, "RO-BIND.RESULT", rni));
 	}
-
 	return (result);
 }
 
@@ -192,22 +179,18 @@ struct DSAPindication	* di;
 		return (dsaplose (di, DA_ERR_ENC, NULLCP, "BIND ERROR"));
 	}
 	binderrpe->pe_context = pctx_id;
-
 	watch_dog ("RoBindError");
 	result = RoBindError (sd, context,
 						  respondtitle, respondaddr, ctxlist, defctxresult,
 						  prequirements, srequirements, isn, settings, ref,
 						  binderrpe, rni);
 	watch_dog_reset();
-
 	if (binderrpe != NULLPE) {
 		pe_free (binderrpe);
 	}
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "RO-BIND.ERROR", rni));
 	}
-
 	return (result);
 }
 
@@ -222,10 +205,8 @@ int DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindica
 	watch_dog ("RoBindReject");
 	result = RoBindReject (acs, status, reason, rni);
 	watch_dog_reset();
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "RO-BIND.ERROR", rni));
 	}
-
 	return (result);
 }

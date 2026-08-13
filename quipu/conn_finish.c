@@ -40,7 +40,6 @@ void conn_finish (struct connection *conn, struct DSAPfinish *df) {
 			}
 		}
 	}
-
 	result = DUnBindAccept (conn->cn_ad, di);
 	if (result != OK) {
 		result = DUAbortRequest (conn->cn_ad, di);

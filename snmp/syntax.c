@@ -93,7 +93,6 @@ static int string_parse (struct qbuf **x, char *s) {
 	if (strncmp (s, "0x", 2) == 0) {
 		int	len;
 		char   *p;
-
 		s += 2;
 		if ((len = strlen (s)) % 3 != 2)
 			return NOTOK;
@@ -336,7 +335,6 @@ PE  ulong2prim (uint32_t i, PElementClass class, PElementID id) {
 static int  counter_encode (uint32_t *x, PE *pe) {
 	if ((*pe = ulong2prim (*x, PE_CLASS_APPL, 1)) == NULLPE)
 		return NOTOK;
-
 	return OK;
 }
 
@@ -404,7 +402,6 @@ static void timeticks_print (uint32_t *x, OS os) {
 	m = s / 60, s = s % 60;
 	h = m / 60, m = m % 60;
 	d = h / 24, h = h % 24;
-
 	if (d > 0)
 		printf ("%d days, ", d);
 	if (d > 0 || h > 0)
@@ -430,11 +427,9 @@ PE     *pe;
 
 	buffer[0] = x -> siso_nlen & 0xff;
 	bcopy (x -> siso_data, buffer + 1, (int) x -> siso_nlen);
-
 	if ((*pe = str2prim (buffer, (int) (x -> siso_nlen + 1), PE_CLASS_APPL,
 						 5)) == NULLPE)
 		return NOTOK;
-
 	return OK;
 }
 
@@ -461,9 +456,7 @@ PE	pe;
 		len = qb -> qb_len - 1;
 	bcopy (qb -> qb_data + 1, isock -> siso_data,
 		   (int) (isock -> siso_nlen = len));
-
 	*x = isock;
-
 	free_SNMP_ClnpAddress (clnp);
 	return OK;
 }
@@ -542,7 +535,6 @@ char   *name;
 	for (os = syntaxes; os < synlast; os++)
 		if (strcmp (os -> os_name, name) == 0)
 			return os;
-
 	return NULLOS;
 }
 

@@ -13,7 +13,6 @@ extern char dsa_mode;
 char *SkipSpace (char *ptr) {
 	if (ptr == NULLCP)
 		return (NULLCP);
-
 	while ( isascii(*ptr) && isspace (*ptr))
 		ptr++;
 	return (ptr);
@@ -29,15 +28,11 @@ StripSpace (char *b)
 		*b = 0;
 		return;
 	}
-
 	while (isascii(*b) && (! isspace(*b)) && (*b))
 		b++;
-
 	if (!*b)
 		return;         /* nothing needs doing */
-
 	a = b;
-
 	for (;;) {
 		if (isascii(*b) && isspace (*b))
 			b++;
@@ -46,7 +41,6 @@ StripSpace (char *b)
 		else
 			*a++ = *b++;
 	}
-
 	*a = 0;
 }
 
@@ -58,12 +52,9 @@ StripSpace2 (char *b)
 
 	while (isascii(*b) && (! isspace(*b)) && (*b))
 		b++;
-
 	if (!*b)
 		return;         /* nothing needs doing */
-
 	a = b;
-
 	for (;;) {
 		if (isascii(*b) && isspace (*b))
 			b++;
@@ -72,7 +63,6 @@ StripSpace2 (char *b)
 		else
 			*a++ = *b++;
 	}
-
 	*a = 0;
 }
 
@@ -91,7 +81,6 @@ char *TidyString2 (char *a) {
 				a++;
 				i = 1;
 			}
-
 			if (*a)
 				b++;
 			else
@@ -99,18 +88,13 @@ char *TidyString2 (char *a) {
 		}
 		if (i)
 			*b = *a;
-
 		a++, b++;
 	}
-
 	*b = 0;
-
 	if (*--b == '\n')
 		*b-- = 0;
-
 	if (*b == ' ')
 		*b = 0;
-
 	return (c);
 }
 
@@ -121,11 +105,9 @@ char *TidyString (char *a) {
 
 	if (!*a)
 		return (a);
-
 	/* remove white space from front of string */
 	while (isascii(*a) && isspace (*a))
 		a++;
-
 	/* removing multiple and trailing spaces */
 	c = a, b = a;
 	while (*a) {
@@ -136,7 +118,6 @@ char *TidyString (char *a) {
 				a++;
 				i = 1;
 			}
-
 			if (*a)
 				b++;
 			else
@@ -144,18 +125,13 @@ char *TidyString (char *a) {
 		}
 		if (i)
 			*b = *a;
-
 		a++, b++;
 	}
-
 	*b = 0;
-
 	if (*--b == '\n')
 		*b-- = 0;
-
 	if (*b == ' ')
 		*b = 0;
-
 	return (c);
 }
 
@@ -163,19 +139,15 @@ int test_prim_pe (PE pe, PElementClass class, PElementID id)
 {
 	if (pe == NULLPE)
 		return FALSE;
-
 	if (pe->pe_form != PE_FORM_PRIM) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Primative Attribute Value expected"));
 		return FALSE;
 	}
-
 	if ( PE_ID (pe -> pe_class, pe -> pe_id) != PE_ID (class, id) ) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Bad class/ID in Attribute Value"));
 		return FALSE;
 	}
-
 	return (TRUE);
-
 }
 
 #ifndef lint
@@ -223,25 +195,19 @@ void pslog (LLog *lp, int event, char *str, int (*func) (/* ??? */), caddr_t ptr
             
 {
 	/* log info to pstream */
-
 	if (!(lp -> ll_events & event))
 		return;
-
 	if (ps == NULL
 			&& (((ps = ps_alloc (str_open)) == NULLPS)
 				|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK)) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return;
 	}
-
 	(*func) (ps,ptr,EDBOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	LLOG (lp,event,("%s: %s",str,ps->ps_base));
-
 	ps->ps_cnt = ps->ps_bufsiz;
 	ps->ps_ptr = ps->ps_base;
 }
@@ -260,7 +226,6 @@ int quipu_pe_cmp (PE a, PE b)
 	int j,i;
 
 	/* based on ISODE pe_cmp */
-
 	if ( a == NULLPE) {
 		if ( b == NULLPE )
 			return (0);
@@ -269,25 +234,21 @@ int quipu_pe_cmp (PE a, PE b)
 	}
 	if ( b == NULLPE)
 		return (-1);
-
 	if (a->pe_class != b->pe_class)
 		if (a->pe_class >  b->pe_class)
 			return (1) ;
 		else
 			return (-1);
-
 	if (a->pe_form != b->pe_form)
 		if (a->pe_form >  b->pe_form)
 			return (1) ;
 		else
 			return (-1);
-
 	if (a->pe_id != b->pe_id)
 		if (a->pe_id >  b->pe_id)
 			return (1) ;
 		else
 			return (-1);
-
 	switch ( a->pe_form ) {
 	case PE_FORM_ICONS:
 		if (a->pe_ilen != a->pe_ilen)
@@ -298,10 +259,8 @@ int quipu_pe_cmp (PE a, PE b)
 				return (1);
 			else
 				return (-1);
-
 		p = (char *) a->pe_prim;
 		q = (char *) b->pe_prim;
-
 		for (j=0; j<i; j++) {
 			if (*p != *q)
 				if ( *p > *q )
@@ -320,7 +279,6 @@ int quipu_pe_cmp (PE a, PE b)
 		return (b ? 1 : 0);
 	default:
 		return (1);
-
 	}
 }
 

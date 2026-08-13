@@ -19,10 +19,8 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 	int authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_list"));
-
 	if (!dsp)
 		target = arg->lsa_object;
-
 	switch(find_child_entry(target,&(arg->lsa_common),binddn,NULLDNSEQ,FALSE,&(entryptr),error,di_p)) {
 	case DS_OK:
 		/* Filled out entryptr - carry on */
@@ -39,7 +37,6 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_list() - find_child_entry failed"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
 									   _ZListArgumentDataDAS,
@@ -50,13 +47,9 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
 	}
-
 	realtarget = get_copy_dn(entryptr);
-
 	if (isleaf(entryptr)) {
-
 		dn_free (realtarget);
-
 		result->lsr_subordinates = NULLSUBORD;
 		result->lsr_age  =  (time_t) 0 ;
 		result->lsr_common.cr_requestor = NULLDN;
@@ -71,14 +64,12 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 		result->lsr_limitproblem = LSR_NOLIMITPROBLEM;
 		return (DS_OK);
 	}
-
 	/* do authentication policy stuff here */
 	if (!manager(binddn))
 		authp = entryptr->e_authp ?
 				entryptr->e_authp->ap_listandsearch : AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
-
 	/* check parent will allow listing */
 	sizelimit = SVC_NOSIZELIMIT;
 	if ( entryptr->e_lacl != NULLAV ) {
@@ -106,7 +97,6 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 		dn_free (realtarget);
 		return (DS_ERROR_REMOTE);
 	}
-
 	if (entryptr->e_children == NULLAVL) {
 		int res;
 		if (try_cache (arg,result,realtarget) == OK) {
@@ -117,9 +107,7 @@ int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_r
 		dn_free (realtarget);
 		return res;
 	}
-
 	dn_free (realtarget);
-
 	build_result (arg, entryptr, result, error,
 				  (authtype % 3) >= authp ? binddn : NULLDN , dsp, sizelimit);
 	return (DS_OK);
@@ -146,23 +134,17 @@ static int build_list (Entry e, DN dn) {
 
 	if (g_size != SVC_NOSIZELIMIT && g_count >= g_size)
 		return(NOTOK);
-
 	g_dnend->dn_rdn = e->e_name;
-
 	if (g_dsp) {
 		/* Only send publicly read data over DSP */
-
 		if ( e->e_lacl != NULLAV ) {
 			int	dummy;
-
 			if ( check_lacl( NULLDN, g_dn, e->e_lacl,
 							 SACL_BASEOBJECT, &dummy ) != OK ) {
-
 				if ( check_lacl( dn, g_dn, e->e_lacl,
 								 SACL_BASEOBJECT, &dummy ) == OK )
 					/* Would get more over DAP */
 					g_security = 1;
-
 				return( 0 );
 			}
 		} else {
@@ -175,25 +157,20 @@ static int build_list (Entry e, DN dn) {
 				return(0);
 			}
 		}
-
 	} else {
-
 		if ( e->e_lacl != NULLAV ) {
 			int	dummy;
 			if ( check_lacl( dn, g_dn, e->e_lacl, SACL_BASEOBJECT,
 							 &dummy ) != OK )
 				return( 0 );
-
 		} else if (check_acl(dn, ACL_READ, e->e_acl->ac_entry, g_dn) != OK)
 			return(0);
-
 	}
 	sub = (struct subordinate *) smalloc(sizeof(struct subordinate));
 	sub->sub_copy = e->e_data;
 	sub->sub_rdn = rdn_cpy(e->e_name);
 	sub->sub_aliasentry = (e->e_alias == NULLDN ? FALSE : TRUE);
 	sub->sub_next = NULLSUBORD;
-
 	if (g_sub == NULLSUBORD) {
 		g_sub = sub;
 		g_trail = sub;
@@ -201,7 +178,6 @@ static int build_list (Entry e, DN dn) {
 		g_trail->sub_next = sub;
 		g_trail = sub;
 	}
-
 	g_count++;
 	return(0);
 }
@@ -217,14 +193,12 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 	Entry akid;
 
 	DLOG (log_dsap,LLOG_DEBUG,("building list results"));
-
 	result->lsr_subordinates = NULLSUBORD;
 	if (!dsp && manager (binddn))
 		size = arg->lsa_common.ca_servicecontrol.svc_sizelimit;
 	else {
 		if ( laclsizelimit == SVC_NOSIZELIMIT )
 			laclsizelimit = admin_size;
-
 		if ((size = MIN( laclsizelimit, MIN( admin_size,
 											 arg->lsa_common.ca_servicecontrol.svc_sizelimit)))
 				== SVC_NOSIZELIMIT) {
@@ -232,7 +206,6 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 			adminlimit = TRUE;
 		}
 	}
-
 	result->lsr_age  =  (time_t) 0 ;
 	result->lsr_common.cr_requestor = NULLDN;
 	/* if no error and NOT SVC_OPT_DONTDEREFERENCEALIASES then */
@@ -246,14 +219,12 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 		result->lsr_object = get_copy_dn (ptr);
 	}
 	result->lsr_cr = NULLCONTINUATIONREF;
-
 	/* we already checked for null kids ... */
 	akid = (Entry) avl_getone(ptr->e_children);
 	dn = get_copy_dn(akid);
 	for (dnend = dn; dnend->dn_parent != NULLDN; dnend=dnend->dn_parent)
 		;  /* NO-OP */
 	dnrdn = dnend->dn_rdn;
-
 	g_dn = dn;
 	g_dsp = dsp;
 	g_dnend = dnend;
@@ -261,16 +232,13 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 	g_size = size;
 	g_count = 0;
 	g_security = 0;
-
 	/*
 	 * preorder would be a little faster in case of small size limit,
 	 * but inorder is more user-predictable, which is nice, though not
 	 * required...
 	 */
-
 	rc = avl_apply(ptr->e_children, build_list, (caddr_t) binddn, NOTOK,
 				   AVL_INORDER);
-
 	/*
 	 * build_list has updated g_count and g_sub to contain a count of
 	 * the number of entries in the list and the list itself,
@@ -278,10 +246,8 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 	 * limit was reached (i.e. instead it ran out of nodes), rc will
 	 * be NOTOK.
 	 */
-
 	size = g_size;
 	result->lsr_subordinates = g_sub;
-
 	if ( rc != AVL_NOMORE )
 		/* stopped look up due to size limit */
 		/* need to send continuation reference */
@@ -289,11 +255,9 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 								   LSR_ADMINSIZEEXCEEDED : LSR_SIZELIMITEXCEEDED;
 	else
 		result->lsr_limitproblem = LSR_NOLIMITPROBLEM;
-
 	if (g_security)
 		/* Could force a DAP operation - this is easier ! */
 		result->lsr_limitproblem = LSR_ADMINSIZEEXCEEDED;
-
 	dnend->dn_rdn = NULLRDN;
 	dn_free (dn);
 	rdn_free (dnrdn);
@@ -316,6 +280,5 @@ int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target
 			return (OK);
 		}
 	}
-
 	return (NOTOK);
 }

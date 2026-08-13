@@ -10,7 +10,6 @@ Attr_Sequence a,b;
 		return (b);
 	if ( b == NULLATTR )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
 	case 0: /* equal */
@@ -31,10 +30,8 @@ Attr_Sequence a,b;
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
-
 		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			aptr->attr_value = avs_merge (aptr->attr_value, bptr->attr_value);
@@ -61,7 +58,6 @@ Attr_Sequence a,b;
 		trail->attr_link = bptr;
 	else
 		trail->attr_link = aptr;
-
 	return (result);
 }
 
@@ -74,7 +70,6 @@ Attr_Sequence a,b;
 		return (b);
 	if ( b == NULLATTR )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
 	case 0: /* equal */
@@ -96,10 +91,8 @@ Attr_Sequence a,b;
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
-
 		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			avs_free (aptr->attr_value);
@@ -127,7 +120,6 @@ Attr_Sequence a,b;
 		trail->attr_link = bptr;
 	else
 		trail->attr_link = aptr;
-
 	return (result);
 }
 
@@ -143,13 +135,11 @@ Attr_Sequence a,b,c,d;
 		return (b);
 	if ( b == NULLATTR )
 		return (a);
-
 	if (quipu_faststart && (a == c) && d->attr_link == NULLATTR)
 		if (AttrT_cmp (d->attr_type,b->attr_type) == 1) {
 			d->attr_link = b;
 			return a;
 		}
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (AttrT_cmp (a->attr_type,b->attr_type)) {
 	case 0: /* equal */
@@ -173,10 +163,8 @@ Attr_Sequence a,b,c,d;
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLATTR) && (bptr != NULLATTR) ) {
-
 		switch (AttrT_cmp (aptr->attr_type,bptr->attr_type)) {
 		case 0: /* equal */
 			aptr->attr_value = avs_fast_merge (aptr->attr_value,
@@ -206,6 +194,5 @@ Attr_Sequence a,b,c,d;
 		trail->attr_link = bptr;
 	else
 		trail->attr_link = aptr;
-
 	return (result);
 }

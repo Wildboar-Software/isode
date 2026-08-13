@@ -127,15 +127,10 @@ int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	struct ftamblk *fsb;
 
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FWaitRequestAux (fsb, secs, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -160,7 +155,6 @@ int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) 
 			bzero ((char *) &fsb -> fsb_data, sizeof fsb -> fsb_data);
 			goto do_data;
 		}
-
 		switch (result = PReadRequest (fsb -> fsb_fd, px, secs, pi)) {
 		case NOTOK:
 			return doPSabort (fsb, &pi -> pi_abort, fti);
@@ -208,7 +202,6 @@ do_data:
 			freefsblk (fsb);
 			break;
 		}
-
 		switch (result) {
 		case NOTOK:
 			return NOTOK;
@@ -233,21 +226,17 @@ static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindica
 	fti -> fti_type = FTI_FINISH;		/* temporary for group */
 	bzero ((char *) ftg, sizeof *ftg);
 	pdu = NULL;
-
 	next = 0;
 	for (pep = px -> px_info, i = px -> px_ninfo - 1; i >= 0; pep++, i--) {
 		if ((pe = *pep) == NULLPE)
 			continue;
-
 		if (pe -> pe_context != fsb -> fsb_id)
 			goto got_fadu;
-
 		switch (PE_ID (pe -> pe_class, pe -> pe_id)) {
 		case PE_ID (PE_CLASS_APPL, FADU_NODESCR):
 		case PE_ID (PE_CLASS_APPL, FADU_ENTERTREE):
 		case PE_ID (PE_CLASS_APPL, FADU_EXITREE):
 			pe -> pe_context = PE_DFLT_CTX;
-
 got_fadu:
 			;
 			if (next < 0)
@@ -258,7 +247,6 @@ got_fadu:
 		default:
 			if (next > 0) {
 				struct PSAPdata *fx = &fsb -> fsb_data;
-
 copy_psdu:
 				;
 				fsbtrace (fsb, (fsb -> fsb_id,
@@ -275,7 +263,6 @@ copy_psdu:
 			break;
 		}
 	}
-
 	if (next > 0) {
 		switch (fsb -> fsb_state) {
 		case FSB_DATAREAD:
@@ -304,17 +291,13 @@ unexpected_fadu:
 		default:
 			goto unexpected_fadu;
 		}
-
 		fti -> fti_type = FTI_DATA;
 		{
 			struct PSAPdata   *fx = &fti -> fti_data;
-
 			*fx = *px;		/* struct copy */
 		}
-
 		return DONE;
 	}
-
 	next = FTG_BEGIN;
 	for (pep = px -> px_info, i = px -> px_ninfo - 1; i >= 0; pep++, i--) {
 		if ((pe = *pep) == NULLPE)
@@ -325,7 +308,6 @@ unexpected_fadu:
 			goto out;
 		}
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.INDICATION", "FPDU", pe, 1));
-
 		switch (pdu -> offset) {
 		case type_FTAM_PDU_f__begin__group__request:
 			if (fsb -> fsb_flags & FSB_INIT)
@@ -360,7 +342,6 @@ no_grouping:
 				struct FTAMselect *ftse = &ftg -> ftg_select;
 				struct type_FTAM_F__SELECT__request *req =
 						pdu -> un.f__select__request;
-
 				if (fpm2attr (fsb, req -> attributes, &ftse -> ftse_attrs,
 							  fti) == NOTOK)
 					goto out;
@@ -407,7 +388,6 @@ no_mem:
 				struct FTAMselect *ftse = &ftg -> ftg_select;
 				struct type_FTAM_F__SELECT__response *rsp =
 						pdu -> un.f__select__response;
-
 				ftse -> ftse_state = rsp -> state__result
 									 ? rsp -> state__result -> parm
 									 : int_FTAM_State__Result_success;
@@ -448,7 +428,6 @@ no_limited:
 				struct FTAMcreate *ftce = &ftg -> ftg_create;
 				struct type_FTAM_F__CREATE__request *req =
 						pdu -> un.f__create__request;
-
 				ftce -> ftce_override = req -> override;
 				if (fpm2attr (fsb, req -> initial__attributes,
 							  &ftce -> ftce_attrs, fti) == NOTOK)
@@ -468,7 +447,6 @@ no_limited:
 				if (req->create__password) {/* both choices are qbufs... */
 					struct qbuf *qb =
 							req -> create__password -> un.graphic;
-
 					if ((ftce -> ftce_create = qb2str (qb)) == NULL)
 						goto no_mem;
 					ftce -> ftce_crelen = qb -> qb_len;
@@ -512,7 +490,6 @@ no_limited:
 				struct FTAMcreate *ftce = &ftg -> ftg_create;
 				struct type_FTAM_F__CREATE__response *rsp =
 						pdu -> un.f__create__response;
-
 				ftce -> ftce_state = rsp -> state__result
 									 ? rsp -> state__result -> parm
 									 : int_FTAM_State__Result_success;
@@ -552,7 +529,6 @@ no_limited:
 				struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
 				struct type_FTAM_F__READ__ATTRIB__request *req =
 						pdu -> un.f__read__attrib__request;
-
 				if (fpm2bits (fsb, fname_pairs, req,
 							  &ftra -> ftra_attrnames, fti) == NOTOK)
 					goto out;
@@ -576,7 +552,6 @@ no_limited:
 				struct FTAMreadattr  *ftra = &ftg -> ftg_readattr;
 				struct type_FTAM_F__READ__ATTRIB__response *rsp =
 						pdu -> un.f__read__attrib__response;
-
 				ftra -> ftra_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -614,7 +589,6 @@ no_enhanced:
 				struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
 				struct type_FTAM_F__CHANGE__ATTRIB__request *req =
 						pdu -> un.f__change__attrib__request;
-
 				if (fpm2attr (fsb, req, &ftca -> ftca_attrs, fti) == NOTOK)
 					goto out;
 				if (ftca -> ftca_attrs.fa_present
@@ -643,7 +617,6 @@ no_enhanced:
 				struct FTAMchngattr  *ftca = &ftg -> ftg_chngattr;
 				struct type_FTAM_F__CHANGE__ATTRIB__response *rsp =
 						pdu -> un.f__change__attrib__response;
-
 				ftca -> ftca_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -678,7 +651,6 @@ no_enhanced:
 				struct FTAMopen *ftop = &ftg -> ftg_open;
 				struct type_FTAM_F__OPEN__request *req =
 						pdu -> un.f__open__request;
-
 				if (req -> processing__mode) {
 					if (fpm2bits (fsb, fmode_pairs,
 								  req -> processing__mode,
@@ -690,7 +662,6 @@ no_enhanced:
 						== choice_FTAM_0_proposed) {
 					struct type_FTAM_Contents__Type__Attribute
 						*proposed = req -> contents__type -> un.proposed;
-
 					ftop -> ftop_contents =
 						proposed -> document__type__name;
 					proposed -> document__type__name = NULLOID;
@@ -727,7 +698,6 @@ no_enhanced:
 						pdu -> un.f__open__response;
 				struct type_FTAM_Contents__Type__Attribute
 					*proposed = rsp -> contents__type;
-
 				ftop -> ftop_state = rsp -> state__result
 									 ? rsp -> state__result -> parm
 									 : int_FTAM_State__Result_success;
@@ -777,7 +747,6 @@ do_close:
 				struct FTAMclose *ftcl = &ftg -> ftg_close;
 				struct type_FTAM_F__CLOSE__request *req =
 						pdu -> un.f__close__request;
-
 				ftcl -> ftcl_action = req -> action__result
 									  ? req -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -803,7 +772,6 @@ do_close:
 				struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
 				struct type_FTAM_F__DESELECT__request *req =
 						pdu -> un.f__deselect__request;
-
 				if (req
 						&& fpm2shared (fsb, req,
 									   &ftde -> ftde_sharedASE, fti) == NOTOK)
@@ -820,7 +788,6 @@ do_close:
 				struct FTAMdeselect  *ftde = &ftg -> ftg_deselect;
 				struct type_FTAM_F__DESELECT__response *rsp =
 						pdu -> un.f__deselect__response;
-
 				ftde -> ftde_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -852,7 +819,6 @@ do_close:
 				struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
 				struct type_FTAM_F__DELETE__request *req =
 						pdu -> un.f__delete__request;
-
 				if (req
 						&& fpm2shared (fsb, req,
 									   &ftxe -> ftxe_sharedASE, fti) == NOTOK)
@@ -871,7 +837,6 @@ do_close:
 				struct FTAMdelete  *ftxe = &ftg -> ftg_delete;
 				struct type_FTAM_F__DELETE__response *rsp =
 						pdu -> un.f__delete__response;
-
 				ftxe -> ftxe_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -927,7 +892,6 @@ no_access:
 				struct FTAMaccess *ftac = &fti -> fti_access;
 				struct type_FTAM_F__LOCATE__request *req =
 						pdu -> un.f__locate__request;
-
 				ftac -> ftac_operation = FA_OPS_LOCATE;
 				if (fpm2faduid (fsb,
 								req -> file__access__data__unit__identity,
@@ -951,7 +915,6 @@ no_access:
 				struct FTAMaccess *ftac = &fti -> fti_access;
 				struct type_FTAM_F__LOCATE__response *rsp =
 						pdu -> un.f__locate__response;
-
 				ftac -> ftac_operation = FA_OPS_LOCATE;
 				ftac -> ftac_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
@@ -983,7 +946,6 @@ no_access:
 				struct FTAMaccess *ftac = &fti -> fti_access;
 				struct type_FTAM_F__ERASE__request *req =
 						pdu -> un.f__erase__request;
-
 				ftac -> ftac_operation = FA_OPS_ERASE;
 				if (fpm2faduid (fsb, req, &ftac -> ftac_identity, fti)
 						== NOTOK)
@@ -1004,7 +966,6 @@ no_access:
 				struct FTAMaccess *ftac = &fti -> fti_access;
 				struct type_FTAM_F__ERASE__response *rsp =
 						pdu -> un.f__erase__response;
-
 				ftac -> ftac_operation = FA_OPS_ERASE;
 				ftac -> ftac_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
@@ -1033,7 +994,6 @@ no_access:
 				struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
 				struct type_FTAM_F__READ__request *req =
 						pdu -> un.f__read__request;
-
 				ftrw -> ftrw_operation = FA_OPS_READ;
 				if (fpm2faduid (fsb,
 								req -> file__access__data__unit__identity,
@@ -1053,7 +1013,6 @@ no_access:
 					}
 				} else
 					ftrw -> ftrw_level = -1;
-
 				if ((fsb -> fsb_units & FUNIT_FADULOCK)
 						&& req -> fadu__lock)
 					ftrw -> ftrw_locking = req -> fadu__lock -> parm;
@@ -1076,7 +1035,6 @@ no_access:
 				struct FTAMreadwrite *ftrw = &fti -> fti_readwrite;
 				struct type_FTAM_F__WRITE__request *req =
 						pdu -> un.f__write__request;
-
 				ftrw -> ftrw_operation =
 					req -> file__access__data__unit__operation;
 				if (fpm2faduid (fsb,
@@ -1121,13 +1079,11 @@ unexpected_data_end:
 			}
 			if (next != FTG_BEGIN)
 				goto unexpected_data_end;
-
 			fti -> fti_type = FTI_DATAEND;
 			{
 				struct FTAMdataend *ftda = &fti -> fti_dataend;
 				struct type_FTAM_F__DATA__END__request *req =
 						pdu -> un.f__data__end__request;
-
 				ftda -> ftda_action = req -> action__result
 									  ?req -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -1169,7 +1125,6 @@ do_cancel:
 				struct FTAMcancel *ftcn = &fti -> fti_cancel;
 				struct type_FTAM_F__CANCEL__request *req =
 						pdu -> un.f__cancel__request;
-
 				ftcn -> ftcn_action = req -> action__result
 									  ? req -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -1212,7 +1167,6 @@ do_cancel:
 				struct FTAMtransend *ftre = &fti -> fti_transend;
 				struct type_FTAM_F__TRANSFER__END__request *req =
 						pdu -> un.f__transfer__end__request;
-
 				if (req
 						&& fpm2shared (fsb, req,
 									   &ftre -> ftre_sharedASE, fti) == NOTOK)
@@ -1231,7 +1185,6 @@ do_cancel:
 				struct FTAMtransend *ftre = &fti -> fti_transend;
 				struct type_FTAM_F__TRANSFER__END__response *rsp =
 						pdu -> un.f__transfer__end__response;
-
 				ftre -> ftre_action = rsp -> action__result
 									  ? rsp -> action__result -> parm
 									  : int_FTAM_Action__Result_success;
@@ -1258,18 +1211,15 @@ unexpected_fpdu:
 					  pe -> pe_id, fsb -> fsb_state);
 			goto out;
 		}
-
 		free_FTAM_PDU (pdu);
 		pdu = NULL;
 	}
-
 	if (next) {
 		fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 				  "missing FPDU(s) in group; expecting one of 0x%x next",
 				  next);
 		goto out;
 	}
-
 	switch (fti -> fti_type) {
 	case FTI_ACCESS:
 		fsb -> fsb_state = (fsb -> fsb_flags & FSB_INIT) ? FSB_DATAIDLE
@@ -1296,7 +1246,6 @@ unexpected_fpdu:
 	case FTI_CANCEL:
 		if (fsb -> fsb_flags & FSB_COLLIDE) {
 			struct FTAMindication ftis;
-
 			fsbtrace (fsb, (fsb -> fsb_fd, "resolving CANCEL collision",
 							NULLCP, NULLPE, -1));
 			FCancelResponseAux (fsb, fsb -> fsb_cancelaction,
@@ -1304,7 +1253,6 @@ unexpected_fpdu:
 								fsb -> fsb_canceldiags,
 								fsb -> fsb_cancelndiag,
 								&ftis);
-
 			fsb -> fsb_flags &= ~FSB_COLLIDE;
 			fsb -> fsb_cancelaction = FACTION_PERM;
 			if (fsb -> fsb_cancelshared) {
@@ -1317,7 +1265,6 @@ unexpected_fpdu:
 			PXFREE (px);
 			return OK;
 		}
-
 		if (fsb -> fsb_flags & FSB_CANCEL) {
 			fsb -> fsb_flags &= ~FSB_CANCEL;
 			fsb -> fsb_state = FSB_DATAIDLE;
@@ -1328,7 +1275,6 @@ unexpected_fpdu:
 	default:		/* a grouped request */
 		break;
 	}
-
 	if (!(fsb -> fsb_flags & FSB_INIT)
 			&& ftg -> ftg_threshold != px -> px_ninfo - 2) {
 		fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
@@ -1336,7 +1282,6 @@ unexpected_fpdu:
 				  px -> px_ninfo - 2, ftg -> ftg_threshold);
 		goto out;
 	}
-
 	if (ftg -> ftg_flags & (FTG_SELECT | FTG_CREATE)) {
 		if ((fsb -> fsb_flags & FSB_INIT)
 				? (fsb -> fsb_state == FSB_MANAGEMENT)
@@ -1351,9 +1296,7 @@ unexpected_fpdu:
 				default:
 					goto unexpected_group;
 				}
-
 			fti -> fti_type = FTI_MANAGEMENT;
-
 			if (fsb -> fsb_flags & FSB_INIT) {
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
 					fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
@@ -1374,10 +1317,8 @@ unexpected_fpdu:
 				fsb -> fsb_state = FSB_MANAGEMENT;
 				fsb -> fsb_group = ftg -> ftg_flags;
 			}
-
 			goto done;
 		}
-
 		if ((fsb -> fsb_flags & FSB_INIT)
 				? (fsb -> fsb_state == FSB_BULKBEGIN)
 				: (ftg -> ftg_flags & FTG_OPEN)) {
@@ -1391,12 +1332,9 @@ unexpected_fpdu:
 				default:
 					goto unexpected_group;
 				}
-
 			fti -> fti_type = FTI_BULKBEGIN;
-
 			if (fsb -> fsb_flags & FSB_INIT) {
 				int	state;
-
 				if (ftg -> ftg_flags & ~fsb -> fsb_group) {
 					fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 							  "bulk transfer reply mismatch; expecting 0x%x found 0x%x",
@@ -1424,13 +1362,10 @@ unexpected_fpdu:
 				fsb -> fsb_state = FSB_BULKBEGIN;
 				fsb -> fsb_group = ftg -> ftg_flags;
 			}
-
 			goto done;
 		}
-
 		goto unexpected_group;
 	}
-
 	if (ftg -> ftg_flags & FTG_CLOSE) {
 		switch (fsb -> fsb_class) {
 		case FCLASS_TRANSFER:
@@ -1441,9 +1376,7 @@ unexpected_fpdu:
 		default:
 			goto unexpected_group;
 		}
-
 		fti -> fti_type = FTI_BULKEND;
-
 		if (fsb -> fsb_flags & FSB_INIT) {
 			if (fsb -> fsb_state != FSB_BULKEND)
 				goto unexpected_group;
@@ -1460,22 +1393,18 @@ unexpected_fpdu:
 			fsb -> fsb_state = FSB_BULKEND;
 			fsb -> fsb_group = ftg -> ftg_flags;
 		}
-
 		goto done;
 	}
-
 unexpected_group:
 	;
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected group type 0x%x; state=0x%x", ftg -> ftg_flags,
 			  fsb -> fsb_state);
 	goto out;
-
 done:
 	;
 	PXFREE (px);
 	return DONE;
-
 out:
 	;
 	if (pdu)
@@ -1508,7 +1437,6 @@ out:
 		break;
 	}
 	PXFREE (px);
-
 	freefsblk (fsb);
 	return NOTOK;
 }
@@ -1517,7 +1445,6 @@ static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMind
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
-
 	freefsblk (fsb);
 	return NOTOK;
 }
@@ -1538,11 +1465,9 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 		fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 				  "unexpected sync indication (0x%x)", pn -> pn_type);
 		PNFREE (pn);
-
 		freefsblk (fsb);
 		return NOTOK;
 	}
-
 	fsb -> fsb_settings = pn -> pn_settings;
 #define dotoken(requires,shift,bit,type) \
 { \
@@ -1564,20 +1489,15 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 }
 	dotokens ();
 #undef	dotoken
-
 	if (pn -> pn_type == SN_RESETCNF && pn -> pn_ninfo == 0) {
 		struct FTAMcancel *ftcn = &fti -> fti_cancel;
-
 		bzero ((char *) ftcn, sizeof *ftcn);
 		ftcn -> ftcn_action = FACTION_SUCCESS;/* what else can be done? */
-
 		fsb -> fsb_flags &= ~FSB_CANCEL;
 		fsb -> fsb_state = FSB_DATAIDLE;
-
 		PNFREE (pn);
 		return DONE;
 	}
-
 	bzero ((char *) px, sizeof *px);
 	for (i = pn -> pn_ninfo - 1; i >= 0; i--) {
 		px -> px_info[i] = pn -> pn_info[i];
@@ -1585,7 +1505,6 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 	}
 	px -> px_ninfo = pn -> pn_ninfo;
 	PNFREE (pn);
-
 	return doPSdata (fsb, px, fti);
 }
 
@@ -1593,7 +1512,6 @@ static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FT
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
-
 	freefsblk (fsb);
 	return NOTOK;
 }
@@ -1602,7 +1520,6 @@ static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMin
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
-
 	freefsblk (fsb);
 	return NOTOK;
 }
@@ -1622,17 +1539,14 @@ static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMin
 		PFFREE (pf);
 		goto out1;
 	}
-
 	if (AcFINISHser (fsb -> fsb_fd, pf, &acis) == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcFINISHser", aca);
 		goto out1;
 	}
-
 	if (acf -> acf_ninfo < 1 || (pe = acf -> acf_info[0]) == NULLPE) {
 		fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
-
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
 		fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 				  "unable to parse PDU: %s", PY_pepy);
@@ -1645,25 +1559,19 @@ static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMin
 		goto out2;
 	}
 	req = pdu -> un.f__terminate__request;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-RELEASE.INDICATION",
 					"F-TERMINATE-request", pe, 1));
-
 	ACFFREE (acf);
-
 	fti -> fti_type = FTI_FINISH;
 	{
 		struct FTAMfinish *ftf = &fti -> fti_finish;
-
 		bzero ((char *) ftf, sizeof *ftf);
 		if (req && fpm2shared (fsb, req, &ftf -> ftf_sharedASE, fti) == NOTOK)
 			goto out2;
 	}
 	fsb -> fsb_flags |= FSB_FINN;
-
 	free_FTAM_PDU (pdu);
 	return DONE;
-
 out2:
 	;
 	ACFFREE (acf);
@@ -1681,15 +1589,12 @@ static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindi
 
 	if (!pa -> pa_peer && pa -> pa_reason == PC_TIMER)
 		return ftamlose (fti, FS_PRO_TIMEOUT, 0, NULLCP, NULLCP);
-
 	if (AcABORTser (fsb -> fsb_fd, pa, &acis) == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcABORTser", aca);
 		fsb -> fsb_fd = NOTOK;
 		freefsblk (fsb);
-
 		return NOTOK;
 	}
-
 	return acs2ftamabort (fsb, aca, fti);
 }
 static void psDATAser (int sd, struct PSAPdata *px) {
@@ -1701,7 +1606,6 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSdata (fsb, px, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1715,7 +1619,6 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPStokens (fsb, pt, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1729,7 +1632,6 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSsync (fsb, pn, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1743,7 +1645,6 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSactivity (fsb, pv, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1757,7 +1658,6 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSreport (fsb, pp, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1771,7 +1671,6 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSfinish (fsb, pf, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1785,7 +1684,6 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 	if ((fsb = findfsblk (sd)) == NULL)
 		return;
 	handler = fsb -> fsb_indication;
-
 	if (doPSabort (fsb, pa, fti) != OK)
 		(*handler) (sd, fti);
 }
@@ -1801,17 +1699,13 @@ int FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 	struct PSAPabort  *pa = &pis.pi_abort;
 
 	missingP (fti);
-
 	_iosignals_set = 1;
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	if (fsb -> fsb_indication = indication)
 		fsb -> fsb_flags |= FSB_ASYN;
 	else
 		fsb -> fsb_flags &= ~FSB_ASYN;
-
 	if (PSetIndications (fsb -> fsb_fd, e (psDATAser), e (psTOKENser),
 						 e (psSYNCser), e (psACTIVITYser), e (psREPORTser),
 						 e (psFINISHser), e (psABORTser), &pis) == NOTOK) {
@@ -1829,7 +1723,6 @@ int FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
 		}
 	}
 	sigiomask (smask);
-
 	return OK;
 }
 
@@ -1851,10 +1744,8 @@ int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, 
 			sprintf (cp, " [%*.*s]", aca -> aca_cc, aca -> aca_cc,
 					 aca -> aca_data);
 		}
-
 		fsbtrace (fsb, (fsb -> fsb_fd, buffer, NULLCP, NULLPE, -1));
 	}
-
 	cp = "";
 	switch (aca -> aca_reason) {
 	case ACS_ADDRESS:
@@ -1877,7 +1768,6 @@ int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, 
 		reason = FS_PRO_LOWFAIL;
 		break;
 	}
-
 	if (fsb) {
 		if (fsb -> fsb_flags & FSB_INIT)
 			observer = EREF_IFPM;
@@ -1885,7 +1775,6 @@ int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, 
 			observer = EREF_RFPM;
 	} else
 		observer = EREF_NONE;
-
 	if (aca -> aca_cc > 0)
 		return ftamoops (fti, reason, ACS_FATAL (aca -> aca_reason), observer,
 						 EREF_NONE, NULLCP, "%*.*s%s", aca -> aca_cc, aca -> aca_cc,
@@ -1907,12 +1796,10 @@ int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindic
 		acs2ftamlose (fsb, fti, NULLCP, aca);
 		goto out;
 	}
-
 	if (aca -> aca_ninfo < 1 || (pe = aca -> aca_info[0]) == NULLPE) {
 		ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
 		goto out;
 	}
-
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
 		ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
 				  "unable to parse PDU: %s", PY_pepy);
@@ -1939,25 +1826,20 @@ int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindic
 					pdu -> offset != type_FTAM_PDU_f__u__abort__request
 					? "F-P-ABORT-request" : "F-U-ABORT-request",
 					pe, 1));
-
 	fti -> fti_type = FTI_ABORT;
-
 	fta -> fta_peer = peer;
 	fta -> fta_action = req -> action__result ? req -> action__result -> parm
 						:int_FTAM_Action__Result_success;
 	if (req -> diagnostic)
 		fpm2diag (fsb, req -> diagnostic, fta -> fta_diags,
 				  &fta -> fta_ndiag, fti);
-
 out:
 	;
 	ACAFREE (aca);
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 	fsb -> fsb_fd = NOTOK;
 	freefsblk (fsb);
-
 	return NOTOK;
 }
 
@@ -1977,10 +1859,8 @@ int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, s
 			sprintf (cp, " [%*.*s]", pa -> pa_cc, pa -> pa_cc,
 					 pa -> pa_data);
 		}
-
 		fsbtrace (fsb, (fsb -> fsb_fd, buffer, NULLCP, NULLPE, -1));
 	}
-
 	cp = "";
 	switch (pa -> pa_reason) {
 	case PC_PARAMETER:
@@ -1993,7 +1873,6 @@ int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, s
 		reason = FS_PRO_LOWFAIL;
 		break;
 	}
-
 	if (fsb) {
 		if (fsb -> fsb_flags & FSB_INIT)
 			observer = EREF_IFPM;
@@ -2001,7 +1880,6 @@ int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, s
 			observer = EREF_RFPM;
 	} else
 		observer = EREF_NONE;
-
 	if (pa -> pa_cc > 0)
 		return ftamoops (fti, reason, PC_FATAL (pa -> pa_reason), observer,
 						 EREF_NONE, NULLCP, "%*.*s%s", pa -> pa_cc, pa -> pa_cc,
@@ -2020,16 +1898,12 @@ newfsblk (void) {
 	fsb = (struct ftamblk  *) calloc (1, sizeof *fsb);
 	if (fsb == NULL)
 		return NULL;
-
 	fsb -> fsb_fd = NOTOK;
-
 	if (once_only == 0) {
 		FSHead -> fsb_forw = FSHead -> fsb_back = FSHead;
 		once_only++;
 	}
-
 	insque (fsb, FSHead -> fsb_back);
-
 	return fsb;
 }
 
@@ -2040,19 +1914,14 @@ void freefsblk (struct ftamblk *fsb) {
 
 	if (fsb == NULL)
 		return;
-
 	if (fsb -> fsb_fd != NOTOK) {
 		struct AcSAPindication  acis;
-
 		fsbtrace (fsb, (fsb -> fsb_fd, "A-ABORT.REQUEST(discard)",
 						NULLCP, NULLPE, 0));
-
 		AcUAbortRequest (fsb -> fsb_fd, NULLPEP, 0, &acis);
 	}
-
 	if (fsb -> fsb_context)
 		oid_free (fsb -> fsb_context), fsb -> fsb_context = NULLOID;
-
 	for (pp = fsb -> fsb_contexts.pc_ctx, i = fsb -> fsb_contexts.pc_nctx - 1;
 			i >= 0;
 			pp++, i--) {
@@ -2060,7 +1929,6 @@ void freefsblk (struct ftamblk *fsb) {
 			oid_free (pp -> pc_asn);
 	}
 	fsb -> fsb_contexts.pc_nctx = 0;
-
 	for (fcont = fsb -> fsb_contents.fc_contents,
 			i = fsb -> fsb_contents.fc_ncontent - 1;
 			i >= 0;
@@ -2069,14 +1937,10 @@ void freefsblk (struct ftamblk *fsb) {
 			oid_free (fcont -> fc_dtn);
 	}
 	fsb -> fsb_contents.fc_ncontent = 0;
-
 	PXFREE (&fsb -> fsb_data);
-
 	if (fsb -> fsb_cancelshared)
 		pe_free (fsb -> fsb_cancelshared);
-
 	remque (fsb);
-
 	free ((char *) fsb);
 }
 
@@ -2086,10 +1950,8 @@ findfsblk (int sd) {
 
 	if (once_only == 0)
 		return NULL;
-
 	for (fsb = FSHead -> fsb_forw; fsb != FSHead; fsb = fsb -> fsb_forw)
 		if (fsb -> fsb_fd == sd)
 			return fsb;
-
 	return NULL;
 }

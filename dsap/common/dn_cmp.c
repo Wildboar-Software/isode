@@ -9,13 +9,11 @@ int dn_cmp (DN a, DN b)
 		if ( (res = rdn_cmp (a->dn_rdn,b->dn_rdn)) != OK) {
 			return res;
 		}
-
 	if (( a == NULLDN) && (b == NULLDN)) {
 		return OK;
 	} else {
 		return ( a == NULLDN ? 1 : -1 );
 	}
-
 }
 
 int dn_cmp_prefix (DN a, DN b)
@@ -41,7 +39,6 @@ int dn_order_cmp (DN a, DN b)
 			return( i );
 		}
 	}
-
 	if ( ( a == NULLDN) && (b == NULLDN) ) {
 		return( 0 );
 	} else if ( b ) {       /* b longer, so a is less */

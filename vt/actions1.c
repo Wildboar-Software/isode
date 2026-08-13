@@ -31,7 +31,6 @@ int a1_0 (	/*NDQ-ntr in states 50B or 51Q (Release awaiting peer)*/
 	/*For now, only supporting simple or no delivery control, so give pe
 	/*to application here.
 	*/
-
 	vdatind(SEQUENCED,pe);		/*Deliver the NDQ to application*/
 	return(OK);
 }
@@ -53,9 +52,7 @@ int a1_2 (		/*VASSreq from user in state 01 (No Association)*/
 	dr_pm_st = DEFINED;	/*Draft-VTE param. status = Defined
 				/*(SetVTPmS(P) in 9041) */
 	/*Set draft-VTE parameter values per profile (SetVTPmV(P) in 9041)*/
-
 	asq(pe);		/*Send the ASQ PDU*/
-
 	vsmd = 0;		/*Very TEMPORARY -- A-Mode only
 				  Should be done in VT-user or application call
 				*/
@@ -92,7 +89,6 @@ int a1_3 (	/*VASSrsp from user in state 03B (Associate -- Awaiting user)*/
 		/*Set status of draft-VTE parameters above to defined
 		/* (SetVTPmSDe(L)
 		/*Set current VTE from draft VTE (SetCuVTE) */
-
 		vena = TRUE;	/*Current VTE agreed to*/
 		waca = TRUE;
 		asr(pe,SUCCESS);
@@ -132,7 +128,6 @@ int a1_4 (	/*VASSrsp from user in state 03S (Associate -- Awaiting user)*/
 		/*Set status of draft-VTE parameters above to defined
 		/* (SetVTPmSDe(L)
 		/*Set current VTE from draft VTE (SetCuVTE) */
-
 		vena = TRUE;	/*Current VTE agreed to*/
 		asr(pe,SUCCESS);
 		if(vrsl == SUCCESS) {
@@ -177,9 +172,7 @@ int a1_7 (	/*VRELreq from user in state 10B (Env. not agreed)*/
 		request_token();
 		/*Need call to ISODE to request token*/
 		state = S1_50B;
-
 		/*Probably need to release the NULL PE for VRELreq that got us here*/
-
 	}
 	return(OK);
 }
@@ -190,16 +183,13 @@ int a1_8 (	/*VRELreq in 10T*/
 ) {
 	vt_disconnect();	/*May be only TEMP--check function*/
 	state = S1_51T;
-
 	/*Release NULL PE from VT USER*/
-
 	return(OK);
 }
 
 int a1_9 (	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
 	PE pe
 ) {
-
 	/*	vrsl = -1;
 	/*	for(p = first_member(pe); p; p = next_member(pe,p) )
 	/*			/*Get Result parameter*/
@@ -218,7 +208,6 @@ int a1_9 (	/*VRELrsp in 51R & 51N (Release -- Awaiting User)*/
 	/*	since we know our vt-user is an agreeable fellow, we can
 	/*	assume success
 	*/
-
 	vrsl = SUCCESS;
 	if(vrsl == SUCCESS) {
 		if(vns > 0) {	/*If data left to send*/
@@ -254,9 +243,7 @@ int a1_10 (	/*VRQTreq(request token) n state 10N*/
 ) {
 	request_token();	/*TEMP -- Need an ISODE call to really do this
 				  since there is no VTP PDU*/
-
 	/*Probably need to free the NullPE that triggered this*/
-
 	state = S1_10N;		/*Should be here already.  Do this to follow
 				  the spec literally*/
 	return(OK);
@@ -266,10 +253,8 @@ int a1_10 (	/*VRQTreq(request token) n state 10N*/
 int a1_11 (	/*VSNEGreq (User Start Negotiation)*/
 	PE pe
 ) {
-
 	/*MIN not implemented*/
 	/*Probably need to send back a negative Acknowledgement*/
-
 	return(OK);
 }
 
@@ -277,10 +262,8 @@ int a1_11 (	/*VSNEGreq (User Start Negotiation)*/
 int a1_12 (	/*VSNEGreq*/
 	PE pe
 ) {
-
 	/*MIN not implemented*/
 	/*Probably need to send back a Negative Acknowledgement*/
-
 	return(OK);
 }
 
@@ -288,10 +271,8 @@ int a1_12 (	/*VSNEGreq*/
 int a1_13 (	/*VSWPreq (User Switch profile request)*/
 	PE pe
 ) {
-
 	/*Switch Profile not implemented*/
 	/*Should probably send back a negative acknowledgement*/
-
 	return(OK);
 }
 
@@ -299,10 +280,8 @@ int a1_13 (	/*VSWPreq (User Switch profile request)*/
 int a1_14 (	/*VSWPreq*/
 	PE pe
 ) {
-
 	/*Switch Profile not implented*/
 	/*Should Probably send back a negative acknowledgement*/
-
 	return(OK);
 }
 
@@ -327,13 +306,11 @@ int a1_15 (		/*ASR in state 2B (Assoc. awaiting target) */
 		state = S1_01;
 		return(FAILURE);	/*Notify user of ASR (VASScnf)*/
 	} else {
-
 		/*Set draft-VTE param. according to list in primitive or protocol
 		/*element (SetVTPmV(L)).
 		/*Set status of draft-VTE params. listed in primitive or protocol
 		/*element to defined (SetVTPmSDe(L))
 		/*Set current-VTE from draft-VTE (SetCuVTE) */
-
 		vena = 1;
 		waci = 1;
 		if(vrsl == SUCCESS) {
@@ -364,13 +341,11 @@ int a1_16 (		/*ASR in state 2S (Assoc. awaiting target) */
 		state = S1_01;
 		return(FAILURE);	/*Notify user of ASR (VASScnf)*/
 	} else {
-
 		/*Set draft-VTE param. according to list in primitive or protocol
 		/*element (SetVTPmV(L)).
 		/*Set status of draft-VTE params. listed in primitive or protocol
 		/*element to defined (SetVTPmSDe(L))
 		/*Set current-VTE from draft-VTE (SetCuVTE) */
-
 		vena = 1;
 		if(vrsl == SUCCESS) {
 			sector = 5;
@@ -388,7 +363,6 @@ int a1_16 (		/*ASR in state 2S (Assoc. awaiting target) */
 int a1_17 (		/*ASQ in state 01 (No Association)*/
 	PE pe
 ) {
-
 	int result;
 
 	result = read_asq(pe);	/*Unpack ASQ*/
@@ -400,7 +374,6 @@ int a1_17 (		/*ASQ in state 01 (No Association)*/
 		send_bad_asr(0);	/*Send failure ASR w/ no reason*/
 		return(NOTOK);
 	}
-
 	/*SetVTPmS(P)*/
 	/*SetVTPmV(P)*/
 	dr_pm_st = DEFINED;
@@ -436,7 +409,6 @@ int a1_19 (	/*GTQ in 10N or VRTQreq in 10T*/
 int a1_20 (	/*RLR (Release Response) in 51Q or 51T (Release Awaiting Peer)*/
 	PE pe
 ) {
-
 	PE p;
 
 	vrsl = -1;
@@ -455,7 +427,6 @@ int a1_20 (	/*RLR (Release Response) in 51Q or 51T (Release Awaiting Peer)*/
 		/*VRELcnf -- Confirm the release to user -- for now, use the
 		  original mechanism (closing TELNET) -- should be changed
 		  especially for forms mode*/
-
 		vrelcnf();
 		if(vnt > 0)
 			/*Should never happen until Quarantined Delivery
@@ -507,12 +478,10 @@ int a1_21 (	/*DLQ (Deliver Request) in 50B or 51Q (Release Awaiting Peer)*/
 int a1_22 (	/*RLQ (Release Request) in 50B*/
 	PE pe
 ) {
-
 	vrsl = FAILURE;
 	vrea = COLL_DET;
 	/*VRELcnf -- Confirm to user telling of failure due to collision --
 	  but user can't do anything now anyway. */
-
 	if(vnt > 0) { /*Shouldn't happen without Quarantine Delivery Ctrl*/
 		/*VDATind-n(Vnt)*/
 		vnt = 0;
@@ -557,7 +526,6 @@ int a1_26 (	/*RLQ (Release Request) in state 10N*/
 	vrelind();
 	state = S1_51R;
 	return(OK);
-
 }
 
 
@@ -565,10 +533,8 @@ int a1_27 (	/*RTQ (Request Token) in state 10T*/
 	PE pe
 ) {
 	vrtq_ind();	/*Tell Application that peer requested token*/
-
 	/*Probably some ISODE call to give token directly instead of telling
 	  user */
-
 	return(OK);
 }
 
@@ -625,7 +591,6 @@ int a1_101 (	/*AUQ (VT-U-ABORT -- Abort from VT User) in any state*/
 int a1_102 (	/*VUABreq (Abort by User) in any state*/
 	PE pe
 ) {
-
 	PE pe_auq;
 	char *reason = "Association Closed by User";
 
@@ -635,7 +600,6 @@ int a1_102 (	/*VUABreq (Abort by User) in any state*/
 	if(AcUAbortRequest(sd,&pe_auq,1,aci) == NOTOK)
 		acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
 	state = S1_01;
-
 	finalbye ();
 	exit(1);
 }
@@ -644,7 +608,6 @@ int a1_102 (	/*VUABreq (Abort by User) in any state*/
 int a1_103 (	/*VTAB (Irrecoverable exception condition) in any state*/
 	PE pe
 ) {
-
 	PE pe_apq;
 
 	advise(LLOG_NOTICE,NULLCP,  "Irrecoverable Exception Condition -- Aborting\n");
@@ -655,9 +618,7 @@ int a1_103 (	/*VTAB (Irrecoverable exception condition) in any state*/
 		adios(NULLCP,"a1_103: APQ build failure (out of memory)");
 	if(AcUAbortRequest(sd,&pe_apq,1,aci) == NOTOK)
 		acs_adios (&aci -> aci_abort, "A-ABORT.REQUEST");
-
 	state = S1_01;	/*For completeness*/
-
 	finalbye ();
 	exit(1);
 }

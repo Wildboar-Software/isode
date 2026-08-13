@@ -187,11 +187,8 @@ int main (int argc, char *argv[]) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *argv;
-
 	isodetailor (myname, 1);
-
 	ll_hdinit (vt_log, myname);
-
 	fflag = 0;
 	logname = 0;
 	myhostname = PLocalHostName ();
@@ -199,7 +196,6 @@ int main (int argc, char *argv[]) {
 	acc = &accs;
 	acr = &acrs;
 	aci = &acis;
-
 #ifdef TERMIOS
 	if (tcgetattr(0, &oterm) == -1)
 		perror("tcgetattr");
@@ -223,15 +219,12 @@ int main (int argc, char *argv[]) {
 	erase_line = ottyb.sg_kill;
 	intr_char = otc.t_intrc;
 #endif
-
 	setbuf(stdin, NULLCP);
 	setbuf(stdout, NULLCP);
-
 	bzero ((char *) &vtp_profile, sizeof vtp_profile);
 	vtp_profile.profile_name = "telnet";
 	vtp_profile.arg_val.tel_arg_list.x_window = ncols (stdin);
 	vtp_profile.arg_val.tel_arg_list.full_ascii = 1;
-
 	for(i=1; i<argc; i++) {
 		if (peerhost[0] == NULL && (*argv[i] != '-')) {
 			strcpy(peerhost,argv[i]);
@@ -258,31 +251,23 @@ int main (int argc, char *argv[]) {
 			adios("usage: %s [-g] [-D] [-B] [-f] [-F logfile] [hostname]",
 				  myname);
 	}
-
 	runcom = 1;
-
 	rcinit ();
 	sprintf (buffer, "%s/.vtrc", myhome);
 	if (!fflag && (fp = fopen (buffer, "r"))) {
 		char   *bp;
-
 		while (fgets (buffer, sizeof buffer, fp)) {
 			if (bp = index (buffer, '\n'))
 				*bp = 0;
-
 			bzero ((char *) vec, sizeof vec);
 			if (str2vec (buffer, vec) < 1)
 				continue;
-
 			if (vtploop (vec, NOTOK) == NOTOK && peerhost[0])
 				exit (1);
 		}
-
 		fclose (fp);
 	}
-
 	runcom = 0;
-
 	if (peerhost[0] != NULL) {
 		if (setjmp(toplevel) != 0)
 			exit(0);
@@ -311,16 +296,13 @@ void command (int top) {
 				vt_status (NULLVP);
 				break;
 			}
-
 			eof = 1;
 			continue;
 		}
 		eof = 0;
-
 		bzero ((char *) vec, sizeof vec);
 		if (str2vec (line, vec) < 1)
 			break;
-
 		if (vtploop (vec, NOTOK) != DONE)
 			break;
 	}
@@ -338,7 +320,6 @@ static int vtploop (char **vec, int error) {
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
-
 	if (!connected) {
 		if (ds -> ds_flags & DS_OPEN) {
 			advise (LLOG_NOTICE,NULLCP,  "not associated with terminal service");
@@ -349,7 +330,6 @@ static int vtploop (char **vec, int error) {
 				"already associated with terminal service");
 		return error;
 	}
-
 	switch ((*ds -> ds_fnx) (vec)) {
 	case NOTOK:
 		return error;
@@ -373,26 +353,21 @@ int _getline (char *prompt, char *buffer) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	printf (prompt, connected ? peerhost : myname);
 	fflush (stdout);
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			printf ("\n");
 			clearerr (stdin);
 			if (cp == buffer)
 				return NOTOK;
-
 			sticky++;
 			break;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	return OK;
 }
 
@@ -418,7 +393,6 @@ struct dispatch *getds (char *name) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (LLOG_NOTICE,NULLCP,  "unknown operation \"%s\"", name);
@@ -453,10 +427,8 @@ void do_vt (void) {
 #endif
 	printf("Trying...\n");
 	fflush(stdout);
-
 	if ((fd = con_req()) < 0)
 		return;
-
 	connected++;
 	vt_status (NULLVP);
 	printf ("escape character is '%s'\n", escapestr);
@@ -473,16 +445,13 @@ static int vt_close (char **vec) {
 		while (getch () >= -1)
 			continue;
 	}
-
 	/* read network events until the release sequence reached
 	   the point where the other side shuts down
 	 */
-
 	printf ("association released\n");
 	fflush (stdout);
 	connected = 0;
 	/* reset his options */
-
 	return OK;
 }
 
@@ -504,7 +473,6 @@ static int vt_suspend (char **vec) {
 	int save;
 	save = tmode(0);
 	kill(0, SIGTSTP);
-
 	/* reget parameters in case they were changed */
 #ifdef TERMIOS
 	if (tcgetattr(0, &oterm) == -1)
@@ -524,7 +492,6 @@ static int vt_suspend (char **vec) {
 	}
 #endif
 	tmode(save);
-
 	return OK;
 }
 
@@ -536,15 +503,12 @@ static int vt_escape (char **vec) {
 				|| str2vec (line, vec) < 1)
 			return NOTOK;
 	}
-
 	if ((c = *vec[0]) != 0) {
 		char   *cp = control (escape = c);
-
 		free (escapestr);
 		escapestr = strdup (cp);
 	}
 	printf ("escape character is '%s'\n", escapestr);
-
 	return OK;
 }
 
@@ -658,15 +622,12 @@ static int vt_set (char **vec) {
 				width,
 				lines;
 		struct var *u;
-
 		for (u = vars; u -> v_name; u++)
 			continue;
 		width = varwidth1;
-
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
 		lines = ((u - vars) + columns - 1) / columns;
-
 		printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -679,29 +640,21 @@ static int vt_set (char **vec) {
 				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
 					putchar ('\t');
 			}
-
 		return DONE;
 	}
-
 	echo = (nego_state & ECHO_OBJ) ? 1 : 0;
 	repertoire = transparent ? 1 : 0;
-
 	if (strcmp (*vec, "?") == 0) {
 		for (v = vars; v -> v_name; v++)
 			printvar (v);
-
 		return DONE;
 	}
-
 	if ((v = getvar (*vec)) == NULL)
 		return DONE;
-
 	if (*++vec == NULL) {
 		printvar (v);
-
 		return DONE;
 	}
-
 	if (strcmp (*vec, "?") == 0) {
 		if (v -> v_value && (cp = v -> v_dvalue)) {
 			printf ("use %s of:", v -> v_mask ? "any" : "one");
@@ -716,13 +669,10 @@ static int vt_set (char **vec) {
 		} else
 			printf ("use any %s value\n",
 					v -> v_value ? "integer" : "string");
-
 		return DONE;
 	}
-
 	if (v -> v_value == NULL) {
 		int    w;
-
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
 		*v -> v_dvalue = strdup (*vec);
@@ -734,7 +684,6 @@ static int vt_set (char **vec) {
 			printvar (v);
 		return DONE;
 	}
-
 	if (v -> v_mask) {
 		if (strcmp (dp = *vec, "all") == 0 && (cp = v -> v_dvalue)) {
 			i = 1;
@@ -753,7 +702,6 @@ static int vt_set (char **vec) {
 		}
 	} else
 		j = sscanf (*vec, "%d", &value);
-
 	if (j == 1) {
 		if (cp = v -> v_dvalue) {
 			if (v -> v_mask) {
@@ -770,46 +718,37 @@ out_of_range:
 					;
 					advise (LLOG_NOTICE,NULLCP,
 							"value out of range \"%s\"", *vec);
-
 					return DONE;
 				}
 			}
 		}
-
 		vflag = verbose;
 		*v -> v_value = value;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
 			printvar (v);
-
 		return DONE;
 	}
-
 	if (v -> v_mask) {
 		i = 0;
 		for (; *vec; vec++) {
 			if (!(cp = getval (*vec, v -> v_dvalue))) {
 				advise (LLOG_NOTICE,NULLCP,  "bad value \"%s\"", *vec);
-
 				return DONE;
 			}
 			if ((j = cp - v -> v_dvalue) <= 0)
 				continue;
-
 			i |= 1 << (j - 1);
 		}
-
 		vflag = verbose;
 		*v -> v_value = i;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
 			printvar (v);
-
 		return DONE;
 	}
-
 	if (v -> v_dvalue && (cp = getval (*vec, v -> v_dvalue))) {
 		vflag = verbose;
 		*v -> v_value = cp - v -> v_dvalue;
@@ -819,7 +758,6 @@ out_of_range:
 			printvar (v);
 	} else if (!v -> v_dvalue)
 		advise (LLOG_NOTICE,NULLCP,  "bad value \"%s\"", *vec);
-
 	return DONE;
 }
 
@@ -829,11 +767,9 @@ static void printvar (struct var *v) {
 
 	if (runcom)
 		return;
-
 	printf ("%-*s = ", varwidth1, v -> v_name);
 	if (v -> v_value) {
 		i = *v -> v_value;
-
 		if (v -> v_mask) {
 			if (v -> v_dvalue) {
 				if (i == 0)
@@ -914,7 +850,6 @@ static char **getval (char *name, char **choices) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (LLOG_NOTICE,NULLCP,  "unknown value \"%s\"", name);
@@ -954,7 +889,6 @@ static struct var *getvar (char *name) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (LLOG_NOTICE,NULLCP,  "unknown variable \"%s\"", name);
@@ -985,12 +919,10 @@ static int vt_help (char **vec) {
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
 	width = helpwidth;
-
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
 		lines = ((es - dispatches) + columns - 1) / columns;
-
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -1003,21 +935,16 @@ static int vt_help (char **vec) {
 				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
 					putchar ('\t');
 			}
-
 		printf ("\n");
-
 		return DONE;
 	}
-
 	for (; *vec; vec++)
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
 				printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 			break;
 		} else if (ds = getds (*vec))
 			printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 	return DONE;
 }
 
@@ -1044,16 +971,13 @@ static void rcinit (void) {
 
 	if ((myhome = getenv ("HOME")) == NULL)
 		myhome = ".";		/* could do passwd search... */
-
 	escapestr = strdup (control (escape));
 	for (ds = dispatches, helpwidth = 0; ds -> ds_name; ds++)
 		if ((w = strlen (ds -> ds_name)) > helpwidth)
 			helpwidth = w;
-
 	for (v = vars, varwidth1 = 0; v -> v_name; v++) {
 		if ((w = strlen (v -> v_name)) > varwidth1)
 			varwidth1 = w;
-
 		if (v -> v_value) {
 			if (cp = v -> v_dvalue) {
 				if (v -> v_mask) {
@@ -1093,7 +1017,6 @@ void vt (int s) {
 	if ((nfds = (tin > tout ? tin : tout)) < s)
 		nfds = s;
 	nfds++;
-
 	nego_state = 0;
 	if(telnet_profile) {
 		tmode(2);
@@ -1102,21 +1025,16 @@ void vt (int s) {
 		repertoire = 1;
 		vt_repertoire(repertoire);
 	} else  tmode(1);
-
 	for (;;) {
 		fd_set    ibits, obits;
-
 		FD_ZERO (&ibits);
-
 		FD_ZERO (&obits);
 		FD_SET (tout, &obits);
 		FD_SET (s, &obits);
-
 		if (nfrontp - nbackp)
 			FD_SET (s, &obits);
 		else
 			FD_SET (tin, &ibits);
-
 		if (tfrontp - tbackp)
 			FD_SET (tout, &obits);
 		else
@@ -1141,22 +1059,18 @@ void vt (int s) {
 			sleep(5);
 			continue;
 		}
-
 		/*
 		 * Something to read from the network...
 		 */
 		if (FD_ISSET (s, &ibits)) {
-
 			while ( (c = getch()) > 0) {
 				*tfrontp++ = c;
 				if(tfrontp >= &ttyobuf[TBUFSIZ-1]) break;
 			}
-
 			if (c == E_EOF) {
 				break;
 			}
 		}
-
 		/*
 		 * Something to read from the tty...
 		 */
@@ -1172,10 +1086,8 @@ void vt (int s) {
 				tbp = tibuf;
 			}
 		}
-
 		while (tcc > 0) {
 			int ch;
-
 			if ((&netobuf[BUFSIZ] - nfrontp) < 2)
 				break;
 			ch = *tbp++ & 0377, tcc--;
@@ -1357,7 +1269,6 @@ void netflush (int dd) {
 			if(nl_flag && telnet_profile) vdelreq(FALSE);
 			rflag = 0;
 		}
-
 	}
 	if (n < 0) {
 		if (errno != ENOBUFS && errno != EWOULDBLOCK) {

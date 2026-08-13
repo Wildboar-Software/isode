@@ -25,16 +25,13 @@ void call_compare (int argc, char **argv) {
 	char           *str1_type;
 	char           *str1_value;
 	char           *ptr;
-
 	if ((argc = service_control (OPT, argc, argv, &compare_arg.cma_common)) == -1)
 		return;
-
 	if (argc == 1) {
 		ps_print (OPT,"What do you want to compare ?\n");
 		Usage (argv[0]);
 		return;
 	}
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x],"-attribute",1)) {
 			str1_type = argv[++x];
@@ -54,7 +51,6 @@ void call_compare (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (att_present == 0) {
 		ps_printf (OPT, "We are missing <attribute_type>=<attribute_value>.\n");
 		Usage (argv[0]);
@@ -71,25 +67,20 @@ void call_compare (int argc, char **argv) {
 		return;
 	}
 	compare_arg.cma_object = dn;
-
 	if (rebind () != OK)
 		return;
-
 	/* Strong authentication */
 	if (compare_arg.cma_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		compare_arg.cma_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&compare_arg,
 									   _ZCompareArgumentDataDAS, &_ZDAS_mod);
 	}
-
 	while (ds_compare (&compare_arg, &error, &result) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return;
 		compare_arg.cma_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	if (result.cmr_common.cr_aliasdereferenced & print) {
 		ps_print (RPS, "(Alias dereferenced - ");
 		dn_print (RPS, result.cmr_object, EDBOUT);

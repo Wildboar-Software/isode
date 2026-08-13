@@ -9,7 +9,6 @@ RDN rdn_merge (RDN a, RDN b)
 		return (b);
 	if ( b == NULLRDN )
 		return (a);
-
 	/* start sequence off, make sure 'a' is the first */
 	switch (rdn_cmp_comp (a,b)) {
 	case 0: /* equal */
@@ -29,10 +28,8 @@ RDN rdn_merge (RDN a, RDN b)
 		bptr = b;
 		break;
 	}
-
 	trail = result;
 	while (  (aptr != NULLRDN) && (bptr != NULLRDN) ) {
-
 		switch (rdn_cmp_comp (aptr,bptr)) {
 		case 0: /* equal */
 			trail->rdn_next = aptr;
@@ -57,6 +54,5 @@ RDN rdn_merge (RDN a, RDN b)
 		trail->rdn_next = bptr;
 	else
 		trail->rdn_next = aptr;
-
 	return (result);
 }

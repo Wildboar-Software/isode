@@ -29,7 +29,6 @@ void ds_log (struct DSAPabort *da, char *str, int fd) {
 		source = "?";
 		break;
 	}
-
 	switch (da->da_reason) {
 	case DA_NO_REASON:
 		reason = "No Reason";
@@ -78,23 +77,19 @@ void force_close (int fd, struct DSAPindication *di) {
 
 	if (fd == NOTOK)
 		return;
-
 	if (di)
 		ds_log (&di->di_abort,"ABORT",fd);
-
 	/* Something has gone wrong on this fd, and all attempts
 	   at a protocol reject have failed.
 	   Rip out the connection the best you can.
 	   If there is not a tblk - TLI could be a problem.
 	*/
-
 	if ((tb = findtblk (fd)) != (struct tsapblk *) NULL) {
 		if ((*tb -> tb_closefnx) (tb -> tb_fd) == NOTOK) {
 			if (errno == EBADF) level = LLOG_NOTICE;
 			LLOG (log_dsap, level,
 				  ("force_close failed %d (1): %d",
 				   tb -> tb_fd, errno ));
-
 			if ( errno != EBADF && close (fd) == NOTOK) {
 				if (errno == EBADF) level = LLOG_NOTICE;
 				LLOG (log_dsap, level,
@@ -103,7 +98,6 @@ void force_close (int fd, struct DSAPindication *di) {
 			}
 		}
 		tb -> tb_fd = NOTOK;
-
 	} else if (close (fd) == NOTOK) {
 		if (errno == EBADF) level = LLOG_NOTICE;
 		LLOG (log_dsap, level,
@@ -117,12 +111,9 @@ void net_send_abort (struct connection *conn) {
 	struct DSAPindication      *di = &di_s;
 
 	DLOG(log_dsap, LLOG_NOTICE, ("D-ABORT.REQUEST: <%d>", conn->cn_ad));
-
 	result = DUAbortRequest(conn->cn_ad, di);
-
 	if (result != OK)
 		force_close (conn->cn_ad,di);	/* Need a transport close really */
-
 	conn->cn_state = CN_FAILED;
 	conn->cn_ad = NOTOK;
 }

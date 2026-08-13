@@ -42,11 +42,9 @@ struct connection *make_conn_block (
 	extern struct PSAPaddr * mydsaaddr;
 	int x;
 	char onnet = FALSE;
-
 	/*
 	* Set up a new connection block and add it to the list.
 	*/
-
 	if(dn_cmp(name, mydsadn) == 0) {
 		LLOG(log_dsap, LLOG_FATAL, ("Trying to connect to self :-)"));
 		return(NULLCONN);
@@ -58,14 +56,11 @@ struct connection *make_conn_block (
 	}
 	/* see if on the appropriate net */
 	ta = & (addr->pa_addr.sa_addr);
-
 	/* compare ta and ts_communities to see if they have a network in common */
 	for (na=ta->ta_addrs , x = ta->ta_naddr - 1 ;
 			x >= 0;
 			na++, x-- ) {
-
 		int *ip;
-
 		for (ip = ts_communities; *ip; ip++) {
 			if (na->na_community == *ip) {
 				onnet = TRUE;
@@ -102,11 +97,9 @@ int link_op_to_conn (struct oper_act *on) {
 	int 		res;
 
 	sort_dsa_list (&on->on_dsas);
-
 	/*
 	*  Use an open connection if one is available.
 	*/
-
 	next_di = &(on->on_dsas);
 	for(di=on->on_dsas; di!=NULL_DI_BLOCK; di=di->di_next) {
 		for(cn=connlist; cn!=NULLCONN; cn=cn->cn_next) {
@@ -115,7 +108,6 @@ int link_op_to_conn (struct oper_act *on) {
 				LLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - open conn has DAP context"));
 				continue;
 			}
-
 			if((cn->cn_ctx == DS_CTX_X500_DSP)
 					&& ((on->on_type == ON_TYPE_GET_EDB)
 						|| (!cn->cn_initiator))) {
@@ -125,15 +117,12 @@ int link_op_to_conn (struct oper_act *on) {
 					LLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - open conn has DSP context - QUIPU/Internet context needed"));
 				continue;
 			}
-
 			if((cn->cn_dn != NULLDN)
 					&& (dn_cmp(cn->cn_dn, di->di_dn) == 0))
 				break;
-
 		}
 		if(cn != NULLCONN)
 			break;
-
 		next_di = &(di->di_next);
 	}
 	if(di != NULL_DI_BLOCK) {
@@ -154,7 +143,6 @@ int link_op_to_conn (struct oper_act *on) {
 			on->on_relay = FALSE;	/* No need we have an open connection */
 		return(OK);
 	}
-
 	/*
 	*  Use a waiting connection if one is available.
 	*/
@@ -169,18 +157,15 @@ int link_op_to_conn (struct oper_act *on) {
 			/* Must be a suitable context */
 			if(cn->cn_ctx == DS_CTX_X500_DAP)
 				continue;
-
 			if((cn->cn_ctx == DS_CTX_X500_DSP)
 					&& (on->on_type == ON_TYPE_GET_EDB))
 				continue;
-
 			if((cn->cn_dn != NULLDN)
 					&& (dn_cmp(cn->cn_dn, di->di_dn) == 0))
 				break;
 		}
 		if(cn != NULLCONN)
 			break;
-
 		next_di = &(di->di_next);
 	}
 	if(di != NULL_DI_BLOCK) {
@@ -195,9 +180,7 @@ int link_op_to_conn (struct oper_act *on) {
 			on->on_relay = FALSE;	/* No need we will chain sooner or later */
 		return(OK);
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Neither an open nor a waiting conn suitable"));
-
 	next_di = &(on->on_dsas);
 	for(di=on->on_dsas; di!=NULL_DI_BLOCK; di=(*next_di)) {
 		if(di->di_state == DI_DEFERRED) {
@@ -205,7 +188,6 @@ int link_op_to_conn (struct oper_act *on) {
 			next_di = &(di->di_next);
 			continue;
 		}
-
 		if(di->di_state == DI_ACCESSPOINT) {
 			/* context problem:
 			if we have not got the entry, we don't know which context it
@@ -214,14 +196,11 @@ int link_op_to_conn (struct oper_act *on) {
 				ASSUME Internet context is OK
 				Could be QUIPU - so we lose out on caching
 			*/
-
 			if(on->on_type == ON_TYPE_GET_EDB)
 				conn_ctx = DS_CTX_INTERNET_DSP;
 			else
 				conn_ctx = DS_CTX_X500_DSP;
-
 			DLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - make conn block from access point"));
-
 			/* There *should* only be one access point -
 			 * but QUIPU may give a choice try find one that will work...
 			     * This is *wrong* if it is a non specific subordinate reference.
@@ -233,14 +212,12 @@ int link_op_to_conn (struct oper_act *on) {
 				di_extract(di);
 				continue;
 			}
-
 			for (loop_ap=di->di_accesspoints; loop_ap != NULLACCESSPOINT; loop_ap=loop_ap->ap_next)
 				if((cn = make_conn_block(loop_ap->ap_name, loop_ap->ap_address, conn_ctx)) != NULLCONN) {
 					if (on->on_relay != 2)
 						on->on_relay = FALSE;	/* Made a connection block */
 					break;
 				}
-
 			if (loop_ap == NULLACCESSPOINT) {
 				DLOG(log_dsap, LLOG_DEBUG, ("link_op_to_conn - make_conn_block failed 1"));
 				(*next_di) = di->di_next;
@@ -248,7 +225,6 @@ int link_op_to_conn (struct oper_act *on) {
 				continue;
 			}
 		}
-
 		if(di->di_state == DI_COMPLETE) {
 			/*
 			*  Open a quipu context connection if possible: this is so if
@@ -269,15 +245,12 @@ int link_op_to_conn (struct oper_act *on) {
 				if(res == 2) {
 					DLOG(log_dsap, LLOG_DEBUG, ("link_op_to_conn - linking to a connection with internet context"));
 					conn_ctx = DS_CTX_INTERNET_DSP;
-
 				} else {
 					DLOG(log_dsap, LLOG_DEBUG, ("link_op_to_conn - linking to a connection with a quipu context"));
 					conn_ctx = DS_CTX_QUIPU_DSP;
 				}
 			}
-
 			DLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - make conn block from entry"));
-
 			if((cn = make_conn_block(di->di_dn, di->di_entry->e_dsainfo->dsa_addr, conn_ctx)) == NULLCONN) {
 				DLOG(log_dsap, LLOG_DEBUG, ("link_op_to_conn - make_conn_block failed 2"));
 				(*next_di) = di->di_next;
@@ -285,9 +258,7 @@ int link_op_to_conn (struct oper_act *on) {
 				continue;
 			} else if (on->on_relay != 2)
 				on->on_relay = FALSE;	/* Made a connection block */
-
 		}
-
 		/*
 		*  Decide whether to request connection or place it
 		*  on the list of waiting connections.
@@ -304,7 +275,6 @@ int link_op_to_conn (struct oper_act *on) {
 			do_conn = (conns_used < (MAX_CONNS - CONNS_RESERVED_DI));
 			break;
 		}
-
 		if(do_conn) {
 			DLOG(log_dsap, LLOG_TRACE, ("link_op_to_conn - about to request connection"));
 			if(conn_request(cn) != OK) {
@@ -314,7 +284,6 @@ int link_op_to_conn (struct oper_act *on) {
 				continue;
 			}
 			DLOG(log_dsap, LLOG_DEBUG, ("link_op_to_conn - conn_request OK"));
-
 			cn->cn_next = connlist;
 			connlist = cn;
 			conns_used++;
@@ -323,7 +292,6 @@ int link_op_to_conn (struct oper_act *on) {
 			cn->cn_next = connwaitlist;
 			connwaitlist = cn;
 		}
-
 		(*next_di) = di->di_next;
 		di_extract(di);
 		on->on_conn = cn;
@@ -331,7 +299,6 @@ int link_op_to_conn (struct oper_act *on) {
 		cn->cn_operlist = on;
 		return(OK);
 	}
-
 	/*
 	*  If we get this far it means that we are waiting for a dsa info
 	*  operation to complete, or there are no di_blocks left to try.
@@ -367,11 +334,9 @@ int oper_chain (struct oper_act *on) {
 		if(on->on_dsas == NULL_DI_BLOCK) {
 			if (relay_dsa (on) == NOTOK)
 				return NOTOK;
-
 			LLOG(log_dsap, LLOG_TRACE, ("Trying to relay..."));
 			return(oper_chain(on));
 		}
-
 		on->on_state = ON_DEFERRED;
 	}
 	return(OK);
@@ -387,7 +352,6 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 	DLOG(log_dsap, LLOG_DEBUG, ("task_chain called with:"));
 	di_list_log(di);
 #endif
-
 	/* NB At some point this routine must assign the di_block list to
 	* either the task (if it is intended to geneate a referral) or to
 	* an operation hanging off that task if it is intended to chain the
@@ -403,22 +367,18 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 	* for consistency but it won't happen that often if DSA info is cached
 	* sensibly.
 	*/
-
 	/*
 	*  Generate the referral which the DSA will pass back if
 	*  chaining is disallowed or oper_chain fails for all
 	*  DSAs listed.
 	*/
-
 	sort_dsa_list (&di);
-
 	if ((di_tmp = select_refer_dsa (di,tk)) == NULL_DI_BLOCK) {
 		/* The remote END is probably unable to follow the referral - chain if allowed */
 		refer_ok = FALSE;
 		for(di_tmp=di; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 			if(di_tmp->di_state == DI_DEFERRED)
 				continue;
-
 #ifdef DEBUG
 			DLOG(log_dsap, LLOG_DEBUG, ("About to call di2cref with:"));
 			di_log(di_tmp);
@@ -428,7 +388,6 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 		}
 	} else if (di2cref(di_tmp, err, tk->tk_conn->cn_ctx) != OK)
 		di_tmp = NULL_DI_BLOCK;	/* waiting... */
-
 	if(di_tmp == NULL_DI_BLOCK) {
 		/*
 		*  Want to generate a referral - but all di_blocks (if any)
@@ -441,18 +400,15 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 		di_desist(di);
 		return(NOTOK);
 	}
-
 	/*
 	*  If it would be inappropriate to chain this operation, then
 	*  generate a referral from the di_block list.
 	*/
-
 	if(chain_ok(tk,refer_ok,di_tmp->di_dn) == FALSE) {
 		DLOG(log_dsap, LLOG_DEBUG, ("Referring!"));
 		di_desist(di);
 		return(NOTOK);
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Chaining!"));
 	/* Chain. Generate the new operation to send */
 	if((on = task2oper(tk)) == NULLOPER) {
@@ -463,7 +419,6 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 		di_desist(di);
 		return(NOTOK);
 	}
-
 	if(ti_is_elem(tk->tk_dx.dx_arg.dca_charg.cha_trace,
 				  tk->tk_dx.dx_arg.dca_charg.cha_trace->ti_next)) {
 		DLOG (log_dsap,LLOG_TRACE,("Loop found in oper_chain()"));
@@ -472,29 +427,24 @@ int task_chain (struct task_act *tk, struct di_block *di) {
 		err->ERR_SERVICE.DSE_sv_problem = DSE_SV_LOOPDETECT;
 		return(NOTOK);
 	}
-
 	on->on_next_task = tk->tk_operlist;
 	tk->tk_operlist = on;
 	on->on_task = tk;
-
 	/* Hand control of di_blocks to the operation */
 	on->on_dsas = di;
 	for(di_tmp = di; di_tmp != NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 		di_tmp->di_type = DI_OPERATION;
 		di_tmp->di_oper = on;
 	}
-
 	if(oper_chain(on) != OK) {
 		oper_task_extract(on);
 		oper_free(on);
 		return(NOTOK);
 	}
-
 #ifdef QUIPU_CONSOLE
 	/* SPT trying to insert a chain_analyse here. */
 	/* The aim is to add this chained command to */
 	/* the open_call_avs structure */
-
 	chaining_analyse(tk, di) ;
 #endif /* QUIPU_CONSOLE */
 	return(OK);
@@ -509,16 +459,13 @@ int oper_rechain (struct oper_act *on) {
 
 	DLOG(log_dsap, LLOG_TRACE, ("Rechain an operation ..."));
 	cref = ref->DSE_ref_candidates;
-
 	if(cref == NULLCONTINUATIONREF) {
 		LLOG(log_dsap, LLOG_FATAL, ("No continuation reference to rechain"));
 		return(NOTOK);
 	}
-
 	cha->cha_target = dn_cpy(cref->cr_name);
 	cha->cha_progress = cref->cr_progress;
 	cha->cha_aliasderef = ((cha->cha_aliasedrdns = cref->cr_aliasedRDNs) != CR_NOALIASEDRDNS);
-
 	if (cha->cha_aliasderef) {
 		if ((on->on_arg->dca_dsarg.arg_type == OP_SEARCH)
 				&& (on->on_arg->dca_dsarg.arg_sr.sra_subset == SRA_ONELEVEL))
@@ -533,12 +480,10 @@ int oper_rechain (struct oper_act *on) {
 		else
 			cha->cha_entryonly = FALSE;
 	}
-
 	cha->cha_returnrefs = FALSE;
 	cha->cha_domaininfo = NULLPE;
 	if((cha->cha_reftype = cref->cr_reftype) == RT_UNDEFINED)
 		cha->cha_reftype = RT_SUPERIOR;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("oper_rechain - Setting trace info"));
 	ti = (struct trace_info *) malloc(sizeof(struct trace_info));
 	ti->ti_dsa = dn_cpy(on->on_conn->cn_dn);
@@ -546,7 +491,6 @@ int oper_rechain (struct oper_act *on) {
 	ti->ti_progress = cref->cr_progress;
 	ti->ti_next = cha->cha_trace;
 	cha->cha_trace = ti;
-
 	if(ti_is_elem(ti,ti->ti_next)) {
 		DLOG (log_dsap,LLOG_TRACE,("Loop found in oper_rechain()"));
 		ds_error_free (&on->on_resp.di_error.de_err);
@@ -554,9 +498,7 @@ int oper_rechain (struct oper_act *on) {
 		on->on_resp.di_error.de_err.ERR_SERVICE.DSE_sv_problem = DSE_SV_LOOPDETECT;
 		return(NOTOK);
 	}
-
 	oper_conn_extract(on);
-
 	/*
 	*  Problem - having converted to di_blocks it is harder to handle referrals
 	*  Set up a single di_block with the address in the parent field ??
@@ -598,7 +540,6 @@ struct oper_act *task2oper (struct task_act *tk) {
 	}
 	cha->cha_progress = cref->cr_progress;
 	cha->cha_aliasderef = ((cha->cha_aliasedrdns = cref->cr_aliasedRDNs) != CR_NOALIASEDRDNS);
-
 	if (cha->cha_aliasderef) {
 		if ((on->on_arg->dca_dsarg.arg_type == OP_SEARCH)
 				&& (on->on_arg->dca_dsarg.arg_sr.sra_subset == SRA_ONELEVEL)) {
@@ -613,19 +554,16 @@ struct oper_act *task2oper (struct task_act *tk) {
 		} else
 			cha->cha_entryonly = FALSE;
 	}
-
 	cha->cha_returnrefs = FALSE;
 	cha->cha_domaininfo = NULLPE;
 	if((cha->cha_reftype = cref->cr_reftype) == RT_UNDEFINED)
 		cha->cha_reftype = RT_SUPERIOR;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Checking history of op"));
 	if(tk->tk_conn->cn_ctx == DS_CTX_X500_DAP) {
 		DLOG(log_dsap, LLOG_DEBUG, ("... user originated ..."));
 		cha->cha_originator = dn_cpy(tk->tk_conn->cn_dn);
 		cha->cha_trace = NULLTRACEINFO;
 	}
-
 	if(tk->tk_timed == FALSE) {
 		cha->cha_timelimit = NULLCP;
 	} else {
@@ -637,7 +575,6 @@ struct oper_act *task2oper (struct task_act *tk) {
 		cha->cha_timelimit = NULLCP;
 #endif
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Setting trace info"));
 	ti = (struct trace_info *) malloc(sizeof(struct trace_info));
 	ti->ti_dsa = dn_cpy(mydsadn);
@@ -656,7 +593,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
 	/* if refer_ok is FALSE - we MUST chain unless prevented, otherwise operation will fail */
 	DLOG (log_dsap,LLOG_TRACE,( "chain_ok: Checking if chaining is ok"));
-
 	if ( ! refer_ok) {
 		DLOG (log_dsap,LLOG_DEBUG,( "We MUST chain"));
 		if ((tk->tk_conn->cn_ctx != DS_CTX_X500_DAP)
@@ -676,7 +612,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 		DLOG (log_dsap,LLOG_DEBUG,( "Forced chain OK!"));
 		return TRUE;
 	}
-
 	if (tk->tk_conn->cn_ctx != DS_CTX_X500_DAP) {
 		if ((dspchaining != 0) 	/* not on */
 				&& (! relayfordsa (tk->tk_conn->cn_dn)))  /* explicitly allowed */
@@ -684,7 +619,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 			DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because dspchaining is %s ",dspchaining == 1 ? "off" : "whenNeeded"));
 			return(FALSE);
 		}
-
 		if(! (ca->ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN)) {
 			/* Don't send a self reference back to a remote DSA - chain if possible */
 			/* Should not need it, when self reference bug is fixed ! */
@@ -695,7 +629,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 			}
 		}
 	}
-
 	if(ca->ca_servicecontrol.svc_options & SVC_OPT_CHAININGPROHIBIT) {
 		DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because of prohibition"));
 		return(FALSE);
@@ -704,7 +637,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 		DLOG (log_dsap,LLOG_DEBUG,( "Not chaining because of scope"));
 		return(FALSE);
 	}
-
 	switch (tk->tk_dx.dx_arg.dca_dsarg.arg_type) {
 	case OP_ADDENTRY:
 	case OP_REMOVEENTRY:
@@ -718,7 +650,6 @@ int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
 	default:
 		break;
 	}
-
 	DLOG (log_dsap,LLOG_DEBUG,( "Chain OK!"));
 	return(TRUE);
 }
@@ -735,13 +666,11 @@ void task_result_wakeup (struct oper_act *on) {
 		*  Were waiting for a remote result and here it is.
 		*  Attempt to tidy up and send result.
 		*/
-
 		ds_error_free (tk->tk_error);
 		tk->tk_result = &(on->on_resp.di_result.dr_res);
 		dsp_cache (&(tk->tk_dx.dx_arg.dca_dsarg),
 				   &(tk->tk_result->dcr_dsres),
 				   tk->tk_conn->cn_ctx, tk->tk_conn->cn_dn);
-
 		task_conn_extract(tk);
 		task_result(tk);
 		oper_extract(on);
@@ -754,7 +683,6 @@ void task_error_wakeup (struct oper_act *on) {
 	char free_error = TRUE;
 
 	DLOG(log_dsap, LLOG_TRACE, ("task_error_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Oper can't wake up (error) extracted task"));
 		oper_extract(on);
@@ -771,7 +699,6 @@ void task_error_wakeup (struct oper_act *on) {
 			tk->tk_error = &(on->on_resp.di_error.de_err);
 			free_error = FALSE;
 		}
-
 		if((on->on_resp.di_error.de_err.dse_type == DSE_DSAREFERRAL)
 				|| (on->on_resp.di_error.de_err.dse_type == DSE_REFERRAL)) {
 			DLOG(log_dsap, LLOG_DEBUG, ("Try rechaining"));
@@ -801,7 +728,6 @@ void task_fail_wakeup (struct oper_act *on) {
 		oper_extract(on);
 		return;
 	}
-
 	/*
 	*  Were waiting for a remote result and got a remote failure.
 	*  If it is a referral, then rechain the operation if appropriate
@@ -886,7 +812,6 @@ static struct access_point *di2ap (struct di_block *di) {
 	default:
 		return NULLACCESSPOINT;
 	}
-
 }
 
 int di2cref (struct di_block *di, struct DSError *err, char ctx) {
@@ -898,15 +823,12 @@ int di2cref (struct di_block *di, struct DSError *err, char ctx) {
 	DLOG(log_dsap, LLOG_TRACE, ("di2cref"));
 	di_log(di);
 #endif
-
 	switch(di->di_state) {
 	case DI_ACCESSPOINT:
 		DLOG(log_dsap, LLOG_TRACE, ("di2cref - generating referrral from di_accesspoints"));
-
 		/* Should check context */
 		err->dse_type = DSE_REFERRAL;
 		err->ERR_REFERRAL.DSE_ref_prefix = NULLDN;
-
 		cref = err->ERR_REFERRAL.DSE_ref_candidates = (struct continuation_ref *) calloc(1, sizeof(struct continuation_ref));
 		cref->cr_accesspoints = ap_cpy(di->di_accesspoints);
 		cref->cr_name = dn_cpy(di->di_target);
@@ -922,11 +844,9 @@ int di2cref (struct di_block *di, struct DSError *err, char ctx) {
 		break;
 	case DI_COMPLETE:
 		DLOG(log_dsap, LLOG_TRACE, ("di2cref - generating referrral from di_entry"));
-
 		/* Should check context */
 		err->dse_type = DSE_REFERRAL;
 		err->ERR_REFERRAL.DSE_ref_prefix = NULLDN;
-
 		cref = err->ERR_REFERRAL.DSE_ref_candidates = (struct continuation_ref *) calloc(1, sizeof(struct continuation_ref));
 		if ((cref->cr_accesspoints = di2ap (di)) == NULLACCESSPOINT)
 			return NOTOK;
@@ -948,7 +868,6 @@ int di2cref (struct di_block *di, struct DSError *err, char ctx) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("di2cref - invalid di_state %d",di->di_state));
 		return(NOTOK);
 	}
-
 	if (ctx == DS_CTX_QUIPU_DSP) {
 		/* Make QSSR */
 		/* append AP's from remaining di_blocks */
@@ -959,7 +878,6 @@ int di2cref (struct di_block *di, struct DSError *err, char ctx) {
 			cref->cr_accesspoints = ap_append (cref->cr_accesspoints,ap);
 		}
 	}
-
 	return OK;
 }
 
@@ -969,12 +887,10 @@ void oper_fail_wakeup (struct oper_act *on) {
 	*  Attempt to perform operation remotely has failed.
 	*  Check the type of operation and take appropriate action.
 	*/
-
 	if (on == NULLOPER) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("No operation to fail"));
 		return;
 	}
-
 	switch(on->on_type) {
 	case ON_TYPE_X500:
 		task_fail_wakeup(on);
@@ -1016,12 +932,9 @@ void subtask_chain (struct task_act *tk) {
 	struct common_args		* get_ca_ref();
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
-
 	if(tk->refer_st == NULL_ST)
 		return;
-
 	DLOG(log_dsap, LLOG_TRACE, ("Chain search subtasks ..."));
-
 	for(refer = tk->refer_st; refer != NULL_ST; refer = nref) {
 		nref = refer->st_next;
 		if((di = refer->st_di) == NULL_DI_BLOCK) {
@@ -1035,7 +948,6 @@ void subtask_chain (struct task_act *tk) {
 			for(di_tmp=di; di_tmp!=NULL_DI_BLOCK; di_tmp=di_tmp->di_next) {
 				if(di_tmp->di_state == DI_DEFERRED)
 					continue;
-
 #ifdef DEBUG
 				DLOG(log_dsap, LLOG_DEBUG, ("About to call di2cref with:"));
 				di_log(di_tmp);
@@ -1152,7 +1064,6 @@ void subtask_result_wakeup (struct oper_act *on) {
 	struct ds_search_task	* st;
 
 	DLOG(log_dsap, LLOG_TRACE, ("subtask_result_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Oper can't wake up (result)extracted task"));
 		oper_extract(on);
@@ -1164,7 +1075,6 @@ void subtask_result_wakeup (struct oper_act *on) {
 		for(st=tk->referred_st; st!=NULL_ST; st=(*next_st)) {
 			if(st == on->on_subtask)
 				break;
-
 			next_st = &(st->st_next);
 		}
 		if(st == NULL_ST) {
@@ -1174,16 +1084,12 @@ void subtask_result_wakeup (struct oper_act *on) {
 			*  Correlate uncorrelated search results from oper,
 			*  then merge with correlated search results of task.
 			*/
-
 			struct ds_search_result * tk_sr = &(tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr);
 			struct ds_search_result * op_sr = &(on->on_resp.di_result.dr_res.dcr_dsres.res_sr);
-
 			DLOG(log_dsap, LLOG_DEBUG, ("Collating a search result"));
-
 			st_comp_free (st);
 			on->on_subtask = NULL_ST;
 			(*next_st) = st->st_next;
-
 			correlate_search_results(op_sr);
 			if(tk_sr->srr_next == NULLSRR) {
 				DLOG(log_dsap, LLOG_DEBUG, ("Search result unallocated!"));
@@ -1192,12 +1098,9 @@ void subtask_result_wakeup (struct oper_act *on) {
 				tk_sr->srr_next->srr_un.srr_unit = (struct ds_search_unit *) calloc(1, sizeof(struct ds_search_unit));
 				tk_sr->srr_next->CSR_limitproblem = LSR_NOLIMITPROBLEM;
 			}
-
 			merge_search_results(tk_sr->srr_next, op_sr);
 		}
-
 		oper_extract(on);
-
 		if((tk->referred_st == NULL_ST) && (tk->tk_state == TK_PASSIVE) && (tk->tk_operlist == NULLOPER)) {
 			task_conn_extract(tk);
 			task_result(tk);
@@ -1212,7 +1115,6 @@ void subtask_error_wakeup (struct oper_act *on) {
 	struct ds_search_task	* st;
 
 	DLOG(log_dsap, LLOG_TRACE, ("subtask_error_wakeup"));
-
 	if((tk = on->on_task) == NULLTASK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Oper can't wake up (error) extracted task"));
 		oper_extract(on);
@@ -1241,7 +1143,6 @@ void subtask_error_wakeup (struct oper_act *on) {
 		for(st=tk->referred_st; st!=NULL_ST; st=(*next_st)) {
 			if(st == on->on_subtask)
 				break;
-
 			next_st = &(st->st_next);
 		}
 		if(st == NULL_ST) {
@@ -1360,25 +1261,19 @@ int relay_dsa (struct oper_act *on) {
 			|| (on->on_task->tk_conn == NULLCONN)
 			|| (on->on_task->tk_conn->cn_ctx != DS_CTX_X500_DAP))
 		return NOTOK;
-
 	if ((my_entry = local_find_entry_aux (mydsadn,TRUE)) == NULLENTRY)
 		return NOTOK;
-
 	if (( as = entry_find_type (my_entry,at_relaydsa)) == NULLATTR)
 		return NOTOK;
-
 	di_trail = &di;
-
 	for (avs = as->attr_value; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
-
 		/* if DN is in the trace - possible loop - so don't use it */
 		for(tip = on->on_task->tk_dx.dx_arg.dca_charg.cha_trace;
 				tip!=NULLTRACEINFO; tip=tip->ti_next)
 			if(dn_cmp((DN)avs->avseq_av.av_struct, tip->ti_dsa) == 0)
 				continue;
-
 		switch(get_dsa_info((DN)avs->avseq_av.av_struct, dn_stack,
 							&err, di_trail)) {
 		case DS_OK:
@@ -1411,9 +1306,7 @@ int relay_dsa (struct oper_act *on) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("dsa_info_new - get_dsa_info (master) unexpected return"));
 			break;
 		}
-
 	}
-
 	on->on_relay = 2;	/* Don't relay twice to same DSA ! */
 	if (di == NULL_DI_BLOCK)
 		return NOTOK;
@@ -1462,14 +1355,11 @@ chaining_analyse (struct task_act *task, struct di_block *di) {
 						struct chain_list * new_chain_list ;
 						struct chain_list * tmp_chain_list ;
 						struct sub_ch_list * new_sub_ch_list ;
-
 						fprintf(stderr, "More than one on_next_conn!\n") ;
 						new_chain_list = (struct chain_list *) malloc (sizeof (struct chain_list)) ;
 						new_sub_ch_list = (struct sub_ch_list *) malloc (sizeof (struct sub_ch_list)) ;
-
 						/* We have now found the right operation in our list */
 						/* Now we add the chain request onto the chained_ops list */
-
 						if (tmp_op_list->operation_list->chained_ops == (struct chain_list *) 0) {
 							tmp_op_list->operation_list->chained_ops = new_chain_list ;
 						} else {

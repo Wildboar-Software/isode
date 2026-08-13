@@ -17,11 +17,9 @@ struct FTAMindication *fti;
 			free_FTAM_Shared__ASE__Information (fpm);
 		return NULL;
 	}
-
 	fpm -> indirect__reference = sharedASE -> pe_context;
 	fpm -> encoding -> offset = choice_UNIV_0_single__ASN1__type;
 	(fpm -> encoding -> un.single__ASN1__type = sharedASE) -> pe_refcnt++;
-
 	return fpm;
 }
 
@@ -36,10 +34,8 @@ struct FTAMindication *fti;
 	if (fpm -> encoding -> offset != choice_UNIV_0_single__ASN1__type)
 		return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 						 "shared ASE information not single-ASN1-type");
-
 	if ((pe = pe_cpy (fpm -> encoding -> un.single__ASN1__type)) == NULLPE)
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 	(*sharedASE = pe) -> pe_context = fpm -> indirect__reference;
-
 	return OK;
 }

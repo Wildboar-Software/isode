@@ -39,13 +39,11 @@ objectclass * str2oc (char *str)
 
 	if ((oc = name2oc (str)) != NULLOBJECTCLASS)
 		return (oc);
-
 	/* unknown object class -- need to add to table */
 	if ((ptr = get_oid (str)) == NULLCP) {
 		parse_error ("Object class %s unknown",str);
 		return (NULLOBJECTCLASS);
 	}
-
 	return (oc_add (str2oid(ptr)));
 }
 
@@ -67,7 +65,6 @@ static AV_Sequence str2oc_hier (char *str)
 	char * ptr, *save, val;
 
 	str = SkipSpace (str);
-
 	while ((ptr = index (str,'&')) != 0) {
 		save = ptr++;
 		save--;
@@ -75,7 +72,6 @@ static AV_Sequence str2oc_hier (char *str)
 			save++;
 		val = *save;
 		*save = 0;
-
 		if ((oc = str2oc (str)) == NULLOBJECTCLASS)
 			return (NULLAV);
 		if (avs == NULLAV)
@@ -83,11 +79,9 @@ static AV_Sequence str2oc_hier (char *str)
 		else
 			add_oc_avs (oc,&avs);
 		add_hierarchy (oc,&avs);
-
 		*save = val;
 		str = SkipSpace(ptr);
 	}
-
 	if ((oc = str2oc (str)) == NULLOBJECTCLASS)
 		return (NULLAV);
 	if (avs == NULLAV)
@@ -95,7 +89,6 @@ static AV_Sequence str2oc_hier (char *str)
 	else
 		add_oc_avs (oc,&avs);
 	add_hierarchy (oc,&avs);
-
 	return (avs);
 }
 
@@ -105,7 +98,6 @@ void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
 	objectclass *ocp;
 
 	/* see if we already have oc in heirarchy ... */
-
 	for (loop = *avsp; loop != NULLAV; loop = loop->avseq_next) {
 		ocp = (objectclass *)loop->avseq_av.av_struct;
 		if (oc == ocp)
@@ -132,18 +124,14 @@ static int in_hierarchy (AV_Sequence a, AV_Sequence b)
 
 	if ((a == NULLAV) || (a->avseq_av.av_syntax != oc_sntx) || (a->avseq_av.av_struct == NULL))
 		return (FALSE);
-
 	if ((b == NULLAV) || (b->avseq_av.av_syntax != oc_sntx) || (b->avseq_av.av_struct == NULL))
 		return (FALSE);
-
 	oca = (objectclass *) a->avseq_av.av_struct;
 	ocb = (objectclass *) b->avseq_av.av_struct;
-
 	for (oidseq = ocb->oc_hierachy;
 			oidseq != NULLOCSEQ; oidseq = oidseq->os_next)
 		if (objclass_cmp(oca,oidseq->os_oc) == 0)
 			return (TRUE);
-
 	return (FALSE);
 }
 
@@ -158,10 +146,8 @@ static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use th
 
 	if (avs == NULLAV)
 		return;
-
 	if (format != READOUT)
 		DLOG (log_dsap,LLOG_EXCEPTIONS,("invalid call to oc_print"));
-
 	for ( ; avs->avseq_next != NULLAV ; avs=avs->avseq_next) {
 		found = FALSE;
 		for (newavs = avs->avseq_next; newavs != NULLAV; newavs=newavs->avseq_next)
@@ -169,7 +155,6 @@ static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use th
 				found = TRUE;
 				break;
 			}
-
 		if (found == FALSE) {
 			if (printed == TRUE)
 				ps_print (ps," & ");
@@ -177,7 +162,6 @@ static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use th
 			printed = TRUE;
 		}
 	}
-
 	if (printed == TRUE)
 		ps_print (ps," & ");
 	AttrV_print (ps,&avs->avseq_av,format);
@@ -186,7 +170,6 @@ static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use th
 int objectclass_cmp (objectclass *a, objectclass *b)
 {
 	/* macro ! */
-
 	return objclass_cmp(a,b);
 }
 
@@ -206,7 +189,6 @@ int check_in_oc (OID oid, AV_Sequence avs)
 		if (oid_cmp(oid,oc->oc_ot.ot_oid) == 0)
 			return (TRUE);
 	}
-
 	return (FALSE);
 }
 
@@ -227,13 +209,10 @@ static objectclass * oc_dec (PE pe)
 
 	if (!test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
 		return NULLOBJECTCLASS;
-
 	if ((oid = prim2oid (pe)) == NULLOID)
 		return NULLOBJECTCLASS;
-
 	if ((oc = oid2oc (oid)) != NULLOBJECTCLASS)
 		return (oc);
-
 	return (oc_add(oid));
 }
 

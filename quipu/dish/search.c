@@ -62,7 +62,6 @@ void call_search (int argc, char **argv) {
 	extern	char	search_result;
 
 	search_result = OK;
-
 	value_flag = TRUE;
 	all_flag = FALSE;
 	name_flag = TRUE;
@@ -72,15 +71,12 @@ void call_search (int argc, char **argv) {
 	}
 	flag_show = FALSE;
 	key_flag = TRUE;
-
 	search_arg.sra_filter = NULLFILTER;
 	search_arg.sra_subset = SRA_ONELEVEL;
 	search_arg.sra_common.ca_servicecontrol.svc_sizelimit = sizelimit;
 	search_arg.sra_searchaliases = FALSE;
-
 	if ((argc = service_control (OPT, argc, argv, &search_arg.sra_common)) == -1)
 		return;
-
 	allow_move = FALSE;
 	if ( (argc = set_read_flags (argc,argv)) == -1) {
 		allow_move = TRUE;
@@ -93,7 +89,6 @@ void call_search (int argc, char **argv) {
 	fred_phone = FALSE;
 	fred_sequence = TRUE;
 	fred_subdisplay = FALSE;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-baseobject",1))
 			search_arg.sra_subset = SRA_BASEOBJECT;
@@ -157,17 +152,13 @@ void call_search (int argc, char **argv) {
 			fred_subdisplay = TRUE;
 		else
 			continue;  /* a read type flag !!! */
-
 		shuffle_up (argc--,argv,x--);
 	}
-
 	if (fred_flag)
 		as_flag = as_cpy (fred_long || fred_expand ? fred_full ()
 						  : fred_as ());
-
 	if (flag_show && (as_flag == NULLATTR))
 		all_flag = TRUE;
-
 	if ((save_arg != NULLCP) && (*save_arg != 0)) {
 		/* There is an unflagged argument */
 		if (search_arg.sra_filter == NULLFILTER) {
@@ -182,7 +173,6 @@ void call_search (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (search_arg.sra_filter == NULLFILTER) {
 		/* set default */
 		search_arg.sra_filter = filter_alloc ();
@@ -190,12 +180,10 @@ void call_search (int argc, char **argv) {
 		search_arg.sra_filter->flt_type = FILTER_AND;
 		search_arg.sra_filter->FUFILT = NULLFILTER;
 	}
-
 	if (argc != 1) {
 		Usage (argv[0]);
 		return;
 	}
-
 	if (fred_flag
 			&& (save_entry = local_find_entry (dn, FALSE))
 			&& save_entry -> e_alias)
@@ -204,35 +192,27 @@ void call_search (int argc, char **argv) {
 	search_arg.sra_eis.eis_allattributes = all_flag;
 	search_arg.sra_eis.eis_select = as_flag;
 	search_arg.sra_baseobject = dn;
-
 	if (rebind () != OK)
 		return;
-
 	/* Strong authentication */
 	if (search_arg.sra_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		search_arg.sra_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&search_arg,
 									   _ZSearchArgumentDataDAS, &_ZDAS_mod);
 	}
-
 	while (ds_search (&search_arg, &error, &result) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return;
 		search_arg.sra_baseobject = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	correlate_search_results (&result);
-
 	if (result_sequence)
 		set_sequence (result_sequence);
-
 	if (result.CSR_entries == NULLENTRYINFO)
 		ps_printf (aps = OPT, "Search failed to find anything.\n");
 	else {
 		EntryInfo      *ptr;
-
 		ptr = result.CSR_entries;
 		if (hit_one && result.CSR_entries->ent_next != NULLENTRYINFO) {
 #ifndef	SOCKETS
@@ -247,42 +227,34 @@ void call_search (int argc, char **argv) {
 #endif
 			ps_printf (OPT,"Multiple hits...\n");
 		}
-
 		aps = RPS;
 		save_dn = dn_cpy(current_dn);
 		save_entry = current_entry;
 		doneget = TRUE;
 		if (rel_flag)
 			rel_dn = dn_cpy(dn);
-
 		if (fred_flag) {
 			int	    i,
 					nchild = 0;
-
 			i = 0;
 			for (ptr = result.CSR_entries;
 					ptr;
 					ptr = ptr -> ent_next) {
 				cache_entry (ptr, all_flag, value_flag);
-
 				i++;
 			}
-
 			if (fred_long == 2)
 				if ((fred_subdisplay && fred_expand)
 						|| (!fred_subdisplay && !fred_expand))
 					fred_long = i == 1;
 				else
 					fred_long = fred_expand;
-
 			if (i > 1) {
 				EntryInfo **base,
 						  **bp,
 						  **ep;
-
 				ps_printf (RPS, "%d matches found.\n", i);
 				ps_flush (RPS);
-
 				if (base = (EntryInfo **) malloc ((unsigned)
 												  (i * sizeof *base))) {
 					ep = base;
@@ -290,9 +262,7 @@ void call_search (int argc, char **argv) {
 							ptr;
 							ptr = ptr -> ent_next)
 						*ep++ = ptr;
-
 					qsort ((char *) base, i, sizeof *base, csr_compar);
-
 					bp = base;
 					ptr = result.CSR_entries = *bp++;
 					while (bp < ep) {
@@ -300,11 +270,9 @@ void call_search (int argc, char **argv) {
 						ptr = *bp++;
 					}
 					ptr -> ent_next = NULL;
-
 					free ((char *) base);
 				}
 			}
-
 			if (fred_expand)
 				fred_long = fred_subdisplay = TRUE;
 			for (ptr = result.CSR_entries;
@@ -322,7 +290,6 @@ void call_search (int argc, char **argv) {
 						ps_print (RPS, "\n");
 					ps_flush (RPS);
 				}
-
 				nchild = showfred (ptr -> ent_dn, fred_long,
 								   fred_subdisplay);
 			}
@@ -335,12 +302,10 @@ void call_search (int argc, char **argv) {
 				if (seqno != 0)
 					ps_printf (RPS,"%-3d ",seqno);
 				nvec[1] = "-compact";
-
 				if (name_flag)
 					call_showname (2, nvec);
 				else if (seqno != 0)
 					ps_print (RPS,"\n");
-
 				if (flag_show) {
 					eptr = ptr->ent_attr;
 					for (; eptr != NULLATTR; eptr = eptr->attr_link)
@@ -356,9 +321,7 @@ void call_search (int argc, char **argv) {
 		current_entry = save_entry;
 		entryinfo_free (result.CSR_entries,0);
 	}
-
 	handle_problems (aps,result.CSR_cr,result.CSR_limitproblem,part_flag);
-
 	dn_free (result.CSR_object);
 	crefs_free (result.CSR_cr);
 	filter_free (search_arg.sra_filter);
@@ -379,36 +342,29 @@ EntryInfo **a,
 			&& (be = local_find_entry ((*b) -> ent_dn, FALSE))) {
 		Attr_Sequence as,
 					  bs;
-
 		if (!at_surName && !(at_surName = AttrT_new ("surName")))
 			goto check_rdn;
-
 		for (as = ae -> e_attributes; as; as = as -> attr_link)
 			if (AttrT_cmp (as -> attr_type, at_surName) == 0)
 				break;
 		if (!as)
 			goto check_rdn;
-
 		for (bs = be -> e_attributes; bs; bs = bs -> attr_link)
 			if (AttrT_cmp (bs -> attr_type, at_surName) == 0)
 				break;
 		if (!bs)
 			goto check_rdn;
-
 		i = AttrV_cmp (&as -> attr_value -> avseq_av,
 					   &bs -> attr_value -> avseq_av);
 	} else {
 check_rdn:
 		;
-
 		for (adn = (*a) -> ent_dn; adn -> dn_parent; adn = adn -> dn_parent)
 			continue;
 		for (bdn = (*b) -> ent_dn; bdn -> dn_parent; bdn = bdn -> dn_parent)
 			continue;
-
 		i = rdn_cmp (adn -> dn_rdn, bdn -> dn_rdn);
 	}
-
 	return (i == (-1) || i == 1 ? i : 0);
 }
 

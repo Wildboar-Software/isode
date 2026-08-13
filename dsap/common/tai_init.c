@@ -17,18 +17,15 @@ int dsap_tai_init (void) {
 
 	if(!isstr(tailfile))    /* it's compiled in */
 		return(OK);
-
 	if( (fp = fopen(cp = isodefile(tailfile, 0), "r")) == (FILE *)NULL) {
 		LLOG (log_dsap,LLOG_FATAL,("can't open tailor file '%s'", cp));
 		fatal (-1, "Cannot open tailor file");
 	}
-
 	while(fgets(buf, sizeof(buf), fp) != NULLCP)
 		if ( (*buf != '#') && (*buf != '\n') )
 			/* not a comment or blank */
 			if (tai_string (buf) == NOTOK)
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("tai_string failed %s",buf));
-
 	fclose(fp);
 	return OK;
 }
@@ -40,7 +37,6 @@ int tai_string (char *str) {
 
 	if( (p = index(str, '\n')) != NULLCP)
 		*p = '\0';
-
 	if((ac = sstr2arg(str, MAXTAIARGS, args, " \t,")) == NOTOK) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("too many tailor parameters"));
 		return(NOTOK);
@@ -50,5 +46,4 @@ int tai_string (char *str) {
 		return (NOTOK);
 	}
 	return (dsap_tai(ac, args));
-
 }

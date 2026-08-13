@@ -20,11 +20,9 @@ static int test_deadlock (struct oper_act *on) {
 
 	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
 		ndi++;
-
 	/* To proceed, we need to contact on_dsas. */
 	/* Check they do not rely on the conn that has just failed */
 	/* Possibly a better way of testing this... */
-
 	for (di= on -> on_dsas; di!= NULL_DI_BLOCK; di= di -> di_next)
 		if (( di-> di_state == DI_DEFERRED ) &&
 				( di-> di_perform ) &&
@@ -34,10 +32,8 @@ static int test_deadlock (struct oper_act *on) {
 			case CN_FAILED:
 				ndi--;
 			}
-
 	if (ndi != 0)
 		return OK;
-
 	if (on -> on_task) {
 		on -> on_task -> tk_resp.di_error.de_err.dse_type =
 			DSE_SERVICEERROR;
@@ -45,7 +41,6 @@ static int test_deadlock (struct oper_act *on) {
 		tk_resp.di_error.de_err.ERR_SERVICE.DSE_sv_problem =
 			DSE_SV_UNABLETOPROCEED;
 	}
-
 	return NOTOK;
 }
 
@@ -65,9 +60,7 @@ void conn_retry (struct connection *conn, int moveon) {
 	int				do_next_nsap;
 
 	DLOG (log_dsap,LLOG_TRACE,( "conn_retry()"));
-
 	pstate = conn->cn_state;
-
 	if (moveon && (timenow - conn->cn_last_used >= nsap_timeout)) {
 		/* this NSAP has had long enough - try the next one... */
 		LLOG (log_dsap,LLOG_NOTICE,("NSAP hanging (%d)...",conn->cn_ad));
@@ -76,7 +69,6 @@ void conn_retry (struct connection *conn, int moveon) {
 	} else {
 		do_next_nsap = 0;
 	}
-
 	switch (conn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DAP context type in conn_retry()"));
@@ -100,7 +92,6 @@ void conn_retry (struct connection *conn, int moveon) {
 		conn_extract(conn);
 		return;
 	}
-
 	switch(result) {
 	case CONNECTING_1:
 		DLOG (log_dsap,LLOG_TRACE,("D-BIND.RETRY CONNECTING_1 (%d)",conn->cn_ad));
@@ -114,12 +105,10 @@ void conn_retry (struct connection *conn, int moveon) {
 
 	case NOTOK :
 		conn->cn_state = CN_FAILED;
-
 #ifndef NO_STATS
 		pslog(log_stat, LLOG_TRACE, "Failed (RETRY NOTOK)", (IFP)dn_print, (caddr_t) conn->cn_dn);
 #endif
 		dsa_reliable (conn,FALSE,timenow);
-
 		for(on=conn->cn_operlist; on!=NULLOPER; on=onext) {
 			onext = on->on_next_conn;
 			/* See if there is another DSA to try... */
@@ -170,11 +159,9 @@ void conn_retry (struct connection *conn, int moveon) {
 			conn_extract(conn);
 			return;
 		}
-
 		for(on=conn->cn_operlist; on!=NULLOPER; on=on->on_next_conn) {
 			if (on->on_state == ON_ABANDONED)
 				oper_fail_wakeup(on);
-
 			else if (oper_send_invoke(on) != OK) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("oper_send_invoke failed in conn_retry"));
 				oper_log(on,LLOG_DEBUG);
@@ -190,9 +177,7 @@ void conn_retry (struct connection *conn, int moveon) {
 		}
 		conn_extract(conn);
 		break;
-
 	} /* switch retry */
-
 	if (pstate != conn->cn_state)
 		conn->cn_last_used = timenow;
 }

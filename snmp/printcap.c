@@ -205,7 +205,6 @@ int tgetent(char *bp, char *name) {
 				*cp++ = c;
 		}
 		*cp = 0;
-
 		/*
 		 * The real work for the match.
 		 */

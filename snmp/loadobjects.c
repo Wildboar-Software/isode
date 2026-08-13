@@ -11062,26 +11062,21 @@ int loadobjects (char *file) {
 
     if (file && !once_only)
 	return readobjects (file);
-
     if (once_only) {
 	 sprintf (PY_pepy, "loadobjects called more than once!");
 	return NOTOK;
     }
     once_only = 1;
-
     bcopy ((char *) _Tbuckets, (char *) Tbuckets, sizeof _Tbuckets);
     once_only_Tbuckets = 1;
-
     readsyntax ();
     for (sy = _syntaxes; sy -> name; sy++)
 	if ((sy -> value = text2syn (sy -> name)) == NULLOS) {
 	     sprintf (PY_pepy, "lost \"%s\" syntax", sy -> name);
 	    return NOTOK;
 	}
-
     for (ot = _types; ot -> ot_text; ot++)
 	ot -> ot_syntax = (i = (ssize_t) ot -> ot_syntax) < 0
 	    			? NULLOS : _syntaxes[i].value;
-
     return OK;
 }

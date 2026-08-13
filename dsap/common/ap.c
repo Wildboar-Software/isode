@@ -40,7 +40,6 @@ static PE qap_enc (struct access_point *p) {
 
 	if (encode_DO_QAccessPoint (&ret_pe,0,0,NULLCP,p) == NOTOK )
 		return NULLPE;
-
 	return (ret_pe);
 }
 
@@ -59,7 +58,6 @@ static struct access_point *qap_parse (char *s) {
 	char * p;
 
 	qap = (struct access_point *) calloc (1,sizeof (struct access_point));
-
 	if ((p = index (s,'#')) != NULLCP) {
 		*p++ = 0;
 		if (pa=str2paddr(SkipSpace(p))) {
@@ -71,19 +69,15 @@ static struct access_point *qap_parse (char *s) {
 			*(--p) = '#';
 			return (NULLACCESSPOINT);
 		}
-
 	}
-
 	if ((qap -> ap_name = str2dn (s)) == NULLDN) {
 		if (qap->ap_address)
 			free ((char *)qap->ap_address);
 		free ((char *)qap);
 		return NULLACCESSPOINT;
 	}
-
 	if (p)
 		*--p = '#';
-
 	return qap;
 }
 

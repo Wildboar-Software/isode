@@ -270,7 +270,6 @@ node *get_node (void)
 	mem->n_type = INTERNAL;              /* The most common node type */
 	mem->zero = NULL;
 	mem->one = NULL;
-
 	return (mem);
 }
 
@@ -291,59 +290,42 @@ int build_trees (void) {
 
 	if (built)
 		return (0);
-
 	/* create the tops of the trees */
-
 	bl_tree_top = get_node ();
 	wt_tree_top = get_node ();
 	two_tree_top = get_node ();
-
 	/* Add the white terminals to the white tree */
-
 	i=0;
 	for (string = wt_term; *string; ++string)
 		add_tree (*string,i++,WT_TERM,wt_tree_top);
-
 	/* Add the black terminals to the black tree */
-
 	i=0;
 	for (string = bl_term; *string; ++string)
 		add_tree (*string,i++,BL_TERM,bl_tree_top);
-
 	/* Add the white make codes to the white tree */
-
 	i = 64;
 	for (string = wt_make; *string; ++string) {
 		add_tree (*string,i,MAKE,wt_tree_top);
 		i += 64;
 	}
-
 	/* Add the black make up codes to the black tree */
-
 	i = 64;
 	for (string = bl_make; *string; ++string) {
 		add_tree (*string,i,MAKE,bl_tree_top);
 		i += 64;
 	}
-
 	/* make the two dimensional decode tree */
-
 	i = 1;
 	for (string = two_dim; *string; ++string)
 		add_tree (*string,i++,MAKE,two_tree_top);
-
 	/* put uncompressed mode entrance codewords on all three trees */
-
 	add_tree (uncompressed_1d,-1,MAKE,bl_tree_top);
 	add_tree (uncompressed_1d,-1,MAKE,wt_tree_top);
 	add_tree (uncompressed_2d,-1,MAKE,two_tree_top);
-
 	/* put end of line markers on all three trees */
-
 	add_tree ("00000000000",EOLN,EOLN,bl_tree_top);
 	add_tree ("00000000000",EOLN,EOLN,wt_tree_top);
 	add_tree ("00000000000",EOLN,EOLN,two_tree_top);
-
 	built = 1;
 	return(0);
 }
@@ -358,26 +340,22 @@ int build_trees (void) {
 void add_tree (char *string, int run, char mode, node *root)
 
 {
-
 	char *   ptr;
 	node *   treeptr;
 	int i;
 
 	ptr = string;
 	treeptr = root;
-
 	for ( i=0; i< (int)strlen(string); i++,ptr++)
 		if (*ptr == '0') {
 			if (treeptr->zero == NULL)
 				treeptr->zero = get_node ();
 			treeptr = treeptr->zero;
-
 		} else {
 			if (treeptr->one == NULL)
 				treeptr->one = get_node ();
 			treeptr = treeptr->one;
 		}
-
 	treeptr->n_type = mode;
 	treeptr->value  = run;
 }

@@ -136,41 +136,33 @@ int main (int argc, char **argv, char **envp) {
 			*vec[NVEC + 1];
 
 	arginit (argv);
-
 	status = 0;
 	if (op) {
 		vecp = 0;
 		while (*op)
 			vec[vecp++] = *op++;
 		vec[vecp] = NULL;
-
 		if (snmploop (vec, NOTOK) == NOTOK)
 			status = 1;
-
 		goto were_out_of_here;
 	}
-
 #ifdef LINUX
 	istat = signal (SIGINT, (__sighandler_t) intrser);
 #else
 	istat = signal (SIGINT, intrser);
 #endif
-
 	eof = 0;
 	for (interrupted = 0;; interrupted = 0) {
 		if (_getline ("%s> ", buffer) == NOTOK) {
 			if (eof)
 				break;
-
 			eof = 1;
 			continue;
 		}
 		eof = 0;
-
 		bzero ((char *) vec, sizeof vec);
 		if ((vecp = str2vec (buffer, vec)) < 1)
 			continue;
-
 		switch (snmploop (vec, OK)) {
 		case NOTOK:
 			status = 1;
@@ -186,15 +178,12 @@ int main (int argc, char **argv, char **envp) {
 		}
 		break;
 	}
-
 	signal (SIGINT, istat);
-
 were_out_of_here:
 	;
 #ifdef	COTS
 	if (snmp_ta.ta_addrs -> na_stack != NA_TCP) {
 		struct TSAPdisconnect tds;
-
 #ifdef	CLTS
 		if (snmp_ta.ta_addrs -> na_stack != NA_NSAP)
 #endif
@@ -233,7 +222,6 @@ static struct dispatch *getds (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return ds;
-
 		if (*q == NULL)
 			if (q - name > longest) {
 				longest = q - name;
@@ -242,7 +230,6 @@ static struct dispatch *getds (char *name) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (NULLCP, "unknown operation \"%s\"", name);
@@ -287,10 +274,8 @@ static int  f_audit (char **vec) {
 		printf ("        -N:   last N traps\n");
 		printf ("        +N:   first N traps\n");
 		printf ("        file: trap file (default %s)\n", file);
-
 		return OK;
 	}
-
 	follow = forever = 0;
 	for (; cp = *vec; vec++)
 		switch (*cp) {
@@ -309,13 +294,11 @@ static int  f_audit (char **vec) {
 			file = cp;
 			break;
 		}
-
 	file = _isodefile (isodelogpath, file);
 	if ((fp = fopen (file, "r")) == NULL) {
 		advise (file, "unable to read");
 		return OK;
 	}
-
 	pe = p = NULLPE, au = NULL;
 	if ((ps2 = ps_alloc (std_open)) == NULLPS) {
 		advise (NULLCP, "ps_alloc(std_open): you lose");
@@ -325,16 +308,13 @@ static int  f_audit (char **vec) {
 		advise (NULLCP, "std_setup: %s", ps_error (ps2 -> ps_errno));
 		goto out;
 	}
-
 	time (&now);
 	longtimeago = now - 6L * 30L * 24L * 60L * 60L;
-
 	if (follow < 0) {
 		long    offset,
 				*lp,
 				*ep;
 		long   *opp;
-
 		follow = -follow;
 		if ((opp = (long *) calloc ((unsigned) follow, sizeof *opp)) == NULL)
 			adios (NULLCP, "out of memory");
@@ -342,35 +322,27 @@ static int  f_audit (char **vec) {
 		for (ep = (lp = opp) + follow; lp < ep; lp++)
 			*lp = offset;
 		lp = opp;
-
 		for (;;) {
 			if ((pe = ps2pe (ps2)) == NULLPE)
 				break;
 			if (decode_SNMP_Audit (pe, 1, NULLIP, NULLVP, &au) == NOTOK)
 				goto bad_audit;
-
 			fseek (fp, (long) au -> sizeOfEncodingWhichFollows, 1);
-
 			free_SNMP_Audit (au);
-
 			*lp++ = offset;
 			if (lp >= ep)
 				lp = opp;
 			offset = ftell (fp);
 		}
-
 		fseek (fp, *lp, 0);
 		free ((char *) opp);
 		follow = 0;
 	}
-
 	for (i = 1;; i++) {
 		long	mtime;
 		UTC	ut;
-
 		if (follow > 0 && i > follow)
 			break;
-
 		if ((pe = ps2pe (ps2)) == NULLPE) {
 			if (ps2 -> ps_errno)
 				advise (NULLCP, "ps2pe: %s", ps_error (ps2 -> ps_errno));
@@ -388,7 +360,6 @@ bad_audit:
 			advise (NULLCP, "decode_SNMP_Audit: %s", PY_pepy);
 			break;
 		}
-
 		if ((cp = qb2str (au -> dateAndTime)) == NULL) {
 no_mem:
 			;
@@ -409,12 +380,10 @@ no_mem:
 			printf ("%-7.7s %-4.4s ", cp + 4, cp + 20);
 		else
 			printf ("%-12.12s ", cp + 4);
-
 		if ((cp = qb2str (au -> source)) == NULL)
 			goto no_mem;
 		printf ("%s\n", cp);
 		free (cp);
-
 		if ((p = ps2pe (ps2)) == NULLPE) {
 			if (ps2 -> ps_errno)
 				advise (NULLCP, "ps2pe: %s", ps_error (ps2 -> ps_errno));
@@ -422,10 +391,8 @@ no_mem:
 		}
 		if (print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP) == NOTOK)
 			printf ("\n");
-
 		free_SNMP_Audit (au), au = NULL;
 	}
-
 out:
 	;
 	fclose (fp);
@@ -461,11 +428,9 @@ static int f_bulk (char **vec) {
 	struct type_SNMP_VarBindList **vp;
 	struct type_SNMP_VarBindList *vb;
 	OT	    et = NULL;
-
 	if (*++vec != NULL && strcmp (*vec, "-help") == 0) {
 		printf ("bulk [-alg1 | -alg2] columns...\n");
 		printf ("    with arguments, bulk retrieves columns from a table\n");
-
 		return OK;
 	}
 	while (*vec) {
@@ -483,7 +448,6 @@ static int f_bulk (char **vec) {
 	}
 	if (*vec == NULL)
 		return OK;
-
 #ifdef	COTS
 	if (snmp_ta.ta_addrs -> na_stack != NA_TCP) {
 #ifdef	CLTS
@@ -496,22 +460,18 @@ static int f_bulk (char **vec) {
 #endif
 	}
 #endif
-
 	vp = &vb, vb = NULL;
 	for (result = NOTOK; *vec; vec++) {
 		struct type_SNMP_VarBindList *bind;
 		struct type_SNMP_VarBind *v;
 		OT	ot;
-
 		if ((ot = text2obj (*vec)) == NULL) {
 			advise (NULLCP, "unknown object \"%s\"", *vec);
 			goto out;
 		}
-
 		if (et) {
 			OID    eid = et -> ot_name,
 				   oid = ot -> ot_name;
-
 			if (eid -> oid_nelem != oid -> oid_nelem - 1
 					|| bcmp ((char *) eid -> oid_elements,
 							 (char *) oid -> oid_elements,
@@ -523,11 +483,9 @@ static int f_bulk (char **vec) {
 			}
 		} else {
 			/*	    int	    i; */
-
 			ot -> ot_name -> oid_nelem--;
 			et = name2obj (ot -> ot_name);
 			ot -> ot_name -> oid_nelem++;
-
 			if (et == NULL) {
 				advise (NULLCP, "unable to find row object for %s",
 						ot -> ot_text);
@@ -540,25 +498,20 @@ static int f_bulk (char **vec) {
 				goto out;
 			}
 		}
-
 		if ((bind = (struct type_SNMP_VarBindList *) calloc (1, sizeof *bind))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		*vp = bind, vp = &bind -> next;
-
 		if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v)) == NULL)
 			adios (NULLCP, "out of memory");
 		bind -> VarBind = v;
-
 		if ((v -> name = oid_cpy (ot -> ot_name)) == NULLOID
 				|| (v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 										   PE_PRIM_NULL)) == NULLPE)
 			adios (NULLCP, "out of memory");
 	}
-
 	(*fnx) (ps, sd, vb, community);
 	result = OK;
-
 out:
 	;
 	free_SNMP_VarBindList (vb);
@@ -599,7 +552,6 @@ static int f_compile (char **vec) {
 		printf ("    -f:   brief output (default to stdout)\n");
 		printf ("    -s:   source output (C language bindings)\n");
 		printf ("    file: output file (default %s)\n", file);
-
 		return OK;
 	}
 	while (cp = *vec++) {
@@ -611,13 +563,10 @@ static int f_compile (char **vec) {
 			source = 1, fast = 0;
 			continue;
 		}
-
 		file = cp;
 	}
-
 	if (file) {
 		char   *sp;
-
 		if (source && strcmp (file, "./objects.defs") == 0)
 			file = "./loadobjects.defs";
 		if (sp = rindex (file, '/'))
@@ -631,36 +580,29 @@ static int f_compile (char **vec) {
 		else
 			sprintf (sysout, "%s.%s", file,
 					 source ? "c" : "defs");
-
 		if ((fp = fopen (sysout, "w")) == NULL) {
 			advise (sysout, "unable to write");
 			return OK;
 		}
 	} else
 		fp = stdout;
-
 	i = j = k = 0;
 	if (source) {
 		int	v;
 		OS	last;
-
 		fprintf (fp, "/* compiled */\n\n");
 		fprintf (fp, "#include <stdio.h>\n#include \"objects.h\"\n\n");
-
 		fprintf (fp, "static unsigned int _elems[] = {\n");
 		v = 0;
 		for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
 			unsigned int *ip = ot -> ot_name -> oid_elements;
-
 			fprintf (fp, "     ");
 			for (j = ot -> ot_name -> oid_nelem; j > 0; j--)
 				fprintf (fp, " %u,", *ip++);
 			fprintf (fp, " 0, /* %s */ \n", ot -> ot_text);
-
 			ot -> ot_views = v++;
 		}
 		fprintf (fp, "};\n\n");
-
 		fprintf (fp, "static OIDentifier _names[] = {\n");
 		for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
 			fprintf (fp, "    { %d, &_elems[%d] }, \n",
@@ -668,7 +610,6 @@ static int f_compile (char **vec) {
 			k += ot -> ot_name -> oid_nelem + 1;
 		}
 		fprintf (fp, "};\n\n");
-
 		flsyntax (&first, &last);
 		fprintf (fp, "static struct _syntax {\n    char   *name;\n");
 		fprintf (fp, "    OS      value;\n}\t_syntaxes[] = {\n");
@@ -685,10 +626,8 @@ static int f_compile (char **vec) {
 		j += i << 1, k += i;
 		fprintf (fp, "--* compiled %d %d %d\n", i, j, k);
 	}
-
 	if (source) {
 		i = 0;
-
 		fprintf (fp, "static object_type _types[] = {\n");
 	}
 	for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
@@ -696,7 +635,6 @@ static int f_compile (char **vec) {
 			fprintf (fp, "%s=%s\n", ot -> ot_text, sprintoid (ot -> ot_name));
 			continue;
 		}
-
 		if (source) {
 			fprintf (fp, "    { \"%s\", \"%s\", &_names[%d],\n      (OS) ",
 					 ot -> ot_text, sprintoid (ot -> ot_name), i++);
@@ -715,17 +653,13 @@ static int f_compile (char **vec) {
 		fprintf (fp, "&_types[%d]%s", ot -> x -> ot_views, y); \
 	    else \
 		fprintf (fp, "NULLOT%s", y)
-
 			OT_OFFSET (ot_chain, ", ");
 			OT_OFFSET (ot_sibling, ", ");
 			OT_OFFSET (ot_children, ", ");
 			OT_OFFSET (ot_next, " },\n");
-
 #undef	OT_OFFSET
-
 			continue;
 		}
-
 		fprintf (fp, "%-20s %-20s", ot -> ot_text, sprintoid (ot -> ot_name));
 		if ((os = ot -> ot_syntax) || ot -> ot_status)
 			fprintf (fp, " %-15s %d %d %d",
@@ -741,13 +675,10 @@ static int f_compile (char **vec) {
 		fprintf (fp, "    NULL\n};\n\n");
 		fprintf (fp, "OT\tanchor = _types;\n");
 		fprintf (fp, "OT\tchain = &_types[%d];\n\n", i - 1);
-
 		flobjects (fp);
 	}
-
 	if (file)
 		fclose (fp);
-
 	if (!fast)
 		advise (NULLCP, "%d objects written to %s", i,
 				file ? sysout : "stdout");
@@ -778,16 +709,12 @@ static int f_dump (char **vec) {
 		gettimeofday (&tvs, (struct timezone *) 0);
 		vec++;
 	}
-
 	nvec[0] = "dump";
 	nvec[1] = *vec ? *vec : "0.0";
 	nvec[2] = NULL;
-
 	if ((msg = new_message (type_SNMP_PDUs_get__next__request, nvec)) == NULL)
 		return OK;
-
 	request_id = msg -> data -> un.get__response -> request__id = 0;
-
 	if (*vec) {
 		if ((oid = oid_cpy (msg -> data -> un.get__next__request ->
 							variable__bindings -> VarBind -> name)) == NULLOID)
@@ -795,70 +722,57 @@ static int f_dump (char **vec) {
 	} else
 		oid = NULLOID;
 	rows = 0;
-
 again:
 	;
 	pe = NULLPE;
-
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) != NOTOK) {
 		if (watch)
 			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
-
 		if (pe2ps (ps, pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			goto out;
 		}
 	} else
 		advise (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
-
 try_again:
 	;
 	if (pe)
 		pe_free (pe);
 	pe = NULLPE;
-
 	free_SNMP_Message (msg);
 	msg = NULL;
-
 	if ((pe = ps2pe (ps)) == NULLPE) {
 		advise (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 		goto out;
 	}
-
 	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
 		advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
-
 	if (watch)
 		print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
-
 	if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 		advise (NULLCP, "unexpected message type %d",
 				msg -> data -> offset);
 		goto out;
 	}
-
 	if ((parm = msg -> data -> un.get__response) -> request__id
 			!= request_id) {
 		fprintf (stderr, "request-id mismatch (got %d, wanted %d)\n",
 				 parm -> request__id, request_id);
 		goto try_again;
 	}
-
 	if (parm -> error__status != int_SNMP_error__status_noError) {
 		if (parm -> error__status != int_SNMP_error__status_noSuchName)
 			fprintf (stderr, "%s at position %d\n",
 					 snmp_error (parm -> error__status), parm -> error__index);
 		goto out;
 	}
-
 	for (vp = parm -> variable__bindings; vp; vp = vp -> next) {
 		caddr_t	 value;
 		OI	oi;
 		OS	os;
 		struct type_SNMP_VarBind *v = vp -> VarBind;
-
 		if (oid
 				&& (oid -> oid_nelem > v -> name -> oid_nelem
 					|| bcmp ((char *) oid -> oid_elements,
@@ -866,7 +780,6 @@ try_again:
 							 oid -> oid_nelem
 							 * sizeof oid -> oid_elements[0])))
 			goto out;
-
 		if (timing)
 			continue;
 		printf ("%s=", oid2ode (vp -> VarBind -> name));
@@ -877,7 +790,6 @@ try_again:
 		else {
 			(*os -> os_print) ((void *)value, os);
 			printf ("\n");
-
 			(*os -> os_free) ((void *)value);
 		}
 	}
@@ -887,7 +799,6 @@ try_again:
 	msg -> data -> offset = type_SNMP_PDUs_get__next__request;
 	request_id = ++parm -> request__id;
 	goto again;
-
 out:
 	;
 	if (oid)
@@ -940,9 +851,7 @@ static struct type_SNMP_Message *new_message (int offset, char **vec) {
 
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	msg -> version = int_SNMP_version_version__1;
-
 	if ((msg -> community = str2qb (community, strlen (community), 1)) == NULL)
 		adios (NULLCP, "out of memory");
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
@@ -953,7 +862,6 @@ static struct type_SNMP_Message *new_message (int offset, char **vec) {
 	if ((parm = (struct type_SNMP_PDU *) calloc (1, sizeof *parm)) == NULL)
 		adios (NULLCP, "out of memory");
 	pdu -> un.get__request = parm;
-
 #ifndef	SYS5
 	parm -> request__id = ((int) random ()) & 0x7fffffff;
 #else
@@ -963,16 +871,13 @@ static struct type_SNMP_Message *new_message (int offset, char **vec) {
 	for (vec++; *vec; vec++) {
 		struct type_SNMP_VarBindList *bind;
 		struct type_SNMP_VarBind *v;
-
 		if ((bind = (struct type_SNMP_VarBindList *) calloc (1, sizeof *bind))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		*vp = bind, vp = &bind -> next;
-
 		if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v)) == NULL)
 			adios (NULLCP, "out of memory");
 		bind -> VarBind = v;
-
 		if (get_ava (v, *vec, offset) == NOTOK) {
 			free_SNMP_Message (msg);
 			return NULL;
@@ -998,17 +903,14 @@ static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset) {
 		advise (NULLCP, "need variable=value for set operation");
 		return NOTOK;
 	}
-
 	if ((oi = text2inst (ava)) == NULL) {
 		if (cp || (oid = text2oid (ava)) == NULL) {
 			advise (NULLCP, "unknown variable \"%s\"", ava);
 			return NOTOK;
 		}
-
 		ot = NULLOT;
 	} else
 		ot = oi -> oi_type;
-
 	if ((v -> name = oid_cpy (oi ? oi -> oi_name : oid)) == NULLOID)
 		adios (NULLCP, "out of memory");
 	if (cp == NULLCP) {
@@ -1032,7 +934,6 @@ static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset) {
 			return NOTOK;
 		}
 	}
-
 	if (oi == NULL)
 		oid_free (oid);
 	return OK;
@@ -1046,66 +947,54 @@ static int process (struct type_SNMP_Message *msg) {
 
 	if (msg == NULL)
 		return OK;
-
 	request_id = msg -> data -> un.get__request -> request__id;
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) != NOTOK) {
 		if (watch)
 			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
-
 		if (pe2ps (ps, pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			goto out;
 		}
 	} else
 		advise (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
-
 try_again:
 	;
 	if (pe)
 		pe_free (pe);
 	pe = NULLPE;
-
 	free_SNMP_Message (msg);
 	msg = NULL;
-
 	if ((pe = ps2pe (ps)) == NULLPE) {
 		advise (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 		goto out;
 	}
-
 	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
 		advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
-
 	if (watch)
 		print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
-
 	if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 		advise (NULLCP, "unexpected message type %d",
 				msg -> data -> offset);
 		goto out;
 	}
-
 	if ((parm = msg -> data -> un.get__response) -> request__id
 			!= request_id) {
 		fprintf (stderr, "request-id mismatch (got %d, wanted %d)\n",
 				 parm -> request__id, request_id);
 		goto try_again;
 	}
-
 	if (parm -> error__status != int_SNMP_error__status_noError) {
 		fprintf (stderr, "%s at position %d\n",
 				 snmp_error (parm -> error__status), parm -> error__index);
 		goto out;
 	}
-
 	for (vp = parm -> variable__bindings; vp; vp = vp -> next) {
 		caddr_t	 value;
 		OI	oi;
 		OS	os;
 		struct type_SNMP_VarBind *v = vp -> VarBind;
-
 		if ((oi = name2inst (v -> name)) == NULL) {
 			advise (NULLCP, "unknown variable \"%s\"", oid2ode (v -> name));
 no_dice:
@@ -1124,14 +1013,11 @@ no_dice:
 					oid2ode (v -> name));
 			goto no_dice;
 		}
-
 		printf ("%s=", oid2ode (v -> name));
 		(*os -> os_print) ((void *)value, os);
 		printf ("\n");
-
 		(*os -> os_free) ((void *)value);
 	}
-
 out:
 	;
 	if (pe)
@@ -1154,7 +1040,6 @@ static int f_help (char **vec) {
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
 	width = helpwidth;
-
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
@@ -1174,14 +1059,12 @@ static int f_help (char **vec) {
 		printf ("\n");
 		return OK;
 	}
-
 	if (strcmp (*vec, "-help") == 0) {
 		printf ("help [commands ...]\n");
 		printf ("    with no arguments, lists operations which may be invoked\n");
 		printf ("    otherwise prints help for each operation given\n");
 		return OK;
 	}
-
 	for (; *vec; vec++)
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
@@ -1409,7 +1292,6 @@ static	void arginit (char **vec) {
 	na -> na_tset = NA_TSET_UDP;
 	ta -> ta_naddr = 1;
 #endif
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-') {
 			while (*++ap)
@@ -1438,7 +1320,6 @@ static	void arginit (char **vec) {
 						} else
 							adios (NULLCP, "%s: unknown host", pp);
 					break;
-
 #ifdef	TCP
 				case 'p':
 					if ((pp = *++vec) == NULL
@@ -1486,12 +1367,10 @@ static	void arginit (char **vec) {
 			break;
 		}
 	}
-
 	helpwidth = 0;
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if ((w = strlen (ds -> ds_name)) > helpwidth)
 			helpwidth = w;
-
 	if (ta -> ta_naddr == 0)
 		adios (NULLCP, "usage: %s -a string", myname);
 	switch (na -> na_stack) {
@@ -1500,7 +1379,6 @@ static	void arginit (char **vec) {
 	{
 		struct sockaddr_in lo_socket;
 		struct sockaddr_in *lsock = &lo_socket;
-
 		bzero ((char *) lsock, sizeof *lsock);
 		if ((hp = gethostbystring (pp = getlocalhost ())) == NULL)
 			adios (NULLCP, "%s: unknown host", pp);
@@ -1518,17 +1396,14 @@ static	void arginit (char **vec) {
 #undef	LOOPBACK
 		if ((sd = start_udp_client (lsock, 0, 0, 0)) == NOTOK)
 			adios ("failed", "start_udp_client");
-
 		bzero ((char *) isock, sizeof *isock);
 		if ((hp = gethostbystring (na -> na_domain)) == NULL)
 			adios (NULLCP, "%s: unknown host", na -> na_domain);
 		isock -> sin_family = hp -> h_addrtype;
 		isock -> sin_port = na -> na_port;
 		inaddr_copy (hp, isock);
-
 		if (join_udp_server (sd, isock) == NOTOK)
 			adios ("failed", "join_udp_server");
-
 		if ((ps = ps_alloc (dg_open)) == NULLPS
 				|| dg_setup (ps, sd, MAXDGRAM, read_udp_socket,
 							 write_udp_socket, check_udp_socket)
@@ -1557,15 +1432,12 @@ static	void arginit (char **vec) {
 	{
 		union sockaddr_osi lo_socket;
 		union sockaddr_osi *lsock = &lo_socket;
-
 		bzero ((char *) lsock, sizeof *lsock);
 		if ((sd = start_clts_client (lsock, 0, 0, 0)) == NOTOK)
 			adios ("failed", "start_clts_client");
-
 		gen2tp4 (ta, lsock);
 		if (join_clts_server (sd, lsock) == NOTOK)
 			adios ("failed", "join_udp_server");
-
 		if ((ps = ps_alloc (dg_open)) == NULLPS
 				|| dg_setup (ps, sd, MAXDGRAM, read_clts_socket,
 							 write_clts_socket, check_clts_socket)
@@ -1589,7 +1461,6 @@ static	void arginit (char **vec) {
 	default:
 		adios (NULLCP, "unknown network type 0x%x", na -> na_stack);
 		/* NOT REACHED */
-
 #ifdef	COTS
 cots:
 		;
@@ -1598,7 +1469,6 @@ cots:
 			struct TSAPconnect *tc = &tcs;
 			struct TSAPdisconnect tds;
 			struct TSAPdisconnect *td = &tds;
-
 			if (verbose) {
 				fprintf (stderr, "%s... ", taddr2str (ta));
 				fflush (stderr);
@@ -1614,7 +1484,6 @@ cots:
 					   td -> td_cc, td -> td_cc, td -> td_data);
 			}
 			fprintf (stderr, "connected\n");
-
 			if ((ps = ps_alloc (dg_open)) == NULLPS
 					|| dg_setup (ps, sd = tc -> tc_sd, MAXDGRAM, ts_read,
 								 ts_write, NULLIFP) == NOTOK) {
@@ -1628,7 +1497,6 @@ cots:
 		break;
 #endif
 	}
-
 #ifdef	SYS5
 	srand ((unsigned int) time ((long *) 0));
 #else
@@ -1680,7 +1548,6 @@ static int  _getline (char *prompt, char *buffer) {
 			clearerr (stdin);
 			if (cp == buffer)
 				longjmp (intrenv, DONE);
-
 			sticky++;
 			break;
 		}

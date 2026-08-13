@@ -78,9 +78,7 @@ int dsap_tai (int argc, char **argv) {
 
 	if(argc < 2)
 		return(NOTOK);
-
 	arg = argv[1];
-
 	switch(cmd_srch(argv[0], cmdtab)) {
 	case SYSLOG:
 		DLOG (log_dsap,LLOG_DEBUG,( "Tailor SYSLOG %s", arg));

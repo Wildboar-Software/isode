@@ -57,17 +57,14 @@ int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxli
 	OID                   req_asn;
 
 	DLOG (log_dsap, LLOG_TRACE, ("judge_ctxlist"));
-
 	for(i=0; i<req_ctxlist->pc_nctx; i++) {
 		DLOG (log_dsap, LLOG_DEBUG, ("Context (%d): id=%d, %s",
 									 i,
 									 req_ctxlist->pc_ctx[i].pc_id,
 									 oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
-
 		if(req_ctxlist->pc_ctx[i].pc_result == PC_ACCEPT)
 			req_ctxlist->pc_ctx[i].pc_result = PC_REJECTED;
 	}
-
 	for(j=0; j<ok_ctxlist->pc_nctx; j++) {
 		ok_asn = ok_ctxlist->pc_ctx[j].pc_asn;
 		for(i=0; i<req_ctxlist->pc_nctx; i++) {
@@ -75,7 +72,6 @@ int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxli
 				LLOG (log_dsap,LLOG_EXCEPTIONS,( "Reject: asn is NULLOID"));
 				continue;
 			}
-
 			if((oid_cmp(req_asn, ok_asn) == 0))
 				break;
 		}
@@ -86,21 +82,17 @@ int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxli
 			ctxlist_notok = NOTOK;
 		}
 	}
-
 #ifdef	DEBUG
 	for(i=0; i<req_ctxlist->pc_nctx; i++) {
 		DLOG(log_dsap, LLOG_DEBUG, ("ctx[%d] id = %d, res = %d.", i,
 									req_ctxlist->pc_ctx[i].pc_id,
 									req_ctxlist->pc_ctx[i].pc_result));
-
 		if(req_ctxlist->pc_ctx[i].pc_result == PC_REJECTED)
 			DLOG (log_dsap, LLOG_DEBUG, ("Context Rejected: id=%d, %s",
 										 req_ctxlist->pc_ctx[i].pc_id,
 										 oid2ode (req_ctxlist->pc_ctx[i].pc_asn)));
-
 	}
 #endif
-
 	return(ctxlist_notok);
 }
 
@@ -111,44 +103,36 @@ OID			  ctx_oid;
 	int	  i;
 
 	DLOG (log_dsap, LLOG_TRACE, ("find_ctx_id"));
-
 	for(i=0; i<pcdl->pc_nctx; i++) {
 		if(oid_cmp(ctx_oid, pcdl->pc_ctx[i].pc_asn) == 0)
 			break;
 	}
-
 	if(i < pcdl->pc_nctx)
 		return(pcdl->pc_ctx[i].pc_id);
-
 	LLOG(log_dsap, LLOG_EXCEPTIONS, ("Couldn't find context identifier %s", sprintoid(ctx_oid)));
-
 	return(NOTOK);
 }
 
 int check_dap_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, x500_da_pcdl) != OK)
 		return (NOTOK);
-
 	return (find_ctx_id (ctxlist, x500_da_as));
 }
 
 int check_dsp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, x500_ds_pcdl) != OK)
 		return (NOTOK);
-
 	return (find_ctx_id (ctxlist, x500_ds_as));
 }
 
 int check_qsp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, quipu_ds_pcdl) != OK)
 		return (NOTOK);
-
 	return (find_ctx_id (ctxlist, quipu_ds_as));
 }
 
 int check_isp_ctxlist (struct PSAPctxlist *ctxlist) {
 	if (judge_ctxlist (ctxlist, internet_ds_pcdl) != OK)
 		return (NOTOK);
-
 	return (find_ctx_id (ctxlist, internet_ds_as));
 }

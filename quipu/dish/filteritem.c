@@ -17,13 +17,11 @@ Filter          get_filter ();
 char           *TidyString ();
 
 int filteritem (char *str, Filter fltr) {
-
 	char           *ptr;
 	AttributeValue  av;
 	AttributeType   at;
 
 	fltr->flt_type = FILTER_ITEM;
-
 	if ((ptr = index (str, '=')) == NULLCP) {
 		/* set default (cn~=) */
 		fltr->FUITEM.fi_type = FILTERITEM_APPROX;
@@ -55,7 +53,6 @@ int filteritem (char *str, Filter fltr) {
 		}
 		str = ptr + 1;
 	}
-
 	if ((*str == '*') || (*str == 0)) {
 		if (*++str == 0) {
 			fltr->FUITEM.fi_type = FILTERITEM_PRESENT;
@@ -64,23 +61,19 @@ int filteritem (char *str, Filter fltr) {
 		} else
 			str--;
 	}
-
 	/* test for whether there is only the simple 'equality' case */
 	if ((ptr = index (str, '*')) == NULLCP) {
 		debug (1, ("[EXACT(%s)]", str));
-
 		fltr->FUITEM.UNAVA.ava_type = at;
 		str = TidyString (str);
 		if ((fltr->FUITEM.UNAVA.ava_value = str2AttrV (str, at->oa_syntax)) == NULLAttrV)
 			return (NOTOK);
 		return (OK);
 	}
-
 	/*
 	 * We have to parse the string for 'initial', 'final' and 'any'
 	 * components
 	 */
-
 	fltr->FUITEM.UNSUB.fi_sub_initial = NULLAV;
 	fltr->FUITEM.UNSUB.fi_sub_any = NULLAV;
 	fltr->FUITEM.UNSUB.fi_sub_final = NULLAV;
@@ -90,7 +83,6 @@ int filteritem (char *str, Filter fltr) {
 		ps_print (OPT,"Can only substring search on strings\n");
 		return (NOTOK);
 	}
-
 	debug (1, ("[ "));
 	/* This is the 'initial' section of the string - maybe NULL */
 	*ptr = '\0';
@@ -102,7 +94,6 @@ int filteritem (char *str, Filter fltr) {
 		fltr->FUITEM.UNSUB.fi_sub_initial = avs_comp_new (av);
 	}
 	str = ptr + 1;
-
 	/* Test for whether there are going to be any 'any' bits */
 	if ((ptr = rindex (str, '*')) == NULLCP) {
 		ptr = TidyString (str);
@@ -121,28 +112,22 @@ int filteritem (char *str, Filter fltr) {
 		debug (1, ("FINAL(%s) ", ptr));
 		if ((av = str2AttrV (ptr, at->oa_syntax)) == NULLAttrV)
 			return NOTOK;
-
 		fltr->FUITEM.UNSUB.fi_sub_final = avs_comp_new (av);
 	}
 	/* There are some internal 'any's to be found */
 	do {
 		AV_Sequence any_end;
-
 		if ((ptr = index (str, '*')) != NULLCP)
 			*ptr = '\0';
-
 		if (*str != 0) {
 			str = TidyString (str);
 			debug (1, ("ANY(%s) ", str));
-
 			if (*str == 0)
 				av = str2AttrV ("\\20", at->oa_syntax);
 			else
 				av = str2AttrV (str, at->oa_syntax);
-
 			if (av == NULLAttrV)
 				return NOTOK;
-
 			if (fltr->FUITEM.UNSUB.fi_sub_any == NULLAV) {
 				fltr->FUITEM.UNSUB.fi_sub_any = avs_comp_new (av);
 				any_end = fltr->FUITEM.UNSUB.fi_sub_any;
@@ -154,7 +139,6 @@ int filteritem (char *str, Filter fltr) {
 		if (ptr != NULLCP)
 			str = ptr + 1;
 	}
-
 	while (ptr != NULLCP);
 	debug (1, ("]"));
 	return (OK);

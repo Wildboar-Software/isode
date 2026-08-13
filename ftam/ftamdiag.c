@@ -26,11 +26,9 @@ out:
 			return NULL;
 		}
 		*fpc = fpm;
-
 		if ((f3 = (struct diag_element *) calloc (1, sizeof *f3)) == NULL)
 			goto no_mem;
 		fpm -> diagnostic = f3;
-
 		switch (dp -> ftd_type) {
 		case DIAG_INFORM:
 		case DIAG_TRANS:
@@ -47,9 +45,7 @@ bad_dp:
 			goto out;
 		}
 		f3 -> diagnostic__type = dp -> ftd_type;
-
 		f3 -> error__identifier = dp -> ftd_identifier;
-
 		switch (dp -> ftd_observer) {
 		case EREF_IFSU:
 		case EREF_IFPM:
@@ -74,7 +70,6 @@ bad_dp:
 				== NULL)
 			goto no_mem;
 		f3 -> error__observer -> parm = dp -> ftd_observer;
-
 		switch (dp -> ftd_source) {
 		case EREF_NONE:
 		case EREF_IFSU:
@@ -93,12 +88,10 @@ bad_dp:
 				== NULL)
 			goto no_mem;
 		f3 -> error__source -> parm = dp -> ftd_source;
-
 		if (dp -> ftd_delay != DIAG_NODELAY) {
 			f3 -> optionals |= opt_FTAM_diag_element_suggested__delay;
 			f3 -> suggested__delay = dp -> ftd_delay;
 		}
-
 		if (dp -> ftd_cc > FTD_SIZE)
 			goto bad_dp;
 		else if (dp -> ftd_cc > 0
@@ -106,10 +99,8 @@ bad_dp:
 											  dp -> ftd_cc, 1))
 				 == NULL)
 			goto no_mem;
-
 		fpc = &fpm -> next;
 	}
-
 	return fpmp;
 }
 
@@ -119,13 +110,11 @@ int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAM
 	struct diag_element *f3;
 
 	*ndiag = 0;
-
 	dp = diag, i = 0;
 	for (; fpm; fpm = fpm -> next) {
 		if (i >= NFDIAG)
 			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 							 "too many diagnostics");
-
 		f3 = fpm -> diagnostic;
 		dp -> ftd_type = f3 -> diagnostic__type;
 		dp -> ftd_identifier = f3 -> error__identifier;
@@ -137,7 +126,6 @@ int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAM
 			dp -> ftd_delay = DIAG_NODELAY;
 		if (f3 -> further__details) {
 			char   *cp;
-
 			if ((cp = qb2str (f3 -> further__details)) == NULL)
 				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 								 "out of memory");
@@ -147,11 +135,8 @@ int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAM
 			free (cp);
 		} else
 			dp -> ftd_cc = 0;
-
 		dp++, i++;
 	}
-
 	*ndiag = i;
-
 	return OK;
 }

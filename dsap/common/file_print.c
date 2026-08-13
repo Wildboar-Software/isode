@@ -27,20 +27,15 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 	int save_count;
 
 	used_temp = FALSE;
-
 	fs = (struct file_syntax *) x->av_struct;
-
 	if ((parse_file != NULLCP) && ((pathend = rindex (parse_file,'/')) != NULLCP)) {
 		val = *++pathend;
 		*pathend = 0;
 		path = parse_file;
 	}
-
 	last_heap = mem_heap;	/* put PS on general heap */
 	mem_heap = 0;
-
 	bzero (buffer,LINESIZE);
-
 	sps = ps_alloc (str_open);
 	if (str_setup (sps,buffer,LINESIZE,1) == NOTOK) {
 		mem_heap = last_heap;
@@ -48,7 +43,6 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 		return (NOTOK);
 	}
 	mem_heap = last_heap;
-
 	if (parse_rdn == NULLRDN) {
 		ps_printf (sps,"/tmp/%s_XXXXXX",at->oa_ot.ot_name);
 		used_temp = TRUE;
@@ -68,22 +62,17 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 	}
 	*sps->ps_ptr = 0;
 	ps_free (sps);
-
 #if	defined(SYS5) && !defined(SVR4)
-
 	if ((full) && ((int)strlen(buffer) > MAXFILENAMELEN)) {
 		char *nptr, *mptr;
 		char nbuf [LINESIZE];
 		int i;
-
 		nptr = buffer;
 		mptr = nbuf;
 		used_temp = TRUE;
-
 		for (i=0 ; (*nptr!=0) && (i < MAXFILENAMELEN-6) ; nptr++)
 			if (isalpha(*nptr))
 				*mptr++ = *nptr, i++;
-
 		strcpy (mptr,"XXXXXX");
 		if (path != NULLCP) {
 			fs->fs_name = strdup (_isodefile(path,nbuf);
@@ -94,19 +83,16 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 		}
 		if (pathend != NULLCP)
 			*pathend = val;
-
 		fs->fs_mode = 0;
 		return (OK);
 	}
 #endif
-
 	if (path != NULLCP)
 		fs->fs_name = strdup (_isodefile(path,buffer));
 	else
 		fs->fs_name = strdup (buffer);
 	if (pathend != NULLCP)
 		*pathend = val;
-
 	return (OK);
 }
 
@@ -117,7 +103,6 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 	AttributeType save_at;
 
 	fs = (struct file_syntax *) y->av_struct;
-
 	if (format != EDBOUT) {
 		if (fs->fs_attr)
 			AttrV_print (ps,fs->fs_attr,format);
@@ -126,9 +111,7 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 	} else {
 		FILE * fptr;
 		PS fps;
-
 		ps_print (ps,"{FILE}");
-
 		if (fs->fs_name == NULLCP) {
 			save_at = last_at;
 			if (dflt_attr_file (last_at,y,0) == NOTOK) {
@@ -143,14 +126,11 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 			}
 		} else if (! (fs->fs_mode & FS_DEFAULT))
 			ps_print (ps,fs->fs_name);
-
 		if (fs->fs_attr == NULLAttrV)
 			/* already exists */
 			return;
-
 		if (fs->fs_mode & FS_CREATE)	/* already written */
 			return;
-
 		um = umask (0177);
 		if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
 			umask (um);
@@ -178,7 +158,6 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 		fclose (fptr);
 		ps_free (fps);
 		fs->fs_mode |= FS_CREATE;
-
 		DLOG (log_dsap,LLOG_DEBUG,("Written photo file '%s'",fs->fs_name));
 	}
 	return;
@@ -195,22 +174,15 @@ void as_write_files (Attr_Sequence as, char *where)
 	static unsigned long loopcount = 0;
 
 	for ( ; as != NULLATTR; as = as -> attr_link )
-
 		for ( avs = as -> attr_value ; avs != NULLAV ;
 				avs = avs -> avseq_next )
-
 			if ( avs -> avseq_av.av_syntax == AV_FILE ) {
-
 				fs = (struct file_syntax *) avs->avseq_av.av_struct;
-
 				if (fs->fs_name != NULLCP || fs->fs_attr == NULLAttrV)
 					continue ;
-
 				sprintf (buffer,"%s%D_%s",where,loopcount++,
 						 as -> attr_type -> oa_ot.ot_name);
-
 				fs->fs_name = strdup(buffer);
-
 				um = umask (0177);
 				if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
 					umask (um);
@@ -241,17 +213,13 @@ void as_write_files (Attr_Sequence as, char *where)
 					return;
 				}
 				AttrV_print (fps,fs->fs_attr,FILEOUT);
-
 				fs->fs_mode &= ~FS_DEFAULT;
 				fs->fs_mode |= FS_CREATE;
 				fs->fs_mode |= FS_TMP;
-
 				AttrV_free (fs->fs_attr);
 				fs->fs_attr = NULLAttrV;
-
 				fclose (fptr);
 				ps_free (fps);
-
 				DLOG (log_dsap,LLOG_DEBUG,
 					  ("Written photo file (tmp) '%s'",fs->fs_name));
 			}

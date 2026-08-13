@@ -28,19 +28,15 @@ int check_avs_schema (AttributeType at, AV_Sequence avs_oc) {
 				break;
 		if (optr != NULLTABLE_SEQ)
 			break;
-
 		for (optr=oc->oc_may; optr!=NULLTABLE_SEQ;  optr=optr->ts_next)
 			if (at == optr->ts_oa)
 				break;
 		if (optr != NULLTABLE_SEQ)
 			break;
 	}
-
 	if (optr == NULLTABLE_SEQ)
 		return (NOTOK);
-
 	return OK;
-
 }
 
 int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
@@ -53,18 +49,13 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 	extern OID alias_oc;
 
 	shadow_entry (eptr);
-
 	if (eptr->e_data != E_DATA_MASTER)
 		return (OK);	/* only check schema of MASTERed entries */
-
 	if (eptr->e_parent == NULLENTRY)
 		return (OK);    /* no schema for root */
-
 	avs_oc = avs = eptr->e_oc;
-
 	if ((at = as_find_type (eptr->e_parent->e_attributes,at_schema)) != NULLATTR) {
 		/* what should default be !!! */
-
 		tavs = at->attr_value;
 		/* make sure object class is allowed */
 		if (test_schema (tavs,avs) != OK) {
@@ -74,7 +65,6 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 			return (NOTOK);
 		}
 	}
-
 	/* now check 'must contain' attributes */
 	for (; avs != NULLAV; avs = avs->avseq_next) {
 		oc = (objectclass *) avs->avseq_av.av_struct;
@@ -83,7 +73,6 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 			for (; at!=NULLATTR; at=at->attr_link)
 				if (at->attr_type == optr->ts_oa)
 					break;
-
 			if (at == NULLATTR) {
 				if (eptr->e_iattr) {
 					if (eptr->e_iattr->i_always
@@ -100,13 +89,10 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 			}
 		}
 	}
-
 	/* Now try the 'may' contain bits */
 	/* BUT not if "alias" */
-
 	if ( check_in_oc (alias_oc, avs_oc) )
 		return (OK);
-
 	at = (as == NULLATTR) ? eptr->e_attributes : as;
 	for (; at!=NULLATTR; at=at->attr_link) {
 		if (check_avs_schema (at->attr_type,avs_oc) == NOTOK)
@@ -118,7 +104,6 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 				return (NOTOK);
 			}
 	}
-
 	if ((as == NULLATTR) && eptr->e_iattr) {
 		/* Check inherited ones as well */
 		for (at=eptr->e_iattr->i_default; at!=NULLATTR; at=at->attr_link) {
@@ -137,10 +122,8 @@ int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error) {
 				return (NOTOK);
 			}
 		}
-
 	}
 	return (OK);
-
 }
 
 int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error) {
@@ -149,12 +132,9 @@ int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error) {
 	AV_Sequence tavs = NULLAV;
 
 	DLOG (log_dsap,LLOG_TRACE,("check schema type"));
-
 	if (eptr->e_parent == NULLENTRY)
 		return (OK);    /* no schema for root */
-
 	avs = eptr->e_oc;
-
 	if ((at = as_find_type (eptr->e_parent->e_attributes,at_schema)) != NULLATTR) {
 		tavs = at->attr_value;
 		if (test_schema (tavs,avs) != OK) {
@@ -164,13 +144,10 @@ int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error) {
 			return (NOTOK);
 		}
 	}
-
 	/* Now try the 'may' contain bits */
 	/* BUT not if "alias" */
-
 	if ( check_in_oc (alias_oc, avs) )
 		return (OK);
-
 	if (check_avs_schema(attr,avs) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("attribute type '%s' not allowed in the specified objectclass",attr2name(attr,OIDPART)));
 		error->dse_type = DSE_UPDATEERROR;
@@ -178,7 +155,6 @@ int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error) {
 		return (NOTOK);
 	}
 	return (OK);
-
 }
 
 int test_schema (AV_Sequence tree, AV_Sequence oc) {
@@ -189,7 +165,6 @@ int test_schema (AV_Sequence tree, AV_Sequence oc) {
 
 	if (oc == NULLAV)
 		return (NOTOK);
-
 	for (aptr=oc; aptr!= NULLAV; aptr=aptr->avseq_next) {
 		found = FALSE;
 		for (tavs=tree; tavs!=NULLAV ; tavs=tavs->avseq_next) {
@@ -220,11 +195,9 @@ int test_hierarchy (    /* see if b in oc a */
 
 	if ( a == b )
 		return OK;
-
 	for (oidseq = a->oc_hierachy; oidseq != NULLOCSEQ; oidseq = oidseq->os_next)
 		if (test_hierarchy (oidseq->os_oc,b) == OK)
 			return (OK);
-
 	return (NOTOK);
 }
 
@@ -238,10 +211,8 @@ int check_oc_hierarchy (AV_Sequence avs) {
 
 	if (topoc == NULLOBJECTCLASS)
 		topoc = str2oc (TOP_OC);
-
 	/* Check the OC attribute has all the hierarchy elements */
 	/* ALWAYS the case with Quipu - but other implementations... */
-
 	for ( avs1 = avs; avs1 != NULLAV ; avs1=avs1->avseq_next) {
 		oc1 = (objectclass *) avs1->avseq_av.av_struct;
 		for (oidseq = oc1->oc_hierachy; oidseq != NULLOCSEQ; oidseq = oidseq->os_next) {

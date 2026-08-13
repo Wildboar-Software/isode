@@ -47,36 +47,26 @@ int dsa_init (void) {
 	Entry akid;
 
 	check_dsa_known_oids ();
-
 	unrav_fn = (IFP) real_unravel_attribute;
 	schema_fn = (IFP) real_check_schema;
 	restart_fn = (IFP) attempt_restart;
-
 	if (( manager = AttrT_new (MANAGER_OID)) == NULLAttrT)
 		fatal (-1,"Manager - unknown attribute - check oid tables");
-
 	LLOG (log_dsap,LLOG_NOTICE,("dsa name %s",mydsaname));
-
 	if ((mydsadn = str2dn (mydsaname)) == NULLDN) {
 		fatal (-2,"Invalid dsa name");
 	}
-
 	if ((my_entry = load_dsa_cache_entry (mydsadn)) == NULLENTRY) {
 		if (parse_status != 0)
 			fatal (-3,"Can't load EDB subtree holding my DSA entry");
-
 		if (database_root != NULLENTRY)
 			fatal (-4,"Found EDB - but my DSA entry not in it!");
-
 		fatal (-4,"can't locate my DSA entry in local database!");
-
 	} else if (my_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
 		shadow_myentry ();
-
 	if (get_entry_passwd (my_entry->e_attributes) == NULLCP)
 		/* This is not a fatal error, but some remote operations may fail */
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't find my own PASSWORD"));
-
 	if (dsa_real_attr) {
 		if (as_cmp (my_entry->e_attributes,dsa_real_attr) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
@@ -88,39 +78,33 @@ int dsa_init (void) {
 		}
 	} else
 		dsa_real_attr = as_cpy (my_entry->e_attributes);
-
 	if (my_entry->e_dsainfo != NULLDSA) {
 		/* get manager attribute */
 		if ((as = entry_find_type(my_entry,manager)) == NULLATTR )
 			fatal (-5,"Manager attribute missing in my own entry");
 		AttrT_free (manager);
 		super_user = avs_cpy ((AV_Sequence)as->attr_value);
-
 		if (quipu_ctx_supported(my_entry) < 5) {
 			LLOG(log_dsap,LLOG_EXCEPTIONS,(
 					 "Adding QUIPU and/or Internet DSP to application context!!!"));
 			set_context (my_entry);
 		}
-
 		my_entry->e_dsainfo->dsa_version =
 			TidyString (strdup (quipuversion));
 		if (as = entry_find_type (my_entry,at_version))
 			if ( strcmp (
 						(char *) as->attr_value->avseq_av.av_struct,
 						my_entry->e_dsainfo->dsa_version) != 0) {
-
 				if (as->attr_value->avseq_av.av_struct)
 					free (as->attr_value->avseq_av.av_struct);
 				as->attr_value->avseq_av.av_struct =
 					(caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
-
 				if (as = as_find_type (dsa_real_attr,at_version)) {
 					if (as->attr_value->avseq_av.av_struct)
 						free (as->attr_value->avseq_av.av_struct);
 					as->attr_value->avseq_av.av_struct =
 						(caddr_t) strdup (my_entry->e_dsainfo->dsa_version);
 				}
-
 				if (parse_status == 0)
 					if (my_entry->e_data == E_DATA_MASTER) {
 						if (my_entry->e_parent != NULLENTRY)
@@ -138,36 +122,28 @@ int dsa_init (void) {
 						write_dsa_entry(my_entry);
 					}
 			}
-
 	} else
 		fatal (-6,"No edbinfo attribute in my own entry");
-
 	if (parse_status != 0)
 		loadstate = FALSE;
-
 	for (avs = my_entry->e_dsainfo->dsa_attr ; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
 		dsainfo = (struct edb_info *) avs->avseq_av.av_struct;
 		if ((newentry = make_path (dsainfo->edb_name)) == NULLENTRY)
 			continue;
-
 		subtree_load (newentry,dsainfo->edb_name);
 		if (parse_status != 0)
 			loadstate = FALSE;
 	}
-
 	if (loadstate == FALSE)
 		fatal (-7,"DSA Halted");
-
 	if ((akid = (Entry) avl_getone(database_root->e_children))
 			!= NULLENTRY )
 		database_root->e_data = akid->e_data;
-
 	/* Load cached EDB files - if any */
 	if ((as = get_cacheEDB()) != NULLATTR) {
 		time (&timenow);
-
 		for (avs = as -> attr_value; avs != NULLAV; avs = avs -> avseq_next) {
 			if ((newentry = make_path ((DN)avs->avseq_av.av_struct)) == NULLENTRY)
 				continue;
@@ -177,13 +153,10 @@ int dsa_init (void) {
 				newentry->e_age = timenow;
 		}
 	}
-
 #ifndef TURBO_DISK
 	free_phylinebuf();	/* Large buffer used in loading text database */
 #endif
-
 	return (OK);
-
 }
 
 static Entry
@@ -195,7 +168,6 @@ load_dsa_cache_entry (DN dn) {
 	int fail = FALSE;
 
 	tmp = dn_cpy (dn);
-
 	if (tmp->dn_parent == NULLDN) {
 		database_root = subtree_load (NULLENTRY,NULLDN);
 		dn_free (tmp);
@@ -205,11 +177,9 @@ load_dsa_cache_entry (DN dn) {
 			load_pseudo_attrs (res->e_data);
 		return res;
 	}
-
 	database_root = subtree_load (NULLENTRY,NULLDN);
 	if (parse_status != 0)
 		fail = TRUE;
-
 	for (ptr=tmp; ptr->dn_parent != NULLDN; ptr=ptr->dn_parent) {
 		trail = ptr;
 		tmp2 = trail->dn_parent;
@@ -218,22 +188,15 @@ load_dsa_cache_entry (DN dn) {
 			parse_error ("Make_path failed",NULLCP);
 		else
 			subtree_load (newentry,tmp);
-
 		trail->dn_parent = tmp2;
-
 		if (parse_status != 0)
 			fail = TRUE;
-
 	}
-
 	dn_free (tmp);
-
 	if ((res = local_find_entry_aux (dn,TRUE)) != NULLENTRY)
 		load_pseudo_attrs (res->e_data);
-
 	if (fail)
 		return NULLENTRY;
-
 	return res;
 }
 

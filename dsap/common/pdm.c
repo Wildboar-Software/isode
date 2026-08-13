@@ -41,35 +41,29 @@ static void pdmfree (struct pref_deliv *pdm) {
 
 static int pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
 	/* matching here is a bit dubious !!! */
-
 	for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
 			a = a->pd_next, b=b->pd_next)
 		if ( a->deliv != b->deliv )
 			return (a->deliv > b->deliv ? 1 : -1);
-
 	if ( a != b)
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-
 }
 
 static struct pref_deliv *pdmcpy (struct pref_deliv *a) {
 	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
 	c = result; /* to keep lint happy */
-
 	for (; a != (struct pref_deliv *) NULL; a = a->pd_next) {
 		b = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
 		b -> deliv = a -> deliv;
-
 		if (result == (struct pref_deliv *) NULL)
 			result = b;
 		else
 			c->pd_next = b;
 		c = b;
 	}
-
 	b->pd_next = (struct pref_deliv *) NULL;
 	return (result);
 }
@@ -81,11 +75,9 @@ static struct pref_deliv *pdmparse (char *str) {
 	char * mark = NULLCP;
 
 	b = result; /* to keep lint happy */
-
 	for (;;) {
 		mark = NULLCP;
 		a = (struct pref_deliv *) smalloc (sizeof (struct pref_deliv));
-
 		if ( (ptr=index (str,'$')) != NULLCP) {
 			*ptr-- = 0;
 			if (isspace (*ptr)) {
@@ -94,18 +86,15 @@ static struct pref_deliv *pdmparse (char *str) {
 			}
 			ptr++;
 		}
-
 		if ((a -> deliv = cmd_srch (str,pdm_table)) == -1) {
 			parse_error ("Unknown method %s",str);
 			return ((struct pref_deliv *) NULL);
 		}
-
 		if (result == (struct pref_deliv *) NULL)
 			result = a;
 		else
 			b->pd_next = a;
 		b = a;
-
 		if (ptr != NULLCP) {
 			*ptr++ = '$';
 			if (mark != NULLCP)
@@ -116,7 +105,6 @@ static struct pref_deliv *pdmparse (char *str) {
 			break;
 	}
 	a -> pd_next = (struct pref_deliv *) NULL ;
-
 	return (result);
 }
 
@@ -130,9 +118,7 @@ int format;
 	for (; pdm != (struct pref_deliv *) NULL; pdm = pdm->pd_next) {
 		if (prefix != NULLCP)
 			ps_print (ps,prefix);
-
 		ps_print (ps,rcmd_srch (pdm->deliv,pdm_table));
-
 		if (format == READOUT)
 			prefix = " or ";
 		else
@@ -146,7 +132,6 @@ struct pref_deliv * m;
 	PE ret_pe;
 
 	encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 

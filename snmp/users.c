@@ -104,7 +104,6 @@ static int get_pw (int offset) {
 		lastq = quantum;
 		return OK;
 	}
-
 	free_pw ();
 	if ((pw_fd = open ("/etc/passwd", O_RDONLY)) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/passwd", "unable to read");
@@ -130,7 +129,6 @@ oops:
 		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/passwd: empty file");
 		goto oops;
 	}
-
 	if ((pw_data = malloc ((unsigned) (cc + 1))) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		goto oops;
@@ -155,12 +153,10 @@ losing:
 	*dp = 0;
 	pw_st = st;	/* struct copy */
 	lastq = quantum;
-
 	i = 1;
 	for (ep = (dp = pw_data) + cc; dp < ep; )
 		if (*dp++ == '\n')
 			i++;
-
 	if ((pw_head = (struct pw *) calloc ((unsigned) i, sizeof *pw_head))
 			== NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
@@ -171,31 +167,26 @@ losing:
 		flock (pw_fd, LOCK_UN);
 		close (pw_fd), pw_fd = NOTOK;
 	}
-
 	for (pw = pw_head, dp = pw_data; dp < ep; pw++) {
 again:
 		;
 		pw -> pw_pw.pw_name = dp;
-
 		for (;;) {
 			if (*dp == ':') {
 				unsigned int *ip;
 				char   *cp;
 				struct pw *qw;
-
 				*dp++ = 0;
 				while (++dp < ep)
 					if (*dp == '\n') {
 						dp++;
 						break;
 					}
-
 				for (cp = pw -> pw_pw.pw_name, ip = pw -> pw_instance, i = 0;
 						*cp;
 						i++)
 					*ip++ = *cp++ & 0xff;
 				pw -> pw_insize = i;
-
 				for (qw = pw_head; qw < pw; qw++)
 					if (elem_cmp (pw -> pw_instance, pw -> pw_insize,
 								  qw -> pw_instance, qw -> pw_insize) == 0) {
@@ -206,21 +197,17 @@ again:
 							goto again;
 						goto out;
 					}
-
 				pw -> pw_status = PW_OTHER;
 				break;
 			}
-
 			if (*dp++ == '\n' || dp >= ep)
 				break;
 		}
 	}
 out:
 	;
-
 	if (pw - pw_head > 1)
 		qsort ((char *) pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
-
 	return OK;
 }
 
@@ -230,7 +217,6 @@ static void fill_pw (struct passwd *pwp) {
 
 	if (dp = index (cp = pwp -> pw_name + strlen (pwp -> pw_name) + 1, '\n'))
 		*dp = 0;
-
 #ifdef PW_QUOTA
 	pwp -> pw_quota = -1;
 #endif
@@ -264,7 +250,6 @@ static void free_pw (void) {
 	if (pw_head) {
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
 			struct passwd *pwp = &pw -> pw_pw;
-
 			if (pw -> pw_malloc) {
 				if (pwp -> pw_name)
 					free (pwp -> pw_name);
@@ -335,7 +320,6 @@ static int get_gr (int offset) {
 		lastq = quantum;
 		return OK;
 	}
-
 	free_gr ();
 	if ((gr_fd = open ("/etc/group", O_RDONLY)) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, "/etc/group", "unable to read");
@@ -361,7 +345,6 @@ oops:
 		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/group: empty file");
 		goto oops;
 	}
-
 	if ((gr_data = malloc ((unsigned) (cc + 1))) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		goto oops;
@@ -386,12 +369,10 @@ losing:
 	*dp = 0;
 	gr_st = st;	/* struct copy */
 	lastq = quantum;
-
 	i = 1;
 	for (ep = (dp = gr_data) + cc; dp < ep; )
 		if (*dp++ == '\n')
 			i++;
-
 	if ((gr_head = (struct gr *) calloc ((unsigned) i, sizeof *gr_head))
 			== NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
@@ -402,32 +383,27 @@ losing:
 		flock (gr_fd, LOCK_UN);
 		close (gr_fd), gr_fd = NOTOK;
 	}
-
 	for (gr = gr_head, dp = gr_data; dp < ep; gr++) {
 again:
 		;
 		gr -> gr_serial = gr - gr_head;
 		gr -> gr_gr.gr_name = dp;
-
 		for (;;) {
 			if (*dp == ':') {
 				unsigned int *ip;
 				char   *cp;
 				struct gr *qw;
-
 				*dp++ = 0;
 				while (++dp < ep)
 					if (*dp == '\n') {
 						dp++;
 						break;
 					}
-
 				for (cp = gr -> gr_gr.gr_name, ip = gr -> gr_instance, i = 0;
 						*cp;
 						i++)
 					*ip++ = *cp++ & 0xff;
 				gr -> gr_insize = i;
-
 				for (qw = gr_head; qw < gr; qw++)
 					if (elem_cmp (gr -> gr_instance, gr -> gr_insize,
 								  qw -> gr_instance, qw -> gr_insize) == 0) {
@@ -438,21 +414,17 @@ again:
 							goto again;
 						goto out;
 					}
-
 				gr -> gr_status = GR_OTHER;
 				break;
 			}
-
 			if (*dp++ == '\n' || dp >= ep)
 				break;
 		}
 	}
 out:
 	;
-
 	if (gr - gr_head > 1)
 		qsort ((char *) gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
-
 	return OK;
 }
 
@@ -513,7 +485,6 @@ static struct gr *get_grent (unsigned int *ip, int len, int isnext) {
 		case 1:
 			return (isnext ? gr : NULL);
 		}
-
 	return NULL;
 }
 
@@ -537,16 +508,13 @@ static int get_gu (int offset) {
 		return NOTOK;
 	if (gu_head)
 		return OK;
-
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		if (!gr -> gr_gr.gr_mem) {
 			char  *dp;
 			struct group *grp = &gr -> gr_gr;
-
 			if (!grp -> gr_passwd)
 				fill_gr (grp);
 			dp = grp -> gr_passwd + strlen (grp -> gr_passwd) + 1;
-
 			i = 0;
 			if (cp = index (dp, ':')) {
 				for (dp = ++cp; dp = index (dp, ','); dp++)
@@ -554,7 +522,6 @@ static int get_gu (int offset) {
 				if (*cp)
 					i++;
 			}
-
 			if (!(grp -> gr_mem = (char **) calloc ((unsigned) (i + 1),
 													sizeof *grp -> gr_mem))) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
@@ -562,11 +529,9 @@ static int get_gu (int offset) {
 			}
 			if (!i)
 				continue;
-
 			dp = cp;
 			for (ap = grp -> gr_mem;; ap++) {
 				char **bp;
-
 again:
 				;
 				if (i-- <= 0)
@@ -582,28 +547,23 @@ again:
 						goto again;
 					}
 			}
-
 			if (ap -  grp -> gr_mem > 1)
 				qsort ((char *) grp -> gr_mem, ap -  grp -> gr_mem,
 					   sizeof *grp -> gr_mem, gm_compar);
 		}
-
 	i = 1;
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		for (ap = gr -> gr_gr.gr_mem; *ap; ap++)
 			i++;
-
 	if ((gu_head = (struct gu *) calloc ((unsigned) i, sizeof *gu_head))
 			== NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		return NOTOK;
 	}
-
 	gu = gu_head;
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		for (ap = gr -> gr_gr.gr_mem; *ap; ap++) {
 			unsigned int *ip;
-
 			ip = gu -> gu_instance, i = 0;
 			for (cp = gr -> gr_gr.gr_name; *cp; i++)
 				*ip++ = *cp++ & 0xff;
@@ -611,16 +571,13 @@ again:
 			for (cp = *ap; *cp; i++)
 				*ip++ = *cp++ & 0xff;
 			gu -> gu_insize = i;
-
 			gu -> gu_serial = gr -> gr_serial;
 			gu -> gu_user = *ap;
 			gu -> gu_status = GU_OTHER;
 			gu++;
 		}
-
 	if (gu - gu_head > 1)
 		qsort ((char *) gu_head, gu -gu_head, sizeof *gu_head, gu_compar);
-
 	return OK;
 }
 
@@ -641,7 +598,6 @@ static struct gu *get_guent (unsigned int *ip, int len, int isnext) {
 		case 1:
 			return (isnext ? gu : NULL);
 		}
-
 	return NULL;
 }
 
@@ -672,7 +628,6 @@ losing:
 		;
 		return generr (offset);
 	}
-
 	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		goto losing;
@@ -693,40 +648,33 @@ try_again:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((pw = pw_head) == NULL || pw -> pw_pw.pw_name == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, pw -> pw_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - pw -> pw_insize;
 			jp = pw -> pw_instance;
 			for (i = pw -> pw_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((pw = get_pwent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - pw -> pw_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = pw -> pw_instance;
 			for (i = pw -> pw_insize; i > 0; i--)
@@ -737,7 +685,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	pwp = &pw -> pw_pw;
 	switch (ifvar) {
 	case userName:
@@ -749,7 +696,6 @@ try_again:
 			fill_pw (pwp);
 		break;
 	}
-
 	switch (ifvar) {
 	case userName:
 		return o_string (oi, v, pwp -> pw_name,  strlen (pwp -> pw_name));
@@ -768,17 +714,14 @@ try_again:
 	case userGroup: {
 		char    buffer[BUFSIZ];
 		struct gr *gr;
-
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			struct group *grp = &gr -> gr_gr;
-
 			if (!grp -> gr_passwd)
 				fill_gr (grp);
 			if (pwp -> pw_gid == grp -> gr_gid)
 				return o_string (oi, v, grp -> gr_name,
 								 strlen (grp -> gr_name));
 		}
-
 		sprintf (buffer, "%d", pwp -> pw_gid);
 		return o_string (oi, v, buffer, strlen (buffer));
 	}
@@ -835,7 +778,6 @@ static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pw (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-
 	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
 			&& get_gr (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
@@ -846,14 +788,12 @@ static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			== NULL) {
 		unsigned int *jp;
 		char    name[PW_SIZE + 1];
-
 		if (i > PW_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
 			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
-
 		i = 0;
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
 			i++;
@@ -880,10 +820,8 @@ no_mem:
 				if (pwp -> pw_shell)
 					free (pwp -> pw_shell);
 			}
-
 			return int_SNMP_error__status_genErr;
 		}
-
 		bzero ((char *)	(pw = (pw_head = pw) + i), sizeof *pw);
 		pw -> pw_insize = oid -> oid_nelem - ot -> ot_name -> oid_nelem;
 		for (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -907,7 +845,6 @@ no_mem:
 #endif
 		pw -> pw_malloc = pw -> pw_new = 1;
 		pw -> pw_status = PW_OTHER;
-
 		pw++;
 		bzero ((char *) pw, sizeof *pw);
 		if (pw - pw_head > 1)
@@ -923,7 +860,6 @@ no_mem:
 		pwp = &pw -> pw_pw;
 	} else if (!(pwp = &pw -> pw_pw) -> pw_passwd)
 		fill_pw (pwp);
-
 	if (!pwp -> pw_uid)
 		goto bad_value;
 	if (os == NULLOS) {
@@ -931,7 +867,6 @@ no_mem:
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case userPasswd:
 	case userComment:
@@ -951,14 +886,11 @@ losing:
 				;
 				advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 				result = int_SNMP_error__status_genErr;
-
 you_lose:
 				;
 				free_pw ();
-
 				return result;
 			}
-
 			pw -> pw_malloc = 1;
 		}
 		break;
@@ -966,7 +898,6 @@ you_lose:
 	default:
 		break;
 	}
-
 	pw_touched++;
 	switch (ifvar) {
 	case userPasswd:
@@ -1009,21 +940,17 @@ bad_value:
 		{
 			int	gid;
 			struct gr *gr;
-
 			for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 				if (strcmp (gr -> gr_gr.gr_name, cp) == 0) {
 					struct group *grp = &gr -> gr_gr;
-
 					if (!grp -> gr_passwd)
 						fill_gr (grp);
-
 					pwp -> pw_gid = grp -> gr_gid;
 done_gid:
 					;
 					free (cp);
 					return int_SNMP_error__status_noError;
 				}
-
 			if (sscanf (cp, "%d", &gid) == 1) {
 				pwp -> pw_gid = gid;
 				goto done_gid;
@@ -1065,7 +992,6 @@ do_string:
 		}
 		if (ifvar == userHome) {
 			char *dp;
-
 			if (*cp != '/') {
 				free (cp);
 				goto bad_value;
@@ -1124,7 +1050,6 @@ static int o_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gr (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -1143,40 +1068,33 @@ try_again:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((gr = gr_head) == NULL || gr -> gr_gr.gr_name == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, gr -> gr_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - gr -> gr_insize;
 			jp = gr -> gr_instance;
 			for (i = gr -> gr_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((gr = get_grent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - gr -> gr_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = gr -> gr_instance;
 			for (i = gr -> gr_insize; i > 0; i--)
@@ -1187,7 +1105,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	grp = &gr -> gr_gr;
 	switch (ifvar) {
 	case groupName:
@@ -1199,7 +1116,6 @@ try_again:
 			fill_gr (grp);
 		break;
 	}
-
 	switch (ifvar) {
 	case groupName:
 		return o_string (oi, v, grp -> gr_name,  strlen (grp -> gr_name));
@@ -1238,7 +1154,6 @@ static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gr (offset) == NOTOK || get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-
 	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
@@ -1247,14 +1162,12 @@ static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			== NULL) {
 		unsigned int *jp;
 		char    name[GR_SIZE + 1];
-
 		if (i > GR_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
 			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
-
 		i = 0;
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 			i++;
@@ -1271,10 +1184,8 @@ no_mem:
 				if (grp -> gr_passwd)
 					free (grp -> gr_passwd);
 			}
-
 			return int_SNMP_error__status_genErr;
 		}
-
 		bzero ((char *)	(gr = (gr_head = gr) + i), sizeof *gr);
 		gr -> gr_insize = oid -> oid_nelem - ot -> ot_name -> oid_nelem;
 		for (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1293,7 +1204,6 @@ no_mem:
 			goto no_mem;
 		gr -> gr_malloc = 1;
 		gr -> gr_status = GR_OTHER;
-
 		gr++;
 		bzero ((char *) gr, sizeof *gr);
 		if (gr - gr_head > 1)
@@ -1309,13 +1219,11 @@ no_mem:
 		grp = &gr -> gr_gr;
 	} else if (!(grp = &gr -> gr_gr) -> gr_passwd)
 		fill_gr (grp);
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case groupPasswd:
 		if (!gr -> gr_malloc) {
@@ -1325,14 +1233,11 @@ losing:
 				;
 				advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 				result = int_SNMP_error__status_genErr;
-
 you_lose:
 				;
 				free_gr ();
-
 				return result;
 			}
-
 			gr -> gr_malloc = 1;
 		}
 		break;
@@ -1340,7 +1245,6 @@ you_lose:
 	default:
 		break;
 	}
-
 	gr_touched++;
 	switch (ifvar) {
 	case groupPasswd:
@@ -1408,7 +1312,6 @@ static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gu (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	switch (offset) {
 	case type_SNMP_SMUX__PDUs_get__request:
@@ -1425,38 +1328,32 @@ static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((gu = gu_head) == NULL || gu -> gu_user == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, gu -> gu_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - gu -> gu_insize;
 			jp = gu -> gu_instance;
 			for (i = gu -> gu_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	j;
-
 			if ((gu = get_guent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - gu -> gu_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = gu -> gu_instance;
 			for (i = gu -> gu_insize; i > 0; i--)
@@ -1467,7 +1364,6 @@ static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case grUserStatus:
 		return o_integer (oi, v, gu -> gu_status);
@@ -1490,7 +1386,6 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-
 	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
@@ -1501,7 +1396,6 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		char    group[GU_SIZE + 1],
 				user[PW_SIZE + 1];
 		struct gr *gr;
-
 		if (i > GU_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = group; i-- > 0; ip++, cp++) {
@@ -1524,7 +1418,6 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		*cp = 0;
 		if (cp == user)
 			return int_SNMP_error__status_noSuchName;
-
 		i = 0;
 		if (gu_head)
 			for (gu = gu_head; gu -> gu_user; gu++)
@@ -1537,7 +1430,6 @@ no_mem:
 			advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 			return int_SNMP_error__status_genErr;
 		}
-
 		bzero ((char *)	(gu = (gu_head = gu) + i), sizeof *gu);
 		gu -> gu_insize = oid -> oid_nelem - ot -> ot_name -> oid_nelem;
 		for (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1550,7 +1442,6 @@ no_mem:
 			goto no_mem;
 		gu -> gu_malloc = 1;
 		gu -> gu_status = GU_OTHER;
-
 		gu++;
 		bzero ((char *) gu, sizeof *gu);
 		if (gu - gu_head > 1)
@@ -1565,13 +1456,11 @@ no_mem:
 			return int_SNMP_error__status_noSuchName;
 		}
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	gr_touched++;
 	switch (ifvar) {
 	case grUserStatus:
@@ -1579,7 +1468,6 @@ no_mem:
 bad_value:
 			;
 			free_gr ();
-
 			return int_SNMP_error__status_badValue;
 		}
 		i = *((integer *) value);
@@ -1614,7 +1502,6 @@ static char *mycrypt (char *s) {
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
 	salt[2] = 0;
-
 	return crypt (s, salt);
 }
 
@@ -1660,7 +1547,6 @@ void init_users (void) {
 		ot -> ot_getfnx = o_user,
 			  ot -> ot_setfnx = s_user,
 					ot -> ot_info = (caddr_t) userStatus;
-
 	if (ot = text2obj ("groupName"))
 		ot -> ot_getfnx = o_group,
 			  ot -> ot_info = (caddr_t) groupName;
@@ -1676,7 +1562,6 @@ void init_users (void) {
 		ot -> ot_getfnx = o_group,
 			  ot -> ot_setfnx = s_group,
 					ot -> ot_info = (caddr_t) groupStatus;
-
 	if (ot = text2obj ("grUserStatus"))
 		ot -> ot_getfnx = o_gruser,
 			  ot -> ot_setfnx = s_gruser,
@@ -1743,16 +1628,13 @@ void sync_users (int cor) {
 			advise (LLOG_EXCEPTIONS, "",
 					"unable to change mode of %s to 0%o",
 					tmpfil, pw_st.st_mode & 0777);
-
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
 			if (!pw -> pw_pw.pw_passwd)
 				fill_pw (&pw -> pw_pw);
 		if ((npw = pw - pw_head) > 1)
 			qsort ((char *) pw_head, npw, sizeof *pw_head, pw_sort);
-
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
 			struct passwd *pwp = &pw -> pw_pw;
-
 			if (pw -> pw_status == PW_INVALID) {
 				invalid = 1;
 				continue;
@@ -1767,12 +1649,10 @@ void sync_users (int cor) {
 				advise (LLOG_EXCEPTIONS, pwp -> pw_dir,
 						"unable to set permissions for %s", pwp -> pw_dir);
 		}
-
 		fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
 		fclose (fp);
-
 		if (iserr)
 			unlink (tmpfil);
 		else {
@@ -1792,12 +1672,10 @@ void sync_users (int cor) {
 		}
 		if (npw > 1)
 			qsort ((char *) pw_head, npw, sizeof *pw_head, pw_compar);
-
 flush_pw:
 		;
 		if (invalid)
 			free_pw ();
-
 check_gr:
 		;
 		if (!gr_touched)
@@ -1817,7 +1695,6 @@ check_gr:
 			advise (LLOG_EXCEPTIONS, "",
 					"unable to change mode of %s to 0%o",
 					tmpfil, gr_st.st_mode & 0777);
-
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 #ifdef	not_needed	/* call to get_gu (offset) from s_group does this... */
 			if (!gr -> gr_gr.gr_passwd)
@@ -1827,11 +1704,9 @@ check_gr:
 		}
 		if ((ngr = gr - gr_head) > 1)
 			qsort ((char *) gr_head, ngr, sizeof *gr_head, gr_sort);
-
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			char   *cp = "";
 			struct group *grp = &gr -> gr_gr;
-
 			if (gr -> gr_status == GR_INVALID) {
 				invalid = 1;
 				continue;
@@ -1847,7 +1722,6 @@ check_gr:
 					}
 			fprintf (fp, "\n");
 		}
-
 		fflush (fp);
 		if (iserr = ferror (fp))
 			advise (LLOG_FATAL, tmpfil, "error writing");
@@ -1871,7 +1745,6 @@ check_gr:
 		}
 		if (ngr)
 			qsort ((char *) gr_head, ngr, sizeof *gr_head, gr_compar);
-
 flush_gr:
 		;
 		if (!invalid && gu_head)
@@ -1891,14 +1764,12 @@ flush_gr:
 			free_gr ();
 		break;
 	}
-
 	pw_touched = 0;
 	if (pw_fd != NOTOK) {
 		fstat (pw_fd, &pw_st);
 		flock (pw_fd, LOCK_UN);
 		close (pw_fd), pw_fd = NOTOK;
 	}
-
 	gr_touched = 0;
 	if (gr_fd != NOTOK) {
 		fstat (gr_fd, &gr_st);

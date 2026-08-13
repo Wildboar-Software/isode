@@ -136,9 +136,7 @@ void main(int argc, char *argv[]) {
 		ftam_log -> ll_stat &= ~LLOGCLS;
 		ll_hdinit (ftam_log, ptr);
 	}
-
 	advise (NULLCP, "starting");
-
 	addrlen = sizeof his_addr;
 	if (getpeername (0, (struct sockaddr *) &his_addr, &addrlen) == NOTOK)
 		adios ("failed", "getpeername");
@@ -385,7 +383,6 @@ void ftp_delete(char *name) {
 	vec[0] = "f_rm";
 	vec[1] = name;
 	vec[2] = NULL;
-
 	if (f_rm(vec) == NOTOK) {
 		reply(550, "%s: %s.", name, ftam_error);
 		return;
@@ -483,7 +480,6 @@ int directory(char *how, char *name) {
  * Execute FTAM login if all necessary arguements present
  */
 int dologin(void) {
-
 	if (!ftp_user) {
 		reply(500,"Send USER command first");
 		return(0);
@@ -509,27 +505,22 @@ int dologin(void) {
 	vec[2] = ftp_user;
 	vec[3] = (ftp_account) ? "" : ftp_account;
 	vec[4] = ftp_passwd;
-
 	advise (NULLCP,
 			"attempting association with OSI filestore \"%s\" as initiator \"%s\"",
 			osi_host, ftp_user);
-
 	/* f_open performs the FTAM initialization (including login) */
 	if (f_open(vec) == NOTOK) {
 		reply(500,"Login failed");
 		return(0);
 	}
-
 	reply(200,"Associated with OSI filestore %s", osi_host);
 	return(1);
-
 }
 
 /*
  * exit with supplied status.
  */
 void dologout(int status) {
-
 	vec[0] = "f_close";
 	vec[1] = NULL;
 	/* f_close performs the logout sequence and receives charging
@@ -557,7 +548,6 @@ int checkuser(char *name) {
 		return (1);
 	while (fgets(line, sizeof (line), fd) != NULL) {
 		char *cp = index(line, '\n');
-
 		if (cp)
 			*cp = '\0';
 		if (strcmp(line, name) == 0) {

@@ -91,59 +91,46 @@ void call_fred (int argc, char **argv) {
 
 	if (argc < 2)
 		goto usage;
-
 	fred_init ();
 	if (!did_ufnas) {
 		if (ufn_init () == FALSE) {
 			ps_printf (OPT, "UFN initialization fails.\n");
 			return;
 		}
-
 		ufnas = as_merge (ufnas, as_cpy (fred_as ()));
-
 		did_ufnas = 1;
 	}
-
 	if (test_arg (argv[1], "-display", 7)) {
 		if (argc != 3)
 			goto usage;
-
 		setenv ("DISPLAY", argv[2]);
 		if (s_photo)
 			set_av_pe_print (s_photo,
 							 strdup (isodefile ("g3fax/Xphoto", 1)));
 		return;
 	}
-
 	if (test_arg (argv[1], "-dm2dn", 5)) {
 		if (argc < 3)
 			goto usage;
-
 		do_dm_match (argc - 2, argv + 2);
 		return;
 	}
-
 	if (test_arg (argv[1], "-expand", 5)) {
 		if (argc < 3)
 			goto usage;
-
 		do_expand (argc - 2, argv + 2);
 		return;
 	}
-
 	if (test_arg (argv[1], "-ufnrc", 5)) {
 		build_ufnrc (argc - 2, argv + 2);
 		return;
 	}
-
 	if (test_arg (argv[1], "-ufn", 3)) {
 		if (argc < 3)
 			goto usage;
-
 		do_ufn_match (argc - 2, argv + 2);
 		return;
 	}
-
 usage:
 	;
 	Usage (argv[0]);
@@ -183,12 +170,10 @@ static void do_dm_match (int n, char **vec) {
 		fred_photo = dad_flag;
 	} else
 		fred_photo = FALSE;
-
 	if (n != 1) {
 		Usage ("fred");
 		return;
 	}
-
 	if ((cp = index (vec[0], '@')) && cp != vec[0]) {
 		strcpy (mbox, vec[0]);
 		*cp++ = 0;
@@ -200,35 +185,29 @@ static void do_dm_match (int n, char **vec) {
 		mbox[0] = 0;
 		cp = cp ? ++cp : vec[0];
 	}
-
 	if ((dlist = dm2dn_seq (cp)) == NULLDNSEQ) {
 		if (dsa_status == OK)
 			ps_printf (OPT, "Unable to resolve domain.\n");
 		return;
 	}
-
 	if (mbox[0] == NULL) {
 		if (fred_list) {
 			done_match (dlist, NULLCP);
 			return;
 		}
-
 		for (dp = dlist; dp; dp = dp -> dns_next) {
 			if (seqno = add_sequence (dp -> dns_dn))
 				ps_printf (RPS, "%-3d ", seqno);
 			dn_print (RPS, dp -> dns_dn, RDNOUT);
 			ps_printf (RPS, "\n");
 		}
-
 		dn_seq_free (dlist);
 		return;
 	}
-
 	if ((dlist = interact (dlist, NULLDN, cp)) == NULL) {
 		ps_printf (OPT, "Unable to resolve mailbox.\n");
 		return;
 	}
-
 	{
 		char	buffer[BUFSIZ];
 		struct ds_search_arg search_arg;
@@ -241,23 +220,17 @@ static void do_dm_match (int n, char **vec) {
 		EntryInfo *ptr;
 		struct dn_seq *result = NULL;
 		PS	nps;
-
 		bzero ((char *) sa, sizeof *sa);
-
 		sa -> sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 		sa -> sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 		sa -> sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
-
 		sa -> sra_subset = SRA_WHOLESUBTREE;
 		sa -> sra_searchaliases = FALSE;
-
 		sa -> sra_eis.eis_allattributes = FALSE;
 		sa -> sra_eis.eis_select = fred_as ();
 		sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 		if (t_mbox == NULL || t_othermbox == NULL)
 			fatal (-100, "rfc822Mailbox/otherMailbox: invalid attribute type");
-
 		fi = make_filter (mbox, t_mbox);
 		if (!index (mbox, '*')) {
 			sprintf (buffer, "internet$%s", mbox);
@@ -268,13 +241,11 @@ static void do_dm_match (int n, char **vec) {
 			sa -> sra_filter -> FUFILT = fi;
 		} else
 			sa -> sra_filter = fi;
-
 		if ((nps = ps_alloc (str_open))
 				&& str_setup (nps, NULLCP, 0, 0) == NOTOK) {
 			ps_free (nps);
 			nps = NULLPS;
 		}
-
 		for (dp = dlist; dp; dp = dp -> dns_next) {
 			if (!dp -> dns_dn -> dn_parent) {
 				ps_printf (nps, "Unable to resolve domain %s beyond ", cp);
@@ -282,32 +253,24 @@ static void do_dm_match (int n, char **vec) {
 				ps_print (nps, "\n");
 				continue;
 			}
-
 			sa -> sra_baseobject = dp -> dns_dn;
-
 			if (rebind () != OK)
 				break;
-
 			while (ds_search (sa, se, sr) != DS_OK) {
 				if (dish_error (nps, se) == 0) {
 					dsa_status = NOTOK;
 					goto free_filter;
 				}
-
 				sa -> sra_baseobject =
 					se -> ERR_REFERRAL.DSE_ref_candidates -> cr_name;
 			}
-
 			if (sr -> srr_correlated != TRUE)
 				correlate_search_results (sr);
-
 			for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
 				cache_entry (ptr, sa -> sra_eis.eis_allattributes,
 							 sa -> sra_eis.eis_infotypes);
-
 				result = dn_seq_push (ptr -> ent_dn, result);
 			}
-
 			dn_free (sr -> CSR_object);
 			entryinfo_free (sr -> CSR_entries, 0);
 			crefs_free (sr -> CSR_cr);
@@ -315,14 +278,11 @@ static void do_dm_match (int n, char **vec) {
 free_filter:
 		;
 		filter_free (sa -> sra_filter);
-
 		dn_seq_free (dlist);
 		if (result == NULL && nps && nps -> ps_byteno) {
 			ps_print (nps, " ");
 			*--nps -> ps_ptr = 0, nps -> ps_cnt++;
-
 			ps_print (OPT, nps -> ps_base);
-
 			nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 		} else
 			done_match (result, NULLCP);
@@ -404,9 +364,7 @@ static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 		if (i == dlevel)
 			for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
 				struct dn_seq *dprev = dlist;
-
 				dlist = dm2dn_seq_aux (dm, ptr -> ent_dn, dlist);
-
 				if (dprev == dlist)
 					dlist = dn_seq_push (ptr -> ent_dn, dlist);
 				else if (i < dlevel)
@@ -469,46 +427,37 @@ static struct dn_seq *expand_full (DN dn, int *complete) {
 	bzero ((char *) la, sizeof *la);
 	bzero ((char *) lr, sizeof *lr);
 	bzero ((char *) le, sizeof *le);
-
 	la -> lsa_common.ca_servicecontrol.svc_options
 		= SVC_OPT_PREFERCHAIN | SVC_OPT_DONTDEREFERENCEALIAS;
 	la -> lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	la -> lsa_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
-
 	if (ptr = find_list_cache (la -> lsa_object = dn, SVC_NOSIZELIMIT)) {
 		sub = ptr -> list_subs;
 		*complete = 1;
 	} else {
 		if (rebind () != OK)
 			return NULLDNSEQ;
-
 		for (;;) {
 			if (ds_list (la, le, lr) == DS_OK)
 				break;
 			if (dish_error (OPT, le) == NOTOK)
 				return NULLDNSEQ;
-
 			la -> lsa_object =
 				le -> ERR_REFERRAL.DSE_ref_candidates -> cr_name;
 		}
-
 		cache_list (lr -> lsr_subordinates, lr -> lsr_limitproblem, dn,
 					SVC_NOSIZELIMIT);
-
 		sub = lr -> lsr_subordinates;
 		*complete = lr -> lsr_limitproblem == LSR_NOLIMITPROBLEM;
 	}
-
 	newdn = dn_comp_new (rdn_comp_new (NULLAttrT, NULLAttrV));
 	if (adn = dn_cpy (dn))
 		dn_append (adn, newdn);
 	else
 		dn_free (adn), adn = newdn;
-
 	for (; sub; sub = sub -> sub_next) {
 		rdn_free (newdn -> dn_rdn);
 		dn_comp_fill (newdn, rdn_cpy (sub -> sub_rdn));
-
 		result = dn_seq_push (adn, result);
 	}
 	dn_free (adn);
@@ -530,19 +479,15 @@ static struct dn_seq *expand_partial (DN dn, int *complete)
 	struct dn_seq *result = NULLDNSEQ;
 
 	bzero ((char *) sa, sizeof *sa);
-
 	sa -> sra_common.ca_servicecontrol.svc_options
 		= SVC_OPT_PREFERCHAIN | SVC_OPT_DONTDEREFERENCEALIAS;
 	sa -> sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	sa -> sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
-
 	sa -> sra_subset = SRA_ONELEVEL;
 	sa -> sra_searchaliases = FALSE;
-
 	sa -> sra_eis.eis_allattributes = FALSE;
 	sa -> sra_eis.eis_select = fred_as ();
 	sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 	if (!(fi1 = ocfilter ("dSA")))
 		fatal (-100, "ocfilter (\"dSA\") failed");
 	fi1 = joinfilter (fi1, FILTER_NOT);
@@ -551,37 +496,28 @@ static struct dn_seq *expand_partial (DN dn, int *complete)
 	fi2 = joinfilter (fi2, FILTER_NOT);
 	fi2 -> flt_next = fi1;
 	sa -> sra_filter = joinfilter (fi2, FILTER_AND);
-
 	sa -> sra_baseobject = dn;
-
 	if (rebind () != OK)
 		goto free_filter;
-
 	while (ds_search (sa, se, sr) != DS_OK) {
 		if (dish_error (OPT, se) == 0) {
 			dsa_status = NOTOK;
 			goto free_filter;
 		}
-
 		sa -> sra_baseobject =
 			se -> ERR_REFERRAL.DSE_ref_candidates -> cr_name;
 	}
-
 	if (sr -> srr_correlated != TRUE)
 		correlate_search_results (sr);
-
 	for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
 		cache_entry (ptr, sa -> sra_eis.eis_allattributes,
 					 sa -> sra_eis.eis_infotypes);
-
 		result = dn_seq_push (ptr -> ent_dn, result);
 	}
 	*complete = sr -> CSR_limitproblem == LSR_NOLIMITPROBLEM;
-
 	dn_free (sr -> CSR_object);
 	entryinfo_free (sr -> CSR_entries, 0);
 	crefs_free (sr -> CSR_cr);
-
 free_filter:
 	;
 	filter_free (sa -> sra_filter);
@@ -600,7 +536,6 @@ static void build_ufnrc (int argc, char **argv) {
 		char *cp;
 		char   *xp;
 		struct dn_seq **dp;
-
 		if ((en = (envlist) calloc (1, sizeof *en)) == NULL) {
 no_mem:
 			;
@@ -608,30 +543,24 @@ no_mem:
 			goto losing;
 		}
 		*ep = en, ep = &en -> Next;
-
 		if (sscanf (argv[0], "%d", &en -> Lower) != 1
 				|| sscanf (argv[1], "%d", &en -> Upper) != 1)
 			goto usage;
-
 		dp = &en -> Dns;
 		for (cp = argv[2]; *cp; cp = xp) {
 			struct dn_seq *ds;
-
 			if (xp = index (cp, '$'))
 				*xp++ = 0;
 			else
 				xp = cp + strlen (cp);
-
 			if ((ds = (struct dn_seq *) calloc (1, sizeof *ds)) == NULL)
 				goto no_mem;
 			*dp = ds, dp = &ds -> dns_next;
-
 			if (*cp != '-' && (ds -> dns_dn = str2dn (cp)) == NULLDN) {
 				ps_printf (OPT, "Bad DN in environment: %s", cp);
 				goto losing;
 			}
 		}
-
 		argc -= 3, argv += 3;
 	}
 	if (argc > 0) {
@@ -640,19 +569,15 @@ usage:
 		Usage ("fred");
 		goto losing;
 	}
-
 	en = myel, myel = el, el = en;
 	/* and fall... */
-
 losing:
 	;
 	for (; el; el = en) {
 		en = el -> Next;
-
 		dn_seq_free (el -> Dns);
 		free ((char *) el);
 	}
-
 	for (el = myel; el; el = el -> Next) {
 		ps_printf (RPS, "%d,%d:\t    ", el -> Lower, el -> Upper);
 		dn_seq_print (RPS, el -> Dns, EDBOUT);
@@ -672,7 +597,6 @@ static void do_ufn_match (int n, char **vec) {
 
 	if (rebind () != OK)
 		return;
-
 	ufn_notify = !frompipe;
 	if (n > 0 && strcmp (vec[0], "-list") == 0) {
 		n--, vec++;
@@ -701,48 +625,38 @@ static void do_ufn_match (int n, char **vec) {
 			ps_printf (OPT, "bad option: %s\n", vec[0]);
 			return;
 		}
-
 		n--, vec++;
 	} else
 		ufn_flags = UFN_ALL;
-
 	dns = NULL;
 	if (!ufn_match (n, vec, interact, &dns, myel)) {
 		Entry	e;
-
 		if (fred_mailbox) {
 			ps_printf (OPT, "unable to resolve name");
 			return;
 		}
-
 		if (ufn_bad_dsa) {
 			if (e = fredentry (ufn_bad_dsa, TRUE)) {
 				ps_printf (OPT,
 						   "Unable to resolve name due to Directory failure, problem with:\n");
 				showfred (ufn_bad_dsa, TRUE, FALSE);
 			}
-
 			dn_free (ufn_bad_dsa), ufn_bad_dsa = NULL;
-
 			if (e)
 				return;
 		}
 		ps_printf (OPT, "Unable to resolve name.\n");
-
 		return;
 	}
-
 	if (!fred_mailbox)
 		done_match (dns, NULLCP);
 	else {
 		struct dn_seq  *result;
 		Entry	e;
 		Attr_Sequence	eptr;
-
 		result = NULL;
 		while (dns) {
 			struct dn_seq *tmp;
-
 			if (!(e = local_find_entry (dns -> dns_dn, FALSE))) {
 strip_it:
 				;
@@ -752,42 +666,34 @@ strip_it:
 				dn_seq_free (tmp);
 				continue;
 			}
-
 			for (eptr = e -> e_attributes; eptr; eptr = eptr -> attr_link)
 				if (AttrT_cmp (eptr -> attr_type, t_mbox) == 0)
 					break;
 			if (!eptr || !eptr -> attr_value)
 				goto strip_it;
-
 			tmp = dns -> dns_next;
 			dns -> dns_next = result;
 			result = dns;
 			dns = tmp;
 		}
-
 		if (!(dns = result)) {
 none_selected:
 			;
 			ps_printf (OPT, "search failed\n");
 			return;
 		}
-
 		while (dns -> dns_next) {
 			int	i;
 			struct dn_seq *ptr;
-
 			i = 0;
 			for (ptr = dns; ptr; ptr = ptr -> dns_next)
 				i++;
 			dns_sort (&dns, i);
-
 			if (!(dns = interact (dns, NULLDN, NULLCP)))
 				goto none_selected;
 		}
-
 		if (!(dns = interact (dns, NULLDN, NULLCP)))
 			goto none_selected;
-
 		if (!(e = local_find_entry (dns -> dns_dn, FALSE))) {
 lost_entry:
 			;
@@ -800,7 +706,6 @@ lost_entry:
 				break;
 		if (!eptr || !eptr -> attr_value)
 			goto lost_entry;
-
 		AttrV_print (RPS, &eptr -> attr_value -> avseq_av, READOUT);
 		ps_print (RPS, "\n");
 		dn_seq_free (dns);
@@ -826,49 +731,38 @@ static struct dn_seq *interact (struct dn_seq *dns, DN dn, char *s)
 			ps_free (nps);
 		return dns;
 	}
-
 	i = 0;
 	for (ptr = dns; ptr; ptr = ptr -> dns_next)
 		i++;
-
 	if (i == 1 && s)
 		return dns;
-
 	if (fred_list && frompipe && i > 1) {
 #define	NCHOICES	25
 		int *ip;
 		int	chosen[NCHOICES];
 		char   *bp;
-
 		if (i > NCHOICES) {
 losing:
 			;
 			dn_seq_free (dns);
 			return NULLDNSEQ;
 		}
-
 		dns_sort (&dns, i);
-
 		for (ptr = dns; ptr; ptr = ptr -> dns_next) {
 			ufn_dn_print_aux (nps, ptr -> dns_dn, dn, 0);
 			ps_print (nps, "$");
 			dn_print (nps, ptr -> dns_dn, EDBOUT);
 			ps_print (nps, " ");
 			*--nps -> ps_ptr = 0, nps -> ps_cnt++;
-
 			sprintf (buffer, "l%s\n", nps -> ps_base);
-
 			nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
-
 			send_pipe_aux (buffer);
-
 			if (read_pipe_aux (buffer, sizeof buffer) < 1) {
 				fprintf (stderr, "read failure\n");
 				remote_prob = TRUE;
 				goto losing;
 			}
 		}
-
 		if (s)
 			sprintf (buffer,
 					 "LPlease select from the following matches for '%s':\n",
@@ -881,17 +775,14 @@ losing:
 			remote_prob = TRUE;
 			goto losing;
 		}
-
 		bzero ((char *) chosen, sizeof chosen);
 		for (bp = buffer + 1; *bp; ) {
 			int	    k;
-
 			while (!isdigit (*bp))
 				if (*bp)
 					bp++;
 				else
 					return (NULLDNSEQ);
-
 			if (!*bp || sscanf (bp, "%d", &k) != 1 || k <= 0 || k > NCHOICES)
 				break;
 			chosen[--k] = 1;
@@ -901,7 +792,6 @@ losing:
 				else
 					return (NULLDNSEQ);
 		}
-
 		for (ip = chosen; dns; ip++)
 			if (*ip) {
 				tmp = dns -> dns_next;
@@ -914,10 +804,8 @@ losing:
 				tmp -> dns_next = NULL;
 				dn_seq_free (tmp);
 			}
-
 		return result;
 	}
-
 	if (i > 10) {
 		if (s)
 			sprintf (buffer,
@@ -938,10 +826,8 @@ losing:
 		else
 			sprintf (buffer, "mPlease %s of the following:\n",
 					 i > 1 ? "select one" : "confirm use");
-
 		if (frompipe) {
 			send_pipe_aux (buffer);
-
 			if (read_pipe_aux (buffer, sizeof buffer) < 1) {
 				fprintf (stderr, "read failure\n");
 				remote_prob = TRUE;
@@ -950,21 +836,16 @@ losing:
 		} else
 			ps_printf (OPT, "%s", buffer + 1);
 	}
-
 	if (i > 1)
 		dns_sort (&dns, i);
-
 	j = 1;
 	while (dns) {
 		ufn_dn_print_aux (nps, dns -> dns_dn, dn, 0);
 		ps_print (nps, " [y/n] ? ");
 		ps_print (nps, " ");
 		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
-
 		strcpy (buffer, nps -> ps_base);
-
 		nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
-
 		switch (yesno (buffer)) {
 		case OK:
 			tmp = dns -> dns_next;
@@ -985,7 +866,6 @@ losing:
 			dn_seq_free (dns);
 			goto out;
 		}
-
 		if ((j++ % 10) == 0 && dns) {
 			sprintf (buffer, "Continue (%d more) [y/n] ? ", i - j + 1);
 			if (yesno (buffer)) {
@@ -996,7 +876,6 @@ losing:
 	}
 out:
 	;
-
 	return result;
 }
 
@@ -1022,9 +901,7 @@ static int dns_sort (struct dn_seq **dns, int i) {
 			ep = base;
 			for (ptr = *dns; ptr; ptr = ptr -> dns_next)
 				*ep++ = ptr;
-
 			qsort ((char *) base, i, sizeof *base, (IFP) dns_compar);
-
 			bp = base;
 			ptr = *dns = *bp++;
 			while (bp < ep) {
@@ -1032,7 +909,6 @@ static int dns_sort (struct dn_seq **dns, int i) {
 				ptr = *bp++;
 			}
 			ptr -> dns_next = NULL;
-
 			free ((char *) base);
 		}
 	}
@@ -1046,7 +922,6 @@ static void done_match (struct dn_seq *dns, char *fancy) {
 		if (ufn_partials) {
 			if (fred_list && frompipe && ufn_partials -> dns_next) {
 				char	buffer[BUFSIZ];
-
 				send_pipe_aux ("mUnable to resolve name, partial matches follow...\n");
 				if (read_pipe_aux (buffer, sizeof buffer) < 1) {
 					fprintf (stderr, "read failure\n");
@@ -1056,7 +931,6 @@ static void done_match (struct dn_seq *dns, char *fancy) {
 				dns = ufn_partials, ufn_partials = NULL;
 				goto fresh_start;
 			}
-
 			ps_printf (OPT,
 					   "Unable to resolve name, partial match%s available:\n",
 					   ufn_partials -> dns_next ? "es" : "");
@@ -1066,27 +940,21 @@ static void done_match (struct dn_seq *dns, char *fancy) {
 losing:
 			;
 			dn_seq_free (ufn_partials), ufn_partials = NULL;
-
 			return;
 		}
-
 		ps_printf (OPT, "Search failed to find anything.\n");
 		return;
 	}
 fresh_start:
 	;
-
 	i = 0;
 	for (ptr = dns; ptr; ptr = ptr -> dns_next)
 		i++;
-
 	fred_long = i == 1;
 	fred_expand = fred_subdisplay = FALSE;
 	fred_sequence = !fred_list;
-
 	if (i > 1 || fancy) {
 		PS    aps;
-
 #ifndef	SOCKETS
 		if (frompipe)
 			search_result = NOTOK;
@@ -1097,22 +965,17 @@ fresh_start:
 				&& opt -> ps_byteno == 0
 				&& fdx_reset (opt) == OK) {		/* MAJOR HACK */
 			char   *cp = fancy ? fancy : "3";
-
 			(*opt -> ps_writeP) (opt, cp, strlen (cp), 0);
 			aps = opt;
 		} else
 			aps = RPS;
 #endif
-
 		ps_printf (aps, "%d matches found.\n", i);
 		ps_flush (aps);
-
 		dns_sort (&dns, i);
 	}
-
 	for (ptr = dns; ptr; ptr = ptr -> dns_next)
 		add_sequence (ptr -> dns_dn);
-
 	if (i == 1
 			&& !fancy
 			&& fred_list
@@ -1121,33 +984,26 @@ fresh_start:
 			&& opt -> ps_byteno == 0
 			&& fdx_reset (rps) == OK) {		/* MAJOR HACK */
 		showfredDNs (dns -> dns_dn, fred_long);
-
 		(*rps -> ps_writeP) (rps, "4", 1, 0);
 		ufn_dn_print_aux (rps, dns -> dns_dn, NULLDN, 0);
 		ps_print (RPS, "$");
 		dn_print (RPS, dns -> dns_dn, EDBOUT);
 		ps_print (rps, "\n");
 		ps_flush (rps);
-
 		fred_list = FALSE;
 	}
-
 	for (i = 0, ptr = dns; ptr; ptr = ptr -> dns_next, i++) {
 		if (fred_list) {
 			ufn_dn_print_aux (RPS, ptr -> dns_dn, NULLDN, 0);
 			ps_print (RPS, "$");
 			dn_print (RPS, ptr -> dns_dn, EDBOUT);
 			ps_print (RPS, "\n");
-
 			continue;
 		}
-
 		if (i > 0)
 			ps_flush (RPS);
-
 		showfred (ptr -> dns_dn, fred_long, fred_subdisplay);
 	}
-
 	dn_seq_free (dns);
 }
 
@@ -1326,11 +1182,8 @@ int showfred (DN mydn, char islong, char subdisplay) {
 	RDN	    myrdn;
 
 	fred_init ();
-
 	myentry = fredentry (mydn = dn_cpy (mydn), islong);
-
 	pos = RPS -> ps_byteno;
-
 	seqno = fred_sequence ? add_sequence (mydn) : 0;
 	if (islong == FALSE) {
 		if (seqno)
@@ -1338,11 +1191,9 @@ int showfred (DN mydn, char islong, char subdisplay) {
 		else
 			ps_printf (RPS, "     ");
 	}
-
 	if (mydn) {
 		DN	adn;
 		RDN	rdn;
-
 		/*
 			if (islong == FALSE) {
 			    ufn_dn_print_aux (RPS, mydn, NULLDN, 0);
@@ -1355,20 +1206,16 @@ int showfred (DN mydn, char islong, char subdisplay) {
 		if (myrdn -> rdn_next) {
 			int    i;
 			RDN	    *base;
-
 			i = 1;
 			for (rdn = myrdn -> rdn_next; rdn; rdn = rdn -> rdn_next)
 				i++;
 			if (base = (RDN *) malloc ((unsigned) (i * sizeof *base))) {
 				RDN    *bp,
 				*ep;
-
 				ep = base;
 				for (rdn = myrdn; rdn; rdn = rdn -> rdn_next)
 					*ep++ = rdn;
-
 				qsort ((char *) base, i, sizeof *base, (IFP) ava_compar);
-
 				bp = base;
 				rdn = myrdn = *bp++;
 				while (bp < ep) {
@@ -1376,9 +1223,7 @@ int showfred (DN mydn, char islong, char subdisplay) {
 					rdn = *bp++;
 				}
 				rdn -> rdn_next = NULL;
-
 				free ((char *) base);
-
 				adn -> dn_rdn = myrdn;
 			}
 		}
@@ -1392,19 +1237,15 @@ int showfred (DN mydn, char islong, char subdisplay) {
 		myrdn = NULLRDN, rdn_at = NULLAttrT, rdn_av = NULLAttrV;
 		ps_print (RPS, "@");
 	}
-
 	if (islong == TRUE && seqno)
 		ps_printf (RPS, " (%d)", seqno);
-
 	if ((pos += 52 - RPS -> ps_byteno) <= 0)
 				pos = 1;
-
 	inf_at = NULLAttrT;
 	if (myentry) {
 		for (eptr = myentry -> e_attributes; eptr; eptr = eptr -> attr_link)
 			if (!fred_phone && AttrT_cmp (eptr -> attr_type, t_mbox) == 0) {
 				inf_at = t_mbox;
-
 				if (avs = eptr -> attr_value) {
 					ps_printf (RPS, "%*s", pos, "");
 					showfredattr (&avs -> avseq_av);
@@ -1414,20 +1255,16 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				inf_at = t_phone;
 				avp = eptr -> attr_value;
 			}
-
 		if (inf_at == t_phone && avp) {
 			ps_printf (RPS, "%*s", pos, "");
 			showfredattr (&avp -> avseq_av);
 		}
 	}
-
 	ps_print (RPS, "\n");
-
 	if (myentry == NULLENTRY)
 		goto out;
 	if (islong == FALSE)
 		goto children;
-
 	if (!fred_photo)
 		for (eptr = myentry -> e_attributes; eptr; eptr = eptr -> attr_link)
 			if (AttrT_cmp (eptr -> attr_type, t_photo) == 0) {
@@ -1436,7 +1273,6 @@ int showfred (DN mydn, char islong, char subdisplay) {
 							&& (ps = ps_alloc (str_open)) != NULLPS
 							&& str_setup (ps, NULLCP, 0, 0) != NOTOK) {
 						RDN rdn;
-
 						AttrV_print (ps, rdn_av, EDBOUT);
 						for (rdn = myrdn -> rdn_next;
 								rdn;
@@ -1452,7 +1288,6 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				}
 				break;
 			}
-
 	level = 0;
 	for (eptr = myentry -> e_attributes; eptr; eptr = eptr -> attr_link)
 		if (AttrT_cmp (eptr -> attr_type, rdn_at) == 0) {
@@ -1463,10 +1298,8 @@ int showfred (DN mydn, char islong, char subdisplay) {
 					ps_print (RPS, "\n");
 					level++;
 				}
-
 			break;
 		}
-
 	hasauthor = haspost = 0;
 	for (eptr = myentry -> e_attributes; eptr; eptr = eptr -> attr_link)
 		if (AttrT_cmp (eptr -> attr_type, t_author) == 0) {
@@ -1477,31 +1310,25 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				haspost = 1;
 		}
 	ps_print (RPS, "\n");
-
 	level = -1;
 	for (t = default_template; t -> t_name; t++) {
 		RDN	rdn;
-
 		for (rdn = myrdn; rdn; rdn = rdn -> rdn_next)
 			if (AttrT_cmp (t -> t_at, rdn -> rdn_at) == 0)
 				break;
 		if (rdn)
 			continue;
-
 		if (fred_photo && AttrT_cmp (t -> t_at, t_photo) == 0)
 			continue;
-
 		for (eptr = myentry -> e_attributes;
 				eptr;
 				eptr = eptr -> attr_link)
 			if (AttrT_cmp (eptr -> attr_type, t -> t_at) == 0) {
 				int	i;
-
 				if (AttrT_cmp (eptr -> attr_type, inf_at) == 0
 						&& (avs = eptr -> attr_value)
 						&& !avs -> avseq_next)
 					continue;
-
 				if (t -> t_level == LEVEL_AUTHOR)
 					if (AttrT_cmp (eptr -> attr_type, t_authorCN) == 0) {
 						if (hasauthor)
@@ -1511,27 +1338,23 @@ int showfred (DN mydn, char islong, char subdisplay) {
 							   && AttrT_cmp (eptr -> attr_type, t_authorSN)
 							   == 0)
 						continue;
-
 				if (haspost
 						&& t -> t_level == LEVEL_POSTAL
 						&& AttrT_cmp (eptr -> attr_type, t_title)) {
 					level = t -> t_level + 1;
 					continue;
 				}
-
 				if (t -> t_level != level) {
 					if (level >= 0)
 						ps_print (RPS, "\n");
 					if ((level = t -> t_level) == LEVEL_MBOX)
 						ps_print (RPS, "Mailbox information:\n");
 				}
-
 				if (t -> t_prefix) {
 					i = strlen (t -> t_prefix);
 					ps_printf (RPS, "%s", t -> t_prefix);
 				} else
 					i = 0;
-
 				if (avs = eptr -> attr_value) {
 					postal_indent = i;
 					qos_indent = ufn_indent = postal_indent + 2;
@@ -1544,18 +1367,14 @@ int showfred (DN mydn, char islong, char subdisplay) {
 							ps_printf (RPS, "%*s", i, "");
 						else
 							ps_print (RPS, "\n");
-
 						showfredattr (&avp -> avseq_av);
-
 						ps_print (RPS, "\n");
 					}
 				} else
 					ps_print (RPS, "no value?!?\n");
-
 				break;
 			}
 	}
-
 	ufn_indent = (sizeof "Modified: " - 1) + 2;
 	if (mydn) {
 		ps_print (RPS, "\nName:     ");
@@ -1563,9 +1382,7 @@ int showfred (DN mydn, char islong, char subdisplay) {
 		if (seqno)
 			ps_printf (RPS, " (%d)", seqno);
 	}
-
 	ps_print (RPS, "\n");
-
 	didtime = 0;
 	for (eptr = myentry -> e_attributes; eptr; eptr = eptr -> attr_link)
 		if (AttrT_cmp (eptr -> attr_type, t_modtime) == 0) {
@@ -1573,7 +1390,6 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				ps_print (RPS, "Modified: ");
 				showfredattr (&avs -> avseq_av);
 				ps_print (RPS, "\n");
-
 				didtime = 1;
 			}
 			break;
@@ -1589,7 +1405,6 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				}
 				break;
 			}
-
 children:
 	;
 	nchild = 0;
@@ -1598,44 +1413,34 @@ children:
 		struct ds_list_result list_result;
 		struct DSError list_error;
 		struct list_cache *ptr;
-
 		ps_flush (RPS);
-
 		service_control (OPT, 0, NULLVP, &list_arg.lsa_common);
 		list_arg.lsa_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
-
 		if (ptr = find_list_cache (list_arg.lsa_object = mydn,
 								   SVC_NOSIZELIMIT)) {
 			if (ptr -> list_subs)
 				nchild = fred_children (mydn, ptr -> list_subs,
 										ptr -> list_problem);
-
 			goto out;
 		}
-
 		if (rebind () != OK)
 			goto out;
-
 		for (;;) {
 			if (ds_list (&list_arg, &list_error, &list_result) == DS_OK)
 				break;
 			if (dish_error (OPT, &list_error) == NOTOK)
 				goto out;
-
 			list_arg.lsa_object =
 			list_error.ERR_REFERRAL.DSE_ref_candidates -> cr_name;
 		}
-
 		if (list_result.lsr_subordinates)
 			nchild = fred_children (mydn, list_result.lsr_subordinates,
 									list_result.lsr_limitproblem);
-
 		cache_list (list_result.lsr_subordinates, list_result.lsr_limitproblem,
 					mydn, SVC_NOSIZELIMIT);
 		subords_free (list_result.lsr_subordinates);
 	}
-
 out:
 	;
 	if (mydn)
@@ -1645,7 +1450,6 @@ out:
 	postal_indent = -1;
 	qos_indent = 24;
 	ufn_indent = 16;
-
 	return nchild;
 }
 
@@ -1661,28 +1465,21 @@ static int fred_children (DN parentdn, struct subordinate *ptr, int prob) {
 		dn_append (adn, newdn);
 	else
 		adn = newdn;
-
 	i = 0;
 	for (qtr = ptr; qtr; qtr = qtr -> sub_next)
 		i++;
 	nchild = i;
-
 	if (i > 0)
 		ps_printf (RPS, "%d child%s.\n-----\n", i, i != 1 ? "ren" : "");
-
 	for (i = 0; ptr; ptr = ptr -> sub_next, i++) {
 		rdn_free (newdn -> dn_rdn);
 		dn_comp_fill (newdn, rdn_cpy (ptr -> sub_rdn));
 		add_sequence (adn);
-
 		showfred (adn, 0, FALSE);
 	}
-
 	dn_free (adn);
-
 	if (prob != LSR_NOLIMITPROBLEM)
 		ps_print (RPS, "(Limit problem)\n");
-
 	return nchild;
 }
 
@@ -1691,7 +1488,6 @@ static void showfredattr (AttributeValue av) {
 
 	if (av -> av_syntax == s_dn) {
 		ufn_dn_print_aux (RPS, (DN) av -> av_struct, NULLDN, 1);
-
 		if (fred_sequence && (seqno = add_sequence ((DN) av -> av_struct)))
 			ps_printf (RPS, " (%d)", seqno);
 	} else
@@ -1731,13 +1527,10 @@ static void fred_init (void) {
 	if (!once_only)
 		return;
 	once_only = 0;
-
 	s_dn = str2syntax ("DN");
 	s_photo = str2syntax ("Photo");
-
 	for (p = pairs; p -> p_name; p++)
 		*p -> p_at = AttrT_new (p -> p_name);
-
 	for (t = default_template; t -> t_name; t++)
 		t -> t_at = AttrT_new (t -> t_name);
 }
@@ -1749,7 +1542,6 @@ static Entry fredentry (DN adn, char islong)
 	struct ds_read_arg read_arg;
 	struct ds_read_result read_result;
 	struct DSError read_error;
-
 	if (adn == NULLDN)
 		return NULLENTRY;
 	if ((newentry = local_find_entry (read_arg.rda_object = adn,
@@ -1764,7 +1556,6 @@ static Entry fredentry (DN adn, char islong)
 		read_arg.rda_eis.eis_allattributes = FALSE;
 		read_arg.rda_eis.eis_select = islong ? fred_full () : fred_as ();
 		read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 		if (ds_read (&read_arg, &read_error, &read_result) != DS_OK) {
 #ifdef	notdef
 			dish_error (RPS, &read_error);
@@ -1776,7 +1567,6 @@ static Entry fredentry (DN adn, char islong)
 		entryinfo_comp_free (&read_result.rdr_entry, 0);
 		newentry = local_find_entry (adn, FALSE);
 	}
-
 	return newentry;
 }
 
@@ -1788,7 +1578,6 @@ void showfredDNs (DN dn, int islong) {
 	int fd;
 
 	fred_init ();
-
 	if (!(theEntry = fredentry (dn, islong)))
 		return;
 	if ((nps = ps_alloc (str_open)) == NULLPS
@@ -1802,23 +1591,17 @@ void showfredDNs (DN dn, int islong) {
 			if (AttrT_cmp (eptr -> attr_type, t_master) == 0
 					|| AttrT_cmp (eptr -> attr_type, t_slave) == 0)
 				continue;
-
 			for (avs = eptr -> attr_value; avs; avs = avs -> avseq_next) {
 				char	buffer[BUFSIZ];
 				DN	adn = (DN) avs -> avseq_av.av_struct;
-
 				ufn_dn_print_aux (nps, adn, NULLDN, 0);
 				ps_print (nps, "$");
 				dn_print (nps, adn, EDBOUT);
 				ps_print (nps, " ");
 				*--nps -> ps_ptr = 0, nps -> ps_cnt++;
-
 				sprintf (buffer, "d%s\n", nps -> ps_base);
-
 				nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
-
 				send_pipe_aux (buffer);
-
 				if (read_pipe_aux (buffer, sizeof buffer) < 1) {
 					fprintf (stderr, "read failure\n");
 					remote_prob = TRUE;
@@ -1830,7 +1613,6 @@ void showfredDNs (DN dn, int islong) {
 					   || eptr -> attr_type -> oa_syntax - AV_WRITE_FILE
 					   == s_photo)) {
 			int	avsno;
-
 			for (avs = eptr -> attr_value, avsno = 1;
 					avs;
 					avs = avs -> avseq_next, avsno++) {
@@ -1848,11 +1630,9 @@ void showfredDNs (DN dn, int islong) {
 				PE	    pe;
 				PS	    ps;
 				struct stat st;
-
 				if ((av = &avs -> avseq_av) -> av_syntax != AV_FILE)
 					av = ((struct file_syntax *) av -> av_struct)
 					-> fs_attr;
-
 				strcpy (faxtopbm, isodefile ("g3fax/faxtopbm", 1));
 				if (access (faxtopbm, X_OK) == NOTOK) {
 #ifndef	NO_STATS
@@ -1861,15 +1641,12 @@ void showfredDNs (DN dn, int islong) {
 #endif
 					break;
 				}
-
 				strcpy (tmp1, "/tmp/faxXXXXXX");
 				fd = mkstemp (tmp1);
 				strcpy (tmp2, "/tmp/pbmXXXXXX");
 				close (mkstemp (tmp2));
-
 				if ((fp = fdopen (fd, "w")) == NULL)
 					break;
-
 				if ((ps = ps_alloc (std_open)) == NULLPS
 						|| std_setup (ps, fp) == NOTOK) {
 					if (ps)
@@ -1879,19 +1656,13 @@ void showfredDNs (DN dn, int islong) {
 					break;
 				}
 				pe2ps (ps, pe = grab_pe (av));
-
 				pe_free (pe);
 				ps_free (ps);
-
 				fclose (fp);
-
 				sprintf (buffer, "%s < %s > %s",
 						 faxtopbm, tmp1, tmp2);
-
 				i = system (buffer);
-
 				unlink (tmp1);
-
 				if (i
 						|| (fp = fopen (tmp2, "r")) == NULL
 						|| fstat (fileno (fp), &st) == NOTOK
@@ -1899,10 +1670,8 @@ void showfredDNs (DN dn, int islong) {
 					if (!i && fp)
 						fclose (fp);
 					unlink (tmp2);
-
 					continue;
 				}
-
 				if ((cp = malloc ((unsigned) (cc))) == NULL) {
 					fprintf (stderr, "out of memory\n");
 					goto out;
@@ -1925,26 +1694,20 @@ out2:
 					default:
 						break;
 					}
-
 				sprintf (buffer, "P%d %s", cc,
 						 attr2name (eptr -> attr_type, OIDPART));
 				if (avs != eptr -> attr_value || avs -> avseq_next)
 					sprintf (buffer + strlen (buffer), "#%d",
 							 avsno);
-
 				ufn_dn_print_aux (nps, dn, NULLDN, 0);
 				ps_print (nps, "$");
 				dn_print (nps, dn, EDBOUT);
 				ps_print (nps, " ");
 				*--nps -> ps_ptr = 0, nps -> ps_cnt++;
-
 				sprintf (buffer + strlen (buffer), "$%s\n",
 						 nps -> ps_base);
-
 				nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
-
 				send_pipe_aux (buffer);
-
 				if ((i = read_pipe_aux (buffer, sizeof buffer)) < 1) {
 					fprintf (stderr, "read failure\n");
 					remote_prob = TRUE;
@@ -1959,24 +1722,19 @@ out:
 					unlink (tmp2);
 					break;
 				}
-
 				send_pipe_aux2 (cp, cc);
 				free (cp);
-
 				if ((i = read_pipe_aux (buffer, sizeof buffer)) < 1) {
 					ps_printf (OPT, "read failure\n");
 					remote_prob = TRUE;
 					goto out;
 				}
-
 				fclose (fp);
 				unlink (tmp2);
 			}
 		}
-
 losing:
 	;
-
 	ps_free (nps);
 }
 
@@ -2008,23 +1766,18 @@ Attr_Sequence fred_full (void) {
 		struct pair *p;
 		struct template *t;
 		AttributeType at;
-
 		fred_init ();
-
 		for (p = pairs; p -> p_name; p++)
 			if (at = *p -> p_at)
 				as = as_merge (as, as_comp_new (AttrT_cpy (at), NULLAV,
 												NULLACL_INFO));
-
 		for (t = default_template; t -> t_name; t++)
 			if (at = t -> t_at)
 				as = as_merge (as, as_comp_new (AttrT_cpy (at), NULLAV,
 												NULLACL_INFO));
 	}
-
 	if (t_photo) {
 		sntx_table *s;
-
 		if (dad_flag
 				|| (s_photo
 					&& (s = get_syntax_table (s_photo))
@@ -2035,7 +1788,6 @@ Attr_Sequence fred_full (void) {
 			int	    i;
 			Attr_Sequence  ptr,
 			*pptr;
-
 			for (pptr = &as, ptr = *pptr;
 					ptr;
 					pptr = &ptr -> attr_link, ptr = *pptr) {
@@ -2048,6 +1800,5 @@ Attr_Sequence fred_full (void) {
 			}
 		}
 	}
-
 	return as;
 }

@@ -59,14 +59,11 @@ int check_want_attr (AttributeType at) {
 
 	if (at == NULLTABLE_ATTR)
 		return (ignore_unknown);
-
 	if (at->oa_syntax == 0)
 		return (ignore_unknown);
-
 	for (as=ignore_attr; as != NULLATTR; as=as->attr_link)
 		if (AttrT_cmp (at,as->attr_type) == 0)
 			return (FALSE);
-
 	return (check_want_tmp_attr(at));
 }
 
@@ -78,7 +75,6 @@ int check_want_tmp_attr (AttributeType at) {
 
 	if (at->oa_syntax == 0)
 		return (ignore_unknown || show_all_flag);
-
 	for (as=tmp_ignore; as != NULLATTR; as=as->attr_link)
 		if (AttrT_cmp (at,as->attr_type) == 0) {
 			/* may be explicitly wanted... */
@@ -87,7 +83,6 @@ int check_want_tmp_attr (AttributeType at) {
 					return (TRUE);
 			return (FALSE);
 		}
-
 	return (TRUE);
 }
 

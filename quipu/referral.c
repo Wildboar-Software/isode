@@ -49,10 +49,8 @@ struct access_point *ap_append (struct access_point *a, struct access_point *b) 
 		return (b);
 	if ( b == NULLACCESSPOINT)
 		return (a);
-
 	for (top = a ; a != NULLACCESSPOINT; a = a->ap_next)
 		trail = a;
-
 	trail->ap_next = b;
 	return (top);
 }
@@ -130,12 +128,9 @@ int dsa_info_new (
 	struct access_point * aps;
 
 	DLOG (log_dsap,LLOG_TRACE,("in dsa_info_new"));
-
 	ret_val = DS_ERROR_LOCAL;
 	di_trail = di_p;
-
 	new_dn_stack = dn_seq_push(name,dn_stack);
-
 	if (entry_ptr->e_external) {
 		aps = (struct access_point *) entry_ptr->e_reference->avseq_av.av_struct;
 		(*di_p) = di_alloc();
@@ -162,7 +157,6 @@ int dsa_info_new (
 				return DS_X500_ERROR;
 			}
 		} else {
-
 			if (aps->ap_address != NULLPA) {
 				(*di_p)->di_accesspoints = ap_cpy (aps);
 			} else {
@@ -188,14 +182,11 @@ int dsa_info_new (
 				}
 			}
 		}
-
 		return DS_CONTINUE;
 	}
-
 	for (avs = entry_ptr->e_master; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
-
 		switch(get_dsa_info((DN)avs->avseq_av.av_struct, new_dn_stack,
 							(&err_tmp), di_trail)) {
 		case DS_OK:
@@ -218,13 +209,11 @@ int dsa_info_new (
 			break;
 		}
 	}
-
 	if(!master) {
 		/* repeat for slaves */
 		for (avs = entry_ptr->e_slave; avs != NULLAV; avs=avs->avseq_next) {
 			if (avs->avseq_av.av_struct == NULL)
 				continue;
-
 			switch(get_dsa_info((DN)avs->avseq_av.av_struct, new_dn_stack,
 								&(err_tmp), di_trail)) {
 			case DS_OK:
@@ -248,19 +237,15 @@ int dsa_info_new (
 			}
 		}
 	}
-
 out:
 	;
-
 	new_dn_stack = dn_seq_pop(new_dn_stack);
-
 	if((ret_val == DS_ERROR_LOCAL) || (ret_val == DS_X500_ERROR)) {
 		err->dse_type = DSE_SERVICEERROR;
 		err->ERR_SERVICE.DSE_sv_problem = DSE_SV_INVALIDREFERENCE;
 		ret_val = DS_X500_ERROR;
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Invalid reference in entry",(IFP)dn_print,(caddr_t)name);
 	}
-
 	return (ret_val);
 }
 
@@ -281,7 +266,6 @@ struct di_block *ap2di (
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("No acces point to make into a di"));
 		return NULL_DI_BLOCK;
 	}
-
 	for (loop=ap; loop!=NULLACCESSPOINT; loop=loop->ap_next) {
 		ptr = di_alloc();
 		ptr->di_dn = dn_cpy(loop->ap_name);
@@ -297,7 +281,6 @@ struct di_block *ap2di (
 			trail = res = ptr;
 		else
 			trail = (trail->di_next = ptr);
-
 		if (master)
 			break;	/* Only want to use first AP */
 	}

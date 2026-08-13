@@ -20,9 +20,7 @@ int conn_release (struct connection *conn) {
 	struct DSAPabort		* da = &(di->di_abort);
 
 	DLOG(log_dsap, LLOG_TRACE, ("conn_release(%d)",conn->cn_ad));
-
 	result = DUnBindRequest (conn->cn_ad, OK, dr, di);
-
 	switch (result) {
 	case NOTOK:
 		do_ds_unbind(conn);
@@ -61,7 +59,6 @@ int conn_release (struct connection *conn) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Unexpected return from DUnBindRequest"));
 		return NOTOK;
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("conn_release calling conn_extract"));
 	conn_extract(conn);
 	return OK;
@@ -76,9 +73,7 @@ int conn_release_retry (struct connection *conn) {
 	struct DSAPabort		* da = &(di->di_abort);
 
 	DLOG(log_dsap, LLOG_TRACE, ("conn_release retry (%d)",conn->cn_ad));
-
 	result = DUnBindRetry (conn->cn_ad, OK, dr, di);
-
 	switch (result) {
 	case NOTOK:
 		do_ds_unbind(conn);
@@ -115,7 +110,6 @@ int conn_release_retry (struct connection *conn) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Unexpected return from DUnBindRetry"));
 		return NOTOK;
 	}
-
 	DLOG(log_dsap, LLOG_DEBUG, ("conn_release calling conn_extract"));
 	conn_extract(conn);
 	return OK;

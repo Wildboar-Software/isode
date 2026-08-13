@@ -22,47 +22,38 @@ void call_delete (int argc, char **argv) {
 
 	if ((argc = service_control (OPT, argc, argv, &remove_arg.rma_common)) == -1)
 		return;
-
 	if (argc > 1)
 		if (move (argv[1]) == OK)
 			argc--;
-
 	if (argc != 1) {
 		ps_printf (OPT,"Unknown option %s\n",argv[1]);
 		Usage (argv[0]);
 		return;
 	}
 	remove_arg.rma_object = dn;
-
 	if (rebind () != OK)
 		return;
-
 	/* Strong authentication */
 	if (remove_arg.rma_common.ca_security != (struct security_parms *) 0) {
 		extern struct SecurityServices *dsap_security;
-
 		remove_arg.rma_common.ca_sig =
 			(dsap_security->serv_sign)((caddr_t)&remove_arg,
 									   _ZRemoveEntryArgumentDataDAS, &_ZDAS_mod);
 	}
-
 	while (ds_removeentry (&remove_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return;
 		remove_arg.rma_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	ps_print (RPS, "Removed ");
 	dn_print (RPS, dn, EDBOUT);
 	delete_cache (dn);
 	for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		trail = dnptr;
-
 	if (trail != NULLDN)
 		trail->dn_parent = NULLDN;
 	else
 		dn = NULLDN;
-
 	dn_comp_free (dnptr);
 	ps_print (RPS, "\n");
 }

@@ -34,7 +34,6 @@ static void Criteria_free (struct Criteria *arg) {
 
 	if (parm == NULL)
 		return;
-
 	switch (parm -> offset) {
 	case Criteria_type:
 		if (parm -> un.type)
@@ -45,19 +44,15 @@ static void Criteria_free (struct Criteria *arg) {
 	case Criteria_and:
 	case Criteria_or: {
 		struct and_or_set *and_or_set;
-
 		for (and_or_set = parm -> un.and_or; and_or_set;) {
 			struct and_or_set *f_and_or_set = and_or_set -> and_or_next;
-
 			if (and_or_set -> and_or_comp)
 				Criteria_free (and_or_set -> and_or_comp),
 							  and_or_set -> and_or_comp = NULL;
-
 			if (and_or_set)
 				free ((char *) and_or_set);
 			and_or_set = f_and_or_set;
 		}
-
 		parm -> un.and_or = NULL;
 	}
 	break;
@@ -68,7 +63,6 @@ static void Criteria_free (struct Criteria *arg) {
 						  parm -> un.not = NULL;
 		break;
 	}
-
 	free ((char *) arg);
 }
 
@@ -77,20 +71,16 @@ static void free_CriteriaItem (struct CriteriaItem *arg) {
 
 	if (parm == NULL)
 		return;
-
 	free ((char *) arg);
 }
 
 static void guidefree (struct Guide *arg) {
 	if (arg == NULL)
 		return;
-
 	/* will always be present if nadfGuide... */
 	if (arg->objectClass)
 		oid_free (arg->objectClass);
-
 	Criteria_free (arg->criteria);
-
 	free ((char *)arg);
 }
 
@@ -100,12 +90,9 @@ static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg) {
 
 	if (parm == NULL)
 		return NULL;
-
 	res = (struct CriteriaItem *) smalloc (sizeof(struct CriteriaItem));
-
 	res->offset = parm->offset;
 	res->attrib = AttrT_cpy (parm->attrib);
-
 	return (res);
 }
 
@@ -114,10 +101,8 @@ static struct Criteria *Criteria_cpy (struct Criteria *a) {
 
 	if (a == NULL)
 		return NULL;
-
 	b = (struct Criteria *) smalloc (sizeof(struct Criteria));
 	b-> offset = a->offset;
-
 	switch (a -> offset) {
 	case Criteria_type:
 		b->un.type = CriteriaItem_cpy (a->un.type);
@@ -128,12 +113,9 @@ static struct Criteria *Criteria_cpy (struct Criteria *a) {
 		struct and_or_set *and_or_set;
 		struct and_or_set *ao_res = (struct and_or_set *)NULL;
 		struct and_or_set *ao_tmp;
-
 		ao_tmp = ao_res; /* OK lint ? */
-
 		for (and_or_set = a -> un.and_or; and_or_set; and_or_set = and_or_set->and_or_next) {
 			struct and_or_set *tmp;
-
 			tmp = (struct and_or_set *) smalloc (sizeof(struct and_or_set));
 			tmp->and_or_comp = Criteria_cpy(and_or_set->and_or_comp);
 			tmp->and_or_next = (struct and_or_set *)NULL;
@@ -143,7 +125,6 @@ static struct Criteria *Criteria_cpy (struct Criteria *a) {
 				ao_tmp->and_or_next = tmp;
 			ao_tmp = tmp;
 		}
-
 		b->un.and_or = ao_res;
 	}
 	break;
@@ -152,7 +133,6 @@ static struct Criteria *Criteria_cpy (struct Criteria *a) {
 		b->un.not = Criteria_cpy (a->un.not);
 		break;
 	}
-
 	return (b);
 }
 
@@ -160,16 +140,12 @@ static struct Guide *guidecpy (struct Guide *a) {
 	struct Guide * b;
 
 	b = (struct Guide * ) smalloc (sizeof(struct Guide));
-
 	if (a->objectClass)
 		b->objectClass = oid_cpy (a->objectClass);
 	else
 		b->objectClass = NULLOID;
-
 	b->criteria = Criteria_cpy (a->criteria);
-
 	b -> subset = a -> subset;
-
 	return (b);
 }
 
@@ -189,9 +165,7 @@ static struct CriteriaItem *CriteriaItem_parse (char *str) {
 	char * ptr;
 	if ((str == NULLCP) || (*str == 0))
 		return ((struct CriteriaItem *) NULL);
-
 	res = (struct CriteriaItem *) smalloc (sizeof(struct CriteriaItem));
-
 	if ((ptr = index (str,'$')) == NULLCP) {
 		parse_error ("Seperator missing in CriteriaItem %s",str);
 		return ((struct CriteriaItem *) NULL);
@@ -205,14 +179,11 @@ static struct CriteriaItem *CriteriaItem_parse (char *str) {
 		return ((struct CriteriaItem *) NULL);
 	}
 	*ptr++ = '$';
-
 	if ((res -> offset = cmd_srch(SkipSpace(ptr),guide_tab)) == NOCHOICE) {
 		parse_error ("Unknown search type in CriteriaItem %s",ptr);
 		return ((struct CriteriaItem *) NULL);
 	}
-
 	return (res);
-
 }
 
 static int getop (char *str, char *ch) {
@@ -245,18 +216,13 @@ static struct Criteria *Criteria_parse (char *str) {
 
 	struct and_or_set  * ao = (struct and_or_set *)NULL;
 	struct and_or_set  * ao_ptr;
-
 	result = (struct Criteria *) smalloc (sizeof(struct Criteria));
-
 	FAST_TIDY(str);
-
 	/* Got a multiple-component string for parsing */
-
 	do {
 		bracketed = FALSE;
 		if ((gotit = getop (str, &ch)) == -2)
 			return ((struct Criteria *)NULL);
-
 		if (gotit < 0) {/* Match an open bracket. */
 			if (*str == '(')
 				if (str[strlen (str) - 1] == ')') {
@@ -267,7 +233,6 @@ static struct Criteria *Criteria_parse (char *str) {
 					parse_error ("Too many open brackets",NULLCP);
 					return ((struct Criteria *)NULL);
 				}
-
 			if (och == '\0') {
 				if (bracketed == TRUE) {
 					gotit = 0;	/* Stop 'while' loop
@@ -290,13 +255,11 @@ static struct Criteria *Criteria_parse (char *str) {
 		ao_ptr = (struct and_or_set*) smalloc (sizeof(struct and_or_set));
 		if ((ao_ptr->and_or_comp = Criteria_parse (str)) == (struct Criteria *)NULL)
 			return ((struct Criteria *)NULL);
-
 		ao_ptr->and_or_next = (struct and_or_set*) NULL;
 		if (ao != (struct and_or_set *)NULL)
 			ao_ptr->and_or_next = ao;
 		ao = ao_ptr;
 		str += gotit + 1;
-
 		if (gotit >= 0) {	/* Match an and symbol */
 			if (och == '@') {
 				result->offset = Criteria_and;
@@ -326,7 +289,6 @@ static struct Guide *guideparse (char *str) {
 
 	res = (struct Guide *) smalloc (sizeof (struct Guide));
 	res -> subset = -1;
-
 	if ((ptr = index (str,'#')) != NULLCP) {
 		*ptr-- = 0;
 		if (isspace (*ptr))
@@ -341,13 +303,11 @@ static struct Guide *guideparse (char *str) {
 		str = ptr;
 	} else
 		res->objectClass = NULLOID;
-
 	if ((res->criteria = Criteria_parse (SkipSpace(str)))
 			== (struct Criteria *)NULL) {
 		guidefree (res);
 		return ((struct Guide *)NULL);
 	}
-
 	return (res);
 }
 
@@ -381,7 +341,6 @@ static struct Guide *nadfparse (char *str) {
 		guidefree (res);
 		return NULL;
 	}
-
 	return res;
 }
 
@@ -394,10 +353,8 @@ static void CriteriaItem_print(
 
 	if (parm == NULL)
 		return;
-
 	if ((ptr = rcmd_srch ((int)parm->offset,guide_tab)) == NULLCP)
 		ptr = "UNKNOWN !!!";
-
 	if (format == READOUT) {
 		ps_printf (ps,"%s on ",ptr);
 		AttrT_print (ps,parm->attrib,EDBOUT);
@@ -405,7 +362,6 @@ static void CriteriaItem_print(
 		AttrT_print (ps,parm->attrib,format);
 		ps_printf (ps,"$%s",ptr);
 	}
-
 }
 
 static void Criteria_print (
@@ -419,10 +375,8 @@ static void Criteria_print (
 		sep = " OR ";
 	else
 		sep = "|";
-
 	if (a == NULL)
 		return;
-
 	switch (a -> offset) {
 	case Criteria_type:
 		CriteriaItem_print (ps,a->un.type,format);
@@ -435,7 +389,6 @@ static void Criteria_print (
 	case Criteria_or: {
 		struct and_or_set *and_or_set;
 		char * tmp = NULLCP;
-
 		for (and_or_set = a -> un.and_or; and_or_set; and_or_set = and_or_set->and_or_next) {
 			if (tmp != NULLCP)
 				ps_print (ps,tmp);
@@ -474,12 +427,9 @@ static void guideprint (
 			ps_print (ps," # ");
 		}
 	}
-
 	Criteria_print (ps,a->criteria,format);
-
 	if (a -> subset >= 0) {
 		char *ptr = rcmd_srch (a -> subset, subset_tab);
-
 		ps_printf (ps, format == READOUT ? " using %s search" : " # %s",
 				   ptr ? ptr : "UNKNOWN !!!");
 	}
@@ -532,10 +482,8 @@ static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
 		return(b==NULL ? 0 : -1);
 	if (b==NULL)
 		return(1);
-
 	if (a->offset != b->offset)
 		return (a->offset > b->offset ? 1 : -1);
-
 	switch (a -> offset) {
 	case Criteria_type:
 		return (criteriaItem_cmp (a->un.type, b->un.type));
@@ -544,7 +492,6 @@ static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
 	case Criteria_or: {
 		struct and_or_set *a_set;
 		struct and_or_set *b_set;
-
 		for (a_set = a->un.and_or; a_set ; a_set = a_set->and_or_next) {
 			for (b_set = b->un.and_or; b_set ; b_set = b_set->and_or_next) {
 				if ((result=criteria_cmp (a_set -> and_or_comp,b_set->and_or_comp)) == 0)
@@ -562,14 +509,12 @@ static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
 				return (-1);
 		}
 		return (0);
-
 	}
 
 	case Criteria_not:
 		result = criteria_cmp (a->un.not,b->un.not);
 		break;
 	}
-
 	return (result);
 }
 
@@ -580,10 +525,8 @@ static int guidecmp (struct Guide *a, struct Guide *b) {
 			return (0);
 		else
 			return (1);
-
 	if (b==(struct Guide *)NULL)
 		return (-1);
-
 	if ((i=oid_cmp(a->objectClass,b->objectClass)) == 0
 			&& (i = criteria_cmp(a->criteria,b->criteria)) == 0) {
 		if ((i = b -> subset - a -> subset) > 0)
@@ -591,7 +534,6 @@ static int guidecmp (struct Guide *a, struct Guide *b) {
 		else if (i < 0)
 			i = -1;
 	}
-
 	return (i);
 }
 
@@ -602,7 +544,6 @@ void guide_syntax (void) {
 						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
 						  NULLIFP,	TRUE);
-
 	add_attribute_syntax ("NadfGuide",
 						  nadfenc,		nadfdec,
 						  nadfparse,	guideprint,

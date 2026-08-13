@@ -21,7 +21,6 @@ DN str2dn (char *str)
 
 	if (str == NULLCP)
 		return (NULLDN);
-
 	if (*str == '<') {
 		/* try 'rfc' string format instead */
 		rfcformat = 1;
@@ -30,10 +29,8 @@ DN str2dn (char *str)
 			str++;
 		sep = ',';
 	}
-
 	if ((rfcformat == 0) && (*str == '@'))   /* Skip leading '@' signs for dish compat */
 		str++;
-
 	while ( (ptr = index (str,sep)) != 0) {
 		save = ptr++;
 		if (isspace (*(save - 1))) {
@@ -43,7 +40,6 @@ DN str2dn (char *str)
 		}
 		val = *save;
 		*save = 0;
-
 		if ((rfcformat == 0) && (dn == NULLDN)) {
 			/* try str as an alias */
 			if ((aliasptr = alias2name (SkipSpace(str))) != NULLCP) {
@@ -59,7 +55,6 @@ DN str2dn (char *str)
 				continue;
 			}
 		}
-
 		if ((rdn = str2rdn (str)) == NULLRDN) {
 			dn_free (dn);
 			return (NULLDN);
@@ -78,7 +73,6 @@ DN str2dn (char *str)
 		*save = val;
 		str = ptr;
 	}
-
 	/* try str as an alias */
 	if ((rfcformat == 0) && (dn == NULLDN)) {
 		if ((aliasptr = alias2name (SkipSpace(str))) != NULLCP) {
@@ -91,7 +85,6 @@ DN str2dn (char *str)
 			return (newdn);
 		}
 	}
-
 	if (rfcformat == 1) {
 		char * p;
 		p = str;
@@ -103,12 +96,10 @@ DN str2dn (char *str)
 				*p = 0;
 		}
 	}
-
 	if ((rdn = str2rdn (str)) == NULLRDN) {
 		dn_free (dn);
 		return (NULLDN);
 	}
-
 	if (dn == NULLDN)
 		dn = dn_comp_new (rdn);
 	else {
@@ -153,7 +144,6 @@ DN dn_dec (PE pe)
 
 	if (decode_IF_DistinguishedName(pe,1,NULLIP,NULLVP,&adn) == NOTOK)
 		return (NULLDN);
-
 	return (adn);
 }
 

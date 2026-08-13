@@ -18,24 +18,18 @@ void pe_print (PS ps, PE pe, int format)
 		pe2ps (ps,pe);
 		return;
 	}
-
 	if ((format == READOUT) && (pe->pe_len >= LINESIZE)) {
 		ps_print (ps,"ASN attribute too big to print here!");
 		return;
 	}
-
 	if ((sps = ps_alloc (str_open)) == NULLPS)
 		return;
 	if (str_setup (sps,NULLCP,LINESIZE,0) == NOTOK)
 		return;
-
 	if (format != READOUT)
 		ps_write (ps, (PElementData)"{ASN}", 5);
-
 	pe2ps (sps,pe);
-
 	s = buffer;
-
 	ptr = sps->ps_base;
 	for (i=0, j=0; i<sps->ps_byteno; i++) {
 		/*
@@ -55,7 +49,6 @@ void pe_print (PS ps, PE pe, int format)
 	ps_write (ps, (PElementData)buffer, j);
 	ps_write (ps, (PElementData)"00", 2);
 	ps_free (sps);
-
 }
 
 PE asn2pe (char *str)
@@ -72,7 +65,6 @@ PE asn2pe (char *str)
 #endif
 
 	StripSpace (str);
-
 	j = strlen (str);
 	if (j % 2 == 1) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
@@ -81,7 +73,6 @@ PE asn2pe (char *str)
 	}
 	pe_ptr = (char *) smalloc (j+10);
 	ptr = pe_ptr;
-
 	for ( i=0 ; i<j; ) {
 		if (!isascii(*str) || !isxdigit(*str)) { /* skip bad chars */
 			str ++, i++;
@@ -93,19 +84,16 @@ PE asn2pe (char *str)
 		i += 2;
 #ifdef oldcode
 		sscanf (str,"%2x",&val);
-
 		*ptr++ = val & 0xff;
 		str++;
 		str++;
 		i+=2;
 #endif
 	}
-
 	if ((sps = ps_alloc (str_open)) == NULLPS)
 		return(NULLPE);
 	if (str_setup (sps,pe_ptr,j+10,0) == NOTOK)
 		return(NULLPE);
-
 	pe = ps2pe (sps);
 	if (sps->ps_errno != PS_ERR_NONE) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("%s in ASN attribute ",ps_error(sps->ps_errno)));
@@ -114,9 +102,7 @@ PE asn2pe (char *str)
 			pe = NULLPE;
 		}
 	}
-
 	free (pe_ptr);
 	ps_free (sps);
-
 	return (pe);
 }

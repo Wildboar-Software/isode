@@ -33,15 +33,10 @@ int FAccessResponse (
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FAccessResponseAux (fsb, action, identity, diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -70,7 +65,6 @@ static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUident
 	default:
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -92,7 +86,6 @@ out:
 				   calloc (1, sizeof *era)) == NULL)
 			goto no_mem;
 		pdu -> un.f__erase__response = era;
-
 		if ((era -> action__result =
 					(struct type_FTAM_Action__Result *)
 					calloc (1, sizeof *era -> action__result)) == NULL)
@@ -108,7 +101,6 @@ out:
 				   calloc (1, sizeof *loc)) == NULL)
 			goto no_mem;
 		pdu -> un.f__locate__response = loc;
-
 		if ((loc -> action__result =
 					(struct type_FTAM_Action__Result *)
 					calloc (1, sizeof *loc -> action__result)) == NULL)
@@ -123,32 +115,24 @@ out:
 				== NULL)
 			goto out;
 	}
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST",
 					fsb -> fsb_state != FSB_LOCATE ? "F-LOCATE-response"
 					: "F-ERASE-response", pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = FSB_DATAIDLE;
-
 	return OK;
 }

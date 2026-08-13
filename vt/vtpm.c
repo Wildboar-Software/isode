@@ -70,7 +70,6 @@ int get_event (int dd, PE *pe) {
 		if ((pi.pi_type == PI_ABORT) &&
 				PC_FATAL(pi.pi_abort.pa_reason))
 			adios(NULLCP, "PReadRequest returned fatal ABORT");
-
 		return(NOTOK);
 	case DONE:
 		if (pi.pi_type == PI_FINISH) {
@@ -87,7 +86,6 @@ int get_event (int dd, PE *pe) {
 		if (px.px_ninfo > 1)
 			adios(NULLCP, "read more than one PE from network!\n");
 		pe = &(px.px_info[0]);
-
 		/* we are assuming here that you can only get one PDU per P-DATA.
 		*/
 		PLOG (vt_log, print_VT_PDUs, *pe, NULLCP, 1);
@@ -97,13 +95,11 @@ int get_event (int dd, PE *pe) {
 		case (ASQ_PDU): {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got ASQ_PDU");
-
 			event = ASQ;
 		}
 		case ASR_PDU: {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got ASR_PDU");
-
 			event = ASR;
 		}
 		case AUQ_PDU:
@@ -119,16 +115,13 @@ int get_event (int dd, PE *pe) {
 		case DLQ_PDU:
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got DLQ_PDU");
-
 			event = DLQ;
 			break;
 
 		case NDQ_PDU: {
 			if (debug)
 				advise(LLOG_DEBUG,NULLCP,  "got NDQ_PDU");
-
 			event = NDQ_tr;	/*See comment below*/
-
 			/*	We're supposed to find out if the NDQ contains an
 				update to a triggered control object or not to determine
 				what kind of event we have.  Right now we'll assume that
@@ -292,9 +285,7 @@ int pn_ind ( /* sync indications */
 /*****************************************************************************/
 
 int p_data (PE pdu) {
-
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PDataRequest(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-DATA.REQUEST");
 	pe_free(pdu);
@@ -319,7 +310,6 @@ int p_maj_sync_req (PE pdu) {
 	long ssn;
 
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PMajSyncRequest(sd, &ssn, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.REQUEST");
 	return(OK);
@@ -341,7 +331,6 @@ int p_maj_sync_req (PE pdu) {
 
 int p_maj_sync_resp (PE pdu) {
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PMajSyncResponse(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.RESPONSE");
 	return(OK);
@@ -362,9 +351,7 @@ int p_maj_sync_resp (PE pdu) {
 /***************************************************************************/
 
 int p_typed_data (PE pdu) {
-
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PTypedRequest(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-TYPED-DATA.REQUEST");
 	return(OK);
@@ -383,16 +370,13 @@ int p_typed_data (PE pdu) {
 /*****************************************************************************/
 
 int p_resync_req (PE pdu, int type) {
-
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
 
 #define VTKP_REQ   0x00 /* setting values, see ssap.h */
 #define VTKP_ACC   0x15
 #define VTKP_CHO   0x2a
-
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PReSyncRequest(sd, type, ssn, settings, &pdu, 1, &pi) != OK)
 		/*	if (PReSyncRequest(sd, type, 0, 0, (PE *)NULL, 0, &pi) != OK) */
 		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.REQUEST");
@@ -414,11 +398,9 @@ int p_resync_req (PE pdu, int type) {
 /****************************************************************************/
 
 int p_resync_resp (PE pdu) {
-
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
 	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
-
 	if (PReSyncResponse(sd, ssn, settings, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.RESPONSE");
 	return(OK);
@@ -436,7 +418,6 @@ int p_resync_resp (PE pdu) {
 /****************************************************************************/
 
 int asr (PE pe, int status) {
-
 	/*	include "pe" as user data on the AcAssocResponse
 	*/
 	struct PSAPctxlist *pl = &ps->ps_ctxlist;
@@ -449,13 +430,11 @@ int asr (PE pe, int status) {
 			advise(LLOG_DEBUG,NULLCP," ctx %d: %d %s %d",
 				   i,pl->pc_ctx[i].pc_id,sprintoid(pl->pc_ctx[i].pc_asn),
 				   pl->pc_ctx[i].pc_result);
-
 	}
 	if (debug) {
 		advise(LLOG_DEBUG,NULLCP,  "in asr.\n");
 		advise(LLOG_DEBUG,NULLCP,  "about to call AcAssocResp, sd is %d, pe->pe_id is %d\n", sd, pe->pe_id);
 	}
-
 	if(status == SUCCESS) {
 		status = ACS_ACCEPT;
 		reason = ACS_USER_NULL;
@@ -472,7 +451,6 @@ int asr (PE pe, int status) {
 						 ps->ps_defctxresult, ps->ps_prequirements, s_requirements,isn,
 						 ps->ps_settings, &ps->ps_connect, &pe, 1, aci) == NOTOK)
 		acs_adios (aca, "A-ASSOCIATE.RESPONSE");
-
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,  "sent AcAssociate Response\n");
 	return(OK);
@@ -486,7 +464,6 @@ int send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 			*/
 	int reason
 ) {
-
 	PE asr_pe;
 	ASR_MSG ud;
 
@@ -504,7 +481,6 @@ int send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 	ud.version.bitcount = 5;
 	if(build_ASRPDU_ASRpdu(&asr_pe,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		adios (NULLCP, "ASR build failure (%s)", PY_pepy);
-
 	return(asr(asr_pe,FAILURE)); /*Send the PDU thru Association control*/
 }
 
@@ -522,7 +498,6 @@ int send_rlr (	/*Send RLR (Release Response) PDU to peer.  The RLR is
 
 
 int clear_vte (void) {	/*Clear VT Environment.  */
-
 	/*Nothing to do for now since we have no formalized environment
 	  and we exit VTP when association ends.
 	*/
@@ -530,13 +505,11 @@ int clear_vte (void) {	/*Clear VT Environment.  */
 
 
 int vgvt_ind (void) {	/*Indication to User that peer has given the token*/
-
 	/*Don't know how to indicate this to user yet*/
 }
 
 
 int vrtq_ind (void) {	/*Indicate to User that peer has requested token*/
-
 	/*Don't know how to give indication to user.
 	  Synchronous?  Asynch interrupt??? */
 }
@@ -546,12 +519,10 @@ int give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 		  at once so no need to discriminate between them.
 		*/
 {
-
 	int vt_tokens;
 	struct PSAPindication vt_pi;
 
 	vt_tokens = ST_RLS_TOKEN;
-
 	if(PGTokenRequest(sd,vt_tokens,&vt_pi) == NOTOK
 			&& vt_pi.pi_abort.pa_reason != PC_OPERATION)
 		ps_adios (&vt_pi.pi_abort, "P-GIVE-TOKENS.REQUEST");
@@ -559,12 +530,10 @@ int give_token (void)	/*Transfer Token to peer.  For VTP, all tokens are given
 
 
 int request_token (void) {	/*Request Tokens from peer*/
-
 	int vt_tokens;
 	struct PSAPindication vt_pi;
 
 	vt_tokens = ST_RLS_TOKEN;
-
 	if(PPTokenRequest(sd,vt_tokens,NULLPEP,0,&vt_pi) == NOTOK
 			&& vt_pi.pi_abort.pa_reason != PC_OPERATION)
 		ps_adios (&vt_pi.pi_abort, "P-PLEASE-TOKENS.REQUEST");
@@ -579,9 +548,7 @@ static void  acs_advise ();
 void
 acs_adios (struct AcSAPabort *aa, char *event) {
 	acs_advise (aa, event);
-
 	finalbye ();
-
 	_exit (1);
 }
 
@@ -594,16 +561,13 @@ static void acs_advise (struct AcSAPabort *aa, char *event) {
 				 aa -> aca_cc, aa -> aca_cc, aa -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aa -> aca_reason));
-
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s (source %d)", event, buffer,
 			aa -> aca_source);
 }
 
 static void ps_adios (struct PSAPabort *pab, char *event) {
 	ps_advise (pab, event);
-
 	finalbye ();
-
 	_exit (1);
 }
 
@@ -616,7 +580,6 @@ static void ps_advise (struct PSAPabort *pab, char *event) {
 				 pab -> pa_cc, pab -> pa_cc, pab -> pa_data);
 	else
 		sprintf (buffer, "[%s]", PErrString (pab -> pa_reason));
-
 	advise (LLOG_NOTICE,NULLCP,  "%s: %s%s", event, buffer,
 			pab -> pa_peer ? " (peer initiated)" : "");
 }

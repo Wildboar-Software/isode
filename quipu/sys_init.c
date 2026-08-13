@@ -28,37 +28,25 @@ int dsa_sys_init (int *acptr, char ***avptr) {
 
 #ifdef  TURBO_DISK
 	extern char quipu_faststart;
-
 	quipu_faststart = 1;
 #endif
-
 	parse_line = 0;		/* stop 'line 1:' being printed in tailor file errors */
 	dsa_mode = 1;
-
 	name = **avptr;
-
 	DLOG (log_dsap,LLOG_TRACE,("Initialisation"));
-
 	cnt = *acptr;
 	ptr = *avptr;
 	dsa_tai_args (acptr,avptr);
-
 	if (dsa_tai_init(name) != OK)
 		fatal (-43,"Tailoring failed");
-
 	dsa_tai_args (&cnt,&ptr);    /* second call IS needed !!! */
-
 	DLOG (log_dsap,LLOG_TRACE,("Loading oid table (%s)",dsaoidtable));
-
 	if (load_oid_table (dsaoidtable) == NOTOK)
 		fatal (-43, "Can't load oid tables");
-
 	if (retry_timeout == (time_t)0)
 		retry_timeout = cache_timeout;
-
 	if (slave_timeout == (time_t)0)
 		slave_timeout = cache_timeout;
-
 }
 
 void
@@ -68,11 +56,9 @@ mk_dsa_tmp_dir (void) {
 	char err_buf[BUFSIZ];
 
 	sprintf (edbtmp_buf, "%stmp", treedir);
-
 	strcat (edbtmp_buf, "/");
 	edbtmp_path = strdup (edbtmp_buf);
 	edbtmp_buf[strlen(edbtmp_path) - 1] = 0;	/* remove "/" */
-
 	if ((stat(edbtmp_buf, &statbuf) == OK)
 			&& ((statbuf.st_mode & S_IFMT) == S_IFDIR)) {
 		/* tmpdir exists - clean it */
@@ -80,7 +66,6 @@ mk_dsa_tmp_dir (void) {
 		scandir(edbtmp_buf, &namelist, rmFiles, NULL);
 		if (namelist)
 			free((char *) namelist);
-
 	} else if (mkdir (edbtmp_buf,0700) != 0) {
 		sprintf (err_buf,"Can't create tmp directory: %s (%d)",
 				 edbtmp_path,errno);
@@ -97,15 +82,12 @@ struct dirent *entry;
 			(strcmp(entry->d_name,".") == 0)
 			|| (strcmp(entry->d_name,"..") == 0))
 		return 0;
-
 	strcpy (cbuf, edbtmp_path);
 	strcat (cbuf, entry -> d_name);
-
 	if (unlink(cbuf) == NOTOK) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("remove failure \"%s\")",cbuf,errno));
 		return 0;
 	}
-
 	return 0;
 }

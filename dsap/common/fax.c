@@ -73,10 +73,8 @@ int	format;
 
 	if (format == READOUT) {
 		ps_printf (ps, "%s", f -> number);
-
 		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
 			char    *cp = " {";
-
 			while (i-- >= 0)
 				if (bit_test (pe, i) > OK) {
 					for (p = pairs; p -> p_name; p++)
@@ -88,16 +86,13 @@ int	format;
 						ps_printf (ps, "%s %d", cp, i);
 					cp = ",";
 				}
-
 			if (*cp == ',')
 				ps_print (ps, " }");
 		}
 	} else {
 		ps_printf (ps, "%s", f -> number);
-
 		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
 			char    *cp = " $";
-
 			while (i-- >= 0)
 				if (bit_test (pe, i) > OK) {
 					for (p = pairs; p -> p_name; p++)
@@ -122,7 +117,6 @@ static struct fax *str2fax (char *str) {
 	struct pair *p;
 
 	f = (struct fax *) smalloc (sizeof *f);
-
 	if (ptr = index (str, '$'))
 		*ptr = 0;
 	if ((int)strlen (str) > UB_TELEPHONE_NUMBER) {
@@ -130,30 +124,23 @@ static struct fax *str2fax (char *str) {
 		free ((char *) f);
 		return ((struct fax *) NULL);
 	}
-
 	FAST_TIDY(str);
 	f -> number = strdup(str);
 	f -> bits = NULLPE;
-
 	if (!ptr)
 		return f;
-
 	*ptr++ = '$';
 	ptr = strdup (ptr);
-
 	bzero ((char *) vec, sizeof vec);
 	str2vec (ptr, vec);
-
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
 			goto got_value;
-
 		for (p = pairs; p -> p_name; p++)
 			if (lexequ (p -> p_name, *ap) == 0)
 				break;
 		if (! p -> p_name) {
 			parse_error ("unknown G3fax non-basic parameter: '%s'", *ap);
-
 you_lose:
 			;
 			free (ptr);
@@ -161,11 +148,9 @@ you_lose:
 			if (f -> bits)
 				pe_free (f -> bits);
 			free ((char *) f);
-
 			return ((struct fax *) NULL);
 		}
 		value = p -> p_value;
-
 got_value:
 		;
 		if ((f -> bits == NULLPE
@@ -180,12 +165,9 @@ no_allocate:
 			goto you_lose;
 		}
 	}
-
 	if (bit2prim (f -> bits) == NULLPE)
 		goto no_allocate;
-
 	free (ptr);
-
 	return f;
 }
 
@@ -195,12 +177,9 @@ struct fax *f;
 	PE	pe = NULLPE;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
-
 	encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
-
 	if (f -> fax_bits)
 		free (f -> fax_bits);
-
 	return pe;
 }
 
@@ -213,19 +192,15 @@ PE	pe;
 			== NOTOK) {
 		return ((struct fax *) NULL);
 	}
-
 	if ((int)strlen (f->number) > UB_TELEPHONE_NUMBER) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("fax number string too big"));
 		return ((struct fax *) NULL);
 	}
-
 	if ( f -> fax_bits ) {
 		f -> bits = strb2bitstr ( f -> fax_bits, f -> fax_len,
 								  PE_CLASS_UNIV, PE_PRIM_BITS);
-
 		free ( f -> fax_bits );
 	}
-
 	return f;
 }
 

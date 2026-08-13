@@ -22,7 +22,6 @@ char	**argv;
 		fprintf(stderr, "usage: %s [-v] edbfile\n", argv[0]);
 		return(1);
 	}
-
 	filearg = 1;
 	verbose = 0;
 	if ( argc == 3 )
@@ -34,19 +33,16 @@ char	**argv;
 			filearg++;
 		} else
 			fprintf(stderr, "invalid flag ignored: %s\n", argv[1]);
-
 	if ( (fp = fopen(argv[filearg], "r")) == NULL ) {
 		perror(argv[filearg]);
 		return(1);
 	}
-
 	strcpy(gfname, argv[filearg]);
 	strcat(gfname, ".gdbm");
 	if ( (db = gdbm_open(gfname, 0, GDBM_NEWDB, 00664, 0)) == NULL ) {
 		fprintf(stderr, "could not open %s\n", gfname);
 		return(1);
 	}
-
 	if ( fgets(type, sizeof(type), fp) == NULL ) {
 		fprintf(stderr, "File is empty!\n");
 		return(1);
@@ -65,36 +61,29 @@ char	**argv;
 		fprintf(stderr, "could not gdbm_store header");
 		return(1);
 	}
-
 	while ( feof(fp) == 0 ) {
 		buflen = sizeof(buf);
 		bp = buf;
 		while ( rc = fgets(bp, buflen, fp) )
 			if ( *buf !=  '#' && *buf != '\n' ) break;
 		if ( rc == NULL ) break;
-
 		strcpy(kbuf, buf);
 		kbuf[strlen(kbuf)-1] = '\0';
 		key.dptr = TidyString(kbuf);
 		key.dsize = strlen(kbuf) + 1;
-
 		if ( verbose > 0 )  printf("key (%s)\n", key.dptr);
-
 		sprintf(buf, "%s\n", kbuf);
 		len = strlen(bp);
 		bp += len;
 		buflen -= len;
-
 		while ( rc = fgets(bp, buflen, fp) ) {
 			if ( *bp == '\n' ) break;
-
 			len = strlen(bp);
 			bp += len;
 			buflen -= len;
 		}
 		*bp++ = '\n';
 		*bp = '\0';
-
 		content.dptr = buf;
 		content.dsize = strlen(buf) + 1;
 		if ( verbose > 1 )  printf("content (%s)\n", content.dptr);
@@ -105,7 +94,6 @@ char	**argv;
 		free(content.dptr);
 		free(key.dptr);
 	}
-
 	gdbm_close(db);
 	return(0);
 }
@@ -119,11 +107,9 @@ char * a;
 
 	if (!*a)
 		return (a);
-
 	/* remove white space from front of string */
 	while (isspace (*a))
 		a++;
-
 	/* now continue removing multiple and trailing spaces */
 	c = a, b = a;
 	while (*a) {
@@ -131,7 +117,6 @@ char * a;
 			*b = ' ';       /* make sure not a tab etc */
 			while (isspace (*++a))
 				i = 1;
-
 			if (*a)
 				b++;
 			else
@@ -139,17 +124,12 @@ char * a;
 		}
 		if (i == 1)
 			*b = *a;
-
 		a++, b++;
 	}
-
 	*b = 0;
-
 	if (*--b == '\n')
 		*b-- = 0;
-
 	if (*b == ' ')
 		*b = 0;
-
 	return (c);
 }

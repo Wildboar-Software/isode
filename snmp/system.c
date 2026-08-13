@@ -32,11 +32,9 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = 0;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
@@ -47,19 +45,15 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (quantum != lastq) {
 		lastq = quantum;
-
 		if (gettimeofday (&now, (struct timezone *) 0) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "gettimeofday");
 			return generr (offset);
 		}
-
 		diff = (now.tv_sec - my_boottime.tv_sec) * 100
 			   + ((now.tv_usec - my_boottime.tv_usec) / 10000);
 	}
-
 	return o_number (oi, v, (caddr_t) &diff);
 }
 
@@ -88,12 +82,10 @@ void init_system (void) {
 
 	gethostname (buffer, sizeof buffer);
 	pairs[SYS_NAME].s_text = buffer;
-
 	for (sp = pairs; sp -> s_name; sp++)
 		if (ot = text2obj (sp -> s_name)) {
 			ot -> ot_getfnx = sp -> s_getfnx;
 			ot -> ot_setfnx = sp -> s_setfnx;
-
 			if (sp -> s_text)
 				if (ot -> ot_syntax)
 					(*ot -> ot_syntax -> os_parse) ((void **)&ot -> ot_info,

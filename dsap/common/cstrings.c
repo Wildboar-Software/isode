@@ -32,10 +32,8 @@ int test_arg (char *x, char *y, int c) {
 
 	top = y;
 	topx = x;
-
 	if (*y == '-' )
 		count--;
-
 	for (; (*y != 0) || (*x != 0); y++) {
 		if (*x == 0)
 			if (count >= c)
@@ -48,11 +46,9 @@ int test_arg (char *x, char *y, int c) {
 			}
 		if (chrcnv[*x] != chrcnv[*y])
 			return (0);
-
 		count++;
 		x++;
 	}
-
 	if (count >= c)
 		return (1);
 	else {

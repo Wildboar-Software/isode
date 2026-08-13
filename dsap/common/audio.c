@@ -45,19 +45,16 @@ void audio_print (
 #else
 	union wait status;
 #endif
-
 #ifdef LINUX
 	__sighandler_t pstat;
 #else
 	SFP	    pstat;
 #endif
-
 	if (format != READOUT) {
 		for (p = qb -> qb_forw; p != qb; p = p -> qb_forw)
 			ps_write (ps,(PElementData)p->qb_data,p->qb_len);
 		return;
 	}
-
 #if	!defined(sparc) || !defined(SUNOS41)
 	ps_print (ps, "(No audio process defined)");
 #else
@@ -65,9 +62,7 @@ void audio_print (
 		ps_print (ps,"ERROR: could not create pipe");
 		return;
 	}
-
 	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
-
 	switch (childpid = fork()) {
 
 	case -1:
@@ -79,20 +74,15 @@ void audio_print (
 
 	case 0:
 		signal (SIGPIPE, pstat);
-
 		if (dup2(pd[0], 0) == -1)
 			_exit (-1);
 		close (pd[0]);
 		close (pd[1]);
-
 		sprintf (execvector,"%splay",BINPATH);
-
 		execl (execvector,execvector,NULLCP);
-
 		while (read (0, buffer, sizeof buffer) > 0)
 			continue;
 		printf ("ERROR: can't execute '%s'",execvector);
-
 		fflush (stdout);
 		/* safety catch */
 		_exit (-1);
@@ -110,18 +100,14 @@ void audio_print (
 		}
 		close (pd[1]);
 		ps_printf (ps,"%splay invoked",BINPATH);
-
 #ifdef SVR4
 		while ((pid = wait (&status)) != NOTOK
 #else
 		while ((pid = wait (&status.w_status)) != NOTOK
 #endif
 				&& childpid != pid)
-
 			continue;
-
 		signal (SIGPIPE, pstat);
-
 		return;
 	}
 #endif
@@ -142,5 +128,4 @@ int audio_syntax (void) {
 						  qb_cpy,		qb_cmp,
 						  qb_free,		NULLCP,
 						  NULLIFP,		TRUE);
-
 }

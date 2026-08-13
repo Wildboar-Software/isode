@@ -44,12 +44,10 @@ int check_acl (DN who, int mode, struct acl_info *acl, DN node) {
 			break;
 		}
 	}
-
 	/* one last try for access */
 	for (avs=super_user; avs != NULLAV;  avs=avs->avseq_next)
 		if ( dn_cmp (who,(DN) avs->avseq_av.av_struct) == OK)
 			return (OK);
-
 #ifdef DEBUG
 	if (log_dsap -> ll_events & LLOG_TRACE) {
 		pslog (log_dsap,LLOG_TRACE,"access denied for user ",
@@ -59,7 +57,6 @@ int check_acl (DN who, int mode, struct acl_info *acl, DN node) {
 			   (IFP)dn_print,(caddr_t)node);
 	}
 #endif
-
 	return (NOTOK);
 }
 
@@ -69,6 +66,5 @@ int manager (DN dn) {
 	for (avs=super_user; avs != NULLAV;  avs=avs->avseq_next)
 		if ( dn_cmp (dn,(DN) avs->avseq_av.av_struct) == OK)
 			return (TRUE);
-
 	return (FALSE);
 }

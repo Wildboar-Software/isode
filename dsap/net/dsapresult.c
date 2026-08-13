@@ -19,11 +19,9 @@ int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindicatio
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
 	}
-
 	watch_dog ("RoResultRequest (DAP)");
 	result = RoResultRequest (sd, id, res->result_type, res_pe, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest(): Fatal rejection"));
@@ -33,7 +31,6 @@ int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindicatio
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
 		}
 	}
-
 	if (res_pe != NULLPE)
 		pe_free (res_pe);
 	return (OK);
@@ -76,7 +73,6 @@ int DapEncodeResult (PE *pep, struct DSResult *res) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DapEncodeResult(): unknown op type %d", res->result_type));
 		break;
 	}
-
 	return(success);
 }
 
@@ -91,12 +87,10 @@ int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
 	}
-
 	watch_dog ("RoResultRequest (DSP)");
 	result = RoResultRequest (sd, id, res->dcr_dsres.result_type, res_pe,
 							  ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest(): Fatal rejection"));
@@ -106,7 +100,6 @@ int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
 		}
 	}
-
 	if (res_pe != NULLPE)
 		pe_free (res_pe);
 	return (OK);
@@ -149,7 +142,6 @@ int DspEncodeResult (PE *pep, struct ds_op_res *res) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DspEncodeResult(): unknown op type %d", res->dcr_dsres.result_type));
 		break;
 	}
-
 	return(success);
 }
 
@@ -164,12 +156,10 @@ int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
 	}
-
 	watch_dog ("RoResultRequest (QSP)");
 	result = RoResultRequest (sd, id, res->dcr_dsres.result_type, res_pe,
 							  ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest(): Fatal rejection"));
@@ -179,7 +169,6 @@ int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
 		}
 	}
-
 	if (res_pe != NULLPE)
 		pe_free (res_pe);
 	return (OK);
@@ -225,7 +214,6 @@ int QspEncodeResult (PE *pep, struct ds_op_res *res) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("QspEncodeResult(): unknown op type %d", res->dcr_dsres.result_type));
 		break;
 	}
-
 	return(success);
 }
 

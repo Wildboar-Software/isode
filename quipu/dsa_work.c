@@ -26,7 +26,6 @@ void dsa_work (struct task_act *tk) {
 	err = &(tk->tk_resp.di_error.de_err);
 	local = &(tk->local_st);
 	refer = &(tk->refer_st);
-
 	if (quipu_shutdown) {
 		err->dse_type = DSE_SERVICEERROR;
 		err->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
@@ -39,12 +38,9 @@ void dsa_work (struct task_act *tk) {
 						 (struct DSAPindication *)NULL);
 		else
 			conn_release(tk->tk_conn);
-
 		task_extract(tk);
-
 		return;
 	}
-
 	if(tk->tk_conn->cn_ctx == DS_CTX_X500_DAP) {
 		orig = tk->tk_conn->cn_dn;
 		dsp = FALSE;
@@ -81,7 +77,6 @@ void dsa_work (struct task_act *tk) {
 			}
 		} else
 			orig = tk->tk_dx.dx_arg.dca_charg.cha_originator;
-
 		if (tk->tk_dx.dx_arg.dca_charg.cha_target == NULLDN) {
 			switch (arg->arg_type) {
 			case OP_READ:
@@ -117,24 +112,18 @@ void dsa_work (struct task_act *tk) {
 			}
 		} else
 			base = tk->tk_dx.dx_arg.dca_charg.cha_target;
-
 		dsp = TRUE;
-
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,( "Apply operation"));
-
 #ifndef NO_STATS
 	if (*local == NULL_ST)
 		log_x500_event (arg,tk->tk_conn->cn_ctx,orig,base,
 						tk->tk_conn->cn_ad,tk);
 #endif
-
 	authtype = tk->tk_conn->cn_authen;
 	if (!dsp && authtype == DBA_AUTH_NONE) {
 		orig = NULLDN;
 	}
-
 	switch(arg->arg_type) {
 	case OP_READ:
 		dsa_ret = do_ds_read(&(arg->arg_rd), err, &(res->res_rd), orig, base,
@@ -157,15 +146,12 @@ void dsa_work (struct task_act *tk) {
 		break;
 
 	case OP_SEARCH:
-
 		dsa_ret = do_ds_search(&(arg->arg_sr), err, &(res->res_sr), orig, base,
 							   local, refer, &(di), dsp,
 							   tk->tk_conn->cn_ctx == DS_CTX_QUIPU_DSP,
 							   tk->tk_timed ? tk->tk_timeout : (time_t) 0,
 							   tk->tk_dx.dx_arg.dca_charg.cha_entryonly, authtype);
-
 		search_continue (tk);
-
 		break;
 
 	case OP_ADDENTRY:
@@ -198,9 +184,7 @@ void dsa_work (struct task_act *tk) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,( "Unknown operation type!"));
 		break;
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,( "Activity applied"));
-
 	switch(dsa_ret) {
 	case DS_OK:
 		DLOG (log_dsap,LLOG_DEBUG,( "dsa_work - DS_OK"));
@@ -208,7 +192,6 @@ void dsa_work (struct task_act *tk) {
 		tk->tk_result = &(tk->tk_resp.di_result.dr_res);
 		tk->tk_result->dcr_dsres.result_type = tk->tk_dx.dx_arg.dca_dsarg.arg_type;
 		tk->tk_resp.di_type = DI_RESULT;
-
 		if((tk->referred_st != NULL_ST) || (tk->tk_operlist != NULLOPER)) {
 			tk->tk_state = TK_PASSIVE;
 			break; /* Go wait for operations to return */
@@ -273,7 +256,6 @@ void dsa_work (struct task_act *tk) {
 		task_extract(tk);
 		break;
 	}
-
 }
 
 void search_continue (struct task_act *tk) {
@@ -287,10 +269,8 @@ void search_continue (struct task_act *tk) {
 		tk_sr->srr_next->srr_un.srr_unit = (struct ds_search_unit *) calloc(1, sizeof(struct ds_search_unit));
 		tk_sr->srr_next->CSR_limitproblem = LSR_NOLIMITPROBLEM;
 	}
-
 	/* Map any new elements in the refer list onto opers */
 	subtask_chain(tk);
-
 	if((tk->local_st != NULL_ST) && (tk->tk_state == TK_PASSIVE)) {
 		tk->tk_state = TK_ACTIVE;
 	}
@@ -359,12 +339,10 @@ void log_x500_event (
 		op = "Unknown op";
 		break;
 	}
-
 	if (log_stat -> ll_events & LLOG_DEBUG)
 		sprintf (buf,"%s (%d) [%d]",op,ad,tk->tk_dx.dx_id);
 	else
 		sprintf (buf,"%s (%d)",op,ad);
-
 	if (context == DS_CTX_X500_DAP)
 		pslog (log_stat,LLOG_NOTICE,buf,(IFP)dn_print,(caddr_t)daptarget);
 	else {

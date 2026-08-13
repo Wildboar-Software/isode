@@ -12,7 +12,6 @@ int dn_seq_free (struct dn_seq *dnseq) {
 		dn_free (ptr->dns_dn);
 		free ((char *) ptr);
 	}
-
 }
 
 struct dn_seq *dn_seq_cpy (struct dn_seq *dnseq) {
@@ -37,7 +36,6 @@ int check_dnseq (struct dn_seq *dnseq, DN who)
 		if (dn_cmp (who,ptr->dns_dn) == OK)
 			return (OK);
 	}
-
 	return (NOTOK);
 }
 
@@ -47,13 +45,10 @@ int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 
 	if((a == NULLDNSEQ) && (b == NULLDNSEQ))
 		return(0);
-
 	if(a==NULLDNSEQ)
 		return(-1);
-
 	if(b==NULLDNSEQ)
 		return(1);
-
 	for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next) {
 		for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next) {
 			if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
@@ -62,7 +57,6 @@ int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 		if(dns2 == NULLDNSEQ)
 			return(1);
 	}
-
 	for (dns2=b; dns2!=NULLDNSEQ; dns2=dns2->dns_next) {
 		for (dns1=a; dns1!=NULLDNSEQ; dns1=dns1->dns_next) {
 			if(dn_cmp (dns1->dns_dn,dns2->dns_dn) == 0)
@@ -71,7 +65,6 @@ int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b) {
 		if(dns1 == NULLDNSEQ)
 			return(-1);
 	}
-
 	return (0);
 }
 
@@ -83,7 +76,6 @@ int check_dnseq_prefix (struct dn_seq *dnseq, DN who)
 		if (dn_cmp_prefix (ptr->dns_dn,who) == OK)
 			return (OK);
 	}
-
 	return (NOTOK);
 }
 
@@ -91,7 +83,6 @@ void dn_seq_print (PS ps, struct dn_seq *dnseq, int format)
 {
 	if (dnseq == NULLDNSEQ)
 		return;
-
 	dn_print (ps,dnseq->dns_dn,EDBOUT);
 	for (dnseq=dnseq->dns_next; dnseq!=NULLDNSEQ;  dnseq=dnseq->dns_next) {
 		if (format == READOUT)
@@ -126,7 +117,6 @@ struct dn_seq *str2dnseq (char *str) {
 		*save = val;
 		str = ptr;
 	}
-
 	if ((ptr = rindex (str,'#')) != 0) {
 		/* a bit or reverse compatability... */
 		if (*++ptr != 0) {
@@ -136,7 +126,6 @@ struct dn_seq *str2dnseq (char *str) {
 		} else
 			*--ptr = 0;
 	}
-
 	newdns = dn_seq_alloc();
 	if ((newdns->dns_dn = str2dn (str)) == NULLDN) {
 		dn_seq_free (dns);
@@ -145,7 +134,6 @@ struct dn_seq *str2dnseq (char *str) {
 	}
 	newdns->dns_next = dns;
 	dns = newdns;
-
 	return (dns);
 }
 

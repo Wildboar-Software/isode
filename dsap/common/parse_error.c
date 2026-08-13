@@ -18,7 +18,6 @@ void parse_error (char *a, char *b)
 	char buffer [LINESIZE];
 
 	parse_status++;
-
 	if (print_parse_errors) {
 		if (_opt == NULLPS) {
 			_opt = ps_alloc (std_open);

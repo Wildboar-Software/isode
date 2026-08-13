@@ -30,12 +30,10 @@ void call_ds (int argc, char **argv) {
 	extern struct PSAPaddr dsa_bound;
 
 	fred_flag = FALSE;
-
 	if (argc > 1 && test_arg (argv[1], "-fred", 4)) {
 		fred_flag = TRUE;
 		argc--, argv++;
 	}
-
 	if (argc > 1) {
 		if (test_arg (argv[1],"-sequence",1)) {
 			show_sequence (RPS,argv[2],fred_flag);
@@ -72,7 +70,6 @@ void call_ds (int argc, char **argv) {
 			return;
 		}
 	}
-
 	if (bound) {
 		ps_printf (RPS, "Connected to ");
 		if (strcmp (myname, dsa_address))
@@ -105,7 +102,6 @@ static void new_alias (char *cp) {
 		ps_printf (OPT, "Invalid DN for alias: %s\n", cp);
 		return;
 	}
-
 	set_sequence ("default");
 	if (seqno = add_sequence (sdn)) {
 		ps_printf (RPS, "%-3d ", seqno);
@@ -126,32 +122,26 @@ int dish_error (PS ps, struct DSError * error) {
 		ps_print (ps,"(DAP call interrupted - abandon successful)\n");
 		return (0);
 	}
-
 	if (error->dse_type == DSE_ABANDON_FAILED) {
 		ps_print (ps,"(DAP call interrupted - abandon unsuccessful)\n");
 		return (0);
 	}
-
 	if (error->dse_type == DSE_INTRERROR) {
 		ps_print (ps,"(DAP call interrupted)\n");
 		return (0);
 	}
-
 	if ((error->dse_type != DSE_REFERRAL)
 			|| ((chase_flag == 0) && neverefer)
 			|| (chase_flag == 1)) {
 		ds_error (ps,error);
 		return (0);
 	}
-
 	if (error->ERR_REFERRAL.DSE_ref_candidates == NULLCONTINUATIONREF) {
 		ps_print (ps,"*** Referral error (but no reference !!!) ***\n");
 		return (0);
 	}
-
 	for (ap = error->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints;
 			ap != NULLACCESSPOINT; ap=ap->ap_next) {
-
 		if (chase_flag != 2) {
 			ps_print (ps,"Reference to another DSA for '");
 			ufn_dn_print_aux (ps,
@@ -159,7 +149,6 @@ int dish_error (PS ps, struct DSError * error) {
 							  NULLDN, 0);
 			ps_print (ps,"Chase reference to the DSA '");
 			ufn_dn_print_aux (ps,ap->ap_name, NULLDN, 0);
-
 			if (!yesno ("' ? ") == FALSE)
 				continue;
 		} else if (!frompipe) {
@@ -171,10 +160,8 @@ int dish_error (PS ps, struct DSError * error) {
 			ps_print (ps,"'...\n");
 			ps_flush (ps);
 		}
-
 		if (referral_bind (ap->ap_address) != 0)
 			return (1);
-
 		if (chase_flag == 2)
 			break; /* only try first - otherwise possible looping */
 	}

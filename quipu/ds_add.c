@@ -36,23 +36,18 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 	extern int	entry_cmp();
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_add"));
-
 	if (!dsp)
 		target = arg->ada_object;
-
 	/* stop aliases being dereferenced */
 	arg->ada_common.ca_servicecontrol.svc_options |= SVC_OPT_DONTDEREFERENCEALIAS;
-
 	error ->dse_type = DSE_NOERROR;
 	/* first of all see if entry exists */
-
 	if (target == NULLDN) {
 		error->dse_type = DSE_NAMEERROR;
 		error->ERR_NAME.DSE_na_problem = DSE_NA_NOSUCHOBJECT;
 		error->ERR_NAME.DSE_na_matched = NULLDN;
 		return (DS_ERROR_REMOTE);
 	}
-
 	switch (find_entry (target,&(arg->ada_common),binddn,NULLDNSEQ,TRUE,&entryptr, error, di_p, OP_ADDENTRY)) {
 	case DS_OK:
 		error->dse_type = DSE_UPDATEERROR;
@@ -73,9 +68,7 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	/* object does not exist, so create it */
-
 	/* Strong authentication  */
 	if ((retval = check_security_parms((caddr_t) arg,
 									   _ZAddEntryArgumentDataDAS,
@@ -86,13 +79,10 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		error->ERR_SECURITY.DSE_sc_problem = retval;
 		return (DS_ERROR_REMOTE);
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,("add - find parent"));
-
 	if ((dntop = dn_cpy(target)) != NULLDN)
 		for (dn=dntop; dn->dn_parent != NULLDN; dn=dn->dn_parent)
 			trail = dn;
-
 	if (trail == NULLDN) {
 		dntop = NULLDN;
 		entryptr = database_root;
@@ -125,7 +115,6 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 			return(DS_ERROR_LOCAL);
 		}
 	}
-
 	if ( read_only || ((entryptr->e_parent != NULLENTRY) && (entryptr->e_parent->e_lock))) {
 		error->dse_type = DSE_SERVICEERROR;
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;
@@ -133,7 +122,6 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		dn_free (dn);
 		return (DS_ERROR_REMOTE);
 	}
-
 	/* not prepared to accept operation over DSP */
 	if (dsp) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -142,15 +130,12 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		dn_free (dn);
 		return (DS_ERROR_REMOTE);
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,("add - acl"));
-
 	if (!manager(binddn))
 		authp = entryptr->e_authp ? entryptr->e_authp->ap_modification :
 				AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
-
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_ADD,
 				   entryptr->e_acl->ac_child,dntop) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -159,17 +144,12 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		dn_free (dn);
 		return (DS_ERROR_REMOTE);
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,("add - default"));
-
 	DATABASE_HEAP;
-
 	ptr = get_default_entry (entryptr);
 	ptr->e_name = rdn_cpy (dn->dn_rdn);
 	ptr->e_attributes = as_cpy (arg->ada_entry);
-
 	modify_attr (ptr,binddn);
-
 	DLOG (log_dsap,LLOG_TRACE,("add - unravel"));
 	if (unravel_attribute (ptr,error) != OK) {
 		dn_free (dntop);
@@ -178,7 +158,6 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		GENERAL_HEAP;
 		return (DS_ERROR_REMOTE);
 	}
-
 	if ( ! check_oc_hierarchy(ptr->e_oc)) {
 		error->dse_type = DSE_UPDATEERROR;
 		error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
@@ -188,7 +167,6 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		GENERAL_HEAP;
 		return (DS_ERROR_REMOTE);
 	}
-
 	DLOG (log_dsap,LLOG_TRACE,("add - schema"));
 	if (check_schema (ptr,NULLATTR,error) != OK) {
 		dn_free (dntop);
@@ -197,12 +175,9 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		GENERAL_HEAP;
 		return (DS_ERROR_REMOTE);
 	}
-
 	GENERAL_HEAP;
-
 	dn_free (dn);
 	dn_free (dntop);
-
 	if ( (!ptr->e_leaf) && (!ptr->e_external) && (!ptr->e_children)) {
 		AV_Sequence avs;
 		for (avs = ptr->e_master; avs != NULLAV; avs=avs->avseq_next)
@@ -213,24 +188,18 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		if (avs == NULLAV)
 			ptr->e_allchildrenpresent = FALSE;
 	}
-
 	/* add the entry */
 	DATABASE_HEAP;
 	avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
 	GENERAL_HEAP;
-
 	if (entryptr->e_leaf) {
-
 		/* Turn leaf into non leaf, and add child */
 		/* Temporary until managemnet tools do it */
-
 		Attr_Sequence newas;
-
 		if (entryptr->e_data != E_DATA_MASTER) {
 			DN dn_found;
 			struct dn_seq	* dn_stack = NULLDNSEQ;
 			int res;
-
 			dn_found = get_copy_dn (entryptr);
 			res = constructor_dsa_info(dn_found,dn_stack,TRUE,entryptr,error,di_p);
 			dn_free (dn_found);
@@ -245,11 +214,8 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 			}
 			/* NOTREACHED */
 		}
-
 		/* add master attributes */
-
 		DATABASE_HEAP;
-
 		if (entryptr->e_parent->e_master == NULLAV) {
 			extern char * mydsaname;
 			entryptr->e_master = str2avs (mydsaname,at_masterdsa);
@@ -262,17 +228,14 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 			}
 		}
 		/* add new QuipuNonLeaf objectclass */
-
 		/* see if OC inherited */
 		if (as_find_type(entryptr->e_attributes,at_objectclass) == NULLATTR) {
 			/* OC inherited - pull down */
 			newas = as_comp_new (AttrT_cpy(at_objectclass),avs_cpy(entryptr->e_oc),NULLACL_INFO);
 			entryptr->e_attributes = as_merge (entryptr->e_attributes,newas);
 		}
-
 		newas = as_comp_new (AttrT_cpy(at_objectclass),str2avs(NONLEAFOBJECT,at_objectclass),NULLACL_INFO);
 		entryptr->e_attributes = as_merge (entryptr->e_attributes,newas);
-
 		if (entryptr->e_parent != NULLENTRY) {
 			if (entryptr->e_parent->e_edbversion)
 				free (entryptr->e_parent->e_edbversion);
@@ -283,16 +246,13 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		entryptr->e_edbversion = new_version();
 		ptr->e_edbversion = new_version();
 		entryptr->e_allchildrenpresent = 2;	/* Subtree ! */
-
 		modify_attr (entryptr,binddn);
 		if (unravel_attribute (entryptr,error) != OK)
 			fatal (-31,"serious schema error");
-
 #ifdef TURBO_INDEX
 		turbo_add2index(ptr);		/* add new entry to index */
 		turbo_add2index(entryptr);	/* add parent to index */
 #endif
-
 #ifdef TURBO_DISK
 		/* write the new entry */
 		if (turbo_write(ptr) == NOTOK)
@@ -301,9 +261,7 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		if (journal (ptr) == NOTOK)
 			fatal (-32,"add journal (2) failure - check database");
 #endif
-
 		entryptr->e_leaf = FALSE;
-
 #ifdef TURBO_DISK
 		/* rewrite the parent as well */
 		if (turbo_write(entryptr) == NOTOK)
@@ -312,24 +270,18 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 		if (journal (entryptr) != OK)
 			fatal (-31,"add parent journal failed - check database");
 #endif
-
 		GENERAL_HEAP;
-
 		local_master_size++;
 		return (OK);
-
 	}
-
 	if (ptr->e_parent != NULLENTRY) {
 		if (ptr->e_parent->e_edbversion)
 			free (ptr->e_parent->e_edbversion);
 		ptr->e_parent->e_edbversion = new_version();
 	}
-
 #ifdef TURBO_INDEX
 	turbo_add2index(ptr);
 #endif
-
 #ifdef TURBO_DISK
 	if (turbo_write(ptr) == NOTOK)
 		fatal(-32,"add turbo_write failure - check database");
@@ -337,7 +289,6 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 	if (journal (ptr) == NOTOK)
 		fatal (-32,"add journal failure - check database");
 #endif
-
 	local_master_size++;
 	return (DS_OK);
 }

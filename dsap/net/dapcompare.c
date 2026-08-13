@@ -9,15 +9,11 @@ int dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *er
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
-
 	DapCompare (ad, (*id), arg, di, ROS_INTR);
-
 	error->dse_type = DSE_NOERROR;
-
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-
 		/* Nasty struct copy */
 		(*result) = dr->dr_res.res_cm;	/* struct copy */
 		dr->dr_res.result_type = -1;	/* Prevent freeing */
@@ -27,7 +23,6 @@ int dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *er
 
 	case DI_ERROR: {
 		struct DAPerror	* de = &(di->di_error);
-
 		/* Nasty struct copy */
 		(*error) = de->de_err;			/* struct copy */
 		return (DS_ERROR_REMOTE);
@@ -53,7 +48,5 @@ int DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication
 	if(encode_DAS_CompareArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
 		return(dapreject (di, DP_INVOKE, id, NULLCP, "Compare argument encoding failed"));
 	}
-
 	return (DapInvokeReqAux (ad, id, OP_COMPARE, arg_pe, di, asyn));
-
 }

@@ -51,15 +51,12 @@ static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP
 		*taller = 1;
 		return( OK );
 	}
-
 	cmp = (*fcmp)( data, (*iroot)->avl_data );
-
 	/* equal - duplicate name */
 	if ( cmp == 0 ) {
 		*taller = 0;
 		return( (*fdup)( (*iroot)->avl_data, data ) );
 	}
-
 	/* go right */
 	else if ( cmp > 0 ) {
 		rc = ravl_insert( &((*iroot)->avl_right), data, &tallersub,
@@ -113,7 +110,6 @@ static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP
 		else
 			*taller = 0;
 	}
-
 	/* go left */
 	else {
 		rc = ravl_insert( &((*iroot)->avl_left), data, &tallersub,
@@ -167,7 +163,6 @@ static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP
 		else
 			*taller = 0;
 	}
-
 	return( rc );
 }
 
@@ -249,7 +244,6 @@ static int right_balance(Avlnode **root)
 		}
 		break;
 	}
-
 	return( shorter );
 }
 
@@ -308,7 +302,6 @@ static int left_balance(Avlnode **root)
 		}
 		break;
 	}
-
 	return( shorter );
 }
 
@@ -321,14 +314,11 @@ static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 
 	if ( *root == NULLAVL )
 		return( 0 );
-
 	cmp = (*fcmp)( data, (*root)->avl_data );
-
 	/* found it! */
 	if ( cmp == 0 ) {
 		savenode = *root;
 		savedata = savenode->avl_data;
-
 		/* simple cases: no left child */
 		if ( (*root)->avl_left == 0 ) {
 			*root = (*root)->avl_right;
@@ -342,25 +332,20 @@ static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 			free( (char *) savenode );
 			return( savedata );
 		}
-
 		/*
 		 * avl_getmin will return to us the smallest node greater
 		 * than the one we are trying to delete.  deleting this node
 		 * from the right subtree is guaranteed to end in one of the
 		 * simple cases above.
 		 */
-
 		minnode = (*root)->avl_right;
 		while ( minnode->avl_left != NULLAVL )
 			minnode = minnode->avl_left;
-
 		/* swap the data */
 		(*root)->avl_data = minnode->avl_data;
 		minnode->avl_data = savedata;
-
 		savedata = ravl_delete( &(*root)->avl_right, data, fcmp,
 								&shortersubtree );
-
 		if ( shortersubtree )
 			*shorter = right_balance( root );
 		else
@@ -372,7 +357,6 @@ static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 			*shorter = 0;
 			return( 0 );
 		}
-
 		/* left subtree shorter? */
 		if ( shortersubtree )
 			*shorter = left_balance( root );
@@ -385,13 +369,11 @@ static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 			*shorter = 0;
 			return( 0 );
 		}
-
 		if ( shortersubtree )
 			*shorter = right_balance( root );
 		else
 			*shorter = 0;
 	}
-
 	return( savedata );
 }
 
@@ -405,15 +387,12 @@ int avl_inapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
-
 	if ( root->avl_left != 0 )
 		if ( avl_inapply( root->avl_left, fn, arg, stopflag )
 				== stopflag )
 			return( stopflag );
-
 	if ( (*fn)( root->avl_data, arg ) == stopflag )
 		return( stopflag );
-
 	if ( root->avl_right == 0 )
 		return( AVL_NOMORE );
 	else
@@ -424,17 +403,14 @@ int avl_postapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
-
 	if ( root->avl_left != 0 )
 		if ( avl_postapply( root->avl_left, fn, arg, stopflag )
 				== stopflag )
 			return( stopflag );
-
 	if ( root->avl_right != 0 )
 		if ( avl_postapply( root->avl_right, fn, arg, stopflag )
 				== stopflag )
 			return( stopflag );
-
 	return( (*fn)( root->avl_data, arg ) );
 }
 
@@ -442,15 +418,12 @@ int avl_preapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 {
 	if ( root == 0 )
 		return( AVL_NOMORE );
-
 	if ( (*fn)( root->avl_data, arg ) == stopflag )
 		return( stopflag );
-
 	if ( root->avl_left != 0 )
 		if ( avl_preapply( root->avl_left, fn, arg, stopflag )
 				== stopflag )
 			return( stopflag );
-
 	if ( root->avl_right == 0 )
 		return( AVL_NOMORE );
 	else
@@ -538,19 +511,14 @@ int avl_free(Avlnode *root, IFP dfree)
 
 	if ( root == 0 )
 		return( 0 );
-
 	nleft = nright = 0;
 	if ( root->avl_left != 0 )
 		nleft = avl_free( root->avl_left, dfree );
-
 	if ( root->avl_right != 0 )
 		nright = avl_free( root->avl_right, dfree );
-
 	if ( dfree )
 		(*dfree)( root->avl_data );
-
 	free( (char *) root );
-
 	return( nleft + nright + 1 );
 }
 
@@ -591,9 +559,7 @@ static int avl_buildlist (caddr_t data, int arg) {
 		avl_list = (caddr_t *) realloc( (char *) avl_list,
 										(unsigned) slots * sizeof(caddr_t));
 	}
-
 	avl_list[ avl_maxlist++ ] = data;
-
 	return( 0 );
 }
 

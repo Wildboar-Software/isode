@@ -32,16 +32,11 @@ static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, s
 
 	missingP (ftg);
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	if ((result = frgrpchk (fsb, ftg, type, fti)) != NOTOK)
 		result = FGroupResponseAux (fsb, ftg, state, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -65,7 +60,6 @@ static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int st
 	bzero ((char *) texts, sizeof texts);
 	bzero ((char *) info, sizeof info);
 	bzero ((char *) pdus, sizeof pdus);
-
 	did_loop = 0;
 	if ((result = frgrp2pdus (fsb, ftg, pdus, texts, &npdu, fti)) == NOTOK)
 		goto out;
@@ -79,13 +73,10 @@ static int FGroupResponseAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int st
 			goto out;
 		}
 		(*pep = pe) -> pe_context = fsb -> fsb_id;
-
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", *txp, pe, 0));
 	}
 	did_loop = 1;
-
 	result = PDataRequest (fsb -> fsb_fd, info, npdu, pi);
-
 out:
 	;
 	for (pdup = pdus, pep = info, i = NPDATA - 1;
@@ -96,16 +87,13 @@ out:
 		if (*pdup)
 			free_FTAM_PDU (*pdup);
 	}
-
 	if (result == NOTOK) {
 		if (did_loop)
 			ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (fti -> fti_abort.fta_action == FACTION_PERM)
 			freefsblk (fsb);
-
 		return NOTOK;
 	}
-
 	switch (state) {
 	case FSB_DATAIDLE:
 		if (ftg -> ftg_flags & FTG_SELECT)
@@ -122,7 +110,6 @@ out:
 		fsb -> fsb_state = state;
 		break;
 	}
-
 	return OK;
 }
 
@@ -161,10 +148,8 @@ wrong_state:
 		;
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	if (ftg -> ftg_flags & FTG_SELECT) {
 		struct FTAMselect *ftse = &ftg -> ftg_select;
-
 		switch (ftse -> ftse_state) {
 		case FSTATE_SUCCESS:
 		case FSTATE_FAILURE:
@@ -191,10 +176,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many select diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_CREATE) {
 		struct FTAMcreate *ftce = &ftg -> ftg_create;
-
 		switch (ftce -> ftce_state) {
 		case FSTATE_SUCCESS:
 		case FSTATE_FAILURE:
@@ -238,10 +221,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many create diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_CLOSE) {
 		struct FTAMclose     *ftcl = &ftg -> ftg_close;
-
 		switch (ftcl -> ftcl_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -256,10 +237,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many close diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_RDATTR) {
 		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-
 		switch (ftra -> ftra_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -282,10 +261,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many read attribute diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_CHATTR) {
 		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-
 		switch (ftca -> ftca_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -311,10 +288,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many change attribute diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_DESELECT) {
 		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
-
 		switch (ftde -> ftde_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -336,10 +311,8 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many deselect diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_DELETE) {
 		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
-
 		switch (ftxe -> ftxe_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -357,11 +330,9 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many delete diagnostics");
 	}
-
 	if (ftg -> ftg_flags & FTG_OPEN) {
 		struct FTAMopen *ftop = &ftg -> ftg_open;
 		struct FTAMconcurrency *fc;
-
 		switch (ftop -> ftop_state) {
 		case FSTATE_SUCCESS:
 		case FSTATE_FAILURE:
@@ -396,7 +367,6 @@ wrong_state:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many open diagnostics");
 	}
-
 	return OK;
 }
 
@@ -406,7 +376,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	struct type_FTAM_PDU *pdu;
 
 	i = 0;
-
 #define	new_pdu(t,o,u,x) \
 	struct t *req; \
  \
@@ -418,7 +387,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	if ((req = (struct t *) calloc (1, sizeof *req)) == NULL) \
 	    goto no_mem; \
 	pdu -> un.u = req;
-
 #define	new_state(s) \
     if (s != int_FTAM_State__Result_success) { \
 	if ((req -> state__result = \
@@ -428,7 +396,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	    goto no_mem; \
 	req -> state__result -> parm = s; \
     }
-
 #define	new_action(a) \
     if (a != int_FTAM_Action__Result_success) { \
 	if ((req -> action__result = \
@@ -438,7 +405,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	    goto no_mem; \
 	req -> action__result -> parm = a; \
     }
-
 	if ((flags = ftg -> ftg_flags) & FTG_SELECT) {
 		if (ftg -> ftg_select.ftse_state == FSTATE_FAILURE)
 			flags &= FTG_BEGIN | FTG_SELECT | FTG_END;
@@ -446,7 +412,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 		if (ftg -> ftg_create.ftce_state == FSTATE_FAILURE)
 			flags &= FTG_BEGIN | FTG_CREATE | FTG_END;
 	}
-
 	if (flags & FTG_BEGIN) {
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -454,10 +419,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 		pdu -> offset = type_FTAM_PDU_f__begin__group__response;
 		texts[i++] = "F-BEGIN-GROUP-response";
 	}
-
 	if (flags & FTG_SELECT) {
 		struct FTAMselect *ftse = &ftg -> ftg_select;
-
 		new_pdu (type_FTAM_F__SELECT__response,
 				 type_FTAM_PDU_f__select__response,
 				 f__select__response, "F-SELECT-response");
@@ -476,10 +439,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_CREATE) {
 		struct FTAMcreate *ftce = &ftg -> ftg_create;
-
 		new_pdu (type_FTAM_F__CREATE__response,
 				 type_FTAM_PDU_f__create__response,
 				 f__create__response, "F-CREATE-response");
@@ -498,10 +459,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_CLOSE) {
 		struct FTAMclose *ftcl = &ftg -> ftg_close;
-
 		new_pdu (type_FTAM_F__CLOSE__response,
 				 type_FTAM_PDU_f__close__response,
 				 f__close__response, "F-CLOSE-response");
@@ -516,10 +475,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_RDATTR) {
 		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-
 		new_pdu (type_FTAM_F__READ__ATTRIB__response,
 				 type_FTAM_PDU_f__read__attrib__response,
 				 f__read__attrib__response, "F-READ-ATTRIB-response");
@@ -534,10 +491,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_CHATTR) {
 		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-
 		new_pdu (type_FTAM_F__CHANGE__ATTRIB__response,
 				 type_FTAM_PDU_f__change__attrib__response,
 				 f__change__attrib__response, "F-CHANGE-ATTRIB-response");
@@ -552,10 +507,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_DESELECT) {
 		struct FTAMdeselect   *ftde = &ftg -> ftg_deselect;
-
 		new_pdu (type_FTAM_F__DESELECT__response,
 				 type_FTAM_PDU_f__deselect__response,
 				 f__deselect__response, "F-DESELECT-response");
@@ -574,10 +527,8 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_DELETE) {
 		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
-
 		new_pdu (type_FTAM_F__DELETE__response,
 				 type_FTAM_PDU_f__delete__response,
 				 f__delete__response, "F-DELETE-response");
@@ -596,11 +547,9 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_OPEN) {
 		struct FTAMopen *ftop = &ftg -> ftg_open;
 		struct type_FTAM_Contents__Type__Attribute *proposed;
-
 		new_pdu (type_FTAM_F__OPEN__response,
 				 type_FTAM_PDU_f__open__response,
 				 f__open__response, "F-OPEN-response");
@@ -630,7 +579,6 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (flags & FTG_END) {
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -638,14 +586,11 @@ static int frgrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 		pdu -> offset = type_FTAM_PDU_f__end__group__response;
 		texts[i++] = "F-END-GROUP-response";
 	}
-
 	*npdu = i;
 	return OK;
-
 #undef	new_pdu
 #undef	new_state
 #undef	new_action
-
 no_mem:
 	;
 	return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");

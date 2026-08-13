@@ -21,23 +21,19 @@ out:
 			free_FTAM_Read__Attributes (fpm);
 		return NULL;
 	}
-
 	if (fa -> fa_present & FA_FILENAME) {
 		struct type_FTAM_Filename__Attribute *fn,
 				   **fc;
-
 		if (fa -> fa_novalue & FA_FILENAME) {
 			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 					  "filename not present");
 			goto out;
 		}
-
 		if (fa -> fa_nfile > NFFILE) {
 			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 					  "too many filenames");
 			goto out;
 		}
-
 		fc = &fpm -> filename;
 		for (ap = fa -> fa_files, i = fa -> fa_nfile - 1; i >= 0; ap++, i--) {
 			if (*ap == NULLCP) {
@@ -46,33 +42,27 @@ out:
 						  fa -> fa_nfile - i - 1);
 				goto out;
 			}
-
 			if ((fn = (struct type_FTAM_Filename__Attribute *)
 					  calloc (1, sizeof *fpm -> filename))
 					== NULL)
 				goto no_mem;
 			*fc = fn;
-
 			if ((fn -> GraphicString = str2qb (*ap, strlen (*ap), 1)) == NULL)
 				goto no_mem;
-
 			fc = &((*fc) -> next);
 		}
 	}
-
 	if (fa -> fa_present & FA_ACTIONS) {
 		if (fa -> fa_novalue & FA_ACTIONS) {
 			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 					  "permitted-actions not present");
 			goto out;
 		}
-
 		if ((fpm -> permitted__actions = bits2fpm (fsb, fpermitted_pairs,
 										 fa -> fa_permitted, fti))
 				== NULL)
 			goto out;
 	}
-
 	if (fa -> fa_present & FA_CONTENTS) {
 		if (fa -> fa_novalue & FA_CONTENTS) {
 			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -93,7 +83,6 @@ out:
 		if (fpm -> contents__type -> parameter = fa -> fa_parameter)
 			fpm -> contents__type -> parameter -> pe_refcnt++;
 	}
-
 	if (fa -> fa_present & FA_ACCOUNT) {
 		if (fa -> fa_account == NULL) {
 			ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -117,7 +106,6 @@ out:
 				goto no_mem;
 		}
 	}
-
 #define	dodate(flag,field,tag) \
     if (fa -> fa_present & flag) { \
 	if ((fpm -> tag = (struct type_FTAM_Date__and__Time__Attribute *) \
@@ -144,7 +132,6 @@ out:
 	dodate (FA_DATE_ATTR, &fa -> fa_date_attribute,
 			date__and__time__of__last__attribute__modification);
 #undef	dodate
-
 #define	douser(flag,field,tag,name) \
     if (fa -> fa_present & flag) { \
 	if ((fpm -> tag = (struct type_FTAM_User__Identity__Attribute *) \
@@ -177,7 +164,6 @@ out:
 			identity__of__last__attribute__modifier,
 			"identity-of-last-attribute-modifier");
 #undef	douser
-
 	if (fa -> fa_present & FA_AVAILABILITY) {
 		if ((fpm -> file__availability =
 					(struct type_FTAM_File__Availability__Attribute *)
@@ -204,7 +190,6 @@ out:
 			}
 		}
 	}
-
 #define	dosize(flag,field,tag) \
     if (fa -> fa_present & flag) { \
 	if ((fpm -> tag = (struct type_FTAM_Filesize__Attribute *) \
@@ -222,7 +207,6 @@ out:
 	dosize (FA_FILESIZE, fa -> fa_filesize, filesize);
 	dosize (FA_FUTURESIZE, fa -> fa_futuresize, future__filesize);
 #undef	dosize
-
 	if (fa -> fa_present & FA_CONTROL) {
 		if ((fpm -> access__control =
 					(struct type_FTAM_Access__Control__Attribute *)
@@ -240,7 +224,6 @@ out:
 				goto out;
 		}
 	}
-
 	if (fa -> fa_present & FA_LEGAL) {
 		if ((fpm -> legal__qualification =
 					(struct type_FTAM_Legal__Qualification__Attribute *)
@@ -264,7 +247,6 @@ out:
 				goto no_mem;
 		}
 	}
-
 	/*
 	 * Added private use attribute functionality for Retix NBS9 interworking.
 	 * No value should always be set because we don't support private use.
@@ -275,7 +257,6 @@ out:
 				  "private-use attribute not supported");
 		goto out;
 	}
-
 	return fpm;
 }
 
@@ -284,14 +265,11 @@ int fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struc
 	UTC     u;
 
 	bzero ((char *) fa, sizeof *fa);
-
 	if (fpm -> filename) {
 		int	n;
 		char **ap;
 		struct type_FTAM_Filename__Attribute *fn;
-
 		fa -> fa_present |= FA_FILENAME;
-
 		ap = fa -> fa_files, n = NFFILE;
 		for (fn = fpm -> filename; fn; fn = fn -> next) {
 			if (n-- <= 0) {
@@ -312,18 +290,14 @@ no_mem:
 			fa -> fa_nfile++;
 		}
 	}
-
 	if (fpm -> permitted__actions) {
 		fa -> fa_present |= FA_ACTIONS;
-
 		if (fpm2bits (fsb, fpermitted_pairs, fpm -> permitted__actions,
 					  &fa -> fa_permitted, fti) == NOTOK)
 			goto out;
 	}
-
 	if (fpm -> contents__type) {
 		fa -> fa_present |= FA_CONTENTS;
-
 		fa -> fa_contents = fpm -> contents__type -> document__type__name;
 		fpm -> contents__type -> document__type__name = NULLOID;
 		if (fpm -> contents__type -> parameter
@@ -332,10 +306,8 @@ no_mem:
 				== NULLPE)
 			goto no_mem;
 	}
-
 	if (fpm -> storage__account) {
 		fa -> fa_present |= FA_ACCOUNT;
-
 		if (fpm -> storage__account -> offset
 				== type_FTAM_Account__Attribute_no__value__available)
 			fa -> fa_novalue |= FA_ACCOUNT;
@@ -346,13 +318,11 @@ no_mem:
 				goto no_mem;
 			if (*fa -> fa_account == NULL) {	/* CDC: some other vendor... */
 				fa -> fa_present &= ~FA_ACCOUNT;
-
 				free (fa -> fa_account);
 				fa -> fa_account = NULL;
 			}
 		}
 	}
-
 #define	dodate(flag,field,tag) \
     if (fpm -> tag) { \
 	fa -> fa_present |= flag; \
@@ -379,7 +349,6 @@ no_mem:
 	dodate (FA_DATE_ATTR, fa -> fa_date_attribute,
 			date__and__time__of__last__attribute__modification);
 #undef	dodate
-
 #define	douser(flag,field,tag,name) \
     if (fpm -> tag) { \
 	fa -> fa_present |= flag; \
@@ -401,10 +370,8 @@ no_mem:
 			identity__of__last__attribute__modifier,
 			"identity-of-last-attribute-modifier");
 #undef	douser
-
 	if (fpm -> file__availability) {
 		fa -> fa_present |= FA_AVAILABILITY;
-
 		if (fpm -> file__availability -> offset ==
 				type_FTAM_File__Availability__Attribute_no__value__available)
 			fa -> fa_novalue |= FA_AVAILABILITY;
@@ -412,7 +379,6 @@ no_mem:
 			fa -> fa_availability =
 				fpm -> file__availability -> un.actual__values;
 	}
-
 #define	dosize(flag,field,tag) \
     if (fpm -> tag) { \
 	fa -> fa_present |= flag; \
@@ -426,10 +392,8 @@ no_mem:
 	dosize (FA_FILESIZE, fa -> fa_filesize, filesize);
 	dosize (FA_FUTURESIZE, fa -> fa_futuresize, future__filesize);
 #undef	dosize
-
 	if (fpm -> access__control) {
 		fa -> fa_present |= FA_CONTROL;
-
 		if (fpm -> access__control -> offset
 				== type_FTAM_Access__Control__Attribute_no__value__available)
 			fa -> fa_novalue |= FA_CONTROL;
@@ -437,10 +401,8 @@ no_mem:
 						  &fa -> fa_control, fti) == NOTOK)
 			goto out;
 	}
-
 	if (fpm -> legal__qualification) {
 		fa -> fa_present |= FA_LEGAL;
-
 		if (fpm -> legal__qualification -> offset ==
 				type_FTAM_Legal__Qualification__Attribute_no__value__available)
 			fa -> fa_novalue |= FA_LEGAL;
@@ -449,14 +411,12 @@ no_mem:
 				 == NULL)
 			goto no_mem;
 	}
-
 	/* Added private use functionality pmk */
 	if (fpm -> private__use) {
 		fa -> fa_present |= FA_PRIVATE;
 		/* Set no value, regardless of what is there we don't support it */
 		fa -> fa_novalue |= FA_PRIVATE;
 	}
-
 	return OK;
 }
 

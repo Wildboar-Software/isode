@@ -45,16 +45,11 @@ int FHookRequest (int sd, IFP tracing, struct FTAMindication *fti) {
 	struct ftamblk *fsb;
 
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	if (fsb -> fsb_trace = tracing)
 		pe_applist = ftam_appls, pe_maxappl = ftam_nappl;
-
 	sigiomask (smask);
-
 	return OK;
 }
 
@@ -64,9 +59,7 @@ int FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw) {
 	if (event)
 		LLOG (ftam_log, LLOG_ALL, ("%s %s", rw > 0 ? "event"
 								   : rw == 0 ? "action" : "exception", event));
-
 	if (pe)
 		pvpdu (ftam_log, print_FTAM_PDU_P, pe, fpdu ? fpdu : "FPDU", rw);
-
 	ll_sync (ftam_log);
 }

@@ -53,7 +53,6 @@ int cha_loopdetected (struct chain_arg *cha) {
 	ti_elem->ti_target = cha->cha_target;
 	ti_elem->ti_progress.op_resolution_phase = cha->cha_progress.op_resolution_phase;
 	ti_elem->ti_progress.op_nextrdntoberesolved = cha->cha_progress.op_nextrdntoberesolved;
-
 	return(ti_is_elem(ti_elem, cha->cha_trace));
 }
 
@@ -63,17 +62,13 @@ int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list) {
 	for(tip = ti_list; tip!=NULLTRACEINFO; tip=tip->ti_next) {
 		if(dn_cmp(ti->ti_dsa, tip->ti_dsa) != 0)
 			continue;
-
 		if(dn_cmp(ti->ti_target, tip->ti_target) != 0)
 			continue;
-
 		if(ti->ti_progress.op_resolution_phase == tip->ti_progress.op_resolution_phase)
 			return(1);
-
 		if(ti->ti_progress.op_nextrdntoberesolved == tip->ti_progress.op_nextrdntoberesolved)
 			return(1);
 	}
-
 	return(0);
 }
 
@@ -83,13 +78,10 @@ ti_cpy (struct trace_info *ti) {
 
 	if(ti == NULLTRACEINFO)
 		return(NULLTRACEINFO);
-
 	ret_ti = (struct trace_info *) malloc(sizeof(struct trace_info));
-
 	ret_ti->ti_target = dn_cpy(ti->ti_target);
 	ret_ti->ti_dsa = dn_cpy(ti->ti_dsa);
 	ret_ti->ti_progress = ti->ti_progress;
 	ret_ti->ti_next = ti_cpy(ti->ti_next);
-
 	return(ret_ti);
 }

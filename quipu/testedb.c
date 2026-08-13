@@ -18,19 +18,15 @@ int main (int argc, char *argv[]) {
 	Avlnode	*treetop;
 
 	dsa_mode = TRUE;
-
 	unrav_fn = (IFP) real_unravel_attribute;
 	schema_fn = (IFP) real_check_schema;
-
 	quipu_syntaxes();
 	if (load_oid_table ("oidtable") == NOTOK)
 		fatal (-1, "Can't load oid tables");
 	check_dsa_known_oids ();
-
 	ll_close (log_dsap);
 	ll_dbinit (log_dsap, "testedb");
 	log_dsap -> ll_events = LLOG_FATAL | LLOG_EXCEPTIONS;
-
 	if ((treetop = getentry_block (NULLENTRY, argc > 1 ? argv [1] : "./EDB"))
 			!= NULL) {
 		printf ("EDB ok\n");
@@ -44,9 +40,7 @@ int main (int argc, char *argv[]) {
 #endif
 		exit (0);
 	}
-
 	printf ("EDB not ok\n");
-
 	return 1;
 }
 

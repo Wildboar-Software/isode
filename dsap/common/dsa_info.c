@@ -8,7 +8,6 @@ extern LLog * log_dsap;
 static void edb_info_free (struct edb_info *edb) {
 	if (edb == NULLEDB)
 		return;
-
 	dn_free (edb->edb_name) ;
 	dn_free (edb->edb_getfrom);
 	dn_seq_free (edb->edb_allowed);
@@ -62,13 +61,11 @@ static void edb_info_print (
 ) {
 	if (edb == NULLEDB)
 		return;
-
 	if (format == READOUT) {
 		if (edb->edb_name != NULLDN)
 			dn_print (ps,edb->edb_name,EDBOUT);
 		else
 			ps_print (ps,"ROOT");
-
 		if (edb->edb_getfrom != NULLDN) {
 			ps_print (ps," ( FROM ");
 			dn_print (ps,edb->edb_getfrom,EDBOUT);
@@ -94,7 +91,6 @@ static void edb_info_print (
 		ps_print (ps,"#");
 		dn_seq_print (ps,edb->edb_allowed,format);
 	}
-
 	if (edb->edb_sendto != NULLDNSEQ)
 		DLOG (log_dsap,LLOG_EXCEPTIONS,("edb_sendto not null"));
 }
@@ -111,7 +107,6 @@ static struct edb_info *str2update (char *str) {
 	}
 	ei = edb_info_alloc ();
 	ei->edb_sendto = NULLDNSEQ;
-
 	/* go for name */
 	save = ptr++;
 	if (*str == '#')
@@ -121,14 +116,12 @@ static struct edb_info *str2update (char *str) {
 			save++;
 		val = *save;
 		*save = 0;
-
 		if ((ei->edb_name = str2dn(str)) == NULLDN) {
 			free ((char *) ei);
 			return (NULLEDB);
 		}
 		*save = val;
 	}
-
 	str = SkipSpace(ptr);
 	if ((ptr = index (str,'#')) == 0) {
 		parse_error ("2nd # missing in update syntax '%s'",str);
@@ -136,7 +129,6 @@ static struct edb_info *str2update (char *str) {
 		free ((char *) ei);
 		return (NULLEDB);
 	}
-
 	save = ptr++;
 	if (*str == '#') {
 		ei->edb_getfrom = NULLDN;
@@ -145,7 +137,6 @@ static struct edb_info *str2update (char *str) {
 			save++;
 		val = *save;
 		*save = 0;
-
 		if ((ei->edb_getfrom = str2dn(str)) == NULLDN) {
 			dn_free (ei->edb_name);
 			free ((char *) ei);
@@ -153,7 +144,6 @@ static struct edb_info *str2update (char *str) {
 		}
 		*save = val;
 	}
-
 	/* send to */
 	str = SkipSpace(ptr);
 	if ((ptr = index (str,'#')) == 0) {
@@ -165,7 +155,6 @@ static struct edb_info *str2update (char *str) {
 		val = *save;
 		*save=0;
 	}
-
 	if (*str == 0)
 		ei->edb_allowed = NULLDNSEQ;
 	else if ((ei->edb_allowed = str2dnseq(str)) == NULLDNSEQ) {
@@ -175,10 +164,8 @@ static struct edb_info *str2update (char *str) {
 		free ((char *) ei);
 		return (NULLEDB);
 	}
-
 	if (ptr != 0)
 		*save = val;
-
 	return (ei);
 }
 

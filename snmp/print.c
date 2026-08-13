@@ -114,35 +114,29 @@ static int get_pq (int offset) {
 		lastq = quantum;
 		return OK;
 	}
-
 	free_pq ();
 	if (stat (_PATH_PRINTCAP, &st) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, _PATH_PRINTCAP, "unable to fstat");
 		return NOTOK;
 	}
-
 	i = 1;
 	bp = pbuf;
 	while (getprent (buffer) > 0)
 		if (!pgetstr ("rm", &bp))
 			i++;
 	endprent ();
-
 	if ((pq_head = (struct pq *) calloc ((unsigned) i, sizeof *pq_head))
 			== NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		return NOTOK;
 	}
-
 	pq_st = st;	/* struct copy */
 	lastq = quantum;
-
 	for (pq = pq_head; i > 1; i--) {
 		int	j;
 		unsigned int *ip;
 		char  *cp;
 		struct pq *qp;
-
 		if (getprent (pq -> pq_buffer) <= 0)
 			break;
 		pq -> pq_bp = pq -> pq_pbuf;
@@ -154,7 +148,6 @@ static int get_pq (int offset) {
 			pq -> pq_LO = "lock";
 		if (!(pq -> pq_ST = pgetstr ("st", &pq -> pq_bp)))
 			pq -> pq_ST = "status";
-
 		for (cp = pq -> pq_buffer; *cp; cp++)
 			if (*cp == '|' || *cp == ':') {
 				*cp = 0;
@@ -167,14 +160,11 @@ static int get_pq (int offset) {
 			continue;
 		}
 		pq -> pq_name = pq -> pq_buffer;
-
 		for (cp = pq -> pq_name, ip = pq -> pq_instance, j = 0; *cp; j++)
 			*ip++ = *cp++ & 0xff;
 		pq -> pq_insize = j;
-
 		pq -> pq_action = PQ_OTHER;
 		pq -> pq_lastq = -1;
-
 		for (qp = pq_head; qp < pq; qp++)
 			if (elem_cmp (pq -> pq_instance, pq -> pq_insize,
 						  qp -> pq_instance, qp -> pq_insize) == 0)
@@ -187,10 +177,8 @@ static int get_pq (int offset) {
 			pq++;
 	}
 	endprent ();
-
 	if (pq - pq_head > 1)
 		qsort ((char *) pq_head, pq - pq_head, sizeof *pq_head, pq_compar);
-
 	return OK;
 }
 
@@ -215,7 +203,6 @@ static struct pq *get_pqent (unsigned int *ip, int len, int isnext) {
 		case 1:
 			return (isnext ? pq : NULL);
 		}
-
 	return NULL;
 }
 
@@ -249,13 +236,11 @@ static int get_pj (int offset) {
 			return OK;
 		}
 	}
-
 	free_pj ();
 	i = 1;
 	for (pq = pq_head; pq -> pq_name; pq++) {
 		struct dirent *dd;
 		DIR   *dp;
-
 		if (!(dp = opendir (pq -> pq_SD)))
 			continue;
 		while (dd = readdir (dp))
@@ -263,20 +248,16 @@ static int get_pj (int offset) {
 				i++;
 		closedir (dp);
 	}
-
 	if ((pj_head = (struct pj *) calloc ((unsigned) i, sizeof *pj_head))
 			== NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		return NOTOK;
 	}
-
 	lastq = quantum;
-
 	pj = pj_head;
 	for (pq = pq_head; pq -> pq_name; pq++) {
 		struct dirent *dd;
 		DIR   *dp;
-
 		if (chdir (pq -> pq_SD) == NOTOK || !(dp = opendir (".")))
 			continue;
 		fstat (dirfd(dp), &pq -> pq_st);
@@ -284,49 +265,39 @@ static int get_pj (int offset) {
 			int    j;
 			unsigned int *ip;
 			char  *cp;
-
 			if (dd -> d_name[0] != 'c' || dd -> d_name[1] != 'f')
 				continue;
-
 			if (stat (dd -> d_name, &pj -> pj_st) == NOTOK)
 				continue;
 			if (i <= 1)
 				break;
 			strcpy (pj -> pj_file, dd -> d_name);
 			pj -> pj_pq = pq;
-
 			for (cp = pq -> pq_name, ip = pj -> pj_instance, j = 0; *cp; j++)
 				*ip++ = *cp++ & 0xff;
 			pj -> pj_insize = j;
-
 			pj -> pj_action = PJ_OTHER;
-
 			pj++, i--;
 		}
 		closedir (dp);
 		if (i <= 1)
 			break;
 	}
-
 	if (pj - pj_head > 1)
 		qsort ((char *) pj_head, pj - pj_head, sizeof *pj_head, pj_compar);
 	pq = NULL;
 	for (pj = pj_head; pj -> pj_pq; pj++) {
 		if (pj -> pj_pq != pq) {
 			char    buffer[BUFSIZ];
-
 			pq = pj -> pj_pq;
 			i = 1;
-
 			if (chdir (pq -> pq_SD) != NOTOK
 					&& findaemon (pq, buffer) > OK
 					&& strcmp (pj -> pj_file, buffer) == 0)
 				i = 0;
 		}
-
 		pj -> pj_instance[pj -> pj_insize++] = i++;
 	}
-
 	return OK;
 }
 
@@ -350,7 +321,6 @@ static struct pj *get_pjent (unsigned int *ip, int len, int isnext) {
 		case 1:
 			return (isnext ? pj : NULL);
 		}
-
 	return NULL;
 }
 
@@ -372,7 +342,6 @@ static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -391,40 +360,33 @@ try_again:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((pq = pq_head) == NULL || pq -> pq_name == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, pq -> pq_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - pq -> pq_insize;
 			jp = pq -> pq_instance;
 			for (i = pq -> pq_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((pq = get_pqent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - pq -> pq_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = pq -> pq_instance;
 			for (i = pq -> pq_insize; i > 0; i--)
@@ -435,7 +397,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case printQName:
 	case printQAction:
@@ -445,12 +406,10 @@ try_again:
 		if (quantum == pq -> pq_lastq)
 			break;
 		pq -> pq_lastq = quantum;
-
 		{
 			char   *cp;
 			struct stat st;
 			DIR    *dp;
-
 			if (chdir (pq -> pq_SD) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, pq -> pq_SD,
 						"unable to change directory to");
@@ -458,22 +417,17 @@ try_again:
 					goto try_again;
 				return int_SNMP_error__status_genErr;
 			}
-
 			pq -> pq_status = 0, pq -> pq_display[0] = 0;
 			if (stat (pq -> pq_LO, &st) != NOTOK) {
 				FILE   *fp;
-
 				if (!(st.st_mode & 010))
 					pq -> pq_status |= PQ_STQUEUEING;
 				if (!(st.st_mode & 0100))
 					pq -> pq_status |= PQ_STPRINTING;
-
 				if (findaemon (pq, NULLCP) > OK)
 					pq -> pq_status |= PQ_STDAEMON;
-
 				if (fp = fopen (pq -> pq_ST, "r")) {
 					char    buffer[sizeof pq -> pq_display];
-
 					if (!fgets (buffer, sizeof buffer - 1, fp))
 						buffer[0] = 0;
 					if (cp = index (buffer, '\n'))
@@ -488,16 +442,13 @@ try_again:
 								? cp : "");
 					else
 						strcpy (pq -> pq_display, buffer);
-
 					fclose (fp);
 				}
 			} else
 				pq -> pq_status |= PQ_STQUEUEING | PQ_STPRINTING;
-
 			pq -> pq_entries = 0;
 			if (dp = opendir (".")) {
 				struct dirent *dd;
-
 				while (dd = readdir (dp))
 					if (dd -> d_name[0] == 'c' && dd -> d_name[1] == 'f')
 						pq -> pq_entries++;
@@ -506,7 +457,6 @@ try_again:
 		}
 		break;
 	}
-
 	switch (ifvar) {
 	case printQName:
 		return o_string (oi, v, pq -> pq_name,  strlen (pq -> pq_name));
@@ -544,7 +494,6 @@ static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
@@ -552,13 +501,11 @@ static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 						 oid -> oid_nelem - ot -> ot_name -> oid_nelem, 0))
 			== NULL)
 		return int_SNMP_error__status_noSuchName;
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case printQAction:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
@@ -607,7 +554,6 @@ static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 try_again:
 	;
@@ -626,40 +572,33 @@ try_again:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			if ((pj = pj_head) == NULL || pj -> pj_pq == NULL)
 				return NOTOK;
-
 			if ((new = oid_extend (oid, pj -> pj_insize)) == NULLOID)
 				return NOTOK;
 			ip = new -> oid_elements + new -> oid_nelem - pj -> pj_insize;
 			jp = pj -> pj_instance;
 			for (i = pj -> pj_insize; i > 0; i--)
 				*ip++ = *jp++;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
-
 			oid = new;	/* for try_again... */
 		} else {
 			int	j;
-
 			if ((pj = get_pjent (oid -> oid_elements
 								 + ot -> ot_name -> oid_nelem,
 								 j = oid -> oid_nelem
 									 - ot -> ot_name -> oid_nelem, 1))
 					== NULL)
 				return NOTOK;
-
 			if ((i = j - pj -> pj_insize) < 0) {
 				if ((new = oid_extend (oid, -i)) == NULLOID)
 					return NOTOK;
 				if (v -> name)
 					free_SNMP_ObjectName (v -> name);
 				v -> name = new;
-
 				oid = new;
 			} else if (i > 0)
 				oid -> oid_nelem -= i;
-
 			ip = oid -> oid_elements + ot -> ot_name -> oid_nelem;
 			jp = pj -> pj_instance;
 			for (i = pj -> pj_insize; i > 0; i--)
@@ -670,7 +609,6 @@ try_again:
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	pq = pj -> pj_pq;
 	switch (ifvar) {
 	case printJRank:
@@ -683,7 +621,6 @@ try_again:
 			char    buffer[BUFSIZ],
 					host[BUFSIZ];
 			FILE   *fp;
-
 			if (chdir (pq -> pq_SD) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, pq -> pq_SD,
 						"unable to change directory to");
@@ -691,20 +628,16 @@ try_again:
 					goto try_again;
 				return int_SNMP_error__status_genErr;
 			}
-
 			if (!(fp = fopen (pj -> pj_file, "r"))) {
 				advise (LLOG_EXCEPTIONS, pj -> pj_file, "unable to read");
 				if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 					goto try_again;
 				return int_SNMP_error__status_genErr;
 			}
-
 			pj -> pj_size = 0, host[0] = 0;
-
 			while (fgets (buffer, sizeof buffer - 1, fp)) {
 				char   *cp;
 				struct stat st;
-
 				if (cp = index (buffer, '\n'))
 					*cp = 0;
 				switch (buffer[0]) {
@@ -735,12 +668,10 @@ try_again:
 			if (host[0])
 				sprintf (pj -> pj_owner + strlen (pj -> pj_owner),
 						 "@%s", host);
-
 			fclose (fp);
 		}
 		break;
 	}
-
 	switch (ifvar) {
 	case printJRank:
 		return o_integer (oi, v, pj -> pj_instance[pj -> pj_insize - 1]);
@@ -787,7 +718,6 @@ static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
-
 	ifvar = (ssize_t) ot -> ot_info;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
@@ -795,13 +725,11 @@ static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 						 oid -> oid_nelem - ot -> ot_name -> oid_nelem, 0))
 			== NULL)
 		return int_SNMP_error__status_noSuchName;
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case printJAction:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
@@ -862,7 +790,6 @@ void init_print (void) {
 		ot -> ot_getfnx = o_pj,
 			  ot -> ot_setfnx = s_pj,
 					ot -> ot_info = (caddr_t) printJAction;
-
 	umask (0);
 }
 
@@ -914,12 +841,10 @@ static int sortq (const struct dirent **d1, const struct dirent **d2) {
 		return c1;
 	if ((c1 = (*d1) -> d_name[0]) == (c2 = (*d2) -> d_name[0]))
 		return ((*d1) -> d_name[2] - (*d2) ->d_name[2]);
-
 	if (c1 == 'c')
 		return (-1);
 	if (c1 == 'd' || c2 == 'c')
 		return 1;
-
 	return 0;
 }
 
@@ -946,18 +871,14 @@ int	sync_print (int cor) {
 			char   *cp;
 			struct dirent **queue;
 			struct stat st;
-
 			if (!pq -> pq_touched)
 				continue;
-
 			if (chdir (pq -> pq_SD) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, pq -> pq_SD,
 						"unable to change directory to");
 				continue;
 			}
-
 			status = stat (pq -> pq_LO, &st);
-
 			switch (pq -> pq_touched) {
 			case PQ_OTHER:
 				break;
@@ -969,7 +890,6 @@ int	sync_print (int cor) {
 						upstat (pq, "printing disabled\n");
 				} else if (errno == ENOENT) {
 					int	fd;
-
 					if ((fd = open (pq -> pq_LO,
 									O_WRONLY | O_CREAT, 0760))
 							== NOTOK)
@@ -979,12 +899,10 @@ int	sync_print (int cor) {
 						close (fd);
 						upstat (pq, "printing disabled\n");
 					}
-
 					break;
 				} else {
 					advise (LLOG_EXCEPTIONS, pq -> pq_LO,
 							"unable to stat");
-
 					break;
 				}
 				if (pq -> pq_touched == PQ_STOP)
@@ -1020,13 +938,11 @@ int	sync_print (int cor) {
 				}
 				for (i = 0; i < status; i++) {
 					int	    n;
-
 					switch (*(cp = queue[i] -> d_name)) {
 					case 'c':
 						n = 0;
 						while (i + 1 < status) {
 							char   *dp = queue[i + 1] -> d_name;
-
 							if (*dp != 'd'
 									|| strcmp (cp + 3, dp + 3))
 								break;
@@ -1063,7 +979,6 @@ int	sync_print (int cor) {
 					if chmode (pq -> pq_LO,(st.st_mode & 0777) | 0010);
 				} else if (errno == ENOENT) {
 					int	fd;
-
 					if ((fd = open (pq -> pq_LO,
 									O_WRONLY | O_CREAT, 0670))
 							== NOTOK)
@@ -1092,13 +1007,11 @@ int	sync_print (int cor) {
 			}
 			pq -> pq_action = pq -> pq_touched, pq -> pq_touched = 0;
 		}
-
 		invalid = 0;
 		qp = NULL;
 		for (pj = pj_head; pj -> pj_pq; pj++) {
 			if (!pj -> pj_touched)
 				continue;
-
 			if ((pq = pj -> pj_pq) != qp)
 				if (chdir (pq -> pq_SD) == NOTOK) {
 					advise (LLOG_EXCEPTIONS, pq -> pq_SD,
@@ -1106,7 +1019,6 @@ int	sync_print (int cor) {
 					continue;
 				} else
 					qp = pq;
-
 			switch (pj -> pj_touched) {
 			case PJ_OTHER:
 				break;
@@ -1114,7 +1026,6 @@ int	sync_print (int cor) {
 			case PJ_TOPQ: {
 				struct pj *qj;
 				struct timeval tv[2];
-
 				for (qj = pj_head; qj < pj; qj++)
 					if (qj -> pj_pq == pq)
 						break;
@@ -1135,7 +1046,6 @@ int	sync_print (int cor) {
 					if ((pid = findaemon (pq, buffer)) > OK
 							&& strcmp (pj -> pj_file, buffer) == 0) {
 						int	i;
-
 						if (kill (pid, SIGINT) == NOTOK) {
 							advise (LLOG_EXCEPTIONS, "",
 									"unable to interrupt pid %d", pid);
@@ -1149,10 +1059,8 @@ int	sync_print (int cor) {
 						}
 					} else
 						pid = NOTOK;
-
 					while (fgets (buffer, sizeof buffer - 1, fp)) {
 						char   *cp;
-
 						if (buffer[0] != 'U')
 							continue;
 						if (cp = index (buffer, '\n'))
@@ -1164,13 +1072,11 @@ int	sync_print (int cor) {
 						}
 					}
 					fclose (fp);
-
 					if (unlink (pj -> pj_file) == NOTOK) {
 						advise (LLOG_EXCEPTIONS, pj -> pj_file,
 								"unable to remove");
 						invalid = 1;
 					}
-
 					if (pid > OK)
 						startdaemon (pq);
 				} else {
@@ -1198,7 +1104,6 @@ int	sync_print (int cor) {
 		for (pq = pq_head; pq -> pq_name; pq++)
 			if (pq -> pq_touched)
 				pq -> pq_touched = 0;
-
 		for (pj = pj_head; pj -> pj_pq; pj++)
 			if (pj -> pj_touched)
 				pj -> pj_touched = 0;
@@ -1213,16 +1118,13 @@ static void upstat (struct pq *pq, char *msg) {
 		advise (LLOG_EXCEPTIONS, pq -> pq_ST, "unable to create");
 		return;
 	}
-
 	if (flock (fd, LOCK_EX) < 0) {
 		advise (LLOG_EXCEPTIONS, pq -> pq_ST, "unable to flock");
 		close (fd);
 		return;
 	}
-
 	ftruncate (fd, (off_t) 0);
 	write (fd, msg, strlen (msg));
-
 	close (fd);
 }
 
@@ -1239,7 +1141,6 @@ static void startdaemon (struct pq *pq) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "unable to start");
 		return;
 	}
-
 	bzero ((char *) &sunix, sizeof sunix);
 	sunix.sun_family = AF_UNIX;
 	strcpy (sunix.sun_path, _PATH_SOCKETNAME);
@@ -1249,7 +1150,6 @@ static void startdaemon (struct pq *pq) {
 		close (sd);
 		return;
 	}
-
 	sprintf (buffer, "\1%s\n", pq -> pq_name);
 	n = strlen (buffer);
 	if (write (sd, buffer, n) != n) {
@@ -1267,7 +1167,6 @@ static void startdaemon (struct pq *pq) {
 	while ((n = read (sd, buffer, sizeof (buffer))) > 0)
 		continue;
 	close (sd);
-
 	return;
 }
 
@@ -1278,16 +1177,13 @@ static int findaemon (struct pq *pq, char *current) {
 
 	if (!(fp = fopen (pq -> pq_LO, "r")))
 		return NOTOK;
-
 	pid = OK;
 	if (fgets (buffer, sizeof buffer - 1, fp)) {
 		char   *cp;
-
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
 		if ((pid = atoi (buffer)) > OK && kill (pid, 0) == NOTOK)
 			pid = OK;
-
 		if (current) {
 			if (pid > OK
 					&& fgets (buffer, sizeof buffer - 1, fp)) {

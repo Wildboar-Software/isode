@@ -32,16 +32,11 @@ static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, st
 
 	missingP (ftg);
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	if ((result = figrpchk (fsb, ftg, type, fti)) != NOTOK)
 		result = FGroupRequestAux (fsb, ftg, state, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -64,11 +59,9 @@ static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int sta
 	bzero ((char *) texts, sizeof texts);
 	bzero ((char *) info, sizeof info);
 	bzero ((char *) pdus, sizeof pdus);
-
 	did_loop = 0;
 	if ((result = figrp2pdus (fsb, ftg, pdus, texts, &npdu, fti)) == NOTOK)
 		goto out;
-
 	for (pdup = pdus, pep = info, txp = texts, i = npdu - 1;
 			i >= 0;
 			pdup++, pep++, txp++, i--) {
@@ -79,13 +72,10 @@ static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, int sta
 			goto out;
 		}
 		(*pep = pe) -> pe_context = fsb -> fsb_id;
-
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", *txp, pe, 0));
 	}
 	did_loop = 1;
-
 	result = PDataRequest (fsb -> fsb_fd, info, npdu, pi);
-
 out:
 	;
 	for (pdup = pdus, pep = info, i = NPDATA - 1;
@@ -96,19 +86,15 @@ out:
 		if (*pdup)
 			free_FTAM_PDU (*pdup);
 	}
-
 	if (result == NOTOK) {
 		if (did_loop)
 			ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (fti -> fti_abort.fta_action == FACTION_PERM)
 			freefsblk (fsb);
-
 		return NOTOK;
 	}
-
 	fsb -> fsb_state = state;
 	fsb -> fsb_group = ftg -> ftg_flags;
-
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
 
@@ -136,7 +122,6 @@ wrong_state:
 		;
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	switch (fsb -> fsb_class) {
 	case FCLASS_TRANSFER:
 		if (type != FTI_MANAGEMENT)
@@ -158,10 +143,8 @@ bad_class:
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "file management not permitted");
 	}
-
 	if (!(ftg -> ftg_flags & FTG_BEGIN) || !(ftg -> ftg_flags & FTG_END))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "must be grouped");
-
 	switch (type) {
 	case FTI_MANAGEMENT:
 	case FTI_BULKBEGIN:
@@ -191,7 +174,6 @@ bad_class:
 		if ((ftg -> ftg_flags & FTG_CLOSE) == 0)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "missing close request");
-
 finish_end:
 		;
 		if ((ftg -> ftg_flags & (FTG_DESELECT | FTG_DELETE)) == 0
@@ -201,7 +183,6 @@ finish_end:
 							 "missing/duplicate deselect/delete request");
 		break;
 	}
-
 	if (!(fsb -> fsb_units & FUNIT_GROUPING)
 			&& (ftg -> ftg_flags & (FTG_BEGIN | FTG_END)))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -214,29 +195,22 @@ finish_end:
 			&& (ftg -> ftg_flags & FTG_CHATTR))
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "enhanced file management not permitted");
-
 	i = 0;
-
 	if (ftg -> ftg_flags & FTG_SELECT) {
 		struct FTAMselect *ftse = &ftg -> ftg_select;
-
 		if (ftse -> ftse_attrs.fa_present != FA_FILENAME)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "only filename should be present");
 		if (ftse -> ftse_access & ~FA_REQ_MASK)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "FADU-Identity groups not permitted");
-
 		request = ftse -> ftse_access;
 		fp = &ftse -> ftse_pwds;
 		fc = &ftse -> ftse_conctl;
-
 		goto finish_create;
 	}
-
 	if (ftg -> ftg_flags & FTG_CREATE) {
 		struct FTAMcreate *ftce = &ftg -> ftg_create;
-
 		switch (ftce -> ftce_override) {
 		case FOVER_FAIL:
 		case FOVER_SELECT:
@@ -271,11 +245,9 @@ finish_end:
 		if (ftce -> ftce_access & ~FA_REQ_MASK)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "FADU-Identity groups not permitted");
-
 		request = ftce -> ftce_access;
 		fp = &ftce -> ftce_pwds;
 		fc = &ftce -> ftce_conctl;
-
 finish_create:
 		;
 		if (!(fsb -> fsb_attrs & FATTR_SECURITY) && passes_present (fp))
@@ -301,13 +273,10 @@ finish_create:
 				return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 								 "bad settings for select/create concurrency control");
 		}
-
 		i++;
 	}
-
 	if (ftg -> ftg_flags & FTG_CLOSE) {
 		struct FTAMclose   *ftcl = &ftg -> ftg_close;
-
 		switch (ftcl -> ftcl_action) {
 		case FACTION_SUCCESS:
 		case FACTION_TRANS:
@@ -318,17 +287,13 @@ finish_create:
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad value for close action parameter");
 		}
-
 		if (ftcl -> ftcl_ndiag > NFDIAG)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "too many close diagnostics");
-
 		i++;
 	}
-
 	if (ftg -> ftg_flags & FTG_RDATTR) {
 		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-
 		if (!(fsb -> fsb_attrs & FATTR_STORAGE)
 				&& (ftra -> ftra_attrnames & FA_STORAGE))
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
@@ -337,13 +302,10 @@ finish_create:
 				&& (ftra -> ftra_attrnames & FA_SECURITY))
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "security attributes not permitted");
-
 		i++;
 	}
-
 	if (ftg -> ftg_flags & FTG_CHATTR) {
 		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-
 		if (ftca -> ftca_attrs.fa_present & ftca -> ftca_attrs.fa_novalue)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "attributes can not be changed to no-value-available");
@@ -358,19 +320,14 @@ finish_create:
 		if (ftca -> ftca_attrs.fa_present & FA_CONTROL)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "encoding of access-control not supported (yet)");
-
 		i++;
 	}
-
 	if (ftg -> ftg_flags & FTG_DESELECT)
 		i++;
-
 	if (ftg -> ftg_flags & FTG_DELETE)
 		i++;
-
 	if (ftg -> ftg_flags & FTG_OPEN) {
 		struct FTAMopen *ftop = &ftg -> ftg_open;
-
 		if ((request = ftop -> ftop_mode) & ~FA_MODE_MASK)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "bad open mode");
@@ -397,15 +354,12 @@ finish_create:
 				return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 								 "bad settings for open concurrency control");
 		}
-
 		i++;
 	}
-
 	if (i != ftg -> ftg_threshold)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 						 "threshold mismatch; expecting %d, found %d",
 						 ftg -> ftg_threshold, i);
-
 	return OK;
 }
 
@@ -414,7 +368,6 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	struct type_FTAM_PDU *pdu;
 
 	i = 0;
-
 #define	new_pdu(t,o,u,x) \
 	struct t *req; \
  \
@@ -426,7 +379,6 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	if ((req = (struct t *) calloc (1, sizeof *req)) == NULL) \
 	    goto no_mem; \
 	pdu -> un.u = req;
-
 #define	new_action(a) \
     if (a != int_FTAM_Action__Result_success) { \
 	if ((req -> action__result = \
@@ -436,17 +388,14 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 	    goto no_mem; \
 	req -> action__result -> parm = a; \
     }
-
 	if (ftg -> ftg_flags & FTG_BEGIN) {
 		new_pdu (type_FTAM_F__BEGIN__GROUP__request,
 				 type_FTAM_PDU_f__begin__group__request,
 				 f__begin__group__request, "F-BEGIN-GROUP-request");
 		req -> parm = ftg -> ftg_threshold;
 	}
-
 	if (ftg -> ftg_flags & FTG_SELECT) {
 		struct FTAMselect *ftse = &ftg -> ftg_select;
-
 		new_pdu (type_FTAM_F__SELECT__request,
 				 type_FTAM_PDU_f__select__request,
 				 f__select__request, "F-SELECT-request");
@@ -477,10 +426,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			goto no_mem;
 	}
-
 	if (ftg -> ftg_flags & FTG_CREATE) {
 		struct FTAMcreate *ftce = &ftg -> ftg_create;
-
 		new_pdu (type_FTAM_F__CREATE__request,
 				 type_FTAM_PDU_f__create__request,
 				 f__create__request, "F-CREATE-request");
@@ -490,7 +437,6 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 			return NOTOK;
 		if (ftce -> ftce_create) {
 			struct type_FTAM_Password *p;
-
 			if ((p = (struct type_FTAM_Password *) calloc (1, sizeof *p))
 					== NULL)
 				goto no_mem;
@@ -524,10 +470,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			goto no_mem;
 	}
-
 	if (ftg -> ftg_flags & FTG_CLOSE) {
 		struct FTAMclose *ftcl = &ftg -> ftg_close;
-
 		new_pdu (type_FTAM_F__CLOSE__request, type_FTAM_PDU_f__close__request,
 				 f__close__request, "F-CLOSE-request");
 		new_action (ftcl -> ftcl_action);
@@ -542,10 +486,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 				== NULL)
 			return NOTOK;
 	}
-
 	if (ftg -> ftg_flags & FTG_RDATTR) {
 		struct FTAMreadattr   *ftra = &ftg -> ftg_readattr;
-
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
 		pdus[i] = pdu;
@@ -556,10 +498,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 							  fti)) == NULLPE)
 			return NOTOK;
 	}
-
 	if (ftg -> ftg_flags & FTG_CHATTR) {
 		struct FTAMchngattr   *ftca = &ftg -> ftg_chngattr;
-
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
 		pdus[i] = pdu;
@@ -569,10 +509,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 					attr2fpm (fsb, &ftca -> ftca_attrs, fti)) == NULL)
 			return NOTOK;
 	}
-
 	if (ftg -> ftg_flags & FTG_DESELECT) {
 		struct FTAMdeselect *ftde = &ftg -> ftg_deselect;
-
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
 		pdus[i] = pdu;
@@ -583,10 +521,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 						shared2fpm (fsb, ftde -> ftde_sharedASE, fti)) == NULL)
 			return NOTOK;
 	}
-
 	if (ftg -> ftg_flags & FTG_DELETE) {
 		struct FTAMdelete *ftxe = &ftg -> ftg_delete;
-
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
 		pdus[i] = pdu;
@@ -597,10 +533,8 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 						shared2fpm (fsb, ftxe -> ftxe_sharedASE, fti)) == NULL)
 			return NOTOK;
 	}
-
 	if (ftg -> ftg_flags & FTG_OPEN) {
 		struct FTAMopen *ftop = &ftg -> ftg_open;
-
 		new_pdu (type_FTAM_F__OPEN__request, type_FTAM_PDU_f__open__request,
 				 f__open__request, "F-OPEN-request");
 		if (ftop -> ftop_mode != FA_PERM_READ
@@ -615,7 +549,6 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 			goto no_mem;
 		if (ftop -> ftop_contents) {
 			struct type_FTAM_Contents__Type__Attribute *proposed;
-
 			req -> contents__type -> offset = choice_FTAM_0_proposed;
 			if ((proposed = (struct type_FTAM_Contents__Type__Attribute *)
 							calloc (1, sizeof *proposed)) == NULL)
@@ -642,7 +575,6 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 										   ? int_FTAM_FADU__Lock_on
 										   : int_FTAM_FADU__Lock_off;
 	}
-
 	if (ftg -> ftg_flags & FTG_END) {
 		if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 			goto no_mem;
@@ -650,13 +582,10 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 		pdu -> offset = type_FTAM_PDU_f__end__group__request;
 		texts[i++] = "F-END-GROUP-request";
 	}
-
 	*npdu = i;
 	return OK;
-
 #undef	new_pdu
 #undef	new_action
-
 no_mem:
 	;
 	return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");

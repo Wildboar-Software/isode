@@ -100,16 +100,13 @@ int DspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 
 	if (qlocalhost == NULLCP)
 		qlocalhost = PLocalHostName();
-
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
-
 	return (DspAsynBindReqAux (NULLAEI, NULLAEI, NULLPA, calledaddr,
 							   PR_MYREQUIRE, ROS_MYREQUIRE, SERIAL_NONE, 0, sf,
 							   bindarg, &qos, dc, di, async));
@@ -143,47 +140,37 @@ int			  async;
 	struct AcSAPconnect	* acc = &(dc->dc_connect);
 
 	app_ctx = quipu_ds_ac;
-
 #ifdef USE_DEFAULT_CTX
 	def_ctx = quipu_ds_as;
 #else
 	def_ctx = NULLOID;
 #endif
-
 	pcl = (struct PSAPctxlist *) smalloc(sizeof(struct PSAPctxlist));
-
 	(*pcl) = (*(quipu_ds_pcdl)); /* struct copy */
-
 	/* Encode Bind Argument */
 	if (encode_DAS_DirectoryBindArgument (&bindargpe, 1, 0, NULLCP, bindarg) != OK) {
 		return (dsaplose (di, DA_ARG_ENC, NULLCP, "QSP BIND REQUEST"));
 	}
 	bindargpe->pe_context = DIR_SYSTEM_PC_ID;
-
 	watch_dog ("RoAsynBindRequest (QSP)");
 	result = RoAsynBindRequest (app_ctx, callingtitle, calledtitle,
 								callingaddr, calledaddr, pcl, def_ctx, prequirements,
 								srequirements, isn, settings, sf, bindargpe,
 								qos, acc, rni, async);
 	watch_dog_reset();
-
 	if (bindargpe != NULLPE)
 		pe_free (bindargpe);
 	free ((char *) pcl);
-
 	if (result == NOTOK) {
 		/* Have an RoSAPindication, need to return DSAPindication */
 		return (ronot2dsaplose (di, "QSP-BIND.REQUEST", rni));
 	}
-
 	dc->dc_sd = acc->acc_sd;
-
 	if (((!async) && (result == OK)) || (async && (result == DONE))) {
 		if (DBindDecode (acc, dc) != OK) {
 			return (dsaplose (di, DA_RES_DEC, NULLCP, "QSP BIND REQUEST"));
 		}
 	}
-
 	return (result);
 }
 
@@ -194,16 +181,13 @@ int QspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 
 	if (qlocalhost == NULLCP)
 		qlocalhost = PLocalHostName();
-
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
-
 	/*
 	* The quipu system application context can assume that
 	* the remote DSA is a Quipu DSA and can take certain actions
@@ -212,7 +196,6 @@ int QspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 	* release appears to be necessary, so SR_NEGOTIATED is
 	* is included in the session requirements here.
 	*/
-
 	return (QspAsynBindReqAux (NULLAEI, NULLAEI, NULLPA,
 							   calledaddr, PR_MYREQUIRE,
 							   ROS_MYREQUIRE | SR_NEGOTIATED, SERIAL_NONE, 0, sf,
@@ -228,17 +211,14 @@ int DspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct D
 	watch_dog ("RoAsynBindRetry (DSP)");
 	result = RoAsynBindRetry (sd, do_next_nsap, acc, rni);
 	watch_dog_reset ();
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "DSP-BIND.RETRY", rni));
 	}
-
 	if (result == DONE) {
 		if (DBindDecode (acc, dc) != OK) {
 			return (dsaplose (di, DA_RES_DEC, NULLCP, "DSP BIND RETRY"));
 		}
 	}
-
 	return (result);
 }
 
@@ -251,17 +231,14 @@ int QspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct D
 	watch_dog ("RoAsynBindRetry (QSP)");
 	result = RoAsynBindRetry (sd, do_next_nsap, acc, rni);
 	watch_dog_reset ();
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "QSP-BIND.RETRY", rni));
 	}
-
 	if (result == DONE) {
 		if (DBindDecode (acc, dc) != OK) {
 			return (dsaplose (di, DA_RES_DEC, NULLCP, "QSP BIND RETRY"));
 		}
 	}
-
 	return (result);
 }
 
@@ -318,12 +295,9 @@ int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 		else
 			LLOG (log_dsap,LLOG_EXCEPTIONS,( "Association rejected: [%s]",
 											 AcErrString(acc->acc_result)));
-
 		dc->dc_result = DS_REJECT;
 		return (NOTOK);
-
 	} /* switch acc->acc_result */
-
 	return(OK);
 }
 
@@ -355,47 +329,37 @@ int			  async;
 	struct AcSAPconnect	* acc = &(dc->dc_connect);
 
 	app_ctx = internet_ds_ac;
-
 #ifdef USE_DEFAULT_CTX
 	def_ctx = internet_ds_as;
 #else
 	def_ctx = NULLOID;
 #endif
-
 	pcl = (struct PSAPctxlist *) smalloc(sizeof(struct PSAPctxlist));
-
 	(*pcl) = (*(internet_ds_pcdl)); /* struct copy */
-
 	/* Encode Bind Argument */
 	if (encode_DAS_DirectoryBindArgument (&bindargpe, 1, 0, NULLCP, bindarg) != OK) {
 		return (dsaplose (di, DA_ARG_ENC, NULLCP, "ISP BIND REQUEST"));
 	}
 	bindargpe->pe_context = DIR_SYSTEM_PC_ID;
-
 	watch_dog ("RoAsynBindRequest (ISP)");
 	result = RoAsynBindRequest (app_ctx, callingtitle, calledtitle,
 								callingaddr, calledaddr, pcl, def_ctx, prequirements,
 								srequirements, isn, settings, sf, bindargpe,
 								qos, acc, rni, async);
 	watch_dog_reset();
-
 	if (bindargpe != NULLPE)
 		pe_free (bindargpe);
 	free ((char *) pcl);
-
 	if (result == NOTOK) {
 		/* Have an RoSAPindication, need to return DSAPindication */
 		return (ronot2dsaplose (di, "ISP-BIND.REQUEST", rni));
 	}
-
 	dc->dc_sd = acc->acc_sd;
-
 	if (((!async) && (result == OK)) || (async && (result == DONE))) {
 		if (DBindDecode (acc, dc) != OK) {
 			return (dsaplose (di, DA_RES_DEC, NULLCP, "ISP BIND REQUEST"));
 		}
 	}
-
 	return (result);
 }
 
@@ -406,16 +370,13 @@ int IspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 
 	if (qlocalhost == NULLCP)
 		qlocalhost = PLocalHostName();
-
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = qos_maxtime;
-
 	/*
 	* The quipu system application context can assume that
 	* the remote DSA is a Quipu DSA and can take certain actions
@@ -424,7 +385,6 @@ int IspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 	* release appears to be necessary, so SR_NEGOTIATED is
 	* is included in the session requirements here.
 	*/
-
 	return (IspAsynBindReqAux (NULLAEI, NULLAEI, NULLPA,
 							   calledaddr, PR_MYREQUIRE,
 							   ROS_MYREQUIRE | SR_NEGOTIATED, SERIAL_NONE, 0, sf,
@@ -440,16 +400,13 @@ int IspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct D
 	watch_dog ("RoAsynBindRetry (ISP)");
 	result = RoAsynBindRetry (sd, do_next_nsap, acc, rni);
 	watch_dog_reset ();
-
 	if (result == NOTOK) {
 		return (ronot2dsaplose (di, "ISP-BIND.RETRY", rni));
 	}
-
 	if (result == DONE) {
 		if (DBindDecode (acc, dc) != OK) {
 			return (dsaplose (di, DA_RES_DEC, NULLCP, "ISP BIND RETRY"));
 		}
 	}
-
 	return (result);
 }

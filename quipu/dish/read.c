@@ -46,22 +46,17 @@ int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 	}
 	flag_show = TRUE;
 	key_flag = TRUE;
-
 	if (ca)
 		read_arg.rda_common = *ca;	/* struct copy */
 	else if ((argc = service_control (OPT, argc, argv, &read_arg.rda_common)) == -1)
 		return (-1);
-
 	if ( (argc = set_read_flags (argc,argv)) == -1)
 		return (-1);
-
 	read_arg.rda_eis.eis_infotypes = value_flag;
 	read_arg.rda_eis.eis_allattributes = all_flag;
 	read_arg.rda_eis.eis_select = as_flag;
-
 	if (!copy_flag)
 		do_read = TRUE;
-
 	for (x=1; x< argc; x++) {
 		if (test_arg (argv[x], "-nocache",4))
 			do_read = TRUE;
@@ -71,31 +66,23 @@ int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 			continue;
 		shuffle_up (argc--,argv,x--);
 	}
-
 	if ( ! ali )
 		read_arg.rda_common.ca_servicecontrol.svc_options |= SVC_OPT_DONTDEREFERENCEALIAS;
-
 	else if ((read_arg.rda_common.ca_servicecontrol.svc_options & SVC_OPT_DONTDEREFERENCEALIAS) == 0)
 		deref = TRUE;
-
 	if ((read_entry = local_find_entry (dn, deref)) != NULLENTRY) {
-
 		for (as = as_flag; as!= NULLATTR; as = as->attr_link)
 			if (as_find_type (read_entry->e_attributes, as->attr_type) == NULL)
 				do_read = TRUE;
-
 		if (value_flag && (!read_entry->e_lock))
 			do_read = TRUE;
-
 		if ((read_arg.rda_eis.eis_allattributes == 1) && (!read_entry->e_complete))
 			do_read = TRUE;
-
 		current_entry = read_entry;
 		dn_free (current_dn);
 		current_dn = get_copy_dn (read_entry);
 	} else
 		do_read = TRUE;
-
 	if (do_read)
 		if (noread_flag)
 			if (read_entry == NULLENTRY) {
@@ -106,44 +93,33 @@ int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 		else {
 			struct DSError  error;
 			struct ds_read_result result;
-
 			read_arg.rda_object = dn;
-
 			if (rebind () != OK)
 				return(-2);
-
 			/* Strong authentication */
 			if (read_arg.rda_common.ca_security !=
 					(struct security_parms *) 0) {
 				extern struct SecurityServices *dsap_security;
-
 				read_arg.rda_common.ca_sig =
 					(dsap_security->serv_sign)((caddr_t)&read_arg,
 											   _ZReadArgumentDataDAS, &_ZDAS_mod);
 			}
-
 			while (ds_read (&read_arg, &error, &result) != DS_OK) {
 				if (dish_error (OPT, &error) == 0)
 					return (-2);
 				read_arg.rda_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 			}
-
 			if (result.rdr_entry.ent_attr == NULLATTR) {
 				ps_print (OPT, "No attributes\n");
 				return (-2);
 			}
-
 			if (result.rdr_common.cr_aliasdereferenced) {
 				ps_print (RPS, "(Alias dereferenced)\n");
 			}
-
 			cache_entry (&(result.rdr_entry), read_arg.rda_eis.eis_allattributes, value_flag);
-
 			entryinfo_comp_free (&result.rdr_entry,0);
-
 			return (argc);
 		}
-
 	return (argc);
 }
 
@@ -162,7 +138,6 @@ int set_read_flags (int argc, char **argv) {
 
 	print_format = READOUT;
 	tmp_ignore = NULLATTR;
-
 	for (x = 1; x < argc; x++) {
 		if (test_arg (argv[x], "-all",1)) {
 			show_all_flag = TRUE;
@@ -262,7 +237,6 @@ int set_read_flags (int argc, char **argv) {
 				continue;
 		} else
 			continue;
-
 		shuffle_up (argc--,argv,x--);
 	}
 	return (argc);

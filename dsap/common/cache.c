@@ -27,14 +27,12 @@ subord_cpy (struct subordinate *x) {
 
 	if (x == NULLSUBORD)
 		return (x);
-
 	top = (struct subordinate *) smalloc (sizeof(struct subordinate));
 	top->sub_copy =  x->sub_copy;
 	top->sub_rdn = rdn_cpy(x->sub_rdn);
 	top->sub_aliasentry = x->sub_aliasentry;
 	top->sub_next = NULLSUBORD;
 	y = top;
-
 	for (x=x->sub_next; x != NULLSUBORD; x=x->sub_next) {
 		sub = (struct subordinate *) smalloc (sizeof(struct subordinate));
 		sub->sub_copy =  x->sub_copy;
@@ -44,7 +42,6 @@ subord_cpy (struct subordinate *x) {
 		y->sub_next = sub;
 		y = sub;
 	}
-
 	return (top);
 }
 
@@ -68,12 +65,10 @@ void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit)
 		cache->list_sub_top = cache->list_subs;
 		cache->list_problem = prob;
 	}
-
 	for (i=0, sub=cache->list_subs;
 			sub != NULLSUBORD;
 			i++, sub = sub->sub_next);
 	cache->list_count = i;
-
 }
 
 void delete_list_cache (DN adn)
@@ -124,7 +119,6 @@ struct list_cache *find_list_cache (DN dn, int sizelimit)
 					ptr->list_subs = ptr->list_subs->sub_next;
 				return (ptr);
 			}
-
 	return (NULLCACHE);
 }
 
@@ -146,24 +140,17 @@ void cache_entry (EntryInfo *ptr, char complete, char vals)
 	Attr_Sequence	as, as_merge_aux();
 
 	/* use e_lock to indicate if values are present */
-
 	if (ptr->ent_dn == NULLDN)
 		return;
-
 	dn_free (current_dn);
-
 	current_dn = dn_cpy (ptr->ent_dn);
-
 	for (dnptr = current_dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		;
-
 	if ((current_entry = local_find_entry_aux (current_dn, FALSE)) != NULLENTRY) {
-
 		current_entry->e_age = time((time_t *)0);
 		if ((vals && complete) ||
 				((current_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
 				 && (time((time_t *)0) - current_entry->e_age > cache_timeout))) {
-
 			as_free (current_entry->e_attributes);
 			current_entry->e_attributes = as_cpy(ptr->ent_attr);
 			current_entry->e_lock = vals;
@@ -189,7 +176,6 @@ void cache_entry (EntryInfo *ptr, char complete, char vals)
 		current_entry->e_attributes = as_cpy(ptr->ent_attr);
 		local_cache_size++;
 	}
-
 	/* insert alias pointers */
 	for ( as = current_entry->e_attributes; as != NULLATTR; as = as->attr_link) {
 		if (as->attr_type == at_alias)
@@ -203,7 +189,6 @@ void delete_cache (DN adn)
 	Entry           ptr;
 
 	delete_list_cache (adn);
-
 	if ((ptr = local_find_entry_aux (adn, FALSE)) != NULLENTRY) {
 		if (ptr->e_data == E_TYPE_CACHE_FROM_MASTER) {
 			local_cache_size--;
@@ -226,7 +211,6 @@ Entry local_find_entry (DN object, char deref)
 
 	if ((the_entry = local_find_entry_aux (object,deref)) == NULLENTRY)
 		return NULLENTRY;
-
 	if ((the_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
 			&& (time((time_t *)0) - the_entry->e_age > cache_timeout)) {
 		DLOG (log_dsap,LLOG_TRACE,("local find entry - timeout"));
@@ -244,21 +228,16 @@ Entry local_find_entry_aux (DN object, char deref)
 
 	if (database_root == NULLENTRY)
 		return (NULLENTRY);
-
 	if ((dn = object) == NULLDN)
 		return (database_root);
-
 	b_rdn = dn->dn_rdn;
 	if ((kids = database_root->e_children) == NULLAVL)
 		return (NULLENTRY);
-
 	b_rdn = dn->dn_rdn;
-
 	for(;;) { /* break or return out */
 		if ((the_entry = (Entry) avl_find(kids, (caddr_t) b_rdn,
 										  entryrdn_cmp)) == NULLENTRY)
 			return(NULLENTRY);
-
 		if ( the_entry->e_alias != NULLDN )
 			/* got an alias entry */
 			if (deref) {
@@ -273,16 +252,12 @@ Entry local_find_entry_aux (DN object, char deref)
 				return (the_entry);
 			else
 				return (NULLENTRY);
-
 		if ( dn->dn_parent == NULLDN)
 			return (the_entry);
-
 		dn = dn->dn_parent;
 		b_rdn = dn->dn_rdn;
-
 		if (the_entry->e_children == NULLAVL)
 			return (NULLENTRY);
-
 		kids = the_entry->e_children;
 	}
 	/* NOTREACHED */
@@ -296,14 +271,12 @@ DN get_copy_dn (Entry entryptr)
 
 	if ((entryptr == NULLENTRY) || (entryptr->e_parent == NULLENTRY))
 		return NULLDN;
-
 	dn = dn_comp_new (rdn_cpy (entryptr->e_name));
 	for (ptr = entryptr->e_parent; ptr->e_parent != NULLENTRY; ptr = ptr->e_parent) {
 		dnptr = dn_comp_new (rdn_cpy (ptr->e_name));
 		dnptr->dn_parent = dn;
 		dn = dnptr;
 	}
-
 	return (dn);
 }
 

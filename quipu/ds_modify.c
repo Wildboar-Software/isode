@@ -213,7 +213,6 @@ int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN
 			break;
 		}
 	}
-
 	/* check the last value of an attribute has not been removed */
 	for (as = entryptr->e_attributes; as!=NULLATTR; as=as->attr_link)
 		if (as->attr_value == NULLAV) {
@@ -245,7 +244,6 @@ int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN
 		return (DS_ERROR_REMOTE);
 	} else if (check_schema (entryptr,NULLATTR,error) == OK) {
 		GENERAL_HEAP;
-
 		/* Check user has not prevented further
 		   modification by themselves ! */
 		if ((acl_list != entryptr->e_acl)
@@ -258,7 +256,6 @@ int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN
 				error->ERR_SERVICE.DSE_sv_problem =
 					DSE_SV_UNWILLINGTOPERFORM;
 				return (DS_ERROR_REMOTE);
-
 			}
 			if ((check_acl (effdn, ACL_WRITE, as->attr_acl,target)
 					== NOTOK) ||
@@ -441,9 +438,7 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 	int i;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute value"));
-
 	realas = entry_find_type (real_entry,rmas->attr_type);
-
 	if ((as = as_find_type (eptr->e_attributes,rmas->attr_type))
 			== NULLATTR)
 		if (realas == NULLATTR) {
@@ -462,17 +457,14 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 			/* inherited */
 			return OK;
 		}
-
 	if (realas && realas->attr_acl &&
 			check_acl(requestor,ACL_WRITE,realas->attr_acl,dn) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (NOTOK);
 	}
-
 	for (rmavs = rmas -> attr_value; rmavs != NULLAV;
 			rmavs = rmavs->avseq_next) {
-
 		for (avs=as->attr_value; avs!=NULLAV; avs=avs->avseq_next) {
 			if ((i = AttrV_cmp(&avs->avseq_av,&rmavs->avseq_av)) == 0)
 				break;
@@ -491,7 +483,6 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 			}
 			trail = avs;
 		}
-
 		if (avs == NULLAV) {
 			error->dse_type = DSE_ATTRIBUTEERROR;
 			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (eptr);
@@ -505,18 +496,14 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 				DSE_AT_NOPROBLEM;
 			return (DS_ERROR_REMOTE);
 		}
-
 		/* SPT addition for empty non-leaves */
 		/* Removing the nonLeafObject objectclass makes it a leaf again,
 		 * if this is allowed. */
-
 		if (nonleafav == NULLAttrV)
 			nonleafav = str2AttrV(NONLEAFOBJECT, str2syntax("objectClass"));
-
 		if (AttrT_cmp(as->attr_type, at_objectclass) == 0 &&
 				AttrV_cmp(&avs->avseq_av, nonleafav ) == 0) {
 			Entry chld;
-
 			chld = (Entry) avl_getone(eptr->e_children);
 			if (!eptr->e_leaf && chld && chld->e_data == E_DATA_MASTER) {
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
@@ -525,14 +512,11 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 				error->ERR_UPDATE.DSE_up_problem = DSE_UP_NOTONNONLEAF;
 				return(DS_ERROR_REMOTE) ;
 			}
-
 			/*After all that, we should be able to remove stuff... */
 			eptr->e_leaf = TRUE ;	/* Make it a leaf */
 			/* Let it continue, & remove attrV */
-
 			/* Also have to remove the EDB File that was generated there */
 		}
-
 		if (trail == NULLAV) {
 			/* first in sequence */
 			as->attr_value = avs->avseq_next;
@@ -540,7 +524,6 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 		} else
 			avs_delnext (trail);
 	}
-
 	return (OK);
 }
 
@@ -550,7 +533,6 @@ int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN re
 	struct oid_seq * oidptr;
 
 	DLOG (log_dsap,LLOG_DEBUG,("add attribute"));
-
 	if (entry_find_type (eptr,newas->attr_type) != NULLATTR) {
 		error->dse_type = DSE_ATTRIBUTEERROR;
 		error->ERR_ATTRIBUTE.DSE_at_name = dn_cpy (dn);
@@ -564,7 +546,6 @@ int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN re
 		DLOG (log_dsap,LLOG_DEBUG,("add exists error"));
 		return (NOTOK);
 	}
-
 	for ( aa = acl_list->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next) {
 		for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ;
 				oidptr=oidptr->oid_next) {
@@ -579,7 +560,6 @@ int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN re
 	}
 	if (ai == NULLACL_INFO)
 		ai = acl_list->ac_default;
-
 	if (check_acl(requestor,ACL_WRITE,ai,dn) == NOTOK) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;

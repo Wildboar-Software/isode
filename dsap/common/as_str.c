@@ -82,13 +82,11 @@ char allownull;
 
 	if (str == NULLCP)
 		return (as);
-
 	while (*ptr != 0)
 		if (*ptr == '=')
 			break;
 		else
 			ptr++;
-
 	if (*ptr == 0) {
 		if (allownull) {
 			nas = as_comp_alloc ();
@@ -106,33 +104,26 @@ char allownull;
 		parse_error ("equals missing in '%s'",str);
 		return (as);
 	}
-
 	save = ptr++;
 	if (! isspace (*--save))
 		save++;
-
 	val = *save;
 	*save = 0;
-
 	ptr = SkipSpace (ptr);
-
 	if ((at = AttrT_new (str)) == NULLAttrT) {
 		parse_error ("unknown attribute type '%s'",str);
 		*ptr = '=';
 		return (as);
 	}
-
 	if (*ptr == 0) {
 		if ((at->oa_syntax == acl_sntx) && dsa_mode) {
 			/* Add default ACL */
 			struct acl * acl = (struct acl *) NULL;
-
 			acl = acl_alloc();
 			acl->ac_child = (struct acl_info *)(*acl_fn)();
 			acl->ac_entry = (struct acl_info *)(*acl_fn)();
 			acl->ac_default = (struct acl_info *)(*acl_fn)();
 			acl->ac_attributes = NULLACL_ATTR;
-
 			nas = as_comp_alloc ();
 			nas->attr_acl  = NULLACL_INFO;
 			nas->attr_link = NULLATTR;
@@ -155,55 +146,41 @@ char allownull;
 		}
 		return (as);
 	}
-
 	for (as2=as; as2 != NULLATTR; as2=as2->attr_link) {
 		if ((i = AttrT_cmp (at, as2->attr_type)) == 0) {
 			*save = val;
-
 			ATTRIBUTE_HEAP;
-
 			if (at->oa_syntax == acl_sntx) {
 				(*merge_acl)(as2->attr_value,SkipSpace(ptr));
 				RESTORE_HEAP;
 				return (as);
 			}
-
 			if ((avs = fast_str2avs (ptr,as2->attr_type)) == NULLAV) {
 				RESTORE_HEAP;
 				return (as);
 			}
-
 			as2->attr_value = avs_fast_merge (as2->attr_value,avs,
 											  fast_avs, fast_avstail);
 			fast_avs = as2->attr_value;
 			fast_avstail = avs;
-
 			RESTORE_HEAP;
-
 			return (as);
 		} else if ( i > 0 )
 			break;
 	}
-
 	*save = val;
-
 	nas = as_comp_alloc ();
 	nas->attr_acl  = NULLACL_INFO;
 	nas->attr_type = at;
 	nas->attr_link = NULLATTR;
-
 	ATTRIBUTE_HEAP;
-
 	if ((nas->attr_value = fast_str2avs (ptr,nas->attr_type)) == NULLAV) {
 		RESTORE_HEAP;
 		as_free (nas);
 		return (as);
 	}
-
 	RESTORE_HEAP;
-
 	as = as_fast_merge (as,nas,fast_as,fast_tail);
 	fast_as = as, fast_tail= nas;
 	return as;
-
 }

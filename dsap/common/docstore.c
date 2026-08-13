@@ -35,14 +35,12 @@
 static void documentStore_free (struct documentStore *a) {
 	if (!a)
 		return;
-
 	if (a -> ds_host)
 		free (a -> ds_host);
 	if (a -> ds_dir)
 		free (a -> ds_dir);
 	if (a -> ds_file)
 		free (a -> ds_file);
-
 	free ((char *) a);
 }
 
@@ -93,60 +91,48 @@ static struct documentStore *str2documentStore (char *str) {
 		return NULL;
 	}
 	*d1 = 0;
-
 	for (ptr = str + strlen (str) - 1; ptr >= str && isspace (*ptr); ptr--)
 		continue;
 	*++ptr = 0;
-
 	if (lexequ (str, "ftp") == 0)
 		method = DS_FTP;
 	else if (lexequ (str, "ftam") == 0)
 		method = DS_FTAM;
 	else
 		method = DS_UNK;
-
 	*d1 = '$';
 	if (ptr != d1)
 		*ptr = ' ';
-
 	if (method == DS_UNK) {
 		parse_error ("unknown method in documentStore '%s'",str);
 		return NULL;
 	}
-
 	a = (struct documentStore *) smalloc (sizeof *a);
 	bzero ((char *) a, sizeof *a);
 	a -> ds_method = method;
-
 	*d2 = 0;
 	a -> ds_host = strdup (SkipSpace (d1 + 1));
 	*d2 = '$';
-
 	if (d3 = index (d2 + 1, '$')) {
 		*d3 = 0;
 		a -> ds_dir = strdup (SkipSpace (d2 + 1));
 		*d3 = '$';
-
 		a -> ds_file = strdup (SkipSpace (d3 + 1));
 	} else
 		a -> ds_file = strdup (SkipSpace (d2 + 1));
-
 	d1 = a -> ds_host;
 	for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 		continue;
 	*++ptr = 0;
-
 	if (d1 = a -> ds_dir) {
 		for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 			continue;
 		*++ptr = 0;
 	}
-
 	d1 = a -> ds_file;
 	for (ptr = d1 + strlen (d1) - 1; ptr >= d1 && isspace (*ptr); ptr--)
 		continue;
 	*++ptr = 0;
-
 	return a;
 }
 

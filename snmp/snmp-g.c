@@ -12,7 +12,6 @@ void init_snmp (void) {
 	OT	    ot;
 
 	bzero ((char *) &snmpstat, sizeof snmpstat);
-
 	if (ot = text2obj ("snmpInPkts"))
 		ot -> ot_getfnx = o_generic,
 			  ot -> ot_info = (caddr_t) &snmpstat.s_inpkts;
@@ -80,7 +79,6 @@ void init_snmp (void) {
 		set_hint (ot, TRAPS_MAXVALUE);
 	} else
 		adios (NULLCP, "unable to resolve snmpEnableAuthenTraps");
-
 	if (ot = text2obj ("agentAction")) {
 		ot -> ot_getfnx = o_generic;
 		ot -> ot_setfnx = s_generic;

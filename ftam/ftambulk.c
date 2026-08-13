@@ -17,15 +17,10 @@ int FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	struct ftamblk *fsb;
 
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FDataRequestAux (fsb, fadus, nfadu, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -53,15 +48,12 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 	default:
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	for (pep = fadus, i = nfadu - 1; i >= 0; pep++, i--) {
 		if ((pe = *pep) == NULLPE)
 			return ftamlose (fti, FS_GEN (fsb), 0, NULLCP,
 							 "empty FADU at slot %d", nfadu - i - 1);
-
 		if (pe -> pe_context == PE_DFLT_CTX)
 			pe -> pe_context = fsb -> fsb_id;
-
 		if (pe -> pe_context == fsb -> fsb_id)
 			switch (PE_ID (pe -> pe_class, pe -> pe_id)) {
 			case PE_ID (PE_CLASS_APPL, FADU_NODESCR):
@@ -74,15 +66,12 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 								 "bad context at slot %d", nfadu - i - 1);
 			}
 	}
-
 	if (PDataRequest (fsb -> fsb_fd, fadus, nfadu, pi) == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		if (PC_FATAL (pa -> pa_reason))
 			freefsblk (fsb);
-
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -105,15 +94,10 @@ int FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FDataEndRequestAux (fsb, action, diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -142,7 +126,6 @@ static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagn
 	default:
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -172,32 +155,24 @@ out:
 			&& (req -> diagnostic = diag2fpm (fsb, 0, diag, ndiag, fti))
 			== NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb,
 			  (fsb -> fsb_fd, "P-DATA.REQUEST", "F-DATA-END-request", pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = FSB_DATAFIN1;
-
 	return OK;
 }
 
@@ -220,15 +195,10 @@ int FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FCancelRequestAux (fsb, action, sharedASE, diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -251,7 +221,6 @@ static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, str
 	default:
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
 	}
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -285,44 +254,33 @@ out:
 			&& (req -> diagnostic = diag2fpm (fsb, 0, diag, ndiag, fti))
 			== NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	if (fsb -> fsb_srequirements & SR_RESYNC) {
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-RESYNCHRONIZE.REQUEST",
 						"F-CANCEL-request", pe, 0));
-
 		settings = 0;		/* XXX: more later! */
-
 		result = PReSyncRequest (fsb -> fsb_fd, SYNC_ABANDON, SERIAL_NONE,
 								 settings, &pe, 1, pi);
-
 		prequest = "PReSyncRequest";
 	} else {
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", "F-CANCEL-request",
 						pe, 0));
-
 		result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 		prequest = "PDataRequest";
 	}
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
-
 	fsb -> fsb_flags |= FSB_CANCEL;
 	fsb -> fsb_state = FSB_DATACANCEL;
 	fsb -> fsb_cancelaction = action;
@@ -330,7 +288,6 @@ out:
 		fsb -> fsb_cancelshared -> pe_refcnt++;
 	fsb -> fsb_canceldiags = diag;
 	fsb -> fsb_cancelndiag = ndiag;
-
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
 
@@ -353,15 +310,10 @@ int FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic dia
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FCancelResponseAux (fsb, action, sharedASE, diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -377,7 +329,6 @@ int FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FT
 
 	if (fsb -> fsb_state != FSB_DATACANCEL)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -411,43 +362,32 @@ out:
 			&& (rsp -> diagnostic = diag2fpm (fsb, 0, diag, ndiag, fti))
 			== NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	if (fsb -> fsb_srequirements & SR_RESYNC) {
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-RESYNCHRONIZE.RESPONSE",
 						"F-CANCEL-response", pe, 0));
-
 		result = PReSyncResponse (fsb -> fsb_fd, SERIAL_NONE,
 								  fsb -> fsb_settings, &pe, 1, pi);
-
 		prequest = "PReSyncResponse";
 	} else {
 		fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", "F-CANCEL-response",
 						pe, 0));
-
 		result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 		prequest = "PDataRequest";
 	}
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, prequest, pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = FSB_DATAIDLE;
-
 	return OK;
 }

@@ -33,17 +33,13 @@ char get_bit (bit_string *lineptr)
 	/* Anding the mask and the data gives a 0 if the bit masked is 0, 1 otherwis
 	e */
 	result = lineptr->mask & lineptr->pos;
-
 	lineptr->mask  >>= 1;
-
 	if (lineptr->mask == 0) {
 		lineptr->pos = *lineptr->dbuf++;
 		lineptr->mask = BIT_MASK;
 	}
-
 	if( result != 0 )    /* may not be 1, may be 0001000 for example */
 		result = 1;
-
 	return ( (char) result );
 }
 
@@ -56,9 +52,7 @@ void set_bit (bit_string *lineptr)
 {
 	/* This sets the masked bit */
 	lineptr->pos |= lineptr->mask;
-
 	lineptr->mask  >>= 1;
-
 	if (lineptr->mask == 0) {
 		*lineptr->dbuf++ = lineptr->pos;
 		lineptr->mask = BIT_MASK;
@@ -74,9 +68,7 @@ void clr_bit (bit_string *lineptr)
 {
 	/* clear the masked bit */
 	lineptr->pos &=   ~(lineptr->mask) ;
-
 	lineptr->mask  >>= 1;         /* right shift the mask */
-
 	if (lineptr->mask == 0) {     /* may need to move on to the next byte */
 		*lineptr->dbuf++ = lineptr->pos;
 		lineptr->mask = BIT_MASK;

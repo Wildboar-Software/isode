@@ -17,16 +17,12 @@ void tai_args (int *acptr, char ***avptr) {
 
 	int cnt;
 	char *cp;
-
 	if (acptr == (int *)NULL)
 		return;
-
 	if (*acptr <= 1)
 		return;
-
 	av = *avptr;
 	av++, cnt = 1;
-
 	while ((cp = *av) && *cp == '-') {
 		switch (*++cp) {
 		case 'T':
@@ -49,7 +45,6 @@ void tai_args (int *acptr, char ***avptr) {
 		av++;
 		cnt++;
 	}
-
 	*acptr -= cnt;
 	*avptr = av;
 }

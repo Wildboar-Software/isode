@@ -44,27 +44,21 @@ int update_pseudo_attr (void) {
 	*/
 
 #ifdef QUIPU_CONSOLE
-
 	Attr_Sequence   as ;
 	AttributeValue  av ;
 	AttributeType   att ;
 	AV_Sequence     avs, tmp_avs ;
 	char	    buffer[10] ;
 	int         num_of_ops = 0 ;
-
 	/* SPT: Update the Master, slave and cache EDBs in case */
 	/* someone has just added an entry or two. */
-
 	/* SPT Adding Management bit for a test. */
-
 	/* Insert the open_call attribute here. */
 	/* Should remove the old open_calls, as it will be easier to maintain them */
 	/* in the open_call_avs rather than messing about in the pseudo attrs. */
-
 #ifdef SPT_DEBUG
 	fprintf(stderr, "Entering update_pseudo_attr\n") ;
 #endif
-
 	att = AttrT_new("masterEntries") ;
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
 		av = AttrV_alloc() ;
@@ -82,7 +76,6 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = local_master_size ;
 	}
 	AttrT_free(att) ;
-
 	att = AttrT_new("slaveEntries") ;
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
 		av = AttrV_alloc() ;
@@ -97,10 +90,8 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = local_slave_size ;
 	}
 	AttrT_free(att) ;
-
 	att = AttrT_new("cacheEntries") ;
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
-
 		av = AttrV_alloc() ;
 		sprintf(buffer, "%d", local_cache_size) ;
 		if ((AttributeValue)(av = str2AttrV (buffer, att->oa_syntax)) == NULLAttrV) {
@@ -113,15 +104,12 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = local_cache_size ;
 	}
 	AttrT_free(att) ;
-
 	att = AttrT_new("usageRate") ;
 	tmp_avs = open_call_avs ;
 	while (tmp_avs != NULLAV) {
 		struct op_list * tmp_op_list ;
 		time_t timenow ;
-
 		time (&timenow) ;
-
 		tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->pending_ops ;
 		while(tmp_op_list != (struct op_list *) 0) {
 			if ((tmp_op_list->operation_list->start_time != (char *) 0) &&
@@ -131,7 +119,6 @@ int update_pseudo_attr (void) {
 			}
 			tmp_op_list = tmp_op_list->next ;
 		}
-
 		tmp_op_list = ((struct quipu_call *)tmp_avs->avseq_av.av_struct)->invoked_ops ;
 		while(tmp_op_list != (struct op_list *) 0) {
 			if ((tmp_op_list->operation_list->finish_time != (char *) 0) &&
@@ -141,7 +128,6 @@ int update_pseudo_attr (void) {
 			}
 			tmp_op_list = tmp_op_list->next ;
 		}
-
 		tmp_avs = tmp_avs->avseq_next ;
 	}
 	if ((as = as_find_type(dsa_pseudo_attr, att)) == NULLATTR) {
@@ -157,7 +143,6 @@ int update_pseudo_attr (void) {
 		*((int *)as->attr_value->avseq_av.av_struct) = (num_of_ops / 5) ;
 	}
 	AttrT_free(att) ;
-
 	att = AttrT_new("openCall") ;
 	as = as_find_type(dsa_pseudo_attr, att) ;
 	if (open_call_avs != (AV_Sequence) 0) {
@@ -196,7 +181,6 @@ int update_pseudo_attr (void) {
 		}
 	}
 	AttrT_free(att) ;
-
 	/* Testing to see that the attributes have been incorporated */
 	/* properly and passed across correctly.
 		as_print(opt, dsa_pseudo_attr, EDBOUT) ;
@@ -212,29 +196,22 @@ int new_cacheEDB (DN dn) {
 	DN trail;
 
 	at = AttrT_new (cacheEDB);
-
 	av = AttrV_alloc ();
 	av -> av_syntax = str2syntax ("DN");
 	av -> av_struct = (caddr_t) dn_cpy (dn);
-
 	/* remove last component of DN */
 	for (dn = (DN)av->av_struct; dn->dn_parent != NULLDN; dn = dn->dn_parent)
 		trail = dn;
-
 	dn_comp_free (dn);
 	trail->dn_parent = NULLDN;
-
 	avs = avs_comp_new (av);
-
 	if (as_find_type (dsa_pseudo_attr,at) == NULLATTR)
 		dsa_pseudo_attr = as_comp_new (at,avs,NULLACL_INFO);
 	else
 		dsa_pseudo_attr = as_merge (dsa_pseudo_attr,
 									as_comp_new (at,avs,NULLACL_INFO));
-
 	if ((e = local_find_entry_aux (mydsadn,TRUE)) != NULLENTRY)
 		write_dsa_entry (e);
-
 }
 
 Attr_Sequence
@@ -242,7 +219,6 @@ get_cacheEDB (void) {
 	AttributeType at;
 
 	at = AttrT_new (cacheEDB);
-
 	return (as_find_type (dsa_pseudo_attr,at));
 }
 

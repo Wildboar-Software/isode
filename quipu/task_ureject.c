@@ -12,7 +12,6 @@ int send_ro_ureject (int ad, int *id_p, int urej) {
 	struct RoSAPpreject         *rop = &(roi->roi_preject);
 
 	DLOG(log_dsap, LLOG_TRACE, ("send_ro_ureject()"));
-
 	watch_dog("RoURejectRequest");
 	if(RoURejectRequest(ad, id_p, urej, ROS_NOPRIO, roi) == NOTOK) {
 		watch_dog_reset();
@@ -23,5 +22,4 @@ int send_ro_ureject (int ad, int *id_p, int urej) {
 		}
 	} else
 		watch_dog_reset();
-
 }

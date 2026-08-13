@@ -35,22 +35,18 @@ str2cpair (char *str) {
 	result = (struct certificate_list *) calloc(1, sizeof(*result));
 	if (result == (struct certificate_list *) 0)
 		return (result);
-
 	/* If there isn't a '|', the pair is technically illegal. However,
 	 * allow this case to mean : "the string contains a certificate,
 	 * which is the forward cross certificate".
 	 */
-
 	ptr = index(str, '|');
 	if (ptr != NULLCP) {
 		*ptr = '\0';
 		ptr++;
 	}
-
 	/* Need to cook up a quick test for whether a string contains a certificate
 	 * or whitespace. A certificate will always contain a '#', so use this.
 	 */
-
 	if (index(str, '#') != NULLCP) {
 		result->cert = str2cert(str);
 		if (result->cert == (struct certificate *) 0) {
@@ -58,7 +54,6 @@ str2cpair (char *str) {
 			return ((struct certificate_list *) 0);
 		}
 	}
-
 	str = ptr;
 	if ((str != NULLCP) && (index(str, '#') != NULLCP)) {
 		result->reverse = str2cert(str);
@@ -67,7 +62,6 @@ str2cpair (char *str) {
 			return ((struct certificate_list *) 0);
 		}
 	}
-
 	return (result);
 }
 
@@ -78,9 +72,7 @@ int format;
 {
 	if (parm->cert)
 		printcert(ps, parm->cert, format);
-
 	ps_printf(ps, "|\\\n");
-
 	if (parm->reverse)
 		printcert(ps, parm->reverse, format);
 }
@@ -96,7 +88,6 @@ cpair_cpy (struct certificate_list *parm) {
 		result->cert = cert_cpy(parm->cert);
 	if (parm->reverse)
 		result->reverse = cert_cpy(parm->reverse);
-
 	return (result);
 }
 
@@ -114,10 +105,8 @@ int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 		else
 			retval = cert_cmp(a->cert, b->cert);
 	}
-
 	if (retval != 0)
 		return (retval);
-
 	if (a->reverse == (struct certificate *) 0) {
 		if (b->reverse == (struct certificate *) 0)
 			retval = 0;
@@ -129,7 +118,6 @@ int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 		else
 			retval = cert_cmp(a->reverse, b->reverse);
 	}
-
 	return (retval);
 }
 

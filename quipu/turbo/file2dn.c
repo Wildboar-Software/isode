@@ -17,14 +17,10 @@ char	**argv;
 		prefixlen = 0;
 	else
 		prefixlen = strlen(argv[1]);
-
 	dn = argv[argc - 1] + prefixlen;
-
 	if (*dn == '/')
 		dn++;
-
 	dnbuf[0] = '\0';
-
 	while ((p = index(dn, '/')) != NULL) {
 		strncpy(mapfile, argv[argc - 1], dn - argv[argc - 1]);
 		mapfile[dn - argv[argc - 1]] = '\0';
@@ -52,6 +48,5 @@ char	**argv;
 	p = rindex(dnbuf, '@');
 	*p = '\0';
 	puts(dnbuf);
-
 	return(0);
 }

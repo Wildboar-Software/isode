@@ -75,7 +75,6 @@ char	multiline;
 {
 	if (sntx > num_syntax)
 		return;
-
 	syntax_table[sntx].s_encode  = enc;
 	syntax_table[sntx].s_decode  = dec;
 	syntax_table[sntx].s_parse   = parse;
@@ -100,7 +99,6 @@ void set_av_printer (
 ) {
 	if (sntx >= num_syntax)
 		return;
-
 	syntax_table[sntx].s_print = print;
 }
 
@@ -122,7 +120,6 @@ short modify_av_printer (
 								 syntax_table[at->oa_syntax].s_pe_print,
 								 syntax_table[at->oa_syntax].s_approx,
 								 syntax_table[at->oa_syntax].s_multiline);
-
 	at->oa_syntax = nstx;
 	return nstx;
 }
@@ -154,7 +151,6 @@ short str2syntax (char *str) {
 	for (i=0, ptr = &syntax_table[0] ; i<num_syntax; i++,ptr++)
 		if ( lexequ (ptr->s_sntx,str) == 0)
 			return (i);
-
 	return (0);
 }
 
@@ -233,10 +229,8 @@ static int strip_header (char **str) {
 		"CRYPT",	4,
 		0,              0,
 	} ;
-
 	if (*str == NULLCP)
 		return (0);
-
 	ptr = SkipSpace (*str);
 	if (*ptr == 0) {
 		if ( ptr == (*str)+1) 	/* single space */
@@ -244,10 +238,8 @@ static int strip_header (char **str) {
 		return (0);
 	}
 	*str = ptr;
-
 	t61_flag = FALSE;
 	crypt_flag = FALSE;
-
 	if (*ptr++ == '{') {
 		/* look for syntax */
 		if (( *str = index (ptr,'}')) == 0) {
@@ -256,22 +248,18 @@ static int strip_header (char **str) {
 		}
 		save = *str;
 		val = **str;
-
 		*(*str)++ = 0;
 		*str = SkipSpace (*str);
-
 		if ((syntax = cmd_srch (ptr,cmd_syntax)) == 0) {
 			parse_error ("unknown syntax '%s'",ptr);
 			return (0);
 		}
 		*save = val;
-
 		if ((syntax == 4) && ! dsa_mode) {
 			parse_error ("{CRYPT} not allowed",ptr);
 			return (0);
 		}
 		return (syntax);
-
 	}
 	return (5);
 }
@@ -411,7 +399,6 @@ int rdn_cmp (RDN a, RDN b) {
 	for (; (a != NULLRDN) && (b != NULLRDN) ; a = a->rdn_next, b = b->rdn_next) {
 		if (a->rdn_at != b->rdn_at)
 			return ((a->rdn_at > b->rdn_at) ? 1 : -1);
-
 		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULL)
 			return (2); /* can't compare */
 		else if (( i = (*syntax_table[a->rdn_av.av_syntax].s_compare) (a->rdn_av.av_struct,b->rdn_av.av_struct)) != 0)
@@ -429,7 +416,6 @@ int rdn_cmp_reverse (RDN a, RDN b) {
 	for (; (a != NULLRDN) && (b != NULLRDN) ; a = a->rdn_next, b = b->rdn_next) {
 		if (a->rdn_at != b->rdn_at)
 			return ((a->rdn_at > b->rdn_at) ? -1 : 1);
-
 		if (syntax_table[a->rdn_av.av_syntax].s_compare == NULL)
 			return (2); /* can't compare */
 		else if (( i = (*syntax_table[a->rdn_av.av_syntax].s_compare) (a->rdn_av.av_struct,b->rdn_av.av_struct)) != 0)

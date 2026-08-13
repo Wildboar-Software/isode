@@ -22,16 +22,11 @@ int FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag,
 						 "bad value for action parameter");
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FAbortRequestAux (fsb, type_FTAM_PDU_f__u__abort__request, action,
 							   diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -69,43 +64,35 @@ int FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagno
 	}
 carry_on:
 	;
-
 	pe = NULLPE;
 	if (pdu) {
 		result = encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu);
-
 		if (result == NOTOK) {
 			if (pe)
 				pe_free (pe), pe = NULLPE;
 		} else if (pe)
 			pe -> pe_context = fsb -> fsb_id;
 	}
-
 	fsbtrace (fsb,
 			  (fsb -> fsb_fd, "A-ABORT.REQUEST",
 			   id != type_FTAM_PDU_f__p__abort__request ? "F-U-ABORT-request"
 			   : "F-P-ABORT-request",
 			   pe, 0));
-
 	result = AcUAbortRequest (fsb -> fsb_fd, pe ? &pe : NULLPEP, pe ? 1 : 0,
 							  aci);
-
 	if (pe)
 		pe_free (pe);
 	if (pdu)
 		free_FTAM_PDU (pdu);
-
 	if (result == NOTOK)
 		acs2ftamlose (fsb, fti, "AcUAbortRequest", aca);
 	else {
 		fsb -> fsb_fd = NOTOK;
 		result = OK;
 	}
-
 	if (id != type_FTAM_PDU_f__p__abort__request)
 		freefsblk (fsb);
 	else if (result == OK)
 		fsb -> fsb_fd = NOTOK;
-
 	return result;
 }

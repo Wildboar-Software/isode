@@ -15,18 +15,15 @@ di_alloc (void) {
 	struct di_block	* di_ret;
 
 	di_ret = (struct di_block *) calloc(1,sizeof(struct di_block));
-
 	return(di_ret);
 }
 
 void di_free (struct di_block *di) {
 	DLOG(log_dsap, LLOG_TRACE, ("di_free()"));
-
 	if (di->di_state == -1) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("duplicate di_free"));
 		return;
 	}
-
 	switch (di->di_type) {
 	case DI_GLOBAL:
 		break;
@@ -42,16 +39,11 @@ void di_free (struct di_block *di) {
 		DLOG(log_dsap, LLOG_TRACE, ("di_free() of unknown type %d",di->di_state));
 		return;
 	}
-
 	dn_free(di->di_dn);
-
 	dn_free(di->di_target);
-
 	if(di->di_accesspoints != NULLACCESSPOINT)
 		aps_free(di->di_accesspoints);
-
 	di->di_state = -1;
-
 	free((char *)di);
 }
 
@@ -68,7 +60,6 @@ void di_extract (struct di_block *old_di) {
 		for(di=deferred_dis; di!=NULL_DI_BLOCK; di=di->di_next) {
 			if(di == old_di)
 				break;
-
 			next_di = &(di->di_next);
 		}
 		if(di == NULL_DI_BLOCK) {
@@ -104,7 +95,6 @@ void di_desist (struct di_block *di) {
 			for(di_tmp2=di_tmp1->di_perform->on_wake_list; di_tmp2!=NULL_DI_BLOCK; di_tmp2=di_tmp2->di_wake_next) {
 				if(di_tmp2 == di_tmp1)
 					break;
-
 				di_p2 = &(di_tmp2->di_wake_next);
 			}
 			if(di_tmp2 == NULL_DI_BLOCK) {
@@ -177,7 +167,6 @@ static int di_prefer_dsa (DN a, DN b) {
 		return ( x > y ? -1 : 1 );
 	}
 	return 0;
-
 }
 
 static void di_ap2comp (struct di_block **di) {
@@ -186,14 +175,11 @@ static void di_ap2comp (struct di_block **di) {
 
 	/* replace DI_ACCESSPOINT with DI_COMPLETE if possible... */
 	/*	(data may have been cached since creating DI_ACCESSPOINT) */
-
 	for (loop= *di; loop!=NULL_DI_BLOCK; loop=loop->di_next) {
 		if (loop->di_state != DI_ACCESSPOINT)
 			continue;
-
 		if (loop->di_reftype == RT_NONSPECIFICSUBORDINATE)
 			continue;	/* can't split these - all must be followed... */
-
 		if (loop->di_accesspoints->ap_next == NULLACCESSPOINT) {
 			if ((eptr=local_find_entry (loop->di_accesspoints->ap_name,FALSE)) != NULLENTRY)
 				if (eptr->e_dsainfo != NULLDSA) {
@@ -206,7 +192,6 @@ static void di_ap2comp (struct di_block **di) {
 		} else
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("Many access points, but not a RT_NONSPECIFICSUBORDINATE"));
 	}
-
 }
 
 void dsa_reliable (struct connection * cn, char good, time_t when) {
@@ -291,14 +276,12 @@ static int di_cmp_address (struct di_block *a, struct di_block *b) {
 		dna = NULLDN;
 		dnb = NULLDN;
 	}
-
 	/* ta2norm return a static buffer */
 	ta = ta2norm (ta);
 	nas = *(ta->ta_addrs);	/* struct copy */
 	na = &nas;
 	tb = ta2norm (tb);
 	nb = tb->ta_addrs;
-
 	/* normalised, so look for first "na" match with ts_communities */
 	for (ip = ts_communities; *ip; ip++) {
 		if (*ip == na->na_community) {
@@ -309,7 +292,6 @@ static int di_cmp_address (struct di_block *a, struct di_block *b) {
 		if (*ip == nb->na_community)
 			return -1;		/* 'b' preferred */
 	}
-
 	/* Look at the DSA name to detect locality */
 	ma=0;
 	for (dnptr=dna, mydnptr=mydsadn ;
@@ -318,7 +300,6 @@ static int di_cmp_address (struct di_block *a, struct di_block *b) {
 		if (rdn_cmp(dnptr->dn_rdn,mydnptr->dn_rdn) == 0)
 			ma++;
 	}
-
 	mb=0;
 	for (dnptr=dnb, mydnptr=mydsadn ;
 			(dnptr!=NULLDN) && (mydnptr!=NULLDN) ;
@@ -326,10 +307,8 @@ static int di_cmp_address (struct di_block *a, struct di_block *b) {
 		if (rdn_cmp(dnptr->dn_rdn,mydnptr->dn_rdn) == 0)
 			mb++;
 	}
-
 	if (ma != mb)
 		return (ma > mb ? 1 : -1);
-
 	/* check the DMD - NYI */
 	return 0;
 }
@@ -351,7 +330,6 @@ static int di_cmp (struct di_block *a, struct di_block *b)
 
 	if (a->di_state != b->di_state)
 		return (a->di_state > b->di_state ? -1 : 1);	/* rule 1 */
-
 	switch (a->di_state) {
 	case DI_DEFERRED:
 		break;
@@ -380,7 +358,6 @@ static int di_cmp (struct di_block *a, struct di_block *b)
 		}
 		break;
 	}
-
 	return (di_prefer_dsa(a->di_dn, b->di_dn));
 }
 
@@ -392,19 +369,14 @@ void sort_dsa_list (struct di_block **dsas) {
 
 	if (dsas == NULL)
 		return;
-
 	/* turn access point into complete references if possible */
 	di_ap2comp (dsas);
-
 	if (*dsas == NULL_DI_BLOCK)
 		return;
-
 	result = *dsas;
 	if ((old_di = result->di_next) == NULL_DI_BLOCK)
 		return;		/* only 1 - must be sorted !!! */
-
 	result->di_next = NULL_DI_BLOCK;
-
 	for(; old_di != NULL_DI_BLOCK; ) {
 		trail = NULL_DI_BLOCK;
 		for(new_di = result; new_di != NULL_DI_BLOCK; new_di= new_di->di_next) {
@@ -432,7 +404,6 @@ void sort_dsa_list (struct di_block **dsas) {
 		}
 	}
 	*dsas = result;
-
 	if (changed) {
 		LLOG (log_dsap,LLOG_TRACE,("DSA order changed"));
 #ifdef DEBUG
@@ -440,7 +411,6 @@ void sort_dsa_list (struct di_block **dsas) {
 #endif
 	} else
 		DLOG (log_dsap,LLOG_TRACE,("DSA order not changed"));
-
 }
 
 static int common_address (struct di_block *a, struct TSAPaddr *tb) {
@@ -482,12 +452,10 @@ struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk) {
 	   to contact...
 	   If it can't contact any - return NULL
 	    */
-
 	if (di != NULL_DI_BLOCK)
 		best = di;
 	else
 		best = NULL_DI_BLOCK;
-
 	/* First set - find out who the remote end is... */
 	if (tk->tk_conn->cn_ctx == DS_CTX_X500_DAP)
 		return best;	/* we will chain anyway - unless prevented by service control... */

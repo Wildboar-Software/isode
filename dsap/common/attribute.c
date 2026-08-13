@@ -83,7 +83,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 	for (new_rdn = eptr->e_name; new_rdn != NULLRDN; new_rdn = new_rdn->rdn_next) {
 		if (new_rdn->rdn_at != NULLTABLE_ATTR)
 			new_rdn->rdn_av.av_syntax = new_rdn->rdn_at->oa_syntax;
-
 		if (new_rdn->rdn_av.av_syntax == 0) {
 			/* Check we know about local RDNs syntax */
 			if (eptr->e_data == E_DATA_MASTER)
@@ -100,7 +99,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 					return NOTOK;
 				}
 		}
-
 		for (rdn_test = eptr->e_name; rdn_test != new_rdn; rdn_test = rdn_test->rdn_next)
 			/* check for repeated attribute in RDN */
 			if (AttrT_cmp (new_rdn->rdn_at, rdn_test->rdn_at) == 0) {
@@ -109,7 +107,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 				error->ERR_UPDATE.DSE_up_problem = DSE_UP_NAMINGVIOLATION;
 				return NOTOK;
 			}
-
 		if ((as = as_find_type (eptr->e_attributes,new_rdn->rdn_at)) == NULLATTR) {
 			SET_HEAP (new_rdn->rdn_at);
 			at  = AttrT_cpy (new_rdn->rdn_at);
@@ -129,10 +126,8 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			}
 		}
 	}
-
 	/* now get special attributes into structure */
 	/* first reset pointers - incase deleted. */
-
 	eptr->e_alias = NULLDN;
 	if (eptr->e_dsainfo)
 		free ((char *) eptr->e_dsainfo);
@@ -145,14 +140,12 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 	eptr->e_sacl = NULLAV;
 	eptr->e_lacl = NULLAV;
 	eptr->e_authp = NULLAUTHP;
-
 #ifdef notyet
 	/* Should free this, but would need recursive inheritance setting */
 	if (eptr->e_inherit)
 		avs_free (eptr->e_inherit);
 #endif
 	eptr->e_inherit = NULLAV;
-
 	if ((as = entry_find_type (eptr,at_objectclass)) == NULLATTR) {
 		/* Might inherit it ! */
 		set_inheritance (eptr);
@@ -170,7 +163,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		eptr->e_oc = as->attr_value;
 		/* order swapped ! */
 	}
-
 	if (as = entry_find_type (eptr,at_acl)) {
 		if (as->attr_value) {	/* How can this be null ? */
 			eptr->e_acl = (struct acl *) as->attr_value->avseq_av.av_struct;
@@ -184,7 +176,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		}
 	} else
 		eptr->e_acl = NULLACL;
-
 	if (as = entry_find_type (eptr,at_edbinfo)) {
 		if (eptr->e_dsainfo == NULLDSA) {
 			eptr->e_dsainfo = (struct dsa_info *) smalloc (sizeof (struct dsa_info));
@@ -192,7 +183,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		}
 		eptr->e_dsainfo->dsa_attr = as->attr_value;
 	}
-
 	if (as = entry_find_type (eptr,at_dsaaddress)) {
 		if (eptr->e_dsainfo == NULLDSA) {
 			eptr->e_dsainfo = (struct dsa_info *) smalloc (sizeof (struct dsa_info));
@@ -203,38 +193,29 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,
 				   "WARNING: multi valued presentationAddress (only one will be used)",
 				   rdn_print, (caddr_t)eptr->e_name);
-
 	}
-
 	if (as = entry_find_type (eptr,at_masterdsa)) {
 		eptr->e_master = as->attr_value;
 		eptr->e_leaf = FALSE;
 	}
-
 	if (as = entry_find_type (eptr,at_slavedsa)) {
 		eptr->e_slave = as->attr_value;
 		eptr->e_leaf = FALSE;
 	}
-
 	if (as = entry_find_type (eptr,at_alias))
 		eptr->e_alias = (DN) as->attr_value->avseq_av.av_struct;
-
 	if (as = entry_find_type (eptr,at_searchacl)) {
 		eptr->e_sacl = as->attr_value;
 	}
-
 	if (as = entry_find_type (eptr,at_listacl)) {
 		eptr->e_lacl = as->attr_value;
 	}
-
 	if (as = entry_find_type (eptr,at_authpolicy)) {
 		eptr->e_authp = (Authpolicy) as->attr_value->avseq_av.av_struct;
 	}
-
 	if (eptr->e_dsainfo != NULLDSA) /* set version number */
 		if (as = entry_find_type (eptr,at_version))
 			eptr->e_dsainfo->dsa_version = (char *) as->attr_value->avseq_av.av_struct;
-
 	if (eptr->e_leaf) {
 		/* still a leaf -> look for any external references */
 		if (as = entry_find_type (eptr,at_xref)) {
@@ -275,15 +256,12 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			eptr->e_allchildrenpresent = FALSE;
 		}
 	}
-
 	/* Make sure acl attribute exists */
 	if (eptr->e_acl == (struct acl *) NULL) {
 		Attr_Sequence as1;
 		AV_Sequence avs1;
 		AttributeValue av;
-
 		SET_HEAP (at_acl);
-
 		acl = acl_alloc();
 		eptr->e_acl = acl;
 		acl->ac_child = acl_default ();
@@ -296,10 +274,8 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		avs1 = avs_comp_new (av);
 		as1 = as_comp_new (AttrT_cpy(at_acl),avs1,NULLACL_INFO);
 		eptr->e_attributes = as_merge(eptr->e_attributes,as1);
-
 		RESTORE_HEAP;
 	}
-
 	/* now do the attribute acl */
 	/* first of all create and oid_seq of all attribute, and point them to */
 	/* the default.  */
@@ -312,13 +288,11 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		struct acl_attr * found_aa;
 		struct oid_seq * oidptr;
 		char once;
-
 		/* The following is probably in efficient */
 		/* There must be a better way of setting these pointers */
 		for ( as = eptr->e_attributes; as != NULLATTR; as = as->attr_link) {
 			found_aa = NULLACL_ATTR;
 			once = FALSE;
-
 			for ( aa = acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next) {
 				for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next) {
 					if (oid_cmp (oidptr->oid_oid,grab_oid(as->attr_type)) == 0) {
@@ -333,7 +307,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 					}
 				}
 			}
-
 			if (found_aa != NULLACL_ATTR)
 				/* found the apprioriate acl - add oid to it */
 				as->attr_acl = found_aa->aa_acl;
@@ -341,14 +314,11 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 				as->attr_acl = acl->ac_default;
 		}
 	}
-
 	if (ias = entry_find_type (eptr,at_inherit)) {
 		/* set inherit ACL pointers */
 		InheritAttr tmp;
 		Attr_Sequence nas;
-
 		eptr->e_inherit = avs_cpy (ias->attr_value);
-
 		for (avs=eptr->e_inherit; avs!=NULLAV; avs=avs->avseq_next) {
 			tmp = (InheritAttr) avs->avseq_av.av_struct;
 			for (as = tmp->i_always; as != NULLATTR; as=as->attr_link) {
@@ -405,7 +375,6 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			}
 		}
 	}
-
 	return (OK);
 }
 
@@ -418,13 +387,10 @@ void set_inheritance (Entry eptr) {
 			|| (eptr->e_parent == NULLENTRY)
 			|| (eptr->e_parent->e_inherit == NULLAV))
 		return;
-
 	eptr->e_iattr = NULLINHERIT;
-
 	if ((eptr->e_oc == NULLAV) &&
 			((as = entry_find_type (eptr,at_objectclass)) != NULLATTR))
 		eptr->e_oc = as->attr_value;
-
 	if (eptr->e_oc == NULLAV)
 		for (avs=eptr->e_parent->e_inherit; avs != NULLAV; avs=avs->avseq_next) {
 			tmp = (InheritAttr) avs->avseq_av.av_struct;
@@ -433,7 +399,6 @@ void set_inheritance (Entry eptr) {
 				return;
 			}
 		}
-
 	/* scan through inherit atribute looking of the right object class */
 	for (avs=eptr->e_parent->e_inherit; avs != NULLAV; avs=avs->avseq_next) {
 		tmp = (InheritAttr) avs->avseq_av.av_struct;
@@ -443,7 +408,6 @@ void set_inheritance (Entry eptr) {
 		}
 	}
 	return;
-
 }
 
 Attr_Sequence entry_find_type (Entry a, AttributeType b) {
@@ -451,7 +415,6 @@ Attr_Sequence entry_find_type (Entry a, AttributeType b) {
 	Attr_Sequence ptr;
 
 	/* if Attr_cmp returns <0 no point in continuing due to ordering */
-
 	for(ptr = a->e_attributes; ptr != NULLATTR; ptr=ptr->attr_link) {
 		if (  (i = AttrT_cmp (ptr->attr_type,b)) <= 0)
 			if ( i == 0 )
@@ -459,10 +422,8 @@ Attr_Sequence entry_find_type (Entry a, AttributeType b) {
 			else
 				break;
 	}
-
 	if (a->e_iattr == NULLINHERIT)
 		return (NULLATTR);
-
 	for(ptr = a->e_iattr->i_default; ptr != NULLATTR; ptr=ptr->attr_link) {
 		if (  (i = AttrT_cmp (ptr->attr_type,b)) <= 0)
 			if ( i == 0 )
@@ -474,6 +435,5 @@ Attr_Sequence entry_find_type (Entry a, AttributeType b) {
 		if (  (i = AttrT_cmp (ptr->attr_type,b)) <= 0)
 			return (i ? NULLATTR : ptr);
 	}
-
 	return (NULLATTR);
 }

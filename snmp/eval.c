@@ -250,24 +250,20 @@ int	offset;
 	case type_SNMP_PDUs_get__next__request:
 		if (oid -> oid_nelem == ot -> ot_name -> oid_nelem) {
 			OID	new;
-
 			for (e = exprs; e < roofexpr; e++)
 				if (e -> e_expr)
 					break;
 			if (e >= roofexpr)
 				return NOTOK;
 			ifnum = (e - exprs) + 1;
-
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
-
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-
 			if ((ifnum = oid -> oid_elements[i]) >= NEXPR)
 				return NOTOK;
 			for (e = exprs + ifnum; e < roofexpr; e++)
@@ -276,7 +272,6 @@ int	offset;
 			if (e >= roofexpr)
 				return NOTOK;
 			ifnum = (e - exprs) + 1;
-
 			oid -> oid_elements[i] = ifnum;
 			oid -> oid_nelem = i + 1;
 		}
@@ -285,7 +280,6 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (ifvar) {
 	case exprIndex:
 		return o_integer (oi, v, ifnum);
@@ -321,7 +315,6 @@ struct expr *e;
 
 	roof = (tos = fstack) + (sizeof fstack / sizeof fstack[0]);
 	tos++;
-
 	bzero ((char *) ps, sizeof *ps);
 	if (str_open (ps) == NOTOK) {
 		e -> e_status = E_other;
@@ -334,7 +327,6 @@ struct expr *e;
 				 ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
-
 	if (read_tl (e, &class, &form, &id, &len) == NOTOK)
 		return NOTOK;
 	if (PE_ID (class, id) != PE_ID (PE_CLASS_UNIV, PE_CONS_SEQ)) {
@@ -342,11 +334,9 @@ struct expr *e;
 		sprintf (e -> e_hints, "unexpected TAG: %d/%d", class, id);
 		return NOTOK;
 	}
-
 	while (ps -> ps_cnt > 0) {
 		integer	i;
 		OID	oid;
-
 		if (read_tl (e, &class, &form, &id, &len) == NOTOK)
 			return NOTOK;
 		switch (PE_ID (class, id)) {
@@ -369,7 +359,6 @@ struct expr *e;
 			return NOTOK;
 		}
 		ps -> ps_ptr += len, ps -> ps_cnt -= len;
-
 		if (tos < roof)
 			*tos++ = i;
 		else {
@@ -378,19 +367,16 @@ struct expr *e;
 			return NOTOK;
 		}
 	}
-
 	if (tos <= fstack) {
 		e -> e_status = E_underflow;
 		strcpy (e -> e_hints, "stack underflow");
 		return NOTOK;
 	}
 	e -> e_eval = *--tos;
-
 	if (tos > fstack + 1 && e -> e_hints[0] == NULL)
 		sprintf (e -> e_hints,
 				 "%d items left on stack after evaluating expression",
 				 tos - fstack - 1);
-
 	return OK;
 }
 
@@ -415,7 +401,6 @@ PElementLen   *len;
 				 ps_error (ps -> ps_errno));
 		return NOTOK;
 	}
-
 	return OK;
 }
 
@@ -440,13 +425,10 @@ integer *result;
 		sprintf (e -> e_hints, "integer: %s", pe_error (PE_ERR_OVER));
 		return NOTOK;
 	}
-
 	i = (*(dp = (PElementData) base) & 0x80) ? (-1) : 0;
 	for (ep = dp + len; dp < ep;)
 		i = (i << 8) | (*dp++ & 0xff);
-
 	*result = i;
-
 	return OK;
 }
 
@@ -472,17 +454,14 @@ OID   *ox;
 		return NOTOK;
 	}
 	ep = dp + len;
-
 	if (o -> oid_elements)
 		free ((char *) o -> oid_elements);
-
 	for (i = 1; dp < ep; i++) {	/* another whacko OSI encoding... */
 		if (*dp == 0x80) {
 			e -> e_status = E_other;
 			sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_OID));
 			return NOTOK;
 		}
-
 		while (*dp++ & 0x80)
 			if (dp > ep) {
 				e -> e_status = E_other;
@@ -491,21 +470,18 @@ OID   *ox;
 				return NOTOK;
 			}
 	}
-
 	if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL) {
 		e -> e_status = E_other;
 		sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_NMEM));
 		return NOTOK;
 	}
 	o -> oid_elements = ip, o -> oid_nelem = i;
-
 	for (dp = (PElementData) base; dp < ep; ) {
 		i = 0;
 		do {
 			i <<= 7;
 			i |= *dp & 0x7f;
 		} while (*dp++ & 0x80);
-
 		if (ip != o -> oid_elements)
 			*ip++ = i;
 		else if (i < 40)
@@ -515,9 +491,7 @@ OID   *ox;
 		else
 			*ip++ = 2, *ip++ = i - 80;
 	}
-
 	*ox = o;
-
 	return OK;
 }
 
@@ -550,21 +524,18 @@ integer *i;
 				 oid2ode (oid));
 		return NOTOK;
 	}
-
 	if (!os -> os_data2) {
 		e -> e_status = E_notAnInteger;
 		sprintf (e -> e_hints, "variable %s is not integer-valued",
 				 oid2ode (oid));
 		return NOTOK;
 	}
-
 	if (ot -> ot_getfnx == NULL) {
 		e -> e_status = E_noSuchName;
 		sprintf (e -> e_hints, "no get method for variable %s",
 				 oid2ode (oid));
 		return NOTOK;
 	}
-
 	if ((v = (struct type_SNMP_VarBind *) calloc (1, sizeof *v)) == NULL
 			|| (v -> name = oid_cpy (oid)) == NULL
 			|| (v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
@@ -575,7 +546,6 @@ integer *i;
 		sprintf (e -> e_hints, "out of memory");
 		return NOTOK;
 	}
-
 	if ((status = (*ot -> ot_getfnx) (oi, v, type_SNMP_PDUs_get__request))
 			!= int_SNMP_error__status_noError) {
 		if (e -> e_hints[0] == NULL)
@@ -585,7 +555,6 @@ losing:
 		free_SNMP_VarBind (v);
 		return NOTOK;
 	}
-
 	if ((*os -> os_decode) ((void **)&result, v -> value) == NOTOK) {
 		e -> e_status = E_other;
 		sprintf (e -> e_hints, "%s: decoding error!", oid2ode (oid));
@@ -594,7 +563,6 @@ losing:
 	*i = *result;
 	free ((char *) result);
 	free_SNMP_VarBind (v);
-
 	return OK;
 }
 
@@ -633,14 +601,11 @@ int	offset;
 	default:
 		return int_SNMP_error__status_genErr;
 	}
-
 	if (os == NULLOS) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"no syntax defined for object \"%s\"", ot -> ot_text);
-
 		return int_SNMP_error__status_genErr;
 	}
-
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (e -> e_save.expr)
@@ -672,7 +637,6 @@ int	offset;
 			free (e -> e_save.expr), e -> e_save.expr = NULL;
 		break;
 	}
-
 	return int_SNMP_error__status_noError;
 }
 
@@ -681,25 +645,18 @@ void init_eval (void) {
 
 	roof = (tos = fstack) + (sizeof fstack / sizeof fstack[0]);
 	roofexpr = exprs + NEXPR;
-
 	bzero ((char *) exprs, sizeof exprs);
-
 	{
 		OS	os;
-
 		if (os = text2syn ("INTEGER"))
 			os -> os_data2 = 1;
-
 		if (os = text2syn ("Counter"))
 			os -> os_data2 = 1;
-
 		if (os = text2syn ("Gauge"))
 			os -> os_data2 = 1;
-
 		if (os = text2syn ("TimeTicks"))
 			os -> os_data2 = 1;
 	}
-
 	if (ot = text2obj ("functAdd"))
 		ot -> ot_getfnx = o_funct,
 			  ot -> ot_info = (caddr_t) functAdd;
@@ -748,7 +705,6 @@ void init_eval (void) {
 	if (ot = text2obj ("functNot"))
 		ot -> ot_getfnx = o_funct,
 			  ot -> ot_info = (caddr_t) functNot;
-
 	if (ot = text2obj ("exprNumber"))
 		ot -> ot_getfnx = o_generic,
 			  ot -> ot_info = (caddr_t) &exprNumber;
@@ -778,7 +734,6 @@ int	f_expression (char **vec) {
 	PS	    ps;
 
 	vec++;
-
 	if (sscanf (*vec, "%d", &i) != 1) {
 invalid:
 		;
@@ -788,17 +743,14 @@ invalid:
 	if (i <= 0 || i > NEXPR)
 		goto invalid;
 	vec++;
-
 	e = exprs + i - 1;
 	if (e -> e_expr)
 		free (e -> e_expr), e -> e_expr = NULL;
-
 	if ((pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULL)
 		adios (NULLCP, "pe_alloc: out of memory");
 	while (cp = *vec++) {
 		OID	oid;
 		PE	p;
-
 		if (isdigit (*cp)) {
 			if (sscanf (cp, "%ld", &i) != 1) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "bad integer-value: %s", cp);
@@ -813,31 +765,23 @@ invalid:
 			p = obj2prim (oid, PE_CLASS_UNIV, PE_PRIM_OID);
 			oid_free (oid);
 		}
-
 		if (seq_add (pe, p, NOTOK) == NOTOK)
 			adios (NULLCP, "seq_add: out of memory");
 	}
-
 	if ((ps = ps_alloc (str_open)) == NULLPS)
 		adios (NULLCP, "ps_alloc: failed");
 	if (str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK)
 		adios (NULLCP, "std_setup: %s", ps_error (ps -> ps_errno));
 	if (pe2ps (ps, pe) == NOTOK)
 		adios (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
-
 	e -> e_size = ps -> ps_ptr - (e -> e_expr = ps -> ps_base);
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	ps_free (ps);
-
 	if (debug)
 		vunknown (pe);
 	pe_free (pe);
-
 	if (i > exprNumber)
 		exprNumber = i;
-
 	return OK;
 }

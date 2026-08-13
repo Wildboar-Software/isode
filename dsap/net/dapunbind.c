@@ -24,19 +24,15 @@ int dap_unbind (int ad) {
 
 	DLOG(log_dsap, LLOG_NOTICE, ("dap_unbind: <%d, normal, nullpe>",
 								 ad));
-
 	ret = DapUnBindRequest (ad, NOTOK, dr, di);
-
 	if (ret != OK) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapUnBindRequest() failed"));
 		return (DS_ERROR_LOCAL);
 	}
-
 	if (!dr->dr_affirmative) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DapUnBindRequest failed"));
 		return(DS_ERROR_PROVIDER);
 	}
-
 	return(DS_OK);
 }
 
@@ -48,18 +44,15 @@ int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindicat
 	struct RoNOTindication	* rni = &(rni_s);
 
 	result = RoUnBindRequest (sd, NULLPE, secs, acr, rni);
-
 	if (result == OK) {
 		dr->dr_affirmative = acr->acr_affirmative;
 		dr->dr_reason = acr->acr_reason;
 		ACRFREE(acr);
 		return (OK);
 	}
-
 	if (result == NOTOK) {
 		return (ronot2daplose (di, "D-UNBIND.REQUEST", rni));
 	}
-
 	return (result);
 }
 
@@ -73,17 +66,14 @@ int DapUnBindRetry (int sd, int secs, struct DAPrelease *dr, struct DAPindicatio
 	struct RoNOTindication	* rni = &(rni_s);
 
 	result = RoUnBindRetry (sd, secs, acr, rni);
-
 	if (result == OK) {
 		dr->dr_affirmative = acr->acr_affirmative;
 		dr->dr_reason = acr->acr_reason;
 		ACRFREE (acr);
 		return (OK);
 	}
-
 	if (result == NOTOK) {
 		return (ronot2daplose (di, "D-UNBIND.RETRY", rni));
 	}
-
 	return (result);
 }

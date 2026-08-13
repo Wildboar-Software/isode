@@ -17,7 +17,6 @@ int oper_send_invoke (struct oper_act *oper) {
 	struct DSAPindication	* di = &(di_s);
 
 	DLOG(log_dsap, LLOG_TRACE, ("oper_send_invoke"));
-
 	if (quipu_shutdown) {
 		struct connection	* cn;
 		oper->on_conn->cn_state = CN_FAILED;
@@ -26,20 +25,16 @@ int oper_send_invoke (struct oper_act *oper) {
 		conn_extract(cn);
 		return(NOTOK);
 	}
-
 	if(oper == NULLOPER) {
 		LLOG(log_dsap, LLOG_FATAL, ("Task memerr 3"));
 		return(NOTOK);
 	}
-
 	if(oper->on_state == ON_ABANDONED)
 		return NOTOK;
-
 	/*
 	* Genrate an id unique over this connection for this operation.
 	*/
 	oper->on_id = ++(oper->on_conn->cn_op_id);
-
 	switch (oper->on_conn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("oper_invoke(): DAP context unexpected"));
@@ -55,7 +50,6 @@ int oper_send_invoke (struct oper_act *oper) {
 	case DS_CTX_INTERNET_DSP:
 		if (oper->on_type == ON_TYPE_GET_EDB)
 			set_edb_limit (oper);
-
 		result = IspInvokeRequest (oper->on_conn->cn_ad, oper->on_id,
 								   oper->on_arg, di);
 		break;
@@ -63,11 +57,9 @@ int oper_send_invoke (struct oper_act *oper) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("oper_invoke(): Unknown context %d", oper->on_conn->cn_ctx));
 		break;
 	}
-
 	if (result != OK) {
 		if(di->di_type == DI_ABORT) {
 			struct connection	* cn;
-
 			LLOG(log_dsap, LLOG_FATAL, ("D-INVOKE.REQUEST: fatal reject - fail the connection"));
 			oper->on_conn->cn_state = CN_FAILED;
 			cn = oper->on_conn;
@@ -142,7 +134,6 @@ int oper_send_invoke (struct oper_act *oper) {
 					op = "Read - shadow";
 					break;
 				}
-
 			if (log_stat -> ll_events & LLOG_DEBUG)
 				LLOG(log_stat, LLOG_DEBUG, ("Chain (%d): %s [%d]",
 											oper->on_conn->cn_ad,

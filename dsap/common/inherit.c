@@ -41,7 +41,6 @@ InheritAttr b;
 			return (0);
 		else
 			return (-1);
-
 	if ( a->i_oid ) {
 		if ( b->i_oid) {
 			if ( (res = oid_cmp (a->i_oid,b->i_oid)) != 0)
@@ -50,10 +49,8 @@ InheritAttr b;
 			return -1;
 	} else if ( b->i_oid )
 		return 1;
-
 	if ( (res = as_cmp (a->i_always,b->i_always)) != 0)
 		return (res);
-
 	return (as_cmp (a->i_default,b->i_default));
 }
 
@@ -89,11 +86,9 @@ int format;
 			}
 		}
 		ps_print (ps,"--------");
-
 	} else {
 		if (inherit->i_oid)
 			ps_printf (ps,"%s $ ",oid2name(inherit->i_oid, OIDPART));
-
 		if (inherit->i_always) {
 			ps_print (ps,"ALWAYS (\n");
 			as_print (ps,inherit->i_always,EDBOUT);
@@ -111,7 +106,6 @@ static char * nextline = NULLCP;
 
 int setAttributeLine (char *str) {
 	/* Recusion ? */
-
 	if ((nextline = index (str,'\n')) != NULLCP)
 		*nextline++ = 0;
 }
@@ -124,7 +118,6 @@ char *nextAttributeLine (char *str) {
 	extern char fromfile;
 #endif
 	char * getnextline();
-
 	if (nextline) {
 		if (nextline == NULLCP)
 			return NULLCP;
@@ -132,7 +125,6 @@ char *nextAttributeLine (char *str) {
 		setAttributeLine (nextline);
 		return ptr;
 	}
-
 #ifdef TURBO_DISK
 	if (fromfile) {
 		if ((ptr = fgetnextline ()) == NULLCP) {
@@ -145,9 +137,7 @@ char *nextAttributeLine (char *str) {
 			parse_error ("Inherit: EOF unexpected",NULLCP);
 			return (NULLCP);
 		}
-
 	return ptr;
-
 }
 
 static char * getInheritAttrs (asptr, needsoc, str)
@@ -166,19 +156,15 @@ char * 		str;
 		return (NULLCP);
 	}
 	str = ptr;
-
 	if (*ptr == ')') {
 		parse_error ("Attributes missing",NULLCP);
 		return (++ptr);
 	}
-
 	while ( *ptr != 0 ) {
 		as = as_combine (as,ptr,TRUE);
-
 		if ((ptr = nextAttributeLine (ptr)) == NULLCP)
 			break;
 		str = ptr;
-
 		if (*ptr == ')') {
 			if (needsoc && octype == NULLAttrT)
 				octype = str2AttrT("objectClass");
@@ -189,13 +175,10 @@ char * 		str;
 			}
 			*asptr = as;
 			return (++ptr);
-
 		}
 	}
-
 	parse_error ("Inherit: EOF unexpected (2)",NULLCP);
 	return (NULLCP);
-
 }
 
 static InheritAttr str2inherit (str)
@@ -207,24 +190,20 @@ char * str;
 	char		failed = FALSE;
 
 	setAttributeLine(str);
-
 	result = (InheritAttr) smalloc (sizeof *result);
 	result->i_oid = NULLOID;
 	result->i_always = NULLATTR;
 	result->i_default = NULLATTR;
-
 	if ( (ptr=index (str,'$')) != NULLCP) {
 		*ptr-- = 0;
 		if (isspace (*ptr))
 			*ptr = 0;
 		ptr++;
 		ptr = SkipSpace (++ptr);
-
 		if ((result->i_oid = name2oid (str)) == NULLOID)
 			needsoc = TRUE;
 	} else
 		ptr = str;
-
 	if (lexnequ (ptr,"ALWAYS",strlen("ALWAYS")) == 0) {
 		ptr = SkipSpace (ptr+strlen("ALWAYS"));
 		if (*ptr++ != '(') {
@@ -238,7 +217,6 @@ char * str;
 		}
 		ptr = getInheritAttrs(&result->i_always, FALSE, ptr);
 	}
-
 	ptr = SkipSpace (ptr);
 	if (lexnequ (ptr,"DEFAULT",strlen("DEFAULT")) == 0) {
 		ptr = SkipSpace (ptr+strlen("DEFAULT"));
@@ -253,17 +231,14 @@ char * str;
 		}
 		ptr = getInheritAttrs(&result->i_default, needsoc, ptr);
 	}
-
 	if ((result->i_always == NULLATTR)
 			&& (result->i_default == NULLATTR)) {
 		parse_error ("Inherited Attribute syntax incorrect",NULLCP);
 		return NULLINHERIT;
 	}
-
 	ptr = SkipSpace (ptr);
 	if (*ptr != 0)
 		parse_error ("Inherit: extra data '%s'",ptr);
-
 	if (failed) {
 		if (result->i_oid)
 			oid_free (result->i_oid);
@@ -275,7 +250,6 @@ char * str;
 			free ((char *)result);
 		return NULLINHERIT;
 	}
-
 	return result;
 }
 
@@ -285,7 +259,6 @@ InheritAttr m;
 	PE ret_pe;
 
 	encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 

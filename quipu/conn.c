@@ -54,7 +54,6 @@ void conn_extract (struct connection *conn) {
 	* the tasks (and their derivative operations) made on the connection;
 	* then remove the connection from the list of active connections.
 	*/
-
 	struct oper_act     * on;
 	struct oper_act     * on_next;
 	struct task_act     * tk;
@@ -64,23 +63,19 @@ void conn_extract (struct connection *conn) {
 	struct DSError	* err;
 
 	DLOG (log_dsap,LLOG_TRACE, ("conn_extract"));
-
 #ifdef QUIPU_CONSOLE
 	/* SPT: Catch this close and indicate it on the open_calls */
 	closing_analyse(conn) ;
 #endif /* QUIPU_CONSOLE */
-
 	if(conn == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Extracting NULLCONN!!!"));
 		return;
 	}
-
 	cn_p = &(connlist);
 	for(cn=connlist; cn!=NULLCONN; cn=cn->cn_next) {
 		DLOG(log_dsap, LLOG_DEBUG, ("checking connlist"));
 		if(cn == conn)
 			break;
-
 		cn_p = &(cn->cn_next);
 	}
 	if(cn==NULLCONN) {
@@ -92,12 +87,10 @@ void conn_extract (struct connection *conn) {
 		(*cn_p) = cn->cn_next;
 		conns_used--;
 	}
-
 	for(on=conn->cn_operlist; on!=NULLOPER; on=on_next) {
 		on_next = on->on_next_conn;
 		oper_fail_wakeup (on);
 	}
-
 	for(tk=conn->cn_tasklist; tk!=NULLTASK; tk=tk_next) {
 		tk_next = tk->tk_next;
 		err = &(tk->tk_resp.di_error.de_err);
@@ -108,7 +101,6 @@ void conn_extract (struct connection *conn) {
 		task_error(tk);
 		task_extract(tk);
 	}
-
 	conn_free(conn);
 }
 
@@ -122,7 +114,6 @@ void conn_log (struct connection *conn, int level) {
 		LLOG (log_dsap,level, ("Connection: NULLCONN"));
 		return;
 	}
-
 	switch (conn->cn_ctx) {
 	case DS_CTX_X500_DAP:
 		cntxt = "DAP";
@@ -140,7 +131,6 @@ void conn_log (struct connection *conn, int level) {
 		cntxt = "?";
 		break;
 	}
-
 	switch(conn->cn_state) {
 	case CN_INDICATED:
 		state = "INDICATED";
@@ -173,10 +163,8 @@ void conn_log (struct connection *conn, int level) {
 		state = "?";
 		return;
 	}
-
 	LLOG (log_dsap,level,
 		  ("Connection %d, %s %s", conn->cn_ad, cntxt, state));
-
 	if (conn->cn_initiator)
 		LLOG (log_dsap, level, ("To: %s",
 								paddr2str(&conn->cn_addr,NULLNA)));
@@ -184,7 +172,6 @@ void conn_log (struct connection *conn, int level) {
 		LLOG (log_dsap, level, ("From: %s",
 								paddr2str(&conn->cn_start.cs_ds.ds_start.acs_start.ps_calling,
 										  NULLNA)));
-
 #ifdef DEBUG
 	if (conn->cn_tasklist != NULLTASK) {
 		DLOG (log_dsap,level, ("Tasks:"));

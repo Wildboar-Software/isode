@@ -69,16 +69,12 @@ not_enough:
 	missingP (qos);
 #endif
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	result = FInitializeRequestAux (context, callingtitle, calledtitle,
 									callingaddr, calledaddr, manage, class, units, attrs, sharedASE, fqos,
 									contents, initiator, account, password, passlen, qos, tracing, ftc,
 									fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -113,12 +109,9 @@ static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle
 		return ftamlose (fti, FS_GEN_NOREASON, 1, NULLCP, "out of memory");
 	fsb -> fsb_flags |= FSB_INIT;
 	fsb -> fsb_trace = tracing;
-
 	ctx = pci = NULLOID, pl -> pc_nctx = 0;
 	bzero ((char *) ftc, sizeof *ftc);
-
 	pdu = NULL;
-
 	if (context == NULLOID && (context = ode2oid (FS_CTX)) == NULLOID) {
 		result = ftamlose (fti, FS_ACS_MGMT, 1, NULLCP, "%s: unknown", FS_CTX);
 		goto out1;
@@ -129,16 +122,13 @@ no_mem:
 		result = ftamlose (fti, FS_GEN_NOREASON, 1, NULLCP, "out of memory");
 		goto out1;
 	}
-
 	if ((pci = ode2oid (FS_ASN)) == NULLOID) {
 		result = ftamlose (fti, FS_ACS_MGMT, 1, NULLCP, "%s: unknown", FS_ASN);
 		goto out1;
 	}
 	if ((pci = oid_cpy (pci)) == NULLOID)
 		goto no_mem;
-
 	px = pl -> pc_ctx, pl -> pc_nctx = 0;
-
 	px -> pc_id = fsb -> fsb_id = idc = 1;
 	if ((px -> pc_asn = ode2oid (FS_ASN)) == NULLOID) {
 		result = ftamlose (fti, FS_ACS_MGMT, 1, NULLCP, "%s: unknown", FS_ASN);
@@ -153,10 +143,8 @@ no_mem:
 	if ((px -> pc_atn = oid_cpy (px -> pc_atn)) == NULLOID)
 		goto no_mem;
 	px++, pl -> pc_nctx++;
-
 	if (contents) {
 		struct isodocument *id;
-
 		for (fx = contents -> fc_contents, i = contents -> fc_ncontent - 1;
 				i >= 0;
 				fx++, i--) {
@@ -166,7 +154,6 @@ no_mem:
 								   contents -> fc_ncontent - i - 1);
 				goto out1;
 			}
-
 			if ((id = getisodocumentbytype (fx -> fc_dtn)) == NULL) {
 				result = ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 								   "unknown document type %s at slot %d",
@@ -174,7 +161,6 @@ no_mem:
 								   contents -> fc_ncontent - i - 1);
 				goto out1;
 			}
-
 			px -> pc_id = (idc += 2);
 			if ((px -> pc_asn = oid_cpy (id -> id_abstract)) == NULLOID)
 				goto no_mem;
@@ -183,7 +169,6 @@ no_mem:
 			px++, pl -> pc_nctx++;
 		}
 	}
-
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL)
 		goto no_mem;
 	pdu -> offset = type_FTAM_PDU_f__initialize__request;
@@ -219,7 +204,6 @@ no_mem:
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *fpm;
 		struct type_FTAM_Contents__Type__List **fpc;
-
 		fpc = &req -> contents__type__list;
 		for (fx = contents -> fc_contents, i = contents -> fc_ncontent - 1;
 				i >= 0;
@@ -228,7 +212,6 @@ no_mem:
 					   calloc (1, sizeof *fpm)) == NULL)
 				goto no_mem;
 			*fpc = fpm;
-
 			if ((fpm -> Document__Type__Name = oid_cpy (fx -> fc_dtn))
 					== NULLOID)
 				goto no_mem;
@@ -246,7 +229,6 @@ no_mem:
 		goto out1;
 	if (password) {
 		struct type_FTAM_Password *p;
-
 		if ((p = (struct type_FTAM_Password *) calloc (1, sizeof *p))
 				== NULL)
 			goto no_mem;
@@ -256,15 +238,12 @@ no_mem:
 			goto no_mem;
 	}
 	req -> checkpoint__window = 1;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out1;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsb -> fsb_srequirements = SR_DUPLEX | SR_RESYNC;
 	fsb -> fsb_srequirements &= ~SR_RESYNC;	/* XXX */
 	if (units & (FUNIT_RECOVERY | FUNIT_RESTART))
@@ -280,25 +259,19 @@ no_mem:
 }
 	dotokens ();
 #undef	dotoken
-
 	if ((sr = addr2ref (PLocalHostName ())) == NULL)
 		goto no_mem;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "A-ASSOCIATE.REQUEST",
 					"F-INITIALIZE-request", pe, 0));
-
 	result = AcAssocRequest (ctx, callingtitle, calledtitle, callingaddr,
 							 calledaddr, pl, NULLOID /* pci */, fsb -> fsb_prequirements,
 							 fsb -> fsb_srequirements, isn, settings, sr, &pe, 1,
 							 qos, acc, aci);
-
 	if (result == NOTOK) {
 		acs2ftamlose (fsb, fti, "AcAssocRequest", aca);
 		goto out1;
 	}
-
 	fsb -> fsb_fd = acc -> acc_sd;
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
@@ -317,26 +290,21 @@ no_mem:
 			px -> pc_atn = NULLOID;
 		}
 	}
-
 	if (acc -> acc_ninfo < 1 || (pe = acc -> acc_info[0]) == NULLPE) {
 		if (acc -> acc_result != ACS_ACCEPT) {
 			struct FTAMabort *fta = &fti -> fti_abort;
-
 			aca -> aca_reason = acc -> acc_result;
 			acs2ftamlose (fsb, fti, "AcAssocRequest(pseudo)", aca);
-
 			ftc -> ftc_sd = NOTOK;
 			ftc -> ftc_state = FSTATE_FAILURE;
 			ftc -> ftc_action = FACTION_PERM;
 			*ftc -> ftc_diags = *fta -> fta_diags;	/* struct copy */
 			ftc -> ftc_ndiag = fta -> fta_ndiag;
-
 			result = OK;
 		} else
 			result = fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
-
 	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
 		result = fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 						   "unable to parse PDU: %s", PY_pepy);
@@ -349,11 +317,9 @@ no_mem:
 		goto out2;
 	}
 	rsp = pdu -> un.f__initialize__response;
-
 	fsbtrace (fsb,
 			  (fsb -> fsb_fd, "A-ASSOCIATE.CONFIRMATION", "F-INITIALIZE-response",
 			   pe, 1));
-
 	ftc -> ftc_state = rsp -> state__result
 					   ? rsp -> state__result -> parm
 					   : int_FTAM_State__Result_success;
@@ -368,7 +334,6 @@ no_mem:
 							   "state/action mismatch");
 			goto out2;
 		}
-
 		fsb -> fsb_flags |= FSB_CONN;
 		fsb -> fsb_srequirements &= pc -> pc_srequirements;
 #define dotoken(requires,shift,bit,type) \
@@ -398,14 +363,12 @@ no_mem:
 			goto out2;
 		}
 		fsb -> fsb_ssdusize = pc -> pc_ssdusize;
-
 		pl = &pc -> pc_ctxlist;
 		if (pl -> pc_nctx > 0 && pl -> pc_ctx[0].pc_result != PC_ACCEPT) {
 			result = fpktlose (fsb, fti, FS_PRO_ERRPROC, NULLCP,
 							   "FTAM PCI rejected");
 			goto out2;
 		}
-
 		fsb -> fsb_prequirements &= pc -> pc_prequirements;
 		if (rsp -> presentation__context__management) {
 			if (!(fsb -> fsb_prequirements & PR_MANAGEMENT)) {
@@ -415,7 +378,6 @@ no_mem:
 			}
 		} else
 			fsb -> fsb_prequirements &= ~PR_MANAGEMENT;
-
 		if (rsp -> service__class) {
 			rcvd_bits = fpm2bits (fsb, fclass_pairs, rsp -> service__class,
 								  &bits, fti);
@@ -525,7 +487,6 @@ too_many:
 			goto out2;
 		}
 		fsb -> fsb_fqos = MY_FQOS;
-
 		ftc -> ftc_sd = fsb -> fsb_fd;
 		break;
 
@@ -539,13 +500,11 @@ too_many:
 		}
 		{
 			struct FTAMabort *fta = &fti -> fti_abort;
-
 			bzero ((char *) fta, sizeof *fta);
 			fta -> fta_peer = 1;
 		}
 		break;
 	}
-
 	ftc -> ftc_respondtitle = acc -> acc_respondtitle;	/* struct copy */
 	bzero ((char *) &acc -> acc_respondtitle, sizeof acc -> acc_respondtitle);
 	ftc -> ftc_respondaddr = pc -> pc_responding;	/* struct copy */
@@ -560,13 +519,10 @@ too_many:
 						   &ftc -> ftc_sharedASE, fti) == NOTOK)
 		goto out2;
 	ftc -> ftc_fqos = fsb -> fsb_fqos;
-
 	if (contents) {
 		struct type_FTAM_Contents__Type__List *dtn;
 		struct FTAMcontent *fx2;
-
 		fx2 = ftc -> ftc_contents.fc_contents;
-
 		for (fx = contents -> fc_contents,
 				i = contents -> fc_ncontent - 1;
 				i >= 0;
@@ -576,16 +532,12 @@ too_many:
 					break;
 			if (dtn == NULL)
 				continue;
-
 			px = pl -> pc_ctx + 1 + (fx - contents -> fc_contents);
-
 			fx2 -> fc_dtn = dtn -> Document__Type__Name;
 			fx2 -> fc_id = px -> pc_id;
 			fx2 -> fc_result = px -> pc_result;
-
 			fx2++, ftc -> ftc_contents.fc_ncontent++;
 		}
-
 		for (dtn = rsp -> contents__type__list; dtn; dtn = dtn -> next) {
 			for (fx2 = ftc -> ftc_contents.fc_contents,
 					i = ftc -> ftc_contents.fc_ncontent - 1;
@@ -602,19 +554,14 @@ too_many:
 				  &ftc -> ftc_ndiag, fti);
 	ftc -> ftc_ssdusize = fsb -> fsb_ssdusize;
 	ftc -> ftc_qos = pc -> pc_qos;	/* struct copy */
-
 	free_FTAM_PDU (pdu);
 	ACCFREE (acc);
-
 	if (acc -> acc_result != ACS_ACCEPT)
 		freefsblk (fsb);
-
 	return OK;
-
 out2:
 	;
 	ACCFREE (acc);
-
 out1:
 	;
 	if (pdu)
@@ -630,6 +577,5 @@ out1:
 			oid_free (px -> pc_atn);
 	}
 	freefsblk (fsb);
-
 	return result;
 }

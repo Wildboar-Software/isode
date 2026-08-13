@@ -10,10 +10,8 @@ char	**argv;
 		write( 1, ".\n", sizeof( ".\n" ) );
 		return( 0 );
 	}
-
 	*p = '\0';
 	write( 1, argv[ 1 ], strlen( argv[ 1 ] ) );
 	write( 1, "\n", 1 );
-
 	return( 0 );
 }

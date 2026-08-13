@@ -18,12 +18,9 @@ static int * intdec (PE pe)
 
 	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_INT))
 		return (0);
-
 	x = (int *) smalloc (sizeof (int));
 	*x = prim2num(pe);
-
 	return x;
-
 }
 
 static int * enumdec (PE pe)
@@ -82,7 +79,6 @@ void integer_syntax (void) {
 						  intdup,		intcmp,
 						  intfree,	NULLCP,
 						  NULLIFP,	FALSE);
-
 	add_attribute_syntax("enumerated",
 						 enumenc, 	enumdec,
 						 enumparse,	enumprint,

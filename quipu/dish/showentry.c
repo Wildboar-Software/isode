@@ -42,7 +42,6 @@ void call_showentry (int argc, char **argv) {
 	extern int      mod_template();
 
 	vect[0] = "showentry";
-
 	move_flag = FALSE;
 	fred_flag = FALSE;
 	fred_expand = FALSE;
@@ -54,7 +53,6 @@ void call_showentry (int argc, char **argv) {
 	fred_subdisplay = FALSE;
 	name_flag = FALSE;
 	full_edb_flag = FALSE;
-
 	for (x=1; x<argc; x++) {
 		if (test_arg (argv[x], "-move",2))
 			move_flag = TRUE;
@@ -94,17 +92,14 @@ void call_showentry (int argc, char **argv) {
 		} else
 			continue;
 		shuffle_up (argc--,argv,x--);
-
 	}
 	if ((argc = read_cache (argc, argv)) < 0)
 		return;
-
 	if (argc != 1) {
 		ps_printf (OPT,"Unknown option %s\n",argv[1]);
 		Usage (argv[0]);
 		return;
 	}
-
 	if (current_entry == NULLENTRY) {
 		ps_print (OPT,"Specify an entry \n");
 		/* this CAN happen - when the entry is not cache, but -noread */
@@ -114,7 +109,6 @@ void call_showentry (int argc, char **argv) {
 		mod_template(temp_file_name,0);
 		return;
 	}
-
 	if (fred_flag) {
 		if (fred_long == 2)
 			if ((fred_subdisplay && fred_expand)
@@ -124,33 +118,27 @@ void call_showentry (int argc, char **argv) {
 				fred_long = fred_expand;
 		if (fred_expand)
 			fred_long = fred_subdisplay = TRUE;
-
 		if (fred_list
 				&& frompipe
 				&& rps -> ps_byteno == 0
 				&& opt -> ps_byteno == 0) {
 			DN	new_dn = dn_cpy (current_dn);
-
 			showfredDNs (new_dn, fred_long);
 			dn_free (new_dn);
 		}
-
 		showfred (current_dn, fred_long, fred_subdisplay);
 	} else {
 		if (name_flag) {
 			dn_print (RPS,dn,EDBOUT);
 			ps_print (RPS,"\n");
 		}
-
 		if (all_flag)
 			eptr = current_entry->e_attributes;
 		else
 			eptr = as_flag;
-
 		if (flag_show)
 			for (; eptr != NULLATTR; eptr = eptr->attr_link)
 				showattribute (eptr->attr_type);
 	}
-
 	consolidate_move();
 }

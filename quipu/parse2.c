@@ -33,7 +33,6 @@ getentry_block (Entry p_parent, char *fname) {
 	Avlnode	*get_entries_aux();
 
 	time_t cache_age;
-
 #ifdef TURBO_DISK
 	GDBM_FILE	file;
 	char		gfname[1024];
@@ -41,7 +40,6 @@ getentry_block (Entry p_parent, char *fname) {
 #else
 	FILE 		*file;
 #endif
-
 #ifdef TURBO_DISK
 	strcpy(gfname, fname);
 	strcat(gfname, ".gdbm");
@@ -53,22 +51,17 @@ getentry_block (Entry p_parent, char *fname) {
 #else
 	file = fopen (fname, "r");
 #endif
-
 	if (file == NULL) {
 		extern int	refreshing;
-
 		LLOG (log_dsap,LLOG_NOTICE,("WARNING - Can't open \"%s\" (%d)- should I be able to ?",fname,errno));
 		if (refreshing)
 			parse_error("Can't open \"%s\"", fname);
 		return(NULLAVL);
 	}
-
 	LLOG (log_dsap,LLOG_NOTICE,("Loading \"%s\"",fname));
-
 	parse_status = 0;
 	parse_line   = 0;
 	parse_file = fname;
-
 	if (get_header (file,&dtype,&version) != OK) {
 		parse_line = 0;
 		parse_error ("Bad HEADER - File %s not loaded",fname);
@@ -84,7 +77,6 @@ getentry_block (Entry p_parent, char *fname) {
 		return (NULLAVL);
 #endif
 	}
-
 	if (dtype == E_TYPE_CACHE_FROM_MASTER) {
 		UTC sutc;
 		struct tm *tm;
@@ -93,9 +85,7 @@ getentry_block (Entry p_parent, char *fname) {
 				cache_age = gtime (tm);
 		p_parent->e_allchildrenpresent = FALSE;
 	}
-
 	tree = get_entries_aux (file,p_parent,version,dtype,cache_age);
-
 	if ((parse_status == 0) && (tree == NULLAVL)) {
 		LLOG(log_dsap, LLOG_NOTICE,("Header OK, but null EDB File %s.",fname));
 		p_parent->e_leaf = FALSE ;
@@ -114,7 +104,6 @@ getentry_block (Entry p_parent, char *fname) {
 		return(NULLAVL) ;
 #endif
 	}
-
 	if ((parse_status != 0) || (tree == NULLAVL)) {
 		parse_line = 0;
 		parse_error ("File %s not loaded",fname);
@@ -131,20 +120,16 @@ getentry_block (Entry p_parent, char *fname) {
 		return(NULLAVL);
 #endif
 	}
-
 	if ( p_parent != NULLENTRY ) {
 		p_parent->e_edbversion = version;
 		if ((dtype == E_DATA_MASTER) || (dtype == E_TYPE_SLAVE))
 			p_parent->e_allchildrenpresent = 1; 	/* at least */
 	}
-
 	parse_file = NULLCP;
-
 	if (dtype == E_DATA_MASTER)
 		master_edbs++;
 	if (dtype == E_TYPE_SLAVE)
 		slave_edbs++;
-
 #ifdef TURBO_DISK
 	save_heap = mem_heap;
 	GENERAL_HEAP;
@@ -174,24 +159,20 @@ char		**versionptr;
 		0,		-1,
 	};
 	extern char	*parse_entry;
-
 	save_heap = mem_heap;
 	GENERAL_HEAP;
-
 	parse_entry = turbo_header_key.dptr;
 	if (db == NULL) {
 		parse_error("NULL dbm file!!!", NULLCP);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	h = gdbm_fetch(db, turbo_header_key);
 	if (h.dptr == NULL) {
 		parse_error("File has no header!!!", NULLCP);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	v = index(h.dptr, '\n');
 	if (v == NULLCP) {
 		parse_error("Bad file header", NULLCP);
@@ -199,13 +180,11 @@ char		**versionptr;
 		return(NOTOK);
 	}
 	*v++ = '\0';
-
 	if ((*typeptr = cmd_srch(h.dptr, cmd_header)) == -1) {
 		parse_error("File type %s not recognised", h.dptr);
 		mem_heap = save_heap;
 		return(NOTOK);
 	}
-
 	if (*v == '\0') {
 		parse_error("No version specified", NULLCP);
 		mem_heap = save_heap;
@@ -215,7 +194,6 @@ char		**versionptr;
 		*p = '\0';
 	*versionptr = strdup(v);
 	free(h.dptr);
-
 	mem_heap = save_heap;
 	return(OK);
 }
@@ -230,23 +208,19 @@ int get_header (FILE * file, int * typeptr, char ** versionptr) {
 		"CACHE",	E_TYPE_CACHE_FROM_MASTER,
 		0,		-1,
 	};
-
 	if ((ptr = _getline (file)) == NULLCP) {
 		parse_error ("NULL file !!!",NULLCP);
 		return (NOTOK);
 	}
-
 	if ((*typeptr = cmd_srch (ptr,cmd_header)) == -1) {
 		parse_error ("File type %s not recognised",ptr);
 		return (NOTOK);
 	}
-
 	if ((ptr = _getline (file)) == NULLCP) {
 		parse_error ("No version specified",NULLCP);
 		return (NOTOK);
 	}
 	*versionptr = strdup (ptr);
-
 	return (OK);
 }
 
@@ -282,24 +256,19 @@ time_t cache_age;
 #endif
 		if ((eptr = get_entry_aux (file,parent,dtype)) == NULLENTRY)
 			continue;
-
 		if (dtype == E_TYPE_CACHE_FROM_MASTER)
 			eptr->e_age = cache_age;
-
 		DATABASE_HEAP;
-
 		if (avl_insert(&tree, (caddr_t) eptr, entry_cmp, avl_dup_error)
 				== NOTOK) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,"Duplicate entry for",
 				   rdn_print,(caddr_t)eptr->e_name);
 			parse_error ("Non Unique RDN",NULLCP);
 		}
-
 #ifdef TURBO_INDEX
 		turbo_add2index(eptr);
 #endif
 	}
-
 	return(tree);
 }
 
@@ -318,6 +287,5 @@ int dtype;
 
 	parse_status = 0;
 	parse_line   = 0;
-
 	return (get_entries_aux (file,parent,version,dtype,(time_t)NULL));
 }

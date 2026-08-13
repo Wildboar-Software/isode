@@ -117,9 +117,7 @@ void iso8859print(PS ps, char *sstr)
 
 	if (buff == (unsigned char *)0)
 		buff = (unsigned char *) smalloc (BUFSIZ);
-
 	optr = buff;
-
 	str = (unsigned char *) sstr;
 	while (*str != '\0') {
 		if ((*str > 0x1f) && (*str < 0x80)) {
@@ -232,7 +230,6 @@ static char *local_t61 (char *a) {
 
 	if (a == NULLCP)
 		return (NULLCP);
-
 	b = smalloc (strlen(a) +2);
 	*b++ = T61_MARK;
 	strcpy (b,a);
@@ -255,7 +252,6 @@ static char * prtsdec (PE pe)
 				return strdup (" ");
 			} else
 				return NULLCP;
-
 		if (check_print_string(p))
 			return (p);
 		free (p);
@@ -290,12 +286,10 @@ int check_3166 (char *a) {
 
 	if (strlen (a) != 2)
 		return 0;
-
 	if (islower ((uint8_t) a[0]))
 		a[0] = toupper (a[0]);
 	if (islower ((uint8_t) a[1]))
 		a[1] = toupper (a[1]);
-
 #ifdef STRICT_X500
 	return (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a));
 #else
@@ -312,7 +306,6 @@ static char * cntydec (PE pe)
 
 	if ((a = prtsdec(pe)) == NULLCP)
 		return (NULLCP);
-
 	if (strlen (a) != 2) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("Country code size wrong: \"%s\"", a));
@@ -321,19 +314,16 @@ losing:
 		free (a);
 		return (NULLCP);
 	}
-
 	if (islower ((uint8_t) a[0]))
 		a[0] = toupper (a[0]);
 	if (islower ((uint8_t) a[1]))
 		a[1] = toupper (a[1]);
-
 #ifdef STRICT_X500
 	if (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a))
 #else
 	if (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]))
 #endif
 		return (a);
-
 	LLOG (log_dsap, LLOG_EXCEPTIONS,
 		  ("Invalid country code: \"%s\"", a));
 	goto losing;
@@ -341,13 +331,11 @@ losing:
 
 struct qbuf *r_octsdec (PE pe)
 {
-
 	if (PE_ID(pe->pe_class, pe->pe_id) ==
 			PE_ID(PE_CLASS_UNIV,PE_PRIM_OCTS))
 		return (prim2qb(pe));
 	else
 		return ((struct qbuf *)0);
-
 }
 
 static char * octsdec (PE pe)
@@ -359,7 +347,6 @@ static char * octsdec (PE pe)
 		return (TidyString2(prim2str(pe,&z)));
 	else
 		return (NULLCP);
-
 }
 
 static char * ia5sdec (PE pe)
@@ -392,7 +379,6 @@ static char * t61dec (PE pe)
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Primitive string expected"));
 		return NULLCP;
 	}
-
 	if ( PE_ID (pe -> pe_class, pe -> pe_id) == PE_ID (PE_CLASS_UNIV,PE_DEFN_T61S) ) {
 		ptr = prim2str(pe,&z);
 		val = *ptr;
@@ -425,12 +411,10 @@ static char * dirstrdec (PE pe)
 		DLOG (log_dsap,LLOG_DEBUG,("Primitive string expected"));
 		return NULLCP;
 	}
-
 	if (pe->pe_class != PE_CLASS_UNIV) {
 		DLOG (log_dsap,LLOG_DEBUG,("Invalid DirectoryString tag class %d", pe->pe_class));
 		return NULLCP;
 	}
-
 	switch (pe->pe_id) {
 		case PE_DEFN_UTF8:
 			return (utf8dec(pe));
@@ -468,7 +452,6 @@ static char * dirstrdec (PE pe)
 static char *quotechar (char a, char *b) {
 #ifdef NICER_ESCAPES
 #define CONT_CHAR	'\\'
-
 	switch (a & 0xff) {
 	case '\n':
 		*b++ = CONT_CHAR;
@@ -489,7 +472,6 @@ static char *quotechar (char a, char *b) {
 		*b++ = CONT_CHAR;
 		*b++ = CONT_CHAR;
 		break;
-
 #ifndef	TIDY_STRING
 	case ' '
 			*b++ = CONT_CHAR;
@@ -515,7 +497,6 @@ unquotechar (char *a, char *b) {
 	int val;
 
 #ifdef NICER_ESCAPES
-
 	switch (*a) {
 	case '\\':
 		*b = '\\';
@@ -530,7 +511,6 @@ unquotechar (char *a, char *b) {
 	case 'r':
 		*b = '\r';
 		break;
-
 #ifndef	TIDY_STRING
 	case ' '
 			*b = ' ';
@@ -544,7 +524,6 @@ unquotechar (char *a, char *b) {
 		} else
 			parse_error ("Bad Quoted character",NULLCP);
 		break;
-
 	}
 #else
 	if (*a == '\\')
@@ -564,7 +543,6 @@ int check_print_string (char *str) {
 	for (; *str != 0; str++) {
 		if ((isascii((*str)& 0xff)) && (isalnum ((*str) & 0xff)))
 			continue;
-
 		switch (*str) {
 		case 047:  /* ' */
 		case '(':
@@ -600,7 +578,6 @@ struct qbuf *r_octparse (char *str) {
 
 	left = buflen;
 	ptr = buf;
-
 	for (; *str != 0; str++) {
 		if ( left <= MINBUF) {
 			if (buflen <= 0) {
@@ -614,7 +591,6 @@ struct qbuf *r_octparse (char *str) {
 				ptr = buf + curlen;
 			}
 		}
-
 		if (*str != '\\')
 			*ptr++ = *str;
 		else {
@@ -624,7 +600,6 @@ struct qbuf *r_octparse (char *str) {
 		}
 		left--;
 	}
-
 	*ptr = 0;	/* just for safety ? */
 	return (str2qb(buf, ptr - buf, 1));
 }
@@ -660,7 +635,6 @@ char *prtparse (char *str) {
 			&& (*(str+2) == '0')
 			&& (*(str+3) == 0))
 		return strdup (" ");
-
 	if ((ptr = prtparse_aux(str)) != NULLCP)
 		return (ptr);
 	else {
@@ -674,10 +648,8 @@ static char *cntyparse (char *str) {
 
 	if ((a=prtparse(str)) == NULLCP)
 		return (NULLCP);
-
 	if (check_3166 (a))
 		return a;
-
 	parse_error ("invalid country code: \"%s\"", a);
 	free (a);
 	return (NULLCP);
@@ -697,7 +669,6 @@ static char *t61parse (char *str) {
 			return res;
 		} else
 			return strdup (" ");
-
 	if (t61_flag) {
 		t61_flag = FALSE;  /* recognised it !!! */
 		return (local_t61(octparse (str)));   /* need t61 parser */
@@ -714,11 +685,9 @@ char *cryptstring (char *str) {
 	/* at a glance.  It buys virtually no extra security */
 
 #define CRYPT_MASK 0x23 	/* could tailor this */
-
 	for (p=str; *p != 0; p++)
 		if (*p != CRYPT_MASK)
 			*p ^= CRYPT_MASK;
-
 	return (str);
 }
 
@@ -754,13 +723,11 @@ static int tpstrcmp (char *a, char *b) {
 		a++;
 	if (*b == T61_MARK)
 		b++;
-
 	while (*a == *b) {
 		if (*a++ == NULL)
 			return (0);
 		b++;
 	}
-
 	if (*a > *b)
 		return (1);
 	else
@@ -768,20 +735,16 @@ static int tpstrcmp (char *a, char *b) {
 }
 
 static int tlexequ (char *a, char *b) {
-
 	/* lexequ with T.61 knowledge */
-
 	if (*a == T61_MARK)
 		a++;
 	if (*b == T61_MARK)
 		b++;
-
 	while (chrcnv[*a] == chrcnv[*b]) {
 		if (*a++ == NULL)
 			return (0);
 		b++;
 	}
-
 	if (chrcnv[*a] > chrcnv[*b])
 		return (1);
 	else
@@ -802,16 +765,13 @@ int telcmp (char *a, char *b) {
 		while (c1 = *a++)
 			if (c1 != ' ' && c1 != '-')
 				break;
-
 		while (c2 = *b++)
 			if (c2 != ' ' && c2 != '-')
 				break;
-
 		if (c1 == NULL)
 			return (c2 ? -1 : 0);
 		else if (c2 == NULL)
 			return 1;
-
 		if (c1 > c2)
 			return 1;
 		else if (c1 < c2)
@@ -825,7 +785,6 @@ int telstrlen (char *s) {
 	for ( len = 0; *s; s++ )
 		if ( *s != ' ' && *s != '-' )
 			len++;
-
 	return( len );
 }
 
@@ -836,16 +795,13 @@ int telncmp (char *a, char *b, int len) {
 		while (c1 = *a++)
 			if (c1 != ' ' && c1 != '-')
 				break;
-
 		while (c2 = *b++)
 			if (c2 != ' ' && c2 != '-')
 				break;
-
 		if (c1 == NULL)
 			return (c2 ? -1 : 0);
 		else if (c2 == NULL)
 			return 1;
-
 		if (c1 > c2)
 			return 1;
 		else if (c1 < c2)
@@ -907,7 +863,6 @@ void r_octprint (PS ps, struct qbuf *qb, int format)
 	char	*optr = buf;
 	int	cnt;
 	struct qbuf *qp;
-
 	for (qp = qb->qb_forw; qp != qb; qp = qp->qb_forw) {
 		for (str = qp->qb_data, cnt = qp->qb_len; cnt > 0; str++, cnt--) {
 again:
@@ -959,7 +914,6 @@ void octprint (PS ps, char *str, int format)
 		ps_print (ps,"\\20");
 		return;
 	}
-
 	while (*str) {
 		if (isascii((*str) & 0xff) && isprint((*str) & 0xff)) {
 			if (format != READOUT)
@@ -992,7 +946,6 @@ void octprint (PS ps, char *str, int format)
 		optr = ptr;
 		str++;
 	}
-
 	if (optr > buf)
 		ps_write (ps, (PElementData)buf, optr - buf);
 }
@@ -1012,20 +965,16 @@ int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 
 	if (qb1 == NULL && qb2 == NULL)
 		return (0);
-
 	if (qb1 == NULL)
 		return (-1);
-
 	if (qb2 == NULL)
 		return (1);
-
 	qp1 = qb1->qb_forw;
 	qp2 = qb2->qb_forw;
 	po1 = qp1->qb_data;
 	po2 = qp2->qb_data;
 	len1 = qp1->qb_len;
 	len2 = qp2->qb_len;
-
 	while (qp1 != qb1 && qp2 != qb2) {
 		if (len1 < len2) {
 			if ((i = nbcmp(po1, po2, len1)))
@@ -1045,7 +994,6 @@ int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 			len2 = qp2->qb_len;
 		}
 	}
-
 	if (len1 == 0)
 		qp1 = qp1->qb_forw;
 	if (len2 == 0)
@@ -1056,10 +1004,8 @@ int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 		qp2 = qp2->qb_forw;
 	if (qp1 == qb1 && qp2 == qb2)
 		return (0);	/* perfect match */
-
 	if (qp1 == qb1)
 		return (-1);
-
 	return (1);
 }
 
@@ -1111,7 +1057,6 @@ struct qbuf *qb_cpy (struct qbuf *qb) {
 		insque(nqp, pred);
 		pred = nqp;
 	}
-
 	return (nqb);
 }
 
@@ -1129,7 +1074,6 @@ void part_print (PS ps, char *p, int len)
 
 	char	*pend = buf + MAXLINE;
 	char	*optr = buf;
-
 	for (str = p; len > 0; len--, str++) {
 again:
 		if (isascii(*str) && isprint(*str)) {
@@ -1160,7 +1104,6 @@ again:
 		}
 		optr = ptr;
 	}
-
 	/* Add the delimiter */
 	*ptr++ = '\\';
 	*ptr++ = 'Z';
@@ -1189,7 +1132,6 @@ char *part_parse (
 	str = *pstr;
 	left = buflen;
 	ptr = buf;
-
 	for (; *str != 0; str++) {
 		if ( left <= MINBUF) {
 			if (buflen <= 0) {
@@ -1203,7 +1145,6 @@ char *part_parse (
 				ptr = buf + curlen;
 			}
 		}
-
 		if (*str != '\\')
 			*ptr++ = *str;
 		else if (str[1] == 'Z') { /* Ahha ! found the delimiter */
@@ -1219,7 +1160,6 @@ char *part_parse (
 		}
 		left--;
 	}
-
 	*ptr = '\0';	/* for users convience */
 	*pstr = ++str;
 	*plen = ptr - buf;
@@ -1257,65 +1197,55 @@ void string_syntaxes (void) {
 
 	/* 1-4 Exact string */
 	/* 1-7 Approx       */
-
 	exct = add_attribute_syntax ("caseexactstring",
 								 strenc,	dirstrdec,
 								 t61parse,	strprint,
 								 strdup,	tpstrcmp,
 								 sfree,		NULLCP,
 								 soundex_match,	TRUE);
-
 	tel_sntx = add_attribute_syntax ("TelephoneNumber",
 									 strenc,	prtsdec,
 									 prtparse,	strprint,
 									 strdup,	telcmp,
 									 sfree,		NULLCP,
 									 soundex_match,	TRUE);
-
 	add_attribute_syntax ("printablestring",
 						  strenc,	prtsdec,
 						  prtparse,	strprint,
 						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	add_attribute_syntax ("ia5string",
 						  ia5enc,	ia5sdec,
 						  octparse,	octprint,
 						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	/* 5-8 ignore strings */
-
 	add_attribute_syntax ("countrystring",
 						  strenc,	cntydec,
 						  cntyparse,strprint,
 						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	add_attribute_syntax ("DestinationString",
 						  strenc,	prtsdec,
 						  prtparse,	strprint,
 						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	add_attribute_syntax ("caseignorestring",
 						  strenc,	dirstrdec,
 						  t61parse,	strprint,
 						  strdup,	tlexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	add_attribute_syntax ("caseIgnoreIa5string",
 						  ia5enc,	ia5sdec,
 						  octparse,	octprint,
 						  strdup,	lexequ,
 						  sfree,		NULLCP,
 						  soundex_match,	TRUE);
-
 	/* 1-9 -> substrings */
 	add_attribute_syntax ("numericstring",
 						  nstrenc,	numsdec,
@@ -1323,7 +1253,6 @@ void string_syntaxes (void) {
 						  strdup,	pstrcmp,
 						  sfree,		NULLCP,
 						  NULLIFP,	FALSE);
-
 	/* Not really strings at all (yet!) */
 	add_attribute_syntax ("octetstring",
 						  r_octenc,	r_octsdec,
@@ -1331,7 +1260,6 @@ void string_syntaxes (void) {
 						  qb_cpy,	qb_cmp,
 						  qb_free,		NULLCP,
 						  NULLIFP,	TRUE);
-
 	add_attribute_syntax ("password",
 						  octenc,	octsdec,
 						  cryptparse,	cryptprint,

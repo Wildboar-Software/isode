@@ -129,13 +129,11 @@ int main (int argc, char *argv[]) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *argv;
-
 	isodetailor (myname, 0);
 	if (debug = isatty (fileno (stderr)))
 		ll_dbinit (vt_log, myname);
 	else
 		ll_hdinit (vt_log, myname);
-
 	for(i=1; i<(argc - 2); i++) {
 		if (!strcmp(argv[i], "-d")) {
 			if (!isdigit(argv[++i][0])
@@ -154,14 +152,11 @@ int main (int argc, char *argv[]) {
 			adios(NULLCP, "usage: %s [-F logfile] [-d N]",
 				  myname);
 	}
-
 	advise (LLOG_NOTICE,NULLCP,  "starting");
-
 	acc = &accs;
 	acr = &acrs;
 	aci = &acis;
 	acs = &acss;
-
 	if (ass_ind(argc,argv) == OK) {
 		connected = TRUE;
 		if( !strcmp(vtp_profile.profile_name,"default") )
@@ -198,7 +193,6 @@ int main (int argc, char *argv[]) {
 	vrelreq();
 	/*NOTREACHED*/
 gotpty:
-
 	cp[strlen("/dev/")] = 't';
 	t = open("/dev/tty", 2);
 	if (t >= 0) {
@@ -233,7 +227,6 @@ gotpty:
 	}
 	na_image = 0;
 	nego_state = 0;			/*Start off in Local echo*/
-
 	if ((i = fork()) < 0)
 		fatalperror(f, "fork", errno);
 	if (i)
@@ -255,7 +248,6 @@ gotpty:
 	close(t);
 #endif
 	environ = envinit;
-
 	execl(_PATH_LOGIN,"login","-h",peerhost,NULLCP);
 	fatalperror(f, _PATH_LOGIN, errno);
 	/*NOTREACHED*/
@@ -287,7 +279,6 @@ void vtd (int f, int p) {
 	do_cleaning = 1;
 	net = f, pty = p;
 	nfds = (f > p ? f : p) + 1;
-
 #ifdef SVR4
 	if ((on = fcntl (p, F_GETFL, 0)) == -1) {
 		perror ("fcntl");
@@ -322,7 +313,6 @@ void vtd (int f, int p) {
 	myhostname = PLocalHostName ();
 	sprintf(nfrontp, BANNER, myhostname, "");
 	nfrontp += strlen(nfrontp);
-
 #ifdef TERMIOS
 	if (tcgetattr(pty, &oterm) == -1) {
 		perror("tcgetattr");
@@ -355,11 +345,9 @@ void vtd (int f, int p) {
 	erase_line = ottyb.sg_kill;
 	intr_char = otc.t_intrc;
 #endif
-
 	for (;;) {
 		fd_set    ibits, obits;
 		int c;
-
 		FD_ZERO (&ibits);
 		FD_ZERO (&obits);
 		/*
@@ -378,10 +366,8 @@ void vtd (int f, int p) {
 		}
 		if (FD_ISSET (f, &ibits) && data_pending()) {
 			FD_CLR (f, &ibits);
-
 			result = xselect(nfds, &ibits, &obits,
 							 (fd_set *)NULL, OK);
-
 			if (result < 0)
 				adios("failed", "xselect");
 			FD_SET (f, &ibits);
@@ -397,7 +383,6 @@ void vtd (int f, int p) {
 			sleep(5);
 			continue;
 		}
-
 		/*
 		 * Something to read from the network...
 		 */
@@ -408,13 +393,11 @@ void vtd (int f, int p) {
 		if (c == E_EOF) {
 			break;
 		}
-
 		/*
 		 * Something to read from the pty...
 		 */
 		if (FD_ISSET (p, &ibits)) {
 			pcc = read(p, nfrontp, (&netobuf[BUFSIZ] - nfrontp));
-
 			if (pcc < 0 && errno == EWOULDBLOCK)
 				pcc = 0;
 			else {
@@ -427,10 +410,8 @@ void vtd (int f, int p) {
 			}
 			nfrontp += pcc;
 		}
-
 		if (FD_ISSET (f, &obits) && (nfrontp - nbackp) > 0)
 			netflush();
-
 		if (FD_ISSET (p, &obits) && (pfrontp - pbackp) > 0)
 			ptyflush();
 	}
@@ -460,7 +441,6 @@ void interrupt(void) {
 #else
 	struct sgttyb b;
 	struct tchars tchars;
-
 	ptyflush();	/* half-hearted */
 	if (ioctl(pty, TIOCGETP, (char*)&b) == -1) {
 		perror("ioctl");
@@ -483,10 +463,8 @@ int netflush (void) {
 			  decide if Deliver Request should follow it.  Should
 			  not be required but some implementations may wait
 			  for it before delivering NDQ to application*/
-
 	nl_flag = 0;
 	if ((n = nfrontp - nbackp) > 0) {
-
 		if (debug) {
 			ll_log (vt_log, LLOG_DEBUG, NULLCP,
 					("writing to the net"));
@@ -607,11 +585,9 @@ cleanup (void) {
 				  in network.  Kludge to overcome deficiency
 				  in Session Release. */
 	rmut();
-
 #if !defined(SYS5) && !defined(BSD44) && !defined(_AIX)
 	vhangup();
 #endif
-
 	vrelreq();
 	kill(0, SIGKILL);
 	exit(1);

@@ -25,10 +25,8 @@ void dsa_tai_args (int *acptr, char ***avptr) {
 
 	if (acptr == (int *)NULL)
 		return;
-
 	av = *avptr;
 	av++, cnt = 1;
-
 	while ((cp = *av) && *cp == '-') {
 		switch (*++cp) {
 		case 'T':
@@ -69,7 +67,6 @@ void dsa_tai_args (int *acptr, char ***avptr) {
 		av++;
 		cnt++;
 	}
-
 	*acptr -= cnt;
 	*avptr = av;
 }

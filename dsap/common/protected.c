@@ -37,10 +37,8 @@ str2prot (char *str) {
 
 	result = (struct protected_password *)
 			 calloc(1, sizeof(*result));
-
 	if (result == (struct protected_password *) 0)
 		return (result);
-
 	/* Using strlen means can't have zeros in the password */
 	result->passwd = cryptparse(str);
 	result->n_octets = strlen(result->passwd);
@@ -49,7 +47,6 @@ str2prot (char *str) {
 	result->time2 = NULLCP;
 	result->random1 = (struct random_number *) 0;
 	result->random2 = (struct random_number *) 0;
-
 	return (result);
 }
 
@@ -65,7 +62,6 @@ int format;
 	cp = malloc((unsigned)(parm->n_octets + 1));
 	bcopy(parm->passwd, cp, parm->n_octets);
 	cp[parm->n_octets] = '\0';
-
 	if (dsa_mode == FALSE) {
 		if (format == READOUT)
 			ps_print (ps,"Read but not displayed");
@@ -92,12 +88,10 @@ char *hash2str (unsigned long hash, int *len) {
 	result = malloc(5);
 	if (result == NULLCP)
 		return (result);
-
 	for (i=0; i<4; i++) {
 		result[i] = (char) (hash & 255);
 		hash = hash >> 8;
 	}
-
 	*len = 4;
 	return (result);
 }
@@ -107,9 +101,7 @@ char *hash2str (unsigned long hash, int *len) {
 unsigned long
 hash_passwd (unsigned long seed, char *str, int len) {
 	seed = 0;
-
 	DLOG(log_dsap, LLOG_DEBUG, ("Hash = %D", seed));
-
 	return (seed);
 }
 
@@ -165,28 +157,22 @@ prot_cpy (struct protected_password *parm) {
 
 	result = (struct protected_password *)
 			 calloc(1, sizeof(*result));
-
 	result->passwd = malloc((unsigned)parm->n_octets);
 	if (result->passwd == NULLCP)
 		return ((struct protected_password *) 0);
 	bcopy(parm->passwd, result->passwd, parm->n_octets);
-
 	result->n_octets = parm->n_octets;
 	if (parm->time1 == NULLCP)
 		result->time1 = NULLCP;
 	else
 		result->time1 = strdup(parm->time1);
-
 	if (parm->time2 == NULLCP)
 		result->time2 = NULLCP;
 	else
 		result->time2 = strdup(parm->time2);
-
 	result->random1 = (struct random_number *) 0;
 	result->random2 = (struct random_number *) 0;
-
 	result->is_protected[0] = parm->is_protected[0];
-
 	return (result);
 }
 

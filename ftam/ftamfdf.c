@@ -9,7 +9,6 @@ int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti) {
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "invalid ftam descriptor");
-
 	return fpm2bits (fsb, fname_pairs, bits, names, fti);
 }
 
@@ -19,7 +18,6 @@ int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti) {
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "invalid ftam descriptor");
-
 	if ((*bits) = bits2fpm (fsb, fname_pairs, names, fti))
 		return OK;
 	return NOTOK;
@@ -31,7 +29,6 @@ int fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attri
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "invalid ftam descriptor");
-
 	if ((*attrs) = attr2fpm (fsb, fa, fti))
 		return OK;
 	return NOTOK;
@@ -43,6 +40,5 @@ int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMat
 	if ((fsb = findfsblk (fd)) == NULL)
 		return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP,
 						 "invalid ftam descriptor");
-
 	return fpm2attr (fsb, attrs, fa, fti);
 }

@@ -9,22 +9,17 @@ int dap_modifyrdn (int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
-
 	DapModifyRDN (ad, (*id), arg, di, ROS_INTR);
-
 	error->dse_type = DSE_NOERROR;
-
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-
 		DRFREE (dr);
 		return (DS_OK);
 	}
 
 	case DI_ERROR: {
 		struct DAPerror	* de = &(di->di_error);
-
 		(*error) = de->de_err;	/* struct copy */
 		return (DS_ERROR_REMOTE);
 	}
@@ -49,7 +44,5 @@ int DapModifyRDN (int ad, int id, struct ds_modifyrdn_arg *arg, struct DAPindica
 	if(encode_DAS_ModifyRDNArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
 		return(dapreject (di, DP_INVOKE, id, NULLCP, "ModifyRDN argument encoding failed"));
 	}
-
 	return (DapInvokeReqAux (ad, id, OP_MODIFYRDN, arg_pe, di, asyn));
-
 }

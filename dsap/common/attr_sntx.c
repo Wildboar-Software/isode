@@ -37,11 +37,9 @@ char *find_nest (char *str) {
 	if(!(cp = index(str,AS_START_DELIMITER)))
 		return(NULL);
 	ptr1 = ++cp;
-
 	if(!(ptr2 = index(cp,AS_END_DELIMITER)))
 		return(NULL);
 	*ptr2 = 0;
-
 	while((ptr1 = index(ptr1,AS_START_DELIMITER))) {
 		*ptr2 = AS_END_DELIMITER;
 		ptr2++;
@@ -95,9 +93,7 @@ char   *str;
 
 	if ( *str != AS_START_DELIMITER)
 		parse_error ("Starting delimeter missing",NULLCP);
-
 	for (;;) { /* break out */
-
 #ifdef TURBO_DISK
 		if (fromfile) {
 			if ((ptr = fgetnextline ()) == NULLCP) {
@@ -110,17 +106,14 @@ char   *str;
 				parse_error ("Attribute sntx EOF unexpected(2)",NULLCP);
 				return (NULLATTR);
 			}
-
 		if ( *ptr == AS_END_DELIMITER )
 			break;
-
 		if ((tas = str2as(ptr)) == NULLATTR) {
 			parse_error ("attr sntx attr parse failed",NULLCP);
 			return (NULLATTR);
 		}
 		as = as_merge (as, tas);
 	}
-
 	return as;
 }
 
@@ -146,12 +139,10 @@ AV_Sequence avs;
 	PE	    pe;
 
 	pe = pe_alloc(PE_CLASS_UNIV,PE_FORM_CONS,PE_CONS_SEQ);
-
 	for (avl = avs; avl; avl=avl->avseq_next) {
 		AttrV_cpy_enc(&(avl->avseq_av),&av);
 		seq_add(pe,(PE) av.av_struct,-1);
 	}
-
 	return pe;
 }
 
@@ -180,19 +171,16 @@ Attr_Sequence a;
 	PE pe, r;
 
 	pe = pe_alloc(PE_CLASS_UNIV,PE_FORM_CONS,PE_CONS_SEQ);
-
 	if ((r = oid2prim(a->attr_type->oa_ot.ot_oid)) == NULLPE) {
 		pe_free(pe);
 		return(NULLPE);
 	} else
 		seq_add(pe,r,0);
-
 	if ((r = avs_enc(a->attr_value)) == NULLPE) {
 		pe_free(pe);
 		return(NULLPE);
 	} else
 		seq_add(pe,r,1);
-
 	return(pe);
 }
 
@@ -215,7 +203,6 @@ PE pe;
 						as_free(a);
 						return NULLATTR;
 					}
-
 				} else
 					return NULLATTR;
 				break;
@@ -239,7 +226,6 @@ Attr_Sequence a;
 	PE	    pe, r;
 
 	pe = pe_alloc(PE_CLASS_UNIV,PE_FORM_CONS,PE_CONS_SEQ);
-
 	for (atl = a; atl; atl=atl->attr_link) {
 		if ((r = attr_enc(atl)) == NULLPE) {
 			pe_free(pe);

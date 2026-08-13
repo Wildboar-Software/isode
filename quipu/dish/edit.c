@@ -28,18 +28,13 @@ int editentry (int argc, char **argv) {
 		Usage (argv[0]);
 		return (NOTOK);
 	}
-
 	sprintf (str, "%s %s",
 			 _isodefile (isodebinpath, "editentry"), fname);
-
 	if (!frompipe)
 		return (system (str) ? NOTOK : OK);
-
 	if (!dad_flag) {
 		sprintf (prog, "e%s\n", str);
-
 		send_pipe_aux (prog);
-
 		if ((res = read_pipe_aux (prog,sizeof prog)) < 1) {
 			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
@@ -51,7 +46,6 @@ int editentry (int argc, char **argv) {
 			}
 			if (*fname != '/') {
 				char            tempbuf[LINESIZE];
-
 				/* relative path... prefix cwd */
 				*(prog + res) = 0;
 				sprintf (tempbuf, "%s/%s", prog, fname);
@@ -68,7 +62,6 @@ int editentry (int argc, char **argv) {
 		char *cp, *dp;
 		FILE *fp;
 		struct stat st;
-
 		if ((fp = fopen (fname, "r+")) == NULL) {
 			ps_printf (OPT, "unable to open %s for rw: %s\n",
 					   fname, sys_errname (errno));
@@ -83,10 +76,8 @@ out:
 			fclose (fp);
 			return NOTOK;
 		}
-
 		sprintf (prog, "e%d\n", cc);
 		send_pipe_aux (prog);
-
 		if ((res = read_pipe_aux (prog, sizeof prog)) < 1) {
 			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
@@ -95,7 +86,6 @@ out:
 			remote_prob = FALSE;
 			goto out;
 		}
-
 		if ((cp = malloc ((unsigned) (cc))) == NULL) {
 			ps_printf (OPT, "out of memory\n");
 			goto out;
@@ -118,10 +108,8 @@ out2:
 			default:
 				break;
 			}
-
 		send_pipe_aux2 (cp, cc);
 		free (cp), cp = NULLCP;
-
 		if ((res = read_pipe_aux2 (&cp, &cc)) < 1) {
 			ps_printf (OPT, "read failure\n");
 			remote_prob = TRUE;
@@ -133,7 +121,6 @@ out2:
 						   cp);
 			goto out;
 		}
-
 		fclose (fp);
 		if ((fp = fopen (fname, "w")) == NULL) {
 			ps_printf (OPT, "unable to re-open %s for writing: %s\n",
@@ -141,18 +128,15 @@ out2:
 			free (cp);
 			return NOTOK;
 		}
-
 		if (fwrite (cp, sizeof *cp, cc, fp) == 0) {
 			ps_printf (OPT, "error writing %s: %s\n",
 					   fname, sys_errname (errno));
 			goto out2;
 		}
-
 		free (cp);
 		fclose (fp);
 #endif
 	}
-
 	return (OK);
 }
 
@@ -190,9 +174,7 @@ int yesno (char *str) {
 
 	if (frompipe) {
 		sprintf (prog, "y%s\n", str);
-
 		send_pipe_aux (prog);
-
 		if (read_pipe_aux (prog,sizeof prog) < 1) {
 			fprintf (stderr, "read failure\n");
 			remote_prob = TRUE;
@@ -202,7 +184,6 @@ int yesno (char *str) {
 		ps_printf (OPT,"%s",str);
 		fgets (prog, sizeof prog, stdin);
 	}
-
 	switch (prog[0]) {
 	case 'y':
 		return OK;

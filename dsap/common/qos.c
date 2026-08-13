@@ -79,19 +79,15 @@ static struct dsaQoS *str2dsaQoS (char *str) {
 	quality = cmd_srch (str, dsaQoS_tab);
 	if (ptr)
 		*ptr = '#';
-
 	if (quality == -1) {
 		parse_error ("Unknown serviceQuality in DSAQualitySyntax %s", str);
 		return NULL;
 	}
-
 	a = (struct dsaQoS *) smalloc (sizeof *a);
 	bzero ((char *) a, sizeof *a);
 	a -> dsa_quality = quality;
-
 	if (ptr)
 		a -> dsa_description = strdup (SkipSpace (ptr + 1));
-
 	return a;
 }
 
@@ -100,7 +96,6 @@ static PE dsaQoS_enc (struct dsaQoS *a)
 	PE	    pe;
 
 	encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
-
 	return pe;
 }
 
@@ -110,14 +105,12 @@ static struct dsaQoS *dsaQoS_dec (PE pe)
 
 	if (decode_Thorn_DSAQualitySyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
 		return NULL;
-
 	return a;
 }
 
 static void attrQoS_free (struct attrQoS *a) {
 	if (!a)
 		return;
-
 	free ((char *) a);
 }
 
@@ -318,7 +311,6 @@ out:
 		parse_error ("unknown namespace-completeness in DataQualitySyntax %s", str);
 		goto out;
 	}
-
 	qtr = SkipSpace (ptr + 1);
 	if (!(ptr = index (qtr, '#'))) {
 		parse_error ("missing defaultAttributeQuality in DataQualitySyntax %s", str);
@@ -329,7 +321,6 @@ out:
 	*ptr = '#';
 	if (!a -> dit_default)
 		goto out;
-
 	qtr = SkipSpace (ptr + 1);
 	if (ptr = index (qtr, '#'))
 		*ptr = 0;
@@ -339,13 +330,10 @@ out:
 		char   *rtr,
 			   *ttr,
 			   *utr;
-
 		p = (struct attrsQoS *) smalloc (sizeof *p);
 		*q = p,	q = &p -> dit_next, *q = NULL;
-
 		if (ttr = index (qtr, '$'))
 			*ttr = 0;
-
 		if (!(rtr = index (qtr, '+'))) {
 			parse_error ("missing AttributeQuality in attributeQuality %s",
 						 qtr);
@@ -378,16 +366,13 @@ out2:
 		}
 		if (!(p -> dit_quality = str2attrQoS (SkipSpace (rtr + 1))))
 			goto out2;
-
 		if (ttr)
 			*ttr = '+', qtr = SkipSpace (ttr + 1);
 		else
 			break;
 	}
-
 	if (ptr)
 		a -> dit_description = strdup (SkipSpace (ptr + 1));
-
 	return a;
 }
 
@@ -439,10 +424,8 @@ static int  CMD_SRCH (char *str, CMD_TABLE *cmd)
 	p++;
 	if ((c = *p) == NULL || p == str)
 		return cmd_srch (str, cmd);
-
 	*p = 0;
 	result = cmd_srch (str, cmd);
 	*p = c;
-
 	return result;
 }

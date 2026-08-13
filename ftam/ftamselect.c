@@ -15,11 +15,8 @@ int FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti) {
 	missingP (mask);
 	missingP (nfds);
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	if (fsb -> fsb_data.px_ninfo > 0)
 		goto waiting;
 	if (PSelectMask (fsb -> fsb_fd, mask, nfds, &pis) == NOTOK)
@@ -36,8 +33,6 @@ waiting:
 			sigiomask (smask);
 			return NOTOK;
 		}
-
 	sigiomask (smask);
-
 	return OK;
 }

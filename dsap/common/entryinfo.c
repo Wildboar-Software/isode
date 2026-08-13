@@ -10,18 +10,15 @@ void entryinfo_comp_free (EntryInfo *a, int state)
 
 	if (a == NULLENTRYINFO)
 		return;
-
 	dn_free (a->ent_dn);
 	if (state == 1) {
 		Attr_Sequence as_tmp = NULLATTR;
-
 		for ( as=a->ent_attr; as!= NULLATTR; as=as_tmp) {
 			as_tmp = as -> attr_link;
 			free ((char *) as);
 		}
 	} else
 		as_free (a->ent_attr);
-
 	for (einfo=a->ent_next; einfo!=NULLENTRYINFO; einfo=e2) {
 		dn_free (einfo->ent_dn);
 		if (state == 1) {
@@ -72,16 +69,13 @@ void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast)
 	if (( a == NULLENTRYINFO )
 			|| (b == NULLENTRYINFO ))
 		return;
-
 	/* Use fast mode if you know there are no duplicates */
-
 	if (fast) {
 		for (ptr=a; ptr->ent_next != NULLENTRYINFO; ptr=ptr->ent_next)
 			;
 		ptr->ent_next = b;
 		return;
 	}
-
 	for (ptr=a; ptr != NULLENTRYINFO; ptr=ptr->ent_next) {
 		prev = NULLENTRYINFO;
 		for (tmp=b; tmp != NULLENTRYINFO; tmp=tmp->ent_next) {
@@ -100,7 +94,6 @@ void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast)
 		}
 		trail = ptr;
 	}
-
 	trail->ent_next = b;
 }
 

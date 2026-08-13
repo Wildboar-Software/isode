@@ -14,10 +14,8 @@ void AttrT_print (
 		ps_print(ps,"Unknown Type");
 		return;
 	}
-
 	last_at = x;
 	avs_count = 1;
-
 	if (format == READOUT)
 		ps_printf (ps,"%s",attr2name (x,oidformat));
 	else

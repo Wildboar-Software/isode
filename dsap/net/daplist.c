@@ -9,15 +9,11 @@ int dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, s
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
-
 	DapList (ad, (*id), arg, di, ROS_INTR);
-
 	error->dse_type = DSE_NOERROR;
-
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-
 		/* Nasty struct copy */
 		(*result) = dr->dr_res.res_ls;      /* struct copy */
 		dr->dr_res.result_type = -1;        /* Prevent freeing */
@@ -27,7 +23,6 @@ int dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, s
 
 	case DI_ERROR: {
 		struct DAPerror	* de = &(di->di_error);
-
 		(*error) = de->de_err;	/* struct copy */
 		return (DS_ERROR_REMOTE);
 	}
@@ -52,7 +47,5 @@ int DapList (int ad, int id, struct ds_list_arg *arg, struct DAPindication *di, 
 	if(encode_DAS_ListArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
 		return(dapreject (di, DP_INVOKE, id, NULLCP, "List argument encoding failed"));
 	}
-
 	return (DapInvokeReqAux (ad, id, OP_LIST, arg_pe, di, asyn));
-
 }

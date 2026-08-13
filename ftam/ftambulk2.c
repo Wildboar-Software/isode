@@ -27,15 +27,10 @@ int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic d
 	}
 	toomuchP (diag, ndiag, NFDIAG, "diagnostic");
 	missingP (fti);
-
 	smask = sigioblock ();
-
 	ftamPsig (fsb, sd);
-
 	result = FTransEndResponseAux (fsb, action, sharedASE, diag, ndiag, fti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -52,7 +47,6 @@ static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, 
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "not responder");
 	if (fsb -> fsb_state != FSB_DATAFIN2)
 		return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, "wrong state");
-
 	pe = NULLPE;
 	if ((pdu = (struct type_FTAM_PDU *) calloc (1, sizeof *pdu)) == NULL) {
 no_mem:
@@ -86,31 +80,23 @@ out:
 			&& (rsp -> diagnostic = diag2fpm (fsb, 0, diag, ndiag, fti))
 			== NULL)
 		goto out;
-
 	if (encode_FTAM_PDU (&pe, 1, 0, NULLCP, pdu) == NOTOK) {
 		ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 				  "error encoding PDU: %s", PY_pepy);
 		goto out;
 	}
-
 	pe -> pe_context = fsb -> fsb_id;
-
 	fsbtrace (fsb, (fsb -> fsb_fd, "P-DATA.REQUEST", "F-TRANSFER-END-response",
 					pe, 0));
-
 	result = PDataRequest (fsb -> fsb_fd, &pe, 1, pi);
-
 	pe_free (pe);
 	pe = NULLPE;
 	free_FTAM_PDU (pdu);
 	pdu = NULL;
-
 	if (result == NOTOK) {
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-
 	fsb -> fsb_state = FSB_DATAIDLE;
-
 	return OK;
 }

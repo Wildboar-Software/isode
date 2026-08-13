@@ -17,7 +17,6 @@ int setisodocument (int f) {
 	else
 		rewind (servf);
 	stayopen |= f;
-
 	return (servf != NULL);
 }
 
@@ -26,7 +25,6 @@ int endisodocument (void) {
 		fclose (servf);
 		servf = NULL;
 	}
-
 	return 1;
 }
 
@@ -40,7 +38,6 @@ getisodocument (void) {
 	if (servf == NULL
 			&& (servf = fopen (isodefile (isodocuments, 0), "r")) == NULL)
 		return NULL;
-
 	if (id -> id_type)
 		oid_free (id -> id_type);
 	if (id -> id_abstract)
@@ -51,9 +48,7 @@ getisodocument (void) {
 		oid_free (id -> id_model);
 	if (id -> id_constraint)
 		oid_free (id -> id_constraint);
-
 	bzero ((char *) id, sizeof *id);
-
 	while (fgets (buffer, sizeof buffer, servf) != NULL) {
 		if (*buffer == '#')
 			continue;
@@ -61,54 +56,42 @@ getisodocument (void) {
 			*cp = 0;
 		if (str2vec (buffer, vec) < 6)
 			continue;
-
 		id -> id_entry = vec[0];
-
 		if ((id -> id_type = str2oid (vec[1])) == NULLOID
 				|| (id -> id_type = oid_cpy (id -> id_type)) == NULLOID)
 			continue;
-
 		if ((id -> id_abstract = str2oid (vec[2])) == NULLOID
 				|| (id -> id_abstract = oid_cpy (id -> id_abstract))
 				== NULLOID)
 			goto free1;
-
 		if ((id -> id_transfer = str2oid (vec[3])) == NULLOID
 				|| (id -> id_transfer = oid_cpy (id -> id_transfer))
 				== NULLOID)
 			goto free2;
-
 		if ((id -> id_model = str2oid (vec[4])) == NULLOID
 				|| (id -> id_model = oid_cpy (id -> id_model)) == NULLOID)
 			goto free3;
-
 		if ((id -> id_constraint = str2oid (vec[5])) == NULLOID
 				|| (id -> id_constraint = oid_cpy (id -> id_constraint))
 				== NULLOID) {
 			oid_free (id -> id_model);
 			id -> id_model = NULLOID;
-
 free3:
 			;
 			oid_free (id -> id_transfer);
 			id -> id_transfer = NULLOID;
-
 free2:
 			;
 			oid_free (id -> id_abstract);
 			id -> id_abstract = NULLOID;
-
 free1:
 			;
 			oid_free (id -> id_type);
 			id -> id_type = NULLOID;
-
 			continue;
 		}
-
 		return id;
 	}
-
 	return NULL;
 }
 
@@ -121,7 +104,6 @@ getisodocumentbyentry (char *entry) {
 		if (strcmp (id -> id_entry, entry) == 0)
 			break;
 	endisodocument ();
-
 	return id;
 }
 
@@ -135,6 +117,5 @@ OID	type;
 		if (oid_cmp (id -> id_type, type) == 0)
 			break;
 	endisodocument ();
-
 	return id;
 }

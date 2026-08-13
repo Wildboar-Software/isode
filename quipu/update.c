@@ -70,7 +70,6 @@ int journal (Entry myentry) {
 		LLOG (log_dsap,LLOG_FATAL,("update edb problem"));
 		return NOTOK;
 	}
-
 	if ((myentry->e_parent != NULLENTRY) && (myentry->e_parent->e_leaf)) {
 		liststart = myentry;
 		dn = get_copy_dn (liststart->e_parent);
@@ -79,7 +78,6 @@ int journal (Entry myentry) {
 			return NOTOK;
 		}
 		myentry->e_parent->e_leaf = FALSE;  /* not a leaf now !! */
-
 		if ( write_edb(liststart,filename) != OK) {
 			dn_free (dn);
 			return NOTOK;
@@ -96,19 +94,15 @@ int journal (Entry myentry) {
 			dn_free (dn);
 			return NOTOK;
 		}
-
 		strcpy (newfile,filename);
 		strcat (newfile,".new");
-
 		if ( write_edb(liststart,newfile) != OK) {
 			unlink (newfile);
 			dn_free (dn);
 			return NOTOK;
 		}
-
 		strcpy (savefile,filename);
 		strcat (savefile,".bak");
-
 		unlink (savefile);
 		if (link (filename, savefile) == NOTOK)
 			SLOG (log_dsap, LLOG_EXCEPTIONS, savefile,
@@ -129,9 +123,7 @@ int journal (Entry myentry) {
 			return NOTOK;
 		}
 	}
-
 	dn_free (dn);
-
 	return OK;
 }
 #endif TURBO_DISK
@@ -145,15 +137,11 @@ void modify_attr (Entry eptr, DN who) {
 
 	if (no_last_mod)
 		return;
-
 	at = AttrT_new (LAST_MOD_OID);
-
 	av = AttrV_alloc ();
 	av->av_syntax = str2syntax ("UTCTime");
 	av->av_struct = (caddr_t) new_version();
-
 	avs = avs_comp_new(av);
-
 	if ((old = as_find_type (eptr->e_attributes,at)) == NULLATTR) {
 		as = as_comp_new (at,avs,NULLACL_INFO);
 		eptr->e_attributes = as_merge (eptr->e_attributes,as);
@@ -162,15 +150,11 @@ void modify_attr (Entry eptr, DN who) {
 		old->attr_value = avs;
 		AttrT_free (at);
 	}
-
 	at = AttrT_new (MOD_BY_OID);
-
 	av = AttrV_alloc ();
 	av->av_syntax = str2syntax ("DN");
 	av->av_struct = (caddr_t) dn_cpy (who);
-
 	avs = avs_comp_new(av);
-
 	/* Is it inherited ? */
 	set_inheritance (eptr);
 	if ((old = entry_find_type (eptr,at)) != NULLATTR)
@@ -182,7 +166,6 @@ void modify_attr (Entry eptr, DN who) {
 				avs_free (avs);
 				return;
 			}
-
 	if (old == NULLATTR) {
 		as = as_comp_new (at,avs,NULLACL_INFO);
 		eptr->e_attributes = as_merge (eptr->e_attributes,as);
@@ -197,14 +180,11 @@ static int allowed_to_send (DN a, DN b) {
 	/* Return TRUE if the DNs are the same */
 	/* Return TRUE if all components of 'a' match, but 'b' has one extra */
 	/* False otherwise */
-
 	if ((a == NULLDN) || (b == NULLDN))
 		return FALSE;
-
 	for (; a != NULLDN && b != NULLDN ; a = a->dn_parent, b = b->dn_parent)
 		if ( dn_comp_cmp (a,b) == NOTOK)
 			return FALSE;
-
 	if (( b == NULLDN) || (b->dn_parent == NULLDN))
 		return TRUE;
 	else
@@ -228,10 +208,8 @@ int do_get_edb (
 	Entry	akid;
 
 	DLOG (log_dsap,LLOG_DEBUG,("getedb '%s'",arg->ga_version));
-
 	if (arg->ga_type == GA_CONTINUE)
 		return edb_continue (arg,error,result,binddn,fd);
-
 	switch(really_find_entry (arg->ga_entry,FALSE,NULLDNSEQ,FALSE,&(eptr),error,&(di))) {
 	case DS_OK:
 		/*
@@ -260,10 +238,8 @@ int do_get_edb (
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_DITERROR;
 		return (DS_X500_ERROR);
 	}
-
 	if ((my_entry = local_find_entry_aux (mydsadn,TRUE)) == NULLENTRY)
 		fatal (84,"my entry has gone - no getedb");
-
 	/* Check we will send to this DSA */
 	for (avs = my_entry->e_dsainfo->dsa_attr ; avs != NULLAV;
 			avs=avs->avseq_next) {
@@ -282,13 +258,11 @@ int do_get_edb (
 		if (proceed)
 			break;
 	}
-
 	if (!proceed) {
 		error->dse_type = DSE_SECURITYERROR;
 		error->ERR_SECURITY.DSE_sc_problem = DSE_SC_ACCESSRIGHTS;
 		return (DS_ERROR_REMOTE);
 	}
-
 	akid = (Entry) avl_getone(eptr->e_children);
 	if (akid == NULLENTRY || (akid->e_data != E_DATA_MASTER
 							  && akid->e_data != E_TYPE_SLAVE)) {
@@ -296,14 +270,11 @@ int do_get_edb (
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_DITERROR;
 		return (DS_X500_ERROR);
 	}
-
 	result->gr_nextEntryPos = 0;
 	result->gr_edb = NULLAVL;
 	result->gr_next = NULL_GETRESULT;
-
 	if (eptr->e_edbversion != NULLCP) {
 		DLOG(log_dsap, LLOG_DEBUG, ("edb_ver = %s", eptr->e_edbversion));
-
 		if ( (arg->ga_type == GA_SENDIFMORERECENT) &&
 				(lexequ (arg->ga_version,eptr->e_edbversion) == 0)) {
 			result->gr_version = strdup (eptr->e_edbversion);
@@ -311,17 +282,12 @@ int do_get_edb (
 		}
 	} else
 		eptr->e_edbversion = new_version();
-
 	result->gr_version = strdup(eptr->e_edbversion);
-
 	if (arg->ga_type == GA_GETVERSION)
 		return (DS_OK);
-
 	result->gr_edb = eptr->e_children;
-
 	if (arg->ga_maxEntries != 0)
 		return edb_start (arg,error,result,binddn,fd);
-
 	return (DS_OK);
 }
 
@@ -343,12 +309,9 @@ int update_aux (DN dn, int isroot) {
 	int		  success;
 
 	DLOG (log_dsap,LLOG_TRACE,("slave update"));
-
 	if ((my_entry = local_find_entry_aux (mydsadn,TRUE)) == NULLENTRY)
 		fatal (82,"Can't update slaves - my entry has gone");
-
 	avs_head = avs_cpy(my_entry->e_dsainfo->dsa_attr);
-
 	for (avs = avs_head ; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
@@ -357,7 +320,6 @@ int update_aux (DN dn, int isroot) {
 			continue;  /* not an EDB to update */
 		if ((dn || isroot) && dn_cmp (dn, dsainfo -> edb_name) != OK)
 			continue;	   /* not an EDB this time */
-
 		if ((eptr = local_find_entry (dsainfo->edb_name,FALSE)) == NULLENTRY) {
 			version = "0000000000Z";
 			if ((eptr = make_path (dsainfo->edb_name)) == NULLENTRY) {
@@ -373,18 +335,13 @@ int update_aux (DN dn, int isroot) {
 				version = "0000000000Z";
 			}
 		}
-
 		success = send_get_edb(version, dsainfo->edb_name,
 							   dsainfo->edb_getfrom);
-
 		if(dn || isroot)
 			break;
-
 		dsa_wait (0);	/* accept any results of previous ops */
-
 	}
 	avs_free (avs_head);
-
 	return((dn || isroot) ? success : OK);
 }
 
@@ -405,7 +362,6 @@ int send_get_edb (char *version, DN dn, DN from) {
 		*/
 		if (  (log_dsap -> ll_events & LLOG_NOTICE)
 				&&(ps = ps_alloc (str_open))) {
-
 			if (str_setup (ps, buffer, sizeof buffer, 1) != NOTOK) {
 				ps_printf (ps, "contact ");
 				dn_print (ps, from, EDBOUT);
@@ -413,13 +369,10 @@ int send_get_edb (char *version, DN dn, DN from) {
 				if (dn)
 					dn_print (ps, dn, EDBOUT);
 				*ps -> ps_ptr = 0;
-
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
-
 			ps_free (ps);
 		}
-
 #ifdef DEBUG
 		DLOG(log_dsap, LLOG_DEBUG, ("send_get_edb - get_dsa_info OK:"));
 		di_list_log(di);
@@ -430,9 +383,7 @@ int send_get_edb (char *version, DN dn, DN from) {
 				 ("make_get_edb_op failed for send_get_edb"));
 			return(NOTOK);
 		}
-
 		schedule_operation (on);
-
 		return(OK);
 
 	case DS_CONTINUE:
@@ -450,12 +401,9 @@ int send_get_edb (char *version, DN dn, DN from) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("make_get_edb_op failed for send_get_edb"));
 			return(NOTOK);
 		}
-
 		on->on_state = ON_DEFERRED;
-
 		on->on_next_task = get_edb_ops;
 		get_edb_ops = on;
-
 		if (  (log_dsap -> ll_events & LLOG_NOTICE)
 				&&(ps = ps_alloc (str_open))) {
 			if (str_setup (ps, buffer, sizeof buffer, 1) != NOTOK) {
@@ -465,13 +413,10 @@ int send_get_edb (char *version, DN dn, DN from) {
 				if (dn)
 					dn_print (ps, dn, EDBOUT);
 				*ps -> ps_ptr = 0;
-
 				LLOG (log_dsap, LLOG_NOTICE, ("%s", buffer));
 			}
-
 			ps_free (ps);
 		}
-
 		return(OK);
 
 	case DS_X500_ERROR:
@@ -524,21 +469,16 @@ static int link_child (Entry e, Avlnode *oldkids) {
 
 	Entry   old_entry;
 	int     entryrdn_cmp();
-
 	g_entry_cnt++;
-
 	/* find the old entry the new one is replacing */
 	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, entryrdn_cmp);
 	if (old_entry == NULLENTRY)
 		return(OK);
-
 	e->e_leaf = old_entry->e_leaf;
 	e->e_allchildrenpresent = old_entry->e_allchildrenpresent;
 	e->e_children = old_entry->e_children;
-
 	turbo_index_delete(old_entry);
 	turbo_add2index(e);
-
 	/* link children to their new parent */
 	avl_apply(e->e_children, parent_link, (caddr_t) e,
 			  NOTOK, AVL_PREORDER);
@@ -570,29 +510,23 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		get_more_edb (on,newop);
 		return;
 	}
-
 	if (result->gr_pe == NULLPE) {
 		DLOG (log_dsap, LLOG_TRACE,
 			  ("  EDBs are the same (%d): %s",
 			   on->on_id,on->on_getedb_ver));
 		goto out;
 	}
-
 	if (!pull_up_result (arg,result))
 		goto out;
-
 	newkids = result->gr_edb;
-
 	if ((eptr = local_find_entry (arg->ga_entry,FALSE)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
 			   "Updating something which does not exist !!!",
 			   (IFP)dn_print,(caddr_t) arg->ga_entry);
 		goto out;
 	}
-
 	DLOG (log_dsap, LLOG_NOTICE,("  EDB updated from (%d): %s to: %s",
 								 on->on_id, on->on_getedb_ver, result->gr_version));
-
 #ifndef NO_STATS
 	{
 		DN tmp_dn;
@@ -601,22 +535,18 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		dn_free (tmp_dn);
 	}
 #endif
-
 	if (eptr->e_edbversion)
 		free (eptr->e_edbversion);
 	eptr->e_edbversion = NULLCP;
-
 	if (result->gr_version == NULLCP) {
 		eptr->e_edbversion = strdup ("Unknown");
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("EDBRES: NULL version"));
 	} else
 		eptr->e_edbversion = strdup (result->gr_version);
-
 	/*
 	     * now unravel the attributes, linking all nodes to eptr, their
 	     * parent node.
 	     */
-
 	g_parent = eptr;
 	if (avl_apply(newkids, unravel_edb, (caddr_t) &error, NOTOK,
 				  AVL_INORDER)
@@ -627,14 +557,12 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		/* ??? should we free newkids here ??? */
 		goto out;
 	}
-
 	/*
 	 * the new edb is now unravelled and linked to its parent.  now go
 	 * through and link children of entries in the old edb that also
 	 * exist in the new edb to their new parent.  link_child updates
 	 * g_entry_cnt with the number of entries in the new edb.
 	 */
-
 	g_entry_cnt = 0;
 	if (avl_apply(newkids, link_child, (caddr_t) eptr->e_children, NOTOK,
 				  AVL_INORDER) == NOTOK) {
@@ -643,24 +571,18 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		/* ??? should we free newkids here ??? */
 		goto out;
 	}
-
 	dsa_wait (0);	/* progress any other connections before writing EDB */
-
 	if (eptr->e_children == NULLAVL)
 		slave_edbs++;
-
 	/*
 	 * now free up entries from the old edb and update the size of
 	 * our cache. avl_free returns the number of nodes freed.
 	 */
-
 	local_slave_size -= avl_free(eptr->e_children, entry_free);
-
 	eptr->e_children = newkids;
 	local_slave_size += g_entry_cnt;
 	eptr->e_leaf = FALSE;
 	eptr->e_allchildrenpresent = (got_subtree ? 2 : 1);
-
 #ifdef TURBO_DISK
 	if (turbo_writeall(eptr) != OK)
 		fatal (-79,"Lost old EDB, can't write new one!!!");
@@ -668,7 +590,6 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	if (journal ((Entry)avl_getone(eptr->e_children)) != OK)
 		fatal (-79,"Lost old EDB, can't write new one !!!");
 #endif
-
 	if ((eptr = local_find_entry_aux (mydsadn,TRUE)) == NULLENTRY)
 		fatal (-80,"My entry has disappeared from the DIT !!!");
 	else if (as_cmp (eptr->e_attributes, dsa_real_attr) != 0) {
@@ -679,20 +600,16 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 		if (unravel_attribute (eptr,&error) != OK)
 			fatal (-81,"real DSA entry bad error");
 	}
-
 	/* Arrange for connection to shut in 30 seconds unless
 	   used by something else in that time
 	   Better than leaving it for 5 minutes
 	    */
-
 out:
 	;
-
 	if (on->on_conn) {
 		time (&timenow);
 		on->on_conn->cn_last_used = timenow - conn_timeout + nsap_timeout;
 	}
-
 }
 
 /*
@@ -706,46 +623,37 @@ void get_edb_fail_wakeup (struct oper_act *on) {
 #endif
 
 	DLOG(log_dsap, LLOG_TRACE, ("get_edb_fail_wakeup"));
-
 	if (on -> on_resp.di_type == DI_ERROR) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote getEDB error",(IFP)dn_print,
 			   (caddr_t) on->on_req.dca_dsarg.arg_ge.ga_entry);
 		log_ds_error (& on -> on_resp.di_error.de_err);
-
 		if (on->on_conn) {
 			time (&timenow);
 			on->on_conn->cn_last_used =
 				timenow - conn_timeout + nsap_timeout;
 		}
 	}
-
 #ifdef notanymore
 	on_p = &(get_edb_ops);
 	for(on_tmp = get_edb_ops; on_tmp != NULLOPER; on_tmp = on_tmp->on_next_task) {
 		if(on_tmp == on)
 			break;
-
 		on_p = &(on_tmp->on_next_task);
 	}
-
 	if(on_tmp != NULLOPER) {
 		(*on_p) = on_tmp->on_next_task;
 	} else {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
 			 ("get_edb_fail_wakeup - op escaped from get_edb_ops (the global list)"));
 	}
-
 #else
-
 	if (get_edb_ops == on) {
 		pending_ops = get_edb_ops -> on_next_task;
 		get_edb_ops -> on_next_task = NULLOPER;
 		get_edb_ops = NULLOPER;
 	} else
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("Failure is not current opertion"));
-
 #endif
-
 	oper_conn_extract(on);
 	oper_free(on);
 }
@@ -757,13 +665,11 @@ struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di) {
 	int edb_size;
 
 	DLOG(log_dsap, LLOG_TRACE, ("make_get_edb_op"));
-
 	if((on_tmp = oper_alloc()) == NULLOPER) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
 			 ("make_get_edb_op - out of memory"));
 		return(NULLOPER);
 	}
-
 	on_tmp->on_type = ON_TYPE_GET_EDB;
 	on_tmp->on_req.dca_dsarg.arg_type = OP_GETEDB;
 	on_tmp->on_getedb_ver = version;
@@ -792,7 +698,6 @@ struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di) {
 		di_tmp->di_type = DI_OPERATION;
 		di_tmp->di_oper = on_tmp;
 	}
-
 	arg->ga_maxEntries = edb_size;
 	return(on_tmp);
 }
@@ -842,23 +747,18 @@ out:
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
 		return (DS_X500_ERROR);
 	}
-
 	/* This is a slow process, take a look at the network... */
 	dsa_wait (0);
-
 	/* write PE to file */
-
 	/* Make file name - this is where we could be clever an pick up
 	   old files etc.  Worry about optimization later.
 	*/
-
 	sprintf (buffer,"%s/%s.XXXXXX",edbtmp_path,result->gr_version);
 	if ((fname = strdup(buffer)) == NULLCP || (sfd = mkstemp (fname)) < 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("Too many getedbs at once '%s'",fname));
 		goto out;
 	}
-
 	um = umask (0177);
 	if ((fptr = fdopen (sfd,"w")) != NULL) {
 		umask (um);
@@ -879,7 +779,6 @@ out:
 			   ("Could not open EDB/PE file '%s'",fname));
 		goto out;
 	}
-
 	/* loop, writing each part of the set to file... */
 	if ((spe = prim2seq (pe)) == NULLPE) {
 		ps_free (fps);
@@ -887,7 +786,6 @@ out:
 			   ("How comes its not a seq !?!"));
 		goto out;
 	}
-
 	for (lpe = first_member (spe); lpe; lpe = next_member (spe, lpe)) {
 		if (pe2ps(fps, lpe) != OK) {
 			ps_free (fps);
@@ -896,7 +794,6 @@ out:
 			goto out;
 		}
 	}
-
 	if (fclose (fptr) != 0) {
 		ps_free (fps);
 		LLOG ( log_dsap,LLOG_EXCEPTIONS,
@@ -905,7 +802,6 @@ out:
 		goto out;
 	}
 	ps_free (fps);
-
 	/* Now open file up for reading */
 	if ((fptr = fopen (fname,"r")) != NULL) {
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
@@ -924,7 +820,6 @@ out:
 			   ("Could not open EDB/PE file (R)'%s'",fname));
 		goto out;
 	}
-
 	nextop = (struct edbops_list *) smalloc (sizeof (struct edbops_list));
 	nextop -> edb_name = dn_cpy (arg->ga_entry);
 	nextop -> bind_name = dn_cpy (binddn);
@@ -935,17 +830,12 @@ out:
 	nextop -> edb_fd = fd;
 	nextop -> next = edbops;
 	edbops = nextop;
-
 	/* This is a slow process, take a look at the network... */
 	dsa_wait (0);
-
 	pe_free (pe);
-
 	/* Now behave as if it's the first continue call */
 	/* Extra checks are made, but thats OK ! */
-
 	return edb_continue (arg,error,result,binddn,fd);
-
 }
 
 void check_getedb_ops (int fd) {
@@ -1000,7 +890,6 @@ static int edb_continue (
 		*/
 		break;
 	}
-
 	if ( nextop == NULLEDBOP ) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Lost EDB operation"));
 out:
@@ -1009,7 +898,6 @@ out:
 		error->ERR_SERVICE.DSE_sv_problem = DSE_SV_UNAVAILABLE;
 		return (DS_X500_ERROR);
 	}
-
 	switch (read_part_edb (nextop->edb_ps,&pe,arg->ga_maxEntries)) {
 	case NOTOK:
 		if (pe)
@@ -1026,30 +914,23 @@ out:
 		nextop->edb_next = result->gr_nextEntryPos;
 		return DS_OK;
 	}
-
 	/* last one, send result and clean up */
-
 	result->gr_version = strdup(nextop->edb_version);
 	result->gr_encoded = TRUE;
 	result->gr_pe = pe;
 	result->gr_nextEntryPos = 0;
-
 	fclose ((FILE *)nextop->edb_ps->ps_addr);
 	ps_free (nextop -> edb_ps);
 	dn_free (nextop -> edb_name);
 	dn_free (nextop -> bind_name);
-
 	unlink (nextop -> edb_fname);
 	free (nextop -> edb_fname);
 	free (nextop -> edb_version);
-
 	if (trail == NULLEDBOP)
 		edbops = nextop -> next;
 	else
 		trail -> next = nextop -> next;
-
 	free ((char *) nextop);
-
 	return DS_OK;
 	/* send next part of an EDB file */
 }
@@ -1105,15 +986,12 @@ static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
 			/* last part of EDB is empty - start with next one */
 			pe_free (pe);
 			pe = result -> gr_pe = loop -> gr_pe;
-
 			loop = loop -> gr_next;
-
 			if (loop) {
 				if (loop -> gr_version)
 					free (loop -> gr_version);
 				loop -> gr_version = NULLCP;
 			}
-
 			if ((spe = prim2seq (pe)) == NULLPE) {
 				LLOG ( log_dsap,LLOG_EXCEPTIONS,
 					   ("first PE EDB bit is not a seq !?!"));
@@ -1128,14 +1006,10 @@ static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
 				return FALSE;
 			}
 		}
-
 		for ( ; npe ; npe = next_member (spe, npe) )
 			lpe = npe;
-
 		for ( ; loop != NULL_GETRESULT; loop = ln ) {
-
 			ln = loop -> gr_next;
-
 			if ((spe = prim2seq (loop->gr_pe)) == NULLPE) {
 				LLOG ( log_dsap,LLOG_EXCEPTIONS,
 					   ("next PE EDB bit is not a seq !?!"));
@@ -1143,42 +1017,33 @@ static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result)
 				return FALSE;
 			}
 			loop->gr_pe = NULLPE;
-
 			/* loop round this PE, adding each element to result PE */
 			for (npe = first_member (spe); npe; npe = zpe) {
 				zpe = next_member (spe, npe);
 				npe -> pe_next = NULLPE;
-
 				if (seq_addon (pe, lpe, npe) == NOTOK) {
 					LLOG ( log_dsap,LLOG_EXCEPTIONS,
 						   ("EDB/PE seq_addon failed"));
 					pe_free(pe);
 					return FALSE;
 				}
-
 				lpe = npe;
 			}
-
 			spe->pe_cons = NULLPE;
 			spe->pe_next = NULLPE;
 			pe_free (spe);
 			free ((char *) loop);
 		}
 	}
-
 	DATABASE_HEAP;
-
 	if (EDB_decode_force (&result,pe) == NOTOK) {
 		GENERAL_HEAP;
 		pe_free(pe);
 		return FALSE;
 	}
 	GENERAL_HEAP;
-
 	pe_free(pe);
-
 	dsa_wait (0);	/* accept any results of previous ops */
-
 	return TRUE;
 }
 
@@ -1190,24 +1055,20 @@ static int read_part_edb (PS ps, PE *pep, int n) {
 	/* return OK    == got n */
 	/* return DONE  == got <= n, and EOF */
 	/* return NOTOK == failed in some way */
-
 	if (((*pep) = pe_alloc (PE_CLASS_UNIV, PE_FORM_CONS, PE_CONS_SEQ)) == NULLPE) {
 		LLOG ( log_dsap,LLOG_EXCEPTIONS, ("EDB/PE alloc failed"));
 		return NOTOK;
 	}
-
 	for (i=0 ; i<n ; i++) {
 		if ((pe = ps2pe (ps)) == NULLPE) {
 			if ((ps -> ps_errno == PS_ERR_EOF) ||
 					(ps -> ps_errno == 0))
 				return DONE;
-
 			pe_free (*pep);
 			LLOG ( log_dsap,LLOG_EXCEPTIONS,
 				   ("EDB/PE read failed (%s)",
 					ps_error(ps->ps_errno)));
 			return NOTOK;
-
 		}
 		if (seq_addon (*pep, lpe, pe) == NOTOK) {
 			LLOG ( log_dsap,LLOG_EXCEPTIONS, ("EDB/PE seq_add failed"));
@@ -1216,7 +1077,6 @@ static int read_part_edb (PS ps, PE *pep, int n) {
 		}
 		lpe = pe;
 	}
-
 	return OK;
 }
 

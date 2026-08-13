@@ -66,12 +66,9 @@ int load_oid_table (char *table) {
 
 	if (NumEntries != 0)
 		return OK;    /* already loaded */
-
 	isodetable = isodefile(table, 0);
-
 	strcpy (filename,isodetable);
 	extension = &filename[strlen(isodetable)];
-
 	strcpy (extension,".gen");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL) {
 bad_file:
@@ -79,7 +76,6 @@ bad_file:
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("file %s",filename));
 		return NOTOK;
 	}
-
 	while (1) {     /* break out */
 		if ( (name = get_entry ()) == NULLCP)
 			break;
@@ -94,11 +90,9 @@ bad_entry:
 		allow_single_oid = FALSE;
 	}
 	fclose (f_table);
-
 	strcpy (extension,".at");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
-
 	while (1) {     /* break out */
 		if ( (name = get_entry ()) == NULLCP)
 			break;
@@ -106,11 +100,9 @@ bad_entry:
 			goto bad_entry;
 	}
 	fclose (f_table);
-
 	strcpy (extension,".oc");
 	if (( f_table = fopen (filename,"r")) == (FILE *) NULL)
 		goto bad_file;
-
 	while (1) {     /* break out */
 		if ( (name = get_entry ()) == NULLCP)
 			break;
@@ -130,51 +122,42 @@ int add_entry_aux (char *a, caddr_t b, int c, char *d)
 			p && lexequ (p -> p_name, a);
 			p = p -> p_chain)
 		; /* NO-OP */
-
 	if ( p ) {
 		LLOG (log_dsap,LLOG_FATAL,("duplicate OID '%s'",a));
 		return FALSE;
 	}
-
 	if ((p = (struct pair *) calloc (1, sizeof *p)) == NULL) {
 		SLOG (log_dsap, LLOG_EXCEPTIONS, NULLCP,
 			  ("calloc of oid hash structure failed"));
 		return FALSE;
 	}
-
 	p -> p_name = a;
 	p -> p_value = b;
 	p -> p_type = c;
 	p -> p_chain = Pbuckets[i = PHASH (p -> p_name)];
 	Pbuckets[i] = p;
-
 	if (d != NULLCP) {
 		for (p = Pbuckets[PHASH (d)];
 				p && lexequ (p -> p_name, d);
 				p = p -> p_chain)
 			; /* NO-OP */
-
 		if ( p ) {
 			LLOG (log_dsap,LLOG_FATAL,("duplicate alias OID '%s'",d));
 			return FALSE;
 		}
-
 		if ((p = (struct pair *) calloc (1, sizeof *p)) == NULL) {
 			SLOG (log_dsap, LLOG_EXCEPTIONS, NULLCP,
 				  ("calloc of alias hash structure failed"));
 			return FALSE;
 		}
-
 		Palias[Palias_next].a_full = a;
 		Palias[Palias_next++].a_alias = d;
-
 		p -> p_name = d;
 		p -> p_value = b;
 		p -> p_type = c;
 		p -> p_chain = Pbuckets[i = PHASH (p -> p_name)];
 		Pbuckets[i] = p;
 	}
-
 	return TRUE;
 }
 
@@ -194,7 +177,6 @@ static int add_entry (char *newname, int towho) {
 		alias = strdup(newname);
 		newname = sep;
 	}
-
 	switch (towho) {
 	case GEN:
 		Current = &OIDTable[NumEntries];
@@ -217,10 +199,8 @@ static int add_entry (char *newname, int towho) {
 	}
 	*nptr = SEPERATOR;
 	nptr++;
-
 	if ((sep = index (nptr,SEPERATOR)) != 0)
 		*sep++ = 0;
-
 	if ((ptr = index (nptr,COMMA)) != 0) {
 		char * p;
 		*ptr++ = 0;
@@ -239,14 +219,12 @@ static int add_entry (char *newname, int towho) {
 		return FALSE;
 	}
 	Current->ot_stroid = strdup(ptr);
-
 	oid = str2oid (Current->ot_stroid);
 	if (oid == NULLOID)
 		Current->ot_oid = NULLOID;
 	/* only reason for failure is generic oid of length 1 */
 	else
 		Current->ot_oid = oid_cpy (oid);
-
 	/* now do special work for at and oc types */
 	switch (towho) {
 	case GEN:
@@ -293,24 +271,19 @@ char *get_oid (char *str) {
 
 	if (buffer == NULLCP)
 		buffer = smalloc (LINESIZE);
-
 	ptr = buffer;
-
 	if ( ! isdigit(*str))
 		if ((dotptr = index (str,DOT)) == 0)
 			return (name2gen(str));
-
 	while (*str != 0) {
 		if (*str == DOT)
 			got_dot = TRUE;
-
 		if ( (! isdigit (*str)) && (*str != DOT) ) {
 			if ((dotptr = index (str,DOT)) == 0) {
 				*--ptr = 0;
 				return (buffer);
 			} else
 				got_dot = TRUE;
-
 			*dotptr = 0;
 			*ptr = 0;
 			if ((soid = name2gen(str)) == NULLCP) {
@@ -331,10 +304,8 @@ char *get_oid (char *str) {
 		} else
 			*ptr++ = *str++;
 	}
-
 	if ( !got_dot && !allow_single_oid )
 		return NULLCP;
-
 	*ptr = 0;
 	return (buffer);
 }
@@ -349,18 +320,14 @@ name2gen (char *nodename) {
 		if (lexequ (tblptr->ot_name, nodename) == 0)
 			return (tblptr->ot_stroid);
 	}
-
 	return (NULLCP);
-
 #endif
 	struct pair *p;
 	oid_table * ot;
-
 	for (p = Pbuckets[PHASH (nodename)];
 			p && lexequ (p -> p_name, nodename);
 			p = p -> p_chain)
 		; /* NO-OP */
-
 	if (p != NULL)
 		switch (p -> p_type) {
 		case GEN:
@@ -369,7 +336,6 @@ name2gen (char *nodename) {
 		default:
 			return (NULLCP);
 		}
-
 	return NULLCP;
 }
 
@@ -381,7 +347,6 @@ soid2gen (char *soid) {
 		if (strcmp (tblptr->ot_stroid, soid) == 0)
 			return (tblptr->ot_name);
 	}
-
 	return (NULLCP);
 }
 
@@ -399,17 +364,13 @@ get_line (void) {
 		buffer = smalloc (LINESIZE);
 		buflen = LINESIZE;
 	}
-
 	buf = buffer, ptr = buffer;
 	left = buflen;
-
 	/* read line, ignore comments, join lines in '/' found */
-
 	do {
 		done = TRUE;
 		if (fgets (buf, left, f_table) == NULLCP)
 			return (NULLCP);
-
 		StripSpace (buf);
 		if (*buf != 0) {
 			size = strlen(buf);
@@ -418,7 +379,6 @@ get_line (void) {
 			if (*ptr == '\\') {
 				buf = ptr;
 				done = FALSE;
-
 				if (left <= 20) {
 					buflen += LINESIZE;
 					if ((buffer = realloc(buffer,
@@ -432,7 +392,6 @@ get_line (void) {
 		} else
 			done = FALSE;
 	} while (done == FALSE);
-
 	return (buffer);
 }
 
@@ -445,7 +404,6 @@ get_entry (void) {
 	while (1) { /* return out */
 		if ((buf = get_line ()) == NULLCP)
 			return (NULLCP);
-
 		if ((ptr = index (buf,'=')) != 0) {
 			*ptr++ = 0;
 			if (oc_macro_add != NULLIFP) {
@@ -453,9 +411,7 @@ get_entry (void) {
 			}
 		} else
 			return (buf);
-
 	}
-
 }
 
 oid_table_attr *name2attr(char *nodename)
@@ -466,20 +422,17 @@ oid_table_attr *name2attr(char *nodename)
 	oid_table_attr * atrptr = &attrOIDTable[0];
 
 	attr_index = 0;
-
 	if ((ptr = rindex (nodename,DOT)) == 0) {
 		struct pair *p;
 		for (p = Pbuckets[PHASH (nodename)];
 				p && lexequ (p -> p_name, nodename);
 				p = p -> p_chain)
 			; /* NO-OP */
-
 		if ((p != NULL) && (p->p_type == ATTR)) {
 			attr_index = ((oid_table_attr *) p->p_value) - atrptr;
 			return ( (oid_table_attr *) p->p_value);
 		} else
 			return (NULLTABLE_ATTR);
-
 	} else {
 		if ((str = get_oid (nodename)) == NULLCP) {
 			LLOG (log_dsap,LLOG_FATAL,("invalid oid '%s'",nodename));
@@ -503,7 +456,6 @@ oid_table_attr *name2attr(char *nodename)
 		}
 	}
 	return (NULLTABLE_ATTR);
-
 }
 
 int set_heap (AttributeType x)
@@ -523,9 +475,7 @@ oid_table_attr *oid2attr(OID oid)
 			return (ptr);
 		else if (oid_cmp (ptr->oa_ot.ot_aliasoid, oid) == 0)
 			return (ptr);
-
 	}
-
 	return (NULLTABLE_ATTR);
 }
 
@@ -542,7 +492,6 @@ objectclass *name2oc(char *nodename)
 				p && lexequ (p -> p_name, nodename);
 				p = p -> p_chain)
 			; /* NO-OP */
-
 		if ((p != NULL) && (p->p_type == OC))
 			return ( (objectclass *) p->p_value);
 		else
@@ -561,10 +510,8 @@ objectclass *name2oc(char *nodename)
 						return (oc);
 					else
 						return (NULLOBJECTCLASS);
-
 		}
 	}
-
 	return (NULLOBJECTCLASS);
 }
 
@@ -579,7 +526,6 @@ objectclass *oid2oc(OID oid)
 		else if (oid_cmp (oc->oc_ot.ot_aliasoid, oid) == 0)
 			return (oc);
 	}
-
 	return (NULLOBJECTCLASS);
 }
 
@@ -592,14 +538,10 @@ static char *full_gen (oid_table *ot)
 
 	if (buffer == NULLCP)
 		buffer = smalloc (LINESIZE);
-
 	ptr = buffer;
-
 	buffer [0] = '\0';
 	str = sprintoid (ot->ot_oid);
-
 	soid   = str;
-
 	while (*str != '\0')
 		if ( *str == DOT)  {
 			*str = '\0';
@@ -613,7 +555,6 @@ static char *full_gen (oid_table *ot)
 			*str++ = DOT;
 		} else
 			str++;
-
 	strcat (buffer,".");
 	strcat (buffer,ot->ot_name);
 	return (&buffer[1]);
@@ -629,17 +570,12 @@ static char *part_gen (oid_table *ot)
 
 	if (buffer == NULLCP)
 		buffer = smalloc (LINESIZE);
-
 	ptr = buffer;
-
 	if (index (ot->ot_name,DOT) == NULLCP)
 		return (ot->ot_name);
-
 	str = sprintoid (ot->ot_oid);
-
 	soid = str;
 	last = str;
-
 	while (*str != '\0')
 		if ( *str == DOT)  {
 			*str = '\0';
@@ -651,10 +587,8 @@ static char *part_gen (oid_table *ot)
 				strcpy (buffer,ptr);
 			last = str;
 			*str++ = DOT;
-
 		} else
 			str++;
-
 	strcat (buffer,last);
 	return (buffer);
 }
@@ -721,11 +655,9 @@ char *oid2name(OID oid, int format)
 	/* try attribute first */
 	if (( at = oid2attr (oid)) != NULLTABLE_ATTR)
 		return (attr2name(at,format)) ;
-
 	/* try objectclass */
 	if (( oc = oid2oc (oid)) != NULLOBJECTCLASS)
 		return (oc2name(oc,format)) ;
-
 	/* try gen tables */
 	for (i=0; i<NumEntries; i++,ptr++) {
 		if ((oid_cmp (ptr->ot_oid, oid) == 0) ||
@@ -740,12 +672,9 @@ char *oid2name(OID oid, int format)
 			}
 		}
 	}
-
 	if ((sptr = oid2ode_aux (oid,0)) == NULLCP)
 		parse_error ("Bad OID '%s'",sprintoid (oid));
-
 	return (sptr);
-
 }
 
 OID name2oid(char *str)
@@ -755,12 +684,10 @@ OID name2oid(char *str)
 
 	if (*str == 0)
 		return NULLOID;
-
 	for (p = Pbuckets[PHASH (str)];
 			p && lexequ (p -> p_name, str);
 			p = p -> p_chain)
 		; /* NO-OP */
-
 	if (p != NULL)
 		switch (p -> p_type) {
 		case GEN: {
@@ -788,7 +715,6 @@ OID name2oid(char *str)
 		char * x;
 		if ((x=get_oid(str)) != NULLCP)
 			return (oid_cpy(str2oid(x)));
-
 		/* try isobjects */
 		if ( (ptr=ode2oid (str)) == NULLOID) {
 			if ((ptr=str2oid(str)) == NULLOID) {
@@ -799,7 +725,6 @@ OID name2oid(char *str)
 		}
 		return (oid_cpy(ptr));
 	}
-
 }
 
 PE oid2pe (OID o)
@@ -824,10 +749,8 @@ OID dup_prim2oid (PE pe)
 
 	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
 		return (NULLOID);
-
 	if (( oid = prim2oid(pe)) == NULLOID)
 		return (NULLOID);
-
 	return (oid_cpy(oid));
 }
 
@@ -841,7 +764,6 @@ void free_oid_buckets (void) {
 			free (p->p_name);
 			free ((char *)p);
 		}
-
 }
 
 void oid_syntax (void) {

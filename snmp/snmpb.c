@@ -186,94 +186,73 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 
 	timeout = 2 * 1000L;
 	timemin = timemax = timeout;
-
 	curthreads = maxthreads = tothreads = nilthreads = dedthreads = 0;
-
 	threadlimit = MAXTHREADS;
 	RTTperthread = MAXTIME;
-
 	totreqs = totretr = totrsps = totdups = 0;
-
 	gettimeofday (&tvs, (struct timezone *) 0);
 	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
-
 	a = oid_copy (arg = vb -> VarBind -> name);
 	a -> oid_elements[a -> oid_nelem++] = 127;
 	if (new_thread (ps, vb, community, arg, a) == NOTOK)
 		goto losing;
-
 	b = oid_copy (arg);
 	b -> oid_elements[b -> oid_nelem++] = 192;
 	if (new_thread (ps, vb, community, a, b) == NOTOK)
 		goto losing;
-
 	a -> oid_elements[(--a -> oid_nelem) - 1]++;
 	if (new_thread (ps, vb, community, b, a) == NOTOK)
 		goto losing;
-
 	oid_free (a);
 	oid_free (b);
-
 	bp = &bl, bl = NULL, rows = 0;
 	for (timelap = 0; THead -> t_forw != THead; timelap++) {
 		struct binding *bv;
 		struct thread *u;
-
 		if ((backoff = wait_for_action (sd, ps)) == NOTOK)
 			break;
-
 		for (t = THead -> t_forw; t != THead; t = u) {
 			struct binding **bz;
 			struct type_SNMP_VarBindList *vp,
 					   *vb2;
 			struct OIDentifier oids;
-
 			u = t -> t_forw;
 			if (!t -> t_info)
 				continue;
-
 			if (oid_cmp (t -> t_arg, b = t -> t_msg -> data -> un.get__response
 										 -> variable__bindings -> VarBind
 										 -> name)
 					>= 0) {
 				char buffer[BUFSIZ];
-
 				strcpy (buffer, oid2ode (t -> t_arg));
 				advise (NULLCP,
 						"agent botched get-next (%s -> %s), thread dead",
 						buffer, oid2ode (b));
-
 				free_thread (t);
 				dedthreads++;
 				continue;
 			}
-
 			if (oid_cmp (b, t -> t_hi) >= 0) {
 				free_thread (t);
 				continue;
 			}
 			oid_free (t -> t_arg);
 			t -> t_arg = oid_copy (b);
-
 			a = vb -> VarBind -> name, b = t -> t_arg;
 			oids.oid_nelem = b -> oid_nelem - a -> oid_nelem;
 			oids.oid_elements = b -> oid_elements + a -> oid_nelem;
-
 			if ((bv = (struct binding *) calloc (1, sizeof *bv)) == NULL)
 				adios (NULLCP, "out of memory");
 			*bp = bv, bp = &bv -> b_next;
-
 			bv -> b_name = oid_copy (&oids);
 			bz = &bv -> b_cols;
 			rows++;
-
 			for (vp = t -> t_msg -> data -> un.get__response
 					  -> variable__bindings, vb2 = vb;
 					vp;
 					vp = vp -> next, vb2 = vb2 -> next) {
 				int	fixup = 0;
 				a = vb2 -> VarBind -> name, b = vp -> VarBind -> name;
-
 				if (a -> oid_nelem > b -> oid_nelem
 						|| bcmp ((char *) a -> oid_elements,
 								 (char *) b -> oid_elements,
@@ -284,7 +263,6 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					bcopy ((char *) a -> oid_elements,
 						   (char *) b -> oid_elements,
 						   a -> oid_nelem * sizeof *a -> oid_elements);
-
 					/* not really needed...
 							    pe_free (vp -> VarBind -> value);
 							    if ((vp -> VarBind -> value = pe_alloc (PE_CLASS_UNIV,
@@ -295,11 +273,9 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					 */
 					fixup = 1;
 				}
-
 				if ((bv = (struct binding *) calloc (1, sizeof *bv)) == NULL)
 					adios (NULLCP, "out of memory");
 				*bz = bv, bz = &bv -> b_next;
-
 				bv -> b_name = oid_copy (b);
 				if (!fixup) {
 					bv -> b_value = vp -> VarBind -> value;
@@ -310,26 +286,21 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 						adios (NULLCP, "out of memory");
 				}
 			}
-
 			if (curthreads < threadlimit
 					&& !backoff
 					&& (a = oid_median (t -> t_arg, t -> t_hi))) {
 				if (new_thread (ps, vb, community, a, t -> t_hi) == NOTOK)
 					goto losing;
-
 				remque (t);		/* fairness in splits... */
 				insque (t, THead -> t_back);
-
 				oid_free (t -> t_hi);
 				t -> t_hi = a;
 				backoff = 1;
 			}
-
 			if (next_thread (t, ps, 1) == NOTOK)
 				goto losing;
 		}
 	}
-
 	if (backoff == NOTOK) {
 losing:
 		;
@@ -337,7 +308,6 @@ losing:
 		while ((t = THead -> t_forw) != THead)
 			free_thread (t);
 	}
-
 	gettimeofday (&now, (struct timezone *) 0);
 	now.tv_sec -= tvs.tv_sec;
 	if ((now.tv_usec -= tvs.tv_usec) < 0)
@@ -357,7 +327,6 @@ losing:
 	advise (NULLCP, "timeouts: min=%d.%03d fin=%d.%03d max=%d.%03d seconds",
 			timemin / 1000, timemin % 1000, timeout / 1000, timeout % 1000,
 			timemax / 1000, timemax % 1000);
-
 	print_bulk (bl, vb, dedthreads);
 }
 
@@ -380,32 +349,25 @@ static int  wait_for_action (int sd, PS ps) {
 	PE	    pe;
 
 	FD_ZERO (&rfds);
-
 	nfds = sd + 1;
 	FD_SET (sd, &rfds);
-
 	backoff = 1;
-
 	lastime = timenow;
 	for (t = THead -> t_forw; t != THead; t = t -> t_forw) {
 		if (t -> t_info)	/* should always fail... */
 			continue;
-
 		for (s = t -> t_forw; s != THead; s = s -> t_forw)
 			if (!s -> t_info && s -> t_lastime < t -> t_lastime)
 				t = s;
-
 		if (lastime > t -> t_lastime)
 			lastime = t -> t_lastime;
 	}
 	for (r = RHead -> r_forw; r != RHead; r = r -> r_forw) {
 		if (r -> r_info)	/* should always fail... */
 			continue;
-
 		for (u = r -> r_forw; u != RHead; u = u -> r_forw)
 			if (!u -> r_info && u -> r_lastime < r -> r_lastime)
 				r = u;
-
 		if (lastime > r -> r_lastime)
 			lastime = r -> r_lastime;
 	}
@@ -416,7 +378,6 @@ static int  wait_for_action (int sd, PS ps) {
 				 timeout, (uint32_t) maxrtt, (int) (timeout - maxrtt));
 	tvs.tv_sec = maxrtt / 1000L, tvs.tv_usec = (maxrtt % 1000) * 1000L;
 	maxrtt = 0;
-
 	switch (n = select (nfds, &rfds, NULLFD, NULLFD, &tvs)) {
 	case NOTOK:
 		advise ("failed", "select");
@@ -426,17 +387,14 @@ static int  wait_for_action (int sd, PS ps) {
 	default:
 		gettimeofday (&tvs, (struct timezone *) 0);
 		timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
-
 		if (n == OK)
 			break;
-
 again:
 		;
 		if ((pe = ps2pe (ps)) == NULLPE) {
 			advise (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			return NOTOK;
 		}
-
 		msg = NULL;
 		if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
 			advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
@@ -458,28 +416,23 @@ oops:
 					msg -> data -> offset);
 			goto oops;
 		}
-
 		request_id =
 			(parm = msg -> data -> un.get__response) -> request__id;
-
 		for (t = THead -> t_forw; t != THead; t = s) {
 			s = t -> t_forw;
 			if (t -> t_rid != request_id)
 				continue;
-
 			if (t -> t_info) {
 				advise (NULLCP, "duplicated response for request-id %d",
 						request_id);
 				goto duplicate_id;
 			}
-
 			t -> t_info = 1;
 			free_SNMP_Message (t -> t_msg);
 			t -> t_msg = msg;
 			if (t -> t_pe)
 				pe_free (t -> t_pe);
 			t -> t_pe = pe;
-
 			if (parm -> error__status != int_SNMP_error__status_noError) {
 				if (parm -> error__status
 						!= int_SNMP_error__status_noSuchName)
@@ -489,22 +442,18 @@ oops:
 				free_thread (t);
 				dedthreads++;
 			}
-
 			i = &t -> t_invoke;
 			goto finish_invoke;
 		}
-
 		for (r = RHead -> r_forw; r != RHead; r = u) {
 			u = r -> r_forw;
 			if (r -> r_rid != request_id)
 				continue;
-
 			if (r -> r_info) {
 				advise (NULLCP, "duplicated response for request-id %d",
 						request_id);
 				goto duplicate_id;
 			}
-
 			switch (parm -> error__status) {
 			case int_SNMP_error__status_noError:
 				r -> r_info = 1;
@@ -521,7 +470,6 @@ oops:
 						r -> r_nbound);
 				if (1 < r -> r_nbound && r -> r_nbound <= boundlimit)
 					boundlimit = r -> r_nbound - 1;
-
 toss_it:
 				;
 				r -> r_info = -1;
@@ -545,7 +493,6 @@ invalid_index:
 							   **bp;
 					struct type_SNMP_VarBindList  *v,
 							   **vp;
-
 					bp = &r -> r_bounds;
 					vp = &r -> r_msg -> data -> un.get__request
 						 -> variable__bindings;
@@ -559,15 +506,12 @@ invalid_index:
 							"got %s on %s",
 							snmp_error (parm -> error__status),
 							oid2ode ((*bp) -> r_arg));
-
 					b = *bp, bp = &b -> r_next;
 					free_bound (b);
 					r -> r_nbound--;
-
 					v = *vp, vp = &v -> next;
 					v -> next = NULL;
 					free_SNMP_VarBindList (v);
-
 					goto toss_it;
 				}
 
@@ -582,20 +526,16 @@ drop_request:
 				goto next_request;
 			}
 			i = &r -> r_invoke;
-
 finish_invoke:
 			;
 			if (i -> i_retries == 0) {
 				long    val = timenow - i -> i_lastime;
-
 				if (maxrtt < val)
 					maxrtt = val;
 				if (timelap < SETTLETIME) {
 					int  rtt = maxrtt / i -> i_curinvokes;
-
 					if (RTTperthread > rtt) {
 						RTTperthread = rtt;
-
 						if ((threadlimit = i -> i_curinvokes + 1)
 								> MAXTHREADS)
 							threadlimit = MAXTHREADS;
@@ -621,19 +561,15 @@ duplicate_id:
 		totrsps--, totdups++;
 next_request:
 		;
-
 		FD_SET (sd, &rfds);
 		if (select_dgram_socket (nfds, &rfds, NULLFD, NULLFD, OK) > OK)
 			goto again;
-
 		break;
 	}
-
 	if (curthreads > maxthreads)
 		maxthreads = curthreads;
 	if (currequests > maxrequests)
 		maxrequests = currequests;
-
 	if (backoff) {
 		if ((timeout <<= 1) > MAXTIME)
 			timeout = MAXTIME;
@@ -642,7 +578,6 @@ next_request:
 					 timeout / 1000.0);
 	} else if (maxrtt > 0 && maxrtt != timeout) {
 		long    timedelta = maxrtt + (maxrtt >> 1);
-
 		if (timedelta > timeout) {
 			if ((timeout = timedelta) > MAXTIME)
 				timeout = MAXTIME;
@@ -652,7 +587,6 @@ next_request:
 			timeout -= (timeout - timedelta) >> 1;
 			if (timeout  < MINTIME)
 				timeout = MINTIME;
-
 outta_time:
 			;
 			if (debug)
@@ -661,41 +595,33 @@ outta_time:
 						 timeout / 1000.0);
 		}
 	}
-
 	if (timeout < timemin)
 		timemin = timeout;
 	else if (timeout > timemax)
 		timemax = timeout;
-
 	i = NULL;
 	for (r = RHead -> r_forw; r != RHead; r = r -> r_forw) {
 		if (r -> r_info)
 			continue;
-
 		for (u = r -> r_forw; u != RHead; u = u -> r_forw)
 			if (!u -> r_info && u -> r_lastime < r -> r_lastime)
 				r = u;
-
 		i = &r -> r_invoke;
 	}
 	for (t = THead -> t_forw; t != THead; t = t -> t_forw) {
 		if (t -> t_info)
 			continue;
-
 		for (s = t -> t_forw; s != THead; s = s -> t_forw)
 			if (!s -> t_info && s -> t_lastime < t -> t_lastime)
 				t = s;
-
 		if (i == NULL || t -> t_lastime < i -> i_lastime)
 			i = &t -> t_invoke;
 	}
-
 	if (i && i -> i_lastime + timeout < timenow) {
 		if (++i -> i_retries > MAXTRIES) {
 			advise (NULLCP, "too many retries (%d)", MAXTRIES);
 			return NOTOK;
 		}
-
 		if (pe2ps (ps, i -> i_pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			return NOTOK;
@@ -709,14 +635,11 @@ outta_time:
 					 "retry ID %d, time now %u, waiting %u, timeout %u\n",
 					 i -> i_rid, timenow, timenow - i -> i_lastime,
 					 timeout);
-
 		totretr++;
-
 		i -> i_lastime = timenow;
 		i -> i_curinvokes = currequests ? currequests : 1;
 		backoff = 1;
 	}
-
 	return backoff;
 }
 
@@ -733,11 +656,9 @@ static void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, in
 		if (i < (j = strlen (cp)))
 			i = j;
 	}
-
 	printf ("%-*s", i, "row");
 	for (; vb; vb = vb -> next)
 		printf ("\t%s", oid2ode (vb -> VarBind -> name));
-
 	for (bv = bl; bv; bv = bz) {
 		struct binding *bp,
 				   *bq;
@@ -968,7 +889,6 @@ void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					*bb = NULL;
 					break;
 				}
-
 				if (oid_cmp (br -> r_arg, b = vr -> VarBind -> name) >= 0) {
 					char    buffer[BUFSIZ];
 					strcpy (buffer, oid2ode (br -> r_arg));
@@ -978,7 +898,6 @@ void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					dedrequests++;
 					goto drop_bound;
 				}
-
 				if (oid_cmp (b, br -> r_hi) >= 0) {
 					if (br -> b_gns <=1)
 						evalreq--;
@@ -1023,12 +942,10 @@ drop_bound:
 					&& evalreq < 0 && boundlimit != MINBOUNDS)
 				boundlimit--;
 		}
-
 		if (push_requests (ps, community,
 						   currequests < threadlimit && !backoff) == NOTOK)
 			goto losing;
 	}
-
 	if (bulk2_aux (ps, sd, bl, vb, community) == NOTOK) {
 losing:
 		;
@@ -1036,7 +953,6 @@ losing:
 		while ((r = RHead -> r_forw) != RHead)
 			free_request (r);
 	}
-
 	gettimeofday (&now, (struct timezone *) 0);
 	now.tv_sec -= tvs.tv_sec;
 	if ((now.tv_usec -= tvs.tv_usec) < 0)
@@ -1071,7 +987,6 @@ static int bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBin
 
 	curthreads = maxthreads = tothreads = nilthreads = dedthreads = 0;
 	timelap2 = 0;
-
 	if (bl == NULL || (vb = vb -> next) == NULL)
 		return OK;
 	while (bl)
@@ -1101,7 +1016,6 @@ static int bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBin
 				if ((bv = (struct binding *) calloc (1, sizeof *bv)) == NULL)
 					adios (NULLCP, "out of memory");
 				*bz = bv, bz = &bv -> b_next;
-
 				bv -> b_name = oid_copy (vp -> VarBind -> name);
 				bv -> b_value = vp -> VarBind -> value;
 				if ((vp -> VarBind -> value = pe_alloc (PE_CLASS_UNIV,
@@ -1124,7 +1038,6 @@ static int bulk2_aux (PS ps, int sd, struct binding *bl, struct type_SNMP_VarBin
 			}
 		}
 	}
-
 	if (backoff == NOTOK) {
 losing:
 		;
@@ -1177,7 +1090,6 @@ static int  new_bound (char *community, OID start, OID stop) {
 		RHead -> r_forw = RHead -> r_back = RHead;
 		once_only++;
 	}
-
 	if ((r = RHead -> r_forw) == RHead)
 		r = new_request (community);
 	if ((b = (struct bound *) calloc (1, sizeof *b)) == NULL)
@@ -1245,7 +1157,6 @@ static int push_requests (PS ps, char *community, int onemore) {
 			for (bz = *bp; bz; bz = bz -> r_next)
 				if (bz -> r_next == NULL)
 					bp = &bz -> r_next;
-
 			r -> r_bounds = NULL;
 			nbound += r -> r_nbound;
 		}
@@ -1287,7 +1198,6 @@ static int push_requests (PS ps, char *community, int onemore) {
 		if ((vz -> VarBind = (struct type_SNMP_VarBind *)
 							 calloc (1, sizeof *v)) == NULL)
 			adios (NULLCP, "push_requests: out of memory");
-
 		vz -> VarBind -> name = oid_copy (mid);
 		if ((vz -> VarBind -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM,
 												PE_PRIM_NULL)) == NULL)
@@ -1318,31 +1228,25 @@ static int push_requests (PS ps, char *community, int onemore) {
 	}
 	/* should never get here, since we should run out bounds before
 	   running out of requests; if we do ... ?? */
-
 	if (debug)
 		fprintf (stderr, "push_requests: possibly loss of bounds\n");
-
 send_them:
 	;
 	for (r = RHead -> r_forw; r != RHead; r = u) {
 		u = r -> r_forw;
 		if (!r -> r_info)
 			continue;
-
 		if (r -> r_nbound <= 0) {
 			free_request (r);
 			continue;
 		}
-
 		if (++r -> r_rid >= r -> r_mid)
 			r -> r_rid = r -> r_mid - MAXSPACE;
 		r -> r_info = 0;
 		r -> r_msg -> data -> offset = type_SNMP_PDUs_get__next__request;
 		r -> r_msg -> data -> un.get__response -> request__id = r -> r_rid;
-
 		if (r -> r_pe)
 			pe_free (r -> r_pe), r -> r_pe = NULL;
-
 		if (encode_SNMP_Message (&r -> r_pe, 1, 0, NULLCP, r -> r_msg)
 				== NOTOK) {
 			advise (NULLCP, "encode_SNMP_Message: %s", PY_pepy);
@@ -1361,7 +1265,6 @@ send_them:
 		r -> r_lastime = timenow;
 		r -> r_curinvokes = currequests ? currequests : 1;
 	}
-
 	return OK;
 }
 
@@ -1376,7 +1279,6 @@ static OID oid_median (OID a, OID b) {
 		strcpy (buffer, sprintoid (a));
 		adios (NULLCP, "oid_median(%s <= %s)", buffer, sprintoid (b));
 	}
-
 	for (i = 1, ap = a -> oid_elements, bp = b -> oid_elements;
 			i <= b -> oid_nelem;
 			i++, ap++, bp++) {
@@ -1405,7 +1307,6 @@ static OID oid_median (OID a, OID b) {
 						goto testc;
 					}
 				}
-
 				*bp = *ap >= 16383 ? *ap + 16383
 					  : *ap >= 4095  ? *ap + 4095
 					  : *ap >= 1023  ? *ap + 1023
@@ -1413,17 +1314,14 @@ static OID oid_median (OID a, OID b) {
 					  :               (*ap >> 1) + 128;
 			}
 		}
-
 testc:
 		;
 		if (c -> oid_nelem < 2)
 			c -> oid_elements[c -> oid_nelem++] = 0;
 		break;
 	}
-
 	if (c == NULL) {
 		char    buffer[BUFSIZ];
-
 losing:
 		;
 		if (debug) {
@@ -1436,7 +1334,6 @@ losing:
 	if (oid_cmp (a, c) >= 0) {
 		char    buf1[BUFSIZ],
 				buf2[BUFSIZ];
-
 		strcpy (buf1, sprintoid (a));
 		strcpy (buf2, sprintoid (b));
 		adios (NULLCP, "oid_median(%s, %s) -> %s loses(1)",
@@ -1445,13 +1342,11 @@ losing:
 	if (oid_cmp (c, b) >= 0) {
 		char    buf1[BUFSIZ],
 				buf2[BUFSIZ];
-
 		strcpy (buf1, sprintoid (a));
 		strcpy (buf2, sprintoid (b));
 		adios (NULLCP, "oid_median(%s, %s) -> %s loses(2)",
 			   buf1, buf2, sprintoid (c));
 	}
-
 	return c;
 }
 

@@ -81,7 +81,6 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 	my_version = 0x01;
 	if(do_break) my_fu = destBreak;
 	else my_fu = 0x00;
-
 	bzero ((char *) &ud, sizeof ud);
 	ud.class = class;
 	ud.valid_imp = 0;
@@ -95,13 +94,11 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 		if((p_oid = ode2oid(profile->profile_name)) == NULLOID)
 			adios(NULLCP,"%s: unknown profile", profile->profile_name);
 		ud.asq_profile.prof_oid = p_oid;
-
 		ud.asq_profile.num_sp_param = 0;
 		ud.asq_profile.num_cds_objects = 0;
 		ud.asq_profile.num_css_objects = 0;
 		ud.asq_profile.num_dev_objects = 0;
 		ud.asq_profile.del_ctrl.bitcount = 0;
-
 		ud.asq_profile.num_cds_objects = 1;
 		ud.asq_profile.cds_offer_list[0].obj_name = "D";
 		for(i=0; i<ud.asq_profile.num_cds_objects; i++) {
@@ -127,7 +124,6 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 			ud.asq_profile.cds_offer_list[0].rep_offer.repertoire[0].rep_assign =
 				ascii_go_repertoire;
 		}
-
 		ud.asq_profile.cds_offer_list[0].valid_x_dim = 1;
 		ud.asq_profile.cds_offer_list[0].x_dim.bound_type = 0;
 		ud.asq_profile.cds_offer_list[0].x_dim.addressing.bitcount = 0;
@@ -136,7 +132,6 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 		ud.asq_profile.cds_offer_list[0].x_dim.window.type = 0;
 		ud.asq_profile.cds_offer_list[0].x_dim.window.value =
 			vtp_profile.arg_val.tel_arg_list.x_window;
-
 		vtok = 1;
 		vsmd = 0;
 	} else if( !strcmp(profile->profile_name,"default") ) {
@@ -150,13 +145,10 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 		vsmd = 0;
 	} else
 		adios(NULLCP, "%s: unsupported profile", profile->profile_name);
-
 	ud.func_units.bitstring = my_fu;
 	ud.func_units.bitcount = 5;
-
 	if(build_ASQPDU_ASQpdu(&a_req,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		adios(NULLCP, "ASQ build failure (%s)", PY_pepy);
-
 	do_event(VASSreq, a_req);
 }
 
@@ -194,7 +186,6 @@ int vass_resp (int result) {
 		ud.arg_list.num_css_objects = 0;
 		ud.arg_list.num_dev_objects = 0;
 		ud.arg_list.num_cds_objects = 1;
-
 		ud.arg_list.cds_val[0].obj_name = "D";
 		for(i=0; i<ud.arg_list.num_cds_objects; i++) {
 			ud.arg_list.cds_val[i].dimensions = 0;
@@ -228,7 +219,6 @@ int vass_resp (int result) {
 		ud.arg_list.cds_val[0].x_dim.window_type = 2;
 		ud.arg_list.cds_val[0].x_dim.window =
 			vtp_profile.arg_val.tel_arg_list.x_window;
-
 	} else if( !strcmp(vtp_profile.profile_name,"default") ) {
 		ud.valid_arg_list = 0;
 		ud.arg_list.num_sp_param = 0;
@@ -239,7 +229,6 @@ int vass_resp (int result) {
 		adios (NULLCP, "invalid profile stored");
 	ud.func_units.bitstring = my_fu;
 	ud.func_units.bitcount = 5;
-
 	if(build_ASRPDU_ASRpdu((PE *)&a_resp,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		advise(LLOG_NOTICE,NULLCP,  "ASR build failure (%s) -- continuing",
 			   PY_pepy);
@@ -277,7 +266,6 @@ void vrelreq (void) {
 /*************************************************************************/
 
 void vrelrsp (int result) {
-
 	int offset = 0;
 	PE  r_rsp, r_result, r_coll;
 
@@ -310,7 +298,6 @@ void vrelcnf (void) {
 int vrelind (void) {
 	if (AcFINISHser(sd,pf,aci) == NOTOK)
 		acs_adios (&aci->aci_abort, "A-RELEASE.INDICATION");
-
 	vrelrsp(SUCCESS);
 	return(OK);
 }
@@ -506,7 +493,6 @@ int data_pending (void) {
 	// get_event may have resulted in data being read and mapped to the cbuf
 	if (queued())
 		return(TRUE);
-
 	/* if there is no data left and get_event resulted in the association being
 	released */
 	if (!connected) {
@@ -675,7 +661,6 @@ int con_req (void) {
 
 	if (debug)
 		advise(LLOG_DEBUG, NULLCP,  "in con_req");
-
 	vass_req(1,WACI_WACA,&vtp_profile);
 	if (acc->acc_result != ACS_ACCEPT) {
 		advise(LLOG_NOTICE,NULLCP,  "association rejected: [%s]",
@@ -683,7 +668,6 @@ int con_req (void) {
 		state = S1_01;
 		return NOTOK;
 	}
-
 	if (debug) {
 		advise(LLOG_DEBUG, NULLCP,  "got associate confirm event, sd is %d", acc->acc_sd);
 		advise(LLOG_DEBUG, NULLCP,  "acc_ninfo is %d", acc->acc_ninfo);
@@ -691,16 +675,12 @@ int con_req (void) {
 		advise(LLOG_DEBUG, NULLCP,  "pe_class is %d", acc->acc_info[0]->pe_class);
 		advise(LLOG_DEBUG, NULLCP,  "pe_form is %d", acc->acc_info[0]->pe_form);
 	}
-
 	if (acc->acc_ninfo < 1)
 		adios(NULLCP, "no ASQ PDU sent with the associate confirm");
-
 	sd = acc->acc_sd;
 	uevent = do_event(ASR,acc->acc_info[0]);
-
 	if (debug)
 		advise(LLOG_DEBUG, NULLCP, "got user event %d", uevent);
-
 	if(uevent == SUCCESS) return(sd);
 	else return(-1);
 }
@@ -722,7 +702,6 @@ int read_asq (PE pe) {
 		advise(LLOG_NOTICE,NULLCP,  "ASQ parse failure (%s)", PY_pepy);
 		return(0);
 	}
-
 	if(!ud.class) {
 		advise(LLOG_DEBUG, NULLCP,  "ASQ without Class");
 		return(0);
@@ -743,7 +722,6 @@ int read_asq (PE pe) {
 		vtp_profile.profile_name = "telnet";
 		vtp_profile.arg_val.tel_arg_list.full_ascii = 0xff;
 		vtp_profile.arg_val.tel_arg_list.x_window = -1;
-
 		D = -1;
 		for(n=0; n<ud.asq_profile.num_cds_objects; n++) {
 			if( *ud.asq_profile.cds_offer_list[n].obj_name == 'D') {
@@ -755,7 +733,6 @@ int read_asq (PE pe) {
 			advise(LLOG_DEBUG, NULLCP,  "ASQ with no D Display Object");
 			return(0);
 		}
-
 		if( !ud.asq_profile.cds_offer_list[D].valid_rep_list ) {
 			vtp_profile.arg_val.tel_arg_list.full_ascii = 1;
 			default_rep_flag = 1;
@@ -784,7 +761,6 @@ int read_asq (PE pe) {
 			if(vtp_profile.arg_val.tel_arg_list.full_ascii < 0) return(0);
 		}
 		transparent = 0;
-
 		if(ud.asq_profile.cds_offer_list[D].valid_x_dim == 0) {
 			advise(LLOG_DEBUG, NULLCP,  "ASQ with no X-Window");
 			return(0);
@@ -811,7 +787,6 @@ int read_asq (PE pe) {
 				vtp_profile.arg_val.tel_arg_list.x_window =
 					ud.asq_profile.cds_offer_list[D].x_dim.window.min_val;
 			}
-
 		}
 		if(vtp_profile.arg_val.tel_arg_list.x_window < 0) {
 			advise(LLOG_DEBUG, NULLCP, "ASQ without x-window");
@@ -825,7 +800,6 @@ int read_asq (PE pe) {
 		advise(LLOG_DEBUG, NULLCP,  "Unknown Profile Requested");
 		return(PROFILE_NG);
 	}
-
 	return(1);
 }
 
@@ -918,14 +892,11 @@ void asq (PE data) {
 
 	qos.qos_reliability = HIGH_QUALITY;
 	qos.qos_sversion = 2;
-
 	if (debug)
 		advise(LLOG_DEBUG, NULLCP,  "in asq");
-
 	acc = &accs;
 	acr = &acrs;
 	aci = &acis;
-
 	/*	 I'm relying on "peerhost" being an external char * that
 		has the name of the host we want to connect to
 	*/
@@ -934,7 +905,6 @@ void asq (PE data) {
 		adios (NULLCP, "unable to resolve service: %s", PY_pepy);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
-
 	if ((ctx = ode2oid (mycontext)) == NULLOID)
 		adios (NULLCP, "%s: unknown object descriptor", mycontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -943,17 +913,14 @@ void asq (PE data) {
 		adios (NULLCP, "%s: unknown object descriptor", mypci);
 	if ((pci = oid_cpy (pci)) == NULLOID)
 		adios (NULLCP, "out of memory");
-
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	PLOG (vt_log, print_VT_PDUs, data, NULLCP, 0);
 	aca = &aci->aci_abort;
 	srequirements = SR_DUPLEX | SR_RESYNC | SR_TYPEDATA;
 	srequirements &= ~SR_RLS_EXISTS;
-
 	if((vt_asn = oid_cpy (pci)) == NULLOID)
 		adios (NULLCP, "out of memory");
 	vclist.pc_nctx = 1;
@@ -961,16 +928,13 @@ void asq (PE data) {
 	vclist.pc_ctx[0].pc_asn = vt_asn;
 	vclist.pc_ctx[0].pc_atn = NULLOID;
 	data -> pe_context = 1;
-
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa,
 						&vclist, pci,
 						0, srequirements, SERIAL_MIN, 0, sf, &data, 1, &qos,
 						acc, aci) == NOTOK)
 		acs_adios (aca, "A-ASSOCIATE.REQUEST");
-
 	if (acc -> acc_result != ACS_ACCEPT)
 		return;
-
 	sd = acc->acc_sd;
 	ts_bound = acc -> acc_connect.pc_responding;	/* struct copy */
 #ifdef	DEBUG
@@ -978,15 +942,12 @@ void asq (PE data) {
 		int    i;
 		struct PSAPconnect *pc = &acc -> acc_connect;
 		struct PSAPctxlist *pl = &pc -> pc_ctxlist;
-
 		advise (LLOG_DEBUG, NULLCP,  "context: %s",
 				oid2ode (acc -> acc_context));
-
 		advise (LLOG_DEBUG, NULLCP,
 				"responding AE title: %s, responding PSAP address: %s",
 				sprintaei (&acc -> acc_respondtitle),
 				paddr2str (&pc -> pc_responding, NULLNA));
-
 		for (i = 0; i < pl -> pc_nctx; i++)
 			advise (LLOG_DEBUG, NULLCP,  "ctx %d: 0x%x 0x%x %d",
 					pl -> pc_ctx[i].pc_id, pl -> pc_ctx[i].pc_asn,
@@ -1027,16 +988,13 @@ int ass_ind (int argc, char **argv) {
 	aca = &aci->aci_abort;
 	ps = &acs->acs_start;
 	pl = &ps -> ps_ctxlist;
-
 	if (AcInit (argc, argv, acs, aci) == NOTOK)
 		acs_adios (aca, "initialization fails");
-
 	advise (LLOG_NOTICE,NULLCP,
 			"A-ASSOCIATE.INDICATION: <%d, %s, %s, %s, %d>",
 			acs -> acs_sd, oid2ode (acs -> acs_context),
 			sprintaei (&acs -> acs_callingtitle),
 			sprintaei (&acs -> acs_calledtitle), acs -> acs_ninfo);
-
 	advise (LLOG_NOTICE,NULLCP,
 			"PSAP: <%d, %s, %s, %d, %s,",
 			ps -> ps_sd,
@@ -1047,17 +1005,12 @@ int ass_ind (int argc, char **argv) {
 			"  %s, %d, %d>",
 			sprintb (ps -> ps_srequirements, RMASK), ps -> ps_isn,
 			ps -> ps_ssdusize);
-
 	strcpy (peerhost,
 			na2str (ps -> ps_calling.pa_addr.sa_addr.ta_addrs));
-
 	sd = acs->acs_sd;
-
 	/*	ACSFREE(acs);
 	*/
-
 	PLOG (vt_log, print_VT_PDUs, acs -> acs_info[0], NULLCP, 1);
-
 	return( do_event(ASQ,acs->acs_info[0]) );
 }
 

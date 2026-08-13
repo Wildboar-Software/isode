@@ -92,38 +92,27 @@ static int sacl_cmp( Saclinfo a, Saclinfo b )
 
 	if ( a == NULLSACL && b == NULLSACL )
 		return( 0 );
-
 	if ( a == NULLSACL )
 		return( -1 );
-
 	if ( b == NULLSACL )
 		return( 1 );
-
 	if ( (i = acl_info_cmp( &a->sac_info, &b->sac_info )) != 0 )
 		return( i );
-
 	if ( a->sac_scope != b->sac_scope )
 		return( a->sac_scope < b->sac_scope ? -1 : 1 );
-
 	if ( a->sac_access != b->sac_access )
 		return( a->sac_access < b->sac_access ? -1 : 1 );
-
 	if ( (i = oid_seq_cmp( a->sac_types, b->sac_types )) != 0 )
 		return( i );
-
 	if ( a->sac_access == SACL_UNSEARCHABLE )
 		return( 0 );
-
 	if ( a->sac_maxresults != b->sac_maxresults )
 		return( a->sac_maxresults < b->sac_maxresults ? -1 : 1 );
-
 	if ( a->sac_minkeylength != b->sac_minkeylength )
 		return( a->sac_minkeylength < b->sac_minkeylength ? -1 : 1 );
-
 	if ( a->sac_zeroifexceeded != b->sac_zeroifexceeded )
 		return( a->sac_zeroifexceeded < b->sac_zeroifexceeded ?
 				-1 : 1 );
-
 	return( 0 );
 }
 
@@ -133,22 +122,16 @@ static int lacl_cmp( Listacl a, Listacl b )
 
 	if ( a == NULLSACL && b == NULLSACL )
 		return( 0 );
-
 	if ( a == NULLSACL )
 		return( -1 );
-
 	if ( b == NULLSACL )
 		return( 1 );
-
 	if ( (i = acl_info_cmp( &a->sac_info, &b->sac_info )) != 0 )
 		return( i );
-
 	if ( a->sac_scope != b->sac_scope )
 		return( a->sac_scope < b->sac_scope ? -1 : 1 );
-
 	if ( a->sac_maxresults != b->sac_maxresults )
 		return( a->sac_maxresults < b->sac_maxresults ? -1 : 1 );
-
 	return( 0 );
 }
 
@@ -163,7 +146,6 @@ static Saclinfo sacl_cpy( Saclinfo sacl )
 	new->sac_tmpbstr = NULL;
 	if ( sacl->sac_types != NULLOIDSEQ )
 		new->sac_types = oid_seq_cpy( sacl->sac_types );
-
 	return( new );
 }
 
@@ -180,7 +162,6 @@ static Saclinfo sacl_decode( PE pe )
 			== NOTOK ) {
 		return( NULLSACL );
 	}
-
 	return( acl );
 }
 
@@ -189,7 +170,6 @@ static PE sacl_enc( Saclinfo acl )
 	PE ret_pe;
 
 	encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
-
 	return( ret_pe );
 }
 
@@ -205,12 +185,10 @@ static Saclinfo str2sacl( char *str )
 		return( NULLSACL );
 	}
 	new = sacl_alloc();
-
 	save = *s;
 	*s = '\0';
 	while ( isspace( *str ) )
 		str++;
-
 	/* get access selector */
 	if ( lexnequ( str, "group", 5 ) == 0 ) {
 		new->sac_selector = ACL_GROUP;
@@ -225,7 +203,6 @@ static Saclinfo str2sacl( char *str )
 		free( (char *) new );
 		return( NULLSACL );
 	}
-
 	if ( new->sac_selector == ACL_GROUP
 			|| new->sac_selector == ACL_PREFIX) {
 		/* skip past next # */
@@ -240,14 +217,12 @@ static Saclinfo str2sacl( char *str )
 		*s = '\0';
 		while ( isspace( *str ) )
 			str++;
-
 		str = TidyString(str);
 		if ( (new->sac_name = str2dnseq( str )) == NULLDNSEQ ) {
 			free( (char *) new );
 			return( NULLSACL );
 		}
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -264,7 +239,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* get access */
 	if ( lexnequ( str, "search", 6 ) == 0 ) {
 		new->sac_access = SACL_SEARCHABLE;
@@ -275,7 +249,6 @@ static Saclinfo str2sacl( char *str )
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -292,7 +265,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* attribute list */
 	if ( lexnequ( str, "default", 7 ) == 0 ) {
 		new->sac_types = NULLOIDSEQ;
@@ -303,7 +275,6 @@ static Saclinfo str2sacl( char *str )
 			return( NULLSACL );
 		}
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -320,7 +291,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* get scope */
 	scope = 0;
 	while ( str != NULL && *str != '\0' ) {
@@ -344,7 +314,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	if ( scope != 0 )
 		new->sac_scope = scope;
-
 	if ( new->sac_access == SACL_UNSEARCHABLE ) {
 		if ( s != NULLCP ) {
 			parse_error( "extra junk after nosearch '%s'", s+1 );
@@ -354,7 +323,6 @@ static Saclinfo str2sacl( char *str )
 			return( new );
 		}
 	}
-
 	if ( s == NULLCP ) {
 		/*
 		 * if this is only a baseobject sacl, it doesn't need
@@ -362,12 +330,10 @@ static Saclinfo str2sacl( char *str )
 		 */
 		if ( new->sac_scope == SACL_BASEOBJECT )
 			return( new );
-
 		parse_error( "max-results missing from searchacl", NULLCP );
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -384,7 +350,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* max results */
 	new->sac_maxresults = atoi( str );
 	if ( new->sac_maxresults <= 0 ) {
@@ -392,13 +357,11 @@ static Saclinfo str2sacl( char *str )
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	if ( s == NULLCP ) {
 		parse_error( "[no]partialresults missing from searchacl" ,NULLCP);
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -415,7 +378,6 @@ static Saclinfo str2sacl( char *str )
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* zero-results-if-limit-exceeded flag */
 	if ( lexnequ( str, "partial", 7 ) == 0 )
 		new->sac_zeroifexceeded = FALSE;
@@ -426,17 +388,14 @@ static Saclinfo str2sacl( char *str )
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	if ( s == NULLCP ) {
 		return( new );	/* default to no min key length */
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
 	while ( isspace( *str ) )
 		str++;
-
 	/* min substring key length */
 	new->sac_minkeylength = atoi( str );
 	if ( new->sac_minkeylength < 0 ) {
@@ -444,7 +403,6 @@ static Saclinfo str2sacl( char *str )
 		sacl_free( new );
 		return( NULLSACL );
 	}
-
 	return( new );
 }
 
@@ -473,7 +431,6 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 		else
 			ps_printf( ps, " # " );
 	}
-
 	/* access */
 	if ( acl->sac_access == SACL_SEARCHABLE ) {
 		if ( format == READOUT )
@@ -486,7 +443,6 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 		else
 			ps_printf( ps, "nosearch # " );
 	}
-
 	/* attributes */
 	if ( acl->sac_types == NULLOIDSEQ ) {
 		if ( format == READOUT )
@@ -502,7 +458,6 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 	}
 	if ( format != READOUT )
 		ps_printf( ps, " # " );
-
 	/* scope */
 	if ( format == READOUT )
 		ps_printf( ps, " in the " );
@@ -519,21 +474,17 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 			once = 1;
 		}
 	}
-
 	if ( acl->sac_access == SACL_UNSEARCHABLE )
 		return;
-
 	/* if it's only a baseobject sacl, nothing more to print */
 	if ( acl->sac_scope == SACL_BASEOBJECT )
 		return;
-
 	/* max results */
 	if ( format == READOUT )
 		ps_printf( ps, "\n\t\t\t(limit %d matches",
 				   acl->sac_maxresults );
 	else
 		ps_printf( ps, " # %d", acl->sac_maxresults );
-
 	/* zero results flag */
 	if ( format == READOUT ) {
 		if ( acl->sac_zeroifexceeded )
@@ -543,7 +494,6 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 	} else
 		ps_printf( ps, " # %s", acl->sac_zeroifexceeded ?
 				   "nopartialresults" : "partialresults" );
-
 	/* min key length */
 	if ( acl->sac_minkeylength != SACL_NOMINLENGTH ) {
 		if ( format == READOUT )
@@ -578,14 +528,11 @@ static Listacl str2lacl(char *str) {
 		parse_error( "# missing in list acl '%s'", str );
 		return( NULLLISTACL );
 	}
-
 	new = sacl_alloc();
-
 	save = *s;
 	*s = '\0';
 	while ( isspace( *str ) )
 		str++;
-
 	/* get access selector */
 	if ( lexnequ( str, "group", 5 ) == 0 ) {
 		new->sac_selector = ACL_GROUP;
@@ -600,7 +547,6 @@ static Listacl str2lacl(char *str) {
 		free( (char *) new );
 		return( NULLLISTACL );
 	}
-
 	if ( new->sac_selector == ACL_GROUP
 			|| new->sac_selector == ACL_PREFIX) {
 		/* skip past next # */
@@ -615,14 +561,12 @@ static Listacl str2lacl(char *str) {
 		*s = '\0';
 		while ( isspace( *str ) )
 			str++;
-
 		str = TidyString(str);
 		if ( (new->sac_name = str2dnseq( str )) == NULLDNSEQ ) {
 			free( (char *) new );
 			return( NULLLISTACL );
 		}
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -632,7 +576,6 @@ static Listacl str2lacl(char *str) {
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* get access */
 	if ( lexnequ( str, "list", 4 ) == 0 ) {
 		new->sac_maxresults = -1;
@@ -643,13 +586,11 @@ static Listacl str2lacl(char *str) {
 		sacl_free( new );
 		return( NULLLISTACL );
 	}
-
 	if ( s == NULLCP ) {
 		parse_error( "listacl scope missing",NULLCP );
 		sacl_free( new );
 		return( NULLLISTACL );
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -659,15 +600,12 @@ static Listacl str2lacl(char *str) {
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* get scope */
 	if ( lexnequ( str, "entry", 5 ) == 0 ) {
 		new->sac_scope = SACL_BASEOBJECT;
-
 		return( new );
 	} else if ( lexnequ( str, "children", 8 ) == 0 ) {
 		new->sac_scope = SACL_SINGLELEVEL;
-
 		if ( new->sac_maxresults == 0 ) {
 			return( new );	/* nolist was specified */
 		}
@@ -676,11 +614,9 @@ static Listacl str2lacl(char *str) {
 		sacl_free( new );
 		return( NULLLISTACL );
 	}
-
 	if ( s == NULLCP ) {
 		return( new );
 	}
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -690,10 +626,8 @@ static Listacl str2lacl(char *str) {
 	}
 	while ( isspace( *str ) )
 		str++;
-
 	/* get max results */
 	new->sac_maxresults = atoi( str );
-
 	return( new );
 }
 
@@ -715,7 +649,6 @@ static void lacl_print( PS ps, Listacl acl, int format ) {
 		else
 			ps_printf( ps, " # " );
 	}
-
 	/* access */
 	if ( acl->sac_maxresults != 0 ) {
 		if ( format == READOUT )
@@ -728,7 +661,6 @@ static void lacl_print( PS ps, Listacl acl, int format ) {
 		else
 			ps_printf( ps, "nolist # " );
 	}
-
 	/* scope */
 	if ( acl->sac_scope == SACL_BASEOBJECT ) {
 		if ( format == READOUT )
@@ -742,7 +674,6 @@ static void lacl_print( PS ps, Listacl acl, int format ) {
 		else
 			ps_printf( ps, "children" );
 	}
-
 	if ( acl->sac_maxresults > 0 ) {
 		if ( format == READOUT )
 			ps_printf( ps, " (limit %d entries)",
@@ -750,7 +681,6 @@ static void lacl_print( PS ps, Listacl acl, int format ) {
 		else
 			ps_printf( ps, " # %d", acl->sac_maxresults );
 	}
-
 	return;
 }
 

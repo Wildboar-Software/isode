@@ -19,20 +19,17 @@ extern LLog *log_dsap;
 char *first_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
-
 	while (iswordbreak(*ptr))
 		if (*ptr == 0)
 			return NULLCP;
 		else
 			ptr++;
-
 	return(ptr);
 }
 
 char *next_word (char *ptr) {
 	if ( ptr == NULLCP )
 		return NULLCP;
-
 	for (;;) {
 		if (*ptr == 0)
 			return NULLCP;
@@ -59,26 +56,21 @@ void soundex (char *s, char **c) {
 		**c = '\0';
 		return;
 	}
-
 	/* assume at least four...realloc if we need to */
 	*c = (char *) malloc(5*sizeof(char));
 	cmax = 4;
-
 	adjacent = '0';
 	if ( islower( *p ) )
 		(*c)[0] = toupper(*p);
 	else
 		(*c)[0] = *p;
-
 	(*c)[1]  = '\0';
 	for ( i = 0; i < 99 && (! iswordbreak(*p)); p++ ) {
 		if ( islower( *p ) )
 			ch = toupper (*p);
 		else
 			ch = *p;
-
 		code = '0';
-
 		switch (ch) {
 		case 'B':
 		case 'F':
@@ -113,7 +105,6 @@ void soundex (char *s, char **c) {
 		default:
 			adjacent = '0';
 		}
-
 		if ( i == 0 ) {
 			adjacent = code;
 			i++;
@@ -129,10 +120,8 @@ void soundex (char *s, char **c) {
 			i++;
 		}
 	}
-
 	if (i > 0)
 		(*c)[i] = '\0';
-
 	return;
 }
 
@@ -144,7 +133,6 @@ static int match_word (char *a) {
 	int	cmp;
 
 	soundex(a, &as);
-
 #ifdef SOUNDEX_PREFIX
 	cmp = strncmp(as, g_bcode, g_bcodelen);
 #else
@@ -174,7 +162,6 @@ int soundex_cmp (char *a, char *b) {
 	}
 	if ((a == NULL) && (b != NULL))
 		return FALSE;
-
 	return (result);
 }
 
@@ -183,6 +170,5 @@ int soundex_match (struct filter_item *fitem, AV_Sequence avs)
 	for (; avs != NULLAV; avs=avs->avseq_next)
 		if (soundex_cmp ((char *)avs->avseq_av.av_struct, (char *)fitem->UNAVA.ava_value->av_struct))
 			return (OK);
-
 	return (NOTOK);
 }

@@ -21,7 +21,6 @@ out:
 			free_FTAM_FADU__Identity (fpm);
 		return NULL;
 	}
-
 	switch (fa -> fa_type) {
 	case FA_FIRSTLAST:
 		fpm -> offset = type_FTAM_FADU__Identity_first__last;
@@ -104,7 +103,6 @@ bad_value:
 				  "bad type for FADU identity");
 		goto out;
 	}
-
 	return fpm;
 }
 
@@ -114,7 +112,6 @@ int fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struc
 	struct name_element *f4;
 
 	bzero ((char *) fa, sizeof *fa);
-
 	switch (fpm -> offset) {
 	case type_FTAM_FADU__Identity_first__last:
 		fa -> fa_type = FA_FIRSTLAST;
@@ -162,6 +159,5 @@ no_mem:
 		fa -> fa_fadunumber = fpm -> un.fadu__number;
 		break;
 	}
-
 	return OK;
 }

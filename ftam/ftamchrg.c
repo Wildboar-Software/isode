@@ -22,7 +22,6 @@ chrg2fpm (struct ftamblk *fsb, struct FTAMcharging *charging, struct FTAMindicat
 					  charging -> fc_ncharge - i - 1);
 			goto out;
 		}
-
 		if ((fpm = (struct type_FTAM_Charging *) calloc (1, sizeof *fpm))
 				== NULL) {
 no_mem:
@@ -35,11 +34,9 @@ out:
 			return NULL;
 		}
 		*fpc = fpm;
-
 		if ((f1 = (struct charge_element *) calloc (1, sizeof *f1)) == NULL)
 			goto no_mem;
 		fpm -> charge = f1;
-
 		if ((f1 -> resource__identifier = str2qb (fc -> fc_resource,
 										  strlen (fc -> fc_resource),
 										  1))
@@ -49,10 +46,8 @@ out:
 				== NULL)
 			goto no_mem;
 		f1 -> charging__value = fc -> fc_value;
-
 		fpc = &fpm -> next;
 	}
-
 	return fpmp;
 }
 
@@ -62,13 +57,11 @@ int fpm2chrg (struct ftamblk *fsb, struct type_FTAM_Charging *fpm, struct FTAMch
 	struct charge_element *f1;
 
 	bzero ((char *) charging, sizeof *charging);
-
 	fc = charging -> fc_charges, i = 0;
 	for (; fpm; fpm = fpm -> next) {
 		if (i >= NFCHRG)
 			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
 							 "too many charges");
-
 		f1 = fpm -> charge;
 		if ((fc -> fc_resource = qb2str (f1 -> resource__identifier)) == NULL
 				|| (fc -> fc_unit = qb2str (f1 -> charging__unit)) == NULL) {
@@ -79,13 +72,10 @@ int fpm2chrg (struct ftamblk *fsb, struct type_FTAM_Charging *fpm, struct FTAMch
 				free (fc -> fc_resource), fc -> fc_resource = NULL;
 				free (fc -> fc_unit), fc -> fc_unit = NULL;
 			}
-
 			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "out of memory");
 		}
 		fc -> fc_value = f1 -> charging__value;
-
 		fc++, i++;
 	}
-
 	return OK;
 }

@@ -114,23 +114,19 @@ static int  smuxalloc () {
 					  ps_error (ps -> ps_errno));
 		} else
 			smuxlose (youLoseBig, NULLCP, "ps_alloc: failed");
-
 you_lose:
 		;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
-
 	if (getsockname (sd, (struct sockaddr *) &in_socket,
 					 (len = sizeof in_socket, &len)) == NOTOK)
 		bzero ((char *) &in_socket.sin_addr, 4);
 	if ((smux_addr = str2qb ((char *) &in_socket.sin_addr, 4, 1)) == NULL) {
 		smuxlose (youLoseBig, NULLCP, "str2qb: failed");
-
 		ps_free (ps), ps = NULLPS;
 		goto you_lose;
 	}
-
 	return OK;
 }
 
@@ -150,18 +146,15 @@ int	commlen;
 			|| description == NULL
 			|| (commname == NULL && commlen != 0))
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
-
 	if (sd == NOTOK)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not inited");
 	if (ps == NULLPS) {
 		fd_set	mask;
 		struct sockaddr_in *isock = &in_socket;
-
 		FD_ZERO (&mask);
 		FD_SET (sd, &mask);
 		if (xselect (sd + 1, NULLFD, &mask, NULLFD, 0) < 1)
 			goto not_yet;
-
 		if (join_tcp_server (sd, isock) == NOTOK)
 			switch (errno) {
 			case EINPROGRESS:
@@ -177,13 +170,10 @@ not_yet:
 				close_tcp_socket (sd);
 				return (sd = NOTOK);
 			}
-
 		if (smuxalloc () == NOTOK)
 			return NOTOK;
 	}
-
 	bzero ((char *) &pdu, sizeof pdu);
-
 	if ((simple = (struct type_SNMP_SimpleOpen *) calloc (1, sizeof *simple))
 			== NULL) {
 no_mem:
@@ -191,17 +181,14 @@ no_mem:
 		smuxlose (congestion, NULLCP, "out of memory");
 		if (simple)
 			free_SNMP_SimpleOpen (simple);
-
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_simple;
 	pdu.un.simple = simple;
-
 	if ((smux_enterprise = oid_cpy (identity)) == NULL)
 		goto no_mem;
-
 	simple -> version = int_SNMP_version_version__1;
 	if ((simple -> identity = oid_cpy (identity)) == NULL
 			|| (simple -> description = str2qb (description,
@@ -209,11 +196,8 @@ no_mem:
 										1)) == NULL
 			|| (simple -> password = str2qb (commname, commlen, 1)) == NULL)
 		goto no_mem;
-
 	result = smuxsend (&pdu);
-
 	free_SNMP_SimpleOpen (simple);
-
 	return result;
 }
 
@@ -229,32 +213,26 @@ struct type_SNMP_SMUX__PDUs *pdu;
 						   PY_pepy);
 		goto out;
 	}
-
 #ifdef	DEBUG
 	if (smux_debug)
 		print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
 							   (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
-
 	if (pe2ps (ps, pe) == NOTOK) {
 		result = smuxlose (youLoseBig, NULLCP, "pe2ps: %s",
 						   ps_error (ps -> ps_errno));
 		goto out;
 	}
-
 	result = OK;
-
 out:
 	;
 	if (pe)
 		pe_free (pe);
-
 	if (result == NOTOK) {
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
-
 	return OK;
 }
 
@@ -269,32 +247,24 @@ int	reason;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
-
 	bzero ((char *) &pdu, sizeof pdu);
-
 	if ((close = (struct type_SNMP_ClosePDU *) calloc (1, sizeof *close))
 			== NULL) {
 		result = smuxlose (congestion, NULLCP, "out of memory");
 		if (close)
 			free_SNMP_ClosePDU (close);
-
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_close;
 	pdu.un.close = close;
-
 	close -> parm = reason;
-
 	result = smuxsend (&pdu);
-
 	free_SNMP_ClosePDU (close);
-
 	ps_free (ps), ps = NULLPS;
 	close_tcp_socket (sd);
 	sd = NOTOK;
-
 	if (smux_pe)
 		pe_free (smux_pe), smux_pe = NULL;
 	if (smux_pdu)
@@ -303,7 +273,6 @@ int	reason;
 		oid_free (smux_enterprise), smux_enterprise = NULL;
 	if (smux_addr)
 		free_SNMP_NetworkAddress (smux_addr), smux_addr = NULL;
-
 	return result;
 }
 
@@ -320,12 +289,9 @@ int	priority,
 
 	if (subtree == NULL)
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
-
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
-
 	bzero ((char *) &pdu, sizeof pdu);
-
 	if ((rreq = (struct type_SNMP_RReqPDU *) calloc (1, sizeof *rreq))
 			== NULL) {
 no_mem:
@@ -333,23 +299,18 @@ no_mem:
 		result = smuxlose (congestion, NULLCP, "out of memory");
 		if (rreq)
 			free_SNMP_RReqPDU (rreq);
-
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_registerRequest;
 	pdu.un.registerRequest = rreq;
-
 	if ((rreq -> subtree = oid_cpy (subtree)) == NULLOID)
 		goto no_mem;
 	rreq -> priority = priority;
 	rreq -> operation = operation;
-
 	result = smuxsend (&pdu);
-
 	free_SNMP_RReqPDU (rreq);
-
 	return result;
 }
 
@@ -364,10 +325,8 @@ int	secs;
 
 	if (event == NULL)
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
-
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
-
 	FD_ZERO (&mask);
 	FD_SET (sd, &mask);
 	if (ps_prime (ps, 1) == OK
@@ -375,44 +334,37 @@ int	secs;
 		errno = EWOULDBLOCK;
 		return smuxlose (inProgress, NULLCP, NULLCP);
 	}
-
 	if ((pe = ps2pe (ps)) == NULLPE) {
 		smuxlose (youLoseBig, NULLCP, "ps2pe: %s",
 				  ps_error (ps -> ps_errno));
 		goto out;
 	}
-
 	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, event) == NOTOK) {
 		smuxlose (youLoseBig, NULLCP, "encode_SNMP_SMUX__PDUs: %s",
 				  PY_pepy);
 		goto out;
 	}
-
 #ifdef	DEBUG
 	if (smux_debug)
 		print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
 							   (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
-
 	if (smux_pe)
 		pe_free (smux_pe);
 	smux_pe = pe;
 	if (smux_pdu)
 		free_SNMP_SMUX__PDUs (smux_pdu);
 	smux_pdu = *event;
-
 	if (smux_pdu -> offset == type_SNMP_SMUX__PDUs_close) {
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		sd = NOTOK;
 	}
 	return OK;
-
 out:
 	;
 	if (pe)
 		pe_free (pe);
-
 	ps_free (ps), ps = NULLPS;
 	close_tcp_socket (sd);
 	return (sd = NOTOK);
@@ -427,15 +379,11 @@ struct type_SNMP_GetResponse__PDU *event;
 
 	if (event == NULL)
 		return smuxlose (parameterMissing, NULLCP, "missing parameter");
-
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
-
 	bzero ((char *) &pdu, sizeof pdu);
-
 	pdu.offset = type_SNMP_SMUX__PDUs_get__response;
 	pdu.un.get__response = event;
-
 	return smuxsend (&pdu);
 }
 
@@ -453,22 +401,18 @@ struct type_SNMP_VarBindList *bindings;
 
 	if (ps == NULLPS)
 		return smuxlose (invalidOperation, NULLCP, "SMUX not opened");
-
 	bzero ((char *) &pdu, sizeof pdu);
-
 	if ((trap = (struct type_SNMP_Trap__PDU *) calloc (1, sizeof *trap))
 			== NULL) {
 		result = smuxlose (congestion, NULLCP, "out of memory");
 		if (trap)
 			free_SNMP_Trap__PDU (trap);
-
 		ps_free (ps), ps = NULLPS;
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
 	pdu.offset = type_SNMP_SMUX__PDUs_trap;
 	pdu.un.trap = trap;
-
 	trap -> enterprise = smux_enterprise;
 	trap -> agent__addr = smux_addr;
 	trap -> generic__trap = generic;
@@ -479,16 +423,12 @@ struct type_SNMP_VarBindList *bindings;
 								  + ((now.tv_usec - my_boottime.tv_usec)
 									 / 10000);
 	trap -> variable__bindings = bindings;
-
 	result = smuxsend (&pdu);
-
 	trap -> enterprise = NULL;
 	trap -> agent__addr = NULL;
 	trap -> time__stamp = NULL;
 	trap -> variable__bindings = NULL;
-
 	free_SNMP_Trap__PDU (trap);
-
 	return result;
 }
 
@@ -500,13 +440,9 @@ static int  smuxlose (int reason, char *what, char *fmt, ...)
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	smux_errno = reason;
-
 	_asprintf (smux_info, what, fmt, ap);
-
 	va_end (ap);
-
 	return NOTOK;
 }
 #else

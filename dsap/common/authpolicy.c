@@ -88,11 +88,8 @@ static Authpolicy str2authp( char *str ) {
 	*s = '\0';
 	while ( isspace( *str ) )
 		str++;
-
 	new = authp_alloc();
-
 	new->ap_modification = get_policy( str );
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
@@ -105,17 +102,13 @@ static Authpolicy str2authp( char *str ) {
 	*s = '\0';
 	while ( isspace( *str ) )
 		str++;
-
 	new->ap_readandcompare = get_policy( str );
-
 	/* skip past next # */
 	*s++ = save;
 	str = s;
 	while ( isspace( *str ) )
 		str++;
-
 	new->ap_listandsearch = get_policy( str );
-
 	return( new );
 }
 

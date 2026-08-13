@@ -18,11 +18,9 @@ int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-
 	watch_dog ("RoErrorRequest (DAP)");
 	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapErrorRequest(%d): Fatal rejection",sd));
@@ -32,10 +30,8 @@ int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
 		}
 	}
-
 	if (err_pe != NULLPE)
 		pe_free (err_pe);
-
 	return (OK);
 }
 
@@ -50,11 +46,9 @@ int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-
 	watch_dog ("RoErrorRequest (DSP)");
 	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspErrorRequest(): Fatal rejection"));
@@ -64,10 +58,8 @@ int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
 		}
 	}
-
 	if (err_pe != NULLPE)
 		pe_free (err_pe);
-
 	return (OK);
 }
 
@@ -82,11 +74,9 @@ int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation error"));
 	}
-
 	watch_dog ("RoErrorRequest (QSP)");
 	result = RoErrorRequest (sd, id, err->dse_type, err_pe, ROS_NOPRIO, roi);
 	watch_dog_reset();
-
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspErrorRequest(): Fatal rejection"));
@@ -96,10 +86,8 @@ int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoErrorRequest failed"));
 		}
 	}
-
 	if (err_pe != NULLPE)
 		pe_free (err_pe);
-
 	return (OK);
 }
 
@@ -146,7 +134,6 @@ int DEncodeError (PE *pep, struct DSError *err) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): unknown error %d", err->dse_type));
 		break;
 	}
-
 	return(success);
 }
 

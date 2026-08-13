@@ -9,22 +9,17 @@ int dap_removeentry (int ad, int *id, struct ds_removeentry_arg *arg, struct DSE
 	struct DAPindication	* di = &(di_s);
 
 	++(*id);
-
 	DapRemoveEntry (ad, (*id), arg, di, ROS_INTR);
-
 	error->dse_type = DSE_NOERROR;
-
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-
 		DRFREE (dr);
 		return (DS_OK);
 	}
 
 	case DI_ERROR: {
 		struct DAPerror	* de = &(di->di_error);
-
 		(*error) = de->de_err;	/* struct copy */
 		return (DS_ERROR_REMOTE);
 	}
@@ -49,7 +44,5 @@ int DapRemoveEntry (int ad, int id, struct ds_removeentry_arg *arg, struct DAPin
 	if(encode_DAS_RemoveEntryArgument(&arg_pe,1,0,NULLCP,arg) != OK) {
 		return(dapreject (di, DP_INVOKE, id, NULLCP, "RemoveEntry argument encoding failed"));
 	}
-
 	return (DapInvokeReqAux (ad, id, OP_REMOVEENTRY, arg_pe, di, asyn));
-
 }

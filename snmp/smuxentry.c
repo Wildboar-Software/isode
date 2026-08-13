@@ -34,7 +34,6 @@ int	endsmuxEntry () {
 		fclose (servf);
 		servf = NULL;
 	}
-
 	return 1;
 }
 
@@ -50,9 +49,7 @@ struct smuxEntry  *getsmuxEntry () {
 	if (servf == NULL
 			&& (servf = fopen (isodefile (smuxEntries, 0), "r")) == NULL)
 		return NULL;
-
 	bzero ((char *) se, sizeof *se);
-
 	while (fgets (buffer, sizeof buffer, servf) != NULL) {
 		if (*buffer == '#')
 			continue;
@@ -60,19 +57,15 @@ struct smuxEntry  *getsmuxEntry () {
 			*cp = 0;
 		if ((vecp = str2vec (buffer, vec)) < 3)
 			continue;
-
 		if ((i = str2elem (vec[1], elements)) <= 1)
 			continue;
-
 		se -> se_name = vec[0];
 		se -> se_identity.oid_elements = elements;
 		se -> se_identity.oid_nelem = i;
 		se -> se_password = vec[2];
 		se -> se_priority = vecp > 3 ? atoi (vec[3]) : -1;
-
 		return se;
 	}
-
 	return NULL;
 }
 
@@ -86,7 +79,6 @@ char   *name;
 		if (strcmp (name, se -> se_name) == 0)
 			break;
 	endsmuxEntry ();
-
 	return se;
 }
 
@@ -96,7 +88,6 @@ OID	identity;
 	struct smuxEntry *se;
 
 	setsmuxEntry (0);
-
 	/* Compare only the portion of the object identifier that is given in
 	   the entry read from the smux.peers file, allowing a SMUX sub-agent
 	   to provide its own version number as a suffix of its identity.  (EJP)
@@ -108,8 +99,6 @@ OID	identity;
 							 se -> se_identity.oid_elements,
 							 se -> se_identity.oid_nelem) == 0)
 			break;
-
 	endsmuxEntry ();
-
 	return se;
 }

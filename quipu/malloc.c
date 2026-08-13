@@ -146,7 +146,6 @@ int start_malloc_trace (char *f) {
 
 	if (((env = getenv ("TRACE_MEMORY")) == (char *)0) || (*env == 0))
 		return;
-
 	if (! malloc_started) {
 		if (f == (char *)0)
 			malloc_fname = "memory.out";
@@ -179,7 +178,6 @@ static write_string (char *p) {
 
 	if (!malloc_file)
 		return;
-
 	q = p;
 	while (*q++)
 		;
@@ -194,22 +192,17 @@ static write_addr (char *addr) {
 
 	if (!malloc_file)
 		return;
-
 	x = (int) addr;
-
 	if (x == 0) {
 		write(malloc_file, "0 ",2);
 		return;
 	}
-
 	ptr = buf;
 	while (x > 0)
 		*ptr++ = hex[x % 16], x /= 16;
 	*ptr = 0;
-
 	while (ptr != buf)
 		write(malloc_file, --ptr,1);
-
 	write (malloc_file," ",1);
 }
 
@@ -220,19 +213,15 @@ static write_int (unsigned x) {
 
 	if (!malloc_file)
 		return;
-
 	if (x == 0) {
 		write(malloc_file, "0 ",2);
 		return;
 	}
-
 	ptr = buf;
 	while (x > 0)
 		*ptr++ = dec[x % 10], x /= 10;
-
 	while (ptr != buf)
 		write(malloc_file, --ptr,1);
-
 	write (malloc_file," ",1);
 }
 
@@ -243,7 +232,6 @@ static log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
 	write_addr (addr);
 	write_string ("\n");
 	write_stack("x");
-
 	write_string ("realloc-to of ");
 	write_int (newlen);
 	write_string ("gets ");
@@ -284,7 +272,6 @@ char * x;
 
 	if (!malloc_file)
 		return;
-
 #ifdef sun3
 	for (fp = ((struct frame*)(&x-2))->next ;
 			fp;
@@ -330,7 +317,6 @@ new_freelist (void) {
 		return_freelist (next);
 		next++;
 	}
-
 	return (flist);
 }
 
@@ -469,7 +455,6 @@ malloc (size_t size)
 		pagemask = ~pageminusone;
 		smallmax = (~0) - PAGESIZE;
 	}
-
 	if (mem_heap >= MAXHEAP)
 		mem_heap = MAXHEAP - 1;
 	if (size < sizeof (struct freelist *))	/* memory will be used when freed for freelist !!! */
@@ -492,7 +477,6 @@ malloc (size_t size)
 			for (j = 0 ; j<BUCKETS; j++) {
 				heaps[i][j].prev = &heaps[i][j];
 				heaps[i][j].next = &heaps[i][j];
-
 				heaps[i][j].size = 0;
 			}
 		}
@@ -535,9 +519,7 @@ allocate_more:
 		head->smallsize = blocksize;
 		top_mem = (char *)head + blocksize;
 		head->use = INUSE | mem_heap;
-
 	}
-
 return_memory:
 	;
 	use_block (head,realsize);

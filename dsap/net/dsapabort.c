@@ -14,13 +14,10 @@ int DUAbortRequest (int sd, struct DSAPindication *di) {
 
 	LLOG (log_dsap, LLOG_NOTICE,
 		  ("RO-ABORT-BIND.REQUEST called on %d", sd));
-
 	watch_dog ("RoBindUAbort");
 	result = RoBindUAbort (sd, rni);
 	watch_dog_reset();
-
 	if (result != OK)
 		return (ronot2dsaplose (di, "D-ABORT-BIND.REQUEST", rni));
-
 	return (OK);
 }
