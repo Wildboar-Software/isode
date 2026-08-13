@@ -16,13 +16,7 @@ extern struct vfsmap vfs[];
 
 long	lseek ();
 
-struct vfsmap *st2vfs (fd, file, st, proposed, ftamfd)
-int	fd;
-char   *file;
-struct stat *st;
-OID	proposed;
-int	ftamfd;
-{
+struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftamfd) {
 #ifndef	BRIDGE
 	int    fmt;
 	struct vfsmap *lf;
@@ -128,10 +122,7 @@ int	binarycheck (void *param, char *data)
 	return OK;
 }
 
-int	textcheck (param, data)
-caddr_t param;
-char   *data;
-{
+int	textcheck (caddr_t param, char *data) {
 	struct type_DOCS_FTAM__1__Parameters *p1 =
 		(struct type_DOCS_FTAM__1__Parameters *) param;
 
@@ -174,13 +165,7 @@ char   *data;
 	return OK;
 }
 
-int	binarypeek (vf, fd, file, st, ftamfd)
-struct vfsmap *vf;
-int	fd;
-char   *file;
-struct stat *st;
-int	ftamfd;
-{
+int	binarypeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
 	static struct type_DOCS_FTAM__3__Parameters p3s;
 	struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
 
@@ -220,13 +205,7 @@ int	ftamfd;
 
 #define	isIA5(c) (isprint ((uint8_t) c) || (isspace ((uint8_t)c) && (c) != '\r'))
 
-int	textpeek (vf, fd, file, st, ftamfd)
-struct vfsmap *vf;
-int	fd;
-char   *file;
-struct stat *st;
-int	ftamfd;
-{
+int	textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
 #ifndef	BRIDGE
 	int     gd,
 			n;
@@ -307,13 +286,7 @@ int	ftamfd;
 #endif
 }
 
-int	fdfpeek (vf, fd, file, st, ftamfd)
-struct vfsmap *vf;
-int	fd;
-char   *file;
-struct stat *st;
-int	ftamfd;
-{
+int	fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
 	struct type_DOCS_NBS__9__Parameters *p9;
 	struct FTAMindication ftis;
 

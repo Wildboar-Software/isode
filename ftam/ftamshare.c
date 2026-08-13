@@ -3,11 +3,7 @@
 #include <stdio.h>
 #include "fpkt.h"
 
-struct type_FTAM_Shared__ASE__Information *shared2fpm (fsb, sharedASE, fti)
-struct ftamblk *fsb;
-PE	sharedASE;
-struct FTAMindication *fti;
-{
+struct type_FTAM_Shared__ASE__Information *shared2fpm (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {
 	struct type_FTAM_Shared__ASE__Information *fpm;
 
 	if ((fpm = (struct type_FTAM_Shared__ASE__Information *)
@@ -23,12 +19,7 @@ struct FTAMindication *fti;
 	return fpm;
 }
 
-int	fpm2shared (fsb, fpm, sharedASE, fti)
-struct ftamblk *fsb;
-struct type_FTAM_Shared__ASE__Information *fpm;
-PE    *sharedASE;
-struct FTAMindication *fti;
-{
+int	fpm2shared (struct ftamblk *fsb, struct type_FTAM_Shared__ASE__Information *fpm, PE *sharedASE, struct FTAMindication *fti) {
 	PE	    pe;
 
 	if (fpm -> encoding -> offset != choice_UNIV_0_single__ASN1__type)

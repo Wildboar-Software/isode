@@ -26,9 +26,7 @@ static int l,m,n,q;
 
 ASR_MSG udr;
 
-rcv_asr(pe)
-PE pe;
-{
+void rcv_asr (PE pe) {
 
 	int i;
 

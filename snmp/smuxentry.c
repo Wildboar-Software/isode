@@ -7,6 +7,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "smux.h"
 #include "tailor.h"
 
@@ -17,9 +19,7 @@ static int  stayopen = 0;
 
 static struct smuxEntry    ses;
 
-int	setsmuxEntry (f)
-int	f;
-{
+int	setsmuxEntry (int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (smuxEntries, 0), "r");
 	else
@@ -69,9 +69,7 @@ struct smuxEntry  *getsmuxEntry () {
 	return NULL;
 }
 
-struct smuxEntry *getsmuxEntrybyname (name)
-char   *name;
-{
+struct smuxEntry *getsmuxEntrybyname (char *name) {
 	struct smuxEntry *se;
 
 	setsmuxEntry (0);
@@ -82,9 +80,7 @@ char   *name;
 	return se;
 }
 
-struct smuxEntry *getsmuxEntrybyidentity (identity)
-OID	identity;
-{
+struct smuxEntry *getsmuxEntrybyidentity (OID identity) {
 	struct smuxEntry *se;
 
 	setsmuxEntry (0);

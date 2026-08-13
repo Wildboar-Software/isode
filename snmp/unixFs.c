@@ -7,6 +7,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "smux.h"
 #include "objects.h"
@@ -113,11 +114,7 @@ static void refresh_entry();
 /*-----------------------------------------------------------------
  * Come here to retreive any variable from this mib group
  *-----------------------------------------------------------------*/
-static int o_unix_fs(oi, v, offset)
-OI  oi;
-struct type_SNMP_VarBind *v;
-int offset;
-{
+static int o_unix_fs (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID  new;
 	OID  oid   = oi->oi_name;
 	OT   ot    = oi->oi_type;
@@ -254,9 +251,7 @@ int init_unix_fs() {
  * Perform commit/rollback operations. (this mib group has no
  * set operations so there are not commit/rollback operations)
  *-----------------------------------------------------------------*/
-int sync_unix_fs( cor )
-integer	cor;
-{
+int sync_unix_fs (integer cor) {
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
 		return(1);
@@ -269,11 +264,7 @@ integer	cor;
 /*-----------------------------------------------------------------
  * Find an entry in the file system table.
  *-----------------------------------------------------------------*/
-static struct fs *get_fsent( ip, len, isnext )
-unsigned *ip;
-int len;
-int isnext;
-{
+static struct fs *get_fsent (unsigned *ip, int len, int isnext) {
 	static long last = 0;
 	static int lastq = -1;
 	int refresh = 1;
@@ -318,9 +309,7 @@ int isnext;
 /*-----------------------------------------------------------------
  * Simple insertion sort of file system table.
  *-----------------------------------------------------------------*/
-static void insert_entry(fsp)
-struct fs *fsp;
-{
+static void insert_entry (struct fs *fsp) {
 	struct fs *cur   = fs_tbl;
 	struct fs **last = &fs_tbl;
 
@@ -346,26 +335,6 @@ struct fs *fsp;
 		cur  = cur->next;
 	}
 }
-
-#ifdef BSDSTRS
-/*-----------------------------------------------------------------
- * some systems (sun386) do not have this funtion
- *-----------------------------------------------------------------*/
-char * strstr(s1, s2)
-char *s1, *s2;
-{
-	int s2len = strlen(s2); /* length of the second string */
-
-	if (s2len == 0)
-		return (s1);
-	while (strlen(s1) >= s2len) {
-		if (strncmp(s1, s2, s2len) == 0)
-			return (s1);
-		s1++;
-	}
-	return (0);
-}
-#endif
 
 /*-----------------------------------------------------------------
  * Fill the entire file system table. (call with fs_tbl == NULL)
@@ -433,9 +402,7 @@ static int get_fs_table() {
 /*-----------------------------------------------------------------
  * Get current statistics for this filesystem.
  *-----------------------------------------------------------------*/
-static void refresh_entry(fsp)
-struct fs *fsp;
-{
+static void refresh_entry (struct fs *fsp) {
 #if	!(defined(ultrix) && defined(mips))
 	struct statfs  fss;
 
@@ -495,10 +462,7 @@ static void free_fs_table() {
 #if defined(ultrix) && defined(mips)
 
 FILE *
-setmntent(mntfile, mode)
-char	*mntfile;
-char	*mode;
-{
+setmntent (char *mntfile, char *mode) {
 	/*
 	 * initialize global static counter to zero
 	 */
@@ -507,9 +471,7 @@ char	*mode;
 }
 
 struct mntent *
-getmntent(mfile)
-FILE	*mfile;
-{
+getmntent (FILE *mfile) {
 	static struct fs_data	mnt_buf;
 	static struct mntent	fake;
 	int	stat;
@@ -530,9 +492,7 @@ FILE	*mfile;
 }
 
 FILE *
-endmntent(mntfile)
-FILE	*mntfile;
-{
+endmntent (FILE *mntfile) {
 	/* nullop */
 }
 #endif

@@ -272,9 +272,7 @@ int f_open (char **vec) {
 	return (ftamfd != NOTOK ? OK : NOTOK);
 }
 
-int	f_close (vec)
-char  **vec;
-{
+int	f_close (char **vec) {
 	struct FTAMrelease  ftrs;
 	struct FTAMrelease *ftr = &ftrs;
 	struct FTAMindication   ftis;
@@ -308,9 +306,7 @@ char  **vec;
 	return OK;
 }
 
-int	f_quit (vec)
-char  **vec;
-{
+int	f_quit (char **vec) {
 	if (ftamfd != NOTOK)
 		f_close (vec);
 
@@ -320,9 +316,7 @@ char  **vec;
 #define	AMASK	"\020\01STORAGE\02SECURITY\03PRIVATE"
 
 #ifndef	BRIDGE
-int	f_status (vec)
-char  **vec;
-{
+int	f_status (char **vec) {
 	int	    hit;
 	struct vfsmap *vf;
 

@@ -3,7 +3,10 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <unistd.h>
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"
@@ -79,7 +82,10 @@ static	struct gu *gu_head = NULL;
 static char   *mycrypt ();
 static void free_pw (void), free_gr (void);
 
-static int  pw_compar (struct pw *a, struct pw *b) {
+static int  pw_compar (const void *p, const void *q) {
+	struct pw *a = (struct pw *) p;
+	struct pw *b = (struct pw *) q;
+
 	return elem_cmp (a -> pw_instance, a -> pw_insize,
 					 b -> pw_instance, b -> pw_insize);
 }
@@ -207,7 +213,7 @@ again:
 out:
 	;
 	if (pw - pw_head > 1)
-		qsort ((char *) pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
+		qsort (pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
 	return OK;
 }
 
@@ -295,7 +301,10 @@ static struct pw *get_pwent (unsigned int *ip, int len, int isnext) {
 	return NULL;
 }
 
-static int gr_compar (struct gr *a, struct gr *b) {
+static int gr_compar (const void *p, const void *q) {
+	struct gr *a = (struct gr *) p;
+	struct gr *b = (struct gr *) q;
+
 	return elem_cmp (a -> gr_instance, a -> gr_insize,
 					 b -> gr_instance, b -> gr_insize);
 }
@@ -424,7 +433,7 @@ again:
 out:
 	;
 	if (gr - gr_head > 1)
-		qsort ((char *) gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
+		qsort (gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
 	return OK;
 }
 
@@ -488,13 +497,16 @@ static struct gr *get_grent (unsigned int *ip, int len, int isnext) {
 	return NULL;
 }
 
-static int gu_compar (struct gu *a, struct gu *b) {
+static int gu_compar (const void *p, const void *q) {
+	struct gu *a = (struct gu *) p;
+	struct gu *b = (struct gu *) q;
+
 	return elem_cmp (a -> gu_instance, a -> gu_insize,
 					 b -> gu_instance, b -> gu_insize);
 }
 
-static int gm_compar (char **a, char **b) {
-	return strcmp (*a, *b);
+static int gm_compar (const void *p, const void *q) {
+	return strcmp (*(char * const *) p, *(char * const *) q);
 }
 
 static int get_gu (int offset) {
@@ -548,7 +560,7 @@ again:
 					}
 			}
 			if (ap -  grp -> gr_mem > 1)
-				qsort ((char *) grp -> gr_mem, ap -  grp -> gr_mem,
+				qsort (grp -> gr_mem, ap -  grp -> gr_mem,
 					   sizeof *grp -> gr_mem, gm_compar);
 		}
 	i = 1;
@@ -577,7 +589,7 @@ again:
 			gu++;
 		}
 	if (gu - gu_head > 1)
-		qsort ((char *) gu_head, gu -gu_head, sizeof *gu_head, gu_compar);
+		qsort (gu_head, gu -gu_head, sizeof *gu_head, gu_compar);
 	return OK;
 }
 
@@ -848,7 +860,7 @@ no_mem:
 		pw++;
 		bzero ((char *) pw, sizeof *pw);
 		if (pw - pw_head > 1)
-			qsort ((char *) pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
+			qsort (pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
 		if (!(pw = get_pwent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -1207,7 +1219,7 @@ no_mem:
 		gr++;
 		bzero ((char *) gr, sizeof *gr);
 		if (gr - gr_head > 1)
-			qsort ((char *) gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
+			qsort (gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
 		if (!(gr = get_grent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -1445,7 +1457,7 @@ no_mem:
 		gu++;
 		bzero ((char *) gu, sizeof *gu);
 		if (gu - gu_head > 1)
-			qsort ((char *) gu_head, gu - gu_head, sizeof *gu_head, gu_compar);
+			qsort (gu_head, gu - gu_head, sizeof *gu_head, gu_compar);
 		if (!(gu = get_guent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -1568,10 +1580,9 @@ void init_users (void) {
 					ot -> ot_info = (caddr_t) grUserStatus;
 }
 
-static int pw_sort (a, b)
-struct pw *a,
-		   *b;
-{
+static int pw_sort (const void *p, const void *q) {
+	struct pw *a = (struct pw *) p;
+	struct pw *b = (struct pw *) q;
 	int	    i;
 	if (a -> pw_pw.pw_uid == 0 || b -> pw_pw.pw_uid == 0) {
 		if (strcmp (a -> pw_pw.pw_name, "root") == 0)
@@ -1584,7 +1595,9 @@ struct pw *a,
 	return strcmp (a -> pw_pw.pw_name, b -> pw_pw.pw_name);
 }
 
-static int gr_sort (struct gr *a, struct gr *b) {
+static int gr_sort (const void *p, const void *q) {
+	struct gr *a = (struct gr *) p;
+	struct gr *b = (struct gr *) q;
 	int	    i;
 	if (a -> gr_gr.gr_gid == 0 || b -> gr_gr.gr_gid == 0) {
 		if (strcmp (a -> gr_gr.gr_name, "wheel") == 0)
@@ -1632,7 +1645,7 @@ void sync_users (int cor) {
 			if (!pw -> pw_pw.pw_passwd)
 				fill_pw (&pw -> pw_pw);
 		if ((npw = pw - pw_head) > 1)
-			qsort ((char *) pw_head, npw, sizeof *pw_head, pw_sort);
+			qsort (pw_head, npw, sizeof *pw_head, pw_sort);
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
 			struct passwd *pwp = &pw -> pw_pw;
 			if (pw -> pw_status == PW_INVALID) {
@@ -1671,7 +1684,7 @@ void sync_users (int cor) {
 						"unable to rename %s to", tmpfil);
 		}
 		if (npw > 1)
-			qsort ((char *) pw_head, npw, sizeof *pw_head, pw_compar);
+			qsort (pw_head, npw, sizeof *pw_head, pw_compar);
 flush_pw:
 		;
 		if (invalid)
@@ -1703,7 +1716,7 @@ check_gr:
 			continue;
 		}
 		if ((ngr = gr - gr_head) > 1)
-			qsort ((char *) gr_head, ngr, sizeof *gr_head, gr_sort);
+			qsort (gr_head, ngr, sizeof *gr_head, gr_sort);
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			char   *cp = "";
 			struct group *grp = &gr -> gr_gr;
@@ -1744,7 +1757,7 @@ check_gr:
 						tmpfil);
 		}
 		if (ngr)
-			qsort ((char *) gr_head, ngr, sizeof *gr_head, gr_compar);
+			qsort (gr_head, ngr, sizeof *gr_head, gr_compar);
 flush_gr:
 		;
 		if (!invalid && gu_head)

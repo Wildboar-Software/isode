@@ -904,10 +904,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	de2fadu (pe, concat)
-PE	pe;
-int	concat;
-{
+int	de2fadu (PE pe, int concat) {
 	int	    result;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;

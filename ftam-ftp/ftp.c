@@ -276,9 +276,7 @@ bad:
 	return(NOTOK);
 }
 
-int recvrequest(cmd, /* local,*/ remote)
-char *cmd, /* *local,*/ *remote;
-{
+int recvrequest(char *cmd, char *remote) {
 	int din;
 	int expectingreply = 0;
 

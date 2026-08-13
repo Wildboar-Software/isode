@@ -27,9 +27,7 @@ static int l,m,n,q;
 char *myname;
 ASQ_MSG ud;
 
-rcv_asq(pe)
-PE pe;
-{
+void rcv_asq (PE pe) {
 	int i,j;
 
 	if(unbuild_ASQPDU_ASQpdu(pe,1,NULLIP,NULLVP,&ud) == NOTOK)return;

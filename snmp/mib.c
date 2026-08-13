@@ -138,11 +138,7 @@ void set_variable (char *name, char *newvalue) {
 }
 
 #ifndef LINUX
-int	getkmem (n, buffer, cc)
-struct nlist *n;
-caddr_t	buffer;
-int	cc;
-{
+int	getkmem (struct nlist *n, caddr_t buffer, int cc) {
 	if (n -> n_value == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "\"%s\" not in %s", n -> n_name,
 				VMUNIX);
@@ -161,11 +157,7 @@ int	cc;
 	return OK;
 }
 
-int	setkmem (n, buffer, cc)
-struct nlist *n;
-caddr_t	buffer;
-int	cc;
-{
+int	setkmem (struct nlist *n, caddr_t buffer, int cc) {
 	if (chekmem (n) == NOTOK)
 		return NOTOK;
 	if (write (wd, buffer, cc) != cc) {
@@ -176,9 +168,7 @@ int	cc;
 	return OK;
 }
 
-int	chekmem (n)
-struct nlist *n;
-{
+int	chekmem (struct nlist *n) {
 	if (n == NULL) {
 		if (wd != NOTOK)
 			close (wd), wd = NOTOK;

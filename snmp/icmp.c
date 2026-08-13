@@ -133,11 +133,7 @@ static int _read_icmp_stats ()
 }
 #endif
 
-static int  o_icmp (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_icmp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct icmpstat *icps = &icmpstat;
 	OID    oid = oi -> oi_name;

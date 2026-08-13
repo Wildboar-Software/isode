@@ -88,11 +88,7 @@ static int _read_udp_stats ()
 }
 #endif
 
-static int  o_udp (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_udp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct udpstat *udps = &udpstat;
 	OID    oid = oi -> oi_name;
@@ -220,11 +216,7 @@ static struct udptab *_read_udp_sockets(int *len)
 }
 #endif
 
-static int  o_udp_listen (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_udp_listen (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -319,17 +311,12 @@ int	offset;
 	}
 }
 
-static int  ut_compar (a, b)
-struct udptab **a,
-		   **b;
-{
+static int  ut_compar (struct udptab **a, struct udptab **b) {
 	return elem_cmp ((*a) -> ut_instance, UT_SIZE,
 					 (*b) -> ut_instance, UT_SIZE);
 }
 
-static int  get_listeners (offset)
-int	offset;
-{
+static int  get_listeners (int offset) {
 	int    i;
 	unsigned int  *cp;
 	struct udptab *us,
@@ -434,10 +421,7 @@ int	offset;
 	return OK;
 }
 
-static struct udptab *get_udpent (ip, isnext)
-unsigned int *ip;
-int	isnext;
-{
+static struct udptab *get_udpent (unsigned int *ip, int isnext) {
 	struct udptab *ut;
 
 	for (ut = uts; ut; ut = ut -> ut_next)

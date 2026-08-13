@@ -28,10 +28,7 @@ TEXT_UPDATE ud;
 
 TEXT_UPDATE *ndq_queue;
 
-main(argc,argv)
-int argc;
-char **argv;
-{
+int main (int argc, char **argv) {
 
 	PE pe;
 
@@ -245,9 +242,7 @@ END
 
 #ifdef PEPYTEST
 
-void advise(what,fmt,a,b,c,d,e,f,g,h,i,j)
-char *what, *fmt, *a, *b, *c, *d, *e, *f, *g, *h, *i, *j;
-{
+void advise (char *what, char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
 
 	(void) fflush(stdout);
 
@@ -260,10 +255,7 @@ char *what, *fmt, *a, *b, *c, *d, *e, *f, *g, *h, *i, *j;
 	(void)fflush(stderr);
 }
 
-testdebug(pe,words)
-PE pe;
-char *words;
-{
+testdebug (PE pe, char *words) {
 
 	(void) printf("%s\n",words);
 }

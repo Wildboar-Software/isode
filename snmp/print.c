@@ -89,10 +89,7 @@ extern char   *pgetstr ();
 static void free_pq (void), free_pj (void), upstat (struct pq *pq, char *msg), startdaemon (struct pq *pq);
 static int findaemon (struct pq *pq, char *current);
 
-static int  pq_compar (a, b)
-struct pq *a,
-		   *b;
-{
+static int  pq_compar (struct pq *a, struct pq *b) {
 	return elem_cmp (a -> pq_instance, a -> pq_insize,
 					 b -> pq_instance, b -> pq_insize);
 }

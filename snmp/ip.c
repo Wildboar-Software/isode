@@ -162,11 +162,7 @@ static int _read_ip_stats ()
 }
 #endif
 
-static int  o_ip (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct ipstat *ips = &ipstat;
 	OID    oid = oi -> oi_name;
@@ -309,11 +305,7 @@ int	offset;
 	}
 }
 
-static int  s_ip (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
@@ -419,11 +411,7 @@ int	offset;
 
 extern int	get_interfaces ();
 
-static int  o_ip_addr (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   i;
 	int	    ifvar;
 	unsigned int *ip,
@@ -534,11 +522,7 @@ int	offset;
 #define	unixIpRouteRefCnt 14
 #define	unixIpRouteUses	15
 
-static int  o_ip_route (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -709,11 +693,7 @@ try_again:
 }
 
 #ifndef	BSD44
-static int  s_ip_route (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip;
@@ -987,11 +967,7 @@ static struct rtstat rtstat;
 #define	unixRouteLookupFails 3
 #define	unixRouteWildcardUses 4
 
-static int  o_ip_routing_stats (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_ip_routing_stats (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct rtstat *rts = &rtstat;
 	OID    oid = oi -> oi_name;
@@ -1107,11 +1083,7 @@ static struct adrtab *get_arpent ();
 #define	ipNetToMediaNetAddress 5
 #define	ipNetToMediaType 6
 
-static int  o_address (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int    i;
 	int	    ifvar,
 			isnpa;
@@ -1260,11 +1232,7 @@ int	offset;
 	}
 }
 
-static int  s_address (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int    i;
 	int	    ifvar,
 			isnpa;
@@ -1577,9 +1545,7 @@ static struct arptab *_read_arptab ()
 }
 #endif
 
-static int  get_arptab (offset)
-int	offset;
-{
+static int  get_arptab (int offset) {
 	int	    arptab_size,
 			tblsize;
 	struct arptab *ac,
@@ -1741,12 +1707,7 @@ static void sort_arptab (void) {
 	free ((char *) base);
 }
 
-static struct adrtab *get_arpent (ip, len, isnpa, isnext)
-unsigned int *ip;
-int	len;
-int	isnpa,
-	isnext;
-{
+static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext) {
 	struct adrtab *at;
 
 	switch (isnpa) {

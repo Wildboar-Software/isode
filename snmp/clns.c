@@ -97,11 +97,7 @@ struct clnp_stat clnp_stat;
 #define	clnpOutErrUnsRRs (100 + 44)
 #define	clnpOutErrInterferences	(100 + 45)
 
-static int  o_clnp (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_clnp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   *dp,
 		  *ep,
 		  j;
@@ -373,9 +369,7 @@ int	offset;
 	}
 }
 
-static int  clnp_er_index (p)
-uint8_t p;
-{
+static int  clnp_er_index (uint8_t p) {
 	uint8_t *cp = clnp_er_codes + CLNP_ERRORS;
 
 	while (cp-- > clnp_er_codes)
@@ -384,11 +378,7 @@ uint8_t p;
 	return (CLNP_ERRORS + 1);
 }
 
-static int  s_clnp (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_clnp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
@@ -485,11 +475,7 @@ int	offset;
 
 extern int	get_interfaces ();
 
-static int  o_clnp_addr (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_clnp_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   i;
 	int	    ifvar;
 	unsigned int *ip,
@@ -589,11 +575,7 @@ int	offset;
 #define	unixClnpRouteRefCnt 13
 #define	unixClnpRouteUses 14
 
-static int  o_clnp_route (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_clnp_route (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -766,11 +748,7 @@ static struct adrtab *get_arpent ();
 #undef	clnpMediaToNetAge /* 10		/* NOT IMPLEMENTED */
 #undef	clnpMediaToNetHoldTime /* 11	/* NOT IMPLEMENTED */
 
-static int  o_address (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int    i;
 	int	    ifvar,
 			isnpa;
@@ -899,27 +877,19 @@ int	offset;
 	}
 }
 
-static int  adn_compar (a, b)
-struct adrtab **a,
-		   **b;
-{
+static int  adn_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adn_instance, (*a) -> adn_insize,
 					 (*b) -> adn_instance, (*b) -> adn_insize);
 }
 
-static int  adm_compar (a, b)
-struct adrtab **a,
-		   **b;
-{
+static int  adm_compar (struct adrtab **a, struct adrtab **b) {
 	return elem_cmp ((*a) -> adm_instance, (*a) -> adm_insize,
 					 (*b) -> adm_instance, (*b) -> adm_insize);
 }
 
 #define	ROUND(a)	(1 + (((a) - 1) | (sizeof (long) - 1)))
 
-static int  get_arptab (offset)
-int	offset;
-{
+static int  get_arptab (int offset) {
 	int	    adrNumber = 0,
 			rlen,
 			tblsize;
@@ -1044,12 +1014,7 @@ int	offset;
 }
 #undef	ROUND
 
-static struct adrtab *get_arpent (ip, len, isnpa, isnext)
-unsigned int *ip;
-int	len;
-int	isnpa,
-	isnext;
-{
+static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext) {
 	struct adrtab *at;
 
 	if (isnpa)
@@ -1093,11 +1058,7 @@ static	struct esis_stat esis_stat;
 #define	esisRDUins	4
 #define	esisRDUouts	5
 
-static int  o_esis (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_esis (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct esis_stat *es = &esis_stat;
 	OID    oid = oi -> oi_name;

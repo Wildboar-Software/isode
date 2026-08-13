@@ -107,9 +107,7 @@ getisodocumentbyentry (char *entry) {
 	return id;
 }
 
-struct isodocument *getisodocumentbytype (type)
-OID	type;
-{
+struct isodocument *getisodocumentbytype (OID type) {
 	struct isodocument *id;
 
 	setisodocument (0);

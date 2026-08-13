@@ -3,6 +3,7 @@
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"
+#include "isoaddrs.h"
 #include "RONOT-types.h"
 
 /* RO-BIND.INDICATION */

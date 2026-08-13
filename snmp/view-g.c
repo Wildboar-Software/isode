@@ -1,6 +1,8 @@
 /* view-g.c - VIEW group */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "mib.h"
 #include "view-g.h"
 #include "tailor.h"
@@ -23,11 +25,7 @@ static OID	rfc1157Domain = NULLOID;
 static struct view *get_prent ();
 static int  str2sa ();
 
-static int  o_viewPrim (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -133,11 +131,7 @@ int	offset;
 	}
 }
 
-static struct view *get_prent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct view *get_prent (unsigned int *ip, int len, int isnext) {
 	struct view *v;
 
 	for (v = VHead -> v_forw; v != VHead; v = v -> v_forw)
@@ -167,11 +161,7 @@ static struct community *CLex = NULL;
 
 static struct community *get_acent ();
 
-static int  o_viewAcl (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -265,11 +255,7 @@ int	offset;
 	}
 }
 
-static struct community *get_acent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct community *get_acent (unsigned int *ip, int len, int isnext) {
 	struct community *c;
 
 	for (c = CLex; c; c = c -> c_next)
@@ -294,11 +280,7 @@ static OID    trapview = NULLOID;
 
 static struct trap *get_trent ();
 
-static int  o_viewTrap (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -391,11 +373,7 @@ int	offset;
 	}
 }
 
-static struct trap *get_trent (ip, len, isnext)
-unsigned int *ip;
-int	len;
-int	isnext;
-{
+static struct trap *get_trent (unsigned int *ip, int len, int isnext) {
 	struct trap *t;
 
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw)
@@ -413,26 +391,26 @@ int	isnext;
 	return NULL;
 }
 
-static int  view_compar (a, b)
-struct view **a,
-		   **b;
-{
+static int  view_compar (const void *p, const void *q) {
+	struct view **a = (struct view **) p;
+	struct view **b = (struct view **) q;
+
 	return elem_cmp ((*a) -> v_instance, (*a) -> v_insize,
 					 (*b) -> v_instance, (*b) -> v_insize);
 }
 
-static int  comm_compar (a, b)
-struct community **a,
-		   **b;
-{
+static int  comm_compar (const void *p, const void *q) {
+	struct community **a = (struct community **) p;
+	struct community **b = (struct community **) q;
+
 	return elem_cmp ((*a) -> c_instance, (*a) -> c_insize,
 					 (*b) -> c_instance, (*b) -> c_insize);
 }
 
-static int  trap_compar (a, b)
-struct trap **a,
-		   **b;
-{
+static int  trap_compar (const void *p, const void *q) {
+	struct trap **a = (struct trap **) p;
+	struct trap **b = (struct trap **) q;
+
 	return elem_cmp ((*a) -> t_instance, (*a) -> t_insize,
 					 (*b) -> t_instance, (*b) -> t_insize);
 }
@@ -575,7 +553,7 @@ void fin_view (void) {
 		}
 		VHead -> v_forw = VHead -> v_back = VHead;
 		if (i > 1)
-			qsort ((char *) base, i, sizeof *base, (IFP)view_compar);
+			qsort (base, i, sizeof *base, view_compar);
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, VHead -> v_back);
@@ -648,7 +626,7 @@ stuff_it:
 			*ep++ = c;
 		}
 		if (i > 1)
-			qsort ((char *) base, i, sizeof *base, (IFP)comm_compar);
+			qsort (base, i, sizeof *base, comm_compar);
 		bp = base;
 		c = CLex = *bp++;
 		while (bp < ep) {
@@ -689,7 +667,7 @@ stuff_it:
 		}
 		UHead -> t_forw = UHead -> t_back = UHead;
 		if (i > 1)
-			qsort ((char *) base, i, sizeof *base, (IFP)trap_compar);
+			qsort (base, i, sizeof *base, trap_compar);
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, UHead -> t_back);
@@ -754,9 +732,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	f_proxy (vec)
-char  **vec;
-{
+int	f_proxy (char **vec) {
 	char    buffer[BUFSIZ];
 	struct community *c;
 	struct view *v,
@@ -825,9 +801,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	f_trap (vec)
-char  **vec;
-{
+int	f_trap (char **vec) {
 	struct trap *t;
 	struct view *v;
 	struct NSAPaddr nas;
@@ -897,9 +871,7 @@ you_lose:
 	return NOTOK;
 }
 
-int  f_view (vec)
-char  **vec;
-{
+int  f_view (char **vec) {
 	char    buffer[BUFSIZ];
 	struct subtree *s,
 			   *x,
@@ -989,12 +961,7 @@ extern	int	tcpservice;
 extern	int	udport;
 extern	int	traport;
 
-static int  str2sa (s, na, sock, proxy)
-char   *s;
-struct NSAPaddr *na;
-struct sockaddr *sock;
-int	proxy;
-{
+static int  str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int proxy) {
 #ifdef	TCP
 	struct hostent *hp;
 #endif

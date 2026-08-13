@@ -998,15 +998,7 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 	return result;
 }
 
-int	readattrs (attrnames, fa, proposed, parameter, file, st, diags)
-int	attrnames;
-struct FTAMattributes *fa;
-OID	proposed;
-PE	parameter;
-char   *file;
-struct stat *st;
-struct FTAMdiagnostic **diags;
-{
+int	readattrs (int attrnames, struct FTAMattributes *fa, OID proposed, PE parameter, char *file, struct stat *st, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
 	int     result;
 	char   *cp;
@@ -1419,9 +1411,7 @@ static char *getgroup (int gid) {
 	return my_name;
 }
 
-int	findgid (group)
-char   *group;
-{
+int	findgid (char *group) {
 	int	    i;
 #ifdef	BSD42
 	int	    gidset[NGROUPS];
@@ -1774,10 +1764,7 @@ again:
 	return syscall (SYS_fchown, fd, uid, gid);
 }
 
-static int  truncate (file, length)
-char   *file;
-int     length;
-{
+static int  truncate (char *file, int length) {
 	if (debug) {
 		int     i,
 				b;
@@ -1808,10 +1795,7 @@ again:
 	return syscall (SYS_truncate, file, length);
 }
 
-static int  rename (old, new)
-char   *old;
-char   *new;
-{
+static int  rename (char *old, char *new) {
 	if (debug) {
 		int     i,
 				b;
@@ -1842,10 +1826,7 @@ again:
 	return syscall (SYS_rename, old, new);
 }
 
-static int  flock (fd, operation)
-int	fd,
-	operation;
-{
+static int  flock (int fd, int operation) {
 	if (debug) {
 		int     i,
 				b;

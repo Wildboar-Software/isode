@@ -561,11 +561,7 @@ do_clts:
 	}
 }
 
-static void ts_advise (td, code, event)
-struct TSAPdisconnect *td;
-int	code;
-char   *event;
-{
+static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -578,9 +574,7 @@ char   *event;
 }
 
 #ifdef	CLTS
-static	doit_clts (pd)
-int	pd;
-{
+static	doit_clts (int pd) {
 	int	    fd;
 	char   *cp;
 	union sockaddr_osi in_socket;
@@ -607,10 +601,7 @@ int	pd;
 #endif
 
 #ifdef	COTS
-static int  start_tsap (vecp, vec)
-int	vecp;
-char  **vec;
-{
+static int  start_tsap (int vecp, char **vec) {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -635,9 +626,7 @@ char  **vec;
 	return ts -> ts_sd;
 }
 
-static	doit_cots (fd)
-int	fd;
-{
+static	doit_cots (int fd) {
 	strcpy (source, taddr2str (taddrs + fd));
 	doit_aux (fd, &(taddrs[fd].ta_addrs[0]), ts_read, ts_write, NULLIFP);
 #ifndef	SNMPT
@@ -1212,9 +1201,7 @@ out:
 	return result;
 }
 
-static int proxy2 (msg)
-struct type_SNMP_Message *msg;
-{
+static int proxy2 (struct type_SNMP_Message *msg) {
 	integer  request;
 	struct proxyque *pq,
 			   *qp;
@@ -1258,9 +1245,7 @@ out:
 }
 
 #ifdef	COTS
-static	proxy_clear (fd)
-int	fd;
-{
+static	proxy_clear (int fd) {
 	struct proxyque *pq,
 			   *qp;
 
@@ -2639,10 +2624,7 @@ void adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
-{
+void	adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -2658,11 +2640,7 @@ void advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
-{
+void	advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

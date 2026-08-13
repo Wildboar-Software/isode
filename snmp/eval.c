@@ -6,8 +6,6 @@
 
 /*    FUNCTION MIB */
 
-static int  eval_expr (), read_tl (), read_long (), read_oid (), get_var_value ();
-
 #define	NSTACK	10
 
 static	integer	*tos;
@@ -43,6 +41,8 @@ struct expr {
 	}	    e_save;
 };
 
+static int  eval_expr (struct expr *), read_tl (struct expr *, PElementClass *, PElementForm *, PElementID *, PElementLen *), read_long (struct expr *, char *, int, PElementForm, integer *), read_oid (struct expr *, char *, int, PElementForm, OID *), get_var_value (struct expr *, OID, integer *);
+
 static integer	exprNumber = 0;
 
 static struct expr exprs[NEXPR];
@@ -66,11 +66,7 @@ static struct expr *roofexpr;
 #define	functOr		14
 #define	functNot	15
 
-static int  o_funct (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_funct (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	integer arg1,
 			arg2;
@@ -224,11 +220,7 @@ int	offset;
 #define	exprStatus	3
 #define	exprHints	4
 
-static int  o_expressions (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifnum,
 			ifvar;
 	OID    oid = oi -> oi_name;
@@ -304,9 +296,7 @@ int	offset;
 	}
 }
 
-static int  eval_expr (e)
-struct expr *e;
-{
+static int  eval_expr (struct expr *e) {
 	PElementClass class;
 	PElementForm  form;
 	PElementID	  id;
@@ -380,13 +370,7 @@ struct expr *e;
 	return OK;
 }
 
-static int  read_tl (e, class, form, id, len)
-struct expr *e;
-PElementClass *class;
-PElementForm  *form;
-PElementID    *id;
-PElementLen   *len;
-{
+static int  read_tl (struct expr *e, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *len) {
 	PS	    ps = &e -> e_ps;
 
 	if (ps_read_id (ps, 0, class, form, id) == NOTOK) {
@@ -404,13 +388,7 @@ PElementLen   *len;
 	return OK;
 }
 
-static int  read_long (e, base, len, form, result)
-struct expr *e;
-char   *base;
-int	len;
-PElementForm  form;
-integer *result;
-{
+static int  read_long (struct expr *e, char *base, int len, PElementForm form, integer *result) {
 	integer    i;
 	PElementData dp,
 				 ep;
@@ -432,13 +410,7 @@ integer *result;
 	return OK;
 }
 
-static int  read_oid (e, base, len, form, ox)
-struct expr *e;
-char   *base;
-int	len;
-PElementForm  form;
-OID   *ox;
-{
+static int  read_oid (struct expr *e, char *base, int len, PElementForm form, OID *ox) {
 	unsigned int i,
 			 *ip;
 	PElementData dp,
@@ -495,11 +467,7 @@ OID   *ox;
 	return OK;
 }
 
-static int  get_var_value (e, oid, i)
-struct expr *e;
-OID	oid;
-integer *i;
-{
+static int  get_var_value (struct expr *e, OID oid, integer *i) {
 	int	    status;
 	integer *result;
 	OI	    oi;
@@ -566,11 +534,7 @@ losing:
 	return OK;
 }
 
-static int  s_expressions (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  s_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifnum
 #ifndef	lint
 	,

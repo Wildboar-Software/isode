@@ -982,9 +982,7 @@ int	get_interfaces (int offset) {
 	return OK;
 }
 
-static struct address *find_address (addr)
-union sockaddr_un *addr;
-{
+static struct address *find_address (union sockaddr_un *addr) {
 	struct address *as;
 	struct in_addr *in;
 #ifdef	BSD44

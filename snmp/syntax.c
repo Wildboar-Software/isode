@@ -419,10 +419,7 @@ static void add_timeticks (void) {
 				(ParseFunction)counter_parse, (PrintFunction)timeticks_print);
 }
 
-static int clnpaddr_encode (x, pe)
-struct sockaddr_iso *x;
-PE     *pe;
-{
+static int clnpaddr_encode (struct sockaddr_iso *x, PE *pe) {
 	char    buffer[sizeof x -> siso_data + 1];
 
 	buffer[0] = x -> siso_nlen & 0xff;
@@ -433,10 +430,7 @@ PE     *pe;
 	return OK;
 }
 
-static int clnpaddr_decode (x, pe)
-struct sockaddr_iso **x;
-PE	pe;
-{
+static int clnpaddr_decode (struct sockaddr_iso **x, PE pe) {
 	int	    len;
 	struct type_SNMP_ClnpAddress *clnp;
 	struct qbuf *qb;
@@ -465,10 +459,7 @@ static void clnpaddr_free (struct sockaddr_iso *x) {
 	free ((char *) x);
 }
 
-static int clnpaddr_parse (x, s)
-struct sockaddr_iso **x;
-char   *s;
-{
+static int clnpaddr_parse (struct sockaddr_iso **x, char *s) {
 	struct sockaddr_iso *isock;
 
 	if ((isock = (struct sockaddr_iso *) calloc (1, sizeof *isock)) == NULL)
@@ -527,9 +518,7 @@ int	add_syntax (
 	return i;
 }
 
-OS	text2syn (name)
-char   *name;
-{
+OS	text2syn (char *name) {
 	OS	    os;
 
 	for (os = syntaxes; os < synlast; os++)

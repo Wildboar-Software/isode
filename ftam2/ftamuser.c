@@ -180,9 +180,7 @@ static struct dispatch  dispatches[] = {
 	NULL
 };
 
-struct dispatch *getds (name)
-char *name;
-{
+struct dispatch *getds (char *name) {
 	int    longest,
 		   nmatches;
 	char  *p,
@@ -1177,9 +1175,7 @@ int rcinit (void) {
 #ifndef	TIOCGWINSZ
 #endif
 
-int	ncols (fp)
-FILE *fp;
-{
+int	ncols (FILE *fp) {
 #ifdef	TIOCGWINSZ
 	int	    i;
 	struct winsize ws;

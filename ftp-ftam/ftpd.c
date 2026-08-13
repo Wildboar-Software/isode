@@ -341,18 +341,12 @@ static void _reply (int n, char c, va_list ap) {
 #else
 /* VARARGS2 */
 
-reply(n,fmt)
-int	n;
-char   *fmt;
-{
+reply (int n, char *fmt) {
 	reply(n,fmt);
 }
 /* VARARGS2 */
 
-lreply(n,fmt)
-int	n;
-char   *fmt;
-{
+lreply (int n, char *fmt) {
 	lreply(n,fmt);
 }
 #endif

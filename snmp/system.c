@@ -11,11 +11,7 @@
 #include "tailor.h"
 #include <sys/time.h>
 
-static int  o_sysUpTime (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_sysUpTime (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	struct timeval now;
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;

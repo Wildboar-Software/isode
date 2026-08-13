@@ -125,11 +125,7 @@ integer	number;				/* actual param: often a constant */
 	return o_number (oi, v, (caddr_t) &number);
 }
 
-int	o_number (oi, v, number)
-OI	oi;
-struct type_SNMP_VarBind *v;
-caddr_t	number;
-{
+int	o_number (OI oi, struct type_SNMP_VarBind *v, caddr_t number) {
 	int	    result;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
@@ -151,12 +147,7 @@ caddr_t	number;
 	return int_SNMP_error__status_noError;
 }
 
-int	o_string (oi, v, base, len)
-OI	oi;
-struct type_SNMP_VarBind *v;
-char   *base;
-int	len;
-{
+int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, int len) {
 	int	    result;
 	struct qbuf *value;
 	OT	    ot = oi -> oi_type;
@@ -184,11 +175,7 @@ int	len;
 	return int_SNMP_error__status_noError;
 }
 
-int	o_qbstring (oi, v, value)
-OI	oi;
-struct type_SNMP_VarBind *v;
-struct qbuf *value;
-{
+int	o_qbstring (OI oi, struct type_SNMP_VarBind *v, struct qbuf *value) {
 	int	    result;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
@@ -210,11 +197,7 @@ struct qbuf *value;
 	return int_SNMP_error__status_noError;
 }
 
-int	o_specific (oi, v, value)
-OI	oi;
-struct type_SNMP_VarBind *v;
-caddr_t	value;
-{
+int	o_specific (OI oi, struct type_SNMP_VarBind *v, caddr_t value) {
 	int	    result;
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
@@ -236,12 +219,7 @@ caddr_t	value;
 	return int_SNMP_error__status_noError;
 }
 
-int	mediaddr2oid (ip, addr, len, islen)
-unsigned int *ip;
-uint8_t *addr;
-int	len,
-	islen;
-{
+int	mediaddr2oid (unsigned int *ip, uint8_t *addr, int len, int islen) {
 	int   i;
 
 	if (islen)
@@ -251,10 +229,7 @@ int	len,
 	return (len + (islen ? 1 : 0));
 }
 
-OID	oid_extend (q, howmuch)
-OID	q;
-int	howmuch;
-{
+OID	oid_extend (OID q, int howmuch) {
 	unsigned int   i,
 			 *ip,
 			 *jp;
@@ -278,11 +253,7 @@ int	howmuch;
 	return oid;
 }
 
-OID	oid_normalize (q, howmuch, bigvalue)
-OID	q;
-int	howmuch,
-	bigvalue;
-{
+OID	oid_normalize (OID q, int howmuch, int bigvalue) {
 	int	i;
 	unsigned int   *ip,
 			 *jp;

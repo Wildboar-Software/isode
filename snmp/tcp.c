@@ -159,11 +159,7 @@ static int _read_tcp_stats ()
 }
 #endif
 
-static int  o_tcp (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_tcp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct tcpstat *tcps = &tcpstat;
 	OID    oid = oi -> oi_name;
@@ -371,11 +367,7 @@ static struct tcptab *_read_tcp_connections(int *len)
 }
 #endif
 
-static int  o_tcp_conn (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_tcp_conn (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	int    i;
 	unsigned int *ip,
@@ -482,17 +474,12 @@ try_again:
 	}
 }
 
-static int  tt_compar (a, b)
-struct tcptab **a,
-		   **b;
-{
+static int  tt_compar (struct tcptab **a, struct tcptab **b) {
 	return elem_cmp ((*a) -> tt_instance, TT_SIZE,
 					 (*b) -> tt_instance, TT_SIZE);
 }
 
-static int  get_connections (offset)
-int	offset;
-{
+static int  get_connections (int offset) {
 	int    i;
 	unsigned int  *cp;
 	struct tcptab *ts,
@@ -588,10 +575,7 @@ int	offset;
 	return OK;
 }
 
-static struct tcptab *get_tcpent (ip, isnext)
-unsigned int *ip;
-int	isnext;
-{
+static struct tcptab *get_tcpent (unsigned int *ip, int isnext) {
 	struct tcptab *tt;
 
 	for (tt = tts; tt; tt = tt -> tt_next)
@@ -634,11 +618,7 @@ static	struct mbstat mbstat;
 #define	mbufSpaces	7
 #endif
 
-static int  o_mbuf (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_mbuf (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
 	struct mbstat *m = &mbstat;
 	OID    oid = oi -> oi_name;
@@ -720,11 +700,7 @@ int	offset;
 #define	mbufType	0
 #define	mbufAllocates	1
 
-static int  o_mbufType (oi, v, offset)
-OI	oi;
-struct type_SNMP_VarBind *v;
-int	offset;
-{
+static int  o_mbufType (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifnum,
 			ifvar;
 	struct mbstat *m = &mbstat;

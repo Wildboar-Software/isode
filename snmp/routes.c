@@ -77,9 +77,7 @@ static int _read_routes()
 }
 #endif
 
-int	get_routes (offset)
-int	offset;
-{
+int	get_routes (int offset) {
 	int   i;
 	int	    rthashsize,
 			tblsize;
@@ -210,10 +208,7 @@ out1:
 	return NOTOK;
 }
 
-static int  rt_compar (a, b)
-struct rtetab **a,
-		   **b;
-{
+static int  rt_compar (struct rtetab **a, struct rtetab **b) {
 	int	    i;
 
 	if ((i = (*a) -> rt_dst.sa.sa_family - (*b) -> rt_dst.sa.sa_family))
@@ -273,9 +268,7 @@ void sort_rtetab (void) {
 	free ((char *) base);
 }
 
-static int  get_route (re)
-struct rtentry *re;
-{
+static int  get_route (struct rtentry *re) {
 	struct rtetab *rt,
 			   *rz;
 #ifdef	BSD44
@@ -379,9 +372,7 @@ static int  get_radix_nodes () {
 	return OK;
 }
 
-static int  get_radix_node (rn)
-struct radix_node *rn;
-{
+static int  get_radix_node (struct radix_node *rn) {
 	struct radix_node rnode;
 	struct rtentry rtentry;
 	struct nlist nzs;
@@ -413,12 +404,7 @@ struct radix_node *rn;
 }
 #endif
 
-struct rtetab *get_rtent (ip, len, head, isnext)
-unsigned int *ip;
-int	len;
-struct rtetab *head;
-int	isnext;
-{
+struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext) {
 	int	    family;
 	struct rtetab *rt;
 

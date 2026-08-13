@@ -39,9 +39,7 @@ static int  smuxalloc (), smuxsend ();
 
 /* INIT */
 
-int	smux_init (debug)
-int	debug;
-{
+int	smux_init (int debug) {
 	int	    onoff;
 	struct sockaddr_in *isock = &in_socket;
 	struct hostent *hp;
@@ -132,12 +130,7 @@ you_lose:
 
 /*    SIMPLE OPEN */
 
-int	smux_simple_open (identity, description, commname, commlen)
-OID	identity;
-char   *description;
-char   *commname;
-int	commlen;
-{
+int	smux_simple_open (OID identity, char *description, char *commname, int commlen) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_SimpleOpen *simple;
@@ -201,9 +194,7 @@ no_mem:
 	return result;
 }
 
-static int  smuxsend (pdu)
-struct type_SNMP_SMUX__PDUs *pdu;
-{
+static int  smuxsend (struct type_SNMP_SMUX__PDUs *pdu) {
 	int	    result;
 	PE	    pe;
 
@@ -238,9 +229,7 @@ out:
 
 /* CLOSE */
 
-int	smux_close (reason)
-int	reason;
-{
+int	smux_close (int reason) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_ClosePDU *close;
@@ -278,11 +267,7 @@ int	reason;
 
 /* REGISTER */
 
-int	smux_register (subtree, priority, operation)
-OID	subtree;
-int	priority,
-	operation;
-{
+int	smux_register (OID subtree, int priority, int operation) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_RReqPDU *rreq;
@@ -316,10 +301,7 @@ no_mem:
 
 /* WAIT */
 
-int	smux_wait (event, secs)
-struct type_SNMP_SMUX__PDUs **event;
-int	secs;
-{
+int	smux_wait (struct type_SNMP_SMUX__PDUs **event, int secs) {
 	fd_set  mask;
 	PE	    pe;
 
@@ -372,9 +354,7 @@ out:
 
 /* RESPONSE */
 
-int	smux_response (event)
-struct type_SNMP_GetResponse__PDU *event;
-{
+int	smux_response (struct type_SNMP_GetResponse__PDU *event) {
 	struct type_SNMP_SMUX__PDUs pdu;
 
 	if (event == NULL)
@@ -389,11 +369,7 @@ struct type_SNMP_GetResponse__PDU *event;
 
 /* TRAP */
 
-int	smux_trap (generic, specific, bindings)
-int	generic,
-	specific;
-struct type_SNMP_VarBindList *bindings;
-{
+int	smux_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings) {
 	int	    result;
 	struct timeval now;
 	struct type_SNMP_SMUX__PDUs pdu;
@@ -448,11 +424,7 @@ static int  smuxlose (int reason, char *what, char *fmt, ...)
 #else
 /* VARARGS3 */
 
-static int  smuxlose (reason, what, fmt)
-int	reason;
-char   *what,
-	   *fmt;
-{
+static int  smuxlose (int reason, char *what, char *fmt) {
 	return smuxlose (reason, what, fmt);
 }
 #endif
@@ -476,9 +448,7 @@ static char *errors_down[] = {
 	"inProgress"
 };
 
-char   *smux_error (i)
-integer	i;
-{
+char   *smux_error (integer i) {
 	int	    j;
 	char  **ap;
 	static char buffer[BUFSIZ];
