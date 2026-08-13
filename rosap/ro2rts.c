@@ -15,16 +15,17 @@
 
 #include <stdio.h>
 #include "ROS-types.h"
+#include "manifest.h"
 #include "ropkt.h"
 #include "tailor.h"
 
-static int	rtslose ();
-static void rtsINDICATIONser ();
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta);
+static int rtsINDICATIONser (int sd, struct RtSAPindication *rti);
 
-static int  doRTSturn ();
-static int  doRTSclose ();
-static int  doRTSfinish ();
-static int  doRTSabort ();
+static int doRTSturn (struct assocblk *acb, struct RtSAPturn *rtu, struct RoSAPindication *roi);
+static int doRTSclose (struct assocblk *acb, struct RtSAPclose *rtc, struct RoSAPindication *roi);
+static int doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi);
+static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi);
 
 /*    bind underlying service */
 
@@ -47,7 +48,7 @@ int RoRtService (struct assocblk *acb, struct RoSAPindication *roi) {
 
 /*    define vectors for INDICATION events */
 
-#define	e(i)	(indication ? (i) : 0)
+#define	e(i)	(indication ? (i) : NULL)
 
 int ro2rtsasync (
 	struct assocblk *acb,
@@ -281,7 +282,7 @@ static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSA
 	return NOTOK;
 }
 
-static void rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
+static int rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	int     result;
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
@@ -289,7 +290,7 @@ static void rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	struct RoSAPindication *roi = &rois;
 
 	if ((acb = findacblk (sd)) == NULL)
-		return;
+		return NOTOK;
 
 	handler = acb -> acb_rosindication;
 
@@ -324,6 +325,7 @@ static void rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 
 	if (result != OK)
 		(*handler) (sd, roi);
+	return result;
 }
 
 int ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi) {

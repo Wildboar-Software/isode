@@ -8,15 +8,15 @@
 
 #define	doSSabort	ss2rtsabort
 
-static void ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
-		ssREPORTser (),	ssFINISHser (), ssABORTser ();
+static void ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),
+		ssREPORTser (int sd, struct SSAPreport *sp),	ssFINISHser (int sd, struct SSAPfinish *sf), ssABORTser (int sd, struct SSAPabort *sa);
 
-static int  doSSdata ();
-static int  doSSfinish ();
-static int  doSSreport ();
-static int  doSSactivity ();
-static int  doSSsync ();
-static int  doSStoken ();
+static int  doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti);
+static int  doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti);
+static int  doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti);
+static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti);
+static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti);
+static int  doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti);
 
 int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result,
@@ -406,7 +406,7 @@ int rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindica
 
 /*    protocol-level abort */
 
-int rt2sslose (struct assocblk *acb, int result) {
+void rt2sslose (struct assocblk *acb, int result) {
 	int     len;
 	char   *base;
 	PE	    pe;

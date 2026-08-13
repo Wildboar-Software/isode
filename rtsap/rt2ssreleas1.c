@@ -4,7 +4,7 @@
 #include <signal.h>
 #include "rtpkt.h"
 
-static int  RtEndRequestAux ();
+static int  RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti);
 
 /*    RT-END.REQUEST (X.410 CLOSE.REQUEST) */
 
@@ -14,15 +14,10 @@ int RtEndRequest (int sd, struct RtSAPindication *rti) {
 	struct assocblk   *acb;
 
 	missingP (rti);
-
 	smask = sigioblock ();
-
 	rtsapPsig (acb, sd);
-
 	result = RtEndRequestAux (acb, rti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -49,7 +44,6 @@ static int RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti) {
 	if (SRelRequest (acb -> acb_fd, NULLCP, 0, NOTOK, sr, si) == NOTOK) {
 		if (sa -> sa_peer)
 			return ss2rtsabort (acb, sa, rti);
-
 		result = ss2rtslose (acb, rti, "SRelRequest", sa);
 	} else if (!sr -> sr_affirmative)
 		result = rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
@@ -58,9 +52,7 @@ static int RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti) {
 		acb -> acb_fd = NOTOK;
 		result = OK;
 	}
-
 	acb -> acb_flags &= ~ACB_STICKY;
 	freeacblk (acb);
-
 	return result;
 }

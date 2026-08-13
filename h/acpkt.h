@@ -187,9 +187,9 @@ struct assocblk {
 	int (*acb_gturnrequest)(struct assocblk *acb, struct RtSAPindication *rti);	/* RT-TURN-GIVE.REQUEST */
 	int (*acb_transferequest)(struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti);	/* RT-TRANSER.REQUEST */
 	int (*acb_rtwaitrequest)(struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti);	/* RT-WAIT.REQUEST */
-	int (*acb_rtsetindications)(struct assocblk *acb, IFP indication, struct RtSAPindication *rti);/* define vectors for INDICATION events */
+	int (*acb_rtsetindications)(struct assocblk *acb, int (*indication)(int sd, struct RtSAPindication *rti), struct RtSAPindication *rti); /* define vectors for INDICATION events */
 	int (*acb_rtselectmask)(struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti);	/* map association descriptors for select () */
-	int (*acb_rtpktlose)(struct assocblk *acb, int result);	/* protocol-level abort */
+	void (*acb_rtpktlose)(struct assocblk *acb, int result);	/* protocol-level abort */
 
 	int	    acb_priority;	/* priority of please turn */
 	struct AcSAPfinish acb_finish;

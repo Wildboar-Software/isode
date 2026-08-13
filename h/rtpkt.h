@@ -128,9 +128,25 @@ int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
     (acb) -> acb_rtpktlose = rt2pslose; \
 }
 
-int	acs2rtslose (), acs2rtsabort (), ps2rtslose ();
-int	rt2pspturn (), rt2psgturn (), rt2pstrans (), rt2pswait (),
-	rt2psasync (), rt2psmask (), rt2pslose ();
+int ps2rtslose (
+	struct assocblk *acb,
+	struct RtSAPindication *rti,
+	char *event,
+	struct PSAPabort *pa
+);
+int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti);
+int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca);
+void rt2pslose (struct assocblk *acb, int result);
+int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti);
+int rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti);
+int rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti);
+int rt2pswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti);
+int rt2psasync (
+	struct assocblk *acb,
+	int (*indication)(int sd, struct RtSAPindication *rti),
+	struct RtSAPindication *rti
+);
+int rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti);
 
 #define	SetSS2RtService(acb) \
 { \
@@ -145,7 +161,8 @@ int	rt2pspturn (), rt2psgturn (), rt2pstrans (), rt2pswait (),
 
 int	ss2rtslose (), ss2rtsabort ();
 int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
-	rt2ssasync (), rt2ssmask (), rt2sslose ();
+	rt2ssasync (), rt2ssmask ();
+void rt2sslose (struct assocblk *acb, int result);
 
 /* RTORQ apdu */
 #define	RTORQ_CKPOINT	0	/* checkpointSize tag */

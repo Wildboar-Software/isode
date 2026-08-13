@@ -67,23 +67,21 @@ int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 
 /* RO-BIND.RESULT */
 
-int	  RoBindResult (sd, context, respondtitle, respondaddr, ctxlist,
-					defctxresult, prequirements, srequirements, isn, settings,
-					ref, bindrespe, rni)
-int			  sd;
-OID			  context;
-AEI			  respondtitle;
-struct PSAPaddr		* respondaddr;
-struct PSAPctxlist	* ctxlist;
-int			  defctxresult;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* ref;
-PE			  bindrespe;
-struct RoNOTindication	* rni;
-{
+int	RoBindResult (
+	int sd,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int	defctxresult,
+	int	prequirements,
+	int	srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE bindrespe,
+	struct RoNOTindication *rni
+) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -128,23 +126,21 @@ struct RoNOTindication	* rni;
 
 /* RO-BIND.ERROR */
 
-int	  RoBindError (sd, context, respondtitle,
-				   respondaddr, ctxlist, defctxresult, prequirements,
-				   srequirements, isn, settings, ref, binderrpe, rni)
-int			  sd;
-OID			  context;
-AEI			  respondtitle;
-struct PSAPaddr		* respondaddr;
-struct PSAPctxlist	* ctxlist;
-int			  defctxresult;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* ref;
-PE			  binderrpe;
-struct RoNOTindication	* rni;
-{
+int RoBindError (
+	int sd,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int	defctxresult,
+	int	prequirements,
+	int	srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE binderrpe,
+	struct RoNOTindication *rni
+) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);

@@ -4,7 +4,7 @@
 #include <signal.h>
 #include "rtpkt.h"
 
-static int  RtCloseResponseAux ();
+static int  RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti);
 
 /* RT-CLOSE.RESPONSE */
 

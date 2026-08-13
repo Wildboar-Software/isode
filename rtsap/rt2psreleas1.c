@@ -4,7 +4,7 @@
 #include <signal.h>
 #include "rtpkt.h"
 
-static int  RtCloseRequestAux ();
+static int  RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti);
 
 /* RT-CLOSE.REQUEST */
 
@@ -15,15 +15,10 @@ int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struc
 
 	missingP (acr);
 	missingP (rti);
-
 	smask = sigioblock ();
-
 	rtsapPsig (acb, sd);
-
 	result = RtCloseRequestAux (acb, reason, data, acr, rti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -47,7 +42,6 @@ static int RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct 
 
 	if (data)
 		data -> pe_context = acb -> acb_rtsid;
-
 	acb -> acb_flags &= ~ACB_STICKY;
 	if (AcRelRequest (acb -> acb_fd, reason, &data, data ? 1 : 0, NOTOK, acr, aci)
 			== NOTOK) {
@@ -60,6 +54,5 @@ static int RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct 
 							"other side refused to release association");
 	else
 		result = OK;
-
 	return result;
 }

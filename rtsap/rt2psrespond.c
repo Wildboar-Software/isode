@@ -7,12 +7,7 @@
 
 /* RT-OPEN.INDICATION */
 
-int	RtInit_Aux (vecp, vec, rts, rti, dctx)
-int	vecp;
-char  **vec;
-struct RtSAPstart *rts;
-struct RtSAPindication *rti;
-OID	dctx;
+int	RtInit_Aux (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindication *rti, OID dctx)
 {
 	int	    ctx,
 			i;
@@ -195,18 +190,17 @@ out:
 
 /* RT-OPEN.RESPONSE */
 
-int	RtOpenResponse (sd, status, context, respondtitle, respondaddr,
-					ctxlist, defctxresult, data, rti)
-int	sd,
-	status;
-AEI	respondtitle;
-OID	context;
-struct PSAPaddr *respondaddr;
-struct PSAPctxlist *ctxlist;
-int	defctxresult;
-PE	data;
-struct RtSAPindication *rti;
-{
+int RtOpenResponse (
+	int sd,
+	int status,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int defctxresult,
+	PE data,
+	struct RtSAPindication *rti
+) {
 	int	    result;
 	PE	    pe,
 	 p,

@@ -5,16 +5,21 @@
 #include "rtpkt.h"
 #include "tailor.h"
 
-static void psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
-		psREPORTser (),	psFINISHser (), psABORTser ();
+static void psDATAser (int sd, struct PSAPdata *px);
+static void psTOKENser (int sd, struct PSAPtoken *pt);
+static void psSYNCser (int sd, struct PSAPsync *pn);
+static void psACTIVITYser (int sd, struct PSAPactivity *pv);
+static void psREPORTser (int sd, struct PSAPreport *pp);
+static void psFINISHser (int sd, struct PSAPfinish *pf);
+static void psABORTser (int sd, struct PSAPabort *pa);
 
-static int  doPSdata ();
-static int  doPSabort ();
-static int  doPSfinish ();
-static int  doPSreport ();
-static int  doPSactivity ();
-static int  doPSsync ();
-static int  doPStoken ();
+static int doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti);
+static int doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti);
+static int doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti);
+static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti);
+static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti);
+static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti);
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, struct RtSAPindication *rti);
 
 int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result;
@@ -373,7 +378,7 @@ int rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindica
 
 /*    protocol-level abort */
 
-int rt2pslose (struct assocblk *acb, int result) {
+void rt2pslose (struct assocblk *acb, int result) {
 	PE	    pe;
 	struct AcSAPindication  acis;
 

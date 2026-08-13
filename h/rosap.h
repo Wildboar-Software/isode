@@ -246,7 +246,8 @@ int	RoSelectMask ();	/* map remote operation descriptors for
 				   select() */
 
 int	RoSetService ();	/* bind underlying service */
-int	RoRtService (), RoPService (), RoSService ();
+int RoRtService ();
+int	RoPService (), RoSService ();
 int	RoSetThorn ();
 
 char	*RoErrString ();	/* return RoSAP error code in string form */

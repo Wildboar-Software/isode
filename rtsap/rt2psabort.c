@@ -7,7 +7,7 @@
 #include "tailor.h"
 #include "logger.h"
 
-static int  RtUAbortRequestAux ();
+static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti);
 
 /* RT-U-ABORT.REQUEST */
 
@@ -17,15 +17,10 @@ int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
 	struct assocblk *acb;
 
 	missingP (rti);
-
 	smask = sigioblock ();
-
 	rtsapPsig (acb, sd);
-
 	result = RtUAbortRequestAux (acb, data, rti);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -36,7 +31,6 @@ static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindica
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;
 	struct AcSAPabort *aca = &aci -> aci_abort;
-
 	if (!(acb -> acb_flags & ACB_ACS))
 		return rtsaplose (rti, RTS_OPERATION, NULLCP,
 						  "not an association descriptor for RTS");
@@ -54,14 +48,11 @@ static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindica
 	}
 	pe -> pe_context = acb -> acb_rtsid;
 	/* end RTAB APDU */
-
 	PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTABapdu", 0);
-
 	if ((result = AcUAbortRequest (acb -> acb_fd, &pe, 1, aci)) == NOTOK)
 		acs2rtslose (acb, rti, "AcUAbortRequest", aca);
 	else
 		result = OK;
-
 out:
 	;
 	if (pe) {
@@ -69,6 +60,5 @@ out:
 			pe_extract (pe, data);
 		pe_free (pe);
 	}
-
 	return result;
 }

@@ -6,28 +6,41 @@
 #include "rtpkt.h"
 #include "tailor.h"
 
-static int  RtOpenRequestAux ();
+static int RtOpenRequestAux (
+	int mode,
+	int turn,
+	OID context,
+	AEI callingtitle,
+	AEI calledtitle,
+	struct PSAPaddr *callingaddr,
+	struct PSAPaddr *calledaddr,
+	struct PSAPctxlist *ctxlist,
+	OID defctxname,
+	PE data,
+	struct QOStype *qos,
+	OID tctx,
+	struct RtSAPconnect *rtc,
+	struct RtSAPindication *rti
+);
 
 /* RT-OPEN.REQUEST */
 
-int	RtOpenRequest2 (mode, turn, context, callingtitle, calledtitle,
-					callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
-					rtc, rti)
-int	mode,
-	turn;
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		   *calledaddr;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-PE	data;
-struct QOStype *qos;
-OID	tctx;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
-{
+int	RtOpenRequest2 (
+	int mode,
+	int turn,
+	OID context,
+	AEI callingtitle,
+	AEI calledtitle,
+	struct PSAPaddr *callingaddr,
+	struct PSAPaddr *calledaddr,
+	struct PSAPctxlist *ctxlist,
+	OID defctxname,
+	PE data,
+	struct QOStype *qos,
+	OID tctx,
+	struct RtSAPconnect *rtc,
+	struct RtSAPindication *rti
+) {
 	SBV	    smask;
 	int result;
 
@@ -72,24 +85,22 @@ struct RtSAPindication *rti;
 	return result;
 }
 
-static int  RtOpenRequestAux (mode, turn, context, callingtitle, calledtitle,
-							  callingaddr, calledaddr, ctxlist, defctxname, data, qos, tctx,
-							  rtc, rti)
-int	mode,
-	turn;
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		   *calledaddr;
-struct PSAPctxlist *ctxlist;
-OID	defctxname;
-PE	data;
-struct QOStype *qos;
-OID	tctx;
-struct RtSAPconnect *rtc;
-struct RtSAPindication *rti;
-{
+static int RtOpenRequestAux (
+	int mode,
+	int turn,
+	OID context,
+	AEI callingtitle,
+	AEI calledtitle,
+	struct PSAPaddr *callingaddr,
+	struct PSAPaddr *calledaddr,
+	struct PSAPctxlist *ctxlist,
+	OID defctxname,
+	PE data,
+	struct QOStype *qos,
+	OID tctx,
+	struct RtSAPconnect *rtc,
+	struct RtSAPindication *rti
+) {
 	int    i;
 	int	    result,
 			requirements,

@@ -10,7 +10,18 @@
 
 /*    SERVER only */
 
-int RtExec (struct SSAPstart *ss, struct RtSAPindication *rti, char *arg1, char *arg2, IFP hook, IFP setperms) {
+int RtExec (
+	struct SSAPstart *ss,
+	struct RtSAPindication *rti,
+	char *arg1,
+	char *arg2,
+	IFP hook,
+#ifndef	IAE
+	int (*setperms) (struct isoservent *)
+#else
+	int (*setperms) (struct IAEntry *)
+#endif
+) {
 	int     result,
 			result2;
 	struct isoservent *is;
