@@ -44,13 +44,13 @@ struct	udpstat {
 struct inpcb {
 	struct	inpcb *inp_next;
 	struct	in_addr inp_faddr;	/* foreign host table entry */
-	u_short	inp_fport;		/* foreign port */
+	uint16_t	inp_fport;		/* foreign port */
 	struct	in_addr inp_laddr;	/* local host table entry */
-	u_short	inp_lport;		/* local port */
+	uint16_t	inp_lport;		/* local port */
 };
 struct socket {
 	struct	sockbuf {
-		u_short	sb_cc;		/* actual chars in buffer */
+		uint16_t	sb_cc;		/* actual chars in buffer */
 	} so_rcv, so_snd;
 };
 #endif

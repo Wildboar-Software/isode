@@ -3,6 +3,8 @@
 #ifndef	_TAILOR_
 #define	_TAILOR_
 
+#include <stdint.h>
+
 #ifndef	_LOGGER_
 #include "logger.h"
 #endif
@@ -74,8 +76,8 @@ extern char     x25_strip_dnic;
 extern char     *x25_dnic_prefix[];
 
 extern u_char   reverse_charge;
-extern u_short  recvpktsize;
-extern u_short  sendpktsize;
+extern uint16_t  recvpktsize;
+extern uint16_t  sendpktsize;
 extern u_char   recvwndsize;
 extern u_char   sendwndsize;
 extern u_char   recvthruput;
@@ -84,7 +86,7 @@ extern u_char   cug_req;
 extern u_char   cug_index;
 extern u_char   fast_select_type;
 extern u_char   rpoa_req;
-extern u_short  rpoa;
+extern uint16_t  rpoa;
 
 extern LLog *x25_log, _x25_log;
 

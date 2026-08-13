@@ -14,6 +14,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "ROS-types.h"
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
@@ -61,7 +62,7 @@ congest:
 		goto out;
 	}
 	if (is = getisoserventbyport ("rosap",
-								  (u_short) htons ((u_short) pcon -> pUserData -> applicationProtocol))) {
+								  (uint16_t) htons ((uint16_t) pcon -> pUserData -> applicationProtocol))) {
 		*is -> is_tail++ = arg1;
 		*is -> is_tail++ = arg2;
 		*is -> is_tail = NULL;

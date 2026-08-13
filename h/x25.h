@@ -16,6 +16,8 @@
 #ifndef _X25_
 #define _X25_
 
+#include <stdint.h>
+
 /*
  *
  * #defines for generic addressing & TSEL encoded addresses.
@@ -75,7 +77,7 @@ typedef       struct facility_dB_S {
 #define CCITT_CUG             1
 #define CCITT_CUG_EXTENDED    3
 	u_char    t_03_sel;
-	u_short   t_03;
+	uint16_t   t_03;
 	/* closed user group in 2- or 4-digit BCD               */
 
 #define REQ_CHARGE_INF                1
@@ -92,11 +94,11 @@ typedef       struct facility_dB_S {
 	/* called line address modified notification            */
 #define CCITT_OUTCUG_EXTENDED 3
 	u_char    t_09_sel;
-	u_short   t_09;
+	uint16_t   t_09;
 	/* closed user group in 2- or 4-digit BCD               */
 
 	u_char    t_41_sel;
-	u_short   t_41;
+	uint16_t   t_41;
 	/* bilateral closed user group in 4-digit BCD           */
 
 	u_char    t_42 [2];
@@ -109,11 +111,11 @@ typedef       struct facility_dB_S {
 
 #define CCITT_RPOA            1
 	u_char    t_44_sel;
-	u_short   t_44;
+	uint16_t   t_44;
 	/* RPOA transit number                                  */
 
 	u_char    t_49_sel;
-	u_short   t_49;
+	uint16_t   t_49;
 	/* Transit delay selection and indication               */
 
 	u_char    *t_c1;

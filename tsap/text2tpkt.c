@@ -151,12 +151,12 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_dstref = htons((u_short)data);
+		t -> t_cr.cr_dstref = htons((uint16_t)data);
 		printf("Source Reference [%04x]: ", data = ntohs(t -> t_cr.cr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_srcref = htons ((u_short)data);
+		t -> t_cr.cr_srcref = htons ((uint16_t)data);
 		printf("Class/Options [%02x]: ", data = t-> t_cr.cr_class);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
@@ -172,7 +172,7 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_options = htons((u_short)data);
+		t -> t_cr.cr_options = htons((uint16_t)data);
 		printf("Alternate classes [%02x]: ",
 			   data = t -> t_cr.cr_alternate);
 		fflush(stdout);
@@ -192,12 +192,12 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dr.dr_dstref = htons((u_short)data);
+		t -> t_dr.dr_dstref = htons((uint16_t)data);
 		printf("Source Reference [%04x]: ", data = ntohs(t -> t_dr.dr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dr.dr_srcref = htons((u_short)data);
+		t -> t_dr.dr_srcref = htons((uint16_t)data);
 		printf("Disconnect Reason [%02x]: ", data = t-> t_dr.dr_reason);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
@@ -230,7 +230,7 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_er.er_dstref = htons((u_short)data);
+		t -> t_er.er_dstref = htons((uint16_t)data);
 		printf("Reject Cause [%02x]: ", data = t-> t_er.er_reject);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
@@ -249,13 +249,13 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_dstref = htons((u_short)data);
+		t -> t_cr.cr_dstref = htons((uint16_t)data);
 		printf("Octets 5-6 [%04x]: ",
 			   data = ntohs(t -> t_cr.cr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_srcref = htons((u_short)data);
+		t -> t_cr.cr_srcref = htons((uint16_t)data);
 		printf("Octet 7 [%02x]: ", data = t-> t_cr.cr_class);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
@@ -269,12 +269,12 @@ void text2tpkt (struct tsapkt *t) {
 	fflush(stdout);
 	fgets(buffer, sizeof buffer, stdin);
 	sscanf(buffer, "%d", &data);
-	t -> t_calling = htons((u_short)data);
+	t -> t_calling = htons((uint16_t)data);
 	printf("Called TSAP ID [%d]: ",
 		   ntohs (t -> t_called));
 	fflush(stdout);
 	fgets(buffer, sizeof buffer, stdin);
 	sscanf(buffer, "%d", &data);
-	t -> t_called = htons((u_short)data);
+	t -> t_called = htons((uint16_t)data);
 #endif
 }

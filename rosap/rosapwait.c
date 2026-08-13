@@ -1,16 +1,7 @@
 /* rosapwait.c - ROPM: wait for an indication */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

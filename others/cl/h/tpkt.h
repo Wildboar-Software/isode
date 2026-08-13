@@ -1,6 +1,7 @@
 /* tpkt.h - include file for transport providers (TS-PROVIDER) */
 
 #ifndef	_TSAP_
+#include <stdint.h>
 #include "tsap.h"		/* definitions for TS-USERs */
 
 #ifdef HULA
@@ -115,7 +116,7 @@ struct tsapblk {
 	int     tb_fd;		/* file descriptor */
 
 #ifdef HULA
-	u_short tb_flags;           /* our state...expanded for hula */
+	uint16_t tb_flags;           /* our state...expanded for hula */
 #else
 	char    tb_flags;		/* our state */
 #endif
@@ -143,8 +144,8 @@ struct tsapblk {
 
 	struct tsapkt *tb_retry;	/* initial tpkt */
 
-	u_short tb_srcref;		/* source reference */
-	u_short tb_dstref;		/* destination reference */
+	uint16_t tb_srcref;		/* source reference */
+	uint16_t tb_dstref;		/* destination reference */
 
 	int	    tb_tsdusize;	/* maximum TSDU size */
 	int	    tb_tpduslop;	/* .. */
@@ -218,7 +219,7 @@ struct tsapkt {
 
 		u_char    pk_rsrvd;
 
-		u_short   pk_length;
+		uint16_t   pk_length;
 #define	TPKT_MAXLEN	0xffff
 	}       t_pkthdr;
 #define	t_vrsn		t_pkthdr.pk_vrsn
@@ -265,8 +266,8 @@ struct tsapkt {
 		union {
 			struct {
 				/* FIXED part */
-				u_short   un_cr_dstref;
-				u_short   un_cr_srcref;
+				uint16_t   un_cr_dstref;
+				uint16_t   un_cr_srcref;
 
 				u_char    un_cr_class;
 #define	CR_CLASS(t)	((t) -> t_cr.cr_class & 0xf0)
@@ -287,7 +288,7 @@ struct tsapkt {
 
 				u_char    un_cr_tpdusize;
 
-				u_short	  un_cr_options;
+				uint16_t	  un_cr_options;
 
 				u_char	  un_cr_alternate;
 			}       un_cr;
@@ -309,8 +310,8 @@ struct tsapkt {
 
 			struct {
 				/* FIXED part */
-				u_short   un_dr_dstref;
-				u_short   un_dr_srcref;
+				uint16_t   un_dr_dstref;
+				uint16_t   un_dr_srcref;
 				u_char    un_dr_reason;
 			}       un_dr;
 #define	dr_dstref	un_dr_dstref
@@ -337,7 +338,7 @@ struct tsapkt {
 
 			struct {
 				/* FIXED part */
-				u_short	   un_er_dstref;
+				uint16_t	   un_er_dstref;
 				u_char	   un_er_reject;
 #define	ER_REJ_NOTSPECIFIED	0x00	/* Reason not specified */
 #define	ER_REJ_CODE		0x01	/* Invalid parameter code */

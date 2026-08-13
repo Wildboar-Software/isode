@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdint.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "isoservent.h"
@@ -88,7 +89,7 @@ static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *calle
 		}
 		if (calling -> pa_selectlen == 0) {
 			calling -> pa_port =
-				htons ((u_short) (0x8000 | (getpid () & 0x7fff)));
+				htons ((uint16_t) (0x8000 | (getpid () & 0x7fff)));
 			calling -> pa_selectlen = sizeof calling -> pa_port;
 		}
 	}

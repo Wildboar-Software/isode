@@ -15,6 +15,7 @@
 
 #include "general.h"
 #include <sys/param.h>
+#include <stdint.h>
 #ifdef SVR4_UCB
 #include <termio.h>
 #else
@@ -109,7 +110,7 @@ int hookup(char *host, int port) {
 		goto bad;
 	}
 	inaddr_copy (hp, &hisctladdr);
-	hisctladdr.sin_port = htons ((u_short) port);
+	hisctladdr.sin_port = htons ((uint16_t) port);
 	if (connect(s, (struct sockaddr *)&hisctladdr, sizeof (hisctladdr)) < 0) {
 		sprintf(ftp_error,"ftp: connect %s",
 				strerror(errno));

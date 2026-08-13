@@ -1,16 +1,7 @@
 /* rosaperror.c - return RoSAP error code in string form */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

@@ -1,16 +1,7 @@
 /* rosapasync.c - ROPM: set asynchronous events */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

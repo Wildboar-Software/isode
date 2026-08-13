@@ -1,14 +1,8 @@
-/* 
 
-/*
- *  
- *
- *
- *
- */
 #include "ntp-config.h"
 
 #include <stdio.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/param.h>
 #include <sys/uio.h>
@@ -222,8 +216,8 @@ struct l_fixedpt {
 };
 
 struct s_fixedpt {
-	u_short int_part;
-	u_short fraction;
+	uint16_t int_part;
+	uint16_t fraction;
 };
 
 /*  =================  Table 3.3. Packet Variables   ================= */
@@ -407,8 +401,8 @@ struct sysdata {			/* procedure */
 struct clockinfo {
 	u_long net_address;
 	u_long my_address;
-	u_short port;
-	u_short flags;
+	uint16_t port;
+	uint16_t flags;
 	u_long pkt_sent;
 	u_long pkt_rcvd;
 	u_long pkt_dropped;
@@ -420,7 +414,7 @@ struct clockinfo {
 
 	u_char hpoll;
 	u_char filler1;
-	u_short reach;
+	uint16_t reach;
 
 	long	estdisp;			/* scaled by 1000 */
 	long	estdelay;			/* in milliseconds */

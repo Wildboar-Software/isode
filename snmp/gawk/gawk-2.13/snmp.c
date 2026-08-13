@@ -1,6 +1,7 @@
 /* snmp.c - SNMP changes for gawk */
 
 #ifdef	SNMP
+#include <stdint.h>
 #include "awk.h"
 #ifdef	HUGE
 #undef	HUGE
@@ -1699,7 +1700,7 @@ got_host:
 	if (snmp_portno == 0)
 		snmp_portno = (sp = getservbyname ("snmp", "udp"))
 					  ? sp -> s_port
-					  : htons ((u_short) 161);
+					  : htons ((uint16_t) 161);
 
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp -> h_addrtype;

@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "spkt.h"
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
@@ -374,7 +375,7 @@ u_char  settings;
 static	type_tsdu (fp, rw, init, resp)
 FILE   *fp;
 char   *rw;
-u_short	init,
+uint16_t	init,
 		resp;
 {
 	fprintf (fp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",

@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #define	LPP
 #include "PS-types.h"
@@ -116,7 +117,7 @@ int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi) {
 
 	if (cp = index (domain1, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
@@ -129,7 +130,7 @@ int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi) {
 
 	if (cp = index (domain2, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 	if ((pb -> pb_stream = ps_alloc (dg_open)) == NULLPS

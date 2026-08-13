@@ -23,6 +23,8 @@
 
 #if 	defined(SOCKETS) && !defined(TLI_TCP)
 
+#include <stdint.h>
+
 /* For real networking, nothing is better than 4BSD! */
 
 int start_tcp_client (struct sockaddr_in *sock, int priv) {
@@ -42,7 +44,7 @@ int start_tcp_client (struct sockaddr_in *sock, int priv) {
 		goto got_socket;
 
 	for (port = IPPORT_RESERVED - priv;; priv ? port-- : port++) {
-		sock -> sin_port = htons ((u_short) port);
+		sock -> sin_port = htons ((uint16_t) port);
 
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			break;
@@ -119,7 +121,7 @@ int start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 	}
 
 	for (port = IPPORT_RESERVED;; port++) {
-		sock -> sin_port = htons ((u_short) port);
+		sock -> sin_port = htons ((uint16_t) port);
 
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			break;
@@ -300,7 +302,7 @@ int start_tcp_client (struct sockaddr_in *sock, int priv) {
 	}
 
 	for (port = IPPORT_RESERVED - priv;; priv ? port-- : port++) {
-		sock -> sin_port = htons ((u_short) port);
+		sock -> sin_port = htons ((uint16_t) port);
 
 		if ((sd = socket (SOCK_STREAM, 0, (struct sockaddr *) sock,
 						  SO_KEEPALIVE)) != NOTOK)
@@ -337,7 +339,7 @@ int start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 	}
 
 	for (port = IPPORT_RESERVED;; port++) {
-		sock -> sin_port = htons ((u_short) port);
+		sock -> sin_port = htons ((uint16_t) port);
 
 		if ((sd = socket (SOCK_STREAM, 0, (struct sockaddr *) sock,
 						  SO_ACCEPTCONN | SO_KEEPALIVE | opt1 | opt2)) != NOTOK)
@@ -532,7 +534,7 @@ getservbyname (char *name, char *proto) {
 				&& strcmp (proto, s -> s_proto) == 0) {
 			if (s -> s_aliases == NULL) {
 				s -> s_aliases = &empty;
-				s -> s_port = htons ((u_short) s -> s_port);
+				s -> s_port = htons ((uint16_t) s -> s_port);
 			}
 
 			return s;

@@ -1,6 +1,7 @@
 /* susaptest.c - test out -lsusap for session unit data service  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include <ctype.h>
 #include "spkt.h"
 #include "ssap.h"
@@ -26,7 +27,7 @@ int main (int argc, char **argv, char **envp) {
 	struct udvec uvs[2];
 	struct udvec *uv;
 	int  cc, result, data, mode;
-	u_short  pattern;
+	uint16_t  pattern;
 	struct tsapblk *tb;
 	struct SuSAPstart sunitdata;
 	struct SuSAPstart *sud = &sunitdata;

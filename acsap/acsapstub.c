@@ -14,6 +14,7 @@
 
 #include <ctype.h>
 #include <string.h>
+#include <stdint.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "internet.h"
@@ -151,7 +152,7 @@ str2aei_stub (char *designator, char *qualifier) {
 			struct TSAPaddr *ta;
 
 			if (tcp_port) {
-				na -> na_port = (u_short) tcp_port;
+				na -> na_port = (uint16_t) tcp_port;
 				na -> na_tset = NA_TSET_TCP;
 
 				if (udp_port
@@ -165,11 +166,11 @@ str2aei_stub (char *designator, char *qualifier) {
 					ua -> na_community = ts_comm_tcp_default;
 					strncpy (ua -> na_domain, na -> na_domain,
 							 sizeof ua -> na_domain);
-					ua -> na_port = (u_short) udp_port;
+					ua -> na_port = (uint16_t) udp_port;
 					ua -> na_tset = NA_TSET_UDP;
 				}
 			} else if (udp_port) {
-				na -> na_port = (u_short) udp_port;
+				na -> na_port = (uint16_t) udp_port;
 				na -> na_tset = NA_TSET_UDP;
 			}
 		}
@@ -222,7 +223,7 @@ static int lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
 		strncpy (na -> na_domain, designator, sizeof na -> na_domain);
-		na -> na_port = (u_short) tcp_port;
+		na -> na_port = (uint16_t) tcp_port;
 		na -> na_tset = NA_TSET_TCP;
 		na++;
 	}
@@ -230,7 +231,7 @@ static int lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 		na -> na_stack = NA_TCP;
 		na -> na_community = ts_comm_tcp_default;
 		strncpy (na -> na_domain, designator, sizeof na -> na_domain);
-		na -> na_port = (u_short) udp_port;
+		na -> na_port = (uint16_t) udp_port;
 		na -> na_tset = NA_TSET_UDP;
 		na++;
 	}

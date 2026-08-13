@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "imagesbr.h"
 #include "internet.h"
 #include <X11/Xlib.h>
@@ -445,7 +446,7 @@ int startsocket (int portno) {
 	struct sockaddr_in *isock = &in_socket;
 
 	isock -> sin_family = AF_INET;
-	isock -> sin_port = htons ((u_short) portno);
+	isock -> sin_port = htons ((uint16_t) portno);
 	isock -> sin_addr.s_addr = INADDR_ANY;
 
 	if ((sd = socket (AF_INET, SOCK_DGRAM, 0)) == NOTOK)

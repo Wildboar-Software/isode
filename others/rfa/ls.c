@@ -18,6 +18,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "general.h"
@@ -26,7 +27,7 @@
 #include "rfainfo.h"
 
 struct pair {
-	u_short	val;
+	uint16_t	val;
 	char	*s;
 };
 
@@ -41,7 +42,7 @@ static struct pair facc[] = { { 01, "--x" }, { 02, "-w-" }, { 03, "-wx" },
 };
 
 static void mode2str (int m, char *mstr) {
-	u_short v;
+	uint16_t v;
 	struct pair *pp;
 
 	v = m & S_IFMT;
@@ -50,7 +51,7 @@ static void mode2str (int m, char *mstr) {
 			strcat(mstr, pp->s);
 			break;
 		}
-	v = (u_short)(m & 0700) >> 6;
+	v = (uint16_t)(m & 0700) >> 6;
 	for (pp = facc; pp->s; pp++)
 		if (v == pp->val) {
 			strcat(mstr, pp->s);
@@ -58,7 +59,7 @@ static void mode2str (int m, char *mstr) {
 		}
 	if (m & S_ISUID)
 		*(mstr + strlen(mstr) - 1) = 's';
-	v = (u_short)(m & 070) >> 3;
+	v = (uint16_t)(m & 070) >> 3;
 	for (pp = facc; pp->s; pp++)
 		if (v == pp->val) {
 			strcat(mstr, pp->s);

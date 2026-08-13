@@ -8,6 +8,8 @@
 #ifndef	_RoSAP_
 #define	_RoSAP_
 
+#include <stdint.h>
+
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -24,7 +26,7 @@
 struct RoSAPaddr {		/* RoSAP address (old-style)*/
 	struct SSAPaddr roa_addr;
 
-	u_short	roa_port;
+	uint16_t	roa_port;
 };
 #define	NULLRoA			((struct RoSAPaddr *) 0)
 
@@ -35,7 +37,7 @@ struct RoSAPstart {		/* RO-BEGIN.INDICATION */
 
 	struct RoSAPaddr ros_initiator;/* unique identifier */
 
-	u_short ros_port;		/* application number */
+	uint16_t ros_port;		/* application number */
 
 	PE	    ros_data;		/* initial DATA from peer */
 };

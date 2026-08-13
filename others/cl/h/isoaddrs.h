@@ -3,6 +3,8 @@
 #ifndef	_ISOADDRS_
 #define	_ISOADDRS_
 
+#include <stdint.h>
+
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -54,8 +56,8 @@ struct NSAPaddr {
 
 		struct na_tcp {			/* emulation via RFC1006 */
 			char    na_tcp_domain[NASIZE];/* e.g., nrtc.northrop.com */
-			u_short na_tcp_port;	/* non-standard TCP port */
-			u_short na_tcp_tset;	/* transport set */
+			uint16_t na_tcp_port;	/* non-standard TCP port */
+			uint16_t na_tcp_tset;	/* transport set */
 #define	NA_TSET_TCP	0x0001		/*   .. TCP */
 #define	NA_TSET_UDP	0x0002	        /*   .. UDP */
 		}               un_na_tcp;
@@ -117,7 +119,7 @@ struct TSAPaddr {
 	union {				/* TSAP selector */
 		char    ta_un_selector[TSSIZE];
 
-		u_short ta_un_port;
+		uint16_t ta_un_port;
 	}               un_ta;
 #define	ta_selector	un_ta.ta_un_selector
 #define	ta_port		un_ta.ta_un_port
@@ -133,7 +135,7 @@ struct SSAPaddr {
 	union {				/* SSAP selector */
 		char    sa_un_selector[SSSIZE];
 
-		u_short sa_un_port;
+		uint16_t sa_un_port;
 	}               un_sa;
 #define	sa_selector	un_sa.sa_un_selector
 #define	sa_port		un_sa.sa_un_port
@@ -149,7 +151,7 @@ struct PSAPaddr {
 	union {				/* PSAP selector */
 		char    pa_un_selector[PSSIZE];
 
-		u_short pa_un_port;
+		uint16_t pa_un_port;
 	}               un_pa;
 #define	pa_selector	un_pa.pa_un_selector
 #define	pa_port		un_pa.pa_un_port

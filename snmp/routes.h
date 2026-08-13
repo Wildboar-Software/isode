@@ -33,8 +33,8 @@
 struct rtentry {
 	struct	sockaddr rt_dst;	/* key */
 	struct	sockaddr rt_gateway;	/* value */
-	u_short	rt_flags;		/* up/down?, host/net */
-	u_short	rt_refcnt;		/* # held references */
+	uint16_t	rt_flags;		/* up/down?, host/net */
+	uint16_t	rt_refcnt;		/* # held references */
 	u_long	rt_use;			/* raw # packets forwarded */
 	struct	ifnet *rt_ifp;		/* the answer: interface to use */
 };

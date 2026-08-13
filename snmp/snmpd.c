@@ -428,7 +428,7 @@ do_clts:
 		lsock -> sin_family = AF_INET;
 		lsock -> sin_port = (sp = getservbyname ("smux", "tcp"))
 							? sp -> s_port
-							: htons ((u_short) 199);
+							: htons ((uint16_t) 199);
 
 		if (smux_enabled) {
 			if ((smux = start_tcp_server (lsock, SOMAXCONN, 0, 0)) == NOTOK)
@@ -2487,7 +2487,7 @@ static void arginit (char **vec) {
 	tcp_na -> na_community = ts_comm_tcp_default;
 	tcp_na -> na_domain[0] = 0;
 #ifndef	SNMPT
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((u_short) 161);
+	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 161);
 	udport = tcp_na -> na_port;
 #endif
 	tz -> ta_naddr = 1;
@@ -2497,9 +2497,9 @@ static void arginit (char **vec) {
 	if ((sp = getservbyname ("snmp-trap", "udp")) == NULL)
 		advise (LLOG_EXCEPTIONS, NULLCP, "udp/snmp-trap: unknown service");
 #ifndef	SNMPT
-	traport = sp ? sp -> s_port : htons ((u_short) 162);
+	traport = sp ? sp -> s_port : htons ((uint16_t) 162);
 #else
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((u_short) 162);
+	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 162);
 #endif
 #endif
 
@@ -2601,7 +2601,7 @@ static void arginit (char **vec) {
 						|| *ap == '-'
 						|| (port = atoi (ap)) <= 0)
 					adios (NULLCP, "usage: %s -p portno", myname);
-				tcp_na -> na_port = htons ((u_short) port);
+				tcp_na -> na_port = htons ((uint16_t) port);
 				continue;
 #endif
 

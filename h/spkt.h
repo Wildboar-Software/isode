@@ -10,6 +10,7 @@
  *
  */
 
+#include <stdint.h>
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */
 #endif
@@ -422,13 +423,13 @@ struct ssapblk {
     u_char  sb_options;		/* connect options */
     u_char  sb_settings;	/* tokens settings on connect */
 
-    u_short sb_tsdu_us;		/* our max TSDU size */
-    u_short sb_tsdu_them;	/* their max TSDU size */
+    uint16_t sb_tsdu_us;		/* our max TSDU size */
+    uint16_t sb_tsdu_them;	/* their max TSDU size */
 #define	BAD_TSDU_SIZE(s)	((s) ? (s) < DT_MINSIZE : 0)
 #define	GET_TSDU_SIZE(s)	((s) < DT_MINSIZE ? 0 : (s))
 
     u_char  sb_owned;		/* tokens we own */
-    u_short sb_requirements;	/* functional units selected */
+    uint16_t sb_requirements;	/* functional units selected */
 
     struct SSAPaddr sb_initiating;	/* initiator */
     struct SSAPaddr sb_responding;	/* responder */
@@ -528,8 +529,8 @@ struct ssapkt {
 #define	CR_OPT_MASK	CR_OPT_EXTD
 
 #define	SMASK_CN_TSDU	0x0004
-		u_short	un_cn_tsdu_init;
-		u_short	un_cn_tsdu_resp;
+		uint16_t	un_cn_tsdu_init;
+		uint16_t	un_cn_tsdu_resp;
 
 #define	SMASK_CN_VRSN	0x0008
 		u_char  un_cn_version;
@@ -546,7 +547,7 @@ struct ssapkt {
 	    u_char	un_ac_token;/* ACCEPT SPDU only */
 
 #define	SMASK_CN_REQ	0x0080
-	    u_short	un_cn_requirements;
+	    uint16_t	un_cn_requirements;
 
 #define	SMASK_CN_CALLING 0x0100
 	    char	un_cn_calling[SSSIZE];
@@ -573,7 +574,7 @@ struct ssapkt {
 #define	RF_DISC_MASK	RF_DISC_RELEASE
 
 #define	SMASK_RF_REQ	0x0004
-	    u_short	un_rf_requirements;
+	    uint16_t	un_rf_requirements;
 
 #define	SMASK_RF_VRSN	0x0008
 	    u_char	un_rf_version;

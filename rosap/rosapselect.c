@@ -1,16 +1,7 @@
 /* rosapselect.c - ROPM: map descriptors */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

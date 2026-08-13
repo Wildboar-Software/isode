@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <unistd.h>
 #include "fred.h"
 #include "internet.h"
@@ -104,9 +105,9 @@ int dish (char *command, int silent) {
 			inaddr_copy (hp, sock);
 
 			if (cp)
-				sock -> sin_port = htons ((u_short) portno);
+				sock -> sin_port = htons ((uint16_t) portno);
 			else if ((sp = getservbyname ("da", "tcp")) == NULL)
-				sock -> sin_port = htons ((u_short) 411);
+				sock -> sin_port = htons ((uint16_t) 411);
 			else
 				sock -> sin_port = sp -> s_port;
 
@@ -128,7 +129,7 @@ int dish (char *command, int silent) {
 			bzero ((char *) sock, sizeof *sock);
 			sock -> sin_family = hp -> h_addrtype;
 			inaddr_copy (hp, sock);
-			sock -> sin_port = htons ((u_short) portno);
+			sock -> sin_port = htons ((uint16_t) portno);
 
 			didbind = 0, boundP = 1;
 			signal (SIGPIPE, SIG_IGN);

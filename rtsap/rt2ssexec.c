@@ -1,6 +1,7 @@
 /* rt2ssexec.c - RTPM: exec */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"
@@ -60,7 +61,7 @@ congest:
 		goto out;
 	}
 	if (is = getisoserventbyport ("rtsap",
-								  (u_short) htons ((u_short) pcon -> pUserData -> applicationProtocol))) {
+								  (uint16_t) htons ((uint16_t) pcon -> pUserData -> applicationProtocol))) {
 		*is -> is_tail++ = arg1;
 		*is -> is_tail++ = arg2;
 		*is -> is_tail = NULL;

@@ -8,7 +8,7 @@ static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, u_long ssn);
 static void type_bits (LLog *, char *, char *, u_char,  int,  char *);
 static void type_settings (LLog *, char *, u_char);
-static void type_tsdu (LLog *, char *, u_short,  u_short);
+static void type_tsdu (LLog *, char *, uint16_t,  uint16_t);
 static void type_ref (LLog *lp, char *rw, struct SSAPref *ref);
 static void type_vrsn (LLog *, char *, u_char);
 static void type_reason (LLog *lp, char *rw, int reason);
@@ -343,7 +343,7 @@ static void type_settings (LLog *lp, char *rw, u_char settings) {
 
 #undef	dotoken
 
-static void type_tsdu (LLog *lp, char *rw, u_short init, u_short resp) {
+static void type_tsdu (LLog *lp, char *rw, uint16_t init, uint16_t resp) {
 	ll_printf (lp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 			   rw, init, resp);
 }

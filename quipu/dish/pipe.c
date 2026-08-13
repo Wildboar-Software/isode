@@ -3,6 +3,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <errno.h>
+#include <stdint.h>
 #include "general.h"
 
 #ifdef SOCKETS
@@ -328,7 +329,7 @@ int get_dish_sock (struct sockaddr_in *isock) {
 
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp -> h_addrtype;
-	isock -> sin_port = htons ((u_short) portno);
+	isock -> sin_port = htons ((uint16_t) portno);
 	inaddr_copy (hp, isock);
 
 	return (0);

@@ -3,6 +3,7 @@
 #ifndef	_RtSAP_
 #define	_RtSAP_
 
+#include <stdint.h>
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -17,7 +18,7 @@
 struct RtSAPaddr {		/* RtSAP address (old-style) */
 	struct SSAPaddr rta_addr;
 
-	u_short	rta_port;
+	uint16_t	rta_port;
 };
 #define	NULLRtA			((struct RtSAPaddr *) 0)
 
@@ -34,7 +35,7 @@ struct RtSAPstart {		/* RT-OPEN.INDICATION */
 #define	RTS_INITIATOR	0	/*   the initiator */
 #define	RTS_RESPONDER	1	/*   the responder */
 
-	u_short rts_port;		/* application number */
+	uint16_t rts_port;		/* application number */
 
 	PE	    rts_data;		/* initial DATA from peer */
 

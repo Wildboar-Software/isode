@@ -1,5 +1,3 @@
-lint
-
 /*
  * ntp daemon - based on the 3.4 version but heavily modified for OSI
  * interworking.
@@ -11,6 +9,7 @@ lint
  *
  */
 
+#include <stdint.h>
 #include "manifest.h"
 #include <stdarg.h>
 #include <unistd.h>
@@ -358,10 +357,10 @@ dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 		break;
 	}
 	printf("Synch Dist is %04X.%04X  Synch Dispersion is %04X.%04X\n",
-		   ntohs((u_short) pkt->distance.int_part),
-		   ntohs((u_short) pkt->distance.fraction),
-		   ntohs((u_short) pkt->dispersion.int_part),
-		   ntohs((u_short) pkt->dispersion.fraction));
+		   ntohs((uint16_t) pkt->distance.int_part),
+		   ntohs((uint16_t) pkt->distance.fraction),
+		   ntohs((uint16_t) pkt->dispersion.int_part),
+		   ntohs((uint16_t) pkt->dispersion.fraction));
 	printf("Reference Timestamp is %08lx.%08lx\n",
 		   ntohl(pkt->reftime.int_part),
 		   ntohl(pkt->reftime.fraction));

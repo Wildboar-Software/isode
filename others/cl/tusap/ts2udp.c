@@ -248,6 +248,8 @@ int udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remot
 
 #ifdef EXOS
 
+#include <stdint.h>
+
 int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 {
@@ -359,7 +361,7 @@ int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2)
 
 		for (port = IPPORT_RESERVED ;; port++) {
 
-			sock -> sin_port = htons ((u_short) port);
+			sock -> sin_port = htons ((uint16_t) port);
 
 #ifdef HULADEBUG
 			printf ("\n          creating the local DATAGRAM socket \n");

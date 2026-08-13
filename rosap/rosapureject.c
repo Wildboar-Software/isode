@@ -1,16 +1,7 @@
 /* rosapureject.c - ROPM: user reject */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

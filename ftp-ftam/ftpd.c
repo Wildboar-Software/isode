@@ -37,6 +37,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 /*
 #include <sys/socket.h>
  */
@@ -148,7 +149,7 @@ void main(int argc, char *argv[]) {
 		exit(1);
 	}
 	ctrl_addr.sin_port = sp->s_port;
-	data_source.sin_port = htons(ntohs((u_short) sp->s_port) - 1);
+	data_source.sin_port = htons(ntohs((uint16_t) sp->s_port) - 1);
 #ifdef LINUX
 	signal(SIGPIPE, (__sighandler_t)lostconn);
 #else

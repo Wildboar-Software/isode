@@ -31,6 +31,7 @@
  ****************************************************************
  */
 
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -356,7 +357,7 @@ static arginit (char **vec) {
 						|| *ap == '-'
 						|| (port = atoi (ap)) <= 0)
 					adios (NULLCP, "usage: %s -p portno", myname);
-				tcp_na -> na_port = htons ((u_short) port);
+				tcp_na -> na_port = htons ((uint16_t) port);
 				continue;
 #endif
 

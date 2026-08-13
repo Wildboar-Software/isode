@@ -1,19 +1,11 @@
 /* ro2ssrespond.c - responder */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
@@ -93,7 +85,7 @@ int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication
 	bzero ((char *) ros, sizeof *ros);
 	ros -> ros_sd = acb -> acb_fd;
 	ros -> ros_initiator.roa_addr = ss -> ss_calling;	/* struct copy */
-	ros -> ros_port = htons ((u_short) pconn -> pUserData -> applicationProtocol);
+	ros -> ros_port = htons ((uint16_t) pconn -> pUserData -> applicationProtocol);
 	if (pconn -> pUserData -> member_OACS_2 -> offset
 			== type_OACS_ConnectionData_open)
 		ros -> ros_data = pe_expunge (pe, pconn -> pUserData

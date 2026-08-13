@@ -1,9 +1,9 @@
 /* mpkt.h - defines the report format for management */
-
+#include <stdint.h>
 #include "isoaddrs.h"
 
 struct MReport {
-	u_short type;
+	uint16_t type;
 #define OPREQIN         1
 #define OPREQOUT        2
 #define USERDT          3
@@ -19,7 +19,7 @@ struct MReport {
 #define	ENDLISTEN	13
 
 	long    id;		/* process id */
-	u_short cid;        /* connection fd */
+	uint16_t cid;        /* connection fd */
 
 	union {
 		struct {

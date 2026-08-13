@@ -3,6 +3,7 @@
 #ifdef	CLTS
 #include <string.h>
 #endif
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -85,7 +86,7 @@ int start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 	} else
 		sock -> sin_family = AF_INET;
 	for (port = IPPORT_RESERVED;; port++) {
-		sock -> sin_port = htons ((u_short) port);
+		sock -> sin_port = htons ((uint16_t) port);
 		action ("BIND", sd, (struct sockaddr *) sock);
 		if (bind (sd, (struct sockaddr *) sock, sizeof *sock) != NOTOK)
 			break;

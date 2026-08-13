@@ -1,6 +1,7 @@
 /* rt2ssrespond.c - RTPM: responder */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"
@@ -140,7 +141,7 @@ int RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindicatio
 		rts -> rts_mode = RTS_MONOLOGUE;
 	rts -> rts_turn = acb -> acb_flags & ACB_TURN ? RTS_RESPONDER
 					  : RTS_INITIATOR;
-	rts -> rts_port = htons ((u_short) pcon -> pUserData -> applicationProtocol);
+	rts -> rts_port = htons ((uint16_t) pcon -> pUserData -> applicationProtocol);
 	if (pcon -> pUserData -> member_OACS_2 -> offset
 			== type_OACS_ConnectionData_open)
 		rts -> rts_data = pe_expunge (pe, pcon -> pUserData -> member_OACS_2

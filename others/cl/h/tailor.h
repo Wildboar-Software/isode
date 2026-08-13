@@ -1,5 +1,7 @@
 /* tailor.h - ISODE tailoring */
 
+#include <stdint.h>
+
 #ifndef	_TAILOR_
 #define	_TAILOR_
 
@@ -51,8 +53,8 @@ extern	char   *rosapfile;
 #ifdef	X25
 #ifdef	SUN_X25
 extern  u_char  reverse_charge;
-extern  u_short recvpktsize;
-extern  u_short sendpktsize;
+extern  uint16_t recvpktsize;
+extern  uint16_t sendpktsize;
 extern  u_char  recvwndsize;
 extern  u_char  sendwndsize;
 extern  u_char  recvthruput;
@@ -61,7 +63,7 @@ extern  u_char  cug_req;
 extern  u_char  cug_index;
 extern  u_char  fast_select_type;
 extern  u_char  rpoa_req;
-extern  u_short rpoa;
+extern  uint16_t rpoa;
 #endif
 
 #if	defined(CAMTEC) || defined(CAMTEC_CCL)
@@ -96,7 +98,7 @@ extern	char   *x25_bridge_pid;
 #endif
 
 #if defined(BRIDGE_X25) || defined(X25)
-extern u_short  x25_bridge_port;
+extern uint16_t  x25_bridge_port;
 #endif
 
 #ifdef CONS

@@ -60,6 +60,8 @@ struct TSAPaddr *newtuaddr ();
 
 #ifdef HULA
 
+#include <stdint.h>
+
 /*    STATIC DATA */
 
 #ifdef WITHOUTCONS
@@ -144,8 +146,8 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 			*  Now finish setting up the control block.
 				 */
 
-			tb -> tb_srcref = htons ((u_short) (getpid () & 0xffff));
-			tb -> tb_dstref = htons ((u_short) 0);
+			tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
+			tb -> tb_dstref = htons ((uint16_t) 0);
 
 			/*
 			 *  Set the network address to be only the one we care about.
@@ -319,7 +321,7 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	}
 
 	if (called -> ta_selectlen > 0 && calling -> ta_selectlen == 0) {
-		calling -> ta_port = htons ((u_short) (0x8000 | (getpid () & 0x7fff)));
+		calling -> ta_port = htons ((uint16_t) (0x8000 | (getpid () & 0x7fff)));
 		calling -> ta_selectlen = sizeof calling -> ta_port;
 	}
 
@@ -382,8 +384,8 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 			*  Now finish setting up the control block.
 				 */
 
-			tb -> tb_srcref = htons ((u_short) (getpid () & 0xffff));
-			tb -> tb_dstref = htons ((u_short) 0);
+			tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
+			tb -> tb_dstref = htons ((uint16_t) 0);
 
 			/*
 			 *  Set the network address to be only the one we care about.

@@ -104,16 +104,18 @@ int	d1,
 
 #ifndef	SWABLIB
 
+#include <stdint.h>
+
 /* ROS and HP-UX don't seem to have these in libc.a */
 
 #undef	ntohs
-u_short	ntohs (netshort) u_short netshort;
+uint16_t	ntohs (netshort) uint16_t netshort;
 {
 	return netshort;
 }
 
 #undef	htons
-u_short	htons (hostshort) u_short hostshort;
+uint16_t	htons (hostshort) uint16_t hostshort;
 {
 	return hostshort;
 }

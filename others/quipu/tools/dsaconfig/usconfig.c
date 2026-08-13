@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <sys/file.h>
 #include <pwd.h>
@@ -332,7 +333,7 @@ arginit (int ac, char **av) {
 /* read_dsas () -- read in identities and locations of regional DSAs */
 void
 read_dsas () {
-	u_short lncnt;			/* linecount */
+	uint16_t lncnt;			/* linecount */
 	char *cp;				/* character pointer */
 	char *toks[NVEC+1];			/* tokens on line */
 	FILE *fp;				/* file pointer */
@@ -394,7 +395,7 @@ read_dsas () {
 /* read_config () -- parse configuration file, and initialize from it */
 void
 read_config () {
-	u_short lncnt;			/* linecount */
+	uint16_t lncnt;			/* linecount */
 	char *toks[NVEC+1];			/* tokens on line */
 	char *cp,*cp2;			/* character pointers */
 	struct pair *pp, *pp2, *pp3;	/* pointers to a pair struct. */

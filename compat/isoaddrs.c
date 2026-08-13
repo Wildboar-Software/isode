@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
@@ -605,7 +606,7 @@ handle_dsp:
 								ep = dp + strlen (dp);
 							else
 								*ep++ = 0;
-							na -> na_port = htons ((u_short) atoi(dp));
+							na -> na_port = htons ((uint16_t) atoi(dp));
 
 							if (*ep)
 								na -> na_tset = atoi (ep);

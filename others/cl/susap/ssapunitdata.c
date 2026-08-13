@@ -51,6 +51,8 @@
 
 #ifdef HULA
 
+#include <stdint.h>
+
 #define SSAP_NOT_ASYNC 	0
 #define SSAP_ASYNC 	1
 
@@ -187,7 +189,7 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 	}
 
 	if (local -> sa_selectlen == 0) {
-		local -> sa_port = htons((u_short)(0x8000 | (getpid() & 0x7fff)));
+		local -> sa_port = htons((uint16_t)(0x8000 | (getpid() & 0x7fff)));
 		local -> sa_selectlen = sizeof local -> sa_port;
 	}
 

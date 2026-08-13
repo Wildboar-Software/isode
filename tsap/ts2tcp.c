@@ -59,7 +59,7 @@ int tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote
 	if (remote -> na_port == 0) {
 		if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 			sp = getservbyname ("iso-tsap", "tcp");
-		isock -> sin_port = sp ? sp -> s_port : htons ((u_short) 102);
+		isock -> sin_port = sp ? sp -> s_port : htons ((uint16_t) 102);
 	} else
 		isock -> sin_port = remote -> na_port;
 
@@ -294,7 +294,7 @@ int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 
 	if (cp = index (domain1, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 
@@ -309,7 +309,7 @@ int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 
 	if (cp = index (domain2, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 

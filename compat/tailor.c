@@ -164,6 +164,8 @@ char	*tsb_default_address = "undefined";
 char 	*local_nsap = "";
 
 #ifdef  X25
+#include <stdint.h>
+
 char 	*x25_local_dte = "";
 char    *x25_local_pid = "";
 
@@ -188,11 +190,11 @@ u_char reverse_charge = 0;
  * ( octets in decimal )
  */
 static char *recvpktsize_default = "0";
-u_short recvpktsize = 0;
+uint16_t recvpktsize = 0;
 
 /* same as above, but for send packet size */
 static char *sendpktsize_default = "0";
-u_short sendpktsize = 0;
+uint16_t sendpktsize = 0;
 
 /* 0= default recv window size.
  * 7, 127 ( in decimal )
@@ -248,7 +250,7 @@ u_char rpoa_req = 0;
 /* valid when rpoa_req= 1 */
 /* 0x0000 ~ 0x9999 (RPOA transit group in BCD) */
 static char *rpoa_default = "0";
-u_short rpoa = 0;
+uint16_t rpoa = 0;
 
 static char *x25debug = "none";
 LLog _x25_log = {
@@ -838,8 +840,8 @@ isodexport (char *myname) {
 
 #ifdef	X25
 	reverse_charge = (u_char) atoi (reverse_charge_default);
-	recvpktsize = (u_short) atoi (recvpktsize_default);
-	sendpktsize = (u_short) atoi (sendpktsize_default);
+	recvpktsize = (uint16_t) atoi (recvpktsize_default);
+	sendpktsize = (uint16_t) atoi (sendpktsize_default);
 	recvwndsize = (u_char) atoi (recvwndsize_default);
 	sendwndsize = (u_char) atoi (sendwndsize_default);
 	recvthruput = (u_char) atoi (recvthruput_default);
@@ -848,7 +850,7 @@ isodexport (char *myname) {
 	cug_index = (u_char) atoi (cug_index_default);
 	fast_select_type = (u_char) atoi (fast_select_type_default);
 	rpoa_req = atoi (rpoa_req_default);
-	rpoa = (u_short) atoi (rpoa_default);
+	rpoa = (uint16_t) atoi (rpoa_default);
 
 #ifdef	CAMTEC_CCL
 	x25_outgoing_port = *x25_outgoing_port_str;

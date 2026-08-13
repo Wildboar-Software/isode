@@ -1413,7 +1413,7 @@ static	void arginit (char **vec) {
 	na -> na_community = ts_comm_tcp_default;
 	strncpy (na -> na_domain, getlocalhost (),
 			 sizeof na -> na_domain - 1);
-	na -> na_port = sp ? sp -> s_port : htons ((u_short) 161);
+	na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 161);
 	na -> na_tset = NA_TSET_UDP;
 	ta -> ta_naddr = 1;
 #endif
@@ -1440,7 +1440,7 @@ static	void arginit (char **vec) {
 							if (na -> na_stack == NA_TCP) {
 								if (na -> na_port == 0)
 									na -> na_port = sp ? sp -> s_port
-													: htons ((u_short) 161);
+													: htons ((uint16_t) 161);
 								na -> na_tset = NA_TSET_UDP;
 							}
 						} else
@@ -1456,7 +1456,7 @@ static	void arginit (char **vec) {
 					if (na -> na_stack != NA_TCP)
 						adios (NULLCP, "-p not allowed with %s",
 							   taddr2str (ta));
-					na -> na_port = htons ((u_short) port);
+					na -> na_port = htons ((uint16_t) port);
 					break;
 #endif
 

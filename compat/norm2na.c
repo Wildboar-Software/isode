@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"
@@ -190,7 +191,7 @@ lock_and_load:
 					}
 					sscanf (cp, "%5d", &i);
 					cp += 5;
-					na -> na_port = htons ((u_short) i);
+					na -> na_port = htons ((uint16_t) i);
 
 					if (*cp) {
 						if ((int)strlen (cp) < 5) {
@@ -200,7 +201,7 @@ lock_and_load:
 						}
 						sscanf (cp, "%5d", &i);
 						cp += 5;
-						na -> na_tset = (u_short) i;
+						na -> na_tset = (uint16_t) i;
 
 						if (*cp)
 							LLOG (addr_log, LLOG_EXCEPTIONS,

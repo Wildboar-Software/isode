@@ -57,7 +57,7 @@ static struct TSAPaddr  tas[NTADDRS];
 struct dispatch {
 	char       *dp_entity;
 
-	u_short	dp_port;
+	uint16_t	dp_port;
 };
 
 static struct dispatch *dz;
@@ -124,7 +124,7 @@ int main (int argc, char **argv, char **envp) {
 }
 
 static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
-	u_short port = ta -> ta_addrs[0].na_port;
+	uint16_t port = ta -> ta_addrs[0].na_port;
 	struct dispatch *dp;
 	struct isoservent *is;
 

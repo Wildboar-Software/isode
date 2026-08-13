@@ -2,6 +2,7 @@
 /* Contributed by The Wollongong Group, Inc. */
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
@@ -156,7 +157,7 @@ int	tcprestore (
 						 "bad initialization vector");
 	if (cp = index (domain1, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain1, sizeof na -> na_domain);
 	PTservice (pb, fd);
@@ -165,7 +166,7 @@ int	tcprestore (
 	na -> na_community = ts_comm_tcp_default;
 	if (cp = index (domain2, '+')) {
 		*cp++ = 0;
-		na -> na_port = htons ((u_short) atoi (cp));
+		na -> na_port = htons ((uint16_t) atoi (cp));
 	}
 	strncpy (na -> na_domain, domain2, sizeof na -> na_domain);
 	if ((pb -> pb_stream = ps_alloc (fdx_open)) == NULLPS

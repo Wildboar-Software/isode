@@ -24,8 +24,8 @@ static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, stru
 							 "initial user data not allowed with class 0");
 	}
 
-	tb -> tb_srcref = htons ((u_short) (getpid () & 0xffff));
-	tb -> tb_dstref = htons ((u_short) 0);
+	tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
+	tb -> tb_dstref = htons ((uint16_t) 0);
 
 	if ((t = newtpkt (TPDU_CR)) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
@@ -239,7 +239,7 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 		}
 	}
 
-	tb -> tb_srcref = htons ((u_short) (getpid () & 0xffff));
+	tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
 	tb -> tb_dstref = t -> t_cr.cr_srcref;
 	if (!(tb -> tb_flags & TB_TCP) || t -> t_tpdusize) {
 		if (t -> t_tpdusize == 0)

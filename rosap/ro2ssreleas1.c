@@ -1,16 +1,7 @@
 /* ro2ssreleas1.c - initiate release */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

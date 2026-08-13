@@ -1,6 +1,7 @@
 /* dad.c - "directory assistance"
 	   lightweight interface to the Directory Service */
 
+#include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -583,7 +584,7 @@ static void arginit (char **vec) {
 	if ((sp = getservbyname ("da", "tcp")) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "%s/%s: unknown service",
 				"tcp", "da");
-		lsock -> sin_port = htons ((u_short) 411);
+		lsock -> sin_port = htons ((uint16_t) 411);
 	} else
 		lsock -> sin_port = sp -> s_port;
 
@@ -599,7 +600,7 @@ static void arginit (char **vec) {
 						|| *ap == '-'
 						|| (port = atoi (ap)) <= 0)
 					adios (NULLCP, "usage: %s -p portno", myname);
-				lsock -> sin_port = htons ((u_short) port);
+				lsock -> sin_port = htons ((uint16_t) port);
 				continue;
 
 			default:

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdint.h>
 #include "tpkt.h"
 #include "tsap.h"
 #include "tusap.h"
@@ -26,7 +27,7 @@ int main (int argc, char **argv, char **envp) {
 	struct udvec uvs[2];
 	struct udvec *uv;
 	int  cc, result, data, mode;
-	u_short  pattern;
+	uint16_t  pattern;
 	struct tsapblk *tb;
 	struct TSAPunitdata tunitdata;
 	struct TSAPunitdata *tud = &tunitdata;

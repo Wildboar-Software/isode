@@ -1,16 +1,7 @@
 /* ropkt.h - include file for remote operation providers (RoS-PROVIDER) */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef	_RoSAP_

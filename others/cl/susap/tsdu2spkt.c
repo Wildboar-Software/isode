@@ -1,6 +1,7 @@
 /* tsdu2spkt.c - read/write a SPDU to a TSDU */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "spkt.h"
 #include "tailor.h"
 
@@ -568,7 +569,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 			end_pgi (&c);
 		}
 		If_Set (SMASK_CN_REQ) {
-			u_short requirements = htons (s -> s_cn_require);
+			uint16_t requirements = htons (s -> s_cn_require);
 			Put_Item (PI_USER_REQ, (char *) &requirements);
 		}
 		If_Set (SMASK_CN_CALLING)
@@ -606,7 +607,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		If_Set (SMASK_AC_TOKEN)
 		Put_Item (PI_TOKEN, (char *) &s -> s_ac_token);
 		If_Set (SMASK_CN_REQ) {
-			u_short requirements = htons (s -> s_cn_require);
+			uint16_t requirements = htons (s -> s_cn_require);
 			Put_Item (PI_USER_REQ, (char *) &requirements);
 		}
 		If_Set (SMASK_CN_CALLING)
@@ -627,7 +628,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		If_Set (SMASK_RF_DISC)
 		Put_Item (PI_TDISC, (char *) &s -> s_rf_disconnect);
 		If_Set (SMASK_RF_REQ) {
-			u_short requirements = htons (s -> s_rf_require);
+			uint16_t requirements = htons (s -> s_rf_require);
 			Put_Item (PI_USER_REQ, (char *) &requirements);
 		}
 		If_Set (SMASK_RF_VRSN)
@@ -1452,7 +1453,7 @@ do_pgi:
 			break;
 
 		case PI_USER_REQ: {
-			u_short requirements;
+			uint16_t requirements;
 			bcopy (base, (char *) &requirements, 2);
 			requirements = ntohs (requirements);
 			if (si != SPDU_RF) {

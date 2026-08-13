@@ -8,7 +8,7 @@
 #include "ronot.h"
 
 #ifndef	lint
-static int  _ronotlose ();
+static int  _ronotlose (struct RoNOTindication *rni, int reason, va_list ap);
 #endif
 
 #ifndef	lint

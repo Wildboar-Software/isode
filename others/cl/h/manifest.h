@@ -126,7 +126,7 @@ typedef struct fd_set {
 
 #ifdef	SYS5NLY
 typedef unsigned char	u_char;
-typedef unsigned short	u_short;
+typedef unsigned short	uint16_t;
 typedef unsigned int	u_int;
 typedef unsigned long	u_long;
 #endif

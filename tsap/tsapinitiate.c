@@ -100,7 +100,7 @@ static int TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, i
 	}
 #ifdef	notdef
 	if (called -> ta_selectlen > 0 && calling -> ta_selectlen == 0) {
-		calling -> ta_port = htons ((u_short) (0x8000 | (getpid () & 0x7fff)));
+		calling -> ta_port = htons ((uint16_t) (0x8000 | (getpid () & 0x7fff)));
 		calling -> ta_selectlen = sizeof calling -> ta_port;
 	}
 #endif

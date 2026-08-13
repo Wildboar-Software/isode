@@ -208,7 +208,7 @@ static int  TNetWork (
 #ifdef	LPP
 static int _lpp_fd = NOTOK;
 
-u_short	_lpp_lastport;		/* MOBY HACK */
+uint16_t	_lpp_lastport;		/* MOBY HACK */
 #endif
 
 #ifdef	SO_REUSEADDR
@@ -1093,7 +1093,7 @@ static int  tcplisten (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdis
 
 		if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 			sp = getservbyname ("iso-tsap", "tcp");
-		isock -> sin_port = sp ? sp -> s_port : htons ((u_short) 102);
+		isock -> sin_port = sp ? sp -> s_port : htons ((uint16_t) 102);
 	} else
 		isock -> sin_port = na -> na_port;
 	if (hp)

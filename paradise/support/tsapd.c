@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <unistd.h>
 #include "manifest.h"
@@ -566,7 +567,7 @@ char	**vec;
 	tcp_na -> na_stack = NA_TCP;
 	tcp_na -> na_community = ts_comm_tcp_default;
 	tcp_na -> na_domain[0] = 0;
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((u_short) 102);
+	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 102);
 	tz -> ta_naddr = 1;
 
 	tz++;
@@ -686,7 +687,7 @@ char	**vec;
 						|| *ap == '-'
 						|| (port = atoi (ap)) <= 0)
 					adios (NULLCP, "usage: %s -p portno", pgmname);
-				tcp_na -> na_port = htons ((u_short) port);
+				tcp_na -> na_port = htons ((uint16_t) port);
 				continue;
 #endif
 

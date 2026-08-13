@@ -1,16 +1,7 @@
 /* ro2ss.c - ROPM: SSAP interface */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

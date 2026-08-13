@@ -83,7 +83,7 @@ int	debug;
 	isock -> sin_family = hp -> h_addrtype;
 	isock -> sin_port = (sp = getservbyname ("smux", "tcp"))
 						? sp -> s_port
-						: htons ((u_short) 199);
+						: htons ((uint16_t) 199);
 	inaddr_copy (hp, isock);
 
 	if ((sd = start_tcp_client ((struct sockaddr_in *) NULL, 0)) == NOTOK)

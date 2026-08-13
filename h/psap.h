@@ -6,6 +6,7 @@
 #ifdef LINUX
 #include <sys/types.h>
 #endif
+#include <stdint.h>
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -38,7 +39,7 @@ typedef	u_char	   PElementClass;
 
 typedef	u_char	   PElementForm;
 
-typedef u_short    PElementID;	/* 0..16383 are meaningful (14 bits) */
+typedef uint16_t    PElementID;	/* 0..16383 are meaningful (14 bits) */
 #define	PE_ID_BITS	14
 
 #define	PE_ID(class,code) \

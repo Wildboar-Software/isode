@@ -21,6 +21,8 @@ extern char *t_errlist[];
 
 #ifdef	TLI_TCP
 
+#include <stdint.h>
+
 static fd_set	inprogress;
 
 #include <tiuser.h>
@@ -101,7 +103,7 @@ int	priv;
 
 		for (port = IPPORT_RESERVED - priv;; priv ? port-- : port++) {
 			((struct sockaddr_in *)bind->addr.buf)->sin_port =
-				htons ((u_short) port);
+				htons ((uint16_t) port);
 
 			if (t_bind (sd, bind, bound) == OK) {
 

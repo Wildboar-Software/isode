@@ -3,6 +3,8 @@
 #ifndef	_PSAP_
 #define	_PSAP_
 
+#include <stdint.h>
+
 #ifndef	_MANIFEST_
 #include "manifest.h"
 #endif
@@ -36,7 +38,7 @@ typedef	u_char	   PElementClass;
 
 typedef	u_char	   PElementForm;
 
-typedef u_short    PElementID;	/* 0..16383 are meaningful (14 bits) */
+typedef uint16_t    PElementID;	/* 0..16383 are meaningful (14 bits) */
 
 #define	PE_ID(class,code) \
 	((int) ((((code) & 0x3fff) << 2) | ((class) & 0x0003)))

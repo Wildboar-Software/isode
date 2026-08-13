@@ -1,6 +1,7 @@
 /* socket.c - dish -pipe support */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "quipu/util.h"
 #include "tailor.h"
 #include "general.h"
@@ -70,7 +71,7 @@ int	pid,
 
 	bzero ((char *) isock, sizeof *isock);
 	isock -> sin_family = hp -> h_addrtype;
-	isock -> sin_port = htons ((u_short) portno);
+	isock -> sin_port = htons ((uint16_t) portno);
 	inaddr_copy (hp, isock);
 
 	return (0);
