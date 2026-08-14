@@ -6,11 +6,7 @@
 
 /*    BIND interface */
 
-int	  ronot2daplose (di, event, rni)
-struct DAPindication	* di;
-char			* event;
-struct RoNOTindication	* rni;
-{
+int	  ronot2daplose (struct DAPindication * di, char * event, struct RoNOTindication * rni) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 

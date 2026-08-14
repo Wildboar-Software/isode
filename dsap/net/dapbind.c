@@ -75,24 +75,9 @@ int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, str
 
 /* DAP-BIND.REQUEST */
 
-int	  DapAsynBindReqAux (callingtitle, calledtitle, callingaddr,
-						 calledaddr, prequirements, srequirements, isn, settings,
-						 sf, bindarg, qos, dc, di, async)
-AEI			  callingtitle;
-AEI			  calledtitle;
-struct PSAPaddr		* callingaddr;
-struct PSAPaddr		* calledaddr;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* sf;
-struct ds_bind_arg	* bindarg;
-struct QOStype		* qos;
-struct DAPconnect	* dc;
-struct DAPindication	* di;
-int			  async;
-{
+int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	  pc_s;

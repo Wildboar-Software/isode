@@ -27,9 +27,7 @@ struct PSAPctxlist	* quipu_ds_pcdl = &quipu_ds_pcdl_s;
 struct PSAPctxlist         internet_ds_pcdl_s;
 struct PSAPctxlist	* internet_ds_pcdl = &internet_ds_pcdl_s;
 
-int	  select_context (app_ctx)
-OID			  app_ctx;
-{
+int	  select_context (OID app_ctx) {
 	if(oid_cmp(app_ctx, x500_da_ac) == 0) {
 		return(DS_CTX_X500_DAP);
 	}
@@ -96,10 +94,7 @@ int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxli
 	return(ctxlist_notok);
 }
 
-int	  find_ctx_id(pcdl, ctx_oid)
-struct PSAPctxlist	* pcdl;
-OID			  ctx_oid;
-{
+int	  find_ctx_id(struct PSAPctxlist * pcdl, OID ctx_oid) {
 	int	  i;
 
 	DLOG (log_dsap, LLOG_TRACE, ("find_ctx_id"));

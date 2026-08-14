@@ -23,24 +23,9 @@ extern LLog	* log_dsap;
 
 static char * qlocalhost = "DSAP";	/* Bind speed up */
 
-int	  DspAsynBindReqAux (callingtitle, calledtitle, callingaddr,
-						 calledaddr, prequirements, srequirements, isn, settings,
-						 sf, bindarg, qos, dc, di, async)
-AEI			  callingtitle;
-AEI			  calledtitle;
-struct PSAPaddr		* callingaddr;
-struct PSAPaddr		* calledaddr;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* sf;
-struct ds_bind_arg	* bindarg;
-struct QOStype		* qos;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
-{
+int	  DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
@@ -112,24 +97,9 @@ int DspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg
 							   bindarg, &qos, dc, di, async));
 }
 
-int	  QspAsynBindReqAux (callingtitle, calledtitle, callingaddr,
-						 calledaddr, prequirements, srequirements, isn, settings,
-						 sf, bindarg, qos, dc, di, async)
-AEI			  callingtitle;
-AEI			  calledtitle;
-struct PSAPaddr		* callingaddr;
-struct PSAPaddr		* calledaddr;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* sf;
-struct ds_bind_arg	* bindarg;
-struct QOStype		* qos;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
-{
+int	  QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
@@ -301,24 +271,9 @@ int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 	return(OK);
 }
 
-int	  IspAsynBindReqAux (callingtitle, calledtitle, callingaddr,
-						 calledaddr, prequirements, srequirements, isn, settings,
-						 sf, bindarg, qos, dc, di, async)
-AEI			  callingtitle;
-AEI			  calledtitle;
-struct PSAPaddr		* callingaddr;
-struct PSAPaddr		* calledaddr;
-int			  prequirements;
-int			  srequirements;
-long			  isn;
-int			  settings;
-struct SSAPref		* sf;
-struct ds_bind_arg	* bindarg;
-struct QOStype		* qos;
-struct DSAPconnect	* dc;
-struct DSAPindication	* di;
-int			  async;
-{
+int	  IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
