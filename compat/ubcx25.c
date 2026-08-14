@@ -133,9 +133,7 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 	return connect (fd, sck, sizeof (CONN_DB));
 }
 
-int     read_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     read_x25_socket (int fd, char *buffer, int len)
 {
 	static uint8_t mode;
 	static struct iovec iov[2] = {
@@ -189,9 +187,7 @@ char    *buffer;
  * efficient.
  */
 
-int     write_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     write_x25_socket (int fd, char *buffer, int len)
 {
 	static uint8_t mode;
 	static struct iovec iov[2] = {
@@ -228,9 +224,7 @@ char    *buffer;
 	return total;
 }
 #else
-int     write_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     write_x25_socket (int fd, char *buffer, int len)
 {
 	char        mybuffer[X25_PACKETSIZE+1];
 	char        *p = buffer;

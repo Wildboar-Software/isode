@@ -31,8 +31,7 @@ static fd_set	inprogress;
 #endif /* DEVTLI */
 #include <fcntl.h>
 
-static char *sys_terrname (te)
-int te;
+static char *sys_terrname (int te)
 {
 	static char tbuf[32];
 
@@ -42,9 +41,7 @@ int te;
 	return tbuf;
 }
 
-static tli_lose (fd, str)
-int fd;
-char *str;
+static tli_lose (int fd, char *str)
 {
 	int eindex = errno;
 	int tindex = t_errno;
@@ -57,8 +54,7 @@ char *str;
 	return NOTOK;
 }
 
-static int tligetdis(fd)
-int fd;
+static int tligetdis(int fd)
 {
 	struct t_discon *discon;
 
@@ -74,9 +70,7 @@ out:
 	return NOTOK;
 }
 
-int	start_tcp_client (sock, priv)
-struct sockaddr_in *sock;
-int	priv;
+int	start_tcp_client (struct sockaddr_in *sock, int priv)
 {
 	int    port;
 	int	    sd;
@@ -155,11 +149,7 @@ int	priv;
 	return sd;
 }
 
-int	start_tcp_server (sock, backlog, opt1, opt2)
-struct sockaddr_in *sock;
-int	backlog,
-	opt1,
-	opt2;
+int	start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 {
 	int     sd, eindex;
 	struct t_bind *bind, *bound;
@@ -238,9 +228,7 @@ int	backlog,
 	return sd;
 }
 
-int	join_tcp_client (fd, sock)
-int	fd;
-struct sockaddr_in *sock;
+int	join_tcp_client (int fd, struct sockaddr_in *sock)
 {
 	int     eindex,
 			len = sizeof *sock,
@@ -290,9 +278,7 @@ disconnect:
 	goto out;
 }
 
-int	join_tcp_server (fd, sock)
-int	fd;
-struct sockaddr_in *sock;
+int	join_tcp_server (int fd, struct sockaddr_in *sock)
 {
 	int     eindex,
 			result;
@@ -344,10 +330,7 @@ struct sockaddr_in *sock;
 	return OK;
 }
 
-ssize_t read_tcp_socket (fd, buffer, len)
-int	fd;
-char	*buffer;
-int	len;
+ssize_t read_tcp_socket (int fd, char *buffer, int len)
 {
 	int	n, flags;
 	if ((n = t_rcv (fd, buffer, len, &flags)) == NOTOK)
@@ -355,10 +338,7 @@ int	len;
 	return n;
 }
 
-ssize_t write_tcp_socket (fd, buffer, len)
-int	fd;
-char	*buffer;
-int	len;
+ssize_t write_tcp_socket (int fd, char *buffer, int len)
 {
 	int n;
 
@@ -367,8 +347,7 @@ int	len;
 	return n;
 }
 
-close_tcp_socket (fd)
-int	fd;
+int close_tcp_socket (int fd)
 {
 	FD_CLR (fd, &inprogress);
 	return (t_close (fd));

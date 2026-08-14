@@ -536,9 +536,7 @@ int set_cmd_default (char *cmd, char *dflt) {
 	return (NOTOK);
 }
 
-SFD dish_intr (sd)
-int sd;
-{
+SFD dish_intr (int sd) {
 #ifndef BSDSIGS
 	signal (SIGINT, dish_intr);
 #endif

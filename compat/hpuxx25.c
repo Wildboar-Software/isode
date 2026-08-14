@@ -553,8 +553,7 @@ clear_sigurg (int fd) {
 				fdlp = fdlp->next;
 }
 
-int close_x25_socket (fd)
-int fd;
+int close_x25_socket (int fd)
 {
 	clear_sigurg (fd);
 	return (close (fd));

@@ -3,10 +3,7 @@
 #include "sys.file.h"
 #include <ctype.h>
 
-main (argc, argv)
-int	argc;
-char	**argv;
-{
+int main (int argc, char **argv) {
 	int		filearg, verbose;
 	FILE		*fp;
 	GDBM_FILE	db;

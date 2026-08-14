@@ -552,9 +552,7 @@ retry:
 }
 
 
-int     read_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     read_x25_socket (int fd, char *buffer, int len)
 {
 	N_indication_t *	result;
 	char pbuf[CONTROL_BUF_SIZE];
@@ -628,9 +626,7 @@ char    *buffer;
 }
 
 
-int     write_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     write_x25_socket (int fd, char *buffer, int len)
 {
 	N_data_req_t	req;
 	struct strbuf control, data;
@@ -661,8 +657,7 @@ char    *buffer;
 	return total;
 }
 
-int close_x25_socket(fd)
-int fd;
+int close_x25_socket(int fd)
 {
 	FD_CLR (fd, &inprogress);
 	return close(fd);

@@ -156,9 +156,7 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 	return (r);
 }
 
-int     read_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     read_x25_socket (int fd, char *buffer, int len)
 {
 	static uint8_t mode;
 	int cc, count = 0, total = len;
@@ -200,9 +198,7 @@ char    *buffer;
 	return count;
 }
 
-int     write_x25_socket (fd, buffer, len)
-int     fd, len;
-char    *buffer;
+int     write_x25_socket (int fd, char *buffer, int len)
 {
 	int         count;
 	int         cc;

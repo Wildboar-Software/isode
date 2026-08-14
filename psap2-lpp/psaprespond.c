@@ -24,12 +24,7 @@ static int  PInitAux ();
 
 /* P-CONNECT.INDICATION */
 
-int	PInit (vecp, vec, ps, pi)
-int	vecp;
-char  **vec;
-struct PSAPstart *ps;
-struct PSAPindication *pi;
-{
+int	PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi) {
 	struct psapblk *pb;
 
 	isodetailor (NULLCP, 0);
@@ -202,22 +197,8 @@ out:
 
 /* P-CONNECT.RESPONSE */
 
-int	PConnResponse (sd, status, responding, ctxlist, defctxresult,
-				   prequirements, srequirements, isn, settings, ref, data, ndata, pi)
-int	sd;
-struct PSAPaddr *responding;
-int	status,
-	prequirements,
-	srequirements,
-	settings,
-	ndata;
-long	isn;
-struct PSAPctxlist *ctxlist;
-int	defctxresult;
-struct SSAPref *ref;
-PE     *data;
-struct PSAPindication *pi;
-{
+int	PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult,
+				   int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS	    ps;

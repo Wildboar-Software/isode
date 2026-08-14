@@ -1,9 +1,8 @@
 #include "general.h"
+#include <string.h>
+#include <unistd.h>
 
-main( argc, argv )
-int	argc;
-char	**argv;
-{
+int main (int argc, char **argv) {
 	char	*p;
 
 	if ( argc < 2 || ((p = rindex( argv[ 1 ], '/' )) == 0) ) {

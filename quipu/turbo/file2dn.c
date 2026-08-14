@@ -1,10 +1,7 @@
 #include "general.h"
 #include <stdio.h>
 
-main(argc, argv)
-int	argc;
-char	**argv;
-{
+int main (int argc, char **argv) {
 	char	*dn, *p, *mp;
 	int	prefixlen;
 	int	mapped;

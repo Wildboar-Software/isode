@@ -89,7 +89,7 @@ long	random ();
 
 /* INIT */
 
-int	snmp_init () {
+int	snmp_init (void) {
 	char   *addr;
 	struct hostent *hp;
 	struct sockaddr_in lo_socket;
@@ -134,7 +134,7 @@ static struct pair {
 	NULL
 };
 
-static	snmp_onceonly () {
+static void snmp_onceonly (void) {
 	int	    i;
 	struct pair *pp;
 	struct type_SNMP_Message *msg = &msgs;
@@ -203,9 +203,7 @@ static	snmp_onceonly () {
 
 /* CHECK */
 
-int	snmp_check (r, name)
-NODE   *r;
-char   *name;
+int	snmp_check (NODE *r, char *name)
 {
 	char    c;
 	char   *cp;
@@ -225,9 +223,7 @@ char   *name;
 
 /* GET */
 
-int	snmp_get (ptr, instname)
-NODE   *ptr;
-char   *instname;
+int	snmp_get (NODE *ptr, char *instname)
 {
 	int	    gotone,
 			retries,
@@ -427,9 +423,7 @@ out:
 
 /* SCAN */
 
-struct search *snmp_assoc_scan (symbol, instance)
-NODE   *symbol,
-	   *instance;
+struct search *snmp_assoc_scan (NODE *symbol, NODE *instance)
 {
 	struct snmp_search *s;
 	OID	    inst;
@@ -511,9 +505,7 @@ NODE   *symbol,
 	return snmp_assoc_next (&s -> s_search, 0);
 }
 
-struct search *snmp_assoc_next (lookat, done)
-struct search *lookat;
-int	done;
+struct search *snmp_assoc_next (struct search *lookat, int done)
 {
 	int	    i;
 	char   *cp;
@@ -567,8 +559,7 @@ int	done;
 	return l;
 }
 
-static int  snmp_get_next (s)
-struct snmp_search *s;
+static int snmp_get_next (struct snmp_search *s)
 {
 	struct type_SNMP_VarBindList  *vp,
 			   *vp2,
@@ -641,8 +632,7 @@ struct snmp_search *s;
 	return OK;
 }
 
-static int  snmp_get_next_aux (s)
-struct snmp_search *s;
+static int snmp_get_next_aux (struct snmp_search *s)
 {
 	int	    gotone,
 			result,
@@ -828,9 +818,7 @@ out:
 	return NOTOK;
 }
 
-static int  req_ready (sr, do_val)
-struct snmp_req *sr;
-int	do_val;
+static int req_ready (struct snmp_req *sr, int do_val)
 {
 	struct type_SNMP_Message *msg = &msgs;
 	struct type_SNMP_PDU *parm = msg -> data -> un.get__request;
@@ -860,7 +848,7 @@ int	do_val;
 
 /* SET */
 
-void	snmp_set () {
+void snmp_set (void) {
 	int	    gotone,
 			result,
 			retries,
@@ -1089,9 +1077,7 @@ out:
 
 /* ENCODE */
 
-static int  e_integer (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_integer (NODE *x, PE *pe)
 {
 	if ((*pe = int2prim ((integer) force_number (x))) == NULLPE) {
 		strcpy (PY_pepy, "int2prim failed");
@@ -1102,9 +1088,7 @@ PE     *pe;
 
 extern char 	hex2nib[];
 
-static int  e_octets (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_octets (NODE *x, PE pe)
 {
 	int	    i;
 	char *cp,
@@ -1140,9 +1124,7 @@ PE     *pe;
 	return OK;
 }
 
-static int  e_display (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_display (NODE *x, PE pe)
 {
 	char   *tmp = force_string (x) -> stptr;
 
@@ -1154,9 +1136,7 @@ PE     *pe;
 	return OK;
 }
 
-static int  e_objectID (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_objectID (NODE *x, PE pe)
 {
 	char   *tmp = force_string (x) -> stptr;
 	OID	    oid = str2oid (tmp);
@@ -1184,9 +1164,7 @@ bad_oid:
 	return OK;
 }
 
-static int  e_null (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_null (NODE *x, PE pe)
 {
 	if ((*pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 			== NULLPE) {
@@ -1196,9 +1174,7 @@ PE     *pe;
 	return OK;
 }
 
-static int  e_ipaddr (x, pe)
-NODE   *x;
-PE     *pe;
+static int e_ipaddr (NODE *x, PE pe)
 {
 	char   *tmp = force_string (x) -> stptr;
 	struct hostent *hp;
@@ -1220,12 +1196,9 @@ PE     *pe;
 	return OK;
 }
 
-extern	PE ulong2prim ();
+extern	PE ulong2prim (void);
 
-static int  e_ulong (x, pe, id)
-NODE   *x;
-PE     *pe;
-PElementID id;
+static int  e_ulong (NODE *x, PE pe, PElementID id)
 {
 	if ((*pe = ulong2prim ((uint32_t) force_number (x), PE_CLASS_APPL, id))
 			== NULL) {
@@ -1235,30 +1208,22 @@ PElementID id;
 	return OK;
 }
 
-static int  e_counter (x, pe)
-NODE   *x;
-PE     *pe;
+static int  e_counter (NODE *x, PE pe)
 {
 	return e_ulong (x, pe, 1);
 }
 
-static int  e_gauge (x, pe)
-NODE   *x;
-PE     *pe;
+static int  e_gauge (NODE *x, PE pe)
 {
 	return e_ulong (x, pe, 2);
 }
 
-static int  e_timeticks (x, pe)
-NODE   *x;
-PE     *pe;
+static int  e_timeticks (NODE *x, PE pe)
 {
 	return e_ulong (x, pe, 3);
 }
 
-static int  e_clnpaddr (x, pe)
-NODE   *x;
-PE     *pe;
+static int  e_clnpaddr (NODE *x, PE pe)
 {
 	if (e_octets (x, pe) == NOTOK)
 		return NOTOK;
@@ -1268,10 +1233,7 @@ PE     *pe;
 
 /* DECODE */
 
-static NODE *make_octet_node (base, len)
-char   *base;
-int	len;
-{
+static NODE *make_octet_node (char *base, int len) {
 	char *bp,
 		 *cp,
 		 *ep;
@@ -1292,10 +1254,7 @@ int	len;
 	return r;
 }
 
-static int  d_integer (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_integer (NODE **x, PE pe) {
 	integer	i = prim2num (pe);
 
 	if (i == NOTOK && pe -> pe_errno != PE_ERR_NONE) {
@@ -1306,10 +1265,7 @@ PE	pe;
 	return OK;
 }
 
-static int  d_octets (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_octets (NODE **x, PE pe) {
 	struct qbuf *qb = prim2qb (pe);
 
 	if (qb == NULL || qb_pullup (qb) == NOTOK) {
@@ -1322,10 +1278,7 @@ PE	pe;
 	return OK;
 }
 
-static int  d_display (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_display (NODE **x, PE pe) {
 	struct qbuf *qb = prim2qb (pe);
 
 	if (qb == NULL || qb_pullup (qb) == NOTOK) {
@@ -1338,10 +1291,7 @@ PE	pe;
 	return OK;
 }
 
-static int  d_objectID (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_objectID (NODE **x, PE pe) {
 	char   *cp;
 	OID	    oid = prim2oid (pe);
 
@@ -1354,18 +1304,12 @@ PE	pe;
 	return OK;
 }
 
-static int  d_null (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_null (NODE **x, PE pe) {
 	*x = make_str_node ("NULL", 4, 0);
 	return OK;
 }
 
-static int  d_ipaddr (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int  d_ipaddr (NODE **x, PE pe) {
 	char    ipaddr[16];
 	struct type_SNMP_IpAddress *ip;
 	struct qbuf *qb;
@@ -1392,12 +1336,9 @@ PE	pe;
 	return OK;
 }
 
-extern	uint32_t prim2ulong ();
+extern	uint32_t prim2ulong (void);
 
-static int  d_ulong (x, pe)
-NODE  **x;
-PE	pe;
-{
+static int d_ulong (NODE **x, PE pe) {
 	uint32_t    i = prim2ulong (pe);
 
 	if (i == 0 && pe -> pe_errno != PE_ERR_NONE) {
@@ -1408,9 +1349,7 @@ PE	pe;
 	return OK;
 }
 
-static int  d_clnpaddr (x, pe)
-NODE  **x;
-PE	pe;
+static int  d_clnpaddr (NODE **x, PE pe)
 {
 	int	    len;
 	struct type_SNMP_ClnpAddress *clnp;
@@ -1433,9 +1372,7 @@ PE	pe;
 
 /* MISC */
 
-static	snmp_ready (do_id)
-int	do_id;
-{
+static	int snmp_ready (int do_id) {
 	int	    changed = 0;
 	char   *pp;
 	struct sockaddr_in lo_socket;
@@ -1560,8 +1497,7 @@ got_host:
 
  */
 
-static	snmp_map (isock)
-struct sockaddr_in *isock;
+static	snmp_map (struct sockaddr_in *isock)
 {
 	int	    result = NOTOK;
 	uint32_t	hostaddr,
@@ -1648,8 +1584,7 @@ char   *what,
 }
 #endif
 
-char   *snmp_name (ptr)
-NODE   *ptr;
+char   *snmp_name (NODE *ptr)
 {
 	return ((OT) (ptr -> magic)) -> ot_text;
 }
@@ -1658,15 +1593,12 @@ static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"
 };
 
-static char *snmp_error (i)
-int	i;
-{
+static char *snmp_error (int i) {
 	static char buffer[BUFSIZ];
 
 	if (0 < i && i < sizeof errors / sizeof errors[0])
 		return errors[i];
 	sprintf (buffer, "error %d", i);
-
 	return buffer;
 }
 

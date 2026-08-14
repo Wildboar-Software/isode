@@ -288,8 +288,7 @@ int join_x25_server (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-close_x25_socket(fd)
-int	fd;
+int close_x25_socket(int fd)
 {
 	struct	X25ClearData	cbuf;
 	struct	X25ClearData	*cdata = &cbuf;
@@ -1786,10 +1785,7 @@ loop:
 
 #endif /* ULTRIX_X25_SPAWN_TSAPD */
 
-int     read_x25_socket (sd, buffer, len)
-int     sd;
-int     len;
-char    *buffer;
+int read_x25_socket (int sd, char *buffer, int len)
 {
 	X25vc   vci;
 	int event, count;
@@ -1827,10 +1823,7 @@ char    *buffer;
 
 }
 
-int     write_x25_socket (sd, buffer, len)
-int     sd;
-int     len;
-char    *buffer;
+int     write_x25_socket (int sd, char *buffer, int len)
 {
 
 	int count;
@@ -1865,8 +1858,7 @@ char    *buffer;
 
 }
 
-close_x25_socket (sd)
-int     sd;
+int close_x25_socket (sd)
 {
 	int error = OK;
 	X25vc   vci;

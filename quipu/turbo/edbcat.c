@@ -2,13 +2,12 @@
 #include <gdbm.h>
 #include "sys.file.h"
 #include <ctype.h>
+#include <string.h>
+#include <unistd.h>
 
 extern int gdbm_errno;
 
-main (argc, argv)
-int	argc;
-char	**argv;
-{
+int main (int argc, char **argv) {
 	GDBM_FILE	db;
 	datum		prv, key, content;
 	char		*p, gfname[1024];

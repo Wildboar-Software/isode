@@ -57,9 +57,7 @@ struct qelem   *elem;
 #include <fcntl.h>
 #endif
 
-int     dup2 (d1, d2)
-int    d1,
-	   d2;
+int     dup2 (int d1, int d2)
 {
 	int     d;
 
@@ -82,20 +80,13 @@ int    d1,
 }
 
 #ifndef	F_DUPFD
-dup2_aux (d1, d2)
-int	d1,
-	d2;
+int dup2_aux (int d1, int d2)
 {
-	int     fd,
-			result;
-
+	int fd, result;
 	if ((fd = dup (d1)) == NOTOK || fd == d2)
 		return fd;
-
 	result = dup2_aux (d1, d2);
-
 	close (fd);
-
 	return result;
 }
 #endif
