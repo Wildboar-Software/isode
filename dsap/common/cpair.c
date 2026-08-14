@@ -8,18 +8,14 @@
 struct certificate *cert_cpy();
 struct certificate *str2cert();
 
-PE cpair_enc(parm)
-struct certificate_list *parm;
-{
+static PE cpair_enc(void *value) {
 	PE pe;
-
+	struct certificate_list *parm = (struct certificate_list *) value;
 	encode_AF_CertificatePair(&pe, 0, 0, NULLCP, parm);
 	return (pe);
 }
 
-struct certificate_list *cpair_dec(pe)
-PE pe;
-{
+static void *cpair_dec(PE pe) {
 	struct certificate_list *result;
 
 	if (decode_AF_CertificatePair(pe, 0, NULLIP, NULLVP, &result) == NOTOK)
@@ -27,8 +23,7 @@ PE pe;
 	return (result);
 }
 
-struct certificate_list *
-str2cpair (char *str) {
+static void *str2cpair (char *str) {
 	struct certificate_list *result;
 	char *ptr;
 
@@ -65,11 +60,8 @@ str2cpair (char *str) {
 	return (result);
 }
 
-int printcpair(ps, parm, format)
-PS ps;
-struct certificate_list *parm;
-int format;
-{
+void printcpair(PS ps, void *value, int format) {
+	struct certificate_list *parm = (struct certificate_list *) value;
 	if (parm->cert)
 		printcert(ps, parm->cert, format);
 	ps_printf(ps, "|\\\n");
@@ -77,8 +69,7 @@ int format;
 		printcert(ps, parm->reverse, format);
 }
 
-struct certificate_list *
-cpair_cpy (struct certificate_list *parm) {
+struct certificate_list *cpair_cpy (struct certificate_list *parm) {
 	struct certificate_list *result;
 
 	result = (struct certificate_list *) calloc(1, sizeof(*result));
@@ -91,7 +82,13 @@ cpair_cpy (struct certificate_list *parm) {
 	return (result);
 }
 
-int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
+void *cpair_cpy_void (void *value) {
+	return cpair_cpy ((struct certificate_list *) value);
+}
+
+static int cpair_cmp (void *value1, void *value2) {
+	struct certificate_list *a = (struct certificate_list *) value1;
+	struct certificate_list *b = (struct certificate_list *) value2;
 	int retval;
 
 	if (a->cert == (struct certificate *) 0) {
@@ -121,7 +118,8 @@ int cpair_cmp (struct certificate_list *a, struct certificate_list *b) {
 	return (retval);
 }
 
-int cpair_free (struct certificate_list *parm) {
+void cpair_free (void *value) {
+	struct certificate_list *parm = (struct certificate_list *) value;
 	if (parm->cert)
 		cert_free(parm->cert);
 	if (parm->reverse)
@@ -129,12 +127,12 @@ int cpair_free (struct certificate_list *parm) {
 	free((char *) parm);
 }
 
-int certificate_pair_syntax (void) {
+void certificate_pair_syntax (void) {
 	add_attribute_syntax(
 		"CertificatePair",
 		cpair_enc,	cpair_dec,
 		str2cpair,	printcpair,
-		cpair_cpy,	cpair_cmp,
+		cpair_cpy_void,	cpair_cmp,
 		cpair_free,	NULLCP,
-		NULLIFP,	TRUE);
+		NULL,		TRUE);
 }

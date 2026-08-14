@@ -2,13 +2,8 @@
 
 #ifndef ATTRVALUE
 #define ATTRVALUE
+#include "quipu/attr.h"
 #include "quipu/name.h"
-
-typedef struct avseqcomp {      /* attribute may have multiple values   */
-	/* respresents SET OF AttributeValue    */
-	attrVal      	avseq_av;
-	struct avseqcomp    *avseq_next;
-} avseqcomp, *AV_Sequence;
 
 #define NULLAV ((AV_Sequence) 0)
 #define avs_comp_alloc()	(AV_Sequence) smalloc(sizeof(avseqcomp))

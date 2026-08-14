@@ -7,34 +7,8 @@
 #include "quipu/commonarg.h"
 #include "quipu/ds_error.h"
 #include "quipu/dap.h"
+#include "attr.h"
 #include "quipu/entry.h"
-
-typedef struct {
-	AttributeType fi_sub_type;
-	AV_Sequence fi_sub_initial;
-	AV_Sequence fi_sub_any;
-	AV_Sequence fi_sub_final;
-	/* initial and final should be zero or  */
-	/* one components only                  */
-	char       *fi_sub_match; /* for DSA use */
-} Filter_Substrings;
-
-struct filter_item {
-	int         fi_type;
-#define FILTERITEM_EQUALITY 1
-#define FILTERITEM_SUBSTRINGS 2
-#define FILTERITEM_GREATEROREQUAL 3
-#define FILTERITEM_LESSOREQUAL 4
-#define FILTERITEM_PRESENT 5
-#define FILTERITEM_APPROX 6
-	union {
-		AttributeType fi_un_type;
-		AVA fi_un_ava;
-		Filter_Substrings fi_un_substrings;
-	} fi_un;
-	/* field for DSA use - no need to fill is DUA */
-	IFP	    fi_ifp;
-};
 
 #define NULLFITEM (struct filter_item *) NULL
 #define UNSUB    fi_un.fi_un_substrings

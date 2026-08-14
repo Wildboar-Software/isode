@@ -1,6 +1,8 @@
 /* picture.c - exec printing of external attributes */
 
+#include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/photo.h"
@@ -141,7 +143,7 @@ void exec_print (
 	ps_free (sps);
 }
 
-int hide_picture (void) {
+void hide_picture (void) {
 	int	    pid;
 	int	status;
 
@@ -158,11 +160,8 @@ int hide_picture (void) {
 	rootChildList = NULL;
 }
 
-void picture_print (ps,pe,format)
-PS ps;
-PE pe;
-int format;
-{
+static void picture_print (PS ps, void *value, int format) {
+	PE pe = (PE) value;
 	if (format != READOUT)
 		pe_print (ps,pe,format);
 	else
@@ -171,17 +170,29 @@ int format;
 
 extern int quipu_pe_cmp();
 
-int photo_syntax (void) {
+static void *pe_cpy_void (void *value)
+{
+	PE pe = (PE) value;
+	return pe_cpy (pe);
+}
+
+static void pe_free_void (void *value)
+{
+	PE pe = (PE) value;
+	pe_free (pe);
+}	
+
+void photo_syntax (void) {
 	add_attribute_syntax ("photo",
-						  pe_cpy,	NULLIFP,
-						  NULLIFP,	picture_print,
-						  pe_cpy,	quipu_pe_cmp,
-						  pe_free,	NULLCP,
-						  NULLIFP,	TRUE );
+						  pe_cpy,	NULL,
+						  NULL,		picture_print,
+						  pe_cpy_void,	quipu_pe_cmp,
+						  pe_free_void,	NULLCP,
+						  NULL,		TRUE );
 	add_attribute_syntax ("jpeg",
-						  pe_cpy,	NULLIFP,
-						  NULLIFP,	picture_print,
-						  pe_cpy,	quipu_pe_cmp,
-						  pe_free,	NULLCP,
-						  NULLIFP,	TRUE );
+						  pe_cpy,	NULL,
+						  NULL,		picture_print,
+						  pe_cpy_void,	quipu_pe_cmp,
+						  pe_free_void,	NULLCP,
+						  NULL,		TRUE );
 }

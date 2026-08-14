@@ -32,7 +32,9 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static void documentStore_free (struct documentStore *a) {
+static void documentStore_free (void *value) {
+	struct documentStore *a = (struct documentStore *) value;
+
 	if (!a)
 		return;
 	if (a -> ds_host)
@@ -44,7 +46,8 @@ static void documentStore_free (struct documentStore *a) {
 	free ((char *) a);
 }
 
-static struct documentStore *documentStore_cpy (struct documentStore *a) {
+static void *documentStore_cpy (void *value) {
+	struct documentStore *a = (struct documentStore *) value;
 	struct documentStore *b;
 	b = (struct documentStore *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
@@ -56,7 +59,9 @@ static struct documentStore *documentStore_cpy (struct documentStore *a) {
 	return b;
 }
 
-static int documentStore_cmp (struct documentStore *a, struct documentStore *b) {
+static int documentStore_cmp (void *value1, void *value2) {
+	struct documentStore *a = (struct documentStore *) value1;
+	struct documentStore *b = (struct documentStore *) value2;
 	int	    res;
 	if (!a)
 		return (b ? (-1) : 0);
@@ -67,7 +72,9 @@ static int documentStore_cmp (struct documentStore *a, struct documentStore *b) 
 	return lexequ (a -> ds_host, b -> ds_host);
 }
 
-static void documentStore_print (PS ps, struct documentStore *a, int format) {
+static void documentStore_print (PS ps, void *value, int format) {
+	struct documentStore *a = (struct documentStore *) value;
+
 	if (format == READOUT) {
 		ps_printf (ps, "use %s to %s and get %s",
 				   a -> ds_method ? "ftam" : "ftp", a -> ds_host,
@@ -80,7 +87,7 @@ static void documentStore_print (PS ps, struct documentStore *a, int format) {
 				   a -> ds_dir ? a -> ds_dir : "", a -> ds_file);
 }
 
-static struct documentStore *str2documentStore (char *str) {
+static void *str2documentStore (char *str) {
 	int method;
 	char *d1, *d2, *d3, *ptr;
 	struct documentStore *a;
@@ -136,14 +143,15 @@ static struct documentStore *str2documentStore (char *str) {
 	return a;
 }
 
-static PE documentStore_enc (struct documentStore *a)
+static PE documentStore_enc (void *value)
 {
+	struct documentStore *a = (struct documentStore *) value;
 	PE	    pe;
 	encode_Thorn_DocumentStoreSyntax (&pe, 0, 0, NULLCP, a);
 	return pe;
 }
 
-static struct documentStore *documentStore_dec (PE pe)
+static void *documentStore_dec (PE pe)
 {
 	struct documentStore *a;
 	if (decode_Thorn_DocumentStoreSyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
@@ -160,5 +168,5 @@ void documentStore_syntax (void) {
 						  documentStore_cpy,
 						  documentStore_cmp,
 						  documentStore_free,
-						  NULLCP, NULLIFP, TRUE);
+						  NULLCP, NULL, TRUE);
 }

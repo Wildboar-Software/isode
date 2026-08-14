@@ -5,8 +5,6 @@
 #undef AttrT_free
 #endif
 
-AttrT_free (x)
-AttributeType x;
-{
+void AttrT_free (AttributeType x) {
 	;
 }

@@ -47,14 +47,8 @@ static struct mapping {
 	NULL
 };
 
-static PE name2value_dap (name, context, ontty, userdn, passwd, real_name)
-char   *name,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	ontty;
-PE     *real_name;
-{
+static PE name2value_dap (char *name, char *context, int ontty, char *userdn,
+						  char *passwd, PE *real_name) {
 	char buffer[BUFSIZ];
 	DN dn;
 	AttributeType at;

@@ -7,9 +7,7 @@ extern IFP merge_acl;
 extern IFP acl_fn;
 extern char dsa_mode;
 
-Attr_Sequence str2as (str)
-char * str;
-{
+Attr_Sequence str2as (char * str) {
 	char * ptr;
 	char * save, val;
 	AttributeType at;
@@ -61,11 +59,7 @@ char * str;
 
 }
 
-Attr_Sequence as_combine (as,str,allownull)
-Attr_Sequence as;
-char * str;
-char allownull;
-{
+Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull) {
 	char * ptr = str;
 	char * save, val;
 	AV_Sequence avs;

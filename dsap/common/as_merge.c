@@ -1,9 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-Attr_Sequence as_merge (a,b)
-Attr_Sequence a,b;
-{
+Attr_Sequence as_merge (Attr_Sequence a, Attr_Sequence b) {
 	Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
@@ -61,9 +59,7 @@ Attr_Sequence a,b;
 	return (result);
 }
 
-Attr_Sequence as_merge_aux (a,b)
-Attr_Sequence a,b;
-{
+Attr_Sequence as_merge_aux (Attr_Sequence a, Attr_Sequence b) {
 	Attr_Sequence aptr, bptr, result, trail, tmp;
 
 	if ( a == NULLATTR )
@@ -123,9 +119,7 @@ Attr_Sequence a,b;
 	return (result);
 }
 
-Attr_Sequence as_fast_merge (a,b,c,d)
-Attr_Sequence a,b,c,d;
-{
+Attr_Sequence as_fast_merge (Attr_Sequence a, Attr_Sequence b, Attr_Sequence c, Attr_Sequence d) {
 	Attr_Sequence aptr, bptr, result, trail, tmp;
 	static AV_Sequence fast_avs = NULLAV;
 	static AV_Sequence fast_tail = NULLAV;

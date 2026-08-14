@@ -37,15 +37,16 @@ static UTC	qstr2utct (char *s, int len)
 
 #define	str2utct	qstr2utct
 
-static PE timeenc (char *x)
+static PE timeenc (void *value)
 {
+	char *x = (char *) value;
 	PE ret_pe = NULLPE;
 	/* Should switch to pepsy -> need to use qbufs! */
 	build_UNIV_UTCTime (&ret_pe,0,0,x,NULL);
 	return (ret_pe);
 }
 
-static char * timedec (PE pe)
+static void * timedec (PE pe)
 {
 	char * x;
 	if (parse_UNIV_UTCTime (pe,0,0,&x,NULL) == NOTOK)
@@ -65,7 +66,9 @@ void utcprint (PS ps, char *xtime, int format)
 		ps_printf (ps, "%s", xtime);
 }
 
-static int utccmp (char *a, char *b) {
+static int utccmp (void *value1, void *value2) {
+	char *a = (char *) value1;
+	char *b = (char *) value2;
 	long a_time, mdiff;
 	UTC ut;
 
@@ -81,8 +84,8 @@ static int utccmp (char *a, char *b) {
 void time_syntax (void) {
 	add_attribute_syntax ("UTCTime",
 						  timeenc,		timedec,
-						  strdup,		utcprint,
-						  strdup,		utccmp,
-						  sfree,		NULLCP,
-						  NULLIFP,	FALSE);
+						  (AttributeValueParser)strdup,		(AttributeValuePrinter)utcprint,
+						  (AttributeValueCopier)strdup,		utccmp,
+						  free,		NULLCP,
+						  NULL,		FALSE);
 }

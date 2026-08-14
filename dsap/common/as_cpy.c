@@ -20,9 +20,7 @@ Attr_Sequence as_comp_cpy (Attr_Sequence as) {
 	return (ptr);
 }
 
-Attr_Sequence  as_cpy (as)
-Attr_Sequence  as;
-{
+Attr_Sequence  as_cpy (Attr_Sequence as) {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
 	Attr_Sequence eptr;

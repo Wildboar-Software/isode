@@ -8,8 +8,6 @@
 #undef AttrT_cpy
 #endif
 
-AttributeType AttrT_cpy (x)
-AttributeType x;
-{
+AttributeType AttrT_cpy (AttributeType x) {
 	return x;
 }

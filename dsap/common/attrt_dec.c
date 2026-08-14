@@ -8,9 +8,7 @@ extern LLog * log_dsap;
 #undef AttrT_decode
 #endif
 
-AttributeType AttrT_decode_aux (oid)
-OID oid;
-{
+AttributeType AttrT_decode_aux (OID oid) {
 	AttributeType x;
 
 	if (oid == NULLOID) {

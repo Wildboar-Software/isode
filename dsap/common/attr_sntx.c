@@ -7,7 +7,7 @@
  *
  *		Written by :-	Kuan Siew Weng
  */
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "psap.h"
@@ -52,7 +52,8 @@ char *find_nest (char *str) {
 	return(ptr2);
 }
 
-static void attrSntx_print (PS ps, Attr_Sequence a, int format) {
+static void attrSntx_print (PS ps, void *value, int format) {
+	Attr_Sequence a = (Attr_Sequence) value;
 	char buf[LINESIZE];
 	Attr_Sequence  atl;
 	AV_Sequence avs;
@@ -81,9 +82,7 @@ static void attrSntx_print (PS ps, Attr_Sequence a, int format) {
 	}
 }
 
-static Attr_Sequence str2attrSntx (str)
-char   *str;
-{
+static void * str2attrSntx (char *str) {
 	char * ptr;
 	Attr_Sequence as = NULLATTR, tas;
 	char * getnextline();
@@ -117,9 +116,7 @@ char   *str;
 	return as;
 }
 
-Attr_Sequence str2attrSeq(buf)
-char * buf;
-{
+Attr_Sequence str2attrSeq(char * buf) {
 	char *cp, cp1[3];
 
 	cp = smalloc(strlen(buf)+4);
@@ -131,9 +128,7 @@ char * buf;
 }
 #define str2AttrList(buf)	str2attrSeq(buf)
 
-static PE avs_enc(avs)
-AV_Sequence avs;
-{
+static PE avs_enc(AV_Sequence avs) {
 	AV_Sequence avl;
 	attrVal av;
 	PE	    pe;
@@ -146,10 +141,7 @@ AV_Sequence avs;
 	return pe;
 }
 
-static AV_Sequence avs_dec(pe, at)
-PE pe;
-AttributeType at;
-{
+static AV_Sequence avs_dec(PE pe, AttributeType at) {
 	AV_Sequence avl,av;
 	PE r;
 
@@ -165,9 +157,7 @@ AttributeType at;
 	return avl;
 }
 
-static PE attr_enc(a)
-Attr_Sequence a;
-{
+static PE attr_enc(Attr_Sequence a) {
 	PE pe, r;
 
 	pe = pe_alloc(PE_CLASS_UNIV,PE_FORM_CONS,PE_CONS_SEQ);
@@ -184,9 +174,7 @@ Attr_Sequence a;
 	return(pe);
 }
 
-static Attr_Sequence attr_dec(pe)
-PE pe;
-{
+static Attr_Sequence attr_dec(PE pe) {
 	Attr_Sequence a;
 	AttributeType at;
 	PE r;
@@ -219,9 +207,7 @@ PE pe;
  * attrSntx_enc and attrSntx_dec must be defined as non static for tests
  */
 
-PE attrSntx_enc (a)
-Attr_Sequence a;
-{
+PE attrSntx_enc (Attr_Sequence a) {
 	Attr_Sequence atl;
 	PE	    pe, r;
 
@@ -236,9 +222,7 @@ Attr_Sequence a;
 	return pe;
 }
 
-Attr_Sequence attrSntx_dec (pe)
-PE	pe;
-{
+Attr_Sequence attrSntx_dec (PE pe) {
 	Attr_Sequence a, atl;
 	PE r;
 
@@ -253,14 +237,14 @@ PE	pe;
 	return atl;
 }
 
-int attribute_syntax (void) {
+void attribute_syntax (void) {
 	as_sntx = add_attribute_syntax ("AttributeSyntax",
-									attrSntx_enc,
-									attrSntx_dec,
+									(AttributeValueEncoder)attrSntx_enc,
+									(AttributeValueDecoder)attrSntx_dec,
 									str2attrSntx,
 									attrSntx_print,
-									as_cpy,
-									as_cmp,
-									as_free,
-									NULLCP, NULLIFP, TRUE);
+									(AttributeValueCopier)as_cpy,
+									(AttributeValueComparator)as_cmp,
+									(AttributeValueFree)as_free,
+									NULLCP, NULL, TRUE);
 }

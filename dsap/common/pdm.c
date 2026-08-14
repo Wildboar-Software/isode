@@ -30,7 +30,8 @@ static CMD_TABLE pdm_table [] = {
 	0,		-1
 };
 
-static void pdmfree (struct pref_deliv *pdm) {
+static void pdmfree (void *value) {
+	struct pref_deliv *pdm = (struct pref_deliv *) value;
 	struct pref_deliv *next;
 
 	for (; pdm != (struct pref_deliv *) NULL; pdm = next)  {
@@ -39,7 +40,10 @@ static void pdmfree (struct pref_deliv *pdm) {
 	}
 }
 
-static int pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
+static int pdmcmp (void *value1, void *value2) {
+	struct pref_deliv *a = (struct pref_deliv *) value1;
+	struct pref_deliv *b = (struct pref_deliv *) value2;
+
 	/* matching here is a bit dubious !!! */
 	for (; (a != (struct pref_deliv *) NULL) && (b != (struct pref_deliv *) NULL) ;
 			a = a->pd_next, b=b->pd_next)
@@ -51,7 +55,8 @@ static int pdmcmp (struct pref_deliv *a, struct pref_deliv *b) {
 		return (0);
 }
 
-static struct pref_deliv *pdmcpy (struct pref_deliv *a) {
+static void *pdmcpy (void *value) {
+	struct pref_deliv *a = (struct pref_deliv *) value;
 	struct pref_deliv * b, *c, *result = (struct pref_deliv *) NULL;
 
 	c = result; /* to keep lint happy */
@@ -68,7 +73,7 @@ static struct pref_deliv *pdmcpy (struct pref_deliv *a) {
 	return (result);
 }
 
-static struct pref_deliv *pdmparse (char *str) {
+static void *pdmparse (char *str) {
 	struct pref_deliv * result = (struct pref_deliv *) NULL;
 	struct pref_deliv * a, *b;
 	char * ptr;
@@ -108,11 +113,8 @@ static struct pref_deliv *pdmparse (char *str) {
 	return (result);
 }
 
-static void pdmprint (ps,pdm,format)
-PS ps;
-struct pref_deliv * pdm;
-int format;
-{
+static void pdmprint (PS ps, void *value, int format) {
+	struct pref_deliv * pdm = (struct pref_deliv *) value;
 	char * prefix = NULLCP;
 
 	for (; pdm != (struct pref_deliv *) NULL; pdm = pdm->pd_next) {
@@ -126,18 +128,15 @@ int format;
 	}
 }
 
-static PE pdmenc (m)
-struct pref_deliv * m;
-{
+static PE pdmenc (void *value) {
+	struct pref_deliv * m = (struct pref_deliv *) value;
 	PE ret_pe;
 
 	encode_SA_PreferredDeliveryMethod (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct pref_deliv * pdmdec (pe)
-PE pe;
-{
+static void * pdmdec (PE pe) {
 	struct pref_deliv * m;
 
 	if (decode_SA_PreferredDeliveryMethod (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -151,5 +150,5 @@ void pref_deliv_syntax (void) {
 						  pdmparse,		pdmprint,
 						  pdmcpy,		pdmcmp,
 						  pdmfree,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 }

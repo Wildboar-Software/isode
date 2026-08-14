@@ -39,9 +39,7 @@ char	*brkl();
 
 #ifdef TURBO_DISK
 
-char *_getline (db)
-GDBM_FILE	db;
-{
+char *_getline (GDBM_FILE db) {
 	static datum	newkey, key, dat;
 	static char	*line, *next, *save;
 	static int	new_entry;
@@ -262,7 +260,7 @@ extern char	*unesc_cont(char *ptr, int len);
 FILE * savefile;
 
 #ifdef TURBO_DISK
-char * fgetline (file)
+char * fgetline (FILE *file)
 #else
 char * _getline (FILE *file)
 #endif
@@ -292,7 +290,7 @@ char * _getline (FILE *file)
 }
 
 #ifdef TURBO_DISK
-char * fgetnextline ()
+char * fgetnextline (void)
 #else
 char * getnextline (void)
 #endif
@@ -435,9 +433,7 @@ char *srealloc (char *p, int nsize) {
 
 #ifdef TURBO_DISK
 
-Attr_Sequence fget_attributes_aux (file)
-FILE * file;
-{
+Attr_Sequence fget_attributes_aux (FILE * file) {
 	Attr_Sequence as = NULLATTR;
 	Attr_Sequence as_combine ();
 	char * ptr;
@@ -452,9 +448,7 @@ FILE * file;
 	return (as);
 }
 
-Attr_Sequence fget_attributes (file)
-FILE * file;
-{
+Attr_Sequence fget_attributes (FILE * file) {
 	extern int parse_status;
 	extern int parse_line;
 

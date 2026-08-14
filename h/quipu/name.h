@@ -5,11 +5,6 @@
 
 #include "quipu/attr.h"
 
-typedef struct ava {            /* represents AttributeValueAssertion */
-	AttributeType ava_type;
-	AttributeValue ava_value;
-} ava, AVA;
-
 typedef struct rdncomp {        /* RDN is sequence of attribute value   */
 	/* assertions                           */
 	/* represents RelativeDistinguishedName */

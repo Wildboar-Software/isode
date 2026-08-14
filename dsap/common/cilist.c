@@ -13,7 +13,8 @@
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 
-static void cilistfree (struct CIList *cilist) {
+static void cilistfree (void *value) {
+	struct CIList *cilist = (struct CIList *) value;
 	struct CIList * next;
 	for (; cilist != NULLCILIST; cilist = next) {
 		next = cilist->l_next;
@@ -22,7 +23,9 @@ static void cilistfree (struct CIList *cilist) {
 	}
 }
 
-static int cilistcmp (struct CIList *a, struct CIList *b) {
+static int cilistcmp (void *value1, void *value2) {
+	struct CIList *a = (struct CIList *) value1;
+	struct CIList *b = (struct CIList *) value2;
 	int res;
 
 	for (; (a != NULLCILIST) && (b != NULLCILIST) ;
@@ -35,7 +38,8 @@ static int cilistcmp (struct CIList *a, struct CIList *b) {
 		return (0);
 }
 
-static struct CIList *cilistcpy (struct CIList *a) {
+static void *cilistcpy (void *value) {
+	struct CIList *a = (struct CIList *) value;
 	struct CIList * b, *c, *result = NULLCILIST;
 
 	c = result; /* to keep lint quiet ! */
@@ -53,7 +57,7 @@ static struct CIList *cilistcpy (struct CIList *a) {
 	return (result);
 }
 
-static struct CIList *cilistparse (char *str) {
+static void *cilistparse (char *str) {
 	struct CIList * result = NULLCILIST;
 	struct CIList * a, *b;
 	char * ptr;
@@ -125,11 +129,8 @@ static struct CIList *cilistparse (char *str) {
 	return (result);
 }
 
-static void cilistprint (ps,cilist,format)
-PS ps;
-struct CIList * cilist;
-int format;
-{
+static void cilistprint (PS ps, void *value, int format) {
+	struct CIList * cilist = (struct CIList *) value;
 	char * prefix = NULLCP;
 
 	for (; cilist != NULLCILIST; cilist = cilist->l_next) {
@@ -148,18 +149,15 @@ int format;
 	}
 }
 
-static PE cilistenc (m)
-struct CIList * m;
-{
+static PE cilistenc (void *value) {
+	struct CIList * m = (struct CIList *) value;
 	PE ret_pe;
 
 	encode_SA_CaseIgnoreList (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct CIList * cilistdec (pe)
-PE pe;
-{
+static void * cilistdec (PE pe) {
 	struct CIList * m;
 
 	if (decode_SA_CaseIgnoreList (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -173,5 +171,5 @@ void cilist_syntax (void) {
 						  cilistparse,	cilistprint,
 						  cilistcpy,	cilistcmp,
 						  cilistfree,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 }

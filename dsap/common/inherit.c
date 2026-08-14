@@ -9,18 +9,17 @@
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 
-static void inherit_free (ptr)
-InheritAttr ptr;
-{
+static void inherit_free (void *value) {
+	InheritAttr ptr = (InheritAttr) value;
+
 	oid_free (ptr->i_oid);
 	as_free  (ptr->i_default);
 	as_free  (ptr->i_always);
 	free ((char *) ptr);
 }
 
-static InheritAttr inherit_cpy (a)
-InheritAttr a;
-{
+static void * inherit_cpy (void *value) {
+	InheritAttr a = (InheritAttr) value;
 	InheritAttr result;
 
 	result = (InheritAttr) smalloc (sizeof (*result));
@@ -30,10 +29,9 @@ InheritAttr a;
 	return (result);
 }
 
-static int inherit_cmp (a,b)
-InheritAttr a;
-InheritAttr b;
-{
+static int inherit_cmp (void *value1, void *value2) {
+	InheritAttr a = (InheritAttr) value1;
+	InheritAttr b = (InheritAttr) value2;
 	int res;
 
 	if (a == NULLINHERIT)
@@ -54,11 +52,9 @@ InheritAttr b;
 	return (as_cmp (a->i_default,b->i_default));
 }
 
-static void inherit_print (ps,inherit,format)
-PS ps;
-InheritAttr inherit;
-int format;
-{
+static void inherit_print (PS ps, void *value, int format) {
+	InheritAttr inherit = (InheritAttr) value;
+
 	if (format == READOUT) {
 		if (inherit->i_oid) {
 			if (inherit->i_always) {
@@ -140,11 +136,7 @@ char *nextAttributeLine (char *str) {
 	return ptr;
 }
 
-static char * getInheritAttrs (asptr, needsoc, str)
-Attr_Sequence * asptr;
-char		needsoc;
-char * 		str;
-{
+static char * getInheritAttrs (Attr_Sequence * asptr, char needsoc, char * str) {
 	Attr_Sequence as = NULLATTR;
 	Attr_Sequence as_combine ();
 	Attr_Sequence as_find_type();
@@ -181,9 +173,7 @@ char * 		str;
 	return (NULLCP);
 }
 
-static InheritAttr str2inherit (str)
-char * str;
-{
+static void * str2inherit (char * str) {
 	InheritAttr	result;
 	char 		*ptr;
 	char		needsoc = FALSE;
@@ -253,18 +243,15 @@ char * str;
 	return result;
 }
 
-static PE inherit_enc (m)
-InheritAttr m;
-{
+static PE inherit_enc (void *value) {
+	InheritAttr m = (InheritAttr) value;
 	PE ret_pe;
 
 	encode_Quipu_InheritedAttribute (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static InheritAttr inherit_dec (pe)
-PE pe;
-{
+static void * inherit_dec (PE pe) {
 	InheritAttr m;
 
 	if (decode_Quipu_InheritedAttribute (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -280,5 +267,5 @@ void inherit_syntax (void) {
 										 str2inherit,	inherit_print,
 										 inherit_cpy,	inherit_cmp,
 										 inherit_free,		NULLCP,
-										 NULLIFP,		TRUE);
+										 NULL,			TRUE);
 }

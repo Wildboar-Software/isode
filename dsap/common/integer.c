@@ -2,17 +2,21 @@
 #include "quipu/attr.h"
 #include "psap.h"
 
-static PE intenc (int *x)
+static PE intenc (void *value)
 {
+	int *x = (int *) value;
+
 	return (int2prim(*x));
 }
 
-static PE enumenc (int *x)
+static PE enumenc (void *value)
 {
+	int *x = (int *) value;
+
 	return enumint2prim ((integer)*x);
 }
 
-static int * intdec (PE pe)
+static void * intdec (PE pe)
 {
 	int * x;
 
@@ -23,7 +27,7 @@ static int * intdec (PE pe)
 	return x;
 }
 
-static int * enumdec (PE pe)
+static void * enumdec (PE pe)
 {
 	int *x;
 
@@ -34,14 +38,17 @@ static int * enumdec (PE pe)
 	return x;
 }
 
-static void intprint (PS ps, int *x, int format)
+static void intprint (PS ps, void *value, int format)
 {
+	int *x = (int *) value;
+
 	ps_printf (ps,"%d",*x);
 }
 
 #define enumprint intprint
 
-static int *intdup (int *x) {
+static void *intdup (void *value) {
+	int *x = (int *) value;
 	int *y;
 	y = (int *) smalloc (sizeof (int));
 	*y = *x;
@@ -50,19 +57,24 @@ static int *intdup (int *x) {
 
 #define enumdup intdup
 
-static int intcmp (int *x, int *y) {
+static int intcmp (void *value1, void *value2) {
+	int *x = (int *) value1;
+	int *y = (int *) value2;
+
 	return ( *x == *y ? 0 : (*x > *y ? 1 : -1) );
 }
 
 #define enumcmp intcmp
 
-static void intfree (int *x) {
+static void intfree (void *value) {
+	int *x = (int *) value;
+
 	free ((char *) x);
 }
 
 #define enumfree intfree
 
-static int *intparse (char *str) {
+static void *intparse (char *str) {
 	int atoi(const char *);
 	int * x;
 	x = (int *) smalloc (sizeof (int));
@@ -78,11 +90,11 @@ void integer_syntax (void) {
 						  intparse,		intprint,
 						  intdup,		intcmp,
 						  intfree,	NULLCP,
-						  NULLIFP,	FALSE);
+						  NULL,		FALSE);
 	add_attribute_syntax("enumerated",
 						 enumenc, 	enumdec,
 						 enumparse,	enumprint,
 						 enumdup,	enumcmp,
 						 enumfree,		NULLCP,
-						 NULLIFP,		FALSE);
+						 NULL,			FALSE);
 }

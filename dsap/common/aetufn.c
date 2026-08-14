@@ -63,11 +63,7 @@ again:
 	return result;
 }
 
-static DNS just_say_no (dns,dn,s)
-DNS dns;
-DN dn;
-char * s;
-{
+static DNS just_say_no (DNS dns, DN dn, char * s) {
 	/* we only want good hits ! */
 	dn_seq_free (dns);
 	SLOG (addr_log, LLOG_NOTICE, NULLCP,
@@ -98,9 +94,7 @@ static int bind_to_dsa (void) {
 
 static char bound = FALSE;
 
-static PE name2psap (dn)
-DN dn;
-{
+static PE name2psap (DN dn) {
 	AttributeType at;
 	extern PE grab_pe();
 	PE res_pe;
@@ -163,14 +157,8 @@ out:
 static char unbind = FALSE;
 static envlist el = NULLEL;
 
-static PE  name2value_ufn (name, context, ontty, userdn, passwd, real_name)
-char   *name,
-	   *context,
-	   *userdn,
-	   *passwd;
-int	ontty;
-PE     *real_name;
-{
+static PE  name2value_ufn (char *name, char *context, int ontty, char *userdn,
+						   char *passwd, PE *real_name) {
 	int n;
 	char * v[20],buffer[LINESIZE];
 	DNS dns = NULLDNS;

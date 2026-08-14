@@ -10,7 +10,7 @@ extern char dsa_mode;
 int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
 int acl_cmp (struct acl *acl1, struct acl *acl2);
 static struct acl_info * defaultacl = (struct acl_info *) NULL;
-static struct acl * acl_cpy (struct acl *aclptr);
+static void * acl_cpy (void *value);
 
 static void acl_info_free (struct acl_info *aclptr) {
 	struct acl_info * ptr;
@@ -37,7 +37,9 @@ static void acl_attr_free (struct acl *aclptr) {
 	}
 }
 
-static void acl_free (struct acl *aclptr) {
+static void acl_free (void *value) {
+	struct acl *aclptr = (struct acl *) value;
+
 	acl_info_free (aclptr->ac_child);
 	acl_info_free (aclptr->ac_entry);
 	acl_info_free (aclptr->ac_default);
@@ -179,6 +181,12 @@ int acl_cmp (struct acl *acl1, struct acl *acl2) {
 	return(0);
 }
 
+int acl_cmp_void (void *value1, void *value2) {
+	struct acl *acl1 = (struct acl *) value1;
+	struct acl *acl2 = (struct acl *) value2;
+	return acl_cmp (acl1, acl2);
+}
+
 struct acl_info *acl_info_new (int x, int y, struct dn_seq *z) {
 	struct acl_info * ptr;
 	ptr = acl_info_alloc ();
@@ -224,7 +232,8 @@ static struct acl_attr *acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *
 	return (result);
 }
 
-static struct acl *acl_cpy (struct acl *aclptr) {
+static void *acl_cpy (void *value) {
+	struct acl *aclptr = (struct acl *) value;
 	struct acl * ptr;
 	ptr = (struct acl *) smalloc (sizeof (struct acl));
 	ptr->ac_child = acl_info_cpy (aclptr->ac_child);
@@ -234,7 +243,7 @@ static struct acl *acl_cpy (struct acl *aclptr) {
 	return (ptr);
 }
 
-static struct acl *acl_decode (PE pe) {
+static void *acl_decode (PE pe) {
 	struct acl * aclptr;
 	if (decode_Quipu_ACLSyntax(pe,1,NULLIP,NULLVP,&aclptr) == NOTOK) {
 		return (struct acl *) NULL;
@@ -593,7 +602,8 @@ static void acl_info_print (
 	}
 }
 
-static void acl_print (PS ps, struct acl * aclptr, int format) {
+static void acl_print (PS ps, void *value, int format) {
+	struct acl * aclptr = (struct acl *) value;
 	char printed = FALSE;
 	struct acl_attr * ptr;
 
@@ -651,7 +661,7 @@ static void acl_print (PS ps, struct acl * aclptr, int format) {
 			ps_print (ps,"(default)");
 }
 
-static struct acl *str2acl (char *str) {
+static void *str2acl (char *str) {
 	struct acl * the_acl;
 	the_acl = acl_alloc ();
 	if (str2acl_aux(str,the_acl) != NULLACL)
@@ -660,7 +670,8 @@ static struct acl *str2acl (char *str) {
 	return (NULLACL);
 }
 
-static PE acl_enc (struct acl * acl) {
+static PE acl_enc (void *value) {
+	struct acl * acl = (struct acl *) value;
 	PE ret_pe;
 	encode_Quipu_ACLSyntax (&ret_pe,0,0,NULLCP,acl);
 	return (ret_pe);
@@ -673,9 +684,9 @@ void acl_syntax (void) {
 	acl_sntx = add_attribute_syntax ("acl",
 									 acl_enc,	acl_decode,
 									 str2acl,	acl_print,
-									 acl_cpy,	acl_cmp,
+									 acl_cpy,	acl_cmp_void,
 									 acl_free,	NULLCP,
-									 NULLIFP,	TRUE);
+									 NULL,		TRUE);
 	merge_acl = (IFP) acl_merge;
 	acl_fn = (IFP) acl_default;
 	get_default_acl();

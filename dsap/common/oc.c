@@ -10,6 +10,7 @@ extern IFP oc_hier;
 extern IFP oc_avsprint;
 
 static void add_hierarchy (objectclass *oc, AV_Sequence *avsp);
+void want_oc_hierarchy (void);
 
 objectclass * oc_add (OID oid)
 {
@@ -45,6 +46,11 @@ objectclass * str2oc (char *str)
 		return (NULLOBJECTCLASS);
 	}
 	return (oc_add (str2oid(ptr)));
+}
+
+static void *str2oc_void (char *str)
+{
+	return str2oc (str);
 }
 
 static AV_Sequence new_oc_avs (objectclass *oc)
@@ -167,14 +173,17 @@ static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use th
 	AttrV_print (ps,&avs->avseq_av,format);
 }
 
-int objectclass_cmp (objectclass *a, objectclass *b)
+int objectclass_cmp (void *value1, void *value2)
 {
-	/* macro ! */
+	objectclass *a = (objectclass *) value1;
+	objectclass *b = (objectclass *) value2;
 	return objclass_cmp(a,b);
 }
 
-static objectclass * oc_cpy (objectclass *oc)
+static void * oc_cpy (void *value)
 {
+	objectclass *oc = (objectclass *) value;
+
 	return (oc);	/* static table !!! */
 }
 
@@ -192,17 +201,19 @@ int check_in_oc (OID oid, AV_Sequence avs)
 	return (FALSE);
 }
 
-static void oc_free (objectclass *oc)
+static void oc_free (void *value)
 {
 	;	/* static table !!! */
 }
 
-static PE oc_enc (objectclass *oc)
+static PE oc_enc (void *value)
 {
+	objectclass *oc = (objectclass *) value;
+
 	return (oid2prim(oc->oc_ot.ot_oid));
 }
 
-static objectclass * oc_dec (PE pe)
+static void * oc_dec (PE pe)
 {
 	OID oid;
 	objectclass *oc;
@@ -216,9 +227,10 @@ static objectclass * oc_dec (PE pe)
 	return (oc_add(oid));
 }
 
-void oc_print (PS ps, objectclass *oc, int format)
+static void oc_print (PS ps, void *value, int format)
 {
 	extern int oidformat;
+	objectclass *oc = (objectclass *) value;
 
 	if ( format != READOUT)
 		ps_printf (ps,"%s",oc2name (oc,OIDPART));
@@ -229,10 +241,10 @@ void oc_print (PS ps, objectclass *oc, int format)
 void objectclass_syntax (void) {
 	oc_sntx = add_attribute_syntax ("objectclass",
 									oc_enc,		oc_dec,
-									str2oc,		oc_print,
+									str2oc_void,		oc_print,
 									oc_cpy,		objectclass_cmp,
 									oc_free,	NULLCP,
-									NULLIFP,	FALSE );
+									NULL,		FALSE );
 	oc_hier = (IFP) str2oc_hier;
 	oc_avsprint = (IFP) oc_print_avs;
 	want_oc_hierarchy ();

@@ -20,7 +20,9 @@
 
 static int  CMD_SRCH ();
 
-static void dsaQoS_free (struct dsaQoS *a) {
+static void dsaQoS_free (void *value) {
+	struct dsaQoS *a = (struct dsaQoS *) value;
+
 	if (!a)
 		return;
 	if (a -> dsa_description)
@@ -28,7 +30,8 @@ static void dsaQoS_free (struct dsaQoS *a) {
 	free ((char *) a);
 }
 
-static struct dsaQoS *dsaQoS_cpy (struct dsaQoS *a) {
+static void *dsaQoS_cpy (void *value) {
+	struct dsaQoS *a = (struct dsaQoS *) value;
 	struct dsaQoS *b;
 	b = (struct dsaQoS *) smalloc (sizeof *b);
 	bzero ((char *) b, sizeof *b);
@@ -38,7 +41,9 @@ static struct dsaQoS *dsaQoS_cpy (struct dsaQoS *a) {
 	return b;
 }
 
-static int dsaQoS_cmp (struct dsaQoS *a, struct dsaQoS *b) {
+static int dsaQoS_cmp (void *value1, void *value2) {
+	struct dsaQoS *a = (struct dsaQoS *) value1;
+	struct dsaQoS *b = (struct dsaQoS *) value2;
 	int	    res;
 	if (!a)
 		return (b ? (-1) : 0);
@@ -58,7 +63,8 @@ static CMD_TABLE dsaQoS_tab[] = {
 	NULL,		-1
 };
 
-static void dsaQoS_print (PS ps, struct dsaQoS *a, int format) {
+static void dsaQoS_print (PS ps, void *value, int format) {
+	struct dsaQoS *a = (struct dsaQoS *) value;
 	char   *ptr = rcmd_srch (a -> dsa_quality, dsaQoS_tab);
 	if (format == READOUT)
 		ps_printf (ps, "%s", ptr ? ptr : "UNKNOWN !!!");
@@ -69,7 +75,7 @@ static void dsaQoS_print (PS ps, struct dsaQoS *a, int format) {
 				   a -> dsa_description);
 }
 
-static struct dsaQoS *str2dsaQoS (char *str) {
+static void *str2dsaQoS (char *str) {
 	int	    quality;
 	char   *ptr;
 	struct dsaQoS *a;
@@ -91,15 +97,16 @@ static struct dsaQoS *str2dsaQoS (char *str) {
 	return a;
 }
 
-static PE dsaQoS_enc (struct dsaQoS *a)
+static PE dsaQoS_enc (void *value)
 {
+	struct dsaQoS *a = (struct dsaQoS *) value;
 	PE	    pe;
 
 	encode_Thorn_DSAQualitySyntax (&pe, 0, 0, NULLCP, a);
 	return pe;
 }
 
-static struct dsaQoS *dsaQoS_dec (PE pe)
+static void *dsaQoS_dec (PE pe)
 {
 	struct dsaQoS *a;
 
@@ -114,7 +121,8 @@ static void attrQoS_free (struct attrQoS *a) {
 	free ((char *) a);
 }
 
-static void ditQoS_free (struct ditQoS *a) {
+static void ditQoS_free (void *value) {
+	struct ditQoS *a = (struct ditQoS *) value;
 	struct attrsQoS *p, *q;
 	if (!a)
 		return;
@@ -138,7 +146,8 @@ static struct attrQoS *attrQoS_cpy (struct attrQoS *a) {
 	return b;
 }
 
-static struct ditQoS *ditQoS_cpy (struct ditQoS *a) {
+static void *ditQoS_cpy (void *value) {
+	struct ditQoS *a = (struct ditQoS *) value;
 	struct ditQoS *b;
 	struct attrsQoS  *p, **q, *r;
 
@@ -172,7 +181,9 @@ static int attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
 	return 0;
 }
 
-static int ditQoS_cmp (struct ditQoS *a, struct ditQoS *b) {
+static int ditQoS_cmp (void *value1, void *value2) {
+	struct ditQoS *a = (struct ditQoS *) value1;
+	struct ditQoS *b = (struct ditQoS *) value2;
 	int	    res;
 	struct attrsQoS *p, *r;
 
@@ -228,8 +239,9 @@ static void attrQoS_print (PS ps, struct attrQoS *a, int format)
 			   p ? p : "UNKNOWN !!!", q ? q : "UNKNOWN !!!");
 }
 
-static void ditQoS_print (PS ps, struct ditQoS *a, int format)
+static void ditQoS_print (PS ps, void *value, int format)
 {
+	struct ditQoS *a = (struct ditQoS *) value;
 	char   *ptr = rcmd_srch (a -> dit_namespace, ditQoS_tab);
 	struct attrsQoS  *p;
 
@@ -287,7 +299,7 @@ static struct attrQoS *str2attrQoS (char *str) {
 	return a;
 }
 
-static struct ditQoS *
+static void *
 str2ditQoS (char *str) {
 	char   *ptr,
 		   *qtr;
@@ -376,14 +388,15 @@ out2:
 	return a;
 }
 
-static PE ditQoS_enc (struct ditQoS *a)
+static PE ditQoS_enc (void *value)
 {
+	struct ditQoS *a = (struct ditQoS *) value;
 	PE	    pe;
 	encode_Thorn_DataQualitySyntax (&pe, 0, 0, NULLCP, a);
 	return pe;
 }
 
-static struct ditQoS *ditQoS_dec (PE pe)
+static void *ditQoS_dec (PE pe)
 {
 	struct ditQoS *a;
 	if (decode_Thorn_DataQualitySyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
@@ -400,7 +413,7 @@ void QoS_syntax (void) {
 						  dsaQoS_cpy,
 						  dsaQoS_cmp,
 						  dsaQoS_free,
-						  NULLCP, NULLIFP, TRUE);
+						  NULLCP, NULL, TRUE);
 	add_attribute_syntax ("DataQualitySyntax",
 						  ditQoS_enc,
 						  ditQoS_dec,
@@ -409,7 +422,7 @@ void QoS_syntax (void) {
 						  ditQoS_cpy,
 						  ditQoS_cmp,
 						  ditQoS_free,
-						  NULLCP, NULLIFP, TRUE);
+						  NULLCP, NULL, TRUE);
 }
 
 #undef	cmd_srch

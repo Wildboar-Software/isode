@@ -1,5 +1,6 @@
 /* oid.c - Object Identifier routines */
 
+#include <stdio.h>
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -594,9 +595,7 @@ static char *part_gen (oid_table *ot)
 }
 
 #ifndef attr2name_aux
-char *attr2name_aux (oa)
-oid_table_attr *oa;
-{
+char *attr2name_aux (oid_table_attr *oa) {
 	if ( oa != NULLTABLE_ATTR)
 		return (oa->oa_ot.ot_name);
 	else {
@@ -727,9 +726,20 @@ OID name2oid(char *str)
 	}
 }
 
+static void *name2oid_void (char *str)
+{
+	return name2oid(str);
+}
+
 PE oid2pe (OID o)
 {
 	/* needed cos of a macro */
+	return (oid2prim (o));
+}
+
+static PE oid2pe_void (void *value)
+{
+	OID o = (OID) value;
 	return (oid2prim (o));
 }
 
@@ -743,15 +753,26 @@ void oidprint (PS ps, OID o, int format)
 		ps_printf (ps,"%s",oid2name(o,OIDPART));
 }
 
+static void oidprint_void (PS ps, void *value, int format)
+{
+	OID o = (OID) value;
+	oidprint (ps, o, format);
+}
+
 OID dup_prim2oid (PE pe)
 {
 	OID oid;
 
-	if (! test_prim_pe (pe,PE_CLASS_UNIV,PE_PRIM_OID))
+	if (!test_prim_pe(pe,PE_CLASS_UNIV,PE_PRIM_OID))
 		return (NULLOID);
 	if (( oid = prim2oid(pe)) == NULLOID)
 		return (NULLOID);
 	return (oid_cpy(oid));
+}
+
+static void *dup_prim2oid_void (PE pe)
+{
+	return dup_prim2oid (pe);
 }
 
 void free_oid_buckets (void) {
@@ -766,11 +787,30 @@ void free_oid_buckets (void) {
 		}
 }
 
+static void *oid_cpy_void (void *value)
+{
+	OID o = (OID) value;
+	return oid_cpy (o);
+}
+
+static int oid_cmp_void (void *value1, void *value2)
+{
+	OID o1 = (OID) value1;
+	OID o2 = (OID) value2;
+	return oid_cmp (o1, o2);
+}
+
+static void oid_free_void (void *value)
+{
+	OID o = (OID) value;
+	oid_free (o);
+}
+
 void oid_syntax (void) {
 	add_attribute_syntax ("oid",
-						  oid2pe,		dup_prim2oid,
-						  name2oid,		oidprint,
-						  oid_cpy,		oid_cmp,
-						  oid_free,	NULLCP,
-						  NULLIFP,	FALSE );
+		oid2pe_void,		dup_prim2oid_void,
+		name2oid_void,		oidprint_void,
+		oid_cpy_void,		oid_cmp_void,
+		oid_free_void,	NULLCP,
+						  NULL,		FALSE );
 }

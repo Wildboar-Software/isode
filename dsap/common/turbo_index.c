@@ -1,5 +1,5 @@
 /* turbo_index.c */
-
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include "quipu/config.h"
@@ -231,10 +231,7 @@ static Index *new_index(DN dn)
 
 #ifdef notdef
 
-static print_soundex_node( n, ps )
-Index_node	*n;
-int		ps;
-{
+static print_soundex_node( Index_node *n, int ps ) {
 	int	i;
 
 	printf( "\t(%s)\n",n->in_value );

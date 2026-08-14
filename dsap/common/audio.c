@@ -28,7 +28,7 @@ extern struct qbuf * qb_cpy();
 extern int qb_cmp(struct qbuf *qb1, struct qbuf *qb2);
 extern int file_attr_length;
 
-void audio_print (
+static void audio_print (
 	PS ps,
 	struct qbuf * qb,
 	int format
@@ -113,19 +113,18 @@ void audio_print (
 #endif
 }
 
-static struct qbuf *
-audio_parse (char *str) {
+static void *audio_parse (char *str) {
 	if (file_attr_length)
 		return str2qb (str, file_attr_length, 1);
 	else
 		return str2qb (str, strlen (str), 1);
 }
 
-int audio_syntax (void) {
+void audio_syntax (void) {
 	add_attribute_syntax ("audio",
-						  r_octenc,		r_octsdec,
-						  audio_parse,	audio_print,
-						  qb_cpy,		qb_cmp,
-						  qb_free,		NULLCP,
-						  NULLIFP,		TRUE);
+						  (AttributeValueEncoder)r_octenc,	(AttributeValueDecoder)r_octsdec,
+						  audio_parse,	(AttributeValuePrinter)audio_print,
+						  (AttributeValueCopier)qb_cpy,	(AttributeValueComparator)qb_cmp,
+						  (AttributeValueFree)qb_free,		NULLCP,
+						  NULL,			TRUE);
 }

@@ -74,7 +74,9 @@ static void free_CriteriaItem (struct CriteriaItem *arg) {
 	free ((char *) arg);
 }
 
-static void guidefree (struct Guide *arg) {
+static void guidefree (void *value) {
+	struct Guide *arg = (struct Guide *) value;
+
 	if (arg == NULL)
 		return;
 	/* will always be present if nadfGuide... */
@@ -136,7 +138,8 @@ static struct Criteria *Criteria_cpy (struct Criteria *a) {
 	return (b);
 }
 
-static struct Guide *guidecpy (struct Guide *a) {
+static void *guidecpy (void *value) {
+	struct Guide *a = (struct Guide *) value;
 	struct Guide * b;
 
 	b = (struct Guide * ) smalloc (sizeof(struct Guide));
@@ -283,7 +286,7 @@ static struct Criteria *Criteria_parse (char *str) {
 	return (result);
 }
 
-static struct Guide *guideparse (char *str) {
+static void *guideparse (char *str) {
 	char *ptr;
 	struct Guide * res;
 
@@ -318,7 +321,7 @@ static CMD_TABLE subset_tab[] = {
 	NULL,	       -1
 };
 
-static struct Guide *nadfparse (char *str) {
+static void *nadfparse (char *str) {
 	char   *ptr1,
 		   *ptr2;
 	struct Guide *res;
@@ -414,9 +417,11 @@ static void Criteria_print (
 
 static void guideprint (
 	PS ps,
-	struct Guide * a,
+	void *value,
 	int format
 ) {
+	struct Guide * a = (struct Guide *) value;
+
 	if (a->objectClass) {
 		if (format == READOUT) {
 			ps_print (ps,"Class: ");
@@ -435,13 +440,14 @@ static void guideprint (
 	}
 }
 
-static PE guideenc (struct Guide * m) {
+static PE guideenc (void *value) {
+	struct Guide * m = (struct Guide *) value;
 	PE ret_pe;
 	encode_SA_Guide (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct Guide * guidedec (PE pe)
+static void * guidedec (PE pe)
 {
 	struct Guide * m;
 	if (decode_SA_Guide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -450,14 +456,15 @@ static struct Guide * guidedec (PE pe)
 	return (m);
 }
 
-static PE nadfenc (struct Guide *m)
+static PE nadfenc (void *value)
 {
+	struct Guide *m = (struct Guide *) value;
 	PE ret_pe;
 	encode_SA_NadfGuide (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct Guide *nadfdec (PE pe)
+static void *nadfdec (PE pe)
 {
 	struct Guide * m;
 	if (decode_SA_NadfGuide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -518,7 +525,9 @@ static int criteria_cmp (struct Criteria *a, struct Criteria *b) {
 	return (result);
 }
 
-static int guidecmp (struct Guide *a, struct Guide *b) {
+static int guidecmp (void *value1, void *value2) {
+	struct Guide *a = (struct Guide *) value1;
+	struct Guide *b = (struct Guide *) value2;
 	int i;
 	if (a == (struct Guide *)NULL)
 		if (b == (struct Guide *)NULL)
@@ -543,11 +552,11 @@ void guide_syntax (void) {
 						  guideparse,	guideprint,
 						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 	add_attribute_syntax ("NadfGuide",
 						  nadfenc,		nadfdec,
 						  nadfparse,	guideprint,
 						  guidecpy,		guidecmp,
 						  guidefree,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 }

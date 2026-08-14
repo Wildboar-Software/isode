@@ -11,15 +11,25 @@ void tree_struct_free (struct tree_struct *ptr) {
 	free ((char *)ptr);
 }
 
-static struct tree_struct *
-	tree_struct_cpy (struct tree_struct *a) {
+void tree_struct_free_void (void *value)
+{
+	struct tree_struct *ptr = (struct tree_struct *) value;
+	tree_struct_free (ptr);
+}
+
+static void *
+	tree_struct_cpy (void *value) {
+	struct tree_struct *a = (struct tree_struct *) value;
 	struct tree_struct * result;
 	result = tree_struct_alloc ();
 	result->tree_object = a->tree_object;
 	return (result);
 }
 
-static int tree_struct_cmp (struct tree_struct *a, struct tree_struct *b) {
+static int tree_struct_cmp (void *value1, void *value2) {
+	struct tree_struct *a = (struct tree_struct *) value1;
+	struct tree_struct *b = (struct tree_struct *) value2;
+
 	if (a == NULLTREE)
 		return (b == NULLTREE ? 0 : -1 );
 	if (b == NULLTREE)
@@ -27,11 +37,13 @@ static int tree_struct_cmp (struct tree_struct *a, struct tree_struct *b) {
 	return (objclass_cmp(a->tree_object,b->tree_object));
 }
 
-static void tree_struct_print (PS ps, struct tree_struct *tree, int format) {
+static void tree_struct_print (PS ps, void *value, int format) {
+	struct tree_struct *tree = (struct tree_struct *) value;
+
 	ps_printf (ps,"%s",oc2name(tree->tree_object,oidformat));
 }
 
-static struct tree_struct *str2schema (char *str) {
+static void *str2schema (char *str) {
 	struct tree_struct * ts;
 	objectclass * str2oc();
 
@@ -44,13 +56,14 @@ static struct tree_struct *str2schema (char *str) {
 	return (ts);
 }
 
-static PE ts_enc (struct tree_struct *ts) {
+static PE ts_enc (void *value) {
+	struct tree_struct *ts = (struct tree_struct *) value;
 	PE ret_pe;
 	encode_Quipu_TreeStructureSyntax(&ret_pe,0,0,NULLCP,ts);
 	return (ret_pe);
 }
 
-static struct tree_struct * ts_dec (PE pe) {
+static void * ts_dec (PE pe) {
 	struct tree_struct * ts;
 	if (decode_Quipu_TreeStructureSyntax(pe,1,NULLIP,NULLVP,&ts) == NOTOK)
 		return (struct tree_struct *)NULL;
@@ -62,6 +75,6 @@ void schema_syntax (void) {
 						  ts_enc,		ts_dec,
 						  str2schema,	tree_struct_print,
 						  tree_struct_cpy,	tree_struct_cmp,
-						  tree_struct_free,	NULLCP,
-						  NULLIFP,		FALSE );
+						  tree_struct_free_void,	NULLCP,
+						  NULL,			FALSE );
 }

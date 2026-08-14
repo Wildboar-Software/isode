@@ -35,6 +35,11 @@ typedef struct {
 	caddr_t  av_struct;
 } attrVal, * AttributeValue;
 
+typedef struct ava {            /* represents AttributeValueAssertion */
+	AttributeType ava_type;
+	AttributeValue ava_value;
+} ava, AVA;
+
 #define AV_WRITE_FILE		256
 #define AV_FILE			128
 #define MAX_AV_SYNTAX 		100
@@ -46,7 +51,60 @@ AttributeValue AttrV_cpy(AttributeValue x);
 AttributeValue str_at2AttrV(char * str, AttributeType at);
 AttributeValue str2AttrV(char * str, short syntax);
 short str2syntax(char * str);
-short add_attribute_syntax ();
+
+typedef struct avseqcomp {      /* attribute may have multiple values   */
+	/* respresents SET OF AttributeValue    */
+	attrVal      	avseq_av;
+	struct avseqcomp    *avseq_next;
+} avseqcomp, *AV_Sequence;
+
+typedef struct {
+	AttributeType fi_sub_type;
+	AV_Sequence fi_sub_initial;
+	AV_Sequence fi_sub_any;
+	AV_Sequence fi_sub_final;
+	/* initial and final should be zero or  */
+	/* one components only                  */
+	char       *fi_sub_match; /* for DSA use */
+} Filter_Substrings;
+
+struct filter_item {
+	int         fi_type;
+#define FILTERITEM_EQUALITY 1
+#define FILTERITEM_SUBSTRINGS 2
+#define FILTERITEM_GREATEROREQUAL 3
+#define FILTERITEM_LESSOREQUAL 4
+#define FILTERITEM_PRESENT 5
+#define FILTERITEM_APPROX 6
+	union {
+		AttributeType fi_un_type;
+		AVA fi_un_ava;
+		Filter_Substrings fi_un_substrings;
+	} fi_un;
+	/* field for DSA use - no need to fill if using DUA */
+	IFP	    fi_ifp;
+};
+
+typedef PE (*AttributeValueEncoder)(void *value);
+typedef void* (*AttributeValueDecoder)(PE pe);
+typedef void* (*AttributeValueParser)(char *str);
+typedef void (*AttributeValuePrinter)(PS ps, void *value, int format);
+typedef void* (*AttributeValueCopier)(void *value);
+typedef int (*AttributeValueComparator)(void *value1, void *value2);
+typedef void (*AttributeValueFree)(void *value);
+typedef int (*AttributeValueApproximator)(struct filter_item *fitem, AV_Sequence avs);
+
+short add_attribute_syntax (char *sntx,
+	AttributeValueEncoder enc,
+	AttributeValueDecoder dec,
+	AttributeValueParser parse,
+	AttributeValuePrinter print,
+	AttributeValueCopier cpy,
+	AttributeValueComparator cmp,
+	AttributeValueFree sfree,
+	char *print_pe,
+	AttributeValueApproximator approx,
+	char multiline);
 short modify_av_printer ();
 
 struct file_syntax {
@@ -73,19 +131,19 @@ struct file_syntax {
 
 typedef struct {
 	char *s_sntx;		/* String defining syntax */
-	PE (*s_encode)(void *value);
-	void* (*s_decode)(PE pe);
-	void* (*s_parse)(char *str);
-	void (*s_print)(PS ps, void *value, int format);
-	void* (*s_copy)(void *value);
+	AttributeValueEncoder s_encode;
+	AttributeValueDecoder s_decode;
+	AttributeValueParser s_parse;
+	AttributeValuePrinter s_print;
+	AttributeValueCopier s_copy;
 	/* return 0 if equal, -1 or 1 if not equal (not sure which way though) */
-	int	(*s_compare)(void *value1, void *value2);
-	void (*s_free)(void *value);
+	AttributeValueComparator s_compare;
+	AttributeValueFree s_free;
 	char *s_pe_print;	/* process to handle raw PE */
 	/* Approximate match routine. The first argument is a filter_item, and
 	the second is an AV_Sequence. I just couldn't actually use those types in
 	this header without recursive includes. */
-	int	(*s_approx)(void *filter_item, void *attr_value_seq);
+	AttributeValueApproximator s_approx;
 	char s_multiline;	/* if true print each value on new line */
 } sntx_table;
 

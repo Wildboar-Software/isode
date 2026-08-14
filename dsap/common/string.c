@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include "quipu/attr.h"
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 
@@ -20,6 +21,8 @@ static char char_failed;
 int ch_set = 0;
 
 extern int soundex_match (struct filter_item *fitem, AV_Sequence avs);
+
+void octprint (PS ps, char *str, int format);
 
 static unsigned char escapes[16][17] = {
 	'A','C','E','I','N','O','U','Y',
@@ -193,13 +196,33 @@ void iso8859print(PS ps, char *sstr)
 	ps_printf(ps, "%s", buff);
 }
 
-static PE ia5enc (char *x)
+/*
+ * new bcmp
+ * actually compares them and returns 1, 0, -1 depending on wether the
+ * len characters of string1 are greater, equal or less than string2
+ */
+ static int nbcmp (char *string1, char *string2, int len) {
+	while (len-- > 0) {
+		if (*string1++ == *string2++)
+			continue;
+		if (*--string1 > *--string2)
+			return (1);
+		return (-1);
+	}
+	return (0);
+}
+
+static PE ia5enc (void *value)
 {
+	char *x = (char *) value;
+
 	return (ia5s2prim(x,strlen(x)));
 }
 
-static PE nstrenc (char *x)
+static PE nstrenc (void *value)
 {
+	char *x = (char *) value;
+
 	return (nums2prim(x,strlen(x)));
 }
 
@@ -211,13 +234,17 @@ PE r_octenc (struct qbuf *x)
 	return (qb2prim(x,PE_CLASS_UNIV, PE_PRIM_OCTS));
 }
 
-static PE octenc (char *x)
+static PE octenc (void *value)
 {
+	char *x = (char *) value;
+
 	return (oct2prim(x,strlen(x)));
 }
 
-static PE strenc (char *x)
+static PE strenc (void *value)
 {
+	char *x = (char *) value;
+
 	if (*x == T61_MARK) {
 		x++;
 		return (t61s2prim(x,strlen(x)));
@@ -237,7 +264,7 @@ static char *local_t61 (char *a) {
 	return (--b);
 }
 
-static char * prtsdec (PE pe)
+static void * prtsdec (PE pe)
 {
 	int z;
 	char * p, *ptr, val;
@@ -297,7 +324,7 @@ int check_3166 (char *a) {
 #endif
 }
 
-static char * cntydec (PE pe)
+static void * cntydec (PE pe)
 {
 	char *a;
 #ifdef STRICT_X500
@@ -338,7 +365,7 @@ struct qbuf *r_octsdec (PE pe)
 		return ((struct qbuf *)0);
 }
 
-static char * octsdec (PE pe)
+static void * octsdec (PE pe)
 {
 	int z;
 
@@ -349,7 +376,7 @@ static char * octsdec (PE pe)
 		return (NULLCP);
 }
 
-static char * ia5sdec (PE pe)
+static void * ia5sdec (PE pe)
 {
 	int z;
 
@@ -360,7 +387,7 @@ static char * ia5sdec (PE pe)
 		return (NULLCP);
 }
 
-static char * numsdec (PE pe)
+static void * numsdec (PE pe)
 {
 	int z;
 	if ( PE_ID(pe->pe_class, pe->pe_id) ==
@@ -402,7 +429,7 @@ static char * t61dec (PE pe)
 // 	universalString 	UniversalString(SIZE (1..MAX)),
 // 	uTF8String 			UTF8String(SIZE (1..MAX)) }
 
-static char * dirstrdec (PE pe)
+static void * dirstrdec (PE pe)
 {
 	int z;
 	char * ptr, *p2, val;
@@ -626,6 +653,10 @@ char *octparse (char *str) {
 	return (strdup(buffer));
 }
 
+static void *octparse_void (char *str) {
+	return octparse (str);
+}
+
 #define prtparse_aux(z)	(check_print_string(z) ? strdup(z) : NULLCP)
 
 char *prtparse (char *str) {
@@ -643,7 +674,11 @@ char *prtparse (char *str) {
 	}
 }
 
-static char *cntyparse (char *str) {
+static void *prtparse_void (char *str) {
+	return prtparse (str);
+}
+
+static void *cntyparse (char *str) {
 	char * a;
 
 	if ((a=prtparse(str)) == NULLCP)
@@ -655,7 +690,7 @@ static char *cntyparse (char *str) {
 	return (NULLCP);
 }
 
-static char *t61parse (char *str) {
+static void *t61parse (char *str) {
 	extern char t61_flag;
 	char * res;
 
@@ -718,7 +753,14 @@ int pstrcmp (char *a, char *b) {
 		return (-1);
 }
 
-static int tpstrcmp (char *a, char *b) {
+static int pstrcmp_void (void *value1, void *value2) {
+	return pstrcmp ((char *) value1, (char *) value2);
+}
+
+static int tpstrcmp (void *value1, void *value2) {
+	char *a = (char *) value1;
+	char *b = (char *) value2;
+
 	if (*a == T61_MARK)
 		a++;
 	if (*b == T61_MARK)
@@ -734,7 +776,10 @@ static int tpstrcmp (char *a, char *b) {
 		return (-1);
 }
 
-static int tlexequ (char *a, char *b) {
+static int tlexequ (void *value1, void *value2) {
+	char *a = (char *) value1;
+	char *b = (char *) value2;
+
 	/* lexequ with T.61 knowledge */
 	if (*a == T61_MARK)
 		a++;
@@ -777,6 +822,10 @@ int telcmp (char *a, char *b) {
 		else if (c1 < c2)
 			return -1;
 	}
+}
+
+int telcmp_void (void *value1, void *value2) {
+	return telcmp ((char *) value1, (char *) value2);
 }
 
 int telstrlen (char *s) {
@@ -1009,22 +1058,6 @@ int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 	return (1);
 }
 
-/*
- * new bcmp
- * actually compares them and returns 1, 0, -1 depending on wether the
- * len characters of string1 are greater, equal or less than string2
- */
-int nbcmp (char *string1, char *string2, int len) {
-	while (len-- > 0) {
-		if (*string1++ == *string2++)
-			continue;
-		if (*--string1 > *--string2)
-			return (1);
-		return (-1);
-	}
-	return (0);
-}
-
 #define SIZEOFQB(qb)  (sizeof (struct qbuf) +  (qb && qb->qb_data ? qb->qb_len \
 				: 0))
 
@@ -1191,6 +1224,12 @@ int telephone_match (short sntx) {
 	return( sntx == tel_sntx );
 }
 
+static void strprint_void (PS ps, void *value, int format)
+{
+	char *str = (char *) value;
+	strprint (ps, str, format);
+}
+
 void string_syntaxes (void) {
 	/* Don't change ordering here unless you know
 	   the side effects !!! */
@@ -1199,71 +1238,73 @@ void string_syntaxes (void) {
 	/* 1-7 Approx       */
 	exct = add_attribute_syntax ("caseexactstring",
 								 strenc,	dirstrdec,
-								 t61parse,	strprint,
-								 strdup,	tpstrcmp,
-								 sfree,		NULLCP,
+								 t61parse,	strprint_void,
+								 (AttributeValueCopier)strdup,	tpstrcmp,
+								 free,		NULL,
 								 soundex_match,	TRUE);
 	tel_sntx = add_attribute_syntax ("TelephoneNumber",
 									 strenc,	prtsdec,
-									 prtparse,	strprint,
-									 strdup,	telcmp,
-									 sfree,		NULLCP,
+									 prtparse_void,	strprint_void,
+									 (AttributeValueCopier)strdup,	telcmp_void,
+									 free,		NULL,
 									 soundex_match,	TRUE);
 	add_attribute_syntax ("printablestring",
 						  strenc,	prtsdec,
-						  prtparse,	strprint,
-						  strdup,	pstrcmp,
-						  sfree,		NULLCP,
+						  prtparse_void,	strprint_void,
+						  (AttributeValueCopier)strdup,	pstrcmp_void,
+						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("ia5string",
 						  ia5enc,	ia5sdec,
-						  octparse,	octprint,
-						  strdup,	pstrcmp,
-						  sfree,		NULLCP,
+						  octparse_void,	strprint_void,
+						  (AttributeValueCopier)strdup,	pstrcmp_void,
+						  free,		NULL,
 						  soundex_match,	TRUE);
 	/* 5-8 ignore strings */
 	add_attribute_syntax ("countrystring",
 						  strenc,	cntydec,
-						  cntyparse,strprint,
-						  strdup,	lexequ,
-						  sfree,		NULLCP,
+						  cntyparse,strprint_void,
+						  (AttributeValueCopier)strdup,	lexequ,
+						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("DestinationString",
 						  strenc,	prtsdec,
-						  prtparse,	strprint,
-						  strdup,	lexequ,
-						  sfree,		NULLCP,
+						  prtparse_void,	strprint_void,
+						  (AttributeValueCopier)strdup,	lexequ,
+						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("caseignorestring",
 						  strenc,	dirstrdec,
-						  t61parse,	strprint,
-						  strdup,	tlexequ,
-						  sfree,		NULLCP,
+						  t61parse,	strprint_void,
+						  (AttributeValueCopier)strdup,	tlexequ,
+						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("caseIgnoreIa5string",
 						  ia5enc,	ia5sdec,
-						  octparse,	octprint,
-						  strdup,	lexequ,
-						  sfree,		NULLCP,
+						  octparse_void,	(AttributeValuePrinter)octprint,
+						  (AttributeValueCopier)strdup,	lexequ,
+						  free,		NULL,
 						  soundex_match,	TRUE);
+
+	// TODO: This using pstrcmp is not right. NumericStrings ignore whitespace when compared.
 	/* 1-9 -> substrings */
 	add_attribute_syntax ("numericstring",
 						  nstrenc,	numsdec,
-						  strdup,	strprint,
-						  strdup,	pstrcmp,
-						  sfree,		NULLCP,
-						  NULLIFP,	FALSE);
+						  (AttributeValueParser)strdup,	strprint_void,
+						  (AttributeValueCopier)strdup,	pstrcmp_void,
+						  free,		NULL,
+						  NULL,		FALSE);
 	/* Not really strings at all (yet!) */
 	add_attribute_syntax ("octetstring",
-						  r_octenc,	r_octsdec,
-						  r_octparse, r_octprint,
-						  qb_cpy,	qb_cmp,
-						  qb_free,		NULLCP,
-						  NULLIFP,	TRUE);
+						  (AttributeValueEncoder)r_octenc,	(AttributeValueDecoder)r_octsdec,
+						  (AttributeValueParser)r_octparse, (AttributeValuePrinter)r_octprint,
+						  (AttributeValueCopier)qb_cpy,	(AttributeValueComparator)qb_cmp,
+						  (AttributeValueFree)qb_free,		NULL,
+						  NULL,		TRUE);
 	add_attribute_syntax ("password",
 						  octenc,	octsdec,
-						  cryptparse,	cryptprint,
-						  strdup,	passwdcmp,
-						  sfree,		NULLCP,
-						  NULLIFP,	TRUE);
+						  (AttributeValueParser)cryptparse,	(AttributeValuePrinter)cryptprint,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)passwdcmp,
+						  free,		NULL,
+						  NULL,		TRUE);
 }

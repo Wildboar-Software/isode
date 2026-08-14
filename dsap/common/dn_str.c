@@ -155,11 +155,52 @@ PE dn_enc (DN dn)
 	return (ret_pe);
 }
 
+static PE dn_enc_void (void *value)
+{
+	DN dn = (DN) value;
+	return dn_enc (dn);
+}
+
+static void *dn_dec_void (PE pe)
+{
+	return dn_dec (pe);
+}
+
+static void *str2dnX_void (char *str)
+{
+	return str2dnX (str);
+}
+
+static void dn_print_void (PS ps, void *value, int format)
+{
+	DN dn = (DN) value;
+	dn_print (ps, dn, format);
+}
+
+static void *dn_cpy_void (void *value)
+{
+	DN dn = (DN) value;
+	return dn_cpy (dn);
+}
+
+static int dn_cmp_void (void *value1, void *value2)
+{
+	DN dn1 = (DN) value1;
+	DN dn2 = (DN) value2;
+	return dn_cmp (dn1, dn2);
+}
+
+static void dn_free_void (void *value)
+{
+	DN dn = (DN) value;
+	dn_free (dn);
+}
+
 int dn_syntax (void) {
 	syntax_dn = add_attribute_syntax ("dn",
-									  dn_enc, dn_dec,
-									  str2dnX, dn_print,
-									  dn_cpy,	dn_cmp,
-									  dn_free,	NULLCP,
-									  NULLIFP,	TRUE );
+									  dn_enc_void, dn_dec_void,
+									  str2dnX_void, dn_print_void,
+									  dn_cpy_void,	dn_cmp_void,
+									  dn_free_void,	NULLCP,
+									  NULL,		TRUE );
 }

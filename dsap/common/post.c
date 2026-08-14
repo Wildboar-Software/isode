@@ -12,6 +12,7 @@
 	Maximum of 6 (UB_POSTAL_LINE) <address_component>'s
 */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
@@ -20,7 +21,8 @@
 
 extern LLog * log_dsap;
 
-static void addrfree (struct postaddr *addr) {
+static void addrfree (void *value) {
+	struct postaddr *addr = (struct postaddr *) value;
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -29,7 +31,9 @@ static void addrfree (struct postaddr *addr) {
 	}
 }
 
-static int addrcmp (struct postaddr *a, struct postaddr *b) {
+static int addrcmp (void *value1, void *value2) {
+	struct postaddr *a = (struct postaddr *) value1;
+	struct postaddr *b = (struct postaddr *) value2;
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
@@ -41,7 +45,8 @@ static int addrcmp (struct postaddr *a, struct postaddr *b) {
 		return (0);
 }
 
-static struct postaddr *addrcpy (struct postaddr *a) {
+static void *addrcpy (void *value) {
+	struct postaddr *a = (struct postaddr *) value;
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
@@ -59,7 +64,7 @@ static struct postaddr *addrcpy (struct postaddr *a) {
 	return (result);
 }
 
-static struct postaddr *addrparse (char *str) {
+static void *addrparse (char *str) {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
 	char * ptr;
@@ -174,11 +179,8 @@ static struct postaddr *addrparse (char *str) {
 
 int	postal_indent = -1;
 
-static void addrprint (ps,addr,format)
-PS ps;
-struct postaddr * addr;
-int format;
-{
+static void addrprint (PS ps, void *value, int format) {
+	struct postaddr * addr = (struct postaddr *) value;
 	char * prefix = NULLCP;
 
 	for (; addr != (struct postaddr *) NULL; addr = addr->pa_next) {
@@ -206,18 +208,15 @@ int format;
 	}
 }
 
-static PE addrenc (m)
-struct postaddr * m;
-{
+static PE addrenc (void *value) {
+	struct postaddr * m = (struct postaddr *) value;
 	PE ret_pe;
 
 	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct postaddr * addrdec (pe)
-PE pe;
-{
+static void * addrdec (PE pe) {
 	struct postaddr * m;
 	struct postaddr * a;
 	int i = 0;
@@ -260,5 +259,5 @@ void post_syntax (void) {
 						  addrparse,	addrprint,
 						  addrcpy,		addrcmp,
 						  addrfree,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 }

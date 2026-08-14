@@ -45,6 +45,8 @@
 	vis_str_seq ::= <visible_string> | <str_seq> "$" <visible_string>
 */
 
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attr.h"		/* Def.s for READOUT etc */
 #include "quipu/nrs_info.h"
@@ -390,11 +392,7 @@ static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 	return (0);
 }
 
-static void addr_info_print (ps, info, format)
-PS		  ps;
-struct addr_info	* info;
-int			  format;
-{
+static void addr_info_print (PS ps, struct addr_info * info, int format) {
 	switch (info->addr_info_type) {
 	case ADDR_INFO_DTE_ONLY:
 		ps_printf (ps, "%s", "dte_only");
@@ -983,7 +981,9 @@ static struct nrs_routes *str2nrs_routes (char *orig) {
 	return (result);
 }
 
-static void nrs_info_free (struct nrs_info *arg) {
+static void nrs_info_free (void *value) {
+	struct nrs_info *arg = (struct nrs_info *) value;
+
 	if (arg == (struct nrs_info *)NULL)
 		return;
 	if (arg->routes)
@@ -991,7 +991,8 @@ static void nrs_info_free (struct nrs_info *arg) {
 	free ((char *) arg);
 }
 
-static struct nrs_info *nrs_info_cpy (struct nrs_info *arg) {
+static void *nrs_info_cpy (void *value) {
+	struct nrs_info *arg = (struct nrs_info *) value;
 	struct nrs_info * result;
 	if (arg == (struct nrs_info *)NULL)
 		return ((struct nrs_info *)NULL);
@@ -1002,7 +1003,10 @@ static struct nrs_info *nrs_info_cpy (struct nrs_info *arg) {
 	return (result);
 }
 
-static int nrs_info_cmp (struct nrs_info *arg1, struct nrs_info *arg2) {
+static int nrs_info_cmp (void *value1, void *value2) {
+	struct nrs_info *arg1 = (struct nrs_info *) value1;
+	struct nrs_info *arg2 = (struct nrs_info *) value2;
+
 	if (arg1 == (struct nrs_info *) NULL)
 		if (arg2 == (struct nrs_info *) NULL)
 			return (0);
@@ -1112,9 +1116,11 @@ static void addr_sp_id_print (
 
 static void nrs_info_print (
     PS ps,
-    struct nrs_info * nrs,
+    void *value,
     int format
 ) {
+	struct nrs_info * nrs = (struct nrs_info *) value;
+
 	context_print (ps, nrs->context, format);
 	ps_printf (ps, "$");
 	addr_sp_id_print (ps, nrs->addr_sp_id, format);
@@ -1233,7 +1239,7 @@ static int str2addr_sp_id (char *orig) {
 	}
 }
 
-static struct nrs_info *str2nrs_info (char *orig) {
+static void *str2nrs_info (char *orig) {
 	struct nrs_info	* result;
 	char		* copy;
 	char		* ptr_prev;
@@ -1284,7 +1290,8 @@ static struct nrs_info *str2nrs_info (char *orig) {
 	return (result);
 }
 
-static PE nrs_info_enc (struct nrs_info * nrs) {
+static PE nrs_info_enc (void *value) {
+	struct nrs_info * nrs = (struct nrs_info *) value;
 	PE ret_pe;
 
 	if (encode_NRS_NRSInformation (&ret_pe, 1, 0, NULLCP, nrs) != OK)
@@ -1292,7 +1299,7 @@ static PE nrs_info_enc (struct nrs_info * nrs) {
 	return (ret_pe);
 }
 
-static struct nrs_info * nrs_info_dec (PE pe)
+static void * nrs_info_dec (PE pe)
 {
 	struct nrs_info	* nrs;
 
@@ -1304,9 +1311,9 @@ static struct nrs_info * nrs_info_dec (PE pe)
 
 void nrs_info_syntax (void) {
 	add_attribute_syntax ("NRSInformation",
-						  (IFP) nrs_info_enc,	(IFP) nrs_info_dec,
-						  (IFP) str2nrs_info,	nrs_info_print,
-						  (IFP) nrs_info_cpy,	nrs_info_cmp,
+						  nrs_info_enc,		nrs_info_dec,
+						  str2nrs_info,		nrs_info_print,
+						  nrs_info_cpy,		nrs_info_cmp,
 						  nrs_info_free,		NULLCP,
-						  NULLIFP,		TRUE);
+						  NULL,			TRUE);
 }

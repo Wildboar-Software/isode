@@ -40,19 +40,17 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 	}
 };
 
-short add_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
-char *	sntx;
-void (*print)(PS ps, void *value, int format);
-int (*cmp)(void *value1, void *value2);
-void (*sfree)(void *value);
-int (*approx)(void *filter_item, void *attr_value_seq);
-void* (*parse)(char *str);
-void* (*cpy)(void *value);
-PE (*enc)(void *value);
-void* (*dec)(PE pe);
-char *  print_pe;
-char	multiline;
-{
+short add_attribute_syntax (char *sntx,
+							AttributeValueEncoder enc,
+							AttributeValueDecoder dec,
+							AttributeValueParser parse,
+							AttributeValuePrinter print,
+							AttributeValueCopier cpy,
+							AttributeValueComparator cmp,
+							AttributeValueFree sfree,
+							char *print_pe,
+							AttributeValueApproximator approx,
+							char multiline) {
 	if (num_syntax >= MAX_AV_SYNTAX)
 		return (-1);
 	syntax_table[num_syntax].s_sntx = sntx;
@@ -60,19 +58,17 @@ char	multiline;
 	return (num_syntax++);
 }
 
-void set_attribute_syntax (sntx,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline)
-short sntx;
-void (*print)(PS ps, void *value, int format);
-int (*cmp)(void *value1, void *value2);
-void (*sfree)(void *value);
-int (*approx)(void *filter_item, void *attr_value_seq);
-void* (*parse)(char *str);
-void* (*cpy)(void *value);
-PE (*enc)(void *value);
-void* (*dec)(PE pe);
-char *  print_pe;
-char	multiline;
-{
+void set_attribute_syntax (short sntx,
+						   AttributeValueEncoder enc,
+						   AttributeValueDecoder dec,
+						   AttributeValueParser parse,
+						   AttributeValuePrinter print,
+						   AttributeValueCopier cpy,
+						   AttributeValueComparator cmp,
+						   AttributeValueFree sfree,
+						   AttributeValueApproximator approx,
+						   char *  print_pe,
+						   char multiline) {
 	if (sntx > num_syntax)
 		return;
 	syntax_table[sntx].s_encode  = enc;
@@ -132,7 +128,7 @@ int split_attr (Attr_Sequence as) {
 		return syntax_table[as->attr_type->oa_syntax].s_multiline;
 }
 
-int (*approxfn(short x))(void *filter_item, void *attr_value_seq) {
+int (*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq) {
 	if (x >= num_syntax)
 		return NULL;
 	return (syntax_table[x].s_approx);

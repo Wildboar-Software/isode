@@ -54,8 +54,10 @@ static Saclinfo sacl_alloc() {
 	return( new );
 }
 
-static void sacl_free( Saclinfo p )
+static void sacl_free( void *value )
 {
+	Saclinfo p = (Saclinfo) value;
+
 	if ( p->sac_tmpbstr )
 		free( p->sac_tmpbstr );
 	if ( p->sac_name != NULLDNSEQ )
@@ -65,8 +67,10 @@ static void sacl_free( Saclinfo p )
 	free( (char *) p );
 }
 
-static void lacl_free( Saclinfo p )
+static void lacl_free( void *value )
 {
+	Saclinfo p = (Saclinfo) value;
+
 	if ( p->sac_tmpbstr )
 		free( p->sac_tmpbstr );
 	if ( p->sac_name != NULLDNSEQ )
@@ -86,8 +90,10 @@ int selector_rank[] = {
 	2	/* ACL_GROUP	*/
 };
 
-static int sacl_cmp( Saclinfo a, Saclinfo b )
+static int sacl_cmp( void *value1, void *value2 )
 {
+	Saclinfo a = (Saclinfo) value1;
+	Saclinfo b = (Saclinfo) value2;
 	int	i;
 
 	if ( a == NULLSACL && b == NULLSACL )
@@ -116,8 +122,10 @@ static int sacl_cmp( Saclinfo a, Saclinfo b )
 	return( 0 );
 }
 
-static int lacl_cmp( Listacl a, Listacl b )
+static int lacl_cmp( void *value1, void *value2 )
 {
+	Listacl a = (Listacl) value1;
+	Listacl b = (Listacl) value2;
 	int	i;
 
 	if ( a == NULLSACL && b == NULLSACL )
@@ -135,8 +143,9 @@ static int lacl_cmp( Listacl a, Listacl b )
 	return( 0 );
 }
 
-static Saclinfo sacl_cpy( Saclinfo sacl )
+static void * sacl_cpy( void *value )
 {
+	Saclinfo sacl = (Saclinfo) value;
 	Saclinfo new;
 
 	new = sacl_alloc();
@@ -149,12 +158,14 @@ static Saclinfo sacl_cpy( Saclinfo sacl )
 	return( new );
 }
 
-static Listacl lacl_cpy( Listacl lacl )
+static void * lacl_cpy( void *value )
 {
+	Listacl lacl = (Listacl) value;
+
 	return( sacl_cpy( lacl ) );
 }
 
-static Saclinfo sacl_decode( PE pe )
+static void * sacl_decode( PE pe )
 {
 	Saclinfo acl;
 
@@ -165,15 +176,16 @@ static Saclinfo sacl_decode( PE pe )
 	return( acl );
 }
 
-static PE sacl_enc( Saclinfo acl )
+static PE sacl_enc( void *value )
 {
+	Saclinfo acl = (Saclinfo) value;
 	PE ret_pe;
 
 	encode_Quipu_SearchACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 	return( ret_pe );
 }
 
-static Saclinfo str2sacl( char *str )
+static void * str2sacl( char *str )
 {
 	Saclinfo	new;
 	char		save, *s, *tmp;
@@ -412,7 +424,8 @@ static char	*sacl_scope[] = {
 	"baseobject"
 };
 
-static void sacl_print( PS ps, Saclinfo acl, int format ) {
+static void sacl_print( PS ps, void *value, int format ) {
+	Saclinfo acl = (Saclinfo) value;
 	int		i, once;
 	extern char	*acl_sel[];
 
@@ -505,7 +518,7 @@ static void sacl_print( PS ps, Saclinfo acl, int format ) {
 	}
 }
 
-static Listacl lacl_decode(PE pe)
+static void * lacl_decode(PE pe)
 {
 	Listacl	acl;
 	if ( decode_Quipu_ListACLSyntax( pe, 1, NULLIP, NULLVP, &acl ) == NOTOK ) {
@@ -514,13 +527,14 @@ static Listacl lacl_decode(PE pe)
 	return( acl );
 }
 
-static PE lacl_enc( Listacl acl ) {
+static PE lacl_enc( void *value ) {
+	Listacl acl = (Listacl) value;
 	PE ret_pe;
 	encode_Quipu_ListACLSyntax( &ret_pe, 0, 0, NULLCP, acl );
 	return( ret_pe );
 }
 
-static Listacl str2lacl(char *str) {
+static void * str2lacl(char *str) {
 	char	*s, save;
 	Listacl	new;
 
@@ -631,7 +645,8 @@ static Listacl str2lacl(char *str) {
 	return( new );
 }
 
-static void lacl_print( PS ps, Listacl acl, int format ) {
+static void lacl_print( PS ps, void *value, int format ) {
+	Listacl acl = (Listacl) value;
 	extern char	*acl_sel[];
 
 	/* selector */
@@ -690,7 +705,7 @@ void sacl_syntax (void) {
 									  str2sacl,	sacl_print,
 									  sacl_cpy,	sacl_cmp,
 									  sacl_free,	NULLCP,
-									  NULLIFP,	TRUE);
+									  NULL,		TRUE);
 }
 
 void lacl_syntax (void) {
@@ -699,5 +714,5 @@ void lacl_syntax (void) {
 									  str2lacl,	lacl_print,
 									  lacl_cpy,	lacl_cmp,
 									  lacl_free,	NULLCP,
-									  NULLIFP,	TRUE);
+									  NULL,		TRUE);
 }

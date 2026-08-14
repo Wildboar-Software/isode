@@ -7,18 +7,21 @@
 	EXAMPLE:
 		internet $ quipu-support@cs.ucl.ac.uk
 */
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
-static void mailbox_free (struct mailbox *ptr) {
+static void mailbox_free (void *value) {
+	struct mailbox *ptr = (struct mailbox *) value;
+
 	free (ptr->mbox);
 	free (ptr->mtype);
 	free ((char *) ptr);
 }
 
-static struct mailbox *mailbox_cpy (struct mailbox *a) {
+static void *mailbox_cpy (void *value) {
+	struct mailbox *a = (struct mailbox *) value;
 	struct mailbox * result;
 
 	result = (struct mailbox *) smalloc (sizeof (struct mailbox));
@@ -27,7 +30,9 @@ static struct mailbox *mailbox_cpy (struct mailbox *a) {
 	return (result);
 }
 
-static int mailbox_cmp (struct mailbox *a, struct mailbox *b) {
+static int mailbox_cmp (void *value1, void *value2) {
+	struct mailbox *a = (struct mailbox *) value1;
+	struct mailbox *b = (struct mailbox *) value2;
 	int res;
 
 	if (a == (struct mailbox *) NULL)
@@ -42,18 +47,16 @@ static int mailbox_cmp (struct mailbox *a, struct mailbox *b) {
 	return (0);
 }
 
-static void mailbox_print (ps,mail,format)
-PS ps;
-struct   mailbox* mail;
-int format;
-{
+static void mailbox_print (PS ps, void *value, int format) {
+	struct mailbox* mail = (struct mailbox *) value;
+
 	if (format == READOUT)
 		ps_printf (ps,"%s: %s",mail->mtype, mail->mbox);
 	else
 		ps_printf (ps,"%s $ %s",mail->mtype, mail->mbox);
 }
 
-static struct mailbox *str2mailbox (char *str) {
+static void *str2mailbox (char *str) {
 	struct mailbox * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -77,18 +80,15 @@ static struct mailbox *str2mailbox (char *str) {
 	return (result);
 }
 
-static PE mail_enc (m)
-struct mailbox * m;
-{
+static PE mail_enc (void *value) {
+	struct mailbox * m = (struct mailbox *) value;
 	PE ret_pe;
 
 	encode_Thorn_MailBox (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct mailbox * mail_dec (pe)
-PE pe;
-{
+static void * mail_dec (PE pe) {
 	struct mailbox * m;
 
 	if (decode_Thorn_MailBox (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
@@ -103,5 +103,5 @@ void mailbox_syntax (void) {
 						  str2mailbox,	mailbox_print,
 						  mailbox_cpy,	mailbox_cmp,
 						  mailbox_free,		NULLCP,
-						  NULLIFP,		TRUE);
+						  NULL,			TRUE);
 }

@@ -1,6 +1,8 @@
 /* certificate.c - Attribute Syntax for certificates */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "quipu/util.h"
 #include "quipu/entry.h"
@@ -8,17 +10,14 @@
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
 
-PE cert_enc(parm)
-struct certificate *parm;
-{
+static PE cert_enc(void *value) {
 	PE pe;
+	struct certificate *parm = (struct certificate *) value;
 	encode_AF_Certificate(&pe, 0, 0, NULLCP, parm);
 	return (pe);
 }
 
-struct certificate *cert_dec(pe)
-PE pe;
-{
+static void *cert_dec(PE pe) {
 	struct certificate *result;
 
 	if (decode_AF_Certificate(pe, 0, NULLIP, NULLVP, &result) == NOTOK)
@@ -281,11 +280,7 @@ struct certificate *str2cert (char *str) {
 	return (result);
 }
 
-void print_algid(ps, parm, format)
-PS ps;
-struct alg_id *parm;
-int format;
-{
+void print_algid(PS ps, struct alg_id *parm, int format) {
 	ps_printf(ps, "%s#", oid2name (parm->algorithm, OIDPART));
 	switch(parm->p_type) {
 	case ALG_PARM_ABSENT:
@@ -318,12 +313,7 @@ int format;
 	}
 }
 
-void print_encrypted(ps, str, n_bits, format)
-PS ps;
-char *str;
-int n_bits;
-int format;
-{
+void print_encrypted(PS ps, char *str, int n_bits, int format) {
 	int i;
 
 	/* The end-user doesn't care what the signature is, so don't display it */
@@ -339,11 +329,7 @@ int format;
 	}
 }
 
-void printcert(ps, parm, format)
-PS ps;
-struct certificate *parm;
-int format;
-{
+void printcert(PS ps, struct certificate *parm, int format) {
 	print_algid(ps, &(parm->sig.alg), format);
 	print_encrypted(ps, parm->sig.encrypted, parm->sig.n_bits, format);
 	dn_print(ps, parm->issuer, EDBOUT);
@@ -389,8 +375,8 @@ void certificate_syntax (void) {
 	add_attribute_syntax(
 		"Certificate",
 		cert_enc, cert_dec,
-		str2cert, printcert,
-		cert_cpy, cert_cmp,
-		cert_free,	NULLCP,
-		NULLIFP,	TRUE);
+		(AttributeValueParser)str2cert, (AttributeValuePrinter)printcert,
+		(AttributeValueCopier)cert_cpy,	(AttributeValueComparator)cert_cmp,
+		(AttributeValueFree)cert_free,	NULLCP,
+		NULL,		TRUE);
 }

@@ -9,20 +9,24 @@
 		number $ country $ answerback
 */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 
 extern LLog * log_dsap;
 
-static void telex_free (struct telex *ptr) {
+static void telex_free (void *value) {
+	struct telex *ptr = (struct telex *) value;
+
 	free (ptr->telexnumber);
 	free (ptr->countrycode);
 	free (ptr->answerback);
 	free ((char *) ptr);
 }
 
-static struct telex *telex_cpy (struct telex *a) {
+static void *telex_cpy (void *value) {
+	struct telex *a = (struct telex *) value;
 	struct telex * result;
 
 	result = (struct telex *) smalloc (sizeof (struct telex));
@@ -32,7 +36,9 @@ static struct telex *telex_cpy (struct telex *a) {
 	return (result);
 }
 
-static int telex_cmp (struct telex *a, struct telex *b) {
+static int telex_cmp (void *value1, void *value2) {
+	struct telex *a = (struct telex *) value1;
+	struct telex *b = (struct telex *) value2;
 	int res;
 
 	if (a == (struct telex *) NULL)
@@ -49,18 +55,16 @@ static int telex_cmp (struct telex *a, struct telex *b) {
 	return (0);
 }
 
-static void telex_print (ps,telex,format)
-PS ps;
-struct   telex* telex;
-int format;
-{
+static void telex_print (PS ps, void *value, int format) {
+	struct telex* telex = (struct telex *) value;
+
 	if (format == READOUT)
 		ps_printf (ps,"number: %s, country: %s, answerback: %s",telex->telexnumber, telex->countrycode, telex->answerback);
 	else
 		ps_printf (ps,"%s $ %s $ %s",telex->telexnumber, telex->countrycode, telex->answerback);
 }
 
-static struct telex *str2telex (char *str) {
+static void *str2telex (char *str) {
 	struct telex * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -112,18 +116,15 @@ static struct telex *str2telex (char *str) {
 	return (result);
 }
 
-static PE telex_enc (m)
-struct telex * m;
-{
+static PE telex_enc (void *value) {
+	struct telex * m = (struct telex *) value;
 	PE ret_pe;
 
 	encode_SA_TelexNumber (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct telex * telex_dec (pe)
-PE pe;
-{
+static void * telex_dec (PE pe) {
 	struct telex * m;
 
 	if (decode_SA_TelexNumber (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
@@ -150,5 +151,5 @@ void telex_syntax (void) {
 						  str2telex,		telex_print,
 						  telex_cpy,		telex_cmp,
 						  telex_free,		NULLCP,
-						  NULLIFP,		TRUE);
+						  NULL,			TRUE);
 }

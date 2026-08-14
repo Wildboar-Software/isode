@@ -1,5 +1,6 @@
 /* authpolicy.c - authentication policy routines */
-
+#include <stdlib.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
@@ -24,7 +25,9 @@ extern void sfree(char *x);
 
 short authp_sntx;
 
-int authp_cmp( Authpolicy a, Authpolicy b ) {
+static int authp_cmp( void *value1, void *value2 ) {
+	Authpolicy a = (Authpolicy) value1;
+	Authpolicy b = (Authpolicy) value2;
 	if ( a == NULLAUTHP && b == NULLAUTHP )
 		return( 0 );
 	if ( a == NULLAUTHP )
@@ -40,13 +43,14 @@ int authp_cmp( Authpolicy a, Authpolicy b ) {
 	return( 0 );
 }
 
-static Authpolicy authp_cpy( Authpolicy ap ) {
+static void * authp_cpy( void *value ) {
+	Authpolicy ap = (Authpolicy) value;
 	Authpolicy new = authp_alloc();
 	*new = *ap;
 	return new;
 }
 
-static Authpolicy authp_decode( PE pe ) {
+static void * authp_decode( PE pe ) {
 	Authpolicy	ap;
 
 	if ( decode_Quipu_AuthenticationPolicySyntax( pe, 1, NULLIP, NULLVP,
@@ -56,7 +60,8 @@ static Authpolicy authp_decode( PE pe ) {
 	return( ap );
 }
 
-static PE authp_enc( Authpolicy ap ) {
+static PE authp_enc( void *value ) {
+	Authpolicy ap = (Authpolicy) value;
 	PE ret_pe;
 	encode_Quipu_AuthenticationPolicySyntax( &ret_pe, 0, 0, NULLCP, ap );
 	return( ret_pe );
@@ -76,7 +81,7 @@ static int get_policy (char *str) {
 	}
 }
 
-static Authpolicy str2authp( char *str ) {
+static void * str2authp( char *str ) {
 	Authpolicy	new;
 	char		save, *s;
 
@@ -118,7 +123,8 @@ static char *policy[] = {
 	"strong"
 };
 
-void authp_print (PS ps, Authpolicy ap, int format) {
+static void authp_print (PS ps, void *value, int format) {
+	Authpolicy ap = (Authpolicy) value;
 	if ( format == READOUT ) {
 		ps_printf( ps, "modification policy: %s\n",
 				   policy[ap->ap_modification] );
@@ -138,6 +144,6 @@ void authp_syntax (void) {
 									   authp_enc,	authp_decode,
 									   str2authp,	authp_print,
 									   authp_cpy,	authp_cmp,
-									   sfree,			NULLCP,
-									   NULLIFP,		TRUE);
+									   free,			NULLCP,
+									   NULL,		TRUE);
 }

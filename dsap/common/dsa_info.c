@@ -5,7 +5,9 @@
 #include "quipu/syntaxes.h"
 extern LLog * log_dsap;
 
-static void edb_info_free (struct edb_info *edb) {
+static void edb_info_free (void *value) {
+	struct edb_info *edb = (struct edb_info *) value;
+
 	if (edb == NULLEDB)
 		return;
 	dn_free (edb->edb_name) ;
@@ -15,7 +17,8 @@ static void edb_info_free (struct edb_info *edb) {
 	free ((char *) edb);
 }
 
-static struct edb_info *edb_info_cpy (struct edb_info *a) {
+static void *edb_info_cpy (void *value) {
+	struct edb_info *a = (struct edb_info *) value;
 	struct edb_info * result;
 
 	result = edb_info_alloc ();
@@ -26,7 +29,9 @@ static struct edb_info *edb_info_cpy (struct edb_info *a) {
 	return (result);
 }
 
-static int edb_info_cmp (struct edb_info *a, struct edb_info *b) {
+static int edb_info_cmp (void *value1, void *value2) {
+	struct edb_info *a = (struct edb_info *) value1;
+	struct edb_info *b = (struct edb_info *) value2;
 	int i;
 
 	if (a == NULLEDB)
@@ -44,9 +49,7 @@ static int edb_info_cmp (struct edb_info *a, struct edb_info *b) {
 	return (0);
 }
 
-static struct edb_info * edb_info_decode (pe)
-PE pe;
-{
+static void * edb_info_decode (PE pe) {
 	struct edb_info * a;
 	if (decode_Quipu_EDBInfoSyntax(pe,1,NULLIP,NULLVP,&a) == NOTOK) {
 		return (NULLEDB);
@@ -56,9 +59,11 @@ PE pe;
 
 static void edb_info_print (
 	PS ps,
-	struct edb_info * edb,
+	void *value,
 	int format
 ) {
+	struct edb_info * edb = (struct edb_info *) value;
+
 	if (edb == NULLEDB)
 		return;
 	if (format == READOUT) {
@@ -95,7 +100,7 @@ static void edb_info_print (
 		DLOG (log_dsap,LLOG_EXCEPTIONS,("edb_sendto not null"));
 }
 
-static struct edb_info *str2update (char *str) {
+static void *str2update (char *str) {
 	char * ptr;
 	char * save,val;
 	struct edb_info * ei;
@@ -169,20 +174,19 @@ static struct edb_info *str2update (char *str) {
 	return (ei);
 }
 
-static PE edb_info_enc (ei)
-struct edb_info * ei;
-{
+static PE edb_info_enc (void *value) {
+	struct edb_info * ei = (struct edb_info *) value;
 	PE ret_pe;
 
 	encode_Quipu_EDBInfoSyntax (&ret_pe,0,0,NULLCP,ei);
 	return (ret_pe);
 }
 
-int edbinfo_syntax (void) {
+void edbinfo_syntax (void) {
 	add_attribute_syntax ("edbinfo",
 						  edb_info_enc,	edb_info_decode,
 						  str2update,	edb_info_print,
 						  edb_info_cpy,	edb_info_cmp,
 						  edb_info_free,		NULLCP,
-						  NULLIFP,		TRUE );
+						  NULL,			TRUE );
 }

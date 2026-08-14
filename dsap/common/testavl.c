@@ -2,16 +2,16 @@
 
 #include <sys/types.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "manifest.h"
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "quipu/turbo.h"
 
-main( argc, argv )
-int	argc;
-char	**argv;
-{
+static void myprint( Avlnode *root );
+
+int main( int argc, char **argv ) {
 	Avlnode	*tree = NULLAVL;
 	char	command[ 10 ];
 	char	name[ 80 ];
@@ -76,10 +76,7 @@ char	**argv;
 	/* NOTREACHED */
 }
 
-static ravl_print( root, depth )
-Avlnode	*root;
-int	depth;
-{
+static void ravl_print( Avlnode *root, int depth ) {
 	int	i;
 
 	if ( root == 0 )
@@ -91,9 +88,7 @@ int	depth;
 	ravl_print( root->avl_left, depth+1 );
 }
 
-myprint( root )
-Avlnode	*root;
-{
+static void myprint( Avlnode *root ) {
 	printf( "********\n" );
 	if ( root == 0 )
 		printf( "\tNULL\n" );

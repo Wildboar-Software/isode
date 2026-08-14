@@ -1,5 +1,7 @@
 /* protected.c - ProtectedPassword attribute syntax */
-
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/attr.h"
@@ -10,18 +12,15 @@ extern LLog *log_dsap;
 extern char dsa_mode;
 char *cryptparse();
 
-static PE prot_enc (x)
-struct protected_password *x;
-{
+static PE prot_enc (void *value) {
+	struct protected_password *x = (struct protected_password *) value;
 	PE result = NULLPE;
 
 	encode_Quipu_ProtectedPassword (&result, 0, 0, NULLCP, x);
 	return (result);
 }
 
-static struct protected_password * prot_dec (pe)
-PE pe;
-{
+static void * prot_dec (PE pe) {
 	struct protected_password *result;
 
 	if (decode_Quipu_ProtectedPassword (pe, 0, NULLIP, NULLVP, &result)
@@ -30,7 +29,7 @@ PE pe;
 	return (result);
 }
 
-static struct protected_password *
+static void *
 str2prot (char *str) {
 	struct protected_password *result;
 	char *octparse();
@@ -50,11 +49,8 @@ str2prot (char *str) {
 	return (result);
 }
 
-static void prot_print (ps, parm, format)
-PS ps;
-struct protected_password *parm;
-int format;
-{
+static void prot_print (PS ps, void *value, int format) {
+	struct protected_password *parm = (struct protected_password *) value;
 	char *cp;
 	extern char * cryptstring();
 
@@ -115,7 +111,9 @@ int check_guard (
 	return (2);
 }
 
-static int prot_cmp (struct protected_password *a, struct protected_password *b) {
+static int prot_cmp (void *value1, void *value2) {
+	struct protected_password *a = (struct protected_password *) value1;
+	struct protected_password *b = (struct protected_password *) value2;
 	int retval;
 
 	if (a->is_protected[0] == (char) 0) {
@@ -151,8 +149,9 @@ static int prot_cmp (struct protected_password *a, struct protected_password *b)
 	return (retval);
 }
 
-static struct protected_password *
-prot_cpy (struct protected_password *parm) {
+static void *
+prot_cpy (void *value) {
+	struct protected_password *parm = (struct protected_password *) value;
 	struct protected_password *result;
 
 	result = (struct protected_password *)
@@ -176,7 +175,9 @@ prot_cpy (struct protected_password *parm) {
 	return (result);
 }
 
-static void prot_free (struct protected_password *parm) {
+static void prot_free (void *value) {
+	struct protected_password *parm = (struct protected_password *) value;
+
 	if (parm->passwd != NULLCP)
 		free(parm->passwd);
 	if (parm->time1 != NULLCP)
@@ -192,5 +193,5 @@ void protected_password_syntax (void) {
 						  str2prot,	prot_print,
 						  prot_cpy,	prot_cmp,
 						  prot_free,	NULLCP,
-						  NULLIFP,	FALSE);
+						  NULL,		FALSE);
 }

@@ -8,7 +8,7 @@
 	REPRESENTING:
 		terminal $ graphic $ control $ page $ misc $ private
 */
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
@@ -17,7 +17,9 @@
 
 extern LLog * log_dsap;
 
-static void teletex_free (struct teletex *ptr) {
+static void teletex_free (void *value) {
+	struct teletex *ptr = (struct teletex *) value;
+
 	nfree (ptr->terminal);
 	nfree (ptr->graphic);
 	nfree (ptr->control);
@@ -34,7 +36,8 @@ static char *xstrdup (char *a) {
 		return (strdup (a));
 }
 
-static struct teletex *teletex_cpy (struct teletex *a) {
+static void *teletex_cpy (void *value) {
+	struct teletex *a = (struct teletex *) value;
 	struct teletex * result;
 
 	result = (struct teletex *) smalloc (sizeof (struct teletex));
@@ -47,7 +50,9 @@ static struct teletex *teletex_cpy (struct teletex *a) {
 	return (result);
 }
 
-static int teletex_cmp (struct teletex *a, struct teletex *b) {
+static int teletex_cmp (void *value1, void *value2) {
+	struct teletex *a = (struct teletex *) value1;
+	struct teletex *b = (struct teletex *) value2;
 	int res;
 
 	if (a == (struct teletex *) NULL)
@@ -70,11 +75,9 @@ static int teletex_cmp (struct teletex *a, struct teletex *b) {
 	return (0);
 }
 
-static void teletex_print (ps,teletex,format)
-PS ps;
-struct   teletex* teletex;
-int format;
-{
+static void teletex_print (PS ps, void *value, int format) {
+	struct teletex* teletex = (struct teletex *) value;
+
 	if (format == READOUT)
 		ps_print (ps,"terminal: ");
 	ps_print (ps,teletex->terminal);
@@ -115,7 +118,7 @@ int format;
 	}
 }
 
-static struct teletex *str2teletex (char *str) {
+static void *str2teletex (char *str) {
 	struct teletex * result;
 	char * ptr;
 	char * mark = NULLCP;
@@ -209,18 +212,15 @@ static struct teletex *str2teletex (char *str) {
 	return (result);
 }
 
-static PE teletex_enc (m)
-struct teletex * m;
-{
+static PE teletex_enc (void *value) {
+	struct teletex * m = (struct teletex *) value;
 	PE ret_pe;
 
 	encode_SA_TeletexTerminalIdentifier (&ret_pe,0,0,NULLCP,m);
 	return (ret_pe);
 }
 
-static struct teletex * teletex_dec (pe)
-PE pe;
-{
+static void * teletex_dec (PE pe) {
 	struct teletex * m;
 
 	if (decode_SA_TeletexTerminalIdentifier (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
@@ -239,5 +239,5 @@ void teletex_syntax (void) {
 						  str2teletex,		teletex_print,
 						  teletex_cpy,		teletex_cmp,
 						  teletex_free,		NULLCP,
-						  NULLIFP,		TRUE);
+						  NULL,			TRUE);
 }

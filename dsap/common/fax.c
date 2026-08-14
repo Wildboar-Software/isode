@@ -11,7 +11,7 @@
 	EXAMPLE:
 		123-4567 $ twoDimensional
 */
-
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
@@ -35,14 +35,17 @@ static struct pair pairs[] = {
 	NULL
 };
 
-static void fax_free (struct fax *f) {
+static void fax_free (void *value) {
+	struct fax *f = (struct fax *) value;
+
 	free (f -> number);
 	if (f -> bits)
 		pe_free (f -> bits);
 	free ((char *) f);
 }
 
-static struct fax *fax_cpy (struct fax *a) {
+static void *fax_cpy (void *value) {
+	struct fax *a = (struct fax *) value;
 	struct fax *f;
 	f = (struct fax *) smalloc (sizeof *f);
 	f -> number = strdup (a -> number);
@@ -50,7 +53,9 @@ static struct fax *fax_cpy (struct fax *a) {
 	return f;
 }
 
-static int fax_cmp (struct fax *a, struct fax *b) {
+static int fax_cmp (void *value1, void *value2) {
+	struct fax *a = (struct fax *) value1;
+	struct fax *b = (struct fax *) value2;
 	int	    i;
 
 	if (a == (struct fax *) NULL)
@@ -62,11 +67,8 @@ static int fax_cmp (struct fax *a, struct fax *b) {
 	return pe_cmp (a -> bits, b -> bits);
 }
 
-static void fax_print (ps, f, format)
-PS ps;
-struct fax *f;
-int	format;
-{
+static void fax_print (PS ps, void *value, int format) {
+	struct fax *f = (struct fax *) value;
 	int   i;
 	struct pair *p;
 	PE    pe;
@@ -108,7 +110,7 @@ int	format;
 	}
 }
 
-static struct fax *str2fax (char *str) {
+static void *str2fax (char *str) {
 	int	    value;
 	char  *ptr,
 		  **ap;
@@ -171,9 +173,8 @@ no_allocate:
 	return f;
 }
 
-static PE  fax_enc (f)
-struct fax *f;
-{
+static PE  fax_enc (void *value) {
+	struct fax *f = (struct fax *) value;
 	PE	pe = NULLPE;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
@@ -183,9 +184,7 @@ struct fax *f;
 	return pe;
 }
 
-static struct fax *fax_dec (pe)
-PE	pe;
-{
+static void *fax_dec (PE pe) {
 	struct fax *f;
 
 	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
@@ -210,5 +209,5 @@ void fax_syntax (void) {
 						  str2fax,		fax_print,
 						  fax_cpy,		fax_cmp,
 						  fax_free,	NULLCP,
-						  NULLIFP,	TRUE);
+						  NULL,		TRUE);
 }

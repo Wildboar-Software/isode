@@ -1,5 +1,5 @@
 /* security.c - Check security parameters */
-
+#include <string.h>
 #include "logger.h"
 #include "quipu/ds_error.h"
 #include "quipu/commonarg.h"
@@ -26,14 +26,9 @@ struct SecurityServices *dsap_security = (struct SecurityServices *) 0;
  * Check security parameters - return 0 or the number of the security error.
  */
 
-int check_security_parms(data, type, module, sp, sig, nameptr)
-caddr_t data;
-int type;
-modtyp *module;
-struct security_parms *sp;
-struct signature *sig;
-DN *nameptr;
-{
+int check_security_parms(caddr_t data, int type, modtyp *module,
+						 struct security_parms *sp, struct signature *sig,
+						 DN *nameptr) {
 	long time_now;
 	long time_then;
 	long delta;

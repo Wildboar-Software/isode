@@ -10,7 +10,12 @@ extern LLog * log_dsap;
 extern struct PSAPaddr * psap_cpy ();
 extern void aps_free (struct access_point *app);
 
-struct access_point *qap_cpy (struct access_point *a) {
+void aps_free_void (void *value) {
+	aps_free ((struct access_point *) value);
+}
+
+static void *qap_cpy (void *value) {
+	struct access_point *a = (struct access_point *) value;
 	struct access_point * r;
 
 	r = (struct access_point *) smalloc (sizeof (struct access_point));
@@ -21,7 +26,9 @@ struct access_point *qap_cpy (struct access_point *a) {
 	return (r);
 }
 
-static int qap_cmp (struct access_point *r, struct access_point *a) {
+static int qap_cmp (void *value1, void *value2) {
+	struct access_point *r = (struct access_point *) value1;
+	struct access_point *a = (struct access_point *) value2;
 	int res;
 
 	if (( res = dn_cmp (r -> ap_name, a -> ap_name)) == 0)
@@ -35,7 +42,8 @@ static int qap_cmp (struct access_point *r, struct access_point *a) {
 	return res;
 }
 
-static PE qap_enc (struct access_point *p) {
+static PE qap_enc (void *value) {
+	struct access_point *p = (struct access_point *) value;
 	PE ret_pe;
 
 	if (encode_DO_QAccessPoint (&ret_pe,0,0,NULLCP,p) == NOTOK )
@@ -43,7 +51,7 @@ static PE qap_enc (struct access_point *p) {
 	return (ret_pe);
 }
 
-static struct access_point *qap_dec (PE pe) {
+static void *qap_dec (PE pe) {
 	struct access_point *qap;
 
 	if (decode_DO_QAccessPoint (pe,1,NULLIP,NULLVP,&qap) == NOTOK) {
@@ -52,7 +60,7 @@ static struct access_point *qap_dec (PE pe) {
 	return (qap);
 }
 
-static struct access_point *qap_parse (char *s) {
+static void *qap_parse (char *s) {
 	struct PSAPaddr *pa;
 	struct access_point *qap;
 	char * p;
@@ -81,7 +89,9 @@ static struct access_point *qap_parse (char *s) {
 	return qap;
 }
 
-static void qap_print (PS ps, struct access_point *p, int format) {
+static void qap_print (PS ps, void *value, int format) {
+	struct access_point *p = (struct access_point *) value;
+
 	dn_print (ps, p -> ap_name, format);
 	if ( p -> ap_address )
 		if (format != READOUT)
@@ -95,6 +105,6 @@ void ap_syntax (void) {
 						  qap_enc,		qap_dec,
 						  qap_parse,	qap_print,
 						  qap_cpy,		qap_cmp,
-						  aps_free,		NULLCP,
-						  NULLIFP,		TRUE );
+						  aps_free_void,		NULLCP,
+						  NULL,			TRUE );
 }

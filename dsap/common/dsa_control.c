@@ -18,55 +18,25 @@
 extern struct qbuf *str2qb(char *str, int len, int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;
 
-static PE dsa_control_enc(struct dsa_control * control_option) ;
-static struct dsa_control * dsa_control_decode() ;
-void dsa_control_print(PS ps, struct dsa_control * dsa_controlptr, int format) ;
-static struct dsa_control * dsa_control_cpy(struct dsa_control *dsa_c_ptr) ;
-int dsa_control_cmp(struct dsa_control *a, struct dsa_control *b) ;
-void dsa_control_free(struct dsa_control *item_to_free) ;
-struct dsa_control * str2dsa_control(char *str) ;
+static PE dsa_control_enc(void *value) ;
+static void * dsa_control_cpy(void *value) ;
 static struct dsa_control * str2dsa_control_aux(char *str, struct dsa_control *item) ;
 
-static        PE          quipu_call_enc() ;
-static struct quipu_call *quipu_call_decode() ;
-void quipu_call_print(PS ps, struct quipu_call *item, int format) ;
-struct quipu_call *quipu_call_cpy() ;
-int	  quipu_call_cmp() ;
-void	  quipu_call_free();
 void        auth_level_free() ;
-struct quipu_call *str2quipu_call() ;
-static struct quipu_call *str2quipu_call_aux() ;
-static        int         op_list_print() ;
-static        int         ops_print() ;
 struct op_list    *op_list_cpy() ;
 struct ops        *ops_cpy() ;
 struct chain_list *chain_list_cpy() ;
 struct sub_ch_list *sub_ch_list_cpy() ;
-static        int         chain_list_print() ;
-static        int         sub_ch_list_print() ;
 
-int dsa_control_syntax (void) {
-	add_attribute_syntax
-	("DSAControl",
-	 dsa_control_enc,    dsa_control_decode,/* Encoder and decoder */
-	 str2dsa_control,	dsa_control_print,          /* parser, print */
-	 dsa_control_cpy,    dsa_control_cmp,/* copy and compare */
-	 dsa_control_free,	NULLCP,             /* structure_free, print - READOUT */
-	 NULLIFP,	TRUE );                     /* Approx matching, multiline output */
-}
-
-static PE dsa_control_enc (control_option)
-struct dsa_control * control_option;
-{
+static PE dsa_control_enc (void *value) {
+	struct dsa_control * control_option = (struct dsa_control *) value;
 	PE ret_pe;
 
 	encode_Quipu_DSAControl(&ret_pe,0,0,NULLCP,control_option);
 	return (ret_pe);
 }
 
-static struct dsa_control * dsa_control_decode (pe)
-PE pe;
-{
+static void * dsa_control_decode (PE pe) {
 	struct dsa_control * dsa_controlptr;
 
 	if (decode_Quipu_DSAControl(pe,1,NULLIP,NULLVP,&dsa_controlptr) == NOTOK) {
@@ -75,7 +45,8 @@ PE pe;
 	return (dsa_controlptr);
 }
 
-void dsa_control_print (PS ps, struct dsa_control * dsa_controlptr, int format) {
+static void dsa_control_print (PS ps, void *value, int format) {
+	struct dsa_control *dsa_controlptr = (struct dsa_control *) value;
 	if (format == READOUT) {
 		ps_printf(ps, "Write attribute only - No READ printing. SPT\n") ;
 		switch (dsa_controlptr->dsa_control_option) {
@@ -129,7 +100,8 @@ void dsa_control_print (PS ps, struct dsa_control * dsa_controlptr, int format) 
 	}
 }
 
-static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
+static void *dsa_control_cpy (void *value) {
+	struct dsa_control *dsa_c_ptr = (struct dsa_control *) value;
 	struct dsa_control * new_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
 
 	new_item->dsa_control_option = dsa_c_ptr->dsa_control_option ;
@@ -209,12 +181,12 @@ static struct dsa_control *dsa_control_cpy (struct dsa_control *dsa_c_ptr) {
 	return(new_item) ;
 }
 
-int dsa_control_cmp (struct dsa_control *a, struct dsa_control *b) {
-	return (2) ;
+static int dsa_control_cmp (void *a, void *b) {
+	return (2); // TODO: What does this mean?
 }
 
-void
-dsa_control_free (struct dsa_control *item_to_free) {
+static void dsa_control_free (void *value) {
+	struct dsa_control *item_to_free = (struct dsa_control *) value;
 	switch (item_to_free->dsa_control_option) {
 	case(CONTROL_SETLOGLEVEL): {
 		qb_free(item_to_free->un.setLogLevel) ;
@@ -248,7 +220,7 @@ dsa_control_free (struct dsa_control *item_to_free) {
 	free ((char *)item_to_free) ;
 }
 
-struct dsa_control *str2dsa_control (char *str) {
+static void *str2dsa_control (char *str) {
 	struct dsa_control * the_item;
 
 	the_item = (struct dsa_control *) malloc (sizeof (struct dsa_control)) ;
@@ -393,35 +365,22 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 	return (item) ;
 }
 
-int optional_dn_free (struct optional_dn *item_to_free) {
+void optional_dn_free (struct optional_dn *item_to_free) {
 	if (item_to_free->offset == DN_PRESENT) {
 		dn_free(item_to_free->un.selectedDN) ;
 	}
 	free ((char *)item_to_free) ;
 }
 
-int quipu_call_syntax (void) {
-	add_attribute_syntax
-	("Call",
-	 quipu_call_enc,    quipu_call_decode,     /* Encoder and decoder */
-	 str2quipu_call,	  quipu_call_print,      /* parser, print */
-	 quipu_call_cpy,    quipu_call_cmp,        /* copy and compare */
-	 quipu_call_free,	  NULLCP,               /* structure_free, print - READOUT */
-	 NULLIFP,	          TRUE );               /* Approx matching, multiline output */
-}
-
-static PE quipu_call_enc (control_option)
-struct quipu_call * control_option;
-{
+static PE quipu_call_enc (void *value) {
+	struct quipu_call * control_option = (struct quipu_call *) value;
 	PE ret_pe;
 
 	encode_Quipu_Call(&ret_pe,0,0,NULLCP,control_option);
 	return (ret_pe);
 }
 
-static struct quipu_call * quipu_call_decode (pe)
-PE pe;
-{
+static void * quipu_call_decode (PE pe) {
 	struct quipu_call * quipu_callptr;
 
 	if (decode_Quipu_Call(pe,1,NULLIP,NULLVP,&quipu_callptr) == NOTOK) {
@@ -430,8 +389,15 @@ PE pe;
 	return (quipu_callptr);
 }
 
-struct quipu_call *
-str2quipu_call (char *str) {
+static struct quipu_call *str2quipu_call_aux (char *str, struct quipu_call *item) {
+	/* SPT: Forget it! The structure is horrible
+	 and should be filled in by hand!
+	 Read only structure. */
+
+	return((struct quipu_call *) 0) ;
+}
+
+static void *str2quipu_call (char *str) {
 	struct quipu_call * the_item ;
 
 	the_item = (struct quipu_call *) malloc (sizeof (struct quipu_call)) ;
@@ -441,17 +407,48 @@ str2quipu_call (char *str) {
 	return ((struct quipu_call *) 0);
 }
 
-static struct quipu_call *
-str2quipu_call_aux (char *str, struct quipu_call *item) {
-	/* SPT: Forget it! The structure is horrible
-	 and should be filled in by hand!
-	 Read only structure. */
-
-	return((struct quipu_call *) 0) ;
+static void sub_ch_list_print(PS ps, struct sub_ch_list * item, int format) {
+	ps_printf(ps, "%d, %d", item->assoc_id, item->invok_id) ;
 }
 
-void quipu_call_print(PS ps, struct quipu_call *item, int format)
+static void chain_list_print(PS ps, struct chain_list * item, int format) {
+	while (item != (struct chain_list *) 0) {
+		sub_ch_list_print(ps, item->sub_chained_ops, format) ;
+		item = item->next ;
+		if (item != (struct chain_list *) 0) {
+			ps_print(ps, " $ ") ;
+		}
+	}
+}
+
+static int ops_print(PS ps, struct ops * item, int format) {
+	ps_printf(ps, "\t\t   Invoke_id %d, ", item->invoke_id) ;
+	ps_printf(ps, "Op Id. %d, ", item->operation_id) ;
+	dn_print(ps, item->base_object, format) ;
+	ps_print(ps, " Start: ") ;
+	utcprint(ps, item->start_time, format) ;
+	ps_print(ps, " Finish: ") ;
+	if (item->finish_time) {
+		utcprint(ps, item->finish_time, format) ;
+	} else {
+		ps_print(ps, " <unknown> ") ;
+	}
+	ps_print(ps, " Chained Ops: ") ;
+	chain_list_print(ps, item->chained_ops, format) ;
+	ps_print(ps, "\n") ;
+}
+
+static int op_list_print(PS ps, struct op_list * item, int format) {
+	while (item != (struct op_list *) 0) {
+		ps_print(ps, "\t\tOperation List:\n") ;
+		ops_print(ps, item->operation_list, format) ;
+		item = item->next ;
+	}
+}
+
+static void quipu_call_print(PS ps, void *value, int format)
 {
+	struct quipu_call *item = (struct quipu_call *) value;
 	/* When the DSA exits, we do not want to print this out */
 	/* as it really is irrelevant info, not to be reloaded */
 	/* upon start up. */
@@ -512,63 +509,8 @@ void quipu_call_print(PS ps, struct quipu_call *item, int format)
 	op_list_print(ps, item->invoked_ops, format) ;
 }
 
-static int op_list_print(ps, item, format)
-PS ps ;
-struct op_list * item ;
-int format ;
-{
-	while (item != (struct op_list *) 0) {
-		ps_print(ps, "\t\tOperation List:\n") ;
-		ops_print(ps, item->operation_list, format) ;
-		item = item->next ;
-	}
-}
-
-static int ops_print(ps, item, format)
-PS ps ;
-struct ops * item ;
-int format ;
-{
-	ps_printf(ps, "\t\t   Invoke_id %d, ", item->invoke_id) ;
-	ps_printf(ps, "Op Id. %d, ", item->operation_id) ;
-	dn_print(ps, item->base_object, format) ;
-	ps_print(ps, " Start: ") ;
-	utcprint(ps, item->start_time, format) ;
-	ps_print(ps, " Finish: ") ;
-	if (item->finish_time) {
-		utcprint(ps, item->finish_time, format) ;
-	} else {
-		ps_print(ps, " <unknown> ") ;
-	}
-	ps_print(ps, " Chained Ops: ") ;
-	chain_list_print(ps, item->chained_ops, format) ;
-	ps_print(ps, "\n") ;
-}
-
-static int chain_list_print(ps, item, format)
-PS ps ;
-struct chain_list * item ;
-int format ;
-{
-	while (item != (struct chain_list *) 0) {
-		sub_ch_list_print(ps, item->sub_chained_ops, format) ;
-		item = item->next ;
-		if (item != (struct chain_list *) 0) {
-			ps_print(ps, " $ ") ;
-		}
-	}
-}
-
-static int sub_ch_list_print(ps, item, format)
-PS ps ;
-struct sub_ch_list * item ;
-int format ;
-{
-	ps_printf(ps, "%d, %d", item->assoc_id, item->invok_id) ;
-}
-
-struct quipu_call *
-quipu_call_cpy (struct quipu_call *item) {
+static void *quipu_call_cpy (void *value) {
+	struct quipu_call *item = (struct quipu_call *) value;
 	struct quipu_call * tmp_item = (struct quipu_call *) 0 ;
 
 	tmp_item = (struct quipu_call *) calloc (1, sizeof (struct quipu_call)) ;
@@ -687,12 +629,12 @@ sub_ch_list_cpy (struct sub_ch_list *item) {
 	return (new_item) ;
 }
 
-int quipu_call_cmp (struct quipu_call *a, struct quipu_call *b) {
-	return (2) ;
+static int quipu_call_cmp (void *value1, void *value2) {
+	return (2) ; // TODO: What does this mean?
 }
 
-void
-quipu_call_free (struct quipu_call *item_to_free) {
+static void quipu_call_free (void *value) {
+	struct quipu_call *item_to_free = (struct quipu_call *) value;
 	if (item_to_free->authorizationLevel)
 		auth_level_free(item_to_free->authorizationLevel) ;
 	if (item_to_free->usersDN)
@@ -758,7 +700,26 @@ int chain_list_free (struct chain_list *elem) {
 	}
 }
 
-void
-auth_level_free (struct auth_level *item) {
+void auth_level_free (struct auth_level *item) {
 	free((char *)item) ;
+}
+
+void quipu_call_syntax (void) {
+	add_attribute_syntax
+	("Call",
+	 quipu_call_enc,    quipu_call_decode,     /* Encoder and decoder */
+	 str2quipu_call,	  quipu_call_print,      /* parser, print */
+	 quipu_call_cpy,    quipu_call_cmp,        /* copy and compare */
+	 quipu_call_free,	  NULLCP,               /* structure_free, print - READOUT */
+	 NULL,	          TRUE );               /* Approx matching, multiline output */
+}
+
+void dsa_control_syntax (void) {
+	add_attribute_syntax
+	("DSAControl",
+	 dsa_control_enc,    dsa_control_decode,/* Encoder and decoder */
+	 str2dsa_control,	dsa_control_print,          /* parser, print */
+	 dsa_control_cpy,    dsa_control_cmp,/* copy and compare */
+	 dsa_control_free,	NULLCP,             /* structure_free, print - READOUT */
+	 NULL,	TRUE );                     /* Approx matching, multiline output */
 }

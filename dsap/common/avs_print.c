@@ -6,11 +6,7 @@ extern short oc_sntx;
 extern int avs_count;
 
 #ifndef avs_comp_print
-avs_comp_print (ps,avs,format)
-AV_Sequence  avs;
-PS   ps;
-int  format;
-{
+avs_comp_print (PS ps, AV_Sequence avs, int format) {
 	AttrV_print (ps,&avs->avseq_av,format);
 }
 #endif
