@@ -21,10 +21,7 @@
  * Insert a string into a sequence.
  *
  */
-void add_string_to_seq(string, sequence)
-char *string;
-stringCell *sequence;
-{
+void add_string_to_seq(char *string, stringCell *sequence) {
 	stringCell head = cell_alloc();
 	head->string = copy_string(string);
 	head->next = *sequence;
@@ -36,9 +33,7 @@ stringCell *sequence;
  *
  *
  */
-stringCell copy_string_seq(sequence)
-stringCell sequence;
-{
+stringCell copy_string_seq(stringCell sequence) {
 	stringCell curr;
 	stringCell head;
 
@@ -71,10 +66,7 @@ stringCell sequence;
  *
  *
  */
-void delete_from_seq(string, sequence)
-char *string;
-stringCell *sequence;
-{
+void delete_from_seq(char *string, stringCell *sequence) {
 	stringCell curr_cell = *sequence;
 	stringCell last_cell = NULLStrCell;
 
@@ -99,9 +91,7 @@ stringCell *sequence;
  * Free a string sequence.
  *
  */
-void free_string_seq(sequence)
-stringCell *sequence;
-{
+void free_string_seq(stringCell *sequence) {
 	stringCell next_cell, curr_cell = *sequence;
 
 	while (curr_cell != NULLStrCell) {

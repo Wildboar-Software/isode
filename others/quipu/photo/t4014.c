@@ -57,8 +57,6 @@ int photo_white (int length) {
 	line ((position*SCALE)+X_OFFSET,y,((length+position-1)*SCALE)+X_OFFSET,y);
 }
 
-photo_line_end (line)
-bit_string * line;
-{
+void photo_line_end (bit_string *line) {
 	y -= SCALE;
 }

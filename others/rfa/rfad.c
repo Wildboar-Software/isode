@@ -16,6 +16,8 @@
  *
  */
 
+#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <pwd.h>
 #include <grp.h>
@@ -120,11 +122,7 @@ int main (int argc, char **argv) {
 int cleanup () {
 }
 
-initiate (sd, acs, pe)
-int sd;
-struct AcSAPstart *acs;
-PE  *pe;
-{
+int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	struct type_RFA_Initiate *initial;
 	char    *cp, *crypt ();
 	struct passwd *pw;
@@ -182,11 +180,7 @@ PE  *pe;
 	return ACS_ACCEPT;
 }
 
-init_lose (type, pe, str)
-int type;
-PE  *pe;
-char	*str;
-{
+int init_lose (int type, PE *pe, char *str) {
 	*pe = ia5s2prim (str, strlen(str));
 	(*pe) -> pe_context = 3;	/* magic!! - don't ask me why */
 	return type;

@@ -189,9 +189,7 @@ int call_alias_chk (int argc, char **argv) {
 	return(OK) ;
 }
 
-char verify_alias(alias_entry)
-EntryInfo	*alias_entry ;
-{
+char verify_alias(EntryInfo *alias_entry) {
 	static  char	       *nvec[2] = {"search"};
 	struct	DSError		read_error;
 	struct	ds_read_result	read_result;

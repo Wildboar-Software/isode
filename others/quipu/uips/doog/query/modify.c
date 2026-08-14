@@ -53,9 +53,7 @@ extern QE_error_code start_read();
  *
  *
  */
-modifyResult get_modify_result(request_id)
-QCardinal request_id;
-{
+modifyResult get_modify_result(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	modifyRec modrec;
 	modifyResult result;
@@ -77,11 +75,7 @@ QCardinal request_id;
  *
  *
  */
-errorList do_modify(baseobject, id_ptr, mod_attr_list)
-char *baseobject;
-QCardinal *id_ptr;
-modifyAttr mod_attr_list;
-{
+errorList do_modify(char *baseobject, QCardinal *id_ptr, modifyAttr mod_attr_list) {
 	modifyRec modify_request;
 	requestRec this_request;
 
@@ -104,15 +98,10 @@ modifyAttr mod_attr_list;
  *
  *
  */
-static errorList start_modify(request_id,
-							  baseobject,
-							  mod_attr_list,
-							  task_id_ptr)
-QCardinal request_id;
-char *baseobject;
-modifyAttr mod_attr_list;
-int *task_id_ptr;
-{
+static errorList start_modify(QCardinal request_id,
+							  char *baseobject,
+							  modifyAttr mod_attr_list,
+							  int *task_id_ptr) {
 	int task_id;
 
 	struct ds_modifyentry_arg mod_arg;
@@ -494,11 +483,7 @@ int *task_id_ptr;
  *
  *
  */
-request_state process_modify_ds_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_modify_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	modifyRec modrec = request->MODIFY_REC;
 
 	/* This shouldn't happen */
@@ -518,11 +503,7 @@ struct DSResult *ds_result;
  *
  *
  */
-request_state process_modify_ds_error(request, task_id, ds_error)
-requestRec request;
-int task_id;
-struct DSError *ds_error;
-{
+request_state process_modify_ds_error(requestRec request, int task_id, struct DSError *ds_error) {
 	DsTask task_rec;
 	modifyRec modrec = request->MODIFY_REC;
 	QE_error_code error_type;
@@ -562,9 +543,7 @@ struct DSError *ds_error;
  *
  *
  */
-makeTemplateResult get_make_template_result(request_id)
-QCardinal request_id;
-{
+makeTemplateResult get_make_template_result(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	makeTemplateRec temprec;
 	makeTemplateResult result;
@@ -586,11 +565,7 @@ QCardinal request_id;
  *
  *
  */
-QE_error_code do_make_template(baseobject, id_ptr, attr_list)
-char *baseobject;
-QCardinal *id_ptr;
-modifyAttr *attr_list;
-{
+QE_error_code do_make_template(char *baseobject, QCardinal *id_ptr, modifyAttr *attr_list) {
 	makeTemplateRec template_rec;
 	requestRec this_request;
 	stringCell str_attr_list = NULLStrCell;
@@ -640,11 +615,7 @@ modifyAttr *attr_list;
  *
  *
  */
-request_state process_template_ds_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_template_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	makeTemplateRec templaterec = request->TEMPLATE_REC;
 	struct ds_read_result *read_result;
@@ -862,11 +833,7 @@ struct DSResult *ds_result;
  *
  *
  */
-request_state process_template_ds_error(request, task_id, error)
-requestRec request;
-int task_id;
-struct DSError *error;
-{
+request_state process_template_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	makeTemplateRec temprec = request->TEMPLATE_REC;
 	QE_error_code error_type;
@@ -925,10 +892,7 @@ struct DSError *error;
  * for modification operations.
  *
  */
-static void get_template_attrs(readattrs, template)
-Attr_Sequence readattrs;
-modifyAttr template;
-{
+static void get_template_attrs(Attr_Sequence readattrs, modifyAttr template) {
 	PS valps;
 	modifyValue curr_val = NULLModifyValue;
 	modifyAttr this_attr;
@@ -993,9 +957,7 @@ modifyAttr template;
  *
  */
 
-void free_mod_attr_list(mod_attr_list_ptr)
-modifyAttr *mod_attr_list_ptr;
-{
+void free_mod_attr_list(modifyAttr *mod_attr_list_ptr) {
 	modifyAttr curr_attr = *mod_attr_list_ptr, last_attr;
 
 	while (curr_attr != NULLModifyAttr) {
@@ -1013,9 +975,7 @@ modifyAttr *mod_attr_list_ptr;
 	*mod_attr_list_ptr = NULLModifyAttr;
 } /* free_mod_attr_list */
 
-void free_mod_val_list(mod_val_list_ptr)
-modifyValue *mod_val_list_ptr;
-{
+void free_mod_val_list(modifyValue *mod_val_list_ptr) {
 	modifyValue curr_val = *mod_val_list_ptr, last_val;
 
 	while (curr_val != NULLModifyValue) {
@@ -1034,9 +994,7 @@ modifyValue *mod_val_list_ptr;
 	*mod_val_list_ptr = NULLModifyValue;
 } /* free_mod_val_list */
 
-void free_modify_result(result_ptr)
-modifyResult *result_ptr;
-{
+void free_modify_result(modifyResult *result_ptr) {
 	modifyResult result = *result_ptr;
 
 	if (result == NULLModifyResult)
@@ -1050,9 +1008,7 @@ modifyResult *result_ptr;
 	*result_ptr = NULLModifyResult;
 } /* free_modify_result */
 
-void modify_rec_free(record)
-modifyRec record;
-{
+void modify_rec_free(modifyRec record) {
 	if (record == NULLModifyRec)
 		return;
 
@@ -1063,9 +1019,7 @@ modifyRec record;
 		free_modify_result(&record->result);
 } /* free_modify_rec */
 
-void free_make_template_result(result_ptr)
-makeTemplateResult *result_ptr;
-{
+void free_make_template_result(makeTemplateResult *result_ptr) {
 	makeTemplateResult result = *result_ptr;
 
 	if (result->base_object != NULLCP)
@@ -1091,9 +1045,7 @@ makeTemplateResult *result_ptr;
 	*result_ptr = NULLTemplateResult;
 } /* free_make_template_result */
 
-void free_make_template_rec(record)
-makeTemplateRec record;
-{
+void free_make_template_rec(makeTemplateRec record) {
 	if (record == NULLTemplateRec) return;
 
 	if (record->base_object != NULLCP)
@@ -1129,9 +1081,7 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 	return a;
 }
 
-modifyAttr avList2modifyAttr(attr_list)
-attrValList attr_list;
-{
+modifyAttr avList2modifyAttr(attrValList attr_list) {
 	modifyAttr curr_mod_attr, head = NULLModifyAttr;
 	modifyValue curr_mod_val;
 	stringCell curr_val;
@@ -1182,9 +1132,7 @@ attrValList attr_list;
  *
  *
  */
-static modifyAttr remove_common_attrs(primary, secondary)
-modifyAttr primary, secondary;
-{
+static modifyAttr remove_common_attrs(modifyAttr primary, modifyAttr secondary) {
 	modifyAttr curr_sec, last_sec;
 	modifyAttr tmp;
 
@@ -1224,9 +1172,7 @@ modifyAttr primary, secondary;
  *
  *
  */
-static modifyAttr remove_double_attrs(primary)
-modifyAttr primary;
-{
+static modifyAttr remove_double_attrs(modifyAttr primary) {
 	modifyAttr curr_attr, last_attr;
 	modifyAttr curr_primary, tmp;
 

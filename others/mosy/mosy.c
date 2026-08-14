@@ -342,11 +342,7 @@ int pass1 () {
 	printf ("\n\n");
 }
 
-pass1_oid (mod, id, value)
-char   *mod,
-	   *id;
-YV	value;
-{
+void pass1_oid (char *mod, char *id, YV value) {
 	SY	    sy;
 	OI	    yi;
 
@@ -371,18 +367,7 @@ YV	value;
 	myidentifiers = add_symbol (myidentifiers, sy);
 }
 
-pass1_obj (mod, id, syntax, value, aname, sname, descr, refer, idx, defval)
-char   *mod,
-	   *id,
-	   *aname,
-	   *sname,
-	   *descr,
-	   *refer;
-YP	syntax;
-YV	value,
- idx,
- defval;
-{
+void pass1_obj (char *mod, char *id, YP syntax, YV value, char *aname, char *sname, char *descr, char *refer, YV idx, YV defval) {
 	SY	    sy;
 	OT	    yo;
 
@@ -414,15 +399,7 @@ YV	value,
 	myobjects = add_symbol (myobjects, sy);
 }
 
-pass1_trap (mod, id, enterprise, number, vars, descr, refer)
-char   *mod,
-	   *id;
-YV	enterprise;
-int	number;
-YV	vars;
-char   *descr,
-	   *refer;
-{
+void pass1_trap (char *mod, char *id, YV enterprise, int number, YV vars, char *descr, char *refer) {
 	SY	    sy;
 	TT	    yt;
 
@@ -451,14 +428,7 @@ char   *descr,
 	mytraps = add_symbol (mytraps, sy);
 }
 
-pass1_type (encpref, decpref, prfpref, mod, id, yp)
-char  *encpref,
-	  *decpref,
-	  *prfpref,
-	  *mod,
-	  *id;
-YP	yp;
-{
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp) {
 	SY	    sy;
 
 	if (dflag && lookup_type (mod, id))	/* no duplicate entries, please... */
@@ -766,9 +736,7 @@ lookup_identifier (char *mod, char *id) {
 	return NULLOI;
 }
 
-static char *id2str (yv)
-YV	yv;
-{
+static char *id2str (YV yv) {
 	char *cp,
 		 *dp;
 	static char buffer[BUFSIZ];
@@ -806,11 +774,7 @@ lookup_object (char *mod, char *id) {
 	return NULLOT;
 }
 
-static	check_objects (yv, clause, typesOK)
-YV    yv;
-char   *clause;
-int	typesOK;
-{
+static void check_objects (YV yv, char *clause, int typesOK) {
 	if (yv -> yv_code != YV_VALIST) {
 		myyerror ("value of %s clause is not a list of object types", clause);
 		return;
@@ -848,10 +812,7 @@ not_a_type:
 
 /*    TYPE HANDLING */
 
-static YP  lookup_type (mod, id)
-char *mod,
-	 *id;
-{
+static YP  lookup_type (char *mod, char *id) {
 	SY	    sy;
 
 	for (sy = mytypes; sy; sy = sy -> sy_next) {
@@ -871,9 +832,7 @@ char *mod,
 
 /*    VALUE HANDLING */
 
-static char *val2str (yv)
-YV	yv;
-{
+static char *val2str (YV yv) {
 	static char buffer[BUFSIZ];
 
 	switch (yv -> yv_code) {
@@ -955,10 +914,7 @@ static print_yt (TT yt, int level) {
 	}
 }
 
-static	print_type (yp, level)
-YP	yp;
-int	level;
-{
+static void print_type (YP yp, int level) {
 	YP	    y;
 	YV	    yv;
 
@@ -1041,10 +997,7 @@ int	level;
 	}
 }
 
-static	print_value (yv, level)
-YV	yv;
-int	level;
-{
+static void print_value (YV yv, int level) {
 	YV	    y;
 
 	if (yv == NULLYV)
@@ -1136,9 +1089,7 @@ add_symbol (SY s1, SY s2) {
 
 /* TYPES */
 
-YP	new_type (code)
-int	code;
-{
+YP	new_type (int code) {
 	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -1148,10 +1099,7 @@ int	code;
 	return yp;
 }
 
-YP	add_type (yp1, yp2)
-YP	yp1,
- yp2;
-{
+YP	add_type (YP yp1, YP yp2) {
 	YP	    yp;
 
 	for (yp = yp1; yp -> yp_next; yp = yp -> yp_next)
@@ -1163,9 +1111,7 @@ YP	yp1,
 
 /* VALUES */
 
-YV	new_value (code)
-int	code;
-{
+YV	new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -1175,10 +1121,7 @@ int	code;
 	return yv;
 }
 
-YV	add_value (yp1, yp2)
-YV	yp1,
- yp2;
-{
+YV	add_value (YV yp1, YV yp2) {
 	YV	    yv;
 
 	for (yv = yp1; yv -> yv_next; yv = yv -> yv_next)
@@ -1190,9 +1133,7 @@ YV	yp1,
 
 /* TAGS */
 
-YT	new_tag (class)
-PElementClass	class;
-{
+YT	new_tag (PElementClass class) {
 	YT    yt;
 
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)

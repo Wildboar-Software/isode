@@ -153,13 +153,9 @@ int main (int argc, char **argv, char **envp) {
 }
 
 #ifdef	BSD42
-static SFD  dishser (sig, code, sc)
-int	sig;
-long	code;
-struct sigcontext *sc;
+static SFD  dishser (int sig, long code, struct sigcontext *sc)
 #else
-static SFD  dishser (i)
-int	i;
+static SFD  dishser (int i)
 #endif
 {
 	int	    pid;
@@ -548,11 +544,7 @@ done:
 
 #ifdef	BSD42
 
-static SFD  chldser (sig, code, sc)
-int	sig;
-long	code;
-struct sigcontext *sc;
-{
+static SFD  chldser (int sig, long code, struct sigcontext *sc) {
 #ifdef UNIONWAIT
 	union wait status;
 #else

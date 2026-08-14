@@ -37,13 +37,7 @@
 
 /* returns ptr to header and header len */
 
-int  T_UnitDataWrite (tb, uv, hptr, td)
-
-struct tsapblk *tb;
-struct udvec *uv;
-char	              **hptr;
-struct TSAPdisconnect *td;
-{
+int  T_UnitDataWrite (struct tsapblk *tb, struct udvec *uv, char **hptr, struct TSAPdisconnect *td) {
 
 	char   *vptr,
 		   *liptr;

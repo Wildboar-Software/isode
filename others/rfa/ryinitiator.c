@@ -63,13 +63,7 @@ int makeconn (char *thehost, char *password, char *user) {
 
 static	int	ry_sd = NOTOK;
 
-static int ryconnect (thehost, data, theservice, thecontext, thepci)
-char   *thehost,
-	   *theservice,
-	   *thecontext,
-	   *thepci;
-PE	data;
-{
+static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext, char *thepci) {
 	struct SSAPref sfs;
 	struct SSAPref *sf;
 	struct PSAPaddr *pa;
@@ -158,11 +152,7 @@ int closeconn () {
 	ACRFREE (acr);
 }
 
-invoke (op, arg, res, err)
-int	op;
-caddr_t	arg, *res;
-int *err;
-{
+invoke (int op, caddr_t arg, caddr_t *res, int *err) {
 	int	    result;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;

@@ -505,10 +505,7 @@ void
 unset_sequence () {
 }
 
-dish_error (ps,error)
-PS ps;
-struct DSError * error;
-{
+int dish_error (PS ps,struct DSError *error) {
 
 	if (error->dse_type == DSE_ABANDONED) {
 		ps_printf (ps,"(DAP call interrupted - abandon successful)\n");
@@ -530,9 +527,7 @@ struct DSError * error;
 	return (0);
 }
 
-DN sequence_dn(y)
-int y;
-{
+DN sequence_dn(int y) {
 	struct dua_seq_entry * ptr;
 	int x = 1;
 
@@ -566,11 +561,7 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 	return a;
 }
 
-struct entrymod * modify_avs (a,b,ent_mod_at)
-AV_Sequence a;
-AV_Sequence b;
-AttributeType ent_mod_at;
-{
+struct entrymod * modify_avs (AV_Sequence a,AV_Sequence b,AttributeType ent_mod_at) {
 	AV_Sequence x;
 	AV_Sequence y;
 	struct entrymod *em = NULLMOD, *em_new;

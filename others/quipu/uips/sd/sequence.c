@@ -12,10 +12,7 @@
 
 extern char * strdup ();
 
-void add_seq (seq, str)
-str_seq *seq;
-char *str;
-{
+void add_seq (str_seq *seq, char *str) {
 	str_seq curr;
 
 	if (*seq) {
@@ -32,10 +29,7 @@ char *str;
 	curr->next = 0;
 }
 
-char *get_from_seq (seq_num, seq_ptr)
-int seq_num;
-str_seq seq_ptr;
-{
+char *get_from_seq (int seq_num, str_seq seq_ptr) {
 	for (; seq_num > 1 && seq_ptr; seq_ptr = seq_ptr->next, seq_num--) {}
 	if (seq_ptr)
 		return seq_ptr->dname;
@@ -43,9 +37,7 @@ str_seq seq_ptr;
 		return 0;
 }
 
-void free_seq (seq_ptr)
-str_seq seq_ptr;
-{
+void free_seq (str_seq seq_ptr) {
 	str_seq next_seq;
 
 	while (seq_ptr) {

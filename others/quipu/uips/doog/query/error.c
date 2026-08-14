@@ -70,9 +70,7 @@ QE_error error_msgs[] = {
  *
  *
  */
-char *get_message_of_code(code)
-QE_error_code code;
-{
+char *get_message_of_code(QE_error_code code) {
 	QCardinal count;
 
 	for (count = 0;
@@ -122,12 +120,7 @@ char *ds_error_message (struct DSError *error) {
  * A dap error has occured. Record it in the given request record.
  *
  */
-void add_error_to_request_rec(request, baseobject, error_type, error)
-requestRec request;
-char *baseobject;
-QE_error_code error_type;
-struct DSError *error;
-{
+void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_code error_type, struct DSError *error) {
 	errorList new_err = error_alloc();
 
 	new_err->baseobject = (baseobject == NULLCP? NULLCP:copy_string(baseobject));
@@ -139,10 +132,7 @@ struct DSError *error;
 	request->errors = new_err;
 } /* add_error_to_request_rec */
 
-QE_error_code get_log_error_type(error, task_id)
-struct DSError *error;
-int task_id;
-{
+QE_error_code get_log_error_type(struct DSError *error, int task_id) {
 	log_ds_error(error);
 
 	switch (error->dse_type) {
@@ -190,9 +180,7 @@ int task_id;
  *
  *
  */
-void error_list_free(error_list_ptr)
-errorList *error_list_ptr;
-{
+void error_list_free(errorList *error_list_ptr) {
 	errorList next_errors, errors = *error_list_ptr;
 
 	while (errors != NULLError) {
@@ -214,9 +202,7 @@ errorList *error_list_ptr;
  *
  *
  */
-errorList error_list_copy(list)
-errorList list;
-{
+errorList error_list_copy(errorList list) {
 	errorList new_list = NULLError, curr_error = NULLError;
 
 	if (list == NULLError)

@@ -11,10 +11,7 @@
 /*
  * - add_type_to_list() -
  */
-QBool add_type_to_list(type, list_ptr)
-AttributeType type;
-attrTypeList *list_ptr;
-{
+QBool add_type_to_list(AttributeType type, attrTypeList *list_ptr) {
 	attrTypeList curr_cell = *list_ptr;
 
 	while (curr_cell != NULLAttrTypeList && curr_cell->type != type)
@@ -37,10 +34,7 @@ attrTypeList *list_ptr;
 /*
  * - delete_type_from_list() -
  */
-QBool delete_type_from_list(type, list_ptr)
-AttributeType type;
-attrTypeList *list_ptr;
-{
+QBool delete_type_from_list(AttributeType type, attrTypeList *list_ptr) {
 	attrTypeList curr_cell = *list_ptr, last_cell = NULLAttrTypeList;
 
 	while (curr_cell != NULLAttrTypeList && curr_cell->type != type) {
@@ -65,9 +59,7 @@ attrTypeList *list_ptr;
 /*
  * - free_at_list() -
  */
-void free_at_list(list_ptr)
-attrTypeList *list_ptr;
-{
+void free_at_list(attrTypeList *list_ptr) {
 	attrTypeList curr_cell, next_cell;
 
 	for (curr_cell = *list_ptr;

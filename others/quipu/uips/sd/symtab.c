@@ -1,11 +1,9 @@
+#include <string.h>
+#include <stdlib.h>
 #include "general.h"
 #include "symtab.h"
 
-put_symbol_value(table, name, val)
-table_entry table;
-char *name;
-char *val;
-{
+void put_symbol_value(table_entry table, char *name, char *val) {
 	if (!name) return;
 
 	while(table && strcmp(name, table->name)) {
@@ -33,19 +31,14 @@ char *val;
 	}
 }
 
-char *get_symbol_value(table, name)
-table_entry table;
-char *name;
-{
+char *get_symbol_value(table_entry table, char *name) {
 	while(table && strcmp(name, table->name)) table = table->next;
 	if (table)
 		return table->val;
 	return (char *) 0;
 }
 
-free_table(table)
-table_entry table;
-{
+void free_table(table_entry table) {
 	table_entry  entry;
 
 	while(table) {

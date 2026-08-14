@@ -36,9 +36,7 @@
 		/* draw a white line of 'length' pixels */
 	}
 
-	photo_line_end (line)
-	bit_string * line;
-	{
+	void photo_line_end (bit_string *line) {
 		/* the end of a line has been reached */
 		/* A bit string is stored in line->dbuf_top */
 	}

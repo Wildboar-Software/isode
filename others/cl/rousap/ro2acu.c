@@ -163,13 +163,8 @@ int ro2acuwait (
 }
 
 /*---------------------------------------------------------------------------*/
-int	ro2acuwrite (acb, pe, fe, priority, roi)
+int	ro2acuwrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi)
 /*---------------------------------------------------------------------------*/
-struct assocblk *acb;
-PE	pe,
- fe;
-int	priority;
-struct RoSAPindication *roi;
 {
 	int	    result;
 	struct AcSAPindication   acis;

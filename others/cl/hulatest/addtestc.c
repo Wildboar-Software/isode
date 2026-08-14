@@ -94,12 +94,7 @@ static int addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_
 	return OK;
 }
 
-static int  do_help (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
@@ -107,12 +102,7 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-static int  do_quit (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;
 

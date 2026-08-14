@@ -766,14 +766,7 @@ int udp_close (int fd) {
  **********************************************************
  */
 
-int	udp_select_socket (nfds, rfds, wfds, efds, secs)
-
-int	nfds;
-fd_set *rfds,
-	   *wfds,
-	   *efds;
-int	secs;
-{
+int	udp_select_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 	int    fd;
 	int	    cc,
 			len,

@@ -79,11 +79,7 @@ static char nib2hex[0x10] = {
 	'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 };
 
-static int  explode (a, b, n)
-char  *a;
-uint8_t *b;
-int    n;
-{
+static int  explode (char *a, uint8_t *b, int n) {
 	int    i;
 	uint8_t c;
 
@@ -101,11 +97,7 @@ int    n;
 
 /*   Not SunLink OSI */
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-      **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	fprintf (stderr,"%s only works on SunOS with SunLink OSI\n", argv[0]);
 	exit (0);
 }

@@ -83,10 +83,7 @@ XFamily (int af) {
 	return -1;
 }
 
-main(argc, argv)
-int argc;
-char **argv;
-{
+int main(int argc, char **argv) {
 	Display *dpy;
 	char host[256];
 	char *arg;
@@ -191,11 +188,7 @@ char **argv;
  */
 #endif /* ISOCONN */
 
-int change_host (dpy, name, add)
-Display *dpy;
-char *name;
-Bool add;
-{
+int change_host (Display *dpy, char *name, Bool add) {
 	struct hostent *hp;
 	XHostAddress ha;
 	static struct in_addr addr;	/* so we can point at it */
@@ -345,9 +338,7 @@ Bool add;
 
 jmp_buf env;
 
-char *get_hostname (ha)
-XHostAddress *ha;
-{
+char *get_hostname (XHostAddress *ha) {
 	struct hostent *hp = NULL;
 	int nameserver_lost();
 	char *inet_ntoa();
@@ -406,10 +397,7 @@ nameserver_lost() {
  * that an X_GetHosts request for an unknown address format was received, just
  * return, otherwise print the normal error message and continue.
  */
-static int local_xerror (dpy, rep)
-Display *dpy;
-XErrorEvent *rep;
-{
+static int local_xerror (Display *dpy, XErrorEvent *rep) {
 	if ((rep->error_code == BadAccess) && (rep->request_code == X_ChangeHosts)) {
 		fprintf (stderr,
 				 "%s:  must be on local machine to add or remove hosts.\n",

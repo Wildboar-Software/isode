@@ -1225,9 +1225,7 @@ static void hourly () {
 }
 /* Debugging stuff */
 #if	defined(DEBUG) && defined(SIGUSR1) && defined(SIGUSR2)
-static SFD incdebug(sig)
-int sig;
-{
+static SFD incdebug(int sig) {
 	if (debug == 255)
 		return;
 	debug++;
@@ -1235,9 +1233,7 @@ int sig;
 }
 
 static SFD
-decdebug(sig)
-int sig;
-{
+decdebug(int sig) {
 	if (debug == 0)
 		return;
 	debug--;
@@ -1246,9 +1242,7 @@ int sig;
 #endif
 
 static SFD
-finish(sig)
-int sig;
-{
+finish(int sig) {
 	exit(1);
 }
 

@@ -372,9 +372,7 @@ int ResetHosts (char *display) {
 }
 
 static Bool
-AuthorizedClient(client)
-ClientPtr client;
-{
+AuthorizedClient(ClientPtr client) {
 	int    		alen, family;
 #ifndef ISOCONN
 	struct sockaddr	from;
@@ -418,12 +416,7 @@ ClientPtr client;
 /* Add a host to the access control list.  This is the external interface
  * called from the dispatcher */
 
-int AddHost (client, family, length, pAddr)
-ClientPtr		client;
-int                 family;
-unsigned            length;        /* of bytes in pAddr */
-pointer             pAddr;
-{
+int AddHost (ClientPtr client, int family, unsigned length /* of bytes in pAddr */, pointer pAddr) {
 	int			len;
 	HOST	*host;
 	int                 unixFamily;
@@ -464,10 +457,7 @@ pointer             pAddr;
 
 /* Add a host to the access control list. This is the internal interface
  * called when starting or resetting the server */
-NewHost (family, addr)
-short	family;
-pointer	addr;
-{
+void NewHost (short family, pointer addr) {
 	int		len;
 	HOST *host;
 
@@ -496,12 +486,7 @@ pointer	addr;
 
 /* Remove a host from the access control list */
 
-int RemoveHost (client, family, length, pAddr)
-ClientPtr		client;
-int                 family;
-unsigned            length;        /* of bytes in pAddr */
-pointer             pAddr;
-{
+int RemoveHost (ClientPtr client, int family, unsigned length /* of bytes in pAddr */, pointer pAddr) {
 	int			len,
 				unixFamily;
 	HOST	*host, **prev;
@@ -534,11 +519,7 @@ pointer             pAddr;
 }
 
 /* Get all hosts in the access control list */
-int GetHosts (data, pnHosts, pEnabled)
-pointer		*data;
-int			*pnHosts;
-BOOL		*pEnabled;
-{
+int GetHosts (pointer *data, int *pnHosts, BOOL *pEnabled) {
 	int			len;
 	int 	n = 0;
 	pointer	ptr;
@@ -714,14 +695,11 @@ InvalidHost (struct sockaddr *saddr, int len)
 	return (1);
 }
 
-ConvertAddr (saddr, len, addr)
 #ifdef ISOCONN
-struct TSAPaddr *saddr;
+ConvertAddr (struct TSAPaddr *saddr, int *len, pointer *addr)
 #else /* ISOCONN */
-struct sockaddr	*saddr;
+ConvertAddr (struct sockaddr *saddr, int *len, pointer *addr)
 #endif /* ISOCONN */
-int				*len;
-pointer			*addr;
 {
 	if (len == 0)
 		return (0);
@@ -766,10 +744,7 @@ pointer			*addr;
 #endif /* ISOCONN */
 }
 
-int ChangeAccessControl(client, fEnabled)
-ClientPtr client;
-int fEnabled;
-{
+int ChangeAccessControl(ClientPtr client, int fEnabled) {
 	if (!AuthorizedClient(client))
 		return BadAccess;
 	AccessEnabled = fEnabled;

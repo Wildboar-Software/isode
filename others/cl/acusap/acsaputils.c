@@ -54,12 +54,8 @@ static struct assocblk *AcuHead = &assocque;
 /* INTERNAL */
 
 /*---------------------------------------------------------------------------*/
-struct type_ACS_Association__information *info2_apdu (acb, aci, data, ndata)
+struct type_ACS_Association__information *info2_apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata)
 /*---------------------------------------------------------------------------*/
-struct assocblk *acb;
-struct AcSAPindication *aci;
-PE     *data;
-int	ndata;
 {
 	PE	    pe;
 	struct type_ACS_Association__information *info;
@@ -93,13 +89,8 @@ out:
 }
 
 /*---------------------------------------------------------------------------*/
-int	apdu2_info (acb, aci, info, data, ndata)
+int	apdu2_info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata)
 /*---------------------------------------------------------------------------*/
-struct assocblk *acb;
-struct AcSAPindication *aci;
-struct type_ACS_Association__information *info;
-PE     *data;
-int    *ndata;
 {
 	int    i;
 	PE	    pe;
@@ -127,11 +118,8 @@ int    *ndata;
 #ifdef	DEBUG
 
 /*---------------------------------------------------------------------------*/
-int	ACU_print (pe, text, rw)
+int	ACU_print (PE pe, char *text, int rw)
 /*---------------------------------------------------------------------------*/
-PE	pe;
-char   *text;
-int	rw;
 {
 	int	    isopen;
 	FILE   *fp;

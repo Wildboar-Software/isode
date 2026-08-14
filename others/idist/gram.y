@@ -353,10 +353,7 @@ again:
 	return(c);
 }
 
-any(c, str)
-	register int c;
-	register char *str;
-{
+int any(register int c, register char *str) {
 	while (*str)
 		if (c == *str++)
 			return(1);
@@ -366,11 +363,7 @@ any(c, str)
 /*
  * Insert or append ARROW command to list of hosts to be updated.
  */
-insert(label, files, hosts, subcmds)
-	char *label;
-	struct namelist *files, *hosts;
-	struct subcmd *subcmds;
-{
+void insert(char *label, struct namelist *files, struct namelist *hosts, struct subcmd *subcmds) {
 	register struct cmd *c, *prev, *nc;
 	register struct namelist *h;
 
@@ -416,12 +409,7 @@ insert(label, files, hosts, subcmds)
  * Append DCOLON command to the end of the command list since these are always
  * executed in the order they appear in the distfile.
  */
-append(label, files, stamp, subcmds)
-	char *label;
-	struct namelist *files;
-	char *stamp;
-	struct subcmd *subcmds;
-{
+void append(char *label, struct namelist *files, char *stamp, struct subcmd *subcmds) {
 	register struct cmd *c;
 
 	c = ALLOC(cmd);
@@ -444,9 +432,7 @@ append(label, files, stamp, subcmds)
 /*
  * Error printing routine in parser.
  */
-yyerror(s)
-	char *s;
-{
+void yyerror(char *s) {
 	extern int yychar;
 
 	nerrs++;
@@ -456,9 +442,7 @@ yyerror(s)
 /*
  * Return a copy of the string.
  */
-char *makestr(str)
-	char *str;
-{
+char *makestr(char *str) {
 	register char *cp, *s;
 
 	str = cp = malloc((unsigned)strlen(s = str) + 1);
@@ -472,10 +456,7 @@ char *makestr(str)
 /*
  * Allocate a namelist structure.
  */
-struct namelist *
-makenl(name)
-	char *name;
-{
+struct namelist *makenl(char *name) {
 	register struct namelist *nl;
 
 	nl = ALLOC(namelist);
@@ -489,10 +470,7 @@ makenl(name)
 /*
  * Make a sub command for lists of variables, commands, etc.
  */
-struct subcmd *
-makesubcmd(type)
-	int type;
-{
+struct subcmd *makesubcmd(int type) {
 	register struct subcmd *sc;
 
 	sc = ALLOC(subcmd);

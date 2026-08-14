@@ -3,11 +3,7 @@
 #include <stdio.h>
 #include "callback.h"
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	struct TSAPaddr tas;
 	struct TSAPaddr *ta = &tas;
 	struct SSAPaddr *sz;

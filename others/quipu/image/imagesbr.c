@@ -152,11 +152,7 @@ dm2dn_seq (char *dm) {
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
 }
 
-static struct dn_seq *dm2dn_seq_aux (dm, dn, dlist)
-char   *dm;
-DN	dn;
-struct dn_seq *dlist;
-{
+static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 	char   *dp;
 	char   buffer[BUFSIZ];
 	struct ds_search_arg search_arg;
@@ -278,9 +274,7 @@ free_filter:
 	return dlist;
 }
 
-static  PE  image_search (ak)
-struct aka *ak;
-{
+static  PE  image_search (struct aka *ak) {
 	struct dn_seq *dlist;
 	struct ds_search_arg search_arg;
 	struct ds_search_arg *sa = &search_arg;
@@ -558,9 +552,7 @@ int photo_white (int length) {
 	return OK;
 }
 
-photo_line_end (line)
-caddr_t line;
-{
+int photo_line_end (caddr_t line) {
 	if (passno == 1 && x > maxx)
 		maxx = x;
 	x = 0, y++;

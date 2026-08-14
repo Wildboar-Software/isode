@@ -528,11 +528,7 @@ int _getline (char *prompt, char *buffer) {
 #define	IAC	255
 #endif
 
-static int  fetchline (s, n, iop)
-char  *s;
-int	n;
-FILE  *iop;
-{
+static int  fetchline (char *s, int n, FILE *iop) {
 	int    c;
 	char  *p;
 
@@ -554,9 +550,7 @@ FILE  *iop;
 	return OK;
 }
 
-static	SFD alrmser (sig)
-int	sig;
-{
+static	SFD alrmser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGALRM, alrmser);
 #endif
@@ -564,9 +558,7 @@ int	sig;
 	longjmp (alrmenv, NOTOK);
 }
 
-static	SFD intrser (sig)
-int	sig;
-{
+static	SFD intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif

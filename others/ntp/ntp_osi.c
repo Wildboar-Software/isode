@@ -225,13 +225,7 @@ int transmit_osi (struct ntp_peer *peer) {
 struct s_fixedpt gfixed ();
 struct l_fixedpt gstamp ();
 
-int result_func (sd, ryo, rox, in, roi)
-int     sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t in;
-struct RoSAPindication *roi;
-{
+int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct ntp_peer *peer;
 	int peer_mode;
 	struct intf *ap;
@@ -457,9 +451,7 @@ gfixed (struct type_NTP_SmallFixed *ts) {
 	return fp;
 }
 
-Refid *gclock (ci)
-struct type_NTP_ClockIdentifier *ci;
-{
+Refid *gclock (struct type_NTP_ClockIdentifier *ci) {
 	static Refid rid;
 	char	*p;
 	struct PSAPaddr *pa;
@@ -511,9 +503,7 @@ sfixed (struct s_fixedpt *ts) {
 	return nts;
 }
 
-struct type_NTP_ClockIdentifier *srclock (rid)
-Refid	*rid;
-{
+struct type_NTP_ClockIdentifier *srclock (Refid *rid) {
 	struct type_NTP_ClockIdentifier *ci;
 	char	*p;
 
@@ -1171,10 +1161,7 @@ static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_p
 	return DONE;
 }
 
-static PE build_bind_arg (psap, peer)
-struct PSAPaddr *psap;
-struct ntp_peer *peer;
-{
+static PE build_bind_arg (struct PSAPaddr *psap, struct ntp_peer *peer) {
 	struct type_NTP_BindArgument *bindarg;
 	char	*str;
 	PE	pe;
@@ -1412,9 +1399,7 @@ static void tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp) {
 }
 #endif
 
-struct type_NTP_ClockIdentifier *cli_refid (refid)
-Refid refid;
-{
+struct type_NTP_ClockIdentifier *cli_refid (Refid refid) {
 	struct type_NTP_ClockIdentifier *rid;
 	char	*cp;
 
@@ -1494,13 +1479,7 @@ peer2clock (struct ntp_peer *peer) {
 	return ci;
 }
 
-int query_func (sd, ryo, rox, in, roi)
-int     sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t in;
-struct RoSAPindication *roi;
-{
+int query_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_NTP_ClockInfoList *clbase, *cl;
 	struct ntp_peer *peer;
 

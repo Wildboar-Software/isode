@@ -999,18 +999,8 @@ static int SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int sec
 
 /*    define vectors for INDICATION events */
 
-int	SSetIndications (sd, data, tokens, sync, activity, report, finish,
-					 abort, si)
-int	sd;
-IFP	data,
-	tokens,
-	sync,
-	activity,
-	report,
-	finish,
-	abort;
-struct SSAPindication *si;
-{
+int	SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish,
+					 IFP abort, struct SSAPindication *si) {
 	SBV     smask;
 	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;

@@ -161,10 +161,8 @@ int ppdu2data (
 }
 
 /*----------------------------------------------------------------------------*/
-int	qb2_info (qb, pe)
+int	qb2_info (struct qbuf *qb, PE *pe)
 /*----------------------------------------------------------------------------*/
-struct qbuf *qb;
-PE     *pe;
 {
 	int	    result;
 #ifdef	DEBUG
@@ -221,11 +219,8 @@ PE     *pe;
 }
 
 /*----------------------------------------------------------------------------*/
-struct qbuf *info2_qb (pe, qp, pi)
+struct qbuf *info2_qb (PE pe, struct qbuf *qp, struct PSAPindication *pi)
 /*----------------------------------------------------------------------------*/
-PE pe;
-struct qbuf *qp;
-struct PSAPindication *pi;
 {
 	int	    len;
 	struct qbuf *qb;
@@ -295,13 +290,8 @@ out:
 }
 
 /*----------------------------------------------------------------------------*/
-struct type_PS_User__data *info2_ppdu (pb, pi, data, ndata, ppdu)
+struct type_PS_User__data *info2_ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu)
 /*----------------------------------------------------------------------------*/
-struct psapblk *pb;
-struct PSAPindication *pi;
-PE     *data;
-int	ndata,
-	ppdu;
 {
 	int    i,
 		   j;
@@ -624,7 +614,7 @@ char *PuErrString (
 /* INTERNAL */
 /*----------------------------------------------------------------------------*/
 struct psapblk *
-	newpublk ()
+	newpublk (void)
 /*----------------------------------------------------------------------------*/
 {
 	struct psapblk *pb;
@@ -694,12 +684,8 @@ int freepublk (
 
 #ifdef	DEBUG
 /*----------------------------------------------------------------------------*/
-int	PS_print (pe, text, rw, fnx)
+int	PS_print (PE pe, char *text, int rw, IFP fnx)
 /*----------------------------------------------------------------------------*/
-PE	pe;
-char   *text;
-int	rw;
-IFP	fnx;
 {
 	int	    isopen;
 	FILE   *fp;

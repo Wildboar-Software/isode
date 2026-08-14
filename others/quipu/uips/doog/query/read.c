@@ -47,9 +47,7 @@ QBool photo_pass_two;
  *
  *
  */
-readResults get_read_results(request_id)
-QCardinal request_id;
-{
+readResults get_read_results(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	readRec readrec;
 	readResults results;
@@ -71,11 +69,7 @@ QCardinal request_id;
  *
  *
  */
-QE_error_code do_read(baseobject, id_ptr, attr_list)
-char *baseobject;
-QCardinal *id_ptr;
-stringCell attr_list;
-{
+QE_error_code do_read(char *baseobject, QCardinal *id_ptr, stringCell attr_list) {
 	readRec new_request;
 	requestRec this_request;
 
@@ -95,12 +89,7 @@ stringCell attr_list;
  *
  *
  */
-QE_error_code start_read(request_id, baseobject, attr_list, task_id_ptr)
-QCardinal request_id;
-char *baseobject;
-stringCell attr_list;
-int *task_id_ptr;
-{
+QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr_list, int *task_id_ptr) {
 	int task_id;
 	struct ds_read_arg read_arg;
 	struct DAPindication di;
@@ -167,11 +156,7 @@ int *task_id_ptr;
  *
  *
  */
-request_state process_read_ds_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_read_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	readRec readrec = request->READ_REC;
 	struct ds_read_result *read_result;
@@ -212,11 +197,7 @@ struct DSResult *ds_result;
  *
  *
  */
-request_state process_read_ds_error(request, task_id, error)
-requestRec request;
-int task_id;
-struct DSError *error;
-{
+request_state process_read_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	readRec readrec = request->READ_REC;
 	QE_error_code error_type;
@@ -249,9 +230,7 @@ struct DSError *error;
  *
  *
  */
-void read_result_free(result_ptr)
-readResults *result_ptr;
-{
+void read_result_free(readResults *result_ptr) {
 	attrValList av_list, av_last;
 
 	readResults result = *result_ptr;
@@ -277,9 +256,7 @@ readResults *result_ptr;
  * Assumes that results and errors have already been freed.
  *
  */
-void read_rec_free(record)
-readRec record;
-{
+void read_rec_free(readRec record) {
 	if (record == NULLReadRec) return;
 
 	if (record->base_object != NULLCP) free(record->base_object);
@@ -291,9 +268,7 @@ readRec record;
  * Assumes that results and errors have already been freed.
  *
  */
-void read_dn_attr_rec_free(record)
-readDnAttrRec record;
-{
+void read_dn_attr_rec_free(readDnAttrRec record) {
 	if (record == NULLReadDnAttrRec) return;
 
 	if (record->base_object != NULLCP) free(record->base_object);
@@ -310,11 +285,7 @@ readDnAttrRec record;
  *
  *
  */
-void get_read_attrs(readattrs, entryattrs, format)
-Attr_Sequence readattrs;
-attrValList *entryattrs;
-int format;
-{
+void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format) {
 	PS valps;
 	photoData photo_data = (photoData) NULL;
 	QBool is_photo;
@@ -430,16 +401,7 @@ int format;
 	}
 } /* get_read_attrs */
 
-/*
- * - photo2xbm() -
- *
- *
- */
-int photo2xbm(ps, picture, format)
-PS ps;
-PE picture;
-int format;
-{
+int photo2xbm(PS ps, PE picture, int format) {
 	PS sps;
 
 	if ((sps = ps_alloc(str_open)) == NULLPS)
@@ -576,9 +538,7 @@ int photo_white (int line_length) {
 	return 0;
 }
 
-int photo_line_end(line)
-bit_string *line;
-{
+int photo_line_end(bit_string *line) {
 	/* the end of a line has been reached */
 	/* A bit string is stored in line dbuf_top */
 
@@ -609,11 +569,7 @@ bit_string *line;
  *
  *
  */
-QE_error_code do_dn_attr_read(baseobject, id_ptr, dn_attr)
-char *baseobject;
-QCardinal *id_ptr;
-stringCell dn_attr;
-{
+QE_error_code do_dn_attr_read(char *baseobject, QCardinal *id_ptr, stringCell dn_attr) {
 	readDnAttrRec new_request;
 	requestRec this_request;
 
@@ -639,11 +595,7 @@ stringCell dn_attr;
  *
  *
  */
-request_state process_read_dn_attr_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_read_dn_attr_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	readDnAttrRec readrec = request->READ_DN_ATTR_REC;
 	struct ds_read_result *read_result;
@@ -679,14 +631,8 @@ struct DSResult *ds_result;
 
 /*
  * - process_read_ds_error() -
- *
- *
  */
-request_state process_read_dn_attr_error(request, task_id, error)
-requestRec request;
-int task_id;
-struct DSError *error;
-{
+request_state process_read_dn_attr_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	readDnAttrRec readrec = request->READ_DN_ATTR_REC;
 	QE_error_code error_type;
@@ -718,12 +664,8 @@ struct DSError *error;
 
 /*
  * - get_read_results() -
- *
- *
  */
-readResults get_read_dn_attr_results(request_id)
-QCardinal request_id;
-{
+readResults get_read_dn_attr_results(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	readDnAttrRec readrec;
 	readResults results;

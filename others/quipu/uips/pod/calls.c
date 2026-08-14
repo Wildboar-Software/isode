@@ -644,10 +644,7 @@ set_default_type () {
 	typetoggled = 0;
 }
 
-void dn2buf (ptr,cptr)
-caddr_t ptr;
-char * cptr;
-{
+void dn2buf (caddr_t ptr,char *cptr) {
 	PS ps;
 	char buffer [RESBUF];
 
@@ -925,9 +922,7 @@ char *GetWholeRelName (char *name) {
 	return name;
 }
 
-str_seq SortList(list)
-str_seq list;
-{
+str_seq SortList(str_seq list) {
 	str_seq currEntry, lastSortedEntry , currSortedEntry;
 	str_seq sortedList;
 	char *sortedName, *currName;

@@ -547,10 +547,7 @@ static int compare (char *f1, char *f2) {
 /*
  * Change owner, group and mode of file.
  */
-chog(file, owner, group, imode)
-char *file, *owner, *group;
-integer imode;
-{
+int chog(char *file, char *owner, char *group, integer imode) {
 	int i;
 	int uid, gid;
 	extern char user[];

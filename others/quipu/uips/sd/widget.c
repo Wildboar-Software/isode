@@ -81,10 +81,7 @@ textfresh () {
 	wrefresh (Text);
 }
 
-void setwidgets(thesewdgts, y)
-int	y;
-WIDGET	*thesewdgts;
-{
+void setwidgets(WIDGET *thesewdgts, int y) {
 	currwidgets = thesewdgts;
 	lowy = posnwidgets(thesewdgts, y);
 	Text = newwin(LINES-1-lowy, COLS-3, lowy, 3);
@@ -112,10 +109,7 @@ int gety () {
 }
 
 /* Determine the positions of the widgets: return the lowest point */
-int posnwidgets(thesewdgts, starty)
-int	starty;
-WIDGET	thesewdgts[];
-{
+int posnwidgets(WIDGET thesewdgts[], int starty) {
 	int	cnt = 0, x = 0, hght = WDGTHGHT;
 
 	/* If no explicit position provided, put on the next level */
@@ -162,9 +156,7 @@ WIDGET	thesewdgts[];
 }
 
 /* Create the widgets: return the number of widgets */
-void makewidgets(wdgts)
-WIDGET	wdgts[];
-{
+void makewidgets(WIDGET wdgts[]) {
 	int		cnt = 0;
 	WIDGET		*wdgt;
 
@@ -180,10 +172,7 @@ WIDGET	wdgts[];
 }
 
 /* Set a widgets width, based on the TYPE of widget and label length */
-void setwdgtwdth(wdgt, currx)
-int	currx;
-WIDGET	*wdgt;
-{
+void setwdgtwdth(WIDGET *wdgt, int currx) {
 	char	expand;
 	int	len = -1, cnt = -1;
 
@@ -230,9 +219,7 @@ WIDGET	*wdgt;
 }
 
 /* Erase and remove the widgets, decrementing the activelist counter */
-void killwidgets(thesewdgts)
-WIDGET	*thesewdgts;
-{
+void killwidgets(WIDGET *thesewdgts) {
 	int	cnt = 0;
 
 	while (thesewdgts[cnt].type != FINISH)
@@ -263,10 +250,7 @@ WIDGET	*thesewdgts;
 /* This should check that the number of active widgets is not excessive, or
  * have the activelist really as a linked list.
  */
-void activewidget(wdgts, text)
-WIDGET	wdgts[];
-WINDOW	*text;
-{
+void activewidget(WIDGET wdgts[], WINDOW *text) {
 	activelist.widgets[activelist.count] = wdgts;
 	activelist.text[activelist.count]    = Text;
 	++(activelist.count);
@@ -297,9 +281,7 @@ redraw () {
 	wrefresh(Text);
 }
 
-void rfrshwidgets(thesewdgts)
-WIDGET	*thesewdgts;
-{
+void rfrshwidgets(WIDGET *thesewdgts) {
 	int	i = 0;
 
 	while(thesewdgts[i].wndw != (WINDOW *)NULL && thesewdgts[i].type != DUMMY) {
@@ -309,10 +291,7 @@ WIDGET	*thesewdgts;
 }
 
 /* Draw a perimeter box around WDGT, with horizontal char XCH etc */
-void boxwdgt(wdgt, xch, ych)
-char	xch, ych;
-WIDGET	*wdgt;
-{
+void boxwdgt(WIDGET *wdgt, char xch, char ych) {
 	int x, y;
 
 	mvwaddch(wdgt->wndw, 0, 0, '.');
@@ -335,9 +314,7 @@ WIDGET	*wdgt;
 /* THESE ROUTINES PRINT THE INDIVIDUAL WIDGET BOXES */
 
 /* Print a widgets label, dependant on the widget type */
-void printwdgt(wdgt)
-WIDGET	*wdgt;
-{
+void printwdgt(WIDGET *wdgt) {
 	switch(wdgt->type) {
 
 	case LABEL:
@@ -395,9 +372,7 @@ printbar (int list_size, int first, int display_num) {
 }
 
 /* Print a LABEL widgets label string, dependant on the justification char */
-void printlabel(wdgt)
-WIDGET	*wdgt;
-{
+void printlabel(WIDGET *wdgt) {
 	int	x, labellen, wdgtlen;
 
 	labellen = strlen(wdgt->label);
@@ -417,9 +392,7 @@ WIDGET	*wdgt;
 }
 
 /* Print a DIALOG widget label: if it don't all fit, show the last part */
-void printdialog(wdgt)
-WIDGET	*wdgt;
-{
+void printdialog(WIDGET *wdgt) {
 	int	length, maxlen;
 	char	*showptr;
 
@@ -439,9 +412,7 @@ WIDGET	*wdgt;
 }
 
 /* Print a TOGGLE widget label, and the current toggle value */
-void printtoggle(wdgt)
-WIDGET	*wdgt;
-{
+void printtoggle(WIDGET *wdgt) {
 	wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
 	if (wdgt->tvalues == (char **)NULL)
@@ -454,9 +425,7 @@ WIDGET	*wdgt;
 }
 
 /* Print a COMMAND widget label */
-void printcommand(wdgt)
-WIDGET	*wdgt;
-{
+void printcommand(WIDGET *wdgt) {
 	mvwaddstr(wdgt->wndw,1,1,wdgt->label);
 	wrefresh(wdgt->wndw);
 }
@@ -578,10 +547,7 @@ docallback (int indx) {
 /* THESE ROUTINES SEARCH THE ACTIVE WIDGET SET FOR ONE SPECIFIED WIDGET */
 
 /* Find a widget based on the call-back character */
-WIDGET *getwidget(wdgts, callch)
-int	callch;
-WIDGET	wdgts[];
-{
+WIDGET *getwidget(WIDGET wdgts[], int callch) {
 	int	indx;
 
 	indx = getwidgetindex(wdgts, callch);
@@ -590,10 +556,7 @@ WIDGET	wdgts[];
 	return((WIDGET *)NULL);
 }
 
-int getwidgetindex(wdgts, callch)
-int	callch;
-WIDGET	wdgts[];
-{
+int getwidgetindex(WIDGET wdgts[], int callch) {
 	int	cnt = 0;
 
 	while (wdgts[cnt].type != FINISH) {
@@ -607,9 +570,7 @@ WIDGET	wdgts[];
 
 /* THESE ROUTINES MANIPULATE THE DIALOG WIDGETS */
 
-void dialog(wdgt)
-WIDGET	*wdgt;
-{
+void dialog(WIDGET *wdgt) {
 	int		i, length, labellen, maxlen;
 	char		ch, *endptr, *showptr;
 	char		*blanks;
@@ -716,21 +677,14 @@ WIDGET	*wdgt;
 	free(blanks);
 }
 
-void setdialogstr(wdgt, dstr, maxlen)
-char	*dstr;
-WIDGET	*wdgt;
-int maxlen ;
-{
+void setdialogstr(WIDGET *wdgt, char *dstr, int maxlen) {
 	if (wdgt->type != DIALOG) return;
 
 	wdgt->dstr = dstr;
 	wdgt->dstrlen = maxlen;
 }
 
-int getdialogstr(wdgt, str)		/* 'str' must be long enough... */
-char	str[];
-WIDGET	*wdgt;
-{
+int getdialogstr(WIDGET *wdgt, char str[])		/* 'str' must be long enough... */ {
 	if (wdgt->type != DIALOG || wdgt->dstr == (char *)NULL) return(FALSE);
 
 	strcpy(str, wdgt->dstr);
@@ -739,9 +693,7 @@ WIDGET	*wdgt;
 
 /* THESE ROUTINES MANIPULATE THE TOGGLE WIDGETS */
 
-void toggle(wdgt)
-WIDGET	*wdgt;
-{
+void toggle(WIDGET *wdgt) {
 	WIDGET *vwdgt;
 	int av_indx;
 
@@ -774,21 +726,14 @@ WIDGET	*wdgt;
 	printtoggle(wdgt);
 }
 
-void settogglstrs(wdgt, togglstrs, togglindx)
-int	togglindx;
-char	**togglstrs;
-WIDGET	*wdgt;
-{
+void settogglstrs(WIDGET *wdgt, char **togglstrs, int togglindx) {
 	if (wdgt->type != TOGGLE)
 		return;
 	wdgt->tvalues = togglstrs;
 	wdgt->tindx = togglindx;
 }
 
-int settogglindx(wdgt, indx)
-int	indx;
-WIDGET	*wdgt;
-{
+int settogglindx(WIDGET *wdgt, int indx) {
 	int	i;
 
 	if (wdgt->type != TOGGLE || wdgt->tvalues == (char **)NULL)
@@ -802,18 +747,13 @@ WIDGET	*wdgt;
 	return(TRUE);
 }
 
-int gettogglindx(wdgt)
-WIDGET	*wdgt;
-{
+int gettogglindx(WIDGET *wdgt) {
 	if (wdgt->type != TOGGLE || wdgt->tvalues == (char **)NULL)
 		return(-1);
 	return(wdgt->tindx);
 }
 
-int gettogglstr(wdgt, str)		/* 'str' must be long enough... */
-WIDGET	*wdgt;
-char	str[];
-{
+int gettogglstr(WIDGET *wdgt, char str[])		/* 'str' must be long enough... */ {
 	if (wdgt->type != TOGGLE || wdgt->tvalues == (char **)NULL)
 		return(FALSE);
 	strcpy(str, wdgt->tvalues[wdgt->tindx]);
@@ -822,17 +762,11 @@ char	str[];
 
 /* THESE ROUTINES MANIPULATE THE LABEL WIDGETS */
 
-void setlabel(wdgt, label)
-WIDGET	*wdgt;
-char	*label;
-{
+void setlabel(WIDGET *wdgt, char *label) {
 	wdgt->label = label;
 }
 
-void getlabel(wdgt, label)		/* 'label' must be long enough... */
-WIDGET	*wdgt;
-char	label[];
-{
+void getlabel(WIDGET *wdgt, char label[])		/* 'label' must be long enough... */ {
 	strcpy(label, wdgt->label);
 }
 
@@ -854,10 +788,7 @@ int lowesty () {
 }
 
 /* This satisfies the generalised printing structure */
-void wprint(here, fmt, a,b,c,d,e,f,g,h,i,j)
-WINDOW	*here;
-char	*fmt, *a,*b,*c,*d,*e,*f,*g,*h,*i,*j;
-{
+void wprint(WINDOW *here, char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j) {
 	wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
 	wrefresh(Text);
 }

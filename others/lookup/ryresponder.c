@@ -27,18 +27,8 @@ int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 
 /* RESPONDER */
 
-int	ryresponder (argc, argv, host, myservice, mycontext, dispatches, ops,
-				 start, stop)
-int	argc;
-char  **argv,
-	  *host,
-	  *myservice,
-	  *mycontext;
-struct dispatch *dispatches;
-struct RyOperation *ops;
-IFP	start,
-	stop;
-{
+int	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops,
+				 IFP start, IFP stop) {
 	struct dispatch   *ds;
 	AEI	    aei;
 	struct TSAPdisconnect   tds;

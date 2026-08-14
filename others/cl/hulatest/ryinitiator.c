@@ -83,16 +83,7 @@ extern char *isodeversion;
 
 /* INITIATOR */
 
-ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
-int	argc;
-char  **argv,
-	  *myservice,
-	  *mycontext,
-	  *mypci;
-struct RyOperation ops[];
-struct dispatch *dispatches;
-IFP	quit;
-{
+void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation ops[], struct dispatch *dispatches, IFP quit) {
 	int	    iloop,
 			sd;
 	char  *cp,
@@ -464,13 +455,7 @@ static timer (int bytes, int pkts) {
 #endif
 #endif
 
-static int    timing_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-caddr_t result;
-struct RoSAPindication *roi;
-{
+static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	return OK;
 }
 

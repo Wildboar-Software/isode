@@ -177,9 +177,7 @@ done:
 	}
 }
 
-SFD lostconn(sig)
-int sig;
-{
+SFD lostconn(int sig) {
 	log(lfp, "idist: lost connection\n");
 	longjmp(env, 1);
 }
@@ -339,11 +337,7 @@ int rcmptime (struct stat *st) {
  * rhost == NULL if we are mailing a list of changes compared to at time
  * stamp file.
  */
-notify(file, rhost, to, lmod)
-char *file, *rhost;
-struct namelist *to;
-time_t lmod;
-{
+void notify(char *file, char *rhost, struct namelist *to, time_t lmod) {
 	int fd, len;
 	FILE *pf, *popen();
 	struct stat stb;

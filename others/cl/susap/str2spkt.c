@@ -5,9 +5,7 @@
 #include "spkt.h"
 #include "tailor.h"
 
-char   *spkt2str (s)
-struct ssapkt *s;
-{
+char   *spkt2str (struct ssapkt *s) {
 	int     i,
 			len;
 	char   *base,

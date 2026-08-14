@@ -22,19 +22,12 @@ extern char mvalue[];
 
 void tprint(), cleartext();
 
-void make_type(name_val, filt)
-char * name_val;
-filt_struct * filt;
-{
+void make_type(char *name_val, filt_struct *filt) {
 	filttype[curr_filt] = strdup(name_val);
 	filt_arr[curr_filt] = filt;
 }
 
-filt_struct *make_item_filter(oid, match, value)
-char *oid;
-int match;
-char *value;
-{
+filt_struct *make_item_filter(char *oid, int match, char *value) {
 	filt_struct * filt = (filt_struct *) malloc(sizeof(filt_struct));
 
 	filt->flt_type = ITEM;
@@ -52,20 +45,12 @@ char *value;
 	return filt;
 }
 
-filt_struct *link_filters(filt1, filt2)
-filt_struct *filt1;
-filt_struct *filt2;
-{
+filt_struct *link_filters(filt_struct *filt1, filt_struct *filt2) {
 	filt1->next = filt2;
 	return filt1;
 }
 
-filt_struct *make_parent_filter(filt_type, filt1, filt2, filt3)
-int filt_type;
-filt_struct * filt1;
-filt_struct * filt2;
-filt_struct * filt3;
-{
+filt_struct *make_parent_filter(int filt_type, filt_struct *filt1, filt_struct *filt2, filt_struct *filt3) {
 	filt_struct * parent = (filt_struct *) malloc(sizeof(filt_struct));
 
 	switch (filt_type) {
@@ -338,9 +323,7 @@ Filter make_attr_filter() {
 	}
 }
 
-Filter make_filter(filt)
-filt_struct *filt;
-{
+Filter make_filter(filt_struct *filt) {
 	int type;
 	char svalue[1024];
 	AttributeValue av;
@@ -466,9 +449,7 @@ filt_struct *filt;
 	}
 }
 
-void free_filt(filt)
-filt_struct *filt;
-{
+void free_filt(filt_struct *filt) {
 	if (filt) {
 		free_filt(filt->next);
 

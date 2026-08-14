@@ -128,24 +128,19 @@ char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 }
 
 /* ROUTINE:     code_one
-/*
-/* SYNOPSIS:    codes one line of a bit map into t4
-/*
-/* DESCRIPTION:
-/*              To encode a line one dimensionally, bits are read in until
-/* a change is noticed, when this happens, the run_length code for the number
-/* of bits read in is found, and written to the output file.
-/*
-/* A run_length code may consist of two parts if the run is large, a make up
-/* and a terminal code.
+ *
+ * SYNOPSIS:    codes one line of a bit map into t4
+ *
+ * DESCRIPTION:
+ *              To encode a line one dimensionally, bits are read in until
+ * a change is noticed, when this happens, the run_length code for the number
+ * of bits read in is found, and written to the output file.
+ *
+ * A run_length code may consist of two parts if the run is large, a make up
+ * and a terminal code.
 */
 
-code_one (lineptr,t4_lineptr)
-
-bit_string * lineptr;           /* input line */
-bit_string * t4_lineptr;        /* output line */
-
-{
+void code_one (bit_string *lineptr /* input line */,bit_string *t4_lineptr /* output line */) {
 	char            colour = WHITE; /* the colour of the current bit */
 	full_code       code;           /* the code for the characters run_length */
 	int             old_pos = 1;    /* the number of bits of the same colur read in */
@@ -192,29 +187,23 @@ bit_string * t4_lineptr;        /* output line */
 }
 
 /* ROUTINE:     code_two
-/*
-/* SYNOPSIS:    Codes one line of a bit map two dimensionally as
-/*              described by CCITT T.4.
-/*
-/* DESCRIPTION: Two lines are compared by looking at the list of run changes.
-/* In order to do this, this list has to be created for the line we are about
-/* to encode.  The encoding procedure then follows the flow chart in the CCITT
-/* recommendation.  This is summarised as follows:
-/*
-/*   1. Find the positions a0, a1, b1, b2.
-/*   2. Compare to see which mode is required.
-/*
-/* The positions of a1, b1, b2 are found from the run change list.  a0 is known
-/* in advance.
+ *
+ * SYNOPSIS:    Codes one line of a bit map two dimensionally as
+ *              described by CCITT T.4.
+ *
+ * DESCRIPTION: Two lines are compared by looking at the list of run changes.
+ * In order to do this, this list has to be created for the line we are about
+ * to encode.  The encoding procedure then follows the flow chart in the CCITT
+ * recommendation.  This is summarised as follows:
+ *
+ *   1. Find the positions a0, a1, b1, b2.
+ *   2. Compare to see which mode is required.
+ *
+ * The positions of a1, b1, b2 are found from the run change list.  a0 is known
+ * in advance.
 */
 
-code_two (ref_lineptr,code_lineptr,t4_lineptr)
-
-bit_string * ref_lineptr;       /* reference line */
-bit_string * code_lineptr;      /* line to encode */
-bit_string * t4_lineptr;        /* output line    */
-
-{
+void code_two (bit_string *ref_lineptr /* reference line */,bit_string *code_lineptr /* line to encode */,bit_string *t4_lineptr /* output line    */) {
 	char    colour = WHITE;
 	char    ref_colour = WHITE;
 
@@ -269,18 +258,16 @@ bit_string * t4_lineptr;        /* output line    */
 	} while (a0 < STOP);
 }
 
-/* ROUTINE:     Pass_mode
-/*
-/* SYNOPSIS:    Encodes pass_mode
-/*
-/* DESCRIPTION: When pass mode is detected, the pass mode code is written to
-/* the output, and a0 is moved to underneath b2.
+/**
+ * ROUTINE:     Pass_mode
+ *
+ * SYNOPSIS:    Encodes pass_mode
+ *
+ * DESCRIPTION: When pass mode is detected, the pass mode code is written to
+ * the output, and a0 is moved to underneath b2.
 */
 
-pass_mode (t4_lineptr)
-bit_string * t4_lineptr;
-
-{
+void pass_mode (bit_string *t4_lineptr) {
 	static code_word code = {4,0x0200};
 
 	put_code (t4_lineptr,code);
@@ -296,11 +283,7 @@ bit_string * t4_lineptr;
 /* a0 is moved to a1
 */
 
-vertical_mode (t4_lineptr)
-
-bit_string * t4_lineptr;
-
-{
+void vertical_mode (bit_string *t4_lineptr) {
 	static code_word code [7] = {
 		{7,0x080  },    /* -3 */
 		{6,0x100  },    /* -2 */
@@ -324,13 +307,7 @@ bit_string * t4_lineptr;
 /* a0 is moved to after these runs.
 */
 
-horizontal_mode (code_lineptr,t4_lineptr,colour)
-
-bit_string * t4_lineptr;
-bit_string * code_lineptr;
-char    colour;
-
-{
+void horizontal_mode (bit_string *code_lineptr,bit_string *t4_lineptr,char colour) {
 	int a2;
 	static code_word h_code = {3,0x0400};
 	full_code code;
@@ -368,11 +345,7 @@ char    colour;
 /* SYNOPSIS:    appends the code word to the 'line'.                    */
 /*                                                                      */
 
-put_code (lineptr,code)
-
-bit_string *    lineptr;
-code_word       code;
-{
+void put_code (bit_string *lineptr,code_word code) {
 
 	int		i;
 	short	mask;
@@ -395,11 +368,7 @@ code_word       code;
 /*              An end of line (eoln) marker is 11 (or more) zero's     */
 /*              followed by a 1.                                        */
 
-put_eoln (lineptr)
-
-bit_string    * lineptr;
-
-{
+void put_eoln (bit_string *lineptr) {
 	int i;
 
 	for (i=0 ; i< 11; i++)
@@ -418,10 +387,7 @@ bit_string    * lineptr;
  *
  */
 
-get_runs (lineptr)
-bit_string * lineptr;
-
-{
+void get_runs (bit_string *lineptr) {
 	int i;
 	char     colour = WHITE;
 
@@ -443,9 +409,7 @@ bit_string * lineptr;
  * leaves room for the length (to be filled in later);
 */
 
-set_output (lineptr)
-bit_string * lineptr;
-{
+void set_output (bit_string *lineptr) {
 	lineptr->dbuf_top += 28; /* leave room for ASN.1 preamble */
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
@@ -461,9 +425,7 @@ bit_string * lineptr;
  *              old BIT STRING-ish preamble may be selected.
  */
 
-flush_output (lineptr)
-bit_string * lineptr;
-{
+void flush_output (bit_string *lineptr) {
 	long length, len;
 	int  count, i;
 
@@ -601,9 +563,7 @@ bit_string * lineptr;
 /* SYNOPSIS:    Initialises the input buffers
 */
 
-set_input (lineptr)
-bit_string * lineptr;
-{
+void set_input (bit_string *lineptr) {
 	lineptr->mask = BIT_MASK;
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->pos = *lineptr->dbuf++;

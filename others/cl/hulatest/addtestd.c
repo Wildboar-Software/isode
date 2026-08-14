@@ -58,13 +58,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* OPERATIONS */
 
-static int  op_addit (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+static int  op_addit (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_ADD_Sum *psum;
 	struct type_ADD_Addends *paddends;
 
@@ -96,13 +90,7 @@ struct RoSAPindication *roi;
 
 /* ERROR */
 
-static int  error (sd, err, param, rox, roi)
-int	sd,
-	err;
-caddr_t	param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
-{
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 

@@ -22,13 +22,7 @@
 #include "defs.h"
 
 struct type_Idist_FileSpec *
-makefs (type, opts, mode, size, mtime, uname, group, name, lname)
-unsigned short type, mode;
-off_t	size;
-time_t	mtime;
-int	opts;
-char	*uname, *group, *name, *lname;
-{
+makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname) {
 	struct type_Idist_FileSpec *fs;
 	struct type_Idist_FileType *makeftype ();
 	struct type_Idist_FileTime *makefmtime ();

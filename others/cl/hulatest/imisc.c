@@ -214,12 +214,7 @@ static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_
 	return OK;
 }
 
-static int  do_help (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
@@ -227,12 +222,7 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-static int  do_quit (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	/* HULA DOESN'T LIKE THIS ONE */
 	;
 }
@@ -284,25 +274,13 @@ static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *res
 	return OK;
 }
 
-static int  tell_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-caddr_t result;
-struct RoSAPindication *roi;
-{
+static int  tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	printf ("told.\n");
 
 	return OK;
 }
 
-static int  null_result (sd, id, dummy, result, roi)
-int	sd,
-	id,
-	dummy;
-caddr_t result;
-struct RoSAPindication *roi;
-{
+static int  null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	return OK;
 }
 

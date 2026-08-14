@@ -27,11 +27,7 @@
  * Insert a new entry name into an unsorted listed of entry names.
  *
  */
-QBool dn_list_insert(dn, entry_list_ptr, object_type)
-char *dn;
-entryList *entry_list_ptr;
-AttributeType object_type;
-{
+QBool dn_list_insert(char *dn, entryList *entry_list_ptr, AttributeType object_type) {
 	entryList element, new_element;
 	char *sort_key;
 	char *entry_name;
@@ -66,11 +62,7 @@ AttributeType object_type;
  * Insert a new entry name into a sorted listed of entry names.
  *
  */
-QBool dn_list_add(dn, entry_list_ptr, object_type)
-char *dn;
-entryList *entry_list_ptr;
-AttributeType object_type;
-{
+QBool dn_list_add(char *dn, entryList *entry_list_ptr, AttributeType object_type) {
 	entryList element, new_element;
 	char *sort_key;
 	char *entry_name;
@@ -145,9 +137,7 @@ AttributeType object_type;
  * Free given entry list.
  *
  */
-void dn_list_free(entry_list_ptr)
-entryList *entry_list_ptr;
-{
+void dn_list_free(entryList *entry_list_ptr) {
 	entryList next_entry, list = *entry_list_ptr;
 
 	while (list != NULLEntryList) {
@@ -167,9 +157,7 @@ entryList *entry_list_ptr;
  *
  *
  */
-void dn_list_copy(original, copy)
-entryList original, *copy;
-{
+void dn_list_copy(entryList original, entryList *copy) {
 	entryList copylist = NULLEntryList;
 	int sort_key_diff = 0;
 

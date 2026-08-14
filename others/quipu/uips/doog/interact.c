@@ -159,11 +159,7 @@ ufnsearch (char *params) {
  * continue search if good matches identified.
  *
  */
-void ufnresolve(name, baseobjects, is_leaf)
-char *name;
-entryList baseobjects;
-known is_leaf;
-{
+void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 	ufnMatchState match_state;
 	namePart ufname;
 	ufnResults results;
@@ -361,10 +357,7 @@ readentry (char *params) {
 	read_result_free(&results);
 }
 
-void print_read_results(results, baseobject)
-readResults results;
-char *baseobject;
-{
+void print_read_results(readResults results, char *baseobject) {
 	stringCell val_list;
 	attrValList entry_attrs;
 	int error_count = 0;
@@ -408,9 +401,7 @@ char *baseobject;
 	uprint("\n");
 }
 
-void print_entry_list(entries)
-entryList entries;
-{
+void print_entry_list(entryList entries) {
 	int line_count = 0, entry_count = 0;
 	char fname[LINESIZE];
 
@@ -497,9 +488,7 @@ callcommand (char *commandline) {
 		ufnsearch(commandline);
 }
 
-void new_current_list(results)
-ufnResults results;
-{
+void new_current_list(ufnResults results) {
 	if (currentlist != NULLEntryList) dn_list_free(&currentlist);
 
 	currlistsize = results->match_num;
@@ -521,10 +510,7 @@ looklist (char *params) {
 	print_entry_list(currentlist);
 }
 
-QBool query_matches(matches, returnlist)
-entryList matches;
-entryList *returnlist;
-{
+QBool query_matches(entryList matches, entryList *returnlist) {
 	entryList good_matches = NULLEntryList, curr_poor_match;
 	char fname[LINESIZE], input[LINESIZE];
 

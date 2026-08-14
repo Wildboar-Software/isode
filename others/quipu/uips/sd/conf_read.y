@@ -74,8 +74,7 @@ extern filt_struct *filt_arr[];
 	      ;
 %%
 
-yylex()
-{
+int yylex(void) {
   register int c, count = 0;
   char lexeme[255];
   
@@ -182,9 +181,7 @@ yylex()
   }
 }
 
-yyerror(err)
-     char *err;
-{
+void yyerror(char *err) {
   (void) fprintf(stderr,
                  "Parse error in '%s'. Exiting.\n",
                  (char *) file_names[curr_filt]);
@@ -197,9 +194,7 @@ yyerror(err)
   exit(1);
 }
 
-int issymbol(c) 
-     char c;
-{
+int issymbol(char c) {
   switch(c) {
   case '#':
   case '"':

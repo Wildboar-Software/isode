@@ -1300,9 +1300,7 @@ adios (char *what, char *fmt, ...) {
 #else /* lint */
 
 void
-adios (what, fmt)
-char *what, fmt);
-{
+adios (char *what, char fmt) {
 	adios (what, fmt);
 }
 

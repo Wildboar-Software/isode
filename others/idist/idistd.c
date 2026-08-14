@@ -98,13 +98,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* OPERATIONS */
 
-static int  op_init (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+static int  op_init (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	char	*str;
 	struct type_Idist_InitDir *arg =
 		(struct type_Idist_InitDir *) in;
@@ -139,13 +133,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_transfer (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_transfer (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_Idist_FileSpec *arg =
 		(struct type_Idist_FileSpec *) in;
 
@@ -204,13 +192,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_data (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_Idist_Data *arg =
 		(struct type_Idist_Data *) in;
 	struct qbuf *qb;
@@ -237,13 +219,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_query (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_query (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	struct type_Idist_QueryResult *qr;
@@ -276,13 +252,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_terminate (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_terminate (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_Idist_TermStatus *arg =
 		(struct type_Idist_TermStatus *) in;
 
@@ -338,13 +308,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_special (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_special (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
@@ -377,13 +341,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_deletefile (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_deletefile (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_UNIV_IA5String *arg =
 		(struct type_UNIV_IA5String *) in;
 	int	result;
@@ -418,13 +376,7 @@ struct RoSAPindication *roi;
 	return OK;
 }
 
-op_listcdir (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+int op_listcdir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_Idist_FileList *fl;
 
 	if (rox -> rox_nolinked == 0) {
@@ -450,13 +402,7 @@ struct RoSAPindication *roi;
 
 /* ERROR */
 
-static int  error (sd, err, param, rox, roi)
-int	sd,
-	err;
-caddr_t	param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
-{
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -489,11 +435,7 @@ static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPind
 
 /*  Initialisation stuff */
 
-initiate (sd, acs, pe)
-int	sd;
-struct AcSAPstart *acs;
-PE	*pe;
-{
+int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	struct type_Idist_Initiate *initial;
 	char	*cp;
 
@@ -562,11 +504,7 @@ PE	*pe;
 	return ACS_ACCEPT;
 }
 
-init_lose (type, pe, str)
-int	type;
-PE	*pe;
-char	*str;
-{
+int init_lose (int type, PE *pe, char *str) {
 	*pe = ia5s2prim (str, strlen(str));
 	(*pe) -> pe_context = 3;	/* magic!! - don't ask me why */
 	return type;
@@ -575,10 +513,7 @@ char	*str;
 #define SIZEOFQB(qb)  (sizeof (struct qbuf) +  (qb && qb->qb_data ? qb->qb_len \
 				: 0))
 
-static struct qbuf *
-qb_cpy(qb)
-struct qbuf	*qb;
-{
+static struct qbuf *qb_cpy(struct qbuf *qb) {
 	struct qbuf	*qp;
 	struct qbuf	*nqb;
 	struct qbuf	*nqp;
@@ -611,9 +546,7 @@ struct qbuf	*qb;
 	return (nqb);
 }
 
-static struct type_Idist_FileSpec *cpy_fs (ft)
-struct type_Idist_FileSpec *ft;
-{
+static struct type_Idist_FileSpec *cpy_fs (struct type_Idist_FileSpec *ft) {
 	struct type_Idist_FileSpec *new;
 
 	new = (struct type_Idist_FileSpec *)calloc (1, sizeof *new);

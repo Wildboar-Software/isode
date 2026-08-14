@@ -37,11 +37,7 @@ extern char username[], userpassword[];
  * bind_to_ds - Bind to directory using indicated degree of authentication.
  *
  */
-QBool bind_to_ds(argc, argv, auth_type)
-int argc;
-char *argv[];
-auth_bind_type auth_type;
-{
+QBool bind_to_ds(int argc, char *argv[], auth_bind_type auth_type) {
 	struct ds_bind_arg bind_arg, bind_result;
 	struct ds_bind_error bind_error;
 
@@ -110,9 +106,7 @@ auth_bind_type auth_type;
  * Get association descriptor for a particular request.
  *
  */
-int get_association_descriptor(request_id)
-QCardinal request_id;
-{
+int get_association_descriptor(QCardinal request_id) {
 	extern int dsap_ad;
 	return dsap_ad;
 } /* get_association_descriptor */

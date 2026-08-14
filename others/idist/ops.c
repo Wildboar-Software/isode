@@ -52,13 +52,7 @@ int initdir (int flag, char *dest) {
 				   basic_error);
 }
 
-int	transfer (type, opts, mode, size, mtime, uname, group, name, lname)
-unsigned short type, mode;
-time_t	mtime;
-off_t	size;
-int	opts;
-char	*uname, *group, *name, *lname;
-{
+int	transfer (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname) {
 	struct type_Idist_FileSpec *fs;
 
 	fs = makefs (type, opts, mode, size, mtime,
@@ -110,12 +104,7 @@ static time_t	cmtime;
 static off_t	csize;
 static unsigned short cmode;
 
-int	rquery (file, mtime, size, mode)
-char	*file;
-time_t	*mtime;
-off_t	*size;
-unsigned short *mode;
-{
+int	rquery (char *file, time_t *mtime, off_t *size, unsigned short *mode) {
 	struct type_UNIV_IA5String *ia5;
 	int	retval;
 
@@ -255,24 +244,12 @@ static int basic_error (int sd, int id, int error, struct type_Idist_IA5List *pa
 	return OK;
 }
 
-static null_result (sd, id, dummy, result, roi)
-int     sd,
-		id,
-		dummy;
-caddr_t result;
-struct RoSAPindication *roi;
-{
+static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	result_value = OK;
 	return OK;
 }
 
-static int ia5_result (sd, id, parameter, result, roi)
-int     sd,
-		id,
-		parameter;
-caddr_t result;
-struct RoSAPindication *roi;
-{
+static int ia5_result (int sd, int id, int parameter, caddr_t result, struct RoSAPindication *roi) {
 	result_value = OK;
 	print_ia5list ((struct type_Idist_IA5List *)result);
 	return OK;

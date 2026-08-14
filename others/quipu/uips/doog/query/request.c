@@ -39,9 +39,7 @@ static void request_rec_free();
  * Abort request of given id.
  *
  */
-void abort_request(request_id)
-QCardinal request_id;
-{
+void abort_request(QCardinal request_id) {
 	DsTask curr_task;
 
 	if (_get_request_of_id(request_id) == NULLReqRec)
@@ -68,9 +66,7 @@ QCardinal request_id;
  * relevant user request has completed, return true and pass back the results.
  *
  */
-QCardinal directory_wait(id_ptr)
-QCardinal **id_ptr;
-{
+QCardinal directory_wait(QCardinal **id_ptr) {
 	struct DAPindication indication;
 	QCardinal aindex, req_id;
 	QCardinal result_list[MAXREQUESTS];
@@ -131,10 +127,7 @@ QCardinal **id_ptr;
  * Add invoked user request to request array and pass back identifier.
  *
  */
-QE_error_code _request_invoked(type, return_id_ptr)
-request_type type;
-QCardinal *return_id_ptr;
-{
+QE_error_code _request_invoked(request_type type, QCardinal *return_id_ptr) {
 	requestRec new_request;
 	QCardinal aindex;
 	ufnameRec ufnrec;
@@ -260,9 +253,7 @@ QCardinal *return_id_ptr;
  * The id'ed request has aborted or returned. Remove from outstanding list.
  *
  */
-void _request_complete(request_id)
-QCardinal request_id;
-{
+void _request_complete(QCardinal request_id) {
 	requestRec old_request;
 
 	if ((old_request = _get_request_of_id(request_id)) == NULLReqRec) return;
@@ -284,9 +275,7 @@ QCardinal request_id;
  * Free a request_rec structure.
  *
  */
-static void request_rec_free(request)
-requestRec request;
-{
+static void request_rec_free(requestRec request) {
 	if (request == NULLReqRec) return;
 
 	switch (request->type) {
@@ -329,10 +318,7 @@ requestRec request;
  * Decode results and place into appropriate request_rec for later dispatch.
  *
  */
-static request_state process_dap_result(dap_result, id_ptr)
-struct DAPresult *dap_result;
-QCardinal *id_ptr;
-{
+static request_state process_dap_result(struct DAPresult *dap_result, QCardinal *id_ptr) {
 	requestRec request;
 	DsTask task_rec;
 	int task_id = dap_result->dr_id;
@@ -383,10 +369,7 @@ QCardinal *id_ptr;
  *
  *
  */
-static request_state process_dap_error(error, id_ptr)
-struct DAPerror *error;
-QCardinal *id_ptr;
-{
+static request_state process_dap_error(struct DAPerror *error, QCardinal *id_ptr) {
 	requestRec request;
 	DsTask task_rec;
 	int task_id = error->de_id;
@@ -436,9 +419,7 @@ QCardinal *id_ptr;
  * Return a pointer to the identified request record. If not found
  * return null pointer.
  */
-requestRec _get_request_of_id(request_id)
-QCardinal request_id;
-{
+requestRec _get_request_of_id(QCardinal request_id) {
 	requestRec request;
 	QCardinal count;
 

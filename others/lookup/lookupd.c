@@ -41,13 +41,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* OPERATIONS */
 
-static int  op_lookupUser (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+static int  op_lookupUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	int     result;
 	char   *cp;
 	struct type_PasswordLookup_UserName   *arg =
@@ -74,13 +68,7 @@ struct RoSAPindication *roi;
 	return result;
 }
 
-static int  op_lookupUID (sd, ryo, rox, in, roi)
-int	sd;
-struct RyOperation *ryo;
-struct RoSAPinvoke *rox;
-caddr_t	in;
-struct RoSAPindication *roi;
-{
+static int  op_lookupUID (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct type_PasswordLookup_UserID   *arg =
 		(struct type_PasswordLookup_UserID   *) in;
 
@@ -147,13 +135,7 @@ static int lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct Ro
 
 /* ERROR */
 
-static int  error (sd, err, param, rox, roi)
-int	sd,
-	err;
-caddr_t	param;
-struct RoSAPinvoke *rox;
-struct RoSAPindication *roi;
-{
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 

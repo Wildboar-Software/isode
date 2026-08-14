@@ -53,15 +53,8 @@
 /* ^L   P-UNIT-DATA.REQUEST */
 /*      opens and closes a socket for each request */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataRequest (calling, called, ctxlist, data, ndata, qos, pi)
+int	PUnitDataRequest (struct	PSAPaddr *calling, struct	PSAPaddr *called, struct	PSAPctxlist *ctxlist, PE *data, int ndata, struct	QOStype *qos, struct	PSAPindication *pi)
 /*---------------------------------------------------------------------------*/
-struct	PSAPaddr *calling,
-			*called;
-struct	PSAPctxlist *ctxlist;
-int	ndata;
-PE	*data;
-struct	QOStype *qos;
-struct	PSAPindication *pi;
 {
 	SBV     smask;
 	int     result;
@@ -387,12 +380,8 @@ int PUnitDataRebind (
 /*    send P-UNIT-DATA.REQUEST over locally bound association */
 /*      socket must have been previously bound by PUnitDataBind() */
 /*---------------------------------------------------------------------------*/
-int	PUnitDataWrite ( sd, data, ndata, pi )
+int	PUnitDataWrite ( int sd, PE *data, int ndata, struct  PSAPindication *pi )
 /*---------------------------------------------------------------------------*/
-int	sd;
-int	ndata;
-PE     *data;
-struct  PSAPindication *pi;
 {
 	SBV     smask;
 	int     result;

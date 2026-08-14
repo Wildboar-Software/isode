@@ -846,10 +846,7 @@ list_start () {
 	filter_free(search_arg.sra_filter);
 }
 
-void rdn2str(ptr,cptr)
-caddr_t ptr;
-char * cptr;
-{
+void rdn2str(caddr_t ptr,char *cptr) {
 	PS ps;
 	char buffer [RESBUF];
 
@@ -1013,10 +1010,7 @@ srch_start () {
 	filter_free(search_arg.sra_filter);
 }
 
-void dn2buf (ptr,cptr)
-caddr_t ptr;
-char * cptr;
-{
+void dn2buf (caddr_t ptr,char *cptr) {
 	PS ps;
 	char buffer [RESBUF];
 
@@ -1032,10 +1026,7 @@ char * cptr;
 	strcpy(cptr, buffer);
 }
 
-void read_print(func,ptr)
-int (*func) ();
-caddr_t ptr;
-{
+void read_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	PS ps;
 	char buffer [RESBUF];
 	char save;
@@ -1079,10 +1070,7 @@ caddr_t ptr;
 	scrollbar('\0');
 }
 
-void quipu_print(func,ptr)
-int (*func)();         /* assumes func (PS ,dataptr,(int) format); */
-caddr_t ptr;
-{
+void quipu_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	PS ps;
 	char buffer [RESBUF];
 	int count;
@@ -1149,10 +1137,7 @@ returnmain () {
 	scrollbar('\0');
 }
 
-void get_listed_object(number, wdgt)
-char number;
-WIDGET *wdgt;
-{
+void get_listed_object(char number, WIDGET *wdgt) {
 	int entrynum, count = 0;
 	char *sptr, *str;
 	char buffer[1024];
@@ -1384,11 +1369,7 @@ int isleafnode (char *name) {
 	}
 }
 
-void entry2str(ptr, cptr, size)
-caddr_t ptr;
-char *cptr;
-int size;
-{
+void entry2str(caddr_t ptr, char *cptr, int size) {
 	PS ps;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
@@ -1542,9 +1523,7 @@ char *GetWholeRelName (char *name) {
 	return name;
 }
 
-str_seq SortList(list)
-str_seq list;
-{
+str_seq SortList(str_seq list) {
 	str_seq currEntry, lastSortedEntry , currSortedEntry;
 	str_seq sortedList;
 	char *sortedName, *currName;

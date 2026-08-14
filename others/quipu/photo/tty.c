@@ -191,9 +191,7 @@ int photo_white (int length) {
 	pos += length;
 }
 
-photo_line_end (line)
-bit_string *line;
-{
+void photo_line_end (bit_string *line) {
 	int     i,
 			j,
 			k,

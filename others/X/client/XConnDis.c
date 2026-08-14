@@ -511,9 +511,7 @@ int _XDisconnectDisplay (int server)
  * 2) if the connection can be read, must enqueue events and handle errors,
  * until the connection is writable.
  */
-_XWaitForWritable(dpy)
-Display *dpy;
-{
+void _XWaitForWritable(Display *dpy) {
 	unsigned long r_mask[MSKCNT];
 	unsigned long w_mask[MSKCNT];
 	int nfound;
@@ -596,9 +594,7 @@ Display *dpy;
 	}
 }
 
-_XWaitForReadable(dpy)
-Display *dpy;
-{
+void _XWaitForReadable(Display *dpy) {
 	unsigned long r_mask[MSKCNT];
 	int result;
 
@@ -628,10 +624,7 @@ Display *dpy;
 
 static int padlength[4] = {0, 3, 2, 1};
 
-_XSendClientPrefix (dpy, client)
-Display *dpy;
-xConnClientPrefix *client;
-{
+void _XSendClientPrefix (Display *dpy, xConnClientPrefix *client) {
 	/*
 	 * Authorization string stuff....  Must always transmit multiple of 4
 	 * bytes.

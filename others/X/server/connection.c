@@ -560,16 +560,11 @@ int TReadFromClient (int client, char *data, int size, int nonblock) {
  */
 
 jmp_buf	env;
-void
-TimeOut () {
+void TimeOut (void) {
 	longjmp(env, 1);
 }
 static Bool
-ReadBuffer(conn, buffer, charsWanted)
-long conn;
-char *buffer;
-int charsWanted;
-{
+ReadBuffer(long conn, char *buffer, int charsWanted) {
 	char *bptr = buffer;
 	int got, fTimeOut;
 	struct itimerval	itv;
@@ -755,15 +750,9 @@ static int padlength[4] = {0, 3, 2, 1};
 
 void
 #ifdef ISOCONN
-EstablishNewConnections(newclients, nnew, vecp, vec)
-ClientPtr	        *newclients;
-int 		*nnew;
-int			vecp;
-char 		**vec;
+EstablishNewConnections(ClientPtr *newclients, int *nnew, int vecp, char **vec)
 #else /* ISOCONN */
-EstablishNewConnections(newclients, nnew)
-ClientPtr	        *newclients;
-int 		*nnew;
+EstablishNewConnections(ClientPtr *newclients, int *nnew)
 #endif /* ISOCONN */
 {
 	long readyconnections;     /* mask of listeners that are ready */
@@ -946,9 +935,7 @@ int 		*nnew;
  ************/
 
 void
-CloseDownFileDescriptor(connection)
-int connection;
-{
+CloseDownFileDescriptor(int connection) {
 #ifdef ISOCONN
 	struct TSAPdisconnect tds;
 #ifdef ISODEBUG
@@ -987,8 +974,7 @@ int connection;
  *    to check each and every socket individually.
  *****************/
 
-void
-CheckConnections() {
+void CheckConnections(void) {
 	long		mask[mskcnt];
 	long		tmask[mskcnt];
 	int	curclient;
@@ -1039,9 +1025,7 @@ CheckConnections() {
  *    Delete client from AllClients and free resources
  *****************/
 
-CloseDownConnection(client)
-ClientPtr client;
-{
+void CloseDownConnection(ClientPtr client) {
 	OsCommPtr oc = (OsCommPtr)client->osPrivate;
 
 	ConnectionTranslation[oc->fd] = (ClientPtr)NULL;
@@ -1051,16 +1035,12 @@ ClientPtr client;
 	xfree(client->osPrivate);
 }
 
-AddEnabledDevice(fd)
-int fd;
-{
+void AddEnabledDevice(int fd) {
 	EnabledDevices |= (1<<fd);
 	BITSET(AllSockets, fd);
 }
 
-RemoveEnabledDevice(fd)
-int fd;
-{
+void RemoveEnabledDevice(int fd) {
 	EnabledDevices &= ~(1<<fd);
 	BITCLEAR(AllSockets, fd);
 }
@@ -1075,9 +1055,7 @@ int fd;
  *    This routine is "undone" by ListenToAllClients()
  *****************/
 
-OnlyListenToOneClient(client)
-ClientPtr client;
-{
+void OnlyListenToOneClient(ClientPtr client) {
 	OsCommPtr oc = (OsCommPtr)client->osPrivate;
 	int connection = oc->fd;
 
@@ -1106,7 +1084,7 @@ ClientPtr client;
  *    Undoes OnlyListentToOneClient()
  ****************/
 
-ListenToAllClients() {
+void ListenToAllClients(void) {
 	if (GrabDone) {
 		ORBITS(AllSockets, AllSockets, SavedAllSockets);
 		ORBITS(AllClients, AllClients, SavedAllClients);

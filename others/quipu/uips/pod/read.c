@@ -29,9 +29,7 @@ bool photo_on = TRUE;
 
 dsEnqError do_read(), read_all(), read_config_types();
 
-Attr_Sequence sort_attrs(entry_attrs)
-Attr_Sequence entry_attrs;
-{
+Attr_Sequence sort_attrs(Attr_Sequence entry_attrs) {
 	Attr_Sequence last, next, curr, first, firstn;
 
 	first = curr = entry_attrs;
@@ -72,9 +70,7 @@ Attr_Sequence entry_attrs;
 		return first;
 }
 
-Attr_Sequence get_sorted_attrs(entry_attrs, wanted_attrs)
-Attr_Sequence entry_attrs, wanted_attrs;
-{
+Attr_Sequence get_sorted_attrs(Attr_Sequence entry_attrs, Attr_Sequence wanted_attrs) {
 	Attr_Sequence curr_ent_attr, curr_found,
 				  curr_wanted, attrs_found, next;
 
@@ -118,9 +114,7 @@ dsEnqError read_config_types() {
 	return do_read(read_types);
 }
 
-dsEnqError do_read(attrs_to_read)
-Attr_Sequence attrs_to_read;
-{
+dsEnqError do_read(Attr_Sequence attrs_to_read) {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -263,11 +257,7 @@ int read_print (int (*func), caddr_t ptr) {
 	free(str);
 }
 
-podphoto(ps, picture, format)
-PS ps;
-PE picture;
-int format;
-{
+void podphoto(PS ps, PE picture, int format) {
 	PS sps;
 
 	if (photo_on == TRUE) {

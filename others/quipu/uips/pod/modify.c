@@ -45,9 +45,7 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 	return a;
 }
 
-dsErrorStruct modify_entry(mods)
-dirEntry mods;
-{
+dsErrorStruct modify_entry(dirEntry mods) {
 	struct ds_modifyentry_arg mod_arg;
 	dsErrorStruct mod_error;
 	struct DSError error;
@@ -361,10 +359,7 @@ dirEntry mods;
 	return mod_error;
 }
 
-void make_template(entry_name, attrs)
-char *entry_name;
-dirAttrs *attrs;
-{
+void make_template(char *entry_name, dirAttrs *attrs) {
 	char *buffer;
 	PS ps;
 	extern oid_table_attr *at_objectclass;
@@ -470,10 +465,7 @@ dirAttrs *attrs;
 	if (buffer != NULLCP) free(buffer);
 }
 
-make_attr_sequence(entry_string, attrs)
-char *entry_string;
-dirAttrs *attrs;
-{
+void make_attr_sequence(char *entry_string, dirAttrs *attrs) {
 	char *str, *sptr;
 	char save, buffer[RESBUF];
 	modVals curr_val = 0;
@@ -611,10 +603,7 @@ dirAttrs *attrs;
 	}
 }
 
-static void char_map(buffer, value, at)
-char *buffer, *value;
-AttributeType at;
-{
+static void char_map(char *buffer, char *value, AttributeType at) {
 	char ia5_char_desc[3];
 	long ia5_char;
 
@@ -653,9 +642,7 @@ AttributeType at;
 	*buffer = '\0';
 }
 
-static bool is_map_required(at)
-AttributeType at;
-{
+static bool is_map_required(AttributeType at) {
 	int at_syntax = at->oa_syntax;
 
 	if ((str2syntax("PostalAddress") == at_syntax) ||
@@ -666,10 +653,7 @@ AttributeType at;
 	return FALSE;
 }
 
-static void char_unmap(buffer, value, at)
-char *buffer, *value;
-AttributeType at;
-{
+static void char_unmap(char *buffer, char *value, AttributeType at) {
 	if (value == NULLCP || *value == '\0') {
 		*buffer = '\0';
 		return;
@@ -702,9 +686,7 @@ AttributeType at;
 	*buffer = '\0';
 }
 
-Attr_Sequence make_template_as(oc)
-AV_Sequence oc;
-{
+Attr_Sequence make_template_as(AV_Sequence oc) {
 	AV_Sequence avs;
 	Attr_Sequence newas;
 	Attr_Sequence as = NULLATTR;
@@ -733,7 +715,6 @@ AV_Sequence oc;
 	return(as);
 }
 
-/*Big Bodge!*/
 char *modify_error (struct DSError *error) {
 	PS ps;
 	char buffer[RESBUF];
@@ -760,11 +741,7 @@ char *modify_error (struct DSError *error) {
 	return message;
 }
 
-static void my_as_comp_print (ps,as,format)
-PS   ps;
-Attr_Sequence  as;
-int  format;
-{
+static void my_as_comp_print (PS ps,Attr_Sequence as,int format) {
 	AV_Sequence avs;
 	char buffer[64];
 	extern int oidformat;
@@ -804,20 +781,14 @@ int  format;
 	}
 }
 
-static void my_as_print (ps,as,format)
-Attr_Sequence  as;
-PS   ps;
-int  format;
-{
+static void my_as_print (PS ps,Attr_Sequence as,int format) {
 	Attr_Sequence curr_as;
 	if (as != NULLATTR)
 		for (curr_as = as; curr_as != NULLATTR; curr_as = curr_as->attr_link)
 			my_as_comp_print(ps, curr_as, format);
 }
 
-static Attr_Sequence as_sort(as)
-Attr_Sequence as;
-{
+static Attr_Sequence as_sort(Attr_Sequence as) {
 	Attr_Sequence with_vals = NULLATTR, without_vals = NULLATTR, next_as;
 
 	if (as == NULLATTR) return as;

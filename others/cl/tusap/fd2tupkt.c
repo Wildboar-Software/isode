@@ -5,11 +5,7 @@
 #include "tpkt.h"
 #include "tailor.h"
 
-struct tsapkt *fd2tpkt (fd, initfnx, readfnx)
-int	fd;
-IFP	initfnx,
-	readfnx;
-{
+struct tsapkt *fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
@@ -44,12 +40,7 @@ IFP	initfnx,
 	return t;
 }
 
-static int  fd2tpktaux (fd, t, initfnx, readfnx)
-int	fd;
-struct tsapkt *t;
-IFP	initfnx,
-	readfnx;
-{
+static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	int    code,
 		   len,
 		   vlen;
@@ -292,12 +283,7 @@ IFP	initfnx,
 	return OK;
 }
 
-static int  readx (fd, buffer, n, readfnx)
-int	fd;
-char    *buffer;
-int	n;
-IFP	readfnx;
-{
+static int  readx (int fd, char *buffer, int n, IFP readfnx) {
 	int    i,
 		   cc;
 	char   *bp;
@@ -319,11 +305,7 @@ IFP	readfnx;
 	return (bp - buffer);
 }
 
-int	tpkt2fd (fd, t, writefnx)
-int	fd;
-struct tsapkt *t;
-IFP	writefnx;
-{
+int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx) {
 	SBV	    smask;
 	int     i,
 			ilen,

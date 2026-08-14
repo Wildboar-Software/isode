@@ -99,11 +99,7 @@ void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 void	ts_advise ();
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-	  **envp;
-{
+int main (int argc, char **argv, char **envp) {
 	int	    listen,
 			vecp;
 	int     sd;
@@ -396,9 +392,7 @@ static envinit () {
 			}
 			break;
 		}
-
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
@@ -423,12 +417,9 @@ static envinit () {
 
 	for (sd = 3; sd < nbits; sd++)
 		close (sd);
-
 	signal (SIGPIPE, SIG_IGN);
-
 	closelog ();
 	openlog (myname, LOG_PID);
-
 	advise (LOG_INFO, NULLCP, "starting");
 }
 
@@ -437,20 +428,13 @@ static void  _advise ();
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (LOG_ERR, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
-/* VARARGS */
-
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -459,34 +443,24 @@ adios (char *what, char *fmt) {
 void	advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
-
 	va_start (ap, fmt);
-
 	_advise (code, what, fmt, ap);
-
 	va_end (ap);
 }
 
 static void  _advise (int code, char *what, char *fmt, ap) {
 	char    buffer[BUFSIZ];
-
 	_asprintf (buffer, what, fmt, ap);
-
 	syslog (code, "%s", buffer);
-
 	if (debug) {
 		fflush (stdout);
-
 		fprintf (stderr, "[%d] %s", code, buffer);
 		fputc ('\n', stderr);
 		fflush (stderr);
 	}
 }
 #else
-/* VARARGS */
-
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

@@ -40,12 +40,7 @@ extern LLog    *log_stat;
  * Add invoked task to task list and pass back task identifier.
  *
  */
-QE_error_code _task_invoked(type, baseobject, request_id, task_id_ptr)
-task_type type;
-char *baseobject;
-QCardinal request_id;
-int *task_id_ptr;
-{
+QE_error_code _task_invoked(task_type type, char *baseobject, QCardinal request_id, int *task_id_ptr) {
 	DsTask task_rec;
 
 	if (live_task_count >= MAXTASKS)
@@ -96,9 +91,7 @@ _task_complete (int task_id) {
  * Find task_rec of given id and return a pointer to it.
  *
  */
-DsTask _get_task_of_id(task_id)
-int task_id;
-{
+DsTask _get_task_of_id(int task_id) {
 	DsTask task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id)
@@ -136,9 +129,7 @@ abort_task (int task_id) {
  * Free a ds_task structure.
  *
  */
-static void ds_task_free(task)
-DsTask task;
-{
+static void ds_task_free(DsTask task) {
 	if (task == NULLDsTask)
 		return;
 

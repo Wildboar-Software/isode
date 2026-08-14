@@ -73,9 +73,7 @@ int main (int argc, char **argv) {
 }
 #endif STANDALONE
 
-init_clock_psti(timesource)
-char *timesource;
-{
+init_clock_psti(char *timesource) {
 	int cfd;
 #ifdef TCSETA
 	struct termio tty;
@@ -147,10 +145,7 @@ char *timesource;
 /*
  * read_clock_psti() -- Read the PSTI Radio Clock.
  */
-read_clock_psti(cfd, tvpp, otvpp)
-int cfd;
-struct timeval **tvpp, **otvpp;
-{
+int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 	static struct timeval radiotime;
 	static struct timeval mytime;
 	struct timeval timeout;
@@ -372,10 +367,7 @@ struct timeval **tvpp, **otvpp;
 }
 
 static double
-reltime(tm, usec)
-struct tm *tm;
-int usec;
-{
+reltime(struct tm *tm, int usec) {
 	return(tm->tm_year*(366.0*24.0*60.0*60.0) +
 		   tm->tm_yday*(24.0*60.0*60.0) +
 		   tm->tm_hour*(60.0*60.0) +

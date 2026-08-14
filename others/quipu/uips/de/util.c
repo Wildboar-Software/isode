@@ -94,9 +94,7 @@ char *copy_string (char *string) {
 
 static PS ps = NULLPS;
 
-char   *dn2pstr (dn)
-DN	dn;
-{
+char   *dn2pstr (DN dn) {
 	char       *cp;
 
 	if (ps == NULL

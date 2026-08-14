@@ -1010,10 +1010,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-static uint32_t str2ssn (s, n)
-char  *s;
-int	n;
-{
+static uint32_t str2ssn (char *s, int n) {
 	uint32_t u;
 
 	for (u = 0L; n > 0; n--)

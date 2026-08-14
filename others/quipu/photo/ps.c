@@ -34,9 +34,7 @@ int photo_white (int length) {
 	x += length;
 }
 
-photo_line_end (line)
-bit_string * line;
-{
+void photo_line_end (bit_string *line) {
 	x = 0;
 	--y;
 	if (y < 0) {

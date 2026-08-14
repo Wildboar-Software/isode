@@ -60,20 +60,10 @@
 /* A-UNIT-DATA.REQUEST */
 /*      opens and closes a socket for each request */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataRequest ( context, callingtitle, calledtitle,
-						callingaddr, calledaddr, ctxlist,
-						data, ndata, qos, aci )
+int	AcUnitDataRequest ( OID context, AEI callingtitle, AEI calledtitle,
+						struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist,
+						PE *data, int ndata, struct  QOStype *qos, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct PSAPaddr *callingaddr,
-		   *calledaddr;
-struct PSAPctxlist *ctxlist;
-PE     *data;
-int	ndata;
-struct  QOStype *qos;
-struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
@@ -180,19 +170,9 @@ out:
 /*    set a local binding for AcUnitDataWrite() and AcUnitDataRead()       */
 /*      a socket is created and bound if sd is NOTOK on input                */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataBind ( sd, binding, context, callingtitle, calledtitle,
-					 callingaddr, calledaddr, ctxlist, qos, aci )
+int	AcUnitDataBind ( int sd, int binding, OID context, AEI callingtitle, AEI calledtitle,
+					 struct  PSAPaddr *callingaddr, struct  PSAPaddr *calledaddr, struct  PSAPctxlist *ctxlist, struct  QOStype *qos, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
-int	sd;
-int	binding;
-OID	context;
-AEI	callingtitle,
-	calledtitle;
-struct  PSAPaddr *callingaddr,
-			*calledaddr;
-struct  PSAPctxlist *ctxlist;
-struct  QOStype *qos;
-struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
@@ -290,12 +270,8 @@ no_good:
 /*---------------------------------------------------------------------------*/
 /*    reset a local binding for new called addr and called title           */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataRebind ( sd, calledtitle, calledaddr, aci )
+int	AcUnitDataRebind ( int sd, AEI calledtitle, struct  PSAPaddr *calledaddr, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
-int	sd;
-AEI	calledtitle;
-struct  PSAPaddr *calledaddr;
-struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
@@ -347,12 +323,8 @@ no_good:
 /*    set off A-UNIT-DATA.REQUEST over locally bound association */
 /*      socket must have been previously bound by AcUnitDataBind() */
 /*---------------------------------------------------------------------------*/
-int	AcUnitDataWrite ( sd, data, ndata, aci )
+int	AcUnitDataWrite ( int sd, PE *data, int ndata, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
-int	sd;
-int	ndata;
-PE     *data;
-struct  AcSAPindication *aci;
 {
 	SBV     smask;
 	int     result;
@@ -635,12 +607,8 @@ int AcuSave (
 }
 
 /*---------------------------------------------------------------------------*/
-int	titles2block ( callingtitle, calledtitle, acb, aci )
+int	titles2block ( AEI callingtitle, AEI calledtitle, struct assocblk *acb, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
-AEI	callingtitle,
-	calledtitle;
-struct assocblk *acb;
-struct  AcSAPindication *aci;
 {
 	AEI    pi, po;
 
@@ -697,11 +665,8 @@ no_mem:
 }
 
 /*---------------------------------------------------------------------------*/
-int	titles2pdu ( callingtitle, calledtitle, pdu )
+int	titles2pdu ( AEI callingtitle, AEI calledtitle, struct  type_ACS_AUDT__apdu *pdu )
 /*---------------------------------------------------------------------------*/
-AEI	    callingtitle,
-		calledtitle;
-struct  type_ACS_AUDT__apdu *pdu;
 {
 	if (calledtitle) {
 		pdu -> called__AP__title = calledtitle -> aei_ap_title;

@@ -173,17 +173,13 @@ int photo_white (int length) {
 	x += length;
 }
 
-photo_line_end (line)
-bit_string * line;
-{
+void photo_line_end (bit_string *line) {
 	if (passno == 1 && x > maxx)
 		maxx = x;
 	x = 0;
 	y++;
 }
 
-static int *silentExit (dis)
-Display *dis;
-{
+static void *silentExit (Display *dis) {
 	exit (0);
 }

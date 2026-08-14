@@ -33,9 +33,7 @@ char padding[20];
 
 static PS ps = NULLPS;
 
-char *val2str (av)
-AttributeValue  av;
-{
+char *val2str (AttributeValue av) {
 	char       *cp;
 
 	if (ps == NULL
@@ -280,9 +278,7 @@ de_addrparse (char *str) {
 	return (result);
 }
 
-static PE de_addrenc (m)
-struct postaddr * m;
-{
+static PE de_addrenc (struct postaddr *m) {
 	PE ret_pe;
 
 	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
@@ -290,9 +286,7 @@ struct postaddr * m;
 	return (ret_pe);
 }
 
-static struct postaddr * de_addrdec (pe)
-PE pe;
-{
+static struct postaddr * de_addrdec (PE pe) {
 	struct postaddr * m;
 
 	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -302,11 +296,7 @@ PE pe;
 
 extern int postal_indent;
 
-static de_addrprint (xps,addr,format)
-PS xps;
-struct postaddr * addr;
-int format;
-{
+static de_addrprint (PS xps,struct postaddr *addr,int format) {
 	char * prefix = NULLCP;
 	char prefbuff[100];
 
@@ -336,15 +326,11 @@ int format;
 
 /* special functions for handling email addresses */
 
-static PE de_ia5enc (x)
-char *x;
-{
+static PE de_ia5enc (char *x) {
 	return (ia5s2prim(x,strlen(x)));
 }
 
-static char * de_ia5sdec (pe)
-PE pe;
-{
+static char * de_ia5sdec (PE pe) {
 	int z;
 
 	if (test_prim_pe (pe,PE_CLASS_UNIV,PE_DEFN_IA5S))
@@ -353,10 +339,7 @@ PE pe;
 		return (NULLCP);
 }
 
-de_mailprint (xps,str)
-PS xps;
-char * str;
-{
+de_mailprint (PS xps,char *str) {
 	char	buf[BUFSIZ], workbuf[BUFSIZ];
 	char	*ptr = buf;
 	char	* cp, * cp2;
@@ -385,11 +368,7 @@ char * str;
 /* modified versioin of dn_print to give appropriately formatted DNs
    the code should only alter the print format for READOUT */
 
-de_dn_print (xps,dn,format)
-PS   xps;
-DN  dn;
-int  format;
-{
+de_dn_print (PS xps,DN dn,int format) {
 	DN eptr;
 	int pad;
 	char padstr[100];
@@ -433,11 +412,7 @@ int  format;
 	}
 }
 
-de_phone_print (xps,str,format)
-PS xps;
-char * str;
-int format;
-{
+de_phone_print (PS xps,char *str,int format) {
 	if (*str == T61_MARK) {
 		if (format != READOUT) {
 			ps_print (xps,"{T.61}");
@@ -457,9 +432,7 @@ int format;
 	}
 }
 
-static PE de_strenc (x)
-char *x;
-{
+static PE de_strenc (char *x) {
 	if (*x == T61_MARK) {
 		x++;
 		return (t61s2prim(x,strlen(x)));
@@ -467,9 +440,7 @@ char *x;
 		return (prts2prim(x,strlen(x)));
 }
 
-static char * de_prtsdec (pe)
-PE pe;
-{
+static char * de_prtsdec (PE pe) {
 	int z;
 	char * p, *ptr, val;
 
@@ -542,11 +513,7 @@ static int de_fax_cmp (struct fax *a, struct fax *b) {
 	return pe_cmp (a -> bits, b -> bits);
 }
 
-static	de_fax_print (xps, f, format)
-PS xps;
-struct fax *f;
-int	format;
-{
+static	de_fax_print (PS xps, struct fax *f, int format) {
 	int   i;
 	struct pair *p;
 	PE    pe;
@@ -668,9 +635,7 @@ no_allocate:
 	return f;
 }
 
-static PE  de_fax_enc (f)
-struct fax *f;
-{
+static PE  de_fax_enc (struct fax *f) {
 	PE	pe = NULLPE;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
@@ -683,9 +648,7 @@ struct fax *f;
 	return pe;
 }
 
-static struct fax *de_fax_dec (pe)
-PE	pe;
-{
+static struct fax *de_fax_dec (PE pe) {
 	struct fax *f;
 
 	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)

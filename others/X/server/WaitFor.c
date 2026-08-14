@@ -120,12 +120,7 @@ int ANYSET (long *src) {
 }
 #endif
 
-WaitForSomething(pClientsReady, nready, pNewClients, nnew)
-ClientPtr *pClientsReady;
-int *nready;
-ClientPtr *pNewClients;
-int *nnew;
-{
+void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClients, int *nnew) {
 	int i;
 	struct timeval waittime, *wt;
 	long timeout;

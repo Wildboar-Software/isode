@@ -49,8 +49,7 @@ FILE   *errfp = NULL;
 
 #ifdef __GNUC__
 __attribute__((constructor))
-static void _init_fp ()
-{
+static void _init_fp (void) {
 	stdfp = stdout;
 }
 #endif
@@ -828,9 +827,7 @@ int rcfile (char *file, int op, int isystem) {
 #ifndef	TIOCGWINSZ
 #endif
 
-int	ncols (fp)
-FILE *fp;
-{
+int	ncols (FILE *fp) {
 #ifdef	TIOCGWINSZ
 	int	    i;
 	struct winsize ws;

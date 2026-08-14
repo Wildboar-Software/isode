@@ -1,16 +1,12 @@
 #include "dir_entry.h"
 
-int free_dir_entry(entry)
-dirEntry entry;
-{
+int free_dir_entry(dirEntry entry) {
 	if (entry->entry_name) free(entry->entry_name);
 	free_ent_attrs(entry->attrs);
 	free((char *) entry);
 }
 
-int free_ent_attrs(attrs)
-dirAttrs attrs;
-{
+int free_ent_attrs(dirAttrs attrs) {
 	dirAttrs last_attr = 0;
 	for (; attrs; attrs = attrs->next) {
 		if (attrs->val_seq) free_mod_vals(attrs->val_seq);
@@ -20,9 +16,7 @@ dirAttrs attrs;
 	}
 }
 
-int free_mod_vals(vals)
-modVals vals;
-{
+int free_mod_vals(modVals vals) {
 	modVals last_val = 0;
 	for (; vals; vals = vals->next) {
 		if (vals->value) free(vals->value);

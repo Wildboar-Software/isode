@@ -99,13 +99,7 @@ int makeconn (char *thehost) {
 
 static	int	ry_sd = NOTOK;
 
-static int ryconnect (thehost, data, theservice, thecontext, thepci)
-char   *thehost,
-	   *theservice,
-	   *thecontext,
-	   *thepci;
-PE	data;
-{
+static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext, char *thepci) {
 	struct SSAPref sfs;
 	struct SSAPref *sf;
 	struct PSAPaddr *pa;
@@ -195,13 +189,11 @@ int closeconn () {
 	ACRFREE (acr);
 }
 
-invoke (op, arg, mod, ind, rfx, efx)
-int	op;
-modtyp	*mod;		/* encoding/decoding table for Idist */
-int	ind;		/* index of this type in tables */
-caddr_t	arg;
-IFP	rfx, efx;
-{
+/**
+ * @param mod encoding/decoding table for Idist
+ * @param ind index of this type in tables
+ */
+int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx) {
 	int	    result;
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;

@@ -963,12 +963,7 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
  ****************************************************************
  */
 
-int	TSetUnitDataIndications (sd, data)
-
-int	sd;
-IFP	data;
-
-{
+int	TSetUnitDataIndications (int sd, IFP data) {
 
 	SBV	    smask;
 	int     result;
@@ -1019,12 +1014,7 @@ IFP	data;
  ****************************************************************
  */
 
-int	TSelectUnitDataMask (sd, mask, nfds)
-int	sd;
-fd_set *mask;
-int    *nfds;
-
-{
+int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds) {
 
 	SBV     smask;
 	struct tsapblk *tb;
@@ -1249,11 +1239,7 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 #include <sys/stropts.h>
 #endif
 
-static int  TUnitDataWakeUp (tb)
-
-struct tsapblk *tb;
-
-{
+static int  TUnitDataWakeUp (struct tsapblk *tb) {
 	int	    result;
 	static int  inited = 0;
 

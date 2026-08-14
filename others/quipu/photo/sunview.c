@@ -68,9 +68,7 @@ int photo_white (int length) {
 	/* draw a white line of 'length' pixels */
 }
 
-photo_line_end (line)
-bit_string * line;
-{
+void photo_line_end (bit_string *line) {
 	struct  pixrect * pix;
 
 	/* the end of a line has been reached */
@@ -79,5 +77,4 @@ bit_string * line;
 	pix = mem_point (PIC_LINESIZE,1,1,line->dbuf_top);
 	pw_write (gfx->gfx_pixwin, sx, sy, PIC_LINESIZE-sx, 1, PIX_SRC,pix,0,0);
 	sy++;
-
 }

@@ -188,9 +188,7 @@ int makeFileReadWrite (char *fn, struct RfaInfo *rfa) {
 /*--------------------------------------------------------------*/
 /*  changeTime - change local time if eff. uid is root		*/
 /*--------------------------------------------------------------*/
-int changeTime (dt)
-time_t dt;
-{
+int changeTime (time_t dt) {
 	struct timeval tv;
 	int rc = OK;
 	int changedUID = 0;

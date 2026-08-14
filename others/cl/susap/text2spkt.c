@@ -18,11 +18,7 @@
 #define	TMASK	"\020\01DATA\03SYNC\05ACTIVITY\07RELEASE"
 #define	YMASK	"\020\01NOEXPLICIT"
 
-void	spkt2text (fp, s, read)
-FILE	*fp;
-struct ssapkt *s;
-int	read;
-{
+void	spkt2text (FILE *fp, struct ssapkt *s, int read) {
 	char   *rw = read ? "<--- " : "---> ";
 
 	fprintf (fp, "%s(: dump of SPDU 0x%x, errno=0x%x mask=0x%x%s\n",
@@ -312,13 +308,7 @@ int	read;
 	fprintf (fp, "%s)\n", rw);
 }
 
-static	type_id (fp, type, rw, selector, len)
-FILE   *fp;
-char   *type,
-	   *rw;
-char   *selector;
-int	len;
-{
+static	type_id (FILE *fp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
 	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
@@ -326,23 +316,11 @@ int	len;
 	fprintf (fp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-static	type_ssn (fp, rw, what, ssn)
-FILE   *fp;
-char   *rw,
-	   *what;
-uint32_t	ssn;
-{
+static	type_ssn (FILE *fp, char *rw, char *what, uint32_t ssn) {
 	fprintf (fp, "%s%s/ %d\n", rw, what, ssn);
 }
 
-static	type_bits (fp, rw, s, bits, mask, t)
-FILE   *fp;
-char   *rw,
-	   *s,
-	   *t;
-uint8_t  bits,
-		mask;
-{
+static	type_bits (FILE *fp, char *rw, char *s, uint8_t bits, uint8_t mask, char *t) {
 	fprintf (fp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		fprintf (fp, ": illegal use of %s", sprintc (bits & ~mask, t));
@@ -358,11 +336,7 @@ uint8_t  bits,
 	: "reserved"); \
 }
 
-static	type_settings (fp, rw, settings)
-FILE   *fp;
-char   *rw;
-uint8_t  settings;
-{
+static	type_settings (FILE *fp, char *rw, uint8_t settings) {
 	int     token;
 
 	fprintf (fp, "%sSETTINGS/", rw);
@@ -372,21 +346,12 @@ uint8_t  settings;
 
 #undef	dotoken
 
-static	type_tsdu (fp, rw, init, resp)
-FILE   *fp;
-char   *rw;
-uint16_t	init,
-		resp;
-{
+static	type_tsdu (FILE *fp, char *rw, uint16_t init, uint16_t resp) {
 	fprintf (fp, "%sTSDU/ INITIATOR: %d, RESPONDER: %d\n",
 			 rw, init, resp);
 }
 
-static	type_ref (fp, rw, ref)
-FILE   *fp;
-char   *rw;
-struct SSAPref *ref;
-{
+static	type_ref (FILE *fp, char *rw, struct SSAPref *ref) {
 	fprintf (fp, "%sREFERENCE/", rw);
 	if (ref -> sr_vlen)
 		type_info (fp, "<CALLING %d", (int) ref -> sr_calling_len,
@@ -401,28 +366,16 @@ struct SSAPref *ref;
 	fprintf (fp, ">\n");
 }
 
-static	type_vrsn (fp, rw, version)
-FILE   *fp;
-char   *rw;
-uint8_t	version;
-{
+static	type_vrsn (FILE *fp, char *rw, uint8_t version) {
 	fprintf (fp, "%sVERSION/ 0x%x\n", rw, version);
 }
 
-static	type_reason (fp, rw, reason)
-FILE   *fp;
-char   *rw;
-int	reason;
-{
+static	type_reason (FILE *fp, char *rw, int reason) {
 	fprintf (fp, "%sREASON/ 0x%x: %s\n", rw, reason,
 			 SErrString ((int) reason));
 }
 
-static	type_prepare (fp, rw, type)
-FILE   *fp;
-char   *rw;
-uint8_t  type;
-{
+static	type_prepare (FILE *fp, char *rw, uint8_t type) {
 	fprintf (fp, "%sTYPE/ ", rw);
 	switch (type) {
 	case PR_MAA:
@@ -444,11 +397,7 @@ uint8_t  type;
 	fprintf (fp, "\n");
 }
 
-static	type_error (fp, rw, reason)
-FILE   *fp;
-char   *rw;
-uint8_t  reason;
-{
+static	type_error (FILE *fp, char *rw, uint8_t reason) {
 	fprintf (fp, "%sREASON/ ", rw);
 	switch (reason) {
 	case SP_NOREASON:
@@ -476,11 +425,7 @@ uint8_t  reason;
 	fprintf (fp, "\n");
 }
 
-static	type_resync (fp, rw, type)
-FILE   *fp;
-char   *rw;
-uint8_t  type;
-{
+static	type_resync (FILE *fp, char *rw, uint8_t type) {
 	fprintf (fp, "%sTYPE/ ", rw);
 	switch (type) {
 	case SYNC_RESTART:
@@ -499,24 +444,13 @@ uint8_t  type;
 	fprintf (fp, "\n");
 }
 
-static	type_data (fp, type, rw, len, data)
-FILE   *fp;
-char   *type,
-	   *rw,
-	   *data;
-int	len;
-{
+static	type_data (FILE *fp, char *type, char *rw, int len, char *data) {
 	fprintf (fp, "%s%s DATA/ ", rw, type);
 	type_info (fp, "%d", len, data);
 	fprintf (fp, "\n");
 }
 
-static	type_info (fp, fmt, len, data)
-FILE   *fp;
-char   *fmt,
-	   *data;
-int	len;
-{
+static	type_info (FILE *fp, char *fmt, int len, char *data) {
 	char    buffer[BUFSIZ];
 
 	fprintf (fp, fmt, len);

@@ -15,16 +15,7 @@ extern char *isodeversion;
 
 /* INITIATOR */
 
-void ryinitiator (argc, argv, myservice, mycontext, mypci, ops, dispatches, quit)
-int	argc;
-char  **argv,
-	  *myservice,
-	  *mycontext,
-	  *mypci;
-struct RyOperation ops[];
-struct dispatch *dispatches;
-IFP	quit;
-{
+void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation ops[], struct dispatch *dispatches, IFP quit) {
 	int	    iloop,
 			sd;
 	char    buffer[BUFSIZ],

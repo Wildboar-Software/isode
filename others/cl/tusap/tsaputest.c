@@ -9,9 +9,7 @@
 #include "isoaddrs.h"
 #include "internet.h"
 
-main ()
-
-{
+int main (void) {
 
 	TUnitDataListen();	/* Listen on a datagram socket */
 	TUnitDataBind(); 	/* Bind socket to a remote address */

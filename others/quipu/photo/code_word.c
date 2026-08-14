@@ -233,11 +233,7 @@ static code_word bl_make [] = {
 extern int forcesize;
 
 full_code
-get_code (run, colour)
-
-char    colour;
-int     run;
-{
+get_code (int run, char colour) {
 
 	full_code result;
 	result.make.length = 0;

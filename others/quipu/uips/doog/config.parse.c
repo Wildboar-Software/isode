@@ -296,11 +296,7 @@ int yydebug;			/*  nonzero means print parse trace	*/
 
 /* This is the most reliable way to avoid incompatibilities
    in available built-in functions on various systems.  */
-static void __yy_bcopy (from, to, count)
-char *from;
-char *to;
-int count;
-{
+static void __yy_bcopy (char *from, char *to, int count) {
 	char *f = from;
 	char *t = to;
 	int i = count;

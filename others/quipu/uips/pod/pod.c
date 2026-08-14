@@ -277,17 +277,11 @@ print_photo () {
 	photo_pixmap = (Pixmap) 0;
 }
 
-static void FreeWidgetPixmap(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void FreeWidgetPixmap(Widget w, XtPointer closure, XtPointer calldata) {
 	XFreePixmap(dpy, (Pixmap) closure);
 }
 
-static void createList(list_seq, top_mess, lower_mess)
-str_seq list_seq;
-char *top_mess, *lower_mess;
-{
+static void createList(str_seq list_seq, char *top_mess, char *lower_mess) {
 	int count = 0;
 	Widget shell, swindow, ListForm, ListWindow,
 		   closeButton, keepButton, ListTitleView;
@@ -411,9 +405,7 @@ char *top_mess, *lower_mess;
 		CreateBackgroundPixmap(ListForm, gray_bits, gray_width, gray_height);
 }
 
-static void CreateCurrPosWindow(parent)
-Widget parent;
-{
+static void CreateCurrPosWindow(Widget parent) {
 	int count;
 	Widget PosForm, swindow, title;
 	Arg args[MAXARGS];
@@ -448,9 +440,7 @@ static char defaultTranslations[] =
    Ctrl<Key>J:  TSearch() \n\
    Ctrl<Key>U:  ClearSearchArea()";
 
-static void CreateSearchWindow(parent)
-Widget parent;
-{
+static void CreateSearchWindow(Widget parent) {
 	int count;
 	Arg args[MAXARGS];
 	Widget TypeForm, SearchVal;
@@ -544,9 +534,7 @@ add_to_history (int seqnum) {
 
 }
 
-print_search_area(PosWindow)
-Widget PosWindow;
-{
+void print_search_area(Widget PosWindow) {
 	char *str, *end, save, name_array[STRINGLEN];
 	char *trans_start_btn2 = "None <Btn2Up>:  set() DnList(",
 		  *trans_start_btn3 = "None <Btn3Up>:  set() DnMove(",
@@ -665,10 +653,7 @@ Widget PosWindow;
 	}
 }
 
-static void StartSearch(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void StartSearch(Widget w, XtPointer closure, XtPointer calldata) {
 	Arg args[MAXARGS];
 	int count, indx;
 	Widget text;
@@ -824,9 +809,7 @@ Click on this window to continue");
 					(XEvent *) NULL, (String *) NULL, (Cardinal) 0);
 }
 
-static Widget createTypeMenu(parent)
-Widget parent;
-{
+static Widget createTypeMenu(Widget parent) {
 	Widget menu_mgr, button;
 	Arg args[MAXARGS];
 	int count = 0, n;
@@ -848,10 +831,7 @@ Widget parent;
 	return menu_mgr;
 }
 
-static void SetType(w, indx, calldata)
-Widget w;
-XtPointer indx, calldata;
-{
+static void SetType(Widget w, XtPointer indx, XtPointer calldata) {
 	Widget  menu, menuButton;
 	int count = 0;
 	Arg args[MAXARGS];
@@ -876,9 +856,7 @@ XtPointer indx, calldata;
 	typeindx = (int) indx;
 }
 
-static void CreateCommandForm(parent)
-Widget parent;
-{
+static void CreateCommandForm(Widget parent) {
 	Widget form, quitButton, helpButton,
 		   searchButton, listButton, historyButton;
 	Arg args[MAXARGS];
@@ -1009,10 +987,7 @@ setReadEntryName (char *entry_name) {
 	}
 }
 
-static void cannotModify(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void cannotModify(Widget w, XtPointer closure, XtPointer calldata) {
 	displayError(XtParent(XtParent(w)),
 				 "Cannot modify this entry!\nClick on this window to continue.");
 }
@@ -1157,11 +1132,7 @@ static Widget createReadPopup() {
 	return ReadPopup;
 }
 
-static void AddNewList(list_widget, list_seq, list_size)
-Widget list_widget;
-str_seq list_seq;
-unsigned int list_size;
-{
+static void AddNewList(Widget list_widget, str_seq list_seq, unsigned int list_size) {
 	Arg args[MAXARGS];
 	Widget element, scrolwin;
 	int count = 0, n;
@@ -1252,10 +1223,7 @@ readEntryPrint (char *entry_ptr) {
 	}
 }
 
-static void entry_print(entry_form, entry_ptr)
-Widget entry_form;
-char *entry_ptr;
-{
+static void entry_print(Widget entry_form, char *entry_ptr) {
 	Widget attr_list, val_list, sep_list;
 	Arg args[MAXARGS];
 	int count = 0, attr_count = 0;
@@ -1411,30 +1379,17 @@ char *entry_ptr;
 	XawFormDoLayout(entry_form, TRUE);
 }
 
-static void Quit(widget, closure, callData)
-Widget widget;
-XtPointer closure, callData;
-{
+static void Quit(Widget widget, XtPointer closure, XtPointer callData) {
 	XtUnmapWidget(toplevel);
 	XtDestroyWidget(toplevel);
 	quit(0);
 }
 
-static void TSearch(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void TSearch(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	StartSearch((Widget) 0, (XtPointer) 0, (XtPointer) 0);
 }
 
-static void ClearSearchArea(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void ClearSearchArea(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	Arg args[MAXARGS];
 	int count= 0;
 	XtSetArg(args[count], XtNstring, "\0");
@@ -1442,10 +1397,7 @@ Cardinal num_params;
 	XtSetValues(w, args, count);
 }
 
-static void ReadAll(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void ReadAll(Widget w, XtPointer closure, XtPointer calldata) {
 	dsEnqError status;
 	Widget temp_read_popup;
 	char current_path[STRINGLEN];
@@ -1469,10 +1421,7 @@ XtPointer closure, calldata;
 	curr_read_popup = temp_read_popup;
 }
 
-static void Read(w, data, calldata)
-Widget w;
-XtPointer data, calldata;
-{
+static void Read(Widget w, XtPointer data, XtPointer calldata) {
 	dsEnqError status;
 
 	if (curr_read_popup == 0) curr_read_popup = createReadPopup();
@@ -1486,9 +1435,7 @@ XtPointer data, calldata;
 		displayReadPopup();
 }
 
-set_search_area(search_area)
-Widget search_area;
-{
+set_search_area(Widget search_area) {
 	WidgetList wlist;
 	char name[STRINGLEN];
 	int count = 0, n;
@@ -1511,10 +1458,7 @@ Widget search_area;
 	print_search_area(search_area);
 }
 
-static void List(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void List(Widget w, XtPointer closure, XtPointer calldata) {
 	int indx;
 	char string[1024], mess[1024];
 	dsEnqError status;
@@ -1599,10 +1543,7 @@ XtPointer closure, calldata;
 	}
 }
 
-static void ListSelect(w, object, calldata)
-Widget w;
-XtPointer object, calldata;
-{
+static void ListSelect(Widget w, XtPointer object, XtPointer calldata) {
 	char *entry_name, parent[STRINGLEN];
 
 	entry_name = (char *) object;
@@ -1622,12 +1563,7 @@ XtPointer object, calldata;
 	}
 }
 
-static void ListSelectMove(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void ListSelectMove(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	char temp_path[STRINGLEN];
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
@@ -1647,12 +1583,7 @@ Click on this window to continue");
 	}
 }
 
-static void ListSelectList(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void ListSelectList(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
 	char temp_path[STRINGLEN];
@@ -1675,12 +1606,7 @@ Click on this window to continue");
 	}
 }
 
-static void DnList(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void DnList(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
 	char *end = base_path;
@@ -1703,12 +1629,7 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-static void DnMove(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void DnMove(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	char *end;
 	Widget search_area = XtNameToWidget(outer,
 										"PosForm.PosScrolledWindow.PosWindow");
@@ -1732,10 +1653,7 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-static void DnMoveRead(w, rdnlevel, calldata)
-Widget w;
-XtPointer rdnlevel, calldata;
-{
+static void DnMoveRead(Widget w, XtPointer rdnlevel, XtPointer calldata) {
 	Widget search_area;
 	char *end;
 	dsEnqError status;
@@ -1770,10 +1688,7 @@ XtPointer rdnlevel, calldata;
 	}
 }
 
-static void Move(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void Move(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget search_area;
 	char *new_base;
 
@@ -1872,10 +1787,7 @@ Brunel University";
 	CreateBackgroundPixmap(piccy, work_bits, work_width, work_height);
 }
 
-static void ShowVersion(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void ShowVersion(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget title, authors, version_label, text_form, piccy;
 	Position x, y;
 	Dimension width, label_width;
@@ -1938,12 +1850,7 @@ XtPointer closure, calldata;
 	XRaiseWindow(dpy, XtWindow(version_popup));
 }
 
-static void HideVersion(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void HideVersion(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	XtPopdown(version_popup);
 }
 
@@ -1968,9 +1875,7 @@ static void CreateErrorPopup () {
 	XtRealizeWidget(error_popup);
 }
 
-static void doError(status)
-dsEnqError status;
-{
+static void doError(dsEnqError status) {
 	char show_message[STRINGLEN];
 	entry_number = 0;
 
@@ -2044,10 +1949,7 @@ to make this request!\nClick on this window to continue");
 	}
 }
 
-void displayError(refto, mess)
-Widget refto;
-String mess;
-{
+void displayError(Widget refto, String mess) {
 	Arg args[MAXARGS];
 	int count;
 	Widget text;
@@ -2064,9 +1966,7 @@ String mess;
 	XBell(dpy, 100);
 }
 
-void displayStartupError(mess)
-String mess;
-{
+void displayStartupError(String mess) {
 	Arg args[MAXARGS];
 	int count;
 	Widget text;
@@ -2084,10 +1984,7 @@ String mess;
 	PopupMessage(error_popup, (Widget) 0, text, mess, XtGrabExclusive);
 }
 
-static void killError(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void killError(Widget w, XtPointer closure, XtPointer calldata) {
 	kill_error();
 }
 
@@ -2114,10 +2011,7 @@ static void kill_error () {
 		XFreePixmap(dpy, pixmap_resource);
 }
 
-void message(refto, mess)
-Widget refto;
-char *mess;
-{
+void message(Widget refto, char *mess) {
 	Arg args[MAXARGS];
 	int count;
 	Widget text;
@@ -2139,7 +2033,7 @@ char *mess;
 }
 
 void
-kill_message () {
+kill_message (void) {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;
@@ -2162,7 +2056,7 @@ kill_message () {
 		XFreePixmap(dpy, pixmap_resource);
 }
 
-static void CreateHelpPopup () {
+static void CreateHelpPopup (void) {
 	Widget popup_help, popup_help_button, popup_quit_button,
 	popup_help_form, popup_help_scrolwin;
 
@@ -2222,10 +2116,7 @@ static void CreateHelpPopup () {
 	}
 }
 
-static void Help(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void Help(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget help_popup;
 
 	help_popup = XtNameToWidget(toplevel, "Pod Help Screen");
@@ -2236,10 +2127,7 @@ XtPointer closure, calldata;
 	help_up = TRUE;
 }
 
-static void QuitFromHelp(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void QuitFromHelp(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget help_popup;
 
 	help_up = FALSE;
@@ -2248,10 +2136,7 @@ XtPointer closure, calldata;
 	HideVersion((Widget) NULL, (XEvent *) NULL, (String *) NULL, 0);
 }
 
-static void InsertHelp(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void InsertHelp(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget text, scrolwin;
 	FILE *file;
 	char filename[STRINGLEN], help_buf[RESBUF];
@@ -2319,11 +2204,7 @@ XtPointer closure, calldata;
 	}
 }
 
-static void CreateBackgroundPixmap(widget, bits, width, height)
-Widget widget;
-char bits[];
-Cardinal width, height;
-{
+static void CreateBackgroundPixmap(Widget widget, char bits[], Cardinal width, Cardinal height) {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap bitmap;
@@ -2350,17 +2231,11 @@ Cardinal width, height;
 				  FreeWidgetPixmap, (XtPointer) bitmap);
 }
 
-static void ListDestroy(w, list_seq, calldata)
-Widget w;
-XtPointer calldata, list_seq;
-{
+static void ListDestroy(Widget w, XtPointer list_seq, XtPointer calldata) {
 	free_seq((str_seq) list_seq);
 }
 
-static void destroyList(w, shellwidget, calldata)
-Widget w;
-XtPointer shellwidget, calldata;
-{
+static void destroyList(Widget w, XtPointer shellwidget, XtPointer calldata) {
 	if (curr_list_popup == (Widget) shellwidget) curr_list_popup = 0;
 
 	XtPopdown((Widget) shellwidget);
@@ -2369,17 +2244,11 @@ XtPointer shellwidget, calldata;
 	XFlush(dpy);
 }
 
-static void keepList(w, shellwidget, calldata)
-Widget w;
-XtPointer calldata, shellwidget;
-{
+static void keepList(Widget w, XtPointer shellwidget, XtPointer calldata) {
 	if (curr_list_popup == (Widget) shellwidget) curr_list_popup = 0;
 }
 
-static void CreateHistoryPopup(list_seq, mess)
-str_seq list_seq;
-char *mess;
-{
+static void CreateHistoryPopup(str_seq list_seq, char *mess) {
 	int count = 0;
 	Widget shell, swindow, HistoryForm, ListWindow, closeButton;
 	Arg args[MAXARGS];
@@ -2434,10 +2303,7 @@ char *mess;
 		CreateBackgroundPixmap(HistoryForm, gray_bits, gray_width, gray_height);
 }
 
-static void popupHistory(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void popupHistory(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget history_popup;
 
 	history_popup = XtNameToWidget(toplevel, "Session History");
@@ -2445,34 +2311,21 @@ XtPointer closure, calldata;
 	XRaiseWindow(dpy, XtWindow(history_popup));
 }
 
-static void popdownHistory(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void popdownHistory(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget history_popup;
 
 	history_popup = XtNameToWidget(toplevel, "Session History");
 	XtPopdown(history_popup);
 }
 
-static void ChangeHelp(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void ChangeHelp(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	if ((help_up) && strcmp(params[0], curr_help)) {
 		InsertHelp((Widget) 0, (XtPointer) params[0], (XtPointer) 0);
 		strcpy(curr_help, params[0]);
 	}
 }
 
-static void buttonPress(w, event, params, num_params)
-Widget w;
-XEvent *event;
-String *params;
-Cardinal num_params;
-{
+static void buttonPress(Widget w, XEvent *event, String *params, Cardinal num_params) {
 	char *buttonName = params[0];
 
 	if (!strcmp(buttonName, "search"))
@@ -2550,10 +2403,7 @@ Cardinal num_params;
 	XFlush(dpy);
 }
 
-static void readDestroy(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void readDestroy(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget readForm = XtNameToWidget((Widget) closure, "ReadForm");
 	PhotoWindow = XtNameToWidget(readForm,
 								 "TextScrolledWindow.TextForm.PhotoWindow");
@@ -2585,20 +2435,14 @@ XtPointer closure, calldata;
 	XtDestroyWidget((Widget) closure);
 }
 
-static void keepRead(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void keepRead(Widget w, XtPointer closure, XtPointer calldata) {
 	if (curr_read_popup == (Widget) closure) {
 		PhotoWindow = 0;
 		curr_read_popup = 0;
 	}
 }
 
-static void modifyEntry(w, object, calldata)
-Widget w;
-XtPointer object, calldata;
-{
+static void modifyEntry(Widget w, XtPointer object, XtPointer calldata) {
 	char *tmp;
 	tmp = (char *)object;
 	if (*tmp == '\0') return;
@@ -2615,10 +2459,7 @@ XtPointer object, calldata;
 	}
 }
 
-static void closeModify(w, clientdata, calldata)
-Widget w;
-XtPointer clientdata, calldata;
-{
+static void closeModify(Widget w, XtPointer clientdata, XtPointer calldata) {
 	Widget modifyPopup = (Widget) clientdata;
 	Widget modifyForm = XtNameToWidget(modifyPopup, "modifyForm");
 	Widget modifyButtonForm = XtNameToWidget(modifyForm, "ModifyButtonForm");
@@ -2655,28 +2496,19 @@ XtPointer clientdata, calldata;
 	if (modifyPopup == curr_modify_popup) curr_modify_popup = (Widget) 0;
 }
 
-static void keepModify(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void keepModify(Widget w, XtPointer closure, XtPointer calldata) {
 	if (curr_modify_popup == (Widget) closure) {
 		curr_modify_popup = 0;
 	}
 }
 
-static void modUpdate(w, attrValue, calldata)
-Widget w;
-XtPointer attrValue, calldata;
-{
+static void modUpdate(Widget w, XtPointer attrValue, XtPointer calldata) {
 	modVals val = (modVals) attrValue;
 	val->mod_flag = TRUE;
 	val->attr->mod_flag = TRUE;
 }
 
-static void submitModif(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void submitModif(Widget w, XtPointer closure, XtPointer calldata) {
 	dirEntry mods = (dirEntry) closure;
 	dirAttrs attrs;
 	modVals vals;
@@ -2738,10 +2570,7 @@ XtCallbackRec modCallbacks[] = {
 	{(XtCallbackProc) NULL, (XtPointer) NULL},
 };
 
-static void deleteVal(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void deleteVal(Widget w, XtPointer closure, XtPointer calldata) {
 	modVals this_val = (modVals) closure, curr_val;
 	dirAttrs this_attr = (dirAttrs) this_val->attr, curr_attr;
 	Widget valWidg, menuWidg, nextValWidg, nextValMenuWidg,
@@ -2850,10 +2679,7 @@ XtPointer closure, calldata;
 	XawFormDoLayout(form, TRUE);
 }
 
-static void addValField(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void addValField(Widget w, XtPointer closure, XtPointer calldata) {
 	dirAttrs attr = (dirAttrs) closure;
 	modVals first_val = attr->val_seq, new_val;
 	Widget newValWidg, firstValWidg = first_val->text_widg, fromVertWidg, form,
@@ -2978,10 +2804,7 @@ XtPointer closure, calldata;
 	XawFormDoLayout(form, TRUE);
 }
 
-static void UndoAttrChanges(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void UndoAttrChanges(Widget w, XtPointer closure, XtPointer calldata) {
 	dirAttrs this_attr = (dirAttrs) closure;
 	modVals this_val = this_attr->val_seq;
 	Widget form = XtParent(XtParent(XtParent(w)));
@@ -2997,10 +2820,7 @@ XtPointer closure, calldata;
 	XFlush(dpy);
 }
 
-static void UndoValChanges(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 	int count;
 	Arg args[MAXARGS];
 	Widget thisValWidg, thisValMenuWidg, thisAttrWidg,
@@ -3222,10 +3042,7 @@ XtPointer closure, calldata;
 	if (w != (Widget) calldata) XawFormDoLayout(form, TRUE);
 }
 
-static dirEntry createModifyTemplate(modify_form, entry_name)
-Widget modify_form;
-char *entry_name;
-{
+static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 	Widget modifyViewForm, modAttrMenu, attrName, lastVal,
 		   modAttrMenuButton, modValButton, modValMenu, modifyScrolledWindow,
 		   valName, modValMenuButton, modifyButton;
@@ -3497,9 +3314,7 @@ char *entry_name;
 	return entry;
 }
 
-static Widget createModifyPopup(entry_name)
-char *entry_name;
-{
+static Widget createModifyPopup(char *entry_name) {
 	Widget modifyPopup, modifyForm, modifyButton, closeButton, keepButton,
 		   attrName, valName, ButtonForm, modValButton;
 	dirEntry entry;
@@ -3638,24 +3453,15 @@ char *entry_name;
 	return(modifyPopup);
 }
 
-static void freeEntry(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void freeEntry(Widget w, XtPointer closure, XtPointer calldata) {
 	free_dir_entry((dirEntry) closure);
 }
 
-static void freeSpace(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void freeSpace(Widget w, XtPointer closure, XtPointer calldata) {
 	free(closure);
 }
 
-static int GetTextWidth(widget, istring)
-Widget widget;
-char *istring;
-{
+static int GetTextWidth(Widget widget, char *istring) {
 	int count;
 	Arg args[MAXARGS];
 	XFontStruct *font;
@@ -3694,10 +3500,7 @@ char *istring;
 	return (max_width + FONTWIDTH(font));
 }
 
-static int GetTextHeight(widget, string)
-Widget widget;
-char *string;
-{
+static int GetTextHeight(Widget widget, char *string) {
 	int count;
 	Arg args[MAXARGS];
 	XFontStruct *font;
@@ -3723,13 +3526,7 @@ char *string;
 	return ((FONTHEIGHT(font) * lines) + font->ascent);
 }
 
-static bool ConvSel(w, selection, target, type, value, length, format)
-Widget w;
-Atom *selection, *target, *type;
-XtPointer *value;
-unsigned long *length;
-int *format;
-{
+static bool ConvSel(Widget w, Atom *selection, Atom *target, Atom *type, XtPointer *value, unsigned long *length, int *format) {
 	if (XmuConvertStandardSelection(w, selection, target,
 									type, value, length, format))
 		return TRUE;
@@ -3744,10 +3541,7 @@ int *format;
 		return FALSE;
 }
 
-static void CutString(w, closure, calldata)
-Widget w;
-XtPointer closure, calldata;
-{
+static void CutString(Widget w, XtPointer closure, XtPointer calldata) {
 	Time xtime = XtLastTimestampProcessed(dpy);
 	char *string = (char *) closure;
 
@@ -3756,11 +3550,7 @@ XtPointer closure, calldata;
 	XtOwnSelection(w, XA_PRIMARY, xtime, ConvSel, NULL, NULL);
 }
 
-static void PopupMessage(shell, refto, label_widget, label, grab_kind)
-Widget refto, shell, label_widget;
-char *label;
-XtGrabKind grab_kind;
-{
+static void PopupMessage(Widget shell, Widget refto, Widget label_widget, char *label, XtGrabKind grab_kind) {
 	int count;
 	Arg args[MAXARGS];
 	Dimension width, height;

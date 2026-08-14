@@ -503,9 +503,7 @@ int startClient (char *client[]) {
 
 static jmp_buf close_env;
 
-static int ignorexio (dpy)
-Display *dpy;
-{
+static int ignorexio (Display *dpy) {
 	fprintf (stderr, "%s:  connection to X server lost.\r\n", program);
 	longjmp (close_env, 1);
 	return;

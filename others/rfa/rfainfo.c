@@ -49,9 +49,7 @@ char rfaErrStr[512];
 /*------------------------------------------------------
  * str2status - convert status string to integer code
  *------------------------------------------------------*/
-int str2status (stat)
-char *stat;
-{
+int str2status (char *stat) {
 	int i = 0;
 
 	switch(*(stat++)) {
@@ -97,9 +95,7 @@ char *stat;
 /*------------------------------------------------------
  * status2str - convert status to string
  *------------------------------------------------------*/
-char *status2str(stat)
-int stat;
-{
+char *status2str(int stat) {
 	static char sbuf[5];
 	char *s = sbuf;
 
@@ -183,19 +179,14 @@ freeRfaInfoList (struct RfaInfo *rfa) {
 /*------------------------------------------------------
  * lock_timeout - handler for lock timeout
  *------------------------------------------------------*/
-SFD lock_timeout(sig)
-int sig;
-{
+SFD lock_timeout(int sig) {
 	timedout++;
 }
 
 /*------------------------------------------------------
  * lckRfainfo
  *------------------------------------------------------*/
-static struct LockEntry *lockRfainfo(fn, fp)
-char *fn;
-FILE *fp;
-{
+static struct LockEntry *lockRfainfo(char *fn, FILE *fp) {
 	struct LockEntry *le;
 	struct itimerval itv;
 
@@ -338,11 +329,7 @@ static int statFile (char *fn, struct RfaInfo *rfa) {
 /*------------------------------------------------------
  * getRfaInfo - read RFA file info from ".rfainfo"
  *------------------------------------------------------*/
-static int getRfaInfo(dirname, f, rfap)
-char *dirname;
-FILE *f;
-struct RfaInfo **rfap;
-{
+static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap) {
 	char *s, *d;
 	char buf[BUFSIZ];
 	char line[BUFSIZ];

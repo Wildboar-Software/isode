@@ -45,9 +45,7 @@ searchPath ufnpaths = NULLSearchPath;
  *
  *
  */
-ufnStatus get_ufn_status(request_id)
-QCardinal request_id;
-{
+ufnStatus get_ufn_status(QCardinal request_id) {
 	_get_request_of_id(request_id);
 
 	return NULLUfnStatus;
@@ -60,9 +58,7 @@ QCardinal request_id;
  * records for that request.
  *
  */
-ufnResults get_ufn_results(id)
-QCardinal id;
-{
+ufnResults get_ufn_results(QCardinal id) {
 	requestRec ufn_request = _get_request_of_id(id);
 	ufnameRec ufnrec;
 	ufnResults results;
@@ -83,12 +79,7 @@ QCardinal id;
  * Initiate a UFN search.
  *
  */
-QE_error_code do_ufn_resolve(baseobjects, ufname, is_leaf, id_ptr)
-entryList baseobjects;
-namePart ufname;
-known is_leaf;
-QCardinal *id_ptr;
-{
+QE_error_code do_ufn_resolve(entryList baseobjects, namePart ufname, known is_leaf, QCardinal *id_ptr) {
 	ufnameRec new_request;
 	namePart root_part, tmp_part;
 	entryList path;
@@ -176,9 +167,7 @@ QCardinal *id_ptr;
  * of partial names resolved thus far.
  *
  */
-static QE_error_code process_ufn_search(ufnrec)
-ufnameRec ufnrec;
-{
+static QE_error_code process_ufn_search(ufnameRec ufnrec) {
 	namePart name_comp, prev_comp;
 	entryList resolved_names;
 	QE_error_code search_status;
@@ -232,15 +221,7 @@ ufnameRec ufnrec;
 	return QERR_ok;
 } /* process_ufn_search */
 
-/*
- *
- *
- *
- */
-request_state continue_ufn_search(good_matches, request_id)
-entryList good_matches;
-QCardinal request_id;
-{
+request_state continue_ufn_search(entryList good_matches, QCardinal request_id) {
 	namePart last_part, first_real_part;
 	ufnameRec ufnrec;
 	requestRec request;
@@ -315,11 +296,7 @@ QCardinal request_id;
  * Compose and invoke a X500 search.
  *
  */
-static QE_error_code directory_search(base_name, purp_name_comp, ufnrec)
-char *base_name;
-namePart purp_name_comp;
-ufnameRec ufnrec;
-{
+static QE_error_code directory_search(char *base_name, namePart purp_name_comp, ufnameRec ufnrec) {
 	struct ds_search_arg search_arg;
 	struct DAPindication di;
 	DN base_dn;
@@ -812,9 +789,7 @@ ufnameRec ufnrec;
  * Free a ufname_rec structure.
  *
  */
-void ufname_rec_free(record)
-ufnameRec record;
-{
+void ufname_rec_free(ufnameRec record) {
 	if (record == NULLUfnameRec) return;
 
 	name_part_free(&record->name_parts);
@@ -823,12 +798,8 @@ ufnameRec record;
 
 /*
  * - ufname_result_free() -
- *
- *
  */
-void ufname_result_free(ufn_result)
-ufnResults *ufn_result;
-{
+void ufname_result_free(ufnResults *ufn_result) {
 	ufnResults result = *ufn_result;
 	if (result == NULLUfnResults) return;
 
@@ -845,11 +816,8 @@ ufnResults *ufn_result;
 /*
  * - name_part_free() -
  * Free a name part list.
- *
  */
-void name_part_free(name)
-namePart *name;
-{
+void name_part_free(namePart *name) {
 	namePart part = *name;
 	namePart next_part;
 
@@ -876,11 +844,8 @@ namePart *name;
 /*
  * - str2ufname() -
  * Convert a string encode UFN into a list of name part_names.
- *
  */
-namePart str2ufname(str_ufn)
-char *str_ufn;
-{
+namePart str2ufname(char *str_ufn) {
 	namePart name_comp = NULLNamePart, new_comp;
 	char *start, *end;
 	char save;
@@ -949,11 +914,7 @@ char *str_ufn;
  * completed indicate this.
  *
  */
-request_state process_ufn_ds_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_ufn_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	ufnameRec ufnrec = request->UFNAME_REC;
 	namePart name_comp, curr_part, part;
@@ -1378,14 +1339,8 @@ struct DSResult *ds_result;
 
 /*
  * - process_ufn_ds_error() -
- *
- *
  */
-request_state process_ufn_ds_error(request, task_id, error)
-requestRec request;
-int task_id;
-struct DSError *error;
-{
+request_state process_ufn_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	ufnameRec ufnrec = request->UFNAME_REC;
 	namePart name_comp, part;
@@ -1590,14 +1545,7 @@ struct DSError *error;
 	return RQ_processing;
 } /* process_ufn_ds_error */
 
-/*
- *
- *
- *
- */
-static QBool follow_path(ufnrec)
-ufnameRec ufnrec;
-{
+static QBool follow_path(ufnameRec ufnrec) {
 	namePart part;
 
 	for (part = ufnrec->name_parts;
@@ -1640,15 +1588,10 @@ ufnameRec ufnrec;
 }
 
 /*
- *
  *	Procedures for UFN search path configuration
- *
  */
 
-void add_ufn_path_element(lower, upper, path)
-int lower, upper;
-entryList path;
-{
+void add_ufn_path_element(int lower, int upper, entryList path) {
 	searchPath curr_path;
 
 	curr_path = search_path_alloc();
@@ -1662,9 +1605,7 @@ entryList path;
 	curr_path->path = path;
 } /* add_ufn_path_element */
 
-entryList get_ufn_path(comp_num)
-int comp_num;
-{
+entryList get_ufn_path(int comp_num) {
 	searchPath curr_path;
 	int lower, upper;
 

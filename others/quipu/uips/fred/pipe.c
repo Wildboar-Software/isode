@@ -596,11 +596,7 @@ nearly_done:
 	return DONE;
 }
 
-paginate (fp, buffer, cc)
-FILE   *fp;
-char   *buffer;
-int	cc;
-{
+paginate (FILE *fp, char *buffer, int cc) {
 	static int first_time = 1;
 	static int doing_pager = 0;
 	static int pid = NOTOK;
@@ -752,9 +748,7 @@ static	int	rows;
 static	int	length = 0;
 static	int	width = 0;
 
-static	mypager (fp)
-FILE   *fp;
-{
+static	mypager (FILE *fp) {
 	char *bp;
 	char    buffer[BUFSIZ];
 #ifdef	TIOCGWINSZ

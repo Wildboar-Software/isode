@@ -703,10 +703,7 @@ n2p (char *name, int any) {
 	/* NOTREACHED */
 }
 
-static	munge (fp, entries)
-FILE   *fp;
-char   *entries[];
-{
+static void munge (FILE *fp, char *entries[]) {
 	char   c,
 		   *bp,
 		   *cp,
@@ -746,7 +743,7 @@ no_match:
 
 /* EDB */
 
-static build_root () {
+static void build_root (void) {
 	if (debug)
 		fprintf (stderr, "mkdir %s\n", wildlife);
 	if (mkdir (wildlife, 0700) == NOTOK)

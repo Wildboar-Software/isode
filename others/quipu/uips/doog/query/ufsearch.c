@@ -38,14 +38,8 @@ char *TidyString();
  * - do_ufsearch() -
  * Start a user friendly search. The 'search_data' list is taken (not copied)
  * by the proc.
- *
  */
-QE_error_code do_ufsearch(target_data, search_data, baselist, id_ptr)
-searchPair target_data;
-searchPair search_data;
-entryList baselist;
-QCardinal *id_ptr;
-{
+QE_error_code do_ufsearch(searchPair target_data, searchPair search_data, entryList baselist, QCardinal *id_ptr) {
 	requestRec request;
 	ufsearchRec ufsrec;
 	searchPair curr_srch_data;
@@ -135,12 +129,8 @@ QCardinal *id_ptr;
 
 /*
  * - process_ufsearch() -
- *
- *
  */
-static QE_error_code process_ufsearch(ufsrec)
-ufsearchRec ufsrec;
-{
+static QE_error_code process_ufsearch(ufsearchRec ufsrec) {
 	entryList to_follow;
 	objectTypeList curr_type, child_types;
 	QCardinal succeeded = 0;
@@ -210,13 +200,8 @@ ufsearchRec ufsrec;
 
 /*
  * - follow_up() -
- *
- *
  */
-static QE_error_code follow_up(baseinfo, ufsrec)
-entryList baseinfo;
-ufsearchRec ufsrec;
-{
+static QE_error_code follow_up(entryList baseinfo, ufsearchRec ufsrec) {
 	AttributeType base_type;
 	objectTypeList search_types, child_types, curr_type;
 	searchPair search_vals = NULLSearchPair,
@@ -312,14 +297,8 @@ ufsearchRec ufsrec;
 
 /*
  * - do_directory_search() -
- *
- *
  */
-static QE_error_code do_directory_search(baseobject, search_vals, ufsrec)
-char *baseobject;
-searchPair search_vals;
-ufsearchRec ufsrec;
-{
+static QE_error_code do_directory_search(char *baseobject, searchPair search_vals, ufsearchRec ufsrec) {
 	struct ds_search_arg search_arg;
 	struct DAPindication di;
 	DN base_dn;
@@ -575,14 +554,8 @@ ufsearchRec ufsrec;
 
 /*
  * - process_ufs_ds_result() -
- *
- *
  */
-request_state process_ufs_ds_result(request, task_id, ds_result)
-requestRec request;
-int task_id;
-struct DSResult *ds_result;
-{
+request_state process_ufs_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	ufsearchRec ufsrec = request->UFSEARCH_REC;
 	int *ufs_task_array;
@@ -953,14 +926,8 @@ struct DSResult *ds_result;
 
 /*
  * - process_ufs_ds_error() -
- *
- *
  */
-request_state process_ufs_ds_error(request, task_id, error)
-requestRec request;
-int task_id;
-struct DSError *error;
-{
+request_state process_ufs_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	ufsearchRec ufsrec = request->UFSEARCH_REC;
 	int *ufs_task_array;
@@ -1129,12 +1096,8 @@ struct DSError *error;
 
 /*
  * - ufsearch_result_free() -
- *
- *
  */
-void ufsearch_result_free(result_ptr)
-ufsearchResult *result_ptr;
-{
+void ufsearch_result_free(ufsearchResult *result_ptr) {
 	ufsearchResult ufs_result = *result_ptr;
 
 	if (ufs_result == NULLUfsearchResult) return;
@@ -1150,11 +1113,8 @@ ufsearchResult *result_ptr;
  * - get_ufs_results() -
  * Copy and return results for the identified ufn request, then delete all
  * records for that request.
- *
  */
-ufsearchResult get_ufsearch_result(id)
-QCardinal id;
-{
+ufsearchResult get_ufsearch_result(QCardinal id) {
 	requestRec ufs_request = _get_request_of_id(id);
 	ufsearchRec ufsrec;
 	ufsearchResult result;
@@ -1177,12 +1137,8 @@ QCardinal id;
 
 /*
  * - ufsearch_rec_free() -
- *
- *
  */
-void ufsearch_rec_free(record)
-ufsearchRec record;
-{
+void ufsearch_rec_free(ufsearchRec record) {
 	if (record == NULLUfsearchRec) return;
 
 	if (record->search_data != NULLSearchPair)
@@ -1194,9 +1150,7 @@ ufsearchRec record;
 	free((char *) record);
 } /* ufsearch_rec_free */
 
-void search_pair_list_free(list)
-searchPair *list;
-{
+void search_pair_list_free(searchPair *list) {
 	searchPair curr, next;
 
 	for (curr = *list; curr != NULLSearchPair; curr = next) {

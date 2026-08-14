@@ -83,12 +83,7 @@ static int do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_P
 	return OK;
 }
 
-static int  do_help (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
@@ -96,12 +91,7 @@ caddr_t *dummy;
 	return NOTOK;
 }
 
-static int  do_quit (sd, ds, args, dummy)
-int	sd;
-struct dispatch *ds;
-char  **args;
-caddr_t *dummy;
-{
+static int  do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -148,13 +138,7 @@ static print_qb (struct qbuf *q) {
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
 
-static int  lookup_error (sd, id, error, parameter, roi)
-int	sd,
-	id,
-	error;
-caddr_t parameter;
-struct RoSAPindication *roi;
-{
+static int  lookup_error (int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi) {
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {

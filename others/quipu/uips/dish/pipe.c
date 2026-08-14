@@ -205,10 +205,7 @@ char            retfile[BUFSIZ];
 int             fd;
 int		wfd;
 
-main (argc, argv)
-int             argc;
-char          **argv;
-{
+int main (int argc, char **argv) {
 	int             res;
 	char            buffer[BUFSIZ];
 	char            sendfile[BUFSIZ];
@@ -367,9 +364,7 @@ char          **argv;
 		}
 	}
 
-	void pipe_quit (sig)
-	int     sig;
-	{
+	void pipe_quit (int sig) {
 		unlink (retfile);
 		fprintf (stderr,"(signal %d) exiting...\n",sig);
 		exit(0);

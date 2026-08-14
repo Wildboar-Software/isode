@@ -75,18 +75,12 @@ int main (int argc, char **argv) {
 	return (0);
 }
 
-static ps_die (ps, s)
-PS	 ps;
-char   *s;
-{
+static void ps_die (PS ps, char *s) {
 	fprintf (stderr, "%s: %s\n", s, ps_error (ps -> ps_errno));
 	exit (1);
 }
 
-static pe_die (pe, s)
-PE	 pe;
-char   *s;
-{
+static void pe_die (PE pe, char *s) {
 	fprintf (stderr, "%s: %s\n", s, pe_error (pe -> pe_errno));
 	exit (1);
 }

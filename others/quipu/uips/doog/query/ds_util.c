@@ -28,9 +28,7 @@ QCardinal match_word_limit = 3;
  *
  *
  */
-char *qy_dn2str(dn)
-DN dn;
-{
+char *qy_dn2str(DN dn) {
 	char *cp;
 	PS ps;
 
@@ -58,11 +56,7 @@ DN dn;
  *
  *
  */
-void qy_dn_print(ps, dn, format)
-DN dn;
-PS ps;
-int format;
-{
+void qy_dn_print(PS ps, DN dn, int format) {
 	DN eptr;
 
 	if (dn == NULLDN) {
@@ -96,9 +90,7 @@ int format;
  * Find out if match_str is a good match of the rdn of dn_str.
  *
  */
-QBool is_good_match(match_str, dn_str)
-char *match_str, *dn_str;
-{
+QBool is_good_match(char *match_str, char *dn_str) {
 	char *match_from;
 	char *str1, *str2;
 	QCardinal match_char_num = 0, max_char_matches = 0, words_matched = 0;
@@ -190,9 +182,7 @@ char *match_str, *dn_str;
 	}
 } /* is_good_match */
 
-static QBool char_compare(a, b)
-char a, b;
-{
+static QBool char_compare(char a, char b) {
 	int chr1 = a, chr2 = b;
 
 	if (isalpha(chr1) && islower(chr1)) chr1 = toupper(chr1);
@@ -206,12 +196,8 @@ char a, b;
  *  Make basic filters (approx and equal) for given string encoded filter item.
  *
  */
-QE_error_code make_typed_filter_items(filter_str,
-									  ex_filter_ptr, ap_filter_ptr)
-char *filter_str;
-Filter *ex_filter_ptr;
-Filter *ap_filter_ptr;
-{
+QE_error_code make_typed_filter_items(char *filter_str,
+									  Filter *ex_filter_ptr, Filter *ap_filter_ptr) {
 	char *start, *end;
 	char *str_attr_type, *str_attr_value;
 	char save;
@@ -257,13 +243,8 @@ Filter *ap_filter_ptr;
  * string search value.
  *
  */
-QE_error_code make_filter_items(attr_type, search_value,
-								ex_filter_ptr, ap_filter_ptr)
-AttributeType attr_type;
-char *search_value;
-Filter *ex_filter_ptr;
-Filter *ap_filter_ptr;
-{
+QE_error_code make_filter_items(AttributeType attr_type, char *search_value,
+								Filter *ex_filter_ptr, Filter *ap_filter_ptr) {
 	Filter exact_filter, approx_filter;
 	AttributeValue exact_value, approx_value;
 
@@ -339,9 +320,7 @@ char *get_entry_type_name (char *entry_name) {
  * Return TRUE if b is a subclass of a.
  *
  */
-QBool qy_in_hierarchy(a, b)
-objectclass *a, *b;
-{
+QBool qy_in_hierarchy(objectclass *a, objectclass *b) {
 	struct oc_seq *oidseq;
 
 	if (a == (objectclass *) NULL || b == (objectclass *) NULL) return FALSE;

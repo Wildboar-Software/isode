@@ -188,12 +188,7 @@ int TDiscFromClient (int fd) {
 
 ConnectionInput inputBuffers[MAXSOCKS];    /* buffers for clients */
 
-/*ARGSUSED*/
-char *ReadRequestFromClient(who, status, oldbuf)
-ClientPtr who;
-int *status;          /* read at least n from client */
-char *oldbuf;
-{
+char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from client */, char *oldbuf) {
 #define YieldControl()				\
         { isItTimeToYield = TRUE;		\
 	  timesThisConnection = 0; }
@@ -388,12 +383,7 @@ static int padlength[4] = {0, 3, 2, 1};
 **********************/
 
 static int
-FlushClient(who, oc, extraBuf, extraCount)
-ClientPtr who;
-OsCommPtr oc;
-char *extraBuf;
-int extraCount; /* do not modify... returned below */
-{
+FlushClient(ClientPtr who, OsCommPtr oc, char *extraBuf, int extraCount /* do not modify... returned below */) {
 	int connection = oc->fd,
 		total, n, i, notWritten, written,
 		iovCnt = 0;
@@ -605,11 +595,7 @@ SetCriticalOutputPending () {
  *    this routine as int.
  *****************/
 
-int WriteToClient (who, count, buf)
-ClientPtr who;
-char *buf;
-int count;
-{
+int WriteToClient (ClientPtr who, int count, char *buf) {
 	OsCommPtr oc = (OsCommPtr)who->osPrivate;
 	int padBytes;
 

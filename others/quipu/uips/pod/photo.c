@@ -89,9 +89,7 @@ int photo_end (char *name) {
 	return 0;
 }
 
-int photo_line_end(line)
-bit_string *line;
-{
+int photo_line_end(bit_string *line) {
 	/* the end of a line has been reached */
 	/* A bit string is stored in line->dbuf_top */
 

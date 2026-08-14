@@ -444,12 +444,7 @@ int update (char *rname, int opts, struct stat *sp) {
 	return(2);
 }
 
-/*VARARGS2*/
-log(fp, fmt, a1, a2, a3)
-FILE *fp;
-char *fmt;
-int a1, a2, a3;
-{
+void log(FILE *fp, char *fmt, int a1, int a2, int a3) {
 	/* Print changes locally if not quiet mode */
 	if (!qflag)
 		printf(fmt, a1, a2, a3);

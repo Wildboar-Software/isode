@@ -10,11 +10,7 @@
 
 #include "internet.h"
 
-get_dish_sock (isock, pid, islocal)
-struct sockaddr_in *isock;
-int	pid,
-	islocal;
-{
+int get_dish_sock (struct sockaddr_in *isock, int pid, int islocal) {
 	int    myppid;
 	char * getenv ();
 	char * ptr, * prnt;

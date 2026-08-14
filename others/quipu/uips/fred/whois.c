@@ -856,9 +856,7 @@ limits (int isearch) {
 	return buffer;
 }
 
-static FILE *capture (command)
-char   *command;
-{
+static FILE *capture (char *command) {
 	int	    savnet,
 			savpage;
 	char    tmpfil[BUFSIZ];

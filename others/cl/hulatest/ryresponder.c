@@ -63,19 +63,8 @@ int	ros_init (), ros_work (), ros_indication (), ros_lose ();
 /* HULA changed call */
 /* ryresponder (argc, argv, host, myservice, dispatches, ops, start, stop) */
 
-ryresponder (argc, argv, host, myservice, mycontext, mypci,
-			 dispatches, ops, start, stop)
-int	argc;
-char  **argv,
-	  *host,
-	  *myservice,
-	  *mycontext,
-	  *mypci;
-struct dispatch *dispatches;
-struct RyOperation *ops;
-IFP	start,
-	stop;
-{
+void ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, char *mypci,
+			 struct dispatch *dispatches, struct RyOperation *ops, IFP start, IFP stop) {
 	struct dispatch   *ds;
 	AEI	    aei;
 	/*
