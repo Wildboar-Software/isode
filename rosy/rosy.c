@@ -910,10 +910,15 @@ static void do_err1 (YE ye, char *id) {
 	normalize (&ye -> ye_param, ye -> ye_name);
 	if (!Pepsyflag) {
 		if ((yp = ye -> ye_param)) {
-			fprintf (ftbl, "int\t%s (),\n",
-					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"));
-			fprintf (ftbl, "\t%s (),\n",
-					 modsym (yp -> yp_module, yp -> yp_identifier, "decode"));
+			fprintf (ftbl, "int\t%s (PE *pe, int top, int len, char *buffer, struct %s *parm),\n",
+					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"),
+					 modsym (yp -> yp_module, yp -> yp_identifier, "type")
+					);
+			fprintf (ftbl, "\t%s (PE pe, int top, int *len, char **buffer, struct %s **parm),\n",
+					 modsym (yp -> yp_module, yp -> yp_identifier, "decode"),
+					 modsym (yp -> yp_module, yp -> yp_identifier, "type")
+					);
+			// TODO: Not sure what arguments this should have.
 			fprintf (ftbl, "\t%s ();\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "free"));
 		}
