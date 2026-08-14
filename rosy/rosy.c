@@ -710,29 +710,29 @@ static void do_op1 (YO yo, char *id) {
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#define\t%s_result\t",
 				 modsym (mymodule, yo -> yo_name, "decode"));
 		if (yp = yo -> yo_result)
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "decode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#define\t%s_result\t",
 				 modsym (mymodule, yo -> yo_name, "free"));
 		if (yp = yo -> yo_result)
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "free"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 	}
 	if (!Pepsyflag) {
 		fprintf (fdef, "#else\n");
-		fprintf (fdef, "#define\t%s_argument\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_argument\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "encode"));
-		fprintf (fdef, "#define\t%s_result\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_result\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "decode"));
-		fprintf (fdef, "#define\t%s_result\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_result\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "free"));
 		fprintf (fdef, "#endif\n\n");
 
@@ -745,29 +745,29 @@ static void do_op1 (YO yo, char *id) {
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "decode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#define\t%s_argument\t",
 				 modsym (mymodule, yo -> yo_name, "free"));
 		if (yp = yo -> yo_arg)
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "free"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#define\t%s_result\t",
 				 modsym (mymodule, yo -> yo_name, "encode"));
 		if (yp = yo -> yo_result)
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 	}
 	if (!Pepsyflag) {
 		fprintf (fdef, "#else\n");
-		fprintf (fdef, "#define\t%s_argument\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_argument\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "decode"));
-		fprintf (fdef, "#define\t%s_argument\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_argument\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "free"));
-		fprintf (fdef, "#define\t%s_result\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_result\tNULL\n",
 				 modsym (mymodule, yo -> yo_name, "encode"));
 		fprintf (fdef, "#endif\n\n");
 	}
@@ -805,17 +805,15 @@ static void do_op2 (YO yo, char *id) {
 			 " operation_%s,\\\n\t(caddr_t) (in), (out), (rsp), (roi))\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 
-	fprintf (fstb, "\nint\tstub_%s (sd, id, in, rfx, efx, class, roi)\n",
+	if ((yp = yo -> yo_arg)) {
+		fprintf (fstb, "\nint\tstub_%s (int sd, int id, struct %s *in, IFP rfx, IFP efx, int class, struct RoSAPindication *roi)\n",
+			modsym (mymodule, yo -> yo_name, NULLCP),
+			modsym (yp -> yp_module, yp -> yp_identifier, "type")
+		);
+	} else {
+		fprintf (fstb, "\nint\tstub_%s (int sd, int id, caddr_t in, IFP rfx, IFP efx, int class, struct RoSAPindication *roi)\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
-	fprintf (fstb, "int\tsd,\n\tid,\n\tclass;\n");
-	if (yp = yo -> yo_arg)
-		fprintf (fstb, "struct %s*",
-				 modsym (yp -> yp_module, yp -> yp_identifier, "type"));
-	else
-		fprintf (fstb, "caddr_t");
-	fprintf (fstb, " in;\n");
-	fprintf (fstb,
-			 "IFP\trfx,\n\tefx;\nstruct RoSAPindication *roi;\n");
+	}
 	fprintf (fstb, "{\n    return RyStub (sd, table_%s_Operations, ",
 			 mymodaux);
 	fprintf (fstb,
@@ -823,17 +821,15 @@ static void do_op2 (YO yo, char *id) {
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 	fprintf (fstb, "}\n");
 
-	fprintf (fstb, "\nint\top_%s (sd, in, out, rsp, roi)\n",
-			 modsym (mymodule, yo -> yo_name, NULLCP));
-	fprintf (fstb, "int\tsd;\n");
-	if (yp = yo -> yo_arg)
-		fprintf (fstb, "struct %s*",
-				 modsym (yp -> yp_module, yp -> yp_identifier, "type"));
-	else
-		fprintf (fstb, "caddr_t");
-	fprintf (fstb, " in;\n");
-	fprintf (fstb,
-			 "caddr_t *out;\nint    *rsp;\nstruct RoSAPindication *roi;\n");
+	if ((yp = yo -> yo_arg)) {
+		fprintf (fstb, "\nint\top_%s (int sd, struct %s *in, caddr_t *out, int *rsp, struct RoSAPindication *roi)\n",
+			modsym (mymodule, yo -> yo_name, NULLCP),
+			modsym (yp -> yp_module, yp -> yp_identifier, "type")
+		);
+	} else {
+		fprintf (fstb, "\nint\top_%s (int sd, caddr_t in, caddr_t *out, int *rsp, struct RoSAPindication *roi)\n",
+			modsym (mymodule, yo -> yo_name, NULLCP));
+	}
 	fprintf (fstb, "{\n    return RyOperation (sd, table_%s_Operations, ",
 			 mymodaux);
 	fprintf (fstb, "operation_%s,\n\t\t(caddr_t) in, out, rsp, roi);\n",
@@ -913,7 +909,7 @@ static void do_err1 (YE ye, char *id) {
 
 	normalize (&ye -> ye_param, ye -> ye_name);
 	if (!Pepsyflag) {
-		if (yp = ye -> ye_param) {
+		if ((yp = ye -> ye_param)) {
 			fprintf (ftbl, "int\t%s (),\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"));
 			fprintf (ftbl, "\t%s (),\n",
@@ -924,35 +920,35 @@ static void do_err1 (YE ye, char *id) {
 		fprintf (fdef, "#ifdef\tINVOKER\n");
 		fprintf (fdef, "#define\t%s_parameter\t",
 				 modsym (mymodule, ye -> ye_name, "decode"));
-		if (yp = ye -> ye_param)
+		if ((yp = ye -> ye_param))
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "decode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#define\t%s_parameter\t",
 				 modsym (mymodule, ye -> ye_name, "free"));
-		if (yp = ye -> ye_param)
+		if ((yp = ye -> ye_param))
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "free"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#else\n");
-		fprintf (fdef, "#define\t%s_parameter\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_parameter\tNULL\n",
 				 modsym (mymodule, ye -> ye_name, "decode"));
-		fprintf (fdef, "#define\t%s_parameter\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_parameter\tNULL\n",
 				 modsym (mymodule, ye -> ye_name, "free"));
 		fprintf (fdef, "#endif\n\n");
 
 		fprintf (fdef, "#ifdef\tPERFORMER\n");
 		fprintf (fdef, "#define\t%s_parameter\t",
 				 modsym (mymodule, ye -> ye_name, "encode"));
-		if (yp = ye -> ye_param)
+		if ((yp = ye -> ye_param))
 			fprintf (fdef, "%s\n",
 					 modsym (yp -> yp_module, yp -> yp_identifier, "encode"));
 		else
-			fprintf (fdef, "NULLIFP\n");
+			fprintf (fdef, "NULL\n");
 		fprintf (fdef, "#else\n");
-		fprintf (fdef, "#define\t%s_parameter\tNULLIFP\n",
+		fprintf (fdef, "#define\t%s_parameter\tNULL\n",
 				 modsym (mymodule, ye -> ye_name, "encode"));
 		fprintf (fdef, "#endif\n\n\n");
 	}
