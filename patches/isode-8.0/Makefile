@@ -78,8 +78,7 @@ inst-partial:;	cd h; $(MAKE) inst-all
 everything:	all true
 		./make all-ftam all-ftam-ftp all-vt all-quipu all-snmp \
 			all-lpp
-		@echo "a great album by mtr's favorite rock band"
-		@echo "sh \"whois -name mtr -info 'favorite rock band'\""
+		@echo "build succeeded"
 
 inst-everything: inst-all true
 		./make inst-ftam inst-ftam-ftp inst-vt inst-quipu inst-snmp \
