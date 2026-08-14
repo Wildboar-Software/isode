@@ -479,12 +479,7 @@ void file_header(FILE *fp, char *act) {
  * output the function prologue to the file specified by fp
  */
 void open_func(FILE *fp) {
-	fprintf(fp, "(pe, parm, p, mod)\n");
-	fprintf(fp, "PE\tpe;\n");
-	fprintf(fp, "PEPYPARM\tparm;\n");
-	fprintf(fp, "ptpe\t*p;\n");
-	fprintf(fp, "modtyp\t*mod;\n");
-	fprintf(fp, "{\n");
+	fprintf(fp, "(PE pe, PEPYPARM parm, ptpe *p, modtyp *mod)\n{\n");
 	/* action 0 ???? */
 	fprintf(fp, "\tswitch (p->pe_ucode) {\n");
 }
@@ -804,11 +799,7 @@ void gen_lint(FILE *fp) {
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyencdflt);
 			fprintf(fp, "\n#undef %s\n", buf);
 			fprintf(fp, "int	%s", buf);
-			fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			fprintf(fp, "PE     *pe;\n");
-			fprintf(fp, "int\ttop,\n\tlen;\n");
-			fprintf(fp, "char   *buffer;\n");
-			fprintf(fp, "%s *parm;\n", sym2type(sy));
+			fprintf(fp, "(PE *pe, int top, int len, char *buffer, %s *parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",
 					ENCFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
 			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
@@ -820,11 +811,7 @@ void gen_lint(FILE *fp) {
 			buf = modsym (sy -> sy_module, sy -> sy_name, yydecdflt);
 			fprintf(fp, "\n#undef %s\n", buf);
 			fprintf(fp, "int	%s", buf);
-			fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			fprintf(fp, "PE\tpe;\n");
-			fprintf(fp, "int\ttop,\n       *len;\n");
-			fprintf(fp, "char  **buffer;\n");
-			fprintf(fp, "%s **parm;\n", sym2type(sy));
+			fprintf(fp, "(PE pe, int top, int *len, char **buffer, %s **parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",
 					DECFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
 			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
@@ -836,11 +823,7 @@ void gen_lint(FILE *fp) {
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyprfdflt);
 			fprintf(fp, "\n#undef %s\n/* ARGSUSED */\n", buf);
 			fprintf(fp, "int	%s", buf);
-			fprintf(fp, "(pe, top, len, buffer, parm)\n");
-			fprintf(fp, "PE\tpe;\n");
-			fprintf(fp, "int\ttop,\n       *len;\n");
-			fprintf(fp, "char  **buffer;\n");
-			fprintf(fp, "%s *parm;\n", sym2type(sy));
+			fprintf(fp, "(PE pe, int top, int *len, char **buffer, %s *parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",
 					PRNTFNCNAME, PREFIX, proc_name(sy->sy_name, 1));
 			fprintf(fp, "&%s%s%s, ", PREFIX, tab, MODTYP_SUFFIX);
@@ -866,8 +849,7 @@ void gen_lint(FILE *fp) {
 		/* Free routine */
 		buf = modsym (sy -> sy_module, sy -> sy_name, "free");
 		fprintf(fp, "\n#undef %s\n", buf);
-		fprintf(fp, "void %s(val)\n", buf);
-		fprintf(fp, "%s *val;\n", sym2type(sy));
+		fprintf(fp, "void %s(%s *val)\n", buf, sym2type(sy));
 		fprintf(fp, "{\n");
 		fprintf(fp, "%s;\n", gfree(sy->sy_module, sy->sy_name, "val"));
 		fprintf(fp, "}\n");
@@ -1142,9 +1124,7 @@ void gen_actfunct(FILE *fp) {
 	YP	yp;
 
 	if (e_actions > 0) {
-		fprintf(fp, "\n/*VARARGS*/");
-		fprintf(fp, "\nstatic\tint\nefn_%s(__p, ppe, _Zp)\ncaddr_t	__p;\n", tab);
-		fprintf(fp, "PE	*ppe;\nptpe	*_Zp;\n{\n");
+		fprintf(fp, "\nstatic\tint\nefn_%s(caddr_t __p, PE *ppe, ptpe *_Zp)\n{\n", tab);
 		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
 				e_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
@@ -1162,9 +1142,7 @@ void gen_actfunct(FILE *fp) {
 		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 	if (d_actions > 0) {
-		fprintf(fp, "\n/*VARARGS*/");
-		fprintf(fp, "\nstatic\tint\ndfn_%s(__p, pe, _Zp, _val)\ncaddr_t	__p;\n", tab);
-		fprintf(fp, "PE	pe;\nptpe	*_Zp;\nint _val;\n{\n");
+		fprintf(fp, "\nstatic\tint\ndfn_%s(caddr_t __p, PE pe, ptpe *_Zp, int _val)\n{\n", tab);
 		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
 				d_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
@@ -1182,9 +1160,7 @@ void gen_actfunct(FILE *fp) {
 		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 	if (p_actions > 0) {
-		fprintf(fp, "\n/*VARARGS*/");
-		fprintf(fp, "\nstatic\tint\npfn_%s(pe, _Zp)\n", tab);
-		fprintf(fp, "PE	pe;\nptpe	*_Zp;\n{\n");
+		fprintf(fp, "\nstatic\tint\npfn_%s(PE pe, ptpe *_Zp)\n{\n", tab);
 		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
 				p_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {
