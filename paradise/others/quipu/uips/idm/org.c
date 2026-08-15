@@ -46,8 +46,7 @@ int listOrgs(char *cstr, char *ostr, struct namelist **olistp) {
 		return (listMatchingOrgs(cstr, ostr, olistp));
 }
 
-void
-printListOrgs(char *org, struct namelist *olistp) {
+void printListOrgs(char *org, struct namelist *olistp) {
 	struct namelist * x;
 	int i;
 
@@ -64,8 +63,7 @@ printListOrgs(char *org, struct namelist *olistp) {
 	}
 }
 
-void
-freeOrgs(struct namelist **listpp) {
+void freeOrgs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -80,13 +78,11 @@ freeOrgs(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void
-freeOrgListArgs(void) {
+void freeOrgListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
-void
-freeOrgSearchArgs(void) {
+void freeOrgSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
@@ -347,8 +343,7 @@ void makeAllOrgFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATION);
 }
 
-void
-makeExplicitOrgFilter(char *ostr, struct s_filter **fpp) {
+void makeExplicitOrgFilter(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -373,8 +368,7 @@ makeExplicitOrgFilter(char *ostr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-orgFilter1(char *ostr, struct s_filter **fpp) {
+void orgFilter1(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -383,8 +377,7 @@ orgFilter1(char *ostr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-orgFilter2(char *ostr, struct s_filter **fpp) {
+void orgFilter2(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -393,8 +386,7 @@ orgFilter2(char *ostr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-orgFilter3(char *ostr, struct s_filter **fpp) {
+void orgFilter3(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -403,8 +395,7 @@ orgFilter3(char *ostr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-orgFilter4(char *ostr, struct s_filter **fpp) {
+void orgFilter4(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();

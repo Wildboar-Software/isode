@@ -27,43 +27,35 @@ void tprint(), scrollbar();
 
 void get_help();
 
-void
-help_cncs () {
+void help_cncs () {
 	get_help("help", "   Press <KEY> to get detailed help.\n");
 }
 
-void
-help_init () {
+void help_init () {
 	get_help("help", "   SD X.500 Directory Agent - Concise Help\n");
 }
 
-void
-help_up () {
+void help_up () {
 	get_help("widen", "   The \"Widen Area\" Function.\n");
 }
 
-void
-help_back () {
+void help_back () {
 	get_help("look", "   The \"Look Back\" Function.\n");
 }
 
-void
-help_number () {
+void help_number () {
 	get_help("number", "   The \"Go To Number\" Function.\n");
 }
 
-void
-help_srch () {
+void help_srch () {
 	get_help("search", "   The \"Search\" Function");
 }
 
-void
-help_list () {
+void help_list () {
 	get_help("list", "   The \"List\" Function");
 }
 
-void
-get_help (char *filename, char *line) {
+void get_help (char *filename, char *line) {
 	FILE * helpfp;
 	char helpbuf[BUFLEN];
 	char filebuf[BUFLEN];

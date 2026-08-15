@@ -30,8 +30,7 @@ char *checkSetTerm();
 int output();
 void turnInverseVideoOn();
 
-void
-initVideo() {
+void initVideo() {
 	char * cp;
 
 	inverseVideo = FALSE;
@@ -114,8 +113,7 @@ char *checkSetTerm(char *termtype, char *defterm) {
 	return termtype;
 }
 
-void
-soundBell(void) {
+void soundBell(void) {
 	if (bellCode != NULLCP)
 		tputs(bellCode, 1, output);
 	else
@@ -126,16 +124,14 @@ void output(char c) {
 	putchar(c);
 }
 
-void
-turnInverseVideoOn(void) {
+void turnInverseVideoOn(void) {
 	if ((revVideoOn == (char *)NULL) || (resetVideo == (char *)NULL))
 		inverseVideo = FALSE;
 	else
 		inverseVideo = TRUE;
 }
 
-void
-turnInverseVideoOff(void) {
+void turnInverseVideoOff(void) {
 	inverseVideo = FALSE;
 }
 

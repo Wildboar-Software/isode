@@ -42,8 +42,7 @@ void initAlarm() {
 	alarm(alarmLen());
 }
 
-void
-alarmCleanUp() {
+void alarmCleanUp() {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (alarmCount > 1) {
@@ -244,13 +243,11 @@ char *lastRDN(char *dnstr) {
 		return (++cp);
 }
 
-void
-clearProblemFlags(void) {
+void clearProblemFlags(void) {
 	limitProblem = notAllReached = FALSE;
 }
 
-void
-setProblemFlags(struct ds_search_result sresult) {
+void setProblemFlags(struct ds_search_result sresult) {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
 			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
@@ -280,8 +277,7 @@ void showAnyProblems(void) {
 	}
 }
 
-void
-logSearchSuccess(char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
+void logSearchSuccess(char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
 	char filterNumberString[20];
 
 	if (deLogLevel > 1) {

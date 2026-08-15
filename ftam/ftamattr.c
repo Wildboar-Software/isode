@@ -420,8 +420,7 @@ no_mem:
 	return OK;
 }
 
-void
-FAFREE (struct FTAMattributes *fa) {
+void FAFREE (struct FTAMattributes *fa) {
 	int FAI;
 
 	for (FAI = (fa) -> fa_nfile - 1; FAI >= 0; FAI--)

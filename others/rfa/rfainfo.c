@@ -158,8 +158,7 @@ mallocRfaInfo (char *fn) {
 /*------------------------------------------------------
  * freeRfaInfoList - free list elements
  *------------------------------------------------------*/
-void
-freeRfaInfoList (struct RfaInfo *rfa) {
+void freeRfaInfoList (struct RfaInfo *rfa) {
 	struct RfaInfo *r;
 
 	for (; rfa; rfa = r) {
@@ -260,8 +259,7 @@ static int closeAndUnlockRfainfo (char *fn) {
 /*------------------------------------------------------
  * releaseRfaInfoList - unlock list and free it
  *------------------------------------------------------*/
-void
-releaseRfaInfoList (char *fn, struct RfaInfo *rfa) {
+void releaseRfaInfoList (char *fn, struct RfaInfo *rfa) {
 	closeAndUnlockRfainfo(fn);
 	freeRfaInfoList(rfa);
 }
@@ -580,8 +578,7 @@ extractRfaInfo (char *fn, struct RfaInfo **rfap) {
 /*------------------------------------------------------
  * remRfaInfo - remove RFA file info from list
  *------------------------------------------------------*/
-void
-remRfaInfo (char *fn, struct RfaInfo **rfap) {
+void remRfaInfo (char *fn, struct RfaInfo **rfap) {
 	struct RfaInfo *h;
 
 	if ((h = extractRfaInfo(fn, rfap))) {
@@ -604,8 +601,7 @@ findRfaInfo (char *fn, struct RfaInfo *rfa) {
 /*------------------------------------------------------
  * sortRfaInfoList - sort RFA list
  *------------------------------------------------------*/
-void
-sortRfaInfoList (struct RfaInfo **rfap) {
+void sortRfaInfoList (struct RfaInfo **rfap) {
 	struct RfaInfo *tnext, *tosort, *sorted, **spp;
 
 	sorted = NULL;

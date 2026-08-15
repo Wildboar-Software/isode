@@ -22,8 +22,7 @@ char *copy_string (char *string) {
 	return new_string;
 }
 
-void
-friendlify (char *name, char *fname) {
+void friendlify (char *name, char *fname) {
 	char *start, *end;
 	char save;
 

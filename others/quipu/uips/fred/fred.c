@@ -767,8 +767,7 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -802,8 +801,7 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-void
-advise (char *what, char *fmt) {
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

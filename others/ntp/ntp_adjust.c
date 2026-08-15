@@ -36,8 +36,7 @@ int	firstpass = 1;
 #define	abs(x)	((x) < 0 ? -(x) : (x))
 #endif
 
-void
-init_logical_clock () {
+void init_logical_clock () {
 	if (kern_tickadj)
 		adj_precision = kern_tickadj;
 	else
@@ -163,8 +162,7 @@ extern int adjtime();
  */
 double adjustment;
 
-void
-adj_host_clock (int n) {
+void adj_host_clock (int n) {
 
 	struct timeval delta, olddelta;
 

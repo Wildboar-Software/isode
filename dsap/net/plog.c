@@ -8,8 +8,7 @@ extern	LLog	* log_dsap;
 
 SFP	abort_vector = NULL;
 
-void
-ros_log (struct RoSAPpreject *rop, char *event) {
+void ros_log (struct RoSAPpreject *rop, char *event) {
 	int level = LLOG_EXCEPTIONS;
 
 	if ((rop->rop_reason == ROS_TIMER) || (rop->rop_reason == ROS_ACS))
@@ -24,8 +23,7 @@ ros_log (struct RoSAPpreject *rop, char *event) {
 		(*abort_vector) (-2);
 }
 
-void
-acs_log (struct AcSAPabort *aca, char *event) {
+void acs_log (struct AcSAPabort *aca, char *event) {
 	if(aca->aca_cc > 0)
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("%s: [%s] %*.*s", event,
 										 AcErrString(aca->aca_reason),

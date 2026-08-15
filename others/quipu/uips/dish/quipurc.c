@@ -493,16 +493,13 @@ int main () {
 	return(0);
 }
 
-void
-advise () {
+void advise () {
 }
 
-void
-set_sequence () {
+void set_sequence () {
 }
 
-void
-unset_sequence () {
+void unset_sequence () {
 }
 
 int dish_error (PS ps,struct DSError *error) {

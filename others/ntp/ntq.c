@@ -306,15 +306,13 @@ static PE build_bind_arg () {
 	return pe;
 }
 
-void
-ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	_exit (1);
 }
 
-void
-ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
@@ -328,15 +326,13 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 
 /* ^L */
 
-void
-acs_adios (struct AcSAPabort *aca, char *event) {
+void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
 
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -418,8 +414,7 @@ void    ryr_advise (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

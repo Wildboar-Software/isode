@@ -52,19 +52,16 @@ void locFilter1(), locFilter2(), locFilter3(), locFilter4();
 VFP explicitLoc[] = {makeExplicitLocFilter, NULLVFP};
 VFP normalLoc[] = {locFilter1, locFilter2, locFilter3, locFilter4, NULLVFP};
 
-void
-saveLocs() {
+void saveLocs() {
 	copyLocs(&savelocinfo, &qinfo[LOCALITY]);
 }
 
-void
-restoreSavedLocs() {
+void restoreSavedLocs() {
 	copyLocs(&qinfo[LOCALITY], &savelocinfo);
 	highNumber = qinfo[LOCALITY].listlen;
 }
 
-void
-copyLocs(struct query *a, struct query *b) {
+void copyLocs(struct query *a, struct query *b) {
 	struct namelist * lp, ** slp;
 
 	strcpy(a->defvalue, b->defvalue);
@@ -93,8 +90,7 @@ int listLocs(char *cstr, char *lstr, struct namelist **llistp) {
 		return (listMatchingLocs(cstr, lstr, llistp));
 }
 
-void
-printListLocs(char *loc, struct namelist *llistp) {
+void printListLocs(char *loc, struct namelist *llistp) {
 	struct namelist * x;
 	int i;
 
@@ -110,13 +106,11 @@ printListLocs(char *loc, struct namelist *llistp) {
 	}
 }
 
-void
-freeSavedLocs() {
+void freeSavedLocs() {
 	freeLocs(&savelocinfo.lp);
 }
 
-void
-freeLocs(struct namelist **listpp) {
+void freeLocs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -131,13 +125,11 @@ freeLocs(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void
-freeLocListArgs(void) {
+void freeLocListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
-void
-freeLocSearchArgs(void) {
+void freeLocSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
@@ -396,8 +388,7 @@ makeAllLocFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
 }
 
-void
-makeExplicitLocFilter(char *lstr, struct s_filter **fpp) {
+void makeExplicitLocFilter(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * lstr1, * lstr2;
@@ -422,8 +413,7 @@ makeExplicitLocFilter(char *lstr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-locFilter1(char *lstr, struct s_filter **fpp) {
+void locFilter1(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -432,8 +422,7 @@ locFilter1(char *lstr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-locFilter2(char *lstr, struct s_filter **fpp) {
+void locFilter2(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -442,8 +431,7 @@ locFilter2(char *lstr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-locFilter3(char *lstr, struct s_filter **fpp) {
+void locFilter3(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -452,8 +440,7 @@ locFilter3(char *lstr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-locFilter4(char *lstr, struct s_filter **fpp) {
+void locFilter4(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	if (fuzzyMatching == FALSE) {

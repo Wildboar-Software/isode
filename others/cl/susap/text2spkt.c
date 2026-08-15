@@ -460,7 +460,6 @@ static	type_info (FILE *fp, char *fmt, int len, char *data) {
 	}
 }
 
-void
-text2spkt (struct ssapkt *s) {
+void text2spkt (struct ssapkt *s) {
 	/* NOT YET IMPLEMENTED */
 }

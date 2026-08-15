@@ -8,8 +8,7 @@
 extern struct mapnamelist * mapnamelp;
 static struct mapnamelist * taillp;
 
-void
-addToAttList(char *str) {
+void addToAttList(char *str) {
 	char * cp;
 
 	cp = index(str, ' ');
@@ -22,8 +21,7 @@ addToAttList(char *str) {
 	addAttNode(str, cp);
 }
 
-void
-addAttNode(char *tablename, char *nicename) {
+void addAttNode(char *tablename, char *nicename) {
 	struct mapnamelist * mnlp;
 
 	mnlp = mapname_alloc();

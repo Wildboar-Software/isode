@@ -570,14 +570,12 @@ int printCountry () {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
-void
-foundFollowing () {
+void foundFollowing () {
 	resetprint("\nFound the following entries.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
-void
-matchFollowing () {
+void matchFollowing () {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
@@ -845,8 +843,7 @@ int countryCodeMessage (int str) {
 	printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
 
-void
-onint1 () {
+void onint1 () {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -868,8 +865,7 @@ int cleanup (int exitCode) {
 }
 
 /* the flushes need dealing with properly */
-void
-onalarm () {
+void onalarm () {
 
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
@@ -938,8 +934,7 @@ int searchFail (int objectType) {
 	return problem;
 }
 
-void
-de_exit (int exitCode) {
+void de_exit (int exitCode) {
 	void exit();
 
 	if (byeByeMessage == TRUE)

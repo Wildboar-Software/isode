@@ -86,8 +86,7 @@ int main (unsigned int argc, char **argv) {
 	return 0;
 }
 
-void
-read_args (unsigned int *acptr, char ***avptr) {
+void read_args (unsigned int *acptr, char ***avptr) {
 	char *cp;
 	char **av;
 
@@ -119,8 +118,7 @@ read_args (unsigned int *acptr, char ***avptr) {
 	}
 }
 
-void
-read_bind_args (unsigned int *acptr, char ***avptr) {
+void read_bind_args (unsigned int *acptr, char ***avptr) {
 	char *cp;
 	char **av;
 	bool got_user_name = FALSE,
@@ -155,8 +153,7 @@ read_bind_args (unsigned int *acptr, char ***avptr) {
 	if (got_user_name == TRUE && got_password == FALSE) passwd[0] = '\0';
 }
 
-void
-quit (int sig) {
+void quit (int sig) {
 	ds_unbind();
 	exit(sig);
 }

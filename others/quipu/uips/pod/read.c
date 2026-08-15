@@ -298,8 +298,7 @@ int entry2str (caddr_t ptr, char *cptr, int size) {
 	ps_free(ps);
 }
 
-void
-rfc2greybook (char *string) {
+void rfc2greybook (char *string) {
 	char reversed[STRINGLEN];
 	char *part;
 

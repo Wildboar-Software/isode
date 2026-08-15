@@ -335,8 +335,7 @@ check_peer (struct Naddr *dst, int sock) {
 }
 
 #ifdef	DEBUG
-void
-dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
+void dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 	struct Naddr clock_host;
 
 	printf("Packet: %s\n", paddr (dst));
@@ -381,8 +380,7 @@ dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 }
 #endif
 
-void
-make_new_peer (struct ntp_peer *peer) {
+void make_new_peer (struct ntp_peer *peer) {
 	int i;
 	void	double_to_s_fixed ();
 
@@ -1382,8 +1380,7 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS2 */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -1403,8 +1400,7 @@ void	advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS3 */
 
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

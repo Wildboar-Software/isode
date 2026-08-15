@@ -51,8 +51,7 @@ QCardinal requests_made = 0, requests_failed = 0;
 
 jmp_buf env;
 
-void
-interact () {
+void interact () {
 	char commandline[LINESIZE];
 
 	setjmp(env);
@@ -68,8 +67,7 @@ interact () {
 	}
 }
 
-void
-intquit () {
+void intquit () {
 	char input[LINESIZE];
 
 	while (1) {
@@ -86,14 +84,12 @@ intquit () {
 	}
 }
 
-void
-quitfn (char *params) {
+void quitfn (char *params) {
 	uprint("\nOK, exiting.\n");
 	exit(0);
 }
 
-void
-ufnsearch (char *params) {
+void ufnsearch (char *params) {
 	char *str;
 
 	signal(SIGINT, abort_command);
@@ -275,8 +271,7 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 	_request_complete(request_id);
 }
 
-void
-readentry (char *params) {
+void readentry (char *params) {
 	fd_set association, writefds, exceptfds;
 	int assoc_des;
 	int entry_num = 0;
@@ -431,8 +426,7 @@ void print_entry_list(entryList entries) {
 	}
 }
 
-void
-printcommands (char *params) {
+void printcommands (char *params) {
 	char buffer[LINESIZE];
 
 	signal(SIGINT, abort_command);
@@ -457,8 +451,7 @@ printcommands (char *params) {
 	uprint("help, ?\t\t\tView commands.\n");
 }
 
-void
-callcommand (char *commandline) {
+void callcommand (char *commandline) {
 	char *params;
 
 	if (*commandline == '\0') return;
@@ -497,8 +490,7 @@ void new_current_list(ufnResults results) {
 	results->matches = NULLEntryList;
 }
 
-void
-looklist (char *params) {
+void looklist (char *params) {
 	signal(SIGINT, abort_command);
 
 	if (currentlist == NULLEntryList) {
@@ -550,19 +542,16 @@ QBool query_matches(entryList matches, entryList *returnlist) {
 	return TRUE;
 }
 
-void
-nullfn () {
+void nullfn () {
 }
 
-void
-abort_query () {
+void abort_query () {
 	uprint("\nQuery interrupted.\n");
 	abort_request(request_id);
 	longjmp(env, 0);
 }
 
-void
-abort_command () {
+void abort_command () {
 	uprint("\nCommand interrupted.\n");
 	longjmp(env, 0);
 }

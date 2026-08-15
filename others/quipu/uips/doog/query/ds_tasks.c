@@ -66,8 +66,7 @@ QE_error_code _task_invoked(task_type type, char *baseobject, QCardinal request_
  *  A task has been completed. Remove it from the outstanding list.
  *
  */
-void
-_task_complete (int task_id) {
+void _task_complete (int task_id) {
 	DsTask prev_rec = NULLDsTask, task_rec = live_task_list;
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id) {
@@ -105,8 +104,7 @@ DsTask _get_task_of_id(int task_id) {
  * Abort an X.500 request
  *
  */
-void
-abort_task (int task_id) {
+void abort_task (int task_id) {
 	struct ds_abandon_arg arg;
 	struct DAPindication di;
 

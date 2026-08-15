@@ -8,8 +8,7 @@
 extern struct cnamelist * cnamelp;
 static struct cnamelist * taillp;
 
-void
-addToCoList(char *str) {
+void addToCoList(char *str) {
 	char * cp;
 
 	cp = index(str, ' ');
@@ -26,8 +25,7 @@ addToCoList(char *str) {
 	addCoNode(str, cp);
 }
 
-void
-addCoNode(char *shortname, char *longname) {
+void addCoNode(char *shortname, char *longname) {
 	struct cnamelist * colp;
 
 	colp = cname_alloc();

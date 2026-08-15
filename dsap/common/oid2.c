@@ -210,8 +210,7 @@ static table_seq table_seq_new (char *str)
 		return (NULLTABLE_SEQ);
 }
 
-void
-dumpalloid (void) {
+void dumpalloid (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];
 	oid_table_attr   * at = &attrOIDTable[0];
@@ -240,8 +239,7 @@ void table_seq_free (table_seq ts)
 	}
 }
 
-void
-free_oid_table (void) {
+void free_oid_table (void) {
 	int i;
 	objectclass      * oc = &ocOIDTable[0];
 	oid_table_attr   * at = &attrOIDTable[0];

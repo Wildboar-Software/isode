@@ -32,24 +32,21 @@ static fd_set in_rfds, in_wfds, in_efds;
 static fd_set out_rfds, out_wfds, out_efds;
 static int out_n;
 
-void
-rhandler (int fd) {
+void rhandler (int fd) {
 	if ( FD_ISSET(fd,&in_rfds) ) {
 		FD_SET(fd,&out_rfds);
 		out_n++;
 	}
 }
 
-void
-whandler (int fd) {
+void whandler (int fd) {
 	if ( FD_ISSET(fd,&in_wfds) ) {
 		FD_SET(fd,&out_wfds);
 		out_n++;
 	}
 }
 
-void
-xhandler (int fd) {
+void xhandler (int fd) {
 	if ( FD_ISSET(fd,&in_efds) ) {
 		FD_SET(fd,&out_efds);
 		out_n++;

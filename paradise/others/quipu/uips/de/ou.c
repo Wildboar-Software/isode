@@ -48,8 +48,7 @@ int listOUs(char *parentstr, char *thisstr, struct namelist **listp) {
 		return (listMatchingOUs(parentstr, thisstr, listp));
 }
 
-void
-printListOUs(char *str, struct namelist *listp) {
+void printListOUs(char *str, struct namelist *listp) {
 	struct namelist * x;
 	int i;
 	if (listp == NULLLIST)
@@ -64,8 +63,7 @@ printListOUs(char *str, struct namelist *listp) {
 	}
 }
 
-void
-freeOUs(struct namelist **listpp) {
+void freeOUs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -80,13 +78,11 @@ freeOUs(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void
-freeOUListArgs(void) {
+void freeOUListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
-void
-freeOUSearchArgs(void) {
+void freeOUSearchArgs(void) {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
@@ -370,8 +366,7 @@ void makeAllOUFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
 }
 
-void
-makeExplicitOUFilter(char *oustr, struct s_filter **fpp) {
+void makeExplicitOUFilter(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -396,8 +391,7 @@ makeExplicitOUFilter(char *oustr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter1(char *oustr, struct s_filter **fpp) {
+void ouFilter1(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -406,8 +400,7 @@ ouFilter1(char *oustr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter2(char *oustr, struct s_filter **fpp) {
+void ouFilter2(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -416,8 +409,7 @@ ouFilter2(char *oustr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter3(char *oustr, struct s_filter **fpp) {
+void ouFilter3(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -426,8 +418,7 @@ ouFilter3(char *oustr, struct s_filter **fpp) {
 	fp->flt_next = NULLFILTER;
 }
 
-void
-ouFilter4(char *oustr, struct s_filter **fpp) {
+void ouFilter4(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	if (fuzzyMatching == FALSE) {

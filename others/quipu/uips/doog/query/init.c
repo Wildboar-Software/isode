@@ -46,8 +46,7 @@ static void read_args(), read_quipurc();
  * - init_query_engine() -
  *
  */
-void
-init_query_engine (int argc, char *argv[]) {
+void init_query_engine (int argc, char *argv[]) {
 	FILE *config_file;
 	char linebuf[LINESIZE];
 
@@ -231,8 +230,7 @@ static void read_args (int argc, char *argv[]) {
  * Set up use of an 1so8859-1 font, to allow display of T.61 strings.
  *
  */
-void
-have_iso8859_font () {
+void have_iso8859_font () {
 	extern int ch_set;
 
 	ch_set = 1;

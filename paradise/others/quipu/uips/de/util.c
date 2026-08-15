@@ -54,8 +54,7 @@ void initAlarm(void) {
 	alarm(2);
 }
 
-void
-alarmCleanUp(void) {
+void alarmCleanUp(void) {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (dotsPrinted > 0) {
@@ -67,8 +66,7 @@ alarmCleanUp(void) {
 	}
 }
 
-void
-clearDots(void) {
+void clearDots(void) {
 	int i, len;
 
 	len = strlen(SEARCHMESS) + dotsPrinted;
@@ -76,8 +74,7 @@ clearDots(void) {
 		printf("\b \b");
 }
 
-void
-handleTimeout(void) {
+void handleTimeout(void) {
 	de_unbind();
 	signal(SIGALRM, SIG_IGN);
 }
@@ -322,13 +319,11 @@ char *lastRDN(char *dnstr) {
 		return (++cp);
 }
 
-void
-clearProblemFlags() {
+void clearProblemFlags() {
 	limitProblem = notAllReached = FALSE;
 }
 
-void
-setProblemFlags(struct ds_search_result sresult) {
+void setProblemFlags(struct ds_search_result sresult) {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
 			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
@@ -356,8 +351,7 @@ void showAnyProblems(char *str) {
 	}
 }
 
-void
-logSearchSuccess(char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
+void logSearchSuccess(char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
 	char filterNumberString[20];
 
 	if (deLogLevel > 1) {

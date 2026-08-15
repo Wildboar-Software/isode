@@ -185,8 +185,7 @@ invoke (int op, caddr_t arg, caddr_t *res, int *err) {
 	return result;
 }
 
-void
-ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_errmsg (rop, event);
 
 	cleanup ();
@@ -194,8 +193,7 @@ ros_adios (struct RoSAPpreject *rop, char *event) {
 	_exit (1);
 }
 
-void
-ros_errmsg (struct RoSAPpreject *rop, char *event) {
+void ros_errmsg (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
@@ -207,16 +205,14 @@ ros_errmsg (struct RoSAPpreject *rop, char *event) {
 	errmsg (NULLCP, "%s: %s", event, buffer);
 }
 
-void
-acs_errexit (struct AcSAPabort *aca, char *event) {
+void acs_errexit (struct AcSAPabort *aca, char *event) {
 	acs_errmsg (aca, event);
 
 	cleanup ();
 	_exit (1);
 }
 
-void
-acs_errmsg (struct AcSAPabort *aca, char *event) {
+void acs_errmsg (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -249,8 +245,7 @@ void	errexit (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-errexit (char *what, char *fmt) {
+void errexit (char *what, char *fmt) {
 	errexit (what, fmt);
 }
 #endif
@@ -282,8 +277,7 @@ static void  _errmsg (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-void
-errmsg (char *what, char *fmt) {
+void errmsg (char *what, char *fmt) {
 	errmsg (what, fmt);
 }
 #endif
@@ -301,8 +295,7 @@ void	ryr_errmsg (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-ryr_errmsg (char *what, char *fmt) {
+void ryr_errmsg (char *what, char *fmt) {
 	ryr_errmsg (what, fmt);
 }
 #endif

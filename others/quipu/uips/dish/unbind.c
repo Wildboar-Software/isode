@@ -171,8 +171,7 @@ int main (int argc, char **argv) {
 		exit (-1);
 }
 
-void
-pipe_quit (int sig) {
+void pipe_quit (int sig) {
 	unlink (retfile);
 	fprintf (stderr,"(signal %d) exiting...\n",sig);
 	exit (0);

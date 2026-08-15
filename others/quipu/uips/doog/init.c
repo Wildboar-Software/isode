@@ -29,8 +29,7 @@ static void read_quipurc();
 
 void exit();
 
-void
-initialize () {
+void initialize () {
 	char *homeconfig = "/.doogrc";
 	char *sysconfig = "doogrc";
 	extern QBool testing;

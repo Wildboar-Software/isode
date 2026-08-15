@@ -466,8 +466,7 @@ char *isodesetailor (char *file) {
 	return ofile;
 }
 
-void
-isodetailor (char *myname, int wantuser) {
+void isodetailor (char *myname, int wantuser) {
 	char *hp,
 		 *mp;
 	char   buffer[BUFSIZ];
@@ -557,8 +556,7 @@ int isodesetvar (char *name, char *value, int dynamic) {
 	return NOTOK;
 }
 
-void
-isodexport (char *myname) {
+void isodexport (char *myname) {
 	compat_log -> ll_events = events_value (ll_pairs, compatdebug, "compatlevel");
 	addr_log -> ll_events = events_value (ll_pairs, addrdebug, "addrlevel");
 	tsap_log -> ll_events = events_value (ll_pairs, tsapdebug, "tsaplevel");

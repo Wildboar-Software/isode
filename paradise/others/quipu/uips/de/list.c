@@ -5,8 +5,7 @@
 #include "namelist.h"
 #include "quipu/util.h"
 
-void
-addToList(struct namelist **lp, char *str) {
+void addToList(struct namelist **lp, char *str) {
 	for (; *lp != NULLLIST; lp = &(*lp)->next) {};
 	*lp = list_alloc();
 	(*lp)->name = copy_string(str);

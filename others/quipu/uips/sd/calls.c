@@ -110,8 +110,7 @@ char *get_strioid (char *ptr) {
 	return ptr;
 }
 
-void
-user_tailor () {
+void user_tailor () {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -409,16 +408,14 @@ user_tailor () {
 	fclose(config_file);
 }
 
-void
-main_help () {
+void main_help () {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
 	help_cncs();
 }
 
-void
-main_bind () {
+void main_bind () {
 	cleartext();
 	if (*passwd != 0)
 		strcpy(bindpass,"******");
@@ -426,13 +423,11 @@ main_bind () {
 		bindpass[0] = '\0';
 }
 
-void
-cnnct_quit () {
+void cnnct_quit () {
 	quit("Exiting sd.\n", 0);
 }
 
-void
-cnnct_bind () {
+void cnnct_bind () {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -516,8 +511,7 @@ cnnct_bind () {
 	text_state = TEXT;
 }
 
-void
-rd_start () {
+void rd_start () {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -588,8 +582,7 @@ rd_start () {
 	}
 }
 
-void
-back_start () {
+void back_start () {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -609,8 +602,7 @@ back_start () {
 	scrollbar('\0');
 }
 
-void
-widen () {
+void widen () {
 	char *str, *sptr;
 	int count = 0;
 	str_seq first;
@@ -653,8 +645,7 @@ widen () {
 	}
 }
 
-void
-set_default_type () {
+void set_default_type () {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -718,8 +709,7 @@ set_default_type () {
 
 /* These are the functions called by the list level widgets */
 
-void
-list_start () {
+void list_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -864,8 +854,7 @@ void rdn2str(caddr_t ptr,char *cptr) {
 	strcpy(cptr, buffer);
 }
 
-void
-srch_start () {
+void srch_start () {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -1099,8 +1088,7 @@ void quipu_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	} while (*sptr != '\0');
 }
 
-void
-quipu_error (struct DSError *err) {
+void quipu_error (struct DSError *err) {
 	switch(err->dse_type) {
 	case DSE_LOCALERROR:
 		xprint(" SD internal error!\n");
@@ -1129,8 +1117,7 @@ quipu_error (struct DSError *err) {
 	}
 }
 
-void
-returnmain () {
+void returnmain () {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1196,8 +1183,7 @@ void get_listed_object(char number, WIDGET *wdgt) {
 	*srchvalue = '\0';
 }
 
-void
-scrollbar (int command) {
+void scrollbar (int command) {
 	char *str;
 	char *base_rdn;
 	int rdn_count = 0;
@@ -1291,8 +1277,7 @@ scrollbar (int command) {
 	return;
 }
 
-void
-make_friendly (char *fstr, char *str) {
+void make_friendly (char *fstr, char *str) {
 	char *end_ptr;
 	char save;
 
@@ -1321,8 +1306,7 @@ make_friendly (char *fstr, char *str) {
 	}
 }
 
-void
-goto_addr () {
+void goto_addr () {
 	set_default_type();
 	rd_start();
 }
@@ -1428,8 +1412,7 @@ int indexstring (char *string, char *substring) {
 	}
 }
 
-void
-rfc2jnt (char *string) {
+void rfc2jnt (char *string) {
 	char reversed[STRINGLEN];
 	char front[STRINGLEN];
 	char *part;

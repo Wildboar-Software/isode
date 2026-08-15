@@ -312,8 +312,7 @@ static void connecting_analyse (struct connection *cn) {
 	}
 }
 
-void
-opening_analyse (struct connection *cn) {
+void opening_analyse (struct connection *cn) {
 	/* SPT: The sub parts to build an openCall attribute type. */
 	AttributeType oc_att ;
 	AttributeValue oc_av ;
@@ -406,8 +405,7 @@ opening_analyse (struct connection *cn) {
 	}
 }
 
-void
-closing_analyse (struct connection *cn) {
+void closing_analyse (struct connection *cn) {
 	AV_Sequence tmp_avs ;
 	int success = FALSE ;
 	UTCtime ut ;

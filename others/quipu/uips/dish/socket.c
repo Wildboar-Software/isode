@@ -76,8 +76,7 @@ int get_dish_sock (struct sockaddr_in *isock, int pid, int islocal) {
 
 #else	/* USE UNIX NAMED PIPES */
 
-void
-dummy () {
+void dummy () {
 	;
 }
 

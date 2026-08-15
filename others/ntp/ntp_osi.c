@@ -60,8 +60,7 @@ static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-void
-create_osilisten (char *addr) {
+void create_osilisten (char *addr) {
 	int result_func (), query_func ();
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
@@ -652,8 +651,7 @@ static void terminate (struct intf *ap, struct RoSAPindication *roi) {
 			"Connection on %d if %d TERMINATED", ap -> fd, fd);
 }
 
-void
-iso_init (int vecp, char **vec, int fd) {
+void iso_init (int vecp, char **vec, int fd) {
 	struct intf *ap;
 	int	acount;
 
@@ -1289,8 +1287,7 @@ static int handle_reject (struct AcSAPconnect *acc, struct intf *ap) {
 	return NOTOK;
 }
 
-void
-ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
@@ -1304,8 +1301,7 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)

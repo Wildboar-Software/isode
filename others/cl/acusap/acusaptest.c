@@ -520,15 +520,13 @@ static printpaddr (
 
 }
 
-void
-acs_adios (struct AcSAPabort *aca, char *event) {
+void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
 
 	_exit (1);
 }
 
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -555,8 +553,7 @@ void	adios (char *what, char *fmt, ...)
 }
 #else
 /* VARARGS */
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -582,8 +579,7 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-void
-advise (char *what, char *fmt) {
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif
@@ -598,8 +594,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

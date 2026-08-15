@@ -54,15 +54,13 @@ char *SReportString (int code) {
 	return buffer;
 }
 
-void
-rts_adios (struct RtSAPabort *rta, char *event) {
+void rts_adios (struct RtSAPabort *rta, char *event) {
 	rts_advise (rta, event);
 
 	_exit (1);
 }
 
-void
-rts_advise (struct RtSAPabort *rta, char *event) {
+void rts_advise (struct RtSAPabort *rta, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rta -> rta_cc > 0)
@@ -90,8 +88,7 @@ void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -109,8 +106,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
@@ -129,8 +125,7 @@ void	ryr_advise (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void
-ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

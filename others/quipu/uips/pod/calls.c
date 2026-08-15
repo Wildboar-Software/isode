@@ -100,8 +100,7 @@ char *get_strioid (char *ptr) {
 	return ptr;
 }
 
-void
-put_dn_and_password (char *dn, char *password, char *name) {
+void put_dn_and_password (char *dn, char *password, char *name) {
 	str_seq alias_list = alias_seq;
 	int seq_num;
 
@@ -122,8 +121,7 @@ put_dn_and_password (char *dn, char *password, char *name) {
 	}
 }
 
-void
-user_tailor () {
+void user_tailor () {
 	char *part1, *part2;
 	char *getenv(), *TidyString(), *SkipSpace();
 	char *config_dir = "/.duaconfig",
@@ -470,8 +468,7 @@ user_tailor () {
 	fclose(config_file);
 }
 
-void
-parse_duarc (char *options_path) {
+void parse_duarc (char *options_path) {
 	char *SkipSpace(), *TidyString();
 	char *p, *part1, *part2, *part3;
 	char Read_in_Stuff[BUFSIZ];
@@ -602,8 +599,7 @@ Click on this window to exit.");
 	return NULLCP;
 }
 
-void
-set_default_type () {
+void set_default_type () {
 	int count;
 	DN base_name;
 	DN d_name;
@@ -660,8 +656,7 @@ void dn2buf (caddr_t ptr,char *cptr) {
 	strcpy(cptr, buffer);
 }
 
-void
-make_friendly (char *fstr, char *str) {
+void make_friendly (char *fstr, char *str) {
 	char *end, *start;
 	char save;
 	char buffer[LINESIZE];
@@ -780,8 +775,7 @@ static void make_friendly_aux (char *fstr, char *rdn) {
 	}
 }
 
-void
-make_friendly_rdn (char *friendly, char *object, char *base) {
+void make_friendly_rdn (char *friendly, char *object, char *base) {
 	char *front;
 	char save;
 	int count;

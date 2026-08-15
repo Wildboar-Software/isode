@@ -7,8 +7,7 @@
 extern struct mapphonelist * mapphonelp;
 static struct mapphonelist * tailplp;
 
-void
-addToPhoneList(char *str) {
+void addToPhoneList(char *str) {
 	char * cp;
 
 	cp = index(str, ':');
@@ -21,8 +20,7 @@ addToPhoneList(char *str) {
 	addPhoneNode(str, cp);
 }
 
-void
-addPhoneNode(char *from, char *to) {
+void addPhoneNode(char *from, char *to) {
 	struct mapphonelist * mplp;
 
 	mplp = mapphone_alloc();

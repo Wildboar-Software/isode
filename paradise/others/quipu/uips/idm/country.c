@@ -62,8 +62,7 @@ int listCos(char *cstr, struct namelist **clistp) {
 		return(listMatchingCos(cstr, clistp));
 }
 
-void
-printListCos(struct namelist *clistp) {
+void printListCos(struct namelist *clistp) {
 	struct namelist * x;
 	int i;
 
@@ -77,8 +76,7 @@ printListCos(struct namelist *clistp) {
 	}
 }
 
-void
-freeCos(struct namelist **listpp) {
+void freeCos(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -93,8 +91,7 @@ freeCos(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void
-freeCoSearchArgs(void) {
+void freeCoSearchArgs(void) {
 	dn_free(sarg.sra_baseobject);
 }
 
@@ -209,8 +206,7 @@ void makeAllCoFilter(struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
 }
 
-void
-makeExplicitCoFilter(char *cstr, struct s_filter **fpp) {
+void makeExplicitCoFilter(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, *fp2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -252,8 +248,7 @@ makeExplicitCoFilter(char *cstr, struct s_filter **fpp) {
 
 }
 
-void
-coFilter1(char *cstr, struct s_filter **fpp) {
+void coFilter1(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -268,8 +263,7 @@ coFilter1(char *cstr, struct s_filter **fpp) {
 	fp = fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_LOCALITY_NAME, cstr);
 }
 
-void
-coFilter2(char *cstr, struct s_filter **fpp) {
+void coFilter2(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -281,8 +275,7 @@ coFilter2(char *cstr, struct s_filter **fpp) {
 	fp = fp->flt_next = subsfilter(LEADSUBSTR, DE_LOCALITY_NAME, cstr);
 }
 
-void
-coFilter3(char *cstr, struct s_filter **fpp) {
+void coFilter3(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -294,8 +287,7 @@ coFilter3(char *cstr, struct s_filter **fpp) {
 	fp = fp->flt_next = subsfilter(ANYSUBSTR, DE_LOCALITY_NAME, cstr);
 }
 
-void
-coFilter4(char *cstr, struct s_filter **fpp) {
+void coFilter4(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -355,8 +347,7 @@ read_country:
 
 }
 
-void
-freeCoListArgs() {
+void freeCoListArgs() {
 	dn_free(larg.lsa_object);
 }
 

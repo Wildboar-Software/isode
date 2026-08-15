@@ -18,8 +18,7 @@ char *SkipSpace (char *ptr) {
 	return (ptr);
 }
 
-void
-StripSpace (char *b)
+void StripSpace (char *b)
 /* copy b to a less spaces and comments */
 {
 	char *a;
@@ -44,8 +43,7 @@ StripSpace (char *b)
 	*a = 0;
 }
 
-void
-StripSpace2 (char *b)
+void StripSpace2 (char *b)
 /* copy b to a less spaces and comments */
 {
 	char *a;

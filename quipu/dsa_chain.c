@@ -1336,8 +1336,7 @@ static int relayfordsa (DN dn) {
 }
 
 #ifdef QUIPU_CONSOLE
-void
-chaining_analyse (struct task_act *task, struct di_block *di) {
+void chaining_analyse (struct task_act *task, struct di_block *di) {
 	AV_Sequence tmp_avs = open_call_avs ;
 	struct op_list * tmp_op_list ;
 	struct chain_list * tmp_ch_list ;

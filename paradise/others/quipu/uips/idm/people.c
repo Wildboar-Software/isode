@@ -41,8 +41,7 @@ int listPRRs(char *parentstr, char *thisstr, struct namelist **listp) {
 		return (listMatchingPRRs(parentstr, thisstr, listp));
 }
 
-void
-printListPRRs(char *str, struct namelist *listp, int searchparent, int pdet) {
+void printListPRRs(char *str, struct namelist *listp, int searchparent, int pdet) {
 	struct namelist * x;
 	char * savestr;
 	static char lastsavedcomp[LINESIZE];
@@ -82,8 +81,7 @@ printListPRRs(char *str, struct namelist *listp, int searchparent, int pdet) {
 	lastsavedcomp[0] = '\0';
 }
 
-void
-freePRRs(struct namelist **listpp) {
+void freePRRs(struct namelist **listpp) {
 	struct namelist * w, * x;
 
 	w = *listpp;
@@ -328,8 +326,7 @@ void makeExactPRRcnFilter(struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void
-makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp) {
+void makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fpsav, * fpsav2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -365,8 +362,7 @@ makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void
-prrFilter1(char *prrstr, struct s_filter **fpp) {
+void prrFilter1(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp1;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -402,8 +398,7 @@ prrFilter1(char *prrstr, struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void
-prrFilter2(char *prrstr, struct s_filter **fpp) {
+void prrFilter2(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -435,8 +430,7 @@ prrFilter2(char *prrstr, struct s_filter **fpp) {
 	}
 }
 
-void
-prrFilter3(char *prrstr, struct s_filter **fpp) {
+void prrFilter3(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -449,8 +443,7 @@ prrFilter3(char *prrstr, struct s_filter **fpp) {
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-void
-prrFilter4(char *prrstr, struct s_filter **fpp) {
+void prrFilter4(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();

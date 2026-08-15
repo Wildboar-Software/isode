@@ -2287,8 +2287,7 @@ void adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif

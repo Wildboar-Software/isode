@@ -202,8 +202,7 @@ struct edbdir topdirs[] = {
 #define USDN			"c=US"		/* DN for the US */
 
 /* main () -- main function for program */
-void
-main (int argc, char **argv) {
+void main (int argc, char **argv) {
 	struct pair *pp;			/* pair pointer */
 	extern struct pair * findpair ();
 	extern void arginit (), read_config (), read_dsas ();
@@ -276,8 +275,7 @@ main (int argc, char **argv) {
 }
 
 /* arginit () -- parse command line, and initialize from it */
-void
-arginit (int ac, char **av) {
+void arginit (int ac, char **av) {
 	int i,j,k;
 	struct pair *wildlife;
 
@@ -331,8 +329,7 @@ arginit (int ac, char **av) {
 }
 
 /* read_dsas () -- read in identities and locations of regional DSAs */
-void
-read_dsas () {
+void read_dsas () {
 	uint16_t lncnt;			/* linecount */
 	char *cp;				/* character pointer */
 	char *toks[NVEC+1];			/* tokens on line */
@@ -393,8 +390,7 @@ read_dsas () {
 	fclose (fp);
 }
 /* read_config () -- parse configuration file, and initialize from it */
-void
-read_config () {
+void read_config () {
 	uint16_t lncnt;			/* linecount */
 	char *toks[NVEC+1];			/* tokens on line */
 	char *cp,*cp2;			/* character pointers */
@@ -692,8 +688,7 @@ out:
 }
 
 /* bad_postaladdress () -- print error message for a bad postal address */
-void
-bad_postaladdress (
+void bad_postaladdress (
 	char *line,				/* offending line */
 	int postdef			/* postal address defined? */
 ) {
@@ -712,8 +707,7 @@ bad_postaladdress (
 }
 
 /* build_top () -- build root, c=US */
-void
-build_top () {
+void build_top () {
 	struct pair *pp;
 	int i;
 	extern void copy_edb ();
@@ -744,8 +738,7 @@ build_top () {
 }
 
 /* add_us () -- add national organization to US EDB */
-void
-add_us (
+void add_us (
 	struct pair *orgcode			/* ansi organization code */
 ) {
 	extern void copy_edb ();
@@ -769,8 +762,7 @@ extern void copy_edb ();
 extern struct pair *findpair ();
 
 /* add_state () -- build state entry, adding organization if necessary*/
-void
-add_state (
+void add_state (
 	int addorg			/* add organization to state entry? */
 ) {
 	struct pair *state;			/* name of state */
@@ -819,8 +811,7 @@ add_state (
 	}
 }
 
-void
-build_dsa () {
+void build_dsa () {
 	unlink (DSAENTRY);
 	bzero (buf, BUFSIZ);
 	sprintf (buf, "sed -f %s %s  > %s", SEDFILE, DSATMPL, DSAENTRY);
@@ -832,8 +823,7 @@ build_dsa () {
 }
 
 /* build_orgedb () -- build skeleton EDB for organization */
-void
-build_orgedb () {
+void build_orgedb () {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	extern struct pair *findpair ();
@@ -876,8 +866,7 @@ build_orgedb () {
 }
 
 /* build_ouedb () -- build skeleton EDB for organizational unit */
-void
-build_ouedb () {
+void build_ouedb () {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	char *ounm;			/* name of organizational unit */
@@ -926,8 +915,7 @@ build_ouedb () {
 }
 
 /* build_tailor () -- build tailor files */
-void
-build_tailor () {
+void build_tailor () {
 	extern void make_file ();
 
 	make_file ("quiputailor", QUIPUTMPL);
@@ -935,8 +923,7 @@ build_tailor () {
 }
 
 /* build_scripts () -- build script files */
-void
-build_scripts () {
+void build_scripts () {
 	extern void make_file ();
 
 	make_file ("startup.sh", STARTUPTMPL);
@@ -945,8 +932,7 @@ build_scripts () {
 }
 
 /* build_uifl () -- build user interface configuration files */
-void
-build_uifl () {
+void build_uifl () {
 	extern void make_file ();
 
 	sprintf (file, "%s/fredrc", isodetcpath);
@@ -958,8 +944,7 @@ build_uifl () {
 }
 
 /* create_sedfile () -- create sed file to convert templates */
-void
-create_sedfile () {
+void create_sedfile () {
 	FILE *sedfp;			/* sed file pointer */
 	struct pair *pp;			/* to get pair values */
 	char *orgnm;			/* organization name */
@@ -1031,8 +1016,7 @@ create_sedfile () {
 }
 
 /* make_file () -- create a file from a template */
-void
-make_file (
+void make_file (
 	char *fl,				/* file to be created */
 	char *tmpl				/* template to use */
 ) {
@@ -1050,8 +1034,7 @@ make_file (
 }
 
 /* build_mesgfl () -- build file that needs to be sent to wpp-manager */
-void
-build_mesgfl () {
+void build_mesgfl () {
 	FILE *msgfp;			/* pointer to message file */
 	FILE *fp;				/* pointer to various EDB entries */
 	struct pair *pp;			/* to get pair values */
@@ -1114,8 +1097,7 @@ build_mesgfl () {
 }
 
 /* copy_edb () -- create an EDB, or append to an existing EDB */
-void
-copy_edb (
+void copy_edb (
 	char *dir,				/* place where EDB should go */
 	char *edbtmpl,				/* location of EDB template */
 	int append			/* append, nonzero if so */
@@ -1180,8 +1162,7 @@ findpair (
 }
 
 /* set_permissions () -- set appropriate permissions on database directory */
-void
-set_permissions () {
+void set_permissions () {
 	struct pair *pp;			/* to get pair values */
 	char *owner, *group;		/* owner and group */
 	char *wildlife;			/* database directory */
@@ -1243,8 +1224,7 @@ set_permissions () {
 }
 
 /* make_usstates () -- generate EDB format entries for the U.S. states */
-void
-make_usstates () {
+void make_usstates () {
 	int i,j;
 	char *masterdsa;
 
@@ -1284,8 +1264,7 @@ char *timestamp () {
 #ifndef lint
 static void _advise ();
 
-void
-adios (char *what, char *fmt, ...) {
+void adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -1299,8 +1278,7 @@ adios (char *what, char *fmt, ...) {
 
 #else /* lint */
 
-void
-adios (char *what, char fmt) {
+void adios (char *what, char fmt) {
 	adios (what, fmt);
 }
 
@@ -1309,8 +1287,7 @@ adios (char *what, char fmt) {
 /* advise () -- print out an error message */
 #ifndef lint
 
-void
-advise (char *what, char *fmt, ...)
+void advise (char *what, char *fmt, ...)
 {
 	va_list ap;
 
@@ -1340,8 +1317,7 @@ static void _advise (char *what, char *fmt, va_list ap) {
 
 /* VARARGS */
 
-void
-advise (char *what, char *fmt) {
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 

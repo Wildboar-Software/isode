@@ -821,8 +821,7 @@ int	vfs_fdf = VFS_FDF;
 
 struct vfsmap *myvf;
 
-void
-ftam_advise (struct FTAMabort *fta, char *event) {
+void ftam_advise (struct FTAMabort *fta, char *event) {
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
 		printf ("\n");
@@ -889,8 +888,7 @@ ftam_advise (struct FTAMabort *fta, char *event) {
 	}
 }
 
-void
-ftam_chrg (struct FTAMcharging *charges) {
+void ftam_chrg (struct FTAMcharging *charges) {
 	int    i;
 	char   *cp;
 	struct fc_charge  *fc;
@@ -917,8 +915,7 @@ static char *entity[] = {
 	"responder"
 };
 
-void
-ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
+void ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action) {
 	int    i;
 	int     didit;
 	struct FTAMdiagnostic *dp;

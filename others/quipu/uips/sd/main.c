@@ -57,8 +57,7 @@ int main (unsigned int argc, char *argv[]) {
 	return(0);
 }
 
-void
-read_args (unsigned int argc, char ***avptr) {
+void read_args (unsigned int argc, char ***avptr) {
 	char **av;
 	char *cp;
 
@@ -93,26 +92,22 @@ read_args (unsigned int argc, char ***avptr) {
 	}
 }
 
-void
-setsignals () {
+void setsignals () {
 	int     i;
 
 	for (i=0; i<18; i++)
 		signal(i, SIG_DFL);
 }
 
-void
-eprint (char *str) {
+void eprint (char *str) {
 	tprint(str);
 }
 
-void
-sd_quit () {
+void sd_quit () {
 	quit("\n", 0);
 }
 
-void
-quit (char *error, int sig) {
+void quit (char *error, int sig) {
 	endwidgets();
 	ds_unbind();
 	hide_picture();
@@ -120,8 +115,7 @@ quit (char *error, int sig) {
 	exit(sig);
 }
 
-void
-int_quit (int sig) {
+void int_quit (int sig) {
 	quit("\n", sig);
 }
 

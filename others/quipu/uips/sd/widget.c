@@ -66,8 +66,7 @@ WINDOW *Text;
 int text_height;
 jmp_buf	env;
 
-void
-initwidgets () {
+void initwidgets () {
 	initscr();
 	noecho();
 	crmode();
@@ -76,8 +75,7 @@ initwidgets () {
 	activelist.count = 0;
 }
 
-void
-textfresh () {
+void textfresh () {
 	wrefresh (Text);
 }
 
@@ -256,20 +254,17 @@ void activewidget(WIDGET wdgts[], WINDOW *text) {
 	++(activelist.count);
 }
 
-void
-deleteactive () {
+void deleteactive () {
 	if (activelist.count > 0)
 		--(activelist.count);
 }
 
-void
-activeindex (int indx) {
+void activeindex (int indx) {
 	activelist.lastindex[activelist.count - 1] = indx;
 }
 
 /* Refresh each of the active widgets and the current text window */
-void
-redraw () {
+void redraw () {
 	int	i;
 
 #ifndef QUICKREFRESH
@@ -335,8 +330,7 @@ void printwdgt(WIDGET *wdgt) {
 	}
 }
 
-void
-printbar (int list_size, int first, int display_num) {
+void printbar (int list_size, int first, int display_num) {
 	WIDGET * wdgt;
 	int cnt, bar_size, bar_pos=0, space_size;
 
@@ -433,8 +427,7 @@ void printcommand(WIDGET *wdgt) {
 /* THESE ROUTINES GET AND REACT TO A USERS INPUT FROM THE KEYBOARD */
 
 /* Loop forever, calling widget callback functions when activated */
-void
-interact () {
+void interact () {
 	int	ch, indx;
 	void		int_quit(), jumpback();
 
@@ -512,8 +505,7 @@ int findactiveinput (int ch) {
 	return(-1);
 }
 
-void
-docallback (int indx) {
+void docallback (int indx) {
 	WIDGET	*wdgts;
 
 	activeindex(indx);
@@ -795,24 +787,20 @@ void wprint(WINDOW *here, char *fmt, char *a,char *b,char *c,char *d,char *e,cha
 
 /* This can be called as a way for an application to print text */
 /* VARARGS1 */
-void
-tprint (char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
+void tprint (char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
 	wprintw(Text,fmt,a,b,c,d,e,f,g,h,i,j);
 	wrefresh(Text);
 }
 
-void
-xprint (char *fmt) {
+void xprint (char *fmt) {
 	wprintw(Text, "%s", fmt);
 }
 
-void
-xprintint (char *fmt, int a) {
+void xprintint (char *fmt, int a) {
 	wprintw(Text,fmt, a);
 }
 
-void
-cleartext () {
+void cleartext () {
 #ifndef QUICKREFRESH
 	clearok (Text,TRUE);
 #endif /* QUICKREFRESH */
@@ -820,28 +808,24 @@ cleartext () {
 }
 
 /* Jump back to the interact function only on an interrupt */
-void
-jumpback () {
+void jumpback () {
 	waddstr(Text,"\n*** Interrupted ***\n");
 	wrefresh(Text);
 	longjmp(env, TRUE);
 }
 
 /* This is used as a declaration, when no function callback is required */
-void
-nullfn () {
+void nullfn () {
 }
 
 /* This is used by widgets that just want to kill the current level */
-void
-quitfn () {
+void quitfn () {
 	wclear(Text);
 	wrefresh(Text);
 	killwidgets(activelist.widgets[activelist.count - 1]);
 }
 
-void
-endwidgets () {
+void endwidgets () {
 	move(LINES-1, 0);
 	refresh();
 	endwin();

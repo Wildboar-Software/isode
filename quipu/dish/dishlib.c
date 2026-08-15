@@ -256,8 +256,7 @@ int unknown_cmd (int argc, char **argv) {
 
 #ifdef GNUREADLINE
 
-void
-gnu_gets_setup (void) {
+void gnu_gets_setup (void) {
 	extern int           rl_bind_key ();
 	extern int               *rl_insert ();
 	rl_bind_key ( '\t', rl_insert );

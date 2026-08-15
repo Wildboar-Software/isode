@@ -47,8 +47,7 @@ struct dn_seq *dn_seq_push ();
 int	dn_seq_print ();
 PE	grab_pe ();
 
-void
-init_aka (char *pgm, int stayopen, char *dit) {
+void init_aka (char *pgm, int stayopen, char *dit) {
 	char   *cp;
 	struct aka *ak;
 	static int once_only = 0;
@@ -577,8 +576,7 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -613,8 +611,7 @@ static void  _advise (char *what, char *fmt, va_list ap)
 #else
 /* VARARGS */
 
-void
-advise (char *what, char *fmt) {
+void advise (char *what, char *fmt) {
 	advise (what, fmt);
 }
 #endif

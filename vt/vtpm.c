@@ -545,8 +545,7 @@ int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 
 static void  acs_advise ();
 
-void
-acs_adios (struct AcSAPabort *aa, char *event) {
+void acs_adios (struct AcSAPabort *aa, char *event) {
 	acs_advise (aa, event);
 	finalbye ();
 	_exit (1);

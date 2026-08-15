@@ -42,8 +42,7 @@ alarmLen () {
 		return remoteAlarmTime;
 }
 
-void
-initAlarm () {
+void initAlarm () {
 	void onalarm();
 
 	alarmCount = 0;
@@ -51,8 +50,7 @@ initAlarm () {
 	alarm(alarmLen());
 }
 
-void
-alarmCleanUp () {
+void alarmCleanUp () {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (alarmCount > 1) {
@@ -61,22 +59,19 @@ alarmCleanUp () {
 	}
 }
 
-void
-handleTimeout () {
+void handleTimeout () {
 	de_unbind();
 	signal(SIGALRM, SIG_IGN);
 }
 
-void
-startUnbindTimer () {
+void startUnbindTimer () {
 	void handleTimeout();
 
 	signal(SIGALRM, (VFP) handleTimeout);
 	alarm((unsigned)bindTimeout);
 }
 
-void
-stopUnbindTimer () {
+void stopUnbindTimer () {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 }
@@ -145,8 +140,7 @@ int starstring (char *istr, char **ostr1, char **ostr2) {
 }
 
 /* print last component of a dn string - optionally indented by type */
-void
-printLastComponent (int indent, char *dnstr, int objectType, int printNumber) {
+void printLastComponent (int indent, char *dnstr, int objectType, int printNumber) {
 	char * cp1, * cp2, * savestring;
 
 	if (strcmp(dnstr, "root") == 0)
@@ -264,13 +258,11 @@ char *lastRDN (char *dnstr) {
 		return (++cp);
 }
 
-void
-clearProblemFlags () {
+void clearProblemFlags () {
 	limitProblem = notAllReached = FALSE;
 }
 
-void
-setProblemFlags (struct ds_search_result sresult) {
+void setProblemFlags (struct ds_search_result sresult) {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
 			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
@@ -298,8 +290,7 @@ int showAnyProblems (char *str) {
 	}
 }
 
-void
-logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
+void logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
 	char filterNumberString[20];
 
 	if (deLogLevel > 1) {
@@ -314,8 +305,7 @@ logSearchSuccess (char *outcome, char *objecttype, char *string, int searchNumbe
 	}
 }
 
-void
-logListSuccess (char *outcome, char *objecttype, int noMatches) {
+void logListSuccess (char *outcome, char *objecttype, int noMatches) {
 	if (deLogLevel > 1) {
 		ll_log (de_log, LLOG_NOTICE, NULLCP,
 				"listOutcome:%s:%s:%d", objecttype, outcome, noMatches);

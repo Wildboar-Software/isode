@@ -33,8 +33,7 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -53,8 +52,7 @@ void	advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

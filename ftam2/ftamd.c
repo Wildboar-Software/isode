@@ -117,8 +117,7 @@ int main (int argc, char **argv, char **envp) {
 		}
 }
 
-void
-ftam_adios (struct FTAMabort *fta, char *event) {
+void ftam_adios (struct FTAMabort *fta, char *event) {
 	struct FTAMindication   ftis;
 
 	ftam_advise (fta, event);
@@ -132,8 +131,7 @@ ftam_adios (struct FTAMabort *fta, char *event) {
 	_exit (1);
 }
 
-void
-ftam_advise (struct FTAMabort *fta, char *event) {
+void ftam_advise (struct FTAMabort *fta, char *event) {
 	advise (LLOG_NOTICE, NULLCP, "%s: failed", event);
 	ftam_diag (fta -> fta_diags, fta -> fta_ndiag);
 
@@ -148,8 +146,7 @@ static char *entity[] = {
 	"UNK", "IFSU", "IFPM", "VFS", "RFPM", "RFSU"
 };
 
-void
-ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
+void ftam_diag (struct FTAMdiagnostic diag[], int ndiag) {
 	int    i;
 	char  *cp;
 	char    buffer[BUFSIZ];
@@ -255,8 +252,7 @@ void	adios (char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -274,8 +270,7 @@ void	advise (int code, char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

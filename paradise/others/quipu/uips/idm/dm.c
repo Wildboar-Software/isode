@@ -652,13 +652,11 @@ void displayValidWildCards(void) {
 	printf(wildcard2);
 }
 
-void
-onint1(void) {
+void onint1(void) {
 	putchar('\n');
 	de_exit(-1);
 }
-void
-onint2(void) {
+void onint2(void) {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -679,8 +677,7 @@ int cleanup(int exitCode) {
 	de_exit(exitCode);
 }
 
-void
-onalarm(void) {
+void onalarm(void) {
 
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
@@ -700,8 +697,7 @@ onalarm(void) {
 	alarmCount++;
 }
 
-void
-searchFail(char *str) {
+void searchFail(char *str) {
 	searchfail = TRUE;
 	if (abandoned)
 		printf(srch_abandoned);
@@ -714,8 +710,7 @@ searchFail(char *str) {
 	}
 }
 
-void
-de_exit(int exitCode) {
+void de_exit(int exitCode) {
 	void exit();
 
 	/*  if (byeByeMessage == TRUE) */

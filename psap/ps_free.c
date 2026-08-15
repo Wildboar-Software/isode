@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-void
-ps_free (PS ps) {
+void ps_free (PS ps) {
 	if (ps -> ps_closeP)
 		(*ps -> ps_closeP) (ps);
 

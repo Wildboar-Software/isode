@@ -245,15 +245,13 @@ static int ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-void
-ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 
 	longjmp (toplevel, NOTOK);
 }
 
-void
-ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (rop -> rop_cc > 0)
@@ -265,8 +263,7 @@ ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-void
-acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -295,8 +292,7 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS2 */
 
-void
-adios (char *what, char *fmt) {
+void adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -314,8 +310,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS3 */
 
-void
-advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
@@ -333,8 +328,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 #else
 /* VARARGS2 */
 
-void
-ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif

@@ -262,8 +262,7 @@ int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	return (returncode);
 }
 
-void
-fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
+void fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 	int	i;
 
 	memset (ccitt, 0, sizeof (CCITT_FACILITY_DB));
@@ -496,8 +495,7 @@ int log_cause_and_diag (int fd) {
 	}
 }
 
-void
-sigurg (int sig, int code, struct sigcontext *scp) {
+void sigurg (int sig, int code, struct sigcontext *scp) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
 	signal (SIGURG, sigurg);
@@ -513,8 +511,7 @@ sigurg (int sig, int code, struct sigcontext *scp) {
 		scp->sc_syscall_action = SIG_RESTART;
 }
 
-void
-setup_sigurg (int fd) {
+void setup_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl;
 
 	signal (SIGURG, sigurg);
@@ -532,8 +529,7 @@ setup_sigurg (int fd) {
 	fdl = fdlp;
 }
 
-void
-clear_sigurg (int fd) {
+void clear_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
 	if ((fdl != NULL) && (fdl->fd == fd)) {

@@ -255,8 +255,7 @@ invalidinput:
 	return NOTOK;
 }
 
-void
-displayCurrentSettings () {
+void displayCurrentSettings () {
 	int i;
 
 	printf("These are the current settings:\n\n");

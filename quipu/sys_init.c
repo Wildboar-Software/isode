@@ -49,8 +49,7 @@ int dsa_sys_init (int *acptr, char ***avptr) {
 		slave_timeout = cache_timeout;
 }
 
-void
-mk_dsa_tmp_dir (void) {
+void mk_dsa_tmp_dir (void) {
 	struct stat statbuf;
 	char edbtmp_buf[BUFSIZ];
 	char err_buf[BUFSIZ];

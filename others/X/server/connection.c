@@ -233,8 +233,7 @@ open_unix_socket () {
  *    with TCP-IP with LSB first.
  *****************/
 
-void
-CreateWellKnownSockets () {
+void CreateWellKnownSockets () {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
    					 LSB or MSB */
@@ -425,8 +424,7 @@ CreateWellKnownSockets () {
 	}
 }
 
-void
-ResetWellKnownSockets () {
+void ResetWellKnownSockets () {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
 		/*
@@ -748,11 +746,10 @@ static int padlength[4] = {0, 3, 2, 1};
  *    and AllSockets.
  *****************/
 
-void
 #ifdef ISOCONN
-EstablishNewConnections(ClientPtr *newclients, int *nnew, int vecp, char **vec)
+void EstablishNewConnections(ClientPtr *newclients, int *nnew, int vecp, char **vec)
 #else /* ISOCONN */
-EstablishNewConnections(ClientPtr *newclients, int *nnew)
+void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 #endif /* ISOCONN */
 {
 	long readyconnections;     /* mask of listeners that are ready */
@@ -934,8 +931,7 @@ EstablishNewConnections(ClientPtr *newclients, int *nnew)
  *     Remove this file descriptor and it's inputbuffers, etc.
  ************/
 
-void
-CloseDownFileDescriptor(int connection) {
+void CloseDownFileDescriptor(int connection) {
 #ifdef ISOCONN
 	struct TSAPdisconnect tds;
 #ifdef ISODEBUG
