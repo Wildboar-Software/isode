@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"

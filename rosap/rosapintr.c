@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include "rosap.h"
+#include "compat.h"
 
 static int interrupted;
 static SFD	intrser ();

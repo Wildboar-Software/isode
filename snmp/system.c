@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "mib.h"
 #include "tailor.h"
 #include <sys/time.h>

@@ -4,6 +4,8 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/signal.h>
 #include "smux.h"
 #include "objects.h"
@@ -89,7 +91,9 @@ extern char   *pgetstr ();
 static void free_pq (void), free_pj (void), upstat (struct pq *pq, char *msg), startdaemon (struct pq *pq);
 static int findaemon (struct pq *pq, char *current);
 
-static int  pq_compar (struct pq *a, struct pq *b) {
+static int  pq_compar (const void *p, const void *q) {
+	struct pq *a = (struct pq *) p;
+	struct pq *b = (struct pq *) q;
 	return elem_cmp (a -> pq_instance, a -> pq_insize,
 					 b -> pq_instance, b -> pq_insize);
 }
@@ -203,9 +207,12 @@ static struct pq *get_pqent (unsigned int *ip, int len, int isnext) {
 	return NULL;
 }
 
-static int pj_compar (struct pj *a, struct pj *b)
+static int pj_compar (const void *p, const void *q)
 {
 	int i;
+	struct pj *a = (struct pj *) p;
+	struct pj *b = (struct pj *) q;
+
 	if (i = elem_cmp (a -> pj_instance, a -> pj_insize,
 					  b -> pj_instance, b -> pj_insize))
 		return i;

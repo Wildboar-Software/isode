@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <strings.h>
+#include <unistd.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"

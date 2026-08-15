@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #include "mib.h"
 
@@ -311,7 +312,9 @@ static int  o_udp_listen (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	}
 }
 
-static int  ut_compar (struct udptab **a, struct udptab **b) {
+static int  ut_compar (const void *p, const void *q) {
+	struct udptab **a = (struct udptab **) p;
+	struct udptab **b = (struct udptab **) q;
 	return elem_cmp ((*a) -> ut_instance, UT_SIZE,
 					 (*b) -> ut_instance, UT_SIZE);
 }
@@ -408,7 +411,7 @@ static int  get_listeners (int offset) {
 		use = base;
 		for (us = uts; us; us = us -> ut_next)
 			*use++ = us;
-		qsort ((char *) base, i, sizeof *base, (IFP)ut_compar);
+		qsort ((char *) base, i, sizeof *base, ut_compar);
 		usp = base;
 		us = uts = *usp++;
 		while (usp < use) {

@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "mib.h"
 #include "sys.file.h"
 #include <sys/time.h>

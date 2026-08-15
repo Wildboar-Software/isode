@@ -1,5 +1,6 @@
 /* vtpm.c - VTPM: FSM */
 
+#include <strings.h>
 #include <unistd.h>
 #include "vtpm.h"
 #include "eventmsg.h"

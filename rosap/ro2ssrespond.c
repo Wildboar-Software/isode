@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
 #include "tailor.h"

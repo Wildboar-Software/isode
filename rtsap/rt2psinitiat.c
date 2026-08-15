@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <strings.h>
 #include "RTS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"

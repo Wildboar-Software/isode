@@ -1,6 +1,7 @@
 /* rt2psrespond.c - RTPM: responder */
 
 #include <stdio.h>
+#include <strings.h>
 #include "RTS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"

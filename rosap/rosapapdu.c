@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <strings.h>
 #include "ROS-types.h"
 #include "ropkt.h"
 #ifdef	DEBUG

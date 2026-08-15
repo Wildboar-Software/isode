@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #include "mib.h"
 
@@ -474,7 +475,9 @@ try_again:
 	}
 }
 
-static int  tt_compar (struct tcptab **a, struct tcptab **b) {
+static int  tt_compar (const void *p, const void *q) {
+	struct tcptab **a = (struct tcptab **) p;
+	struct tcptab **b = (struct tcptab **) q;
 	return elem_cmp ((*a) -> tt_instance, TT_SIZE,
 					 (*b) -> tt_instance, TT_SIZE);
 }
@@ -562,7 +565,7 @@ static int  get_connections (int offset) {
 		tse = base;
 		for (ts = tts; ts; ts = ts -> tt_next)
 			*tse++ = ts;
-		qsort ((char *) base, i, sizeof *base, (IFP)tt_compar);
+		qsort ((char *) base, i, sizeof *base, tt_compar);
 		tsp = base;
 		ts = tts = *tsp++;
 		while (tsp < tse) {

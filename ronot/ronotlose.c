@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <strings.h>
 #include "tailor.h"
 #include "logger.h"
 #include "ronot.h"

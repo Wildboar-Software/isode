@@ -16,6 +16,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "mib.h"
 #include "interfaces.h"
@@ -208,8 +209,10 @@ out1:
 	return NOTOK;
 }
 
-static int  rt_compar (struct rtetab **a, struct rtetab **b) {
+static int  rt_compar (const void *p, const void *q) {
 	int	    i;
+	struct rtetab **a = (struct rtetab **) p;
+	struct rtetab **b = (struct rtetab **) q;
 
 	if ((i = (*a) -> rt_dst.sa.sa_family - (*b) -> rt_dst.sa.sa_family))
 		return (i > 0 ? 1 : -1);
@@ -229,7 +232,7 @@ void sort_rtetab (void) {
 	rte = base;
 	for (rt = rts; rt; rt = rt -> rt_next)
 		*rte++ = rt;
-	qsort ((char *) base, routeNumber, sizeof *base, (IFP) rt_compar);
+	qsort ((char *) base, routeNumber, sizeof *base, rt_compar);
 	rtp = base;
 	rt = rts = *rtp++;
 	rts_inet = NULL;

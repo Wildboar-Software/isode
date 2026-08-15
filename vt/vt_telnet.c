@@ -1,5 +1,7 @@
 /* vt_telnet.c - VT telnet profile */
 
+#include <strings.h>
+
 #include "vtpm.h"
 #include "sector1.h"
 #ifdef SVR4_UCB

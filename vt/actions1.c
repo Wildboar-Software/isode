@@ -1,5 +1,8 @@
 /* actions1.c - VTPM: FSM sector 1 actions */
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "vtpm.h"
 #include "sector1.h"
 

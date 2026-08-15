@@ -12,6 +12,7 @@
 #include "tailor.h"
 
 #include <errno.h>
+#include "compat.h"
 #include "internet.h"
 #include "sys.file.h"
 

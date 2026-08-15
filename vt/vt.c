@@ -1,7 +1,9 @@
 /* vt.c - VT initiator */
 
 #include <signal.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "vtpm.h"
 #include "sector1.h"

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <strings.h>
 #include "rtpkt.h"
 #include "tailor.h"
 

@@ -1,5 +1,6 @@
 /* ronotbind1.c - RONOT: ABSTRACT-BIND mapping onto A-ASSOCIATE.REQUEST */
 
+#include <strings.h>
 #include "RONOT-types.h"
 #include "logger.h"
 #include "ronot.h"

@@ -5,6 +5,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"

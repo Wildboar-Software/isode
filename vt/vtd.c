@@ -5,7 +5,10 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <time.h>
 #include <unistd.h>
+#include <pty.h>
 #include "vtpm.h"
 #include "sector1.h"
 #include "tailor.h"
@@ -38,6 +41,7 @@
 #include <setjmp.h>
 #include <pwd.h>
 #include <stdarg.h>
+#include <utmp.h>
 
 #define	BELL	'\07'
 #ifndef	SUNOS4

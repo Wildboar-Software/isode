@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "compat.h"
 #include "smux.h"
 #include "objects.h"
 #include "sys.file.h"

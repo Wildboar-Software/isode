@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <strings.h>
 #include "ROS-types.h"
 #include "manifest.h"
 #include "ropkt.h"

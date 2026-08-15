@@ -12,6 +12,7 @@
 #include <search.h>
 #include "SNMP-types.h"
 #include "objects.h"
+#include "dgram.h"
 #include "tailor.h"
 
 #ifdef	BSD42

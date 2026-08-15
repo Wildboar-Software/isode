@@ -1,6 +1,10 @@
 /* rt2ss.c - RTPM: SSAP interface */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <search.h>
+#include <time.h>
 #include "RTS-types.h"
 #include "OACS-types.h"
 #include "rtpkt.h"

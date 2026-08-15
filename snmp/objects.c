@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "objects.h"
 #include "tailor.h"
 
@@ -50,8 +51,8 @@ int	THASH (const char *name) {
 #define	OT_XXX	0x04
 
 static int	ot_compar (const void *ap, const void *ab) {
-	struct object_type **a = ap;
-	struct object_type **b = ab;
+	struct object_type **a = (struct object_type **) ap;
+	struct object_type **b = (struct object_type **) ab;
 	int	    i = oid_cmp ((*a) -> ot_name, (*b) -> ot_name);
 
 	if (i == 0
@@ -232,7 +233,7 @@ you_lose:
 			for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain)
 				*op++ = ot;
 		ep = op;
-		qsort ((char *) base, j, sizeof *base, (IFP)ot_compar);
+		qsort ((char *) base, j, sizeof *base, ot_compar);
 		op = base;
 		anchor = ot = *op++;
 		while (op < ep) {

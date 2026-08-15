@@ -4,6 +4,9 @@
 #undef PEPYPARM
 #define PEPYPARM int *
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "vtpm.h"
 #include "sector1.h"
 
