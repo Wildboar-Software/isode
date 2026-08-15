@@ -1,14 +1,18 @@
 /* fred.c - FRont-End to Dish */
 
 #include <ctype.h>
+#include <fcntl.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "fred.h"
 #include "internet.h"
+#include "logger.h"
 
 #include "sys.file.h"
 

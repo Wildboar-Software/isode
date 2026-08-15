@@ -19,6 +19,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <crypt.h>
 #include <pwd.h>
 #include <grp.h>
 #include <sys/types.h>

@@ -2,6 +2,7 @@
  * 
  */
 
+#include <string.h>
 #include "bitmap"
 #include "pod.h"
 #include "defs.h"

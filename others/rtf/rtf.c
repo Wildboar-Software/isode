@@ -1,8 +1,12 @@
 /* rtf.c - RT-file transfer utility -- initiator */
 
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "RTF-types.h"
 #include "rtf.h"
 #include "isoservent.h"
+#include "tailor.h"
 
 static char *myname = "rtf";
 

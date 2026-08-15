@@ -42,6 +42,8 @@ static char sccsid[] = "@(#)expand.c    5.6 (Berkeley) 6/1/90";
 #endif
 
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 #include "defs.h"
 
 #define	GAVSIZ	NCARGS / 6

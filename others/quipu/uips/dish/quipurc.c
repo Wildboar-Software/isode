@@ -9,6 +9,10 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <pwd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "quipu/bind.h"
 #include "quipu/read.h"

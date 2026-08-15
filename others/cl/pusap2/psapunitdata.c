@@ -42,8 +42,11 @@
 /* stolen from psapinitiate.c in ISODE's /psap2 library */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "PS-types.h"
 #include "pupkt.h"
 #include "isoservent.h"

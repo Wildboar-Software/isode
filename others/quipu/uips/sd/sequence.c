@@ -8,6 +8,8 @@
  *    at GEC Research, Hirst Research Centre.
  */
 
+#include <stdlib.h>
+#include <string.h>
 #include "sequence.h"
 
 extern char * strdup ();

@@ -5,6 +5,8 @@
  */
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include "ropkt.h"
 
 #ifndef	lint

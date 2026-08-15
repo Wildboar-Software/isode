@@ -6,6 +6,7 @@
 #else
 #include <sys/termio.h>
 #endif
+#include <sys/ioctl.h>
 
 static short savemode;
 static unsigned char savemin;

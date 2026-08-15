@@ -4,7 +4,11 @@
 #include <signal.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include "fred.h"
 #include "internet.h"
 

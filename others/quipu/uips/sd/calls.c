@@ -4,6 +4,11 @@
  * 
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <ctype.h>
+#include <unistd.h>
 #include "calls.h"
 
 #define RESBUF 10000

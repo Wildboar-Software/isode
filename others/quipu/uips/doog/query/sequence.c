@@ -13,6 +13,8 @@
 
 *****************************************************************************/
 
+#include <stdlib.h>
+#include <string.h>
 #include "util.h"
 #include "sequence.h"
 

@@ -2,6 +2,7 @@
 
 #ifdef HULA
 
+#include <stdlib.h>
 #include <search.h>
 #include "spkt.h"
 #include "tailor.h"

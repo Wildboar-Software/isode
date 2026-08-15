@@ -8,6 +8,8 @@
  *
  */
 
+#include <stdlib.h>
+#include <strings.h>
 #include "ntp.h"
 #include <stdarg.h>
 #include <unistd.h>

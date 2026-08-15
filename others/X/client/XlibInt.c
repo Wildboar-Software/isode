@@ -12,13 +12,21 @@
 #define NEED_REPLIES
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include <errno.h>
+#include <sys/ioctl.h>
 #include "Xlibint.h"
 
 #ifdef ISOCONN
 #include <isode/psap.h>
 #include <isode/tsap.h>
 #include <isode/isoservent.h>
+#include "psap.h"
+#include "tsap.h"
+#include "isoservent.h"
 
 #endif /* ISOCONN */
 

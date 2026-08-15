@@ -37,8 +37,10 @@
 /* modified for UNIT-DATA protocol stack */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#include <strings.h>
 #include <unistd.h>
 #include "ryresponder.h"
 

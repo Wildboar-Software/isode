@@ -1,6 +1,7 @@
 /* template.c - template for display processes */
 
 #include "stdio.h"
+#include <unistd.h>
 #include "quipu/photo.h"
 
 /* Any errors should be written to *stdout* */

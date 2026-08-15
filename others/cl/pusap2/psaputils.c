@@ -43,7 +43,11 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <signal.h>
+#include <unistd.h>
 #include <search.h>
 #include "PS-types.h"
 #include "pupkt.h"

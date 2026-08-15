@@ -18,6 +18,9 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "general.h"
 #include "logger.h"
 #include "rfa.h"

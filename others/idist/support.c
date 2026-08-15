@@ -17,6 +17,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "Idist-types.h"	/* type definitions */
 #include "Idist-ops.h"		/* operation definitions */
 #include "defs.h"

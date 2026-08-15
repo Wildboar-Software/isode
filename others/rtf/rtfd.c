@@ -1,8 +1,14 @@
 /* rtfd.c - RT-file transfer utility -- responder */
 
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <grp.h>
+#include <crypt.h>
 #include "RTF-types.h"
 #include "rtf.h"
 #include <pwd.h>
+#include "tailor.h"
 
 #ifdef	SYS5
 struct passwd *getpwnam ();

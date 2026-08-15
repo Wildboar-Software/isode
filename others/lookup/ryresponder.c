@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <setjmp.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 

@@ -1,6 +1,8 @@
 /* tty.c - display on any terminal */
 
 #include "stdio.h"
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/photo.h"
 
 #define GREYSCALE "#OI&\\*o=_\"-;:,.  "

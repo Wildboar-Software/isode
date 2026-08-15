@@ -33,6 +33,12 @@ SOFTWARE.
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/select.h>
 #include "X.h"
 #include "misc.h"
 
@@ -102,6 +108,7 @@ extern int playback_on;
  */
 
 #include <isode/tsap.h>
+#include "tsap.h"
 #endif /* ISOCONN */
 
 static long timeTilFrob = 0;		/* while screen saving */

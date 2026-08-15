@@ -2,6 +2,7 @@
  * 
  */
 
+#include <string.h>
 #include "quipu/photo.h"
 #include "pod.h"
 

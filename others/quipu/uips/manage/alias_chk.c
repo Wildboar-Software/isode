@@ -1,6 +1,7 @@
 /* alias_chk.c - checks aliases from position provided downwards. */
 /* A management tool - probably best to run this as a manager. */
 
+#include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"

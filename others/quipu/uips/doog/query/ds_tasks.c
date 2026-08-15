@@ -13,6 +13,7 @@
 
 *****************************************************************************/
 
+#include <stdlib.h>
 #include "types.h"
 #include "util.h"
 #include "ds_tasks.h"

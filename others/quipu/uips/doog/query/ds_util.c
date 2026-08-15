@@ -13,6 +13,8 @@
 
 *****************************************************************************/
 
+#include <ctype.h>
+#include <stdlib.h>
 #include "ds_util.h"
 
 #include "quipu/ds_search.h"

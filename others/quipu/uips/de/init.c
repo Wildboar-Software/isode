@@ -8,11 +8,14 @@
 
 *****************************************************************************/
 
-/* #include <stdlib.h> */
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "demanifest.h"
 #include "types.h"
 #include "util.h"
 #include "quipu/util.h"
+#include "quipu/attr.h"
 #include "tailor.h"
 #include "logger.h"
 #include "query.h"

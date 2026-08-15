@@ -8,6 +8,13 @@
  * systems.  VMS and System V should plan to have their own version.
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
 #include <X11/Xos.h>
 #include "Xlibint.h"
 #include <sys/socket.h>
@@ -31,6 +38,9 @@ void bcopy();
 #include <isode/psap.h>
 #include <isode/tsap.h>
 #include <isode/isoservent.h>
+#include "psap.h"
+#include "tsap.h"
+#include "isoservent.h"
 
 #ifdef ISODEBUG
 extern char *isodetcpath;

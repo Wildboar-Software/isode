@@ -47,6 +47,9 @@ static char rcsid[] = "
 
 #include "defs.h"
 #include "sys.file.h"
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 struct	linkbuf *ihead;		/* list of files with more than one link */
 char	target[BUFSIZ];		/* target/source directory name */

@@ -3,6 +3,7 @@
 #include "rtf.h"
 #include <stdarg.h>
 #include <unistd.h>
+#include <sys/time.h>
 #if	defined(SYS5) && !defined(HPUX)
 #include <sys/times.h>
 #define	TMS

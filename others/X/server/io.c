@@ -30,6 +30,10 @@ SOFTWARE.
  *****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "Xos.h"
 #include "Xmd.h"
 #include <errno.h>
@@ -46,6 +50,7 @@ SOFTWARE.
 
 #ifdef ISOCONN
 #include <isode/tsap.h>
+#include "tsap.h"
 #endif /* ISOCONN */
 
 extern long ClientsWithInput[];

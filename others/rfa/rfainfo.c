@@ -17,6 +17,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -30,6 +32,7 @@
 #include <signal.h>
 #include "psap.h"
 #include "logger.h"
+#include "ryresponder.h"
 #include "rfainfo.h"
 #include "rfa.h"
 

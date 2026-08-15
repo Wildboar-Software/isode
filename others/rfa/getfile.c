@@ -18,6 +18,10 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <utime.h>
 #include <pwd.h>
 #include <grp.h>
 #include <sys/types.h>

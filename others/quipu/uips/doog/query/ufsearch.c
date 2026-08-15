@@ -6,6 +6,9 @@
 
 *****************************************************************************/
 
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "types.h"
 #include "util.h"
 #include "ufsearch.h"

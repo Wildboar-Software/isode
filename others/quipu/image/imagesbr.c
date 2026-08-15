@@ -2,6 +2,9 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <stdarg.h>
 #include <search.h>
 #include <unistd.h>

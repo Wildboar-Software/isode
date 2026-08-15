@@ -45,6 +45,9 @@ static char sccsid[] = "@(#)docmd.c	5.6 (Berkeley) 6/1/90";
 #include <setjmp.h>
 #include "sys.file.h"
 #include <signal.h>
+#include <string.h>
+#include <unistd.h>
+#include <regex.h>
 
 FILE	*lfp;			/* log file for recording files updated */
 struct	subcmd *subcmds;	/* list of sub-commands for current cmd */

@@ -1,6 +1,9 @@
 /* dispatch.c - fred dispatch */
 
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "fred.h"
 #ifdef	BSD42
 #include <sys/ioctl.h>

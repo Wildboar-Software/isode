@@ -1,7 +1,10 @@
 /* template.c - your comments here */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
+#include "quipu/attr.h"
 
 #define LINES 24
 #define COLS  80

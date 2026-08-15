@@ -18,6 +18,9 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <search.h>
 #include "Idist-types.h"      /* type definitions */
 #include "Idist-ops.h"                /* operation definitions */

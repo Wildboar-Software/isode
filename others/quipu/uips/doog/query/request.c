@@ -13,6 +13,7 @@
 
 *****************************************************************************/
 
+#include <stdlib.h>
 #include "types.h"
 #include "error.h"
 #include "request.h"

@@ -6,9 +6,14 @@
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <pwd.h>
+#include <sys/ioctl.h>
 
 #include "config.h"
 #include "general.h"
@@ -19,6 +24,8 @@
 
 #include "internet.h"
 #include "tailor.h"
+#include "logger.h"
+#include "compat.h"
 
 static	int	debug = 0;
 static	int	nbits = FD_SETSIZE;

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "quipu/entry.h"

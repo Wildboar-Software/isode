@@ -7,6 +7,7 @@
  *
  */
 
+#include <stdlib.h>
 #include "interact.h"
 #include "query.h"
 #include "initialize.h"

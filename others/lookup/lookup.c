@@ -1,6 +1,8 @@
 /* lookup.c - password lookup service -- initiator */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "PasswordLookup-types.h"	/* type definitions */
 #include "ryinitiator.h"		/* for generic interctive initiators */
 #include "PasswordLookup-ops.h"		/* operation definitions */

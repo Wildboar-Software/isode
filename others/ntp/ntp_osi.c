@@ -1,5 +1,7 @@
 /* OSI ntp stuff */
 
+#include <stdlib.h>
+#include <strings.h>
 #include "ntp.h"
 
 #include "NTP-ops.h"

@@ -7,6 +7,7 @@
  *
  */
 
+#include <string.h>
 #include "types.h"
 #include "util.h"
 #include "quipu/util.h"

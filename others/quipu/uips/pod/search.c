@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <string.h>
 
 #include "quipu/util.h"
 #include "quipu/common.h"

@@ -1,7 +1,11 @@
 /* unbind.c - dish shell unbind and squid commands */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <errno.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "tailor.h"
 #include "general.h"

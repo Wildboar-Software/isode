@@ -6,6 +6,7 @@
 
 *****************************************************************************/
 
+#include <stdlib.h>
 #include "types.h"
 #include "util.h"
 #include "read.h"

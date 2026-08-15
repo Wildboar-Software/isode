@@ -52,6 +52,12 @@ SOFTWARE.
 #include "Xproto.h"
 #include <sys/param.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <arpa/inet.h>
+#include <sys/time.h>
+#include <sys/select.h>
 #include "Xos.h"			/* for strings, file, time */
 #include <sys/socket.h>
 
@@ -94,6 +100,9 @@ static int unixDomainConnection = -1;
 #include <isode/psap.h>
 #include <isode/tsap.h>
 #include <isode/isoservent.h>
+#include "psap.h"
+#include "tsap.h"
+#include "isoservent.h"
 
 extern char *isodetcpath;
 

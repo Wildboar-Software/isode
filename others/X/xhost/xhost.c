@@ -18,11 +18,16 @@ without express or implied warranty.
 #include <signal.h>
 #include <setjmp.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #ifdef notdef
 #include <arpa/inet.h>
 bogus definition of inet_makeaddr() in BSD 4.2 and Ultrix
@@ -41,6 +46,9 @@ extern unsigned long inet_makeaddr();
 #include <isode/psap.h>
 #include <isode/tsap.h>
 #include <isode/isoservent.h>
+#include "psap.h"
+#include "tsap.h"
+#include "isoservent.h"
 #include "../server/osdep.h"
 #endif /* ISOCONN */
 #include "af_osi.h"

@@ -2,9 +2,16 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <signal.h>
 #include "imagesbr.h"
 #include "internet.h"
+#include "tailor.h"
+#include "compat.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 

@@ -1,6 +1,7 @@
 /* e_main.c - make the encoding routines into a stand alone program */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "quipu/photo.h"
 #include <pixrect/pixrect_hs.h>
 

@@ -3,6 +3,10 @@
 #include <X11/Xos.h>
 #include <X11/Xlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <stdarg.h>
 #include <ctype.h>
 #include <signal.h>
 #include <unistd.h>

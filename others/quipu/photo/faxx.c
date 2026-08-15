@@ -1,6 +1,9 @@
 /* winx.c - xwindow version of display code */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "quipu/photo.h"
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>

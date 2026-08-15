@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "dir_entry.h"
 
 int free_dir_entry(dirEntry entry) {

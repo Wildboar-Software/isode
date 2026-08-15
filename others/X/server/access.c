@@ -38,6 +38,10 @@ SOFTWARE.
 #include "misc.h"
 #include "site.h"
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -61,6 +65,9 @@ SOFTWARE.
 #include <isode/psap.h>
 #include <isode/tsap.h>
 #include <isode/isoservent.h>
+#include "psap.h"
+#include "tsap.h"
+#include "isoservent.h"
 #endif
 #undef NULL
 #include <stdio.h>

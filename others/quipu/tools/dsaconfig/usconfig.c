@@ -7,10 +7,14 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/file.h>
+#include <sys/stat.h>
+#include <time.h>
 #include <pwd.h>
 #include <grp.h>
 

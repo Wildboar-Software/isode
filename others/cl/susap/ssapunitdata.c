@@ -41,7 +41,10 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
+#include <unistd.h>
 #include "spkt.h"
 #include "ssap.h"
 #include "susap.h"

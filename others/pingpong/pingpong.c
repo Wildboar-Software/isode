@@ -2,7 +2,10 @@
 
 #include "manifest.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "isoaddrs.h"
+#include "tailor.h"
 #include "tsap.h"
 
 struct PSAPaddr * pingaddr;

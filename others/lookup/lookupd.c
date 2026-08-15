@@ -1,6 +1,8 @@
 /* lookupd.c - password lookup service -- responder */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <pwd.h>
 #include "ryresponder.h"	/* for generic idempotent responders */
 #include "PasswordLookup-ops.h"		/* operation definitions */

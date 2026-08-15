@@ -18,8 +18,10 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include "general.h"
 
 int main (int ac, char **av) {
 	struct timeval tv;

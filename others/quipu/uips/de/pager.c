@@ -1,7 +1,10 @@
 /* template.c - your comments here */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
+#include <signal.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <termios.h>
 #include "quipu/util.h"

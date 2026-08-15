@@ -1,6 +1,10 @@
 /* miscellany.c - fred miscellaneous functions */
 
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "fred.h"
 
 int	area_quantum = 0;

@@ -4,6 +4,10 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "mosy-defs.h"
 
 static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),

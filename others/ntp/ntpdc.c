@@ -5,6 +5,9 @@
 
 #include <errno.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <unistd.h>
 #include "ntp.h"
 
 #define	WTIME	10		/* Time to wait for all responses */

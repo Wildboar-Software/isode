@@ -1,6 +1,9 @@
 /* ou.c - search for an org unit */
 
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 #include "quipu/dua.h"

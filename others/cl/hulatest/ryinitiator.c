@@ -43,7 +43,10 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "ryinitiator.h"
 
 #define ACSE

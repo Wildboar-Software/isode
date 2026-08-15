@@ -1,6 +1,7 @@
 /* initiator.c -- initiator for callback demo */
 
 #include <stdio.h>
+#include <string.h>
 #include "callback.h"
 
 static char *mycontext = "isode callback demo";

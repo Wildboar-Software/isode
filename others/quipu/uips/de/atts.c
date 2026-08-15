@@ -1,6 +1,9 @@
 /* template.c - your comments here */
 
 #include "quipu/util.h"
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 #include "quipu/ds_search.h"

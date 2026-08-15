@@ -1,6 +1,12 @@
 /* xwho.c - who for X windows */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
 #include "imagesbr.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -8,6 +14,8 @@
 #include <netdb.h>
 #include "general.h"
 #include "manifest.h"
+#include "tailor.h"
+#include "compat.h"
 #include "sys.file.h"
 #include "usr.dirent.h"
 

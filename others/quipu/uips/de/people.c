@@ -1,6 +1,9 @@
 /* people.c - search for a person */
 
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 #include "quipu/dua.h"

@@ -34,12 +34,19 @@ static char *sccsid = "@(#)read_psti.c	1.1	MS/ACF	89/02/17";
  *			   provided to the reference and local time.
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/select.h>
 #include <sys/ioctl.h>
 #if defined(sun)
 #include <termio.h>
 #endif
+#include "general.h"
+#include "logger.h"
 
 #ifdef	DEBUG
 extern int debug;

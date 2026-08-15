@@ -8,7 +8,10 @@
 
 #ifdef HULA
 
+#include <stdlib.h>
+#include <signal.h>
 #include <search.h>
+#include <sys/select.h>
 #include "tpkt.h"
 #include "tsap.h"
 #include "tusap.h"

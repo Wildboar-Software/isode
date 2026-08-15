@@ -8,6 +8,8 @@
  */
 
 #include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "ntp.h"
 
 struct intf *addrs;

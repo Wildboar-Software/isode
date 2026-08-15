@@ -6,6 +6,8 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define IP _IP
 #include <curses.h>
 #undef OK

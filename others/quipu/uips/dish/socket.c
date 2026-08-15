@@ -1,7 +1,10 @@
 /* socket.c - dish -pipe support */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "quipu/util.h"
 #include "tailor.h"
 #include "general.h"

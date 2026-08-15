@@ -26,6 +26,8 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <pwd.h>
 #include "ryinitiator.h"	/* for generic interactive initiators */
 

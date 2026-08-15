@@ -5,8 +5,13 @@
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <time.h>
 #include "general.h"
 #include "manifest.h"
 #include "internet.h"

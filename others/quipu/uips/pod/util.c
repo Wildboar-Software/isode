@@ -1,3 +1,4 @@
+#include <string.h>
 #include "util.h"
 
 int issubstr (char *str, char *substr) {

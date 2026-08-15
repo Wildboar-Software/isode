@@ -19,6 +19,7 @@
  *
  */
 
+#include <stdlib.h>
 #include "ntp.h"
 #include "af_osi.h"
 

@@ -27,6 +27,8 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef notanymore	/* SYS 5 symbol clashes with curses... */
 #include <sgtty.h>
 #endif

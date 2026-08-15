@@ -4,6 +4,8 @@
  * 
  */
 
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/photo.h"
 #include "quipu/common.h"
