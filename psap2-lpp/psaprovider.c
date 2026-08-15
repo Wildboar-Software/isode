@@ -1,6 +1,6 @@
 /* psaprovider.c - PPM: implement the pseudo-presentation protocol */
 /* Contributed by The Wollongong Group, Inc. */
-#include <signal.h>
+#include <search.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"

@@ -19,6 +19,12 @@
 #ifdef	TLI_TP
 #include <errno.h>
 #include <fcntl.h>
+#include <search.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include "compat.h"
 #include "tailor.h"
 #include "sys/file.h"
 

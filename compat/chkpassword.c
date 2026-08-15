@@ -3,6 +3,7 @@
 //#define _XOPEN_SOURCE
 //#include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 

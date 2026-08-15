@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
+#include <strings.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

@@ -6,6 +6,7 @@
 #include "vtpm.h"
 #include "sector1.h"
 #include "tailor.h"
+#include "compat.h"
 
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>

@@ -14,15 +14,24 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <search.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include "tailor.h"
 #include "tpkt.h"
 #include "mpkt.h"
 #include "sys.file.h"
 #include "tsap.h"
+#include "compat.h"
 
 #ifdef	LPP
 #undef	X25

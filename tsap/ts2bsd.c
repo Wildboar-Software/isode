@@ -12,9 +12,16 @@
 
 #ifdef	BSD_TP4
 #include <errno.h>
+#include <search.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/socket.h>
 #include <sys/uio.h>
 #include "tailor.h"
+#include "compat.h"
 
 /*#define	MAXTP4		8192	/* until we have a dynamic estimate... */
 #define	MAXTP4		1024	/* until we have a dynamic estimate... */

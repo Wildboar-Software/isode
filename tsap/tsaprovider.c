@@ -1,6 +1,9 @@
 /* tsaprovider.c - implement the transport service */
 
+#include <search.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #include <unistd.h>
 #include "tpkt.h"
@@ -580,19 +583,14 @@ newtblk(void) {
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
 	if (tb == NULL)
 		return NULL;
-
 	tb -> tb_fd = NOTOK;
-
 	tb -> tb_qbuf.qb_forw = tb -> tb_qbuf.qb_back = &tb -> tb_qbuf;
 	tb -> tb_qwrites.qb_forw = tb -> tb_qwrites.qb_back = &tb -> tb_qwrites;
-
 	if (once_only == 0) {
 		THead -> tb_forw = THead -> tb_back = THead;
 		once_only++;
 	}
-
 	insque (tb, THead -> tb_back);
-
 	return tb;
 }
 

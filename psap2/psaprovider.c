@@ -1,7 +1,8 @@
 /* psaprovider.c - implement the presentation protocol */
 
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
+#include <search.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
@@ -62,7 +63,7 @@ int PDataRequestAux (
 	char *text,
 	int ppdu
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     i,
 			len,
 			result;
@@ -125,7 +126,7 @@ out1:
 /*    P-READ.REQUEST (pseudo) */
 
 int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct psapblk *pb;
 
@@ -429,7 +430,7 @@ int PSetIndications (
 	void (*abort)(int sd, struct PSAPabort *sa),
 	struct PSAPindication *pi
 ) {
-	SBV     smask;
+	int     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;

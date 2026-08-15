@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "manifest.h"
 #include "tailor.h"
+#include <sys/ioctl.h>
 #include <sys/stat.h>
 
 int	xselect_blocking_on_intr = 0;

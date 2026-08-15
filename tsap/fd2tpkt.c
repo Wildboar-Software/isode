@@ -1,7 +1,10 @@
 /* fd2tpkt.c - read/write a TPDU thru a socket */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
+#include <arpa/inet.h>
 #include "tpkt.h"
 #include "tailor.h"
 #include "internet.h"

@@ -469,3 +469,7 @@ int	tp4open ();
 
 char   *tp4save ();
 int	tp4restore ();
+
+int TTService (struct tsapblk *tb);
+int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out);
+int copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out);

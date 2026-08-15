@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <search.h>
 #include "spkt.h"
 #include "tailor.h"
 

@@ -1,13 +1,4 @@
 /* tsaputils.c - common service routines to tsap unit data */
-
-#include <stdio.h>
-#include <signal.h>
-#include "tpkt.h"
-#include "tsap.h"
-#include "tusap.h"
-#include "isoservent.h"
-#include "tailor.h"
-
 #define	selmask(fd,m,n) \
 { \
     FD_SET (fd, &(m)); \
@@ -16,6 +7,13 @@
 }
 
 #ifdef HULA
+
+#include <search.h>
+#include "tpkt.h"
+#include "tsap.h"
+#include "tusap.h"
+#include "isoservent.h"
+#include "tailor.h"
 
 static int tu_once_only = 0;
 static struct tsapblk tusapque;

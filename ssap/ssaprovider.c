@@ -1,7 +1,8 @@
 /* ssaprovider.c - implement the session protocol */
 
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
+#include <search.h>
 #include "spkt.h"
 #include "tailor.h"
 

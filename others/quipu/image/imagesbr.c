@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <search.h>
 #include <unistd.h>
 #include "imagesbr.h"
 #include "quipu/bind.h"

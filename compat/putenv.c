@@ -1,6 +1,7 @@
 /* putenv.c - generic putenv() */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "general.h"
 #include "manifest.h"

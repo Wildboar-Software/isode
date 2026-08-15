@@ -1,6 +1,8 @@
 /* closedir -- close a directory stream */
 #include	<sys/errno.h>
 #include	<sys/types.h>
+#include	<stdlib.h>
+#include	<unistd.h>
 #include	"usr.dirent.h"
 
 #ifndef	GETDENTS

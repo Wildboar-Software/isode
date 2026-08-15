@@ -1,6 +1,7 @@
 /* saddr2str.c - SSAPaddr to string value */
 
 #include <stdio.h>
+#include <strings.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"

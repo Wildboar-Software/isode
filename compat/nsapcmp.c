@@ -1,6 +1,7 @@
 /* nsapcmp.c - compare NSAPs */
 
 #include <string.h>
+#include <strings.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"

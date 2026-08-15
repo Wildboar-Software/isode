@@ -4,6 +4,7 @@
 #define	_ISOADDRS_
 
 #include <stdint.h>
+#include "tailor.h"
 
 #ifndef	_MANIFEST_
 #include "manifest.h"
@@ -253,5 +254,9 @@ struct QOStype {
 	int	    qos_maxtime;	/* for SPM response during S-CONNECT */
 };
 #define	NULLQOS	((struct QOStype *) 0)
+
+int macro2comm (char *name, struct ts_interim *ts);
+void free_macros(void);
+int norm2na (char *p, int len, struct NSAPaddr *na);
 
 #endif

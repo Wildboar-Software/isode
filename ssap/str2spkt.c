@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <search.h>
 #include "spkt.h"
 #include "tailor.h"
 

@@ -1,6 +1,7 @@
 /* is2saddr.c - old-style S-ADDR lookup */
 
 #include <string.h>
+#include <strings.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "isoservent.h"

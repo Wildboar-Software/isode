@@ -25,9 +25,16 @@
 
 #ifdef	SUN_TP4
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <search.h>
+#include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/socket.h>
 #include <sys/uio.h>
 #include "tailor.h"
+#include "compat.h"
 
 #ifdef SUNLINK_7_0 /* 13-Jun-91: added by Dave D. for SunNet OSI 7.0 bug */
 #include "tsap.h"

@@ -1,11 +1,10 @@
 /* ssaputils.c - comon session utilities */
 
-#include <stdio.h>
-#include <signal.h>
+#ifdef HULA
+
+#include <search.h>
 #include "spkt.h"
 #include "tailor.h"
-
-#ifdef HULA
 
 static int  su_once_only = 0;
 static struct ssapblk susapque;

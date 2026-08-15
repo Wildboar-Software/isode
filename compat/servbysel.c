@@ -1,6 +1,7 @@
 /* servbysel.c - getisoserventbyselector */
 
 #include <string.h>
+#include <strings.h>
 #include "general.h"
 #include "manifest.h"
 #include "isoservent.h"

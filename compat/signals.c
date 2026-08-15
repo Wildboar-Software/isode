@@ -1,6 +1,7 @@
 /* signals.c - signal handling */
 
 #include <signal.h>
+#include <unistd.h>
 #ifndef	BADSIG
 #define	BADSIG	((SFP) -1)
 #endif

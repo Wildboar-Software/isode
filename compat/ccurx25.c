@@ -17,6 +17,10 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <sys/socket.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

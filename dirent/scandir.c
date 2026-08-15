@@ -33,6 +33,8 @@ static char sccsid[] = "@(#)scandir.c	5.9 (Berkeley) 6/24/90";
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
+#include <string.h>
 #include "general.h"		/* sys 5 bcopy */
 #include "usr.dirent.h"
 

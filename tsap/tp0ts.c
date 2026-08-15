@@ -1,12 +1,17 @@
 /* tp0ts.c - TPM: TP0 engine */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <search.h>
 #include <signal.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"
 #include "internet.h"
+#include "compat.h"
 
 #ifdef SUN_X25
 #include <netx25/x25_ioctl.h>

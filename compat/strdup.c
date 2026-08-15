@@ -1,6 +1,8 @@
 /* strdup.c - create a duplicate copy of the given string */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

@@ -1,6 +1,5 @@
 /* rydsblock.c - manage dispatch blocks */
-
-#include <stdio.h>
+#include <search.h>
 #include "rosy.h"
 
 static int  once_only = 0;

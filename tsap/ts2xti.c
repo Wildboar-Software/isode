@@ -13,7 +13,13 @@
 #ifdef  XTI_TP
 #include <errno.h>
 #include <fcntl.h>
+#include <search.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "tailor.h"
+#include "compat.h"
 
 /*
  * Better to do segmenting across the syscall interface than in Session. Make

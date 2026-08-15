@@ -15,6 +15,9 @@
  */
 
 #include <stdio.h>
+#include <strings.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

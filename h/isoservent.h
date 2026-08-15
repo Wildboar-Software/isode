@@ -28,4 +28,8 @@ struct isoservent *getisoserventbyname ();
 struct isoservent *getisoserventbyselector ();
 struct isoservent *getisoserventbyport (char *, short unsigned int);
 
+#ifdef DEBUG
+int _printsrv (struct isoservent *is);
+#endif
+
 #endif

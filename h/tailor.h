@@ -133,4 +133,6 @@ char   *_isodefile ();
 
 char   *getlocalhost ();
 
+int ll_hdfree (LLog *lp);
+
 #endif

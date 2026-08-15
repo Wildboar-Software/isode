@@ -1,7 +1,9 @@
 /* isoalias.c - application entity info --  directory service utilities */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "general.h"
 #include "manifest.h"

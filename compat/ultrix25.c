@@ -24,6 +24,11 @@
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
 #include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/stat.h>
+#include <sys/socket.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

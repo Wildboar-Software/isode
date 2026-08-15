@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
 #include "tpkt.h"
 #include "manifest.h"

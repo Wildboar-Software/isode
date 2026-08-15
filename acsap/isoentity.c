@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"

@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <strings.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

@@ -4,6 +4,9 @@
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "DASE-types.h"
 #include "psap.h"
 #include "tsap.h"

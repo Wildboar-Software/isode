@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <search.h>
 #include "mib.h"
 #include "view-g.h"
 #include "tailor.h"

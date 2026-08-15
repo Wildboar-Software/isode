@@ -4,6 +4,7 @@
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "general.h"

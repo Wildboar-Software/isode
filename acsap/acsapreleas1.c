@@ -1,6 +1,8 @@
 /* acsapreleas1.c - ACPM: initiate release */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #include "ACS-types.h"
 #define	ACSE

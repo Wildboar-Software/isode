@@ -10,6 +10,7 @@
 #include "sector1.h"
 #include "tailor.h"
 #include "general.h"
+#include "compat.h"
 #ifndef	SVR4_UCB
 #include <sys/ioctl.h>
 #endif

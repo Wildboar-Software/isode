@@ -1,6 +1,7 @@
 /* acsapabort2.c - ACPM: interpret abort */
 
 #include <stdio.h>
+#include <strings.h>
 #include <signal.h>
 #include "ACS-types.h"
 #define	ACSE

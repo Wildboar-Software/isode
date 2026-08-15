@@ -1,6 +1,5 @@
 /* str2qb.c - string to qbuf */
-
-#include <stdio.h>
+#include <search.h>
 #include "psap.h"
 
 struct qbuf *str2qb (char *s, int len, int head) {

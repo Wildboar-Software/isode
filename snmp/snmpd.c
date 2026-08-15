@@ -12,6 +12,7 @@
  * F30602-88-C-0016.
  */
 
+#include <search.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>

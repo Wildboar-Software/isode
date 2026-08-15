@@ -1,6 +1,8 @@
 /* acsapblock.c - manage association blocks */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <search.h>
 #include "acpkt.h"
 
 static int  once_only = 0;

@@ -1,7 +1,10 @@
 /* tsapinitiate.c - TPM: initiator */
 
 #include <signal.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include "tpkt.h"
 #include "mpkt.h"
 #include "isoservent.h"

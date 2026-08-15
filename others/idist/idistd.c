@@ -1,8 +1,6 @@
 /* idistd.c - remote distribution -- responder */
 
 /*
- * 
- *
  * Idist daemon - this module handles the remote operations as they
  * are received. It runs as a state machine for file transfer
  * expecting the sequence transfer, data..., terminate for each file
@@ -16,17 +14,11 @@
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
- *
  */
 
 #include <errno.h>
 #include <stdio.h>
+#include <search.h>
 #include "Idist-types.h"      /* type definitions */
 #include "Idist-ops.h"                /* operation definitions */
 #include "ryresponder.h"      /* for generic idempotent responders */
@@ -46,21 +38,13 @@ int	op_init (), op_transfer (), op_terminate (), op_listcdir (),
 
 static struct dispatch dispatches[] = {
 	"init", operation_Idist_init, op_init,
-
 	"transfer", operation_Idist_transfer, op_transfer,
-
 	"terminate", operation_Idist_terminate, op_terminate,
-
 	"listcdir",	operation_Idist_listcdir, op_listcdir,
-
 	"deletefile", operation_Idist_deletefile, op_deletefile,
-
 	"query", operation_Idist_query, op_query,
-
 	"special", operation_Idist_special, op_special,
-
 	"data", operation_Idist_data, op_data,
-
 	NULL
 };
 

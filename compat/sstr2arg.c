@@ -1,6 +1,7 @@
 /* sstr2arg: convert string into argument list */
 
 #include <stdio.h>
+#include <strings.h>
 #include "manifest.h"
 #include "general.h"
 #include <errno.h>

@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <search.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acupkt.h"

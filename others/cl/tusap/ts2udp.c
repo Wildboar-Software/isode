@@ -26,7 +26,10 @@
  *								*
  ****************************************************************
  */
+#ifdef	HULA
+#ifdef  UDP
 
+#include <search.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>
@@ -36,10 +39,6 @@
 #include "tpkt.h"
 #include "tsap.h"
 #include "uderrors.h"
-
-#ifdef	HULA
-#ifdef  UDP
-
 #include "internet.h"
 
 /* this structure is allocated for each socket device */

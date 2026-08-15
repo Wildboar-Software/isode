@@ -1,5 +1,6 @@
 /* cmd_srch.c - search a lookup table: return numeric value */
 
+#include "general.h"
 #include "manifest.h"
 #include "cmd_srch.h"
 

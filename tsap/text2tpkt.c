@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <arpa/inet.h>
 #include "tpkt.h"
 #include "logger.h"
 #include "internet.h"

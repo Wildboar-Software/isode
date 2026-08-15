@@ -13,11 +13,14 @@
  */
 
 #include <ctype.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+#include <strings.h>
 #include "psap.h"
 #include "isoaddrs.h"
 #include "internet.h"
+#include "tpkt.h"
 #include "tailor.h"
 
 #define	fetch_aet	str2aet_seq

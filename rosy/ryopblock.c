@@ -1,5 +1,5 @@
 /* ryopblock.c - manage operation blocks */
-#include <stdio.h>
+#include <search.h>
 #include "rosy.h"
 
 static int  once_only = 0;

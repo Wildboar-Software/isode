@@ -3,9 +3,6 @@
 #include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
-#include <stdio.h>
-#include "tpkt.h"
-#include "tailor.h"
 
 #ifdef  X25
 #include "x25.h"
@@ -15,6 +12,15 @@
 #ifdef	SYS5
 #include <fcntl.h>
 #endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <errno.h>
+#include "tpkt.h"
+#include "tailor.h"
+#include "compat.h"
 
 static  fd_set  inprogress;
 static  struct NSAPaddr **peers = NULL;

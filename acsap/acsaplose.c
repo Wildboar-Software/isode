@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include "ACS-types.h"
 #define	ACSE
 #include "acpkt.h"

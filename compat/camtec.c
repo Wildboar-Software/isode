@@ -15,6 +15,11 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include "general.h"
 #include "manifest.h"
 

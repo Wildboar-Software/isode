@@ -6,6 +6,9 @@
 #include "mpkt.h"
 
 #ifdef  MGMT
+#include <netdb.h>
+#include <strings.h>
+#include <unistd.h>
 #include "internet.h"
 
 #define LOCALTHLD 128		/* local threshold for reporting (bytes) */

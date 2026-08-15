@@ -59,6 +59,8 @@
 #endif
 #include	"sys.dirent.h"
 #include	<sys/stat.h>
+#include	<string.h>
+#include	<unistd.h>
 
 #ifndef	NFS
 #ifdef	BSD42

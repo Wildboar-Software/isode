@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <signal.h>
+#include <search.h>
 #include "PS-types.h"
 #include "pupkt.h"
 #include "isoservent.h"

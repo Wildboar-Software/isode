@@ -10,6 +10,7 @@
 
 #include	<sys/errno.h>
 #include	<sys/types.h>
+#include	<unistd.h>
 #include	"usr.dirent.h"
 
 #ifndef	GETDENTS

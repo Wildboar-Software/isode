@@ -14,7 +14,13 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <signal.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include "general.h"
 #include "manifest.h"
 #include "tailor.h"

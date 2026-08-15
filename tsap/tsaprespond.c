@@ -1,6 +1,7 @@
 /* tsaprespond.c - TPM: responder */
 
 #include <string.h>
+#include <strings.h>
 #include "tpkt.h"
 #include "tailor.h"
 

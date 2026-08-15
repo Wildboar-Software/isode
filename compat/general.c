@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -21,6 +22,8 @@ int	_general_stub (void) {};
 #if	!defined(BSDLIBC) || defined(BSD44)
 
 #ifndef	lint
+
+#include <search.h>
 
 struct qelem {
 	struct qelem   *q_forw;

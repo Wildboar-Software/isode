@@ -1,12 +1,16 @@
 /* ts2tcp.c - TPM: TCP interface */
 
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <stdio.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 #include "tpkt.h"
 #include "tailor.h"
+#include "compat.h"
 
 #ifdef	TCP
 #include "internet.h"
