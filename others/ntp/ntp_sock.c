@@ -46,7 +46,6 @@ int main () {
 		printf("sockbuf size = %d ", val);
 		putchar('\n');
 	}
-
 	for (i=0; i < nintf; i++) {
 		fprintf(stderr, "Read fd %d.. ", addrs[i].fd);
 		cc = read(addrs[i].fd, foo, 10);
@@ -73,13 +72,10 @@ int create_sockets (unsigned int port) {
 	ap->name = "wildcard";
 	ap->addr.type = AF_INET;
 	ap->flags = (INTF_VALID|INTF_STATIC);
-
 	if ((ap->fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 		adios ("failed", "socket()");
-
 	if (fcntl(ap->fd, F_SETFL, FNDELAY) < 0)
 		adios ("failed", "fcntl(FNDELAY)");
-
 	ap->addr.inet_ad.sin_family = AF_INET;
 	ap->addr.inet_ad.sin_port = port;
 	ap->if_flags = 0;
@@ -113,7 +109,6 @@ int create_sockets (unsigned int port) {
 	ap -> name = "wild";
 	ap -> flags = (INTF_VALID|INTF_STATIC);
 	ap -> mask.sin_addr.s_addr = htonl(~0);
-
 	if ((vs = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 		adios("failed", "socket(AF_INET, SOCK_DGRAM)");
 	ifc.ifc_len = sizeof(buf);
@@ -121,10 +116,8 @@ int create_sockets (unsigned int port) {
 	if (ioctl(vs, SIOCGIFCONF, (char *)&ifc) < 0)
 		adios ("failed", "get interface configuration");
 	n = ifc.ifc_len/sizeof(struct ifreq);
-
 	for (ifr = ifc.ifc_req; n > 0; n--, ifr++) {
 		int num;
-
 		ap = getintf (&num);
 		if (ifr->ifr_addr.sa_family != AF_INET)
 			continue;
@@ -137,7 +130,6 @@ int create_sockets (unsigned int port) {
 		if ((ifreq.ifr_flags & IFF_UP) == 0)
 			continue;
 		ap -> if_flags = ifreq.ifr_flags;
-
 		if (ioctl(vs, SIOCGIFADDR, (char *)&ifreq) < 0) {
 			advise (LLOG_EXCEPTIONS, "failed",
 					"get interface addr");
@@ -146,7 +138,6 @@ int create_sockets (unsigned int port) {
 		ap -> name = strdup (ifreq.ifr_name);
 		ap -> addr.inet_ad = *(struct sockaddr_in *)&ifreq.ifr_addr;
 		ap -> addr.type = AF_INET;
-
 #ifdef SIOCGIFBRDADDR
 		if (ap -> if_flags & IFF_BROADCAST) {
 			if (ioctl(vs, SIOCGIFBRDADDR, (char *)&ifreq) < 0)
@@ -163,10 +154,8 @@ int create_sockets (unsigned int port) {
 #ifdef SIOCGIFNETMASK
 		if (ioctl(vs, SIOCGIFNETMASK, (char *)&ifreq) < 0)
 			adios ("failed", "SIOCGIFNETMASK ");
-
 		ap -> mask = *(struct sockaddr_in *)&ifreq.ifr_addr;
 #endif /* SIOCGIFNETMASK */
-
 		/*
 		 * look for an already existing source interface address.  If
 		 * the machine has multiple point to point interfaces, then
@@ -187,27 +176,23 @@ next:
 		;
 	}
 	close(vs);
-
 	for (i = 0; i < nintf; i++) {
 		if ((addrs[i].flags & INTF_VALID) == 0)
 			continue;
 		/* create a datagram (UDP) socket */
 		if ((addrs[i].fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 			adios ("failed", "socket()");
-
 		/* set SO_REUSEADDR since we will be binding the same port
 		   number on each interface */
 		if (setsockopt(addrs[i].fd, SOL_SOCKET, SO_REUSEADDR,
 					   (char *)&on, sizeof(on)))
 			advise(LLOG_EXCEPTIONS, "failed",
 				   "setsockopt SO_REUSEADDR");
-
 		/*
 		 * set non-blocking I/O on the descriptor
 		 */
 		if (fcntl(addrs[i].fd, F_SETFL, FNDELAY) < 0)
 			adios ("failed", "fcntl(FNDELAY) fails");
-
 		/*
 		 * finally, bind the local address address.
 		 */
@@ -217,7 +202,6 @@ next:
 				 (struct sockaddr *)&addrs[i].addr.inet_ad,
 				 sizeof(addrs[i].addr.inet_ad)) < 0)
 			adios ("failed", "bind on %s", paddr(&addrs[i].addr));
-
 		/*
 		 *  Turn off the SO_REUSEADDR socket option.  It apparently
 		 *  causes heartburn on systems with multicast IP installed.
@@ -227,7 +211,6 @@ next:
 		if (setsockopt(addrs[i].fd, SOL_SOCKET, SO_REUSEADDR,
 					   (char *)&off, sizeof(off)))
 			adios ("failed", "setsockopt SO_REUSEADDR off");
-
 #ifdef SO_BROADCAST
 		/* if this interface can support broadcast, set SO_BROADCAST */
 		if (addrs[i].if_flags & IFF_BROADCAST) {
@@ -256,7 +239,6 @@ int recv_inet (struct intf *ap, struct timeval *tvp) {
 	if ((cc = recvfrom(ap -> fd, (char *) pkt,
 					   sizeof(*pkt), 0,
 					   (struct sockaddr *) &peer->inet_ad, &dstlen)) < 0) {
-
 		if (errno != EWOULDBLOCK) {
 			advise (LLOG_EXCEPTIONS, "failed", "recvfrom");
 #ifdef	DEBUG
@@ -266,7 +248,6 @@ int recv_inet (struct intf *ap, struct timeval *tvp) {
 		}
 		return -1;
 	}
-
 	if (cc < sizeof(*pkt)) {
 #ifdef	DEBUG
 		if (debug)
@@ -340,7 +321,6 @@ int query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap) {
 	nip->peers = peer_list.members;
 	nip->count = 0;
 	cip = (struct clockinfo *)&nip[1];
-
 	for (peer = peer_list.head; peer != NULL; peer = peer->next) {
 		if (peer->src.type == AF_INET) {
 			if (peer->sock < 0)
@@ -386,7 +366,6 @@ int query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap) {
 		}
 		cip->reftime.int_part = htonl(peer->reftime.int_part);
 		cip->reftime.fraction = htonl(peer->reftime.fraction);
-
 		cip->info_filter.index = htons(peer->filter.samples);
 		for (i = 0; i < PEER_SHIFT; i++) {
 			cip->info_filter.offset[i] =

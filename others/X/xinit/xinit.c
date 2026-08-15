@@ -153,7 +153,6 @@ int main (int argc, char **argv) {
 
 	program = *argv++;
 	argc--;
-
 #ifndef UNIXCONN
 #ifdef hpux
 	/* Why not use gethostname()?  Well, at least on my system, I've had to
@@ -163,7 +162,6 @@ int main (int argc, char **argv) {
 	 */
 	{
 		struct utsname name;
-
 		uname(&name);
 		strcpy(displayname, name.nodename);
 	}
@@ -208,7 +206,6 @@ int main (int argc, char **argv) {
 		argv++;
 		argc--;
 	}
-
 	/*
 	 * Copy the server args.
 	 */
@@ -224,16 +221,13 @@ int main (int argc, char **argv) {
 		displayNum = *argv;
 	else
 		displayNum = *sptr++ = default_display;
-
 	start_of_server_args = (sptr - server);
 	while (--argc >= 0) {
 		server_args_given++;
 		*sptr++ = *argv++;
 	}
 	*sptr = NULL;
-
 	strcat(displayname, displayNum);
-
 	/*
 	 * if no client arguments given, check for a startup file and copy
 	 * that into the argument list
@@ -241,7 +235,6 @@ int main (int argc, char **argv) {
 	if (!client_given) {
 		char *cp;
 		Bool required = False;
-
 		xinitrcbuf[0] = '\0';
 		if ((cp = getenv ("XINITRC")) != NULL) {
 			strcpy (xinitrcbuf, cp);
@@ -260,7 +253,6 @@ int main (int argc, char **argv) {
 			}
 		}
 	}
-
 	/*
 	 * if no server arguments given, check for a startup file and copy
 	 * that into the argument list
@@ -268,7 +260,6 @@ int main (int argc, char **argv) {
 	if (!server_given) {
 		char *cp;
 		Bool required = False;
-
 		xserverrcbuf[0] = '\0';
 		if ((cp = getenv ("XSERVERRC")) != NULL) {
 			strcpy (xserverrcbuf, cp);
@@ -287,12 +278,10 @@ int main (int argc, char **argv) {
 			}
 		}
 	}
-
 	/*
 	 * put the display name into the environment
 	 */
 	set_environment ();
-
 	/*
 	 * Start the server and client.
 	 */
@@ -309,9 +298,7 @@ int main (int argc, char **argv) {
 	}
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
-
 	shutdown(serverpid, clientpid);
-
 	if (serverpid < 0 || clientpid < 0)
 		exit(ERR_EXIT);
 	exit(OK_EXIT);
@@ -338,7 +325,6 @@ int waitforserver (int serverpid) {
 #undef MSG
 		}
 	}
-
 	fprintf (stderr, "giving up.\r\n");
 	return(FALSE);
 }
@@ -408,7 +394,6 @@ int startServer (char *server[]) {
 	case 0:
 		close(0);
 		close(1);
-
 		/*
 		 * don't hang on read/write to control tty
 		 */
@@ -418,18 +403,15 @@ int startServer (char *server[]) {
 #ifdef SIGTTOU
 		signal(SIGTTOU, SIG_IGN);
 #endif
-
 		/*
 		 * prevent server from getting sighup from vhangup()
 		 * if client is xterm -L
 		 */
 		setpgrp();
-
 		Execute (server);
 		Error ("no server \"%s\" in PATH\n", server[0]);
 		{
 			char **cpp;
-
 			fprintf (stderr,
 					 "\nUse the -- option, or make sure that %s is in your path and\n",
 					 bindir);
@@ -444,7 +426,6 @@ int startServer (char *server[]) {
 			fprintf (stderr, "\n");
 		}
 		exit (ERR_EXIT);
-
 		break;
 	case -1:
 		break;
@@ -455,7 +436,6 @@ int startServer (char *server[]) {
 #ifdef PRIO_PROCESS
 		setpriority( PRIO_PROCESS, serverpid, -1 );
 #endif
-
 		errno = 0;
 		if (! processTimeout(serverpid, 0, "")) {
 			serverpid = -1;
@@ -466,7 +446,6 @@ int startServer (char *server[]) {
 		 * set his socket options before we try to open it
 		 */
 		sleep(5);
-
 		if (waitforserver(serverpid) == 0) {
 			Error("unable to connect to X server\r\n");
 			shutdown(serverpid, -1);
@@ -474,7 +453,6 @@ int startServer (char *server[]) {
 		}
 		break;
 	}
-
 	return(serverpid);
 }
 
@@ -517,7 +495,6 @@ shutdown (int serverpid, int clientpid) {
 		if (! setjmp(close_env)) {
 			XCloseDisplay(xd);
 		}
-
 		/* HUP all local clients to allow them to clean up */
 		errno = 0;
 		if ((killpg(clientpid, SIGHUP) != 0) &&
@@ -525,7 +502,6 @@ shutdown (int serverpid, int clientpid) {
 			Error("can't send HUP to process group %d\r\n",
 				  clientpid);
 	}
-
 	if (serverpid < 0)
 		return;
 	errno = 0;
@@ -539,7 +515,6 @@ shutdown (int serverpid, int clientpid) {
 		fprintf (stderr, "\r\n");
 		return;
 	}
-
 	fprintf(stderr,
 			"\r\n%s:  X server slow to shut down, sending KILL signal.\r\n",
 			program);
@@ -568,7 +543,6 @@ int set_environment () {
 
 	/* count number of environment variables */
 	for (oldPtr = environ; *oldPtr; oldPtr++) ;
-
 	nenvvars = (oldPtr - environ);
 	newenviron = (char **) malloc ((nenvvars + 2) * sizeof(char **));
 	if (!newenviron) {
@@ -577,13 +551,11 @@ int set_environment () {
 		program, nenvvars + 2);
 		exit (1);
 	}
-
 	/* put DISPLAY=displayname as first element */
 	strcpy (displaybuf, "DISPLAY=");
 	strcpy (displaybuf + 8, displayname);
 	newPtr = newenviron;
 	*newPtr++ = displaybuf;
-
 	/* copy pointers to other variables */
 	for (oldPtr = environ; *oldPtr; oldPtr++) {
 		if (strncmp (*oldPtr, "DISPLAY=", 8) != 0) {

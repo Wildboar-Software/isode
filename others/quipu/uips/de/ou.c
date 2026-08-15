@@ -71,7 +71,6 @@ void freeOUs (struct namelist **listpp) {
 }
 
 void freeOUSearchArgs () {
-
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
@@ -121,7 +120,6 @@ int listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp) {
 		}
 	}
 	logSearchSuccess(SEARCH_FAIL, "ou", thisstr, filtnumber, 0);
-
 	/* nothing found by single level searches - let's try subtree searching */
 	if (index(thisstr, '*') != NULLCP) { /* contains at least one asterisk */
 		filtarray = explicitOU;
@@ -176,9 +174,7 @@ int makeListOUs (struct namelist **listp) {
 	if (retval != OK)
 		return NOTOK;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*listp = list_alloc();
@@ -206,7 +202,6 @@ fillMostOUSearchArgs (char *parentstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
 	arg.sra_searchaliases = TRUE;

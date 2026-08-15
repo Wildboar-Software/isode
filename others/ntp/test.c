@@ -53,7 +53,6 @@ int test2 () {
 
 	gettimeofday(&tp, (struct timezone *) 0);
 	tstamp(&time_lm, &tp);
-
 	printf("tv_sec:  %d tv_usec:  %d \n", tp.tv_sec, tp.tv_usec);
 	printf("intpart: %lu fraction: %lu \n",
 	ntohl(time_lm.int_part), ntohl(time_lm.fraction));
@@ -104,7 +103,6 @@ int test4 (int v) {
 #endif
 	if (v)
 		printf("test4: 3.0*1024.0*1024.0*1024.0 = 0x%08x\n", ul);
-
 	if (ul != 0xc0000000) {
 		printf("test4 fails:\n");
 		printf("Can't convert unsigned long to double.\n");

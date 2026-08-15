@@ -244,13 +244,10 @@ void CreateWellKnownSockets () {
 #ifdef SO_LINGER
 	static int linger[2] = { 0, 0 };
 #endif /* SO_LINGER */
-
 #endif /* TCPCONN */
-
 #ifdef DNETCONN
 	struct sockaddr_dn dnsock;
 #endif /* DNETCONN */
-
 #ifdef ISOCONN
 	struct TSAPdisconnect tds;
 	struct TSAPdisconnect *td = &tds;
@@ -260,45 +257,35 @@ void CreateWellKnownSockets () {
 	AEI   aei;
 #endif /* ISOCONN */
 	int retry;
-
 #ifdef ISOCONN
 #ifdef ISODEBUG
 	isodetcpath = ISODEPATH;
 #endif
 #endif /* ISOCONN */
-
 	CLEARBITS(AllSockets);
 	CLEARBITS(AllClients);
 	CLEARBITS(LastSelectMask);
 	CLEARBITS(ClientsWithInput);
-
 	for (i=0; i<MAXSOCKS; i++) ConnectionTranslation[i] = (ClientPtr)NULL;
-
 #ifdef	hpux
 	lastfdesc = _NFILE - 1;
 #else
 	lastfdesc = getdtablesize() - 1;
 #endif	/* hpux */
-
 	if (lastfdesc > MAXSOCKS) {
 		lastfdesc = MAXSOCKS;
 		if (debug_conns)
 			ErrorF( "GOT TO END OF SOCKETS %d\n", MAXSOCKS);
 	}
-
 	WellKnownConnections = 0;
 	whichbyte = 1;
-
 	if (*(char *) &whichbyte)
 		whichByteIsFirst = 'l';
 	else
 		whichByteIsFirst = 'B';
-
 #ifdef TCPCONN
-
 	tcpportReg = atoi (display);
 	tcpportReg += X_TCP_PORT;
-
 	if ((request = socket (AF_INET, SOCK_STREAM, 0)) < 0) {
 		Notice ("Creating TCP socket");
 	} else {
@@ -339,9 +326,7 @@ void CreateWellKnownSockets () {
 		fd2family[request] = UNIX_IO;
 #endif /* ISOCONN */
 	}
-
 #endif /* TCPCONN */
-
 #ifdef UNIXCONN
 	if ((request = open_unix_socket ()) != -1) {
 		WellKnownConnections |= (1L << request);
@@ -351,7 +336,6 @@ void CreateWellKnownSockets () {
 #endif /* ISOCONN */
 	}
 #endif /*UNIXCONN */
-
 #ifdef DNETCONN
 	if ((request = socket (AF_DECnet, SOCK_STREAM, 0)) < 0) {
 		Notice ("Creating DECnet socket");
@@ -379,20 +363,16 @@ void CreateWellKnownSockets () {
 		aei = str2aei(TLocalHostName(), DEFAULTTSERVICE);
 	else
 		aei = str2aei(TLocalHostName(), display);
-
 	if (aei == NULLAEI) {
 		ErrorF("No AEI for me:");
 		FatalError(TLocalHostName());
 	}
-
 	/*
 	 * This hack only works if the PSAPaddr and SSAP addrsd are null!!
 	 */
 	if ((pa = aei2addr (aei)) == NULLPA)
 		FatalError("address translation failed");
-
 	ta = (struct TSAPaddr *)&(pa->pa_addr.sa_addr);
-
 	/*
 	 * Just put out a listen for now
 	 */
@@ -400,7 +380,6 @@ void CreateWellKnownSockets () {
 		Error(TErrString(td->td_reason));
 		FatalError("TNetListen");
 	}
-
 	WellKnownConnections |= (1 << request);
 	DefineSelf (request);
 	fd2family[request] = ISODE_IO;
@@ -414,7 +393,6 @@ void CreateWellKnownSockets () {
 	FirstClient = request + 1;
 	AllSockets[0] = WellKnownConnections;
 	ResetHosts(display);
-
 	for (i=0; i<MaxClients; i++) {
 		inputBuffers[i].buffer = (char *) NULL;
 		inputBuffers[i].bufptr = (char *) NULL;
@@ -431,7 +409,6 @@ void ResetWellKnownSockets () {
 		 * see if the unix domain socket has disappeared
 		 */
 		struct stat	statb;
-
 		if (stat (unsock.sun_path, &statb) == -1 ||
 		(statb.st_mode & S_IFMT) != S_IFSOCK) {
 			ErrorF ("Unix domain socket %s trashed, recreating\n",
@@ -575,7 +552,6 @@ ReadBuffer(long conn, char *buffer, int charsWanted) {
 	itv.it_value.tv_usec = 0;
 	setitimer(ITIMER_REAL, &itv, (struct itimerval *)NULL);
 	/* It better not take a full minute to get to the read call */
-
 	while (charsWanted && (fTimeOut = setjmp(env)) == FALSE) {
 #ifdef ISOCONN
 		got = SRead(conn, bptr, charsWanted, NOTOK);
@@ -661,7 +637,6 @@ int ClientAuthorized (
 	xConnClientPrefix xccp;
 	char auth_proto[100];
 	char auth_string[100];
-
 #ifdef ISOCONN
 	/*
 	 * For now we always auth an ISO client!!
@@ -705,7 +680,6 @@ int ClientAuthorized (
 #undef STR
 		return 0;
 	}
-
 	slen = (xccp.nbytesAuthProto + 3) & ~3;
 	if ( slen )
 		if (!ReadBuffer(conn, auth_proto, slen)) {
@@ -716,7 +690,6 @@ int ClientAuthorized (
 #undef STR
 		}
 	auth_proto[slen] = '\0';
-
 	slen = (xccp.nbytesAuthString + 3) & ~3;
 	if ( slen)
 		if (!ReadBuffer(conn, auth_string, slen)) {
@@ -727,7 +700,6 @@ int ClientAuthorized (
 #undef STR
 		}
 	auth_string[slen] = '\0';
-
 	/* At this point, if the client is authorized to change the access control
 	 * list, we should getpeername() information, and add the client to
 	 * the selfhosts list.  It's not really the host machine, but the
@@ -783,7 +755,6 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 	} from;
 	int	fromlen;
 #endif TCP_NODELAY
-
 	*nnew = 0;
 	if (readyconnections = (LastSelectMask[0] & WellKnownConnections)) {
 		while (readyconnections) {
@@ -811,7 +782,6 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 #endif /* ISOCONN */
 				} else {
 					ClientPtr next = (ClientPtr)NULL;
-
 #ifdef TCP_NODELAY
 #ifdef ISOCONN
 					if (fd2family(newconn) == UNIX_IO) {
@@ -859,7 +829,6 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 						next = NextAvailableClient();
 						if (next != (ClientPtr)NULL) {
 							OsCommPtr priv;
-
 							newclients[(*nnew)++] = next;
 							next->swapped = swapped;
 							ConnectionTranslation[newconn] = next;
@@ -879,7 +848,6 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 					}
 					if (next == (ClientPtr)NULL) {
 						xConnSetupPrefix c;
-
 						if(reason) {
 							c.success = xFalse;
 							c.lengthReason = strlen(reason);
@@ -888,12 +856,10 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 							c.minorVersion = X_PROTOCOL_REVISION;
 							if(swapped) {
 								int	n;
-
 								swaps(&c.majorVersion, n);
 								swaps(&c.minorVersion, n);
 								swaps(&c.length, n);
 							}
-
 #ifdef ISOCONN
 							SWrite(newconn, (char *)&c, sizeof(xConnSetupPrefix));
 #else /* ISOCONN */
@@ -918,7 +884,6 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 #endif /* ISOCONN */
 						xfree(reason);
 					}
-
 				}
 			}
 			readyconnections &= ~(1 << curconn);
@@ -942,7 +907,6 @@ void CloseDownFileDescriptor(int connection) {
 #else /* ISOCONN */
 	close(connection);
 #endif /* ISOCONN */
-
 	if (inputBuffers[connection].size) {
 		xfree(inputBuffers[connection].buffer);
 		inputBuffers[connection].buffer = (char *) NULL;
@@ -952,7 +916,6 @@ void CloseDownFileDescriptor(int connection) {
 	inputBuffers[connection].bufcnt = 0;
 	inputBuffers[connection].lenLastReq = 0;
 	inputBuffers[connection].used = 0;
-
 	BITCLEAR(AllSockets, connection);
 	BITCLEAR(AllClients, connection);
 	BITCLEAR(ClientsWithInput, connection);
@@ -987,7 +950,6 @@ void CheckConnections(void) {
 
 	notime.tv_sec = 0;
 	notime.tv_usec = 0;
-
 	COPYBITS(AllClients, mask);
 	for (i=0; i<mskcnt; i++) {
 		while (mask[i]) {
@@ -1066,7 +1028,6 @@ void OnlyListenToOneClient(ClientPtr client) {
 		}
 		COPYBITS(AllSockets, SavedAllSockets);
 		COPYBITS(AllClients, SavedAllClients);
-
 		UNSETBITS(AllSockets, AllClients);
 		BITSET(AllSockets, connection);
 		CLEARBITS(AllClients);

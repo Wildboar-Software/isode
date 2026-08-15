@@ -138,7 +138,6 @@ void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClie
 #ifdef	hpux
 	long	ready_inputs;  /* to tell HIL drivers about input */
 #endif	hpux
-
 	*nready = 0;
 	*nnew = 0;
 	CLEARBITS(clientsReadable);
@@ -150,12 +149,10 @@ void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClie
 				timeout = ScreenSaverTime - TimeSinceLastInputEvent();
 				if (timeout <= 0) { /* may be forced by AutoResetServer() */
 					long timeSinceSave;
-
 					if (clientsDoomed) {
 						*nnew = *nready = 0;
 						break;
 					}
-
 					timeSinceSave = -timeout;
 					if ((timeSinceSave >= timeTilFrob) && (timeTilFrob >= 0)) {
 						SaveScreens(SCREEN_SAVER_ON, ScreenSaverActive);
@@ -200,7 +197,6 @@ void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClie
 				XTestComputeWaitTime (&waittime);
 			}
 #endif /* XTESTEXT1 */
-
 #ifndef ISOCONN
 			if (AnyClientsWriteBlocked) {
 				COPYBITS(ClientsWriteBlocked, clientsWritable);
@@ -265,14 +261,11 @@ void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClie
 					if (! ANYSET(ClientsWriteBlocked))
 						AnyClientsWriteBlocked = FALSE;
 				}
-
 #ifdef	hpux
 				ready_inputs = (LastSelectMask[0] & EnabledDevices);
-
 				if (ready_inputs > 0)  store_inputs (ready_inputs);
 				/* call the HIL driver to gather inputs. 	*/
 #endif	hpux
-
 				MASKANDSETBITS(clientsReadable, LastSelectMask, AllClients);
 #ifdef ISOCONN
 				/*
@@ -297,7 +290,6 @@ void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClie
 	} else {
 		COPYBITS(ClientsWithInput, clientsReadable);
 	}
-
 	if (ANYSET(clientsReadable)) {
 #ifdef ISODEBUG
 		if (isodexbug)

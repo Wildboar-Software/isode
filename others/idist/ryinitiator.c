@@ -53,15 +53,11 @@ int makeconn (char *thehost) {
 			return 1;
 		closeconn ();
 	}
-
 	strcpy (lasthost, thehost);
-
 	if ((initial = (struct type_Idist_Initiate *)
 				   malloc (sizeof *initial)) == NULL)
 		adios ("memory", "out of");
-
 	initial -> version = VERSION;
-
 	if (cp = index(thehost, '@')) {
 		rhost = cp + 1;
 		strncpy (ruser, thehost, cp - thehost);
@@ -77,23 +73,17 @@ int makeconn (char *thehost) {
 	if (cp == NULLCP)
 		cp = ruser;
 	initial -> user = str2qb (cp, strlen (cp), 1);
-
 	sprintf (buf, "password (%s:%s): ", rhost, cp);
 	cp = getpassword (buf);
-
 	initial -> passwd = str2qb (cp, strlen(cp), 1);
 	bzero (cp, strlen (cp));	/* in case of cores */
-
 	if (encode_Idist_Initiate (&data, 1, 0, NULLCP, initial) == NOTOK) {
 		advise (NULLCP, "Error encoding data");
 		return 0;
 	}
 	data -> pe_context = 3;	/* hack */
-
 	result = ryconnect (rhost, data, myservice, mycontext, mypci);
-
 	free_Idist_Initiate (initial);
-
 	return result == OK ? 1 : 0;
 }
 
@@ -122,7 +112,6 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 		adios (NULLCP, "unable to resolve service: %s", PY_pepy);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
-
 	if ((ctx = ode2oid (thecontext)) == NULLOID)
 		adios (NULLCP, "%s: unknown object descriptor", thecontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -135,22 +124,18 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
 						0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf, &data, 1, NULLQOS,
 						acc, aci)
 			== NOTOK)
 		acs_adios (aca, "A-ASSOCIATE.REQUEST");
-
 	if (acc -> acc_result != ACS_ACCEPT) {
 		int slen;
 		char *str;
-
 		if (acc -> acc_ninfo > 0 && (str = prim2str(acc->acc_info[0], &slen)))
 			adios (NULLCP, "association rejected: [%s] %*.*s",
 				   AcErrString (acc -> acc_result),
@@ -159,10 +144,8 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 			adios (NULLCP, "association rejected: [%s]",
 				   AcErrString (acc -> acc_result));
 	}
-
 	ry_sd = acc -> acc_sd;
 	ACCFREE (acc);
-
 	if (RoSetService (ry_sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
 	return OK;
@@ -177,15 +160,12 @@ int closeconn () {
 
 	if (ry_sd == NOTOK)
 		return;
-
 	if (AcRelRequest (ry_sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
-
 	if (!acr -> acr_affirmative) {
 		AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
-
 	ACRFREE (acr);
 }
 
@@ -220,10 +200,8 @@ int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx) {
 		adios (NULLCP, "unknown return from RyStub=%d", result);
 		/* NOTREACHED */
 	}
-
 	if (mod  && ind >= 0 && arg)
 		fre_obj (arg, mod -> md_dtab[ind], mod, 1);
-
 	return result_value;
 }
 
@@ -231,9 +209,7 @@ SFD cleanup ();
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	cleanup ();
-
 	_exit (1);
 }
 
@@ -245,13 +221,11 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
-
 	cleanup ();
 	_exit (1);
 }
@@ -265,7 +239,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -277,13 +250,9 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	cleanup ();
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -299,9 +268,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -309,13 +276,10 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
@@ -331,9 +295,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 #else
@@ -350,10 +312,8 @@ char *getstring (char *prompt) {
 
 	fputs (prompt, stdout);
 	fflush (stdout);
-
 	if (fgets (buffer, sizeof buffer, stdin) == NULL)
 		return NULLCP;
-
 	if (cp = index (buffer, '\n'))
 		*cp = '\0';
 	if (buffer[0] == '\0')

@@ -45,7 +45,6 @@ char *dirname (char *fn) {
 
 	strcpy(buf, fn);
 	if ((f = rindex(buf,'/')) && (f != buf)) {
-
 		*f = '\0';
 		return buf;
 	} else
@@ -71,11 +70,9 @@ char *makeFN2 (char *dir, char *fn) {
 	}
 	if (*(s-1) != '/')
 		*(s++) = '/';
-
 	while (*fn == '/')
 		fn++;
 	strcpy(s, fn);
-
 	return p;
 }
 
@@ -120,10 +117,8 @@ char *realPath3 (char *dir, char *path1, char *path2) {
 		*(s++) = '/';
 		strcpy(s, path2);
 	}
-
 	rp = realp;
 	*(rp++) = '/';
-
 	for (s = givenp; *s;) {
 		while(*s == '/')
 			s++;
@@ -148,7 +143,6 @@ char *realPath3 (char *dir, char *path1, char *path2) {
 		*(rp++) = *(s++);
 	}
 	*rp = '\0';
-
 	return realp;
 }
 
@@ -172,12 +166,9 @@ char *getRfaContext (char *cwd, char *fn) {
 		rp = realPath(buf, fn);
 	} else
 		rp = realPath3(fsBase, cwd, fn);
-
 	if (strncmp(fsBase, rp, strlen(fsBase)))
 		return NULL;
-
 	/*--- extract realtive path ---*/
 	rp += strlen(fsBase);
-
 	return rp;
 }

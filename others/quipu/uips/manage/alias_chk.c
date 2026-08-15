@@ -35,10 +35,8 @@ int call_alias_chk (int argc, char **argv) {
 		ps_print(OPT, "Error, too many arguments..\n") ;
 		return(NOTOK) ;
 	}
-
 	if (argc == 2) {
 		/* Convert arg 2 to a DN for future use. */
-
 		/* Turn a sequence number back into a DN */
 		if (*argv[1] >= '0' && *argv[1] <= '9') {
 			/* First convert the number into a dn */
@@ -48,7 +46,6 @@ int call_alias_chk (int argc, char **argv) {
 				ps_print(OPT, "..@ gives me a headache. Ambiguous. Aborting.\n") ;
 				return(NOTOK) ;
 			}
-
 			if (*argv[1] == '@') {
 				tmp_dn = dn_cpy(str2dn(argv[1] + 1)) ;
 			} else {
@@ -69,7 +66,6 @@ int call_alias_chk (int argc, char **argv) {
 			}
 		}
 	}
-
 	/* We now have the start location in tmp_dn */
 	if (tmp_dn != NULLDN) {
 		save_dn = dn_cpy(dn) ;	/* save start location for later restore */
@@ -77,19 +73,15 @@ int call_alias_chk (int argc, char **argv) {
 		dn = dn_cpy(tmp_dn) ;
 		dn_free(tmp_dn) ;
 	}
-
 	/* dn should be set to a: either current location, or
 			       b: 2nd arg if specified. */
-
 	/* Is dn a leaf or a non_leaf? */
 	{
 		struct	ds_compare_arg		compare_arg;
 		struct	DSError			compare_error;
 		struct	ds_compare_result	compare_result;
-
 		if ((argc = service_control (OPT, argc, argv, &compare_arg.cma_common)) == -1)
 			return(NOTOK) ;
-
 		compare_arg.cma_common.ca_servicecontrol.svc_options |= SVC_OPT_DONTDEREFERENCEALIAS ;
 		compare_arg.cma_object = dn;
 		if (get_ava (&compare_arg.cma_purported, "objectClass", "quipuNonLeafObject") != OK) {
@@ -97,82 +89,66 @@ int call_alias_chk (int argc, char **argv) {
 			ps_print(OPT, "This is very bad...\n") ;
 			return(NOTOK) ;
 		}
-
 		if (rebind () != OK)
 			return(NOTOK) ;
-
 		while (ds_compare (&compare_arg, &compare_error, &compare_result) != DS_OK) {
 			if (dish_error (OPT, &compare_error) == 0) {
 				return(NOTOK) ;
 			}
 			compare_arg.cma_object = compare_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 		}
-
 		/* If the object is a leaf then check it out and exit... */
 		if ( compare_result.cmr_matched == FALSE ) {
 			struct	DSError		read_error;
 			struct	ds_read_result	read_result;
 			struct	ds_read_arg	read_arg;
-
 			read_arg.rda_eis.eis_allattributes = TRUE ;
 			read_arg.rda_eis.eis_select = NULLATTR ;
 			read_arg.rda_eis.eis_infotypes = TRUE ;
-
 			if (service_control (OPT, argc, argv, &read_arg.rda_common) == -1) {
 				return(-1) ;
 			}
 			read_arg.rda_common.ca_servicecontrol.svc_options
 			|= SVC_OPT_DONTDEREFERENCEALIAS ;
 			read_arg.rda_object = dn;
-
 			while (ds_read (&read_arg, &read_error, &read_result) != DS_OK) {
 				if (dish_error (OPT, &read_error) == 0)
 					return (-2);
 				read_arg.rda_object = read_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 			}
-
 			if ( verify_alias(&read_result.rdr_entry) != OK ) {
 				ps_print(OPT, "Bad Alias.\n") ;
 			}
 			return(OK) ;
 		}
 	}
-
 	/* Else search the subtree below this current
 	 * position for ALL aliases, and check each one. */
-
 	/* Sort out the search filter for this. */
 	search_arg.sra_baseobject = dn ;
 	search_arg.sra_subset = SRA_WHOLESUBTREE ;
 	search_arg.sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT ;
 	search_arg.sra_searchaliases = FALSE ;
 	search_arg.sra_filter = NULLFILTER ;
-
 	if ((argc = service_control (OPT, argc, argv, &search_arg.sra_common)) == -1)
 		return(NOTOK);
-
 	if ((search_arg.sra_filter = get_filter("objectClass=alias")) == NULLFILTER) {
 		ps_printf (OPT,"Very bad... Filter wrong. Aborting...\n");
 		return(NOTOK) ;
 	}
 	ps_print(OPT, "Searching... please wait...\n") ;
-
 	if (rebind () != OK)
 		return(NOTOK);
-
 	while (ds_search (&search_arg, &search_error, &search_result) != DS_OK) {
 		if (dish_error (OPT, &search_error) == 0)
 			return(NOTOK);
 		search_arg.sra_baseobject = search_error.ERR_REFERRAL.DSE_ref_candidates->cr_name ;
 	}
-
 	correlate_search_results (&search_result);
-
 	if (search_result.CSR_entries == NULLENTRYINFO) {
 		ps_printf(OPT, "No aliases found...\n");
 		return(OK) ;
 	}
-
 	for (ptr = search_result.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next) {
 		/* decode it immediately so we only have to do it once. */
 		cache_entry (ptr, TRUE, TRUE) ;
@@ -180,7 +156,6 @@ int call_alias_chk (int argc, char **argv) {
 			ps_print(OPT, "Bad Alias.\n") ;
 		}
 	}
-
 	handle_problems (RPS, search_result.CSR_cr,search_result.CSR_limitproblem, TRUE);
 	filter_free (search_arg.sra_filter);
 	dn_free(dn) ;
@@ -213,7 +188,6 @@ char verify_alias(EntryInfo *alias_entry) {
 	char            Name=FALSE, Acl=FALSE, ObjClass=FALSE, AlObjNam=FALSE ;
 	char            BackReference=FALSE ;
 	char            GoodAlias = OK ;
-
 	at_ojc = AttrT_new("objectClass") ;                  /* objectClass */
 	at_aoj = AttrT_new("aliasedObjectName") ;
 	at_acl = AttrT_new("acl") ;
@@ -227,11 +201,9 @@ char verify_alias(EntryInfo *alias_entry) {
 	at_cn  = AttrT_new("commonName") ;
 	nvec[1] = "-compact";
 	read_arg.rda_object = NULLDN ;
-
 	ps_print(OPT, "\nFound alias:") ;
 	dn_print(OPT, alias_entry->ent_dn, EDBOUT) ;
 	ps_print(OPT, "\n") ;
-
 	/* We now have ourselves an entrystruct which is an alias, and we
 	 * have to check various features!!
 	 * 1: only the allowed objects.
@@ -239,9 +211,7 @@ char verify_alias(EntryInfo *alias_entry) {
 	 * 3: The objectClass of the real entry fits under where the alias
 	 *    lives.
 	 */
-
 	/* Does the alias have the allowed objects and only the allowed? */
-
 	for (tmp_ent_attr = alias_entry->ent_attr; tmp_ent_attr != NULL; tmp_ent_attr = tmp_ent_attr->attr_link) {
 		if (AttrT_cmp(tmp_ent_attr->attr_type, at_ojc) == 0) {
 			ObjClass = TRUE ;
@@ -266,12 +236,10 @@ char verify_alias(EntryInfo *alias_entry) {
 			GoodAlias = NOTOK;
 		}
 	}
-
 	if (read_arg.rda_object == NULLDN ) {
 		ps_print(OPT, "Malformed alias. No alias object name present!\n" ) ;
 		return (NOTOK) ;
 	}
-
 	if (ObjClass == FALSE) {
 		ps_print(OPT, "Object Class missing.\n") ;
 	}
@@ -284,19 +252,16 @@ char verify_alias(EntryInfo *alias_entry) {
 	if (Name == FALSE) {
 		ps_print(OPT, "Name of alias is missing.\n") ;
 	}
-
 	GoodAlias = ((ObjClass && AlObjNam && Acl && Name) ? OK : NOTOK) ;
 	/* Read the entry that the alias points to.... */
 	read_arg.rda_eis.eis_allattributes = TRUE ;
 	read_arg.rda_eis.eis_select = NULLATTR ;
 	read_arg.rda_eis.eis_infotypes = TRUE ;
-
 	if (service_control (OPT, 0, NULLARGV, &read_arg.rda_common) == -1) {
 		return(-1) ;
 	}
 	read_arg.rda_common.ca_servicecontrol.svc_options
 	|= SVC_OPT_DONTDEREFERENCEALIAS ;
-
 	while (ds_read (&read_arg, &read_error, &read_result) != DS_OK) {
 		if (dish_error (OPT, &read_error) == 0) {
 			ps_print(OPT, "Can't read ") ;
@@ -306,7 +271,6 @@ char verify_alias(EntryInfo *alias_entry) {
 		}
 		read_arg.rda_object = read_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	/* and see if it points back to this alias.
 	 * It should do, but doesn't have to. While we are at it,
 	 * collect the objectClass of this entry.
@@ -315,7 +279,6 @@ char verify_alias(EntryInfo *alias_entry) {
 			tmp_ent_attr = tmp_ent_attr->attr_link) {
 		if (AttrT_cmp(tmp_ent_attr->attr_type, at_sa) == 0) {
 			AV_Sequence   tmp_avs = tmp_ent_attr->attr_value;
-
 			for (; tmp_avs != NULL; tmp_avs = tmp_avs->avseq_next) {
 				if (dn_cmp((DN) tmp_avs->avseq_av.av_struct, alias_entry->ent_dn)) {
 					ps_print(OPT, "Alias object correctly points back to alias itself.\n") ;
@@ -329,7 +292,6 @@ char verify_alias(EntryInfo *alias_entry) {
 	if (BackReference == FALSE) {
 		ps_print(OPT, "Alias object should point back to alias.\n") ;
 	}
-
 	if (object_class_of_object == NULLAV) {
 		ps_print(OPT, "Can't find object class of aliased object\n. Assuming OK\n") ;
 		return(GoodAlias) ;
@@ -340,23 +302,19 @@ char verify_alias(EntryInfo *alias_entry) {
 		trail = dnptr;
 	dn_comp_free (dnptr);
 	trail->dn_parent = NULLDN;
-
 	/* Now read it... */
 	read_arg.rda_object = dn_cpy(dn_above_alias) ;
-
 	while (ds_read (&read_arg, &read_error, &read_result) != DS_OK) {
 		if (dish_error (OPT, &read_error) == 0)
 			return (-2);
 		read_arg.rda_object = read_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	for (tmp_ent_attr = read_result.rdr_entry.ent_attr; tmp_ent_attr != NULL;
 			tmp_ent_attr = tmp_ent_attr->attr_link) {
 		if (AttrT_cmp(tmp_ent_attr->attr_type, at_trs) == 0) {
 			tree_strAVS = avs_cpy(tmp_ent_attr->attr_value) ;
 		}
 	}
-
 	if (tree_strAVS == NULLAV) {
 		ps_print(OPT, "Tree structure missing - assuming validity.\n") ;
 	} else if (test_schema(tree_strAVS, object_class_of_object) != OK) {

@@ -36,53 +36,39 @@ int main (unsigned int argc, char **argv) {
 	char *mess;
 
 	extern int ch_set;
-
 	ch_set = TRUE;
-
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
-
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
-
 	want_oc_hierarchy();
-
 	namestr[0] = '\0';
 	passwd[0] = '\0';
-
 	toplevel = XtInitialize("X-Directory", "Pod", NULL, 0,
 							&argc, argv);
-
 	dsap_init((int *) NULL, &null_argv);
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	read_args(&argc, &argv);
 	user_tailor();
 	read_bind_args(&argc, &argv);
-
 	CreateWidgets();
 	message((Widget) NULL, "Connecting to Directory. Please Wait...");
-
 	if ((mess = cnnct_bind()) != NULLCP) {
 		kill_message();
 		displayStartupError(mess);
 		XtMainLoop();
 	}
-
 	set_attribute_syntax (str2syntax("photo"),
 						  (IFP)pe_cpy,    NULLIFP,
 						  NULLIFP,        podphoto,
 						  (IFP)pe_cpy,    quipu_pe_cmp,
 						  pe_free,        NULLCP,
 						  NULLIFP,        TRUE );
-
 	kill_message();
 	PodLoop();
-
 	return 0;
 }
 
@@ -92,10 +78,8 @@ void read_args (unsigned int *acptr, char ***avptr) {
 
 	if (acptr == (unsigned int *) NULL) return;
 	if (*acptr <= 1) return;
-
 	av = *avptr;
 	av++;
-
 	while ((cp = *av) && (*cp == '-')) {
 		switch (*++cp) {
 		case 'T':
@@ -126,10 +110,8 @@ void read_bind_args (unsigned int *acptr, char ***avptr) {
 
 	if (acptr == (unsigned int *) NULL) return;
 	if (*acptr <= 1) return;
-
 	av = *avptr;
 	av++;
-
 	while ((cp = *av) && (*cp == '-')) {
 		switch (*++cp) {
 		case 'u':
@@ -163,8 +145,6 @@ advise (int code, char *what, char *fmt, ...) {
 	extern LLog * log_dsap;
 
 	va_start (ap, fmt);
-
 	_ll_log (log_dsap, code, what, fmt, ap);
-
 	va_end (ap);
 }

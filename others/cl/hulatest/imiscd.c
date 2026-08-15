@@ -64,7 +64,6 @@ char   *ctime ();
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, dispatches,
 				 table_IMISC_Operations, NULLIFP, NULLIFP);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -87,22 +86,16 @@ static int op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox,
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if (time (&clock) == NOTOK || (tm = gmtime (&clock)) == NULL)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
 					  rox, roi);
-
 	tm2ut (tm, ut);
-
 	if ((cp = utct2str (ut)) == NULLCP
 			|| (ur = str2qb (cp, strlen (cp), 1)) == NULL)
 		return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ur, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_IMISC_UTCResult (ur);
-
 	return OK;
 }
 
@@ -126,7 +119,6 @@ static int op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox,
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 #if	defined(BSD42) || defined (HPUX)
 	if (gettimeofday (&tvs, (struct timezone *) 0) == NOTOK)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
@@ -145,16 +137,12 @@ static int op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox,
 	ut -> ut_flags |= UT_USEC;
 	ut -> ut_usec = tvs.tv_usec;
 #endif
-
 	if ((cp = gent2str (ut)) == NULLCP
 			|| (gr = str2qb (cp, strlen (cp), 1)) == NULL)
 		return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) gr, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_IMISC_GenResult (gr);
-
 	return OK;
 }
 
@@ -174,15 +162,12 @@ static int op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *ro
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if (time (&clock) == NOTOK)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
 					  rox, roi);
 	tr -> parm = clock + 2208988800;
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) tr, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	return OK;
 }
 
@@ -217,27 +202,20 @@ static int op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	ia5 = NULL;
 	ia5p = &ia5;
-
 #ifndef	SYS5
 	if ((ud = open ("/etc/utmp", 0)) == NOTOK) {
 		int	result;
-
 		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
-
 		result = error (sd, error_IMISC_unableToOpenFile, (caddr_t) ia5, rox,
 						roi);
-
 		free_IMISC_IA5List (ia5);
-
 		return result;
 	}
-
 	while (read (ud, (char *) ut, sizeof *ut) == sizeof *ut) {
 		if (ut -> ut_name[0] == NULL)
 			continue;
@@ -250,7 +228,6 @@ static int op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 			sprintf (buffer + strlen (buffer), "\t(%.*s)",
 					 HMAX, ut -> ut_host);
 #endif
-
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
@@ -266,25 +243,20 @@ static int op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 		sprintf (buffer, "%-*.*s %-*.*s %.12s",
 				 NMAX, NMAX, ut -> ut_name, LMAX, LMAX, ut -> ut_line,
 				 dp + 4);
-
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
 	endutent ();
 #endif
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
 	free_IMISC_IA5List (ia5);
-
 	return OK;
-
 congested:
 	;
 	free_IMISC_IA5List (ia5);
-
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
@@ -313,15 +285,12 @@ static int op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox,
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	re = ring;
 	for (i = 0; i < 0x80; i++)
 		if (isprint (i))
 			*re++ = i;
-
 	ia5 = NULL;
 	ia5p = &ia5;
-
 	for (rs = ring, i = NBYTES; i > 0; rs++, i -= j) {
 		if (rs >= re)
 			rs = ring;
@@ -331,24 +300,19 @@ static int op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox,
 				rp = ring;
 			*dp = *rp;
 		}
-
 		*dp = 0;
 		if ((*ia5p = str2ia5list (line)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
 	free_IMISC_IA5List (ia5);
-
 	return OK;
-
 congested:
 	;
 	free_IMISC_IA5List (ia5);
-
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
@@ -369,30 +333,23 @@ static int op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, 
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	ia5 = NULL;
 	ia5p = &ia5;
-
 	for (i = NPASS; i > 0; i--) {
 		if (pwdgen (buffer) == NOTOK)
 			goto congested;
-
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
 	}
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
 	free_IMISC_IA5List (ia5);
-
 	return OK;
-
 congested:
 	;
 	free_IMISC_IA5List (ia5);
-
 	return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 }
 
@@ -516,19 +473,15 @@ static int pwdgen (char *pw) {
 		s += strlen (s);
 		strcpy (s, Nx);
 		s += strlen (s);
-
 		srand ((int) time ((long *) 0));
-
 		latch++;
 	}
-
 	rng (TOT, 1.0);
 	for (pair = pairs; pair -> p_form; pair++)
 		if (pair -> p_value < i)
 			f = pair -> p_form;
 		else
 			break;
-
 	do {
 		for (s = pw; c = *f++;) {
 			for (web = webs; web -> w_key != c; web++)
@@ -536,9 +489,7 @@ static int pwdgen (char *pw) {
 					break;
 			if (!web -> w_key)
 				return NOTOK;
-
 			rng (web -> w_length, web -> w_factor);
-
 			for (j = web -> w_factor; j > 0; j--)
 				*s++ = (*web -> w_string)[i++];
 			if (web -> w_special && *f == NULL) {
@@ -548,10 +499,8 @@ static int pwdgen (char *pw) {
 				s++;
 			}
 		}
-
 		*s = 0;
 	} while (object (pw));
-
 	return OK;
 }
 
@@ -574,12 +523,10 @@ static int object (char *pw) {
 
 	for (f = buffer + strlen (s = pw), *f = NULL; *s; s++)
 		*--f = *s;
-
 	for (o = objects; s = o -> o_string; o++)
 		for (n = o -> o_advance; *s; s += n)
 			if (strncmp (f, s, n) == 0)
 				return NOTOK;
-
 	return OK;
 }
 
@@ -621,7 +568,6 @@ static int op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
     if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if (ryo -> ryo_op == operation_IMISC_qotd) {
 		vec[vecp++] = pgm = FORTUNE;
 		vecq = vecp;
@@ -643,35 +589,27 @@ static int op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 			}
 	}
 	vec[vecp] = NULLCP;
-
 	ia5 = NULL;
 	ia5p = &ia5;
-
 	if (access (pgm, 1) == NOTOK) {
 		result = error_IMISC_unableToAccessFile;
-
 oops:
 		;
 		free_IMISC_IA5List (ia5);
 		ia5 = NULL;
 		ia5p = &ia5;
-
 		sprintf (buffer, "%s: %s", pgm, sys_errname (errno));
 		if ((*ia5p = str2ia5list (buffer)) == NULL)
 			goto congested;
 		ia5p = &((*ia5p) -> next);
-
 		result = error (sd, result, (caddr_t) ia5, rox, roi);
-
 		free_IMISC_IA5List (ia5);
-
 		goto out;
 	}
 	if (pipe (pd) == NOTOK) {
 		result = error_IMISC_unableToPipe;
 		goto oops;
 	}
-
 	switch (fork ()) {
 	case NOTOK:
 		close (pd[0]);
@@ -702,7 +640,6 @@ oops:
 			free (bp);
 			vec[vecp] = NULL;
 		}
-
 		for (; vecq < vecp; vecq++)
 			if (bp = vec[vecq])
 				free (bp);
@@ -751,17 +688,14 @@ oops:
 				continue;
 			}
 	}
-
 congested:
 	;
 	free_IMISC_IA5List (ia5);
 	result = error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
-
 out:
 	;
 	for (vecp = vecq; bp = vec[vecp]; vecp++)
 		free (bp);
-
 	return result;
 }
 
@@ -793,13 +727,11 @@ static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	if (debug)
 		advise (LOG_DEBUG, NULLCP, , "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	for (ia5 = (struct type_IMISC_IA5List  *) in; ia5; ia5 = ia5 -> next)
 		if (vecp >= NVEC
 				|| (vecl[vecp++] = qb2str (ia5 -> IA5String)) == NULLCP)
 			goto congested;
 	vecl[vecp] = NULLCP;
-
 	if (vecp < 3) {
 		advise (LOG_INFO, NULLCP,
 				"too few arguments (got %d, wanted at least 3)", vecp);
@@ -809,7 +741,6 @@ static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	fromuser = vecl[0];
 	touser = vecl[1];
 	vec = &vecl[2], vecp -= 2;
-
 	hit = 0;
 	result = error_IMISC_userNotLoggedIn;
 #ifndef	SYS5
@@ -817,15 +748,11 @@ static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 		sprintf (buffer, "/etc/utmp: %s", sys_errname (errno));
 		if ((ia5 = str2ia5list (buffer)) == NULL)
 			goto congested;
-
 		result = error (sd, error_IMISC_unableToOpenFile, (caddr_t) ia5, rox,
 						roi);
-
 		free_IMISC_IA5List (ia5);
-
 		goto out;
 	}
-
 	while (read (ud, (char *) ut, sizeof *ut) == sizeof *ut) {
 		if (ut -> ut_name[0] == NULL)
 			continue;
@@ -853,23 +780,18 @@ static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 		result = error (sd, result, (caddr_t) NULL, rox, roi);
 		goto out;
 	}
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) NULL, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	result = OK;
 	goto out;
-
 congested:
 	;
 	result = error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
-
 out:
 	;
 	for (vecp = 0; bp = vecl[vecp]; vecp++)
 		free (bp);
-
 	return result;
 }
 
@@ -889,7 +811,6 @@ static int do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
 	if (stat (tty, &st) == NOTOK
 			|| (st.st_mode & (S_IWRITE >> 3)) != (S_IWRITE >> 3))
 		return NOTOK;
-
 	for (i = 0; i < 5; i++) {
 		switch (pid = fork ()) {
 		case NOTOK:
@@ -928,11 +849,9 @@ static int op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 	if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	if (RyDsResult (sd, rox -> rox_id, ryo -> ryo_op == operation_IMISC_echo
 					? in : (caddr_t) NULL, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	return OK;
 }
 
@@ -941,7 +860,6 @@ static int op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
-
 	return OK;
 }
 
@@ -950,7 +868,6 @@ static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struc
 static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
-
 	return OK;
 }
 
@@ -962,11 +879,9 @@ str2ia5list (char *s) {
 
 	if ((ia5 = (struct type_IMISC_IA5List  *) calloc (1, sizeof *ia5)) == NULL)
 		return NULL;
-
 	if ((ia5 -> IA5String = str2qb (s, strlen (s), 1)) == NULL) {
 		free ((char *) ia5);
 		return NULL;
 	}
-
 	return ia5;
 }

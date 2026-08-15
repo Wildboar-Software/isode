@@ -14,13 +14,9 @@ int	susaplose (struct SSAPindication *si, ...) {
 	va_list ap;
 
 	va_start (ap, si);
-
 	reason = va_arg (ap, int);
-
 	result = _susaplose (si, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -45,15 +41,12 @@ static int _susaplose (	/* what, fmt, args ... */
 		bzero ((char *) si, sizeof *si);
 		si -> si_type = SI_ABORT;
 		sa = &si -> si_abort;
-
 		asprintf (bp = buffer, ap);
 		bp += strlen (bp);
-
 		sa -> sa_peer = 0;
 		sa -> sa_reason = reason;
 		copySSAPdata (buffer, bp - buffer, sa);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -68,7 +61,6 @@ int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *t
 				  td -> td_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
 				  TuErrString (td -> td_reason), td -> td_cc, td -> td_cc,
 				  td -> td_data);
-
 	cp = "";
 	switch (td -> td_reason) {
 	case DR_REMOTE:
@@ -92,6 +84,5 @@ int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *t
 		reason = SC_TRANSPORT;
 		break;
 	}
-
 	return susaplose (si, reason, NULLCP, "%s", *cp ? cp + 1 : cp);
 }

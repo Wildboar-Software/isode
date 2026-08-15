@@ -58,7 +58,6 @@ int createEmptyFile (char *dir, struct RfaInfo *rfa) {
 	strcpy(buf,"This file has been created by RFA as a dummy.");
 	strcat(buf," Use RFA commands 'get' and 'setauto'\nto retrieve");
 	strcat(buf," the actual content of this file\n");
-
 	if (write(fd, buf, strlen(buf)) == 0) {
 		fprintf(err,"\t*** can't write local SLAVE for %s (%s) ***\n"
 				, fn, sys_errname(errno));
@@ -91,7 +90,6 @@ int removeDir (char *dir) {
 		fprintf(err, "*** can't open %s - %s ***", dir, sys_errname(errno));
 		return NOTOK;
 	}
-
 	for (dp = readdir(dirp); dp != NULL; dp = readdir(dirp)) {
 		if (strncmp(dp->d_name, "..", 2) && strncmp(dp->d_name, ".", 1)
 				&& strncmp(dp->d_name, ".rfainfo", 8)) {
@@ -114,7 +112,6 @@ int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp) 
 
 	if ((rfa == NULL) && (rrfa == NULL))
 		return OK;
-
 	sprintf(fn, "%s%s%s", dir, *(dir+strlen(dir)-1) == '/' ? "" : "/",
 			rfa ? rfa->ri_filename : rrfa->ri_filename);
 	/*-- checks if file exists only local --*/
@@ -143,7 +140,6 @@ int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp) 
 					incstr, rfa->ri_filename);
 			return NOTOK;
 		}
-
 	/*-- checks if file exists only remote --*/
 	if (rfa == NULL)
 		switch (RI_STATUS(rrfa->ri_status)) {
@@ -159,7 +155,6 @@ int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp) 
 					incstr, rrfa->ri_filename);
 			return NOTOK;
 		}
-
 	/*-- checks if file exists at both sides --*/
 	switch (RI_STATUS(rfa->ri_status)) {
 	case RI_UNREGISTERED:
@@ -223,7 +218,6 @@ int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp) 
 					incstr, rrfa->ri_filename);
 			return NOTOK;
 		}
-
 	/* NOTREACHED */
 	default:
 		fprintf(err, "%sinvalid state for local '%s' ***\n",
@@ -261,10 +255,8 @@ int handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa
 
 	if (!strcmp(rrfa->ri_filename, ".") || !strcmp(rrfa->ri_filename, ".."))
 		return OK;
-
 	sprintf(fn, "%s/%s", strcmp(dir,"/") ? dir : "", rrfa->ri_filename);
 	rfa = findRfaInfo(rrfa->ri_filename, *localRfaListPtr);
-
 	switch (RI_STATUS(rrfa->ri_status)) {
 	case RI_UNREGISTERED:
 		if (rfa)
@@ -324,17 +316,14 @@ int handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa
 			}
 			if (checkState(rfa, rrfa, dir, wrp) == NOTOK)
 				return NOTOK_INCONSISTENCY;
-
 		} /* if local rfa exists */
 	} /* switch rrfa->ri_status */
-
 	/*--- now we have a local version of the dir ---*/
 	if(rec && IS_TR_AUTO(rfa->ri_status))
 		if ((rc = syncDir(fn, rec)) != OK)  {
 			fprintf(err,"\t*** syncdir for %s failed ***\n", rrfa->ri_filename);
 			return rc;
 		}
-
 	return OK;
 }
 
@@ -356,7 +345,6 @@ int syncDir (char *dir, int rec) {
 		fprintf(err,"\t*** can't get rfainfo : %s ***\n", errMsg(rc));
 		return(rc);
 	}
-
 	/*--- get remote rfa list ---*/
 	if ((rc = getRemoteRfaInfoList(dir, &remoteRfaList)) != OK) {
 		releaseRfaInfoList(dir, localRfaList);
@@ -364,7 +352,6 @@ int syncDir (char *dir, int rec) {
 	}
 	fprintf(err, "syncing directory %s\n", dir);
 	*syncfiles = '\0';
-
 	/*-- check remote list agaist local one --*/
 	for(rrfa = remoteRfaList; rrfa; rrfa = rrfa->ri_next) {
 		writeList = 0;
@@ -378,7 +365,6 @@ int syncDir (char *dir, int rec) {
 		case S_IFLNK:
 			if (rrfa->ri_lnkName == NULL)
 				continue;
-
 			strcpy(buf, makeFN2(dir, rrfa->ri_filename));
 			if (*(rrfa->ri_lnkName) == '/')
 				lp = l = makeFN(rrfa->ri_lnkName);
@@ -386,10 +372,8 @@ int syncDir (char *dir, int rec) {
 				l = rrfa->ri_lnkName;
 				lp = makeFN2(dir, rrfa->ri_lnkName);
 			}
-
 			if (stat(lp, &st) == -1)
 				continue;
-
 			if ((rfa = findRfaInfo(rrfa->ri_filename,localRfaList)) == NULL) {
 				fprintf(err, "\tcreating link %s to %s\n",
 						rrfa->ri_filename, l);
@@ -427,11 +411,8 @@ int syncDir (char *dir, int rec) {
 		default:
 			continue;
 		}
-
 		/*--- rrfa->ri_filename is regular file ---*/
-
 		rfa = findRfaInfo(rrfa->ri_filename, localRfaList);
-
 		switch (RI_STATUS(rrfa->ri_status)) {
 		case RI_UNREGISTERED:
 			checkState(rfa, rrfa, dir, &writeList);
@@ -444,7 +425,6 @@ int syncDir (char *dir, int rec) {
 
 		case RI_MASTER:
 			if (rfa == NULL) {
-
 				/*--- check if not a .rfaexec file ---*/
 				if (strcmp(rrfa->ri_filename, ".rfaexec") == 0) {
 					fprintf(err,
@@ -452,7 +432,6 @@ int syncDir (char *dir, int rec) {
 							,rfa->ri_filename);
 					continue;
 				}
-
 				fprintf(err, "\tfound new MASTER file '%s' at remote\n",
 						rrfa->ri_filename);
 				if ((rfa=mallocRfaInfo(strdup(rrfa->ri_filename)))==NULL) {
@@ -474,7 +453,6 @@ int syncDir (char *dir, int rec) {
 					break;;
 				checkMasterSlave(rrfa, rfa, "remote", "local");
 			} /* if local rfa exists */
-
 			/*--- now we are ready to get the remote file ---*/
 			if (writeList && IS_TR_REQ(rfa->ri_status)) {
 				if (createEmptyFile(dir, rrfa) == NOTOK)
@@ -497,7 +475,6 @@ int syncDir (char *dir, int rec) {
 					incstr, rrfa->ri_filename);
 			continue;
 		} /* switch rrfa->ri_status */
-
 		/*--- now we have a local slave version of the file ---*/
 		if (writeList)
 			if ((rc = putRfaInfoList(dir, localRfaList)) != OK) {
@@ -505,9 +482,7 @@ int syncDir (char *dir, int rec) {
 						rfa->ri_filename);
 				continue;
 			}
-
 	} /* for rrfa */
-
 	/*-- now check local list against remote list --*/
 	for(rfa = localRfaList; rfa; rfa = rfa->ri_next)
 		if (findRfaInfo(rfa->ri_filename, remoteRfaList) == NULL) {
@@ -518,10 +493,8 @@ int syncDir (char *dir, int rec) {
 			fprintf(err,"%scan't set SLAVE status of %s ***\n", incstr,
 					rfa->ri_filename);
 		}
-
 	releaseRfaInfoList(dir, localRfaList);
 	freeRfaInfoList(remoteRfaList);
-
 	/*-- look for .rfaexec script --*/
 	return rfaMake(dir, syncfiles);
 }
@@ -539,7 +512,6 @@ int rfaMake (char *dir, char *fns) {
 	/*-- check if files sync'ed --*/
 	if (*fns == '\0' || doRfaExec == 0)
 		return OK;
-
 	/*-- check if .rfaexec exists --*/
 	sprintf(execfn, "%s/.rfaexec", dir);
 	if (lstat(makeFN(execfn),&st) == -1) {
@@ -553,7 +525,6 @@ int rfaMake (char *dir, char *fns) {
 				sys_errname(errno));
 		return NOTOK_LOCAL_ERROR;
 	}
-
 	/*-- check if dir is locked --*/
 	if ((rc=getRfaInfoList(dirname(dir),&localRfaList,(char *)NULL,0)) != OK) {
 		return rc;
@@ -566,7 +537,6 @@ int rfaMake (char *dir, char *fns) {
 	}
 	if ((rfa == NULL) || (rfa && !IS_MASTER(rfa->ri_status))) {
 		freeRfaInfoList(localRfaList);
-
 		/*--- get remote rfa list ---*/
 		if ((rc = getRemoteRfaInfoList(dirname(dir), &remoteRfaList)) != OK) {
 			return rc;
@@ -587,19 +557,16 @@ int rfaMake (char *dir, char *fns) {
 		}
 		freeRfaInfoList(remoteRfaList);
 	}
-
 	/*-- change cwd to sync'ed dir --*/
 	if (chdir(makeFN(dir)) == -1) {
 		fprintf(err,"\t*** can't change dir to '%s' (%s) ***\n", dir,
 				sys_errname(errno));
 		return NOTOK_LOCAL_ERROR;
 	}
-
 	/*-- so we are able to exec .rfaexec --*/
 	fprintf(err,"\texecuting '%s'...\n", execfn);
 	sprintf(buf, "%s %s", makeFN(execfn), fns);
 	if (system(buf) == -1)
 		return NOTOK_LOCAL_ERROR;
-
 	return OK;
 }

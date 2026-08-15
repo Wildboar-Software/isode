@@ -99,7 +99,6 @@ int main(int argc, char **argv) {
 #endif
 
 	ProgramName = argv[0];
-
 #ifdef ISOCONN
 	/*
 	 * XXX Shouldd parse -display display here
@@ -112,9 +111,7 @@ int main(int argc, char **argv) {
 				ProgramName, XDisplayName (NULL));
 		exit(1);
 	}
-
 	XSetErrorHandler(local_xerror);
-
 	if (argc == 1) {
 #ifdef DNETCONN
 		setnodeent(1); /* keep the database accessed */
@@ -139,11 +136,9 @@ int main(int argc, char **argv) {
 		}
 		exit(0);
 	}
-
 	for (i = 1; i < argc; i++) {
 		arg = argv[i];
 		if (*arg == '-') {
-
 			if (!argv[i][1] && ((i+1) == argc)) {
 				printf ("all hosts being restricted (access control enabled)\n");
 				XEnableAccessControl(dpy);
@@ -305,7 +300,6 @@ int change_host (Display *dpy, char *name, Bool add) {
 #ifdef h_addr				/* new 4.3bsd version of gethostent */
 		{
 			char **list;
-
 			/* iterate over the hosts */
 			for (list = hp->h_addr_list; *list; list++) {
 				ha.address = *list;
@@ -383,7 +377,6 @@ char *get_hostname (XHostAddress *ha) {
 		return(ha->address);
 	}
 #endif /* ISOCONN */
-
 	return (NULL);
 }
 
@@ -413,7 +406,6 @@ static int local_xerror (Display *dpy, XErrorEvent *rep) {
 			   (rep->request_code == X_ListHosts)) {
 		return 1;
 	}
-
 	XmuPrintDefaultErrorMessage (dpy, rep, stderr);
 	return 0;
 }

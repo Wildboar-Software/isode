@@ -50,11 +50,9 @@ int dish (char *command, int silent) {
 		fprintf (stderr, "%s\n", command);
 		fflush (stderr);
 	}
-
 	isarea = strncmp (command, "moveto -pwd", sizeof "moveto -pwd" - 1)
 			 ? 0 : 1;
 	isuser = !isarea && strcmp (command, "squid -user") == 0;
-
 	if (dafd != NOTOK) {
 		if (da_command ("STAT") == NOTOK) {
 			close_tcp_socket (dafd);
@@ -63,31 +61,25 @@ int dish (char *command, int silent) {
 	} else if (dish_running != NOTOK
 			   && kill (dish_running, 0) == NOTOK)
 		dish_running = NOTOK, boundP = 0;
-
 	if (dish_running == NOTOK && dafd == NOTOK) {
 		int	vecp;
 		char	dishname[BUFSIZ],
 				*vec[4];
 		static int very_first_time = 1;
-
 		if (very_first_time) {
 			unsetenv ("DISHPROC");
 			unsetenv ("DISHPARENT");
-
 			very_first_time = 0;
 		}
-
 		if (strcmp (server, "internal")) {
 			int	    portno;
 			char   *cp,
 				   *dp;
 			struct hostent *hp;
 			struct servent *sp;
-
 			if ((dafd = start_tcp_client ((struct sockaddr_in *) 0, 0))
 					== NOTOK)
 				adios ("control connection", "unable to start");
-
 			if (cp = index (server, ':')) {
 				if (sscanf (cp + 1, "%d", &portno) == 1)
 					*cp = 0;
@@ -103,43 +95,35 @@ int dish (char *command, int silent) {
 			bzero ((char *) sock, sizeof *sock);
 			sock -> sin_family = hp -> h_addrtype;
 			inaddr_copy (hp, sock);
-
 			if (cp)
 				sock -> sin_port = htons ((uint16_t) portno);
 			else if ((sp = getservbyname ("da", "tcp")) == NULL)
 				sock -> sin_port = htons ((uint16_t) 411);
 			else
 				sock -> sin_port = sp -> s_port;
-
 			if (join_tcp_server (dafd, sock) == NOTOK)
 				adios ("control connection", "unable to establish");
-
 			if (da_response () == NOTOK)
 				adios (NULLCP, "%s", da_reply);
-
 			cp = da_reply + sizeof "+OK " - 1;
 			if ((dp = index (cp, ' ')) == NULLCP
 					|| sscanf (dp + 1, "%d", &portno) != 1)
 				adios (NULLCP, "malformed response for data connection: %s",
 					   da_reply);
 			*dp = 0;
-
 			if ((hp = gethostbystring (cp)) == NULL)
 				adios (NULLCP, "%s: unknown host for data connection", cp);
 			bzero ((char *) sock, sizeof *sock);
 			sock -> sin_family = hp -> h_addrtype;
 			inaddr_copy (hp, sock);
 			sock -> sin_port = htons ((uint16_t) portno);
-
 			didbind = 0, boundP = 1;
 			signal (SIGPIPE, SIG_IGN);
-
 			if (cp = getenv ("DISPLAY")) {
 				char cp_host [1024];
 				char *cp_disp;
 				struct sockaddr_in sinl;
 				int sinl_size;
-
 				strncpy (cp_host, cp, 1024);
 				cp_host [1023] = '\0';
 				if ((cp_disp = index (cp_host, ':')) == NULLCP)
@@ -165,15 +149,11 @@ int dish (char *command, int silent) {
 				dish (buffer, 1);
 			}
 no_display:
-
 			goto do_conn;
 		}
-
 		if (get_dish_sock (sock, getpid (), 1) == NOTOK)
 			exit (1);
-
 		strcpy (dishname, _isodefile (isodebinpath, "dish"));
-
 fork_again:
 		;
 		switch (dish_running = vfork ()) {
@@ -199,15 +179,11 @@ fork_again:
 					adios ("client", "unable to start");
 				if (join_tcp_server (sd, sock) != NOTOK)
 					break;
-
 				close_tcp_socket (sd);
-
 				sleep (5);
-
 				if (kill (dish_running, 0) == NOTOK)
 					goto fork_again;
 			}
-
 			didbind = 0, boundP = 1;
 			signal (SIGPIPE, SIG_IGN);
 			break;
@@ -220,12 +196,10 @@ do_conn:
 		if (join_tcp_server (sd, sock) == NOTOK)
 			adios ("server", "unable to join");
 	}
-
 	sprintf (buffer, "%s\n", command);
 	n = send (sd, buffer, cc = strlen (buffer), 0);
 	if (debug)
 		fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
-
 	if (n != cc)
 		if (n == NOTOK) {
 			advise ("please retry", "write to DUA failed,");
@@ -235,7 +209,6 @@ do_conn:
 		} else
 			adios (NULLCP, "write to DUA truncated, sent %d of %d octets",
 				   n, cc);
-
 	status = OK;
 	for (;;) {
 		if ((cc = recv (sd, buffer, sizeof buffer - 1, 0)) == NOTOK) {
@@ -243,7 +216,6 @@ err_recv:
 			;
 			if (!interrupted)
 				adios ("failed", "read from DUA");
-
 			if (dafd != NOTOK)
 				da_command ("INTR");
 			else
@@ -251,7 +223,6 @@ err_recv:
 			interrupted = 0;
 			continue;
 		}
-
 		buffer[cc] = 0;
 		if (debug)
 			fprintf (stderr, "read %d octets from DUA: '%c'\n", cc,
@@ -266,20 +237,15 @@ lost_dua:
 					dafd = NOTOK;
 				}
 				boundP = 0;
-
 				advise (NULLCP, "lost DUA");
 			}
-
 			break;
 		}
-
 		if (!isdigit (buffer[0])) {
 			char  *cp,
 				  *ep;
-
 			cp = buffer + cc - 1;
 			ep = buffer + sizeof buffer - 1;
-
 			while (*cp != '\n') {
 				++cp;
 				switch (cc = recv (sd, cp, ep - cp, 0)) {
@@ -307,22 +273,18 @@ lost_dua:
 			}
 			*cp = 0;
 		}
-
 		switch (buffer[0]) {
 		case '2':
 			if ((fp = errfp) == NULL)
 				fp = stdfp != stdout ? stdfp : stderr;
 			status = NOTOK;
-
 copy_out:
 			;
 			if (cc > 1 && !silent)
 				paginate (fp, buffer + 1, cc - 1);
-
 			while ((cc = recv (sd, buffer, sizeof buffer - 1, 0)) > OK)
 				if (!silent)
 					paginate (fp, buffer, cc);
-
 			if (!silent)
 				paginate (fp, NULLCP, 0);
 			break;
@@ -332,7 +294,6 @@ copy_out:
 			if (isarea || isuser) {
 				char   *cp,
 					   **vp;
-
 				if (cp = index (buffer + 1, '\n'))
 					*cp = 0;
 #ifdef	notdef
@@ -341,7 +302,6 @@ copy_out:
 #endif
 				buffer[0] = '@';
 				vp = isarea ? &myarea : &mydn;
-
 				if (*vp)
 					free (*vp);
 				*vp = strdup (buffer);
@@ -406,7 +366,6 @@ user_abort:
 			sprintf (where, "Enter password for \"%s\": ",
 					 buffer + 1);
 			sprintf (where, "p%s", getpassword (where));
-
 stuff_it:
 			;
 			strcat (where, "\n");
@@ -417,7 +376,6 @@ stuff_it:
 			n = send (sd, where, cc = strlen (where), 0);
 			if (debug)
 				fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
-
 			if (n != cc)
 				if (n == NOTOK) {
 					advise ("please retry", "write to DUA failed,");
@@ -437,9 +395,7 @@ stuff_it:
 		}
 		break;
 	}
-
 	close_tcp_socket (sd);
-
 	return status;
 }
 
@@ -458,7 +414,6 @@ static do_edit (int sd, char *octets) {
 
 	strcpy (tmpfil, "/tmp/fredXXXXXX");
 	close (mkstemp (tmpfil));
-
 	if (sscanf (octets, "%d", &j) != 1 || j < 0) {
 		advise (NULLCP, "protocol botch");
 losing:
@@ -468,7 +423,6 @@ losing:
 		unlink (tmpfil);
 		return NOTOK;
 	}
-
 	if (watch) {
 		fprintf (stderr, "y\n");
 		fflush (stderr);
@@ -476,7 +430,6 @@ losing:
 	n = send (sd, "y\n", cc = sizeof "y\n" - 1, 0);
 	if (debug)
 		fprintf (stderr, "wrote %d of %d octets to DUA\n", n, cc);
-
 	if (n != cc)
 		if (n == NOTOK) {
 			advise ("please retry", "write to DUA failed,");
@@ -484,10 +437,8 @@ losing:
 		} else
 			adios (NULLCP, "write to DUA truncated, sent %d of %d cotets",
 				   n, cc);
-
 	if ((fp = fopen (tmpfil, "w")) == NULL)
 		adios (tmpfil, "unable to write");
-
 	for (cc = j; j > 0; j -= i)
 		switch (i = recv (sd, buffer, j < sizeof buffer ? j : sizeof buffer,
 						  0)) {
@@ -515,7 +466,6 @@ losing:
 			}
 			break;
 		}
-
 	if (fp == NULL) {
 all_done:
 		;
@@ -523,12 +473,10 @@ all_done:
 		return OK;
 	}
 	fclose (fp);
-
 	sprintf (buffer, "%s %s",
 			 _isodefile (isodebinpath, "editentry"), tmpfil);
 	if (system (buffer))
 		goto all_done;
-
 	cp = NULLCP;
 	if ((fp = fopen (tmpfil, "r")) == NULL) {
 		advise ("reading", "unable to re-open %s for", tmpfil);
@@ -545,7 +493,6 @@ nearly_done:
 		fclose (fp);
 		goto all_done;
 	}
-
 	sprintf (buffer, "e%d\n", cc);
 	j = strlen (buffer);
 	if ((cp = malloc ((unsigned) (k = cc + j + 1))) == NULL)
@@ -565,10 +512,8 @@ nearly_done:
 			break;
 		}
 	*dp = 0;
-
 	fclose (fp);
 	unlink (tmpfil);
-
 	if (watch) {
 		fprintf (stderr, "///////\n%s///////\n", cp);
 		fflush (stderr);
@@ -591,7 +536,6 @@ nearly_done:
 						 j, dp != cp ? "more " : "");
 			break;
 		}
-
 	free (cp);
 	return DONE;
 }
@@ -610,20 +554,15 @@ paginate (FILE *fp, char *buffer, int cc) {
 		union wait status;
 #endif
 		int	child;
-
 		first_time = 1;
 		fflush (fp);
 		if (!doing_pager)
 			return;
-
 		doing_pager = 0;
-
 		if (dup2 (sd, fileno (fp)) == NOTOK)
 			adios ("standard output", "unable to dup2");
-
 		clearerr (fp);
 		close (sd);
-
 #ifndef UNIONWAIT
 		while ((child = wait (&status)) != NOTOK
 #else
@@ -631,30 +570,21 @@ paginate (FILE *fp, char *buffer, int cc) {
 #endif
 				&& child != pid)
 			continue;
-
 		signal (SIGINT, Istat);
 		signal (SIGQUIT, Qstat);
-
 		return;
 	}
-
 	if (first_time) {
 		int	pd[2];
-
 		first_time = 0;
-
 		if (dontpage || network || *pager == NULL || !isatty (fileno (fp)))
 			goto no_pager;
-
 		fflush (fp);
-
 		foreground ();
-
 		if ((sd = dup (fileno (fp))) == NOTOK) {
 			advise ("dup", "unable to");
 			goto no_pager;
 		}
-
 		if (pipe (pd) == NOTOK) {
 			advise ("pipe", "unable to");
 			goto no_pager;
@@ -669,7 +599,6 @@ paginate (FILE *fp, char *buffer, int cc) {
 		case OK:
 			signal (SIGINT, SIG_DFL);
 			signal (SIGQUIT, SIG_DFL);
-
 			close (pd[1]);
 			if (pd[0] != fileno (stdin)) {
 				dup2 (pd[0], fileno (stdin));
@@ -692,19 +621,15 @@ paginate (FILE *fp, char *buffer, int cc) {
 			}
 			break;
 		}
-
 		Istat = signal (SIGINT, SIG_IGN);
 		Qstat = signal (SIGQUIT, SIG_IGN);
-
 		doing_pager = 1;
 	}
-
 no_pager:
 	;
 	if (network && !mail) {
 		char *cp,
 			 *dp;
-
 		for (dp = (cp = buffer) + cc; cp < dp; cp++) {
 			if (*cp == '\n')
 				fputc ('\r', fp);
@@ -729,14 +654,12 @@ static foreground () {
 
 	if ((pgrp = getpgrp (0)) == NOTOK)
 		return;
-
 	tstat = signal (SIGTTIN, SIG_DFL);
 	for (;;) {
 		if (ioctl (fileno (stdin), TIOCGPGRP, (char *) &tpgrp) == NOTOK)
 			break;
 		if (pgrp == tpgrp)
 			break;
-
 		kill (0, SIGTTIN);
 	}
 	signal (SIGTTIN, tstat);
@@ -763,13 +686,10 @@ static	mypager (FILE *fp) {
 		length = 23;
 	if (--width <= 0)
 		width = 79;
-
 	rows = cols = 0;
-
 	while (fgets (buffer, sizeof buffer, fp))
 		for (bp = buffer; *bp; bp++)
 			pagchar (*bp);
-
 	fflush (stdout);
 }
 
@@ -812,7 +732,6 @@ static pagchar (int ch) {
 			cols++;
 		break;
 	}
-
 	if (cols >= width) {
 		pagchar ('\n');
 		pagchar (ch);
@@ -827,7 +746,6 @@ int f_bind (char **vec) {
 		didbind = 0;
 		return OK;
 	}
-
 	return dish ("bind", 0);
 }
 
@@ -837,19 +755,14 @@ int f_quit (char **vec) {
 	if (vec && *++vec != NULL && strcmp (*vec, "-help") == 0) {
 		fprintf (stdfp, "quit\n");
 		fprintf (stdfp, "    terminate fred\n");
-
 		return OK;
 	}
-
 	if (dafd != NOTOK) {
 		da_command ("QUIT");
-
 		close_tcp_socket (dafd);
 	} else if (dish_running != NOTOK)
 		kill (dish_running, SIGHUP);
-
 	dafd = dish_running = NOTOK, boundP = 0;
-
 	return DONE;
 }
 
@@ -861,11 +774,8 @@ static int  da_command (char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	val = _da_command (fmt, ap);
-
 	va_end (ap);
-
 	return val;
 }
 
@@ -877,19 +787,15 @@ static int  _da_command (char *fmt, va_list ap)
 
 	if (dafd == NOTOK)
 		return NOTOK;
-
 	_asprintf (buffer, NULLCP, fmt, ap);
 	if (watch) {
 		fprintf (stderr, "<--- %s\n", buffer);
 		fflush (stderr);
 	}
-
 	strcat (buffer, "\r\n");
 	len = strlen (buffer);
-
 	if (write_tcp_socket (dafd, buffer, len) != len)
 		adios ("failed", "write_tcp_socket to control connection");
-
 	return (da_response ());
 }
 #else
@@ -911,7 +817,6 @@ static int da_response () {
 			break;
 	}
 	*cp = 0;
-
 	if (cp > da_reply)
 		cp--;
 	if (*cp == '\n') {
@@ -921,12 +826,10 @@ static int da_response () {
 	}
 	if (*cp == '\r')
 		*cp = 0;
-
 	if (watch) {
 		fprintf (stderr, "---> %s\n", da_reply);
 		fflush (stderr);
 	}
-
 	switch (da_reply[0]) {
 	case '+':
 		return OK;
@@ -947,11 +850,9 @@ int sync_ufnrc () {
 
 	sprintf (bp = buffer, "fred -ufnrc");
 	bp += strlen (bp);
-
 	for (ag = areas; ag -> ag_record; ag++)
 		if (ag -> ag_record == W_ORGANIZATION)
 			break;
-
 	sprintf (bp, " 1 1 \"%s", myarea + 1);
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag -> ag_area)) {
@@ -960,7 +861,6 @@ int sync_ufnrc () {
 	}
 	sprintf (bp, "$-\"");
 	bp += strlen (bp);
-
 	sprintf (bp, " 2 2 \"");
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag -> ag_area)) {
@@ -969,7 +869,6 @@ int sync_ufnrc () {
 	}
 	sprintf (bp, "%s$-\"", myarea + 1);
 	bp += strlen (bp);
-
 	sprintf (bp, " 3 32767 \"-");
 	bp += strlen (bp);
 	if ((ag -> ag_record) && (ag->ag_area)) {
@@ -978,7 +877,6 @@ int sync_ufnrc () {
 	}
 	sprintf (bp, "$%s\"", myarea + 1);
 	bp += strlen (bp);
-
 	return dish (buffer, 1);
 }
 
@@ -998,27 +896,21 @@ int init_ufnrc () {
 	else {
 		if ((bp = getenv ("HOME")) == NULL)
 			bp = ".";
-
 		sprintf (ufnrc, "%s/.ufnrc", bp);
 	}
-
 	if ((fp = fopen (ufnrc, "r")) == NULL) {
 		strcpy (ufnrc, isodefile ("ufnrc", 0));
-
 		if ((fp = fopen (ufnrc, "r")) == NULL)
 			return NOTOK;
 	}
-
 	sprintf (ep = sync, "fred -ufnrc");
 	ep += strlen (ep);
-
 	inprogress = 0;
 	for (i = 0; fgets (bp = buffer, sizeof buffer, fp); i++) {
 		if (*buffer == '#')
 			continue;
 		if (bp = index (buffer, '\n'))
 			*bp = 0;
-
 		bp = buffer;
 		if (*bp == 0) {
 			if (inprogress) {
@@ -1028,31 +920,25 @@ int init_ufnrc () {
 			}
 			continue;
 		}
-
 		if (!isspace (*bp)) {
 			int	    lower,
 					upper;
 			char *dp;
-
 			if ((cp = index (bp, ':')) == NULL) {
 				advise (NULLCP, "%s: missing ':' at line %d", ufnrc, i);
 				return NOTOK;
 			}
 			*cp++ = 0;
-
 			if (dp = index (bp, ',')) {
 				*dp++ = 0;
-
 				while (isspace (*dp))
 					dp++;
 				upper = *dp == '+' ? 32767 : atoi (dp);
 			} else
 				upper = 0;
-
 			lower = atoi (bp);
 			sprintf (ep, " %d %d \"", lower, upper ? upper : lower);
 			ep += strlen (ep);
-
 			bp = cp;
 			inprogress = 1;
 		} else if (!inprogress) {
@@ -1061,20 +947,16 @@ int init_ufnrc () {
 			return NOTOK;
 		} else
 			*ep++ = '$';
-
 		while (isspace (*bp))
 			bp++;
 		sprintf (ep, "%s", bp);
 		ep += strlen (ep);
 	}
-
 	if (inprogress) {
 		strcpy (ep, "\"");
 		ep += strlen (ep);
 		inprogress = 0;
 	}
-
 	fclose (fp);
-
 	return dish (sync, 1);
 }

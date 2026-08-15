@@ -90,12 +90,9 @@ char *get_strioid (char *ptr) {
 
 	while(*ptr == '"') ptr++;
 	while(*ptr != '"') ptr++;
-
 	while(*ptr > '9' || *ptr < '0') ptr++;
-
 	end_ptr = ptr;
 	while(*end_ptr != '\n') end_ptr++;
-
 	*end_ptr = '\0';
 	return ptr;
 }
@@ -107,13 +104,11 @@ void put_dn_and_password (char *dn, char *password, char *name) {
 	for (seq_num = 1; alias_list != NULLDS;
 			seq_num++, alias_list = alias_list->next)
 		if (!lexequ(name, alias_list->dname)) break;
-
 	if (alias_list == NULLDS) {
 		strcpy(dn, name);
 		*password = '\0';
 	} else {
 		strcpy(dn, get_from_seq(seq_num, aliased_dn_seq));
-
 		if (get_from_seq(seq_num, password_seq) != NULLCP)
 			strcpy(password, get_from_seq(seq_num, password_seq));
 		else
@@ -135,29 +130,21 @@ void user_tailor () {
 	type_path[BUFSIZ], options_path[BUFSIZ],
 	friendly_path[BUFSIZ], type_defaults_path[BUFSIZ],
 	dua_config_dir[BUFSIZ];
-
 	char stroid_buf[BUFSIZ];
 	char Read_in_Stuff[STRINGLEN];
-
 	extern  char * dsa_address,
 	* myname;
 	extern  char * tailfile;
-
 	char *str, *sptr, *p, *end;
 	char save;
-
 	DIR *config_directory;
 	struct dirent  *dir_ent;
-
 	int count, n, num;
 	int tempints[MAXTYPES];
-
 #ifndef NO_STATS
 	ll_hdinit (log_stat,"pod");
 #endif
-
 	/* read dsaptailor file to get address */
-
 	dsa_address = NULLCP;
 	if((config_file = fopen(isodefile(tailfile,0), "r")) == (FILE *) NULL) {
 		kill_message();
@@ -167,22 +154,17 @@ void user_tailor () {
 		while(fgets(Read_in_Stuff, sizeof(Read_in_Stuff), config_file) != NULLCP)
 			if ((*Read_in_Stuff != '#') && (*Read_in_Stuff != '\n') )
 				tai_string (Read_in_Stuff);
-
 		fclose(config_file);
 	}
-
 	strcpy(dua_config_dir, isodefile("xd", 0));
 	strcpy(dua_help_dir, dua_config_dir);
-
 	strcat(dua_config_dir, "/duaconfig/");
 	strcat(dua_help_dir, "/podHelpdir/");
-
 	strcpy (user_path, getenv("HOME"));
 	strcpy(read_path, user_path);
 	strcpy(type_path, user_path);
 	strcpy(friendly_path, user_path);
 	strcpy(type_defaults_path, user_path);
-
 	strcat(read_path, config_dir);
 	strcat(read_path, readTypes);
 	strcat(type_path, config_dir);
@@ -191,7 +173,6 @@ void user_tailor () {
 	strcat(friendly_path, friendlyNames);
 	strcat(type_defaults_path, config_dir);
 	strcat(type_defaults_path, typeDefaults);
-
 	if (testing) {
 		strcpy(type_path, "./Xd/duaconfig/");
 		strcat(type_path, type_dir);
@@ -210,7 +191,6 @@ void user_tailor () {
 			}
 		}
 	}
-
 	rewinddir(config_directory);
 	filt_num = 0;
 	while(dir_ent = readdir(config_directory)) {
@@ -226,7 +206,6 @@ void user_tailor () {
 		}
 	}
 	closedir(config_directory);
-
 	if (testing) {
 		strcpy(options_path, "./Xd/duaconfig/duarc");
 		parse_duarc(options_path);
@@ -235,11 +214,9 @@ void user_tailor () {
 		strcpy(options_path, "duarc");
 		parse_duarc(options_path);
 	}
-
 	strcpy(options_path, user_path);
 	strcat(options_path, options);
 	parse_duarc(options_path);
-
 	if (testing) {
 		strcpy(read_path, "./Xd/duaconfig/");
 		strcat(read_path, readTypes);
@@ -257,7 +234,6 @@ void user_tailor () {
 			}
 		}
 	}
-
 	while(fgets(Read_in_Stuff, STRINGLEN, config_file) != 0) {
 		strcpy(stroid_buf, get_strioid(Read_in_Stuff));
 		if (*stroid_buf) {
@@ -270,11 +246,8 @@ void user_tailor () {
 		}
 	}
 	fclose(config_file);
-
 #ifdef USE_PP
-
 	/* If they want PP - they want OR names don't they ! */
-
 	if (!read_types)
 		read_types = as_comp_new(AttrT_new("2.6.5.2.6"),
 								 NULLAV, NULLACL_INFO);
@@ -283,9 +256,7 @@ void user_tailor () {
 		NULLAV, NULLACL_INFO);
 		read_types = as_merge(read_types, read_types2);
 	}
-
 #endif
-
 	if (testing) {
 		strcpy(friendly_path, "./Xd/duaconfig/");
 		strcat(friendly_path, friendlyNames);
@@ -303,7 +274,6 @@ void user_tailor () {
 			}
 		}
 	}
-
 	name_map[fname_num] = 0;
 	while(fgets(Read_in_Stuff, STRINGLEN, config_file) != 0) {
 		if (*Read_in_Stuff != '#') {
@@ -314,24 +284,19 @@ void user_tailor () {
 				while (*str != ' ' && *str != ',' && *str != ':') str++;
 				save = *str;
 				*str = '\0';
-
 				if (!name_map[fname_num]) {
 					name_map[fname_num] = (fName) malloc(sizeof(struct friendlyName));
 					name_map[fname_num]->names = 0;
 				}
-
 				add_seq(&name_map[fname_num]->names, sptr);
 				*str = save;
 				sptr = str;
 				while (*sptr != ',' && *sptr != ':') sptr++;
 			}
-
 			while (!isalpha(*sptr) && *sptr != '\0') sptr++;
-
 			str = sptr;
 			while (*str != '\0' && *str != '\n') str++;
 			*str = '\0';
-
 			if (name_map[fname_num]) {
 				strcpy(name_map[fname_num]->fname, sptr);
 				fname_num++;
@@ -339,7 +304,6 @@ void user_tailor () {
 			}
 		}
 	}
-
 	for (curr_filt = 0; curr_filt < filt_num; curr_filt++) {
 		if (!(config_file = fopen(file_names[curr_filt], "r"))) {
 			fprintf(stderr, "Can't find file %s!\n", file_names[curr_filt]);
@@ -348,15 +312,12 @@ void user_tailor () {
 		filt_arr[curr_filt] = (filt_struct  *) NULL;
 		filtvalue[curr_filt] = (char *) malloc(STRINGLEN);
 		*filtvalue[curr_filt] = '\0';
-
 		yyparse();
 		fclose(config_file);
 	}
-
 	filttype[curr_filt] = NULLCP;
 	for (count = 0; count < filt_num; count++)
 		free(file_names[count]);
-
 	if (testing) {
 		strcpy(type_defaults_path, "./Xd/duaconfig/");
 		strcat(type_defaults_path, typeDefaults);
@@ -374,34 +335,26 @@ void user_tailor () {
 			}
 		}
 	}
-
 	default_num = 0;
 	while (fgets (Read_in_Stuff, STRINGLEN, config_file) != 0) {
 		p = SkipSpace(Read_in_Stuff);
 		if (( *p == '#') || (*p == '\0'))
 			continue;
-
 		part1 = p;
 		if ((part2 = index (p,':')) == NULLCP)
 			continue;
-
 		end = part2 - 1;
 		while (isspace(*end)) end--;
 		*++end = '\0';
-
 		*part2++ = '\0';
-
 		while (isspace(*part2)) part2++;
 		end = part2;
-
 		while (!isspace(*end) && *end != ',' && *end != ':') end++;
-
 		count = 0;
 		while (*part2 != ':') {
 			n = 0;
 			while (n < filt_num && strncmp(filttype[n],
 										   part2, (int) (end - part2))) n++;
-
 			if (n == filt_num) {
 				fprintf(stderr, "Parsing error in typeDefaults file!");
 				quit(1);
@@ -410,12 +363,10 @@ void user_tailor () {
 				count++;
 				part2 = end;
 				while (!isalpha(*part2) && *part2 != ':' && part2 != '\0') part2++;
-
 				if (*part2 == '\0') {
 					fprintf(stderr, "Parsing error in typeDefaults file!");
 					quit(1);
 				}
-
 				if (*part2 != ':') {
 					while (!isalpha(*part2)) part2++;
 					end = part2;
@@ -428,16 +379,13 @@ void user_tailor () {
 				} else end = part2;
 			}
 		}
-
 		if (*end == ':') {
 			while(isspace(*++end));
 			p = end;
 			while(!isspace(*++end));
 			*end = '\0';
-
 			n = 0;
 			while (n < filt_num && strcmp(filttype[n], p)) n++;
-
 			if (n == filt_num) {
 				fprintf(stderr, "Parsing error in typeDefaults file!");
 				quit(1);
@@ -449,22 +397,17 @@ void user_tailor () {
 					quit(1);
 				}
 			}
-
 			defaults[default_num] = n;
-
 			levels[default_num] = malloc((unsigned int) (strlen(part1) + 1));
 			strcpy(levels[default_num], part1);
 			available_types[default_num] =
 				(int *) malloc((unsigned int) (sizeof(int) * (count+1)));
-
 			for (n = 0; n < count; n++)
 				available_types[default_num][n] = tempints[n];
-
 			available_types[default_num][n] = -1;
 			default_num++;
 		}
 	}
-
 	fclose(config_file);
 }
 
@@ -480,14 +423,11 @@ void parse_duarc (char *options_path) {
 			p = SkipSpace (Read_in_Stuff);
 			if (( *p == '#') || (*p == '\0'))
 				continue;  /* ignore comments and blanks */
-
 			part1 = p;
 			if ((part2 = index (p,':')) == NULLCP)
 				continue; /* ignore it */
-
 			*part2++ = '\0';
 			part2 = TidyString(part2);
-
 			if ((lexequ(part1, "username") == 0) && *namestr == '\0')
 				strcpy (namestr, part2);
 			else if ((lexequ(part1, "password") == 0) && *passwd == '\0')
@@ -546,16 +486,13 @@ char *cnnct_bind () {
 		message((Widget) NULL,
 		"Connecting to Directory. Please wait.");
 	}
-
 	/* set dsa_address */
 	if (dsa_address == NULLCP)
 		dsa_address = myname;
-
 	if (dsa_address == NULLCP || *dsa_address == '\0') {
 		return
 		("Cannot find name of DSA to bind to! Click on this window to exit.");
 	}
-
 	/* now bind */
 	bindarg.dba_version = DBA_VERSION_V1988;
 	if (passwd[0] == 0) {
@@ -565,9 +502,7 @@ char *cnnct_bind () {
 		bindarg.dba_passwd_len = strlen(passwd);
 		strcpy (bindarg.dba_passwd, passwd);
 	}
-
 	bindarg.dba_dn = (*namestr == 0? NULLDN: str2dn(namestr));
-
 	if (ds_bind (&bindarg, &binderr, &bindresult) != DS_OK) {
 		return(binderr.dbe_type == DBE_TYPE_SECURITY?
 		"Security error - Check name and pasword.\n\
@@ -576,19 +511,15 @@ Click on this window to exit.":
 Click on this window to exit.");
 	} else {
 		user_name = bindarg.dba_dn;
-
 		if(local_dit && *local_dit)
 			strcpy(base_path, local_dit);
-
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("bound ('%s' to '%s')",namestr,dsa_address));
 #endif
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("pod bound to directory"));
 #endif
-
 		make_friendly(friendly_base_path, base_path);
-
 		set_default_type();
 		check_known_oids();
 		oclass = as_comp_new(AttrT_new("2.5.4.0"), NULLAV, NULLACL_INFO);
@@ -606,10 +537,8 @@ void set_default_type () {
 
 	if (*base_path != '\0') {
 		base_name = d_name = str2dn(base_path);
-
 		while (base_name && base_name->dn_parent)
 			base_name = base_name->dn_parent;
-
 		for (count = 0
 		;
 		count < default_num && base_name &&
@@ -617,9 +546,7 @@ void set_default_type () {
 		;
 		count++)
 			;
-
 		dn_free(d_name);
-
 		if (count < default_num) {
 			av_typeindx = available_types[count];
 			typeindx = defaults[count];
@@ -645,14 +572,10 @@ void dn2buf (caddr_t ptr,char *cptr) {
 	char buffer [RESBUF];
 
 	if((ps = ps_alloc(str_open)) == NULLPS) return ;
-
 	if(str_setup(ps, buffer, RESBUF, 1) == NOTOK) return ;
-
 	dn_print(ps, (DN) ptr, EDBOUT);
 	*ps->ps_ptr = 0;
-
 	ps_free (ps);
-
 	strcpy(cptr, buffer);
 }
 
@@ -667,35 +590,26 @@ void make_friendly (char *fstr, char *str) {
 		*fstr = '\0';
 		return;
 	}
-
 	end = str;
 	while (*end != '\0') end++;
-
 	start = end;
 	while (start >= str) {
 		if (*start == '@' || start == str) {
 			save = *end;
 			*end = '\0';
-
 			if (start != str) start++;
 			add_seq(&rdns, start);
-
 			*end = save;
-
 			end = --start;
 			rdn_count++;
 		}
-
 		--start;
 	}
-
 	*fstr = '\0';
 	for (count = 1; count <= rdn_count; count++) {
 		start = get_from_seq(count, rdns);
-
 		buffer[0] = '\0';
 		make_friendly_aux(buffer, start);
-
 		if (*fstr == '\0')
 			strcpy(fstr, buffer);
 		else {
@@ -703,7 +617,6 @@ void make_friendly (char *fstr, char *str) {
 			strcat(fstr, buffer);
 		}
 	}
-
 	free_seq(rdns);
 }
 
@@ -714,14 +627,11 @@ static void make_friendly_aux (char *fstr, char *rdn) {
 	int count, seqnum;
 
 	extern char *SkipSpace();
-
 	/* First check the attribute type alias */
 	start = end = SkipSpace(rdn);
 	while (!isspace(*end) && *end != '=') end++;
-
 	save = *end;
 	*end = '\0';
-
 	mapped = FALSE;
 	for (count = 0; count < fname_num && !mapped; count++) {
 		seqnum = 0;
@@ -732,26 +642,20 @@ static void make_friendly_aux (char *fstr, char *rdn) {
 				mapped = TRUE;
 			}
 	}
-
 	if (!mapped) {
 		strcat(fstr, start);
 		strcat(fstr, " = ");
 	} else {
 		if (*name_map[--count]->fname != '\0')  strcat(fstr, " = ");
 	}
-
 	*end = save;
-
 	/* Now get the attribute value*/
 	start = end;
 	while (isspace(*start) || *start == '=') start++;
-
 	end = start;
 	while (*end != '@' && *end != '\0' && *end != '%') end++;
-
 	save = *end;
 	*end = '\0';
-
 	if (index(start, ',') == NULLCP)
 		strcat(fstr, start);
 	else {
@@ -759,18 +663,13 @@ static void make_friendly_aux (char *fstr, char *rdn) {
 		strcat(fstr, start);
 		strcat(fstr, "\"");
 	}
-
 	*end = save;
-
 	if (save == '\0' || save == '@') return;
 	else if (save == '%') {
 		strcat(fstr, " (");
-
 		for (start = fstr; *start != '\0'; start++)
 			;
-
 		make_friendly_aux(start, ++end);
-
 		strcat(fstr, ")");
 	}
 }
@@ -782,32 +681,24 @@ void make_friendly_rdn (char *friendly, char *object, char *base) {
 
 	count = strlen(base);
 	front = (char *) (object + count);
-
 	save = *front;
 	*front = '\0';
-
 	if (lexequ(object, base)) {
 		*front = save;
 		make_friendly(friendly, object);
 		return;
 	}
-
 	*front = save;
 	*friendly = '\0';
-
 	front = base;
 	count = 0;
-
 	if (showseq != backseq) {
 		while (*front != '\0') if (*front++ == '@') count++;
 		count++;
 	} else
 		count = 0;
-
 	front = object;
-
 	while (count && *front != '\0') if (*front++ == '@') count--;
-
 	if (*front != '\0') {
 		if (front != object) while (isspace(*front) && *front != '\0') front++;
 		make_friendly(friendly, front);
@@ -821,15 +712,12 @@ int goto_addr () {
 	void add_to_history();
 
 	set_default_type();
-
 	make_friendly(friendly_base_path, base_path);
-
 	str = get_from_seq(count+1, backseq);
 	while (count < back_buf_num && strcmp(str, base_path)) {
 		count++;
 		str = get_from_seq(count+1, backseq);
 	}
-
 	if (count == back_buf_num) {
 		add_seq(&backseq, base_path);
 		back_buf_num++;
@@ -852,19 +740,14 @@ int is_dit_leaf (char *name) {
 	struct ds_read_result   read_result;
 	Entry                   read_entry;
 	Attr_Sequence           object_class;
-
 	struct DSError          list_error, read_error;
-
 	char entry_str[STRINGLEN];
-
 	if (get_default_service (&read_arg.rda_common) != 0) return(1);
 	read_arg.rda_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	read_arg.rda_eis.eis_allattributes = FALSE;
 	read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	read_arg.rda_eis.eis_select = oclass;
-
 	read_arg.rda_object = (*name? str2dn(name): NULLDN);
-
 	if ((read_entry = local_find_entry(read_arg.rda_object, FALSE))
 			!= NULLENTRY &&
 			read_entry->e_data != E_TYPE_CONSTRUCTOR) {
@@ -882,12 +765,10 @@ int is_dit_leaf (char *name) {
 		dn_free(read_arg.rda_object);
 		ds_error_free(&read_error);
 	}
-
 	if (get_default_service (&list_arg.lsa_common) != 0) return(1);
 	list_arg.lsa_common.ca_servicecontrol.svc_sizelimit = 1;
 	list_arg.lsa_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	list_arg.lsa_object = (*name? str2dn(name): NULLDN);
-
 	if ((cached_list = find_list_cache(list_arg.lsa_object, 1)) != NULL) {
 		if (cached_list->list_sub_top) return(0);
 		else return(1);
@@ -924,23 +805,17 @@ str_seq SortList(str_seq list) {
 	DN dn;
 
 	if (!list) return 0;
-
 	currEntry = list;
 	sortedList = 0;
-
 	while (currEntry) {
 		dn = curr_dn = str2dn(currEntry->dname);
-
 		while (curr_dn && curr_dn->dn_parent != NULLDN)
 			curr_dn = curr_dn->dn_parent;
-
 		if (!strcmp(curr_dn->dn_rdn->rdn_at->oa_ot.ot_stroid, "2.5.4.3"))
 			currName = GetSurname(currEntry->dname);
 		else
 			currName = GetWholeRelName(currEntry->dname);
-
 		dn_free(dn);
-
 		if (!sortedList) {
 			sortedList = currEntry;
 			currEntry = currEntry->next;
@@ -948,21 +823,16 @@ str_seq SortList(str_seq list) {
 		} else {
 			lastSortedEntry = 0;
 			currSortedEntry = sortedList;
-
 			while (currSortedEntry != 0) {
 				dn = curr_dn = str2dn(currSortedEntry->dname);
-
 				while (curr_dn && curr_dn->dn_parent != NULLDN)
 					curr_dn = curr_dn->dn_parent;
-
 				if (!strcmp(curr_dn->dn_rdn->rdn_at->oa_ot.ot_stroid,
 							"2.5.4.3"))
 					sortedName = GetSurname(currSortedEntry->dname);
 				else
 					sortedName = GetWholeRelName(currSortedEntry->dname);
-
 				dn_free(dn);
-
 				if (strcmp(currName, sortedName) <= 0) {
 					if (lastSortedEntry) {
 						lastSortedEntry->next = currEntry;

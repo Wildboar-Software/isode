@@ -42,45 +42,34 @@ int photo_end (char *name) {
 		passno = 2;
 		px = x = maxx;
 		py = --y;
-
 		make_photo_widget();
-
 		dpy = XtDisplay(toplevel);
 		scr = DefaultScreenOfDisplay(dpy);
-
 		winW = x;
 		winH = y;
-
 		photo_pixmap = XCreatePixmap(dpy, XtWindow(PhotoWindow),
 									 (Dimension) x, (Dimension) y,
 									 DefaultDepthOfScreen(scr));
 		gc = XCreateGC(dpy, photo_pixmap, 0, NULL);
-
 		count = 0;
 		XtSetArg(args[count], XtNbackground, &back);
 		count++;
 		XtSetArg(args[count], XtNforeground, &fore);
 		count++;
 		XtGetValues(PhotoWindow, args, count);
-
 		XSetLineAttributes(dpy, gc, 0, LineSolid, CapButt, JoinBevel);
-
 		XSetForeground(dpy, gc, (unsigned long) fore);
 		XSetBackground(dpy, gc, (unsigned long) back);
-
 		if (fore == 0)
 			XSetFunction(dpy, gc, GXset);
 		else
 			XSetFunction(dpy, gc, GXclear);
-
 		XFillRectangle(dpy, photo_pixmap, gc, 0, 0,
 					   (unsigned int) winW, (unsigned int) winH);
-
 		if (fore == 0)
 			XSetFunction(dpy, gc, GXclear);
 		else
 			XSetFunction(dpy, gc, GXset);
-
 		return 0;
 	}
 	if (name && *name)  strcpy(photo_name, name);
@@ -92,11 +81,9 @@ int photo_end (char *name) {
 int photo_line_end(bit_string *line) {
 	/* the end of a line has been reached */
 	/* A bit string is stored in line->dbuf_top */
-
 	if (passno == 1 && x > maxx)
 		maxx = x;
 	x = 0, y++;
-
 	return 0;
 }
 
@@ -114,10 +101,8 @@ int photo_white (int length) {
 		x += length;
 		return 0;
 	}
-
 	/* draw a white line of 'length' pixels */
 	XDrawLine (dpy, photo_pixmap, gc, position,
 			   NUMLINES, length+position-1, NUMLINES);
-
 	return 0;
 }

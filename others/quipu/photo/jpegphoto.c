@@ -33,7 +33,6 @@ void SkipAsn1Len () {
 	unsigned char   c;
 
 	c = mygetchar();
-
 	if (c > 0x80) {
 		c &= ~0x80;
 		while (c--) {
@@ -56,7 +55,6 @@ void DoG3Fax (unsigned char firstChar) {
 		exit(BAD_EXIT);
 	}
 	fwrite((char *)&firstChar, 1, 1, newPipe);
-
 	while (len = read(0, buffer, sizeof(buffer))) {
 		if (!fwrite(buffer, 1, len, newPipe)) {
 			fprintf(stderr, "write to pipe failed for '%s'", command);
@@ -64,16 +62,13 @@ void DoG3Fax (unsigned char firstChar) {
 			exit(BAD_EXIT);
 		}
 	}
-
 	pclose(newPipe);
 	exit(0);
 }
 
 void DoNewJPEG () {
 	SkipAsn1Len();
-
 	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
-
 	if (execl(command, "xphoto-jpeg", 0)) {
 		fprintf(stderr, "command '%s' failed", command);
 		perror(" ");
@@ -84,9 +79,7 @@ void DoNewJPEG () {
 
 void DoJPEG () {
 	SkipAsn1Len();
-
 	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
-
 	if (execl(command, "xphoto-jpeg", 0)) {
 		fprintf(stderr, "command '%s' failed", command);
 		perror(" ");
@@ -99,9 +92,7 @@ void main (int argc, char **argv, char **envp) {
 	unsigned char   firstChar;
 
 	firstChar = mygetchar();
-
 	/* test first octet */
-
 	switch (firstChar) {
 	case NEW_JPEG_TAG:
 		DoNewJPEG();

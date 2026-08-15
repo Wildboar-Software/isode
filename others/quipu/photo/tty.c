@@ -31,14 +31,12 @@ int photo_start (char *name) {
 	if ((ptr = getenv ("photo_invert")) != (char *) NULL)
 		if (strcmp (ptr, "true") == 0)
 			invert = 1;
-
 	if ((ptr = getenv ("photo_equal")) != (char *) NULL) {
 		if (strcmp (ptr, "true") == 0)
 			equal = 1;
 		else if (strcmp (ptr, "edge") == 0) {
 			int     i,
 					j;
-
 			for (i = 1; i < PIC_LINESIZE; i++)
 				for (j = 1; j < NUMLINES; j++)
 					buffer[i][j] = 0;
@@ -49,7 +47,6 @@ int photo_start (char *name) {
 		strcpy (mapping, ptr);
 	else
 		strcpy (mapping, GREYSCALE);
-
 	if ((ptr = getenv ("photo_scale")) != (char *) NULL) {
 		if (strcmp (ptr, "large") == 0)
 			scale = 1;
@@ -59,7 +56,6 @@ int photo_start (char *name) {
 			scale = 4;
 	}
 	scalediv = scale * scale / 8;
-
 	printf ("\n");
 	return (0);
 }
@@ -77,21 +73,17 @@ int photo_end (char *name) {
 		numlev = scale * scale * 2;
 		for (i = 0; i < numlev; i++)
 			level[i] = 0;
-
 		for (i = 0; i < ln; i++)
 			for (j = 0; j < PIC_LINESIZE / scale; j++)
 				level[display[i][j]]++;
-
 		for (i = 0; i < numlev; i++)
 			totlevel += level[i];
-
 		for (i = 0; i < numlev; i++) {
 			total += level[i];
 			show[i] = (total * 16) / totlevel;
 			if (show[i] >= 16)
 				show[i] = 15;
 		}
-
 		for (i = 0; i < ln; i++) {
 			for (j = 0; j < PIC_LINESIZE / scale; j++) {
 				if (invert)
@@ -104,11 +96,9 @@ int photo_end (char *name) {
 	} else if (edges) {
 		/* edges by expansion */
 		char    ebuf[500][500];
-
 		for (i = 1; i < PIC_LINESIZE; i++)
 			for (j = 1; j < NUMLINES; j++)
 				ebuf[i][j] = 0;
-
 		for (i = 1; i < PIC_LINESIZE; i++)
 			for (j = 1; j < NUMLINES; j++)
 				if (buffer[i][j] == 1) {
@@ -125,14 +115,12 @@ int photo_end (char *name) {
 			for (j = 1; j < NUMLINES; j++)
 				if (buffer[i][j] == 1)
 					ebuf[i][j] = 0;
-
 		for (lineno = 0; lineno < NUMLINES; lineno += (2 * scale)) {
 			for (k = 0; k < PIC_LINESIZE; k += scale) {
 				cnt = 0;
 				for (i = k; i < k + scale; i++)
 					for (j = lineno; j < (2 * scale) + lineno; j++)
 						cnt += ebuf[i][j];
-
 				/* Need to select a grey level on the strength of the edge
 				 *
 				 *				cnt *= 4;
@@ -145,7 +133,6 @@ int photo_end (char *name) {
 					cnt = (scalediv * 16) -1;
 				else
 					cnt = 0;
-
 				if (invert)
 					putc (mapping[(cnt / scalediv)],stdout);
 				else
@@ -153,10 +140,8 @@ int photo_end (char *name) {
 			}
 			putc ('\n',stdout);
 		}
-
 	}
 	return (0);
-
 }
 
 int photo_black (int length) {
@@ -203,10 +188,8 @@ void photo_line_end (bit_string *line) {
 	}
 	lineno++;
 	pos = 0;
-
 	if (edges)
 		return;
-
 	if (lineno >= 2 * scale) {
 		ln++;
 		lineno = 0;
@@ -215,20 +198,17 @@ void photo_line_end (bit_string *line) {
 			for (i = k; i < k + scale; i++)
 				for (j = 0; j < 2 * scale; j++)
 					cnt += buffer[i][j];
-
 			if (equal) {
 				display[ln][k / scale] = cnt;
 				continue;
 			}
 			if (cnt == (scalediv * 16))
 				cnt--;
-
 			if (invert)
 				putc (mapping[cnt / scalediv],stdout);
 			else
 				putc (mapping[15 - (cnt / scalediv)],stdout);
 		}
-
 		if (!equal)
 			putc ('\n',stdout);
 	}

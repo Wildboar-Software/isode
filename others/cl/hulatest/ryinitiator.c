@@ -117,13 +117,10 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	qos.qos_reliability = HIGH_QUALITY;
-
 	for (ap = argv + 1; cp = *ap; ap++) {
 		if (*cp != '-')
 			break;
-
 		if (strcmp (cp, "-low") == 0) {
 			qos.qos_reliability = LOW_QUALITY;
 			continue;
@@ -149,18 +146,14 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 				adios (NULLCP, "usage: %s -l length", myname);
 			continue;
 		}
-
 		adios (NULLCP, "%s: unknown switch", cp);
 	}
-
 	if ((cp = *ap++) == NULL)
 		adios (NULLCP, "usage: %s host [operation [ arguments ... ]]", myname);
-
 	if ((aei = str2aei (cp, myservice)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity", cp, myservice);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
-
 	if ((ctx = ode2oid (mycontext)) == NULLOID)
 		adios (NULLCP, "%s: unknown object descriptor", mycontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -173,14 +166,12 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	/*
 	    if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		 bzero ((char *) sf, sizeof *sf);
 	    }
 	*/
-
 	if (*ap == NULLCP) {
 		printf ("%s", myname);
 		/*
@@ -192,10 +183,8 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		printf (" [%s, ", sprintoid (ctx));
 		printf ("%s]\n", sprintoid (pci));
 		printf ("using %s\n", isodeversion);
-
 		printf ("%s... ", cp);
 		fflush (stdout);
-
 		iloop = 1;
 	} else {
 		cp = *ap++;
@@ -204,10 +193,8 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 				break;
 		if (ds -> ds_name == NULL)
 			adios (NULLCP, "unknown operation \"%s\"", cp);
-
 		iloop = 0;
 	}
-
 	/***************************************/
 	if ((sd = AcUnitDataBind (NOTOK, BIND_STATIC, ctx, NULLAEI, aei,
 							  NULLPA, pa, pc, qos, aci) ) == NOTOK )
@@ -236,23 +223,18 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		ros_adios (rop, "set RO/PS fails");
 	*/
 	/***************************************/
-
 	if (iloop) {
 		printf ("connected\n");
 		fflush (stdout);
 	}
-
 	if (RoSetService (sd, RoAcuService, roi) == NOTOK)
 		ros_adios (rop, "set RO/AcuS fails");
-
 	if (iloop) {
 		for (;;) {
 			if (_getline (buffer) == NOTOK)
 				break;
-
 			if (str2vec (buffer, vec) < 1)
 				continue;
-
 			for (ds = dispatches; ds -> ds_name; ds++)
 				if (strcmp (ds -> ds_name, vec[0]) == 0)
 					break;
@@ -260,12 +242,10 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 				advise (NULLCP, "unknown operation \"%s\"", vec[0]);
 				continue;
 			}
-
 			invoke (sd, ops, ds, vec + 1);
 		}
 	} else
 		invoke (sd, ops, ds, ap);
-
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
@@ -283,32 +263,26 @@ static invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **arg
 	in = NULL;
 	if (ds -> ds_argument && (*ds -> ds_argument) (sd, ds, args, &in) == NOTOK)
 		return;
-
 #ifdef	TIMER
 	if (timing) {
 		struct RyOperation *ryo = ops;
 		PE	pe;
-
 		cc = 0;
-
 		for (; ryo -> ryo_name; ryo++)
 			if (ryo -> ryo_op == ds -> ds_operation)
 				break;
 		if (!ryo -> ryo_name || !ryo -> ryo_arg_encode)
 			goto nope;
-
 		pe = NULLPE;
 		if ((*ryo -> ryo_arg_encode) (&pe, 1, NULL, NULLCP, in) != NOTOK)
 			cc = ps_get_abs (pe);
 		if (pe)
 			pe_free (pe);
-
 nope:
 		;
 		timer (0, 0);
 	}
 #endif
-
 	for (i = 0; i < count; i++)
 		switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd),
 								 NULLIP, in, DS_RESULT (ds), ds -> ds_error,
@@ -330,12 +304,10 @@ nope:
 			adios (NULLCP, "unknown return from RyStub=%d", result);
 			/* NOTREACHED */
 		}
-
 #ifdef	TIMER
 	if (timing)
 		timer (cc, count);
 #endif
-
 out:
 	;
 	if (ds -> ds_free && in)
@@ -354,10 +326,8 @@ static int _getline (char *buffer) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	printf ("%s> ", myname);
 	fflush (stdout);
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			printf ("\n");
@@ -366,15 +336,12 @@ static int _getline (char *buffer) {
 				sticky++;
 				break;
 			}
-
 			return NOTOK;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	return OK;
 }
 
@@ -400,12 +367,10 @@ static timer (int bytes, int pkts) {
 		return;
 	} else
 		gettimeofday (&stop, (struct timezone  *) 0);
-
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
 	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
 	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
-
 	printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 			pkts, td.tv_sec, td.tv_usec / 10000, ps);
 	if (bytes > 0)
@@ -414,7 +379,6 @@ static timer (int bytes, int pkts) {
 }
 
 static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
-
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)
@@ -439,13 +403,11 @@ static timer (int bytes, int pkts) {
 		return;
 	} else
 		stop = times (&tm);
-
 	td = stop - start;
 	secs = td / 60, msecs = (td % 60) * 1000 / 60;
 	ms = (secs * 1000) +  msecs;
 	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
 	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
-
 	printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 			pkts, secs, msecs / 10, ps);
 	if (bytes > 0)
@@ -461,7 +423,6 @@ static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSA
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	_exit (1);
 }
 
@@ -473,13 +434,11 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
 void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
-
 	_exit (1);
 }
 
@@ -494,7 +453,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 	else
 		sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
 	/*	 sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason)); */
-
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -506,11 +464,8 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -526,9 +481,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -536,13 +489,10 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
@@ -558,9 +508,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 #else

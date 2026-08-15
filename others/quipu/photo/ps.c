@@ -19,7 +19,6 @@ int photo_start (char *name) {
 
 int photo_end (char *name) {
 	/* Decoding has finished - display the image */
-
 	if (y < HEIGHT) puts ("showpage");
 	return 0;
 }

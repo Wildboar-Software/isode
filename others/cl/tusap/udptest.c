@@ -39,46 +39,36 @@ int main (int argc, char **argv, char **envp) {
 	struct TSAPdisconnect	td;
 
 #define	NTADDRS		FD_SETSIZE
-
 	static struct TSAPaddr *tz;
 	static struct TSAPaddr  tas[NTADDRS];
 	int	    port;
 	struct NSAPaddr *tcp_na;
 	struct servent *sp;
-
 	printf ("\n UDP test driver for TUNITDATA\n");
 	printf ("\n running on host \"%s\"\n", TLocalHostName ());
-
 	t = NULL;
 	bptr = buffer;
 	*bptr = 'h';
-
 	/*
 	 *  Init the send buffer to a continous pattern.
 	 */
-
 	for (cc = pattern = 0; cc < sizeof(sendbuf); cc++, pattern++)
 		sendbuf[cc] = pattern;
-
 	/*
 	 *  Setup the calling and called network addresses.
 	 */
-
 	if ((is = getisoserventbyname("udptest", "tsap")) == NULL) {
 		printf ("\nfailed to lookup iso service \n");
 		exit (1);
 	}
-
 	if (is)
 		printsrv (is);
-
 	if ((ta = is2taddr("loopback", "udptest", is)) == NULLTA) {
 		printf ("\n tsap address translation failed \n");
 		exit(1);
 	}
 	if (ta)
 		printtaddr(ta);
-
 	while (1) {
 		switch (toupper(*bptr)) {
 		case 'H':
@@ -94,9 +84,7 @@ int main (int argc, char **argv, char **envp) {
 			printf("\nUDP tester terminated by user\n");
 			exit(0);
 		case 'T':
-
 			printf ("\n Toggle mode \n");
-
 			printf ("\n Current mode is ");
 			if (mode == SERVER_MODE) {
 				printf ("SERVER\n");
@@ -117,50 +105,39 @@ int main (int argc, char **argv, char **envp) {
 			else {
 				if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 					printf ("\ntcp/tsap: unknown service");
-
 				tz = tas;
 				tcp_na = tz -> ta_addrs;
 				tcp_na -> na_type = NA_TCP;
 				tcp_na -> na_domain[0] = 0;
 				tcp_na -> na_port = sp -> s_port;
 				tz -> ta_naddr = 1;
-
 				sd = TUnitDataListen (tcp_na, NULL);
 			}
-
 			if (sd == NOTOK)
 				printf ("\n Bind unit data service failed\n");
 			else
 				printf ("\n application bound to socket = %d \n", sd);
-
 #endif
 			break;
 
 		case 'U':
 			printf ("\n Unbinding the service\n");
-
 			TUnitDataUnbind (sd);
-
 			break;
 
 		case 'S':
-
 			printf ("\n Send a datagram \n");
 			printf ("\n sending %d bytes of user data\n", cc);
 			printf ("\n here are the first 25 bytes \n");
-
 			for (data = 0; data < 25; data++)
 				printf (" %x ", sendbuf[data]);
-
 			uv = &uvs[0];
 			uv -> uv_base = &sendbuf[0];
 			uv -> uv_len = 1024;
 			uv++;
 			uv -> uv_len = 0;
 			uv -> uv_base = NULL;
-
 			result = TUnitDataWrite (sd, uvs);
-
 			if (result != OK)
 				printf ("\n datagram write failed\n");
 			else
@@ -169,12 +146,9 @@ int main (int argc, char **argv, char **envp) {
 
 		case 'R':
 			printf ("\n Read datagram on socket %d \n", sd);
-
 			cc = TUnitDataRead (sd, tud, 60);
-
 			if (cc != NOTOK)
 				printf ("\n received %d bytes \n", cc);
-
 			break;
 
 		case '\0':
@@ -200,7 +174,6 @@ static printsrv (struct isoservent *is) {
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
 			sel2str (is -> is_selector, is -> is_selectlen, 1));
-
 	for (; n >= 0; ap++, n--)
 		printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
 	printf ("\n");
@@ -209,16 +182,13 @@ static printsrv (struct isoservent *is) {
 static printtaddr (struct TSAPaddr *ta)
 
 {
-
 	int    n = ta -> ta_naddr - 1;
 	struct NSAPaddr   *na = ta -> ta_addrs;
 
 	printf ("ADDR:    TSEL: %s\n",
 			sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
-
 	for (; n >= 0; na++, n--) {
 		printf ("\t%d: ", ta -> ta_naddr - n - 1);
-
 		switch (na -> na_type) {
 		case NA_NSAP:
 			printf ("NS %s", na2str (na));
@@ -247,5 +217,4 @@ static printtaddr (struct TSAPaddr *ta)
 			break;
 		}
 	}
-
 }

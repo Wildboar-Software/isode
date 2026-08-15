@@ -28,25 +28,19 @@ dsEnqError list_start() {
 	dsEnqError return_error;
 
 	return_error = Okay;
-
 	if (get_default_service (&search_arg.sra_common) != 0) {
 		return localdsaerror;
 	}
-
 	search_arg.sra_common.ca_servicecontrol.svc_options =
 		search_arg.sra_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
-
 	search_arg.sra_baseobject = (strncmp(friendly_base_path, "The World", 9)?
 								 str2dn(base_path):
 								 NULLDN);
-
 	search_arg.sra_eis.eis_allattributes = FALSE;
 	search_arg.sra_eis.eis_infotypes = EIS_ATTRIBUTETYPESONLY;
 	search_arg.sra_eis.eis_select = 0;
-
 	search_arg.sra_searchaliases = TRUE;
 	search_arg.sra_subset = SRA_ONELEVEL;
-
 	search_arg.sra_filter = filter_alloc();
 	search_arg.sra_filter->flt_type = FILTER_NOT;
 	search_arg.sra_filter->flt_next = NULLFILTER;
@@ -57,17 +51,14 @@ dsEnqError list_start() {
 		= FILTERITEM_EQUALITY;
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.fi_un.
 	fi_un_ava.ava_type = AttrT_new("2.5.4.0");
-
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.fi_un.
 	fi_un_ava.ava_value =
 		str2AttrV("dsa", search_arg.sra_filter->flt_un.flt_un_filter->
 				  flt_un.flt_un_item.fi_un.fi_un_ava.ava_type->oa_syntax);
-
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("search +%s,extent %d, val objectClass != dsa",
 								base_path,search_arg.sra_subset));
 #endif
-
 	if (search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.
 			fi_un.fi_un_ava.ava_value == NULLAttrV) {
 		return_error = localdsaerror;
@@ -108,18 +99,15 @@ dsEnqError list_start() {
 		dn_number = 0;
 		if (result.CSR_entries != NULLENTRYINFO) {
 			EntryInfo *ptr;
-
 			free_seq(dnseq);
 			dnseq = NULLDS;
 			dn_number = 0;
-
 			for (ptr = result.CSR_entries; ptr != NULLENTRYINFO;
 					ptr = ptr->ent_next) {
 				dn_number++;
 				dn2buf((caddr_t) ptr->ent_dn, goto_path);
 				add_seq(&dnseq, goto_path);
 			}
-
 			if (dn_number) dnseq = SortList(dnseq);
 		} else if (result.CSR_limitproblem == LSR_NOLIMITPROBLEM) {
 			free_seq(dnseq);
@@ -127,7 +115,6 @@ dsEnqError list_start() {
 			dn_number = 0;
 			return_error = nothingfound;
 		}
-
 		if (result.CSR_limitproblem != LSR_NOLIMITPROBLEM) {
 			switch (result.CSR_limitproblem) {
 			case LSR_TIMELIMITEXCEEDED:

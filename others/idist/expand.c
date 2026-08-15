@@ -89,16 +89,13 @@ expand (struct namelist *list, int wh) {
 		printf("expand(%x, %d)\nlist = ", list, wh);
 		prnames(list);
 	}
-
 	if (wh == 0) {
 		char *cp;
-
 		for (nl = list; nl != NULL; nl = nl->n_next)
 			for (cp = nl->n_name; *cp; cp++)
 				*cp = *cp & TRIM;
 		return(list);
 	}
-
 	which = wh;
 	path = tpathp = pathp = pathbuf;
 	*pathp = '\0';
@@ -144,7 +141,6 @@ int expstr (char *s) {
 
 	if (s == NULLCP || *s == 0)
 		return;
-
 	if ((which & E_VARS) && (cp = index(s, '$')) != NULL) {
 		*cp++ = '\0';
 		if (*cp == '\0') {
@@ -234,7 +230,6 @@ int expstr (char *s) {
 }
 
 static argcmp (char **a1, char **a2) {
-
 	return (strcmp(*a1, *a2));
 }
 
@@ -306,7 +301,6 @@ int matchdir (char *pattern) {
 		}
 	closedir(dirp);
 	return;
-
 patherr1:
 	closedir(dirp);
 patherr2:
@@ -542,7 +536,6 @@ int smatch (char *s, char *p) {
 			if (scc == 0)
 				return (0);
 			continue;
-
 		}
 	}
 }
@@ -566,7 +559,6 @@ int Cat (char *s1, char *s2) {
 }
 
 int addpath (int c) {
-
 	if (pathp >= lastpathp)
 		yyerror("Pathname too long");
 	else {

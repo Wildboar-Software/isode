@@ -31,24 +31,18 @@ void exit();
 int main (unsigned int argc, char *argv[]) {
 	print_parse_errors = FALSE;
 	quipu_syntaxes();
-
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
-
 	namestr[0] = '\0';
 	passwd[0] = '\0';
-
 	read_args(argc, &argv);
 	dsap_init((int *) 0, &argv);
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	initwidgets();
 	setsignals();
-
 	user_tailor();
 	main_bind();
 	cnnct_bind();
@@ -62,10 +56,8 @@ void read_args (unsigned int argc, char ***avptr) {
 	char *cp;
 
 	if (argc <= 1) return;
-
 	av = *avptr;
 	av++;
-
 	while ((cp = *av) && (*cp == '-')) {
 		switch (*++cp) {
 		case 'u':
@@ -124,8 +116,6 @@ advise (int code, char *what, char *fmt, ...) {
 	extern LLog * log_dsap;
 
 	va_start (ap, fmt);
-
 	_ll_log (log_dsap, code, what, fmt, ap);
-
 	va_end (ap);
 }

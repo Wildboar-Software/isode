@@ -66,7 +66,6 @@ int docmds (char **dhosts, int argc, char **argv) {
 	signal(SIGINT, cleanup);
 	signal(SIGQUIT, cleanup);
 	signal(SIGTERM, cleanup);
-
 	for (c = cmds; c != NULL; c = c->c_next) {
 		if (dhosts != NULL && *dhosts != NULL) {
 			for (cpp = dhosts; *cpp; cpp++)
@@ -115,12 +114,10 @@ int doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *s
 
 	if (debug)
 		printf("doarrow(%x, %s, %x)\n", files, rhost, scmds);
-
 	if (files == NULL) {
 		advise(NULLCP, "no files to be updated");
 		return;
 	}
-
 	subcmds = scmds;
 	ddir = files->n_next != NULL;	/* destination is a directory */
 	if (nflag)
@@ -199,7 +196,6 @@ int dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *
 
 	if (debug)
 		printf("dodcolon()\n");
-
 	if (files == NULL) {
 		advise (NULLCP, "no files to be updated");
 		return;
@@ -210,7 +206,6 @@ int dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *
 	}
 	if (debug)
 		printf("%s: %d\n", stamp, stb.st_mtime);
-
 	subcmds = scmds;
 	lastmod = stb.st_mtime;
 	if (nflag || (options & VERIFY))
@@ -224,7 +219,6 @@ int dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *
 		tv[1] = tv[0];
 		utimes(stamp, tv);
 	}
-
 	for (f = files; f != NULL; f = f->n_next) {
 		if (filev) {
 			for (cpp = filev; *cpp; cpp++)
@@ -236,7 +230,6 @@ found:
 		tp = NULLCP;
 		cmptime(f->n_name);
 	}
-
 	if (tfp != NULL)
 		fclose(tfp);
 	for (sc = scmds; sc != NULL; sc = sc->sc_next)
@@ -254,15 +247,12 @@ int cmptime (char *name) {
 
 	if (debug)
 		printf("cmptime(%s)\n", name);
-
 	if (except(name))
 		return;
-
 	if (nflag) {
 		printf("comparing dates: %s\n", name);
 		return;
 	}
-
 	/*
 	 * first time cmptime() is called?
 	 */
@@ -277,7 +267,6 @@ int cmptime (char *name) {
 		advise (name, "Can't access");
 		return;
 	}
-
 	switch (stb.st_mode & S_IFMT) {
 	case S_IFREG:
 		break;
@@ -290,7 +279,6 @@ int cmptime (char *name) {
 		advise(NULLCP, "%s not a plain file", name);
 		return;
 	}
-
 	if (stb.st_mtime > lastmod)
 		log(tfp, "new: %s\n", name);
 }
@@ -304,7 +292,6 @@ int rcmptime (struct stat *st) {
 
 	if (debug)
 		printf("rcmptime(%x)\n", st);
-
 	if ((d = opendir(target)) == NULL) {
 		advise (target, "can't open directory");
 		return;
@@ -353,7 +340,6 @@ void notify(char *file, char *rhost, struct namelist *to, time_t lmod) {
 	}
 	if (nflag)
 		return;
-
 	if ((fd = open(file, O_RDONLY, 0)) < 0) {
 		advise (file, "Can't open file");
 		return;
@@ -400,7 +386,6 @@ void notify(char *file, char *rhost, struct namelist *to, time_t lmod) {
 	else
 		fprintf(pf, "Subject: files updated after %s\n", ctime(&lmod));
 	putc('\n', pf);
-
 	while ((len = read(fd, buf, BUFSIZ)) > 0)
 		fwrite(buf, 1, len, pf);
 	close(fd);
@@ -429,7 +414,6 @@ int except (char *file) {
 
 	if (debug)
 		printf("except(%s)\n", file);
-
 	for (sc = subcmds; sc != NULL; sc = sc->sc_next) {
 		if (sc->sc_type != EXCEPT && sc->sc_type != PATTERN)
 			continue;
@@ -451,7 +435,6 @@ int except (char *file) {
 }
 
 char *colon (char *cp) {
-
 	while (*cp) {
 		if (*cp == ':')
 			return(cp);

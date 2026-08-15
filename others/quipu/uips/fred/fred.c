@@ -76,24 +76,18 @@ int main (int argc, char **argv, char **envp) {
 			   *isock = &in_socket;
 
 	arginit (argv);
-
 	rcinit ();
-
 	rcfile (isodefile ("fredrc", 0), 0, 1);
 	if (init_ufnrc () == OK)
 		area_quantum = -1;
-
 	status = 0;
-
 	if (mail) {
 		int   c;
 		char *ep;
 		struct pair *p;
 		FILE   *fp;
-
 		for (;;) {
 			ep = (cp = buffer) + sizeof buffer - 1;
-
 			while ((c = getc (stdin)) != EOF)
 				if (c == '\n') {
 					if ((c = getc (stdin)) == ' ' || c == '\t') {
@@ -115,11 +109,9 @@ int main (int argc, char **argv, char **envp) {
 					}
 				} else if (cp < ep)
 					*cp++ = c != '\t' ? c & 0xff : ' ';
-
 			if (cp == buffer)
 				break;
 			*cp = 0;
-
 			for (p = pairs; p -> p_name; p++)
 				if (lexnequ (buffer, p -> p_name, c = strlen (p -> p_name))
 						== 0) {
@@ -136,37 +128,28 @@ int main (int argc, char **argv, char **envp) {
 					}
 					break;
 				}
-
 		}
-
 		if (!from && !reply_to && !sender)
 			adios (NULLCP, "unable to determine return address");
-
 		sprintf (buffer, "/bin/mail \"%s\"",
 				 ep = reply_to ? reply_to : from ? from : sender);
 		if (watch) {
 			fprintf (stderr, "%s\n", buffer);
 			fflush (stderr);
 		}
-
 		signal (SIGPIPE, SIG_IGN);
 		if ((fp = popen (buffer, "w")) == NULL)
 			adios ("failed", "popen");
-
 		stdfp = errfp = fp;
-
 		fprintf (stdfp, "To: %s\nSubject: Re: %s\n\n",
 				 ep, subject ? subject : "white pages query");
 		fflush (stdfp);
-
 		if (f_bind (NULLVP) == NOTOK)
 			adios (NULLCP, "unable to open the white pages");
-
 		if (subject) {
 			strcpy (buffer, subject);
 			ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
 					ep, buffer);
-
 			bzero ((char *) vec, sizeof vec);
 			if (str2vecY (buffer, vec) < 1)
 				f_help (NULLVP);
@@ -174,54 +157,41 @@ int main (int argc, char **argv, char **envp) {
 				status = 1;
 		} else {
 			int	    didone = 0;
-
 			while ((c = getc (stdin)) != EOF)
 				if (c != ' ' || c != '\t' || c != '\n')
 					break;
-
 			if (c != EOF)
 				while (fgets (buffer, sizeof buffer, stdin)) {
 					if (cp = index (buffer, '\n'))
 						*cp = 0;
 					if (buffer[0] == NULL)
 						break;
-
 					ll_log (fred_log, LLOG_NOTICE, NULLCP,
 							"%s asks: %s", ep, buffer);
-
 					fprintf (stdfp, "%s>>> %s\n", didone ? "\n\n" : "", buffer);
-
 					bzero ((char *) vec, sizeof vec);
 					if (str2vecY (buffer, vec) < 1)
 						break;
-
 					if (fredloop (vec, NOTOK) != OK) {
 						status = 1;
 						break;
 					}
 					didone = 1;
 				}
-
 			if (!didone)
 				f_help (NULLVP);
 		}
-
 		fclose (fp);
-
 		stdfp = stdout;
-
 		goto were_out_of_here;
 	}
-
 	if (network) {
 		int    len;
-
 		if (getpeername (fileno (stdin), (struct sockaddr *) isock,
 						 (len = sizeof *isock, &len)) != NOTOK) {
 			sprintf (address, "%s/%d",
 					 inet_ntoa (isock -> sin_addr),
 					 ntohs (isock -> sin_port));
-
 			rcmap (isock);
 		} else {
 			ll_log (fred_log, LLOG_EXCEPTIONS, "failed", "getpeername");
@@ -229,9 +199,7 @@ int main (int argc, char **argv, char **envp) {
 		}
 	} else {
 		struct hostent *hp;
-
 		strcpy (address, getlocalhost ());
-
 		if (hp = gethostbystring (address)) {
 			bzero ((char *) isock, sizeof *isock);
 			isock -> sin_family = hp -> h_addrtype;
@@ -239,20 +207,15 @@ int main (int argc, char **argv, char **envp) {
 			rcmap (isock);
 		} else
 			advise (NULLCP, "%s: unknown host", address);
-
 	}
-
 	if (!fflag) {
 		sprintf (buffer, "%s/.fredrc", myhome);
 		rcfile (buffer, op ? 1 : 0, 0);
 	}
-
 	if (f_bind (NULLVP) == NOTOK)
 		adios (NULLCP, "unable to open the white pages");
-
 	if (network) {
 		errfp = stdout;
-
 		strcpy (buffer, "whois ");
 		switch (fetchline (buffer + (sizeof "whois " - 1),
 						   sizeof buffer - (sizeof "whois " - 1), stdin)) {
@@ -272,62 +235,48 @@ int main (int argc, char **argv, char **envp) {
 			*cp = 0;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
-
 		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%s asks: %s",
 				address, buffer);
-
 		bzero ((char *) vec, sizeof vec);
 		if (str2vecY (buffer, vec) < 2)
 			f_help (NULLVP);
 		else if (fredloop (vec, NOTOK) != OK)
 			status = 1;
-
 		goto were_out_of_here;
 	}
-
 	if (op) {
 		vecp = 0;
 		if (nametype > 1
 				&& (strcmp (myname, "whois") == 0 || (*op && **op == 'w'))) {
 			char **pp;
 			char    *bp = "";
-
 			if (strcmp (myname, "whois") && *op)
 				op++;
-
 			for (pp = op; *pp; pp++)
 				if (!test_ufn (*pp)) {
 					bp = "\"";
 					break;
 				}
-
 			for (cp = buffer; *op; cp += strlen (cp))
 				sprintf (cp, " %s%s%s", bp, *op++, bp);
-
 			vec[vecp++] = "whois";
 			vec[vecp++] = buffer;
 		} else {
 			if (strcmp (myname, "whois") == 0)
 				vec[vecp++] = myname;
-
 			while (*op)
 				vec[vecp++] = *op++;
 		}
 		vec[vecp] = NULL;
-
 		if (fredloop (vec, NOTOK) != NOTOK)
 			status = 1;
-
 		goto were_out_of_here;
 	}
-
 	istat = signal (SIGINT, intrser);
-
 	eof = 0;
 	for (interrupted = 0;; interrupted = 0) {
 		if (alarming) {
 			astat = signal (SIGALRM, alrmser);
-
 			switch (setjmp (alrmenv)) {
 			case OK:
 				alarm ((unsigned) 300);
@@ -337,27 +286,21 @@ int main (int argc, char **argv, char **envp) {
 				adios (NULLCP, "timed out due to inactivity");
 			}
 		}
-
 		if (_getline ("%s> ", buffer) == NOTOK) {
 			if (eof)
 				break;
-
 			eof = 1;
 			continue;
 		}
 		eof = 0;
-
 		if (alarming)
 			alarm ((unsigned) 0);
-
 		if (logging)
 			ll_log (fred_log, LLOG_NOTICE, NULLCP, "command: %s",
 					buffer);
-
 		bzero ((char *) vec, sizeof vec);
 		if ((vecp = str2vecY (buffer, vec)) < 1)
 			continue;
-
 		switch (fredloop (vec, OK)) {
 		case NOTOK:
 			status = 1;
@@ -373,13 +316,10 @@ int main (int argc, char **argv, char **envp) {
 		}
 		break;
 	}
-
 	signal (SIGINT, istat);
-
 were_out_of_here:
 	;
 	f_quit (NULLVP);
-
 	exit (mail ? 0 : status);		/* NOTREACHED */
 }
 
@@ -392,17 +332,13 @@ static arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	if (strcmp (myname, "in.whitepages") == 0)
 		network++, fflag++;
-
 	isodetailor (myname, 1);
 	ll_hdinit (fred_log, myname);
-
 	if (ontty = isatty (fileno (stdin)))
 		verbose++;
 	oneshot = 0;
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-') {
 			while (*++ap)
@@ -459,7 +395,6 @@ static arginit (char **vec) {
 			break;
 		}
 	}
-
 	if (debug)
 		ll_dbinit (fred_log, myname);
 	if (logging)
@@ -478,12 +413,10 @@ int _getline (char *prompt, char *buffer) {
 		interrupted = 0;
 		return NOTOK;
 	}
-
 	if (sticky) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	switch (setjmp (intrenv)) {
 	case OK:
 		armed++;
@@ -496,12 +429,10 @@ int _getline (char *prompt, char *buffer) {
 		armed = 0;
 		return NOTOK;
 	}
-
 	if (ontty) {
 		printf (prompt, myname);
 		fflush (stdout);
 	}
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			if (ontty)
@@ -509,18 +440,14 @@ int _getline (char *prompt, char *buffer) {
 			clearerr (stdin);
 			if (cp == buffer)
 				longjmp (intrenv, DONE);
-
 			sticky++;
 			break;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	armed = 0;
-
 	return OK;
 }
 
@@ -546,7 +473,6 @@ static int  fetchline (char *s, int n, FILE *iop) {
 	if (c == EOF && p == s)
 		return DONE;
 	*p++ = 0;
-
 	return OK;
 }
 
@@ -554,7 +480,6 @@ static	SFD alrmser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGALRM, alrmser);
 #endif
-
 	longjmp (alrmenv, NOTOK);
 }
 
@@ -562,10 +487,8 @@ static	SFD intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif
-
 	if (armed)
 		longjmp (intrenv, NOTOK);
-
 	interrupted++;
 }
 
@@ -580,10 +503,8 @@ int	ask (char *fmt, ...)
 		interrupted = 0;
 		return DONE;
 	}
-
 	if (!ontty)
 		return OK;
-
 	switch (setjmp (intrenv)) {
 	case OK:
 		armed++;
@@ -595,21 +516,15 @@ int	ask (char *fmt, ...)
 		armed = 0;
 		return DONE;
 	}
-
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	va_end (ap);
-
 again:
 	;
 	printf ("%s", buffer);
-
 	x = y = getchar ();
 	while (y != '\n' && y != EOF)
 		y = getchar ();
-
 	switch (x) {
 	case 'y':
 	case '\n':
@@ -628,9 +543,7 @@ again:
 	default:
 		goto again;
 	}
-
 	armed = 0;
-
 	return result;
 }
 #else
@@ -651,7 +564,6 @@ normal:
 		;
 		return str2vec (buffer, vec);
 	}
-
 	for (cp = buffer; isspace (*cp); cp++)
 		continue;
 	for (dp = cp++; !isspace (*cp); cp++)
@@ -662,11 +574,9 @@ normal:
 		*cp = ' ';
 		goto normal;
 	}
-
 	vec[0] = dp;
 	vec[1] = ++cp;
 	vec[2] = NULL;
-
 	return 2;
 }
 
@@ -698,9 +608,7 @@ static rcmap (struct sockaddr_in *isock) {
 
 	if ((fp = fopen (isodefile ("fredmap", 0), "r")) == NULL)
 		goto done;
-
 	hostaddr = isock -> sin_addr.s_addr;
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#')
 			continue;
@@ -720,20 +628,15 @@ static rcmap (struct sockaddr_in *isock) {
 		netaddr = htonl (netaddr);
 		if ((hostaddr & netmask) != netaddr)
 			continue;
-
 		vec[1] = "thisis";
-
 		runcom = 1, rcmode = 0400;
 		if (f_thisis (vec + 1) == NOTOK)
 			adios (NULLCP, "unable to bind as %s for %s",
 				   vec[2], inet_ntoa (isock -> sin_addr));
-
 		runcom = 0;
 		break;
 	}
-
 	fclose (fp);
-
 done:
 	;
 	setgid (getgid ());
@@ -750,18 +653,12 @@ void	adios (char *what, char *fmt, ...) {
 	if (latch)
 		_exit (1);
 	latch = 1;
-
 	va_start (ap, fmt);
-
 	if (network)
 		_ll_log (fred_log, LLOG_FATAL, what, fmt, ap);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
-
 	f_quit (NULLVP);
-
 	_exit (1);
 }
 #else
@@ -777,9 +674,7 @@ void	advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -789,13 +684,10 @@ static void  _advise (char *what, char *fmt, va_list ap)
 	FILE   *fp = network ? stdfp : stderr;
 
 	_asprintf (buffer, what, fmt, ap);
-
 	fflush (stdfp);
-
 	fprintf (fp, "%s: ", myname);
 	fputs (buffer, fp);
 	fputs (EOLN, fp);
-
 	fflush (fp);
 }
 #else
@@ -868,7 +760,6 @@ static	log_utmp () {
 	while (ut = getutent ()) {
 		if (ut -> ut_type != USER_PROCESS || SCMPN (ut -> ut_line, line))
 			continue;
-
 		ll_log (fred_log, LLOG_NOTICE, NULLCP, "%.*s on %.*s",
 				NMAX, ut -> ut_name, LMAX, ut -> ut_line);
 		break;

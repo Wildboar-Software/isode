@@ -64,14 +64,12 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 		fprintf(err, "*** local file access error : %s ***\n", rfaErrStr);
 		return NOTOK_OUTOFSUBTREE;
 	}
-
 	/*--- get file Info ---*/
 	if ((rc = getRfaInfoList(dirname(*fn), rfalp, basename(*fn), 1)) != OK) {
 		fprintf(err,
 				"*** local file access error : %s ***\n", errMsg(rc));
 		return NOTOK_FILEACCESS;
 	}
-
 	if ((*rfap = findRfaInfo(basename(*fn), *rfalp)) == NULL) {
 		releaseRfaInfoList(*fn,*rfalp);
 		*rfalp = NULL;
@@ -79,7 +77,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 				*fn);
 		return NOTOK_FILEACCESS;
 	}
-
 	/*--- check if regular file ---*/
 	if (reg)
 		if (((*rfap)->ri_mode & S_IFMT) != S_IFREG) {
@@ -88,7 +85,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 			*rfalp = NULL;
 			return NOTOK_NOTREGULAR;
 		}
-
 	return OK;
 }
 
@@ -104,7 +100,6 @@ int do_localListDir (char **av) {
 		*av = "";
 		*(av+1) = NULL;
 	}
-
 	START;
 	for(; *av; av++) {
 		if((fn = getRfaContext(cwd_remote, *av)) == NULL) {
@@ -113,7 +108,6 @@ int do_localListDir (char **av) {
 					fsBase);
 			CONT(NOTOK_OUTOFSUBTREE);
 		}
-
 		if ((rc = getRfaInfoList(fn, &rfalist, NULLCP, 0)) != OK) {
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
 			CONT(NOTOK_FILEACCESS);
@@ -138,7 +132,6 @@ int do_listDir (char **av) {
 		*av = "";
 		*(av+1) = NULL;
 	}
-
 	START;
 	for(; *av; av++) {
 		if((fn = getRfaContext(cwd_remote, *av)) == NULL) {
@@ -147,10 +140,8 @@ int do_listDir (char **av) {
 					fsBase);
 			CONT(NOTOK_OUTOFSUBTREE);
 		}
-
 		if ((rc= getRemoteRfaInfoList(fn, &rfalist)) != OK)
 			CONT(rc);
-
 		sortRfaInfoList(&rfalist);
 		for (rfa = rfalist; rfa; rfa = rfa->ri_next)
 			fprintf(out, "%s\n", (char *)rfa2ls(rfa));
@@ -169,7 +160,6 @@ int getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap) {
 
 	if (getConnection() != OK)
 		return NOTOK_REMOTE_ERROR;
-
 	arg = str2qb(fn, strlen(fn), 1);
 	if (invoke(operation_RFA_listDir, (caddr_t)arg, (caddr_t *)&fil, &res) == NOTOK) {
 		fprintf(err, "*** remote operation invocation failed ***\n");
@@ -177,7 +167,6 @@ int getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap) {
 		return NOTOK_REMOTE_ERROR;
 	}
 	qb_free(arg);
-
 	if (res != RY_RESULT) {
 		printError(res, (caddr_t)fil, &rc);
 		return rc;
@@ -200,7 +189,6 @@ int do_getFile (char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		if((fn = getRfaContext(cwd_remote, *av)) == NULL) {
 			fprintf(err,
 					"*** local file access error : not within RFA subtree %s ***\n",
@@ -212,7 +200,6 @@ int do_getFile (char **av) {
 			fprintf(err, "*** local file access error : %s ***", rfaErrStr);
 			CONT(NOTOK_OUTOFSUBTREE);
 		}
-
 		/*--- get file Info ---*/
 		if ((rc=getRfaInfoList(dirname(fn),&rfalist,basename(fn), 1)) != OK) {
 			fprintf(err,
@@ -220,9 +207,7 @@ int do_getFile (char **av) {
 					errMsg(rc));
 			CONT(NOTOK_FILEACCESS);
 		}
-
 		if ((rfa = findRfaInfo(basename(fn), rfalist)) == NULL) {
-
 			/*--- file does locally not exist, get it from master  ---*/
 			if ((rfa = mallocRfaInfo(strdup(basename(fn)))) == NULL) {
 				releaseRfaInfoList(dirname(fn), rfalist);
@@ -238,14 +223,12 @@ int do_getFile (char **av) {
 			rfalist = rfa;
 			new++;
 		}
-
 		/*--- check if file is master ---*/
 		if (IS_MASTER(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err,"*** local file %s is master version ***\n", fn );
 			CONT(NOTOK_GETMASTER);
 		}
-
 		/*--- check if file is unregistered ---*/
 		if (IS_UNREGISTERED(rfa->ri_status)) {
 			if(interactive) {
@@ -258,11 +241,9 @@ int do_getFile (char **av) {
 					CONT(NOTOK_UNREG_LOCAL_FILE);
 				} else {
 					SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
-
 					/*--- will be set in getfile_aux acc. to remote state ---*/
 					SET_STATUS(rfa->ri_status, RI_SLAVE);
 					SET_TRANSFER(rfa->ri_status, default_transfer);
-
 					time(&(rfa->ri_lastChange));
 					rfa->ri_modTime = 0L;
 					new++;
@@ -274,13 +255,11 @@ int do_getFile (char **av) {
 				CONT(NOTOK_UNREG_LOCAL_FILE);
 			}
 		}
-
 		/*--- otherwise we are slave or unregistered file, get from master ---*/
 		if ((rc = getfile_aux(fn, rfa, &rmode)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			CONT(rc);
 		}
-
 		if(new)
 			if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 				fprintf(err, "*** local file access error : %s ***\n",
@@ -288,9 +267,7 @@ int do_getFile (char **av) {
 				releaseRfaInfoList(dirname(fn), rfalist);
 				CONT(NOTOK_FILEACCESS);
 			}
-
 		releaseRfaInfoList(dirname(fn), rfalist);
-
 	}
 	RETURN;
 }
@@ -305,12 +282,10 @@ int do_unlockFile (char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		/*--- check if we are master ---*/
 		if (IS_SLAVE(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
@@ -326,7 +301,6 @@ int do_unlockFile (char **av) {
 		rfa->ri_lcksince = NULL;
 		free(rfa->ri_lckname);
 		rfa->ri_lckname = "NONE";
-
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -352,12 +326,10 @@ int do_lockFile (char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		/*--- check if we are master ---*/
 		if (IS_MASTER(rfa->ri_status) || IS_UNREGISTERED(rfa->ri_status)) {
 			if (IS_LOCKED(rfa->ri_status)) {
@@ -379,27 +351,22 @@ int do_lockFile (char **av) {
 			fprintf(out, "locked file %s\n",fn);
 			continue;
 		}
-
 		/*--- otherwise we are slave, get from master ---*/
 		if (getConnection() != OK)
 			CONT(NOTOK_REMOTE_ERROR);
-
 		if (rfa->ri_mode & S_IFMT & S_IFREG)
 			if ((rc = getfile_aux(fn, rfa, &rmode)) != OK)  {
 				releaseRfaInfoList(dirname(fn), rfalist);
 				CONT(NOTOK_REMOTE_ERROR);
 			}
-
 		if ((rma = (struct type_RFA_RequestMasterArg *)
 				   malloc(sizeof(struct type_RFA_RequestMasterArg))) == NULL) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err,"*** local error : no memory ***\n");
 			CONT(NOTOK_LOCAL_ERROR);
 		}
-
 		rma->filename = str2qb(fn, strlen(fn), 1);
 		rma->slaveVersion = rfa->ri_modTime;
-
 		if (invoke(operation_RFA_requestMaster, (caddr_t)rma, (caddr_t *)&rmr, &res)
 				== NOTOK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
@@ -413,7 +380,6 @@ int do_lockFile (char **av) {
 			printError(res, (caddr_t)rmr, &rc);
 			CONT(rc);
 		}
-
 		free_RFA_RequestMasterRes(rmr);
 		free_RFA_RequestMasterArg(rma);
 		SET_LOCKINFO(rfa->ri_status, RI_LOCKED);
@@ -428,12 +394,10 @@ int do_lockFile (char **av) {
 					fn);
 			CONT(NOTOK_FILEACCESS);
 		}
-
 		/*--- set owner and group mode to writable ---*/
 		if (rmode && (rfa->ri_mode & S_IFMT & S_IFREG))
 			if (changeFileMode(fn, rmode, "set write permissions") != OK)
 				fprintf(err, "*** %s ***\n", rfaErrStr);
-
 		releaseRfaInfoList(dirname(fn), rfalist);
 		fprintf(out, "locked file %s\n",fn);
 	}
@@ -454,26 +418,22 @@ int do_master (char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		/*--- check if not a .rfaexec file ---*/
 		if (strcmp(rfa->ri_filename, ".rfaexec") == 0) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** not allowed on file '%s' ***\n",rfa->ri_filename);
 			CONT(NOTOK_NOT_ALLOWED);
 		}
-
 		/*--- check if unregistered ---*/
 		if (IS_MASTER(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** file %s is already master version ***\n", fn);
 			CONT(NOTOK_ALREADY_MASTER);
 		}
-
 		/*--- check if remote is already master ---*/
 		if ((rc = getRemoteRfaInfoList(dirname(fn), &remoteRfaList)) != OK) {
 			if (interactive) {
@@ -491,11 +451,9 @@ int do_master (char **av) {
 				CONT(NOTOK_REMOTE_ERROR);
 			}
 		} else {
-
 			/*--- consistency checks ---*/
 			if (rrfa = findRfaInfo(basename(fn), remoteRfaList)) {
 				if (IS_MASTER(rrfa->ri_status)) {
-
 					/*--- try to become master ---*/
 					if (rfa->ri_mode & S_IFMT & S_IFREG)
 						if ((rc = getfile_aux(fn, rfa, &rmode)) != OK)  {
@@ -503,7 +461,6 @@ int do_master (char **av) {
 							freeRfaInfoList(remoteRfaList);
 							CONT(NOTOK_REMOTE_ERROR);
 						}
-
 					if ((rma = (struct type_RFA_RequestMasterArg *)
 							   malloc(sizeof(struct type_RFA_RequestMasterArg))) == NULL) {
 						releaseRfaInfoList(dirname(fn), rfalist);
@@ -511,10 +468,8 @@ int do_master (char **av) {
 						fprintf(err,"*** local error : no memory ***\n");
 						CONT(NOTOK_LOCAL_ERROR);
 					}
-
 					rma->filename = str2qb(fn, strlen(fn), 1);
 					rma->slaveVersion = rfa->ri_modTime;
-
 					if (invoke(operation_RFA_requestMaster, (caddr_t) rma,
 							   (caddr_t *)&rmr, &res) ==NOTOK) {
 						releaseRfaInfoList(dirname(fn), rfalist);
@@ -555,7 +510,6 @@ int do_master (char **av) {
 			}
 			freeRfaInfoList(remoteRfaList);
 		}
-
 		if (IS_UNREGISTERED(rfa->ri_status))
 			SET_TRANSFER(rfa->ri_status, default_transfer);
 		SET_STATUS(rfa->ri_status, RI_MASTER);
@@ -565,12 +519,10 @@ int do_master (char **av) {
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
 			CONT(NOTOK_FILEACCESS);
 		}
-
 		/*--- set owner and group mode to writable ---*/
 		if (rmode && (rrfa->ri_mode & S_IFMT & S_IFREG))
 			if (changeFileMode(fn, rmode, "set write permissions") != OK)
 				fprintf(err, "*** %s ***\n", rfaErrStr);
-
 		releaseRfaInfoList(dirname(fn), rfalist);
 		fprintf(out, "changed local version of %s to MASTER\n",fn);
 	}
@@ -588,33 +540,28 @@ int do_slave (char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		/*--- check if not a .rfaexec file ---*/
 		if (strcmp(rfa->ri_filename, ".rfaexec") == 0) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** not allowed on file '%s' ***\n",rfa->ri_filename);
 			CONT(NOTOK_NOT_ALLOWED);
 		}
-
 		/*--- check if unregistered ---*/
 		if (IS_SLAVE(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** file %s already is slave version ***\n", fn);
 			CONT(NOTOK_ALREADY_SLAVE);
 		}
-
 		/*--- check if unregistered ---*/
 		if (IS_LOCKED(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** file %s is currently locked ***\n", fn);
 			CONT(NOTOK_LOCKED);
 		}
-
 		/*--- check if remote is already master ---*/
 		if ((rc = getRemoteRfaInfoList(dirname(fn), &remoteRfaList)) != OK) {
 			if (interactive) {
@@ -632,7 +579,6 @@ int do_slave (char **av) {
 				CONT(NOTOK_REMOTE_ERROR);
 			}
 		} else {
-
 			/*--- consistency checks ---*/
 			if (rrfa = findRfaInfo(basename(fn), remoteRfaList)) {
 				if (!IS_MASTER(rrfa->ri_status)) {
@@ -659,17 +605,14 @@ int do_slave (char **av) {
 			}
 			freeRfaInfoList(remoteRfaList);
 		}
-
 		if ((rfa->ri_mode & S_IFMT & S_IFDIR) == 0)
 			if (makeFileReadOnly(fn, rfa) != OK)
 				fprintf(err, "*** %s ***\n", rfaErrStr);
-
 		SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
 		if (IS_UNREGISTERED(rfa->ri_status))
 			SET_TRANSFER(rfa->ri_status, default_transfer);
 		SET_STATUS(rfa->ri_status, RI_SLAVE);
 		time(&(rfa->ri_lastChange));
-
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -691,35 +634,29 @@ int do_unregister(char **av) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		/*--- check if unregistered ---*/
 		if (IS_UNREGISTERED(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** file %s already is unregistered ***\n", fn);
 			CONT(NOTOK_ALREADY_UNREG);
 		}
-
 		/*--- check if locked ---*/
 		if (IS_LOCKED(rfa->ri_status)) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err," *** file %s is currently locked ***\n", fn);
 			CONT(NOTOK_LOCKED);
 		}
-
 		if ((rfa->ri_mode & S_IFMT & S_IFDIR) == 0)
 			if (makeFileReadWrite(fn, rfa) != OK)
 				fprintf(err, "*** %s ***\n", rfaErrStr);
-
 		SET_LOCKINFO(rfa->ri_status, RI_UNLOCKED);
 		SET_TRANSFER(rfa->ri_status, RI_TR_REQ);
 		SET_STATUS(rfa->ri_status, RI_UNREGISTERED);
 		time(&(rfa->ri_lastChange));
-
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -771,7 +708,6 @@ int do_syncdir (char **av) {
 		*av = "";
 		*(av+1) = NULL;
 	}
-
 	START;
 	for(; *av; av++) {
 		if((fn = getRfaContext(cwd_remote, *av)) == NULL) {
@@ -784,7 +720,6 @@ int do_syncdir (char **av) {
 			fprintf(err, "*** local file access error : %s ***\n", rfaErrStr);
 			CONT(NOTOK_OUTOFSUBTREE);
 		}
-
 		if((rc = syncDir(fn, 0)) != OK)
 			CONT(rc);
 	}
@@ -809,14 +744,11 @@ int do_settransfer (char **av, int mode) {
 
 	START;
 	for(; *av; av++) {
-
 		/*--- get file Info ---*/
 		fn = *av;
 		if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 0)) != OK)
 			CONT(rc);
-
 		SET_TRANSFER(rfa->ri_status, mode);
-
 		if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 			releaseRfaInfoList(dirname(fn), rfalist);
 			fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -850,7 +782,6 @@ int do_changeDir (char **av) {
 		*cwd_remote = '\0';
 		fn++;
 	}
-
 	for (s = strtok(fn, "/"); s; s = strtok(NULL, "/")) {
 		if (strcmp(s, ".") == 0)
 			continue;
@@ -881,7 +812,6 @@ int do_timesync (char **av) {
 	if (getConnection() != OK)  {
 		return NOTOK_REMOTE_ERROR;
 	}
-
 	if (timeSlave) {
 		sta.role = int_RFA_role_slave;
 		sta.time = 0;
@@ -896,7 +826,6 @@ int do_timesync (char **av) {
 		return (NOTOK_REMOTE_ERROR);
 	}
 	time(&lt);
-
 	if (res != RY_RESULT) {
 		printError(res, (caddr_t)str, &rc);
 		return rc;
@@ -1014,18 +943,15 @@ int executeCommand (char *cmd) {
 		},
 		{ NULL,		NULL,		NULL			}
 	}, *cmdp, *fc;
-
 	aps[0] = strtok (cmd, " ");
 	for (ap = aps+1; *ap = strtok(NULL," "); ap++)
 		;
-
 	if (aps[0]) {
 		if ((strncmp(*aps, "h", 1) == 0) || (strncmp(*aps, "?", 1) == 0)) {
 			for (cmdp = cmds; cmdp->n; cmdp++)
 				fprintf(out,"%8.8s - %s\n", cmdp->n, cmdp->h);
 			return NOTOK;
 		}
-
 		fc = NULL;
 		for (cmdp = cmds; cmdp->n; cmdp++)
 			if (strncmp(cmdp->n, *aps, strlen(*aps)) == 0)  {
@@ -1042,12 +968,10 @@ int executeCommand (char *cmd) {
 			fprintf(err, "unknown command: %s\n",*aps);
 			return NOTOK;
 		}
-
 		if (fc->f)
 			return (*(fc->f))(aps+1);
 		else
 			return NOTOK;
-
 	}
 	return OK;
 }
@@ -1076,15 +1000,11 @@ int main (int ac, char **av) {
 
 	host = "localhost";
 	myname = av[0];
-
 	out = stdout;
 	err = stderr;
-
 	isodetailor (myname, 1);
-
 	/*-- create log file --*/
 	initLog(myname);
-
 	/*--- rfa tailoring ---*/
 	sprintf(buf, "%s/rfatailor", isodetcpath);
 	if (tailor(buf) != OK) {
@@ -1096,7 +1016,6 @@ int main (int ac, char **av) {
 		fprintf(stderr,"*** tailoring of file '%s' failed:%s\n",buf, rfaErrStr);
 		exit(NOTOK_LOCAL_ERROR);
 	}
-
 	while ((c = getopt(ac, av, "qu:p:c:h:")) != -1)
 		switch (c) {
 		case 'u':
@@ -1119,16 +1038,13 @@ int main (int ac, char **av) {
 			fprintf(stderr, "USAGE: %s [-h  hostname] [-u user] [-p password] [-c command] [ -q ]\n", basename(myname));
 			exit(NOTOK_LOCAL_ERROR);
 		}
-
 	/*-- set uid, gid --*/
 	if (initUserId(getuid(), getgid(), "") != OK)
 		fprintf(err, "*** %s ***\n", rfaErrStr);
-
 	/*--- init cwd ---*/
 	getwd(buf);
 	if (strncmp(buf, fsBase, strlen(fsBase)) == 0)
 		strcpy(cwd_remote, buf + strlen(fsBase));
-
 	if (cmd) {
 		commandMode = 1;
 		rc = executeCommand(cmd);
@@ -1136,7 +1052,6 @@ int main (int ac, char **av) {
 			closeconn();
 		exit(rc);
 	}
-
 	while (! quit_command) {
 		printf("rfa-%s@%s> ", user, host);
 		gets(buf);

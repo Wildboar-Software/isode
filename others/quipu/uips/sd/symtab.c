@@ -5,7 +5,6 @@
 
 void put_symbol_value(table_entry table, char *name, char *val) {
 	if (!name) return;
-
 	while(table && strcmp(name, table->name)) {
 		table = table->next;
 	}

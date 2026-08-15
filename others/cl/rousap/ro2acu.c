@@ -48,18 +48,15 @@ int RoAcuService (
 	struct assocblk *acb,
 	struct RoSAPindication *roi
 ) {
-
 	if (!(acb -> acb_flags & ACB_AUDT))
 		return rosaplose (roi, ROS_OPERATION, NULLCP,
 						  "not an association descriptor for ROS on A-UNIT-DATA");
-
 	acb -> acb_putosdu = ro2acuwrite;
 	acb -> acb_rowaitrequest = ro2acuwait;
 	acb -> acb_ready = NULLIFP;
 	acb -> acb_rosetindications = NULLIFP;    /* until ro2acuasync */
 	acb -> acb_roselectmask = NULLIFP;        /* until synch intr supported */
 	acb -> acb_ropktlose = NULLIFP;           /* AcuUnbind ??? */
-
 	return OK;
 }
 
@@ -121,7 +118,6 @@ int ro2acuwait (
 	struct AcSAPabort *aca = &acis.aci_abort;
 
 	fd = acb -> acb_fd;
-
 	for (;;) {
 		switch (result = AcUnitDataRead (fd, acs, secs, aci)) {
 		case NOTOK:
@@ -133,16 +129,13 @@ int ro2acuwait (
 
 		case OK:
 			/* check received AUDT against binding */
-
 			if ( ValidBinding ( acb, acs ) == NOTOK ) {
 				rosaplose ( roi, ROS_ACS, NULLCP,
 							"A-Unit-Data read did not match binding");
 				ACSFREE (acs);
 				return NOTOK;
 			}
-
 			/* a server may need to reset binding to respond to client */
-
 			if ( acb -> acb_binding == BIND_DYNAMIC )
 				if ( AcUnitDataRebind ( fd, &acs -> acs_callingtitle,
 										&acs -> acs_start.ps_calling, aci )
@@ -151,10 +144,8 @@ int ro2acuwait (
 					ACSFREE (acs);
 					return NOTOK;
 				}
-
 			pe = acs -> acs_info[0], acs -> acs_info[0] = NULLPE;
 			ACSFREE (acs);
-
 			if ( (result = acb2osdu (acb, invokeID, pe, roi)) != OK  )
 				return (result != DONE ? result : OK);
 			continue;
@@ -172,25 +163,20 @@ int	ro2acuwrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 	struct AcSAPabort *aca = &acis.aci_abort;
 
 	pe -> pe_context = acb -> acb_rosid;
-
 #ifdef	DEBUG
 	if (rosaplevel & ISODELOG_PDUS) {
 		int	isopen;
 		FILE   *fp;
-
 		if (strcmp (rosapfile, "-")) {
 			char    file[BUFSIZ];
-
 			sprintf (file, rosapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
 			fp = stderr, isopen = 0,  fflush (stdout);
-
 		if (fp) {
 			vpushfp (fp, pe, "ROSEapdus", 0);
 			print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
 			vpopfp ();
-
 			if (isopen)
 				fclose (fp);
 			else
@@ -198,15 +184,12 @@ int	ro2acuwrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 		}
 	}
 #endif
-
 	if ((result = AcUnitDataWrite (acb -> acb_fd, &pe, 1, aci)) == NOTOK) {
 		aculose (acb, roi, "AcUnitDataWrite", aca);
 	}
-
 	if (fe)
 		pe_extract (pe, fe);
 	pe_free (pe);
-
 	return result;
 }
 
@@ -216,18 +199,14 @@ int ValidBinding (
 	struct assocblk *acb,
 	struct AcuSAPstart *acs
 ) {
-
 #define	AEICMP(aei1,aei2) \
     (pe_cmp ((aei1) -> aei_ap_title, (aei2) -> aei_ap_title) \
   || pe_cmp ((aei1) -> aei_ae_qualifier, (aei2) -> aei_ae_qualifier))
-
 	if ( oid_cmp (acb -> acb_context, acs -> acs_context) )
 		return NOTOK;
-
 	if ( acb -> acb_callingtitle
 			&& AEICMP (acb->acb_callingtitle, &acs->acs_calledtitle) )
 		return NOTOK;
-
 	if ( acb -> acb_binding == BIND_STATIC
 			&& acb -> acb_calledtitle
 			&& AEICMP (acb -> acb_calledtitle, &acs->acs_callingtitle) )
@@ -254,7 +233,6 @@ static int aculose (
 				  aca -> aca_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
 				  AcErrString (aca -> aca_reason), aca -> aca_cc, aca -> aca_cc,
 				  aca -> aca_data);
-
 	cp = "";
 	switch (aca -> aca_reason) {
 	case ACS_ADDRESS:
@@ -276,7 +254,6 @@ static int aculose (
 		reason = ROS_ACS;
 		break;
 	}
-
 	if (aca -> aca_cc > 0)
 		return rosaplose ( roi, reason, NULLCP, "%*.*s%s",
 						   aca -> aca_cc, aca -> aca_cc, aca -> aca_data, cp);

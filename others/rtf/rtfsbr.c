@@ -42,21 +42,18 @@ char *SReportString (int code) {
 
 	if (code == SP_PROTOCOL)
 		return "SS-provider protocol error";
-
 	code &= 0xff;
 	if (code & RC_BASE) {
 		if ((fcode = code & ~RC_BASE) < reason_err8_cnt)
 			return reason_err8[fcode];
 	} else if (code < reason_err0_cnt)
 		return reason_err0[code];
-
 	sprintf (buffer, "unknown reason code 0x%x", code);
 	return buffer;
 }
 
 void rts_adios (struct RtSAPabort *rta, char *event) {
 	rts_advise (rta, event);
-
 	_exit (1);
 }
 
@@ -68,7 +65,6 @@ void rts_advise (struct RtSAPabort *rta, char *event) {
 				 rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 	else
 		sprintf (buffer, "[%s]", RtErrString (rta -> rta_reason));
-
 	advise (LLOG_NOTICE, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -78,11 +74,8 @@ void	adios (char *what, char *fmt, ...)
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -98,9 +91,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
@@ -117,9 +108,7 @@ void	ryr_advise (char *what, char *fmt, ...)
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_NOTICE, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
@@ -155,11 +144,9 @@ void timer (int cc) {
 		return;
 	} else
 		gettimeofday (&stop, (struct timezone  *) 0);
-
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
 	bs = (((float) cc * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
-
 	advise (LLOG_NOTICE, NULLCP,
 			"transfer complete: %d bytes in %d.%02d seconds (%.2f Kbytes/s)",
 			cc, td.tv_sec, td.tv_usec / 10000, bs / 1024);
@@ -190,12 +177,10 @@ int timer (int cc) {
 		return;
 	} else
 		stop = times (&tm);
-
 	td = stop - start;
 	secs = td / 60, msecs = (td % 60) * 1000 / 60;
 	ms = (secs * 1000) +  msecs;
 	bs = (((float) cc * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
-
 	advise (LLOG_NOTICE, NULLCP,
 			"transfer complete: %d bytes in %d.%02d seconds (%.2f Kbytes/s)",
 			cc, secs, msecs / 10, bs / 1024);

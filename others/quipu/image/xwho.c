@@ -94,21 +94,16 @@ int main (int argc, char **argv, char **envp) {
 	fd_set  rfds;
 
 	arginit (argv);
-
 	if (errsw)
 		errsw = NOTOK;
-
 	update_X ();
-
 	FD_ZERO (&rfds);
 	nfds = ConnectionNumber (DISP) + 1;
 	FD_SET (ConnectionNumber (DISP), &rfds);
 	for (;;) {
 		fd_set	ifds;
-
 		ifds = rfds;
 		xselect (nfds, &ifds, NULLFD, NULLFD, sleepsw);
-
 		update_X ();
 	}
 }
@@ -127,10 +122,8 @@ int arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	isodetailor (myname, 1);
 	lp = NULLCP;
-
 	nhosts = 0;
 	for (vec++; ap = *vec; vec++)
 		if (*ap == '-')
@@ -173,29 +166,23 @@ int arginit (char **vec) {
 		else {
 			if (nhosts++ >= NHOSTS)
 				adios (NULLCP, "too many hosts");
-
 			if ((hp = gethostbyname (ap)) == NULL)
 				adios (NULLCP, "%s: unknown host", ap);
 			if ((ap = malloc ((unsigned) (strlen (hp -> h_name) + 1)))
 					== NULL)
 				adios (NULLCP, "out of memory");
-
 			strcpy (*host_end++ = ap, hp -> h_name);
 		}
-
 	init_aka (myname, 1, lp);
-
 	if (debug)
 		ll_dbinit (pgm_log, myname);
 	else
 		ll_hdinit (pgm_log, myname);
 	ll_open (pgm_log);
-
 	if ((DISP = XOpenDisplay (display)) == NULL)
 		adios (NULLCP, "unable to open display \"%s\"",
 			   XDisplayName (display));
 	SCRN = DefaultScreen (DISP);
-
 	forepix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L, (XGCValues *)NULL);
 	highpix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L, (XGCValues *)NULL);
 	XCopyGC (DISP, DefaultGC (DISP, SCRN), (1L<<(GCLastBit+1)) - 1, forepix);
@@ -216,15 +203,12 @@ int arginit (char **vec) {
 		XSetFunction(DISP, forepix, GXcopy);
 		XSetFunction(DISP, highpix, GXor);
 	}
-
 	XSetBackground (DISP, forepix, backpix);
 	XSetBackground (DISP, highpix, backpix);
-
 	if (cp = XGetDefault (DISP, myname, "BorderWidth"))
 		bwidth = atoi (cp);
 	else
 		bwidth = 2;
-
 	if (cp = XGetDefault (DISP, myname, "BodyFont"))
 		fontname = cp;
 	myfont = XLoadQueryFont (DISP, fontname);
@@ -238,24 +222,18 @@ static update_X () {
 	XGCValues gcvalues;
 
 	service_X ();
-
 	if (mywindow && !mapped)
 		return;
-
 	read_X ();
-
 	layout_X ();
-
 	if (mywindow == NULL)
 		init_X ();
-
 	for (hp = hosts; hp; hp = hp -> h_next) {
 		if (hp -> h_update && display_this_host (hp -> h_name)) {
 			if (hp -> h_window) {
 				XFreeGC (DISP, hp -> h_gc);
 				XDestroyWindow (DISP, hp -> h_window);
 			}
-
 			if (debug)
 				fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
 						 hp -> h_name, hp -> h_frame.width,
@@ -269,11 +247,8 @@ static update_X () {
 												  hp -> h_frame.bdrwidth,
 												  hp -> h_frame.border,
 												  hp -> h_frame.background);
-
 			XSelectInput (DISP, hp -> h_window, ExposureMask);
-
 			XMapWindow (DISP, hp -> h_window);
-
 			gcvalues.foreground = bdrpix;
 			gcvalues.background = backpix;
 			gcvalues.font = myfont -> fid;
@@ -281,12 +256,10 @@ static update_X () {
 									GCForeground | GCBackground | GCFont,
 									&gcvalues);
 		}
-
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 			if (fp -> f_update) {
 				if (fp -> f_window)
 					XDestroyWindow (DISP, fp -> f_window);
-
 				if (debug)
 					fprintf (stderr, "%s: %dx%d+%d+%d/%d\n",
 							 fp -> f_name, fp -> f_frame.width,
@@ -300,13 +273,10 @@ static update_X () {
 													 fp -> f_frame.bdrwidth,
 													 fp -> f_frame.border,
 													 fp -> f_frame.background);
-
 				XSelectInput (DISP, fp -> f_window, ExposureMask);
-
 				XMapWindow (DISP, fp -> f_window);
 			}
 	}
-
 	service_X ();
 }
 
@@ -321,23 +291,19 @@ static int service_X () {
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
-
 		switch (xe -> type) {
 		case Expose:
 			if ((w = ((XExposeEvent *) xe) -> window) == mywindow) {
 				display_top ();
 				break;
 			}
-
 			for (hp = hosts; hp; hp = hp -> h_next) {
 				if (!display_this_host (hp -> h_name))
 					continue;
-
 				if (hp -> h_window == w) {
 					display_host (hp);
 					break;
 				}
-
 				for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 					if (fp -> f_window == w)
 						break;
@@ -399,33 +365,26 @@ static init_X () {
 	myframe.y = 0;
 	sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
 	myframe.x, myframe.y);
-
 	if (debug)
 		fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
 		myframe.width, myframe.height, myframe.x, myframe.y,
 		myframe.bdrwidth);
-
 	hints.width = largest_w + 100;
 	hints.height = largest_h + 100;
 	hints.x = hints.y = 0;
 	hints.flags = PSize | PPosition;
-
 	xswattrs.border_pixel = bdrpix;
 	xswattrs.background_pixel = backpix;
 	xswattrs_mask = CWBackPixel | CWBorderPixel;
-
 	mywindow = XCreateWindow (DISP, RootWindow (DISP, SCRN),
 	myframe.x, myframe.y,
 	myframe.width, myframe.height,
 	myframe.bdrwidth,
 	0, InputOutput, (Visual *) CopyFromParent,
 	xswattrs_mask, &xswattrs);
-
 	XSetStandardProperties (DISP, mywindow, myname, "X Who", None,
 	(char **) 0, 0, &hints);
-
 	XSelectInput (DISP, mywindow, ExposureMask | StructureNotifyMask);
-
 	XMapWindow (DISP, mywindow);
 	mapped = 0;
 }
@@ -437,17 +396,14 @@ static layout_X () {
 	XCharStruct mychar;
 
 	h = largest_w = 0;
-
 	for (hp = hosts; hp; hp = hp -> h_next) {
 		int     hh,
 		hw;
-
 		hh = hw = 0;
 		if (hp -> h_window == NULL || hp -> h_frame.y != h) {
 			int	    direction_return,
 			font_ascent_return,
 			font_descent_return;
-
 			hp -> h_frame.bdrwidth = 2;
 			XTextExtents (myfont, hp -> h_string, strlen (hp -> h_string),
 			&direction_return, &font_ascent_return,
@@ -462,11 +418,9 @@ static layout_X () {
 		} else
 			hp -> h_update = 0;
 		h += hp -> h_frame.height + 2 * hp -> h_frame.bdrwidth;
-
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 			if (fp -> f_imap && fp -> f_imap -> height > hh)
 				hh = fp -> f_imap -> height;
-
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 			if (fp -> f_imap) {
 				if (fp -> f_window == NULL
@@ -481,11 +435,9 @@ static layout_X () {
 					fp -> f_frame.background = backpix;
 					fp -> f_frame.x = hw;
 					fp -> f_frame.y = h;
-
 					fp -> f_update = 1;
 				} else
 					fp -> f_update = 0;
-
 				hw += fp -> f_imap -> width + bwidth * 2;
 			} else
 				fp -> f_update = 0;
@@ -493,7 +445,6 @@ static layout_X () {
 			largest_w = hw;
 		if (hp -> h_frame.width > largest_w)
 			largest_w = hp -> h_frame.width;
-
 		if (hw > 0)
 			h += hh + 2;
 		else {
@@ -506,7 +457,6 @@ static layout_X () {
 			}
 		}
 	}
-
 	largest_h = h;
 }
 
@@ -518,7 +468,6 @@ static display_top () {
 static display_host (struct host *hp) {
 	if (debug)
 		fprintf (stderr, "%s:\n", hp -> h_name);
-
 	XDrawImageString (DISP, hp -> h_window, hp -> h_gc, 0, hp -> h_ascent,
 					  hp -> h_string, strlen (hp -> h_string));
 }
@@ -540,14 +489,12 @@ static display_face (struct face *fp) {
 	dy = max ((int) xm -> height - im -> height, 0) / 2;
 	w = min (xm -> width, im -> width);
 	h = min (xm -> height, im -> height);
-
 	if (debug) {
 		fprintf (stderr, "im: %dx%d frame:%dx%d\n",
 				 im -> width, im -> height, xm -> width, xm -> height);
 		fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
 				 sx, sy, dx, dy, w, h);
 	}
-
 	image = XCreateImage (DISP, DefaultVisual (DISP, SCRN), 1, XYBitmap, 0,
 						  im -> data -> qb_forw -> qb_data,
 						  (unsigned int) im -> width,
@@ -557,7 +504,6 @@ static display_face (struct face *fp) {
 	image -> byte_order = image -> bitmap_bit_order = LSBFirst;
 	XClearWindow (DISP, fp -> f_window);
 	XPutImage (DISP, fp -> f_window, forepix, image, sx, sy, dx, dy, w, h);
-
 	XDestroyImage (image);
 }
 
@@ -589,30 +535,24 @@ static read_X () {
 		for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 			fp -> f_active = 0;
 	}
-
 	if (dd == NULL) {
 		if (chdir ("/usr/spool/rwho") == NOTOK)
 			adios ("/usr/spool/rwho", "unable to change directory to");
-
 		if ((dd = opendir (".")) == NULL)
 			adios ("/usr/spool/rwho", "unable to read");
 	} else
 		rewinddir (dd);
-
 	while (dp = readdir (dd)) {
 		if (dp -> d_ino == 0 || strncmp (dp -> d_name, "whod.", 5) != 0)
 			continue;
-
 		if ((fd = open (dp -> d_name, O_RDONLY)) == NOTOK)
 			continue;
 		n = read (fd, (char *) wd, sizeof *wd);
 		close (fd);
 		if ((n -= sizeof *wd - sizeof wd -> wd_we) < 0)
 			continue;
-
 		if (now - wd -> wd_recvtime > 5 * 60 || n < sizeof *we)
 			continue;
-
 		for (hp = hosts; hp; hp = hp -> h_next)
 			if (strncmp (hp -> h_name, wd -> wd_hostname,
 			sizeof wd -> wd_hostname) == 0)
@@ -622,20 +562,16 @@ static read_X () {
 				adios (NULLCP, "out of memory");
 			hp -> h_next = hosts;
 			hosts = hp;
-
 			strncpy (hp -> h_name, wd -> wd_hostname,
 			sizeof wd -> wd_hostname);
 			sprintf (hp -> h_string, "%s:", hp -> h_name);
 			hp -> h_frame.width = XTextWidth (myfont, hp -> h_string,
 			strlen (hp -> h_string));
 		}
-
 		hp -> h_up = 1;
-
 		for (we = wd -> wd_we, n = n / sizeof *we; n > 0; we++, n--) {
 			if (we -> we_idle > 60 * 60)
 				continue;
-
 			for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 				if (strncmp (fp -> f_name, we -> we_utmp.out_name,
 							 sizeof we -> we_utmp.out_name) == 0)
@@ -645,10 +581,8 @@ static read_X () {
 					adios (NULLCP, "out of memory");
 				fp -> f_next = hp -> h_faces;
 				hp -> h_faces = fp;
-
 				strncpy (fp -> f_name, we -> we_utmp.out_name,
 						 sizeof we -> we_utmp.out_name);
-
 				if (display_this_host (hp -> h_name)
 						&& (fp -> f_imap = fetch_image (fp -> f_name, NULLCP))
 						== NULL) {
@@ -658,11 +592,9 @@ static read_X () {
 							   hp -> h_name, fp -> f_name));
 				}
 			}
-
 			fp -> f_active = 1;
 		}
 	}
-
 	for (hpp = &hosts; hp = *hpp;) {
 		for (fpp = &hp -> h_faces; fp = *fpp;) {
 			if (!hp -> h_up || !fp -> f_active) {
@@ -672,10 +604,8 @@ static read_X () {
 				free ((char *) fp);
 				continue;
 			}
-
 			fpp = &fp -> f_next;
 		}
-
 		if (!hp -> h_up || hp -> h_faces == NULL) {
 			*hpp = hp -> h_next;
 			if (hp -> h_window) {
@@ -686,22 +616,18 @@ static read_X () {
 		} else
 			hpp = &hp -> h_next;
 	}
-
 	{
 		int    i;
 		struct host **hq;
-
 		i = 0;
 		for (hp = hosts; hp; hp = hp -> h_next) {
 			int j;
 			struct face **fq;
-
 			i++, j = 0;
 			for (fp = hp -> h_faces; fp; fp = fp -> f_next)
 				j++;
 			if (j > 1) {
 				struct face **faces;
-
 				if ((faces = (struct face **)
 				calloc ((unsigned) j, sizeof *faces)) == NULL)
 					continue;
@@ -714,14 +640,11 @@ static read_X () {
 				*fpp = *fq;
 				fq++, fpp = &(*fpp) -> f_next)
 					continue;
-
 				free ((char *) faces);
 			}
 		}
-
 		if (i > 1) {
 			struct host **hostz;
-
 			if ((hostz = (struct host **)
 						 calloc ((unsigned) i, sizeof *hostz)) == NULL)
 				goto out;
@@ -732,11 +655,9 @@ static read_X () {
 					*hpp = *hq;
 					hq++, hpp = &(*hpp) -> h_next)
 				continue;
-
 			free ((char *) hostz);
 		}
 	}
-
 out:
 	;
 }
@@ -746,10 +667,8 @@ static int display_this_host (char *n) {
 
 	if (host_list == host_end)
 		return 1;
-
 	for (ap = host_list; ap < host_end; ap++)
 		if (strcmp (*ap, n) == 0)
 			return (!dont_list);
-
 	return dont_list;
 }

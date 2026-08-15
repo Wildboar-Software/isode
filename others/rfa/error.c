@@ -43,9 +43,7 @@ int str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAP
 	int r;
 
 	qb= str2qb(str, strlen(str), 1);
-
 	r = aux_error (sd, err, (caddr_t)qb, rox, roi);
-
 	qb_free(qb);
 	return r;
 }
@@ -90,6 +88,5 @@ int statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke 
 		sep->user = NULL;
 		sep->since = 0;
 	}
-
 	return aux_error (sd, error_RFA_statusError, (caddr_t)sep, rox, roi);
 }

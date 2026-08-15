@@ -36,11 +36,9 @@ void set_relation(AttributeType parent_type, AttributeType child_type, QBool nee
 					curr_child != NULLObjectType;
 					curr_child = curr_child->next)
 				if (curr_child->object_type == child_type) return;
-
 			break;
 		}
 	}
-
 	if (curr_node != NULLDitRelation) {
 		curr_child = object_type_alloc();
 		curr_child->next = curr_node->child_types;
@@ -49,13 +47,9 @@ void set_relation(AttributeType parent_type, AttributeType child_type, QBool nee
 	} else {
 		new_node = dit_relation_alloc();
 		new_node->next = ditmodel;
-
 		ditmodel = new_node;
-
 		new_node->parent_type = parent_type;
-
 		curr_child = new_node->child_types = object_type_alloc();
-
 		curr_child->use_subtree = need_subtree;
 		curr_child->object_type = child_type;
 		curr_child->next = NULLObjectType;
@@ -75,7 +69,6 @@ objectTypeList get_child_list(AttributeType parent_type) {
 			curr_node = curr_node->next)
 		if (curr_node->parent_type == parent_type)
 			return curr_node->child_types;
-
 	return NULLObjectType;
 } /* get_child_list */
 
@@ -91,7 +84,6 @@ objectTypeList get_search_attrs(AttributeType attr_type) {
 			curr_info != NULLSearchInfo;
 			curr_info = curr_info->next)
 		if (attr_type == curr_info->object_type) return curr_info->search_on_list;
-
 	return NULLObjectType;
 } /* get_search_attrs */
 
@@ -112,28 +104,19 @@ void set_search_attr(char *type_label, AttributeType obj_type, AttributeType sea
 					curr_type != NULLObjectType;
 					curr_type = curr_type->next)
 				if (curr_type->object_type == search_type) return;
-
 			curr_type = object_type_alloc();
 			curr_type->next = curr_info->search_on_list;
-
 			curr_info->search_on_list = curr_type;
-
 			curr_type->object_type = search_type;
-
 			return;
 		}
-
 	curr_info = search_info_alloc();
 	curr_info->next = search_type_list;
-
 	search_type_list = curr_info;
-
 	curr_info->object_type = obj_type;
 	curr_info->type_label = copy_string(type_label);
-
 	curr_type = curr_info->search_on_list = object_type_alloc();
 	curr_type->next = NULLObjectType;
-
 	curr_type->object_type = search_type;
 } /* set_search_attr */
 
@@ -146,89 +129,64 @@ int test_init_ditmodel () {
 	ou = AttrT_new("2.5.6.5");
 	loc = AttrT_new("2.5.6.3");
 	person = AttrT_new("2.5.6.6");
-
 	/* Root goes to country and locality */
 	set_relation(NULLAttrT, country, FALSE);
 	set_relation(NULLAttrT, loc, FALSE);
-
 	/* country goes to organization */
 	set_relation(country, org, FALSE);
 	set_relation(country, loc, FALSE);
-
 	/* locality goes to org or ou */
 	set_relation(loc, org, FALSE);
 	set_relation(loc, ou, TRUE);
 	set_relation(loc, person, TRUE);
-
 	/* Organization goes to ou and cn */
 	set_relation(org, ou, TRUE);
 	set_relation(org, loc, FALSE);
 	set_relation(org, person, TRUE);
-
 	/* ou goes to person */
 	set_relation(ou, person, TRUE);
 	set_relation(ou, ou, FALSE);
-
 	/* Default search paths */
-
 	/* Search attrs */
 	search_path = NULLEntryList;
-
 	dn_list_insert("c=us", &search_path, country);
 	dn_list_insert("c=gb", &search_path, country);
-
 	set_default_path(country, search_path);
-
 	set_search_attr("Country",
 	country,
 	AttrT_new("0.9.2342.19200300.99.1.8"));
-
 	search_path = NULLEntryList;
-
 	dn_list_insert("c=gb@o=nottingham university", &search_path, org);
 	dn_list_insert("c=gb@o=university college london", &search_path, org);
 	dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
 	dn_list_insert("c=gb@o=joint network team", &search_path, org);
 	dn_list_insert("c=gb@o=brunel university", &search_path, org);
-
 	set_default_path(loc, search_path);
-
 	set_search_attr("Place",
 	loc,
 	AttrT_new("2.5.4.7"));
-
 	set_default_path(org, search_path);
-
 	set_search_attr("Organization",
 	org,
 	AttrT_new("2.5.4.10"));
-
 	set_search_attr("Organization",
 	org,
 	AttrT_new("2.5.4.7"));
-
 	search_path = NULLEntryList;
-
 	set_default_path(ou, search_path);
-
 	set_search_attr("Department",
 	ou,
 	AttrT_new("2.5.4.11"));
-
 	set_search_attr("Department",
 	ou,
 	AttrT_new("2.5.4.7"));
-
 	search_path = NULLEntryList;
-
 	dn_list_insert("c=gb@o=nottingham university", &search_path, org);
 	dn_list_insert("c=gb@o=university college london", &search_path, org);
 	dn_list_insert("c=gb@o=edinburgh university", &search_path, org);
 	dn_list_insert("c=gb@o=brunel university", &search_path, org);
 	dn_list_insert("c=gb@o=joint network team", &search_path, org);
-
 	set_default_path(person, search_path);
-
 	set_search_attr("Person",
 	person,
 	AttrT_new("2.5.4.3"));
@@ -254,7 +212,6 @@ QBool is_oc_must(objectclass *ocp, AttributeType at) {
 	for (optr = ocp->oc_must; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)
 			return TRUE;
-
 	return FALSE;
 }
 
@@ -269,7 +226,6 @@ QBool is_oc_may(objectclass *ocp, AttributeType at) {
 	for (optr = ocp->oc_may; optr != NULLTABLE_SEQ; optr = optr->ts_next)
 		if (optr->ts_oa == at)
 			return TRUE;
-
 	return FALSE;
 }
 
@@ -283,7 +239,6 @@ QBool is_search_type(AttributeType at) {
 
 	while (srchlist != NULLSearchInfo && srchlist->object_type != at)
 		;
-
 	return (srchlist == NULLSearchInfo? FALSE : TRUE);
 }
 
@@ -299,7 +254,6 @@ char *get_type_label(AttributeType at) {
 			srchlist != NULLSearchInfo && srchlist->object_type != at;
 			srchlist = srchlist->next)
 		;
-
 	return (srchlist == NULLSearchInfo? NULLCP : srchlist->type_label);
 }
 
@@ -317,14 +271,11 @@ void set_default_path(AttributeType object_type, entryList path) {
 		if (curr_path->object_type == object_type)
 			break;
 	}
-
 	if (curr_path == NULLUfsPath) {
 		curr_path = ufs_path_alloc();
 		curr_path->next = ufs_paths;
-
 		curr_path->object_type = object_type;
 		curr_path->path = path;
-
 		ufs_paths = curr_path;
 	}
 }
@@ -343,6 +294,5 @@ entryList get_default_path(AttributeType object_type) {
 		if (curr_path->object_type == object_type)
 			return curr_path->path;
 	}
-
 	return NULLEntryList;
 }

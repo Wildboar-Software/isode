@@ -36,13 +36,11 @@ int main (int argc, char *argv[]) {
 		LocalDomain = p;
 	} else
 		LocalDomain = "";
-
 	if (argc < 2) {
 usage:
 		printf("usage: %s [ -v ][ -n ] hosts...\n", argv[0]);
 		exit(1);
 	}
-
 	argv++, argc--;
 	if (*argv[0] == '-') {
 		switch (argv[0][1]) {
@@ -59,7 +57,6 @@ usage:
 	}
 	if (argc > 1)
 		printf("--- %s ---\n", *argv);
-
 	while (argc > 0) {
 		/*
 		 * Get a new socket each time - this will cause us to ignore
@@ -120,17 +117,14 @@ int answer (char *host) {
 			return;
 		}
 		FD_SET(s, &bits);
-
 		if (msg->type != INFO_REPLY)
 			return;
-
 		if (msg->version != NTPDC_VERSION) {
 			printf("ntpd(%d) - ntpdc(%d) version mismatch\n",
 				   msg->version, NTPDC_VERSION);
 			alarm(0);
 			return;
 		}
-
 		if (first) {
 			first = 0;
 			replies = (1L << msg->npkts) - 1;
@@ -263,7 +257,6 @@ int print_verbose (struct clockinfo *n) {
 	}
 	printf(" timestamp: %08lx.%08lx\n", ntohl(n->reftime.int_part),
 		   ntohl(n->reftime.fraction));
-
 	printf("hpoll: %d, ppoll: %d, timer: %d, sent: %d received: %d\n",
 		   n->hpoll, n->ppoll,
 		   (int)ntohl((uint32_t)n->timer),
@@ -298,10 +291,8 @@ char *cvthname (struct sockaddr_in *f) {
 						   f->sin_family);
 	else
 		return (inet_ntoa(f->sin_addr));
-
 	if (hp == 0)
 		return (inet_ntoa(f->sin_addr));
-
 	if ((p = index(hp->h_name, '.')) && strcmp(p + 1, LocalDomain) == 0)
 		*p = '\0';
 	return (hp->h_name);

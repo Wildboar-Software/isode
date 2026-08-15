@@ -41,10 +41,8 @@ main (int argc, char **argv, char **envp) {
 		exit (0);
 	}
 	service = (argc > 2) ? argv[2] : "FTAM";
-
 	/* SUNLink OSI directory lookup */
 	mds_lookup (argv[1], service, &p_addr);
-
 	/* SUNLink function to slice out SAP bytes from full address */
 	paddr_type = 0;
 	if ((len = osi_get_sap (&p_addr, buf, sizeof buf, OSI_NSAP, &paddr_type))
@@ -52,7 +50,6 @@ main (int argc, char **argv, char **envp) {
 		fprintf (stderr, "no entry for %s %s\n", argv[1], service);
 		exit (1);
 	}
-
 	buf2[explode (buf2, (uint8_t *) buf, len)]= NULL;
 	switch (paddr_type) {
 	case AF_NBS:
@@ -68,7 +65,6 @@ main (int argc, char **argv, char **envp) {
 		break;
 	}
 	printf ("\t\t\t\tNS+%s%s\n\n", prefix, buf2);
-
 	exit (0);
 }
 
@@ -89,7 +85,6 @@ static int  explode (char *a, uint8_t *b, int n) {
 		*a++ = nib2hex[(c & 0x0f)];
 	}
 	*a = NULL;
-
 	return (n * 2);
 }
 

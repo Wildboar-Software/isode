@@ -55,33 +55,25 @@ int ros_init (int vecp, char **vec) {
 			acs -> acs_sd, oid2ode (acs -> acs_context),
 			sprintaei (&acs -> acs_callingtitle),
 			sprintaei (&acs -> acs_calledtitle), acs -> acs_ninfo);
-
 	sd = acs -> acs_sd;
-
 	for (vec++; *vec; vec++)
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown argument \"%s\"", *vec);
-
 	reply = startfnx ? (*startfnx) (sd, acs, &pe[0]) : ACS_ACCEPT;
-
 	result = AcAssocResponse (sd, reply,
 							  reply != ACS_ACCEPT ? ACS_USER_NOREASON : ACS_USER_NULL,
 							  NULLOID, NULLAEI, NULLPA, NULLPC, ps -> ps_defctxresult,
 							  ps -> ps_prequirements, ps -> ps_srequirements, SERIAL_NONE,
 							  ps -> ps_settings, &ps -> ps_connect, pe,
 							  reply != ACS_ACCEPT ? 1 : 0, aci);
-
 	ACSFREE (acs);
-
 	if (result == NOTOK) {
 		acs_advise (aca, "A-ASSOCIATE.RESPONSE");
 		return NOTOK;
 	}
 	if (reply != ACS_ACCEPT)
 		return NOTOK;
-
 	if (RoSetService (sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
-
 	return sd;
 }
 
@@ -105,7 +97,6 @@ int ros_work (int fd) {
 		RyLose (fd, roi);
 		return NOTOK;
 	}
-
 	switch (result = RyWait (fd, NULLIP, &out, OK, roi)) {
 	case NOTOK:
 		if (rop -> rop_reason == ROS_TIMER)
@@ -118,7 +109,6 @@ int ros_work (int fd) {
 	default:
 		adios (NULLCP, "unknown return from RoWaitRequest=%d", result);
 	}
-
 	return OK;
 }
 
@@ -135,7 +125,6 @@ int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_UREJECT: {
 		struct RoSAPureject   *rou = &roi -> roi_ureject;
-
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP, "RO-REJECT-U.INDICATION/%d: %s",
 					sd, RoErrString (rou -> rou_reason));
@@ -149,7 +138,6 @@ int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_PREJECT: {
 		struct RoSAPpreject   *rop = &roi -> roi_preject;
-
 		if (ROS_FATAL (rop -> rop_reason))
 			ros_adios (rop, "RO-REJECT-P.INDICATION");
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
@@ -160,17 +148,12 @@ int ros_indication (int sd, struct RoSAPindication *roi) {
 		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
 		struct AcSAPabort *aca = &acis.aci_abort;
-
 		advise (LLOG_NOTICE, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				sd, acf -> acf_reason);
-
 		reply = stopfnx ? (*stopfnx) (sd, acf) : ACS_ACCEPT;
-
 		result = AcRelResponse (sd, reply, ACR_NORMAL, NULLPEP, 0,
 								&acis);
-
 		ACFFREE (acf);
-
 		if (result == NOTOK)
 			acs_advise (aca, "A-RELEASE.RESPONSE");
 		else if (reply != ACS_ACCEPT)
@@ -195,9 +178,7 @@ int ros_lose (struct TSAPdisconnect *td) {
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	cleanup ();
-
 	longjmp (toplevel, NOTOK);
 }
 
@@ -209,7 +190,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -222,7 +202,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -233,6 +212,5 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
-
 	return OK;
 }

@@ -76,7 +76,6 @@ char   *ctime ();
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_ADD_Operations, dispatches, do_quit);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -98,7 +97,6 @@ static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
-
 	return NOTOK;
 }
 
@@ -133,16 +131,13 @@ static int addtest_error (
 		advise (NULLCP, "%s", RoErrString ((int) parameter));
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_ADD_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	/*
 	    if (parameter)
 		print_ia5list(parameter);
 	*/
-
 	return OK;
 }

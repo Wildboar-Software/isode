@@ -22,17 +22,14 @@ int main (int argc, char **argv, char **envp) {
 	SB	    sbo = &outgoing;
 
 	reportailor (argv[0]);
-
 	if (argc != 2)
 		adios (NULLCP, "usage: %s \"host\"", argv[0]);
-
 	if ((aei = str2aei (argv[1], mycontext)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   argv[1], mycontext);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
 	sz = &pa -> pa_addr;
-
 	bzero ((char *) sbo, sizeof *sbo);
 	sbo -> sb_requirements = SR_BASUBSET;
 	sbo -> sb_settings = 0;
@@ -44,7 +41,6 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_isn = SERIAL_NONE;
-
 	if (SConnRequest (&sbo -> sb_connect, NULLSA, sz, sbo -> sb_requirements,
 					  sbo -> sb_settings, sbo -> sb_isn, NULLCP, 0, NULLQOS, sc, si)
 			== NOTOK)
@@ -58,7 +54,6 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&sc -> sc_responding),
 			sprintb (sc -> sc_requirements, RMASK), sc -> sc_isn,
 			sc -> sc_ssdusize);
-
 	sbo -> sb_sd = sc -> sc_sd;
 	sbo -> sb_requirements = sc -> sc_requirements;
 	sbo -> sb_settings = sc -> sc_settings;
@@ -71,11 +66,8 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_ssn = sbo -> sb_isn = sc -> sc_isn;
-
 	SCFREE (sc);
-
 	/* do work here */
-
 	if (SRelRequest (sbo -> sb_sd, NULLCP, 0, NOTOK, sr, si) == NOTOK)
 		adios (NULLCP, "S-RELEASE.REQUEST: %s", SErrString (sa -> sa_reason));
 	if (sr -> sr_affirmative) {
@@ -99,7 +91,6 @@ int main (int argc, char **argv, char **envp) {
 			break;
 		}
 	}
-
 	exit (1);
 	return 1;
 }

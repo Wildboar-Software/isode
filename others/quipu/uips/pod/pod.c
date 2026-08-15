@@ -125,16 +125,13 @@ void CreateWidgets () {
 	count = 0;
 	outer = XtCreateManagedWidget("outer", formWidgetClass, toplevel,
 	args, count);
-
 	dpy = XtDisplay(toplevel);
 	scr = DefaultScreen(dpy);
 	screen = XtScreen(toplevel);
-
 	XtAddActions(buttonActionsTable, XtNumber(buttonActionsTable));
 	XtAddActions(listActionsTable, XtNumber(listActionsTable));
 	XtAddActions(currPosActionsTable, XtNumber(currPosActionsTable));
 	XtAddActions(verActionsTable, XtNumber(verActionsTable));
-
 	curr_help[0] = '\0';
 	CreateCurrPosWindow(outer);
 	CreateSearchWindow(outer);
@@ -156,62 +153,46 @@ void PodLoop () {
 	icon_name = "Directory";
 
 	XtRealizeWidget(toplevel);
-
 	icon_pixmap = XCreatePixmapFromBitmapData(dpy, XtWindow(toplevel),
 	icon_bits, icon_width, icon_height,
 	BlackPixelOfScreen(screen),
 	WhitePixelOfScreen(screen),
 	DefaultDepthOfScreen(screen));
-
 	hints.flags = 0;
-
 	wm_hints.input = TRUE;
 	wm_hints.icon_pixmap = icon_pixmap;
 	wm_hints.initial_state = NormalState;
 	wm_hints.flags = InputHint | IconPixmapHint | StateHint;
-
 	class_hint.res_name ="pod";
 	class_hint.res_class = "Pod";
-
 	XStringListToTextProperty(&window_name, 1, &window);
 	XStringListToTextProperty(&icon_name, 1, &icon);
-
 	XSetWMProperties(dpy, XtWindow(toplevel),
 	&window, &icon,
 	(char **) 0, (int) 0,
 	&hints, &wm_hints, &class_hint);
-
 	PosWindow = XtNameToWidget(outer,
 	"PosForm.PosScrolledWindow.PosWindow");
 	print_search_area(PosWindow);
-
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm"),
 		gray_bits, gray_width, gray_height);
-
 		CreateBackgroundPixmap(outer, gray_bits, gray_width, gray_height);
 		CreateBackgroundPixmap(XtNameToWidget(outer, "TypeForm"),
 		gray_bits, gray_width, gray_height);
 	}
-
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.searchButton"),
 	Search_bits, Search_width, Search_height);
-
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.listButton"),
 	List_bits, List_width, List_height);
-
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.historyButton"),
 	History_bits, History_width, History_height);
-
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.quitButton"),
 	Quit_bits, Quit_width, Quit_height);
-
 	CreateBackgroundPixmap(XtNameToWidget(outer, "MainButtonForm.helpButton"),
 	Help_bits, Help_width, Help_height);
-
 	goto_addr();
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
-
 	XtMainLoop();
 }
 
@@ -224,7 +205,6 @@ void make_photo_widget () {
 	"ReadForm.TextScrolledWindow.TextForm");
 	TextWindow = XtNameToWidget(curr_read_popup,
 	"ReadForm.TextScrolledWindow.TextForm.AttrWindow");
-
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
@@ -265,10 +245,8 @@ void print_photo () {
 	XtSetArg(args[count], XtNresizable, FALSE);
 	count++;
 	XtSetValues(PhotoWindow, args, count);
-
 	XtAddCallback(PhotoWindow, XtNdestroyCallback, FreeWidgetPixmap,
 	(XtPointer) photo_pixmap);
-
 	photo_pixmap = (Pixmap) 0;
 }
 
@@ -285,51 +263,40 @@ static void createList(str_seq list_seq, char *top_mess, char *lower_mess) {
 	if (curr_list_popup) {
 		if (!XtIsManaged(curr_list_popup)) XtManageChild(curr_list_popup);
 		shell = curr_list_popup;
-
 		ListForm = XtNameToWidget(shell, "ListForm");
 		swindow = XtNameToWidget(shell,
 								 "ListForm.ListScrolledWindow");
 		ListWindow = XtNameToWidget(shell,
 									"ListForm.ListScrolledWindow.ListWindow");
-
 		XawFormDoLayout(ListForm, FALSE);
-
 		XtUnmanageChild(ListWindow);
 		XtDestroyWidget(ListWindow);
-
 		count = 0;
 		ListWindow = XtCreateWidget("ListWindow", formWidgetClass,
 									swindow, args, count);
-
 		AddNewList(ListWindow, list_seq,  (unsigned) entry_number);
 		XtRealizeWidget(ListWindow);
 		XtManageChild(ListWindow);
-
 		XawFormDoLayout(ListForm, TRUE);
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, top_mess);
 		count++;
 		XtSetValues(XtNameToWidget(shell, "ListForm.ListTitleView.listTitle"),
 					args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, lower_mess);
 		count++;
 		XtSetValues(XtNameToWidget(shell, "ListForm.ListMessage"),
 					args, count);
-
 		XRaiseWindow(dpy, XtWindow(shell));
 		return;
 	}
-
 	count = 0;
 	shell = XtCreatePopupShell("ListOutput", topLevelShellWidgetClass,
 							   toplevel, args, 0);
 	count = 0;
 	ListForm = XtCreateManagedWidget("ListForm", formWidgetClass,
 									 shell, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
 	count++;
@@ -338,10 +305,8 @@ static void createList(str_seq list_seq, char *top_mess, char *lower_mess) {
 	closeButton = XtCreateManagedWidget("closeButton",
 										commandWidgetClass,
 										ListForm, args, count);
-
 	XtAddCallback(closeButton, XtNcallback,
 				  (XtCallbackProc) destroyList, (XtPointer) shell);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Keep_height);
 	count++;
@@ -350,10 +315,8 @@ static void createList(str_seq list_seq, char *top_mess, char *lower_mess) {
 	keepButton = XtCreateManagedWidget("keepButton",
 									   commandWidgetClass,
 									   ListForm, args, count);
-
 	XtAddCallback(keepButton, XtNcallback,
 				  (XtCallbackProc) keepList, (XtPointer) shell);
-
 	count = 0;
 	XtSetArg(args[count], XtNforceBars, FALSE);
 	count++;
@@ -363,37 +326,28 @@ static void createList(str_seq list_seq, char *top_mess, char *lower_mess) {
 	count++;
 	ListTitleView = XtCreateManagedWidget("ListTitleView", viewportWidgetClass,
 										  ListForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, top_mess);
 	count++;
 	XtCreateManagedWidget("listTitle", labelWidgetClass,
 						  ListTitleView, args, count);
-
 	count = 0;
 	swindow = XtCreateManagedWidget("ListScrolledWindow", viewportWidgetClass,
 									ListForm, args, count);
-
 	count = 0;
 	ListWindow = XtCreateManagedWidget("ListWindow", formWidgetClass,
 									   swindow, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, lower_mess);
 	count++;
 	XtCreateManagedWidget("ListMessage", labelWidgetClass,
 						  ListForm, args, count);
-
 	XtAddCallback(ListWindow, XtNdestroyCallback,
 				  ListDestroy, (XtPointer) list_seq);
-
 	AddNewList(ListWindow, list_seq,  (unsigned) entry_number);
-
 	XtRealizeWidget(shell);
 	XtPopup(shell, XtGrabNone);
-
 	curr_list_popup = shell;
-
 	CreateBackgroundPixmap(closeButton, Close_bits, Close_width, Close_height);
 	CreateBackgroundPixmap(keepButton, Keep_bits, Keep_width, Keep_height);
 	if (DefaultDepthOfScreen(screen) == 1)
@@ -411,13 +365,10 @@ static void CreateCurrPosWindow(Widget parent) {
 	count = 0;
 	title = XtCreateManagedWidget("PosTitle", commandWidgetClass, PosForm,
 								  args, count);
-
 	XtAddCallback(title, XtNcallback, CutString, (XtPointer) base_path);
-
 	count = 0;
 	swindow = XtCreateManagedWidget("PosScrolledWindow", viewportWidgetClass,
 									PosForm, args, count);
-
 	count = 0;
 	XtCreateManagedWidget("PosWindow", formWidgetClass,
 						  swindow, args, count);
@@ -493,20 +444,15 @@ void add_to_history (int seqnum) {
 	str_seq first;
 
 	history_form = XtNameToWidget(toplevel, "Session History.HistoryForm");
-
 	history_display = XtNameToWidget(history_form,
 									 "ListScrolledWindow.ListWindow");
 	scrolwin = XtParent(history_display);
-
 	XawFormDoLayout(history_form, FALSE);
-
 	XtUnmanageChild(history_display);
 	XtDestroyWidget(history_display);
-
 	count = 0;
 	history_display = XtCreateWidget("ListWindow", formWidgetClass,
 									 scrolwin, args, count);
-
 	if (seqnum > histlimit) {
 		first = backseq;
 		backseq = backseq->next;
@@ -514,18 +460,13 @@ void add_to_history (int seqnum) {
 		free_seq(first);
 		back_buf_num--;
 	}
-
 	strcpy(curr_base, base_path);
 	base_path[0] = '\0';
-
 	AddNewList(history_display, backseq,  (unsigned) back_buf_num);
-
 	XtRealizeWidget(history_display);
 	XtManageChild(history_display);
-
 	strcpy(base_path, curr_base);
 	XawFormDoLayout(history_form, TRUE);
-
 }
 
 void print_search_area(Widget PosWindow) {
@@ -544,9 +485,7 @@ void print_search_area(Widget PosWindow) {
 	XtSetArg(args[count], XtNwidth, &width);
 	count++;
 	XtGetValues(PosWindow, args, count);
-
 	width -= 24;
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, ("The World"));
 	count++;
@@ -563,31 +502,22 @@ void print_search_area(Widget PosWindow) {
 	rdn_window = XtCreateManagedWidget("x", commandWidgetClass,
 									   PosWindow, args, count);
 	XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) 0);
-
 	sprintf(trans_buf, "%d", 0);
-
 	strcpy(translations, trans_start_btn2);
 	strcat(translations, trans_buf);
 	strcat(translations, ") unset() \n ");
 	strcat(translations, trans_start_btn3);
 	strcat(translations, trans_buf);
 	strcat(translations, ") unset()");
-
 	trans_table = XtParseTranslationTable(translations);
 	XtOverrideTranslations(rdn_window, trans_table);
-
 	last_rdn = rdn_window;
-
 	rdn_number = 1;
-
 	strcpy (name_array, "xx");
-
 	make_friendly(friendly_base_path, base_path);
 	end = friendly_base_path;
-
 	while (*end != '\0') end++;
 	str = end;
-
 	while (str > (char *) friendly_base_path) {
 		while (*str != ',' && str > (char *) friendly_base_path)
 			if (*str == '\"')	{
@@ -596,12 +526,9 @@ void print_search_area(Widget PosWindow) {
 					str--;
 			} else
 				str--;
-
 		while (!isalnum(*str)) str++;
-
 		save = *end;
 		*end = '\0';
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, (*str? str: "ahem"));
 		count++;
@@ -621,24 +548,18 @@ void print_search_area(Widget PosWindow) {
 										   PosWindow, args, count);
 		last_rdn = rdn_window;
 		XtAddCallback(rdn_window, XtNcallback, DnMoveRead, (XtPointer) rdn_number);
-
 		sprintf(trans_buf, "%d", (strlen(name_array) - 1));
-
 		strcpy(translations, trans_start_btn2);
 		strcat(translations, trans_buf);
 		strcat(translations, ") unset() \n ");
 		strcat(translations, trans_start_btn3);
 		strcat(translations, trans_buf);
 		strcat(translations, ") unset()");
-
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(rdn_window, trans_table);
-
 		strcat(name_array, "x");
 		rdn_number++;
-
 		*end = save;
-
 		if (str > (char *) friendly_base_path) {
 			while (*str != ',' && str > (char *) friendly_base_path) str--;
 			end = str;
@@ -658,13 +579,11 @@ static void StartSearch(Widget w, XtPointer closure, XtPointer calldata) {
 	Cursor normal_cur = XCreateFontCursor(dpy, XC_left_ptr);
 
 	text = XtNameToWidget(outer, "TypeForm.SearchVal");
-
 	count = 0;
 	XtSetArg(args[count], XtNstring, &value);
 	count++;
 	XtGetValues(text, args, count);
 	strcpy(mvalue, value);
-
 	if (mvalue[0] == '\0') {
 		kill_message();
 		displayError(outer,
@@ -672,7 +591,6 @@ static void StartSearch(Widget w, XtPointer closure, XtPointer calldata) {
 Click on this window to continue");
 		return;
 	}
-
 	if (index(mvalue, '=') == NULLCP)
 		sprintf(mess,
 				"Searching for entry of type `%s'.\nPlease stand by....",
@@ -681,19 +599,13 @@ Click on this window to continue");
 		sprintf(mess,
 				"Searching with filter `%s'.\nPlease stand by....",
 				mvalue);
-
 	message(outer, mess);
-
 	XDefineCursor(dpy, XtWindow(outer), time_cur);
 	XFlush(dpy);
-
 	status = srch_start();
-
 	XDefineCursor(dpy, XtWindow(outer), normal_cur);
 	XFlush(dpy);
-
 	kill_message();
-
 	switch(status) {
 	case Okay:
 		if (entry_number == 1) {
@@ -706,11 +618,8 @@ Click on this window to continue");
 				goto_addr();
 				SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 				XFlush(dpy);
-
 				if (curr_read_popup == 0) curr_read_popup = createReadPopup();
-
 				status = read_config_types();
-
 				if (status == Okay)
 					displayReadPopup();
 				else
@@ -720,12 +629,9 @@ Click on this window to continue");
 				strcpy(base_path, entry);
 				make_friendly(friendly_base_path, base_path);
 				XFlush(dpy);
-
 				if (curr_read_popup == 0) curr_read_popup = createReadPopup();
-
 				status = read_config_types();
 				displayReadPopup();
-
 				if (status == Okay) {
 					strcpy(base_path, string);
 					make_friendly(friendly_base_path, base_path);
@@ -736,7 +642,6 @@ Click on this window to continue");
 			entry_number = 0;
 		} else if (entry_number > 0) {
 			strcpy(mess, "Results of search under ");
-
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
@@ -747,7 +652,6 @@ Click on this window to continue");
 				strcat(mess, "The World");
 				indx = 0;
 			}
-
 			createList(dnseq, mess, "");
 			dnseq = 0;
 			break;
@@ -755,7 +659,6 @@ Click on this window to continue");
 		case adminlimit_w_partial:
 		case timelimit_w_partial:
 			strcpy(mess, "Results of search under ");
-
 			if (strlen(base_path) > 3) {
 				indx = 0;
 				while (friendly_base_path[indx] != ',' &&
@@ -766,7 +669,6 @@ Click on this window to continue");
 				strcat(mess, "The World");
 				indx = 0;
 			}
-
 			switch (status) {
 			case timelimit_w_partial:
 				sprintf(string,
@@ -790,7 +692,6 @@ Click on this window to continue");
 						entry_number);
 				break;
 			}
-
 			createList(dnseq, mess, string);
 			dnseq = 0;
 			break;
@@ -798,7 +699,6 @@ Click on this window to continue");
 			doError(status);
 		}
 	}
-
 	ClearSearchArea(XtNameToWidget(outer, "TypeForm.SearchVal"),
 					(XEvent *) NULL, (String *) NULL, (Cardinal) 0);
 }
@@ -810,7 +710,6 @@ static Widget createTypeMenu(Widget parent) {
 
 	menu_mgr = XtCreatePopupShell("menu", simpleMenuWidgetClass,
 								  parent, args, 0 );
-
 	n = 0;
 	while (av_typeindx[n] != -1) {
 		count = 0;
@@ -832,21 +731,15 @@ static void SetType(Widget w, XtPointer indx, XtPointer calldata) {
 	char label[1024];
 
 	menuButton = XtNameToWidget(outer, "TypeForm.TypeButton");
-
 	if ((int) indx < 0 || (int) indx >= (int) filt_num) return;
-
 	if ((menu = XtNameToWidget(outer, "TypeForm.TypeButton.menu")))
 		XtDestroyWidget(menu);
-
 	createTypeMenu(menuButton);
-
 	strcpy(label, filttype[(int) indx]);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, label);
 	count++;
 	XtSetValues(menuButton, args, count);
-
 	typeindx = (int) indx;
 }
 
@@ -859,7 +752,6 @@ static void CreateCommandForm(Widget parent) {
 	count = 0;
 	form = XtCreateManagedWidget("MainButtonForm", formWidgetClass, parent,
 								 args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Quit_height);
 	count++;
@@ -868,10 +760,8 @@ static void CreateCommandForm(Widget parent) {
 	quitButton = XtCreateManagedWidget("quitButton",
 									   commandWidgetClass,
 									   form, args, count);
-
 	XtAddCallback(quitButton, XtNcallback,
 				  (XtCallbackProc) Quit, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Help_height);
 	count++;
@@ -880,10 +770,8 @@ static void CreateCommandForm(Widget parent) {
 	helpButton = XtCreateManagedWidget("helpButton",
 									   commandWidgetClass,
 									   form, args, count);
-
 	XtAddCallback(helpButton, XtNcallback,
 				  (XtCallbackProc) Help, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Search_height);
 	count++;
@@ -892,10 +780,8 @@ static void CreateCommandForm(Widget parent) {
 	searchButton = XtCreateManagedWidget("searchButton",
 										 commandWidgetClass,
 										 form, args, count);
-
 	XtAddCallback(searchButton, XtNcallback,
 				  (XtCallbackProc) StartSearch, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, List_height);
 	count++;
@@ -904,10 +790,8 @@ static void CreateCommandForm(Widget parent) {
 	listButton = XtCreateManagedWidget("listButton",
 									   commandWidgetClass,
 									   form, args, count);
-
 	XtAddCallback(listButton, XtNcallback,
 				  (XtCallbackProc) List, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, History_height);
 	count++;
@@ -916,10 +800,8 @@ static void CreateCommandForm(Widget parent) {
 	historyButton = XtCreateManagedWidget("historyButton",
 										  commandWidgetClass,
 										  form, args, count);
-
 	XtAddCallback(historyButton, XtNcallback,
 				  (XtCallbackProc) popupHistory, (XtPointer) 0);
-
 }
 
 static void displayReadPopup () {
@@ -936,10 +818,8 @@ void setReadEntryName (char *entry_name) {
 	char *object, friendly_name[STRINGLEN];
 
 	make_friendly(friendly_name, entry_name);
-
 	if (curr_read_popup) {
 		object = strdup(entry_name);
-
 		title = XtNameToWidget(curr_read_popup, "ReadForm.titleView.readTitle");
 		if (*friendly_name == '\0') {
 			XtSetArg(args[count], XtNlabel, "The World");
@@ -949,32 +829,24 @@ void setReadEntryName (char *entry_name) {
 			count++;
 		}
 		XtSetValues(title, args, count);
-
 		modifyButton = XtNameToWidget(curr_read_popup,
 									  "ReadForm.ReadButtonForm.modifyButton");
 		showAllButton = XtNameToWidget(curr_read_popup,
 									   "ReadForm.ReadButtonForm.showAllButton");
-
 		if (XtHasCallbacks(title, XtNcallback) == XtCallbackHasSome)
 			XtRemoveAllCallbacks(title, XtNcallback);
-
 		XtAddCallback(title, XtNcallback, CutString, (XtPointer) object);
-
 		if (XtHasCallbacks(showAllButton, XtNcallback) == XtCallbackHasSome)
 			XtRemoveAllCallbacks(showAllButton, XtNcallback);
-
 		XtAddCallback(showAllButton, XtNcallback, ReadAll, (XtPointer) object);
-
 		if (XtHasCallbacks(modifyButton, XtNcallback) == XtCallbackHasSome)
 			XtRemoveAllCallbacks(modifyButton, XtNcallback);
-
 		if (*object != '\0')
 			XtAddCallback(modifyButton, XtNcallback,
 						  modifyEntry, (XtPointer) object);
 		else
 			XtAddCallback(modifyButton, XtNcallback,
 						  cannotModify, (XtPointer) NULL);
-
 		XtAddCallback(modifyButton, XtNdestroyCallback,
 					  freeSpace, (XtPointer) object);
 	}
@@ -996,15 +868,12 @@ static Widget createReadPopup() {
 
 	ReadPopup = XtCreatePopupShell("Directory Entry", topLevelShellWidgetClass,
 								   toplevel, args , 0);
-
 	/* Top of popup form. */
 	ReadForm = XtCreateWidget("ReadForm", formWidgetClass,
 							  ReadPopup, args, 0);
-
 	/* Buttons */
 	ButtonForm = XtCreateManagedWidget("ReadButtonForm", formWidgetClass,
 									   ReadForm, args, 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
 	count++;
@@ -1012,9 +881,7 @@ static Widget createReadPopup() {
 	count++;
 	closeButton = XtCreateManagedWidget("closeButton", commandWidgetClass,
 										ButtonForm, args, count);
-
 	XtAddCallback(closeButton, XtNcallback, readDestroy, (XtPointer) ReadPopup);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Keep_height);
 	count++;
@@ -1022,9 +889,7 @@ static Widget createReadPopup() {
 	count++;
 	keepButton = XtCreateManagedWidget("keepButton", commandWidgetClass,
 									   ButtonForm, args, count);
-
 	XtAddCallback(keepButton, XtNcallback, keepRead, (XtPointer) ReadPopup);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, ShowAll_height);
 	count++;
@@ -1032,7 +897,6 @@ static Widget createReadPopup() {
 	count++;
 	showAllButton = XtCreateManagedWidget("showAllButton", commandWidgetClass,
 										  ButtonForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Modify_height);
 	count++;
@@ -1040,7 +904,6 @@ static Widget createReadPopup() {
 	count++;
 	modifyButton = XtCreateManagedWidget("modifyButton", commandWidgetClass,
 										 ButtonForm, args, count);
-
 	/* End of buttons */
 	count = 0;
 	XtSetArg(args[count], XtNforceBars, FALSE);
@@ -1051,24 +914,20 @@ static Widget createReadPopup() {
 	count++;
 	titleView = XtCreateManagedWidget("titleView", viewportWidgetClass,
 									  ReadForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, friendly_base_path);
 	count++;
 	XtCreateManagedWidget("readTitle", commandWidgetClass,
 						  titleView, args, count);
-
 	count = 0;
 	TextScrolledWindow = XtCreateManagedWidget("TextScrolledWindow",
 						 viewportWidgetClass,
 						 ReadForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNborderWidth, 0);
 	count++;
 	TextForm = XtCreateManagedWidget("TextForm", formWidgetClass,
 									 TextScrolledWindow, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
@@ -1076,9 +935,7 @@ static Widget createReadPopup() {
 	count++;
 	AttrWindow = XtCreateManagedWidget("AttrWindow", asciiTextWidgetClass,
 									   TextForm, args, count);
-
 	XawTextSetSelectionArray(AttrWindow, select_types);
-
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
@@ -1086,7 +943,6 @@ static Widget createReadPopup() {
 	count++;
 	XtCreateManagedWidget("SepWindow", asciiTextWidgetClass,
 						  TextForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNresizable, TRUE);
 	count++;
@@ -1094,33 +950,24 @@ static Widget createReadPopup() {
 	count++;
 	XtCreateManagedWidget("ValWindow", asciiTextWidgetClass,
 						  TextForm, args, count);
-
 	XawFormDoLayout(TextForm, FALSE);
-
 	/* End of text layout */
 	XFlush(dpy);
 	XtManageChild(ReadForm);
 	XtRealizeWidget(ReadPopup);
-
 	CreateBackgroundPixmap(closeButton, Close_bits, Close_width, Close_height);
-
 	CreateBackgroundPixmap(keepButton, Keep_bits,
 						   Keep_width, Keep_height);
-
 	CreateBackgroundPixmap(showAllButton, ShowAll_bits,
 						   ShowAll_width, ShowAll_height);
-
 	CreateBackgroundPixmap(modifyButton, Modify_bits,
 						   Modify_width, Modify_height);
-
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(ReadForm, gray_bits,
 							   gray_width, gray_height);
-
 		CreateBackgroundPixmap(ButtonForm, gray_bits,
 							   gray_width, gray_height);
 	}
-
 	PhotoWindow = 0;
 	return ReadPopup;
 }
@@ -1138,20 +985,15 @@ static void AddNewList(Widget list_widget, str_seq list_seq, unsigned int list_s
 	XtTranslations trans_table;
 
 	scrolwin = (Widget) XtParent(list_widget);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &width);
 	count++;
 	XtGetValues(scrolwin, args, count);
-
 	width -= 15;
-
 	element_number = list_size;
-
 	*name = '\0';
 	for (n = 0; n < element_number; n++) {
 		strcat(name, "X");
-
 		object = get_from_seq(n+1, list_seq);
 		make_friendly_rdn(friendly_rdn, object, base_path);
 		count = 0;
@@ -1174,9 +1016,7 @@ static void AddNewList(Widget list_widget, str_seq list_seq, unsigned int list_s
 		element = XtCreateManagedWidget((String) name,
 										commandWidgetClass,
 										list_widget, args, count);
-
 		XtAddCallback(element, XtNcallback, ListSelect, (XtPointer) object);
-
 		strcpy(translations, trans_start_btn2);
 		strcat(translations,"\"");
 		strcat(translations, object);
@@ -1187,15 +1027,12 @@ static void AddNewList(Widget list_widget, str_seq list_seq, unsigned int list_s
 		strcat(translations, object);
 		strcat(translations,"\"");
 		strcat(translations, ") unset()");
-
 		trans_table = XtParseTranslationTable(translations);
 		XtOverrideTranslations(element, trans_table);
-
 		count = 0;
 		XtSetArg(args[count], XtNwidth, &rwidth);
 		count++;
 		XtGetValues(element, args, count);
-
 		if (rwidth < width) {
 			count = 0;
 			XtSetArg(args[count], XtNwidth, width);
@@ -1229,58 +1066,42 @@ static void entry_print(Widget entry_form, char *entry_ptr) {
 	bool do_mail_reverse = FALSE;
 
 	XawFormDoLayout(entry_form, FALSE);
-
 	strcpy(vals, "");
 	strcpy(attrs, "");
 	strcpy(seps, "");
-
 	attr_list = XtNameToWidget(entry_form, "AttrWindow");
 	val_list = XtNameToWidget(entry_form, "ValWindow");
 	sep_list = XtNameToWidget(entry_form, "SepWindow");
-
 	XawTextDisableRedisplay(attr_list);
 	XawTextDisableRedisplay(val_list);
 	XawTextDisableRedisplay(sep_list);
-
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
 	count++;
 	XtGetValues(attr_list, args, count);
-
 	str_start = str_end = entry_ptr;
 	while (str_end != NULLCP && *str_end != '\0') {
 		attr_count++;
 		if (*str_end == '\t') {
 			while (isspace(*str_end)) str_end++;
 			str_start = str_end;
-
 			while (*str_end != '\n' && *str_end != '\0') str_end++;
-
 			save = *str_end;
 			*str_end = '\0';
-
 			strcat(attrs, "\n");
 			strcat(vals, "\n");
-
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
 			strcat(vals, str_start);
-
 			strcat(seps, "\n");
-
 			val_width = XTextWidth(font, str_start, strlen(str_start))+
 						FONTWIDTH(font);
-
 			if (val_width > max_val_width) max_val_width = val_width;
-
 			if (save == '\0') str_end--;
 		} else {
 			while (!isspace(*str_end)) str_end++;
-
 			save = *str_end;
 			*str_end = '\0';
-
 			strcat(attrs, "\n");
-
 			if (mailformat == greybook && !lexequ(str_start, "rfc822Mailbox")) {
 				do_mail_reverse = TRUE;
 				strcat(attrs, "mailbox");
@@ -1288,50 +1109,37 @@ static void entry_print(Widget entry_form, char *entry_ptr) {
 				do_mail_reverse = FALSE;
 				strcat(attrs, str_start);
 			}
-
 			attr_width = XTextWidth(font, str_start, strlen(str_start)) +
 						 FONTWIDTH(font);
-
 			if (attr_width > max_attr_width) max_attr_width = attr_width;
-
 			*str_end = save;
 			while (*str_end != '-') str_end++;
 			str_end++;
-
 			while (isspace(*str_end)) str_end++;
-
 			str_start = str_end;
 			while (*str_end != '\n' && *str_end != '\0') str_end++;
-
 			save = *str_end;
 			*str_end = '\0';
-
 			strcat(seps, "-\n");
 			strcat(vals, "\n");
-
 			if (do_mail_reverse == TRUE) rfc2greybook(str_start);
 			strcat(vals, str_start);
-
 			val_width =
 				XTextWidth(font, str_start, strlen(str_start)) + FONTWIDTH(font);
-
 			if (val_width > max_val_width) max_val_width = val_width;
 			if (save == '\0') str_end--;
 		}
 		str_start = ++str_end;
 	}
-
 	max_attr_width += FONTWIDTH(font);
 	max_val_width += FONTWIDTH(font);
 	height = ++attr_count * FONTHEIGHT(font);
 	sep_width = FONTWIDTH(font);
-
 	if (entry_ptr == NULLCP) {
 		strcpy (attrs, "No Attributes found!");
 		max_attr_width =
 			XTextWidth(font, attrs, strlen(attrs)) + FONTWIDTH(font);
 	}
-
 	count = 0;
 	XtSetArg(args[count], XtNstring, (attrs+1));
 	count++;
@@ -1340,7 +1148,6 @@ static void entry_print(Widget entry_form, char *entry_ptr) {
 	XtSetArg(args[count], XtNheight, height);
 	count++;
 	XtSetValues(attr_list, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNstring, (vals+1));
 	count++;
@@ -1349,7 +1156,6 @@ static void entry_print(Widget entry_form, char *entry_ptr) {
 	XtSetArg(args[count], XtNheight, height);
 	count++;
 	XtSetValues(val_list, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNstring, seps);
 	count++;
@@ -1358,16 +1164,13 @@ static void entry_print(Widget entry_form, char *entry_ptr) {
 	XtSetArg(args[count], XtNheight, height);
 	count++;
 	XtSetValues(sep_list, args, count);
-
 	XawTextEnableRedisplay(attr_list);
 	XawTextEnableRedisplay(val_list);
 	XawTextEnableRedisplay(sep_list);
-
 	if (PhotoWindow != NULL && photo_on == TRUE) {
 		XtRealizeWidget(PhotoWindow);
 		print_photo();
 	}
-
 	XawFormDoLayout(entry_form, TRUE);
 }
 
@@ -1397,18 +1200,13 @@ static void ReadAll(Widget w, XtPointer closure, XtPointer calldata) {
 
 	strcpy(current_path, base_path);
 	strcpy(base_path, object);
-
 	temp_read_popup = curr_read_popup;
-
 	curr_read_popup = XtParent(XtParent(XtParent(w)));
-
 	status = read_all();
-
 	if (status != Okay)
 		doError(status);
 	else
 		displayReadPopup();
-
 	strcpy(base_path, current_path);
 	curr_read_popup = temp_read_popup;
 }
@@ -1417,10 +1215,8 @@ static void Read(Widget w, XtPointer data, XtPointer calldata) {
 	dsEnqError status;
 
 	if (curr_read_popup == 0) curr_read_popup = createReadPopup();
-
 	XFlush(dpy);
 	status = read_config_types();
-
 	if (status != Okay)
 		doError(status);
 	else
@@ -1433,19 +1229,15 @@ set_search_area(Widget search_area) {
 	int count = 0, n;
 
 	wlist = (WidgetList) XtMalloc((rdn_number + 1) * sizeof(Widget));
-
 	name[0] = '\0';
-
 	for (n = 0; n < rdn_number; n++) {
 		strcat(name, "x");
 		wlist[n] = XtNameToWidget(search_area, name);
 		count++;
 	}
 	XtUnmanageChildren(wlist, count);
-
 	for (n = 0; n < count; n++)
 		XtDestroyWidget(wlist[n]);
-
 	XtFree(wlist);
 	print_search_area(search_area);
 }
@@ -1459,25 +1251,18 @@ static void List(Widget w, XtPointer closure, XtPointer calldata) {
 
 	message(outer, "Listing, Please Stand By......");
 	XFlush(dpy);
-
 	XDefineCursor(dpy, XtWindow(outer), time_cur);
 	XFlush(dpy);
-
 	status = list_start();
-
 	XDefineCursor(dpy, XtWindow(outer), normal_cur);
 	XFlush(dpy);
-
 	kill_message();
-
 	make_friendly(friendly_base_path, base_path);
-
 	switch(status) {
 	case listsizelimit:
 	case adminlimit_w_partial:
 	case timelimit_w_partial:
 		strcpy(mess, "Results of list under ");
-
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
@@ -1486,7 +1271,6 @@ static void List(Widget w, XtPointer closure, XtPointer calldata) {
 			strcat(mess, (char *) friendly_base_path);
 		} else
 			strcat(mess, "The World");
-
 		switch (status) {
 		case listsizelimit:
 			sprintf(string,
@@ -1515,7 +1299,6 @@ static void List(Widget w, XtPointer closure, XtPointer calldata) {
 		break;
 	case Okay:
 		strcpy(mess, "Results of list under ");
-
 		if (strlen(base_path) > 3) {
 			indx = 0;
 			while (friendly_base_path[indx] != ',' &&
@@ -1524,7 +1307,6 @@ static void List(Widget w, XtPointer closure, XtPointer calldata) {
 			strcat(mess, (char *) friendly_base_path);
 		} else
 			strcat(mess, "The World");
-
 		createList(dnseq, mess, "");
 		dnseq = 0;
 		break;
@@ -1539,11 +1321,9 @@ static void ListSelect(Widget w, XtPointer object, XtPointer calldata) {
 	char *entry_name, parent[STRINGLEN];
 
 	entry_name = (char *) object;
-
 	strcpy(parent, base_path);
 	strcpy(base_path, entry_name);
 	make_friendly(friendly_base_path, base_path);
-
 	if (!is_dit_leaf(entry_name)) {
 		if (read_all_flag == TRUE) {
 			Read((Widget) 0, (XtPointer) 0, (XtPointer) 0);
@@ -1561,7 +1341,6 @@ static void ListSelectMove(Widget w, XEvent *event, String *params, Cardinal num
 										"PosForm.PosScrolledWindow.PosWindow");
 	strcpy(temp_path, base_path);
 	strcpy(base_path, params[0]);
-
 	if (!is_dit_leaf(base_path)) {
 		goto_addr();
 		set_search_area(search_area);
@@ -1582,10 +1361,8 @@ static void ListSelectList(Widget w, XEvent *event, String *params, Cardinal num
 
 	strcpy(temp_path, base_path);
 	strcpy(base_path, params[0]);
-
 	if (!is_dit_leaf(base_path)) {
 		List((Widget) 0, (XtPointer) 0, (XtPointer) 0);
-
 		goto_addr();
 		set_search_area(search_area);
 		SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
@@ -1613,7 +1390,6 @@ static void DnList(Widget w, XEvent *event, String *params, Cardinal num_params)
 		}
 		*--end = '\0';
 	}
-
 	List((Widget) 0, (XtPointer) 0, (XtPointer) 0);
 	goto_addr();
 	set_search_area(search_area);
@@ -1628,7 +1404,6 @@ static void DnMove(Widget w, XEvent *event, String *params, Cardinal num_params)
 	int rdnlevel = atoi(params[0]);
 
 	end = base_path;
-
 	if (rdnlevel == 0) *base_path = '\0';
 	else if (rdn_number > (int) (rdnlevel+1)) {
 		while (rdnlevel) {
@@ -1638,7 +1413,6 @@ static void DnMove(Widget w, XEvent *event, String *params, Cardinal num_params)
 		}
 		*--end = '\0';
 	}
-
 	goto_addr();
 	set_search_area(search_area);
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
@@ -1651,7 +1425,6 @@ static void DnMoveRead(Widget w, XtPointer rdnlevel, XtPointer calldata) {
 	dsEnqError status;
 
 	search_area = XtNameToWidget(outer, "PosForm.PosScrolledWindow.PosWindow");
-
 	end = base_path;
 	if (rdnlevel == 0) *base_path = '\0';
 	else if (rdn_number > (int) (rdnlevel+1)) {
@@ -1662,16 +1435,13 @@ static void DnMoveRead(Widget w, XtPointer rdnlevel, XtPointer calldata) {
 		}
 		*--end = '\0';
 	}
-
 	goto_addr();
 	set_search_area(search_area);
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 	XFlush(dpy);
-
 	if (read_all_flag == TRUE) {
 		if (curr_read_popup == 0) curr_read_popup = createReadPopup();
 		status = read_config_types();
-
 		if (status != Okay)
 			doError(status);
 		else {
@@ -1685,10 +1455,8 @@ static void Move(Widget w, XtPointer closure, XtPointer calldata) {
 	char *new_base;
 
 	search_area = XtNameToWidget(outer, "PosForm.PosScrolledWindow.PosWindow");
-
 	new_base = (char *) closure;
 	strcpy(base_path, new_base);
-
 	make_friendly(friendly_base_path, new_base);
 	set_search_area(search_area);
 	goto_addr();
@@ -1703,13 +1471,11 @@ static void CreateMessagePopup () {
 	standby = XtCreatePopupShell("POD: Working.",
 	transientShellWidgetClass,
 	toplevel, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNresize, FALSE);
 	count++;
 	XtCreateManagedWidget("standby", labelWidgetClass,
 	standby, args, count);
-
 	XtRealizeWidget(standby);
 }
 
@@ -1727,11 +1493,9 @@ Brunel University";
 	count = 0;
 	version_popup = XtCreatePopupShell("About Pod", transientShellWidgetClass,
 	toplevel, args, count);
-
 	count = 0;
 	text_form = XtCreateManagedWidget("verForm", formWidgetClass,
 	version_popup, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, title_string);
 	count++;
@@ -1739,7 +1503,6 @@ Brunel University";
 	count++;
 	title = XtCreateManagedWidget("verTitle", labelWidgetClass,
 	text_form, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, version);
 	count++;
@@ -1749,7 +1512,6 @@ Brunel University";
 	count++;
 	version_label = XtCreateManagedWidget("verLabel", labelWidgetClass,
 	text_form, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "");
 	count++;
@@ -1763,7 +1525,6 @@ Brunel University";
 	count++;
 	piccy = XtCreateManagedWidget("teamPic", labelWidgetClass,
 	text_form, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, author_string);
 	count++;
@@ -1773,9 +1534,7 @@ Brunel University";
 	count++;
 	XtCreateManagedWidget("authLabel", labelWidgetClass,
 	text_form, args, count);
-
 	XtRealizeWidget(version_popup);
-
 	CreateBackgroundPixmap(piccy, work_bits, work_width, work_height);
 }
 
@@ -1791,54 +1550,43 @@ static void ShowVersion(Widget w, XtPointer closure, XtPointer calldata) {
 	authors = XtNameToWidget(text_form, "authLabel");
 	version_label = XtNameToWidget(text_form, "verLabel");
 	piccy = XtNameToWidget(text_form, "teamPic");
-
 	PopupMessage(version_popup, w, text_form, (String) NULL, XtGrabNone);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &width);
 	count++;
 	XtGetValues(text_form, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &label_width);
 	count++;
 	XtSetArg(args[count], XtNy, &y);
 	count++;
 	XtGetValues(authors, args, count);
-
 	x = (Position) ((width - label_width) /2);
 	XtMoveWidget(authors, x, y);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &label_width);
 	count++;
 	XtSetArg(args[count], XtNy, &y);
 	count++;
 	XtGetValues(title, args, count);
-
 	x = (Position) ((width - label_width) /2);
 	XtMoveWidget(title, x, y);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &label_width);
 	count++;
 	XtSetArg(args[count], XtNy, &y);
 	count++;
 	XtGetValues(piccy, args, count);
-
 	x = (Position) ((width - label_width) /2);
 	XtMoveWidget(piccy, x, y);
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &label_width);
 	count++;
 	XtSetArg(args[count], XtNy, &y);
 	count++;
 	XtGetValues(version_label, args, count);
-
 	x = (Position) ((width - label_width) /2);
 	XtMoveWidget(version_label, x, y);
-
 	XRaiseWindow(dpy, XtWindow(version_popup));
 }
 
@@ -1855,22 +1603,18 @@ static void CreateErrorPopup () {
 	error_popup = XtCreatePopupShell("POD: <Directory Error>",
 	transientShellWidgetClass,
 	toplevel, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNresize, FALSE);
 	count++;
 	text = XtCreateManagedWidget("error_popup", commandWidgetClass,
 	error_popup, args, count);
-
 	XtAddCallback(text, XtNcallback, killError, (XtPointer) 0);
-
 	XtRealizeWidget(error_popup);
 }
 
 static void doError(dsEnqError status) {
 	char show_message[STRINGLEN];
 	entry_number = 0;
-
 	switch(status) {
 	case timelimit:
 		displayError
@@ -1947,14 +1691,11 @@ void displayError(Widget refto, String mess) {
 	Widget text;
 
 	text = XtNameToWidget(error_popup, "error_popup");
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
 	XtSetValues(text, args, count);
-
 	PopupMessage(error_popup, refto, text, mess, XtGrabExclusive);
-
 	XBell(dpy, 100);
 }
 
@@ -1964,15 +1705,12 @@ void displayStartupError(String mess) {
 	Widget text;
 
 	text = XtNameToWidget(error_popup, "error_popup");
-
 	XtRemoveAllCallbacks(text, XtNcallback);
 	XtAddCallback(text, XtNcallback, Quit, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
 	XtSetValues(text, args, count);
-
 	PopupMessage(error_popup, (Widget) 0, text, mess, XtGrabExclusive);
 }
 
@@ -1986,19 +1724,15 @@ static void kill_error () {
 	Pixmap pixmap_resource;
 
 	Widget text = XtNameToWidget(error_popup, "error_popup");
-
 	XtPopdown(error_popup);
-
 	count = 0;
 	XtSetArg(args[count], XtNbackgroundPixmap, &pixmap_resource);
 	count++;
 	XtGetValues(text, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNbackgroundPixmap, XtUnspecifiedPixmap);
 	count++;
 	XtSetValues(text, args, count);
-
 	if (pixmap_resource != XtUnspecifiedPixmap)
 		XFreePixmap(dpy, pixmap_resource);
 }
@@ -2010,17 +1744,13 @@ void message(Widget refto, char *mess) {
 	XEvent event;
 
 	text = XtNameToWidget(standby, "standby");
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
 	XtSetValues(text, args, count);
-
 	PopupMessage(standby, refto, text, mess, XtGrabNonexclusive);
-
 	while (!XCheckTypedWindowEvent(dpy, XtWindow(text), Expose, &event));
 	XtDispatchEvent(&event);
-
 	XFlush(dpy);
 }
 
@@ -2030,19 +1760,15 @@ void kill_message (void) {
 	Pixmap pixmap_resource;
 
 	Widget text = XtNameToWidget(standby, "standby");
-
 	XtPopdown(standby);
-
 	count = 0;
 	XtSetArg(args[count], XtNbackgroundPixmap, &pixmap_resource);
 	count++;
 	XtGetValues(text, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNbackgroundPixmap, XtUnspecifiedPixmap);
 	count++;
 	XtSetValues(text, args, count);
-
 	if (pixmap_resource != XtUnspecifiedPixmap)
 		XFreePixmap(dpy, pixmap_resource);
 }
@@ -2053,15 +1779,12 @@ static void CreateHelpPopup (void) {
 
 	Arg args[MAXARGS];
 	int count;
-
 	count = 0;
 	popup_help = XtCreatePopupShell("Pod Help Screen", topLevelShellWidgetClass,
 	toplevel, args, count);
-
 	count = 0;
 	popup_help_form = XtCreateManagedWidget("popup_help_form", formWidgetClass,
 	popup_help, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
 	count++;
@@ -2070,9 +1793,7 @@ static void CreateHelpPopup (void) {
 	popup_quit_button = XtCreateManagedWidget("popup_help_quit",
 	commandWidgetClass,
 	popup_help_form, args, count);
-
 	XtAddCallback(popup_quit_button, XtNcallback, QuitFromHelp, (XtPointer) 0);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, About_height);
 	count++;
@@ -2081,26 +1802,20 @@ static void CreateHelpPopup (void) {
 	popup_help_button = XtCreateManagedWidget("popup_help_general",
 	commandWidgetClass,
 	popup_help_form, args, count);
-
 	XtAddCallback(popup_help_button, XtNcallback, ShowVersion, (XtPointer) NULL);
-
 	count = 0;
 	popup_help_scrolwin = XtCreateManagedWidget("popup_help_scrolwin",
 	viewportWidgetClass,
 	popup_help_form, args, count);
-
 	count = 0;
 	XtCreateManagedWidget("popup_help_text",
 	asciiTextWidgetClass,
 	popup_help_scrolwin, args, count);
 	XtRealizeWidget(popup_help);
-
 	CreateBackgroundPixmap(popup_help_button, About_bits,
 	About_width, About_height);
-
 	CreateBackgroundPixmap(popup_quit_button, Close_bits,
 	Close_width, Close_height);
-
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(popup_help_form, gray_bits,
 		gray_width, gray_height);
@@ -2111,7 +1826,6 @@ static void Help(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget help_popup;
 
 	help_popup = XtNameToWidget(toplevel, "Pod Help Screen");
-
 	XtPopup(help_popup, XtGrabNone);
 	InsertHelp((Widget) 0, (XtPointer) "help", (XtPointer) 0);
 	XFlush(dpy);
@@ -2138,28 +1852,22 @@ static void InsertHelp(Widget w, XtPointer closure, XtPointer calldata) {
 
 	scrolwin = XtNameToWidget(toplevel,
 							  "Pod Help Screen.popup_help_form.popup_help_scrolwin");
-
 	text = XtNameToWidget(scrolwin, "popup_help_text");
-
 	count = 0;
 	XtSetArg(args[count], XtNwidth, &width);
 	count++;
 	XtGetValues(scrolwin, args, count);
-
 	strcpy(filename, dua_help_dir);
 	strcat(filename, (String) closure);
-
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
 	count++;
 	XtGetValues(text, args, count);
-
 	height = FONTHEIGHT(font);
 	count = 0;
 	XtSetArg(args[count], XtNheight, height);
 	count++;
 	XtSetValues(text, args, count);
-
 	height = 0;
 	if (!(file = fopen(filename, "r"))) {
 		strcpy(filename, "./Xd/podHelpdir/");
@@ -2170,20 +1878,17 @@ static void InsertHelp(Widget w, XtPointer closure, XtPointer calldata) {
 			return;
 		}
 	}
-
 	if (file) {
 		strcpy(help_buf, "\0");
 		while (fgets(help_string, STRINGLEN - 1, file)) {
 			height += (FONTHEIGHT(font));
 			strcat(help_buf, help_string);
 		}
-
 		fclose(file);
 		count = 0;
 		XtSetArg(args[count], XtNstring, "");
 		count++;
 		XtSetValues(text, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNwidth, width - 18);
 		count++;
@@ -2206,7 +1911,6 @@ static void CreateBackgroundPixmap(Widget widget, char bits[], Cardinal width, C
 										 BlackPixelOfScreen(screen),
 										 WhitePixelOfScreen(screen),
 										 DefaultDepthOfScreen(screen));
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, height);
 	count++;
@@ -2217,7 +1921,6 @@ static void CreateBackgroundPixmap(Widget widget, char bits[], Cardinal width, C
 	XtSetArg(args[count], XtNresizable, FALSE);
 	count++;
 	XtSetValues(widget, args, count);
-
 	XtAddCallback(widget, XtNdestroyCallback,
 				  FreeWidgetPixmap, (XtPointer) bitmap);
 }
@@ -2228,7 +1931,6 @@ static void ListDestroy(Widget w, XtPointer list_seq, XtPointer calldata) {
 
 static void destroyList(Widget w, XtPointer shellwidget, XtPointer calldata) {
 	if (curr_list_popup == (Widget) shellwidget) curr_list_popup = 0;
-
 	XtPopdown((Widget) shellwidget);
 	XtUnmanageChild((Widget) shellwidget);
 	XtDestroyWidget((Widget) shellwidget);
@@ -2250,7 +1952,6 @@ static void CreateHistoryPopup(str_seq list_seq, char *mess) {
 	count = 0;
 	HistoryForm = XtCreateManagedWidget("HistoryForm", formWidgetClass,
 										shell, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
 	count++;
@@ -2259,36 +1960,28 @@ static void CreateHistoryPopup(str_seq list_seq, char *mess) {
 	closeButton = XtCreateManagedWidget("closeButton",
 										commandWidgetClass,
 										HistoryForm, args, count);
-
 	XtAddCallback(closeButton, XtNcallback,
 				  (XtCallbackProc) popdownHistory, (XtPointer) shell);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "History Window");
 	count++;
 	XtCreateManagedWidget("HistoryTitle", labelWidgetClass,
 						  HistoryForm, args, count);
-
 	count = 0;
 	swindow = XtCreateManagedWidget("ListScrolledWindow", viewportWidgetClass,
 									HistoryForm, args, count);
-
 	count = 0;
 	ListWindow = XtCreateManagedWidget("ListWindow", formWidgetClass,
 									   swindow, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, mess);
 	count++;
 	XtCreateManagedWidget("ListMessage", labelWidgetClass,
 						  HistoryForm, args, count);
-
 	XtAddCallback(ListWindow, XtNdestroyCallback,
 				  ListDestroy, (XtPointer) list_seq);
-
 	AddNewList(ListWindow, list_seq,  (unsigned) entry_number);
 	XtRealizeWidget(shell);
-
 	CreateBackgroundPixmap(closeButton, Close_bits, Close_width, Close_height);
 	if (DefaultDepthOfScreen(screen) == 1)
 		CreateBackgroundPixmap(HistoryForm, gray_bits, gray_width, gray_height);
@@ -2352,11 +2045,9 @@ static void buttonPress(Widget w, XEvent *event, String *params, Cardinal num_pa
 	else if (!strcmp(buttonName, "submit_modify"))
 		CreateBackgroundPixmap(w, ModifyPress_bits,
 							   ModifyPress_width, ModifyPress_height);
-
 	XFlush(dpy);
 	XtCallCallbacks(w, XtNcallback, NULL);
 	XFlush(dpy);
-
 	if (!strcmp(buttonName, "search"))
 		CreateBackgroundPixmap(w, Search_bits,
 							   Search_width, Search_height);
@@ -2390,7 +2081,6 @@ static void buttonPress(Widget w, XEvent *event, String *params, Cardinal num_pa
 	else if (!strcmp(buttonName, "submit_modify"))
 		CreateBackgroundPixmap(w, Modify_bits,
 							   Modify_width, Modify_height);
-
 	XFlush(dpy);
 }
 
@@ -2398,30 +2088,22 @@ static void readDestroy(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget readForm = XtNameToWidget((Widget) closure, "ReadForm");
 	PhotoWindow = XtNameToWidget(readForm,
 								 "TextScrolledWindow.TextForm.PhotoWindow");
-
 	if (PhotoWindow != (Widget) 0) kill_photo();
-
 	if (curr_read_popup == (Widget) closure) {
 		XtPopdown(curr_read_popup);
 		return;
 	}
-
 	if (curr_read_popup == (Widget) 0) {
 		Widget keepButton = XtNameToWidget((Widget) closure,
 										   "ReadForm.ReadButtonForm.keepButton");
-
 		CreateBackgroundPixmap(keepButton, Keep_bits, Keep_width, Keep_height);
 		XtPopdown((Widget) closure);
-
 		curr_read_popup = (Widget) closure;
 		return;
 	}
-
 	XtPopdown((Widget) closure);
-
 	XtUnmanageChild(readForm);
 	XtDestroyWidget(readForm);
-
 	XtUnmanageChild((Widget) closure);
 	XtDestroyWidget((Widget) closure);
 }
@@ -2437,7 +2119,6 @@ static void modifyEntry(Widget w, XtPointer object, XtPointer calldata) {
 	char *tmp;
 	tmp = (char *)object;
 	if (*tmp == '\0') return;
-
 	if (!curr_modify_popup)
 		curr_modify_popup = createModifyPopup((char *) object);
 	else {
@@ -2459,31 +2140,22 @@ static void closeModify(Widget w, XtPointer clientdata, XtPointer calldata) {
 	Widget modMessage = XtNameToWidget(modifyForm, "modMessage");
 
 	XtPopdown(modifyPopup);
-
 	if (modifyPopup == curr_modify_popup) return;
-
 	if (curr_modify_popup == (Widget) 0) {
 		Widget keepButton = XtNameToWidget(modifyButtonForm, "keepButton");
 		CreateBackgroundPixmap(keepButton, Keep_bits, Keep_width, Keep_height);
-
 		return;
 	}
-
 	XtUnmanageChild (modifyButtonForm);
 	XtDestroyWidget(modifyButtonForm);
-
 	XtUnmanageChild(modifyScrolledWindow);
 	XtDestroyWidget(modifyScrolledWindow);
-
 	XtUnmanageChild(modMessage);
 	XtDestroyWidget(modMessage);
-
 	XtUnmanageChild(modifyForm);
 	XtDestroyWidget(modifyForm);
-
 	XtUnmanageChild(modifyPopup);
 	XtDestroyWidget(modifyPopup);
-
 	if (modifyPopup == curr_modify_popup) curr_modify_popup = (Widget) 0;
 }
 
@@ -2518,7 +2190,6 @@ static void submitModif(Widget w, XtPointer closure, XtPointer calldata) {
 						XtSetArg(args[count], XtNstring, &string);
 						count++;
 						XtGetValues(vals->text_widg, args, count);
-
 						if (!(*string == '\0' && (!vals->value || *vals->value == '\0'))) {
 							vals->new_value = (*string == '\0'? NULLCP: strdup(string));
 							curr_mod_num++;
@@ -2537,11 +2208,9 @@ static void submitModif(Widget w, XtPointer closure, XtPointer calldata) {
 			if (curr_mod_num == 0) attrs->mod_flag = 0;
 			curr_mod_num = 0;
 		}
-
 	message(XtParent(XtParent(XtParent(w))), "Modifying, please stand by......");
 	mod_error = modify_entry(mods);
 	kill_message();
-
 	switch (mod_error.error) {
 	case Okay:
 		break;
@@ -2571,102 +2240,81 @@ static void deleteVal(Widget w, XtPointer closure, XtPointer calldata) {
 
 	valWidg = this_val->text_widg;
 	if (!valWidg) return;
-
 	form = XtParent(valWidg);
 	XawFormDoLayout(form, FALSE);
-
 	count = 0;
 	XtSetArg(args[count], XtNfromVert, &fromVertWidg);
 	count++;
 	XtSetArg(args[count], XtNfromHoriz, &menuWidg);
 	count++;
 	XtGetValues(valWidg, args, count);
-
 	curr_val = this_attr->val_seq;
 	while (curr_val && curr_val != this_val && !(curr_val->text_widg))
 		curr_val = curr_val->next;
-
 	if (curr_val == this_val) vertDistance = 10;
 	else vertDistance = 2;
-
 	curr_val = this_val->next;
 	while (curr_val && !(nextValWidg = curr_val->text_widg))
 		curr_val = curr_val->next;
-
 	if (curr_val && nextValWidg) {
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &nextValMenuWidg);
 		count++;
 		XtGetValues(nextValWidg, args, count);
-
 		this_val->text_widg = 0;
 		nextAttrWidg = 0;
-
 		XtUnmanageChild(valWidg);
 		XtDestroyWidget(valWidg);
 		XtUnmanageChild(menuWidg);
 		XtDestroyWidget(menuWidg);
 	} else {
 		curr_attr = this_attr->next;
-
 		if (curr_attr) {
 			vertDistance = 10;
-
 			curr_val = curr_attr->val_seq;
 			while (!(nextValWidg = curr_val->text_widg)) curr_val = curr_val->next;
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &nextValMenuWidg);
 			count++;
 			XtGetValues(nextValWidg, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &nextAttrWidg);
 			count++;
 			XtGetValues(nextValMenuWidg, args, count);
 		} else
 			nextValWidg = nextValMenuWidg = nextAttrWidg = 0;
-
 		curr_val = this_attr->val_seq;
 		while (curr_val && !curr_val->text_widg) curr_val = curr_val->next;
-
 		if (this_val == curr_val) {
 			count = 0;
 			XtSetArg(args[count], XtNstring, "");
 			count++;
 			XtSetValues(valWidg, args, count);
-
 			nextValWidg = nextValMenuWidg = nextAttrWidg = 0;
 		} else {
 			this_val->text_widg = 0;
-
 			XtUnmanageChild(valWidg);
 			XtDestroyWidget(valWidg);
 			XtUnmanageChild(menuWidg);
 			XtDestroyWidget(menuWidg);
 		}
 	}
-
 	if (nextValWidg) {
 		count = 0;
 		XtSetArg(args[count], XtNvertDistance, vertDistance);
 		count++;
 		XtSetArg(args[count], XtNfromVert, fromVertWidg);
 		count++;
-
 		XtSetValues(nextValMenuWidg, args, count);
 		XtSetValues(nextValWidg, args, count);
-
 		if (nextAttrWidg) XtSetValues(nextAttrWidg, args, count);
 	}
-
 	this_val->mod_flag = TRUE;
 	this_attr->mod_flag = TRUE;
 	if (this_val->new_value) {
 		free(this_val->new_value);
 		this_val->new_value = 0;
 	}
-
 	XawFormDoLayout(form, TRUE);
 }
 
@@ -2686,24 +2334,18 @@ static void addValField(Widget w, XtPointer closure, XtPointer calldata) {
 	new_val->new_value = 0;
 	new_val->value = 0;
 	new_val->attr = attr;
-
 	attr->val_seq = new_val;
-
 	form = XtParent(XtParent(XtParent(w)));
 	XawFormDoLayout(form, FALSE);
-
 	while (first_val && !(firstValWidg = first_val->text_widg))
 		first_val = first_val->next;
-
 	firstValWidg = first_val->text_widg;
-
 	count = 0;
 	XtSetArg(args[count], XtNfromVert, &fromVertWidg);
 	count++;
 	XtSetArg(args[count], XtNfont, &font);
 	count++;
 	XtGetValues(firstValWidg, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNfromHoriz, XtParent(XtParent(w)));
 	count++;
@@ -2720,33 +2362,26 @@ static void addValField(Widget w, XtPointer closure, XtPointer calldata) {
 	modValButton = XtCreateWidget("modValMenu",
 								  menuButtonWidgetClass,
 								  form, args, count);
-
 	count = 0;
 	modValMenu = XtCreatePopupShell("menu", simpleMenuWidgetClass,
 									modValButton, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "Delete this value");
 	count++;
 	modValMenuButton = XtCreateManagedWidget("delValMenuButton",
 					   smeBSBObjectClass,
 					   modValMenu, args, count);
-
 	XtAddCallback(modValMenuButton, XtNcallback,
 				  deleteVal, (XtPointer) new_val);
-
 	count = 0;
 	XtSetArg(args[count], XtNlabel, "Undo changes to this value");
 	count++;
 	modValMenuButton = XtCreateManagedWidget("undoValMenuButton",
 					   smeBSBObjectClass,
 					   modValMenu, args, count);
-
 	XtAddCallback(modValMenuButton, XtNcallback,
 				  UndoValChanges, (XtPointer) new_val);
-
 	height = FONTHEIGHT(font) + font->ascent;
-
 	modCallbacks[0].closure = (XtPointer) new_val;
 	count = 0;
 	XtSetArg(args[count], XtNfromHoriz, modValButton);
@@ -2770,12 +2405,10 @@ static void addValField(Widget w, XtPointer closure, XtPointer calldata) {
 	newValWidg = XtCreateWidget("valText", asciiTextWidgetClass,
 								form, args, count);
 	new_val->text_widg = newValWidg;
-
 	count = 0;
 	XtSetArg(args[count], XtNfromHoriz, &firstValButton);
 	count++;
 	XtGetValues(firstValWidg, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNfromVert, newValWidg);
 	count++;
@@ -2783,15 +2416,11 @@ static void addValField(Widget w, XtPointer closure, XtPointer calldata) {
 	count++;
 	XtSetValues(firstValWidg, args, count);
 	XtSetValues(firstValButton, args, count);
-
 	XFlush(dpy);
-
 	XtManageChild(modValButton);
 	XtManageChild(newValWidg);
-
 	CreateBackgroundPixmap(modValButton, menuicon_bits,
 						   menuicon_width, menuicon_height);
-
 	XawFormDoLayout(form, TRUE);
 }
 
@@ -2801,7 +2430,6 @@ static void UndoAttrChanges(Widget w, XtPointer closure, XtPointer calldata) {
 	Widget form = XtParent(XtParent(XtParent(w)));
 
 	this_attr->mod_flag = FALSE;
-
 	XawFormDoLayout(form, FALSE);
 	while (this_val) {
 		UndoValChanges(w, (XtPointer) this_val, (XtPointer) w);
@@ -2823,20 +2451,16 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 	dirAttrs this_attr = this_val->attr, next_attr;
 
 	if (!this_val->mod_flag && this_val->value) return;
-
 	if (w != (Widget) calldata) {
 		form = XtParent(XtParent(XtParent(w)));
 		XawFormDoLayout(form, FALSE);
 	}
-
 	this_val->mod_flag = FALSE;
 	thisValWidg = this_val->text_widg;
-
 	if (this_val->new_value) {
 		free(this_val->new_value);
 		this_val->new_value = NULLCP;
 	}
-
 	if (this_val->value && *this_val->value != '\0') {
 		if (!thisValWidg) {
 			prevValWidg = 0;
@@ -2845,49 +2469,39 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 				if (prev_val->text_widg) prevValWidg = prev_val->text_widg;
 				prev_val = prev_val->next;
 			}
-
 			nextValWidg = 0;
 			if (!prevValWidg) {
 				next_val = this_val->next;
 				while (next_val && !(next_val->text_widg)) next_val = next_val->next;
-
 				if (!next_val) {
 					if (w != (Widget) calldata) XawFormDoLayout(form, TRUE);
 					return;
 				}
-
 				nextValWidg = next_val->text_widg;
-
 				count = 0;
 				XtSetArg(args[count], XtNfromVert, &prevValWidg);
 				count++;
 				XtGetValues(nextValWidg, args, count);
-
 				count = 0;
 				XtSetArg(args[count], XtNfromHoriz, &prevValMenuWidg);
 				count++;
 				XtGetValues(nextValWidg, args, count);
-
 				count = 0;
 				XtSetArg(args[count], XtNfromHoriz, &thisAttrWidg);
 				count++;
 				XtGetValues(prevValMenuWidg, args, count);
-
 				vertDistance = 10;
 			} else {
 				count = 0;
 				XtSetArg(args[count], XtNfromHoriz, &prevValMenuWidg);
 				count++;
 				XtGetValues(prevValWidg, args, count);
-
 				count = 0;
 				XtSetArg(args[count], XtNfromHoriz, &thisAttrWidg);
 				count++;
 				XtGetValues(prevValMenuWidg, args, count);
-
 				vertDistance = 2;
 			}
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, thisAttrWidg);
 			count++;
@@ -2902,33 +2516,26 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 			thisValMenuWidg = XtCreateWidget("modValMenu",
 											 menuButtonWidgetClass,
 											 XtParent(thisAttrWidg), args, count);
-
 			count = 0;
 			modValMenu = XtCreatePopupShell("menu", simpleMenuWidgetClass,
 											thisValMenuWidg, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNlabel, "Delete this value");
 			count++;
 			modValMenuButton = XtCreateManagedWidget("delValMenuButton",
 							   smeBSBObjectClass,
 							   modValMenu, args, count);
-
 			XtAddCallback(modValMenuButton, XtNcallback,
 						  deleteVal, (XtPointer) this_val);
-
 			count = 0;
 			XtSetArg(args[count], XtNlabel, "Undo changes to this value");
 			count++;
 			modValMenuButton = XtCreateManagedWidget("undoValMenuButton",
 							   smeBSBObjectClass,
 							   modValMenu, args, count);
-
 			XtAddCallback(modValMenuButton, XtNcallback,
 						  UndoValChanges, (XtPointer) this_val);
-
 			modCallbacks[0].closure = (XtPointer) this_val;
-
 			count = 0;
 			XtSetArg(args[count], XtNvertDistance, vertDistance);
 			count++;
@@ -2948,13 +2555,10 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 			count++;
 			thisValWidg = XtCreateWidget("valText", asciiTextWidgetClass,
 										 XtParent(thisAttrWidg), args, count);
-
 			this_val->text_widg = thisValWidg;
-
 			next_attr = 0;
 			next_val = this_val->next;
 			while (next_val && !(next_val->text_widg)) next_val = next_val->next;
-
 			if (next_val) nextValWidg = next_val->text_widg;
 			else {
 				next_attr = this_attr->next;
@@ -2962,20 +2566,16 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 				else {
 					next_val = next_attr->val_seq;
 					while (!(next_val->text_widg)) next_val = next_val->next;
-
 					nextValWidg = next_val->text_widg;
 				}
 			}
-
 			if (nextValWidg) {
 				count = 0;
 				XtSetArg(args[count], XtNfromHoriz, &nextValMenuWidg);
 				count++;
 				XtGetValues(nextValWidg, args, count);
-
 				if (next_attr) {
 					vertDistance = 10;
-
 					count = 0;
 					XtSetArg(args[count], XtNfromHoriz, &nextAttrWidg);
 					count++;
@@ -2984,22 +2584,17 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 					vertDistance = 2;
 					nextAttrWidg = 0;
 				}
-
 				count = 0;
 				XtSetArg(args[count], XtNvertDistance, vertDistance);
 				count++;
 				XtSetArg(args[count], XtNfromVert, thisValWidg);
 				count++;
-
 				XtSetValues(nextValWidg, args, count);
 				XtSetValues(nextValMenuWidg, args, count);
-
 				if (nextAttrWidg) XtSetValues(nextAttrWidg, args, count);
 			}
-
 			XtManageChild(thisValMenuWidg);
 			XtManageChild(thisValWidg);
-
 			count = 0;
 			XtSetArg(args[count],
 					 XtNwidth,
@@ -3010,7 +2605,6 @@ static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata) {
 					 (Dimension) GetTextHeight(thisValWidg,this_val->value));
 			count++;
 			XtSetValues(thisValWidg, args, count);
-
 			CreateBackgroundPixmap(thisValMenuWidg, menuicon_bits,
 								   menuicon_width, menuicon_height);
 		} else {
@@ -3045,30 +2639,24 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 	int count, vertDistance;
 
 	make_template(entry_name, &attrs);
-
 	entry = (dirEntry) malloc(sizeof(dir_entry));
 	entry->entry_name = malloc((unsigned) strlen(entry_name) + 1);
 	strcpy(entry->entry_name, entry_name);
 	entry->attrs = attrs;
-
 	modifyViewForm = XtNameToWidget(modify_form,
 									"modifyForm.modifyScrolledWindow.modifyViewForm");
 	modifyScrolledWindow = XtNameToWidget(modify_form,
 										  "modifyForm.modifyScrolledWindow");
-
 	if (modifyViewForm != 0) {
 		XtUnmanageChild(modifyViewForm);
 		XtDestroyWidget(modifyViewForm);
 	}
-
 	count = 0;
 	modifyViewForm = XtCreateWidget("modifyViewForm", formWidgetClass,
 									modifyScrolledWindow, args, count);
-
 	lastVal = (Widget) 0;
 	for (curr_attrs = entry->attrs; curr_attrs; curr_attrs = curr_attrs->next) {
 		vertDistance = 10;
-
 		count = 0;
 		if (lastVal) {
 			XtSetArg(args[count], XtNfromVert, lastVal);
@@ -3084,40 +2672,32 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 		count++;
 		attrName = XtCreateWidget("attrLabel", menuButtonWidgetClass,
 								  modifyViewForm, args, count);
-
 		text_width = GetTextWidth(attrName, curr_attrs->attr_name);
-
 		count = 0;
 		modAttrMenu = XtCreatePopupShell("menu", simpleMenuWidgetClass,
 										 attrName, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, "Add value field");
 		count++;
 		modAttrMenuButton = XtCreateManagedWidget("addValMenuButton",
 							smeBSBObjectClass,
 							modAttrMenu, args, count);
-
 		XtAddCallback(modAttrMenuButton, XtNcallback,
 					  addValField, (XtPointer) curr_attrs);
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, "Undo ALL changes");
 		count++;
 		modAttrMenuButton = XtCreateManagedWidget("undoMenuButton",
 							smeBSBObjectClass,
 							modAttrMenu, args, count);
-
 		XtAddCallback(modAttrMenuButton, XtNcallback,
 					  UndoAttrChanges, (XtPointer) curr_attrs);
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, curr_attrs->attr_name);
 		count++;
 		XtSetArg(args[count], XtNwidth, text_width);
 		count++;
 		XtSetValues(attrName, args, count);
-
 		for (curr_val = curr_attrs->val_seq;
 				curr_val;
 				curr_val = curr_val->next) {
@@ -3139,31 +2719,25 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 			modValButton = XtCreateWidget("modValMenu",
 										  menuButtonWidgetClass,
 										  modifyViewForm, args, count);
-
 			count = 0;
 			modValMenu = XtCreatePopupShell("menu", simpleMenuWidgetClass,
 											modValButton, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNlabel, "Delete this value");
 			count++;
 			modValMenuButton = XtCreateManagedWidget("delValMenuButton",
 							   smeBSBObjectClass,
 							   modValMenu, args, count);
-
 			XtAddCallback(modValMenuButton, XtNcallback,
 						  deleteVal, (XtPointer) curr_val);
-
 			count = 0;
 			XtSetArg(args[count], XtNlabel, "Undo changes to this value");
 			count++;
 			modValMenuButton = XtCreateManagedWidget("undoValMenuButton",
 							   smeBSBObjectClass,
 							   modValMenu, args, count);
-
 			XtAddCallback(modValMenuButton, XtNcallback,
 						  UndoValChanges, (XtPointer) curr_val);
-
 			modCallbacks[0].closure = (XtPointer) curr_val;
 			count = 0;
 			if (curr_val->value)
@@ -3174,12 +2748,10 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 					XtSetArg(args[count], XtNstring, "HIDDEN");
 					count++;
 				}
-
 			if (lastVal) {
 				XtSetArg(args[count], XtNfromVert, lastVal);
 				count++;
 			}
-
 			XtSetArg(args[count], XtNfromHoriz, modValButton);
 			count++;
 			XtSetArg(args[count], XtNvertDistance, vertDistance);
@@ -3194,7 +2766,6 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 			count++;
 			valName = XtCreateWidget("valText", asciiTextWidgetClass,
 									 modifyViewForm, args, count);
-
 			text_height = text_width = 0;
 			if (!attrs->hidden_flag) {
 				text_height = GetTextHeight(valName, curr_val->value);
@@ -3203,7 +2774,6 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 				text_height = GetTextHeight(valName, "HIDDEN");
 				text_width = GetTextWidth(valName, "HIDDEN");
 			}
-
 			count = 0;
 			if (text_height && text_width) {
 				XtSetArg(args[count], XtNwidth, text_width);
@@ -3212,14 +2782,11 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 				count++;
 				XtSetValues(valName, args, count);
 			}
-
 			curr_val->text_widg = valName;
-
 			lastVal = valName;
 			vertDistance = 2;
 		}
 	}
-
 	if (curr_modify_popup) {
 		for (max_width = 0, curr_attrs = entry->attrs;
 				curr_attrs;
@@ -3228,42 +2795,33 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 			XtSetArg(args[count], XtNfromHoriz, &modValButton);
 			count++;
 			XtGetValues(curr_attrs->val_seq->text_widg, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &attrName);
 			count++;
 			XtGetValues(modValButton, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNwidth, &text_width);
 			count++;
 			XtGetValues(attrName, args, count);
-
 			max_width = (text_width > max_width? text_width: max_width);
 		}
-
 		for(curr_attrs = entry->attrs; curr_attrs; curr_attrs = curr_attrs->next) {
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &modValButton);
 			count++;
 			XtGetValues(curr_attrs->val_seq->text_widg, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &attrName);
 			count++;
 			XtGetValues(modValButton, args, count);
-
 			count = 0;
 			XtSetArg(args[count], XtNwidth, max_width);
 			count++;
 			XtSetValues(attrName, args, count);
-
 			XtManageChild(attrName);
-
 			count = 0;
 			XtSetArg(args[count], XtNfromHoriz, &modValButton);
 			count++;
-
 			for (curr_val = curr_attrs->val_seq;
 					curr_val;
 					curr_val = curr_val->next) {
@@ -3273,13 +2831,10 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 				XtManageChild(valName);
 			}
 		}
-
 		XtManageChild(modifyViewForm);
-
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &modValButton);
 		count++;
-
 		for(curr_attrs = entry->attrs; curr_attrs; curr_attrs = curr_attrs->next) {
 			for (curr_val = curr_attrs->val_seq;
 					curr_val;
@@ -3290,17 +2845,13 @@ static dirEntry createModifyTemplate(Widget modify_form, char *entry_name) {
 									   menuicon_width, menuicon_height);
 			}
 		}
-
 		modifyButton = XtNameToWidget(modify_form,
 									  "modifyForm.ModifyButtonForm.modifyButton");
-
 		if (XtHasCallbacks(modifyButton, XtNcallback) == XtCallbackHasSome)
 			XtRemoveAllCallbacks(modifyButton, XtNcallback);
-
 		XtAddCallback(modifyButton, XtNcallback, submitModif, (XtPointer) entry);
 		XtAddCallback(modifyButton, XtNdestroyCallback,
 					  freeEntry, (XtPointer) entry);
-
 	} else XtManageChild(modifyViewForm);
 	return entry;
 }
@@ -3317,15 +2868,12 @@ static Widget createModifyPopup(char *entry_name) {
 
 	modifyPopup = XtCreatePopupShell("Modify Entry", topLevelShellWidgetClass,
 									 toplevel, args, 0);
-
 	count = 0;
 	modifyForm = XtCreateManagedWidget("modifyForm", formWidgetClass,
 									   modifyPopup, args, count);
-
 	count = 0;
 	ButtonForm = XtCreateManagedWidget("ModifyButtonForm", formWidgetClass,
 									   modifyForm, args, count);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Close_height);
 	count++;
@@ -3333,10 +2881,8 @@ static Widget createModifyPopup(char *entry_name) {
 	count++;
 	closeButton = XtCreateManagedWidget("closeButton", commandWidgetClass,
 										ButtonForm, args, count);
-
 	XtAddCallback(closeButton, XtNcallback, closeModify,
 				  (XtPointer) modifyPopup);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Keep_height);
 	count++;
@@ -3344,9 +2890,7 @@ static Widget createModifyPopup(char *entry_name) {
 	count++;
 	keepButton = XtCreateManagedWidget("keepButton", commandWidgetClass,
 									   ButtonForm, args, count);
-
 	XtAddCallback(keepButton, XtNcallback, keepModify, (XtPointer) modifyPopup);
-
 	count = 0;
 	XtSetArg(args[count], XtNheight, Modify_height);
 	count++;
@@ -3354,20 +2898,15 @@ static Widget createModifyPopup(char *entry_name) {
 	count++;
 	modifyButton = XtCreateManagedWidget("modifyButton", commandWidgetClass,
 										 ButtonForm, args, count);
-
 	count = 0;
 	XtCreateManagedWidget("modifyScrolledWindow",
 						  viewportWidgetClass, modifyForm,
 						  args, count);
-
 	entry = createModifyTemplate(modifyPopup, entry_name);
-
 	XtAddCallback(modifyButton, XtNcallback, submitModif, (XtPointer) entry);
 	XtAddCallback(modifyButton, XtNdestroyCallback,
 				  freeEntry, (XtPointer) entry);
-
 	XtRealizeWidget(modifyPopup);
-
 	for (max_width = 0, curr_attrs = entry->attrs;
 			curr_attrs;
 			curr_attrs = curr_attrs->next) {
@@ -3375,42 +2914,33 @@ static Widget createModifyPopup(char *entry_name) {
 		XtSetArg(args[count], XtNfromHoriz, &modValButton);
 		count++;
 		XtGetValues(curr_attrs->val_seq->text_widg, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &attrName);
 		count++;
 		XtGetValues(modValButton, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNwidth, &text_width);
 		count++;
 		XtGetValues(attrName, args, count);
-
 		max_width = (text_width > max_width? text_width: max_width);
 	}
-
 	for(curr_attrs = entry->attrs; curr_attrs; curr_attrs = curr_attrs->next) {
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &modValButton);
 		count++;
 		XtGetValues(curr_attrs->val_seq->text_widg, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &attrName);
 		count++;
 		XtGetValues(modValButton, args, count);
-
 		count = 0;
 		XtSetArg(args[count], XtNwidth, max_width);
 		count++;
 		XtSetValues(attrName, args, count);
-
 		XtManageChild(attrName);
-
 		count = 0;
 		XtSetArg(args[count], XtNfromHoriz, &modValButton);
 		count++;
-
 		for (curr_val = curr_attrs->val_seq;
 				curr_val;
 				curr_val = curr_val->next) {
@@ -3422,25 +2952,21 @@ static Widget createModifyPopup(char *entry_name) {
 								   menuicon_width, menuicon_height);
 		}
 	}
-
 	CreateBackgroundPixmap(modifyButton, Modify_bits,
 						   Modify_width, Modify_height);
 	CreateBackgroundPixmap(closeButton, Close_bits,
 						   Close_width, Close_height);
 	CreateBackgroundPixmap(keepButton, Keep_bits,
 						   Keep_width, Keep_height);
-
 	if (DefaultDepthOfScreen(screen) == 1) {
 		CreateBackgroundPixmap(ButtonForm, gray_bits,
 							   gray_width, gray_height);
 		CreateBackgroundPixmap(modifyForm, gray_bits,
 							   gray_width, gray_height);
 	}
-
 	XtPopup(modifyPopup, XtGrabNone);
 	XRaiseWindow(dpy, XtWindow(modifyPopup));
 	XFlush(dpy);
-
 	return(modifyPopup);
 }
 
@@ -3461,16 +2987,12 @@ static int GetTextWidth(Widget widget, char *istring) {
 	char * string;
 
 	if (!widget) return 0;
-
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
 	count++;
 	XtGetValues(widget, args, count);
-
 	if (!istring || *istring == '\0') return (FONTWIDTH(font));
-
 	string = strdup (istring);
-
 	max_width = 0;
 	sptr = str = string;
 	while (str && *str != '\0') {
@@ -3482,7 +3004,6 @@ static int GetTextWidth(Widget widget, char *istring) {
 			sptr = ++str;
 		} else str++;
 	}
-
 	if (sptr) {
 		text_width = XTextWidth(font, sptr, strlen(sptr));
 		if (text_width > max_width) max_width = text_width;
@@ -3499,21 +3020,17 @@ static int GetTextHeight(Widget widget, char *string) {
 	char *str;
 
 	if (!widget) return 0;
-
 	count = 0;
 	XtSetArg(args[count], XtNfont, &font);
 	count++;
 	XtGetValues(widget, args, count);
-
 	if (!string || *string == '\0') return (FONTHEIGHT(font) + font->ascent);
-
 	lines = 1;
 	str = string;
 	while (str && *str != '\0') {
 		if (*str == '\n') lines++;
 		str++;
 	}
-
 	return ((FONTHEIGHT(font) * lines) + font->ascent);
 }
 
@@ -3521,7 +3038,6 @@ static bool ConvSel(Widget w, Atom *selection, Atom *target, Atom *type, XtPoint
 	if (XmuConvertStandardSelection(w, selection, target,
 									type, value, length, format))
 		return TRUE;
-
 	if (*target == XA_STRING) {
 		*type = XA_STRING;
 		*value = strdup(curr_selection);
@@ -3551,16 +3067,13 @@ static void PopupMessage(Widget shell, Widget refto, Widget label_widget, char *
 	Position x, y;
 
 	dash_list[0] = dash_list[1] = 1;
-
 	if (label != (String) NULL) {
 		width = GetTextWidth(label_widget, label) + 8;
 		height = GetTextHeight(label_widget, label) + 8;
-
 		count = 0;
 		XtSetArg(args[count], XtNlabel, label);
 		count++;
 		XtSetValues(label_widget, args, count);
-
 		XtMakeResizeRequest(shell, width, height, NULL, NULL);
 		XtResizeWidget(label_widget, width, height, (Dimension) 1);
 	} else {
@@ -3571,59 +3084,42 @@ static void PopupMessage(Widget shell, Widget refto, Widget label_widget, char *
 		count++;
 		XtGetValues(label_widget, args, count);
 	}
-
 	if (refto == (Widget) 0 || !XtIsRealized(refto)) XtMoveWidget(shell, 0, 0);
 	else {
 		XtTranslateCoords(refto, -20, 20, &x, &y);
-
 		if (x < 0) x = 0;
-
 		XtMoveWidget(shell, x, y);
 	}
-
 	XtPopup(shell, grab_kind);
 	XRaiseWindow(dpy, XtWindow(shell));
-
 	border_pixmap = XCreatePixmap(dpy, XtWindow(label_widget),
 								  width, height, DefaultDepthOfScreen(screen));
-
 	gc = XCreateGC(dpy, XtWindow(label_widget), 0, NULL);
-
 	XSetFunction(dpy, gc, GXcopy);
-
 	XSetBackground(dpy, gc, WhitePixelOfScreen(screen));
 	XSetForeground(dpy, gc, WhitePixelOfScreen(screen));
-
 	XFillRectangle(dpy, border_pixmap, gc, 0, 0,
 				   (unsigned int) width, (unsigned int) height);
-
 	XSetForeground(dpy, gc, BlackPixelOfScreen(screen));
-
 	XSetDashes(dpy, gc, 0, dash_list, 2);
 	XSetLineAttributes(dpy, gc, 0, LineOnOffDash, CapButt, JoinBevel);
-
 	XDrawLine(dpy, border_pixmap, gc, 0, 0, width - 1, 0);
 	XDrawLine(dpy, border_pixmap, gc, 1, 1, width - 2, 1);
 	XDrawLine(dpy, border_pixmap, gc, 2, 2, width - 3, 2);
 	XDrawLine(dpy, border_pixmap, gc, 3, 3, width - 4, 3);
-
 	XDrawLine(dpy, border_pixmap, gc, 0, 0, 0, height - 1);
 	XDrawLine(dpy, border_pixmap, gc, 1, 1, 1, height - 2);
 	XDrawLine(dpy, border_pixmap, gc, 2, 2, 2, height - 3);
 	XDrawLine(dpy, border_pixmap, gc, 3, 3, 3, height - 4);
-
 	XSetLineAttributes(dpy, gc, 0, LineSolid, CapButt, JoinBevel);
-
 	XDrawLine(dpy, border_pixmap, gc, 0, height - 1, width - 1, height - 1);
 	XDrawLine(dpy, border_pixmap, gc, 1, height - 2, width - 2, height - 2);
 	XDrawLine(dpy, border_pixmap, gc, 2, height - 3, width - 3, height - 3);
 	XDrawLine(dpy, border_pixmap, gc, 3, height - 4, width - 4, height - 4);
-
 	XDrawLine(dpy, border_pixmap, gc, width - 1, 0, width - 1, height - 1);
 	XDrawLine(dpy, border_pixmap, gc, width - 2, 1, width - 2, height - 2);
 	XDrawLine(dpy, border_pixmap, gc, width - 3, 2, width - 3, height - 3);
 	XDrawLine(dpy, border_pixmap, gc, width - 4, 3, width - 4, height - 4);
-
 	count = 0;
 	XtSetArg(args[count], XtNbackgroundPixmap, border_pixmap);
 	count++;

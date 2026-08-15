@@ -72,13 +72,11 @@ int main (int argc, char **argv) {
 		myname++;
 	else
 		myname = argv[0];
-
 	/*--- isode initialization and tailoring ---*/
 	sprintf(buf,"HOME=%s", RFA_TAILDIR);
 	putenv(buf);
 	isodetailor (myname, 1);
 	initLog(myname);
-
 	/*--- rfa tailoring ---*/
 	sprintf(buf, "%s/rfatailor", isodetcpath);
 	if (tailor(buf) != OK)
@@ -86,24 +84,19 @@ int main (int argc, char **argv) {
 	sprintf(buf, "%s/rfatailor", RFA_TAILDIR);
 	if (tailor(buf) != OK)
 		advise (LLOG_EXCEPTIONS, NULLCP, rfaErrStr);
-
 	/*--- get application entity identifier for rfa service ---*/
 	if ((aei = _str2aei (host, myservice,mycontext,0,NULLCP,NULLCP)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   host, myservice);
-
 	/*--- register operation to serve ---*/
 	advise (LLOG_EXCEPTIONS, NULLCP, "doing");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, table_RFA_Operations, ds -> ds_operation,
 						ds -> ds_vector, roi) == NOTOK)
 			ros_adios (rop, ds -> ds_name);
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "done");
-
 	startfnx = initiate;
 	stopfnx = NULLIFP;
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
 	if (isodeserver (argc, argv, aei, ros_init, ros_work, ros_lose, td)
 			== NOTOK) {
@@ -115,7 +108,6 @@ int main (int argc, char **argv) {
 			adios (NULLCP, "isodeserver: [%s]",
 				   TErrString (td -> td_reason));
 	}
-
 	exit(0);
 }
 
@@ -130,49 +122,36 @@ int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	*pe	 = NULLPE;
 	if ( acs -> acs_ninfo != 1)
 		return init_lose (ACS_PERMANENT, pe, "No Bind data");
-
 	if (decode_RFA_Initiate (acs -> acs_info[0], 1, NULLIP, NULLVP,
 							 &initial) == NOTOK)
 		return init_lose (ACS_PERMANENT, pe, "Can't parse Bind data");
-
 	user = qb2str (initial -> user);
-
 	advise (LLOG_NOTICE, NULLCP, "Bind of user %s", user);
-
 	if (baduser (NULLCP, user)) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "Bad listed user '%s'", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
 	}
-
 	if ((pw = getpwnam (user)) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "Unknown user '%s'", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
-
 	}
-
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
 	strcpy (homedir, pw -> pw_dir);
-
 	cp = qb2str (initial -> password);
-
 	if (pw -> pw_passwd == NULL
 			|| strcmp (crypt (cp, pw -> pw_passwd), pw -> pw_passwd) != 0) {
 		advise (LLOG_NOTICE, NULLCP, "Password mismatch for %s", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
-
 	}
 	bzero (cp, strlen(cp)); /* in case of cores */
 	free (cp);
-
 	free_RFA_Initiate (initial);
-
 	if (chdir (homedir) == -1) {
 		advise (LLOG_NOTICE, NULLCP, "Can't set home directory to '%s'",
 				homedir);
 		return init_lose (ACS_PERMANENT, pe, "No home directory");
 	}
-
 	if (initUserId(userid, groupid, user) != OK) {
 		advise (LLOG_NOTICE, NULLCP, "%s\n", rfaErrStr);
 		return init_lose (ACS_PERMANENT, pe, rfaErrStr);

@@ -38,14 +38,11 @@ void initialize () {
 #ifndef NO_STATS
 	ll_hdinit (log_stat, "doog");
 #endif
-
 	if (testing == FALSE) {
 		strcpy(config_file_name, getenv("HOME"));
 		strcat(config_file_name, homeconfig);
-
 		if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
 			strcpy(config_file_name, isodefile(sysconfig, 0));
-
 			if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
 				fprintf(stderr,
 				"Cannot find `doogrc' tailor file. Exiting.\n");
@@ -55,19 +52,15 @@ void initialize () {
 	} else {
 		strcpy(config_file_name, "./");
 		strcat(config_file_name, sysconfig);
-
 		if ((config_file = fopen(config_file_name, "r")) == (FILE *) NULL) {
 			fprintf(stderr, "Cannot find `doogrc' tailor file.\n");
 			fprintf(stderr,
 			"To test, run `doog -test' in the source directory.\n");
-
 			exit(1);
 		}
 	}
-
 	parseConfig();
 	fclose(config_file);
-
 	read_quipurc();
 }
 
@@ -81,22 +74,16 @@ static void read_quipurc () {
 
 	strcpy(quipurc, getenv("HOME"));
 	strcat(quipurc, quipurc_name);
-
 	if ((qfile = fopen(quipurc, "r")) == NULL) return;
-
 	while (fgets (line, LINESIZE, qfile) != 0) {
 		p = SkipSpace(line);
-
 		if ((*p == '#') || (*p == '\0'))
 			continue;  /* ignore comments and blanks */
-
 		part1 = p;
 		if ((part2 = index (p,':')) == NULLCP)
 			continue; /* ignore it */
-
 		*part2++ = '\0';
 		part2 = TidyString(part2);
-
 		if ((lexequ(part1, "username") == 0) && *username == '\0')
 			strcpy (username, part2);
 		else if ((lexequ(part1, "password") == 0) && *userpassword == '\0')

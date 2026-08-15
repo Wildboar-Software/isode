@@ -133,9 +133,7 @@ int displayHelp (char *helpstr) {
 	if (lexequ(helpstr, "settings") == 0) {
 		printf("It is possible to modify some values used by this program, for example the\n");
 		printf("number of lines on the user's screen.  ");
-
 		displayCurrentSettings();
-
 		if (signal(SIGINT, SIG_IGN) != SIG_IGN)
 			signal(SIGINT, onint1);
 		for (;;) {
@@ -191,7 +189,6 @@ enterVarVal:
 				continue;
 			if (validateSetting(settableVars[i].vartype, cp) != OK)
 				goto enterVarVal; /* invalid input - have another go */
-
 			/* treat termtype specially */
 			if (lexequ(varname, "termtype") == 0) {
 				cp = checkSetTerm(cp, term);
@@ -206,7 +203,6 @@ enterVarVal:
 				else
 					turnInverseVideoOff();
 			}
-
 			switch(settableVars[i].vartype) {
 			case 1:
 				*((int *)settableVars[i].varval) = atoi(cp);

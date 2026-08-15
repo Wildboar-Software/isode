@@ -21,14 +21,11 @@ QBool testing = FALSE;
 
 int main (int argc, char *argv[]) {
 	fprintf(stderr, "Binding to directory.....\n");
-
 	read_doog_args(argc, argv);
 	init_query_engine(argc, argv);
 	initialize();
 	if (bind_to_ds(argc, argv, SIMPLE_AUTH) == FALSE) exit(1);
-
 	interact();
-
 	return 0;
 }
 

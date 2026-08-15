@@ -61,7 +61,6 @@ int getFileOwner (char *fn, int *uidp, int *gidp) {
 
 	if (stat(makeFN(fn), &st) == -1)
 		return NOTOK;
-
 	*uidp = st.st_uid;
 	*gidp = st.st_gid;
 	return OK;
@@ -84,7 +83,6 @@ int changeFileOwner (char *fn, struct RfaInfo *rfa) {
 	if ((doChgrp || doChown) && runAsRoot)
 		if (setreuid(-1, 0) != -1)
 			changedUID++;
-
 	if (doChgrp)
 		if ((gr = getgrnam(rfa->ri_group)) == NULL) {
 			sprintf(rfaErrStr, "can't change group to %s (invalid group)",
@@ -116,10 +114,8 @@ int changeFileOwner (char *fn, struct RfaInfo *rfa) {
 						rfa->ri_owner, sys_errname(errno));
 				rc = NOTOK;
 			}
-
 	if (changedUID)
 		setreuid(-1, getuid());
-
 	return rc;
 }
 
@@ -135,15 +131,12 @@ int changeFileMode (char *fn, int mode, char *errmsg) {
 		sprintf(rfaErrStr, "can't %s of file %s", errmsg, fn);
 		return NOTOK;
 	}
-
 	if (fuid != getuid())
 		if (runAsRoot && (setreuid(-1, 0) != -1) && (fuid != getuid()))
 			changedUID++;
-
 	/*-- clear set uid on execution bit --*/
 	if (doClearSUID)
 		mode &= ~S_ISUID;
-
 	if (chmod(makeFN(fn), mode & 07777) == -1)
 		if (runAsRoot) {
 			setreuid(-1, fuid);
@@ -157,7 +150,6 @@ int changeFileMode (char *fn, int mode, char *errmsg) {
 					sys_errname(errno));
 			rc = NOTOK;
 		}
-
 	if (changedUID)
 		setreuid(-1, getuid());
 	return rc;
@@ -202,7 +194,6 @@ int changeTime (time_t dt) {
 		sprintf (rfaErrStr, "can't set time myself, using 'rfatime'");
 		return NOTOK;
 	}
-
 	if (dt > 0) {
 		/*--- clock "jumps" forwards ---*/
 		gettimeofday(&tv, (struct timezone *)NULL);
@@ -219,9 +210,7 @@ int changeTime (time_t dt) {
 			rc = NOTOK;
 		}
 	}
-
 	if (changedUID)
 		setreuid(-1, getuid());
-
 	return rc;
 }

@@ -71,7 +71,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 		fprintf(err, "*** local file access error : %s ***\n", rfaErrStr);
 		return(NOTOK_OUTOFSUBTREE);
 	}
-
 	/*--- get file Info ---*/
 	if ((rc = getRfaInfoList(dirname(*fn), rfalp, basename(*fn), 1)) != OK) {
 		fprintf(err,
@@ -79,7 +78,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 				dirname(*fn), errMsg(rc));
 		return(NOTOK_FILEACCESS);
 	}
-
 	if ((*rfap = findRfaInfo(basename(*fn), *rfalp)) == NULL) {
 		releaseRfaInfoList(*fn,*rfalp);
 		*rfalp = NULL;
@@ -87,7 +85,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 				*fn);
 		return(NOTOK_FILEACCESS);
 	}
-
 	/*--- check if regular file ---*/
 	if (reg)
 		if (((*rfap)->ri_mode & S_IFMT) != S_IFREG) {
@@ -96,7 +93,6 @@ int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, i
 			*rfalp = NULL;
 			return NOTOK_NOTREGULAR;
 		}
-
 	return OK;
 }
 
@@ -110,7 +106,6 @@ int do_lunlock (char *fn) {
 	/*--- get file Info ---*/
 	if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK)
 		return rc;
-
 	/*--- check if we are master ---*/
 	if (IS_SLAVE(rfa->ri_status)) {
 		releaseRfaInfoList(dirname(fn), rfalist);
@@ -126,7 +121,6 @@ int do_lunlock (char *fn) {
 	rfa->ri_lcksince = NULL;
 	free(rfa->ri_lckname);
 	rfa->ri_lckname = "NONE";
-
 	if ((rc = putRfaInfoList(dirname(fn), rfalist)) != OK) {
 		releaseRfaInfoList(dirname(fn), rfalist);
 		fprintf(err, "*** local file access error : %s ***\n", errMsg(rc));
@@ -146,7 +140,6 @@ int do_llock (char *fn) {
 	/*--- get file Info ---*/
 	if ((rc = getLocalRfaInfo(&fn, &rfa, &rfalist, 1)) != OK)
 		return rc;
-
 	/*--- check if we are master ---*/
 	if (IS_MASTER(rfa->ri_status) || IS_UNREGISTERED(rfa->ri_status)) {
 		if (IS_LOCKED(rfa->ri_status)) {
@@ -169,7 +162,6 @@ int do_llock (char *fn) {
 		fprintf(out, "locked file %s\n",fn);
 		return OK;
 	}
-
 	/*-- here we will need help from Big-Brother "rfa" --*/
 	return NOTOK_LOCAL_LOCK;
 }
@@ -180,19 +172,15 @@ int main (int ac, char **av) {
 	int rc;
 
 	myname = av[0];
-
 	out = stdout;
 	err = stderr;
-
 	initLog(myname);
-
 	if (ac < 2) {
 		fprintf(stderr, "USAGE: %s filename [-q]\n", basename(myname));
 		exit (1);
 	}
 	if (ac > 2 && strcmp(av[2], "-q") == 0)
 		interactive = 0;
-
 	/*--- rfa tailoring ---*/
 	sprintf(buf, "%s/rfatailor", isodetcpath);
 	if (tailor(buf) != OK) {
@@ -209,21 +197,17 @@ int main (int ac, char **av) {
 		fprintf(stderr, "*** tailoring %s - %s ***\n", buf, rfaErrStr);
 		exit(1);
 	}
-
 	/*--- init cwd ---*/
 	getwd(buf);
 	if (strncmp(buf, fsBase, strlen(fsBase)) == 0)
 		strcpy(cwd_remote, buf + strlen(fsBase));
-
 	interactive = 0;
 	commandMode = 1;
 	if (strcmp(basename(myname), "llock") == 0)
 		rc = do_llock(av[1]);
 	else
 		rc = do_lunlock(av[1]);
-
 	if (interactive && (rc == 2))
 		fprintf(stderr,"*** can't LOCK locally, must use RFA command ***\n");
-
 	exit (rc);
 }

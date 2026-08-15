@@ -79,9 +79,7 @@ char *shortTime (long *t) {
 	char *s;
 
 	s = ctime(t);
-
 	*(rindex(s, ':')) = '\0';
-
 	s+=4;
 	return s;
 }
@@ -91,20 +89,16 @@ char *rfa2ls (struct RfaInfo *rfa) {
 
 	*buf = '\0';
 	bp = buf;
-
 	mode2str(rfa->ri_mode, bp);
 	bp += strlen(bp);
-
 	sprintf(bp, " %3.3s", status2str(rfa->ri_status));
 	bp += strlen(bp);
-
 	if(IS_LOCKED(rfa->ri_status)) {
 		sprintf(bp, " lockby %-10s %8d", rfa->ri_lckname, rfa->ri_size);
 	} else
 		sprintf(bp, " %-8s %-8s %8d", rfa->ri_owner, rfa->ri_group,
 				rfa->ri_size);
 	bp += strlen(bp);
-
 	sprintf(bp, " %12s", shortTime(&(rfa->ri_modTime)));
 	bp += strlen(bp);
 	sprintf(bp, " %s", rfa->ri_filename);
@@ -112,6 +106,5 @@ char *rfa2ls (struct RfaInfo *rfa) {
 		bp += strlen(bp);
 		sprintf(bp, " -> %s", rfa->ri_lnkName);
 	}
-
 	return buf;
 }

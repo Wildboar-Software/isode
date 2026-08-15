@@ -37,10 +37,8 @@ ems_append (struct entrymod *a, struct entrymod *b) {
 
 	if ((ptr = a) == NULLMOD)
 		return b;
-
 	for ( ; ptr->em_next != NULLMOD; ptr = ptr->em_next)
 		;
-
 	ptr->em_next = b;
 	return a;
 }
@@ -62,42 +60,34 @@ dsErrorStruct modify_entry(dirEntry mods) {
 		mod_error.error = serviceerror;
 		mod_error.err_mess = strdup("Directory Service Error!\n");
 	}
-
 	mod_arg.mea_common.ca_servicecontrol.svc_options =
 		mod_arg.mea_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
 	mod_arg.mea_object = str2dn(mods->entry_name);
-
 	for (attrs = mods->attrs; attrs; attrs = attrs->next) {
 		if (attrs->mod_flag) {
 			if (mailformat == greybook && !lexequ(attrs->attr_name, "mailbox"))
 				attr_type = str2AttrT("rfc822Mailbox");
 			else
 				attr_type = str2AttrT(attrs->attr_name);
-
 			for (curr_val = attrs->val_seq;
 					curr_val && curr_val->mod_flag;
 					curr_val = curr_val->next)
 				;
-
 			if (!curr_val) {
 				if (attrs->in_flag) {
 					curr_mod = em_alloc();
 					curr_mod->em_next = NULLMOD;
 					curr_mod->em_type = EM_REMOVEATTRIBUTE;
 					curr_mod->em_what = NULLATTR;
-
 					curr_mod->em_what = as_comp_new(attr_type, NULLAV, NULLACL_INFO);
 					entrymods = ems_append(entrymods, curr_mod);
 				}
-
 				curr_mod = em_alloc();
 				curr_mod->em_next = NULLMOD;
 				curr_mod->em_type = EM_ADDATTRIBUTE;
 				curr_mod->em_what = NULLATTR;
-
 				for (curr_val = attrs->val_seq; curr_val; curr_val = curr_val->next) {
 					char_unmap(attr_val_buf, curr_val->new_value, attr_type);
-
 					if (attr_val_buf[0] != '\0') {
 						if (mailformat == greybook && !lexequ(attrs->attr_name, "mailbox"))
 							rfc2greybook(attr_val_buf);
@@ -120,7 +110,6 @@ dsErrorStruct modify_entry(dirEntry mods) {
 						}
 					}
 				}
-
 				if (attrVal_seq) {
 					curr_mod->em_what = as_comp_new(AttrT_cpy(attr_type),
 													attrVal_seq,
@@ -136,7 +125,6 @@ dsErrorStruct modify_entry(dirEntry mods) {
 							curr_val;
 							curr_val = curr_val->next) {
 						char_unmap(attr_val_buf, curr_val->value, attr_type);
-
 						if (curr_val->mod_flag && attr_val_buf[0] != '\0') {
 							if (mailformat == greybook
 									&& !lexequ(attrs->attr_name, "mailbox"))
@@ -152,12 +140,10 @@ dsErrorStruct modify_entry(dirEntry mods) {
 							entrymods = ems_append(entrymods, curr_mod);
 						}
 					}
-
 					for (curr_val = attrs->val_seq;
 							curr_val;
 							curr_val = curr_val->next) {
 						char_unmap(attr_val_buf, curr_val->new_value, attr_type);
-
 						if (curr_val->mod_flag && attr_val_buf[0] != '\0') {
 							if (mailformat == greybook
 									&& !lexequ(attrs->attr_name, "mailbox"))
@@ -180,7 +166,6 @@ dsErrorStruct modify_entry(dirEntry mods) {
 								mod_error.err_mess = strdup(err_buf);
 								return mod_error;
 							}
-
 							curr_mod = em_alloc();
 							curr_mod->em_next = NULLMOD;
 							curr_mod->em_type = EM_ADDVALUES;
@@ -190,7 +175,6 @@ dsErrorStruct modify_entry(dirEntry mods) {
 							entrymods = ems_append(entrymods, curr_mod);
 						}
 					}
-
 					if (attrVal_seq) {
 						attrVal_seq = 0;
 						curr_mod = 0;
@@ -200,12 +184,10 @@ dsErrorStruct modify_entry(dirEntry mods) {
 					curr_mod = em_alloc();
 					curr_mod->em_next = NULLMOD;
 					curr_mod->em_type = EM_ADDATTRIBUTE;
-
 					for (curr_val = attrs->val_seq;
 							curr_val;
 							curr_val = curr_val->next) {
 						char_unmap(attr_val_buf, curr_val->new_value, attr_type);
-
 						if (attr_val_buf[0] != '\0') {
 							if (mailformat == greybook
 									&& !lexequ(attrs->attr_name, "mailbox"))
@@ -230,7 +212,6 @@ dsErrorStruct modify_entry(dirEntry mods) {
 							}
 						}
 					}
-
 					if (attrVal_seq) {
 						curr_mod->em_what = as_comp_new(AttrT_cpy(attr_type),
 														attrVal_seq,
@@ -244,12 +225,10 @@ dsErrorStruct modify_entry(dirEntry mods) {
 			}
 		}
 	}
-
 	if (entrymods) {
 		mod_arg.mea_changes = entrymods;
 		if (ds_modifyentry(&mod_arg, &error) != DS_OK) {
 			mod_error.err_mess = modify_error(&error);
-
 			switch (error.dse_type) {
 			case DSE_LOCALERROR:
 				mod_error.error = duaerror;
@@ -332,12 +311,10 @@ dsErrorStruct modify_entry(dirEntry mods) {
 		dn_free(mod_arg.mea_object);
 		return mod_error;
 	}
-
 	for (attrs = mods->attrs; attrs; attrs = attrs->next) {
 		if (attrs->mod_flag == TRUE && attrs->in_flag == FALSE)
 			attrs->in_flag = TRUE;
 		attrs->mod_flag = FALSE;
-
 		attr_removed = TRUE;
 		for (curr_val = attrs->val_seq; curr_val; curr_val = curr_val->next) {
 			if (curr_val->new_value != NULLCP) {
@@ -346,10 +323,8 @@ dsErrorStruct modify_entry(dirEntry mods) {
 				curr_val->new_value = NULLCP;
 				attr_removed = FALSE;
 			}
-
 			if (curr_val->value && *curr_val->value != '\0' && !curr_val->mod_flag)
 				attr_removed = FALSE;
-
 			curr_val->mod_flag = FALSE;
 		}
 		if (attr_removed) attrs->in_flag = FALSE;
@@ -371,23 +346,16 @@ void make_template(char *entry_name, dirAttrs *attrs) {
 	Attr_Sequence   nas = 0, tas = 0, templ_as, make_template_as();
 
 	*attrs = 0;
-
 	if (*entry_name == '\0') return;
-
 	if ((ps = ps_alloc(str_open)) == NULLPS) return;
 	if (str_setup(ps, NULLCP, 0, 0) == NOTOK) return;
-
 	if (get_default_service (&read_arg.rda_common) != 0) return;
-
 	read_arg.rda_common.ca_servicecontrol.svc_options =
 		read_arg.rda_common.ca_servicecontrol.svc_options | SVC_OPT_PREFERCHAIN;
 	read_arg.rda_eis.eis_allattributes = TRUE;
 	read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
-
 	read_arg.rda_object = str2dn(entry_name);
-
 	photo_on = FALSE;
-
 	if ((read_entry = local_find_entry(read_arg.rda_object, FALSE)) != NULLENTRY
 			&& read_entry->e_data != E_TYPE_CONSTRUCTOR) {
 		read_attrs = read_entry->e_attributes;
@@ -396,21 +364,16 @@ void make_template(char *entry_name, dirAttrs *attrs) {
 			photo_on = TRUE;
 			return;
 		}
-
 		if (result.rdr_entry.ent_attr == NULLATTR) {
 			photo_on = TRUE;
 			return;
 		}
-
 		read_attrs = result.rdr_entry.ent_attr;
 	}
-
 	for (as = read_attrs; as != NULLATTR; as = as->attr_link)
 		if (as->attr_type == at_objectclass)
 			break;
-
 	templ_as = make_template_as(as->attr_value);
-
 	for (as = read_attrs; as != NULLATTR; as = as->attr_link)
 		if (!(AS_SYNTAX(as) == str2syntax("schema") ||
 				AS_SYNTAX(as) == str2syntax("objectclass") ||
@@ -426,7 +389,6 @@ void make_template(char *entry_name, dirAttrs *attrs) {
 			if (tas) tas = as_merge(tas, nas);
 			else tas = nas;
 		}
-
 	as = templ_as;
 	nas = templ_as = 0;
 	for (; as != NULLATTR; as = as->attr_link)
@@ -442,26 +404,18 @@ void make_template(char *entry_name, dirAttrs *attrs) {
 			if (templ_as) templ_as = as_merge(templ_as, nas);
 			else templ_as = nas;
 		}
-
 	as = as_merge(tas, templ_as);
 	as = as_sort(as);
-
 	my_as_print(ps, as, READOUT);
-
 	buffer = ps->ps_base;
-
 	ps->ps_ptr = 0;
 	ps->ps_cnt = 0;
 	ps->ps_bufsiz = 0;
 	ps->ps_base = NULL;
-
 	photo_on = TRUE;
-
 	ps_free(ps);
 	as_free(as);
-
 	make_attr_sequence(buffer, attrs);
-
 	if (buffer != NULLCP) free(buffer);
 }
 
@@ -476,45 +430,36 @@ void make_attr_sequence(char *entry_string, dirAttrs *attrs) {
 	str = sptr = entry_string;
 	while (1) {
 		str = index(sptr, '-');
-
 		/* Look for things like "dl-policy" -- don't know what the test SHOULD be*/
 		while (str && isalpha(str[-1]) && isalpha(str[1]))
 			str = index(str+1, '-');
-
 		if (!str || str == sptr) return;
 		while (!isalpha(*str)) {
 			if (str < sptr) return;
 			else --str;
 		}
 		str++;
-
 		save = *str;
 		*str = '\0';
-
 		if (curr_attr) {
 			if (strcmp(curr_attr->attr_name, sptr)) {
 				curr_val = 0;
 				curr_attr->next = (dirAttrs) malloc(sizeof(dir_attrs));
 				curr_attr = curr_attr->next;
-
 				curr_attr->next = 0;
 				curr_attr->val_seq = 0;
 				curr_attr->mod_flag = FALSE;
 				curr_attr->in_flag = TRUE;
-
 				curr_attr->attr_name = strdup(sptr);
-
 				if (curr_attr_type != NULLAttrT) {
 					AttrT_free(curr_attr_type);
 					curr_attr_type = str2AttrT(curr_attr->attr_name);
 				}
-
 				if (curr_attr_type && curr_attr_type->oa_ot.ot_stroid &&
 						strcmp(curr_attr_type->oa_ot.ot_stroid, "2.5.4.35"))
 					curr_attr->hidden_flag = TRUE;
 				else
 					curr_attr->hidden_flag = FALSE;
-
 				if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 						&& mailformat == greybook) {
 					strcpy(curr_attr->attr_name, "mailbox");
@@ -523,35 +468,27 @@ void make_attr_sequence(char *entry_string, dirAttrs *attrs) {
 		} else {
 			curr_attr = (dirAttrs) malloc(sizeof(dir_attrs));
 			*attrs = curr_attr;
-
 			curr_attr->next = 0;
 			curr_attr->val_seq = (modVals) 0;
 			curr_attr->mod_flag = FALSE;
 			curr_attr->in_flag = TRUE;
-
 			curr_attr->attr_name = strdup(sptr);
-
 			if (curr_attr_type != NULLAttrT) AttrT_free(curr_attr_type);
 			curr_attr_type = str2AttrT(curr_attr->attr_name);
-
 			if (!strcmp(curr_attr_type->oa_ot.ot_stroid, "2.5.4.35"))
 				curr_attr->hidden_flag = TRUE;
 			else
 				curr_attr->hidden_flag = FALSE;
-
 			if (!lexequ(curr_attr->attr_name, "rfc822Mailbox")
 					&& mailformat == greybook) {
 				strcpy(curr_attr->attr_name, "mailbox");
 			}
 		}
-
 		*str = save;
 		while ((isspace(*str) || (*str == '-')) && *str != '\n' && *str != '\0')
 			str++;
-
 		sptr = str;
 		count = 0;
-
 		while (1) {
 			while (*str != '\n' && *str != '\0') {
 				buffer[count++] = *str;
@@ -562,18 +499,15 @@ void make_attr_sequence(char *entry_string, dirAttrs *attrs) {
 				while (isspace(*str)) str++;
 			} else break;
 		}
-
 		buffer[count] = '\0';
 		save = *str;
 		*str = '\0';
-
 		if (curr_val) {
 			curr_val->next = (modVals) malloc(sizeof(struct mod_vals));
 			curr_val = curr_val->next;
 		} else {
 			curr_val = (modVals) malloc(sizeof(struct mod_vals));
 			curr_attr->val_seq = curr_val;
-
 			if (!count) curr_attr->in_flag = FALSE;
 		}
 		curr_val->attr = curr_attr;
@@ -581,24 +515,19 @@ void make_attr_sequence(char *entry_string, dirAttrs *attrs) {
 		curr_val->mod_flag = FALSE;
 		curr_val->new_value = 0;
 		curr_val->text_widg = 0;
-
 		curr_val->value = strdup(buffer);
-
 		char_map(buffer, curr_val->value, curr_attr_type);
 		free(curr_val->value);
 		curr_val->value = strdup(buffer);
-
 		if (mailformat == greybook
 				&& !lexequ(curr_attr->attr_name, "mailbox")) {
 			rfc2greybook(curr_val->value);
 		}
-
 		*str = save;
 		if (*str == '\0' || *++str == '\0') {
 			if (curr_attr_type != NULLAttrT) AttrT_free(curr_attr_type);
 			return;
 		}
-
 		sptr = str;
 	}
 }
@@ -608,14 +537,11 @@ static void char_map(char *buffer, char *value, AttributeType at) {
 	long ia5_char;
 
 	extern long strtol();
-
 	ia5_char_desc[2] = '\0';
-
 	if (!at || !is_map_required(at)) {
 		strcpy(buffer, value);
 		return;
 	}
-
 	if (value != NULLCP && *value != '\0') {
 		while (*value != '\0') {
 			switch (*value) {
@@ -626,10 +552,8 @@ static void char_map(char *buffer, char *value, AttributeType at) {
 				ia5_char_desc[0] = *(char *) (value + 1);
 				ia5_char_desc[1] = *(char *) (value + 2);
 				ia5_char = strtol(ia5_char_desc, (char **) NULL, 16);
-
 				*buffer = (char) ia5_char;
 				value += 2;
-
 				break;
 			default:
 				*buffer = *value;
@@ -638,7 +562,6 @@ static void char_map(char *buffer, char *value, AttributeType at) {
 			buffer++;
 		}
 	}
-
 	*buffer = '\0';
 }
 
@@ -649,7 +572,6 @@ static bool is_map_required(AttributeType at) {
 			(str2syntax("CaseIgnoreIA5String") == at_syntax) ||
 			(str2syntax("IA5String") == at_syntax))
 		return TRUE;
-
 	return FALSE;
 }
 
@@ -658,17 +580,14 @@ static void char_unmap(char *buffer, char *value, AttributeType at) {
 		*buffer = '\0';
 		return;
 	}
-
 	if (str2syntax("dn") == at->oa_syntax) {
 		if (*value == '@')  strcpy(buffer, (char *) (value + 1));
 		return;
 	}
-
 	if (!is_map_required(at)) {
 		strcpy(buffer, value);
 		return;
 	}
-
 	if (value != NULLCP && *value != '\0') {
 		while (*value != '\0') {
 			switch (*value) {
@@ -682,7 +601,6 @@ static void char_unmap(char *buffer, char *value, AttributeType at) {
 			buffer++;
 		}
 	}
-
 	*buffer = '\0';
 }
 
@@ -702,7 +620,6 @@ Attr_Sequence make_template_as(AV_Sequence oc) {
 			as = as_merge(as, newas);
 		}
 	}
-
 	for (avs = oc; avs != NULLAV; avs = avs->avseq_next) {
 		ocp = (objectclass *) avs->avseq_av.av_struct;
 		for (optr = ocp->oc_may; optr != NULLTABLE_SEQ; optr = optr->ts_next) {
@@ -711,7 +628,6 @@ Attr_Sequence make_template_as(AV_Sequence oc) {
 			as = as_merge(as, newas);
 		}
 	}
-
 	return(as);
 }
 
@@ -723,21 +639,16 @@ char *modify_error (struct DSError *error) {
 	if ((ps = ps_alloc(str_open)) == NULLPS) {
 		return NULLCP;
 	}
-
 	if (str_setup(ps, buffer, RESBUF, 1) == NOTOK) {
 		return NULLCP;
 	}
-
 	ds_error(ps, error);
 	*ps->ps_ptr = 0;
 	ps_free(ps);
-
 	str = buffer;
-
 	if (*str != '\0') {
 		message = strdup(str);
 	} else message = NULLCP;
-
 	return message;
 }
 
@@ -751,7 +662,6 @@ static void my_as_comp_print (PS ps,Attr_Sequence as,int format) {
 			sprintf(buffer,"%s", attr2name(as->attr_type, 1));
 		else
 			sprintf(buffer,"%s", attr2name_aux(as->attr_type));
-
 		if (split_attr (as)) {
 			if (as->attr_value == NULLAV && format != READOUT)
 				ps_printf(ps, "%s=\n", buffer);
@@ -764,9 +674,7 @@ static void my_as_comp_print (PS ps,Attr_Sequence as,int format) {
 							ps_printf (ps, "%-21s - ", buffer);
 						else
 							ps_printf (ps, "%s= ", buffer);
-
 						avs_comp_print (ps, avs, EDBOUT);
-
 						ps_print (ps, "\n");
 					}
 				}
@@ -792,24 +700,18 @@ static Attr_Sequence as_sort(Attr_Sequence as) {
 	Attr_Sequence with_vals = NULLATTR, without_vals = NULLATTR, next_as;
 
 	if (as == NULLATTR) return as;
-
 	while (as != NULLATTR) {
 		next_as = as->attr_link;
 		as->attr_link = NULLATTR;
-
 		if (as->attr_value) with_vals = as_merge(with_vals, as);
 		else without_vals = as_merge(without_vals, as);
-
 		as = next_as;
 	}
-
 	as = with_vals;
-
 	if (as != NULLATTR)
 		for (; as->attr_link != NULLATTR; as = as->attr_link)
 			;
 	else return without_vals;
-
 	as->attr_link = without_vals;
 	return with_vals;
 }

@@ -77,7 +77,6 @@ int install (char *src, char *dest, int destdir, int opts) {
 		opts &= ~WHOLE; /* WHOLE mode only useful if renaming */
 		dest = src;
 	}
-
 	if (nflag || debug) {
 		printf("%s%s%s%s%s%s %s %s\n",
 			   opts & VERIFY ? "verify":"install",
@@ -89,7 +88,6 @@ int install (char *src, char *dest, int destdir, int opts) {
 		if (nflag)
 			return;
 	}
-
 	rname = exptilde(target, src);
 	if (rname == NULL)
 		return;
@@ -121,10 +119,8 @@ int install (char *src, char *dest, int destdir, int opts) {
 	 */
 	if (initdir (destdir, dest) < 0)
 		return;
-
 	strcpy(destcopy, dest);
 	Tdest = destcopy;
-
 	sendf(rname, opts);
 	Tdest = 0;
 }
@@ -149,7 +145,6 @@ int sendf (char *rname, int opts) {
 
 	if (debug)
 		printf("sendf(%s, %x)\n", rname, opts);
-
 	if (except(target))
 		return;
 	if ((opts & FOLLOW ? stat(target, &stb) : lstat(target, &stb)) < 0) {
@@ -161,7 +156,6 @@ int sendf (char *rname, int opts) {
 			savelink(&stb, opts);
 		return;
 	}
-
 	if (pw == NULL || pw->pw_uid != stb.st_uid)
 		if ((pw = getpwuid(stb.st_uid)) == NULL) {
 			log(lfp, "%s: no password entry for uid \n", target);
@@ -188,7 +182,6 @@ int sendf (char *rname, int opts) {
 		log(lfp, "installing: %s\n", target);
 		opts &= ~(COMPARE|REMOVE);
 	}
-
 	switch (stb.st_mode & S_IFMT) {
 	case S_IFDIR:
 		if ((d = opendir(target)) == NULL) {
@@ -202,10 +195,8 @@ int sendf (char *rname, int opts) {
 			closedir (d);
 			return;
 		}
-
 		if (opts & REMOVE)
 			rmchk(opts);
-
 		otp = tp;
 		len = tp - target;
 		while (dp = readdir(d)) {
@@ -236,7 +227,6 @@ int sendf (char *rname, int opts) {
 			opts |= COMPARE;
 		if (stb.st_nlink > 1) {
 			struct linkbuf *lp;
-
 			if ((lp = savelink(&stb, opts)) != NULL) {
 				if (*lp -> target == 0)
 					strcpy (buf, lp -> pathname);
@@ -267,7 +257,6 @@ int sendf (char *rname, int opts) {
 		advise (NULLCP, "%s: not a file or directory", target);
 		return;
 	}
-
 	if (u == 2) {
 		if (opts & VERIFY) {
 			log(lfp, "need to update: %s\n", target);
@@ -275,10 +264,8 @@ int sendf (char *rname, int opts) {
 		}
 		log(lfp, "updating: %s\n", target);
 	}
-
 	if (stb.st_nlink > 1) {
 		struct linkbuf *lp;
-
 		if ((lp = savelink(&stb, opts)) != NULL) {
 			if (*lp -> target == 0)
 				strcpy (buf, lp -> pathname);
@@ -292,7 +279,6 @@ int sendf (char *rname, int opts) {
 			return;
 		}
 	}
-
 	if ((f = open(target, O_RDONLY, 0)) < 0) {
 		advise (target, "Can't open file");
 		return;
@@ -343,7 +329,6 @@ dospecial:
 		sprintf(buf, "FILE=%s;export FILE;%s",
 				target, sc->sc_name);
 		runspecial (buf);
-
 	}
 }
 
@@ -375,7 +360,6 @@ savelink (struct stat *sp, int opts) {
 			else
 				lp -> pathname = makestr (target);
 		}
-
 		if (Tdest)
 			lp->target = makestr (Tdest);
 		else
@@ -392,7 +376,6 @@ int update (char *rname, int opts, struct stat *sp) {
 
 	if (debug)
 		printf("update(%s, %x, %x)\n", rname, opts, sp);
-
 	/*
 	 * Check to see if the file exists on the remote machine.
 	 */
@@ -415,17 +398,14 @@ int update (char *rname, int opts, struct stat *sp) {
 		advise (NULLCP, "update: unexpected response %d", retval);
 		return(0);
 	}
-
 	if (mode == S_IFDIR)
 		return (2);
-
 	if (opts & COMPARE) {
 		if ((opts & QUERYM) && !query ("Compare and update",
 									   (int) mode, NULLCP))
 			return 0;
 		return(3);
 	}
-
 	/*
 	 * File needs to be updated?
 	 */
@@ -448,7 +428,6 @@ void log(FILE *fp, char *fmt, int a1, int a2, int a3) {
 	/* Print changes locally if not quiet mode */
 	if (!qflag)
 		printf(fmt, a1, a2, a3);
-
 	/* Save changes (for mailing) if really updating files */
 	if (!(options & VERIFY) && fp != NULL)
 		fprintf(fp, fmt, a1, a2, a3);
@@ -481,7 +460,6 @@ int query (char *mess, int mode, char *name) {
 		cp = "unknown file type";
 		break;
 	}
-
 	sprintf (buf, "%s %s %s? ", mess, cp,
 			 name == NULLCP ? target : name);
 	for (;;) {
@@ -491,7 +469,6 @@ int query (char *mess, int mode, char *name) {
 		if (*cp == 'y' || *cp == 'Y' || *cp == 'n' || *cp == 'N')
 			break;
 	}
-
 	if (*cp == 'y' || *cp == 'Y')
 		return 1;
 	return 0;

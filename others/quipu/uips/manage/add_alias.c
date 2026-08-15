@@ -41,13 +41,10 @@ int call_add_alias (int argc, char **argv) {
 	struct		ds_modifyentry_arg	mod_arg;
 	struct		DSError			mod_error;
 	struct		entrymod	       *emnew ;
-
 	AV_Sequence	objClassAVS ;
 	AV_Sequence	treeStrAVS = NULLAV;
 	Attr_Sequence   get_attributes();
-
 	extern int	parse_status;
-
 	int		draft_flag = 0;
 	char	       *home;
 	char		objectname[80] ;
@@ -55,7 +52,6 @@ int call_add_alias (int argc, char **argv) {
 	char	       *contact_compare[6] ;
 	char	       *contact_showentry[6] ;
 	char	       *contact_modify[1] ;
-
 	contact_compare[0] = "compare" ;
 	contact_compare[1] = "";
 	contact_compare[2] = "-attribute";
@@ -67,7 +63,6 @@ int call_add_alias (int argc, char **argv) {
 	contact_showentry[3] = "-nokey" ;
 	contact_showentry[4] = "-dontdereferencealias";
 	contact_modify[0] = "modify" ;
-
 	emnew = em_alloc() ;
 	if (argc < 3) {
 		ps_printf(OPT, "Not enough arguments.\n") ;
@@ -76,27 +71,21 @@ int call_add_alias (int argc, char **argv) {
 	}
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[2])+1) ;
 	strcpy(contact_showentry[5], argv[2]) ;
-
 	contact_compare[3] = (char *) malloc ((unsigned)strlen("objectClass=alias.")) ;
 	strcpy(contact_compare[3], "objectClass=alias") ;
-
 	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1) {
 		ps_print(OPT, "Problems with compare service control flags.\n") ;
 		return ;
 	}
-
 	if (home = getenv ("HOME"))
 		sprintf (fname, "%s/.dishdraft", home);
 	else
 		strcpy (fname, "./.dishdraft");
 	new_draft = FALSE;
-
 	if ((argc = service_control (OPT, argc, argv, &add_arg.ada_common)) == -1)
 		return ;
-
 	strcpy(objectname, argv[1]) ;
 	strcpy(aliasobjectname, argv[2]) ;
-
 	/* Turn a sequence number back into a DN */
 	if (*aliasobjectname >= '0' && *aliasobjectname <= '9') {
 		/* First convert the number into a dn */
@@ -106,7 +95,6 @@ int call_add_alias (int argc, char **argv) {
 			ps_print(OPT, "..@ gives me a headache. Ambiguous. Abort... \n") ;
 			return ;
 		}
-
 		if (*aliasobjectname == '@') {
 			aoj_dn = dn_cpy(str2dn(aliasobjectname + 1)) ;
 		} else {
@@ -129,7 +117,6 @@ int call_add_alias (int argc, char **argv) {
 			dn_free(save_dn) ;
 		}
 	}
-
 	if (*objectname >= '0' && *objectname <= '9') {
 		/* First convert the number into a dn */
 		oj_dn = dn_cpy(sequence_dn(atoi(objectname))) ;
@@ -138,7 +125,6 @@ int call_add_alias (int argc, char **argv) {
 			ps_print(OPT, "..@ gives me a headache. Ambiguous. Abort... \n") ;
 			return ;
 		}
-
 		if (*objectname == '@') {
 			oj_dn = dn_cpy(str2dn(objectname + 1)) ;
 		} else {
@@ -146,7 +132,6 @@ int call_add_alias (int argc, char **argv) {
 			dn_append(oj_dn, dn_cpy(str2dn(objectname))) ;
 		}
 	}
-
 	save_dn = dn_cpy(dn) ;
 	dn_free(dn) ;
 	dn = dn_cpy(aoj_dn) ;
@@ -165,35 +150,28 @@ int call_add_alias (int argc, char **argv) {
 		ps_print(OPT, "This is very bad...\n") ;
 		return ;
 	}
-
 	if (rebind () != OK)
 		return ;
-
 	while (ds_compare (&compare_arg, &compare_error, &compare_result) != DS_OK) {
 		if (dish_error (OPT, &compare_error) == 0) {
 			return ;
 		}
 		compare_arg.cma_object = compare_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	if ( compare_result.cmr_matched == 1 ) {	/* if <AOJ> is an alias, abort. */
 		ps_printf(OPT, "Sorry, %s is an alias.\nAliasing to aliases is illegal.\n", aliasobjectname) ;
 		return ;
 	}
-
 	/* Now we want to discover the objectClass of our object, and make
 	 * sure that this will be OK when we add in the alias. (ie fitting
 	 * in with the treeStructure.)
 	 */
-
 	/* stick the aliasobjectname into the cache so we can read
 	 * bits of information from it.
 	 */
-
 	call_showentry(6, contact_showentry) ;
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[2])+1) ;
 	strcpy(contact_showentry[5], argv[2]) ;
-
 	if (current_entry == NULLENTRY) {
 		ps_print(OPT, "Can't read ") ;
 		dn_print(OPT, dn, EDBOUT) ;
@@ -207,11 +185,9 @@ int call_add_alias (int argc, char **argv) {
 		 * are present, so we can decide whether we need to add
 		 * the entire attribute or just another value.
 		 */
-
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("objectClass") ;
 		AttributeType a_t2 = AttrT_new("seeAlso") ;
-
 		emnew->em_type = EM_ADDATTRIBUTE ;
 		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
@@ -228,15 +204,12 @@ int call_add_alias (int argc, char **argv) {
 	}
 	/* We should have got the ObjectClass now, so return to where we were
 	 * and move up a level to grab the tree structure */
-
 	dn_free(dn) ;
 	dn = dn_cpy(oj_dn) ;
-
 	for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		trail = dnptr;
 	dn_comp_free (dnptr);
 	trail->dn_parent = NULLDN;
-
 	contact_showentry[1] = ( char *) malloc ((unsigned)strlen("-noshow") + 1) ;
 	strcpy(contact_showentry[1], "-noshow") ;
 	contact_showentry[2] = ( char *) malloc ((unsigned)strlen("-all") + 1) ;
@@ -245,9 +218,7 @@ int call_add_alias (int argc, char **argv) {
 	strcpy(contact_showentry[3], "-nokey") ;
 	contact_showentry[4] = ( char *) malloc ((unsigned)strlen("-dontdereferencealias") + 1) ;
 	strcpy(contact_showentry[4], "-dontdereferencealias") ;
-
 	call_showentry(5, contact_showentry) ;
-
 	if (current_entry == NULLENTRY) {
 		ps_print(OPT, "Can't read ") ;
 		dn_print(OPT, dn, EDBOUT) ;
@@ -256,14 +227,12 @@ int call_add_alias (int argc, char **argv) {
 	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("treeStructure") ;
-
 		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
 				treeStrAVS = avs_cpy (eptr->attr_value) ;
 			}
 		}
 	}
-
 	if (treeStrAVS == NULLAV) {
 		ps_print(OPT, "Tree Structure Missing in ") ;
 		dn_print(OPT, dn, EDBOUT) ;
@@ -275,27 +244,22 @@ int call_add_alias (int argc, char **argv) {
 			return ;
 		}
 	}
-
 	/* This is where we have to start being rather careful, previously
 	 * we have just being reading and checking, but now we start to add
 	 * things in, changing in several places. Mistakes => inconsistencies
 	 * ie BAD...
 	 */
-
 	/* If we reach here, we should have the appropriate arguments,
 	 * one is the new object,
 	 * the other is an existing non-alias-entry object.
 	 * We now write the information to a draft file, and 'whongo'
 	 * the alias into the database.
 	 */
-
 	/* open the draft file for writing... */
-
 	if ((fd = fopen (fname, "w")) == (FILE *) NULL) {
 		ps_printf (OPT, "Can't open draft entry %s\n", fname);
 		return ;
 	}
-
 	fprintf(fd, "aliasedObjectName= ") ;
 	if ( ((tmp = ps_alloc (std_open)) != NULLPS) &&
 			(std_setup (tmp, fd) != NOTOK) ) {
@@ -306,12 +270,10 @@ int call_add_alias (int argc, char **argv) {
 	}
 	fprintf(fd, "\nobjectClass= quipuObject & alias & top\n") ;
 	fclose(fd) ;
-
 	if (move (objectname) != OK) {
 		ps_printf (OPT,"Unknown option %s\n",objectname);
 		return ;
 	}
-
 	/* now parse the files */
 	if ((fd = fopen (fname, "r")) == (FILE *) NULL) {
 		ps_printf (OPT, "Can't open draft entry %s\n", fname);
@@ -322,18 +284,15 @@ int call_add_alias (int argc, char **argv) {
 	fclose (fd);
 	if (parse_status != 0)
 		return ;
-
 	add_arg.ada_object = dn;
 	for (moddn = dn ; moddn->dn_parent != NULLDN; moddn=moddn->dn_parent)
 		;
 	entry_ptr->e_name = rdn_cpy (moddn->dn_rdn);
 	add_arg.ada_entry = entry_ptr->e_attributes;
-
 	if (rebind () != OK) {
 		entry_free (entry_ptr);
 		return ;
 	}
-
 	while (ds_addentry (&add_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0) {
 			entry_free (entry_ptr);
@@ -346,20 +305,16 @@ int call_add_alias (int argc, char **argv) {
 	ps_print (RPS, "\n");
 	entry_free (entry_ptr);
 	make_old (fname,draft_flag);
-
 	/* Now we have to add a "seeAlso=<DN>" attribute to the <AOJ> */
-
 	if (service_control(OPT, 1, contact_modify, &mod_arg.mea_common) == -1) {
 		ps_printf(OPT, "Add_alias: Badly wrong. Service controls for modify in error...\n") ;
 		return ;
 	}
-
 	dn_free(dn) ;
 	dn = dn_cpy(save_dn) ;
 	{
 		AV_Sequence	new_avs = avs_comp_alloc() ;
 		AttributeValue	new_AV = AttrV_alloc() ;
-
 		if ((str_ps = ps_alloc(str_open)) == NULLPS) {
 			ps_printf(OPT, "Ps alloc for your string failed.\n") ;
 			return ;
@@ -372,7 +327,6 @@ int call_add_alias (int argc, char **argv) {
 		dn_print(str_ps, oj_dn, EDBOUT) ;
 		*str_ps->ps_ptr = 0 ;
 		ps_free(str_ps) ;
-
 		new_AV = AttrV_cpy(str2AttrV(str_buffer, str2syntax("DN"))) ;
 		new_avs = avs_comp_new(AttrV_cpy(new_AV)) ;
 		emnew->em_what = as_comp_new(AttrT_new("seeAlso"), new_avs, NULLACL_INFO) ;
@@ -380,10 +334,8 @@ int call_add_alias (int argc, char **argv) {
 	emnew->em_next = NULLMOD ;
 	mod_arg.mea_object = aoj_dn;
 	mod_arg.mea_changes = emnew ;
-
 	if (rebind () != OK)
 		return ;
-
 	while (ds_modifyentry (&mod_arg, &mod_error) != DS_OK) {
 		if (dish_error (OPT, &mod_error) == 0) {
 			ps_print(OPT, "Unable to modify ") ;
@@ -397,7 +349,6 @@ int call_add_alias (int argc, char **argv) {
 	dn_print (RPS, aoj_dn, EDBOUT);
 	ps_print (RPS, "\n");
 	delete_cache (aoj_dn);	/* re-cache when next read */
-
 	dn_free(dn) ;
 	dn = dn_cpy(save_dn) ;
 }

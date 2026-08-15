@@ -113,11 +113,8 @@ int posnwidgets(WIDGET thesewdgts[], int starty) {
 	/* If no explicit position provided, put on the next level */
 	if (starty < 0)
 		starty = lowesty();
-
 	/* Set the position of the widgets, as dynamically as possible */
-
 	while (thesewdgts[cnt].type != FINISH) {
-
 		if (thesewdgts[cnt].type != DUMMY) {
 			/* If the widget is a scrollbar put on a new line */
 			if (thesewdgts[cnt].type == SCROLLBAR) {
@@ -125,18 +122,15 @@ int posnwidgets(WIDGET thesewdgts[], int starty) {
 				hght = LINES - starty;
 				x = 0;
 			} else
-
 				/* If the initial structure y-value is CRNL, put on a new line */
 				if (thesewdgts[cnt].y == CRNL) {
 					starty += WDGTHGHT;
 					hght = WDGTHGHT;
 					x = 0;
 				}
-
 			/* If we ain't got a width, make one based on the type/label-length */
 			if (thesewdgts[cnt].wdth <= 0)
 				setwdgtwdth(&thesewdgts[cnt], x);
-
 			/* If the widget won't fit, start a new line of widgets */
 			if (x + thesewdgts[cnt].wdth > COLS) {
 				starty += WDGTHGHT;
@@ -176,7 +170,6 @@ void setwdgtwdth(WIDGET *wdgt, int currx) {
 
 	if (expand = (wdgt->wdth == EXPAND))
 		wdgt->wdth = COLS - currx;
-
 	switch (wdgt->type) {
 	case LABEL:
 		len = strlen(wdgt->label) + 2;
@@ -235,9 +228,7 @@ void killwidgets(WIDGET *thesewdgts) {
 			delwin(thesewdgts[cnt++].wndw);
 		else ++cnt;
 	delwin(Text);
-
 	deleteactive();
-
 	Text = activelist.text[activelist.count-1];
 	if (Text != (WINDOW *)NULL)
 		wrefresh(Text);
@@ -272,7 +263,6 @@ void redraw () {
 #endif /* QUICKREFRESH */
 	for (i=0; i<activelist.count; i++)
 		rfrshwidgets(activelist.widgets[i]);
-
 	wrefresh(Text);
 }
 
@@ -293,13 +283,11 @@ void boxwdgt(WIDGET *wdgt, char xch, char ych) {
 	for (x = 1; x < wdgt->wdth-1; x++)
 		waddch(wdgt->wndw, xch);
 	waddch(wdgt->wndw, '.');
-
 	mvwaddch(wdgt->wndw, 1, 0, ych);
 	for (y = 1; y < wdgt->hght-1; y++) {
 		mvwaddch(wdgt->wndw, y, 0, ych);
 		mvwaddch(wdgt->wndw, y, wdgt->wdth-1, ych);
 	}
-
 	mvwaddch(wdgt->wndw, wdgt->hght-1, 0, '`');
 	for (x = 1; x < wdgt->wdth-1; x++)
 		waddch(wdgt->wndw, xch);
@@ -336,32 +324,24 @@ void printbar (int list_size, int first, int display_num) {
 
 	for(cnt = 0; currwidgets[cnt].type != SCROLLBAR; cnt++) ;
 	wdgt = &currwidgets[cnt];
-
 	wclear(wdgt->wndw);
 	boxwdgt(wdgt, '-', '|');
-
 	space_size = wdgt->hght - 4;
-
 	if(display_num == list_size) {
 		bar_size = space_size;
 		bar_pos = 1;
 	} else {
 		bar_size = (display_num*space_size)/(list_size+1);
 		bar_size = bar_size? bar_size: 1;
-
 		while(!((list_size*bar_pos)/(first*(space_size+1)))) bar_pos++;
 	}
-
 	while((bar_size + bar_pos - 1) > space_size) {
 		bar_size--;
 	}
-
 	for(cnt = 0; cnt < bar_size; cnt++)
 		mvwaddch(wdgt->wndw, cnt+1+bar_pos, 1, '*');
-
 	mvwaddch(wdgt->wndw, 1, 1, ']');
 	mvwaddch(wdgt->wndw, wdgt->hght-2, 1, '[');
-
 	wrefresh(wdgt->wndw);
 }
 
@@ -371,16 +351,13 @@ void printlabel(WIDGET *wdgt) {
 
 	labellen = strlen(wdgt->label);
 	wdgtlen = wdgt->wdth - 2;
-
 	if (labellen > wdgtlen)
 		wdgt->label[wdgtlen] = '\0';
-
 	if (wdgt->callch & CENTRE)
 		x = (wdgtlen - labellen)/2;
 	else if (wdgt->callch & LEFT)
 		x = 0;
 	else if (wdgt->callch & RIGHT)	x = wdgtlen - labellen;
-
 	mvwaddstr(wdgt->wndw,1,1+x,wdgt->label);
 	wrefresh(wdgt->wndw);
 }
@@ -435,7 +412,6 @@ void interact () {
 		/* Get a character input, and set the interrupt jump vector */
 		setjmp(env);
 		signal(SIGINT, int_quit);
-
 		move(0,0);
 		wrefresh(Text);
 		refresh();
@@ -443,14 +419,12 @@ void interact () {
 		if (isupper(ch))
 			ch = tolower(ch);
 		signal(SIGINT, jumpback);
-
 		/* Allow the user to refresh the entire screen, with a CTRL-L */
 		if (ch == '\014') {
 			redraw();
 			scrollbar('\0');
 			continue;
 		}
-
 		/* Search through the current widgets for one matching that required */
 		command = ch;
 		indx = findactiveinput(ch);
@@ -487,13 +461,11 @@ int findactiveinput (int ch) {
 			break;
 		}
 	}
-
 	/* See whether the 'ch' exists in the currently active widgets */
 	wdgts = activelist.widgets[activelist.count - 1];
 	indx = getwidgetindex(wdgts, ch);
 	if (indx >= 0)
 		return(indx);
-
 	/* If not, check the previously active widgets, if possible */
 	if (activelist.count <= 1)
 		return(-1);
@@ -544,7 +516,6 @@ WIDGET *getwidget(WIDGET wdgts[], int callch) {
 
 	indx = getwidgetindex(wdgts, callch);
 	if (indx >= 0) return(&(wdgts[indx]));
-
 	return((WIDGET *)NULL);
 }
 
@@ -556,7 +527,6 @@ int getwidgetindex(WIDGET wdgts[], int callch) {
 		++cnt;
 	}
 	if (wdgts[cnt].type != FINISH) return(cnt);
-
 	return(-1);
 }
 
@@ -569,16 +539,13 @@ void dialog(WIDGET *wdgt) {
 
 	labellen = strlen(wdgt->label);	/* The length of the prompt string  */
 	length = strlen(wdgt->dstr);	/* The length of the current string */
-
 	maxlen = wdgt->wdth - 4 - labellen;	/* The maximum length of shown str  */
 	blanks = malloc((unsigned)(maxlen + 2));
 	for (i=0; i<maxlen; i++)
 		blanks[i] = ' ';
 	blanks[i] = '\0';
-
 	endptr = &(wdgt->dstr[length]);	/* The next character pos'n to fill */
 	*endptr = '\0';
-
 	if (length > maxlen)
 		showptr = &(wdgt->dstr[length - maxlen]);
 	else
@@ -590,13 +557,11 @@ void dialog(WIDGET *wdgt) {
 #ifdef QUICKREFRESH
 	doupdate ();
 #endif /* QUICKREFRESH */
-
 	while ((ch = getchar() & 127) != '\n' && ch != '\r' && ch != '\f') {
 		if (ch == '\014') {			/* Allow for redrawing */
 			redraw();
 			continue;
 		}
-
 		if (ch == '\b' || ch == 127) {	/* Delete a character, with wrapping */
 			if (length == 0)
 				continue;
@@ -622,7 +587,6 @@ void dialog(WIDGET *wdgt) {
 #endif /* QUICKREFRESH */
 			continue;
 		}
-
 		if (ch == 21) {		/* ^U to delete the entire line of text */
 			length = 0;
 			endptr = wdgt->dstr;
@@ -636,7 +600,6 @@ void dialog(WIDGET *wdgt) {
 #endif /* QUICKREFRESH */
 			continue;
 		}
-
 		/* Otherwise, add the character if there is room and it ain't a control code */
 		if (length == 1024 || ch < 32)
 			continue;
@@ -671,14 +634,12 @@ void dialog(WIDGET *wdgt) {
 
 void setdialogstr(WIDGET *wdgt, char *dstr, int maxlen) {
 	if (wdgt->type != DIALOG) return;
-
 	wdgt->dstr = dstr;
 	wdgt->dstrlen = maxlen;
 }
 
 int getdialogstr(WIDGET *wdgt, char str[])		/* 'str' must be long enough... */ {
 	if (wdgt->type != DIALOG || wdgt->dstr == (char *)NULL) return(FALSE);
-
 	strcpy(str, wdgt->dstr);
 	return(TRUE);
 }
@@ -691,30 +652,22 @@ void toggle(WIDGET *wdgt) {
 
 	if (wdgt->tvalues == (char **)NULL)
 		return;
-
 	if (wdgt == getwidget(currwidgets, 't')) {
 		typetoggled = 1;
 		vwdgt = getwidget(currwidgets, 's');
 		strcpy(filtvalue[wdgt->tindx], vwdgt->dstr);
-
 		av_indx = 0;
 		while (av_typeindx[av_indx] != wdgt->tindx && av_typeindx[av_indx] >= 0)
 			av_indx++;
-
 		if (av_typeindx[av_indx] == wdgt->tindx)
 			av_indx++;
-
 		if (av_typeindx[av_indx] < 0)
 			av_indx = 0;
-
 		wdgt->tindx = av_typeindx[av_indx];
-
 		strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
 		typeindx = wdgt->tindx;
-
 		printdialog(vwdgt);
 	}
-
 	printtoggle(wdgt);
 }
 
@@ -770,12 +723,9 @@ int lowesty () {
 	WIDGET		*wdgts;
 
 	if (activelist.count <= 0)  return(0);
-
 	wdgts = activelist.widgets[activelist.count - 1];
 	while (wdgts[cnt].type != FINISH) ++cnt;
-
 	if (cnt == 0) return(0);
-
 	return((wdgts[cnt-1].y) + WDGTHGHT);
 }
 

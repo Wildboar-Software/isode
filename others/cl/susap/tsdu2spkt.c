@@ -393,7 +393,6 @@ static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 				basesize += s -> s_ulen + (s -> s_ulen > 254 ? 4 : 2);
 			break;
 		}
-
 	switch (s -> s_code) {
 	case SPDU_CN:
 	case SPDU_AC:
@@ -438,7 +437,6 @@ static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 		}
 		break;
 	}
-
 	if (basesize < 254)
 		basesize = 254;
 	c -> li = c -> pgi = 0;
@@ -474,7 +472,6 @@ static int end_spdu (int code, struct local_buf *c) {
 		*c -> top = code;
 		return OK;
 	}
-
 	return NOTOK;
 }
 
@@ -533,7 +530,6 @@ static void put2spdu (int code, int li, char *value, struct local_buf *c) {
 			*c -> ptr++ = li & 0xff;
 			c -> li += 4 + li;
 		}
-
 		bcopy (value, c -> ptr, li);
 		c -> ptr += li;
 	}
@@ -718,7 +714,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		Put_Item (PI_ENCLOSE, (char *) &s -> s_enclose);
 		/* NB: caller responsible for mapping s -> s_udata to user info */
 		break;
-
 #ifdef HULA
 
 	case SPDU_UD:
@@ -736,7 +731,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 				  s -> s_ud_called, &c);
 		/* NB: caller responsible for mapping s -> s_udata to user info */
 		break;
-
 #endif
 
 	case SPDU_TD:
@@ -970,7 +964,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		s -> s_errno = SC_PROTOCOL;
 		break;
 	}   /* end switch */
-
 	if ((end_spdu (s -> s_code, &c) == NOTOK) || (s -> s_errno != SC_ACCEPT)) {
 		if (s -> s_errno == SC_ACCEPT)
 			s -> s_errno = SC_CONGEST;
@@ -988,13 +981,11 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		printf ("\n     encoded hdr: len = %d, li = %d \n", c.len, c.li);
 #endif
 	}
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 0);
@@ -1006,7 +997,6 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		}
 	}
 #endif
-
 	return c.len ? OK : NOTOK;
 }
 
@@ -1015,7 +1005,6 @@ static uint32_t str2ssn (char *s, int n) {
 
 	for (u = 0L; n > 0; n--)
 		u = u * 10 + *s++ - '0';
-
 	return u;
 }
 
@@ -1042,34 +1031,28 @@ pullqb (struct qbuf *qb, int n) {
 
 	if (n > SEGMENT_MAX)
 		return NULLCP;
-
 	for (once = 1, cp = buffer, qp = NULL; n > 0; once = 0, cp += i, n -= i) {
 		if (qp == NULL && (qp = qb -> qb_forw) == qb)
 			return NULLCP;
-
 		i = min (qp -> qb_len, n);
 		if (once && i == n) {	/* special case */
 			cp = qp -> qb_data;
 			qp -> qb_data += i, qp -> qb_len -= i;
 			return cp;
 		}
-
 		if (buffer == NULL) {
 			if ((buffer = malloc ((unsigned) SEGMENT_MAX)) == NULL)
 				return NULLCP;
 			cp = buffer;
 		}
 		bcopy (qp -> qb_data, cp, i);
-
 		qp -> qb_data += i, qp -> qb_len -= i;
 		if (qp -> qb_len <= 0) {
 			remque (qp);
-
 			free ((char *) qp);
 			qp = NULL;
 		}
 	}
-
 	return buffer;
 }
 
@@ -1096,7 +1079,6 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	if ((base = pullqb (qb, nread = 2)) == NULL
 			|| (s = newspkt ((int) (si = *base++))) == NULL)
 		return NULLSPKT;
-
 	if (*((uint8_t *) base) == 255) {
 		if ((base = pullqb (qb, 2)) == NULL) {
 			s -> s_errno = SC_PROTOCOL;
@@ -1108,7 +1090,6 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	} else
 		s -> s_li = *((uint8_t *) base);
 	pgilen = pktlen = s -> s_li;
-
 	if (cat0)
 		switch (si) {
 		case SPDU_GT:
@@ -1134,7 +1115,6 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 		default:
 			break;
 		}
-
 	if ((si >= SI_TABLE_LEN)
 			|| ((pmask = si_table[si]) == PMASK_NOTSUPPORTED)) {
 		s -> s_errno = SC_PROTOCOL;
@@ -1144,7 +1124,6 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
-
 	s -> s_errno = SC_ACCEPT;
 	xbase = base;
 	while (pktlen && (s -> s_errno == SC_ACCEPT)) {
@@ -1205,7 +1184,6 @@ tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 				}
 			}
 		}
-
 		switch (code) {
 		case PGI_AR_LINK:
 			Set (SMASK_AR_OID);/* HACK! */
@@ -1681,20 +1659,16 @@ do_pgi:
 		}
 	}
 	/* NB: caller responsible for mapping user info to s -> s_qbuf */
-
 	if (cc)
 		*cc = nread;
 	{
 		/* "dangling" qbuf */
 		struct qbuf *qp;
-
 		if ((qp = qb -> qb_forw) != qb && qp -> qb_len <= 0) {
 			remque (qp);
-
 			free ((char *) qp);
 		}
 	}
-
 	switch (s -> s_code) {
 	case SPDU_AB:
 		If_Set (SMASK_SPDU_AB) {
@@ -1759,13 +1733,11 @@ do_pgi:
 		s -> s_errno = SC_PROTOCOL;
 		break;
 	}
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
@@ -1777,7 +1749,6 @@ do_pgi:
 		}
 	}
 #endif
-
 	return s;
 }
 
@@ -1795,25 +1766,18 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 	unsigned char   code,
 			 si;
 	struct ssapkt  *s;
-
 	/*
 	 *  Get si.
 	 */
-
 	base = qb -> qb_data;
-
 	if  ( (s = newspkt ((int) (si = *base++))) == NULL )
 		return NULLSPKT;
-
 	nread = 1;
-
 	/*
 	 *  Get li.
 	 */
-
 	if (*((uint8_t *) base) == 255) {
 		base += 2;
-
 		nread += 2;
 		s -> s_li =
 			(*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
@@ -1821,13 +1785,10 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		s -> s_li = *((uint8_t *) base);
 		nread++;
 	}
-
 	pktlen = s -> s_li;
-
 	/*
 	 *  Process the unit data PDU.
 	 */
-
 	switch (si) {
 	case SPDU_UD:
 		Set (SMASK_SPDU_UD);
@@ -1840,27 +1801,21 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
-
 	if ((si >= SI_TABLE_LEN) || ((pmask = si_table[si]) == PMASK_NOTSUPPORTED)) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
-
 	if (len < pktlen + nread) {
 		s -> s_errno = SC_PROTOCOL;
 		return s;
 	}
-
 	s -> s_errno = OK;
-
 	base++;
-
 	while (pktlen && (s -> s_errno == OK)) {
 		code = *base++;
 #ifdef HULADEBUG
 		printf ("\n     code = %x \n", code);
 #endif
-
 		if (*((uint8_t *) base) == 255) {
 			li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
 			xlen = 2;
@@ -1868,21 +1823,16 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 			li = *((uint8_t *) base);
 			xlen = 1;
 		}
-
 		base += xlen;
-
 		if (xlen > 1)
 			xlen += 2;
 		else
 			xlen++;
-
 		if (code >= PI_TABLE_LEN || !(pmask & pi_table[code])) {
 			s -> s_errno = SC_PROTOCOL;
 			break;
 		}
-
 		pktlen -= (xlen + li);
-
 		if (code < PI_TABLE_LEN) {
 			if (li) {
 				if (pi_table[code] & PMASK_VARLEN) {
@@ -1896,7 +1846,6 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 				}
 			}
 		}
-
 		switch (code) {
 		case PI_VERSION:
 			switch (si) {
@@ -1935,17 +1884,13 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 			s -> s_errno = SC_PROTOCOL;
 			break;
 		}
-
 	}    /* end while loop */
-
 	/* NB: caller responsible for mapping user info to s -> s_qbuf */
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				spkt2text (fp, s, 1);
@@ -1957,14 +1902,11 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 		}
 	}
 #endif
-
 	/*
 	 *  Update the pointer to the user information.
 	 */
-
 	qb -> qb_len -= (int) ( base - qb -> qb_data );
 	qb -> qb_data = base;
-
 #ifdef HULADEBUG
 	printf ("\n     smask = %x", s -> s_mask);
 	printf ("\n     calledlen = %d", s -> s_ud_calledlen);
@@ -1972,9 +1914,7 @@ udtsdu2spkt (struct qbuf *qb, int len) {
 	for (li=0; li < 25; li++)
 		printf (" %x ", *(base + li));
 #endif
-
 	return s;
-
 }
 
 #endif
@@ -1986,10 +1926,8 @@ newspkt (int code) {
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)
 		return NULL;
-
 	s -> s_code = code;
 	s -> s_qbuf.qb_forw = s -> s_qbuf.qb_back = &s -> s_qbuf;
-
 	return s;
 }
 
@@ -1999,9 +1937,7 @@ int freespkt (struct ssapkt *s) {
 
 	if (s == NULL)
 		return;
-
 	switch (s -> s_code) {
-
 #ifdef HULA
 	case SPDU_UD:
 		/*
@@ -2024,11 +1960,9 @@ int freespkt (struct ssapkt *s) {
 		for (qb = s -> s_qbuf.qb_forw; qb != &s -> s_qbuf; qb = qp) {
 			qp = qb -> qb_forw;
 			remque (qb);
-
 			free ((char *) qb);
 		}
 		break;
 	}
-
 	free ((char *) s);
 }

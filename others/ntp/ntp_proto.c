@@ -75,7 +75,6 @@ void transmit (struct ntp_peer *peer) {
 		transmit_osi (peer);
 		return;
 	}
-
 	pkt->status = sys.leap | peer->hmode;
 	VERS2PKT (pkt -> status, peer -> vers);
 	pkt->stratum = sys.stratum;
@@ -89,7 +88,6 @@ void transmit (struct ntp_peer *peer) {
 	pkt->org = peer->org;
 	pkt->rec = peer->rec;
 	gettimeofday(&txtv, (struct timezone *) 0);
-
 #ifdef notdef
 	if (peer->flags & PEER_FL_AUTHENABLE &&
 			peer -> vers == 2 &&
@@ -107,13 +105,10 @@ void transmit (struct ntp_peer *peer) {
 #endif
 		tstamp(&pkt->xmt, &txtv);
 	}
-
 	peer->xmt = pkt->xmt;
-
 	if ((peer->flags & (PEER_FL_BCAST|PEER_FL_REFCLOCK)) == 0) {
 		/* select correct socket to send reply on */
 		struct intf *ap;
-
 		ap = &addrs[peer->sock < 0 ? 0 : peer-> sock];
 		switch (peer->src.type) {
 		case AF_INET:
@@ -125,30 +120,23 @@ void transmit (struct ntp_peer *peer) {
 #ifdef	REFCLOCK
 	} else if (peer->flags & PEER_FL_REFCLOCK) {
 		/* Special version of code below, adjusted for refclocks */
-
 		peer->pkt_sent++;
 		i = peer->reach;	/* save a copy */
-
 		peer->reach = (peer->reach << 1) & NTP_WINDOW_SHIFT_MASK;
-
 		if (i && peer->reach == 0) {
 			advise (LLOG_NOTICE, NULLCP,
 					"Lost reachability with %.4s",
 					peer->refid.rid_string);
 		}
-
 		if (peer->reach == 0)
 			clear(peer);
-
 		if (peer->valid < 2)
 			peer->valid++;
 		else {
 			clock_filter(peer, 0.0, 0.0);	/* call with invalid values */
 			select_clock();		/* and try to reselect clock */
 		}
-
 		peer->timer = 1<<NTP_MINPOLL;	/* poll refclocks frequently */
-
 		refclock_input(peer, pkt);
 		return;
 #endif REFCLOCK
@@ -163,7 +151,6 @@ void transmit (struct ntp_peer *peer) {
 		return;
 #endif
 	}
-
 #ifdef	DEBUG
 	if (debug > 5) {
 		printf("\nSent ");
@@ -172,20 +159,16 @@ void transmit (struct ntp_peer *peer) {
 #endif
 	peer->pkt_sent++;
 	i = peer->reach;	/* save a copy */
-
 	peer->reach = (peer->reach << 1) & NTP_WINDOW_SHIFT_MASK;
-
 	if ((peer->reach == 0) &&
 			((peer->flags & PEER_FL_CONFIG) == 0) &&
 			(peer != &dummy_peer) && demobilize(&peer_list, peer))
 		return;
-
 	if (i && peer->reach == 0) {
 		advise (LLOG_NOTICE, NULLCP,
 				"Lost reachability with %s",
 				paddr (&peer->src));
 	}
-
 	if (peer->reach == 0) {
 		clear(peer);
 		if (peer->src.type == AF_INET)
@@ -193,7 +176,6 @@ void transmit (struct ntp_peer *peer) {
 					   earth, don't depend on local address
 					   any longer */
 	}
-
 	if (peer->valid < 2)
 		peer->valid++;
 	else {
@@ -202,10 +184,8 @@ void transmit (struct ntp_peer *peer) {
 		if (sys.peer != NULL)
 			poll_update(sys.peer, NTP_MINPOLL);
 	}
-
 	peer->timer = 1<<(MAX(MIN((int)peer->ppoll, MIN((int)peer->hpoll, NTP_MAXPOLL)),
 						  NTP_MINPOLL));
-
 	if (peer->reach == 0) {
 		if (peer->backoff == 0)
 			peer->backoff = BACKOFF_COUNT;
@@ -227,7 +207,6 @@ void refclock_input (struct ntp_peer *peer, struct ntpdata *pkt) {
 
 	if (read_clock(peer->sock, &tvp, &otvp))
 		return;
-
 	tstamp(&pkt->rec, tvp);
 	pkt->xmt = pkt->rec;
 	pkt->reftime = pkt->rec;
@@ -258,7 +237,6 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 
 	/* if we're only going to support NTP Version 2 then this stuff
 	   isn't necessary, right? */
-
 	if ((peer_mode = pkt->status & MODEMASK) == 0 && dst) {
 		/* packet from an older NTP implementation.  Synthesize the
 		   correct mode.  The mapping goes like this:
@@ -277,13 +255,11 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 		   ---------------	------------	----
 		   NTP Port		NTP Port	symmetric active
 		   not NTP Port		NTP Port	client		 */
-
 		if (dst->inet_ad.sin_port == servport)
 			peer_mode = MODE_SYM_ACT;
 		else
 			peer_mode = MODE_CLIENT;
 	}
-
 	if (peer_mode == MODE_CLIENT) {
 		/*
 		 * Special case: Use the dummy peer item that we keep around
@@ -303,7 +279,6 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 #endif
 	} else
 		peer = check_peer(dst, sock);
-
 	if (peer == NULL) {
 		peer = (struct ntp_peer *) malloc(sizeof(struct ntp_peer));
 		if (peer == NULL) {
@@ -327,10 +302,8 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 		 */
 		if (trusting)
 			peer->flags |= PEER_FL_SYNC;
-
 		enqueue(&peer_list, peer);
 	}
-
 	/*
 	 *  "pre-configured" peers are initially assigned a socket index of
 	 *  -1, which means we don't know which interface we'll use to talk
@@ -339,7 +312,6 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 	 */
 	if (peer->sock == -1)
 		peer->sock = sock;
-
 #ifdef	BROADCAST_NTP
 	/*
 	 *  Input frame matched a funny broadcast peer;  these peers only
@@ -352,14 +324,12 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 		return;
 	}
 #endif	/* BROADCAST_NTP */
-
 #if	0
 	if ((peer->flags & PEER_FL_AUTHENABLE) &&
 			pkt->mac) {
 		/* verify computed crypto-checksum */
 	}
 #endif
-
 	if (peer_mode < MODE_SYM_ACT || peer_mode > MODE_BROADCAST) {
 		TRACE (1, ("Bogus peer_mode %d from %s", peer_mode,
 				   (struct ntp_peer *) dst == peer ?
@@ -369,14 +339,12 @@ void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int s
 #endif
 		return;
 	}
-
 	if (peer->hmode < MODE_SYM_ACT || peer->hmode > MODE_BROADCAST) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Bogus hmode %d for peer %s", peer->hmode,
 				paddr (&peer->src));
 		abort();
 	}
-
 	peer->backoff = 0;
 	switch (actions[peer_mode - 1][peer->hmode - 1]) {
 	case ACT_RECV:
@@ -425,11 +393,9 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 
 	duplicate = (pkt->xmt.int_part == peer->org.int_part) &&
 				(pkt->xmt.fraction == peer->org.fraction);
-
 	bogus = ((pkt->org.int_part != peer->xmt.int_part) ||
 			 (pkt->org.fraction != peer->xmt.fraction))
 			|| (peer->xmt.int_part == 0);
-
 	peer->pkt_rcvd++;
 	peer->leap = pkt->status & LEAPMASK;
 	peer->vers = PKT2VERS(pkt->status);
@@ -447,7 +413,6 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 	peer->org = pkt->xmt;
 	tstamp(&peer->rec, tvp);
 	poll_update(peer, (int)peer->hpoll);
-
 	/*
 	 * may want to do something special here for Broadcast Mode peers to
 	 * allow these through
@@ -459,7 +424,6 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 		TRACE (3, ("process_packet: dropped duplicate or bogus"));
 		return;
 	}
-
 	/*
 	 *  Now compute local adjusts
 	 */
@@ -467,14 +431,12 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 	t2 = ul_fixed_to_double(&pkt->rec);
 	t3 = ul_fixed_to_double(&pkt->xmt);
 	t4 = ul_fixed_to_double(&peer->rec);
-
 	/*
 	 * although the delay computation looks different than the one in the
 	 * specification, it is correct.  Think about it.
 	 */
 	delay = (t2 - t1) - (t3 - t4);
 	offset = ((t2 - t1) + (t3 - t4)) / 2.0;
-
 	delay += 1.0/(unsigned long)(1L << -sys.precision)
 #ifndef	REFCLOCK
 			 + NTP_MAXSKW;
@@ -483,22 +445,18 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 #endif
 	if (peer->precision < 0 && -peer->precision < sizeof(long)*NBBY)
 		delay += 1.0/(unsigned long)(1L << -peer->precision);
-
 	if (delay < 0.0) {
 		peer->pkt_dropped++;
 		return;
 	}
-
 #ifndef	REFCLOCK
 	delay = MAX(delay, NTP_MINDIST);
 #else
 	delay = MAX(delay, (peer->flags & PEER_FL_REFCLOCK) ?
 				NTP_REFMINDIST : NTP_MINDIST);
 #endif
-
 	peer->valid = 0;
 	clock_filter(peer, delay, offset);  /* invoke clock filter procedure */
-
 	TRACE (1, ("host: %s : %f : %f : %f : %f : %f : %o",
 			   dst ? paddr (dst) : "refclock",
 			   delay, offset,
@@ -530,7 +488,6 @@ void clock_update (struct ntp_peer *peer) {
 	select_clock();
 	if (sys.peer != NULL)
 		poll_update(sys.peer, NTP_MINPOLL);
-
 	/*
 	 * Did we just sync to this peer?
 	 */
@@ -567,17 +524,12 @@ void clock_update (struct ntp_peer *peer) {
 			}
 		}
 #endif
-
 		temp = s_fixed_to_double(&peer->distance) + peer->estdelay;
 		double_to_s_fixed(&sys.distance, temp);
-
 		temp = s_fixed_to_double(&peer->dispersion) + peer->estdisp;
 		double_to_s_fixed(&sys.dispersion, temp);
-
 		sys.reftime = peer->rec;
-
 		TRACE (3, ("clock_update: synced to peer, adj clock"));
-
 		/*
 		 * Sanity check: is computed offset insane?
 		 */
@@ -588,11 +540,9 @@ void clock_update (struct ntp_peer *peer) {
 					peer->estoffset, paddr (&peer->src));
 			return;
 		}
-
 		clock_watchdog = 0;	/* reset watchdog timer */
 		if (adj_logical(peer->estoffset) > 0) {
 			struct ntp_peer *p = peer_list.head;
-
 			advise (LLOG_NOTICE, NULLCP,
 					"adjust: STEP %s st %d off %f drft %f cmpl %f",
 					paddr (&peer->src), peer->stratum,
@@ -600,7 +550,6 @@ void clock_update (struct ntp_peer *peer) {
 			TRACE (1, ("Clockset from %s stratum %d offset %f",
 					   paddr (&peer->src),
 					   peer->stratum, peer->estoffset));
-
 			while (p) {
 				clear(p);
 				p = p->next;
@@ -668,22 +617,18 @@ void poll_update (struct ntp_peer *peer, int new_hpoll) {
 	int interval;
 
 	peer->hpoll = MAX(NTP_MINPOLL, MIN(NTP_MAXPOLL, new_hpoll));
-
 #if	XTAL	/* if crystal controlled clock */
 	if (peer == sys.peer)
 #endif
 		peer->hpoll = NTP_MINPOLL;
-
 	interval = 1 << (MAX(MIN((int)peer->ppoll, MIN((int)peer->hpoll, NTP_MAXPOLL)),
 						 NTP_MINPOLL));
-
 #ifdef	REFCLOCK
 	if (peer->flags & PEER_FL_REFCLOCK)
 		interval = 1 << NTP_MINPOLL;
 #endif
 	if (interval == peer->timer)
 		return;
-
 	/* only randomize when poll interval changes */
 	if (interval < peer->timer) {
 		interval = (double)interval *
@@ -725,7 +670,6 @@ void clock_filter (struct ntp_peer *peer, double new_delay, double new_offset) {
 	}
 	peer->filter.offset[0] = new_offset;
 	peer->filter.delay[0] = new_delay;
-
 	samples = 0;
 	/*
 	 *  Now sort the valid (non-zero delay) samples into a temporary
@@ -754,14 +698,11 @@ void clock_filter (struct ntp_peer *peer, double new_delay, double new_offset) {
 			}
 		}
 		/* samples are now sorted by delay */
-
 		peer->estdelay = delay[0];
 		peer->estoffset = offset[0];
 	}
-
 	temp = 0.0;
 	w = 1.0;
-
 	for (i = 0; i < PEER_SHIFT; i++) {
 		if (i >= samples)
 			d = PEER_MAXDISP;
@@ -791,10 +732,8 @@ void select_clock () {
 	int i, j, stratums, candidates;
 	int sanity_check();
 	double dtmp;
-
 	candidates = 0;
 	stratums = 0;
-
 	while (peer != NULL && candidates < X_NTP_CANDIDATES) {
 		/*
 		 * Check if this is a candidate for "sys.peer"
@@ -828,7 +767,6 @@ void select_clock () {
 		 */
 		return;
 	}
-
 	/*
 	 *  Sort the list.  We assume that sanity_check() above trashed any
 	 *  peers which were stratum 0, so we can safely compare stratums
@@ -849,24 +787,19 @@ void select_clock () {
 			}
 		}
 	}
-
 	TRACE (3, ("select_clock: step2 %d candidates",
 			   candidates));
-
 	/* truncate the list at NTP_MAXLIST peers */
 	if (candidates > NTP_MAXLIST)
 		candidates = NTP_MAXLIST;
-
 	TRACE (3, ("select_clock: step3 %d candidates",
 			   candidates));
-
 	/* truncate list where number of different strata exceeds NTP_MAXSTRA */
 	for (stratums = 0, i = 1; i < candidates; i++) {
 		if (sel_lst[i - 1].peer->stratum != sel_lst[i].peer->stratum) {
 			if (++stratums > NTP_MAXSTRA) {
 				TRACE (2, ("select_clock: truncated to %d peers", i));
 				candidates = i;
-
 				break;
 			}
 		}
@@ -912,15 +845,12 @@ void select_clock () {
 			/* since we just happen to have this double floating
 			   around.. */
 			sel_lst[i].distance = dispersion;
-
 			precision_thres = NTP_MAXSKW + 1.0/(1<<-sys.precision);
 			if (sel_lst[i].peer->precision < 0 &&
 					-sel_lst[i].peer->precision < sizeof(long)*NBBY)
 				precision_thres +=
 					1.0/(1<<-sel_lst[i].peer->precision);
-
 			sel_lst[i].precision = precision_thres;
-
 			if (dispersion >= maxdispersion) {
 				maxdispersion = dispersion;
 				worst = i;
@@ -941,7 +871,6 @@ void select_clock () {
 			TRACE (4, (" %d left valid", candidates));
 			break;
 		}
-
 		TRACE (4, (" peer %s => TOSS",
 				   paddr(&sel_lst[worst].peer->src)));
 		/*
@@ -956,10 +885,8 @@ void select_clock () {
 		candidates--;
 		/* one more time.. */
 	}
-
 	TRACE (3, ("select_clock: step6 %d candidates",
 			   candidates));
-
 	/*
 	 *  Check to see if current peer is on the list of candidate peers.  If
 	 *  don't change sys.peer.  Note that if the first selected clock is
@@ -987,12 +914,10 @@ void select_clock () {
 			}
 		}
 	}
-
 	/*
 	 *  The currently selected peer (if any) isn't on the candidate list.
 	 *  Grab the first one and let it be.
 	 */
-
 	if (sys.peer != sel_lst[0].peer) {
 		if (sys.peer != NULL)
 			advise (LLOG_NOTICE, NULLCP,
@@ -1005,7 +930,6 @@ void select_clock () {
 					"clock: select peer %s stratum %d was UNSYNCED",
 					paddr (&sel_lst[0].peer->src),
 					sel_lst[0].peer->stratum);
-
 		sys.peer = sel_lst[0].peer;
 		peer_switches++;
 	}
@@ -1014,28 +938,23 @@ void select_clock () {
 int sanity_check (struct ntp_peer *peer) {
 	TRACE (7, ("Checking peer %s stratum %d",
 			   paddr (&peer->src), peer->stratum));
-
 	/* Snity check -1 - not really in consideration */
 	if (peer->flags & PEER_FL_SNOOZE)
 		return 0;
 	/* Sanity check 0. ?? */
 	if (!(peer->flags & PEER_FL_SYNC))
 		return(0);
-
 	/* Sanity check 1. */
 	if (peer->stratum <= 0 || peer->stratum >= NTP_INFIN)
 		return(0);
-
 	/* Sanity check 2.
 	   if peer.stratum is greater than one (synchronized via NTP),
 	   peer.refid must not match peer.dstadr */
-
 	if (peer->stratum > 1) {
 		int i;
 		for (i = 1; i < nintf; i++) {
 			if ((addrs[i].flags & INTF_VALID) == 0)
 				continue;
-
 			if (addrs[i].addr.type == AF_INET &&
 					peer->refid.rid_type == RID_INET &&
 					addrs[i].addr.inet_ad.sin_addr.s_addr
@@ -1047,9 +966,7 @@ int sanity_check (struct ntp_peer *peer) {
 								  &addrs[i].addr.psap_ad))
 				return 0;
 		}
-
 	}
-
 	/* Sanity check 3.
 	   Both peer.estdelay and
 	   peer.estdisp to be less than NTP_MAXWGT, which insures that the
@@ -1058,7 +975,6 @@ int sanity_check (struct ntp_peer *peer) {
 	if (peer->estdisp > (float)NTP_MAXWGT ||
 			peer->estdelay > (float)NTP_MAXWGT)
 		return(0);
-
 	/*  Sanity check 4.
 	    The peer clock must be synchronized... and the interval since
 	    the peer clock was last updated satisfy
@@ -1069,7 +985,6 @@ int sanity_check (struct ntp_peer *peer) {
 			(ul_fixed_to_double(&peer->org)
 			 - ul_fixed_to_double(&peer->reftime)) >= NTP_MAXAGE)
 		return(0);
-
 	TRACE (7, ("That one is certainly qualified %s",
 			   paddr (&peer->src)));
 	return(1);

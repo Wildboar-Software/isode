@@ -44,20 +44,15 @@ int makeconn (char *thehost, char *password, char *user) {
 
 	if ((initial = (struct type_RFA_Initiate *)malloc(sizeof *initial)) == NULL)
 		errexit ("memory", "out of");
-
 	initial -> user = str2qb (user, strlen (user), 1);
 	initial -> password = str2qb (password, strlen(password), 1);
-
 	if (encode_RFA_Initiate (&data, 1, 0, NULLCP, initial) == NOTOK) {
 		errmsg (NULLCP, "Error encoding data");
 		return 0;
 	}
 	data -> pe_context = 3;	/* hack */
-
 	result = ryconnect (thehost, data, myservice, mycontext, mypci);
-
 	free_RFA_Initiate (initial);
-
 	return result;
 }
 
@@ -86,7 +81,6 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 		errexit (NULLCP,"%s-%s: unknown application-entity",thehost,theservice);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		errexit (NULLCP, "address translation failed");
-
 	if ((ctx = ode2oid (thecontext)) == NULLOID)
 		errexit (NULLCP, "%s: unknown object descriptor", thecontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -99,22 +93,18 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
 						0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf, &data, 1, NULLQOS,
 						acc, aci)
 			== NOTOK)
 		acs_errexit (aca, "A-ASSOCIATE.REQUEST");
-
 	if (acc -> acc_result != ACS_ACCEPT) {
 		int slen;
 		char *str;
-
 		if (acc -> acc_ninfo > 0 && (str = prim2str(acc->acc_info[0], &slen)))
 			errexit (NULLCP, "association rejected: [%s] %*.*s",
 					 AcErrString (acc -> acc_result), slen, slen, str);
@@ -122,10 +112,8 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 			errexit (NULLCP, "association rejected: [%s]",
 					 AcErrString (acc -> acc_result));
 	}
-
 	ry_sd = acc -> acc_sd;
 	ACCFREE (acc);
-
 	if (RoSetService (ry_sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
 	return OK;
@@ -140,15 +128,12 @@ int closeconn () {
 
 	if (ry_sd == NOTOK)
 		return;
-
 	if (AcRelRequest (ry_sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_errexit (aca, "A-RELEASE.REQUEST");
-
 	if (!acr -> acr_affirmative) {
 		AcUAbortRequest (ry_sd, NULLPEP, 0, aci);
 		errexit (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
-
 	ACRFREE (acr);
 }
 
@@ -181,15 +166,12 @@ invoke (int op, caddr_t arg, caddr_t *res, int *err) {
 		errexit (NULLCP, "unknown return from RyStub=%d", result);
 		/* NOTREACHED */
 	}
-
 	return result;
 }
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_errmsg (rop, event);
-
 	cleanup ();
-
 	_exit (1);
 }
 
@@ -201,13 +183,11 @@ void ros_errmsg (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	errmsg (NULLCP, "%s: %s", event, buffer);
 }
 
 void acs_errexit (struct AcSAPabort *aca, char *event) {
 	acs_errmsg (aca, event);
-
 	cleanup ();
 	_exit (1);
 }
@@ -221,7 +201,6 @@ void acs_errmsg (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	errmsg (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -233,13 +212,9 @@ void	errexit (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_errmsg (what, fmt, ap);
-
 	cleanup ();
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -255,9 +230,7 @@ void	errmsg (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_errmsg (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -265,13 +238,10 @@ static void  _errmsg (char *what, char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
@@ -287,9 +257,7 @@ void	ryr_errmsg (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_errmsg (what, fmt, ap);
-
 	va_end (ap);
 }
 #else

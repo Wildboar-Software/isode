@@ -56,13 +56,10 @@ void interact () {
 
 	setjmp(env);
 	signal(SIGINT, intquit);
-
 	for (;;) {
 		uprint(":- ");
-
 		if (gets(commandline) == NULL) quitfn("");
 		callcommand(commandline);
-
 		signal(SIGINT, intquit);
 	}
 }
@@ -73,7 +70,6 @@ void intquit () {
 	while (1) {
 		uprint("\nReally exit? [y/n] - ");
 		if (gets(input) == NULL) quitfn("");
-
 		if ((int)strlen(input) > 1) {
 			uprint("y or n only! - ");
 			continue;
@@ -93,33 +89,25 @@ void ufnsearch (char *params) {
 	char *str;
 
 	signal(SIGINT, abort_command);
-
 	/* Zero current list */
 	dn_list_free(&currentlist);
 	currlistsize = 0;
-
 	/* Zero task and error counts */
 	requests_made = requests_failed = 0;
-
 	if (*params == '\0') {
 		uprint("You haven't entered a name to search on!\n");
 		return;
 	}
-
 	/* Count number of components in user friendly name */
 	str = params;
 	for (;;) {
 		while (*str != ',' && !isnull(*str))
 			str++;
-
 		if (isnull(*str))
 			break;
-
 		str++;
 	}
-
 	ufnresolve(params, NULLEntryList, unknown);
-
 	if (requests_failed > 0) {
 		sprintf(message,
 				"%d requests were sent of which %d failed.\n",
@@ -127,7 +115,6 @@ void ufnsearch (char *params) {
 				requests_failed);
 		uprint(message);
 	}
-
 	switch (currlistsize) {
 	case 0:
 		uprint("\nFailed to find anything!\n");
@@ -140,7 +127,6 @@ void ufnsearch (char *params) {
 	default:
 		sprintf(message, "\nFound %d good matches.\n", currlistsize);
 		uprint(message);
-
 		print_entry_list(currentlist);
 		break;
 	}
@@ -165,13 +151,10 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 	QCardinal *request_list;
 
 	ufname = str2ufname(name);
-
 	baselist = baseobjects;
-
 	if (do_ufn_resolve(baselist, ufname, is_leaf, &request_id) == QERR_ok) {
 		request_state request_status = RQ_processing;
 		signal(SIGINT, abort_query);
-
 		do {
 			do {
 				do {
@@ -186,22 +169,15 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 								&exceptfds,
 								(struct timeval *) NULL) <= 0);
 			} while (directory_wait(&request_list) == 0);
-
 			signal(SIGINT, abort_command);
-
 			results = get_ufn_results(request_id);
 			free((char *) request_list);
-
 			requests_made += results->tasks_sent;
 			requests_failed += results->tasks_failed;
-
 			match_state = results->match_status;
-
 			if (baseobjects == NULLEntryList)
 				dn_list_free(&baselist);
-
 			request_status = RQ_results_returned;
-
 			switch (match_state) {
 			case Failed:
 				break;
@@ -209,31 +185,25 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 			case GoodMatches:
 				new_current_list(results);
 				results->matches = NULLEntryList;
-
 				break;
 
 			case PoorComplete:
 				sprintf(message,
 						"Made poor matches for `%s'.\n",
 						results->resolved_part);
-
 				uprint(message);
 				uprint("Please indicate which ones you wish to follow up.\n");
-
 				if (query_matches(results->matches, &matches) == FALSE)
 					;
 				else {
 					if (matches != NULLEntryList) {
 						dn_list_free(&results->matches);
-
 						results->matches = matches;
 						results->match_num = 0;
-
 						while (matches != NULLEntryList) {
 							results->match_num++;
 							matches = matches->next;
 						}
-
 						new_current_list(results);
 						results->matches = NULLEntryList;
 					} else {
@@ -241,24 +211,20 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 						request_status = continue_ufn_search(matches,request_id);
 					}
 				}
-
 				break;
 
 			case PoorPartial:
 				sprintf(message,
 						"Made poor matches for `%s'.\n",
 						results->resolved_part);
-
 				uprint(message);
 				uprint("Please indicate which ones you wish to follow up.\n");
-
 				if (query_matches(results->matches, &matches) == FALSE)
 					break;
 				else {
 					ufname_result_free(&results);
 					request_status = continue_ufn_search(matches, request_id);
 				}
-
 				break;
 			}
 		} while (request_status == RQ_processing);
@@ -266,7 +232,6 @@ void ufnresolve(char *name, entryList baseobjects, known is_leaf) {
 		match_state = Failed;
 		results = NULLUfnResults;
 	}
-
 	ufname_result_free(&results);
 	_request_complete(request_id);
 }
@@ -282,24 +247,19 @@ void readentry (char *params) {
 	QCardinal *request_list;
 
 	signal(SIGINT, abort_command);
-
 	if (currentlist == NULLEntryList) {
 		uprint("No current entry list!\n");
 		return;
 	}
-
 	if (!isdigit(*params)) {
 		uprint("Invalid command syntax! Need `read <number>'.\n");
 		return;
 	}
-
 	entry_num = atoi(params);
-
 	if (entry_num < 1 || entry_num > currlistsize) {
 		uprint("Entry number out of range!\n");
 		return;
 	}
-
 	add_string_to_seq("2.5.4.3", &attrs_to_read);
 	add_string_to_seq("2.5.4.4", &attrs_to_read);
 	add_string_to_seq("2.5.4.6", &attrs_to_read);
@@ -311,12 +271,10 @@ void readentry (char *params) {
 	add_string_to_seq("2.5.4.16", &attrs_to_read);
 	add_string_to_seq("2.5.4.17", &attrs_to_read);
 	add_string_to_seq("2.5.4.20", &attrs_to_read);
-
 	for (count = 1, entries = currentlist;
 			count < entry_num && entries != NULLEntryList;
 			count++, entries = entries->next)
 		;
-
 	if (entries != NULLEntryList) {
 		if (do_read(entries->string_dn, &request_id, attrs_to_read) != QERR_ok) {
 			uprint("Read failed!\n");
@@ -326,9 +284,7 @@ void readentry (char *params) {
 		uprint("Invalid entry number!\n");
 		return;
 	}
-
 	signal(SIGINT, abort_query);
-
 	do {
 		do {
 			assoc_des = get_association_descriptor(request_id);
@@ -342,12 +298,9 @@ void readentry (char *params) {
 						&exceptfds,
 						(struct timeval *) NULL) <= 0);
 	} while (directory_wait(&request_list) == 0);
-
 	signal(SIGINT, abort_command);
 	results = get_read_results(request_id);
-
 	free((char *) request_list);
-
 	print_read_results(results, entries->string_dn);
 	read_result_free(&results);
 }
@@ -360,25 +313,19 @@ void print_read_results(readResults results, char *baseobject) {
 	char fname[LINESIZE];
 
 	errors = results->errors;
-
 	for (errors = results->errors; errors != NULLError; errors = errors->next)
 		error_count++;
-
 	if (results->entry == NULLAVList && error_count > 0) {
 		uprint("Cannot perform read!\n");
 		return;
 	}
-
 	friendlify(baseobject, fname);
-
 	sprintf(message, "Read `%s'.\n", fname);
 	uprint(message);
-
 	if (error_count > 0) {
 		sprintf(message, "Errors encountered: %d.\n\n", error_count);
 		uprint(message);
 	}
-
 	for (entry_attrs = results->entry;
 			entry_attrs != NULLAVList;
 			entry_attrs = entry_attrs->next) {
@@ -392,7 +339,6 @@ void print_read_results(readResults results, char *baseobject) {
 			uprint(message);
 		}
 	}
-
 	uprint("\n");
 }
 
@@ -403,25 +349,19 @@ void print_entry_list(entryList entries) {
 	if (entries != NULLEntryList) {
 		for (; entries != NULLEntryList; entries = entries->next) {
 			entry_count++;
-
 			if (line_count >= 15) {
 				uprint("< ** Press return to continue ** >");
 				fgetc(stdin);
 				line_count = 0;
 			}
-
 			friendlify(entries->string_dn, fname);
-
 			sprintf(message, " %d %s\n", entry_count, fname);
-
 			if ((int)strlen(message) > 80)
 				line_count += 2;
 			else
 				line_count++;
-
 			uprint(message);
 		}
-
 		uprint("\n");
 	}
 }
@@ -430,24 +370,18 @@ void printcommands (char *params) {
 	char buffer[LINESIZE];
 
 	signal(SIGINT, abort_command);
-
 	uprint("* Commands *\n\n");
-
 	strcpy(buffer, "quit, q\t\t\tQuit this application.\n\n");
 	uprint(buffer);
-
 	strcpy(buffer, "<name>, find <name>\tSearch for the named object,\n");
 	strcat(buffer,"\t\t\tfor example ");
 	strcat(buffer, "`damanjit, manufacturing, brunel, gb'.\n");
 	uprint(buffer);
-
 	strcpy(buffer,	"curr\t\t\tLook at the list of entries returned");
 	strcat(buffer, "by the last search.\n");
 	strcat(buffer, "This is referred to as the current list\n\n");
 	uprint(buffer);
-
 	uprint("<number>\t\tView numbered entry in current list.\n\n");
-
 	uprint("help, ?\t\t\tView commands.\n");
 }
 
@@ -455,7 +389,6 @@ void callcommand (char *commandline) {
 	char *params;
 
 	if (*commandline == '\0') return;
-
 	for (; isspace(*commandline); commandline++)
 		;
 	for (params = commandline; isspace(*params) && !isnull(*params); params++)
@@ -464,7 +397,6 @@ void callcommand (char *commandline) {
 		;
 	for (; isspace(*params) && !isnull(*params); params++)
 		;
-
 	if ((strncmp(commandline, "quit", 4) == 0 && !isalnum(commandline[4])) ||
 			(*commandline == 'q' && strlen(commandline) == 1))
 		quitfn(params);
@@ -483,21 +415,17 @@ void callcommand (char *commandline) {
 
 void new_current_list(ufnResults results) {
 	if (currentlist != NULLEntryList) dn_list_free(&currentlist);
-
 	currlistsize = results->match_num;
 	currentlist = results->matches;
-
 	results->matches = NULLEntryList;
 }
 
 void looklist (char *params) {
 	signal(SIGINT, abort_command);
-
 	if (currentlist == NULLEntryList) {
 		uprint("No current list at present!\n");
 		return;
 	}
-
 	uprint("\n");
 	print_entry_list(currentlist);
 }
@@ -507,15 +435,12 @@ QBool query_matches(entryList matches, entryList *returnlist) {
 	char fname[LINESIZE], input[LINESIZE];
 
 	uprint("\n");
-
 	for (curr_poor_match = matches;
 			curr_poor_match != NULLEntryList;
 			curr_poor_match = curr_poor_match->next) {
 		friendlify(curr_poor_match->string_dn, fname);
-
 		sprintf(message, "`%s'? [y/n/q]\n:- ", fname);
 		uprint(message);
-
 		while (1) {
 			if (gets(input) == NULL) quitfn("");
 			if ((int)strlen(input) > 1) {
@@ -534,10 +459,8 @@ QBool query_matches(entryList matches, entryList *returnlist) {
 			} else
 				uprint("y, n or q only!\n:- ");
 		}
-
 		*input = '\0';
 	}
-
 	*returnlist = good_matches;
 	return TRUE;
 }

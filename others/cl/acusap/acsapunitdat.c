@@ -76,64 +76,50 @@ int	AcUnitDataRequest ( OID context, AEI callingtitle, AEI calledtitle,
 	struct type_ACS_AUDT__apdu *pdu;
 
 	isodetailor ("acsap");
-
 	missingP (context);
 #ifdef	notdef
 	missingP (callingtitle);
 	missingP (calledtitle);
 #endif
-
 	missingP (data);
 	toomuchP (data, ndata, NACDATA, "user");
 	if ( ndata <= 0 )
 		acusaplose (aci, ACS_PARAMETER, NULLCP,
 					"illegal number of ASDUs (%d)", ndata );
 	missingP (aci);
-
 	smask = sigioblock ();
-
 	if ((acb = newacublk ()) == NULL) {
 		sigiomask (smask);
 		return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 	}
-
 	pe = NULLPE;
 	if ((pdu = (struct type_ACS_AUDT__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto no_good;
 	}
-
 	pdu -> application__context__name = context;
-
 	titles2pdu ( callingtitle, calledtitle, pdu );
-
 	/*  Unfortunately info2_apdu() below only does fully encoded data */
 	/*  Will change to allow simple encoding later */
-
 	if (data && ndata > 0
 			&& (pdu -> user__information = info2_apdu (acb, aci, data, ndata))
 			== NULL)
 		goto no_good;
-
 	if ( encode_ACS_AUDT__apdu (&pe, 1, 0, NULLCP, pdu) == NOTOK ) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 					PY_pepy);
 		goto no_good;
 	}
-
 	pp = NULLPC;
 	if ( ctx2block (ctxlist, acb, &pp, aci) == NOTOK ) /* set AUDT p-context */
 		goto no_good;
 	pe -> pe_context = acb -> acb_id;
-
 #ifdef	DEBUG
 	if (acsaplevel & ISODELOG_PDUS) ACU_print (pe, "AUDT-apdu", 0);
 #endif
-
 	result = PUnitDataRequest (callingaddr, calledaddr,
 							   ctxlist, &pe, 1, qos, pi);
-
 	if (pp) {    /* created an AUDT context for PUnitDataRequest, so free it */
 		ctxlist -> pc_nctx--;
 		pp -> pc_id = 0;
@@ -142,13 +128,11 @@ int	AcUnitDataRequest ( OID context, AEI callingtitle, AEI calledtitle,
 			oid_free (pp -> pc_atn);
 		pp -> pc_asn = pp -> pc_atn = NULLOID;
 	}
-
 	if ( result == NOTOK) {
 		ps2aculose (NULLACB, aci, "PUnitDataRequest", pa);
 		goto no_good;
 	}
 	goto out;
-
 no_good:
 	;
 	result = NOTOK;
@@ -184,24 +168,18 @@ int	AcUnitDataBind ( int sd, int binding, OID context, AEI callingtitle, AEI cal
 	struct PSAPabort *pa = &pi -> pi_abort;
 
 	isodetailor ("acsap");
-
 	missingP (context);
 	missingP (aci);
-
 	/* binding is static by default */
 	/* but if dynamic calledaddr and calledtitle may be reset, AcUnitDataRebind */
-
 	if ( binding == BIND_DYNAMIC ) {
 		missingP (callingaddr);
 	} else {
 		missingP (calledaddr);
 	}
-
 	smask = sigioblock ();
-
 	/*  Bind remembers the input parameters, not the processed AUDT PE */
 	/*  necessary to unhook the AUDT PE from user space. */
-
 	if ( sd == NOTOK ) {
 		if ((acb = newacublk ()) == NULL) {
 			sigiomask (smask);
@@ -215,25 +193,19 @@ int	AcUnitDataBind ( int sd, int binding, OID context, AEI callingtitle, AEI cal
 							   "invalid association descriptor");
 		}
 	}
-
 	acb -> acb_binding = ((binding == BIND_DYNAMIC) ? binding : BIND_STATIC);
-
 	if ((acb -> acb_context = oid_cpy (context)) == NULLOID) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto no_good;
 	}
-
 	if ( titles2block ( callingtitle, calledtitle, acb, aci ) == NOTOK )
 		goto no_good;
-
 	{
 		pp = NULLPC;
 		if ( ctx2block ( ctxlist, acb, &pp, aci ) == NOTOK )
 			goto no_good;
-
 		result = PUnitDataBind ( acb -> acb_fd, callingaddr, calledaddr,
 								 ctxlist, qos, pi );
-
 		if (pp) {    /* free part of created AUDT context */
 			ctxlist -> pc_nctx--;
 			pp -> pc_id = 0;
@@ -242,24 +214,19 @@ int	AcUnitDataBind ( int sd, int binding, OID context, AEI callingtitle, AEI cal
 			pp -> pc_asn = pp -> pc_atn = NULLOID;
 		}
 	}
-
 	if ( result == NOTOK ) {
 		ps2aculose (NULLACB, aci, "PUnitDataBind", pa);
 		goto no_good;
 	}
-
 	acb -> acb_fd = result;
 	/*  acb -> acb_uabort = PUnitDataUnbind; ? */
-
 	/*  set flags - for connectionless both sides of binding "association" */
 	/*                  should be able to initiate operations */
 	acb -> acb_flags |= ACB_AUDT;
 	acb -> acb_flags |= ACB_ACS;  /* may be necessary to fake out rosap */
 	acb -> acb_flags |= ACB_INIT; /* may be necessary to fake out rosap */
-
 	sigiomask (smask);
 	return result;
-
 no_good:
 	;
 	freeacublk (acb);
@@ -282,37 +249,30 @@ int	AcUnitDataRebind ( int sd, AEI calledtitle, struct  PSAPaddr *calledaddr, st
 
 	missingP (calledaddr);
 	missingP (aci);
-
 	smask = sigioblock ();
-
 	if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
 		acusaplose (aci, ACS_PARAMETER, NULLCP,
 					"invalid association descriptor");
 		goto no_good;
 	}
-
 	if ( acb -> acb_binding != BIND_DYNAMIC ) {
 		acusaplose (aci, ACS_PARAMETER, NULLCP,"association cannot be rebound");
 		goto no_good;
 	}
-
 	/*  free any old called title */
 	if ( acb -> acb_calledtitle ) {
 		AEIFREE ( acb -> acb_calledtitle );
 		free ( acb -> acb_callingtitle );
 	}
-
 	if ( titles2block ( acb -> acb_callingtitle, calledtitle, acb, aci )
 			== NOTOK )
 		goto no_good;
-
 	if ( PUnitDataRebind ( acb -> acb_fd, calledaddr, pi) == NOTOK ) {
 		ps2aculose (NULLACB, aci, "PUnitDataRebind", pa);
 		goto no_good;
 	}
 	sigiomask (smask);
 	return OK;
-
 no_good:
 	;
 	sigiomask (smask);
@@ -342,45 +302,34 @@ int	AcUnitDataWrite ( int sd, PE *data, int ndata, struct  AcSAPindication *aci 
 	if ( ndata <= 0 )
 		acusaplose (aci, ACS_PARAMETER, NULLCP,
 					"illegal number of ASDUs (%d)", ndata );
-
 	missingP (aci);
-
 	smask = sigioblock ();
-
 	if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
 		sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
-
 	if ((pdu = (struct type_ACS_AUDT__apdu *) calloc (1, sizeof *pdu))
 			== NULL) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
 		goto no_good;
 	}
-
 	pdu -> application__context__name = acb -> acb_context;
-
 	titles2pdu ( acb -> acb_callingtitle,  acb -> acb_calledtitle, pdu );
-
 	/*  Unfortunately info2_apdu() below only does fully encoded data */
 	/*  Will change to allow simple encoding later */
-
 	if ((pdu -> user__information = info2_apdu (acb, aci, data, ndata)) == NULL)
 		goto no_good;
-
 	pe = NULLPE;
 	if ( encode_ACS_AUDT__apdu (&pe, 1, 0, NULLCP, pdu) == NOTOK ) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, "error encoding PDU: %s",
 					PY_pepy);
 		goto no_good;
 	}
-
 	pe -> pe_context = acb -> acb_id;
 	if ( (result = PUnitDataWrite ( sd, &pe, 1, pi ))  ==  NOTOK )
 		ps2aculose (NULLACB, aci, "PUnitDataWrite", pa);
 	goto out;
-
 no_good:
 	;
 	result = NOTOK;
@@ -426,76 +375,58 @@ int AcUnitDataRead (
 	struct type_ACS_AUDT__apdu *pdu;
 
 	isodetailor ("acsap");
-
 	missingP (acs);
 	missingP (aci);
-
 	smask = sigioblock ();
-
 	if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT)) {
 		sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
-
 	ps = &acs -> acs_start;
 	bzero ((char *) acs,  sizeof *acs );
-
 	if ( PUnitDataRead (acb -> acb_fd, ps, secs, pi) == NOTOK ) {
 		ps2aculose (NULLACB, aci, "PUnitDataRead", pa);
 		return NOTOK;
 	}
-
 	pdu = NULL;
 	if (ps -> ps_ninfo < 1) {
 		acusaplose (aci, ACS_PROTOCOL, NULLCP,
 					"no user-data on P-UNIT-DATA");
 		goto no_good;
 	}
-
 	pe = ps -> ps_info[0];
 	ctx = pe -> pe_context;
 	result = decode_ACS_AUDT__apdu (pe, 1, NULLIP, NULLVP, &pdu);
-
 #ifdef	DEBUG
 	if (result == OK && (acsaplevel & ISODELOG_PDUS))
 		ACU_print (pe, "AUDT-apdu", 1);
 #endif
-
 	pe_free (pe);
 	pe = ps -> ps_info[0] = NULLPE;
-
 	if (result == NOTOK) {
 		acusaplose (aci, ACS_PROTOCOL, NULLCP, "%s", PY_pepy);
 		goto no_good;
 	}
-
 	/************/
 	/*  validate presentation context for AUDT ACSE PCI */
 	/*  where HULA folded AUDT PCI into abstract syntax for ACSE PCI */
 	/*  and assure application context is present */
 	/************/
-
 	if ( validaudtctx ( ctx, acb, ps, aci ) == NOTOK )
 		goto no_good;
-
 	if ( pdu -> application__context__name == NULLOID ) {
 		acusaplose (aci, ACS_CONGEST, NULLCP, NULLCP);
 		goto no_good;
 	}
-
 	/************/
 	/*  now set the AcuSAPstart structure for the indication */
 	/************/
-
 	acs -> acs_sd = acb -> acb_fd;
-
 	pdu2start ( pdu, acs ); /* move context and titles to start struct */
-
 	if (apdu2_info (acb, aci, pdu -> user__information, acs -> acs_info,
 					&acs -> acs_ninfo) == NOTOK)
 		goto no_good;
-
 	for (i = ps -> ps_ninfo - 1; i >= 0; i--)
 		if (ps -> ps_info[i]) {
 			pe_free (ps -> ps_info[i]);
@@ -504,7 +435,6 @@ int AcUnitDataRead (
 	ps -> ps_ninfo = 0;
 	free_ACS_AUDT__apdu (pdu);
 	return OK;
-
 no_good:
 	;
 	if (pdu)
@@ -531,15 +461,12 @@ int AcUnitDataUnbind (
 	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	missingP (aci);
-
 	smask = sigioblock ();
-
 	if ((acb = findacublk (sd)) == NULL) {
 		sigiomask (smask);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
 	}
-
 	if ((result = PUnitDataUnbind (acb -> acb_fd, pi))
 			== NOTOK) {
 		ps2aculose (acb, aci, "PUnitDataUnbind", pa);
@@ -548,13 +475,10 @@ int AcUnitDataUnbind (
 		else
 			goto out1;
 	}
-
 	result = OK;
-
 out2:
 	;
 	freeacublk (acb);
-
 out1:
 	;
 	sigiomask (smask);
@@ -578,16 +502,12 @@ int AcuSave (
 	struct PSAPabort  *pa = &pi -> pi_abort;
 
 	isodetailor ("acsap");
-
 	missingP (vec);
 	missingP (aci);
-
 	/*  assume here only when process spawned by daemon on initial UD indication */
 	/*  so no need to hold signals with sigioblock() */
-
 	/*  if AcuSave() is called before AcUnitDataBind() (sd==NOTOK) */
 	/*  association descriptor returned is input to AcUnitDataBind() */
-
 	if ( sd == NOTOK ) {
 		if ((acb = newacublk ()) == NULL)
 			return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
@@ -595,13 +515,11 @@ int AcuSave (
 	} else if ((acb = findacublk (sd)) == NULL || !(acb -> acb_flags & ACB_AUDT))
 		return acusaplose (aci, ACS_PARAMETER, NULLCP,
 						   "invalid association descriptor");
-
 	if ( (result = PuSave ( sd, vecp, vec, pi) ) == NOTOK) {
 		ps2aculose (NULLACB, aci, "PuSave", pa);
 		if ( sd == NOTOK ) freeacublk (acb);
 		return NOTOK;
 	}
-
 	acb->acb_fd = result;
 	return result;
 }
@@ -630,7 +548,6 @@ int	titles2block ( AEI callingtitle, AEI calledtitle, struct assocblk *acb, stru
 		po -> aei_ae_id = pi -> aei_ae_id;
 		po -> aei_flags = pi -> aei_flags;
 	}
-
 	if ( !calledtitle )
 		acb -> acb_calledtitle = NULLAEI;
 	else if ( calledtitle != acb -> acb_calledtitle ) {
@@ -649,7 +566,6 @@ int	titles2block ( AEI callingtitle, AEI calledtitle, struct assocblk *acb, stru
 		po -> aei_flags = pi -> aei_flags;
 	}
 	return OK;
-
 no_mem:
 	;
 	if ( acb -> acb_callingtitle ) {
@@ -710,19 +626,15 @@ int ctx2block (
 	acb -> acb_audtpci = NULLOID;
 	if (ctxlist -> pc_nctx >= NPCTX)
 		return acusaplose (aci, ACS_PARAMETER, NULLCP, "too many contexts");
-
 	/* HULA assumes the OID of the AUDT apdu is the same as other ACSE apdus */
 	/* but to get the oid for acse pci should no longer be a database read */
-
 	if ((oid = ode2oid (AC_ASN)) == NULLOID)
 		return acusaplose (aci, ACS_PARAMETER, NULLCP, "%s: unknown", AC_ASN);
-
 	/*  HULA is allowing, at least for now, a default context for AUDT */
 	if ( ctxlist -> pc_nctx <= 0 ) {
 		acb -> acb_id = PE_DFLT_CTX;
 		return OK;
 	}
-
 	i = ctxlist -> pc_nctx - 1, ctx = 1;
 	for (pcx = ctxlist -> pc_ctx; i >= 0; i--, pcx++) {
 		if (oid_cmp (pcx -> pc_asn, oid) == 0) {
@@ -734,29 +646,23 @@ int ctx2block (
 		if (ctx <= pcx -> pc_id)
 			ctx = pcx -> pc_id + 2;
 	}
-
 	/*  there were context(s) input but not one for AUDT - will create one */
-
 	pcx -> pc_id = ctx;
 	if ((pcx -> pc_asn = oid_cpy (oid)) == NULLOID)
 		goto no_mem;
-
 	if ((pcx -> pc_atn = ode2oid (BER)) == NULLOID) {
 		oid_free (pcx -> pc_asn);
 		return acusaplose (aci, ACS_PARAMETER, NULLCP, "%s: unknown", BER);
 	}
-
 	if ((pcx -> pc_atn = oid_cpy (pcx -> pc_atn)) == NULLOID ) {
 		oid_free (pcx -> pc_asn);
 		goto no_mem;
 	}
-
 	ctxlist -> pc_nctx++;
 	acb -> acb_id = pcx -> pc_id;
 	acb -> acb_audtpci = pcx -> pc_asn;
 	*ppcx =  pcx;
 	return OK;
-
 no_mem:
 	;
 	return acusaplose (aci, ACS_CONGEST, NULLCP, "out of memory");
@@ -775,9 +681,7 @@ int validaudtctx (
 
 	/*  checks p-context on AUDT indication equals local AUDT PCI context */
 	/*  where AUDT PCI = ACSE PCI since HULA put AUDT in with ACSE */
-
 	i = ps -> ps_ctxlist.pc_nctx;
-
 	if ( acb -> acb_id == PE_DFLT_CTX ) {
 		if ( i == 0 )
 			return OK;
@@ -785,23 +689,19 @@ int validaudtctx (
 			return acusaplose (aci, ACS_PROTOCOL, NULLCP,
 							   "contexts not supported");
 	}
-
 	/*  since only the indirect reference context id was retrieved from the PE, */
 	/*  must search through the context list on the indication to get direct ref */
-
 	for (pp = ps -> ps_ctxlist.pc_ctx; i > 0; i--, pp++) {
 		if ( pp -> pc_id == ctx ) break;
 		if ( pp -> pc_result == PC_ACCEPT)
 			acb -> acb_rosid = pp -> pc_id;
 	}
-
 	if ( i <= 0 )
 		return acusaplose (aci, ACS_PROTOCOL, NULLCP,
 						   "wrong ASN for ACSE");
 	if (pp -> pc_result != PC_ACCEPT)
 		return acusaplose (aci, ACS_PROTOCOL, NULLCP,
 						   "PCI for ACSE not accepted");
-
 	if (oid_cmp (pp -> pc_asn, acb -> acb_audtpci))
 		return acusaplose (aci, ACS_PROTOCOL, NULLCP,
 						   "wrong ASN for ACSE");
@@ -816,7 +716,6 @@ int pdu2start (
 ) {
 	acs -> acs_context = pdu -> application__context__name;
 	pdu -> application__context__name = NULLOID;
-
 	acs -> acs_callingtitle.aei_ap_title = pdu -> calling__AP__title;
 	pdu-> calling__AP__title = NULLPE;
 	acs -> acs_callingtitle.aei_ae_qualifier =
@@ -832,13 +731,11 @@ int pdu2start (
 			pdu -> calling__AE__invocation__id -> parm;
 		acs -> acs_callingtitle.aei_flags |= AEI_AE_ID;
 	}
-
 	acs -> acs_calledtitle.aei_ap_title = pdu -> called__AP__title;
 	pdu -> called__AP__title = NULLPE;
 	acs -> acs_calledtitle.aei_ae_qualifier =
 		pdu -> called__AE__qualifier;
 	pdu -> called__AE__qualifier = NULLPE;
-
 	if (pdu -> called__AP__invocation__id) {
 		acs -> acs_calledtitle.aei_ap_id =
 			pdu -> called__AP__invocation__id -> parm;

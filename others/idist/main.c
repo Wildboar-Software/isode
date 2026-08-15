@@ -90,18 +90,14 @@ int main (int argc, char *argv[]) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	isodetailor (myname, 1);
-
 	pw = getpwuid(userid = getuid());
 	if (pw == NULL)
 		adios (NULLCP, "Who are you?");
-
 	strcpy(user, pw->pw_name);
 	strcpy(homedir, pw->pw_dir);
 	groupid = pw->pw_gid;
 	host = getlocalhost ();
-
 	while ((opt = getopt (argc, argv, "f:m:d:DcnqbuRvwyhiQ")) != EOF)
 		switch (opt) {
 		case 'f':
@@ -187,9 +183,7 @@ int main (int argc, char *argv[]) {
 	*hp = NULL;
 	argc -= optind;
 	argv += optind;
-
 	mkstemp(utmpfile);
-
 	if (cmdargs)
 		docmdargs(argc, argv);
 	else {
@@ -207,7 +201,6 @@ int main (int argc, char *argv[]) {
 		if (nerrs == 0)
 			docmds(dhosts, argc, argv);
 	}
-
 	return(nerrs != 0);
 }
 
@@ -233,7 +226,6 @@ int docmdargs (int nargs, char *args[]) {
 
 	if (nargs < 2)
 		usage();
-
 	prev = NULL;
 	for (i = 0; i < nargs - 1; i++) {
 		nl = makenl(args[i]);
@@ -244,7 +236,6 @@ int docmdargs (int nargs, char *args[]) {
 			prev = nl;
 		}
 	}
-
 	cp = args[i];
 	if ((dest = index(cp, ':')) != NULL)
 		*dest++ = '\0';
@@ -252,7 +243,6 @@ int docmdargs (int nargs, char *args[]) {
 	hosts = expand(&tnl, E_ALL);
 	if (nerrs)
 		exit(1);
-
 	if (dest == NULL || *dest == '\0')
 		cmds = NULL;
 	else {
@@ -260,7 +250,6 @@ int docmdargs (int nargs, char *args[]) {
 		cmds->sc_options = options;
 		cmds->sc_name = dest;
 	}
-
 	if (debug) {
 		printf("docmdargs()\nfiles = ");
 		prnames(files);

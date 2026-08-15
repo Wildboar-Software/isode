@@ -32,10 +32,8 @@ int main (int argc, char **argv, char **envp) {
 			sbo = &outgoing;
 
 	reportailor (argv[0]);
-
 	if (argc != 2)
 		adios (NULLCP, "usage: %s \"host\"", argv[0]);
-
 	/* really should postpone this until after the session connect so we
 	   can bind to the same network address (in the case of a multi-homed ES) */
 	if ((aei = str2aei (PLocalHostName (), mycontext)) == NULLAEI)
@@ -53,14 +51,12 @@ int main (int argc, char **argv, char **envp) {
 	}
 	if ((taddr = taddr2str (ta)) == NULLCP)
 		adios (NULLCP, "taddr2str failed");
-
 	if ((aei = str2aei (argv[1], mycontext)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   argv[1], mycontext);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
 	sz = &pa -> pa_addr;
-
 	bzero ((char *) sbo, sizeof *sbo);
 	sbo -> sb_requirements = SR_BASUBSET;
 	sbo -> sb_settings = 0;
@@ -72,7 +68,6 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_isn = SERIAL_NONE;
-
 	/* we pass the transport address we are listening on in the initial
 	   user data */
 	if (SConnRequest (&sbo -> sb_connect, NULLSA, sz, sbo -> sb_requirements,
@@ -88,7 +83,6 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&sc -> sc_responding),
 			sprintb (sc -> sc_requirements, RMASK), sc -> sc_isn,
 			sc -> sc_ssdusize);
-
 	sbo -> sb_sd = sc -> sc_sd;
 	sbo -> sb_requirements = sc -> sc_requirements;
 	sbo -> sb_settings = sc -> sc_settings;
@@ -101,9 +95,7 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_ssn = sbo -> sb_isn = sc -> sc_isn;
-
 	SCFREE (sc);
-
 	/* now wait for the other end to call us back */
 	for (;;) {
 		if (TNetAccept (&vecp, vec, 0, NULLFD, NULLFD, NULLFD, NOTOK, td)
@@ -114,11 +106,9 @@ int main (int argc, char **argv, char **envp) {
 			else
 				adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 		}
-
 		if (vecp > 0)
 			break;
 	}
-
 	if (SInit (vecp, vec, ss, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.INDICATION: %s",
 			   SErrString (sa -> sa_reason));
@@ -128,10 +118,8 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&ss -> ss_calling), saddr2str (&ss -> ss_called),
 			sprintb (ss -> ss_requirements, RMASK), ss -> ss_isn,
 			ss -> ss_ssdusize);
-
 	/* stop listening, we have what we want */
 	TNetClose (NULLTA, td);
-
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;
 	sbi -> sb_connect = ss -> ss_connect;	/* struct copy */
@@ -161,21 +149,16 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef	dotoken
 	sbi -> sb_ssn = sbi -> sb_isn = ss -> ss_isn;
-
 	SSFREE (ss);
-
 	if (SConnResponse (sbi -> sb_sd, &sbi -> sb_connect, NULLSA, SC_ACCEPT,
 					   sbi -> sb_requirements, sbi -> sb_settings, sbi -> sb_isn,
 					   NULLCP, 0, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.RESPONSE: %s", SErrString (sa -> sa_reason));
-
 	/* do work here */
-
 	if (SRelRequest (sbo -> sb_sd, NULLCP, 0, NOTOK, sr, si) == NOTOK)
 		adios (NULLCP, "S-RELEASE.REQUEST: %s", SErrString (sa -> sa_reason));
 	if (!sr -> sr_affirmative)
 		adios (NULLCP, "release rejected by peer");
-
 	switch (SReadRequest (sbi -> sb_sd, sx, NOTOK, si)) {
 	case NOTOK:
 		adios (NULLCP, "S-READ.REQUEST: %s", SErrString (sa -> sa_reason));
@@ -190,6 +173,5 @@ int main (int argc, char **argv, char **envp) {
 			adios (NULLCP, "S-RELEASE.RESPONSE: %s", SErrString (sa -> sa_reason));
 		break;
 	}
-
 	return (0);
 }

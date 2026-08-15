@@ -23,19 +23,15 @@ int main (int argc, char *argv[]) {
 	char 			* ptr;
 
 	isodetailor (argv[0], 1);
-
 	if ((sd = start_tcp_client ((struct sockaddr_in *) 0, 0)) == NOTOK) {
 		perror("start_tcp_client");
 		exit(-20);
 	}
-
 	if (get_dish_sock (sin, 0, 1) != 0)
 		exit (-21);
-
 	if (join_tcp_server (sd, sin) == NOTOK) {
 		int	pid;
 		close_tcp_socket (sd);
-
 fork_again:
 		;
 		switch (pid = vfork ()) {
@@ -46,7 +42,6 @@ fork_again:
 					_isodefile (isodebinpath, "dish"));
 			{
 				int i, nfds = getdtablesize ();
-
 				for (i = fileno(stderr) + 1; i < nfds; i++)
 					close (i);
 			}
@@ -68,12 +63,9 @@ fork_again:
 				}
 				if (join_tcp_server (sd, sin) != NOTOK)
 					break;
-
 				/* need to introduce a timeout !!! */
 				close_tcp_socket (sd);
-
 				sleep (5);
-
 				if (kill (pid, 0) == NOTOK) {
 					fprintf (stderr,"Trying again...\n");
 					goto fork_again;
@@ -82,27 +74,22 @@ fork_again:
 			break;
 		}
 	}
-
 	if ((ptr = rindex (argv[0], '/')) == NULLCP)
 		strcpy (buffer,argv[0]);
 	else
 		strcpy (buffer,++ptr);
-
 	argc--,argv++;
-
 	while (argc--) {
 		strcat (buffer, " \"");
 		strcat (buffer, *argv++);
 		strcat (buffer, "\"");
 	}
 	strcat (buffer, "\n");
-
 	if (send(sd, buffer, strlen(buffer), 0) == -1) {
 		perror("send");
 		close_tcp_socket (sd);
 		exit (-25);
 	}
-
 	for (;;) {
 		if ((res = recv(sd, buffer, BUFSIZ - 1, 0)) == -1) {
 err_recv:
@@ -116,7 +103,6 @@ err_recv:
 			close_tcp_socket (sd);
 			exit (0);
 		}
-
 		if (*buffer == '2') {
 			if (res > 1)
 				write (2,&buffer[1],--res);
@@ -136,7 +122,6 @@ err_recv:
 		} else {		/* 'e', 'y', 'm', or 'p' */
 			char  *cp, *ep;
 			char            where[BUFSIZ];
-
 			cp = buffer + res - 1;
 			ep = buffer + sizeof buffer - 1;
 			while (*cp != '\n') {
@@ -160,7 +145,6 @@ err_recv:
 				}
 			}
 			*cp = 0;
-
 			if (*buffer == 'e') {
 				if (system (&buffer[1]))
 					strcpy (where, "e");
@@ -182,15 +166,12 @@ err_recv:
 						 getpassword (where));
 			}
 			strcat (where, "\n");
-
 			if (send(sd, where, strlen(where), 0) == -1) {
 				perror("send");
 				close_tcp_socket (sd);
 				exit (-27);
 			}
-
 		}
-
 	}
 }
 
@@ -221,18 +202,14 @@ int main (int argc, char **argv) {
 		setenv ("DISHPROC", sendfile);
 	} else
 		strcpy (sendfile, ptr);
-
 	setbuf (stdout,NULLCP);
 	setbuf (stderr,NULLCP);
-
 	if (mknod (retfile, S_IFIFO | 0600, 0) == -1) {
 		fprintf (stderr,"Can't create pipe '%s'\n",retfile);
 		exit (-12);
 	}
-
 	for (i = 1; i <= 15; i++)
 		signal (i, pipe_quit);
-
 	if ((fd = open (sendfile, O_WRONLY | O_NDELAY)) == -1) {
 		fprintf (stderr, "(Dish starting)\n");
 		if (mknod (sendfile, S_IFIFO | 0600, 0) == -1) {
@@ -258,13 +235,11 @@ int main (int argc, char **argv) {
 	else
 		sprintf (buffer, "%s:%s", retfile, ++ptr);
 	argv++;
-
 	while (argc--) {
 		strcat (buffer, " \"");
 		strcat (buffer, *argv++);
 		strcat (buffer, "\"");
 	}
-
 	if ((res = write (fd, buffer, strlen (buffer))) == -1) {
 		fprintf (stderr, "Write to DUA failed... Please retry\n");
 		close (fd);
@@ -272,21 +247,18 @@ int main (int argc, char **argv) {
 		exit (-3);
 	}
 	close (fd);
-
 	/* get results */
 	if ((fd = open (retfile, O_RDONLY)) < 0) {
 		fprintf (stderr, "Can't read results\n");
 		unlink (retfile);
 		exit (-4);
 	}
-
 	if ((wfd = open (retfile, O_WRONLY)) < 0) {
 		fprintf (stderr, "Can't lock results failed\n");
 		unlink (retfile);
 		close (fd);
 		exit (-5);
 	}
-
 	for (;;) {
 		if ((res = read (fd, buffer, BUFSIZ - 1)) == -1) {
 			fprintf (stderr, "Read failed (%d)\n", errno);
@@ -296,7 +268,6 @@ int main (int argc, char **argv) {
 			exit (-6);
 		}
 		*(buffer + res) = 0;
-
 		if (*buffer == '2') {
 			write (2,&buffer[1],--res);
 			while ( (res = read (fd, buffer, BUFSIZ)) > 0)
@@ -319,7 +290,6 @@ int main (int argc, char **argv) {
 				int             res2,
 								nfd;
 				char            where[BUFSIZ];
-
 				if (*buffer == 'e') {
 					if (system (&buffer[1]))
 						strcpy (where, "e");
@@ -330,7 +300,6 @@ int main (int argc, char **argv) {
 					strcpy (where, "m");
 				} else if (*buffer == 'y') {
 					char   *cp;
-
 					fprintf (stderr,"%s",buffer + 1);
 					fgets (where, sizeof where, stdin);
 					if (cp = index (where, '\n'))
@@ -343,7 +312,6 @@ int main (int argc, char **argv) {
 							 getpassword (where));
 				}
 				strcat (where, "\n");
-
 				if ((nfd = open (sendfile, O_WRONLY)) == -1) {
 					fprintf (stderr, "re-write open error\n");
 					close (wfd);
@@ -363,7 +331,6 @@ int main (int argc, char **argv) {
 			}
 		}
 	}
-
 	void pipe_quit (int sig) {
 		unlink (retfile);
 		fprintf (stderr,"(signal %d) exiting...\n",sig);

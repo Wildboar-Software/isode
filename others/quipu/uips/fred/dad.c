@@ -69,28 +69,21 @@ int main (int argc, char **argv, char **envp) {
 
 	arginit (argv);
 	envinit ();
-
 	if ((sd = start_tcp_server (&lo_socket, SOMAXCONN,
 								debug ? SO_DEBUG : 0, 0)) == NOTOK)
 		adios ("failed", "start_tcp_server");
 #ifdef	FIOCLEX
 	ioctl (sd, FIOCLEX, NULLCP);
 #endif
-
 	setgid (gid);
 	setuid (uid);
-
 	nfds = sd + 1;
-
 	FD_ZERO (&sfds);
 	FD_SET (sd, &sfds);
-
 	for (;;) {
 		fd_set	ifds;
-
 		if (dishpid == NOTOK || kill (dishpid, 0) == NOTOK)
 			start_dish (1);
-
 		ifds = sfds;	/* struct copy */
 		switch (xselect (nfds, &ifds, NULLFD, NULLFD, 5 * 60)) {
 		case OK:
@@ -108,17 +101,14 @@ int main (int argc, char **argv, char **envp) {
 				continue;
 			break;
 		}
-
 		if ((fd = join_tcp_client (sd, isock)) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "join_tcp_client");
 			continue;
 		}
 		advise (LLOG_NOTICE, NULLCP, "incoming connection from %s/%d",
 				inet_ntoa (isock -> sin_addr), ntohs (isock -> sin_port));
-
 		if (debug)
 			break;
-
 		switch (fork ()) {
 		case NOTOK:
 			advise (LLOG_EXCEPTIONS, "failed", "fork");
@@ -142,12 +132,10 @@ int main (int argc, char **argv, char **envp) {
 		}
 		break;
 	}
-
 	close_tcp_socket (sd);
 	dadser (fd, isock);
 	advise (LLOG_NOTICE, NULLCP, "terminating");
 	close_tcp_socket (fd);
-
 	_exit (0);
 	return 0;
 }
@@ -168,7 +156,6 @@ static SFD  dishser (int i)
 #ifndef BSD42
 	signal (SIGCLD, dishser);
 #endif
-
 #ifndef UNIONWAIT
 	while ((pid = wait (&status)) != NOTOK
 #else
@@ -176,7 +163,6 @@ static SFD  dishser (int i)
 #endif
 			&& dishpid != pid)
 		continue;
-
 	if (pid == dishpid) {
 		advise (LLOG_NOTICE, NULLCP, "dish has terminated");
 		doomsday++;
@@ -196,26 +182,21 @@ static dadser (int fd, struct sockaddr_in *isock) {
 		sleep (5);
 		return;
 	}
-
 	da_response (fd, "+OK %s", getenv ("DISHPROC"));
 #ifdef	BSD42
 	signal (SIGCHLD, dishser);
 #else
 	signal (SIGCLD, dishser);
 #endif
-
 	nfds = fd + 1;
-
 	FD_ZERO (&sfds);
 	FD_SET (fd, &sfds);
-
 	for (;;) {
 		int	eof,
 			n;
 		char   *cp,
 			   *ep;
 		fd_set	ifds;
-
 		ifds = sfds;	/* struct copy */
 		switch (xselect (nfds, &ifds, NULLFD, NULLFD,
 						 doomsday ? 5 * 60 : NOTOK)) {
@@ -236,7 +217,6 @@ static dadser (int fd, struct sockaddr_in *isock) {
 				continue;
 			break;
 		}
-
 		eof = 0;
 		for (ep = (cp = buffer) + sizeof buffer - 1; cp < ep;) {
 			switch (read_tcp_socket (fd, cp, sizeof *cp)) {
@@ -272,10 +252,8 @@ static dadser (int fd, struct sockaddr_in *isock) {
 			break;
 		}
 		*cp = 0;
-
 		if (eof && (cp == buffer))
 			break;
-
 		if (cp > buffer)
 			cp--;
 		if (*cp == '\n') {
@@ -285,10 +263,8 @@ static dadser (int fd, struct sockaddr_in *isock) {
 		}
 		if (*cp == '\r')
 			*cp = 0;
-
 		if (debug)
 			fprintf (stderr, "---> %s\n", buffer);
-
 		if ((n = str2vec (buffer, vec)) < 1)
 			cp = "-ERR null command";
 		else if (lexequ (vec[0], "intr") == 0 && n == 1)
@@ -299,9 +275,7 @@ static dadser (int fd, struct sockaddr_in *isock) {
 			cp = kill (dishpid, 0) != NOTOK ? "+OK" : "-ERR";
 		else
 			cp = "-ERR command not understood";
-
 		da_response (fd, cp);
-
 		if (eof)
 			break;
 	}
@@ -312,11 +286,9 @@ static dadser (int fd, struct sockaddr_in *isock) {
 #endif
 	advise (LLOG_NOTICE, NULLCP, "terminating dish");
 	kill (dishpid, SIGHUP);
-
 	for (i = 5; i-- > 0; sleep (1))
 		if (kill (dishpid, 0) == NOTOK)
 			break;
-
 were_history:
 	;
 	kill (dishpid, SIGKILL);
@@ -330,11 +302,8 @@ static int  da_response (char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	val = _da_response (fmt, ap);
-
 	va_end (ap);
-
 	return val;
 }
 
@@ -344,14 +313,11 @@ static int  _da_response (char *fmt, va_list ap)
 	char    buffer[BUFSIZ];
 
 	fd = va_arg (ap, int);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
 	if (debug)
 		fprintf (stderr, "<--- %s\n", buffer);
-
 	strcat (buffer, "\r\n");
 	len = strlen (buffer);
-
 	if (write_tcp_socket (fd, buffer, len) != len)
 		adios ("failed", "write_tcp_socket to control connection");
 }
@@ -373,25 +339,20 @@ static int start_dish (int binding) {
 		kill (dishpid, SIGKILL);
 		dishpid = NOTOK;
 	}
-
 	unsetenv ("DISHPROC");
 	unsetenv ("DISHPARENT");
 	unsetenv ("DISPLAY");
 	unsetenv ("TERM");
 	unsetenv ("TERMCAP");
-
 	if (get_dish_sock (&dishsock, getpid (), 0) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "get_dish_sock failed");
 		return NOTOK;
 	}
-
 	strcpy (buffer, _isodefile (isodebinpath, "dish"));
-
 fork_again:
 	;
 	advise (LLOG_NOTICE, NULLCP, "starting %s on %s", buffer,
 			getenv ("DISHPROC"));
-
 	switch (dishpid = vfork ()) {
 	case NOTOK:
 		advise (LLOG_EXCEPTIONS, "fork", "unable to");
@@ -405,7 +366,6 @@ fork_again:
 		vec[vecp++] = "-fast";
 		vec[vecp] = NULL;
 		execv (buffer, vec);
-
 		advise (LLOG_FATAL, buffer, "unable to exec");
 		_exit (1);
 	/* NOTREACHED */
@@ -414,18 +374,14 @@ fork_again:
 		for (ntries = 5; ntries-- > 0;) {
 			int	n,
 				sd;
-
 			if ((sd = start_tcp_client ((struct sockaddr_in *) 0, 0))
 					== NOTOK)
 				break;
 			n = join_tcp_server (sd, &dishsock);
 			close_tcp_socket (sd);
-
 			if (n != NOTOK)
 				break;
-
 			sleep (5);
-
 			if (kill (dishpid, 0) == NOTOK) {
 				advise (LLOG_EXCEPTIONS, NULLCP, "dish not started");
 				goto fork_again;
@@ -440,7 +396,6 @@ fork_again:
 			rcfile ();
 		break;
 	}
-
 	return (dishpid != NOTOK ? OK : NOTOK);
 }
 
@@ -453,13 +408,11 @@ static rcfile () {
 
 	if ((fp = fopen (isodefile ("fredrc", 0), "r")) == NULL)
 		return;
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#')
 			continue;
 		if (bp = index (buffer, '\n'))
 			*bp = 0;
-
 		bzero ((char *) vec, sizeof vec);
 		switch (str2vec (buffer, vec)) {
 		case 0:
@@ -471,9 +424,7 @@ static rcfile () {
 				break;
 			continue;
 		}
-
 		sprintf (command, "moveto \"%s\"\n", vec[2] ? vec[2] : vec[1]);
-
 		if (rcpipe (command) == NOTOK) {
 failed:
 			;
@@ -484,7 +435,6 @@ failed:
 		}
 	}
 	fclose (fp);
-
 	if (rcpipe ("unbind -noquit\n") == NOTOK)
 		goto failed;
 }
@@ -507,7 +457,6 @@ static int rcpipe (char *command) {
 		advise (LLOG_EXCEPTIONS, "failed", "join to dish");
 		goto done;
 	}
-
 	cc = send (sd, command, len = strlen (command), 0);
 	if (cc != len) {
 		if (cc == NOTOK)
@@ -516,7 +465,6 @@ static int rcpipe (char *command) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "write to dish truncated");
 		goto done;
 	}
-
 	for (;;) {
 		if ((cc = recv (sd, buffer, sizeof buffer - 1, 0)) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, "failed", "read from dish");
@@ -534,11 +482,9 @@ static int rcpipe (char *command) {
 		fflush (stderr);
 	}
 	result = OK;
-
 done:
 	;
 	close_tcp_socket (sd);
-
 	return result;
 }
 
@@ -566,20 +512,16 @@ static void arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
-
 	bzero ((char *) lsock, sizeof *lsock);
 	lsock -> sin_family = AF_INET;
-
 	if ((sp = getservbyname ("da", "tcp")) == NULL) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "%s/%s: unknown service",
 				"tcp", "da");
 		lsock -> sin_port = htons ((uint16_t) 411);
 	} else
 		lsock -> sin_port = sp -> s_port;
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -598,13 +540,10 @@ static void arginit (char **vec) {
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
-
 		adios (NULLCP, "usage: %s [switches]", myname);
 	}
-
 	{
 		struct passwd *pw = getpwnam ("fred");
-
 		if (pw && pw -> pw_uid)
 			uid = pw -> pw_uid, gid = pw -> pw_gid;
 	}
@@ -615,7 +554,6 @@ static void envinit () {
 	sd;
 
 	nbits = getdtablesize ();
-
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -631,16 +569,13 @@ static void envinit () {
 			}
 			break;
 		}
-
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	SETSID
 		if (setsid () == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -657,7 +592,6 @@ static void envinit () {
 		signal (SIGQUIT, SIG_IGN);
 #endif
 #endif
-
 #ifdef	BSD42
 		signal (SIGCHLD, chldser);
 #else
@@ -665,15 +599,12 @@ static void envinit () {
 #endif
 	} else
 		ll_dbinit (pgm_log, myname);
-
 #ifndef	sun		/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
 			close (sd);
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
@@ -683,11 +614,8 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -703,9 +631,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

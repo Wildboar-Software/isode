@@ -234,23 +234,18 @@ extern int forcesize;
 
 full_code
 get_code (int run, char colour) {
-
 	full_code result;
 	result.make.length = 0;
 	if (run > (forcesize ? forcesize : PIC_LINESIZE))
 		fprintf (stderr,"Run too long\n");
-
 	if (colour  ==  WHITE) {
 		if  (run > 63)
 			result.make = wt_make [(run/64)-1];
 		result.term = wt_term [run%64];
-
 	} else {
 		if  (run > 63)
 			result.make = bl_make [(run/64)-1];
 		result.term = bl_term [run%64];
 	}
-
 	return (result);
-
 }

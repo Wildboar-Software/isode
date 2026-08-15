@@ -78,7 +78,6 @@ char *get_message_of_code(QE_error_code code) {
 			count++)
 		if (code == error_msgs[count].error)
 			return error_msgs[count].error_message;
-
 	return NULLCP;
 }
 
@@ -94,24 +93,18 @@ char *ds_error_message (struct DSError *error) {
 
 	if (error == (struct DSError *) NULL)
 		return NULLCP;
-
 	if ((ps = ps_alloc(str_open)) == NULLPS)
 		return NULLCP;
-
 	if (str_setup(ps, buffer, LINESIZE, 1) == NOTOK)
 		return NULLCP;
-
 	ds_error(ps, error);
 	*ps->ps_ptr = 0;
 	ps_free(ps);
-
 	str = buffer;
-
 	if (*str != '\0')
 		message = copy_string(str);
 	else
 		message = NULLCP;
-
 	return message;
 } /* get_message_from_ds_error */
 
@@ -126,15 +119,12 @@ void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_cod
 	new_err->baseobject = (baseobject == NULLCP? NULLCP:copy_string(baseobject));
 	new_err->error_type = error_type;
 	new_err->next = request->errors;
-
 	new_err->ds_message = ds_error_message(error);
-
 	request->errors = new_err;
 } /* add_error_to_request_rec */
 
 QE_error_code get_log_error_type(struct DSError *error, int task_id) {
 	log_ds_error(error);
-
 	switch (error->dse_type) {
 	case DSE_LOCALERROR:
 		return QERR_local_error;
@@ -186,14 +176,11 @@ void error_list_free(errorList *error_list_ptr) {
 	while (errors != NULLError) {
 		if (errors->baseobject != NULLCP) free(errors->baseobject);
 		next_errors = errors->next;
-
 		if (errors->ds_message != NULLCP)
 			free(errors->ds_message);
-
 		free((char *) errors);
 		errors = next_errors;
 	}
-
 	*error_list_ptr = NULLError;
 } /* error_list_free */
 
@@ -207,25 +194,19 @@ errorList error_list_copy(errorList list) {
 
 	if (list == NULLError)
 		return NULLError;
-
 	for (; list != NULLError; list = list->next) {
 		if (new_list == NULLError)
 			new_list = curr_error = error_alloc();
 		else
 			curr_error = curr_error->next = error_alloc();
-
 		curr_error->error_type = list->error_type;
-
 		curr_error->baseobject = (list->baseobject != NULLCP ?
 								  copy_string(list->baseobject) :
 								  NULLCP);
-
 		curr_error->ds_message = (list->ds_message != NULLCP ?
 								  copy_string(list->ds_message) :
 								  NULLCP);
-
 		curr_error->next = NULLError;
 	}
-
 	return new_list;
 } /* error_list_copy */

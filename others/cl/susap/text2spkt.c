@@ -24,9 +24,7 @@ void	spkt2text (FILE *fp, struct ssapkt *s, int read) {
 	fprintf (fp, "%s(: dump of SPDU 0x%x, errno=0x%x mask=0x%x%s\n",
 			 rw, s, s -> s_errno, s -> s_mask,
 			 s -> s_mask & SMASK_SPDU_EXPD ? " (expedited)" : "");
-
 	fprintf (fp, "%sLI/ %d\n", rw, s -> s_li);
-
 	switch (s -> s_code) {
 	case SPDU_CN:
 	case SPDU_AC:
@@ -54,7 +52,6 @@ void	spkt2text (FILE *fp, struct ssapkt *s, int read) {
 		if (s -> s_mask & SMASK_CN_CALLED)
 			type_id (fp, "CALLED", rw, s -> s_called, s -> s_calledlen);
 		break;
-
 #ifdef HULA
 	case SPDU_UD:
 		SPDU_TYPE ("UNITDATA");
@@ -291,10 +288,8 @@ void	spkt2text (FILE *fp, struct ssapkt *s, int read) {
 		fprintf (fp, "%sCODE/ 0x%x\n", rw, s -> s_code);
 		break;
 	}
-
 	if (s -> s_mask & SMASK_ENCLOSE)
 		type_bits (fp, rw, "ENCLOSURE", s -> s_enclose, ENCL_MASK, EMASK);
-
 	if (s -> s_udata)
 		if (s -> s_code == SPDU_ER)
 			type_data (fp, "REFLECT", rw, s -> s_ulen, s -> s_udata);
@@ -312,7 +307,6 @@ static	type_id (FILE *fp, char *type, char *rw, char *selector, int len) {
 	char    buffer[BUFSIZ];
 
 	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
-
 	fprintf (fp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 

@@ -53,7 +53,6 @@ char *SuErrString (int code) {
 		return uderror_text[fcode];
 	} else if (code < reject_uerr0_cnt)
 		return reject_uerr0[code];
-
 	sprintf (buffer, "unknown error code 0x%x", code);
 	return buffer;
 }

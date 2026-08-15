@@ -196,7 +196,6 @@ static struct LockEntry *lockRfainfo(char *fn, FILE *fp) {
 	}
 	strcpy (le->le_fn, fn);
 	le->le_filep = fp;
-
 	/*-- set timer --*/
 	itv.it_interval.tv_sec = 0L;
 	itv.it_interval.tv_usec = 0L;
@@ -205,7 +204,6 @@ static struct LockEntry *lockRfainfo(char *fn, FILE *fp) {
 	if (setitimer(ITIMER_REAL, &itv, (struct itimerval *)NULL) != -1) {
 		signal(SIGALRM, lock_timeout);
 	}
-
 	timedout = 0;
 	if (lockf(fileno(fp), F_LOCK, 0L) == -1) {
 		if (timedout)
@@ -222,7 +220,6 @@ static struct LockEntry *lockRfainfo(char *fn, FILE *fp) {
 	itv.it_value.tv_sec = 0L;
 	setitimer(ITIMER_REAL, &itv, (struct itimerval *)NULL);
 	signal(SIGALRM, SIG_DFL);
-
 	le->le_next = lockList;
 	lockList = le;
 	return le;
@@ -278,7 +275,6 @@ static int statFile (char *fn, struct RfaInfo *rfa) {
 	static int lastuid = -1, lastgid = -1;
 
 	/*advise (LLOG_DEBUG, NULLCP, "statFile:  '%s'", fn);*/
-
 	if (lstat(fn,&st) == -1) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "cant stat '%s':%s", fn,
 				sys_errname(errno));
@@ -289,7 +285,6 @@ static int statFile (char *fn, struct RfaInfo *rfa) {
 	rfa->ri_accTime = st.st_atime;
 	rfa->ri_modTime = st.st_mtime;
 	rfa->ri_mode = st.st_mode;
-
 	/*--- get user and group of owner ---*/
 	if(st.st_uid == lastuid)
 		rfa->ri_owner = strdup(lastuname);
@@ -311,7 +306,6 @@ static int statFile (char *fn, struct RfaInfo *rfa) {
 		rfa->ri_group = strdup(gr->gr_name);
 		strcpy(lastgname, gr->gr_name);
 	}
-
 	/*--- read symbolic links ---*/
 	if ((rfa->ri_mode & S_IFMT) == S_IFLNK) {
 		if ((rc = readlink(fn, lnkbuf, sizeof lnkbuf)) == -1)
@@ -320,7 +314,6 @@ static int statFile (char *fn, struct RfaInfo *rfa) {
 			lnkbuf[rc] = '\0';
 		rfa->ri_lnkName = strdup(lnkbuf);
 	}
-
 	return OK;
 }
 
@@ -335,13 +328,10 @@ static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap) {
 	struct RfaInfo *rfa;
 
 	advise(LLOG_DEBUG,NULLCP,"getRfaInfo: %s",dirname);
-
 	if (f == NULL)
 		return OK;
-
 	while (fgets(line, sizeof(line), f)) {
 		s = line;
-
 		while (isspace(*s))
 			s++;
 		for(d = buf; ! isspace(*s); s++, d++)
@@ -349,7 +339,6 @@ static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap) {
 		*d = '\0';
 		if ((rfa = findRfaInfo(buf, *rfap)) == NULL)
 			continue;
-
 		while (isspace(*s))
 			s++;
 		for(d = buf; ! isspace(*s); s++, d++)
@@ -361,14 +350,12 @@ static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap) {
 			continue;
 		}
 		rfa->ri_status = rc;
-
 		while (isspace(*s))
 			s++;
 		for(d = buf; ! isspace(*s); s++, d++)
 			*d = *s;
 		*d = '\0';
 		rfa->ri_lastChange = (time_t)atol(buf);
-
 		while (isspace(*s))
 			s++;
 		for(d = buf; ! isspace(*s); s++, d++)
@@ -378,14 +365,12 @@ static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap) {
 			rfa->ri_lckname = strdup(buf);
 		else
 			rfa->ri_lckname = NULL;
-
 		while (isspace(*s))
 			s++;
 		for(d = buf; ! isspace(*s); s++, d++)
 			*d = *s;
 		*d = '\0';
 		rfa->ri_lcksince = (time_t)atol(buf);
-
 	}  /*-- while fgets --*/
 	return OK;
 }
@@ -405,7 +390,6 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 
 	advise (LLOG_DEBUG, NULLCP, "getRfaInfoList: '%s', target '%s'",
 			dir, target);
-
 	/*--- find out if directory  --*/
 	if (stat(makeFN(dir),&st) == -1) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "cant stat '%s':%s", dir,
@@ -413,13 +397,11 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 		sprintf(rfaErrStr, "%s - %s", dir, sys_errname(errno));
 		return NOTOK;
 	}
-
 	/*-- get rfainfo --*/
 	if (st.st_mode & S_IFDIR)
 		rfa_fn = dir;
 	else
 		rfa_fn = dirname(dir);
-
 	if (rfa_fp = fopen(makeFN2(rfa_fn,".rfainfo"),locked ? "a+":"r"))
 		rewind(rfa_fp);
 	else if (errno != ENOENT)  {
@@ -428,13 +410,11 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 			   rfa_fn, sys_errname(errno));
 		return NOTOK_SYS;
 	}
-
 	if (locked)
 		if ((le = lockRfainfo(rfa_fn, rfa_fp)) == NULL) {
 			fclose(rfa_fp);
 			return NOTOK;
 		}
-
 	if (st.st_mode & S_IFDIR) {
 		/*--- dir is a directory name, so open dir ---*/
 		if ((dirp = opendir(makeFN(dir))) ==  NULL) {
@@ -444,7 +424,6 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 			rc = NOTOK;
 			goto err_cleanup;
 		}
-
 		for (dp = readdir(dirp); dp != NULL; dp = readdir(dirp)) {
 			if (((*rfap) = mallocRfaInfo(strdup(dp->d_name))) == NULL) {
 				freeRfaInfoList(rfalist);
@@ -456,7 +435,6 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 			SET_STATUS((*rfap)->ri_status, RI_UNREGISTERED);
 			SET_LOCKINFO((*rfap)->ri_status, RI_UNLOCKED);
 			SET_TRANSFER((*rfap)->ri_status, RI_TR_REQ);
-
 			if ((target == NULL ) || (strcmp(target, dp->d_name) == 0)) {
 				if ((rc = statFile(makeFN2(dir, dp->d_name), *rfap)) != OK) {
 					freeRfaInfoList(rfalist);
@@ -472,7 +450,6 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 		}
 	} else {
 		/*--- dir is a single file ---*/
-
 		if (((*rfap) = mallocRfaInfo(strdup(basename(dir)))) == NULL) {
 			freeRfaInfoList(rfalist);
 			sprintf(rfaErrStr, "out of memory");
@@ -483,12 +460,10 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 		SET_STATUS((*rfap)->ri_status, RI_UNREGISTERED);
 		SET_LOCKINFO((*rfap)->ri_status, RI_UNLOCKED);
 		SET_TRANSFER((*rfap)->ri_status, RI_TR_REQ);
-
 		if ((rc = statFile(makeFN(dir), *rfap)) != OK) {
 			freeRfaInfoList(rfalist);
 			goto err_cleanup;
 		}
-
 		/*--- get locking info ---*/
 		if ((rc = getRfaInfo(dirname(dir), rfa_fp, &rfalist)) != OK) {
 			freeRfaInfoList(rfalist);
@@ -498,9 +473,7 @@ int getRfaInfoList (char *dir, struct RfaInfo **rfaHeadp, char *target, int lock
 	*rfaHeadp = rfalist;
 	if (!locked && rfa_fp)
 		fclose(rfa_fp);
-
 	return OK;
-
 err_cleanup:
 	;
 	if (locked)
@@ -520,7 +493,6 @@ int putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 	int num;
 
 	advise(LLOG_DEBUG,NULLCP,"putRfaInfo %s", makeFN(dirname));
-
 	for (le = lockList; le; le = le->le_next)
 		if (strcmp(le->le_fn, dirname) == 0)
 			break;
@@ -529,7 +501,6 @@ int putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 		advise(LLOG_EXCEPTIONS,NULLCP,rfaErrStr);
 		return NOTOK;
 	}
-
 	if (backup_f = fopen(makeFN2(dirname, ".rfainfo.bak"), "w")) {
 		rewind(le->le_filep);
 		while (num = fread(buf, 1, BUFSIZ, le->le_filep))
@@ -540,7 +511,6 @@ int putRfaInfoList (char *dirname, struct RfaInfo *rfa) {
 	for (; rfa; rfa = rfa->ri_next) {
 		if (rfa->ri_mode && (rfa->ri_mode & S_IFMT & (S_IFREG | S_IFDIR)) == 0)
 			continue;
-
 		if (fprintf(le->le_filep, "%s %s %ld %s %ld\n", rfa->ri_filename,
 					status2str(rfa->ri_status),  rfa->ri_lastChange,
 					rfa->ri_lckname ? rfa->ri_lckname : "NONE",

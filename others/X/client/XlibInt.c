@@ -38,7 +38,6 @@ static int readv (int fd, struct iovec *iov, int iovcnt) {
 	hdr.msg_accrightslen = 0;
 	hdr.msg_name = 0;
 	hdr.msg_namelen = 0;
-
 	return (recvmsg (fd, &hdr, 0));
 }
 
@@ -55,7 +54,6 @@ static int writev (
 		hdr.msg_accrightslen = 0;
 		hdr.msg_name = 0;
 		hdr.msg_namelen = 0;
-
 		return (sendmsg (fd, &hdr, 0));
 	}
 
@@ -178,7 +176,6 @@ static int writev (
 			TXFREE(tx);
 		}
 		return ingot;
-
 	}
 
 	/*
@@ -218,7 +215,6 @@ static int writev (
 
 		for(i=0, size = 0, iovp = iov; i < iovcnt; i++, iovp++)
 			size += iovp->iov_len;
-
 #ifdef ISODEBUG
 		if (isodexbug)
 			fprintf(stderr, "TReadvFromServer %d, want %d\n", fd, size);
@@ -233,7 +229,6 @@ static int writev (
 			 */
 			return(-1);
 		}
-
 		/*
 		 * Note, TReadFromServer is written to *NOT* return more than size
 		 */
@@ -242,7 +237,6 @@ static int writev (
 				fprintf(stderr, "TReadvReq err\n");
 			return(-1);
 		}
-
 		left = result;
 		dp = data;
 		while (left > 0) {
@@ -396,7 +390,6 @@ static int writev (
 		len /= SIZEOF(xReply);
 		pend = len * SIZEOF(xReply);
 		_XRead (dpy, buf, (long) pend);
-
 		/* no space between comma and type or else macro will die */
 		STARTITERATE (rep,xReply, buf, (len > 0), len--) {
 			if (rep->generic.type == X_Error)
@@ -423,7 +416,6 @@ static int writev (
 			if (BytesReadable(dpy->fd, (char *) &pend_not_register) < 0)
 				(*_XIOErrorFunction)(dpy);
 			pend = pend_not_register;
-
 			/* must read at least one xEvent; if none is pending, then
 			   we'll just flush and block waiting for it */
 			if (pend < SIZEOF(xEvent)) {
@@ -436,16 +428,12 @@ static int writev (
 					not_yet_flushed = False;
 				}
 			}
-
 			/* but we won't read more than the max buffer size */
 			if (pend > BUFSIZE)
 				pend = BUFSIZE;
-
 			/* round down to an integral number of XReps */
 			pend = (pend / SIZEOF(xEvent)) * SIZEOF(xEvent);
-
 			_XRead (dpy, buf, pend);
-
 			/* no space between comma and type or else macro will die */
 			STARTITERATE (ev,xEvent, buf, (pend > 0),
 						  pend -= SIZEOF(xEvent)) {
@@ -469,7 +457,6 @@ static int writev (
 		errno = 0;
 		while ((bytes_read = ReadFromServer(dpy->fd, data, (int)size))
 				!= size) {
-
 			if (bytes_read > 0) {
 				size -= bytes_read;
 				data += bytes_read;
@@ -490,7 +477,6 @@ static int writev (
 				errno = EPIPE;
 				(*_XIOErrorFunction)(dpy);
 			}
-
 			else { /* bytes_read is less than 0; presumably -1 */
 				/* If it's a system call interrupt, it's not an error. */
 				if (errno != EINTR)
@@ -518,12 +504,10 @@ static int writev (
 		long maskw, nwords, i, bits;
 
 		_XReadPad (dpy, packbuffer, size);
-
 		lp = data;
 		lpack = (long *) packbuffer;
 		nwords = size >> 2;
 		bits = 32;
-
 		for(i=0; i<nwords; i++) {
 			maskw = mask32 << bits;
 			*lp++ = ( *lpack & maskw ) >> bits;
@@ -555,7 +539,6 @@ static int writev (
 		long maskw, nwords, i, bits;
 
 		_XRead(dpy,packbuffer,size);	/* don't do a padded read... */
-
 		lp = (long *) data;
 		lpack = (long *) packbuffer;
 		nwords = size >> 1;  /* number of 16 bit words to be unpacked */
@@ -610,14 +593,11 @@ static int writev (
 		 * aligned padding.  The [1] vector is of length 0, 1, 2, or 3,
 		 * whatever is needed.
 		 */
-
 		iov[1].iov_len = padlength[size & 3];
 		iov[1].iov_base = pad;
 		size += iov[1].iov_len;
-
 		errno = 0;
 		while ((bytes_read = ReadvFromServer (dpy->fd, iov, 2)) != size) {
-
 			if (bytes_read > 0) {
 				size -= bytes_read;
 				if ((iov[0].iov_len -= bytes_read) < 0) {
@@ -643,14 +623,12 @@ static int writev (
 				errno = EPIPE;
 				(*_XIOErrorFunction)(dpy);
 			}
-
 			else { /* bytes_read is less than 0; presumably -1 */
 				/* If it's a system call interrupt, it's not an error. */
 				if (errno != EINTR)
 					(*_XIOErrorFunction)(dpy);
 			}
 		}
-
 	}
 
 	/*
@@ -666,17 +644,14 @@ static int writev (
 		long skip = 0;
 		long total = (dpy->bufptr - dpy->buffer) + ((size + 3) & ~3);
 		long todo = total;
-
 		while (total) {
 			long before = skip;
 			long remain = todo;
 			int i = 0;
 			long len;
-
 			/* You could be very general here and have "in" and "out" iovecs
 			 * and write a loop without using a macro, but what the heck
 			 */
-
 #define InsertIOV(pointer, length) \
 	    len = (length) - before; \
 	    if (len > remain) \
@@ -690,12 +665,10 @@ static int writev (
 		remain -= len; \
 		before = 0; \
 	    }
-
 			InsertIOV(dpy->buffer, dpy->bufptr - dpy->buffer)
 			InsertIOV(data, size)
 			/* Provide 32-bit aligned padding as necessary */
 			InsertIOV(pad, padlength[size & 3])
-
 			errno = 0;
 			if ((len = WritevToServer(dpy->fd, iov, i)) >= 0) {
 				skip += len;
@@ -717,7 +690,6 @@ static int writev (
 				(*_XIOErrorFunction)(dpy);
 			}
 		}
-
 		dpy->bufptr = dpy->buffer;
 		dpy->last_req = (char *) & _dummy_request;
 	}
@@ -750,7 +722,6 @@ static int writev (
 		 */
 		if ((rep->type & 0x7f) == KeymapNotify)
 			return(dpy->last_request_read);
-
 		newseq = (dpy->last_request_read & ~((unsigned long)0xffff)) |
 				 rep->sequenceNumber;
 		lastseq = dpy->last_request_read;
@@ -765,7 +736,6 @@ static int writev (
 				break;
 			}
 		}
-
 		dpy->last_request_read = newseq;
 		return(newseq);
 	}
@@ -831,7 +801,6 @@ static int writev (
 				int ret_code;
 				xError *err = (xError *) rep;
 				unsigned long serial;
-
 				serial = _SetLastRequestRead(dpy, (xGenericReply *)rep);
 				if (serial == cur_request)
 					/* do not die on "no such font", "can't allocate",
@@ -917,7 +886,6 @@ static int writev (
 		if ((*dpy->event_vec[event->u.u.type & 0177])(dpy, &qelt->event, event)) {
 			if (dpy->tail)	dpy->tail->next = qelt;
 			else 		dpy->head = qelt;
-
 			dpy->tail = qelt;
 			dpy->qlen++;
 		} else {
@@ -956,16 +924,13 @@ static int writev (
 	 */
 	Bool
 	_XWireToEvent(Display *dpy /* pointer to display structure */, XEvent *re /* pointer to where event should be reformatted */, xEvent *event /* wire protocol event */) {
-
 		re->type = event->u.u.type & 0x7f;
 		((XAnyEvent *)re)->serial = _SetLastRequestRead(dpy,
 									(xGenericReply *)event);
 		((XAnyEvent *)re)->send_event = ((event->u.u.type & 0x80) != 0);
 		((XAnyEvent *)re)->display = dpy;
-
 		/* Ignore the leading bit of the event type since it is set when a
 			client sends an event rather than the server. */
-
 		switch (event-> u.u.type & 0177) {
 		case KeyPress:
 		case KeyRelease: {
@@ -1302,12 +1267,10 @@ static int writev (
 				 "      after %lu requests (%lu known processed) with %d events remaining.\r\n",
 				 NextRequest(dpy) - 1, LastKnownRequestProcessed(dpy),
 				 QLength(dpy));
-
 		if (errno == EPIPE) {
 			fprintf (stderr,
 					 "      The connection was probably broken by a server shutdown or KillClient.\r\n");
 		}
-
 		exit (1);
 	}
 
@@ -1454,14 +1417,12 @@ static int writev (
 		lp = (long *)data;
 		lpack = (long *)packbuffer;
 		*lpack = 0;
-
 		/*  nwords is the number of 16 bit values to be packed,
 		 *  the low order 16 bits of each word will be packed
 		 *  into 64 bit words
 		 */
 		nwords = len >> 1;
 		bits = 48;
-
 		for(i=0; i<nwords; i++) {
 			*lpack ^= (*lp & mask16) << bits;
 			bits -= 16 ;
@@ -1500,16 +1461,13 @@ static int writev (
 
 		lpack = (long *) packbuffer;
 		lp = data;
-
 		*lpack = 0;
-
 		/*  nwords is the number of 32 bit values to be packed
 		 *  the low order 32 bits of each word will be packed
 		 *  into 64 bit words
 		 */
 		nwords = len >> 2;
 		bits = 32;
-
 		for(i=0; i<nwords; i++) {
 			*lpack ^= (*lp & mask32) << bits;
 			bits = bits ^32;

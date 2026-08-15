@@ -36,7 +36,6 @@ int main (int argc, char **argv)
 	int skip;
 
 	argv++;
-
 	if ( (argc > 1) && (**argv == '-')) {
 		switch (*++*argv) {
 		case '1':
@@ -67,22 +66,15 @@ int main (int argc, char **argv)
 		argv++;
 		argc--;
 	}
-
 	if ((pix = pr_load (stdin, NULL)) == (struct pixrect *)NULL)
 		fprintf (stderr,"Not a pixrect.\n");
-
 	PIC_LINESIZE = pix->pr_size.x;
 	STOP  = PIC_LINESIZE + 1;
 	NUMLINES = pix->pr_size.y;
-
 	src_mpr = (struct mpr_data *)(pix->pr_data);
 	inbuf = (char *) src_mpr->md_image;
-
 	skip = 16 - (PIC_LINESIZE % 16);
 	if  (skip == 16) skip = 0;
-
 	outbuf = encode_t4 (k_param,inbuf,skip);
-
 	fwrite (outbuf, optlen, 1, stdout);
-
 }

@@ -52,7 +52,6 @@ char	*getlocalhost();
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, getlocalhost(), myservice, mycontext, mypci,
 				 dispatches, table_ADD_Operations, NULLIFP, NULLIFP);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -71,20 +70,15 @@ static int  op_addit (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, 
 	if (debug)
 		advise (LOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if ((psum = (struct type_ADD_Sum *) calloc (1, sizeof *psum)) == NULL
 			|| in == NULL )
 		return error (sd, error_ADD_cantadd, (caddr_t) NULL,
 					  rox, roi);
-
 	paddends = (struct type_ADD_Addends *)in;
 	psum->parm = paddends->addend1 + paddends->addend2;
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t)psum, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_ADD_Sum (psum);
-
 	return OK;
 }
 
@@ -93,7 +87,6 @@ static int  op_addit (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, 
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
-
 	return OK;
 }
 
@@ -102,6 +95,5 @@ static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, stru
 static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
-
 	return OK;
 }

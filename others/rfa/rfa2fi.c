@@ -107,7 +107,6 @@ fi2rfa (struct type_RFA_FileInfoList *fil) {
 		}
 		rfaNew->ri_next = rfa;
 		rfa = rfaNew;
-
 		rfa->ri_mode = fi->mode;
 		rfa->ri_owner = qb2str(fi->user);
 		rfa->ri_group = qb2str(fi->group);

@@ -23,11 +23,8 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -44,9 +41,7 @@ void	advise (int code, char *what, char *fmt, ...)
     va_list ap;
 
     va_start (ap, fmt);
-
     _ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

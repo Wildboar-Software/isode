@@ -10,21 +10,17 @@ struct tsapkt *fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 
 	if ((t = newtpkt (0)) == NULL)
 		return NULL;
-
 	if ((t -> t_errno = fd2tpktaux (fd, t, initfnx, readfnx)) != OK) {
 		if (t -> t_vdata != NULL)
 			free (t -> t_vdata), t -> t_vdata = NULL, t -> t_vlen = 0;
-
 		if (t -> t_qbuf)
 			free ((char *) t -> t_qbuf), t -> t_qbuf = NULL;
 	}
-
 #ifdef	DEBUG
 	if (tsaplevel & ISODELOG_PDUS) {
 		if (strcmp (tsapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 1);
@@ -36,7 +32,6 @@ struct tsapkt *fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 		}
 	}
 #endif
-
 	return t;
 }
 
@@ -50,7 +45,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 		return code;
 	if (t -> t_li > TPDU_MAXLEN (t))
 		return DR_LENGTH;
-
 	switch (TPDU_CODE (t)) {
 	case TPDU_CR:
 	case TPDU_CC:
@@ -59,7 +53,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 		if (readx (fd, (char *) &t -> t_cr, CR_SIZE (t), readfnx)
 				!= CR_SIZE (t))
 			return DR_NETWORK;
-
 		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, CR)) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
@@ -68,14 +61,12 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				return DR_NETWORK;
 			for (; vlen > 0; vptr += len, vlen -= len) {
 				int	    ilen;
-
 				if (vlen < 2)
 					return DR_LENGTH;
 				code = *vptr++ & 0xff;
 				len = *vptr++ & 0xff;
 				if ((vlen -= 2) < len)
 					return DR_LENGTH;
-
 				switch (code) {
 				case VDAT_TSAP_SRV:
 					if ((ilen = len) > sizeof t -> t_called)
@@ -106,7 +97,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				case VDAT_ALTERNATE: {
 					int i;
 					char *ap;
-
 					for (ap = vptr, i = len; i > 0; ap++, i--)
 						t -> t_cr.cr_alternate |=
 							1 << ((*ap >> 4) & 0x0f);
@@ -137,7 +127,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 		if (readx (fd, (char *) &t -> t_dr, DR_SIZE (t), readfnx)
 				!= DR_SIZE (t))
 			return DR_NETWORK;
-
 		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, DR)) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
@@ -151,7 +140,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				len = *vptr++ & 0xff;
 				if ((vlen -= 2) < len)
 					return DR_LENGTH;
-
 				switch (code) {
 				case VDAT_ADDITIONAL:
 				case VDAT_CHECKSUM:
@@ -170,7 +158,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 		if (readx (fd, (char *) &t -> t_dt, DT_SIZE (t), readfnx)
 				!= DT_SIZE (t))
 			return DR_NETWORK;
-
 		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, DT)) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
@@ -184,7 +171,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				len = *vptr++ & 0xff;
 				if ((vlen -= 2) < len)
 					return DR_LENGTH;
-
 				switch (code) {
 				case VDAT_CHECKSUM:
 					break;
@@ -203,14 +189,12 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				!= ED_SIZE (t))
 			return DR_NETWORK;
 		t -> t_ed.ed_nr = ntohs (t -> t_ed.ed_nr);
-
 		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, ED)) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
 					!= t -> t_vlen)
 				return DR_NETWORK;
-
 			for (; vlen > 0; vptr += len, vlen -= len) {
 				if (vlen < 2)
 					return DR_LENGTH;
@@ -218,7 +202,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				len = *vptr++ & 0xff;
 				if ((vlen -= 2) < len)
 					return DR_LENGTH;
-
 				switch (code) {
 				case VDAT_CHECKSUM:
 				case VDAT_SUBSEQ:
@@ -238,7 +221,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 		if (readx (fd, (char *) &t -> t_er, ER_SIZE (t), readfnx)
 				!= ER_SIZE (t))
 			return DR_NETWORK;
-
 		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, ER)) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
@@ -252,7 +234,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				len = *vptr++ & 0xff;
 				if ((vlen -= 2) < len)
 					return DR_LENGTH;
-
 				switch (code) {
 				case VDAT_INVALID:
 				case VDAT_CHECKSUM:
@@ -268,7 +249,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	default:
 		return DR_PROTOCOL;
 	}
-
 	if (len = TPDU_USRLEN (t)) {
 		if ((t -> t_qbuf = (struct qbuf *)
 						   malloc (sizeof *t -> t_qbuf + (unsigned) len))
@@ -279,7 +259,6 @@ static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 				   t -> t_qbuf -> qb_len = len, readfnx) != len)
 			return DR_NETWORK;
 	}
-
 	return OK;
 }
 
@@ -301,7 +280,6 @@ static int  readx (int fd, char *buffer, int n, IFP readfnx) {
 		}
 		break;
 	}
-
 	return (bp - buffer);
 }
 
@@ -318,22 +296,18 @@ int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx) {
 
 	if (t -> t_errno != OK)
 		return t -> t_errno;
-
 	if (t -> t_vrsn != TPKT_VRSN)
 		if (t -> t_vrsn)
 			return DR_PROTOCOL;
 		else
 			t -> t_vrsn = TPKT_VRSN;
-
 	if (t -> t_vdata != NULL) {
 		free (t -> t_vdata);
 		t -> t_vdata = NULL;
 	}
 	t -> t_vlen = 0;
-
 	for (ulen = 0, uv = t -> t_udvec; uv -> uv_base; uv++)
 		ulen += uv -> uv_len;
-
 	switch (TPDU_CODE (t)) {
 	case TPDU_CR:
 	case TPDU_CC:
@@ -424,15 +398,12 @@ int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx) {
 	default:
 		return DR_PROTOCOL;
 	}
-
 	t -> t_length = htons (t -> t_li + 5 + ulen);
-
 #ifdef	DEBUG
 	if (tsaplevel & ISODELOG_PDUS) {
 		if (strcmp (tsapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, tsapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				tpkt2text (fp, t, 0);
@@ -444,15 +415,11 @@ int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx) {
 		}
 	}
 #endif
-
 	pstat = signal (SIGPIPE, SIG_IGN);
 	smask = sigioblock ();
-
 	i = (*writefnx) (fd, t, outptr, ilen);
-
 	sigiomask (smask);
 	signal (SIGPIPE, pstat);
-
 	return (i != NOTOK ? OK : DR_NETWORK);
 }
 
@@ -463,22 +430,17 @@ newtpkt (int code) {
 	t = (struct tsapkt *) calloc (1, sizeof *t);
 	if (t == NULL)
 		return NULL;
-
 	t -> t_vrsn = TPKT_VRSN;
 	t -> t_code = code;
-
 	return t;
 }
 
 int freetpkt (struct tsapkt *t) {
 	if (t == NULL)
 		return;
-
 	if (t -> t_vdata)
 		free (t -> t_vdata);
-
 	if (t -> t_qbuf)
 		free ((char *) t -> t_qbuf);
-
 	free ((char *) t);
 }

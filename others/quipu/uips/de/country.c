@@ -92,7 +92,6 @@ int listAllCos (struct namelist **clistp) {
 		logListSuccess(LIST_ERROR, "co", 0);
 	else
 		logListSuccess(LIST_OK, "co", listlen(*clistp));
-
 	freeCoSearchArgs();
 	alarmCleanUp();
 	return ret;
@@ -154,9 +153,7 @@ int makeListCountries (struct namelist **clistp) {
 			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*clistp = list_alloc();
@@ -181,7 +178,6 @@ fillMostCountrySearchArgs (char *objectstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(objectstr);
 	/* specify attributes of interest */
@@ -238,7 +234,6 @@ void makeExplicitCoFilter (char *cstr, struct s_filter **fpp) {
 									   DE_LOCALITY_NAME, ostr2);
 		break;
 	}
-
 }
 
 void coFilter1 (char *cstr, struct s_filter **fpp) {

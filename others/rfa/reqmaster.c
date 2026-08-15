@@ -60,10 +60,8 @@ int op_requestMaster (
 	}
 	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if((s = qb2str(rma->filename)) == NULL)
 		return NOTOK_SYS;
-
 	/*--- expand symlinks and get relative path ---*/
 	if ((fn = expandSymLinks(s)) == NULL) {
 		free(s);
@@ -71,13 +69,11 @@ int op_requestMaster (
 		return str_error(sd, error_RFA_fileAccessError, rfaErrStr, rox, roi);
 	}
 	free(s);
-
 	/*--- get rfainfo list for directory (begin of critical section) ---*/
 	if ((rc = getRfaInfoList(dirname(fn), &rfalist, basename(fn), 1))
 			!= OK) {
 		return rc;
 	}
-
 	/*--- check if file exists and user is allowed to write it ---*/
 	if ((rfa = findRfaInfo(basename(fn), rfalist)) == NULL)   {
 		releaseRfaInfoList(dirname(fn), rfalist);
@@ -85,14 +81,12 @@ int op_requestMaster (
 			   fn);
 		return statusError(sd, int_RFA_reason_notRegistered, NULL, 0L,rox,roi);
 	}
-
 	if (access(makeFN(fn), W_OK) == -1)  {
 		releaseRfaInfoList(dirname(fn), rfalist);
 		advise(LLOG_NOTICE,NULLCP,"reqMaster: %s not writable",
 			   fn);
 		return statusError(sd, int_RFA_reason_notWritable, NULL, 0L,rox,roi);
 	}
-
 	/*--- check if we are master of the file ---*/
 	switch(RI_STATUS(rfa->ri_status)) {
 	case RI_MASTER:
@@ -120,12 +114,9 @@ int op_requestMaster (
 		releaseRfaInfoList(dirname(fn), rfalist);
 		sprintf(buf, "unknown file status %d for %s",rfa->ri_status,fn);
 		return str_error(sd, error_RFA_miscError, buf, rox, roi);
-
 	}
-
 	advise(LLOG_DEBUG,NULLCP,"reqMaster: allowing lock mv=%ld sv=%d",
 		   rfa->ri_modTime, rma->slaveVersion);
-
 	/*--- so we are master of the file, check the modify times ---*/
 	if (rfa->ri_mode & S_IFMT & S_IFREG) {
 		t = rma->slaveVersion;
@@ -137,7 +128,6 @@ int op_requestMaster (
 							   0L, rox, roi);
 		}
 	}
-
 	/*--- grant mastership, update rfalist ---*/
 	SET_STATUS(rfa->ri_status, RI_SLAVE);
 	time(&(rfa->ri_lastChange));
@@ -152,11 +142,9 @@ int op_requestMaster (
 		return syserror(sd, error_RFA_miscError, rox, roi);
 	}
 	advise(LLOG_NOTICE,NULLCP,"reqMaster: sending result");
-
 	/*--- return result ----*/
 	rmr.parm = rfa->ri_modTime;
 	if (RyDsResult(sd, rox->rox_id, (caddr_t) &rmr, ROS_NOPRIO, roi) != OK) {
-
 		/*--- result failed, so assume that peer has not become master ---*/
 		advise(LLOG_NOTICE,NULLCP,"reqMaster: sending result failed");
 		SET_STATUS(rfa->ri_status, RI_MASTER);
@@ -166,11 +154,9 @@ int op_requestMaster (
 		releaseRfaInfoList(dirname(fn), rfalist);
 		ros_adios (&roi -> roi_preject, "RESULT");
 	}
-
 	if (rfa->ri_mode & S_IFMT & S_IFREG)
 		if(makeFileReadOnly(fn, rfa) != OK)
 			advise(LLOG_EXCEPTIONS,NULLCP,"reqMaster: %s",rfaErrStr);
-
 	releaseRfaInfoList(dirname(fn), rfalist);
 	return OK;
 }

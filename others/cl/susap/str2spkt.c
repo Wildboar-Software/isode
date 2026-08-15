@@ -33,17 +33,14 @@ char   *spkt2str (struct ssapkt *s) {
 		default:
 			break;
 		}
-
 	buffer[explode (buffer, (uint8_t *) base, len)] = 0;
 	if (len > 0)
 		free (base);
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
@@ -57,7 +54,6 @@ char   *spkt2str (struct ssapkt *s) {
 		}
 	}
 #endif
-
 	return buffer;
 }
 
@@ -72,7 +68,6 @@ str2spkt (char *buffer) {
 
 	bzero ((char *) qb, sizeof *qb);
 	qb -> qb_forw = qb -> qb_back = qb;
-
 	cc = implode ((uint8_t *) packet, buffer, strlen (buffer));
 	if ((qp = (struct qbuf *) malloc (sizeof *qp + (unsigned) cc)) == NULL)
 		s = NULLSPKT;
@@ -82,17 +77,14 @@ str2spkt (char *buffer) {
 		s = tsdu2spkt (qb, cc, NULLIP);
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw) {/* never! */
 			remque (qp);
-
 			free ((char *) qp);
 		}
 	}
-
 #ifdef	DEBUG
 	if (ssaplevel & ISODELOG_PDUS) {
 		if (strcmp (ssapfile, "-")) {
 			char    file[BUFSIZ];
 			FILE   *fp;
-
 			sprintf (file, ssapfile, getpid ());
 			if (fp = fopen (file, "a")) {
 				fprintf (fp, "str = %d/\"%s\"\n", strlen (buffer), buffer);
@@ -108,6 +100,5 @@ str2spkt (char *buffer) {
 		}
 	}
 #endif
-
 	return s;
 }

@@ -64,7 +64,6 @@ int define (char *name) {
 
 	if (debug)
 		printf("define(%s)\n", name);
-
 	cp = index(name, '=');
 	if (cp == NULLCP)
 		value = NULL;
@@ -127,12 +126,10 @@ lookup (char *name, int action, struct namelist *value) {
 
 	if (debug)
 		printf("lookup(%s, %d, %x)\n", name, action, value);
-
 	n = 0;
 	for (cp = name; *cp; )
 		n += *cp++;
 	n %= HASHSIZE;
-
 	for (s = hashtab[n]; s != NULL; s = s->s_next) {
 		if (strcmp(name, s->s_name))
 			continue;
@@ -144,13 +141,11 @@ lookup (char *name, int action, struct namelist *value) {
 		}
 		return(s->s_value);
 	}
-
 	if (action == LOOKUP) {
 		sprintf(buf, "%s undefined", name);
 		yyerror(buf);
 		return(NULL);
 	}
-
 	s = ALLOC(syment);
 	if (s == NULL)
 		adios (NULLCP, "ran out of memory\n");

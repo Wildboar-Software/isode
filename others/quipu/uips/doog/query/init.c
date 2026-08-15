@@ -51,28 +51,20 @@ void init_query_engine (int argc, char *argv[]) {
 	char linebuf[LINESIZE];
 
 	int test_ufn_paths();
-
 	username[0] = userpassword[0] = '\0';
-
 	print_parse_errors = FALSE;   /* Stop auto printing of errors */
 	quipu_syntaxes();
-
 #ifdef USE_PP
 	pp_quipu_init ("doog");
 #endif
-
 	dsap_init((int *) NULL, (char ***) NULL);
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	read_args(argc, argv);
-
 	/*
 	 *	Read `dsaptailor' file
 	 */
-
 	if((config_file = fopen(isodefile(tailfile,0), "r")) == (FILE *) NULL) {
 		fprintf(stderr,
 				"Cannot open `dsaptailor' file. Attempting to continue.\n"
@@ -81,18 +73,13 @@ void init_query_engine (int argc, char *argv[]) {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))
 				tai_string (linebuf);
-
 		fclose(config_file);
 	}
-
 	/*
 	 *	Read users' .quipurc
 	 */
-
 	read_quipurc();
-
 	if (dsa_address == NULLCP) dsa_address = myname;
-
 	if (want_photo_as_bytes)
 		set_attribute_syntax(str2syntax("photo"),
 							 (IFP) pe_cpy,
@@ -121,62 +108,49 @@ static void read_quipurc () {
 
 	strcpy(quipurc_path, getenv("HOME"));
 	strcat(quipurc_path, quipurc_name);
-
 	if ((config_file = fopen (quipurc_path, "r")) == 0)
 		return;
-
 	while (fgets(line, LINESIZE, config_file) != 0) {
 		p = SkipSpace(line);
-
 		/* Ignore comments and blanks */
-
 		if (*p == '#' || *p == '\0')
 			continue;
-
 		part1 = p;
 		if ((part2 = index(p,':')) == NULLCP)
 			continue; /* ignore it */
-
 		*part2++ = '\0';
 		part2 = TidyString(part2);
-
 		/*
 		 *	Read users DN
 		 */
 		if ((lexequ(part1, "username") == 0) && *username == '\0')
 			strcpy (username, part2);
-
 		/*
 		 *	Read password
 		 */
 		else if ((lexequ(part1, "password") == 0) && *userpassword == '\0')
 			strcpy (userpassword, part2);
-
 		/*
 		 *	Dsap options
 		 */
 		else if (lexequ (part1, "dsap") == 0)
 			tai_string (part2);
-
 		/*
 		 *	Isode options
 		 */
 		else if (lexequ (part1, "isode") == 0) {
 			char *split;
-
 			if ((split = index (part2,' ')) != NULLCP) {
 				*split++ = 0;
 				isodesetvar (part2, split, 0);
 			}
 		}
-
 		/*
 		 *	Service options
 		 */
 		else if (lexequ(part1, "service") == 0)
 			new_service (part2);
 	}
-
 	isodexport(NULLCP);
 	fclose(config_file);
 } /* read_quipurc */
@@ -190,36 +164,28 @@ static void read_args (int argc, char *argv[]) {
 	char *argstr;
 
 	if (argc <= 1) return;
-
 	argv++;
 	while (argc != 0 && (argstr = *argv)) {
 		if (*argstr == '-') {
 			switch (*++argstr) {
 			case 'T':
-
 				if (*++argv != NULLCP && *++argstr == '\0')
 					load_oid_table(*argv);
-
 				break;
 
 			case 'c':
-
 				if (*++argv != NULLCP  && *++argstr == '\0') myname = *argv;
 				dsa_address = NULLCP;
-
 				break;
 
 			case 't':
-
 				if (*++argv != NULLCP && *++argstr == '\0') tailfile = *argv;
-
 				break;
 
 			default:
 				argv++;
 			}
 		}
-
 		argv++;
 		argc--;
 	}

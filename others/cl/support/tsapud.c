@@ -115,24 +115,19 @@ int main (int argc, char **argv, char **envp) {
 
 	arginit (argv);
 	envinit ();
-
 #ifdef CAMTEC
 	if (x25service && (tcpservice || bridgeservice || tp4service))
 		adios (NULLCP, "CAMTEC X.25 daemon must run stand-alone");
 #endif
-
 	listen = 0;
-
 	for (ta = tas; ta < tz; ta++) {
 		if (ta -> ta_naddr == 0) {
 			if (!tp4service)
 				continue;
-
 			advise (LOG_INFO, NULLCP, "listening on TSEL %s",
 					sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
 		} else {
 			na = ta -> ta_addrs;
-
 			switch (na -> na_type) {
 			case NA_TCP:
 				if (!udpservice)
@@ -145,48 +140,36 @@ int main (int argc, char **argv, char **envp) {
 				adios (NULLCP, "unknown network type 0x%x", na -> na_type);
 				/* NOTREACHED */
 			}
-
 			if (ta -> ta_selectlen)
 				advise (LOG_INFO, NULLCP, "   %s",
 						sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
 		}
-
 		/*  set up a listen socket for unitdata service */
-
 		if (( sd = TUnitDataBind ( NOTOK, ta, NULL, NULL, td)) == NOTOK) {
 			ts_advise (td, LOG_ERR, "UNITDATA listen failed");
 			_exit (1);
 		}
-
 		listen++;
 	}
-
 	if (!listen)
 		adios (NULLCP, "no network services selected");
-
 	/*  keep reading until we get a datagram */
-
 	for (;;) {
 		if (TUnitDataRead (sd, tud, NOTOK) == NOTOK) {
 			ts_advise (td, LOG_ERR, "UNITDATA read failed");
 			continue;
 		}
-
 		/*
 		 *  Setup the vec pointers to pass.
 		 */
-
 		vec[0] = "tusap";
 		vec[1] = sd;
 		vec[2] = tud;
 		vec[3] = NULLCP;
-
 		vecp = 3;
-
 		/*
 		     *  Fork a new process for this unitdata instance.
 		     */
-
 		switch (pid = fork ()) {
 		case OK:
 			break;
@@ -194,7 +177,6 @@ int main (int argc, char **argv, char **envp) {
 		default:
 			tusaplose (td, DR_CONGEST, "unitddata",
 					   "unable to fork ");
-
 		}
 	}
 }
@@ -216,14 +198,11 @@ static int tsapud (int vecp, char **vec) {
 	strcpy (buffer1, vec[1]);
 	strcpy (buffer2, vec[2]);
 	/* end UGLY */
-
 	/*  save the datagram in the transport layer for the 1st read */
-
 	if (TuSave (vecp, vec, tud, td) == NOTOK) {
 		ts_advise (td, LOG_ERR, "T-UNITDATA.SAVE");
 		return;
 	}
-
 	advise (LOG_INFO, NULLCP,
 			"T-UNITDATA.INDICATION: <%d, <%s, %s>, <%s, %s>",
 			tud -> tud_sd,
@@ -233,7 +212,6 @@ static int tsapud (int vecp, char **vec) {
 			na2str (tud -> tud_called.ta_addrs),
 			sel2str (tud -> tud_called.ta_selector,
 					 tud -> tud_called.ta_selectlen, 1) );
-
 	if (tud -> tud_called.ta_selectlen) {
 		if ((is = getisoserventbyselector ("tsap", tud -> tud_called.ta_selector,
 										   tud -> tud_called.ta_selectlen))
@@ -244,29 +222,22 @@ static int tsapud (int vecp, char **vec) {
 			goto out;
 		}
 	}
-
 	*is -> is_tail++ = buffer1;
 	*is -> is_tail++ = buffer2;
 	*is -> is_tail = NULL;
-
 	if (tb = findtublk (tud -> tud_sd))
 		tb -> tb_fd = NOTOK;
-
 	/*
 	 *  Now exec the service process.
 	 */
-
 	execv (*is -> is_vec, is -> is_vec);
-
 	sprintf (buffer, "unable to exec %s: %s",
 			 *is -> is_vec, sys_errname (errno));
-
 out:
 	;
 	advise (LOG_ERR, NULLCP, "%s", buffer);
 	if (strlen (buffer) >= TD_SIZE)
 		buffer[0] = 0;
-
 	exit (1);
 }
 
@@ -279,7 +250,6 @@ static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
 		sprintf (buffer, "[%s]", TuErrString (td -> td_reason));
-
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -309,32 +279,22 @@ static arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	openlog (myname, LOG_PID);
-
 	isodetailor (myname);
-
 	rflag = 0;
-
 	strcpy (myhost, TLocalHostName ());
-
 	bzero ((char *) tas, sizeof tas);
-
 	tz = tas;
-
 #ifdef	TCP
 	if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 		adios (NULLCP, "tcp/tsap: unknown service");
-
 	tcp_na = tz -> ta_addrs;
 	tcp_na -> na_type = NA_TCP;
 	tcp_na -> na_domain[0] = 0;
 	tcp_na -> na_port = sp -> s_port;
 	tz -> ta_naddr = 1;
-
 	tz++;
 #endif
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -346,7 +306,6 @@ static arginit (char **vec) {
 			case 'r':
 				rflag = 1;
 				continue;
-
 #ifdef	TCP
 			case 'p':
 				if ((ap = *++vec) == NULL
@@ -360,10 +319,8 @@ static arginit (char **vec) {
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
-
 		adios (NULLCP, "usage: %s [switches]", myname);
 	}
-
 	if (!rflag
 			&& getuid () == 0
 			&& stat (ap = isodefile ("isoservices"), &st) != NOTOK
@@ -376,7 +333,6 @@ static envinit () {
 	sd;
 
 	nbits = getdtablesize ();
-
 	if (!(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -399,7 +355,6 @@ static envinit () {
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	TIOCNOTTY
 		if ((sd = open ("/dev/tty", O_RDWR)) != NOTOK) {
 			ioctl (sd, TIOCNOTTY, NULLCP);
@@ -414,7 +369,6 @@ static envinit () {
 #endif
 	} else
 		setlog ("tsapud.out");
-
 	for (sd = 3; sd < nbits; sd++)
 		close (sd);
 	signal (SIGPIPE, SIG_IGN);

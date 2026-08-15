@@ -46,7 +46,6 @@ int doexec (char *cmd) {
 
 	if (pipe(fd) < 0)
 		return NOTOK;
-
 	if ((pid = vfork ()) == 0) {
 		/*
 		 * Return everything the shell commands print.
@@ -64,19 +63,15 @@ int doexec (char *cmd) {
 	}
 	if (pid == -1)
 		return NOTOK;
-
 	close(fd[1]);
-
 	while ((i = read(fd[0], buf, sizeof(buf))) > 0) {
 		addtoia5 (buf, i);
 	}
-
 	while ((i = wait(&status)) != pid && i != -1)
 		;
 	if (i == -1)
 		status = -1;
 	close(fd[0]);
-
 	return OK;
 }
 
@@ -87,11 +82,9 @@ int do_symlink (struct type_Idist_FileSpec *fs) {
 	new = qb2str (fs -> filename);
 	linkname = cannon (new);
 	free (new);
-
 	new = qb2str (fs -> linkname);
 	strcpy (old, new);
 	free (new);
-
 	if (symlink (old, linkname) < 0) {
 		if (errno != ENOENT || chkparent (linkname) < 0 ||
 				symlink (old, linkname) < 0) {
@@ -99,10 +92,8 @@ int do_symlink (struct type_Idist_FileSpec *fs) {
 			return NOTOK;
 		}
 	}
-
 	if (bit_on (fs -> fileopts, bit_Idist_Options_compare)) {
 		char	tbuf[BUFSIZ];
-
 		if ((i = readlink (target, tbuf, BUFSIZ)) >= 0 &&
 				i == fs -> filesize &&
 				strncmp (old, tbuf, (int) fs -> filesize) == 0) {
@@ -115,7 +106,6 @@ int do_symlink (struct type_Idist_FileSpec *fs) {
 			return OK;
 		}
 	}
-
 	if (rename (linkname, target) < 0) {
 		nadvise (target, "can't rename %s to", linkname);
 		unlink (linkname);
@@ -177,7 +167,6 @@ int do_rfile (struct type_Idist_FileSpec *fs) {
 	p = qb2str (fs -> filename);
 	name = cannon (p);
 	free (p);
-
 	if ((cfile = fopen (name, "w")) == NULL) {
 		if (errno != ENOENT || chkparent (name) < 0 ||
 				(cfile = fopen (name, "w")) == NULL) {
@@ -186,7 +175,6 @@ int do_rfile (struct type_Idist_FileSpec *fs) {
 		}
 	}
 	fchmod (fileno (cfile), (int)fs -> filemode);
-
 	return OK;
 }
 
@@ -205,11 +193,9 @@ int do_hardlink (struct type_Idist_FileSpec *fs) {
 		return NOTOK;
 	}
 	free (cp);
-
 	if (catname)
 		sprintf (tp, "/%s", new);
 	free (new);
-
 	if (lstat(target, &stb) == 0) {
 		int mode = stb.st_mode & S_IFMT;
 		if (mode != S_IFREG && mode != S_IFLNK) {
@@ -239,13 +225,11 @@ int do_direct (struct type_Idist_FileSpec *fs) {
 	struct stat stb;
 
 	cp = name = qb2str (fs -> filename);
-
 	if (catname >= sizeof(stp)) {
 		nadvise (NULLCP, "Too many directory levels");
 		free (name);
 		return NOTOK;
 	}
-
 	stp[catname] = tp;
 	if (catname++) {
 		*tp ++ = '/';
@@ -253,12 +237,10 @@ int do_direct (struct type_Idist_FileSpec *fs) {
 			;
 		tp --;
 	}
-
 	if (bit_on (fs -> fileopts, bit_Idist_Options_verify)) {
 		free (name);
 		return OK;
 	}
-
 	if (lstat (target, &stb) == 0) {
 		if ((stb.st_mode & S_IFMT) == S_IFDIR) {
 			if ((stb.st_mode & 07777) == fs -> filemode) {
@@ -276,7 +258,6 @@ int do_direct (struct type_Idist_FileSpec *fs) {
 								   mkdir (target, (int)fs -> filemode) == 0)) {
 		char *owner = qb2str (fs -> fileowner);
 		char *group = qb2str (fs -> filegroup);
-
 		if (chog (target, owner, group, fs -> filemode) == 0) {
 			free (owner);
 			free (group);
@@ -308,7 +289,6 @@ int i_remove (char *str) {
 		nadvise (str, "Can't stat file");
 		return NOTOK;
 	}
-
 	switch (stb.st_mode & S_IFMT) {
 	case S_IFREG:
 	case S_IFLNK:
@@ -326,12 +306,10 @@ int i_remove (char *str) {
 		nadvise (NULLCP, "%s: not a plain file", target);
 		return NOTOK;
 	}
-
 	if ((d = opendir(str)) == NULL) {
 		nadvise (str, "Can't open directory");
 		return NOTOK;
 	}
-
 	while (dp = readdir(d)) {
 		if (strcmp(dp->d_name, ".") == 0 ||
 				strcmp(dp->d_name, "..") == 0)
@@ -353,7 +331,6 @@ int addtoia5 (char *str, int len) {
 
 	for (ia5p = &ia5list; *ia5p; ia5p = &(*ia5p) -> next)
 		continue;
-
 	*ia5p = str2ia5list (str, len);
 }
 
@@ -365,10 +342,8 @@ query (char *str) {
 	qr = (struct type_Idist_QueryResult *) malloc (sizeof *qr);
 	if (qr == NULL)
 		adios ("memory", "out of");
-
 	if (catname)
 		sprintf (tp, "/%s", str);
-
 	if (lstat (target, &stb) < 0) {
 		if (errno == ENOENT) {
 			qr -> offset = type_Idist_QueryResult_doesntExist;
@@ -406,12 +381,10 @@ str2ia5list (char *s, int len) {
 	if ((ia5 = (struct type_Idist_IA5List  *) calloc (1, sizeof *ia5))
 			== NULL)
 		return NULL;
-
 	if ((ia5 -> IA5String = str2qb (s, len, 1)) == NULL) {
 		free ((char *) ia5);
 		return NULL;
 	}
-
 	return ia5;
 }
 
@@ -425,12 +398,10 @@ struct type_Idist_FileList *
 
 	base = NULL;
 	flp = &base;
-
 	if ((d = opendir (target)) == NULL) {
 		nadvise (target, "Can't open directory");
 		return NULL;
 	}
-
 	while (dp = readdir (d)) {
 		if (strcmp (dp -> d_name, ".") == 0 ||
 				strcmp (dp -> d_name, "..") == 0)
@@ -451,7 +422,6 @@ struct type_Idist_FileList *
 		if ((*flp = (struct type_Idist_FileList *)
 					malloc (sizeof **flp)) == NULL)
 			adios ("memory", "out of");
-
 		(*flp) -> FileSpec = makefs (stb.st_mode & S_IFMT, 0,
 									 stb.st_mode & 07777, stb.st_size,
 									 stb.st_mtime, "", "",
@@ -472,7 +442,6 @@ int fixup () {
 	p = qb2str (cfiletype -> filename);
 	new = cannon (p);
 	free (p);
-
 	if (bit_on (cfiletype -> fileopts, bit_Idist_Options_compare)) {
 		if (compare (target, new) == OK) {
 			unlink (new);
@@ -484,17 +453,14 @@ int fixup () {
 			return OK;
 		}
 	}
-
 	tvp[1].tv_sec =
 		tvp[0].tv_sec =
 			convtime (cfiletype -> filemtime);
 	tvp[0].tv_usec = tvp[1].tv_usec = 0;
 	if (utimes (new, tvp) < 0)
 		nadvise (new, "utimes failed on");
-
 	owner = qb2str (cfiletype -> fileowner);
 	group = qb2str (cfiletype -> filegroup);
-
 	if (chog (new, owner, group, cfiletype -> filemode) < 0) {
 		free (owner);
 		free (group);
@@ -503,7 +469,6 @@ int fixup () {
 	}
 	free (owner);
 	free (group);
-
 	if (rename (new, target) < 0) {
 		nadvise (target, "Can't rename %s to", new);
 		return NOTOK;
@@ -538,7 +503,6 @@ static int compare (char *f1, char *f2) {
 		if (bcmp (buf1, buf2, n1) != 0)
 			break;
 	}
-
 	fclose (fp1);
 	fclose (fp2);
 	return n1 == 0 ? OK : NOTOK;
@@ -555,7 +519,6 @@ int chog(char *file, char *owner, char *group, integer imode) {
 	int	mode;
 
 	mode = imode;	/* ? lint ? */
-
 	uid = userid;
 	if (userid == 0) {
 		if (*owner == ':') {

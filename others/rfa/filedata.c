@@ -39,7 +39,6 @@ int getCompressed (char *fn, struct qbuf **qbp) {
 		advise(LLOG_EXCEPTIONS,NULLCP,"spawnCompress: pipe failed");
 		return 0;
 	}
-
 	switch (fork()) {
 	case -1:
 		advise(LLOG_EXCEPTIONS,NULLCP,"spawnCompress: fork failed");
@@ -57,12 +56,9 @@ int getCompressed (char *fn, struct qbuf **qbp) {
 	default:
 		break;
 	}
-
 	close (p[1]);
-
 	rc = fd2qb(p[0], qbp);
 	close (p[0]);
-
 	return rc;
 }
 
@@ -106,10 +102,8 @@ int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 	}
 	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if((s = qb2str(gfa->filename)) == NULL)
 		return NOTOK_SYS;
-
 	/*--- expand symlinks and get relative path ---*/
 	if ((fn = expandSymLinks(s)) == NULL) {
 		free(s);
@@ -117,7 +111,6 @@ int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 		return str_error(sd, error_RFA_fileAccessError, rfaErrStr, rox, roi);
 	}
 	free(s);
-
 	/*--- get file info (begin of critical region) ---*/
 	if ((rc = getRfaInfoList(dirname(fn), &rfalist,basename(fn), 1)) != OK) {
 		return error(sd, error_RFA_fileAccessError, rc, rox, roi);
@@ -126,27 +119,22 @@ int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 		releaseRfaInfoList(dirname(fn), rfalist);
 		return str_error(sd, error_RFA_fileAccessError, "no such file",rox, roi);
 	}
-
 	/*--- check if regular file ---*/
 	if ((rfa->ri_mode & S_IFMT) != S_IFREG) {
 		releaseRfaInfoList(dirname(fn), rfalist);
 		advise(LLOG_NOTICE,NULLCP,"getFileData: not regular file  %s", fn);
 		return statusError(sd, int_RFA_reason_notRegularFile, NULL,0L,rox,roi);
 	}
-
 	/*--- see if we are slave for file ---*/
 	if (IS_SLAVE(rfa->ri_status)) {
 		releaseRfaInfoList(dirname(fn), rfalist);
 		advise(LLOG_EXCEPTIONS,NULLCP,"getFileData: not master for %s", fn);
 		return statusError(sd, int_RFA_reason_notMaster, NULL, 0L, rox, roi);
 	}
-
 	gfr.fileinfo = rfa2fi(dirname(fn), rfa);
 	releaseRfaInfoList(dirname(fn), rfalist);
-
 	advise (LLOG_DEBUG, NULLCP, "getFileData: mv=%d sv=%d",
 			gfr.fileinfo->modTime, gfa->slaveVersion);
-
 	/*--- see if proposed version is actual ---*/
 	if (gfa->slaveVersion > gfr.fileinfo->modTime) {
 		advise(LLOG_EXCEPTIONS,NULLCP,"reqMaster: slave newer than master of %s"
@@ -192,7 +180,6 @@ int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 			advise (LLOG_DEBUG, NULLCP, "getFileData: send %d bytes", bytes);
 		}
 	}
-
 	/*--- return result ---*/
 	if (RyDsResult (sd, rox->rox_id, (caddr_t)&gfr, ROS_NOPRIO,
 					roi) == NOTOK) {
@@ -204,6 +191,5 @@ int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, ca
 	if (gfr.data)
 		qb_free(gfr.data);
 	free_RFA_FileInfo(gfr.fileinfo);
-
 	return OK;
 }

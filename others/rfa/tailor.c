@@ -70,7 +70,6 @@ int tailor (char *fn) {
 
 	if ((f = fopen(fn, "r")) == NULL)
 		return OK;
-
 	errp = rfaErrStr;
 	while (fgets(buf, BUFSIZ, f)) {
 		for (v = buf; isspace(*v); v++)
@@ -87,26 +86,21 @@ int tailor (char *fn) {
 		*v = '\0';
 		v = cut(v+1);
 		o = cut(buf);
-
 		/*--- USER ---*/
 		if (!strcasecmp(o, "user")) {
 			user = strdup(v);
 		} else
-
 			/*--- PASSWORD ---*/
 			if (!strcasecmp(o, "password")) {
 				passwd = strdup(v);
 			} else
-
 				/*--- HOST ---*/
 				if (!strcasecmp(o, "host")) {
 					host = strdup(v);
 				} else
-
 					/*--- ROOT ---*/
 					if (!strcasecmp(o, "root")) {
 						char buf[BUFSIZ];
-
 						if (realpath(v, buf) == NULLCP) {
 							sprintf(errp,"\n\tinvalid local root '%s'", cut(v));
 							errp += strlen(errp);
@@ -114,16 +108,13 @@ int tailor (char *fn) {
 						}
 						fsBase = strdup(buf);
 					} else
-
 						/*--- COMPRESS ---*/
 						if (!strcasecmp(o, "compress")) {
 							if((compLimit = atoi(v)) == 0)
 								VERROR(v);
 						} else
-
 							/*--- BACKUP ---*/
 							if (!strcasecmp(o, "backup")) {
-
 								if (!strcasecmp(v, "on"))
 									backup = 1;
 								else if (!strcasecmp(v, "off"))
@@ -131,10 +122,8 @@ int tailor (char *fn) {
 								else
 									VERROR(v);
 							} else
-
 								/*--- CHGRP ---*/
 								if (!strcasecmp(o, "chgrp")) {
-
 									if (!strcasecmp(v, "on"))
 										doChgrp = 1;
 									else if (!strcasecmp(v, "off"))
@@ -142,10 +131,8 @@ int tailor (char *fn) {
 									else
 										VERROR(v);
 								} else
-
 									/*--- TIME ---*/
 									if (!strcasecmp(o, "time")) {
-
 										if (!strcasecmp(v, "slave"))
 											timeSlave = 1;
 										else if (!strcasecmp(v, "master"))
@@ -153,7 +140,6 @@ int tailor (char *fn) {
 										else
 											VERROR(v);
 									} else
-
 										/*--- CHOWN ---*/
 										if (!strcasecmp(o, "chown")) {
 											if (!strcasecmp(v, "on")) {
@@ -169,7 +155,6 @@ int tailor (char *fn) {
 											else
 												VERROR(v);
 										} else
-
 											/*--- CHMOD ---*/
 											if (!strcasecmp(o, "chmod")) {
 												if (!strcasecmp(v, "on"))
@@ -179,7 +164,6 @@ int tailor (char *fn) {
 												else
 													VERROR(v);
 											} else
-
 												/*--- STRIP SUID ---*/
 												if (!strcasecmp(o, "clearsuid")) {
 													if (!strcasecmp(v, "on"))
@@ -189,7 +173,6 @@ int tailor (char *fn) {
 													else
 														VERROR(v);
 												} else
-
 													/*--- REMOVE SLAVES ---*/
 													if (!strcasecmp(o, "rmslaves")) {
 														if (!strcasecmp(v, "on"))
@@ -199,7 +182,6 @@ int tailor (char *fn) {
 														else
 															VERROR(v);
 													} else
-
 														/*--- LOGDEBUG ---*/
 														if (!strcasecmp(o, "debuglog"))  {
 															if (!strcasecmp(v, "on"))
@@ -208,9 +190,7 @@ int tailor (char *fn) {
 																pgm_log->ll_events = LLOG_EXCEPTIONS | LLOG_FATAL;
 															else
 																VERROR(v);
-
 														} else
-
 															/*--- RFA EXEC ---*/
 															if (!strcasecmp(o, "rfaexec"))  {
 																if (!strcasecmp(v, "on"))
@@ -220,7 +200,6 @@ int tailor (char *fn) {
 																else
 																	VERROR(v);
 															} else
-
 																/*--- TRANSFER ---*/
 																if (!strcasecmp(o, "transfer"))  {
 																	if (!strcasecmp(v, "request"))
@@ -229,7 +208,6 @@ int tailor (char *fn) {
 																		default_transfer = RI_TR_AUTO;
 																	else
 																		VERROR(v);
-
 																} else  {
 																	sprintf(errp, "\n\tinvalid tailor option '%s'",o);
 																	errp += strlen(errp);

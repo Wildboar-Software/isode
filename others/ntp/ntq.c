@@ -42,14 +42,11 @@ int main (int argc, char **argv) {
 			fprintf (stderr, "Usage: %s [-s] host\n", myname);
 			break;
 		}
-
 	argc -= optind;
 	argv += optind;
 	isodetailor (myname, 0);
-
 	if (argc < 1)
 		adios (NULLCP, "Usage: %s [-s] host", myname);
-
 	ntp_monitor (*argv);
 	exit (0);
 	return 0;
@@ -59,11 +56,8 @@ int ntp_monitor (char *host) {
 	int	sd;
 
 	sd = mk_connect (host);
-
 	for (;;) {
-
 		send_request (sd);
-
 		sleep ((unsigned)sleeptime);
 	}
 }
@@ -87,14 +81,11 @@ int mk_connect (char *addr) {
 	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	PE pep[1];
-
 	if ((pa = str2paddr (addr)) == NULLPA) {
 		advise ( NULLCP, "Can't translate %s", addr);
 		return NOTOK;
 	}
-
 	pep[0] = build_bind_arg ();
-
 	if ((ctx = ode2oid (mycontext)) == NULLOID) {
 		advise ( NULLCP,
 				 "%s: unknown object descriptor", mycontext);
@@ -121,25 +112,19 @@ int mk_connect (char *addr) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	if (AcAssocRequest (ctx, NULLAEI, NULLAEI, NULLPA, pa,
 						pc, NULLOID,
 						0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf,
 						pep, 1, NULLQOS,
 						acc, aci) == NOTOK)
 		acs_adios (aca, "A-ASSOCIATE.REQUEST");
-
 	pe_free (pep[0]);
-
 	if (acc -> acc_result != ACS_ACCEPT)
 		ac_failed (acc);
-
 	sd = acc -> acc_sd;
 	ACCFREE (acc);
-
 	if (RoSetService (sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
-
 	return sd;
 }
 
@@ -147,7 +132,6 @@ int ac_failed (struct AcSAPconnect *acc) {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
-
 		if (decode_NTP_BindError (acc -> acc_info[0], 1,
 								  NULLIP, NULLVP,
 								  &binderr) != NOTOK) {
@@ -231,7 +215,6 @@ int query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *resu
 	putchar ('\n');
 	for (; result; result = result -> next) {
 		clock = result -> ClockInfo;
-
 		c = ' ';
 		if (bit_test (clock -> flags, bit_NTP_flags_configured))
 			c = '-';
@@ -272,12 +255,10 @@ int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter
 		advise (NULLCP, "%s", RoErrString ((int) parameter));
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_NTP_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	return OK;
 }
 static PE build_bind_arg () {
@@ -293,7 +274,6 @@ static PE build_bind_arg () {
 			bit_NTP_version_version__1);
 	bit_on (bindarg -> version,
 			bit_NTP_version_version__2);
-
 	bindarg -> mode = (struct type_NTP_BindMode *)
 					  calloc (1, sizeof *bindarg->mode);
 	bindarg -> mode -> parm =
@@ -308,7 +288,6 @@ static PE build_bind_arg () {
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	_exit (1);
 }
 
@@ -320,7 +299,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
@@ -328,7 +306,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 
 void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
-
 	_exit (1);
 }
 
@@ -341,7 +318,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -353,11 +329,8 @@ static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -373,9 +346,7 @@ static void    advise (char *what, char *fmt, ...) {
     va_list ap;
 
     va_start (ap, fmt);
-
     _advise (what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -384,13 +355,10 @@ static void  _advise (char *what, char *fmt, va_list ap)
 	char    buffer[BUFSIZ];
 
     _asprintf (buffer, what, fmt, ap);
-
 	fflush (stdout);
-
 	fprintf (stderr, "%s: ", myname);
 	fputs (buffer, stderr);
 	fputc ('\n', stderr);
-
 	fflush (stderr);
 }
 #else
@@ -406,9 +374,7 @@ void    ryr_advise (char *what, char *fmt, ...) {
     va_list ap;
 
     va_start (ap, fmt);
-
     _advise (what, fmt, ap);
-
 	va_end (ap);
 }
 #else

@@ -19,14 +19,10 @@ int	ropktlose (struct assocblk *acb, ...)
 	va_list ap;
 
 	va_start (ap, acb);
-
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
-
 	result = _rosaplose (roi, reason, ap);
-
 	va_end (ap);
-
 #ifdef HULA
 	return result;
 #else
@@ -34,7 +30,6 @@ int	ropktlose (struct assocblk *acb, ...)
 	|| acb -> acb_fd == NOTOK
 	|| acb -> acb_ropktlose == NULLIFP)
 		return result;
-
 	switch (reason) {
 	case ROS_PROTOCOL:
 		value = ABORT_PROTO;
@@ -48,9 +43,7 @@ int	ropktlose (struct assocblk *acb, ...)
 		value = ABORT_LSP;
 		break;
 	}
-
 	(*acb -> acb_ropktlose) (acb, value);
-
 	return result;
 #endif
 }
@@ -73,23 +66,17 @@ int	rosapreject (struct assocblk *acb, ...)
 	va_list ap;
 
 	va_start (ap, acb);
-
 	roi = va_arg (ap, struct RoSAPindication *);
 	reason = va_arg (ap, int);
-
 	result = _rosaplose (roi, reason, ap);
-
 	result = _rosaplose (roi, reason, ap);
-
 	va_end (ap);
-
 	if (RoURejectRequestAux (acb, NULLIP, reason - REJECT_GENERAL_BASE,
 	REJECT_GENERAL, 0, &rois) == NOTOK
 	&& ROS_FATAL (rois.roi_preject.rop_reason)) {
 		*roi = rois;		/* struct copy */
 		result = NOTOK;
 	}
-
 	return result;
 }
 #else
@@ -105,15 +92,10 @@ int	rosaplose (struct RoSAPindication *roi, ...)
 {
 	int	    reason, result;
 	va_list (ap);
-
 	va_start (ap, roi);
-
 	reason = va_arg (ap, int);
-
 	result = _rosaplose (roi, reason, ap);
-
 	va_end (ap);
-
 	return result;
 }
 #else
@@ -139,16 +121,13 @@ static int _rosaplose (  /* what, fmt, args ... */
 		bzero ((char *) roi, sizeof *roi);
 		roi -> roi_type = ROI_PREJECT;
 		rop = &roi -> roi_preject;
-
 		what = va_arg (ap, char *);
 		fmt = va_arg (ap, char *);
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		rop -> rop_reason = reason;
 		copyRoSAPdata (buffer, bp - buffer, rop);
 	}
-
 	return NOTOK;
 }
 #endif

@@ -38,27 +38,22 @@
 /* returns ptr to header and header len */
 
 int  T_UnitDataWrite (struct tsapblk *tb, struct udvec *uv, char **hptr, struct TSAPdisconnect *td) {
-
 	char   *vptr,
 		   *liptr;
 
 	int	   n;
-
 	/*
 	 *  Format the ISO T-UNITDATA header
 	 */
-
 	if ((vptr =  malloc ((unsigned) (3 + 7 +
 									 (2 + tb -> tb_initiating.ta_selectlen)
 									 + (2 + tb -> tb_initiating.ta_selectlen)
 									 + 3))) == NULL)
 		return DR_CONGEST;
-
 	*hptr = vptr;
 	liptr = vptr++;
 	*vptr++ = TPDU_UD;
 	*liptr = 1;
-
 	if (tb -> tb_initiating.ta_selectlen > 0) {
 		*vptr++ = VDAT_TSAP_CLI;
 		*vptr++ = tb -> tb_initiating.ta_selectlen;
@@ -68,7 +63,6 @@ int  T_UnitDataWrite (struct tsapblk *tb, struct udvec *uv, char **hptr, struct 
 		vptr += tb -> tb_initiating.ta_selectlen;
 		*liptr += 2 + tb -> tb_initiating.ta_selectlen;
 	}
-
 	if (tb -> tb_responding.ta_selectlen > 0) {
 		*vptr++ = VDAT_TSAP_SRV;
 		*vptr++ = tb -> tb_responding.ta_selectlen;
@@ -78,11 +72,9 @@ int  T_UnitDataWrite (struct tsapblk *tb, struct udvec *uv, char **hptr, struct 
 		vptr += tb -> tb_responding.ta_selectlen;
 		*liptr += 2 + tb -> tb_responding.ta_selectlen;
 	}
-
 	/*
 	 *  LI field doesn't include itself so bump up the actual
 	 */
-
 	return ( (*liptr) + 1 );
 }
 
@@ -96,37 +88,27 @@ int T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdis
 	int	   	len, vlen, savelen;
 
 	vptr = (char*) tud -> tud_qbuf.qb_data;
-
 	/*
 	 *  Get LI.
 	 */
-
 	vlen = *vptr;
 	savelen = vlen;
-
 	/*
 	 *  Check for valid unitdata TPDU.
 	 */
-
 	vptr++;
-
 	if (*vptr++ != TPDU_UD)
 		return DR_PROTOCOL;
-
 	len = 0;
 	vlen--;
-
 	for (; vlen > 0; vptr += len, vlen -= len) {
 		int	ilen;
-
 		if (vlen < 2)
 			return DR_LENGTH;
-
 		code = *vptr++ & 0xff;
 		len = *vptr++ & 0xff;
 		if ((vlen -= 2) < len)
 			return NOTOK;
-
 		switch (code) {
 		case VDAT_TSAP_SRV:
 			if ((ilen = len) > sizeof tud -> tud_called)
@@ -160,22 +142,15 @@ int T_UnitDataRead (struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdis
 
 		default:
 			return NOTOK;
-
 		}
-
 	}
-
 	/*
 	 * Update the pointer to the user data.
 	 */
-
 	tud -> tud_qbuf.qb_data  = (char*) vptr;
-
 	/*
 	 *  LI field doesn't include itself so bump up the actual
 	 *  length in savelen to return.
 	 */
-
 	return (savelen + 1);
-
 }

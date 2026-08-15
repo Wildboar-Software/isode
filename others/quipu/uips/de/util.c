@@ -80,10 +80,8 @@ char *copy_string (char *string) {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;
-
 	new_string = (char *) smalloc((strlen(string) + 1));
 	strcpy(new_string, string);
-
 	return new_string;
 }
 
@@ -97,19 +95,14 @@ char   *dn2pstr (DN dn) {
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
-
 	dn_print (ps, dn, RDNOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }
 
@@ -298,7 +291,6 @@ void logSearchSuccess (char *outcome, char *objecttype, char *string, int search
 			strcpy(filterNumberString, "explicit");
 		else
 			sprintf(filterNumberString, "%d", searchNumber);
-
 		ll_log (de_log, LLOG_NOTICE, NULLCP,
 				"searchOutcome:%s:%s:%s:%s:%d", objecttype,
 				outcome, string, filterNumberString, noMatches);

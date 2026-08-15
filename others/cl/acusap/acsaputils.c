@@ -72,15 +72,12 @@ struct type_ACS_Association__information *info2_apdu (struct assocblk *acb, stru
 												malloc (sizeof (struct choice_UNIV_0))) == NULL)
 			goto out;
 		q = p -> EXTERNAL;
-
 		q -> indirect__reference = (pe = *data++) -> pe_context;
 		q -> encoding -> offset = choice_UNIV_0_single__ASN1__type;
 		(q -> encoding -> un.single__ASN1__type = pe) -> pe_refcnt++;
 	}
 	(*pp) = NULL;
-
 	return info;
-
 out:
 	;
 	free_ACS_Association__information (info);
@@ -100,15 +97,12 @@ int	apdu2_info (struct assocblk *acb, struct AcSAPindication *aci, struct type_A
 		if (i > NACDATA)
 			return acusaplose ( aci, ACS_CONGEST, NULLCP,
 								"too much user information");
-
 		q = info -> EXTERNAL;
 		if (q -> encoding -> offset != choice_UNIV_0_single__ASN1__type)
 			return acusaplose ( aci, ACS_PROTOCOL, NULLCP,
 								"EXTERNAL data not single-ASN1-type");
-
 		(pe = q -> encoding -> un.single__ASN1__type) -> pe_refcnt++;
 		pe -> pe_context = q -> indirect__reference;
-
 		*data++ = pe;
 	}
 	*ndata = i;
@@ -126,17 +120,14 @@ int	ACU_print (PE pe, char *text, int rw)
 
 	if (strcmp (acsapfile, "-")) {
 		char	file[BUFSIZ];
-
 		sprintf (file, acsapfile, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
 		fp = stderr, isopen = 0,  fflush (stdout);
-
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
 		print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
-
 		if (isopen)
 			fclose (fp);
 		else
@@ -155,9 +146,7 @@ struct assocblk *
 	acb = (struct assocblk   *) calloc (1, sizeof *acb);
 	if (acb == NULL)
 		return NULL;
-
 	acb -> acb_fd = NOTOK;
-
 	if (once_only == 0) {
 		AcuHead -> acb_forw = AcuHead -> acb_back = AcuHead;
 		once_only++;
@@ -176,7 +165,6 @@ findacublk (
 
 	if (once_only == 0 || sd == NOTOK)
 		return NULL;
-
 	for (acb = AcuHead -> acb_forw; acb != AcuHead; acb = acb -> acb_forw)
 		if (acb -> acb_fd == sd)
 			return acb;
@@ -189,16 +177,12 @@ int freeacublk (
 	struct assocblk *acb
 ) {
 	if (acb == NULL) return;
-
 	if (acb -> acb_context)
 		oid_free (acb -> acb_context);
-
 	if (acb -> acb_audtpci)
 		oid_free (acb -> acb_audtpci);
-
 	if (acb -> acb_apdu)
 		pe_free (acb -> acb_apdu);
-
 	if ( acb -> acb_callingtitle ) {
 		AEIFREE ( acb -> acb_callingtitle );
 		free ( acb -> acb_callingtitle );
@@ -230,7 +214,6 @@ int ps2aculose (
 				  pa -> pa_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
 				  PuErrString (pa -> pa_reason), pa -> pa_cc, pa -> pa_cc,
 				  pa -> pa_data);
-
 	cp = "";
 	switch (pa -> pa_reason) {
 	case PC_ADDRESS:
@@ -260,7 +243,6 @@ int ps2aculose (
 		reason = ACS_PRESENTATION;
 		break;
 	}
-
 	if (pa -> pa_cc > 0)
 		return acusaplose (aci, reason, NULLCP, "%*.*s%s",
 						   pa -> pa_cc, pa -> pa_cc, pa -> pa_data, cp);
@@ -309,15 +291,12 @@ static int _acusaplose (  /* what, fmt, args ... */
 		bzero ((char *) aci, sizeof *aci);
 		aci -> aci_type = ACI_ABORT;
 		aca = &aci -> aci_abort;
-
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		aca -> aca_source = ACA_LOCAL;
 		aca -> aca_reason = reason;
 		copyAcSAPdata (buffer, bp - buffer, aca);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -365,7 +344,6 @@ char *AcuErrString (
 
 	if (code < reject_err0_cnt)
 		return reject_err0[code];
-
 	sprintf (buffer, "unknown error code %d", code);
 	return buffer;
 }

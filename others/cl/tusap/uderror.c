@@ -39,5 +39,4 @@
 
 int	uderror (int err)
 {
-
 }

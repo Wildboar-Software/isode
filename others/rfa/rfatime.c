@@ -22,7 +22,6 @@
 #include <sys/time.h>
 
 int main (int ac, char **av) {
-
 	struct timeval tv;
 	time_t dt;
 	int err;

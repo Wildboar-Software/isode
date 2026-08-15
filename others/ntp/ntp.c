@@ -63,12 +63,10 @@ int main (int argc, char *argv[]) {
 	char ref_clock[5];
 	time_t net_time;
 	ref_clock[4] = '\0';
-
 	myname = argv[0];
 	timeout.tv_sec = TIME_OUT;
 	timeout.tv_usec = 0;
 	retry = RETRY_COUNT;
-
 	sp = getservbyname("ntp", "udp");
 	if (sp == NULL) {
 		fprintf(stderr, "udp/ntp: service unknown; using default %d\n",
@@ -76,7 +74,6 @@ int main (int argc, char *argv[]) {
 		dst.sin_port = htons(NTP_PORT);
 	} else
 		dst.sin_port = sp->s_port;
-
 	dst.sin_family = AF_INET;
 	while ((n = getopt(argc, argv, "vsf")) != EOF) {
 		switch (n) {
@@ -93,10 +90,8 @@ int main (int argc, char *argv[]) {
 	}
 	for (host = optind; host < argc; ++host) {
 		long	HostAddr;
-
 		if (argv[host] == NULL)
 			continue;
-
 		hp = NULL;
 		HostAddr = inet_addr(argv[host]);
 		dst.sin_addr.s_addr = (uint32_t) HostAddr;
@@ -109,37 +104,29 @@ int main (int argc, char *argv[]) {
 			}
 			bcopy(hp->h_addr, (char *) &dst.sin_addr,hp->h_length);
 		}
-
 		bzero((char *)pkt, sizeof(ntp_data));
-
 		pkt->status = NTPVERSION_1 | NO_WARNING | MODE_CLIENT;
 		pkt->stratum = UNSPECIFIED;
 		pkt->ppoll = 0;
-
 		if ((s = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 			perror("ntp socket");
 			exit(1);
 		}
-
 		FD_ZERO(&readfds);
 		FD_SET(s, &readfds);	/* since it's always modified on ret */
-
 		if (connect(s, (struct sockaddr *)&dst, dstlen)) {
 			perror("connect");
 			exit(1);
 		}
-
 		/*
 		 * Needed to fill in the time stamp fields
 		 */
 		gettimeofday(&tp, (struct timezone *) 0);
 		tstamp(&pkt->xmt, &tp);
-
 		if (send(s, (char *) pkt, sizeof(ntp_data), 0) < 0) {
 			perror("send");
 			exit(1);
 		}
-
 		/*
 		 * Wait for the reply by watching the file descriptor
 		 */
@@ -148,7 +135,6 @@ int main (int argc, char *argv[]) {
 			perror("ntp select");
 			exit(1);
 		}
-
 		if (n == 0) {
 			fprintf(stderr,"*Timeout*\n");
 			if (--retry)
@@ -167,7 +153,6 @@ int main (int argc, char *argv[]) {
 		}
 		gettimeofday(&tp, (struct timezone *) 0);
 		tstamp(&in_timestamp, &tp);
-
 		close(s);
 		if (verbose) {
 			printf("Packet from: [%s]\n", inet_ntoa(isock.sin_addr));
@@ -192,30 +177,25 @@ int main (int argc, char *argv[]) {
 				   ntohs(pkt->distance.int_part),
 				   ntohs(pkt->distance.fraction),
 				   s_fixed_to_double(&pkt->distance));
-
 			printf("Synch Dispersion is %04X.%04x  %f\n",
 				   ntohs(pkt->dispersion.int_part),
 				   ntohs(pkt->dispersion.fraction),
 				   s_fixed_to_double(&pkt->dispersion));
-
 			net_time = ntohl(pkt->reftime.int_part) - JAN_1970;
 			printf("Reference Timestamp is %08lx.%08lx %s",
 				   ntohl(pkt->reftime.int_part),
 				   ntohl(pkt->reftime.fraction),
 				   ctime(&net_time));
-
 			net_time = ntohl(pkt->org.int_part) - JAN_1970;
 			printf("Originate Timestamp is %08lx.%08lx %s",
 				   ntohl(pkt->org.int_part),
 				   ntohl(pkt->org.fraction),
 				   ctime(&net_time));
-
 			net_time = ntohl(pkt->rec.int_part) - JAN_1970;
 			printf("Receive Timestamp is   %08lx.%08lx %s",
 				   ntohl(pkt->rec.int_part),
 				   ntohl(pkt->rec.fraction),
 				   ctime(&net_time));
-
 			net_time = ntohl(pkt->xmt.int_part) - JAN_1970;
 			printf("Transmit Timestamp is  %08lx.%08lx %s",
 				   ntohl(pkt->xmt.int_part),
@@ -226,13 +206,11 @@ int main (int argc, char *argv[]) {
 		t2 = ul_fixed_to_double(&pkt->rec);
 		t3 = ul_fixed_to_double(&pkt->xmt);
 		t4 = ul_fixed_to_double(&in_timestamp);
-
 		net_time = ntohl(in_timestamp.int_part) - JAN_1970;
 		if (verbose)
 			printf("Input Timestamp is     %08lx.%08lx %s",
 				   ntohl(in_timestamp.int_part),
 				   ntohl(in_timestamp.fraction), ctime(&net_time));
-
 		delay = (t4 - t1) - (t3 - t2);
 		offset = (t2 - t1) + (t3 - t4);
 		offset = offset / 2.0;
@@ -242,28 +220,23 @@ int main (int argc, char *argv[]) {
 		net_time = ntohl(pkt->xmt.int_part) - JAN_1970 + delay;
 		fputs(ctime(&net_time), stdout);
 		fflush(stdout);
-
 		if (!set)
 			continue;
-
 		if ((offset < 0 ? -offset  : offset) > WAYTOOBIG && !force) {
 			fprintf(stderr, "Offset too large - use -f option to force clock set.\n");
 			continue;
 		}
-
 		if (pkt->status & LEAPMASK == ALARM) {
 			fprintf(stderr, "Can't set time from %s - unsynchronized\n",
 					argv[host]);
 			continue;
 		}
-
 		/* set the clock */
 		gettimeofday(&tp, (struct timezone *) 0);
 		offset += tp.tv_sec;
 		offset += tp.tv_usec / 1000000.0;
 		tp.tv_sec = offset;
 		tp.tv_usec = (offset - tp.tv_sec) * 1000000.0;
-
 		if (settimeofday(&tp, (struct timezone *) 0)) {
 			perror("Can't set time (settimeofday)");
 		} else

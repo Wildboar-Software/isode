@@ -39,7 +39,6 @@ int main (int argc, char **argv, char **envp) {
 	struct SSAPindication *sptr;
 
 #define	NTADDRS		FD_SETSIZE
-
 	struct TSAPaddr   *ta;
 	int    n = ta -> ta_naddr - 1;
 	struct NSAPaddr   *na = ta -> ta_addrs;
@@ -47,47 +46,37 @@ int main (int argc, char **argv, char **envp) {
 	static struct TSAPaddr  tas[NTADDRS];
 	int	    port;
 	struct NSAPaddr *tcp_na;
-
 	printf ("\n SuSAP test driver for SUNITDATA\n");
 	printf ("\n running on host \"%s\"\n", SLocalHostName ());
-
 	t = NULL;
 	bptr = buffer;
 	*bptr = 'h';
-
 	/*
 	 *  Init the send buffer to a continous pattern.
 	 */
-
 	for (cc = pattern = 0; cc < sizeof(sendbuf); cc++, pattern++)
 		sendbuf[cc] = pattern;
-
 	/*
 	 *  Setup the calling and called network addresses.
 	 */
-
 	if ((is = getisoserventbyname("susaptest", "ssap")) == NULL) {
 		printf ("\nfailed to lookup iso service \n");
 		exit (1);
 	}
-
 	if (is)
 		printsrv (is);
-
 	if ((sa = is2saddr("loopback", "udptest", is)) == NULLSA) {
 		printf ("\n ssap address translation failed \n");
 		exit(1);
 	}
 	if (sa)
 		printsaddr(sa);
-
 	if ((ta = is2taddr("loopback", "udptest", is)) == NULLTA) {
 		printf ("\n tsap address translation failed \n");
 		exit(1);
 	}
 	if (ta)
 		printtaddr(ta);
-
 	while (1) {
 		switch (toupper(*bptr)) {
 		case 'H':
@@ -103,9 +92,7 @@ int main (int argc, char **argv, char **envp) {
 			printf("\nSuSAP tester terminated by user\n");
 			exit(0);
 		case 'T':
-
 			printf ("\n Toggle mode \n");
-
 			printf ("\n Current mode is ");
 			if (mode == SERVER_MODE) {
 				printf ("SERVER\n");
@@ -121,41 +108,32 @@ int main (int argc, char **argv, char **envp) {
 		case 'B':
 			printf ("\n Binding the service\n");
 #ifdef UDP
-
 			if (mode == CLIENT_MODE)
 				sd = SUnitDataBind (NOTOK, NULL, sa, NULL, &si);
 			else
 				sd = SUnitDataBind (NOTOK, sa, NULL, NULL, &si);
-
 			if (sd == NOTOK)
 				printf ("\n Bind unit data service failed\n");
 			else
 				printf ("\n application bound to socket = %d \n", sd);
-
 #endif
 			break;
 
 		case 'U':
 			printf ("\n Unbinding the service\n");
-
 			SUnitDataUnbind (sd);
-
 			break;
 
 		case 'L':
-
 			if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 				printf ("\ntcp/tsap: unknown service");
-
 			tz = tas;
 			tcp_na = tz -> ta_addrs;
 			tcp_na -> na_type = NA_TCP;
 			tcp_na -> na_domain[0] = 0;
 			tcp_na -> na_port = sp -> s_port;
 			tz -> ta_naddr = 1;
-
 			sd = TUnitDataListen (tcp_na, NULL);
-
 			if (sd == NOTOK)
 				printf ("\n TNetListen failed\n");
 			else {
@@ -165,23 +143,18 @@ int main (int argc, char **argv, char **envp) {
 			break;
 
 		case 'S':
-
 			printf ("\n Send a datagram \n");
 			printf ("\n sending %d bytes of user data\n", cc);
 			printf ("\n here are the first 100 bytes \n");
-
 			for (data = 0; data < 100; data++)
 				printf (" %x ", sendbuf[data]);
-
 			uv = &uvs[0];
 			uv -> uv_base = &sendbuf[0];
 			uv -> uv_len = 1024;
 			uv++;
 			uv -> uv_len = 0;
 			uv -> uv_base = NULL;
-
 			result = SUnitDataWrite (sd, &sendbuf[0], sizeof sendbuf, &si);
-
 			if (result != OK)
 				printf ("\n datagram write failed\n");
 			else
@@ -190,38 +163,27 @@ int main (int argc, char **argv, char **envp) {
 
 		case 'R':
 			printf ("\n Read datagram on socket %d \n", sd);
-
 			result = SUnitDataRead (sd, &sunitdata, 3, &si);
-
 			if (result != OK)
 				printf ("\n Read failed.  \n");
 			else {
 				printf ("\n Read successful.  \n");
-
 				printf ("\n calling addr: \n");
 				printsaddr (&sunitdata.ss_calling);
-
 				printf ("\n called addr: \n");
 				printsaddr (&sunitdata.ss_called);
-
 				printf ("\n user data len = %d  ...  \n", sunitdata.ss_cc);
 				for (data=0; data< min(sunitdata.ss_cc,256); data++)
 					printf (" %x ", *(sunitdata.ss_data + data) );
-
 				SUSFREE (&sunitdata);
-
 				if (mode == CLIENT_MODE)
 					break;
-
 				/* rebind to the remote addr */
-
 				sd = SUnitDataBind (sd, sa, &sunitdata.ss_calling, NULL, &si);
-
 				if (sd == NOTOK)
 					printf ("\n REBIND unit data service failed\n");
 				else
 					printf ("\n application REBINDED to socket = %d \n", sd);
-
 			}
 			break;
 
@@ -248,7 +210,6 @@ static printsrv (struct isoservent *is) {
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
 			sel2str (is -> is_selector, is -> is_selectlen, 1));
-
 	for (; n >= 0; ap++, n--)
 		printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
 	printf ("\n");
@@ -257,20 +218,16 @@ static printsrv (struct isoservent *is) {
 static printsaddr (struct SSAPaddr *sa)
 
 {
-
 	struct TSAPaddr   *ta = &(sa -> sa_addr);
 	struct NSAPaddr   *na = ta -> ta_addrs;
 	int    n = 1;
 
 	printf ("ADDR:    SSEL: %s\n",
 			sel2str (sa -> sa_selector, sa -> sa_selectlen, 1));
-
 	printf ("ADDR:    TSEL: %s\n",
 			sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
-
 	for (; n >= 0; na++, n--) {
 		printf ("\t%d: ", ta -> ta_naddr - n - 1);
-
 		switch (na -> na_type) {
 		case NA_NSAP:
 			printf ("NS %s", na2str (na));
@@ -299,25 +256,20 @@ static printsaddr (struct SSAPaddr *sa)
 			break;
 		}
 	}
-
 }
 
 static printtaddr (struct TSAPaddr *ta)
 
 {
-
 	int    n;
 	struct NSAPaddr   *na;
 
 	n = ta -> ta_naddr - 1;
 	na = ta -> ta_addrs;
-
 	printf ("ADDR:    TSEL: %s\n",
 			sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
-
 	for (; n >= 0; na++, n--) {
 		printf ("\t%d: ", ta -> ta_naddr - n - 1);
-
 		switch (na -> na_type) {
 		case NA_NSAP:
 			printf ("NS %s", na2str (na));
@@ -346,5 +298,4 @@ static printtaddr (struct TSAPaddr *ta)
 			break;
 		}
 	}
-
 }

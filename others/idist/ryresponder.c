@@ -45,14 +45,11 @@ int	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycon
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	isodetailor (myname, 0);
-
 	if (debug = isatty (fileno (stderr)))
 		ll_dbinit (pgm_log, myname);
 	else {
 		static char  myfile[BUFSIZ];
-
 		sprintf (myfile, "%s.log",
 				 (strncmp (myname, "ros.", 4)
 				  && strncmp (myname, "lpp.", 4))
@@ -61,21 +58,16 @@ int	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycon
 		pgm_log -> ll_file = myfile;
 		ll_hdinit (pgm_log, myname);
 	}
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
-
 	if ((aei = _str2aei (host, myservice, mycontext, 0, NULLCP, NULLCP))
 			== NULLAEI)
 		adios (NULLCP, "unable to resolve service: %s", PY_pepy);
-
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, ops, ds -> ds_operation, ds -> ds_vector, roi)
 				== NOTOK)
 			ros_adios (rop, ds -> ds_name);
-
 	startfnx = start;
 	stopfnx = stop;
-
 	if (isodeserver (argc, argv, aei, ros_init, ros_work, ros_lose, td)
 			== NOTOK) {
 		if (td -> td_cc > 0)
@@ -86,7 +78,6 @@ int	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycon
 			adios (NULLCP, "isodeserver: [%s]",
 				   TErrString (td -> td_reason));
 	}
-
 	return 0;
 }
 
@@ -114,33 +105,25 @@ static int ros_init (int vecp, char **vec) {
 			acs -> acs_sd, oid2ode (acs -> acs_context),
 			sprintaei (&acs -> acs_callingtitle),
 			sprintaei (&acs -> acs_calledtitle), acs -> acs_ninfo);
-
 	sd = acs -> acs_sd;
-
 	for (vec++; *vec; vec++)
 		advise (LLOG_EXCEPTIONS, NULLCP, "unknown argument \"%s\"", *vec);
-
 	reply = startfnx ? (*startfnx) (sd, acs, &pe[0]) : ACS_ACCEPT;
-
 	result = AcAssocResponse (sd, reply,
 							  reply != ACS_ACCEPT ? ACS_USER_NOREASON : ACS_USER_NULL,
 							  NULLOID, NULLAEI, NULLPA, NULLPC, ps -> ps_defctxresult,
 							  ps -> ps_prequirements, ps -> ps_srequirements, SERIAL_NONE,
 							  ps -> ps_settings, &ps -> ps_connect, pe,
 							  reply != ACS_ACCEPT ? 1 : 0, aci);
-
 	ACSFREE (acs);
-
 	if (result == NOTOK) {
 		acs_advise (aca, "A-ASSOCIATE.RESPONSE");
 		return NOTOK;
 	}
 	if (reply != ACS_ACCEPT)
 		return NOTOK;
-
 	if (RoSetService (sd, RoPService, roi) == NOTOK)
 		ros_adios (rop, "set RO/PS fails");
-
 	return sd;
 }
 
@@ -164,7 +147,6 @@ static int ros_work (int fd) {
 		RyLose (fd, roi);
 		return NOTOK;
 	}
-
 	switch (result = RyWait (fd, NULLIP, &out, OK, roi)) {
 	case NOTOK:
 		if (rop -> rop_reason == ROS_TIMER)
@@ -177,7 +159,6 @@ static int ros_work (int fd) {
 	default:
 		adios (NULLCP, "unknown return from RoWaitRequest=%d", result);
 	}
-
 	return OK;
 }
 
@@ -194,7 +175,6 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_UREJECT: {
 		struct RoSAPureject   *rou = &roi -> roi_ureject;
-
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP, "RO-REJECT-U.INDICATION/%d: %s",
 					sd, RoErrString (rou -> rou_reason));
@@ -208,7 +188,6 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_PREJECT: {
 		struct RoSAPpreject   *rop = &roi -> roi_preject;
-
 		if (ROS_FATAL (rop -> rop_reason))
 			ros_adios (rop, "RO-REJECT-P.INDICATION");
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
@@ -219,17 +198,12 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
 		struct AcSAPabort *aca = &acis.aci_abort;
-
 		advise (LLOG_NOTICE, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				sd, acf -> acf_reason);
-
 		reply = stopfnx ? (*stopfnx) (sd, acf) : ACS_ACCEPT;
-
 		result = AcRelResponse (sd, reply, ACR_NORMAL, NULLPEP, 0,
 								&acis);
-
 		ACFFREE (acf);
-
 		if (result == NOTOK)
 			acs_advise (aca, "A-RELEASE.RESPONSE");
 		else if (reply != ACS_ACCEPT)
@@ -254,9 +228,7 @@ static int ros_lose (struct TSAPdisconnect *td) {
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	cleanup ();
-
 	longjmp (toplevel, NOTOK);
 }
 
@@ -268,7 +240,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -281,7 +252,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -292,13 +262,9 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	cleanup ();
-
 	_exit (1);
 }
 #else
@@ -314,9 +280,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -333,9 +297,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_NOTICE, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
@@ -358,11 +320,8 @@ note (char *fmt, ...) {
 	va_list	ap;
 
 	va_start (ap, fmt);
-
 	_asprintf (buffer, NULLCP, fmt, ap);
-
 	addtoia5 (buffer, strlen (buffer));
-
 	va_end (ap);
 }
 #endif
@@ -379,14 +338,10 @@ nadvise (char *what, char *fmt, ...) {
 	extern	char *host;
 
 	va_start (ap, fmt);
-
 	sprintf (buf, "%s (%s): ", myname, host);
 	cp = buf + strlen (buf);
-
 	_asprintf (cp, what, fmt, ap);
-
 	addtoia5 (buf, strlen (buf));
-
 	va_end (ap);
 }
 #endif

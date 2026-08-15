@@ -43,15 +43,12 @@ int main (int argc, char **argv, char **envp) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	isodetailor (myname, 0);
 	if (debug = isatty (fileno (stderr)))
 		ll_dbinit (pgm_log, myname);
 	else
 		ll_hdinit (pgm_log, myname);
-
 	advise (LLOG_NOTICE, NULLCP, "starting");
-
 	if (RtBInit (argc, argv, rts, rti) == NOTOK)
 		rts_adios (rta, "(RtB)initialization fails");
 	advise (LLOG_NOTICE, NULLCP,
@@ -61,9 +58,7 @@ int main (int argc, char **argv, char **envp) {
 			ntohs (rts -> rts_port),
 			saddr2str (&rts -> rts_initiator.rta_addr),
 			rts -> rts_data);
-
 	sd = rts -> rts_sd;
-
 	if (rts -> rts_data == NULLPE) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "rejected -- no user-data parameter");
 reject:
@@ -72,7 +67,6 @@ reject:
 			rts_adios (rta, "RT-BEGIN.RESPONSE (reject)");
 		exit (1);
 	}
-
 	req = NULL;
 	if (decode_RTF_Request (rts -> rts_data, 1, NULLIP, NULLVP, &req)
 			== NOTOK) {
@@ -81,7 +75,6 @@ reject:
 		goto reject;
 	}
 	PLOGP (pgm_log,RTF_Request, rts -> rts_data, "Request", 1);
-
 	if (qb_pullup (req -> user) == NOTOK) {
 no_mem:
 		;
@@ -92,12 +85,10 @@ no_mem:
 		goto no_mem;
 	if ((cp = qb2str (req -> file)) == NULL)
 		goto no_mem;
-
 	guest = 0;
 	advise (LLOG_NOTICE, NULLCP, "%s: %s \"%s\"",
 			user = req -> user -> qb_forw -> qb_data,
 			(turn = rts -> rts_turn) == RTS_RESPONDER ? "get" : "put", cp);
-
 	if (strcmp (cp, "ANON") == 0 || strcmp (user, ANON) == 0) {
 		if ((pw = getpwnam (ANON)) && pw -> pw_uid == 0)
 			pw = NULL;
@@ -122,7 +113,6 @@ no_validate:
 				cp);
 		goto no_validate;
 	}
-
 	if (chdir (pw -> pw_dir) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, pw -> pw_dir,
 				"unable to change directory to");
@@ -137,15 +127,12 @@ no_dice:
 				"unable to change root to");
 		goto no_dice;
 	}
-
 	setgid (pw -> pw_gid);
 #ifndef	SYS5
 	initgroups (pw -> pw_name, pw -> pw_gid);
 #endif
 	setuid (pw -> pw_uid);
-
 	umask (0022);
-
 	if (turn == RTS_RESPONDER) {
 		if ((fd = open (cp, O_RDONLY, 0x00)) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, cp, "rejected -- unable to open");
@@ -154,30 +141,22 @@ no_dice:
 		free (cp);
 	} else
 		destination = cp;
-
 	free_RTF_Request (req);
-
 	RTSFREE (rts);
-
 	if (RtBeginResponse (sd, RTS_ACCEPT, NULLPE, rti) == NOTOK)
 		rts_adios (rta, "RT-BEGIN.RESPONSE (accept)");
-
 	if (turn == RTS_RESPONDER) {
 		if (RtSetDownTrans (sd, downtrans, rti) == NOTOK)
 			rts_adios (rta, "set DownTrans upcall");
-
 		if (RtTransferRequest (sd, NULLPE, NOTOK, rti) == NOTOK)
 			rts_adios (rta, "RT-TRANSFER.REQUEST");
-
 		if (nbytes == 0)
 			advise (LLOG_NOTICE, NULLCP, "transfer complete");
 		else
 			timer (nbytes);
-
 		close (fd);
 	} else if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 		rts_adios (rta, "set UpTrans upcall");
-
 	for (;;) {
 		switch (result = RtWaitRequest (sd, NOTOK, rti)) {
 		case NOTOK:
@@ -189,11 +168,9 @@ no_dice:
 			adios (NULLCP, "unknown return from RtWaitRequest=%d",
 				   result);
 		}
-
 		switch (rti -> rti_type) {
 		case RTI_TURN: {
 			struct RtSAPturn *rtu = &rti -> rti_turn;
-
 			if (rtu -> rtu_please) {
 				if (RtGTurnRequest (sd, rti) == NOTOK)
 					rts_adios (rta, "RT-TURN-GIVE.REQUEST");
@@ -206,7 +183,6 @@ no_dice:
 #ifndef	lint
 			struct RtSAPtransfer *rtt = &rti -> rti_transfer;
 #endif
-
 			if (nbytes == 0)
 				advise (LLOG_NOTICE, NULLCP, "transfer complete");
 			else
@@ -216,7 +192,6 @@ no_dice:
 
 		case RTI_ABORT: {
 			struct RtSAPabort *rtb = &rti -> rti_abort;
-
 			if (rtb -> rta_peer)
 				rts_adios (rtb, "RT-U-ABORT.INDICATION");
 			if (RTS_FATAL (rtb -> rta_reason))
@@ -229,7 +204,6 @@ no_dice:
 #ifndef	lint
 			struct RtSAPclose *rtc = &rti -> rti_close;
 #endif
-
 			advise (LLOG_NOTICE, NULLCP, "RT-END.INDICATION");
 			if (RtEndResponse (sd, rti) == NOTOK)
 				rts_adios (rta, "RT-END.RESPONSE");
@@ -245,7 +219,6 @@ no_dice:
 		}
 		break;
 	}
-
 	exit (0);
 }
 
@@ -266,10 +239,8 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 #endif
 		return OK;
 	}
-
 	if (bp == NULLCP) {
 		struct stat st;
-
 		if (fstat (fd, &st) == NOTOK)
 			return rtsaplose (rti, RTS_TRANSFER, destination,
 							  "unable to fstat");
@@ -293,7 +264,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 		bsize = n;
 		timer (nbytes = 0);
 	}
-
 	*base = NULLCP, *len = 0;
 	for (ep = (dp = bp) + (cc = bsize); dp < ep; dp += n, cc -= n) {
 		switch (n = read (fd, dp, cc)) {
@@ -312,7 +282,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 		*base = bp, *len = cc;
 		nbytes += cc;
 	}
-
 	return OK;
 }
 
@@ -322,7 +291,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 	case SI_DATA: {
 		struct qbuf *qb = (struct qbuf *) addr;
 		struct qbuf *qp;
-
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw)
 			if (write (fd, qp -> qb_data, qp -> qb_len) !=qp -> qb_len)
 				return rtsaplose (rti, RTS_TRANSFER, "failed","write");
@@ -334,7 +302,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 	case SI_SYNC: {
 #ifdef	DEBUG
 		struct SSAPsync *sn = (struct SSAPsync *) addr;
-
 		advise (LLOG_DEBUG, NULLCP, "S-MINOR-SYNC.INDICATION: %ld",
 				sn -> sn_ssn);
 #endif
@@ -343,7 +310,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 	case SI_ACTIVITY: {
 		struct SSAPactivity *sv = (struct SSAPactivity *)addr;
-
 		switch (sv -> sv_type) {
 		case SV_START:
 #ifdef	DEBUG
@@ -389,7 +355,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 	case SI_REPORT: {
 		struct SSAPreport *sp = (struct SSAPreport *) addr;
-
 		if (!sp -> sp_peer)
 			return rtsaplose (rti, RTS_TRANSFER, NULLCP,
 							  "unexpected provider-initiated exception report");
@@ -403,7 +368,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 		return rtsaplose (rti, RTS_TRANSFER, NULLCP,
 						  "unknown uptrans type=0x%x", type);
 	}
-
 	return OK;
 }
 

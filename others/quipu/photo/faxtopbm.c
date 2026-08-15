@@ -24,13 +24,10 @@ int main (int argc, char **argv, char **envp) {
 	long    size;
 
 	/* process command options and parameters */
-
 	black = PBM_BLACK;
 	white = PBM_WHITE;
-
 	file = NULLCP;
 	fd = fileno (stdin);
-
 	for (argv++; cp = *argv; argv++) {
 		if (*cp == '-') {
 			if (cp[1] == NULL) {
@@ -52,7 +49,6 @@ usage:
 			file = cp;
 		}
 	}
-
 	if ( file == NULLCP ) {
 		file = "<stdin>";
 	} else {
@@ -62,9 +58,7 @@ usage:
 			exit (1);
 		}
 	}
-
 	/* read the entire source file into memory */
-
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
 		fputs ("faxtopbm: out of memory\n", stderr);
@@ -72,7 +66,6 @@ usage:
 	}
 	limit = ALLOCATION_SIZE;
 	size = 0L;
-
 	for (;;) {
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int)(limit + ALLOCATION_SIZE));
@@ -91,20 +84,16 @@ usage:
 			break;
 		size += len;
 	}
-
 	if (size < 1) {
 		fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);
 	}
-
 	if (decode_t4 (data, file, (int)size) == -1
 			|| decode_t4 (data, file, (int)size) == -1) {
 		fprintf (stderr,"\n");
 		exit (-1);
 	}
-
 	free (data);
-
 	exit (0);
 }
 
@@ -129,52 +118,41 @@ int photo_start (char *name) {
 	if (passno == 1)
 		maxx = 0;
 	x = y = 0;
-
 	return OK;
 }
 
 int photo_end (char *name) {
 	if (passno == 1) {
 		int	i;
-
 		passno = 2;
 		x = maxx, y--;
-
 #ifdef PBM4PARMS
 		pbm_writepbminit (stdout, maxx, y, 0);
 #else
 		pbm_writepbminit (stdout, maxx, y);
 #endif
-
 		bitrow = pbm_allocrow (maxx);
-
 		for (i = maxx, bP = bitrow; i-- > 0; )
 			*bP++ = white;
 		bP = bitrow;
 	} else
 		pbm_freerow (bitrow);
-
 	return OK;
 }
 
 int photo_black (int length) {
 	if (passno == 2) {
 		int	i;
-
 		for (i = length; i > 0; i--)
 			*bP++ = black;
 	}
-
 	x += length;
-
 }
 
 int photo_white (int length) {
 	if (passno == 2)
 		bP += length;
-
 	x += length;
-
 }
 
 void photo_line_end (caddr_t line) {
@@ -183,17 +161,14 @@ void photo_line_end (caddr_t line) {
 			maxx = x;
 	} else {
 		int	i;
-
 #ifdef PBM4PARMS
 		pbm_writepbmrow (stdout, bitrow, maxx, 0);
 #else
 		pbm_writepbmrow (stdout, bitrow, maxx);
 #endif
-
 		for (i = maxx, bP = bitrow; i-- > 0; )
 			*bP++ = white;
 		bP = bitrow;
 	}
-
 	x = 0, y++;
 }

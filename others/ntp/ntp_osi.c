@@ -48,15 +48,12 @@ static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	if (TInit (*vecp, vec, ts, td) == NOTOK)
 		return NOTOK;
 	sd = ts -> ts_sd;
-
 	if (TConnResponse (sd, &ts -> ts_called, ts -> ts_expedited, NULLCP, 0,
 					   NULLQOS, td) == NOTOK)
 		return NOTOK;
-
 	if (TSaveState (sd, vec + 1, td) == NOTOK)
 		return NOTOK;
 	vec[*vecp = 2] = NULL;
-
 	return OK;
 }
 
@@ -70,13 +67,10 @@ void create_osilisten (char *addr) {
 
 	if (addr == NULL)
 		return;
-
 	if ((pa = str2paddr (addr)) == NULLPA)
 		adios (NULLCP, "Address translation failed for %s", addr);
-
 	if (TNetListenAux (&pa -> pa_addr.sa_addr, TMagic, td) == NOTOK)
 		adios (NULLCP, "Address listen failed");
-
 	if (RyDispatch (NOTOK, table_NTP_Operations, operation_NTP_update,
 					result_func, roi) == NOTOK)
 		adios (NULLCP, "RyDispatch failed");
@@ -111,10 +105,8 @@ int transmit_osi (struct ntp_peer *peer) {
 	int	i;
 
 	ap = peer -> sock < 0 ? addrs : &addrs[peer->sock];
-
 	TRACE (2, ("Sending OSI packet to %s fd %d if %d",
 			   paddr(&ap -> addr), ap -> fd, ap - addrs));
-
 	if (ap -> addr.type != AF_OSI) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Wrong address family in send_osi!");
@@ -153,11 +145,9 @@ int transmit_osi (struct ntp_peer *peer) {
 	packet -> referenceTimestamp = sstamp (&sys.reftime);
 	packet -> originateTimestamp = sstamp (&peer -> org);
 	packet -> receiveTimestamp = sstamp (&peer -> rec);
-
 	gettimeofday (&txtv, (struct timezone *)0);
 	tstamp_osi (&peer->xmt, &txtv);
 	packet -> transmitTimestamp = sstamp (&peer -> xmt);
-
 	switch (RyStub (ap -> fd, table_NTP_Operations, operation_NTP_update,
 					RyGenID (ap -> fd), NULLIP, (caddr_t) packet,
 					result_func, NULLIFP, ROS_ASYNC, roi)) {
@@ -173,26 +163,20 @@ int transmit_osi (struct ntp_peer *peer) {
 		break;
 	}
 	free_NTP_Packet (packet);
-
 	peer->pkt_sent++;
 	i = peer->reach;	/* save a copy */
-
 	peer->reach = (peer->reach << 1) & NTP_WINDOW_SHIFT_MASK;
-
 	if ((peer->reach == 0) &&
 			((peer->flags & PEER_FL_CONFIG) == 0) &&
 			(peer != &dummy_peer) && demobilize(&peer_list, peer))
 		return 0;
-
 	if (i && peer->reach == 0) {
 		advise (LLOG_NOTICE, NULLCP,
 				"Lost reachability with %s",
 				paddr (&peer->src));
 	}
-
 	if (peer->reach == 0)
 		clear(peer);
-
 	if (peer->valid < 2)
 		peer->valid++;
 	else {
@@ -201,10 +185,8 @@ int transmit_osi (struct ntp_peer *peer) {
 		if (sys.peer != NULL)
 			poll_update(sys.peer, NTP_MINPOLL);
 	}
-
 	peer->timer = 1<<(MAX(MIN((int)peer->ppoll, MIN((int)peer->hpoll, NTP_MAXPOLL)),
 						  NTP_MINPOLL));
-
 	if (peer->reach == 0) {
 		if (peer->backoff == 0)
 			peer->backoff = BACKOFF_COUNT;
@@ -217,7 +199,6 @@ int transmit_osi (struct ntp_peer *peer) {
 		poll_update(peer, (int)peer->hpoll - 1);
 	else
 		poll_update(peer, (int)peer->hpoll + 1);
-
 	return 0;
 }
 
@@ -237,7 +218,6 @@ int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 			break;
 	if (ap >= &addrs[nintf])
 		return OK;
-
 	dst = &ap -> addr;
 	sock = ap - addrs;
 	if ((peer_mode = result -> mode -> parm) == int_NTP_Mode_client) {
@@ -254,7 +234,6 @@ int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 		clear(peer);
 	} else
 		peer = check_peer(dst, sock);
-
 	if (peer == NULL) {
 		peer = (struct ntp_peer *) malloc(sizeof(struct ntp_peer));
 		if (peer == NULL) {
@@ -278,16 +257,13 @@ int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 		 */
 		if (trusting)
 			peer->flags |= PEER_FL_SYNC;
-
 		enqueue(&peer_list, peer);
 	}
-
 	if (peer_mode < MODE_SYM_ACT || peer_mode > MODE_BROADCAST) {
 		TRACE (1, ("Bogus peer_mode %d from %s", peer_mode,
 				   paddr (dst)));
 		return OK;
 	}
-
 	if (peer->hmode < MODE_SYM_ACT || peer->hmode > MODE_BROADCAST) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Bogus hmode %d for peer %s", peer->hmode,
@@ -295,7 +271,6 @@ int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 		abort();
 	}
 	peer->backoff = 0;
-
 	switch (actions[peer_mode - 1][peer->hmode - 1]) {
 	case ACT_RECV:
 		if (!(((peer->flags & PEER_FL_CONFIG) == 0) &&
@@ -339,11 +314,9 @@ static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, 
 
 	duplicate = (pkt->transmitTimestamp->integer == peer->org.int_part) &&
 				(pkt->transmitTimestamp->fraction == peer->org.fraction);
-
 	bogus = ((pkt->originateTimestamp -> integer != peer->xmt.int_part) ||
 			 (pkt->originateTimestamp -> fraction != peer->xmt.fraction))
 			|| (peer->xmt.int_part == 0);
-
 	peer->pkt_rcvd++;
 	switch (pkt -> leap -> parm) {
 	case int_NTP_Leap_minussecond:
@@ -372,7 +345,6 @@ static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, 
 	peer->org = gstamp (pkt->transmitTimestamp);
 	tstamp_osi (&peer->rec, tvp);
 	poll_update(peer, (int)peer->hpoll);
-
 	/*
 	 * may want to do something special here for Broadcast Mode peers to
 	 * allow these through
@@ -386,7 +358,6 @@ static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, 
 		TRACE (3, ("process_packet_osi: dropped duplicate or bogus"));
 		return;
 	}
-
 	/*
 	 *  Now compute local adjusts
 	 */
@@ -395,35 +366,28 @@ static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, 
 	t3 = ul2_fixed_to_double(pkt->transmitTimestamp);
 	t4 = ul_fixed_to_doublep(&peer->rec);
 	/* END Protocol specific stuff */
-
 	/*
 	 * although the delay computation looks different than the one in the
 	 * specification, it is correct.  Think about it.
 	 */
 	delay = (t2 - t1) - (t3 - t4);
 	offset = ((t2 - t1) + (t3 - t4)) / 2.0;
-
 	delay += 1.0/(unsigned long)(1L << -sys.precision)
 			 + (peer->flags&PEER_FL_REFCLOCK) ? NTP_REFMAXSKW : NTP_MAXSKW;
-
 	if (peer->precision < 0 && -peer->precision < sizeof(long)*NBBY)
 		delay += 1.0/(unsigned long)(1L << -peer->precision);
-
 	if (delay < 0.0) {
 		peer->pkt_dropped++;
 		return;
 	}
-
 #ifndef	REFCLOCK
 	delay = MAX(delay, NTP_MINDIST);
 #else
 	delay = MAX(delay, (peer->flags & PEER_FL_REFCLOCK) ?
 				NTP_REFMINDIST : NTP_MINDIST);
 #endif
-
 	peer->valid = 0;
 	clock_filter(peer, delay, offset);  /* invoke clock filter procedure */
-
 	TRACE (1, ("host: %s : %f : %f : %f : %f : %f : %o",
 			   dst ? paddr (dst) : "refclock",
 			   delay, offset,
@@ -532,7 +496,6 @@ struct type_NTP_ClockIdentifier *srclock (Refid *rid) {
 		p = _paddr2str (&rid->rid_psap, NULLNA, -1);
 		ci -> un.psapaddr = str2qb (p, strlen(p), 1);
 		break;
-
 	}
 	return ci;
 }
@@ -544,7 +507,6 @@ int recv_osi (struct intf *ap, struct timeval *tvp) {
 	struct RoSAPpreject   *rop = &roi -> roi_preject;
 
 	TRACE (2, ("Received OSI packet from %s", paddr (&ap->addr)));
-
 	osi_tvp = tvp;
 	switch (RyWait (ap -> fd, NULLIP, &out, OK, roi)) {
 	case NOTOK:
@@ -574,7 +536,6 @@ static void ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi
 
 	case ROI_UREJECT: {
 		struct RoSAPureject   *rou = &roi -> roi_ureject;
-
 		if (rou -> rou_noid)
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"RO-REJECT-U.INDICATION/%d: %s",
@@ -589,12 +550,10 @@ static void ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi
 
 	case ROI_PREJECT: {
 		struct RoSAPpreject   *rop = &roi -> roi_preject;
-
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
 		if (ROS_FATAL (rop -> rop_reason)) {
 			terminate (ap, roi);
 		}
-
 	}
 	break;
 
@@ -602,15 +561,11 @@ static void ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi
 		struct AcSAPfinish *acf = &roi -> roi_finish;
 		struct AcSAPindication  acis;
 		struct AcSAPabort *aca = &acis.aci_abort;
-
 		advise (LLOG_EXCEPTIONS, NULLCP, "A-RELEASE.INDICATION/%d: %d",
 				fd, acf -> acf_reason);
-
 		result = AcRelResponse (fd, ACS_ACCEPT, ACR_NORMAL, NULLPEP, 0,
 								&acis);
-
 		ACFFREE (acf);
-
 		if (result == NOTOK)
 			acs_advise (aca, "A-RELEASE.RESPONSE");
 		terminate (ap, roi);
@@ -639,14 +594,12 @@ static void terminate (struct intf *ap, struct RoSAPindication *roi) {
 			selfds --;
 		ap -> fd = -1;
 	}
-
 	if ((peer = find_peer (ap - addrs)) != NULL) {
 		peer-> flags &= ~PEER_FL_CONNSTATE;
 		peer -> reach = 0;
 		clear (peer);
 	}
 	ap -> flags = 0;
-
 	advise (LLOG_NOTICE, NULLCP,
 			"Connection on %d if %d TERMINATED", ap -> fd, fd);
 }
@@ -728,13 +681,11 @@ int iso_accept (struct intf *ap) {
 			pa = &acs -> acs_start.ps_calling;
 		else {
 			char	*p;
-
 			p = qb2str(bindarg -> psap);
 			if ((pa = str2paddr (p)) == NULLPA)
 				pa = &acs -> acs_start.ps_calling;
 			free (p);
 		}
-
 		if (bit_test (bindarg ->  version,
 					  bit_NTP_version_version__2))
 			version = 2;
@@ -769,7 +720,6 @@ int iso_accept (struct intf *ap) {
 							   "Unknown mode");
 		}
 		free_NTP_BindArgument(bindarg);
-
 		bindresult = (struct type_NTP_BindResult *)
 					 calloc (1, sizeof *bindresult);
 		bindresult -> version = version;
@@ -804,7 +754,6 @@ int iso_accept (struct intf *ap) {
 	ap->fd = sd;
 	adr = &ap->addr;
 	pa = &adr->psap_ad;
-
 	result = AcAssocResponse (sd, ACS_ACCEPT,
 							  ACS_USER_NULL,
 							  NULLOID, NULLAEI, NULLPA, NULLPC,
@@ -813,11 +762,9 @@ int iso_accept (struct intf *ap) {
 							  ps -> ps_srequirements, SERIAL_NONE,
 							  ps -> ps_settings, &ps -> ps_connect,
 							  pep, pep == NULLPEP ? 0 : 1, aci);
-
 	if (pep)
 		pe_free (*pep);
 	ACSFREE (acs);
-
 	if (result == NOTOK) {
 		acs_advise (aca, "Association response failed");
 		terminate (ap, roi);
@@ -828,9 +775,7 @@ int iso_accept (struct intf *ap) {
 		terminate (ap, roi);
 		return NOTOK;
 	}
-
 	ap -> flags |= INTF_VALID;
-
 	FD_SET (sd, &globmask);
 	if (sd >= selfds)
 		selfds = sd + 1;
@@ -884,7 +829,6 @@ static int bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *
 
 	binderr = (struct type_NTP_BindError *)
 			  calloc (1, sizeof *binderr);
-
 	binderr -> reason = type;
 	if (msg != NULLCP)
 		binderr -> supplementary = str2qb (msg, strlen (msg), 1);
@@ -1034,15 +978,12 @@ static int acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindicat
 	ap->fd = -1;
 	ap->name = "OSI";
 	peer-> sock = acount;
-
 	pa = &ap -> addr.psap_ad;
 	TRACE (2, ("Making connection to %s", paddr2str (pa, NULLNA)));
-
 	if ((pa2 = str2paddr (addr)) == NULLPA) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "Can't translate %s", addr);
 		return NOTOK;
 	}
-
 	pep[0] = build_bind_arg (pa2, peer);
 	if ((ctx = ode2oid (mycontext)) == NULLOID) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
@@ -1066,12 +1007,10 @@ static int acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindicat
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	result = AcAsynAssocRequest (ctx, NULLAEI, NULLAEI, pa2, pa,
 								 pc, NULLOID,
 								 0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf,
@@ -1132,11 +1071,8 @@ static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_p
 		version = 1;
 		mode = int_NTP_BindMode_normal;
 	}
-
 	sd = acc -> acc_sd;
-
 	ACCFREE (acc);
-
 	if (RoSetService (sd, RoPService, roi) == NOTOK) {
 		ros_advise (rop, "set RO/PS fails");
 		terminate (ap, roi);
@@ -1146,13 +1082,11 @@ static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_p
 	FD_SET (sd, &globmask);
 	if (sd >= selfds)
 		selfds = sd + 1;
-
 	peer -> flags |= PEER_FL_CONNECTED;
 	peer -> vers = version;
 	peer -> mode = mode;
 	ap -> fd = sd;
 	ap->flags = INTF_VALID;
-
 	TRACE (1,  ("CONNECTED to %s on %d if %d",
 				paddr2str (&peer->src.psap_ad, NULLNA),
 				sd, peer->sock));
@@ -1175,7 +1109,6 @@ static PE build_bind_arg (struct PSAPaddr *psap, struct ntp_peer *peer) {
 			bit_NTP_version_version__1);
 	bit_on (bindarg -> version,
 			bit_NTP_version_version__2);
-
 	bindarg -> mode = (struct type_NTP_BindMode *)
 					  calloc (1, sizeof *bindarg-> mode);
 	bindarg -> mode -> parm =
@@ -1205,7 +1138,6 @@ static int acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi) {
 
 	TRACE (2, ("retry request on %s", paddr (&peer->src)));
 	ap = &addrs[peer->sock];
-
 	switch (result = AcAsynRetryRequest (ap -> fd, acc, aci)) {
 	case CONNECTING_1:
 	case CONNECTING_2:
@@ -1233,7 +1165,6 @@ static int handle_reject (struct AcSAPconnect *acc, struct intf *ap) {
 	if (acc -> acc_ninfo > 0) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
-
 		PLOG (pgm_log, print_NTP_BindError, acc -> acc_info[0],
 			  "NTP.BindError", 1);
 		if (decode_NTP_BindError (acc -> acc_info[0], 1,
@@ -1297,7 +1228,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 	else
 		sprintf (buffer, "[%s]",
 				 RoErrString (rop -> rop_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -1311,7 +1241,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 	else
 		sprintf (buffer, "[%s]",
 				 AcErrString (aca -> aca_reason));
-
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -1400,7 +1329,6 @@ struct type_NTP_ClockIdentifier *cli_refid (Refid refid) {
 	char	*cp;
 
 	rid = (struct type_NTP_ClockIdentifier *) malloc (sizeof *rid);
-
 	switch (refid.rid_type) {
 	case 0:
 		free ((char *)rid);
@@ -1432,13 +1360,11 @@ peer2clock (struct ntp_peer *peer) {
 	char	*cp;
 
 	ci = (struct type_NTP_ClockInfo *) calloc (1, sizeof *ci);
-
 	if (peer -> sock < 0)
 		cp = "none";
 	else
 		cp = paddr (&addrs[peer->sock].addr);
 	ci -> localAddress = str2qb (cp, strlen (cp), 1);
-
 	cp = paddr (&peer -> src);
 	ci -> remoteAddress = str2qb (cp, strlen (cp), 1);
 	ci -> flags = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_BITS);
@@ -1489,7 +1415,6 @@ int query_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_
 						 calloc (1, sizeof *cl);
 			cl = cl -> next;
 		}
-
 		cl -> ClockInfo = peer2clock (peer);
 	}
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) clbase,

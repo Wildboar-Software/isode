@@ -129,14 +129,11 @@ int DefineSelf (int fd) {
 
 	struct utsname name;
 	struct hostent  *hp;
-
 	union {
 		struct  sockaddr   sa;
 		struct  sockaddr_in  in;
 	} saddr;
-
 	struct	sockaddr_in	*inetaddr;
-
 	/* Why not use gethostname()?  Well, at least on my system, I've had to
 	 * make an ugly kernel patch to get a name longer than 8 characters, and
 	 * uname() lets me access to the whole string (it smashes release, you
@@ -281,7 +278,6 @@ int ResetHosts (char *display) {
 	int			len;
 	pointer		addr;
 	struct hostent *hp;
-
 	AccessEnabled = DEFAULT_ACCESS_CONTROL;
 	while (host = validhosts) {
 		validhosts = host->next;
@@ -360,7 +356,6 @@ int ResetHosts (char *display) {
 #else
 						NewHost (family, (pointer)hp->h_addr);
 #endif
-
 				}
 #endif /* TCPCONN */
 #ifdef DNETCONN
@@ -389,7 +384,6 @@ AuthorizedClient(ClientPtr client) {
 	 */
 	return TRUE;
 #endif /* ISOCONN */
-
 	alen = sizeof (from);
 #ifdef ISOCONN
 	if (!SGetPeerName (((OsCommPtr)client->osPrivate)->fd, &from, &alen))
@@ -428,7 +422,6 @@ int AddHost (ClientPtr client, int family, unsigned length /* of bytes in pAddr 
 		client->errorValue = family;
 		return(-len);
 	}
-
 	if (len != length) {
 		client->errorValue = length;
 		return(BadValue);
@@ -551,7 +544,6 @@ int GetHosts (pointer *data, int *pnHosts, BOOL *pEnabled) {
 			}
 #endif ISODEBUG
 #endif /* ISOCONN */
-
 			len = lengths[nHosts++];
 			((xHostEntry *)ptr)->family = XFamily(host->family);
 			((xHostEntry *)ptr)->length = len;
@@ -646,7 +638,6 @@ InvalidHost (struct sockaddr *saddr, int len)
 #ifdef ISOCONN
 	len = NASIZE;
 #endif /* ISOCONN */
-
 	if ((family = ConvertAddr (saddr, len ? &len : 0, &addr)) < 0)
 		return (1);
 #ifdef ISOCONN
@@ -663,7 +654,6 @@ InvalidHost (struct sockaddr *saddr, int len)
 #endif /* ISOCONN */
 	if (family == 0)
 		return (0);
-
 #ifdef ISOCONN
 	/*
 	 * XXXXXXXXXXXXXXXXX
@@ -671,7 +661,6 @@ InvalidHost (struct sockaddr *saddr, int len)
 	 */
 	return 0;
 #endif
-
 	if (!AccessEnabled)   /* just let them in */
 		return(0);
 	for (host = validhosts; host; host = host->next) {
@@ -712,7 +701,6 @@ ConvertAddr (struct sockaddr *saddr, int *len, pointer *addr)
 	*len = NASIZE;
 	*addr = (pointer)saddr;
 	return (AF_OSI);
-
 #else /* ISOCONN */
 	switch (saddr->sa_family) {
 	case AF_UNSPEC:
@@ -728,7 +716,6 @@ ConvertAddr (struct sockaddr *saddr, int *len, pointer *addr)
 #else
 		break;
 #endif
-
 #ifdef DNETCONN
 	case AF_DECnet:
 		*len = sizeof (struct dn_naddr);

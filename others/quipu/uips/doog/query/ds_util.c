@@ -35,19 +35,14 @@ char *qy_dn2str(DN dn) {
 	if (((ps = ps_alloc (str_open)) == NULLPS)
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK)
 		return NULLCP;
-
 	qy_dn_print(ps, dn, READOUT);
 	ps_print (ps, " ");
 	*--ps->ps_ptr = 0;
 	ps -> ps_cnt++;
-
 	cp = ps->ps_base;
-
 	ps->ps_base = NULL;
 	ps->ps_cnt = 0;
-
 	ps_free(ps);
-
 	return cp;
 }
 
@@ -62,10 +57,8 @@ void qy_dn_print(PS ps, DN dn, int format) {
 	if (dn == NULLDN) {
 		if (format == READOUT)
 			ps_print (ps,"NULL DN");
-
 		return ;
 	}
-
 	dn_comp_print(ps, dn, format);
 	for (eptr = dn->dn_parent; eptr != NULLDN; eptr = eptr->dn_parent) {
 		switch (format) {
@@ -97,50 +90,36 @@ QBool is_good_match(char *match_str, char *dn_str) {
 
 	for (str1 = dn_str; isspace(*str1); str1++)
 		;
-
 	match_from = str1;
-
 	for (str2 = match_str; isspace(*str2) && !isnull(*str2); str2++)
 		;
-
 	match_str = str2;
-
 	if (isnull(*str2))
 		return FALSE;
-
 	for (;;) {
 		str1 = match_from;
 		str2 = match_str;
-
 		while (!char_compare(*str1, *str2)) {
 			for (++str1; !isspace(*str1) && !isnull(*str1); str1++)
 				;
-
 			for (; isspace(*str1); str1++)
 				;
-
 			if (isnull(*str1))
 				return FALSE;
 		}
-
 		for (; !isnull(*str1) && !isnull(*str2); str1++, str2++) {
 			if (isspace(*str2)) {
 				for (++str2; isspace(*str2); str2++)
 					;
-
 				while (!char_compare(*str1, *str2)) {
 					for (; !isspace(*str1) && !isnull(*str1); str1++)
 						;
-
 					if (isnull(*str1))
 						break;
-
 					for (++str1; isspace(*str1); str1++)
 						;
-
 					if (isnull(*str2)) {
 						words_matched++;
-
 						if (words_matched > 1 ||
 								max_char_matches >= match_word_limit)
 							return TRUE;
@@ -149,7 +128,6 @@ QBool is_good_match(char *match_str, char *dn_str) {
 					} else
 						words_matched++;
 				}
-
 				if (isnull(*str1))
 					break;
 			} else if (!char_compare(*str1, *str2))
@@ -157,26 +135,20 @@ QBool is_good_match(char *match_str, char *dn_str) {
 			else
 				match_char_num++;
 		}
-
 		if (match_char_num > max_char_matches)
 			max_char_matches = match_char_num;
-
 		if (isnull(*str2)) {
 			if (words_matched > 1 || max_char_matches >= match_word_limit)
 				return TRUE;
 			else
 				return FALSE;
 		}
-
 		while (!isspace(*match_from) && !isnull(*match_from))
 			match_from++;
-
 		if (isnull(*match_from))
 			return FALSE;
-
 		for (++match_from; isspace(*match_from); match_from++)
 			;
-
 		if (isnull(*match_from))
 			return FALSE;
 	}
@@ -187,7 +159,6 @@ static QBool char_compare(char a, char b) {
 
 	if (isalpha(chr1) && islower(chr1)) chr1 = toupper(chr1);
 	if (isalpha(chr2) && islower(chr2)) chr2 = toupper(chr2);
-
 	return chr1 == chr2;
 }
 
@@ -207,33 +178,25 @@ QE_error_code make_typed_filter_items(char *filter_str,
 
 	start = filter_str;
 	while (isspace(*start)) start++;
-
 	end = start;
 	while(!isspace(*end) && *end != '=') end++;
-
 	save = *end;
 	*end = '\0';
 	str_attr_type = copy_string(start);
 	*end = save;
-
 	start = end + 1;
-
 	while(!isalnum(*start)) start++;
-
 	str_attr_value = copy_string(start);
 	str_attr_value = TidyString(str_attr_value);
-
 	if ((attr_type = AttrT_new(str_attr_type)) == NULLAttrT) {
 		free(str_attr_type);
 		free(str_attr_value);
 		return QERR_bad_attr_syntax;
 	}
-
 	error = make_filter_items(attr_type, str_attr_value,
 							  ex_filter_ptr, ap_filter_ptr);
 	free(str_attr_type);
 	free(str_attr_value);
-
 	return error;
 } /* make_typed_filter_items */
 
@@ -250,34 +213,25 @@ QE_error_code make_filter_items(AttributeType attr_type, char *search_value,
 
 	exact_filter = filter_alloc();
 	approx_filter = filter_alloc();
-
 	approx_filter->flt_next = exact_filter->flt_next = NULLFILTER;
 	approx_filter->flt_type = exact_filter->flt_type = FILTER_ITEM;
-
 	exact_filter->FUITEM.fi_type = FILTERITEM_EQUALITY;
 	approx_filter->FUITEM.fi_type = FILTERITEM_APPROX;
-
 	approx_filter->FUITEM.UNAVA.ava_type =
 		exact_filter->FUITEM.UNAVA.ava_type =
 			attr_type;
-
 	*ex_filter_ptr = exact_filter;
 	*ap_filter_ptr = approx_filter;
-
 	approx_filter->FUITEM.UNAVA.ava_value =
 		exact_filter->FUITEM.UNAVA.ava_value = NULLAttrV;
-
 	if ((approx_value = str2AttrV(search_value, attr_type->oa_syntax))
 			== NULLAttrV)
 		return QERR_bad_value_syntax;
-
 	if ((exact_value = str2AttrV(search_value, attr_type->oa_syntax))
 			== NULLAttrV)
 		return QERR_bad_value_syntax;
-
 	approx_filter->FUITEM.UNAVA.ava_value = approx_value;
 	exact_filter->FUITEM.UNAVA.ava_value = exact_value;
-
 	return QERR_ok;
 } /* make_filter_items */
 
@@ -293,25 +247,18 @@ char *get_entry_type_name (char *entry_name) {
 
 	end = entry_name;
 	while (!isnull(*end)) end++;
-
 	while (*end-- != '=')
 		;
-
 	while (isspace(*end)) end--;
 	end++;
-
 	save = *end;
 	*end = '\0';
-
 	start = end;
 	while (*start != '@' && start >= entry_name) start--;
 	start++;
-
 	while (isspace(*start)) start++;
-
 	type_name = copy_string(start);
 	*end = save;
-
 	return type_name;
 } /* get_entry_type_name */
 
@@ -324,14 +271,11 @@ QBool qy_in_hierarchy(objectclass *a, objectclass *b) {
 	struct oc_seq *oidseq;
 
 	if (a == (objectclass *) NULL || b == (objectclass *) NULL) return FALSE;
-
 	if (a == b) return TRUE;
-
 	for (oidseq = b->oc_hierachy; oidseq != NULLOCSEQ; oidseq = oidseq->os_next)
 		if (a == oidseq->os_oc)
 			return TRUE;
 		else if (qy_in_hierarchy(a, oidseq->os_oc))
 			return TRUE;
-
 	return FALSE;
 } /* qy_in_hierarchy */

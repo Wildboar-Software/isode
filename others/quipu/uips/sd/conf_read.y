@@ -80,9 +80,7 @@ int yylex(void) {
   
   while(isspace(c = getc(config_file)))
     if (c == EOF) return(0);
-  
   lexeme[count++] = c;
-  
   switch(c) {
   case '#':
     while (getc(config_file) != '\n');
@@ -129,15 +127,12 @@ int yylex(void) {
     yylval.symbol = EQUAL;
     return EQUAL;
   }
-  
   while(!isspace(c = getc(config_file)) && c != '\0' && !issymbol(c))
     if (c != EOF)
       lexeme[count++] = c;
     else
       return(0);
-  
   (void) fseek(config_file,(long) -1, 1);
-  
   lexeme[count] = '\0';
   switch(*lexeme) {
   case 'd':
@@ -189,7 +184,6 @@ void yyerror(char *err) {
     free(filttype[curr_filt]);
     filttype[curr_filt] = (char *) 0;
   }
-
   if (filt_arr[curr_filt]) free_filt(filt_arr[curr_filt]);
   exit(1);
 }

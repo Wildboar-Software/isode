@@ -24,27 +24,21 @@ int main (int argc, char **argv, char **envp) {
 	SB	    sbi = &incoming;
 
 	reportailor (argv[0]);
-
 	if (argc > 2)
 		adios (NULLCP, "usage: %s [secs]", argv[0]);
-
 	secs = (argc == 2) ? atoi(argv[1]) : 15; /* Wait 15s after release
 						by default */
-
 	if ((aei = str2aei (PLocalHostName(), mycontext)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity",
 			   PLocalHostName (), mycontext);
-
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
-
 	if (TNetListen (&pa -> pa_addr.sa_addr, td) == NOTOK)
 		if (td -> td_cc > 0)
 			adios (NULLCP, "TNetListen: [%s] %*.*s", TErrString (td -> td_reason),
 				   td -> td_cc, td -> td_cc, td -> td_data);
 		else
 			adios (NULLCP, "TNetListen: [%s]", TErrString (td -> td_reason));
-
 	/* now wait for incoming call */
 	for (;;) {
 		if (TNetAccept (&vecp, vec, 0, NULLFD, NULLFD, NULLFD, NOTOK, td)
@@ -55,11 +49,9 @@ int main (int argc, char **argv, char **envp) {
 			else
 				adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 		}
-
 		if (vecp > 0)
 			break;
 	}
-
 	if (SInit (vecp, vec, ss, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.INDICATION: %s", SErrString (sa -> sa_reason));
 	advise (LLOG_NOTICE, NULLCP,
@@ -68,10 +60,8 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&ss -> ss_calling), saddr2str (&ss -> ss_called),
 			sprintb (ss -> ss_requirements, RMASK), ss -> ss_isn,
 			ss -> ss_ssdusize);
-
 	/* stop listening, we have what we want */
 	TNetClose (NULLTA, td);
-
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;
 	sbi -> sb_connect = ss -> ss_connect;	/* struct copy */
@@ -101,16 +91,12 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef	dotoken
 	sbi -> sb_ssn = sbi -> sb_isn = ss -> ss_isn;
-
 	SSFREE (ss);
-
 	if (SConnResponse (sbi -> sb_sd, &sbi -> sb_connect, NULLSA, SC_ACCEPT,
 					   sbi -> sb_requirements, sbi -> sb_settings, sbi -> sb_isn,
 					   NULLCP, 0, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.RESPONSE: %s", SErrString (sa -> sa_reason));
-
 	/* do work here */
-
 	switch (SReadRequest (sbi -> sb_sd, sx, secs, si)) {
 	case NOTOK:
 		adios (NULLCP, "S-READ.REQUEST: %s", SErrString (sa -> sa_reason));
@@ -125,7 +111,6 @@ int main (int argc, char **argv, char **envp) {
 			adios (NULLCP, "S-RELEASE.RESPONSE: %s", SErrString (sa -> sa_reason));
 		break;
 	}
-
 	exit (0);
 	return 0;
 }

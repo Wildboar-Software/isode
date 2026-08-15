@@ -43,7 +43,6 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 
 	if (getConnection() != OK)
 		return NOTOK_REMOTE_ERROR;
-
 	if ((gfa = (struct type_RFA_GetFileDataArg *)
 			   malloc(sizeof(struct type_RFA_GetFileDataArg))) == NULL) {
 		fprintf(err,"*** local error : no memory ***\n");
@@ -51,7 +50,6 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 	}
 	gfa->filename = str2qb(fn, strlen(fn), 1);
 	gfa->slaveVersion = rfa->ri_modTime;
-
 	fprintf(err,"requesting from master...");
 	fflush(err);
 	time(&ts);
@@ -66,7 +64,6 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 		printError(res, (caddr_t)gfr, &rc);
 		return rc;
 	}
-
 	/*-- set file characteristics in rfa --*/
 	rfa->ri_mode = gfr->fileinfo->mode;
 	rfa->ri_modTime = gfr->fileinfo->modTime;
@@ -81,13 +78,11 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 		SET_STATUS(rfa->ri_status, RI_UNREGISTERED);
 		SET_TRANSFER(rfa->ri_status, default_transfer);
 	}
-
 	/*-- create the file --*/
 	if ((rc = instfile(fn, gfr, &num)) != OK) {
 		free_RFA_GetFileDataRes(gfr);
 		return rc;
 	}
-
 	time(&te);
 	te = (te - ts) ? te - ts : 1L;
 	switch (gfr->mode) {
@@ -110,13 +105,11 @@ int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode) {
 				(float)(gfr->fileinfo->size) / 1024, te,
 				(float)(gfr->fileinfo->size) / (float)te / 1024  );
 	}
-
 	/*--- set file access mode bits ---*/
 	if (changeFileMode(fn, rfa->ri_mode, "set permissions") != OK)
 		fprintf(err, "\t*** %s ***\n", rfaErrStr);
 	if (changeFileOwner(fn, rfa) != OK)
 		fprintf(err, "\t*** %s ***\n", rfaErrStr);
-
 	*rmode = gfr->fileinfo->mode;
 	free_RFA_GetFileDataRes(gfr);
 	return OK;
@@ -136,11 +129,9 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 
 	if (gfr->mode == int_RFA_mode_actual)
 		return OK;
-
 	/*--- save old file ---*/
 	sprintf(fnbak, "%s.bak", makeFN(fn));
 	rename(makeFN(fn), fnbak);
-
 	/*--- open new file ---*/
 	if ((f = fopen(makeFN(fn), "w")) == NULL) {
 		fprintf(err, "failed\n\t*** local error : open of %s failed ***\n", fn);
@@ -148,7 +139,6 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 		rename(fnbak, makeFN(fn));
 		return NOTOK_LOCAL_ERROR;
 	}
-
 	/*--- write new file with data in result ---*/
 	if (gfr->mode != int_RFA_mode_zero) {
 		*nump = 0;
@@ -165,7 +155,6 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 		}
 	}
 	fclose(f);
-
 	/*--- see if new file is compressed ---*/
 	if (gfr->mode == int_RFA_mode_compressed) {
 		sprintf(fnz, "%s.Z", makeFN(fn));
@@ -178,7 +167,6 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 			return NOTOK_LOCAL_ERROR;
 		}
 	}
-
 	/*--- check size of transfered file ---*/
 	if (stat(makeFN(fn),&st) == -1) {
 		fprintf(err,
@@ -193,7 +181,6 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 		rename(fnbak, makeFN(fn));
 		return NOTOK_LOCAL_ERROR;
 	}
-
 	/*--- set time of file ---*/
 	tt[0] = gfr->fileinfo->modTime;
 	tt[1] = gfr->fileinfo->modTime;
@@ -204,10 +191,8 @@ int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump) {
 		rename(fnbak, makeFN(fn));
 		return NOTOK_LOCAL_ERROR;
 	}
-
 	/*--- remove old file ---*/
 	if(!backup)
 		unlink(fnbak);
-
 	return OK;
 }

@@ -39,24 +39,17 @@ stringCell copy_string_seq(stringCell sequence) {
 
 	if (sequence == NULLStrCell)
 		return NULLStrCell;
-
 	if (sequence != NULLStrCell)
 		head = curr = cell_alloc();
-
 	curr->next = NULLStrCell;
 	curr->string = copy_string(sequence->string);
-
 	sequence = sequence->next;
-
 	while (sequence != NULLStrCell) {
 		curr = curr->next = cell_alloc();
-
 		curr->next = NULLStrCell;
 		curr->string = copy_string(sequence->string);
-
 		sequence = sequence->next;
 	}
-
 	return head;
 } /* copy_string_seq */
 
@@ -74,13 +67,11 @@ void delete_from_seq(char *string, stringCell *sequence) {
 		last_cell = curr_cell;
 		curr_cell = curr_cell->next;
 	}
-
 	if (curr_cell != NULLStrCell) {
 		if (last_cell == NULLStrCell)
 			*sequence = curr_cell->next;
 		else
 			last_cell->next = curr_cell->next;
-
 		curr_cell->next = NULLStrCell;
 		free_string_seq(&curr_cell);
 	}
@@ -100,6 +91,5 @@ void free_string_seq(stringCell *sequence) {
 		free((char *) curr_cell);
 		curr_cell = next_cell;
 	}
-
 	*sequence = NULLStrCell;
 } /* free_string_seq */

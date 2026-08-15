@@ -70,9 +70,7 @@ int main (int argc, char **argv, char **envp) {
 	char	*vec[4];
 
 	arginit (argv);
-
 	envinit ();
-
 	for (vecp = 0; vecp < con_tbl_cnt; vecp++) {
 		advise (LLOG_TRACE, NULLCP, "Listening on %s",
 				taddr2str (&con_tbl[vecp].src));
@@ -82,15 +80,12 @@ int main (int argc, char **argv, char **envp) {
 			ts_adios (td, "listen failed");
 		}
 	}
-
 	for (;;) {
 		if (TNetAcceptAux (&vecp, vec, NULLIP, ta, 0, NULLFD, NULLFD,
 						   NULLFD, NOTOK, td) == NOTOK)
 			ts_adios (td, "accept failed");
-
 		if (vecp <= 0)
 			continue;
-
 		advise (LLOG_TRACE, NULLCP, "accepted new connection");
 		switch (TNetFork (vecp, vec, td)) {
 		case OK:
@@ -123,14 +118,12 @@ static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 
 	if (TInit (vecp, vec, ts, td) == NOTOK)
 		ts_adios (td, "T-CONNECT.INDICATION failed");
-
 	sd = ts -> ts_sd;
 	advise (LLOG_NOTICE, NULLCP,
 			"T-CONNECT.INDICATION: <%d, %s, %s, %d, %d>",
 			ts -> ts_sd, taddr2str (&ts -> ts_calling),
 			taddr2str (&ts -> ts_called),
 			ts -> ts_expedited, ts -> ts_tsdusize);
-
 	ctp = find_connection (ta);
 	if (ctp == NULL) {
 		ts_close (sd, "Unknown listener address");
@@ -138,11 +131,8 @@ static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 	}
 	advise (LLOG_TRACE, NULLCP, "Accepted from address %s",
 			taddr2str (&ctp -> src));
-
 	tota = getnewta (&ts -> ts_called, sd, ctp);
-
 	fromta = maketa (&ts -> ts_calling, tota -> ta_addrs[0].na_stack, ctp);
-
 	if ((ctp -> flags & CONN_TRANS) == 0) {
 		ts -> ts_expedited = 0;
 		if (ts -> ts_cc > 0) {
@@ -153,12 +143,10 @@ static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 			exit (1);
 		}
 	}
-
 	advise (LLOG_NOTICE, NULLCP,
 			"T-CONNECT.REQUEST: <%s, %s, %d, 0x%x/%d>",
 			taddr2str (fromta), taddr2str (tota), ts -> ts_expedited,
 			ts -> ts_data, ts -> ts_cc);
-
 	if (TConnRequest (fromta, tota, ts -> ts_expedited,
 					  ts -> ts_data, ts -> ts_cc, &ts -> ts_qos,
 					  tc, td) == NOTOK) {
@@ -172,7 +160,6 @@ static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta) {
 		ts_close (tc -> tc_sd, "connection establishment failed");
 		ts_adios (td, "T-CONNECT.RESPONSE");
 	}
-
 	do_the_biz (sd, tc -> tc_sd);
 }
 
@@ -183,16 +170,13 @@ static void do_the_biz (int sd1, int sd2) {
 	struct TSAPdisconnect  *td = &tds;
 
 	FD_ZERO (&rmask);
-
 	if (TSelectMask (sd1, &rmask, &nfds, td) == NOTOK
 			|| TSelectMask (sd2, &rmask, &nfds, td) == NOTOK)
 		ts_adios (td, "TSelectMask failed");
-
 	for (;;) {
 		imask = rmask;
 		if (xselect (nfds, &imask, NULLFD, NULLFD, NOTOK) == NOTOK)
 			adios ("select", "failed");
-
 		if (FD_ISSET (sd1, &imask))
 			copy_tsdu (sd1, sd2);
 		if (FD_ISSET (sd2, &imask))
@@ -209,7 +193,6 @@ static void copy_tsdu (int s1, int s2) {
 	char	*p;
 
 	SLOG (pgm_log, LLOG_DEBUG, NULLCP, ("copy_tsdu (%d -> %d)", s1, s2));
-
 	if (TReadRequest (s1, tx, OK, td) == NOTOK) {
 		switch (td -> td_reason) {
 		case DR_TIMER:
@@ -227,7 +210,6 @@ static void copy_tsdu (int s1, int s2) {
 			ts_adios (td, "TReadRequest");
 		}
 	}
-
 	if (tx -> tx_expedited) {
 		SLOG (pgm_log, LLOG_DEBUG, NULLCP, ("TExpdRequest"));
 		p = qb2str (&tx -> tx_qbuf);
@@ -238,7 +220,6 @@ static void copy_tsdu (int s1, int s2) {
 		int	uiocnt = 0;
 		struct udvec uvec[100];
 		int total;
-
 		total = uiocnt = 0;
 		for (qb = tx-> tx_qbuf.qb_forw; qb != &tx -> tx_qbuf;
 				qb = qb -> qb_forw) {
@@ -258,11 +239,9 @@ static void copy_tsdu (int s1, int s2) {
 		result = TWriteRequest (s2, uvec, td);
 	}
 	TXFREE (tx);
-
 	if (result == NOTOK) {
 		if (td -> td_reason == DR_NORMAL)
 			ts_discon (td, s1);
-
 		ts_adios (td, tx -> tx_expedited ? "T-EXPEDITED-DATA.REQUEST"
 				  : "T-DATA.REQUEST");
 	}
@@ -271,7 +250,6 @@ static void copy_tsdu (int s1, int s2) {
 static void ts_discon (struct TSAPdisconnect *td, int sd) {
 	ts_close (sd, "Normal Disconnect");
 	ts_advise (td, LLOG_NOTICE, "T-DISCONNECT.INDICATION");
-
 	exit (0);
 }
 
@@ -288,7 +266,6 @@ static void ts_close (int sd, char *event) {
 
 static void ts_adios (struct TSAPdisconnect *td, char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
-
 	exit (1);
 }
 
@@ -301,7 +278,6 @@ static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 				 td -> td_cc, td -> td_cc, td -> td_data);
 	else
 		sprintf (buffer, "[%s]", TErrString (td -> td_reason));
-
 	advise (code, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -324,13 +300,11 @@ getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp) {
 		}
 		return nta;
 	}
-
 	/* do the real TS bridge stuff */
 	if ((m = ta -> ta_selectlen) == 0) {
 		ts_close (sd, "no transport selector");
 		adios (NULLCP, "no transport selector");
 	}
-
 	/* does this look like an encoded TSEL? */
 	n = ta -> ta_selector[0];
 	/*
@@ -356,13 +330,11 @@ getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp) {
 	/* try old form... */
 	bcopy (ta -> ta_selector, buffer, ta -> ta_selectlen);
 	buffer[ta -> ta_selectlen] = 0;
-
 	if ((nta = str2taddr (buffer)) == NULLTA) {
 		ts_close (sd, "unable to translate address");
 		adios (NULLCP, "unable to translate \"%s\"", buffer);
 	}
 	newta = *nta;
-
 	return &newta;
 }
 
@@ -386,7 +358,6 @@ maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
 					(nta -> ta_selectlen = strlen (p)) >= TSSIZE) {
 				if (ctp -> flags & CONN_STRICT)
 					adios (NULLCP, "new selector not encodable");
-
 				advise (LLOG_NOTICE, NULLCP,
 						"new selector not encodable");
 				nta -> ta_selectlen = 0;
@@ -394,7 +365,6 @@ maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
 				bcopy (p, nta -> ta_selector, TSSIZE);
 		} else {
 			struct NSAPaddr *nna = na2norm (&ta -> ta_addrs[0]);
-
 			if ((nta -> ta_selectlen = 2 + nna -> na_addrlen +
 									   ta -> ta_selectlen) >= TSSIZE)
 				nta -> ta_selectlen = 0;
@@ -436,10 +406,8 @@ maketa (struct TSAPaddr *ta, long type, ContTbl *ctp) {
 	}
 	if (ctp -> flags & CONN_STRICT)
 		adios (NULLCP, "not listening on this network (%d)", type);
-
 	advise (LLOG_NOTICE, NULLCP,
 			"not listening on this network (%d)", type);
-
 	return ta;
 }
 
@@ -449,19 +417,16 @@ find_connection (struct TSAPaddr *ta) {
 	struct NSAPaddr *na1, *na2;
 
 	na2 = &ta -> ta_addrs[0];
-
 	for (ctp = con_tbl; ctp < &con_tbl[con_tbl_cnt]; ctp ++) {
 		if (na2 -> na_type == NA_NSAP && ctp->src.ta_naddr == 0 &&
 				ta -> ta_selectlen == ctp -> src.ta_selectlen &&
 				bcmp (ta -> ta_selector, ctp -> src.ta_selector,
 					  ta -> ta_selectlen) == 0)
 			return ctp;
-
 		for (na1 = &ctp -> src.ta_addrs[0];
 				na1 < &ctp -> src.ta_addrs[ctp->src.ta_naddr]; na1++) {
 			if (na1 -> na_type != na2 -> na_type)
 				continue;
-
 			switch (na1 -> na_stack) {
 			case NA_NSAP:
 				if ((na1 -> na_addrlen == 0 ||
@@ -504,7 +469,6 @@ static void arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-' && ap[1])
 			switch (*++ap) {
@@ -537,14 +501,11 @@ static void arginit (char **vec) {
 			}
 		else
 			break;
-
 	}
 	isodetailor (myname, 0);
 	ll_hdinit (pgm_log, myname);
-
 	for (; ap = *vec; vec++)
 		read_file (ap);
-
 	if (con_tbl_cnt <= 0) {
 		if ((ta = str2taddr (tsb_default_address)) == NULLTA)
 			adios (NULLCP, "bad default address \"%s\"",
@@ -567,22 +528,17 @@ static void read_file (char *file) {
 		fp = stdin;
 	else if ((fp = fopen (file, "r")) == NULL)
 		adios (file, "Can't open ");
-
 	while (fgets (buf, sizeof buf, fp) != NULLCP) {
 		if (buf[0] == '#' || buf[0] == '\n')
 			continue;
-
 		vecp = sstr2arg (buf, 50, vec, " \t,\n");
 		if (vecp <= 0)
 			continue;
-
 		if ((ta = str2taddr (vec[0])) == NULLTA)
 			adios (NULLCP, "Bad address \"%s\" in file %s", vec[0], file);
-
 		ctp = &con_tbl[con_tbl_cnt];
 		ctp -> src = *ta; /* struct copy */
 		con_tbl_cnt ++;
-
 		for (i = 1; i < vecp; i++) {
 			ap = vec[i];
 			if (*ap == '\0')
@@ -613,9 +569,7 @@ static void read_file (char *file) {
 				ctp -> flags |= (CONN_TRANS|CONN_NOMUNGE);
 			}
 		}
-
 	}
-
 	if (strcmp (file, "-") != 0)
 		fclose (fp);
 }
@@ -625,7 +579,6 @@ static void envinit () {
 	sd;
 
 	nbits = getdtablesize ();
-
 	if (!(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -641,16 +594,13 @@ static void envinit () {
 			}
 			break;
 		}
-
 		chdir ("/");
-
 		if ((sd = open ("/dev/null", O_RDWR)) == NOTOK)
 			adios ("/dev/null", "unable to read");
 		if (sd != 0)
 			dup2 (sd, 0),  close (sd);
 		dup2 (0, 1);
 		dup2 (0, 2);
-
 #ifdef	SETSID
 		if (setsid () == NOTOK)
 			advise (LLOG_EXCEPTIONS, "failed", "setsid");
@@ -669,15 +619,12 @@ static void envinit () {
 #endif
 	} else
 		ll_dbinit (pgm_log, myname);
-
 #ifndef sun			/* damn YP... */
 	for (sd = 3; sd < nbits; sd++)
 		if (pgm_log -> ll_fd != sd)
 			close (sd);
 #endif
-
 	signal (SIGPIPE, SIG_IGN);
-
 	ll_hdinit (pgm_log, myname);
 	advise (LLOG_NOTICE, NULLCP, "starting");
 }
@@ -687,11 +634,8 @@ static void    adios (char *what, char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
-
     _ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -707,9 +651,7 @@ static void    advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
-
     _ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

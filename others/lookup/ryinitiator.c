@@ -42,16 +42,13 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	if (argc < 2)
 		adios (NULLCP, "usage: %s host [operation [ arguments ... ]]", myname);
-
 	if ((aei = _str2aei (argv[1], myservice, mycontext, argc < 3, NULLCP,
 						 NULLCP)) == NULLAEI)
 		adios (NULLCP, "unable to resolve service: %s", PY_pepy);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
-
 	if ((ctx = ode2oid (mycontext)) == NULLOID)
 		adios (NULLCP, "%s: unknown object descriptor", mycontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -64,12 +61,10 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	if ((sf = addr2ref (PLocalHostName ())) == NULL) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	if (argc < 3) {
 		printf ("%s", myname);
 		if (sf -> sr_ulen > 2)
@@ -79,10 +74,8 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		printf (" [%s, ", oid2ode (ctx));
 		printf ("%s]\n", oid2ode (pci));
 		printf ("using %s\n", isodeversion);
-
 		printf ("%s... ", argv[1]);
 		fflush (stdout);
-
 		iloop = 1;
 	} else {
 		for (ds = dispatches; ds -> ds_name; ds++)
@@ -90,20 +83,16 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 				break;
 		if (ds -> ds_name == NULL)
 			adios (NULLCP, "unknown operation \"%s\"", argv[2]);
-
 		iloop = 0;
 	}
-
 	if (AcAssocRequest (ctx, NULLAEI, aei, NULLPA, pa, pc, NULLOID,
 						0, ROS_MYREQUIRE, SERIAL_NONE, 0, sf, NULLPEP, 0, NULLQOS,
 						acc, aci)
 			== NOTOK)
 		acs_adios (aca, "A-ASSOCIATE.REQUEST");
-
 	if (acc -> acc_result != ACS_ACCEPT) {
 		if (iloop)
 			printf ("failed\n");
-
 		adios (NULLCP, "association rejected: [%s]",
 			   AcErrString (acc -> acc_result));
 	}
@@ -111,7 +100,6 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		printf ("connected\n");
 		fflush (stdout);
 	}
-
 	sd = acc -> acc_sd;
 	ACCFREE (acc);
 	if (RoSetService (sd, RoPService, roi) == NOTOK)
@@ -120,10 +108,8 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 		for (;;) {
 			if (_getline (buffer) == NOTOK)
 				break;
-
 			if (str2vec (buffer, vec) < 1)
 				continue;
-
 			for (ds = dispatches; ds -> ds_name; ds++)
 				if (strcmp (ds -> ds_name, vec[0]) == 0)
 					break;
@@ -131,7 +117,6 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 				advise (NULLCP, "unknown operation \"%s\"", vec[0]);
 				continue;
 			}
-
 			invoke (sd, ops, ds, vec + 1);
 		}
 	} else
@@ -149,7 +134,6 @@ static int invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char *
 	in = NULL;
 	if (ds -> ds_argument && (*ds -> ds_argument) (sd, ds, args, &in) == NOTOK)
 		return;
-
 	switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd), NULL,
 							 in, ds -> ds_result, ds -> ds_error, ROS_SYNC,
 							 roi)) {
@@ -170,7 +154,6 @@ static int invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char *
 		adios (NULLCP, "unknown return from RyStub=%d", result);
 		/* NOTREACHED */
 	}
-
 	if (ds -> ds_mod && ds -> ds_ind >= 0 && in)
 		fre_obj (in, ds -> ds_mod -> md_dtab[ds -> ds_ind],
 				 ds -> ds_mod, 1);
@@ -186,10 +169,8 @@ static int _getline (char *buffer) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	printf ("%s> ", myname);
 	fflush (stdout);
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			printf ("\n");
@@ -198,15 +179,12 @@ static int _getline (char *buffer) {
 				sticky++;
 				break;
 			}
-
 			return NOTOK;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	return OK;
 }
 
@@ -240,7 +218,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }

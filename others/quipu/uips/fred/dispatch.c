@@ -120,7 +120,6 @@ int fredloop (char **vec, int error) {
 		}
 	} else
 		vec[0] = ds -> ds_name;
-
 	switch ((*ds -> ds_fnx) (vec)) {
 	case NOTOK:
 		return error;
@@ -149,7 +148,6 @@ getds (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return ds;
-
 		if (*q == NULL)
 			if (q - name > longest) {
 				longest = q - name;
@@ -158,7 +156,6 @@ getds (char *name) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		if (*(p = name) == '!')
@@ -170,7 +167,6 @@ getds (char *name) {
 			for (ds = dispatches; ds -> ds_name; ds++)
 				if (strcmp (ds -> ds_name, "whois") == 0)
 					return ds;
-
 		advise (NULLCP, "unknown operation \"%s\"", name);
 		return NULL;
 
@@ -284,15 +280,12 @@ static int f_set (char **vec) {
 				width,
 				lines;
 		struct var *u;
-
 		for (u = vars; u -> v_name; u++)
 			continue;
 		width = varwidth1;
-
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
 		lines = ((u - vars) + columns - 1) / columns;
-
 		printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -308,7 +301,6 @@ static int f_set (char **vec) {
 		/*	 printf ("\nversion: %s\n", isodeversion); */
 		return OK;
 	}
-
 	if (strcmp (*vec, "-help") == 0) {
 		fprintf (stdfp, "set [variable [value]]\n");
 		fprintf (stdfp,
@@ -317,26 +309,19 @@ static int f_set (char **vec) {
 				 "    with one argument, lists the value of the named variable\n");
 		fprintf (stdfp,
 				 "    with two arguments, sets the given variable accordingly\n");
-
 		return OK;
 	}
-
 	if (strcmp (*vec, "?") == 0) {
 		for (v = vars; v -> v_name; v++)
 			printvar (v);
-
 		return OK;
 	}
-
 	if ((v = getvar (*vec)) == NULL)
 		return OK;
-
 	if (*++vec == NULL) {
 		printvar (v);
-
 		return OK;
 	}
-
 	if (strcmp (*vec, "?") == 0) {
 		if (v -> v_value && (cp = v -> v_dvalue)) {
 			printf ("use %s of:", v -> v_mask ? "any" : "one");
@@ -351,23 +336,18 @@ static int f_set (char **vec) {
 		} else
 			printf ("use any %s value\n",
 					v -> v_value ? "integer" : "string");
-
 		return OK;
 	}
-
 	if (!runsys && readonly && (v -> v_flags & V_RDONLY)) {
 		advise (NULLCP, "variable is read-only");
 		return OK;
 	}
-
 	if (boundP && (v -> v_flags & V_SERVER)) {
 		advise (NULLCP, "too late!");
 		return OK;
 	}
-
 	if (v -> v_value == NULLIP) {
 		int    w;
-
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
 		*v -> v_dvalue = strdup (*vec);
@@ -379,7 +359,6 @@ static int f_set (char **vec) {
 			printvar (v);
 		return OK;
 	}
-
 	if (v -> v_mask) {
 		if (strcmp (dp = *vec, "all") == 0 && (cp = v -> v_dvalue)) {
 			i = 1;
@@ -398,7 +377,6 @@ static int f_set (char **vec) {
 		}
 	} else
 		j = sscanf (*vec, "%d", &value);
-
 	if (j == 1) {
 		if (cp = v -> v_dvalue) {
 			if (v -> v_mask) {
@@ -414,46 +392,37 @@ static int f_set (char **vec) {
 out_of_range:
 					;
 					advise (NULLCP, "value out of range \"%s\"", *vec);
-
 					return OK;
 				}
 			}
 		}
-
 		vflag = verbose;
 		*v -> v_value = value;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
 			printvar (v);
-
 		return OK;
 	}
-
 	if (v -> v_mask) {
 		i = 0;
 		for (; *vec; vec++) {
 			if (!(cp = getval (*vec, v -> v_dvalue))) {
 				advise (NULLCP, "bad value \"%s\"", *vec);
-
 				return OK;
 			}
 			if ((j = cp - v -> v_dvalue) <= 0)
 				continue;
-
 			i |= 1 << (j - 1);
 		}
-
 		vflag = verbose;
 		*v -> v_value = i;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
 			printvar (v);
-
 		return OK;
 	}
-
 	if (v -> v_dvalue && (cp = getval (*vec, v -> v_dvalue))) {
 		vflag = verbose;
 		*v -> v_value = cp - v -> v_dvalue;
@@ -463,7 +432,6 @@ out_of_range:
 			printvar (v);
 	} else if (!v -> v_dvalue)
 		advise (NULLCP, "bad value \"%s\"", *vec);
-
 	return OK;
 }
 
@@ -473,11 +441,9 @@ static printvar (struct var *v) {
 
 	if (runcom)
 		return;
-
 	printf ("%-*s = ", varwidth1, v -> v_name);
 	if (v -> v_value) {
 		i = *v -> v_value;
-
 		if (v -> v_mask) {
 			if (v -> v_dvalue) {
 				if (i == 0)
@@ -528,7 +494,6 @@ getval (char *name, char **choices) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (NULLCP, "unknown value \"%s\"", name);
@@ -568,7 +533,6 @@ getvar (char *name) {
 		for (ip = ignore; *ip; ip++)
 			if (lexequ (*ip, name) == 0)
 				return NULL;
-
 	longest = nmatches = 0;
 	for (v = vars; p = v -> v_name; v++) {
 		for (q = name; *q == *p++; q++)
@@ -582,7 +546,6 @@ getvar (char *name) {
 			} else if (q - name == longest)
 				nmatches++;
 	}
-
 	switch (nmatches) {
 	case 0:
 		advise (NULLCP, "unknown variable \"%s\"", name);
@@ -619,22 +582,17 @@ int f_help (char **vec) {
 
 	if (network || vec == NULL) {
 		char **ap;
-
 		for (ap = whois_help; *ap; ap++)
 			fprintf (stdfp, "%s%s", *ap, EOLN);
-
 		return OK;
 	}
-
 	for (es = dispatches; es -> ds_name; es++)
 		continue;
 	width = helpwidth;
-
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
 		lines = ((es - dispatches) + columns - 1) / columns;
-
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -648,29 +606,23 @@ int f_help (char **vec) {
 					putchar ('\t');
 			}
 		/*	 printf ("\nversion: %s\n", isodeversion); */
-
 		return OK;
 	}
-
 	if (strcmp (*vec, "-help") == 0) {
 		fprintf (stdfp, "help [commands ...]\n");
 		fprintf (stdfp,
 				 "    with no arguments, lists operations which may be invoked\n");
 		fprintf (stdfp,
 				 "    otherwise prints help for each operation given\n");
-
 		return OK;
 	}
-
 	for (; *vec; vec++)
 		if (strcmp (*vec, "?") == 0) {
 			for (ds = dispatches; ds -> ds_name; ds++)
 				printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 			break;
 		} else if (ds = getds (*vec))
 			printf ("%-*s\t- %s\n", width, ds -> ds_name, ds -> ds_help);
-
 	return OK;
 }
 
@@ -686,27 +638,21 @@ int rcinit () {
 
 	if (fflag)
 		return;
-
 	if ((myhome = getenv ("HOME")) == NULL)
 		myhome = ".";		/* could do passwd search... */
-
 	if ((myuser = getenv ("USER")) == NULLCP)
 		myuser = getenv ("LOGNAME");
-
 	if (dp = getenv ("QUIPURC"))
 		strcpy (buffer, dp);
 	else
 		sprintf (buffer, "%s/.quipurc", myhome);
 	snarf (buffer, "username:", &mydn);
-
 	for (ds = dispatches, helpwidth = 0; ds -> ds_name; ds++)
 		if ((w = strlen (ds -> ds_name)) > helpwidth)
 			helpwidth = w;
-
 	for (v = vars, varwidth1 = 0; v -> v_name; v++) {
 		if ((w = strlen (v -> v_name)) > varwidth1)
 			varwidth1 = w;
-
 		if (v -> v_value) {
 			if (cp = v -> v_dvalue) {
 				if (v -> v_mask) {
@@ -747,17 +693,14 @@ static snarf (char *file, char *name, char **variable) {
 				*bp = 0;
 			if (lexnequ (buffer, name, strlen (name)))
 				continue;
-
 			bp = buffer + strlen (name);
 			while (isspace (*bp))
 				bp++;
-
 			if (*bp == '"') {
 				if (*(dp = bp + strlen (bp) - 1) == '"')
 					bp++, *dp = 0;
 				goto set_variable;
 			}
-
 			i = 0;
 			for (dp = ep = bp; *dp; ) {
 				if (isspace (*dp)) {
@@ -771,11 +714,9 @@ static snarf (char *file, char *name, char **variable) {
 				}
 				if (i == 1)
 					*ep = *dp;
-
 				dp++, ep++;
 			}
 			*ep = 0;
-
 set_variable:
 			;
 			if (*variable)
@@ -783,7 +724,6 @@ set_variable:
 			*variable = strdup (bp);
 			break;
 		}
-
 		fclose (fp);
 	}
 }
@@ -797,30 +737,24 @@ int rcfile (char *file, int op, int isystem) {
 
 	if ((fp = fopen (file, "r")) == NULL)
 		return;
-
 	runcom = 1, runsys = isystem;
 	if (fstat (fileno (fp), &st) == NOTOK)
 		adios (file, "unable to fstat");
 	rcmode = st.st_mode & 0777;
-
 	while (fgets (buffer, sizeof buffer, fp)) {
 		if (*buffer == '#')
 			continue;
 		if (cp = index (buffer, '\n'))
 			*cp = 0;
-
 		bzero ((char *) vec, sizeof vec);
 		if (str2vecY (buffer, vec) < 1)
 			continue;
-
 		if (fredloop (vec, NOTOK) != OK && op) {
 			f_quit (NULLVP);
 			exit (1);
 		}
 	}
-
 	runcom = runsys = 0;
-
 	fclose (fp);
 }
 
@@ -836,7 +770,6 @@ int	ncols (FILE *fp) {
 			&& (i = ws.ws_col) > 0)
 		return i;
 #endif
-
 	return 80;
 }
 
@@ -846,7 +779,6 @@ int f_version (char **vec) {
 			printf ("version: %s\n", isodeversion);
 			return OK;
 		}
-
 	printf ("version: %s\n\nUsing server version:\n", isodeversion);
 	return dish ("squid -version", 0);
 }

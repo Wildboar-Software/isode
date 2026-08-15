@@ -59,29 +59,21 @@ int main (int argc, char **argv, char **envp) {
 			*vec[NVEC + 1];
 
 	arginit (argv);
-
 	if (portsw > 0)
 		startsocket (portsw);
-
 	if (ppidsw > 0)
 		envinit ();
-
 	if (errsw)
 		errsw = NOTOK;
-
 	for (;;) {
 		if ((portsw > 0 ? readsocket (buffer) : _getline (buffer)) == NOTOK)
 			break;
-
 		if (str2vec (buffer, vec) != 2)
 			continue;
-
 		fetch_face (vec[0], vec[1]);
-
 		if (debug)
 			fflush (stderr);
 	}
-
 	return (0);
 }
 
@@ -89,7 +81,6 @@ static fetch_face (char *host, char *user) {
 	if ((myim = fetch_image (user, host)) == NULL && recording)
 		LLOG (pgm_log, LLOG_NOTICE,
 			  ("no image for \"%s\" \"%s\"", user, host));
-
 	if (mywindow != NULL || myim)
 		display_X ();
 }
@@ -104,10 +95,8 @@ static int _getline (char *buffer) {
 		sticky = 0;
 		return NOTOK;
 	}
-
 	printf ("%s> ", myname);
 	fflush (stdout);
-
 	for (ep = (cp = buffer) + BUFSIZ - 1; (i = getchar ()) != '\n';) {
 		if (i == EOF) {
 			printf ("\n");
@@ -115,15 +104,12 @@ static int _getline (char *buffer) {
 				sticky++;
 				break;
 			}
-
 			return NOTOK;
 		}
-
 		if (cp < ep)
 			*cp++ = i;
 	}
 	*cp = 0;
-
 	return OK;
 }
 
@@ -138,16 +124,13 @@ static arginit (char **vec) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = *vec;
-
 	isodetailor (myname, 1);
 	init_aka (myname, 0, NULLCP);
-
 	if ((ap = getenv ("FACEPROC"))
 			&& (cp = index (ap, ' '))
 			&& sscanf (++cp, "%d", &n) == 1
 			&& n >= 1)
 		portsw = n;
-
 	for (vec++; ap = *vec; vec++)
 		if (*ap == '-')
 			switch (*++ap) {
@@ -191,12 +174,10 @@ static arginit (char **vec) {
 		else
 			adios (NULLCP, "usage: %s [switches] host:display",
 				   myname);
-
 	if (debug)
 		ll_dbinit (pgm_log, myname);
 	else
 		ll_hdinit (pgm_log, myname);
-
 	if ((DISP = XOpenDisplay (display)) == NULL)
 		adios (NULLCP, "unable to open display \"%s\"",
 			   XDisplayName (display));
@@ -209,7 +190,6 @@ static envinit () {
 
 	if (debug)
 		return;
-
 	for (i = 0; (pid = fork ()) == NOTOK && i < 5; i++)
 		sleep (5);
 	switch (pid) {
@@ -220,7 +200,6 @@ static envinit () {
 	default:
 		exit (0);
 	}
-
 	ll_hdinit (pgm_log, myname);
 }
 
@@ -232,7 +211,6 @@ static display_X () {
 		XSizeHints hints;
 		XSetWindowAttributes xswattrs;
 		unsigned long xswattrs_mask;
-
 		forepix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L,
 		(XGCValues *) NULL);
 		highpix = XCreateGC (DISP, RootWindow (DISP, SCRN), 0L,
@@ -257,15 +235,12 @@ static display_X () {
 			XSetFunction(DISP, forepix, GXcopy);
 			XSetFunction(DISP, highpix, GXor);
 		}
-
 		XSetBackground (DISP, forepix, backpix);
 		XSetBackground (DISP, highpix, backpix);
-
 		if (opt = XGetDefault (DISP, myname, "BorderWidth"))
 			bwidth = atoi (opt);
 		else
 			bwidth = 2;
-
 		myframe.bdrwidth = bwidth;
 		myframe.height = myim -> height;
 		if (myframe.height + bwidth * 2 > DisplayHeight (DISP, SCRN))
@@ -277,42 +252,33 @@ static display_X () {
 		myframe.y = 0;
 		sprintf (def, "=%dx%d+%d+%d", myframe.width, myframe.height,
 				 myframe.x, myframe.y);
-
 		if (debug)
 			fprintf (stderr, "def: %s, myframe: =%dx%d+%d+%d/%d\n", def,
 					 myframe.width, myframe.height, myframe.x, myframe.y,
 					 myframe.bdrwidth);
-
 		hints.width = myim -> width;
 		hints.height = myim -> height;
 		hints.x = hints.y = 0;
 		hints.flags = PSize | PPosition;
-
 		xswattrs.border_pixel = bdrpix;
 		xswattrs.background_pixel = backpix;
 		xswattrs_mask = CWBackPixel | CWBorderPixel;
-
 		mywindow = XCreateWindow (DISP, RootWindow (DISP, SCRN),
 								  myframe.x, myframe.y,
 								  myframe.width, myframe.height,
 								  myframe.bdrwidth,
 								  0, InputOutput, (Visual *) CopyFromParent,
 								  xswattrs_mask, &xswattrs);
-
 		XSetStandardProperties (DISP, mywindow, myname, "Face Agent", None,
 								(char **) 0, 0, &hints);
-
 		XSelectInput (DISP, mywindow, ExposureMask | StructureNotifyMask);
-
 		XMapWindow (DISP, mywindow);
 		mapped = parent = 0;
 	} else
 		Redisplay ();
-
 	eventfd = ConnectionNumber (DISP);
 	eventfx = XWINser;
 	alarmfx = ALRMser;
-
 	XWINser (0);
 }
 
@@ -329,21 +295,18 @@ static Redisplay () {
 		XClearWindow (DISP, mywindow);
 		return;
 	}
-
 	sx = max (myim -> width - (int) myframe.width, 0) / 2;
 	sy = max (myim -> height - (int) myframe.height, 0) / 2;
 	dx = max ((int) myframe.width - myim -> width, 0) / 2;
 	dy = max ((int) myframe.height - myim -> height, 0) / 2;
 	w = min (myframe.width, myim -> width);
 	h = min (myframe.height, myim -> height);
-
 	if (debug) {
 		fprintf (stderr, "im: %dx%d frame:%dx%d\n",
 		myim -> width, myim -> height, myframe.width, myframe.height);
 		fprintf (stderr, "sx=%d sy=%d dx=%d dy=%d w=%d h=%d\n",
 		sx, sy, dx, dy, w, h);
 	}
-
 	image = XCreateImage (DISP, DefaultVisual (DISP, SCRN), 1, XYBitmap, 0,
 	myim -> data -> qb_forw -> qb_data,
 	(unsigned int) myim -> width,
@@ -353,7 +316,6 @@ static Redisplay () {
 	image -> byte_order = image -> bitmap_bit_order = LSBFirst;
 	XClearWindow (DISP, mywindow);
 	XPutImage (DISP, mywindow, forepix, image, sx, sy, dx, dy, w, h);
-
 	XDestroyImage (image);
 }
 
@@ -364,7 +326,6 @@ static int ALRMser () {
 		else
 			XUnmapWindow (DISP, mywindow);
 	}
-
 	if (myim)
 		myim = NULL;
 }
@@ -377,7 +338,6 @@ static int XWINser (int io) {
 
 	while (XPending (DISP)) {
 		XNextEvent (DISP, xe);
-
 		switch (xe -> type) {
 		case Expose:
 			if (debug)
@@ -448,10 +408,8 @@ int startsocket (int portno) {
 	isock -> sin_family = AF_INET;
 	isock -> sin_port = htons ((uint16_t) portno);
 	isock -> sin_addr.s_addr = INADDR_ANY;
-
 	if ((sd = socket (AF_INET, SOCK_DGRAM, 0)) == NOTOK)
 		adios ("socket", "unable to create");
-
 	if (bind (sd, (struct sockaddr *) isock, sizeof *isock) == NOTOK)
 		adios ("socket", "unable to bind");
 }
@@ -465,45 +423,34 @@ int readsocket (char *buffer) {
 		fd_set	imask;
 		struct sockaddr_in  in_socket;
 		struct sockaddr_in *isock = &in_socket;
-
 		FD_ZERO (&imask);
-
 		nfds = sd + 1;
 		FD_SET (sd, &imask);
 		if (eventfd != NOTOK) {
 			(*eventfx) (0);
-
 			if (eventfd >= nfds)
 				nfds = eventfd + 1;
 			FD_SET (eventfd, &imask);
 		}
-
 		if (xselect (nfds, &imask, NULLFD, NULLFD, sleepsw) <= 0) {
 			if (errno == EINTR)
 				continue;
-
 			if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
 				close (sd);
 				return NOTOK;
 			}
-
 			if (alarmfx)
 				(*alarmfx) ();
-
 			continue;
 		}
-
 		if (ppidsw > 0 && kill (ppidsw, 0) == NOTOK) {
 			close (sd);
 			return NOTOK;
 		}
-
 		if (eventfd != NOTOK && FD_ISSET (eventfd, &imask))
 			(*eventfx) (1);
-
 		if (!FD_ISSET (sd, &imask))
 			continue;
-
 		i = sizeof *isock;
 		if ((cc = recvfrom (sd, buffer, BUFSIZ, 0, (struct sockaddr *) isock,
 							&i)) == NOTOK) {
@@ -511,11 +458,8 @@ int readsocket (char *buffer) {
 				continue;
 			adios ("failed", "recvfrom socket");
 		}
-
 		break;
 	}
-
 	buffer[cc] = 0;
-
 	return OK;
 }

@@ -46,7 +46,6 @@ static struct dispatch dispatches[] = {
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_PasswordLookup_Operations, dispatches, do_quit);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -59,10 +58,8 @@ static int do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_
 		advise (NULLCP, "usage: lookupUser username");
 		return NOTOK;
 	}
-
 	if ((*arg = str2qb (cp, strlen (cp), 1)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	return OK;
 }
 
@@ -73,13 +70,10 @@ static int do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_P
 		advise (NULLCP, "usage: lookupUID userid");
 		return NOTOK;
 	}
-
 	if ((*arg = (struct type_PasswordLookup_UserID *) calloc (1, sizeof **arg))
 			== NULL)
 		adios (NULLCP, "out of memory");
-
 	(*arg) -> parm = atoi (cp);
-
 	return OK;
 }
 
@@ -87,7 +81,6 @@ static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
-
 	return NOTOK;
 }
 
@@ -100,14 +93,11 @@ static int  do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 
 	if (AcRelRequest (sd, ACF_NORMAL, NULLPEP, 0, NOTOK, acr, aci) == NOTOK)
 		acs_adios (aca, "A-RELEASE.REQUEST");
-
 	if (!acr -> acr_affirmative) {
 		AcUAbortRequest (sd, NULLPEP, 0, aci);
 		adios (NULLCP, "release rejected by peer: %d", acr -> acr_reason);
 	}
-
 	ACRFREE (acr);
-
 	exit (0);
 }
 
@@ -124,7 +114,6 @@ static int lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_
 	putchar (':');
 	print_qb (result -> shell);
 	putchar ('\n');
-
 	return OK;
 }
 
@@ -133,7 +122,6 @@ static print_qb (struct qbuf *q) {
 
 	if (q == NULL)
 		return;
-
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
 }
@@ -145,11 +133,9 @@ static int  lookup_error (int sd, int id, int error, caddr_t parameter, struct R
 		advise (NULLCP, "%s", RoErrString ((int) parameter));
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_PasswordLookup_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	return OK;
 }

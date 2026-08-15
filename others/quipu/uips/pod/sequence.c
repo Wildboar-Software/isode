@@ -13,10 +13,8 @@ void add_seq (str_seq *seq, char *str) {
 		curr = (struct str_seq *) malloc (sizeof (struct str_seq));
 		*seq = curr;
 	}
-
 	curr->dname = (char *) malloc ((unsigned int) (strlen(str) + 1));
 	strcpy(curr->dname, str);
-
 	curr->next = 0;
 }
 

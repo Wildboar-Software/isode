@@ -23,7 +23,6 @@ void add_seq (str_seq *seq, char *str) {
 		curr = (struct string_seq *) malloc (sizeof (struct string_seq));
 		*seq = curr;
 	}
-
 	curr->s_strlen = strlen(str);
 	curr->dname = strdup(str);
 	curr->next = 0;

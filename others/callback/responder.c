@@ -24,7 +24,6 @@ int main (int argc, char **argv, char **envp) {
 			sbo = &outgoing;
 
 	reportailor (argv[0]);
-
 	/* S-CONNECT.INDICATION */
 	if (SInit (argc, argv, ss, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.INDICATION: %s", SErrString (sa -> sa_reason));
@@ -34,7 +33,6 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&ss -> ss_calling), saddr2str (&ss -> ss_called),
 			sprintb (ss -> ss_requirements, RMASK), ss -> ss_isn,
 			ss -> ss_ssdusize);
-
 	bzero ((char *) sbi, sizeof *sbi);
 	sbi -> sb_sd = ss -> ss_sd;
 	sbi -> sb_connect = ss -> ss_connect;	/* struct copy */
@@ -64,22 +62,17 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef	dotoken
 	sbi -> sb_ssn = sbi -> sb_isn = ss -> ss_isn;
-
 	if ((ta = str2taddr (ss -> ss_data)) == NULLTA)
 		adios (NULLCP, "str2taddr failed");
-
 	SSFREE (ss);
-
 	if (SConnResponse (sbi -> sb_sd, &sbi -> sb_connect, NULLSA, SC_ACCEPT,
 					   sbi -> sb_requirements, sbi -> sb_settings, sbi -> sb_isn,
 					   NULLCP, 0, si) == NOTOK)
 		adios (NULLCP, "S-CONNECT.RESPONSE: %s", SErrString (sa -> sa_reason));
-
 	/* we use the transport address passed in via the initial user data,
 	   along with our our session selector */
 	sz = &ss -> ss_called;
 	sz -> sa_addr = *ta;	/* struct copy */
-
 	bzero ((char *) sbo, sizeof *sbo);
 	sbo -> sb_requirements = SR_BASUBSET;
 	sbo -> sb_settings = 0;
@@ -91,7 +84,6 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_isn = SERIAL_NONE;
-
 	/* make the callback */
 	if (SConnRequest (&sbo -> sb_connect, NULLSA, sz, sbo -> sb_requirements,
 					  sbo -> sb_settings, sbo -> sb_isn, NULLCP, 0, NULLQOS, sc, si)
@@ -106,7 +98,6 @@ int main (int argc, char **argv, char **envp) {
 			saddr2str (&sc -> sc_responding),
 			sprintb (sc -> sc_requirements, RMASK), sc -> sc_isn,
 			sc -> sc_ssdusize);
-
 	sbo -> sb_sd = sc -> sc_sd;
 	sbo -> sb_requirements = sc -> sc_requirements;
 	sbo -> sb_settings = sc -> sc_settings;
@@ -119,11 +110,8 @@ int main (int argc, char **argv, char **envp) {
 	dotokens ();
 #undef  dotoken
 	sbo -> sb_ssn = sbo -> sb_isn = sc -> sc_isn;
-
 	SCFREE (sc);
-
 	/* do work here */
-
 	switch (SReadRequest (sbi -> sb_sd, sx, NOTOK, si)) {
 	case NOTOK:
 		adios (NULLCP, "S-READ.REQUEST: %s", SErrString (sa -> sa_reason));
@@ -138,11 +126,9 @@ int main (int argc, char **argv, char **envp) {
 			adios (NULLCP, "S-RELEASE.RESPONSE: %s", SErrString (sa -> sa_reason));
 		break;
 	}
-
 	if (SRelRequest (sbo -> sb_sd, NULLCP, 0, NOTOK, sr, si) == NOTOK)
 		adios (NULLCP, "S-RELEASE.REQUEST: %s", SErrString (sa -> sa_reason));
 	if (!sr -> sr_affirmative)
 		adios (NULLCP, "release rejected by peer");
-
 	return (0);
 }

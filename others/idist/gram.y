@@ -332,7 +332,6 @@ again:
 		case 'Q':
 			yylval.intval = QUERYM;
 			return (OPTION);
-
 		}
 	}
 	if (!strcmp(yytext, "install"))

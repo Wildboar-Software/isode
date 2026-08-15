@@ -55,9 +55,7 @@ int photo_end (char *name) {
 		passno = 2;
 		x = maxx;
 		--y;
-
 		/* Initialise a window to recieve a photo of 'name' */
-
 		if (!(dpy= XOpenDisplay((char *) 0))) {
 			printf ("Cannot open X display");
 			return (-1);
@@ -68,12 +66,9 @@ int photo_end (char *name) {
 		winH = y;
 		winX = WidthOfScreen(scr) - winW;
 		winY = HeightOfScreen(scr) - winH;
-
 		xswa.event_mask = ExposureMask | ButtonReleaseMask | ButtonPressMask;
-
 		xswa.background_pixel = BlackPixelOfScreen(scr);
 		xswa.backing_store	= WhenMapped;
-
 		win = XCreateWindow(dpy, RootWindowOfScreen(scr),
 							winX, winY, winW, winH, 0,
 							DefaultDepthOfScreen(scr), InputOutput,
@@ -85,33 +80,23 @@ int photo_end (char *name) {
 			fprintf (stderr,"decode_fax: Pixmap failed");
 			return (-1);
 		}
-
 		/* Set up a graphics context: */
-
 		gc = XCreateGC(dpy, pixmap, 0, NULL);
-
 		/* Clear pixmap */
-
 		XSetForeground(dpy, gc, BlackPixelOfScreen(scr));
 		XFillRectangle(dpy, pixmap, gc, 0, 0, winW,winH);
-
 		XSetForeground(dpy, gc, WhitePixelOfScreen(scr));
 		XSetBackground(dpy, gc, BlackPixelOfScreen(scr));
-
 		XorVal = WhitePixelOfScreen(scr) ^ BlackPixelOfScreen(scr);
-
 		return (0);
 	}
-
 	if (strcmp (name, "unknown") == 0)
 		name = NULL;
-
 	if (name == NULL) {
 		printf ("(See X window, pid %d)", getpid());
 		fflush (stdout);
 	}
 	close (1);
-
 	sprintf(buff, name ? "%s" : "%s (%d)",
 			name ? name : "Photo", getpid());
 	XChangeProperty(dpy, win, XA_WM_NAME, XA_STRING, 8,
@@ -120,7 +105,6 @@ int photo_end (char *name) {
 	XSetForeground(dpy, gc, XorVal);
 	for (;;) {
 		XEvent xev;
-
 		XNextEvent(dpy, &xev);
 		switch (xev.type) {
 		case ButtonPress:
@@ -164,12 +148,9 @@ int photo_black (int length) {
 }
 
 int photo_white (int length) {
-
 	/* draw a white line of 'length' pixels */
-
 	if (passno == 2 && length > 0)
 		XDrawLine (dpy, pixmap, gc, x, y, x + length - 1, y);
-
 	x += length;
 }
 

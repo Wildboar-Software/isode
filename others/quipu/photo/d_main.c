@@ -23,16 +23,11 @@ int main (int argc, char **argv) {
 
 	if ((name = getenv ("RDN")) == NULL)
 		name = "unknown";
-
 	/* process commmand line options and parameters */
-
 	if (argc > 1)
 		name = *(++argv);
-
 	fd = fileno (stdin);
-
 	/* read the entire source file into memory */
-
 	data = (char *)malloc ((unsigned int)ALLOCATION_SIZE);
 	if ( !data ) {
 		fputs ("decode_fax: out of memory\n", stderr);
@@ -40,7 +35,6 @@ int main (int argc, char **argv) {
 	}
 	limit = ALLOCATION_SIZE;
 	size = 0L;
-
 	for (;;) {
 		if (size + ALLOCATION_SIZE > limit) {
 			newData = (char *)realloc (data, (unsigned int) (limit + ALLOCATION_SIZE));
@@ -59,7 +53,6 @@ int main (int argc, char **argv) {
 			break;
 		size += len;
 	}
-
 	if (size < 1) {
 		fprintf (stderr, "%s: is not a fax image\n", file);
 		exit (1);

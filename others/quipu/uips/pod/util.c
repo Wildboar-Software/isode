@@ -7,10 +7,8 @@ int issubstr (char *str, char *substr) {
 	int count;
 
 	if (*substr == '\0' || *str == '\0') return(0);
-
 	sptr = str;
 	c = *substr;
-
 	while (1) {
 		while (*sptr != '\0' && *sptr != c) sptr++;
 		if (*sptr == '\0') return(0);
@@ -32,7 +30,6 @@ int indexstring (char *string, char *substring) {
 		str = string + indx;;
 		if (*str == '\0') return(-1);
 		sub = substring;
-
 		if (*str == *sub) {
 			s = *str;
 			c = *sub;
@@ -40,7 +37,6 @@ int indexstring (char *string, char *substring) {
 				c = *++sub;
 				s = *++str;
 			}
-
 			if (c == '\0') return((int) indx);
 			else if(s == '\0') return(-1);
 		}

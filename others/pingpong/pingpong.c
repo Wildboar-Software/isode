@@ -16,21 +16,13 @@ int	doneit = 0;
 int	retry = 1;
 
 int main (int argc, char **argv) {
-
 	do_args (argc,argv);
-
 	start_listener ();
-
 	printf ("Started to listen\n");
-
 	ping_address ();
-
 	wait_for_result ();
-
 	printf ("Got Result\n");
-
 	stop_nicely ();
-
 	return 0;
 }
 
@@ -41,19 +33,15 @@ int do_args (int argc, char **argv) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	if (argc != 3) {
 		fprintf (stderr,"Usage pingpong listen_address call_address\n");
 		exit (-1);
 	}
-
 	isodetailor (myname, 0);
-
 	if ((pongaddr = str2paddr (argv[1])) == NULLPA) {
 		fprintf (stderr,"Invalid listen address %s\n", argv[1]);
 		exit (-1);
 	}
-
 	if ((pingaddr = str2paddr (argv[2])) == NULLPA) {
 		fprintf (stderr,"Invalid call address %s\n", argv[2]);
 		exit (-1);
@@ -81,7 +69,6 @@ int ping_address () {
 	cn_state = TAsynConnRequest (NULLTA, &pingaddr->pa_addr.sa_addr, 0,
 	NULLCP, ts -> ts_cc, &ts -> ts_qos,
 	tc, td, 1);
-
 	cn_sd = tc -> tc_sd;
 	printf ("Starting ping on %d state ", cn_sd);
 	updatemask ();
@@ -104,7 +91,6 @@ int wait_for_result () {
 	fd_set ifds, ofds;
 
 	for (;;) {
-
 		ifds = rfds;
 		ofds = wfds;
 		printf ("TNetAccept nfds=%d rfds=0x%x wfds=0x%x\n", nfds,
@@ -116,7 +102,6 @@ int wait_for_result () {
 		}
 		if (retry)
 			ping_address ();
-
 		if (vecp > 0) {
 			if (TInit (vecp, vec, ts, td) == NOTOK) {
 				ts_advise ("TInit failed failed", td);
@@ -132,7 +117,6 @@ int wait_for_result () {
 			if (ts -> ts_sd >= nfds)
 				nfds = ts -> ts_sd + 1;
 		}
-
 		for (i = 0; i < nfds; i++) {
 			if (FD_ISSET (i, &ofds) || FD_ISSET (i, &ifds)) {
 				if (i == cn_sd)
@@ -143,7 +127,6 @@ int wait_for_result () {
 						if (doneit ++ > 0)
 							return;
 					}
-
 				}
 			}
 		}

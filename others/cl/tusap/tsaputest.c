@@ -10,7 +10,6 @@
 #include "internet.h"
 
 int main (void) {
-
 	TUnitDataListen();	/* Listen on a datagram socket */
 	TUnitDataBind(); 	/* Bind socket to a remote address */
 	TUnitDataUnbind(); 	/* UnBind socket to a remote address */
@@ -18,5 +17,4 @@ int main (void) {
 	TUnitDataWrite();	/* Write unit data on a bound socket */
 	TUnitDataRead();	/* Read unit data on a bound socket */
 	TUnitDataWakeUp();	/* Sync wakeup routine on kill */
-
 }

@@ -35,7 +35,6 @@ int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 				 dispatches, table_PasswordLookup_Operations,
 				 NULLIFP, NULLIFP);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -56,7 +55,6 @@ static int  op_lookupUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	if ((cp = qb2str (arg)) == NULL)
 		result = error (sd, error_PasswordLookup_congested, (caddr_t) NULL,
 						rox, roi);
@@ -64,7 +62,6 @@ static int  op_lookupUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *
 		result = lookup (sd, getpwnam (cp), rox, roi);
 		free (cp);
 	}
-
 	return result;
 }
 
@@ -81,7 +78,6 @@ static int  op_lookupUID (int sd, struct RyOperation *ryo, struct RoSAPinvoke *r
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	return lookup (sd, getpwuid (arg -> parm), rox, roi);
 }
 
@@ -90,7 +86,6 @@ static int lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct Ro
 
 	if (pw) {
 		struct type_PasswordLookup_Passwd *res = NULL;
-
 		if (xalloc (res, struct type_PasswordLookup_Passwd *) == NULL
 				|| (res -> name = salloc (pw -> pw_name)) == NULL
 				|| (*pw -> pw_passwd
@@ -118,18 +113,15 @@ static int lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct Ro
 			/*
 				    res -> quota = pw -> pw_quota;
 			 */
-
 			if (RyDsResult (sd, rox -> rox_id, (caddr_t) res, ROS_NOPRIO, roi)
 					== NOTOK)
 				ros_adios (&roi -> roi_preject, "RESULT");
 			result = OK;
 		}
-
 		free_PasswordLookup_Passwd (res);
 	} else
 		result = error (sd, error_PasswordLookup_noSuchUser, (caddr_t) NULL,
 						rox, roi);
-
 	return result;
 }
 
@@ -138,7 +130,6 @@ static int lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct Ro
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
-
 	return OK;
 }
 
@@ -147,6 +138,5 @@ static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, stru
 static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
-
 	return OK;
 }

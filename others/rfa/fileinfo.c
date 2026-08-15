@@ -48,9 +48,7 @@ int op_listDir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_
 	}
 	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	s = qb2str(arg);
-
 	/*--- expand symlinks and get relative path ---*/
 	if ((dir = expandSymLinks(s)) == NULL) {
 		free(s);
@@ -58,18 +56,14 @@ int op_listDir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_
 		return str_error(sd, error_RFA_fileAccessError, rfaErrStr, rox, roi);
 	}
 	free(s);
-
 	if ((rc = getRfaInfoList(dir, &rfalist, NULL, 0)) != OK)
 		return error(sd, error_RFA_fileAccessError, rc, rox, roi);
-
 	/*--- convert to FileInfoList ---*/
 	if ((fi = rfa2fil(dir, rfalist)) == NULL)
 		return syserror(sd, error_RFA_miscError, rox, roi);
-
 	/*--- return result ----*/
 	if (RyDsResult (sd, rox->rox_id, (caddr_t) fi, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
 	free_RFA_FileInfoList(fi);
-
 	return OK;
 }

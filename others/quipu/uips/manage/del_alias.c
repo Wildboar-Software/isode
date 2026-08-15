@@ -47,38 +47,30 @@ int call_del_alias (int argc, char **argv) {
 	contact_showentry[3] = "-nokey" ;
 	contact_showentry[4] = "-dontdereferencealias";
 	contact_modify[0] = "modify" ;
-
 	emnew = em_alloc() ;
 	str_buffer = (char *) malloc ((unsigned)1000) ;
 	contact_showentry[5] = (char *) malloc ((unsigned)strlen(argv[1])) ;
 	strcpy(contact_showentry[5], argv[1]+1) ;
-
 	contact_compare[3] = (char *) malloc ((unsigned)strlen("objectClass=alias.")) ;
 	strcpy(contact_compare[3], "objectClass=alias") ;
-
 	if ((argc = service_control (OPT, argc, argv, &remove_arg.rma_common)) == -1)
 		return ;
-
 	if (argc > 2) {
 		ps_printf (OPT,"Too many arguments. Aborting...\n");
 		Usage (argv[0]);
 		return ;
 	}
-
 	if (argc == 1) {
 		ps_printf (OPT,"Delete what???\n") ;
 		Usage (argv[0]) ;
 		return ;
 	}
-
 	strcpy(objectname,argv[1]) ;
 	contact_compare[1] = argv[1] ;
-
 	if (service_control (OPT, 6, contact_compare, &compare_arg.cma_common) == -1) {
 		ps_print(OPT, "Problems with compare service control flags.\n") ;
 		return ;
 	}
-
 	/* Turn a sequence number back into a DN */
 	if (*objectname >= '0' && *objectname <= '9') {
 		/* First convert the number into a dn */
@@ -110,40 +102,32 @@ int call_del_alias (int argc, char **argv) {
 			dn_free(save_dn) ;
 		}
 	}
-
 	if (get_ava (&compare_arg.cma_purported, "objectClass", "alias") != OK) {
 		ps_print(OPT, "Oops, 'objectClass=alias' is a bad attribute!\n") ;
 		ps_print(OPT, "This is very bad...\n") ;
 		return ;
 	}
-
 	save_dn = dn_cpy(dn) ;
 	dn = dn_cpy(oj_dn) ;
 	compare_arg.cma_object = oj_dn;
-
 	if (rebind () != OK)
 		return ;
-
 	while (ds_compare (&compare_arg, &compare_error, &compare_result) != DS_OK) {
 		if (dish_error (OPT, &compare_error) == 0) {
 			return ;
 		}
 		compare_arg.cma_object = compare_error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	if (compare_result.cmr_matched == FALSE) {
 		ps_printf(OPT, "Sorry, object is not an alias. Aborting.\n") ;
 		return ;
 	}
-
 	call_showentry(5, contact_showentry) ;
-
 	if (current_entry == NULLENTRY) {
 		fprintf(stderr, "we have no current entry. No wonder!\n") ;
 	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("aliasedObjectName") ;
-
 		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
 				aliObjNameAVS = avs_cpy(eptr->attr_value);
@@ -155,11 +139,9 @@ int call_del_alias (int argc, char **argv) {
 		ps_print(OPT, "Are you sure that this is an alias? Aborting.\n") ;
 		return ;
 	}
-
 	/* Now we have the other end of the alias in AttrValue format,
 	 * convert it into a DN, so we can modify it.
 	 */
-
 	if ((str_ps = ps_alloc(str_open)) == NULLPS) {
 		ps_printf(OPT, "Ps alloc for your string failed.\n") ;
 		return ;
@@ -169,7 +151,6 @@ int call_del_alias (int argc, char **argv) {
 		ps_free (str_ps);
 		return ;
 	}
-
 	avs_print(str_ps, aliObjNameAVS, EDBOUT) ;
 	*str_ps->ps_ptr = 0 ;
 	ps_free (str_ps) ;
@@ -180,17 +161,14 @@ int call_del_alias (int argc, char **argv) {
 		*ptr_local = '\0' ;
 	}
 	aoj_dn = str2dn(str_buffer) ;
-
 	/* We now have converted a string to DN and we now have to form the
 	 * attribute "seeAlso=<DN>", put it into the modify attributes
 	 * and delete that attribute from the other end of the alias.
 	 */
-
 	if (service_control(OPT, 1, contact_modify, &mod_arg.mea_common) == -1) {
 		ps_printf(OPT, "Del_alias: Badly wrong. Service controls for modify in error...\n") ;
 		return ;
 	}
-
 	dn_free(dn) ;
 	dn = dn_cpy(aoj_dn) ;
 	contact_showentry[1] = ( char *) malloc ((unsigned)strlen("-noshow") + 1) ;
@@ -201,14 +179,12 @@ int call_del_alias (int argc, char **argv) {
 	strcpy(contact_showentry[3], "-nokey") ;
 	contact_showentry[4] = ( char *) malloc ((unsigned)strlen("-dontdereferencealias") + 1) ;
 	strcpy(contact_showentry[4], "-dontdereferencealias") ;
-
 	call_showentry(5, contact_showentry) ;
 	if (current_entry == NULLENTRY) {
 		fprintf(stderr, "we have no current entry. No wonder!\n") ;
 	} else {
 		Attr_Sequence eptr ;
 		AttributeType a_t = AttrT_new("seeAlso") ;
-
 		emnew->em_type = -1 ;
 		for (eptr = current_entry->e_attributes; eptr != NULLATTR; eptr = eptr->attr_link) {
 			if ( AttrT_cmp (eptr->attr_type, a_t) == 0 ) {
@@ -225,11 +201,9 @@ int call_del_alias (int argc, char **argv) {
 			return ;
 		}
 	}
-
 	{
 		AV_Sequence	new_avs = avs_comp_alloc() ;
 		AttributeValue	new_AV = AttrV_alloc() ;
-
 		str_buffer = (char *) malloc ((unsigned)1000) ;
 		if ((str_ps = ps_alloc(str_open)) == NULLPS) {
 			ps_printf(OPT, "Ps alloc for your string failed.\n") ;
@@ -240,11 +214,9 @@ int call_del_alias (int argc, char **argv) {
 			ps_free (str_ps);
 			return ;
 		}
-
 		dn_print(str_ps, oj_dn, EDBOUT) ;
 		*str_ps->ps_ptr = 0 ;
 		ps_free(str_ps) ;
-
 		new_AV = AttrV_cpy(str2AttrV(str_buffer, str2syntax("DN"))) ;
 		new_avs = avs_comp_new(AttrV_cpy(new_AV)) ;
 		emnew->em_what = as_comp_new(AttrT_new("seeAlso"), new_avs, NULLACL_INFO) ;
@@ -252,10 +224,8 @@ int call_del_alias (int argc, char **argv) {
 	emnew->em_next = NULLMOD ;
 	mod_arg.mea_object = aoj_dn;
 	mod_arg.mea_changes = emnew ;
-
 	if (rebind () != OK)
 		return ;
-
 	while (ds_modifyentry (&mod_arg, &mod_error) != DS_OK) {
 		if (dish_error (OPT, &mod_error) == 0) {
 			ps_print(OPT, "Unable to modify ") ;
@@ -271,35 +241,27 @@ int call_del_alias (int argc, char **argv) {
 		ps_print (RPS, "\n");
 		delete_cache (aoj_dn);	/* re-cache when next read */
 	}
-
 	dn_free(dn) ;
 	dn = dn_cpy(save_dn) ;
-
 	if (move (objectname) == OK)
 		argc--;
-
 	remove_arg.rma_object = dn;
-
 	if (rebind () != OK)
 		return ;
-
 	while (ds_removeentry (&remove_arg, &error) != DS_OK) {
 		if (dish_error (OPT, &error) == 0)
 			return ;
 		remove_arg.rma_object = error.ERR_REFERRAL.DSE_ref_candidates->cr_name;
 	}
-
 	ps_print (RPS, "Removed ");
 	dn_print (RPS, dn, EDBOUT);
 	delete_cache (dn);
 	for (dnptr = dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		trail = dnptr;
-
 	if (trail != NULLDN)
 		trail->dn_parent = NULLDN;
 	else
 		dn = NULLDN;
-
 	dn_comp_free (dnptr);
 	ps_print (RPS, "\n");
 }

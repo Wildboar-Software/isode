@@ -102,7 +102,6 @@ int TWritevToClient (int sd, struct iovec *iov, int iovcnt) {
 	}
 	uvp->uv_base = NULL;
 	uvp->uv_len = 0;
-
 	ret = TWriteRequest (sd, uv, td);
 	if (ret == NOTOK) {
 #ifdef ISODEBUG
@@ -131,7 +130,6 @@ int TAcceptFromClient (int fd, int vecp, char **vec) {
 		Error("TInit");
 		return -1;
 	}
-
 	if (TConnResponse(tst->ts_sd, NULLTA, tst->ts_expedited, NULL, 0,
 					  &(tst->ts_qos), td) == NOTOK) {
 		Error(TErrString(td->td_reason));
@@ -198,7 +196,6 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 #define YieldControlAndReturnNull()		\
         { YieldControlNoInput();		\
 	  return((char *) NULL ); }
-
 	OsCommPtr oc = (OsCommPtr)who->osPrivate;
 	int client = oc->fd;
 	int result, gotnow, needed;
@@ -206,18 +203,14 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 	xReq *request;
 
 	/* ignore oldbuf, just assume we're done with prev. buffer */
-
 	if (client == -1) {
 		ErrorF( "OH NO, %d translates to -1\n", who);
 		return((char *)NULL);
 	}
-
 	pBuff = &inputBuffers[client];
 	pBuff->bufptr += pBuff->lenLastReq;
 	pBuff->lenLastReq = 0;
-
 	/* handle buffer empty or full case first */
-
 	if ((pBuff->bufptr - pBuff->buffer) >= pBuff->bufcnt) {
 #ifdef ISOCONN
 		result = SRead(client, pBuff->buffer, pBuff->size, OK);
@@ -244,10 +237,8 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 		}
 	}
 	/* now look if there is enough in the buffer */
-
 	request = (xReq *)pBuff->bufptr;
 	gotnow = pBuff->bufcnt + pBuff->buffer - pBuff->bufptr;
-
 	if (gotnow < sizeof(xReq))
 		needed = sizeof(xReq) - gotnow;
 	else {
@@ -308,10 +299,8 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 		}
 		pBuff->bufptr = pBuff->buffer;
 	}
-
 	if (gotnow < needed ) {
 		int i, wanted;
-
 		wanted = needed - gotnow;
 		i = 0;
 		while (i < wanted) {
@@ -340,14 +329,12 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 	}
 	*status = needed;
 	pBuff->lenLastReq = needed;
-
 	/*
 	 *  Check to see if client has at least one whole request in the
 	 *  buffer.  If there is only a partial request, treat like buffer
 	 *  is empty so that select() will be called again and other clients
 	 *  can get into the queue.
 	 */
-
 	timesThisConnection++;
 	if (pBuff->bufcnt + pBuff->buffer >= pBuff->bufptr + needed + sizeof(xReq)) {
 		request = (xReq *)(pBuff->bufptr + needed);
@@ -360,9 +347,7 @@ char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from c
 		YieldControlNoInput();
 	if (timesThisConnection == MAX_TIMES_PER)
 		YieldControl();
-
 	return((char *)pBuff->bufptr);
-
 #undef YieldControlAndReturnNull
 #undef YieldControlNoInput
 #undef YieldControl
@@ -408,9 +393,7 @@ FlushClient(ClientPtr who, OsCommPtr oc, char *extraBuf, int extraCount /* do no
 			iov[iovCnt++].iov_base = padBuffer;
 		}
 	}
-
 	notWritten = total;
-
 #ifdef ISOCONN
 	while ((n = SWritev (connection, iov, iovCnt)) != notWritten)
 #else /* ISOCONN */
@@ -453,13 +436,11 @@ FlushClient(ClientPtr who, OsCommPtr oc, char *extraBuf, int extraCount /* do no
 			MarkClientException(who);
 			return(-1);
 		}
-
 		/* If we've arrived here, then the client is stuffed to the gills
 		   and not ready to accept more.  Make a note of it and buffer
 		   the rest. */
 		BITSET(ClientsWriteBlocked, connection);
 		AnyClientsWriteBlocked = TRUE;
-
 		written = total - notWritten;
 		if (written < oc->count) {
 			if (written > 0) {
@@ -471,7 +452,6 @@ FlushClient(ClientPtr who, OsCommPtr oc, char *extraBuf, int extraCount /* do no
 			written -= oc->count;
 			oc->count = 0;
 		}
-
 		if (notWritten > oc->bufsize) {
 			/* allocate at least enough to contain it plus one
 			   OutputBufferSize */
@@ -503,17 +483,13 @@ outOfMem:
 				return(-1);
 			}
 		}
-
 		/* If the amount written extended into the padBuffer, then the
 		   difference "extraCount - written" may be less than 0 */
 		if ((n = extraCount - written) > 0)
 			bcopy (extraBuf + written, (char *)oc->buf + oc->count, n);
-
 		oc->count = notWritten; /* this will include the pad */
-
 		return extraCount; /* return only the amount explicitly requested */
 	}
-
 	/* everything was flushed out */
 	oc->count = 0;
 	if (oc->bufsize > OutputBufferSize) {
@@ -542,7 +518,6 @@ void FlushAllOutput () {
 
 	if (! NewOutputPending)
 		return;
-
 	/*
 	 * It may be that some client still has critical output pending,
 	 * but he is not yet ready to receive it anyway, so we will
@@ -550,7 +525,6 @@ void FlushAllOutput () {
 	 */
 	CriticalOutputPending = FALSE;
 	NewOutputPending = FALSE;
-
 	for (base = 0; base < mskcnt; base++) {
 		mask = OutputPending[ base ];
 		OutputPending[ base ] = 0;
@@ -569,7 +543,6 @@ void FlushAllOutput () {
 				FlushClient(client, oc, (char *)NULL, 0);
 		}
 	}
-
 }
 
 void FlushIfCriticalOutputPending () {
@@ -600,27 +573,22 @@ int WriteToClient (ClientPtr who, int count, char *buf) {
 		ErrorF( "OH NO, %d translates to -1\n", oc->fd);
 		return(-1);
 	}
-
 	if (oc->fd == -2) {
 #ifdef notdef
 		ErrorF( "CONNECTION %d ON ITS WAY OUT\n", oc->fd);
 #endif
 		return(-1);
 	}
-
 	padBytes =  padlength[count & 3];
-
 	if (oc->count + count + padBytes > oc->bufsize) {
 		BITCLEAR(OutputPending, oc->fd);
 		CriticalOutputPending = FALSE;
 		NewOutputPending = FALSE;
 		return FlushClient(who, oc, buf, count);
 	}
-
 	NewOutputPending = TRUE;
 	BITSET(OutputPending, oc->fd);
 	bcopy(buf, (char *)oc->buf + oc->count, count);
 	oc->count += count + padBytes;
-
 	return(count);
 }

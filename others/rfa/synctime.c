@@ -46,7 +46,6 @@ int changeTimeWithRfatime (long dt) {
 		sprintf(rfaErrStr, "can't set remote time (%s)",sys_errname(errno));
 		return NOTOK;
 	}
-
 	switch (fork()) {
 	case NOTOK:
 		sprintf(rfaErrStr, "can't set remote time (%s)",sys_errname(errno));
@@ -58,9 +57,7 @@ int changeTimeWithRfatime (long dt) {
 		sprintf(buf, "%s/rfatime", isodesbinpath, dt);
 		sprintf(dtbuf,"%ld", dt);
 		advise (LLOG_NOTICE, NULLCP, "syncTime: start %s", buf);
-
 		execl(buf, buf, dtbuf, NULL);
-
 		fprintf(stderr, "can't set remote time (%s)",sys_errname(errno));
 		advise (LLOG_NOTICE, NULLCP, "syncTime: exec failed: %s", buf);
 		exit(-2);
@@ -68,7 +65,6 @@ int changeTimeWithRfatime (long dt) {
 	default:
 		break;
 	}
-
 	/*-------- does not work, wait always returns error "no children"
 	st=0;
 	if ((rc = wait(&st)) == -1) {
@@ -83,7 +79,6 @@ int changeTimeWithRfatime (long dt) {
 	sprintf(buf, "can't set remote time");
 	advise (LLOG_NOTICE, NULLCP, "syncTime: start failed %x", rc);
 	-------------------*/
-
 	close(p[1]);
 	if (read(p[0], buf, sizeof buf)) {
 		*(buf+strlen(buf)-1) = '\0';
@@ -94,7 +89,6 @@ int changeTimeWithRfatime (long dt) {
 	}
 	close(p[0]);
 	return OK;
-
 }
 
 /*--------------------------------------------------------------
@@ -107,7 +101,6 @@ int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 	time_t lt, dt;
 
 	time(&lt);
-
 	if (rox -> rox_nolinked == 0) {
 		advise (LLOG_NOTICE, NULLCP,
 				"RO-INVOKE.INDICATION/%d: %s, unknown linkage %d",
@@ -116,7 +109,6 @@ int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 	}
 	advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 			sd, ryo -> ryo_name);
-
 	if (sta->role == int_RFA_role_slave) {
 		if (timeSlave) {
 			return str_error(sd, error_RFA_miscError,"remote is not TIME master"
@@ -130,21 +122,17 @@ int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 							 , rox, roi);
 		}
 		str.parm = dt = sta->time - lt;
-
 		if (changeTime(dt) != OK)
 			if (changeTimeWithRfatime(dt) != OK)
 				return str_error(sd, error_RFA_miscError, rfaErrStr, rox, roi);
-
 		if (dt > 0)
 			advise (LLOG_NOTICE, NULLCP, "syncTime: advanced time %ld sec", dt);
 		else
 			advise (LLOG_NOTICE, NULLCP, "syncTime: delayed time %ld sec", dt);
 	}
-
 	/*--- return result ---*/
 	if (RyDsResult (sd, rox->rox_id, (caddr_t)&str, ROS_NOPRIO,roi) == NOTOK) {
 		ros_adios (&roi -> roi_preject, "RESULT");
 	}
-
 	return OK;
 }

@@ -105,12 +105,10 @@ int main (int argc, char *argv[]) {
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	isodetailor (myname, 0);
 	initialize();		/* call NTP protocol initialization first,
 				   then allow others to override default
 				   values */
-
 	while ((cc = getopt(argc, argv, "a:c:dD:lstnp:")) != EOF) {
 		switch (cc) {
 		case 'a':
@@ -174,23 +172,18 @@ int main (int argc, char *argv[]) {
 			break;
 		}
 	}
-
 	if (servport == 0) {
 		struct servent *sp;
-
 		if ((sp = getservbyname ("ntp", "udp")) == NULL)
 			servport = htons (NTP_PORT);
 		else	servport = sp -> s_port;
 	}
-
 	peer_list.head = peer_list.tail = NULL;
 	peer_list.members = 0;
 	srandom(getpid ());
-
 	init_ntp(conf);
 	init_kern_vars();
 	init_logical_clock();
-
 	envinit ();
 	create_listeners ();
 	/*
@@ -201,7 +194,6 @@ int main (int argc, char *argv[]) {
 		drift_fd = i;
 	}
 	doit ();
-
 	return 0;
 }
 
@@ -216,7 +208,6 @@ int doit () {
 	int	newfd;
 
 	gettimeofday(&tv, (struct timezone *) 0);
-
 	FD_ZERO(&globmask);
 	FD_ZERO(&globwmask);
 	for (i = 0; i < nintf; i++) {
@@ -233,7 +224,6 @@ int doit () {
 			addrs[i].name, addrs[i].fd,
 			paddr (&addrs[i].addr)));
 	}
-
 	signal(SIGINT, finish);
 	signal(SIGTERM, finish);
 #if	defined(DEBUG) && defined(SIGUSR1) && defined(SIGUSR2)
@@ -250,38 +240,29 @@ int doit () {
 	TRACE (2, ("Highest fd in use is %d", selfds));
 	if (!selfds) abort();
 	selfds++;
-
 	/* prime the pump! */
 	ticked = 1;
 	gettimeofday(&tv, (struct timezone *) 0);
-
 	for (;;) {	/* go into a finite but hopefully very long loop */
-
 		readfds = globmask;
 		writefds = globwmask;
 		TRACE (7, ("wait nfds %d, fds 0x%x 0x%x", selfds,
 		readfds.fds_bits[0], writefds.fds_bits[0]));
-
 		if (ticked) {
 			ticked = 0;
 			tvt = tv;
 		}
-
 		TNetAcceptAux (&vecp, vec, &newfd, NULLTA,
 					   selfds, &readfds,
 					   &writefds, NULLFD, (1<<CLOCK_ADJ), td);
-
 		gettimeofday(&tv, (struct timezone *) 0);
 		if (tv.tv_sec - tvt.tv_sec >= (1 << CLOCK_ADJ))
 			ticked = 1;
-
 		if (vecp > 0)
 			iso_init (vecp, vec, newfd);
-
 		for(i = 0; i < nintf; i++) {
 			if ((addrs[i].flags & INTF_SELECT) == 0)
 				continue;
-
 			if (!FD_ISSET(addrs[i].fd, &readfds) &&
 					!FD_ISSET (addrs[i].fd, &writefds))
 				continue;
@@ -339,7 +320,6 @@ void dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 	struct Naddr clock_host;
 
 	printf("Packet: %s\n", paddr (dst));
-
 	printf("Leap %d, version %d, mode %d, poll %d, precision %d stratum %d",
 		   (int)(pkt->status & LEAPMASK) >> 6, (int)(pkt->status & VERSIONMASK) >> 3,
 		   pkt->status & MODEMASK, pkt->ppoll, pkt->precision,
@@ -414,20 +394,17 @@ int demobilize (struct list *l, struct ntp_peer *peer) {
 		peer -> flags |= PEER_FL_SNOOZE;
 		return 0;
 	}
-
 	if (peer == &dummy_peer)
 #ifdef	DEBUG
 		abort();
 #else
 		return 1;
 #endif
-
 #ifdef	DEBUG
 	if ((peer->next == NULL && peer->prev == NULL) ||
 			l->tail == NULL || l->head == NULL)
 		abort();
 #endif
-
 	/* delete only peer in list? */
 	if (l->head == l->tail) {
 #ifdef	DEBUG
@@ -436,25 +413,21 @@ int demobilize (struct list *l, struct ntp_peer *peer) {
 		l->head = l->tail = NULL;
 		goto dropit;
 	}
-
 	/* delete first peer? */
 	if (l->head == peer) {
 		l->head = peer->next;
 		l->head->prev = NULL;
 		goto dropit;
 	}
-
 	/* delete last peer? */
 	if (l->tail == peer) {
 		l->tail = peer->prev;
 		l->tail->next = NULL;
 		goto dropit;
 	}
-
 	/* drop peer in middle */
 	peer->prev->next = peer->next;
 	peer->next->prev = peer->prev;
-
 dropit:
 #ifdef	DEBUG
 	/* just some sanity checking */
@@ -468,7 +441,6 @@ dropit:
 #endif
 	free((char *) peer);
 	l->members--;
-
 	return 1;
 }
 
@@ -480,7 +452,6 @@ int enqueue (struct list *l, struct ntp_peer *peer) {
 		peer->next = peer->prev = NULL;
 		return;
 	}
-
 	/* insert at end of list */
 	l->tail->next = peer;
 	peer->next = NULL;
@@ -511,7 +482,6 @@ static void timeout (int n) {
 	 * If interval has expired blast off an NTP to that host.
 	 */
 	for (peer = peer_list.head; peer != NULL; peer = peer->next) {
-
 #ifdef	DEBUG
 		if (peer->next == NULL && peer != peer_list.tail) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "Broken peer list");
@@ -528,13 +498,11 @@ static void timeout (int n) {
 				do_peer (peer);
 		}
 	}
-
 	periodic += n;
 	if (periodic >= 60*60) {
 		periodic = 0;
 		hourly();
 	}
-
 	clock_watchdog += n;
 	if (clock_watchdog >= NTP_MAXAGE) {
 		/* woof, woof - barking dogs bite! */
@@ -545,7 +513,6 @@ static void timeout (int n) {
 					NTP_MAXAGE);
 		}
 	}
-
 #ifdef	DEBUG
 	if (debug)
 		fflush(stdout);
@@ -570,7 +537,6 @@ static void do_peer (struct ntp_peer *peer) {
 					poll_update (peer, (int)peer->hpoll +1);
 				peer -> backoff --;
 			}
-
 			if (make_osi_conn (peer, osiaddress) == NOTOK)
 				return;
 			break;
@@ -606,19 +572,15 @@ static void init_ntp (char *config) {
 	char	*argv[MAXARGS];
 
 	extern double drift_comp;
-
 	bzero((char *) &addr, sizeof(addr));
 	fp = fopen(config, "r");
 	if (fp == NULL)
 		adios (config, "Problem opening NTP initialization file");
-
 	while (fgets (buffer, sizeof buffer, fp)) { /* read line and parse */
 		if (buffer[0] == '#' || buffer[0] == '\n')
 			continue;
-
 		if ((argc = sstr2arg (buffer, MAXARGS, argv, " \t\n")) <= 0)
 			continue;
-
 		if (config_line (argv, argc) != OK)
 			TRACE (1, ("Ignoring line %s ...", argv[0]));
 	}
@@ -823,7 +785,6 @@ int config_line (char *argv[], int argc) {
 	case TBL_SERVER:
 		if (argc < 2)
 			return NOTOK;
-
 		if (GetHostName(argv[1], &addr) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"%s: unknown host", argv[1]);
@@ -832,7 +793,6 @@ int config_line (char *argv[], int argc) {
 		for (i=0; i<nintf; i++)
 			if (addr_compare (&addrs[i].addr, &addr))
 				return NOTOK;
-
 		peer = check_peer(&addr, -1);
 		if (peer != NULL) {
 			advise (LLOG_NOTICE, NULLCP,
@@ -844,7 +804,6 @@ int config_line (char *argv[], int argc) {
 			   malloc(sizeof(struct ntp_peer));
 		if (peer == NULL)
 			adios ("failed", "malloc");
-
 		make_new_peer(peer);
 		peer->flags = PEER_FL_CONFIG;
 		switch (result) {
@@ -886,12 +845,10 @@ int config_line (char *argv[], int argc) {
 			int stratum, prec;
 			char	*ref_clock;
 			char *clk_type;
-
 			ref_clock = argv[2];
 			stratum = atoi (argv[3]);
 			prec = atoi (argv[4]);
 			clk_type = argv[5];
-
 			if((i = init_clock(argv[1], clk_type)) < 0) {
 				/* If we could not initialize clock line */
 				advise (LLOG_EXCEPTIONS, NULLCP,
@@ -983,14 +940,11 @@ static int kern_hz, kern_tick;
 static void init_kern_vars () {
 #ifdef __linux__
 	kern_hz = HZ;
-
 	if (tickadj == 0)
 		tickadj = 10*1000/HZ;
-
 	struct timex txc = {};
 	txc.tick = tickadj * 1000;  /* convert tickadj to micoseconds */
 	txc.modes = MOD_CLKB;
-
 	if (ntp_adjtime(&txc) < 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "ntp_adjtime with %d fails", tickadj);
 	} else {
@@ -1009,7 +963,6 @@ static void init_kern_vars () {
 		advise (LLOG_EXCEPTIONS, memory, "Can't open");
 		return;
 	}
-
 	for (i = 0; i < 3; i++) {
 #ifdef SYS5
 		strcpy (nl[i].n_name, knames[i]);
@@ -1022,10 +975,8 @@ static void init_kern_vars () {
 #else
 	nlist("/vmunix", nl);
 #endif
-
 	for (i = 0; i < (sizeof(kern_vars)/sizeof(kern_vars[0])); i++) {
 		long where;
-
 		if ((where = nl[i].n_value) == 0) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"Unknown kernal var %s", nl[i].n_name);
@@ -1039,7 +990,6 @@ static void init_kern_vars () {
 		if (read(kmem, (char *)kern_vars[i], sizeof(int)) != sizeof(int)) {
 			advise (LLOG_EXCEPTIONS, "", "read for %s fails",
 					nl[i].n_name);
-
 			*kern_vars[i] = 0;
 		}
 	}
@@ -1053,12 +1003,10 @@ static void init_kern_vars () {
 	 */
 	if (tickadj == 0 && kern_hz)
 		tickadj = 500/kern_hz;
-
 	TRACE (1, ("kernel vars: tickadj = %d, hz = %d, tick = %d",
 			   kern_tickadj, kern_hz, kern_tick));
 	TRACE (1, ("desired tickadj = %d, dotickadj = %d", tickadj,
 			   dotickadj));
-
 	if (dotickadj && tickadj && (tickadj != kern_tickadj)) {
 		close(kmem);
 		if ((kmem = open(memory, O_RDWR)) >= 0) {
@@ -1084,7 +1032,6 @@ static void init_kern_vars () {
 #endif	/* SETTICKADJ */
 	close(kmem);
 #endif  /* __linux__ */
-
 	/*
 	 *  If we have successfully discovered `hz' from the kernel, then we
 	 *  can set sys.precision, if it has not already been specified.  If
@@ -1136,17 +1083,14 @@ int GetHostName (char *name, struct Naddr *addr) {
 			return NOTOK;
 		}
 		name = cp;
-
 	} else
 		addr->type = AF_INET;
-
 	if (addr->type == AF_INET && (HostAddr = inet_addr(name)) != -1) {
 		addr->inet_ad.sin_addr.s_addr = (uint32_t) HostAddr;
 		addr->inet_ad.sin_family = AF_INET;
 		addr->inet_ad.sin_port = servport;
 		return OK;
 	}
-
 	if (addr->type == AF_INET && (hp = gethostbyname(name)) != NULL) {
 		if (hp->h_addrtype != AF_INET)
 			return NOTOK;
@@ -1177,7 +1121,6 @@ static void hourly () {
 	sprintf(buf, "stats: dc %f comp %f peersw %d inh %d",
 			drift_comp, compliance, peer_switches,
 			peer_sw_inhibited);
-
 	if (sys.peer == NULL) {
 		strcat(buf, " UNSYNC");
 #ifdef	REFCLOCK
@@ -1213,7 +1156,6 @@ static void hourly () {
 		drifts[(drift_count+2) % 5],
 		drifts[(drift_count+1) % 5],
 		drift_count + 1);
-
 		lseek(drift_fd, 0L, L_SET);
 		if (write(drift_fd, buf, strlen(buf)) < 0) {
 			advise (LLOG_EXCEPTIONS, "write error", "drift comp file");
@@ -1260,7 +1202,6 @@ int init_clock (char *name, char *type) {
 	struct refclock *r;
 	int (*reader)();
 	int cfd;
-
 	if (strcmp(type, "local") == 0) {
 		reader = read_clock_local;
 		cfd = init_clock_local(name);
@@ -1298,7 +1239,6 @@ int read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 
 int create_listeners () {
 	create_sockets(servport);
-
 	create_osilisten (osiaddress);
 }
 
@@ -1327,7 +1267,6 @@ int envinit () {
 	if (!debug) {
 		if (fork())
 			exit(0);
-
 		for (s = getdtablesize(); s >= 0; s--)
 			close(s);
 		open("/", 0);
@@ -1346,17 +1285,14 @@ int envinit () {
 		pgm_log -> ll_events = LLOG_ALL;
 		ll_dbinit (pgm_log, myname);
 	}
-
 	advise (LLOG_NOTICE, NULLCP,
 	"%s starting: version $Revision: 9.0 $ patchlevel %d",
 	myname, PATCHLEVEL);
-
 #ifdef SYS5
 	nice (priority);
 #else
 	setpriority(PRIO_PROCESS, 0, priority);
 #endif
-
 #ifdef	NOSWAP
 	if (noswap)
 		if (plock(PROCLOCK) != 0)
@@ -1370,11 +1306,8 @@ void	adios (char *what, char *fmt, ...) {
 	extern LLog *pgm_log;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -1392,9 +1325,7 @@ void	advise (int code, char *what, char *fmt, ...)
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 #else
@@ -1465,7 +1396,6 @@ getintf (int *n) {
 		adios ("memory", "out of");
 	ap = &addrs[nintf];
 	bzero ((char *)ap, sizeof *ap);
-
 	*n = nintf++;
 	return ap;
 }

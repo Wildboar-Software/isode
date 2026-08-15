@@ -93,7 +93,6 @@ iso_conn (char *server) {
 #ifdef ISODEBUG
 	isodetcpath = ISODEPATH;
 #endif /* ISODEBUG */
-
 	/*
 	 * Get their TSAP from their AEI
 	 */
@@ -103,12 +102,10 @@ iso_conn (char *server) {
 	} else {
 		aei = str2aei(server, DEFAULTTSERVICE);
 	}
-
 	if (aei == NULLAEI) {
 		fprintf(stderr, "No AEI for %s\n", server);
 		return -1;
 	}
-
 	if ((pa = aei2addr (aei)) == NULLPA) {
 		fprintf (stderr, "address translation failed");
 		return -1;
@@ -127,13 +124,11 @@ iso_conn (char *server) {
 				 TLocalHostName());
 		return -1;
 	}
-
 	if ((mpa = aei2addr (aei)) == NULLPA) {
 		fprintf (stderr, "my address translation failed %s\n",
 				 TLocalHostName());
 		return -1;
 	}
-
 	rmpa = *mpa; /* struct copy */
 	/*
 	 * No Xpedited required !
@@ -146,11 +141,9 @@ iso_conn (char *server) {
 	tc->tc_tsdusize = 16000;
 	tc->tc_cc = 0;
 	qos->qos_reliability = LOW_QUALITY; /* Well this is X after all */
-
 	ret = TConnRequest(&(rmpa.pa_addr.sa_addr),
 					   &(rpa.pa_addr.sa_addr),
 					   0, 0, NULLCP, qos, tc, td);
-
 	/*
 	 * Should map errors to perrors somehow???
 	 */
@@ -219,7 +212,6 @@ int _XConnectDisplay (
 	 * TP4 or TP0 whathaveyou
 	 */
 #endif /* ISOCONN */
-
 	/*
 	 * Find the ':' seperator and extract the hostname and the
 	 * display number.
@@ -242,13 +234,10 @@ int _XConnectDisplay (
 	}
 #endif /* ISOCONN */
 	*(display_ptr++) = '\0';
-
 	/* displaybuf now contains only a null-terminated host name, and
 	 * display_ptr points to the display number.
 	 * If the display number is missing there is an error. */
-
 	if (*display_ptr == '\0') return(-1);
-
 	/*
 	 * Build a string of the form <display-number>.<screen-number> in
 	 * numberbuf, using ".0" as the default.
@@ -268,7 +257,6 @@ int _XConnectDisplay (
 			*(numbuf_ptr++) = *(screen_ptr++);
 		}
 	}
-
 	/*
 	 * If the spec doesn't include a screen number, add ".0" (or "0" if
 	 * only "." is present.)
@@ -282,18 +270,15 @@ int _XConnectDisplay (
 			*(numbuf_ptr++) = '0';
 	}
 	*numbuf_ptr = '\0';
-
 	/*
 	 * Return the screen number and property names in the result parameters
 	 */
 	*screen_num = atoi(dot_ptr + 1);
 	strcpy (prop_name, screen_ptr);
-
 	/*
 	 * Convert the server number string to an integer.
 	 */
 	display_num = atoi(display_ptr);
-
 	/*
 	 * If the display name is missing, use current host.
 	 */
@@ -312,7 +297,6 @@ int _XConnectDisplay (
 			 */
 		{
 			struct utsname name;
-
 			uname(&name);
 			strcpy(displaybuf, name.nodename);
 		}
@@ -320,7 +304,6 @@ int _XConnectDisplay (
 			gethostname (displaybuf, sizeof(displaybuf));
 #endif /* hpux */
 #endif /* UNIXCONN else TCPCONN (assumed) */
-
 #ifdef DNETCONN
 	if (dnet) {
 		/*
@@ -337,7 +320,6 @@ int _XConnectDisplay (
 		else
 			fd2family[fd] = UNIX_IO;
 #endif /* ISOCONN */
-
 	} else
 #endif
 #ifdef ISOCONN
@@ -380,7 +362,6 @@ int _XConnectDisplay (
 						errno = EPROTOTYPE;
 						return(-1);
 					}
-
 					/* Set up the socket data. */
 					inaddr.sin_family = host_ptr->h_addrtype;
 #if defined(CRAY) && defined(OLDTCP)
@@ -414,7 +395,6 @@ int _XConnectDisplay (
 				/*
 				 * Open the network connection.
 				 */
-
 				if ((fd = socket((int) addr->sa_family, SOCK_STREAM, 0)) < 0)
 					return(-1);	    /* errno set by system call. */
 #ifdef ISOCONN
@@ -428,13 +408,11 @@ int _XConnectDisplay (
 				}
 #endif
 			}
-
 			if (connect(fd, addr, addrlen) == -1) {
 				close (fd);
 				return(-1); 	    /* errno set by system call. */
 			}
 		}
-
 #ifdef ISOCONN
 	if (!isoconn) {
 #endif /* ISOCONN */
@@ -453,7 +431,6 @@ int _XConnectDisplay (
 #else
 		fcntl(fd, F_SETFL, FNDELAY);
 #endif /* FIOSNBIO */
-
 #ifdef ISOCONN
 	}
 #endif /* ISOCONN */
@@ -479,14 +456,12 @@ int _XConnectDisplay (
 		*(display_ptr++) = *(numbuf_ptr++);
 	if (prop_name[0] != '\0') {
 		char *cp;
-
 		*(display_ptr++) = '.';
 		for (cp = prop_name; *cp; cp++) *(display_ptr++) = *cp;
 	}
 	*display_ptr = '\0';
 	strcpy(expanded_name, displaybuf);
 	return(fd);
-
 }
 
 /*
@@ -518,11 +493,9 @@ void _XWaitForWritable(Display *dpy) {
 
 	CLEARBITS(r_mask);
 	CLEARBITS(w_mask);
-
 	while (1) {
 		BITSET(r_mask, dpy->fd);
 		BITSET(w_mask, dpy->fd);
-
 		do {
 #ifdef ISOCONN
 			/*
@@ -555,30 +528,23 @@ void _XWaitForWritable(Display *dpy) {
 			if (nfound < 0 && errno != EINTR)
 				(*_XIOErrorFunction)(dpy);
 		} while (nfound <= 0);
-
 		if (ANYSET(r_mask)) {
 			char buf[BUFSIZE];
 			long pend_not_register;
 			long pend;
 			xEvent *ev;
-
 			/* find out how much data can be read */
 			if (BytesReadable(dpy->fd, (char *) &pend_not_register) < 0)
 				(*_XIOErrorFunction)(dpy);
 			pend = pend_not_register;
-
 			/* must read at least one xEvent; if none is pending, then
 			   we'll just block waiting for it */
 			if (pend < SIZEOF(xEvent)) pend = SIZEOF(xEvent);
-
 			/* but we won't read more than the max buffer size */
 			if (pend > BUFSIZE) pend = BUFSIZE;
-
 			/* round down to an integral number of XReps */
 			pend = (pend / SIZEOF(xEvent)) * SIZEOF(xEvent);
-
 			_XRead (dpy, buf, pend);
-
 			/* no space between comma and type or else macro will die */
 			STARTITERATE (ev,xEvent, buf, (pend > 0),
 						  (pend -= SIZEOF(xEvent))) {
@@ -610,7 +576,6 @@ void _XWaitForReadable(Display *dpy) {
 		char *vec[4];
 		struct TSAPdisconnect tds;
 		struct TSAPdisconnect *td = &tds;
-
 		BITSET(r_mask, dpy->fd);
 		result = TNetAccept(&vecp, vec, dpy->fd + 1, r_mask, NULL, NULL,
 							NOTOK, td);
@@ -629,7 +594,6 @@ void _XSendClientPrefix (Display *dpy, xConnClientPrefix *client) {
 	 * Authorization string stuff....  Must always transmit multiple of 4
 	 * bytes.
 	 */
-
 	char *auth_proto = "";
 	int auth_length;
 	char *auth_string = "";
@@ -638,16 +602,13 @@ void _XSendClientPrefix (Display *dpy, xConnClientPrefix *client) {
 	char buffer[BUFSIZ], *bptr;
 
 	int bytes=0;
-
 	auth_length = strlen(auth_proto);
 	auth_strlen = strlen(auth_string);
 	client->nbytesAuthProto = auth_length;
 	client->nbytesAuthString = auth_strlen;
-
 	bytes = (SIZEOF(xConnClientPrefix) +
 			 auth_length + padlength[auth_length & 3] +
 			 auth_strlen + padlength[auth_strlen & 3]);
-
 	bcopy(client, buffer, SIZEOF(xConnClientPrefix));
 	bptr = buffer + SIZEOF(xConnClientPrefix);
 	if (auth_length) {

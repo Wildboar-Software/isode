@@ -89,25 +89,18 @@ int main (int argc, char *argv[]) {
 	/*  pdu_dump_init("/tmp"); */
 	if (initialisations(argc, argv) != OK)
 		de_exit(-1);
-
 	tailorHelp();
-
 	if (de_bind(FALSE) != OK)
 		de_exit(-1);
-
 	ll_hdinit(de_log, "de");
-
 	strcpy(origDefaultCo, qinfo[COUNTRY].defvalue);
 	strcpy(origDefaultOrg, qinfo[ORG].defvalue);
-
 	qinfo[COUNTRY].lp = NULLLIST;
 	qinfo[LOCALITY].lp = NULLLIST;
 	qinfo[ORG].lp = NULLLIST;
 	qinfo[ORGUNIT].lp = NULLLIST;
 	qinfo[PERSON].lp = NULLLIST;
-
 	welcome();
-
 	/* exit from this loop (and thus from the program) is handled by the
 	   enterString routine */
 	for (;;) {
@@ -119,18 +112,13 @@ int main (int argc, char *argv[]) {
 			signal(SIGINT, cleanupok);
 		else
 			signal(SIGINT, onint1);
-
 		enterString(PERSON);
-
 		signal(SIGINT, onint1);
-
 		if (boundToDSA == FALSE)
 			if (de_bind(FALSE) == NOTOK) /* don`t block */
 				de_exit(-1);
-
 		highNumber = 0;
 		enterString(ORGUNIT);
-
 		if (boundToDSA == FALSE)
 			if (de_bind(FALSE) == NOTOK) /* don`t block */
 				de_exit(-1);
@@ -144,10 +132,8 @@ enterorg:
 entercountry:
 			enterString(COUNTRY);
 		}
-
 		/* look at the input strings and decide what sort of search or list
 		   to do */
-
 		/* must have entered a country */
 		if (strlen(qinfo[COUNTRY].entered) == 0) {
 			if (strlen(qinfo[ORG].entered) == 0) {
@@ -158,7 +144,6 @@ entercountry:
 				goto entercountry;
 			}
 		}
-
 		if (boundToDSA == FALSE) {
 			if (de_bind(TRUE) == NOTOK) /* block until bound */
 				de_exit(-1);
@@ -166,17 +151,13 @@ entercountry:
 			start_malloc_trace(0);
 #endif
 		}
-
 		if (deLogLevel)
 			ll_log (de_log, LLOG_NOTICE, NULLCP,
 					"Search: co=%s, org=%s, ou=%s, cn=%s",
 					qinfo[COUNTRY].entered, qinfo[ORG].entered,
 					qinfo[ORGUNIT].entered, qinfo[PERSON].entered);
-
 		searchfail = FALSE;
-
 		pagerOn(NUMBER_ALLOWED);
-
 		res = doCountry();
 		switch (res) {
 		case QUERY_ERROR:
@@ -190,7 +171,6 @@ entercountry:
 			} else
 				break;
 		}
-
 		res = doOrganisation(matched);
 		switch (res) {
 		case QUERY_ERROR:
@@ -204,7 +184,6 @@ entercountry:
 			} else
 				break;
 		}
-
 		if (strlen(qinfo[ORGUNIT].entered) != 0) {
 			res = doOU(matched);
 			switch (res) {
@@ -230,23 +209,19 @@ entercountry:
 				freePRRs(&qinfo[PERSON].lp);
 			doPRR(matched, ORG);
 		}
-
 set_up_defaults:
 		/* set up defaults for next time round */
 		/* note that the list default is converted to null */
 		/* except for country */
 		strcpy(qinfo[COUNTRY].defvalue, qinfo[COUNTRY].entered);
-
 		if (strcmp(qinfo[ORG].entered, "*") == 0)
 			strcpy(qinfo[ORG].defvalue, "");
 		else
 			strcpy(qinfo[ORG].defvalue, qinfo[ORG].entered);
-
 		if (strcmp(qinfo[ORGUNIT].entered, "*") == 0)
 			strcpy(qinfo[ORGUNIT].defvalue, "");
 		else
 			strcpy(qinfo[ORGUNIT].defvalue, qinfo[ORGUNIT].entered);
-
 		if (strcmp(qinfo[PERSON].entered, "*") == 0)
 			strcpy(qinfo[PERSON].defvalue, "");
 		else
@@ -256,7 +231,6 @@ set_up_defaults:
 }
 
 int doCountry () {
-
 	if ((strcmp(qinfo[COUNTRY].entered, qinfo[COUNTRY].defvalue) == 0) &&
 	(qinfo[COUNTRY].lp != NULLLIST) && (qinfo[COUNTRY].listlen == 1)) {
 		printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
@@ -267,7 +241,6 @@ int doCountry () {
 		freeOUs(&qinfo[ORGUNIT].lp);
 		freePRRs(&qinfo[PERSON].lp);
 	}
-
 	for (;;) {
 		/* inits */
 		freeCos(&qinfo[COUNTRY].lp);
@@ -322,7 +295,6 @@ int doCountry () {
 }
 
 int doOrganisation (char matchstring[]) {
-
 	if ((strcmp(qinfo[ORG].entered, qinfo[ORG].defvalue) == 0) &&
 			(qinfo[ORG].lp != NULLLIST) && (qinfo[ORG].listlen == 1)) {
 		printLastComponent(INDENTON, qinfo[ORG].lp->name, ORG, 0);
@@ -335,11 +307,9 @@ int doOrganisation (char matchstring[]) {
 		freeOUs(&qinfo[ORGUNIT].lp);
 		freePRRs(&qinfo[PERSON].lp);
 	}
-
 	for (;;) {
 		/* inits */
 		freeOrgs(&qinfo[ORG].lp);
-
 		if (strlen(qinfo[ORG].entered) == 0) {
 			resetprint("\nNothing to search for as no organisation name entered.  Either enter\n");
 			resetprint("an organisation name at the prompt, or press <CR> to start the\n");
@@ -348,9 +318,7 @@ int doOrganisation (char matchstring[]) {
 			if (strlen(qinfo[ORG].entered) == 0)
 				return NO_ORG_ENTERED;
 		}
-
 		pagerOn(NUMBER_ALLOWED);
-
 		/*    if (strcmp(qinfo[ORG].entered, "*") == 0)
 		       strcpy(qinfo[ORG].defvalue, "");
 		    else
@@ -394,7 +362,6 @@ int doOrganisation (char matchstring[]) {
 }
 
 int doOU (char matchstring[]) {
-
 	if ((strcmp(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].defvalue) == 0) &&
 			(qinfo[ORGUNIT].lp != NULLLIST) && (qinfo[ORGUNIT].listlen == 1)) {
 		printLastComponent(INDENTON, qinfo[ORGUNIT].lp->name, ORGUNIT, 0);
@@ -404,7 +371,6 @@ int doOU (char matchstring[]) {
 		return NAME_PRINTED;
 	} else
 		freePRRs(&qinfo[PERSON].lp);
-
 	for (;;) {
 		/* inits */
 		freeOUs(&qinfo[ORGUNIT].lp);
@@ -473,18 +439,15 @@ int doOU (char matchstring[]) {
 }
 
 int doPRR (char matchstring[], int searchparent) {
-
 	if ((strcmp(qinfo[PERSON].entered, qinfo[PERSON].defvalue) == 0) &&
 			(qinfo[PERSON].lp != NULLLIST) && (qinfo[PERSON].listlen == 1)) {
 		printListPRRs(qinfo[PERSON].entered, qinfo[PERSON].lp, searchparent, TRUE);
 		return NAME_PRINTED;
 	}
-
 	for (;;) {
 		/* inits */
 		freePRRs(&qinfo[PERSON].lp);
 		pagerOn(NUMBER_ALLOWED);
-
 		if (listPRRs(matchstring, qinfo[PERSON].entered, &qinfo[PERSON].lp) != OK) {
 			if (searchFail(PERSON) != SF_ABANDONED)
 				strcpy(qinfo[PERSON].entered, "");
@@ -699,7 +662,6 @@ int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValu
 			return;
 		}
 	}
-
 	for (;;) {
 		exactMatch = -1;
 		writeInverse(prompt);
@@ -752,7 +714,6 @@ int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValu
 				displayHelp(findHelp(cp));
 			continue;
 		}
-
 		/* if a number has been entered, check that it is in range, and
 		   map the number onto the appropriate name */
 		isnum = TRUE;
@@ -781,10 +742,8 @@ int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValu
 				*nep = n;
 			}
 		}
-
 		if (index(cp, '*') == 0) /* no wild cards */
 			break;
-
 		if (*cp == '*') {
 			if (strlen(cp) == 1)
 				break;
@@ -866,7 +825,6 @@ int cleanup (int exitCode) {
 
 /* the flushes need dealing with properly */
 void onalarm () {
-
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
 	switch (alarmCount) {

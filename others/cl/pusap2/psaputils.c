@@ -72,11 +72,9 @@ int ppdu2data (
 
 	data = ps->ps_info;
 	ndata = &ps->ps_ninfo;
-
 	*ndata = 0;
 	*data = NULLPE;
 	if (info == NULL) return OK;
-
 	i = 0;
 	switch (info -> offset) {
 	default:
@@ -110,7 +108,6 @@ int ppdu2data (
 			struct qbuf *qb;
 			struct PSAPcontext *qp;
 			struct type_PS_PDV__list *pdv = full -> PDV__list;
-
 			ctx = pdv -> identifier;
 			nctx = ps -> ps_ctxlist.pc_nctx;
 			for (j = 0, qp = ps -> ps_ctxlist.pc_ctx; j < nctx; j++, qp++)
@@ -172,7 +169,6 @@ int	qb2_info (struct qbuf *qb, PE *pe)
 	PS	    ps;
 
 	*pe = NULLPE;
-
 	if ((ps = ps_alloc (qbuf_open)) == NULLPS)
 		return PS_ERR_NMEM;
 #ifdef	DEBUG
@@ -185,26 +181,21 @@ int	qb2_info (struct qbuf *qb, PE *pe)
 		result = PS_ERR_NONE;
 		*pe = p;
 	}
-
 	ps -> ps_addr = NULL;	/* so ps_free doesn't free remainder of qbuf */
 #ifdef	DEBUG
 	len = ps -> ps_byteno - len;
 #endif
 	ps_free (ps);
-
 #ifdef	DEBUG
 	if (p && (psaplevel & ISODELOG_PDUS)) {
 		int	isopen;
 		FILE   *fp;
-
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
-
 			sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
 			fp = stderr, isopen = 0,  fflush (stdout);
-
 		if (fp) {
 			pe2text (fp, p, 1, len);
 			if (isopen)
@@ -214,7 +205,6 @@ int	qb2_info (struct qbuf *qb, PE *pe)
 		}
 	}
 #endif
-
 	return result;
 }
 
@@ -235,10 +225,8 @@ no_mem:
 			pusaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out;
 		}
-
 		qb -> qb_data = qb -> qb_base, qb -> qb_len = len;
 	}
-
 	if ((ps = ps_alloc (str_open)) == NULLPS)
 		goto no_mem;
 	if (str_setup (ps, qb -> qb_data, qb -> qb_len, 1) == NOTOK
@@ -247,26 +235,21 @@ no_mem:
 		ps_free (ps);
 		goto out;
 	}
-
 	len = ps -> ps_ptr - ps -> ps_base;
 	if (qp)
 		qp -> qb_data += len, qp -> qb_len -= len;
 	else
 		qb -> qb_len = len;
-
 #ifdef	DEBUG
 	if (psaplevel & ISODELOG_PDUS) {
 		int	isopen;
 		FILE   *fp;
-
 		if (strcmp (psapfile, "-")) {
 			char    file[BUFSIZ];
-
 			sprintf (file, psapfile, getpid ());
 			fp = fopen (file, "a"), isopen = 1;
 		} else
 			fp = stderr, isopen = 0,  fflush (stdout);
-
 		if (fp) {
 			pe2text (fp, pe, 0, len);
 			if (isopen)
@@ -276,16 +259,12 @@ no_mem:
 		}
 	}
 #endif
-
 	ps_free (ps);
-
 	return qb;
-
 out:
 	;
 	if (qb && qb != qp)
 		free ((char *) qb);
-
 	return NULL;
 }
 
@@ -312,7 +291,6 @@ no_mem:
 		pusaplose (pi, PC_CONGEST, NULLCP, "out of memory");
 		goto out;
 	}
-
 	pdu -> offset = type_PS_User__data_simple;
 	for (d = data, i = 0; i < ndata; i++) {
 		if ((pe = *d++) == NULLPE) {
@@ -321,12 +299,10 @@ no_mem:
 					   i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th");
 			goto out;
 		}
-
 		/*  for now and perhaps forever the choice of simply vs fully encoded */
 		/*  is the presence of more than one context since it is presumed that */
 		/*  AUDT is present and we don't want to force fully encoded just because */
 		/*  there is a context for the AUDT pdu */
-
 		if (pb -> pb_ncontext > 1) {
 			if ( pe -> pe_context == PE_DFLT_CTX) {
 				pusaplose (pi, PC_PARAMETER, NULLCP,
@@ -336,14 +312,12 @@ no_mem:
 			pdu -> offset = type_PS_User__data_complex;
 		}
 	}
-
 	if (pdu -> offset == type_PS_User__data_simple) {
 		if ((qb = (struct qbuf *) malloc (sizeof *qb)) == NULL)
 			goto no_mem;
 		simple = pdu -> un.simple = qb;
 		qb -> qb_forw = qb -> qb_back = qb;
 		qb -> qb_data = NULL, qb -> qb_len = 0;
-
 		j = 0;
 		for (d = data, i = 0; i < ndata; i++)
 			j += ps_get_abs (*d++);
@@ -354,7 +328,6 @@ no_mem:
 		insque (qb, simple -> qb_back);
 	} else
 		complex = &pdu -> un.complex;
-
 	for (d = data, i = 0; i < ndata; i++) {
 		pe = *d++;
 		switch (pe -> pe_context) {
@@ -381,12 +354,10 @@ no_mem:
 			atn = qp -> pc_atn;
 			break;
 		}
-
 		if (!atn_is_asn1 (atn)) {
 			pusaplose (pi, PC_PARAMETER, NULLCP, "not ASN.1");
 			goto out;
 		}
-
 		if (pdu -> offset == type_PS_User__data_simple) {
 			if (info2_qb (pe, qb, pi) == NULL)
 				goto out;
@@ -405,7 +376,6 @@ no_mem:
 						(struct choice_PS_0 *)
 						calloc (1, sizeof (struct choice_PS_0))) == NULL)
 				goto no_mem;
-
 			if (ndata == 1) {
 				full -> PDV__list -> presentation__data__values ->
 				offset = choice_PS_0_single__ASN1__type;
@@ -413,7 +383,6 @@ no_mem:
 				 un.single__ASN1__type = pe) -> pe_refcnt++;
 			} else {
 				struct qbuf *qb2;
-
 				full -> PDV__list -> presentation__data__values ->
 				offset = choice_PS_0_octet__aligned;
 				if ((qb2 = (struct qbuf *) malloc (sizeof *qb2)) == NULL)
@@ -429,14 +398,11 @@ no_mem:
 			}
 		}
 	}
-
 	return pdu;
-
 out:
 	;
 	if (pdu)
 		free_PS_User__data (pdu);
-
 	return NULL;
 }
 
@@ -455,7 +421,6 @@ int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 				  sa -> sa_cc > 0 ? "%s: %s\n\t%*.*s": "%s: %s", event,
 				  SuErrString (sa -> sa_reason), sa -> sa_cc, sa -> sa_cc,
 				  sa -> sa_data);
-
 	cp = "";
 	switch (sa -> sa_reason) {
 	case SC_SSAPID:
@@ -501,7 +466,6 @@ int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 				 SuErrString (sa -> sa_reason));
 		break;
 	}
-
 	if (sa -> sa_cc > 0)
 		return pusaplose (pi, reason, NULLCP, "%*.*s%s",
 						  sa -> sa_cc, sa -> sa_cc, sa -> sa_data, cp);
@@ -550,16 +514,13 @@ static int _pusaplose (	/* what, fmt, args ... */
 		bzero ((char *) pi, sizeof *pi);
 		pi -> pi_type = PI_ABORT;
 		pa = &pi -> pi_abort;
-
 		asprintf (bp = buffer, ap);
 		bp += strlen (bp);
-
 		pa -> pa_peer = 0;
 		pa -> pa_reason = reason;
 		pa -> pa_ninfo = 0;
 		copyPSAPdata (buffer, bp - buffer, pa);
 	}
-
 	return NOTOK;
 }
 #endif
@@ -622,9 +583,7 @@ struct psapblk *
 	pb = (struct psapblk   *) calloc (1, sizeof *pb);
 	if (pb == NULL)
 		return NULL;
-
 	pb -> pb_fd = NOTOK;
-
 	if (once_only == 0) {
 		PuHead -> pb_forw = PuHead -> pb_back = PuHead;
 		once_only++;
@@ -643,11 +602,9 @@ findpublk (
 
 	if (once_only == 0)
 		return NULL;
-
 	for (pb = PuHead -> pb_forw; pb != PuHead; pb = pb -> pb_forw)
 		if (pb -> pb_fd == sd)
 			return pb;
-
 	return NULL;
 }
 
@@ -660,12 +617,9 @@ int freepublk (
 	struct PSAPcontext *qp;
 
 	if (pb == NULL) return;
-
 	if ( pb -> pb_calling ) free (pb -> pb_calling);
 	if ( pb -> pb_called ) free (pb -> pb_called);
-
 	if (pb -> pb_retry) free (pb -> pb_retry);
-
 	for (qp = pb -> pb_contexts, i = pb -> pb_ncontext - 1;
 			i >= 0;
 			qp++, i--) {
@@ -674,10 +628,8 @@ int freepublk (
 		if (qp -> pc_atn)
 			oid_free (qp -> pc_atn);
 	}
-
 	if (pb -> pb_asn) oid_free (pb -> pb_asn);
 	if (pb -> pb_atn) oid_free (pb -> pb_atn);
-
 	remque (pb);
 	free ((char *) pb);
 }
@@ -692,17 +644,14 @@ int	PS_print (PE pe, char *text, int rw, IFP fnx)
 
 	if (strcmp (psap2file, "-")) {
 		char	file[BUFSIZ];
-
 		sprintf (file, psap2file, getpid ());
 		fp = fopen (file, "a"), isopen = 1;
 	} else
 		fp = stderr, isopen = 0,  fflush (stdout);
-
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
 		(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
 		vpopfp ();
-
 		if (isopen)
 			fclose (fp);
 		else

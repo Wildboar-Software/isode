@@ -86,13 +86,10 @@ struct group *gr;
 int main (int argc, char **argv, char **envp) {
 	int initiate ();
 	oumask = umask (0);
-
 	host = getlocalhost ();
-
 	ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,
 				 dispatches, table_Idist_Operations, initiate,
 				 NULLIFP);
-
 	exit (0);		/* NOTREACHED */
 }
 
@@ -112,7 +109,6 @@ static int  op_init (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	if (arg -> offset == type_Idist_InitDir_destdir) {
 		catname = 1;
 		str = qb2str (arg -> un.destdir);
@@ -123,13 +119,10 @@ static int  op_init (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 	if (exptilde (target, str) == NULL)
 		return error (sd, error_Idist_badfilename, (caddr_t)ia5list,
 					  rox, roi);
-
 	tp = target + strlen (target);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) NULL, ROS_NOPRIO,
 					roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	return OK;
 }
 
@@ -146,7 +139,6 @@ int op_transfer (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	switch (arg -> filetype -> parm) {
 
 	case int_Idist_FileType_regular:
@@ -177,18 +169,14 @@ int op_transfer (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 		return error (sd, error_Idist_badfiletype, (caddr_t) NULL,
 					  rox, roi);
 	}
-
 	if (cfiletype != NULL)
 		free_Idist_FileSpec (cfiletype);
 	cfiletype = cpy_fs (arg);;
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5list, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_Idist_IA5List (ia5list);
 	ia5list = NULL;
-
 	return OK;
 }
 
@@ -215,7 +203,6 @@ int op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t i
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) NULL, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	return OK;
 }
 
@@ -234,21 +221,16 @@ int op_query (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t 
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	str = qb2str (arg);
 	qr = query (str);
 	free (str);
-
 	if (qr == NULL)
 		return error (sd, error_Idist_congested, (caddr_t)ia5list,
 					  rox, roi);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) qr, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_Idist_QueryResult (qr);
-
 	return OK;
 }
 
@@ -265,7 +247,6 @@ int op_terminate (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, cadd
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	switch (arg -> filetype -> parm) {
 	case int_Idist_FileType_regular:
 		if (cfile == NULL)
@@ -300,11 +281,9 @@ int op_terminate (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, cadd
 		return error (sd, error_Idist_badfiletype, (caddr_t)NULL,
 					  rox, roi);
 	}
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) NULL, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	return OK;
 }
 
@@ -323,21 +302,16 @@ int op_special (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	str = qb2str (arg);
 	result = doexec (str);
 	free (str);
-
 	if (result == NOTOK)
 		return syserror (sd, error_Idist_execError, rox, roi);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5list, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_Idist_IA5List (ia5list);
 	ia5list = NULL;
-
 	return OK;
 }
 
@@ -357,20 +331,16 @@ int op_deletefile (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, cad
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	str = qb2str (arg);
 	sprintf (buf, "%s/%s", target, str);
 	free (str);
 	result = i_remove (buf);
-
 	if (result == NOTOK)
 		return error (sd, error_Idist_badfilename, (caddr_t) ia5list,
 					  rox, roi);
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ia5list, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_Idist_IA5List (ia5list);
 	ia5list = NULL;
 	return OK;
@@ -388,15 +358,11 @@ int op_listcdir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 	if (debug)
 		advise (LLOG_DEBUG, NULLCP, "RO-INVOKE.INDICATION/%d: %s",
 				sd, ryo -> ryo_name);
-
 	fl = do_listcdir ();
-
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) fl, ROS_NOPRIO, roi)
 			== NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
-
 	free_Idist_FileList (fl);
-
 	return OK;
 }
 
@@ -405,22 +371,18 @@ int op_listcdir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
-
 	if (ia5list)
 		free_Idist_IA5List (ia5list);
 	ia5list = NULL;
-
 	return OK;
 }
 
 static int i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	addtoia5 (str, strlen(str));
-
 	return error (sd, err, (caddr_t)ia5list, rox, roi);
 }
 
 static int syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
-
 	return i_strerror (sd, err, sys_errname (errno), rox, roi);
 }
 
@@ -429,7 +391,6 @@ static int syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindic
 static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
-
 	return OK;
 }
 
@@ -442,53 +403,40 @@ int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	*pe  = NULLPE;
 	if ( acs -> acs_ninfo != 1)
 		return init_lose (ACS_PERMANENT, pe, "No Association data");
-
 	if (decode_Idist_Initiate (acs -> acs_info[0], 1, NULLIP, NULLVP,
 							   &initial) == NOTOK)
 		return init_lose (ACS_PERMANENT, pe,
 						  "Can't parse initial data");
-
 	if (initial -> version != VERSION)
 		return init_lose (ACS_PERMANENT, pe, "Version mismatch");
-
 	cp = qb2str (initial -> user);
 	strcpy (user, cp);
 	free (cp);
-
 	if (baduser (NULLCP, user)) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "Bad listed user '%s'", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
 	}
-
 	if ((pw = getpwnam (user)) == NULL) {
 		advise (LLOG_NOTICE, NULLCP, "Unknown user '%s'", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
-
 	}
-
 	userid = pw -> pw_uid;
 	groupid = pw -> pw_gid;
 	strcpy (homedir, pw -> pw_dir);
-
 	cp = qb2str (initial -> passwd);
-
 	if (pw -> pw_passwd == NULL
 			|| !chkpassword (user, pw -> pw_passwd, cp)) {
 		advise (LLOG_NOTICE, NULLCP, "Password mismatch for %s", user);
 		return init_lose (ACS_PERMANENT, pe, "Bad user/password");
-
 	}
 	bzero (cp, strlen(cp));	/* in case of cores */
 	free (cp);
-
 	free_Idist_Initiate (initial);
-
 	if (chdir (homedir) == -1) {
 		advise (LLOG_NOTICE, NULLCP, "Can't set home directory to '%s'",
 				homedir);
 		return init_lose (ACS_PERMANENT, pe, "No home directory");
 	}
-
 #ifdef SVR4
 	if (setuid (userid) < 0) {
 #else
@@ -498,9 +446,7 @@ int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 				userid, user);
 		return init_lose (ACS_PERMANENT, pe, "Can't set user id");
 	}
-
 	close (mkstemp (utmpfile));
-
 	return ACS_ACCEPT;
 }
 
@@ -542,7 +488,6 @@ static struct qbuf *qb_cpy(struct qbuf *qb) {
 		insque(nqp, pred);
 		pred = nqp;
 	}
-
 	return (nqb);
 }
 
@@ -550,7 +495,6 @@ static struct type_Idist_FileSpec *cpy_fs (struct type_Idist_FileSpec *ft) {
 	struct type_Idist_FileSpec *new;
 
 	new = (struct type_Idist_FileSpec *)calloc (1, sizeof *new);
-
 	if (ft -> filetype) {
 		new -> filetype = (struct type_Idist_FileType *)
 						  calloc (1, sizeof *new -> filetype);
@@ -558,7 +502,6 @@ static struct type_Idist_FileSpec *cpy_fs (struct type_Idist_FileSpec *ft) {
 	}
 	if (ft -> fileopts)
 		new -> fileopts = pe_cpy (ft -> fileopts);
-
 	new -> filemode = ft -> filemode;
 	new -> filesize = ft -> filesize;
 	if (ft -> filemtime) {
@@ -566,11 +509,9 @@ static struct type_Idist_FileSpec *cpy_fs (struct type_Idist_FileSpec *ft) {
 						   calloc (1, sizeof *new -> filemtime);
 		new -> filemtime -> parm = ft -> filemtime -> parm;
 	}
-
 	new -> fileowner = qb_cpy (ft -> fileowner);
 	new -> filegroup = qb_cpy (ft -> filegroup);
 	new -> filename = qb_cpy (ft -> filename);
 	new -> linkname = qb_cpy (ft -> linkname);
-
 	return new;
 }

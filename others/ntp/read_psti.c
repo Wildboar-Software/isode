@@ -89,7 +89,6 @@ init_clock_psti(char *timesource) {
 			advise (LLOG_EXCEPTIONS, timesource, "can't open ");
 		return(-1);
 	}
-
 	if (ioctl(cfd, TIOCEXCL, 0) < 0) {
 #ifdef DEBUG
 		if (debug) perror("TIOCEXCL on radioclock failed");
@@ -99,7 +98,6 @@ init_clock_psti(char *timesource) {
 					"TIOCEXCL on ");
 		return(-1);
 	}
-
 #ifdef TCSETA
 	if (ioctl(cfd, TCGETA, &tty) < 0) {
 #ifdef DEBUG
@@ -166,9 +164,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 	FD_SET(cfd, &readfds);
 	timeout.tv_sec = 2;
 	timeout.tv_usec = 0;
-
 	ioctl(cfd, TIOCFLUSH, 0);	/* scrap the I/O queues */
-
 	/* BEGIN TIME CRITICAL CODE SECTION!!!!!! */
 	/* EVERY CYCLE FROM THIS POINT OUT ADDS TO THE INACCURACY OF
 	     THE READ CLOCK VALUE!!!!! */
@@ -202,10 +198,8 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 						"radioclock read (%d<%d)", i, MIN_READ);
 		return(1);
 	}
-
 	gettimeofday(&mytime, (struct timezone *)0);
 	/* END OF TIME CRITICAL CODE SECTION!!!! */
-
 	if (clockdata[i-1] != '\n') {
 #ifdef DEBUG
 		if (debug) printf("radioclock format error1 (%.12s)(0x%x)\n",
@@ -239,7 +233,6 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 	rtm->tm_yday = ((clockdata[7]-'0')*64)+(clockdata[8]-'0')-1;
 	rtm->tm_year = 86+(clockdata[9]-'0');
 	/* byte 10 and 11 reserved */
-
 	/*
 	 * Correct "hours" based on whether or not AM/PM mode is enabled.
 	 * If clock is in 24 hour (military) mode then no correction is
@@ -252,7 +245,6 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 			if (rtm->tm_hour == 12) rtm->tm_hour = 0;
 		}
 	}
-
 	if (stat1 != 0x4 && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug) printf("radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
@@ -293,7 +285,6 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "%s", message);
 		return(1);
 	}
-
 	mtm = gmtime(&mytime.tv_sec);
 	diff =  reltime(rtm, millis*1000) - reltime(mtm, mytime.tv_usec);
 #ifdef DEBUG
@@ -302,7 +293,6 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 			   rtm->tm_year, rtm->tm_yday, rtm->tm_hour,
 			   rtm->tm_min, rtm->tm_sec, millis, diff);
 #endif DEBUG
-
 	if (diff > (90*24*60*60.0) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug)
@@ -317,7 +307,6 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 					rtm->tm_year, mtm->tm_yday);
 		return(1);
 	}
-
 	diff += (double)mytime.tv_sec + ((double)mytime.tv_usec/1000000.0);
 	radiotime.tv_sec = diff;
 	radiotime.tv_usec = (diff - (double)radiotime.tv_sec) * 1000000;

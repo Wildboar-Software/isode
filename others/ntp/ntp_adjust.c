@@ -74,11 +74,9 @@ int adj_logical (double offset) {
 	 */
 	if (!doset)
 		return 0;
-
 	adj_residual = 0.0;
 	if (offset > CLOCK_MAX || offset < -CLOCK_MAX) {
 		double steptime = offset;
-
 		gettimeofday(&tv2, (struct timezone *) 0);
 		steptime += tv2.tv_sec;
 		steptime += tv2.tv_usec / 1000000.0;
@@ -103,7 +101,6 @@ int adj_logical (double offset) {
 		return (1);	  /* indicate that step adjustment was done */
 	} else 	{
 		double ai;
-
 		/*
 		 * If this is our very first adjustment, don't touch
 		 * the drift compensation (this is f in the spec
@@ -121,19 +118,16 @@ int adj_logical (double offset) {
 				ai = 1.0;
 			drift_comp += offset / (ai * (double)update_timer);
 		}
-
 		/*
 		 * Set the timer to zero.  adj_host_clock() increments it
 		 * so we can tell the period between updates.
 		 */
 		update_timer = 0;
-
 		/*
 		 * Now update the compliance.  The compliance is h in the
 		 * equations.
 		 */
 		compliance += (offset - compliance)/(double)(1<<CLOCK_TRACK);
-
 #ifdef XADJTIME2
 		delta.tv_sec = offset;
 		delta.tv_usec = (offset - delta.tv_sec) * 1000;
@@ -163,12 +157,10 @@ extern int adjtime();
 double adjustment;
 
 void adj_host_clock (int n) {
-
 	struct timeval delta, olddelta;
 
 	if (!doset)
 		return;
-
 	/*
 	 * Add update period into timer so we know how long it
 	 * took between the last update and the next one.
@@ -177,7 +169,6 @@ void adj_host_clock (int n) {
 	/*
 	 * Should check to see if update_timer > 1 day here?
 	 */
-
 	/*
 	 * Compute phase part of adjustment here and update clock_adjust.
 	 * Note that the equations used here are implicit in the last
@@ -186,7 +177,6 @@ void adj_host_clock (int n) {
 	 */
 	adjustment = clock_adjust / (double)(1<<CLOCK_PHASE);
 	clock_adjust -= adjustment;
-
 	/*
 	 * Now add in the frequency component.  Be careful to note that
 	 * the ni occurs in the last equation since those equations take
@@ -195,12 +185,10 @@ void adj_host_clock (int n) {
 	 * little 4 second adjustment interval here.
 	 */
 	adjustment += drift_comp / (double)(1<<CLOCK_FREQ);
-
 	/*
 	 * Add in old adjustment residual
 	 */
 	adjustment += adj_residual;
-
 	/*
 	 * Simplify.  Adjustment shouldn't be bigger than 2 ms.  Hope
 	 * writer of spec was truth telling.
@@ -213,15 +201,11 @@ void adj_host_clock (int n) {
 #endif
 	delta.tv_usec = ((long)(adjustment * 1000000.0) / adj_precision)
 					* adj_precision;
-
 	adj_residual = adjustment - (double) delta.tv_usec / 1000000.0;
-
 	if (delta.tv_usec == 0)
 		return;
-
 	if (adjtime(&delta, &olddelta) < 0)
 		advise (LLOG_EXCEPTIONS, NULLCP, "Can't adjust time: %m");
-
 	TRACE (2, ("adj: %ld us  %f %f",
 			   delta.tv_usec, drift_comp, clock_adjust));
 }

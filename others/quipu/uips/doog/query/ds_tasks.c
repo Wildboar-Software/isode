@@ -45,19 +45,14 @@ QE_error_code _task_invoked(task_type type, char *baseobject, QCardinal request_
 
 	if (live_task_count >= MAXTASKS)
 		return QERR_internal_limit_reached;
-
 	task_rec = ds_task_alloc();
 	task_rec->next = live_task_list;
-
 	task_rec->type = type;
 	task_rec->task_id = *task_id_ptr = next_task_id++;
-
 	task_rec->baseobject = copy_string(baseobject);
 	task_rec->request_id = request_id;
-
 	live_task_count++;
 	live_task_list = task_rec;
-
 	return QERR_ok;
 } /* _task_invoked */
 
@@ -73,13 +68,11 @@ void _task_complete (int task_id) {
 		prev_rec = task_rec;
 		task_rec = task_rec->next;
 	}
-
 	if (task_rec != NULLDsTask) {
 		if (prev_rec != NULLDsTask)
 			prev_rec->next = task_rec->next;
 		else
 			live_task_list = task_rec->next;
-
 		ds_task_free(task_rec);
 		live_task_count--;
 	}
@@ -95,7 +88,6 @@ DsTask _get_task_of_id(int task_id) {
 
 	while (task_rec != NULLDsTask && task_rec->task_id != task_id)
 		task_rec = task_rec->next;
-
 	return task_rec;
 } /* _get_task_of_id */
 
@@ -109,13 +101,9 @@ void abort_task (int task_id) {
 	struct DAPindication di;
 
 	extern int dsap_ad;
-
 	_task_complete(task_id);
-
 	arg.aba_invokeid = task_id;
-
 	DapAbandon(dsap_ad, next_task_id++, &arg, &di, ROS_ASYNC);
-
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE,
 		  ("ABANDONING task %d", task_id));
@@ -130,9 +118,7 @@ void abort_task (int task_id) {
 static void ds_task_free(DsTask task) {
 	if (task == NULLDsTask)
 		return;
-
 	if (task->baseobject != NULLCP)
 		free(task->baseobject);
-
 	free((char *) task);
 } /* ds_task_free */

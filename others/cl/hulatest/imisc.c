@@ -116,7 +116,6 @@ char   *ctime ();
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
 				 table_IMISC_Operations, dispatches, do_quit);
-
 	exit (0);			/* NOTREACHED */
 }
 
@@ -129,18 +128,14 @@ vec2ia5list (char **vec) {
 
 	ia5 = NULL;
 	ia5p = &ia5;
-
 	for (; *vec; vec++) {
 		if ((*ia5p = (struct type_IMISC_IA5List *) calloc (1, sizeof **ia5p))
 				== NULL)
 			adios (NULLCP, "out of memory");
-
 		if (((*ia5p) -> IA5String = str2qb (*vec, strlen (*vec), 1)) == NULL)
 			adios (NULLCP, "out of memory");
-
 		ia5p = &((*ia5p) -> next);
 	}
-
 	return ia5;
 }
 
@@ -160,7 +155,6 @@ static print_ia5list (struct type_IMISC_IA5List *ia5) {
 
 static int do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
 	*ia5 = vec2ia5list (args);
-
 	return OK;
 }
 
@@ -175,23 +169,18 @@ static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_
 		advise (NULLCP, "usage: tell user message ...");
 		return NOTOK;
 	}
-
 	*ia5 = vec2ia5list (args);
-
 	cp = (pw = getpwuid (getuid ())) ? pw -> pw_name : "anon";
 	dp = getlocalhost(); /* PLocalHostName (); */
-
 	if ((ia52 = (struct type_IMISC_IA5List *) calloc (1, sizeof *ia52))
 			== NULL)
 		adios (NULLCP, "out of memory");
 	sprintf (buffer, "%s@%s", cp, dp);
 	if ((ia52 -> IA5String = str2qb (buffer, strlen (buffer), 1)) == NULL)
 		adios (NULLCP, "out of memory");
-
 	/* kludge this arg onto front of list - HACK ATTACK */
 	ia52 -> next = *ia5;
 	*ia5 = ia52;
-
 	return OK;
 }
 
@@ -209,7 +198,6 @@ static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_
 		if (cp)
 			free (cp);
 	}
-
 	*pep = data;
 	return OK;
 }
@@ -218,7 +206,6 @@ static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
-
 	return NOTOK;
 }
 
@@ -255,7 +242,6 @@ static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResul
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
 		printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
 	printf ("\n");
-
 	return OK;
 }
 
@@ -264,19 +250,16 @@ static int timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeRe
 
 	s = result -> parm - 2208988800L;	/* UNIX epoch */
 	printf ("%s", ctime (&s));
-
 	return OK;
 }
 
 static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
 	print_ia5list (result);
-
 	return OK;
 }
 
 static int  tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
 	printf ("told.\n");
-
 	return OK;
 }
 
@@ -287,7 +270,6 @@ static int  null_result (int sd, int id, int dummy, caddr_t result, struct RoSAP
 static int echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
 	if (pe_cmp (result, data))
 		advise (NULLCP, "data mismatch");
-
 	return OK;
 }
 
@@ -298,14 +280,11 @@ static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *pa
 		advise (NULLCP, "%s", RoErrString ((int) parameter));
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_IMISC_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	if (parameter)
 		print_ia5list(parameter);
-
 	return OK;
 }

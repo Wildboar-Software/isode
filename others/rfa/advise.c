@@ -33,9 +33,7 @@ void initLog (char *myname) {
 	/*    if (isatty (fileno (stderr)))
 	        ll_dbinit (pgm_log, myname);
 	    else */ {
-
 		static char  myfile[BUFSIZ];
-
 		sprintf (myfile, "%s.log", (strncmp (myname, "ros.", 4)
 									&& strncmp (myname, "lpp.", 4))
 				 || myname[4] == NULL
@@ -50,13 +48,9 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
-
 	va_end (ap);
-
 	cleanup ();
-
 	_exit (1);
 }
 #else
@@ -72,9 +66,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, code, what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -91,9 +83,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_ll_log (pgm_log, LLOG_NOTICE, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

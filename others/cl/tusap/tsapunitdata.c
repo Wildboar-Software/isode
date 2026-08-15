@@ -97,7 +97,6 @@ static int TPid = NOTOK;
 int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdisconnect *td)
 
 {
-
 	int      result;
 	int n = listen -> ta_naddr - 1;
 	struct NSAPaddr *na = listen -> ta_addrs;
@@ -107,31 +106,25 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataListen \n");
 #endif
-
 	/*
 	 *  Check for missing parms.
 	 */
-
 	missing_udP (listen);
 	missing_udP (td);
-
 	/*
 	 *  Allocate a new tsap block for this listen.
 	 */
-
 	if ((tb = newtublk ()) == NULL)
 		return tusaplose (td,
 						  DR_CONGEST,
 						  NULLCP,
 						  TuErrString(UDERR_NO_MEMORY) );
-
 	/*
 	 *  Find the type of transport service to use.
 	 *  The idea is that if the listen address has
 	 *  multiple network addresses, we will setup
 	 *  a listen on each one.
 	 */
-
 	for (; n >= 0; na++, n--) {
 		switch (na -> na_type) {
 		/*
@@ -139,32 +132,24 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 		 *  if no addresses are supplied.
 		     */
 		case NA_TCP:
-
 			udpinit (tb);
-
 			/*
 			*  Now finish setting up the control block.
 				 */
-
 			tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
 			tb -> tb_dstref = htons ((uint16_t) 0);
-
 			/*
 			 *  Set the network address to be only the one we care about.
 			 */
-
 #if FALSE
 			tb -> tb_initiating = *newtuaddr (calling, la);
 			tb -> tb_responding = *newtuaddr (called, na);
 #endif
-
 			if (qos)
 				tb -> tb_qos = *qos;	/* struct copy */
-
 			/*
 			 *  Allocate the local socket to listen on.
 			 */
-
 			if ( (result = (*tb -> tb_UnitDataStart) (tb,
 						   na,
 						   NULL,
@@ -181,17 +166,13 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 							   NULLCP,
 							   TuErrString(UDERR_NSAP_NOT_SUPPORTED) );
 		}
-
 		break;
 	}   /* end of for number of net addresses */
-
 	if (tb -> tb_fd == NOTOK) {
 		freetublk (tb);
 		return NOTOK;
 	}
-
 	return (tb -> tb_fd);
-
 }
 
 /*
@@ -229,7 +210,6 @@ int TUnitDataListen (struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdi
 int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct TSAPdisconnect *td)
 
 {
-
 	int      result;
 	int n;
 	struct NSAPaddr *na;
@@ -242,21 +222,16 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataBind \n");
 #endif
-
 	isodetailor ("tsap");
-
 	/*
 	 *  Check for missing parms.
 	 */
-
 	missing_udP (td);
-
 	/*
 	 *  Check if we need to create a new socket or just
 	 *  reuse (essentially "rebind") the current socket
 	 *  for the specified address pair.
 	 */
-
 	if (sd < 0) {
 		/*
 		 *  Allocate a new tsap block for this calling/called address pair.
@@ -264,79 +239,60 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 #ifdef HULADEBUG
 		printf ("\n     allocating new tsap block \n");
 #endif
-
 		if ( (tb = newtublk () ) == NULL)
 			return tusaplose (td,
 							  DR_CONGEST,
 							  NULLCP,
 							  TuErrString(UDERR_NO_MEMORY) );
-
 		option = TUNITDATA_START;
-
 	} else {
 		/*
 		 *  Find the correct tsap block and set the signal mask.
 		 */
-
 #ifdef HULADEBUG
 		printf ("\n     re-binding on current tsap block \n");
 #endif
-
 		/*
 		     *  There had better be a remote addr to bind to.
 		     */
-
 		if (called == NULLTA)
 			return tusaplose (td,
 							  DR_PARAMETER,
 							  NULLCP,
 							  TuErrString(UDERR_NO_REMOTE_ADDR) );
-
 		tsap_udPsig (tb, sd);
-
 		option = TUNITDATA_BIND;
-
 	}
-
 	if (calling == NULLTA) {
 		static struct TSAPaddr tas_calling;
-
 		/*
 		 *   Zero-fill the calling address.
 		 */
-
 		calling = &tas_calling;
 		bzero ((char *) calling, sizeof *calling);
 	}
-
 	if (called == NULLTA) {
 		static struct TSAPaddr tas_called;
-
 		/*
 		 *   Zero-fill the called address.
 		 */
-
 		called = &tas_called;
 		bzero ((char *) called, sizeof *called);
 	}
-
 	if (called -> ta_selectlen > 0 && calling -> ta_selectlen == 0) {
 		calling -> ta_port = htons ((uint16_t) (0x8000 | (getpid () & 0x7fff)));
 		calling -> ta_selectlen = sizeof calling -> ta_port;
 	}
-
 	/*
 	 *  Set the network address from the called address if it is specified
 	 *  otherwise default the address to the calling (so we can init the
 	 *  transport that it supports).
 	 */
-
 	if (n = (called -> ta_naddr - 1) < 0) {
 		/*
 		 *  No called network address.
 		*  Default it to be the local if it exists.
 		       */
-
 		if (n = (calling -> ta_naddr - 1) < 0) {
 			freetublk (tb);
 			return tusaplose ( td,
@@ -350,7 +306,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 			called -> ta_addrs[0].na_type = calling -> ta_addrs[0].na_type;
 		}
 	}
-
 	/*
 	 *  Now find the type of transport service to use.
 	 *  The idea is that if the called service address has
@@ -359,17 +314,14 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	 *  If the called service address has no network address,
 	 *  then we will default to the local network address.
 	 */
-
 	for (na = called -> ta_addrs; n >= 0; na++, n--) {
 		for (l = calling -> ta_naddr - 1, la = calling -> ta_addrs;
 				l >= 0;
 				la++, l--)
 			if (la -> na_type == na -> na_type)
 				break;
-
 		if (l < 0)
 			la = NULLNA;
-
 		switch (na -> na_type) {
 		/*
 		 *  For now, we only support UDP (which is the default service
@@ -377,30 +329,22 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 		     */
 
 		case NA_TCP:
-
 			udpinit (tb);
-
 			/*
 			*  Now finish setting up the control block.
 				 */
-
 			tb -> tb_srcref = htons ((uint16_t) (getpid () & 0xffff));
 			tb -> tb_dstref = htons ((uint16_t) 0);
-
 			/*
 			 *  Set the network address to be only the one we care about.
 			 */
-
 			tb -> tb_initiating = *newtuaddr (calling, la);
 			tb -> tb_responding = *newtuaddr (called, na);
-
 			if (qos)
 				tb -> tb_qos = *qos;	/* struct copy */
-
 			/*
 			 *  Allocate the socket and BIND it to the address pair.
 			 */
-
 			if ((result = (*tb -> tb_UnitDataStart) (tb,
 						  la,
 						  na,
@@ -416,18 +360,13 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 							   NULLCP,
 							   TuErrString(UDERR_NSAP_NOT_SUPPORTED) );
 		}
-
 		break;
-
 	}   /* end of for number of net addresses */
-
 	if (tb -> tb_fd == NOTOK) {
 		freetublk (tb);
 		return NOTOK;
 	}
-
 	return (tb -> tb_fd);
-
 }
 
 /*
@@ -447,7 +386,6 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 
 {
-
 	struct tsapblk *tb;
 	int	 result;
 	SBV      smask;			 	/* signal save mask */
@@ -455,25 +393,18 @@ int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataUnbind \n");
 #endif
-
 	/*
 	 *  Find the correct transport block and set the signal mask.
 	 */
-
 	tsap_udPsig (tb, sd);
-
 	/*
 	 *  Close the transport socket and free its resources.
 	 */
-
 #ifdef HULADEBUG
 	printf ("\n     freeing the tsap block \n");
 #endif
-
 	freetublk (tb);
-
 	return OK;
-
 }
 
 /*
@@ -496,7 +427,6 @@ int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 
 {
-
 	struct tsapblk *tb;
 	char     domain[NASIZE];
 	struct NSAPaddr *na;
@@ -507,17 +437,13 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 	if (vecp < 3)
 		return tusaplose (td, DR_PARAMETER, NULLCP,
 						  TuErrString(UDERR_BAD_INIT_VECTOR));
-
 	missing_udP (vec);
 	missing_udP (td);
-
 	/*
 	 *  Check if we need to create a new socket or just
 	 *  reuse an already bound socket.
 	 */
-
 	if (sd < 0) {
-
 		/*
 		 *  Allocate a new tsap block and create a new socket.
 		 */
@@ -526,7 +452,6 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 							  DR_CONGEST,
 							  NULLCP,
 							  TuErrString(UDERR_NO_MEMORY) );
-
 		/*
 		 *  Now parse the vector for the args.
 		 *      vec[0] = ptr to buffer containing:
@@ -535,9 +460,7 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 		 *			remote host name (sock addr)
 		 *	    vec[1] = TPDU
 		 */
-
 		vec += vecp - 2;
-
 		switch (*vec[0]) {
 		case NT_TCP:
 		case NT_UDP:
@@ -545,18 +468,15 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 			if (sscanf((vec[0]+1), "%d %s %s", &fd, na->na_domain, domain) != 3)
 				return tusaplose (td, DR_PARAMETER, NULLCP,
 								  TuErrString(UDERR_BAD_INIT_VECTOR));
-
 			/*
 			 *  Create the temp socket.  We don't need addresses since
 			 *  the remote address will be specifeied when the service binds.
 			 */
-
 			if ((result = (*tb -> tb_UnitDataStart) (tb,
 						  NULL,
 						  NULL,
 						  TUNITDATA_START),
 					td) != OK)
-
 #endif
 			default:
 			tusaplose (td, DR_ADDRESS, NULLCP,
@@ -564,32 +484,21 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 			freetblk (tb);
 			return NOTOK;
 		}
-
 	} else {
 		/*
 		 *  Find the correct tsap block and set the signal mask.
 		 */
-
 		tsap_udPsig (tb, sd);
-
 	}
-
 	/*
 	 *  Now save the TPDU in the control block for the first read.
 	 */
-
 	tb -> tb_holding_tpdu = 1;
-
 	bcopy ( vec[1], &tb -> tb_hold_tpdu, strlen (vec[1]) );
-
 	bzero (vec[0], strlen (vec[0]));
-
 	bzero (vec[1], strlen (vec[1]));
-
 	*vec = NULL;
-
 	return (tb -> tb_fd);
-
 }
 
 /*
@@ -609,37 +518,27 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct udvec *uv, struct TSAPdisconnect *td)
 
 {
-
 	int	sd;
 
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataRequest \n");
 #endif
-
 	/*
 	 *  Create the socket on the fly.
 	 */
-
 	sd = TUnitDataBind (calling, called, qos, td);
-
 	if (sd == NOTOK)
 		return NOTOK;
-
 	/*
 	 *  Now do the datagram send.
 	 */
-
 	if ( TUnitDataWrite (sd, uv, td) == NOTOK)
 		return NOTOK;
-
 	/*
 	 *  Unbind the socket.
 	 */
-
 	TUnitDataUnbind (sd, td);
-
 	return OK;
-
 }
 
 /*
@@ -660,7 +559,6 @@ int TUnitDataRequest (struct TSAPaddr *calling, struct TSAPaddr *called, struct 
 int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
 {
-
 	int 	 n, cc, hlen;
 	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
@@ -672,18 +570,14 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 	printf ("\n     in TUnitDataWrite \n");
 	printf ("\n     writing on socket %d \n", sd);
 #endif
-
 	/*
 	 *  Check for missing parameters.
 	 */
-
 	missing_udP (uv);
 	missing_udP (uv -> uv_base);
-
 	/*
 	 *  Check user data.
 	 */
-
 	cc = 0;
 	for (vv = uv; vv -> uv_base; vv++) {
 #ifdef HULADEBUG
@@ -691,137 +585,103 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 #endif
 		cc += vv -> uv_len;
 	}
-
 	if (n <= 0)
 		return tusaplose ( td,
 						   DR_PARAMETER,
 						   NULLCP,
 						   TuErrString(UDERR_ILLEGAL_UD_SIZE) );
-
 	/*
 	 *  Block any signals while we do the write.
 	 */
-
 	smask = sigioblock ();
-
 	/*
 	 *  Find the correct transport block and set the signal mask.
 	 */
-
 	tsap_udPsig (tb, sd);
-
 	/*
 	 *  Add the ISO T-UNITDATA header.  For prototype purposes we
 	 *  do this as a subroutine call.  Ideally, it should be
 	 *  implemented as a bona-fide transport service.
 	 */
-
 	hlen = 0;
-
 	hlen = T_UnitDataWrite (tb, uv, &hptr, td);
-
 	/*
 	 *  Now check if we have to allocate a contiguous buffer
 	 *  for the buffer since datagrams must be a complete msg.
 	 *  If the len in the first udvec is not the total len, it
 	 *  means that the data spans multiple buffers.
 	 */
-
 	/*
 	 *  NOTE:  FOR ISO HEADER, WE WILL ALWAYS SPAN BUFFERS
 	 */
-
 	if ( (cc != uv -> uv_len) || (hlen > 0) ) {
-
 #ifdef HULADEBUG
 		printf ("\n     data spans multiple buffers - alloc buf %d \n", cc);
 #endif
-
 		/*
 		 *  Allocate the buffer.
 		     */
-
 		buffer = (char *) calloc (1, cc + hlen);
-
 		if (buffer == NULL)
 			return tusaplose ( td,
 							   DR_CONGEST,
 							   NULLCP,
 							   TuErrString(UDERR_NO_MEMORY) );
-
 		/*
 		 *  Save the buffer ptr.
 		 */
-
 		data = buffer;
-
 		/*
 		     *  Copy the header first.
 		 */
-
 		if (hlen > 0) {
 			bcopy (hptr, buffer, hlen);
 			buffer += hlen;
 		}
-
 		/*
 		     *  Now copy all the non-contiguous buffers into the
 		 *  contiguous buffer we just allocated.
 		     */
-
 		for (vv = uv; vv -> uv_base; vv++) {
 			bcopy (vv -> uv_base, buffer, vv -> uv_len);
 			buffer += vv -> uv_len;
 		}
-
 	}   /* end if non-contiguous user data */
-
 	else {
-
 		data = uv -> uv_base;
-
 #ifdef HULADEBUG
 		printf ("\n     data is contiguous - %d bytes \n", cc);
 #endif
 	}
-
 	/*
 	 *  Do the unit data write over the real transport service.
 	 *  The service entry point is in the transport block service
 	 *  area.  It returns the number of bytes written.
 	 */
-
 #ifdef HULADEBUG
 	printf ("\n     Tunitdata ... \n");
 	for (n=0; n < min(cc,256); n++)
 		printf (" %x", *(data+n) );
 #endif
-
 	if (*tb -> tb_UnitDataWrite)
 		result = (*tb -> tb_UnitDataWrite) (sd, data, cc, td);
 	else
 		result = 0;
-
 	if (data == uv -> uv_base)
 		free ((char *) data);
-
 	/*
 	 *  Restore the mask.
 	 */
-
 	sigiomask (smask);
-
 	/*
 	 *  And return the result from the write.  To succeed, it
 	 *  must have written the entire length cc since datagrams
 	 *  cannot be partially sent.
 	 */
-
 	if (result == cc)
 		return OK;
 	else
 		return NOTOK;
-
 }
 
 /*
@@ -841,7 +701,6 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td)
 
 {
-
 	int	     cc, hlen;
 	SBV      smask;			 	/* signal save mask */
 	struct tsapblk *tb;
@@ -854,25 +713,18 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 	int	j;
 	printf ("\n     in TUnitDataRead \n");
 #endif
-
 	/*
 	 *  Check for missing parameters.
 	 */
-
 	missing_udP (tud);
-
 	/*
 	 *  Block any incomming signals while we do the read.
 	 */
-
 	smask = sigioblock ();
-
 	/*
 	 *  Find the current transport block and set the signal mask.
 	 */
-
 	tsap_udPsig (tb, sd);
-
 	/*
 	 *  Check if we are holding a tpdu that hasn't been read yet.
 	 *  This would happen with dynamic service invocation on the
@@ -880,74 +732,52 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 	 *  the save function on unitdata indications and then spawns
 	 *  the service.
 	 */
-
 	if (tb -> tb_holding_tpdu) {
 		/*
 		     *  Copy the held one into the real one.
 		 */
-
 		bcopy ( &tb -> tb_hold_tpdu, tud, sizeof(tb -> tb_hold_tpdu) );
-
 		tb -> tb_holding_tpdu = 0;
-
 		return (tud -> tud_cc);
 	}
-
 	/*
 	 *  Read the datagram socket for data.  It returns number of bytes read.
 	 */
-
 	tud -> tud_qbuf.qb_forw = tud -> tud_qbuf.qb_back = &tud -> tud_qbuf;
-
 	cc = (*tb -> tb_UnitDataRead) (sd, &tud -> tud_qbuf, secs, &socket, td);
-
 	if (cc < 1)
 		return 0;
-
 #ifdef HULADEBUG
 	printf ("\n     from tb_UnitDataRead %d bytes \n", cc);
 	for (j=0; j<25; j++)
 		printf (" %x ", *((tud -> tud_qbuf.qb_data) + j) );
 #endif
-
 	/*
 	 *  Format the tsap unit data structure.
 	 */
-
 	tud -> tud_sd = sd;
-
 	bzero ( &tud -> tud_calling, sizeof tud -> tud_calling);
 	bzero ( &tud -> tud_called, sizeof tud -> tud_called);
-
 	na = tud -> tud_calling.ta_addrs;
-
 	na -> na_type = NA_TCP;
-
 	hp = gethostbyaddr ((char *) &socket.sin_addr,
 						sizeof socket.sin_addr,
 						socket.sin_family);
 	strcpy ( na-> na_domain, hp ? hp -> h_name :
 			 inet_ntoa (socket.sin_addr));
-
 	na -> na_port = socket.sin_port;
 	na -> na_tset = NA_TSET_UDP;
-
 	tud -> tud_calling.ta_naddr = 1;
 	tud -> tud_calling.ta_selectlen = 0;
-
 	tud -> tud_cc = cc;
 	tud -> tud_base = tud -> tud_qbuf.qb_data;
-
 	/*
 	 *  Strip off the ISO T-UNITDATA header.  For prototype purposes
 	 *  this is done as a simple subroutine call.  Ideally this should
 	 *  be implemented as a bona-fide transport service.
 	 */
-
 	hlen = T_UnitDataRead (tb, tud, td);
-
 	return (cc - hlen);
-
 }
 
 #if FALSE
@@ -964,7 +794,6 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
  */
 
 int	TSetUnitDataIndications (int sd, IFP data) {
-
 	SBV	    smask;
 	int     result;
 	struct tsapblk *tb;
@@ -972,39 +801,28 @@ int	TSetUnitDataIndications (int sd, IFP data) {
 	/*
 	 *  Check for missing parm.
 	 */
-
 	missingP (data);
-
 	/*
 	 *  Block any incomming signals while we do the read.
 	 */
-
 	smask = sigioblock ();
-
 	/*
 	 *  Find the current transport block and set the signal mask.
 	 */
-
 	tsapPsig (tb, sd);
-
 	/*
 	 *  Set the N+1 service routine to call with inbound data
 	 *  and set the flags for asynchronous service.
 	 */
-
 	if (tb -> tb_UnitDataIndication == data)
 		tb -> tb_flags |= TB_ASYN;
 	else
 		tb -> tb_flags &= ~TB_ASYN;
-
 	/*
 	 *  Now setup the signal event handler for inbound data.
 	 */
-
 	result = TUnitDataWakeUp (tb);
-
 	sigiomask (smask);
-
 	return result;
 }
 
@@ -1015,27 +833,21 @@ int	TSetUnitDataIndications (int sd, IFP data) {
  */
 
 int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds) {
-
 	SBV     smask;
 	struct tsapblk *tb;
 
 	/*
 	 *  Check for missing parameters.
 	 */
-
 	missingP (mask);
 	missingP (nfds);
-
 	/*
 	 *  Block any incomming signals while we set the mask.
 	 */
-
 	smask = sigioblock ();
-
 	/*
 	 *  Find the transport block for this socket descriptor.
 	 */
-
 	if ((tb = findtublk (sd)) == NULL) {
 		sigiomask (smask);
 		return tusaplose ( td,
@@ -1043,17 +855,12 @@ int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds) {
 						   NULLCP,
 						   TuErrString(UDERR_INVALID_XPORT) );
 	}
-
 	/*
 	 *  Now set the select mask.
 	 */
-
 	selmask (tb -> tb_fd, *mask, *nfds);
-
 	sigiomask (smask);
-
 	return OK;
-
 }
 
 /*
@@ -1071,7 +878,6 @@ int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds) {
 static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 
 {
-
 	int     n,
 			nfds,
 			sd;
@@ -1090,10 +896,8 @@ static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 #ifdef SIGEMT
 	signal (SIGEMT, UNITDATAser);
 #endif
-
 	smask = sigioblock ();
 #endif
-
 	for (;;) {
 		n = 0;
 		FD_ZERO (&ifds);
@@ -1108,13 +912,10 @@ static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 					n++;
 				}
 			}
-
 		if (n == 0)
 			break;
-
 		for (tb = THead -> tb_forw; tb != THead; tb = tb2) {
 			tb2 = tb -> tb_forw;
-
 			if (FD_ISSET (sd = tb -> tb_fd, &ifds)) {
 				switch ((*tb -> tb_UnitDataRead) (tb, tx)) {
 				case NOTOK:
@@ -1122,12 +923,10 @@ static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 					break;
 
 				case OK:
-
 					/*
 					 *			Call the N+1 data handler.
 					 */
 					(*tb -> tb_UnitDataIndication) (sd, tx);
-
 					break;
 
 				case DONE:	/* partially assembled TSDU */
@@ -1136,22 +935,18 @@ static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 			}
 		}
 	}
-
 	/*
 	 *  Post a signal back to the ISORE helper to handshake and
 	 *  indicate completion of the data handler.
 	 */
-
 #ifndef	SIGPOLL
 #ifdef SIGEMT
 	kill (TPid, SIGEMT);
 #endif
 #endif
-
 #ifndef	BSDSIGS
 	sigiomask (smask);
 #endif
-
 }
 
 #ifndef	SIGPOLL
@@ -1172,26 +967,21 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
-
 	nfds = 0;
 	FD_ZERO (&mask);
 	for (tb = THead -> tb_forw; tb != THead; tb = tb -> tb_forw)
 		if (tb -> tb_fd != NOTOK && (tb -> tb_flags & TB_ASYN))
 			selmask (tb -> tb_fd, mask, nfds);
-
 	if (nfds == 0)
 		return OK;
-
 	if (nfds > sizeof (int) * 8)
 		return tsaplose (td, DR_CONGEST, NULLCP, "you lose");
-
 	if (!inited) {
 #ifndef	BSDSIGS
 #ifdef SIGEMT
 		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
 #endif
 #endif
-
 #ifdef SIGEMT
 		signal (SIGEMT, UNITDATAser);
 #endif
@@ -1200,10 +990,8 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 #endif
 		inited++;
 	}
-
 	if ((is = getisoserventbyname ("udisore", "tsap")) == NULL)
 		return tusaplose (td, DR_CONGEST, NULLCP, "ISO service tsap/isore not found");
-
 	sprintf (buf1, "%d", nfds);
 	*is -> is_tail++ = buf1;
 	sprintf (buf2, "0x%x", mask.fds_bits[0]);
@@ -1211,7 +999,6 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 	sprintf (buf3, "%d", getpid ());
 	*is -> is_tail++ = buf3;
 	*is -> is_tail = NULL;
-
 	for (i = 0; i < 5; i++)
 		switch (TPid = vfork ()) {
 		case NOTOK:
@@ -1227,9 +1014,7 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 		default:
 			return OK;
 		}
-
 	return tusaplose (td, DR_CONGEST, NULLCP, "unable to fork");
-
 }
 #else
 #ifdef	BSDSIGS
@@ -1246,10 +1031,8 @@ static int  TUnitDataWakeUp (struct tsapblk *tb) {
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
 			signal (SIGPOLL, UNITDATAser);
-
 			inited++;
 		}
-
 #ifdef	BSDSIGS
 		if (fcntl (tb -> tb_fd, F_SETOWN, getpid ()) == NOTOK)
 			return tusaplose (td, DR_CONGEST, "fcntl F_SETOWN");
@@ -1259,7 +1042,6 @@ static int  TUnitDataWakeUp (struct tsapblk *tb) {
 		if (fcntl (tb -> tb_fd, F_SETFL, result) == NOTOK)
 			return tusaplose (td, DR_CONGEST, "fcntl F_SETFL");
 #else
-
 		/*
 			if (ioctl (tb -> tb_fd, I_GETSIG, &result) == NOTOK)
 			    result = 0;
@@ -1286,7 +1068,6 @@ static int  TUnitDataWakeUp (struct tsapblk *tb) {
 			return tusaplose (td, DR_CONGEST, "ioctl I_SETSIG ");
 #endif
 	}
-
 	return OK;
 }
 #endif
@@ -1297,7 +1078,6 @@ int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 	struct NSAPaddr *ndest = tdest -> ta_addrs;
 
 	bzero ((char *) tdest, sizeof(struct TSAPaddr));
-
 	if (tdest -> ta_selectlen = ta -> ta_selectlen)
 		bcopy (ta -> ta_selector, tdest -> ta_selector, ta -> ta_selectlen);
 	if (na) {
@@ -1317,7 +1097,6 @@ int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 		}
 		tdest -> ta_naddr = 1;
 	}
-
 	return OK;
 }
 
@@ -1330,14 +1109,12 @@ newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na) {
 	struct NSAPaddr *nz = tz -> ta_addrs;
 
 	bzero ((char *) tz, sizeof *tz);
-
 	if (tz -> ta_selectlen = ta -> ta_selectlen)
 		bcopy (ta -> ta_selector, tz -> ta_selector, ta -> ta_selectlen);
 	if (na) {
 		*nz = *na;
 		tz -> ta_naddr = 1;
 	}
-
 	return tz;
 }
 

@@ -36,18 +36,13 @@ struct tsapblk *
 	tb = (struct tsapblk   *) calloc (1, sizeof *tb);
 	if (tb == NULL)
 		return NULL;
-
 	tb -> tb_fd = NOTOK;
-
 	tb -> tb_qbuf.qb_forw = tb -> tb_qbuf.qb_back = &tb -> tb_qbuf;
-
 	if (tu_once_only == 0) {
 		TuHead -> tb_forw = TuHead -> tb_back = TuHead;
 		tu_once_only++;
 	}
-
 	insque (tb, TuHead -> tb_back);
-
 	return tb;
 }
 
@@ -61,9 +56,7 @@ int freetublk (struct tsapblk *tb) {
 
 	if (tb == NULL)
 		return;
-
 	smask = sigioblock ();
-
 #ifdef HULA
 	if (tb -> tb_flags & TB_CLNS) {
 		if (*tb -> tb_UnitDataClose)
@@ -71,31 +64,23 @@ int freetublk (struct tsapblk *tb) {
 		tb -> tb_fd = NOTOK;
 	}
 #endif
-
 	if (tb -> tb_fd != NOTOK)
 		(*tb -> tb_closefnx) (tb -> tb_fd);
-
 	if (tb -> tb_retry)
 		freetpkt (tb -> tb_retry);
-
 #ifndef	SIGPOLL
 	if ((tb -> tb_flags & TB_ASYN) && TPid > OK) {
 		kill (TPid, SIGTERM);
 		TPid = NOTOK;
 	}
 #endif
-
 	for (qb = tb -> tb_qbuf.qb_forw; qb != &tb -> tb_qbuf; qb = qp) {
 		qp = qb -> qb_forw;
 		remque (qb);
-
 		free ((char *) qb);
 	}
-
 	remque (tb);
-
 	free ((char *) tb);
-
 #ifndef	SIGPOLL
 	for (tb = TuHead -> tb_forw; tb != TuHead; tb = tb -> tb_forw)
 		if (tb -> tb_fd != NOTOK && (tb -> tb_flags & TB_ASYN)) {
@@ -105,7 +90,6 @@ int freetublk (struct tsapblk *tb) {
 			break;
 		}
 #endif
-
 	sigiomask (smask);
 }
 
@@ -115,11 +99,9 @@ findtublk (int sd) {
 
 	if (tu_once_only == 0)
 		return NULL;
-
 	for (tb = TuHead -> tb_forw; tb != TuHead; tb = tb -> tb_forw)
 		if (tb -> tb_fd == sd)
 			return tb;
-
 	return NULL;
 }
 

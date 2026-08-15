@@ -43,14 +43,12 @@ int main (int argc, char **argv, char **envp) {
 	struct type_RTF_Request *req = &reqs;
 
 	arginit (argv);
-
 	if (turn == RTS_INITIATOR) {
 		if ((fd = open (source, O_RDONLY, 0x00)) == NOTOK)
 			adios (source, "unable to open");
 		file = destination;
 	} else
 		file = source;
-
 	if ((req -> user = str2qb (user, strlen (user), 1)) == NULL
 			|| (req -> password = str2qb (password, strlen (password), 1))
 			== NULL
@@ -60,7 +58,6 @@ int main (int argc, char **argv, char **envp) {
 	if (encode_RTF_Request (&pe, 1, 0, NULLCP, req) == NOTOK)
 		adios (NULLCP, "error encoding request: %s", PY_pepy);
 	PLOGP (pgm_log,RTF_Request, pe, "Request", 0);
-
 	if ((is = getisoserventbyname (myentity, myprovider)) == NULL)
 		adios (NULLCP, "%s/%s: unknown provider/entity pair",
 			   myentity, myprovider);
@@ -70,47 +67,37 @@ int main (int argc, char **argv, char **envp) {
 	if ((sa = is2saddr (host, NULLCP, is)) == NULLSA)
 		adios (NULLCP, "address translation failed");
 	rtz -> rta_addr = *sa;	/* struct copy */
-
 	fprintf (stderr, "%s...", host);
 	fflush (stderr);
 	if (RtBeginRequest (rtz, RTS_TWA, turn, pe, rtc, rti) == NOTOK) {
 		fprintf (stderr, "failed\n");
 		rts_adios (rta, "RT-BEGIN.REQUEST");
 	}
-
 	pe_free (pe);
 	qb_free (req -> user);
 	qb_free (req -> password);
 	qb_free (req -> file);
-
 	if (rtc -> rtc_result != RTS_ACCEPT) {
 		fprintf (stderr, "failed\n");
 		adios (NULLCP, "association rejected: [%s]",
 			   RtErrString (rtc -> rtc_result));
 	}
 	fprintf (stderr, "connected\n");
-
 	sd = rtc -> rtc_sd;
-
 	RTCFREE (rtc);
-
 	if (turn == RTS_INITIATOR) {
 		if (RtSetDownTrans (sd, downtrans, rti) == NOTOK)
 			rts_adios (rta, "set DownTrans upcall");
-
 		if (RtTransferRequest (sd, NULLPE, NOTOK, rti) == NOTOK)
 			rts_adios (rta, "RT-TRANSFER.REQUEST");
-
 		if (nbytes == 0)
 			advise (LLOG_NOTICE, NULLCP, "transfer complete");
 		else
 			timer (nbytes);
-
 		close (fd);
 	} else {
 		if (RtSetUpTrans (sd, uptrans, rti) == NOTOK)
 			rts_adios (rta, "set UpTrans upcall");
-
 		for (;;) {
 			switch (result = RtWaitRequest (sd, NOTOK, rti)) {
 			case NOTOK:
@@ -122,11 +109,9 @@ int main (int argc, char **argv, char **envp) {
 				adios (NULLCP, "unknown return from RtWaitRequest=%d",
 					   result);
 			}
-
 			switch (rti -> rti_type) {
 			case RTI_TURN: {
 				struct RtSAPturn *rtu = &rti -> rti_turn;
-
 				if (rtu -> rtu_please) {
 					if (RtGTurnRequest (sd, rti) == NOTOK)
 						rts_adios (rta, "RT-TURN-GIVE.REQUEST");
@@ -140,7 +125,6 @@ int main (int argc, char **argv, char **envp) {
 				struct RtSAPtransfer *rtt =
 						&rti -> rti_transfer;
 #endif
-
 				if (nbytes == 0)
 					advise (LLOG_NOTICE, NULLCP, "transfer complete");
 				else
@@ -152,7 +136,6 @@ int main (int argc, char **argv, char **envp) {
 
 			case RTI_ABORT: {
 				struct RtSAPabort *rtb = &rti -> rti_abort;
-
 				if (rtb -> rta_peer)
 					rts_adios (rtb, "RT-U-ABORT.INDICATION");
 				if (RTS_FATAL (rtb -> rta_reason))
@@ -173,10 +156,8 @@ int main (int argc, char **argv, char **envp) {
 			break;
 		}
 	}
-
 	if (RtEndRequest (sd, rti) == NOTOK)
 		rts_adios (rta, "RT-END.REQUEST");
-
 	exit (0);
 }
 
@@ -196,10 +177,8 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 #endif
 		return OK;
 	}
-
 	if (bp == NULLCP) {
 		struct stat st;
-
 		if (fstat (fd, &st) == NOTOK)
 			return rtsaplose (rti, RTS_TRANSFER, source, "unable to fstat");
 #ifdef	MAXBSIZE
@@ -222,7 +201,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 		bsize = n;
 		timer (nbytes = 0);
 	}
-
 	*base = NULLCP, *len = 0;
 	for (ep = (dp = bp) + (cc = bsize); dp < ep; dp += n, cc -= n) {
 		switch (n = read (fd, dp, cc)) {
@@ -241,7 +219,6 @@ static int downtrans (int sd, char **base, int *len, int size, long ssn, long ac
 		*base = bp, *len = cc;
 		nbytes += cc;
 	}
-
 	return OK;
 }
 
@@ -251,7 +228,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 	case SI_DATA: {
 		struct qbuf *qb = (struct qbuf *) addr;
 		struct qbuf *qp;
-
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw)
 			if (write (fd, qp -> qb_data, qp -> qb_len) !=qp -> qb_len)
 				return rtsaplose (rti, RTS_TRANSFER, "failed","write");
@@ -263,7 +239,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 	case SI_SYNC: {
 #ifdef	DEBUG
 		struct SSAPsync *sn = (struct SSAPsync *) addr;
-
 		advise (LLOG_DEBUG, NULLCP, "S-MINOR-SYNC.INDICATION: %ld",
 				sn -> sn_ssn);
 #endif
@@ -272,7 +247,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 	case SI_ACTIVITY: {
 		struct SSAPactivity *sv = (struct SSAPactivity *)addr;
-
 		switch (sv -> sv_type) {
 		case SV_START:
 #ifdef	DEBUG
@@ -320,7 +294,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 
 	case SI_REPORT: {
 		struct SSAPreport *sp = (struct SSAPreport *) addr;
-
 		if (!sp -> sp_peer)
 			return rtsaplose (rti, RTS_TRANSFER, NULLCP,
 							  "unexpected provider-initiated exception report");
@@ -335,7 +308,6 @@ static int uptrans (int sd, int type, caddr_t addr, struct RtSAPindication *rti)
 		return rtsaplose (rti, RTS_TRANSFER, NULLCP,
 						  "unknown uptrans type=0x%x", type);
 	}
-
 	return OK;
 }
 
@@ -349,12 +321,9 @@ static arginit (char **vec) {
 		myname = *vec;
 	if (strcmp (myname, "rtf") && strcmp (myname, "xrtf"))
 		host = myname, myname = "rtf";
-
 	isodetailor (myname, 1);
-
 	ll_hdinit (pgm_log, myname);
 	pgm_log -> ll_stat |= LLOGTTY;
-
 	for (vec++; ap = *vec; vec++) {
 		if (*ap == '-')
 			switch (*++ap) {
@@ -366,7 +335,6 @@ static arginit (char **vec) {
 			default:
 				adios (NULLCP, "-%s: unknown switch", ap);
 			}
-
 		if (host == NULL)
 			host = ap;
 		else if (turn == NOTOK) {
@@ -388,15 +356,12 @@ usage:
 				   myname);
 		}
 	}
-
 	if (destination == NULL)
 		goto usage;
-
 	if (user == NULL && (user = getenv ("USER")) == NULL)
 		user = getenv ("LOGNAME");
 	if (strcmp (user, "anon") == 0)
 		user = "ANON";
-
 	if (password == NULL) {
 		if (strcmp (user, "ANON")) {
 			sprintf (prompt, "password (%s:%s): ", host, user);

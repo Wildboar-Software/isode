@@ -77,48 +77,36 @@ void ryresponder (int argc, char **argv, char *host, char *myservice, char *myco
 	struct PSAPaddr *pa;
 
 	/* HULA added for connectionless ******************/
-
 	int	  sd;
 	static    struct QOStype qos;
 	static    OID	    ctx;
 	static    OID	    pci;
 	static    struct PSAPctxlist pcs;
 	static    struct PSAPctxlist *pc = &pcs;
-
 	static    struct AcSAPindication  acis;
 	static    struct AcSAPindication *aci = &acis;
 	static    struct AcSAPabort *aca = &acis.aci_abort;
-
 	static    struct  AcuSAPstart	cacs, sacs;
 	static    struct  AcuSAPstart	*pcacs = &cacs;
 	static    struct  AcuSAPstart	*psacs = &sacs;
-
 	/* end of HULA added stuff */
-
 	if (myname = rindex (argv[0], '/'))
 		myname++;
 	if (myname == NULL || *myname == NULL)
 		myname = argv[0];
-
 	if (debug = isatty (fileno (stderr)))
 		setlog ("service.out");
-
 	openlog (myname, LOG_PID);
-
 	advise (LOG_INFO, NULLCP, "starting");
-
 	if ((aei = str2aei (host, myservice)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity", host, myservice);
-
 	for (ds = dispatches; ds -> ds_name; ds++)
 		if (RyDispatch (NOTOK, ops, ds -> ds_operation, ds -> ds_vector, roi)
 				== NOTOK) {
 			ros_advise (rop, ds -> ds_name);
 			exit (1);
 		}
-
 	/********** HULA inserted for connectionless *************/
-
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "%s-%s: address unknown", host, myservice);
 	if ((ctx = ode2oid (mycontext)) == NULLOID)
@@ -133,28 +121,22 @@ void ryresponder (int argc, char **argv, char *host, char *myservice, char *myco
 	pc -> pc_ctx[0].pc_id = 1;
 	pc -> pc_ctx[0].pc_asn = pci;
 	pc -> pc_ctx[0].pc_atn = NULLOID;
-
 	if ((sd = AcUnitDataBind (NOTOK, BIND_DYNAMIC, ctx, aei, NULLAEI,
 							  pa, NULLPA, pc, qos, aci) ) == NOTOK ) {
 		acs_advise (aca, "A-UNIT-DATA BIND");
 		return NOTOK;
 	}
-
 	/*  dynamic invocation by tsap daemon must save tpdu for later read */
 	if ( argc > 1 )
 		if ( AcuSave ( sd, argc, argv, aci ) == NOTOK ) {
 			acs_advise (aca, "A-UNIT-DATA SAVE");
 			return NOTOK;
 		}
-
 	if (RoSetService (sd, RoAcuService, roi) == NOTOK)
 		ros_adios (rop, "set RO/Acu fails");
-
 	for (;;)
 		ros_work (sd);
-
 	/* end of HULA inserted */
-
 	startfnx = start;
 	stopfnx = stop;
 	/*
@@ -172,7 +154,6 @@ void ryresponder (int argc, char **argv, char *host, char *myservice, char *myco
 	    }
 	*****************************************************
 	*/
-
 	exit (0);
 }
 
@@ -256,7 +237,6 @@ static int ros_work (int fd) {
 		RyLose (fd, roi);
 		return NOTOK;
 	}
-
 	switch (result = RyWait (fd, NULLIP, &out, OK, roi)) {
 	case NOTOK:
 		if (rop -> rop_reason == ROS_TIMER)
@@ -269,7 +249,6 @@ static int ros_work (int fd) {
 	default:
 		adios (NULLCP, "unknown return from RoWaitRequest=%d", result);
 	}
-
 	return OK;
 }
 
@@ -286,7 +265,6 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_UREJECT: {
 		struct RoSAPureject   *rou = &roi -> roi_ureject;
-
 		if (rou -> rou_noid)
 			advise (LOG_INFO, NULLCP, "RO-REJECT-U.INDICATION/%d: %s",
 					sd, RoErrString (rou -> rou_reason));
@@ -300,7 +278,6 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 
 	case ROI_PREJECT: {
 		struct RoSAPpreject   *rop = &roi -> roi_preject;
-
 		if (ROS_FATAL (rop -> rop_reason))
 			ros_adios (rop, "RO-REJECT-P.INDICATION");
 		ros_advise (rop, "RO-REJECT-P.INDICATION");
@@ -356,7 +333,6 @@ struct TSAPdisconnect *td;
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
-
 	longjmp (toplevel, NOTOK);
 }
 
@@ -368,7 +344,6 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 				 rop -> rop_cc, rop -> rop_cc, rop -> rop_data);
 	else
 		sprintf (buffer, "[%s]", RoErrString (rop -> rop_reason));
-
 	advise (LOG_INFO, NULLCP, "%s: %s", event, buffer);
 }
 
@@ -381,7 +356,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcErrString (aca -> aca_reason));
-
 	advise (LOG_INFO, NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }
@@ -393,11 +367,8 @@ void	adios (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (LOG_ERR, what, fmt, ap);
-
 	va_end (ap);
-
 	_exit (1);
 }
 #else
@@ -413,9 +384,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (code, what, fmt, ap);
-
 	va_end (ap);
 }
 
@@ -423,12 +392,9 @@ static void  _advise (int code, char *what, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
-
 	syslog (code, "%s", buffer);
-
 	if (debug) {
 		fflush (stdout);
-
 		fprintf (stderr, "[%d] %s", code, buffer);
 		fputc ('\n', stderr);
 		fflush (stderr);
@@ -447,9 +413,7 @@ void	ryr_advise (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
-
 	_advise (LOG_INFO, what, fmt, ap);
-
 	va_end (ap);
 }
 #else

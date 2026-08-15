@@ -38,22 +38,17 @@ dsEnqError srch_start() {
 	if (*mvalue == '\0') {
 		return list_start();
 	}
-
 	if (get_default_service (&search_arg.sra_common) != 0) {
 		return nothingfound;
 	}
-
 	search_arg.sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
-
 	curr_rdn = search_arg.sra_baseobject = (strncmp(base_path,"The World", 9)?
 											str2dn (base_path):
 											NULLDN);
-
 	search_arg.sra_eis.eis_allattributes = FALSE;
 	search_arg.sra_eis.eis_infotypes = EIS_ATTRIBUTETYPESONLY;
 	search_arg.sra_eis.eis_select = 0;
 	search_arg.sra_searchaliases = TRUE;
-
 	search_arg.sra_subset = SRA_ONELEVEL;
 	while (curr_rdn != NULLDN) {
 		if (!strcmp(curr_rdn->dn_rdn->rdn_at->oa_ot.ot_stroid, "2.5.4.10")) {
@@ -62,7 +57,6 @@ dsEnqError srch_start() {
 		}
 		curr_rdn = curr_rdn->dn_parent;
 	}
-
 	*dir_error_message = '\0';
 	if ((search_arg.sra_filter = make_filter(filt_arr[typeindx])) == NULLFILTER)
 		if (*dir_error_message == '\0') {
@@ -70,12 +64,10 @@ dsEnqError srch_start() {
 		} else {
 			return error_string_given;
 		}
-
 #ifndef NO_STATS
 	LLOG (log_stat, LLOG_NOTICE, ("search +%s, extent %d, val %s",
 								  base_path,search_arg.sra_subset, mvalue));
 #endif
-
 	if(ds_search (&search_arg, &error, &result) != DS_OK) {
 		/* deal with error */
 		free_seq(dnseq);
@@ -113,15 +105,12 @@ dsEnqError srch_start() {
 	} else {
 		correlate_search_results (&result);
 		dn_number = 0;
-
 		if (result.CSR_entries != NULLENTRYINFO) {
 			EntryInfo *ptr;
-
 			return_error = Okay;
 			free_seq(dnseq);
 			dnseq = NULLDS;
 			dn_number = 0;
-
 			for (ptr = result.CSR_entries;
 					ptr != NULLENTRYINFO;
 					ptr = ptr->ent_next) {
@@ -129,7 +118,6 @@ dsEnqError srch_start() {
 				dn2buf((caddr_t) ptr->ent_dn, goto_path);
 				add_seq(&dnseq, goto_path);
 			}
-
 			if (dn_number) dnseq = SortList(dnseq);
 		} else if (result.CSR_limitproblem == LSR_NOLIMITPROBLEM) {
 			free_seq(dnseq);
@@ -137,7 +125,6 @@ dsEnqError srch_start() {
 			dn_number = 0;
 			return_error = nothingfound;
 		}
-
 		if(result.CSR_limitproblem != LSR_NOLIMITPROBLEM) {
 			switch (result.CSR_limitproblem) {
 			case LSR_TIMELIMITEXCEEDED:

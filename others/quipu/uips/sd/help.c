@@ -68,21 +68,17 @@ void get_help (char *filename, char *line) {
 	free_seq(textseq);
 	curr_dnseq = 0;
 	textseq = 0;
-
 	strcpy(filebuf, HELPDIR);
 	strcat(filebuf, filename);
 	strcpy(helpbuf, isodefile(filebuf, 0));
-
 	if ((helpfp = fopen(helpbuf, "r")) == (FILE *)NULL ) {
 		tprint("Can't open help file '%s'.\n",helpbuf);
 		return;
 	}
-
 	if (line) {
 		add_seq(&textseq, line);
 		entry_number++;
 	}
-
 	while(fgets(filebuf, BUFLEN, helpfp) != (char *) NULL) {
 		str = filebuf;
 		while(*str != '\n' && *str != '\0') str++;
@@ -90,7 +86,6 @@ void get_help (char *filename, char *line) {
 		add_seq(&textseq, filebuf);
 		entry_number++;
 	}
-
 	fclose(helpfp);
 	scrollbar('\0');
 }

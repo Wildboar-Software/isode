@@ -100,12 +100,9 @@ char *get_strioid (char *ptr) {
 
 	while(*ptr == '"') ptr++;
 	while(*ptr != '"') ptr++;
-
 	while(*ptr > '9' || *ptr < '0') ptr++;
-
 	end_ptr = ptr;
 	while(*end_ptr != '\n') end_ptr++;
-
 	*end_ptr = '\0';
 	return ptr;
 }
@@ -125,38 +122,28 @@ void user_tailor () {
 	char		  read_path[BUFSIZ];
 	char		  type_path[BUFSIZ];
 	char            type_defaults_path[BUFSIZ];
-
 	char	          stroid_buf[BUFSIZ];
-
 	DIR 	         *config_directory;
-
 	struct dirent  *dir_ent;
-
 	char            Read_in_Stuff[STRINGLEN];
 	char           *p,
 	*TidyString(),
 	*SkipSpace(),
 	*end;
-
 	int             count, n, num;
 	int     tempints[MAXTYPES];
-
 #ifndef NO_STATS
 	ll_hdinit (log_stat,"sd");
 #endif
-
 	if ((opt = ps_alloc (std_open)) == NULLPS)
 		fatal (-1,"ps_alloc failed");
 	if (std_setup (opt,stdout) == NOTOK)
 		fatal (-1,"std_setup failed");
-
 	cache[0] = '\0';
-
 	strcpy (user_home, getenv ("HOME"));
 	strcpy(read_path, user_home);
 	strcpy(type_path, user_home);
 	strcpy(type_defaults_path, user_home);
-
 	strcat(user_home, ptr);
 	strcat(read_path, config_dir);
 	strcat(read_path, readTypes);
@@ -164,7 +151,6 @@ void user_tailor () {
 	strcat(type_path, type_dir);
 	strcat(type_defaults_path, config_dir);
 	strcat(type_defaults_path, typeDefaults);
-
 	if (testing) {
 		strcpy(type_path, "./sd/duaconfig/");
 		strcat(type_path, type_dir);
@@ -181,7 +167,6 @@ void user_tailor () {
 			}
 		}
 	}
-
 	rewinddir(config_directory);
 	filt_num = 0;
 	while(dir_ent = readdir(config_directory)) {
@@ -195,21 +180,17 @@ void user_tailor () {
 		}
 	}
 	closedir(config_directory);
-
 	if ((config_file = fopen (user_home, "r")) == 0);
 	else {
 		while (fgets (Read_in_Stuff, STRINGLEN, config_file) != 0) {
 			p = SkipSpace (Read_in_Stuff);
 			if (( *p == '#') || (*p == '\0'))
 				continue;  /* ignore comments and blanks */
-
 			part1 = p;
 			if ((part2 = index (p,':')) == NULLCP)
 				continue; /* ignore it */
-
 			*part2++ = '\0';
 			part2 = TidyString(part2);
-
 			if ((lexequ(part1, "username") == 0) && namestr[0] == '\0')
 				strcpy (namestr, part2);
 			else if ((lexequ(part1, "password") == 0) && passwd[0] == '\0')
@@ -234,7 +215,6 @@ void user_tailor () {
 		isodexport (NULLCP);
 		fclose(config_file);
 	}
-
 	if (testing) {
 		strcpy(read_path, "./sd/duaconfig/");
 		strcat(read_path, readTypes);
@@ -251,9 +231,7 @@ void user_tailor () {
 			}
 		}
 	}
-
 	/*  load_oid_table("oidtable");*/
-
 	while(fgets(Read_in_Stuff, STRINGLEN, config_file) != 0) {
 		strcpy(stroid_buf, get_strioid(Read_in_Stuff));
 		if (*stroid_buf) {
@@ -266,11 +244,8 @@ void user_tailor () {
 		}
 	}
 	fclose(config_file);
-
 #ifdef USE_PP
-
 	/* If they want PP - they want OR names don't they ! */
-
 	if (!read_types)
 		read_types = as_comp_new(AttrT_new("2.6.5.2.6"),
 								 NULLAV, NULLACL_INFO);
@@ -279,23 +254,19 @@ void user_tailor () {
 		NULLAV, NULLACL_INFO);
 		read_types = as_merge(read_types, read_types2);
 	}
-
 #endif
-
 	for (curr_filt = 0; curr_filt < filt_num; curr_filt++) {
 		if (!(config_file = fopen(file_names[curr_filt], "r"))) {
 			quit("Can't find filter template file\n", 1);
 		}
 		filtvalue[curr_filt] = (char *) malloc(STRINGLEN);
 		*filtvalue[curr_filt] = '\0';
-
 		yyparse();
 		fclose(config_file);
 	}
 	filttype[curr_filt] = NULLCP;
 	for (count = 0; count < filt_num; count++)
 		free(file_names[count]);
-
 	if (testing) {
 		strcpy(type_defaults_path, "./sd/duaconfig/");
 		strcat(type_defaults_path, typeDefaults);
@@ -317,34 +288,26 @@ void user_tailor () {
 			}
 		}
 	}
-
 	default_num = 0;
 	while (fgets (Read_in_Stuff, STRINGLEN, config_file) != 0) {
 		p = SkipSpace(Read_in_Stuff);
 		if (( *p == '#') || (*p == '\0'))
 			continue;
-
 		part1 = p;
 		if ((part2 = index (p,':')) == NULLCP)
 			continue;
-
 		end = part2 - 1;
 		while (isspace(*end)) end--;
 		*++end = '\0';
-
 		*part2++ = '\0';
-
 		while (isspace(*part2)) part2++;
 		end = part2;
-
 		while (!isspace(*end) && *end != ',' && *end != ':') end++;
-
 		count = 0;
 		while (*part2 != ':') {
 			n = 0;
 			while (n < filt_num && strncmp(filttype[n], part2,
 										   (int) (end - part2))) n++;
-
 			if (n == filt_num) {
 				fprintf(stderr, "Parsing error in typeDefaults file!");
 				int_quit(1);
@@ -353,12 +316,10 @@ void user_tailor () {
 				count++;
 				part2 = end;
 				while (!isalpha(*part2) && *part2 != ':' && part2 != '\0') part2++;
-
 				if (*part2 == '\0') {
 					fprintf(stderr, "Parsing error in typeDefaults file!");
 					int_quit(1);
 				}
-
 				if (*part2 != ':') {
 					while (!isalpha(*part2)) part2++;
 					end = part2;
@@ -376,10 +337,8 @@ void user_tailor () {
 			p = end;
 			while(!isspace(*++end));
 			*end = '\0';
-
 			n = 0;
 			while (n < filt_num && strcmp(filttype[n], p)) n++;
-
 			if (n == filt_num) {
 				fprintf(stderr, "Parsing error in typeDefaults file!");
 				int_quit(1);
@@ -391,16 +350,12 @@ void user_tailor () {
 					int_quit(1);
 				}
 			}
-
 			defaults[default_num] = n;
-
 			levels[default_num] = strdup(part1);
 			available_types[default_num] = (int *) malloc((unsigned)
 										   sizeof(int) * (count+1));
-
 			for (n = 0; n < count; n++)
 				available_types[default_num][n] = tempints[n];
-
 			available_types[default_num][n] = -1;
 			default_num++;
 		}
@@ -447,19 +402,15 @@ void cnnct_bind () {
 	while(fgets(buf, sizeof(buf), fp) != NULLCP)
 		if ( (*buf != '#') && (*buf != '\n') )
 			tai_string(buf);
-
 	fclose(fp);
-
 	if (dsa_address == NULLCP)
 		dsa_address = myname;
-
 	/* set password */
 	if (bindpass[0] != 0) {
 		if (strcmp (bindpass,"******") != 0)
 			strcpy (passwd,bindpass);
 	} else
 		passwd[0] = 0;
-
 	/* now bind */
 	bindarg.dba_version = DBA_VERSION_V1988;
 	if (passwd[0] == 0) {
@@ -469,9 +420,7 @@ void cnnct_bind () {
 		bindarg.dba_passwd_len = strlen(passwd);
 		strcpy (bindarg.dba_passwd, passwd);
 	}
-
 	bindarg.dba_dn = (*namestr == 0? NULLDN: str2dn(namestr));
-
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		if (binderr.dbe_type == DBE_TYPE_SECURITY)
 			quit("Bind security error - Check name and pasword.\n", 0);
@@ -484,19 +433,15 @@ void cnnct_bind () {
 		settogglstrs(getwidget(mainwdgts, 't'), filttype, 0);
 		setwidgets (mainwdgts,-1);
 		user_name = bindarg.dba_dn;
-
 		if(local_dit && *local_dit)
 			strcpy(base_path, local_dit);
 		else
 			strcpy(base_path, "The World");
-
 		oclass = as_comp_new(AttrT_new("objectClass"), NULLAV, NULLACL_INFO);
 		make_friendly(friendly_base_path, base_path);
 		printdialog(getwidget(mainwdgts,'\0'));
 		set_default_type();
-
 		strcpy (buf, "TERM");
-
 #ifndef NO_STATS
 		LLOG (log_stat,LLOG_NOTICE,("bound ('%s' to '%s')",namestr,dsa_address));
 #endif
@@ -526,22 +471,18 @@ void rd_start () {
 		entry_number  = 0;
 		return;
 	}
-
 	xprint("Reading data on ");
 	xprint(friendly_base_path);
 	xprint(".\n");
 	tprint("Working. Please wait.....");
-
 	if ( get_default_service (&read_arg.rda_common) != 0) {
 		xprint ("Default service error -> check your .quipurc\n");
 		return ;
 	}
-
 	read_arg.rda_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	read_arg.rda_eis.eis_allattributes = FALSE;
 	read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	read_arg.rda_eis.eis_select = read_types;
-
 	read_arg.rda_object = (*friendly_base_path != 'T'?
 	str2dn(base_path):
 	NULLDN);
@@ -552,11 +493,9 @@ void rd_start () {
 		read_print (as_print, (caddr_t) read_entry->e_attributes);
 		return;
 	}
-
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("read +%s",base_path));
 #endif
-
 	if (ds_read (&read_arg,&error,&result) != DS_OK) {
 		/* deal with error */
 		cleartext();
@@ -575,7 +514,6 @@ void rd_start () {
 		xprint("Result of look up ...\n");
 		if (result.rdr_common.cr_aliasdereferenced)
 			xprint("Alias dereferenced)\n");
-
 		result.rdr_entry.ent_attr = sort_attrs(result.rdr_entry.ent_attr);
 		cache_entry(&(result.rdr_entry), FALSE, TRUE);
 		read_print(as_print, (caddr_t) result.rdr_entry.ent_attr);
@@ -590,9 +528,7 @@ void back_start () {
 		scrollbar('\0');
 		return;
 	}
-
 	if (text_state == DN_LIST) free_seq(curr_dnseq);
-
 	free_seq(textseq);
 	textseq = NULLDS;
 	curr_dnseq = back_seq;
@@ -621,23 +557,18 @@ void widen () {
 			free_seq(first);
 		}
 	}
-
 	str = base_path;
 	if (*str != 'T') {
-
 		for (sptr = str; *sptr != '\0'; sptr++)
 			if (*sptr == '@')	str = sptr;
-
 		sptr = str;
 		typetoggled = 0;
-
 		if (str != base_path) {
 			if (*--sptr == ' ')
 				str = sptr;
 			*str = '\0';
 		} else
 			strcpy(base_path, "The World");
-
 		make_friendly(friendly_base_path, base_path);
 		set_default_type();
 		printdialog(getwidget(mainwdgts, '\0'));
@@ -652,12 +583,10 @@ void set_default_type () {
 
 	wdgt = getwidget(mainwdgts,'t');
 	vwdgt = getwidget(mainwdgts, 's');
-
 	if (av_typeindx)
 		lastindx = wdgt->tindx;
 	else
 		lastindx = 0;
-
 	if (*base_path != 'T') {
 		if (!typetoggled) {
 			base_name = str2dn(base_path);
@@ -666,7 +595,6 @@ void set_default_type () {
 			strcmp(levels[count] ,base_name->dn_rdn->rdn_at->
 			oa_ot.ot_stroid);
 			count++);
-
 			if (count < default_num) {
 				av_typeindx = available_types[count];
 				typeindx = defaults[count];
@@ -675,7 +603,6 @@ void set_default_type () {
 				typeindx = defaults[0];
 			}
 			count = typeindx;
-
 			if (count < filt_num) {
 				if (lastindx)
 					strcpy(filtvalue[lastindx], vwdgt->dstr);
@@ -700,7 +627,6 @@ void set_default_type () {
 			strcpy(vwdgt->dstr, filtvalue[wdgt->tindx]);
 		}
 	}
-
 	make_friendly(friendly_base_path, base_path);
 	typetoggled = 0;
 	printtoggle(wdgt);
@@ -717,22 +643,18 @@ void list_start () {
 	cleartext();
 	xprint("OK, listing.\n");
 	tprint("Working. Please wait.....");
-
 	if (get_default_service (&search_arg.sra_common) != 0) {
 		xprint ("Default service error -> check your .quipurc\n");
 		return ;
 	}
-
 	search_arg.sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	search_arg.sra_baseobject = (*base_path != 'T'?
 	str2dn (base_path):
 	NULLDN);
-
 	search_arg.sra_eis.eis_allattributes = FALSE;
 	search_arg.sra_eis.eis_infotypes = EIS_ATTRIBUTETYPESONLY;
 	search_arg.sra_eis.eis_select = 0;
 	search_arg.sra_subset = SRA_ONELEVEL;
-
 	search_arg.sra_filter = filter_alloc();
 	search_arg.sra_filter->flt_type = FILTER_NOT;
 	search_arg.sra_filter->flt_next = NULLFILTER;
@@ -741,16 +663,13 @@ void list_start () {
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_next = NULLFILTER;
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.fi_type
 	= FILTERITEM_EQUALITY;
-
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.fi_un.
 	fi_un_ava.ava_type = AttrT_new("2.5.4.0");
-
 	search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.fi_un.
 	fi_un_ava.ava_value =
 	str2AttrV("dsa", search_arg.sra_filter->flt_un.flt_un_filter->
 	flt_un.flt_un_item.fi_un.fi_un_ava.ava_type->
 	oa_syntax);
-
 	if (search_arg.sra_filter->flt_un.flt_un_filter->flt_un.flt_un_item.
 	fi_un.fi_un_ava.ava_value == NULLAttrV) {
 		cleartext();
@@ -770,7 +689,6 @@ void list_start () {
 		correlate_search_results (&result);
 		if (result.CSR_entries != NULLENTRYINFO) {
 			EntryInfo *ptr;
-
 			xprint ("Result of search ...\n");
 			if (result.CSR_common.cr_aliasdereferenced) {
 				xprint ("(Alias dereferenced -  object is ");
@@ -778,21 +696,18 @@ void list_start () {
 				dn_free (result.CSR_object);
 				xprint (")\n");
 			}
-
 			if (text_state == DN_LIST) free_seq(curr_dnseq);
 			free_seq(textseq);
 			curr_dnseq = textseq = NULLDS;
 			display_entry = current_entry_ = 1;
 			entry_number = 0;
 			text_state = DN_LIST;
-
 			for (ptr = result.CSR_entries; ptr != NULLENTRYINFO;
 					ptr = ptr->ent_next) {
 				entry_number++;
 				dn2buf ((caddr_t)ptr->ent_dn, goto_path);
 				add_seq (&curr_dnseq, goto_path);
 			}
-
 			if (entry_number) curr_dnseq = SortList(curr_dnseq);
 			scrollbar('\0');
 		} else if (result.CSR_limitproblem != LSR_TIMELIMITEXCEEDED) {
@@ -803,7 +718,6 @@ void list_start () {
 			text_state = TEXT;
 			xprint("Nothing found<");
 		}
-
 		if(result.CSR_limitproblem != LSR_NOLIMITPROBLEM) {
 			switch (result.CSR_limitproblem) {
 			case LSR_TIMELIMITEXCEEDED:
@@ -829,10 +743,8 @@ void list_start () {
 				break;
 			}
 		}
-
 		entryinfo_free(result.CSR_entries, 0);
 	}
-
 	filter_free(search_arg.sra_filter);
 }
 
@@ -847,10 +759,8 @@ void rdn2str(caddr_t ptr,char *cptr) {
 		return ;
 	}
 	rdn_print(ps, (RDN) ptr, READOUT);
-
 	ps_free(ps);
 	*ps->ps_ptr = 0;
-
 	strcpy(cptr, buffer);
 }
 
@@ -865,27 +775,21 @@ void srch_start () {
 		list_start();
 		return;
 	}
-
 	cleartext();
 	xprint("OK. Starting search.\n");
 	tprint("Working. Please wait.....");
-
 	wdgt = getwidget(mainwdgts,'t');
-
 	if (get_default_service (&search_arg.sra_common) != 0) {
 		xprint ("Default service error -> check your .quipurc\n");
 		return ;
 	}
-
 	search_arg.sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	curr_rdn = search_arg.sra_baseobject = (*base_path != 'T'?
 	str2dn (base_path):
 	NULLDN);
-
 	search_arg.sra_eis.eis_allattributes = FALSE;
 	search_arg.sra_eis.eis_infotypes = EIS_ATTRIBUTETYPESONLY;
 	search_arg.sra_eis.eis_select = 0;
-
 	search_arg.sra_subset = SRA_ONELEVEL;
 	while (curr_rdn != NULLDN) {
 		if (!strcmp(curr_rdn->dn_rdn->rdn_at->oa_ot.ot_stroid,
@@ -895,18 +799,15 @@ void srch_start () {
 		}
 		curr_rdn = curr_rdn->dn_parent;
 	}
-
 	if ((search_arg.sra_filter = make_filter(filt_arr[gettogglindx(wdgt)]))
 			== NULLFILTER) {
 		xprint("Invalid search filter!");
 		return;
 	}
-
 #ifndef NO_STATS
 	LLOG (log_stat,LLOG_NOTICE,("search +%s, extent %d, val %s",
 								base_path, search_arg.sra_subset, mvalue));
 #endif
-
 	if(ds_search (&search_arg,&error,&result) != DS_OK) {
 		/* deal with error */
 		free_seq(textseq);
@@ -920,33 +821,27 @@ void srch_start () {
 	} else {
 		cleartext();
 		correlate_search_results (&result);
-
 		if (result.CSR_entries != NULLENTRYINFO) {
 			EntryInfo *ptr;
-
 			if (result.CSR_common.cr_aliasdereferenced) {
 				xprint (" (Alias dereferenced - object is ");
 				quipu_print ((IFP)dn_print, (caddr_t) result.CSR_object);
 				dn_free (result.CSR_object);
 				xprint (")\n");
 			}
-
 			if (text_state == DN_LIST) free_seq(curr_dnseq);
 			free_seq(textseq);
 			curr_dnseq = textseq = NULLDS;
 			display_entry = current_entry_ = 1;
 			entry_number = 0;
 			text_state = DN_LIST;
-
 			for (ptr = result.CSR_entries;
 					ptr != NULLENTRYINFO; ptr = ptr->ent_next) {
 				entry_number++;
 				dn2buf ((caddr_t) ptr->ent_dn, goto_path);
 				add_seq (&curr_dnseq, goto_path);
 			}
-
 			if (entry_number > 1) curr_dnseq = SortList(curr_dnseq);
-
 			if (entry_number != 1)
 				scrollbar('\0');
 			else {
@@ -968,7 +863,6 @@ void srch_start () {
 			text_state = TEXT;
 			xprint("Nothing found using current search parameters.\n");
 		}
-
 		if(result.CSR_limitproblem != LSR_NOLIMITPROBLEM)
 			switch (result.CSR_limitproblem) {
 			case LSR_TIMELIMITEXCEEDED:
@@ -995,7 +889,6 @@ void srch_start () {
 			}
 		entryinfo_free(result.CSR_entries, 0);
 	}
-
 	filter_free(search_arg.sra_filter);
 }
 
@@ -1004,14 +897,10 @@ void dn2buf (caddr_t ptr,char *cptr) {
 	char buffer [RESBUF];
 
 	if((ps = ps_alloc(str_open)) == NULLPS) return ;
-
 	if(str_setup(ps, buffer, RESBUF, 1) == NOTOK) return ;
-
 	dn_print(ps, (DN) ptr, EDBOUT);
 	*ps->ps_ptr = 0;
-
 	ps_free (ps);
-
 	strcpy(cptr, buffer);
 }
 
@@ -1023,17 +912,13 @@ void read_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	char *str, *sptr;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
-
 	if (str_setup (ps,buffer,RESBUF,1) == NOTOK) return ;
-
 	(*func) (ps, ptr, READOUT);
 	*ps->ps_ptr = 0;
-
 	ps_free(ps);
 	str = buffer ;
 	sptr = str;
 	size = strlen(buffer);
-
 	if (text_state == DN_LIST) free_seq(curr_dnseq);
 	curr_dnseq = NULLDS;
 	free_seq(textseq);
@@ -1041,21 +926,17 @@ void read_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	display_entry = current_entry_ = 1;
 	entry_number = 0;
 	text_state = TEXT;
-
 	for (i = 0; i <= size; i++, sptr++)
 		if (*sptr == '\n' || *sptr == '\0') {
 			entry_number++;
 			save = *sptr ;
 			*sptr = '\0';
-
 			if (mailformat == greybook && indexstring(str, "rfc822") >= 0)
 				rfc2jnt(str);
 			add_seq(&textseq, str);
-
 			str = sptr+1;
 			*sptr = save;
 		}
-
 	scrollbar('\0');
 }
 
@@ -1067,14 +948,10 @@ void quipu_print(int (*func)(PS, caddr_t *, int),caddr_t ptr) {
 	char save;
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
-
 	if (str_setup (ps,buffer,RESBUF,1) == NOTOK) return ;
-
 	(*func) (ps,ptr,READOUT);
 	*ps->ps_ptr = 0;
-
 	ps_free (ps);
-
 	/* print in blocks of 100 bytes-larger seems too much for curses*/
 	str = buffer;
 	do {
@@ -1134,38 +1011,30 @@ void get_listed_object(char number, WIDGET *wdgt) {
 		printdialog(wdgt);
 		return;
 	}
-
 	*srchvalue = number;
 	*(srchvalue+1) = '\0';
-
 	if (wdgt) {
 		printdialog(wdgt);
 		dialog(wdgt);
 	}
-
 	entrynum = atoi(srchvalue);
-
 	if (entrynum > entry_number) {
 		*wdgt->dstr = '\0';
 		printdialog(wdgt);
 		return;
 	}
-
 	if (sptr = get_from_seq (entrynum, curr_dnseq))
 		if(!isleafnode(sptr)) {
 			cleartext();
 			str = get_from_seq(count+1, back_seq);
-
 			while (str && count < back_buf_num && strcmp(str, base_path)) {
 				count++;
 				str = get_from_seq(count+1, back_seq);
 			}
-
 			if (count == back_buf_num) {
 				add_seq(&back_seq, base_path);
 				back_buf_num++;
 			}
-
 			strcpy(base_path, sptr);
 			make_friendly(friendly_base_path, base_path);
 			wdgt = getwidget(mainwdgts, '\0');
@@ -1192,25 +1061,18 @@ void scrollbar (int command) {
 
 	if (!entry_number)
 		return;
-
 	if(command == '[') {
 		if(display_entry >= entry_number)
 			return;
-
 		for (count = 0; (display_entry + count) < entry_number &&
 				count < text_height/2; count++);
-
 		current_entry_ += count;
 	} else if(command == ']') {
-
 		for (count = 0; (current_entry_ - count) > 1 &&
 				count < text_height/2; count++);
-
 		current_entry_ -= count;
 	}
-
 	cleartext();
-
 	switch(text_state) {
 
 	case BACK_LIST:
@@ -1232,32 +1094,23 @@ void scrollbar (int command) {
 		thisseq = textseq;
 		break;
 	}
-
 	if (current_entry_ > entry_number)
 		current_entry_ = 1;
-
 	lines = linec()-2;
 	count = 0;
-
 	for (display_entry = current_entry_; display_entry <= entry_number
 			&& gety() < lines; display_entry++) {
-
 		if (text_state == DN_LIST || text_state == BACK_LIST)
 			xprintint(" %d ", display_entry) ;
-
 		base_rdn = str = get_from_seq(display_entry, thisseq);
-
 		if (text_state == DN_LIST && rdn_count) {
 			while (rdn_count) {
 				if (*str == '@') rdn_count--;
 				str++;
 			}
-
 			while(*str == ' ') str++;
 			count = (int) (str - base_rdn);
-
 		} else if (count) str += count;
-
 		if (str) {
 			if (text_state != TEXT) {
 				make_friendly(friendly_name, str);
@@ -1267,11 +1120,9 @@ void scrollbar (int command) {
 			xprint("\n");
 		}
 	}
-
 	if (text_state == DN_LIST)
 		if (current_entry_ >= entry_number) xprint("<List finished>");
 		else        xprintint("<Total of %d entries>", entry_number);
-
 	printbar(entry_number, current_entry_, display_entry-current_entry_);
 	display_entry--;
 	return;
@@ -1286,11 +1137,9 @@ void make_friendly (char *fstr, char *str) {
 		strcpy(fstr, str);
 		return;
 	}
-
 	while (*str != '\0') {
 		while (*str != '=') str++;
 		while (*str == ' ') str++;
-
 		end_ptr = ++str;
 		while (*end_ptr != '@' && *end_ptr != '\0') end_ptr++;
 		save = *end_ptr;
@@ -1317,17 +1166,13 @@ int isleafnode (char *name) {
 
 	struct ds_read_arg read_arg;
 	struct ds_read_result   read_result;
-
 	struct DSError          list_error, read_error;
 	char entry_str[1024];
-
 	if (get_default_service (&read_arg.rda_common) != 0) return(1);
-
 	read_arg.rda_common.ca_servicecontrol.svc_options = 1;
 	read_arg.rda_eis.eis_allattributes = FALSE;
 	read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	read_arg.rda_eis.eis_select = oclass;
-
 	read_arg.rda_object = (*name? str2dn(name): NULLDN);
 	if (ds_read (&read_arg,&read_error,&read_result) != DS_OK) return(1);
 	else {
@@ -1336,15 +1181,12 @@ int isleafnode (char *name) {
 		if (issubstr(entry_str, "NonLeaf")) return(0);
 	}
 	if (get_default_service (&list_arg.lsa_common) != 0) return(1);
-
 	list_arg.lsa_common.ca_servicecontrol.svc_sizelimit = 1;
 	list_arg.lsa_common.ca_servicecontrol.svc_options = 1;
-
 	if (*name)
 		list_arg.lsa_object = str2dn(name);
 	else
 		list_arg.lsa_object = NULLDN;
-
 	if (ds_list (&list_arg,&list_error,&list_result) != DS_OK)
 		return (1);
 	else {
@@ -1358,10 +1200,8 @@ void entry2str(caddr_t ptr, char *cptr, int size) {
 
 	if ((ps = ps_alloc (str_open)) == NULLPS) return ;
 	if (str_setup (ps, cptr, size, 1) == NOTOK) return ;
-
 	as_print(ps, (Attr_Sequence) ptr, READOUT);
 	*ps->ps_ptr = 0;
-
 	ps_free(ps);
 }
 
@@ -1372,10 +1212,8 @@ int issubstr (char *str, char *substr) {
 	int count;
 
 	if (*substr == '\0' || *str == '\0') return(0);
-
 	sptr = str;
 	c = *substr;
-
 	while (1) {
 		while (*sptr != '\0' && *sptr != c) sptr++;
 		if (*sptr == '\0') return(0);
@@ -1397,7 +1235,6 @@ int indexstring (char *string, char *substring) {
 		str = string + indx;;
 		if (*str == '\0') return(-1);
 		sub = substring;
-
 		if (*str == *sub) {
 			s = *str;
 			c = *sub;
@@ -1420,15 +1257,11 @@ void rfc2jnt (char *string) {
 
 	mailbox = string;
 	while (*mailbox != '-') mailbox++;
-
 	reversed[0] = '\0';
 	part = string + strlen(string);
-
 	if (*part != '\0') return;
-
 	while(1) {
 		while (*part != '.' && *part != '@') --part;
-
 		if (*part == '.') {
 			if (reversed[0] != '\0')  strcat(reversed, ".");
 			part++;
@@ -1457,7 +1290,6 @@ sort_attrs (struct attrcomp *entry_attrs) {
 
 	first = curr = entry_attrs;
 	firstn = last = next = 0;
-
 	while (curr)
 		if (!strcmp("2.5.4.3", curr->attr_type->oa_ot.ot_stroid) ||
 				!strcmp("2.5.4.4", curr->attr_type->oa_ot.ot_stroid) ||
@@ -1466,26 +1298,20 @@ sort_attrs (struct attrcomp *entry_attrs) {
 				!strcmp("0.9.2342.19200300.100.1.2",
 						curr->attr_type->oa_ot.ot_stroid) ||
 				!strcmp("2.5.4.20", curr->attr_type->oa_ot.ot_stroid)) {
-
 			if (first == curr) first = curr->attr_link;
-
 			if (next)
 				next->attr_link = curr;
 			else
 				firstn = curr;
-
 			next = curr;
-
 			if (last)
 				last->attr_link = curr->attr_link;
-
 			curr = curr->attr_link;
 			next->attr_link = 0;
 		} else {
 			last = curr;
 			curr = curr->attr_link;
 		}
-
 	if (next) {
 		next->attr_link = first;
 		return firstn;
@@ -1514,23 +1340,17 @@ str_seq SortList(str_seq list) {
 	DN dn;
 
 	if (!list) return 0;
-
 	currEntry = list;
 	sortedList = 0;
-
 	while (currEntry) {
 		dn = curr_dn = str2dn(currEntry->dname);
-
 		while (curr_dn && curr_dn->dn_parent != NULLDN)
 			curr_dn = curr_dn->dn_parent;
-
 		if (!strcmp(curr_dn->dn_rdn->rdn_at->oa_ot.ot_stroid, "2.5.4.3"))
 			currName = GetSurname(currEntry->dname);
 		else
 			currName = GetWholeRelName(currEntry->dname);
-
 		dn_free(dn);
-
 		if (!sortedList) {
 			sortedList = currEntry;
 			currEntry = currEntry->next;
@@ -1538,21 +1358,16 @@ str_seq SortList(str_seq list) {
 		} else {
 			lastSortedEntry = 0;
 			currSortedEntry = sortedList;
-
 			while (currSortedEntry != 0) {
 				dn = curr_dn = str2dn(currSortedEntry->dname);
-
 				while (curr_dn && curr_dn->dn_parent != NULLDN)
 					curr_dn = curr_dn->dn_parent;
-
 				if (!strcmp(curr_dn->dn_rdn->rdn_at->oa_ot.ot_stroid,
 							"2.5.4.3"))
 					sortedName = GetSurname(currSortedEntry->dname);
 				else
 					sortedName = GetWholeRelName(currSortedEntry->dname);
-
 				dn_free(dn);
-
 				if (strcmp(currName, sortedName) <= 0) {
 					if (lastSortedEntry) {
 						lastSortedEntry->next = currEntry;

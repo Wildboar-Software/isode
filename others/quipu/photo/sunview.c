@@ -23,40 +23,31 @@ int photo_start (char *name) {
 	char * getenv ();
 
 	/* Initialise a window to recieve a photo of 'name' */
-
 	if (getenv ("WINDOW_PARENT") == (char *)NULL) {
 		fprintf (stderr,"PHOTO: Must be running suntools on the console");
 		return (-1);
 	}
-
 	if (( tool = tool_make (WIN_LABEL,name,WIN_TOP,sx,WIN_LEFT,sy,0)) == NULL) {
 		fprintf (stderr,"PHOTO: can't create window");
 		return (-1);
 	}
-
 	signal (SIGWINCH,sigwinched);
-
 	gfx_sw = gfxsw_createtoolsubwindow (tool,"",TOOL_SWEXTENDTOEDGE,TOOL_SWEXTENDTOEDGE,NULL);
 	gfx = (struct gfxsubwindow *) gfx_sw->ts_data;
 	gfxsw_getretained (gfx);
-
 	tool_install (tool);
-
 	/* return 0 if sucessful -1 if not */
 	return (0);
 }
 
 int photo_end (char *name) {
 	/* Decoding has finished - display the photo */
-
 	printf ("(See sunview window)");
 	fflush (stdout);
 	close (1);
-
 	/* return 0 if sucessful -1 if not */
 	tool_set_attributes (tool,WIN_WIDTH,PIC_LINESIZE+40,WIN_HEIGHT,sy+40,0);
 	tool_select (tool,0);
-
 	return (0);
 }
 
@@ -73,7 +64,6 @@ void photo_line_end (bit_string *line) {
 
 	/* the end of a line has been reached */
 	/* A bit string is stored in line->dbuf_top */
-
 	pix = mem_point (PIC_LINESIZE,1,1,line->dbuf_top);
 	pw_write (gfx->gfx_pixwin, sx, sy, PIC_LINESIZE-sx, 1, PIX_SRC,pix,0,0);
 	sy++;

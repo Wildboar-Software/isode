@@ -9,7 +9,6 @@
 	int
 	photo_start (char *name) {
 		/* Initialise a window to recieve a photo of 'name' */
-
 		/* return 0 if sucessful -1 if not */
 		fprintf (stderr,"PHOTO: not implemented yet");
 		return (-1);
@@ -21,7 +20,6 @@
 		printf ("done it");
 		fflush (stdout);
 		close (1);	/* this is needed for QUIPU if the process does not exit */
-
 		/* return 0 if sucessful -1 if not */
 		return (-1);
 	}

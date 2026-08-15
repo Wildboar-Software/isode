@@ -45,50 +45,36 @@ int main (int argc, char **argv, char **envp) {
 	FILE   *fp;
 
 	black = PBM_BLACK;
-
 	file = NULL;
 	fp = stdin;
-
 	for (argv++; cp = *argv; argv++) {
 		if (*cp == '-') {
 			if (cp[1] == NULL)
 				continue;
-
 			else if (strcmp (cp, "-reversebits") == 0)
 				black = PBM_WHITE;
-
 			else if (strcmp (cp, "-2d") == 0)
 				twoDimensional = 1;
-
 			else if (strcmp (cp, "-cr") == 0)
 				fineResolution = 0;
-
 			else if (strcmp (cp, "-ul") == 0)
 				unlimitedLength = 1;
-
 			else if (strcmp (cp, "-b4l") == 0)
 				b4Length = 1;
-
 			else if (strcmp (cp, "-a3w") == 0)
 				a3Width = 1;
-
 			else if (strcmp (cp, "-b4w") == 0)
 				b4Width = 1;
-
 			else if (strcmp (cp, "-uc") == 0)
 				uncompressed = 1;
-
 			else if (strcmp (cp, "-sw") == 0)
 				standardwidth = 1;
-
 			else if (strcmp (cp, "-old") == 0) {
 				oldformat = 1;
 				twoDimensional = 1;
 			}
-
 			else if (strcmp (cp, "-nopreamble") == 0)
 				nopreamble = 1;
-
 			else
 				goto usage;
 		} else if (file) {
@@ -113,7 +99,6 @@ usage:
 		} else
 			file = cp;
 	}
-
 	if (file) {
 		fp = pm_openr (file);
 		if (fp == NULL) {
@@ -122,20 +107,15 @@ usage:
 		}
 	} else
 		file = "<stdin>";
-
 	pbm_readpbminit (fp, &cols, &rows, &format);
 	bitrow = pbm_allocrow (cols);
-
 	data = malloc ((unsigned) (cols * rows));
 	byteP = (unsigned char *) data;
-
 	for (i = rows; i-- > 0; ) {
 		pbm_readpbmrow (fp, bP = bitrow, cols, format);
 		*byteP = 0, bitcount = 7;
-
 		for (j = cols; j-- > 0; ) {
 			unsigned char mask = 1 << bitcount;
-
 			if (*bP++ == black)
 				*byteP |= mask;
 			else
@@ -146,17 +126,12 @@ usage:
 		if (bitcount != 7)
 			byteP++;
 	}
-
 	pm_close (fp);
-
 	STOP = (PIC_LINESIZE = cols) + 1;
 	NUMLINES = rows;
 	if ((skip = 8 - (PIC_LINESIZE % 8)) == 8)
 		skip = 0;
-
 	optbuf = encode_t4 (twoDimensional ? 4 : 1, data, skip);
-
 	fwrite (optbuf, optlen, sizeof *optbuf, stdout);
-
 	exit (0);
 }

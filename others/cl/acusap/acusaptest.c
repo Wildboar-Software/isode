@@ -80,10 +80,8 @@ int main (int argc, char **argv, char **envp) {
 	char buffer[80], *bptr;
 
 	printf ("\n AcuSAP test driver for AUNITDATA\n");
-
 	bptr = buffer;
 	*bptr = 'h';
-
 	while (1) {
 		switch (toupper(*bptr)) {
 		case 'H':
@@ -168,9 +166,7 @@ int bind (void)
 /*-------------------------------------*/
 {
 	/*  set binding variables: title, presentation address, and ctxlist */
-
 	initbindvars();
-
 	{
 		if (mode == CLIENT_MODE) {
 			printf ("\n Binding the client side\n");
@@ -197,13 +193,11 @@ int initbindvars (void)
 /*-------------------------------------*/
 {
 	/*  set up bind static variables for test */
-
 	if ((aei = str2aei (myhost, myservice)) == NULLAEI)
 		adios (NULLCP, "%s-%s: unknown application-entity", myhost, myservice);
 	if ((pa = aei2addr (aei)) == NULLPA)
 		adios (NULLCP, "address translation failed");
 	printpaddr ( pa );
-
 	if ((ctx = ode2oid (mycontext)) == NULLOID)
 		adios (NULLCP, "%s: unknown object descriptor", mycontext);
 	if ((ctx = oid_cpy (ctx)) == NULLOID)
@@ -258,7 +252,6 @@ int listenup (void)
 	/* if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 	    printf ("failed - \ntcp/tsap: unknown service");
 	*/
-
 	/*
 	    tz = tas;
 	    tcp_na = tz -> ta_addrs;
@@ -337,7 +330,6 @@ int audtsend (void)
 		spe->pe_context = 1;
 		result = AcUnitDataWrite (ssd, &spe, 1, aci );
 	}
-
 	if ( result == NOTOK ) {
 		printf ("\n AcUnitDataWrite failed\n");
 		acs_adios (aca, "A-UNIT-DATA WRITE");
@@ -400,19 +392,15 @@ int validbinding (
 #define	AEICMP(aei1,aei2) \
     (pe_cmp ((aei1) -> aei_ap_title, (aei2) -> aei_ap_title) \
   || pe_cmp ((aei1) -> aei_ae_qualifier, (aei2) -> aei_ae_qualifier))
-
 	if ( (acb = findacublk (sd)) == NULL ) {
 		printf ("\n cannot find assocblk\n");
 		return NOTOK;
 	}
-
 	if ( acb -> acb_context != acs -> acs_context )
 		return NOTOK;
-
 	if ( acb -> acb_callingtitle
 			&& (AEICMP(acb->acb_callingtitle,&acs->acs_calledtitle)) )
 		return NOTOK;
-
 	if ( acb -> acb_binding == BIND_STATIC
 			&& acb -> acb_calledtitle
 			&& AEICMP (acb -> acb_calledtitle, &acs -> acs_callingtitle ))
@@ -428,7 +416,6 @@ int audtrebind (void)
 		printf ("\n Only support on server side\n");
 	else {  /* SERVER_MODE */
 		printf ("\n Rebinding server to new called address and title\n");
-
 		/* cheating til Kurt gets back
 		    if ((pclientaei = str2aei (myhost, "clientacusaptest")) == NULLAEI)
 			adios (NULLCP, "%s-%s: unknown application-entity",
@@ -438,10 +425,8 @@ int audtrebind (void)
 		    printpaddr ( pa );
 		    if ( AcUnitDataRebind (ssd, pclientaei, cpa, aci) == NOTOK )
 		end cheat */
-
 		if ( AcUnitDataRebind (ssd, &clientaei,
 		&psacs->acs_start.ps_calling, aci) == NOTOK )
-
 		{
 			printf ("\n Rebind unit data service failed\n");
 			acs_adios (aca, "A-UNIT-DATA REBIND");
@@ -461,7 +446,6 @@ static printsrv (
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,
 			sel2str (is -> is_selector, is -> is_selectlen, 1));
-
 	for (; n >= 0; ap++, n--)
 		printf ("\t%d: \"%s\"\n", ap - is -> is_vec, *ap);
 	printf ("\n");
@@ -479,16 +463,12 @@ static printpaddr (
 
 	printf ("ADDR:    PSEL: %s\n",
 			sel2str (pa -> pa_selector, pa -> pa_selectlen, 1));
-
 	printf ("ADDR:    SSEL: %s\n",
 			sel2str (sa -> sa_selector, sa -> sa_selectlen, 1));
-
 	printf ("ADDR:    TSEL: %s\n",
 			sel2str (ta -> ta_selector, ta -> ta_selectlen, 1));
-
 	for (; n >= 0; na++, n--) {
 		printf ("\t%d: ", ta -> ta_naddr - n - 1);
-
 		switch (na -> na_type) {
 		case NA_NSAP:
 			printf ("NS %s", na2str (na));
@@ -517,12 +497,10 @@ static printpaddr (
 			break;
 		}
 	}
-
 }
 
 void acs_adios (struct AcSAPabort *aca, char *event) {
 	acs_advise (aca, event);
-
 	_exit (1);
 }
 
@@ -535,7 +513,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 				 aca -> aca_cc, aca -> aca_cc, aca -> aca_data);
 	else
 		sprintf (buffer, "[%s]", AcuErrString (aca -> aca_reason));
-
 	advise (NULLCP, "%s: %s (source %d)", event, buffer,
 			aca -> aca_source);
 }

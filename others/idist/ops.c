@@ -57,7 +57,6 @@ int	transfer (unsigned short type, int opts, unsigned short mode, off_t size, ti
 
 	fs = makefs (type, opts, mode, size, mtime,
 				 uname, group, name, lname);
-
 	return invoke (operation_Idist_transfer, (caddr_t)fs,
 				   &_ZIdist_mod, _ZFileSpecIdist,
 				   ia5_result,
@@ -82,7 +81,6 @@ int tran_data (char *data, int len) {
 	struct type_Idist_Data *dat;
 
 	dat = str2qb (data, len, 1);
-
 	return invoke (operation_Idist_data, (caddr_t)dat,
 				   &_ZIdist_mod,_ZDataIdist,
 				   null_result,
@@ -93,7 +91,6 @@ int runspecial (char *cmd) {
 	struct type_UNIV_IA5String *ia5;
 
 	ia5 = str2qb (cmd, strlen(cmd), 1);
-
 	return invoke (operation_Idist_special, (caddr_t)ia5,
 				   &_ZUNIV_mod, _ZIA5StringUNIV,
 				   ia5_result,
@@ -109,7 +106,6 @@ int	rquery (char *file, time_t *mtime, off_t *size, unsigned short *mode) {
 	int	retval;
 
 	ia5 = str2qb (file, strlen(file), 1);
-
 	retval = invoke (operation_Idist_query, (caddr_t)ia5,
 					 &_ZUNIV_mod, _ZIA5StringUNIV,
 					 query_result,
@@ -210,13 +206,10 @@ int deletefile (char *str, int mode) {
 		mode = 0;
 		break;
 	}
-
 	sprintf (buffer, "%s/%s", target, str);
 	if ((copts & QUERYM) && !query ("Delete", mode, buffer))
 		return OK;
-
 	ia5 = str2qb (str, strlen(str), 1);
-
 	return invoke (operation_Idist_deletefile, (caddr_t) ia5,
 				   &_ZUNIV_mod, _ZIA5StringUNIV,
 				   ia5_result,
@@ -231,15 +224,12 @@ static int basic_error (int sd, int id, int error, struct type_Idist_IA5List *pa
 		result_value = NOTOK;
 		return OK;
 	}
-
 	if (rye = finderrbyerr (table_Idist_Errors, error))
 		advise (NULLCP, "%s", rye -> rye_name);
 	else
 		advise (NULLCP, "Error %d", error);
-
 	if (parameter)
 		print_ia5list (parameter);
-
 	result_value = NOTOK;
 	return OK;
 }
