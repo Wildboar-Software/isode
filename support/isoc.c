@@ -4,7 +4,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include "compat.h"
 #include "rosap.h"
 #include "rtsap.h"
 #include "acsap.h"

@@ -7,8 +7,11 @@
 #include <errno.h>
 #include <signal.h>
 #include <string.h>
+#include <strings.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <sys/ioctl.h>
+#include <time.h>
 #include "manifest.h"
 #include "sys.file.h"
 #include <sys/stat.h>
