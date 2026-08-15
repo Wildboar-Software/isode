@@ -14,9 +14,7 @@ static int wrapLines = FALSE;
 int lineno;
 int discardInput;
 
-pagerOn(number)
-int number;
-{
+void pagerOn(int number) {
 	lineno = 0;
 	discardInput = FALSE;
 	pagerNumber = -1;
@@ -26,15 +24,15 @@ int number;
 		numOK = FALSE;
 }
 
-linewrapOn() {
+void linewrapOn(void) {
 	wrapLines = TRUE;
 }
 
-linewrapOff() {
+void linewrapOff(void) {
 	wrapLines = FALSE;
 }
 
-isWrapOn() {
+int isWrapOn(void) {
 	return wrapLines;
 }
 
@@ -131,6 +129,6 @@ int getPagerInput() {
 	return c;
 }
 
-int getpnum() {
+int getpnum(void) {
 	return pagerNumber;
 }

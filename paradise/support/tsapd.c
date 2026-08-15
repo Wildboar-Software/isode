@@ -158,9 +158,9 @@ int	ssapd (), psapd ();
 
 static int  setperms ();
 static void tsapd (int vecp, char **vec);
-static  envinit ();
+static void envinit (void);
 #ifndef	IAE
-static	arginit ();
+static void arginit (char **vec);
 #endif
 
 int main (int argc, char **argv, char **envp) {
@@ -370,11 +370,10 @@ out:
 	exit (1);
 }
 
-static int  setperms (is)
 #ifndef	IAE
-struct isoservent *is;
+static int  setperms (struct isoservent *is)
 #else
-struct IAEntry *is;
+static int  setperms (struct IAEntry *is)
 #endif
 {
 	struct stat st;
@@ -388,11 +387,7 @@ struct IAEntry *is;
 	}
 }
 
-static void  ts_advise (td, code, event)
-struct TSAPdisconnect *td;
-int	code;
-char   *event;
-{
+static void  ts_advise (struct TSAPdisconnect *td, int code, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -406,10 +401,7 @@ char   *event;
 }
 
 #ifndef	NOGOSIP
-static int  ssapd (is, td)
-struct isoservent *is;
-struct TSAPdisconnect *td;
-{
+static int  ssapd (struct isoservent *is, struct TSAPdisconnect *td) {
 	int	    sd;
 	struct TSAPstart    tss;
 	struct TSAPstart  *ts = &tss;
@@ -446,10 +438,7 @@ struct TSAPdisconnect *td;
     "\020\01HALFDUPLEX\02DUPLEX\03EXPEDITED\04MINORSYNC\05MAJORSYNC\06RESYNC\
 \07ACTIVITY\010NEGOTIATED\011CAPABILITY\012EXCEPTIONS\013TYPEDATA"
 
-static int  psapd (is, si)
-struct isoservent *is;
-struct SSAPindication *si;
-{
+static int  psapd (struct isoservent *is, struct SSAPindication *si) {
 	struct SSAPstart    sss;
 	struct SSAPstart  *ss = &sss;
 	struct PSAPindication  pis;
@@ -518,9 +507,7 @@ struct SSAPindication *si;
 #endif
 
 #ifndef	IAE
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	int	    rflag;
 	char  *ap;
 #ifdef	TCP
@@ -788,9 +775,7 @@ char	**vec;
 }
 
 #else
-static	arginit (vec)
-char	**vec;
-{
+static void arginit (char **vec) {
 	int	    argp,
 			options;
 	char *ap;
@@ -995,9 +980,7 @@ char	**vec;
 	}
 }
 
-static	search_directory (firstime)
-int	firstime;
-{
+static void search_directory (int firstime) {
 	int	    i;
 	struct ds_search_arg *sa = &search_arg;
 	struct ds_search_result search_result;
@@ -1378,11 +1361,7 @@ static int  rebind_to_directory () {
 	return (isbound ? OK : NOTOK);
 }
 
-static	int	make_bind_args (ba, br, be)
-struct ds_bind_arg *ba,
-		   *br;
-struct ds_bind_error *be;
-{
+static void make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be) {
 	bzero ((char *) ba, sizeof *ba);
 	bzero ((char *) br, sizeof *br);
 	bzero ((char *) be, sizeof *be);
@@ -1410,15 +1389,11 @@ static int  unbind_from_directory () {
 		ds_unbind ();
 		isbound = 0;
 	}
-
 	dsa_dead = 0;
-
 	return wasbound;
 }
 
-static int  do_error (de)
-struct DSError *de;
-{
+static int  do_error (struct DSError *de) {
 	if (de -> dse_type == DSE_REFERRAL
 			&& de -> ERR_REFERRAL.DSE_ref_candidates) {
 		struct access_point *ap;
@@ -1483,10 +1458,7 @@ struct DSError *de;
 	return NOTOK;
 }
 
-int	str2dnY (str, dn)
-char   *str;
-DN     *dn;
-{
+int	str2dnY (char *str, DN *dn) {
 	if (*str == NULL) {
 		*dn = NULLDN;
 		return OK;
@@ -1498,9 +1470,7 @@ DN     *dn;
 #ifdef	BSD42
 #endif
 
-static SFD  hupser (sig)
-int	sig;
-{
+static SFD hupser (int sig) {
 #ifndef	BSD42
 	signal (sig, hupser);
 #endif
@@ -1510,9 +1480,7 @@ int	sig;
 #endif
 
 #ifdef SYS5
-static SFD  cldser (sig)
-int   sig;
-{
+static SFD cldser (int sig) {
 	int status;
 	int pid;
 
@@ -1530,7 +1498,7 @@ int   sig;
 
 /* ^L */
 
-static  envinit () {
+static void envinit (void) {
 	int     i,
 			sd;
 
@@ -1617,12 +1585,7 @@ void	adios (char *what, char *fmt, ...) {
 	_exit (1);
 }
 #else
-/* VARARGS */
-
-void	adios (what, fmt)
-char   *what,
-	   *fmt;
-{
+void	adios (char *what, char *fmt) {
 	adios (what, fmt);
 }
 #endif
@@ -1638,13 +1601,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_end (ap);
 }
 #else
-/* VARARGS */
-
-void	advise (code, what, fmt)
-char   *what,
-	   *fmt;
-int	code;
-{
+void	advise (int code, char *what, char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

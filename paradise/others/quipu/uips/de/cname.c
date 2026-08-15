@@ -9,9 +9,7 @@ extern struct cnamelist * cnamelp;
 static struct cnamelist * taillp;
 
 void
-addToCoList(str)
-char *str;
-{
+addToCoList(char *str) {
 	char * cp;
 
 	cp = index(str, ' ');
@@ -29,9 +27,7 @@ char *str;
 }
 
 void
-addCoNode(shortname, longname)
-char * shortname, * longname;
-{
+addCoNode(char *shortname, char *longname) {
 	struct cnamelist * colp;
 
 	colp = cname_alloc();
@@ -45,9 +41,7 @@ char * shortname, * longname;
 	colp->next = NULLCNLIST;
 }
 
-char *mapCoName(shortname)
-char * shortname;
-{
+char *mapCoName(char *shortname) {
 	struct cnamelist * cnlp;
 
 	for (cnlp = cnamelp; cnlp != NULLCNLIST; cnlp = cnlp->next)

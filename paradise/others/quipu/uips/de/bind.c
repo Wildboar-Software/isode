@@ -55,9 +55,7 @@ int tryBackup() {
  * bind_to_ds - Bind to directory
  *
  */
-int init_bind_to_ds(assoc)
-int * assoc;
-{
+int init_bind_to_ds(int *assoc) {
 	struct ds_bind_arg bind_arg;
 	struct PSAPaddr             *addr;
 	void exit();
@@ -104,10 +102,7 @@ try_bind:
 	return OK;
 }
 
-int wait_bind_to_ds(assoc, wantToBlock)
-int assoc;
-int wantToBlock;
-{
+int wait_bind_to_ds(int assoc, int wantToBlock) {
 	struct PSAPindication   pi_s;
 	struct PSAPindication   * pi = &(pi_s);
 	int     nfds, nevents;
@@ -184,9 +179,7 @@ int rebind() {
 		return OK;
 }
 
-int de_bind(wantToBlock)
-int wantToBlock;
-{
+int de_bind(int wantToBlock) {
 	static int assoc;
 
 	if (bindStarted == FALSE) {
@@ -201,7 +194,7 @@ int wantToBlock;
 	return OK;
 }
 
-de_unbind() {
+void de_unbind(void) {
 	if (deLogLevel)
 		ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
 	ds_unbind();

@@ -118,11 +118,7 @@ int de_Modify() {
 	return OK;
 }
 
-int modify_av(dn, rdn, objectType)
-char * dn;
-char * rdn;
-int  objectType;
-{
+int modify_av(char *dn, char *rdn, int objectType) {
 
 	int addr_changed;
 	int arenew;
@@ -573,9 +569,7 @@ int fillMostModArg() {
 	modarg.mea_common.ca_extensions = (struct extension *) NULL;
 }
 
-int dm_modentry(dn)
-char * dn;
-{
+int dm_modentry(char *dn) {
 
 	extern int rfrl_msg;
 
@@ -606,10 +600,7 @@ modify_entry:
 	rfrl_msg = TRUE;
 }
 
-struct entrymod * ems_append (a,b)
-struct entrymod *a;
-struct entrymod *b;
-{
+struct entrymod * ems_append (struct entrymod *a,struct entrymod *b) {
 	struct entrymod *ptr;
 
 	if ((ptr = a) == NULLMOD)
@@ -622,10 +613,7 @@ struct entrymod *b;
 	return a;
 }
 
-int rtnstr2dlrstr(rtnstr, dlrstr)
-char * rtnstr;
-char dlrstr[];
-{
+int rtnstr2dlrstr(char *rtnstr, char dlrstr[]) {
 
 	char * cp;
 	char * start;
@@ -669,10 +657,7 @@ char dlrstr[];
 	return OK;
 }
 
-int new_at(atcount, objectType)
-int * atcount;
-int objectType;
-{
+int new_at(int *atcount, int objectType) {
 
 	extern struct namelist * orgatts;
 	extern struct namelist * ouatts;
@@ -701,10 +686,7 @@ int objectType;
 	return OK;
 }
 
-int check_new_at(atcount, objectType)
-int * atcount;
-int objectType;
-{
+int check_new_at(int *atcount, int objectType) {
 
 	extern struct namelist * orgatts;
 	extern struct namelist * ouatts;
@@ -728,14 +710,9 @@ int objectType;
 	return OK;
 }
 
-int existing_at(rdn, atcount, objectType, numbers)
-char * rdn;
-int * atcount;
-int objectType;
-int numbers;				/* Unfortunately a control flag,
+int existing_at(char *rdn, int *atcount, int objectType, int numbers /* Unfortunately a control flag,
                                            to indicate if to print numbers
-					   alongside attributes or not */
-{
+					   alongside attributes or not */) {
 
 	struct namelist * olp = NULLLIST;
 	struct namelist * oulp = NULLLIST;
@@ -829,11 +806,7 @@ int numbers;				/* Unfortunately a control flag,
 	return OK;
 }
 
-printEmptyAttributes(lp, objatts, count)
-struct namelist * lp;
-struct namelist * objatts;
-int * count;
-{
+void printEmptyAttributes(struct namelist *lp, struct namelist *objatts, int *count) {
 	Attr_Sequence at;
 
 	struct namelist * saveprr;
@@ -871,11 +844,8 @@ int * count;
 		printf(all_attVal);
 	}
 }
-checkForEmptyAttributes(lp, objatts, count)
-struct namelist * lp;
-struct namelist * objatts;
-int * count;
-{
+
+void checkForEmptyAttributes(struct namelist *lp, struct namelist *objatts, int *count) {
 	Attr_Sequence at;
 
 	struct namelist * saveprr;
@@ -910,10 +880,7 @@ int * count;
 	objatts = saveprr;
 }
 
-int get_new_attr(dn, at_number)
-char * dn;
-int at_number;
-{
+int get_new_attr(char *dn, int at_number) {
 
 	struct entrymod *emnew, *ems_append(), *modify_avs();
 	Attr_Sequence as_mhs;
@@ -1046,10 +1013,7 @@ prompt_attr:
 	return OK;
 }
 
-int prompt_new_value(attr_name, new_value)
-char attr_name[];
-int * new_value;
-{
+int prompt_new_value(char attr_name[], int *new_value) {
 
 	struct entrymod *emnew, *ems_append(), *modify_avs();
 
@@ -1138,10 +1102,7 @@ int * new_value;
 	return OK;
 }
 
-int get_objectClass(rdn,objectType)
-char * rdn;
-int * objectType;
-{
+int get_objectClass(char *rdn,int *objectType) {
 	char * cp;
 	char * savestr;
 	char * temprdn;
@@ -1182,10 +1143,7 @@ int * objectType;
 	    return NOTOK; */
 }
 
-get_objectClassPRR(lp, objectType)
-struct namelist * lp;
-int * objectType;
-{
+int get_objectClassPRR(struct namelist *lp, int *objectType) {
 	Attr_Sequence at;
 	AV_Sequence av;
 	char * str;
@@ -1409,10 +1367,7 @@ get_new_pswd:
 	return OK;
 }
 
-modify_pswd(old_pswd, new_pswd)
-char old_pswd[];
-char new_pswd[];
-{
+int modify_pswd(char old_pswd[], char new_pswd[]) {
 
 	extern char username[];
 

@@ -33,10 +33,7 @@ void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};
 
-int listOUs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listOUs(char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == ORGUNIT)
@@ -49,10 +46,7 @@ struct namelist ** listp;
 }
 
 void
-printListOUs(str, listp)
-char * str;
-struct namelist * listp;
-{
+printListOUs(char *str, struct namelist *listp) {
 	struct namelist * x;
 	int i;
 	if (listp == NULLLIST)
@@ -68,9 +62,7 @@ struct namelist * listp;
 }
 
 void
-freeOUs(listpp)
-struct namelist ** listpp;
-{
+freeOUs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -86,21 +78,18 @@ struct namelist ** listpp;
 }
 
 void
-freeOUListArgs() {
+freeOUListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
 void
-freeOUSearchArgs() {
+freeOUSearchArgs(void) {
 
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int listAllOUs(parentstr, listp)
-char * parentstr;
-struct namelist ** listp;
-{
+int listAllOUs(char *parentstr, struct namelist **listp) {
 	int ret;
 
 	if (quipuMastersCo == FALSE) {
@@ -123,10 +112,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int listMatchingOUs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listMatchingOUs(char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -196,10 +182,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int readExactOU(oustr, olistp)
-char * oustr;
-struct namelist ** olistp;
-{
+int readExactOU(char *oustr, struct namelist **olistp) {
 	int ret;
 
 	ret = readOU(oustr, olistp);
@@ -207,9 +190,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int reallyMakeListOUs(olistp)
-struct namelist ** olistp;
-{
+int reallyMakeListOUs(struct namelist **olistp) {
 	struct subordinate * x;
 	int retval;
 	char * cp;
@@ -246,10 +227,7 @@ struct namelist ** olistp;
 	return OK;
 }
 
-int listExactOUs(objectstr, listp)
-char * objectstr;
-struct namelist ** listp;
-{
+int listExactOUs(char *objectstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostOUSearchArgs(objectstr, SRA_BASEOBJECT);
@@ -260,9 +238,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int makeListOUs(listp)
-struct namelist ** listp;
-{
+int makeListOUs(struct namelist **listp) {
 	entrystruct * x;
 	int retval;
 
@@ -292,10 +268,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int readOU(ostr, olistp)
-char * ostr;
-struct namelist ** olistp;
-{
+int readOU(char *ostr, struct namelist **olistp) {
 	static struct ds_read_arg rarg;
 	static struct ds_read_result rresult;
 	static struct DSError rerror;
@@ -338,9 +311,7 @@ struct namelist ** olistp;
 }
 
 struct ds_list_arg *
-fillMostOUListArgs(str)
-char * str;
-{
+fillMostOUListArgs(char *str) {
 	static struct ds_list_arg arg;
 	static CommonArgs sca = default_common_args;
 
@@ -353,10 +324,7 @@ char * str;
 }
 
 struct ds_search_arg *
-fillMostOUSearchArgs(parentstr, searchdepth)
-char * parentstr;
-int searchdepth;
-{
+fillMostOUSearchArgs(char *parentstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -386,17 +354,12 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllOUFilter(fpp)
-struct s_filter ** fpp;
-{
+void makeAllOUFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATIONAL_UNIT);
 }
 
 void
-makeExplicitOUFilter(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
-{
+makeExplicitOUFilter(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -422,10 +385,7 @@ struct s_filter ** fpp;
 }
 
 void
-ouFilter1(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
-{
+ouFilter1(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -435,10 +395,7 @@ struct s_filter ** fpp;
 }
 
 void
-ouFilter2(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
-{
+ouFilter2(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -448,10 +405,7 @@ struct s_filter ** fpp;
 }
 
 void
-ouFilter3(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
-{
+ouFilter3(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -461,10 +415,7 @@ struct s_filter ** fpp;
 }
 
 void
-ouFilter4(oustr, fpp)
-char * oustr;
-struct s_filter ** fpp;
-{
+ouFilter4(char *oustr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();

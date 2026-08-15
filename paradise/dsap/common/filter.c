@@ -18,9 +18,7 @@
 
 extern LLog * log_dsap;
 
-filter_free (filt)
-Filter filt;
-{
+void filter_free (Filter filt) {
 	Filter ptr;
 	Filter next;
 
@@ -52,9 +50,7 @@ Filter filt;
 	}
 }
 
-filter_append (a,b)
-Filter a,b;
-{
+void filter_append (Filter a,Filter b) {
 	Filter ptr,trail;
 
 	if ( a == NULLFILTER)
@@ -66,11 +62,7 @@ Filter a,b;
 	trail->flt_next = b;
 }
 
-Filter strfilter (at,s,type)
-AttributeType at;
-char * s;
-char type;
-{
+Filter strfilter (AttributeType at,char *s,char type) {
 	Filter filt;
 
 	at = AttrT_cpy (at);
@@ -161,9 +153,7 @@ all_done:
 	return filt;
 }
 
-Filter ocfilter (s)
-char * s;
-{
+Filter ocfilter (char *s) {
 	Filter filt;
 
 	filt = filter_alloc ();
@@ -184,10 +174,7 @@ char * s;
 	return filt;
 }
 
-Filter joinfilter (f, type)
-Filter f;
-char type;
-{
+Filter joinfilter (Filter f, char type) {
 	Filter filt;
 
 	filt = filter_alloc ();
@@ -198,19 +185,11 @@ char type;
 	return filt;
 }
 
-int	fi_print (ps, fi, format)
-PS	ps;
-Filter	fi;
-int	format;
-{
+int	fi_print (PS ps, Filter fi, int format) {
 	print_filter (ps, fi, 0);
 }
 
-print_filter (nps, fi, level)
-PS nps;
-Filter	fi;
-int	level;
-{
+void print_filter (PS nps, Filter fi, int level) {
 	char   *cp;
 	Filter    fi2;
 	struct filter_item *fi3;

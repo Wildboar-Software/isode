@@ -51,9 +51,7 @@ static int bindres;
  * bind_to_ds - Bind to directory
  *
  */
-int init_bind_to_ds(assoc)
-int * assoc;
-{
+int init_bind_to_ds(int *assoc) {
 	struct PSAPaddr             *addr;
 	int protect_password();
 	void exit();
@@ -126,10 +124,7 @@ int * assoc;
 	return OK;
 }
 
-int wait_bind_to_ds(assoc, wantToBlock)
-int assoc;
-int wantToBlock;
-{
+int wait_bind_to_ds(int assoc, int wantToBlock) {
 	extern int pswd_intrctv;
 	extern int username_intrctv;
 	struct PSAPindication   pi_s;

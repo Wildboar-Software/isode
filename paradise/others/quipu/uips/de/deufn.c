@@ -102,11 +102,7 @@ doUfnSearch() {
 	return;
 }
 
-DNS ufn_interact (dns, dn, s)
-DNS dns;
-DN dn;
-char * s;
-{
+DNS ufn_interact (DNS dns, DN dn, char *s) {
 	char    buf[LINESIZE], buf2[LINESIZE], penult[LINESIZE];
 	DNS tmp, ptr;
 	int i, j, n;
@@ -179,9 +175,7 @@ validNumber:
 	return(ptr);
 }
 
-int printUfnComponents(str)
-char * str;
-{
+int printUfnComponents(char *str) {
 	char buf[BUFSIZ];
 	int j;
 	char * cp, *cp2;

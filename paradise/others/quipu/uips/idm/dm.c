@@ -109,10 +109,7 @@ int posdit_oc;
 int tmp_org=FALSE;
 int orgEntered;
 
-int main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 
 	struct namelist * option5lp = NULLLIST;
 
@@ -285,10 +282,7 @@ int de_Action() {
 	return OK;
 }
 
-int ask_objectType(string, object_to_work)
-char * string;
-char * object_to_work;
-{
+int ask_objectType(char *string, char *object_to_work) {
 
 	char * temp1;
 	char * temp2;
@@ -317,11 +311,7 @@ char * object_to_work;
 	free(temp4);
 }
 
-enterString(objectType,defaultValue, lp)
-int objectType;
-char * defaultValue;
-struct namelist * lp;
-{
+void enterString(int objectType,char *defaultValue, struct namelist *lp) {
 	char prompt[LINESIZE];
 	static char prstr[] = ":";
 
@@ -454,12 +444,7 @@ struct namelist * lp;
 	}
 }
 
-enterAndValidate(prompt, buf, objectType, defaultValue, lp)
-char * prompt, * buf;
-int objectType;
-char * defaultValue;
-struct namelist * lp;
-{
+void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp) {
 	char * cp, * cp2;
 	int i, n, isnum;
 
@@ -662,18 +647,18 @@ struct namelist * lp;
 	free(cp);
 }
 
-displayValidWildCards() {
+void displayValidWildCards(void) {
 	printf(wildcard1);
 	printf(wildcard2);
 }
 
 void
-onint1() {
+onint1(void) {
 	putchar('\n');
 	de_exit(-1);
 }
 void
-onint2() {
+onint2(void) {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -681,13 +666,11 @@ onint2() {
 	longjmp(sjbuf, 0);
 }
 
-SFD cleanupok() {
+SFD cleanupok(void) {
 	cleanup(0);
 }
 
-int cleanup(exitCode)
-int exitCode;
-{
+int cleanup(int exitCode) {
 	if (boundToDSA == TRUE)
 		de_unbind();
 #ifdef SPEC_MALL
@@ -697,7 +680,7 @@ int exitCode;
 }
 
 void
-onalarm() {
+onalarm(void) {
 
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
@@ -718,9 +701,7 @@ onalarm() {
 }
 
 void
-searchFail(str)
-char * str;
-{
+searchFail(char *str) {
 	searchfail = TRUE;
 	if (abandoned)
 		printf(srch_abandoned);
@@ -734,9 +715,7 @@ char * str;
 }
 
 void
-de_exit(exitCode)
-int exitCode;
-{
+de_exit(int exitCode) {
 	void exit();
 
 	/*  if (byeByeMessage == TRUE) */

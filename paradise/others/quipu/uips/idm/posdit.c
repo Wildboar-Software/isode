@@ -62,10 +62,7 @@ int position_dit() {
 	}
 }
 
-int display_posdit(length, str)
-int length;
-char str[];
-{
+int display_posdit(int length, char str[]) {
 	char * savestr;
 	int first;
 	int spaces;
@@ -334,9 +331,7 @@ prompt_ou:
 	return OK;
 }
 
-int determine_posdit(objectType)
-int * objectType;
-{
+int determine_posdit(int *objectType) {
 	char * cp;
 	char * savestr;
 	char * temprdn;

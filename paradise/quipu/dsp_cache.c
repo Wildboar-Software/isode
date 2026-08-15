@@ -40,10 +40,7 @@ extern char * edbtmp_path;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
-Entry cache_dsp_entry (ptr,complete)
-EntryInfo      *ptr;
-char complete;
-{
+Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 	/* assumes entry passed is complete */
 
 	Entry           make_path ();
@@ -140,12 +137,7 @@ char complete;
 	return (eptr);
 }
 
-dsp_cache (arg,res,ctx,binddn)
-struct DSArgument *arg;
-struct DSResult   *res;
-char ctx;
-DN binddn;
-{
+void dsp_cache (struct DSArgument *arg,struct DSResult *res,char ctx,DN binddn) {
 	EntryInfo *ptr;
 	Entry entryptr;
 	Attr_Sequence as, eis_select (), attr_eis_select ();

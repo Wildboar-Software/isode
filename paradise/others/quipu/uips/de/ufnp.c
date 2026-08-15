@@ -57,9 +57,7 @@ char ufn_abort = FALSE;		/* external to force UFN to abort */
 static	print_search ();
 #endif
 
-DNS DNS_append (a,b)
-DNS a, b;
-{
+DNS DNS_append (DNS a,DNS b) {
 	DNS c;
 	if (a == NULLDNS)
 		return b;
@@ -72,9 +70,7 @@ DNS a, b;
 	return a;
 }
 
-static Attr_Sequence read_cache (base)
-DN base;
-{
+static Attr_Sequence read_cache (DN base) {
 	Entry ptr;
 
 	if ((ptr = local_find_entry (base,FALSE)) != NULLENTRY)
@@ -83,19 +79,14 @@ DN base;
 	return NULLATTR;
 }
 
-int countMatches(dns)
-DNS dns;
-{
+int countMatches(DNS dns) {
 	int i;
 
 	for (i = 0; dns != NULLDNS; dns = dns->dns_next, i++);
 	return i;
 }
 
-static char exact_match (dn,s)
-DN dn;
-char * s;
-{
+static char exact_match (DN dn,char *s) {
 	RDN rdn;
 	for (; dn->dn_parent != NULLDN; dn=dn->dn_parent)
 		; /* Nothing */
@@ -108,10 +99,7 @@ char * s;
 	return FALSE;
 }
 
-static char good_match (dn,s)
-DN dn;
-char * s;
-{
+static char good_match (DN dn,char *s) {
 	Attr_Sequence as;
 	AV_Sequence avs;
 
@@ -123,13 +111,7 @@ char * s;
 	return FALSE;
 }
 
-dnSelect (s,dlist,interact,el, leafFlag)
-char * s;
-DNS *dlist;
-DNS (* interact) ();
-DNS el;
-int leafFlag;
-{
+int dnSelect (char *s,DNS *dlist,DNS (*interact)(),DNS el, int leafFlag) {
 	DNS exact = NULLDNS;
 	DNS good  = NULLDNS;
 	DNS bad   = NULLDNS;
@@ -196,10 +178,7 @@ int leafFlag;
 DN	ufn_bad_dsa = NULLDN;
 DNS	ufn_partials = NULLDNS;
 
-static char present (d,t)
-DN d;
-AttributeType t;
-{
+static char present (DN d,AttributeType t) {
 	RDN rdn;
 	DN p, q;
 
@@ -220,16 +199,7 @@ AttributeType t;
 	}
 }
 
-ufn_search (base, subtree, filt, res, s, interact, el, leafFlag)
-DN base;
-char subtree;
-Filter filt;
-DNS * res;
-char * s;
-DNS (* interact) ();
-DNS el;
-int leafFlag;
-{
+int ufn_search (DN base, char subtree, Filter filt, DNS *res, char *s, DNS (*interact)(), DNS el, int leafFlag) {
 	struct ds_search_arg search_arg;
 	static struct ds_search_result result;
 	struct DSError err;
@@ -332,12 +302,7 @@ set_bad_dsa:
 #define	SUBSTRINGS()	((ufn_flags & UFN_WILDHEAD) ? FILTERITEM_SUBSTRINGS \
 			 			    : -FILTERITEM_SUBSTRINGS)
 
-static rootSearch (s,interact,el,result)
-char * s;
-DNS (* interact) ();
-DNS el;
-DNS * result;
-{
+static int rootSearch (char *s,DNS (*interact)(),DNS el,DNS *result) {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
 	if (check_3166 (s)) {
@@ -377,13 +342,7 @@ DNS * result;
 	return ufn_search (NULLDN,FALSE,filt,result,s,interact,el,FALSE);
 }
 
-static intSearch (base,s,interact,el,result)
-DN base;
-char * s;
-DNS (* interact) ();
-DNS el;
-DNS * result;
-{
+static int intSearch (DN base,char *s,DNS (*interact)(),DNS el,DNS *result) {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 
 	if ( present (base,at_OrgUnit) ) {
@@ -481,14 +440,7 @@ DNS * result;
 	return ufn_search (base,FALSE,filtf,result,s,interact,el, FALSE);
 }
 
-static leafSearch (base,s,subtree,interact,el,result)
-DN base;
-char * s;
-char subtree;
-DNS (* interact) ();
-DNS el;
-DNS * result;
-{
+static int leafSearch (DN base,char *s,char subtree,DNS (*interact)(),DNS el,DNS *result) {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
 	if ((filta = strfilter (at_CommonName,s,SUBSTRINGS ())) == NULLFILTER)
@@ -516,13 +468,7 @@ DNS * result;
 	return ufn_search (base,subtree,filt,result,s,interact,el, TRUE);
 }
 
-static keyedSearch (base,t,v,interact,el,result)
-DN base;
-char * t, *v;
-DNS (* interact) ();
-DNS el;
-DNS * result;
-{
+static int keyedSearch (DN base,char *t,char *v,DNS (*interact)(),DNS el,DNS *result) {
 	Filter filt, filta, filtb;
 	AttributeType at;
 
@@ -550,14 +496,7 @@ DNS * result;
 					   filt, result, v, interact, el, FALSE);
 }
 
-static purportedMatch(base,c,v,interact,el,result)
-DN base;
-int c;
-char ** v;
-DNS (* interact) ();
-DNS el;
-DNS * result;
-{
+static int purportedMatch(DN base,int c,char **v,DNS (*interact)(),DNS el,DNS *result) {
 	char * s;
 	DNS root, x, new = NULLDNS;
 	char * ptr;
@@ -636,13 +575,7 @@ DNS * result;
 	return matches;
 }
 
-static envMatch (c,v,el,interact,result)
-int c;
-char ** v;
-DNS el;
-DNS (* interact) ();
-DNS * result;
-{
+static int envMatch (int c,char **v,DNS el,DNS (*interact)(),DNS *result) {
 	int res;
 
 	if (el == NULLDNS)
@@ -659,13 +592,7 @@ DNS * result;
 
 }
 
-static	friendlyMatch_aux (c,v,el,interact,result)
-int c;
-char ** v;
-envlist el;
-DNS (* interact) ();
-DNS * result;
-{
+static int friendlyMatch_aux (int c,char **v,envlist el,DNS (*interact)(),DNS *result) {
 	if (el == NULLEL)
 		return TRUE;
 
@@ -676,7 +603,7 @@ DNS * result;
 
 }
 
-envlist read_envlist() {
+envlist read_envlist(void) {
 	char * home, *p, *ptr;
 	char ufnrc [LINESIZE];
 	char * def, *opened;
@@ -786,13 +713,7 @@ envlist read_envlist() {
 	return top;
 }
 
-ufn_match (c,v,interact,result,el)
-int c;
-char ** v;
-DNS (* interact) ();
-DNS * result;
-envlist el;
-{
+int ufn_match (int c,char **v,DNS (*interact)(),DNS *result,envlist el) {
 	static int inited = FALSE;
 
 	if ( (!ufnas) && !(inited = ufn_init()))
@@ -815,7 +736,7 @@ envlist el;
 	return (friendlyMatch_aux (c,v,el,interact,result));
 }
 
-ufn_init () {
+int ufn_init (void) {
 	Attr_Sequence as;
 	int result = TRUE;
 
@@ -881,11 +802,7 @@ ufn_init () {
 
 #ifdef	DEBUG
 
-static	print_search (dn, subtree, fi)
-DN	dn;
-char	subtree;
-Filter	fi;
-{
+static void print_search (DN dn, char subtree, Filter fi) {
 	static	PS	nps = NULLPS;
 
 	if (nps == NULLPS) {

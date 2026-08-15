@@ -50,7 +50,7 @@ static struct {
 	NULLCP, NULLCP, 0
 };
 
-tailorHelp() {
+void tailorHelp(void) {
 	int i;
 
 	if (controlCtoQuit)
@@ -64,9 +64,7 @@ tailorHelp() {
 		}
 }
 
-char *findHelp(helpstr)
-char * helpstr;
-{
+char *findHelp(char *helpstr) {
 	int i, n;
 	char * cp;
 
@@ -84,10 +82,7 @@ char * helpstr;
 	return(helpstr);
 }
 
-displayFile(filename, help)
-char * filename;
-int help;
-{
+void displayFile(char *filename, int help) {
 	FILE *fname;
 	char linebuf[LINESIZE];
 	char str[LINESIZE];
@@ -129,9 +124,7 @@ static struct {
 	NULLCP, 0, 0, NULLCP, NULLCP
 };
 
-displayHelp(helpstr)
-char * helpstr;
-{
+void displayHelp(char *helpstr) {
 	SFD cleanupok();
 	void onint1();
 	int i, n, found;
@@ -242,10 +235,7 @@ resetSignal:
 		displayFile(helpstr, TRUE); /* TRUE says this is a help file */
 }
 
-validateSetting(type, value)
-int type;
-char * value;
-{
+int validateSetting(int type, char *value) {
 	char * cp;
 	switch (type) {
 	case 1: /* look for non numeric chars */
@@ -268,8 +258,7 @@ invalidinput:
 	return NOTOK;
 }
 
-void
-displayCurrentSettings() {
+void displayCurrentSettings(void) {
 	int i;
 
 	printf("These are the current settings:\n\n");

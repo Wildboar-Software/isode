@@ -31,9 +31,7 @@ char * mapPhone();
 
 static PS ps = NULLPS;
 
-char *val2str (av)
-AttributeValue  av;
-{
+char *val2str (AttributeValue av) {
 	char       *cp;
 
 	if (ps == NULL
@@ -55,9 +53,7 @@ AttributeValue  av;
 
 	return cp;
 }
-char *val2dnstr (av)
-AttributeValue  av;
-{
+char *val2dnstr (AttributeValue av) {
 	char       *cp;
 
 	if (ps == NULL
@@ -80,10 +76,7 @@ AttributeValue  av;
 	return cp;
 }
 
-printDetails(objectType, lp)
-int objectType;
-struct namelist * lp;
-{
+void printDetails(int objectType, struct namelist *lp) {
 	Attr_Sequence at;
 	AV_Sequence av;
 	char * cp;
@@ -131,11 +124,7 @@ struct namelist * lp;
 	linewrapOff();
 }
 
-printDetailsNumbers(objectType, lp, count)
-int objectType;
-struct namelist * lp;
-int * count;
-{
+void printDetailsNumbers(int objectType, struct namelist *lp, int *count) {
 	Attr_Sequence at;
 	AV_Sequence av;
 	char * cp;
@@ -177,10 +166,7 @@ int * count;
 	linewrapOff();
 }
 
-printPersonOneLiner(lp, number)
-struct namelist * lp;
-int number;
-{
+void printPersonOneLiner(struct namelist *lp, int number) {
 	Attr_Sequence at;
 	char * cp;
 	char mail[LINESIZE], phone[LINESIZE];
@@ -211,9 +197,7 @@ int number;
 /* actually we only want a special handler for the printing, but static
    declarations in dsap/common/post.c force us to do all this */
 
-static de_addrfree (addr)
-struct postaddr * addr;
-{
+static void de_addrfree (struct postaddr *addr) {
 	struct postaddr * next;
 	for (; addr != (struct postaddr *) NULL; addr = next) {
 		next = addr->pa_next;
@@ -222,9 +206,7 @@ struct postaddr * addr;
 	}
 }
 
-static de_addrcmp (a,b)
-struct postaddr * a, *b;
-{
+static int de_addrcmp (struct postaddr *a,struct postaddr *b) {
 	int res;
 	for (; (a != (struct postaddr *) NULL) && (b != (struct postaddr *) NULL) ;
 			a = a->pa_next, b=b->pa_next)
@@ -238,9 +220,7 @@ struct postaddr * a, *b;
 
 }
 
-static struct postaddr * de_addrcpy (a)
-struct postaddr * a;
-{
+static struct postaddr * de_addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
@@ -261,9 +241,7 @@ struct postaddr * a;
 	return (result);
 }
 
-static struct postaddr* de_addrparse (str)
-char * str;
-{
+static struct postaddr* de_addrparse (char *str) {
 	struct postaddr * result = (struct postaddr *) NULL;
 	struct postaddr * a, *b;
 	char * ptr;
@@ -355,9 +333,7 @@ char * str;
 	return (result);
 }
 
-static PE de_addrenc (m)
-struct postaddr * m;
-{
+static PE de_addrenc (struct postaddr *m) {
 	PE ret_pe;
 
 	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
@@ -365,9 +341,7 @@ struct postaddr * m;
 	return (ret_pe);
 }
 
-static struct postaddr * de_addrdec (pe)
-PE pe;
-{
+static struct postaddr * de_addrdec (PE pe) {
 	struct postaddr * m;
 
 	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
@@ -377,11 +351,7 @@ PE pe;
 
 extern int postal_indent;
 
-static de_addrprint (xps,addr,format)
-PS xps;
-struct postaddr * addr;
-int format;
-{
+static de_addrprint (PS xps,struct postaddr *addr,int format) {
 	char * prefix = NULLCP;
 	char prefbuff[100];
 
@@ -411,15 +381,11 @@ int format;
 
 /* special functions for handling email addresses */
 
-static PE de_ia5enc (x)
-char *x;
-{
+static PE de_ia5enc (char *x) {
 	return (ia5s2prim(x,strlen(x)));
 }
 
-static char * de_ia5sdec (pe)
-PE pe;
-{
+static char * de_ia5sdec (PE pe) {
 	int z;
 
 	if (test_prim_pe (pe,PE_CLASS_UNIV,PE_DEFN_IA5S))
@@ -428,10 +394,7 @@ PE pe;
 		return (NULLCP);
 }
 
-de_mailprint (xps,str)
-PS xps;
-char * str;
-{
+void de_mailprint (PS xps,char *str) {
 	char	buf[BUFSIZ], workbuf[BUFSIZ];
 	char	*ptr = buf;
 	char	* cp, * cp2;
@@ -460,11 +423,7 @@ char * str;
 /* modified versioin of dn_print to give appropriately formatted DNs
    the code should only alter the print format for READOUT */
 
-de_dn_print (xps,dn,format)
-PS   xps;
-DN  dn;
-int  format;
-{
+void de_dn_print (PS xps,DN dn,int format) {
 	DN eptr;
 	int pad;
 	char padstr[100];
@@ -508,11 +467,7 @@ int  format;
 	}
 }
 
-de_phone_print (ps,str,format)
-PS ps;
-char * str;
-int format;
-{
+void de_phone_print (PS ps,char *str,int format) {
 	if (*str == T61_MARK) {
 		if (format != READOUT) {
 			ps_print (ps,"{T.61}");
@@ -532,9 +487,7 @@ int format;
 	}
 }
 
-static PE de_strenc (x)
-char *x;
-{
+static PE de_strenc (char *x) {
 	if (*x == T61_MARK) {
 		x++;
 		return (t61s2prim(x,strlen(x)));
@@ -542,9 +495,7 @@ char *x;
 		return (prts2prim(x,strlen(x)));
 }
 
-static char * de_prtsdec (pe)
-PE pe;
-{
+static char * de_prtsdec (PE pe) {
 	int z;
 	char * p, *ptr, val;
 
@@ -582,9 +533,7 @@ static struct pair pairs[] = {
 	NULL
 };
 
-static	de_fax_free (f)
-struct fax *f;
-{
+static void de_fax_free (struct fax *f) {
 	free (f -> number);
 
 	if (f -> bits)
@@ -593,9 +542,7 @@ struct fax *f;
 	free ((char *) f);
 }
 
-static struct fax *de_fax_cpy (a)
-struct fax *a;
-{
+static struct fax *de_fax_cpy (struct fax *a) {
 	struct fax *f;
 
 	f = (struct fax *) smalloc (sizeof *f);
@@ -606,10 +553,7 @@ struct fax *a;
 	return f;
 }
 
-static int  de_fax_cmp (a, b)
-struct fax *a;
-struct fax *b;
-{
+static int  de_fax_cmp (struct fax *a, struct fax *b) {
 	int	    i;
 
 	if (a == (struct fax *) NULL)
@@ -623,11 +567,7 @@ struct fax *b;
 	return pe_cmp (a -> bits, b -> bits);
 }
 
-static	de_fax_print (ps, f, format)
-PS ps;
-struct fax *f;
-int	format;
-{
+static void de_fax_print (PS ps, struct fax *f, int format) {
 	int   i;
 	struct pair *p;
 	PE    pe;
@@ -674,9 +614,7 @@ int	format;
 	}
 }
 
-static struct fax *de_str2fax (str)
-char  *str;
-{
+static struct fax *de_str2fax (char *str) {
 	int	    value;
 	char  *ptr,
 		  **ap;
@@ -750,9 +688,7 @@ no_allocate:
 	return f;
 }
 
-static PE  de_fax_enc (f)
-struct fax *f;
-{
+static PE  de_fax_enc (struct fax *f) {
 	PE	pe = NULLPE;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
@@ -765,9 +701,7 @@ struct fax *f;
 	return pe;
 }
 
-static struct fax *de_fax_dec (pe)
-PE	pe;
-{
+static struct fax *de_fax_dec (PE pe) {
 	struct fax *f;
 
 	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
@@ -785,7 +719,7 @@ PE	pe;
 	return f;
 }
 
-specialSyntaxHandlers() {
+void specialSyntaxHandlers(void) {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

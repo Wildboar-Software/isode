@@ -34,10 +34,7 @@ VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int listPRRs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listPRRs(char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == PERSON)
@@ -49,11 +46,7 @@ struct namelist ** listp;
 }
 
 void
-printListPRRs(str, listp, searchparent, pdet)
-char * str;
-struct namelist * listp;
-int searchparent, pdet;
-{
+printListPRRs(char *str, struct namelist *listp, int searchparent, int pdet) {
 	struct namelist * x;
 	char * savestr;
 	static char lastsavedcomp[LINESIZE];
@@ -93,9 +86,7 @@ int searchparent, pdet;
 }
 
 void
-freePRRs(listpp)
-struct namelist ** listpp;
-{
+freePRRs(struct namelist **listpp) {
 	struct namelist * w, * x;
 
 	w = *listpp;
@@ -110,15 +101,12 @@ struct namelist ** listpp;
 	*listpp = NULLLIST;
 }
 
-freePRRSearchArgs() {
+void freePRRSearchArgs(void) {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
 
-int listAllPRRs(parentstr, listp)
-char * parentstr;
-struct namelist ** listp;
-{
+int listAllPRRs(char *parentstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgs(parentstr, SRA_WHOLESUBTREE);
@@ -133,10 +121,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int listMatchingPRRs(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listMatchingPRRs(char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -172,10 +157,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int readExactPRR(objectstr, listp)
-char * objectstr;
-struct namelist ** listp;
-{
+int readExactPRR(char *objectstr, struct namelist **listp) {
 	int ret;
 
 	ret = readPerson(objectstr, listp);
@@ -183,10 +165,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int makeListPRRs(listp, parentstr)
-struct namelist ** listp;
-char * parentstr;
-{
+int makeListPRRs(struct namelist **listp, char *parentstr) {
 	entrystruct * x;
 	int retval;
 	void onalarm();
@@ -253,10 +232,7 @@ char * parentstr;
 	return OK;
 }
 
-int readPerson(pstr, plistp)
-char * pstr;
-struct namelist ** plistp;
-{
+int readPerson(char *pstr, struct namelist **plistp) {
 	static struct ds_read_arg rarg;
 	static struct ds_read_result rresult;
 	static struct DSError rerror;
@@ -301,10 +277,7 @@ struct namelist ** plistp;
 }
 
 struct ds_search_arg *
-fillMostPRRSearchArgs(parentstr, searchdepth)
-char * parentstr;
-int searchdepth;
-{
+fillMostPRRSearchArgs(char *parentstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -334,9 +307,7 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllPRRFilter(fpp)
-struct s_filter ** fpp;
-{
+void makeAllPRRFilter(struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -345,9 +316,7 @@ struct s_filter ** fpp;
 	fp->flt_next = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ROOM);
 }
 
-makeExactPRRFilter(fpp)
-struct s_filter ** fpp;
-{
+void makeExactPRRFilter(struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -357,10 +326,7 @@ struct s_filter ** fpp;
 }
 
 void
-makeExplicitPRRFilter(prrstr, fpp)
-char * prrstr;
-struct s_filter ** fpp;
-{
+makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fpsav, * fpsav2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -397,10 +363,7 @@ struct s_filter ** fpp;
 }
 
 void
-prrFilter1(prrstr, fpp)
-char * prrstr;
-struct s_filter ** fpp;
-{
+prrFilter1(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp1;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -437,10 +400,7 @@ struct s_filter ** fpp;
 }
 
 void
-prrFilter2(prrstr, fpp)
-char * prrstr;
-struct s_filter ** fpp;
-{
+prrFilter2(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	char firststring[LINESIZE];
 	char * fsp, * lsp, * laststring;
@@ -473,10 +433,7 @@ struct s_filter ** fpp;
 }
 
 void
-prrFilter3(prrstr, fpp)
-char * prrstr;
-struct s_filter ** fpp;
-{
+prrFilter3(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -490,10 +447,7 @@ struct s_filter ** fpp;
 }
 
 void
-prrFilter4(prrstr, fpp)
-char * prrstr;
-struct s_filter ** fpp;
-{
+prrFilter4(char *prrstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	if (fuzzyMatching == FALSE) {

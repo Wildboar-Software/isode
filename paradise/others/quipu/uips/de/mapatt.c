@@ -9,9 +9,7 @@ extern struct mapnamelist * mapnamelp;
 static struct mapnamelist * taillp;
 
 void
-addToAttList(str)
-char *str;
-{
+addToAttList(char *str) {
 	char * cp;
 
 	cp = index(str, ' ');
@@ -25,9 +23,7 @@ char *str;
 }
 
 void
-addAttNode(tablename, nicename)
-char * tablename, * nicename;
-{
+addAttNode(char *tablename, char *nicename) {
 	struct mapnamelist * mnlp;
 
 	mnlp = mapname_alloc();
@@ -41,9 +37,7 @@ char * tablename, * nicename;
 	mnlp->next = NULLMNLIST;
 }
 
-char *mapAttName(tablename)
-char * tablename;
-{
+char *mapAttName(char *tablename) {
 	struct mapnamelist * mnlp;
 
 	for (mnlp = mapnamelp; mnlp != NULLMNLIST; mnlp = mnlp->next)

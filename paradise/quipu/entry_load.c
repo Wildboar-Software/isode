@@ -41,9 +41,7 @@ static PS ps;
 
 #define EDBLEN	3	/* length of string "EDB" */
 
-fileexists (fname)
-char * fname;
-{
+int fileexists (char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -54,9 +52,7 @@ char * fname;
 	return TRUE;
 }
 
-static dir_exists (fname)
-char * fname;
-{
+static int dir_exists (char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -73,11 +69,7 @@ char * fname;
 	return FALSE;
 }
 
-static read_mapped_rdn (aps,name,file)
-PS aps;
-char * name;
-char * file;
-{
+static int read_mapped_rdn (PS aps,char *name,char *file) {
 	FILE * mapfp;
 #ifdef	TURBO_DISK
 	char *ptr, *newname, *tmp, *fgetline();
@@ -255,11 +247,7 @@ static int rdn2filename (PS aps, RDN rdn, char make) {
 	return NOTOK;
 }
 
-static dn2filename (aps,dn,make)
-PS aps;
-DN dn;
-char make;
-{
+static int dn2filename (PS aps,DN dn,char make) {
 	if (treedir != NULLCP) {
 		ps_print (aps,isodefile(treedir,0));
 		if (make) {
@@ -292,9 +280,7 @@ char make;
 
 }
 
-char * dn2edbfile (dn)
-DN dn;
-{
+char * dn2edbfile (DN dn) {
 	PS aps;
 	static char result [LINESIZE];
 
@@ -321,10 +307,7 @@ DN dn;
 	return result;
 }
 
-static file_check (offset,entryptr)
-int offset;
-Entry entryptr;
-{
+static int file_check (int offset,Entry entryptr) {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
 
@@ -339,9 +322,7 @@ Entry entryptr;
 	return (NOTOK);
 }
 
-static sibling_expected (e)
-Entry e;
-{
+static int sibling_expected (Entry e) {
 	AV_Sequence avs;
 
 	if (e->e_external)
@@ -364,10 +345,7 @@ Entry e;
 
 static char got_all = TRUE;
 
-static load_a_kid(e, offset)
-Entry   e;
-int     offset;
-{
+static int load_a_kid(Entry e, int offset) {
 	static int      entry_load_kids();
 
 	if ((!e->e_external) &&
@@ -410,10 +388,7 @@ int     offset;
 	return(OK);
 }
 
-static entry_load_kids (entryptr,offset)
-Avlnode	*entryptr;	/* in this case, entryptr is really a tree of kids */
-int offset;
-{
+static int entry_load_kids (Avlnode *entryptr /* in this case, entryptr is really a tree of kids */,int offset) {
 	Entry	akid, parent;
 
 	ps->ps_ptr = filename + offset;
@@ -443,27 +418,19 @@ int offset;
 
 static char got_subtree;
 
-static check_entry_free (e)
-Entry e;
-{
+static void check_entry_free (Entry e) {
 	if (e->e_allchildrenpresent < 2)
 		got_subtree = FALSE;
 	entry_free(e);
 }
 
-parent_link(e, parent)
-Entry   e;
-Entry   parent;
-{
+int parent_link(Entry e, Entry parent) {
 	e->e_parent = parent;
 	set_inheritance (e);
 	return(OK);
 }
 
-static merge_entry(newentry, oldtree)
-Entry   newentry;
-Avlnode *oldtree;
-{
+static int merge_entry(Entry newentry, Avlnode *oldtree) {
 	Entry   p;
 	int     entry_cmp();
 
@@ -488,10 +455,7 @@ Avlnode *oldtree;
 	return(OK);
 }
 
-Entry subtree_load (parent,dn)
-Entry parent;
-DN dn;
-{
+Entry subtree_load (Entry parent,DN dn) {
 	char failed = FALSE;
 	Avlnode	*treetop;
 	Entry	akid;
@@ -587,9 +551,7 @@ DN dn;
 
 int	refreshing;
 
-refresh_from_disk(dn)
-DN	dn;
-{
+int refresh_from_disk(DN dn) {
 	Entry child;
 	Entry parent;
 	Entry tmp;

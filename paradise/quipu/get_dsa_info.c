@@ -43,12 +43,7 @@ extern Attr_Sequence entry_find_type();
 *  This is called during the DSA initialisation, to find the name THIS dsa.
 */
 
-int	  get_dsa_info(dn, dn_stack, err, di_p)
-DN		  dn;
-struct dn_seq	* dn_stack;
-struct DSError	* err;
-struct di_block	**di_p;
-{
+int	  get_dsa_info(DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di_block **di_p) {
 	struct di_block	* di_tmp;
 	struct di_block	* di_lookup;
 	struct oper_act	* on = NULLOPER;
@@ -202,9 +197,7 @@ struct di_block	**di_p;
 	}
 }
 
-dsa_info_result_wakeup(on)
-struct oper_act	* on;
-{
+void dsa_info_result_wakeup(struct oper_act *on) {
 	EntryInfo	* ent_res;
 	Entry		  di_ent;
 	struct di_block	* di;
@@ -299,9 +292,7 @@ struct oper_act	* on;
 	oper_extract(on);
 }
 
-dsa_info_error_wakeup(on)
-struct oper_act	* on;
-{
+void dsa_info_error_wakeup(struct oper_act *on) {
 	struct DSError	* err = &(on->on_resp.di_error.de_err);
 	struct di_block	* di;
 
@@ -348,9 +339,7 @@ struct oper_act	* on;
 	}
 }
 
-dsa_info_fail_wakeup(on)
-struct oper_act	* on;
-{
+void dsa_info_fail_wakeup(struct oper_act *on) {
 	/*
 	*  Last attempt to get dsa info failed somehow.
 	*  If there are any more "di_block"s to attempt it must be
@@ -380,9 +369,7 @@ struct oper_act	* on;
 	*/
 }
 
-char * get_entry_passwd (as)
-Attr_Sequence as;
-{
+char * get_entry_passwd (Attr_Sequence as) {
 	extern AttributeType at_password;
 	Attr_Sequence at;
 
@@ -399,9 +386,7 @@ Attr_Sequence as;
 
 }
 
-make_dsa_bind_arg (arg)
-struct ds_bind_arg *arg;
-{
+void make_dsa_bind_arg (struct ds_bind_arg *arg) {
 #ifdef NEXT_VERSION
 	Entry my_entry;
 	char * passwd;
@@ -469,10 +454,7 @@ struct ds_bind_arg *arg;
 #endif
 }
 
-struct oper_act	* make_get_dsa_info_op(dn, di)
-DN		  dn;
-struct di_block	* di;
-{
+struct oper_act	* make_get_dsa_info_op(DN dn, struct di_block *di) {
 	struct di_block	* di_tmp;
 	struct oper_act	* on_tmp;
 	struct ds_read_arg	* arg;
@@ -507,10 +489,7 @@ struct di_block	* di;
 	return(on_tmp);
 }
 
-set_my_chain_args(cha, dn)
-struct chain_arg	* cha;
-DN dn;
-{
+void set_my_chain_args(struct chain_arg *cha, DN dn) {
 	cha->cha_originator = dn_cpy(mydsadn);
 	cha->cha_target = dn_cpy(dn);
 	cha->cha_progress.op_resolution_phase = OP_PHASE_NOTSTARTED;
@@ -524,9 +503,7 @@ DN dn;
 	cha->cha_timelimit = NULLCP;
 }
 
-set_my_common_args(ca)
-struct common_args	* ca;
-{
+void set_my_common_args(struct common_args *ca) {
 	ca->ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	ca->ca_servicecontrol.svc_prio = SVC_PRIO_HIGH;
 	ca->ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -541,9 +518,7 @@ struct common_args	* ca;
 	ca->ca_extensions = (struct extension *) NULL;
 }
 
-quipu_ctx_supported (ptr)
-Entry ptr;
-{
+int quipu_ctx_supported (Entry ptr) {
 	AV_Sequence avs;
 	Attr_Sequence as;
 	extern OID quipu_dsa_oid;
@@ -607,9 +582,7 @@ Entry ptr;
 	return res;
 }
 
-quipu_version_7(eptr)
-Entry eptr;
-{
+int quipu_version_7(Entry eptr) {
 	char * p, *t, *s;
 	int res, vrsn;
 	char * v;

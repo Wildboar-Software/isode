@@ -19,11 +19,7 @@ void searchFail();
 char * mapAttName();
 extern int orgEntered;
 
-int de_prompt_yesno(prompt, value, default_string)
-char prompt[];
-char * value;
-char default_string[];
-{
+int de_prompt_yesno(char prompt[], char *value, char default_string[]) {
 
 	extern char no_string[];
 	extern char yesnoonly[];
@@ -63,10 +59,7 @@ char default_string[];
 	return;
 }
 
-int de_prompt_value(prompt, value)
-char prompt[];
-char * value;
-{
+int de_prompt_value(char prompt[], char *value) {
 	char * temp;
 	temp = malloc(LINESIZE);
 	sprintf(temp, prompt);
@@ -85,10 +78,7 @@ char * value;
 	return;
 }
 
-int ask_addr(attr_name, lines)
-char * attr_name;
-char * lines;
-{
+int ask_addr(char *attr_name, char *lines) {
 
 	char * addr_ptr[LINES_PA+1];
 	char str_pa[LINESIZE];
@@ -232,10 +222,7 @@ prompt_value2:
 	return OK;
 }
 
-int ask_tlx(attr_name, lines)
-char * attr_name;
-char * lines;
-{
+int ask_tlx(char *attr_name, char *lines) {
 
 	char * tlx_ptr[LINES_TLX+1];
 	char str_pa[LINESIZE];
@@ -394,9 +381,7 @@ prompt_value2:
 	return OK;
 }
 
-int is_postal_address(str)
-char * str;
-{
+int is_postal_address(char *str) {
 	if (!(strcmp(str, "postalAddress"))     ||
 			!(strcmp(str, "homePostalAddress")) ||
 			!(strcmp(str, "registeredAddress")) ||
@@ -407,9 +392,7 @@ char * str;
 	}
 }
 
-int is_dn(str)
-char * str;
-{
+int is_dn(char *str) {
 	if (!(strcmp(str, "roleOccupant"))		||
 			!(strcmp(str, "secretary"))		||
 			!(strcmp(str, "aliasedObjectName"))	||
@@ -420,9 +403,7 @@ char * str;
 	}
 }
 
-int is_phone_fax(str)
-char * str;
-{
+int is_phone_fax(char *str) {
 	if (!(strcmp(str, "telephoneNumber"))		||
 			!(strcmp(str, "homePhone"))			||
 			!(strcmp(str, "facsimileTelephoneNumber"))) {
@@ -432,9 +413,7 @@ char * str;
 	}
 }
 
-int is_tlx(str)
-char * str;
-{
+int is_tlx(char *str) {
 	if (!(strcmp(str, "telexNumber"))) {
 		return TRUE;
 	} else {
@@ -442,9 +421,7 @@ char * str;
 	}
 }
 
-int is_x400(str)
-char * str;
-{
+int is_x400(char *str) {
 	if (!(strcmp(str, "mhsORAddresses"))) {
 		return TRUE;
 	} else {
@@ -452,10 +429,7 @@ char * str;
 	}
 }
 
-int ask_dnhnc(str, attr_name)
-char * str;  /* Should have been malloc'd before */
-char attr_name[];
-{
+int ask_dnhnc(char *str, char attr_name[]) {
 
 	struct namelist *plp = NULLLIST;
 
@@ -630,10 +604,7 @@ prompt_dn:
 	}
 }
 
-int get_posdn(posdn, new)
-char posdn[];
-int * new;
-{
+int get_posdn(char posdn[], int *new) {
 	struct namelist * clp = NULLLIST;
 	struct namelist * olp = NULLLIST;
 	struct namelist * oulp = NULLLIST;
@@ -813,9 +784,7 @@ prompt_ou:
 	return OK;
 }
 
-int ask_password_entry(pswd)
-char pswd[];
-{
+int ask_password_entry(char pswd[]) {
 	char * getpass();
 	char * temp2;
 	char new_pswd[LINESIZE];

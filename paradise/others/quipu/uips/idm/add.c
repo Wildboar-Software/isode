@@ -122,10 +122,7 @@ int de_Add() {
 
 }
 
-int prompt_atts(object, atts)
-int object;
-struct namelist * atts;
-{
+int prompt_atts(int object, struct namelist *atts) {
 #define PADCHARS 22
 	char * all_ok;
 	char * cp;
@@ -445,9 +442,7 @@ add_again:
 	return OK;
 }
 
-int bind_to_initial_DSA(initial_dsa_address)
-char * initial_dsa_address;
-{
+int bind_to_initial_DSA(char *initial_dsa_address) {
 
 	int status;
 
@@ -1056,9 +1051,7 @@ int set_adarg() {
 	adarg.ada_common.ca_extensions = (struct extension *) NULL;
 }
 
-int check_error(error)
-struct	DSError		error;
-{
+int check_error(struct	DSError error) {
 	static int first_time = TRUE;
 	int status;
 	int wait_result;

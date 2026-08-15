@@ -92,10 +92,7 @@ jmp_buf sjbuf;
 
 SFD cleanupok();
 
-int main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	int res;
 	void doUfnSearch();
 
@@ -355,10 +352,7 @@ int doCountry() {
 	}
 }
 
-int doOrganisation(matchstring, searchUnder)
-char matchstring [];
-int searchUnder;
-{
+int doOrganisation(char matchstring[], int searchUnder) {
 	int res;
 
 	if ((strcmp(qinfo[ORG].entered, qinfo[ORG].defvalue) == 0) &&
@@ -456,9 +450,7 @@ int searchUnder;
 	}
 }
 
-int searchOrgUnderLocality(costr)
-char * costr;
-{
+int searchOrgUnderLocality(char *costr) {
 	int res, noLocs;
 
 	resetprint("No organisations match `%s'\n\n", qinfo[ORG].entered);
@@ -512,9 +504,7 @@ char * costr;
 	}
 }
 
-int doOU(matchstring)
-char matchstring [];
-{
+int doOU(char matchstring[]) {
 
 	if ((strcmp(qinfo[ORGUNIT].entered, qinfo[ORGUNIT].defvalue) == 0) &&
 			(qinfo[ORGUNIT].lp != NULLLIST) && (qinfo[ORGUNIT].listlen == 1)) {
@@ -595,10 +585,7 @@ char matchstring [];
 	}
 }
 
-int doPRR(matchstring, searchparent)
-char matchstring [];
-int searchparent;
-{
+int doPRR(char matchstring[], int searchparent) {
 
 	if ((strcmp(qinfo[PERSON].entered, qinfo[PERSON].defvalue) == 0) &&
 			(qinfo[PERSON].lp != NULLLIST) && (qinfo[PERSON].listlen == 1)) {
@@ -666,9 +653,7 @@ int searchparent;
 	return START_NEW_QUERY;
 }
 
-printNames(objectType)
-int objectType;
-{
+void printNames(int objectType) {
 	switch (objectType) {
 	case COUNTRY:
 		printLastComponent(INDENTON, qinfo[COUNTRY].lp->name,
@@ -707,27 +692,23 @@ int objectType;
 	}
 }
 
-printCountry() {
+void printCountry(void) {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
-void
-foundFollowing() {
+void foundFollowing(void) {
 	resetprint("\nFound the following entries.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
-void
-matchFollowing() {
+void matchFollowing(void) {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
 /* routine returns the number of an entry selected from a list, or zero
    otherwise */
-int enterString(objectType)
-int objectType;
-{
+int enterString(int objectType) {
 	char prompt[LINESIZE];
 	static char prstr[] = ":-";
 	static char gotValue[LINESIZE] = "";
@@ -833,13 +814,7 @@ int objectType;
 	return numEnt;
 }
 
-enterAndValidate(prompt, buf, objectType, defaultValue, lp, nep)
-char * prompt, * buf;
-int objectType;
-char * defaultValue;
-struct namelist * lp;
-int * nep;
-{
+void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep) {
 	char * cp, * cp2;
 	int i, n, isnum;
 
@@ -984,9 +959,7 @@ int * nep;
 	free(cp);
 }
 
-char enterYesNo(str)
-char * str;
-{
+char enterYesNo(char *str) {
 	char buf[LINESIZE];
 	int i;
 
@@ -1003,18 +976,17 @@ char * str;
 	}
 }
 
-displayValidWildCards() {
+void displayValidWildCards(void) {
 	printf("The following wild-card formats are acceptable:\n");
 	printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
 
-countryCodeMessage(str) {
+void countryCodeMessage(char *str) {
 	printf("<%s> is not a valid two-letter country code.\n", str);
 	printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
 
-void
-onint1() {
+void onint1(void) {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -1030,13 +1002,11 @@ onint1() {
 	longjmp(sjbuf, 0);
 }
 
-SFD cleanupok() {
+SFD cleanupok(void) {
 	cleanup(0);
 }
 
-int cleanup(exitCode)
-int exitCode;
-{
+int cleanup(int exitCode) {
 	if (boundToDSA == TRUE)
 		de_unbind();
 #ifdef SPEC_MALL
@@ -1046,8 +1016,7 @@ int exitCode;
 }
 
 /* the flushes need dealing with properly */
-void
-onalarm() {
+void onalarm(void) {
 
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
@@ -1068,9 +1037,7 @@ onalarm() {
 	dotsPrinted++;
 }
 
-searchFail(objectType)
-int objectType;
-{
+int searchFail(int objectType) {
 	int problem;
 	searchfail = TRUE;
 	if (abandoned) {
@@ -1119,10 +1086,7 @@ int objectType;
 	return problem;
 }
 
-void
-de_exit(exitCode)
-int exitCode;
-{
+void de_exit(int exitCode) {
 	void exit();
 
 	if (byeByeMessage == TRUE)

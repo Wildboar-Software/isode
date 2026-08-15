@@ -30,10 +30,7 @@ orfilter() {
 }
 
 struct s_filter *
-eqfilter(matchtype, type, value)
-int matchtype;
-char * type, * value;
-{
+eqfilter(int matchtype, char *type, char *value) {
 	struct s_filter * fp;
 	AttributeType at;
 
@@ -49,10 +46,7 @@ char * type, * value;
 }
 
 struct s_filter *
-subsfilter(substrtype, type, value)
-int substrtype;
-char * type, * value;
-{
+subsfilter(int substrtype, char *type, char *value) {
 	struct s_filter * fp;
 	AttributeType at;
 
@@ -86,9 +80,7 @@ char * type, * value;
 }
 
 struct s_filter *
-presfilter(type)
-char * type;
-{
+presfilter(char *type) {
 	struct s_filter * fp;
 
 	fp = filter_alloc();

@@ -64,9 +64,7 @@ restoreSavedLocs() {
 }
 
 void
-copyLocs(a, b)
-struct query * a, * b;
-{
+copyLocs(struct query *a, struct query *b) {
 	struct namelist * lp, ** slp;
 
 	strcpy(a->defvalue, b->defvalue);
@@ -84,10 +82,7 @@ struct query * a, * b;
 	*slp = NULLLIST;
 }
 
-int listLocs(cstr, lstr, llistp)
-char * cstr, * lstr;
-struct namelist ** llistp;
-{
+int listLocs(char *cstr, char *lstr, struct namelist **llistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == LOCALITY)
@@ -99,10 +94,7 @@ struct namelist ** llistp;
 }
 
 void
-printListLocs(loc, llistp)
-char * loc;
-struct namelist * llistp;
-{
+printListLocs(char *loc, struct namelist *llistp) {
 	struct namelist * x;
 	int i;
 
@@ -124,9 +116,7 @@ freeSavedLocs() {
 }
 
 void
-freeLocs(listpp)
-struct namelist ** listpp;
-{
+freeLocs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -142,12 +132,12 @@ struct namelist ** listpp;
 }
 
 void
-freeLocListArgs() {
+freeLocListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
 void
-freeLocSearchArgs() {
+freeLocSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
@@ -163,10 +153,7 @@ freeLocSearchArgs() {
 	*/
 }
 
-int listAllLocs(cstr, llistp)
-char * cstr;
-struct namelist ** llistp;
-{
+int listAllLocs(char *cstr, struct namelist **llistp) {
 	int ret;
 
 	if (quipuMastersCo == FALSE) {
@@ -189,10 +176,7 @@ struct namelist ** llistp;
 	return ret;
 }
 
-int listMatchingLocs(cstr, lstr, llistp)
-char * cstr, * lstr;
-struct namelist ** llistp;
-{
+int listMatchingLocs(char *cstr, char *lstr, struct namelist **llistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -238,10 +222,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int readExactLoc(lstr, llistp)
-char * lstr;
-struct namelist ** llistp;
-{
+int readExactLoc(char *lstr, struct namelist **llistp) {
 	int ret;
 
 	ret = readLoc(lstr, llistp);
@@ -249,9 +230,7 @@ struct namelist ** llistp;
 	return ret;
 }
 
-int reallyMakeListLocs(llistp)
-struct namelist ** llistp;
-{
+int reallyMakeListLocs(struct namelist **llistp) {
 	struct subordinate * x;
 	int retval;
 	char * cp;
@@ -290,9 +269,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int makeListLocanisations(llistp)
-struct namelist ** llistp;
-{
+int makeListLocanisations(struct namelist **llistp) {
 	entrystruct * x;
 	int retval;
 
@@ -324,10 +301,7 @@ struct namelist ** llistp;
 	return OK;
 }
 
-int readLoc(lstr, llistp)
-char * lstr;
-struct namelist ** llistp;
-{
+int readLoc(char *lstr, struct namelist **llistp) {
 	static struct ds_read_arg rarg;
 	static struct ds_read_result rresult;
 	static struct DSError rerror;
@@ -372,9 +346,7 @@ struct namelist ** llistp;
 }
 
 struct ds_list_arg *
-fillMostLocListArgs(str)
-char * str;
-{
+fillMostLocListArgs(char *str) {
 	static struct ds_list_arg arg;
 	static CommonArgs sca = default_common_args;
 
@@ -387,10 +359,7 @@ char * str;
 }
 
 struct ds_search_arg *
-fillMostLocSearchArgs(cstr, searchdepth)
-char * cstr;
-int searchdepth;
-{
+fillMostLocSearchArgs(char *cstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -423,17 +392,12 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllLocFilter(fpp)
-struct s_filter ** fpp;
-{
+makeAllLocFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_LOCALITY);
 }
 
 void
-makeExplicitLocFilter(lstr, fpp)
-char * lstr;
-struct s_filter ** fpp;
-{
+makeExplicitLocFilter(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * lstr1, * lstr2;
@@ -459,10 +423,7 @@ struct s_filter ** fpp;
 }
 
 void
-locFilter1(lstr, fpp)
-char * lstr;
-struct s_filter ** fpp;
-{
+locFilter1(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -472,10 +433,7 @@ struct s_filter ** fpp;
 }
 
 void
-locFilter2(lstr, fpp)
-char * lstr;
-struct s_filter ** fpp;
-{
+locFilter2(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -485,10 +443,7 @@ struct s_filter ** fpp;
 }
 
 void
-locFilter3(lstr, fpp)
-char * lstr;
-struct s_filter ** fpp;
-{
+locFilter3(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -498,10 +453,7 @@ struct s_filter ** fpp;
 }
 
 void
-locFilter4(lstr, fpp)
-char * lstr;
-struct s_filter ** fpp;
-{
+locFilter4(char *lstr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	if (fuzzyMatching == FALSE) {

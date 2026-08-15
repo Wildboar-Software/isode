@@ -35,10 +35,7 @@ void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};
 VFP normalOrg[] = {orgFilter1, orgFilter2, orgFilter3, orgFilter4, NULLVFP};
 
-int listOrgs(cstr, ostr, olistp)
-char * cstr, * ostr;
-struct namelist ** olistp;
-{
+int listOrgs(char *cstr, char *ostr, struct namelist **olistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == ORG)
@@ -50,10 +47,7 @@ struct namelist ** olistp;
 }
 
 void
-printListOrgs(org, olistp)
-char * org;
-struct namelist * olistp;
-{
+printListOrgs(char *org, struct namelist *olistp) {
 	struct namelist * x;
 	int i;
 
@@ -71,9 +65,7 @@ struct namelist * olistp;
 }
 
 void
-freeOrgs(listpp)
-struct namelist ** listpp;
-{
+freeOrgs(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -89,12 +81,12 @@ struct namelist ** listpp;
 }
 
 void
-freeOrgListArgs() {
+freeOrgListArgs(void) {
 	dn_free(larg.lsa_object);
 }
 
 void
-freeOrgSearchArgs() {
+freeOrgSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
@@ -110,10 +102,7 @@ freeOrgSearchArgs() {
 	*/
 }
 
-int listAllOrgs(cstr, olistp)
-char * cstr;
-struct namelist ** olistp;
-{
+int listAllOrgs(char *cstr, struct namelist **olistp) {
 	int ret;
 
 	if (quipuMastersCo == FALSE) {
@@ -134,10 +123,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int readOrg(ostr, olistp)
-char * ostr;
-struct namelist ** olistp;
-{
+int readOrg(char *ostr, struct namelist **olistp) {
 	static struct ds_read_arg rarg;
 	static struct ds_read_result rresult;
 	static struct DSError rerror;
@@ -174,9 +160,7 @@ struct namelist ** olistp;
 }
 
 struct ds_list_arg *
-fillMostOrgListArgs(str)
-char * str;
-{
+fillMostOrgListArgs(char *str) {
 	static struct ds_list_arg arg;
 	static CommonArgs sca = default_common_args;
 
@@ -187,10 +171,7 @@ char * str;
 	return (&arg);
 }
 
-int readExactOrg(ostr, olistp)
-char * ostr;
-struct namelist ** olistp;
-{
+int readExactOrg(char *ostr, struct namelist **olistp) {
 	int ret;
 
 	ret = readOrg(ostr, olistp);
@@ -198,9 +179,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int reallyMakeListOrgs(olistp)
-struct namelist ** olistp;
-{
+int reallyMakeListOrgs(struct namelist **olistp) {
 	struct subordinate * x;
 	int retval;
 	char * cp;
@@ -243,10 +222,7 @@ list_orgs:
 	return OK;
 }
 
-int listMatchingOrgs(cstr, ostr, olistp)
-char * cstr, * ostr;
-struct namelist ** olistp;
-{
+int listMatchingOrgs(char *cstr, char *ostr, struct namelist **olistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -289,10 +265,7 @@ struct namelist ** olistp;
 	return OK;
 }
 
-int listExactOrgs(ostr, olistp)
-char * ostr;
-struct namelist ** olistp;
-{
+int listExactOrgs(char *ostr, struct namelist **olistp) {
 	int ret;
 
 	sarg = * fillMostOrgSearchArgs(ostr, SRA_BASEOBJECT);
@@ -303,9 +276,7 @@ struct namelist ** olistp;
 	return ret;
 }
 
-int makeListOrganisations(olistp)
-struct namelist ** olistp;
-{
+int makeListOrganisations(struct namelist **olistp) {
 	entrystruct * x;
 	int retval;
 
@@ -336,10 +307,7 @@ struct namelist ** olistp;
 }
 
 struct ds_search_arg *
-fillMostOrgSearchArgs(cstr, searchdepth)
-char * cstr;
-int searchdepth;
-{
+fillMostOrgSearchArgs(char *cstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;
@@ -375,17 +343,12 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllOrgFilter(fpp)
-struct s_filter ** fpp;
-{
+void makeAllOrgFilter(struct s_filter **fpp) {
 	*fpp = eqfilter(FILTERITEM_EQUALITY, DE_OBJECT_CLASS, DE_ORGANISATION);
 }
 
 void
-makeExplicitOrgFilter(ostr, fpp)
-char * ostr;
-struct s_filter ** fpp;
-{
+makeExplicitOrgFilter(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -411,10 +374,7 @@ struct s_filter ** fpp;
 }
 
 void
-orgFilter1(ostr, fpp)
-char * ostr;
-struct s_filter ** fpp;
-{
+orgFilter1(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -424,10 +384,7 @@ struct s_filter ** fpp;
 }
 
 void
-orgFilter2(ostr, fpp)
-char * ostr;
-struct s_filter ** fpp;
-{
+orgFilter2(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -437,10 +394,7 @@ struct s_filter ** fpp;
 }
 
 void
-orgFilter3(ostr, fpp)
-char * ostr;
-struct s_filter ** fpp;
-{
+orgFilter3(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();
@@ -450,10 +404,7 @@ struct s_filter ** fpp;
 }
 
 void
-orgFilter4(ostr, fpp)
-char * ostr;
-struct s_filter ** fpp;
-{
+orgFilter4(char *ostr, struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = andfilter();

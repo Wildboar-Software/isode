@@ -30,10 +30,7 @@ VFP explicitPRRRm[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRRRm[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
 /*VFP normalPRR[] = {prrFilter1, prrFilter3, NULLVFP};*/
 
-int listPRRRm(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listPRRRm(char *parentstr, char *thisstr, struct namelist **listp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == PERSON)
@@ -44,10 +41,7 @@ struct namelist ** listp;
 		return (listMatchingPRRRm(parentstr, thisstr, listp));
 }
 
-int listAllPRRRm(parentstr, listp)
-char * parentstr;
-struct namelist ** listp;
-{
+int listAllPRRRm(char *parentstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgRm(parentstr, SRA_WHOLESUBTREE);
@@ -62,10 +56,7 @@ struct namelist ** listp;
 	return ret;
 }
 
-int listMatchingPRRRm(parentstr, thisstr, listp)
-char * parentstr, * thisstr;
-struct namelist ** listp;
-{
+int listMatchingPRRRm(char *parentstr, char *thisstr, struct namelist **listp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -101,10 +92,7 @@ struct namelist ** listp;
 	return OK;
 }
 
-int listExactPRRRm(objectstr, listp)
-char * objectstr;
-struct namelist ** listp;
-{
+int listExactPRRRm(char *objectstr, struct namelist **listp) {
 	int ret;
 
 	sarg = * fillMostPRRSearchArgRm(objectstr, SRA_BASEOBJECT);
@@ -116,10 +104,7 @@ struct namelist ** listp;
 }
 
 struct ds_search_arg *
-fillMostPRRSearchArgRm(parentstr, searchdepth)
-char * parentstr;
-int searchdepth;
-{
+fillMostPRRSearchArgRm(char *parentstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	Attr_Sequence * atl;
 	AttributeType at;

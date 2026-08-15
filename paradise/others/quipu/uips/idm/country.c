@@ -40,9 +40,7 @@ VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
 
 int listAtRoot = TRUE;
 
-int makeRootCountry(clistp)
-struct namelist ** clistp;
-{
+int makeRootCountry(struct namelist **clistp) {
 	*clistp = list_alloc();
 	(*clistp)->name = copy_string("root");
 	(*clistp)->ats = NULLATTR;
@@ -50,10 +48,7 @@ struct namelist ** clistp;
 	return OK;
 }
 
-int listCos(cstr, clistp)
-char * cstr;
-struct namelist ** clistp;
-{
+int listCos(char *cstr, struct namelist **clistp) {
 	clearProblemFlags();
 	initAlarm();
 	if (exactMatch == COUNTRY)
@@ -68,9 +63,7 @@ struct namelist ** clistp;
 }
 
 void
-printListCos(clistp)
-struct namelist * clistp;
-{
+printListCos(struct namelist *clistp) {
 	struct namelist * x;
 	int i;
 
@@ -85,9 +78,7 @@ struct namelist * clistp;
 }
 
 void
-freeCos(listpp)
-struct namelist ** listpp;
-{
+freeCos(struct namelist **listpp) {
 	struct namelist * x, * y;
 
 	x = *listpp;
@@ -103,14 +94,11 @@ struct namelist ** listpp;
 }
 
 void
-freeCoSearchArgs() {
+freeCoSearchArgs(void) {
 	dn_free(sarg.sra_baseobject);
 }
 
-listMatchingCos(cstr, clistp)
-char * cstr;
-struct namelist ** clistp;
-{
+int listMatchingCos(char *cstr, struct namelist **clistp) {
 	VFP * filtarray;
 	VFP filterfunc;
 	int filtnumber;
@@ -156,10 +144,7 @@ struct namelist ** clistp;
 	return OK;
 }
 
-listExactCos(objectstr, clistp)
-char * objectstr;
-struct namelist ** clistp;
-{
+int listExactCos(char *objectstr, struct namelist **clistp) {
 	int ret;
 
 	sarg = * fillMostCountrySearchArgs(objectstr, SRA_BASEOBJECT);
@@ -170,9 +155,7 @@ struct namelist ** clistp;
 	return ret;
 }
 
-makeListCountries(clistp)
-struct namelist ** clistp;
-{
+int makeListCountries(struct namelist **clistp) {
 	entrystruct * x;
 	int retval;
 
@@ -201,10 +184,7 @@ struct namelist ** clistp;
 }
 
 struct ds_search_arg *
-fillMostCountrySearchArgs(objectstr, searchdepth)
-char * objectstr;
-int searchdepth;
-{
+fillMostCountrySearchArgs(char *objectstr, int searchdepth) {
 	static struct ds_search_arg arg;
 	static CommonArgs sca = default_common_args;
 
@@ -221,9 +201,7 @@ int searchdepth;
 	return (&arg);
 }
 
-makeAllCoFilter(fpp)
-struct s_filter ** fpp;
-{
+void makeAllCoFilter(struct s_filter **fpp) {
 	struct s_filter * fp;
 
 	*fpp = orfilter();
@@ -232,10 +210,7 @@ struct s_filter ** fpp;
 }
 
 void
-makeExplicitCoFilter(cstr, fpp)
-char * cstr;
-struct s_filter ** fpp;
-{
+makeExplicitCoFilter(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, *fp2;
 	int wildcardtype;
 	char * ostr1, * ostr2;
@@ -278,10 +253,7 @@ struct s_filter ** fpp;
 }
 
 void
-coFilter1(cstr, fpp)
-char * cstr;
-struct s_filter ** fpp;
-{
+coFilter1(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -297,10 +269,7 @@ struct s_filter ** fpp;
 }
 
 void
-coFilter2(cstr, fpp)
-char * cstr;
-struct s_filter ** fpp;
-{
+coFilter2(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -313,10 +282,7 @@ struct s_filter ** fpp;
 }
 
 void
-coFilter3(cstr, fpp)
-char * cstr;
-struct s_filter ** fpp;
-{
+coFilter3(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -329,10 +295,7 @@ struct s_filter ** fpp;
 }
 
 void
-coFilter4(cstr, fpp)
-char * cstr;
-struct s_filter ** fpp;
-{
+coFilter4(char *cstr, struct s_filter **fpp) {
 	struct s_filter * fp, * fp2;
 
 	*fpp = orfilter();
@@ -345,9 +308,7 @@ struct s_filter ** fpp;
 }
 
 struct ds_read_arg *
-fillMostCountryReadArgs(objectstr)
-char * objectstr;
-{
+fillMostCountryReadArgs(char *objectstr) {
 	static struct ds_read_arg arg;
 	static CommonArgs sca = default_common_args;
 	Attr_Sequence * atl;
@@ -375,10 +336,7 @@ char * objectstr;
 	return (&arg);
 }
 
-readCo(objectstr, clistp)
-char * objectstr;
-struct namelist ** clistp;
-{
+int readCo(char *objectstr, struct namelist **clistp) {
 	extern int rfrl_msg;
 	int status;
 
@@ -415,9 +373,7 @@ fillMostCountryListArgs() {
 	return (&arg);
 }
 
-listAllCos(clistp)
-struct namelist ** clistp;
-{
+int listAllCos(struct namelist **clistp) {
 	int ret;
 
 	if (listAtRoot == TRUE) {
@@ -441,9 +397,7 @@ struct namelist ** clistp;
 	return ret;
 }
 
-reallyMakeListCountries(clistp)
-struct namelist ** clistp;
-{
+int reallyMakeListCountries(struct namelist **clistp) {
 	struct subordinate * x;
 	int status;
 	char * cp;

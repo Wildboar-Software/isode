@@ -19,9 +19,7 @@ extern char origDefaultCo[], origDefaultOrg[], co[], org[];
 extern int deLogLevel;
 extern int alarmCount;
 
-int listlen(lp)
-struct namelist * lp;
-{
+int listlen(struct namelist *lp) {
 	int len;
 
 	for (len = 0; lp != NULLLIST; lp = lp->next, len++) {};
@@ -54,9 +52,7 @@ alarmCleanUp() {
 	}
 }
 
-char *copy_string(string)
-char *string;
-{
+char *copy_string(char *string) {
 	char *new_string;
 
 	if (string == NULLCP) return NULLCP;
@@ -69,9 +65,7 @@ char *string;
 
 static PS ps = NULLPS;
 
-char   *dn2pstr (dn)
-DN	dn;
-{
+char   *dn2pstr (DN dn) {
 	char       *cp;
 
 	if (ps == NULL
@@ -97,9 +91,7 @@ DN	dn;
 
 /* determine wildcard type of already validated string */
 
-int starstring(istr, ostr1, ostr2)
-char * istr, ** ostr1, ** ostr2;
-{
+int starstring(char *istr, char **ostr1, char **ostr2) {
 	char * lastcp, *cp;
 
 	lastcp = istr + strlen(istr) - 1;
@@ -124,12 +116,7 @@ char * istr, ** ostr1, ** ostr2;
 }
 
 /* print last component of a dn string - optionally indented by type */
-void printLastComponent(indent, dnstr, objectType, printNumber)
-int indent;
-char * dnstr;
-int objectType;
-int printNumber;
-{
+void printLastComponent(int indent, char *dnstr, int objectType, int printNumber) {
 	char * cp1, * cp2, * savestring;
 
 	cp2 = malloc(LINESIZE);
@@ -175,10 +162,7 @@ int printNumber;
 	free(cp2);
 }
 
-char *lastComponent(dnstr, objectType)
-char * dnstr;
-int objectType;
-{
+char *lastComponent(char *dnstr, int objectType) {
 	char * cp, * cp2, *cp3, * savestring;
 	int gotmatch;
 
@@ -242,9 +226,7 @@ int objectType;
 	return cp;
 }
 
-char *removeLastRDN(dnstr)
-char * dnstr;
-{
+char *removeLastRDN(char *dnstr) {
 	char * cp;
 
 	cp = copy_string(dnstr);
@@ -252,9 +234,7 @@ char * dnstr;
 	return cp;
 }
 
-char *lastRDN(dnstr)
-char * dnstr;
-{
+char *lastRDN(char *dnstr) {
 	char * cp;
 
 	cp = rindex(dnstr, '@');
@@ -265,14 +245,12 @@ char * dnstr;
 }
 
 void
-clearProblemFlags() {
+clearProblemFlags(void) {
 	limitProblem = notAllReached = FALSE;
 }
 
 void
-setProblemFlags(sresult)
-struct ds_search_result sresult;
-{
+setProblemFlags(struct ds_search_result sresult) {
 	if ((sresult.CSR_limitproblem == LSR_SIZELIMITEXCEEDED) ||
 			(sresult.CSR_limitproblem == LSR_ADMINSIZEEXCEEDED))
 		limitProblem = TRUE;
@@ -281,9 +259,7 @@ struct ds_search_result sresult;
 		notAllReached = TRUE;
 }
 
-showAnyProblems()
-/*char * str; */
-{
+void showAnyProblems(void) {
 	if (limitProblem == TRUE) {
 		pageprint("\nA limit has been imposed by the managers of the data which prevents the \n");
 		pageprint("listing of all the entries in the Directory beyond this point. \n");
@@ -305,13 +281,7 @@ showAnyProblems()
 }
 
 void
-logSearchSuccess(outcome, objecttype, string, searchNumber, noMatches)
-char * outcome;
-char * objecttype;
-char * string;
-int searchNumber;
-int noMatches;
-{
+logSearchSuccess(char *outcome, char *objecttype, char *string, int searchNumber, int noMatches) {
 	char filterNumberString[20];
 
 	if (deLogLevel > 1) {
@@ -326,20 +296,14 @@ int noMatches;
 	}
 }
 
-void logListSuccess(outcome, objecttype, noMatches)
-char * outcome;
-char * objecttype;
-int noMatches;
-{
+void logListSuccess(char *outcome, char *objecttype, int noMatches) {
 	if (deLogLevel > 1) {
 		ll_log (de_log, LLOG_NOTICE, NULLCP,
 				"listOutcome:%s:%s:%d", objecttype, outcome, noMatches);
 	}
 }
 
-char   *rdn2pstr (rdn)
-RDN	rdn;
-{
+char   *rdn2pstr (RDN rdn) {
 	char       *cp;
 
 	if (ps == NULL
