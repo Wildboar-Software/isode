@@ -307,7 +307,7 @@ char *lastRDN(char *dnstr) {
 		return (++cp);
 }
 
-void clearProblemFlags() {
+void clearProblemFlags (void) {
 	limitProblem = notAllReached = FALSE;
 }
 

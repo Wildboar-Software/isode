@@ -49,7 +49,7 @@ static struct {
 	NULLCP, NULLCP, 0
 };
 
-int tailorHelp () {
+int tailorHelp (void) {
 	int i;
 
 	if (controlCtoQuit)
@@ -251,7 +251,7 @@ invalidinput:
 	return NOTOK;
 }
 
-void displayCurrentSettings () {
+void displayCurrentSettings (void) {
 	int i;
 
 	printf("These are the current settings:\n\n");

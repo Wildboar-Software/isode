@@ -95,7 +95,7 @@ char	Password[LINESIZE] ;
 char	Local[LINESIZE] ;
 char	filterstring[LINESIZE] ;
 
-int main () {
+int main (void) {
 	struct  passwd  *pw_entry ;
 	struct  passwd  *getpwuid() ;
 	struct	stat	buf ;
@@ -434,13 +434,13 @@ int main () {
 	return(0);
 }
 
-void advise () {
+void advise (void) {
 }
 
-void set_sequence () {
+void set_sequence (void) {
 }
 
-void unset_sequence () {
+void unset_sequence (void) {
 }
 
 int dish_error (PS ps,struct DSError *error) {

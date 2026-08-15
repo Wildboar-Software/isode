@@ -17,7 +17,7 @@
 
 char            command[512];
 
-int mygetchar () {
+int mygetchar (void) {
 	char            c;
 
 	if (!read(0, &c, 1))
@@ -29,7 +29,7 @@ int mygetchar () {
 /*
  * SkipAsn1Len - skip the ASN-1 encoded length (variable # of octets)
  */
-void SkipAsn1Len () {
+void SkipAsn1Len (void) {
 	unsigned char   c;
 
 	c = mygetchar();
@@ -66,7 +66,7 @@ void DoG3Fax (unsigned char firstChar) {
 	exit(0);
 }
 
-void DoNewJPEG () {
+void DoNewJPEG (void) {
 	SkipAsn1Len();
 	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
 	if (execl(command, "xphoto-jpeg", 0)) {
@@ -77,7 +77,7 @@ void DoNewJPEG () {
 	/*NOTREACHED*/
 }
 
-void DoJPEG () {
+void DoJPEG (void) {
 	SkipAsn1Len();
 	strncpy(command, isodefile("g3fax/jpeg.sh", 1), sizeof(command) - 1);
 	if (execl(command, "xphoto-jpeg", 0)) {

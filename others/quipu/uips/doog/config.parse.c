@@ -321,7 +321,7 @@ static void __yy_bcopy (char *from, char *to, int count) {
 #endif
 
 #line 160 "/usr/local/lib/bison.simple"
-int yyparse() {
+int yyparse (void) {
 	int yystate;
 	int yyn;
 	short *yyssp;

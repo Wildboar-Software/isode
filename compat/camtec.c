@@ -209,7 +209,7 @@ int     write_x25_socket (int fd, char *buffer, int len)
 	return count;
 }
 #else 	/* CAMTEC_CCL */
-int _camtec_sunlink_stub2()  {}
+int _camtec_sunlink_stub2 (void) {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
 int _camtec_sunlink_stub(void) {}

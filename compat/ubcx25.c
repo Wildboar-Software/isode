@@ -258,7 +258,7 @@ int     write_x25_socket (int fd, char *buffer, int len)
 #endif
 
 #else   /* UBC_X25 */
-int _ubcx25_stub2()  {}
+int _ubcx25_stub2 (void) {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
 int _ubcx25_stub(void) {}

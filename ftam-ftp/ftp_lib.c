@@ -70,7 +70,7 @@ int ftp_login (char *host, char *user, char *passwd, char *acct) {
 /*
  * ftp_quit: send quit command and shutdown communications link.
  */
-int ftp_quit() {
+int ftp_quit (void) {
 	extern FILE *cout;
 	extern int data;
 	int n;
@@ -87,7 +87,7 @@ int ftp_quit() {
 /*
  * ftp_abort: send abort command
  */
-int ftp_abort() {
+int ftp_abort (void) {
 	int n;
 
 	if (!connected) return NOTOK;
@@ -229,7 +229,7 @@ int ftp_type (int modeX) {
 	return NOTOK;
 }
 
-int ftp_reply() {
+int ftp_reply (void) {
 	int n;
 
 	/* process an FTP response */

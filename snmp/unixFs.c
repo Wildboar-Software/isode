@@ -208,7 +208,7 @@ try_again:
 /*-----------------------------------------------------------------
  * Initialize each node in the object identifier tree.
  *-----------------------------------------------------------------*/
-int init_unix_fs() {
+int init_unix_fs (void) {
 	OT ot;
 
 	if (ot = text2obj("fsIdentifier"))
@@ -339,7 +339,7 @@ static void insert_entry (struct fs *fsp) {
 /*-----------------------------------------------------------------
  * Fill the entire file system table. (call with fs_tbl == NULL)
  *-----------------------------------------------------------------*/
-static int get_fs_table() {
+static int get_fs_table(void) {
 	static int fake_dev  = 0;
 	FILE *mfile;
 	struct mntent *mp;
@@ -444,7 +444,7 @@ static void refresh_entry (struct fs *fsp) {
 /*-----------------------------------------------------------------
  * Delete the file system table.
  *-----------------------------------------------------------------*/
-static void free_fs_table() {
+static void free_fs_table(void) {
 	struct fs *fs = fs_tbl, *bye;
 
 	while( fs != NULL ) {

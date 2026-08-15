@@ -92,7 +92,7 @@ void free_filt(filt_struct *filt) {
 		return;
 }
 
-Filter make_attr_filter() {
+Filter make_attr_filter(void) {
 	int match_type;
 	char attr_name[STRINGLEN],
 		 attr_val[STRINGLEN], sub_val_initial[STRINGLEN],

@@ -120,7 +120,7 @@ void set_search_attr(char *type_label, AttributeType obj_type, AttributeType sea
 	curr_type->object_type = search_type;
 } /* set_search_attr */
 
-int test_init_ditmodel () {
+int test_init_ditmodel (void) {
 	entryList search_path;
 	AttributeType country, org, ou, loc, person;
 

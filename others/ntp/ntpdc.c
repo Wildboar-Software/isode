@@ -187,7 +187,7 @@ int query (char *host) {
 	return 1;
 }
 
-SFD timeout() {
+SFD timeout(void) {
 	timedout = 1;
 }
 

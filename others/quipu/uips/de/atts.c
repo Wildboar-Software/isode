@@ -612,7 +612,7 @@ static struct fax *de_fax_dec (PE pe) {
 	return f;
 }
 
-int specialSyntaxHandlers () {
+int specialSyntaxHandlers (void) {
 	AttributeType at;
 
 	set_attribute_syntax(str2syntax("PostalAddress"), (IFP) de_addrenc, (IFP)de_addrdec,

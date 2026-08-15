@@ -37,7 +37,7 @@ static int already_mhsUser;
 char * mapAttName();
 /* end file global variables */
 
-int de_Modify() {
+int de_Modify (void) {
 	char * more;
 	char * rdn;
 	char * TidyString();
@@ -524,7 +524,7 @@ next_value:
 	return OK;
 }
 
-int fillMostModArg() {
+int fillMostModArg (void) {
 	modarg.mea_common.ca_servicecontrol.svc_options = SVC_OPT_CHAININGPROHIBIT;
 	modarg.mea_common.ca_servicecontrol.svc_prio = SVC_PRIO_MED;
 	modarg.mea_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -1096,7 +1096,7 @@ int get_objectClassPRR(struct namelist *lp, int *objectType) {
 	return NOTOK;
 }
 
-int dm_ModifyOrg() {
+int dm_ModifyOrg (void) {
 	char * cp;
 	char * more;
 	char * rdn;

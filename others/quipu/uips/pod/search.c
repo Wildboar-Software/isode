@@ -27,7 +27,7 @@ str_seq SortList();
 dsEnqError list_start();
 void dn2buf();
 
-dsEnqError srch_start() {
+dsEnqError srch_start(void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;

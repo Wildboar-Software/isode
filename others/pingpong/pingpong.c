@@ -48,7 +48,7 @@ int do_args (int argc, char **argv) {
 	}
 }
 
-int start_listener () {
+int start_listener (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
@@ -58,7 +58,7 @@ int start_listener () {
 	}
 }
 
-int ping_address () {
+int ping_address (void) {
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
@@ -78,7 +78,7 @@ int ping_address () {
 		retry = 0;
 }
 
-int wait_for_result () {
+int wait_for_result (void) {
 	int	vecp = 0;
 	char    *vec[4];
 	int	i;
@@ -153,7 +153,7 @@ int sink_data (int sd) {
 	return OK;
 }
 
-int progress_connection () {
+int progress_connection (void) {
 	struct TSAPdisconnect	td_s;
 	struct TSAPdisconnect	*td = &td_s;
 	struct TSAPconnect tcs;
@@ -188,14 +188,14 @@ int progress_connection () {
 	}
 }
 
-int stop_nicely () {
+int stop_nicely (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 
 	TNetClose (&pongaddr->pa_addr.sa_addr, td);
 }
 
-int updatemask () {
+int updatemask (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 

@@ -30,7 +30,7 @@ char *checkSetTerm();
 int output();
 void turnInverseVideoOn();
 
-void initVideo() {
+void initVideo (void) {
 	char * cp;
 
 	inverseVideo = FALSE;

@@ -204,7 +204,7 @@ int main (int argc, char *argv[]) {
 	return(nerrs != 0);
 }
 
-int usage () {
+int usage (void) {
 	advise (NULLCP,
 	"Usage: %s [-nqbhirvwyD] [-f distfile] [-d var=value] [-m host] [file ...]\n",
 	myname);

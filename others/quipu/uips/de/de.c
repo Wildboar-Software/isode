@@ -230,7 +230,7 @@ set_up_defaults:
 	/* and that's all for now */
 }
 
-int doCountry () {
+int doCountry (void) {
 	if ((strcmp(qinfo[COUNTRY].entered, qinfo[COUNTRY].defvalue) == 0) &&
 	(qinfo[COUNTRY].lp != NULLLIST) && (qinfo[COUNTRY].listlen == 1)) {
 		printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
@@ -529,16 +529,16 @@ int printNames (int objectType) {
 	}
 }
 
-int printCountry () {
+int printCountry (void) {
 	printLastComponent(INDENTON, qinfo[COUNTRY].lp->name, COUNTRY, 0);
 }
 
-void foundFollowing () {
+void foundFollowing (void) {
 	resetprint("\nFound the following entries.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
 
-void matchFollowing () {
+void matchFollowing (void) {
 	resetprint("\nGot the following approximate matches.  Please select one from the list\n");
 	resetprint("by typing the number corresponding to the entry you want.\n\n");
 }
@@ -775,7 +775,7 @@ int enterAndValidate (char *prompt, char *buf, int objectType, char *defaultValu
 	free(cp);
 }
 
-char enterYesNo () {
+char enterYesNo (void) {
 	char buf[LINESIZE];
 	int i;
 
@@ -792,7 +792,7 @@ char enterYesNo () {
 	}
 }
 
-int displayValidWildCards () {
+int displayValidWildCards (void) {
 	printf("The following wild-card formats are acceptable:\n");
 	printf("\t*\n\txxx*\n\t*xxx*\n\t*xxx\n\txx*xx\n\n");
 }
@@ -802,7 +802,7 @@ int countryCodeMessage (int str) {
 	printf("Either enter a valid two-letter code, or enter the country name more fully.\n\n", str);
 }
 
-void onint1 () {
+void onint1 (void) {
 	putchar('\n');
 	/* simulate search failure -
 	   this ensures that the "country question" is asked */
@@ -810,7 +810,7 @@ void onint1 () {
 	longjmp(sjbuf, 0);
 }
 
-SFD cleanupok() {
+SFD cleanupok(void) {
 	cleanup(0);
 }
 
@@ -824,7 +824,7 @@ int cleanup (int exitCode) {
 }
 
 /* the flushes need dealing with properly */
-void onalarm () {
+void onalarm (void) {
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
 	switch (alarmCount) {

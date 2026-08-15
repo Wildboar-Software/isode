@@ -22,7 +22,7 @@ static struct namelist * plp = NULLLIST;
 
 void searchFail(), de_exit();
 
-int de_Delete() {
+int de_Delete (void) {
 	char * more;
 	char * rdn;
 	char * sure;
@@ -107,7 +107,7 @@ int de_Delete() {
 	return OK;
 }
 
-int fillMostRmArg() {
+int fillMostRmArg (void) {
 	rmarg.rma_common.ca_servicecontrol.svc_options = SVC_OPT_CHAININGPROHIBIT;
 	rmarg.rma_common.ca_servicecontrol.svc_prio = SVC_PRIO_MED;
 	rmarg.rma_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -124,7 +124,7 @@ int fillMostRmArg() {
 	rmarg.rma_common.ca_extensions = (struct extension *) NULL;
 }
 
-int dm_Delete_entry() {
+int dm_Delete_entry (void) {
 	extern int rfrl_msg;
 	int status;
 

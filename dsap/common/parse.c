@@ -132,7 +132,7 @@ char *_getline (GDBM_FILE db) {
 	return save;
 }
 
-char *getnextline () {
+char *getnextline (void) {
 	return _getline (save_db);
 }
 

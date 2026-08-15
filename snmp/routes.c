@@ -350,7 +350,7 @@ static int  get_route (struct rtentry *re) {
 }
 
 #ifdef	BSD44
-static int  get_radix_nodes () {
+static int  get_radix_nodes (void) {
 	struct radix_node_head *rnh,
 			   head;
 	struct nlist nzs;

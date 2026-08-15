@@ -99,7 +99,7 @@ void init_query_engine (int argc, char *argv[]) {
  *
  *
  */
-static void read_quipurc () {
+static void read_quipurc (void) {
 	extern char *SkipSpace(), *TidyString(), *getenv();
 	char quipurc_path[LINESIZE], line[LINESIZE];
 	char *quipurc_name = "/.quipurc";
@@ -196,7 +196,7 @@ static void read_args (int argc, char *argv[]) {
  * Set up use of an 1so8859-1 font, to allow display of T.61 strings.
  *
  */
-void have_iso8859_font () {
+void have_iso8859_font (void) {
 	extern int ch_set;
 
 	ch_set = 1;

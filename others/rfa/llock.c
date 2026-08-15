@@ -42,7 +42,7 @@ char cwd_remote[512];
 int interactive = 1;
 int retcode;
 
-int cleanup () {}
+int cleanup (void) {}
 
 /*--------------------------------------------------------------*/
 /* errMsg */

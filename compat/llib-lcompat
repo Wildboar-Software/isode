@@ -486,7 +486,7 @@ int     f;
 }
 
 
-int     endisoservent () {
+int endisoservent (void) {
     return endisoservent ();
 }
 

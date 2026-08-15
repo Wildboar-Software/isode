@@ -976,10 +976,10 @@ int executeCommand (char *cmd) {
 	return OK;
 }
 
-int cleanup () {
+int cleanup (void) {
 }
 
-int getConnection () {
+int getConnection (void) {
 	if (connected)
 		return OK;
 	if (makeconn(host, passwd, user) == NOTOK)  {

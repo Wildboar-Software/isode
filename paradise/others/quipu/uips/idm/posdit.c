@@ -21,7 +21,7 @@ extern int highNumber;
 extern int posdit_oc;
 extern int quipuMastersCo;
 
-int position_dit() {
+int position_dit (void) {
 	char * change_pos;
 	char * mapCoName();
 	DN dn;
@@ -81,7 +81,7 @@ int display_posdit(int length, char str[]) {
 	return;
 }
 
-int get_posdit() {
+int get_posdit (void) {
 	struct namelist * clp = NULLLIST;
 	struct namelist * olp = NULLLIST;
 	struct namelist * oulp = NULLLIST;

@@ -22,7 +22,7 @@ int setisobject (int f) {
 	return (servf != NULL);
 }
 
-int endisobject()  {
+int endisobject (void) {
 	if (servf && !stayopen) {
 		fclose (servf);
 		servf = NULL;

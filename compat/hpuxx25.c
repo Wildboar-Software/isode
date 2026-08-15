@@ -825,7 +825,7 @@ print_send:
 }
 #endif
 #else
-int _hpuxx25_stub2()  {
+int _hpuxx25_stub2 (void) {
 	;
 }
 #endif

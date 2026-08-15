@@ -45,7 +45,7 @@ char * mapAttName();
 
 /* end file global variables */
 
-int de_Add() {
+int de_Add (void) {
 	char * object_to_work;
 	char * option;
 	char * TidyString();
@@ -391,7 +391,7 @@ int prompt_atts(int object, struct namelist *atts) {
 	}
 }
 
-int dm_addentry() {
+int dm_addentry (void) {
 	extern int assoc;
 	extern int rfrl_msg;
 	struct	DSError		error;
@@ -444,7 +444,7 @@ int bind_to_initial_DSA(char *initial_dsa_address) {
 	return OK;
 }
 
-int de_Add_person() {
+int de_Add_person (void) {
 	char * already_in;
 	char * first_name;
 	char * more;
@@ -692,7 +692,7 @@ prompt_cn:
 	}
 }
 
-int de_Add_role() {
+int de_Add_role (void) {
 	char * already_in;
 	char * more;
 	char * TidyString();
@@ -838,7 +838,7 @@ int de_Add_role() {
 	}
 }
 
-int de_Add_room() {
+int de_Add_room (void) {
 	char * already_in;
 	char * more;
 	char * TidyString();
@@ -981,7 +981,7 @@ int de_Add_room() {
 	return OK;
 }
 
-int set_adarg() {
+int set_adarg (void) {
 	adarg.ada_common.ca_servicecontrol.svc_options = SVC_OPT_CHAININGPROHIBIT;
 	adarg.ada_common.ca_servicecontrol.svc_prio = SVC_PRIO_MED;
 	adarg.ada_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
@@ -1156,7 +1156,7 @@ int check_error(struct	DSError error) {
 	return NOTOK;
 }
 
-int dm_Add_org() {
+int dm_Add_org (void) {
 	void searchFail(), onint1(), de_exit();
 	char buffer[LINESIZE];
 	char dir_mgr[LINESIZE];
@@ -1309,7 +1309,7 @@ int dm_Add_org() {
 	return OK;
 }
 
-int dm_Add_mgr() {
+int dm_Add_mgr (void) {
 	extern char password[];
 
 	void searchFail(), onint1(), de_exit();

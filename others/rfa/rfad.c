@@ -111,7 +111,7 @@ int main (int argc, char **argv) {
 	exit(0);
 }
 
-int cleanup () {
+int cleanup (void) {
 }
 
 int initiate (int sd, struct AcSAPstart *acs, PE *pe) {

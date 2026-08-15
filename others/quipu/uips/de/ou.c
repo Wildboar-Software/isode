@@ -70,7 +70,7 @@ void freeOUs (struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void freeOUSearchArgs () {
+void freeOUSearchArgs (void) {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }

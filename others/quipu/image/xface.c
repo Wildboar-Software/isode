@@ -184,7 +184,7 @@ static arginit (char **vec) {
 	SCRN = DefaultScreen (DISP);
 }
 
-static envinit () {
+static void envinit (void) {
 	int     i,
 	pid;
 
@@ -203,7 +203,7 @@ static envinit () {
 	ll_hdinit (pgm_log, myname);
 }
 
-static display_X () {
+static void display_X (void) {
 	if (mywindow == NULL) {
 		int	bwidth;
 		char   *opt,
@@ -282,7 +282,7 @@ static display_X () {
 	XWINser (0);
 }
 
-static Redisplay () {
+static void Redisplay (void) {
 	int     sx,
 	sy,
 	dx,
@@ -319,7 +319,7 @@ static Redisplay () {
 	XDestroyImage (image);
 }
 
-static int ALRMser () {
+static int ALRMser (void) {
 	if (mywindow && mapped) {
 		if (parent)
 			XClearWindow (DISP, mywindow);

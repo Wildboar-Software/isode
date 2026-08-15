@@ -19,7 +19,7 @@ extern void receive();
 
 #ifdef	TEST
 
-int main () {
+int main (void) {
 	int i, cc, val;
 	char foo[10];
 

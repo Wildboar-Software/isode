@@ -1890,7 +1890,7 @@ int close_x25_socket (sd)
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */
-int _ultrix25_stub2()  {
+int _ultrix25_stub2 (void) {
 	;
 }
 #endif  /* ULTRIX_X25 */

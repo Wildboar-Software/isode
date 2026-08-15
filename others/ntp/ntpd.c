@@ -197,7 +197,7 @@ int main (int argc, char *argv[]) {
 	return 0;
 }
 
-int doit () {
+int doit (void) {
 	struct timeval tvt;
 	fd_set readfds, writefds;
 	int	vecp;
@@ -937,7 +937,7 @@ static int kern_hz, kern_tick;
 #define n_name n_un.n_name
 #endif
 
-static void init_kern_vars () {
+static void init_kern_vars (void) {
 #ifdef __linux__
 	kern_hz = HZ;
 	if (tickadj == 0)
@@ -1110,7 +1110,7 @@ int GetHostName (char *name, struct Naddr *addr) {
 	return (NOTOK);
 }
 /* every hour, dump some useful information to the log */
-static void hourly () {
+static void hourly (void) {
 	char buf[200];
 	int p = 0;
 	static double drifts[5] = { 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -1237,7 +1237,7 @@ int read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 }
 #endif
 
-int create_listeners () {
+int create_listeners (void) {
 	create_sockets(servport);
 	create_osilisten (osiaddress);
 }
@@ -1261,7 +1261,7 @@ char *paddr (struct Naddr *addr) {
 	}
 }
 
-int envinit () {
+int envinit (void) {
 	int s;
 
 	if (!debug) {

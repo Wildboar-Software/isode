@@ -574,7 +574,7 @@ static void read_file (char *file) {
 		fclose (fp);
 }
 
-static void envinit () {
+static void envinit (void) {
 	int     i,
 	sd;
 

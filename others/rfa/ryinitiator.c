@@ -119,7 +119,7 @@ static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext
 	return OK;
 }
 
-int closeconn () {
+int closeconn (void) {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;

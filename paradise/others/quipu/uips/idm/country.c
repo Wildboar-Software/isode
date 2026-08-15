@@ -340,7 +340,7 @@ read_country:
 	return OK;
 }
 
-void freeCoListArgs() {
+void freeCoListArgs (void) {
 	dn_free(larg.lsa_object);
 }
 

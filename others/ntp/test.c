@@ -25,7 +25,7 @@ int main (int argc, char **argv) {
 	exit(0);
 }
 
-int test1 () {
+int test1 (void) {
 	int i;
 	double l_fixed_to_double();
 	struct l_fixedpt sample;
@@ -47,7 +47,7 @@ int test1 () {
 	return 0;
 }
 
-int test2 () {
+int test2 (void) {
 	struct timeval tp;
 	struct l_fixedpt time_lm;
 

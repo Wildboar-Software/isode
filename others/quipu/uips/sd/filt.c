@@ -78,7 +78,7 @@ filt_struct *make_parent_filter(int filt_type, filt_struct *filt1, filt_struct *
 	return parent;
 }
 
-Filter make_attr_filter() {
+Filter make_attr_filter(void) {
 	int match_type;
 	char attr_name[1024],
 		 attr_val[1024], sub_val_initial[1024],

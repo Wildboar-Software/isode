@@ -646,7 +646,7 @@ no_pager:
    it forks less.  there is still a critical window, but it is very small...
  */
 
-static foreground () {
+static void foreground (void) {
 #ifdef	TIOCGPGRP
 	int     pgrp,
 	tpgrp;
@@ -806,7 +806,7 @@ static int da_command (char *fmt) {
 }
 #endif
 
-static int da_response () {
+static int da_response (void) {
 	char *cp,
 	*ep;
 
@@ -843,7 +843,7 @@ static int da_response () {
 	}
 }
 
-int sync_ufnrc () {
+int sync_ufnrc (void) {
 	char *bp;
 	char    buffer[BUFSIZ];
 	struct area_guide *ag;
@@ -880,7 +880,7 @@ int sync_ufnrc () {
 	return dish (buffer, 1);
 }
 
-int init_ufnrc () {
+int init_ufnrc (void) {
 	int   i;
 	int	    inprogress;
 	char *bp,

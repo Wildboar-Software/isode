@@ -328,7 +328,7 @@ static arginit (char **vec) {
 		adios (NULLCP, "%s not owned by root", ap);
 }
 
-static envinit () {
+static void envinit (void) {
 	int     i,
 	sd;
 

@@ -628,7 +628,7 @@ int f_help (char **vec) {
 
 /* MISCELLANY */
 
-int rcinit () {
+int rcinit (void) {
 	int    w;
 	char **cp,
 	*dp;

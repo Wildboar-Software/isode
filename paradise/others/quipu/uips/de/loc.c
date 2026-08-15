@@ -52,11 +52,11 @@ void locFilter1(), locFilter2(), locFilter3(), locFilter4();
 VFP explicitLoc[] = {makeExplicitLocFilter, NULLVFP};
 VFP normalLoc[] = {locFilter1, locFilter2, locFilter3, locFilter4, NULLVFP};
 
-void saveLocs() {
+void saveLocs (void) {
 	copyLocs(&savelocinfo, &qinfo[LOCALITY]);
 }
 
-void restoreSavedLocs() {
+void restoreSavedLocs (void) {
 	copyLocs(&qinfo[LOCALITY], &savelocinfo);
 	highNumber = qinfo[LOCALITY].listlen;
 }
@@ -106,7 +106,7 @@ void printListLocs(char *loc, struct namelist *llistp) {
 	}
 }
 
-void freeSavedLocs() {
+void freeSavedLocs (void) {
 	freeLocs(&savelocinfo.lp);
 }
 

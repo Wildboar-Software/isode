@@ -664,7 +664,7 @@ int close_x25_socket(int fd)
 }
 
 #else
-int _ccurx25_stub() {}
+int _ccurx25_stub (void) {}
 #endif  /* CCUR_X25 */
-int _ccurx25_stub2()  {}
+int _ccurx25_stub2 (void) {}
 #endif  /* X25 */

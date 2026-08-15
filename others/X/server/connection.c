@@ -233,7 +233,7 @@ open_unix_socket () {
  *    with TCP-IP with LSB first.
  *****************/
 
-void CreateWellKnownSockets () {
+void CreateWellKnownSockets (void) {
 	int		request, i;
 	int		whichbyte;	    /* used to figure out whether this is
    					 LSB or MSB */
@@ -402,7 +402,7 @@ void CreateWellKnownSockets () {
 	}
 }
 
-void ResetWellKnownSockets () {
+void ResetWellKnownSockets (void) {
 #ifdef UNIXCONN
 	if (unixDomainConnection != -1) {
 		/*

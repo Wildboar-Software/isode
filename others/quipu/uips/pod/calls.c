@@ -116,7 +116,7 @@ void put_dn_and_password (char *dn, char *password, char *name) {
 	}
 }
 
-void user_tailor () {
+void user_tailor (void) {
 	char *part1, *part2;
 	char *getenv(), *TidyString(), *SkipSpace();
 	char *config_dir = "/.duaconfig",
@@ -470,7 +470,7 @@ void parse_duarc (char *options_path) {
 	}
 }
 
-char *cnnct_bind () {
+char *cnnct_bind (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -530,7 +530,7 @@ Click on this window to exit.");
 	return NULLCP;
 }
 
-void set_default_type () {
+void set_default_type (void) {
 	int count;
 	DN base_name;
 	DN d_name;
@@ -706,7 +706,7 @@ void make_friendly_rdn (char *friendly, char *object, char *base) {
 		make_friendly(friendly, object);
 }
 
-int goto_addr () {
+int goto_addr (void) {
 	char *str;
 	int count = 0;
 	void add_to_history();
@@ -725,7 +725,7 @@ int goto_addr () {
 	}
 }
 
-int clear_dnseq () {
+int clear_dnseq (void) {
 	free_seq(dnseq);
 	dnseq = NULLDS;
 	dn_number = 0;

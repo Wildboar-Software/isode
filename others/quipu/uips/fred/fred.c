@@ -725,7 +725,7 @@ struct utmp *getutent ();
 
 char *ttyname ();
 
-static	log_utmp () {
+static	void log_utmp (void) {
 #ifndef	SYS5
 	int	    ud;
 #endif

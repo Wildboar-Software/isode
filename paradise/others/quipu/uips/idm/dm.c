@@ -210,7 +210,7 @@ int main(int argc, char *argv[]) {
 	/* and that's all for now */
 }
 
-int de_Action() {
+int de_Action (void) {
 	struct namelist * option2lp = NULLLIST;
 
 	int return_status;

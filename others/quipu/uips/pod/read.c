@@ -94,11 +94,11 @@ Attr_Sequence get_sorted_attrs(Attr_Sequence entry_attrs, Attr_Sequence wanted_a
 	return attrs_found;
 }
 
-dsEnqError read_all() {
+dsEnqError read_all(void) {
 	return do_read(NULLATTR);
 }
 
-dsEnqError read_config_types() {
+dsEnqError read_config_types(void) {
 	return do_read(read_types);
 }
 

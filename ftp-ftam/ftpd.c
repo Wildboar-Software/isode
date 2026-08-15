@@ -180,7 +180,7 @@ void main(int argc, char *argv[]) {
 	}
 }
 
-SFD lostconn() {
+SFD lostconn(void) {
 	advise (NULLCP,"lost connection");
 	dologout(-1);
 }
@@ -234,7 +234,7 @@ int ftp_store(char *name, char *modeX) {
 	return result;
 }
 
-int getdatasock() {
+int getdatasock (void) {
 	/* UCB data socket creation routine */
 	int s;
 #ifdef	BSD43

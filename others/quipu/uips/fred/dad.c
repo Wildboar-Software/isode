@@ -399,7 +399,7 @@ fork_again:
 	return (dishpid != NOTOK ? OK : NOTOK);
 }
 
-static rcfile () {
+static void rcfile (void) {
 	char   *bp;
 	char    buffer[BUFSIZ],
 	command[BUFSIZ],
@@ -549,7 +549,7 @@ static void arginit (char **vec) {
 	}
 }
 
-static void envinit () {
+static void envinit (void) {
 	int     i,
 	sd;
 

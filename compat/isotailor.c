@@ -949,7 +949,7 @@ static int events_value (struct pair *pairs, char *s, char *var) {
 }
 
 #ifdef DEBUG
-int tailorfree () {
+int tailorfree (void) {
 	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)

@@ -91,11 +91,11 @@ void freeCos(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void freeCoListArgs() {
+void freeCoListArgs (void) {
 	dn_free(larg.lsa_object);
 }
 
-void freeCoSearchArgs() {
+void freeCoSearchArgs (void) {
 	dn_free(sarg.sra_baseobject);
 }
 

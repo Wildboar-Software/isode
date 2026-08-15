@@ -324,6 +324,6 @@ char verify_alias(EntryInfo *alias_entry) {
 	return (GoodAlias) ;
 }
 
-int shadow_entry () {
+int shadow_entry (void) {
 	;
 }

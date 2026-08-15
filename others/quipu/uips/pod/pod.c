@@ -118,7 +118,7 @@ static XtActionsRec currPosActionsTable[] = {
 	{"DnMove", (XtActionProc) DnMove},
 };
 
-void CreateWidgets () {
+void CreateWidgets (void) {
 	int count;
 	Arg args[MAXARGS];
 
@@ -143,7 +143,7 @@ void CreateWidgets () {
 	CreateVersionPopup();
 }
 
-void PodLoop () {
+void PodLoop (void) {
 	Widget PosWindow;
 	XSizeHints   hints;
 	XWMHints wm_hints;
@@ -196,7 +196,7 @@ void PodLoop () {
 	XtMainLoop();
 }
 
-void make_photo_widget () {
+void make_photo_widget (void) {
 	int count;
 	Arg args[MAXARGS];
 	Widget TextForm, TextWindow;
@@ -225,7 +225,7 @@ void make_photo_widget () {
 	TextForm, args, count);
 }
 
-void kill_photo () {
+void kill_photo (void) {
 	if (PhotoWindow != NULL) {
 		XtUnmanageChild(PhotoWindow);
 		XtDestroyWidget(PhotoWindow);
@@ -233,7 +233,7 @@ void kill_photo () {
 	}
 }
 
-void print_photo () {
+void print_photo (void) {
 	int count;
 	Arg args[MAXARGS];
 
@@ -804,7 +804,7 @@ static void CreateCommandForm(Widget parent) {
 				  (XtCallbackProc) popupHistory, (XtPointer) 0);
 }
 
-static void displayReadPopup () {
+static void displayReadPopup (void) {
 	if (curr_read_popup) {
 		XtPopup(curr_read_popup, XtGrabNone);
 		XRaiseWindow(dpy, XtWindow(curr_read_popup));
@@ -859,7 +859,7 @@ static void cannotModify(Widget w, XtPointer closure, XtPointer calldata) {
 
 static XawTextSelectType select_types[] = {XawselectLine, XawselectNull};
 
-static Widget createReadPopup() {
+static Widget createReadPopup(void) {
 	Arg args[MAXARGS];
 	int count = 0;
 	Widget closeButton, keepButton, modifyButton, showAllButton,
@@ -1463,7 +1463,7 @@ static void Move(Widget w, XtPointer closure, XtPointer calldata) {
 	SetType((Widget) 0, (XtPointer) typeindx, (XtPointer) 0);
 }
 
-static void CreateMessagePopup () {
+static void CreateMessagePopup (void) {
 	int count;
 	Arg args[MAXARGS];
 
@@ -1479,7 +1479,7 @@ static void CreateMessagePopup () {
 	XtRealizeWidget(standby);
 }
 
-static void CreateVersionPopup () {
+static void CreateVersionPopup (void) {
 	Widget title, piccy, version_label, text_form;
 	Arg args[MAXARGS];
 	int count;
@@ -1594,7 +1594,7 @@ static void HideVersion(Widget w, XEvent *event, String *params, Cardinal num_pa
 	XtPopdown(version_popup);
 }
 
-static void CreateErrorPopup () {
+static void CreateErrorPopup (void) {
 	Widget text;
 	int count;
 	Arg args[MAXARGS];
@@ -1718,7 +1718,7 @@ static void killError(Widget w, XtPointer closure, XtPointer calldata) {
 	kill_error();
 }
 
-static void kill_error () {
+static void kill_error (void) {
 	Arg args[MAXARGS];
 	int count;
 	Pixmap pixmap_resource;

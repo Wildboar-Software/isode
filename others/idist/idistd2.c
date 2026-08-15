@@ -433,7 +433,7 @@ struct type_Idist_FileList *
 	return base;
 }
 
-int fixup () {
+int fixup (void) {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;
@@ -569,7 +569,7 @@ ok:
 	return(0);
 }
 
-SFD cleanup () {
+SFD cleanup (void) {
 	char	*p, *temp;
 
 	if (cfiletype) {

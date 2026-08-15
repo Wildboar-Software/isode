@@ -79,11 +79,11 @@ void freeOrgs(struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void freeOrgListArgs() {
+void freeOrgListArgs (void) {
 	dn_free(larg.lsa_object);
 }
 
-void freeOrgSearchArgs() {
+void freeOrgSearchArgs (void) {
 	/*
 	Attr_Sequence atl, x;
 	*/

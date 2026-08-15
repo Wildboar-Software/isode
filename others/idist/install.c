@@ -436,7 +436,7 @@ void log(FILE *fp, char *fmt, int a1, int a2, int a3) {
 /*
  * Remove temporary files and do any cleanup operations before exiting.
  */
-SFD cleanup() {
+SFD cleanup(void) {
 	unlink(utmpfile);
 	exit(1);
 }

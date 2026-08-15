@@ -18,7 +18,7 @@ extern unsigned position;
 
 int y = Y_OFFSET;
 
-SFD photo_quit () {
+SFD photo_quit (void) {
 	putch (030);	/* Return to non-graphic mode */
 	exit (0);
 }

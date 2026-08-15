@@ -23,7 +23,7 @@ static struct namelist * plp = NULLLIST;
 
 void searchFail(), onint1(), de_exit();
 
-int dm_List() {
+int dm_List (void) {
 	extern int discardInput;		/* defined in pageprint */
 
 	char * buf;

@@ -216,7 +216,7 @@ int arginit (char **vec) {
 
 /* XWINDOWS */
 
-static update_X () {
+static void update_X (void) {
 	struct host   *hp;
 	struct face   *fp;
 	XGCValues gcvalues;
@@ -280,7 +280,7 @@ static update_X () {
 	service_X ();
 }
 
-static int service_X () {
+static int service_X (void) {
 	int	    wh,
 	ww;
 	Window w;
@@ -351,7 +351,7 @@ static int service_X () {
 	}
 }
 
-static init_X () {
+static void init_X (void) {
 	char    def[BUFSIZ];
 
 	myframe.bdrwidth = bwidth;
@@ -389,7 +389,7 @@ static init_X () {
 	mapped = 0;
 }
 
-static layout_X () {
+static void layout_X (void) {
 	int     h;
 	struct face   *fp;
 	struct host   *hp;
@@ -460,7 +460,7 @@ static layout_X () {
 	largest_h = h;
 }
 
-static display_top () {
+static void display_top (void) {
 	if (debug)
 		fprintf (stderr, "top window\n");
 }
@@ -515,7 +515,7 @@ static int hostcmp (struct host **h1, struct host **h2) {
 	return strcmp ((*h1) -> h_name, (*h2) -> h_name);
 }
 
-static read_X () {
+static void read_X (void) {
 	int	    fd,
 	n;
 	long    now;

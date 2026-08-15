@@ -78,7 +78,7 @@ void freeCos (struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void freeCoSearchArgs () {
+void freeCoSearchArgs (void) {
 	dn_free(sarg.sra_baseobject);
 }
 

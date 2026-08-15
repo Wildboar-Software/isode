@@ -37,7 +37,7 @@ extern int quipuMastersCo;
 char * add_entries;
 int tmp_org_found;
 
-int check_credentials() {
+int check_credentials (void) {
 	void de_exit();
 	char * getpass();
 	char * temp2;
@@ -154,7 +154,7 @@ prompt_pswd:
 	return OK;
 }
 
-int just_bind() {
+int just_bind (void) {
 	int status;
 	int wait_result;
 
@@ -174,7 +174,7 @@ int just_bind() {
 	return OK;
 }
 
-int get_username() {
+int get_username (void) {
 	struct namelist * clp  = NULLLIST;
 	struct namelist * olp  = NULLLIST;
 	struct namelist * oulp = NULLLIST;

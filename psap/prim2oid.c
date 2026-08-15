@@ -65,7 +65,7 @@ PE	pe;
 }
 
 #ifdef DEBUG
-int free_static_oid()  {
+int free_static_oid (void) {
 	if (!once_only && oid.oid_elements) {
 		free ((char *) oid.oid_elements);
 		oid.oid_elements = NULL;

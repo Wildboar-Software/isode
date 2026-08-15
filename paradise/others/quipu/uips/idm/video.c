@@ -28,7 +28,7 @@ int output();
 void turnInverseVideoOn();
 void soundBell();
 
-void initVideo() {
+void initVideo (void) {
 	char * cp;
 
 	inverseVideo = FALSE;

@@ -261,7 +261,7 @@ int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter
 		advise (NULLCP, "Error %d", error);
 	return OK;
 }
-static PE build_bind_arg () {
+static PE build_bind_arg (void) {
 	struct type_NTP_BindArgument *bindarg;
 	PE	pe;
 

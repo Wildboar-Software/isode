@@ -96,7 +96,7 @@ putPagePrompt() {
 	writeInverse(": ");
 }
 
-int getPagerInput() {
+int getPagerInput (void) {
 	int c, i;
 	char numstr[LINESIZE];
 

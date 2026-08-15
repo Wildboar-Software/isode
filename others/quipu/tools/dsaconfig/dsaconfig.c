@@ -197,7 +197,7 @@ static struct pair pairs[] = {
 
 static struct pair *n2p ();
 
-static read_config () {
+static void read_config (void) {
 	int	    lineno;
 	char *cp,
 	*dp;
@@ -614,7 +614,7 @@ hit:
 	fclose (fp);
 }
 
-int generate_sed () {
+int generate_sed (void) {
 	FILE   *fp;
 	struct pair *p;
 	int fd;
@@ -741,7 +741,7 @@ static char *c_TLC[] = {
 	NULL
 };
 
-static build_TLC () {
+static void build_TLC (void) {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s", wildlife,
@@ -779,7 +779,7 @@ static char *o_I[] = {
 	NULL
 };
 
-static build_organization () {
+static void build_organization (void) {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s", wildlife,
@@ -813,7 +813,7 @@ static char *u_J[] = {
 	NULL
 };
 
-static build_unit () {
+static void build_unit (void) {
 	char    buffer[BUFSIZ];
 
 	sprintf (buffer, "%s/c=%s/o=%s/ou=%s", wildlife,
@@ -858,15 +858,15 @@ version () {
 
 /* FILES */
 
-static build_tailor () {
+static void build_tailor (void) {
 	make_file ("quiputailor", "quiputailor", 0644, 1);
 }
 
-static build_startup () {
+static void build_startup (void) {
 	make_file ("startup.sh", "startup.sh", 0755, 1);
 }
 
-static build_nightly () {
+static void build_nightly (void) {
 	make_file ("nightly.sh", "nightly.sh", 0755, 1);
 }
 
@@ -893,16 +893,16 @@ static make_file (char *infile, char *outfile, int mode, int dosed) {
 
 /* SED */
 
-static build_dsap () {
+static void build_dsap (void) {
 	fudge_file ("dsaptailor");
 }
 
-static build_fred () {
+static void build_fred (void) {
 	fudge_file ("fredrc");
 	fudge_file ("ufnrc");
 }
 
-static fudge_file (char *name) {
+static void fudge_file (char *name) {
 	char   buffer[BUFSIZ],
 		   file[BUFSIZ],
 		   oldfil[BUFSIZ],
@@ -928,7 +928,7 @@ static fudge_file (char *name) {
 
 /* ARGINIT */
 
-static arginit (char **vec) {
+static void arginit (char **vec) {
 	char  *ap;
 
 	if (myname = rindex (*vec, '/'))
@@ -968,7 +968,7 @@ usage:
 		goto usage;
 }
 
-static parse_3166 () {
+static void parse_3166 (void) {
 	int	    bitno;
 	unsigned int bits_size;
 	char *cp,
@@ -1039,7 +1039,7 @@ static parse_3166 () {
 	fclose (fp);
 }
 
-static table_3166 () {
+static void table_3166 (void) {
 	char *cp,
 	*dp;
 	char    d,
@@ -1094,7 +1094,7 @@ static table_3166 () {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (void);
 
 static void  adios (char *what, char *fmt, ...) {
 	va_list ap;

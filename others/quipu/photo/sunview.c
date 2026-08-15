@@ -15,7 +15,7 @@ static struct toolsw *gfx_sw;
 static int        sx=20,sy=20,x,y;
 extern int PIC_LINESIZE;
 
-int sigwinched () {
+int sigwinched (void) {
 	tool_sigwinch (tool);
 }
 

@@ -1170,7 +1170,7 @@ losing_iae:
 	nextime += IAETIME;
 }
 
-static	bind_to_directory () {
+static	void bind_to_directory (void) {
 	struct ds_bind_arg bind_arg,
 			   bind_result;
 	struct ds_bind_arg *ba = &bind_arg,
@@ -1200,7 +1200,7 @@ static	bind_to_directory () {
 	isbound = 1;
 }
 
-static int  rebind_to_directory () {
+static int  rebind_to_directory (void) {
 	if (referral_dsa != NOTOK) {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
@@ -1224,7 +1224,7 @@ static void make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 		strcpy (ba -> dba_passwd, passwd);
 }
 
-static int  unbind_from_directory () {
+static int  unbind_from_directory (void) {
 	int	    wasbound;
 
 	if (wasbound = isbound) {

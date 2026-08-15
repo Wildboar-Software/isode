@@ -611,7 +611,7 @@ print_send:
 }
 #endif
 #else
-int _sunlink_stub2()  {}
+int _sunlink_stub2 (void) {}
 #endif
 #else
 int _sunlink_stub(void) {}

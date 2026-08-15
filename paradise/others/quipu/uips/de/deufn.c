@@ -37,7 +37,7 @@ extern struct query qinfo[];
 extern int boundToDSA;
 extern int deLogLevel;
 
-void doUfnSearch() {
+void doUfnSearch (void) {
 	DNS ufn_interact();
 	struct dn_seq  *ufnres, * dns;
 	char buf[BUFSIZ];

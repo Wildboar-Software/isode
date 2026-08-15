@@ -42,7 +42,7 @@ alarmLen () {
 		return remoteAlarmTime;
 }
 
-void initAlarm () {
+void initAlarm (void) {
 	void onalarm();
 
 	alarmCount = 0;
@@ -50,7 +50,7 @@ void initAlarm () {
 	alarm(alarmLen());
 }
 
-void alarmCleanUp () {
+void alarmCleanUp (void) {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (alarmCount > 1) {
@@ -59,19 +59,19 @@ void alarmCleanUp () {
 	}
 }
 
-void handleTimeout () {
+void handleTimeout (void) {
 	de_unbind();
 	signal(SIGALRM, SIG_IGN);
 }
 
-void startUnbindTimer () {
+void startUnbindTimer (void) {
 	void handleTimeout();
 
 	signal(SIGALRM, (VFP) handleTimeout);
 	alarm((unsigned)bindTimeout);
 }
 
-void stopUnbindTimer () {
+void stopUnbindTimer (void) {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 }
@@ -251,7 +251,7 @@ char *lastRDN (char *dnstr) {
 		return (++cp);
 }
 
-void clearProblemFlags () {
+void clearProblemFlags (void) {
 	limitProblem = notAllReached = FALSE;
 }
 

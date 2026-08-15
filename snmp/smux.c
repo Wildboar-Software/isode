@@ -102,7 +102,7 @@ int	smux_init (int debug) {
 	return sd;
 }
 
-static int  smuxalloc () {
+static int  smuxalloc (void) {
 	int	    len;
 
 	if ((ps = ps_alloc (fdx_open)) == NULLPS || fdx_setup (ps, sd) == NOTOK) {

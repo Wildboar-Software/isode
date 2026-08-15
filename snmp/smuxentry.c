@@ -29,7 +29,7 @@ int	setsmuxEntry (int f) {
 	return (servf != NULL);
 }
 
-int	endsmuxEntry () {
+int endsmuxEntry (void) {
 	if (servf && !stayopen) {
 		fclose (servf);
 		servf = NULL;

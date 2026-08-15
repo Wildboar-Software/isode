@@ -34,7 +34,7 @@ alarmLen() {
 		return remoteAlarmTime;
 }
 
-void initAlarm() {
+void initAlarm (void) {
 	void onalarm();
 
 	alarmCount = 0;
@@ -42,7 +42,7 @@ void initAlarm() {
 	alarm(alarmLen());
 }
 
-void alarmCleanUp() {
+void alarmCleanUp (void) {
 	signal(SIGALRM, SIG_IGN);
 	alarm(0);
 	if (alarmCount > 1) {

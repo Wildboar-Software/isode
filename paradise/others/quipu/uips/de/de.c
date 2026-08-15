@@ -249,7 +249,7 @@ set_up_defaults:
 	/* and that's all for now */
 }
 
-int doCountry() {
+int doCountry (void) {
 	Attr_Sequence at;
 
 	/* if we already have the values set up, use the cached results */

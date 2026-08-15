@@ -1869,7 +1869,7 @@ static void tb_free (struct smuxTree *tb) {
 }
 #endif	/* SMUX */
 
-static void start_view () {
+static void start_view (void) {
 	OT	    ot;
 	if (ot = text2obj ("view"))
 		viewTree = ot -> ot_name;

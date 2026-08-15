@@ -23,7 +23,7 @@ static struct namelist * plp = NULLLIST;
 
 void searchFail(), de_exit();
 
-int de_Read() {
+int de_Read (void) {
 	char * more;
 	char * rdn;
 	char name[LINESIZE];

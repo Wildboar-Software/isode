@@ -536,7 +536,7 @@ shutdown (int serverpid, int clientpid) {
  * make a new copy of environment that has room for DISPLAY
  */
 
-int set_environment () {
+int set_environment (void) {
 	int nenvvars;
 	char **newPtr, **oldPtr;
 	static char displaybuf[256];

@@ -98,7 +98,7 @@ void freePRRs (struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-int freePRRSearchArgs () {
+int freePRRSearchArgs (void) {
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }

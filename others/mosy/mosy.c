@@ -269,7 +269,7 @@ myyerror (char *fmt, ...) {
 }
 #endif
 
-int yywrap () {
+int yywrap (void) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	return 1;
@@ -307,7 +307,7 @@ static yyprint_aux (char *s, char *mode) {
 
 /* PASS1 */
 
-int pass1 () {
+int pass1 (void) {
 	printf ("-- object definitions compiled from %s", mymodule);
 	if (mymoduleid)
 		printf (" %s", oidprint(mymoduleid));
@@ -408,7 +408,7 @@ void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *i
 
 /* PASS2 */
 
-int pass2 () {
+int pass2 (void) {
 	SY	    sy;
 
 	if (!sflag)

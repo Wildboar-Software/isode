@@ -66,7 +66,7 @@ WINDOW *Text;
 int text_height;
 jmp_buf	env;
 
-void initwidgets () {
+void initwidgets (void) {
 	initscr();
 	noecho();
 	crmode();
@@ -75,7 +75,7 @@ void initwidgets () {
 	activelist.count = 0;
 }
 
-void textfresh () {
+void textfresh (void) {
 	wrefresh (Text);
 }
 
@@ -94,11 +94,11 @@ void setwidgets(WIDGET *thesewdgts, int y) {
 	rfrshwidgets(thesewdgts);
 }
 
-int linec () {
+int linec (void) {
 	return (int) LINES;
 }
 
-int gety () {
+int gety (void) {
 	int y,x;
 	getyx(Text, y, x);
 	/* Get rid of lint warning */
@@ -245,7 +245,7 @@ void activewidget(WIDGET wdgts[], WINDOW *text) {
 	++(activelist.count);
 }
 
-void deleteactive () {
+void deleteactive (void) {
 	if (activelist.count > 0)
 		--(activelist.count);
 }
@@ -255,7 +255,7 @@ void activeindex (int indx) {
 }
 
 /* Refresh each of the active widgets and the current text window */
-void redraw () {
+void redraw (void) {
 	int	i;
 
 #ifndef QUICKREFRESH
@@ -404,7 +404,7 @@ void printcommand(WIDGET *wdgt) {
 /* THESE ROUTINES GET AND REACT TO A USERS INPUT FROM THE KEYBOARD */
 
 /* Loop forever, calling widget callback functions when activated */
-void interact () {
+void interact (void) {
 	int	ch, indx;
 	void		int_quit(), jumpback();
 
@@ -718,7 +718,7 @@ void getlabel(WIDGET *wdgt, char label[])		/* 'label' must be long enough... */ 
 /* MISCELLANEOUS FUNCTIONS */
 
 /* Try to locate the bottom of the last set of widgets displayed */
-int lowesty () {
+int lowesty (void) {
 	int		cnt = 0;
 	WIDGET		*wdgts;
 
@@ -750,7 +750,7 @@ void xprintint (char *fmt, int a) {
 	wprintw(Text,fmt, a);
 }
 
-void cleartext () {
+void cleartext (void) {
 #ifndef QUICKREFRESH
 	clearok (Text,TRUE);
 #endif /* QUICKREFRESH */
@@ -758,24 +758,24 @@ void cleartext () {
 }
 
 /* Jump back to the interact function only on an interrupt */
-void jumpback () {
+void jumpback (void) {
 	waddstr(Text,"\n*** Interrupted ***\n");
 	wrefresh(Text);
 	longjmp(env, TRUE);
 }
 
 /* This is used as a declaration, when no function callback is required */
-void nullfn () {
+void nullfn (void) {
 }
 
 /* This is used by widgets that just want to kill the current level */
-void quitfn () {
+void quitfn (void) {
 	wclear(Text);
 	wrefresh(Text);
 	killwidgets(activelist.widgets[activelist.count - 1]);
 }
 
-void endwidgets () {
+void endwidgets (void) {
 	move(LINES-1, 0);
 	refresh();
 	endwin();

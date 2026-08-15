@@ -51,7 +51,7 @@ QCardinal requests_made = 0, requests_failed = 0;
 
 jmp_buf env;
 
-void interact () {
+void interact (void) {
 	char commandline[LINESIZE];
 
 	setjmp(env);
@@ -64,7 +64,7 @@ void interact () {
 	}
 }
 
-void intquit () {
+void intquit (void) {
 	char input[LINESIZE];
 
 	while (1) {
@@ -465,16 +465,16 @@ QBool query_matches(entryList matches, entryList *returnlist) {
 	return TRUE;
 }
 
-void nullfn () {
+void nullfn (void) {
 }
 
-void abort_query () {
+void abort_query (void) {
 	uprint("\nQuery interrupted.\n");
 	abort_request(request_id);
 	longjmp(env, 0);
 }
 
-void abort_command () {
+void abort_command (void) {
 	uprint("\nCommand interrupted.\n");
 	longjmp(env, 0);
 }

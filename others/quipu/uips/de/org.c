@@ -72,7 +72,7 @@ void freeOrgs (struct namelist **listpp) {
 	*listpp = NULLLIST;
 }
 
-void freeOrgSearchArgs () {
+void freeOrgSearchArgs (void) {
 	/*
 	Attr_Sequence atl, x;
 	*/

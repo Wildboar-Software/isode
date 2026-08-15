@@ -43,7 +43,7 @@ short lacl_sntx = -1;
 
 extern LLog	*log_dsap;
 
-static Saclinfo sacl_alloc() {
+static Saclinfo sacl_alloc(void) {
 	Saclinfo	new;
 	new = (Saclinfo) smalloc( sizeof(saclinfo) );
 	bzero( (char *) new, sizeof(saclinfo) );

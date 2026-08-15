@@ -107,7 +107,7 @@ char *get_strioid (char *ptr) {
 	return ptr;
 }
 
-void user_tailor () {
+void user_tailor (void) {
 	char           *part1;
 	char           *part2;
 	char           *getenv ();
@@ -363,14 +363,14 @@ void user_tailor () {
 	fclose(config_file);
 }
 
-void main_help () {
+void main_help (void) {
 	cleartext();
 	killwidgets(mainwdgts);
 	setwidgets(dethelpwdgts,-1);
 	help_cncs();
 }
 
-void main_bind () {
+void main_bind (void) {
 	cleartext();
 	if (*passwd != 0)
 		strcpy(bindpass,"******");
@@ -378,11 +378,11 @@ void main_bind () {
 		bindpass[0] = '\0';
 }
 
-void cnnct_quit () {
+void cnnct_quit (void) {
 	quit("Exiting sd.\n", 0);
 }
 
-void cnnct_bind () {
+void cnnct_bind (void) {
 	struct ds_bind_arg bindarg;
 	struct ds_bind_arg bindresult;
 	struct ds_bind_error binderr;
@@ -456,7 +456,7 @@ void cnnct_bind () {
 	text_state = TEXT;
 }
 
-void rd_start () {
+void rd_start (void) {
 	struct ds_read_arg read_arg;
 	struct ds_read_result   result;
 	struct DSError          error;
@@ -520,7 +520,7 @@ void rd_start () {
 	}
 }
 
-void back_start () {
+void back_start (void) {
 	if (!back_buf_num) {
 		cleartext();
 		tprint("History Buffer Empty!\n");
@@ -538,7 +538,7 @@ void back_start () {
 	scrollbar('\0');
 }
 
-void widen () {
+void widen (void) {
 	char *str, *sptr;
 	int count = 0;
 	str_seq first;
@@ -576,7 +576,7 @@ void widen () {
 	}
 }
 
-void set_default_type () {
+void set_default_type (void) {
 	int count, lastindx;
 	WIDGET *wdgt, *vwdgt;
 	DN base_name;
@@ -635,7 +635,7 @@ void set_default_type () {
 
 /* These are the functions called by the list level widgets */
 
-void list_start () {
+void list_start (void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -764,7 +764,7 @@ void rdn2str(caddr_t ptr,char *cptr) {
 	strcpy(cptr, buffer);
 }
 
-void srch_start () {
+void srch_start (void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
@@ -994,7 +994,7 @@ void quipu_error (struct DSError *err) {
 	}
 }
 
-void returnmain () {
+void returnmain (void) {
 	QUITFN();
 	setwidgets (mainwdgts,-1);
 	rd_start();
@@ -1155,7 +1155,7 @@ void make_friendly (char *fstr, char *str) {
 	}
 }
 
-void goto_addr () {
+void goto_addr (void) {
 	set_default_type();
 	rd_start();
 }

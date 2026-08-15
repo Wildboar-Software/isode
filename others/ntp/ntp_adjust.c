@@ -36,7 +36,7 @@ int	firstpass = 1;
 #define	abs(x)	((x) < 0 ? -(x) : (x))
 #endif
 
-void init_logical_clock () {
+void init_logical_clock (void) {
 	if (kern_tickadj)
 		adj_precision = kern_tickadj;
 	else

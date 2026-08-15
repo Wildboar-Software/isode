@@ -131,7 +131,7 @@ static int TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAP
 	return SendMReport ();
 }
 
-static int ManInit () {
+static int ManInit (void) {
 	struct sockaddr_in sin;
 	struct sockaddr_in *sock = &sin;
 	struct servent *sp;

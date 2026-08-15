@@ -1277,7 +1277,7 @@ static void bind_to_directory (void) {
 	isbound = 1;
 }
 
-static int  rebind_to_directory () {
+static int  rebind_to_directory (void) {
 	if (referral_dsa != NOTOK) {
 		if (debug)
 			advise (LLOG_DEBUG, NULLCP, "dap_unbind from referral dsa");
@@ -1305,7 +1305,7 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 		strcpy (ba -> dba_passwd, passwd);
 }
 
-static int  unbind_from_directory () {
+static int  unbind_from_directory (void) {
 	int	    wasbound;
 
 	if (wasbound = isbound) {

@@ -84,7 +84,7 @@ void read_args (unsigned int argc, char ***avptr) {
 	}
 }
 
-void setsignals () {
+void setsignals (void) {
 	int     i;
 
 	for (i=0; i<18; i++)
@@ -95,7 +95,7 @@ void eprint (char *str) {
 	tprint(str);
 }
 
-void sd_quit () {
+void sd_quit (void) {
 	quit("\n", 0);
 }
 
