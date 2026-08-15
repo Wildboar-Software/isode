@@ -7,6 +7,7 @@
 *****************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "bind.h"
 #include "util.h"
@@ -14,6 +15,7 @@
 #include "quipu/bind.h"
 #include "quipu/dap2.h"
 #include "logger.h"
+#include "compat.h"
 
 extern char *dsa_address;
 extern char *backup_dsa_address;

@@ -1,5 +1,8 @@
 /* ds_init.c - initialise the DSA */
 
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/read.h"

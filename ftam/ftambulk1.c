@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 #include "fpkt.h"
 
 static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti);

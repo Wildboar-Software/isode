@@ -1,6 +1,8 @@
 /* ftamacl.c - FPM: encode/decode access control lists (SETs of AC elements) */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "fpkt.h"
 
 struct type_FTAM_Access__Control__List *

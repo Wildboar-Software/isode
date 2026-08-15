@@ -1,5 +1,9 @@
 /* malloc.c - Quipu DSA specific memory management */
 
+#include <fcntl.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <unistd.h>
 #include <stdio.h>
 #ifdef	__linux__
 #include <values.h>
@@ -127,8 +131,6 @@ static size_t pagesize = 0x2000;
 static size_t pagemask = 0xE000;
 static size_t pageminusone = 0x1FFF;
 static unsigned short smallmax = 0xDFFF;
-
-extern caddr_t sbrk();
 
 #ifdef MALLOCTRACE
 static int malloc_started = 0;

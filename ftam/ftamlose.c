@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include "fpkt.h"
 
 static int _ftamoops (struct FTAMindication *fti, int reason, int fatal, int observer, int source, va_list ap);

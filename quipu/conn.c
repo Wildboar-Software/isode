@@ -1,5 +1,6 @@
 /* conn.c - */
 
+#include <stdlib.h>
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

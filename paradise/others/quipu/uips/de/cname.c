@@ -1,6 +1,8 @@
 /* template.c - your comments here */
 
 #include <stdio.h>
+#include <string.h>
+#include <strings.h>
 #include "util.h"
 #include "cnamelist.h"
 #include "quipu/util.h"

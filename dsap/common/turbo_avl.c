@@ -1,6 +1,7 @@
 /* turbo_avl.c */
 
 #include <sys/types.h>
+#include <stdlib.h>
 
 #include "manifest.h"
 #include "quipu/util.h"

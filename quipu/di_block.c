@@ -1,5 +1,6 @@
 /* di_block.c - routines to handle operation activity blocks */
 
+#include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "tsap.h"

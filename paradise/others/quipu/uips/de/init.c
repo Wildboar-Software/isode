@@ -9,6 +9,9 @@
 *****************************************************************************/
 
 /* #include <stdlib.h> */
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "demanifest.h"
 #include "types.h"
 #include "util.h"

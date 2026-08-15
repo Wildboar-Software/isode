@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 #include "isoaddrs.h"
 #include "quipu/util.h"
 #include "demanifest.h"

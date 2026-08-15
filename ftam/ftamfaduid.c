@@ -1,6 +1,9 @@
 /* ftamfaduid.c - FPM: encode/decode FADU identities */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "fpkt.h"
 
 struct type_FTAM_FADU__Identity *

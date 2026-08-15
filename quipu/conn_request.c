@@ -1,5 +1,6 @@
 /* conn_request.c - Generate DSP BIND from connection block */
 
+#include <stdio.h>
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"

@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <netdb.h>
+#include <unistd.h>
 
 #include "ftp_var.h"
 #include "general.h"

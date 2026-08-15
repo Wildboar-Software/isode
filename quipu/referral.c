@@ -1,5 +1,6 @@
 /* referral.c - create referral notices */
 
+#include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
 

@@ -5,8 +5,12 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <unistd.h>
-#include <errno.h>
+#include <fcntl.h>
+#include <sys/time.h>
 #include "IMISC-types.h"	/* IMISC type definitions */
 #include "ryresponder.h"	/* for generic idempotent responders */
 #include "IMISC-ops.h"		/* IMISC operation definitions */

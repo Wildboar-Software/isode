@@ -1,6 +1,9 @@
 /* country.c - search for a country */
 
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/list.h"

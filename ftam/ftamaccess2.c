@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 #include "fpkt.h"
 
 static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);

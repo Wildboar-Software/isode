@@ -2,6 +2,12 @@
 
 #include <stdint.h>
 #include <string.h>
+
+// Trick to avoid conflicting "entry" symbol
+#define entry search_h_entry
+#include <search.h>
+#undef entry
+
 #include "quipu/attr.h"
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

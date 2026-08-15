@@ -1,6 +1,7 @@
 /* ufn_parse.c - user-friendly name resolution */
 
 #include <string.h>
+#include <stdlib.h>
 #include "quipu/ufn.h"
 #include "tailor.h"
 #include "quipu/list.h"

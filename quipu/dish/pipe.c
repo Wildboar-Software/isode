@@ -1,5 +1,12 @@
 /* pipe.c - */
 
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/socket.h>
+#include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
 #include <errno.h>
@@ -38,7 +45,7 @@ int init_pipe (void) {
 #endif
 	if ((cp = getenv ("DISHPARENT")) == NULLCP) {
 		sprintf (parent, "%d", getppid ());
-		setenv ("DISHPARENT", cp = parent);
+		setenv ("DISHPARENT", cp = parent, 1);
 	}
 	if (sscanf (cp, "%d", &parent_pid) != 1) {
 		fprintf (stderr,"DISHPARENT malformed");
@@ -294,7 +301,7 @@ int get_dish_sock (struct sockaddr_in *isock) {
 #else
 		sprintf (buffer, "127.0.0.1 %d", portno);
 #endif
-		setenv ("DISHPROC", ptr = buffer);
+		setenv ("DISHPROC", ptr = buffer, 1);
 	}
 	if ((dp = index (ptr, ' ')) == NULLCP || sscanf (dp + 1, "%d", &portno) != 1) {
 		fprintf (stderr,"DISHPROC malformed");

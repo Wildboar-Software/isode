@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
 #include "fpkt.h"
 
 static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti);

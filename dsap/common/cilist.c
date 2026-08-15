@@ -9,6 +9,7 @@
 		An example $ of a case ignore list $ syntax attribute
 */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"

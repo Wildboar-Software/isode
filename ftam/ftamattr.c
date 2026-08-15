@@ -1,6 +1,9 @@
 /* ftamattr.c - FPM: encode/decode attributes */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "fpkt.h"
 
 struct type_FTAM_Read__Attributes *

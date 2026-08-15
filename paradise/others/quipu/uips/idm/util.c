@@ -1,4 +1,8 @@
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
 #include "config.h"
 #include "demanifest.h"
 #include "destrings.h"

@@ -1,5 +1,9 @@
 /* pseudo.c -- Handle pseudo DSA attributes */
 
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "psap.h"
 #include <stdio.h>
 #include <unistd.h>
 #include "quipu/util.h"

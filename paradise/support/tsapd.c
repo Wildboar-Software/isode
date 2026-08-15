@@ -23,7 +23,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <time.h>
 #include "manifest.h"
 #include "sys.file.h"
 #include <sys/stat.h>

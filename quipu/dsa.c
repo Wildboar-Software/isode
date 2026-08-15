@@ -1,5 +1,10 @@
 /* dsa.c - Main routine for QUIPU DSA process */
 
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <time.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <signal.h>

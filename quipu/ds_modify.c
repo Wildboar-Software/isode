@@ -1,5 +1,8 @@
 /* ds_modify.c - */
 
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "quipu/config.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"

@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "fpkt.h"
 
 static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti);

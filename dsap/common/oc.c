@@ -1,5 +1,6 @@
 /* oc.c - Object Class routines */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "tailor.h"

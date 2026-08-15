@@ -1,6 +1,8 @@
 /* ftam-assoc.c - interactive initiator FTAM -- association management */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "ftamuser.h"
 
 static struct PSAPaddr vfs_bound;

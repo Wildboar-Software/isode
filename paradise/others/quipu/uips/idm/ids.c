@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 #include "bind.h"
 #include "extmessages.h"
 #include "demanifest.h"

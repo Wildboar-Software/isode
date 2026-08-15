@@ -1,5 +1,10 @@
 /* ds_search.c - DSA search of the directory */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "psap.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/list.h"		/* to get LSR # defs */

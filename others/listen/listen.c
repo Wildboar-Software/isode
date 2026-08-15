@@ -1,6 +1,8 @@
 /* listen.c -- responder for listen demo */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "listen.h"
 
 static char *mycontext = "isode listen demo";

@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "extmessages.h"
 #include "demanifest.h"
 #include "quipu/util.h"

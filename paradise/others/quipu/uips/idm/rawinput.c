@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/termio.h>
+#include <sys/ioctl.h>
 #include "extmessages.h"
 
 static short savemode;

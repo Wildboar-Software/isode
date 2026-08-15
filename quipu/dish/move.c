@@ -1,5 +1,9 @@
 /* move.c - */
 
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
 

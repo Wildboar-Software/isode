@@ -2,6 +2,11 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <time.h>
+#include <unistd.h>
 #include "FTAM-types.h"
 #include "ftamuser.h"
 #include "general.h"
@@ -36,7 +41,12 @@ FILE   *popen ();
 
 static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
 static int fdfls (char *file);
-static int filcmp (struct filent **a, struct filent **b);
+
+static int filcmp (const void *p, const void *q) {
+	struct filent **a = (struct filent **) p;
+	struct filent **b = (struct filent **) q;
+	return strcmp ((*a) -> fi_entry, (*b) -> fi_entry);
+}
 
 #ifndef	BRIDGE
 int f_fls (char **vec) {
@@ -598,6 +608,3 @@ int fdffnx (int fd, struct PSAPdata *px, int status) {
 	return status;
 }
 
-static int filcmp (struct filent **a, struct filent **b) {
-	return strcmp ((*a) -> fi_entry, (*b) -> fi_entry);
-}

@@ -1,5 +1,7 @@
 /* entry_dump.c - routines to dump the database */
 
+#include <stdio.h>
+#include "psap.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include <errno.h>

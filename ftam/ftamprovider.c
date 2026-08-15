@@ -2,6 +2,10 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <search.h>
 #include "fpkt.h"
 
 struct pair fclass_pairs[] = {

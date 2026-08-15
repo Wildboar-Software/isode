@@ -1,5 +1,9 @@
 /* dsa_chain.c - take referral and chain if allowed */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "acsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

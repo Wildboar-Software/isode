@@ -13,6 +13,9 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/oid.h"
 #include "quipu/dap2.h"

@@ -1,6 +1,8 @@
 /* ftamrespond.c - FPM: responder */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "fpkt.h"
 
 /* F-INITIALIZE.INDICATION */

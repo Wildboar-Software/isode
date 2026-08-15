@@ -1,5 +1,7 @@
 /* turbo_disk.c */
 
+#include <string.h>
+#include <unistd.h>
 #include <stdio.h>
 #include "quipu/config.h"
 #include "quipu/entry.h"

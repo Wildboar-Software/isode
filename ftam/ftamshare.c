@@ -1,6 +1,7 @@
 /* ftamshare.c - FPM: encode/decode shared ASE information */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "fpkt.h"
 
 struct type_FTAM_Shared__ASE__Information *shared2fpm (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti) {

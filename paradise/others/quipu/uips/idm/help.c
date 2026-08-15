@@ -1,4 +1,6 @@
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #include "demanifest.h"
 #include "tailor.h"

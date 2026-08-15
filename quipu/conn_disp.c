@@ -1,5 +1,10 @@
 /* conn_dispatch.c - deal with an event on an open connection */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <time.h>
 #include "quipu/dsap.h"
 #include "tsap.h"
 #include "quipu/util.h"

@@ -1,5 +1,10 @@
 /* dish.c - */
 
+#include <ctype.h>
+#include <setjmp.h>
+#include <stdlib.h>
+#include <strings.h>
+#include "psap.h"
 #include <errno.h>
 #include <stdio.h>
 #include <signal.h>

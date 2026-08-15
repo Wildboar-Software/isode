@@ -1,5 +1,6 @@
 /* dapbind.c - Establish directory association */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/oid.h"
 #include "quipu/dap2.h"

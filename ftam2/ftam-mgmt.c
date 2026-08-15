@@ -1,6 +1,9 @@
 /* ftam-mgmt.c - interactive initiator FTAM -- file management */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "ftamuser.h"
 
 static int mv (char *src, char *dst, int multi);

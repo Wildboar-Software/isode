@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <unistd.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"

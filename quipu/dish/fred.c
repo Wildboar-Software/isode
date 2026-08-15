@@ -1,5 +1,10 @@
 /* fred.c - DiSH support for FrED */
 
+#include <stdlib.h>
+#include <strings.h>
+#include <unistd.h>
+#include "logger.h"
+#include "psap.h"
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
@@ -103,7 +108,7 @@ void call_fred (int argc, char **argv) {
 	if (test_arg (argv[1], "-display", 7)) {
 		if (argc != 3)
 			goto usage;
-		setenv ("DISPLAY", argv[2]);
+		setenv ("DISPLAY", argv[2], 1);
 		if (s_photo)
 			set_av_pe_print (s_photo,
 							 strdup (isodefile ("g3fax/Xphoto", 1)));
@@ -879,7 +884,9 @@ out:
 	return result;
 }
 
-static int dns_compar (struct dn_seq **a, struct dn_seq **b) {
+static int dns_compar (const void *p, const void *q) {
+	struct dn_seq **a = (struct dn_seq **) p;
+	struct dn_seq **b = (struct dn_seq **) q;
 	int	    i;
 	DN	    adn, bdn;
 	for (adn = (*a) -> dns_dn; adn -> dn_parent; adn = adn -> dn_parent)
@@ -901,7 +908,7 @@ static int dns_sort (struct dn_seq **dns, int i) {
 			ep = base;
 			for (ptr = *dns; ptr; ptr = ptr -> dns_next)
 				*ep++ = ptr;
-			qsort ((char *) base, i, sizeof *base, (IFP) dns_compar);
+			qsort ((char *) base, i, sizeof *base, dns_compar);
 			bp = base;
 			ptr = *dns = *bp++;
 			while (bp < ep) {
@@ -1157,7 +1164,9 @@ static struct template {
 	NULL
 };
 
-static int ava_compar (RDN *a, RDN *b) {
+static int ava_compar (const void *p, const void *q) {
+	RDN *a = (RDN *) p;
+	RDN *b = (RDN *) q;
 	/* tricky, just check 'a' part, no need to check 'v' part! */
 	return (*a) -> rdn_at - (*b) -> rdn_at;
 }
@@ -1215,7 +1224,7 @@ int showfred (DN mydn, char islong, char subdisplay) {
 				ep = base;
 				for (rdn = myrdn; rdn; rdn = rdn -> rdn_next)
 					*ep++ = rdn;
-				qsort ((char *) base, i, sizeof *base, (IFP) ava_compar);
+				qsort ((char *) base, i, sizeof *base, ava_compar);
 				bp = base;
 				rdn = myrdn = *bp++;
 				while (bp < ep) {
@@ -1282,9 +1291,9 @@ int showfred (DN mydn, char islong, char subdisplay) {
 						}
 						ps_print (ps, " ");
 						*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-						setenv ("RDN", ps -> ps_base);
+						setenv ("RDN", ps -> ps_base, 1);
 					} else
-						setenv ("RDN", "Photo");
+						setenv ("RDN", "Photo", 1);
 				}
 				break;
 			}

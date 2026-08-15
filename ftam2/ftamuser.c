@@ -4,6 +4,10 @@
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/time.h>
 #include "ftamuser.h"
 #include "tailor.h"
 #if	defined(SYS5) && !defined(HPUX)

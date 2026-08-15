@@ -1,7 +1,13 @@
 /* ftam-get.c - interactive initiator FTAM -- "get" */
 
 #include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include "compat.h"
 #include "ftamuser.h"
 
 static int effector;

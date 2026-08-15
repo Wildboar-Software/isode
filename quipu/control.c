@@ -6,6 +6,7 @@
    This is strictly non standard, but gives the dua control of the dsa.
 */
 
+#include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/dsp.h"

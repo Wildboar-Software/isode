@@ -1,5 +1,6 @@
 /* search.c - */
 
+#include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 #include "quipu/list.h"

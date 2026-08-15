@@ -1,5 +1,7 @@
 /* get_filter.c - */
 
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
 

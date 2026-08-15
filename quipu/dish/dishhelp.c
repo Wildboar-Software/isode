@@ -1,5 +1,6 @@
 /* dishhelp.c - */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
 

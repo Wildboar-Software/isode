@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "fpkt.h"
 
 #define	FS_CTX		"iso ftam"

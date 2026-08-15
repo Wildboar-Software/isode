@@ -1,5 +1,10 @@
 /* add.c - */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "psap.h"
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"

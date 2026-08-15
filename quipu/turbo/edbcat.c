@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <strings.h>
 #include <stdio.h>
 #include <gdbm.h>
 #include "sys.file.h"

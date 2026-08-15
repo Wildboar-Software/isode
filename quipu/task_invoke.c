@@ -1,5 +1,7 @@
 /* task_invoke.c - deal with invocation of an operation over a connection */
 
+#include <string.h>
+#include <time.h>
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <strings.h>
 #include "util.h"
 #include "mapatts.h"
 #include "quipu/util.h"

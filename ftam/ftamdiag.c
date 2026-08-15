@@ -1,6 +1,8 @@
 /* ftamdiag.c - FPM: encode/decode diagnostics */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "fpkt.h"
 
 struct type_FTAM_Diagnostic *

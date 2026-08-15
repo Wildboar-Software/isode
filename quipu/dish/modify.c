@@ -1,5 +1,8 @@
 /* modify.c - */
 
+#include <ctype.h>
+#include <stdlib.h>
+#include "psap.h"
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>

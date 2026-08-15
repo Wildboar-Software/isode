@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <sys/termio.h>
+#include <sys/ioctl.h>
 
 static short savemode;
 static unsigned char savemin;

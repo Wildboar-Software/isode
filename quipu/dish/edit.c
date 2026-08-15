@@ -1,5 +1,8 @@
 /* edit.c - */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include "manifest.h"
 #include "quipu/util.h"

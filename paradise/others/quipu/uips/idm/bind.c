@@ -1,4 +1,6 @@
 #include <signal.h>
+#include <stdlib.h>
+#include <string.h>
 #include "manifest.h"
 #include "quipu/util.h"
 #include <fcntl.h>
@@ -20,6 +22,7 @@
 #include "quipu/bind.h"
 #include "quipu/dap2.h"
 #include "logger.h"
+#include "compat.h"
 
 extern char *dsa_address;
 extern char username[];

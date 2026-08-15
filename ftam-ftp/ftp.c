@@ -30,7 +30,11 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <sys/socket.h>
 #include "ftp_var.h"
 #include "logger.h"
 void	advise (int, char *, char *, ...);

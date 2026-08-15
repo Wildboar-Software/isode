@@ -19,6 +19,9 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"

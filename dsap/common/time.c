@@ -16,6 +16,7 @@
 		890602093221Z -> 09:32:21 GMT, on June 2nd 1989.
 */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"

@@ -1,3 +1,4 @@
+#include <strings.h>
 #include "general.h"
 #include <string.h>
 #include <unistd.h>

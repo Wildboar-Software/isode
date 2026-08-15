@@ -2,6 +2,10 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 #include <pwd.h>
 #include "ryinitiator.h"	/* for generic interactive initiators */
 #include "IMISC-ops.h"		/* IMISC operation definitions */

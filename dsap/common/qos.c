@@ -13,6 +13,7 @@
 		list ::=        <attribute> '+' <attrQuality>
  */
 #include <stdint.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "cmd_srch.h"
 #define	cmd_srch	CMD_SRCH

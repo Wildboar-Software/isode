@@ -22,6 +22,7 @@
 		Use of @ for "and" as '&' get filtered out earlier!!!
 */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "cmd_srch.h"

@@ -1,5 +1,7 @@
 /* sys_tai.c - System tailoring routines */
 
+#include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "cmd_srch.h"
 #include "tailor.h"

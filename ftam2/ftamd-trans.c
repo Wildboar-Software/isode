@@ -1,7 +1,12 @@
 /* ftamd-trans.c - FTAM responder -- transfer */
 
+#include <dirent.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
+#include <sys/stat.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include "FTAM-types.h"
 #include "ftamsystem.h"

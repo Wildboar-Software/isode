@@ -1,5 +1,7 @@
 /* checkacl.c - routines to check search and list acl's */
 
+#include <stdlib.h>
+#include <strings.h>
 #include "quipu/attrvalue.h"
 #include "logger.h"
 #include "quipu/entry.h"

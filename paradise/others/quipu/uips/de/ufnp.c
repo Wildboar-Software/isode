@@ -13,6 +13,11 @@
  *
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <ctype.h>
 #include "quipu/ufn.h"
 #include "tailor.h"
 #include "quipu/list.h"

@@ -36,8 +36,10 @@
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 /*
 #include <sys/socket.h>
  */
@@ -64,6 +66,8 @@
 #include "logger.h"
 extern LLog _ftam_log, *ftam_log;
 #include <stdarg.h>
+#include "tailor.h"
+#include "ftamuser.h"
 
 char *ctime();
 void adios (char *, char *, ...);

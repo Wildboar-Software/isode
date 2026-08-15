@@ -1,5 +1,6 @@
 /* task_select.c - tidy connection mesh and select next DSA activity */
 
+#include <time.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
 

@@ -1,6 +1,7 @@
 /* ftamconctl.c - FPM: encode/decode concurrency control */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "fpkt.h"
 
 static int fc2lock[] = {

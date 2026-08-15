@@ -1,6 +1,8 @@
 /* ftampass.c - FPM: encode/decode access passwords */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "fpkt.h"
 
 struct type_FTAM_Access__Passwords *

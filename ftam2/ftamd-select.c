@@ -1,8 +1,13 @@
 /* ftamd-select.c - FTAM responder -- selection regime */
 
+#include <fcntl.h>
 #include <grp.h>
 #include <stdio.h>
 #include <pwd.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "ftamsystem.h"
 

@@ -1,5 +1,9 @@
 /* entry_load.c - load bits of the database */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include "psap.h"
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
