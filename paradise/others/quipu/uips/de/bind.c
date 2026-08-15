@@ -38,7 +38,6 @@ static int bindStarted = FALSE;
 static int boundOnce = FALSE;
 
 int tryBackup() {
-
 	if (triedBackup == TRUE)
 		return NOTOK;
 	if (backup_dsa_address == NULLCP)
@@ -64,16 +63,12 @@ int init_bind_to_ds(int *assoc) {
 		fprintf(stderr, "No dsa address has been configured in dsaptailor or detailor\n\n");
 		exit(-1);
 	}
-
 	if (triedBackup == FALSE)
 		if (boundOnce == FALSE)
 			printf("Connecting to the Directory - wait just a moment please ...\n");
-
 	bind_arg.dba_version = DBA_VERSION_V1988;
 	bind_arg.dba_auth_type = DBA_AUTH_SIMPLE;
-
 	bind_arg.dba_dn = str2dn(username);
-
 	if (password == NULLCP) {
 		bind_arg.dba_passwd[0] = '\0';
 		bind_arg.dba_passwd_len = 0;
@@ -81,9 +76,7 @@ int init_bind_to_ds(int *assoc) {
 		strcpy(bind_arg.dba_passwd, password);
 		bind_arg.dba_passwd_len = strlen(password);
 	}
-
 try_bind:
-
 	if ((addr = str2paddr (dsa_address)) == NULLPA) {
 		fprintf(stderr, "DSA address format problem\n");
 		exit(-1);
@@ -110,29 +103,23 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 	fd_set  wfds;
 
 	while ((bindres == CONNECTING_1) || (bindres == CONNECTING_2)) {
-
 		FD_ZERO (&rfds);
 		FD_ZERO (&wfds);
-
 		if ((bindres == CONNECTING_2) && (wantToBlock == FALSE))
 			return CONNECTING_2;
-
 		if (bindres == CONNECTING_1) {
 			if (PSelectMask (assoc, &wfds, &nfds, pi) == NOTOK) {
 				fprintf(stderr, "PSelectMask (write) failed\n");
 				return NOTOK;
 			}
 		}
-
 		if (bindres == CONNECTING_2) {
 			if (PSelectMask (assoc, &rfds, &nfds, pi) == NOTOK) {
 				fprintf(stderr, "PSelectMask (read) failed\n");
 				return NOTOK;
 			}
 		}
-
 		nevents = xselect (nfds, &rfds, &wfds, NULLFD, NOTOK);
-
 		if (nevents == NOTOK) {
 			fprintf(stderr, "xselect failed\n");
 			return NOTOK;
@@ -145,7 +132,6 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 			if (nevents != OK)
 				bindres = DapAsynBindRetry(assoc, 0, &dc, &di);
 		}
-
 		if (bindres == DONE) {
 			if (dc.dc_result != DC_RESULT) {
 				if (dc.dc_un.dc_bind_err.dbe_type == DBE_TYPE_SECURITY) {

@@ -180,9 +180,7 @@ int makeListPRRs(struct namelist **listp, char *parentstr) {
 	if (retval != OK)
 		return NOTOK;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	if (strncmp(lastRDN(parentstr), SHORT_OU, strlen(SHORT_OU)) != 0) {
 		/* we want to build the list so that any people with no ou
@@ -285,7 +283,6 @@ fillMostPRRSearchArgs(char *parentstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
 	arg.sra_searchaliases = TRUE;
@@ -376,7 +373,6 @@ void prrFilter1(char *prrstr, struct s_filter **fpp) {
 			laststring = lsp++;
 		else
 			laststring = fsp + 1;
-
 		*fpp = orfilter();
 		fp1 = fp = (*fpp)->FUFILT = andfilter();
 		fp = fp->FUFILT = subsfilter(LEADSUBSTR, DE_COMMON_NAME, firststring);
@@ -419,7 +415,6 @@ void prrFilter2(char *prrstr, struct s_filter **fpp) {
 			laststring = lsp++;
 		else
 			laststring = fsp + 1;
-
 		*fpp = andfilter();
 		fp = (*fpp)->FUFILT = subsfilter(LEADSUBSTR, DE_COMMON_NAME, firststring);
 		fp = fp->flt_next = subsfilter(LEADSUBSTR, DE_SURNAME, laststring);

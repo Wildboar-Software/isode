@@ -20,16 +20,13 @@ char * mapAttName();
 extern int orgEntered;
 
 int de_prompt_yesno(char prompt[], char *value, char default_string[]) {
-
 	extern char no_string[];
 	extern char yesnoonly[];
 	extern char yes_string[];
 	char * prompt2;
 	char * temp;
 	temp = malloc(LINESIZE);
-
 	prompt2 = malloc(LINESIZE);
-
 	for (;;) {
 		sprintf(prompt2, "%s (%s/%s)", prompt, yes_string, no_string);
 		sprintf(prompt2, "%s [%s]  ", prompt2, default_string);
@@ -54,7 +51,6 @@ int de_prompt_yesno(char prompt[], char *value, char default_string[]) {
 			writeInverse(temp);
 		}
 	}
-
 	free(temp);
 	return;
 }
@@ -64,9 +60,7 @@ int de_prompt_value(char prompt[], char *value) {
 	temp = malloc(LINESIZE);
 	sprintf(temp, prompt);
 	writeInverse(temp);
-
 	putchar(' ');
-
 	if (gets(value) == NULLCP) {
 		/* behave as for an interrupt */
 		clearerr(stdin);
@@ -79,7 +73,6 @@ int de_prompt_value(char prompt[], char *value) {
 }
 
 int ask_addr(char *attr_name, char *lines) {
-
 	char * addr_ptr[LINES_PA+1];
 	char str_pa[LINESIZE];
 	char * mark;
@@ -90,7 +83,6 @@ int ask_addr(char *attr_name, char *lines) {
 	int length;
 	int line_counter;
 	int position;
-
 	str = malloc(LINESIZE);
 	strncpy(str_pa, "", LINESIZE);
 	line_counter = 1;
@@ -103,12 +95,10 @@ int ask_addr(char *attr_name, char *lines) {
 		strncpy(addr_ptr[line_counter], "", LINESIZE);
 		line_counter++;
 	}
-
 	if (strlen(lines) > 0) {
 		ptr = lines;
 		mark = lines;
 		line_counter = 1;
-
 		while (line_counter <= LINES_PA) {
 			if (last == FALSE) {
 				if ((ptr = index(ptr, '$')) == NULLCP) {
@@ -142,12 +132,10 @@ prompt_value1:
 				printf("%s %d %s\n", max_len_line, CHARS_PA, characters);
 				goto prompt_value1;
 			}
-
 			if (strlen(str) == 0 && addr_ptr[line_counter] != NULLCP) {
 				/* The default value was taken, copy it */
 				strcpy(str, addr_ptr[line_counter]);
 			}
-
 			if (line_counter == 1) {
 				strcpy(str_pa, str);
 			} else {
@@ -200,9 +188,7 @@ prompt_value2:
 			line_counter++;
 		}
 	}
-
 	/* Strip trailing $ signs (looping backwards) */
-
 	length = strlen(str_pa);
 	position = length - 1;  /* 0 based */
 	while (position >= 0 ) {
@@ -223,7 +209,6 @@ prompt_value2:
 }
 
 int ask_tlx(char *attr_name, char *lines) {
-
 	char * tlx_ptr[LINES_TLX+1];
 	char str_pa[LINESIZE];
 	char * mark;
@@ -235,10 +220,8 @@ int ask_tlx(char *attr_name, char *lines) {
 	int length;
 	int line_counter;
 	int position;
-
 	prompt	= malloc(LINESIZE);
 	str		= malloc(LINESIZE);
-
 	strncpy(str_pa, "", LINESIZE);
 	line_counter = 1;
 	length = 0;
@@ -250,12 +233,10 @@ int ask_tlx(char *attr_name, char *lines) {
 		strncpy(tlx_ptr[line_counter], "", LINESIZE);
 		line_counter++;
 	}
-
 	if (strlen(lines) > 0) {
 		ptr = lines;
 		mark = lines;
 		line_counter = 1;
-
 		while (line_counter <= LINES_TLX) {
 			if (last == FALSE) {
 				if ((ptr = index(ptr, '$')) == NULLCP) {
@@ -292,12 +273,10 @@ prompt_value1:
 				*str = '\0';
 				tlx_ptr[line_counter] = NULLCP;
 			}
-
 			if (strlen(str) == 0 && tlx_ptr[line_counter] != NULLCP) {
 				/* The default value was taken, copy it */
 				strcpy(str, tlx_ptr[line_counter]);
 			}
-
 			if (line_counter == 1) {
 				strcpy(str_pa, str);
 			} else {
@@ -342,7 +321,6 @@ prompt_value2:
 				displayFile(attr_name, FALSE);
 				goto prompt_value2;
 			}
-
 			if (line_counter == 1) {
 				if (strlen(str) <= 0) {
 					sprintf(lines, "");
@@ -359,9 +337,7 @@ prompt_value2:
 			line_counter++;
 		}
 	}
-
 	/* Strip trailing $ signs (looping backwards) */
-
 	length = strlen(str_pa);
 	position = length - 1;  /* 0 based */
 	while (position >= 0 ) {
@@ -430,7 +406,6 @@ int is_x400(char *str) {
 }
 
 int ask_dnhnc(char *str, char attr_name[]) {
-
 	struct namelist *plp = NULLLIST;
 
 	static char posdn[LINESIZE];
@@ -442,23 +417,19 @@ int ask_dnhnc(char *str, char attr_name[]) {
 	char * here;
 	char * rdn;
 	char * tmp_search;
-
 	int new;
 	int noPersons;
 	int objectType;
 	int status;
-
 	here	= malloc(LINESIZE);
 	rdn		= malloc(LINESIZE);
 	tmp_search	= malloc(LINESIZE);
 	new = FALSE;
-
 	if (((!(strcmp(change_posdn, yes_string))) &&
 			(strlen(posdn) <= 0)) ||
 			(strcmp(change_posdn, yes_string))) {
 		sprintf(posdn, posdit);
 	}
-
 prompt_where:
 	if (!(strcmp(change_posdn, yes_string))) {
 		printf("                                   ");
@@ -486,7 +457,6 @@ prompt_where:
 		sprintf(here, yes_string);
 	}
 prompt_dn:
-
 	if (!(strcmp(here, yes_string))) {
 		if (strlen(str) <= 0) {
 			sprintf(default_userdn, "");
@@ -494,18 +464,15 @@ prompt_dn:
 			rdn = copy_string(lastComponent(str, PERSON));
 			sprintf(default_userdn, rdn);
 		}
-
 		printf("%s %s ", enter_msg, mapAttName(attr_name));
 		noPersons = 0;
 		enterString(USERDN, person, plp);
-
 		if (!(strcmp(person, quit_String))) {
 			if (noPersons > 0) {
 				freePRRs(&plp);
 			}
 			return NOTOK;
 		}
-
 		if (strlen(person) == 1 && index(person, '-') != 0) {
 			sprintf(str, "%s", "-");
 			return OK;
@@ -528,11 +495,9 @@ prompt_dn:
 				}
 			}
 		}
-
 		if (noPersons > 0) {
 			freePRRs(&plp);
 		}
-
 		if (orgEntered == FALSE) {
 			sprintf(tmp_search, "%s@cn=%s", posdn,person);
 			if (listXctCpPRRcn(tmp_search, &plp) != OK) {
@@ -616,7 +581,6 @@ int get_posdn(char posdn[], int *new) {
 	char * rdn;
 
 	rdn = malloc(LINESIZE);
-
 prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
@@ -637,7 +601,6 @@ prompt_country:
 			*new = TRUE;
 		}
 	}
-
 	if (listCos(co, &clp) != OK) {
 		searchFail(co);
 		return NOTOK;
@@ -714,7 +677,6 @@ prompt_org:
 		printListOrgs(org, olp);
 		goto prompt_org;
 	}
-
 	pagerOn(NUMBER_NOT_ALLOWED);
 	if (!(strcmp(have_department, no_string))) {
 		free(rdn);
@@ -734,10 +696,8 @@ prompt_org:
 			return OK;
 		}
 	}
-
 	highNumber = 0;
 	pagerOn(NUMBER_NOT_ALLOWED);
-
 prompt_ou:
 	printf("\n");
 	enterString(ORGUNIT, ou, oulp);
@@ -791,7 +751,6 @@ int ask_password_entry(char pswd[]) {
 	char vfy_pswd[LINESIZE];
 
 	temp2 = malloc(LINESIZE);
-
 ask_again:
 	sprintf(temp2, "%s :  ", ask_org_password);
 	sprintf(new_pswd, getpass(temp2));

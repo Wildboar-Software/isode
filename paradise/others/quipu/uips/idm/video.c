@@ -66,13 +66,11 @@ char *checkSetTerm(char *termtype, char *defterm) {
 			return defterm;
 		}
 	}
-
 	cp = buffer;
 	revVideoOn = tgetstr("mr", &cp);
 	resetVideo = tgetstr("me", &cp);
 	if (preferInvVideo == TRUE)
 		turnInverseVideoOn();
-
 	lines = tgetnum("li");
 	if (lines < 1)
 		lines = LINES;
@@ -98,7 +96,6 @@ char *checkSetTerm(char *termtype, char *defterm) {
 	cols = tgetnum("co");
 	if (cols == 0)
 		cols = COLS;
-
 	cursorMotion = tgetstr("cm", &cp);
 	if (cursorMotion != NULLCP)
 		startLine = tgoto(cursorMotion, 0, lines);

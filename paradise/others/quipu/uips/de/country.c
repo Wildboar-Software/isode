@@ -114,7 +114,6 @@ int listAllCos(struct namelist **clistp) {
 		logListSuccess(LIST_ERROR, "co", 0);
 	else
 		logListSuccess(LIST_OK, "co", listlen(*clistp));
-
 	if (listAtRoot == TRUE)
 		freeCoListArgs();
 	else
@@ -139,7 +138,6 @@ int listMatchingCos(char *cstr, struct namelist **clistp) {
 			return OK;
 		}
 	}
-
 	if (index(cstr, '*') != NULLCP) { /* contains at least one asterisk */
 		filtarray = explicitCo;
 		filtnumber = -1;
@@ -182,14 +180,12 @@ int readCo(char *objectstr, struct namelist **clistp) {
 	if (retval != OK)
 		return NOTOK;
 	/* setProblemFlags(rresult); */
-
 	*clistp = list_alloc();
 	(*clistp)->name = dn2pstr(rresult.rdr_entry.ent_dn);
 	(*clistp)->ats = as_cpy(rresult.rdr_entry.ent_attr);
 	(*clistp)->next = NULLLIST;
 	highNumber = 1;
 	return OK;
-
 }
 
 int listExactCos(char *objectstr, struct namelist **clistp) {
@@ -214,7 +210,6 @@ int reallyMakeListCountries(struct namelist **clistp) {
 	if ((retval == DSE_INTR_ABANDONED) &&
 			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
-
 	/* setProblemFlags(sresult); */
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
@@ -249,9 +244,7 @@ int makeListCountries(struct namelist **clistp) {
 			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*clistp = list_alloc();
@@ -279,7 +272,6 @@ fillMostCountryReadArgs(char *objectstr) {
 	arg.rda_common =sca; /* struct copy */
 	arg.rda_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.rda_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.rda_object = str2dn(objectstr);
 	/* specify attributes of interest */
 	arg.rda_eis.eis_allattributes = FALSE;
@@ -305,7 +297,6 @@ fillMostCountryListArgs() {
 	arg.lsa_common =sca; /* struct copy */
 	arg.lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.lsa_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.lsa_object = str2dn("");
 	return (&arg);
 }
@@ -321,7 +312,6 @@ fillMostCountrySearchArgs(char *objectstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(objectstr);
 	/* specify attributes of interest */
@@ -387,7 +377,6 @@ void makeExplicitCoFilter(char *cstr, struct s_filter **fpp) {
 									   DE_LOCALITY_NAME, ostr2);
 		break;
 	}
-
 }
 
 void coFilter1(char *cstr, struct s_filter **fpp) {

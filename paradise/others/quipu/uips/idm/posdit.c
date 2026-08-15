@@ -22,7 +22,6 @@ extern int posdit_oc;
 extern int quipuMastersCo;
 
 int position_dit() {
-
 	char * change_pos;
 	char * mapCoName();
 	DN dn;
@@ -30,9 +29,7 @@ int position_dit() {
 
 	void de_exit();
 	void searchFail();
-
 	change_pos = malloc(LINESIZE);
-
 	if (strlen(posdit) > 0) {
 		dn = NULLDN;
 		dn = str2dn(posdit);
@@ -68,13 +65,9 @@ int display_posdit(int length, char str[]) {
 	int spaces;
 
 	savestr = malloc(LINESIZE);
-
 	sprintf(savestr, str);
-
 	first = TRUE;
-
 	pagerOn(NUMBER_NOT_ALLOWED);
-
 	while (*savestr != NULL) {
 		if (first == FALSE) {
 			spaces = length - 1 ;
@@ -84,7 +77,6 @@ int display_posdit(int length, char str[]) {
 		printLastComponent(INDENTOFF, savestr, 0, FALSE);
 		savestr = removeLastRDN(savestr);
 	}
-
 	free(savestr);
 	return;
 }
@@ -103,9 +95,7 @@ int get_posdit() {
 	Attr_Sequence at;
 
 	rdn		= malloc(LINESIZE);
-
 	strcpy(posdit_save, posdit);
-
 prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
@@ -138,7 +128,6 @@ prompt_country:
 			sprintf(default_organisation, "");
 		}
 	}
-
 	if (listCos(co, &clp) != OK) {
 		searchFail(co);
 		de_exit(-1);
@@ -245,9 +234,7 @@ prompt_org:
 		printListOrgs(org, olp);
 		goto prompt_org;
 	}
-
 	pagerOn(NUMBER_NOT_ALLOWED);
-
 	if (!(strcmp(have_department, no_string))) {
 		free(rdn);
 		return OK;
@@ -338,9 +325,7 @@ int determine_posdit(int *objectType) {
 
 	savestr = malloc(LINESIZE);
 	temprdn = malloc(LINESIZE);
-
 	sprintf(savestr, posdit);
-
 	cp = rindex(savestr, '@');
 	cp++;
 	if (strncmp(cp, SHORT_OU, strlen(SHORT_OU)) == 0) {

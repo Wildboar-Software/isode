@@ -32,23 +32,16 @@ int de_Delete() {
 	int noEntries;
 	int objectType;
 	int status;
-
 	noEntries = 0;
-
 	more = malloc(LINESIZE);
 	plp = (struct namelist *) malloc(sizeof(struct namelist));
 	sure = malloc(LINESIZE);
-
 	fillMostRmArg();
-
 	sprintf(default_person, ""); /* Clear default value */
 	sprintf(more, yes_string);  /* Enter loop */
-
 	highNumber = 0;
-
 	while (!(strcmp(more, yes_string))) {
 		enterString(DELETE, person, plp);
-
 		if (!(strcmp(person, quit_String))) {
 			sprintf(more, no_string);
 			if (noEntries > 0) {
@@ -61,18 +54,14 @@ int de_Delete() {
 			continue;
 		}
 		printf("\n");
-
 		if (noEntries > 0) {
 			freePRRs(&plp);
 		}
-
 		if (listPRRs(posdit, person, &plp) != OK) {
 			searchFail(person);
 			de_exit(-1);
 		}
-
 		noEntries = listlen(plp);
-
 		if (noEntries == 0) {
 			printf(no_ent_found);
 			freePRRs(&plp);
@@ -112,7 +101,6 @@ int de_Delete() {
 			printListPRRs(name, plp, COUNTRY, FALSE);
 		}
 	}
-
 	free(more);
 	free(rdn);
 	free(sure);
@@ -141,7 +129,6 @@ int dm_Delete_entry() {
 	int status;
 
 	struct DSError error;
-
 	fillMostRmArg();
 	rmarg.rma_object = str2dn(plp->name);
 	rfrl_msg = TRUE;

@@ -42,17 +42,14 @@ extern AttributeType at_objectclass;
 
 Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 	/* assumes entry passed is complete */
-
 	Entry           make_path ();
 	Entry		eptr;
 
 	Attr_Sequence   asptr;
-
 	struct DSError  error;
 	DN              dnptr;
 	char		aclfound = FALSE;
 	char		ocfound = FALSE;
-
 	for (asptr = ptr->ent_attr; asptr != NULLATTR; asptr = asptr->attr_link) {
 		if (asptr->attr_type == at_acl) {
 			aclfound = TRUE;
@@ -63,7 +60,6 @@ Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 			continue;
 		}
 	}
-
 	if (!aclfound) {
 		LLOG (log_dsap,LLOG_TRACE,("No ACL in dsp_cache"));
 		return NULLENTRY;		/* don't cache if no acl */
@@ -74,10 +70,8 @@ Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 		/* ... we could do if we were clever
 		   ... wait for next release !?! */
 	}
-
 	for (dnptr = ptr->ent_dn; dnptr->dn_parent != NULLDN; dnptr = dnptr->dn_parent)
 		;
-
 	if ((eptr = local_find_entry_aux (ptr->ent_dn, FALSE)) != NULLENTRY) {
 		if ((eptr->e_data == E_TYPE_CACHE_FROM_MASTER) ||
 				(eptr->e_data == E_TYPE_CONSTRUCTOR)) {
@@ -104,7 +98,6 @@ Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 		eptr->e_attributes = as_cpy(ptr->ent_attr);
 		eptr->e_age = timenow;
 	}
-
 	if (unravel_attribute (eptr,&error) == NOTOK) {
 		/* Keep name, but throw away attributes */
 		local_cache_size--;
@@ -148,7 +141,6 @@ void dsp_cache (struct DSArgument *arg,struct DSResult *res,char ctx,DN binddn) 
 		entryptr = cache_dsp_entry (&res->res_rd.rdr_entry,TRUE);
 		if (ctx == DS_CTX_X500_DAP)
 			if (entryptr != NULLENTRY) {
-
 				/* remove acl if DAP user not allowed it */
 				as_free (res->res_rd.rdr_entry.ent_attr);
 				if ((res->res_rd.rdr_entry.ent_attr = eis_select (
@@ -174,7 +166,6 @@ void dsp_cache (struct DSArgument *arg,struct DSResult *res,char ctx,DN binddn) 
 		if ((arg->arg_sr.sra_eis.eis_allattributes == TRUE) &&
 				(arg->arg_sr.sra_eis.eis_infotypes == EIS_ATTRIBUTESANDVALUES))
 			cache_search = TRUE;
-
 		for (ptr = res->res_sr.CSR_entries; ptr != NULLENTRYINFO; ptr = ptr->ent_next)
 			cache_dsp_entry (ptr,cache_search);
 		break;
@@ -186,7 +177,6 @@ void dsp_cache (struct DSArgument *arg,struct DSResult *res,char ctx,DN binddn) 
 						arg->arg_ls.lsa_object,
 						arg->arg_ls.lsa_common.ca_servicecontrol.svc_sizelimit);
 		break;
-
 	/* the following change an entry - the easiest thing is to
 	   deleted the cached entry and start again */
 	case OP_ADDENTRY:

@@ -133,7 +133,6 @@ void freeLocSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
-
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 	/*
@@ -234,7 +233,6 @@ int reallyMakeListLocs(struct namelist **llistp) {
 	if ((retval == DSE_INTR_ABANDONED) &&
 			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
-
 	/* setProblemFlags(sresult); */
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
@@ -250,7 +248,6 @@ int reallyMakeListLocs(struct namelist **llistp) {
 			(*llistp)->ats = NULLATTR;
 			llistp = &(*llistp)->next;
 			highNumber++;
-
 		}
 		free(cp);
 	}
@@ -274,9 +271,7 @@ int makeListLocanisations(struct namelist **llistp) {
 	if (retval != OK)
 		return NOTOK;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*llistp = list_alloc();
@@ -345,7 +340,6 @@ fillMostLocListArgs(char *str) {
 	arg.lsa_common =sca; /* struct copy */
 	arg.lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.lsa_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.lsa_object = str2dn(str);
 	return (&arg);
 }
@@ -361,7 +355,6 @@ fillMostLocSearchArgs(char *cstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	if (strcmp(cstr, "root") == 0)
 		arg.sra_baseobject = NULLDN;

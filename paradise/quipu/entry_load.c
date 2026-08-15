@@ -60,12 +60,9 @@ static int dir_exists (char *fname) {
 			DLOG (log_dsap,LLOG_DEBUG,("File %s will not stat - %d",fname,errno));
 		return FALSE;
 	}
-
 	if ((buf.st_mode & S_IFMT) == S_IFDIR)
 		return TRUE;
-
 	DLOG (log_dsap,LLOG_DEBUG,("File %s is not a directory",fname));
-
 	return FALSE;
 }
 
@@ -83,7 +80,6 @@ static int read_mapped_rdn (PS aps,char *name,char *file) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Cannot read \"%s\" (%d)",file,errno));
 		return FALSE;
 	}
-
 	parse_line = 0;
 #ifdef	TURBO_DISK
 	while ( (ptr = fgetline(mapfp)) != NULLCP)
@@ -100,7 +96,6 @@ static int read_mapped_rdn (PS aps,char *name,char *file) {
 		*newname++ = 0;
 		while (isspace(*--tmp))
 			*tmp = 0;
-
 		if (lexequ (name,ptr) == 0) {
 			/* got it - replace in ps*/
 			i = strlen (name);
@@ -111,7 +106,6 @@ static int read_mapped_rdn (PS aps,char *name,char *file) {
 			return TRUE;
 		}
 	}
-
 	DLOG (log_dsap, LLOG_DEBUG,("%s not found in map file %s",name,file));
 	fclose (mapfp);
 	return FALSE;
@@ -204,10 +198,8 @@ static int rdn2filename (PS aps, RDN rdn, char make) {
 	/* look for EDB.map file */
 	*aps->ps_ptr = 0;
 	sprintf (mapbuf, "%sEDB.map",aps->ps_base);
-
 	rdn_print (aps,rdn,DIROUT);
 	*aps->ps_ptr = 0;
-
 	if (fileexists (mapbuf) && read_mapped_rdn (aps,start,mapbuf)) {
 		*aps->ps_ptr = 0;
 		if (dir_exists(aps->ps_base))
@@ -223,17 +215,12 @@ static int rdn2filename (PS aps, RDN rdn, char make) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("mapped file missing \"%s\"",aps->ps_base));
 		return NOTOK;
 	}
-
 #if     defined(DEBUG) && defined(SYS5) && !defined(HPUX) && !defined(SVR4)
-
 	else if ( (int)strlen(start) > MAXFILENAMELEN )
 		LLOG (log_dsap,LLOG_NOTICE,("Potential problem with \"%s\" (name too long)",start));
-
 #endif
-
 	if (dir_exists(aps->ps_base))
 		return OK;
-
 	if (make) {
 		if (write_mapped_rdn (aps,start,mapbuf))
 			return OK;
@@ -243,7 +230,6 @@ static int rdn2filename (PS aps, RDN rdn, char make) {
 		}
 		return OK;
 	}
-
 	return NOTOK;
 }
 
@@ -262,7 +248,6 @@ static int dn2filename (PS aps,DN dn,char make) {
 			ps_print (aps,"/");
 	} else
 		ps_print (aps,"./");
-
 	if (dn != NULLDN) {
 		if (rdn2filename (aps,dn->dn_rdn,make) == NOTOK)
 			return NOTOK;
@@ -275,9 +260,7 @@ static int dn2filename (PS aps,DN dn,char make) {
 			}
 		}
 	}
-
 	return OK;
-
 }
 
 char * dn2edbfile (DN dn) {
@@ -292,25 +275,20 @@ char * dn2edbfile (DN dn) {
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("dn2dir ps_alloc failed"));
 		return NULLCP;
 	}
-
 	if (dn2filename (aps,dn,TRUE) != OK)
 		return NULLCP;
-
 	if (*(aps->ps_ptr - 1) != '/')
 		ps_print (aps,"/EDB");
 	else
 		ps_print (aps,"EDB");
 	*aps->ps_ptr = 0;
-
 	ps_free (aps);
-
 	return result;
 }
 
 static int file_check (int offset,Entry entryptr) {
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
-
 	if (rdn2filename (ps,entryptr->e_name,FALSE) == OK) {
 		if (*(ps->ps_ptr - 1) != '/')
 			ps_print (ps,"/EDB");
@@ -327,7 +305,6 @@ static int sibling_expected (Entry e) {
 
 	if (e->e_external)
 		return FALSE;
-
 	for (avs = e->e_master; avs != NULLAV; avs=avs->avseq_next) {
 		if (avs->avseq_av.av_struct == NULL)
 			continue;
@@ -355,12 +332,10 @@ static int load_a_kid(Entry e, int offset) {
 		e->e_allchildrenpresent = 2;
 		return(OK);
 	}
-
 	if (file_check(offset, e) == OK) {
 		if ((e->e_children = getentry_block(e, filename)) == NULLAVL) {
 			if (parse_status != 0)
 				return(NOTOK);
-
 			if (e->e_allchildrenpresent != FALSE &&
 					e->e_leaf == FALSE) {
 				got_all = FALSE;
@@ -370,9 +345,7 @@ static int load_a_kid(Entry e, int offset) {
 		}
 		if (parse_status != 0)
 			return(NOTOK);
-
 		e->e_leaf = FALSE;
-
 		if (entry_load_kids(e->e_children, strlen( filename ) - EDBLEN)
 				== NOTOK)
 			return (NOTOK);
@@ -384,7 +357,6 @@ static int load_a_kid(Entry e, int offset) {
 		e->e_allchildrenpresent = FALSE;
 		got_all = FALSE;
 	}
-
 	return(OK);
 }
 
@@ -394,16 +366,12 @@ static int entry_load_kids (Avlnode *entryptr /* in this case, entryptr is reall
 	ps->ps_ptr = filename + offset;
 	ps->ps_cnt = LINESIZE - offset;
 	*ps->ps_ptr = 0;
-
 	if (entryptr == NULLAVL)
 		return(OK);
-
 	got_all = TRUE;
-
 	if (avl_apply(entryptr, load_a_kid,  (caddr_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
-
 	akid = (Entry) avl_getone(entryptr);
 	if (akid && (parent = akid->e_parent)) {
 		if (got_all) {
@@ -412,7 +380,6 @@ static int entry_load_kids (Avlnode *entryptr /* in this case, entryptr is reall
 		} else if (parent->e_allchildrenpresent == 2)
 			parent->e_allchildrenpresent = 1;
 	}
-
 	return (OK);
 }
 
@@ -435,23 +402,19 @@ static int merge_entry(Entry newentry, Avlnode *oldtree) {
 	int     entry_cmp();
 
 	newentry->e_parent = ((Entry) avl_getone(oldtree))->e_parent;
-
 	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, entry_cmp))
 			!= NULLENTRY ) {
 		newentry->e_leaf = FALSE;
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
-
 		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
 				  NOTOK, AVL_PREORDER);
-
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
 	} else {
 		got_subtree = FALSE;
 		newentry->e_allchildrenpresent = FALSE;
 	}
-
 	return(OK);
 }
 
@@ -462,13 +425,11 @@ Entry subtree_load (Entry parent,DN dn) {
 	int	entry_free();
 
 	got_subtree = TRUE;
-
 	if ((parent != NULLENTRY) && (parent->e_children != NULLAVL)) {
 		akid = (Entry) avl_getone(parent->e_children);
 		if (akid->e_data != E_TYPE_CONSTRUCTOR)
 			return (parent);
 	}
-
 	if ((ps = ps_alloc (str_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("file open ps_alloc failed"));
 		return (NULLENTRY);
@@ -477,46 +438,35 @@ Entry subtree_load (Entry parent,DN dn) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("file open ps_alloc failed"));
 		return (NULLENTRY);
 	}
-
 	dn2filename (ps,dn,FALSE);
 	if (*(ps->ps_ptr - 1) != '/')
 		ps_print (ps,"/EDB");
 	else
 		ps_print (ps,"EDB");
 	*ps->ps_ptr = 0;
-
 	if (parent != NULLENTRY && parent->e_children != NULLAVL) {
 		/* yuk - already got an edb lower in the DIT ... */
 		treetop = getentry_block (parent,filename);
 		if (parse_status != 0)
 			return NULLENTRY;
-
 		/*
 		 * go through the tree we just loaded, merging it with the
 		 * tree previously loaded.
 		 */
-
 		avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
 				  NOTOK, AVL_PREORDER);
-
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
-
 		got_subtree = TRUE;
-
 		/* free the old tree and set got_subtree */
 		avl_free(parent->e_children, check_entry_free);
-
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
-
 		parent->e_children = treetop;
-
 		ps_free (ps);
 		parent->e_children = treetop;
 		return(parent);
 	}
-
 	if (dn == NULLDN) {
 		parent = get_default_entry (NULLENTRY);
 		parent->e_leaf = FALSE;
@@ -528,24 +478,18 @@ Entry subtree_load (Entry parent,DN dn) {
 			return (NULLENTRY);
 	} else
 		treetop = getentry_block (parent,filename);
-
 	if (parse_status != 0)
 		failed = TRUE;
-
 	parent->e_children = treetop;
-
 	if (entry_load_kids (treetop,strlen (filename) - EDBLEN) == NOTOK) {
 		parse_status++;
 		return (NULLENTRY);
 	}
-
 	ps_free (ps);
-
 	if (failed) {
 		parse_status++;
 		return (NULLENTRY);
 	}
-
 	return(parent);
 }
 
@@ -560,15 +504,12 @@ int refresh_from_disk(DN dn) {
 
 	if ((parent = local_find_entry (dn,FALSE)) == NULLENTRY)
 		return (NOTOK);
-
 	if (parent->e_data != E_DATA_MASTER)
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("WARNING: refreshing SLAVE EDB file -- should not be needed"));
-
 	child = entry_cpy(parent);
 	child->e_parent = parent->e_parent;
 	child->e_children = parent->e_children;
 	parent->e_children = NULLAVL;
-
 	refreshing = TRUE;
 	if (dn == NULLDN)
 		tmp = subtree_load (NULLENTRY,NULLDN);
@@ -577,13 +518,11 @@ int refresh_from_disk(DN dn) {
 	refreshing = FALSE;
 	if (tmp == NULLENTRY)
 		return (NOTOK);
-
 	if (dn == NULLDN) {
 		database_root = child;
 		directory_free (child);
 		database_root = tmp;
 	} else
 		directory_free(child);
-
 	return (OK);
 }

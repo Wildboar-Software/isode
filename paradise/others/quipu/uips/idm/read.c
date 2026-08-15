@@ -31,23 +31,16 @@ int de_Read() {
 	int noEntries;
 	int objectType;
 	int status;
-
 	noEntries = 0;
-
 	more = malloc(LINESIZE);
 	plp = (struct namelist *) malloc(sizeof(struct namelist));
 	rdn = malloc(LINESIZE);
-
 	fillMostRmArg();
-
 	sprintf(more, yes_string);		/* Enter loop */
-
 	highNumber = 0;
-
 	while (!(strcmp(more, yes_string))) {
 		sprintf(default_person, "");	/* Avoid default */
 		enterString(ENTRY, person, plp);
-
 		if (!(strcmp(person, quit_String))) {
 			sprintf(more, no_string);
 			if (noEntries > 0) {
@@ -64,18 +57,14 @@ int de_Read() {
 			}
 		}
 		printf("\n");
-
 		if (noEntries > 0) {
 			freePRRs(&plp);
 		}
-
 		if (listPRRs(posdit, person, &plp) != OK) {
 			searchFail(person);
 			de_exit(-1);
 		}
-
 		noEntries = listlen(plp);
-
 		if (noEntries == 0) {
 			printf(no_ent_found);
 			freePRRs(&plp);
@@ -113,7 +102,6 @@ int de_Read() {
 			continue;
 		}
 	}
-
 	free(more);
 	free(rdn);
 	return OK;

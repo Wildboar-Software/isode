@@ -83,7 +83,6 @@ void freeOUListArgs(void) {
 }
 
 void freeOUSearchArgs(void) {
-
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 }
@@ -153,7 +152,6 @@ int listMatchingOUs(char *parentstr, char *thisstr, struct namelist **listp) {
 		}
 	}
 	logSearchSuccess(SEARCH_FAIL, "ou", thisstr, filtnumber, 0);
-
 	/* nothing found by single level searches - let's try subtree searching */
 	if (index(thisstr, '*') != NULLCP) { /* contains at least one asterisk */
 		filtarray = explicitOU;
@@ -204,7 +202,6 @@ int reallyMakeListOUs(struct namelist **olistp) {
 	if ((retval == DSE_INTR_ABANDONED) &&
 			(serror.dse_type == DSE_ABANDONED))
 		abandoned = TRUE;
-
 	/* setProblemFlags(sresult); */
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
@@ -220,7 +217,6 @@ int reallyMakeListOUs(struct namelist **olistp) {
 			(*olistp)->ats = NULLATTR;
 			olistp = &(*olistp)->next;
 			highNumber++;
-
 		}
 		free(cp);
 	}
@@ -255,9 +251,7 @@ int makeListOUs(struct namelist **listp) {
 	if (retval != OK)
 		return NOTOK;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*listp = list_alloc();
@@ -326,7 +320,6 @@ fillMostOUListArgs(char *str) {
 	arg.lsa_common =sca; /* struct copy */
 	arg.lsa_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.lsa_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.lsa_object = str2dn(str);
 	return (&arg);
 }
@@ -342,7 +335,6 @@ fillMostOUSearchArgs(char *parentstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
 	arg.sra_searchaliases = TRUE;

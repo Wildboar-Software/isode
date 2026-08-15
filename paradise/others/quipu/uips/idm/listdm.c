@@ -24,41 +24,29 @@ static struct namelist * plp = NULLLIST;
 void searchFail(), onint1(), de_exit();
 
 int dm_List() {
-
 	extern int discardInput;		/* defined in pageprint */
 
 	char * buf;
 	char * rdn;
-
 	int noEntries;
 	int objectType;
 	int status;
-
 	struct namelist * plp2 = NULLLIST;
-
 	noEntries  = 0;
 	highNumber = 0;
-
 	plp = (struct namelist *) malloc(sizeof(struct namelist));
 	plp = NULLLIST;
 	plp2 = (struct namelist *) malloc(sizeof(struct namelist));
 	plp2 = NULLLIST;
-
 	rdn = malloc(LINESIZE);
-
 	sprintf(default_person, "");	/* Avoid default */
-
 	printf("\n");
-
 	sprintf(person, "%s", "*");
-
 	if (listPRRs(posdit, person, &plp) != OK) {
 		searchFail(person);
 		de_exit(-1);
 	}
-
 	noEntries = listlen(plp);
-
 	if (noEntries == 0) {
 		printf(no_ent_found);
 		freePRRs(&plp);
@@ -100,7 +88,6 @@ skip_entry:
 		}
 		/* continue in loop */
 	}
-
 	printf(press_CR);
 	buf = malloc(LINESIZE);
 	if (gets(buf) == NULLCP) {
@@ -111,6 +98,5 @@ skip_entry:
 exit_list:
 	freePRRs(&plp);
 	free(buf);
-
 	return OK;
 }

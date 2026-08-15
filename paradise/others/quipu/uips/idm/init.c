@@ -93,29 +93,21 @@ int initialisations(int argc, char **argv) {
 	print_parse_errors = FALSE;   /* Stop auto printing of errors */
 	quipu_syntaxes();
 	dsa_address = malloc(LINESIZE);
-
 #ifdef USE_PP
 	pp_quipu_init ("de");
 #endif
-
 	/* Initialize dsap library. */
 	dsap_init((int *)NULL, (char ***)NULL);
-
 	specialSyntaxHandlers();
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	dsa_address = NULLCP;
-
 	default_country[0] = '\0';
 	default_organisation[0] = '\0';
 	default_department[0] = '\0';
 	default_person[0] = '\0';
-
 	home = malloc(LINESIZE);
-
 	/* turn off logging that we are not interested in */
 	isodesetvar("compatlevel", "none", 0);
 	isodesetvar("addrlevel", "none", 0);
@@ -126,20 +118,16 @@ int initialisations(int argc, char **argv) {
 	isodesetvar("acsaplevel", "none", 0);
 	isodesetvar("rosaplevel", "none", 0);
 	/*  isodexport("idm"); */
-
 	addToList(&coatts, "masterDSA");
 	addToList(&coatts, DE_COUNTRY_NAME);
-
 	/* Read in dsaptailor file */
 	if ((config_file = fopen(isodefile(tailfile, 0), "r")) == (FILE *) NULL) {
 		fprintf(stderr, dsap_notOpen);
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))  tai_string (linebuf);
-
 		fclose(config_file);
 	}
-
 	if ((home = getenv("HOME")) != NULLCP) {
 		sprintf(tailorfile, "%s%s", home, "/.dmtailor");
 		if ((config_file = fopen(isodefile(tailorfile, 0), "r")) == (FILE *) NULL) {
@@ -215,12 +203,9 @@ int initialisations(int argc, char **argv) {
 				/* let's show bravado - carry on regardless!!! */
 			}
 	}
-
 	printf("%*s%s\n\n", (80 - strlen(welcomeMessage)) / 2, "",
 		   welcomeMessage);
-
 	initVideo();
-
 	return OK;
 }
 
@@ -236,12 +221,9 @@ static void read_de_option(char *line) {
 	int n;
 
 	part1 = SkipSpace(line);
-
 	if ((part2 = index(part1, ':')) == NULLCP) return;
-
 	*part2++ = '\0';
 	part2 = TidyString(part2);
-
 	if (lexequ(part1, "welcomeMessage") == 0) {
 		strcpy(welcomeMessage, part2);
 	} else if (lexequ(part1, "default_country") == 0) {

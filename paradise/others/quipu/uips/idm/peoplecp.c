@@ -115,7 +115,6 @@ fillMostPRRSearchArgCp(char *parentstr, int searchdepth) {
 	arg.sra_common.ca_servicecontrol.svc_options = SVC_OPT_PREFERCHAIN;
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit = SVC_NOSIZELIMIT;
-
 	arg.sra_subset = searchdepth;
 	arg.sra_baseobject = str2dn(parentstr);
 	arg.sra_searchaliases = TRUE;

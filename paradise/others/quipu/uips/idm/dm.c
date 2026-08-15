@@ -110,40 +110,28 @@ int tmp_org=FALSE;
 int orgEntered;
 
 int main(int argc, char *argv[]) {
-
 	struct namelist * option5lp = NULLLIST;
 
 	SFD cleanupok();
-
 	char * buf;
-
 	int display_posdit();
 	int objectType;
 	int status;
 	int wait_result;
-
 	signal(SIGINT, de_exit);
-
 	/*prratts = (struct namelist *) malloc(sizeof(struct namelist)); */
-
 	printf("\n");
-
 	sprintf(username, "%s", "interactive");
 	sprintf(password, "%s", "interactive");
 	sprintf(welcomeMessage, "%s", wlcm_msg);
-
 	if (initialisations(argc, argv) != OK) {
 		de_exit(-1);
 	}
-
 	displayFile("helloMessage", FALSE);
-
 	status = check_credentials();
-
 	if (status == NOTOK) {
 		de_exit(-1);
 	}
-
 	if (boundToDSA == FALSE) {
 		if (username_intrctv == TRUE) {
 			printf("%s   %s", reconnect, please_wait);
@@ -151,7 +139,6 @@ int main(int argc, char *argv[]) {
 			printf("%s   %s", connect_idm, please_wait);
 		}
 		fflush(stdout);
-
 		wait_result = wait_bind_to_ds(assoc, TRUE);  /* block */
 		if (wait_result == NOTOK) {
 			de_exit(-1);
@@ -162,11 +149,8 @@ int main(int argc, char *argv[]) {
 			printf(done);
 		}
 	}
-
 	tailorHelp();
-
 	ll_hdinit(de_log, myname);
-
 	if (strlen(posdit) > 0) {
 		if (!(strcmp(change_posdit, yes_string))) {
 			printf(curpos_msg);
@@ -177,10 +161,8 @@ int main(int argc, char *argv[]) {
 	} else {
 		position_dit();
 	}
-
 	setjmp(sjbuf);
 	signal(SIGINT, onint1);
-
 	for(;;) {
 		printf(menutopline);
 		printf(menu5line1);
@@ -193,11 +175,8 @@ int main(int argc, char *argv[]) {
 		}
 		printf(menu5line3);
 		printf(menu5line4);
-
 		enterString(OPTION5, default_option5, option5lp);
-
 		signal(SIGINT, onint2);
-
 		if (!(strcmp(option5, "1"))) {
 			de_Action();
 		} else if (!(strcmp(option5, "2"))) {
@@ -220,7 +199,6 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 	}
-
 	if (boundToDSA == TRUE) {
 #ifdef SPEC_MALL
 		stop_malloc_trace();
@@ -236,7 +214,6 @@ int de_Action() {
 	struct namelist * option2lp = NULLLIST;
 
 	int return_status;
-
 	for(;;) {
 		/*   setjmp(sjbuf);
 		   signal(SIGINT, onint1); */
@@ -249,13 +226,10 @@ int de_Action() {
 		if (!(strcmp(change_posdit, yes_string))) {
 			printf(menu2line6);
 		}
-
 		if (tmp_org == TRUE) {
 			sprintf(default_option2, "%s", "3");
 		}
-
 		enterString(OPTION2, default_option2, option2lp);
-
 		if (!(strcmp(option2, "1")))
 			return_status = dm_List();
 		else if (!(strcmp(option2, "2")))
@@ -270,20 +244,15 @@ int de_Action() {
 			return_status = position_dit();
 		else if (!(strcmp(option2, quit_String)))
 			break;
-
 		return_status = OK;
-
 		if (return_status == INV_PSWD) {
 			return INV_PSWD;
 		}
-
 	}
-
 	return OK;
 }
 
 int ask_objectType(char *string, char *object_to_work) {
-
 	char * temp1;
 	char * temp2;
 	char * temp3;
@@ -293,7 +262,6 @@ int ask_objectType(char *string, char *object_to_work) {
 	temp2 = malloc(LINESIZE);
 	temp3 = malloc(LINESIZE);
 	temp4 = malloc(LINESIZE);
-
 	sprintf(temp1, "%s", menutopline);
 	sprintf(temp2, "             1  %s %s\n", string, menutypeperson);
 	sprintf(temp3, "             2  %s %s\n", string, menutyperole);
@@ -302,7 +270,6 @@ int ask_objectType(char *string, char *object_to_work) {
 	printf(temp2);
 	printf(temp3);
 	printf(temp4);
-
 	enterString(OPTION3, default_option3, option3lp);
 	sprintf(object_to_work, "%s", option3);
 	free(temp1);
@@ -470,12 +437,10 @@ void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValu
 			return;
 		}
 	}
-
 	for (;;) {
 		exactMatch = -1;
 		writeInverse(prompt);
 		putchar(' ');
-
 		if (gets(buf) == NULLCP) {
 			if (objectType == OPTION5) {
 				/* exit the program */
@@ -487,7 +452,6 @@ void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValu
 				onint1();
 			}
 		}
-
 		cp = copy_string(TidyString(buf));
 		if (strlen(cp) == 0) { /* default accepted */
 			free(cp);
@@ -549,7 +513,6 @@ void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValu
 				displayHelp(findHelp(cp));
 			continue;
 		}
-
 		/* if a number has been entered, check that it is in range, and
 		   map the number onto the appropriate name */
 		isnum = TRUE;
@@ -604,7 +567,6 @@ void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValu
 				return;
 			}
 		}
-
 		if (index(cp, '*') == 0) { /* no wild cards */
 			if (isnum == FALSE && (strcmp(cp, quit_String)) &&
 					(objectType == OPTION1 || objectType == OPTION2
@@ -615,7 +577,6 @@ void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValu
 			}
 			break;
 		}
-
 		if (*cp == '*') {
 			if (strlen(cp) == 1)
 				break;
@@ -678,7 +639,6 @@ int cleanup(int exitCode) {
 }
 
 void onalarm(void) {
-
 	signal(SIGALRM, (VFP) onalarm);
 	alarm(2);
 	switch (alarmCount) {

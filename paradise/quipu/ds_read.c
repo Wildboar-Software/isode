@@ -53,13 +53,10 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 	char authp;
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_read"));
-
 	if (!dsp)
 		target = arg->rda_object;
-
 	if (!dsp && dsa_read_control(arg,result))
 		return (DS_OK);
-
 	if (target == NULLDN) {
 		/* can't read from the root */
 		error->dse_type = DSE_NAMEERROR;
@@ -67,7 +64,6 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 		error->ERR_NAME.DSE_na_matched = NULLDN;
 		return (DS_ERROR_REMOTE);
 	}
-
 	switch(find_entry(target,&(arg->rda_common),binddn,NULLDNSEQ,FALSE,&(entryptr), error, di_p, OP_READ)) {
 	case DS_OK:
 		/* Filled out entryptr - carry on */
@@ -84,27 +80,21 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("do_ds_read() - find_entry failed"));
 		return(DS_ERROR_LOCAL);
 	}
-
 	realtarget = get_copy_dn (entryptr);
-
 	/* User can be authenticated by using strong authentication for this
 	 * operation, or by using the credntials from the bind.
 	 */
-
 	if (!manager(binddn))
 		authp = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare
 				: AP_SIMPLE;
 	else
 		authp = AP_SIMPLE;
-
 #ifdef NOTUSED
 	authenticated = 0;
-
 	/* Credentials provided in the ds_bind */
 	if ((bind_policy & POLICY_ACCESS_READ) && (!dsp) && (binddn != NULLDN))
 		authenticated = 1;
 #endif
-
 	/* Strong authentication  */
 	/* If it's there, check it, even if you won't believe it anyway */
 	if ((retval = check_security_parms((caddr_t) arg,
@@ -117,13 +107,11 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 		dn_free (realtarget);
 		return (DS_ERROR_REMOTE);
 	}
-
 #ifdef NOTUSED
 	if ((strong_policy & POLICY_ACCESS_READ) &&
 			(arg->rda_common.ca_sig != (struct signature *) 0))
 		authenticated = 1;
 #endif
-
 	/* entry has got a full list of attributes,  eventually
 	   select one required */
 	if (check_acl ((authtype % 3) >= authp ? binddn : NULLDN, ACL_READ,
@@ -140,25 +128,19 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 			return (DS_ERROR_REMOTE);
 		}
 	}
-
 	if (entryptr->e_dsainfo && need_pseudo_dsa(entryptr,arg)) {
-
 		/* Its a 7.0 or better DSA.
 		 * pseudo attributes asked for.
 		 * special routing req'd
 		         */
-
 		if (dn_cmp (realtarget, mydsadn) == 0) {
 			/* Its me - generate result */
-
 			if ((result->rdr_entry.ent_attr = dsa_eis_select (
 												  arg->rda_eis,entryptr, dsp ? NULLDN : binddn,
 												  quipu_ctx, realtarget)) != NULLATTR)
 				goto out;
-
 			if ( arg->rda_eis.eis_allattributes || arg->rda_eis.eis_select == NULLATTR)
 				goto out;
-
 			error->dse_type = DSE_ATTRIBUTEERROR;
 			error->ERR_ATTRIBUTE.DSE_at_name = get_copy_dn (entryptr);
 			error->ERR_ATTRIBUTE.DSE_at_plist.DSE_at_what =DSE_AT_NOSUCHATTRIBUTE;
@@ -167,7 +149,6 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 			error->ERR_ATTRIBUTE.DSE_at_plist.dse_at_next = DSE_AT_NOPROBLEM;
 			dn_free (realtarget);
 			return (DS_ERROR_REMOTE);
-
 		} else {
 			/* make referral to DSA in this entry */
 			(*di_p) = di_alloc();
@@ -180,19 +161,15 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 			(*di_p)->di_entry = entryptr;
 			entryptr->e_refcount++;
 			(*di_p)->di_state = DI_COMPLETE;
-
 			return DS_CONTINUE;
 		}
-
 	}
-
 	if (cant_use_cache (entryptr,binddn,arg->rda_eis,realtarget)) {
 		int res =  referral_dsa_info(realtarget,NULLDNSEQ,FALSE,entryptr,error,di_p,
 									 arg->rda_common.ca_servicecontrol.svc_options & SVC_OPT_PREFERCHAIN);
 		dn_free (realtarget);
 		return res;
 	}
-
 	if (dsp && (eis_check (arg->rda_eis,entryptr, binddn) != OK)) {
 		/* Can only send public things over DSP - but user is entitled to more */
 		error->dse_type = DSE_SECURITYERROR;
@@ -200,7 +177,6 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 		dn_free (realtarget);
 		return (DS_ERROR_REMOTE);
 	}
-
 	if ((result->rdr_entry.ent_attr = eis_select (arg->rda_eis,entryptr, dsp ? NULLDN : binddn, quipu_ctx, realtarget)) == NULLATTR)
 		if ( !arg->rda_eis.eis_allattributes && arg->rda_eis.eis_select != NULLATTR) {
 			error->dse_type = DSE_ATTRIBUTEERROR;
@@ -212,7 +188,6 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 			dn_free (realtarget);
 			return (DS_ERROR_REMOTE);
 		}
-
 out:
 	;
 	result->rdr_entry.ent_dn = realtarget;
@@ -225,7 +200,6 @@ out:
 	/* NO_ERROR !!! */
 	result->rdr_common.cr_aliasdereferenced = (error->dse_type == DSE_NOERROR) ? FALSE : TRUE;
 	return (DS_OK);
-
 }
 
 static int cant_use_cache (Entry ptr,DN dn,EntryInfoSelection eis,DN target) {
@@ -234,28 +208,21 @@ static int cant_use_cache (Entry ptr,DN dn,EntryInfoSelection eis,DN target) {
 
 	if (dn == NULLDN)
 		return FALSE;
-
 	if ((ptr->e_data == E_DATA_MASTER) || (ptr->e_data == E_TYPE_SLAVE))
 		return FALSE;
-
 	if (ptr->e_complete == FALSE)
 		return TRUE;
-
 	/* see if more than cached data is required */
-
 	if (eis.eis_allattributes) {
 		struct acl_attr * aa;
 		struct oid_seq * oidptr;
 		/* look for attr acl */
 		/* see if any attributes use can see */
-
 		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
 			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK)
 				return TRUE;
-
 		if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 			return FALSE;
-
 		for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
 			for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 				/* The attribute is in the attribute ACL list */
@@ -263,20 +230,16 @@ static int cant_use_cache (Entry ptr,DN dn,EntryInfoSelection eis,DN target) {
 				if (check_acl (NULLDN,ACL_READ,aa->aa_acl,target) == NOTOK)
 					if (check_acl (dn,ACL_READ,aa->aa_acl,target) == OK)
 						return TRUE;
-
 	} else {
 		/* for each attribute in eis.eis_select, see is user
 		   entitled to it. */
-
 		if (check_acl (NULLDN,ACL_READ,ptr->e_acl->ac_default,target) == NOTOK)
 			if (check_acl (dn,ACL_READ,ptr->e_acl->ac_default,target) == OK)
 				dfltacl = TRUE;
-
 		for(as=eis.eis_select; as != NULLATTR; as=as->attr_link) {
 			if (entry_find_type (ptr, as->attr_type) == NULLATTR)
 				if (attribute_not_cached (ptr,dn,grab_oid(as->attr_type),target,ACL_READ,dfltacl))
 					return TRUE;
-
 		}
 	}
 	return FALSE;
@@ -289,7 +252,6 @@ static int attribute_not_cached (Entry ptr,DN dn,OID at,DN target,int level,char
 	/* see if more than cached data is required */
 	if (ptr->e_acl->ac_attributes == NULLACL_ATTR)
 		return (dfltacl);
-
 	for ( aa = ptr->e_acl->ac_attributes; aa!=NULLACL_ATTR; aa=aa->aa_next)
 		for ( oidptr=aa->aa_types; oidptr != NULLOIDSEQ; oidptr=oidptr->oid_next)
 			if (oid_cmp (oidptr->oid_oid,at) == 0) {
@@ -301,7 +263,6 @@ static int attribute_not_cached (Entry ptr,DN dn,OID at,DN target,int level,char
 				return FALSE;
 			}
 	return (dfltacl);
-
 }
 
 static Attr_Sequence  dsa_control_info(void) {
@@ -315,7 +276,6 @@ static Attr_Sequence  dsa_control_info(void) {
 
 	sprintf (buffer,"%d Master entries (in %d EDBs), %d Slave entries (in %d EDBs), %d Cached entries",
 			 local_master_size,master_edbs,local_slave_size,slave_edbs,local_cache_size);
-
 	as=as_comp_alloc();
 	as->attr_acl = NULLACL_INFO;
 	as->attr_type = at_control;
@@ -324,35 +284,27 @@ static Attr_Sequence  dsa_control_info(void) {
 		as_free (as);
 		return (NULLATTR);
 	}
-
 	return (as);
 }
 
 int dsa_read_control (struct ds_read_arg *arg,struct ds_read_result *result) {
-
 	if ((arg->rda_eis.eis_allattributes) ||
 			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
-
 	if ((arg->rda_eis.eis_select == NULLATTR)
 			|| (arg->rda_eis.eis_select->attr_link != NULLATTR))
 		return FALSE;
-
 	if (AttrT_cmp (at_control,arg->rda_eis.eis_select->attr_type) != 0)
 		return FALSE;
-
 	if ((result->rdr_entry.ent_attr = dsa_control_info()) == NULLATTR)
 		return FALSE;
-
 	/* Fiddle DN - for DUA caching !!! */
 	result->rdr_entry.ent_dn = dn_cpy (mydsadn);
-
 	result->rdr_entry.ent_iscopy = FALSE;
 	result->rdr_entry.ent_age = (time_t) 0;
 	result->rdr_entry.ent_next = NULLENTRYINFO;
 	result->rdr_common.cr_requestor = NULLDN;
 	result->rdr_common.cr_aliasdereferenced = FALSE;
-
 	return TRUE;
 }
 
@@ -361,20 +313,15 @@ int need_pseudo_dsa (Entry eptr,struct ds_read_arg *arg) {
 
 	if (quipu_ctx_supported (eptr) <= 2)
 		return FALSE;
-
 	if (!quipu_version_7 (eptr))
 		return FALSE;
-
 	if ((arg->rda_common.ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) != 0)
 		return TRUE;
-
 	if (arg->rda_eis.eis_allattributes)
 		return FALSE;
-
 	for (as = arg->rda_eis.eis_select; as!= NULLATTR; as=as->attr_link) {
 		if (check_avs_schema (as->attr_type, eptr->e_oc) != OK)
 			return TRUE;
 	}
-
 	return FALSE;
 }

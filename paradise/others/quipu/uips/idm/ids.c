@@ -38,7 +38,6 @@ char * add_entries;
 int tmp_org_found;
 
 int check_credentials() {
-
 	void de_exit();
 	char * getpass();
 	char * temp2;
@@ -51,9 +50,7 @@ int check_credentials() {
 	add_entries = malloc(LINESIZE);
 	temp2 = malloc(LINESIZE);
 	username_tries = 1;
-
 username_prompt:
-
 	if (!(strcmp(username, "interactive"))) {
 		sprintf(username, "");
 		username[0] = 0;
@@ -70,7 +67,6 @@ username_prompt:
 		} else {
 			printf(done);
 		}
-
 		status = get_username();
 		if (status != OK) {
 			return NOTOK;
@@ -98,14 +94,12 @@ username_prompt:
 		}
 		de_unbind();  /* Unbind from no authentication mode */
 	}
-
 prompt_pswd:
 	if (pswd_intrctv == TRUE) {
 		wait_result = NOTOK; /* Enter loop */
 		while (wait_result != OK) {
 			sprintf(temp2, "%s :  ", ask_password);
 			sprintf(password, getpass(temp2));
-
 			if (strlen(password) <= 0) {
 				if (pswd_tries < PSWD_TRY_LIMIT) {
 					printf(pswd_must_enter);
@@ -123,7 +117,6 @@ prompt_pswd:
 			if (status != OK) {
 				de_exit(-1);
 			}
-
 			wait_result = wait_bind_to_ds(assoc, TRUE); /* block */
 			if (wait_result == INV_PSWD) {
 				if (pswd_tries < PSWD_TRY_LIMIT) {
@@ -157,13 +150,11 @@ prompt_pswd:
 			de_exit(-1);
 		}
 	}
-
 	free(temp2);
 	return OK;
 }
 
 int just_bind() {
-
 	int status;
 	int wait_result;
 
@@ -184,14 +175,12 @@ int just_bind() {
 }
 
 int get_username() {
-
 	struct namelist * clp  = NULLLIST;
 	struct namelist * olp  = NULLLIST;
 	struct namelist * oulp = NULLLIST;
 	struct namelist * plp  = NULLLIST;
 
 	FILE * dn_file;
-
 	int noCos;
 	int noOrgs;
 	int noOUs;
@@ -218,7 +207,6 @@ int get_username() {
 	void onint1();
 	void exit();
 	Attr_Sequence at;
-
 	add_org_ids = malloc(LINESIZE);
 	already_in	= malloc(LINESIZE);
 	confirm_out = malloc(LINESIZE);
@@ -228,11 +216,8 @@ int get_username() {
 	tmp_search	= malloc(LINESIZE);
 	orgEntered  = FALSE;
 	tmp_org_found = FALSE;
-
 	printf(enter_country);
-
 	strcpy(username_save, username);
-
 prompt_country:
 	enterString(COUNTRY, co, clp);
 	if (strlen(co) == 0) {
@@ -251,7 +236,6 @@ prompt_country:
 			goto prompt_country;
 		}
 	}
-
 	if (listCos(co, &clp) != OK) {
 		searchFail(co);
 		de_exit(-1);
@@ -438,7 +422,6 @@ prompt_name_org:
 		goto prompt_org;
 	}
 	pagerOn(NUMBER_NOT_ALLOWED);
-
 	if (!(strcmp(have_department, no_string))) {
 		goto prompt_person;
 	} else if ((strcmp(have_department, yes_string))) {
@@ -494,10 +477,8 @@ prompt_ou:
 		printListOUs(ou, oulp);
 		goto prompt_ou;
 	}
-
 prompt_person:
 	/* Copy to posdit, if not defined */
-
 	if (strlen(posdit) <= 0) {
 		sprintf(posdit, "%s", posdit_user);
 		determine_posdit(&objectType);
@@ -506,7 +487,6 @@ prompt_person:
 	if (!(strcmp(search_mgr, no_string))) {
 		goto prompt_individual;
 	}
-
 	sprintf(person, dir_Mngr);
 	sprintf(tmp_search, "%s@cn=%s", posdit_user,person);
 	if (listExactPRRcn(tmp_search, &plp) != OK) {
@@ -538,7 +518,6 @@ prompt_person:
 		printListPRRs(person, plp, PERSON, FALSE);
 		goto prompt_person;
 	}
-
 prompt_individual:
 	enterString(USER, person, plp);
 	if (strlen(person) == 0) {

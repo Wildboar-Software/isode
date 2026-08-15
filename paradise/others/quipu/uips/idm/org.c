@@ -86,7 +86,6 @@ void freeOrgSearchArgs(void) {
 	/*
 	Attr_Sequence atl, x;
 	*/
-
 	dn_free(sarg.sra_baseobject);
 	as_free(sarg.sra_eis.eis_select);
 	/*
@@ -109,7 +108,6 @@ int listAllOrgs(char *cstr, struct namelist **olistp) {
 		makeAllOrgFilter(&sarg.sra_filter);
 		ret = makeListOrganisations(olistp);
 	}
-
 	if (quipuMastersCo == FALSE) {
 		freeOrgListArgs();
 	} else {
@@ -193,7 +191,6 @@ list_orgs:
 			return NOTOK;
 		}
 	}
-
 	highNumber = 0;
 	for (x = lresult.lsr_subordinates; x != (struct subordinate *) NULL;
 			x = x->sub_next) {
@@ -231,14 +228,12 @@ int listMatchingOrgs(char *cstr, char *ostr, struct namelist **olistp) {
 		filtarray = normalOrg;
 		filtnumber = 0;
 	}
-
 	if (quipuMastersCo ==FALSE) { /* try read first */
 		sprintf(rstr, "%s@o=%s", cstr, ostr);
 		if (readExactOrg(rstr, olistp) == OK) {
 			return OK;
 		}
 	}
-
 	sarg = * fillMostOrgSearchArgs(cstr, SRA_ONELEVEL);
 	while ((filterfunc = *filtarray++) != NULLVFP) {
 		filtnumber++;
@@ -283,9 +278,7 @@ int makeListOrganisations(struct namelist **olistp) {
 	if (retval != OK)
 		return NOTOK;
 	correlate_search_results (&sresult);
-
 	setProblemFlags(sresult);
-
 	highNumber = 0;
 	for (x = sresult.CSR_entries; x != NULLENTRYINFO; x = x->ent_next) {
 		*olistp = list_alloc();
@@ -313,10 +306,8 @@ fillMostOrgSearchArgs(char *cstr, int searchdepth) {
 	arg.sra_common = sca; /* struct copy */
 	arg.sra_common.ca_servicecontrol.svc_timelimit = SVC_NOTIMELIMIT;
 	arg.sra_common.ca_servicecontrol.svc_sizelimit= SVC_NOSIZELIMIT;
-
 	/*        arg.sra_common.ca_servicecontrol.svc_options = (SVC_OPT_CHAININGPROHIBIT |
 		                                                SVC_OPT_DONTUSECOPY); */
-
 	arg.sra_subset = searchdepth;
 	if (strcmp(cstr, "root") == 0)
 		arg.sra_baseobject = NULLDN;

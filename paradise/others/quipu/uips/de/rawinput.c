@@ -11,7 +11,6 @@ static struct termio t;
    to be safe */
 
 setRawMode() {
-
 	if (ioctl(0, TCGETA, &t) == -1) {
 		fprintf(stderr, "Couldn't go into raw mode (1), aaaaaagggggghhhhh!!!!\n");
 		cleanup(-1);
@@ -27,7 +26,6 @@ setRawMode() {
 }
 
 unsetRawMode() {
-
 	t.c_lflag = savemode;
 	t.c_cc[VMIN] = savemin;
 	if (ioctl(0, TCSETA, &t) == -1) {

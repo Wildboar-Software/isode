@@ -46,7 +46,6 @@ char * mapAttName();
 /* end file global variables */
 
 int de_Add() {
-
 	char * object_to_work;
 	char * option;
 	char * TidyString();
@@ -55,27 +54,19 @@ int de_Add() {
 	void searchFail(), onint1(), de_exit();
 
 	int status;
-
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
-
 	cn			= malloc(LINESIZE);
 	object_to_work		= malloc(LINESIZE);
 	option			= malloc(LINESIZE);
 	tmp			= malloc(LINESIZE);
-
 	as1 = as_comp_alloc();
-
 	sprintf(option, "%s", add_opt);
 	sprintf(menu3defopt, menu3defaddopt);
-
 	ask_objectType(option, object_to_work);
-
 	while ((strcmp(object_to_work, quit_String))) {
-
 		sprintf(tmp, "\n%s %s %s\n\n", enter_msg, quit_String, to_quit_anytime);
 		printf(tmp);
-
 		if (!(strcmp(object_to_work, "1"))) {
 			status = de_Add_person();
 			if (status != OK) {
@@ -109,7 +100,6 @@ int de_Add() {
 		}
 		ask_objectType(option, object_to_work);
 	}
-
 	free(cn);
 	free(object_to_work);
 	free(option);
@@ -119,7 +109,6 @@ int de_Add() {
 	} else {
 		return NOTOK;
 	}
-
 }
 
 int prompt_atts(int object, struct namelist *atts) {
@@ -147,7 +136,6 @@ int prompt_atts(int object, struct namelist *atts) {
 
 	if (atts == NULLLIST)
 		return OK;
-
 	all_ok  = malloc(LINESIZE);
 	cp      = malloc(LINESIZE);
 	saveptr = (struct namelist *) malloc(sizeof(struct namelist));
@@ -157,7 +145,6 @@ int prompt_atts(int object, struct namelist *atts) {
 	tmp     = malloc(LINESIZE);
 	saveptr = atts;
 	av_count = 0;
-
 	sprintf(buffer, atts->name);
 	while ((strcmp(buffer, quit_String))) {
 		*str = '\0';
@@ -244,7 +231,6 @@ int prompt_atts(int object, struct namelist *atts) {
 				str = TidyString(str);
 			}
 		}
-
 		str = TidyString(str);
 		if (!(strcmp(str, quit_String))) {
 			return NOTOK;
@@ -254,7 +240,6 @@ int prompt_atts(int object, struct namelist *atts) {
 			*str = '\0';
 			lineptr[av_count] = NULLCP;
 		}
-
 		if (strlen(str) == 0 && lineptr[av_count] != NULLCP) {
 			/* The default value was taken, copy it */
 			strcpy(str, lineptr[av_count]);
@@ -292,7 +277,6 @@ int prompt_atts(int object, struct namelist *atts) {
 		p = malloc(LINESIZE);
 		strcpy(p, str);
 		lineptr[av_count++] = p;
-
 		if (atts->next != NULL) {
 			atts = atts->next;
 			sprintf(buffer, atts->name);
@@ -300,7 +284,6 @@ int prompt_atts(int object, struct namelist *atts) {
 			strcpy(buffer, quit_String);
 		}
 	}
-
 	spaces = PADCHARS -  strlen(name_of_entry);
 	printf("\n%s %*s - ", name_of_entry, spaces, " ");
 	printLastComponent(INDENTOFF, entry_dn, PERSON, 0);
@@ -387,13 +370,10 @@ int prompt_atts(int object, struct namelist *atts) {
 		atts = atts->next;
 		i++;
 	}
-
 	printf("\n");
-
 	atts = saveptr;
 	de_prompt_yesno(ask_ifallok, all_ok, no_string);
 	free(str);
-
 	if (!(strcmp(all_ok, no_string))) {
 		free(all_ok);
 		free(tmp);
@@ -420,9 +400,7 @@ int dm_addentry() {
 
 	rfrl_msg = TRUE;
 	adarg.ada_entry = as_cpy(as1);
-
 add_again:
-
 	rfrl_msg = TRUE;
 	status = ds_addentry(&adarg, &error);
 	if (status != DS_OK) {
@@ -443,7 +421,6 @@ add_again:
 }
 
 int bind_to_initial_DSA(char *initial_dsa_address) {
-
 	int status;
 
 	printf(set_init_DSA);
@@ -496,12 +473,10 @@ int de_Add_person() {
 	Attr_Sequence	as_combine();
 	struct acl_info * acl;
 	struct namelist *plp = NULLLIST;
-
 	already_in		= malloc(LINESIZE);
 	first_name		= malloc(LINESIZE);
 	more			= malloc(LINESIZE);
 	surname		= malloc(LINESIZE);
-
 	acl = (struct acl_info *) malloc(sizeof(struct acl_info));
 	plp = (struct namelist *) malloc(sizeof(struct namelist));
 	as2 = as_comp_alloc();
@@ -515,10 +490,8 @@ int de_Add_person() {
 	sprintf(first_name_default, "");
 	sprintf(init_value, "");
 	status = OK;
-
 	set_adarg();
 	sprintf(more, yes_string);  /* Enter loop */
-
 	while (!(strcmp(more,  yes_string))) {
 prompt_surname:
 		changed = TRUE;
@@ -562,9 +535,7 @@ prompt_surname:
 		} else {
 			sprintf(surname_default, surname);
 		}
-
 prompt_1stname:
-
 		if (strlen(first_name_default) == 0) {
 			sprintf(ask_1stname_string, "%s: ", ask_1stname);
 		} else {
@@ -597,7 +568,6 @@ prompt_1stname:
 			sprintf(first_name_default, first_name);
 			changed = TRUE;
 		}
-
 		strcpy(person, first_name);
 		strcat(person, " ");
 		strcat(person, surname);
@@ -629,14 +599,11 @@ prompt_1stname:
 			}
 			freePRRs(&plp);
 		}
-
 prompt_cn:
 		if (changed == TRUE) {
 			sprintf(cn_default, "%s %s", first_name, surname);
 		}
-
 		sprintf(ask_cn_string, "%s [%s]: ", ask_cn, cn_default);
-
 		de_prompt_value(ask_cn_string, cn);
 		if (!(strcmp(cn, quit_String))) {
 			goto prompt_surname;
@@ -714,12 +681,10 @@ prompt_cn:
 		lineptr[i] = NULLCP;
 		i++;
 	}
-
 	free(already_in);
 	free(first_name);
 	free(more);
 	free(surname);
-
 	if (status == OK) {
 		return OK;
 	} else {
@@ -728,7 +693,6 @@ prompt_cn:
 }
 
 int de_Add_role() {
-
 	char * already_in;
 	char * more;
 	char * TidyString();
@@ -746,17 +710,13 @@ int de_Add_role() {
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
 	struct namelist *plp = NULLLIST;
-
 	already_in		= malloc(LINESIZE);
 	more			= malloc(LINESIZE);
-
 	as2 = as_comp_alloc();
 	as2 = NULLATTR;
 	sprintf(role_default, "");
 	status = OK;
-
 	set_adarg();
-
 	sprintf(more, yes_string);  /* Enter loop */
 	while (!(strcmp(more, yes_string))) {
 		changed = TRUE;
@@ -795,9 +755,7 @@ int de_Add_role() {
 			/* save new default */
 			sprintf(role_default, role);
 		}
-
 		strcpy(person, role);
-
 		if (changed == TRUE) {
 			printf(check_notAlrIn);
 			fflush(stdout);
@@ -871,16 +829,13 @@ int de_Add_role() {
 		lineptr[i] = NULLCP;
 		i++;
 	}
-
 	free(already_in);
 	free(more);
-
 	if (status == OK) {
 		return OK;
 	} else {
 		return NOTOK;
 	}
-
 }
 
 int de_Add_room() {
@@ -897,23 +852,18 @@ int de_Add_room() {
 	int i;
 	int noPersons;
 	int status;
-
 	Attr_Sequence	as2;
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
 	struct namelist *plp = NULLLIST;
-
 	already_in		= malloc(LINESIZE);
 	more			= malloc(LINESIZE);
-
 	sprintf(room_default, "");
 	as2 = as_comp_alloc();
 	as2 = NULLATTR;
 	sprintf(ask_ifNotAlrIn, "%s", sure_not_in);
 	status = OK;
-
 	set_adarg();
-
 	/* room */
 	sprintf(more, yes_string);  /* Enter loop */
 	while (!(strcmp(more, yes_string))) {
@@ -954,7 +904,6 @@ int de_Add_room() {
 			sprintf(room_default, room);
 		}
 		strcpy(person, room);
-
 		if (changed == TRUE) {
 			printf(check_notAlrIn);
 			fflush(stdout);
@@ -1027,10 +976,8 @@ int de_Add_room() {
 		lineptr[i] = NULLCP;
 		i++;
 	}
-
 	free(already_in);
 	free(more);
-
 	return OK;
 }
 
@@ -1059,7 +1006,6 @@ int check_error(struct	DSError error) {
 	char * temp_dsa_address;
 
 	temp_dsa_address = malloc(LINESIZE);
-
 	if (error.dse_type == DSE_ATTRIBUTEERROR ) {
 		/* Attribute Error */
 		if (error.dse_un.dse_un_attribute.DSE_at_plist.DSE_at_what == DSE_AT_NOSUCHATTRIBUTE) {
@@ -1211,7 +1157,6 @@ int check_error(struct	DSError error) {
 }
 
 int dm_Add_org() {
-
 	void searchFail(), onint1(), de_exit();
 	char buffer[LINESIZE];
 	char dir_mgr[LINESIZE];
@@ -1219,7 +1164,6 @@ int dm_Add_org() {
 
 	int i;
 	int status;
-
 	AttributeType	at;
 	AttributeValue	av;
 	AV_Sequence	avl;
@@ -1230,7 +1174,6 @@ int dm_Add_org() {
 	struct acl_info * acl_old;
 	struct acl * acl_entry;
 	struct acl_info *ac;
-
 	/* as1 = as_comp_alloc();
 	 as2 = as_comp_alloc();
 	 as3 = as_comp_alloc();
@@ -1238,7 +1181,6 @@ int dm_Add_org() {
 	 as2 = NULLATTR;
 	 as3 = NULLATTR; */
 	set_adarg();
-
 	sprintf(buffer, "o=%s", org);
 	if ((as1 = str2as(buffer)) == NULLATTR) {
 		printf(fail_addOrg);
@@ -1258,27 +1200,22 @@ int dm_Add_org() {
 	} else {
 		sprintf(buffer, "ObjectClass=top&quipuObject&organization&mhsUser&quipuNonLeafObject");
 	}
-
 	if ((as2 = str2as(buffer)) == NULLATTR) {
 		printf(fail_addOrgOC);
 		return NOTOK;
 	}
 	as1 = as_merge(as1, as2);
-
 	if (strlen(masterDSA) <= 0) {
 		printf("%s   ...%s", mstr_rqrd, exiting);
 		return NOTOK;
 	}
-
 	sprintf(buffer, "%s %s", "masterDSA=", masterDSA);
-
 	as2 = NULLATTR;
 	if ((as2 = str2as(buffer)) == NULLATTR) {
 		printf(fail_mstrDSA);
 		return NOTOK;
 	}
 	as1 = as_merge(as1, as2);
-
 	sprintf(buffer, "%s", "acl= self # write # child");
 	sprintf(buffer, "%s\n%s", buffer, "acl= others # read # child");
 	sprintf(buffer, "%s\n%s%s%s", buffer, "acl= group # ", dir_mgr, " # write # child");
@@ -1300,10 +1237,8 @@ int dm_Add_org() {
 	acl_old = NULLACL_INFO;
 	as3 = as_comp_new(at, avl, acl_old);
 	as1 = as_merge(as1, as3);
-
 	/* at = NULLAttrT; */
 	at = str2AttrT("acl");
-
 	acl_entry = acl_alloc();
 	acl_entry->ac_child = acl_info_alloc();
 	acl_entry->ac_child->acl_categories = ACL_READ;
@@ -1343,7 +1278,6 @@ int dm_Add_org() {
 	ac->acl_name->dns_next->dns_dn = str2dn(dir_mgr);
 	ac->acl_name->dns_next->dns_next = NULLDNSEQ;
 	acl_entry->ac_attributes = NULLACL_ATTR;
-
 	av = AttrV_alloc();
 	av->av_syntax  = at->oa_syntax;
 	av->av_struct  = (caddr_t) acl_entry;
@@ -1351,9 +1285,7 @@ int dm_Add_org() {
 	acl_old = NULLACL_INFO;
 	/* as3 = NULLATTR; */
 	as3 = as_comp_new(at, avl, acl_old);
-
 	as1 = as_merge(as1, as3);
-
 	printf("\n%s `%s'   %s... ", add_org, org, please_wait);
 	fflush(stdout);
 	status = dm_addentry();
@@ -1366,7 +1298,6 @@ int dm_Add_org() {
 	if (status != OK) {
 		return NOTOK;
 	}
-
 	i = 0;
 	while (i <= av_count) {
 		lineptr[i] = NULLCP;
@@ -1379,7 +1310,6 @@ int dm_Add_org() {
 }
 
 int dm_Add_mgr() {
-
 	extern char password[];
 
 	void searchFail(), onint1(), de_exit();
@@ -1387,19 +1317,15 @@ int dm_Add_mgr() {
 	char pswd_local[LINESIZE];
 	char role[LINESIZE];
 	int status;
-
 	Attr_Sequence	as2;
 	Attr_Sequence	as_comp_new();
 	Attr_Sequence	as_combine();
-
 	as1 = as_comp_alloc();
 	as1 = NULLATTR;
 	as2 = as_comp_alloc();
 	as2 = NULLATTR;
 	status = OK;
-
 	set_adarg();
-
 	sprintf(role, dir_Mngr);
 	sprintf(buffer, "cn=%s", role);
 	if ((as1 = str2as(buffer)) == NULLATTR) {
@@ -1436,11 +1362,9 @@ int dm_Add_mgr() {
 	} else {
 		sprintf(default_person, role);
 	}
-
 	if (status == OK) {
 		return OK;
 	} else {
 		return NOTOK;
 	}
-
 }

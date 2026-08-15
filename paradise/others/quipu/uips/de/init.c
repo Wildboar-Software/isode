@@ -72,30 +72,23 @@ int initialisations(int argc, char **argv) {
 
 	print_parse_errors = FALSE;   /* Stop auto printing of errors */
 	quipu_syntaxes();
-
 #ifdef USE_PP
 	pp_quipu_init ("de");
 #endif
-
 	/* Initialize dsap library. */
 	dsap_init((int *)NULL, (char ***)NULL);
-
 	specialSyntaxHandlers();
-
 #ifdef USE_PP
 	pp_quipu_run ();
 #endif
-
 	backup_dsa_address = NULLCP;
 	username = NULLCP;
 	password = NULLCP;
-
 	qinfo[COUNTRY].defvalue[0] = '\0';
 	qinfo[LOCALITY].defvalue[0] = '\0';
 	qinfo[ORG].defvalue[0] = '\0';
 	qinfo[ORGUNIT].defvalue[0] = '\0';
 	qinfo[PERSON].defvalue[0] = '\0';
-
 	/* Read in dsaptailor file */
 	if ((config_file = fopen(isodefile(tailfile, 0), "r")) == (FILE *) NULL) {
 		fprintf(stderr,
@@ -103,10 +96,8 @@ int initialisations(int argc, char **argv) {
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n'))  tai_string (linebuf);
-
 		fclose(config_file);
 	}
-
 	/* turn off logging that we are not interested in */
 	isodesetvar("compatlevel", "none", 0);
 	isodesetvar("addrlevel", "none", 0);
@@ -117,7 +108,6 @@ int initialisations(int argc, char **argv) {
 	isodesetvar("acsaplevel", "none", 0);
 	isodesetvar("rosaplevel", "none", 0);
 	isodexport("de");
-
 	/* always read object class attribute - this means that searches/reads will
 	   work even if none of the selected attributes is present in the entry */
 	addToList(&coatts, DE_OBJECT_CLASS);
@@ -125,13 +115,11 @@ int initialisations(int argc, char **argv) {
 	addToList(&orgatts, DE_OBJECT_CLASS);
 	addToList(&ouatts, DE_OBJECT_CLASS);
 	addToList(&prratts, DE_OBJECT_CLASS);
-
 	/* always want this att for country - this is to allow de to determine
 	   whether it is querying in a Quipu part of the world. */
 	addToList(&coatts, "masterDSA");
 	/* we need to be able to read a valid locality attribute */
 	addToList(&locatts, DE_LOCALITY_NAME);
-
 	if ((cp = getenv("HOME")) != NULLCP) {
 		strcpy(user_file, cp);
 		strcat(user_file, "/.derc");
@@ -142,19 +130,15 @@ int initialisations(int argc, char **argv) {
 			goto runtimeargs;
 		}
 	}
-
 	if ((config_file = fopen(isodefile("de/detailor", 0), "r")) == (FILE *) NULL) {
 		fprintf(stderr,
 				"Cannot open `detailor' file. Attempting to continue.\n");
 	} else {
 		while(fgets(linebuf, sizeof(linebuf), config_file) != NULLCP)
 			if ((*linebuf != '#') && (*linebuf != '\n')) read_de_option(linebuf);
-
 		fclose(config_file);
 	}
-
 runtimeargs:
-
 	for (argc--, argv++; argc > 0; ) {
 		cp = *argv;
 		if (*cp == '-')
@@ -174,16 +158,12 @@ runtimeargs:
 				exit(-1);
 			}
 	}
-
 	/* re-initialise department default if necessary */
 	if (deptQ == FALSE)
 		qinfo[ORGUNIT].defvalue[0] = '\0';
-
 	printf("%*s%s\n\n", (80 - (int)strlen(welcomeMessage)) / 2, "",
 		   welcomeMessage);
-
 	initVideo();
-
 	return OK;
 }
 
@@ -198,12 +178,9 @@ static void read_de_option(char *line) {
 	int n;
 
 	part1 = SkipSpace(line);
-
 	if ((part2 = index(part1, ':')) == NULLCP) return;
-
 	*part2++ = '\0';
 	part2 = TidyString(part2);
-
 	if (lexequ(part1, "welcomeMessage") == 0) {
 		strcpy(welcomeMessage, part2);
 	} else if (lexequ(part1, "default_country") == 0) {

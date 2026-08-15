@@ -31,7 +31,6 @@ int ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bin
 	arg->dba_auth_type = DBA_AUTH_SIMPLE;
 	arg->dba_time1 = NULLCP;
 	arg->dba_time2 = NULLCP;
-
 	return (secure_ds_bind (arg,error,result));
 }
 
@@ -53,7 +52,6 @@ int secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct
 		}
 		return (DS_ERROR_LOCAL);
 	}
-
 	return(dap_bind(&(dsap_ad), arg, error, result, addr));
 }
 
@@ -67,36 +65,25 @@ int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, str
 	DLOG(log_dsap, LLOG_DEBUG, ("dap_bind: Address: %s", paddr2str(addr,NULLNA)));
 	bzero ((char *)dc, sizeof dc_s);
 	error->dbe_cc = 0;
-
 	ret = DapAsynBindRequest ( addr, arg, dc, di, ROS_SYNC);
-
 	if (ret == NOTOK) {
 		*error = dc->dc_un.dc_bind_err;
 		return (DS_ERROR_CONNECT);
 	}
-
 	if (dc->dc_result == DC_RESULT) {
-
 		dsa_bound = dc->dc_connect.acc_connect.pc_responding;	/* struct copy */
-
 		(*ad) = dc->dc_sd;
-
 		*result = dc->dc_un.dc_bind_res; /* struct copy */
 		dc->dc_un.dc_bind_res.dba_dn = NULLDN; /* stop freeing it ! */
-
 		DCFREE(dc);
 		return (DS_OK);
 	}
-
 	if (dc->dc_result == DC_ERROR) {
 		*error = dc->dc_un.dc_bind_err;
-
 		DCFREE(dc);
 		return (DS_X500_ERROR);
 	}
-
 	return (DS_ERROR_CONNECT);
-
 }
 
 /* DAP-BIND.REQUEST */
@@ -119,29 +106,22 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 	* Set application-context, presentation context definition list,
 	* and default-context.
 	*/
-
 	DLOG(log_dsap, LLOG_TRACE, ("DapAsynBindReqAux():"));
-
 	if((acse_pci = oid_cpy(DIR_ACSE)) == NULLOID) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("acse pci version 1 OID not found"));
-
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
 		sprintf (dc->dc_un.dc_bind_err.dbe_data,"acse pci version 1 OID not found");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
-
 		return (NOTOK);
 	}
-
 	app_ctx = oid_cpy (DIR_ACCESS_AC);
-
 #ifdef USE_DEFAULT_CTX
 	def_ctx = oid_cpy (DIR_ACCESS_AS);
 #else
 	def_ctx = NULLOID;
 #endif
-
 	pc->pc_nctx = 2;
 	pc->pc_ctx[0].pc_id = DIR_ACCESS_PC_ID;
 	pc->pc_ctx[0].pc_asn = oid_cpy(DIR_ACCESS_AS);
@@ -149,7 +129,6 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 	pc->pc_ctx[1].pc_id = DIR_ACSE_PC_ID;
 	pc->pc_ctx[1].pc_asn = acse_pci;
 	pc->pc_ctx[1].pc_atn = NULLOID;
-
 	/* Encode Bind Argument */
 	if (encode_DAS_DirectoryBindArgument (&bindargpe, 1, 0, NULLCP, bindarg) != OK) {
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
@@ -157,7 +136,6 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
 		sprintf (dc->dc_un.dc_bind_err.dbe_data,"encoding bind args failed");
 		dc->dc_un.dc_bind_err.dbe_cc = strlen (dc->dc_un.dc_bind_err.dbe_data);
-
 		oid_free(acse_pci);
 		oid_free(app_ctx);
 		oid_free(pc->pc_ctx[0].pc_asn);
@@ -166,7 +144,6 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 		return (daplose (di, DA_ARG_ENC, NULLCP, "DAP BIND REQUEST"));
 	}
 	bindargpe->pe_context = DIR_ACCESS_PC_ID;
-
 #ifdef PDU_DUMP
 	pdu_dump (bindargpe,"arg",100);
 #endif
@@ -174,16 +151,13 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 								callingaddr, calledaddr, pc, def_ctx, prequirements,
 								srequirements, isn, settings, sf, bindargpe, qos,
 								acc, rni, async);
-
 	oid_free(acse_pci);
 	oid_free(app_ctx);
 	oid_free(pc->pc_ctx[0].pc_asn);
 	if (def_ctx != NULLOID)
 		oid_free(def_ctx);
-
 	if (bindargpe != NULLPE)
 		pe_free (bindargpe);
-
 	if (result == NOTOK) {
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
@@ -192,10 +166,8 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 		bcopy (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc);
 		return (ronot2daplose (di, "DAP-BIND.REQUEST", rni));
 	}
-
 	/* Set the connection identifier */
 	dc->dc_sd = acc->acc_sd;
-
 	if (((!async) && (result == OK)) || (async && (result == DONE))) {
 		/*
 		* Check the type of return and attempt to decode user data.
@@ -204,7 +176,6 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *cal
 			return (daplose (di, DA_RES_DEC, NULLCP, "DAP BIND REQUEST"));
 		}
 	}
-
 	return (result);
 }
 
@@ -215,16 +186,13 @@ int	  DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *binda
 
 	if (qlocalhost == NULLCP)
 		qlocalhost = PLocalHostName();
-
 	if ((sf = addr2ref (qlocalhost)) == NULL) {
 		sf = &sf_s;
 		bzero ((char *) sf, sizeof *sf);
 	}
-
 	bzero ((char *) &qos, sizeof qos);
 	qos.qos_sversion = NOTOK;	/* Negotiate highest session */
 	qos.qos_maxtime = NOTOK;	/* No time out specified */
-
 	return (DapAsynBindReqAux (NULLAEI, NULLAEI, NULLPA, calledaddr,
 							   PR_MYREQUIRE, ROS_MYREQUIRE, SERIAL_NONE, 0, sf,
 							   bindarg, &qos, dc, di, async));
@@ -237,17 +205,14 @@ int	  DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct 
 	struct AcSAPconnect	* acc = &(dc->dc_connect);
 
 	result = RoAsynBindRetry (sd, do_next_nsap, acc, rni);
-
 	if (result == NOTOK) {
 		return (ronot2daplose (di, "DAP-BIND.RETRY", rni));
 	}
-
 	if (result == DONE) {
 		if (DapBindDecode (acc, dc, rni) != OK) {
 			return (daplose (di, DA_RES_DEC, NULLCP, "DAP BIND RETRY"));
 		}
 	}
-
 	return (result);
 }
 
@@ -324,17 +289,13 @@ int	  DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoN
 	default:
 		LLOG (log_dsap,LLOG_EXCEPTIONS,( "Association rejected: [%s]",
 										 AcErrString(acc->acc_result)));
-
 		dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
 		dc->dc_un.dc_bind_err.dbe_cc = rni->rni_cc;
 		bcopy (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc);
 		dc->dc_result = DC_REJECT;
-
 		return (NOTOK);
-
 	} /* switch acc->acc_result */
-
 	return(OK);
 }

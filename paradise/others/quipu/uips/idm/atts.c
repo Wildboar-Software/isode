@@ -39,18 +39,14 @@ char *val2str (AttributeValue av) {
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
 	AttrV_print(ps, av, READOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }
 char *val2dnstr (AttributeValue av) {
@@ -61,18 +57,14 @@ char *val2dnstr (AttributeValue av) {
 			|| str_setup (ps, NULLCP, BUFSIZ, 0) == NOTOK) {
 		if (ps)
 			ps_free (ps), ps = NULLPS;
-
 		return NULLCP;
 	}
 	AttrV_print(ps, av, EDBOUT);
 	ps_print (ps, " ");
 	*--ps -> ps_ptr = 0, ps -> ps_cnt++;
-
 	cp = ps -> ps_base;
-
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
-
 	return cp;
 }
 
@@ -131,7 +123,6 @@ void printDetailsNumbers(int objectType, struct namelist *lp, int *count) {
 
 	*count = 0;
 	linewrapOn();
-
 	for (at = lp->ats; at != NULLATTR; at = at->attr_link) {
 		switch (objectType) {
 		case PERSON:
@@ -212,31 +203,26 @@ static int de_addrcmp (struct postaddr *a,struct postaddr *b) {
 			a = a->pa_next, b=b->pa_next)
 		if ((res = lexequ (a->addrcomp, b->addrcomp)) != 0)
 			return (res);
-
 	if ( a != b)
 		return ( a > b ? 1 : -1 );
 	else
 		return (0);
-
 }
 
 static struct postaddr * de_addrcpy (struct postaddr *a) {
 	struct postaddr * b, *c, *result = (struct postaddr *) NULL;
 
 	c = result; /* to keep lint quiet ! */
-
 	for (; a != (struct postaddr *) NULL; a = a->pa_next) {
 		b = (struct postaddr *) smalloc (sizeof (struct postaddr));
 		b -> addrtype = a->addrtype;
 		b -> addrcomp = strdup (a->addrcomp);
-
 		if (result == (struct postaddr *) NULL)
 			result = b;
 		else
 			c->pa_next = b;
 		c = b;
 	}
-
 	b->pa_next = (struct postaddr *) NULL;
 	return (result);
 }
@@ -251,18 +237,14 @@ static struct postaddr* de_addrparse (char *str) {
 	int i;
 
 	b = result; /* to keep lint quiet */
-
 	if (t61_flag) {
 		t61_str = TRUE;
 		t61_flag = FALSE;  /* indicate recognition */
 	}
-
 	str = SkipSpace(str);
-
 	for (i=0; i < UB_POSTAL_LINE; i++) {
 		mark = NULLCP;
 		a = (struct postaddr *) smalloc (sizeof (struct postaddr));
-
 		if ( (ptr=index (str,'$')) != NULLCP) {
 			*ptr-- = 0;
 			if (isspace (*ptr)) {
@@ -271,7 +253,6 @@ static struct postaddr* de_addrparse (char *str) {
 			}
 			ptr++;
 		}
-
 		if (t61_str) {
 			a -> addrtype = 1;
 			if ((a -> addrcomp = octparse (str)) == NULLCP)
@@ -289,22 +270,18 @@ static struct postaddr* de_addrparse (char *str) {
 				return ((struct postaddr *)NULL);
 			}
 		}
-
 		if (result == (struct postaddr *) NULL)
 			result = a;
 		else
 			b->pa_next = a;
 		b = a;
-
 		t61_str = FALSE;
-
 		if (ptr != NULLCP) {
 			*ptr++ = '$';
 			if (mark != NULLCP)
 				*mark = ' ';
 			str = (SkipSpace(ptr));
 			ptr = str;
-
 			if (*ptr++ == '{') {
 				if (( str = index (ptr,'}')) == 0) {
 					parse_error ("close bracket missing '%s'",--ptr);
@@ -323,13 +300,11 @@ static struct postaddr* de_addrparse (char *str) {
 		} else
 			break;
 	}
-
 	if (ptr != NULLCP) {
 		parse_error ("Too many address components",NULLCP);
 		return ((struct postaddr *) NULL);
 	}
 	a -> pa_next = (struct postaddr *) NULL ;
-
 	return (result);
 }
 
@@ -337,7 +312,6 @@ static PE de_addrenc (struct postaddr *m) {
 	PE ret_pe;
 
 	encode_SA_PostalAddress (&ret_pe,0,0,NULLCP,m);
-
 	return (ret_pe);
 }
 
@@ -431,12 +405,10 @@ void de_dn_print (PS xps,DN dn,int format) {
 	if (dn == NULLDN) {
 		return ;
 	}
-
 	if (format == UFNOUT) {
 		ufn_dn_print (xps, dn, 1);
 		return;
 	}
-
 	if (format == READOUT) {
 		pad = PADCHARS + strlen(padding) + 2;
 		AttrV_print(xps, &(dn->dn_rdn->rdn_av), format);
@@ -508,7 +480,6 @@ static char * de_prtsdec (PE pe) {
 				return strdup (" ");
 			} else
 				return NULLCP;
-
 		p = TidyString2(prim2str(pe,&z));
 		if (check_print_string(p))
 			return (p);
@@ -535,10 +506,8 @@ static struct pair pairs[] = {
 
 static void de_fax_free (struct fax *f) {
 	free (f -> number);
-
 	if (f -> bits)
 		pe_free (f -> bits);
-
 	free ((char *) f);
 }
 
@@ -546,10 +515,8 @@ static struct fax *de_fax_cpy (struct fax *a) {
 	struct fax *f;
 
 	f = (struct fax *) smalloc (sizeof *f);
-
 	f -> number = strdup (a -> number);
 	f -> bits = a -> bits ? pe_cpy (a -> bits) : NULLPE;
-
 	return f;
 }
 
@@ -560,10 +527,8 @@ static int  de_fax_cmp (struct fax *a, struct fax *b) {
 		return (b ? -1 : 0);
 	else if  (b == (struct fax *) NULL)
 		return 1;
-
 	if (i = telcmp (a -> number, b -> number))
 		return i;
-
 	return pe_cmp (a -> bits, b -> bits);
 }
 
@@ -574,10 +539,8 @@ static void de_fax_print (PS ps, struct fax *f, int format) {
 
 	if (format == READOUT) {
 		ps_printf (ps, "%s", (char *) mapPhone(f -> number));
-
 		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
 			char    *cp = " {";
-
 			while (i-- >= 0)
 				if (bit_test (pe, i) > OK) {
 					for (p = pairs; p -> p_name; p++)
@@ -589,16 +552,13 @@ static void de_fax_print (PS ps, struct fax *f, int format) {
 						ps_printf (ps, "%s %d", cp, i);
 					cp = ",";
 				}
-
 			if (*cp == ',')
 				ps_print (ps, " }");
 		}
 	} else {
 		ps_printf (ps, "%s", (char *) mapPhone(f -> number));
-
 		if ((pe = f -> bits) && (i = pe -> pe_nbits) > 0) {
 			char    *cp = " $";
-
 			while (i-- >= 0)
 				if (bit_test (pe, i) > OK) {
 					for (p = pairs; p -> p_name; p++)
@@ -623,7 +583,6 @@ static struct fax *de_str2fax (char *str) {
 	struct pair *p;
 
 	f = (struct fax *) smalloc (sizeof *f);
-
 	if (ptr = index (str, '$'))
 		*ptr = 0;
 	if ((int)strlen (str) > UB_TELEPHONE_NUMBER) {
@@ -633,26 +592,20 @@ static struct fax *de_str2fax (char *str) {
 	}
 	f -> number = TidyString (strdup (str));
 	f -> bits = NULLPE;
-
 	if (!ptr)
 		return f;
-
 	*ptr++ = '$';
 	ptr = strdup (ptr);
-
 	bzero ((char *) vec, sizeof vec);
 	str2vec (ptr, vec);
-
 	for (ap = vec; *ap; ap++) {
 		if (sscanf (*ap, "%d", &value) == 1 && value >= 0)
 			goto got_value;
-
 		for (p = pairs; p -> p_name; p++)
 			if (lexequ (p -> p_name, *ap) == 0)
 				break;
 		if (! p -> p_name) {
 			parse_error ("unknown G3fax non-basic parameter: '%s'", *ap);
-
 you_lose:
 			;
 			free (ptr);
@@ -660,11 +613,9 @@ you_lose:
 			if (f -> bits)
 				pe_free (f -> bits);
 			free ((char *) f);
-
 			return ((struct fax *) NULL);
 		}
 		value = p -> p_value;
-
 got_value:
 		;
 		if ((f -> bits == NULLPE
@@ -679,12 +630,9 @@ no_allocate:
 			goto you_lose;
 		}
 	}
-
 	if (bit2prim (f -> bits) == NULLPE)
 		goto no_allocate;
-
 	free (ptr);
-
 	return f;
 }
 
@@ -692,12 +640,9 @@ static PE  de_fax_enc (struct fax *f) {
 	PE	pe = NULLPE;
 
 	f -> fax_bits = bitstr2strb (f -> bits, & f -> fax_len);
-
 	encode_SA_FacsimileTelephoneNumber (&pe, 0, 0, NULLCP, f);
-
 	if (f -> fax_bits)
 		free (f -> fax_bits);
-
 	return pe;
 }
 
@@ -708,14 +653,11 @@ static struct fax *de_fax_dec (PE pe) {
 			== NOTOK) {
 		return ((struct fax *) NULL);
 	}
-
 	if ( f -> fax_bits ) {
 		f -> bits = strb2bitstr ( f -> fax_bits, f -> fax_len,
 								  PE_CLASS_UNIV, PE_PRIM_BITS);
-
 		free ( f -> fax_bits );
 	}
-
 	return f;
 }
 
@@ -736,7 +678,6 @@ void specialSyntaxHandlers(void) {
 						 (IFP) de_fax_dec, (IFP) de_str2fax, de_fax_print,
 						 (IFP) de_fax_cpy, de_fax_cmp, de_fax_free, NULLCP,
 						 NULLIFP, TRUE);
-
 	/* modify syntax handler for rfc822 mail attribute
 	   to allow for JNT ordering */
 	at = AttrT_new (DE_MAILBOX);

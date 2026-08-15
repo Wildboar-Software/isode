@@ -108,7 +108,6 @@ int init_bind_to_ds(int *assoc) {
 	bind_arg.dba_r2.n_bits = 0;
 	bind_arg.dba_r2.value = NULLCP;
 	bind_arg.dba_version = DBA_VERSION_V1988;
-
 	if ((addr = str2paddr (dsa_address)) == NULLPA) {
 		fprintf(stderr, "%s", addr_fmt_pbm);
 		exit(-1);
@@ -118,7 +117,6 @@ int init_bind_to_ds(int *assoc) {
 		fprintf(stderr, "\n\n%s", srvr_unava);
 		return NOTOK;
 	}
-
 	*assoc = dc.dc_sd;
 	dsap_ad = dc.dc_sd;
 	return OK;
@@ -134,29 +132,23 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 	fd_set  wfds;
 
 	while ((bindres == CONNECTING_1) || (bindres == CONNECTING_2)) {
-
 		FD_ZERO (&rfds);
 		FD_ZERO (&wfds);
-
 		if ((bindres == CONNECTING_2) && (wantToBlock == FALSE))
 			return CONNECTING_2;
-
 		if (bindres == CONNECTING_1) {
 			if (PSelectMask (assoc, &wfds, &nfds, pi) == NOTOK) {
 				fprintf(stderr, "%s", pSel_wrt_fail);
 				return NOTOK;
 			}
 		}
-
 		if (bindres == CONNECTING_2) {
 			if (PSelectMask (assoc, &rfds, &nfds, pi) == NOTOK) {
 				fprintf(stderr, "%s", pSel_rd_fail);
 				return NOTOK;
 			}
 		}
-
 		nevents = xselect (nfds, &rfds, &wfds, NULLFD, NOTOK);
-
 		if (nevents == NOTOK) {
 			fprintf(stderr, "%s", net_conn_ref);
 			return NOTOK;
@@ -169,7 +161,6 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 			if (nevents != OK)
 				bindres = DapAsynBindRetry(assoc, 0, &dc, &di);
 		}
-
 		if (bindres == DONE) {
 			/* Check status of bind result */
 			if (dc.dc_result != DC_RESULT) {
@@ -177,7 +168,6 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 				if ((dc.dc_un.dc_bind_err.dbe_type == DBE_TYPE_SECURITY) &&
 						dc.dc_un.dc_bind_err.dbe_value == DSE_SC_INVALIDCREDENTIALS) {
 					printf(errmsg_pwd);
-
 					if (pswd_intrctv == FALSE) {
 						if (username_intrctv == TRUE) {
 							printf(usrpsw_nomatch);

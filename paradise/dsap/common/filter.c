@@ -44,7 +44,6 @@ void filter_free (Filter filt) {
 			}
 		}  else
 			filter_free (ptr->flt_un.flt_un_filter);
-
 		next = ptr->flt_next;
 		free ((char *) ptr);
 	}
@@ -55,10 +54,8 @@ void filter_append (Filter a,Filter b) {
 
 	if ( a == NULLFILTER)
 		DLOG (log_dsap,LLOG_DEBUG,("appending to null filter !"));
-
 	for (ptr=a; ptr!= NULLFILTER; ptr=ptr->flt_next)
 		trail = ptr;
-
 	trail->flt_next = b;
 }
 
@@ -69,16 +66,13 @@ Filter strfilter (AttributeType at,char *s,char type) {
 	filt = filter_alloc ();
 	filt -> flt_next = NULLFILTER;
 	filt -> flt_type = FILTER_ITEM;
-
 	if (type == FILTERITEM_SUBSTRINGS || type == -FILTERITEM_SUBSTRINGS) {
 		char   *dp;
-
 		if (*s == '*' && !s[1]) {
 			filt -> FUITEM.fi_type = FILTERITEM_PRESENT;
 			filt -> FUITEM.UNTYPE = at;
 			goto all_done;
 		}
-
 		filt -> FUITEM.fi_type = FILTERITEM_SUBSTRINGS;
 		filt -> FUITEM.UNSUB.fi_sub_type = at;
 		filt -> FUITEM.UNSUB.fi_sub_initial = NULLAV;
@@ -86,37 +80,30 @@ Filter strfilter (AttributeType at,char *s,char type) {
 		filt -> FUITEM.UNSUB.fi_sub_final = NULLAV;
 		if (dp = index (s, '*')) {
 			char    buffer[BUFSIZ];
-
 			strcpy (buffer, s);
 			dp = buffer + (dp - s);
 			s = buffer;
-
 			*dp++ = 0;
 			if (*s)
 				if ((filt -> FUITEM.UNSUB.fi_sub_initial =
 							str2avs (s, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 					return NULLFILTER;
 			s = dp;
-
 			if (dp = rindex (s, '*')) {
 				AV_Sequence any_end = NULL;
-
 				*dp++ = 0;
 				if (*dp)
 					if ((filt -> FUITEM.UNSUB.fi_sub_final =
 								str2avs (dp, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 						return NULLFILTER;
-
 				do {
 					if (dp = index (s, '*'))
 						*dp++ = 0;
 					if (*s) {
 						AV_Sequence any;
-
 						if ((any = str2avs (s,
 											filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 							return NULLFILTER;
-
 						if (any_end) {
 							any_end -> avseq_next = any;
 							any_end = any_end -> avseq_next;
@@ -128,28 +115,23 @@ Filter strfilter (AttributeType at,char *s,char type) {
 				if ((filt -> FUITEM.UNSUB.fi_sub_final =
 							str2avs (s, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 					return NULLFILTER;
-
 		} else if (type == FILTERITEM_SUBSTRINGS) {
 			if ((filt -> FUITEM.UNSUB.fi_sub_any =
 						str2avs (s, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 				return NULLFILTER;
 		}
-
 		else if ((filt -> FUITEM.UNSUB.fi_sub_initial =
 					  str2avs (s, filt -> FUITEM.UNSUB.fi_sub_type)) == NULLAV)
 			return NULLFILTER;
-
 	} else {
 		filt -> FUITEM.fi_type = type;
 		filt -> FUITEM.UNAVA.ava_type = at;
 		if ((filt -> FUITEM.UNAVA.ava_value =
 					str2AttrV (s, filt -> FUITEM.UNAVA.ava_type -> oa_syntax)) == NULLAttrV)
 			return NULLFILTER;
-
 	}
 all_done:
 	;
-
 	return filt;
 }
 
@@ -170,7 +152,6 @@ Filter ocfilter (char *s) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("'%s' unknown",s));
 		return NULLFILTER;
 	}
-
 	return filt;
 }
 
@@ -181,7 +162,6 @@ Filter joinfilter (Filter f, char type) {
 	filt->flt_next = NULLFILTER;
 	filt->flt_type = type;
 	filt->FUFILT = f;
-
 	return filt;
 }
 
