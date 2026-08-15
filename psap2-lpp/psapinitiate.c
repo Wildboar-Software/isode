@@ -1,5 +1,7 @@
 /* psapinitiate.c - PPM: initiator */
 /* Contributed by The Wollongong Group, Inc. */
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #define	LPP
 #include "PS-types.h"

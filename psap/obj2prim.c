@@ -1,6 +1,7 @@
 /* obj2prim.c - object identifier to presentation element */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 
 PE	obj2prim (o, class, id)

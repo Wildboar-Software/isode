@@ -1,6 +1,7 @@
 /* psapresync2.c - PPM: respond to resyncs */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include "ppkt.h"
 

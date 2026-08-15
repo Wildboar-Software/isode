@@ -1,5 +1,6 @@
 /* sprintref.c - manage encoded session addresses */
 
+#include <stdio.h>
 #include <string.h>
 #include "psap.h"
 #include "ssap.h"

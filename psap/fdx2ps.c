@@ -3,6 +3,8 @@
 #include <unistd.h>
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 static int  fdx_flush (PS ps);

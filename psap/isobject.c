@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <strings.h>
 #include "psap.h"
 #include "tailor.h"
 

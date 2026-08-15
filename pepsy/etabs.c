@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "pepsydefs.h"
 #include "sym.h"
 #include "pass2.h"

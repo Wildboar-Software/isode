@@ -1,4 +1,5 @@
 /* psapabort.c - PPM: user abort */
+#include <stdlib.h>
 #include <signal.h>
 #include "PS-types.h"
 #include "ppkt.h"

@@ -1,6 +1,8 @@
 /* str2ps.c - string-backed abstraction for PStreams */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 static int str_read (PS ps, PElementData data, PElementLen n, int in_line) {

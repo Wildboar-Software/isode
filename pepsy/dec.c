@@ -1,6 +1,8 @@
 /* dec.c */
 
 #include	<stdio.h>
+#include	<stdlib.h>
+#include	<strings.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"
 #include	"pepsy.h"

@@ -3,6 +3,9 @@
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "pepsydefs.h"
 #include "pass2.h"
 #include "mine.h"

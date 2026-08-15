@@ -1,4 +1,5 @@
 /* rydsblock.c - manage dispatch blocks */
+#include <stdlib.h>
 #include <search.h>
 #include "rosy.h"
 

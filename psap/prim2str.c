@@ -1,6 +1,8 @@
 /* prim2str.c - presentation element to octet string */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 /* Similar to pe_pullup.  Returns a newly allocated string, composed of

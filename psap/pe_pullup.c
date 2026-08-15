@@ -1,4 +1,6 @@
 /* pe_pullup.c - "pullup" a presentation element */
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 static PElementData	pe_pullup_aux (PE pe, int *len);

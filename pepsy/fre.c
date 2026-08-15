@@ -4,6 +4,7 @@
  * These routines are the driving routines for freeing of the data
  */
 #include	<stdio.h>
+#include	<stdlib.h>
 #include	"pepsy-driver.h" /* for PEPSY_VERSION defn */
 #include	"psap.h"
 #include	"pepsy.h"

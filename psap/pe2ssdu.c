@@ -1,6 +1,7 @@
 /* pe2ssdu.c - write a PE to a SSDU */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 #include "tailor.h"
 

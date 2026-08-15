@@ -1,6 +1,8 @@
 /* pe_alloc.c - allocate a presentation element */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 #include "tailor.h"
 

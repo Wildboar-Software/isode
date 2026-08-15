@@ -2,6 +2,7 @@
 /* Contributed by The Wollongong Group, Inc. */
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
@@ -11,6 +12,7 @@
 #include "ppkt.h"
 #include "tsap.h"
 #include "tailor.h"
+#include "compat.h"
 
 #include "internet.h"
 #include <errno.h>

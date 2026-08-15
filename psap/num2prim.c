@@ -1,6 +1,7 @@
 /* num2prim.c - integer to presentation element */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 
 PE

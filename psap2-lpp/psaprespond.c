@@ -13,6 +13,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #define	LPP
 #include "PS-types.h"
 #include "ppkt.h"

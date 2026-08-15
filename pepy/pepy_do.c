@@ -3,6 +3,7 @@
 #include "pepy.h"
 #include <ctype.h>
 #include <stdio.h>
+#include <string.h>
 
 extern struct tuple tuples[];
 extern int	rflag;

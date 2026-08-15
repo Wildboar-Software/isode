@@ -1,7 +1,10 @@
 /* psaplose.c - PPM: you lose */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"

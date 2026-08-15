@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "spkt.h"
 #include "isoservent.h"
 #include "tailor.h"

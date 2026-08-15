@@ -7,6 +7,7 @@ OID	ode2oid (char* descriptor) {
 }
 #else
 
+#include <stdlib.h>
 #include <string.h>
 #include "psap.h"
 #include "ppkt.h"

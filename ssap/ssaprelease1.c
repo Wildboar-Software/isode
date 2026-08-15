@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <strings.h>
 #include "spkt.h"
 
 static int  SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si);

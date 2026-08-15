@@ -2,6 +2,8 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <search.h>
 #include "spkt.h"
 #include "tailor.h"

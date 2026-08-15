@@ -1,6 +1,8 @@
 /* prim2oid.c - presentation element to object identifier */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 static	int	once_only = 1;

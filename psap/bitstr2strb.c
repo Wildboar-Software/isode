@@ -1,6 +1,7 @@
 /* bitstr2strb.c - bit string to string of bits */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 
 char *bitstr2strb (PE pe, int *k) {

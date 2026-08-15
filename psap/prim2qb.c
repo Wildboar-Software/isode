@@ -1,6 +1,7 @@
 /* prim2qb.c - presentation element to qbuf */
 
 #include <search.h>
+#include <stdlib.h>
 #include "psap.h"
 
 struct qbuf *

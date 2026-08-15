@@ -1,6 +1,7 @@
 /* psapmajor2.c - PPM: respond to majorsyncs */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include "ppkt.h"
 

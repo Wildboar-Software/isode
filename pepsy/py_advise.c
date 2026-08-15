@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include "general.h"
 
 #ifndef	lint
 char   PY_pepy[BUFSIZ] = "";

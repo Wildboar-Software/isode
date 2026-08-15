@@ -2,6 +2,9 @@
 
 #include	<stdio.h>
 #include	<ctype.h>
+#include	<stdlib.h>
+#include	<string.h>
+#include	<strings.h>
 #include "config.h"
 #include "tailor.h"
 #ifdef	PEPSY_REALS
@@ -9,6 +12,7 @@
 #define F_SMALL	(1.0e-10)	/* How accurate should reals agree */
 #endif
 #include	"psap.h"
+#include	"pepsy.h"
 #include	"T1-types.h"
 #include	"T2-types.h"
 #include	"T3-types.h"

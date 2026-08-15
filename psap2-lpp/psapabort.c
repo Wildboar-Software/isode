@@ -1,5 +1,6 @@
 /* psapabort.c - PPM: user abort */
 /* Contributed by The Wollongong Group, Inc. */
+#include <stdlib.h>
 #include <signal.h>
 #define	LPP
 #include "PS-types.h"

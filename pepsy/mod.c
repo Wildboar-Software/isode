@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include "pepsydefs.h"
 #include "pass2.h"
 

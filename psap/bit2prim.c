@@ -1,6 +1,7 @@
 /* bit2prim.c - bit string to presentation element */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 
 static PE	bit2prim_aux ();

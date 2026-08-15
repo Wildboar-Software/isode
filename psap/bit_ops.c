@@ -1,6 +1,8 @@
 /* bit_opts.c - operations on bit strings */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 /* the first octet indicates how many unused bits are in the last octet --

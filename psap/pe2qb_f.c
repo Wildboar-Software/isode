@@ -1,4 +1,7 @@
 /* pe2qb_f.c - presentation element to qbuf, the qbuf must be one piece. */
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 #define moveit(c, l)        if(Qcp + l > Ecp) { \

@@ -1,7 +1,9 @@
 /* pepy_misc.c - PE parser (yacc-based) misc routines */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "pepy.h"
 
 /*  Oid manipulation */

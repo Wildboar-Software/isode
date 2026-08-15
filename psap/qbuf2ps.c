@@ -1,6 +1,9 @@
 /* qbuf2ps.c - qbuf-backed abstractions for PStreams */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <search.h>
+#include <strings.h>
 #include "psap.h"
 
 static int qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {

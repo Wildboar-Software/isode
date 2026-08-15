@@ -1,6 +1,8 @@
 /* psaprelease1.c - PPM: initiate release */
 /* Contributed by The Wollongong Group, Inc. */
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #define	LPP
 #include "PS-types.h"

@@ -2,6 +2,8 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <search.h>
 #include "PS-types.h"
 #include "ppkt.h"

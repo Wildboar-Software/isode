@@ -2,7 +2,9 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
+#include <strings.h>
 #include "psap.h"
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)

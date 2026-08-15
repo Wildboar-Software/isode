@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <search.h>
+#include <strings.h>
 #include "psap.h"
 
 int qb_pullup (struct qbuf *qb) {

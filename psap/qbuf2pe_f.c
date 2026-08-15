@@ -1,4 +1,5 @@
 /* qbuf2pe.c - build PE(s) from an SSDU assumed to be in qbuf(s) */
+#include <stdlib.h>
 #include "psap.h"
 #include "tailor.h"
 

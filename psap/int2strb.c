@@ -1,6 +1,7 @@
 /* int2strb.c - integer to string of bits */
 
 #include <stdio.h>
+#include <strings.h>
 #include "psap.h"
 
 char *int2strb (int n, int len) {

@@ -1,6 +1,8 @@
 /* qb2str.c - qbuf to string */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 char *qb2str (struct qbuf *q) {

@@ -1,8 +1,11 @@
 /* psapinitiate.c - PPM: initiator */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <signal.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "PS-types.h"
 #include "ppkt.h"
 #include "isoservent.h"

@@ -1,6 +1,7 @@
 /* ut2tm.c - time string to tm */
 
 #include <stdio.h>
+#include <strings.h>
 #include <time.h>
 #include "psap.h"
 #ifdef	OSX

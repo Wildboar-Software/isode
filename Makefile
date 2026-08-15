@@ -15,7 +15,7 @@ all:;		@for i in $(DIRS); \
 		    done
 
 # Just a target I added for debugging individual modules
-one:;		cd tsap; $(MAKE) all;
+one:;		cd pepy; $(MAKE) all;
 
 inst-all:	make-dirs
 		@for i in $(DIRS); \

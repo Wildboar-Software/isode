@@ -1,6 +1,7 @@
 /* pe_cmp.c - compare two presentation elements */
 
 #include <stdio.h>
+#include <strings.h>
 #include "psap.h"
 
 int pe_cmp (PE p, PE q) {

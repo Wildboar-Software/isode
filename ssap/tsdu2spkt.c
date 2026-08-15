@@ -1,8 +1,12 @@
 /* tsdu2spkt.c - read/write a SPDU to a TSDU */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
+#include <search.h>
+#include <arpa/inet.h>
 #include "spkt.h"
 #include "tailor.h"
 #include "internet.h"

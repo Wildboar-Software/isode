@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <sys/types.h>
+#include "compat.h"
 #include "rosy.h"
 
 #ifdef __STDC__

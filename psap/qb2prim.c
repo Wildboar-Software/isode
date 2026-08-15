@@ -1,6 +1,8 @@
 /* qb2prim.c - octet string to primitive */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include "psap.h"
 
 /* form: PRIMitive or CONStructor --

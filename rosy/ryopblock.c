@@ -1,4 +1,5 @@
 /* ryopblock.c - manage operation blocks */
+#include <stdlib.h>
 #include <search.h>
 #include "rosy.h"
 

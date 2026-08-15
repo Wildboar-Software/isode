@@ -2,6 +2,7 @@
  		(really just a refinement of datagram-backed PStreams) */
 
 #include <stdio.h>
+#include <search.h>
 #include "psap.h"
 #include "tsap.h"
 #include "tailor.h"

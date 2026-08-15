@@ -1,6 +1,7 @@
 /* ssapwrite.c - SPM: write various SPDUs  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "spkt.h"
 
 int SWriteRequestAux (struct ssapblk *sb, int code, char *data, int cc, int type, long ssn, int settings, struct SSAPactid *id, struct SSAPactid *oid, struct SSAPref *ref, struct SSAPindication *si) {

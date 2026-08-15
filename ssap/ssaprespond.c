@@ -1,6 +1,8 @@
 /* ssaprespond.c - SPM: responder */
 
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "spkt.h"
 #include "tailor.h"
 

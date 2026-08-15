@@ -1,6 +1,7 @@
 /* oid_cpy.c - copy an object identifier */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "psap.h"
 
 OID	oid_cpy (q)
