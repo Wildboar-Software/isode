@@ -19,7 +19,7 @@ int FReadWriteRequest (
 	int lock,
 	struct FTAMindication *fti
 ) {
-	SBV      smask;
+	int      smask;
 	int     result,
 			state;
 	struct ftamblk *fsb;
@@ -179,7 +179,7 @@ out:
 /* F-TRANSFER-END.REQUEST */
 
 int FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

@@ -16,7 +16,7 @@ int FAccessRequest (
 	int lock,	/* F-LOCATE.REQUEST only */
 	struct FTAMindication *fti
 ) {
-	SBV      smask;
+	int      smask;
 	int     result,
 			state;
 	struct ftamblk *fsb;

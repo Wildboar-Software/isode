@@ -9,7 +9,7 @@ static int  RtEndRequestAux (struct assocblk *acb, struct RtSAPindication *rti);
 /*    RT-END.REQUEST (X.410 CLOSE.REQUEST) */
 
 int RtEndRequest (int sd, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

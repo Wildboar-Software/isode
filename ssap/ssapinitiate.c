@@ -52,7 +52,7 @@ int SAsynConnRequest (
 	struct SSAPindication *si,
 	int async
 ) {
-	SBV     smask;
+	int     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);
@@ -236,7 +236,7 @@ out1:
 /*    S-ASYN-RETRY.REQUEST (pseudo) */
 
 int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct ssapblk *sb;
 	struct TSAPconnect  tcs;
@@ -292,7 +292,7 @@ int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si
 /*    S-ASYN-NEXT.REQUEST (pseudo) */
 
 int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct ssapblk *sb;
 	struct TSAPconnect  tcs;

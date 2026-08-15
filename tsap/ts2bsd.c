@@ -548,7 +548,7 @@ STATIC int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #else
 	SFP	    pstat;
 #endif
-	SBV	    smask;
+	int	    smask;
 
 	bzero ((char *) msg, sizeof *msg);
 	msg -> msg_iov = vv, msg -> msg_iovlen = 1;

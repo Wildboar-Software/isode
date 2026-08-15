@@ -35,7 +35,7 @@ extern	int	xselect_blocking_on_intr;
 /* T-DATA.REQUEST */
 
 int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	SBV     smask,
+	int     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t istat;
@@ -78,7 +78,7 @@ int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 /* T-EXPEDITED-DATA.REQUEST */
 
 int TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	SBV     smask,
+	int     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -127,7 +127,7 @@ int TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 
 int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	int    n;
-	SBV     smask,
+	int     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -168,7 +168,7 @@ int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
 int TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
-	SBV	    smask,
+	int	    smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -245,7 +245,7 @@ out:
 /* T-DISCONNECT.REQUEST */
 
 int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct tsapblk *tb;
 
@@ -276,7 +276,7 @@ int TSetIndications (
 	void (*disc)(int sd, struct TSAPdisconnect *td),
 	struct TSAPdisconnect *td
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct tsapblk *tb;
 
@@ -317,7 +317,7 @@ int TSetIndications (
 /*    map transport descriptors for select() */
 
 int TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
-	SBV     smask;
+	int     smask;
 	struct tsapblk *tb;
 
 	missingP (mask);
@@ -360,7 +360,7 @@ static	SFD DATAser (int sig, long int code, struct sigcontext *sc)
 			imask,
 			emask;
 #ifndef	BSDSIGS
-	SBV	    smask;
+	int	    smask;
 #endif
 	void (*disc)(int sd, struct TSAPdisconnect *td);
 	struct tsapblk *tb,
@@ -595,7 +595,7 @@ newtblk(void) {
 }
 
 void freetblk (struct tsapblk *tb) {
-	SBV     smask;
+	int     smask;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
 #endif

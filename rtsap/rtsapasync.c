@@ -11,7 +11,7 @@ int RtSetIndications (
 	int (*indication)(int sd, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

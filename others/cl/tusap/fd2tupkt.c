@@ -284,7 +284,7 @@ static int  readx (int fd, char *buffer, int n, IFP readfnx) {
 }
 
 int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx) {
-	SBV	    smask;
+	int	    smask;
 	int     i,
 			ilen,
 			ulen;

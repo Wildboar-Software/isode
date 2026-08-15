@@ -16,7 +16,7 @@ static int  AcAsynRetryAux ();
 /*    A-(ASYN-)ASSOCIATE.REQUEST */
 
 int AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
-	SBV     smask;
+	int     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);
@@ -238,7 +238,7 @@ out:
 /*    A-ASYN-RETRY.REQUEST (pseudo) */
 
 int AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct assocblk *acb;
 	struct PSAPconnect *pc;
@@ -474,7 +474,7 @@ out:
 /*    A-ASYN-NEXT.REQUEST (pseudo) */
 
 int AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct assocblk *acb;
 	struct PSAPconnect *pc;

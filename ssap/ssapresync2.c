@@ -9,7 +9,7 @@ static int SReSyncResponseAux (struct ssapblk *sb, long int ssn, int settings, c
 /* S-RESYNCHRONIZE.RESPONSE */
 
 int SReSyncResponse (int sd, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

@@ -12,7 +12,7 @@ static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindica
 /* RT-U-ABORT.REQUEST */
 
 int RtUAbortRequest (int sd, PE data, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct assocblk *acb;
 

@@ -11,7 +11,7 @@ static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, 
 static int  FTransEndResponseAux ();
 
 int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

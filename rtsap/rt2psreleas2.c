@@ -9,7 +9,7 @@ static int  RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struc
 /* RT-CLOSE.RESPONSE */
 
 int RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct assocblk *acb;
 

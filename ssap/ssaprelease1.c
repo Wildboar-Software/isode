@@ -10,7 +10,7 @@ static int  SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPreleas
 /* S-RELEASE.REQUEST */
 
 int SRelRequest (int sd, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -75,7 +75,7 @@ static int SRelRequestAux (
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
 int SRelRetryRequest (int sd, int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct ssapblk *sb;
 

@@ -11,7 +11,7 @@
 /* A-RELEASE.RESPONSE */
 
 int AcRelResponse (int sd, int status, int reason, PE *data, int ndata, struct AcSAPindication *aci) {
-	SBV	    smask;
+	int	    smask;
 	int     code,
 			result;
 	struct assocblk   *acb;

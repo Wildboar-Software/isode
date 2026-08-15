@@ -12,7 +12,7 @@ qb2Rpe (struct qbuf *qb, int len, int *result) {
 /*    modify underling service */
 
 int RoSetThorn (int sd, struct RoSAPindication *roi) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct assocblk   *acb;
 

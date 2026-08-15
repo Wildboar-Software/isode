@@ -11,7 +11,7 @@
 /*    map association descriptors for select() */
 
 int RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

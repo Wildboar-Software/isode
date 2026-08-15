@@ -41,7 +41,7 @@ int	RtOpenRequest2 (
 	struct RtSAPconnect *rtc,
 	struct RtSAPindication *rti
 ) {
-	SBV	    smask;
+	int	    smask;
 	int result;
 
 	isodetailor (NULLCP, 0);

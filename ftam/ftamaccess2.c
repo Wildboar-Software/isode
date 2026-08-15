@@ -17,7 +17,7 @@ int FAccessResponse (
 	int ndiag,
 	struct FTAMindication *fti
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

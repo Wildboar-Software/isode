@@ -7,7 +7,7 @@
 /* P-MINOR-SYNC.RESPONSE */
 
 int PMinSyncResponse (int sd, long ssn, PE *data, int ndata, struct PSAPindication *pi) {
-	SBV	    smask;
+	int	    smask;
 	int     len,
 			result;
 	char   *base,

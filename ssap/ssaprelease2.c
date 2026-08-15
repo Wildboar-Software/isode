@@ -9,7 +9,7 @@ static int  SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc,
 /* S-RELEASE.RESPONSE */
 
 int SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

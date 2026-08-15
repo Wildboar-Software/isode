@@ -29,7 +29,7 @@ int SSendRequest (
 	int end,
 	struct SSAPindication *si
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct udvec uvs[2];
 	struct udvec *uv = uvs;
@@ -57,7 +57,7 @@ int SWriteRequest (
 	struct udvec *uv,
 	struct SSAPindication *si
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -214,7 +214,7 @@ int SReadRequest (
 	int secs,
 	struct SSAPindication *si
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -1233,7 +1233,7 @@ int SSetIndications (
 	IFP abort,
 	struct SSAPindication *si
 ) {
-	SBV     smask;
+	int     smask;
 	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;

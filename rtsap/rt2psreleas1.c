@@ -9,7 +9,7 @@ static int  RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct
 /* RT-CLOSE.REQUEST */
 
 int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct assocblk *acb;
 

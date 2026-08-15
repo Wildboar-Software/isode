@@ -15,7 +15,7 @@ int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td)
 {
 	int	    result;
 	long    value;
-	SBV	    smask;
+	int	    smask;
 	struct tsapblk *tb;
 
 	missingP (nbytes);
@@ -59,7 +59,7 @@ int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td)
 /*    get TSAPs */
 
 int TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td) {
-	SBV	    smask;
+	int	    smask;
 	struct tsapblk *tb;
 
 	missingP (td);
@@ -82,7 +82,7 @@ int TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *respond
 
 #ifdef	MGMT
 int TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td) {
-	SBV	    smask;
+	int	    smask;
 	struct tsapblk *tb;
 
 	missingP (td);

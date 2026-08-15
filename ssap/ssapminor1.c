@@ -9,7 +9,7 @@ static int SMinSyncRequestAux (struct ssapblk *sb, int type, long int *ssn, char
 /* S-MINOR-SYNC.REQUEST */
 
 int SMinSyncRequest (int sd, int type, long *ssn, char *data, int cc, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

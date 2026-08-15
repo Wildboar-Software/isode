@@ -7,7 +7,7 @@
 /*    map association descriptors for select() */
 
 int RtSelectMask (int sd, fd_set *mask, int *nfds, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

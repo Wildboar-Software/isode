@@ -26,7 +26,7 @@ int FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti)
 /*    F-GROUP.RESPONSE (group) */
 
 static int FGroupResponse (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	struct ftamblk *fsb;
 

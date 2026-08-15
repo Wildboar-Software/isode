@@ -1965,7 +1965,7 @@ static int  TFreeQueues (struct listenblk *lb)
 int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
 {
 	int	    result;
-	SBV	    smask;
+	int	    smask;
 	struct tsapblk *tb;
 	missingP (td);
 	smask = sigioblock ();

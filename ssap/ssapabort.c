@@ -74,7 +74,7 @@ int SUAbortRequest (
 	int cc,
 	struct SSAPindication *si
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

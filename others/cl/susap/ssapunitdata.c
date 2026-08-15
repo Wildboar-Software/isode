@@ -92,7 +92,7 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 
 {
 	int     fd;
-	SBV     smask;
+	int     smask;
 	int     result;
 	struct ssapblk *sb;
 	struct  TSAPdisconnect  td;
@@ -220,7 +220,7 @@ int SUnitDataUnbind (int sd, struct SSAPindication *si)
 {
 	struct ssapblk *sb;
 	int	 result;
-	SBV      smask;			 	/* signal save mask */
+	int      smask;			 	/* signal save mask */
 	struct  TSAPdisconnect  td;
 
 #ifdef HULADEBUG
@@ -265,7 +265,7 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 	struct   TSAPdisconnect tds;
 	struct   TSAPdisconnect *td = &tds;
 	int	     result;
-	SBV      smask;			 	/* signal save mask */
+	int      smask;			 	/* signal save mask */
 
 	missing_udP (vec);
 	missing_udP (si);
@@ -362,7 +362,7 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 {
 	int 	 n, len, j;
-	SBV      smask;			 	/* signal save mask */
+	int      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
 	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
@@ -503,7 +503,7 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 {
 	int 	 n, cc, len, j;
-	SBV      smask;			 	/* signal save mask */
+	int      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
 	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
@@ -678,7 +678,7 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 	struct TSAPunitdata tx;
@@ -816,7 +816,7 @@ static int SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int sec
 
 int	SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish,
 					 IFP abort, struct SSAPindication *si) {
-	SBV     smask;
+	int     smask;
 	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;

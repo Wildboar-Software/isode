@@ -7,7 +7,7 @@
 /* RT-TRANSFER.REQUEST */
 
 int RtTransferRequest (int sd, PE data, int secs, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

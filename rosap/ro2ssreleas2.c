@@ -22,7 +22,7 @@ static int  RoEndResponseAux ();
 /* RO-END.RESPONSE */
 
 int RoEndResponse (int sd, struct RoSAPindication *roi) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

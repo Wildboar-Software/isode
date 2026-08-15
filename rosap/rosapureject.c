@@ -13,7 +13,7 @@
 int RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi);
 
 int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	PElementID id;
 	struct assocblk   *acb;

@@ -9,7 +9,7 @@
 static int SCapdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
 
 int SCapdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

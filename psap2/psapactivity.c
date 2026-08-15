@@ -7,7 +7,7 @@
 /* P-CONTROL-GIVE.REQUEST */
 
 int PGControlRequest (int sd, struct PSAPindication *pi) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
@@ -36,7 +36,7 @@ out1:
 /* P-ACTIVITY-START.REQUEST */
 
 int PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi) {
-	SBV	    smask;
+	int	    smask;
 	int     len,
 			result;
 	char   *base,
@@ -78,7 +78,7 @@ out1:
 /* P-ACTIVITY-RESUME.REQUEST */
 
 int PActResumeRequest (int sd, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
-	SBV	    smask;
+	int	    smask;
 	int     len,
 			result;
 	char   *base,
@@ -127,7 +127,7 @@ int PActIntrRequestAux (
 	int (*sfunc)(int sd, int reason, struct SSAPindication *si),
 	char *stype
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
@@ -161,7 +161,7 @@ int PActIntrResponseAux (
 	int (*sfunc)(int sd, struct SSAPindication *si),
 	char *stype
 ) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPindication   sis;

@@ -8,7 +8,7 @@
 #include "manifest.h"
 
 int TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
-	SBV     smask;
+	int     smask;
 	struct tsapblk *tb;
 	static char buffer[sizeof *tb * 2 + 1];
 

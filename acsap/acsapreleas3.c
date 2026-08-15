@@ -13,7 +13,7 @@
 /*    handle P-RELEASE.INDICATION */
 
 int AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci) {
-	SBV	    smask;
+	int	    smask;
 	int	    result;
 	PE	    pe;
 	struct assocblk *acb;

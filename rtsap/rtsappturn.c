@@ -7,7 +7,7 @@
 /* RT-TURN-PLEASE.REQUEST */
 
 int RtPTurnRequest (int sd, int priority, struct RtSAPindication *rti) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct assocblk   *acb;
 

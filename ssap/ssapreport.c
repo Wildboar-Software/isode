@@ -9,7 +9,7 @@ static int  SUReportRequestAux (struct ssapblk *sb, int reason, char *data, int 
 /* S-U-EXCEPTION-REPORT.REQUEST */
 
 int SUReportRequest (int sd, int reason, char *data, int cc, struct SSAPindication *si) {
-	SBV	    smask;
+	int	    smask;
 	int     result;
 	struct ssapblk *sb;
 

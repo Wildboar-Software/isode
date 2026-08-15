@@ -916,7 +916,7 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #else
 	SFP	    pstat;
 #endif
-	SBV	    smask;
+	int	    smask;
 
 	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
 	smask = sigioblock ();
