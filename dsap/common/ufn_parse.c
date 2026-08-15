@@ -86,7 +86,7 @@ static char good_match (DN dn, char *s)
 	return FALSE;
 }
 
-int dnSelect (char *s, DNS *dlist, DNS (*interact) (/* ??? */), DNS el)
+int dnSelect (char *s, DNS *dlist, DNS (*interact) (DNS, DN, char *), DNS el)
 {
 	DNS exact = NULLDNS;
 	DNS good  = NULLDNS;
@@ -159,7 +159,7 @@ int ufn_search (
 	Filter filt,
 	DNS *res,
 	char *s,
-	DNS (*interact) (/* ??? */),
+	DNS (*interact) (DNS, DN, char *),
 	DNS el
 ) {
 	struct ds_search_arg search_arg;
@@ -253,7 +253,7 @@ set_bad_dsa:
 #define	SUBSTRINGS()	((ufn_flags & UFN_WILDHEAD) ? FILTERITEM_SUBSTRINGS \
 			 			    : -FILTERITEM_SUBSTRINGS)
 
-static int rootSearch (char *s, DNS (*interact) (/* ??? */), DNS el, DNS *result)
+static int rootSearch (char *s, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
@@ -293,7 +293,7 @@ static int rootSearch (char *s, DNS (*interact) (/* ??? */), DNS el, DNS *result
 	return ufn_search (NULLDN,FALSE,filt,result,s,interact,el);
 }
 
-static int intSearch (DN base, char *s, DNS (*interact) (/* ??? */), DNS el, DNS *result)
+static int intSearch (DN base, char *s, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf, filtg, filth;
 
@@ -381,7 +381,7 @@ static int intSearch (DN base, char *s, DNS (*interact) (/* ??? */), DNS el, DNS
 	return ufn_search (base,FALSE,filtf,result,s,interact,el);
 }
 
-static int leafSearch (DN base, char *s, char subtree, DNS (*interact) (/* ??? */), DNS el, DNS *result)
+static int leafSearch (DN base, char *s, char subtree, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb, filtc, filtd, filte, filtf;
 
@@ -409,7 +409,7 @@ static int leafSearch (DN base, char *s, char subtree, DNS (*interact) (/* ??? *
 	return ufn_search (base,subtree,filt,result,s,interact,el);
 }
 
-static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (/* ??? */), DNS el, DNS *result)
+static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result)
 {
 	Filter filt, filta, filtb;
 	AttributeType at;
@@ -436,7 +436,7 @@ static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (/* ??? */), 
 					   filt, result, v, interact, el);
 }
 
-static int purportedMatch(DN base, int c, char **v, DNS (*interact) (/* ??? */), DNS el, DNS *result)
+static int purportedMatch(DN base, int c, char **v, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result)
 {
 	char * s;
 	DNS root, x, new = NULLDNS;
@@ -510,7 +510,7 @@ static int purportedMatch(DN base, int c, char **v, DNS (*interact) (/* ??? */),
 	return matches;
 }
 
-static int envMatch (int c, char **v, DNS el, DNS (*interact) (/* ??? */), DNS *result)
+static int envMatch (int c, char **v, DNS el, DNS (*interact) (DNS, DN, char *), DNS *result)
 {
 	int res;
 	if (el == NULLDNS)
@@ -524,7 +524,7 @@ static int envMatch (int c, char **v, DNS el, DNS (*interact) (/* ??? */), DNS *
 	return envMatch(c,v,el->dns_next,interact,result);
 }
 
-static int friendlyMatch_aux (int c, char **v, envlist el, DNS (*interact) (/* ??? */), DNS *result)
+static int friendlyMatch_aux (int c, char **v, envlist el, DNS (*interact) (DNS, DN, char *), DNS *result)
 {
 	if (el == NULLEL)
 		return TRUE;
@@ -628,7 +628,7 @@ envlist read_envlist(void) {
 	return top;
 }
 
-int ufn_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el)
+int ufn_match (int c, char **v, DNS (*interact) (DNS, DN, char *), DNS *result, envlist el)
 {
 	static int inited = FALSE;
 

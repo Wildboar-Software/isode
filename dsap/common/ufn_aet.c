@@ -83,8 +83,14 @@ static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 	return TRUE;
 }
 
-int aet_match (int c, char **v, DNS (*interact) (/* ??? */), DNS *result, envlist el, char *context)
-{
+int aet_match (
+	int c,
+	char **v,
+	DNS (*interact) (DNS, DN, char *),
+	DNS *result,
+	envlist el,
+	char *context
+) {
 	DNS ufnr = NULLDNS;
 	DNS newap = NULLDNS;
 	DNS apps = NULLDNS;

@@ -185,7 +185,7 @@ void fatal (int code, char *fmt) {
 
 static PS ps = NULLPS;
 
-void pslog (LLog *lp, int event, char *str, int (*func) (/* ??? */), caddr_t ptr)
+void pslog (LLog *lp, int event, char *str, int (*func) (PS, caddr_t, int), caddr_t ptr)
           
           
            
