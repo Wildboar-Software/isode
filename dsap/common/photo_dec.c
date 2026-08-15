@@ -8,8 +8,11 @@
 #define UNCOMPRESSED_1D	0x0e
 #define ERR_RUN		0x0f
 
-/* this file contains the main routines for decoding X400 */
-
+/**
+ * @file photo_dec.c
+ *
+ * Main routines for decoding X.400 fax / T.4 photo images.
+ */
 extern int PIC_LINESIZE, STOP, NUMLINES;
 
 /* variables for top of the code word trees */
@@ -157,19 +160,21 @@ static int uc_black_pels [] = {
 	0,	/*     0000           00000000001 */
 };
 
-/* ROUTINE:     Decode_t4
-/*
-/* SYNOPSIS:    Decodes a bit map stored in format T4 as recommended
-/*              by CCITT.
-/*
-/* DESCRIPTION: After setting up the buffers, a line at a time is dealt with.
-/* Each line is recognised as being one or two dimensionally coded, depending
-/* upon the tag bit.
-/* The run change buffers for each line are kept incase the next line is two
-/* dimensionally, when it will be used as a reference.
-/*
-*/
-
+/**
+ * @brief Decode a T.4-encoded bit map as recommended by CCITT.
+ *
+ * After setting up the buffers, a line at a time is dealt with. Each
+ * line is recognised as being one- or two-dimensionally coded, depending
+ * upon the tag bit. The run-change buffers for each line are kept in
+ * case the next line is two-dimensional, when they will be used as a
+ * reference.
+ *
+ * @param inbuf Encoded input buffer.
+ * @param winname Window or image name passed to photo_start/photo_end.
+ * @param length Length of the input buffer.
+ * @param twoDimensional Non-zero if the image is two-dimensionally coded.
+ * @return Result of photo_end on success, or -1 on failure.
+ */
 int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	bit_string code_line,      /* output line */
 			   ref_line,       /* reference line */
@@ -246,12 +251,16 @@ int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	return (photo_end (winname));
 }
 
-/* ROUTINE:     find_node
+/**
+ * @brief Locate a code-word node by walking a decode tree.
  *
- * SYNOPSIS:    Reads a sequence of bits from a source line and traverses
- *              a code word tree to find a matching code word.
+ * Reads a sequence of bits from a source line and traverses a code-word
+ * tree to find a matching code word.
+ *
+ * @param lineptr Input bit string.
+ * @param tree_top Root of the tree to traverse.
+ * @return The matching leaf node, or NULL if the sequence is invalid.
  */
-
 static node *find_node (bit_string *lineptr, node *tree_top)
 {
 	node * ptr;
@@ -273,15 +282,17 @@ static node *find_node (bit_string *lineptr, node *tree_top)
 	return (ptr);
 }
 
-/* ROUTINE:     next_run
+/**
+ * @brief Read the next one-dimensional run length from the input.
  *
- * SYNOPSIS:    Reads the next run length from the input file.
+ * As each bit is read, it is used to move down the decode tree. When a
+ * node that contains a value is found, that value is returned. If the
+ * value is a make-up code, the following terminal code is also read.
  *
- * DESCRIPTION: As each bit is read, it is used to move down the decode tree,
- * when a node is found that contains a value, the value is returned.
- * The code is assumed to be one dimensional.
-*/
-
+ * @param lineptr Input bit string.
+ * @param xcolour Current run colour (BLACK or WHITE).
+ * @return The decoded run, or an error/uncompressed-mode indicator.
+ */
 run_type next_run (bit_string *lineptr, char xcolour)
 {
 	node *   ptr;
@@ -317,19 +328,18 @@ run_type next_run (bit_string *lineptr, char xcolour)
 	return (result);
 }
 
-/* ROUTINE:     decode_one
-/*
-/* SYNOPSIS:    decodes one line of t4.
-/*
-/* DESCRIPTION: reads a run, then writes that many bits of the appropiate
-/* colour to the output.
-/*
-/* RETURNS:     0 if successful
-/*              1 if successful and end of page detected
-/*             -1 if line could not be decoded
-/*             -2 if error detected and resync succeeded
-*/
-
+/**
+ * @brief Decode one one-dimensional T.4 line.
+ *
+ * Reads a run, then writes that many bits of the appropriate colour to
+ * the output.
+ *
+ * @param lineptr Output line being decoded into.
+ * @param t4_lineptr Encoded input line.
+ * @return 0 if successful, 1 if successful and end of page detected,
+ *         -1 if the line could not be decoded, or -2 if an error was
+ *         detected and resync succeeded.
+ */
 int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 {
 	run_type run;
@@ -374,18 +384,18 @@ int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 	return (done);
 }
 
-/* ROUTINE:     decode_two
-/*
-/* SYNOPSIS:    decodes a two dim line.
-/*
-/* DESCRIPTION: The binary codes read in are looked up in the decode tree,
-/* and the appropiate routine called to decode that mode.
-/*
-/* RETURNS:     0 if successful
-/*             -1 if too many sequencing errors
-/*             -2 if resynch performed
-*/
-
+/**
+ * @brief Decode one two-dimensional T.4 line.
+ *
+ * Binary codes read from the input are looked up in the decode tree, and
+ * the appropriate routine is called to decode that mode.
+ *
+ * @param ref_lineptr Reference (previous) line.
+ * @param code_lineptr Line being decoded.
+ * @param t4_lineptr Encoded input line.
+ * @return 0 if successful, -1 if too many sequencing errors, or -2 if
+ *         resynchronisation was performed.
+ */
 int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr)
 {
 	int length;
@@ -443,18 +453,19 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 	return (0);
 }
 
-/* ROUTINE:     undo_uncompressed_mode
-/*
-/* SYNOPSIS:    decodes a section recognised as uncompressed mode.
-/*
-/* DESCRIPTION: Process uncompressed code words until a terminating
-/*              code word is found.
-/*
-/* RETURNS:     -1 if too many sequencing errors
-/*              -2 if resynch performed
-/*              else next colour
-*/
-
+/**
+ * @brief Decode a section recognised as uncompressed mode.
+ *
+ * Process uncompressed code words until a terminating code word is
+ * found.
+ *
+ * @param lineptr Output line being decoded into.
+ * @param t4_lineptr Encoded input line.
+ * @param xcolour Current colour.
+ * @param twoD Non-zero if decoding a two-dimensional line.
+ * @return The next colour, -1 if too many sequencing errors, or -2 if
+ *         resynchronisation was performed.
+ */
 int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD)
 {
 	int black_length;
@@ -501,14 +512,14 @@ int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xco
 	}
 }
 
-/* ROUTINE:     undo_pass_mode
-/*
-/* SYNOPSIS:    decodes a section recognised as pass mode.
-/*
-/* DESCRIPTION: find b2, then write to output the same colour as before
-/* up until position b2.
-*/
-
+/**
+ * @brief Decode a section recognised as pass mode.
+ *
+ * Finds b2, then writes the same colour as before up until position b2.
+ *
+ * @param ref_lineptr Reference line.
+ * @param code_lineptr Line being decoded.
+ */
 void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 {
 	int length;
@@ -523,17 +534,17 @@ void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 	--code_lineptr->run_pos;     /* don't count this as a change */
 }
 
-/* ROUTINE:     undo_horiz_mode
-/*
-/* SYNOPSIS:    decodes a section recognised as horizontal mode.
-/*
-/* DESCRIPTION: Read two run lengths for the input, and write the appropiate
-/* number of 1's or 0's to the output.
-/*
-/* RETURNS:     0 if successful
-/*             -1 if too many sequencing errors
-/*             -2 if resynch performed
-*/
+/**
+ * @brief Decode a section recognised as horizontal mode.
+ *
+ * Reads two run lengths from the input and writes the appropriate
+ * number of 1s or 0s to the output.
+ *
+ * @param t4_lineptr Encoded input line.
+ * @param code_lineptr Line being decoded.
+ * @return 0 if successful, -1 if too many sequencing errors, or -2 if
+ *         resynchronisation was performed.
+ */
 int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 {
 	run_type run;
@@ -563,12 +574,15 @@ int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 	return (0);
 }
 
-/* ROUTINE:     undo_vert_mode
-/*
-/* SYNOPSIS:    decodes vertical mode
-/*
-/* DESCRIPTION: Find b1, the write 1's or 0's upto it allowing for the offset.
-*/
+/**
+ * @brief Decode vertical mode.
+ *
+ * Finds b1, then writes 1s or 0s up to it, allowing for the offset.
+ *
+ * @param ref_lineptr Reference line.
+ * @param code_lineptr Line being decoded.
+ * @param offset Vertical-mode offset from the reference change.
+ */
 void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
 {
 	int   length;
@@ -578,15 +592,14 @@ void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char off
 	colour = 1 - colour;
 }
 
-/* ROUTINE:     goto_b1
+/**
+ * @brief Move the reference-line pointer to b1.
  *
- * SYNOPSIS:    move the pointer in the reference line to b1
+ * b1 is the first changing bit in the reference line of a different
+ * colour to a0. The pointer may need to move backwards or forwards.
  *
- * DESCRIPTION: b1 is the first changing bit in the reference line
- * of a different colour to a0.  May need to move backwards or forwards
- *
+ * @param lineptr Reference line.
  */
-
 void goto_b1 (bit_string *lineptr)
 {
 	while (*lineptr->run_pos > position) {
@@ -609,11 +622,11 @@ void goto_b1 (bit_string *lineptr)
 			lineptr->run_pos += 2;
 }
 
-/* ROUTINE:     resync
-/*
-/* SYNOPSIS:    resynchronizes sequencing by locating the next EOL
-/*
-*/
+/**
+ * @brief Resynchronise sequencing by locating the next EOL.
+ *
+ * @param lineptr Input bit string to scan.
+ */
 static void resync (bit_string *lineptr)
 {
 	int i;
@@ -628,10 +641,13 @@ static void resync (bit_string *lineptr)
 	}
 }
 
-/* ROUTINE:     put_run                                                 */
-/*                                                                      */
-/* SYNOPSIS:    writes a run_length to the indicated bit_string.        */
-/*                                                                      */
+/**
+ * @brief Write a run length to the indicated bit string.
+ *
+ * @param lineptr Destination bit string.
+ * @param length Number of bits in the run.
+ * @param xcolour Colour of the run (WHITE or BLACK).
+ */
 void put_run (bit_string *lineptr, int length, char xcolour)
 {
 	int i;
@@ -691,20 +707,22 @@ void put_run (bit_string *lineptr, int length, char xcolour)
 	*lineptr->run_pos++ = position;
 }
 
-/* ROUTINE:     set_doutput;
-/*
-/* SYNOPSIS:    Initialises the output buffers
-*/
+/**
+ * @brief Initialise the decode output buffers.
+ *
+ * @param lineptr Output bit string to reset.
+ */
 void set_doutput (bit_string *lineptr)
 {
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
 }
 
-/* ROUTINE:     flush_doutput;
-/*
-/* SYNOPSIS:    flush the output buffer;
-*/
+/**
+ * @brief Flush the decode output buffer.
+ *
+ * @param lineptr Output bit string to flush.
+ */
 void flush_doutput (bit_string *lineptr)
 {
 	int count = 0;
@@ -716,10 +734,13 @@ void flush_doutput (bit_string *lineptr)
 	photo_white (count);
 }
 
-/* ROUTINE:     set_dinput;
-/*
-/* SYNOPSIS:    Initialises the input buffers
-*/
+/**
+ * @brief Initialise the decode input buffers.
+ *
+ * @param lineptr Input bit string.
+ * @param length Encoded length, or 0 to parse a BIT STRING header.
+ * @return 0 on success, or -1 on error.
+ */
 int set_dinput (bit_string *lineptr, int length)
 {
 	unsigned char cbyte;

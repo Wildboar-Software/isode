@@ -27,22 +27,23 @@ int forcesize = 0;
 int nopreamble = 0;
 int oldformat = 0;
 
-/* ROUTINE:     encode_t4
-/*
-/* SYNOPSIS:    Implements CCITT recommendation T.4.
-/*              This recomendation is concerned with compressing of bit maps.
-/*
-/* DESCRIPTION:
-/*              This routine sets up the data buffers, then calls routines
-/* to encode one line of the bit map. A line can be encoded  either one
-/* dimensionally  or two dimensionally depending upon the 'k parameter'.
-/*
-/*    When a line is encoded two dimensionally, the line before is used as a
-/* reference. For each line encoded, a record of where the run changes occur
-/* are kept.  This is the used as the reference.
-/*
-*/
-
+/**
+ * @brief Encode a bit map according to CCITT recommendation T.4.
+ *
+ * This recommendation is concerned with compressing bit maps. This
+ * routine sets up the data buffers, then calls routines to encode one
+ * line of the bit map. A line can be encoded either one-dimensionally
+ * or two-dimensionally depending upon the K parameter.
+ *
+ * When a line is encoded two-dimensionally, the line before is used as
+ * a reference. For each line encoded, a record of where the run changes
+ * occur is kept. This is then used as the reference.
+ *
+ * @param k_param K parameter controlling one- vs two-dimensional coding.
+ * @param inbuf Input bit-map buffer.
+ * @param eolnskip Extra end-of-line bits to skip in the source data.
+ * @return Pointer to the encoded output buffer.
+ */
 char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 
 {
@@ -106,20 +107,18 @@ char *encode_t4 (int k_param, char *inbuf, int eolnskip)
 	return (t4_line.dbuf_top);
 }
 
-/* ROUTINE:     code_one
+/**
+ * @brief Encode one line of a bit map one-dimensionally into T.4.
  *
- * SYNOPSIS:    codes one line of a bit map into t4
+ * Bits are read in until a change is noticed; when this happens, the
+ * run-length code for the number of bits read in is found and written
+ * to the output. A run-length code may consist of two parts if the run
+ * is large: a make-up code and a terminal code.
  *
- * DESCRIPTION:
- *              To encode a line one dimensionally, bits are read in until
- * a change is noticed, when this happens, the run_length code for the number
- * of bits read in is found, and written to the output file.
- *
- * A run_length code may consist of two parts if the run is large, a make up
- * and a terminal code.
-*/
-
-void code_one (bit_string *lineptr /* input line */,bit_string *t4_lineptr /* output line */) {
+ * @param lineptr Input line to encode.
+ * @param t4_lineptr Encoded output line.
+ */
+void code_one (bit_string *lineptr, bit_string *t4_lineptr) {
 	char            colour = WHITE; /* the colour of the current bit */
 	full_code       code;           /* the code for the characters run_length */
 	int             old_pos = 1;    /* the number of bits of the same colur read in */
@@ -159,24 +158,25 @@ void code_one (bit_string *lineptr /* input line */,bit_string *t4_lineptr /* ou
 	}
 }
 
-/* ROUTINE:     code_two
+/**
+ * @brief Encode one line of a bit map two-dimensionally as in CCITT T.4.
  *
- * SYNOPSIS:    Codes one line of a bit map two dimensionally as
- *              described by CCITT T.4.
- *
- * DESCRIPTION: Two lines are compared by looking at the list of run changes.
- * In order to do this, this list has to be created for the line we are about
- * to encode.  The encoding procedure then follows the flow chart in the CCITT
- * recommendation.  This is summarised as follows:
+ * Two lines are compared by looking at the list of run changes. In
+ * order to do this, this list has to be created for the line we are
+ * about to encode. The encoding procedure then follows the flow chart
+ * in the CCITT recommendation. This is summarised as follows:
  *
  *   1. Find the positions a0, a1, b1, b2.
  *   2. Compare to see which mode is required.
  *
- * The positions of a1, b1, b2 are found from the run change list.  a0 is known
- * in advance.
-*/
-
-void code_two (bit_string *ref_lineptr /* reference line */,bit_string *code_lineptr /* line to encode */,bit_string *t4_lineptr /* output line    */) {
+ * The positions of a1, b1, b2 are found from the run-change list. a0 is
+ * known in advance.
+ *
+ * @param ref_lineptr Reference line.
+ * @param code_lineptr Line to encode.
+ * @param t4_lineptr Encoded output line.
+ */
+void code_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr) {
 	char    colour = WHITE;
 	char    ref_colour = WHITE;
 
@@ -219,14 +219,13 @@ void code_two (bit_string *ref_lineptr /* reference line */,bit_string *code_lin
 }
 
 /**
- * ROUTINE:     Pass_mode
+ * @brief Encode pass mode.
  *
- * SYNOPSIS:    Encodes pass_mode
+ * When pass mode is detected, the pass-mode code is written to the
+ * output, and a0 is moved to underneath b2.
  *
- * DESCRIPTION: When pass mode is detected, the pass mode code is written to
- * the output, and a0 is moved to underneath b2.
-*/
-
+ * @param t4_lineptr Encoded output line.
+ */
 void pass_mode (bit_string *t4_lineptr) {
 	static code_word code = {4,0x0200};
 
@@ -234,15 +233,14 @@ void pass_mode (bit_string *t4_lineptr) {
 	a0 = b2;
 }
 
-/* ROUTINE:     Vertical_mode
-/*
-/* SYNOPSIS:    Encodes vertical mode.
-/*
-/* DESCRIPTION:  Vertical mode is encoded by writing a particualr code
-/* depending on the offset between a1 and b1.
-/* a0 is moved to a1
-*/
-
+/**
+ * @brief Encode vertical mode.
+ *
+ * Vertical mode is encoded by writing a particular code depending on
+ * the offset between a1 and b1. a0 is moved to a1.
+ *
+ * @param t4_lineptr Encoded output line.
+ */
 void vertical_mode (bit_string *t4_lineptr) {
 	static code_word code [7] = {
 		{7,0x080  },    /* -3 */
@@ -257,15 +255,17 @@ void vertical_mode (bit_string *t4_lineptr) {
 	a0 = a1;
 }
 
-/* ROUTINE:     Horizontal_mode
-/*
-/* SYNOPSIS:    Encodes horizontal mode
-/*
-/* DESCRIPTION: When horizontal mode is detected no further compaction can
-/* can take place, so the next two run lengths are written to the output.
-/* a0 is moved to after these runs.
-*/
-
+/**
+ * @brief Encode horizontal mode.
+ *
+ * When horizontal mode is detected no further compaction can take
+ * place, so the next two run lengths are written to the output. a0 is
+ * moved to after these runs.
+ *
+ * @param code_lineptr Line being encoded.
+ * @param t4_lineptr Encoded output line.
+ * @param colour Current run colour.
+ */
 void horizontal_mode (bit_string *code_lineptr,bit_string *t4_lineptr,char colour) {
 	int a2;
 	static code_word h_code = {3,0x0400};
@@ -291,11 +291,12 @@ void horizontal_mode (bit_string *code_lineptr,bit_string *t4_lineptr,char colou
 	a0 = a2;
 }
 
-/* ROUTINE:     Put_code ()                                             */
-/*                                                                      */
-/* SYNOPSIS:    appends the code word to the 'line'.                    */
-/*                                                                      */
-
+/**
+ * @brief Append a code word to a bit string.
+ *
+ * @param lineptr Destination bit string.
+ * @param code Code word to append.
+ */
 void put_code (bit_string *lineptr,code_word code) {
 	int		i;
 	short	mask;
@@ -310,12 +311,13 @@ void put_code (bit_string *lineptr,code_word code) {
 	}
 }
 
-/* ROUTINE:     put_eoln                                                */
-/*                                                                      */
-/* SYNOPSIS:    Puts an end of line marker at the end of a t4 line.     */
-/*              An end of line (eoln) marker is 11 (or more) zero's     */
-/*              followed by a 1.                                        */
-
+/**
+ * @brief Write an end-of-line marker at the end of a T.4 line.
+ *
+ * An end-of-line (EOL) marker is 11 (or more) zeros followed by a 1.
+ *
+ * @param lineptr Destination bit string.
+ */
 void put_eoln (bit_string *lineptr) {
 	int i;
 
@@ -324,16 +326,15 @@ void put_eoln (bit_string *lineptr) {
 	set_bit (lineptr);
 }
 
-/* ROUTINE:     get_runs
+/**
+ * @brief Fill the run-change buffer for the next input line.
  *
- * SYNOPSIS:    set the runs change buffer fo the next input line
+ * To optimise the input process, sequences of all 1s or 0s (the most
+ * likely combinations) are looked for as special cases; if not found
+ * the runs are counted as bits.
  *
- * DESCRIPTION: To optimise the input process, sequences of all 1's or 0's
- * - the most likely combinations are looked for as special cases, if not
- * found the runs are counted as bits.
- *
+ * @param lineptr Input line to scan.
  */
-
 void get_runs (bit_string *lineptr) {
 	int i;
 	char     colour = WHITE;
@@ -348,28 +349,29 @@ void get_runs (bit_string *lineptr) {
 	*lineptr->run_pos = STOP;
 }
 
-/* ROUTINE:     set_output;
+/**
+ * @brief Initialise the encode output buffers.
  *
- * SYNOPSIS:    Initialises the output buffers, writes the ENODE id, and
- * leaves room for the length (to be filled in later);
-*/
-
+ * Leaves room for the ASN.1 preamble (to be filled in later).
+ *
+ * @param lineptr Output bit string to initialise.
+ */
 void set_output (bit_string *lineptr) {
 	lineptr->dbuf_top += 28; /* leave room for ASN.1 preamble */
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
 }
 
-/* ROUTINE:     flush_output;
+/**
+ * @brief Flush the output buffer and write the ASN.1 preamble if allowed.
  *
- * SYNOPSIS:    Flush the output buffer, and set the ASN.1 preamble if
- *              allowed.  The normal preamble consists of a SEQUENCE definition
- *              which wraps a SET and a SEQUENCE of BIT STRING.  The SET
- *              includes G3-Fax nonbasic parameter indications (such as
- *              twoDimensional, fineResolution, etc.).  Optionally, the
- *              old BIT STRING-ish preamble may be selected.
+ * The normal preamble consists of a SEQUENCE definition which wraps a
+ * SET and a SEQUENCE of BIT STRING. The SET includes G3-Fax nonbasic
+ * parameter indications (such as twoDimensional, fineResolution, etc.).
+ * Optionally, the old BIT STRING-ish preamble may be selected.
+ *
+ * @param lineptr Output bit string to flush.
  */
-
 void flush_output (bit_string *lineptr) {
 	long length, len;
 	int  count, i;
@@ -460,11 +462,11 @@ void flush_output (bit_string *lineptr) {
 	optlen = lineptr->dbuf - lineptr->dbuf_top;
 }
 
-/* ROUTINE:     set_input;
-/*
-/* SYNOPSIS:    Initialises the input buffers
-*/
-
+/**
+ * @brief Initialise the encode input buffers.
+ *
+ * @param lineptr Input bit string to initialise.
+ */
 void set_input (bit_string *lineptr) {
 	lineptr->mask = BIT_MASK;
 	lineptr->dbuf = lineptr->dbuf_top;

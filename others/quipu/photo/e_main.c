@@ -11,18 +11,22 @@ extern int STOP;
 extern int NUMLINES;
 extern int optlen;
 
-/* ROUTINE: main
-/*
-/* DESCRIPTION:  Interprets the command line parameters then calls the
-/* encoding routine. The format of the command line is as follows:-
-/*
-/*     encode [-K] infile outfile
-/*
-/*     -K is the K parameter default 1
-/*     if infile or outfile omitted then stdin or stdout is used.
-*/
 char * encode_t4 ();
 
+/**
+ * @brief Encode a pixrect image from stdin to stdout as T.4.
+ *
+ * Interprets the command-line parameters then calls the encoding
+ * routine. The format of the command line is:
+ *
+ *     encode [-K] infile outfile
+ *
+ * `-K` is the K parameter (default 1). If infile or outfile is omitted
+ * then stdin or stdout is used.
+ *
+ * @param argc Argument count.
+ * @param argv Argument vector.
+ */
 int main (int argc, char **argv)
 
 {

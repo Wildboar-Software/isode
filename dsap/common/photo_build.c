@@ -254,14 +254,14 @@ static char *wt_term [] = {
 static char * uncompressed_1d = "000000001111";
 static char * uncompressed_2d = "0000001111";
 
-/* ROUTINE:     get_node                                                */
-/*                                                                      */
-/* SYNOPSIS:    creates a new node.                                     */
-/*                                                                      */
-/* DESCRIPTION: Uses malloc to allocate sufficient memory for a node to */
-/*              be stored, and the sets all the pointer fields of the   */
-/*              node to NULL, and initialises the other fields          */
-
+/**
+ * @brief Allocate and initialise a new decode-tree node.
+ *
+ * Uses malloc to allocate sufficient memory for a node, then sets all
+ * pointer fields to NULL and initialises the remaining fields.
+ *
+ * @return A pointer to the newly allocated node.
+ */
 node *get_node (void)
 {
 	node * mem;
@@ -273,17 +273,16 @@ node *get_node (void)
 	return (mem);
 }
 
-/* ROUTINE:     build_trees.
-/*
-/* SYNOPSIS:    build the decode tree.
-/*
-/* DESCRIPTION: For each of the three trees, read the data in from a file
-/* in string form, convert this into an integer, then add this integer to the
-/* tree.
-/* Also contained in the node is the value associated with the string read in,
-/* so we need to count each string as it is read in.
-*/
-
+/**
+ * @brief Build the fax decode trees.
+ *
+ * For each of the three trees, read the data in string form, convert it
+ * into an integer, then add that integer to the tree. Each node also
+ * stores the value associated with the string, so strings are counted as
+ * they are read in.
+ *
+ * @return 0 on success.
+ */
 int build_trees (void) {
 	int i;
 	char **  string;
@@ -331,12 +330,13 @@ int build_trees (void) {
 }
 
 /**
- * Adds a run to the tree
- * @param string containing the bit sequence         
- * @param run the run length associated with the sequence
- * @param mode the type of data we are entering           
- * @param root top of the tree string should be added to
-*/
+ * @brief Add a run-length code word to a decode tree.
+ *
+ * @param string Bit sequence to insert.
+ * @param run Run length associated with the sequence.
+ * @param mode Type of data being entered.
+ * @param root Root of the tree the string should be added to.
+ */
 void add_tree (char *string, int run, char mode, node *root)
 
 {

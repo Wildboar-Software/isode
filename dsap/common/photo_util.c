@@ -3,30 +3,29 @@
 #include <stdio.h>
 #include "quipu/photo.h"
 
-/* This file contains utility routines used by both the                 */
-/* encoding and decoding programs.                                      */
-/* The routines are concerned with getting and setting bits of          */
-/* a bit string.                                                        */
-
-/* All these routine work in basically the same way.
-/* a mask is used to get at each individual bit within
-/* a byte.  Each time the next bit is required, the
-/* mask is shifted right, when the mask is zero, the byte is either
-/* written to the file, or the next byte read in depending upon the
-/* routine.
-*/
+/**
+ * @file photo_util.c
+ *
+ * Utility routines used by both the encoding and decoding programs.
+ * The routines are concerned with getting and setting bits of a bit
+ * string.
+ *
+ * All these routines work in basically the same way. A mask is used to
+ * get at each individual bit within a byte. Each time the next bit is
+ * required, the mask is shifted right; when the mask is zero, the byte
+ * is either written to the file, or the next byte is read in, depending
+ * upon the routine.
+ */
 
 int PIC_LINESIZE,STOP,NUMLINES;
 
-/* ROUTINE:     Get_bit                                                 */
-/*                                                                      */
-/* SYNOPSIS:    Gets the next bit from the input.                       */
-/*              Returns 0 if it is a zero.                              */
-/*              Returns 1 if it is a one                                */
+/**
+ * @brief Get the next bit from the input.
+ *
+ * @param lineptr Bit string to read from.
+ * @return 0 if the bit is zero, 1 if the bit is one.
+ */
 char get_bit (bit_string *lineptr)
-
-                           /* the line to get the bit from */
-
 {
 	unsigned char    result;
 
@@ -43,11 +42,11 @@ char get_bit (bit_string *lineptr)
 	return ( (char) result );
 }
 
-/* ROUTINE:   Set_bit                                                   */
-/*                                                                      */
-/* SYNOPSIS:  Sets the next bit of the bit string pointed to by         */
-/*            lineptr to a one.                                         */
-
+/**
+ * @brief Set the next bit of a bit string to one.
+ *
+ * @param lineptr Bit string to write to.
+ */
 void set_bit (bit_string *lineptr)
 {
 	/* This sets the masked bit */
@@ -59,11 +58,11 @@ void set_bit (bit_string *lineptr)
 	}
 }
 
-/* ROUTINE:   Clr_bit                                                   */
-/*                                                                      */
-/* SYNOPSIS:  clears the next bit of the bit string pointed to by       */
-/*            lineptr.  i.e set it to zero.                             */
-
+/**
+ * @brief Clear the next bit of a bit string (set it to zero).
+ *
+ * @param lineptr Bit string to write to.
+ */
 void clr_bit (bit_string *lineptr)
 {
 	/* clear the masked bit */

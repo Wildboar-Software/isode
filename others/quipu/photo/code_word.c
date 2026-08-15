@@ -5,13 +5,14 @@
 
 extern int PIC_LINESIZE;
 
-/* The following are declarations of the code words that are used with one
-/* dimensional encoding.   The first number in each pair give the length
-/* of the string, the second gives the string in hex, starting at the 13th bit
-/* position.
-/* The declarations are made this way so that the arays are made at compile
-/* time as opposed to run time.
-*/
+/**
+ * Code words used with one-dimensional encoding. The first number in
+ * each pair gives the length of the string; the second gives the string
+ * in hex, starting at the 13th bit position.
+ *
+ * The declarations are made this way so that the arrays are made at
+ * compile time as opposed to run time.
+ */
 
 /* White terminal run lengths */
 
@@ -225,13 +226,15 @@ static code_word bl_make [] = {
 	{ 12, 0x26   },         /* 2048: 000000010011  */
 };
 
-/* ROUTINE:     Get_code ()                                             */
-/*                                                                      */
-/* SYNOPSIS:    Gets a code word from an array given the run_length     */
-/*              and the colour (0 = white, 1 = black)                   */
-
 extern int forcesize;
 
+/**
+ * @brief Look up a code word for a run length and colour.
+ *
+ * @param run Run length to encode.
+ * @param colour Run colour (0 = white, 1 = black).
+ * @return The make-up and terminal code words for the run.
+ */
 full_code
 get_code (int run, char colour) {
 	full_code result;
