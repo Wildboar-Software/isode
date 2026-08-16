@@ -127,7 +127,6 @@ static double val2real (YV yv);
 static void prime_default (YP yp, int level);
 static YP	lookup_type (char *mod, char *id);
 
-static void yyerror_aux (char *s);
 static void do_struct0 (YP yp, char *id);
 static void do_struct1 (YP yp, char *id, char *pullup);
 static void do_struct2 (YP yp, char *id, char *pullup);
@@ -138,9 +137,7 @@ static void posy (YP yp, int top, int level, char *id, char *val, char *var, int
 static void printag (YP yp, int level, char *pullup);
 static void xalloc (YP yp, int top, int level, char *arg, char *type, int brackets);
 static void balloc (YP yp, char *var, char *action2, int level);
-static void choice_pullup (YP yp, int partial);
 static void components_pullup (YP yp);
-static int  val2int (YV yv);
 static void val2prf (YV yv, int level);
 static void dump_real (double r);
 static int  dfl2int (YP yp);
@@ -261,7 +258,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-int yyerror (char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -292,7 +289,7 @@ int warning (char *fmt) {
 	warning (fmt);
 }
 #endif
-static void yyerror_aux (char *s) {
+void yyerror_aux (char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -317,7 +314,7 @@ void myyerror (char*fmt, ...) {
 #endif
 
 #ifndef	lint
-static void pyyerror (YP yp, char *fmt, ...) {
+void pyyerror (YP yp, char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
 	va_start (ap, fmt);
@@ -334,8 +331,7 @@ static void pyyerror (YP yp, char *fmt, ...) {
 	exit (1);
 }
 #else
-/* VARARGS */
-static void pyyerror (YP yp, char *fmt) {
+void pyyerror (YP yp, char *fmt) {
 	pyyerror (yp, fmt);
 }
 #endif
@@ -378,7 +374,7 @@ void yyprint (char *s, int f, int top) {
 	linepos += len;
 }
 
-int pass1(void) {
+void pass1(void) {
 	printf ("%s ", mymodule);
 	if (mymoduleid) {
 		printf ("%s ", oidprint(mymoduleid));
@@ -2184,7 +2180,7 @@ int	level;
 }
 #endif
 
-static void choice_pullup (YP yp, int partial)
+void choice_pullup (YP yp, int partial)
 {
 	YP	   *x,
 	 y,
@@ -2275,7 +2271,7 @@ static void components_pullup (YP yp)
 	}
 }
 
-static int val2int (YV yv)
+int val2int (YV yv)
 {
 	switch (yv -> yv_code) {
 	case YV_BOOL:

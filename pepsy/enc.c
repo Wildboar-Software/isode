@@ -16,6 +16,20 @@
 extern ptpe *next_tpe(ptpe *p), *fdflt_f(ptpe *p);
 extern char *pr_petype(int type);
 char   *idname(), *clname();
+extern int pepsylose (modtyp *module, ...);
+extern int same (
+	ptpe *typ,
+	ptpe *dflt,
+	char *parm,
+	modtyp *mod			/* Module it is from */
+);
+
+extern int ismatch (
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	unsigned int cl,
+	unsigned int tag
+);
 
 #define NEXT_TPE(p) (p = next_tpe(p))
 #define CHKTAG(mod, p, pe)	ismatch(p, mod, pe->pe_class, pe->pe_id)
@@ -34,12 +48,20 @@ static int en_setof(char *parm, ptpe *p, modtyp *mod, PE *rpe);
 static int en_choice(char *parm, ptpe *p, modtyp *mod, PE *rpe);
 static int en_etype(char *parm, ptpe *p, modtyp *mod, PE *rpe);
 
+extern int hasdata (
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int *popt,
+	int *optcnt
+);
+
 /*
  * encode the specified type of the specified module into the given
  * pe
  */
 int enc_f (
-		int typ,			/* which type it is */
+	int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE *pe,
 	int explicit,

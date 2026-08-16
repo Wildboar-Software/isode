@@ -18,6 +18,21 @@ extern FILE *vfp;
 
 extern ptpe *next_ptpe(ptpe *p);
 extern int pepsylose (modtyp *module, ...);
+extern void pr_entry (ptpe *p);
+extern int ppepsylose (modtyp*module, ...);
+
+static int p_ismatch (
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	unsigned int cl,
+	unsigned int tag
+);
+
+static void dmp_ptpe (
+	char *s,
+	ptpe *p,
+	modtyp *mod	/* Module it is from */
+);
 
 int     xlevel = 0;
 int     tabed = 0;
@@ -1434,7 +1449,7 @@ bad:
  * Is there a match at for this tag and class pair. Return 1 if yes 0
  * if no We will search through contained objects and through choices
  */
-int p_ismatch (
+static int p_ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
 	unsigned int cl,
@@ -1649,7 +1664,7 @@ int printable (char *strptr, int len) {
 /*
  * (Dump) Print out a printable entry in a human recognisable form
  */
-void dmp_ptpe (
+static void dmp_ptpe (
 	char *s,
 	ptpe *p,
 	modtyp *mod	/* Module it is from */

@@ -26,7 +26,14 @@ int SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindicatio
 	return result;
 }
 
-int SMajSyncRequestAux (struct ssapblk *sb, long *ssn, char *data, int cc, int opts, struct SSAPindication *si) {
+int SMajSyncRequestAux (
+	struct ssapblk *sb,
+	long *ssn,
+	char *data,
+	int cc,
+	int opts,
+	struct SSAPindication *si
+) {
 	int     result;
 
 	if (SDoActivityAux (sb, si, 0, 0) == NOTOK)

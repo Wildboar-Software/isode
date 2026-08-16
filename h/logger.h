@@ -74,6 +74,8 @@ else
 
 #ifdef __STDC__
 
+void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
+
 #define	PLOGP(lp,args,pe,text,rw) \
     if ((lp) -> ll_events & LLOG_PDUS) { \
 	pvpdu (lp, print_##args##_P, pe, text, rw); \

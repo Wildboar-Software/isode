@@ -118,7 +118,7 @@ OID	int2oid (int n)
 	return noid;
 }
 
-int addtable (char *name, int lt) {
+void addtable (char *name, int lt) {
 	SYM		sp;
 
 	sp = (SYM)calloc (1, sizeof *sp);
@@ -142,7 +142,7 @@ void addtableref (char *name, OID id, int lt) {
 		}
 }
 
-int print_expimp(void) {
+void print_expimp(void) {
 	SYM		sp;
 	int		ind;
 	OID		oid;
@@ -263,7 +263,7 @@ static struct oidtbl {
 	NULL,
 };
 
-int initoidtbl(void) {
+void initoidtbl(void) {
 	struct oidtbl *op;
 	OID		oid;
 

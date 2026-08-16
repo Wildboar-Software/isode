@@ -17,8 +17,16 @@
 #define pname(t)	((t)->pe_typename ? *(t)->pe_typename : "???")
 
 char *pr_petype (int type);
+static void pr_entry (ptpe *p);
 
 extern void exit(int);
+
+extern int same (
+	ptpe *typ,
+	ptpe *dflt,
+	char *parm,
+	modtyp *mod			/* Module it is from */
+);
 
 #ifdef lint
 /* VARARGS4 */
@@ -117,9 +125,7 @@ int	ppepsylose (modtyp*module, ...) {
 }
 #endif
 
-/*
- * Useful little routines
- */
+
 /*
  * print out the message and if the arguement is greater than 0
  * terminate
@@ -129,6 +135,7 @@ int ferr (int n, char *mesg) {
 	if (n > 0)
 		exit(n);
 }
+
 /*
  * print out the message and number and if the arguement is greater
  * than 0 terminate
@@ -284,7 +291,7 @@ char *pr_petype (int type) {
 	return p;
 }
 
-void pr_entry (ptpe *p) {
+static void pr_entry (ptpe *p) {
 	printf ("%s, ", pr_petype (p -> pe_type));
 	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }

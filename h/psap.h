@@ -442,6 +442,13 @@ int	ps_io ();
 
 int	ps_flush ();
 
+int ps_prime (PS ps, int waiting);
+
+int ps_get_plen (PE pe);
+int ps_read_id (PS ps, int top, PElementClass *class, PElementForm *form, PElementID *id);
+int ps_read_cons (PS ps, PE *pe, PElementLen len);
+int ps_read_len (PS ps, PElementLen *len);
+
 int	std_open ();
 #define	std_setup(ps, fp)	((ps) -> ps_addr = (char *) (fp), OK)
 

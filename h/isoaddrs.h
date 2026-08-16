@@ -190,6 +190,8 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 
+int add_alias (char *name, char *value);
+
 #ifdef	NULLPE
 char   *alias2name ();
 

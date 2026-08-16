@@ -16,6 +16,8 @@ extern char *notidtoid(char *s), *my_new_str(char *s), *my_strcat(char *s1, char
 extern char *
 proc_name(char *t, int flag), *mymodule;
 
+static int hash_val (char *s);
+
 /*
  * Lookup the hash table (id_table) for the string t and insert it at
  * the start of the appropriate chain if it is not already there.
@@ -114,7 +116,7 @@ char *my_strcat (char *s1, char *s2) {
 /*
  * a simple hash function
  */
-int hash_val (char *s) {
+static int hash_val (char *s) {
 	int     i, sum;
 	char   *t;
 

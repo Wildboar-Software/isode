@@ -493,6 +493,14 @@ int	SSelectMask ();		/* map session descriptors for select() */
 
 char   *SErrString ();		/* return SSAP error code in string form */
 
+int SDoCollideAux (
+	int init,
+	int localop,
+	long localssn,
+	int remoteop,
+	long remotessn
+);
+
 #define	SLocalHostName	getlocalhost
 char   *SLocalHostName ();	/* return name of local host (sigh) */
 #endif

@@ -913,3 +913,42 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc);
 
 char   *spkt2str ();
 struct ssapkt *str2spkt ();
+
+int SDataRequestAux (
+	struct ssapblk *sb,
+	int code,
+	struct udvec *uv,
+	int begin,
+	int end,
+	struct SSAPindication *si
+);
+
+int TSaveState (int sd, char **vec, struct TSAPdisconnect *td);
+int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td);
+int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+int SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls);
+
+int SWriteRequestAux (
+	struct ssapblk *sb,
+	int code,
+	char *data,
+	int cc,
+	int type,
+	long ssn,
+	int settings,
+	struct SSAPactid *id,
+	struct SSAPactid *oid,
+	struct SSAPref *ref,
+	struct SSAPindication *si
+);
+
+int SMajSyncRequestAux (
+	struct ssapblk *sb,
+	long *ssn,
+	char *data,
+	int cc,
+	int opts,
+	struct SSAPindication *si
+);
+
+int SMajSyncResponseAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);

@@ -241,6 +241,8 @@ struct pair {
 extern struct pair preq_pairs[], sreq_pairs[];
 #endif
 
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);
+
 #define	REASON_BASE	PC_NOTSPECIFIED
 
 #ifndef	LPP

@@ -2,6 +2,7 @@
 
 #include	<stdio.h>
 #include	<stdlib.h>
+#include    <string.h>
 #include	<strings.h>
 #include	"pepsy-driver.h"
 #include	"psap.h"
@@ -12,6 +13,13 @@ extern int pepsylose (modtyp *module, ...);
 
 extern ptpe *next_tpe(ptpe *p), *fdflt_b(ptpe *p);
 extern char *pr_petype(int type);
+
+extern int ismatch (
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	unsigned int cl,
+	unsigned int tag
+);
 
 #define NEXT_TPE(p)	(p = next_tpe(p))
 #define CHKTAG(mod, p, pe)	ismatch(p, mod, pe->pe_class, pe->pe_id)

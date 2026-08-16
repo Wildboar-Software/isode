@@ -96,7 +96,7 @@ extern int	options[];
 
 #define STRSIZE 128	/* general buffer size */
 
-extern char   *proc_name(char *t, int flag);
+extern char *proc_name(char *t, int flag);
 
 extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
 extern char *class2str(PElementClass cl);
@@ -108,5 +108,8 @@ extern char	*int2tstr(int i);	/* integer to temporary string */
 
 extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
 extern char *class2str(PElementClass cl);
+void out_final_defs(FILE *fp);
+int noindirect (char *f);
+int addptr (char *p);
 
 /* extern Action	start_action, final_action; */

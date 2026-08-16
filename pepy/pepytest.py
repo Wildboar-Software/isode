@@ -17,6 +17,8 @@ static char *rcsid = "";
 #endif
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))
@@ -25,10 +27,13 @@ static char *myname = "pepytest";
 
 static enum { ps2test, pl2test } mode = ps2test;
 
-static int  process ();
+static int  process (char *file, FILE *fp);
 
 static void	adios (char *, char *, ...);
 void advise (char *, char *, ...);
+
+extern int parse_PEPYTEST_PersonnelRecord (PE pe, int explicit, int *len, char **buffer, char *parm);
+int	print_PEPYTEST_PersonnelRecord (PE pe, int explicit, int *len, char **buffer, char *parm);
 
 int main (int argc, char **argv, char **envp) {
     int    status = 0;
@@ -107,12 +112,11 @@ static int process (char *file, FILE *fp) {
 			break;
 		}
 
-		if (parse_PEPYTEST_PersonnelRecord (pe, 1, NULLIP, NULLVP, NULLCP)
+		if (parse_PEPYTEST_PersonnelRecord (pe, 1, NULL, NULLVP, NULLCP)
 				== NOTOK)
 			advise (NULLCP, "parse error: %s", PY_pepy);
 		else
-			(void) print_PEPYTEST_PersonnelRecord (pe, 1, NULLIP, NULLVP,
-							NULLCP);
+			print_PEPYTEST_PersonnelRecord (pe, 1, NULL, NULLVP, NULLCP);
 		pe_free (pe);
     }
 }

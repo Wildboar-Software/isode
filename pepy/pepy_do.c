@@ -39,16 +39,10 @@ void do_type (YP yp, int level, char *id, char *arg)
 	}
 
 	if (level == 1) {
-		printf ("(pe, explicit, len, buffer, parm)\n");
-		printf ("%sPE     *pe;\nint\texplicit;\n",
-				yp -> yp_code != YP_ANY
-				&& yp -> yp_code != YP_NULL
-				&& (yp -> yp_code != YP_CHOICE
-					|| (yp -> yp_flags & YP_CONTROLLED))
-				? "" : "");
-		printf ("int\tlen;\nchar   *buffer;\n%s parm;\n{\n",
-				yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM");
-
+		printf (
+			"(PE *pe, int explicit, int len, char *buffer, %s parm)\n{\n",
+			yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM"
+		);
 		if (yp -> yp_action0) {
 			if (!Pflag && *sysin)
 				printf ("# line %d \"%s\"\n", yp -> yp_act0_lineno, sysin);
@@ -538,6 +532,12 @@ void do_type (YP yp, int level, char *id, char *arg)
 		break;
 
 	case YP_IDEFINED:
+		printf(
+			"%*sextern int %s (PE *pe, int explicit, int len, char *buffer, void *parm);\n",
+			level * 4,
+			"",
+			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER)
+		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, YP_ENCODER));
 		i = strlen (arg) - 3;
@@ -547,7 +547,7 @@ void do_type (YP yp, int level, char *id, char *arg)
 		else if (level == 1)
 			printf ("len, ");
 		else
-			printf ("NULL, ");
+			printf ("0, ");
 		if (yp -> yp_strexp)
 			printf ("%s", yp -> yp_strexp);
 		else if (level == 1)
@@ -555,9 +555,9 @@ void do_type (YP yp, int level, char *id, char *arg)
 		else
 			printf ("NULLCP");
 		if (yp -> yp_flags & YP_PARMVAL)
-			printf (", %s", yp -> yp_parm);
+			printf (", (void *)%s", yp -> yp_parm);
 		else
-			printf (", NullParm");
+			printf (", (void *)NullParm");
 		printf (") == NOTOK)\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
 		if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT))
 				== (YP_TAG | YP_IMPLICIT)) {

@@ -3,6 +3,8 @@
 #ifndef PEPSY_DEFINITIONS
 #define PEPSY_DEFINITIONS
 
+#include <stdint.h>
+
 #ifndef	PEPYPARM
 #define PEPYPARM	char *
 #endif
@@ -13,7 +15,7 @@
 
 typedef struct	{
 	int	pe_type;	/* Type of entry */
-	integer	pe_ucode;	/* index to user's code if any */
+	int32_t	pe_ucode;	/* index to user's code if any */
 	int	pe_tag;		/* Tag of this entry if any */
 	int	pe_flags;	/* Flags */
 	char **pe_typename; /* User defined name of variable */
@@ -188,5 +190,5 @@ typedef	struct	{
 
 #define	LOTSOFBITS	128
 
-int	enc_f (), dec_f (), fre_obj ();
+int dec_f(), fre_obj();
 #endif

@@ -16,6 +16,7 @@ TESTDEBUG DEFINITIONS ::=
 static char *rcsid = "";
 #endif
 
+#include <stdlib.h>
 #include <stdio.h>
 
 %}
@@ -25,12 +26,9 @@ BEGIN
 END
 
 %{
-int	testdebug (pe, s)
-register PE	pe;
-register char	*s;
-{
+int	testdebug (PE pe, char *s) {
     char  *cp;
-    register PS ps;
+    PS ps;
     static int debug = OK;
     
     switch (debug) {

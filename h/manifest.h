@@ -13,7 +13,14 @@
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
-			/* current ISODE distribution: major*10+minor */
+// Trick to avoid conflicting "entry" symbol
+#define entry search_h_entry
+#define ACTION search_h_action
+#include <search.h>
+#undef entry
+#undef ACTION
+
+/* current ISODE distribution: major*10+minor */
 #define	ISODE	80
 
 #ifndef	_CONFIG_
@@ -261,6 +268,9 @@ struct qbuf {
     char   *qb_data;		/* current pointer into data */
     char    qb_base[1];		/* extensible... */
 };
+
+int qbprintf(void);
+int qb_pullup (struct qbuf *qb);
 
 #define	QBFREE(qb) \
 { \

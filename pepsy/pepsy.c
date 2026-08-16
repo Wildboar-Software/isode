@@ -34,6 +34,9 @@
 #include "pepsydefs.h"
 #include "pass2.h"
 
+static void doincl(FILE *fp, char *file[]);
+static void proc_extmod(FILE *fp);
+
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
 
@@ -508,6 +511,9 @@ static void hprologue (FILE *fp)
 	files[last++] = (char *)0;
 
 	doincl(fp, files);
+
+	fprintf(fp, "extern int enc_f (int typ, modtyp *mod, PE *pe, int explicit, int len, char *buf, char *parm);\n");
+	fprintf(fp, "extern int prnt_f (int typ, modtyp *mod, PE pe, int explicit, int *len, char **buf);\n");
 
 #undef NFILES
 }
@@ -3154,7 +3160,7 @@ char *pstrip (char *p) {
  * file: where #include is to be written to 
  * file: files to be included
  */
-void doincl(FILE *fp, char *file[]) {
+static void doincl(FILE *fp, char *file[]) {
 	char	**p;
 
 	if (mflag) {
@@ -3230,7 +3236,7 @@ int addextmod (char *p) {
  * process all the external modules collected to produce the includes
  * required
  */
-void proc_extmod(FILE *fp) {
+static void proc_extmod(FILE *fp) {
 	char	**p;
 	char 	*files[EXTMODSIZE + 1];
 	char 	*buf;

@@ -17,6 +17,7 @@ static char *rcsid = "";
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 %BEGIN(PEPSY)%
 #include "pepsydefs.h"
@@ -30,6 +31,8 @@ static char *rcsid = "";
 %BEGIN(MOSY)%
 #include "mosy-defs.h"
 %END(MOSY)%
+
+int yylex(void);
 
 //#define	YYSTYPE	YYSTKTYPE
 

@@ -43,6 +43,12 @@ static s_table *save_ptr;
 
 extern YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
 
+static void tenc_loop(FILE *fp, YP yp, char *id, char *type);
+static void defdflt(FILE *fp, YP yp, char *name);
+static int numtobstr(YV yv, char **ppstr);
+static void declfns(FILE *fp, YFN fn);
+static void prstr(FILE *fp, char *str, int len);
+
 #define WORDSIZE	20
 #define MAXNAME		256	/* maximum size of a identifier */
 
@@ -829,7 +835,7 @@ char *ec_class(YP yp)
 /*
  * generate tables for encoding a contructed type
  */
-void tenc_loop(FILE *fp, YP yp, char *id, char *type)
+static void tenc_loop(FILE *fp, YP yp, char *id, char *type)
 {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tenc_typ(fp, yp, id, type);
@@ -1080,7 +1086,7 @@ char *strp2name (char *s1, char *s2) {
  * to have pointers which reference these definitions for use by
  * gdflt routine.
  */
-void defdflt(FILE *fp, YP yp, char *name)
+static void defdflt(FILE *fp, YP yp, char *name)
 {
 	YV      yv;
 	YV      yv1;
@@ -1463,8 +1469,7 @@ YV calc_yv(YP yp, char *id)
  * ppstr, to point to a string containing the a reference to a
  * character array which contains the bits.
  */
-
-int numtobstr(YV yv, char **ppstr)
+static int numtobstr(YV yv, char **ppstr)
 {
 
 	int     ibits, lastb, i;
@@ -1534,7 +1539,7 @@ int valisttobs(YP yp, YV yv, char **ppstr) {
  * a C program including the quotes. Using \ escapes for unprintable
  * characters
  */
-void prstr(FILE *fp, char *str, int len)
+static void prstr(FILE *fp, char *str, int len)
 {
 	fputc('"', fp);
 	while (len-- > 0) {
@@ -1939,7 +1944,7 @@ void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy) {
  * declare the functions that are used
  * One day generate ANSII C definitions as well
  */
-void declfns(FILE *fp, YFN fn) {
+static void declfns(FILE *fp, YFN fn) {
 	if (fn->yfn_enc) {
 		fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
 	}

@@ -384,10 +384,79 @@ extern char *sysin;
 
 extern char *module_actions;
 
-OID	addoid ();
-OID	int2oid ();
-OID	oidlookup ();
-char	*oidname ();
-char	*oidprint ();
+OID	addoid (OID o1, OID o2);
+OID	int2oid (int n);
+OID	oidlookup (char *name);
+char *oidname (OID oid);
+char *oidprint (OID oid);
+void initoidtbl(void);
+int yyparse (void);
+int is_any_type (YP yp);
+void peri_pass2(void);
+int ferr (int n, char *mesg);
+int is_stand (char *file);
+void yyerror (char *s);
+void addtableref (char *name, OID id, int lt);
+void check_impexp (YP yp);
+void yyprint (char *s, int f, int top);
+void pass1(void);
+void pass2(void);
+void addtable (
+	char *name,
+	int lt,
+	int typ	/* Does it allow implicit's to work or not */
+);
+void myyerror (char*fmt, ...);
+void pass1_type (
+	char *encpref,
+	char *decpref,
+	char *prfpref,
+	char *mod,
+	char *id,
+	YP yp
+);
+void pass1(void);
+void warning (char*fmt, ...);
+int setvaltype(YP yp, char *str);
+void gen_dflts(FILE *fp, YP yp, char *type);
+void tenc_typ(FILE *fp, YP yp, char *id, char *type);
+void tdec_typ(FILE *fp, YP yp, char *id, char *type);
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
+void gen_act(FILE *fp, Action act, YP yp);
+void dump_ptrtab(FILE *fp);
+int chkil (char *id);
+int control_act (Action act);
+void ddflt(FILE *fp, YP yp);
+void prte_obj(FILE *fp, YP yp, char *t, char *f);
+int optfield(YP yp);
+int hasdatstr(YP yp);
+void genmalloc(FILE *fp, YP yp);
+int gen_modref (char *mod);
+void prstfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
+void prhstr(FILE *fp, char *str, int len);
+int gen_freefn(FILE *fp, YP yp);
+void gen_identry(
+	FILE *fp,
+	char *t,
+	char *f,
+	YP yp,
+	void (*fn) (FILE *fp, YP oyp, YP yp1, char *t, char *f)
+);
+void init_new_file(void);
+void end_file(void);
+int addsptr (char *s);
+int ferrs (int i, char *s, char *d);
+void prnte(FILE *fp, char *t, char *f, YP yp, char *p1);
+void prtfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
+void gdflt(FILE *fp, YP yp, int which);
+int ferrd (int n, char *mesg, int d);
+int printable (char *str, int i);
+int valisttobs(YP yp, YV yv, char **ppstr);
+void prte_enoff(FILE *fp, char *type, YP yp, int idx);
+void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx);
+void prcte(FILE *fp, char *type, char *t, char *f, YP yp, char *p1);
+void gen_fn(FILE *fp, YP yp, char *fn);
+int ferr (int n, char *mesg);
+int yylex (void);
 
 #endif // _PEPSYDEFS_H_

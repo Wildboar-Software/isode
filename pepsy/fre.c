@@ -9,6 +9,22 @@
 #include	"psap.h"
 #include	"pepsy.h"
 
+extern int ferr (int n, char *mesg);
+
+extern int ismatch (
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	unsigned int cl,
+	unsigned int tag
+);
+
+static int fre_type (
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+);
+
 extern ptpe *next_tpe(ptpe *p);
 extern int pepsylose (modtyp *module, ...);
 #define NEXT_TPE(p)	p = next_tpe(p)
@@ -69,7 +85,7 @@ int fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
  * fall back to this so we can put the code to free something just
  * here once and it will handle all the cases else where
  */
-int fre_type (
+static int fre_type (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */

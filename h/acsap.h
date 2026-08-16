@@ -247,4 +247,6 @@ int	AcFindPCI ();		/* return PCI used by ACSE */
 
 char   *AcErrString ();		/* return AcSAP error code in string form */
 
+int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep);
+
 #endif

@@ -15,6 +15,8 @@ PRETTY DEFINITIONS ::=
 #ifndef	lint
 static char *rcsid = "";
 #endif
+
+#include <stdlib.h>
 %}
 
 BEGIN

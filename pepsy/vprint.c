@@ -437,7 +437,7 @@ bad_pe:
 			break;
 
 		case PE_ID (PE_CLASS_UNIV, PE_CONS_EXTN):
-			print_UNIV_EXTERNAL (pe, 1, NULLIP, NULLVP,
+			print_UNIV_EXTERNAL (pe, 1, NULL, NULLVP,
 								 NULLCP);
 			return;
 
@@ -543,7 +543,7 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 	if (mod == NULL)
 		vunknown (pe);
 	else
-		prnt_f (ind, mod, pe, 1, NULLIP, NULLVP);
+		prnt_f (ind, mod, pe, 1, NULL, NULLVP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
 	vfp = stdout, vfnx = (IFP) fprintf;

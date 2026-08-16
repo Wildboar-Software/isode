@@ -11,6 +11,19 @@
 #include "mine.h"
 #include "sym.h"
 
+static void gen_tablefile (char *inc);
+static void gen_typesfile (char *inc);
+static void gen_enctbl(FILE *fp, SY sy);
+static void gen_dectbl(FILE *fp, SY sy);
+static void gen_prnttbl(FILE *fp, SY sy);
+static void gen_tpe(FILE *fp);
+static void gen_modtype(FILE *fp, int no, int f1, int f2, int f3);
+static void gen_actfunct(FILE *fp);
+static void gen_lint(FILE *fp);
+static int scmp (const char *s1, const char *s2);
+static void dumpact(FILE *fp, YAL yal, int form, int ret);
+static void gen_actions(FILE *fp, YP oyp, int form);
+
 extern int doexternals;
 extern int sflag, mflag, fflag, Cflag;
 
@@ -64,7 +77,7 @@ void peri_pass2(void) {
  *			module. contains references to all the tables.
  *		lint declaractions for the "pepy" functions
  */
-void gen_tablefile (char *inc) {
+static void gen_tablefile (char *inc) {
 	int     nentries;
 	int     encflag = 1, decflag = 1, prntflag = 1;
 	SY      sy;
@@ -171,7 +184,7 @@ void gen_tablefile (char *inc) {
 /*
  * generate the *-types.h file
  */
-void gen_typesfile (char *inc) {
+static void gen_typesfile (char *inc) {
 	char   *buf;
 #ifdef ACT_CODE
 	int     encflag = 1, decflag = 1, prntflag = 1;
@@ -316,7 +329,7 @@ void gen_typesfile (char *inc) {
 #endif
 }
 
-void gen_enctbl(FILE *fp, SY sy) {
+static void gen_enctbl(FILE *fp, SY sy) {
 	YP	yp;
 
 	yp = sy->sy_type;
@@ -332,7 +345,7 @@ void gen_enctbl(FILE *fp, SY sy) {
 	fprintf(fp, "\n");
 }
 
-void gen_dectbl(FILE *fp, SY sy) {
+static void gen_dectbl(FILE *fp, SY sy) {
 	fprintf(fp,"static ptpe %s%s[] = {\n", DTABLE, proc_name(sy->sy_name, 0));
 	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
 			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
@@ -345,7 +358,7 @@ void gen_dectbl(FILE *fp, SY sy) {
 	fprintf(fp, "\n");
 }
 
-void gen_prnttbl(FILE *fp, SY sy) {
+static void gen_prnttbl(FILE *fp, SY sy) {
 	fprintf(fp,"static ptpe %s%s[] = {\n",PTABLE, proc_name(sy->sy_name, 0));
 	fprintf(fp, "\t{ PE_START, 0, 0, 0, (char **)&%s%s%s[%d] },\n",
 			PREFIX, PTR_TABNAME, tab, addsptr(sy->sy_name));
@@ -361,7 +374,7 @@ void gen_prnttbl(FILE *fp, SY sy) {
 /*
  * define the tpe index tables and the pointer table
  */
-void gen_tpe(FILE *fp) {
+static void gen_tpe(FILE *fp) {
 	SY	sy;
 	int	empty = 1;
 
@@ -413,7 +426,7 @@ void gen_tpe(FILE *fp) {
 /*
  * output the module structure for this module
  */
-void gen_modtype(FILE *fp, int no, int f1, int f2, int f3) {
+static void gen_modtype(FILE *fp, int no, int f1, int f2, int f3) {
 	if (!f1)
 		fprintf(fp, "extern PE\t%s%s();\n", ENC_FNCNAME, tab);
 	if (!f2)
@@ -617,7 +630,7 @@ struct univ_typ *univtyp (char *name) {
  * numbers are greater then all letters lower case are greater then
  * upper case There must be a better way !
  */
-int scmp (const char *s1, const char *s2) {
+static int scmp (const char *s1, const char *s2) {
 	while (*s1 == *s2 && *s2)
 		s1++, s2++;
 	if (*s1 == '\0' && *s2 == '\0')
@@ -724,6 +737,7 @@ YP lkup(YP yp) {
 	}
 	return (yp);
 }
+
 /*
  * compute the type of tag it should be given the tag and the type it is
  * being applied to
@@ -777,7 +791,7 @@ int comptag(int tag, YP yp) {
  * Generate function definitions for all the macros so that lint
  * can type check all their uses
  */
-void gen_lint(FILE *fp) {
+static void gen_lint(FILE *fp) {
 	char   *buf;
 	SY      sy;
 	YP      yp;
@@ -1122,7 +1136,7 @@ int setvaltype(YP yp, char *str) {
 /*
  * generate the functions that carry out the action statements
  */
-void gen_actfunct(FILE *fp) {
+static void gen_actfunct(FILE *fp) {
 	SY	sy;
 	YP	yp;
 
@@ -1188,7 +1202,7 @@ void gen_actfunct(FILE *fp) {
 /*
  * generate the actions for this YP unit and all its children
  */
-void gen_actions(FILE *fp, YP oyp, int form) {
+static void gen_actions(FILE *fp, YP oyp, int form) {
 	YP	yp;
 	YAL	yal;
 
@@ -1230,7 +1244,7 @@ void gen_actions(FILE *fp, YP oyp, int form) {
 /*
  * dump out a single action
  */
-void dumpact(FILE *fp, YAL yal, int form, int ret) {
+static void dumpact(FILE *fp, YAL yal, int form, int ret) {
 	char	*comm = yal->yal_comment;
 	char	*type = yal->yal_type;
 	Action	act;

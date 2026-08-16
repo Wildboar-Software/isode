@@ -26,6 +26,10 @@ extern char	*code2name (int code);
 extern char	*modsym (char *module, char *id, char *prefix);
 char *c_flags(YP yp, PElementClass cl);
 
+static void pr_deftyp(FILE *fp, YP yp, char *t, char *f);
+static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f);
+static void prte_noff(FILE *fp, char *type, YP yp, int idx);
+
 /*
 extern int explicit;
 */
@@ -650,7 +654,7 @@ void ddflt(FILE *fp, YP yp) {
 /*
  * print a Non offset table entry
  */
-void prte_noff(FILE *fp, char *type, YP yp, int idx) {
+static void prte_noff(FILE *fp, char *type, YP yp, int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -762,7 +766,7 @@ void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx) {
  * handle the very complex task of defined types.
  * Basically generating object calls
  */
-void pr_deftyp(FILE *fp, YP yp, char *t, char *f) {
+static void pr_deftyp(FILE *fp, YP yp, char *t, char *f) {
 	/* Predefined Universal Type */
 	struct univ_typ *p, *univtyp(char *name);
 
@@ -849,7 +853,7 @@ void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 /*
  * print an table entry for Universal type with the given entry
  */
-void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
+static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
 	char	*type;
 	int		tag;
 	PElementClass class;

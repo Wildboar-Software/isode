@@ -307,11 +307,42 @@ extern char *sysin;
 
 extern char *module_actions;
 
-OID	addoid ();
-OID	int2oid ();
-OID	oidlookup ();
-char	*oidname ();
-char	*oidprint ();
+OID	addoid (OID o1, OID o2);
+OID	int2oid (int n);
+OID	oidlookup (char *name);
+char *oidname (OID oid);
+char *oidprint (OID oid);
+void yyerror (char *s);
+void init_new_file(void);
+void end_file(void);
+void initoidtbl(void);
+int yyparse (void);
+void yyerror_aux (char *s);
+void warning (char* fmt, ...);
+void print_type (YP yp, int level);
+void pass1(void);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
+void pass2(void);
+void do_type (YP yp, int level, char *id, char *arg);
+void undo_type (YP yp, int level, char *id, char *arg, int Vflag);
+int is_nonimplicit_type (YP yp);
+void tag_type (YP yp);
+void tag_pushdown (YP yp, int level, char *arg, char *whatsit);
+void choice_pullup (YP yp, int partial);
+void uniqtag (YP y, YP z);
+int do_action (char *action, int level, char *arg, int lineno);
+int val2int (YV yv);
+void myyerror (char*fmt, ...);
+void pyyerror (YP yp, char* fmt, ...);
+void uniqint (YV yv);
+void yyprint (char *s, int f, int top);
+int check_type (char *type, int level, char *class, char *form, char *id, char *arg);
+void addtableref (char *name, OID id, int lt);
+void print_expimp(void);
+void addtable (char *name, int lt);
+void tag_pullup (YP yp, int level, char *arg, char *whatsit);
+void check_impexp (YP yp);
+int is_any_type (YP yp);
 
 extern int errno;
 
