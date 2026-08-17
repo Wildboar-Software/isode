@@ -1,17 +1,4 @@
 -- EAN Defined Types
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 EAN DEFINITIONS ::=
 
 %{

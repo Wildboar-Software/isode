@@ -1,14 +1,3 @@
-/*
- * 
- */
-
-/*
- * 
- *
- *
- *
- */
-
 #ifndef SYMTAB
 #define SYMTAB
 

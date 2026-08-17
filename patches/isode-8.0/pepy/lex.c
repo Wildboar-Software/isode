@@ -779,9 +779,6 @@ char yyextra[] = {
 	0,0,0,0,0,0,0,0,
 	0
 };
-#ifndef lint
-static	char ncform_sccsid[] = "@(#)ncform 1.6 88/02/08 SMI"; /* from S5R2 1.2 */
-#endif
 
 int yylineno =1;
 # define YYU(x) x

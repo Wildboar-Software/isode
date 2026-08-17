@@ -1,18 +1,4 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  dn_list.c - Implements a list of sorted entry names.
-
-*****************************************************************************/
-
+/* dn_list.c - Implements a list of sorted entry names. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -24,9 +10,7 @@
 #include "dn_list.h"
 
 /*
- * - dn_list_insert -
  * Insert a new entry name into an unsorted listed of entry names.
- *
  */
 QBool dn_list_insert(char *dn, entryList *entry_list_ptr, AttributeType object_type) {
 	entryList element, new_element;
@@ -48,12 +32,10 @@ QBool dn_list_insert(char *dn, entryList *entry_list_ptr, AttributeType object_t
 	new_element->next = element;
 	*entry_list_ptr = new_element;
 	return TRUE;
-} /* dn_list_insert */
+}
 
 /*
- * - dn_list_add -
  * Insert a new entry name into a sorted listed of entry names.
- *
  */
 QBool dn_list_add(char *dn, entryList *entry_list_ptr, AttributeType object_type) {
 	entryList element, new_element;
@@ -108,12 +90,10 @@ QBool dn_list_add(char *dn, entryList *entry_list_ptr, AttributeType object_type
 		element->next = new_element;
 	}
 	return TRUE;
-} /* dn_list_add */
+}
 
 /*
- * - dn_list_free() -
  * Free given entry list.
- *
  */
 void dn_list_free(entryList *entry_list_ptr) {
 	entryList next_entry, list = *entry_list_ptr;
@@ -126,13 +106,8 @@ void dn_list_free(entryList *entry_list_ptr) {
 		list = next_entry;
 	}
 	*entry_list_ptr = NULLEntryList;
-} /* dn_list_free */
+}
 
-/*
- * - dn_list_copy() -
- *
- *
- */
 void dn_list_copy(entryList original, entryList *copy) {
 	entryList copylist = NULLEntryList;
 	int sort_key_diff = 0;
@@ -152,4 +127,4 @@ void dn_list_copy(entryList original, entryList *copy) {
 		copylist->sort_key = (char *) (sort_key_diff + copylist->sort_key);
 		copylist->object_class = original->object_class;
 	}
-} /* dn_list_copy */
+}

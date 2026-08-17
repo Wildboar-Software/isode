@@ -1,15 +1,6 @@
 /* tsbridge.c: transport bridge - jpo version ! */
-
 /*
- * 
- *
  * Contributed by Julian Onions, Nottingham University in the UK
- *
- *
- * 
- *
- *
- *
  */
 
 #include <unistd.h>

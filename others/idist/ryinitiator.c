@@ -1,18 +1,9 @@
 /* ryinitiator.c - remote association initiator */
-
 /*
- * 
- *
  * Severely hacked to give embedded functionality for client.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

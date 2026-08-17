@@ -1,15 +1,4 @@
 /* manifest.h - manifest constants */
-
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
@@ -41,7 +30,6 @@
 	SYS5NLY -	target has SYS5 types only, no BSD types
 
 	BSDSIGS	-	target supports BSD signals
-
  */
 
 #ifdef	BSD42

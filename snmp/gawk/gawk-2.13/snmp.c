@@ -1498,7 +1498,6 @@ got_host:
 
 	Each token is seperated by LWSP, though double-quotes may be used to
 	prevent separation.
-
  */
 
 static int snmp_map (struct sockaddr_in *isock)

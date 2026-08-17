@@ -1,11 +1,4 @@
-/* 
-
-/*****************************************************************************
-
-  modify.c - Modify entry attributes.
-
-*****************************************************************************/
-
+/* Modify entry attributes. */
 #include <stdlib.h>
 #include "types.h"
 #include "util.h"
@@ -45,15 +38,8 @@ extern QE_error_code start_read();
 
 /*
  * 	Start of procedures for entry modification requests.
- *
- *
  */
 
-/*
- * - get_modify_result() -
- *
- *
- */
 modifyResult get_modify_result(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	modifyRec modrec;
@@ -65,13 +51,8 @@ modifyResult get_modify_result(QCardinal request_id) {
 	modrec->result = NULLModifyResult;
 	_request_complete(request_id);
 	return result;
-} /* get_modify_result */
+}
 
-/*
- * - do_modify() -
- *
- *
- */
 errorList do_modify(char *baseobject, QCardinal *id_ptr, modifyAttr mod_attr_list) {
 	modifyRec modify_request;
 	requestRec this_request;
@@ -85,13 +66,8 @@ errorList do_modify(char *baseobject, QCardinal *id_ptr, modifyAttr mod_attr_lis
 						baseobject,
 						mod_attr_list,
 						&modify_request->task_id);
-} /* do_modify */
+}
 
-/*
- * - start_modify() -
- *
- *
- */
 static errorList start_modify(QCardinal request_id,
 							  char *baseobject,
 							  modifyAttr mod_attr_list,
@@ -395,11 +371,6 @@ static errorList start_modify(QCardinal request_id,
 	return NULLError;
 } /* start_modify */
 
-/*
- * - process_modify_ds_result() -
- *
- *
- */
 request_state process_modify_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	modifyRec modrec = request->MODIFY_REC;
 
@@ -410,13 +381,8 @@ request_state process_modify_ds_result(requestRec request, int task_id, struct D
 	modrec->result->was_successful = TRUE;
 	modrec->result->errors = NULLError;
 	return RQ_results_returned;
-} /* process_modify_ds_result */
+}
 
-/*
- * - process_modify_ds_error() -
- *
- *
- */
 request_state process_modify_ds_error(requestRec request, int task_id, struct DSError *ds_error) {
 	DsTask task_rec;
 	modifyRec modrec = request->MODIFY_REC;
@@ -438,19 +404,8 @@ request_state process_modify_ds_error(requestRec request, int task_id, struct DS
 	/* Remove invocation record for this task */
 	_task_complete(task_id);
 	return RQ_results_returned;
-} /* process_modify_ds_error */
+}
 
-/*
- *	Start of procedures for making entry templates.
- *
- *
- */
-
-/*
- * - get_modify_result() -
- *
- *
- */
 makeTemplateResult get_make_template_result(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	makeTemplateRec temprec;
@@ -462,13 +417,8 @@ makeTemplateResult get_make_template_result(QCardinal request_id) {
 	temprec->result = NULLTemplateResult;
 	_request_complete(request_id);
 	return result;
-} /* get_make_template_result */
+}
 
-/*
- * - do_make_template() -
- *
- *
- */
 QE_error_code do_make_template(char *baseobject, QCardinal *id_ptr, modifyAttr *attr_list) {
 	makeTemplateRec template_rec;
 	requestRec this_request;
@@ -500,13 +450,8 @@ QE_error_code do_make_template(char *baseobject, QCardinal *id_ptr, modifyAttr *
 							&template_rec->task_id);
 	free_string_seq(&str_attr_list);
 	return error_code;
-} /* do_make_template */
+}
 
-/*
- * - process_template_ds_result() -
- *
- *
- */
 request_state process_template_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	makeTemplateRec templaterec = request->TEMPLATE_REC;
@@ -675,11 +620,6 @@ request_state process_template_ds_result(requestRec request, int task_id, struct
 	return RQ_results_returned;
 } /* process_template_ds_result */
 
-/*
- * - process_template_ds_error() -
- *
- *
- */
 request_state process_template_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	makeTemplateRec temprec = request->TEMPLATE_REC;
@@ -717,14 +657,11 @@ request_state process_template_ds_error(requestRec request, int task_id, struct 
 } /* process_template_ds_error */
 
 /*
- * - get_template_attrs() -
- *
  * Copy values in an `Attr_Sequence' linked list into a `modify_attr'
  * linked list.
  *
  * Uses EDBOUT format for the output style as READOUT isn't allowed
  * for modification operations.
- *
  */
 static void get_template_attrs(Attr_Sequence readattrs, modifyAttr template) {
 	PS valps;
@@ -776,12 +713,6 @@ static void get_template_attrs(Attr_Sequence readattrs, modifyAttr template) {
 	}
 } /* get_template_attrs */
 
-/*
- *
- * Proc's to free structures.
- *
- */
-
 void free_mod_attr_list(modifyAttr *mod_attr_list_ptr) {
 	modifyAttr curr_attr = *mod_attr_list_ptr, last_attr;
 
@@ -794,7 +725,7 @@ void free_mod_attr_list(modifyAttr *mod_attr_list_ptr) {
 		free((char *) last_attr);
 	}
 	*mod_attr_list_ptr = NULLModifyAttr;
-} /* free_mod_attr_list */
+}
 
 void free_mod_val_list(modifyValue *mod_val_list_ptr) {
 	modifyValue curr_val = *mod_val_list_ptr, last_val;
@@ -809,7 +740,7 @@ void free_mod_val_list(modifyValue *mod_val_list_ptr) {
 		free((char *) last_val);
 	}
 	*mod_val_list_ptr = NULLModifyValue;
-} /* free_mod_val_list */
+}
 
 void free_modify_result(modifyResult *result_ptr) {
 	modifyResult result = *result_ptr;
@@ -820,7 +751,7 @@ void free_modify_result(modifyResult *result_ptr) {
 		error_list_free(&result->errors);
 	free((char *) result);
 	*result_ptr = NULLModifyResult;
-} /* free_modify_result */
+}
 
 void modify_rec_free(modifyRec record) {
 	if (record == NULLModifyRec)
@@ -829,7 +760,7 @@ void modify_rec_free(modifyRec record) {
 		free(record->base_object);
 	if (record->result != NULLModifyResult)
 		free_modify_result(&record->result);
-} /* free_modify_rec */
+}
 
 void free_make_template_result(makeTemplateResult *result_ptr) {
 	makeTemplateResult result = *result_ptr;
@@ -848,7 +779,7 @@ void free_make_template_result(makeTemplateResult *result_ptr) {
 		error_list_free(&result->errors);
 	free((char *) result);
 	*result_ptr = NULLTemplateResult;
-} /* free_make_template_result */
+}
 
 void free_make_template_rec(makeTemplateRec record) {
 	if (record == NULLTemplateRec) return;
@@ -859,13 +790,7 @@ void free_make_template_rec(makeTemplateRec record) {
 	if (record->errors != NULLError)
 		error_list_free(&record->errors);
 	free((char *) record);
-} /* free_make_template_rec */
-
-/*
- * Miscellaneous modify procedures.
- *
- *
- */
+}
 
 static struct entrymod *
 ems_append (struct entrymod *a, struct entrymod *b) {
@@ -915,13 +840,8 @@ modifyAttr avList2modifyAttr(attrValList attr_list) {
 		}
 	}
 	return head;
-} /* avList2modifyAttr */
+}
 
-/*
- * - remove_common_attrs() -
- *
- *
- */
 static modifyAttr remove_common_attrs(modifyAttr primary, modifyAttr secondary) {
 	modifyAttr curr_sec, last_sec;
 	modifyAttr tmp;
@@ -951,11 +871,6 @@ static modifyAttr remove_common_attrs(modifyAttr primary, modifyAttr secondary) 
 	return secondary;
 }
 
-/*
- * - remove_double_attrs() -
- *
- *
- */
 static modifyAttr remove_double_attrs(modifyAttr primary) {
 	modifyAttr curr_attr, last_attr;
 	modifyAttr curr_primary, tmp;

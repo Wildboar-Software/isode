@@ -1,18 +1,10 @@
 /* lookup.c -- maintains the symbol table */
 
 /*
- * 
- *
  * This file largely untouched from the original UCB sources.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
  */
 
 /*
@@ -33,11 +25,6 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)lookup.c	5.5 (Berkeley) 6/1/90";
-#endif
-
 #include <string.h>
 #include "defs.h"
 

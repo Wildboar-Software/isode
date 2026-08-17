@@ -1,19 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 struct mapnamelist {
 	char *tablename;
 	char *nicename;

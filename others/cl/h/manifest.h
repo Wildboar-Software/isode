@@ -12,7 +12,6 @@
 	SYS5NLY -	target has SYS5 types only, no BSD types
 
 	BSDSIGS	-	target supports BSD signals
-
  */
 
 #ifdef	BSD42

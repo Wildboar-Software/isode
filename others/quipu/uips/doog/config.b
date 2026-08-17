@@ -1,29 +1,4 @@
 %{
-/* 
-
-/*
- * 
- *
- *
- *
- *
- * sync
- *
- *
- * rel7_2
- *
- *
- * "Release
- *
- *
- * AIX
- *
- *
- *
- * 
- *
- */
-
 #include "types.h"
 #include "sequence.h"
 #include "util.h"

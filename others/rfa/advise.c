@@ -7,15 +7,7 @@
  * advise.c - log error messages
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

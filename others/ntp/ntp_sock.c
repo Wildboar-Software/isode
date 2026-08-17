@@ -1,12 +1,6 @@
 /*
- * 
  * Ntp UDP specific code (mainly) based on the 3.4 ntp but heavily modified.
- * 
- *
- *
- *
  */
-
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>

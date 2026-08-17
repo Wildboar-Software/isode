@@ -1,17 +1,4 @@
 -- P1.py - MHS P1 definitions
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 P1 DEFINITIONS	::=
 
 %{

@@ -7,13 +7,6 @@
  * dirname.c : create local filenames
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

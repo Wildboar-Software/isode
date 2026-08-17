@@ -1,21 +1,11 @@
 /* docmd.c -- driver for the whole thing */
-
 /*
- * 
- *
  * The major alterations to this file are the replacing of the
  * connection stuff with the ISODE functions necessary. These new
  * functions appear in a new file.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University, Computer Science.
- *
- *
- * 
- *
- *
- *
- *
  */
 
 /*
@@ -36,10 +26,6 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)docmd.c	5.6 (Berkeley) 6/1/90";
-#endif
 
 #include "defs.h"
 #include <setjmp.h>

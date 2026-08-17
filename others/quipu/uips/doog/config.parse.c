@@ -5,16 +5,6 @@
 #define	STRING	260
 
 #line 1 "config.b"
-
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
 #include "types.h"
 #include "sequence.h"
 #include "util.h"

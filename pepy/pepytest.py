@@ -1,21 +1,7 @@
 -- pepytest.py - test out PEPY
-
--- 
---
---
--- 
---
---
---
---
-
 PEPYTEST DEFINITIONS   ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

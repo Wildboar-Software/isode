@@ -1,15 +1,7 @@
 /* x25addr.c - X.25 level generic <-> interface address munging */
 
 /*
- * 
- *
  * Contributed by George Michaelson, Julian Onions, and John Pavel
- *
- *
- * 
- *
- *
- *
  */
 
 /*

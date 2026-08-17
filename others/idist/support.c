@@ -1,19 +1,10 @@
 /* support.c - remote distribution -- support routines */
 
 /*
- * 
- *
  * Support routines required by both client and server.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
- *
  */
 
 #include <stdio.h>

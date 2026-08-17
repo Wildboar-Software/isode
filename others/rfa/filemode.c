@@ -7,13 +7,6 @@
  * filemode.c : manipulate file owner, groups and access mode
  *
  * contributed by: Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <ctype.h>

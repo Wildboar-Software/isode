@@ -2,17 +2,6 @@
 /* this is a hacked version of the ufn_parse.c routines.
    Major mod is to only return up to maxPersons leaf matches - otherwise
    interact routine is called */
-
-/*
- * 
- *
- *
- * 
- *
- * *** empty log message ***
- *
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

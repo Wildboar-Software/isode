@@ -1,22 +1,5 @@
 -- dase.py - co-resident DASE
-
--- 
---
---
--- 
---
---
---
---
-
 DASE DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 Query-REQ ::=

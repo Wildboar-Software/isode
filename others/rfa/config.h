@@ -7,13 +7,6 @@
  * Contributed by Oliver Wenzel 1990
  *
  * config.h - installation dependant configuration
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 /*--- default root for RFA tree (can be changed at runtime) ---*/

@@ -1,24 +1,4 @@
 /* get_dsa_info.c - Get DSA info given its distinguished name */
-
-/*
- * 
- *
- *
- * 
- *
- * oops wrong long entry ... XT-DUA exposed caching BUG
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- *
- *
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>

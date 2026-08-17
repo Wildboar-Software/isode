@@ -7,13 +7,6 @@
  * rfa2fi.c : convert between RfaInfo and type_RFA_FileInfoList and vice versa
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

@@ -1,16 +1,7 @@
 /* ro2ssreleas2.c - respond to release */
-
 /*
- * 
- *
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

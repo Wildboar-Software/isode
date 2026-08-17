@@ -1,18 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  ufname.c -
-
-*****************************************************************************/
-
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,21 +28,14 @@ static QBool follow_path();
 
 searchPath ufnpaths = NULLSearchPath;
 
-/*
- * - get_ufn_status() -
- *
- *
- */
 ufnStatus get_ufn_status(QCardinal request_id) {
 	_get_request_of_id(request_id);
 	return NULLUfnStatus;
 } /* get_ufn_status */
 
 /*
- * - get_ufn_results() -
  * Copy and return results for the identified ufn request, then delete all
  * records for that request.
- *
  */
 ufnResults get_ufn_results(QCardinal id) {
 	requestRec ufn_request = _get_request_of_id(id);
@@ -73,9 +51,7 @@ ufnResults get_ufn_results(QCardinal id) {
 } /* get_ufn_results */
 
 /*
- * - do_ufn_resolve() -
  * Initiate a UFN search.
- *
  */
 QE_error_code do_ufn_resolve(entryList baseobjects, namePart ufname, known is_leaf, QCardinal *id_ptr) {
 	ufnameRec new_request;
@@ -132,10 +108,9 @@ QE_error_code do_ufn_resolve(entryList baseobjects, namePart ufname, known is_le
 	new_request->request_id = *id_ptr;
 	new_request->results = NULLUfnResults;
 	return process_ufn_search(new_request);
-} /* do_ufn_resolve */
+}
 
 /*
- * - process_ufn_search() -
  * Do/continue a UFN search. Uses requestRec to determine the stage that
  * the search has reached, and then proceeds accordingly.
  *
@@ -144,7 +119,6 @@ QE_error_code do_ufn_resolve(entryList baseobjects, namePart ufname, known is_le
  *
  * If the given name is only partially resolved, search against the list
  * of partial names resolved thus far.
- *
  */
 static QE_error_code process_ufn_search(ufnameRec ufnrec) {
 	namePart name_comp, prev_comp;
@@ -249,12 +223,10 @@ request_state continue_ufn_search(entryList good_matches, QCardinal request_id) 
 		else
 			return RQ_processing;
 	}
-} /* continue_ufn_search */
+}
 
 /*
- * - directory_search() -
  * Compose and invoke a X500 search.
- *
  */
 static QE_error_code directory_search(char *base_name, namePart purp_name_comp, ufnameRec ufnrec) {
 	struct ds_search_arg search_arg;
@@ -651,12 +623,10 @@ static QE_error_code directory_search(char *base_name, namePart purp_name_comp, 
 	filter_free(exact_filter);
 	filter_free(approx_filter);
 	return QERR_ok;
-} /* directory_search */
+}
 
 /*
- * - ufname_rec_free() -
  * Free a ufname_rec structure.
- *
  */
 void ufname_rec_free(ufnameRec record) {
 	if (record == NULLUfnameRec) return;
@@ -664,9 +634,6 @@ void ufname_rec_free(ufnameRec record) {
 	free((char *) record);
 } /* ufname_rec_free */
 
-/*
- * - ufname_result_free() -
- */
 void ufname_result_free(ufnResults *ufn_result) {
 	ufnResults result = *ufn_result;
 	if (result == NULLUfnResults) return;
@@ -679,7 +646,6 @@ void ufname_result_free(ufnResults *ufn_result) {
 } /* ufname_result_free */
 
 /*
- * - name_part_free() -
  * Free a name part list.
  */
 void name_part_free(namePart *name) {
@@ -702,7 +668,6 @@ void name_part_free(namePart *name) {
 } /* name_part_free */
 
 /*
- * - str2ufname() -
  * Convert a string encode UFN into a list of name part_names.
  */
 namePart str2ufname(char *str_ufn) {
@@ -752,14 +717,12 @@ namePart str2ufname(char *str_ufn) {
 		start = end;
 	}
 	return name_comp;
-} /* str2ufname */
+}
 
 /*
- * - process_ufn_ds_result() -
  * A ds result bound for a ufn request has been received. Process the
  * results and update the request record accordingly. If request has
  * completed indicate this.
- *
  */
 request_state process_ufn_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
@@ -1095,11 +1058,8 @@ request_state process_ufn_ds_result(requestRec request, int task_id, struct DSRe
 		}
 	}
 	return RQ_processing;
-} /* process_ufn_ds_result */
+}
 
-/*
- * - process_ufn_ds_error() -
- */
 request_state process_ufn_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	ufnameRec ufnrec = request->UFNAME_REC;
@@ -1252,7 +1212,7 @@ request_state process_ufn_ds_error(requestRec request, int task_id, struct DSErr
 		}
 	}
 	return RQ_processing;
-} /* process_ufn_ds_error */
+}
 
 static QBool follow_path(ufnameRec ufnrec) {
 	namePart part;
@@ -1290,7 +1250,6 @@ static QBool follow_path(ufnameRec ufnrec) {
 /*
  *	Procedures for UFN search path configuration
  */
-
 void add_ufn_path_element(int lower, int upper, entryList path) {
 	searchPath curr_path;
 
@@ -1300,7 +1259,7 @@ void add_ufn_path_element(int lower, int upper, entryList path) {
 	curr_path->upper_bound = upper;
 	curr_path->lower_bound = lower;
 	curr_path->path = path;
-} /* add_ufn_path_element */
+}
 
 entryList get_ufn_path(int comp_num) {
 	searchPath curr_path;
@@ -1320,4 +1279,4 @@ entryList get_ufn_path(int comp_num) {
 		return curr_path->path;
 	else
 		return NULLEntryList;
-} /* get_ufn_path */
+}

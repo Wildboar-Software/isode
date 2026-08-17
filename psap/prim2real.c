@@ -1,17 +1,9 @@
 /* prim2real.c - presentation element to real */
 
 /*
- * 
- *
  * Contributed by Julian Onions, Nottingham University.
  * July 1989 - this stuff is awful. If you're going to use it seriously then
  * write a machine specific version rather than any attempt at portability.
- *
- *
- * 
- *
- *
- *
  */
 
 #include "psap.h"

@@ -1,12 +1,4 @@
 %{
-#ifndef lint
-static char *rcsid = "";
-#endif
-
-/*
- * 
- */
-
 #include "general.h"
 #include <stdio.h>
 #include <ctype.h>

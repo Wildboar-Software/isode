@@ -1,21 +1,7 @@
 -- mpp.py - test out PEPY
-
--- 
---
---
--- 
---
---
---
---
-
 MPP DEFINITIONS   ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdio.h>
 
 #define	ps_advise(ps, f) \

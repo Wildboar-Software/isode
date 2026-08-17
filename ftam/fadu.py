@@ -5,23 +5,7 @@
 --	    - more commentary-tags for POSY
 --	    - Node-Name must be string-valued
 
--- 
---
---
--- 
---
---
---
---
-
 --* ISO8571-FADU *-- FADU DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 Subtree ::=

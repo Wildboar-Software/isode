@@ -1,14 +1,4 @@
 -- VTPM: encode ASR PDU
-
--- 
---
---
--- 
---
---
---
---
-
 ASRPDU DEFINITIONS ::=
 
 %{

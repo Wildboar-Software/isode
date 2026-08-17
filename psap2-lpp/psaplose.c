@@ -1,17 +1,7 @@
 /* psaplose.c - PPM: you lose */
-
 /*
- * 
- *
  * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
  */
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>

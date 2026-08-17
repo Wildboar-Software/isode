@@ -19,6 +19,7 @@ static void do_type_choice (YP yp, int caseindex, int level, char *narg);
 static void do_type_element (YP yp, int level, int last, char *id, char *narg);
 static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg);
 static void do_components_set (YP yp, int level, char *arg, char *id, char *narg);
+void do_type (YP yp, int level, char *id, char *arg);
 
 void do_type (YP yp, int level, char *id, char *arg)
 {
@@ -421,11 +422,14 @@ void do_type (YP yp, int level, char *id, char *arg)
 		break;
 
 	case YP_SEQLIST:
+		// This is the loop where the sequence of components are encoded.
 		for (y = yp -> yp_type, i = 0; y; y = y -> yp_next, i++) {
 			if (y -> yp_flags & YP_COMPONENTS)
+				// I am pretty sure this is the COMPONENTS OF handling.
 				do_components_seq (y, level, y -> yp_next == NULLYP,
 								   id, arg, narg);
 			else {
+				// This is where each component of a sequence is encoded.
 				do_type_element (y, level, y -> yp_next == NULLYP,
 								 id, narg);
 				printf ("%*sif (%s != NULLPE)\n", level * 4, "", narg);
@@ -533,10 +537,11 @@ void do_type (YP yp, int level, char *id, char *arg)
 
 	case YP_IDEFINED:
 		printf(
-			"%*sextern int %s (PE *pe, int explicit, int len, char *buffer, void *parm);\n",
+			"%*sextern int %s (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);\n",
 			level * 4,
 			"",
-			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER)
+			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER),
+			yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM"
 		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, YP_ENCODER));
@@ -554,10 +559,11 @@ void do_type (YP yp, int level, char *id, char *arg)
 			printf ("buffer");
 		else
 			printf ("NULLCP");
-		if (yp -> yp_flags & YP_PARMVAL)
-			printf (", (void *)%s", yp -> yp_parm);
-		else
-			printf (", (void *)NullParm");
+		if (yp -> yp_flags & YP_PARMVAL && index(yp -> yp_parm, '(') != NULL) {
+			printf (", (PEPYPARM)%s", yp -> yp_parm);
+		} else {
+			printf (", NullParm");
+		}
 		printf (") == NOTOK)\n%*sreturn NOTOK;\n", (level + 1) * 4, "");
 		if ((yp -> yp_flags & (YP_TAG | YP_IMPLICIT))
 				== (YP_TAG | YP_IMPLICIT)) {

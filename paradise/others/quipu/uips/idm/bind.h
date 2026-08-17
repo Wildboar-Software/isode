@@ -1,19 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 #ifndef _xdua_h_
 #define _xdua_h_
 

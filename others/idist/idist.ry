@@ -1,22 +1,10 @@
 -- idist.ry - IDIST protocol
-
--- 
---
 -- The UCB rdist protocol as rewritten in terms of ISO OPERATIONS.
 -- This comes out quite a lot cleaner than the original! It could come
 -- out cleaner still if some more tidying up of internals was done...
 --
 -- Julian Onions <jpo@cs.nott.ac.uk>
 -- Nottingham University Computer Science
---
---
--- 
---
---
---
--- 
--- 
-
 Idist DEFINITIONS ::=
 
 BEGIN

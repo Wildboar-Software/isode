@@ -1,25 +1,5 @@
 -- SFD.py - MHS SFD definitions
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 SFD DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 PRINTER	print

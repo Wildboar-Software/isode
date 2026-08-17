@@ -17,7 +17,7 @@
 #define pname(t)	((t)->pe_typename ? *(t)->pe_typename : "???")
 
 char *pr_petype (int type);
-static void pr_entry (ptpe *p);
+void pr_entry (ptpe *p);
 
 extern void exit(int);
 
@@ -291,7 +291,7 @@ char *pr_petype (int type) {
 	return p;
 }
 
-static void pr_entry (ptpe *p) {
+void pr_entry (ptpe *p) {
 	printf ("%s, ", pr_petype (p -> pe_type));
 	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }

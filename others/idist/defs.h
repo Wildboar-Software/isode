@@ -1,19 +1,11 @@
 /* defs.h - general definitions for idist stuff */
 
 /*
- * 
- *
  * General definitions used in the server & client parts of the idist
  * updating tools. This file not changed much from the original UCB rdist one.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
  */
 
 /*

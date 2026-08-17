@@ -5,15 +5,6 @@
 --	    - more commentary-tags for POSY
 --	    - minor patches for POSY
 
--- 
---
---
--- 
---
---
---
---
-
 --* ISO8571-FTAM *-- FTAM DEFINITIONS ::=
 
 BEGIN

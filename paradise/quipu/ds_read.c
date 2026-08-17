@@ -1,27 +1,3 @@
-/* ds_read.c - */
-
-/*
- * 
- *
- *
- * 
- *
- * "complete" caching problem -> reverse logic
- *
- *
- * oops wrong long entry ... XT-DUA exposed caching BUG
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- *
- *
- */
-
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/read.h"

@@ -1,17 +1,7 @@
 /* lppd.c - lpp listen and dispatch daemon  */
-
 /*
- * 
- *
  * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
  */
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include <errno.h>

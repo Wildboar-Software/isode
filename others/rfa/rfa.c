@@ -7,13 +7,6 @@
  * rfa.c : initiator for RFA commands
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <ctype.h>

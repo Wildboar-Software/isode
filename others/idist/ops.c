@@ -1,20 +1,11 @@
 /* idist.c - remote distribution - initiator */
-
 /*
- * 
- *
  * This file is entirely new, and handles the dispatching of the
  * remote operations to the server. It tries hard to remove all hint
  * of the ISODE parts and to hide the posy generated structures.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

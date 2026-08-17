@@ -1,15 +1,6 @@
 /* bsd43-rt.h - site configuration file for RT PC running 4.3BSD UNIX */
-
 /*
- * 
- *
  * Contributed by Jacob Rekhter, T.J. Watson Research Center, IBM Corp.
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef	_CONFIG_

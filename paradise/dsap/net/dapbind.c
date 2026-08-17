@@ -1,18 +1,4 @@
 /* dapbind.c - Establish directory association */
-
-/*
- * 
- *
- *
- * 
- *
- * Freeing in dap_bind
- *
- *
- *
- *
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>

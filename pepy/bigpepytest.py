@@ -1,21 +1,7 @@
 -- bigpepytest.py - test out most of the pepy constructs
-
--- 
---
---
--- 
---
---
---
---
-
 BigTest DEFINITIONS ::=
 
 %{
-#ifndef lint
-static char *rcsid = "";
-#endif
-
 #include <stdio.h>
 
 static int  count;

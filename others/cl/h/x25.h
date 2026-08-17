@@ -1,24 +1,12 @@
 /* x25.h - X.25 abstractions */
-
 /*
- * 
- *
  * Contributed by John Pavel, Department of Trade and Industry/National
  * Physical Laboratory in the UK
- *
- *
- * $Log$
  */
-
 #ifndef	_X25_
 #define	_X25_
 
-/*
- *
- * #defines for generic addressing & TSEL encoded addresses.
- *
- */
-
+/* defines for generic addressing & TSEL encoded addresses. */
 #ifdef	SUN_X25
 #include <sys/ioctl.h>
 #include <sys/param.h>

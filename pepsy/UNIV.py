@@ -1,17 +1,4 @@
 -- ASN.1 UNIVERSAL defined types
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 UNIV DEFINITIONS ::=
 
 %{

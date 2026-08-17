@@ -15,16 +15,6 @@
 #ifndef _GOOBIS_BO_BOOBIS_H_
 #define _GOOBIS_BO_BOOBIS_H_
 
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #include "psap.h"
 
 struct tuple {
@@ -323,7 +313,6 @@ void print_type (YP yp, int level);
 void pass1(void);
 void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
-void do_type (YP yp, int level, char *id, char *arg);
 void undo_type (YP yp, int level, char *id, char *arg, int Vflag);
 int is_nonimplicit_type (YP yp);
 void tag_type (YP yp);

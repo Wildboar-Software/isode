@@ -1,15 +1,4 @@
--- th-enc.py -  Thorn and RARE defined attribute sytaxes
---		(Now COSINE/Internet !)
-
--- 
---
---
--- 
---
---
---
---
-
+-- th-enc.py - Thorn and RARE defined attribute sytaxes (Now COSINE/Internet !)
 Thorn
 	{
 	ccitt

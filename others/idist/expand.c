@@ -1,21 +1,11 @@
 /* expand.c -- various expanisions of shell type patterns */
-
 /*
- * 
- *
  * Expansion primitives for wild card names. The tilde expansion stuff
  * has been moved out as both sides require that whilst only the
  * client requires this stuff.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science
- *
- *
- * 
- *
- *
- *
- *
  */
 
 /*
@@ -36,11 +26,6 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)expand.c    5.6 (Berkeley) 6/1/90";
-#endif
-
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

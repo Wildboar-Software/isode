@@ -5,7 +5,6 @@
  *
  * N.B.:	I whipped up this code quickly to fill a need I had.  I
  *		do not, it any way, shape, or form, warrant its output.
-
  */
 
 #include "config.h"

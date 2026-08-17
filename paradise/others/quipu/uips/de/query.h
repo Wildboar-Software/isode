@@ -1,15 +1,4 @@
 /* query.h - main information structure */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE release
- *
- */
-
 #ifndef _query_h
 #define _query_h
 

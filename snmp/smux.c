@@ -207,7 +207,7 @@ static int  smuxsend (struct type_SNMP_SMUX__PDUs *pdu) {
 	}
 #ifdef	DEBUG
 	if (smux_debug)
-		print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
+		print_SNMP_SMUX__PDUs (pe, 1, NULL, NULLVP,
 							   (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
 	if (pe2ps (ps, pe) == NOTOK) {
@@ -322,14 +322,14 @@ int	smux_wait (struct type_SNMP_SMUX__PDUs **event, int secs) {
 				  ps_error (ps -> ps_errno));
 		goto out;
 	}
-	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, event) == NOTOK) {
+	if (decode_SNMP_SMUX__PDUs (pe, 1, NULL, NULLVP, event) == NOTOK) {
 		smuxlose (youLoseBig, NULLCP, "encode_SNMP_SMUX__PDUs: %s",
 				  PY_pepy);
 		goto out;
 	}
 #ifdef	DEBUG
 	if (smux_debug)
-		print_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP,
+		print_SNMP_SMUX__PDUs (pe, 1, NULL, NULLVP,
 							   (struct type_SNMP_SMUX__PDUs *) 0);
 #endif
 	if (smux_pe)

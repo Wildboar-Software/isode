@@ -1,20 +1,10 @@
 /* idistd2.c -- the non remote operations parts of the protocol */
-
 /*
- * 
- *
  * Parts of the idist server which are not mixed up with remote
  * operations but depend on the defined types.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
- *
  */
 
 #include <errno.h>

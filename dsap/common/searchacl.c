@@ -15,7 +15,6 @@
  *			[ '#' <max-results> '#' <partialresults>
  *			[ '#' <minkeylen> ]]
  *
- *
  * <accessselector> ::= 'group' '#' <dnseq>	|
  *			'prefix' '#' <dnseq> 	|
  *			'self'		 	|

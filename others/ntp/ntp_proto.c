@@ -5,18 +5,7 @@
  * ntpd.c module, while arithmetic conversion routines are in ntpsubs.c
  *
  * Some of this is now factored out as it was too protocol specific.
- */
-
-/*
- * 
- *
- *
  * Based on the ntp 3.4 code - but modified for use with OSI.
- *
- * 
- *
- *
- *
  */
 
 #include <stdlib.h>

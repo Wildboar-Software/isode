@@ -1,14 +1,4 @@
 -- acsold.py - AcSAP definitions for old-style applications
-
--- 
---
---
--- 
---
---
---
--- 
-
 OACS DEFINITIONS ::=
 
 BEGIN

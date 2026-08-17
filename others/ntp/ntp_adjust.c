@@ -1,14 +1,7 @@
 /*
- * 
- *
  * This module implemenets the logical Local Clock, as described in section
  * 5. of the NTP specification.
  * based on the ntp 3.4 code, but modified for OSI etc.
- *
- * 
- *
- *
- *
  */
 
 #include "ntp.h"

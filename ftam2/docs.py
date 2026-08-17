@@ -1,22 +1,5 @@
 -- documents.py - FTAM document definitions
-
--- 
---
---
--- 
---
---
---
---
-
 DOCS DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 -- FTAM-1: ISO FTAM unstructured text

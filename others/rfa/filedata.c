@@ -7,13 +7,6 @@
  * filedata.c : operation to transfer the content of a file
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

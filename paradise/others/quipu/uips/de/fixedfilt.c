@@ -1,17 +1,6 @@
 /* filter.c - Directory Operation Filters */
 /* this version contains a patch for ufn generated filters -
    discard this file in next release of ISODE */
-
-/*
- * 
- *
- *
- * 
- *
- * *** empty log message ***
- *
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>

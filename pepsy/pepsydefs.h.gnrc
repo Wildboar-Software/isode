@@ -15,16 +15,6 @@
 #if !defined(_PEPSYDEFS_H_) && !defined(_GOOBIS_BO_BOOBIS_H_)
 #define _PEPSYDEFS_H_
 
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #include <errno.h>
 #include "psap.h"
 

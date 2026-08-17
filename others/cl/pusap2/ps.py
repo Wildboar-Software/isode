@@ -30,13 +30,6 @@
 --	    - shortening some names to make loader symbols unique to 24 bytes
 
 --* ISO8823-PRESENTATION *-- PS DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 -- HULA begins

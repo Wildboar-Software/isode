@@ -1,14 +1,4 @@
 -- VTPM: decode ASR PDU
-
--- 
---
---
--- 
---
---
---
---
-
 ASRPDU DEFINITIONS ::=
 
 %{

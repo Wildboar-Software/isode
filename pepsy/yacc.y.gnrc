@@ -2,20 +2,6 @@
 /* %WARNING% */
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>

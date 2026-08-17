@@ -1,25 +1,7 @@
 -- ps.py - pseudo-presentation service definitions
 --	lifted directly from RFC1085
-
--- 
---
 -- Contributed by The Wollongong Group, Inc.
---
---
--- 
---
---
---
---
-
 --* RFC1085-PS *-- PS DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 PDUs ::=

@@ -1,15 +1,6 @@
 /* ts2sunlink.c - TPM: SunLink OSI TP4 interface */
-
 /*
- * 
- *
  * Contributed by John A. Scott, The MITRE Corporation
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

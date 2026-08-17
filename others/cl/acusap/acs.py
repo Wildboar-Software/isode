@@ -25,13 +25,6 @@
 --	lifted directly from ISO8650
 
 --* ACSE-1 *-- ACS DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 -- ACSE-1 refers to ACSE version 1

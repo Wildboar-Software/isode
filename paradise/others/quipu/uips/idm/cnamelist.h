@@ -1,19 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 struct cnamelist {
 	char *shortname;
 	char *longname;

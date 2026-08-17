@@ -13,7 +13,6 @@
 
    	"An interim approach to use of Network Addresses",
 	S.E. Kille, January 16, 1989
-
  */
 
 int norm2na (char *p, int len, struct NSAPaddr *na) {

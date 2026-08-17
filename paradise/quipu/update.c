@@ -1,18 +1,4 @@
 /* update.c - write EDB back to disk after modify */
-
-/*
- * 
- *
- *
- * 
- *
- * Random core dump during get_edb (initiator)
- *
- *
- *
- *
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

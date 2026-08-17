@@ -598,7 +598,6 @@ normal:
 
 	Each token is separated by LWSP, though double-quotes may be used to
 	prevent separation.
-
  */
 
 static rcmap (struct sockaddr_in *isock) {

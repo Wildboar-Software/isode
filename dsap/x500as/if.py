@@ -1,14 +1,4 @@
 -- if-enc.py - manually-augmented InformationFramework module
-
--- 
---
---
--- 
---
---
---
---
-
 IF
 	{
 	joint-iso-ccitt

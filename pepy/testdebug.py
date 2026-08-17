@@ -1,24 +1,9 @@
 -- testdebug.py - support routine for pepy generated routines
-
--- 
---
---
--- 
---
---
---
---
-
 TESTDEBUG DEFINITIONS ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
-
 %}
 
 BEGIN

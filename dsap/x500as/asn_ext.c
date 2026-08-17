@@ -284,8 +284,6 @@ int substring_encode (struct filter_item *parm, PE *pe) {
  *                        %{
  *                        %}
  *                }
- *
- *
  */
 
 int substring_decode (struct filter_item **pparm, PE pe) {
@@ -744,8 +742,6 @@ int treestruct_encode (struct tree_struct *parm, PE *pe) {
  *        %{
  *                DLOG(log_dsap, LLOG_PDUS, ("Done decode TreeStructureSyntax"));
  *        %}
- *
- *
  */
 
 int treestruct_decode (struct tree_struct **parm, PE pe) {
@@ -1000,7 +996,7 @@ int EDB_encode (struct getedb_result *parm, PE *pe) {
 			ent_tmp = (Entry) avl_getnext()) {
 		if ((ent_tmp -> e_data != E_DATA_MASTER) && (ent_tmp -> e_data != E_TYPE_SLAVE))
 			continue;
-		if (encode_Quipu_RelativeEntry (p32, 0, NULL, NULLCP, ent_tmp) == NOTOK)
+		if (encode_Quipu_RelativeEntry (p32, 0, 0, NULLCP, ent_tmp) == NOTOK)
 			return NOTOK;
 		seq_addon ((*pe), p31, (*p32));
 		p31 = (*p32);

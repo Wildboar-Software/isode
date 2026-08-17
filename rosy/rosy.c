@@ -110,14 +110,12 @@ static int expand (char *dp, char *ep, char **gp);
 static void act2prf (char *cp, int level, char *e1, char *e2);
 static void dump_real (double r);
 static void val2prf (YV yv, int level);
-static int val2int (YV yv);
 static void normalize (YP *yp, char *id);
-static void do_type (YP yp, int level, char *id);
 static void do_err2 (YE ye, char *id);
 static void do_err1 (YE ye, char *id);
 static void do_op2 (YO yo, char *id);
 static void do_op1 (YO yo, char *id);
-static void yyerror_aux (char *s);
+static void do_type (YP yp, int level, char *id);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -266,9 +264,8 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-int yyerror (char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
-
 	if (*sysout)
 		unlink (sysout);
 	if (*sysdef)
@@ -277,7 +274,6 @@ int yyerror (char *s) {
 		unlink (systbl);
 	if (*systub)
 		unlink (systub);
-
 	exit (1);
 }
 
@@ -300,7 +296,7 @@ void warning (char *fmt) {
 	warning (fmt);
 }
 #endif
-static void yyerror_aux (char *s) {
+void yyerror_aux (char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	if (eval)
@@ -1349,7 +1345,7 @@ static void normalize (YP *yp, char *id) {
 				y);
 }
 
-static int val2int (YV yv) {
+int val2int (YV yv) {
 	switch (yv -> yv_code) {
 	case YV_BOOL:
 	case YV_NUMBER:

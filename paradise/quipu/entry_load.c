@@ -1,18 +1,4 @@
 /* entry_load.c - load bits of the database */
-
-/*
- * 
- *
- *
- * 
- *
- * first edb update bug fix
- *
- *
- *
- *
- */
-
 #include <string.h>
 #include <strings.h>
 #include <stdio.h>

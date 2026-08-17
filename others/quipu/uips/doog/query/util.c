@@ -1,12 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
 #include <string.h>
 #include "types.h"
 #include "util.h"

@@ -1,19 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 #ifndef _destrings_h
 #define _destrings_h
 

@@ -1,22 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * *** empty log message ***
- *
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>

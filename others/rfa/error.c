@@ -7,13 +7,6 @@
  * error.c : functions for the various error types
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

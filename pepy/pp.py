@@ -1,21 +1,7 @@
 -- pp.py - generic pretty-printer
-
--- 
---
---
--- 
---
---
---
---
-
 PRETTY DEFINITIONS ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdlib.h>
 %}
 

@@ -7,13 +7,6 @@
  * rfad.c : responder for RFA commands
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <string.h>

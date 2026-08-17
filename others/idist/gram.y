@@ -1,18 +1,10 @@
 %{
 /*
- * 
- *
  * The grammer - unchanged from the original UCB version - only lint
  * fixes etc. have been applied.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
  */
 
 /*
@@ -33,12 +25,6 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)gram.y      5.6 (Berkeley) 6/1/90";
-static	char *rcsid = "
-#endif
-
 #include "defs.h"
 
 struct	cmd *cmds = NULL;

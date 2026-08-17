@@ -1,14 +1,4 @@
 -- das.py
-
--- 
---
---
--- 
---
---
---
---
-
 DAS
 	{
 	joint-iso-ccitt

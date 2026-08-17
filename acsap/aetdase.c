@@ -1,5 +1,4 @@
 /* aetdase.c - DASE-based DSE */
-
 #include <ctype.h>
 #include <setjmp.h>
 #include <signal.h>
@@ -109,7 +108,7 @@ no_mem:
 			&& (parm -> passwd = str2qb (passwd, strlen (passwd), 1)) == NULL)
 		goto no_mem;;
 
-	if (encode_DASE_Query__REQ (&pe, 1, NULL, NULLCP, parm) == NOTOK)
+	if (encode_DASE_Query__REQ (&pe, 1, 0, NULLCP, parm) == NOTOK)
 		goto out;
 
 	if ((err = pe2ps (ps, pe)) == NOTOK) {
@@ -379,7 +378,7 @@ static int dase_callback (struct type_DASE_Callback__REQ *arg) {
 
 send_rsp:
 	;
-	if ((result = encode_DASE_Callback__RSP (&pe, 1, NULL, NULLCP, rsp))
+	if ((result = encode_DASE_Callback__RSP (&pe, 1, 0, NULLCP, rsp))
 			== NOTOK)
 		goto out;
 	if ((result = pe2ps (ps, pe)) == NOTOK)

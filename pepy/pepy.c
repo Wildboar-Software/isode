@@ -97,6 +97,7 @@ static void write_ph_file (void);
 static int  pp (void);
 static void print_value (YV yv, int level);
 static void modsym_aux (char *name, char *bp);
+void do_type (YP yp, int level, char *id, char *arg);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,

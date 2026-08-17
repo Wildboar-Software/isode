@@ -1,14 +1,4 @@
 -- VTPM: encode ASQ PDU
-
--- 
---
---
--- 
---
---
---
---
-
 ASQPDU DEFINITIONS ::=
 
 %{

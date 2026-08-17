@@ -1,21 +1,4 @@
 /* tsapd.c - OSI transport listener */
-
-/*
- * 
- *
- *
- * 
- *
- * -T flags
- *
- *
- * iaed service selection fix
- *
- *
- *
- *
- */
-
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>

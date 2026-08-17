@@ -1,15 +1,6 @@
 /* apollo.h - site configuration file for Apollo */
-
 /*
- * 
- *
  * Contributed by John Brezak, Apollo Computer, Inc.
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef	_CONFIG_

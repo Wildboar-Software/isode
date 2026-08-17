@@ -1,12 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
 #include <unistd.h>
 #define getdtablesize() (sysconf (_SC_OPEN_MAX))
 #include "general.h"

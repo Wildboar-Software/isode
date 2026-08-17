@@ -1,13 +1,6 @@
 /*
- * 
  * NTP query program - useful for debugging, Specific to OSI.
- *
- * 
- *
- *
- *
  */
-
 #include <stdlib.h>
 #include <strings.h>
 #include "ntp.h"

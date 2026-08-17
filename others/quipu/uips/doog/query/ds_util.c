@@ -1,18 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  ds_util.c
-
-*****************************************************************************/
-
 #include <ctype.h>
 #include <stdlib.h>
 #include "ds_util.h"
@@ -25,11 +10,6 @@ static QBool char_compare();
 
 QCardinal match_word_limit = 3;
 
-/*
- * - qy_dn2str(dn) -
- *
- *
- */
 char *qy_dn2str(DN dn) {
 	char *cp;
 	PS ps;
@@ -48,11 +28,6 @@ char *qy_dn2str(DN dn) {
 	return cp;
 }
 
-/*
- * - qy_dn_print() -
- *
- *
- */
 void qy_dn_print(PS ps, DN dn, int format) {
 	DN eptr;
 
@@ -81,9 +56,7 @@ void qy_dn_print(PS ps, DN dn, int format) {
 }
 
 /*
- * - is_good_match -
  * Find out if match_str is a good match of the rdn of dn_str.
- *
  */
 QBool is_good_match(char *match_str, char *dn_str) {
 	char *match_from;
@@ -154,7 +127,7 @@ QBool is_good_match(char *match_str, char *dn_str) {
 		if (isnull(*match_from))
 			return FALSE;
 	}
-} /* is_good_match */
+}
 
 static QBool char_compare(char a, char b) {
 	int chr1 = a, chr2 = b;
@@ -165,9 +138,7 @@ static QBool char_compare(char a, char b) {
 }
 
 /*
- * - make_typed_filter_items() -
- *  Make basic filters (approx and equal) for given string encoded filter item.
- *
+ * Make basic filters (approx and equal) for given string encoded filter item.
  */
 QE_error_code make_typed_filter_items(char *filter_str,
 									  Filter *ex_filter_ptr, Filter *ap_filter_ptr) {
@@ -200,13 +171,11 @@ QE_error_code make_typed_filter_items(char *filter_str,
 	free(str_attr_type);
 	free(str_attr_value);
 	return error;
-} /* make_typed_filter_items */
+}
 
 /*
- * - make_filter_items() -
  * Make basic filters (approx and equal) for given attribute type and
  * string search value.
- *
  */
 QE_error_code make_filter_items(AttributeType attr_type, char *search_value,
 								Filter *ex_filter_ptr, Filter *ap_filter_ptr) {
@@ -235,12 +204,10 @@ QE_error_code make_filter_items(AttributeType attr_type, char *search_value,
 	approx_filter->FUITEM.UNAVA.ava_value = approx_value;
 	exact_filter->FUITEM.UNAVA.ava_value = exact_value;
 	return QERR_ok;
-} /* make_filter_items */
+}
 
 /*
- * - get_entry_type_name() -
  * Return the attribute name of the RDN of the given entry name.
- *
  */
 char *get_entry_type_name (char *entry_name) {
 	char *start, *end;
@@ -262,12 +229,10 @@ char *get_entry_type_name (char *entry_name) {
 	type_name = copy_string(start);
 	*end = save;
 	return type_name;
-} /* get_entry_type_name */
+}
 
 /*
- * - qy_in_hierarchy() -
  * Return TRUE if b is a subclass of a.
- *
  */
 QBool qy_in_hierarchy(objectclass *a, objectclass *b) {
 	struct oc_seq *oidseq;
@@ -280,4 +245,4 @@ QBool qy_in_hierarchy(objectclass *a, objectclass *b) {
 		else if (qy_in_hierarchy(a, oidseq->os_oc))
 			return TRUE;
 	return FALSE;
-} /* qy_in_hierarchy */
+}

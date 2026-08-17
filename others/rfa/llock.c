@@ -7,13 +7,6 @@
  * llock.c : do a local lock if possible
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <ctype.h>

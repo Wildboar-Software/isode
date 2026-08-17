@@ -1,18 +1,4 @@
 /* filter.c - Directory Operation Filters */
-
-/*
- * 
- *
- *
- * 
- *
- * fix UFN filters for duplicates
- *
- *
- *
- *
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>

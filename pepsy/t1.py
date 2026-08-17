@@ -1,12 +1,3 @@
--- 
---
---
--- 
---
---
---
---
-
 T1 { joint-iso-ccitt rubbish(999) modid(1) } DEFINITIONS ::=
 
 BEGIN

@@ -1,17 +1,4 @@
 -- P3 Defined Types (stub)
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 P3 DEFINITIONS ::=
 
 %{

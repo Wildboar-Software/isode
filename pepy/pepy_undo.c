@@ -687,27 +687,15 @@ void undo_type (YP yp, int level, char *id, char *arg, int Vflag)
 		break;
 
 	case YP_IDEFINED:
-		if (!yp -> yp_param_type && (yp -> yp_flags & YP_PARMVAL)) {
-			printf(
-				"%*sextern int %s (PE pe, int explicit, int *len, char **buffer, void *parm);\n",
-				level * 4,
-				"",
-				modsym (yp -> yp_module, yp -> yp_identifier, Vflag ? YP_PRINTER : YP_DECODER),
-				yp -> yp_param_type
-					? yp -> yp_param_type
-					: "PEPYPARM"
-			);
-		} else {
-			printf(
-				"%*sextern int %s (PE pe, int explicit, int *len, char **buffer, %s parm);\n",
-				level * 4,
-				"",
-				modsym (yp -> yp_module, yp -> yp_identifier, Vflag ? YP_PRINTER : YP_DECODER),
-				yp -> yp_param_type
-					? yp -> yp_param_type
-					: "PEPYPARM"
-			);
-		}
+		printf(
+			"%*sextern int %s (PE pe, int explicit, int *len, char **buffer, %s parm);\n",
+			level * 4,
+			"",
+			modsym (yp -> yp_module, yp -> yp_identifier, Vflag ? YP_PRINTER : YP_DECODER),
+			yp -> yp_param_type
+				? yp -> yp_param_type
+				: "PEPYPARM"
+		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, Vflag ? YP_PRINTER : YP_DECODER));
 		printf ("%s, ", arg);

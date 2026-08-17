@@ -30,13 +30,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
 #include <fcntl.h>
 #include <stdlib.h>
-#ifndef lint
-static char sccsid[] = "@(#)printcap.c	5.7 (Berkeley) 3/4/91";
-#endif /* not lint */
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>

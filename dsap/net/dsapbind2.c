@@ -112,7 +112,7 @@ int	  DBindResult (int sd, OID context, AEI respondtitle,
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
-	if (encode_DAS_DirectoryBindResult (&(bindrespe), 1, NULLIP, NULLCP,
+	if (encode_DAS_DirectoryBindResult (&(bindrespe), 1, 0, NULLCP,
 										bind_res) != OK) {
 		/* RoBindReject ?? */
 		return (dsaplose (di, DA_RES_ENC, NULLCP, "BIND RESULT"));
@@ -143,7 +143,7 @@ int	  DBindError (int sd, OID context, AEI respondtitle, struct PSAPaddr * respo
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
-	if (encode_DAS_DirectoryBindError (&(binderrpe), 1, NULLIP, NULLCP,
+	if (encode_DAS_DirectoryBindError (&(binderrpe), 1, 0, NULLCP,
 									   bind_err) != OK) {
 		/* RoBindReject ?? */
 		return (dsaplose (di, DA_ERR_ENC, NULLCP, "BIND ERROR"));

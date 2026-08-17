@@ -1,15 +1,6 @@
 /* psaprespond.c - PPM: responder */
-
 /*
- * 
- *
  * Contributed by The Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

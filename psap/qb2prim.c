@@ -8,7 +8,6 @@
 /* form: PRIMitive or CONStructor --
 
 	qb2prim  -	octet string (via qbufs) to presentation element
-
  */
 
 PE

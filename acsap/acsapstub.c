@@ -1,15 +1,6 @@
 /* acsapstub.c - application entity titles -- stub directory service */
-
 /*
- * 
- *
  * RFC1085 (LPP) support contributed by the Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <ctype.h>

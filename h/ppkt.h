@@ -1,15 +1,6 @@
 /* ppkt.h - include file for presentation providers (PS-PROVIDER) */
-
 /*
- * 
- *
  * RFC1085 (LPP) support contributed by the Wollongong Group, Inc.
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef	_PSAP2_

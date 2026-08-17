@@ -1,15 +1,6 @@
 /* sys52-rt.h - site configuration file for RT PC running AIX */
-
 /*
- * 
- *
  * Contributed by by Jacob Rekhter, T.J. Watson Research Center, IBM Corp.
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef	_CONFIG_

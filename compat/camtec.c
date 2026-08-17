@@ -1,15 +1,6 @@
 /* camtec.c - X.25, CONS abstractions for CAMTEC CCL  */
-
 /*
- * 
- *
  * Contributed by Keith Ruttle, CAMTEC Electronics Ltd
- *
- *
- * 
- *
- *
- *
  */
 
 #include <errno.h>

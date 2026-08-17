@@ -1,18 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  error.c - Misc. functions for handling error lists.
-
-*****************************************************************************/
-
 #include <stdlib.h>
 #include "types.h"
 #include "error.h"
@@ -66,11 +51,6 @@ QE_error error_msgs[] = {
 	{QERR_null, ""}
 };
 
-/*
- * - get_message_of_code() -
- *
- *
- */
 char *get_message_of_code(QE_error_code code) {
 	QCardinal count;
 
@@ -82,11 +62,6 @@ char *get_message_of_code(QE_error_code code) {
 	return NULLCP;
 }
 
-/*
- * - char *get_message_from_ds_error() -
- *
- *
- */
 char *ds_error_message (struct DSError *error) {
 	PS ps;
 	char buffer[LINESIZE];
@@ -107,12 +82,10 @@ char *ds_error_message (struct DSError *error) {
 	else
 		message = NULLCP;
 	return message;
-} /* get_message_from_ds_error */
+}
 
 /*
- * - add_error_to_request_rec() -
  * A dap error has occured. Record it in the given request record.
- *
  */
 void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_code error_type, struct DSError *error) {
 	errorList new_err = error_alloc();
@@ -122,7 +95,7 @@ void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_cod
 	new_err->next = request->errors;
 	new_err->ds_message = ds_error_message(error);
 	request->errors = new_err;
-} /* add_error_to_request_rec */
+}
 
 QE_error_code get_log_error_type(struct DSError *error, int task_id) {
 	log_ds_error(error);
@@ -166,11 +139,6 @@ QE_error_code get_log_error_type(struct DSError *error, int task_id) {
 	}
 }
 
-/*
- * - error_list_free() -
- *
- *
- */
 void error_list_free(errorList *error_list_ptr) {
 	errorList next_errors, errors = *error_list_ptr;
 
@@ -183,13 +151,8 @@ void error_list_free(errorList *error_list_ptr) {
 		errors = next_errors;
 	}
 	*error_list_ptr = NULLError;
-} /* error_list_free */
+}
 
-/*
- * - error_list_copy() -
- *
- *
- */
 errorList error_list_copy(errorList list) {
 	errorList new_list = NULLError, curr_error = NULLError;
 
@@ -210,4 +173,4 @@ errorList error_list_copy(errorList list) {
 		curr_error->next = NULLError;
 	}
 	return new_list;
-} /* error_list_copy */
+}

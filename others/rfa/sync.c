@@ -7,15 +7,7 @@
  * sync.c  synchronize local dir with remote site
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
-
 #include <ctype.h>
 #include "general.h"
 #include <stdio.h>

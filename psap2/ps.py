@@ -4,24 +4,7 @@
 --      Two kinds of changes to the ASN.1
 --	    - more commentary-tags for POSY
 --	    - shortening some names to make loader symbols unique to 24 bytes
-
--- 
---
---
--- 
---
---
---
---
-
 --* ISO8823-PRESENTATION *-- PS DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 -- In X.410-1984 mode, the value of the SS-user data parameter of the S-CONNECT

@@ -1,15 +1,4 @@
 /* logger.h - logging routines */
-
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #ifndef	_LOGGER_
 #define	_LOGGER_
 
@@ -73,8 +62,6 @@ else
 #ifdef PEPSY_VERSION
 
 #ifdef __STDC__
-
-void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 
 #define	PLOGP(lp,args,pe,text,rw) \
     if ((lp) -> ll_events & LLOG_PDUS) { \

@@ -1,14 +1,4 @@
 -- rtf.py - RTF definitions
-
--- 
---
---
--- 
---
---
---
---
-
 RTF DEFINITIONS ::=
 
 BEGIN

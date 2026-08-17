@@ -1,27 +1,3 @@
-/* dsp_cache.c - */
-
-/*
- * 
- *
- *
- * 
- *
- * Cache search resutls if all attrs requested
- *
- *
- * oops wrong long entry ... XT-DUA exposed caching BUG
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- * Add entry problem with remote non-leaf objects
- *
- *
- *
- *
- */
-
 #include "quipu/util.h"
 #include "quipu/dua.h"
 #include "quipu/list.h"

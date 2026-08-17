@@ -7,15 +7,7 @@
  * synctime.c : SyncTime operation
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,19 +1,5 @@
 /* llib-licompat - lint library for -licompat */
 
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
-
-
-
-
 #include <varargs.h>
 #include "manifest.h"
 #include "general.h"

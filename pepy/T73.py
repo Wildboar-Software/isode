@@ -1,17 +1,4 @@
 -- T73 Defined Types (stub)
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 T73 DEFINITIONS ::=
 
 

@@ -1,13 +1,4 @@
 -- do.py - manually augmented DistributedOperations module
-
--- 
---
--- 
---
---
---
---
-
 DO
 	{
 	joint-iso-ccitt

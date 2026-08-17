@@ -398,7 +398,7 @@ again:
 			return NOTOK;
 		}
 		msg = NULL;
-		if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+		if (decode_SNMP_Message (pe, 1, NULL, NULLVP, &msg) == NOTOK) {
 			advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 oops:
 			;
@@ -409,7 +409,7 @@ oops:
 		}
 		if (watch) {
 			fprintf (stdout, "read PDU\n");
-			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 			fflush (stdout);
 		}
 		totrsps++;
@@ -630,7 +630,7 @@ outta_time:
 		}
 		if (watch) {
 			fprintf (stdout, "retry ID %d\n", i -> i_rid);
-			print_SNMP_Message (i -> i_pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (i -> i_pe, 1, NULL, NULLVP, NULLCP);
 			fflush (stdout);
 		} else if (debug)
 			fprintf (stderr,
@@ -813,7 +813,7 @@ static int next_thread (struct thread *t, PS ps, int next) {
 	}
 	if (watch) {
 		fprintf (stdout, "write PDU\n");
-		print_SNMP_Message (t -> t_pe, 1, NULLIP, NULLVP, NULLCP);
+		print_SNMP_Message (t -> t_pe, 1, NULL, NULLVP, NULLCP);
 		fflush (stdout);
 	}
 	totreqs++;
@@ -1260,7 +1260,7 @@ send_them:
 		}
 		if (watch) {
 			fprintf (stdout, "write PDU\n");
-			print_SNMP_Message (r -> r_pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (r -> r_pe, 1, NULL, NULLVP, NULLCP);
 			fflush (stdout);
 		}
 		totreqs++;

@@ -1,15 +1,4 @@
 /* tpkt.h - include file for transport providers (TS-PROVIDER) */
-
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #include <stdint.h>
 #include "tsap.h"		/* definitions for TS-USERs */
 #include "logger.h"

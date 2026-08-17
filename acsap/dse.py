@@ -1,22 +1,5 @@
 -- dse.py - X.500 PresentationAddress syntax
-
--- 
---
---
--- 
---
---
---
---
-
 DSE DEFINITIONS ::=
-
-%{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-%}
-
 BEGIN
 
 PSAPaddr ::=

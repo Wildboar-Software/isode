@@ -326,7 +326,7 @@ static int  f_audit (char **vec) {
 		for (;;) {
 			if ((pe = ps2pe (ps2)) == NULLPE)
 				break;
-			if (decode_SNMP_Audit (pe, 1, NULLIP, NULLVP, &au) == NOTOK)
+			if (decode_SNMP_Audit (pe, 1, NULL, NULLVP, &au) == NOTOK)
 				goto bad_audit;
 			fseek (fp, (long) au -> sizeOfEncodingWhichFollows, 1);
 			free_SNMP_Audit (au);
@@ -355,7 +355,7 @@ static int  f_audit (char **vec) {
 			}
 			break;
 		}
-		if (decode_SNMP_Audit (pe, 1, NULLIP, NULLVP, &au) == NOTOK) {
+		if (decode_SNMP_Audit (pe, 1, NULL, NULLVP, &au) == NOTOK) {
 bad_audit:
 			;
 			advise (NULLCP, "decode_SNMP_Audit: %s", PY_pepy);
@@ -390,7 +390,7 @@ no_mem:
 				advise (NULLCP, "ps2pe: %s", ps_error (ps2 -> ps_errno));
 			break;
 		}
-		if (print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP) == NOTOK)
+		if (print_SNMP_Message (p, 1, NULL, NULLVP, NULLCP) == NOTOK)
 			printf ("\n");
 		free_SNMP_Audit (au), au = NULL;
 	}
@@ -728,7 +728,7 @@ again:
 	pe = NULLPE;
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) != NOTOK) {
 		if (watch)
-			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 		if (pe2ps (ps, pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			goto out;
@@ -746,12 +746,12 @@ try_again:
 		advise (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 		goto out;
 	}
-	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+	if (decode_SNMP_Message (pe, 1, NULL, NULLVP, &msg) == NOTOK) {
 		advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
 	if (watch)
-		print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+		print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 	if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 		advise (NULLCP, "unexpected message type %d",
 				msg -> data -> offset);
@@ -951,7 +951,7 @@ static int process (struct type_SNMP_Message *msg) {
 	request_id = msg -> data -> un.get__request -> request__id;
 	if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) != NOTOK) {
 		if (watch)
-			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 		if (pe2ps (ps, pe) == NOTOK) {
 			advise (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
 			goto out;
@@ -969,12 +969,12 @@ try_again:
 		advise (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 		goto out;
 	}
-	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+	if (decode_SNMP_Message (pe, 1, NULL, NULLVP, &msg) == NOTOK) {
 		advise (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 		goto out;
 	}
 	if (watch)
-		print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+		print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 	if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 		advise (NULLCP, "unexpected message type %d",
 				msg -> data -> offset);

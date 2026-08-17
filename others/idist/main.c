@@ -1,20 +1,12 @@
 /* main.c -- driver for the client program */
 
 /*
- * 
- *
  * Major changes to this file have been the ripping out of the server
  * code. This is entirely the client part now. Also changed are the
  * argument parsing stuff and a few bits and pieces.
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science.
- *
- *
- * 
- *
- *
- *
  */
 
 /*
@@ -40,10 +32,6 @@
 char copyright[] =
 	"@(#) Copyright (c) 1983 Regents of the University of California.\n\
  All rights reserved.\n";
-#endif
-
-#ifndef lint
-static char sccsid[] = "@(#)main.c      5.5 (Berkeley) 6/1/90";
 #endif
 
 #include "defs.h"

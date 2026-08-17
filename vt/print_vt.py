@@ -1,14 +1,4 @@
 -- VTPM: print VT PDUs
-
--- 
---
---
--- 
---
---
---
---
-
 VT DEFINITIONS ::=
 
 BEGIN

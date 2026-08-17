@@ -7,13 +7,6 @@
  * ls.c : prepare file info in a "ls" style
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <ctype.h>

@@ -1,27 +1,12 @@
 -- ros.py - ROS definitions
 --	lifted directly from ISO9072-2
-
--- 
---
 -- Based on an TCP-based implementation by George Michaelson of University
 -- College London.
---
---
--- 
---
---
---
---
-
 --* Remote-Operations-APDUs *-- ROS
 --*   { joint-iso-ccitt remote-operations(4) apdus(1) } *--
 DEFINITIONS ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdio.h>
 #include "ropkt.h"
 

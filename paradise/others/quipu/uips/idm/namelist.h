@@ -1,19 +1,3 @@
-/* template.c - your comments here */
-
-/*
- * 
- *
- *
- * 
- *
- * PARADISE Upgrade release
- *
- *
- *
- *
- *
- */
-
 #include <stdio.h>
 #include "quipu/attrvalue.h"
 #include "util.h"

@@ -1,18 +1,9 @@
 /* ccurx25.c - X.25 abstractions for Concurrent RTnet-X25 */
-
 /*
- * 
- *
  * Contributed by Alan Young, Concurrent Computer Corporation
  *
  * This interface should need little adaption for use with any generic
  * service supporting the AT&T Network Provider Interface.
- *
- *
- * 
- *
- *
- *
  */
 
 #include <errno.h>

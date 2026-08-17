@@ -1,5 +1,4 @@
 /* acsaptest.c - test out -lacsap */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -125,12 +124,12 @@ static void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa) {
 		}
 
 		bzero ((char *) &pas, sizeof pas);
-		if (parse_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, (char *) &pas) ==NOTOK) {
+		if (parse_DSE_PSAPaddr (pe, 1, NULL, NULLVP, (char *) &pas) ==NOTOK) {
 			printf ("parse of PSAPaddr failed: %s\n", PY_pepy);
 			goto dont_touch;
 		}
 
-		print_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, NULLCP);
+		print_DSE_PSAPaddr (pe, 1, NULL, NULLVP, NULLCP);
 
 		if (bcmp ((char *) pa, (char *) &pas, sizeof pas)) {
 			printf ("*** NOT EQUAL ***\n");

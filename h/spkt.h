@@ -1,15 +1,4 @@
 /* spkt.h - include file for session providers (SS-PROVIDER) */
-
-/* 
- * 
- *
- *
- * 
- *
- *
- *
- */
-
 #include <stdint.h>
 #ifndef	_SSAP_
 #include "ssap.h"		/* definitions for SS-USERs */

@@ -1,28 +1,9 @@
-/* ftpcmd.y - grammar for FTP commands */
-
-/* 
- * 
- *
- * 
- *
- *
- *
- */
-
-/*
- *	Shamelessly taken from UCB
- */
-
-/*
- * Grammar for FTP commands.
+/* ftpcmd.y - grammar for FTP commands
+ * Shamelessly taken from UCB
  * See RFC 765.
  */
 
 %{
-
-#ifndef	lint
-static char *rcsid = "";
-#endif
 
 #include "config.h"
 #include "internet.h"

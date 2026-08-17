@@ -1,16 +1,4 @@
 /* deufn.c - some de specific ufn routines */
-
-/*
- * 
- *
- *
- * 
- *
- * *** empty log message ***
- *
- */
-/*
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

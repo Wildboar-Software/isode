@@ -1,15 +1,7 @@
 /* ubcx25.c - X.25 abstractions for UBC X25 */
 
 /*
- * 
- *
  * Contributed by Julian Onions, Nottingham University in the UK
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdint.h>

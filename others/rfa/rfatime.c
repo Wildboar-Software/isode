@@ -7,13 +7,6 @@
  * rfatime.c : external program to set time of local site
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <errno.h>

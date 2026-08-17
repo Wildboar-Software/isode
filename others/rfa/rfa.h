@@ -7,13 +7,6 @@
  * rfa.h : common definitions for RFA
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include "config.h"

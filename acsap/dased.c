@@ -401,7 +401,7 @@ send_rsp:
 			goto no_mem;
 	}
 
-	if (encode_DASE_Query__RSP (&pe, 1, NULL, NULLCP, rsp) == NOTOK)
+	if (encode_DASE_Query__RSP (&pe, 1, 0, NULLCP, rsp) == NOTOK)
 		adios (NULLCP, "encode_DASE_Query__RSP: %s", PY_pepy);
 	if (pe2ps (ps, pe) == NOTOK)
 		adios (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
@@ -580,7 +580,7 @@ out:
 
 	dns = NULL;
 
-	if (encode_DASE_Callback__REQ (&pe, 1, NULL, NULLCP, req) == NOTOK) {
+	if (encode_DASE_Callback__REQ (&pe, 1, 0, NULLCP, req) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "encode_DASE_Callback__REQ: %s",
 				PY_pepy);
 		goto out;
@@ -596,7 +596,7 @@ out:
 	if ((pe = ps2pe (ps)) == NULLPE)
 		adios (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 
-	if (decode_DASE_Callback__RSP (pe, 1, NULLIP, NULLVP, &rsp) == NOTOK) {
+	if (decode_DASE_Callback__RSP (pe, 1, 0, NULLVP, &rsp) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "decode_DASE_Callback__RSP: %s",
 				PY_pepy);
 		goto out;

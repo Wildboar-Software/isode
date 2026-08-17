@@ -20,10 +20,6 @@
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#if defined(LIBC_SCCS) && !defined(lint)
-static char sccsid[] = "@(#)scandir.c	5.9 (Berkeley) 6/24/90";
-#endif /* LIBC_SCCS and not lint */
-
 /*
  * Scan the directory dirname calling select to make a list of selected
  * directory entries then sort using qsort and compare routine dcomp.

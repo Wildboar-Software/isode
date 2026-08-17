@@ -1,17 +1,8 @@
 /* sunlink.c - X.25 abstractions for SunLink X25 */
-
 /*
- * 
- *
  * Contributed by John Pavel, Department of Trade and Industry/National
  * Physical Laboratory in the UK
  * much hacked my others since then - i.e., don't blame John!
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

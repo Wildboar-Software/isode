@@ -20,9 +20,7 @@ searchInfoList search_type_list = NULLSearchInfo;
 ufsPath ufs_paths = NULLUfsPath;
 
 /*
- * - set_relation() -
  * Add a new parent/child relation (if not already existent).
- *
  */
 void set_relation(AttributeType parent_type, AttributeType child_type, QBool need_subtree) {
 	ditRelation new_node, curr_node;
@@ -54,13 +52,8 @@ void set_relation(AttributeType parent_type, AttributeType child_type, QBool nee
 		curr_child->object_type = child_type;
 		curr_child->next = NULLObjectType;
 	}
-} /* set_relation */
+}
 
-/*
- * - get_child_list() -
- *
- *
- */
 objectTypeList get_child_list(AttributeType parent_type) {
 	ditRelation curr_node;
 
@@ -70,13 +63,8 @@ objectTypeList get_child_list(AttributeType parent_type) {
 		if (curr_node->parent_type == parent_type)
 			return curr_node->child_types;
 	return NULLObjectType;
-} /* get_child_list */
+}
 
-/*
- * -get_search_attrs() -
- *
- *
- */
 objectTypeList get_search_attrs(AttributeType attr_type) {
 	searchInfo curr_info;
 
@@ -85,13 +73,8 @@ objectTypeList get_search_attrs(AttributeType attr_type) {
 			curr_info = curr_info->next)
 		if (attr_type == curr_info->object_type) return curr_info->search_on_list;
 	return NULLObjectType;
-} /* get_search_attrs */
+}
 
-/*
- * - set_search_attr() -
- *
- *
- */
 void set_search_attr(char *type_label, AttributeType obj_type, AttributeType search_type) {
 	searchInfo curr_info;
 	objectType curr_type;
@@ -118,7 +101,7 @@ void set_search_attr(char *type_label, AttributeType obj_type, AttributeType sea
 	curr_type = curr_info->search_on_list = object_type_alloc();
 	curr_type->next = NULLObjectType;
 	curr_type->object_type = search_type;
-} /* set_search_attr */
+}
 
 int test_init_ditmodel (void) {
 	entryList search_path;
@@ -192,19 +175,12 @@ int test_init_ditmodel (void) {
 	AttrT_new("2.5.4.3"));
 }
 
-/*
- * - is_search_attr() -
- *
- *
- */
 QBool is_search_attr(AttributeType octype, AttributeType srchtype) {
 	return (octype == srchtype);
 }
 
 /*
- * - is_oc_must() -
  * Check if the given attribute is in the given objectClass' must list.
- *
  */
 QBool is_oc_must(objectclass *ocp, AttributeType at) {
 	table_seq optr;
@@ -216,9 +192,7 @@ QBool is_oc_must(objectclass *ocp, AttributeType at) {
 }
 
 /*
- * - is_oc_may() -
  * Check if the given attribute is in the given objectClass' may list.
- *
  */
 QBool is_oc_may(objectclass *ocp, AttributeType at) {
 	table_seq optr;
@@ -230,9 +204,7 @@ QBool is_oc_may(objectclass *ocp, AttributeType at) {
 }
 
 /*
- * - is_search_type() -
  * Check if given object class is in search type list.
- *
  */
 QBool is_search_type(AttributeType at) {
 	searchInfoList srchlist = search_type_list;
@@ -243,9 +215,7 @@ QBool is_search_type(AttributeType at) {
 }
 
 /*
- * - get_type_label() -
  * Return the label for a given search type.
- *
  */
 char *get_type_label(AttributeType at) {
 	searchInfoList srchlist;
@@ -258,9 +228,7 @@ char *get_type_label(AttributeType at) {
 }
 
 /*
- * - set_default_path() -
  * Set a Ufs Path.
- *
  */
 void set_default_path(AttributeType object_type, entryList path) {
 	ufsPath curr_path;
@@ -280,11 +248,6 @@ void set_default_path(AttributeType object_type, entryList path) {
 	}
 }
 
-/*
- * - get_default_path() -
- *
- *
- */
 entryList get_default_path(AttributeType object_type) {
 	ufsPath curr_path;
 

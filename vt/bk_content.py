@@ -1,14 +1,4 @@
 -- VTPM: encode/decode BKQ/BKR PDU
-
--- 
---
---
--- 
---
---
---
---
-
 VT  DEFINITIONS ::=
 %{
 

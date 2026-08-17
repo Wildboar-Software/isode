@@ -1,15 +1,4 @@
 /* loc.c - search for a locality */
-
-/*
- * 
- *
- *
- * 
- *
- * *** empty log message ***
- *
- */
-
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>

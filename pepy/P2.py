@@ -1,17 +1,4 @@
 -- P2.py - MHS P2 definitions
-
--- 
---
---
--- 
---
---
---
---
-
-
-
-
 P2 DEFINITIONS	::=
 
 %{

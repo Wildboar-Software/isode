@@ -2,7 +2,6 @@
 #   Instructions to Make, for compilation of ISODE processes
 ##########################################################################
 
-
 LIBDIRS	=	h compat dirent tsap ssap psap pepsy pepy psap2 \
 		acsap rosap rtsap ronot rosy 
 DIRS	=	$(LIBDIRS) support imisc

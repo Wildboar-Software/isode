@@ -1,19 +1,11 @@
 /* ftpd.c - FTAM/FTP gateway */
-
 /*
- * 
- *
  * Author:	John A. Scott		<Scott@GATEWAY.MITRE.ORG>
  *		The MITRE Corporation
  *		Washington C3I Division
  *		7525 Colshire Drive
  *		Mclean, Virginia 22102
  *		+1-703-883-5915
- *
- * 
- *
- *
- *
  */
 
 /*

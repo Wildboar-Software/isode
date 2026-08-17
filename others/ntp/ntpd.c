@@ -1,14 +1,7 @@
 /*
  * ntp daemon - based on the 3.4 version but heavily modified for OSI
  * interworking.
- *
- * 
- *
- *
- *
- *
  */
-
 #include <stdint.h>
 #include "manifest.h"
 #include <stdarg.h>

@@ -1,14 +1,4 @@
 -- VTPM: encode NDQ PDU
-
--- 
---
---
--- 
---
---
---
---
-
 NDQPDU DEFINITIONS ::=
 
 %{

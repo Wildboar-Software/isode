@@ -1,18 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  request.c - Manage requests to the query engine.
-
-*****************************************************************************/
-
 #include <stdlib.h>
 #include "types.h"
 #include "error.h"
@@ -36,9 +21,7 @@ static request_state process_dap_result(), process_dap_error();
 static void request_rec_free();
 
 /*
- * - abort_request() -
  * Abort request of given id.
- *
  */
 void abort_request(QCardinal request_id) {
 	DsTask curr_task;
@@ -54,14 +37,12 @@ void abort_request(QCardinal request_id) {
 			curr_task = curr_task->next;
 	}
 	_request_complete(request_id);
-} /* abort_request */
+}
 
 /*
- * - directory_wait() -
  * Process one incoming result/error.
  * Check if any user requests are complete and processes them. If the
  * relevant user request has completed, return true and pass back the results.
- *
  */
 QCardinal directory_wait(QCardinal **id_ptr) {
 	struct DAPindication indication;
@@ -106,12 +87,10 @@ QCardinal directory_wait(QCardinal **id_ptr) {
 		*id_ptr = (QCardinal *) NULL;
 		return 0;
 	}
-} /* directory_wait */
+}
 
 /*
- * - _request_invoked() -
  * Add invoked user request to request array and pass back identifier.
- *
  */
 QE_error_code _request_invoked(request_type type, QCardinal *return_id_ptr) {
 	requestRec new_request;
@@ -197,13 +176,10 @@ QE_error_code _request_invoked(request_type type, QCardinal *return_id_ptr) {
 	}
 	live_req_count++;
 	return QERR_ok;
-} /* _request_invoked */
+}
 
 /*
- * - _request_complete() -
- *
  * The id'ed request has aborted or returned. Remove from outstanding list.
- *
  */
 void _request_complete(QCardinal request_id) {
 	requestRec old_request;
@@ -216,12 +192,10 @@ void _request_complete(QCardinal request_id) {
 		old_request->prev->next = old_request->next;
 	old_request->next = NULLReqRec;
 	request_rec_free(old_request);
-} /* _request_complete */
+}
 
 /*
- * - request_rec_free() -
  * Free a request_rec structure.
- *
  */
 static void request_rec_free(requestRec request) {
 	if (request == NULLReqRec) return;
@@ -251,12 +225,10 @@ static void request_rec_free(requestRec request) {
 		break;
 	}
 	free((char *) request);
-} /* request_rec_free */
+}
 
 /*
- * - process_dap_result() -
  * Decode results and place into appropriate request_rec for later dispatch.
- *
  */
 static request_state process_dap_result(struct DAPresult *dap_result, QCardinal *id_ptr) {
 	requestRec request;
@@ -292,13 +264,8 @@ static request_state process_dap_result(struct DAPresult *dap_result, QCardinal 
 		return process_modify_ds_result(request, task_id, ds_result);
 	}
 	return RQ_processing;
-} /* process_dap_result */
+}
 
-/*
- * - process_dap_error() -
- *
- *
- */
 static request_state process_dap_error(struct DAPerror *error, QCardinal *id_ptr) {
 	requestRec request;
 	DsTask task_rec;
@@ -336,7 +303,6 @@ static request_state process_dap_error(struct DAPerror *error, QCardinal *id_ptr
 }
 
 /*
- * - _get_request_of_id() -
  * Return a pointer to the identified request record. If not found
  * return null pointer.
  */
@@ -352,4 +318,4 @@ requestRec _get_request_of_id(QCardinal request_id) {
 		return NULLReqRec;
 	else
 		return request;
-} /* _get_request_of_id */
+}

@@ -1,8 +1,5 @@
 /* ultrix25.c - X.25 abstractions for Ultrix X25 */
-
 /*
- * 
- *
  * DEMSA X25 contributed by Arnold Krechel, GMD
  *
  * Contributed by George Michaelson, University of Queensland in Australia
@@ -12,12 +9,6 @@
  *
  *   Using the example code for the Ultrix X.25 interface
  *   written by DEC NAC here in Australia
- *
- *
- * 
- *
- *
- *
  */
 
 #include <unistd.h>

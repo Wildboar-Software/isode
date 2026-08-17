@@ -1,16 +1,7 @@
 /* x25.h - X.25 abstractions */
-
 /*
- * 
- *
  * Contributed by John Pavel, Department of Trade and Industry/National
  * Physical Laboratory in the UK
- *
- *
- * 
- *
- *
- *
  */
 
 #ifndef _X25_

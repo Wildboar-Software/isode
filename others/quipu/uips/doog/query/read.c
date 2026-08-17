@@ -1,16 +1,3 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-*****************************************************************************/
-
 #include <stdlib.h>
 #include "types.h"
 #include "util.h"
@@ -43,11 +30,6 @@ unsigned char *photo_bytes, *photo_ptr;
 
 QBool photo_pass_two;
 
-/*
- * - get_read_results() -
- *
- *
- */
 readResults get_read_results(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	readRec readrec;
@@ -59,13 +41,8 @@ readResults get_read_results(QCardinal request_id) {
 	readrec->results = NULLReadResults;
 	_request_complete(request_id);
 	return results;
-} /* get_read_results */
+}
 
-/*
- * - do_read() -
- *
- *
- */
 QE_error_code do_read(char *baseobject, QCardinal *id_ptr, stringCell attr_list) {
 	readRec new_request;
 	requestRec this_request;
@@ -76,13 +53,8 @@ QE_error_code do_read(char *baseobject, QCardinal *id_ptr, stringCell attr_list)
 	new_request->base_object = copy_string(baseobject);
 	new_request->request_id = *id_ptr;
 	return start_read(*id_ptr, baseobject, attr_list, &new_request->task_id);
-} /* do_read */
+}
 
-/*
- * - process_read() -
- *
- *
- */
 QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr_list, int *task_id_ptr) {
 	int task_id;
 	struct ds_read_arg read_arg;
@@ -130,13 +102,8 @@ QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr
 		   task_id));
 #endif
 	return QERR_ok;
-} /* start_read */
+}
 
-/*
- * - process_read_ds_result() -
- *
- *
- */
 request_state process_read_ds_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	readRec readrec = request->READ_REC;
@@ -163,13 +130,8 @@ request_state process_read_ds_result(requestRec request, int task_id, struct DSR
 		   task_id));
 #endif
 	return RQ_results_returned;
-} /* process_read_ds_result */
+}
 
-/*
- * - process_read_ds_error() -
- *
- *
- */
 request_state process_read_ds_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	readRec readrec = request->READ_REC;
@@ -190,13 +152,8 @@ request_state process_read_ds_error(requestRec request, int task_id, struct DSEr
 	/* Remove invocation record for this task */
 	_task_complete(task_id);
 	return RQ_results_returned;
-} /* process_read_ds_error */
+}
 
-/*
- * - read_result_free() -
- *
- *
- */
 void read_result_free(readResults *result_ptr) {
 	attrValList av_list, av_last;
 
@@ -212,12 +169,10 @@ void read_result_free(readResults *result_ptr) {
 	if (result->base_object != NULLCP) free(result->base_object);
 	free((char *) result);
 	*result_ptr = NULLReadResults;
-} /* read_result_free */
+}
 
 /*
- * - read_rec_free() -
  * Assumes that results and errors have already been freed.
- *
  */
 void read_rec_free(readRec record) {
 	if (record == NULLReadRec) return;
@@ -226,9 +181,7 @@ void read_rec_free(readRec record) {
 } /* read_rec_free */
 
 /*
- * - read_dn_attr_rec_free() -
  * Assumes that results and errors have already been freed.
- *
  */
 void read_dn_attr_rec_free(readDnAttrRec record) {
 	if (record == NULLReadDnAttrRec) return;
@@ -239,11 +192,6 @@ void read_dn_attr_rec_free(readDnAttrRec record) {
 	free((char *) record);
 } /* read_rec_free */
 
-/*
- * - get_read_attrs() -
- *
- *
- */
 void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format) {
 	PS valps;
 	photoData photo_data = (photoData) NULL;
@@ -334,7 +282,7 @@ void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format
 			curr_attr->is_photo = FALSE;
 		}
 	}
-} /* get_read_attrs */
+}
 
 int photo2xbm(PS ps, PE picture, int format) {
 	PS sps;
@@ -353,7 +301,7 @@ int photo2xbm(PS ps, PE picture, int format) {
 	decode_t4(sps->ps_base, "photo", 0);
 	ps_free(sps);
 	return 0;
-} /* photo2xbm */
+}
 
 int photo_start (char *name) {
 	if (photo_pass_two == FALSE) {
@@ -471,11 +419,6 @@ int photo_line_end(bit_string *line) {
 	return 0;
 }
 
-/*
- * - do_dn_attr_read() -
- *
- *
- */
 QE_error_code do_dn_attr_read(char *baseobject, QCardinal *id_ptr, stringCell dn_attr) {
 	readDnAttrRec new_request;
 	requestRec this_request;
@@ -489,13 +432,8 @@ QE_error_code do_dn_attr_read(char *baseobject, QCardinal *id_ptr, stringCell dn
 	new_request->task_id = NO_TASK;
 	new_request->dn_attr = copy_string_seq(dn_attr);
 	return start_read(*id_ptr, baseobject, dn_attr, &new_request->task_id);
-} /* do_dn_attr_read */
+}
 
-/*
- * - process_dn_attr_read_result() -
- *
- *
- */
 request_state process_read_dn_attr_result(requestRec request, int task_id, struct DSResult *ds_result) {
 	DsTask task_rec;
 	readDnAttrRec readrec = request->READ_DN_ATTR_REC;
@@ -519,11 +457,8 @@ request_state process_read_dn_attr_result(requestRec request, int task_id, struc
 	readrec->base_object = NULLCP;
 	readrec->results->entry = dn_attr;
 	return RQ_results_returned;
-} /* process_dn_attr_read_result */
+}
 
-/*
- * - process_read_ds_error() -
- */
 request_state process_read_dn_attr_error(requestRec request, int task_id, struct DSError *error) {
 	DsTask task_rec;
 	readDnAttrRec readrec = request->READ_DN_ATTR_REC;
@@ -544,11 +479,8 @@ request_state process_read_dn_attr_error(requestRec request, int task_id, struct
 	/* Remove invocation record for this task */
 	_task_complete(task_id);
 	return RQ_results_returned;
-} /* process_read_dn_attr_error */
+}
 
-/*
- * - get_read_results() -
- */
 readResults get_read_dn_attr_results(QCardinal request_id) {
 	requestRec request = _get_request_of_id(request_id);
 	readDnAttrRec readrec;
@@ -560,4 +492,4 @@ readResults get_read_dn_attr_results(QCardinal request_id) {
 	readrec->results = NULLReadResults;
 	_request_complete(request_id);
 	return results;
-} /* get_read_dn_attr_results */
+}

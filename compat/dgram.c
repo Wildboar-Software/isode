@@ -538,7 +538,6 @@ static void inetprint (struct sockaddr_in *sin, char *bp) {
 	S.E. Kille, Research Note RN/89/14, February 1989
 	Department of Computer Science
 	University College London
-
  */
 
 #ifndef SSEL

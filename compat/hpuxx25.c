@@ -1,16 +1,8 @@
 /* hpuxx25.c - X.25 abstractions for HPUX X25/9000 */
 
 /*
- * 
- *
  * Contributed by John Pavel, Department of Trade and Industry/National
  * Physical Laboratory in the UK
- *
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

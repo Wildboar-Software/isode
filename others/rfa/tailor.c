@@ -7,15 +7,7 @@
  * tailor.c - read rfatailor and .rfarc file
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
-
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>

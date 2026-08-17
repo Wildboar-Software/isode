@@ -1,18 +1,7 @@
 /* real2prim.c - real to presentation element */
-
 /*
- * 
- *
  * Contributed by Julian Onions, Nottingham University.
- * July 1989 - this is awful stuff!
- *
- * 
- *
- *
- *
- *
  */
-
 #include <stdlib.h>
 #include "psap.h"
 

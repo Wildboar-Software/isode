@@ -1,8 +1,5 @@
 /* install.c - installation of files on remote host */
-
 /*
- * 
- *
  * Installation of files on remote host - the routines here drive the
  * protocol for installation, comparision and deletion etc. The
  * protocol is basically similar to the original rdist, except it is
@@ -13,12 +10,6 @@
  *
  * Julian Onions <jpo@cs.nott.ac.uk>
  * Nottingham University Computer Science
- *
- *
- * 
- *
- *
- *
  */
 
 /*
@@ -39,12 +30,6 @@
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-#ifndef lint
-static char sccsid[] = "@(#)server.c    5.12 (Berkeley) 6/1/90";
-static char rcsid[] = "
-#endif
-
 #include "defs.h"
 #include "sys.file.h"
 #include <stdlib.h>

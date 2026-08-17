@@ -1,40 +1,19 @@
-/* 
-
-/*
- * 
- *
- *
- *
- */
-
-/*****************************************************************************
-
-  sequence.c - Linked list for string storage.
-
-*****************************************************************************/
-
+/* Linked list for string storage. */
 #include <stdlib.h>
 #include <string.h>
 #include "util.h"
 #include "sequence.h"
 
 /*
- * - add_string_to_seq() -
  * Insert a string into a sequence.
- *
  */
 void add_string_to_seq(char *string, stringCell *sequence) {
 	stringCell head = cell_alloc();
 	head->string = copy_string(string);
 	head->next = *sequence;
 	*sequence = head;
-} /* add_string_to_seq */
+}
 
-/*
- * - copy_string_seq() -
- *
- *
- */
 stringCell copy_string_seq(stringCell sequence) {
 	stringCell curr;
 	stringCell head;
@@ -53,13 +32,10 @@ stringCell copy_string_seq(stringCell sequence) {
 		sequence = sequence->next;
 	}
 	return head;
-} /* copy_string_seq */
+}
 
 /*
- * - delete_from_seq() -
  * Delete a string from a sequence.
- *
- *
  */
 void delete_from_seq(char *string, stringCell *sequence) {
 	stringCell curr_cell = *sequence;
@@ -77,12 +53,10 @@ void delete_from_seq(char *string, stringCell *sequence) {
 		curr_cell->next = NULLStrCell;
 		free_string_seq(&curr_cell);
 	}
-} /* delete_from_seq */
+}
 
 /*
- * - free_string_seq() -
  * Free a string sequence.
- *
  */
 void free_string_seq(stringCell *sequence) {
 	stringCell next_cell, curr_cell = *sequence;
@@ -94,4 +68,4 @@ void free_string_seq(stringCell *sequence) {
 		curr_cell = next_cell;
 	}
 	*sequence = NULLStrCell;
-} /* free_string_seq */
+}

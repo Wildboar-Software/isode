@@ -1,14 +1,4 @@
 -- lookup.ry - the ISODE password lookup demo
-
--- 
---
---
--- 
---
---
---
--- 
-
 PasswordLookup DEFINITIONS ::=
 
 BEGIN

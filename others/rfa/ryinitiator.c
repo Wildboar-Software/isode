@@ -7,13 +7,6 @@
  * ryinitiator.c : initators interface to the ISODE Ry-Library
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

@@ -1,24 +1,10 @@
 -- rts.py - RTS definitions
 --	lifted directly from ISO9066-2
-
--- 
---
---
--- 
---
---
---
---
-
 --* Reliable-Transfer-APDUs *-- RTS
 --*  { joint-iso-ccitt reliable-transfer(3) apdus(0) } *--
 DEFINITIONS ::=
 
 %{
-#ifndef	lint
-static char *rcsid = "";
-#endif
-
 #include <stdio.h>
 #include "rtpkt.h"
 

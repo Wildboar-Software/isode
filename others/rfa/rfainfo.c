@@ -7,13 +7,6 @@
  * rfainfo.c : functions to manipulate fileinfo structure and files
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>

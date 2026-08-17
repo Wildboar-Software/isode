@@ -13,7 +13,6 @@
 
    	"An interim approach to use of Network Addresses",
 	S.E. Kille, January 16, 1989
-
  */
 
 struct NSAPaddr *

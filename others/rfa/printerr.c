@@ -7,13 +7,6 @@
  * printerr.c - print error message for protocol defined errors
  *
  * Contributed by Oliver Wenzel, GMD Berlin, 1990
- *
- * 
- *
- * 
- *
- *
- *
  */
 
 #include <stdio.h>
