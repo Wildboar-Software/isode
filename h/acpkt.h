@@ -1,5 +1,8 @@
 /* acpkt.h - include file for association control providers (AcS-PROVIDER) */
 
+#ifndef _ACPKT_H_
+#define _ACPKT_H_
+
 #ifndef	_AcSAP_
 #include "acsap.h"		/* definitions for AcS-USERs */
 #endif
@@ -232,8 +235,9 @@ struct assocblk {
 void freeacblk (struct assocblk *acb);
 struct assocblk *newacblk (), *findacblk ();
 
-int	acpktlose (struct assocblk*acb, ...);
+int	acpktlose (struct assocblk *acb, ...);
 int	acsaplose (struct AcSAPindication*aci, ...);
+int ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindication *aci);
 
 #ifndef	ACSE
 
@@ -288,3 +292,5 @@ int	acsaplose (struct AcSAPindication*aci, ...);
 #define	ABORT_USER	6	/* User abort */
 #define	ABORT_TRANS	7	/* Transfer completed */
 #endif
+
+#endif /* _ACPKT_H_ */

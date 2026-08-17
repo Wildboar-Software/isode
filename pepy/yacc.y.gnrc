@@ -19,6 +19,8 @@
 %END(MOSY)%
 
 int yylex(void);
+void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode);
+void pass1_err (char *mod, char *id, YP param, int errcode);
 
 //#define	YYSTYPE	YYSTKTYPE
 

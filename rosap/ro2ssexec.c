@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <strings.h>
+#include <unistd.h>
 #include "ROS-types.h"
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"

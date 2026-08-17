@@ -243,4 +243,6 @@ int	RoPService (), RoSService ();
 int	RoSetThorn ();
 
 char	*RoErrString ();	/* return RoSAP error code in string form */
+
+int	rosaplose (struct RoSAPindication *roi, ...);
 #endif

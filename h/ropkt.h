@@ -142,9 +142,8 @@
 #define	pylose() \
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP, "%s", PY_pepy)
 
-int	ropktlose (struct assocblk*acb, ...);
-int	rosapreject (struct assocblk*acb, ...);
-int	rosaplose (struct RoSAPindication*, ...);
+int	ropktlose (struct assocblk *acb, ...);
+int	rosapreject (struct assocblk *acb, ...);
 
 int	acb2osdu ();
 
@@ -156,6 +155,15 @@ int	ro2pswrite (), ro2pswait (), ro2psasync (), ro2psmask ();
 int	ss2roslose (), ss2rosabort ();
 int	ro2sswrite (), ro2sswait (), ro2ssasync (), ro2ssmask (), ro2sslose (),
 	ro2ssready ();
+
+int RoURejectRequestAux (
+	struct assocblk *acb,
+	int *invokeID,
+	int reason,
+	PElementID id,
+	int priority,
+	struct RoSAPindication *roi
+);
 
 /* APDU types */
 #define	APDU_INVOKE	1	/* Invoke */

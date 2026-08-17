@@ -118,7 +118,7 @@ static void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa) {
 		printf ("Address: %s\n", paddr2str (pa, NULLNA));
 
 		pe = NULLPE;
-		if (build_DSE_PSAPaddr (&pe, 1, NULL, NULLCP, (char *) pa) == NOTOK) {
+		if (build_DSE_PSAPaddr (&pe, 1, 0, NULLCP, (char *) pa) == NOTOK) {
 			printf ("build of PSAPaddr failed: %s\n", PY_pepy);
 			goto dont_touch;
 		}

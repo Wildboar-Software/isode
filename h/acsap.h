@@ -10,6 +10,9 @@
 #include "general.h"
 #endif
 
+#include "psap.h"
+#include "isoaddrs.h"
+
 #ifndef	_PSAP2_
 #include "psap2.h"		/* definitions for PS-USERs */
 #endif
@@ -245,8 +248,14 @@ int	AcABORTser ();		/* handle P-{U,P}-ABORT.INDICATION */
 
 int	AcFindPCI ();		/* return PCI used by ACSE */
 
+int	PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi);
+int AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci);
+
 char   *AcErrString ();		/* return AcSAP error code in string form */
 
 int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep);
+
+int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm);
+int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm);
 
 #endif

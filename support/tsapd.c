@@ -15,6 +15,9 @@
 #include "manifest.h"
 #include "sys.file.h"
 #include <sys/stat.h>
+#include "psap.h"
+#include "isoaddrs.h"
+#include "tsap.h"
 
 #ifdef HPUX
 #include <sys/wait.h>

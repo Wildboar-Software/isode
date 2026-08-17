@@ -54,7 +54,7 @@ int	RyDsError (int sd, int id, int err, caddr_t out, int priority, struct RoSAPi
 #endif
 		PY_pepy[0] = 0;
 #ifdef PEPSY_DEFINITIONS
-		if (enc_f (rye -> rye_param_index, rye -> rye_param_mod, &pe, 1, NULL,
+		if (enc_f (rye -> rye_param_index, rye -> rye_param_mod, &pe, 1, 0,
 				   NULLCP, out) == NOTOK)
 #else
 		if ((*rye -> rye_param_encode) (&pe, 1, NULL, NULLCP, out) == NOTOK)

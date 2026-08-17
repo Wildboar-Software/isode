@@ -6,6 +6,14 @@
 #include "sys.file.h"
 #include "tailor.h"
 
+extern int iserver_init (
+	int argc,
+	char **argv,
+	AEI aei,
+	IFP initfnx,
+	struct TSAPdisconnect *td
+);
+
 int isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td) {
 	if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
 		return NOTOK;

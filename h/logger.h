@@ -4,6 +4,9 @@
 
 #include "manifest.h"
 #include <stdarg.h>
+#ifdef PEPSY_VERSION
+#include "pepsy.h"
+#endif
 
 typedef struct  ll_struct {
     char   *ll_file;		/* path name to logging file */
@@ -60,6 +63,8 @@ else
 #ifdef	DEBUG
 
 #ifdef PEPSY_VERSION
+
+void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 
 #ifdef __STDC__
 

@@ -243,7 +243,7 @@ static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char *
 			goto nope;
 
 		pe = NULLPE;
-		if (enc_f (ryo -> ryo_arg_index, ryo -> ryo_arg_mod, &pe, 1, NULL,
+		if (enc_f (ryo -> ryo_arg_index, ryo -> ryo_arg_mod, &pe, 1, 0,
 				   NULLCP, in) != NOTOK)
 			cc = ps_get_abs (pe);
 		if (pe)

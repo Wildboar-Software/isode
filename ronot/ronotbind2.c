@@ -6,6 +6,8 @@
 #include "isoaddrs.h"
 #include "RONOT-types.h"
 
+static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni);
+
 /* RO-BIND.INDICATION */
 
 int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
@@ -37,7 +39,7 @@ int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindica
 	return (result);
 }
 
-int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
+static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acs->acs_ninfo == 0)

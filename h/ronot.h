@@ -65,4 +65,9 @@ struct RoNOTindication {
 #define	copyRoNOTdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
+int	ronotlose (struct RoNOTindication *rni, ...);
+int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *aca);
+
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni);
+
 #endif

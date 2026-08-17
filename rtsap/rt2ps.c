@@ -8,6 +8,13 @@
 #include "rtpkt.h"
 #include "tailor.h"
 
+extern int RtWaitRequestAux (
+	struct assocblk *acb,
+	int secs,
+	int trans,
+	struct RtSAPindication *rti
+);
+
 static void psDATAser (int sd, struct PSAPdata *px);
 static void psTOKENser (int sd, struct PSAPtoken *pt);
 static void psSYNCser (int sd, struct PSAPsync *pn);
@@ -636,8 +643,8 @@ static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, str
 			if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
 				pylose ();
 				goto out;
+				PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTTPapdu", 1);
 			}
-			PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTTPapdu", 1);
 			if (rtpdu -> offset != type_RTS_RTSE__apdus_rttp__apdu) {
 				rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
 						   "unexpected PDU");

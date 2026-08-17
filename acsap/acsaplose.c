@@ -9,9 +9,15 @@
 #include "acpkt.h"
 #include "tailor.h"
 
-int	acsaplose (struct AcSAPindication*aci, ...);
+int	acsaplose (struct AcSAPindication *aci, ...);
+static int _acsaplose (
+	struct AcSAPindication *aci,
+	int reason,
+	char *what,
+	char *fmt,
+	va_list ap
+);
 
-#ifndef	lint
 int	acpktlose (struct assocblk*acb, ...) {
 	int	    reason,
 			result;
@@ -23,48 +29,30 @@ int	acpktlose (struct assocblk*acb, ...) {
 	va_list ap;
 
 	va_start (ap, acb);
-
 	aci = va_arg (ap, struct AcSAPindication *);
 	reason = va_arg (ap, int);
-
 	result = _acsaplose (aci, reason, NULLCP, NULLCP, ap);
-
 	va_end (ap);
-
 	if (acb == NULLACB || acb -> acb_fd == NOTOK)
 		return result;
-
 	if (acb -> acb_sversion == 1) {
 		if (PUAbortRequest (acb -> acb_fd, NULLPEP, 0, &pis) != NOTOK)
 			acb -> acb_fd = NOTOK;
-
 		return result;
 	}
-
 	pdu -> abort__source = int_ACS_abort__source_acse__service__provider;
 	pdu -> user__information = NULL;
-
 	pe = NULLPE;
 	if (encode_ACS_ABRT__apdu (&pe, 1, 0, NULLCP, pdu) != NOTOK) {
 		pe -> pe_context = acb -> acb_id;
-
 		PLOGP (acsap_log,ACS_ACSE__apdu, pe, "ABRT-apdu", 0);
-
 		if (PUAbortRequest (acb -> acb_fd, &pe, 1, &pis) != NOTOK)
 			acb -> acb_fd = NOTOK;
 	}
 	if (pe)
 		pe_free (pe);
-
 	return result;
 }
-#else
-/* VARARGS5 */
-
-int acpktlose (struct assocblk *acb, struct AcSAPindication *aci, int reason, char *what, char *fmt) {
-	return acpktlose (acb, aci, reason, what, fmt);
-}
-#endif
 
 int	acsaplose (struct AcSAPindication*aci, ...) {
 	int	    reason,
@@ -85,7 +73,7 @@ int	acsaplose (struct AcSAPindication*aci, ...) {
 	return result;
 }
 
-int _acsaplose (
+static int _acsaplose (
 	struct AcSAPindication *aci,
 	int reason,
 	char *what,

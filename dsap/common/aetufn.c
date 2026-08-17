@@ -352,6 +352,8 @@ void set_lookup_ufn (char flag) {
 
 #ifdef STANDALONE_AET_TEST
 
+#include "acsap.h"
+
 int main (int argc, char **argv) {
 	char buffer [1024];
 	int ontty, n;

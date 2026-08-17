@@ -5,6 +5,8 @@
 #include "ronot.h"
 #include "RONOT-types.h"
 
+static int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni);
+
 /* RO-UNBIND.REQUEST */
 
 int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni) {
@@ -84,7 +86,7 @@ int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindic
 	return (result);
 }
 
-int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni) {
+static int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni) {
 	PE	  pe;
 
 	if (acr->acr_ninfo == 0)

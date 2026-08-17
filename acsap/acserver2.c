@@ -11,16 +11,48 @@ static	int	is_nfds;
 static fd_set	is_mask;
 static char	is_single;
 
-int iserver_init (int argc, char **argv, AEI aei, IFP initfnx, struct TSAPdisconnect *td) {
+int iserver_init (
+	int argc,
+	char **argv,
+	AEI aei,
+	IFP initfnx,
+	struct TSAPdisconnect *td
+);
+
+static int iserver_initAux (
+	int argc,
+	char **argv,
+	struct PSAPaddr *pa,
+	IFP initfnx,
+	MagicFunction magicfnx,
+	int flag,
+	struct TSAPdisconnect *td
+);
+
+int iserver_init (
+	int argc,
+	char **argv,
+	AEI aei,
+	IFP initfnx,
+	struct TSAPdisconnect *td
+) {
 	struct PSAPaddr *pa = NULLPA;
 
 	if (argc <= 1 && (pa = aei2addr (aei)) == NULLPA)
 		return tsaplose (td, DR_ADDRESS, NULLCP,
 						 "address translation failed");
-	return iserver_initAux (argc, argv, pa, initfnx, NULLIFP, 0, td);
+	return iserver_initAux (argc, argv, pa, initfnx, NULL, 0, td);
 }
 
-int iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
+int iserver_init_aux (
+	int argc,
+	char **argv,
+	AEI aei,
+	IFP initfnx,
+	MagicFunction magicfnx,
+	int flag,
+	struct TSAPdisconnect *td
+) {
 	struct PSAPaddr *pa = NULLPA;
 
 	if (argc <= 1 && (pa = aei2addr (aei)) == NULLPA)
@@ -29,7 +61,15 @@ int iserver_init_aux (int argc, char **argv, AEI aei, IFP initfnx, IFP magicfnx,
 	return iserver_initAux (argc, argv, pa, initfnx, magicfnx, flag, td);
 }
 
-int iserver_initAux (int argc, char **argv, struct PSAPaddr *pa, IFP initfnx, IFP magicfnx, int flag, struct TSAPdisconnect *td) {
+static int iserver_initAux (
+	int argc,
+	char **argv,
+	struct PSAPaddr *pa,
+	IFP initfnx,
+	MagicFunction magicfnx,
+	int flag,
+	struct TSAPdisconnect *td
+) {
 	int	fd;
 
 	isodetailor (NULLCP, 0);

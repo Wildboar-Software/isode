@@ -5,6 +5,9 @@
 #include "logger.h"
 #include "ronot.h"
 #include "tailor.h"
+#include "acsap.h"
+
+static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication *rni);
 
 /* RO-BIND.REQUEST */
 
@@ -137,7 +140,7 @@ int RoAsynBindRetry(int ad, int do_next_nsap, struct AcSAPconnect *acc,
   return (result);
 }
 
-int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication *rni) {
+static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication *rni) {
   PE pe;
 
   if (acc->acc_ninfo == 0)

@@ -11,6 +11,7 @@
 #include "tsap.h"
 #include "dgram.h"
 #include "tailor.h"
+#include "compat.h"
 
 static int stayopen = 0;
 

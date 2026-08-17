@@ -8,6 +8,8 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 
+int _printent (struct isoentity *ie);
+
 static char *isoentities = "isoentities";
 
 static FILE *servf = NULL;
@@ -19,6 +21,9 @@ static char  buffer[BUFSIZ + 1];
 static char *vec[NVEC + NSLACK + 1];
 
 static struct isoentity ies;
+
+int _startisoentity (char *descriptor);
+int _stopisoentity (char *descriptor, struct isoentity *iep);
 
 int setisoentity (int f) {
 	if (servf == NULL)

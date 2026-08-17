@@ -12,7 +12,6 @@
 #undef	MGMT
 #endif
 
-#ifndef	lint
 static int _tsaplose (
 	struct TSAPdisconnect *td,
 	int reason,
@@ -29,25 +28,17 @@ int	tpktlose (struct tsapblk* tb, ...) {
 	char    buffer[BUFSIZ];
 
 	va_start (ap, tb);
-
 	// tb = va_arg (ap, struct tsapblk *);
-
 	td = va_arg (ap, struct TSAPdisconnect *);
 	if (td == NULL)
 		td = &tds;
-
 	reason = va_arg (ap, int);
-
 	result = _tsaplose (td, reason, ap);
-
 	what = va_arg(ap, char *);
 	fmt = va_arg(ap, char *);
-
 	if (fmt)
 		_asprintf (bp = buffer, what, fmt, ap);
-
 	va_end (ap);
-
 	if (td -> td_cc > 0) {
 		SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
 			  ("tpktlose [%s] %*.*s", TErrString (td -> td_reason), td -> td_cc,
@@ -63,12 +54,10 @@ int	tpktlose (struct tsapblk* tb, ...) {
 		case DR_CONGEST:
 			(*tb -> tb_manfnx) (CONGEST, tb);
 			break;
-
 		case DR_PROTOCOL:
 		case DR_MISMATCH:
 			(*tb -> tb_manfnx) (PROTERR, tb);
 			break;
-
 		case DR_SESSION:
 		case DR_ADDRESS:
 		case DR_CONNECT:
@@ -77,50 +66,25 @@ int	tpktlose (struct tsapblk* tb, ...) {
 		case DR_REFUSED:
 			(*tb -> tb_manfnx) (CONFIGBAD, tb);
 			break;
-
 		default:
 			(*tb -> tb_manfnx) (OPREQINBAD, tb);
 		}
 #endif
-
 	(*tb -> tb_losePfnx) (tb, reason, td);
-
 	return result;
 }
-#else
-/* VARARGS5 */
 
-int tpktlose (struct tsapblk *tb, struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
-	return tpktlose (tb, td, reason, what, fmt);
-}
-#endif
-
-#ifndef	lint
 int	tsaplose (struct TSAPdisconnect*td, ...) {
 	int	    reason,
 			result;
 	va_list ap;
-
 	va_start (ap, td);
-
 	reason = va_arg (ap, int);
-
 	result = _tsaplose (td, reason, ap);
-
 	va_end (ap);
-
 	return result;
-
 }
-#else
-/* VARARGS4 */
 
-int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
-	return tsaplose (td, reason, what, fmt);
-}
-#endif
-
-#ifndef	lint
 static int _tsaplose (
 	struct TSAPdisconnect *td,
 	int reason,
@@ -133,17 +97,12 @@ static int _tsaplose (
 
 	what = va_arg(ap, char*);
 	fmt = va_arg(ap, char*);
-
 	if (td) {
 		bzero ((char *) td, sizeof *td);
-
 		_asprintf (bp = buffer, what, fmt, ap);
 		bp += strlen (bp);
-
 		td -> td_reason = reason;
 		copyTSAPdata (buffer, bp - buffer, td);
 	}
-
 	return NOTOK;
 }
-#endif

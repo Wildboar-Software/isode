@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include "general.h"
 #include "manifest.h"
+#include "isoaddrs.h"
 #include "tailor.h"
 
 static char *isoaliases = "isoaliases";

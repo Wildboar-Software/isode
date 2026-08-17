@@ -10,6 +10,13 @@
 #include "rtpkt.h"
 #include "tailor.h"
 
+extern int RtWaitRequestAux (
+	struct assocblk *acb,
+	int secs,
+	int trans,
+	struct RtSAPindication *rti
+);
+
 #define	doSSabort	ss2rtsabort
 
 static void ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),

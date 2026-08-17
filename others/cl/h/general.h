@@ -77,25 +77,6 @@
 #define	rindex	strrchr
 #endif
 
-char   *index ();
-char   *mktemp ();
-char   *rindex ();
-#ifdef	BSDSTRS
-char   *sprintf ();
-#else
-int     sprintf ();
-#endif
-char   *strcat ();
-int     strcmp ();
-char   *strcpy ();
-int	strlen ();
-char   *strncat ();
-int     strncmp ();
-char   *strncpy ();
-
-char   *getenv ();
-char   *calloc (), *malloc (), *realloc ();
-
 #if	defined(SYS5) && !defined(AIX)
 #include <memory.h>
 

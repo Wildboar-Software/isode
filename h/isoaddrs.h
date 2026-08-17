@@ -193,7 +193,7 @@ struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 int add_alias (char *name, char *value);
 
 #ifdef	NULLPE
-char   *alias2name ();
+char   *alias2name (char *name);
 
 extern PE    (*acsap_lookup) ();
 #endif
@@ -206,9 +206,10 @@ struct isoentity {		/* for stub directory service */
 	struct PSAPaddr ie_addr;
 };
 
-int	setisoentity (), endisoentity ();
+int	setisoentity (int f);
+int endisoentity (void);
 
-struct isoentity *getisoentity ();
+struct isoentity *getisoentity (void);
 
 AEI	oid2aei (OID oid);
 #endif
@@ -238,7 +239,6 @@ char   *pa2str ();		/* pretty-print PSAPaddr */
 
 int	isodeserver ();		/* generic server dispatch */
 
-int	iserver_init ();	/* phase 1 */
 int	iserver_wait ();	/* phase 2 */
 fd_set	iserver_mask ();	/* linkage */
 
@@ -260,5 +260,6 @@ struct QOStype {
 int macro2comm (char *name, struct ts_interim *ts);
 void free_macros(void);
 int norm2na (char *p, int len, struct NSAPaddr *na);
+int add_alias (char *name, char *value);
 
 #endif

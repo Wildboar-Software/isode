@@ -166,10 +166,14 @@ int	TNetUnique (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* start liste
 	TNetAcceptAux ((p), (v), NULLIP, NULLTA, (n), (r), (w), (e), (s), (t))
 int	TNetAcceptAux ();	/* accept a call on an TSAP */
 int	TNetClose ();		/* stop listening on an TSAP */
-int	TSetQueuesOK ();	/* enable/disable queued (non-blocking)
-				   writes */
+int	TSetQueuesOK ();	/* enable/disable queued (non-blocking) writes */
 
 typedef int (*MagicFunction)(int *vecp, char **vec, struct TSAPdisconnect *td);
+
+int	TNetListenAux (struct TSAPaddr *ta, MagicFunction magic, struct TSAPdisconnect *td);
+int	TNetFork (int vecp, char **vec, struct TSAPdisconnect *td);
+
+int	tsaplose (struct TSAPdisconnect*td, ...);
 
 #define	TLocalHostName	getlocalhost
 char   *TLocalHostName ();	/* return name of local host (sigh) */

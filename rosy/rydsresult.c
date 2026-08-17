@@ -43,7 +43,7 @@ int	RyDsResult (int sd, int id, caddr_t out, int priority, struct RoSAPindicatio
 #endif
 		PY_pepy[0] = 0;
 #ifdef PEPSY_DEFINITIONS
-		if (enc_f (ryo -> ryo_res_index, ryo -> ryo_res_mod, &pe, 1, NULL,
+		if (enc_f (ryo -> ryo_res_index, ryo -> ryo_res_mod, &pe, 1, 0,
 				   NULLCP, out) == NOTOK)
 #else
 		if ((*ryo -> ryo_res_encode) (&pe, 1, NULL, NULLCP, out) == NOTOK)

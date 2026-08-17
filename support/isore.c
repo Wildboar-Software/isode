@@ -48,7 +48,7 @@ int main (int argc, char **argv, char **envp) {
 #ifndef BSDSIGS
 			kill (ppid, SIGEMT);
 #endif
-			sigpause (0);
+			pause();
 			break;
 		}
 	}

@@ -7,6 +7,7 @@
 #include "psap.h"
 #include "isoaddrs.h"
 #include "tailor.h"
+#include "acsap.h"
 
 static AEInfo aeis;
 static struct PSAPaddr pas;
@@ -44,7 +45,7 @@ str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd)
 	bzero ((char *) pa, sizeof *pa);
 	if (pe = (*acsap_lookup) (name, context, ontty, userdn, passwd,
 							  &aei -> aei_ap_title)) {
-		if (parse_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, (char *) pa) == NOTOK) {
+		if (parse_DSE_PSAPaddr (pe, 1, NULL, NULLVP, (char *) pa) == NOTOK) {
 			SLOG (addr_log, LLOG_EXCEPTIONS, NULLCP,
 				  ("parse of presentationAddress failed: %s", PY_pepy));
 		} else

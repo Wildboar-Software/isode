@@ -16,15 +16,15 @@ all:;		@for i in $(DIRS); \
 # Just a target I added for debugging individual modules
 # one:;		cd pepy; $(MAKE) all;
 
-.PHONY: just-pepy
+# .PHONY: in-order
 
-in-order:
-	cd compat; $(MAKE) all;
-	cd ../dirent; $(MAKE) all;
-	cd ../tsap; $(MAKE) all;
-	cd ../ssap; $(MAKE) all;
-	cd ../psap; $(MAKE) all;
-	cd ../pepsy; $(MAKE) all;
+# in-order:
+# 	cd compat; $(MAKE) all;
+# 	cd ../dirent; $(MAKE) all;
+# 	cd ../tsap; $(MAKE) all;
+# 	cd ../ssap; $(MAKE) all;
+# 	cd ../psap; $(MAKE) all;
+# 	cd ../pepsy; $(MAKE) all;
 
 inst-all:	make-dirs
 		@for i in $(DIRS); \

@@ -10,8 +10,6 @@
 
 /* RO-U-REJECT.REQUEST */
 
-int RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi);
-
 int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi) {
 	int	    smask;
 	int     result;
@@ -26,7 +24,6 @@ int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct Ro
 		id = REJECT_INVOKE;
 		reason -= REJECT_INVOKE_BASE;
 		break;
-
 	case ROS_IP_RELEASE:
 	case ROS_IP_UNLINKED:
 	case ROS_IP_LINKED:
@@ -34,14 +31,12 @@ int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct Ro
 		id = REJECT_COMPLETE;
 		reason -= REJECT_INVOKE_BASE;
 		break;
-
 	case ROS_RRP_UNRECOG: 	/* Return Result Problem */
 	case ROS_RRP_UNEXP:
 	case ROS_RRP_MISTYPED:
 		id = REJECT_RESULT;
 		reason -= REJECT_RESULT_BASE;
 		break;
-
 	case ROS_REP_UNRECOG: 	/* Return Error Problem */
 	case ROS_REP_UNEXP:
 	case ROS_REP_RECERR:
@@ -50,25 +45,26 @@ int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct Ro
 		id = REJECT_ERROR;
 		reason -= REJECT_ERROR_BASE;
 		break;
-
 	default:
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "bad value for reason parameter");
 	}
 	missingP (roi);
-
 	smask = sigioblock ();
-
 	rosapPsig (acb, sd);
-
 	result = RoURejectRequestAux (acb, invokeID, reason, id, priority, roi);
-
 	sigiomask (smask);
-
 	return result;
 }
 
-int RoURejectRequestAux (struct assocblk *acb, int *invokeID, int reason, PElementID id, int priority, struct RoSAPindication *roi) {
+int RoURejectRequestAux (
+	struct assocblk *acb,
+	int *invokeID,
+	int reason,
+	PElementID id,
+	int priority,
+	struct RoSAPindication *roi
+) {
 	PE pe,
 	p;
 

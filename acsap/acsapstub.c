@@ -13,6 +13,9 @@
 #include "internet.h"
 #include "tpkt.h"
 #include "tailor.h"
+#include "acsap.h"
+
+extern int _printent (struct isoentity *ie);
 
 #define	fetch_aet	str2aet_seq
 

@@ -58,7 +58,7 @@ int	RyOpInvoke (
 #endif
 		PY_pepy[0] = 0;
 #ifdef PEPSY_DEFINITIONS
-		if (enc_f (ryo -> ryo_arg_index, ryo -> ryo_arg_mod, &pe, 1, NULL,
+		if (enc_f (ryo -> ryo_arg_index, ryo -> ryo_arg_mod, &pe, 1, 0,
 				   NULLCP, in) == NOTOK)
 #else
 		if ((*ryo -> ryo_arg_encode) (&pe, 1, NULL, NULLCP, in) == NOTOK)
