@@ -152,7 +152,7 @@ static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication 
   pe = acc->acc_info[0];
   acc->acc_info[0] = NULLPE;
   if (acc->acc_result == ACS_ACCEPT) {
-    if (decode_RONOT_BindResultValue(pe, 1, NULLIP, NULLVP,
+    if (decode_RONOT_BindResultValue(pe, 1, NULL, NULLVP,
                                      &acc->acc_info[0]) != OK) {
       /* ADT: Should end association here !?! */
       LLOG(rosap_log, LLOG_EXCEPTIONS,
@@ -162,7 +162,7 @@ static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication 
       return (ronotlose(rni, RBI_DEC_BIND_RES, NULLCP, NULLCP));
     }
   } else {
-    if (decode_RONOT_BindErrorValue(pe, 1, NULLIP, NULLVP, &acc->acc_info[0]) !=
+    if (decode_RONOT_BindErrorValue(pe, 1, NULL, NULLVP, &acc->acc_info[0]) !=
         OK) {
       LLOG(rosap_log, LLOG_EXCEPTIONS,
            ("ParseRoBindResponse: decode_RONOT_BindErrorValue failed"));

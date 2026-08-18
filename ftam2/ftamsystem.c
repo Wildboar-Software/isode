@@ -23,6 +23,7 @@
 #endif
 #include <utmp.h>
 #include "general.h"
+#include "compat.h"
 
 #ifdef SHADOW_PW
 #include <shadow.h>

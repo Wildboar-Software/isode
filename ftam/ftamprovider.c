@@ -306,7 +306,7 @@ unexpected_fadu:
 	for (pep = px -> px_info, i = px -> px_ninfo - 1; i >= 0; pep++, i--) {
 		if ((pe = *pep) == NULLPE)
 			continue;
-		if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+		if (decode_FTAM_PDU (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 			fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 					  "unable to parse PDU: %s", PY_pepy);
 			goto out;
@@ -1551,7 +1551,7 @@ static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMin
 		fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
-	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_FTAM_PDU (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 				  "unable to parse PDU: %s", PY_pepy);
 		goto out2;
@@ -1804,7 +1804,7 @@ int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindic
 		ftamlose (fti, FS_PRO_ERR, 1, NULLCP, NULLCP);
 		goto out;
 	}
-	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_FTAM_PDU (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		ftamlose (fti, FS_PRO_ERRMSG, 1, NULLCP,
 				  "unable to parse PDU: %s", PY_pepy);
 		goto out;

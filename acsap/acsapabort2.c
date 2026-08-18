@@ -78,7 +78,7 @@ int ps2acsabort (struct assocblk *acb, struct PSAPabort *pa, struct AcSAPindicat
 		goto out;
 	}
 
-	result = decode_ACS_ACSE__apdu (pe = pa -> pa_info[0], 1, NULLIP, NULLVP,
+	result = decode_ACS_ACSE__apdu (pe = pa -> pa_info[0], 1, NULL, NULLVP,
 									&pdu);
 
 #ifdef	DEBUG

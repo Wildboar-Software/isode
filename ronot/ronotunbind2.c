@@ -28,7 +28,7 @@ int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) 
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
 	pe = acf->acf_info[0];
 	acf->acf_info[0] = NULLPE;
-	if (decode_RONOT_UnBindArgumentValue (pe, 1, NULLIP, NULLVP, &(acf->acf_info[0])) != OK) {
+	if (decode_RONOT_UnBindArgumentValue (pe, 1, NULL, NULLVP, &(acf->acf_info[0])) != OK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("RO-UNBIND.INDICATION: decode_RONOT_UnBindArgumentValue failed"));
 		acf->acf_ninfo = 0;
 		pe_free (pe);

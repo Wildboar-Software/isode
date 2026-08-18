@@ -126,6 +126,29 @@ char  **blkcpy ();
 
 char   *xglob1val ();
 char  **xglob ();
+void rcinit (void);
+
+int getvf (
+	char *src,
+	char *dst,
+	struct FADUidentity *faduid,
+	struct vfsmap *vf,
+	int (*wfnx) (int fd, struct PSAPdata *px, int status)
+);
+int isdir (char *dir, char *dp, int silent);
+int	ncols (FILE *fp);
+int f_cd (char **vec);
+int f_close (char **vec);
+int f_ls (char **vec);
+int f_pwd (char **vec);
+int f_lcd (char **vec);
+
+int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti);
+int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti);
+int fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
+int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
+void timer (int cc, char *action);
+int	de2fadu (PE pe, int concat);
 
 extern int  errno;
 extern char *isodeversion;

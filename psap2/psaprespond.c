@@ -49,7 +49,7 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 	pb -> pb_srequirements = ss -> ss_requirements;
 	pb -> pb_ssdusize = ss -> ss_ssdusize;
 	bzero ((char *) ps, sizeof *ps);
-	if (decode_PS_CP__type (pe, 1, NULLIP, NULLVP, &cp) == NOTOK) {
+	if (decode_PS_CP__type (pe, 1, NULL, NULLVP, &cp) == NOTOK) {
 		ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CP, NULLCP, "%s", PY_pepy);
 		goto out1;
 	}

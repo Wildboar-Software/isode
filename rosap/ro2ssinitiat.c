@@ -170,7 +170,7 @@ no_mem:
 	SCFREE (sc);
 
 	if (sc -> sc_result != SC_ACCEPT) {
-		if (parse_OACS_PRefuse (pe, 1, NULLIP, NULLVP, &pref) == NOTOK) {
+		if (parse_OACS_PRefuse (pe, 1, NULL, NULLVP, &pref) == NOTOK) {
 			result = pylose ();
 			goto out1;
 		}
@@ -210,7 +210,7 @@ no_mem:
 	if (acb -> acb_requirements & SR_HALFDUPLEX)
 		acb -> acb_flags |= ACB_TURN;	/* it it is there we must have it */
 
-	if (parse_OACS_PAccept (pe, 1, NULLIP, NULLVP, &paccpt) == NOTOK) {
+	if (parse_OACS_PAccept (pe, 1, NULL, NULLVP, &paccpt) == NOTOK) {
 		result = pylose ();
 		goto out1;
 	}

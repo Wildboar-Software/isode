@@ -308,7 +308,7 @@ no_mem:
 			result = fpktlose (fsb, fti, FS_PRO_ERR, NULLCP, NULLCP);
 		goto out2;
 	}
-	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_FTAM_PDU (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		result = fpktlose (fsb, fti, FS_PRO_ERRMSG, NULLCP,
 						   "unable to parse PDU: %s", PY_pepy);
 		goto out2;

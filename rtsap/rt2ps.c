@@ -469,7 +469,7 @@ int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindi
 	}
 	pe = aca -> aca_info[0];
 	/* acsap_abort = ABORT_PERM, acsap_data = NULLPE; */
-	result = decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu);
+	result = decode_RTS_RTSE__apdus (pe, 1, NULL, NULLVP, &rtpdu);
 #ifdef	DEBUG
 	if (result != NOTOK && (rtsap_log -> ll_events & LLOG_PDUS))
 		pvpdu (rtsap_log, print_RTS_RTSE__apdus_P, pe, "RTABapdu", 1);
@@ -640,7 +640,7 @@ static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, str
 			return DONE;
 		case ST_PLEASE:
 			pe = pt -> pt_info[0];
-			if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+			if (decode_RTS_RTSE__apdus (pe, 1, NULL, NULLVP, &rtpdu) == NOTOK) {
 				pylose ();
 				goto out;
 				PLOGP (rtsap_log,RTS_RTSE__apdus, pe, "RTTPapdu", 1);

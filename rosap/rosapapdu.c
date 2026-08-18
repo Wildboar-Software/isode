@@ -25,8 +25,8 @@ int acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication
 
 	rosap_type = APDU_UNKNOWN;
 	if (((acb -> acb_flags & ACB_ACS)
-			? decode_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, &papdu)
-			: decode_ROS_OPDU (pe, 1, NULLIP, NULLVP, &popdu))
+			? decode_ROS_ROSEapdus (pe, 1, NULL, NULLVP, &papdu)
+			: decode_ROS_OPDU (pe, 1, NULL, NULLVP, &popdu))
 			== NOTOK) {
 		rosapreject (acb, roi, rosap_type != APDU_UNKNOWN
 					 ? ROS_GP_MISTYPED

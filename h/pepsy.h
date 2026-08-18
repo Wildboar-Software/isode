@@ -191,7 +191,7 @@ typedef	struct	{
 
 #define	LOTSOFBITS	128
 
-int dec_f(), fre_obj();
+int fre_obj();
 
 int enc_f (
 	int typ,
@@ -201,5 +201,15 @@ int enc_f (
 	int len,
 	char *buf,
 	char *parm
+);
+
+int dec_f (
+	int typ,
+	modtyp *mod,
+	PE pe,
+	int explicit,
+	int *len,
+	char **buf,
+	char **parm
 );
 #endif

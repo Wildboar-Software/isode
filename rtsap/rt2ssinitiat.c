@@ -208,7 +208,7 @@ no_mem:
 	if (sc -> sc_result != SC_ACCEPT) {
 		struct type_OACS_PRefuse *pref;
 
-		if (parse_OACS_PRefuse (pe, 1, NULLIP, NULLVP, &pref) == NOTOK) {
+		if (parse_OACS_PRefuse (pe, 1, NULL, NULLVP, &pref) == NOTOK) {
 			result = pylose ();
 			goto out1;
 		}
@@ -294,7 +294,7 @@ no_mem:
 
 	PLOGP (rtsap_log,OACS_PAccept, pe, "PAccept", 1);
 
-	if (parse_OACS_PAccept (pe, 1, NULLIP, NULLVP, &paccpt) == NOTOK) {
+	if (parse_OACS_PAccept (pe, 1, NULL, NULLVP, &paccpt) == NOTOK) {
 		result = pylose ();
 		goto out1;
 	}

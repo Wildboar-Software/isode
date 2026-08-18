@@ -441,7 +441,7 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 
 		pb -> pb_ssdusize = sc -> sc_ssdusize;
 
-		if (decode_PS_CPA__type (pe, 1, NULLIP, NULLVP, &cpa) == NOTOK) {
+		if (decode_PS_CPA__type (pe, 1, NULL, NULLVP, &cpa) == NOTOK) {
 			ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPA, NULLCP, "%s",
 					  PY_pepy);
 			goto out2;
@@ -459,7 +459,7 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 		pc -> pc_sd = pb -> pb_fd;
 	} else {
 		if (sc -> sc_result == SC_NOTSPECIFIED) {
-			if (decode_PS_ARP__PPDU (pe, 1, NULLIP, NULLVP, &arp) == NOTOK) {
+			if (decode_PS_ARP__PPDU (pe, 1, NULL, NULLVP, &arp) == NOTOK) {
 				ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_ARP, NULLCP,
 						  "%s", PY_pepy);
 				goto out2;
@@ -479,7 +479,7 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 			goto out2;
 		}
 
-		if (decode_PS_CPR__type (pe, 1, NULLIP, NULLVP, &cpr) == NOTOK) {
+		if (decode_PS_CPR__type (pe, 1, NULL, NULLVP, &cpr) == NOTOK) {
 			ppktlose (pb, pi, PC_UNRECOGNIZED, PPDU_CPR, NULLCP, "%s",
 					  PY_pepy);
 			goto out2;

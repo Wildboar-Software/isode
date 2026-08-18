@@ -76,7 +76,7 @@ int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication
 
 	SSFREE (ss);
 
-	if (parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pconn) == NOTOK) {
+	if (parse_OACS_PConnect (pe, 1, NULL, NULLVP, &pconn) == NOTOK) {
 		pylose ();
 		pe_free (pe);
 		goto out2;

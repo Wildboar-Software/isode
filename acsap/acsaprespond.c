@@ -45,7 +45,7 @@ int AcInit (int vecp, char **vec, struct AcSAPstart *acs, struct AcSAPindication
 				   "no user-data on P-CONNECT");
 		goto out2;
 	}
-	result = decode_ACS_ACSE__apdu (pe = ps -> ps_info[0], 1, NULLIP, NULLVP,
+	result = decode_ACS_ACSE__apdu (pe = ps -> ps_info[0], 1, NULL, NULLVP,
 									&pdu);
 #ifdef	DEBUG
 	if (result == OK) {

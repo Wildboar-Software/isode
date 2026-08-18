@@ -8,6 +8,7 @@
 #include <strings.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <pty.h>
 #include "vtpm.h"
 #include "sector1.h"
@@ -43,6 +44,8 @@
 #include <stdarg.h>
 #include <utmp.h>
 
+extern int data_pending (void);
+
 #define	BELL	'\07'
 #ifndef	SUNOS4
 #define BANNER	"\r\n\r\n4.2 BSD UNIX (%s)\r\n\r\n\r%s"
@@ -59,6 +62,26 @@ char	command[256];
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
+static void vtd (int f, int p);
+static int fatalperror (int f, char *msg, int errnum);
+static int fatal (int f, char *msg);
+static int netflush (void);
+
+extern int ass_ind (int argc, char **argv);
+extern void vrelreq (void);
+extern int getch (void);
+extern void vtsend(void);
+extern void vtdata(PE ndq);
+extern PE mkdeliver(int ack);
+extern void vdelreq(int ack);
+extern void vdelind(PE del_pe, int ack);
+extern void vdatind(int type, PE pe);
+extern void vhdatind(PE pe);
+extern void vudatind(PE pe);
+static void ptyflush (void);
+extern int vt_text (char *str, int len);
+extern void vt_newline(void);
+void rmut (void);
 
 /*
  * I/O data buffers, pointers, and counters.
@@ -258,7 +281,7 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-int fatal (int f, char *msg) {
+static int fatal (int f, char *msg) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s.\n", myname, msg);
@@ -266,7 +289,7 @@ int fatal (int f, char *msg) {
 	adios (NULLCP, msg);
 }
 
-int fatalperror (int f, char *msg, int errnum) {
+static int fatalperror (int f, char *msg, int errnum) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s", msg, strerror(errnum));
@@ -277,7 +300,7 @@ int fatalperror (int f, char *msg, int errnum) {
  * Main loop.  Select from pty and network.
  */
 
-void vtd (int f, int p) {
+static void vtd (int f, int p) {
 	int on = 1;
 	int	nfds, result;
 
@@ -460,7 +483,7 @@ void interrupt(void) {
 #endif
 }
 
-int netflush (void) {
+static int netflush (void) {
 	char *cp;
 	int n;
 	int i, j;
@@ -715,7 +738,7 @@ void advise (int code, char *what, char *fmt) {
 }
 #endif
 
-void ptyflush (void) {
+static void ptyflush (void) {
 	int n;
 	if ((n = pfrontp - pbackp) > 0) {
 		n = write(pty, pbackp, n);

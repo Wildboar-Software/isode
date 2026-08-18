@@ -367,7 +367,7 @@ int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication 
 		goto out;
 	}
 
-	if (decode_PS_Abort__type (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_PS_Abort__type (pe, 1, 0, NULLVP, &pdu) == NOTOK) {
 		psaplose (pi, PC_UNRECOGNIZED, NULLCP, "%s", PY_pepy);
 		goto out;
 	}
@@ -1080,7 +1080,7 @@ int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int le
 							 ps_error (result));
 
 		rs = NULL, info = NULL;
-		result = decode_PS_RS__PPDU (pe, 1, NULLIP, NULLVP, &rs);
+		result = decode_PS_RS__PPDU (pe, 1, 0, NULLVP, &rs);
 
 #ifdef	DEBUG
 		if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
@@ -1143,7 +1143,7 @@ out:
 					   pe -> pe_id);
 			result = NOTOK;
 		} else
-			result = decode_PS_Fully__encoded__data (pe, 0, NULLIP, NULLVP,
+			result = decode_PS_Fully__encoded__data (pe, 0, 0, NULLVP,
 					 &info -> un.complex);
 
 #ifdef	DEBUG
@@ -1201,7 +1201,7 @@ int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, i
 							 : PC_PROTOCOL, ppdu, NULLCP, "%s",
 							 ps_error (result));
 		info = NULL;
-		result = decode_PS_User__data (pe, 1, NULLIP, NULLVP, &info);
+		result = decode_PS_User__data (pe, 1, 0, NULLVP, &info);
 #ifdef	DEBUG
 		if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 			pvpdu (psap2_log, print_PS_User__data_P, pe, text, 1);
@@ -1249,7 +1249,7 @@ no_mem:
 					   pe -> pe_id);
 			result = NOTOK;
 		} else
-			result = decode_PS_Fully__encoded__data (pe, 0, NULLIP, NULLVP,
+			result = decode_PS_Fully__encoded__data (pe, 0, 0, NULLVP,
 					 &info -> un.complex);
 #ifdef	DEBUG
 		if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))

@@ -244,3 +244,7 @@ int	fpm2shared ();
 
 int	acs2ftamlose (), acs2ftamabort ();
 int	ps2ftamlose ();
+
+int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti);
+int FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+int FAbortRequestAux (struct ftamblk *fsb, int id, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);

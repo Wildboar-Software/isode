@@ -8,6 +8,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include "compat.h"
+#include "pepsy.h"
 #include "ftamuser.h"
 
 static int  put (),  putaux ();
@@ -519,7 +520,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 				caddr_t parm = NULL;
 
 				if (dec_f (myvf -> vf_number, &_ZDOCS_mod,
-						   ftop -> ftop_parameter, 1, NULLIP, NULLVP,
+						   ftop -> ftop_parameter, 1, NULL, NULLVP,
 						   &parm) == NOTOK)
 					advise (NULLCP,
 							"unable to parse document type parameter: %s",

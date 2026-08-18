@@ -147,10 +147,10 @@ bad_request:
 				PY_pepy[0] = 0;
 #ifdef PEPSY_DEFINITIONS
 				if (dec_f (ryo -> ryo_arg_index, ryo -> ryo_arg_mod,
-						   rox -> rox_args, 1, NULLIP, NULLVP, &in)
+						   rox -> rox_args, 1, NULL, NULLVP, &in)
 						== NOTOK) {
 #else
-				if ((*ryo -> ryo_arg_decode) (rox -> rox_args, 1, NULLIP,
+				if ((*ryo -> ryo_arg_decode) (rox -> rox_args, 1, NULL,
 											  NULLVP, &in) == NOTOK) {
 #endif
 					rosaplose (roi, result = ROS_IP_MISTYPED,
@@ -240,12 +240,12 @@ bad_result:
 #ifdef PEPSY_DEFINITIONS
 				result = dec_f (ryo -> ryo_res_index,
 								ryo -> ryo_res_mod, ror -> ror_result,
-								1, NULLIP, NULLVP, &op2 -> opb_out);
+								1, NULL, NULLVP, &op2 -> opb_out);
 				op2 -> opb_free_index = ryo -> ryo_res_index;
 				op2 -> opb_free_mod = ryo -> ryo_res_mod;
 #else
 				result = (*ryo -> ryo_res_decode) (ror -> ror_result, 1,
-												   NULLIP, NULLVP, &op2 -> opb_out);
+												   NULL, NULLVP, &op2 -> opb_out);
 				op2 -> opb_free = ryo -> ryo_res_free;
 #endif
 			} else {
@@ -360,7 +360,7 @@ bad_error:
 #else
 				result = (*(*rye) -> rye_param_decode) (roe -> roe_param,
 #endif
-								1, NULLIP, NULLVP, &op2 -> opb_out);
+								1, NULL, NULLVP, &op2 -> opb_out);
 #ifdef PEPSY_DEFINITIONS
 				op2 -> opb_free_index = (*rye) -> rye_param_index;
 				op2 -> opb_free_mod = (*rye) -> rye_param_mod;

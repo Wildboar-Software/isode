@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-Ih, -I./include]
+  Add: [-Ih]

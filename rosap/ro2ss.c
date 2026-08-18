@@ -506,7 +506,7 @@ int ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindicat
 		rosaplose (roi, ROS_PROTOCOL, NULLCP, NULLCP);
 		goto out;
 	}
-	result = parse_OACS_AbortInformation (pe, 1, NULLIP, NULLVP, NULLCP);
+	result = parse_OACS_AbortInformation (pe, 1, NULL, NULLVP, NULLCP);
 
 #ifdef	DEBUG
 	if (result != NOTOK && (rosap_log -> ll_events & LLOG_PDUS))

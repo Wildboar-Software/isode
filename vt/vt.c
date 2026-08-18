@@ -9,6 +9,7 @@
 #include "sector1.h"
 #include "tailor.h"
 #include "compat.h"
+#include "vt.h"
 
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
@@ -19,6 +20,23 @@
 #include <ctype.h>
 #include <setjmp.h>
 #include <stdarg.h>
+
+extern void vrelreq (void);
+extern int data_pending (void);
+extern int getch (void);
+extern int con_req (void);
+extern void vt_echo (int echo);
+extern void vt_repertoire (int repertoire);
+extern void vt_rem_echo (char *img_addr);
+extern void vt_sup_ga (char *img_addr);
+extern void ttyflush (int dd);
+extern void vtsend (void);
+extern void vdelreq (int ack);
+extern void vdelind (PE del_pe, int ack);
+
+static void netflush (int dd);
+static void vt (int s);
+static void command (int top);
 
 #define	strip(x)	((x)&0177)
 #define TBUFSIZ		1024
@@ -143,8 +161,8 @@ static struct dispatch dispatches[] = {
 };
 
 void intr(void), deadpeer(void);
-char	*control(int c);
-static int	_getline (char *prompt, char *buffer);
+char *control(int c);
+static int _getline (char *prompt, char *buffer);
 
 #ifdef TERMIOS
 struct	termios oterm;
@@ -281,7 +299,7 @@ int main (int argc, char *argv[]) {
 		command(1);
 }
 
-void command (int top) {
+static void command (int top) {
 	int eof,oldmode;
 	char *vec[NVEC + 1];
 
@@ -346,7 +364,7 @@ static int vtploop (char **vec, int error) {
 	}
 }
 
-int _getline (char *prompt, char *buffer) {
+static int _getline (char *prompt, char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -1012,7 +1030,7 @@ int	tcc;
 /*
  * Select from tty and network...
  */
-void vt (int s) {
+static void vt (int s) {
 	int c;
 	int tin = fileno(stdin), tout = fileno(stdout);
 	int nfds, result;
@@ -1154,7 +1172,7 @@ void ttyflush (int dd) {
 		tbackp = tfrontp = ttyobuf;
 }
 
-void netflush (int dd) {
+static void netflush (int dd) {
 	char *cp;
 	int n, i, j;
 	int nl_flag; // If current PDU includes newline, follow it with a Deliver Request
@@ -1347,9 +1365,7 @@ void advise (int code, char *what, char *fmt) {
 
 /* XXX -- why is this stubbed ? */
 #ifdef TERMIOS
-int ptyecho (int on) {
-}
+void ptyecho (int on) {}
 #else
-int setmode (int on, int off) {
-}
+void setmode (int on, int off) {}
 #endif

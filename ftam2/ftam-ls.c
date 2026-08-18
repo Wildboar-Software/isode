@@ -531,7 +531,7 @@ int fdffnx (int fd, struct PSAPdata *px, int status) {
 			continue;
 
 		d9 = NULL;
-		if (decode_DOCS_NBS__9__Datatype1 (pe, 1, NULLIP, NULLVP, &d9)
+		if (decode_DOCS_NBS__9__Datatype1 (pe, 1, NULL, NULLVP, &d9)
 				== NOTOK) {
 			if (silent)
 				globerr = PY_pepy;

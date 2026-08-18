@@ -54,17 +54,7 @@ FILE	*cin, *cout;
 int	dataconn();
 static void lostpeer(void);
 
-void ftp_init(void) {
-	/* default ftp communication values */
-	strcpy(typename, "ascii"), type = TYPE_A;
-	strcpy(formname, "non-print"), form = FORM_N;
-	strcpy(modename, "stream"), mode = MODE_S;
-	strcpy(structname, "file"), stru = STRU_F;
-	strcpy(bytename, "8"), bytesize = 8;
-	ftp_directory = 0;
-	ftp_error = ftp_error_buffer;
-	verbose = isatty (fileno (stderr));
-}
+static int initconn(void);
 
 int getreply (int expecteof);
 int command (char *fmt, ...);
@@ -313,7 +303,7 @@ bad:
  */
 int sendport = -1;
 
-int initconn(void) {
+static int initconn(void) {
 	char *p, *a;
 	int result, len;
 #ifdef	BSD43

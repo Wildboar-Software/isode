@@ -270,7 +270,7 @@ ready:
 	if (acc -> acc_result != ACS_ACCEPT) {
 		struct type_RTS_RTORJapdu *prtorj;
 
-		if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+		if (decode_RTS_RTSE__apdus (pe, 1, NULL, NULLVP, &rtpdu) == NOTOK) {
 			result = pylose ();
 			goto out2;
 		}
@@ -353,7 +353,7 @@ ready:
 	}
 	acb -> acb_ssdusize = pc -> pc_ssdusize;
 
-	if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+	if (decode_RTS_RTSE__apdus (pe, 1, NULL, NULLVP, &rtpdu) == NOTOK) {
 		result = pylose ();
 		goto out3;
 	}

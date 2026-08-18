@@ -33,7 +33,7 @@ int RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char 
 	missingP (arg2);
 
 	if ((pe = ssdu2pe (ss -> ss_data, ss -> ss_cc, NULLCP, &result)) == NULLPE
-			|| parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
+			|| parse_OACS_PConnect (pe, 1, NULL, NULLVP, &pcon) == NOTOK) {
 		if (pe)
 			pe_free (pe);
 		if (result == PS_ERR_NMEM) {

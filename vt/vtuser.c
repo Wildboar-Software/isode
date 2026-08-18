@@ -62,6 +62,32 @@ void vhdatind (PE pe);
 void vudatind (PE pe);
 int con_req (void);
 int read_asq (PE pe);
+int data_pending (void);
+int getch (void);
+int send_queue (TEXT_UPDATE ud);
+int queued (void);
+int do_event (int event, PE pe);
+int get_event (int dd, PE *pe);
+void map (PE ndq);
+void control_ud (CO_UPDATE *coptr);
+void flushbufs (void);
+void vt_clr_obj (void);
+void ptyecho (int on);
+void vt_rem_echo (char *img_addr);
+void vt_sup_ga (char *img_addr);
+void kill_proc (void);
+int vbrkreq (void);
+int con_req (void);
+
+extern int build_ASQPDU_ASQpdu ();
+extern int build_ASRPDU_ASRpdu ();
+extern int build_NDQPDU_NDQpdu ();
+extern int build_NDQPDU_VTsdi ();
+extern int unbuild_UDQPDU_UDQpdu ();
+extern int unbuild_ASQPDU_ASQpdu ();
+extern int unbuild_ASRPDU_ASRpdu ();
+extern int build_VT_BKQ__pdu ();
+extern int build_VT_BKR__pdu ();
 
 /*************************************************************************/
 /* VASS_REQ - create an ASQ PDU and generate a VASSreq event to 	 */

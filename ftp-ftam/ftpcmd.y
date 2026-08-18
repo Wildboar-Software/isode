@@ -12,12 +12,18 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 #include <pwd.h>
 #include <setjmp.h>
 #include "manifest.h"
 #include "general.h"
+#include "ftam-cmds.h"
+
 void advise(char *, char *, ...);
+int yylex(void);
 
 #ifdef SVR4_UCB
 #ifdef SP
@@ -46,6 +52,33 @@ static	int cmd_bytesz;
 
 char	*savestr();
 static char	*copy(char *);
+static void upper(char *s);
+static void help(char *s);
+
+extern void adios (char *, char *, ...);
+extern void advise (char *, char *, ...);
+extern void reply(int n, ...);
+extern void yyerror(char *s);
+extern void ftp_delete(char *name);
+extern void makedir(char *name);
+extern void removedir(char *name);
+extern char *renamefrom(char *name);
+extern void renamecmd(char *from, char *to);
+extern void dolog(struct sockaddr_in *sin);
+extern void directory(char *how, char *name);
+extern int dologin(void);
+extern void dologout(int status);
+extern int checkuser(char *name);
+extern int retrieve(char *name);
+extern int ftp_store(char *name, char *modeX);
+extern int getdatasock(void);
+extern int dataconn(char *name);
+extern int f_type (int mode);
+extern void ack(char *s);
+extern void nack(char *s);
+extern void fatal(char *s);
+extern void reply(int n, ...);
+extern void lreply(int n, ...);
 
 #define YYSTYPE size_t
 %}
@@ -562,7 +595,7 @@ static SFD toolong(int sd) {
 	dologout(1);
 }
 
-int yylex()
+int yylex(void)
 {
 	static char cbuf[512];
 	static int cpos, state;
@@ -725,7 +758,7 @@ int yylex()
 	}
 }
 
-void upper(char *s) {
+static void upper(char *s) {
 	while (*s != '\0') {
 		if (islower(*s))
 			*s = toupper(*s);
@@ -743,7 +776,7 @@ static char *copy(char *s) {
 	return ((char *)p);
 }
 
-void help(char *s) {
+static void help(char *s) {
 	register struct tab *c;
 	register int width, NCMDS;
 

@@ -9,6 +9,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include "acsap.h"
 #include "ftamuser.h"
 #include "tailor.h"
 
@@ -42,6 +43,8 @@ static void _advise (char* what, char *fmt, va_list ap);
 
 #ifndef	BRIDGE
 static SFD	intrser ();
+#else
+extern void reply(int n, ...);
 #endif
 
 extern char* command_prompt;

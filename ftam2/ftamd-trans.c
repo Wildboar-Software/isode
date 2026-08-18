@@ -1045,9 +1045,9 @@ static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) 
 #define	HZ	60
 #endif
 
-long	times ();
+long times ();
 
-static	timer (int cc, char *action) {
+static timer (int cc, char *action) {
 	long    ms;
 	float   bs;
 	long    stop,

@@ -8,13 +8,14 @@
 #include <strings.h>
 #include <unistd.h>
 #include "compat.h"
+#include "pepsy.h"
 #include "ftamuser.h"
 
 static int effector;
 
 static int check_get (char *dst);
 static struct vfsmap *findvf (char* file);
-static int  getloop (int fd, char* dst, IFP wfnx);
+static int  getloop (int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status));
 static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
 int f_get (char **vec) {
@@ -253,7 +254,13 @@ static int check_get (char *dst) {
 }
 #endif
 
-int getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf, IFP wfnx) {
+int getvf (
+	char *src,
+	char *dst,
+	struct FADUidentity *faduid,
+	struct vfsmap *vf,
+	int (*wfnx) (int fd, struct PSAPdata *px, int status)
+) {
 	int	    fd,
 			result;
 #ifdef	BRIDGE
@@ -366,7 +373,7 @@ int getvf (char *src, char *dst, struct FADUidentity *faduid, struct vfsmap *vf,
 				caddr_t parm = NULL;
 
 				if (dec_f (myvf -> vf_number, &_ZDOCS_mod,
-						   ftop -> ftop_parameter, 1, NULLIP, NULLVP,
+						   ftop -> ftop_parameter, 1, NULL, NULLVP,
 						   (char **) &parm) == NOTOK)
 					advise (NULLCP,
 							"unable to parse document type parameter: %s",
@@ -675,7 +682,7 @@ static struct vfsmap *findvf (char* file) {
 									 &_ZDOCS_mod, 1);
 						vf -> vf_parameter = NULL, vf -> vf_flags &= ~VF_PARM;
 						if (dec_f (vf -> vf_number, &_ZDOCS_mod,
-								   fa -> fa_parameter, 1, NULLIP, NULLVP,
+								   fa -> fa_parameter, 1, NULL, NULLVP,
 								   &vf -> vf_parameter) == NOTOK) {
 							advise (NULLCP,
 									"unable to parse document type parameter: %s",
@@ -718,7 +725,7 @@ you_lose:
 	return NULL;
 }
 
-static int  getloop (int fd, char* dst, IFP wfnx) {
+static int getloop (int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status)) {
 	int	    reason,
 			result;
 	struct FTAMindication   ftis;

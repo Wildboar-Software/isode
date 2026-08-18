@@ -18,6 +18,7 @@
  * FTP User Program -- Command Routines.
  */
 #include "config.h"
+#include <string.h>
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
@@ -53,7 +54,26 @@ void	advise (int, char *, char *, ...);
 #define DONE	1
 #endif /* NOTOK */
 
+extern int hookup(char *host, int port);
+extern int login(char *user, char *pass, char *acct);
+extern int ftp_type (int modeX);
+extern int recvrequest(char *cmd, char *remote);
+extern int sendrequest(char *cmd, char *remote);
+
 int getreply ();
+extern int command (char *fmt, ...);
+
+static void ftp_init(void) {
+	/* default ftp communication values */
+	strcpy(typename, "ascii"), type = TYPE_A;
+	strcpy(formname, "non-print"), form = FORM_N;
+	strcpy(modename, "stream"), mode = MODE_S;
+	strcpy(structname, "file"), stru = STRU_F;
+	strcpy(bytename, "8"), bytesize = 8;
+	ftp_directory = 0;
+	ftp_error = ftp_error_buffer;
+	verbose = isatty (fileno (stderr));
+}
 
 /*
  * ftp_login: establish command connection with remote host
@@ -62,9 +82,11 @@ int getreply ();
 int ftp_login (char *host, char *user, char *passwd, char *acct) {
 	if (connected) return NOTOK; /* already connected */
 	ftp_init(); /* initialize control state structures */
-	if (hookup(host,FTP_PORT) == NOTOK) return NOTOK;
+	if (hookup(host, FTP_PORT) == NOTOK)
+		return NOTOK;
 	/* execute login process */
-	if (login(user,passwd,acct) == NOTOK) return NOTOK;
+	if (login(user, passwd, acct) == NOTOK)
+		return NOTOK;
 	return OK;
 }
 

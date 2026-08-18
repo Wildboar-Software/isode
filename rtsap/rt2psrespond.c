@@ -86,7 +86,7 @@ int	RtInit_Aux (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindica
 		rtsaplose (rti, RTS_PROTOCOL, NULLCP, NULLCP);
 		goto out;
 	}
-	if (decode_RTS_RTSE__apdus (pe, 1, NULLIP, NULLVP, &rtpdu) == NOTOK) {
+	if (decode_RTS_RTSE__apdus (pe, 1, NULL, NULLVP, &rtpdu) == NOTOK) {
 		pylose ();
 		goto out;
 	}

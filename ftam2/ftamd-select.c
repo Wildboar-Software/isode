@@ -10,6 +10,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "ftamsystem.h"
+#include "pepsy.h"
 
 #define	NUID	400
 #define	NGID	400
@@ -46,6 +47,8 @@ static char *getgroup (int gid);
 #endif
 
 #ifdef	BRIDGE
+extern int ftp_create (char *filename);
+extern int ftp_exist (char *filename);
 #define	ftp_access(file,mode)	ftp_exist (file)
 #endif
 
@@ -53,7 +56,9 @@ static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct F
 static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags);
 static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
 
-static int  EACCESS ( char   *file, int	mode);
+static int  EACCESS (char *file, int mode);
+
+static int findgid (char *group);
 
 /*    SELECTION REGIME */
 
@@ -686,7 +691,7 @@ bad_param:
 			}
 			myparam = NULL;
 			if (dec_f (myvf -> vf_number, &_ZDOCS_mod, ftop -> ftop_parameter,
-					   1, NULLIP, NULLVP, &myparam) == NOTOK) {
+					   1, NULL, NULLVP, &myparam) == NOTOK) {
 				sprintf (dp -> ftd_data,
 						 "unable to parse document type parameter: %s",
 						 PY_pepy);
@@ -1003,7 +1008,15 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 	return result;
 }
 
-int	readattrs (int attrnames, struct FTAMattributes *fa, OID proposed, PE parameter, char *file, struct stat *st, struct FTAMdiagnostic **diags) {
+int	readattrs (
+	int attrnames,
+	struct FTAMattributes *fa,
+	OID proposed,
+	PE parameter,
+	char *file,
+	struct stat *st,
+	struct FTAMdiagnostic **diags
+) {
 #ifndef	BRIDGE
 	int     result;
 	char   *cp;
@@ -1065,7 +1078,7 @@ int	readattrs (int attrnames, struct FTAMattributes *fa, OID proposed, PE parame
 					&& vf -> vf_check) {
 				caddr_t	p = NULL;
 
-				if (dec_f (vf -> vf_number, &_ZDOCS_mod, parameter, 1, NULLIP,
+				if (dec_f (vf -> vf_number, &_ZDOCS_mod, parameter, 1, NULL,
 						   NULLVP, &p) == NOTOK) {
 					advise (LLOG_NOTICE, NULLCP,
 							"unable to parse document type parameter: %s",
@@ -1416,7 +1429,7 @@ static char *getgroup (int gid) {
 	return my_name;
 }
 
-int	findgid (char *group) {
+static int findgid (char *group) {
 	int	    i;
 #ifdef	BSD42
 	int	    gidset[NGROUPS];

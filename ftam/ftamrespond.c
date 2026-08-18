@@ -75,7 +75,7 @@ int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAM
 				  NULLCP);
 		goto out2;
 	}
-	if (decode_FTAM_PDU (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_FTAM_PDU (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		ftamoops (fti, FS_PRO_ERRMSG, 1, EREF_RFPM, EREF_RFPM,
 				  NULLCP, "unable to parse PDU: %s", PY_pepy);
 		goto out3;

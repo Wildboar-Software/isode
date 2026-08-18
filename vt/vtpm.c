@@ -38,6 +38,10 @@ static void  ps_adios (),  ps_advise ();
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
+int do_event (int event, PE pe);
+int pn_ind (int dd, struct PSAPsync *psync);
+extern int build_ASRPDU_ASRpdu ();
+
 /****************************************************************************/
 /* GET EVENT - attempt to read a PDU from the presentation connection	    */
 /*		   designated by "sd", determine			    */

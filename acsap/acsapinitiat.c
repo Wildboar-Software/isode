@@ -326,7 +326,7 @@ static int AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct 
 	acb -> acb_fd = pc -> pc_sd;
 	acb -> acb_sversion = pc -> pc_qos.qos_sversion;
 
-	result = decode_ACS_ACSE__apdu (pe = pc -> pc_info[0], 1, NULLIP, NULLVP,
+	result = decode_ACS_ACSE__apdu (pe = pc -> pc_info[0], 1, NULL, NULLVP,
 									&pdu);
 
 #ifdef	DEBUG

@@ -150,7 +150,7 @@ no_mem:
 			break;
 		}
 
-		if (decode_DASE_Provider__RSP (in, 1, NULLIP, NULLVP, &rsp) == NOTOK) {
+		if (decode_DASE_Provider__RSP (in, 1, NULL, NULLVP, &rsp) == NOTOK) {
 you_lose:
 			;
 			pe_free (in);

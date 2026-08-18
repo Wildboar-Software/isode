@@ -5,6 +5,7 @@
 
 #include "vtpm.h"
 #include "sector1.h"
+#include "vt.h"
 
 /************************************************************************/
 /*	This file contains the functions that are executed when the	*/

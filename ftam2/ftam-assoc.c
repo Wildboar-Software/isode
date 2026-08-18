@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "acsap.h"
 #include "ftamuser.h"
 
 static struct PSAPaddr vfs_bound;

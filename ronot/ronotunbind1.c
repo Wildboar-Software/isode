@@ -100,14 +100,14 @@ static int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindicati
 	pe = acr->acr_info[0];
 	acr->acr_info[0] = NULLPE;
 	if (acr->acr_affirmative == ACS_ACCEPT) {
-		if (decode_RONOT_UnBindResultValue (pe, 1, NULLIP, NULLVP, &acr->acr_info[0]) != OK) {
+		if (decode_RONOT_UnBindResultValue (pe, 1, NULL, NULLVP, &acr->acr_info[0]) != OK) {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("ParseRoUnBindResponse: decode_RONOT_UnBindResultValue failed"));
 			acr->acr_ninfo = 0;
 			pe_free (pe);
 			return (ronotlose (rni, RBI_DEC_UNBIND_RES, NULLCP, NULLCP));
 		}
 	} else {
-		if (decode_RONOT_UnBindErrorValue (pe, 1, NULLIP, NULLVP, &acr->acr_info[0]) != OK) {
+		if (decode_RONOT_UnBindErrorValue (pe, 1, NULL, NULLVP, &acr->acr_info[0]) != OK) {
 			LLOG (rosap_log, LLOG_EXCEPTIONS, ("ParseRoUnBindResponse: decode_RONOT_UnBindErrorValue failed"));
 			acr->acr_ninfo = 0;
 			pe_free (pe);

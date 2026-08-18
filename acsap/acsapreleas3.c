@@ -40,7 +40,7 @@ int AcFINISHser (int sd, struct PSAPfinish *pf, struct AcSAPindication *aci) {
 		goto out;
 	}
 
-	result = decode_ACS_ACSE__apdu (pe = pf -> pf_info[0], 1, NULLIP, NULLVP,
+	result = decode_ACS_ACSE__apdu (pe = pf -> pf_info[0], 1, NULL, NULLVP,
 									&pdu);
 
 #ifdef	DEBUG

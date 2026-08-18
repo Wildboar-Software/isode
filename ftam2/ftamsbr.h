@@ -1,6 +1,7 @@
 /* ftamsbr.h - include file for FTAM initiator/responder subroutines */
 
 #include "ftam.h"		/* definitions for FS-USERs */
+#include "logger.h"
 #include "DOCS-types.h"
 #ifdef	NULL
 #undef	NULL
@@ -158,6 +159,8 @@ struct vfsmap *st2vfs ();
 #define	WATCHP(args, pe, rw)
 #else
 #ifdef __STDC__
+#include "pepsy.h"
+void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 #define	WATCHP(args, pe, rw) \
     pvpdu (ftam_log, print_##args##_P, pe, \
 	rw ? "F-DATA.INDICATION" : "F-DATA.REQUEST", rw)

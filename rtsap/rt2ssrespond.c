@@ -97,7 +97,7 @@ int RtBInit (int vecp, char **vec, struct RtSAPstart *rts, struct RtSAPindicatio
 
 	SSFREE (ss);
 
-	if (parse_OACS_PConnect (pe, 1, NULLIP, NULLVP, &pcon) == NOTOK) {
+	if (parse_OACS_PConnect (pe, 1, NULL, NULLVP, &pcon) == NOTOK) {
 		pylose ();
 		pe_free (pe);
 		goto out2;

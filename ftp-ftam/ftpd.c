@@ -60,10 +60,27 @@ extern LLog _ftam_log, *ftam_log;
 #include <stdarg.h>
 #include "tailor.h"
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
-char *ctime();
 void adios (char *, char *, ...);
 void advise (char *, char *, ...);
+void reply(int n, ...);
+void yyerror(char *s);
+void ftp_delete(char *name);
+void makedir(char *name);
+void removedir(char *name);
+char *renamefrom(char *name);
+void renamecmd(char *from, char *to);
+void dolog(struct sockaddr_in *sin);
+void directory(char *how, char *name);
+int dologin(void);
+void dologout(int status);
+int checkuser(char *name);
+int retrieve(char *name);
+int ftp_store(char *name, char *modeX);
+int getdatasock(void);
+int dataconn(char *name);
+extern int yyparse (void);
 
 /*
  * File containing login names
@@ -454,7 +471,7 @@ void dolog(struct sockaddr_in *sin) {
 * DONE  -- Problem opening TCP connection for transfer
 *          Error response made by dataconn routine.
 */
-int directory(char *how, char *name) {
+void directory(char *how, char *name) {
 	int result;
 	vec[0] = strcmp(how,"NLST") ? "dir" : "ls";
 	vec[1] = name;

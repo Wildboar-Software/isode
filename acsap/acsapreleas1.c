@@ -165,7 +165,7 @@ static int AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrel
 		goto out3;
 	}
 
-	result = decode_ACS_ACSE__apdu (pe = pr -> pr_info[0], 1, NULLIP, NULLVP,
+	result = decode_ACS_ACSE__apdu (pe = pr -> pr_info[0], 1, NULL, NULLVP,
 									&pdu);
 
 #ifdef	DEBUG

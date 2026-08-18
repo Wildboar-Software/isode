@@ -1,6 +1,7 @@
 /* states1.c - VTPM: FSM sector 1 states */
 
 #include "vtpm.h"
+#include "vt.h"
 
 #define	undefined(s1,e1) \
 	adios (NULLCP, \

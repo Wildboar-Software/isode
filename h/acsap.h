@@ -257,5 +257,6 @@ int str2aet_seq (char *designator, char *qualifier, struct isoentity *iep);
 
 int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm);
 int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm);
+int set_lookup_dase (char flag);
 
 #endif

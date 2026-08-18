@@ -9,6 +9,7 @@
 
 #include "vtpm.h"
 #include "sector1.h"
+#include "vt.h"
 
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
@@ -44,6 +45,11 @@ extern int showoptions;
 extern int debug;
 extern int telnet_profile;
 
+static void display_ud (DO_UPDATE *doptr);
+void control_ud (CO_UPDATE *coptr);
+static void attrib_hdlr (DO_UPDATE *doptr);
+static void def_echo (CO_UPDATE *coptr);
+
 #ifdef TERMIOS
 static void realptyecho (int on);
 #endif
@@ -58,7 +64,7 @@ Pass individual updates to appropriate processing
 routine. */
 void map (PE ndq) {
 	TEXT_UPDATE *ud;
-	if(unbuild_NDQPDU_NDQpdu(ndq,1,NULLIP,NULLVP,(PEPYPARM)0) == NOTOK) {
+	if(unbuild_NDQPDU_NDQpdu(ndq,1,NULL,NULLVP,(PEPYPARM)0) == NOTOK) {
 		advise (LLOG_NOTICE,NULLCP,  "NDQ parse failure (%s)", PY_pepy);
 		return;
 	}
@@ -77,7 +83,7 @@ void map (PE ndq) {
 }
 
 /* Handle Display Updates */
-void display_ud (DO_UPDATE *doptr) {
+static void display_ud (DO_UPDATE *doptr) {
 	int i;
 	char *pt;
 #ifdef TERMIOS
@@ -744,7 +750,7 @@ void control_ud (CO_UPDATE *coptr) {
 }
 
 /* Handle Write Attribute Display Object Update */
-void attrib_hdlr (DO_UPDATE *doptr) {
+static void attrib_hdlr (DO_UPDATE *doptr) {
 	if(doptr->do_cmd.wrt_attrib.attr_id == 0)
 		/*If switching repertoires*/
 	{
@@ -916,7 +922,7 @@ void kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt ch
 }
 
 /* Handle Default Profile Echo Ctrl Object */
-void def_echo (CO_UPDATE *coptr) {
+static void def_echo (CO_UPDATE *coptr) {
 	char active = 0;
 	if(coptr->co_cmd.bool_update.mask_count == 0) active = 0xff;
 	else active = *coptr->co_cmd.bool_update.mask;

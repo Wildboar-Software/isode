@@ -50,7 +50,7 @@ static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *
 		return (ronotlose (rni, RBI_DEC_NINFO, NULLCP, NULLCP));
 	pe = acs->acs_info[0];
 	acs->acs_info[0] = NULLPE;
-	if (decode_RONOT_BindArgumentValue (pe, 1, NULLIP, NULLVP, &acs->acs_info[0]) != OK) {
+	if (decode_RONOT_BindArgumentValue (pe, 1, NULL, NULLVP, &acs->acs_info[0]) != OK) {
 		LLOG (rosap_log, LLOG_EXCEPTIONS, ("ParseRoBindArgument: decode_RONOT_BindArgumentValue failed"));
 		acs->acs_ninfo = 0;
 		pe_free (pe);

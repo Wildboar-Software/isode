@@ -1100,7 +1100,7 @@ print_it:
 
 /* MISCELLANY */
 
-int rcinit (void) {
+void rcinit (void) {
 #ifndef	BRIDGE
 	int    w;
 	char **cp;

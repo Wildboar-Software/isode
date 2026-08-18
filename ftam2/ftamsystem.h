@@ -115,3 +115,32 @@ int	ftp_exits (), ftp_delete (), ftp_mkdir (), ftp_rename (), ftp_type (),
 	ftp_write (), ftp_append (), ftp_read (), ftp_ls (), ftp_login (),
 	ftp_quit (), ftp_abort (), ftp_reply ();
 #endif
+
+void ftam_start (struct FTAMstart *fts);
+// void ftam_bulkbeginindication (struct FTAMgroup *ftg);
+void ftam_bulkbeginindication (struct FTAMgroup *ftg);
+void ftam_readwriteindication (struct FTAMreadwrite *ftrw);
+void ftam_dataindication (struct PSAPdata *px);
+void ftam_dataendindication (struct FTAMdataend *ftda);
+void ftam_cancelindication (struct FTAMcancel *ftcn);
+void ftam_transendindication (struct FTAMtransend *ftre);
+void ftam_bulkendindication (struct FTAMgroup *ftg);
+void ftam_managementindication (struct FTAMgroup *ftg);
+void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm);
+int ftam_indication (struct FTAMindication *fti);
+int	readattrs (
+	int attrnames,
+	struct FTAMattributes *fa,
+	OID proposed,
+	PE parameter,
+	char *file,
+	struct stat *st,
+	struct FTAMdiagnostic **diags
+);
+int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti);
+int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti);
+int fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
+int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
+void timer (int cc, char *action);
+int closewtmp (void);
+void rcinit (void);

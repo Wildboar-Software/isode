@@ -35,6 +35,15 @@ extern int connected;
 void adios (char *, char *, ...);
 void advise (int, char *, char *, ...);
 
+int send_queue (TEXT_UPDATE ud);
+void vtsend (void);
+int tmode (int f);
+void vt_clr_obj (void);
+int vbrkreq (void);
+int do_event (int event, PE pe);
+void vt_echo (int echo);
+extern int build_UDQPDU_UDQpdu ();
+
 void vt_newline(void) {	/*Produce Newline update*/
 	TEXT_UPDATE ud;
 	bzero ((char *) &ud, sizeof ud);

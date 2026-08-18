@@ -104,9 +104,27 @@ static struct dispatch dispatches[] = {
 	NULL
 };
 
-static struct dispatch *getds ();
-static printvar ();
-static	snarf ();
+struct var {
+	char *v_name;
+	int	*v_value;
+
+	char *v_dname;
+	char **v_dvalue;
+	char *v_mask;
+
+	int (*v_hook)(void);
+
+	int v_flags;
+#define	V_NULL		0x00
+#define	V_RDONLY	0x01
+#define	V_SERVER	0x02
+};
+
+static struct var *getvar (char *name);
+
+static struct dispatch *getds (char *name);
+static void printvar (struct var *v);
+static void snarf (void);
 
 /* DISPATCH */
 
@@ -201,24 +219,6 @@ static char *names[] = {
 static char *ufnoptions[] = {
 	"none", "approx", "wild", NULL
 };
-
-struct var {
-	char   *v_name;
-	IP	    v_value;
-
-	char   *v_dname;
-	char  **v_dvalue;
-	char   *v_mask;
-
-	IFP	    v_hook;
-
-	int	    v_flags;
-#define	V_NULL		0x00
-#define	V_RDONLY	0x01
-#define	V_SERVER	0x02
-};
-
-static struct var *getvar ();
 
 static struct var vars[] = {
 	"bell", &bflag, "ring bell at end of screen", bool,
@@ -631,7 +631,7 @@ int f_help (char **vec) {
 
 /* MISCELLANY */
 
-int rcinit (void) {
+void rcinit (void) {
 	int    w;
 	char **cp,
 	*dp;
