@@ -371,7 +371,7 @@ int main (int argc, char **argv) {
 	addr_log -> ll_events |= LLOG_ALL, addr_log -> ll_stat |= LLOGTTY;
 	if (pe = name2value_ufn (buffer, "iso ftam", ontty, &title)) {
 		struct PSAPaddr pas;
-		if (parse_DSE_PSAPaddr (pe, 1, NULLIP, NULLVP, (char *) &pas)
+		if (parse_DSE_PSAPaddr (pe, 1, NULL, NULLVP, (char *) &pas)
 				== NOTOK)
 			fprintf (stderr, "parse of presentation address failed: %s",
 					 PY_pepy);

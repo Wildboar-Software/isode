@@ -89,7 +89,7 @@ int DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication
 		return (dsaplose (di, DA_ARG_DEC, NULLCP, "BIND INDICATION"));
 	}
 	if (decode_DAS_DirectoryBindArgument (acs->acs_info[0],
-										  1, NULLCP, NULLIP, &bind_arg) != OK) {
+										  1, NULL, NULL, &bind_arg) != OK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode directory bind argument."));
 		watch_dog ("RoBindReject (decode)");
 		RoBindReject (acs, ACS_TRANSIENT, ACS_USER_NOREASON, rni);

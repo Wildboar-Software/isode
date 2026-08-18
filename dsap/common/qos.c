@@ -111,7 +111,7 @@ static void *dsaQoS_dec (PE pe)
 {
 	struct dsaQoS *a;
 
-	if (decode_Thorn_DSAQualitySyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
+	if (decode_Thorn_DSAQualitySyntax (pe, 1, NULL, NULLVP, &a) == NOTOK)
 		return NULL;
 	return a;
 }
@@ -400,7 +400,7 @@ static PE ditQoS_enc (void *value)
 static void *ditQoS_dec (PE pe)
 {
 	struct ditQoS *a;
-	if (decode_Thorn_DataQualitySyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
+	if (decode_Thorn_DataQualitySyntax (pe, 1, NULL, NULLVP, &a) == NOTOK)
 		return NULL;
 	return a;
 }

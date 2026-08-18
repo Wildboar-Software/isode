@@ -697,7 +697,7 @@ static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
 #ifndef	SNMPT
 	snmpstat.s_inpkts++;
 #endif
-	if (decode_SNMP_Message (pe, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+	if (decode_SNMP_Message (pe, 1, NULL, NULLVP, &msg) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "decode_SNMP_Message: %s (%s)",
 				PY_pepy, source);
 #ifndef	SNMPT
@@ -1346,7 +1346,7 @@ out:
 	}
 	advise (LLOG_XXX, NULLCP, "SMUX packet from %s", source);
 	pdu = NULL;
-	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_SNMP_SMUX__PDUs (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"decode_SNMP_SMUX__PDUs: %s (SMUX %s)", PY_pepy, source);
 		goto out;
@@ -1756,7 +1756,7 @@ try_it_again:
 		goto lost_peer;
 	}
 	rsp = NULL;
-	if (decode_SNMP_SMUX__PDUs (pe, 1, NULLIP, NULLVP, &rsp) == NOTOK) {
+	if (decode_SNMP_SMUX__PDUs (pe, 1, NULL, NULLVP, &rsp) == NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"decode_SNMP_SMUX__PDUs: %s (%s, SMUX %s)", PY_pepy, source,
 				pb -> pb_source);

@@ -55,7 +55,7 @@ static int fix_mem(char **parm, ptpe *p);
  * pe
  */
 int dec_f (
-		int typ,			/* which type it is */
+	int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE pe,
 	int explicit,

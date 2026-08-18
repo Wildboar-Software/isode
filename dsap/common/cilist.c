@@ -161,7 +161,7 @@ static PE cilistenc (void *value) {
 static void * cilistdec (PE pe) {
 	struct CIList * m;
 
-	if (decode_SA_CaseIgnoreList (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_CaseIgnoreList (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return (NULLCILIST);
 	return (m);
 }

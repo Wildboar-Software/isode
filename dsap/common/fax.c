@@ -187,7 +187,7 @@ static PE  fax_enc (void *value) {
 static void *fax_dec (PE pe) {
 	struct fax *f;
 
-	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
+	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULL, NULLVP, &f)
 			== NOTOK) {
 		return ((struct fax *) NULL);
 	}

@@ -223,7 +223,7 @@ static PE teletex_enc (void *value) {
 static void * teletex_dec (PE pe) {
 	struct teletex * m;
 
-	if (decode_SA_TeletexTerminalIdentifier (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
+	if (decode_SA_TeletexTerminalIdentifier (pe,1,NULL,NULLVP,&m) == NOTOK) {
 		return ((struct teletex *) NULL);
 	}
 	if ((int)strlen (m->terminal) > UB_TELETEX_TERMINAL_ID) {

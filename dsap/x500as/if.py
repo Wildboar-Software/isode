@@ -231,10 +231,10 @@ int	encode_IF_AttributeType(
 
 #undef decode_IF_AttributeType
 int	decode_IF_AttributeType(
-	PE *pe,
+	PE pe,
 	int top,
-	int len,
-	char* buffer,
+	int *len,
+	char **buffer,
 	struct type_IF_AttributeType *parm
 ) {
   return (dec_f(_ZAttributeTypeIF, &_ZIF_mod, pe, top, len, buffer,
@@ -255,10 +255,10 @@ int	encode_IF_AttributeValue(
 
 #undef decode_IF_AttributeValue
 int	decode_IF_AttributeValue(
-	PE *pe,
+	PE pe,
 	int top,
-	int len,
-	char* buffer,
+	int *len,
+	char **buffer,
 	struct type_IF_AttributeValue *parm
 ) {
   return (dec_f(_ZAttributeValueIF, &_ZIF_mod, pe, top, len, buffer,
@@ -279,10 +279,10 @@ int	encode_IF_DistinguishedName(
 
 #undef decode_IF_DistinguishedName
 int	decode_IF_DistinguishedName(
-	PE *pe,
+	PE pe,
 	int top,
-	int len,
-	char* buffer,
+	int *len,
+	char **buffer,
 	struct type_IF_DistinguishedName *parm
 ) {
   return (dec_f(_ZDistinguishedNameIF, &_ZIF_mod, pe, top, len, buffer,
@@ -303,10 +303,10 @@ int	encode_IF_Name(
 
 #undef decode_IF_Name
 int	decode_IF_Name(
-	PE *pe,
+	PE pe,
 	int top,
-	int len,
-	char* buffer,
+	int *len,
+	char **buffer,
 	struct type_IF_Name *parm
 ) {
   return (dec_f(_ZNameIF, &_ZIF_mod, pe, top, len, buffer,

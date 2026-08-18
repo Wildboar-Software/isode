@@ -1303,7 +1303,7 @@ static void * nrs_info_dec (PE pe)
 {
 	struct nrs_info	* nrs;
 
-	if (decode_NRS_NRSInformation (pe, 1, NULLIP, NULLVP, &nrs) != OK) {
+	if (decode_NRS_NRSInformation (pe, 1, NULL, NULLVP, &nrs) != OK) {
 		return ((struct nrs_info *) NULL);
 	}
 	return (nrs);

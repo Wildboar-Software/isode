@@ -39,7 +39,7 @@ static PE dsa_control_enc (void *value) {
 static void * dsa_control_decode (PE pe) {
 	struct dsa_control * dsa_controlptr;
 
-	if (decode_Quipu_DSAControl(pe,1,NULLIP,NULLVP,&dsa_controlptr) == NOTOK) {
+	if (decode_Quipu_DSAControl(pe,1,NULL,NULLVP,&dsa_controlptr) == NOTOK) {
 		return ((struct dsa_control *) NULL);
 	}
 	return (dsa_controlptr);
@@ -383,7 +383,7 @@ static PE quipu_call_enc (void *value) {
 static void * quipu_call_decode (PE pe) {
 	struct quipu_call * quipu_callptr;
 
-	if (decode_Quipu_Call(pe,1,NULLIP,NULLVP,&quipu_callptr) == NOTOK) {
+	if (decode_Quipu_Call(pe,1,NULL,NULLVP,&quipu_callptr) == NOTOK) {
 		return ((struct quipu_call *) 0);
 	}
 	return (quipu_callptr);

@@ -342,7 +342,7 @@ no_mem_for_inst:
 			snmp_diag (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			goto error_x;
 		}
-		if (decode_SNMP_Message (p, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+		if (decode_SNMP_Message (p, 1, NULL, NULLVP, &msg) == NOTOK) {
 			snmp_diag (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 			goto out;
 		}
@@ -697,7 +697,7 @@ again:
 			snmp_diag (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			goto error_x;
 		}
-		if (decode_SNMP_Message (p, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+		if (decode_SNMP_Message (p, 1, NULL, NULLVP, &msg) == NOTOK) {
 			snmp_diag (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 			goto out;
 		}
@@ -987,7 +987,7 @@ set_value:
 			snmp_diag (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 			goto error_x;
 		}
-		if (decode_SNMP_Message (p, 1, NULLIP, NULLVP, &msg) == NOTOK) {
+		if (decode_SNMP_Message (p, 1, NULL, NULLVP, &msg) == NOTOK) {
 			snmp_diag (NULLCP, "decode_SNMP_Message: %s", PY_pepy);
 			goto out;
 		}
@@ -1314,7 +1314,7 @@ static int  d_ipaddr (NODE **x, PE pe) {
 	struct type_SNMP_IpAddress *ip;
 	struct qbuf *qb;
 
-	if (decode_SNMP_IpAddress (pe, 1, NULLIP, NULLVP, &ip) == NOTOK)
+	if (decode_SNMP_IpAddress (pe, 1, NULL, NULLVP, &ip) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (ip) == NOTOK) {
 		strcpy (PY_pepy, "qb_pullup: out of memory");
@@ -1355,7 +1355,7 @@ static int  d_clnpaddr (NODE **x, PE pe)
 	struct type_SNMP_ClnpAddress *clnp;
 	struct qbuf *qb;
 
-	if (decode_SNMP_ClnpAddress (pe, 1, NULLIP, NULLVP, &clnp) == NOTOK)
+	if (decode_SNMP_ClnpAddress (pe, 1, NULL, NULLVP, &clnp) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (clnp) == NOTOK) {
 		strcpy (PY_pepy, "qb_pullup: out of memory");

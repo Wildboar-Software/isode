@@ -83,7 +83,7 @@ struct PSAPindication *pi;
 
 	pdu = NULL;
 	oid = NULLOID;
-	result = decode_PS_PDUs (pe, 1, NULLIP, NULLVP, &pdu);
+	result = decode_PS_PDUs (pe, 1, NULL, NULLVP, &pdu);
 
 #ifdef	DEBUG
 	if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))

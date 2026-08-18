@@ -98,7 +98,7 @@ again:
 		pdu = NULL;
 		break;
 	}
-	result = decode_PS_PDUs (pb -> pb_response, 1, NULLIP, NULLVP, &pdu);
+	result = decode_PS_PDUs (pb -> pb_response, 1, NULL, NULLVP, &pdu);
 #ifdef	DEBUG
 	if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 		pvpdu (psap2_log, print_PS_PDUs_P, pb -> pb_response, "PDU", 1);

@@ -74,28 +74,28 @@ int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) 
 	switch(res->result_type = ror->ror_op) {
 	case    OP_READ : {
 		struct ds_read_result * rr;
-		success = decode_DAS_ReadResult(pe,1,NULLIP,NULLVP,&rr);
+		success = decode_DAS_ReadResult(pe,1,NULL,NULLVP,&rr);
 		res->res_rd = *rr;	/* struct copy */
 		free ( (char *) rr);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_compare_result * cr;
-		success = decode_DAS_CompareResult(pe,1,NULLIP,NULLVP,&cr);
+		success = decode_DAS_CompareResult(pe,1,NULL,NULLVP,&cr);
 		res->res_cm = *cr;	/* struct copy */
 		free ( (char *) cr);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_list_result * lr;
-		success = decode_DAS_ListResult(pe,1,NULLIP,NULLVP,&lr);
+		success = decode_DAS_ListResult(pe,1,NULL,NULLVP,&lr);
 		res->res_ls = *lr;	/* struct copy */
 		free ( (char *) lr);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_search_result * sr;
-		success = decode_DAS_SearchResult(pe,1,NULLIP,NULLVP,&sr);
+		success = decode_DAS_SearchResult(pe,1,NULL,NULLVP,&sr);
 		res->res_sr = *sr;	/* struct copy */
 		free ( (char *) sr);
 	}
@@ -141,49 +141,49 @@ int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
 	switch(err->dse_type = roe->roe_error) {
 	case    DSE_ABANDON_FAILED : {
 		struct DSE_abandon_fail * af;
-		success = decode_DAS_AbandonFailedParm(pe,1,NULLIP,NULLVP,&af);
+		success = decode_DAS_AbandonFailedParm(pe,1,NULL,NULLVP,&af);
 		err->dse_un.dse_un_abandon_fail = *af; /* struct copy */
 		free ((char *)af);
 	}
 	break;
 	case    DSE_ATTRIBUTEERROR : {
 		struct DSE_attribute * at;
-		success = decode_DAS_AttributeErrorParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_AttributeErrorParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_attribute = *at; /* struct copy */
 		free ((char *) at);
 	}
 	break;
 	case    DSE_NAMEERROR : {
 		struct DSE_name * at;
-		success = decode_DAS_NameErrorParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_NameErrorParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_name = *at; /* struct copy */
 		free ((char *) at);
 	}
 	break;
 	case    DSE_REFERRAL : {
 		struct DSE_referral * at;
-		success = decode_DAS_ReferralParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_ReferralParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_referral = *at; /* struct copy */
 		free ((char *) at);
 	}
 	break;
 	case    DSE_SECURITYERROR : {
 		struct DSE_security * at;
-		success = decode_DAS_SecurityErrorParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_SecurityErrorParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_security = *at; /* struct copy */
 		free ((char *) at);
 	}
 	break;
 	case    DSE_SERVICEERROR : {
 		struct DSE_service * at;
-		success = decode_DAS_ServiceErrorParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_ServiceErrorParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_service = *at; /* struct copy */
 		free ((char *) at);
 	}
 	break;
 	case    DSE_UPDATEERROR : {
 		struct DSE_update * at;
-		success = decode_DAS_UpdateErrorParm(pe,1,NULLIP,NULLVP,&at);
+		success = decode_DAS_UpdateErrorParm(pe,1,NULL,NULLVP,&at);
 		err->dse_un.dse_un_update = *at; /* struct copy */
 		free ((char *) at);
 	}
@@ -193,7 +193,7 @@ int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
 		break;
 	case	DSE_DSAREFERRAL : {
 		struct DSE_referral * at;
-		success = decode_DO_DSAReferralParm(pe, 1, NULLIP, NULLVP, &at);
+		success = decode_DO_DSAReferralParm(pe, 1, NULL, NULLVP, &at);
 		err->dse_un.dse_un_referral = *at; /* struct copy */
 		free ((char *) at);
 	}

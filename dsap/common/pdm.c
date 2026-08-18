@@ -139,7 +139,7 @@ static PE pdmenc (void *value) {
 static void * pdmdec (PE pe) {
 	struct pref_deliv * m;
 
-	if (decode_SA_PreferredDeliveryMethod (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_PreferredDeliveryMethod (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return ((struct pref_deliv *) NULL);
 	return (m);
 }

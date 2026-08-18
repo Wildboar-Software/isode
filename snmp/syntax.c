@@ -231,7 +231,7 @@ static int ipaddr_decode (struct sockaddr_in **x, PE pe) {
 	struct qbuf *qb;
 	struct sockaddr_in *isock;
 
-	if (decode_SNMP_IpAddress (pe, 1, NULLIP, NULLVP, &ip) == NOTOK)
+	if (decode_SNMP_IpAddress (pe, 1, NULL, NULLVP, &ip) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (ip) == NOTOK
 			|| (isock = (struct sockaddr_in *) calloc (1, sizeof *isock))
@@ -436,7 +436,7 @@ static int clnpaddr_decode (struct sockaddr_iso **x, PE pe) {
 	struct qbuf *qb;
 	struct sockaddr_iso *isock;
 
-	if (decode_SNMP_ClnpAddress (pe, 1, NULLIP, NULLVP, &clnp) == NOTOK)
+	if (decode_SNMP_ClnpAddress (pe, 1, NULL, NULLVP, &clnp) == NOTOK)
 		return NOTOK;
 	if (qb_pullup (clnp) == NOTOK
 			|| (isock = (struct sockaddr_iso *) calloc (1, sizeof *isock))

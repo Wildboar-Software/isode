@@ -255,7 +255,7 @@ static PE inherit_enc (void *value) {
 static void * inherit_dec (PE pe) {
 	InheritAttr m;
 
-	if (decode_Quipu_InheritedAttribute (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_Quipu_InheritedAttribute (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return (NULLINHERIT);
 	return (m);
 }

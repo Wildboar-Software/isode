@@ -142,7 +142,7 @@ DN dn_dec (PE pe)
 {
 	DN adn;
 
-	if (decode_IF_DistinguishedName(pe,1,NULLIP,NULLVP,&adn) == NOTOK)
+	if (decode_IF_DistinguishedName(pe,1,NULL,NULLVP,&adn) == NOTOK)
 		return (NULLDN);
 	return (adn);
 }

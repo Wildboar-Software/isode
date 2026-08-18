@@ -8,6 +8,8 @@
 #include "IF-types.h"
 #include "Quipu-types.h"
 
+#include "pepsy.h"
+
 #define	advise	PY_advise
 
 extern	LLog	* log_dsap;
@@ -1027,7 +1029,7 @@ int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 	(*pparm)->gr_edb = NULLAVL;
 	tree = &((*pparm)->gr_edb);
 	for (p46 = first_member (pe); p46; p46 = next_member (pe, p46)) {
-		if (decode_Quipu_RelativeEntry (p46, 1, NULLIP, NULLVP, &tmp)== NOTOK)
+		if (decode_Quipu_RelativeEntry (p46, 1, NULL, NULLVP, &tmp)== NOTOK)
 			return NOTOK;
 		tmp->e_leaf = TRUE;
 		tmp->e_complete = TRUE;

@@ -205,7 +205,7 @@ int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOT
 #ifdef PDU_DUMP
 			pdu_dump (acc->acc_info[0],"res",100);
 #endif
-			if(decode_DAS_DirectoryBindResult(acc->acc_info[0], 1, NULLIP, NULLVP, &bind_res) != OK) {
+			if(decode_DAS_DirectoryBindResult(acc->acc_info[0], 1, NULL, NULLVP, &bind_res) != OK) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,( "Unable to parse DirectoryBindResult"));
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
@@ -239,7 +239,7 @@ int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOT
 #ifdef PDU_DUMP
 			pdu_dump (acc->acc_info[0],"err",100);
 #endif
-			if(decode_DAS_DirectoryBindError(acc->acc_info[0], 1, NULLIP, NULLVP, &bind_err) != OK) {
+			if(decode_DAS_DirectoryBindError(acc->acc_info[0], 1, NULL, NULLVP, &bind_err) != OK) {
 				dc->dc_un.dc_bind_err.dbe_version = DBA_VERSION_V1988;
 				dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 				dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;

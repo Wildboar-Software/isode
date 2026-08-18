@@ -48,7 +48,7 @@ static PE psap_enc (void *value) {
 	struct PSAPaddr *p = (struct PSAPaddr *) value;
 	PE ret_pe;
 
-	if (build_DSE_PSAPaddr (&ret_pe,0,0,NULLCP,p) == NOTOK ) {
+	if (build_DSE_PSAPaddr (&ret_pe,0,0,NULLCP,(char *)p) == NOTOK ) {
 		ret_pe = NULLPE;
 		LLOG (log_dsap,LLOG_EXCEPTIONS, ("Failed to encode PSAP"));
 	}
@@ -59,7 +59,7 @@ static void *psap_dec (PE pe) {
 	struct PSAPaddr *psap;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-	if (parse_DSE_PSAPaddr (pe,1,NULLIP,NULLVP,psap) == NOTOK) {
+	if (parse_DSE_PSAPaddr (pe, 1, NULL, NULLVP, (char *)psap) == NOTOK) {
 		free ((char *)psap);
 		return (NULLPA);
 	}

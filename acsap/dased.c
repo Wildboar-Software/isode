@@ -184,7 +184,7 @@ static void dased (int vecp, char **vec) {
 				adios (NULLCP, "ps2pe: %s", ps_error (ps -> ps_errno));
 		}
 
-		if (decode_DASE_Query__REQ (pe, 1, NULLIP, NULLVP, &req) == NOTOK)
+		if (decode_DASE_Query__REQ (pe, 1, NULL, NULLVP, &req) == NOTOK)
 			adios (NULLCP, "decode_DASE_Query__REQ: %s", PY_pepy);
 		PLOGP (pgm_log,DASE_Message, pe, "message", 1);
 

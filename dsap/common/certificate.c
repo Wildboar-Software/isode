@@ -20,7 +20,7 @@ static PE cert_enc(void *value) {
 static void *cert_dec(PE pe) {
 	struct certificate *result;
 
-	if (decode_AF_Certificate(pe, 0, NULLIP, NULLVP, &result) == NOTOK)
+	if (decode_AF_Certificate(pe, 0, NULL, NULLVP, &result) == NOTOK)
 		return ((struct certificate *)NULL);
 	return (result);
 }

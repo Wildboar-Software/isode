@@ -90,7 +90,7 @@ int do_parse (char *str) {
 	}
 	pe2pl (_opt,pe);
 	as_free (as);
-	if (decode_IF_Attribute (pe, 1, NULLIP, NULLVP, &as) == NOTOK) {
+	if (decode_IF_Attribute (pe, 1, NULL, NULLVP, &as) == NOTOK) {
 		fprintf (stderr,"decode problem [%s]\n", PY_pepy);
 		return;
 	}

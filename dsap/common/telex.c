@@ -127,7 +127,7 @@ static PE telex_enc (void *value) {
 static void * telex_dec (PE pe) {
 	struct telex * m;
 
-	if (decode_SA_TelexNumber (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
+	if (decode_SA_TelexNumber (pe,1,NULL,NULLVP,&m) == NOTOK) {
 		return ((struct telex *) NULL);
 	}
 	if ((int)strlen (m->telexnumber) > UB_TELEX_NUMBER) {

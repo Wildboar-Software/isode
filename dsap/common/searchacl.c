@@ -169,7 +169,7 @@ static void * sacl_decode( PE pe )
 {
 	Saclinfo acl;
 
-	if ( decode_Quipu_SearchACLSyntax( pe, 1, NULLIP, NULLVP, &acl )
+	if ( decode_Quipu_SearchACLSyntax( pe, 1, NULL, NULLVP, &acl )
 			== NOTOK ) {
 		return( NULLSACL );
 	}
@@ -521,7 +521,7 @@ static void sacl_print( PS ps, void *value, int format ) {
 static void * lacl_decode(PE pe)
 {
 	Listacl	acl;
-	if ( decode_Quipu_ListACLSyntax( pe, 1, NULLIP, NULLVP, &acl ) == NOTOK ) {
+	if ( decode_Quipu_ListACLSyntax( pe, 1, NULL, NULLVP, &acl ) == NOTOK ) {
 		return( NULLLISTACL );
 	}
 	return( acl );

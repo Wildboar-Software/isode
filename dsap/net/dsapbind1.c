@@ -220,7 +220,7 @@ int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 	case ACS_ACCEPT:
 		DLOG(log_dsap, LLOG_TRACE, ("DBindDecode ACCEPT"));
 		if ((acc->acc_ninfo == 1) && (acc->acc_info[0] != NULLPE)) {
-			if(decode_DAS_DirectoryBindResult(acc->acc_info[0], 1, NULLIP, NULLVP, &bind_res) != OK) {
+			if(decode_DAS_DirectoryBindResult(acc->acc_info[0], 1, NULL, NULLVP, &bind_res) != OK) {
 				LLOG (log_dsap,LLOG_EXCEPTIONS,( "Unable to parse DirectoryBindResult"));
 				dc->dc_result = DS_REJECT;
 				return (NOTOK);
@@ -241,7 +241,7 @@ int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 		*/
 		DLOG(log_dsap, LLOG_TRACE, ("DBindDecode PERMANENT"));
 		if ((acc->acc_ninfo == 1) && (acc->acc_info[0] != NULLPE)) {
-			if(decode_DAS_DirectoryBindError(acc->acc_info[0], 1, NULLIP, NULLVP, &bind_err) != OK) {
+			if(decode_DAS_DirectoryBindError(acc->acc_info[0], 1, NULL, NULLVP, &bind_err) != OK) {
 				LLOG(log_dsap, LLOG_EXCEPTIONS, ("Unable to decode DirectoryBindError"));
 				dc->dc_result = DS_REJECT;
 				return (NOTOK);

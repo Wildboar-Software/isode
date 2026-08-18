@@ -91,7 +91,7 @@ static PE mail_enc (void *value) {
 static void * mail_dec (PE pe) {
 	struct mailbox * m;
 
-	if (decode_Thorn_MailBox (pe,1,NULLIP,NULLVP,&m) == NOTOK) {
+	if (decode_Thorn_MailBox (pe,1,NULL,NULLVP,&m) == NOTOK) {
 		return ((struct mailbox *) NULL);
 	}
 	return (m);

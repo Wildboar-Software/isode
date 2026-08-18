@@ -451,7 +451,7 @@ static PE guideenc (void *value) {
 static void * guidedec (PE pe)
 {
 	struct Guide * m;
-	if (decode_SA_Guide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_Guide (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return ((struct Guide *) NULL);
 	m -> subset = -1;
 	return (m);
@@ -468,7 +468,7 @@ static PE nadfenc (void *value)
 static void *nadfdec (PE pe)
 {
 	struct Guide * m;
-	if (decode_SA_NadfGuide (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_NadfGuide (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return ((struct Guide *) NULL);
 	return (m);
 }

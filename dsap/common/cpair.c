@@ -18,7 +18,7 @@ static PE cpair_enc(void *value) {
 static void *cpair_dec(PE pe) {
 	struct certificate_list *result;
 
-	if (decode_AF_CertificatePair(pe, 0, NULLIP, NULLVP, &result) == NOTOK)
+	if (decode_AF_CertificatePair(pe, 0, NULL, NULLVP, &result) == NOTOK)
 		return (struct certificate_list *) 0;
 	return (result);
 }

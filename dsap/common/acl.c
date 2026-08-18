@@ -245,7 +245,7 @@ static void *acl_cpy (void *value) {
 
 static void *acl_decode (PE pe) {
 	struct acl * aclptr;
-	if (decode_Quipu_ACLSyntax(pe,1,NULLIP,NULLVP,&aclptr) == NOTOK) {
+	if (decode_Quipu_ACLSyntax(pe, 1, NULL, NULLVP, &aclptr) == NOTOK) {
 		return (struct acl *) NULL;
 	}
 	if (! aclptr->ac_child)

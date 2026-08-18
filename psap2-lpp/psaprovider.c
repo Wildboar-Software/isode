@@ -132,7 +132,7 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, struct PSAP
 	if ((pe = ps2pe (ps = pb -> pb_stream)) == NULLPE)
 		return pslose (pi, ps -> ps_errno);
 	pdu = NULL;
-	result = decode_PS_PDUs (pe, 1, NULLIP, NULLVP, &pdu);
+	result = decode_PS_PDUs (pe, 1, NULL, NULLVP, &pdu);
 #ifdef	DEBUG
 	if (result == OK && (psap2_log -> ll_events & LLOG_PDUS))
 		pvpdu (psap2_log, print_PS_PDUs_P, pe, "PDU", 1);

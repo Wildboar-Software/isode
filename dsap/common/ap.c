@@ -54,7 +54,7 @@ static PE qap_enc (void *value) {
 static void *qap_dec (PE pe) {
 	struct access_point *qap;
 
-	if (decode_DO_QAccessPoint (pe,1,NULLIP,NULLVP,&qap) == NOTOK) {
+	if (decode_DO_QAccessPoint (pe,1,NULL,NULLVP,&qap) == NOTOK) {
 		return (NULLACCESSPOINT);
 	}
 	return (qap);

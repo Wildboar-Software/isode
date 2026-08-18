@@ -23,7 +23,7 @@ static PE prot_enc (void *value) {
 static void * prot_dec (PE pe) {
 	struct protected_password *result;
 
-	if (decode_Quipu_ProtectedPassword (pe, 0, NULLIP, NULLVP, &result)
+	if (decode_Quipu_ProtectedPassword (pe, 0, NULL, NULLVP, &result)
 			== NOTOK)
 		return ((struct protected_password *) 0);
 	return (result);

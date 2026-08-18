@@ -51,7 +51,7 @@ static int edb_info_cmp (void *value1, void *value2) {
 
 static void * edb_info_decode (PE pe) {
 	struct edb_info * a;
-	if (decode_Quipu_EDBInfoSyntax(pe,1,NULLIP,NULLVP,&a) == NOTOK) {
+	if (decode_Quipu_EDBInfoSyntax(pe,1,NULL,NULLVP,&a) == NOTOK) {
 		return (NULLEDB);
 	}
 	return (a);

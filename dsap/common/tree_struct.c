@@ -65,7 +65,7 @@ static PE ts_enc (void *value) {
 
 static void * ts_dec (PE pe) {
 	struct tree_struct * ts;
-	if (decode_Quipu_TreeStructureSyntax(pe,1,NULLIP,NULLVP,&ts) == NOTOK)
+	if (decode_Quipu_TreeStructureSyntax(pe,1,NULL,NULLVP,&ts) == NOTOK)
 		return (struct tree_struct *)NULL;
 	return (ts);
 }

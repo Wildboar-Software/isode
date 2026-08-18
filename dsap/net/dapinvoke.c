@@ -250,7 +250,7 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 						return(dapreject (di, DP_INVOKE, roi1->roi_error.roe_id, NULLCP, "Error mistyped for abandon"));
 					} else {
 						struct DSE_abandon_fail * af;
-						if(decode_DAS_AbandonFailedParm (roi1->roi_error.roe_param, 1, NULLIP, NULLVP, &af) != OK) {
+						if(decode_DAS_AbandonFailedParm (roi1->roi_error.roe_param, 1, NULL, NULLVP, &af) != OK) {
 							LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode abandonFailed"));
 							return(dapreject (di, DP_INVOKE, old_id, NULLCP, "Abandon error decoding failed"));
 						} else {
@@ -321,7 +321,7 @@ int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 						return(dapreject (di, DP_INVOKE, roi2->roi_error.roe_id, NULLCP, "Error mistyped for abandon"));
 					} else {
 						struct DSE_abandon_fail * af;
-						if(decode_DAS_AbandonFailedParm (roi2->roi_error.roe_param, 1, NULLIP, NULLVP, &af) != OK) {
+						if(decode_DAS_AbandonFailedParm (roi2->roi_error.roe_param, 1, NULL, NULLVP, &af) != OK) {
 							LLOG(log_dsap, LLOG_EXCEPTIONS, ("Failed to decode abandonFailed"));
 							return(dapreject (di, DP_INVOKE, old_id, NULLCP, "Abandon error decoding failed"));
 						} else {

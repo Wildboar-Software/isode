@@ -222,7 +222,7 @@ static void * addrdec (PE pe) {
 	int i = 0;
 	int len;
 
-	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_PostalAddress (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return ((struct postaddr *) NULL);
 	for (a=m; a != (struct postaddr *) NULL; a = a->pa_next, i++) {
 		if ((len=(int)strlen (a->addrcomp)) > UB_POSTAL_STRING) {

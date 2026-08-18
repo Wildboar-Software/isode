@@ -155,7 +155,7 @@ static PE documentStore_enc (void *value)
 static void *documentStore_dec (PE pe)
 {
 	struct documentStore *a;
-	if (decode_Thorn_DocumentStoreSyntax (pe, 1, NULLIP, NULLVP, &a) == NOTOK)
+	if (decode_Thorn_DocumentStoreSyntax (pe, 1, NULL, NULLVP, &a) == NOTOK)
 		return NULL;
 	return a;
 }

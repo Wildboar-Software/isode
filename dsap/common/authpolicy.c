@@ -53,7 +53,7 @@ static void * authp_cpy( void *value ) {
 static void * authp_decode( PE pe ) {
 	Authpolicy	ap;
 
-	if ( decode_Quipu_AuthenticationPolicySyntax( pe, 1, NULLIP, NULLVP,
+	if ( decode_Quipu_AuthenticationPolicySyntax( pe, 1, NULL, NULLVP,
 			&ap ) == NOTOK ) {
 		return( NULLAUTHP );
 	}

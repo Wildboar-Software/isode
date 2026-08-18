@@ -300,63 +300,63 @@ int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	switch(arg->arg_type = rox->rox_op) {
 	case    OP_READ : {
 		struct ds_read_arg * dr;
-		success = decode_DAS_ReadArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_ReadArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_rd = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_compare_arg * dr;
-		success = decode_DAS_CompareArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_CompareArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_cm = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_ABANDON : {
 		struct ds_abandon_arg * dr;
-		success = decode_DAS_AbandonArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_AbandonArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_ab = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_list_arg * dr;
-		success = decode_DAS_ListArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_ListArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_ls = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_search_arg * dr;
-		success = decode_DAS_SearchArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_SearchArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_sr = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_addentry_arg * dr;
-		success = decode_DAS_AddEntryArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_AddEntryArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_ad = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_removeentry_arg * dr;
-		success = decode_DAS_RemoveEntryArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_RemoveEntryArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_rm = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_modifyentry_arg * dr;
-		success = decode_DAS_ModifyEntryArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_ModifyEntryArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_me = *dr; /* struct copy */
 		free ((char *) dr);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_modifyrdn_arg * dr;
-		success = decode_DAS_ModifyRDNArgument(pe,1,NULLIP,NULLVP,&dr);
+		success = decode_DAS_ModifyRDNArgument(pe,1,NULL,NULLVP,&dr);
 		arg->arg_mr = *dr; /* struct copy */
 		free ((char *) dr);
 	}
@@ -401,63 +401,63 @@ int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	switch(rox->rox_op) {
 	case    OP_READ : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedReadArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedReadArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedCompareArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedCompareArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_ABANDON : {
 		struct ds_abandon_arg * ab;
-		success = decode_DAS_AbandonArgument(pe,1,NULLIP,NULLVP,&ab);
+		success = decode_DAS_AbandonArgument(pe,1,NULL,NULLVP,&ab);
 		di->di_invoke.dx_arg.dca_dsarg.arg_ab = *ab; /* struct copy */
 		free ((char *)ab);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedListArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedListArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedSearchArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedSearchArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedAddEntryArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedAddEntryArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedRemoveEntryArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedRemoveEntryArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedModifyEntryArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedModifyEntryArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_arg * da;
-		success = decode_DO_ChainedModifyRDNArgument(pe,1,NULLIP,NULLVP,&da);
+		success = decode_DO_ChainedModifyRDNArgument(pe,1,NULL,NULLVP,&da);
 		di->di_invoke.dx_arg = *da; /* struct copy */
 		free ((char *)da);
 	}
@@ -490,63 +490,63 @@ int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedReadResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedReadResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedCompareResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedCompareResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_ABANDON : {
 		struct ds_op_res *op;
-		success = decode_DAS_AbandonResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DAS_AbandonResult(pe,1,NULL,NULLVP,&op);
 		/* No result to copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedListResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedListResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedSearchResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedSearchResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedAddEntryResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedAddEntryResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedModifyEntryResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedModifyEntryResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_res *op;
-		success = decode_DO_ChainedModifyRDNResult(pe,1,NULLIP,NULLVP,&op);
+		success = decode_DO_ChainedModifyRDNResult(pe,1,NULL,NULLVP,&op);
 		di->di_result.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
@@ -585,70 +585,70 @@ int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	switch(rox->rox_op) {
 	case    OP_READ : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedReadArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedReadArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedCompareArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedCompareArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_ABANDON : {
 		struct ds_abandon_arg *arg;
-		success = decode_DAS_AbandonArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DAS_AbandonArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg.dca_dsarg.arg_ab = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedListArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedListArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedSearchArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedSearchArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedAddEntryArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedAddEntryArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedRemoveEntryArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedRemoveEntryArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedModifyEntryArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedModifyEntryArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_arg *arg;
-		success = decode_DO_ChainedModifyRDNArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_DO_ChainedModifyRDNArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg = *arg; /* struct copy */
 		free ((char *)arg);
 	}
 	break;
 	case    OP_GETEDB : {
 		struct getedb_arg *arg;
-		success = decode_Quipu_GetEntryDataBlockArgument(pe,1,NULLIP,NULLVP,&arg);
+		success = decode_Quipu_GetEntryDataBlockArgument(pe,1,NULL,NULLVP,&arg);
 		di->di_invoke.dx_arg.dca_dsarg.arg_ge = *arg; /* struct copy */
 		free ((char *)arg);
 	}
@@ -679,70 +679,70 @@ int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedReadResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedReadResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedCompareResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedCompareResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_ABANDON : {
 		struct ds_op_res *res;
-		success = decode_DAS_AbandonResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DAS_AbandonResult(pe,1,NULL,NULLVP,&res);
 		/* NO result to copy !!! */
 		free ((char *)res);
 	}
 	break;
 	case    OP_LIST : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedListResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedListResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedSearchResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedSearchResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedAddEntryResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedAddEntryResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedModifyEntryResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedModifyEntryResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_res *res;
-		success = decode_DO_ChainedModifyRDNResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_DO_ChainedModifyRDNResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_GETEDB : {
 		struct getedb_result *res;
-		success = decode_Quipu_GetEntryDataBlockResult(pe,1,NULLIP,NULLVP,&res);
+		success = decode_Quipu_GetEntryDataBlockResult(pe,1,NULL,NULLVP,&res);
 		di->di_result.dr_res.dcr_dsres.res_ge = *res; /* sturct copy */
 		free ((char *)res);
 	}
@@ -778,49 +778,49 @@ int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 	switch(err->dse_type = roe->roe_error) {
 	case    DSE_ABANDON_FAILED : {
 		struct DSE_abandon_fail * de;
-		success = decode_DAS_AbandonFailedParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_AbandonFailedParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_abandon_fail = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_ATTRIBUTEERROR : {
 		struct DSE_attribute * de;
-		success = decode_DAS_AttributeErrorParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_AttributeErrorParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_attribute = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_NAMEERROR : {
 		struct DSE_name * de;
-		success = decode_DAS_NameErrorParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_NameErrorParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_name = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_REFERRAL : {
 		struct DSE_referral * de;
-		success = decode_DAS_ReferralParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_ReferralParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_referral = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_SECURITYERROR : {
 		struct DSE_security * de;
-		success = decode_DAS_SecurityErrorParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_SecurityErrorParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_security = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_SERVICEERROR : {
 		struct DSE_service * de;
-		success = decode_DAS_ServiceErrorParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_ServiceErrorParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_service = *de; /* struct copy */
 		free ((char *)de);
 	}
 	break;
 	case    DSE_UPDATEERROR : {
 		struct DSE_update * de;
-		success = decode_DAS_UpdateErrorParm(pe,1,NULLIP,NULLVP,&de);
+		success = decode_DAS_UpdateErrorParm(pe,1,NULL,NULLVP,&de);
 		err->dse_un.dse_un_update = *de; /* struct copy */
 		free ((char *)de);
 	}
@@ -830,7 +830,7 @@ int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 		break;
 	case	DSE_DSAREFERRAL : {
 		struct DSE_referral * de;
-		success = decode_DO_DSAReferralParm(pe, 1, NULLIP, NULLVP, &de);
+		success = decode_DO_DSAReferralParm(pe, 1, NULL, NULLVP, &de);
 		err->dse_un.dse_un_referral = *de; /* struct copy */
 		free ((char *)de);
 	}
