@@ -7,7 +7,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-OPTIONS +=  -std=gnu17 -Wno-error=implicit-function-declaration -w -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS +=  -std=gnu17 -Wno-error=implicit-function-declaration -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 # TODO: -Werror=old-style-definition (to prohibit K&R-style declarations)
 # TODO: -Werror=strict-prototypes (to prohibit empty declarations that don't match)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer

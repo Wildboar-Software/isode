@@ -16,15 +16,6 @@
 #include "config.h"		/* system-specific configuration */
 #endif
 
-#ifdef LINUX
-#define _POSIX_SOURCE	1
-#define _POSIX_C_SOURCE	200809L
-#define _XOPEN_SOURCE	700
-#define _XOPEN_SOURCE_EXTENDED	1
-#define _DEFAULT_SOURCE	1
-#include <features.h>
-#endif
-
 /* target-dependent defines:
 
 	SYS5NLY -	target has SYS5 types only, no BSD types
