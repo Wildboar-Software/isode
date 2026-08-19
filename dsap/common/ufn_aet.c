@@ -6,6 +6,7 @@
 #include "quipu/ds_search.h"
 #include "quipu/connection.h"	/* ds_search uses di_block - include this for lint !!! */
 #include "quipu/dua.h"
+#include "quipu/dap.h"
 
 extern LLog * log_dsap;
 extern LLog * addr_log;

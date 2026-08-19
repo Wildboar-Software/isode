@@ -26,6 +26,8 @@ struct security_parms {
 	int		sp_target;
 };
 
+struct security_parms *secp_cpy (struct security_parms *sp);
+
 typedef struct extension {
 	int		  ext_id;
 	char		  ext_critical;
@@ -34,6 +36,9 @@ typedef struct extension {
 } *Extension;
 #define NULLEXT		((Extension) 0)
 #define ext_alloc()	(Extension) smalloc(sizeof(struct extension))
+
+void extension_free (struct extension *ext);
+struct extension *ext_cpy (struct extension *ext);
 
 typedef struct common_args {    /* Common arguments for operations      */
 	ServiceControl      ca_servicecontrol;
@@ -46,6 +51,11 @@ typedef struct common_args {    /* Common arguments for operations      */
 	struct extension	* ca_extensions;
 } common_args, CommonArgs;
 #define NULL_COMMONARG ((struct common_args *) NULL)
+
+int ca_dup (struct common_args *src, struct common_args *tgt);
+
+int service_control (PS opt, int argc, char **argv, CommonArgs *ca);
+int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca);
 
 typedef struct common_results {
 	DN          cr_requestor;
@@ -78,10 +88,18 @@ typedef struct entrystruct {   /* Represents EntryInformation           */
 	/* for search acl purposes... yuck!	*/
 	struct entrystruct  *ent_next;
 } entrystruct, EntryInfo;
+void entryinfo_free (EntryInfo *a, int state);
+void entryinfo_comp_free (EntryInfo *a, int state);
+void entryinfo_cpy (EntryInfo *a, EntryInfo *b);
+void entryinfo_append (EntryInfo *a, EntryInfo *b);
+void entryinfo_print (PS ps, EntryInfo *entryinfo, int format);
+void cache_entry (EntryInfo *ptr, char complete, char vals);
 
 #define NULLENTRYINFO ((EntryInfo *) 0)
 #define entryinfo_alloc()          (EntryInfo *) smalloc(sizeof(EntryInfo))
 #define entryinfo_cmp(x,y)          (((dn_cmp (x.ent_dn ,y.ent_dn) == OK) && (as_cmp (x.ent_attr ,y.ent_attr) == OK)) ? OK : NOTOK)
+
+void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast);
 
 typedef struct entryinfoselection {
 	/* Rerpesents EntryInformationSelection */
@@ -95,6 +113,8 @@ typedef struct entryinfoselection {
 #define EIS_ATTRIBUTETYPESONLY 0
 #define EIS_ATTRIBUTESANDVALUES 1
 } entryinfoselection, EntryInfoSelection;
+
+int eis_dup (struct entryinfoselection *src, struct entryinfoselection *tgt);
 
 #define LSR_NOLIMITPROBLEM      -1
 #define LSR_TIMELIMITEXCEEDED   0

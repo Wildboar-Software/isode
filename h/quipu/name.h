@@ -15,11 +15,16 @@ typedef struct rdncomp {        /* RDN is sequence of attribute value   */
 
 #define NULLRDN ((RDN) 0)
 #define rdn_comp_alloc()          (RDN) smalloc(sizeof(rdncomp))
-RDN  rdn_comp_new ();
-RDN  rdn_comp_cpy ();
-RDN  str2rdn();
-RDN  rdn_cpy ();
-RDN  rdn_merge ();
+RDN rdn_comp_new (AttributeType at, AttributeValue av);
+RDN str2rdn(char *str);
+RDN rdn_cpy (RDN rdn);
+RDN rdn_comp_cpy (RDN rdn);
+RDN rdn_merge (RDN a, RDN b);
+int rdn_cmp (RDN a, RDN b);
+void rdn_free (RDN rdn);
+void rdn_comp_free (RDN rdn);
+int rdn_cmp_comp (RDN a, RDN b);
+int rdn_cmp_reverse (RDN a, RDN b);
 
 typedef struct dncomp {         /* DN is sequence of RDNs.              */
 	/* represents RDNSequence which is      */
@@ -37,9 +42,14 @@ typedef struct dncomp {         /* DN is sequence of RDNs.              */
 
 DN dn_comp_new (RDN rdn);
 DN dn_comp_cpy (DN dn);
-RDN rdn_cpy (RDN rdn);
 DN dn_cpy (DN dn);
 DN str2dn (char *str);
+int dn_cmp (DN a, DN b);
+int dn_cmp_prefix (DN a, DN b);
+int dn_order_cmp (DN a, DN b);
+void dn_free (DN dn);
+void dn_comp_free (DN dn);
+void dn_append (DN a, DN b);
 
 char *dn2str (DN dn);
 char *dn2ufn (DN dn, int multiline);

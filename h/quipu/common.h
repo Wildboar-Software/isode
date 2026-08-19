@@ -26,4 +26,11 @@ typedef struct simple_creds {
 	char    *usc_time2;
 } USC;
 
+int sub_string (short sntx);
+int telephone_match (short sntx);
+int case_exact_match (short sntx);
+int approx_string (short sntx);
+int check_3166 (char *a);
+void soundex (char *s, char **c);
+
 #endif

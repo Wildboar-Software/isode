@@ -10,6 +10,7 @@
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
 #include "quipu/connection.h"
+#include "quipu/database.h"
 #include "tailor.h"
 #include <sys/stat.h>
 #include <errno.h>

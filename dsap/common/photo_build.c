@@ -10,6 +10,8 @@ extern node * bl_tree_top;      /* pointers to the decode trees */
 extern node * wt_tree_top;
 extern node * two_tree_top;
 
+static void add_tree (char *string, int run, char mode, node *root);
+
 /*
  *  Decoding tables
  */
@@ -337,8 +339,7 @@ int build_trees (void) {
  * @param mode Type of data being entered.
  * @param root Root of the tree the string should be added to.
  */
-void add_tree (char *string, int run, char mode, node *root)
-
+static void add_tree (char *string, int run, char mode, node *root)
 {
 	char *   ptr;
 	node *   treeptr;

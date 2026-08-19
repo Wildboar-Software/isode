@@ -20,6 +20,7 @@
 
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
+#include "quipu/bind.h"
 
 /* An additional value for "asyn" parameters for interruptibility */
 #define ROS_INTR	-1
@@ -91,19 +92,13 @@ struct DAPresult {
 	int			  dr_id;
 	struct DSResult	  dr_res;	/* Decoded result and op type */
 };
-#ifndef DRFREE
-#define DRFREE(dr) \
-    ds_res_free (&((dr)->dr_res))
-#endif
+#define DAPRFREE(dr) ds_res_free (&((dr)->dr_res))
 
 struct DAPerror {
 	int			  de_id;
 	struct DSError	  de_err;	/* Decoded error and error type */
 };
-#ifndef DEFREE
-#define DEFREE(de) \
-    ds_error_free (&((de)->de_err))
-#endif
+#define DAPEFREE(de) ds_error_free (&((de)->de_err))
 
 struct DAPpreject {
 	int		  dp_id;	/* Operation id or -1 */
@@ -135,11 +130,30 @@ struct DAPindication {
 		struct DAPpreject	di_un_preject;
 		struct DAPabort		di_un_abort;
 	} di_un;
+#ifndef di_result
 #define di_result di_un.di_un_result
+#endif
+
+#ifndef di_error
 #define di_error di_un.di_un_error
+#endif
+
+#ifndef di_preject
 #define di_preject di_un.di_un_preject
+#endif
+
+#ifndef di_abort
 #define di_abort di_un.di_un_abort
+#endif
 };
+
+int	daplose (struct DAPindication *di, ...);
+int	dapreject (struct DAPindication *di, ...);
+int DapAbandon (int ad, int id, struct ds_abandon_arg *arg, struct DAPindication *di, int asyn);
+int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOTindication *rni);
+int DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn);
+int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di);
+int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di);
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -161,13 +175,30 @@ struct DAPindication {
 #define	copyDAPdata(base,len,d)	bcopy (base, (char *) d, len)
 #endif
 
-int	DapAsynBindReqAux ();	/* DAP-BIND.REQUEST (ARGUMENT) */
-int	DapAsynBindRequest ();	/* DAP-BIND.REQUEST (ARGUMENT) */
-int	DapAsynBindRetry();	/* DAP-BIND-RETRY.REQUEST */
+/* DAP-BIND.REQUEST (ARGUMENT) */
+int DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr,
+	struct PSAPaddr *calledaddr, int prequirements, int srequirements, long isn, int settings,
+	struct SSAPref *sf, struct ds_bind_arg *bindarg, struct QOStype *qos, struct DAPconnect *dc, struct DAPindication *di, int async);
+/* DAP-BIND.REQUEST (ARGUMENT) */
+int DapAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, int async);	/* DAP-BIND.REQUEST (ARGUMENT) */
+/* DAP-BIND-RETRY.REQUEST */
+int DapAsynBindRetry (int sd, int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di);
 
-int	DapUnBindRequest ();	/* DAP-UNBIND.REQUEST */
-int	DapUnBindRetry ();	/* DAP-BIND-RETRY.REQUEST (pseudo) */
+int DapUnBindRequest (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-UNBIND.REQUEST */
+int DapUnBindRetry (int sd, int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-BIND-RETRY.REQUEST (pseudo) */
 
-char   *DapErrString ();	/* return DAP error code in string form */
+int ronot2daplose (struct DAPindication * di, char * event, struct RoNOTindication * rni);
+int ros2daplose (struct DAPindication *di, char *event, struct RoSAPpreject *rop);
+int ros2dapreject (struct DAPindication *di, char *event, struct RoSAPureject *rou);
+
+int DapRead (int ad, int id, struct ds_read_arg *arg, struct DAPindication *di, int asyn);
+int DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication *di, int asyn);
+int DapAbandon (int ad, int id, struct ds_abandon_arg *arg, struct DAPindication *di, int asyn);
+int DapList (int ad, int id, struct ds_list_arg *arg, struct DAPindication *di, int asyn);
+int DapSearch (int ad, int id, struct ds_search_arg *arg, struct DAPindication *di, int asyn);
+int DapAddEntry (int ad, int id, struct ds_addentry_arg *arg, struct DAPindication *di, int asyn);
+int DapRemoveEntry (int ad, int id, struct ds_removeentry_arg *arg, struct DAPindication *di, int asyn);
+int DapModifyEntry (int ad, int id, struct ds_modifyentry_arg *arg, struct DAPindication *di, int asyn);
+int DapModifyRDN (int ad, int id, struct ds_modifyrdn_arg *arg, struct DAPindication *di, int asyn);
 
 #endif

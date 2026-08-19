@@ -40,6 +40,8 @@ typedef struct ava {            /* represents AttributeValueAssertion */
 	AttributeValue ava_value;
 } ava, AVA;
 
+int ava_dup (struct ava *src, struct ava *tgt);
+
 #define AV_WRITE_FILE		256
 #define AV_FILE			128
 #define MAX_AV_SYNTAX 		100
@@ -47,16 +49,30 @@ typedef struct ava {            /* represents AttributeValueAssertion */
 #define NULLAttrV (AttributeValue) NULL
 #define AttrV_alloc()   (AttributeValue) smalloc (sizeof (attrVal));
 
+void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
 AttributeValue AttrV_cpy(AttributeValue x);
+void AttrV_cpy_aux (AttributeValue x, AttributeValue y);
+void AttrV_cpy_enc (AttributeValue x, AttributeValue y);
+void AttrV_print (PS ps, AttributeValue x, int format);
+int AttrV_cmp (AttributeValue x, AttributeValue y);
+void AttrV_free (AttributeValue x);
 AttributeValue str_at2AttrV(char * str, AttributeType at);
 AttributeValue str2AttrV(char * str, short syntax);
 short str2syntax(char * str);
+int str_at2AttrV_aux (char * str, AttributeType at, AttributeValue rav);
 
 typedef struct avseqcomp {      /* attribute may have multiple values   */
 	/* respresents SET OF AttributeValue    */
 	attrVal      	avseq_av;
 	struct avseqcomp    *avseq_next;
 } avseqcomp, *AV_Sequence;
+
+void avs_print (PS ps, AV_Sequence avs, int format);
+void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep);
 
 typedef struct {
 	AttributeType fi_sub_type;
@@ -67,6 +83,8 @@ typedef struct {
 	/* one components only                  */
 	char       *fi_sub_match; /* for DSA use */
 } Filter_Substrings;
+
+int fi_sub_dup (Filter_Substrings *src, Filter_Substrings *tgt);
 
 struct filter_item {
 	int         fi_type;
@@ -84,6 +102,8 @@ struct filter_item {
 	/* field for DSA use - no need to fill if using DUA */
 	IFP	    fi_ifp;
 };
+
+int filter_item_dup (struct filter_item *src, struct filter_item *tgt);
 
 typedef PE (*AttributeValueEncoder)(void *value);
 typedef void* (*AttributeValueDecoder)(PE pe);
@@ -105,7 +125,22 @@ short add_attribute_syntax (char *sntx,
 	char *print_pe,
 	AttributeValueApproximator approx,
 	char multiline);
-short modify_av_printer ();
+
+void set_attribute_syntax (short sntx,
+	AttributeValueEncoder enc,
+	AttributeValueDecoder dec,
+	AttributeValueParser parse,
+	AttributeValuePrinter print,
+	AttributeValueCopier cpy,
+	AttributeValueComparator cmp,
+	AttributeValueFree sfree,
+	AttributeValueApproximator approx,
+	char *  print_pe,
+	char multiline);
+
+void set_av_pe_print (short sntx, char *print_pe);
+void set_av_printer (short sntx, void (*print)(PS ps, void *value, int format));
+short modify_av_printer (AttributeType at, char *sntx, void (*print)(PS ps, void *value, int format));
 
 struct file_syntax {
 	short	fs_real_syntax;
@@ -127,7 +162,20 @@ struct file_syntax {
 
 #define EDB_LINEWRAP	38	/* Wrap very long lines after 38 characters */
 
+void file_free (struct file_syntax *fs);
+void file_decode (AttributeValue x);
+AttributeValue str2file (char *str, AttributeType at);
+void fileattr_print (PS ps, AttributeValue y, int format);
+int dflt_attr_file (AttributeType at, AttributeValue x, char full);
+int str2file_aux (char *str, AttributeType at, AttributeValue x);
+void exec_print (
+	PS ps,
+	AttributeValue av,
+	char * proc
+);
+
 #define ps_print(ps,data) (void)ps_write(ps,(PElementData)data,strlen(data))
+void pe_print (PS ps, PE pe, int format);
 
 typedef struct {
 	char *s_sntx;		/* String defining syntax */
@@ -152,5 +200,14 @@ extern char * TidyString();
 extern char * TidyString2();
 
 #define FAST_TIDY(x) if (quipu_faststart) while (isascii(*x) && isspace (*x)) x++; else x = TidyString(x)
+
+int AttrV_decode(AttributeType x, AttributeValue y);
+void AttrV_free(AttributeValue x);
+void AttrV_free_aux(AttributeValue x);
+AttributeValue AttrV_cpy(AttributeValue x);
+AttributeValue str_at2AttrV(char * str, AttributeType at);
+AttributeValue str2AttrV(char * str, short syntax);
+short str2syntax(char * str);
+int check_in_oc (OID oid, AV_Sequence avs);
 
 #endif

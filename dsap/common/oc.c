@@ -11,6 +11,7 @@ extern IFP oc_hier;
 extern IFP oc_avsprint;
 
 static void add_hierarchy (objectclass *oc, AV_Sequence *avsp);
+static void add_oc_avs (objectclass *oc, AV_Sequence *avsp);
 void want_oc_hierarchy (void);
 
 objectclass * oc_add (OID oid)
@@ -99,7 +100,7 @@ static AV_Sequence str2oc_hier (char *str)
 	return (avs);
 }
 
-void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
+static void add_oc_avs (objectclass *oc, AV_Sequence *avsp)
 {
 	AV_Sequence loop;
 	objectclass *ocp;
@@ -142,10 +143,7 @@ static int in_hierarchy (AV_Sequence a, AV_Sequence b)
 	return (FALSE);
 }
 
-static void oc_print_avs (PS ps, AV_Sequence avs, int format)  /* need to use this somehow !!! */
-      
-                
-           
+static void oc_print_avs (PS ps, AV_Sequence avs, int format)
 {
 	AV_Sequence newavs;
 	char found;
@@ -184,8 +182,7 @@ int objectclass_cmp (void *value1, void *value2)
 static void * oc_cpy (void *value)
 {
 	objectclass *oc = (objectclass *) value;
-
-	return (oc);	/* static table !!! */
+	return (oc);
 }
 
 int check_in_oc (OID oid, AV_Sequence avs)

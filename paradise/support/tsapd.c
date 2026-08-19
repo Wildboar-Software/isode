@@ -126,7 +126,9 @@ extern	int	dsa_dead;
 extern	char   *local_dit;
 extern	struct PSAPaddr dsa_bound;
 
-extern	int	as_print (), de_print (), fi_print ();
+extern void as_print (PS ps, Attr_Sequence as, int format);
+extern void fi_print (PS ps, Filter fi, int format);
+extern void de_print (PS ps, struct DSError *err, int format);
 #endif
 
 void	adios (char *, char *, ...)

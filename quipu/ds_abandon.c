@@ -48,7 +48,7 @@ int perform_abandon (struct task_act *tk) {
 			return(NOTOK);
 		} else {
 			DLOG(log_dsap, LLOG_DEBUG, ("perform_abandon - task_abandon OK"));
-			tk->tk_result = &(tk->tk_resp.di_result.dr_res);
+			tk->tk_result = &(tk->tk_resp.di_res.dr_res);
 			tk->tk_result->dcr_dsres.result_type = OP_ABANDON;
 			return(OK);
 		}

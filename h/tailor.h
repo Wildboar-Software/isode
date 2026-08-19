@@ -135,4 +135,13 @@ char   *getlocalhost ();
 
 int ll_hdfree (LLog *lp);
 
+int dsa_tai_string (char *str);
+int dsa_sys_tai (int argc, char **argv);
+int dsa_tai_args (int *acptr, char ***avptr);
+int dsa_tai_init (char *name);
+int tai_string (char *str);
+int dsap_tai (int argc, char **argv);
+void tai_args (int *acptr, char ***avptr);
+int dsap_tai_init (void);
+
 #endif

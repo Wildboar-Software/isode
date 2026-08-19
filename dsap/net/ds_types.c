@@ -8,6 +8,8 @@
 
 extern LLog * log_dsap;
 
+static void ca_free (CommonArgs * ca);
+
 void bind_arg_free (struct ds_bind_arg *arg) {
 	if (arg->dba_time1 != NULLCP)
 		free (arg->dba_time1);
@@ -249,7 +251,7 @@ void trace_info_free (struct trace_info *ti) {
 	free( (char *) ti);
 }
 
-void ca_free (CommonArgs * ca)
+static void ca_free (CommonArgs * ca)
 {
 	DLOG(log_dsap, LLOG_TRACE, ("ca_free()"));
 	dn_free (ca->ca_requestor);

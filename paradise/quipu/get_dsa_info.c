@@ -178,7 +178,7 @@ void dsa_info_result_wakeup(struct oper_act *on) {
 	*  Cache the entry returned, flake out if it is not unravellable,
 	*  otherwise grab a reference to the unravelled entry.
 	*/
-	ent_res = &(on->on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry);
+	ent_res = &(on->on_resp.di_res.dr_res.dcr_dsres.res_rd.rdr_entry);
 	if((di_ent = cache_dsp_entry (ent_res,TRUE)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
 			   "dsa_info_result_wakeup - cache_dsp_entry failure",

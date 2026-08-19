@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "quipu/common.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/list.h"
@@ -34,6 +35,7 @@ static EntryInfo	*turbo_and();
 static EntryInfo	*turbo_or();
 static EntryInfo	*eis_union();
 static void		subtree_refer();
+static int build_indexnode (Index_node *node, Index_node *bignode);
 
 Attr_Sequence	eis_select();
 EntryInfo	*filterentry();
@@ -469,7 +471,7 @@ static EntryInfo *turbo_item(
 		node = new_indexnode();
 		g_stopearly = 0;
 		avl_prefixapply(pindex[i].i_sroot,
-						(caddr_t) small, build_indexnode, (caddr_t) node,
+						(caddr_t) small, (int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
 						index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
 #else
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
@@ -534,16 +536,16 @@ static EntryInfo *turbo_item(
 		if (case_exact_match(f->UNSUB.fi_sub_type->oa_syntax)) {
 			if (phoneflag)
 				avl_prefixapply(theindex, thestring,
-								build_indexnode, (caddr_t) node,
+								(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
 								substring_prefix_tel_cmp, (caddr_t)(size_t)len,
 								NOTOK);
 			else
 				avl_prefixapply(theindex, thestring,
-								build_indexnode, (caddr_t) node,
+								(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
 								substring_prefix_cmp, (caddr_t)(size_t)len, NOTOK);
 		} else {
 			avl_prefixapply(theindex, thestring,
-							build_indexnode, (caddr_t) node,
+							(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
 							substring_prefix_case_cmp, (caddr_t)(size_t)len, NOTOK);
 		}
 		if (node->in_num == 0) {
@@ -559,7 +561,7 @@ static EntryInfo *turbo_item(
 
 	case FILTERITEM_PRESENT:
 		g_toplevel = toplevel;
-		avl_apply( pindex[ i ].i_root, entry_collect,
+		avl_apply( pindex[ i ].i_root, (int (*)(caddr_t, caddr_t)) entry_collect,
 				   (caddr_t) &eilist, NOTOK, AVL_INORDER );
 		break;
 

@@ -2,9 +2,12 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dap2.h"
+#include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
 
@@ -16,6 +19,11 @@ extern	void	  ros_log();
 #define DUMP_RES 	"res"
 #define DUMP_ERR 	"err"
 #endif
+
+static int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di);
+static int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di);
+static int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di);
+static int DapInterrupt (int sd, int id, int op, struct DAPindication *di);
 
 int DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, int asyn) {
 #ifdef PDU_DUMP
@@ -40,7 +48,7 @@ int DapInvokeReqAux (int sd, int id, int op, PE pe, struct DAPindication *di, in
 	}
 }
 
-int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+static int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -95,7 +103,7 @@ int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 	return (OK);
 }
 
-int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+static int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -152,7 +160,7 @@ int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 	return (OK);
 }
 
-int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
+static int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -178,22 +186,21 @@ int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *d
 	return (OK);
 }
 
-int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
-	/*
-	* Abandoning. Trickier than it looks!
-	* Need to RoInvoke an abandon op, which will receive
-	* One of the following:
-	*    Result/Error for op being abandoned sent before
-	*	this abandon arrived at the DSA;
-	*    Abandoned error for op being abandoned;
-	*    Result for abandon op which has overtaken the
-	*	abandoned error for previous op between DSA and DUA
-	*    Error for abandon because DSA has screwed up.
-	*
-	* Unless something goes wrong there should be 2 Ro events to
-	* collect before returning.
-	*/
-	/* abandon operation */
+/**
+* Abandoning. Trickier than it looks!
+* Need to RoInvoke an abandon op, which will receive
+* One of the following:
+*    Result/Error for op being abandoned sent before
+*	this abandon arrived at the DSA;
+*    Abandoned error for op being abandoned;
+*    Result for abandon op which has overtaken the
+*	abandoned error for previous op between DSA and DUA
+*    Error for abandon because DSA has screwed up.
+*
+* Unless something goes wrong there should be 2 Ro events to
+* collect before returning.
+*/
+static int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 	struct ds_abandon_arg	  ab_arg;
 	struct DSError		  ab_err;
 	PE				  ab_req_pe;

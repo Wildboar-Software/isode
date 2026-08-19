@@ -4,8 +4,10 @@
 #include "tailor.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
+#include "quipu/watchdog.h"
 
 extern LLog	* log_dsap;
+extern int select_context (OID app_ctx);
 
 /* D-BIND.INDICATION */
 

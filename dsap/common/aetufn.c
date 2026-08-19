@@ -10,12 +10,13 @@
 #include "quipu/dua.h"
 #include "quipu/bind.h"
 #include "tailor.h"
+#include "quipu/IF-types.h"
 
 extern LLog * addr_log;
 
-extern char * dn2str();
-extern char * dn2ufn();
 extern struct dn_seq *dn_seq_push ();
+extern void quipu_syntaxes(void);
+extern int dsap_init (int *acptr, char ***avptr);
 
 static void set_el (void);
 
@@ -36,11 +37,12 @@ static DNS ufn_interact (
 		fflush (stdout);
 again:
 		;
-		if (gets (buf) == NULL) {
+		if (fgets (buf, sizeof buf, stdin) == NULL) {
 			clearerr (stdin);
 			printf ("\n");
 			return result;
 		}
+		buf[strcspn (buf, "\n")] = '\0';
 		if ((buf[0] == NULL)
 				|| (strlen(buf) != 1)
 				|| ((buf[0] != 'y') && (buf[0] != 'n'))) {

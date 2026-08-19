@@ -18,8 +18,6 @@ extern char * TidyString();
 extern char * TidyString2();
 extern int soundex_match();
 extern int sfree();
-extern int dn_cmp();
-extern int dn_free();
 extern PE dn_enc();
 extern DN dn_dec();
 extern DN str2dnX();
@@ -29,7 +27,6 @@ extern char * mapPhone ();
 extern int ch_set;
 extern int telcmp();
 extern void pageprint(char *, ...);
-extern char *strdup();
 
 int greyBook = FALSE;
 char padding[20];

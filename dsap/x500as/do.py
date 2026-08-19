@@ -9,6 +9,30 @@ DO
 
 DEFINITIONS ::=
 
+%{
+#include "quipu/malloc.h"
+
+void pe_print (PS ps, PE pe, int format);
+extern void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
+extern void AttrV_print (PS ps, AttributeValue x, int format);
+extern int AttrV_decode(AttributeType x, AttributeValue y);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int pepsylose (modtyp *module, ...);
+extern int set_heap (AttributeType x);
+extern int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm);
+extern int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm);
+extern int enc_ipa (struct access_point *parm, PE *ppe);
+extern int dec_ipa (struct access_point **parm, PE pe);
+extern int fr_ipa (struct access_point *parm);
+extern int substring_encode (struct filter_item *parm, PE *pe);
+extern int substring_decode (struct filter_item **pparm, PE pe);
+extern int substring_free (struct filter_item *parm);
+%}
+
 PREFIXES encode decode print
 
 BEGIN
@@ -677,7 +701,7 @@ int dec_ipa (struct access_point **parm, PE pe) {
 	int res;
 
 	psap = (struct PSAPaddr *) smalloc (sizeof *psap);
-	if ((res = parse_DSE_PSAPaddr (pe, 0, NULLIP, NULLVP, psap)) == NOTOK) {
+	if ((res = parse_DSE_PSAPaddr (pe, 0, NULL, NULLVP, (char *)psap)) == NOTOK) {
 	   free ((char *) psap);
 	   return res;
 	}

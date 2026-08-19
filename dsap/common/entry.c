@@ -19,7 +19,7 @@ void directory_free (Entry directory)
 		if (directory != database_root)
 			turbo_index_delete(directory);
 		if (directory->e_children != NULLAVL)
-			avl_free(directory->e_children, directory_free);
+			avl_free(directory->e_children, (void (*)(caddr_t))directory_free);
 		switch (directory->e_data) {
 		case E_TYPE_SLAVE:
 			local_slave_size--;

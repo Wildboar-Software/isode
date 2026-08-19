@@ -118,7 +118,7 @@ void oper_task_extract (struct oper_act *on) {
 	if (on->on_dsas != NULL_DI_BLOCK)
 		di_desist (on->on_dsas);
 	on->on_dsas = NULL_DI_BLOCK;
-	if (on->on_task->tk_result == &(on->on_resp.di_result.dr_res))
+	if (on->on_task->tk_result == &(on->on_resp.di_res.dr_res))
 		on->on_task->tk_result = (struct ds_op_res *) NULL;
 	on->on_task = NULLTASK; /* Shows that this has been task_extracted */
 }

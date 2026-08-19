@@ -10,6 +10,7 @@
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
 #include "quipu/malloc.h"
+#include "quipu/cache.h"
 #ifdef TURBO_DISK
 #include <gdbm.h>
 #endif
@@ -37,6 +38,7 @@ extern char	*unesc_cont(char *ptr, int len);
 extern char *getstring();
 char *srealloc(char *p, int nsize);
 char	*brkl();
+static int cnt_escp (char *ptr, int len);
 
 #ifdef TURBO_DISK
 
@@ -410,7 +412,7 @@ void pswr_esc(PS ps, char *line, int wl)
 	}
 }
 
-int cnt_escp (char *ptr, int len) {
+static int cnt_escp (char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -532,15 +534,19 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 	parse_rdn = eptr->e_name;
 	eptr->e_attributes = get_attributes_aux (file);
 	if (check) {
+		char nbuf[32];
+
 		save = parse_line;
 		parse_line = 0;
 		if (unravel_attribute (eptr,&err) != OK) {
-			parse_error ("Error in entry ending line %d...", save);
+			snprintf(nbuf, sizeof(nbuf), "%d", save);
+			parse_error ("Error in entry ending line %d...", nbuf);
 			if (print_parse_errors)
 				ds_error (_opt,&err);
 		}
 		if (check_schema (eptr,NULLATTR,&err) != OK) {
-			parse_error ("Schema error in entry ending line %d...", save);
+			snprintf(nbuf, sizeof(nbuf), "%d", save);
+			parse_error ("Schema error in entry ending line %d...", nbuf);
 			if (print_parse_errors)
 				ds_error (_opt,&err);
 		}
@@ -606,7 +612,8 @@ Entry make_path (DN dn)
 	RDN    b_rdn;
 	Entry	parent, new;
 	Avlnode	*kids;
-	int	entryrdn_cmp(RDN rdn, Entry ent), entry_cmp(Entry e1, Entry e2);
+	int	entryrdn_cmp(RDN rdn, Entry ent);
+	int entry_cmp(Entry e1, Entry e2);
 
 	if (database_root == NULLENTRY || database_root->e_children == NULLAVL) {
 		if ((database_root = new_constructor(NULLENTRY)) == NULLENTRY)
@@ -616,7 +623,9 @@ Entry make_path (DN dn)
 			if ((new = new_constructor(ptr)) == NULLENTRY)
 				return NULLENTRY;
 			new->e_name = rdn_cpy(dn->dn_rdn);
-			avl_insert(&ptr->e_children, (caddr_t) new, entry_cmp, avl_dup_error);
+			avl_insert(&ptr->e_children, (caddr_t) new,
+			(int (*)(caddr_t data1, caddr_t data2))entry_cmp,
+			(int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
 			ptr = (Entry) avl_getone(ptr->e_children);
 		}
 		return (ptr);
@@ -628,7 +637,8 @@ Entry make_path (DN dn)
 		parent = database_root;
 		b_rdn = dn->dn_rdn;
 		for(;;) { /* return out */
-			if ((ptr = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp))
+			if ((ptr = (Entry) avl_find(kids, (caddr_t) b_rdn,
+			(int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp))
 					== NULLENTRY ) {
 				for (; dn != NULLDN; dn = dn->dn_parent) {
 					if ((new = new_constructor(parent)) ==
@@ -636,8 +646,10 @@ Entry make_path (DN dn)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					avl_insert(&parent->e_children, (caddr_t) new,
-							   entry_cmp, avl_dup_error);
-					parent = (Entry) avl_find(parent->e_children, (caddr_t) dn->dn_rdn, entryrdn_cmp);
+							   (int (*)(caddr_t data1, caddr_t data2))entry_cmp,
+							   (int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
+					parent = (Entry) avl_find(parent->e_children, (caddr_t) dn->dn_rdn,
+					(int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp);
 				}
 				return(parent);
 			}
@@ -652,9 +664,10 @@ Entry make_path (DN dn)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					avl_insert(&ptr->e_children, (caddr_t) new,
-							   entry_cmp, avl_dup_error);
+							   (int (*)(caddr_t data1, caddr_t data2))entry_cmp,
+							   (int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
 					ptr = (Entry) avl_find(ptr->e_children,
-										   (caddr_t) dn->dn_rdn, entryrdn_cmp);
+										   (caddr_t) dn->dn_rdn, (int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp);
 				}
 				return(ptr);
 			}

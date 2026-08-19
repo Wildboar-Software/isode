@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "quipu/util.h"
+#include "quipu/attr.h"
 #include "cmd_srch.h"
 #include "tailor.h"
 

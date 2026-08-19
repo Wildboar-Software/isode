@@ -14,7 +14,7 @@ int dap_removeentry (int ad, int *id, struct ds_removeentry_arg *arg, struct DSE
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-		DRFREE (dr);
+		DAPRFREE (dr);
 		return (DS_OK);
 	}
 

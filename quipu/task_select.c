@@ -258,7 +258,7 @@ task_select (int *secs_p) {
 				else { /* ON_TYPE_SHADOW */
 					process_shadow(get_edb_ops);
 					ds_res_free (&get_edb_ops->
-								 on_resp.di_result.dr_res.dcr_dsres);
+								 on_resp.di_res.dr_res.dcr_dsres);
 				}
 				if (newop) {
 					newop->on_next_task = get_edb_ops->on_next_task;
@@ -378,13 +378,13 @@ int timeout_task (struct task_act *tk) {
 			task_error(tk);
 		} else {
 			/* send the results we have got... */
-			tk->tk_result = &(tk->tk_resp.di_result.dr_res);
+			tk->tk_result = &(tk->tk_resp.di_res.dr_res);
 			tk->tk_result->dcr_dsres.result_type = tk->tk_dx.dx_arg.dca_dsarg.arg_type;
 			tk->tk_resp.di_type = DI_RESULT;
 			if (tk->tk_timed == TRUE)
-				tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.CSR_limitproblem = LSR_TIMELIMITEXCEEDED;
+				tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.CSR_limitproblem = LSR_TIMELIMITEXCEEDED;
 			else /* tk->tk_timed == 2 */
-				tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.CSR_limitproblem = LSR_ADMINSIZEEXCEEDED;
+				tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.CSR_limitproblem = LSR_ADMINSIZEEXCEEDED;
 			/* Go through sub-tasks and add a POQ for each */
 			for(tmp=tk->referred_st; tmp!= NULL_ST; tmp=tmp->st_next)
 				add_cref2poq (&tk->tk_result->dcr_dsres.res_sr,tmp->st_cr);

@@ -316,7 +316,7 @@ int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN
 				free (real_entry->e_parent->e_edbversion);
 			real_entry->e_parent->e_edbversion = new_version();
 		}
-		if (avl_apply(real_entry->e_children, inherit_set,
+		if (avl_apply(real_entry->e_children, (int (*)(caddr_t, caddr_t)) inherit_set,
 					  (caddr_t)error, NOTOK, AVL_PREORDER) == NOTOK)
 			return(DS_ERROR_REMOTE);
 		/* May need recursion */

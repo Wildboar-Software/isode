@@ -5,6 +5,7 @@
 
 #include "quipu/config.h"
 #include "quipu/name.h"
+#include "quipu/entry.h"
 
 /*
  * this structure represents a generic avl tree node.
@@ -33,7 +34,8 @@ extern caddr_t	avl_find();
 extern caddr_t	avl_getfirst();
 extern caddr_t	avl_getnext();
 extern int	avl_dup_error();
-extern int	avl_apply();
+
+int turbo_isoptimized(AttributeType attr);
 
 /* apply traversal types */
 #define AVL_PREORDER	1
@@ -77,6 +79,10 @@ typedef struct index {
 	Avlnode		*i_sroot;	/* tree of soundex values	    */
 } Index;
 
+int idn_cmp(DN a, Index *b);
+int idn_cmp_from_caddrs(caddr_t data1, caddr_t data2);
+int th_prefix(DN a, DN b);
+
 #define NULLINDEX	((Index *) 0)
 
 typedef struct {
@@ -94,10 +100,51 @@ typedef struct index_node {
 #define NULLINDEXNODE	((Index_node *) 0)
 
 #define get_subtree_index(x) \
-	((Index *) avl_find( subtree_index, (caddr_t) (x), idn_cmp ))
+	((Index *) avl_find( subtree_index, (caddr_t) (x), idn_cmp_from_caddrs ))
 
 #define get_sibling_index(x) \
-	((Index *) avl_find( sibling_index, (caddr_t) (x), idn_cmp ))
+	((Index *) avl_find( sibling_index, (caddr_t) (x), idn_cmp_from_caddrs ))
+
+int avl_free(
+	Avlnode *root,
+	void (*dfree)(caddr_t data)
+);
+
+caddr_t avl_getfirst(Avlnode *root);
+caddr_t avl_getnext (void);
+int avl_dup_error (void);
+caddr_t avl_find(
+	Avlnode *root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2)
+);
+int avl_prefixapply(
+	Avlnode *root,
+	caddr_t data,
+	int (*fmatch)(caddr_t data1, caddr_t data2),
+	caddr_t marg,
+	int (*fcmp)(caddr_t data1, caddr_t data2, caddr_t carg),
+	caddr_t carg,
+	int stopflag
+);
+int avl_apply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag,
+	int type
+);
+caddr_t avl_delete(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2)
+);
+int avl_insert(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int (*fdup)(caddr_t data1, caddr_t data2)
+);
 
 #endif /* TURBO_INDEX */
 #endif /* QUIPUTURBO */

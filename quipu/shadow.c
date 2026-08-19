@@ -139,7 +139,7 @@ void shadow_update (void) {
 						NULLENTRY) {
 					pslog (log_dsap,LLOG_EXCEPTIONS,
 						   "Shadowing entry which does not exist !!!",
-						   (IFP)dn_print,
+						   (void (*)(PS, caddr_t, int))dn_print,
 						   (caddr_t) dnseq -> dns_dn);
 					continue;
 				}
@@ -148,7 +148,7 @@ void shadow_update (void) {
 							NULLENTRY) {
 						pslog (log_dsap,LLOG_EXCEPTIONS,
 							   "Shadowing alias which does not exist !!!",
-							   (IFP)dn_print,
+							   (void (*)(PS, caddr_t, int))dn_print,
 							   (caddr_t) eptr -> e_alias);
 						continue;
 					}
@@ -197,7 +197,7 @@ void shadow_update (void) {
 				if ((eptr = make_path (dnseq -> dns_dn)) == NULLENTRY) {
 					pslog (log_dsap,LLOG_EXCEPTIONS,
 						   "local shadow entry failure",
-						   (IFP)dn_print, (caddr_t) dnseq -> dns_dn);
+						   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dnseq -> dns_dn);
 					oper_free (op);
 					continue;
 				}
@@ -253,7 +253,7 @@ int shadow_fail_wakeup (struct oper_act *on) {
 			if (oper_rechain(on) == OK)
 				return FALSE;
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote shadow error",
-			   (IFP)dn_print,
+			   (void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t) on -> on_req.dca_dsarg.arg_rd.rda_object);
 		log_ds_error (& on -> on_resp.di_error.de_err);
 		if (on->on_conn) {
@@ -304,16 +304,16 @@ int process_shadow (struct oper_act *on) {
 	DN dn;
 
 	DLOG (log_dsap, LLOG_TRACE, ("Process shadow"));
-	dn = on -> on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn;
+	dn = on -> on_resp.di_res.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn;
 	if ((eptr = local_find_entry_aux (dn,FALSE)) == NULLENTRY)
 		/* aliases on route !!! */
 		if ((eptr = local_find_entry_aux (dn,TRUE)) == NULLENTRY) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,"Shadow has gone",
-				   (IFP)dn_print, (caddr_t) dn);
+				   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dn);
 			goto out;
 		}
 	new_as = on ->
-			 on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_attr;
+			 on_resp.di_res.dr_res.dcr_dsres.res_rd.rdr_entry.ent_attr;
 	if (eptr -> e_external) {
 		/* Add in Quipu attributes */
 		if (  ((as = entry_find_type (eptr, at_subord)) == NULLATTR)
@@ -327,14 +327,14 @@ int process_shadow (struct oper_act *on) {
 		if ((as = as_find_type (new_as, at_objectclass)) == NULLATTR) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, (
 					  "no objectclass in shadow entry"));
-			on -> on_resp.di_result.dr_res.
+			on -> on_resp.di_res.dr_res.
 			dcr_dsres.res_rd.rdr_entry.ent_attr = new_as;
 			goto out;
 		}
 		tas = as_comp_new (AttrT_cpy(at_objectclass),
 						   str2avs(EXTERNOBJECT,at_objectclass),NULLACL_INFO);
 		new_as = as_merge (new_as,tas);
-		on -> on_resp.di_result.dr_res.
+		on -> on_resp.di_res.dr_res.
 		dcr_dsres.res_rd.rdr_entry.ent_attr = new_as;
 	}
 	if (as_cmp (eptr->e_attributes, new_as)	== 0) {
@@ -353,7 +353,7 @@ int process_shadow (struct oper_act *on) {
 	}
 	if (unravel_attribute(ne, &err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: unravel failure",
-			   (IFP)dn_print, (caddr_t) dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dn);
 		log_ds_error (&err);
 		ds_error_free (&err);
 		entry_free (ne);
@@ -361,13 +361,13 @@ int process_shadow (struct oper_act *on) {
 		goto out;
 	} else 	if ( ! check_oc_hierarchy(ne->e_oc)) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: objectclass failure",
-			   (IFP)dn_print, (caddr_t) dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dn);
 		entry_free (ne);
 		ne = NULLENTRY;
 		goto out;
 	} else if (check_schema (ne,NULLATTR,&err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: schema failure",
-			   (IFP)dn_print, (caddr_t) dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dn);
 		log_ds_error (&err);
 		ds_error_free (&err);
 		entry_free (ne);
@@ -386,12 +386,12 @@ int process_shadow (struct oper_act *on) {
 	ne = eptr;
 	if (unravel_attribute(eptr, &err) != OK) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"shadow: 2nd unravel failure",
-			   (IFP)dn_print, (caddr_t) dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) dn);
 		log_ds_error (&err);
 		ds_error_free (&err);
 		goto out;
 	}
-	avl_apply(eptr->e_children, inherit_link,
+	avl_apply(eptr->e_children, (int (*)(caddr_t, caddr_t)) inherit_link,
 			  (caddr_t) eptr, NOTOK, AVL_PREORDER);
 	if (eptr->e_parent->e_edbversion)
 		free (eptr->e_parent->e_edbversion);
@@ -408,8 +408,8 @@ int process_shadow (struct oper_act *on) {
 		fatal (-33,"shadow rewrite failed - check database");
 #endif
 #ifndef NO_STATS
-	pslog (log_stat,LLOG_TRACE,"Shadow update",(IFP)dn_print, (caddr_t) on ->
-		   on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn);
+	pslog (log_stat,LLOG_TRACE,"Shadow update",(void (*)(PS, caddr_t, int))dn_print, (caddr_t) on ->
+		   on_resp.di_res.dr_res.dcr_dsres.res_rd.rdr_entry.ent_dn);
 #endif
 out:
 	;

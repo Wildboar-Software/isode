@@ -21,6 +21,9 @@ extern struct qbuf *qb_cpy(struct qbuf *qb) ;
 static PE dsa_control_enc(void *value) ;
 static void * dsa_control_cpy(void *value) ;
 static struct dsa_control * str2dsa_control_aux(char *str, struct dsa_control *item) ;
+static int op_list_free (struct op_list *elem) ;
+static int ops_free (struct ops *elem) ;
+static int chain_list_free (struct chain_list *elem) ;
 
 void        auth_level_free() ;
 struct op_list    *op_list_cpy() ;
@@ -662,7 +665,7 @@ static void quipu_call_free (void *value) {
 	free((char *)item_to_free) ;
 }
 
-int op_list_free (struct op_list *elem) {
+static int op_list_free (struct op_list *elem) {
 	struct op_list * tmp_elem ;
 
 	while (elem != (struct op_list *) 0) {
@@ -673,7 +676,7 @@ int op_list_free (struct op_list *elem) {
 	}
 }
 
-int ops_free (struct ops *elem) {
+static int ops_free (struct ops *elem) {
 	dn_free(elem->base_object) ;
 	if (elem->start_time)
 		free((char *)elem->start_time) ;
@@ -689,7 +692,7 @@ int ops_free (struct ops *elem) {
 	free((char *)elem) ;
 }
 
-int chain_list_free (struct chain_list *elem) {
+static int chain_list_free (struct chain_list *elem) {
 	struct chain_list * tmp_elem ;
 
 	while (elem != (struct chain_list *) 0) {

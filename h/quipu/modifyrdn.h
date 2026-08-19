@@ -14,4 +14,8 @@ struct ds_modifyrdn_arg {
 	char deleterdn;             /* set to TRUE or FLASE                 */
 };
 
+int dap_modifyrdn (int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError *error);
+void modifyrdn_arg_free (struct ds_modifyrdn_arg *arg);
+int modifyrdn_arg_dup (struct ds_modifyrdn_arg *src, struct ds_modifyrdn_arg *tgt);
+
 #endif

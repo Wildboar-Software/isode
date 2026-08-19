@@ -16,7 +16,7 @@ void end_of_task_analyse() ;
 struct task_act *task_alloc (void) {
 	struct task_act	* tk_ret;
 	tk_ret = (struct task_act *) calloc(1,sizeof(struct task_act));
-	tk_ret->tk_result = &(tk_ret->tk_resp.di_result.dr_res);
+	tk_ret->tk_result = &(tk_ret->tk_resp.di_res.dr_res);
 	tk_ret->tk_error = &(tk_ret->tk_resp.di_error.de_err);
 	return(tk_ret);
 }

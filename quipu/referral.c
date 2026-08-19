@@ -62,7 +62,7 @@ cont_ref_parent (DN name) {
 }
 
 void add_str_parent (char *sdn, char *spsap) {
-	DN dn,str2dn();
+	DN dn, str2dn();
 	struct PSAPaddr *psap, * str2paddr();
 	struct access_point * next_ap;
 	/* add string DN and string PSAP to list of parents */
@@ -144,7 +144,7 @@ int dsa_info_new (
 		if (((*di_p)->di_reftype = entry_ptr->e_reftype) == RT_NONSPECIFICSUBORDINATE) {
 			for (avs = entry_ptr->e_reference; avs != NULLAV; avs = avs->avseq_next) {
 				if (((struct access_point *) avs->avseq_av.av_struct)->ap_address == NULLPA) {
-					pslog (log_dsap,LLOG_EXCEPTIONS,"No address in NSSR",(IFP)dn_print,(caddr_t)name);
+					pslog (log_dsap,LLOG_EXCEPTIONS,"No address in NSSR",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)name);
 					continue;
 				}
 				aps = ap_cpy ((struct access_point *) avs->avseq_av.av_struct);
@@ -245,7 +245,7 @@ out:
 		err->dse_type = DSE_SERVICEERROR;
 		err->ERR_SERVICE.DSE_sv_problem = DSE_SV_INVALIDREFERENCE;
 		ret_val = DS_X500_ERROR;
-		pslog (log_dsap,LLOG_EXCEPTIONS,"Invalid reference in entry",(IFP)dn_print,(caddr_t)name);
+		pslog (log_dsap,LLOG_EXCEPTIONS,"Invalid reference in entry",(void (*)(PS, caddr_t, int))dn_print, (caddr_t)name);
 	}
 	return (ret_val);
 }

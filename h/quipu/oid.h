@@ -147,12 +147,10 @@ char * attr2name();
 
 objectclass * oid2oc();
 objectclass * name2oc();
-char * oc2name();
-
-char * oid2name();      /* find oid wherever it is hiding !!! */
-OID    name2oid();
-
-char * SkipSpace ();
-void   StripSpace ();
+char *oc2name(objectclass *oc, int format);
+char *oid2name(OID oid, int format);
+OID name2oid(char *str);
+void oidprint (PS ps, OID o, int format);
+int load_oid_table (char *table);
 
 #endif

@@ -250,7 +250,7 @@ int really_find_entry (
 	}
 	parent = database_root;
 	for(rdns = 1, aliases = 0 ; ; rdns++ ) { /* break or return out */
-		*ent_p = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp);
+		*ent_p = (Entry) avl_find(kids, (caddr_t) b_rdn, (int (*)(caddr_t, caddr_t)) entryrdn_cmp);
 		if ( *ent_p == NULLENTRY ) {
 			int res = no_reply_edb(object, dn_trail, dn_stack,
 								   master, parent, err, di_p);
@@ -327,7 +327,7 @@ int really_find_entry (
 							dn->dn_parent = NULLDN;
 							err->ERR_NAME.DSE_na_matched = dn_cpy(object);
 							dn->dn_parent = tmp_dn;
-							pslog (log_dsap,LLOG_EXCEPTIONS,"Alias deref Problem",(IFP)dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
+							pslog (log_dsap,LLOG_EXCEPTIONS,"Alias deref Problem",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
 						}
 						if (aliasdn)
 							dn_free (aliasdn);
@@ -337,7 +337,7 @@ int really_find_entry (
 						err->dse_type = DSE_NAMEERROR;
 						err->ERR_NAME.DSE_na_problem = DSE_NA_ALIASPROBLEM;
 						err->ERR_NAME.DSE_na_matched = dn_cpy((*ent_p)->e_alias);
-						pslog (log_dsap,LLOG_EXCEPTIONS,"Alias Problem",(IFP)dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
+						pslog (log_dsap,LLOG_EXCEPTIONS,"Alias Problem",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
 						if (aliasdn)
 							dn_free (aliasdn);
 						return (DS_X500_ERROR);
@@ -362,7 +362,7 @@ int really_find_entry (
 				dn->dn_parent = NULLDN;
 				err->ERR_NAME.DSE_na_matched = dn_cpy(object);
 				dn->dn_parent = tmp_dn;
-				pslog (log_dsap,LLOG_EXCEPTIONS,"Alias deref(2) Problem",(IFP)dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
+				pslog (log_dsap,LLOG_EXCEPTIONS,"Alias deref(2) Problem",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)err->ERR_NAME.DSE_na_matched);
 				if (aliasdn)
 					dn_free (aliasdn);
 				return (DS_X500_ERROR);

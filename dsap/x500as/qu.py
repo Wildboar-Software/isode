@@ -10,6 +10,30 @@ Quipu
 
 DEFINITIONS ::=
 
+%{
+#include "quipu/malloc.h"
+
+void pe_print (PS ps, PE pe, int format);
+extern void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
+extern void AttrV_print (PS ps, AttributeValue x, int format);
+extern int AttrV_decode(AttributeType x, AttributeValue y);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int pepsylose (modtyp *module, ...);
+extern int set_heap (AttributeType x);
+extern int test_acl_default (struct acl_info *a);
+extern int treestruct_encode (struct tree_struct *parm, PE *pe);
+extern int treestruct_decode (struct tree_struct **parm, PE pe);
+extern void tree_struct_free (struct tree_struct *parm);
+extern int EDB_encode (struct getedb_result *parm, PE *pe);
+extern int EDB_decode_force (struct getedb_result **pparm, PE pe);
+extern int EDB_decode (struct getedb_result **pparm, PE pe);
+extern int EDB_free (struct getedb_result *parm);
+%}
+
 PREFIXES encode decode print
 
 BEGIN

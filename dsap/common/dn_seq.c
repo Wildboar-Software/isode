@@ -1,9 +1,11 @@
 /* dn_seq.c - General Directory Name Sequence routines */
 
+#include <string.h>
 #include "quipu/util.h"
+#include "quipu/attr.h"
 #include "quipu/entry.h"
 
-int dn_seq_free (struct dn_seq *dnseq) {
+void dn_seq_free (struct dn_seq *dnseq) {
 	struct dn_seq * ptr;
 	struct dn_seq * next;
 

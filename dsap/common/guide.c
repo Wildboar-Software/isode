@@ -27,6 +27,8 @@
 #include "quipu/attrvalue.h"
 #include "cmd_srch.h"
 #include "quipu/syntaxes.h"
+#include "pepsy.h"
+#include "quipu/SA-types.h"
 
 static void free_CriteriaItem (struct CriteriaItem *arg);
 

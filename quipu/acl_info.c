@@ -51,10 +51,10 @@ int check_acl (DN who, int mode, struct acl_info *acl, DN node) {
 #ifdef DEBUG
 	if (log_dsap -> ll_events & LLOG_TRACE) {
 		pslog (log_dsap,LLOG_TRACE,"access denied for user ",
-			   (IFP)dn_print,(caddr_t)who);
+			   (void (*)(PS, caddr_t, int))dn_print,(caddr_t)who);
 		LLOG (log_dsap,LLOG_TRACE,("  attempting mode=%d", mode));
 		pslog (log_dsap,LLOG_TRACE,"  on entry ",
-			   (IFP)dn_print,(caddr_t)node);
+			   (void (*)(PS, caddr_t, int))dn_print,(caddr_t)node);
 	}
 #endif
 	return (NOTOK);

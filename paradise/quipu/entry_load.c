@@ -356,7 +356,7 @@ static int entry_load_kids (Avlnode *entryptr /* in this case, entryptr is reall
 	if (entryptr == NULLAVL)
 		return(OK);
 	got_all = TRUE;
-	if (avl_apply(entryptr, load_a_kid,  (caddr_t) offset, NOTOK, AVL_PREORDER)
+	if (avl_apply(entryptr, (int (*)(caddr_t, caddr_t)) load_a_kid,  (caddr_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
 	akid = (Entry) avl_getone(entryptr);

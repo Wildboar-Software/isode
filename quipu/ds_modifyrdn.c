@@ -6,8 +6,8 @@
 #include "quipu/entry.h"
 #include "quipu/modifyrdn.h"
 #include "quipu/malloc.h"
+#include "quipu/entry.h"
 #include "quipu/turbo.h"
-extern int entry_cmp(), entryrdn_cmp();
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
@@ -107,7 +107,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	}
 	/* make sure the new name doesn't already exist */
 	if ( (Entry) avl_find( entryptr->e_parent->e_children,
-						   (caddr_t) arg->mra_newrdn, entryrdn_cmp ) != NULLENTRY ) {
+						   (caddr_t) arg->mra_newrdn, (int (*)(caddr_t, caddr_t)) entryrdn_cmp ) != NULLENTRY ) {
 		error->dse_type = DSE_UPDATEERROR;
 		error->ERR_UPDATE.DSE_up_problem = DSE_UP_ALREADYEXISTS;
 		return( DS_ERROR_REMOTE );
@@ -133,7 +133,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 #endif
 	/* delete the old one from core */
 	if ((entryptr = (Entry) avl_delete( &entryptr->e_parent->e_children,
-										(caddr_t) entryptr->e_name, entryrdn_cmp )) == NULLENTRY ) {
+										(caddr_t) entryptr->e_name, (int (*)(caddr_t, caddr_t)) entryrdn_cmp )) == NULLENTRY ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: entry has disappeared!"));
 		return( DS_ERROR_REMOTE );
 	}
@@ -160,7 +160,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 		}
 		/* add the new one to core */
 		if (avl_insert(&entryptr->e_parent->e_children, (caddr_t) entryptr,
-					   entry_cmp, avl_dup_error) != OK) {
+					   (int (*)(caddr_t, caddr_t)) entry_cmp, (int (*)(caddr_t, caddr_t)) avl_dup_error) != OK) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("modrdn: can't add new entry!"));
 			return(DS_ERROR_REMOTE);
 		}

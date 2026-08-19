@@ -10,10 +10,13 @@
 	EXAMPLE:
 		mhs $ physical $ telex $ telephone
 */
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "cmd_srch.h"
 #include "quipu/syntaxes.h"
+#include "pepsy.h"
+#include "quipu/SA-types.h"
 
 static CMD_TABLE pdm_table [] = {
 	"ANY",		0,

@@ -32,8 +32,8 @@ struct acl {                    /* represents ACL                       */
 #define acl_alloc()  (struct acl *) smalloc (sizeof (struct acl));
 #define NULLACL (struct acl *)NULL
 
-static void * acl_cpy();
-static void * str2acl();
+void *str2acl (char *str);
+int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
 
 /* Entry is the structure which is used to hold the DIT in core         */
 
@@ -130,7 +130,17 @@ int find_entry ();
 int find_master_entry ();
 int really_find_entry ();
 Entry local_find_entry (DN object, char deref);
-Entry get_default_entry ();
+void entry_free (Entry entryptr);
+void directory_free (Entry directory);
+void entry_replace(Entry old, Entry new);
+Entry entry_cpy (Entry entryptr);
+Entry get_default_entry (Entry parent);
+void check_known_oids (void);
+int entryrdn_cmp(RDN rdn, Entry ent);
+int entry_cmp(Entry e1, Entry e2);
+int real_unravel_attribute (Entry eptr, struct DSError * error);
+void check_dsa_known_oids (void);
+void set_inheritance (Entry eptr);
 
 #define isleaf(x) 	((x)->e_leaf || \
 		((x)->e_children == NULLAVL && \
@@ -145,6 +155,9 @@ struct oid_seq {
 #define oid_seq_alloc()         (struct oid_seq  *) smalloc (sizeof (struct oid_seq))
 struct oid_seq * oid_seq_cpy();
 struct oid_seq * oid_seq_merge();
+void oid_seq_free (struct oid_seq *ptr);
+int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b);
+void oid_seq_print (PS ps, struct oid_seq *ptr, int format);
 
 struct tree_struct {            /* represents TreeStructure             */
 	objectclass        *tree_object;
@@ -160,6 +173,11 @@ struct dn_seq {
 #define dn_seq_alloc()          (struct dn_seq *) smalloc (sizeof (struct dn_seq))
 struct dn_seq *dn_seq_cpy();
 struct dn_seq *str2dnseq();
+void dn_seq_free (struct dn_seq *dnseq);
+int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b);
+void dn_seq_print (PS ps, struct dn_seq *dnseq, int format);
+int check_dnseq (struct dn_seq *dnseq, DN who);
+int check_dnseq_prefix (struct dn_seq *dnseq, DN who);
 
 struct dsa_info {               /* represents DSA information           */
 	/* UpdateInfoSyntax                     */
@@ -215,6 +233,8 @@ struct getedb_result {
 };
 #define NULL_GETRESULT (struct getedb_result *) NULL
 
+int EDB_decode_force (struct getedb_result **pparm, PE pe);
+
 struct getedb_arg {
 	DN 	ga_entry;
 	char * 	ga_version;
@@ -230,5 +250,14 @@ struct getedb_arg {
 };
 
 #define NULL_GETARG (struct getedb_arg *) NULL
+
+void getedb_arg_free (struct getedb_arg *arg);
+int getedb_arg_dup (struct getedb_arg *src, struct getedb_arg *tgt);
+
+#ifdef TURBO_INDEX
+void turbo_index_delete(Entry e);
+void turbo_add2index(Entry e);
+int journal (Entry myentry);
+#endif /* TURBO_INDEX */
 
 #endif

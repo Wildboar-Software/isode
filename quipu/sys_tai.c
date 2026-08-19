@@ -5,7 +5,21 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/policy.h"
+#include "quipu/oid.h"
 #include "cmd_srch.h"
+
+extern void prefer_dsa (char *str);
+extern void reject_prefix (char *str);
+extern void accept_prefix (char *str);
+extern void reject_length (char *str);
+extern void allowrelay (char *str);
+extern void add_str_parent (char *str, char *addr);
+extern void isodesetvar (char *str, char *value, int ispgm);
+extern void shadow_attribute (char *str);
+extern void getedb_size (int size);
+extern void turbo_optimize (char *str);
+extern void index_subtree (char *str);
+extern void index_siblings (char *str);
 
 extern char *isodelogpath,
 	   *treedir,

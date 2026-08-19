@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dsap.h"
+#include "quipu/watchdog.h"
 
 extern LLog	* log_dsap;
 

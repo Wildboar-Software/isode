@@ -2,6 +2,7 @@
 
 #include "logger.h"
 #include "quipu/util.h"
+#include "quipu/dsap.h"
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 

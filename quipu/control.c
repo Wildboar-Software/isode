@@ -12,12 +12,16 @@
 #include "quipu/dsp.h"
 #include "quipu/ds_error.h"
 #include "tailor.h"
+#include "quipu/database.h"
+#include "quipu/shadow.h"
 
 extern LLog * log_dsap;
 #ifndef NO_STATS
 extern LLog * log_stat;
 #endif
 extern void dsa_abort();
+
+int refresh_from_disk (DN dn);
 
 int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	char * str;

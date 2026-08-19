@@ -32,6 +32,12 @@ typedef struct s_filter {
 	} flt_un;
 } s_filter, *Filter;
 
+void filter_free (Filter filt);
+struct s_filter *filter_cpy (struct s_filter *flt);
+void filter_append (Filter a, Filter b);
+void fi_print (PS ps, Filter fi, int format);
+void print_filter (PS nps, Filter fi, int level);
+
 #define NULLFILTER (Filter)NULL
 #define FUITEM   flt_un.flt_un_item
 #define FUFILT   flt_un.flt_un_filter
@@ -73,6 +79,14 @@ struct ds_search_result {
 	struct ds_search_result * srr_next;
 };
 #define NULLSRR	((struct ds_search_result *) 0)
+
+int dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result);
+void search_arg_free (struct ds_search_arg *arg);
+int search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt);
+
+void merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *sr_tmp);
+void search_result_free (struct ds_search_result *arg);
+void correlate_search_results (struct ds_search_result *sr_res);
 
 /*
  * the following is used to keep track of results for search acl purposes.
@@ -154,6 +168,31 @@ struct ds_search_task {
 };
 #define NULL_ST ((struct ds_search_task *) NULL)
 #define st_alloc() (struct ds_search_task *) smalloc (sizeof(struct ds_search_task));
+
+void st_comp_free (struct ds_search_task *st);
+void st_free (struct ds_search_task **st);
+void st_free_dis (struct ds_search_task **st, int internals);
+struct ds_search_task *st_done (struct ds_search_task **st);
+static int check_filter_presrch (Filter fltr, struct DSError *error, DN dn);
+
+int check_ancestor_sacls (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	int scope,
+	struct ds_search_task *local,
+	char authtype,
+	int *saclerror
+);
+
+void search_refer (
+	struct ds_search_arg *arg,
+	Entry entryptr,
+	struct ds_search_task **local,
+	struct ds_search_task **refer,
+	int ismanager
+);
+int do_alias (struct ds_search_arg *arg, Entry eptr, struct ds_search_task **local);
 
 /* search max 1000 entries before worrying about time limits */
 #define SEARCH_DELTA_SIZE 1000

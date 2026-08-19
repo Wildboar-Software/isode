@@ -33,7 +33,7 @@ static PS ps;
 
 #define EDBLEN	3	/* length of string "EDB" */
 
-int fileexists (char *fname) {
+static int fileexists (char *fname) {
 	struct stat buf;
 
 	if (stat (fname,&buf) != 0) {
@@ -364,7 +364,7 @@ static int entry_load_kids (
 	if (entryptr == NULLAVL)
 		return(OK);
 	got_all = TRUE;
-	if (avl_apply(entryptr, load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
+	if (avl_apply(entryptr, (int (*)(caddr_t, caddr_t)) load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
 	akid = (Entry) avl_getone(entryptr);
@@ -397,12 +397,12 @@ static int merge_entry (Entry newentry, Avlnode *oldtree) {
 	int     entry_cmp();
 
 	newentry->e_parent = ((Entry) avl_getone(oldtree))->e_parent;
-	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, entry_cmp))
+	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, (int (*)(caddr_t, caddr_t)) entry_cmp))
 			!= NULLENTRY ) {
 		newentry->e_leaf = FALSE;
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
-		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
+		avl_apply(newentry->e_children, (int (*)(caddr_t, caddr_t)) parent_link, (caddr_t) newentry,
 				  NOTOK, AVL_PREORDER);
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
@@ -417,7 +417,6 @@ Entry subtree_load (Entry parent, DN dn) {
 	char failed = FALSE;
 	Avlnode	*treetop;
 	Entry	akid;
-	int	entry_free();
 	got_subtree = TRUE;
 	if ((parent != NULLENTRY) && (parent->e_children != NULLAVL)) {
 		akid = (Entry) avl_getone(parent->e_children);
@@ -447,13 +446,13 @@ Entry subtree_load (Entry parent, DN dn) {
 		 * go through the tree we just loaded, merging it with the
 		 * tree previously loaded.
 		 */
-		avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
+		avl_apply(treetop, (int (*)(caddr_t, caddr_t)) merge_entry, (caddr_t) parent->e_children,
 				  NOTOK, AVL_PREORDER);
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
 		got_subtree = TRUE;
 		/* free the old tree and set got_subtree */
-		avl_free(parent->e_children, check_entry_free);
+		avl_free(parent->e_children, (void (*)(caddr_t)) check_entry_free);
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;
 		parent->e_children = treetop;

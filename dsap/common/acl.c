@@ -1,5 +1,6 @@
 /* acl.c - General Access Control routines */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "cmd_srch.h"
@@ -10,7 +11,6 @@ extern char dsa_mode;
 int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
 int acl_cmp (struct acl *acl1, struct acl *acl2);
 static struct acl_info * defaultacl = (struct acl_info *) NULL;
-static void * acl_cpy (void *value);
 
 static void acl_info_free (struct acl_info *aclptr) {
 	struct acl_info * ptr;
@@ -181,7 +181,7 @@ int acl_cmp (struct acl *acl1, struct acl *acl2) {
 	return(0);
 }
 
-int acl_cmp_void (void *value1, void *value2) {
+static int acl_cmp_void (void *value1, void *value2) {
 	struct acl *acl1 = (struct acl *) value1;
 	struct acl *acl2 = (struct acl *) value2;
 	return acl_cmp (acl1, acl2);
@@ -232,7 +232,7 @@ static struct acl_attr *acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *
 	return (result);
 }
 
-static void *acl_cpy (void *value) {
+void *acl_cpy (void *value) {
 	struct acl *aclptr = (struct acl *) value;
 	struct acl * ptr;
 	ptr = (struct acl *) smalloc (sizeof (struct acl));
@@ -661,7 +661,7 @@ static void acl_print (PS ps, void *value, int format) {
 			ps_print (ps,"(default)");
 }
 
-static void *str2acl (char *str) {
+void *str2acl (char *str) {
 	struct acl * the_acl;
 	the_acl = acl_alloc ();
 	if (str2acl_aux(str,the_acl) != NULLACL)

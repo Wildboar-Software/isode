@@ -14,7 +14,7 @@ int dap_addentry (int ad, int *id, struct ds_addentry_arg *arg, struct DSError *
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-		DRFREE (dr);
+		DAPRFREE (dr);
 		return (DS_OK);
 	}
 

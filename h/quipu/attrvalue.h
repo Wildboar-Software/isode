@@ -28,6 +28,9 @@ typedef struct attrcomp {       /* A sequence of attributes             */
 	struct acl_info     *attr_acl;
 } attrcomp, *Attr_Sequence;
 
+void as_comp_print (PS ps, Attr_Sequence as, int format);
+void as_print (PS ps, Attr_Sequence as, int format);
+int split_attr (Attr_Sequence as);
 #define NULLATTR ((Attr_Sequence) 0)
 #define as_comp_alloc()          (Attr_Sequence) smalloc(sizeof(attrcomp))
 #define as_comp_cmp(x,y)      (((oid_cmp (&x->attr_type ,&y->attr_type) == OK) && (avs_cmp (x->attr_value ,y->attr_value) == OK)) ? OK : NOTOK)
@@ -41,6 +44,8 @@ Attr_Sequence str2as(char *str);
 
 void as_free(Attr_Sequence as);
 int as_cmp(Attr_Sequence a, Attr_Sequence b);
+void avs_free (AV_Sequence avs);
+void avs_comp_free (AV_Sequence avs);
 
 /* ACL is defined here as it is         */
 /* referenced.   it is only used by     */
@@ -72,6 +77,10 @@ static struct acl_info * acl_info_cpy (struct acl_info *aclptr);
 struct acl_info *acl_info_new ();
 struct acl_info *acl_default();
 struct acl_info *acl_dflt();
+int test_acl_default (struct acl_info *a);
+void set_default_acl (struct acl_info *ai_ptr);
+int check_acl (DN who, int mode, struct acl_info *acl, DN node);
+int manager (DN dn);
 
 /*
  * the per-entry authentication policy
@@ -302,6 +311,8 @@ struct optional_dn {
 		DN selectedDN ;
 	} un ;
 } ;
+
+void optional_dn_free (struct optional_dn *item_to_free);
 
 typedef struct quipu_call {
 	int	protocol ;

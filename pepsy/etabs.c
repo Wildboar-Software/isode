@@ -1945,18 +1945,19 @@ void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy) {
  * One day generate ANSII C definitions as well
  */
 static void declfns(FILE *fp, YFN fn) {
-	if (fn->yfn_enc) {
-		fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
-	}
-	if (fn->yfn_dec) {
-		fprintf(fp, "extern int	%s();\n", fn->yfn_dec);
-	}
-	if (fn->yfn_prt) {
-		fprintf(fp, "extern int	%s();\n", fn->yfn_prt);
-	}
-	if (fn->yfn_fre) {
-		fprintf(fp, "extern int	%s();\n", fn->yfn_fre);
-	}
+	// Sorry. Now you have to do this manually.
+	// if (fn->yfn_enc) {
+	// 	fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
+	// }
+	// if (fn->yfn_dec) {
+	// 	fprintf(fp, "extern int	%s();\n", fn->yfn_dec);
+	// }
+	// if (fn->yfn_prt) {
+	// 	fprintf(fp, "extern int	%s();\n", fn->yfn_prt);
+	// }
+	// if (fn->yfn_fre) {
+	// 	fprintf(fp, "extern int	%s();\n", fn->yfn_fre);
+	// }
 }
 
 /*

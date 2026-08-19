@@ -180,7 +180,7 @@ struct DSAPindication {
 		struct DSAPfinish	di_un_finish;
 		struct DSAPabort	di_un_abort;
 	} di_un;
-	struct DSAPresult	di_result;
+	struct DSAPresult	di_res;
 
 #define di_invoke di_un.di_un_invoke
 	/*
@@ -191,6 +191,8 @@ struct DSAPindication {
 #define di_finish di_un.di_un_finish
 #define di_abort di_un.di_un_abort
 };
+
+int	dsapreject (struct DSAPindication *di, ...);
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -223,11 +225,30 @@ int	DBindResult ();		/* D-BIND.RESPONSE (RESULT) */
 int	DBindError ();		/* D-BIND.RESPONSE (ERROR) */
 int	DBindReject ();		/* D-BIND.RESPONSE (REJECT) */
 
-int	DUnBindRequest ();	/* D-UNBIND.REQUEST */
-int	DUnBindRetry ();	/* D-BIND-RETRY.REQUEST (pseudo) */
+int DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-UNBIND.REQUEST */
+int DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-BIND-RETRY.REQUEST (pseudo) */
 int	DUnBindResponse ();	/* D-BIND.RESPONSE (RESULT) */
 int	DUnBindReject ();	/* D-BIND.RESPONSE (REJECT) */
+int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di);
 
 char   *DErrString ();		/* return DSAP error code in string form */
+
+int	dsaplose (struct DSAPindication *di, ...);
+
+int	select_context (OID app_ctx);
+int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxlist);
+int find_ctx_id(struct PSAPctxlist * pcdl, OID ctx_oid);
+int check_dap_ctxlist (struct PSAPctxlist *ctxlist);
+int check_dsp_ctxlist (struct PSAPctxlist *ctxlist);
+int check_qsp_ctxlist (struct PSAPctxlist *ctxlist);
+int check_isp_ctxlist (struct PSAPctxlist *ctxlist);
+
+int ronot2dsaplose (struct DSAPindication * di, char * event, struct RoNOTindication * rni);
+int ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop);
+int ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject *rou);
+
+int DRejectRequest (int sd, int reason, int id);
+int DUAbortRequest (int sd, struct DSAPindication *di);
+int DRejectRequest (int sd, int reason, int id);
 
 #endif

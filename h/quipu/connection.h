@@ -87,6 +87,10 @@ struct di_block {
 };
 #define NULL_DI_BLOCK	((struct di_block *) NULL)
 
+void di_free (struct di_block *di);
+void di_log (struct di_block *di);
+void di_rdns (struct di_block *di, int rdns, int aliases, DN object);
+
 /*
 * Operations received over a bound association are represented as a
 * linked list of task blocks. The following task block structure
@@ -169,6 +173,14 @@ struct oper_act {
 	struct connection       *on_conn;
 };
 #define NULLOPER ((struct oper_act *) NULL)
+
+void oper_free (struct oper_act *on);
+void oper_conn_extract (struct oper_act *on);
+void oper_task_extract (struct oper_act *on);
+void process_edb (struct oper_act *on, struct oper_act **newop);
+int shadow_fail_wakeup (struct oper_act *on);
+int process_shadow (struct oper_act *on);
+void oper_log (struct oper_act *on, int level);
 
 struct conn_start {
 	/* Values stored after call to TNetAccept */

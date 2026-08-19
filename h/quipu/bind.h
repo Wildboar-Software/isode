@@ -4,6 +4,7 @@
 #define QUIPUBIND
 #include "quipu/name.h"
 #include "quipu/authen.h"
+#include "isoaddrs.h"
 
 /* THIS SECTION GIVES BIND PARAMETERS */
 
@@ -49,5 +50,12 @@ struct ds_bind_error {
 	char    dbe_data[DBE_SIZE];		/* data */
 
 };
+
+int ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result);
+int secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result);
+int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr);
+int ds_unbind (void);
+int dap_unbind (int ad);
+void bind_arg_free (struct ds_bind_arg *arg);
 
 #endif

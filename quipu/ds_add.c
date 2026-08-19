@@ -191,7 +191,7 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 	}
 	/* add the entry */
 	DATABASE_HEAP;
-	avl_insert(&entryptr->e_children, (caddr_t) ptr, entry_cmp, avl_dup_error);
+	avl_insert(&entryptr->e_children, (caddr_t) ptr, (int (*)(caddr_t, caddr_t)) entry_cmp, (int (*)(caddr_t, caddr_t)) avl_dup_error);
 	GENERAL_HEAP;
 	if (entryptr->e_leaf) {
 		/* Turn leaf into non leaf, and add child */

@@ -27,7 +27,18 @@ extern int ufn_flags;
 #define	UFN_WILDHEAD	0x02
 #define	UFN_ALL	(UFN_APPROX | UFN_WILDHEAD)
 
-int	ufn_init ();
-int	ufn_match ();
+int	ufn_init (void);
+int ufn_match (int c, char **v, DNS (*interact) (DNS, DN, char *), DNS *result, envlist el);
+
+int aet_match (
+	int c,
+	char **v,
+	DNS (*interact) (DNS, DN, char *),
+	DNS *result,
+	envlist el,
+	char *context
+);
+
+int dnSelect (char *s, DNS *dlist, DNS (*interact) (DNS, DN, char *), DNS el);
 
 #endif

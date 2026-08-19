@@ -1,5 +1,6 @@
 /* util.c - General utility routines */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/malloc.h"
@@ -185,13 +186,7 @@ void fatal (int code, char *fmt) {
 
 static PS ps = NULLPS;
 
-void pslog (LLog *lp, int event, char *str, int (*func) (PS, caddr_t, int), caddr_t ptr)
-          
-          
-           
-                        /* assumes func (PS ,dataptr,(int) format); */
-            
-{
+void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr) {
 	/* log info to pstream */
 	if (!(lp -> ll_events & event))
 		return;

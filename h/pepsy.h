@@ -212,4 +212,8 @@ int dec_f (
 	char **buf,
 	char **parm
 );
+
+void vpushquipu(PS ps);
+void vpopquipu(void);
+
 #endif

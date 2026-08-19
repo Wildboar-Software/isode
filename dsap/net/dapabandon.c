@@ -1,6 +1,7 @@
 /* dapabandon.c - Send an abandon request */
 
 #include "quipu/util.h"
+#include "quipu/dsap.h"
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
@@ -17,7 +18,7 @@ int dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *er
 	switch (di->di_type) {
 	case DI_RESULT: {
 		struct DAPresult	* dr = &(di->di_result);
-		DRFREE (dr);
+		DAPRFREE (dr);
 		return (DS_OK);
 	}
 

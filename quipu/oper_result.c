@@ -12,7 +12,7 @@ extern time_t	  timenow;
 extern Entry cache_dsp_entry ();
 
 void oper_result (struct connection *cn, struct DSAPindication *di) {
-	struct DSAPresult	* dr = &(di->di_result);
+	struct DSAPresult	* dr = &(di->di_res);
 	struct oper_act *   on;
 
 	DLOG(log_dsap, LLOG_TRACE, ("oper_result()"));

@@ -437,7 +437,7 @@ void st_comp_free (struct ds_search_task *st) {
 	if (st->st_save != NULL_ST)
 		st_free(&st->st_save);
 	if (--st->st_saclrefcount <= 0) {
-		avl_free((Avlnode *) st->st_sacls, rc_free);
+		avl_free((Avlnode *) st->st_sacls, (void (*)(caddr_t)) rc_free);
 		free((char *) st->st_saclheader);
 	}
 	if (--st->st_ftyperefcount <= 0) {
@@ -972,7 +972,7 @@ static int search_kid (Entry e, struct search_kid_arg *ska) {
 					dsa_wait(0);
 				ska->ska_tmp = 0;
 				ska->ska_domore = TRUE;
-				avl_apply(e->e_children, search_kid2,
+				avl_apply(e->e_children, (int (*)(caddr_t, caddr_t)) search_kid2,
 						  (caddr_t) ska, NOTOK, AVL_INORDER);
 				if (timelimit <= (timenow = time((time_t *) 0)))
 					return (NOTOK);
@@ -1066,7 +1066,7 @@ static EntryInfo *filterchildren (
 #ifdef TURBO_INDEX
 	/* non optimized filter */
 	if ((*local)->st_optimized == 0) {
-		avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		avl_apply(ptr, (int (*)(caddr_t, caddr_t)) search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 		/* optimized filter & subtree search & subtree indexed */
 	} else if (arg->sra_subset == SRA_WHOLESUBTREE
 			   && get_subtree_index((*local)->st_baseobject)) {
@@ -1077,7 +1077,7 @@ static EntryInfo *filterchildren (
 		turbo_sibling_search(entryptr, &ska);
 		/* optimized filter, but no index to search */
 	} else {
-		avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
+		avl_apply(ptr, (int (*)(caddr_t, caddr_t)) search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
 	}
 #else
 	avl_apply(ptr, search_kid, (caddr_t) & ska, NOTOK, AVL_INORDER);
@@ -1203,7 +1203,7 @@ void search_refer (
 	case DS_X500_ERROR:
 		/* An error */
 		pslog(log_dsap, LLOG_EXCEPTIONS, "search_refer failed",
-			  (IFP) dn_print, (caddr_t) name);
+			  (void (*)(PS, caddr_t, int)) dn_print, (caddr_t) name);
 		log_ds_error(&(error));
 		ds_error_free(&(error));
 		dn_free(name);

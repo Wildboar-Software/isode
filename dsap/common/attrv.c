@@ -5,6 +5,7 @@
 #include "quipu/ds_error.h"
 #include "quipu/malloc.h"
 #include "cmd_srch.h"
+#include "pepsy.h"
 #include <sys/stat.h>
 
 extern int oidformat;
@@ -13,7 +14,6 @@ extern void pe_print (PS ps, PE pe, int format);
 AttributeValue str2file ();
 extern LLog * log_dsap;
 PE asn2pe();
-int quipu_pe_cmp();
 char t61_flag;
 char crypt_flag;
 extern char dsa_mode;
@@ -31,7 +31,7 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 #ifdef STRICT_X500
 		NULL,	/* Not allowed if syntax unknown (X.501 9.6.2) */
 #else
-		quipu_pe_cmp,	/* default compare */
+		(AttributeValueComparator)quipu_pe_cmp,	/* default compare */
 #endif
 		(void (*)(void *))pe_free,	/* default free */
 		NULLCP,		/* no pe_printer */
@@ -54,7 +54,7 @@ short add_attribute_syntax (char *sntx,
 	if (num_syntax >= MAX_AV_SYNTAX)
 		return (-1);
 	syntax_table[num_syntax].s_sntx = sntx;
-	set_attribute_syntax (num_syntax,enc,dec,parse,print,cpy,cmp,sfree,print_pe,approx,multiline);
+	set_attribute_syntax (num_syntax,enc,dec,parse,print,cpy,cmp,sfree,approx,print_pe,multiline);
 	return (num_syntax++);
 }
 
@@ -446,8 +446,6 @@ int (*av_cmp_fn(short syntax))(void *value1, void *value2)
 	else
 		return NULL;
 }
-
-extern int ps_printf (PS ps, char *fmt, ...);
 
 void AttrV_print (PS ps, AttributeValue x, int format) {
 	if (format == RDNOUT)

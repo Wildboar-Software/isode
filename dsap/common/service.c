@@ -23,6 +23,9 @@ struct dua_sequence * current_sequence = NULL_DS;
 struct dua_sequence * top_sequence = NULL_DS;
 extern struct SecurityServices *dsap_security;
 
+void set_sequence (char *str);
+static void unset_sequence (void);
+
 int set_default_service (PS opt)
 {
 	if (default_service [0] == 0) {
@@ -249,7 +252,7 @@ void set_sequence (char *str) {
 	current_sequence = ptr;
 }
 
-void unset_sequence (void) {
+static void unset_sequence (void) {
 	current_sequence = NULL_DS;
 }
 

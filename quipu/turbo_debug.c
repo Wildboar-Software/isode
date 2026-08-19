@@ -95,7 +95,7 @@ static void rprint_directory (Entry node, int depth) {
 	rdn_print( ps, node->e_name, EDBOUT );
 	ps_print( ps, "\n" );
 	if ( node->e_children != NULLAVL )
-		avl_apply( node->e_children, rprint_directory, (caddr_t) (size_t) (depth + 1),
+		avl_apply( node->e_children, (int (*)(caddr_t, caddr_t)) rprint_directory, (caddr_t) (size_t) (depth + 1),
 				   NOTOK, AVL_INORDER );
 }
 
@@ -189,11 +189,11 @@ void print_index( Index *pindex ) {
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		ps_printf( fps, "  Index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
-		avl_apply( pindex[i].i_root, print_index_node, (caddr_t) fps,
+		avl_apply( pindex[i].i_root, (int (*)(caddr_t, caddr_t)) print_index_node, (caddr_t) fps,
 				   NOTOK, AVL_INORDER );
 		ps_printf( fps, "  Soundex index for attribute (%s)\n",
 				   pindex[i].i_attr->oa_ot.ot_name );
-		avl_apply( pindex[i].i_sroot, print_soundex_node, (caddr_t) fps,
+		avl_apply( pindex[i].i_sroot, (int (*)(caddr_t, caddr_t)) print_soundex_node, (caddr_t) fps,
 				   NOTOK, AVL_INORDER );
 		ps_print( fps, "  Endof index\n" );
 	}

@@ -18,6 +18,18 @@ extern void AttrT_print (
 	AttributeType x,
 	int format
 );
+extern void AttrV_print (PS ps, AttributeValue x, int format);
+extern int AttrV_decode(AttributeType x, AttributeValue y);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int pepsylose (modtyp *module, ...);
+extern int set_heap (AttributeType x);
+extern void AttrV_free(AttributeValue x);
+extern int grab_pe1 (attrVal *parm, PE *ppe);
+extern int grab_pe2 (avseqcomp *parm, PE *ppe);
+extern int grab_pe3 (rdncomp *parm, PE *ppe);
+extern int free_at_dummy (oid_table_attr *parm);
+extern int dec_at (oid_table_attr **parm, PE pe);
+extern int dec_av1 (AVA **parm, PE pe);
 %}
 
 PREFIXES encode decode print
@@ -71,10 +83,10 @@ Attribute [[P attrcomp *]] ::=
 		       if (AttrV_decode ((*parm)->attr_type,&avs->avseq_av) != OK) {
 		                pslog (log_dsap,LLOG_EXCEPTIONS,
 				      "AttrV_decode failed (1)",
-				      AttrT_print, (caddr_t) (*parm)->attr_type);
+				      (void (*) (PS, caddr_t, int))AttrT_print, (caddr_t) (*parm)->attr_type);
 #ifdef  DEBUG
                			pslog (log_dsap,LLOG_EXCEPTIONS,
-				      "PE", pe_print, (caddr_t) mype);
+				      "PE", (void (*) (PS, caddr_t, int))pe_print, (caddr_t) mype);
 				      
 #endif
 				RESTORE_HEAP;
@@ -120,10 +132,10 @@ RelativeDistinguishedName [[P rdncomp * ]]
 		       if (AttrV_decode (rdn->rdn_at,&rdn->rdn_av) != OK) {
 		                pslog (log_dsap,LLOG_EXCEPTIONS,
 				      "AttrV_decode failed (2)",
-				      AttrT_print, (caddr_t) rdn->rdn_at);
+				      (void (*) (PS, caddr_t, int))AttrT_print, (caddr_t) rdn->rdn_at);
 #ifdef  DEBUG
                			pslog (log_dsap,LLOG_EXCEPTIONS,
-				      "PE", pe_print, (caddr_t) mype);
+				      "PE", (void (*) (PS, caddr_t, int))pe_print, (caddr_t) mype);
 				      
 #endif
 				return NOTOK;
@@ -189,10 +201,10 @@ int dec_av1 (AVA **parm, PE pe) {
 	if ((res = AttrV_decode ((*parm)->ava_type,(*parm)->ava_value)) != OK){
                 pslog (log_dsap,LLOG_EXCEPTIONS,
 		      "AttrV_decode failed (3)",
-		      AttrT_print, (caddr_t) (*parm)->ava_type);
+		      (void (*) (PS, caddr_t, int))AttrT_print, (caddr_t) (*parm)->ava_type);
 #ifdef  DEBUG
                 pslog (log_dsap,LLOG_EXCEPTIONS,
-		      "PE", pe_print, (caddr_t) pe);
+		      "PE", (void (*) (PS, caddr_t, int))pe_print, (caddr_t) pe);
 #endif
         }
         return res;

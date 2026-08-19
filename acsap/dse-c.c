@@ -22,11 +22,8 @@ int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 
 	if ((dse = psap2dse (pa)) == NULL)
 		return NOTOK;
-
 	result = encode_DSE_PSAPaddr (pe, explicit, len, buffer, dse);
-
 	free_DSE_PSAPaddr (dse);
-
 	return result;
 }
 
@@ -87,11 +84,8 @@ int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm
 
 	if (decode_DSE_PSAPaddr (pe, explicit, len, buffer, &dse) == NOTOK)
 		return NOTOK;
-
 	result = dse2psap (dse, pa);
-
 	free_DSE_PSAPaddr (dse);
-
 	return result;
 }
 

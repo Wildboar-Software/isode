@@ -12,4 +12,8 @@ struct ds_removeentry_arg {
 	DN rma_object;
 };
 
+int dap_removeentry (int ad, int *id, struct ds_removeentry_arg *arg, struct DSError *error);
+void removeentry_arg_free (struct ds_removeentry_arg *arg);
+int removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt);
+
 #endif

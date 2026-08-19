@@ -18,7 +18,6 @@ extern char * TidyString();
 extern char * TidyString2();
 extern int soundex_match();
 extern int sfree();
-extern int dn_cmp();
 extern int dn_free();
 extern PE dn_enc();
 extern DN dn_dec();

@@ -11,7 +11,7 @@
 #include "quipu/entry.h"
 
 AV_Sequence super_user;
-Entry subtree_load ();
+Entry subtree_load (Entry parent, DN dn);
 Entry make_path ();
 extern LLog * log_dsap;
 extern DN mydsadn;

@@ -8,6 +8,22 @@ SA
 
 DEFINITIONS ::=
 
+%{
+#include "quipu/malloc.h"
+
+void pe_print (PS ps, PE pe, int format);
+extern void AttrT_print (
+	PS ps,
+	AttributeType x,
+	int format
+);
+extern void AttrV_print (PS ps, AttributeValue x, int format);
+extern int AttrV_decode(AttributeType x, AttributeValue y);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int pepsylose (modtyp *module, ...);
+extern int set_heap (AttributeType x);
+%}
+
 PREFIXES encode decode print
 
 BEGIN

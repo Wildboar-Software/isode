@@ -24,7 +24,8 @@
 extern int strprint (PS ps, char *str, int format);
 extern int sfree (char *x);
 extern int pstrcmp(char *a, char *b);
-extern char *strdup(const char *);
+extern int build_UNIV_UTCTime (PE *pe, int explicit, int len, char *buffer, char *parm);
+extern int parse_UNIV_UTCTime (PE pe, int explicit, int *len, char **buffer, char *parm);
 
 static UTC	qstr2utct (char *s, int len)
 {

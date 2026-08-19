@@ -70,4 +70,59 @@ int acs2ronotlose (struct RoNOTindication *rni, char *event, struct AcSAPabort *
 
 int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni);
 
+int RoAsynBindRequest(OID context, AEI callingtitle, AEI calledtitle,
+	struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr,
+	struct PSAPctxlist *ctxlist, OID defctxname,
+	int prequirements, int srequirements, long isn,
+	int settings, struct SSAPref *ref, PE bindargpe,
+	struct QOStype *qos, struct AcSAPconnect *acc,
+	struct RoNOTindication *rni, int async);
+
+int RoAsynBindRetry(int ad, int do_next_nsap, struct AcSAPconnect *acc,
+	struct RoNOTindication *rni);
+
+int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni);
+
+int	RoBindResult (
+	int sd,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int	defctxresult,
+	int	prequirements,
+	int	srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE bindrespe,
+	struct RoNOTindication *rni
+);
+
+int RoBindError (
+	int sd,
+	OID context,
+	AEI respondtitle,
+	struct PSAPaddr *respondaddr,
+	struct PSAPctxlist *ctxlist,
+	int	defctxresult,
+	int	prequirements,
+	int	srequirements,
+	long isn,
+	int settings,
+	struct SSAPref *ref,
+	PE binderrpe,
+	struct RoNOTindication *rni
+);
+
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni);
+int RoUnBindRequest (int sd, PE unbindargpe, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
+int RoUnBindRetry (int sd, int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
+int RoBindUAbort (int sd, struct RoNOTindication *rni);
+
+int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni);
+int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni);
+int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni);
+int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni);
+
 #endif

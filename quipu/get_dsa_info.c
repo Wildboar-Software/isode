@@ -179,11 +179,11 @@ void dsa_info_result_wakeup (struct oper_act *on) {
 	*  Cache the entry returned, flake out if it is not unravellable,
 	*  otherwise grab a reference to the unravelled entry.
 	*/
-	ent_res = &(on->on_resp.di_result.dr_res.dcr_dsres.res_rd.rdr_entry);
+	ent_res = &(on->on_resp.di_res.dr_res.dcr_dsres.res_rd.rdr_entry);
 	if((di_ent = cache_dsp_entry (ent_res)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
 			   "dsa_info_result_wakeup - cache_dsp_entry failure",
-			   (IFP)dn_print, (caddr_t) ent_res->ent_dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) ent_res->ent_dn);
 		/* This could mean the cached entry was a SLAVE - if so why were we
 		 * doing a get dsa info ?
 		     */
@@ -304,7 +304,7 @@ void dsa_info_fail_wakeup (struct oper_act *on) {
 	*  has occurrred).
 	*/
 	if (on -> on_resp.di_type == DI_ERROR) {
-		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote dsainfo error",(IFP)dn_print,
+		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote dsainfo error",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t) on -> on_req.dca_dsarg.arg_rd.rda_object);
 		log_ds_error (& on -> on_resp.di_error.de_err);
 	}

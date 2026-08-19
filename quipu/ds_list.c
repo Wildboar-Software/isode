@@ -237,7 +237,7 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 	 * but inorder is more user-predictable, which is nice, though not
 	 * required...
 	 */
-	rc = avl_apply(ptr->e_children, build_list, (caddr_t) binddn, NOTOK,
+	rc = avl_apply(ptr->e_children, (int (*)(caddr_t, caddr_t)) build_list, (caddr_t) binddn, NOTOK,
 				   AVL_INORDER);
 	/*
 	 * build_list has updated g_count and g_sub to contain a count of

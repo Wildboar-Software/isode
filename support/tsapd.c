@@ -131,7 +131,9 @@ extern	int	dsa_dead;
 extern	char   *local_dit;
 extern	struct PSAPaddr dsa_bound;
 
-extern	int	as_print (), de_print (), fi_print ();
+extern void as_print (PS ps, Attr_Sequence as, int format);
+extern void fi_print (PS ps, Filter fi, int format);
+extern void de_print (PS ps, struct DSError *err, int format);
 #endif
 
 void	adios (char *, char *, ...);
@@ -947,8 +949,8 @@ static void search_directory(int firstime) {
 	for (;;) {
 	if (debug) {
 			pslog (pgm_log, LLOG_DEBUG, "performing subtree search of",
-				   (IFP) dn_print, (caddr_t) sa -> sra_baseobject);
-			pslog (pgm_log, LLOG_DEBUG, "  for", fi_print,
+				   (void (*)(PS, caddr_t, int)) dn_print, (caddr_t) sa -> sra_baseobject);
+			pslog (pgm_log, LLOG_DEBUG, "  for", (void (*)(PS, caddr_t, int)) fi_print,
 				   (caddr_t) sa -> sra_filter);
 		}
 
@@ -988,15 +990,15 @@ static void search_directory(int firstime) {
 
 	if (iz >= iae + NENTRIES) {
 			pslog (pgm_log, LLOG_EXCEPTIONS,
-				   "too many services, starting with", (IFP)dn_print,
+				   "too many services, starting with", (void (*)(PS, caddr_t, int))dn_print,
 				   (caddr_t) ptr -> ent_dn);
 			break;
 		}
 
 		if (debug) {
-			pslog (pgm_log, LLOG_DEBUG, "processing",  (IFP)dn_print,
+			pslog (pgm_log, LLOG_DEBUG, "processing",  (void (*)(PS, caddr_t, int))dn_print,
 				   (caddr_t) ptr -> ent_dn);
-			pslog (pgm_log, LLOG_DEBUG, "  attributes", as_print,
+			pslog (pgm_log, LLOG_DEBUG, "  attributes", (void (*)(PS, caddr_t, int)) as_print,
 				   (caddr_t) ptr -> ent_attr);
 		}
 
@@ -1070,7 +1072,7 @@ static void search_directory(int firstime) {
 			}
 		}
 		if (iz -> is_vector == NULL) {
-			pslog (pgm_log, LLOG_EXCEPTIONS, "invalid entry",  (IFP)dn_print,
+			pslog (pgm_log, LLOG_EXCEPTIONS, "invalid entry",  (void (*)(PS, caddr_t, int))dn_print,
 				   (caddr_t) ptr -> ent_dn);
 
 losing_iae:
@@ -1138,7 +1140,7 @@ losing_iae:
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"two services with the same transport selector: %s and %s",
 						buffer, taddr2str (ta));
-				pslog (pgm_log, LLOG_EXCEPTIONS, "starting with",  (IFP)dn_print,
+				pslog (pgm_log, LLOG_EXCEPTIONS, "starting with",  (void (*)(PS, caddr_t, int))dn_print,
 					   (caddr_t) ptr -> ent_dn);
 				adios (NULLCP, "you lose big");
 			}
@@ -1358,7 +1360,7 @@ static int  do_error ( struct DSError *de )
 
 		make_bind_args (ba, br, be);
 
-		pslog (pgm_log, LLOG_NOTICE, "referring to",  (IFP)dn_print,
+		pslog (pgm_log, LLOG_NOTICE, "referring to",  (void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t) ap -> ap_name);
 
 		if (dap_bind (&referral_dsa, ba, be, br, ap -> ap_address) != DS_OK) {
@@ -1380,7 +1382,7 @@ static int  do_error ( struct DSError *de )
 		return OK;
 	}
 
-pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", de_print, (caddr_t) de);
+pslog (pgm_log, LLOG_EXCEPTIONS, "DAP error:", (void (*)(PS, caddr_t, int))de_print, (caddr_t) de);
 
 	if (dsa_dead) {
 		dsa_dead = 0;

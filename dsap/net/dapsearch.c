@@ -17,7 +17,7 @@ int dap_search (int ad, int *id, struct ds_search_arg *arg, struct DSError *erro
 		/* Nasty struct copy */
 		(*result) = dr->dr_res.res_sr;      /* struct copy */
 		dr->dr_res.result_type = -1;        /* Prevent freeing */
-		DRFREE (dr);
+		DAPRFREE (dr);
 		return (DS_OK);
 	}
 

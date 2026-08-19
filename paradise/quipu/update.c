@@ -503,7 +503,7 @@ void process_edb(struct oper_act *on,struct oper_act **newop) {
 	Avlnode	*newkids;
 	int	entry_free();
 	struct DSError  error;
-	struct getedb_result	* result = &(on->on_resp.di_result.dr_res.dcr_dsres.res_ge);
+	struct getedb_result	* result = &(on->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(on->on_req.dca_dsarg.arg_ge);
 	char got_subtree = TRUE;
 
@@ -932,7 +932,7 @@ out:
 }
 
 static void get_more_edb (struct oper_act *oper,struct oper_act **newop) {
-	struct getedb_result	* result = &(oper->on_resp.di_result.dr_res.dcr_dsres.res_ge);
+	struct getedb_result	* result = &(oper->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(oper->on_req.dca_dsarg.arg_ge);
 	struct getedb_arg	* narg;
 	struct oper_act	* on_tmp;

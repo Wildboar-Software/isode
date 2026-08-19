@@ -10,8 +10,10 @@
 #include <stdio.h>              /* minus the ctype stuff */
 #include <ctype.h>
 #include <setjmp.h>
+#include <sys/types.h>
 #include "manifest.h"
 #include "logger.h"
+#include "psap.h"
 
 #endif
 
@@ -74,6 +76,26 @@ extern  jmp_buf _timeobuf;
 #define MAXFILENAMELEN 15	/* size of largest fine name allowed */
 
 # define        MAXFORK 10      /* no. of times to try a fork() */
+
+void parse_error (char *a, char *b);
+void pslog (LLog *lp, int event, char *str, void (*func) (PS ps, caddr_t ptr, int format), caddr_t ptr);
+int test_prim_pe (PE pe, PElementClass class, PElementID id);
+int add_entry_aux (char *a, caddr_t b, int c, char *d);
+int stop_listeners (void);
+int check_print_string (char *str);
+int telcmp (char *a, char *b);
+int telncmp (char *a, char *b, int n);
+int telstrlen (char *s);
+void octprint (PS ps, char *str, int format);
+char *SkipSpace (char *ptr);
+void StripSpace (char *b);
+void StripSpace2 (char *b);
+void fatal (int code, char *fmt);
+void utcprint (PS ps, char *xtime, int format);
+int quipu_pe_cmp (PE a, PE b);
+int test_arg (char *x, char *y, int c);
+void pdu_dump (PE pe, char *type, int op);
+int dsa_wait (int secs);
 
 #define _H_UTIL
 

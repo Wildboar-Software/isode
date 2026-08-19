@@ -42,6 +42,9 @@ struct DSArgument {
 #define arg_ge arg_un.arg_un_getedb
 };
 
+void ds_arg_free (struct DSArgument *arg);
+int ds_arg_dup (struct DSArgument *src, struct DSArgument *tgt);
+
 struct DSResult {
 	int result_type;    /* same values as for DSArgument                */
 	union {
@@ -58,12 +61,16 @@ struct DSResult {
 #define res_ge result_un.result_un_getedb
 };
 
+void ds_res_free (struct DSResult *res);
+
 typedef struct cross_ref {
 	DN			  xref_dn;
 	struct access_point	* xref_ap;
 	struct cross_ref	* xref_next;
 } CrossRefs;
 #define NULLXREF ((struct cross_ref *) NULL)
+
+void cross_refs_free (struct cross_ref *xref);
 
 typedef struct chain_arg {
 	DN				  cha_originator;
@@ -80,11 +87,16 @@ typedef struct chain_arg {
 	struct security_parms 		* cha_security;
 } * ChainingArg;
 
+void ch_arg_free (struct chain_arg *arg);
+int cha_loopdetected (struct chain_arg *cha);
+
 typedef struct chain_res {
 	PE				  chr_domaininfo;
 	struct cross_ref		* chr_crossrefs;
 	struct security_parms 		* chr_security;
 } * ChainingRes;
+
+void ch_res_free (struct chain_res *res);
 
 typedef struct ds_op_arg {
 	struct chain_arg	dca_charg;
@@ -95,6 +107,10 @@ typedef struct ds_op_arg {
 	char *			dca_bit;
 } OPArgument;
 
+void op_arg_free (struct ds_op_arg *arg);
+
+struct common_args *get_ca_ref (struct ds_op_arg *dsarg);
+
 typedef struct ds_op_res {
 	struct chain_res	dcr_chres;
 	struct DSResult		dcr_dsres;
@@ -103,5 +119,7 @@ typedef struct ds_op_res {
 	int			dcr_len;
 	char *			dcr_bit;
 } OPResult;
+
+void op_res_free (struct ds_op_res *res);
 
 #endif

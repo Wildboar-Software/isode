@@ -5,38 +5,11 @@
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
+#include "quipu/watchdog.h"
 
 extern  LLog    * log_dsap;
 
-int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di) {
-	int				  result;
-	PE				  res_pe;
-	struct RoSAPindication	  roi_s;
-	struct RoSAPindication	* roi = &(roi_s);
-	struct RoSAPpreject		* rop = &(roi->roi_preject);
-
-	if (DapEncodeResult (&(res_pe), res) != OK) {
-		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest: Encoding failed"));
-		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
-	}
-	watch_dog ("RoResultRequest (DAP)");
-	result = RoResultRequest (sd, id, res->result_type, res_pe, ROS_NOPRIO, roi);
-	watch_dog_reset();
-	if (result != OK) {
-		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest(): Fatal rejection"));
-			return (dsaplose (di, DP_INVOKE, NULLCP, "RoResultRequest failed"));
-		} else {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest(): Non-Fatal rejection"));
-			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
-		}
-	}
-	if (res_pe != NULLPE)
-		pe_free (res_pe);
-	return (OK);
-}
-
-int DapEncodeResult (PE *pep, struct DSResult *res) {
+static int DapEncodeResult (PE *pep, struct DSResult *res) {
 	int		success;
 
 	switch(res->result_type) {
@@ -76,27 +49,26 @@ int DapEncodeResult (PE *pep, struct DSResult *res) {
 	return(success);
 }
 
-int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
-	if (DspEncodeResult (&(res_pe), res) != OK) {
-		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest: Encoding failed"));
+	if (DapEncodeResult (&(res_pe), res) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
 	}
-	watch_dog ("RoResultRequest (DSP)");
-	result = RoResultRequest (sd, id, res->dcr_dsres.result_type, res_pe,
-							  ROS_NOPRIO, roi);
+	watch_dog ("RoResultRequest (DAP)");
+	result = RoResultRequest (sd, id, res->result_type, res_pe, ROS_NOPRIO, roi);
 	watch_dog_reset();
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest(): Fatal rejection"));
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest(): Fatal rejection"));
 			return (dsaplose (di, DP_INVOKE, NULLCP, "RoResultRequest failed"));
 		} else {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest(): Non-Fatal rejection"));
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapResultRequest(): Non-Fatal rejection"));
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
 		}
 	}
@@ -105,7 +77,7 @@ int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 	return (OK);
 }
 
-int DspEncodeResult (PE *pep, struct ds_op_res *res) {
+static int DspEncodeResult (PE *pep, struct ds_op_res *res) {
 	int		success;
 
 	switch(res->dcr_dsres.result_type) {
@@ -145,27 +117,27 @@ int DspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return(success);
 }
 
-int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
-	if (QspEncodeResult (&(res_pe), res) != OK) {
-		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest: Encoding failed"));
+	if (DspEncodeResult (&(res_pe), res) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest: Encoding failed"));
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
 	}
-	watch_dog ("RoResultRequest (QSP)");
+	watch_dog ("RoResultRequest (DSP)");
 	result = RoResultRequest (sd, id, res->dcr_dsres.result_type, res_pe,
 							  ROS_NOPRIO, roi);
 	watch_dog_reset();
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest(): Fatal rejection"));
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest(): Fatal rejection"));
 			return (dsaplose (di, DP_INVOKE, NULLCP, "RoResultRequest failed"));
 		} else {
-			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest(): Non-Fatal rejection"));
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DspResultRequest(): Non-Fatal rejection"));
 			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
 		}
 	}
@@ -174,7 +146,7 @@ int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 	return (OK);
 }
 
-int QspEncodeResult (PE *pep, struct ds_op_res *res) {
+static int QspEncodeResult (PE *pep, struct ds_op_res *res) {
 	int		success;
 
 	switch(res->dcr_dsres.result_type) {
@@ -215,6 +187,35 @@ int QspEncodeResult (PE *pep, struct ds_op_res *res) {
 		break;
 	}
 	return(success);
+}
+
+int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+	int				  result;
+	PE				  res_pe;
+	struct RoSAPindication	  roi_s;
+	struct RoSAPindication	* roi = &(roi_s);
+	struct RoSAPpreject		* rop = &(roi->roi_preject);
+
+	if (QspEncodeResult (&(res_pe), res) != OK) {
+		LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest: Encoding failed"));
+		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation result"));
+	}
+	watch_dog ("RoResultRequest (QSP)");
+	result = RoResultRequest (sd, id, res->dcr_dsres.result_type, res_pe,
+							  ROS_NOPRIO, roi);
+	watch_dog_reset();
+	if (result != OK) {
+		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest(): Fatal rejection"));
+			return (dsaplose (di, DP_INVOKE, NULLCP, "RoResultRequest failed"));
+		} else {
+			LLOG (log_dsap, LLOG_EXCEPTIONS, ("QspResultRequest(): Non-Fatal rejection"));
+			return (dsapreject (di, DP_INVOKE, id, NULLCP, "RoResultRequest failed"));
+		}
+	}
+	if (res_pe != NULLPE)
+		pe_free (res_pe);
+	return (OK);
 }
 
 int IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {

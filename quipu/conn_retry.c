@@ -106,7 +106,7 @@ void conn_retry (struct connection *conn, int moveon) {
 	case NOTOK :
 		conn->cn_state = CN_FAILED;
 #ifndef NO_STATS
-		pslog(log_stat, LLOG_TRACE, "Failed (RETRY NOTOK)", (IFP)dn_print, (caddr_t) conn->cn_dn);
+		pslog(log_stat, LLOG_TRACE, "Failed (RETRY NOTOK)", (void (*)(PS, caddr_t, int))dn_print, (caddr_t) conn->cn_dn);
 #endif
 		dsa_reliable (conn,FALSE,timenow);
 		for(on=conn->cn_operlist; on!=NULLOPER; on=onext) {
@@ -134,7 +134,7 @@ void conn_retry (struct connection *conn, int moveon) {
 		DLOG (log_dsap,LLOG_TRACE,( "D-BIND.RETRY DONE (%d)",conn->cn_ad));
 		if( (conn->cn_ad == NOTOK) || (conn_req_aux(conn) != OK)) {
 #ifndef NO_STATS
-			pslog(log_stat, LLOG_NOTICE, "Failed (RETRY DONE)", (IFP)dn_print, (caddr_t) conn->cn_dn);
+			pslog(log_stat, LLOG_NOTICE, "Failed (RETRY DONE)", (void (*)(PS, caddr_t, int))dn_print, (caddr_t) conn->cn_dn);
 #endif
 			dsa_reliable (conn,FALSE,timenow);
 			conn->cn_state = CN_FAILED;

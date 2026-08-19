@@ -79,7 +79,7 @@ int conn_request (struct connection *cn) {
 	switch(inv_ret) {
 	case NOTOK:
 #ifndef NO_STATS
-		pslog (log_stat, LLOG_NOTICE, "Failed (NOTOK)", (IFP)dn_print, (caddr_t) cn->cn_dn);
+		pslog (log_stat, LLOG_NOTICE, "Failed (NOTOK)", (void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 #endif
 		dsa_reliable (cn,FALSE,timenow);
 		return(NOTOK);
@@ -87,7 +87,7 @@ int conn_request (struct connection *cn) {
 		cn->cn_ad = dc->dc_sd;
 		if (cn->cn_ad == NOTOK) {
 #ifndef NO_STATS
-			pslog(log_stat, LLOG_NOTICE, "Failed (DONE)", (IFP)dn_print, (caddr_t) cn->cn_dn);
+			pslog(log_stat, LLOG_NOTICE, "Failed (DONE)", (void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 #endif
 			cn->cn_state = CN_FAILED;
 			dsa_reliable (cn,FALSE,timenow);
@@ -95,7 +95,7 @@ int conn_request (struct connection *cn) {
 		}
 		if (conn_req_aux(cn) == NOTOK) {
 #ifndef NO_STATS
-			pslog(log_stat, LLOG_NOTICE, "Failed (DONE 2)",(IFP) dn_print, (caddr_t) cn->cn_dn);
+			pslog(log_stat, LLOG_NOTICE, "Failed (DONE 2)",(void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 #endif
 			dsa_reliable (cn,FALSE,timenow);
 			return NOTOK;
@@ -105,7 +105,7 @@ int conn_request (struct connection *cn) {
 		cn->cn_ad = dc->dc_sd;
 		cn->cn_state = CN_CONNECTING1;
 #ifndef NO_STATS
-		pslog (log_stat, LLOG_NOTICE, "Trying (CONN_1)",(IFP) dn_print, (caddr_t) cn->cn_dn);
+		pslog (log_stat, LLOG_NOTICE, "Trying (CONN_1)",(void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 #endif
 		return(OK);
 
@@ -113,7 +113,7 @@ int conn_request (struct connection *cn) {
 		cn->cn_ad = dc->dc_sd;
 		cn->cn_state = CN_CONNECTING2;
 #ifndef NO_STATS
-		pslog (log_stat, LLOG_NOTICE, "Trying (CONN_2)",(IFP) dn_print, (caddr_t) cn->cn_dn);
+		pslog (log_stat, LLOG_NOTICE, "Trying (CONN_2)",(void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 #endif
 		return(OK);
 
@@ -168,7 +168,7 @@ int conn_req_aux (struct connection *cn) {
 					 cn->cn_ctx == DS_CTX_QUIPU_DSP ? "QUIPU" :
 					 cn->cn_ctx == DS_CTX_INTERNET_DSP ? "Internet" : "X500",
 					 cn->cn_ad);
-			pslog(log_stat, LLOG_NOTICE, buf, (IFP)dn_print, (caddr_t) cn->cn_dn);
+			pslog(log_stat, LLOG_NOTICE, buf, (void (*)(PS, caddr_t, int))dn_print, (caddr_t) cn->cn_dn);
 		}
 #endif
 		return(OK);

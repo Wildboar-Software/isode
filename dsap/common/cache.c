@@ -199,7 +199,7 @@ void delete_cache (DN adn)
 				ptr->e_attributes = NULLATTR;
 			} else {
 				( void ) avl_delete( &ptr->e_parent->e_children,
-									 (caddr_t) ptr->e_name, entryrdn_cmp );
+									 (caddr_t) ptr->e_name, (int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp );
 			}
 		}
 	}
@@ -236,7 +236,7 @@ Entry local_find_entry_aux (DN object, char deref)
 	b_rdn = dn->dn_rdn;
 	for(;;) { /* break or return out */
 		if ((the_entry = (Entry) avl_find(kids, (caddr_t) b_rdn,
-										  entryrdn_cmp)) == NULLENTRY)
+										  (int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp)) == NULLENTRY)
 			return(NULLENTRY);
 		if ( the_entry->e_alias != NULLDN )
 			/* got an alias entry */

@@ -24,7 +24,7 @@ void dsa_work (struct task_act *tk) {
 	char		    authtype;
 
 	arg = &(tk->tk_dx.dx_arg.dca_dsarg);
-	res = &(tk->tk_resp.di_result.dr_res.dcr_dsres);
+	res = &(tk->tk_resp.di_res.dr_res.dcr_dsres);
 	err = &(tk->tk_resp.di_error.de_err);
 	local = &(tk->local_st);
 	refer = &(tk->refer_st);
@@ -191,7 +191,7 @@ void dsa_work (struct task_act *tk) {
 	case DS_OK:
 		DLOG (log_dsap,LLOG_DEBUG,( "dsa_work - DS_OK"));
 		/* Task completed successfully: send result */
-		tk->tk_result = &(tk->tk_resp.di_result.dr_res);
+		tk->tk_result = &(tk->tk_resp.di_res.dr_res);
 		tk->tk_result->dcr_dsres.result_type = tk->tk_dx.dx_arg.dca_dsarg.arg_type;
 		tk->tk_resp.di_type = DI_RESULT;
 		if((tk->referred_st != NULL_ST) || (tk->tk_operlist != NULLOPER)) {
@@ -210,9 +210,9 @@ void dsa_work (struct task_act *tk) {
 		task_conn_extract(tk);
 		task_error(tk);
 		if (tk->tk_dx.dx_arg.dca_dsarg.arg_type == OP_SEARCH) {
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next);
 		}
 		task_extract(tk);
 		break;
@@ -226,9 +226,9 @@ void dsa_work (struct task_act *tk) {
 			task_conn_extract(tk);
 			task_error(tk);
 			if (tk->tk_dx.dx_arg.dca_dsarg.arg_type == OP_SEARCH) {
-				free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
-				free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
-				free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next);
+				free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
+				free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
+				free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next);
 			}
 			task_extract(tk);
 		} else {
@@ -251,9 +251,9 @@ void dsa_work (struct task_act *tk) {
 		task_conn_extract(tk);
 		task_error(tk);
 		if (tk->tk_dx.dx_arg.dca_dsarg.arg_type == OP_SEARCH) {
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
-			free ((char *)tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr.srr_next);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_un.srr_unit);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next->srr_un.srr_unit);
+			free ((char *)tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr.srr_next);
 		}
 		task_extract(tk);
 		break;
@@ -261,7 +261,7 @@ void dsa_work (struct task_act *tk) {
 }
 
 void search_continue (struct task_act *tk) {
-	struct ds_search_result * tk_sr = &(tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr);
+	struct ds_search_result * tk_sr = &(tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr);
 
 	/* Set up next part of search result to collate remote sub-searches */
 	if(tk_sr->srr_next == NULLSRR) {
@@ -346,11 +346,11 @@ void log_x500_event (
 	else
 		sprintf (buf,"%s (%d)",op,ad);
 	if (context == DS_CTX_X500_DAP)
-		pslog (log_stat,LLOG_NOTICE,buf,(IFP)dn_print,(caddr_t)daptarget);
+		pslog (log_stat,LLOG_NOTICE,buf,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)daptarget);
 	else {
-		pslog (log_stat,LLOG_NOTICE,buf,(IFP)dn_print,(caddr_t)dsptarget);
+		pslog (log_stat,LLOG_NOTICE,buf,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)dsptarget);
 		if (arg->arg_type != OP_GETEDB)
-			pslog (log_stat,LLOG_TRACE,"DAP Originator",(IFP)dn_print,(caddr_t)orig);
+			pslog (log_stat,LLOG_TRACE,"DAP Originator",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)orig);
 	}
 }
 #endif

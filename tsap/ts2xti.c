@@ -477,8 +477,7 @@ out:
 	return NOTOK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * UPPER HALF */
+/* UPPER HALF */
 
 static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td) {
 	struct t_call  *sndcall;
@@ -558,7 +557,7 @@ static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, stru
 	return DONE;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	struct t_call  *call;
@@ -640,7 +639,7 @@ out:
 	return NOTOK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td) {
 	int             i;
@@ -665,7 +664,7 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 	return OK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 /*
  * This is a tricky one. We have to pass over a dup'd transport descriptor
@@ -736,7 +735,7 @@ reject: {
 	}
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td) {
 	int    cc;
@@ -863,7 +862,7 @@ done:
 	return OK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	int             nc, onoff, result;
@@ -910,7 +909,7 @@ out:
 	return result;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob) {
 	int             cc;
@@ -1037,7 +1036,7 @@ out:
 	return NOTOK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td) {
 	int             result = OK;
@@ -1057,7 +1056,7 @@ static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisco
 
 	return result;
 }
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct t_call  *call;
@@ -1077,8 +1076,7 @@ static int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	}
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * LOWER HALF */
+/* LOWER HALF */
 
 int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async) {
 	int             fd, onoff;
@@ -1110,7 +1108,7 @@ int tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *loc
 	return (async ? OK : DONE);
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	fd_set          mask;
@@ -1123,7 +1121,7 @@ static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td) {
 	return DONE;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 /*
  * Save string format: "fd.connection-sequence-number.expedited
@@ -1154,7 +1152,7 @@ char *tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsa
 	return buffer;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	int             fd, exp;
@@ -1188,7 +1186,7 @@ int tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
 	return OK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 int tp4init (struct tsapblk *tb) {
 
@@ -1218,7 +1216,7 @@ int tp4init (struct tsapblk *tb) {
 	tb->tb_selectfnx = select_tp4_socket;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td) {
 	int             sd;
@@ -1229,7 +1227,7 @@ int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2
 	return sd;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td) {
 	struct t_call  *call;
@@ -1271,7 +1269,7 @@ int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int
 	return sd;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 /*
  * This implements the XTI format for netbuf used by the IBM AIX 3.1 on
@@ -1313,7 +1311,7 @@ int gen2tp4 (	/* dependant on Addressing */
 	return OK;
 }
 
-/*  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 int tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {
 

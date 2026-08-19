@@ -13,4 +13,8 @@ struct ds_addentry_arg {
 	Attr_Sequence ada_entry;
 };
 
+int dap_addentry (int ad, int *id, struct ds_addentry_arg *arg, struct DSError *error);
+void addentry_arg_free (struct ds_addentry_arg *arg);
+int addentry_arg_dup (struct ds_addentry_arg *src, struct ds_addentry_arg *tgt);
+
 #endif

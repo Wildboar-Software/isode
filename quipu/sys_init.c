@@ -7,6 +7,7 @@
 #include <errno.h>
 #include "quipu/oid.h"
 #include "quipu/config.h"
+#include "quipu/util.h"
 #include "tailor.h"
 #include "logger.h"
 #include "usr.dirent.h"
@@ -20,7 +21,7 @@ extern time_t slave_timeout;
 extern char * edbtmp_path;
 extern char * treedir;
 
-static int rmFiles();
+static int rmFiles(const struct dirent *entry);
 
 int dsa_sys_init (int *acptr, char ***avptr) {
 	char *name;
@@ -75,9 +76,7 @@ void mk_dsa_tmp_dir (void) {
 	}
 }
 
-static int rmFiles(entry)
-struct dirent *entry;
-{
+static int rmFiles(const struct dirent *entry) {
 	char cbuf[BUFSIZ];
 
 	if (*entry->d_name == '.' &&

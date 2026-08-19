@@ -55,7 +55,7 @@ struct connection *make_conn_block (
 	}
 	if (! addr) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,"Invalid (accesspoint) reference",
-			   (IFP)dn_print,(caddr_t)name);
+			   (void (*)(PS, caddr_t, int))dn_print,(caddr_t)name);
 		return(NULLCONN);
 	}
 	/* see if on the appropriate net */
@@ -671,7 +671,7 @@ void task_result_wakeup (struct oper_act *on) {
 		*  Attempt to tidy up and send result.
 		*/
 		ds_error_free (tk->tk_error);
-		tk->tk_result = &(on->on_resp.di_result.dr_res);
+		tk->tk_result = &(on->on_resp.di_res.dr_res);
 		dsp_cache (&(tk->tk_dx.dx_arg.dca_dsarg),
 				   &(tk->tk_result->dcr_dsres),
 				   tk->tk_conn->cn_ctx, tk->tk_conn->cn_dn);
@@ -1039,7 +1039,7 @@ void subtask_chain (struct task_act *tk) {
 		DLOG(log_dsap, LLOG_DEBUG, ("Generating search subtask OP"));
 		if( (ca->ca_servicecontrol.svc_options & SVC_OPT_CHAININGPROHIBIT)
 				|| (oper_chain(on) != OK)) {
-			add_cref2poq (&tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr, err.ERR_REFERRAL.DSE_ref_candidates);
+			add_cref2poq (&tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr, err.ERR_REFERRAL.DSE_ref_candidates);
 			oper_task_extract(on);
 			oper_free(on);
 			if (trail == NULL_ST)
@@ -1088,8 +1088,8 @@ void subtask_result_wakeup (struct oper_act *on) {
 			*  Correlate uncorrelated search results from oper,
 			*  then merge with correlated search results of task.
 			*/
-			struct ds_search_result * tk_sr = &(tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr);
-			struct ds_search_result * op_sr = &(on->on_resp.di_result.dr_res.dcr_dsres.res_sr);
+			struct ds_search_result * tk_sr = &(tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr);
+			struct ds_search_result * op_sr = &(on->on_resp.di_res.dr_res.dcr_dsres.res_sr);
 			DLOG(log_dsap, LLOG_DEBUG, ("Collating a search result"));
 			st_comp_free (st);
 			on->on_subtask = NULL_ST;
@@ -1140,7 +1140,7 @@ void subtask_error_wakeup (struct oper_act *on) {
 				return;
 			}
 			DLOG(log_dsap, LLOG_DEBUG, ("Failed rechaining st"));
-			add_cref2poq (&tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr, on->on_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates);
+			add_cref2poq (&tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr, on->on_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates);
 			on->on_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates = NULLCONTINUATIONREF;
 		}
 		next_st = &(tk->referred_st);
@@ -1186,7 +1186,7 @@ void subtask_fail_wakeup (struct oper_act *on) {
 		if(st == NULL_ST) {
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("subtask_result_wakeup - subtask lost from referred list"));
 		} else {
-			add_cref2poq (&tk->tk_resp.di_result.dr_res.dcr_dsres.res_sr, st->st_cr);
+			add_cref2poq (&tk->tk_resp.di_res.dr_res.dcr_dsres.res_sr, st->st_cr);
 			st_comp_free (st);
 			on->on_subtask = NULL_ST;
 			(*next_st) = st->st_next;

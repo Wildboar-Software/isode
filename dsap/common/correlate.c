@@ -5,7 +5,6 @@
 #include "quipu/ds_search.h"
 
 extern LLog * log_dsap;
-int	entryinfo_print(PS ps, EntryInfo *entryinfo, int format);
 
 void correlate_search_results (struct ds_search_result *sr_res) {
 	struct ds_search_result	* sr_tmp;
@@ -64,12 +63,12 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 	if(sr_tmp->CSR_cr != NULLCONTINUATIONREF) {
 		for(cr_tmp = sr_tmp->CSR_cr; cr_tmp->cr_next != NULLCONTINUATIONREF; cr_tmp = cr_tmp->cr_next) {
 #ifdef	DEBUG
-			pslog(log_dsap, LLOG_DEBUG, "Another new ref:", (IFP)dn_print,
+			pslog(log_dsap, LLOG_DEBUG, "Another new ref:", (void (*)(PS, caddr_t, int))dn_print,
 				  (caddr_t) cr_tmp->cr_name);
 #endif
 		}
 #ifdef	DEBUG
-		pslog(log_dsap, LLOG_DEBUG, "Another new ref:", (IFP)dn_print,
+		pslog(log_dsap, LLOG_DEBUG, "Another new ref:", (void (*)(PS, caddr_t, int))dn_print,
 			  (caddr_t) cr_tmp->cr_name);
 #endif
 		cr_tmp->cr_next = sr_res->CSR_cr;
@@ -81,7 +80,7 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 #ifdef DEBUG
 	if(sr_res->CSR_cr != NULLCONTINUATIONREF) {
 		for(cr_tmp = sr_res->CSR_cr; cr_tmp != NULLCONTINUATIONREF; cr_tmp = cr_tmp->cr_next) {
-			pslog(log_dsap, LLOG_DEBUG, "ref entry:", (IFP)dn_print,
+			pslog(log_dsap, LLOG_DEBUG, "ref entry:", (void (*)(PS, caddr_t, int))dn_print,
 				  (caddr_t) cr_tmp->cr_name);
 		}
 	} else {

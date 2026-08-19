@@ -41,6 +41,8 @@ extern short acl_sntx;
 extern AV_Sequence oc_avs();
 Attr_Sequence entry_find_type();
 
+extern int set_heap (AttributeType x);
+
 void check_dsa_known_oids (void) {
 	/* set pointers to special attributes */
 	check_known_oids ();
@@ -152,7 +154,7 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		if ((as = entry_find_type (eptr,at_objectclass)) == NULLATTR) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,
 				   "Object class attribute missing",
-				   rdn_print, (caddr_t)eptr->e_name);
+				   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 			error->dse_type = DSE_UPDATEERROR;
 			error->ERR_UPDATE.DSE_up_problem = DSE_UP_OBJECTCLASSVIOLATION;
 			return (NOTOK);
@@ -192,7 +194,7 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 		if ((as->attr_value->avseq_next) && (eptr->e_data == E_DATA_MASTER))
 			pslog (log_dsap,LLOG_EXCEPTIONS,
 				   "WARNING: multi valued presentationAddress (only one will be used)",
-				   rdn_print, (caddr_t)eptr->e_name);
+				   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 	}
 	if (as = entry_find_type (eptr,at_masterdsa)) {
 		eptr->e_master = as->attr_value;
@@ -227,13 +229,13 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			if (as->attr_value->avseq_next)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "Multi valued cross reference",
-					   rdn_print, (caddr_t)eptr->e_name);
+					   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 		}
 		if (as = entry_find_type (eptr,at_subord)) {
 			if (eptr->e_external)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "cross & subordinate reference",
-					   rdn_print, (caddr_t)eptr->e_name);
+					   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 			eptr->e_reference = as->attr_value;
 			eptr->e_reftype = RT_SUBORDINATE;
 			eptr->e_external = TRUE;
@@ -242,13 +244,13 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 			if (as->attr_value->avseq_next)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "Multi valued subordinate reference",
-					   rdn_print, (caddr_t)eptr->e_name);
+					   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 		}
 		if (as = entry_find_type (eptr,at_nssr)) {
 			if (eptr->e_external)
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "NSSR & cross | subordinate reference",
-					   rdn_print, (caddr_t)eptr->e_name);
+					   (void (*) (PS, caddr_t, int))rdn_print, (caddr_t)eptr->e_name);
 			eptr->e_reference = as->attr_value;
 			eptr->e_reftype = RT_NONSPECIFICSUBORDINATE;
 			eptr->e_external = TRUE;
@@ -299,7 +301,7 @@ int real_unravel_attribute (Entry eptr, struct DSError * error) {
 						if (once == TRUE)
 							pslog (log_dsap,LLOG_EXCEPTIONS,
 								   "WARNING Inconsistent ACL in entry",
-								   rdn_print,
+								   (void (*) (PS, caddr_t, int))rdn_print,
 								   (caddr_t)eptr->e_name);
 						else
 							once = TRUE;

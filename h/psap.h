@@ -615,4 +615,6 @@ extern char *pepy_strings[];
 #define	 PEPY_ERR_TOO_MANY_TAGGED 	(pepy_strings[20])
 #define	 PEPY_ERR_EXTRA_MEMBERS 	(pepy_strings[21])
 
+void ps_printf (PS ps, char *fmt, ...);
+
 #endif

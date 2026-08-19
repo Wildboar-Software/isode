@@ -189,6 +189,7 @@ struct PSAPaddr {
 #define	NULLPA			((struct PSAPaddr *) 0)
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
+void psap_free (struct PSAPaddr *psap);
 
 int add_alias (char *name, char *value);
 

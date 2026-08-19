@@ -18,10 +18,14 @@ struct alg_id {
 	} un;
 };
 
+int alg_cpy (struct alg_id *a, struct alg_id *b);
+
 struct random_number {
 	int n_bits;
 	char *value;
 };
+
+struct random_number *random_cpy (struct random_number *rand);
 
 struct key_info {
 	struct alg_id alg;
@@ -41,6 +45,8 @@ struct signature {
 	char *encrypted;
 };
 
+struct signature *sig_cpy (struct signature *sig);
+
 struct certificate {
 	struct alg_id alg;
 	int version;
@@ -52,12 +58,18 @@ struct certificate {
 	struct signature sig;
 };
 
+void printcert(PS ps, struct certificate *parm, int format);
+int cert_cmp (struct certificate *a, struct certificate *b);
+void cert_free (struct certificate *parm);
+
 struct certificate_list {
 	struct certificate *cert;
 	struct certificate *reverse;
 	struct certificate_list *next, *prev;
 	struct certificate_list *superior;
 };
+
+void cpair_free (void *value);
 
 struct revoked_certificate {
 	struct alg_id alg;

@@ -8,8 +8,17 @@ NRS
 	nRSDefinitions(2)
 	}
 
-DEFINITIONS
-::=
+DEFINITIONS ::=
+
+%{
+#include "quipu/malloc.h"
+#include "quipu/attr.h"
+
+void pe_print (PS ps, PE pe, int format);
+extern void AttrV_print (PS ps, AttributeValue x, int format);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int pepsylose (modtyp *module, ...);
+%}
 
 PREFIXES encode decode print
 

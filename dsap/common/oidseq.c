@@ -1,11 +1,12 @@
 /* oidseq.c - OID Sequence utility routines */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 
 extern int oidformat;
 
-int oid_seq_free (struct oid_seq *ptr) {
+void oid_seq_free (struct oid_seq *ptr) {
 	struct oid_seq * loop;
 	struct oid_seq * next;
 
@@ -26,8 +27,7 @@ int oid_seq_free_aux (struct oid_seq *ptr) {
 	}
 }
 
-struct oid_seq *
-oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
+struct oid_seq *oid_seq_merge (struct oid_seq *a, struct oid_seq *b) {
 	struct oid_seq  *aptr, *bptr, *result, *trail;
 
 	if ( a == NULLOIDSEQ )

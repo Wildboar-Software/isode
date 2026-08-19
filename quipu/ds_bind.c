@@ -86,7 +86,7 @@ out:
 				LLOG(log_stat, LLOG_TRACE, ("Bind (%d) (rejected)", cn->cn_ad));
 			else {
 				sprintf (buff,"Bind (%d) (rejected)",cn->cn_ad);
-				pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
+				pslog (log_stat,LLOG_TRACE,buff,(void (*)(PS, caddr_t, int))dn_print,
 					   (caddr_t)arg->dba_dn);
 			}
 #endif
@@ -119,7 +119,7 @@ out:
 	if ( ! check_prefix_list (arg->dba_dn)) {
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (reject - prefix)",cn->cn_ad);
-		pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
+		pslog (log_stat,LLOG_TRACE,buff,(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)arg->dba_dn);
 #endif
 		error->dbe_version = DBA_VERSION_V1988;
@@ -130,7 +130,7 @@ out:
 	if ((cn->cn_ctx == DS_CTX_X500_DAP) && !(check_dn_length(arg->dba_dn))) {
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (reject - DAP length)",cn->cn_ad);
-		pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,
+		pslog (log_stat,LLOG_TRACE,buff,(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)arg->dba_dn);
 #endif
 		error->dbe_version = DBA_VERSION_V1988;
@@ -151,7 +151,7 @@ out:
 				ds_error_free(&(err));
 #ifndef NO_STATS
 				sprintf (buff,"Bind (%d) (no auth - rejected)",cn->cn_ad);
-				pslog (log_stat,LLOG_TRACE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
+				pslog (log_stat,LLOG_TRACE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)arg->dba_dn);
 #endif
 				error->dbe_version = DBA_VERSION_V1988;
 				error->dbe_type = DBE_TYPE_SECURITY;
@@ -162,7 +162,7 @@ out:
 		default:
 #ifndef NO_STATS
 			sprintf (buff,"Bind (%d) (no auth)",cn->cn_ad);
-			pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
+			pslog (log_stat,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)arg->dba_dn);
 #endif
 			if (dsas != NULL_DI_BLOCK)
 				di_desist (dsas);
@@ -174,7 +174,7 @@ out:
 	case DBA_AUTH_SIMPLE:
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (simple)",cn->cn_ad);
-		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
+		pslog (log_stat,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)arg->dba_dn);
 #endif
 		/* Can't check simple credentials from DSP (livelock risk).
 		 * Hence treat DSP accesses as unauthenticated.
@@ -188,7 +188,7 @@ out:
 	case DBA_AUTH_PROTECTED:
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (protected)",cn->cn_ad);
-		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
+		pslog (log_stat,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)arg->dba_dn);
 #endif
 		if (cn->cn_ctx != DS_CTX_X500_DAP) {
 			cn->cn_authen = DBA_AUTH_NONE;
@@ -225,7 +225,7 @@ out:
 	case DBA_AUTH_STRONG:
 #ifndef NO_STATS
 		sprintf (buff,"Bind (%d) (strong)",cn->cn_ad);
-		pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)arg->dba_dn);
+		pslog (log_stat,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)arg->dba_dn);
 #endif
 		/* Strong authentication is not yet supported.
 		 * It will eventually be possible to check strong credentials over DSP.
@@ -264,7 +264,7 @@ out:
 					return (DS_OK);
 				} else {
 					sprintf (buff,"User != Authenticated User, ie %s != ", dn2str(arg->dba_dn));
-					pslog (log_dsap,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)real_name);
+					pslog (log_dsap,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)real_name);
 					error->dbe_version = DBA_VERSION_V1988;
 					error->dbe_type = DBE_TYPE_SECURITY;
 					error->dbe_value = DSE_SC_AUTHENTICATION;
@@ -413,7 +413,7 @@ int bind_compare_result_wakeup (struct oper_act *on) {
 	if(on->on_bind_compare == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("bind_compare_result_wakeup - connection initiating compare already failed"));
 	} else {
-		if(on->on_resp.di_result.dr_res.dcr_dsres.res_cm.cmr_matched) {
+		if(on->on_resp.di_res.dr_res.dcr_dsres.res_cm.cmr_matched) {
 			DLOG(log_dsap, LLOG_DEBUG, ("bind_compare - user authenticated"));
 			on->on_bind_compare->cn_authen = on->on_bind_compare->cn_start.cs_ds.ds_bind_arg.dba_auth_type;
 			conn_init_res(on->on_bind_compare);
@@ -517,7 +517,7 @@ void do_ds_unbind (struct connection *conn) {
 	} else {
 		sprintf (buff,"Unbind (%d) (responder)",conn->cn_ad);
 	}
-	pslog (log_stat,LLOG_NOTICE,buff,(IFP)dn_print,(caddr_t)conn->cn_dn);
+	pslog (log_stat,LLOG_NOTICE,buff,(void (*)(PS, caddr_t, int))dn_print,(caddr_t)conn->cn_dn);
 #endif
 	if (fstat (conn->cn_ad, &st) != NOTOK) {
 		if (conn->cn_ad != log_dsap -> ll_fd)

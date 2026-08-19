@@ -16,8 +16,9 @@ extern AV_Sequence avs_cpy_enc ();
 extern Attr_Sequence dsa_pseudo_attr;
 extern AttributeType at_acl;
 
-Attr_Sequence
-eis_select (
+extern int update_pseudo_attr (void);
+
+Attr_Sequence eis_select (
 	EntryInfoSelection eis,
 	Entry entryptr,
 	DN dn,

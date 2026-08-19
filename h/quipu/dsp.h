@@ -24,6 +24,8 @@ struct access_point {           /* represents AccessPoint               */
 };
 #define NULLACCESSPOINT ((struct access_point *) NULL)
 
+void aps_free (struct access_point *app);
+
 /* Continuation Ref definded in DSP     */
 /* represents ContinuationReference     */
 typedef struct continuation_ref {
@@ -45,6 +47,8 @@ typedef struct continuation_ref {
 	/* They usually occur in SETs           */
 } continuation_ref, *ContinuationRef;
 
+void crefs_free(ContinuationRef crefp);
+
 #define NULLCONTINUATIONREF ((ContinuationRef) 0)
 
 struct trace_info {
@@ -54,8 +58,11 @@ struct trace_info {
 	struct trace_info   *ti_next;
 };
 
+void trace_info_free (struct trace_info *ti);
+
 #define NULLTRACEINFO ((struct trace_info *) 0)
-struct trace_info	* ti_cpy();
+struct trace_info* ti_cpy(struct trace_info *ti);
+int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list);
 
 /* THIS SECTION GIVES VARIOUS COMMON STRUCTURES */
 

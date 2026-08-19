@@ -6,7 +6,7 @@
 
 /*    BIND interface */
 
-int	  ronot2dsaplose (struct DSAPindication * di, char * event, struct RoNOTindication * rni) {
+int ronot2dsaplose (struct DSAPindication * di, char * event, struct RoNOTindication * rni) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 	cp = buffer;

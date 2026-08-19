@@ -2,11 +2,13 @@
 
 #include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "logger.h"
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
+#include "quipu/watchdog.h"
 
 extern LLog	* log_dsap;
 extern unsigned watchdog_time;
@@ -21,6 +23,18 @@ extern char * RoErrString();
 
 static void slack_watch_dog (char *where);
 extern char dsa_mode;
+
+static int DspWaitRequest (int sd, int secs, struct DSAPindication *di);
+static int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di);
+static int QspWaitRequest (int sd, int secs, struct DSAPindication *di);
+static int IspWaitRequest (int sd, int secs, struct DSAPindication *di);
+static int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
+static int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di);
+static int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
+static int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di);
+static int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di);
+static int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di);
+static int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
 
 int DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
 	int	  result;
@@ -105,7 +119,7 @@ static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 	}
 }
 
-int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -168,7 +182,7 @@ int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	}
 }
 
-int DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -280,7 +294,7 @@ int QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	}
 }
 
-int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 	struct ds_op_arg	* dsarg = &(di->di_invoke.dx_arg);
@@ -384,7 +398,7 @@ int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return(success);
 }
 
-int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -481,24 +495,24 @@ int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return(success);
 }
 
-int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
+static int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
 	di->di_type = DI_RESULT;
-	di->di_result.dr_id = ror->ror_id;
+	di->di_res.dr_id = ror->ror_id;
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedReadResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedCompareResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
@@ -512,42 +526,42 @@ int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	case    OP_LIST : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedListResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedSearchResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedAddEntryResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedModifyEntryResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_res *op;
 		success = decode_DO_ChainedModifyRDNResult(pe,1,NULL,NULLVP,&op);
-		di->di_result.dr_res = *op; /* struct copy */
+		di->di_res.dr_res = *op; /* struct copy */
 		free ((char *)op);
 	}
 	break;
@@ -565,12 +579,12 @@ int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Undecodable argument"));
 	}
-	di->di_result.dr_res.dcr_dsres.result_type = ror->ror_op;
+	di->di_res.dr_res.dcr_dsres.result_type = ror->ror_op;
 	RORFREE (ror);
 	return(success);
 }
 
-int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -670,24 +684,24 @@ int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di)
 	return (success);
 }
 
-int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
+static int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
 	di->di_type = DI_RESULT;
-	di->di_result.dr_id = ror->ror_id;
+	di->di_res.dr_id = ror->ror_id;
 	switch(ror->ror_op) {
 	case    OP_READ : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedReadResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_COMPARE : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedCompareResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
@@ -701,49 +715,49 @@ int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 	case    OP_LIST : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedListResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_SEARCH : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedSearchResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_ADDENTRY : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedAddEntryResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_REMOVEENTRY : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedRemoveEntryResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_MODIFYENTRY : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedModifyEntryResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_MODIFYRDN : {
 		struct ds_op_res *res;
 		success = decode_DO_ChainedModifyRDNResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res = *res; /* sturct copy */
+		di->di_res.dr_res = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
 	case    OP_GETEDB : {
 		struct getedb_result *res;
 		success = decode_Quipu_GetEntryDataBlockResult(pe,1,NULL,NULLVP,&res);
-		di->di_result.dr_res.dcr_dsres.res_ge = *res; /* sturct copy */
+		di->di_res.dr_res.dcr_dsres.res_ge = *res; /* sturct copy */
 		free ((char *)res);
 	}
 	break;
@@ -760,12 +774,12 @@ int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di)
 		RORFREE (ror);
 		return (dsaplose (di, DP_RESULT, NULLCP, "Undecodable argument"));
 	}
-	di->di_result.dr_res.dcr_dsres.result_type = ror->ror_op;
+	di->di_res.dr_res.dcr_dsres.result_type = ror->ror_op;
 	RORFREE (ror);
 	return(success);
 }
 
-int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
+static int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = roe->roe_param;
 	struct DSError	* err = &(di->di_error.de_err);
@@ -852,7 +866,7 @@ int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
 	return(success);
 }
 
-int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
+static int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
@@ -871,16 +885,8 @@ int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
 
 /* Isp == Qsp here */
 
-int IspWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int IspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	return QspWaitRequest (sd, secs, di);
-}
-
-int IspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
-	return QspDecodeInvoke (sd, rox, di);
-}
-
-int IspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
-	return QspDecodeResult (sd, ror, di);
 }
 
 /* Watchdog stuff */
@@ -926,6 +932,7 @@ watch_dog_activate (int sd) {
 	exit(-1);
 }
 
+static
 #ifdef LINUX
 void
 #else

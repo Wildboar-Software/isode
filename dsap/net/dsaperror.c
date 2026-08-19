@@ -4,8 +4,56 @@
 #include "logger.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
+#include "quipu/watchdog.h"
 
 extern  LLog    * log_dsap;
+
+
+static int DEncodeError (PE *pep, struct DSError *err) {
+	int		success;
+
+	switch(err->dse_type) {
+	case    DSE_NOERROR :
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): no error"));
+		(*pep) = NULLPE;
+		success = NOTOK;
+		break;
+	case    DSE_ABANDON_FAILED :
+		success = encode_DAS_AbandonFailedParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_abandon_fail));
+		break;
+	case    DSE_ATTRIBUTEERROR :
+		success = encode_DAS_AttributeErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_attribute));
+		break;
+	case    DSE_NAMEERROR :
+		success = encode_DAS_NameErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_name));
+		break;
+	case    DSE_REFERRAL :
+		success = encode_DAS_ReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
+		break;
+	case    DSE_SECURITYERROR :
+		success = encode_DAS_SecurityErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_security));
+		break;
+	case    DSE_SERVICEERROR :
+		success = encode_DAS_ServiceErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_service));
+		break;
+	case    DSE_UPDATEERROR :
+		success = encode_DAS_UpdateErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_update));
+		break;
+	case    DSE_ABANDONED :
+		(*pep) = NULLPE;
+		success = OK;
+		break;
+	case    DSE_DSAREFERRAL :
+		success = encode_DO_DSAReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
+		break;
+	default :
+		(*pep) = NULLPE;
+		success = NOTOK;
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): unknown error %d", err->dse_type));
+		break;
+	}
+	return(success);
+}
 
 int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
 	int				  result;
@@ -89,52 +137,6 @@ int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 	if (err_pe != NULLPE)
 		pe_free (err_pe);
 	return (OK);
-}
-
-int DEncodeError (PE *pep, struct DSError *err) {
-	int		success;
-
-	switch(err->dse_type) {
-	case    DSE_NOERROR :
-		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): no error"));
-		(*pep) = NULLPE;
-		success = NOTOK;
-		break;
-	case    DSE_ABANDON_FAILED :
-		success = encode_DAS_AbandonFailedParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_abandon_fail));
-		break;
-	case    DSE_ATTRIBUTEERROR :
-		success = encode_DAS_AttributeErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_attribute));
-		break;
-	case    DSE_NAMEERROR :
-		success = encode_DAS_NameErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_name));
-		break;
-	case    DSE_REFERRAL :
-		success = encode_DAS_ReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
-		break;
-	case    DSE_SECURITYERROR :
-		success = encode_DAS_SecurityErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_security));
-		break;
-	case    DSE_SERVICEERROR :
-		success = encode_DAS_ServiceErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_service));
-		break;
-	case    DSE_UPDATEERROR :
-		success = encode_DAS_UpdateErrorParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_update));
-		break;
-	case    DSE_ABANDONED :
-		(*pep) = NULLPE;
-		success = OK;
-		break;
-	case    DSE_DSAREFERRAL :
-		success = encode_DO_DSAReferralParm(pep,1,0,NULLCP,&(err->dse_un.dse_un_referral));
-		break;
-	default :
-		(*pep) = NULLPE;
-		success = NOTOK;
-		LLOG(log_dsap, LLOG_EXCEPTIONS, ("DEncodeError(): unknown error %d", err->dse_type));
-		break;
-	}
-	return(success);
 }
 
 int IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {

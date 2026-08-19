@@ -1,14 +1,16 @@
 /* ds_error.c - Directory Operation Errors */
 
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/dsp.h"
 #include "quipu/ds_error.h"
 #include "quipu/bind.h"
+#include "quipu/attrvalue.h"
+#include "quipu/attr.h"
 
 extern LLog * log_dsap;
 
-extern int AttrT_print ();
 int dsa_dead;
 
 static char * abandon_fail [] = {
@@ -183,17 +185,17 @@ void log_ds_error (struct DSError *err) {
 		break;
 	case DSE_ATTRIBUTEERROR:
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Attribute error\n"));
-		pslog (log_dsap,LLOG_TRACE,"...",(IFP)dn_print,
+		pslog (log_dsap,LLOG_TRACE,"...",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)err->ERR_ATTRIBUTE.DSE_at_name);
 		for (at_prob = &err->ERR_ATTRIBUTE.DSE_at_plist; at_prob != DSE_AT_NOPROBLEM; at_prob = at_prob -> dse_at_next) {
 			LLOG (log_dsap,LLOG_TRACE, (at_problem[at_prob->DSE_at_what]));
 			if (at_prob->DSE_at_value != NULLAttrV)
-				pslog (log_dsap,LLOG_TRACE,"type", AttrT_print, (caddr_t) at_prob->DSE_at_type);
+				pslog (log_dsap,LLOG_TRACE,"type", (void (*)(PS, caddr_t, int))AttrT_print, (caddr_t) at_prob->DSE_at_type);
 		}
 		break;
 	case DSE_NAMEERROR:
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("Name error: %s",name[err->ERR_NAME.DSE_na_problem]));
-		pslog (log_dsap,LLOG_EXCEPTIONS,"   Matched",(IFP)dn_print,
+		pslog (log_dsap,LLOG_EXCEPTIONS,"   Matched",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)err->ERR_NAME.DSE_na_matched);
 		break;
 	case DSE_SERVICEERROR:
@@ -205,7 +207,7 @@ void log_ds_error (struct DSError *err) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in referral error"));
 			break;
 		}
-		pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print,
+		pslog (log_dsap,LLOG_TRACE,"ap_name",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
 		break;
 	case DSE_DSAREFERRAL:
@@ -214,7 +216,7 @@ void log_ds_error (struct DSError *err) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("NULL reference in DSA referral error"));
 			break;
 		}
-		pslog (log_dsap,LLOG_TRACE,"ap_name",(IFP)dn_print,
+		pslog (log_dsap,LLOG_TRACE,"ap_name",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t)err->ERR_REFERRAL.DSE_ref_candidates->cr_accesspoints->ap_name);
 		break;
 	case DSE_SECURITYERROR:

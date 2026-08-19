@@ -27,4 +27,11 @@ struct ds_modifyentry_arg {
 	struct entrymod *mea_changes;
 };
 
+void ems_free (struct entrymod *emp);
+struct entrymod *ems_cpy (struct entrymod *em);
+
+int dap_modifyentry (int ad, int *id, struct ds_modifyentry_arg *arg, struct DSError *error);
+void modifyentry_arg_free (struct ds_modifyentry_arg *arg);
+int modifyentry_arg_dup (struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt);
+
 #endif

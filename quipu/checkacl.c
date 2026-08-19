@@ -355,11 +355,11 @@ int check_one_sacl (
 				 binddn : NULLDN;
 	}
 	if ( (rc = (struct result_count *) avl_find( (Avlnode *)local->st_sacls,
-			   (caddr_t) ancestor, entry_rc_cmp )) == (struct result_count *) 0 ) {
+			   (caddr_t) ancestor, (int (*)(caddr_t, caddr_t))entry_rc_cmp )) == (struct result_count *) 0 ) {
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
 		avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
-					rc_cmp, avl_dup_error );
+					(int (*)(caddr_t, caddr_t))rc_cmp, (int (*)(caddr_t, caddr_t))avl_dup_error );
 	}
 	rc->rc_count++;
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;

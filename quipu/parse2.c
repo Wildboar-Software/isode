@@ -263,10 +263,10 @@ time_t cache_age;
 		if (dtype == E_TYPE_CACHE_FROM_MASTER)
 			eptr->e_age = cache_age;
 		DATABASE_HEAP;
-		if (avl_insert(&tree, (caddr_t) eptr, entry_cmp, avl_dup_error)
+		if (avl_insert(&tree, (caddr_t) eptr, (int (*)(caddr_t, caddr_t)) entry_cmp, (int (*)(caddr_t, caddr_t)) avl_dup_error)
 				== NOTOK) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,"Duplicate entry for",
-				   rdn_print,(caddr_t)eptr->e_name);
+				   (void (*)(PS, caddr_t, int)) rdn_print,(caddr_t)eptr->e_name);
 			parse_error ("Non Unique RDN",NULLCP);
 		}
 #ifdef TURBO_INDEX

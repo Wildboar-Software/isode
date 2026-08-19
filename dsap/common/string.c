@@ -18,7 +18,6 @@
 
 extern LLog * log_dsap;
 extern char * srealloc (char *p, int nsize);
-extern char * strdup (const char *);
 
 static short exct = 0;
 static short tel_sntx = 0;
@@ -675,7 +674,8 @@ char *prtparse (char *str) {
 	if ((ptr = prtparse_aux(str)) != NULLCP)
 		return (ptr);
 	else {
-		parse_error ("character '%c' not in printablestring",char_failed);
+		// TODO: Unit test this.
+		parse_error ("character '%c' not in printablestring", &char_failed);
 		return (NULLCP);
 	}
 }

@@ -15,8 +15,6 @@
 #define AS_START_DELIMITER 	'('
 #define AS_END_DELIMITER 	')'
 
-extern int dn_cmp();
-extern int dn_free();
 extern PE dn_enc();
 extern DN dn_dec();
 extern DN str2dnX();

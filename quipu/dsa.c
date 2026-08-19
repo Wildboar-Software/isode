@@ -61,12 +61,12 @@ static  char *myname;
 
 void    adios (char *, char *, ...);
 void    advise (int, char *, char *, ...);
-void    mk_dsa_tmp_dir();
+void    mk_dsa_tmp_dir(void);
 static  void envinit (void), setdsauid(void);
-SFD attempt_restart();
+SFD attempt_restart(int sig);
 extern int print_parse_errors;
 extern int parse_line;
-struct task_act	* task_select();
+struct task_act	* task_select(int *secs);
 
 char quipu_shutdown = FALSE;
 

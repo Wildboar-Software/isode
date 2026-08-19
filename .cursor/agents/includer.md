@@ -37,3 +37,4 @@ or "automatically generated."
 
 - If you see `insque` or `remque` used, you need to include `<search.h>`.
 - If you see `xselect` used, you need to include `"compat.h"`.
+- If you see `ps_print` used, you need to include `<string.h>`.

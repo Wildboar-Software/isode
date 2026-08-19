@@ -4,6 +4,7 @@
 #define DSERRORH
 
 #include "quipu/dsp.h"
+#include "quipu/entry.h"
 
 struct DSE_abandon_fail {
 	int DSE_ab_problem;
@@ -115,6 +116,8 @@ struct DSError {
 	}   dse_un;
 };
 
+int invalid_matching (AttributeType at, struct DSError *error, DN dn);
+
 /* THIS SECTION DEFINES THE PROCEDURE CALLS */
 
 /* All of the DUA calls are SYNCHRONOUS, with no access to referrals    */
@@ -148,5 +151,9 @@ possible values
 #define ERR_SERVICE      dse_un.dse_un_service
 #define ERR_UPDATE       dse_un.dse_un_update
 #define ERR_ALIAS        dse_un.dse_un_alias
+
+void ds_error (PS ps, struct DSError *err);
+void ds_error_free (struct DSError *err);
+void log_ds_error (struct DSError *err);
 
 #endif

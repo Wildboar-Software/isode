@@ -8,6 +8,20 @@
 #define UNCOMPRESSED_1D	0x0e
 #define ERR_RUN		0x0f
 
+static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr);
+static int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional);
+static int set_dinput (bit_string *lineptr, int length);
+static void set_doutput (bit_string *lineptr);
+static void flush_doutput (bit_string *lineptr);
+static void goto_b1 (bit_string *lineptr);
+static void put_run (bit_string *lineptr, int length, char xcolour);
+static void resync (bit_string *lineptr);
+static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset);
+static int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr);
+static int decode_one (bit_string *lineptr, bit_string *t4_lineptr);
+static int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr);
+static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD);
+
 /**
  * @file photo_dec.c
  *
@@ -175,7 +189,7 @@ static int uc_black_pels [] = {
  * @param twoDimensional Non-zero if the image is two-dimensionally coded.
  * @return Result of photo_end on success, or -1 on failure.
  */
-int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
+static int decode_t4_aux (char *inbuf, char *winname, int length, int twoDimensional) {
 	bit_string code_line,      /* output line */
 			   ref_line,       /* reference line */
 			   t4_line;        /* input line  */
@@ -340,7 +354,7 @@ run_type next_run (bit_string *lineptr, char xcolour)
  *         -1 if the line could not be decoded, or -2 if an error was
  *         detected and resync succeeded.
  */
-int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
+static int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 {
 	run_type run;
 	char xcolour = WHITE;
@@ -520,7 +534,7 @@ int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xco
  * @param ref_lineptr Reference line.
  * @param code_lineptr Line being decoded.
  */
-void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
+static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
 {
 	int length;
 
@@ -545,7 +559,7 @@ void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr)
  * @return 0 if successful, -1 if too many sequencing errors, or -2 if
  *         resynchronisation was performed.
  */
-int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
+static int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
 {
 	run_type run;
 
@@ -583,7 +597,7 @@ int undo_horiz_mode (bit_string *t4_lineptr, bit_string *code_lineptr)
  * @param code_lineptr Line being decoded.
  * @param offset Vertical-mode offset from the reference change.
  */
-void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
+static void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char offset)
 {
 	int   length;
 	goto_b1 (ref_lineptr);
@@ -600,7 +614,7 @@ void undo_vert_mode (bit_string *ref_lineptr, bit_string *code_lineptr, char off
  *
  * @param lineptr Reference line.
  */
-void goto_b1 (bit_string *lineptr)
+static void goto_b1 (bit_string *lineptr)
 {
 	while (*lineptr->run_pos > position) {
 		--lineptr->run_pos;
@@ -648,7 +662,7 @@ static void resync (bit_string *lineptr)
  * @param length Number of bits in the run.
  * @param xcolour Colour of the run (WHITE or BLACK).
  */
-void put_run (bit_string *lineptr, int length, char xcolour)
+static void put_run (bit_string *lineptr, int length, char xcolour)
 {
 	int i;
 	int l;
@@ -712,7 +726,7 @@ void put_run (bit_string *lineptr, int length, char xcolour)
  *
  * @param lineptr Output bit string to reset.
  */
-void set_doutput (bit_string *lineptr)
+static void set_doutput (bit_string *lineptr)
 {
 	lineptr->dbuf = lineptr->dbuf_top;
 	lineptr->mask = BIT_MASK;
@@ -723,7 +737,7 @@ void set_doutput (bit_string *lineptr)
  *
  * @param lineptr Output bit string to flush.
  */
-void flush_doutput (bit_string *lineptr)
+static void flush_doutput (bit_string *lineptr)
 {
 	int count = 0;
 
@@ -741,7 +755,7 @@ void flush_doutput (bit_string *lineptr)
  * @param length Encoded length, or 0 to parse a BIT STRING header.
  * @return 0 on success, or -1 on error.
  */
-int set_dinput (bit_string *lineptr, int length)
+static int set_dinput (bit_string *lineptr, int length)
 {
 	unsigned char cbyte;
 	int count;

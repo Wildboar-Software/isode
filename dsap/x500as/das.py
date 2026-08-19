@@ -15,6 +15,12 @@ extern void AttrT_print (
 	AttributeType x,
 	int format
 );
+extern int pepsylose (modtyp *module, ...);
+extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr);
+extern int AttrV_decode(AttributeType x, AttributeValue y);
+extern int substring_encode (struct filter_item *parm, PE *pe);
+extern int substring_decode (struct filter_item **pparm, PE pe);
+extern int substring_free (struct filter_item *parm);
 %}
 
 PREFIXES encode decode print
@@ -1389,7 +1395,7 @@ AttributeErrorParm [[P struct DSE_attribute *]]
 						(*parm)->DSE_at_value) != OK) {
 		                          pslog (log_dsap,LLOG_EXCEPTIONS,
 				          "AttrV_decode failed",
-				          AttrT_print, (caddr_t) (*parm)->DSE_at_type);
+				          (void (*) (PS, caddr_t, int))AttrT_print, (caddr_t) (*parm)->DSE_at_type);
 				          return NOTOK;
 				       }
 				    %}

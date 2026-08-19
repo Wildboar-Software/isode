@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include "psap.h"
 #include <errno.h>
 #include "quipu/util.h"
@@ -17,7 +18,21 @@
 #include "quipu/Quipu-types.h"
 #include "quipu/turbo.h"
 #include "quipu/malloc.h"
+#include "quipu/cache.h"
+
 extern int parent_link();
+
+extern LLog * log_dsap;
+static int fileexists (char *fname) {
+	struct stat buf;
+
+	if (stat (fname,&buf) != 0) {
+		if (errno != ENOENT)
+			DLOG (log_dsap,LLOG_DEBUG,("File %s will not stat - %d",fname,errno));
+		return FALSE;
+	}
+	return TRUE;
+}
 
 #ifndef NO_STATS
 extern LLog * log_stat;
@@ -58,6 +73,7 @@ static int edb_continue (
 	DN binddn,
 	int fd
 );
+static int send_get_edb (char *version, DN dn, DN from);
 
 char * edbtmp_path = NULLCP;
 
@@ -331,7 +347,7 @@ int update_aux (DN dn, int isroot) {
 			if ((eptr = make_path (dsainfo->edb_name)) == NULLENTRY) {
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "edbinfo references EDB that does not exist !!!",
-					   (IFP)dn_print,(caddr_t) dsainfo->edb_name);
+					   (void (*)(PS, caddr_t, int))dn_print,(caddr_t) dsainfo->edb_name);
 				continue;
 			}
 		} else {
@@ -351,7 +367,7 @@ int update_aux (DN dn, int isroot) {
 	return((dn || isroot) ? success : OK);
 }
 
-int send_get_edb (char *version, DN dn, DN from) {
+static int send_get_edb (char *version, DN dn, DN from) {
 	struct di_block		* di;
 	struct DSError		  error;
 	struct oper_act		* on;
@@ -474,10 +490,9 @@ static int link_child (Entry e, Avlnode *oldkids) {
 	struct DSError  error;
 
 	Entry   old_entry;
-	int     entryrdn_cmp();
 	g_entry_cnt++;
 	/* find the old entry the new one is replacing */
-	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, entryrdn_cmp);
+	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, (int (*)(caddr_t, caddr_t)) entryrdn_cmp);
 	if (old_entry == NULLENTRY)
 		return(OK);
 	e->e_leaf = old_entry->e_leaf;
@@ -490,7 +505,7 @@ static int link_child (Entry e, Avlnode *oldkids) {
 			  NOTOK, AVL_PREORDER);
 	/* And unravel them to set new ACL pointers */
 	/* MAY need to make this recursive */
-	if (avl_apply(e->e_children, quick_unrav, (caddr_t) &error,
+	if (avl_apply(e->e_children, (int (*)(caddr_t, caddr_t)) quick_unrav, (caddr_t) &error,
 				  NOTOK, AVL_PREORDER) == NOTOK) {
 		log_ds_error (&error);
 		return NOTOK;
@@ -505,9 +520,8 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	Entry find_sibling();
 	Entry eptr;
 	Avlnode	*newkids;
-	int	entry_free();
 	struct DSError  error;
-	struct getedb_result	* result = &(on->on_resp.di_result.dr_res.dcr_dsres.res_ge);
+	struct getedb_result	* result = &(on->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(on->on_req.dca_dsarg.arg_ge);
 	char got_subtree = TRUE;
 
@@ -528,7 +542,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	if ((eptr = local_find_entry (arg->ga_entry,FALSE)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
 			   "Updating something which does not exist !!!",
-			   (IFP)dn_print,(caddr_t) arg->ga_entry);
+			   (void (*)(PS, caddr_t, int))dn_print,(caddr_t) arg->ga_entry);
 		goto out;
 	}
 	DLOG (log_dsap, LLOG_NOTICE,("  EDB updated from (%d): %s to: %s",
@@ -537,7 +551,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	{
 		DN tmp_dn;
 		tmp_dn = get_copy_dn (eptr);
-		pslog (log_stat,LLOG_NOTICE,"Slave update",(IFP)dn_print,(caddr_t)tmp_dn);
+		pslog (log_stat,LLOG_NOTICE,"Slave update",(void (*)(PS, caddr_t, int))dn_print,(caddr_t)tmp_dn);
 		dn_free (tmp_dn);
 	}
 #endif
@@ -554,7 +568,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	     * parent node.
 	     */
 	g_parent = eptr;
-	if (avl_apply(newkids, unravel_edb, (caddr_t) &error, NOTOK,
+	if (avl_apply(newkids, (int (*)(caddr_t, caddr_t))unravel_edb, (caddr_t) &error, NOTOK,
 				  AVL_INORDER)
 			== NOTOK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
@@ -570,7 +584,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	 * g_entry_cnt with the number of entries in the new edb.
 	 */
 	g_entry_cnt = 0;
-	if (avl_apply(newkids, link_child, (caddr_t) eptr->e_children, NOTOK,
+	if (avl_apply(newkids, (int (*)(caddr_t, caddr_t))link_child, (caddr_t) eptr->e_children, NOTOK,
 				  AVL_INORDER) == NOTOK) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS,
 			 ("Child problem in new EDB - continuing with old"));
@@ -584,7 +598,7 @@ void process_edb (struct oper_act *on, struct oper_act **newop) {
 	 * now free up entries from the old edb and update the size of
 	 * our cache. avl_free returns the number of nodes freed.
 	 */
-	local_slave_size -= avl_free(eptr->e_children, entry_free);
+	local_slave_size -= avl_free(eptr->e_children, (void (*)(caddr_t))entry_free);
 	eptr->e_children = newkids;
 	local_slave_size += g_entry_cnt;
 	eptr->e_leaf = FALSE;
@@ -630,7 +644,7 @@ void get_edb_fail_wakeup (struct oper_act *on) {
 
 	DLOG(log_dsap, LLOG_TRACE, ("get_edb_fail_wakeup"));
 	if (on -> on_resp.di_type == DI_ERROR) {
-		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote getEDB error",(IFP)dn_print,
+		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote getEDB error", (void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t) on->on_req.dca_dsarg.arg_ge.ga_entry);
 		log_ds_error (& on -> on_resp.di_error.de_err);
 		if (on->on_conn) {
@@ -942,7 +956,7 @@ out:
 }
 
 static void get_more_edb (struct oper_act *oper, struct oper_act **newop) {
-	struct getedb_result	* result = &(oper->on_resp.di_result.dr_res.dcr_dsres.res_ge);
+	struct getedb_result	* result = &(oper->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(oper->on_req.dca_dsarg.arg_ge);
 	struct getedb_arg	* narg;
 	struct oper_act	* on_tmp;

@@ -4,6 +4,7 @@
 #include "logger.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
+#include "quipu/watchdog.h"
 
 extern  OID     acse_pci;
 extern  OID     x500_da_ac;
@@ -22,8 +23,9 @@ extern  struct PSAPctxlist      * internet_ds_pcdl;
 extern LLog	* log_dsap;
 
 static char * qlocalhost = "DSAP";	/* Bind speed up */
+static int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc);
 
-int	  DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+static int DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
 						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
 						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;
@@ -212,7 +214,7 @@ int QspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct D
 	return (result);
 }
 
-int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
+static int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
 

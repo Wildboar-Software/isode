@@ -6,12 +6,15 @@
 #include "quipu/dua.h"
 #include "quipu/bind.h"
 #include "tailor.h"
+#include "quipu/IF-types.h"
 
 static char bound = FALSE;
 static char unbind = FALSE;
 
 static DN username = NULLDN;
 static char password[DBA_MAX_PASSWD_LEN] = "";
+
+extern void string_syntaxes(void);
 
 static int bind_to_dsa (void) {
 	struct ds_bind_arg bindarg;

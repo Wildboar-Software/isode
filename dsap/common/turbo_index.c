@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "quipu/common.h"
 #include "quipu/config.h"
 #include "quipu/attr.h"
 #include "quipu/entry.h"
@@ -12,6 +13,7 @@
 #ifdef TURBO_INDEX
 
 extern LLog * log_dsap;
+extern int set_heap (AttributeType x);
 
 AttributeType	*turbo_index_types;	/* array of attributes to optimize */
 int		turbo_index_num;	/* number of attributes to optimize */
@@ -164,8 +166,8 @@ static void soundex_free(Index_node *node)
 static void index_free(Index *pindex)
 {
 	dn_free( pindex->i_dn );
-	avl_free( pindex->i_root, indexav_free );
-	avl_free( pindex->i_sroot, soundex_free );
+	avl_free( pindex->i_root, (void (*)(caddr_t))indexav_free );
+	avl_free( pindex->i_sroot, (void (*)(caddr_t))soundex_free );
 	free( (char *) pindex );
 }
 
@@ -184,15 +186,19 @@ int idn_cmp(DN a, Index *b)
 	return( dn_order_cmp( a, b->i_dn ) );
 }
 
-/*
- * th_prefix - returns the following:
- *	-2	=>	b is an immediate child of a
- *      -1      =>      a is some other prefix of b
- *      0       =>      a and b are equal
- *      1       =>      b is a prefix of a
- *      2       =>      neither a nor b is a prefix of the other
- */
+int idn_cmp_from_caddrs(caddr_t data1, caddr_t data2) {
+	return( idn_cmp( (DN)data1, (Index *)data2 ) );
+}
 
+// TODO: Define #defines for these return values.
+/**
+ * returns the following:
+ *	-2 => b is an immediate child of a
+ *  -1 => a is some other prefix of b
+ *  0 => a and b are equal
+ *  1 => b is a prefix of a
+ *  2 => neither a nor b is a prefix of the other
+ */
 int th_prefix(DN a, DN b)
 {
 	for ( ; a && b; a = a->dn_parent, b = b->dn_parent )
@@ -394,8 +400,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		 * soundex index for that attribute.
 		 */
 		/* a return of OK means it was the first one inserted */
-		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, index_cmp,
-						 index_dup ) == OK ) {
+		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, (int (*)(caddr_t data1, caddr_t data2))index_cmp,
+						 (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
 			pindex[ i ].i_count++;
 			imem = NULLINDEXNODE;
 		} else if ( substr ) {
@@ -426,7 +432,7 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		/* insert into the reverse index, if appropriate */
 		if ( substr ) {
 			if ( avl_insert( &pindex[ i ].i_rroot, (caddr_t) imem,
-							 index_cmp, index_dup ) == OK ) {
+							 (int (*)(caddr_t data1, caddr_t data2))index_cmp, (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
 				pindex[ i ].i_rcount++;
 				imem = NULLINDEXNODE;
 			} else {
@@ -448,8 +454,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			imem->in_entries[ 0 ] = (struct entry *) e;
 			imem->in_num = 1;
 			imem->in_max = 1;
-			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, sindex_cmp,
-							 index_dup ) == OK ) {
+			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, (int (*)(caddr_t data1, caddr_t data2))sindex_cmp,
+							 (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
 				pindex[ i ].i_scount++;
 			} else {
 				free( (char *) imem->in_value );
@@ -460,8 +466,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	}
 }
 
-/*
- * turbo_add2index -- search through the given entry's attribute list for
+/**
+ * search through the given entry's attribute list for
  * attrs to optimize. if an attr to optimize is found, we add that attribute
  * along with a pointer to the corresponding entry to the appropriate
  * attribute index.
@@ -571,7 +577,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	/* delete all values */
 	for ( av = values; av != NULLAV; av = av->avseq_next ) {
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
-										(caddr_t) &av->avseq_av, (IFP)indexav_cmp );
+										(caddr_t) &av->avseq_av, (int (*)(caddr_t data1, caddr_t data2))indexav_cmp );
 		if ( node == NULLINDEXNODE ) {
 			LLOG( log_dsap, LLOG_EXCEPTIONS, ("Optimized attribute value not found! (%s)\n", attr->oa_ot.ot_name) );
 			continue;
@@ -587,7 +593,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		}
 		if ( --(node->in_num) == 0 ) {
 			imem = (Index_node *) avl_delete( &pindex[ i ].i_root,
-											  (caddr_t) &av->avseq_av, indexav_cmp );
+											  (caddr_t) &av->avseq_av, (int (*)(caddr_t data1, caddr_t data2))indexav_cmp );
 			( void ) AttrV_free( (AttributeValue) imem->in_value );
 			( void ) free( (char *) imem->in_entries );
 			( void ) free( (char *) imem );
@@ -613,7 +619,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			 * on a previous pass through this loop.  we hope.
 			 */
 			if ((imem = (Index_node *) avl_find(pindex[i].i_sroot,
-												code, index_soundex_cmp)) == NULLINDEXNODE) {
+												code, (int (*)(caddr_t data1, caddr_t data2))index_soundex_cmp)) == NULLINDEXNODE) {
 				free(code);
 				continue;
 			}
@@ -632,7 +638,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			if ( --(imem->in_num) == 0 ) {
 				imem = (Index_node *)
 					   avl_delete( &pindex[ i ].i_sroot,
-								   (caddr_t) code, index_soundex_cmp );
+								   (caddr_t) code, (int (*)(caddr_t data1, caddr_t data2))index_soundex_cmp );
 				free( (char *) imem->in_value );
 				free( (char *) imem->in_entries );
 				free( (char *) imem );
@@ -649,12 +655,13 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	}
 }
 
-/*
- * turbo_index_delete -- delete attribute index entries for the given
+/**
+ * delete attribute index entries for the given
  * entry from the attribute index associated with the entry's parent
  * node.
+ *
+ * @param e the entry to delete
  */
-
 void turbo_index_delete(Entry e)
 {
 	Entry		parent;
@@ -793,7 +800,7 @@ void index_subtree (char *tree) {
 	}
 	pindex = new_index( dn );
 	dn_free( dn );
-	if ( avl_insert( &subtree_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
+	if ( avl_insert( &subtree_index, (caddr_t) pindex, (int (*)(caddr_t, caddr_t))i_cmp, (int (*)(caddr_t, caddr_t))i_dup ) == NOTOK ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Subtree index for %s already exists\n", tree));
 		index_free( pindex );
 	}
@@ -817,7 +824,7 @@ void index_siblings (char *parent) {
 	}
 	pindex = new_index( dn );
 	dn_free( dn );
-	if ( avl_insert( &sibling_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
+	if ( avl_insert( &sibling_index, (caddr_t) pindex, (int (*)(caddr_t, caddr_t))i_cmp, (int (*)(caddr_t, caddr_t))i_dup ) == NOTOK ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Sibling index for %s already exists\n", parent));
 		index_free( pindex );
 	}

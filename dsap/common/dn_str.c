@@ -1,10 +1,9 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
+#include "quipu/IF-types.h"
 
 static char dn_alias;
 
-extern int dn_cmp (DN a, DN b);
-extern int dn_free (DN dn);
 extern char * SkipSpace (char *ptr);
 
 short syntax_dn = 0;

@@ -32,14 +32,23 @@ extern LLog * log_dsap;
 	*x = tmp;\
 }
 
-static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP fdup, int depth)
-        	        
-       		     
-   		        
-   		     		/* comparison function */
-   		     		/* function to call for duplicates */
-   		      
-{
+/**
+ * @param iroot the root of the tree to insert into
+ * @param data the data to insert
+ * @param taller pointer to a flag to indicate if the tree has grown taller
+ * @param fcmp the function to use to compare the data
+ * @param fdup the function to invoke upon encountering duplicates
+ * @param depth the depth of the tree
+ * @return OK if the insertion was successful, otherwise NOTOK
+ */
+static int ravl_insert(
+	Avlnode **iroot,
+	caddr_t data,
+	int *taller,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int (*fdup)(caddr_t data1, caddr_t data2),
+	int depth
+) {
 	int	rc, cmp, tallersub;
 	Avlnode	*l, *r;
 
@@ -167,8 +176,8 @@ static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP
 	return( rc );
 }
 
-/*
- * avl_insert -- insert a node containing data data into the avl tree
+/**
+ * insert a node containing data data into the avl tree
  * with root root.  fcmp is a function to call to compare the data portion
  * of two nodes.  it should take two arguments and return <, >, or == 0,
  * depending on whether its first argument is <, >, or == its second
@@ -181,12 +190,20 @@ static int ravl_insert(Avlnode **iroot, caddr_t data, int *taller, IFP fcmp, IFP
  * node.
  *
  * NOTE: this routine may malloc memory
+ *
+ * @param root the root of the tree to insert into
+ * @param data the data to insert
+ * @param fcmp the function to use to compare the data
+ * @param fdup the function to invoke upon encountering duplicates
+ * @return OK if the insertion was successful, otherwise NOTOK
  */
-
-int avl_insert(Avlnode **root, caddr_t data, IFP fcmp, IFP fdup)
-{
+int avl_insert(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int (*fdup)(caddr_t data1, caddr_t data2)
+) {
 	int	taller;
-
 	return( ravl_insert( root, data, &taller, fcmp, fdup, 0 ) );
 }
 
@@ -306,8 +323,12 @@ static int left_balance(Avlnode **root)
 	return( shorter );
 }
 
-static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
-{
+static caddr_t ravl_delete(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int *shorter
+) {
 	int	shortersubtree = 0;
 	int	cmp;
 	caddr_t	savedata;
@@ -378,14 +399,21 @@ static caddr_t ravl_delete(Avlnode **root, caddr_t data, IFP fcmp, int *shorter)
 	return( savedata );
 }
 
-caddr_t avl_delete(Avlnode **root, caddr_t data, IFP fcmp)
-{
+caddr_t avl_delete(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2)
+) {
 	int	shorter;
 	return( ravl_delete( root, data, fcmp, &shorter ) );
 }
 
-int avl_inapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
-{
+static int avl_inapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
 	if ( root->avl_left != 0 )
@@ -400,8 +428,12 @@ int avl_inapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 		return( avl_inapply( root->avl_right, fn, arg, stopflag ) );
 }
 
-int avl_postapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
-{
+static int avl_postapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
 	if ( root->avl_left != 0 )
@@ -415,8 +447,12 @@ int avl_postapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 	return( (*fn)( root->avl_data, arg ) );
 }
 
-int avl_preapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
-{
+static int avl_preapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+) {
 	if ( root == 0 )
 		return( AVL_NOMORE );
 	if ( (*fn)( root->avl_data, arg ) == stopflag )
@@ -431,15 +467,22 @@ int avl_preapply(Avlnode *root, IFP fn, caddr_t arg, int stopflag)
 		return( avl_preapply( root->avl_right, fn, arg, stopflag ) );
 }
 
-/*
- * avl_apply -- avl tree root is traversed, function fn is called with
+/**
+ * avl tree root is traversed, function fn is called with
  * arguments arg and the data portion of each node.  if fn returns stopflag,
  * the traversal is cut short, otherwise it continues.  Do not use -6 as
  * a stopflag.
+ *
+ * @param root the root of the tree to traverse
+ * @param fn the function to apply to the nodes
+ * @param arg extra argument to pass to the fn function
+ * @param stopflag the stopflag to return if the function returns this value
+ * @param type the type of traversal to perform
+ * @return AVL_NOMORE (-6) if no nodes match, otherwise the stopflag
  */
 int avl_apply(
 	Avlnode *root,
-	IFP fn,
+	int (*fn)(caddr_t data, caddr_t arg),
 	caddr_t arg,
 	int stopflag,
 	int type
@@ -458,8 +501,8 @@ int avl_apply(
 	/* NOTREACHED */
 }
 
-/*
- * avl_prefixapply - traverse avl tree root, applying function fprefix
+/**
+ * traverse avl tree root, applying function fprefix
  * to any nodes that match.  fcmp is called with data as its first arg
  * and the current node's data as its second arg.  it should return
  * 0 if they match, < 0 if data is less, and > 0 if data is greater.
@@ -467,10 +510,25 @@ int avl_apply(
  * some key...  Like avl_apply, this routine also takes a stopflag
  * and will return prematurely if fmatch returns this value.  Otherwise,
  * AVL_NOMORE is returned.
+ *
+ * @param root the root of the tree to traverse
+ * @param data the data to search for
+ * @param fmatch the function to apply to the matching nodes
+ * @param marg extra argument to pass to the fmatch function
+ * @param fcmp the function to use to compare the data
+ * @param carg extra argument to pass to the fcmp function
+ * @param stopflag the stopflag to return if the function returns this value
+ * @return AVL_NOMORE (-6) if no nodes match, otherwise the stopflag
  */
-
-int avl_prefixapply(Avlnode *root, caddr_t data, IFP fmatch, caddr_t marg, IFP fcmp, caddr_t carg, int stopflag)
-{
+int avl_prefixapply(
+	Avlnode *root,
+	caddr_t data,
+	int (*fmatch)(caddr_t data1, caddr_t data2),
+	caddr_t marg,
+	int (*fcmp)(caddr_t data1, caddr_t data2, caddr_t carg),
+	caddr_t carg,
+	int stopflag
+) {
 	int	cmp;
 
 	if ( root == 0 )
@@ -500,14 +558,19 @@ int avl_prefixapply(Avlnode *root, caddr_t data, IFP fmatch, caddr_t marg, IFP f
 	return( AVL_NOMORE );
 }
 
-/*
- * avl_free -- traverse avltree root, freeing the memory it is using.
+/**
+ * traverse avltree root, freeing the memory it is using.
  * the dfree() is called to free the data portion of each node.  The
  * number of items actually freed is returned.
+ *
+ * @param root the root of the tree to free
+ * @param dfree the function to call to free the data portion of each node
+ * @return the number of items actually freed
  */
-
-int avl_free(Avlnode *root, IFP dfree)
-{
+int avl_free(
+	Avlnode *root,
+	void (*dfree)(caddr_t data)
+) {
 	int	nleft, nright;
 
 	if ( root == 0 )
@@ -523,15 +586,22 @@ int avl_free(Avlnode *root, IFP dfree)
 	return( nleft + nright + 1 );
 }
 
-/*
- * avl_find -- search avltree root for a node with data data.  the function
+/**
+ * search avltree root for a node with data data.  the function
  * cmp is used to compare things.  it is called with data as its first arg
  * and the current node data as its second.  it should return 0 if they match,
  * < 0 if arg1 is less than arg2 and > 0 if arg1 is greater than arg2.
+ *
+ * @param root the root of the tree to search
+ * @param data the data to search for
+ * @param fcmp the function to use to compare the data
+ * @return the data of the node found, or NULL if not found
  */
-
-caddr_t avl_find(Avlnode *root, caddr_t data, IFP fcmp)
-{
+caddr_t avl_find(
+	Avlnode *root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2)
+) {
 	int	cmp;
 	while ( root != 0 && (cmp = (*fcmp)( data, root->avl_data )) != 0 ) {
 		if ( cmp < 0 )
@@ -574,7 +644,7 @@ caddr_t avl_getfirst(Avlnode *root)
 	avl_nextlist = 0;
 	if ( root == 0 )
 		return( 0 );
-	avl_apply( root, (IFP)avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
+	avl_apply( root, (int (*)(caddr_t, caddr_t))avl_buildlist, (caddr_t) 0, -1, AVL_INORDER );
 	return( avl_list[ avl_nextlist++ ] );
 }
 

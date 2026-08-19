@@ -5,8 +5,13 @@
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
+#include "quipu/watchdog.h"
 
 extern  LLog    * log_dsap;
+
+static int DapEncodeInvoke (PE *pep, struct DSArgument *arg);
+static int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
+static int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
 
 int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di) {
 	int				  result;
@@ -35,7 +40,7 @@ int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindicat
 	return (OK);
 }
 
-int DapEncodeInvoke (PE *pep, struct DSArgument *arg) {
+static int DapEncodeInvoke (PE *pep, struct DSArgument *arg) {
 	int		success;
 
 	switch(arg->arg_type) {
@@ -103,7 +108,7 @@ int DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 	return (OK);
 }
 
-int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
+static int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	int		success;
 
 	switch(arg->dca_dsarg.arg_type) {
