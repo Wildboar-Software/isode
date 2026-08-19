@@ -40,7 +40,7 @@ static PS    vps = NULLPS;
 
 #ifdef __GNUC__
 __attribute__((constructor))
-static void _init_vfp ()
+static void _init_vfp (void)
 {
 	vfp = stdout;
 }

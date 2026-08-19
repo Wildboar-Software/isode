@@ -27,9 +27,7 @@ typedef struct ypa {
 #define	NULLYA	((YA) 0)
 extern double pow ();
 
-static YA  new_action (text, lineno)
-char   *text;
-int	lineno;
+static YA  new_action (char *text, int lineno)
 {
 	register YA	    ya;
 
@@ -49,8 +47,7 @@ typedef struct	{
 } ysa, *YS;
 #define NULLYS ((YS) 0)
 
-static YS new_ys (str)
-char	*str;
+static YS new_ys (char *str)
 {
 	register YS	ys;
 	register char *p, *q;

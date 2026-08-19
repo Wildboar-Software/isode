@@ -16,10 +16,7 @@ static enum format { p1, p2, sfd, ean, eanp2 } topfmt = ean;
 static void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
-main (argc, argv, envp)
-int	argc;
-char  **argv,
-      **envp;
+main (int argc, char **argv, char **envp)
 {
     register int    status = 0;
     register char  *cp;
@@ -78,9 +75,7 @@ char  **argv,
     exit (status);		/* NOTREACHED */
 }
 
-static int  process (file, fp)
-register char *file;
-register FILE *fp;
+static int  process (register char *file, register FILE *fp)
 {
     enum format curfmt = topfmt;
     register PE	    pe;
@@ -181,9 +176,7 @@ static void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void	adios (what, fmt)
-char   *what,
-       *fmt;
+void	adios (char *what, char *fmt)
 {
     adios (what, fmt);
 }

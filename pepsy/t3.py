@@ -359,124 +359,102 @@ END
  * Encoding function for test examples of the Coding functions in t3.py
  */
 
-get_pe(parm, ppe)
-PE	parm;
-PE	*ppe;
+int get_pe(PE parm, PE *ppe)
 {
     if (ppe == (PE *)0) {
-	if (parm == NULLPE)	/* Optional */
-	    return (OK + 1);
-	return (OK);
+		if (parm == NULLPE)	/* Optional */
+			return (OK + 1);
+		return (OK);
     }
 
     *ppe = pe_cpy(parm);
     return (OK);
 }
 
-put_pe(parm, pe)
-PE	*parm;
-PE	pe;
+int put_pe(PE *parm, PE pe)
 {
     *parm = pe_cpy(pe);
     return (OK);
 }
 
-get_int(parm, ppe)
-struct codedata	*parm;
-PE	*ppe;
+int get_int(struct codedata *parm, PE *ppe)
 {
     if (ppe == (PE *)0) {
-	if (parm->cd_int == 1)	/* Default case */
-	    return (OK + 1);
-	return (OK);
+		if (parm->cd_int == 1)	/* Default case */
+			return (OK + 1);
+		return (OK);
     }
 
     *ppe = int2prim(parm->cd_int);
     return (OK);
 }
 
-put_int(parm, pe)
-struct codedata	**parm;
-PE	pe;
+int put_int(struct codedata **parm, PE pe)
 {
     if (pe)
-	(*parm)->cd_int = prim2num(pe);
+		(*parm)->cd_int = prim2num(pe);
     else
-	(*parm)->cd_int = 1;	/* Default */
+		(*parm)->cd_int = 1;	/* Default */
     return (OK);
 }
 
-get_string(parm, ppe)
-struct codedata	*parm;
-PE	*ppe;
+int get_string(struct codedata *parm, PE *ppe)
 {
     if (ppe == (PE *)0) {
-	if (parm->cd_string == NULLCP) /* Not present */
-	    return (OK + 1);
-	return (OK);
+		if (parm->cd_string == NULLCP) /* Not present */
+			return (OK + 1);
+		return (OK);
     }
 
     *ppe = str2prim(parm->cd_string, strlen(parm->cd_string), 0, 0);
     return (OK);
 }
 
-put_string(parm, pe)
-struct codedata	**parm;
-PE	pe;
+int put_string(struct codedata **parm, PE pe)
 {
     int	len;
 
     if (pe)
-	(*parm)->cd_string = prim2str(pe, &len);
+		(*parm)->cd_string = prim2str(pe, &len);
     else
-	(*parm)->cd_string = NULLCP;	/* Default */
-
+		(*parm)->cd_string = (char *)NULLCP;	/* Default */
     return (OK);
 }
-get_string2(parm, ppe)
-struct codedata	*parm;
-PE	*ppe;
+
+int get_string2(struct codedata *parm, PE *ppe)
 {
     if (ppe == (PE *)0) {
-	if (parm->cd_string == NULLCP
-	 || strcmp(parm->cd_string, "Some is out") == 0)/* Not present */
-	    return (OK + 1);
-	return (OK);
+		if (parm->cd_string == NULLCP
+		|| strcmp(parm->cd_string, "Some is out") == 0)/* Not present */
+			return (OK + 1);
+		return (OK);
     }
-
     *ppe = str2prim(parm->cd_string, strlen(parm->cd_string), 0, 0);
     return (OK);
 }
 
-put_string2(parm, pe)
-struct codedata	**parm;
-PE	pe;
+int put_string2(struct codedata **parm, PE pe)
 {
     int	len;
 
     if (pe)
-	(*parm)->cd_string = prim2str(pe, &len);
+		(*parm)->cd_string = prim2str(pe, &len);
     else
-	(*parm)->cd_string = strdup("Some is out");	/* Default */
-
+		(*parm)->cd_string = strdup("Some is out");	/* Default */
     return (OK);
 }
 
-fr_string(parm)
-struct codedata	*parm;
+int fr_string(struct codedata *parm)
 {
      if (parm->cd_string)
 	free(parm->cd_string);
-
      return (OK);
 }
 
-fr_pe(parm)
-PE	parm;
+int fr_pe(PE parm)
 {
     if (parm)
 	pe_free(parm);
-
     return (OK);
 }
 

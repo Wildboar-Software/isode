@@ -148,11 +148,7 @@ getentry_block (Entry p_parent, char *fname) {
 
 #ifdef TURBO_DISK
 
-get_header (db, typeptr, versionptr)
-GDBM_FILE	db;
-int		*typeptr;
-char		**versionptr;
-{
+int get_header (GDBM_FILE db, int *typeptr, char **versionptr) {
 	char		*v, *p;
 	datum		h;
 	int		save_heap;
@@ -230,17 +226,11 @@ int get_header (FILE * file, int * typeptr, char ** versionptr) {
 
 #endif
 
-Avlnode *get_entries_aux (file,parent,version,dtype,cache_age)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+Avlnode *get_entries_aux (GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age) {
 #else
-FILE * file;
+Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, time_t cache_age) {
 #endif
-Entry parent;
-char * version;
-int dtype;
-time_t cache_age;
-{
 	Entry eptr = NULLENTRY;
 	Avlnode	*tree = NULLAVL;
 	int	entry_cmp();
@@ -276,16 +266,11 @@ time_t cache_age;
 	return(tree);
 }
 
-Avlnode *get_entries (file,parent,version,dtype)
 #ifdef TURBO_DISK
-GDBM_FILE	file;
+Avlnode *get_entries (GDBM_FILE file, Entry parent, char * version, int dtype) {
 #else
-FILE * file;
+Avlnode *get_entries (FILE * file, Entry parent, char * version, int dtype) {
 #endif
-Entry parent;
-char * version;
-int dtype;
-{
 	extern int parse_status;
 	extern int parse_line;
 

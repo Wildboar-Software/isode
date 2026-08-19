@@ -10,8 +10,7 @@
 #if !defined(STRDUP) && (!defined(SVR4) || defined(_AIX))
 /* strdup in AIX does not seem to use QUIPUs malloc! */
 
-char   *strdup (str)
-char   *str;
+char   *strdup (char *str)
 {
 	char *ptr;
 

@@ -331,7 +331,7 @@ int	bit_on (), bit_off ();
 int	bit_test ();
 
 OID	prim2oid ();
-PE	obj2prim ();
+PE	obj2prim (OID, PElementClass, PElementID);
 #define	oid2prim(o)		obj2prim ((o), PE_CLASS_UNIV, PE_PRIM_OID)
 
 UTC	prim2time (PE pe, int generalized);

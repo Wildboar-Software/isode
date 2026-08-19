@@ -59,21 +59,7 @@ extern int      admin_size;
 Attr_Sequence   eis_select();
 extern Attr_Sequence entry_find_type();
 
-int do_ds_search(arg, error, result, dnbind, target, local, refer, di_p,
-			 dsp, quipu_ctx, tktime, entryonly, authtype)
-struct ds_search_arg *arg;
-struct ds_search_result *result;
-struct DSError *error;
-DN              dnbind;
-DN              target;
-struct ds_search_task **local, **refer;
-struct di_block **di_p;
-char            dsp;
-char            quipu_ctx;
-time_t          tktime;
-char            entryonly;
-char            authtype;
-{
+int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, DN dnbind, DN target, struct ds_search_task **local, struct ds_search_task **refer, struct di_block **di_p, char dsp, char quipu_ctx, time_t tktime, char entryonly, char authtype) {
 	extern time_t   admin_time;
 	int             ismanager = FALSE;
 	int             retval;

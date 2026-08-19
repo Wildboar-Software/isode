@@ -64,7 +64,7 @@ static struct icmpstat icmpstat;
 #ifdef LINUX
 int _read_snmp_stats ();
 
-static int _read_icmp_stats ()
+static int _read_icmp_stats (void)
 {
 	char *labels, *label;
 	long *values, value;

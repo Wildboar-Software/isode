@@ -12,9 +12,7 @@ extern	PS	opt, rps;
 
 char           *TidyString ();
 
-Filter          get_filter_aux (str)
-char           *str;
-{
+Filter          get_filter_aux (char *str) {
 	int             gotit,
 					bracketed;
 	char            ch,
@@ -98,9 +96,7 @@ char           *str;
 	return (result);
 }
 
-Filter          get_filter (str)
-char           *str;
-{
+Filter          get_filter (char *str) {
 	char * ptr;
 	Filter f;
 

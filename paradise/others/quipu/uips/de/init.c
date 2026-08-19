@@ -299,8 +299,7 @@ static void read_de_option(char *line) {
 } /* read_de_option */
 
 /* might want this at some point
-Usage (rtn)
-char *rtn;
+void Usage (char *rtn)
 {
    fprintf(stderr, "Some helpful message\n");
 }

@@ -63,13 +63,7 @@ out:
 	return NOTOK;
 }
 
-static int  PInitAux (pb, vec, vecp, ps, pi)
-struct psapblk *pb;
-char  **vec;
-int	vecp;
-struct PSAPstart *ps;
-struct PSAPindication *pi;
-{
+static int  PInitAux (struct psapblk *pb, char **vec, int vecp, struct PSAPstart *ps, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	OID	    oid;

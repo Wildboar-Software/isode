@@ -805,8 +805,8 @@ static void do_struct2 (YP yp, char *id, char *pullup) {
 			printag (yp, 4, pullup);
 		fprintf (fdef, "struct %s {\n", modsym (mymodule, id, "type"));
 		if (fflag) {
-			fprintf (fact, "\nint %s (arg)\n", modsym (mymodule, id, "free"));
-			fprintf (fact, "struct %s *arg;\n{\n",
+			fprintf (fact, "\nint %s (", modsym (mymodule, id, "free"));
+			fprintf (fact, "struct %s *arg) {\n",
 					 modsym (mymodule, id, "type"));
 			fprintf (fact, "    struct %s *parm = arg;\n",
 					 modsym (mymodule, id, "type"));
@@ -816,7 +816,8 @@ static void do_struct2 (YP yp, char *id, char *pullup) {
 		}
 		posy (yp, 1, 1, "parm", id, "parm", flg && h2flag);
 		fprintf (fdef, "};\n");
-		fprintf (fdef, "int\t%s ();\n", modsym (mymodule, id, "free"));
+		fprintf (fdef, "int\t%s (", modsym (mymodule, id, "free"));
+		fprintf (fdef, "struct %s *);\n", modsym (mymodule, id, "type"));
 		if (fflag) {
 			if (yp -> yp_code != YP_SEQTYPE &&
 					yp -> yp_code != YP_SETTYPE)
@@ -2158,11 +2159,7 @@ static void balloc (YP yp, char *var, char *action2, int level)
 }
 
 #ifdef	notdef
-static	qalloc (yp, var, action2, level)
-YP	yp;
-char   *var,
-	   *action2;
-int	level;
+static void qalloc (YP yp, char *var, char *action2, int level)
 {
 	printf ("\n%*s%%{\n", level * 4, "");
 	level++;

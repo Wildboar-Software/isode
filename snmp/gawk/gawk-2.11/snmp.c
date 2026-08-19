@@ -1575,9 +1575,7 @@ static void	snmp_diag (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static	snmp_diag (what, fmt)
-char   *what,
-	   *fmt;
+static	void snmp_diag (char *what, char *fmt)
 {
 	snmp_diag (what, fmt);
 }
@@ -1601,9 +1599,7 @@ static char *snmp_error (int i) {
 	return buffer;
 }
 
-static char *snmp_variable (parm, idx)
-struct type_SNMP_PDU *parm;
-integer	idx;
+static char *snmp_variable (struct type_SNMP_PDU *parm, int idx)
 {
 	struct type_SNMP_VarBindList *vp;
 
@@ -1615,8 +1611,7 @@ integer	idx;
 	return oid2ode (vp -> VarBind -> name);
 }
 
-static	OID	str2oid (s)
-char    *s;
+static	OID	str2oid (char *s)
 {
 	int	    i;
 	static struct OIDentifier   oids;

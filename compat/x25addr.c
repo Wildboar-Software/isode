@@ -1491,9 +1491,7 @@ done:
 
 #if defined(SUN_X25) || defined(CCUR_X25)
 #ifdef AEF_NSAP
-int nsap2if (nsap, aef)
-struct NSAPaddr *nsap;
-AEF *aef;
+int nsap2if (struct NSAPaddr *nsap, AEF *aef)
 {
 	char buf[NASIZE*2+1];
 	int len;
@@ -1508,9 +1506,7 @@ AEF *aef;
 #endif
 
 #ifdef AEF_NSAP
-int if2nsap (aef, nsap)
-AEF	*aef;
-struct NSAPaddr *nsap;
+int if2nsap (AEF *aef, struct NSAPaddr *nsap)
 {
 	char buf[NASIZE*2+1];
 	int len;

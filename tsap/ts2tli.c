@@ -113,8 +113,7 @@ struct opts {
 
 /*    Utility Routines */
 
-static char *sys_terrname (te)
-int te;
+static char *sys_terrname (int te)
 {
 	static char tbuf[32];
 
@@ -1503,8 +1502,7 @@ int tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {
 	return OK;
 }
 
-int close_tp4_socket (fd)
-int	fd;
+int close_tp4_socket (int fd)
 {
 	DLOG (tsap_log, LLOG_TRACE, ("close_tp4_socket(%d)", fd));
 	return t_close (fd);

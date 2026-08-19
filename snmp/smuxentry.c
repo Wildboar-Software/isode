@@ -37,7 +37,7 @@ int endsmuxEntry (void) {
 	return 1;
 }
 
-struct smuxEntry  *getsmuxEntry () {
+struct smuxEntry  *getsmuxEntry (void) {
 	int	    vecp;
 	int i;
 	struct smuxEntry *se = &ses;

@@ -328,10 +328,7 @@ void call_search (int argc, char **argv) {
 	filter_free (search_arg.sra_filter);
 }
 
-static	int  csr_compar (a, b)
-EntryInfo **a,
-		  **b;
-{
+static	int  csr_compar (EntryInfo **a, EntryInfo **b) {
 	int	    i;
 	DN	    adn,
 	 bdn;

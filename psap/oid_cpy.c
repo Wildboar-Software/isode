@@ -4,9 +4,7 @@
 #include <stdlib.h>
 #include "psap.h"
 
-OID	oid_cpy (q)
-OID q;
-{
+OID	oid_cpy (OID q) {
 	unsigned int   i,
 			 *ip,
 			 *jp;

@@ -4,11 +4,7 @@
 #include <stdlib.h>
 #include "psap.h"
 
-PE	obj2prim (o, class, id)
-OID	o;
-PElementClass	class;
-PElementID	id;
-{
+PE	obj2prim (OID o, PElementClass class, PElementID id) {
 	int    i,
 		   m,
 		   n,

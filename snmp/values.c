@@ -117,11 +117,7 @@ int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 	return int_SNMP_error__status_noError;
 }
 
-int	o_longword (oi, v, number)
-OI	oi;
-struct type_SNMP_VarBind *v;
-integer	number;				/* actual param: often a constant */
-{
+int	o_longword (OI oi, struct type_SNMP_VarBind *v, integer number) {
 	return o_number (oi, v, (caddr_t) &number);
 }
 

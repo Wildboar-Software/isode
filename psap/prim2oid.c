@@ -8,9 +8,7 @@
 static	int	once_only = 1;
 static	OIDentifier oid;
 
-OID	prim2oid (pe)
-PE	pe;
-{
+OID	prim2oid (PE pe) {
 	unsigned int i,
 			 *ip;
 	PElementData dp,

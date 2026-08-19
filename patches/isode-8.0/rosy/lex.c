@@ -992,8 +992,7 @@ contin:
 # endif
 	}
 }
-yyback(p, m)
-int *p;
+int yyback(int *p, int m)
 {
 	if (p==0) return(0);
 	while (*p) {
@@ -1003,16 +1002,14 @@ int *p;
 	return(0);
 }
 /* the following are only used in the lex library */
-yyinput() {
+int yyinput(void) {
 	return(input());
 }
-yyoutput(c)
-int c;
+void yyoutput(int c)
 {
 	output(c);
 }
-yyunput(c)
-int c;
+void yyunput(int c)
 {
 	unput(c);
 }

@@ -33,7 +33,7 @@ int endisobject (void) {
 }
 
 struct isobject *
-getisobject()  {
+getisobject(void)  {
 	int i;
 	struct isobject *io = &ios;
 	char  *cp;

@@ -44,10 +44,7 @@
 #define DIRSIZ(dp) \
     ((sizeof (struct dirent) - (MAXNAMLEN+1)) + (((dp)->d_namlen+1 + 3) &~ 3))
 
-scandir(dirname, namelist, select, dcomp)
-char *dirname;
-struct dirent ***namelist;
-int (*select)(), (*dcomp)();
+int scandir(char *dirname, struct dirent ***namelist, int (*select)(), int (*dcomp)())
 {
 	struct dirent *d, *p, **names;
 	int nitems;
@@ -114,8 +111,7 @@ int (*select)(), (*dcomp)();
 /*
  * Alphabetic order comparison routine for those who want it.
  */
-alphasort(d1, d2)
-caddr_t d1, d2;
+int alphasort(caddr_t d1, caddr_t d2)
 {
 	return(strcmp((*(struct dirent **)d1)->d_name,
 				  (*(struct dirent **)d2)->d_name));

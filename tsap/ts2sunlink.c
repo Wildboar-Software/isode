@@ -914,10 +914,7 @@ int join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td) {
 #ifdef	SUNLINK_5_2
 #endif
 
-static int  gen2tp4 (generic, specific, template)
-struct TSAPaddr *generic;
-OSI_ADDR	*specific;
-struct NSAPaddr	*template;
+static int  gen2tp4 (struct TSAPaddr *generic, OSI_ADDR *specific, struct NSAPaddr *template)
 {
 #ifndef	SUNLINK_6_0
 	int	    len,
@@ -998,10 +995,7 @@ struct NSAPaddr	*template;
 	return OK;
 }
 
-static	int  gen2tp4X (generic, specific, template)
-struct tsapADDR *generic;
-OSI_ADDR	*specific;
-struct NSAPaddr	*template;
+static	int  gen2tp4X (struct tsapADDR *generic, OSI_ADDR *specific, struct NSAPaddr *template)
 {
 	struct TSAPaddr tas;
 
@@ -1009,9 +1003,7 @@ struct NSAPaddr	*template;
 	return gen2tp4 (&tas, specific, template);
 }
 
-int	tp42gen (generic, specific)
-struct TSAPaddr *generic;
-OSI_ADDR	*specific;
+int	tp42gen (struct TSAPaddr *generic, OSI_ADDR *specific)
 {
 	int	    len,
 	paddr_type;
@@ -1053,9 +1045,7 @@ OSI_ADDR	*specific;
 	return OK;
 }
 
-int	tp42genX (generic, specific)
-struct tsapADDR *generic;
-OSI_ADDR	*specific;
+int	tp42genX (struct tsapADDR *generic, OSI_ADDR *specific)
 {
 	int	    result;
 	struct TSAPaddr tas;
@@ -1066,8 +1056,7 @@ OSI_ADDR	*specific;
 	return result;
 }
 
-struct tp4pkt *newtp4pkt (code)
-TP_EVENT code;
+struct tp4pkt *newtp4pkt (TP_EVENT code)
 {
 	struct tp4pkt *tp;
 

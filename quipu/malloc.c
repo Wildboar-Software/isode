@@ -267,8 +267,7 @@ static print_free_list (size_t heap) {
 #ifdef sun4
 #endif
 
-static write_stack (x)
-char * x;
+static write_stack (char * x)
 {
 	struct frame *fp;
 
@@ -596,16 +595,16 @@ void *s1;
 
 MALLOC_RETURN
 #ifdef lint
-x_realloc(s1, n)
+x_realloc(
 #else
-realloc(s1, n)
+realloc(
 #endif
 #ifndef LINUX
-char *s1;
+char *s1,
 #else
-void *s1;
+void *s1,
 #endif
-size_t n;
+size_t n)
 {
 	char *mem, *s = (char*) s1;
 	size_t realsize;

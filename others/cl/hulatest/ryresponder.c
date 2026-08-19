@@ -162,9 +162,7 @@ void ryresponder (int argc, char **argv, char *host, char *myservice, char *myco
 /*
 ****************** removed for connectionless *************
 
-static int  ros_init (vecp, vec)
-int	vecp;
-char  **vec;
+static int  ros_init (int vecp, char **vec)
 {
     int	    reply,
 	    result,
@@ -320,8 +318,7 @@ static int ros_indication (int sd, struct RoSAPindication *roi) {
 /* HULA removed for connectionless **********************/
 
 /*
-static int  ros_lose (td)
-struct TSAPdisconnect *td;
+static int  ros_lose (struct TSAPdisconnect *td)
 {
     if (td -> td_cc > 0)
 	advise (LOG_INFO, NULLCP, "TNetAccept: [%s] %*.*s",

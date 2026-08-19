@@ -28,7 +28,7 @@ int	flush_rt_cache = 0;
 static int  get_route ();
 
 #ifdef LINUX
-static int _read_routes()
+static int _read_routes(void)
 {
 	FILE *f;
 	char line[256];

@@ -27,10 +27,7 @@ extern char	*parse_file;
  * otherwise it will and a backup of the old one will be made.
  */
 
-static GDBM_FILE turbo_open(parent, create, backup)
-Entry	parent;
-int	create;
-int	backup;
+static GDBM_FILE turbo_open(Entry parent, int create, int backup)
 {
 	GDBM_FILE	db;
 	DN		dn, get_copy_dn();
@@ -79,9 +76,7 @@ int	backup;
 	return(db);
 }
 
-static turbo_write_entry(e, db)
-Entry		e;
-GDBM_FILE	db;
+static int turbo_write_entry(Entry e, GDBM_FILE db)
 {
 	static char	kbuf[512];
 	static char	*buf = NULLCP;
@@ -261,9 +256,7 @@ int turbo_delete (Entry e) {
  * The version is taken from e's parent version
  */
 
-turbo_write_header(db, parent, datatype)
-GDBM_FILE	db;
-Entry		parent;
+int turbo_write_header(GDBM_FILE db, Entry parent, int datatype)
 {
 	static char	hbuf[256];
 	int		rc;

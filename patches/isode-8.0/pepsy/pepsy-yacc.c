@@ -49,9 +49,7 @@ clrfn() {
 	}
 }
 
-static YA  new_action (text, lineno)
-char   *text;
-int	lineno;
+static YA  new_action (char *text, int lineno)
 {
 	register YA	    ya;
 
@@ -71,8 +69,7 @@ typedef struct	{
 } ysa, *YS;
 #define NULLYS ((YS) 0)
 
-static YS new_ys (str)
-char	*str;
+static YS new_ys (char *str)
 {
 	register YS	ys;
 	register char *p, *q;
@@ -115,9 +112,7 @@ char	*str;
 static int  final_actions = 0;
 static int  start_actions = 0;
 
-char *hex2bin (s, pi)
-register char   *s;
-int	*pi;
+char *hex2bin (char *s, int *pi)
 {
 	register char *d;
 	char	*start;
@@ -147,9 +142,7 @@ int	*pi;
 	return start;
 }
 
-char *bit2bin (s, pi)
-register char   *s;
-int	*pi;
+char *bit2bin (char *s, int *pi)
 {
 	register char *d;
 	char	*start;
@@ -179,10 +172,7 @@ int	*pi;
 	return start;
 }
 
-bin2hex (s, d, len)
-register    uint8_t *s;
-register char  *d;
-int     len;
+int bin2hex (uint8_t *s, char *d, int len)
 {
 	register int    i,
 			 g;
@@ -204,8 +194,7 @@ int     len;
 	return len;
 }
 
-int hex2int(s)
-register char	*s;
+int hex2int(char *s)
 {
 	register int	sum = 0;
 	register int		i;
@@ -224,8 +213,7 @@ register char	*s;
 	return (sum);
 }
 
-int bit2int(s)
-register char	*s;
+int bit2int(char *s)
 {
 	register int	sum = 0;
 

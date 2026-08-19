@@ -97,8 +97,7 @@ int main (int argc, char **argv) {
 	return(0);
 }
 
-char * TidyString (a)
-char * a;
+char * TidyString (char * a)
 {
 	char * b;
 	char * c;

@@ -64,7 +64,7 @@ static int  get_listeners ();
 #ifdef LINUX
 int _read_snmp_stats ();
 
-static int _read_udp_stats ()
+static int _read_udp_stats (void)
 {
 	char *labels, *label;
 	long *values, value;

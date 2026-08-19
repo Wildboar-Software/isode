@@ -9,10 +9,7 @@ static char *myname = "hello_world";
 static void adios (char *, char *, ...);
 void advise (char *, char *, ...);
 
-main (argc, argv, envp)
-int     argc;
-char  **argv,
-      **envp;
+main (int argc, char **argv, char **envp)
 {
     PE	    pe;
 
@@ -66,9 +63,7 @@ static void  adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void  adios (what, fmt)
-char   *what,
-       *fmt;
+static void  adios (char *what, char *fmt)
 {
     adios (what, fmt);
 }

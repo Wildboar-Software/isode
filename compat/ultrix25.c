@@ -713,12 +713,10 @@ char our_buffer[256];
 
 char * DELIMITER = ":";
 
-X25vc our_get_vci(sd,s)
+X25vc our_get_vci(int sd, char *s)
 /* this routine returns NOTOK if it detects an error    */
 /* possible errors: 1. sd has not been registered       */
 /*                  1. sd doesn't correspond to X25vci  */
-int  sd;
-char *s;
 {
 	if( sd >= our_TABLE_SIZE ) {
 		SLOG (compat_log, LLOG_EXCEPTIONS, s,
@@ -745,12 +743,10 @@ int compose_text (char *xudatap, char *pid, char *cudf) {
 	strcat(xudatap,cudf);
 }
 
-char * Kloppenburgs_x25_ErrorCause( what, vci)
+char * Kloppenburgs_x25_ErrorCause(int what, X25vc vci)
 /* only called after clear and reset events */
 /* adapted from kloppenburgs's ean x25 access module */
 /* rts/netx25/x25int.c */
-int			what;
-X25vc		vci;
 {
 	unsigned char	cause[2];
 	int			rtn;
@@ -846,10 +842,7 @@ X25vc		vci;
 
 }
 
-int check_x25_event(event_expected,event_received,vci)
-X25vc vci;
-int event_expected;
-int event_received;
+int check_x25_event(int event_expected, int event_received, X25vc vci)
 {
 
 	switch (event_received) {

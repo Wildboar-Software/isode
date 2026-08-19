@@ -18,11 +18,7 @@ char   *calc_arg(YP yp, int actno);
 /*
  * output each of the actions associated with yp
  */
-do_sw_type(name, yp, fp, fpa)
-char   *name;
-YP      yp;
-FILE   *fp;
-FILE   *fpa;
+void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa)
 {
 	char   *s;
 	char   *arg;

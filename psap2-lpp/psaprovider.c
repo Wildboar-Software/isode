@@ -278,7 +278,7 @@ int PSetIndications (
 	return psaplose (pi, PC_OPERATION, NULLCP, NULLCP);
 }
 
-struct psapblk  *newpblk () {
+struct psapblk  *newpblk (void) {
 	struct psapblk *pb;
 	pb = (struct psapblk *) calloc (1, sizeof *pb);
 	if (pb == NULL)

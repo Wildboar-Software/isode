@@ -381,9 +381,7 @@ void advise (char *what, char *fmt, char *a, char *b, char *c, char *d, char *e,
 	(void)fflush(stderr);
 }
 
-testdebug(pe,words)
-PE pe;			/*Not Really, but pretend*/
-char *words;
+void testdebug(PE pe, char *words)			/*Not Really, but pretend*/
 {
 
 	(void) printf("%s \n",words);

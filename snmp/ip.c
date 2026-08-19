@@ -107,7 +107,7 @@ int _file_printf (const char *path, const char *fmt, ...);
 #endif
 
 #ifdef LINUX
-static int _read_ip_stats ()
+static int _read_ip_stats (void)
 {
 	char *labels, *label;
 	long *values, value;
@@ -1498,7 +1498,7 @@ losing_noop:
 }
 
 #ifdef LINUX
-static struct arptab *_read_arptab ()
+static struct arptab *_read_arptab (void)
 {
 	char line[256];
     FILE *f;

@@ -67,10 +67,7 @@ int RoAcuService (
 *    define vectors for INDICATION events *
 #define	e(i)	(indication ? (i) : NULLIFP)
 * ARGSUSED *
-int	ro2acuasync (acb, indication, roi)
-struct assocblk   *acb;
-IFP	indication;
-struct RoSAPindication *roi;
+int	ro2acuasync (struct assocblk *acb, IFP indication, struct RoSAPindication *roi)
 {
 #undef	e
 */
@@ -79,11 +76,7 @@ struct RoSAPindication *roi;
 /*
 *    map association descriptors for select() *
 * ARGSUSED *
-int	ro2acumask (acb, mask, nfds, roi)
-struct assocblk   *acb;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int	ro2acumask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
     struct AcSAPindication   acis;
     struct AcSAPindication *aci = &acis;

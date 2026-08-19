@@ -189,10 +189,7 @@ static int udpretry (struct psapblk *pb, int reason, struct PSAPindication *pi) 
 	return DONE;
 }
 
-static int  udpcheck (pb, pi)
-struct psapblk *pb;
-struct PSAPindication *pi;
-{
+static int  udpcheck (struct psapblk *pb, struct PSAPindication *pi) {
 	int	    nfds;
 	fd_set  ifds;
 

@@ -624,12 +624,10 @@ END
 
 %{
 
-void	adios (char *, char *, ...);
+void adios (char *, char *, ...);
 
 
-void	parse_p2 (octstr, len)
-char	*octstr;
-int	len;
+void parse_p2 (char *octstr, int len)
 {
     PS	    ps;
     PE	    pe;

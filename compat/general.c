@@ -31,9 +31,7 @@ struct qelem {
 	char	    q_data[1];	/* extensible */
 };
 
-insque (elem, pred)
-struct qelem   *elem,
-		   *pred;
+void insque (struct qelem *elem, struct qelem *pred)
 {
 	if (pred -> q_forw)
 		pred -> q_forw -> q_back = elem;
@@ -42,8 +40,7 @@ struct qelem   *elem,
 	pred -> q_forw = elem;
 }
 
-remque (elem)
-struct qelem   *elem;
+void remque (struct qelem *elem)
 {
 	if (elem -> q_forw)
 		elem -> q_forw -> q_back = elem -> q_back;
@@ -104,25 +101,25 @@ int dup2_aux (int d1, int d2)
 /* ROS and HP-UX don't seem to have these in libc.a */
 
 #undef	ntohs
-uint16_t	ntohs (netshort) uint16_t netshort;
+uint16_t	ntohs (uint16_t netshort)
 {
 	return netshort;
 }
 
 #undef	htons
-uint16_t	htons (hostshort) uint16_t hostshort;
+uint16_t	htons (uint16_t hostshort)
 {
 	return hostshort;
 }
 
 #undef	ntohl
-uint32_t	ntohl (netlong) uint32_t netlong;
+uint32_t	ntohl (uint32_t netlong)
 {
 	return netlong;
 }
 
 #undef	htonl
-uint32_t	htonl (hostlong) uint32_t hostlong;
+uint32_t	htonl (uint32_t hostlong)
 {
 	return hostlong;
 }

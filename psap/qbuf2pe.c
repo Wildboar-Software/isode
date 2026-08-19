@@ -9,11 +9,7 @@
 #ifndef	DEBUG
 #endif
 
-PE	qbuf2pe (qb, len, result)
-struct qbuf *qb;
-int	len;
-int    *result;
-{
+PE	qbuf2pe (struct qbuf *qb, int len, int *result) {
 #ifdef	notdef
 	struct qbuf *qp;
 #endif

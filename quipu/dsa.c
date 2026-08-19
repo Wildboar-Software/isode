@@ -334,9 +334,7 @@ static int check_conns (int secs) {
 		}
 #endif
 
-	void dsa_abort(xrestart)
-	int	xrestart;
-	{
+	void dsa_abort(int xrestart) {
 		static int	  been_here = 0;
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
@@ -372,9 +370,7 @@ static int check_conns (int secs) {
 #endif
 	}
 
-	SFD stop_dsa (sig)
-	int sig;
-	{
+	SFD stop_dsa (int sig) {
 		signal (sig, SIG_DFL); /* to stop recursion */
 		LLOG (log_dsap,LLOG_FATAL,("*** Stopping on signal %d ***",sig));
 		dsa_abort(0);
@@ -402,9 +398,7 @@ static int check_conns (int secs) {
 
 #ifdef	SIGUSR1
 	
-	SFD	list_status (sig)
-	int	sig;
-	{
+	SFD	list_status (int sig) {
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif
@@ -465,9 +459,7 @@ static int check_conns (int secs) {
 
 #ifdef	SIGUSR2
 	
-	SFD	list_status2 (sig)
-	int	sig;
-	{
+	SFD	list_status2 (int sig) {
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif
@@ -786,11 +778,7 @@ fork_ok:
 
 #endif /* QUIPU_CONSOLE */
 
-	static void osisecinit(argc, argv, fn)
-	int             *argc;
-	char          ***argv;
-	int	fn;
-	{
+	static void osisecinit(int *argc, char ***argv, int fn) {
 		char   *ap;
 		char  **argptr;
 		static char   *args[10];

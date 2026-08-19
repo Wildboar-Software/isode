@@ -1337,8 +1337,7 @@ int tp42gen (struct TSAPaddr *generic, struct netbuf *specific) {
 
 }
 
-int close_tp4_socket(fd)
-int             fd;
+int close_tp4_socket(int fd)
 {
 	DLOG(tsap_log, LLOG_TRACE, ("close_tp4_socket(%d)", fd));
 	return T_close(fd);

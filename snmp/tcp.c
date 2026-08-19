@@ -115,7 +115,7 @@ static int  get_connections ();
 #ifdef LINUX
 int _read_snmp_stats ();
 
-static int _read_tcp_stats ()
+static int _read_tcp_stats (void)
 {
 	char *labels, *label;
 	long *values, value;

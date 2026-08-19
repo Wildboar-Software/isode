@@ -813,10 +813,7 @@ static	SFD chldser (int sig, long int code, struct sigcontext *sc)
 #ifdef HPUX
 #include <sys/wait.h>
 
-static        SFD chldser (sig, code, sc)
-int   sig;
-long  code;
-struct sigcontext *sc;
+static        SFD chldser (int sig, long code, struct sigcontext *sc)
 {
 	int status;
 	while (wait3 (&status, WNOHANG, (int *) NULL) > 0)

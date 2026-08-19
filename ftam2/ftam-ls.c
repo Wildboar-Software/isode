@@ -30,7 +30,7 @@ static  FILE *lsfp;
 
 #ifdef __GNUC__
 __attribute__((constructor))
-static void _init_fp ()
+static void _init_fp (void)
 {
 	lsfp = stdout;
 }
