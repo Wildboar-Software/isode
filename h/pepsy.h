@@ -181,9 +181,12 @@ typedef	struct	{
 	tpe	**md_etab;	/* Pointer to encoding tables */
 	tpe	**md_dtab;	/* Pointer to decoding tables */
 	ptpe    **md_ptab;	/* Pointer to printing tables */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
 	int	(*md_eucode)();	/* User code for encoding */
 	int	(*md_ducode)();	/* User code for decoding */
 	int	(*md_pucode)();	/* User code for printing */
+#pragma GCC diagnostic pop
 	caddr_t	*md_ptrtab;	/* pointer table */
 
 }	modtyp;
@@ -191,7 +194,7 @@ typedef	struct	{
 
 #define	LOTSOFBITS	128
 
-int fre_obj();
+int fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree);
 void free_pepsy_bp(void);
 
 #endif

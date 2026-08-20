@@ -11,7 +11,7 @@
 #include "pvpdu.h"
 #include "pepsycodec.h"
 
-static int  AcRelRetryRequestAux ();
+static int  AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci);
 
 /* A-RELEASE.REQUEST */
 

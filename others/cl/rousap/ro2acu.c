@@ -170,7 +170,7 @@ int	ro2acuwrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 			fp = stderr, isopen = 0,  fflush (stdout);
 		if (fp) {
 			vpushfp (fp, pe, "ROSEapdus", 0);
-			print_ROS_ROSEapdus (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_ROS_ROSEapdus (pe, 1, NULL, NULLVP, NULLCP);
 			vpopfp ();
 			if (isopen)
 				fclose (fp);

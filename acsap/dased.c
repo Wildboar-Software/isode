@@ -112,7 +112,7 @@ int main (int argc, char **argv, char **envp) {
 		} else
 			nfds = 0, rfds = NULLFD, secs = prebind ? 5 * 60L : NOTOK;
 
-		if (TNetAcceptAux (&vecp, vec, NULLIP, NULLTA, nfds, rfds, NULLFD,
+		if (TNetAcceptAux (&vecp, vec, NULL, NULLTA, nfds, rfds, NULLFD,
 						   NULLFD, secs, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetAccept failed");
 			continue;

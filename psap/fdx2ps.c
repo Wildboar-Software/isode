@@ -24,7 +24,7 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-extern	IFP	set_check_fd ();
+extern	IFP	set_check_fd (int fd, IFP fnx, caddr_t data);
 
 static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;

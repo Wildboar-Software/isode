@@ -1270,25 +1270,25 @@ void string_syntaxes (void) {
 	add_attribute_syntax ("countrystring",
 						  strenc,	cntydec,
 						  cntyparse,strprint_void,
-						  (AttributeValueCopier)strdup,	lexequ,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)lexequ,
 						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("DestinationString",
 						  strenc,	prtsdec,
 						  prtparse_void,	strprint_void,
-						  (AttributeValueCopier)strdup,	lexequ,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)lexequ,
 						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("caseignorestring",
 						  strenc,	dirstrdec,
 						  t61parse,	strprint_void,
-						  (AttributeValueCopier)strdup,	tlexequ,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)tlexequ,
 						  free,		NULL,
 						  soundex_match,	TRUE);
 	add_attribute_syntax ("caseIgnoreIa5string",
 						  ia5enc,	ia5sdec,
 						  octparse_void,	(AttributeValuePrinter)octprint,
-						  (AttributeValueCopier)strdup,	lexequ,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)lexequ,
 						  free,		NULL,
 						  soundex_match,	TRUE);
 

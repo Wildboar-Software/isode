@@ -2640,7 +2640,7 @@ static void ros_invokerequest (int sd, PE pe) {
 	static int  id = 0;
 	static int  op = 0;
 
-	switch (result = RoInvokeRequest (sd, op++, ROS_SYNC, pe, ++id, NULLIP,
+	switch (result = RoInvokeRequest (sd, op++, ROS_SYNC, pe, ++id, NULL,
 									  ROS_NOPRIO, roi)) {
 	case NOTOK:
 		if (ROS_FATAL (rop -> rop_reason))

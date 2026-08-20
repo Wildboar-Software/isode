@@ -173,7 +173,7 @@ int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx) {
 	extern int result_value;
 
 	switch (result = RyStub (ry_sd, table_Idist_Operations, op,
-							 RyGenID (ry_sd), NULLIP, arg, rfx, efx,
+							 RyGenID (ry_sd), NULL, arg, rfx, efx,
 							 ROS_SYNC, roi)) {
 	case NOTOK:		/* failure */
 		if (ROS_FATAL (rop -> rop_reason))

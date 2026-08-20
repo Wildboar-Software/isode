@@ -35,7 +35,7 @@ int boolean_syntax (void) {
 	add_attribute_syntax ("boolean",
 						  boolenc,		booldec,
 						  boolget,		(AttributeValuePrinter)strprint,
-						  (AttributeValueCopier)strdup,		lexequ,
+						  (AttributeValueCopier)strdup,	(AttributeValueComparator)lexequ,
 						  free,		NULLCP,
 						  NULL,		FALSE);
 }

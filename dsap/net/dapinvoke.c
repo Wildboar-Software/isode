@@ -58,7 +58,7 @@ static int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindica
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapSyncInvokeRequest()"));
 	result = RoInvokeRequest (sd, op, ROS_SYNC, pe,
-							  id, NULLIP, ROS_NOPRIO, roi);
+							  id, NULL, ROS_NOPRIO, roi);
 	if (pe)
 		pe_free (pe);
 	if (result != OK) {
@@ -112,7 +112,7 @@ static int DapIntrInvokeRequest (int sd, int id, int op, PE pe, struct DAPindica
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
 	DLOG (log_dsap,LLOG_TRACE,( "DapIntrInvokeRequest()"));
-	result = RoIntrRequest (sd, op, pe, id, NULLIP, ROS_NOPRIO, roi);
+	result = RoIntrRequest (sd, op, pe, id, NULL, ROS_NOPRIO, roi);
 	if (pe)
 		pe_free (pe);
 	if (result != OK) {
@@ -169,7 +169,7 @@ static int DapAsynInvokeRequest (int sd, int id, int op, PE pe, struct DAPindica
 	struct RoSAPpreject		* rop = &(roi->roi_preject);
 
 	result = RoInvokeRequest (sd, op, ROS_ASYNC, pe,
-							  id, NULLIP, ROS_NOPRIO, roi);
+							  id, NULL, ROS_NOPRIO, roi);
 	if (pe)
 		pe_free (pe);
 	if (result != OK) {
@@ -226,7 +226,7 @@ static int DapInterrupt (int sd, int id, int op, struct DAPindication *di) {
 		return(dapreject (di, DP_INVOKE, old_id, NULLCP, "DapInterrupt: Abandon argument encoding failed"));
 	} else {
 		DLOG(log_dsap, LLOG_DEBUG, ("Abandon invoke request"));
-		ret1 = RoInvokeRequest(sd,OP_ABANDON,ROS_SYNC,ab_req_pe,new_id,NULLIP,ROS_NOPRIO,roi1);
+		ret1 = RoInvokeRequest(sd,OP_ABANDON,ROS_SYNC,ab_req_pe,new_id,NULL,ROS_NOPRIO,roi1);
 		DLOG(log_dsap, LLOG_DEBUG, ("Abandon RoInvoke returns: %d", ret1));
 		if (ab_req_pe != NULLPE)
 			pe_free(ab_req_pe);

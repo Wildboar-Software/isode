@@ -14,8 +14,8 @@
 	bit_test  -	test a bit
  */
 
-static PElementData ffb (), ffb_aux ();
-static PE	ffb_pe ();
+static PElementData ffb (PE pe, int n, int *mask, int xtnd), ffb_aux (PE pe, int *n, int *mask);
+static PE	ffb_pe (PE pe);
 
 int bit_on (PE pe, int i) {
 	int	    mask;

@@ -7,9 +7,15 @@
 #include "isoservent.h"
 #include "tailor.h"
 
+
 /*    SERVER only */
 
-int SExec (struct TSAPstart *ts, struct SSAPindication *si, IFP hook, IFP setperms) {
+int SExec (
+	struct TSAPstart *ts,
+	struct SSAPindication *si,
+	int (*hook)(struct isoservent *, struct SSAPindication *),
+	int (*setperms)(struct isoservent *)
+) {
 	int	    sd;
 	char   *cp;
 	struct isoservent *is;

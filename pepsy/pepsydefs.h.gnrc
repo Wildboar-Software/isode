@@ -101,7 +101,7 @@ typedef struct ypv {
 }			ypv, *YV;
 #define	NULLYV	((YV) 0)
 
-YV	new_value (), add_value (), copy_value ();
+YV	new_value (int code), add_value (YV y, YV z), copy_value (YV yv);
 
 typedef struct ypt {
     PElementClass   yt_class;
@@ -110,7 +110,7 @@ typedef struct ypt {
 }			ypt, *YT;
 #define	NULLYT	((YT) 0)
 
-YT	new_tag (PElementClass), copy_tag ();
+YT	new_tag (PElementClass class), copy_tag (YT yt);
 
 %BEGIN(PEPSY)%
 /* Encoding functions definitions */
@@ -123,7 +123,7 @@ typedef struct yfn {
 
 #define NULLYFN	((YFN) 0)
 
-extern YFN new_yfn(), join_yfn();
+extern YFN new_yfn (char *efn, char *dfn, char *pfn, char *ffn), join_yfn (YFN fn1, YFN fn2);
 
 typedef struct action_t	{
 	char	*a_data;	/* actual C text of action statement */
@@ -132,7 +132,7 @@ typedef struct action_t	{
 }	action_t, *Action;
 #define NULLAction	((Action)0)
 
-extern Action	new_action_t();
+extern Action	new_action_t (char *text, int lineno, int num);
 
 typedef struct yactlist	{
 	Action	yal_enc;
@@ -143,7 +143,7 @@ typedef struct yactlist	{
 }   yactlist_t, *YAL;
 #define NULLYAL	((YAL)0)
 
-extern YAL	new_yal(), yal_join();
+extern YAL	new_yal (void), yal_join (YAL yal1, YAL yal2);
 
 extern Action	start_action, final_action;
 
@@ -289,9 +289,9 @@ typedef struct ype {
 } 			ype, *YP;
 #define	NULLYP	((YP) 0)
 
-YP	new_type (), add_type (), copy_type (), lkup();
+YP	new_type (int code, int lineno), add_type (YP y, YP z), copy_type (YP yp), lkup (YP yp);
 
-char   *new_string ();
+char   *new_string (char *s);
 
 #define	TBL_EXPORT	0
 #define TBL_IMPORT	1

@@ -16,7 +16,7 @@
 #include "pepsycodec.h"
 #include "internet.h"
 
-static int  RoBeginRequestAux ();
+static int  RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi);
 
 /* RO-BEGIN.REQUEST */
 

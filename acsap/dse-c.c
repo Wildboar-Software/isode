@@ -11,10 +11,10 @@
 
 #define advise	PY_advise
 
-static struct type_DSE_PSAPaddr *psap2dse ();
+static struct type_DSE_PSAPaddr *psap2dse (struct PSAPaddr *pa);
 
-static int  dse2psap ();
-static int  gstring ();
+static int  dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa);
+static int  gstring (char *buf, int buflen, struct qbuf *qb, char *w);
 
 int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
 	int	    result;

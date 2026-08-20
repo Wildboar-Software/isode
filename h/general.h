@@ -122,8 +122,8 @@
 #endif
 #endif
 
-char   *getenv ();
-char   *mktemp ();
+char   *getenv (const char *);
+char   *mktemp (char *);
 
 #endif /* SVR4 */
 
@@ -158,11 +158,9 @@ int free();
 #endif
 /* HEXIFY */
 
-int	explode (), implode ();
-
 /* SPRINTB */
 
-char   *sprintb ();
+char   *sprintb (int v, char *bits);
 
 /* STR2VEC */
 
@@ -177,37 +175,38 @@ int	str2vecX (char *, char **, int,  int *, char,  int);
 
 #define	NELEM	100
 
-int	str2elem ();
+int	str2elem (char *s, unsigned int elements[]);
 
 /* STR2SEL */
 
-int	str2sel ();
-char   *sel2str ();
+int	str2sel (char *s, int quoted, char *sel, int n);
+char   *sel2str (char *sel, int len, int quoted);
 
 /* GETPASS */
 
-char   *getpassword ();
+char   *getpassword (char *prompt);
 
 /* BADUSER */
 
-int	baduser ();
+int	baduser (char *file, char *user);
 
 /* UTILITIES */
 
 extern char chrcnv[], nochrcnv[];
 
-int	lexequ (), lexnequ ();
+int	lexequ (char *str1, char *str2), lexnequ (char *str1, char *str2, int len);
 
-int	log_tai ();
+struct ll_struct;
+int	log_tai (struct ll_struct *lgptr, char **av, int ac);
 
-int	sstr2arg ();
+int	sstr2arg (char *srcptr, int maxpf, char *argv[], char *dlmstr);
 
-void	(*set_smalloc_handler()) ();
-char    *smalloc ();
+void	(*set_smalloc_handler (void (*fnx)(void)))(void);
+char    *smalloc (int size);
 
 /* MISC */
 
-char   *sys_errname ();
+char   *sys_errname (int i);
 
 #ifdef	lint
 #define	insque(e,p)	INSQUE ((char *) (e), (char *) (p))
@@ -262,6 +261,7 @@ unsigned long	htonl ();
 #endif
 
 #include <stdint.h>
+int	explode (char *a, uint8_t *b, int n), implode (uint8_t *a, char *b, int n);
 int	char2bcd (char *s, int n, uint8_t *d);
 int	bcd2char (uint8_t *s, char *d, int len);
 

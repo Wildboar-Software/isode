@@ -184,7 +184,7 @@ struct tsapblk {
 #define	NULLBP		((struct tsapblk *) 0)
 
 void freetblk (struct tsapblk *tb);
-struct tsapblk *newtblk (), *findtblk ();
+struct tsapblk *newtblk (void), *findtblk (int sd);
 
 /*    TPKT datastructure */
 
@@ -371,11 +371,11 @@ struct tsapkt *newtpkt (int code);
 void text2tpkt (struct tsapkt *t);
 void tpkt2text (LLog *lp, struct tsapkt *t, int isread);
 
-int	tpkt2fd ();
-struct tsapkt  *fd2tpkt ();
+int	tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx);
+struct tsapkt  *fd2tpkt (int fd, IFP initfnx, IFP readfnx);
 
-char   *tpkt2str ();
-struct tsapkt  *str2tpkt ();
+char   *tpkt2str (struct tsapkt *t);
+struct tsapkt  *str2tpkt (char *buffer);
 
 /*    VARIABLE DATA codes, from ISO8073: */
 
@@ -425,39 +425,39 @@ struct tsapkt  *str2tpkt ();
 
 /* TP0 is the protocol */
 
-int	tp0init ();
-int	tp0write ();
+int	tp0init (struct tsapblk *tb);
+int	tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
 
 /* TCP is NS-provider */
 
-int	tcpopen ();
+int	tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
 
-char   *tcpsave ();
-int	tcprestore ();
+char   *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
+int	tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
 
 /* X.25 is NS-provider */
 
-int	x25open ();
+int	x25open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
 
-char   *x25save ();
-int	x25restore ();
+char   *x25save (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td);
+int	x25restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
 
 /* Bridge is NS-provider */
 
-int	bridgeopen ();
-int	bridgediscrim ();
+int	bridgeopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
+int	bridgediscrim (struct NSAPaddr *na);
 
-char	*bridgesave ();
-int	bridgerestore ();
+char	*bridgesave (int fd, struct NSAPaddr *rem, struct NSAPaddr *loc, struct TSAPdisconnect *td);
+int	bridgerestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
 
 /* TP4 is the protocol and the TS-provider */
 
-int	tp4init ();
+int	tp4init (struct tsapblk *tb);
 
-int	tp4open ();
+int	tp4open (struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async);
 
-char   *tp4save ();
-int	tp4restore ();
+char   *tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct tsapADDR *called_ta, struct TSAPdisconnect *td);
+int	tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
 
 int TTService (struct tsapblk *tb);
 int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out);

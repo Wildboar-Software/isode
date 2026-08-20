@@ -5,24 +5,31 @@
 #endif
 #include "rosy.h"
 
+typedef struct dispatch dispatch;
+
+typedef int (*ds_argument_t)(int sd, struct dispatch *ds, char **args, void *parameter);
+
+typedef int (*ds_result_t)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+typedef void (*ds_error_t)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);
+
 struct dispatch {
 	char   *ds_name;
 	int	    ds_operation;
 
 	/* parameter is a void pointer intentionally: it seems that the way this was
 	written that anything could be passed in here. */
-	int (*ds_argument)(int sd, struct dispatch *ds, char **args, void *parameter);
+	ds_argument_t ds_argument;
 	modtyp *ds_fr_mod;        /* pointer to table for arguement type */
 	int     ds_fr_index;      /* index to entry in tables */
 
-	int (*ds_result)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
-	int (*ds_error)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);
+	ds_result_t ds_result;
+	ds_error_t ds_error;
 
 	char   *ds_help;
 };
 
 void adios (char* what, char* fmt, ...), advise (char* what, char* fmt, ...);
-void acs_adios (), acs_advise ();
-void ros_adios (), ros_advise ();
+void acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
+void ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 
 void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, IFP quit);

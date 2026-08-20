@@ -8,7 +8,7 @@
 #include <signal.h>
 #include "ropkt.h"
 
-static int  RoEndResponseAux ();
+static int  RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi);
 
 /* RO-END.RESPONSE */
 

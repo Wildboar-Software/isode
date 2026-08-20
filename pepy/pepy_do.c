@@ -8,10 +8,10 @@
 extern struct tuple tuples[];
 extern int	rflag;
 
-char   *gensym (), *modsym ();
+char   *gensym (void), *modsym (char *module, char *id, int direct);
 
-YP	lookup_type (), lookup_binding ();
-YT	lookup_tag ();
+YP	lookup_type (char *mod, char *id), lookup_binding (char *mod, char *id, char *binding);
+YT	lookup_tag (YP yp);
 static char	*add_point (char *arg);
 
 static void do_type_member (YP yp, int level, char *narg);

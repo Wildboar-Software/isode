@@ -12,7 +12,7 @@
 #include "IMISC-types.h"	/* IMISC type definitions */
 
 #ifdef	SYS5
-struct passwd *getpwuid ();
+struct passwd *getpwuid (uid_t uid);
 #endif
 
 static char *myservice = "isode miscellany";/* should be something other
@@ -24,91 +24,90 @@ static char *mypci = "isode miscellany pci";
 extern int length;
 static type_IMISC_Data *data = NULLPE;
 
-struct type_IMISC_IA5List *vec2ia5list ();
-static int	do_finger (), do_tell (), do_data (), do_help (), do_quit ();
+struct type_IMISC_IA5List *vec2ia5list (char **vec);
+static int	do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5), do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5), do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep), do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy), do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy);
 
 #define	gentime_result	utctime_result
 
-static int	utctime_result (), timeofday_result (), ia5_result (), tell_result (),
-		null_result (), echo_result ();
+static int	utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi), timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi), ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi), tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+		null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi), echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi);
 
-static int imisc_error ();
+static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
 	NULL, NULL, 0,
-	utctime_result, imisc_error,
+	(ds_result_t)utctime_result, (ds_error_t)imisc_error,
 	"the universal time",
 
 	"gentime",	operation_IMISC_genTime,
 	NULL, NULL, 0,
-	gentime_result, imisc_error,
+	(ds_result_t)gentime_result, (ds_error_t)imisc_error,
 	"the generalized time",
 
 	"time",	operation_IMISC_timeOfDay,
 	NULL, NULL, 0,
-	timeofday_result, imisc_error,
+	(ds_result_t)timeofday_result, (ds_error_t)imisc_error,
 	"the current time since the epoch",
 
 	"users",	operation_IMISC_users,
 	NULL, NULL, 0,
-	ia5_result, imisc_error,
+	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
 	"the users logged in on the system",
 
 	"chargen",	operation_IMISC_charGen,
 	NULL, NULL, 0,
-	ia5_result, imisc_error,
+	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
 	"the character generation pattern",
 
 	"qotd",	operation_IMISC_qotd,
 	NULL, NULL, 0,
-	ia5_result, imisc_error,
+	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
 	"the quote of the day",
 
 	"finger",	operation_IMISC_finger,
-	do_finger, &_ZIMISC_mod, _ZIA5ListIMISC,
-	ia5_result, imisc_error,
+	(ds_argument_t)do_finger, &_ZIMISC_mod, _ZIA5ListIMISC,
+	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
 	"the finger of users logged in",
 
 	"pwdgen",	operation_IMISC_pwdGen,
 	NULL, NULL, 0,
-	ia5_result, imisc_error,
+	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
 	"some pseudo-randomly generated passwords",
 
 	"tell", operation_IMISC_tellUser,
-	do_tell, &_ZIMISC_mod, _ZIA5ListIMISC,
-	tell_result, imisc_error,
+	(ds_argument_t)do_tell, &_ZIMISC_mod, _ZIA5ListIMISC,
+	(ds_result_t)tell_result, (ds_error_t)imisc_error,
 	"send a message to a remote user",
 
 	"ping", operation_IMISC_ping,
 	NULL, NULL, 0,
-	null_result, imisc_error,
+	(ds_result_t)null_result, (ds_error_t)imisc_error,
 	"ping responder",
 
 	"sink", operation_IMISC_sink,
-	do_data, NULL, 0,
-	null_result, imisc_error,
+	(ds_argument_t)do_data, NULL, 0,
+	(ds_result_t)null_result, (ds_error_t)imisc_error,
 	"sink data",
 
 	"echo", operation_IMISC_echo,
-	do_data, NULL, 0,
-	echo_result, imisc_error,
+	(ds_argument_t)do_data, NULL, 0,
+	(ds_result_t)echo_result, (ds_error_t)imisc_error,
 	"echo data",
 
 	"help", 0,
-	do_help, NULL, 0,
+	(ds_argument_t)do_help, NULL, 0,
 	NULL, NULL,
 	"print this information",
 
 	"quit", 0,
-	do_quit, NULL, 0,
+	(ds_argument_t)do_quit, NULL, 0,
 	NULL, NULL,
 	"terminate the association and exit",
 
 	NULL
 };
 
-char *ctime ();
 
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,

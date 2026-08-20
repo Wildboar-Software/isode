@@ -386,7 +386,7 @@ bad_error:
 			}
 
 			if (op2 -> opb_errfnx) {
-				result = (*op2 -> opb_errfnx) (sd, op2 -> opb_id,
+				(*op2 -> opb_errfnx) (sd, op2 -> opb_id,
 											   roe -> roe_error,
 											   op2 -> opb_out, roi);
 				freeopblk (op2);
@@ -421,7 +421,7 @@ bad_error:
 				goto next;
 
 			if (op2 -> opb_errfnx) {
-				result = (*op2 -> opb_errfnx) (sd, id = op2 -> opb_id,
+				(*op2 -> opb_errfnx) (sd, id = op2 -> opb_id,
 											   RY_REJECT,
 											   (caddr_t) (size_t) rou -> rou_reason,
 											   roi);
@@ -461,7 +461,7 @@ bad_response:
 			rou -> rou_reason = result;
 
 			if (op2 -> opb_errfnx) {
-				result = (*op2 -> opb_errfnx) (sd, id = op2 -> opb_id, RY_REJECT,
+				(*op2 -> opb_errfnx) (sd, id = op2 -> opb_id, RY_REJECT,
 											   (caddr_t) (size_t) rou ->rou_reason, roi);
 
 				freeopblk (op2);

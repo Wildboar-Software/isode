@@ -90,7 +90,7 @@ typedef struct ypv {
 }			ypv, *YV;
 #define	NULLYV	((YV) 0)
 
-YV	new_value (), add_value (), copy_value ();
+YV	new_value (int code), add_value (YV y, YV z), copy_value (YV yv);
 
 typedef struct ypt {
     PElementClass   yt_class;
@@ -99,7 +99,7 @@ typedef struct ypt {
 }			ypt, *YT;
 #define	NULLYT	((YT) 0)
 
-YT	new_tag (PElementClass), copy_tag ();
+YT	new_tag (PElementClass class), copy_tag (YT yt);
 
 typedef struct ype {
     int     yp_code;
@@ -220,9 +220,9 @@ typedef struct ype {
 } 			ype, *YP;
 #define	NULLYP	((YP) 0)
 
-YP	new_type (), add_type (), copy_type ();
+YP	new_type (int code), add_type (YP y, YP z), copy_type (YP yp);
 
-char   *new_string ();
+char   *new_string (char *s);
 
 #define	TBL_EXPORT	0
 #define TBL_IMPORT	1
@@ -333,6 +333,8 @@ void tag_pullup (YP yp, int level, char *arg, char *whatsit);
 void check_impexp (YP yp);
 int is_any_type (YP yp);
 
+#ifndef errno
 extern int errno;
+#endif
 
 #endif /* _GOOBIS_BO_BOOBIS_H_ */

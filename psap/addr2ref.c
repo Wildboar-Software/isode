@@ -8,7 +8,7 @@
 #include "psap.h"
 #include "ssap.h"
 
-static int  stuff ();
+static int  stuff (PE pe, char *dbase, uint8_t *dlen);
 
 struct SSAPref *
 addr2ref (char *addr) {

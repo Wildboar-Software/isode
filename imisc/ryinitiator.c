@@ -30,7 +30,7 @@ int	length = 536;
 
 static int timing = 0;
 
-static int	timing_result ();
+static int	timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
 #else
 #define	DS_RESULT(ds)	((ds) -> ds_result)
 #endif
@@ -38,12 +38,12 @@ static int	timing_result ();
 static char *myname = "ryinitiator";
 
 static int getlines (char *buffer);
-static	void invoke ();
+static	void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
 
 #ifdef	TIMER
-static  void timer ();
+static  void timer (int bytes, int pkts);
 #ifndef	TMS
-static  void tvsub ();
+static  void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 #endif
 #endif
 
@@ -257,7 +257,7 @@ nope:
 #endif
 	for (i = 0; i < count; i++)
 		switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd),
-								 NULL, in, DS_RESULT (ds), ds -> ds_error,
+								 NULL, in, DS_RESULT (ds), (void (*)(int, int, int, caddr_t, struct RoSAPindication *))ds -> ds_error,
 								 ROS_SYNC, roi)) {
 		case NOTOK:		/* failure */
 			if (ROS_FATAL (rop -> rop_reason))
@@ -432,7 +432,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char* what, char* fmt, va_list ap);
 
 void adios (char* what, char* fmt, ...) {
 	va_list ap;

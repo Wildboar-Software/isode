@@ -31,7 +31,7 @@ static int dase_callback (struct type_DASE_Callback__REQ *arg);
 static int yesno (void);
 static void print_qb (struct qbuf *q);
 
-static struct element_DASE_1 *read_el ();
+static struct element_DASE_1 *read_el (void);
 
 /* LOOKUP */
 

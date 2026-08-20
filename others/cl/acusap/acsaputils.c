@@ -131,7 +131,7 @@ int	ACU_print (PE pe, char *text, int rw)
 		fp = stderr, isopen = 0,  fflush (stdout);
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		print_ACS_ACSE__apdu (pe, 1, NULLIP, NULLVP, NULLCP);
+		print_ACS_ACSE__apdu (pe, 1, NULL, NULLVP, NULLCP);
 		vpopfp ();
 		if (isopen)
 			fclose (fp);

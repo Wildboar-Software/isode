@@ -75,7 +75,7 @@ reject:
 		exit (1);
 	}
 	req = NULL;
-	if (decode_RTF_Request (rts -> rts_data, 1, NULLIP, NULLVP, &req)
+	if (decode_RTF_Request (rts -> rts_data, 1, NULL, NULLVP, &req)
 			== NOTOK) {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"rejected -- error decoding request: %s", PY_pepy);

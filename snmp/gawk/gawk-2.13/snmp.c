@@ -314,7 +314,7 @@ no_mem_for_inst:
 		int	len;
 		fd_set	rfds;
 		if (debug > 1)
-			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 		len = ps -> ps_byteno;
 		if (pe2ps (ps, pe) == NOTOK) {
 			snmp_diag (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
@@ -348,7 +348,7 @@ no_mem_for_inst:
 			goto out;
 		}
 		if (debug > 1)
-			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (p, 1, NULL, NULLVP, NULLCP);
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);
@@ -663,7 +663,7 @@ static int  snmp_get_next_aux (struct snmp_search *s)
 			if (sr -> r_msg)
 				continue;
 			if (debug > 1)
-				print_SNMP_Message (sr -> r_pe, 1, NULLIP, NULLVP, NULLCP);
+				print_SNMP_Message (sr -> r_pe, 1, NULL, NULLVP, NULLCP);
 			len = ps -> ps_byteno;
 			if (pe2ps (ps, sr -> r_pe) == NOTOK) {
 				snmp_diag (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
@@ -702,7 +702,7 @@ again:
 			goto out;
 		}
 		if (debug > 1)
-			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (p, 1, NULL, NULLVP, NULLCP);
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);
@@ -955,7 +955,7 @@ set_value:
 		int	len;
 		fd_set	rfds;
 		if (debug > 1)
-			print_SNMP_Message (pe, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (pe, 1, NULL, NULLVP, NULLCP);
 		len = ps -> ps_byteno;
 		if (pe2ps (ps, pe) == NOTOK) {
 			snmp_diag (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
@@ -989,7 +989,7 @@ set_value:
 			goto out;
 		}
 		if (debug > 1)
-			print_SNMP_Message (p, 1, NULLIP, NULLVP, NULLCP);
+			print_SNMP_Message (p, 1, NULL, NULLVP, NULLCP);
 		if (msg -> data -> offset != type_SNMP_PDUs_get__response) {
 			snmp_diag (NULLCP, "unexpected message type %d",
 					   msg -> data -> offset);

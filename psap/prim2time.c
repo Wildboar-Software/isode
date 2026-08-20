@@ -15,7 +15,7 @@ UTC prim2time (PE pe, int generalized) {
 	int     len;
 	char  *cp;
 	UTC    u;
-	UTC	   (*aux) ();
+	UTC	   (*aux) (char *cp, int len);
 
 	aux = generalized ? str2gent : str2utct;
 	switch (pe -> pe_form) {

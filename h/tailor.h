@@ -121,17 +121,17 @@ extern char    *ns_address;
 
 /* ROUTINES */
 
-void	isodetailor ();
-int	isodesetvar ();
-void	isodexport ();
-char  	*isodesetailor ();
+void	isodetailor (char *myname, int wantuser);
+int	isodesetvar (char *name, char *value, int dynamic);
+void	isodexport (char *myname);
+char  	*isodesetailor (char *file);
 
 #define	isodefile(file,ispgm) \
 	_isodefile ((ispgm) ? isodesbinpath : isodetcpath, (file))
 
-char   *_isodefile ();
+char   *_isodefile (char *path, char *file);
 
-char   *getlocalhost ();
+char   *getlocalhost (void);
 
 int ll_hdfree (LLog *lp);
 

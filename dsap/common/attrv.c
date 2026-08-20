@@ -24,7 +24,7 @@ extern PE grab_filepe ();
 static short num_syntax = 1;
 static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 		"ASN", 		/* ASN - default type */
-		pe_cpy,	/* default encode */
+		(AttributeValueEncoder)pe_cpy,	/* default encode */
 		NULL,	/* no decoding needed */
 		NULL,	/* default parse */
 		NULL, 	/* default print */

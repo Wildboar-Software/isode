@@ -39,29 +39,30 @@
 
 #endif /* defined(WIN) || defined(WINTLI) */
 
-int	start_tcp_client ();
-int	start_tcp_server ();
+int	start_tcp_client (struct sockaddr_in *sock, int priv);
+int	start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2);
 
 #if defined(SOCKETS) && !defined(TLI_TCP)
 int	join_tcp_client (int fd, struct sockaddr_in *sock);
 int	join_tcp_server (int fd, struct sockaddr_in *sock);
+#include <unistd.h>
 #define	read_tcp_socket		read
 #define	write_tcp_socket	write
 #define	select_tcp_socket	selsocket
 #endif
 
 #ifdef TLI_TCP
-int	join_tcp_client ();
-int	join_tcp_server ();
-ssize_t	read_tcp_socket ();
-ssize_t	write_tcp_socket ();
-int	close_tcp_socket ();
+int	join_tcp_client (int fd, struct sockaddr_in *sock);
+int	join_tcp_server (int fd, struct sockaddr_in *sock);
+ssize_t	read_tcp_socket (int fd, char *buffer, int len);
+ssize_t	write_tcp_socket (int fd, char *buffer, int len);
+int	close_tcp_socket (int fd);
 #define	select_tcp_socket	selsocket
 #endif
 
 #ifdef	WINTLI
-int	join_tcp_client ();
-int	join_tcp_server ();
+int	join_tcp_client (int fd, struct sockaddr_in *sock);
+int	join_tcp_server (int fd, struct sockaddr_in *sock);
 
 #define	select_tcp_socket	selsocket
 #endif
@@ -80,11 +81,11 @@ int	join_tcp_server ();
 #endif
 #endif
 
-ssize_t	read_tcp_socket ();
-ssize_t	write_tcp_socket ();
-int	close_tcp_socket ();
+ssize_t	read_tcp_socket (int fd, void *buf, size_t n);
+ssize_t	write_tcp_socket (int fd, const void *buf, size_t n);
+int	close_tcp_socket (int fd);
 
-int	select_tcp_socket ();
+int	select_tcp_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
 
 /* UDP */
 
@@ -144,11 +145,11 @@ struct servent {
 	char   *s_proto;		/* protocol beneath service */
 };
 
-struct hostent *gethostbyaddr (), *gethostbyname ();
-struct servent *getservbyname ();
+struct hostent *gethostbyaddr (const char *, int, int), *gethostbyname (const char *);
+struct servent *getservbyname (const char *, const char *);
 #endif
 
-struct hostent *gethostbystring ();
+struct hostent *gethostbystring (char *s);
 
 /* INET */
 
@@ -156,9 +157,9 @@ struct hostent *gethostbystring ();
    the definition of inet_addr contained therein causes problems with some
    compilers. */
 
-char   *inet_ntoa ();
+char   *inet_ntoa (struct in_addr in);
 #ifdef LINUX
-extern in_addr_t inet_addr (), inet_network ();
+extern in_addr_t inet_addr (const char *cp), inet_network (const char *cp);
 #else
 #ifndef	DG
 #ifndef	HPUX

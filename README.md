@@ -94,5 +94,36 @@ for `cn=Toucan` (or whatever you configure your DSA's name to be in
   - `vt` is the only major project using it.
   - All subprojects in `others` seem to use it.
 - [ ] Unit Tests (using Unity)
+  - [ ] `prim2real`
+  - [ ] BCD code
+  - [ ] `str2pe`
+- [ ] Fuzz Testing
+- [ ] `AGENTS.md` file?
+- [ ] `.gitattributes` file
+- [ ] `.editorconfig` file
+- [ ] AI Security Review
+- [ ] Clean up IFP Usage
 - [ ] Reproducible Builds
+  - [ ] Quipu Packaging
+    - [ ] Debian
+    - [ ] RPM
+    - [ ] Snap
+    - [ ] Arch
+    - [ ] Brew
+    - [ ] OCI Container
+  - [ ] Dish Packaging
+    - [ ] Debian
+    - [ ] RPM
+    - [ ] Snap
+    - [ ] Arch
+    - [ ] Brew
+    - [ ] OCI Container
+    - [ ] Flatpak
 - [ ] End-to-End Tests
+- [ ] Doxygen Documentation
+- [ ] Clang Formatting
+- [ ] Sigstore
+- [ ] SBOM
+- [ ] Ensure that LPP works
+- [ ] Ensure that IDM works
+- [ ] New LDAP Syntaxes and TIME types

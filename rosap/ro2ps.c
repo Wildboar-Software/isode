@@ -10,19 +10,19 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int	acslose ();
+static int	acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca);
 
-static int	pslose ();
-static void	psDATAser (), psTOKENser (), psSYNCser (), psACTIVITYser (),
-		psREPORTser (), psFINISHser (), psABORTser ();
+static int	pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct PSAPabort *pa);
+static void	psDATAser (int sd, struct PSAPdata *px), psTOKENser (int sd, struct PSAPtoken *pt), psSYNCser (int sd, struct PSAPsync *pn), psACTIVITYser (int sd, struct PSAPactivity *pv),
+		psREPORTser (int sd, struct PSAPreport *pp), psFINISHser (int sd, struct PSAPfinish *pf), psABORTser (int sd, struct PSAPabort *pa);
 
-static int  doPSdata ();
-static int  doPStokens ();
-static int  doPSsync ();
-static int  doPSactivity ();
-static int  doPSreport ();
-static int  doPSfinish ();
-static int  doPSabort ();
+static int  doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi);
+static int  doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi);
+static int  doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi);
+static int  doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi);
+static int  doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi);
+static int  doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi);
+static int  doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi);
 
 /*    bind underlying service */
 

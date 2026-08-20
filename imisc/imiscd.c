@@ -23,8 +23,8 @@ static int execuid = 1;
 static int execgid = 1;
 
 /* OPERATIONS */
-static int	op_utcTime (), op_genTime (), op_timeOfDay (), op_users (),
-		op_charGen (), op_pwdGen (), op_exec (), op_tellUser (), op_data ();
+static int	op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi),
+		op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"utcTime", operation_IMISC_utcTime, op_utcTime,
@@ -55,15 +55,13 @@ static struct dispatch dispatches[] = {
 };
 
 /* TYPES */
-struct type_IMISC_IA5List *str2ia5list ();
+struct type_IMISC_IA5List *str2ia5list (char *s);
 
-static int  ureject ();
-static int  error ();
-static int  do_the_tell ();
-static int  object ();
-static int  pwdgen ();
-
-char   *ctime ();
+static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp);
+static int  object (char *pw);
+static int  pwdgen (char *pw);
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
@@ -504,8 +502,6 @@ static struct web {
 #define	ifix(f)		((int) ((float) (f) + 0.5))
 #ifndef	SYS5
 #define	nrand()		(((float) (random ()) / (float) 2147483647))
-
-long	random ();
 #else
 #define	nrand()		(((float) (rand ()) / (float) 2147483647))
 

@@ -164,8 +164,8 @@ static void tsapd (int vecp, char **vec);
 static void envinit (void);
 static void arginit (char **vec);
 static void search_directory (int firstime);
-static int	rebind_to_directory (), make_bind_args (), unbind_from_directory (),
-            do_error ();
+static int	rebind_to_directory (void), make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, struct ds_bind_error *be), unbind_from_directory (void),
+            do_error (struct DSError *de);
 
 int main (int argc, char **argv, char **envp) {
 	int	    failed,

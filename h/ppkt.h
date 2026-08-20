@@ -216,10 +216,10 @@ int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndat
 int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu);
 int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu);
 
-struct qbuf *info2qb ();
-int	qb2info ();
+struct qbuf *info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi);
+int	qb2info (struct qbuf *qb, PE *pe);
 
-struct type_PS_Identifier__list *silly_list ();
+struct type_PS_Identifier__list *silly_list (struct psapblk *pb, struct PSAPindication *pi);
 
 int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi);
 int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa);

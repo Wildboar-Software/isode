@@ -10,11 +10,11 @@ extern int iserver_init (
 	int argc,
 	char **argv,
 	AEI aei,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	struct TSAPdisconnect *td
 );
 
-int isodeserver (int argc, char **argv, AEI aei, IFP initfnx, IFP workfnx, IFP losefnx, struct TSAPdisconnect *td) {
+int isodeserver (int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td) {
 	if (iserver_init (argc, argv, aei, initfnx, td) == NOTOK)
 		return NOTOK;
 

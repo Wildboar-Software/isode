@@ -38,8 +38,8 @@ struct pair sreq_pairs[] = {
 
 #define	doABORT		ss2psabort
 
-static void DATAser (), TOKENser (), SYNCser (), ACTIVITYser (), REPORTser (),
-		FINISHser (), ABORTser ();
+static void DATAser (int sd, struct SSAPdata *sx), TOKENser (int sd, struct SSAPtoken *st), SYNCser (int sd, struct SSAPsync *sn), ACTIVITYser (int sd, struct SSAPactivity *sv), REPORTser (int sd, struct SSAPreport *sp),
+		FINISHser (int sd, struct SSAPfinish *sf), ABORTser (int sd, struct SSAPabort *sa);
 
 static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi);
 static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi);

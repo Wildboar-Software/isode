@@ -105,7 +105,7 @@ int ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindic
 	struct RtSAPindication *rti = &rtis;
 
 	if (acb -> acb_apdu) {
-		result = acb2osdu (acb, NULLIP, acb -> acb_apdu, roi);
+		result = acb2osdu (acb, NULL, acb -> acb_apdu, roi);
 		acb -> acb_apdu = NULLPE;
 
 		return result;
@@ -293,7 +293,7 @@ static int rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 		break;
 
 	case RTI_TRANSFER:
-		result = doRTSdata (acb, NULLIP, &rti -> rti_transfer, roi);
+		result = doRTSdata (acb, NULL, &rti -> rti_transfer, roi);
 		break;
 
 	case RTI_ABORT:

@@ -425,18 +425,18 @@ struct ssapblk {
 
     int	    sb_maxtime;		/* for SPM response during S-CONNECT */
 
-    IFP	    sb_DataIndication;		/* INDICATION handlers */
-    IFP	    sb_TokenIndication;		/* .. */
-    IFP	    sb_SyncIndication;		/* .. */
-    IFP	    sb_ActivityIndication;	/* .. */
-    IFP	    sb_ReportIndication;	/* .. */
-    IFP	    sb_ReleaseIndication;	/* .. */
-    IFP	    sb_AbortIndication;		/* .. */
+    void	    (*sb_DataIndication)(int sd, struct SSAPdata *sx);		/* INDICATION handlers */
+    void	    (*sb_TokenIndication)(int sd, struct SSAPtoken *st);		/* .. */
+    void	    (*sb_SyncIndication)(int sd, struct SSAPsync *sn);		/* .. */
+    void	    (*sb_ActivityIndication)(int sd, struct SSAPactivity *sv);	/* .. */
+    void	    (*sb_ReportIndication)(int sd, struct SSAPreport *sp);	/* .. */
+    void	    (*sb_ReleaseIndication)(int sd, struct SSAPfinish *sf);	/* .. */
+    void	    (*sb_AbortIndication)(int sd, struct SSAPabort *sa);		/* .. */
 };
 #define	NULLBP		((struct ssapblk *) 0)
 
 void freesblk (struct ssapblk *sb);
-struct ssapblk *newsblk ();
+struct ssapblk *newsblk (void);
 struct ssapblk *findsblk (int sd);
 
 int ts2sslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td);
@@ -900,8 +900,8 @@ void spkt2text (LLog *lp, struct ssapkt *s, int read);
 int	spkt2tsdu (struct ssapkt *s, char **base, int *len);
 struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc);
 
-char   *spkt2str ();
-struct ssapkt *str2spkt ();
+char   *spkt2str (struct ssapkt *s);
+struct ssapkt *str2spkt (char *buffer);
 
 int SDataRequestAux (
 	struct ssapblk *sb,

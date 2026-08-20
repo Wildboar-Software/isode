@@ -10,7 +10,7 @@
 #include "ROS-types.h"
 #include "ropkt.h"
 
-static int  RoResultRequestAux ();
+static int  RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi);
 
 /* RO-RESULT.REQUEST */
 

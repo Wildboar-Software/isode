@@ -33,7 +33,7 @@ int	gen2tp4 (), tp42gen ();
 #include "dgram.h"
 #endif
 
-int	start_clts_server ();
+int	start_clts_server (struct sockaddr_iso *sock, int backlog, int opt1, int opt2);
 #define	start_clts_client	start_clts_server
 
 #define	join_clts_server(fd,sock) \
@@ -117,7 +117,7 @@ int	gen2tp4 (), tp42gen ();
 #define	select_tp4_socket	selsocket
 #endif
 
-int	close_tp4_socket ();
-int	select_tp4_socket ();
+int	close_tp4_socket (int fd);
+int	select_tp4_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
 
 #endif

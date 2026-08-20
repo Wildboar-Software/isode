@@ -349,7 +349,7 @@ int audtread (void)
 			if ( validbinding ( csd, pcacs ) == NOTOK )
 			    printf ("\n validation of context and/or title failed\n");
 		*/
-		if ( decode_ADD_Sum ( cacs.acs_info[0], 1, NULLIP, NULLVP, &pSum )
+		if ( decode_ADD_Sum ( cacs.acs_info[0], 1, NULL, NULLVP, &pSum )
 		== NOTOK )
 			printf ("\n read ok but decode failed\n");
 		else
@@ -365,7 +365,7 @@ int audtread (void)
 			    printf ("\n validation of context and/or title failed\n");
 		*/
 		Addends.addend1 = Addends.addend2 = 0;
-		if ( decode_ADD_Addends (sacs.acs_info[0], 1, NULLIP, NULLVP, &pAddends)
+		if ( decode_ADD_Addends (sacs.acs_info[0], 1, NULL, NULLVP, &pAddends)
 		== NOTOK )
 			printf ("\n read ok but decode failed\n");
 		else

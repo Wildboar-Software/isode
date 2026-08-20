@@ -288,7 +288,7 @@ nope:
 #endif
 	for (i = 0; i < count; i++)
 		switch (result = RyStub (sd, ops, ds -> ds_operation, RyGenID (sd),
-								 NULLIP, in, DS_RESULT (ds), ds -> ds_error,
+								 NULL, in, DS_RESULT (ds), ds -> ds_error,
 								 ROS_SYNC, roi)) {
 		case NOTOK:		/* failure */
 			if (ROS_FATAL (rop -> rop_reason))

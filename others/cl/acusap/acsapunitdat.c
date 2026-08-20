@@ -399,7 +399,7 @@ int AcUnitDataRead (
 	}
 	pe = ps -> ps_info[0];
 	ctx = pe -> pe_context;
-	result = decode_ACS_AUDT__apdu (pe, 1, NULLIP, NULLVP, &pdu);
+	result = decode_ACS_AUDT__apdu (pe, 1, NULL, NULLVP, &pdu);
 #ifdef	DEBUG
 	if (result == OK && (acsaplevel & ISODELOG_PDUS))
 		ACU_print (pe, "AUDT-apdu", 1);

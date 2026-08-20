@@ -185,13 +185,13 @@ static void pe_free_void (void *value)
 
 void photo_syntax (void) {
 	add_attribute_syntax ("photo",
-						  pe_cpy,	NULL,
+						  (AttributeValueEncoder)pe_cpy,	NULL,
 						  NULL,		picture_print,
 						  pe_cpy_void,	(AttributeValueComparator)quipu_pe_cmp,
 						  pe_free_void,	NULLCP,
 						  NULL,		TRUE );
 	add_attribute_syntax ("jpeg",
-						  pe_cpy,	NULL,
+						  (AttributeValueEncoder)pe_cpy,	NULL,
 						  NULL,		picture_print,
 						  pe_cpy_void,	(AttributeValueComparator)quipu_pe_cmp,
 						  pe_free_void,	NULLCP,

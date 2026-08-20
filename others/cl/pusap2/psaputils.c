@@ -655,7 +655,7 @@ int	PS_print (PE pe, char *text, int rw, IFP fnx)
 		fp = stderr, isopen = 0,  fflush (stdout);
 	if (fp) {
 		vpushfp (fp, pe, text, rw);
-		(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		(*fnx) (pe, 1, NULL, NULLVP, NULLCP);
 		vpopfp ();
 		if (isopen)
 			fclose (fp);

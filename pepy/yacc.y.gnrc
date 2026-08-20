@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 %BEGIN(PEPSY)%
 #include "pepsydefs.h"
 %END(PEPSY)%
@@ -41,8 +42,6 @@ typedef struct ypa {
     int	    ya_lineno;
 }		ypa, *YA;
 #define	NULLYA	((YA) 0)
-extern double pow ();
-
 static YA  new_action (char *text, int lineno) {
     register YA	    ya;
 

@@ -34,7 +34,7 @@ int	RyStub (
 	int *linked,
 	caddr_t in,
 	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
-	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
 	int class,
 	struct RoSAPindication *roi
 ) {

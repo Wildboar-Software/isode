@@ -79,7 +79,7 @@ str2spkt (char *buffer) {
 	else {
 		bcopy (packet, qp -> qb_data = qp -> qb_base, qp -> qb_len = cc);
 		insque (qp, qb -> qb_back);
-		s = tsdu2spkt (qb, cc, NULLIP);
+		s = tsdu2spkt (qb, cc, NULL);
 		for (qp = qb -> qb_forw; qp != qb; qp = qp -> qb_forw) {/* never! */
 			remque (qp);
 			free ((char *) qp);

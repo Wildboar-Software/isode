@@ -73,7 +73,7 @@ int	rosapreject (struct assocblk *acb, ...)
 	result = _rosaplose (roi, reason, ap);
 	result = _rosaplose (roi, reason, ap);
 	va_end (ap);
-	if (RoURejectRequestAux (acb, NULLIP, reason - REJECT_GENERAL_BASE,
+	if (RoURejectRequestAux (acb, NULL, reason - REJECT_GENERAL_BASE,
 	REJECT_GENERAL, 0, &rois) == NOTOK
 	&& ROS_FATAL (rois.roi_preject.rop_reason)) {
 		*roi = rois;		/* struct copy */

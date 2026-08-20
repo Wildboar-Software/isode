@@ -237,7 +237,7 @@ static int ros_work (int fd) {
 		RyLose (fd, roi);
 		return NOTOK;
 	}
-	switch (result = RyWait (fd, NULLIP, &out, OK, roi)) {
+	switch (result = RyWait (fd, NULL, &out, OK, roi)) {
 	case NOTOK:
 		if (rop -> rop_reason == ROS_TIMER)
 			break;

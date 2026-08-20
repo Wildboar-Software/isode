@@ -1226,13 +1226,13 @@ int SDoCollideAux (
 
 int SSetIndications (
 	int sd,
-	IFP data,
-	IFP tokens,
-	IFP sync,
-	IFP activity,
-	IFP report,
-	IFP finish,
-	IFP abort,
+	void (*data)(int sd, struct SSAPdata *sx),
+	void (*tokens)(int sd, struct SSAPtoken *st),
+	void (*sync)(int sd, struct SSAPsync *sn),
+	void (*activity)(int sd, struct SSAPactivity *sv),
+	void (*report)(int sd, struct SSAPreport *sp),
+	void (*finish)(int sd, struct SSAPfinish *sf),
+	void (*abort)(int sd, struct SSAPabort *sa),
 	struct SSAPindication *si
 ) {
 	int     smask;
@@ -1508,7 +1508,7 @@ bad2:
 }
 
 static void TDATAser (int sd, struct TSAPdata *tx) {
-	IFP	    abort;
+	void	    (*abort)(int sd, struct SSAPabort *sa);
 	struct ssapblk *sb;
 	struct SSAPdata sxs;
 	struct SSAPdata   *sx = &sxs;
@@ -1565,7 +1565,7 @@ static void TDATAser (int sd, struct TSAPdata *tx) {
 }
 
 static void TDISCser (int sd, struct TSAPdisconnect *td) {
-	IFP	    abort;
+	void (*abort)(int sd, struct SSAPabort *sa);
 	struct ssapblk *sb;
 	struct SSAPindication sis;
 	struct SSAPindication *si = &sis;

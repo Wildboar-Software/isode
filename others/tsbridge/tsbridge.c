@@ -76,7 +76,7 @@ int main (int argc, char **argv, char **envp) {
 		}
 	}
 	for (;;) {
-		if (TNetAcceptAux (&vecp, vec, NULLIP, ta, 0, NULLFD, NULLFD,
+		if (TNetAcceptAux (&vecp, vec, NULL, ta, 0, NULLFD, NULLFD,
 						   NULLFD, NOTOK, td) == NOTOK)
 			ts_adios (td, "accept failed");
 		if (vecp <= 0)

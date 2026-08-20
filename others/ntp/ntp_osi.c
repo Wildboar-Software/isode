@@ -152,7 +152,7 @@ int transmit_osi (struct ntp_peer *peer) {
 	tstamp_osi (&peer->xmt, &txtv);
 	packet -> transmitTimestamp = sstamp (&peer -> xmt);
 	switch (RyStub (ap -> fd, table_NTP_Operations, operation_NTP_update,
-					RyGenID (ap -> fd), NULLIP, (caddr_t) packet,
+					RyGenID (ap -> fd), NULL, (caddr_t) packet,
 					result_func, NULLIFP, ROS_ASYNC, roi)) {
 	case NOTOK:
 		ros_advise (rop, "STUB");
@@ -511,7 +511,7 @@ int recv_osi (struct intf *ap, struct timeval *tvp) {
 
 	TRACE (2, ("Received OSI packet from %s", paddr (&ap->addr)));
 	osi_tvp = tvp;
-	switch (RyWait (ap -> fd, NULLIP, &out, OK, roi)) {
+	switch (RyWait (ap -> fd, NULL, &out, OK, roi)) {
 	case NOTOK:
 		if (rop -> rop_reason == ROS_TIMER)
 			break;
@@ -672,7 +672,7 @@ int iso_accept (struct intf *ap) {
 		PLOG (pgm_log, print_NTP_BindArgument, acs -> acs_info[0],
 			  "NTP.BindArgument", 1);
 		if (decode_NTP_BindArgument (acs -> acs_info[0], 1,
-									 NULLIP, NULLVP,
+									 NULL, NULLVP,
 									 &bindarg) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"bind decode failed [%s]", PY_pepy);
@@ -1060,7 +1060,7 @@ static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_p
 		PLOG (pgm_log, print_NTP_BindResult, acc -> acc_info[0],
 			  "NTP.BindResult", 1);
 		if (decode_NTP_BindResult (acc -> acc_info[0], 1,
-								   NULLIP, NULLVP,
+								   NULL, NULLVP,
 								   &bindres) == NOTOK) {
 			advise (LLOG_EXCEPTIONS,  NULLCP,
 					"decode bindresult failed [%s]", PY_pepy);
@@ -1171,7 +1171,7 @@ static int handle_reject (struct AcSAPconnect *acc, struct intf *ap) {
 		PLOG (pgm_log, print_NTP_BindError, acc -> acc_info[0],
 			  "NTP.BindError", 1);
 		if (decode_NTP_BindError (acc -> acc_info[0], 1,
-								  NULLIP, NULLVP,
+								  NULL, NULLVP,
 								  &binderr) != NOTOK) {
 			if (binderr -> supplementary)
 				cp = qb2str (binderr -> supplementary);

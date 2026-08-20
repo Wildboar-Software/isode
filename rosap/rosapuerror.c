@@ -8,7 +8,7 @@
 #include <signal.h>
 #include "ropkt.h"
 
-static int RoErrorRequestAux ();
+static int RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi);
 
 /* RO-ERROR.REQUEST */
 

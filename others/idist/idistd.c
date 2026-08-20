@@ -390,7 +390,7 @@ int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	*pe  = NULLPE;
 	if ( acs -> acs_ninfo != 1)
 		return init_lose (ACS_PERMANENT, pe, "No Association data");
-	if (decode_Idist_Initiate (acs -> acs_info[0], 1, NULLIP, NULLVP,
+	if (decode_Idist_Initiate (acs -> acs_info[0], 1, NULL, NULLVP,
 							   &initial) == NOTOK)
 		return init_lose (ACS_PERMANENT, pe,
 						  "Can't parse initial data");

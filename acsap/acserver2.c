@@ -15,7 +15,7 @@ int iserver_init (
 	int argc,
 	char **argv,
 	AEI aei,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	struct TSAPdisconnect *td
 );
 
@@ -23,7 +23,7 @@ static int iserver_initAux (
 	int argc,
 	char **argv,
 	struct PSAPaddr *pa,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
 	int flag,
 	struct TSAPdisconnect *td
@@ -33,7 +33,7 @@ int iserver_init (
 	int argc,
 	char **argv,
 	AEI aei,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	struct TSAPdisconnect *td
 ) {
 	struct PSAPaddr *pa = NULLPA;
@@ -48,7 +48,7 @@ int iserver_init_aux (
 	int argc,
 	char **argv,
 	AEI aei,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
 	int flag,
 	struct TSAPdisconnect *td
@@ -65,7 +65,7 @@ static int iserver_initAux (
 	int argc,
 	char **argv,
 	struct PSAPaddr *pa,
-	IFP initfnx,
+	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
 	int flag,
 	struct TSAPdisconnect *td
@@ -143,7 +143,7 @@ static int iserver_initAux (
 	return OK;
 }
 
-int iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td) {
+int iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td) {
 	int	    fd,
 			vecp;
 	fd_set  ifds,
@@ -185,7 +185,7 @@ int iserver_wait (IFP initfnx, IFP workfnx, IFP losefnx, int nfds, fd_set *rfds,
 
 	for (fd = 0; fd < nfds; fd++)
 		if (FD_ISSET (fd, &is_mask) && FD_ISSET (fd, &ifds)) {
-			if (workfnx == NULLIFP) {
+			if (workfnx == NULL) {
 				TNetClose (NULLTA, td);
 				return tsaplose (td, DR_OPERATION, NULLCP,
 								 "no worker routine for connected fd");

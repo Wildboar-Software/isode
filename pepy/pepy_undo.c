@@ -9,9 +9,9 @@ extern int	rflag, hflag;
 
 char   *gensym (void), *modsym (char *module, char *id, int direct);
 
-YP	lookup_type (char *mod, char *id), lookup_binding ();
+YP	lookup_type (char *mod, char *id), lookup_binding (char *mod, char *id, char *binding);
 YT	lookup_tag (YP yp);
-char	*add_point ();
+char	*add_point (char *arg);
 
 static void undo_type_element (YP yp, int level, int first, int last, char *id, char *arg, char *narg, int Vflag);
 static void undo_type_member (YP yp, int level, char *arg, char *narg, int Vflag);

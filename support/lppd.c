@@ -92,7 +92,7 @@ int main (int argc, char **argv, char **envp) {
 	if (!listening)
 		adios (NULLCP, "no network services selected");
 	for (ta = tas;;) {
-		if (TNetAcceptAux (&vecp, vec, NULLIP, ta, 0, NULLFD, NULLFD, NULLFD,
+		if (TNetAcceptAux (&vecp, vec, NULL, ta, 0, NULLFD, NULLFD, NULLFD,
 						   NOTOK, td) == NOTOK) {
 			ts_advise (td, LLOG_EXCEPTIONS, "TNetAccept failed");
 			continue;

@@ -6,7 +6,7 @@
 #include "compat.h"
 
 static int interrupted;
-static SFD	intrser ();
+static SFD	intrser (int sig);
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 

@@ -213,7 +213,11 @@ typedef unsigned long	uint32_t;
 typedef ssize_t	*IP;
 #define	NULLIP		((IP) NULL)
 
-typedef	ssize_t	(*IFP) ();
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#endif
+typedef	int	(*IFP) ();
 #define	NULLIFP		((IFP) NULL)
 
 typedef void   (*VFP) ();
@@ -221,6 +225,9 @@ typedef void   (*VFP) ();
 
 typedef	void * (*PFP) ();
 #define	NULLPFP		((PFP) NULL)
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 #ifndef	SFD
 #if !defined(SVR3) && !defined(SUNOS4) && !defined(BSD44) && !defined(ultrix)

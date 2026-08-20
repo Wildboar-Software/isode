@@ -31,7 +31,9 @@ int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
 		return rosaplose (roi, ROS_PARAMETER, NULLCP,
 						  "invocation %d not in progress on association %d",
 						  id, sd);
-	opb -> opb_resfnx = opb -> opb_errfnx = do_response;
+	opb -> opb_resfnx = do_response;
+	// Just a cast to ignore the int.
+	opb -> opb_errfnx = (void (*)(int, int, int, caddr_t, struct RoSAPindication *))do_response;
 	return OK;
 }
 

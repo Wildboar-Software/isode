@@ -658,7 +658,7 @@ static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, int trans, str
 			if (trans) {
 				if (acb -> acb_downtrans) {
 					if ((*acb -> acb_downtrans) (acb -> acb_fd, NULLVP,
-												 /* surely this should be rtsap_priority NULLIP, acsap_priority,*/
+												 /* surely this should be rtsap_priority NULL, acsap_priority,*/
 												 (int *)0, prttp -> parm,
 												 0L, 0L, rti) == NOTOK
 							&& PActIntrRequest (acb -> acb_fd, SP_LOCAL,

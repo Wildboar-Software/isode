@@ -26,12 +26,12 @@ typedef struct OIDentifier {
 }			OIDentifier, *OID;
 #define	NULLOID	((OID) 0)
 
-OID	ode2oid ();
+OID	ode2oid (char *descriptor);
 int	oid_cmp (OID p, OID q), elem_cmp (unsigned int *ip, int i, unsigned int *jp, int j);
 OID	oid_cpy (OID oid);
 void oid_free (OID oid);
 #define	oid2ode(i)	oid2ode_aux ((i), 1)
-char *oid2ode_aux ();
+char *oid2ode_aux (OID identifier, int quoted);
 char *sprintoid (OID oid);
 OID	str2oid (char *s);
 
@@ -201,11 +201,11 @@ extern	PE	pe_active;
 
 PE	pe_alloc (PElementClass, PElementForm, PElementID);
 void pe_free (PE pe);
-int	pe_cmp ();
-PE	pe_cpy ();
+int	pe_cmp (PE p, PE q);
+PE	pe_cpy (PE pe);
 int	pe_pullup (PE pe);
-PE	pe_expunge ();
-int	pe_extract ();
+PE	pe_expunge (PE pe, PE r);
+int	pe_extract (PE pe, PE r);
 
 PE str2pe (char *s, int len, int *advance, int *result);
 PE qb2pe (struct qbuf *qb, int len, int depth, int *result);
@@ -242,18 +242,18 @@ typedef struct UTCtime {
 }			UTCtime, *UTC;
 #define	NULLUTC	((UTC) 0)
 
-void	tm2ut ();
-long	gtime ();
-struct tm *ut2tm ();
+void	tm2ut (struct tm *tm, UTC ut);
+long	gtime (struct tm *tm);
+struct tm *ut2tm (UTC ut);
 
 extern char *psapversion;
 
-int	prim2flag ();
-PE	flag2prim ();
+int	prim2flag (PE pe);
+PE	flag2prim (int b, int class, int id);
 #define	bool2prim(b)		flag2prim ((b), PE_CLASS_UNIV, PE_PRIM_BOOL)
 
-integer	prim2num ();
-PE	num2prim ();
+integer	prim2num (PE pe);
+PE	num2prim (integer i, int class, int id);
 #define	int2prim(i)		num2prim ((integer) (i), PE_CLASS_UNIV, PE_PRIM_INT)
 
 #define	prim2enum(i)		prim2num((i))
@@ -296,9 +296,9 @@ double	prim2real (PE pe);
 PE	real2prim (double, PElementClass, PElementID);
 #define double2prim(i)		real2prim ((i), PE_CLASS_UNIV, PE_PRIM_REAL)
 
-char   *prim2str ();
+char   *prim2str (PE pe, int *len);
 PE	str2prim (char *, int, PElementClass, PElementID);
-struct qbuf *prim2qb ();
+struct qbuf *prim2qb (PE pe);
 PE	qb2prim_aux (struct qbuf *, PElementClass, PElementID, int);		/* really should be qb2pe () */
 #define	qb2prim(q,c,i)		qb2prim_aux ((q), (c), (i), 0)
 #define	oct2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_PRIM_OCTS)
@@ -324,13 +324,13 @@ PE	qb2prim_aux (struct qbuf *, PElementClass, PElementID, int);		/* really shoul
 #define oidiri2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_OID_IRI)
 #define roidiri2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_ROID_IRI)
 
-PE	prim2bit ();
-PE	bit2prim ();
+PE	prim2bit (PE pe);
+PE	bit2prim (PE pe);
 
-int	bit_on (), bit_off ();
-int	bit_test ();
+int	bit_on (PE pe, int i), bit_off (PE pe, int i);
+int	bit_test (PE pe, int i);
 
-OID	prim2oid ();
+OID	prim2oid (PE pe);
 PE	obj2prim (OID, PElementClass, PElementID);
 #define	oid2prim(o)		obj2prim ((o), PE_CLASS_UNIV, PE_PRIM_OID)
 
@@ -340,14 +340,14 @@ UTC	prim2time (PE pe, int generalized);
 PE	time2prim (UTC, int, PElementClass, PElementID);
 #define	utct2prim(u)		time2prim ((u), 0, PE_CLASS_UNIV, PE_DEFN_UTCT)
 #define	gent2prim(u)		time2prim ((u), 1, PE_CLASS_UNIV, PE_DEFN_GENT)
-char   *time2str ();
+char   *time2str (UTC u, int generalized);
 #define	utct2str(u)		time2str ((u), 0)
 #define	gent2str(u)		time2str ((u), 1)
 UTC	str2utct (char *cp, int len), str2gent (char *cp, int len);
 
-PE	prim2set ();
+PE	prim2set (PE pe);
 #define	set2prim(pe)		(pe)
-int	set_add (), set_addon ();
+int	set_add (PE pe, PE r), set_addon (PE pe, PE last, PE new);
 int set_del (PE, PElementClass, PElementID);
 PE	set_find (PE, PElementClass, PElementID);
 #define	first_member(pe)	((pe) -> pe_cons)
@@ -355,10 +355,10 @@ PE	set_find (PE, PElementClass, PElementID);
 
 #define	prim2seq(pe)		(prim2set (pe))
 #define	seq2prim(pe)		(pe)
-int	seq_add (), seq_addon (), seq_del ();
-PE	seq_find ();
+int	seq_add (PE pe, PE r, int i), seq_addon (PE pe, PE last, PE new), seq_del (PE pe, int i);
+PE	seq_find (PE pe, int i);
 
-char   *pe_error ();
+char   *pe_error (int c);
 
 #ifdef SVR4_UCB
 #ifdef PS	/* ucb define PS in sys/sparc/reg.h for "portability" !?! */
@@ -431,16 +431,16 @@ struct PStream {
 
 #define	ps_seterr(ps, e, v)	((ps) -> ps_errno = (e), (v))
 
-PS	ps_alloc ();
-void	ps_free ();
+PS	ps_alloc (IFP io);
+void	ps_free (PS ps);
 
-int	ps_io ();
+int	ps_io (PS ps, IFP io, PElementData data, PElementLen n, int in_line);
 #define	ps_read(ps, data, cc)	ps_io ((ps), (ps) -> ps_readP, (data), (cc), 0)
 #define	ps_write(ps, data, cc)	ps_write_aux ((ps), (data), (cc), 0)
 #define	ps_write_aux(ps, data, cc, in_line) \
     	ps_io ((ps), (ps) -> ps_writeP, (data), (cc), (in_line))
 
-int	ps_flush ();
+int	ps_flush (PS ps);
 
 int ps_prime (PS ps, int waiting);
 
@@ -449,30 +449,30 @@ int ps_read_id (PS ps, int top, PElementClass *class, PElementForm *form, PEleme
 int ps_read_cons (PS ps, PE *pe, PElementLen len);
 int ps_read_len (PS ps, PElementLen *len);
 
-int	std_open ();
+int	std_open (PS ps);
 #define	std_setup(ps, fp)	((ps) -> ps_addr = (char *) (fp), OK)
 
-int	str_open ();
-int	str_setup ();
+int	str_open (PS ps);
+int	str_setup (PS ps, char *cp, int cc, int in_line);
 
-int	dg_open ();
-int	dg_setup ();
+int	dg_open (PS ps);
+int	dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx);
 
 int	fdx_open (PS ps);
 int	fdx_setup (PS ps, int fd);
 
-int	qbuf_open ();
+int	qbuf_open (PS ps);
 #define	qbuf_setup(ps, qb)	((ps) -> ps_addr = (char *) (qb), OK)
 
 #define	ts_open	dg_open
 #define	ts_setup(p,f,s)		dg_setup ((p), (f), (s), ts_read, ts_write)
-int	ts_read (), ts_write ();
+int	ts_read (int fd, struct qbuf **q), ts_write (int fd, struct qbuf *qb);
 
-int	uvec_open ();
-int	uvec_setup ();
+int	uvec_open (PS ps);
+int	uvec_setup (PS ps, int len);
 
 #define	ps2pe(ps)		ps2pe_aux ((ps), 1, 1)
-PE	ps2pe_aux ();
+PE	ps2pe_aux (PS ps, int top, int all);
 #define	pe2ps(ps, pe)		pe2ps_aux ((ps), (pe), 1)
 int	pe2ps_aux (PS ps, PE pe, int eval);
 
@@ -486,7 +486,7 @@ extern int    ps_len_strategy;
 
 int	ps_get_abs (PE pe);
 
-char   *ps_error ();
+char   *ps_error (int c);
 
 struct isobject {
 	char   *io_descriptor;
@@ -494,18 +494,18 @@ struct isobject {
 	OIDentifier io_identity;
 };
 
-int	setisobject (),	endisobject ();
+int	setisobject (int f),	endisobject (void);
 
-struct isobject *getisobject ();
+struct isobject *getisobject (void);
 
-struct isobject *getisobjectbyname ();
+struct isobject *getisobjectbyname (char *descriptor);
 struct isobject *getisobjectbyoid (OID oid);
 
 extern	int	Len;
 extern	char   *Qcp;
 extern	char   *Ecp;
 
-int	pe2qb_f ();
+int	pe2qb_f (PE pe);
 
 extern	int	Byteno;
 extern	int	Qbrefs;
@@ -517,29 +517,30 @@ extern struct qbuf *Qb;
                                         Fqb = (Qb = (qb) -> qb_forw), \
                                         qbuf2pe_f (result))
 PE qbuf2pe_f (int *result);
-char *qb2str ();
+char *qb2str (struct qbuf *q);
 struct qbuf *str2qb (char *s, int len, int head) ;
 void qb_free (struct qbuf *qb);
 
-int	pe2ssdu ();
-PE	ssdu2pe ();
+int	pe2ssdu (PE pe, char **base, int *len);
+PE	ssdu2pe (char *base, int len, char *realbase, int *result);
 
-void	pe2text (), text2pe ();
+struct ll_struct;
+void	pe2text (struct ll_struct *lp, PE pe, int rw, int cc), text2pe (void);
 
-int	pe2uvec ();
+int	pe2uvec (PE pe, struct udvec **uv);
 
-char   *int2strb ();
-int	strb2int ();
+char   *int2strb (int n, int len);
+int	strb2int (char *cp, int len);
 
 PE	strb2bitstr (char *, int, PElementClass, PElementID);
-char   *bitstr2strb ();
+char   *bitstr2strb (PE pe, int *k);
 
 extern char PY_pepy[];
 
 void	PY_advise (char *, char *, ...);
-int	PY_pp ();
+int	PY_pp (int argc, char **argv, char **envp, IFP pfx);
 
-int	testdebug ();
+int	testdebug (PE pe, char *s);
 
 void vpush (void);
 void vpop (void);
@@ -548,7 +549,7 @@ void vtag (int class, int id);
 void vstring (PE pe);
 void vunknown (PE pe);
 void vprint (char*, ...);
-char *bit2str ();
+char *bit2str (PE pe, char *s);
 void vpushfp (FILE *fp, PE pe, char *s, int rw);
 void vpopfp (void);
 void vpushstr (char *cp);

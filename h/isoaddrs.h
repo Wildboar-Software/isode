@@ -40,9 +40,13 @@ typedef struct AEInfo {		/* "real" directory services! */
 #define	str2aeinfo(string,context,interactive,userdn,passwd) \
 	_str2aei ((string), NULLCP, (context), (interactive), (userdn), \
 		  (passwd))
-AEI	_str2aei ();
+AEI	_str2aei (char *string, char *qualifier, char *context, int interactive, char *userdn, char *passwd);
 
-char   *sprintaei ();
+char   *sprintaei (AEI aei);
+#endif
+
+#ifndef NULLPE
+typedef struct AEInfo *AEI;
 #endif
 
 struct NSAPaddr {		/* this structure shouldn't have holes in it */
@@ -190,7 +194,7 @@ struct PSAPaddr {
 };
 #define	NULLPA			((struct PSAPaddr *) 0)
 
-struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
+struct PSAPaddr *aei2addr (AEI aei);	/* application entity title to PSAPaddr */
 void psap_free (struct PSAPaddr *psap);
 void psap_dup (struct PSAPaddr *r, struct PSAPaddr *a);
 
@@ -199,7 +203,7 @@ int add_alias (char *name, char *value);
 #ifdef	NULLPE
 char   *alias2name (char *name);
 
-extern PE    (*acsap_lookup) ();
+extern PE    (*acsap_lookup) (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name);
 #endif
 
 #ifdef	NULLOID
@@ -230,21 +234,22 @@ struct TSAPaddr *str2taddr (char *str);  /* string encoding to TSAPaddr */
 
 #define	paddr2str(pa,na)	_paddr2str ((pa), (na), 0)
 
-char   *_paddr2str ();		/* PSAPaddr to string encoding */
-char   *saddr2str ();		/* SSAPaddr to string encoding */
-char   *taddr2str ();		/* TSAPaddr to string encoding */
+char   *_paddr2str (struct PSAPaddr *pa, struct NSAPaddr *na, int compact);		/* PSAPaddr to string encoding */
+char   *saddr2str (struct SSAPaddr *sa);		/* SSAPaddr to string encoding */
+char   *taddr2str (struct TSAPaddr *ta);		/* TSAPaddr to string encoding */
 
-struct NSAPaddr *na2norm ();	/* normalize NSAPaddr */
+struct NSAPaddr *na2norm (struct NSAPaddr *na);	/* normalize NSAPaddr */
 
-struct NSAPinfo *getnsapinfo ();/* info about an NSAP */
+struct NSAPinfo *getnsapinfo (struct NSAPaddr *nsap);/* info about an NSAP */
 
-char   *na2str ();		/* pretty-print NSAPaddr */
-char   *pa2str ();		/* pretty-print PSAPaddr */
+char   *na2str (struct NSAPaddr *na);		/* pretty-print NSAPaddr */
+char   *pa2str (struct PSAPaddr *px);		/* pretty-print PSAPaddr */
 
-int	isodeserver ();		/* generic server dispatch */
+struct TSAPdisconnect;
+int	isodeserver (int argc, char **argv, AEI aei, int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), struct TSAPdisconnect *td);		/* generic server dispatch */
 
-int	iserver_wait ();	/* phase 2 */
-fd_set	iserver_mask ();	/* linkage */
+int	iserver_wait (int (*initfnx)(int vecp, char **vec), int (*workfnx)(int fd), void (*losefnx)(struct TSAPdisconnect *td), int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td);	/* phase 2 */
+fd_set	iserver_mask (void);		/* linkage */
 
 /* all of this really should be in "isoqos.h" ... */
 

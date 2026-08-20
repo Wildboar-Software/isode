@@ -792,7 +792,7 @@ static void do_op2 (YO yo, char *id) {
 	fprintf (fdef, "\n#define stub_%s(sd,id,in,rfx,efx,class,roi)\\\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 	fprintf (fdef, "RyStub ((sd), table_%s_Operations,", mymodaux);
-	fprintf (fdef, " operation_%s, (id), NULLIP,\\\n",
+	fprintf (fdef, " operation_%s, (id), NULL,\\\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 	fprintf (fdef, "\t(caddr_t) (in), (rfx), (efx), (class), (roi))\n");
 
@@ -815,7 +815,7 @@ static void do_op2 (YO yo, char *id) {
 	fprintf (fstb, "{\n    return RyStub (sd, table_%s_Operations, ",
 			 mymodaux);
 	fprintf (fstb,
-			 "operation_%s, id, NULLIP,\n\t\t(caddr_t) in, rfx, efx, class, roi);\n",
+			 "operation_%s, id, NULL,\n\t\t(caddr_t) in, rfx, efx, class, roi);\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 	fprintf (fstb, "}\n");
 

@@ -13,9 +13,9 @@
 static AEInfo aeis;
 static struct PSAPaddr pas;
 
-extern	PE    name2value_dase ();
+extern	PE    name2value_dase (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name);
 
-PE	(*acsap_lookup) () = name2value_dase;
+PE	(*acsap_lookup) (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name) = name2value_dase;
 
 AEI
 str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd) {

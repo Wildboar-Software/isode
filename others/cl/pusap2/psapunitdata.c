@@ -468,7 +468,7 @@ int PUnitDataRead (
 		goto no_good;
 	}
 	SUSFREE (ss);    /* free the ss_data */
-	if (decode_PS_UD__type (pe, 1, NULLIP, NULLVP, &pdu) == NOTOK) {
+	if (decode_PS_UD__type (pe, 1, NULL, NULLVP, &pdu) == NOTOK) {
 		pusaplose (pi, PC_UNRECOGNIZED, NULLCP, "error decoding PDU: %s",
 				   PY_pepy);
 		goto no_good;

@@ -159,9 +159,9 @@ int rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindica
     (acb) -> acb_rtpktlose = rt2sslose; \
 }
 
-int	ss2rtslose (), ss2rtsabort ();
-int	rt2sspturn (), rt2ssgturn (), rt2sstrans (), rt2sswait (),
-	rt2ssasync (), rt2ssmask ();
+int	ss2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct SSAPabort *sa), ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti);
+int	rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti), rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti), rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti), rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti),
+	rt2ssasync (struct assocblk *acb, int (*indication)(int sd, struct RtSAPindication *rti), struct RtSAPindication *rti), rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti);
 void rt2sslose (struct assocblk *acb, int result);
 
 /* RTORQ apdu */

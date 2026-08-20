@@ -79,7 +79,7 @@ struct opsblk {
 	int	    opb_id;		/* invoke ID */
 
 	int (*opb_resfnx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);		/* result vector */
-	int (*opb_errfnx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);		/* error vector */
+	void (*opb_errfnx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);		/* error vector */
 
 	struct RyOperation *opb_ryo;/* entry in operation table */
 
@@ -167,12 +167,12 @@ int	RyStub (
 	int *linked,
 	caddr_t in,
 	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
-	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
 	int class,
 	struct RoSAPindication *roi
 );
 #define	ROS_INTR	2	/*   invoke stub but return on interrupt */
-int	RyDiscard ();		/* DISCARD */
+int	RyDiscard (int sd, int id, struct RoSAPindication *roi);		/* DISCARD */
 
 /* OPERATION */
 int	RyOperation (
@@ -193,7 +193,7 @@ int	RyOpInvoke (
 	caddr_t in,
 	caddr_t *out,
 	int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
-	int (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
+	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi),
 	int class,
 	int invokeID,
 	int *linkedID,

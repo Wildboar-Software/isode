@@ -44,9 +44,9 @@ struct PSAPctxlist {		/* list of presentation contexts */
 #define BER_OID		ode2oid (BER)
 #endif
 
-struct SSAPref *addr2ref ();	/* address to session reference */
+struct SSAPref *addr2ref (char *addr);	/* address to session reference */
 
-char   *sprintref ();		/* return session reference in string form */
+char   *sprintref (struct SSAPref *sr);		/* return session reference in string form */
 
 struct PSAPstart {		/* P-CONNECT.INDICATION */
 	int	    ps_sd;		/* PRESENTATION descriptor */
@@ -585,5 +585,5 @@ char *PErrString (int code);
 
 #define	PLocalHostName	getlocalhost
 /* return name of local host (sigh) */
-char   *PLocalHostName ();
+char   *PLocalHostName (void);
 #endif

@@ -99,7 +99,7 @@ done:
 			break;
 		}
 
-		(*pfx) (pe, 1, NULLIP, NULLVP, NULLCP);
+		(*pfx) (pe, 1, NULL, NULLVP, NULLCP);
 
 		pe_free (pe);
 	}

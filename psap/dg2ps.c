@@ -20,7 +20,7 @@ struct ps_dg {
 	IFP	    ps_check;
 };
 
-extern	IFP	set_check_fd ();
+extern	IFP	set_check_fd (int fd, IFP fnx, caddr_t data);
 
 static int dg_prime (PS ps, int waiting) {
 	struct qbuf *qb;

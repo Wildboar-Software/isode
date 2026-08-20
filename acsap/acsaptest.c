@@ -14,8 +14,8 @@
 
 #define	NULLIE	((struct isoentity *) 0)
 
-char   *macro2str ();
-struct TSAPaddr *ta2norm ();
+char   *macro2str (char *name);
+struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
 
 static	void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa);
 static	void printobj (struct isobject *io);

@@ -16,15 +16,15 @@
 
 #define	doSSabort	ss2rosabort
 
-static void	ssDATAser (), ssTOKENser (), ssSYNCser (), ssACTIVITYser (),
-		ssREPORTser (), ssFINISHser (), ssABORTser ();
+static void	ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),
+		ssREPORTser (int sd, struct SSAPreport *sp), ssFINISHser (int sd, struct SSAPfinish *sf), ssABORTser (int sd, struct SSAPabort *sa);
 
-static int  doSSdata ();
-static int  doSStokens ();
-static int  doSSsync ();
-static int  doSSactivity ();
-static int  doSSreport ();
-static int  doSSfinish ();
+static int  doSSdata (struct assocblk *acb, int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi);
+static int  doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi);
+static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi);
+static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi);
+static int  doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi);
+static int  doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi);
 
 /*    local stub routine for psap/qbuf2pe */
 
@@ -147,7 +147,7 @@ int ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindica
 	struct SSAPindication *si = &sis;
 
 	if (acb -> acb_apdu) {
-		result = acb2osdu (acb, NULLIP, acb -> acb_apdu, roi);
+		result = acb2osdu (acb, NULL, acb -> acb_apdu, roi);
 		acb -> acb_apdu = NULLPE;
 
 		return result;

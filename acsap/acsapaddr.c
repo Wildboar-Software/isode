@@ -11,15 +11,15 @@ AEI	str2aei_stub (char *designator, char *qualifier);
 struct PSAPaddr *aei2addr_stub (AEI aei);
 #endif
 
-AEI	str2aei_dse ();
-struct PSAPaddr *aei2addr_dse ();
+AEI	str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd);
+struct PSAPaddr *aei2addr_dse (AEI aei);
 
 #ifndef	NOSTUB
 static char fallback1[BUFSIZ],
 	   fallback2[BUFSIZ];
 #endif
 
-static struct PSAPaddr *(*lookup) () = NULL;
+static struct PSAPaddr *(*lookup) (AEI aei) = NULL;
 
 /* backwards compatibility... */
 

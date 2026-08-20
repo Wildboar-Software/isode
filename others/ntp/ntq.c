@@ -128,7 +128,7 @@ int ac_failed (struct AcSAPconnect *acc) {
 		struct type_NTP_BindError *binderr;
 		char	*cp = NULLCP;
 		if (decode_NTP_BindError (acc -> acc_info[0], 1,
-								  NULLIP, NULLVP,
+								  NULL, NULLVP,
 								  &binderr) != NOTOK) {
 			if (binderr -> supplementary)
 				cp = qb2str (binderr -> supplementary);
@@ -177,7 +177,7 @@ int send_request (int sd) {
 	struct RoSAPpreject *rop = &roi -> roi_preject;
 
 	switch (RyStub (sd, table_NTP_Operations, operation_NTP_query,
-					RyGenID (sd), NULLIP, NULLCP,
+					RyGenID (sd), NULL, NULLCP,
 					query_result, query_error, ROS_SYNC, roi)) {
 	case NOTOK:
 		if (ROS_FATAL (rop -> rop_reason))

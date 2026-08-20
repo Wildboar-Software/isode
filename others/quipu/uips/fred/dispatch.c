@@ -227,13 +227,13 @@ static struct var vars[] = {
 	"debug", &debug, "debug FRED", bool,
 	NULLCP, NULLIFP, V_NULL,
 
-	"manager", NULLIP, "mail-address of local white pages manager", &manager,
+	"manager", NULL, "mail-address of local white pages manager", &manager,
 	NULLCP, NULLIFP, V_RDONLY,
 
 	"namesearch", &nametype, "type of name used for matching", names,
 	NULLCP, NULLIFP, V_NULL,
 
-	"pager", NULLIP, "program to use for output pagination", &pager,
+	"pager", NULL, "program to use for output pagination", &pager,
 	NULLCP, NULLIFP, V_RDONLY,
 
 	"phone", &phone, "display phone numbers in one-liner", bool,
@@ -242,7 +242,7 @@ static struct var vars[] = {
 	"query", &query, "confirm two-step operations", bool,
 	NULLCP, NULLIFP, V_NULL,
 
-	"server", NULLIP, "IP-address of directory assistance server", &server,
+	"server", NULL, "IP-address of directory assistance server", &server,
 	NULLCP, NULLIFP, V_RDONLY | V_SERVER,
 
 	"soundex", &soundex, "use soundex for matching", bool,
@@ -349,7 +349,7 @@ static int f_set (char **vec) {
 		advise (NULLCP, "too late!");
 		return OK;
 	}
-	if (v -> v_value == NULLIP) {
+	if (v -> v_value == NULL) {
 		int    w;
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);

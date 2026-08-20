@@ -631,14 +631,18 @@ static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 #ifdef	X25
 #include "x25.h"
 #else
-#define	write_x25_socket	NULLIFP
+#define	write_x25_socket	NULL
 #endif
 
 #if	defined(FIONBIO) || defined(O_NDELAY)
 #define	NODELAY
 #endif
 
+#ifdef LINUX
+#include <errno.h>
+#else
 extern	int	errno;
+#endif
 
 int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
@@ -730,8 +734,15 @@ single:
 	if (p = malloc (sizeof *qb + (unsigned) cc)) {
 		int	nc,
 			onoff;
-		IFP	wfnx = (tb -> tb_flags & TB_X25) ? write_x25_socket
-				   : write_tcp_socket;
+#ifdef LINUX
+		ssize_t (*wfnx) (int, const void *, size_t) = (tb -> tb_flags & TB_X25)
+			? write_x25_socket
+			: write_tcp_socket;
+#else
+		IFP	wfnx = (tb -> tb_flags & TB_X25)
+			? write_x25_socket
+			: write_tcp_socket;
+#endif
 
 #ifdef	NODELAY
 		if (tb -> tb_flags & TB_QWRITES) {
@@ -909,12 +920,17 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 			onoff,
 			result;
 	struct qbuf *qb;
-	IFP	    wfnx = (tb -> tb_flags & TB_X25) ? write_x25_socket
-				   : write_tcp_socket;
+
 #ifdef LINUX
 	__sighandler_t pstat;
+	ssize_t (*wfnx) (int, const void *, size_t) = (tb -> tb_flags & TB_X25)
+		? write_x25_socket
+		: write_tcp_socket;
 #else
 	SFP	    pstat;
+	IFP wfnx = (tb -> tb_flags & TB_X25)
+		? write_x25_socket
+		: write_tcp_socket;
 #endif
 	int	    smask;
 

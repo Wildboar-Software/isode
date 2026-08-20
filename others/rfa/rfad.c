@@ -117,7 +117,7 @@ int initiate (int sd, struct AcSAPstart *acs, PE *pe) {
 	*pe	 = NULLPE;
 	if ( acs -> acs_ninfo != 1)
 		return init_lose (ACS_PERMANENT, pe, "No Bind data");
-	if (decode_RFA_Initiate (acs -> acs_info[0], 1, NULLIP, NULLVP,
+	if (decode_RFA_Initiate (acs -> acs_info[0], 1, NULL, NULLVP,
 							 &initial) == NOTOK)
 		return init_lose (ACS_PERMANENT, pe, "Can't parse Bind data");
 	user = qb2str (initial -> user);

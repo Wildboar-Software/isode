@@ -9,11 +9,10 @@ static void default_smalloc_handler (void) {
 	abort ();
 }
 
-static VFP smalloc_handler = default_smalloc_handler;
+static void (*smalloc_handler)(void) = default_smalloc_handler;
 
-VFP
-set_smalloc_handler (VFP fnx) {
-	VFP savefnx = smalloc_handler;
+void (*set_smalloc_handler (void (*fnx)(void)))(void) {
+	void (*savefnx)(void) = smalloc_handler;
 
 	if (fnx)
 		smalloc_handler = fnx;

@@ -923,7 +923,7 @@ static int  get_arptab (int offset) {
 		free ((char *) at);
 	}
 	adn = adm = NULL;
-	if ((tblsize = getkerninfo (KINFO_RT_DUMP, NULLCP, NULLIP, 0)) == NOTOK)
+	if ((tblsize = getkerninfo (KINFO_RT_DUMP, NULLCP, NULL, 0)) == NOTOK)
 		return NOTOK;
 	if ((snpac = malloc ((unsigned) tblsize)) == NULL)
 		adios (NULLCP, "out of memory");

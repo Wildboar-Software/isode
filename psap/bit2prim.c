@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "psap.h"
 
-static PE	bit2prim_aux ();
+static PE	bit2prim_aux (PE pe);
 
 PE
 bit2prim (PE pe) {

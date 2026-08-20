@@ -25,7 +25,7 @@ int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindicat
 		return (dsapreject (di, DP_INVOKE, id, NULLCP, "Failed to encode operation argument"));
 	}
 	result = RoInvokeRequest (sd, arg->arg_type, ROS_ASYNC, arg_pe,
-							  id, NULLIP, ROS_NOPRIO, roi);
+							  id, NULL, ROS_NOPRIO, roi);
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
 			LLOG (log_dsap, LLOG_EXCEPTIONS, ("DapInvokeRequest(): Fatal rejection"));
@@ -92,7 +92,7 @@ int DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 	}
 	watch_dog("RoInvokeRequest (DSP)");
 	result = RoInvokeRequest (sd, arg->dca_dsarg.arg_type, ROS_ASYNC, arg_pe,
-							  id, NULLIP, ROS_NOPRIO, roi);
+							  id, NULL, ROS_NOPRIO, roi);
 	watch_dog_reset();
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {
@@ -160,7 +160,7 @@ int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindicati
 	}
 	watch_dog("RoInvokeRequest (QSP)");
 	result = RoInvokeRequest (sd, arg->dca_dsarg.arg_type, ROS_ASYNC, arg_pe,
-							  id, NULLIP, ROS_NOPRIO, roi);
+							  id, NULL, ROS_NOPRIO, roi);
 	watch_dog_reset();
 	if (result != OK) {
 		if (ROS_FATAL (rop->rop_reason) || (rop->rop_reason == ROS_PARAMETER)) {

@@ -320,7 +320,7 @@ static PE de_addrenc (struct postaddr *m) {
 static struct postaddr * de_addrdec (PE pe) {
 	struct postaddr * m;
 
-	if (decode_SA_PostalAddress (pe,1,NULLIP,NULLVP,&m) == NOTOK)
+	if (decode_SA_PostalAddress (pe,1,NULL,NULLVP,&m) == NOTOK)
 		return ((struct postaddr *) NULL);
 	return (m);
 }
@@ -651,7 +651,7 @@ static PE  de_fax_enc (struct fax *f) {
 static struct fax *de_fax_dec (PE pe) {
 	struct fax *f;
 
-	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULLIP, NULLVP, &f)
+	if (decode_SA_FacsimileTelephoneNumber (pe, 1, NULL, NULLVP, &f)
 			== NOTOK) {
 		return ((struct fax *) NULL);
 	}

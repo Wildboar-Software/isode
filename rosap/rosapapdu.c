@@ -15,9 +15,9 @@
 #include "pepsycodec.h"
 #endif
 
-static int	prob2num ();
-static int  apdu_proc ();
-static int  opdu_proc ();
+static int	prob2num (struct choice_ROS_3 *prob);
+static int  apdu_proc (int sd, struct type_ROS_ROSEapdus *papdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID);
+static int  opdu_proc (int sd, struct type_ROS_OPDU *popdu, PE *pe, struct RoSAPindication *roi, struct assocblk *acb, int *invokeID);
 
 int acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi) {
 	struct type_ROS_ROSEapdus *papdu;
