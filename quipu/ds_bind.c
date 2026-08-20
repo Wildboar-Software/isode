@@ -15,8 +15,8 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include <sys/stat.h>
-
 #include "osisec-stub.h"
+#include "quipu/find.h"
 
 extern LLog * log_dsap;
 extern DN	mydsadn;
@@ -408,7 +408,7 @@ out:
 	}
 }
 
-int bind_compare_result_wakeup (struct oper_act *on) {
+void bind_compare_result_wakeup (struct oper_act *on) {
 	DLOG(log_dsap, LLOG_TRACE, ("bind_compare_result_wakeup()"));
 	if(on->on_bind_compare == NULLCONN) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("bind_compare_result_wakeup - connection initiating compare already failed"));

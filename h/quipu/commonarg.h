@@ -3,6 +3,7 @@
 #ifndef COMMONARG
 #define COMMONARG
 
+#include "pepsy.h"
 #include "quipu/attrvalue.h"
 #include "quipu/dsp.h"
 #include "quipu/authen.h"
@@ -27,6 +28,9 @@ struct security_parms {
 };
 
 struct security_parms *secp_cpy (struct security_parms *sp);
+int check_security_parms(caddr_t data, int type, modtyp *module,
+	struct security_parms *sp, struct signature *sig,
+	DN *nameptr);
 
 typedef struct extension {
 	int		  ext_id;
@@ -53,9 +57,9 @@ typedef struct common_args {    /* Common arguments for operations      */
 #define NULL_COMMONARG ((struct common_args *) NULL)
 
 int ca_dup (struct common_args *src, struct common_args *tgt);
-
 int service_control (PS opt, int argc, char **argv, CommonArgs *ca);
 int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca);
+void set_my_common_args (struct common_args *ca);
 
 typedef struct common_results {
 	DN          cr_requestor;

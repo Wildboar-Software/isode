@@ -8,6 +8,8 @@
 #include "quipu/connection.h"
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
+#include "quipu/find.h"
+#include "quipu/schema.h"
 
 extern LLog * log_dsap;
 
@@ -21,6 +23,10 @@ extern unsigned bind_policy;
 extern unsigned strong_policy;
 extern DN mydsadn;
 extern struct di_block * di_alloc();
+extern int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
+
+static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg);
+static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result);
 
 int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
 	Entry  entryptr;
@@ -264,7 +270,7 @@ static Attr_Sequence dsa_control_info (void) {
 	return (as);
 }
 
-int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
+static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
 	if ((arg->rda_eis.eis_allattributes) ||
 			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
@@ -285,7 +291,7 @@ int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
 	return TRUE;
 }
 
-int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
+static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
 	Attr_Sequence as;
 
 	if (quipu_ctx_supported (eptr) <= 2)

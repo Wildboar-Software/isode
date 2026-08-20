@@ -89,6 +89,7 @@ typedef struct chain_arg {
 
 void ch_arg_free (struct chain_arg *arg);
 int cha_loopdetected (struct chain_arg *cha);
+void set_my_chain_args (struct chain_arg *cha, DN dn);
 
 typedef struct chain_res {
 	PE				  chr_domaininfo;

@@ -1,5 +1,6 @@
 /* filteritem.c - */
 
+#include "dish.h"
 #include <strings.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"

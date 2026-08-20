@@ -3,6 +3,7 @@
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
+#include "quipu/watchdog.h"
 
 extern	LLog	* log_dsap;
 

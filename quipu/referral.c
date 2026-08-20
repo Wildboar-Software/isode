@@ -93,7 +93,7 @@ void free_parents (void) {
 }
 #endif
 
-struct PSAPaddr *parent_psap (void) {
+static struct PSAPaddr *parent_psap (void) {
 	if (top_ap == NULLACCESSPOINT)
 		return (NULLPA);
 	return (top_ap->ap_address);

@@ -1,5 +1,6 @@
 /* read.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"

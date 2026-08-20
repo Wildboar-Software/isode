@@ -28,9 +28,12 @@ typedef struct attrcomp {       /* A sequence of attributes             */
 	struct acl_info     *attr_acl;
 } attrcomp, *Attr_Sequence;
 
+void as_comp_free (Attr_Sequence as);
 void as_comp_print (PS ps, Attr_Sequence as, int format);
 void as_print (PS ps, Attr_Sequence as, int format);
 int split_attr (Attr_Sequence as);
+void as_delnext (Attr_Sequence as);
+
 #define NULLATTR ((Attr_Sequence) 0)
 #define as_comp_alloc()          (Attr_Sequence) smalloc(sizeof(attrcomp))
 #define as_comp_cmp(x,y)      (((oid_cmp (&x->attr_type ,&y->attr_type) == OK) && (avs_cmp (x->attr_value ,y->attr_value) == OK)) ? OK : NOTOK)

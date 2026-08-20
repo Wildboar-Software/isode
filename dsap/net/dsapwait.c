@@ -896,7 +896,7 @@ IFP restart_fn = NULLIFP;
 static char * watch_dog_where;
 static int watchdogfinal = FALSE;
 
-int watch_dog_final (
+void watch_dog_final (
 #ifdef LINUX
 	__sighandler_t fn
 #else

@@ -1,6 +1,9 @@
 /* entry_dump.c - routines to dump the database */
 
 #include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "psap.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"

@@ -37,6 +37,7 @@ struct s_filter *filter_cpy (struct s_filter *flt);
 void filter_append (Filter a, Filter b);
 void fi_print (PS ps, Filter fi, int format);
 void print_filter (PS nps, Filter fi, int level);
+int optimized_filter (Filter f);
 
 #define NULLFILTER (Filter)NULL
 #define FUITEM   flt_un.flt_un_item
@@ -125,6 +126,9 @@ typedef struct ftype {
 	struct ftype	*ft_next;
 } Ftype, *Ftypelist;
 #define NULLFTL	((Ftypelist) 0)
+
+void ftype_free (Ftypelist ft);
+void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr);
 
 /* allows a reference count for things all search tasks reference */
 typedef struct thing_header {
@@ -215,5 +219,10 @@ struct search_kid_arg {
 	int			ska_saclerror;
 	char			ska_authtype;
 };
+
+void turbo_subtree_search (Entry e, struct search_kid_arg *ska);
+void turbo_sibling_search (Entry e, struct search_kid_arg *ska);
+void add_cref2poq (struct ds_search_result *res, ContinuationRef cref);
+int attr_substr (char *str1, AttributeValue av, char chrmatch[]);
 
 #endif

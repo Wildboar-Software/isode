@@ -19,6 +19,8 @@
 #include "quipu/turbo.h"
 #include "quipu/malloc.h"
 #include "quipu/cache.h"
+#include "quipu/find.h"
+#include "quipu/shadow.h"
 
 extern int parent_link();
 
@@ -74,6 +76,8 @@ static int edb_continue (
 	int fd
 );
 static int send_get_edb (char *version, DN dn, DN from);
+
+int update_aux (DN dn, int isroot);
 
 char * edbtmp_path = NULLCP;
 

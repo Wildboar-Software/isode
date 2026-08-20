@@ -50,6 +50,7 @@ int dn_order_cmp (DN a, DN b);
 void dn_free (DN dn);
 void dn_comp_free (DN dn);
 void dn_append (DN a, DN b);
+char *dn2edbfile (DN dn);
 
 char *dn2str (DN dn);
 char *dn2ufn (DN dn, int multiline);

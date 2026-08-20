@@ -1,5 +1,6 @@
 /* search.c - */
 
+#include "dish.h"
 #include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
@@ -36,6 +37,7 @@ char           *TidyString ();
 char		allow_move = TRUE;
 
 static int	csr_compar ();
+static void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed);
 
 void call_search (int argc, char **argv) {
 	PS	aps;
@@ -366,7 +368,7 @@ check_rdn:
 	return (i == (-1) || i == 1 ? i : 0);
 }
 
-void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed) {
+static void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed) {
 	if (! proceed)
 		return;
 	if (limit != LSR_NOLIMITPROBLEM) {

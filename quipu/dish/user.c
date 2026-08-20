@@ -1,5 +1,6 @@
 /* user.c - */
 
+#include "dish.h"
 #include <stdlib.h>
 #include <string.h>
 #include "quipu/util.h"

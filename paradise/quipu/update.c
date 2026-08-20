@@ -13,6 +13,8 @@
 #include "quipu/Quipu-types.h"
 #include "quipu/turbo.h"
 #include "quipu/malloc.h"
+#include "quipu/find.h"
+
 extern int parent_link();
 
 #ifndef NO_STATS

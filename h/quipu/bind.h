@@ -34,6 +34,8 @@ struct ds_bind_arg {
 	struct alg_id dba_alg;
 };
 
+void make_dsa_bind_arg (struct ds_bind_arg *arg);
+
 struct ds_bind_error {
 	int dbe_version;
 	int dbe_type;

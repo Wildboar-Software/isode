@@ -11,9 +11,30 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
+#include "quipu/find.h"
+#include "quipu/cache.h"
 
 extern LLog * log_dsap;
 extern DN mydsadn;
+
+extern int remove_attribute (
+	Entry eptr,
+	AttributeType at,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+);
+
+int addrdn_attribute (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn
+);
+
+extern int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error);
 
 int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
@@ -145,7 +166,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	modrdn = entryptr->e_name;
 	DATABASE_HEAP;
 	entryptr->e_name = rdn_cpy(arg->mra_newrdn);
-	modify_attr (entryptr,binddn);
+	modify_attr (entryptr, binddn);
 	if (unravel_attribute (entryptr,error) != OK) {
 		GENERAL_HEAP;
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("modify rdn protocol error"));
@@ -180,7 +201,13 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	}
 }
 
-int addrdn_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
+int addrdn_attribute (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn
+) {
 	Attr_Sequence as;
 	struct acl_info * acl;
 

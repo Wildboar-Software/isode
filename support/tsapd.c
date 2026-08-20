@@ -55,6 +55,9 @@
 #endif
 #ifndef	IAE
 #include "isoservent.h"
+#else
+extern void quipu_syntaxes (void);
+extern int dsap_init (int *acptr, char ***avptr);
 #endif
 #include "tailor.h"
 

@@ -13,6 +13,8 @@
 #include "quipu/turbo.h"
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
+#include "quipu/find.h"
+#include "quipu/referral.h"
 
 extern LLog    *log_dsap;
 
@@ -35,6 +37,16 @@ static int check_filter(Filter fltr, Entry entryptr, DN binddn);
 static int check_filterop(Filter fltr, Entry entryptr, int op, DN binddn);
 struct ds_search_task *st_done(struct ds_search_task **st);
 static void do_base(Entry eptr, struct ds_search_task **local);
+
+static int subtask_refer (
+	struct ds_search_arg *arg,
+	struct ds_search_task **local,
+	struct ds_search_task **refer,
+	int ismanager,
+	struct di_block *di
+);
+
+static int dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result);
 
 extern Entry    database_root;
 int             size;
@@ -1577,7 +1589,13 @@ int attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 	return (str1 - top);
 }
 
-int subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, struct di_block *di) {
+static int subtask_refer (
+	struct ds_search_arg *arg,
+	struct ds_search_task **local,
+	struct ds_search_task **refer,
+	int ismanager,
+	struct di_block *di
+) {
 	/* turn query into a referral */
 	struct ds_search_task *new_task;
 
@@ -1612,7 +1630,7 @@ int subtask_refer (struct ds_search_arg *arg, struct ds_search_task **local, str
 	*refer = new_task;
 }
 
-int dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result) {
+static int dsa_search_control (struct ds_search_arg *arg, struct ds_search_result *result) {
 	extern DN       mydsadn;
 	char            buffer[LINESIZE];
 	Attr_Sequence   as;

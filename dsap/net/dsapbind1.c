@@ -80,7 +80,14 @@ static int DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr
 	return (result);
 }
 
-int DspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, int qos_maxtime, struct DSAPconnect *dc, struct DSAPindication *di, int async) {
+int DspAsynBindRequest (
+	struct PSAPaddr *calledaddr,
+	struct ds_bind_arg *bindarg,
+	int qos_maxtime,
+	struct DSAPconnect *dc,
+	struct DSAPindication *di,
+	int async
+) {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
 	struct QOStype		  qos;
@@ -146,7 +153,14 @@ int	  QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * ca
 	return (result);
 }
 
-int QspAsynBindRequest (struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, int qos_maxtime, struct DSAPconnect *dc, struct DSAPindication *di, int async) {
+int QspAsynBindRequest (
+	struct PSAPaddr *calledaddr,
+	struct ds_bind_arg *bindarg,
+	int qos_maxtime,
+	struct DSAPconnect *dc,
+	struct DSAPindication *di,
+	int async
+) {
 	struct SSAPref		  sf_s;
 	struct SSAPref		* sf = &(sf_s);
 	struct QOStype		  qos;

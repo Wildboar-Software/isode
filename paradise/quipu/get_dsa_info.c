@@ -11,6 +11,7 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "osisec-stub.h"
+#include "quipu/find.h"
 
 extern LLog * log_dsap;
 extern DN mydsadn;
@@ -182,7 +183,7 @@ void dsa_info_result_wakeup(struct oper_act *on) {
 	if((di_ent = cache_dsp_entry (ent_res,TRUE)) == NULLENTRY) {
 		pslog (log_dsap,LLOG_EXCEPTIONS,
 			   "dsa_info_result_wakeup - cache_dsp_entry failure",
-			   (IFP)dn_print, (caddr_t) ent_res->ent_dn);
+			   (void (*)(PS, caddr_t, int))dn_print, (caddr_t) ent_res->ent_dn);
 		/* This could mean the cached entry was a SLAVE - if so why were we
 		 * doing a get dsa info ?
 		     */
@@ -303,7 +304,7 @@ void dsa_info_fail_wakeup(struct oper_act *on) {
 	*  has occurrred).
 	*/
 	if (on -> on_resp.di_type == DI_ERROR) {
-		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote dsainfo error",(IFP)dn_print,
+		pslog (log_dsap,LLOG_EXCEPTIONS,"Remote dsainfo error",(void (*)(PS, caddr_t, int))dn_print,
 			   (caddr_t) on -> on_req.dca_dsarg.arg_rd.rda_object);
 		log_ds_error (& on -> on_resp.di_error.de_err);
 	}

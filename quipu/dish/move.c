@@ -1,5 +1,6 @@
 /* move.c - */
 
+#include "dish.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +18,8 @@ extern	PS	opt, rps;
 extern char move_flag;
 
 DN	fixed_pos = NULLDN;
+
+static int test_move_dn (void);
 
 void call_moveto (int argc, char **argv) {
 	char pwd_flag = FALSE;
@@ -193,7 +196,7 @@ int move (char *arg) {
 	}
 }
 
-int test_move_dn (void) {
+static int test_move_dn (void) {
 	char * name = "moveto";
 
 	/* Might do something else here... */

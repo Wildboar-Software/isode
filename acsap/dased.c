@@ -17,14 +17,25 @@
 #include "quipu/bind.h"
 
 #include "DASE-types.h"
+#include "quipu/IF-types.h"
+#include "quipu/ds_error.h"
+#include "quipu/commonarg.h"
+#include "quipu/attr.h"
+#include "quipu/entry.h"
 #include "psap.h"
 #include "tsap.h"
 #include "dgram.h"
 #include "tailor.h"
+#include "pepsy.h"
+#include "logger.h"
 
 #ifdef	DEBUG
 #define	STATS
 #endif
+
+extern void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
+extern void quipu_syntaxes (void);
+extern int dsap_init (int *acptr, char ***avptr);
 
 static int debug = 0;
 static int nbits = FD_SETSIZE;
@@ -374,7 +385,7 @@ no_mem:
 all_done:
 	;
 	if (dn) {
-		encode_IF_DistinguishedName (&rsp -> name, 1, NULL, NULLCP,*dn);
+		encode_IF_DistinguishedName (&rsp -> name, 1, 0, NULLCP, *dn);
 #ifdef	STATS
 		advise (LLOG_NOTICE, NULLCP, "answer: %s", dn2str (*dn));
 #endif

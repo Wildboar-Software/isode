@@ -106,7 +106,7 @@ Entry cache_dsp_entry (EntryInfo *ptr,char complete) {
 	return (eptr);
 }
 
-void dsp_cache (struct DSArgument *arg,struct DSResult *res,char ctx,DN binddn) {
+void dsp_cache (struct DSArgument *arg, struct DSResult *res, char ctx, DN binddn) {
 	EntryInfo *ptr;
 	Entry entryptr;
 	Attr_Sequence as, eis_select (), attr_eis_select ();

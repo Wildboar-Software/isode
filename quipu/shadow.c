@@ -7,6 +7,10 @@
 #include "quipu/dua.h"
 #include "quipu/connection.h"
 #include "quipu/malloc.h"
+#include "quipu/cache.h"
+#include "quipu/schema.h"
+#include "quipu/shadow.h"
+#include "quipu/database.h"
 
 #ifndef NO_STATS
 extern LLog * log_stat;

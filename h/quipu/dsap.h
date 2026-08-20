@@ -18,6 +18,7 @@
 #include "ronot.h"		/* definitions for RoBIND-USERs */
 #endif
 
+#include "tsap.h"
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
 
@@ -228,8 +229,9 @@ int	DBindReject ();		/* D-BIND.RESPONSE (REJECT) */
 int DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-UNBIND.REQUEST */
 int DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-BIND-RETRY.REQUEST (pseudo) */
 int	DUnBindResponse ();	/* D-BIND.RESPONSE (RESULT) */
-int	DUnBindReject ();	/* D-BIND.RESPONSE (REJECT) */
-int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di);
+
+int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
+int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
 
 char   *DErrString ();		/* return DSAP error code in string form */
 
@@ -250,5 +252,53 @@ int ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject 
 int DRejectRequest (int sd, int reason, int id);
 int DUAbortRequest (int sd, struct DSAPindication *di);
 int DRejectRequest (int sd, int reason, int id);
+
+void dsp_cache (struct DSArgument *arg, struct DSResult *res, char ctx, DN binddn);
+
+int td_log (struct TSAPdisconnect *td, char *event);
+void free_oid_table (void);
+
+int DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di);
+int DspAsynBindRequest (
+	struct PSAPaddr *calledaddr,
+	struct ds_bind_arg *bindarg,
+	int qos_maxtime,
+	struct DSAPconnect *dc,
+	struct DSAPindication *di,
+	int async
+);
+int QspAsynBindRequest (
+	struct PSAPaddr *calledaddr,
+	struct ds_bind_arg *bindarg,
+	int qos_maxtime,
+	struct DSAPconnect *dc,
+	struct DSAPindication *di,
+	int async
+);
+int DspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di);
+int QspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di);
+int IspAsynBindRequest (
+	struct PSAPaddr *calledaddr,
+	struct ds_bind_arg *bindarg,
+	int qos_maxtime,
+	struct DSAPconnect *dc,
+	struct DSAPindication *di,
+	int async
+);
+int IspAsynBindRetry (int sd, int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di);
+int DUnBindAccept (int sd, struct DSAPindication *di);
+int DUnBindReject (int sd, int status, int reason, struct DSAPindication *di);
+int DapInvokeRequest (int sd, int id, struct DSArgument *arg, struct DSAPindication *di);
+int DspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
+int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
+int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
+int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di);
+int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di);
+int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di);
+int IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di);
+int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di);
+int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di);
+int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di);
+int IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di);
 
 #endif

@@ -12,6 +12,36 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
+#include "quipu/find.h"
+#include "quipu/cache.h"
+#include "quipu/database.h"
+#include "quipu/schema.h"
+
+static int mod_add_value (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+);
+
+static int add_attribute (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn
+);
+
+static int remove_value (
+	Entry eptr,
+	Attr_Sequence rmas,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+);
 
 static int check_remove_values (RDN rdn, Attr_Sequence as);
 static int check_remove_type (RDN rdn, AttributeType at);
@@ -25,6 +55,9 @@ extern AttributeType at_control;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
+extern int dsa_control (Attr_Sequence as, struct DSError *error, DN dn);
+extern int acl_cmp (struct acl *acl1, struct acl *acl2);
+
 static int inherit_set(Entry e, struct DSError *error);
 
 Entry  nulledb;
@@ -35,6 +68,15 @@ static int inherit_link(Entry e, struct DSError *error);
 struct	acl *acl_list;
 
 int updateerror;
+
+int remove_attribute (
+	Entry eptr,
+	AttributeType at,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+);
 
 int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
@@ -347,7 +389,14 @@ static int inherit_set (Entry e, struct DSError *error) {
 	return(OK);
 }
 
-int remove_attribute (Entry eptr, AttributeType at, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+int remove_attribute (
+	Entry eptr,
+	AttributeType at,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+) {
 	Attr_Sequence as, trail= NULLATTR, real_as;
 
 	DLOG (log_dsap,LLOG_DEBUG,("remove attribute"));
@@ -435,7 +484,14 @@ static int check_remove_values (RDN rdn, Attr_Sequence as) {
 	return (OK);
 }
 
-int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+static int remove_value (
+	Entry eptr,
+	Attr_Sequence rmas,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+) {
 	Attr_Sequence as, realas;
 	AV_Sequence rmavs,avs,trail = NULLAV;
 	int i;
@@ -530,7 +586,13 @@ int remove_value (Entry eptr, Attr_Sequence rmas, struct DSError *error, DN requ
 	return (OK);
 }
 
-int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn) {
+static int add_attribute (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn
+) {
 	struct acl_attr * aa;
 	struct acl_info * ai = NULLACL_INFO;
 	struct oid_seq * oidptr;
@@ -575,7 +637,14 @@ int add_attribute (Entry eptr, Attr_Sequence newas, struct DSError *error, DN re
 	return (OK);
 }
 
-int mod_add_value (Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn, Entry real_entry) {
+static int mod_add_value (
+	Entry eptr,
+	Attr_Sequence newas,
+	struct DSError *error,
+	DN requestor,
+	DN dn,
+	Entry real_entry
+) {
 	Attr_Sequence as, realas;
 	AV_Sequence avs;
 	char * dn2edbfile();

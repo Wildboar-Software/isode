@@ -90,6 +90,11 @@ struct di_block {
 void di_free (struct di_block *di);
 void di_log (struct di_block *di);
 void di_rdns (struct di_block *di, int rdns, int aliases, DN object);
+void sort_dsa_list (struct di_block **dsas);
+void di_extract (struct di_block *old_di);
+void di_desist (struct di_block *di);
+void di_list_log (struct di_block *di);
+int task_dsa_info_wakeup (struct di_block *di);
 
 /*
 * Operations received over a bound association are represented as a
@@ -126,6 +131,19 @@ struct task_act {
 	struct connection	* tk_conn;
 };
 #define NULLTASK ((struct task_act *) NULL)
+
+void task_free (struct task_act *tk);
+void task_conn_extract (struct task_act *tk);
+void task_extract (struct task_act *tk);
+void task_fail_wakeup (struct oper_act *on);
+void task_error (struct task_act *task);
+void task_result (struct task_act *task);
+void task_log (struct task_act *tk, int level);
+int send_ro_ureject (int ad, int *id_p, int urej);
+int task_abandon (struct task_act *tk);
+int schedule_operation (struct oper_act *x);
+void timeout_task (struct task_act *tk);
+int perform_abandon (struct task_act *tk);
 
 struct oper_act {
 	int                       on_id;
@@ -181,6 +199,29 @@ void process_edb (struct oper_act *on, struct oper_act **newop);
 int shadow_fail_wakeup (struct oper_act *on);
 int process_shadow (struct oper_act *on);
 void oper_log (struct oper_act *on, int level);
+int oper_send_invoke (struct oper_act *oper);
+int relay_dsa (struct oper_act *on);
+void oper_extract (struct oper_act *on);
+void oper_fail_wakeup (struct oper_act *on);
+void subtask_fail_wakeup (struct oper_act *on);
+void bind_compare_fail_wakeup (struct oper_act *on);
+void dsa_info_fail_wakeup (struct oper_act *on);
+void get_edb_fail_wakeup (struct oper_act *on);
+int shadow_fail_wakeup (struct oper_act *on);
+int oper_chain (struct oper_act *on);
+int oper_rechain (struct oper_act *on);
+void dsa_info_error_wakeup (struct oper_act *on);
+void dsa_info_fail_wakeup (struct oper_act *on);
+void set_edb_limit (struct oper_act *oper);
+void task_result_wakeup (struct oper_act *on);
+void task_error_wakeup (struct oper_act *on);
+void subtask_result_wakeup (struct oper_act *on);
+void subtask_error_wakeup (struct oper_act *on);
+void bind_compare_result_wakeup (struct oper_act *on);
+void bind_compare_error_wakeup (struct oper_act *on);
+void dsa_info_result_wakeup (struct oper_act *on);
+void dsa_info_error_wakeup (struct oper_act *on);
+void bind_compare_error_wakeup(struct oper_act *on);
 
 struct conn_start {
 	/* Values stored after call to TNetAccept */
@@ -199,12 +240,16 @@ struct conn_start {
 	struct ds_bind_error	  cs_err;
 };
 
+void conn_start_free (struct conn_start *cs);
+
 struct conn_connect {
 	/* Bind argument used in conn_request() */
 	struct ds_bind_arg              cc_req;
 
 	struct DSAPconnect		cc_dc;
 };
+
+void conn_connect_free (struct conn_connect *cc);
 
 /*
 * Conn is the structure used to represent external connections
@@ -282,6 +327,23 @@ struct connection {
 };
 #define NULLCONN ((struct connection *) NULL)
 
+int conn_request (struct connection *cn);
+int conn_req_aux (struct connection *cn);
+void conn_init_res (struct connection *cn);
+void conn_init_err (struct connection *cn);
+void conn_extract (struct connection *conn);
+void conn_dispatch (struct connection *cn);
+void conn_log (struct connection *conn, int level);
+void conn_retry (struct connection *conn, int moveon);
+int conn_release_retry (struct connection *conn);
+void conn_rel_abort (struct connection *conn);
+int conn_release (struct connection *conn);
+void conn_pre_init (int newfd, int vecp, char **vec);
+void conn_init_res (struct connection *cn);
+void conn_init_err (struct connection *cn);
+void conn_init (struct connection *cn);
+void conn_finish (struct connection *conn, struct DSAPfinish *df);
+
 /*
 *  Global variables are nasty but useful. Here the external definitions
 *  for the most crucial are given:
@@ -296,5 +358,29 @@ extern struct connection	* connwaitlist; /* Connection blocks to be */
 extern struct di_block		* deferred_dis;	/* deferred di_blocks */
 extern struct oper_act		* get_edb_ops;	/* GET_EDB operations */
 extern struct PSAPaddr		* mydsaaddr;	/* PSAP of this DSA */
+
+int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di_block **di_p);
+int constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p);
+int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p);
+int referral_dsa_info (
+	DN object,
+	struct dn_seq *dn_stack,
+	int master,
+	Entry ptr,
+	struct DSError *err,
+	struct di_block **di_p,
+	char chain
+);
+
+void force_close (int fd, struct DSAPindication *di);
+void warn_conn_init (int newfd);
+void dsa_reliable (struct connection * cn, char good, time_t when);
+int ds_bind_init (struct connection *cn);
+void do_ds_unbind (struct connection *conn);
+int task_invoke (register struct connection *conn, register struct DSAPinvoke *dx);
+void oper_result (struct connection *cn, struct DSAPindication *di);
+void oper_error (struct connection *conn, struct DSAPindication *di);
+void oper_preject (struct connection *conn, struct DSAPpreject *dp);
+void net_send_abort (struct connection *conn);
 
 #endif

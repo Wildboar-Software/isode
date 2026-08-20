@@ -142,7 +142,7 @@ static char * malloc_fname = (char *)0;
 
 #endif	/* QUIPU_MALLOC */
 
-int start_malloc_trace (char *f) {
+void start_malloc_trace (char *f) {
 #ifdef MALLOCTRACE
 	char * env, *getenv ();
 
@@ -164,7 +164,7 @@ int start_malloc_trace (char *f) {
 #endif
 }
 
-int stop_malloc_trace (void) {
+void stop_malloc_trace (void) {
 #ifdef MALLOCTRACE
 	if (malloc_file)
 		close (malloc_file);

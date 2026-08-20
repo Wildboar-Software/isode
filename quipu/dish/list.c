@@ -1,5 +1,6 @@
 /* list.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/list.h"
 #include "quipu/sequence.h"
@@ -19,6 +20,8 @@ extern char	move_flag;
 
 extern int      sizelimit;
 char  list_show;
+
+static void print_list_subordinates (struct subordinate *ptr, int prob);
 
 void call_list (int argc, char **argv) {
 	struct ds_list_arg list_arg;
@@ -85,7 +88,7 @@ void call_list (int argc, char **argv) {
 	consolidate_move();
 }
 
-void print_list_subordinates (struct subordinate *ptr, int prob) {
+static void print_list_subordinates (struct subordinate *ptr, int prob) {
 	DN adn;
 	DN newdn;
 	int seqno;

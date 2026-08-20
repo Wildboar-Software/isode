@@ -3,6 +3,7 @@
 #include <time.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
+#include "quipu/database.h"
 
 extern LLog * log_dsap;
 extern time_t	conn_timeout;
@@ -341,7 +342,7 @@ task_select (int *secs_p) {
 	return(ret_tk);
 }
 
-int timeout_task (struct task_act *tk) {
+void timeout_task (struct task_act *tk) {
 	struct oper_act	* on;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 	struct ds_search_task *tmp;

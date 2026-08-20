@@ -14,6 +14,15 @@ struct task_act *       task_alloc();
 struct common_args	* get_ca_ref();
 extern char	  quipu_shutdown;
 
+extern void log_x500_event (
+	struct DSArgument *arg,
+	int context,
+	DN orig,
+	DN dsptarget,
+	int ad,
+	struct task_act *tk
+);
+
 int task_invoke (register struct connection *conn, register struct DSAPinvoke *dx) {
 	time_t		  timer;
 	struct task_act	* task;

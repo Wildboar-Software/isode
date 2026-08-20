@@ -23,7 +23,16 @@ longer be maintained. Eventually this will be eliminated.
 
 ## Build and Install
 
-On Linux, run:
+If you plan to build or use GDBM-requiring features (or just develop them),
+you will need to install the headers for this. On Ubuntu, you can run
+
+```
+sudo apt install libgdbm-dev
+```
+
+after which, included `<gdbm.h>` headers will resolve.
+
+Either way, on a POSIX system, such as Linux, run:
 
 ```shell
 cp config/linux.h h/config.h

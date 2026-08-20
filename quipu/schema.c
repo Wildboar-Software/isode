@@ -3,6 +3,8 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
+#include "quipu/schema.h"
+#include "quipu/shadow.h"
 
 extern int oidformat;
 extern LLog * log_dsap;

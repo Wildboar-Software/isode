@@ -2,7 +2,6 @@
 #include "quipu/attrvalue.h"
 
 extern LLog * log_dsap;
-void as_comp_free (Attr_Sequence as);
 
 void as_delnext (Attr_Sequence as) {
 	Attr_Sequence ptr;

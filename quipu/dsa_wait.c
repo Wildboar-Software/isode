@@ -7,6 +7,7 @@
 #include <time.h>
 #include "rosap.h"
 #include "tsap.h"
+#include "quipu/watchdog.h"
 
 #ifdef QUIPU_CONSOLE
 #include "psap.h"             /* Brought in by SPT for the UTCTime stuff... */

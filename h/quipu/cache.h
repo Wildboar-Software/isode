@@ -8,5 +8,7 @@
 int check_schema (Entry eptr, Attr_Sequence as, struct DSError *error);
 int unravel_attribute (Entry eptr, struct DSError *error);
 void cache_entry (EntryInfo *ptr, char complete, char vals);
+void delete_cache (DN adn);
+int free_all_list_cache (void);
 
 #endif

@@ -215,5 +215,6 @@ int dec_f (
 
 void vpushquipu(PS ps);
 void vpopquipu(void);
+void free_pepsy_bp(void);
 
 #endif

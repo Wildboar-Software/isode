@@ -6,6 +6,7 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
+#include "quipu/find.h"
 
 extern LLog * log_dsap;
 extern Attr_Sequence entry_find_type();

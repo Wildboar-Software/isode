@@ -156,6 +156,8 @@ struct TSAPaddr {
 };
 #define	NULLTA			((struct TSAPaddr *) 0)
 
+int tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb);
+
 struct SSAPaddr {
 	struct TSAPaddr sa_addr;		/* transport address */
 
@@ -190,6 +192,7 @@ struct PSAPaddr {
 
 struct PSAPaddr *aei2addr ();	/* application entity title to PSAPaddr */
 void psap_free (struct PSAPaddr *psap);
+void psap_dup (struct PSAPaddr *r, struct PSAPaddr *a);
 
 int add_alias (char *name, char *value);
 
@@ -262,5 +265,9 @@ int macro2comm (char *name, struct ts_interim *ts);
 void free_macros(void);
 int norm2na (char *p, int len, struct NSAPaddr *na);
 int add_alias (char *name, char *value);
+
+#ifdef DEBUG
+int free_isode_alias(void);
+#endif
 
 #endif

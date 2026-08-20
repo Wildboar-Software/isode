@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "psap.h"
+#include "dish.h"
 #include <errno.h>
 #include "quipu/util.h"
 #include "quipu/dua.h"
@@ -31,6 +32,7 @@ char            fname[128];
 static char	new_draft;
 
 void make_old (char *file, char commit);
+static int add_template (char *name, char *objclass);
 
 void call_add (int argc, char **argv) {
 	Entry           entry_ptr;
@@ -221,7 +223,7 @@ Attr_Sequence make_template_as (AV_Sequence oc)
 	return (as);
 }
 
-int add_template (char *name, char *objclass) {
+static int add_template (char *name, char *objclass) {
 	FILE           *fptr;
 	PS              ps;
 	char            obuf[LINESIZE];

@@ -1,5 +1,6 @@
 /* fred.c - DiSH support for FrED */
 
+#include "dish.h"
 #include <stdlib.h>
 #include <strings.h>
 #include <unistd.h>

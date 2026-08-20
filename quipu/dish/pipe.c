@@ -1,5 +1,6 @@
 /* pipe.c - */
 
+#include "dish.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -33,6 +34,8 @@ int             fd, wfd;
 
 int parent_pid;
 extern int	errno;
+
+static int get_dish_sock (struct sockaddr_in *isock);
 
 int init_pipe (void) {
 	char parent [BUFSIZ];
@@ -277,7 +280,7 @@ void send_pipe_aux2 (char *buf, int i) {
 }
 
 #ifdef SOCKETS
-int get_dish_sock (struct sockaddr_in *isock) {
+static int get_dish_sock (struct sockaddr_in *isock) {
 	char * getenv ();
 	char * ptr;
 	char buffer [BUFSIZ];

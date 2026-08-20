@@ -41,6 +41,7 @@ typedef struct ava {            /* represents AttributeValueAssertion */
 } ava, AVA;
 
 int ava_dup (struct ava *src, struct ava *tgt);
+int get_ava (AVA *avasert, char *type, char *value);
 
 #define AV_WRITE_FILE		256
 #define AV_FILE			128
@@ -73,6 +74,8 @@ typedef struct avseqcomp {      /* attribute may have multiple values   */
 
 void avs_print (PS ps, AV_Sequence avs, int format);
 void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep);
+int avs_cmp (AV_Sequence a, AV_Sequence b);
+void avs_delnext (AV_Sequence avs);
 
 typedef struct {
 	AttributeType fi_sub_type;

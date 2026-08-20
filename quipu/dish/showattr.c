@@ -1,5 +1,6 @@
 /* showattr.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/entry.h"
@@ -20,6 +21,9 @@ extern char	show_all_flag;
 
 static Attr_Sequence ignore_attr = NULLATTR;
 static char ignore_unknown = FALSE;
+
+static int check_want_attr (AttributeType at);
+static int check_want_tmp_attr (AttributeType at);
 
 void showattribute (AttributeType at) {
 	Attr_Sequence  eptr;
@@ -54,7 +58,7 @@ void show_unknown (void) {
 	ignore_unknown = TRUE;
 }
 
-int check_want_attr (AttributeType at) {
+static int check_want_attr (AttributeType at) {
 	Attr_Sequence as;
 
 	if (at == NULLTABLE_ATTR)
@@ -67,7 +71,7 @@ int check_want_attr (AttributeType at) {
 	return (check_want_tmp_attr(at));
 }
 
-int check_want_tmp_attr (AttributeType at) {
+static int check_want_tmp_attr (AttributeType at) {
 	Attr_Sequence as;
 	Attr_Sequence as2;
 	extern Attr_Sequence tmp_ignore;

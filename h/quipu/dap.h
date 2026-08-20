@@ -16,4 +16,6 @@ extern	int	  dsap_id;	/* Invocation identifier in simple DUA mode */
 #define ds_modifyentry(arg,err) dap_modifyentry(dsap_ad,&(dsap_id),arg,err)
 #define ds_modifyrdn(arg,err) dap_modifyrdn(dsap_ad,&(dsap_id),arg,err)
 
+int ds_unbind (void);
+
 #endif

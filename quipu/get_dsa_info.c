@@ -12,6 +12,7 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "osisec-stub.h"
+#include "quipu/find.h"
 
 extern LLog * log_dsap;
 extern DN mydsadn;
@@ -21,12 +22,11 @@ struct di_block	* di_alloc();
 struct oper_act	* make_get_dsa_info_op();
 extern Attr_Sequence entry_find_type();
 
-/*
-*  This routine is used to read the info (including presentation address)
-*  for a dsa given its distinguished name.
-*  This is called during the DSA initialisation, to find the name THIS dsa.
+/**
+ * This routine is used to read the info (including presentation address)
+ * for a dsa given its distinguished name.
+ * This is called during the DSA initialisation, to find the name THIS dsa.
 */
-
 int get_dsa_info (DN dn, struct dn_seq *dn_stack, struct DSError *err, struct di_block **di_p) {
 	struct di_block	* di_tmp;
 	struct di_block	* di_lookup;
@@ -335,7 +335,7 @@ char *get_entry_passwd (Attr_Sequence as) {
 	return( (char *)at->attr_value->avseq_av.av_struct);
 }
 
-int make_dsa_bind_arg (struct ds_bind_arg *arg) {
+void make_dsa_bind_arg (struct ds_bind_arg *arg) {
 #ifdef NEXT_VERSION
 	Entry my_entry;
 	char * passwd;

@@ -1,5 +1,6 @@
 /* modifyrdn.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/modifyrdn.h"
 #include "pepsy.h"

@@ -2,6 +2,7 @@
 
 #include <sys/types.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "quipu/util.h"
 #include "psap.h"

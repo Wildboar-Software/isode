@@ -1,5 +1,6 @@
 /* modify.c - */
 
+#include "dish.h"
 #include <ctype.h>
 #include <stdlib.h>
 #include "psap.h"
@@ -27,11 +28,17 @@ extern char     fname[];
 
 int mod_template (char *, char);
 
+static void ems_part_free (struct entrymod *emp);
+static void dsa_control_info (void);
+
 struct	list_element {
 	char   *mod;
 	char	add;			/* 1=add, 0=remove */
 	struct  list_element*	next ;
 } ;
+
+static int build_modify (struct list_element *start,
+			  struct ds_modifyentry_arg *mod_arg);
 
 extern Entry    current_entry;
 static char     new_draft;
@@ -363,7 +370,7 @@ struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at) {
 	return (em);
 }
 
-void ems_part_free (struct entrymod *emp) {
+static void ems_part_free (struct entrymod *emp) {
 	if(emp == NULLMOD)
 		return;
 	ems_part_free(emp->em_next);
@@ -493,7 +500,7 @@ out:
 	/* as_free (mod_arg.mea_changes->em_what); */
 }
 
-void dsa_control_info (void) {
+static void dsa_control_info (void) {
 	struct ds_read_arg read_arg;
 	struct DSError  error;
 	struct ds_read_result result;
@@ -560,7 +567,7 @@ int mod_template (char *name, char noedit) {
 	return (OK);
 }
 
-int build_modify (
+static int build_modify (
 	struct list_element *start,
 	struct ds_modifyentry_arg *mod_arg
 ) {

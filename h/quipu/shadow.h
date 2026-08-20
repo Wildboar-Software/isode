@@ -6,3 +6,4 @@ void shadow_myentry (void);
 void free_shadow_lists (void);
 void shadow_entry (Entry eptr);
 int inherit_link (Entry e, Entry parent);
+void shadow_myentry (void);

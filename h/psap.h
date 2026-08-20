@@ -616,5 +616,6 @@ extern char *pepy_strings[];
 #define	 PEPY_ERR_EXTRA_MEMBERS 	(pepy_strings[21])
 
 void ps_printf (PS ps, char *fmt, ...);
+int free_static_oid (void);
 
 #endif

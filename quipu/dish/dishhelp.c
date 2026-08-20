@@ -1,5 +1,6 @@
 /* dishhelp.c - */
 
+#include "dish.h"
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
@@ -19,6 +20,9 @@ struct {
 
 } help_info[MAXARG];
 int num_help = 0;
+
+static void print_other (PS aps, char x);
+static void print_service (void);
 
 void add_dish_help (char *command, char *args, char serv, char other, char *use) {
 	help_info[num_help].command = command;
@@ -120,13 +124,13 @@ void help_arg (char *rtn) {
 	ps_print (OPT,"Sorry - No help available\n");
 }
 
-void print_other (PS aps, char x) {
+static void print_other (PS aps, char x) {
 	if (x == FALSE)
 		return;
 	ps_print (aps,"\n[-[no]types <attribute-type> *] [-[no]all]\n[-[no]value] [-[no]show] \n[-[no]key] [-edb]\n[-proc <syntax> <process>]");
 }
 
-void print_service (void) {
+static void print_service (void) {
 	ps_print (RPS,"[-sequence <name>] [-nosequence]\n");
 	ps_print (RPS,"[-[no]preferchain] [-[no]chaining]\n");
 	ps_print (RPS,"[-[dont]usecopy] [-[dont]dereferencealias]\n");

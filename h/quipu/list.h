@@ -62,4 +62,14 @@ int dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, s
 void list_arg_free (struct ds_list_arg *arg);
 int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt);
 
+int check_lacl (
+	DN binddn,
+	DN selfdn,
+	AV_Sequence avs,
+	int scope,
+	int *sizelimit
+);
+
+void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit);
+
 #endif

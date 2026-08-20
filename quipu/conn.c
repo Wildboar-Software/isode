@@ -4,6 +4,7 @@
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
+#include "quipu/database.h"
 
 extern LLog * log_dsap;
 

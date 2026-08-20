@@ -9,6 +9,11 @@
 #include "quipu/dua.h"
 #include "quipu/connection.h"
 #include "quipu/entry.h"
+#include "quipu/database.h"
+#include "quipu/shadow.h"
+#include "quipu/service.h"
+#include "quipu/init.h"
+#include "quipu/cache.h"
 
 AV_Sequence super_user;
 Entry subtree_load (Entry parent, DN dn);
@@ -31,6 +36,7 @@ extern IFP schema_fn;
 extern IFP restart_fn;
 extern AttributeType at_version;
 extern SFD attempt_restart ();
+extern int free_phylinebuf (void);
 time_t	timenow;
 
 static void set_context (Entry eptr);

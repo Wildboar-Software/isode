@@ -13,6 +13,14 @@
 #include "quipu/util.h"
 #include <sys/stat.h>
 #include "sys.file.h"
+#include "quipu/watchdog.h"
+#include "quipu/init.h"
+#include "quipu/malloc.h"
+#include "quipu/database.h"
+#include "quipu/watchdog.h"
+#include "quipu/cache.h"
+#include "quipu/shadow.h"
+#include "quipu/service.h"
 
 #include "dgram.h"
 #ifdef	TCP
@@ -48,6 +56,11 @@ static  int   debug = 1;
 static  int   nbits = FD_SETSIZE;
 
 extern LLog * log_dsap;
+
+extern void free_parents (void);
+extern void quipu_syntaxes (void);
+extern int net_init (void);
+extern void dsa_work (struct task_act *tk);
 
 #ifdef QUIPU_CONSOLE
 #include "quipu/IF-types.h"
@@ -99,7 +112,8 @@ extern struct SecurityServices *dsap_security;
 
 char ** sargv;
 
-static void	osisecinit ();
+static void osisecinit(int *argc, char ***argv, int fn);
+static int do_restart (int sig);
 
 int main (int argc, char **argv) {
 #ifdef SBRK_DEBUG
@@ -296,8 +310,7 @@ signal (SIGUSR2, list_status2);
 
 static int restart = 0;
 
-SFD
-clean_exit (int x) {
+void clean_exit (int x) {
 	if (restart)
 		do_restart(x);
 	else
@@ -646,7 +659,7 @@ fork_ok:
 		do_restart (sig);
 	}
 
-	int do_restart (int sig) {
+	static int do_restart (int sig) {
 		int fpid, sd;
 		unsigned int secs;
 		extern char * mydsaname;

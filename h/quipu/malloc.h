@@ -22,4 +22,7 @@ extern unsigned attr_index;
 #define RESTORE_HEAP	{if (mem_heap >= 2) mem_heap = 1;}
 
 #define SET_HEAP(x)	{if (mem_heap == 1) mem_heap = 2 + set_heap (x);}
+
+void start_malloc_trace (char *f);
+void stop_malloc_trace (void);
 #endif

@@ -10,6 +10,7 @@
 #include "quipu/name.h"
 #include "cmd_srch.h"
 #include "quipu/malloc.h"
+#include "quipu/database.h"
 #ifdef TURBO_DISK
 #include <gdbm.h>
 #endif

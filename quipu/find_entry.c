@@ -6,6 +6,9 @@
 #include "quipu/ds_error.h"
 #include "quipu/connection.h"
 #include "quipu/turbo.h"
+#include "quipu/find.h"
+#include "quipu/referral.h"
+#include "quipu/cache.h"
 
 extern Entry database_root;
 extern LLog * log_dsap;
@@ -13,8 +16,39 @@ extern time_t timenow;
 extern time_t cache_timeout;
 extern DN  mydsadn;
 extern struct di_block * di_alloc();
+extern int di2cref (struct di_block *, struct DSError *, char);
 
-int find_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p, int optype) {
+static int no_reply_child (
+	DN object,
+	DN dn, 	/* tail - not matched */
+	struct dn_seq *dn_stack,
+	int master,
+	Entry entryptr,
+	struct DSError *err,
+	struct di_block **di_p
+);
+
+static int no_reply_edb (
+	DN object,
+	DN dn, 	/* tail - not matched */
+	struct dn_seq *dn_stack,
+	int master,
+	Entry entryptr,
+	struct DSError *err,
+	struct di_block **di_p
+);
+
+int find_entry (
+	DN object,
+	common_args *ca,
+	DN acl_who,
+	struct dn_seq *dn_stack,
+	int master,
+	Entry *ent_p,
+	struct DSError *err,
+	struct di_block **di_p,
+	int optype
+) {
 	int deref = FALSE;
 	extern time_t cache_timeout;
 	DN dn_found;
@@ -129,7 +163,16 @@ out:
 	return (DS_OK);
 }
 
-int find_child_entry (DN object, common_args *ca, DN acl_who, struct dn_seq *dn_stack, int master, Entry *ent_p, struct DSError *err, struct di_block **di_p) {
+int find_child_entry (
+	DN object,
+	common_args *ca,
+	DN acl_who,
+	struct dn_seq *dn_stack,
+	int master,
+	Entry *ent_p,
+	struct DSError *err,
+	struct di_block **di_p
+) {
 	/* this is very similar to find_entry(), except a top level */
 	/* constructor is allowed */
 	int deref = FALSE;
@@ -220,7 +263,6 @@ int really_find_entry (
 ) {
 	Entry parent;
 	Avlnode *kids;
-	int entryrdn_cmp ();
 	RDN b_rdn;
 	DN     tdn, dn, dn_trail = NULLDN;
 	DN     aliasdn = NULLDN;
@@ -390,7 +432,15 @@ int really_find_entry (
 	/* NOTREACHED */
 }
 
-int referral_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p, char chain) {
+int referral_dsa_info (
+	DN object,
+	struct dn_seq *dn_stack,
+	int master,
+	Entry ptr,
+	struct DSError *err,
+	struct di_block **di_p,
+	char chain
+) {
 	int ret;
 	struct di_block     * di_tmp;
 
@@ -438,7 +488,7 @@ int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, En
 	return(dsa_info_parent(object,err,di_p,master));
 }
 
-int no_reply_child (
+static int no_reply_child (
 	DN object,
 	DN dn, 	/* tail - not matched */
 	struct dn_seq *dn_stack,
@@ -467,7 +517,7 @@ int no_reply_child (
 	return(constructor_dsa_info_aux (object, dn_stack, master, entryptr, err, di_p));
 }
 
-int no_reply_edb (
+static int no_reply_edb (
 	DN object,
 	DN dn, 	/* tail - not matched */
 	struct dn_seq *dn_stack,

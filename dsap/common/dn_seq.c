@@ -139,7 +139,7 @@ struct dn_seq *str2dnseq (char *str) {
 	return (dns);
 }
 
-int	  dn_in_dnseq(DN dn, struct dn_seq *dnseq)
+int	dn_in_dnseq(DN dn, struct dn_seq *dnseq)
 {
 	struct dn_seq	* ptr;
 	int 	i = 1;

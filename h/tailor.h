@@ -143,5 +143,6 @@ int tai_string (char *str);
 int dsap_tai (int argc, char **argv);
 void tai_args (int *acptr, char ***avptr);
 int dsap_tai_init (void);
+int tailorfree (void);
 
 #endif

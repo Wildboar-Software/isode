@@ -1,5 +1,6 @@
 /* showname.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/name.h"
 

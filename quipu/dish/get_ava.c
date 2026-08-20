@@ -1,5 +1,6 @@
 /* get_ava.c - */
 
+#include "dish.h"
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 
@@ -9,7 +10,7 @@ extern	char	frompipe;
 extern	PS	opt, rps;
 
 int get_ava (AVA *avasert, char *type, char *value) {
-	char           *TidyString ();
+	char *TidyString ();
 
 	if (type == NULLCP || *type == 0)
 		return (NOTOK);

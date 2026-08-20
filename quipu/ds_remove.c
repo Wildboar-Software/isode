@@ -8,6 +8,7 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/connection.h"
+#include "quipu/find.h"
 
 extern LLog * log_dsap;
 extern int local_master_size;

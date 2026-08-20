@@ -32,5 +32,13 @@ int case_exact_match (short sntx);
 int approx_string (short sntx);
 int check_3166 (char *a);
 void soundex (char *s, char **c);
+int	dn_in_dnseq(DN dn, struct dn_seq *dnseq);
+int check_guard (
+	char *pwd,
+	int pwd_len,
+	char *salt,
+	char *hval,
+	int hlen
+);
 
 #endif

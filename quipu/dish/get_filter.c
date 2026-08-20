@@ -1,5 +1,6 @@
 /* get_filter.c - */
 
+#include "dish.h"
 #include <stdlib.h>
 #include <string.h>
 #include "quipu/util.h"
@@ -11,6 +12,8 @@ extern	char	frompipe;
 extern	PS	opt, rps;
 
 char           *TidyString ();
+static int getop (char *str, char *ch);
+int filteritem (char *str, Filter fltr);
 
 Filter          get_filter_aux (char *str) {
 	int             gotit,
@@ -108,7 +111,7 @@ Filter          get_filter (char *str) {
 	return (f);
 }
 
-int getop (char *str, char *ch) {
+static int getop (char *str, char *ch) {
 	int             i,
 					bracket = 0;
 

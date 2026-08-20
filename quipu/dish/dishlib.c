@@ -1,5 +1,6 @@
 /* dish.c - */
 
+#include "dish.h"
 #include <ctype.h>
 #include <setjmp.h>
 #include <stdlib.h>
@@ -11,6 +12,7 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
+#include "quipu/dap.h"
 #include <stdarg.h>
 
 #ifdef	SOCKETS
@@ -50,21 +52,27 @@ char 		doneget;
 char		*TidyString();
 char 		search_result;		/* another horrid global ! */
 
-extern int call_list (), call_compare (), call_search (),
-	   call_add (), call_delete (), call_showentry (), call_showname (),
-	   call_showattribute (), call_unbind (), call_help (), call_ds (),
-	   unknown_cmd (), dsa_control (), call_modify (), call_modifyrdn (),
-	   call_quit (), call_bind (), call_moveto (), call_fred ();
+extern void call_list (int argc, char **argv), call_compare (int argc, char **argv), call_search (int argc, char **argv),
+	   call_add (int argc, char **argv), call_delete (int argc, char **argv), call_showentry (int argc, char **argv),
+	   call_showattribute (int argc, char **argv), call_unbind (int argc, char **argv), call_help (int argc, char **argv), call_ds (int argc, char **argv),
+	   unknown_cmd (int argc, char **argv), dsa_control (int argc, char **argv), call_modify (int argc, char **argv), call_modifyrdn (int argc, char **argv),
+	   call_quit (int argc, char **argv), call_moveto (int argc, char **argv), call_fred (int argc, char **argv);
+
+extern int call_bind (int argc, char **argv);
+
+static void call_bind_void(int argc, char **argv) {
+	call_bind (argc, argv);
+}
 
 static struct {
 	char           *command;
-	int             (*handler) ();
+	void             (*handler) ();
 	int		unique;
 	char		defaults [LINESIZE];
 } Commands[MAXARGS];
 static int num_cmd = 0;
 
-void add_dish_command (char *name, int (*func)(int, char **), int len) {
+void add_dish_command (char *name, void (*func)(int, char **), int len) {
 	Commands[num_cmd].command = name;
 	Commands[num_cmd].handler = func;
 	Commands[num_cmd].unique  = (len == 0 ? strlen(name) : len);
@@ -82,7 +90,7 @@ int dish_cmd_init (void) {
 	add_dish_command ("modifyrdn", 	call_modifyrdn,		7);
 	add_dish_command ("showentry", 	call_showentry,		2);
 	add_dish_command ("showname", 	call_showname,		5);
-	add_dish_command ("bind",	call_bind,		1);
+	add_dish_command ("bind",	call_bind_void,		0);
 	add_dish_command ("unbind", 	call_unbind,		1);
 	add_dish_command ("moveto", 	call_moveto,		3);
 	add_dish_command ("dsacontrol", dsa_control,		2);
@@ -250,7 +258,7 @@ int dish_init (int argc, char **argv) {
 	}
 }
 
-int unknown_cmd (int argc, char **argv) {
+void unknown_cmd (int argc, char **argv) {
 	if (frompipe)
 		ps_print (opt,"Serious dish error\n");
 	else {
@@ -513,7 +521,7 @@ tidy_up:
 	}
 }
 
-int call_quit (int argc, char **argv) {
+void call_quit (int argc, char **argv) {
 	/* can only get called if run interactively - dont worry about pipe */
 	signal (SIGINT, SIG_DFL);
 	DLOG (log_dsap, LLOG_DEBUG, ("Dish:- Exiting Dish successfully..."));

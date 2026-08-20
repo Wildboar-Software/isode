@@ -2,11 +2,13 @@
 /* A management tool - probably best to run this as a manager. */
 
 #include <stdlib.h>
+#include <string.h>
 #include "quipu/util.h"
 #include "quipu/read.h"
 #include "quipu/entry.h"
 #include "quipu/compare.h"
 #include "quipu/ds_search.h"
+#include "quipu/schema.h"
 
 #define ORG_PERSON "newPilotPerson & quipuObject"
 /* this should probably go elsewhere !!! */
@@ -325,6 +327,6 @@ char verify_alias(EntryInfo *alias_entry) {
 	return (GoodAlias) ;
 }
 
-int shadow_entry (void) {
+void shadow_entry (void) {
 	;
 }

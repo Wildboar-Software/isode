@@ -126,9 +126,7 @@ typedef struct entry {
 #define entry_alloc()           (Entry) calloc (1,sizeof(entry));
 Avlnode *getentry_block();
 Entry directory_load();
-int find_entry ();
 int find_master_entry ();
-int really_find_entry ();
 Entry local_find_entry (DN object, char deref);
 void entry_free (Entry entryptr);
 void directory_free (Entry directory);
@@ -141,6 +139,11 @@ int entry_cmp(Entry e1, Entry e2);
 int real_unravel_attribute (Entry eptr, struct DSError * error);
 void check_dsa_known_oids (void);
 void set_inheritance (Entry eptr);
+int quipu_ctx_supported (Entry ptr);
+int write_edb (Entry ptr, char *filename);
+int quipu_version_7 (Entry eptr);
+void modify_attr (Entry eptr, DN who);
+int create_null_edb (Entry eptr);
 
 #define isleaf(x) 	((x)->e_leaf || \
 		((x)->e_children == NULLAVL && \
@@ -234,6 +237,7 @@ struct getedb_result {
 #define NULL_GETRESULT (struct getedb_result *) NULL
 
 int EDB_decode_force (struct getedb_result **pparm, PE pe);
+int EDB_encode (struct getedb_result *parm, PE *pe);
 
 struct getedb_arg {
 	DN 	ga_entry;

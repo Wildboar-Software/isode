@@ -117,7 +117,7 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 #ifndef PLOGP
 #define	PLOGP(lp,args,pe,text,rw) \
     if ((lp) -> ll_events & LLOG_PDUS) { \
-	pvpdu (lp, 0, (struct modtype *) 0, pe, text, rw); \
+	pvpdu (lp, 0, NULL, pe, text, rw); \
     } \
     else
 #endif

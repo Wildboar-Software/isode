@@ -1,5 +1,6 @@
 /* bind.c - */
 
+#include "dish.h"
 #include <ctype.h>
 #include <setjmp.h>
 #include <stdio.h>
