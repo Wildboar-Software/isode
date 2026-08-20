@@ -1,4 +1,5 @@
 /* rydsresult.c - ROSY: return result to invocation */
+#include "pepsycodec.h"
 #include "rosy.h"
 
 #ifdef __STDC__

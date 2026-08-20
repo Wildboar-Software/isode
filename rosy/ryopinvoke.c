@@ -1,5 +1,6 @@
 /* ryopinvoke.c - ROSY: invoke */
 #include <sys/types.h>
+#include "pepsycodec.h"
 #include "rosy.h"
 
 #ifdef __STDC__

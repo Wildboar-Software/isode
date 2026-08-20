@@ -12,6 +12,7 @@
 #include "ppkt.h"
 #include "tsap.h"
 #include "tailor.h"
+#include "pvpdu.h"
 #include "compat.h"
 
 #include "internet.h"

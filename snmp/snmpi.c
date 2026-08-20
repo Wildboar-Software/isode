@@ -12,13 +12,18 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
 #endif
 #include "tailor.h"
+#include "pepsycodec.h"
 
 #include "dgram.h"
 #include "tsap.h"
@@ -35,6 +40,8 @@
 #define	COTS
 #endif
 #endif
+
+extern int THASH (const char *name);
 
 int	debug = 0;
 static	int	verbose = 0;
@@ -611,6 +618,7 @@ static int f_compile (char **vec) {
 			k += ot -> ot_name -> oid_nelem + 1;
 		}
 		fprintf (fp, "};\n\n");
+		extern void flsyntax (OS *first, OS *last);
 		flsyntax (&first, &last);
 		fprintf (fp, "static struct _syntax {\n    char   *name;\n");
 		fprintf (fp, "    OS      value;\n}\t_syntaxes[] = {\n");
@@ -676,6 +684,7 @@ static int f_compile (char **vec) {
 		fprintf (fp, "    NULL\n};\n\n");
 		fprintf (fp, "OT\tanchor = _types;\n");
 		fprintf (fp, "OT\tchain = &_types[%d];\n\n", i - 1);
+		extern void flobjects (FILE *fp);
 		flobjects (fp);
 	}
 	if (file)
@@ -1504,6 +1513,7 @@ cots:
 	srandom ((int) time ((long *) 0));
 #endif
 	ps_len_strategy = PS_LEN_LONG;
+	extern int loadobjects (const char *file);
 	if (loadobjects (defs) == NOTOK)
 		adios (NULLCP, "loadobjects: %s", PY_pepy);
 	if (defs && (ap = rindex (defs, '/')))

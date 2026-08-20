@@ -8,6 +8,8 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int  PRelRequestAux (struct psapblk *pb, PE data, struct PSAPrelease *pr, struct PSAPindication *pi);
 

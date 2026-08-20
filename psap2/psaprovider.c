@@ -8,6 +8,8 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int  once_only = 0;
 static struct psapblk psapque;

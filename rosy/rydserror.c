@@ -1,6 +1,7 @@
 /* rydserror.c - ROSY: return error to invocation */
 
 #include <stdio.h>
+#include "pepsycodec.h"
 #include "rosy.h"
 
 #ifdef __STDC__

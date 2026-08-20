@@ -5,6 +5,7 @@
 #include "quipu/oid.h"
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
+#include "pepsycodec.h"
 
 extern  LLog    * log_dsap;
 extern  int       dsap_ad;           /* Association descriptor */

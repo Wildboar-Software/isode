@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include "fpkt.h"
+#include "pvpdu.h"
 
 LLog _ftam_log = {
 	"ftam.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,

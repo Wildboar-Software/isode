@@ -8,6 +8,8 @@
 #include "ppkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 /*    SERVER only */
 

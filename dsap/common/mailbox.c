@@ -11,6 +11,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static void mailbox_free (void *value) {
 	struct mailbox *ptr = (struct mailbox *) value;

@@ -28,12 +28,12 @@
 #include "tailor.h"
 #include "pepsy.h"
 #include "logger.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 #ifdef	DEBUG
 #define	STATS
 #endif
-
-extern void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 extern void quipu_syntaxes (void);
 extern int dsap_init (int *acptr, char ***avptr);
 

@@ -8,6 +8,7 @@
 #include "ROS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 static int	acslose ();
 

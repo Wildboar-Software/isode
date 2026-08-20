@@ -32,6 +32,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static void documentStore_free (void *value) {
 	struct documentStore *a = (struct documentStore *) value;

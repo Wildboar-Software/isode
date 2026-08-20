@@ -8,6 +8,8 @@
 #define	ACSE
 #include "acpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int  AcRelRetryRequestAux ();
 

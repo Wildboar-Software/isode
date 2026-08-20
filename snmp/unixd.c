@@ -11,6 +11,8 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
 #include "compat.h"
 #include "smux.h"
 #include "objects.h"

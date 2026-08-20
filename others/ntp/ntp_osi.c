@@ -7,6 +7,7 @@
 #include "NTP-ops.h"
 #include "NTP-types.h"
 #include "af_osi.h"
+#include "pvpdu.h"
 
 void	ros_advise (), acs_advise ();
 extern LLog *pgm_log;

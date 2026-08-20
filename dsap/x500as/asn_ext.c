@@ -7,6 +7,7 @@
 #include "quipu/turbo.h"
 #include "IF-types.h"
 #include "Quipu-types.h"
+#include "pepsycodec.h"
 
 #include "pepsy.h"
 

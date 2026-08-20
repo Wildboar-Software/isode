@@ -4,7 +4,7 @@
 #define PEPSY_DEFINITIONS
 
 #include <stdint.h>
-#include "psap.h"
+#include <sys/types.h>
 
 #ifndef	PEPYPARM
 #define PEPYPARM	char *
@@ -192,29 +192,6 @@ typedef	struct	{
 #define	LOTSOFBITS	128
 
 int fre_obj();
-
-int enc_f (
-	int typ,
-	modtyp *mod,
-	PE *pe,
-	int explicit,
-	int len,
-	char *buf,
-	char *parm
-);
-
-int dec_f (
-	int typ,
-	modtyp *mod,
-	PE pe,
-	int explicit,
-	int *len,
-	char **buf,
-	char **parm
-);
-
-void vpushquipu(PS ps);
-void vpopquipu(void);
 void free_pepsy_bp(void);
 
 #endif

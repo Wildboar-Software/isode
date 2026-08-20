@@ -6,6 +6,7 @@
 #include <string.h>
 #include <strings.h>
 #include <search.h>
+#include "pepsycodec.h"
 #include "fpkt.h"
 
 struct pair fclass_pairs[] = {

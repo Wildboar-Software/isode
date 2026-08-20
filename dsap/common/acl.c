@@ -6,6 +6,7 @@
 #include "cmd_srch.h"
 #include "quipu/syntaxes.h"
 #include "quipu/entry.h"
+#include "pepsycodec.h"
 
 extern char dsa_mode;
 int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);

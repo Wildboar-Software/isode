@@ -10,8 +10,17 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 #define	AC_ASN		"acse pci version 1"
+
+extern int	tcprestore (
+	struct psapblk *pb,
+	char *buffer,
+	struct PSAPindication *pi
+);
+extern int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
 
 static int  PInitAux ();
 

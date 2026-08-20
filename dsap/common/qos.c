@@ -18,6 +18,7 @@
 #include "cmd_srch.h"
 #define	cmd_srch	CMD_SRCH
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static int  CMD_SRCH ();
 

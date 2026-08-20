@@ -10,6 +10,7 @@
 #include "manifest.h"
 #include "ropkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct RtSAPabort *rta);
 static int rtsINDICATIONser (int sd, struct RtSAPindication *rti);

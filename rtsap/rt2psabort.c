@@ -6,6 +6,7 @@
 #include "rtpkt.h"
 #include "tailor.h"
 #include "logger.h"
+#include "pvpdu.h"
 
 static int RtUAbortRequestAux (struct assocblk *acb, PE data, struct RtSAPindication *rti);
 

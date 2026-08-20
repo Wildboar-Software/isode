@@ -7,6 +7,7 @@
 #include "quipu/attr.h"
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 extern LLog *log_dsap;
 extern char dsa_mode;

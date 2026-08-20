@@ -73,3 +73,4 @@ extern struct rtetab *rts_iso;
 
 int	get_routes ();
 struct rtetab *get_rtent ();
+void sort_rtetab (void);

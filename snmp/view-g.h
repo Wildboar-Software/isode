@@ -1,5 +1,6 @@
 /* view-g.h - VIEW group */
 #include <stdint.h>
+#include <strings.h>
 #include "isoaddrs.h"
 #include "internet.h"
 #include "psap.h"

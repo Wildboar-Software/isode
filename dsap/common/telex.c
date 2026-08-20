@@ -13,6 +13,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 extern LLog * log_dsap;
 

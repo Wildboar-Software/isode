@@ -9,6 +9,8 @@
 #include "OACS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 extern int RtWaitRequestAux (
 	struct assocblk *acb,

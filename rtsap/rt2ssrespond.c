@@ -8,6 +8,8 @@
 #include "OACS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 #include "internet.h"
 
 extern int acsap_conntype;

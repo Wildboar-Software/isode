@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
+#include <time.h>
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"

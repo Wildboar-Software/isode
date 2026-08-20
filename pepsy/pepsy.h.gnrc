@@ -335,4 +335,4 @@ int is_any_type (YP yp);
 
 extern int errno;
 
-#endif _GOOBIS_BO_BOOBIS_H_
+#endif /* _GOOBIS_BO_BOOBIS_H_ */

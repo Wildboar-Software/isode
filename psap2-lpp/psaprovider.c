@@ -8,6 +8,8 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
 static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, struct PSAPindication *pi);

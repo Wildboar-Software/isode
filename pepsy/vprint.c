@@ -9,6 +9,7 @@
 #include "psap.h"
 #include "pepsy.h"
 #include "logger.h"
+#include "pvpdu.h"
 
 #ifndef __STDC__
 int	fprintf ();
@@ -566,7 +567,7 @@ static char *newbuf (int i) {
 
 /*  VPDU - support for backwards compatibility */
 
-void _vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
+void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
@@ -580,7 +581,7 @@ void _vpdu (LLog *lp, IFP fnx, PE pe, char *text, int rw) {
 	}
 	LLOG (lp, LLOG_ALL, ("%s", buffer));
 	vlevel = didname = didvpush = didvpop = docomma = 0;
-	(*fnx) (pe, 1, NULLIP, NULLVP, NULLCP);
+	(*fnx) (pe, 1, NULL, NULLVP, NULLCP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
 	vfp = stdout, vfnx = (IFP) fprintf;

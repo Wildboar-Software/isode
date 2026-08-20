@@ -7,6 +7,7 @@
 #define	ACSE
 #include "acpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 /* A-ABORT.REQUEST */
 

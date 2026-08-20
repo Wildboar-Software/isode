@@ -3,7 +3,6 @@
  * Based on an TCP-based implementation by George Michaelson of University
  * College London.
  */
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -11,6 +10,8 @@
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 #include "internet.h"
 
 /* RO-BEGIN.INDICATION */

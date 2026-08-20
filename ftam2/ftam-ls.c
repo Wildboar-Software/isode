@@ -7,6 +7,7 @@
 #include <strings.h>
 #include <time.h>
 #include <unistd.h>
+#include "pepsycodec.h"
 #include "FTAM-types.h"
 #include "ftamuser.h"
 #include "general.h"

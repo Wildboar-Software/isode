@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include "pepsycodec.h"
 #include "fpkt.h"
 
 /* F-INITIALIZE.INDICATION */

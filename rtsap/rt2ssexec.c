@@ -9,6 +9,8 @@
 #include "rtpkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 #include "internet.h"
 
 /*    SERVER only */

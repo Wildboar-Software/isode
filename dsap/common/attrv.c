@@ -6,6 +6,7 @@
 #include "quipu/malloc.h"
 #include "cmd_srch.h"
 #include "pepsy.h"
+#include "pepsycodec.h"
 #include <sys/stat.h>
 
 extern int oidformat;

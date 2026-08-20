@@ -9,6 +9,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static void inherit_free (void *value) {
 	InheritAttr ptr = (InheritAttr) value;

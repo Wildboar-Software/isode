@@ -10,6 +10,8 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "objects.h"
 #include "tailor.h"
 
@@ -669,7 +671,15 @@ void dump_objects_by_text (void) {
 	printf ("///////\n");
 }
 
-void dump_objects_by_tree (void) {
+static void dump_object_by_tree (OT ot, int i) {
+	if (ot == NULL)
+		return;
+	dump_object (ot, i);
+	dump_object_by_tree (ot -> ot_children, i + 1);
+	dump_object_by_tree (ot -> ot_sibling, i);
+}
+
+static void dump_objects_by_tree (void) {
 	char **ap;
 	char  **bp;
 	OT	    ot;
@@ -681,14 +691,6 @@ void dump_objects_by_tree (void) {
 			printf ("no object for root \"%s\"\n", *ap);
 	}
 	printf ("///////\n");
-}
-
-void dump_object_by_tree (OT ot, int i) {
-	if (ot == NULL)
-		return;
-	dump_object (ot, i);
-	dump_object_by_tree (ot -> ot_children, i + 1);
-	dump_object_by_tree (ot -> ot_sibling, i);
 }
 
 void dump_objects_by_xxx (void) {
@@ -731,8 +733,7 @@ void flobjects (FILE *fp) {
 	fprintf (fp, "extern	int	once_only_Tbuckets;\n\
 extern	OT	Tbuckets[];\n\
 \n\
-loadobjects (file)\n\
-char   *file;\n\
+int loadobjects (const char *file)\n\
 {\n\
     int	    i;\n\
     struct _syntax *sy;\n\

@@ -17,6 +17,7 @@
 #include "quipu/syntaxes.h"
 #include "pepsy.h"
 #include "quipu/SA-types.h"
+#include "pepsycodec.h"
 
 static CMD_TABLE pdm_table [] = {
 	"ANY",		0,

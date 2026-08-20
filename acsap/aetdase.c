@@ -12,6 +12,8 @@
 #include "dgram.h"
 #include "tailor.h"
 #include "compat.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int stayopen = 0;
 

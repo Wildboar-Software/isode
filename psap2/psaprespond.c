@@ -6,6 +6,8 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 /* P-CONNECT.INDICATION */
 

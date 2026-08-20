@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "pepsycodec.h"
 #include "ftamsystem.h"
 #include "pepsy.h"
 

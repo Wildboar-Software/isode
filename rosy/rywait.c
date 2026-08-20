@@ -3,6 +3,7 @@
 #include <sys/types.h>
 
 #include <stdio.h>
+#include "pepsycodec.h"
 #include "rosy.h"
 
 #ifdef __STDC__

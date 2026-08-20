@@ -6,6 +6,7 @@
 #include "cmd_srch.h"
 #include "quipu/syntaxes.h"
 #include "logger.h"
+#include "pepsycodec.h"
 
 /*
  * These routines implement the searchACLSyntax.  The EDB representation

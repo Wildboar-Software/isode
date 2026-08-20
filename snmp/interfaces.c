@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <stdint.h>
 #include "mib.h"
 #include "interfaces.h"

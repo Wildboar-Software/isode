@@ -20,10 +20,20 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <strings.h>
+#include <time.h>
+#include <sys/time.h>
 #include "mib.h"
+#include "compat.h"
+#include "interfaces.h"
 #include "sys.file.h"
 #include <sys/stat.h>
 #include "tailor.h"
+#include "pepsy.h"
+#include "psap.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 #include "dgram.h"
 #include "tsap.h"
@@ -2450,24 +2460,38 @@ static void envinit (void) {
 		adios (NULLCP, "readobjects: %s", PY_pepy);
 	init_mib ();
 #ifndef	SNMPC
-	init_system ();	    /* Internet-standard MIB */
+	extern void init_system (void);	    /* Internet-standard MIB */
+	extern void init_interfaces (void);
+	extern void init_ip (void);
+	extern void init_icmp (void);
+	extern void init_tcp (void);
+	extern void init_udp (void);
+	extern void init_clns (void);	    /* experimental CLNS group */
+	init_system ();
 	init_interfaces ();
 	init_ip ();
 	init_icmp ();
 	init_tcp ();
 	init_udp ();
-	init_clns ();	    /* experimental CLNS group */
+	init_clns ();
 #endif
+	extern void init_snmp (void);
+	extern void init_view (void);
 	init_snmp ();
 	init_view ();
 #ifdef	SMUX
+	extern void init_smux (void);
 	init_smux ();
 #endif
+	extern void init_eval (void);
+	extern void readconfig (void);
+	extern void fin_view (void);
+	extern void fin_mib (void);
+	extern void start_view (void);
 	init_eval ();
 	readconfig ();
 	fin_view ();
 	fin_mib ();
-	void start_trap (void);
 	start_view ();
 	o_advise = (IFP) advise;
 #endif
@@ -2501,7 +2525,7 @@ static void hupser (int sig) {
 	for (p = pe_active; p; p = p -> pe_link) {
 		sprintf (buffer, "active PE 0x%x (refcnt %d)", (caddr_t) p,
 				 p -> pe_refcnt);
-		_vpdu (pgm_log, vunknown, p, buffer, -1);
+		vpdu (pgm_log, vunknown, p, buffer, -1);
 	}
 }
 #endif

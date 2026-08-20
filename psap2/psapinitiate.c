@@ -10,6 +10,8 @@
 #include "ppkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int	PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
 								 int	prequirements, int srequirements, long	isn, int settings, struct SSAPref *ref, PE    *data,

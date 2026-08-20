@@ -12,6 +12,7 @@
 #ifdef	__NeXT__
 #define	n_name	n_un.n_name
 #endif
+#include <sys/time.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "logger.h"

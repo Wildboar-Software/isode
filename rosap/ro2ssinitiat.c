@@ -12,6 +12,8 @@
 #include "ropkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 #include "internet.h"
 
 static int  RoBeginRequestAux ();

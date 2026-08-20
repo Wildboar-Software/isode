@@ -5,6 +5,7 @@
 #include "psap.h"
 #include "isoaddrs.h"
 #include "../x500as/DO-types.h"
+#include "pepsycodec.h"
 
 extern LLog * log_dsap;
 extern struct PSAPaddr * psap_cpy ();

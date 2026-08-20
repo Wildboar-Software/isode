@@ -9,6 +9,8 @@
 #ifdef	DEBUG
 #include "tailor.h"
 #endif
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 /*    handle P-{U,P}-ABORT.INDICATION */
 

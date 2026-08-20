@@ -4,6 +4,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <strings.h>
+#include "pepsycodec.h"
 #include "fpkt.h"
 
 static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti);

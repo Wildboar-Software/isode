@@ -9,6 +9,7 @@
 #include "rtf.h"
 #include <pwd.h>
 #include "tailor.h"
+#include "pvpdu.h"
 
 #ifdef	SYS5
 struct passwd *getpwnam ();

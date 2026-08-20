@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <search.h>
 #include "mib.h"
 #include "view-g.h"
@@ -24,7 +25,11 @@ static OID	localAgent = NULLOID;
 static OID	rfc1157Domain = NULLOID;
 
 static struct view *get_prent ();
-static int  str2sa ();
+static int str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int proxy);
+int f_view (char **vec);
+int f_community (char **vec);
+int f_proxy (char **vec);
+int f_trap (char **vec);
 
 static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -676,7 +681,7 @@ stuff_it:
 	}
 }
 
-int	f_community (char **vec) {
+int f_community (char **vec) {
 	struct community *c;
 	struct NSAPaddr *na;
 
@@ -733,7 +738,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	f_proxy (char **vec) {
+int f_proxy (char **vec) {
 	char    buffer[BUFSIZ];
 	struct community *c;
 	struct view *v,
@@ -802,7 +807,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	f_trap (char **vec) {
+int f_trap (char **vec) {
 	struct trap *t;
 	struct view *v;
 	struct NSAPaddr nas;
@@ -872,7 +877,7 @@ you_lose:
 	return NOTOK;
 }
 
-int  f_view (char **vec) {
+int f_view (char **vec) {
 	char    buffer[BUFSIZ];
 	struct subtree *s,
 			   *x,

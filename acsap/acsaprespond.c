@@ -7,6 +7,8 @@
 #define	ACSE
 #include "acpkt.h"
 #include "tailor.h"
+#include "pepsycodec.h"
+#include "pvpdu.h"
 
 /* A-ASSOCIATE.INDICATION */
 

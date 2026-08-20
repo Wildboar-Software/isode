@@ -11,6 +11,8 @@
 #include "../acsap/OACS-types.h"
 #include "ropkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 #define	doSSabort	ss2rosabort
 

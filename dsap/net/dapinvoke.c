@@ -5,11 +5,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "logger.h"
+#include "pvpdu.h"
 #include "quipu/util.h"
 #include "quipu/dap2.h"
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
+#include "pepsycodec.h"
 
 extern  LLog    * log_dsap;
 extern	void	  ros_log();

@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "compat.h"
 #include "pepsy.h"
+#include "pepsycodec.h"
 #include "ftamuser.h"
 
 static int  put (),  putaux ();

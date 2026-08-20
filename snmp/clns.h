@@ -6,6 +6,7 @@
  * F30602-88-C-0016.
  */
 #include <stdint.h>
+#include <sys/socket.h>
 
 #ifndef	BSD44
 #define	AF_ISO	AF_MAX		/* any value will do */

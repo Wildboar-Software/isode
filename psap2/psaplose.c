@@ -8,6 +8,7 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 #ifndef	lint
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);

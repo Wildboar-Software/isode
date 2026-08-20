@@ -11,6 +11,8 @@
 #include "ropkt.h"
 #ifdef	DEBUG
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 #endif
 
 static int	prob2num ();

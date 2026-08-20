@@ -5,6 +5,10 @@
 -- F30602-88-C-0016.
 --* RFC1098-SNMP *-- SNMP DEFINITIONS ::=
 
+%{
+#include "pepsycodec.h"
+%}
+
 BEGIN
 
 -- these are defined below for brevity

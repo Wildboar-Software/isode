@@ -24,7 +24,7 @@
  * shouldn't cause any problems
  */
 #define RyOperation		PRyOperation
-#endif PEPSY_DEFINITIONS
+#endif /* PEPSY_DEFINITIONS */
 struct RyOperation {
 	char   *ryo_name;		/* operation name */
 	int	    ryo_op;		/* operation code */

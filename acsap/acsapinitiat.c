@@ -9,6 +9,8 @@
 #include "acpkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int AcAssocRequestAux ();
 static int  AcAsynRetryAux ();

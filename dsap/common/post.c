@@ -16,6 +16,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 #define OLD_UB_POSTAL_STRING 60	/* For ISODE-7.0 compat */
 

@@ -87,3 +87,12 @@ empty database. The EDB file MUST be present, and it MUST have an entry defined
 for `cn=Toucan` (or whatever you configure your DSA's name to be in
 `quiputailor`). Review the documentation on how the `mydsaname` option in
 `quiputailor` affects your startup in [`doc/volume5.pdf`](./doc/volume5.pdf).
+
+## To Do
+
+- [ ] Remove `pepy` and `posy` entirely. `pepsy` is the replacement, per Volume 1.
+  - `vt` is the only major project using it.
+  - All subprojects in `others` seem to use it.
+- [ ] Unit Tests (using Unity)
+- [ ] Reproducible Builds
+- [ ] End-to-End Tests

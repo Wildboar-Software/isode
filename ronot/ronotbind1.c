@@ -6,6 +6,7 @@
 #include "ronot.h"
 #include "tailor.h"
 #include "acsap.h"
+#include "pepsycodec.h"
 
 static int ParseRoBindResponse(struct AcSAPconnect *acc, struct RoNOTindication *rni);
 

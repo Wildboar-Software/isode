@@ -7,6 +7,7 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "DSE-types.h"
+#include "pepsycodec.h"
 
 #define advise	PY_advise
 

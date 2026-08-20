@@ -7,6 +7,8 @@
 #include "vtpm.h"
 #include "sector1.h"
 #include "sector5.h"
+#include "pvpdu.h"
+#include "vt.h"
 #ifdef SVR4_UCB
 #include <termio.h>
 #else
@@ -17,9 +19,6 @@
 		  this turns off resetting local echo so ioctl to pty
 		  will not cause demon to hang up.
 		*/
-
-#undef PEPYPARM
-#define PEPYPARM int *
 
 extern char peerhost[];
 extern struct PSAPaddr ts_bound;
@@ -177,7 +176,7 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 		adios(NULLCP, "%s: unsupported profile", profile->profile_name);
 	ud.func_units.bitstring = my_fu;
 	ud.func_units.bitcount = 5;
-	if(build_ASQPDU_ASQpdu(&a_req,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
+	if(build_ASQPDU_ASQpdu(&a_req,1,0,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		adios(NULLCP, "ASQ build failure (%s)", PY_pepy);
 	do_event(VASSreq, a_req);
 }
@@ -259,7 +258,7 @@ int vass_resp (int result) {
 		adios (NULLCP, "invalid profile stored");
 	ud.func_units.bitstring = my_fu;
 	ud.func_units.bitcount = 5;
-	if(build_ASRPDU_ASRpdu((PE *)&a_resp,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
+	if(build_ASRPDU_ASRpdu((PE *)&a_resp,1,0,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		advise(LLOG_NOTICE,NULLCP,  "ASR build failure (%s) -- continuing",
 			   PY_pepy);
 	return(do_event(VASSrsp, a_resp));
@@ -391,11 +390,11 @@ int vt_text (char *str, int len) {
 int send_queue (TEXT_UPDATE ud) {
 	PE vtsdip;
 	if(p_ondq == NULLPE) {	/*Nothing waiting to be sent*/
-		if(build_NDQPDU_NDQpdu(&p_ondq,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
+		if(build_NDQPDU_NDQpdu(&p_ondq,1,0,NULLCP,(PEPYPARM)&ud) == NOTOK)
 			adios(NULLCP,"NDQ build failure (%s)", PY_pepy);
 		p_ondq->pe_context = 1;
 	} else {
-		if(build_NDQPDU_VTsdi(&vtsdip,1,NULL,NULLCP,(int *)&ud) == NOTOK)
+		if(build_NDQPDU_VTsdi(&vtsdip,1,0,NULLCP,(int *)&ud) == NOTOK)
 			adios(NULLCP,"VTsdi build failure (%s)", PY_pepy);
 		vtsdip->pe_context = 1;
 		if(seq_add(p_ondq,vtsdip,-1) == NOTOK)
@@ -665,7 +664,7 @@ void vhdatind (PE pe) {
 
 void vudatind (PE pe) {
 	TEXT_UPDATE ud;
-	if(unbuild_UDQPDU_UDQpdu(pe,1,NULLIP,NULLVP,(PEPYPARM) &ud) == NOTOK) {
+	if(unbuild_UDQPDU_UDQpdu(pe,1,NULL,NULLVP,(PEPYPARM) &ud) == NOTOK) {
 		advise(LLOG_NOTICE,NULLCP,"UDQ parse failure\n");
 	} else {
 		control_ud((CO_UPDATE *) &(ud.updates.co_list) );
@@ -728,7 +727,7 @@ int read_asq (PE pe) {
 	ASQ_MSG ud;
 
 	bzero ((char *) &ud, sizeof ud);
-	if(unbuild_ASQPDU_ASQpdu(pe,1,NULLIP,NULLVP,(PEPYPARM)&ud) == NOTOK) {
+	if(unbuild_ASQPDU_ASQpdu(pe,1,NULL,NULLVP,(PEPYPARM)&ud) == NOTOK) {
 		advise(LLOG_NOTICE,NULLCP,  "ASQ parse failure (%s)", PY_pepy);
 		return(0);
 	}
@@ -841,7 +840,7 @@ int vasscnf (PE pe) {
 	int rep_flag = 0;
 
 	bzero ((char *) &udr, sizeof udr);
-	if(unbuild_ASRPDU_ASRpdu(pe,1,NULLIP,NULLVP,(PEPYPARM)&udr) == NOTOK) {
+	if(unbuild_ASRPDU_ASRpdu(pe,1,NULL,NULLVP,(PEPYPARM)&udr) == NOTOK) {
 		advise (LLOG_NOTICE,NULLCP,  "ASR parse failure (%s)", PY_pepy);
 		return(NOTOK);
 	}
@@ -947,7 +946,8 @@ void asq (PE data) {
 		sf = &sfs;
 		bzero ((char *) sf, sizeof *sf);
 	}
-	PLOG (vt_log, print_VT_PDUs, data, NULLCP, 0);
+	// extern int print_VT_PDUs (PE pe, int explicit, int *len, char **buffer, PEPYPARM parm);
+	// OLDPLOG (vt_log, print_VT_PDUs, data, NULLCP, 0);
 	aca = &aci->aci_abort;
 	srequirements = SR_DUPLEX | SR_RESYNC | SR_TYPEDATA;
 	srequirements &= ~SR_RLS_EXISTS;
@@ -1040,7 +1040,7 @@ int ass_ind (int argc, char **argv) {
 	sd = acs->acs_sd;
 	/*	ACSFREE(acs);
 	*/
-	PLOG (vt_log, print_VT_PDUs, acs -> acs_info[0], NULLCP, 1);
+	OLDPLOG (vt_log, print_VT_PDUs, acs -> acs_info[0], NULLCP, 1);
 	return( do_event(ASQ,acs->acs_info[0]) );
 }
 
@@ -1057,7 +1057,7 @@ int vbrkreq (void) {
 	brk.BKQcont.ExplPtr.xval = 0;
 	brk.BKQcont.ExplPtr.yval = 0;
 	brk.BKQcont.ExplPtr.zval = NULLCOORD;
-	if ((build_VT_BKQ__pdu(&brk_pe,1,NULL,NULLCP,(PEPYPARM)&brk)) == NOTOK)
+	if ((build_VT_BKQ__pdu(&brk_pe,1,0,NULLCP,(PEPYPARM)&brk)) == NOTOK)
 		adios (NULLCP, "BKQ build failed (%s)", PY_pepy);
 	brk_pe->pe_context = 1;
 	flushbufs();  /* flush local buffers */
@@ -1073,7 +1073,7 @@ void vbrkrsp (void) {
 	brk.BKRcont.ExplPtr.xval = 0;
 	brk.BKRcont.ExplPtr.yval = 0;
 	brk.BKRcont.ExplPtr.zval = NULLCOORD;
-	if ((build_VT_BKR__pdu(&brk_pe,1,NULL,NULLCP,(int *)&brk)) == NOTOK)
+	if ((build_VT_BKR__pdu(&brk_pe,1,0,NULLCP,(int *)&brk)) == NOTOK)
 		adios (NULLCP, "BKR build failed (%s)", PY_pepy);
 	brk_pe->pe_context = 1;
 	do_event(VBRKrsp,brk_pe);

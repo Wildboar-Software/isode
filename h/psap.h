@@ -311,7 +311,7 @@ PE	qb2prim_aux (struct qbuf *, PElementClass, PElementID, int);		/* really shoul
 #define	vtxs2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_VTXS)
 #define	ia5s2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_IA5S)
 #define	utc2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_UTCT)
-#define gent2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GENT)
+// #define gent2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GENT)
 #define	gfxs2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GFXS)
 #define	viss2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_VISS)
 #define	gens2prim(s,len)	str2prim ((s), (len), PE_CLASS_UNIV, PE_DEFN_GENS)
@@ -556,38 +556,8 @@ void vpopstr (void);
 void vpushpp (FILE *vfp, PE pe, char *text, int rw);
 void vpopp (void);
 
-#ifdef PEPSY_VERSION
 /* handle calls to the vunknown print routine */
 #define vunknown_P 	0, ((modtyp *) 0)
-
-/*
- * vpdu now comes out of the closet as a real pepsy function "pvpdu" we
- * keep the #define for vpdu for backwards compatiability of other peoples'
- * code
- */
-#ifdef __STDC__
-#define	vpdu(lp,fnx,pe,text,rw) \
-{ \
-    pvpdu ((lp), fnx##_P, (pe), (text), (rw)); \
-}
-#else   /* __STDC__ */
-#define	vpdu(lp,fnx,pe,text,rw) \
-{ \
-    pvpdu ((lp), fnx/**/_P, (pe), (text), (rw)); \
-}
-#endif /* __STDC__ */
-
-#else
-/* Backwards compatibility with posy/pepy */
-#define vpdu(lp,fnx,pe,text,rw) \
-{ \
-    int    fnx (); \
- \
-    _vpdu ((lp), fnx, (pe), (text), (rw)); \
-}
-
-int     _vpdu ();
-#endif
 
 /* pepy string definitions */
 extern char *pepy_strings[];

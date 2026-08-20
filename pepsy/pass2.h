@@ -20,7 +20,6 @@
 
 #define GENTYPES	"-types.h"
 #define INCFILE1	"pepsy.h"
-/* #define INCFILE2	"pepdefs.h" - not used any more */
 
 #define	ACT1	"_act1"
 #define	ACT2	"_act2"

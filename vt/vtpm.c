@@ -5,9 +5,8 @@
 #include "vtpm.h"
 #include "eventmsg.h"
 #include "sector1.h"
-
-#undef PEPYPARM
-#define PEPYPARM int *
+#include "pvpdu.h"
+#include "vt.h"
 
 int	cmode;
 extern int sd;		/*Session descriptor for this association*/
@@ -93,7 +92,7 @@ int get_event (int dd, PE *pe) {
 		pe = &(px.px_info[0]);
 		/* we are assuming here that you can only get one PDU per P-DATA.
 		*/
-		PLOG (vt_log, print_VT_PDUs, *pe, NULLCP, 1);
+		OLDPLOG (vt_log, print_VT_PDUs, *pe, NULLCP, 1);
 		if ((*pe)->pe_class != PE_CLASS_CONT)
 			adios(NULLCP,"read pe of class %d", (*pe)->pe_class);
 		switch((*pe)->pe_id) {
@@ -290,7 +289,7 @@ int pn_ind ( /* sync indications */
 /*****************************************************************************/
 
 int p_data (PE pdu) {
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PDataRequest(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-DATA.REQUEST");
 	pe_free(pdu);
@@ -314,7 +313,7 @@ int p_data (PE pdu) {
 int p_maj_sync_req (PE pdu) {
 	long ssn;
 
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PMajSyncRequest(sd, &ssn, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.REQUEST");
 	return(OK);
@@ -335,7 +334,7 @@ int p_maj_sync_req (PE pdu) {
 /****************************************************************************/
 
 int p_maj_sync_resp (PE pdu) {
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PMajSyncResponse(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-MAJOR-SYNC.RESPONSE");
 	return(OK);
@@ -356,7 +355,7 @@ int p_maj_sync_resp (PE pdu) {
 /***************************************************************************/
 
 int p_typed_data (PE pdu) {
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PTypedRequest(sd, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-TYPED-DATA.REQUEST");
 	return(OK);
@@ -381,7 +380,7 @@ int p_resync_req (PE pdu, int type) {
 #define VTKP_REQ   0x00 /* setting values, see ssap.h */
 #define VTKP_ACC   0x15
 #define VTKP_CHO   0x2a
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PReSyncRequest(sd, type, ssn, settings, &pdu, 1, &pi) != OK)
 		/*	if (PReSyncRequest(sd, type, 0, 0, (PE *)NULL, 0, &pi) != OK) */
 		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.REQUEST");
@@ -405,7 +404,7 @@ int p_resync_req (PE pdu, int type) {
 int p_resync_resp (PE pdu) {
 	long ssn = 0; /* should be made a global at some time */
 	int settings = ST_INIT_VALUE;
-	PLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
+	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PReSyncResponse(sd, ssn, settings, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.RESPONSE");
 	return(OK);
@@ -484,7 +483,7 @@ int send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 	ud.valid_arg_list = 0;
 	ud.version.bitstring = 0x00;
 	ud.version.bitcount = 5;
-	if(build_ASRPDU_ASRpdu(&asr_pe,1,NULL,NULLCP,(PEPYPARM)&ud) == NOTOK)
+	if(build_ASRPDU_ASRpdu(&asr_pe,1,0,NULLCP,(PEPYPARM)&ud) == NOTOK)
 		adios (NULLCP, "ASR build failure (%s)", PY_pepy);
 	return(asr(asr_pe,FAILURE)); /*Send the PDU thru Association control*/
 }

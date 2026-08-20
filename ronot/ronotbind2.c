@@ -5,6 +5,7 @@
 #include "ronot.h"
 #include "isoaddrs.h"
 #include "RONOT-types.h"
+#include "pepsycodec.h"
 
 static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *rni);
 

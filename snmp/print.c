@@ -5,8 +5,11 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <sys/signal.h>
+#include <sys/time.h>
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"
@@ -15,6 +18,9 @@
 				    ? NOTOK : int_SNMP_error__status_genErr)
 
 extern	int	quantum;
+
+extern int getprent(char *bp);
+extern void endprent(void);
 
 void	advise (int, char *, char *, ...);
 

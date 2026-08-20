@@ -9,6 +9,7 @@
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
+#include "pepsycodec.h"
 
 extern LLog	* log_dsap;
 extern unsigned watchdog_time;

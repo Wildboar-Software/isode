@@ -51,6 +51,7 @@
 #include "quipu/attr.h"		/* Def.s for READOUT etc */
 #include "quipu/nrs_info.h"
 #include "quipu/NRS-types.h"
+#include "pepsycodec.h"
 
 extern LLog	* log_dsap;
 PE		  asn2pe();

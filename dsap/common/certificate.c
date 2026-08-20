@@ -9,6 +9,7 @@
 #include "quipu/name.h"
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static PE cert_enc(void *value) {
 	PE pe;

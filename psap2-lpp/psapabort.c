@@ -6,6 +6,7 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 /* P-U-ABORT.REQUEST */
 

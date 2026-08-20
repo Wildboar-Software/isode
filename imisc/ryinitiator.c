@@ -6,6 +6,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include "pepsycodec.h"
 #include "ryinitiator.h"
 
 #undef	TIMER

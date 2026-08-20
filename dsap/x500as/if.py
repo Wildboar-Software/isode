@@ -11,6 +11,7 @@ DEFINITIONS ::=
 
 %{
 #include "quipu/malloc.h"
+#include "pepsycodec.h"
 
 void pe_print (PS ps, PE pe, int format);
 extern void AttrT_print (

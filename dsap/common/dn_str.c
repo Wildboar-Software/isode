@@ -1,6 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/IF-types.h"
+#include "pepsycodec.h"
 
 static char dn_alias;
 

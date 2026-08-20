@@ -6,6 +6,7 @@
 #include "PS-types.h"
 #include "ppkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 static int  PRelResponseAux (struct psapblk *pb, PE data, struct PSAPindication *pi);
 

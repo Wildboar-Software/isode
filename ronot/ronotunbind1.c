@@ -4,6 +4,7 @@
 #include "logger.h"
 #include "ronot.h"
 #include "RONOT-types.h"
+#include "pepsycodec.h"
 
 static int ParseRoUnBindResponse (struct AcSAPrelease *acr, struct RoNOTindication *rni);
 

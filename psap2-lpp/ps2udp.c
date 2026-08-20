@@ -11,6 +11,7 @@
 #include "ppkt.h"
 #include "tsap.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 #include "dgram.h"
 #include "internet.h"

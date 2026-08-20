@@ -8,12 +8,16 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <search.h>
+#include <sys/time.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "dgram.h"
 #include "tailor.h"
+#include "pepsycodec.h"
 
 #ifdef	BSD42
 

@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #endif
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 extern struct qbuf *str2qb(char *str, int len, int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;

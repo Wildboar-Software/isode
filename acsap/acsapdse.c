@@ -8,6 +8,7 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "acsap.h"
+#include "pvpdu.h"
 
 static AEInfo aeis;
 static struct PSAPaddr pas;

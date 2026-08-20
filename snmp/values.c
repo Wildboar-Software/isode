@@ -7,6 +7,7 @@
  */
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "logger.h"

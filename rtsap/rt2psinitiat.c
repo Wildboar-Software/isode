@@ -6,6 +6,8 @@
 #include "RTS-types.h"
 #include "rtpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
+#include "pepsycodec.h"
 
 static int RtOpenRequestAux (
 	int mode,

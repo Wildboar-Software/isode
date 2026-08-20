@@ -13,6 +13,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 static void cilistfree (void *value) {
 	struct CIList *cilist = (struct CIList *) value;

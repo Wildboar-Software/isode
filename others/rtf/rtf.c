@@ -7,6 +7,7 @@
 #include "rtf.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 static char *myname = "rtf";
 

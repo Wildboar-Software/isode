@@ -8,6 +8,7 @@
 #define	ACSE
 #include "acpkt.h"
 #include "tailor.h"
+#include "pvpdu.h"
 
 int	acsaplose (struct AcSAPindication *aci, ...);
 static int _acsaplose (

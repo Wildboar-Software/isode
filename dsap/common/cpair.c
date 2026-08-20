@@ -3,6 +3,7 @@
 #include "quipu/util.h"
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 /* We import these functions, which ought to be internal to certificate.c */
 struct certificate *cert_cpy();

@@ -5,6 +5,7 @@
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "quipu/watchdog.h"
+#include "pepsycodec.h"
 
 extern  OID     acse_pci;
 extern  OID     x500_da_ac;

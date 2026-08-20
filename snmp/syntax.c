@@ -7,9 +7,13 @@
  */
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
 #include "SNMP-types.h"
 #include "objects.h"
 #include "tailor.h"
+#include "pepsycodec.h"
 
 #include "internet.h"
 #include "clns.h"

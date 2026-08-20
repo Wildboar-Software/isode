@@ -12,6 +12,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
+#include "pepsycodec.h"
 
 #define nfree(x) if (x != NULLCP) free (x)
 
