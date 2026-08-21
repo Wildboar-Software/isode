@@ -66,14 +66,14 @@ typedef struct _ufsearch_rec {
 #define ufsearch_rec_alloc() (ufsearchRec) smalloc(sizeof(ufsearch_rec))
 
 /* Public procedures */
-QE_error_code do_ufsearch();
+QE_error_code do_ufsearch(searchPair target_data, searchPair search_data, entryList baselist, QCardinal *id_ptr);
 
-request_state process_ufs_ds_result();
-request_state process_ufs_ds_error();
+request_state process_ufs_ds_result(requestRec request, int task_id, struct DSResult *ds_result);
+request_state process_ufs_ds_error(requestRec request, int task_id, struct DSError *error);
 
 ufsearchResult get_ufsearch_result();
 
-void ufsearch_rec_free(), ufsearch_result_free();
-void search_pair_list_free();
+void ufsearch_rec_free(ufsearchRec record), ufsearch_result_free(ufsearchResult *result_ptr);
+void search_pair_list_free(searchPair *list);
 
 #endif

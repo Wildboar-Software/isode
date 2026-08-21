@@ -420,7 +420,7 @@ static struct acl *str2acl_aux (char *str, struct acl *the_acl) {
 	struct acl_info * info;
 	char * save, *ptr, val = 0;
 	int oidlist;
-	struct oid_seq * str2oidseq();
+	struct oid_seq * str2oidseq(char *str);
 
 	static CMD_TABLE cmd_who [] = {
 		"child",        0,

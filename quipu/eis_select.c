@@ -8,11 +8,11 @@ extern LLog * log_dsap;
 
 #define EIS_SELECT eis.eis_select
 
-static Attr_Sequence  cpy_as_comp_type ();
-Attr_Sequence  cpy_as_comp ();
-static Attr_Sequence  as_cpy_type ();
+static Attr_Sequence  cpy_as_comp_type(Attr_Sequence as);
+Attr_Sequence  cpy_as_comp(Attr_Sequence as);
+static Attr_Sequence  as_cpy_type(Attr_Sequence as);
 static Attr_Sequence  as_cpy_enc (Attr_Sequence, DN, DN, char);
-extern AV_Sequence avs_cpy_enc ();
+extern AV_Sequence avs_cpy_enc(AV_Sequence avs);
 extern Attr_Sequence dsa_pseudo_attr;
 extern AttributeType at_acl;
 
@@ -198,7 +198,7 @@ dsa_eis_select (
 	/* Don't want this stuff cached */
 	if (eis.eis_allattributes)
 		return eis_select (eis,entryptr,dn, qctx, node);
-	update_pseudo_attr ();
+	update_pseudo_attr();
 	for(eptr=EIS_SELECT; eptr != NULLATTR; eptr=eptr->attr_link) {
 		if ((temp = as_find_type (entryptr->e_attributes,
 								  eptr->attr_type)) == NULLATTR)

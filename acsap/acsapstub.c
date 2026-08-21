@@ -20,7 +20,7 @@ extern int _printent (struct isoentity *ie);
 #define	fetch_aet	str2aet_seq
 
 #ifdef	LPP
-static int  lpp_aet ();
+static int  lpp_aet (char *designator, char *qualifier, struct isoentity *ie);
 #endif
 
 static struct isoentity ies;

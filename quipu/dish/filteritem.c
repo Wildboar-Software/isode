@@ -15,8 +15,8 @@ extern	PS	opt, rps;
 
 #define debug(a,b)		/* remove debug statements */
 
-Filter          get_filter ();
-char           *TidyString ();
+Filter          get_filter(char *str);
+char           *TidyString(char *a);
 
 int filteritem (char *str, Filter fltr) {
 	char           *ptr;

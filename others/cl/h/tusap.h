@@ -35,17 +35,17 @@ struct TSAPunitdata {			/* T-UNITDATA.INDICATION */
 };
 #define	TUDFREE(tud)	QBFREE (&((tud) -> tud_qbuf))
 
-int	TUnitDataListen();	/* Listen on a datagram socket */
-int	TUnitDataBind(); 	/* Bind socket to a remote address */
-int	TUnitDataUnbind(); 	/* UnBind socket to a remote address */
-int	TUnitDataRequest();	/* Unit Data write on unbound socket */
-int 	TUnitDataWrite();	/* Write unit data on a bound socket */
-int 	TUnitDataRead();	/* Read unit data on a bound socket */
+int	TUnitDataListen(struct TSAPaddr *listen, struct QOStype *qos, struct TSAPdisconnect *td);	/* Listen on a datagram socket */
+int	TUnitDataBind(int sd, struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct TSAPdisconnect *td); 	/* Bind socket to a remote address */
+int	TUnitDataUnbind(int sd, struct TSAPdisconnect *td); 	/* UnBind socket to a remote address */
+int	TUnitDataRequest(struct TSAPaddr *calling, struct TSAPaddr *called, struct QOStype *qos, struct udvec *uv, struct TSAPdisconnect *td);	/* Unit Data write on unbound socket */
+int 	TUnitDataWrite(int sd, struct udvec *uv, struct TSAPdisconnect td);	/* Write unit data on a bound socket */
+int 	TUnitDataRead(int sd, struct TSAPunitdata *tud, int secs, struct TSAPdisconnect *td);	/* Read unit data on a bound socket */
 int	TUnitDataWakeUp();	/* Sync wakeup routine on kill */
-int     TuSave();		/* Save a unitdata from buffer */
+int     TuSave(int sd, int vecp, char **vec, struct TSAPdisconnect *td);		/* Save a unitdata from buffer */
 
-int     T_UnitDataWrite();	/* ISO T_UNITDATA.write */
-int     T_UnitDataRead();	/* ISO T_UNITDATA.read */
+int     T_UnitDataWrite(struct tsapblk *tb, struct udvec *uv, char **hptr, struct TSAPdisconnect *td);	/* ISO T_UNITDATA.write */
+int     T_UnitDataRead(struct tsapblk *tb, struct TSAPunitdata *tud, struct TSAPdisconnect *td);	/* ISO T_UNITDATA.read */
 
 #endif
 

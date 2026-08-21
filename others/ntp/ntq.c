@@ -15,9 +15,9 @@ int	sleeptime = 30;
 char	*mycontext = "ntp";
 char	*mypci = "ntp pci";
 
-int	query_result (), query_error ();
+int	query_result (int sd, int id, int dummy, struct type_NTP_ClockInfoList *result, struct RoSAPindication *roi), query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
 
-void	ros_adios (), ros_advise (), acs_adios (), acs_advise ();
+void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event), acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
 static void	adios (char *, char *, ...);
 static void	advise (char *, char *, ...);
 PE	build_bind_arg ();

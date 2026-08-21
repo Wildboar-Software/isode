@@ -10,7 +10,7 @@
 extern LLog * log_dsap;
 
 #ifdef QUIPU_CONSOLE
-void end_of_task_analyse() ;
+void end_of_task_analyse(struct task_act *task) ;
 #endif /* QUIPU_CONSOLE */
 
 struct task_act *task_alloc (void) {

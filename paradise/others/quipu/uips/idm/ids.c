@@ -40,8 +40,8 @@ char * add_entries;
 int tmp_org_found;
 
 int check_credentials (void) {
-	void de_exit();
-	char * getpass();
+	void de_exit(int exitCode);
+	char * getpass(const char *prompt);
 	char * temp2;
 	int pswd_tries;
 	int status;
@@ -189,13 +189,13 @@ int get_username (void) {
 	int noPersons;
 	int objectType;
 	int status;
-	void de_exit();
+	void de_exit(int exitCode);
 	char * add_org_ids;
 	char * already_in;
 	char * confirm_out;
 	char * cp;
 	char * full_c;
-	char * mapCoName();
+	char * mapCoName(char *shortname);
 	char * str;
 	char * tmp_search;
 	char addthisorg[LINESIZE];
@@ -205,9 +205,9 @@ int get_username (void) {
 	char save_addorg_posdit[LINESIZE];
 	extern char have_department[];
 	extern char just_dn[];
-	void searchFail();
-	void onint1();
-	void exit();
+	void searchFail(char *str);
+	void onint1(void);
+	void exit(int status);
 	Attr_Sequence at;
 	add_org_ids = malloc(LINESIZE);
 	already_in	= malloc(LINESIZE);

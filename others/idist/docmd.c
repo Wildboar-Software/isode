@@ -39,8 +39,8 @@ FILE	*lfp;			/* log file for recording files updated */
 struct	subcmd *subcmds;	/* list of sub-commands for current cmd */
 jmp_buf	env;
 
-SFD	cleanup();
-SFD	lostconn();
+SFD	cleanup(void);
+SFD	lostconn(int sig);
 
 /*
  * Do the commands in cmds (initialized by yyparse).

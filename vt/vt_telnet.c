@@ -42,7 +42,7 @@ void vt_clr_obj (void);
 int vbrkreq (void);
 int do_event (int event, PE pe);
 void vt_echo (int echo);
-extern int build_UDQPDU_UDQpdu ();
+extern int build_UDQPDU_UDQpdu (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);
 
 void vt_newline(void) {	/*Produce Newline update*/
 	TEXT_UPDATE ud;
@@ -278,7 +278,7 @@ int vt_sync (char **vec) {
 	ud.updates.co_list.co_cmd.bool_update.val_count = SYNC_SIZE;
 	ud.updates.co_list.co_cmd.bool_update.mask = &mask;
 	ud.updates.co_list.co_cmd.bool_update.mask_count = SYNC_SIZE;
-	if(build_UDQPDU_UDQpdu(&udqp,1,NULL,NULLCP,(PEPYPARM) &ud) == NOTOK)
+	if(build_UDQPDU_UDQpdu(&udqp,1,0,NULLCP,(PEPYPARM) &ud) == NOTOK)
 		adios(NULLCP,"UDQ build failure");
 	udqp->pe_context = 1;
 	do_event(VDATreq_u,udqp);

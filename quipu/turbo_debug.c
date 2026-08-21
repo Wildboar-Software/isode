@@ -33,11 +33,11 @@ static void rsavl_print( Avlnode *root, IFP fn, FILE *fps, int depth ) {
 
 void savl_print (Avlnode *root) {
 #ifndef __STDC__
-	int	fprintf ();
+	int	fprintf(FILE *stream, const char *format, ...);
 #else
 #ifdef  __GNUC__
 #ifdef  SUNOS4		/* And probaby a few more - what a mess! */
-	int	fprintf ();
+	int	fprintf(FILE *stream, const char *format, ...);
 #endif
 #endif
 #endif

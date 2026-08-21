@@ -25,19 +25,19 @@
  */
 
 #ifdef MANAGE
-extern int call_add_alias ();
-extern int call_del_alias ();
-extern int call_alias_chk ();
+extern int call_add_alias(int argc, char **argv);
+extern int call_del_alias(int argc, char **argv);
+extern int call_alias_chk(int argc, char **argv);
 #endif
 
 #ifdef DONT_USE_PP_ANYMORE
-extern int call_dlist ();
+extern int call_dlist(int argc, char **argv);
 #endif
 
 int main (int argc, char **argv) {
 	extern struct SecurityServices *dsap_security;
 
-	quipu_syntaxes ();
+	quipu_syntaxes();
 #ifdef OSISEC
 #ifdef REVOKE_SYNTAX
 	revoke_syntax();
@@ -78,7 +78,7 @@ int main (int argc, char **argv) {
 #endif
 	add_dish_help ("quit","", FALSE, FALSE, "Quit the program.");
 	add_dish_help (NULLCP,NULLCP,0,0,NULLCP);
-	do_dish ();
+	do_dish();
 	return 0;
 }
 

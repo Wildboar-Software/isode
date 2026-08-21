@@ -19,9 +19,11 @@
 
 typedef char	*pointer;		/* (void *) if you have it */
 
-extern void	free();
-extern pointer	malloc();
-extern int	open(), close(), fstat();
+extern void	free(pointer);
+extern pointer	malloc(unsigned);
+extern int	open(char *path, int flags);
+extern int	close(int fd);
+extern int	fstat(int fd, struct stat *buf);
 
 extern int	errno;
 

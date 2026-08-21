@@ -8,8 +8,8 @@
 
 extern time_t	timenow;
 
-struct connection	* conn_alloc();
-void			  conn_free();
+struct connection	* conn_alloc(void);
+void			  conn_free(struct connection *conn);
 
 extern	LLog	* log_dsap;
 #ifndef NO_STATS

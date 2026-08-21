@@ -7,8 +7,8 @@
 #include "quipu/dsap.h"
 
 #ifndef	lint
-static int  _dsaplose ();
-static int  _dsapreject ();
+static int  _dsaplose (struct DSAPindication *di, int reason, va_list ap);
+static int  _dsapreject (struct DSAPindication *di, int reason, int id, va_list ap);
 #endif
 
 #ifndef	lint

@@ -9,9 +9,9 @@
 extern	LLog	* log_dsap;
 extern time_t	  timenow;
 extern time_t 	  admin_time;
-extern UTC	  str2utct();
-struct task_act *       task_alloc();
-struct common_args	* get_ca_ref();
+extern UTC	  str2utct(char *cp, int len);
+struct task_act *       task_alloc(void);
+struct common_args	* get_ca_ref(struct ds_op_arg *dsarg);
 extern char	  quipu_shutdown;
 
 extern void log_x500_event (

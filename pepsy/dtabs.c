@@ -13,7 +13,7 @@ extern char *ec_tag(YP yp), *ec_class(YP yp);
 extern char *strip_last(char *s);
 extern char *str_yp_code[];
 extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
-extern s_table *lookup_list(), *get_offset();
+extern s_table *lookup_list(void), *get_offset(void);
 extern YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
 
 extern char *concat(char *s1, char *s2);
@@ -23,7 +23,7 @@ extern char	*getfield(char *p);
 extern char	*setfield(char *p);
 extern char	*modsym (char *module, char *id, char *prefix);
 extern char	*genstrform (YP yp);
-extern int	gen_sentry();
+extern int	gen_sentry(void);
 extern char *c_flags(YP yp, PElementClass cl);
 
 /* extern int explicit; */

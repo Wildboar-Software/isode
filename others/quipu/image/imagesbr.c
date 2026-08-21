@@ -44,7 +44,7 @@ static int  stay_bound = 0;
 
 DN	local_dn;
 
-static struct dn_seq *dm2dn_seq ();
+static struct dn_seq *dm2dn_seq (char *dm);
 
 extern char *local_dit;
 struct dn_seq *dn_seq_push ();
@@ -121,7 +121,7 @@ mbox2ak (char *local, char *domain) {
 static int bound = 0;
 static int dlevel = 0;
 
-static struct dn_seq *dm2dn_seq_aux ();
+static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist);
 static  do_bind ();
 
 static struct dn_seq *
@@ -476,7 +476,7 @@ int photo_line_end (caddr_t line) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

@@ -208,13 +208,13 @@ struct edbdir topdirs[] = {
 /* main () -- main function for program */
 void main (int argc, char **argv) {
 	struct pair *pp;			/* pair pointer */
-	extern struct pair * findpair ();
-	extern void arginit (), read_config (), read_dsas ();
-	extern void build_top (), add_us (), add_state (), build_dsa ();
-	extern void build_orgedb (), build_ouedb ();
-	extern void build_tailor (), build_scripts (), build_uifl();
-	extern void create_sedfile (), build_mesgfl ();
-	extern void set_permissions ();
+	extern struct pair * findpair (char *nm, int any);
+	extern void arginit (int ac, char **av), read_config (void), read_dsas (void);
+	extern void build_top (void), add_us (struct pair *orgcode), add_state (int addorg), build_dsa (void);
+	extern void build_orgedb (void), build_ouedb (void);
+	extern void build_tailor (void), build_scripts (void), build_uifl(void);
+	extern void create_sedfile (void), build_mesgfl (void);
+	extern void set_permissions (void);
 
 	chartered_by_congress = 0x00;	/* assume not congress-chartered */
 	/* get configuration */
@@ -269,8 +269,8 @@ void arginit (int ac, char **av) {
 	int i,j,k;
 	struct pair *wildlife;
 
-	extern struct pair *findpair ();
-	extern void make_usstates ();
+	extern struct pair *findpair (char *nm, int any);
+	extern void make_usstates (void);
 	/* get name of program */
 	if ((prgnm = strrchr (av[0], (int)'/')) == (char *)NULL)
 		prgnm = av[0];			/* use entire token as program name */
@@ -377,9 +377,9 @@ void read_config (void) {
 	struct sockaddr_in sin;		/* for local address */
 	struct state *sp;			/* to save 'state' */
 
-	extern struct pair *findpair ();
+	extern struct pair *findpair (char *nm, int any);
 	extern char * strdup ();
-	extern void bad_postaladdress ();
+	extern void bad_postaladdress (char *line, int postdef);
 	lncnt = 0;
 	bzero (buf, BUFSIZ);		/* clear global general purpose buffer*/
 	bzero (line, BUFSIZ);		/* clear global general purpose line */
@@ -633,8 +633,8 @@ void bad_postaladdress (
 void build_top (void) {
 	struct pair *pp;
 	int i;
-	extern void copy_edb ();
-	extern struct pair *findpair();
+	extern void copy_edb (char *dir, char *edbtmpl, int append);
+	extern struct pair *findpair(char *nm, int any);
 
 	/* setup base directory */
 	if ((pp = findpair ("wildlife", 0x00)) == (struct pair *)NULL)
@@ -658,7 +658,7 @@ void build_top (void) {
 void add_us (
 	struct pair *orgcode			/* ansi organization code */
 ) {
-	extern void copy_edb ();
+	extern void copy_edb (char *dir, char *edbtmpl, int append);
 
 	bzero (buf, BUFSIZ);
 	unlink (ORGENTRY);
@@ -672,8 +672,8 @@ void add_us (
 		adios (NULLCP, "system failed: cannot create %s", ORGENTRY);
 	copy_edb (USDN, ORGENTRY, 0x01);
 }
-extern void copy_edb ();
-extern struct pair *findpair ();
+extern void copy_edb (char *dir, char *edbtmpl, int append);
+extern struct pair *findpair (char *nm, int any);
 
 /* add_state () -- build state entry, adding organization if necessary*/
 void add_state (
@@ -727,7 +727,7 @@ void build_dsa (void) {
 void build_orgedb (void) {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
-	extern struct pair *findpair ();
+	extern struct pair *findpair (char *nm, int any);
 
 	/* get name of organization */
 	bzero (file, BUFSIZ);
@@ -764,7 +764,7 @@ void build_ouedb (void) {
 	struct pair *pp;		/* to get pair values */
 	char *orgnm;		/* name of organization */
 	char *ounm;			/* name of organizational unit */
-	extern struct pair *findpair ();
+	extern struct pair *findpair (char *nm, int any);
 
 	/* get name of organization and organizational unit */
 	bzero (file, BUFSIZ);
@@ -801,7 +801,7 @@ void build_ouedb (void) {
 
 /* build_tailor () -- build tailor files */
 void build_tailor (void) {
-	extern void make_file ();
+	extern void make_file (char *fl, char *tmpl);
 
 	make_file ("quiputailor", QUIPUTMPL);
 	make_file (isodefile ("dsaptailor", 0), DSAPTMPL);
@@ -809,7 +809,7 @@ void build_tailor (void) {
 
 /* build_scripts () -- build script files */
 void build_scripts (void) {
-	extern void make_file ();
+	extern void make_file (char *fl, char *tmpl);
 
 	make_file ("startup.sh", STARTUPTMPL);
 	make_file ("nightly.sh", NIGHTLYTMPL);
@@ -817,7 +817,7 @@ void build_scripts (void) {
 
 /* build_uifl () -- build user interface configuration files */
 void build_uifl (void) {
-	extern void make_file ();
+	extern void make_file (char *fl, char *tmpl);
 
 	sprintf (file, "%s/fredrc", isodetcpath);
 	make_file (file, FREDTMPL);
@@ -834,7 +834,7 @@ void create_sedfile (void) {
 	struct state *sp;			/* to save state */
 	short stnmlen;			/* length of state name */
 	int i;
-	extern char *timestamp ();
+	extern char *timestamp (void);
 
 	if ((sedfp = fopen (SEDFILE, "w")) == (FILE *)NULL)
 		adios (NULLCP, "cannot create sed file %s", SEDFILE);
@@ -1100,7 +1100,7 @@ char *timestamp (void) {
 
 /* adios () -- exit with error */
 #ifndef lint
-static void _advise ();
+static void _advise (char *what, char *fmt, va_list ap);
 
 void adios (char *what, char *fmt, ...) {
 	va_list ap;

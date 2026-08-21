@@ -28,7 +28,7 @@ QBool want_photo_as_bytes = FALSE;
 
 int quipu_pe_cmp();
 
-static void read_args(), read_quipurc();
+static void read_args(int argc, char *argv[]), read_quipurc(void);
 
 void init_query_engine (int argc, char *argv[]) {
 	FILE *config_file;

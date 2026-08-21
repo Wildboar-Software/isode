@@ -71,19 +71,19 @@ typedef struct _read_dn_attr_rec {
 /*
  *	Procs
  */
-QE_error_code do_read();
-QE_error_code do_dn_attr_read();
+QE_error_code do_read(char *baseobject, QCardinal *id_ptr, stringCell attr_list);
+QE_error_code do_dn_attr_read(char *baseobject, QCardinal *id_ptr, stringCell dn_attr);
 
-request_state process_read_ds_result(),
-			  process_read_ds_error();
+request_state process_read_ds_result(requestRec request, int task_id, struct DSResult *ds_result),
+			  process_read_ds_error(requestRec request, int task_id, struct DSError *error);
 
-request_state process_read_dn_attr_result(),
-			  process_read_dn_attr_error();
+request_state process_read_dn_attr_result(requestRec request, int task_id, struct DSResult *ds_result),
+			  process_read_dn_attr_error(requestRec request, int task_id, struct DSError *error);
 
 readResults get_read_results(), get_read_dn_attr_results();
 
-void read_rec_free(), read_dn_attr_rec_free(), read_result_free();
+void read_rec_free(readRec record), read_dn_attr_rec_free(readDnAttrRec record), read_result_free(readResults *result_ptr);
 
-int photo2xbm();
+int photo2xbm(PS ps, PE picture, int format);
 
 #endif

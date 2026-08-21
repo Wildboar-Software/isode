@@ -93,7 +93,7 @@ static	struct pj *pj_head = NULL;
 #ifdef LINUX
 #define pgetstr tgetstr
 #endif
-extern char   *pgetstr ();
+extern char   *pgetstr (char *id, char **area);
 static void free_pq (void), free_pj (void), upstat (struct pq *pq, char *msg), startdaemon (struct pq *pq);
 static int findaemon (struct pq *pq, char *current);
 

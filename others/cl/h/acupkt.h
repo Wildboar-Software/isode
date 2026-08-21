@@ -57,10 +57,10 @@
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
 int     acusaplose (struct AcSAPindication *aci, ...);
-int     ps2aculose ();
+int     ps2aculose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa);
 
-struct type_ACS_Association__information *info2_apdu ();
-int	apdu2_info ();
+struct type_ACS_Association__information *info2_apdu (struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata);
+int	apdu2_info (struct assocblk *acb, struct AcSAPindication *aci, struct type_ACS_Association__information *info, PE *data, int *ndata);
 
 struct assocblk {
 	struct assocblk *acb_forw;	/* doubly-linked list */
@@ -122,4 +122,4 @@ struct assocblk {
 	IFP	    acb_rosindication;	/* ros event handler */
 };
 #define	NULLACB		((struct assocblk *) 0)
-int     freeacublk ();
+int     freeacublk (struct assocblk *acb);

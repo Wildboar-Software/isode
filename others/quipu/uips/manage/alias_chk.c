@@ -20,7 +20,7 @@ extern  char    frompipe;
 extern  PS      opt;
 extern  PS      rps;
 extern	Entry	current_entry;
-extern	DN	sequence_dn();
+extern	DN	sequence_dn(int y);
 extern	DN	str2dn_aux();
 extern	Filter	get_filter();
 char  **NULLARGV = (char **) 0;
@@ -31,7 +31,7 @@ int call_alias_chk (int argc, char **argv) {
 	struct	ds_search_result search_result;
 	DN	save_dn, tmp_dn = NULLDN;
 	char	alias = FALSE ;
-	char    verify_alias() ;
+	char    verify_alias(EntryInfo *alias_entry) ;
 	EntryInfo	*ptr ;
 
 	if (argc > 2) {

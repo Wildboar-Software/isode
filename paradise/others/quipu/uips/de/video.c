@@ -24,13 +24,13 @@ int preferInvVideo = TRUE;
 int inverseVideo;
 int lines, cols;
 
-char * getenv();
-char * tgetstr();
-char * tgoto();
-char *TidyString();
-char *checkSetTerm();
-int output();
-void turnInverseVideoOn();
+char * getenv(const char *name);
+char * tgetstr(char *id, char **area);
+char * tgoto(const char *cap, int col, int row);
+char *TidyString(char *a);
+char *checkSetTerm(char *termtype, char *defterm);
+int output(char c);
+void turnInverseVideoOn(void);
 
 void initVideo (void) {
 	char * cp;

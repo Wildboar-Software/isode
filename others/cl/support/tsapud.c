@@ -100,7 +100,7 @@ static struct TSAPaddr  tas[NTADDRS];
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-void	ts_advise ();
+void	ts_advise (char *str, struct TSAPdisconnect *td);
 
 int main (int argc, char **argv, char **envp) {
 	int	    listen,
@@ -381,7 +381,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-static void  _advise ();
+static void  _advise (int code, char *what, char *fmt, ap);
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

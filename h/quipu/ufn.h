@@ -17,7 +17,7 @@ typedef struct _envlist {
 	struct  _envlist * Next;
 } * envlist;
 #define NULLEL ((envlist) NULL)
-envlist	read_envlist ();
+envlist	read_envlist (void);
 
 extern char ufn_notify;
 

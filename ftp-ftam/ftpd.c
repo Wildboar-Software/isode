@@ -92,7 +92,6 @@ extern int yyparse (void);
  */
 #define	FTPUSERS	"/usr/etc/ftpusers"
 
-extern	int errno;
 extern  char ftam_error[];
 extern	char version[];
 
@@ -134,7 +133,7 @@ char *vec[NVEC];
 int	swaitmax = SWAITMAX;
 int	swaitint = SWAITINT;
 
-SFD	lostconn();
+SFD	lostconn(void);
 
 void main(int argc, char *argv[]) {
 	int	addrlen;
@@ -547,7 +546,7 @@ void dologout(int status) {
  */
 int checkuser(char *name) {
 	char line[BUFSIZ];
-	FILE *fd, *fopen();
+	FILE *fd;
 	int found = 0;
 
 	fd = fopen(FTPUSERS, "r");

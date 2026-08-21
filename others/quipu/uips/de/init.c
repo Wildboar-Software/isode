@@ -55,7 +55,7 @@ extern char callingDteNumber[],
 	   origDefaultCo[],
 	   origDefaultOrg[],
 	   welcomeMessage[];
-static void read_de_option();
+static void read_de_option(char *line);
 
 extern struct namelist * orgatts;
 extern struct namelist * ouatts;

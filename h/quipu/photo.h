@@ -62,7 +62,7 @@ typedef struct nd {
 
 #define FIXED_OFFSET 6
 
-full_code get_code();
+full_code get_code(int run, char colour);
 int photo_start (char * name);
 int photo_end (char * name);
 void photo_black (int length);
@@ -72,5 +72,5 @@ int build_trees (void);
 void set_bit (bit_string *lineptr);
 void clr_bit (bit_string *lineptr);
 char get_bit (bit_string *lineptr);
-node * get_node ();
+node * get_node (void);
 run_type next_run (bit_string *lineptr, char xcolour);

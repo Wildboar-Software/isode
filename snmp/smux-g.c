@@ -171,7 +171,7 @@ static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 #define	TB_VALID	1		/* smuxTstatus */
 #define	TB_INVALID	2		/* .. */
 
-static struct smuxTree *get_tbent ();
+static struct smuxTree *get_tbent (unsigned int *ip, int len, int isnext);
 
 static int  o_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;

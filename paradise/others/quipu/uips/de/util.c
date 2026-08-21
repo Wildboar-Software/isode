@@ -27,8 +27,8 @@ extern char origDefaultCo[], origDefaultOrg[];
 extern int deLogLevel;
 extern int alarmCount;
 extern int bindTimeout;
-void onint1();
-void clearDots();
+void onint1(void);
+void clearDots(void);
 
 extern int dots;
 extern int dotsPrinted;
@@ -50,7 +50,7 @@ alarmLen(void) {
 }
 
 void initAlarm(void) {
-	void onalarm();
+	void onalarm(void);
 
 	signal(SIGALRM, (VFP) onalarm);
 	dots = alarmLen() / 2;
@@ -84,7 +84,7 @@ void handleTimeout(void) {
 }
 
 void startUnbindTimer(void) {
-	void handleTimeout();
+	void handleTimeout(void);
 
 	signal(SIGALRM, (VFP) handleTimeout);
 	alarm((unsigned)bindTimeout);

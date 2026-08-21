@@ -25,7 +25,7 @@ typedef struct string_seq {
 } string_seq, *str_seq;
 
 #define NULLDS ((str_seq) 0)
-char *get_from_seq ();
-void free_seq(), add_seq();
+char *get_from_seq (int seq_num, str_seq seq_ptr);
+void free_seq(str_seq seq_ptr), add_seq(str_seq *seq, char *str);
 
 #endif

@@ -19,7 +19,7 @@ extern LLog * log_dsap;
 #ifndef NO_STATS
 extern LLog * log_stat;
 #endif
-extern void dsa_abort();
+extern void dsa_abort(int xrestart);
 
 int refresh_from_disk (DN dn);
 
@@ -28,7 +28,7 @@ int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	DN dn2;
 	Entry theentry;
 	extern Entry database_root;
-	SFD attempt_restart();
+	SFD attempt_restart(int sig);
 
 	if ( ! manager(dn) ) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -150,7 +150,7 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	DN dn2;
 	Entry theentry;
 	extern Entry database_root;
-	SFD attempt_restart();
+	SFD attempt_restart(int sig);
 
 	/* Return some silly error to distinguish it from the other dsa_control */
 	if ( ! manager(dn) ) {

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 
 #include "vtpm.h"
 #include "sector1.h"
@@ -77,16 +78,6 @@ void vt_sup_ga (char *img_addr);
 void kill_proc (void);
 int vbrkreq (void);
 int con_req (void);
-
-extern int build_ASQPDU_ASQpdu ();
-extern int build_ASRPDU_ASRpdu ();
-extern int build_NDQPDU_NDQpdu ();
-extern int build_NDQPDU_VTsdi ();
-extern int unbuild_UDQPDU_UDQpdu ();
-extern int unbuild_ASQPDU_ASQpdu ();
-extern int unbuild_ASRPDU_ASRpdu ();
-extern int build_VT_BKQ__pdu ();
-extern int build_VT_BKR__pdu ();
 
 /*************************************************************************/
 /* VASS_REQ - create an ASQ PDU and generate a VASSreq event to 	 */
@@ -1009,7 +1000,7 @@ void vt_disconnect (void) {
 #define	PMASK \
 	"\020\01MANAGEMENT\02RESTORATION"
 
-char   *ctime ();
+char   *ctime (const time_t *timer);
 int	result;
 
 int ass_ind (int argc, char **argv) {

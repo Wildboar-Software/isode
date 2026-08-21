@@ -26,7 +26,7 @@ int call_add_alias (int argc, char **argv) {
 	DN		save_dn, dnptr, trail ;
 	DN		moddn;
 	extern	DN		str2dn_aux() ;
-	extern	DN		sequence_dn() ;
+	extern	DN		sequence_dn(int y) ;
 	Entry		entry_ptr;
 	FILE           *fd;
 	PS		tmp ;

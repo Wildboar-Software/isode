@@ -37,7 +37,7 @@ int mem_heap = 0;
 
 #ifndef MALLOC_TEST
 extern LLog * log_dsap;
-extern SFD attempt_restart();
+extern SFD attempt_restart(int sig);
 #endif
 
 #ifdef MALLOCDEBUG
@@ -56,7 +56,7 @@ extern SFD attempt_restart();
 
 #ifdef MALLOCSTACK
 #include "sys.file.h"
-off_t lseek();
+off_t lseek(int fd, off_t offset, int whence);
 
 #ifndef MALLOCTRACE
 #define MALLOCTRACE
@@ -144,7 +144,7 @@ static char * malloc_fname = (char *)0;
 
 void start_malloc_trace (char *f) {
 #ifdef MALLOCTRACE
-	char * env, *getenv ();
+	char * env, *getenv(const char *name);
 
 	if (((env = getenv ("TRACE_MEMORY")) == (char *)0) || (*env == 0))
 		return;
@@ -450,7 +450,7 @@ malloc (size_t size)
 
 	if (first_malloc) {
 #ifdef	BSD42
-		pagesize = getpagesize ();
+		pagesize = getpagesize();
 #endif
 		pageminusone = PAGESIZE - 1;
 		pagemask = ~pageminusone;

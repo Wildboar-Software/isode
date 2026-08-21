@@ -32,7 +32,7 @@ extern char *fsBase;
 extern char *isodesbinpath;
 extern char *isodetcpath;
 extern char *strtok();
-extern char *getRfaContext();
+extern char *getRfaContext(char *cwd, char *fn);
 
 char *myname;
 int connected = 0;
@@ -317,7 +317,7 @@ int do_lockFile (char **av) {
 	struct type_RFA_RequestMasterArg *rma;
 	int res, rc;
 	struct RfaInfo *rfalist, *rfa;
-	char *fn, *shortTime();
+	char *fn, *shortTime(long *t);
 	int rmode = 0;
 
 	START;
@@ -406,7 +406,7 @@ int do_lockFile (char **av) {
 int do_master (char **av) {
 	int rc, res;
 	struct RfaInfo *rfalist, *rfa, *remoteRfaList, *rrfa;
-	char *fn, *shortTime();
+	char *fn, *shortTime(long *t);
 	char  buf[512];
 	struct type_RFA_RequestMasterRes *rmr;
 	struct type_RFA_RequestMasterArg *rma;
@@ -531,7 +531,7 @@ int do_master (char **av) {
 int do_slave (char **av) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa, *remoteRfaList, *rrfa;
-	char *fn, *shortTime();
+	char *fn, *shortTime(long *t);
 	char  buf[512];
 
 	START;
@@ -736,7 +736,7 @@ int do_setauto (char **av) {
 int do_settransfer (char **av, int mode) {
 	int rc;
 	struct RfaInfo *rfalist, *rfa;
-	char *fn, *shortTime();
+	char *fn, *shortTime(long *t);
 
 	START;
 	for(; *av; av++) {

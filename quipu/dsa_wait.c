@@ -24,10 +24,10 @@ extern unsigned watchdog_delta;
 AV_Sequence open_call_avs ;   /* SPT: This sequence holds all the
 				 current open calls. */
 extern PS opt ;
-static void print_connlist() ;
-void opening_analyse() ;
-static void connecting_analyse() ;
-void closing_analyse() ;
+static void print_connlist(struct connection *conn) ;
+void opening_analyse(struct connection *cn) ;
+static void connecting_analyse(struct connection *cn) ;
+void closing_analyse(struct connection *cn) ;
 
 #endif /* QUIPU_CONSOLE */
 
@@ -50,7 +50,7 @@ int dsa_wait (int secs) {
 	char			*ibp;
 	char			wbuffer[BUFSIZ];
 	char			*wbp;
-	SFD 			attempt_restart();
+	SFD 			attempt_restart(int sig);
 	int				newfd;
 	int				result = NOTOK;
 

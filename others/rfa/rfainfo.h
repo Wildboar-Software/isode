@@ -53,12 +53,12 @@ struct RfaInfo {
 #define RI_TR_REQ		0200
 #define	IS_TR_REQ(s)		(RI_TRANSFER(s) == RI_TR_REQ)
 
-extern int getLockedRfaInfoList(), getRfaInfoList(), putRfaInfoList();
-extern void remRfaInfo();
-extern struct RfaInfo *mallocRfaInfo(), *findRfaInfo(), *extractRfaInfo();
-extern int str2status();
-extern char *status2str(), *status2sstr();
+extern int getLockedRfaInfoList(), getRfaInfoList(char *dir, struct RfaInfo **rfaHeadp, char *target, int locked), putRfaInfoList(char *dirname, struct RfaInfo *rfa);
+extern void remRfaInfo(char *fn, struct RfaInfo **rfap);
+extern struct RfaInfo *mallocRfaInfo(char *fn), *findRfaInfo(char *fn, struct RfaInfo *rfa), *extractRfaInfo(char *fn, struct RfaInfo **rfap);
+extern int str2status(char *stat);
+extern char *status2str(int stat), *status2sstr();
 
-extern struct RfaInfo *fi2rfa();
-extern struct type_RFA_FileInfoList *rfa2fil();
-extern struct type_RFA_FileInfo *rfa2fi();
+extern struct RfaInfo *fi2rfa(struct type_RFA_FileInfoList *fil);
+extern struct type_RFA_FileInfoList *rfa2fil(char *dir, struct RfaInfo *rfa);
+extern struct type_RFA_FileInfo *rfa2fi(char *dir, struct RfaInfo *rfa);

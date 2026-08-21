@@ -30,11 +30,11 @@ static char *mycontext = "rfa";
 extern	struct type_RFA_QueryResult *query ();
 extern	struct type_RFA_FileList *do_listcdir ();
 extern int op_init ();
-extern int ros_init (), ros_work (), ros_indication (), ros_lose ();
+extern int ros_init (int vecp, char **vec), ros_work (int fd), ros_indication (int sd, struct RoSAPindication *roi), ros_lose (struct TSAPdisconnect *td);
 extern IFP startfnx, stopfnx;
 extern char *isodetcpath;
 
-extern int op_getFileData(), op_requestMaster(), op_listDir(), op_syncTime();
+extern int op_getFileData(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_requestMaster(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_listDir(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_syncTime(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 static struct dispatch dispatches[] = {
 	"getFileData",  operation_RFA_getFileData, op_getFileData,
 	"requestMaster",	    operation_RFA_requestMaster, op_requestMaster,
@@ -51,7 +51,7 @@ char homedir[BUFSIZ];
 /* MAIN */
 
 int main (int argc, char **argv) {
-	int initiate ();
+	int initiate (int sd, struct AcSAPstart *acs, PE *pe);
 	char buf[BUFSIZ];
 	struct dispatch   *ds;
 	AEI	    aei;

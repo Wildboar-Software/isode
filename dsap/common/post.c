@@ -73,8 +73,8 @@ static void *addrparse (char *str) {
 	char t61_str = FALSE;
 	extern char t61_flag;
 	int i, len;
-	char * octparse ();
-	char * prtparse ();
+	char * octparse (char *str);
+	char * prtparse (char *str);
 
 	b = result; /* to keep lint quiet */
 	if (t61_flag) {

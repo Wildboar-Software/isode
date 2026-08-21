@@ -48,7 +48,7 @@ static	char   *myname = "dad";
 
 static	struct sockaddr_in lo_socket;
 
-static void	arginit (), envinit ();
+static void	arginit (char **vec), envinit (void);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
@@ -56,11 +56,11 @@ void	advise (int, char *, char *, ...);
 static	dadser ();
 #ifndef	lint
 static int  da_response (char *, ...);
-static int  _da_response ();
+static int  _da_response (char *fmt, va_list ap);
 #endif
-static int  start_dish ();
-static	rcfile ();
-static int  rcpipe ();
+static int  start_dish (int binding);
+static	rcfile (char *file, int op, int isystem);
+static int  rcpipe (char *command);
 
 #ifdef	SYS5
 struct passwd  *getpwnam ();
@@ -302,7 +302,7 @@ were_history:
 }
 
 #ifndef	lint
-static int  _da_response ();
+static int  _da_response (char *fmt, va_list ap);
 
 static int  da_response (char *fmt, ...) {
 	int	    val;

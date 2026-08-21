@@ -133,11 +133,11 @@ char   *mktemp (char *);
 #endif
 #else
 #if defined(BSD44) || defined(_AIX)
-void   *calloc (), *malloc (), *realloc ();
-void free();
+void   *calloc (size_t, size_t), *malloc (size_t), *realloc (void *, size_t);
+void free(void *);
 #else
-char   *calloc (), *malloc (), *realloc ();
-int free();
+char   *calloc (unsigned, unsigned), *malloc (unsigned), *realloc (char *, unsigned);
+int free(char *);
 #endif /* defined BSD44 */
 #endif
 
@@ -241,22 +241,22 @@ void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ..
 #endif /* OSX */
 
 #ifndef __STDC__
-extern time_t time ();
+extern time_t time (time_t *);
 #endif
 
 /*  ntohs etc */
 #ifndef SWABLIB
 #ifndef	ntohs
-unsigned short	ntohs ();
+unsigned short	ntohs (unsigned short);
 #endif
 #ifndef	htons
-unsigned short	htons ();
+unsigned short	htons (unsigned short);
 #endif
 #ifndef	ntohl
-unsigned long	ntohl ();
+unsigned long	ntohl (unsigned long);
 #endif
 #ifndef	htonl
-unsigned long	htonl ();
+unsigned long	htonl (unsigned long);
 #endif
 #endif
 

@@ -13,7 +13,7 @@ static char *mycontext = "isode passwd lookup demo";
 static char *mypci = "isode passwd lookup demo pci";
 
 /* ARGUMENTS */
-int	do_lookupUser (), do_lookupUID (), do_help (), do_quit ();
+int	do_lookupUser (), do_lookupUID (), do_help (), do_quit (char **av);
 
 /* RESULTS */
 int	lookup_result ();

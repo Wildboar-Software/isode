@@ -51,7 +51,7 @@ int	data = -1;
 struct	sockaddr_in myctladdr;
 
 FILE	*cin, *cout;
-int	dataconn();
+int	dataconn(char *modeX);
 static void lostpeer(void);
 
 static int initconn(void);
@@ -190,7 +190,7 @@ static int _command(char *fmt, va_list ap) {
 }
 #else
 /* VARARGS1 */
-int command (char *fmt) {
+int command (char *fmt, ...) {
 	return command (fmt);
 }
 #endif

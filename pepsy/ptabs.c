@@ -8,11 +8,11 @@
 #include "mine.h"
 
 extern char *c_tag(YP yp), *c_class(YP yp);
-extern char *ec_tag(YP yp), *ec_class(YP yp), *pec_class();
+extern char *ec_tag(YP yp), *ec_class(YP yp), *pec_class(YP yp);
 extern char *strip_last(char *s);
 extern char *str_yp_code[];
 extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
-extern s_table *lookup_list(), *get_offset();
+extern s_table *lookup_list(void), *get_offset(void);
 extern YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
 extern void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 

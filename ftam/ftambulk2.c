@@ -5,12 +5,9 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
 static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /* F-TRANSFER-END.RESPONSE */
-static int  FTransEndResponseAux ();
-
 int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    smask;
 	int     result;

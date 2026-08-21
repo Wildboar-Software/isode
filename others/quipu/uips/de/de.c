@@ -37,10 +37,10 @@ LLog    _de_log = {
 LLog *de_log = &_de_log;
 
 extern char *TidyString();
-extern char *findHelp();
-void onint1(), de_exit();
-void foundFollowing(), matchFollowing();
-char enterYesNo();
+extern char *findHelp(char *helpstr);
+void onint1(void), de_exit(int exitCode);
+void foundFollowing(void), matchFollowing(void);
+char enterYesNo(void);
 extern void resetprint(char *, ...);
 
 struct query qinfo[MAXTYPE + 1];
@@ -86,7 +86,7 @@ char origDefaultCo[LINESIZE], origDefaultOrg[LINESIZE],
 char * username, * backup_dsa_address;
 jmp_buf sjbuf;
 
-SFD cleanupok();
+SFD cleanupok(void);
 
 int main (int argc, char *argv[]) {
 	int res;

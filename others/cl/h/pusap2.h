@@ -144,14 +144,14 @@ struct PSAPindication {
 
 extern char *psap2version;
 
-char   *PuErrString ();		/* return PSAP error code in string form */
+char   *PuErrString (int code);		/* return PSAP error code in string form */
 
-int	PUnitDataRequest ();	/* P-UNIT-DATA.REQUEST */
-int	PUnitDataBind ();	/* set P-UNIT-DATA local binding */
-int	PUnitDataRebind ();	/* reset local binding called PSAPaddr */
-int	PUnitDataWrite ();	/* P-UNIT-DATA.REQUEST on local binding */
-int	PUnitDataRead ();	/* P-UNIT-DATA.INDICATION on local binding */
-int	PUnitDataUnbind ();	/* release P-UNIT-DATA local binding */
-int	PuSave ();	        /* save TPDU for PUDT indication on binding */
+int	PUnitDataRequest (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, PE *data, int ndata, struct QOStype *qos, struct PSAPindication *pi);	/* P-UNIT-DATA.REQUEST */
+int	PUnitDataBind (int sd, struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, struct QOStype *qos, struct PSAPindication *pi);	/* set P-UNIT-DATA local binding */
+int	PUnitDataRebind (int sd, struct PSAPaddr *called, struct PSAPindication *pi);	/* reset local binding called PSAPaddr */
+int	PUnitDataWrite (int sd, PE *data, int ndata, struct PSAPindication *pi);	/* P-UNIT-DATA.REQUEST on local binding */
+int	PUnitDataRead (int sd, struct PuSAPstart *ps, int secs, struct PSAPindication *pi);	/* P-UNIT-DATA.INDICATION on local binding */
+int	PUnitDataUnbind (int sd, struct PSAPindication *pi);	/* release P-UNIT-DATA local binding */
+int	PuSave (int sd, int vecp, char **vec, struct PSAPindication *pi);	        /* save TPDU for PUDT indication on binding */
 
 #endif

@@ -26,7 +26,7 @@ struct rtetab *rts_iso = NULL;
 static	int	first_time = 1;
 int	flush_rt_cache = 0;
 
-static int  get_route ();
+static int  get_route (struct rtentry *re);
 
 #ifdef LINUX
 static int _read_routes(void)

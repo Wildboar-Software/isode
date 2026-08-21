@@ -26,14 +26,14 @@ extern char dir_error_message[];
 
 str_seq SortList();
 dsEnqError list_start();
-void dn2buf();
+void dn2buf(caddr_t ptr,char *cptr);
 
 dsEnqError srch_start(void) {
 	struct ds_search_arg search_arg;
 	struct ds_search_result result;
 	struct DSError          error;
 	dsEnqError return_error;
-	extern Filter make_filter();
+	extern Filter make_filter(filt_struct *filt);
 	DN curr_rdn;
 
 	if (*mvalue == '\0') {

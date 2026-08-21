@@ -23,7 +23,7 @@ extern DN dn_dec();
 extern DN str2dnX();
 extern char * octparse ();
 extern char * prtparse ();
-extern char * mapPhone ();
+extern char * mapPhone (char *from);
 extern int ch_set;
 extern int telcmp();
 extern void pageprint(char *, ...);

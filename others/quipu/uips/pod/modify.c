@@ -20,14 +20,14 @@
 
 extern bool photo_on;
 
-char *modify_error();
+char *modify_error(struct DSError *error);
 
-static Attr_Sequence as_sort();
-static bool is_map_required();
-static void char_map(), char_unmap();
-static void my_as_print(), my_as_comp_print();
+static Attr_Sequence as_sort(Attr_Sequence as);
+static bool is_map_required(AttributeType at);
+static void char_map(char *buffer, char *value, AttributeType at), char_unmap(char *buffer, char *value, AttributeType at);
+static void my_as_print(PS ps,Attr_Sequence as,int format), my_as_comp_print(PS ps,Attr_Sequence as,int format);
 
-void rfc2greybook();
+void rfc2greybook(char *string);
 extern mailtype mailformat;
 
 #ifndef NO_STATS

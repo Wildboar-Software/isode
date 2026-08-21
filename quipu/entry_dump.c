@@ -16,7 +16,7 @@ extern LLog * log_dsap;
 #ifndef TURBO_DISK
 
 extern RDN parse_rdn;
-extern char * new_version();
+extern char * new_version(void);
 
 static void header_print (PS psa, Entry edb) {
 	switch (edb->e_data) {
@@ -95,7 +95,7 @@ int write_edb (Entry ptr, char *filename) {
 		return NOTOK;
 	}
 #if     defined(SYS5) && !defined(SVR4)
-	sync ();
+	sync();
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write_edb fsync error: %d",errno));

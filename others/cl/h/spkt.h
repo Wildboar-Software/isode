@@ -427,8 +427,8 @@ struct ssapblk {
 #define	NULLBP		((struct ssapblk *) 0)
 
 #ifdef HULA
-int	freesublk ();
-struct ssapblk *newsublk (), *findsublk ();
+int	freesublk (struct ssapblk *sb);
+struct ssapblk *newsublk (void), *findsublk (int sd);
 #endif
 
 int	freesblk ();
@@ -440,7 +440,7 @@ int	spkt2sd ();
 struct ssapkt *sb2spkt ();
 
 #ifdef HULA
-struct ssapkt *sb2udspkt ();
+struct ssapkt *sb2udspkt (struct ssapblk *sb, struct SSAPindication *si, int secs, struct TSAPunitdata *tud);
 #endif
 
 /*    SPKT datastructure */
@@ -920,13 +920,13 @@ struct ssapkt {
 };
 #define	NULLSPKT	((struct ssapkt *) 0)
 
-int	freespkt ();
-struct ssapkt *newspkt ();
+int	freespkt (struct ssapkt *s);
+struct ssapkt *newspkt (int code);
 
-void	text2spkt (), spkt2text ();
+void	text2spkt (struct ssapkt *s), spkt2text (FILE *fp, struct ssapkt *s, int read);
 
-int	spkt2tsdu ();
-struct ssapkt *tsdu2spkt ();
+int	spkt2tsdu (struct ssapkt *s, char **base, int *len);
+struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc);
 
-char   *spkt2str ();
-struct ssapkt *str2spkt ();
+char   *spkt2str (struct ssapkt *s);
+struct ssapkt *str2spkt (char *buffer);

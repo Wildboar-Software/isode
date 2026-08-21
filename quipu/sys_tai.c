@@ -14,7 +14,7 @@ extern void accept_prefix (char *str);
 extern void reject_length (char *str);
 extern void allowrelay (char *str);
 extern void add_str_parent (char *str, char *addr);
-extern void isodesetvar (char *str, char *value, int ispgm);
+extern int isodesetvar (char *str, char *value, int ispgm);
 extern void shadow_attribute (char *str);
 extern void getedb_size (int size);
 extern void turbo_optimize (char *str);
@@ -56,7 +56,7 @@ extern int optimized_only;
 
 unsigned bind_policy = POLICY_ACCESS_ALL;
 unsigned strong_policy = POLICY_ACCESS_ALL;
-extern unsigned str2permission();
+extern unsigned str2permission(char *str);
 
 #define MLOGDIR          1
 #define SYSLOG           2

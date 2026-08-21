@@ -24,11 +24,6 @@
 #define	FA_PERM_OWNER	FA_PERM_CHNGATTR
 #define	FA_PERM_PARENT	FA_PERM_DELETE
 
-#ifdef	SYS5
-struct group  *getgrnam ();
-struct passwd *getpwnam (), *getpwent (), *getpwuid ();
-#endif
-
 static char mvfile[MAXPATHLEN];
 static PE   rdparam = NULLPE;
 

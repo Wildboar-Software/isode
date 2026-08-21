@@ -412,7 +412,7 @@ int log_call_clear (int fd, int type) {
 	int			stat;
 	int			flags;
 	unsigned char		buf[2];
-	extern	void		elucidate_x25_err();
+	extern	int		elucidate_x25_err (int flags, unsigned char *pkt);
 	char			dbuf[128];
 	int			dlen = sizeof(dbuf);
 
@@ -1847,7 +1847,7 @@ int     write_x25_socket (int sd, char *buffer, int len)
 
 }
 
-int close_x25_socket (sd)
+int close_x25_socket (int sd)
 {
 	int error = OK;
 	X25vc   vci;

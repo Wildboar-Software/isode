@@ -20,7 +20,7 @@
 #define	TWM_RESIZE_BUG		/* twm looses the resize if done too early. */
 #endif	NEVER_USE_TWM
 
-static int *silentExit();
+static void * silentExit(Display *dis);
 
 extern GC XCreateGC();
 Pixmap pixmap;

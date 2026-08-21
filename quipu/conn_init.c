@@ -16,10 +16,10 @@ extern  struct PSAPaddr		* dsaladdr;
 
 void ds_log(struct DSAPabort *da, char *str, int fd);
 
-struct connection	* conn_alloc();
+struct connection	* conn_alloc(void);
 
 #ifdef QUIPU_CONSOLE
-extern  void opening_analyse() ;
+extern  void opening_analyse(struct connection *cn) ;
 #endif /* QUIPU_CONSOLE */
 
 extern  time_t timenow;

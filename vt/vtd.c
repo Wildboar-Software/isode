@@ -54,7 +54,7 @@ extern int data_pending (void);
 #endif
 
 #if !defined(SYS5) && !defined(BSD44) && !defined(_AIX) && !defined(LINUX)
-void	vhangup();
+int	vhangup (void);
 #endif
 
 int	connected = FALSE;
@@ -132,7 +132,7 @@ int	inter;
 extern	char **environ;
 char	line[] = "/dev/ptyp0";
 char	*envinit[] = { "TERM=network", 0 };
-SFD	cleanup();
+SFD	cleanup (void);
 static int do_cleaning = 0;
 
 LLog    _vt_log = {
@@ -630,7 +630,7 @@ char	utmp[] = "/etc/utmp";
 #define SCPYN(a, b)	strncpy(a, b, sizeof (a))
 #define SCMPN(a, b)	strncmp(a, b, sizeof (a))
 
-long	lseek ();
+off_t	lseek (int fd, off_t offset, int whence);
 
 void rmut(void) {
 	int f;

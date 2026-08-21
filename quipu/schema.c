@@ -12,7 +12,7 @@ extern LLog * log_dsap;
 extern AttributeType at_schema;
 extern AttributeType at_objectclass;
 extern OID alias_oc;
-Attr_Sequence entry_find_type();
+Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 int check_avs_schema (AttributeType at, AV_Sequence avs_oc) {
 	table_seq optr;
@@ -208,7 +208,7 @@ int check_oc_hierarchy (AV_Sequence avs) {
 	struct oc_seq * oidseq;
 	objectclass *oc1, *oc2;
 	char found = FALSE;
-	objectclass * str2oc();
+	objectclass * str2oc(char *str);
 	static objectclass * topoc = NULLOBJECTCLASS;
 
 	if (topoc == NULLOBJECTCLASS)

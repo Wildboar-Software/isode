@@ -9,8 +9,6 @@ static int FReadWriteRequestAux (struct ftamblk *fsb, int state, int operation, 
 static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
 
 /*    F-{READ,WRITE}.REQUEST */
-static int  FReadWriteRequestAux (), FTransEndRequestAux ();
-
 int FReadWriteRequest (
 	int sd,
 	int operation,

@@ -25,10 +25,10 @@ extern int length;
 static type_IMISC_Data *data = NULLPE;
 
 /* TYPES */
-struct type_IMISC_IA5List *vec2ia5list ();
+struct type_IMISC_IA5List *vec2ia5list (char **vec);
 
 /* ARGUMENTS */
-int	do_finger (), do_tell (), do_data (), do_help (), do_quit ();
+int	do_finger (), do_tell (), do_data (), do_help (), do_quit (char **av);
 
 /* RESULTS */
 #define	gentime_result	utctime_result

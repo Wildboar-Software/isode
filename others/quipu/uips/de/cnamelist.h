@@ -9,6 +9,6 @@ struct cnamelist {
 #define NULLCNLIST (struct cnamelist *)NULL
 #define cname_alloc()   (struct cnamelist *)smalloc(sizeof (struct cnamelist))
 
-void addToCoList();
-void addCoNode();
-char * mapCoName();
+void addToCoList(char *str);
+void addCoNode(char *shortname, char *longname);
+char * mapCoName(char *shortname);

@@ -15,7 +15,7 @@ extern LLog * log_dsap;
 extern time_t timenow;
 extern time_t cache_timeout;
 extern DN  mydsadn;
-extern struct di_block * di_alloc();
+extern struct di_block * di_alloc(void);
 extern int di2cref (struct di_block *, struct DSError *, char);
 
 static int no_reply_child (

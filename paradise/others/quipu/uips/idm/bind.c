@@ -32,7 +32,7 @@ extern char init_pswd[];
 extern char addorg[];
 extern char yes_string[];
 extern char callingDteNumber[];
-extern char *new_version();
+extern char *new_version(void);
 static char passwd[LINESIZE];
 
 extern int boundToDSA;
@@ -47,7 +47,7 @@ struct DAPconnect         dc;
 struct DAPindication      di;
 struct ds_bind_arg bind_arg;
 
-void de_exit();
+void de_exit(int exitCode);
 
 static int bindres;
 /*
@@ -57,7 +57,7 @@ static int bindres;
 int init_bind_to_ds(int *assoc) {
 	struct PSAPaddr             *addr;
 	int protect_password();
-	void exit();
+	void exit(int status);
 
 	if ((strlen(username) > 0)) {
 		bind_arg.dba_auth_type = DBA_AUTH_SIMPLE;
@@ -200,7 +200,7 @@ int wait_bind_to_ds(int assoc, int wantToBlock) {
 	return NOTOK; /* exit this way if can't talk to access point */
 }
 
-de_unbind() {
+void de_unbind(void) {
 	if (deLogLevel)
 		ll_log (de_log, LLOG_NOTICE, NULLCP, "Unbind:");
 	ds_unbind();

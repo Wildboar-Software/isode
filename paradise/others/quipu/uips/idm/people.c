@@ -23,11 +23,11 @@ extern char exactString[];
 
 struct namelist * prratts;
 
-struct ds_search_arg *fillMostPRRSearchArgs();
-struct ds_search_arg *fillMostPRRSearchArgCp();
+struct ds_search_arg *fillMostPRRSearchArgs(char *parentstr, int searchdepth);
+struct ds_search_arg *fillMostPRRSearchArgCp(char *parentstr, int searchdepth);
 
-void makeExplicitPRRFilter();
-void prrFilter1(), prrFilter2(), prrFilter3(), prrFilter4();
+void makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp);
+void prrFilter1(char *prrstr, struct s_filter **fpp), prrFilter2(char *prrstr, struct s_filter **fpp), prrFilter3(char *prrstr, struct s_filter **fpp), prrFilter4(char *prrstr, struct s_filter **fpp);
 
 VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRR[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};
@@ -192,7 +192,7 @@ int makeListPRRs(struct namelist **listp, char *parentstr) {
 	entrystruct * x;
 	int retval;
 	int status;
-	void onalarm();
+	void onalarm(void);
 	char *cp, *cp2;
 
 	rfrl_msg = TRUE;

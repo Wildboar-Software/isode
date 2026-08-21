@@ -46,8 +46,8 @@ extern void bcopy();
 
 extern (*_XIOErrorFunction)();		/* X system error reporting routine. */
 extern (*_XErrorFunction)();		/* X_Error event reporting routine. */
-extern char *_XAllocScratch();		/* fast memory allocator */
-extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
+extern char *_XAllocScratch(Display *dpy, unsigned long nbytes);		/* fast memory allocator */
+extern Visual *_XVIDtoVisual(Display *dpy, VisualID id);		/* given visual id, find structure */
 
 #ifndef BUFSIZE
 #define BUFSIZE 2048			/* X output buffer size. */
@@ -211,7 +211,7 @@ extern Visual *_XVIDtoVisual();		/* given visual id, find structure */
  * we can presume buffer less than 2^16 bytes, so bcopy can be used safely.
  */
 #ifdef DataRoutineIsProcedure
-extern void Data();
+extern void Data(Display *dpy, char *data, long len);
 #else
 #define Data(dpy, data, len) \
 	if (dpy->bufptr + (len) <= dpy->bufmax) {\

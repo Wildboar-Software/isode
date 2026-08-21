@@ -27,12 +27,12 @@ extern	char    utmpfile[];
 extern	char    *tmpname;
 extern	struct type_Idist_IA5List *ia5list;
 
-static	char	*cannon ();
-static	struct type_Idist_IA5List *str2ia5list ();
-static	int compare ();
-extern	struct type_Idist_FileSpec *makefs ();
-extern	struct type_Idist_QueryResult *query ();
-extern	struct type_Idist_FileList *do_listcdir ();
+static	char	*cannon (char *name);
+static	struct type_Idist_IA5List *str2ia5list (char *s, int len);
+static	int compare (char *f1, char *f2);
+extern	struct type_Idist_FileSpec *makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname);
+extern	struct type_Idist_QueryResult *query (char *str);
+extern	struct type_Idist_FileList *do_listcdir (void);
 
 int doexec (char *cmd) {
 	int fd[2], status, pid, i;
@@ -431,7 +431,7 @@ int fixup (void) {
 	struct timeval tvp[2];
 	char	*new, *p;
 	char	*owner, *group;
-	long	convtime ();
+	long	convtime (struct type_Idist_FileTime *fm);
 
 	p = qb2str (cfiletype -> filename);
 	new = cannon (p);

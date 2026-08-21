@@ -63,33 +63,33 @@ LLog *pgm_log = &_pgm_log;
 static int priority = -10;
 static int ticked;
 
-static void timeout();
-static void init_ntp();
-void initialize();
-static void init_kern_vars();
-static void hourly();
-static void do_peer ();
-static SFD finish ();
+static void timeout(int n);
+static void init_ntp(char *config);
+void initialize(void);
+static void init_kern_vars(void);
+static void hourly(void);
+static void do_peer (struct ntp_peer *peer);
+static SFD finish (int sig);
 
-extern void make_new_peer();
-extern void transmit();
-extern void process_packet();
-extern void clock_update();
-extern void clear();
-extern void clock_filter();
-extern void select_clock();
+extern void make_new_peer(struct ntp_peer *peer);
+extern void transmit(struct ntp_peer *peer);
+extern void process_packet(struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer);
+extern void clock_update(struct ntp_peer *peer);
+extern void clear(struct ntp_peer *peer);
+extern void clock_filter(struct ntp_peer *peer, double new_delay, double new_offset);
+extern void select_clock(void);
 extern void adios(char *, char *, ...);
 extern void advise(int, char *, char *, ...);
-extern void init_logical_clock();
-extern void create_osilisten ();
-extern void iso_init ();
-extern void poll_update();
+extern void init_logical_clock(void);
+extern void create_osilisten (char *addr);
+extern void iso_init (int vecp, char **vec, int fd);
+extern void poll_update(struct ntp_peer *peer, int new_hpoll);
 
 #if	defined(DEBUG) && defined(SIGUSR1) && defined(SIGUSR2)
-static	SFD incdebug(), decdebug();
+static	SFD incdebug(int sig), decdebug(int sig);
 #endif
 
-struct ntp_peer *find_peer ();
+struct ntp_peer *find_peer (int n);
 
 int main (int argc, char *argv[]) {
 	int	cc;
@@ -264,7 +264,7 @@ int doit (void) {
 			TRACE (3, ("Activity on if %d fd=%d (%s)",
 					   i, addrs[i].fd, addrs[i].name));
 			if (addrs[i].flags & INTF_PENDING) {
-				struct ntp_peer *p = find_peer (i);
+				struct ntp_peer *p = find_peer (int n);
 				if (p)
 					make_osi_conn (find_peer(i),
 								   osiaddress);
@@ -357,7 +357,7 @@ void dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer) {
 
 void make_new_peer (struct ntp_peer *peer) {
 	int i;
-	void	double_to_s_fixed ();
+	void	double_to_s_fixed (struct s_fixedpt *t, double value);
 
 	/*
 	 * initialize peer data fields
@@ -459,7 +459,7 @@ static void timeout (int n) {
 	static int periodic = 0;
 	struct ntp_peer *peer;
 #ifndef	XADJTIME2
-	extern void adj_host_clock();
+	extern void adj_host_clock(int n);
 
 	adj_host_clock(n);
 #endif
@@ -1188,9 +1188,9 @@ struct refclock {
 	struct refclock *next;
 } *refclocks = NULL;
 
-int init_clock_local(), read_clock_local();
+int init_clock_local(char *file), read_clock_local(int cfd, struct timeval **tvp, struct timeval **mtvp);
 #ifdef PSTI
-int init_clock_psti(), read_clock_psti();
+int init_clock_psti(char *timesource), read_clock_psti();
 #endif PSTI
 
 int init_clock (char *name, char *type) {

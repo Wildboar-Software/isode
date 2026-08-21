@@ -17,7 +17,7 @@ DN str2dn (char *str)
 	DN dn = NULLDN, newdn, tmpdn;
 	RDN rdn;
 	int	rfcformat = 0;
-	char * alias2name ();
+	char * alias2name (char *name);
 
 	if (str == NULLCP)
 		return (NULLDN);

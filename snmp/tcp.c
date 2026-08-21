@@ -87,7 +87,7 @@ static struct tcpstat tcpstat;
 
 static int tcpConnections;
 
-static int  get_connections ();
+static int  get_connections (int offset);
 
 #define	tcpRtoAlgorithm	0
 #define	tcpRtoMin	1
@@ -113,7 +113,7 @@ static int  get_connections ();
 #endif
 
 #ifdef LINUX
-int _read_snmp_stats ();
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
 
 static int _read_tcp_stats (void)
 {
@@ -320,7 +320,7 @@ static struct tcptab *tts = NULL;
 
 static	int	flush_tcp_cache = 0;
 
-static struct tcptab *get_tcpent ();
+static struct tcptab *get_tcpent (unsigned int *ip, int isnext);
 
 #define	tcpConnState	0
 #define	tcpConnLocalAddress 1
@@ -337,7 +337,7 @@ static struct tcptab *_read_tcp_connections(int *len)
 	char line[256];
 	int i;
 	struct tcptab *tt, *t, **tp;
-	unsigned char *cp;
+	unsigned int *cp;
 
 	*len = 0;
 	f = fopen ("/proc/net/tcp", "r");
@@ -355,11 +355,12 @@ static struct tcptab *_read_tcp_connections(int *len)
 				&t -> tt_pcb.inp_faddr.s_addr, &t -> tt_pcb.inp_fport,
 				&t -> tt_tcpb.t_state,
 				&t -> tt_socb.so_snd.sb_cc, &t -> tt_socb.so_rcv.sb_cc);
-		cp = (unsigned char *) t -> tt_instance;
+		// TODO: Review this very carefully
+		cp = t -> tt_instance;
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_laddr);
-		*cp++ = ntohs (t -> tt_pcb.inp_lport);
+		*cp++ = ntohs (t -> tt_pcb.inp_lport) & 0xffff;
 		cp += ipaddr2oid (cp, &t -> tt_pcb.inp_faddr);
-		*cp++ = ntohs (t -> tt_pcb.inp_fport);
+		*cp++ = ntohs (t -> tt_pcb.inp_fport) & 0xffff;
 		*tp = t; tp = &t -> tt_next;
 	}
 	*len = i;
@@ -507,12 +508,12 @@ static int  get_connections (int offset) {
 		return OK;
 	}
 	lastq = quantum, flush_tcp_cache = 0;
-#ifndef LINUX
 	for (ts = tts; ts; ts = tp) {
 		tp = ts -> tt_next;
 		free ((char *) ts);
 	}
 	tts = NULL;
+#ifndef LINUX
 	if (getkmem (nl + N_TCB, (char *) &tcb, sizeof tcb) == NOTOK)
 		return NOTOK;
 	head = (struct inpcb *) nl[N_TCB].n_value;

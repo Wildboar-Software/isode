@@ -59,7 +59,7 @@ int tryBackup (void) {
 int init_bind_to_ds(int *assoc) {
 	struct ds_bind_arg bind_arg;
 	struct PSAPaddr             *addr;
-	void exit();
+	void exit(int status);
 
 	if (dsa_address == NULLCP) {
 		fprintf(stderr, "No dsa address has been configured in dsaptailor or detailor\n\n");

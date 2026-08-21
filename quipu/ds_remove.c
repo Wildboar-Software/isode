@@ -12,11 +12,11 @@
 
 extern LLog * log_dsap;
 extern int local_master_size;
-extern int entry_cmp();
+extern int entry_cmp(Entry e1, Entry e2);
 
 int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr, delent = NULLENTRY;
-	char * new_version ();
+	char * new_version(void);
 	int retval;
 	int authp, pauthp;
 	extern int read_only;
@@ -113,7 +113,7 @@ int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN
 			DN      save_dn ;
 			char   *filename ;
 			Entry   empty_entry = get_default_entry (entryptr->e_parent) ;
-			char   *dn2edbfile() ;
+			char   *dn2edbfile(DN dn) ;
 			empty_entry->e_data = E_DATA_MASTER ;
 			save_dn = get_copy_dn(entryptr->e_parent) ;
 			if ((filename = dn2edbfile(save_dn)) == NULLCP) {

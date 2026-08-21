@@ -7,12 +7,12 @@
 /* REMEMBER TO NULL-TERMINATE ALL OF THESE STRUCTURE ARRAYS     */
 /*--------------------------------------------------------------*/
 
-void	main_help();
-void	list_start(), back_start();
-void	srch_start(), widen();
-void	rd_start();
-void	sd_quit(), cache_quit();
-void    get_listed_object(), goto_addr(), scrollbar();
+void	main_help(void);
+void	list_start(void), back_start(void);
+void	srch_start(void), widen(void);
+void	rd_start(void);
+void	sd_quit(void), cache_quit();
+void    get_listed_object(char number, WIDGET *wdgt), goto_addr(void), scrollbar(int command);
 
 WIDGET mainwdgts[] = {
 	{LABEL," QUIPU X.500 Screen Directory. ",CENTRE,NULLFN,0,0,EXPAND ,0},
@@ -33,8 +33,8 @@ WIDGET mainwdgts[] = {
 
 /*--------------------------------------------------------------*/
 
-void help_read(), help_list(), help_srch(), help_back(),
-	 help_number(), help_addr(), help_up(), returnmain();
+void help_read(), help_list(void), help_srch(void), help_back(void),
+	 help_number(void), help_addr(), help_up(void), returnmain(void);
 
 WIDGET dethelpwdgts[] = {
 	{LABEL,"QUIPU X.500 Screen Directory: Help",CENTRE,NULLFN,0,0,EXPAND,0},

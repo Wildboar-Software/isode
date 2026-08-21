@@ -33,13 +33,13 @@ extern char exactString[];
 
 struct namelist * locatts;
 
-struct ds_list_arg *fillMostLocListArgs();
-struct ds_search_arg *fillMostLocSearchArgs();
+struct ds_list_arg *fillMostLocListArgs(char *str);
+struct ds_search_arg *fillMostLocSearchArgs(char *cstr, int searchdepth);
 
 static struct query savelocinfo;
 
-void makeExplicitLocFilter();
-void locFilter1(), locFilter2(), locFilter3(), locFilter4();
+void makeExplicitLocFilter(char *lstr, struct s_filter **fpp);
+void locFilter1(char *lstr, struct s_filter **fpp), locFilter2(char *lstr, struct s_filter **fpp), locFilter3(char *lstr, struct s_filter **fpp), locFilter4(char *lstr, struct s_filter **fpp);
 
 VFP explicitLoc[] = {makeExplicitLocFilter, NULLVFP};
 VFP normalLoc[] = {locFilter1, locFilter2, locFilter3, locFilter4, NULLVFP};

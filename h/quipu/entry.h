@@ -124,9 +124,7 @@ typedef struct entry {
 
 #define NULLENTRY ((Entry)0)
 #define entry_alloc()           (Entry) calloc (1,sizeof(entry));
-Avlnode *getentry_block();
-Entry directory_load();
-int find_master_entry ();
+Avlnode *getentry_block(Entry p_parent, char *fname);
 Entry local_find_entry (DN object, char deref);
 void entry_free (Entry entryptr);
 void directory_free (Entry directory);
@@ -156,8 +154,8 @@ struct oid_seq {
 #define NULLOIDSEQ ((struct oid_seq*) 0)
 
 #define oid_seq_alloc()         (struct oid_seq  *) smalloc (sizeof (struct oid_seq))
-struct oid_seq * oid_seq_cpy();
-struct oid_seq * oid_seq_merge();
+struct oid_seq * oid_seq_cpy(struct oid_seq *a);
+struct oid_seq * oid_seq_merge(struct oid_seq *a, struct oid_seq *b);
 void oid_seq_free (struct oid_seq *ptr);
 int oid_seq_cmp (struct oid_seq *a, struct oid_seq *b);
 void oid_seq_print (PS ps, struct oid_seq *ptr, int format);
@@ -174,8 +172,8 @@ struct dn_seq {
 };
 #define NULLDNSEQ ((struct dn_seq *)  0)
 #define dn_seq_alloc()          (struct dn_seq *) smalloc (sizeof (struct dn_seq))
-struct dn_seq *dn_seq_cpy();
-struct dn_seq *str2dnseq();
+struct dn_seq *dn_seq_cpy(struct dn_seq *dnseq);
+struct dn_seq *str2dnseq(char *str);
 void dn_seq_free (struct dn_seq *dnseq);
 int dn_seq_cmp (struct dn_seq *a, struct dn_seq *b);
 void dn_seq_print (PS ps, struct dn_seq *dnseq, int format);
@@ -214,7 +212,7 @@ struct edb_info {               /* represent EDBInfo                    */
 
 #define edb_info_alloc()   (struct edb_info *) smalloc (sizeof (struct edb_info));
 
-DN get_copy_dn ();
+DN get_copy_dn (Entry entryptr);
 
 struct getedb_type {
 	char _gr_encoded;

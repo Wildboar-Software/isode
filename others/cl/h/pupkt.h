@@ -96,8 +96,8 @@ struct psapblk {
 };
 #define	NULLPB		((struct psapblk *) 0)
 
-int	freepublk ();
-struct psapblk *newpublk (), *findpublk ();
+int	freepublk (struct psapblk *pb);
+struct psapblk *newpublk (void), *findpublk (int sd);
 
 #define	PC_PROV_BASE		PC_NOTSPECIFIED
 #define	PC_ABORT_BASE \
@@ -105,10 +105,10 @@ struct psapblk *newpublk (), *findpublk ();
 #define	PC_REASON_BASE \
 	(PC_ABSTRACT - int_PS_provider__reason_abstract__syntax__not__supported)
 
-int     ppdu2data ();
-struct qbuf *info2_qb ();
-int	qb2_info ();
-struct type_PS_User__data *info2_ppdu ();
+int     ppdu2data (struct psapblk *pb, struct PSAPindication *pi, struct PuSAPstart *ps, struct type_PS_User__data *info);
+struct qbuf *info2_qb (PE pe, struct qbuf *qp, struct PSAPindication *pi);
+int	qb2_info (struct qbuf *qb, PE *pe);
+struct type_PS_User__data *info2_ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu);
 
 int	print_PS_UD__type (), print_PS_User__data (),
 	print_PS_Fully__encoded__data ();

@@ -11,7 +11,7 @@
 #include "usr.dirent.h"
 
 #ifndef	GETDENTS
-extern off_t	lseek();
+extern off_t	lseek(int fd, off_t offset, int whence);
 
 extern int	errno;
 

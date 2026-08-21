@@ -73,7 +73,7 @@ int showfred (DN mydn, char islong, char subdisplay);
 static Entry fredentry (DN adn, char islong);
 Attr_Sequence fred_as (void), fred_full (void);
 
-static struct dn_seq *interact ();
+static struct dn_seq *interact(struct dn_seq *dns, DN dn, char *s);
 
 static void do_dm_match (int n, char **vec);
 static int fred_children (DN parentdn, struct subordinate *ptr, int prob);
@@ -85,10 +85,10 @@ static void do_expand (int n, char **vec);
 static void fred_init (void);
 static void showfredattr (AttributeValue av);
 
-Filter	joinfilter (), ocfilter (), strfilter ();
-PE	grab_pe ();
-sntx_table *get_syntax_table ();
-struct dn_seq *dn_seq_push ();
+Filter	joinfilter(Filter f, char type), ocfilter(char *s), strfilter(AttributeType at, char *s, char type);
+PE	grab_pe(AttributeValue av);
+sntx_table *get_syntax_table(short x);
+struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq);
 
 /*    FRED BACK-END */
 
@@ -97,7 +97,7 @@ void call_fred (int argc, char **argv) {
 
 	if (argc < 2)
 		goto usage;
-	fred_init ();
+	fred_init();
 	if (!did_ufnas) {
 		if (ufn_init () == FALSE) {
 			ps_printf (OPT, "UFN initialization fails.\n");
@@ -147,8 +147,8 @@ usage:
 static	int	dlevel = 0;
 static	int	dsa_status;
 
-static struct dn_seq *dm2dn_seq ();
-static struct dn_seq *dm2dn_seq_aux ();
+static struct dn_seq *dm2dn_seq(char *dm);
+static struct dn_seq *dm2dn_seq_aux(char *dm, DN dn, struct dn_seq *dlist);
 
 #define	make_filter(cp,at) \
     	strfilter ((at), (cp), index ((cp), '*') ? FILTERITEM_SUBSTRINGS \
@@ -233,7 +233,7 @@ static void do_dm_match (int n, char **vec) {
 		sa -> sra_subset = SRA_WHOLESUBTREE;
 		sa -> sra_searchaliases = FALSE;
 		sa -> sra_eis.eis_allattributes = FALSE;
-		sa -> sra_eis.eis_select = fred_as ();
+		sa -> sra_eis.eis_select = fred_as();
 		sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 		if (t_mbox == NULL || t_othermbox == NULL)
 			fatal (-100, "rfc822Mailbox/otherMailbox: invalid attribute type");
@@ -323,7 +323,7 @@ static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 	sa -> sra_subset = SRA_ONELEVEL;
 	sa -> sra_searchaliases = FALSE;
 	sa -> sra_eis.eis_allattributes = FALSE;
-	sa -> sra_eis.eis_select = fred_as ();
+	sa -> sra_eis.eis_select = fred_as();
 	sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	dp = dm;
 	for (;;) {
@@ -387,8 +387,8 @@ free_filter:
 	return dlist;
 }
 
-static struct dn_seq	*expand_full (),
-						*expand_partial ();
+static struct dn_seq	*expand_full (DN dn, int *complete),
+						*expand_partial(DN dn, int *complete);
 
 static void do_expand (int n, char **vec) {
 	int	    complete;
@@ -492,7 +492,7 @@ static struct dn_seq *expand_partial (DN dn, int *complete)
 	sa -> sra_subset = SRA_ONELEVEL;
 	sa -> sra_searchaliases = FALSE;
 	sa -> sra_eis.eis_allattributes = FALSE;
-	sa -> sra_eis.eis_select = fred_as ();
+	sa -> sra_eis.eis_select = fred_as();
 	sa -> sra_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 	if (!(fi1 = ocfilter ("dSA")))
 		fatal (-100, "ocfilter (\"dSA\") failed");
@@ -1191,7 +1191,7 @@ int showfred (DN mydn, char islong, char subdisplay) {
 	PS	    ps = NULLPS;
 	RDN	    myrdn;
 
-	fred_init ();
+	fred_init();
 	myentry = fredentry (mydn = dn_cpy (mydn), islong);
 	pos = RPS -> ps_byteno;
 	seqno = fred_sequence ? add_sequence (mydn) : 0;
@@ -1564,7 +1564,7 @@ static Entry fredentry (DN adn, char islong)
 		read_arg.rda_common.ca_servicecontrol.svc_options |=
 		SVC_OPT_DONTDEREFERENCEALIAS;
 		read_arg.rda_eis.eis_allattributes = FALSE;
-		read_arg.rda_eis.eis_select = islong ? fred_full () : fred_as ();
+		read_arg.rda_eis.eis_select = islong ? fred_full () : fred_as();
 		read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 		if (ds_read (&read_arg, &read_error, &read_result) != DS_OK) {
 #ifdef	notdef
@@ -1587,7 +1587,7 @@ void showfredDNs (DN dn, int islong) {
 	PS	     nps;
 	int fd;
 
-	fred_init ();
+	fred_init();
 	if (!(theEntry = fredentry (dn, islong)))
 		return;
 	if ((nps = ps_alloc (str_open)) == NULLPS
@@ -1752,7 +1752,7 @@ Attr_Sequence fred_as (void) {
 	static Attr_Sequence as = NULL;
 	if (!as) {
 		AttributeType at;
-		fred_init ();
+		fred_init();
 		if (at = t_mbox)
 			as = as_merge (as,
 						   as_comp_new (AttrT_cpy (at), NULLAV, NULLACL_INFO));
@@ -1776,7 +1776,7 @@ Attr_Sequence fred_full (void) {
 		struct pair *p;
 		struct template *t;
 		AttributeType at;
-		fred_init ();
+		fred_init();
 		for (p = pairs; p -> p_name; p++)
 			if (at = *p -> p_at)
 				as = as_merge (as, as_comp_new (AttrT_cpy (at), NULLAV,

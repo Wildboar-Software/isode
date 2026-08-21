@@ -13,10 +13,10 @@ extern int preferInvVideo;
 extern int deLogLevel;
 extern int controlCtoQuit;
 extern char term[];
-char *TidyString();
-char *checkSetTerm();
-void displayCurrentSettings();
-void soundBell();
+char *TidyString(char *a);
+char *checkSetTerm(char *termtype, char *defterm);
+void displayCurrentSettings(void);
+void soundBell(void);
 
 static struct {
 	char *topic;
@@ -61,7 +61,7 @@ static struct {
 	NULLCP, NULLCP, 0
 };
 
-tailorHelp() {
+void tailorHelp(void) {
 	int i;
 
 	if (controlCtoQuit)
@@ -139,13 +139,13 @@ static struct {
 };
 
 void displayHelp(char *helpstr) {
-	SFD cleanupok();
-	void onint1();
+	SFD cleanupok(void);
+	void onint1(void);
 	int i, n, found;
 	char * cp, * cp1;
 	char buf[1024];
 	char varname[1024], varval[1024];
-	extern void turnInverseVideoOn(), turnInverseVideoOff();
+	extern void turnInverseVideoOn(void), turnInverseVideoOff(void);
 
 	if (lexequ(helpstr, "settings") == 0) {
 		printf("It is possible to modify some values used by this program, for example the\n");

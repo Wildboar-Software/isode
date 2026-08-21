@@ -32,9 +32,9 @@ typedef struct _ds_task {
 #define NULLDsTask (DsTask) NULL
 #define ds_task_alloc() (DsTask) smalloc(sizeof(ds_task))
 
-QE_error_code _task_invoked();
-void _task_complete();
+QE_error_code _task_invoked(task_type type, char *baseobject, QCardinal request_id, int *task_id_ptr);
+void _task_complete(int task_id);
 DsTask _get_task_of_id();
-void abort_task();
+void abort_task(int task_id);
 
 #endif _query_ds_task_h_

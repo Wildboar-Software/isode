@@ -28,7 +28,7 @@ extern int deLogLevel;
 extern int alarmCount;
 extern int bindTimeout;
 extern void pageprint(char *, ...);
-void onint1();
+void onint1(void);
 
 int listlen (struct namelist *lp) {
 	int len;
@@ -47,7 +47,7 @@ alarmLen () {
 }
 
 void initAlarm (void) {
-	void onalarm();
+	void onalarm(void);
 
 	alarmCount = 0;
 	signal(SIGALRM, (VFP) onalarm);
@@ -69,7 +69,7 @@ void handleTimeout (void) {
 }
 
 void startUnbindTimer (void) {
-	void handleTimeout();
+	void handleTimeout(void);
 
 	signal(SIGALRM, (VFP) handleTimeout);
 	alarm((unsigned)bindTimeout);

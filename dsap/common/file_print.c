@@ -24,7 +24,8 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 	char buffer [LINESIZE];
 	PS sps;
 	char *pathend = NULLCP;
-	char val, *_isodefile();
+	char val;
+	char *_isodefile(char *path, char *file);
 	char *path = NULLCP;
 	struct file_syntax * fs;
 	unsigned last_heap;

@@ -40,12 +40,12 @@ typedef struct {
 #define	closedir	_closedir
 #define	dirfd(dp)	((dp)->dd_fd)
 
-extern DIR		*opendir();
-extern struct dirent	*readdir();
-extern off_t		telldir();
-extern void		seekdir();
-extern void		rewinddir();
-extern int		closedir();
+extern DIR		*opendir(const char *);
+extern struct dirent	*readdir(DIR *);
+extern off_t		telldir(DIR *);
+extern void		seekdir(DIR *, off_t);
+extern void		rewinddir(DIR *);
+extern int		closedir(DIR *);
 
 #ifndef NULL
 #define	NULL	0			/* DAG -- added for convenience */
@@ -53,7 +53,7 @@ extern int		closedir();
 
 #define	getcwd		_getcwd
 
-extern char             *getcwd ();
+extern char             *getcwd (char *, size_t);
 
 #define	scandir	_scandir
 #define	alphasort _alphasort

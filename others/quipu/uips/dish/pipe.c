@@ -196,7 +196,7 @@ int main (int argc, char **argv) {
 	char            dishname[BUFSIZ];
 	int             i;
 	char           *ptr, *getenv(), *sprintf(), *getpassword ();
-	void            pipe_quit ();
+	void            pipe_quit (int sig);
 
 	umask (0);
 	sprintf (retfile, "/tmp/dish%d", getpid ());

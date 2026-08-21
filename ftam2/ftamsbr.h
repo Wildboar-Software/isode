@@ -148,7 +148,7 @@ struct vfsmap {
 	char  *vf_text;		/* textual description */
 };
 
-struct vfsmap *st2vfs ();
+struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftamfd);
 
 /* WATCHP is one pepsy people should use as the macro which is
  * not expansion order dependant
@@ -177,9 +177,9 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
 #endif
 #endif
 
-int	binarypeek (), textpeek (), fdfpeek ();
+int	binarypeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd), textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd), fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd);
 
-int	binarycheck (), textcheck ();
+int	binarycheck (void *param, char *data), textcheck (void *param, char *data);
 
 #define	FA_RDATTR \
     (FA_FILENAME | FA_ACTIONS | FA_CONTENTS | FA_ACCOUNT | FA_DATE_CREATE \
@@ -192,6 +192,6 @@ extern int  ftp_default;
 extern int  ftp_directory;
 #endif
 
-int	de2fd ();
+int	de2fd (int fd, PE pe, int text, int effector);
 
 void compath (char *f);

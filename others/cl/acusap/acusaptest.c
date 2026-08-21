@@ -72,8 +72,8 @@ static	  struct  type_ADD_Addends  *pAddends = &Addends;
 static	  struct  type_ADD_Sum  Sum;
 static	  struct  type_ADD_Sum  *pSum = &Sum;
 
-void acs_adios();
-void acs_advise();
+void acs_adios(struct AcSAPabort *aca, char *event);
+void acs_advise(struct AcSAPabort *aca, char *event);
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
 
@@ -519,7 +519,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void	adios (char *what, char *fmt, ...)
 {

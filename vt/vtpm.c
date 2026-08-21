@@ -33,13 +33,13 @@ struct PSAPindication pi;
 struct PSAPdata	px;
 struct PSAPfinish *pf;
 
-static void  ps_adios (),  ps_advise ();
+static void  ps_adios (struct PSAPabort *pab, char *event),  ps_advise (struct PSAPabort *pab, char *event);
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
 int do_event (int event, PE pe);
 int pn_ind (int dd, struct PSAPsync *psync);
-extern int build_ASRPDU_ASRpdu ();
+extern int build_ASRPDU_ASRpdu (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);
 
 /****************************************************************************/
 /* GET EVENT - attempt to read a PDU from the presentation connection	    */
@@ -170,11 +170,11 @@ int get_event (int dd, PE *pe) {
 
 unsigned	max_state[SECTORS] = { 0, 13, 0, 0, 0, 10};
 
-int (*s0[])() =	{
+int (*s0[])(int event, PE pe) =	{
 	NULL
 };
 
-int (*s1[])() =	{
+int (*s1[])(int event, PE pe) =	{
 	s1_01,			/* states in the first sector  */
 	s1_02B,
 	s1_02S,
@@ -190,19 +190,19 @@ int (*s1[])() =	{
 	s1_51T
 };
 
-int (*s2[])() =	{
+int (*s2[])(int event, PE pe) =	{
 	NULL
 };
 
-int (*s3[])() =	{
+int (*s3[])(int event, PE pe) =	{
 	NULL
 };
 
-int (*s4[])() =	{
+int (*s4[])(int event, PE pe) =	{
 	NULL
 };
 
-int (*s5[])() =	{
+int (*s5[])(int event, PE pe) =	{
 	s5_400B,
 	s5_402B,
 	s5_420B,
@@ -215,7 +215,7 @@ int (*s5[])() =	{
 	s5_62
 };
 
-int	((**sectors[])()) = {s0, s1, s2, s3, s4, s5};
+int	((**sectors[])(int event, PE pe)) = {s0, s1, s2, s3, s4, s5};
 
 
 unsigned	state = 0,
@@ -547,7 +547,7 @@ int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
-static void  acs_advise ();
+static void  acs_advise (struct AcSAPabort *aa, char *event);
 
 void acs_adios (struct AcSAPabort *aa, char *event) {
 	acs_advise (aa, event);

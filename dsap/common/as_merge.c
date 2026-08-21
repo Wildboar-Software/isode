@@ -123,7 +123,7 @@ Attr_Sequence as_fast_merge (Attr_Sequence a, Attr_Sequence b, Attr_Sequence c, 
 	Attr_Sequence aptr, bptr, result, trail, tmp;
 	static AV_Sequence fast_avs = NULLAV;
 	static AV_Sequence fast_tail = NULLAV;
-	extern AV_Sequence avs_fast_merge ();
+	extern AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequence d);
 
 	if ( a == NULLATTR )
 		return (b);

@@ -8,8 +8,6 @@
 static int FAccessRequestAux (struct ftamblk *fsb, int state, struct FADUidentity *identity, int lock, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.REQUEST */
-static int  FAccessRequestAux ();
-
 int FAccessRequest (
 	int sd,
 	int operation,

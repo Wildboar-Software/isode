@@ -22,10 +22,10 @@
 /* Use the {FILE} mechanism to pull in the sound files */
 
 extern void r_octprint(PS ps, struct qbuf *qb, int format);
-extern PE r_octenc();
-extern struct qbuf * r_octsdec();
-extern struct qbuf * r_octparse();
-extern struct qbuf * qb_cpy();
+extern PE r_octenc(struct qbuf *x);
+extern struct qbuf * r_octsdec(PE pe);
+extern struct qbuf * r_octparse(char *str);
+extern struct qbuf * qb_cpy(struct qbuf *qb);
 extern int qb_cmp(struct qbuf *qb1, struct qbuf *qb2);
 extern int file_attr_length;
 

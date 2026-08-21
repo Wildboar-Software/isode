@@ -10,7 +10,7 @@ extern Widget toplevel;
 extern Widget PhotoWindow;
 
 GC XCreateGC();
-void make_photo_widget();
+void make_photo_widget(void);
 
 GC gc;
 char photo_name[1024];

@@ -56,7 +56,7 @@ static PE name2value_dap (char *name, char *context, int ontty, char *userdn,
 	DN dn;
 	AttributeType at;
 	extern char * oidtable;
-	extern PE grab_pe();
+	extern PE grab_pe(AttributeValue av);
 	PE res_pe;
 	static struct ds_read_arg read_arg = {
 		default_common_args,

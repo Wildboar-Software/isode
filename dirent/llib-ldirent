@@ -34,8 +34,7 @@
 #ifndef	GETDENTS
 /* open a directory stream */
 
-DIR    *opendir (name)
-char   *name;
+DIR    *opendir (char *name)
 {
     return opendir (name);
 }
@@ -43,8 +42,7 @@ char   *name;
 
 /* read next entry from a directory stream */
 
-struct dirent *readdir (dp)
-DIR    *dp;
+struct dirent *readdir (DIR *dp)
 {
     return readdir (dp);
 }
@@ -52,8 +50,7 @@ DIR    *dp;
 
 /* report directory stream position */
 
-off_t	telldir (dp)
-DIR    *dp;
+off_t	telldir (DIR *dp)
 {
     return telldir (dp);
 }
@@ -61,9 +58,7 @@ DIR    *dp;
 
 /* reposition a directory stream */
 
-void	seekdir (dp, loc)
-DIR    *dp;
-off_t	loc;
+void	seekdir (DIR *dp, off_t loc)
 {
     seekdir (dp, loc);
 }
@@ -71,8 +66,7 @@ off_t	loc;
 
 /* rewind a directory stream */
 
-void	rewinddir (dp)
-DIR    *dp;
+void	rewinddir (DIR *dp)
 {
     rewinddir (dp);
 }
@@ -80,8 +74,7 @@ DIR    *dp;
 
 /* close a directory stream */
 
-int	closedir (dp)
-DIR    *dp;
+int	closedir (DIR *dp)
 {
     return closedir (dp);
 }
@@ -89,10 +82,7 @@ DIR    *dp;
 
 /* get directory entries in a FS independent format */
 
-int	getdents (fd, buffer, n)
-int	fd;
-char   *buffer;
-unsigned int n;
+int	getdents (int fd, char *buffer, unsigned int n)
 {
     return getdents (fd, buffer, n);
 }
@@ -101,9 +91,7 @@ unsigned int n;
 
 /* get current working directory name */
 
-char   *getcwd (buffer, n)
-char   *buffer;
-int	n;
+char   *getcwd (char *buffer, size_t n)
 {
     return getcwd (buffer, n);
 }

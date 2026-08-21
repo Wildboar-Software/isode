@@ -34,8 +34,8 @@ struct whois {
 #define	W_SUBDISPLAY	0x08
 };
 
-static char   *eqstr (), *limits ();
-static FILE   *capture ();
+static char   *eqstr (char *s, int exact), *limits (int isearch);
+static FILE   *capture (char *command);
 
 char *whois_help[] = {
 	"whois input-field [record-type] [area-designator] [output-control]",
@@ -65,10 +65,10 @@ char *whois_help[] = {
 	NULL
 };
 
-static int  f_whois_aux ();
+static int  f_whois_aux (char **vec);
 static whois_aux ();
-static int  test_arg ();
-static int  f_ufn ();
+static int  test_arg (char *user, char *full, int minlen);
+static int  f_ufn (char **vec);
 
 /* WHOIS */
 

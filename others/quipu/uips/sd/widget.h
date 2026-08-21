@@ -98,19 +98,19 @@ typedef struct widget {
 extern WIDGET *currwidgets;
 extern char typetoggled;
 
-void initwidgets(), textfresh(), makewidgets(), setwdgtwdth(),
-	 killwidgets(), activewidget(), deleteactive(), activeindex(),
-	 redraw(), rfrshwidgets(), boxwdgt(), printwdgt(), printbar(),
-	 printlabel(), printdialog(), printtoggle(), printcommand(),
-	 interact(), docallback(), dialog(), setdialogstr(),
-	 toggle(), settogglstrs(), setlabel(), getlabel(), wprint(), tprint(),
-	 xprint(), xprintint(), cleartext(), jumpback(), nullfn(), quitfn(),
-	 endwidgets();
+void initwidgets(void), textfresh(void), makewidgets(WIDGET wdgts[]), setwdgtwdth(WIDGET *wdgt, int currx),
+	 killwidgets(WIDGET *thesewdgts), activewidget(WIDGET wdgts[], WINDOW *text), deleteactive(void), activeindex(int indx),
+	 redraw(void), rfrshwidgets(WIDGET *thesewdgts), boxwdgt(WIDGET *wdgt, char xch, char ych), printwdgt(WIDGET *wdgt), printbar(int list_size, int first, int display_num),
+	 printlabel(WIDGET *wdgt), printdialog(WIDGET *wdgt), printtoggle(WIDGET *wdgt), printcommand(WIDGET *wdgt),
+	 interact(void), docallback(int indx), dialog(WIDGET *wdgt), setdialogstr(WIDGET *wdgt, char *dstr, int maxlen),
+	 toggle(WIDGET *wdgt), settogglstrs(WIDGET *wdgt, char **togglstrs, int togglindx), setlabel(WIDGET *wdgt, char *label), getlabel(WIDGET *wdgt, char label[]), wprint(WINDOW *here, char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j), tprint(char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j),
+	 xprint(char *fmt), xprintint(char *fmt, int a), cleartext(void), jumpback(void), nullfn(void), quitfn(void),
+	 endwidgets(void);
 
-int linec(), gety(), posnwidgets(), getwidgetindex(), getdialogstr(),
-	settogglindx(), gettogglindx(), gettogglstr(), lowesty(),
-	findactiveinput();
+int linec(void), gety(void), posnwidgets(WIDGET thesewdgts[], int starty), getwidgetindex(WIDGET wdgts[], int callch), getdialogstr(WIDGET *wdgt, char str[]),
+	settogglindx(WIDGET *wdgt, int indx), gettogglindx(WIDGET *wdgt), gettogglstr(WIDGET *wdgt, char str[]), lowesty(void),
+	findactiveinput(int ch);
 
-WIDGET *getwidget();
+WIDGET *getwidget(WIDGET wdgts[], int callch);
 
 #endif

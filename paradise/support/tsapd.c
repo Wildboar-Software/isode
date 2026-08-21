@@ -119,7 +119,7 @@ struct IAEntry {
 static	struct IAEntry *iz;
 static	struct IAEntry  iae[NENTRIES];
 
-int	str2dnY ();
+int	str2dnY (char *str, DN *dn);
 
 extern	int	dsa_ad;
 extern	int	dsa_dead;
@@ -133,18 +133,22 @@ extern void de_print (PS ps, struct DSError *err, int format);
 
 void	adios (char *, char *, ...)
 		advise (int, char *, char *, ...);
-static void	ts_advise ();
+static void	ts_advise (struct TSAPdisconnect *td, int code, char *event);
 #ifdef SYS5
-static  SFD cldser();
+static  SFD cldser(int sig);
 #endif
 
 #ifdef	NOGOSIP
 #define	ssapd	NULLIFP
 #else
-int	ssapd (), psapd ();
+int	ssapd (struct isoservent *is, struct TSAPdisconnect *td), psapd (struct isoservent *is, struct SSAPindication *si);
 #endif
 
-static int  setperms ();
+#ifndef	IAE
+static int  setperms (struct isoservent *is);
+#else
+static int  setperms (struct IAEntry *is);
+#endif
 static void tsapd (int vecp, char **vec);
 static void envinit (void);
 #ifndef	IAE

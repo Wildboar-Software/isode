@@ -12,7 +12,7 @@
 #include "pvpdu.h"
 
 #ifndef __STDC__
-int	fprintf ();
+int	fprintf (FILE *stream, const char *format, ...);
 #endif
 
 static void vprint1 (void);

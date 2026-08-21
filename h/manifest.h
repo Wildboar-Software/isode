@@ -82,7 +82,7 @@
 #define	BSDSIGS
 #define	SIGEMT	SIGUSR1
 
-int   (*_signal ()) ();
+int   (*_signal (int sig, int (*func)())) ();
 
 #define	signal	_signal
 #endif

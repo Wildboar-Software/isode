@@ -11,8 +11,6 @@
 static char *lcwd = NULL;
 #endif
 
-int	fdffnx ();
-
 #ifndef	BRIDGE
 int f_lcd (char **vec) {
 	char   *cp,

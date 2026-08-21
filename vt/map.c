@@ -57,7 +57,8 @@ static void realptyecho (int on);
 void adios (char *, char *, ...);
 void advise (int, char *, char *, ...);
 
-TEXT_UPDATE *ndq_queue, *deq();		/* Incoming (From Net) NDQ's */
+TEXT_UPDATE *ndq_queue;			/* Incoming (From Net) NDQ's */
+TEXT_UPDATE *deq (TEXT_UPDATE **qhp);
 
 /* Parse the given NDQ (could contain several updates).
 Pass individual updates to appropriate processing

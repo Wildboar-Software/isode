@@ -14,7 +14,7 @@ extern	PS	opt, rps;
 
 extern char 	print_format;
 
-void	reverse_print_dn();
+void	reverse_print_dn(void);
 
 void call_showname (int argc, char **argv) {
 	DN              dnptr;

@@ -12,6 +12,6 @@ typedef enum {
 	SIMPLE_AUTH
 } auth_bind_type;
 
-int bind_to_ds();
+int bind_to_ds(int argc, char *argv[], auth_bind_type auth_type);
 
 #endif _xdua_h_

@@ -14,7 +14,7 @@
 extern LLog	* log_dsap;
 extern unsigned watchdog_time;
 
-extern char * RoErrString();
+extern char * RoErrString(int code);
 
 #ifdef PDU_DUMP
 #define DUMP_ARG 	"arg"

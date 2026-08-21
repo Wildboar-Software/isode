@@ -54,9 +54,9 @@ static Frame myframe;
 static unsigned long backpix, bdrpix;
 static GC  forepix, highpix;
 
-static int	ALRMser (), XWINser ();
-static int  _getline ();
-static	fetch_face (), arginit (), envinit (), display_X (),
+static int	ALRMser (void), XWINser (int io);
+static int  _getline (char *buffer);
+static	fetch_face (), arginit (char **vec), envinit (void), display_X (),
         Redisplay (), ALRMser (), XWINser ();
 
 char   *getenv ();

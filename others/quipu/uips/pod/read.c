@@ -17,14 +17,14 @@ extern LLog    *log_stat;
 #endif
 
 int as_print();
-void kill_photo();
-void readEntryPrint();
+void kill_photo(void);
+void readEntryPrint(char *entry_ptr);
 
 extern char goto_path[], base_path[], friendly_base_path[];
 extern int dn_number, two_passes;
 
 mailtype mailformat = rfc822;
-void rfc2greybook();
+void rfc2greybook(char *string);
 
 Attr_Sequence read_types = 0, read_types2 = 0, oclass = 0;
 bool photo_on = TRUE;
@@ -110,7 +110,7 @@ dsEnqError do_read(Attr_Sequence attrs_to_read) {
 	struct DSError          error;
 	Entry read_entry;
 	Attr_Sequence wanted_attrs;
-	extern void setReadEntryName();
+	extern void setReadEntryName(char *entry_name);
 
 	if (*base_path == '\0') {
 		kill_photo();

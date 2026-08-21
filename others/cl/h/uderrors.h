@@ -47,7 +47,7 @@
 #define UDERR_NO_REMOTE_ADDR		(UD_BASE + 25)
 #define UDERR_BAD_INIT_VECTOR		(UD_BASE + 26)
 
-int uderror();
+int uderror(int err);
 
 char *uderror_text[]
 

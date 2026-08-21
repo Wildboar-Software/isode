@@ -8,7 +8,7 @@
 #include "pepsycodec.h"
 
 extern LLog * log_dsap;
-extern struct PSAPaddr * psap_cpy ();
+extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);
 extern void aps_free (struct access_point *app);
 
 void aps_free_void (void *value) {

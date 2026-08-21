@@ -7,6 +7,6 @@ struct mapphonelist {
 #define NULLPHLIST (struct mapphonelist *)NULL
 #define mapphone_alloc()   (struct mapphonelist *)smalloc(sizeof (struct mapphonelist))
 
-void addToPhoneList();
-void addPhoneNode();
-char * mapPhone();
+void addToPhoneList(char *str);
+void addPhoneNode(char *from, char *to);
+char * mapPhone(char *from);

@@ -45,7 +45,7 @@ static char *mypci =     "addtest pci";
 extern int length;
 
 /* ARGUMENTS */
-int	addit_arg (), do_help (), do_quit ();
+int	addit_arg (), do_help (), do_quit (char **av);
 /* RESULTS */
 int	addit_result ();
 /* ERRORS */

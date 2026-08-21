@@ -15,11 +15,11 @@
 #define AS_START_DELIMITER 	'('
 #define AS_END_DELIMITER 	')'
 
-extern PE dn_enc();
-extern DN dn_dec();
-extern DN str2dnX();
+extern PE dn_enc(DN dn);
+extern DN dn_dec(PE pe);
+extern DN str2dnX(char *str);
 
-char * find_nest();
+char * find_nest(char *str);
 
 static int indent = 0;
 short as_sntx;
@@ -83,9 +83,9 @@ static void attrSntx_print (PS ps, void *value, int format) {
 static void * str2attrSntx (char *str) {
 	char * ptr;
 	Attr_Sequence as = NULLATTR, tas;
-	char * getnextline();
+	char * getnextline(void);
 #ifdef TURBO_DISK
-	char * fgetnextline();
+	char * fgetnextline(void);
 #endif
 
 	if ( *str != AS_START_DELIMITER)

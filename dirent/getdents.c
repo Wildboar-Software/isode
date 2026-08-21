@@ -92,24 +92,24 @@
 #ifdef BSD_SYSV
 #define	getdirentries	_getdirentries	/* package hides this system call */
 #endif
-extern int	getdirentries();
+extern int	getdirentries(int fd, char *buf, int n, long *basep);
 static long	dummy;			/* getdirentries() needs basep */
 #define	GetBlock( fd, buf, n )	getdirentries( fd, buf, (int)n, &dummy )
 #else	/* UFS || BFS */
 #ifdef BSD_SYSV
 #define read	_read			/* avoid emulation overhead */
 #endif
-extern int	read();
+extern int	read(int fd, char *buf, unsigned n);
 #define	GetBlock( fd, buf, n )	read( fd, buf, (unsigned)n )
 #endif
 
 #ifdef UNK
-extern int	_getdents();		/* actual system call */
+extern int	_getdents(int fildes, char *buf, unsigned nbyte);		/* actual system call */
 #endif
 
-extern char	*strncpy();
-extern int	fstat();
-extern off_t	lseek();
+extern char	*strncpy(char *dst, char *src, int n);
+extern int	fstat(int fd, struct stat *buf);
+extern off_t	lseek(int fd, off_t offset, int whence);
 
 extern int	errno;
 
@@ -151,7 +151,7 @@ static int NameLen (char name[]) {
 
 #else	/* BFS || NFS */
 
-extern int	strlen();
+extern int	strlen(char *s);
 
 #define	NameLen( name )	strlen( name )	/* names are always NUL-terminated */
 
@@ -192,7 +192,7 @@ int getdents (
 
 #ifdef UNK
 	switch ( state ) {
-		void (*shdlr)();	/* entry SIGSYS handler */
+		void (*shdlr)(int);	/* entry SIGSYS handler */
 		int	retval;	/* return from _getdents() if any */
 	case yes:			/* _getdents() is known to work */
 		return _getdents( fildes, buf, nbyte );

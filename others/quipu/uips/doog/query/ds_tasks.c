@@ -15,7 +15,7 @@ QCardinal live_task_count;
 int next_task_id = 0;
 
 /* Private functions. */
-static void ds_task_free();
+static void ds_task_free(DsTask task);
 
 #ifndef NO_STATS
 extern LLog    *log_stat;

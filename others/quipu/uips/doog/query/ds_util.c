@@ -6,7 +6,7 @@
 #include "quipu/dap2.h"
 #include "quipu/name.h"
 
-static QBool char_compare();
+static QBool char_compare(char a, char b);
 
 QCardinal match_word_limit = 3;
 

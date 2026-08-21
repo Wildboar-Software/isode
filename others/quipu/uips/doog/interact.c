@@ -17,22 +17,22 @@
 #include "interact.h"
 #include "initialize.h"
 
-void ufnsearch();
-void quitfn();
-void readentry();
-void looklist();
+void ufnsearch(char *params);
+void quitfn(char *params);
+void readentry(char *params);
+void looklist(char *params);
 
-void ufnresolve();
-void printcommands(), callcommand();
-QBool query_matches();
+void ufnresolve(char *name, entryList baseobjects, known is_leaf);
+void printcommands(char *params), callcommand(char *commandline);
+QBool query_matches(entryList matches, entryList *returnlist);
 
-void print_entry_list();
-void print_read_results();
-void new_current_list();
+void print_entry_list(entryList entries);
+void print_read_results(readResults results, char *baseobject);
+void new_current_list(ufnResults results);
 
-void nullfn(), abort_query(), intquit(), abort_command();
+void nullfn(void), abort_query(void), intquit(void), abort_command(void);
 
-static void uprint();
+static void uprint(char *printstring);
 static char message[LINESIZE];
 
 void exit();

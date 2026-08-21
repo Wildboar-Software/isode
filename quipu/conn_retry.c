@@ -12,7 +12,7 @@ extern time_t nsap_timeout;
 extern LLog * log_stat;
 #endif
 
-struct connection	* conn_alloc();
+struct connection	* conn_alloc(void);
 
 static int test_deadlock (struct oper_act *on) {
 	struct di_block	* di;

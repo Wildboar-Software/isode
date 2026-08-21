@@ -31,13 +31,13 @@ static char *myservice = "isode idist";
 static char *mycontext = "isode idist";
 
 extern	struct type_Idist_QueryResult *query ();
-extern	struct type_Idist_FileList *do_listcdir ();
+extern	struct type_Idist_FileList *do_listcdir (void);
 
-static int error (), i_strerror (), syserror (), ureject ();
+static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi), i_strerror (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi), syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi), ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
 
 /* OPERATIONS */
-int	op_init (), op_transfer (), op_terminate (), op_listcdir (),
-	op_query (), op_special (), op_data (), op_deletefile ();
+int	op_init (), op_transfer (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_terminate (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_listcdir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi),
+	op_query (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_special (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), op_deletefile (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"init", operation_Idist_init, op_init,
@@ -71,7 +71,7 @@ struct passwd *pw;
 struct group *gr;
 
 int main (int argc, char **argv, char **envp) {
-	int initiate ();
+	int initiate (int sd, struct AcSAPstart *acs, PE *pe);
 	oumask = umask (0);
 	host = getlocalhost ();
 	ryresponder (argc, argv, PLocalHostName (), myservice, mycontext,

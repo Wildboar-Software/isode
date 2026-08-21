@@ -6,7 +6,7 @@
 #include "../x500as/DAS-types.h"
 
 extern  LLog    * log_dsap;
-void ros_log ();
+void ros_log (struct RoSAPpreject *rop, char *event);
 
 int dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error) {
 	struct DAPindication	  di_s;

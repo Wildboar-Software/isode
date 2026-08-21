@@ -25,12 +25,13 @@ extern void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, in
 extern int pepsylose (modtyp *module, ...);
 extern int set_heap (AttributeType x);
 extern void AttrV_free(AttributeValue x);
-extern int grab_pe1 (attrVal *parm, PE *ppe);
-extern int grab_pe2 (avseqcomp *parm, PE *ppe);
-extern int grab_pe3 (rdncomp *parm, PE *ppe);
-extern int free_at_dummy (oid_table_attr *parm);
-extern int dec_at (oid_table_attr **parm, PE pe);
-extern int dec_av1 (AVA **parm, PE pe);
+int grab_pe1 (attrVal *parm, PE *ppe);
+int grab_pe2 (avseqcomp *parm, PE *ppe);
+int grab_pe3 (rdncomp *parm, PE *ppe);
+int free_at_dummy (oid_table_attr *parm);
+int dec_at (oid_table_attr **parm, PE pe);
+int dec_av1 (AVA **parm, PE pe);
+extern oid_table_attr *AttrT_decode_aux(OID oid);
 %}
 
 PREFIXES encode decode print
@@ -167,7 +168,7 @@ END
 
 %{
 
-PE grab_pe();
+PE grab_pe(AttributeValue av);
 
 int grab_pe1 (attrVal *parm, PE *ppe) {
 	if (*ppe = grab_pe (parm))
@@ -213,7 +214,6 @@ int dec_av1 (AVA **parm, PE pe) {
 
 int dec_at (oid_table_attr **parm, PE pe) {
 	OID oid;
-	oid_table_attr * AttrT_decode_aux();
     if (oid = prim2oid (pe)) {
        oid = oid_cpy (oid);
        *parm = AttrT_decode_aux (oid);

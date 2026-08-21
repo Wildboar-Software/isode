@@ -6,7 +6,7 @@
 
 extern  LLog    * log_dsap;
 
-void ros_log ();
+void ros_log(struct RoSAPpreject *rop, char *event);
 
 /*
 * The DSA has produced an error for the task, encode the error,

@@ -31,11 +31,11 @@ extern char exactString[];
 
 struct namelist * orgatts;
 
-struct ds_list_arg *fillMostOrgListArgs();
-struct ds_search_arg *fillMostOrgSearchArgs();
+struct ds_list_arg *fillMostOrgListArgs(char *str);
+struct ds_search_arg *fillMostOrgSearchArgs(char *cstr, int searchdepth);
 
-void makeExplicitOrgFilter();
-void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
+void makeExplicitOrgFilter(char *ostr, struct s_filter **fpp);
+void orgFilter1(char *ostr, struct s_filter **fpp), orgFilter2(char *ostr, struct s_filter **fpp), orgFilter3(char *ostr, struct s_filter **fpp), orgFilter4(char *ostr, struct s_filter **fpp);
 
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};
 VFP normalOrg[] = {orgFilter1, orgFilter2, orgFilter3, orgFilter4, NULLVFP};

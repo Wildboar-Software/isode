@@ -40,12 +40,12 @@ char *modename[8] = {
 #define RETRY_COUNT	2	/* number of times we want to retry */
 #define TIME_OUT        10	/* time to wait for reply, in secs */
 
-extern void tstamp();
+extern void tstamp(struct l_fixedpt *stampp, struct timeval *tvp);
 
 struct sockaddr_in isock = {AF_INET};
 struct sockaddr_in dst = {AF_INET};
 struct servent *sp;
-extern double ul_fixed_to_double(), s_fixed_to_double();
+extern double ul_fixed_to_double(struct l_fixedpt *t), s_fixed_to_double(struct s_fixedpt *t);
 
 int set, verbose, force;
 int debug;

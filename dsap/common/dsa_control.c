@@ -26,11 +26,11 @@ static int op_list_free (struct op_list *elem) ;
 static int ops_free (struct ops *elem) ;
 static int chain_list_free (struct chain_list *elem) ;
 
-void        auth_level_free() ;
-struct op_list    *op_list_cpy() ;
-struct ops        *ops_cpy() ;
-struct chain_list *chain_list_cpy() ;
-struct sub_ch_list *sub_ch_list_cpy() ;
+void        auth_level_free(struct auth_level *item) ;
+struct op_list    *op_list_cpy(struct op_list *item) ;
+struct ops        *ops_cpy(struct ops *item) ;
+struct chain_list *chain_list_cpy(struct chain_list *item) ;
+struct sub_ch_list *sub_ch_list_cpy(struct sub_ch_list *item) ;
 
 static PE dsa_control_enc (void *value) {
 	struct dsa_control * control_option = (struct dsa_control *) value;

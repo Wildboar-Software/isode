@@ -88,7 +88,7 @@ int main (int argc, char **argv) {
 	char sendfile [LINESIZE];
 	int i;
 	char * ptr;
-	void pipe_quit ();
+	void pipe_quit (int sig);
 	char * getenv(), *sprintf();
 
 	umask(0);

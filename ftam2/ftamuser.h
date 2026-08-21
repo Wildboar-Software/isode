@@ -10,12 +10,12 @@ void	advise (char *what, char *fmt, ...);
 int getftamline(char* prompt, char* buffer);
 
 #ifndef	BRIDGE
-int	ask (char *fmt, ...), _getline ();
+int	ask (char *fmt, ...);
 #endif
 
 extern int  ftamfd;
 #ifdef	BRIDGE
-extern int  dataconn ();
+extern int  dataconn (char *modeX);
 #endif
 
 extern char *host;
@@ -54,7 +54,7 @@ extern char *rcwd;
 
 extern struct QOStype myqos;
 
-char   *str2file ();
+char   *str2file (char *s);
 
 /* DISPATCH */
 
@@ -74,7 +74,7 @@ struct dispatch {
 	char   *ds_help;
 };
 
-struct dispatch *getds ();
+struct dispatch *getds (char *name);
 
 /* FTAM */
 
@@ -96,7 +96,9 @@ extern struct vfsmap vfs[];	/* ordering depends on char *tmodes[] */
 
 extern struct vfsmap *myvf;
 
-void	ftam_advise (), ftam_chrg (), ftam_diag (), ftam_watch ();
+void	ftam_advise (struct FTAMabort *fta, char *event);
+void	ftam_chrg (struct FTAMcharging *charges);
+void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag, int peer, int action);
 
 /* FILES */
 
@@ -114,18 +116,18 @@ extern int  toomany;
 extern int  nfilent;
 extern struct filent *filents;
 
-int	fdffnx ();
+int	fdffnx (int fd, struct PSAPdata *px, int status);
 
 /* GLOB */
 
 extern int   xglobbed;
 extern char *globerr;
 
-int	blkfree (), blklen ();
-char  **blkcpy ();
+int	blkfree (char **av0), blklen (char **av);
+char  **blkcpy (char **oav, char **bv);
 
-char   *xglob1val ();
-char  **xglob ();
+char   *xglob1val (char *v, int remote);
+char  **xglob (char **v, int remote);
 void rcinit (void);
 
 int getvf (
@@ -142,6 +144,17 @@ int f_close (char **vec);
 int f_ls (char **vec);
 int f_pwd (char **vec);
 int f_lcd (char **vec);
+int f_put (char **vec);
+int f_chgrp (char **vec);
+int f_echo (char **vec);
+int f_fls (char **vec);
+int f_get (char **vec);
+int f_mkdir (char **vec);
+int f_mv (char **vec);
+int f_open (char **vec);
+int f_rm (char **vec);
+int f_status (char **vec);
+int f_quit (char **vec);
 
 int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti);
 int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti);
@@ -150,7 +163,6 @@ int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMat
 void timer (int cc, char *action);
 int	de2fadu (PE pe, int concat);
 
-extern int  errno;
 extern char *isodeversion;
 #ifdef	BRIDGE
 extern char ftam_error[];

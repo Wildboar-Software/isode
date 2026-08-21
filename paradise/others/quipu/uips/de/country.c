@@ -34,12 +34,12 @@ extern struct namelist * coatts;
 
 int listAtRoot = TRUE;
 
-struct ds_read_arg *fillMostCountryReadArgs();
-struct ds_list_arg *fillMostCountryListArgs();
-struct ds_search_arg *fillMostCountrySearchArgs();
+struct ds_read_arg *fillMostCountryReadArgs(char *objectstr);
+struct ds_list_arg *fillMostCountryListArgs(void);
+struct ds_search_arg *fillMostCountrySearchArgs(char *objectstr, int searchdepth);
 
-void makeExplicitCoFilter();
-void coFilter1(), coFilter2(), coFilter3(), coFilter4();
+void makeExplicitCoFilter(char *cstr, struct s_filter **fpp);
+void coFilter1(char *cstr, struct s_filter **fpp), coFilter2(char *cstr, struct s_filter **fpp), coFilter3(char *cstr, struct s_filter **fpp), coFilter4(char *cstr, struct s_filter **fpp);
 
 VFP explicitCo[] = {makeExplicitCoFilter, NULLVFP};
 VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};
@@ -293,7 +293,7 @@ fillMostCountryReadArgs(char *objectstr) {
 }
 
 struct ds_list_arg *
-fillMostCountryListArgs() {
+fillMostCountryListArgs(void) {
 	static struct ds_list_arg arg;
 	static CommonArgs sca = default_common_args;
 

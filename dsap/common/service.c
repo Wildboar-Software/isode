@@ -164,7 +164,7 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 			chase_flag = 2;
 		else if (test_arg(argv[x], "-strong", 3)) {
 			char *new_version(void);
-			struct certificate *cert_cpy();
+			struct certificate *cert_cpy(struct certificate *parm);
 			ca->ca_security = (struct security_parms *)
 							  calloc(1, sizeof(struct security_parms));
 			ca->ca_security->sp_name = NULLDN;

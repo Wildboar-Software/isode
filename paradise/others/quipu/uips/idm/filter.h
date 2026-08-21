@@ -1,5 +1,5 @@
-struct s_filter * andfilter();
-struct s_filter * orfilter();
-struct s_filter * eqfilter();
-struct s_filter * subsfilter();
-struct s_filter * presfilter();
+struct s_filter * andfilter(void);
+struct s_filter * orfilter(void);
+struct s_filter * eqfilter(int matchtype, char *type, char *value);
+struct s_filter * subsfilter(int substrtype, char *type, char *value);
+struct s_filter * presfilter(char *type);

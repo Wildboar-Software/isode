@@ -1286,7 +1286,7 @@ out_space:
 #ifdef ADD_DTE2NSAP
 
 			if (context != TLI_CTX_LISTEN && na) {
-				struct NSAPaddr *getisosnpa();
+				struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap);
 				struct NSAPaddr *dte_nsap;
 
 				/* On failure - carry on, the NSAP may work on its own */

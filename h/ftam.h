@@ -491,7 +491,7 @@ struct FTAMattributes {		/* {Change,Create,Read,Select}-Attributes */
 	char   *fa_private;		/* XXX */
 };
 
-void	FAFREE ();
+void	FAFREE (struct FTAMattributes *fa);
 
 struct FADUidentity {		/* FADU-Identity */
 	int	    fa_type;
@@ -1142,40 +1142,40 @@ extern char *ftamversion;
 
 extern LLog _ftam_log, *ftam_log;
 
-int	FInit ();		/* F-INITIALIZE.INDICATION */
-int	FInitializeResponse ();	/* F-INITIALIZE.RESPONSE */
-int	FInitializeRequest ();	/* F-INITIALIZE.REQUEST */
-int	FTerminateRequest ();	/* F-TERMINATE.REQUEST */
-int	FTerminateResponse ();	/* F-TERMINATE.RESPONSE */
-int	FUAbortRequest ();	/* F-U-ABORT.REQUEST */
+int	FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAMindication *fti);		/* F-INITIALIZE.INDICATION */
+int	FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-INITIALIZE.RESPONSE */
+int	FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti);	/* F-INITIALIZE.REQUEST */
+int	FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti);	/* F-TERMINATE.REQUEST */
+int	FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);	/* F-TERMINATE.RESPONSE */
+int	FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-U-ABORT.REQUEST */
 
-int	FWaitRequest ();	/* F-WAIT.REQUEST (pseudo) */
+int	FWaitRequest (int sd, int secs, struct FTAMindication *fti);	/* F-WAIT.REQUEST (pseudo) */
 
-int	FManageRequest ();	/* F-MANAGE.REQUEST (group) */
-int	FManageResponse ();	/* F-MANAGE.RESPONSE (group) */
-int	FBulkBeginRequest ();	/* F-BULK-BEGIN.REQUEST (group) */
-int	FBulkBeginResponse ();	/* F-BULK-BEGIN.RESPONSE (group) */
-int	FBulkEndRequest ();	/* F-BULK-END.REQUEST (group) */
-int	FBulkEndResponse ();	/* F-BULK-END.RESPONSE (group) */
+int	FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-MANAGE.REQUEST (group) */
+int	FManageResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-MANAGE.RESPONSE (group) */
+int	FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-BEGIN.REQUEST (group) */
+int	FBulkBeginResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-BEGIN.RESPONSE (group) */
+int	FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-END.REQUEST (group) */
+int	FBulkEndResponse (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti);	/* F-BULK-END.RESPONSE (group) */
 
-int	FAccessRequest ();	/* F-{LOCATE,ERASE}.REQUEST */
-int	FAccessResponse ();	/* F-{LOCATE,ERASE}.RESPONSE */
+int	FAccessRequest (int sd, int operation, struct FADUidentity *identity, int lock, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.REQUEST */
+int	FAccessResponse (int sd, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-{LOCATE,ERASE}.RESPONSE */
 
-int	FReadWriteRequest ();	/* F-{READ,WRITE}.REQUEST */
-int	FDataRequest ();	/* F-DATA.REQUEST */
-int	FDataEndRequest ();	/* F-DATA-END.REQUEST */
-int	FCancelRequest ();	/* F-CANCEL.REQUEST */
-int	FCancelResponse ();	/* F-CANCEL.RESPONSE */
-int	FTransEndRequest ();	/* F-TRANSFER-END.REQUEST */
-int	FTransEndResponse ();	/* F-TRANSFER-END.RESPONSE */
+int	FReadWriteRequest (int sd, int operation, struct FADUidentity *identity, int context, int level, int lock, struct FTAMindication *fti);	/* F-{READ,WRITE}.REQUEST */
+int	FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti);	/* F-DATA.REQUEST */
+int	FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-DATA-END.REQUEST */
+int	FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.REQUEST */
+int	FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-CANCEL.RESPONSE */
+int	FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti);	/* F-TRANSFER-END.REQUEST */
+int	FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-TRANSFER-END.RESPONSE */
 
-int	FSetIndications ();	/* define vector for INDICATION events */
-int	FSelectMask ();		/* map ftam descriptors for select() */
+int	FSetIndications (int sd, IFP indication, struct FTAMindication *fti);	/* define vector for INDICATION events */
+int	FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti);		/* map ftam descriptors for select() */
 
-int	FHookRequest ();	/* set tracing */
-int	FTraceHook ();		/* user-defined tracing */
+int	FHookRequest (int sd, IFP tracing, struct FTAMindication *fti);	/* set tracing */
+int	FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw);	/* user-defined tracing */
 
-char   *FErrString ();		/* return FTAM error code in string form */
+char   *FErrString (int code);		/* return FTAM error code in string form */
 
 struct isodocument {
 	char   *id_entry;
@@ -1188,11 +1188,11 @@ struct isodocument {
 	OID	    id_constraint;
 };
 
-int	setisodocument (), endisodocument ();
+int	setisodocument (int f), endisodocument (void);
 
-struct isodocument *getisodocument ();
+struct isodocument *getisodocument (void);
 
-struct isodocument *getisodocumentbyentry ();
-struct isodocument *getisodocumentbytype ();
+struct isodocument *getisodocumentbyentry (char *entry);
+struct isodocument *getisodocumentbytype (OID type);
 
 #endif

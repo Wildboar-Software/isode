@@ -42,7 +42,7 @@ static char *sys_terrname (int te)
 	return tbuf;
 }
 
-static tli_lose (int fd, char *str)
+static int tli_lose (int fd, char *str)
 {
 	int eindex = errno;
 	int tindex = t_errno;

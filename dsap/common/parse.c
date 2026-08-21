@@ -33,11 +33,11 @@ datum		turbo_header_key = { "HEADER", sizeof("HEADER") };
 GDBM_FILE	save_db;
 #endif
 
-extern char	*unesc_char();
+extern char	*unesc_char(void);
 extern char	*unesc_cont(char *ptr, int len);
-extern char *getstring();
+extern char *getstring(void);
 char *srealloc(char *p, int nsize);
-char	*brkl();
+char	*brkl(void);
 static int cnt_escp (char *ptr, int len);
 
 #ifdef TURBO_DISK
@@ -438,7 +438,7 @@ char *srealloc (char *p, int nsize) {
 
 Attr_Sequence fget_attributes_aux (FILE * file) {
 	Attr_Sequence as = NULLATTR;
-	Attr_Sequence as_combine ();
+	Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
 	char * ptr;
 
 	if ((ptr = fgetline (file)) == NULLCP)
@@ -470,7 +470,7 @@ Attr_Sequence get_attributes_aux (FILE *file)
 #endif
 {
 	Attr_Sequence as = NULLATTR;
-	Attr_Sequence as_combine ();
+	Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
 	char * ptr;
 	if ((ptr = _getline (file)) == NULLCP)
 		return (NULLATTR);

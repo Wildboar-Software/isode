@@ -19,7 +19,7 @@ typedef struct _attr_type_cell {
 /*
  *	Procs
  */
-QBool add_type_to_list(), delete_type_from_list();
-void free_at_list();
+QBool add_type_to_list(AttributeType type, attrTypeList *list_ptr), delete_type_from_list(AttributeType type, attrTypeList *list_ptr);
+void free_at_list(attrTypeList *list_ptr);
 
 #endif

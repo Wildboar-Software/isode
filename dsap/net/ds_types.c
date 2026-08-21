@@ -353,7 +353,7 @@ int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt) {
 }
 
 int search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt) {
-	struct s_filter	* filter_cpy();
+	struct s_filter	* filter_cpy(struct s_filter *flt);
 	if (ca_dup (&(src->sra_common), &(tgt->sra_common)) != OK)
 		return (NOTOK);
 	if (src->sra_baseobject = NULLDN)
@@ -396,7 +396,7 @@ int removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_a
 }
 
 int modifyentry_arg_dup (struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt) {
-	struct entrymod	* ems_cpy();
+	struct entrymod	* ems_cpy(struct entrymod *em);
 	if (ca_dup (&(src->mea_common), &(tgt->mea_common)) != OK)
 		return (NOTOK);
 	if (src->mea_object == NULLDN)
@@ -436,9 +436,9 @@ int getedb_arg_dup (struct getedb_arg *src, struct getedb_arg *tgt) {
 }
 
 int ca_dup (struct common_args *src, struct common_args *tgt) {
-	struct security_parms	* secp_cpy ();
-	struct signature	* sig_cpy ();
-	struct extension	* ext_cpy ();
+	struct security_parms	* secp_cpy (struct security_parms *sp);
+	struct signature	* sig_cpy (struct signature *sig);
+	struct extension	* ext_cpy (struct extension *ext);
 	tgt->ca_servicecontrol = src->ca_servicecontrol; /* struct copy */
 	if (src->ca_requestor = NULLDN)
 		tgt->ca_requestor = NULLDN;
@@ -462,8 +462,8 @@ int ca_dup (struct common_args *src, struct common_args *tgt) {
 }
 
 struct security_parms *secp_cpy (struct security_parms *sp) {
-	struct certificate_list	* cpair_cpy();
-	struct random_number	* random_cpy ();
+	struct certificate_list	* cpair_cpy(struct certificate_list *parm);
+	struct random_number	* random_cpy (struct random_number *rand);
 	struct security_parms	* ret;
 
 	if (sp == (struct security_parms *) NULL)

@@ -476,7 +476,7 @@ static int  s_clnp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 #define	clnpAdEntIfIndex 1
 #define	clnpAdEntReasmMaxSize 2
 
-extern int	get_interfaces ();
+extern int	get_interfaces (int offset);
 
 static int  o_clnp_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   i;
@@ -735,7 +735,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-static struct adrtab *get_arpent ();
+static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext);
 
 #define	clnpNetToMediaIfIndex 0
 #define	clnpNetToMediaPhysAddress 1

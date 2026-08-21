@@ -41,9 +41,7 @@ void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
 static void _advise (char* what, char *fmt, va_list ap);
 
-#ifndef	BRIDGE
-static SFD	intrser ();
-#else
+#ifdef	BRIDGE
 extern void reply(int n, ...);
 #endif
 
@@ -524,7 +522,7 @@ again:
 #else
 /* VARARGS */
 
-int ask (char *fmt) {
+int ask (char *fmt, ...) {
 	return ask (fmt);
 }
 #endif
@@ -556,7 +554,7 @@ void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, char *fmt, ...) {
 	adios (what, fmt);
 }
 #endif

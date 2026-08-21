@@ -28,12 +28,12 @@ typedef struct avlnode {
 /* avl routines */
 #define avl_getone(x)	(x == 0 ? 0 : (x)->avl_data)
 #define avl_onenode(x)	(x == 0 || ((x)->avl_left == 0 && (x)->avl_right == 0))
-extern int	avl_insert();
-extern caddr_t	avl_delete();
-extern caddr_t	avl_find();
-extern caddr_t	avl_getfirst();
-extern caddr_t	avl_getnext();
-extern int	avl_dup_error();
+extern int	avl_insert(Avlnode **root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2), int (*fdup)(caddr_t data1, caddr_t data2));
+extern caddr_t	avl_delete(Avlnode **root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2));
+extern caddr_t	avl_find(Avlnode *root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2));
+extern caddr_t	avl_getfirst(Avlnode *root);
+extern caddr_t	avl_getnext(void);
+extern int	avl_dup_error(void);
 
 int turbo_isoptimized(AttributeType attr);
 

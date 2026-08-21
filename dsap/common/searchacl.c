@@ -191,7 +191,7 @@ static void * str2sacl( char *str )
 	Saclinfo	new;
 	char		save, *s, *tmp;
 	int		scope;
-	struct oid_seq	*str2oidseq();
+	struct oid_seq	*str2oidseq(char *str);
 
 	if ( (s = index( str, '#' )) == NULL ) {
 		parse_error( "# missing in search acl '%s'", str );

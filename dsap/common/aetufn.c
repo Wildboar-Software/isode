@@ -14,7 +14,7 @@
 
 extern LLog * addr_log;
 
-extern struct dn_seq *dn_seq_push ();
+extern struct dn_seq *dn_seq_push (DN dn, struct dn_seq *dnseq);
 extern void quipu_syntaxes(void);
 extern int dsap_init (int *acptr, char ***avptr);
 
@@ -98,7 +98,7 @@ static char bound = FALSE;
 
 static PE name2psap (DN dn) {
 	AttributeType at;
-	extern PE grab_pe();
+	extern PE grab_pe(AttributeValue av);
 	PE res_pe;
 	static struct ds_read_arg read_arg = {
 		default_common_args,

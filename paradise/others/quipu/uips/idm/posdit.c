@@ -26,12 +26,12 @@ extern int quipuMastersCo;
 
 int position_dit (void) {
 	char * change_pos;
-	char * mapCoName();
+	char * mapCoName(char *shortname);
 	DN dn;
 	int objectType;
 
-	void de_exit();
-	void searchFail();
+	void de_exit(int exitCode);
+	void searchFail(char *str);
 	change_pos = malloc(LINESIZE);
 	if (strlen(posdit) > 0) {
 		dn = NULLDN;

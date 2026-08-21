@@ -32,12 +32,12 @@ int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN bindd
 	DN  dntop, dn = NULLDN;
 	DN  trail = NULLDN;
 	extern Entry database_root;
-	ContinuationRef cont_ref_parent ();
-	char * new_version ();
+	ContinuationRef cont_ref_parent(DN name);
+	char * new_version(void);
 	int retval;
 	int authp;
 	extern int read_only;
-	extern int	entry_cmp();
+	extern int	entry_cmp(Entry e1, Entry e2);
 
 	DLOG (log_dsap,LLOG_TRACE,("ds_add"));
 	if (!dsp)

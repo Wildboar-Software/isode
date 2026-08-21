@@ -22,9 +22,9 @@ extern int next_task_id;
 extern LLog    *log_stat;
 #endif
 
-static QE_error_code process_ufn_search();
-static QE_error_code directory_search();
-static QBool follow_path();
+static QE_error_code process_ufn_search(ufnameRec ufnrec);
+static QE_error_code directory_search(char *base_name, namePart purp_name_comp, ufnameRec ufnrec);
+static QBool follow_path(ufnameRec ufnrec);
 
 searchPath ufnpaths = NULLSearchPath;
 
@@ -777,7 +777,7 @@ request_state process_ufn_ds_result(requestRec request, int task_id, struct DSRe
 		char *curr_name, *match_str;
 		QBool good_match;
 		char *dn2str();
-		void get_read_attrs();
+		void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format);
 		/* Decode and add found entry names */
 		for (entry_ptr = search_result->CSR_entries;
 				entry_ptr != NULLENTRYINFO;

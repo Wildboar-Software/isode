@@ -68,9 +68,9 @@ Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull) {
 	int i;
 	static Attr_Sequence fast_as = NULLATTR;
 	static Attr_Sequence fast_tail = NULLATTR;
-	extern Attr_Sequence as_fast_merge();
-	extern AV_Sequence avs_fast_merge ();
-	extern AV_Sequence fast_str2avs ();
+	extern Attr_Sequence as_fast_merge(Attr_Sequence a, Attr_Sequence b, Attr_Sequence c, Attr_Sequence d);
+	extern AV_Sequence avs_fast_merge (AV_Sequence a, AV_Sequence b, AV_Sequence c, AV_Sequence d);
+	extern AV_Sequence fast_str2avs (char *str, AttributeType at);
 	AV_Sequence fast_avs = NULLAV;
 	AV_Sequence fast_avstail = NULLAV;
 

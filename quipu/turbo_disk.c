@@ -30,8 +30,8 @@ extern char	*parse_file;
 static GDBM_FILE turbo_open(Entry parent, int create, int backup)
 {
 	GDBM_FILE	db;
-	DN		dn, get_copy_dn();
-	char		*filename, *dn2edbfile();
+	DN		dn, get_copy_dn(Entry entryptr);
+	char		*filename, *dn2edbfile(DN dn);
 	char		bakname[1024];
 	static char	turbo_gfname[1024];
 
@@ -129,7 +129,7 @@ static int turbo_write_entry(Entry e, GDBM_FILE db)
  */
 
 int turbo_writeall (Entry e) {
-	GDBM_FILE	db, turbo_open();
+	GDBM_FILE	db, turbo_open(Entry parent, int create, int backup);
 	int		save_heap;
 	Entry		akid;
 
@@ -168,7 +168,7 @@ int turbo_writeall (Entry e) {
  */
 
 int turbo_write (Entry e) {
-	GDBM_FILE	db, turbo_open();
+	GDBM_FILE	db, turbo_open(Entry parent, int create, int backup);
 	int		save_heap;
 
 	LLOG (log_dsap, LLOG_TRACE, ("turbo: write"));
@@ -204,7 +204,7 @@ int turbo_write (Entry e) {
 int turbo_delete (Entry e) {
 	static char	deletekey[256];
 	int		rc;
-	GDBM_FILE	db, turbo_open();
+	GDBM_FILE	db, turbo_open(Entry parent, int create, int backup);
 	PS		ps;
 	datum		key;
 	int		save_heap;
@@ -261,7 +261,7 @@ int turbo_write_header(GDBM_FILE db, Entry parent, int datatype)
 	static char	hbuf[256];
 	int		rc;
 	char		*type;
-	char		*version, *new_version();
+	char		*version, *new_version(void);
 	datum		newheader;
 	int		save_heap;
 

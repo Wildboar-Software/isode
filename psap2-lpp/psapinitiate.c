@@ -270,7 +270,20 @@ out1:
 
 #define	QOS_RELIABLE_DFLT	HIGH_QUALITY
 
-int	tcpopen (), udpopen ();
+int	tcpopen (
+	struct psapblk *pb,
+	struct NSAPaddr *calling,
+	struct NSAPaddr *called,
+	struct PSAPindication *pi,
+	int async
+);
+int	udpopen (
+	struct psapblk *pb,
+	struct NSAPaddr *calling,
+	struct NSAPaddr *called,
+	struct PSAPindication *pi,
+	int async
+);
 
 static struct nsapent {
 	int     ns_reliability;

@@ -22,14 +22,14 @@ extern Widget toplevel, outer;
 extern bool testing;
 extern str_seq alias_seq, aliased_dn_seq;
 
-int podphoto(), quipu_pe_cmp();
-void CreateWidgets(), PodLoop(), displayStartupError();
-char *cnnct_bind();
-void kill_message(), message();
-void put_dn_and_password();
+int podphoto(PS ps, PE picture, int format), quipu_pe_cmp();
+void CreateWidgets(void), PodLoop(void), displayStartupError(String mess);
+char *cnnct_bind(void);
+void kill_message(void), message(Widget refto, char *mess);
+void put_dn_and_password(char *dn, char *password, char *name);
 
-void user_tailor();
-void read_bind_args(), read_args(), quit();
+void user_tailor(void);
+void read_bind_args(unsigned int *acptr, char ***avptr), read_args(unsigned int *acptr, char ***avptr), quit(int sig);
 
 void exit();
 

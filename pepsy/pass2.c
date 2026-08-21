@@ -588,7 +588,7 @@ static struct univ_typ univ_tab[] = {
 	},
 };
 
-extern struct univ_typ *simptyp();
+extern struct univ_typ *simptyp(YP yp);
 
 /*
  * Determine wether the type name matches one of the Universal types

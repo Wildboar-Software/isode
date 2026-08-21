@@ -7,15 +7,15 @@
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn);
-static void type_bits (LLog *, char *, char *, uint8_t,  int,  char *);
-static void type_settings (LLog *, char *, uint8_t);
-static void type_tsdu (LLog *, char *, uint16_t,  uint16_t);
+static void type_bits (LLog *lp, char *rw, char *s, uint8_t bits, int mask, char *t);
+static void type_settings (LLog *lp, char *rw, uint8_t settings);
+static void type_tsdu (LLog *lp, char *rw, uint16_t init, uint16_t resp);
 static void type_ref (LLog *lp, char *rw, struct SSAPref *ref);
-static void type_vrsn (LLog *, char *, uint8_t);
+static void type_vrsn (LLog *lp, char *rw, uint8_t version);
 static void type_reason (LLog *lp, char *rw, int reason);
-static void type_prepare (LLog *, char *, uint8_t);
-static void type_error (LLog *, char *, uint8_t);
-static void type_resync (LLog *, char *, uint8_t);
+static void type_prepare (LLog *lp, char *rw, uint8_t type);
+static void type_error (LLog *lp, char *rw, uint8_t reason);
+static void type_resync (LLog *lp, char *rw, uint8_t type);
 static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
 static void type_info (LLog *lp, char *fmt, int len, char *data);
 

@@ -124,15 +124,15 @@ struct AcSAPindication {
 };
 
 extern char  *acsapversion;
-char   *AcuErrString ();        /* return AcuSAP error in string form*/
+char   *AcuErrString (int code);        /* return AcuSAP error in string form*/
 int     AcFindPCI ();  		/* return PCI used by ACSE */
 
-int	AcUnitDataRequest ();	/* A-UNIT-DATA.REQUEST */
-int	AcUnitDataBind ();	/* set A-UNIT-DATA binding */
-int	AcUnitDataRebind ();	/* reset A-UNIT-DATA binding remote addr */
-int	AcUnitDataWrite ();	/* A-UNIT-DATA.REQUEST on binding */
-int	AcUnitDataRead ();	/* A-UNIT-DATA.INDICATION on binding */
-int	AcUnitDataUnbind ();	/* release A-UNIT-DATA binding */
-int	AcuSave ();	        /* save TPDU for AUDT indication */
+int	AcUnitDataRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, PE *data, int ndata, struct QOStype *qos, struct AcSAPindication *aci);	/* A-UNIT-DATA.REQUEST */
+int	AcUnitDataBind (int sd, int binding, OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, struct QOStype *qos, struct AcSAPindication *aci);	/* set A-UNIT-DATA binding */
+int	AcUnitDataRebind (int sd, AEI calledtitle, struct PSAPaddr *calledaddr, struct AcSAPindication *aci);	/* reset A-UNIT-DATA binding remote addr */
+int	AcUnitDataWrite (int sd, PE *data, int ndata, struct AcSAPindication *aci);	/* A-UNIT-DATA.REQUEST on binding */
+int	AcUnitDataRead (int sd, struct AcuSAPstart *acs, int secs, struct AcSAPindication *aci);	/* A-UNIT-DATA.INDICATION on binding */
+int	AcUnitDataUnbind (int sd, struct AcSAPindication *aci);	/* release A-UNIT-DATA binding */
+int	AcuSave (int sd, int vecp, char **vec, struct AcSAPindication *aci);	        /* save TPDU for AUDT indication */
 
 #endif

@@ -14,4 +14,4 @@
 
 #endif
 
-char * int2strb_alloc ();
+char * int2strb_alloc (int n, int len);

@@ -100,7 +100,7 @@
 
 #define	RT_ASN		"rtse pci version 1"
 
-int	rtpktlose (), rtsaplose ();
+int	rtpktlose (), rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt);
 
 #define	SetPS2RtService(acb) \
 { \

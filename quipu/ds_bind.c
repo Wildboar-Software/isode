@@ -20,7 +20,7 @@
 
 extern LLog * log_dsap;
 extern DN	mydsadn;
-struct oper_act	* oper_alloc();
+struct oper_act	* oper_alloc(void);
 extern char quipu_shutdown;
 
 static int check_prefix_list (DN dn);

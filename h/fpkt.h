@@ -173,7 +173,7 @@ struct ftamblk {
 #define	NULLFSB		((struct ftamblk *) 0)
 
 void freefsblk (struct ftamblk *fsb);
-struct ftamblk *newfsblk (), *findfsblk ();
+struct ftamblk *newfsblk (void), *findfsblk (int sd);
 
 int	ftamlose (struct FTAMindication* fti, ...);
 int	ftamoops (struct FTAMindication* fti, ...);
@@ -198,23 +198,23 @@ extern struct pair fclass_pairs[],
 		frequested_pairs[],
 		fpermitted_pairs[];
 
-struct type_FTAM_Access__Control__List *acl2fpm ();
-int	fpm2acl ();
+struct type_FTAM_Access__Control__List *acl2fpm (struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti);
+int	fpm2acl (struct ftamblk *fsb, struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti);
 
-struct type_FTAM_Read__Attributes *attr2fpm ();
-int	fpm2attr ();
+struct type_FTAM_Read__Attributes *attr2fpm (struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti);
+int	fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti);
 
-PE	bits2fpm ();
-int	fpm2bits ();
+PE	bits2fpm (struct ftamblk *fsb, struct pair pairs[], int actions, struct FTAMindication *fti);
+int	fpm2bits (struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti);
 
-struct type_FTAM_Charging *chrg2fpm ();
-int	fpm2chrg ();
+struct type_FTAM_Charging *chrg2fpm (struct ftamblk *fsb, struct FTAMcharging *charging, struct FTAMindication *fti);
+int	fpm2chrg (struct ftamblk *fsb, struct type_FTAM_Charging *fpm, struct FTAMcharging *charging, struct FTAMindication *fti);
 
-struct type_FTAM_Concurrency__Access *conacc2fpm ();
-int	fpm2conacc ();
+struct type_FTAM_Concurrency__Access *conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti);
+int	fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti);
 
-struct type_FTAM_Concurrency__Control *conctl2fpm ();
-int	fpm2conctl ();
+struct type_FTAM_Concurrency__Control *conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti);
+int	fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti);
 #define	conctl_present(fc) \
     ((fc) -> fc_readlock != FLOCK_NOTREQD \
 	|| (fc) -> fc_insertlock != FLOCK_NOTREQD \
@@ -226,24 +226,24 @@ int	fpm2conctl ();
 	|| (fc) -> fc_deletelock != FLOCK_NOTREQD) \
  
 
-struct type_FTAM_Diagnostic *diag2fpm ();
-int	fpm2diag ();
+struct type_FTAM_Diagnostic *diag2fpm (struct ftamblk *fsb, int magic, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+int	fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti);
 
-struct type_FTAM_FADU__Identity *faduid2fpm ();
-int	fpm2faduid ();
+struct type_FTAM_FADU__Identity *faduid2fpm (struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti);
+int	fpm2faduid (struct ftamblk *fsb, struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti);
 
-struct type_FTAM_Access__Passwords *pass2fpm ();
-int	fpm2pass ();
+struct type_FTAM_Access__Passwords *pass2fpm (struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti);
+int	fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti);
 #define	passes_present(fp) \
     ((fp) -> fp_read || (fp) -> fp_insert || (fp) -> fp_replace \
 	|| (fp) -> fp_extend || (fp) -> fp_erase || (fp) -> fp_readattr \
 	|| (fp) -> fp_chngattr || (fp) -> fp_delete) \
  
-struct type_FTAM_Shared__ASE__Information *shared2fpm ();
-int	fpm2shared ();
+struct type_FTAM_Shared__ASE__Information *shared2fpm (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
+int	fpm2shared (struct ftamblk *fsb, struct type_FTAM_Shared__ASE__Information *fpm, PE *sharedASE, struct FTAMindication *fti);
 
-int	acs2ftamlose (), acs2ftamabort ();
-int	ps2ftamlose ();
+int	acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca), acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti);
+int	ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa);
 
 int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti);
 int FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);

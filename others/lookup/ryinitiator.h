@@ -18,7 +18,7 @@ static struct dispatch {
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-void	acs_adios (), acs_advise ();
-void	ros_adios (), ros_advise ();
+void	acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
+void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 
-int	ryinitiator ();
+int	ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation ops[], struct dispatch *dispatches, IFP quit);

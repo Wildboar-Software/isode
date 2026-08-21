@@ -8,7 +8,7 @@
 #ifndef	GETDENTS
 typedef char	*pointer;		/* (void *) if you have it */
 
-extern void	free();
+extern void	free(pointer);
 extern int close(int fd);
 
 extern int	errno;

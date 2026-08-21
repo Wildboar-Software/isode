@@ -127,11 +127,11 @@ int fd2family[MAXSOCKS];
  * ISODE_IO (1) maps to my fns...
  */
 
-extern int accept(), TAcceptFromClient();
+extern int accept(), TAcceptFromClient(int fd, int vecp, char **vec);
 int (*acceptfn[])() = {
 	accept, TAcceptFromClient
 };
-extern getpeername(), getISOpeername();
+extern getpeername(), getISOpeername(int conn, struct TSAPaddr *from, int *alen);
 int (*getpeerfn[])() = {
 	getpeername, getISOpeername
 };
@@ -139,19 +139,19 @@ int (*getpeerfn[])() = {
  * Note yuckiness here XXX
  * TReadFromClient takes one more param than read - must fix...
  */
-extern int read(), TReadFromClient();
+extern int read(), TReadFromClient(int client, char *data, int size, int nonblock);
 int (*readfn[])() = {
 	read, TReadFromClient
 };
-extern int write(), TWriteToClient();
+extern int write(), TWriteToClient(int sd, char *buf, int len);
 int (*writefn[])() = {
 	write, TWriteToClient
 };
-extern writev(), TWritevToClient();
+extern writev(), TWritevToClient(int sd, struct iovec *iov, int iovcnt);
 int (*writevfn[])() = {
 	writev, TWritevToClient
 };
-extern int close(), TDiscFromClient();
+extern int close(), TDiscFromClient(int fd);
 int (*closefn[])() = {
 	close, TDiscFromClient
 };

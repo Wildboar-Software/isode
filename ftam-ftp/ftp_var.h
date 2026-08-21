@@ -54,12 +54,11 @@ struct cmd {
 	char	*c_help;	/* help string */
 	char	c_bell;		/* give bell when command completes */
 	char	c_conn;		/* must be connected to use command */
-	int	(*c_handler)();	/* function to call */
+	int	(*c_handler)(void);	/* function to call */
 };
 
-extern	char *tail();
-extern	char *remglob();
-extern	int errno;
+extern	char *tail(void);
+extern	char *remglob(void);
 
 /* global interface variables */
 extern int ftp_directory;/* TRUE if last ftp_exist was a multiple listing */

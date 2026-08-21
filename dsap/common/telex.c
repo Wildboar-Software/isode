@@ -69,7 +69,7 @@ static void *str2telex (char *str) {
 	struct telex * result;
 	char * ptr;
 	char * mark = NULLCP;
-	char * prtparse ();
+	char * prtparse (char *str);
 
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("seperator missing in telex '%s'",str);

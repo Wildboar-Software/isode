@@ -16,7 +16,7 @@ extern LLog _fred_log, *fred_log;
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-int	ask (char *, ...), _getline ();
+int	ask (char *, ...), _getline (char *prompt, char *buffer);
 char   *strdup ();
 
 extern int	bflag;

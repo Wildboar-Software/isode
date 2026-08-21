@@ -71,6 +71,6 @@ extern struct rtetab *rts_inet;
 extern struct rtetab *rts_iso;
 #endif
 
-int	get_routes ();
-struct rtetab *get_rtent ();
+int	get_routes (int offset);
+struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext);
 void sort_rtetab (void);

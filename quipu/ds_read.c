@@ -13,16 +13,16 @@
 
 extern LLog * log_dsap;
 
-Attr_Sequence eis_select ();
-Attr_Sequence dsa_eis_select ();
-extern Attr_Sequence entry_find_type();
+Attr_Sequence eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+Attr_Sequence dsa_eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 static int cant_use_cache(Entry ptr, DN dn, EntryInfoSelection eis, DN target);
 static int attribute_not_cached (Entry, DN, OID, DN, int, char);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;
 extern DN mydsadn;
-extern struct di_block * di_alloc();
+extern struct di_block * di_alloc(void);
 extern int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
 
 static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg);

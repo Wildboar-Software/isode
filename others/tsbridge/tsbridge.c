@@ -44,18 +44,18 @@ typedef struct ContTbl {
 ContTbl con_tbl[FD_SETSIZE];
 int con_tbl_cnt = 0;
 
-static struct TSAPaddr *maketa ();
-static struct TSAPaddr *getnewta ();
-static ContTbl *find_connection ();
+static struct TSAPaddr *maketa (struct TSAPaddr *ta, long type, ContTbl *ctp);
+static struct TSAPaddr *getnewta (struct TSAPaddr *ta, int sd, ContTbl *ctp);
+static ContTbl *find_connection (struct TSAPaddr *ta);
 
-static void read_file ();
+static void read_file (char *file);
 
 static void	adios (char *, char *, ...);
 static void	advise (int, char *, char *, ...);
 
-static void ts_adios (), ts_advise ();
-static void ts_close (), ts_discon ();
-static void tsbridge (), do_the_biz (), copy_tsdu (), arginit (), envinit ();
+static void ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, int code, char *event);
+static void ts_close (int sd, char *event), ts_discon (struct TSAPdisconnect *td, int sd);
+static void tsbridge (int vecp, char **vec, struct TSAPaddr *ta), do_the_biz (int sd1, int sd2), copy_tsdu (int s1, int s2), arginit (char **vec), envinit (void);
 
 int main (int argc, char **argv, char **envp) {
 	struct TSAPdisconnect   tds;

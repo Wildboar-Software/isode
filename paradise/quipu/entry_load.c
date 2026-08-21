@@ -18,7 +18,7 @@ extern LLog * log_dsap;
 
 extern int parse_status;
 extern DN mydsadn;
-struct acl_info * acl_dflt ();
+struct acl_info * acl_dflt (void);
 #ifdef TURBO_INDEX
 extern AttributeType *turbo_index_types;
 #endif
@@ -56,9 +56,9 @@ static int dir_exists (char *fname) {
 static int read_mapped_rdn (PS aps,char *name,char *file) {
 	FILE * mapfp;
 #ifdef	TURBO_DISK
-	char *ptr, *newname, *tmp, *fgetline();
+	char *ptr, *newname, *tmp, *fgetline(FILE *file);
 #else	/* TURBO_DISK */
-	char *ptr, *newname, *tmp, *_getline();
+	char *ptr, *newname, *tmp, *_getline(FILE *file);
 #endif	/* TURBO_DISK */
 	extern int parse_line;
 	int i;
@@ -310,7 +310,7 @@ static int sibling_expected (Entry e) {
 static char got_all = TRUE;
 
 static int load_a_kid(Entry e, int offset) {
-	static int      entry_load_kids();
+	static int      entry_load_kids(Avlnode *entryptr ,int offset);
 
 	if ((!e->e_external) &&
 			(e->e_master == NULLAV) &&
@@ -386,7 +386,7 @@ int parent_link(Entry e, Entry parent) {
 
 static int merge_entry(Entry newentry, Avlnode *oldtree) {
 	Entry   p;
-	int     entry_cmp();
+	int     entry_cmp(Entry e1, Entry e2);
 
 	newentry->e_parent = ((Entry) avl_getone(oldtree))->e_parent;
 	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, entry_cmp))
@@ -409,7 +409,7 @@ Entry subtree_load (Entry parent,DN dn) {
 	char failed = FALSE;
 	Avlnode	*treetop;
 	Entry	akid;
-	int	entry_free();
+	int	entry_free(Entry entryptr);
 
 	got_subtree = TRUE;
 	if ((parent != NULLENTRY) && (parent->e_children != NULLAVL)) {
@@ -486,7 +486,7 @@ int refresh_from_disk(DN dn) {
 	Entry child;
 	Entry parent;
 	Entry tmp;
-	Entry entry_cpy();
+	Entry entry_cpy(Entry entryptr);
 	extern Entry database_root;
 
 	if ((parent = local_find_entry (dn,FALSE)) == NULLENTRY)

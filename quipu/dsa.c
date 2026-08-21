@@ -66,8 +66,8 @@ extern void dsa_work (struct task_act *tk);
 #include "quipu/IF-types.h"
 extern AV_Sequence open_call_avs ;    /* SPT: This holds a sequence of
 					 all the open call values. */
-void   open_call_avs_clearup() ;
-void   Remove_openCall_attribute() ;
+void   open_call_avs_clearup(void) ;
+void   Remove_openCall_attribute(void) ;
 #endif /* QUIPU_CONSOLE */
 
 static  char *myname;
@@ -140,12 +140,12 @@ int main (int argc, char **argv) {
 	/*
 	* Function to stop DSA server.
 	*/
-	SFD          stop_dsa();
+	SFD          stop_dsa(int sig);
 #ifdef	SIGUSR1
-	SFD		 list_status ();
+	SFD		 list_status(int sig);
 #endif
 #ifdef	SIGUSR2
-	SFD		 list_status2 ();
+	SFD		 list_status2(int sig);
 #endif
 	{
 		int	i;
@@ -175,7 +175,7 @@ no_copy:
 		myname = argv[0];
 	isodetailor (myname,0);
 	envinit();  /* detach */
-	quipu_syntaxes ();
+	quipu_syntaxes();
 #ifdef USE_PP
 	pp_quipu_init (argv[0]);
 #endif
@@ -530,7 +530,7 @@ fork_ok:
 			}
 #else
 #ifdef  SYS5
-			setpgrp ();
+			setpgrp();
 			signal (SIGINT, SIG_IGN);
 			signal (SIGQUIT, SIG_IGN);
 #endif
@@ -697,13 +697,13 @@ fork_ok:
 #endif
 			LLOG (log_dsap,LLOG_FATAL,("Quipu aborting - sig (%d)",sig));
 		}
-		abort ();
+		abort();
 		exit (-20);  /* abort should not return */
 	}
 
 #ifdef QUIPU_CONSOLE
 	void
-	open_call_avs_clearup() {
+	open_call_avs_clearup(void) {
 		AttributeType at ;
 		AV_Sequence tmp_avs = open_call_avs ;
 		AV_Sequence t1, t2 ;
@@ -759,7 +759,7 @@ fork_ok:
 	}
 
 	void
-	Remove_openCall_attribute() {
+	Remove_openCall_attribute(void) {
 		extern Attr_Sequence dsa_pseudo_attr ;
 		AttributeType at ;
 		Attr_Sequence as, trail = NULLATTR ;

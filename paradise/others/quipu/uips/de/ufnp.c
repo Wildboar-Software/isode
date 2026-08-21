@@ -35,12 +35,12 @@ Attr_Sequence ufnas = NULL;
 
 extern LLog * log_dsap;
 
-extern char *TidyString();
+extern char *TidyString(char *a);
 
-extern Filter strfilter ();
-extern Filter ocfilter ();
-extern Filter joinfilter ();
-extern struct dn_seq *dn_seq_push ();
+extern Filter strfilter (AttributeType at,char *s,char type);
+extern Filter ocfilter (char *s);
+extern Filter joinfilter (Filter f, char type);
+extern struct dn_seq *dn_seq_push (DN dn, struct dn_seq *dnseq);
 
 /* shouldn't really be maxPersons - semantics are max leaf entries */
 extern int maxPersons;
@@ -48,7 +48,7 @@ extern int maxPersons;
 char ufn_abort = FALSE;		/* external to force UFN to abort */
 
 #ifdef	DEBUG
-static	print_search ();
+static void print_search (DN dn, char subtree, Filter fi);
 #endif
 
 DNS DNS_append (DNS a,DNS b) {

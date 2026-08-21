@@ -12,7 +12,7 @@ extern int STOP;
 extern int NUMLINES;
 extern int optlen;
 
-char * encode_t4 ();
+char * encode_t4 (int k_param, char *inbuf, int eolnskip);
 
 /**
  * @brief Encode a pixrect image from stdin to stdout as T.4.

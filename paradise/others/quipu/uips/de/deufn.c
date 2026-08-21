@@ -20,8 +20,8 @@
 #include "query.h"
 
 extern LLog *de_log;
-extern char *TidyString();
-void onint1(), de_exit();
+extern char *TidyString(char *a);
+void onint1(void), de_exit(int exitCode);
 
 extern struct query qinfo[];
 
@@ -29,7 +29,7 @@ extern int boundToDSA;
 extern int deLogLevel;
 
 void doUfnSearch (void) {
-	DNS ufn_interact();
+	DNS ufn_interact(DNS dns, DN dn, char *s);
 	struct dn_seq  *ufnres, * dns;
 	char buf[BUFSIZ];
 	char * ufnargv[10];

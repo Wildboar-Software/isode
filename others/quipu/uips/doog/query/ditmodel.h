@@ -49,11 +49,11 @@ typedef struct _ufs_path {
 #define NULLUfsPath (ufsPath) NULL
 #define ufs_path_alloc() (ufsPath) smalloc(sizeof(ufs_path))
 
-void set_relation(), set_search_attrs(), set_default_path();
+void set_relation(AttributeType parent_type, AttributeType child_type, QBool need_subtree), set_search_attrs(), set_default_path(AttributeType object_type, entryList path);
 objectTypeList get_child_list(), get_search_attrs();
 entryList get_default_path();
 
-QBool is_oc_must(), is_oc_may(), is_search_attr();
-char *get_type_label();
+QBool is_oc_must(objectclass *ocp, AttributeType at), is_oc_may(objectclass *ocp, AttributeType at), is_search_attr(AttributeType octype, AttributeType srchtype);
+char *get_type_label(AttributeType at);
 
 #endif

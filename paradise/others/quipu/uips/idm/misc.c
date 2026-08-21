@@ -17,9 +17,9 @@ extern char ou[];
 extern char person[];
 extern char posdit[];
 extern char org_compel[];
-void onint1();
-void searchFail();
-char * mapAttName();
+void onint1(void);
+void searchFail(char *str);
+char * mapAttName(char *tablename);
 extern int orgEntered;
 
 int de_prompt_yesno(char prompt[], char *value, char default_string[]) {
@@ -748,7 +748,7 @@ prompt_ou:
 }
 
 int ask_password_entry(char pswd[]) {
-	char * getpass();
+	char * getpass(const char *prompt);
 	char * temp2;
 	char new_pswd[LINESIZE];
 	char vfy_pswd[LINESIZE];

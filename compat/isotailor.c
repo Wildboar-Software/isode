@@ -10,7 +10,7 @@
 #include "tailor.h"
 #include "internet.h"
 
-static int  events_value ();
+static int  events_value (struct pair *pairs, char *s, char *var);
 
 #define	SUBNET_MAX	(6 + 10)  /* maximum number of subnet entries */
 
@@ -455,8 +455,8 @@ static struct bind {
 	NULL
 };
 
-static int	tailor_read ();
-static char   *tailor_value ();
+static int	tailor_read (char *file);
+static char   *tailor_value (char *s);
 
 char *isodesetailor (char *file) {
 	char   *ofile = isotailor;

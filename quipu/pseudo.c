@@ -26,11 +26,11 @@ extern char * treedir;
 struct dn_seq * dn_cached = NULLDNSEQ;
 extern DN mydsadn;
 #ifdef TURBO_DISK
-extern Attr_Sequence fget_attributes ();
+extern Attr_Sequence fget_attributes(FILE *file);
 #else
-extern Attr_Sequence get_attributes ();
+extern Attr_Sequence get_attributes(FILE *file);
 #endif
-extern Entry local_find_entry_aux();
+extern Entry local_find_entry_aux(DN object, char deref);
 
 #ifdef QUIPU_CONSOLE
 /* SPT: Some imported defines. */
@@ -233,7 +233,7 @@ void write_dsa_entry (Entry eptr) {
 	char filename[LINESIZE];
 	PS ps;
 	/* write e_attributes, and preserved attributes to DSA file */
-	update_pseudo_attr ();
+	update_pseudo_attr();
 	if (dsa_pseudo_attr) {
 		sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
 		um = umask (0177);
@@ -266,7 +266,7 @@ void write_dsa_entry (Entry eptr) {
 			return;
 		}
 #if	defined(SYS5) && !defined(SVR4)
-		sync ();
+		sync();
 #else
 		if (fsync (fileno(fptr)) != 0) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));
@@ -316,7 +316,7 @@ void write_dsa_entry (Entry eptr) {
 		return;
 	}
 #if     defined(SYS5) && !defined(SVR4)
-	sync ();
+	sync();
 #else
 	if (fsync (fileno(fptr)) != 0) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("write DSA fsync error: %d",errno));

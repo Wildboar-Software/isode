@@ -58,7 +58,7 @@ static jmp_buf toplevel;
 static IFP	startfnx;
 static IFP	stopfnx;
 
-int	ros_init (), ros_work (), ros_indication (), ros_lose ();
+int	ros_init (int vecp, char **vec), ros_work (int fd), ros_indication (int sd, struct RoSAPindication *roi), ros_lose (struct TSAPdisconnect *td);
 
 /* RESPONDER */
 
@@ -360,7 +360,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (int code, char *what, va_list ap);
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

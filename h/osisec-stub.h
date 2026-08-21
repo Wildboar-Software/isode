@@ -48,25 +48,25 @@ struct GenericHashKey;
 
 struct SecurityServices {
 	char           			*serv_name;
-	struct signature *	 	(*serv_sign)();
-	int				(*serv_verify)();
-	int				(*serv_ckpath)();
-	int				(*serv_ckfpath)();
-	struct certificate_list *	(*serv_mkpath)();
-	struct encrypted * 		(*serv_encrypt)();
-	int				(*serv_decrypt)();
-	struct Nonce *			(*serv_mknonce)();
-	int				(*serv_cknonce)();
+	struct signature *	 	(*serv_sign)(char *data, int type, modtyp *module);
+	int				(*serv_verify)(char *data, int type, modtyp *module, struct signature *sig, struct GenericPublicKey *pubkey, struct GenericParameters *keyparms, struct GenericHashParameters *hashparms);
+	int				(*serv_ckpath)(caddr_t data, int type, modtyp *module, struct certificate_list *path, struct signature *sig, DN *nameptr);
+	int				(*serv_ckfpath)(caddr_t data, int type, modtyp *module, struct certificate_list *path, struct signature *sig, DN *nameptr);
+	struct certificate_list *	(*serv_mkpath)(void);
+	struct encrypted * 		(*serv_encrypt)(char *concrete, int type, modtyp *module, struct GenericPublicKey *publickey, struct GenericParameters *parms);
+	int				(*serv_decrypt)(struct encrypted *enc, int type, modtyp *module, char **concrete, struct GenericSecretKey *privkey, struct GenericParameters *parms);
+	struct Nonce *			(*serv_mknonce)(struct Nonce *previous);
+	int				(*serv_cknonce)(struct Nonce *nonce);
 };
 
-extern struct signature        *nullsigned();
-extern int      		nullverify();
-extern struct certificate_list *null_mkpath();
-extern int			null_ckpath();
-extern struct encrypted	       *nullencrypted();
-extern int      		nulldecrypted();
-extern struct Nonce *		nullmknonce();
-extern int			nullcknonce();
+extern struct signature        *nullsigned(char *data, int type, modtyp *module);
+extern int      		nullverify(char *data, int type, modtyp *module, struct signature *sig, struct GenericPublicKey *pubkey, struct GenericParameters *keyparms, struct GenericHashParameters *hashparms);
+extern struct certificate_list *null_mkpath(void);
+extern int			null_ckpath(caddr_t data, int type, modtyp *module, struct certificate_list *path, struct signature *sig, DN *nameptr);
+extern struct encrypted	       *nullencrypted(char *concrete, int type, modtyp *module, struct GenericPublicKey *publickey, struct GenericParameters *parms);
+extern int      		nulldecrypted(struct encrypted *enc, int type, modtyp *module, char **concrete, struct GenericSecretKey *privkey, struct GenericParameters *parms);
+extern struct Nonce *		nullmknonce(struct Nonce *previous);
+extern int			nullcknonce(struct Nonce *nonce);
 
 #define NULLSECURITYSERVICES { \
 	"quipusecurityservices", \
@@ -81,7 +81,7 @@ extern int			nullcknonce();
 	nullcknonce \
 }
 
-extern struct SecurityServices	*use_serv_null();
+extern struct SecurityServices	*use_serv_null(void);
 #define SECSERV sec_serv
 extern struct SecurityServices *SECSERV;
 

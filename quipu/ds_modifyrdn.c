@@ -42,7 +42,7 @@ int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN bin
 	Attr_Sequence as;
 	AV_Sequence avs;
 	RDN modrdn;
-	char * new_version ();
+	char * new_version(void);
 	int retval;
 	int authp, pauthp;
 	extern int read_only;

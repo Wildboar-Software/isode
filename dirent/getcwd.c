@@ -28,7 +28,8 @@
 #include	"general.h"
 
 #ifndef		GETCWD
-extern int	fstat(), stat();
+extern int	fstat(int fd, struct stat *buf);
+extern int	stat(char *path, struct stat *buf);
 
 extern int	errno;			/* normally done by <errno.h> */
 
@@ -40,10 +41,9 @@ extern int	errno;			/* normally done by <errno.h> */
 #define	NAME_MAX	255		/* maximum directory entry size */
 #endif
 
-char *getcwd( buf, size )			/* returns pointer to CWD pathname */
-char		*buf;		/* where to put name (NULL to malloc) */
-size_t		size;		/* size of buf[] or malloc()ed memory */
-{
+char *getcwd(char *buf, size_t size) {	/* returns pointer to CWD pathname */
+					/* buf: where to put name (NULL to malloc) */
+					/* size: size of buf[] or malloc()ed memory */
 	static char	dotdots[] =
 		"../../../../../../../../../../../../../../../../../../../../../../../../../..";
 	char 		*dotdot;	/* -> dotdots[.], right to left */

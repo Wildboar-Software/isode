@@ -119,17 +119,17 @@ typedef struct _ufname_rec {
 #define ufname_rec_alloc() (ufnameRec) smalloc(sizeof(ufname_rec))
 
 /* Public procedures */
-QE_error_code do_ufn_resolve();
+QE_error_code do_ufn_resolve(entryList baseobjects, namePart ufname, known is_leaf, QCardinal *id_ptr);
 
-request_state process_ufn_ds_result(), process_ufn_ds_error();
-request_state continue_ufn_search();
+request_state process_ufn_ds_result(requestRec request, int task_id, struct DSResult *ds_result), process_ufn_ds_error(requestRec request, int task_id, struct DSError *error);
+request_state continue_ufn_search(entryList good_matches, QCardinal request_id);
 
 ufnResults get_ufn_results();
 ufnStatus get_ufn_status();
 namePart str2ufname();
 
-void ufname_rec_free(), name_part_free();
-void add_ufn_path_element();
+void ufname_rec_free(ufnameRec record), name_part_free(namePart *name);
+void add_ufn_path_element(int lower, int upper, entryList path);
 entryList get_ufn_path();
 
 #endif _query_ufname_h_

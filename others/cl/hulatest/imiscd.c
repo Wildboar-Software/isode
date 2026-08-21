@@ -29,7 +29,7 @@ static int execgid = 1;
 
 /* OPERATIONS */
 int	op_utcTime (), op_genTime (), op_timeOfDay (), op_users (),
-	op_charGen (), op_pwdGen (), op_exec (), op_tellUser (), op_data ();
+	op_charGen (), op_pwdGen (), op_exec (), op_tellUser (), op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"utcTime", operation_IMISC_utcTime, op_utcTime,
@@ -60,7 +60,7 @@ static struct dispatch dispatches[] = {
 };
 
 /* TYPES */
-struct type_IMISC_IA5List *str2ia5list ();
+struct type_IMISC_IA5List *str2ia5list (char *s);
 
 char	*getlocalhost();
 

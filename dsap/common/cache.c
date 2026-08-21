@@ -137,7 +137,8 @@ void cache_entry (EntryInfo *ptr, char complete, char vals)
 	Entry           make_path (DN dn);
 	DN              dnptr;
 	extern 	AttributeType at_alias;
-	Attr_Sequence	as, as_merge_aux();
+	Attr_Sequence	as;
+	Attr_Sequence as_merge_aux(Attr_Sequence a, Attr_Sequence b);
 
 	/* use e_lock to indicate if values are present */
 	if (ptr->ent_dn == NULLDN)

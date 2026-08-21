@@ -480,7 +480,7 @@ int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 }
 
 #ifndef	lint
-static int  _pusaplose ();
+static int  _pusaplose (struct PSAPindication *pi, int reason, va_list ap);
 
 /*----------------------------------------------------------------------------*/
 int	pusaplose (struct PSAPindication *pi, ...)

@@ -59,8 +59,8 @@ struct address *afs_iso = NULL;
 
 static	int	flush_if_cache = 0;
 
-int	get_interfaces ();
-static struct address *find_address ();
+int	get_interfaces (int offset);
+static struct address *find_address (union sockaddr_un *addr);
 
 #define	ifIndex		0
 #define	ifDescr		1

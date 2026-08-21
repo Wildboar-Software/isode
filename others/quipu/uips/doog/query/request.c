@@ -17,8 +17,8 @@ extern DsTask live_task_list;
 /* Directory association descriptor. */
 extern int dsap_ad;
 
-static request_state process_dap_result(), process_dap_error();
-static void request_rec_free();
+static request_state process_dap_result(struct DAPresult *dap_result, QCardinal *id_ptr), process_dap_error(struct DAPerror *error, QCardinal *id_ptr);
+static void request_rec_free(requestRec request);
 
 /*
  * Abort request of given id.

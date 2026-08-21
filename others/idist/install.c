@@ -48,9 +48,9 @@ char	tranbuf[1024*8];	/* 8K at a time... */
 
 extern	FILE *lfp;		/* log file for mailing changes */
 
-SFD	cleanup();
-struct	linkbuf *savelink();
-extern char *getstring ();
+SFD	cleanup(void);
+struct	linkbuf *savelink(struct stat *sp, int opts);
+extern char *getstring (char *prompt);
 
 /*
  * Update the file(s) if they are different.

@@ -32,9 +32,9 @@ static	mypager ();
 static pagchar ();
 #ifndef	lint
 static int  da_command (char *, ...);
-static int  _da_command ();
+static int  _da_command (char *fmt, va_list ap);
 #endif
-static int  da_response ();
+static int  da_response (void);
 
 /* DISH */
 

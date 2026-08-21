@@ -9,8 +9,8 @@
 #include "tailor.h"
 #include "internet.h"
 
-static int  fd2tpktaux ();
-static int  readx ();
+static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx);
+static int  readx (int fd, char *buffer, int n, IFP readfnx);
 
 struct tsapkt *
 fd2tpkt (int fd, IFP initfnx, IFP readfnx) {

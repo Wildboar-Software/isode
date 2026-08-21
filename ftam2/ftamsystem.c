@@ -29,11 +29,6 @@
 #include <shadow.h>
 #endif
 
-#ifdef	SYS5
-struct group  *getgrnam ();
-struct passwd *getpwnam ();
-#endif
-
 #ifndef	ANON
 #define	ANON	"ftp"
 #endif

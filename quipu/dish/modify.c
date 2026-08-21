@@ -47,12 +47,12 @@ void call_modify (int argc, char **argv) {
 	struct ds_modifyentry_arg mod_arg;
 
 	struct DSError  error;
-	struct entrymod *emnew, *ems_append(), *modify_avs();
+	struct entrymod *emnew, *ems_append(struct entrymod *a, struct entrymod *b), *modify_avs(AV_Sequence a, AV_Sequence b, AttributeType at);
 	Attr_Sequence   as,
 #ifdef TURBO_DISK
-					fget_attributes (),
+					fget_attributes(FILE *file),
 #else
-					get_attributes (),
+					get_attributes(FILE *file),
 #endif
 					temp,
 					trail = NULLATTR;
@@ -268,7 +268,7 @@ void call_modify (int argc, char **argv) {
 	 */
 	if ((mod_arg.mea_common.ca_security != (struct security_parms *) 0)
 			&& (mod_arg.mea_common.ca_security->sp_time != NULLCP)) {
-		char *new_version();
+		char *new_version(void);
 		free(mod_arg.mea_common.ca_security->sp_time);
 		mod_arg.mea_common.ca_security->sp_time = new_version();
 	}
@@ -383,7 +383,7 @@ static char *foobar (char *string) {
 	DN	    fb;
 	PS	    ps;
 	static char    buffer[BUFSIZ];
-	DN	    sequence_dn ();
+	DN	    sequence_dn(int y);
 	if (!isdigit (*string))
 		return string;
 	if ((fb = sequence_dn (atoi (string))) == NULLDN) {
@@ -528,7 +528,7 @@ int mod_template (char *name, char noedit) {
 	PS              ps;
 	extern AttributeType at_objectclass;
 	Attr_Sequence   as;
-	Attr_Sequence   nas, tas, make_template_as ();
+	Attr_Sequence   nas, tas, make_template_as(AV_Sequence oc);
 	int		um;
 
 	if (! new_draft)

@@ -10,16 +10,16 @@
 #include <sys/stat.h>
 
 extern int oidformat;
-extern struct PSAPaddr * psap_cpy ();
+extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);
 extern void pe_print (PS ps, PE pe, int format);
-AttributeValue str2file ();
+AttributeValue str2file (char *str, AttributeType at);
 extern LLog * log_dsap;
-PE asn2pe();
+PE asn2pe(char *str);
 char t61_flag;
 char crypt_flag;
 extern char dsa_mode;
-extern int file_cmp ();
-extern PE grab_filepe ();
+extern int file_cmp (struct file_syntax *a, struct file_syntax *b);
+extern PE grab_filepe (AttributeValue av);
 
 static short num_syntax = 1;
 static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
@@ -353,7 +353,7 @@ AttributeValue str2AttrV (char * str, short syntax) {
 }
 
 void AttrV_cpy_aux (AttributeValue x, AttributeValue y) {
-	struct file_syntax * fileattr_cpy();
+	struct file_syntax * fileattr_cpy(struct file_syntax *fs);
 	y->av_syntax = x->av_syntax;
 	if (x->av_struct == NULL) {
 		y->av_struct = NULL;
@@ -375,7 +375,7 @@ AttributeValue AttrV_cpy (AttributeValue x) {
 }
 
 void AttrV_cpy_enc (AttributeValue x, AttributeValue y) {
-	struct file_syntax * fileattr_cpy();
+	struct file_syntax * fileattr_cpy(struct file_syntax *fs);
 	/* Encode a copy of x into y */
 	y->av_syntax = 0;
 	if (x->av_struct == NULL) {
@@ -441,7 +441,7 @@ int (*av_cmp_fn(short syntax))(void *value1, void *value2)
 	if ( syntax >= AV_WRITE_FILE )
 		return NULL;
 	if (syntax == AV_FILE)
-		return (file_cmp);
+		return (int (*)(void *, void *))file_cmp;
 	if (syntax_table[syntax].s_compare != NULL)
 		return (syntax_table[syntax].s_compare);
 	else

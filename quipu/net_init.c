@@ -28,13 +28,13 @@ extern	struct PSAPctxlist	* x500_ds_pcdl;
 extern	struct PSAPctxlist	* quipu_ds_pcdl;
 extern	struct PSAPctxlist	* internet_ds_pcdl;
 extern  AttributeType at_listen;
-extern  Entry local_find_entry_aux();
+extern  Entry local_find_entry_aux(DN object, char deref);
 
 extern	DN			  mydsadn;
 extern  struct PSAPaddr		* mydsaaddr;
 extern  struct PSAPaddr		* dsaladdr;
 
-extern	struct PSAPaddr		* psap_cpy();
+extern	struct PSAPaddr		* psap_cpy(struct PSAPaddr *a);
 int	max_conns;
 
 static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
@@ -60,7 +60,7 @@ int net_init (void) {
 	struct TSAPdisconnect	  td_s;
 	struct TSAPdisconnect	* td = &(td_s);
 	Entry			  my_entry;
-	Attr_Sequence 		  as, entry_find_type();
+	Attr_Sequence 		  as, entry_find_type(Entry a, AttributeType b);
 	struct NSAPaddr *na;
 	int				  x, *ip;
 
@@ -155,7 +155,7 @@ int net_init (void) {
 		LLOG (log_dsap, LLOG_FATAL,
 			  ("sleeping for 5 minutes, will continue retrying %d more time%s",
 			   ntries, ntries != 1 ? "s" : ""));
-		stop_listeners ();
+		stop_listeners();
 		sleep ((unsigned) 300);
 	}
 	/* compare ta and ts_communities to see if they have a network in common */

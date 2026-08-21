@@ -12,14 +12,14 @@
 
 s_table *head;
 
-extern s_table *lookup_list(), *proc_def();
+extern s_table *lookup_list(void), *proc_def(void);
 
 extern char *genstrform (YP yp);
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp);
 extern char *strip_last(char *s);
 extern char *get_val(char **s), *get_comp(char **s), *get_string(char *s, int direction);
-extern s_table *get_offset();
+extern s_table *get_offset(void);
 extern char *my_strcat(char *s1, char *s2), *strp2name(char *s1, char *s2);
 extern char *my_new_str(char *s);
 extern char *mymodule;

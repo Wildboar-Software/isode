@@ -217,23 +217,23 @@ int	dsapreject (struct DSAPindication *di, ...);
 
 extern char *dsapversion;
 
-int	DBindInit ();		/* D-BIND.INDICATION */
+int	DBindInit (int vecp, char **vec, struct DSAPstart *ds, struct DSAPindication *di);		/* D-BIND.INDICATION */
 
-int	DAsynBindRequest ();	/* D-BIND.REQUEST (ARGUMENT) */
-int	DAsynBindRetry();	/* D-BIND-RETRY.REQUEST */
+int	DAsynBindRequest (void);	/* D-BIND.REQUEST (ARGUMENT) */
+int	DAsynBindRetry(void);	/* D-BIND-RETRY.REQUEST */
 
-int	DBindResult ();		/* D-BIND.RESPONSE (RESULT) */
-int	DBindError ();		/* D-BIND.RESPONSE (ERROR) */
-int	DBindReject ();		/* D-BIND.RESPONSE (REJECT) */
+int	DBindResult (int sd, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, struct ds_bind_arg *bind_res, int pctx_id, struct DSAPindication *di);		/* D-BIND.RESPONSE (RESULT) */
+int	DBindError (int sd, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, struct PSAPctxlist *ctxlist, int defctxresult, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, struct ds_bind_error *bind_err, int pctx_id, struct DSAPindication *di);		/* D-BIND.RESPONSE (ERROR) */
+int	DBindReject (struct DSAPstart *ds, int status, int reason, struct DSAPindication *di);		/* D-BIND.RESPONSE (REJECT) */
 
 int DUnBindRequest (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-UNBIND.REQUEST */
 int DUnBindRetry (int sd, int secs, struct DSAPrelease *dr, struct DSAPindication *di);	/* D-BIND-RETRY.REQUEST (pseudo) */
-int	DUnBindResponse ();	/* D-BIND.RESPONSE (RESULT) */
+int	DUnBindResponse (void);	/* D-BIND.RESPONSE (RESULT) */
 
 int IspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
 int QspInvokeRequest (int sd, int id, struct ds_op_arg *arg, struct DSAPindication *di);
 
-char   *DErrString ();		/* return DSAP error code in string form */
+char   *DErrString (void);		/* return DSAP error code in string form */
 
 int	dsaplose (struct DSAPindication *di, ...);
 

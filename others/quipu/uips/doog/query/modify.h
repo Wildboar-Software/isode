@@ -116,10 +116,10 @@ typedef struct _make_template_rec {
  *	Public procedures
  */
 
-QE_error_code do_make_template();
+QE_error_code do_make_template(char *baseobject, QCardinal *id_ptr, modifyAttr *attr_list);
 makeTemplateResult get_make_template_result();
 
-errorList do_modify();
+errorList do_modify(char *baseobject, QCardinal *id_ptr, modifyAttr mod_attr_list);
 modifyResult get_modify_result();
 
 QE_error_code do_change_name();
@@ -131,12 +131,12 @@ void get_add_entry_result();
 QE_error_code do_delete_entry();
 void get_delete_entry_result();
 
-void free_mod_attr_list(), free_mod_val_list(),
-	 free_make_template_result(), free_modify_result();
+void free_mod_attr_list(modifyAttr *mod_attr_list_ptr), free_mod_val_list(modifyValue *mod_val_list_ptr),
+	 free_make_template_result(makeTemplateResult *result_ptr), free_modify_result(modifyResult *result_ptr);
 
-void free_make_template_rec(), modify_rec_free();
+void free_make_template_rec(makeTemplateRec record), modify_rec_free(modifyRec record);
 
-request_state process_modify_ds_result(), process_modify_ds_error();
-request_state process_template_ds_result(), process_template_ds_error();
+request_state process_modify_ds_result(requestRec request, int task_id, struct DSResult *ds_result), process_modify_ds_error(requestRec request, int task_id, struct DSError *ds_error);
+request_state process_template_ds_result(requestRec request, int task_id, struct DSResult *ds_result), process_template_ds_error(requestRec request, int task_id, struct DSError *error);
 
 #endif

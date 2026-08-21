@@ -14,7 +14,7 @@
 #include "pepsycodec.h"
 
 extern  LLog    * log_dsap;
-extern	void	  ros_log();
+extern	void	  ros_log(struct RoSAPpreject *rop, char *event);
 
 #ifdef PDU_DUMP
 #define DUMP_ARG 	"arg"

@@ -24,9 +24,6 @@ int	toomany;
 int	nfilent = 0;
 struct filent *filents = NULL;
 
-#ifdef	BRIDGE
-FILE	*fdopen();
-#endif
 static  FILE *lsfp;
 
 #ifdef __GNUC__
@@ -36,9 +33,6 @@ static void _init_fp (void)
 	lsfp = stdout;
 }
 #endif
-
-char   *ctime ();
-FILE   *popen ();
 
 static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
 static int fdfls (char *file);

@@ -23,7 +23,6 @@ struct subordinate {
 	struct subordinate *sub_next;
 };
 #define NULLSUBORD (struct subordinate *) NULL
-struct subordinate	* subord_comp_new();
 void subords_free (struct subordinate *subp);
 
 /*
@@ -56,7 +55,7 @@ struct list_cache {
 
 #define NULLCACHE (struct list_cache *) NULL
 
-struct list_cache *find_list_cache ();
+struct list_cache *find_list_cache (DN dn, int sizelimit);
 
 int dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result);
 void list_arg_free (struct ds_list_arg *arg);

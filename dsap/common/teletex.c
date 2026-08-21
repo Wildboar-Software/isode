@@ -123,7 +123,7 @@ static void *str2teletex (char *str) {
 	struct teletex * result;
 	char * ptr;
 	char * mark = NULLCP;
-	char * prtparse ();
+	char * prtparse (char *str);
 
 	if ( (ptr=index (str,'$')) == NULLCP) {
 		parse_error ("seperator missing in teletex '%s'",str);

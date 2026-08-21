@@ -70,10 +70,10 @@ extern LLog * log_dsap;
 extern int parent_pid;
 static unsigned waiting = 0;
 
-extern char *new_version();
-extern unsigned long hash_passwd();
-extern char *hash2str();
-extern struct certificate *cert_cpy();
+extern char *new_version(void);
+extern unsigned long hash_passwd(unsigned long seed, char *str, int len);
+extern char *hash2str(unsigned long hash, int *len);
+extern struct certificate *cert_cpy(struct certificate *parm);
 extern struct SecurityServices *dsap_security;
 static void protect_password(void);
 static int sign_bindarg(void);
@@ -157,7 +157,7 @@ int call_bind (int argc, char **argv) {
 	char    buf[BUFSIZ];
 	DN	newdn, dsadn;
 	extern  char * tailfile;
-	extern DN sequence_dn ();
+	extern DN sequence_dn(int y);
 	char got_name = FALSE;
 	char got_pass = FALSE;
 
@@ -408,11 +408,11 @@ int call_bind (int argc, char **argv) {
 				dsa_address = myname;
 		}
 	if (bound)
-		ds_unbind ();
+		ds_unbind();
 	bound = FALSE;
 	first_bind = FALSE;
 	binderr.dbe_value = 0;
-	bind_alarm ();
+	bind_alarm();
 	if (secure_ds_bind (&bindarg, &binderr, &bindresult) != OK) {
 		signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
@@ -464,7 +464,7 @@ int rebind (void) {
 		break;
 	}
 	binderr.dbe_value = 0;
-	bind_alarm ();
+	bind_alarm();
 	if (secure_ds_bind (&bindarg, &binderr, &bindresult) != OK) {
 		signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
@@ -507,7 +507,7 @@ int referral_bind (struct PSAPaddr *addr) {
 		break;
 	}
 	binderr.dbe_value = 0;
-	bind_alarm ();
+	bind_alarm();
 	if (dap_bind (&dsap_ad, &bindarg, &binderr, &bindresult, addr) != OK) {
 		signal (SIGALRM, SIG_IGN);
 		if (binderr.dbe_value == 0)
@@ -556,7 +556,7 @@ void call_unbind (int argc, char **argv) {
 	bound = FALSE;
 	if (! noquit) {
 		if (frompipe)
-			exit_pipe ();
+			exit_pipe();
 		ps_free (opt);
 		ps_free (rps);
 		directory_free (database_root);	   /* clean /tmp files */
@@ -586,13 +586,13 @@ int user_tailor (void) {
 	int		isenv;
 	char           *part1;
 	char           *part2;
-	char           *getenv ();
+	char           *getenv(const char *name);
 	char           *home;
 
 	FILE           *file;
 	char            Read_in_Stuff[BUFSIZ];
 	char           *p,
-				   *TidyString();
+				   *TidyString(char *a);
 	extern char    *local_dit;
 	extern char	dishinit;
 	struct	 stat	sbuf;
@@ -747,7 +747,7 @@ void dish_quit (int sig) {
 		}
 	}
 	if (frompipe)
-		exit_pipe ();
+		exit_pipe();
 	else
 		fprintf (stderr,"Dish Problem\n");
 	hide_picture();
@@ -763,7 +763,7 @@ void dish_quit (int sig) {
 	default:
 		LLOG (log_dsap, LLOG_FATAL, ("Dish problem - signal %d",sig));
 		signal (sig, SIG_DFL); /* to stop recursion */
-		abort ();
+		abort();
 	}
 }
 

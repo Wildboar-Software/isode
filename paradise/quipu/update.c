@@ -15,12 +15,12 @@
 #include "quipu/malloc.h"
 #include "quipu/find.h"
 
-extern int parent_link();
+extern int parent_link(Entry e, Entry parent);
 
 #ifndef NO_STATS
 extern LLog * log_stat;
 #endif
-extern char *new_version ();
+extern char *new_version (void);
 
 extern LLog * log_dsap;
 extern char remote_lookup;
@@ -29,21 +29,21 @@ extern int slave_edbs;
 extern Entry database_root;
 extern DN mydsadn;
 extern Attr_Sequence dsa_real_attr;
-extern Entry local_find_entry_aux();
+extern Entry local_find_entry_aux(DN object, char deref);
 extern time_t lastedb_update, timenow;
 extern time_t	conn_timeout;
 extern time_t	nsap_timeout;
 extern struct oper_act * pending_ops;
 
-struct oper_act *	oper_alloc();
-struct oper_act *	make_get_edb_op();
+struct oper_act *	oper_alloc(void);
+struct oper_act *	make_get_edb_op(DN dn, char *version, struct di_block *di);
 
 static int split_size = 10;
-static get_more_edb ();
-static read_part_edb ();
-static pull_up_result ();
-static edb_start ();
-static edb_continue ();
+static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
+static int read_part_edb (PS ps, PE *pep, int n);
+static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result);
+static int edb_start (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd);
+static int edb_continue (struct getedb_arg *arg, struct DSError *error, struct getedb_result *result, DN binddn, int fd);
 
 #ifdef USE_DSA_WAIT
 
@@ -67,7 +67,7 @@ char * edbtmp_path = NULLCP;
 /* routine name is historic - not significant */
 
 int journal (Entry myentry) {
-	char * filename, *dn2edbfile();
+	char * filename, *dn2edbfile(DN dn);
 	char savefile [LINESIZE], newfile[LINESIZE];
 	DN dn;
 	extern char * treedir;
@@ -140,7 +140,7 @@ void modify_attr (Entry eptr,DN who) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;
-	Attr_Sequence as, old, entry_find_type();
+	Attr_Sequence as, old, entry_find_type(Entry a, AttributeType b);
 	extern int	  no_last_mod;
 
 	if (no_last_mod)
@@ -300,8 +300,8 @@ void slave_update (void) {
 }
 
 int update_aux (DN dn, int isroot) {
-	Entry my_entry, make_path();
-	Entry find_sibling();
+	Entry my_entry, make_path(DN dn);
+	Entry find_sibling(void);
 	extern DN mydsadn;
 	struct edb_info * dsainfo;
 	Entry eptr;
@@ -472,7 +472,7 @@ static int link_child(Entry e, Avlnode *oldkids) {
 	struct DSError  error;
 
 	Entry   old_entry;
-	int     entryrdn_cmp();
+	int     entryrdn_cmp(RDN rdn, Entry ent);
 	g_entry_cnt++;
 	/* find the old entry the new one is replacing */
 	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, entryrdn_cmp);
@@ -500,10 +500,10 @@ static int link_child(Entry e, Avlnode *oldkids) {
 
 void process_edb(struct oper_act *on,struct oper_act **newop) {
 	extern DN mydsadn;
-	Entry find_sibling();
+	Entry find_sibling(void);
 	Entry eptr;
 	Avlnode	*newkids;
-	int	entry_free();
+	int	entry_free(Entry entryptr);
 	struct DSError  error;
 	struct getedb_result	* result = &(on->on_resp.di_res.dr_res.dcr_dsres.res_ge);
 	struct getedb_arg	* arg = &(on->on_req.dca_dsarg.arg_ge);
@@ -938,7 +938,7 @@ static void get_more_edb (struct oper_act *oper,struct oper_act **newop) {
 	struct getedb_arg	* arg = &(oper->on_req.dca_dsarg.arg_ge);
 	struct getedb_arg	* narg;
 	struct oper_act	* on_tmp;
-	struct di_block * di_alloc ();
+	struct di_block * di_alloc (void);
 
 	/* schedule getting the next part of the EDB */
 	if((on_tmp = oper_alloc()) == NULLOPER) {

@@ -11,7 +11,7 @@ int nintf = 0;
 
 extern void adios (char *, char *, ...);
 extern void advise (int, char *, char *, ...);
-extern void receive();
+extern void receive(struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock);
 
 #ifdef	TEST
 

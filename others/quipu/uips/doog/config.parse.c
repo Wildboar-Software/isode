@@ -18,9 +18,9 @@
 #endif
 
 #define yyparse parseConfig
-static int yylex();
+static int yylex(YYSTYPE *lvalp, YYLTYPE *llocp);
 
-void add_ufn_path_element();
+void add_ufn_path_element(int lower, int upper, entryList path);
 
 extern FILE *config_file;
 extern QCardinal config_line_num;

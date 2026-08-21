@@ -53,15 +53,15 @@ struct SuSAPstart {
 #endif
 
 #ifdef HULA
-int	SUnitDataBind();	/* bind local to a remote address */
-int	SUnitDataUnbind();	/* unbind local from a remote address */
+int	SUnitDataBind(int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si);	/* bind local to a remote address */
+int	SUnitDataUnbind(int sd, struct SSAPindication *si);	/* unbind local from a remote address */
 int	SUnitDataSetupRead();	/* set up read data for server */
-int	SUnitDataWrite();	/* UNITDATA.request (with handle) */
-int	SUnitDataWriteV();	/* UNITDATA.request (for iovec) */
-int	SUnitDataRead();	/* UNITDATA.indication (with handle) */
-int	SUnitDataRequest();	/* UNITDATA.request (without handle) */
+int	SUnitDataWrite(int sd, char *data, int cc, struct SSAPindication *si);	/* UNITDATA.request (with handle) */
+int	SUnitDataWriteV(int sd, struct udvec *uv, int si);	/* UNITDATA.request (for iovec) */
+int	SUnitDataRead(int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si);	/* UNITDATA.indication (with handle) */
+int	SUnitDataRequest(struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si);	/* UNITDATA.request (without handle) */
 int	SUnitDataSelectMask();	/* set the select mask for async */
-int	SuSave();		/* save unitdata buffer */
+int	SuSave(int sd, int vecp, char **vec, struct SSAPindication *si);		/* save unitdata buffer */
 #endif
 
 #endif

@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <setjmp.h>
+#include <time.h>
 #include "manifest.h"
 #include "general.h"
 #include "ftam-cmds.h"
@@ -50,7 +51,7 @@ static	int cmd_type;
 static	int cmd_form;
 static	int cmd_bytesz;
 
-char	*savestr();
+char	*savestr(char *s);
 static char	*copy(char *);
 static void upper(char *s);
 static void help(char *s);
@@ -454,7 +455,7 @@ rename_cmd:	rename_from rename_to
 
 rename_from:	RNFR check_login SP pathname CRLF
 	{
-		char *from = 0, *renamefrom();
+		char *from = 0;
 
 		if ($2 && $4)
 			from = renamefrom((char*)$4);
@@ -583,7 +584,6 @@ static char *_getline(char *s, int n, FILE *iop) {
 
 static SFD toolong(int sd) {
 	time_t now;
-	extern char *ctime();
 
 	reply(421,
 	  "Timeout (%d seconds): closing control connection.", timeout);

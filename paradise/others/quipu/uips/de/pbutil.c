@@ -25,7 +25,7 @@ extern char origDefaultCo[], origDefaultOrg[];
 extern int deLogLevel;
 extern int alarmCount;
 extern int bindTimeout;
-void onint1();
+void onint1(void);
 
 int listlen(struct namelist *lp) {
 	int len;

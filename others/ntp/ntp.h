@@ -109,7 +109,7 @@ struct intf {
 };
 extern struct intf *addrs;
 extern int nintf;
-extern struct intf *getintf ();
+extern struct intf *getintf (int *n);
 
 #define	ACT_ERROR	1
 #define	ACT_RECV	2
@@ -445,17 +445,17 @@ extern int selfds;
 
 extern fd_set globmask, globwmask;
 
-extern char *paddr (), *ntoa ();
+extern char *paddr (struct Naddr *addr), *ntoa (struct sockaddr_in *nsin);
 
 extern long lseek ();
 extern long random ();
 
 extern void advise (int, char *, char *, ...), avoid ();
 
-extern double s_fixed_to_double(), ul_fixed_to_double();
+extern double s_fixed_to_double(struct s_fixedpt *t), ul_fixed_to_double(struct l_fixedpt *t);
 extern double	atof();
 
 #ifdef DEBUG
-extern void	dump_pkt ();
+extern void	dump_pkt (struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer);
 extern int debug;
 #endif

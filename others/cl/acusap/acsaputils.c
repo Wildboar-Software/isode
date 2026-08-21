@@ -257,7 +257,7 @@ int ps2aculose (
 }
 
 #ifndef	lint
-static int  _acusaplose ();
+static int  _acusaplose (struct AcSAPindication *aci, int reason, va_list ap);
 
 /*---------------------------------------------------------------------------*/
 int	acusaplose (struct AcSAPindication *aci, ...)

@@ -54,7 +54,7 @@ extern char *filtvalue[];
 extern unsigned int typeindx;
 extern int *av_typeindx;
 
-void get_listed_object(), scrollbar();
+void get_listed_object(char number, WIDGET *wdgt), scrollbar(int command);
 
 struct active {
 	int		count;
@@ -408,7 +408,7 @@ void printcommand(WIDGET *wdgt) {
 /* Loop forever, calling widget callback functions when activated */
 void interact (void) {
 	int	ch, indx;
-	void		int_quit(), jumpback();
+	void		int_quit(int sig), jumpback(void);
 
 	for (;;) {
 		/* Get a character input, and set the interrupt jump vector */

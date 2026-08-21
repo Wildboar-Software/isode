@@ -16,9 +16,9 @@
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-void	ros_adios (), ros_advise (), acs_advise (), acs_adios ();
+void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event), acs_advise (struct AcSAPabort *aca, char *event), acs_adios (struct AcSAPabort *aca, char *event);
 
-char *getstring ();
+char *getstring (char *prompt);
 
 static char *myservice = "isode idist";
 
@@ -27,7 +27,7 @@ static char *mypci = "isode idist pci";
 
 extern char *isodeversion;
 
-static int ryconnect ();
+static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext, char *thepci);
 
 /* INITIATOR */
 
@@ -197,7 +197,7 @@ int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx) {
 	return result_value;
 }
 
-SFD cleanup ();
+SFD cleanup (void);
 
 void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
@@ -236,7 +236,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

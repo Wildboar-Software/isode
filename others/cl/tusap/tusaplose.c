@@ -7,7 +7,7 @@
 #include "tpkt.h"
 
 #ifndef	lint
-static int _tusaplose ();
+static int _tusaplose (struct TSAPdisconnect *td, int reason, va_list ap);
 
 int	tusaplose (struct TSAPdisconnect *td, ...) {
 	int	    reason,

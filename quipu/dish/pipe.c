@@ -33,7 +33,6 @@ int             fd, wfd;
 #endif
 
 int parent_pid;
-extern int	errno;
 
 static int get_dish_sock (struct sockaddr_in *isock);
 
@@ -87,7 +86,7 @@ int init_pipe (void) {
 	}
 #endif
 #ifdef	SETSID
-	setsid ();
+	setsid();
 #endif
 #ifdef	TIOCNOTTY
 	{
@@ -99,7 +98,7 @@ int init_pipe (void) {
 	}
 #else
 #ifdef	SYS5
-	setpgrp ();
+	setpgrp();
 	signal (SIGINT, SIG_IGN);
 	signal (SIGQUIT, SIG_IGN);
 #endif
@@ -169,7 +168,7 @@ int read_pipe_aux (char *buf, int len) {
 #else
 	if ((res = read (fd, buf, len)) <= 0) {
 		perror ("read error");
-		reopen_ret ();
+		reopen_ret();
 		return (-1);
 	}
 	*(buf + res) = 0;
@@ -243,7 +242,7 @@ out:
 int send_pipe (char *buf) {
 	send_pipe_aux (buf);
 	close (file);
-	reopen_ret ();
+	reopen_ret();
 }
 #endif
 
@@ -257,7 +256,7 @@ void send_pipe_aux2 (char *buf, int i) {
 #ifndef	SOCKETS
 	if ((file = open (inbuf, O_WRONLY)) <= 0) {
 		fprintf (stderr, "error %s on %s\n",sys_errname (errno), inbuf);
-		reopen_ret ();
+		reopen_ret();
 		return;
 	}
 #endif
@@ -271,7 +270,7 @@ void send_pipe_aux2 (char *buf, int i) {
 #else
 		if ((res = write (file, buf, MIN (BUFSIZ,i))) == -1 ) {
 			fprintf (stderr,"result write error (2)\n");
-			reopen_ret ();
+			reopen_ret();
 			return;
 		}
 #endif
@@ -281,7 +280,7 @@ void send_pipe_aux2 (char *buf, int i) {
 
 #ifdef SOCKETS
 static int get_dish_sock (struct sockaddr_in *isock) {
-	char * getenv ();
+	char * getenv(const char *name);
 	char * ptr;
 	char buffer [BUFSIZ];
 	int     portno;
@@ -330,7 +329,7 @@ int reopen_ret (void) {
 	close (wfd);
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
 		if ( errno == EINTR ) {
-			reopen_ret ();
+			reopen_ret();
 			return;
 		}
 		fprintf (stderr, "re-ropen failed\n");

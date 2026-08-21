@@ -372,7 +372,7 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	Index_node	*imem;
 	char		*word, *code, *savestr;
 	char		*first_word(char *ptr), *next_word(char *ptr);
-	IFP		approxfn();
+	int		(*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
 	int		soundex_match(struct filter_item *fitem, AV_Sequence avs);
 
 	/* find the appropriate index */
@@ -477,7 +477,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 void turbo_add2index(Entry e)
 {
 	Entry		parent;
-	Attr_Sequence	as, entry_find_type();
+	Attr_Sequence	as;
+	Attr_Sequence entry_find_type(Entry a, AttributeType b);
 	DN		pdn, dn, tmpdn, prevdn, savedn;
 	int		pcmp, nonleaf;
 	Index		*subindex;

@@ -50,7 +50,7 @@ struct socket {
 
 static struct udpstat udpstat;
 
-static int  get_listeners ();
+static int  get_listeners (int offset);
 
 #if defined(BSD44) || defined(LINUX)
 #define	udpInDatagrams	1
@@ -62,7 +62,7 @@ static int  get_listeners ();
 #endif
 
 #ifdef LINUX
-int _read_snmp_stats ();
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
 
 static int _read_udp_stats (void)
 {
@@ -173,7 +173,7 @@ static struct udptab *uts = NULL;
 
 static	int	flush_udp_cache = 0;
 
-static struct udptab *get_udpent ();
+static struct udptab *get_udpent (unsigned int *ip, int isnext);
 
 #define	udpLocalAddress 0
 #define	udpLocalPort 1
@@ -189,7 +189,7 @@ static struct udptab *_read_udp_sockets(int *len)
 	char line[256];
 	int i;
 	struct udptab *ut, *t, **tp;
-	unsigned char *cp;
+	unsigned int *cp;
 
 	*len = 0;
 	f = fopen ("/proc/net/udp", "r");
@@ -206,9 +206,9 @@ static struct udptab *_read_udp_sockets(int *len)
 				&t -> ut_pcb.inp_laddr.s_addr, &t -> ut_pcb.inp_lport,
 				&t -> ut_pcb.inp_faddr.s_addr, &t -> ut_pcb.inp_fport,
 				&t -> ut_socb.so_snd.sb_cc, &t -> ut_socb.so_rcv.sb_cc);
-		cp = (unsigned char *) t -> ut_instance;
+		cp = t -> ut_instance;
 		cp += ipaddr2oid (cp, &t -> ut_pcb.inp_laddr);
-		*cp++ = ntohs (t -> ut_pcb.inp_lport);
+		*cp++ = ntohs (t -> ut_pcb.inp_lport) & 0xffff;
 		*tp = t; tp = &t -> ut_next;
 	}
 	*len = i;
@@ -345,12 +345,12 @@ static int  get_listeners (int offset) {
 		return OK;
 	}
 	lastq = quantum, flush_udp_cache = 0;
-#ifndef LINUX
 	for (us = uts; us; us = up) {
 		up = us -> ut_next;
 		free ((char *) us);
 	}
 	uts = NULL;
+#ifndef LINUX
 	if (getkmem (nl + N_UDB, (char *) &udb, sizeof udb) == NOTOK)
 		return NOTOK;
 	head = (struct inpcb *) nl[N_UDB].n_value;

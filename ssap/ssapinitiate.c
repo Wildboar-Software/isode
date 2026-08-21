@@ -14,7 +14,7 @@ static int  SConnRequestAux (
 	struct SSAPaddr *called,
 	int requirements,
 	int settings,
-	long int isn,
+	long isn,
 	char *data,
 	int cc,
 	struct QOStype *qos,

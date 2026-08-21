@@ -30,8 +30,7 @@ int listlen(struct namelist *lp) {
 	return len;
 }
 
-unsigned int
-alarmLen() {
+unsigned int alarmLen(void) {
 	if ((lexequ(org, origDefaultOrg) == 0) && (lexequ(co, origDefaultCo) == 0))
 		return localAlarmTime;
 	else
@@ -39,7 +38,7 @@ alarmLen() {
 }
 
 void initAlarm (void) {
-	void onalarm();
+	void onalarm(void);
 
 	alarmCount = 0;
 	signal(SIGALRM, (VFP) onalarm);

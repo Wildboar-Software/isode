@@ -77,7 +77,7 @@ extern char callingDteNumber[],
 extern int pswd_intrctv;
 extern int username_intrctv;
 
-static void read_de_option();
+static void read_de_option(char *line);
 
 extern struct namelist * coatts;
 extern struct namelist * orgatts;
@@ -92,8 +92,8 @@ int initialisations(int argc, char **argv) {
 	char * cp;
 	char * home;
 	char tailorfile[LINESIZE];
-	char *getenv();
-	void de_exit();
+	char *getenv(const char *name);
+	void de_exit(int exitCode);
 	print_parse_errors = FALSE;   /* Stop auto printing of errors */
 	quipu_syntaxes();
 	dsa_address = malloc(LINESIZE);
@@ -220,7 +220,7 @@ int initialisations(int argc, char **argv) {
  */
 static void read_de_option(char *line) {
 	char *part1, *part2;
-	extern char *TidyString(), *SkipSpace();
+	extern char *TidyString(char *a), *SkipSpace(char *ptr);
 	extern int wanAccess;
 	int n;
 

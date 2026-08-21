@@ -30,7 +30,7 @@
 /* this should probably go elsewhere !!! */
 
 LLog    *log_dua;
-DN	sequence_dn() ;
+DN	sequence_dn(int y) ;
 DN      dn, moddn ;
 DN	fixed_pos = NULLDN ;
 PS      opt;
@@ -42,8 +42,8 @@ FILE	*fp_draft ;
 FILE	*fp_tailor ;
 
 Filter	get_filter ();
-struct	entrymod	*ems_append() ;
-struct	entrymod	*modify_avs() ;
+struct	entrymod	*ems_append(struct entrymod *a, struct entrymod *b) ;
+struct	entrymod	*modify_avs(AV_Sequence a,AV_Sequence b,AttributeType ent_mod_at) ;
 
 static	struct	ds_bind_arg	bindarg ;
 static	struct	ds_bind_arg	bindresult ;

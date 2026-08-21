@@ -214,7 +214,7 @@ int rosaplose (struct RoSAPindication *roi, ...);
 int	acb2osdu ();
 
 #ifdef HULA
-int	ro2acuwrite (), ro2acuwait ();
+int	ro2acuwrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2acuwait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi);
 
 #else
 int	ro2rtswrite (), ro2rtswait (), ro2rtsready (), ro2rtsasync (),

@@ -11,7 +11,7 @@
 extern	char	frompipe;
 extern	PS	opt, rps;
 
-char           *TidyString ();
+char           *TidyString(char *a);
 static int getop (char *str, char *ch);
 int filteritem (char *str, Filter fltr);
 

@@ -469,16 +469,16 @@ int	SRelRequest ();		/* S-RELEASE.REQUEST */
 int	SRelResponse ();	/* S-RELEASE.RESPONSE */
 
 #ifdef HULA
-int	SUnitDataBind();	/* bind local to a remote address */
-int	SUnitDataUnbind();	/* unbind local from a remote address */
+int	SUnitDataBind(int sd, struct SSAPaddr *local, struct SSAPaddr *remote, struct QOStype *qos, struct SSAPindication *si);	/* bind local to a remote address */
+int	SUnitDataUnbind(int sd, struct SSAPindication *si);	/* unbind local from a remote address */
 int	SUnitDataSetupRead();	/* set up read data for server */
-int	SUnitDataWrite();	/* UNITDATA.request (with handle) */
-int	SUnitDataRead();	/* UNITDATA.indication (with handle) */
-int	SUnitDataRequest();	/* UNITDATA.request (without handle) */
+int	SUnitDataWrite(int sd, char *data, int cc, struct SSAPindication *si);	/* UNITDATA.request (with handle) */
+int	SUnitDataRead(int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si);	/* UNITDATA.indication (with handle) */
+int	SUnitDataRequest(struct SSAPaddr *calling, struct SSAPaddr *called, char *data, int cc, struct QOStype *qos, struct SSAPindication *si);	/* UNITDATA.request (without handle) */
 int	SUnitDataSelectMask();	/* set the select mask for async */
 #endif
 
-int	SSetIndications ();	/* define vectors for INDICATION events */
+int	SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish, IFP abort, struct SSAPindication *si);	/* define vectors for INDICATION events */
 int	SSelectMask ();		/* map session descriptors for select() */
 
 char   *SErrString ();		/* return SSAP error code in string form */

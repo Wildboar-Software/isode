@@ -10,7 +10,7 @@
 #include "ropkt.h"
 
 #ifndef	lint
-static int	_rosaplose ();
+static int	_rosaplose (struct RoSAPindication *roi, int reason, va_list ap);
 
 int	ropktlose (struct assocblk *acb, ...)
 {

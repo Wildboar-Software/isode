@@ -10,7 +10,7 @@ static struct termio t;
 /* ought to be a bit friendlier than this - but at least this attempts
    to be safe */
 
-setRawMode() {
+void setRawMode(void) {
 	if (ioctl(0, TCGETA, &t) == -1) {
 		fprintf(stderr, "%s (1)\n", no_raw_mode);
 		cleanup(-1);
@@ -25,7 +25,7 @@ setRawMode() {
 	}
 }
 
-unsetRawMode() {
+void unsetRawMode(void) {
 	t.c_lflag = savemode;
 	t.c_cc[VMIN] = savemin;
 	if (ioctl(0, TCSETA, &t) == -1) {

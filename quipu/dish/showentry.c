@@ -40,7 +40,7 @@ void call_showentry (int argc, char **argv) {
 	extern char	flag_show;
 	char            full_edb_flag;
 	char            *temp_file_name;
-	extern int      mod_template();
+	extern int      mod_template(char *name, char noedit);
 
 	vect[0] = "showentry";
 	move_flag = FALSE;

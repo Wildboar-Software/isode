@@ -151,7 +151,7 @@ int test_prim_pe (PE pe, PElementClass class, PElementID id)
 
 #ifndef lint
 void ps_printf (PS ps, char *fmt, ...) {
-	extern int std_flush ();
+	extern int std_flush (PS ps);
 	va_list ap;
 	va_start (ap, fmt);
 #ifdef VSPRINTF

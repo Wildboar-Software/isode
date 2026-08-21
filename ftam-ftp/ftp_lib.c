@@ -60,7 +60,7 @@ extern int ftp_type (int modeX);
 extern int recvrequest(char *cmd, char *remote);
 extern int sendrequest(char *cmd, char *remote);
 
-int getreply ();
+int getreply (int expecteof);
 extern int command (char *fmt, ...);
 
 static void ftp_init(void) {
@@ -132,7 +132,7 @@ int ftp_abort (void) {
 int ftp_exist (char *filename) {
 	int n, count;
 	int fd;
-	FILE *fp, *fdopen();
+	FILE *fp;
 	char lineX[BUFSIZ];
 
 	ftp_directory = 0;

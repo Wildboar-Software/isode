@@ -140,13 +140,13 @@ typedef struct _objclass {
 
 #define objclass_cmp(x,y)	( x == y ? 0 : ( x > y ? -1 : 1 ))
 
-oid_table_attr * oid2attr();
-oid_table_attr * name2attr();
-char * attr2name();
+oid_table_attr * oid2attr(OID oid);
+oid_table_attr * name2attr(char *nodename);
+char * attr2name(oid_table_attr *oa, int format);
 #define attr2name_aux(x)	((x) ? (x)->oa_ot.ot_name : NULLCP)
 
-objectclass * oid2oc();
-objectclass * name2oc();
+objectclass * oid2oc(OID oid);
+objectclass * name2oc(char *nodename);
 char *oc2name(objectclass *oc, int format);
 char *oid2name(OID oid, int format);
 OID name2oid(char *str);

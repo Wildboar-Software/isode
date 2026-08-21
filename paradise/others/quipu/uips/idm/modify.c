@@ -37,20 +37,20 @@ static struct namelist * oulp = NULLLIST;
 static struct namelist * plp = NULLLIST;
 static struct namelist * newatts = NULLLIST;
 static int already_mhsUser;
-char * mapAttName();
+char * mapAttName(char *tablename);
 /* end file global variables */
 
 int de_Modify (void) {
 	char * more;
 	char * rdn;
-	char * TidyString();
+	char * TidyString(char *a);
 	int objectType;
 	int status;
-	void searchFail(), onint1(), de_exit();
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 
 	int noEntries;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	more		= malloc(LINESIZE);
 	rdn		= malloc(LINESIZE);
 	highNumber = 0;
@@ -129,12 +129,12 @@ int modify_av(char *dn, char *rdn, int objectType) {
 	int position;
 	int status;
 	int tlx_changed;
-	struct entrymod *emnew, *ems_append(), *modify_avs();
+	struct entrymod *emnew, *ems_append(struct entrymod *a,struct entrymod *b), *modify_avs(AV_Sequence a, AV_Sequence b, AttributeType at);
 	char * cp;
 	char * cp2;
 	char * str;
-	char * val2str();
-	char * val2dnstr();
+	char * val2str(AttributeValue av);
+	char * val2dnstr(AttributeValue av);
 	char addrstr[LINESIZE];
 	char addrstr2[LINESIZE];
 	char dnstr[LINESIZE];
@@ -672,7 +672,7 @@ int existing_at(char *rdn, int *atcount, int objectType, int numbers /* Unfortun
 
 	char * str;
 	char * tmp_posdit;
-	char * val2str();
+	char * val2str(AttributeValue av);
 	int count;
 	count = 0;
 	str = malloc(LINESIZE);
@@ -823,7 +823,7 @@ void checkForEmptyAttributes(struct namelist *lp, struct namelist *objatts, int 
 }
 
 int get_new_attr(char *dn, int at_number) {
-	struct entrymod *emnew, *ems_append(), *modify_avs();
+	struct entrymod *emnew, *ems_append(struct entrymod *a,struct entrymod *b), *modify_avs(AV_Sequence a, AV_Sequence b, AttributeType at);
 	Attr_Sequence as_mhs;
 	AttributeType at_mhs;
 	AttributeValue av_mhs;
@@ -945,7 +945,7 @@ prompt_attr:
 }
 
 int prompt_new_value(char attr_name[], int *new_value) {
-	struct entrymod *emnew, *ems_append(), *modify_avs();
+	struct entrymod *emnew, *ems_append(struct entrymod *a,struct entrymod *b), *modify_avs(AV_Sequence a, AV_Sequence b, AttributeType at);
 
 	char addrstr2[LINESIZE];
 	char buffer[LINESIZE];
@@ -1104,15 +1104,15 @@ int dm_ModifyOrg (void) {
 	char * more;
 	char * rdn;
 	char * savestr;
-	char * TidyString();
-	void searchFail(), onint1(), de_exit();
+	char * TidyString(char *a);
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 
 	int ignore;
 	int noEntries;
 	int objectType;
 	int status;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	more		= malloc(LINESIZE);
 	rdn		= malloc(LINESIZE);
 	savestr	= malloc(LINESIZE);
@@ -1212,9 +1212,9 @@ int dm_ModifyOrg (void) {
 	return OK;
 }
 
-prompt_new_password() {
+int prompt_new_password(void) {
 #include "bind.h"
-	char * getpass();
+	char * getpass(const char *prompt);
 	char * temp2;
 	char new_pswd[LINESIZE];
 	char old_pswd[LINESIZE];
@@ -1277,7 +1277,7 @@ get_new_pswd:
 int modify_pswd(char old_pswd[], char new_pswd[]) {
 	extern char username[];
 
-	struct entrymod *emnew, *ems_append(), *modify_avs();
+	struct entrymod *emnew, *ems_append(struct entrymod *a,struct entrymod *b), *modify_avs(AV_Sequence a, AV_Sequence b, AttributeType at);
 	char buffer[LINESIZE];
 	sprintf(buffer, "userPassword=%s", old_pswd);
 	if ((as = str2as(buffer)) == NULLATTR) {

@@ -8,16 +8,16 @@
 
 extern LLog * log_dsap;
 
-Attr_Sequence eis_select ();
-Attr_Sequence dsa_eis_select ();
-extern Attr_Sequence entry_find_type();
-static cant_use_cache();
-static attribute_not_cache ();
+Attr_Sequence eis_select (EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+Attr_Sequence dsa_eis_select (EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
+static int cant_use_cache(Entry ptr, DN dn, EntryInfoSelection eis, DN target);
+static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level, char dfltacl);
 extern AttributeType at_control;
 extern unsigned bind_policy;
 extern unsigned strong_policy;
 extern DN mydsadn;
-extern struct di_block * di_alloc();
+extern struct di_block * di_alloc(void);
 
 int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
 	Entry  entryptr;

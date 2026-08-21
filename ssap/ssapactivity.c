@@ -6,7 +6,7 @@
 
 /* S-CONTROL-GIVE.REQUEST */
 
-static int  SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long int ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si);
+static int  SActResumeRequestAux (struct ssapblk *sb, struct SSAPactid *id, struct SSAPactid *oid, long ssn, struct SSAPref *ref, char *data, int cc, struct SSAPindication *si);
 static int  SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct SSAPindication *si);
 static int  SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindication *si);
 static int  SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si);

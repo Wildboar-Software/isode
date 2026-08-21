@@ -12,7 +12,7 @@ extern int debug;
 
 extern int doset;
 extern int kern_tickadj;
-extern char *ntoa();
+extern char *ntoa(struct sockaddr_in *nsin);
 extern struct sysdata sys;
 extern	LLog *pgm_log;
 

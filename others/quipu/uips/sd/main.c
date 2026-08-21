@@ -25,8 +25,8 @@ extern  int     print_parse_errors;
 extern  char   *oidtable, *tailfile, *myname;
 extern  char    testing;
 
-void quit(), die(), setsignals(), int_quit(), sd_quit(), read_args();
-void user_tailor(), main_bind(), cnnct_bind(), interact(), help_init();
+void quit(char *error, int sig), die(), setsignals(void), int_quit(int sig), sd_quit(void), read_args(unsigned int argc, char ***avptr);
+void user_tailor(void), main_bind(void), cnnct_bind(void), interact(void), help_init(void);
 
 void exit();
 
@@ -49,7 +49,7 @@ int main (unsigned int argc, char *argv[]) {
 	main_bind();
 	cnnct_bind();
 	help_init();
-	interact();
+	interact(void);
 	return(0);
 }
 

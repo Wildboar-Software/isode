@@ -17,7 +17,7 @@
 
 #define ASN_LONG_LEN    (0x80)
 
-void            GotError();
+void            GotError(char *theStr);
 
 int main (int argc, char *argv[]) {
 	int             i;

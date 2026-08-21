@@ -44,7 +44,7 @@ struct expr {
 	}	    e_save;
 };
 
-static int  eval_expr (struct expr *), read_tl (struct expr *, PElementClass *, PElementForm *, PElementID *, PElementLen *), read_long (struct expr *, char *, int, PElementForm, integer *), read_oid (struct expr *, char *, int, PElementForm, OID *), get_var_value (struct expr *, OID, integer *);
+static int  eval_expr (struct expr *e), read_tl (struct expr *e, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *len), read_long (struct expr *e, char *base, int len, PElementForm form, integer *result), read_oid (struct expr *e, char *base, int len, PElementForm form, OID *ox), get_var_value (struct expr *e, OID oid, integer *i);
 
 static integer	exprNumber = 0;
 

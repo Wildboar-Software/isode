@@ -2795,7 +2795,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 		tdiff -> tv_sec--, tdiff -> tv_usec += 1000000;
 }
 #else
-long	times ();
+long	times (struct tms *buffer);
 
 static	void timer (int cc) {
 	int	    bytes;

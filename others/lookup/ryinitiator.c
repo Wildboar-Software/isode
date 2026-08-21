@@ -224,7 +224,7 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void adios (char *what, char *fmt, ...) {
 	va_list ap;

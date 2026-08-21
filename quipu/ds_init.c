@@ -17,45 +17,45 @@
 
 AV_Sequence super_user;
 Entry subtree_load (Entry parent, DN dn);
-Entry make_path ();
+Entry make_path(DN dn);
 extern LLog * log_dsap;
 extern DN mydsadn;
 extern Entry database_root;
-static Entry load_dsa_cache_entry(), load_dsa_remote_entry();
-extern Entry local_find_entry_aux();
-extern Attr_Sequence entry_find_type();
+static Entry load_dsa_cache_entry(DN dn), load_dsa_remote_entry(void);
+extern Entry local_find_entry_aux(DN object, char deref);
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 extern Attr_Sequence dsa_real_attr;
 extern char * mydsaname;
 extern char * treedir;
-extern char * get_entry_passwd();
-extern char * new_version();
-extern char * quipuversion, * TidyString();
+extern char * get_entry_passwd(Attr_Sequence as);
+extern char * new_version(void);
+extern char * quipuversion, * TidyString(char *a);
 extern int parse_status;
 extern IFP unrav_fn;
 extern IFP schema_fn;
 extern IFP restart_fn;
 extern AttributeType at_version;
-extern SFD attempt_restart ();
+extern SFD attempt_restart(int sig);
 extern int free_phylinebuf (void);
 time_t	timenow;
 
 static void set_context (Entry eptr);
 
 int dsa_init (void) {
-	Attr_Sequence as, get_cacheEDB();
+	Attr_Sequence as, get_cacheEDB(void);
 	AttributeType manager;
-	DN str2dn();
+	DN str2dn(char *str);
 	struct edb_info * dsainfo;
 	AV_Sequence avs;
 	Entry newentry;
 	Entry my_entry;
-	int real_unravel_attribute ();
-	int real_check_schema ();
+	int real_unravel_attribute(Entry eptr, struct DSError *error);
+	int real_check_schema(Entry eptr, Attr_Sequence as, struct DSError *error);
 	char loadstate = TRUE;
 	struct DSError error;
 	Entry akid;
 
-	check_dsa_known_oids ();
+	check_dsa_known_oids();
 	unrav_fn = (IFP) real_unravel_attribute;
 	schema_fn = (IFP) real_check_schema;
 	restart_fn = (IFP) attempt_restart;
@@ -72,7 +72,7 @@ int dsa_init (void) {
 			fatal (-4,"Found EDB - but my DSA entry not in it!");
 		fatal (-4,"can't locate my DSA entry in local database!");
 	} else if (my_entry->e_data == E_TYPE_CACHE_FROM_MASTER)
-		shadow_myentry ();
+		shadow_myentry();
 	if (get_entry_passwd (my_entry->e_attributes) == NULLCP)
 		/* This is not a fatal error, but some remote operations may fail */
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't find my own PASSWORD"));
@@ -213,7 +213,7 @@ static void set_context (Entry eptr) {
 	AttributeType at;
 	AttributeValue av;
 	AV_Sequence avs;
-	Attr_Sequence as, entry_find_type();
+	Attr_Sequence as, entry_find_type(Entry a, AttributeType b);
 	extern int	  no_last_mod;
 	/* DAP */
 	at = AttrT_new (APPLCTX_OID);

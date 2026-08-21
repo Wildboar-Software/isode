@@ -56,8 +56,7 @@ static	int    gflag;
 static	int tglob(char c);
 char	*globerr;
 static char *home;
-struct	passwd *getpwnam();
-static	char *strspl(), **copyblk(), *strend();
+static	char *strspl (char *cp, char *dp), **copyblk (char **v), *strend (char *cp);
 
 static	int globcnt;
 
@@ -69,15 +68,14 @@ static	char *entp;
 static	char **sortbas;
 
 static int chkldir (char *path, struct stat *st);
-static int (*chkdir) () = chkldir;
+static int (*chkdir) (char *path, struct stat *st) = chkldir;
 
-int	getrdir ();
 static int getldir (char *hdir);
-static int (*gethdir) () = getldir;
+static int (*gethdir) (char *hdir) = getldir;
 
 static void matchldir (char *pattern);
 static void matchrdir (char *pattern);
-static void (*matchdir) () = matchldir;
+static void (*matchdir) (char *pattern) = matchldir;
 
 static char ** glob (char *v) {
 	char agpath[BUFSIZ];

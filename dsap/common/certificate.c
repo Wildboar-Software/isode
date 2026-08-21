@@ -91,7 +91,7 @@ void cert_free (struct certificate *parm) {
 }
 
 int str2alg (char *str, struct alg_id *alg) {
-	PE asn2pe();
+	PE asn2pe(char *str);
 
 	if ((str == NULLCP) || (*str == '\0')) {
 		alg->asn = NULLPE;

@@ -20,7 +20,7 @@ QCardinal config_line_num = 0;
 char config_file_name[LINESIZE];
 FILE *config_file;
 
-static void read_quipurc();
+static void read_quipurc(void);
 
 void exit();
 

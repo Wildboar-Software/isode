@@ -246,7 +246,7 @@ int	RoSelectMask ();	/* map remote operation descriptors for
 int	RoSetService ();	/* bind underlying service */
 int	RoRtService (), RoPService (), RoSService ();
 #ifdef HULA
-int     RoAcuService ();
+int     RoAcuService (struct assocblk *acb, struct RoSAPindication *roi);
 #endif
 int	RoSetThorn ();
 

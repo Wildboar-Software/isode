@@ -40,9 +40,9 @@ void call_add (int argc, char **argv) {
 	struct ds_addentry_arg add_arg;
 	struct DSError  error;
 #ifdef TURBO_DISK
-	Attr_Sequence   fget_attributes();
+	Attr_Sequence   fget_attributes(FILE *file);
 #else
-	Attr_Sequence   get_attributes();
+	Attr_Sequence   get_attributes(FILE *file);
 #endif
 	extern int	parse_status;
 

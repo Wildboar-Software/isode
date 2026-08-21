@@ -17,7 +17,7 @@
 int debug;
 int s;
 int timedout;
-SFD timeout();
+SFD timeout(void);
 int nflag, vflag;
 
 struct sockaddr_in isock = {AF_INET};
@@ -198,7 +198,7 @@ int print_terse (struct clockinfo *n) {
 	int i;
 	double offset[PEER_SHIFT], delay[PEER_SHIFT], dsp,del,off;
 	char c;
-	char *cvthname();
+	char *cvthname(struct sockaddr_in *f);
 	int flags;
 
 	isock.sin_addr.s_addr = n->net_address;
@@ -232,7 +232,7 @@ int print_verbose (struct clockinfo *n) {
 	int i;
 	struct in_addr clock_host;
 	double offset[PEER_SHIFT], delay[PEER_SHIFT], dsp,del,off;
-	char *cvthname();
+	char *cvthname(struct sockaddr_in *f);
 
 	isock.sin_addr.s_addr = n->net_address;
 	for (i = 0; i < PEER_SHIFT; i++) {

@@ -61,27 +61,27 @@ int fd2family[MAXSOCKS];
  * UNIX_IO (0) map to sys calls
  * ISODE_IO (1) maps to my fns...
  */
-extern int read(), TReadFromServer();
+extern int read(), TReadFromServer(int fd, char *data, unsigned size);
 int (*readfn[])() = {
 	read, TReadFromServer
 };
-extern int write(), TWriteToServer();
+extern int write(), TWriteToServer(int fd, char *data, unsigned size);
 int (*writefn[])() = {
 	write, TWriteToServer
 };
-extern int readv(), TReadvFromServer();
+extern int readv(), TReadvFromServer(int fd, struct iovec *iov, int iovcnt);
 int (*readvfn[])() = {
 	readv, TReadvFromServer
 };
-extern writev(), TWritevToServer();
+extern writev(), TWritevToServer(int fd, struct iovec *iov, int iovcnt);
 int (*writevfn[])() = {
 	writev, TWritevToServer
 };
-extern int UBytesReadable(), TBytesReadable();
+extern int UBytesReadable(int fd, long *ptr), TBytesReadable(int fd, long *ptr);
 int (*ioctlfn[])() = {
 	UBytesReadable, TBytesReadable
 };
-extern int close(), TDiscFromServer();
+extern int close(), TDiscFromServer(int fd);
 int (*closefn[])() = {
 	close, TDiscFromServer
 };

@@ -25,7 +25,7 @@
 
 extern char *fsBase;
 extern char *strtok();
-extern char *getRfaContext();
+extern char *getRfaContext(char *cwd, char *fn);
 extern char *isodetcpath;
 extern int commandMode;
 extern char *sys_errname();

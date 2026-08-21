@@ -22,7 +22,7 @@ extern int	tcprestore (
 );
 extern int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
 
-static int  PInitAux ();
+static int  PInitAux (struct psapblk *pb, char **vec, int vecp, struct PSAPstart *ps, struct PSAPindication *pi);
 
 /* P-CONNECT.INDICATION */
 

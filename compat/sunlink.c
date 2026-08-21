@@ -27,8 +27,8 @@
 #define	PROBE	(-1)
 
 #ifdef  DEBUG
-void    print_x25_facilities ();
-static int  log_x25_facilities ();
+static void print_x25_facilities (FACILITY_DB f, int coc, char *caption);
+static int  log_x25_facilities (int fd, int coc, char *caption);
 #endif
 
 int start_x25_client (struct NSAPaddr *local, int priv) {

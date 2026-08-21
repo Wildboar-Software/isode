@@ -13,9 +13,9 @@ typedef struct _string_cell {
 #define NULLStrCell (stringCell) NULL
 #define cell_alloc() (stringCell) smalloc(sizeof(string_cell))
 
-void add_string_to_seq(),
-	 delete_from_seq(),
-	 free_string_seq();
+void add_string_to_seq(char *string, stringCell *sequence),
+	 delete_from_seq(char *string, stringCell *sequence),
+	 free_string_seq(stringCell *sequence);
 
 stringCell copy_string_seq();
 

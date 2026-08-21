@@ -140,10 +140,10 @@ static fd_set qw_mask;
 static int	tcplisten (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td), tcpaccept1 (struct listenblk *lb, struct TSAPdisconnect *td), tcpaccept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td), tcpunique (struct TSAPaddr *ta, struct TSAPdisconnect *td);
 #endif
 #ifdef	X25
-static int	x25listen (), x25accept1 (), x25accept2 (), x25unique ();
+static int	x25listen (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td), x25accept1 (struct listenblk *lb, struct TSAPdisconnect *td), x25accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td), x25unique (struct TSAPaddr *ta, struct TSAPdisconnect *td);
 #endif
 #ifdef	TP4
-static int	tp4listen (), tp4accept1 (), tp4accept2 (), tp4unique ();
+static int	tp4listen (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td), tp4accept1 (struct listenblk *lb, struct TSAPdisconnect *td), tp4accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td), tp4unique (struct TSAPaddr *ta, struct TSAPdisconnect *td);
 #endif
 
 static struct nsapent {
@@ -1116,7 +1116,7 @@ static int  tcplisten (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdis
 }
 
 #ifdef	LPP
-char   *udpsave ();
+char   *udpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
 #endif
 
 static int  tcpaccept1 (struct listenblk *lb, struct TSAPdisconnect *td)

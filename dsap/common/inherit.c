@@ -112,10 +112,10 @@ char *nextAttributeLine (char *str) {
 	char * ptr;
 
 #ifdef TURBO_DISK
-	char * fgetnextline();
+	char * fgetnextline(void);
 	extern char fromfile;
 #endif
-	char * getnextline();
+	char * getnextline(void);
 	if (nextline) {
 		if (nextline == NULLCP)
 			return NULLCP;
@@ -140,8 +140,8 @@ char *nextAttributeLine (char *str) {
 
 static char * getInheritAttrs (Attr_Sequence * asptr, char needsoc, char * str) {
 	Attr_Sequence as = NULLATTR;
-	Attr_Sequence as_combine ();
-	Attr_Sequence as_find_type();
+	Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
+	Attr_Sequence as_find_type(Attr_Sequence a, AttributeType b);
 	static AttributeType octype = NULLAttrT;
 	char * ptr;
 

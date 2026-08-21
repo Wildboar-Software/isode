@@ -15,7 +15,7 @@
 
 extern ptpe *next_tpe(ptpe *p), *fdflt_f(ptpe *p);
 extern char *pr_petype(int type);
-char   *idname(), *clname();
+char   *idname(int id), *clname(int cl);
 extern int pepsylose (modtyp *module, ...);
 extern int same (
 	ptpe *typ,

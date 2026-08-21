@@ -65,11 +65,11 @@ typedef struct _request_rec {
  *	Procedures
  */
 
-QE_error_code _request_invoked();
-void _request_complete();
+QE_error_code _request_invoked(request_type type, QCardinal *return_id_ptr);
+void _request_complete(QCardinal request_id);
 
 QCardinal directory_wait();
-void abort_request();
+void abort_request(QCardinal request_id);
 requestRec _get_request_of_id();
 
 #endif _query_request_h_

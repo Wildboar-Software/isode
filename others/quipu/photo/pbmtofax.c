@@ -11,7 +11,7 @@ int	PIC_LINESIZE, STOP, NUMLINES;
 
 extern	int	optlen;
 
-char   *encode_t4 ();
+char   *encode_t4 (int k_param, char *inbuf, int eolnskip);
 
 /*
  *   G3-Fax nonbasic parameters.

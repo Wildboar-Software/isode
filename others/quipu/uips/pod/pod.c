@@ -11,10 +11,10 @@
 dsEnqError srch_start(), read_config_types(), list_start(), read_all();
 dsErrorStruct modify_entry();
 
-void make_friendly(), make_friendly_rdn(), make_template();
-void quit();
+void make_friendly(char *fstr, char *str), make_friendly_rdn(char *friendly, char *object, char *base), make_template(char *entry_name, dirAttrs *attrs);
+void quit(int sig);
 
-void rfc2greybook();
+void rfc2greybook(char *string);
 extern mailtype mailformat;
 
 extern bool read_all_flag;
@@ -61,42 +61,42 @@ int element_number = 0;
 int rdn_number = 0;
 int help_up = 0;
 
-static void ShowVersion(), HideVersion();
-static void CreateCurrPosWindow(), CreateSearchWindow(), CreateMessagePopup();
-static void CreateErrorPopup(), CreateHelpPopup(), CreateHistoryPopup();
-static void CreateCommandForm(), CreateVersionPopup();
-static dirEntry createModifyTemplate();
-static Widget createModifyPopup(), createReadPopup();
-static Widget createTypeMenu();
-static void Quit(), QuitFromHelp(), InsertHelp();
-static void List(), ListDestroy();
-static void AddNewList(), ListSelect(), destroyList(), keepList();
-static void Move(), DnMoveRead(), DnMove();
-static void SetType(), Read(), Help(), ReadAll();
-static void TSearch(), ClearSearchArea(), StartSearch();
-static void createList();
-static void createHistoryPopup(), popupHistory(), popdownHistory();
-static void displayReadPopup(), readDestroy(), keepRead();
-static void submitModif(), closeModify(), modifyEntry(), addValField();
-static void UndoValChanges(), UndoAttrChanges(), modUpdate(), keepModify();
-static void cannotModify();
-static void killError(), doError();
-static void ChangeHelp();
-static void buttonPress();
-static void freeEntry(), freeSpace(), CutString();
-static void ListSelectList(), DnList();
-static void ListSelectMove();
+static void ShowVersion(Widget w, XtPointer closure, XtPointer calldata), HideVersion(Widget w, XEvent *event, String *params, Cardinal num_params);
+static void CreateCurrPosWindow(Widget parent), CreateSearchWindow(Widget parent), CreateMessagePopup(void);
+static void CreateErrorPopup(void), CreateHelpPopup(void), CreateHistoryPopup(str_seq list_seq, char *mess);
+static void CreateCommandForm(Widget parent), CreateVersionPopup(void);
+static dirEntry createModifyTemplate(Widget modify_form, char *entry_name);
+static Widget createModifyPopup(char *entry_name), createReadPopup(void);
+static Widget createTypeMenu(Widget parent);
+static void Quit(Widget widget, XtPointer closure, XtPointer callData), QuitFromHelp(Widget w, XtPointer closure, XtPointer calldata), InsertHelp(Widget w, XtPointer closure, XtPointer calldata);
+static void List(Widget w, XtPointer closure, XtPointer calldata), ListDestroy(Widget w, XtPointer list_seq, XtPointer calldata);
+static void AddNewList(Widget list_widget, str_seq list_seq, unsigned int list_size), ListSelect(Widget w, XtPointer object, XtPointer calldata), destroyList(Widget w, XtPointer shellwidget, XtPointer calldata), keepList(Widget w, XtPointer shellwidget, XtPointer calldata);
+static void Move(Widget w, XtPointer closure, XtPointer calldata), DnMoveRead(Widget w, XtPointer rdnlevel, XtPointer calldata), DnMove(Widget w, XEvent *event, String *params, Cardinal num_params);
+static void SetType(Widget w, XtPointer indx, XtPointer calldata), Read(Widget w, XtPointer data, XtPointer calldata), Help(Widget w, XtPointer closure, XtPointer calldata), ReadAll(Widget w, XtPointer closure, XtPointer calldata);
+static void TSearch(Widget w, XEvent *event, String *params, Cardinal num_params), ClearSearchArea(Widget w, XEvent *event, String *params, Cardinal num_params), StartSearch(Widget w, XtPointer closure, XtPointer calldata);
+static void createList(str_seq list_seq, char *top_mess, char *lower_mess);
+static void createHistoryPopup(), popupHistory(Widget w, XtPointer closure, XtPointer calldata), popdownHistory(Widget w, XtPointer closure, XtPointer calldata);
+static void displayReadPopup(void), readDestroy(Widget w, XtPointer closure, XtPointer calldata), keepRead(Widget w, XtPointer closure, XtPointer calldata);
+static void submitModif(Widget w, XtPointer closure, XtPointer calldata), closeModify(Widget w, XtPointer clientdata, XtPointer calldata), modifyEntry(Widget w, XtPointer object, XtPointer calldata), addValField(Widget w, XtPointer closure, XtPointer calldata);
+static void UndoValChanges(Widget w, XtPointer closure, XtPointer calldata), UndoAttrChanges(Widget w, XtPointer closure, XtPointer calldata), modUpdate(Widget w, XtPointer attrValue, XtPointer calldata), keepModify(Widget w, XtPointer closure, XtPointer calldata);
+static void cannotModify(Widget w, XtPointer closure, XtPointer calldata);
+static void killError(Widget w, XtPointer closure, XtPointer calldata), doError(dsEnqError status);
+static void ChangeHelp(Widget w, XEvent *event, String *params, Cardinal num_params);
+static void buttonPress(Widget w, XEvent *event, String *params, Cardinal num_params);
+static void freeEntry(Widget w, XtPointer closure, XtPointer calldata), freeSpace(Widget w, XtPointer closure, XtPointer calldata), CutString(Widget w, XtPointer closure, XtPointer calldata);
+static void ListSelectList(Widget w, XEvent *event, String *params, Cardinal num_params), DnList(Widget w, XEvent *event, String *params, Cardinal num_params);
+static void ListSelectMove(Widget w, XEvent *event, String *params, Cardinal num_params);
 
-static bool ConvSel();
-static int GetTextWidth(), GetTextHeight();
-static void PopupMessage();
-static void entry_print();
-static void kill_error();
-void kill_message(), message();
+static bool ConvSel(Widget w, Atom *selection, Atom *target, Atom *type, XtPointer *value, unsigned long *length, int *format);
+static int GetTextWidth(Widget widget, char *istring), GetTextHeight(Widget widget, char *string);
+static void PopupMessage(Widget shell, Widget refto, Widget label_widget, char *label, XtGrabKind grab_kind);
+static void entry_print(Widget entry_form, char *entry_ptr);
+static void kill_error(void);
+void kill_message(void), message(Widget refto, char *mess);
 
-static void CreateBackgroundPixmap(), FreeWidgetPixmap();
-void displayError();
-void print_photo(), kill_photo(), make_photo_widget();
+static void CreateBackgroundPixmap(Widget widget, char bits[], Cardinal width, Cardinal height), FreeWidgetPixmap(Widget w, XtPointer closure, XtPointer calldata);
+void displayError(Widget refto, String mess);
+void print_photo(void), kill_photo(void), make_photo_widget(void);
 
 Widget toplevel, outer;
 

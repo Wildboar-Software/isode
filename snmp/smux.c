@@ -38,10 +38,14 @@ static struct type_SNMP_TimeTicks *smux_stamp = NULL;
 
 static	struct timeval my_boottime;
 
+#ifdef LINUX
+#include <errno.h>
+#else
 extern	int	errno;
+#endif
 
 static int  smuxlose (int, char *, char *, ...);
-static int  smuxalloc (), smuxsend ();
+static int  smuxalloc (void), smuxsend (struct type_SNMP_SMUX__PDUs *pdu);
 
 /* INIT */
 

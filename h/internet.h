@@ -163,12 +163,12 @@ extern in_addr_t inet_addr (const char *cp), inet_network (const char *cp);
 #else
 #ifndef	DG
 #ifndef	HPUX
-in_addr_t inet_network ();
+in_addr_t inet_network (const char *cp);
 #else
-in_addr_t inet_network ();
+in_addr_t inet_network (const char *cp);
 #endif
 #else
-struct in_addr inet_addr (), inet_network ();
+struct in_addr inet_addr (const char *cp), inet_network (const char *cp);
 #endif
 #endif
 #endif

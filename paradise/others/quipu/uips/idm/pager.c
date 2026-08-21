@@ -92,7 +92,7 @@ void pageprint(char *fmt, ...)
 	va_end(ap);
 }
 
-putPagePrompt() {
+void putPagePrompt(void) {
 	writeInverse("SPACE for next screen; q to quit pager");
 	if (numOK == TRUE)
 		writeInverse("; or the number of the entry");

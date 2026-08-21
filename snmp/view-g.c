@@ -24,7 +24,7 @@ static int	viewmask = 0x1;
 static OID	localAgent = NULLOID;
 static OID	rfc1157Domain = NULLOID;
 
-static struct view *get_prent ();
+static struct view *get_prent (unsigned int *ip, int len, int isnext);
 static int str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int proxy);
 int f_view (char **vec);
 int f_community (char **vec);
@@ -165,7 +165,7 @@ static struct view *get_prent (unsigned int *ip, int len, int isnext) {
 
 static struct community *CLex = NULL;
 
-static struct community *get_acent ();
+static struct community *get_acent (unsigned int *ip, int len, int isnext);
 
 static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -284,7 +284,7 @@ static struct community *get_acent (unsigned int *ip, int len, int isnext) {
 
 static OID    trapview = NULLOID;
 
-static struct trap *get_trent ();
+static struct trap *get_trent (unsigned int *ip, int len, int isnext);
 
 static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;

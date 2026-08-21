@@ -14,7 +14,9 @@ extern int  cflag;
 extern int  debug;
 extern char *myname;
 
-void	ftam_adios (), ftam_advise (), ftam_diag ();
+void	ftam_adios (struct FTAMabort *fta, char *event);
+void	ftam_advise (struct FTAMabort *fta, char *event);
+void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
@@ -104,16 +106,14 @@ extern int  mylevel;		/* .. */
     else
 #endif
 
-extern int  errno;
-
 #ifdef	BRIDGE
 /* FTP interface routines and variables */
 
 extern char *ftp_error;
 
-int	ftp_exits (), ftp_delete (), ftp_mkdir (), ftp_rename (), ftp_type (),
-	ftp_write (), ftp_append (), ftp_read (), ftp_ls (), ftp_login (),
-	ftp_quit (), ftp_abort (), ftp_reply ();
+int	ftp_exist (char *filename), ftp_delete (char *file), ftp_mkdir (char *dir), ftp_rename (char *from, char *to), ftp_type (int modeX),
+	ftp_write (char *file), ftp_append (char *file), ftp_read (char *file), ftp_ls (char *dir), ftp_login (char *host, char *user, char *passwd, char *acct),
+	ftp_quit (void), ftp_abort (void), ftp_reply (void);
 #endif
 
 void ftam_start (struct FTAMstart *fts);

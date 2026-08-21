@@ -12,4 +12,4 @@
 
 #endif
 
-extern char * int2strb_alloc ();
+extern char * int2strb_alloc (int n, int len);

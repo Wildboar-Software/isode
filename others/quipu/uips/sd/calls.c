@@ -26,10 +26,10 @@ int current_entry_, entry_number, display_entry;
 int back_buf_num;
 
 int rdn_print(), as_print();
-void quit(), int_quit();
-void help_back(), help_list(), help_up(), help_number(), help_srch(),
-	 help_cncs();
-void setwidgets();
+void quit(char *error, int sig), int_quit(int sig);
+void help_back(void), help_list(void), help_up(void), help_number(void), help_srch(void),
+	 help_cncs(void);
+void setwidgets(WIDGET *thesewdgts, int y);
 
 char bound = FALSE;  /* indication of wether bound */
 char * TidyString();

@@ -35,15 +35,15 @@
 #define NOTOK_INCONSISTENCY		19
 #define NOTOK_NOT_ALLOWED		20
 
-extern char *makeFN2();
-extern char *makeFN();
-extern char *basename();
-extern char *dirname();
-extern char *expandSymLinks();
-extern char *realPath(), *realPath3();
+extern char *makeFN2(char *dir, char *fn);
+extern char *makeFN(char *fn);
+extern char *basename(char *fn);
+extern char *dirname(char *fn);
+extern char *expandSymLinks(char *path);
+extern char *realPath(char *dir, char *path), *realPath3(char *dir, char *path1, char *path2);
 
 extern char rfaErrStr[];
-extern char *errMsg();
+extern char *errMsg(int type);
 
 /*--- tailor variables ---*/
 extern int default_transfer;

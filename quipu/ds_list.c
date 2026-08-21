@@ -267,7 +267,7 @@ static int build_result (struct ds_list_arg *arg, Entry ptr, struct ds_list_resu
 
 static int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target) {
 	struct list_cache *ptr;
-	struct subordinate * subord_cpy();
+	struct subordinate * subord_cpy(struct subordinate *x);
 
 	if ((arg->lsa_common.ca_servicecontrol.svc_options & SVC_OPT_DONTUSECOPY) == 0) {
 		if ((ptr = find_list_cache (target,arg->lsa_common.ca_servicecontrol.svc_sizelimit)) != NULLCACHE) {

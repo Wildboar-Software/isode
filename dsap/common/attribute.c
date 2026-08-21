@@ -38,8 +38,8 @@ extern LLog * log_dsap;
 
 extern short acl_sntx;
 
-extern AV_Sequence oc_avs();
-Attr_Sequence entry_find_type();
+extern AV_Sequence oc_avs(void);
+Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 extern int set_heap (AttributeType x);
 

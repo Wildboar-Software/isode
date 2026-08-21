@@ -16,7 +16,7 @@
 #include "rfa.h"
 
 extern FILE *err;
-extern char *shortTime();
+extern char *shortTime(long *t);
 
 /*--------------------------------------------------------------*/
 /*  Print Error							*/

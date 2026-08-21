@@ -11,7 +11,7 @@
 
 extern LLog *log_dsap;
 extern char dsa_mode;
-char *cryptparse();
+char *cryptparse(char *str);
 
 static PE prot_enc (void *value) {
 	struct protected_password *x = (struct protected_password *) value;
@@ -33,7 +33,7 @@ static void * prot_dec (PE pe) {
 static void *
 str2prot (char *str) {
 	struct protected_password *result;
-	char *octparse();
+	char *octparse(char *str);
 
 	result = (struct protected_password *)
 			 calloc(1, sizeof(*result));
@@ -53,7 +53,7 @@ str2prot (char *str) {
 static void prot_print (PS ps, void *value, int format) {
 	struct protected_password *parm = (struct protected_password *) value;
 	char *cp;
-	extern char * cryptstring();
+	extern char * cryptstring(char *str);
 
 	/* Make a null-terminated copy */
 	cp = malloc((unsigned)(parm->n_octets + 1));

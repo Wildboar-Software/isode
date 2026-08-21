@@ -47,8 +47,10 @@ PE grab_filepe (AttributeValue av)
 {
 	FILE * fptr;
 	struct file_syntax * fs;
-	sntx_table *tbl, * get_syntax_table();
-	PE ret_pe = NULLPE, grab_pe();
+	sntx_table *tbl;
+	sntx_table * get_syntax_table(short x);
+	PE ret_pe = NULLPE;
+	PE grab_pe(AttributeValue av);
 
 	fs = (struct file_syntax *) av->av_struct;
 	if (fs->fs_attr != NULLAttrV)

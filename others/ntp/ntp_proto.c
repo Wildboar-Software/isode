@@ -20,18 +20,18 @@ extern unsigned long clock_watchdog;
 extern LLog	*pgm_log;
 #ifdef	DEBUG
 extern int debug;
-extern void dump_pkt();
+extern void dump_pkt(struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer);
 #endif
 extern unsigned int servport;
 extern int trusting, logstats;
 extern struct sysdata sys;
 extern struct list peer_list;
-extern struct ntp_peer *check_peer();
-extern char *ntoa();
+extern struct ntp_peer *check_peer(struct Naddr *dst, int sock);
+extern char *ntoa(struct sockaddr_in *nsin);
 extern double drift_comp, compliance;	/* logical clock variables */
-extern double s_fixed_to_double(), ul_fixed_to_double();
-extern void make_new_peer(), double_to_s_fixed(), tstamp(), receive ();
-extern int demobilize();
+extern double s_fixed_to_double(struct s_fixedpt *t), ul_fixed_to_double(struct l_fixedpt *t);
+extern void make_new_peer(struct ntp_peer *peer), double_to_s_fixed(struct s_fixedpt *t, double value), tstamp(struct l_fixedpt *stampp, struct timeval *tvp), receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock);
+extern int demobilize(struct list *l, struct ntp_peer *peer);
 
 char actions[5][5] = {
 
@@ -46,11 +46,11 @@ char actions[5][5] = {
 };/* Broadcast */
 
 #ifdef	REFCLOCK
-void	refclock_input();
+void	refclock_input(struct ntp_peer *peer, struct ntpdata *pkt);
 #endif
 
-void	process_packet(), clock_update(), clear(), clock_filter(),
-		receive(), select_clock(), poll_update();
+void	process_packet(struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer), clock_update(struct ntp_peer *peer), clear(struct ntp_peer *peer), clock_filter(struct ntp_peer *peer, double new_delay, double new_offset),
+		receive(struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock), select_clock(void), poll_update(struct ntp_peer *peer, int new_hpoll);
 
 /* 3.4. Event Processing */
 
@@ -473,7 +473,7 @@ void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp
 
 void clock_update (struct ntp_peer *peer) {
 	double temp;
-	extern int adj_logical();
+	extern int adj_logical(double offset);
 
 	select_clock();
 	if (sys.peer != NULL)
@@ -720,7 +720,7 @@ void select_clock (void) {
 		double precision;
 	} sel_lst[X_NTP_CANDIDATES];
 	int i, j, stratums, candidates;
-	int sanity_check();
+	int sanity_check(struct ntp_peer *peer);
 	double dtmp;
 	candidates = 0;
 	stratums = 0;

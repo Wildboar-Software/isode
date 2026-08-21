@@ -20,7 +20,7 @@ extern LLog    *log_stat;
 extern char goto_path[], base_path[], friendly_base_path[], mvalue [];
 
 str_seq SortList();
-void dn2buf();
+void dn2buf(caddr_t ptr,char *cptr);
 
 dsEnqError list_start(void) {
 	struct ds_search_arg search_arg;

@@ -23,10 +23,10 @@ extern char exactString[];
 /*struct namelist * prratts; */
 struct namelist * rmatts;
 
-struct ds_search_arg *fillMostPRRSearchArgRm();
+struct ds_search_arg *fillMostPRRSearchArgRm(char *parentstr, int searchdepth);
 
-void makeExplicitPRRFilter();
-void prrFilter1(), prrFilter2(), prrFilter3(), prrFilter4();
+void makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp);
+void prrFilter1(char *prrstr, struct s_filter **fpp), prrFilter2(char *prrstr, struct s_filter **fpp), prrFilter3(char *prrstr, struct s_filter **fpp), prrFilter4(char *prrstr, struct s_filter **fpp);
 
 VFP explicitPRRRm[] = {makeExplicitPRRFilter, NULLVFP};
 VFP normalPRRRm[] = {prrFilter1, prrFilter2, prrFilter3, prrFilter4, NULLVFP};

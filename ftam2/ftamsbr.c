@@ -16,11 +16,6 @@ extern int vfs_fdf;
 
 extern struct vfsmap vfs[];
 
-#ifdef	BRIDGE
-#endif
-
-long	lseek ();
-
 struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftamfd) {
 #ifndef	BRIDGE
 	int    fmt;
@@ -127,7 +122,7 @@ int	binarycheck (void *param, char *data)
 	return OK;
 }
 
-int	textcheck (caddr_t param, char *data) {
+int	textcheck (void *param, char *data) {
 	struct type_DOCS_FTAM__1__Parameters *p1 =
 		(struct type_DOCS_FTAM__1__Parameters *) param;
 

@@ -9,7 +9,7 @@
 extern LLog * log_dsap;
 
 extern time_t timenow;
-extern struct TSAPaddr *ta2norm();
+extern struct TSAPaddr *ta2norm(struct TSAPaddr *ta);
 
 struct di_block *
 di_alloc (void) {

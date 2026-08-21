@@ -30,13 +30,13 @@ extern char	fred_phone;
 extern char	fred_sequence;
 extern char	fred_subdisplay;
 
-extern Attr_Sequence fred_as (), fred_full ();
+extern Attr_Sequence fred_as(void), fred_full(void);
 
-Filter          get_filter ();
-char           *TidyString ();
+Filter          get_filter(char *str);
+char           *TidyString(char *a);
 char		allow_move = TRUE;
 
-static int	csr_compar ();
+static int	csr_compar(EntryInfo **a, EntryInfo **b);
 static void handle_problems (PS aps, ContinuationRef cr, int limit, char proceed);
 
 void call_search (int argc, char **argv) {
@@ -265,7 +265,7 @@ void call_search (int argc, char **argv) {
 							ptr;
 							ptr = ptr -> ent_next)
 						*ep++ = ptr;
-					qsort ((char *) base, i, sizeof *base, csr_compar);
+					qsort ((char *) base, i, sizeof *base, (int (*)(const void *, const void *)) csr_compar);
 					bp = base;
 					ptr = result.CSR_entries = *bp++;
 					while (bp < ep) {

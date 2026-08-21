@@ -62,21 +62,22 @@ static	char	passwd[DBA_MAX_PASSWD_LEN];
 static	PS	ps;
 static	PS	nps;
 
-static int	dns_compar ();
-static DNS	dase_interact (), just_say_no ();
-static PE	name2psap ();
+static int	dns_compar (const struct dn_seq **a, const struct dn_seq **b);
+static int dns_compar_void (const void *a, const void *b);
+static DNS	dase_interact (DNS dns, DN dn, char *s), just_say_no (DNS dns, DN dn, char *s);
+static PE	name2psap (DN dn);
 
 static void	adios (char *, char *, ...);
 static void	advise (int, char *, char *, ...);
-static void	ts_adios (), ts_advise ();
+static void	ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, int code, char *event);
 static void	dased (int, char **),
 dase_aux (struct type_DASE_Query__REQ *),
 make_bind_args (struct ds_bind_arg *, struct ds_bind_arg *, struct ds_bind_error *),
 arginit (char **), envinit (void);
-static int	bind_to_dsa ();
+static int	bind_to_dsa (void);
 
-char   *dn2str ();
-PE	grab_pe ();
+char   *dn2str (DN dn);
+PE	grab_pe (AttributeValue av);
 
 int main (int argc, char **argv, char **envp) {
 	int	    vecp;
@@ -516,7 +517,7 @@ static DNS dase_interact (DNS dns, DN dn, char *s) {
 			for (ds = dns; ds; ds = ds -> dns_next)
 				*ep++ = ds;
 
-			qsort ((char *) base, i, sizeof *base, dns_compar);
+			qsort ((char *) base, i, sizeof *base, dns_compar_void);
 
 			bp = base;
 			ds = dns = *bp++;
@@ -634,7 +635,7 @@ out:
 	return dns;
 }
 
-static int dns_compar (struct dn_seq **a, struct dn_seq **b) {
+static int dns_compar (const struct dn_seq **a, const struct dn_seq **b) {
 	int	    i;
 	DN	    adn,
 	 bdn;
@@ -646,6 +647,10 @@ static int dns_compar (struct dn_seq **a, struct dn_seq **b) {
 
 	i = rdn_cmp (adn -> dn_rdn, bdn -> dn_rdn);
 	return (i == (-1) || i == 1 ? i : 0);
+}
+
+static int dns_compar_void (const void *a, const void *b) {
+	return dns_compar ((const struct dn_seq **) a, (const struct dn_seq **) b);
 }
 
 static DNS

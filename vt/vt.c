@@ -107,7 +107,7 @@ struct dispatch {
 	char   *ds_help;
 };
 
-struct dispatch *getds ();
+struct dispatch *getds (char *name);
 
 static int vt_open (char **vec);
 static int vt_close (char **vec);
@@ -553,7 +553,7 @@ static char *xsaplevels[] = {
 	"none", "fatal", "exceptions", "notice", "pdus", "trace", "debug", NULL
 };
 
-static struct var *getvar ();
+static struct var *getvar (char *name);
 
 static int   echo = 0;
 static int   repertoire = 0;
@@ -626,7 +626,7 @@ static struct var vars[] = {
 static int varwidth1;
 static int varwidth2;
 
-static char    **getval ();
+static char    **getval (char *name, char **choices);
 
 static int vt_set (char **vec) {
 	int    i,

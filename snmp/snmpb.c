@@ -163,14 +163,14 @@ static	int	dedrequests = 0;
 static	int	boundlimit = MAXBOUNDS;
 
 /* MISCELLANEOUS INFORMATION */
-static OID	oid_median (), oid_copy ();
+static OID	oid_median (OID a, OID b), oid_copy (OID a);
 
 extern	int	debug;
 extern	int	watch;
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-char   *snmp_error ();
+char   *snmp_error (int i);
 
 /* BULK1 */
 

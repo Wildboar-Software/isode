@@ -9,7 +9,7 @@
 #include "quipu/find.h"
 
 extern LLog * log_dsap;
-extern Attr_Sequence entry_find_type();
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level);
 

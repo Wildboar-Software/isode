@@ -19,8 +19,8 @@ extern LLog    *log_stat;
 #endif
 
 /* Not static as are used by other parts of query engine */
-QE_error_code start_read();
-void get_read_attrs();
+QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr_list, int *task_id_ptr);
+void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format);
 
 int photo_width, photo_height, tmp_width;
 PS photo_ps;

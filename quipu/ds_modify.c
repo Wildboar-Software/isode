@@ -47,9 +47,9 @@ static int check_remove_values (RDN rdn, Attr_Sequence as);
 static int check_remove_type (RDN rdn, AttributeType at);
 extern Entry database_root;
 extern LLog * log_dsap;
-extern Attr_Sequence entry_find_type();
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 extern DN mydsadn;
-extern char * new_version();
+extern char * new_version(void);
 
 extern AttributeType at_control;
 extern AttributeType at_acl;
@@ -82,7 +82,7 @@ int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;
-	Entry  entry_cpy ();
+	Entry  entry_cpy(Entry entryptr);
 	int    remove = NOTOK;
 	int    retval;
 	extern int read_only;
@@ -647,7 +647,7 @@ static int mod_add_value (
 ) {
 	Attr_Sequence as, realas;
 	AV_Sequence avs;
-	char * dn2edbfile();
+	char * dn2edbfile(DN dn);
 
 	DLOG (log_dsap,LLOG_DEBUG,("add value"));
 	realas = entry_find_type (real_entry,newas->attr_type);
@@ -702,7 +702,7 @@ static int mod_add_value (
 
 int create_null_edb (Entry eptr) {
 	DN	save_dn ;
-	char   *filename, *dn2edbfile();
+	char   *filename, *dn2edbfile(DN dn);
 	Entry	empty_entry;
 #ifdef TURBO_DISK
 	char	gfname[1024];

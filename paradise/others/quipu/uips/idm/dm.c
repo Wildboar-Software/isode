@@ -36,9 +36,9 @@ LLog    _de_log = {
 };
 LLog *de_log = &_de_log;
 
-extern char *TidyString();
-extern char *findHelp();
-void searchFail(), onint1(), onint2(), de_exit();
+extern char *TidyString(char *a);
+extern char *findHelp(char *helpstr);
+void searchFail(char *str), onint1(void), onint2(void), de_exit(int exitCode);
 
 int boundToDSA = FALSE;
 int limitProblem = FALSE;
@@ -116,9 +116,9 @@ int orgEntered;
 int main(int argc, char *argv[]) {
 	struct namelist * option5lp = NULLLIST;
 
-	SFD cleanupok();
+	SFD cleanupok(void);
 	char * buf;
-	int display_posdit();
+	int display_posdit(int length, char str[]);
 	int objectType;
 	int status;
 	int wait_result;
@@ -675,7 +675,7 @@ void searchFail(char *str) {
 }
 
 void de_exit(int exitCode) {
-	void exit();
+	void exit(int status);
 
 	/*  if (byeByeMessage == TRUE) */
 	pagerOn(NUMBER_NOT_ALLOWED);

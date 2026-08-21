@@ -6,8 +6,8 @@
 #include "pepsycodec.h"
 
 /* We import these functions, which ought to be internal to certificate.c */
-struct certificate *cert_cpy();
-struct certificate *str2cert();
+struct certificate *cert_cpy(struct certificate *parm);
+struct certificate *str2cert(char *str);
 
 static PE cpair_enc(void *value) {
 	PE pe;

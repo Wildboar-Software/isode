@@ -111,15 +111,15 @@ static	SY	myobjects = NULLSY;
 static	SY	mytraps = NULLSY;
 static	SY	mytypes = NULLSY;
 
-static SY	new_symbol (), add_symbol ();
+static SY	new_symbol (char *encpref, char *decpref, char *prfpref, char *mod, char *id), add_symbol (SY s1, SY s2);
 
-static char   *id2str ();
+static char   *id2str (YV yv);
 
-static YP	lookup_type ();
-static char   *val2str ();
+static YP	lookup_type (char *mod, char *id);
+static char   *val2str (YV yv);
 
-static OI	lookup_identifier ();
-static OT	lookup_object ();
+static OI	lookup_identifier (char *mod, char *id);
+static OT	lookup_object (char *mod, char *id);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,

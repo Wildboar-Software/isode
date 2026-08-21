@@ -5,6 +5,7 @@
 #include	<stdlib.h>
 #include	<string.h>
 #include	<strings.h>
+#include	<unistd.h>
 #include "config.h"
 #include "tailor.h"
 #ifdef	PEPSY_REALS
@@ -22,25 +23,25 @@
 #define new(x)	((x *)calloc(1, sizeof (x)))
 
 #define NULLQB	(struct qbuf *)0
-char	*fill();
-static char   *idname();
-static char   *clname();
-static int prntbits();
-static int pclen();
-static int prntos();
-static int prntstr();
+char	*fill(int tynum);
+static char   *idname(int id);
+static char   *clname(int cl);
+static void prntbits(PE pe);
+static void pclen(char *s, int len);
+static int prntos(PE pe);
+static int prntstr(PE pe);
 
-extern int print_pe();
+extern int print_pe(PE pe, int n);
 extern	modtyp	_ZBIT_1;
-extern	char	*bitstr2strb();
-extern PE mkpelist(), mkpe();
-extern OID	mkoid();
-extern struct type_UNIV_EXTERNAL *mkext();
+extern	char	*bitstr2strb(PE pe, int *k);
+extern PE mkpelist(int i), mkpe(int i);
+extern OID	mkoid(int i);
+extern struct type_UNIV_EXTERNAL *mkext(int i);
 
-extern struct rep_elem	*mkrep_elem();
-extern struct rep_int	*mkrep_int();
+extern struct rep_elem	*mkrep_elem(int cnt);
+extern struct rep_int	*mkrep_int(int cnt);
 
-extern void	exit();
+extern void	exit(int);
 
 static int	t_test = 1;	/* Iteration of the test */
 
@@ -3965,7 +3966,7 @@ idname (int id) {
 /*
  * Print out the value of a bits string
  */
-static prntbits (PE pe) {
+static void prntbits (PE pe) {
 	int     len, i;
 
 	if ((len = pe->pe_nbits) < 0) {
@@ -3985,7 +3986,7 @@ static prntbits (PE pe) {
  * Print out a given length of octets as hex (with the ASCII
  * characters given if they have any
  */
-static pclen (char *s, int len) {
+static void pclen (char *s, int len) {
 	int cnt = 0;
 
 	while (len-- > 0) {
@@ -4004,7 +4005,7 @@ static pclen (char *s, int len) {
 /*
  * print out an octet string
  */
-static prntos (PE pe) {
+static int prntos (PE pe) {
 	struct qbuf *qb;
 
 	if ((qb = prim2qb(pe)) == NULL) {
@@ -4025,7 +4026,7 @@ bad:
 /*
  * print out a string which should be printable
  */
-static prntstr (PE pe) {
+static int prntstr (PE pe) {
 	struct qbuf *qb;
 
 	if ((qb = prim2qb(pe)) == NULL) {

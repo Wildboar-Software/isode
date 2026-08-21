@@ -25,7 +25,7 @@ typedef oid_table_attr * AttributeType;
 #define AttrT_cpy(x) x
 #define grab_oid(x)  (x ? x->oa_ot.ot_oid : NULLOID)
 
-AttributeType AttrT_new();
+AttributeType AttrT_new(char *name);
 
 #define str2AttrT(x) AttrT_new(x)
 
@@ -199,8 +199,8 @@ typedef struct {
 } sntx_table;
 
 extern char quipu_faststart;
-extern char * TidyString();
-extern char * TidyString2();
+extern char * TidyString(char *a);
+extern char * TidyString2(char *a);
 
 #define FAST_TIDY(x) if (quipu_faststart) while (isascii(*x) && isspace (*x)) x++; else x = TidyString(x)
 

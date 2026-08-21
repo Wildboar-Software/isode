@@ -751,7 +751,7 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	AttributeType	  at_tmp;
 	OID     oid_tmp;
 	int	is_first;
-	objectclass * oc_add();
+	objectclass * oc_add(OID oid);
 	char explicit = 0;
 
 	int p34_count = 0;

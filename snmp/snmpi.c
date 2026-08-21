@@ -72,8 +72,8 @@ static	char   *community = "public";
 static	int	sd;
 static	struct TSAPaddr  snmp_ta;
 
-char   *snmp_error ();
-static struct type_SNMP_Message *new_message ();
+char   *snmp_error (int i);
+static struct type_SNMP_Message *new_message (int offset, char **vec);
 
 void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
@@ -83,7 +83,7 @@ struct dispatch {
 	int    (*ds_fnx)(char **vec); /* dispatch */
 	char   *ds_help;		      /* help string */
 };
-static struct dispatch *getds ();
+static struct dispatch *getds (char *name);
 
 static int	f_audit (char **vec);
 #ifdef	BSD42
@@ -129,12 +129,7 @@ static struct dispatch dispatches[] = {
 };
 
 static	int	helpwidth;
-static int  _getline (), snmploop ();
-
-#ifndef	SYS5
-long	random ();
-#endif
-long	time ();
+static int  _getline (char *prompt, char *buffer), snmploop (char **vec, int error);
 
 int main (int argc, char **argv, char **envp) {
 	int	    eof,
@@ -1595,7 +1590,7 @@ static int  ncols (FILE *fp) {
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void adios (char *what, char *fmt, ...) {
 	va_list ap;

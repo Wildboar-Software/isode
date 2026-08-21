@@ -23,7 +23,7 @@ extern char yes_string[];
 extern char no_string [];
 static struct namelist * plp = NULLLIST;
 
-void searchFail(), de_exit();
+void searchFail(char *str), de_exit(int exitCode);
 
 int de_Read (void) {
 	char * more;

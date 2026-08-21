@@ -98,24 +98,6 @@ struct var {
 static struct var * getvar (char *name);
 static void printvar (struct var *v);
 
-int f_put();
-int f_cd();
-int f_chgrp();
-int f_close();
-int f_ls();
-int f_echo();
-int f_fls();
-int f_get();
-int f_lcd();
-int f_mkdir();
-int f_mv();
-int f_open();
-int f_pwd();
-int f_quite();
-int f_rm();
-int f_status();
-int f_quit();
-
 #ifndef	BRIDGE
 static struct dispatch  dispatches[] = {
 	"append", f_put, DS_OPEN | DS_MODES, FCLASS_TRANSFER, FUNIT_WRITE,
@@ -352,8 +334,6 @@ static struct var vars[] = {
 
 static int varwidth1;
 static int varwidth2;
-
-static char    **getval ();
 
 static int f_set (char **vec) {
 	int    i,
@@ -1222,8 +1202,6 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 #ifndef	HZ
 #define	HZ	60
 #endif
-
-long	times ();
 
 int timer (int cc, char *action) {
 	long    ms;

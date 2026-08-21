@@ -21,10 +21,10 @@ extern int highNumber;
 extern int exactMatch;
 extern char exactString[];
 
-struct ds_search_arg *fillMostCountrySearchArgs();
+struct ds_search_arg *fillMostCountrySearchArgs(char *objectstr, int searchdepth);
 
-void makeExplicitCoFilter();
-void coFilter1(), coFilter2(), coFilter3(), coFilter4();
+void makeExplicitCoFilter(char *cstr, struct s_filter **fpp);
+void coFilter1(char *cstr, struct s_filter **fpp), coFilter2(char *cstr, struct s_filter **fpp), coFilter3(char *cstr, struct s_filter **fpp), coFilter4(char *cstr, struct s_filter **fpp);
 
 VFP explicitCo[] = {makeExplicitCoFilter, NULLVFP};
 VFP normalCo[] = {coFilter1, coFilter2, coFilter3, coFilter4, NULLVFP};

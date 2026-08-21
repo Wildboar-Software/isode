@@ -57,12 +57,12 @@ static void _init_fp (void) {
 }
 #endif
 
-static int	f_set ();
-int	f_help ();
-int	f_alias (), f_area (), f_dish (), f_edit (), f_manual (), f_report (),
-	f_thisis ();
-int	f_bind (), f_quit ();
-int	f_version (), f_whois ();
+static int	f_set (char **vec);
+int	f_help (char **vec);
+int	f_alias (char **vec), f_area (char **vec), f_dish (char **vec), f_edit (char **vec), f_manual (char **vec), f_report (char **vec),
+	f_thisis (char **vec);
+int	f_bind (char **vec), f_quit (char **vec);
+int	f_version (char **vec), f_whois (char **vec);
 
 static struct dispatch dispatches[] = {
 	"alias", f_alias, DS_SYOK,
@@ -266,7 +266,7 @@ static struct var vars[] = {
 static int varwidth1;
 static int varwidth2;
 
-static char    **getval ();
+static char    **getval (char *name, char **choices);
 
 static int f_set (char **vec) {
 	int    i,

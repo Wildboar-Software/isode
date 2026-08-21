@@ -9,7 +9,7 @@
 #include	"usr.dirent.h"
 
 #ifndef	GETDENTS
-extern int	getdents();		/* SVR3 system call, or emulation */
+extern int	getdents(int fildes, char *buf, unsigned nbyte);		/* SVR3 system call, or emulation */
 
 extern int	errno;
 

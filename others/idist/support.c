@@ -16,9 +16,9 @@
 struct type_Idist_FileSpec *
 makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname) {
 	struct type_Idist_FileSpec *fs;
-	struct type_Idist_FileType *makeftype ();
-	struct type_Idist_FileTime *makefmtime ();
-	struct type_Idist_Options *makeopts ();
+	struct type_Idist_FileType *makeftype (int type);
+	struct type_Idist_FileTime *makefmtime (long mtime);
+	struct type_Idist_Options *makeopts (int opts);
 
 	if ((fs = (struct type_Idist_FileSpec *) malloc (sizeof *fs)) == NULL)
 		adios ("memory", "out of");

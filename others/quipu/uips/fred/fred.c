@@ -38,8 +38,8 @@ SFP	astat;
 SFP	istat;
 SFP	qstat;
 
-static SFD	alrmser ();
-static SFD	intrser ();
+static SFD	alrmser (int sig);
+static SFD	intrser (int sig);
 
 LLog    _fred_log = {
 	"fred.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,
@@ -64,7 +64,7 @@ static struct pair {
 };
 
 static	arginit ();
-static int  fetchline ();
+static int  fetchline (char *s, int n, FILE *iop);
 static	rcmap ();
 static	log_utmp ();
 
@@ -647,7 +647,7 @@ done:
 }
 
 #ifndef	lint
-static void	_advise ();
+static void	_advise (char *what, char *fmt, va_list ap);
 
 void	adios (char *what, char *fmt, ...) {
 	va_list ap;

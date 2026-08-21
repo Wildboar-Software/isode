@@ -46,7 +46,7 @@ static void tree_struct_print (PS ps, void *value, int format) {
 
 static void *str2schema (char *str) {
 	struct tree_struct * ts;
-	objectclass * str2oc();
+	objectclass * str2oc(char *str);
 
 	ts = tree_struct_alloc ();
 	if ((ts->tree_object = str2oc(str)) == NULLOBJECTCLASS) {

@@ -8,8 +8,6 @@
 static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.RESPONSE */
-static int  FAccessResponseAux ();
-
 int FAccessResponse (
 	int sd,
 	int action,

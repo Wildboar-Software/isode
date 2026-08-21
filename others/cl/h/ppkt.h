@@ -154,8 +154,8 @@ void freepblk (struct psapblk *pb);
 struct psapblk *newpblk (), *findpblk ();
 
 #ifdef HULA
-int	freepublk ();
-struct psapblk *newpublk (), *findpublk ();
+int	freepublk (struct psapblk *pb);
+struct psapblk *newpublk (void), *findpublk (int sd);
 #endif
 
 #define	PC_PROV_BASE		PC_NOTSPECIFIED
@@ -167,7 +167,7 @@ struct psapblk *newpublk (), *findpublk ();
 struct type_PS_User__data *info2ppdu ();
 
 #ifdef HULA
-struct type_PS_User__data *info2_ppdu ();
+struct type_PS_User__data *info2_ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu);
 #endif
 
 int	ppdu2info ();
@@ -177,8 +177,8 @@ struct qbuf *info2qb ();
 int	qb2info ();
 
 #ifdef HULA
-struct qbuf *info2_qb ();
-int	qb2_info ();
+struct qbuf *info2_qb (PE pe, struct qbuf *qp, struct PSAPindication *pi);
+int	qb2_info (struct qbuf *qb, PE *pe);
 #endif
 
 struct type_PS_Identifier__list *silly_list ();

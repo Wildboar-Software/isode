@@ -69,7 +69,7 @@ void call_moveto (int argc, char **argv) {
 			return;
 		}
 	if (move_flag == TRUE)
-		consolidate_move ();
+		consolidate_move();
 	if (pwd_flag) {
 		dn_print (RPS, fixed_pos, EDBOUT);
 		ps_print (RPS, "\n");
@@ -93,9 +93,9 @@ void set_current_pos (void) {
 int move (char *arg) {
 	extern int print_parse_errors;
 
-	DN              user_down ();
-	DN              str2dn_aux ();
-	DN		sequence_dn();
+	DN              user_down (void);
+	DN              str2dn_aux(char *str, char *alias);
+	DN		sequence_dn(int y);
 	DN              tmpdn;
 	char *		ptr;
 	char		alias = FALSE;

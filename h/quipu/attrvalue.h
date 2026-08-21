@@ -77,9 +77,9 @@ struct acl_info {
 				  w -> acl_selector_type = y; \
 				  w -> acl_name = z;
 static struct acl_info * acl_info_cpy (struct acl_info *aclptr);
-struct acl_info *acl_info_new ();
-struct acl_info *acl_default();
-struct acl_info *acl_dflt();
+struct acl_info *acl_info_new (int x, int y, struct dn_seq *z);
+struct acl_info *acl_default(void);
+struct acl_info *acl_dflt(void);
 int test_acl_default (struct acl_info *a);
 void set_default_acl (struct acl_info *ai_ptr);
 int check_acl (DN who, int mode, struct acl_info *acl, DN node);

@@ -7,8 +7,8 @@
 #include "quipu/dap2.h"
 
 #ifndef	lint
-static int  _daplose ();
-static int  _dapreject ();
+static int  _daplose (struct DAPindication *di, int reason, va_list ap);
+static int  _dapreject (struct DAPindication *di, int reason, int id, va_list ap);
 #endif
 
 #ifndef	lint

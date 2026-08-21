@@ -22,7 +22,7 @@ extern char yes_string[];
 extern char no_string [];
 static struct namelist * plp = NULLLIST;
 
-void searchFail(), onint1(), de_exit();
+void searchFail(char *str), onint1(void), de_exit(int exitCode);
 
 int dm_List (void) {
 	extern int discardInput;		/* defined in pageprint */

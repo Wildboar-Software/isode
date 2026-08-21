@@ -24,9 +24,9 @@ extern str_seq curr_dnseq;
 extern int text_state;
 extern int current_entry, entry_number, display_entry;
 
-void tprint(), scrollbar();
+void tprint(char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j), scrollbar(int command);
 
-void get_help();
+void get_help(char *filename, char *line);
 
 void help_cncs (void) {
 	get_help("help", "   Press <KEY> to get detailed help.\n");

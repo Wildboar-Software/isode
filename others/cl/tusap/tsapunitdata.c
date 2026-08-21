@@ -53,7 +53,7 @@
 #include "internet.h"
 #include "uderrors.h"
 
-struct TSAPaddr *newtuaddr ();
+struct TSAPaddr *newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest);
 
 #define	selmask(fd,m,n) \
 { \

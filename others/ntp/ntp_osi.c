@@ -9,39 +9,39 @@
 #include "af_osi.h"
 #include "pvpdu.h"
 
-void	ros_advise (), acs_advise ();
+void	ros_advise (struct RoSAPpreject *rop, char *event), acs_advise (struct AcSAPabort *aca, char *event);
 extern LLog *pgm_log;
 extern double WayTooBig;
 extern unsigned long clock_watchdog;
 extern LLog	*pgm_log;
 #ifdef	DEBUG
 extern int debug;
-extern void dump_pkt();
+extern void dump_pkt(struct Naddr *dst, struct ntpdata *pkt, struct ntp_peer *peer);
 #endif
 extern int trusting, logstats;
 extern struct sysdata sys;
 extern struct list peer_list;
-extern struct ntp_peer *check_peer();
+extern struct ntp_peer *check_peer(struct Naddr *dst, int sock);
 extern unsigned int servport;
-extern char *ntoa();
+extern char *ntoa(struct sockaddr_in *nsin);
 extern double drift_comp, compliance;	/* logical clock variables */
-extern void make_new_peer(), tstamp(), clock_update (),
-		receive (), clear (), clock_filter (),
-		select_clock (), poll_update ();
+extern void make_new_peer(struct ntp_peer *peer), tstamp(struct l_fixedpt *stampp, struct timeval *tvp), clock_update (struct ntp_peer *peer),
+		receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock), clear (struct ntp_peer *peer), clock_filter (struct ntp_peer *peer, double new_delay, double new_offset),
+		select_clock (void), poll_update (struct ntp_peer *peer, int new_hpoll);
 extern void adios (char *, char *, ...);
-extern void advise (int, char *, char *,, ...);
-extern struct ntp_peer *find_peer ();
-extern int demobilize ();
-static double ul_fixed_to_doublep ();
-static double ul2_fixed_to_double ();
-static void tstamp_osi ();
-static void ros_indication ();
-static int  acsap_retry ();
-static int  acsap_initial ();
-static int bindfailed ();
-static PE build_bind_arg ();
-static int check_accept ();
-static int handle_reject ();
+extern void advise (int, char *, char *, ...);
+extern struct ntp_peer *find_peer (int n);
+extern int demobilize (struct list *l, struct ntp_peer *peer);
+static double ul_fixed_to_doublep (struct l_fixedpt *t);
+static double ul2_fixed_to_double (struct type_NTP_TimeStamp *t);
+static void tstamp_osi (struct l_fixedpt *stampp, struct timeval *tvp);
+static void ros_indication (int fd, struct intf *ap, struct RoSAPindication *roi);
+static int  acsap_retry (struct ntp_peer *peer, struct RoSAPindication *roi);
+static int  acsap_initial (struct ntp_peer *peer, char *addr, struct RoSAPindication *roi);
+static int bindfailed (struct intf *ap, struct AcSAPstart *acs, int type, char *msg);
+static PE build_bind_arg (struct PSAPaddr *psap, struct ntp_peer *peer);
+static int check_accept (struct AcSAPconnect *acc, struct intf *ap, struct ntp_peer *peer);
+static int handle_reject (struct AcSAPconnect *acc, struct intf *ap);
 
 static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 	int     sd;
@@ -61,7 +61,7 @@ static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td) {
 }
 
 void create_osilisten (char *addr) {
-	int result_func (), query_func ();
+	int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), query_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 	struct RoSAPindication  rois;
 	struct RoSAPindication *roi = &rois;
 	struct TSAPdisconnect tds;
@@ -83,18 +83,18 @@ void create_osilisten (char *addr) {
 	TRACE (1, ("Listening on address %s", addr));
 }
 
-struct type_NTP_TimeStamp *sstamp ();
-struct type_NTP_SmallFixed *sfixed ();
-struct type_NTP_ClockIdentifier *srclock ();
-Refid *gclock ();
+struct type_NTP_TimeStamp *sstamp (struct l_fixedpt *ts);
+struct type_NTP_SmallFixed *sfixed (struct s_fixedpt *ts);
+struct type_NTP_ClockIdentifier *srclock (Refid *rid);
+Refid *gclock (struct type_NTP_ClockIdentifier *ci);
 struct timeval *osi_tvp;
 
 extern struct ntp_peer dummy_peer;
 extern struct list peer_list;
 extern struct sysdata sys;
 
-static void process_packet_osi ();
-static void terminate ();
+static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer);
+static void terminate (struct intf *ap, struct RoSAPindication *roi);
 
 int transmit_osi (struct ntp_peer *peer) {
 	struct RoSAPindication  rois;
@@ -104,7 +104,7 @@ int transmit_osi (struct ntp_peer *peer) {
 	struct type_NTP_Leap *leap;
 	struct intf *ap;
 	struct timeval txtv;
-	int	result_func ();
+	int	result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 	int	i;
 
 	ap = peer -> sock < 0 ? addrs : &addrs[peer->sock];
@@ -205,8 +205,8 @@ int transmit_osi (struct ntp_peer *peer) {
 	return 0;
 }
 
-struct s_fixedpt gfixed ();
-struct l_fixedpt gstamp ();
+struct s_fixedpt gfixed (struct type_NTP_SmallFixed *ts);
+struct l_fixedpt gstamp (struct type_NTP_TimeStamp *ts);
 
 int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
 	struct ntp_peer *peer;

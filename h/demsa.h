@@ -1,9 +1,9 @@
 /* demsb.h - DEC DEMSA router interface (part a!) */
 
 /* read write and error handlers, defined in compat/select.c */
-void xhandler();
-void rhandler();
-void whandler();
+void xhandler(int fd);
+void rhandler(int fd);
+void whandler(int fd);
 #define   our_TCP_IP_SOCKET 1112
 #define   our_X25_SOCKET    1113
 #define   our_TABLE_SIZE    100

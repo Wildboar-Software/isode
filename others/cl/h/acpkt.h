@@ -96,7 +96,7 @@ int	acusaplose (struct AcSAPindication *aci, ...);
 
 int	ps2acslose ();
 #ifdef  HULA
-int     ps2aculose ();
+int     ps2aculose (struct assocblk *acb, struct AcSAPindication *aci, char *event, struct PSAPabort *pa);
 #endif
 
 struct type_ACS_Association__information *info2apdu ();
@@ -212,8 +212,8 @@ struct assocblk {
 int	freeacblk ();
 struct assocblk *newacblk (), *findacblk ();
 #ifdef  HULA
-int     freeacublk ();
-struct assocblk *newacublk (), *findacublk ();
+int     freeacublk (struct assocblk *acb);
+struct assocblk *newacublk (void), *findacublk (int sd);
 #endif
 
 #ifndef	ACSE

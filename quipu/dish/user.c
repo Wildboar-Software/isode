@@ -61,7 +61,7 @@ void call_ds (int argc, char **argv) {
 			return;
 		} else if (test_arg (argv[1], "-syntax", 2)) {
 			int i;
-			char * syntax2str();
+			char * syntax2str(short sntx);
 			for (i=1; i<MAX_AV_SYNTAX; i++) {
 				if (syntax2str(i) == NULLCP)
 					return;

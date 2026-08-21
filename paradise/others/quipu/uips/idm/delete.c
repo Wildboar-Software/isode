@@ -22,7 +22,7 @@ extern char no_string [];
 static struct ds_removeentry_arg rmarg;
 static struct namelist * plp = NULLLIST;
 
-void searchFail(), de_exit();
+void searchFail(char *str), de_exit(int exitCode);
 
 int de_Delete (void) {
 	char * more;
@@ -30,7 +30,7 @@ int de_Delete (void) {
 	char * sure;
 	char name[LINESIZE];
 
-	int fillMostRmArg();
+	int fillMostRmArg(void);
 	int noEntries;
 	int objectType;
 	int status;

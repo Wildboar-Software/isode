@@ -14,6 +14,7 @@
 #include <strings.h>
 #include "objects.h"
 #include "tailor.h"
+#include "psap.h"
 
 #define	TBUCKETS	0x80
 
@@ -29,10 +30,15 @@ OT	Tbuckets[TBUCKETS];
 extern OT	anchor;
 extern OT	chain;
 
-static OID	resolve ();
-static int  read_name (), read_type (), add_objects_aux ();
+static OID	resolve (const char *id, OT ot);
+static int  read_name (const char *name, const char *value, const char *hash), read_type (char **vec), add_objects_aux (void);
 static void dump_object (OT ot, int i);
+
+#ifdef LINUX
+#include <errno.h>
+#else
 extern	int	errno;
+#endif
 
 /* OBJECTS */
 

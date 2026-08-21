@@ -8,7 +8,7 @@
 #include "psap.h"
 
 extern int strprint(PS ps, char *str, int format);
-extern int lexequ();
+extern int lexequ(char *str1, char *str2);
 
 static PE boolenc (void *value) {
 	char *x = (char *) value;

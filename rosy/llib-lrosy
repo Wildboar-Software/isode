@@ -19,12 +19,7 @@
 
 /* WAIT */
 
-int	RyWait (sd, id, out, secs, roi)
-int	sd,
-       *id,
-	secs;
-caddr_t *out;
-struct RoSAPindication *roi;
+int	RyWait (int sd, int *id, caddr_t *out, int secs, struct RoSAPindication *roi)
 {
     return RyWait (sd, id, out, secs, roi);
 }
@@ -34,17 +29,8 @@ struct RoSAPindication *roi;
 
 /* STUB */
 
-int	RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-	id,
-       *linked,
-    	class;
-caddr_t	in;
-IFP	rfx,
-    	efx;
-struct RoSAPindication *roi;
+int	RyStub (int sd, struct RyOperation *ryo, int op, int id, int *linked, caddr_t in, int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi), int class, struct RoSAPindication *roi)
 {
     return RyStub (sd, ryo, op, id, linked, in, rfx, efx, class, roi);
 }
@@ -52,10 +38,7 @@ struct RoSAPindication *roi;
 
 /* DISCARD */
 
-int	RyDiscard (sd, id, roi)
-int	sd,
-	id;
-struct RoSAPindication *roi;
+int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
 {
     return RyDiscard (sd, id, roi);
 }
@@ -63,14 +46,7 @@ struct RoSAPindication *roi;
 
 /* OPERATION */
 
-int	RyOperation (sd, ryo, op, in, out, response, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-       *response;
-caddr_t	in,
-       *out;
-struct RoSAPindication *roi;
+int	RyOperation (int sd, struct RyOperation *ryo, int op, caddr_t in, caddr_t *out, int *response, struct RoSAPindication *roi)
 {
     return RyOperation (sd, ryo, op, in, out, response, roi);
 }
@@ -78,20 +54,9 @@ struct RoSAPindication *roi;
 
 /* INVOKE */
 
-int	RyOpInvoke (sd, ryo, op, in, out, rfx, efx, class, invokeID, linkedID,
-		    priority, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op,
-	class,
-	invokeID,
-       *linkedID,
-	priority;
-caddr_t	in,
-       *out;
-IFP	rfx,
-	efx;
-struct RoSAPindication *roi;
+int	RyOpInvoke (int sd, struct RyOperation *ryo, int op, caddr_t in, caddr_t *out, int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
+	void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi), int class, int invokeID, int *linkedID,
+		    int priority, struct RoSAPindication *roi)
 {
     return RyOpInvoke (sd, ryo, op, in, out, rfx, efx, class, invokeID,
 		       linkedID, priority, roi);
@@ -100,8 +65,7 @@ struct RoSAPindication *roi;
 
 /* generate unique invoke ID */
 
-int	RyGenID (sd)
-int	sd;
+int	RyGenID (int sd)
 {
     return RyGenID (sd);
 }
@@ -111,12 +75,7 @@ int	sd;
 
 /* DISPATCH */
 
-int	RyDispatch (sd, ryo, op, fnx, roi)
-int	sd;
-struct RyOperation *ryo;
-int	op;
-IFP	fnx;
-struct RoSAPindication *roi;
+int	RyDispatch (int sd, struct RyOperation *ryo, int op, int (*fnx)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi), struct RoSAPindication *roi)
 {
     return RyDispatch (sd, ryo, op, fnx, roi);
 }
@@ -124,12 +83,7 @@ struct RoSAPindication *roi;
 
 /* RESULT */
 
-int	RyDsResult (sd, id, out, priority, roi)
-int	sd;
-int	id,
-	priority;
-caddr_t out;
-struct RoSAPindication *roi;
+int	RyDsResult (int sd, int id, caddr_t out, int priority, struct RoSAPindication *roi)
 {
     return RyDsResult (sd, id, out, priority, roi);
 }
@@ -137,13 +91,7 @@ struct RoSAPindication *roi;
 
 /* ERROR */
 
-int	RyDsError (sd, id, err, out, priority, roi)
-int	sd;
-int	id,
-	err,
-	priority;
-caddr_t	out;
-struct RoSAPindication *roi;
+int	RyDsError (int sd, int id, int err, caddr_t out, int priority, struct RoSAPindication *roi)
 {
     return RyDsError (sd, id, err, out, priority, roi);
 }
@@ -151,12 +99,7 @@ struct RoSAPindication *roi;
 
 /* U-REJECT */
 
-int	RyDsUReject (sd, id, reason, priority, roi)
-int	sd;
-int	id,
-	reason,
-	priority;
-struct RoSAPindication *roi;
+int	RyDsUReject (int sd, int id, int reason, int priority, struct RoSAPindication *roi)
 {
     return RyDsUReject (sd, id, reason, priority, roi);
 }
@@ -164,9 +107,7 @@ struct RoSAPindication *roi;
 
 /* clean-up after association termination */
 
-int	RyLose (sd, roi)
-int	sd;
-struct RoSAPindication *roi;
+int	RyLose (int sd, struct RoSAPindication *roi)
 {
     return RyLose (sd, roi);
 }
@@ -174,33 +115,25 @@ struct RoSAPindication *roi;
 
 /* find operations and errors by numbers and names */
 
-struct RyOperation *findopbyop (ryo, op)
-struct RyOperation *ryo;
-int	op;
+struct RyOperation *findopbyop (struct RyOperation *ryo, int op)
 {
     return findopbyop (ryo, op);
 }
 
 
-struct RyOperation *findopbyname (ryo, name)
-struct RyOperation *ryo;
-char   *name;
+struct RyOperation *findopbyname (struct RyOperation *ryo, char *name)
 {
     return findopbyname (ryo, name);
 }
 
 
-struct RyError *finderrbyerr (rye, err)
-struct RyError *rye;
-int	err;
+struct RyError *finderrbyerr (struct RyError *rye, int err)
 {
     return finderrbyerr (rye, err);
 }
 
 
-struct RyError *finderrbyname (rye, name)
-struct RyError *rye;
-char   *name;
+struct RyError *finderrbyname (struct RyError *rye, char *name)
 {
     return finderrbyname (rye, name);
 }

@@ -58,11 +58,11 @@ static int	ipforwarding;
 
 static struct ipstat ipstat;
 
-static int  get_arptab ();
+static int  get_arptab (int offset);
 static void sort_arptab (void);
 
 #ifdef LINUX
-int _read_snmp_stats ();
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
 int _file_printf (const char *path, const char *fmt, ...);
 #endif
 
@@ -410,7 +410,7 @@ static int  s_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 #define	ipAdEntBcastAddr 3
 #define	ipAdEntReasmMaxSize 4
 
-extern int	get_interfaces ();
+extern int	get_interfaces (int offset);
 
 static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   i;
@@ -1073,7 +1073,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-static struct adrtab *get_arpent ();
+static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext);
 
 #define	atIfIndex	0
 #define	atPhysAddress	1

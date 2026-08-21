@@ -20,7 +20,7 @@ int call_del_alias (int argc, char **argv) {
 	DN		dnptr, aoj_dn, oj_dn, save_dn;
 	DN		trail = NULLDN ;
 	extern	DN		str2dn_aux() ;
-	extern	DN		sequence_dn () ;
+	extern	DN		sequence_dn (int y) ;
 	PS		str_ps ;
 	char	       *str_buffer ;
 	char		alias = FALSE ;

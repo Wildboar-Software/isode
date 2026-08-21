@@ -1,4 +1,4 @@
 #include "general.h"
 
-int issubstr();
-int indexstring();
+int issubstr(char *str, char *substr);
+int indexstring(char *string, char *substring);

@@ -10,7 +10,7 @@ struct ds_search_result sresult;
 struct DSError serror;
 
 struct s_filter *
-andfilter() {
+andfilter(void) {
 	struct s_filter * fp;
 
 	fp = filter_alloc();
@@ -20,7 +20,7 @@ andfilter() {
 }
 
 struct s_filter *
-orfilter() {
+orfilter(void) {
 	struct s_filter * fp;
 
 	fp = filter_alloc();

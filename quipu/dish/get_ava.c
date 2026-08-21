@@ -10,7 +10,7 @@ extern	char	frompipe;
 extern	PS	opt, rps;
 
 int get_ava (AVA *avasert, char *type, char *value) {
-	char *TidyString ();
+	char *TidyString(char *a);
 
 	if (type == NULLCP || *type == 0)
 		return (NOTOK);

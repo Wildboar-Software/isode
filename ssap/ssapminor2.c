@@ -4,7 +4,7 @@
 #include <signal.h>
 #include "spkt.h"
 
-static int  SMinSyncResponseAux (struct ssapblk *sb, long int ssn, char *data, int cc, struct SSAPindication *si);
+static int  SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int cc, struct SSAPindication *si);
 
 /* S-MINOR-SYNC.RESPONSE */
 

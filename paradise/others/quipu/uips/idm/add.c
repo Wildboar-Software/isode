@@ -44,21 +44,21 @@ static char * lineptr[100];
 static int av_count;
 static int mhsUser;
 
-char * mapAttName();
+char * mapAttName(char *tablename);
 
 /* end file global variables */
 
 int de_Add (void) {
 	char * object_to_work;
 	char * option;
-	char * TidyString();
+	char * TidyString(char *a);
 	char * tmp;
 	char menu3defopt[LINESIZE];
-	void searchFail(), onint1(), de_exit();
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 
 	int status;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	cn			= malloc(LINESIZE);
 	object_to_work		= malloc(LINESIZE);
 	option			= malloc(LINESIZE);
@@ -398,7 +398,7 @@ int dm_addentry (void) {
 	extern int assoc;
 	extern int rfrl_msg;
 	struct	DSError		error;
-	Attr_Sequence as_cpy();
+	Attr_Sequence as_cpy(Attr_Sequence as);
 	int status;
 
 	rfrl_msg = TRUE;
@@ -452,8 +452,8 @@ int de_Add_person (void) {
 	char * first_name;
 	char * more;
 	char * surname;
-	char * TidyString();
-	void searchFail(), onint1(), de_exit();
+	char * TidyString(char *a);
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 	char ask_cn_string[LINESIZE];
 	char buffer[LINESIZE];
 	char cn_default[LINESIZE];
@@ -472,8 +472,8 @@ int de_Add_person (void) {
 	AV_Sequence	avl;
 	Attr_Sequence	as2;
 	Attr_Sequence	as3;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	struct acl_info * acl;
 	struct namelist *plp = NULLLIST;
 	already_in		= malloc(LINESIZE);
@@ -698,8 +698,8 @@ prompt_cn:
 int de_Add_role (void) {
 	char * already_in;
 	char * more;
-	char * TidyString();
-	void searchFail(), onint1(), de_exit();
+	char * TidyString(char *a);
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 	char buffer[LINESIZE];
 	char role[LINESIZE];
 	char role_default[LINESIZE];
@@ -710,8 +710,8 @@ int de_Add_role (void) {
 	int status;
 
 	Attr_Sequence	as2;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	struct namelist *plp = NULLLIST;
 	already_in		= malloc(LINESIZE);
 	more			= malloc(LINESIZE);
@@ -844,8 +844,8 @@ int de_Add_role (void) {
 int de_Add_room (void) {
 	char * already_in;
 	char * more;
-	char * TidyString();
-	void searchFail(), onint1(), de_exit();
+	char * TidyString(char *a);
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 	char buffer[LINESIZE];
 	char room[LINESIZE];
 	char room_default[LINESIZE];
@@ -856,8 +856,8 @@ int de_Add_room (void) {
 	int noPersons;
 	int status;
 	Attr_Sequence	as2;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	struct namelist *plp = NULLLIST;
 	already_in		= malloc(LINESIZE);
 	more			= malloc(LINESIZE);
@@ -1160,7 +1160,7 @@ int check_error(struct	DSError error) {
 }
 
 int dm_Add_org (void) {
-	void searchFail(), onint1(), de_exit();
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 	char buffer[LINESIZE];
 	char dir_mgr[LINESIZE];
 	char iattr[LINESIZE];
@@ -1172,8 +1172,8 @@ int dm_Add_org (void) {
 	AV_Sequence	avl;
 	Attr_Sequence	as2;
 	Attr_Sequence  as3;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	struct acl_info * acl_old;
 	struct acl * acl_entry;
 	struct acl_info *ac;
@@ -1315,14 +1315,14 @@ int dm_Add_org (void) {
 int dm_Add_mgr (void) {
 	extern char password[];
 
-	void searchFail(), onint1(), de_exit();
+	void searchFail(char *str), onint1(void), de_exit(int exitCode);
 	char buffer[LINESIZE];
 	char pswd_local[LINESIZE];
 	char role[LINESIZE];
 	int status;
 	Attr_Sequence	as2;
-	Attr_Sequence	as_comp_new();
-	Attr_Sequence	as_combine();
+	Attr_Sequence	as_comp_new(AttributeType at, AV_Sequence as, struct acl_info *acl);
+	Attr_Sequence	as_combine(Attr_Sequence as, char *str, char allownull);
 	as1 = as_comp_alloc();
 	as1 = NULLATTR;
 	as2 = as_comp_alloc();

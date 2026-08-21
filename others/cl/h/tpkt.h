@@ -201,8 +201,8 @@ struct tsapblk {
 #define	NULLBP		((struct tsapblk *) 0)
 
 #ifdef HULA
-int	freetublk ();
-struct tsapblk *newtublk (), *findtublk ();
+int	freetublk (struct tsapblk *tb);
+struct tsapblk *newtublk (void), *findtublk (int sd);
 #endif
 
 int	freetblk ();
@@ -390,13 +390,13 @@ struct tsapkt {
 };
 #define	NULLPKT		((struct tsapkt *) 0)
 
-int	freetpkt ();
-struct tsapkt *newtpkt ();
+int	freetpkt (struct tsapkt *t);
+struct tsapkt *newtpkt (int code);
 
 void	text2tpkt (), tpkt2text ();
 
-int	tpkt2fd ();
-struct tsapkt  *fd2tpkt ();
+int	tpkt2fd (int fd, struct tsapkt *t, IFP writefnx);
+struct tsapkt  *fd2tpkt (int fd, IFP initfnx, IFP readfnx);
 
 char   *tpkt2str ();
 struct tsapkt  *str2tpkt ();

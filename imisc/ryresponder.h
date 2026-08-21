@@ -12,11 +12,11 @@ struct dispatch {
 	int (*ds_vector)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 };
 
-void	adios (char *, char *, ...),
-		advise (int, char *, char *, ...);
+void	adios (char *what, char *fmt, ...),
+		advise (int code, char *what, char *fmt, ...);
 void	acs_advise (struct AcSAPabort *aca, char *event);
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
-void	ryr_advise (char*, ...);
+void	ryr_advise (char *what, char *fmt, ...);
 
 void	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops, IFP start, IFP stop);
 

@@ -9,7 +9,7 @@ extern	LLog	* log_dsap;
 extern  LLog    * log_stat;
 #endif
 extern time_t	  timenow;
-extern Entry cache_dsp_entry ();
+extern Entry cache_dsp_entry(EntryInfo *ptr);
 
 void oper_result (struct connection *cn, struct DSAPindication *di) {
 	struct DSAPresult	* dr = &(di->di_res);

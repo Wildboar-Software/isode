@@ -52,8 +52,8 @@ extern Entry    database_root;
 int             size;
 char            qctx;
 extern int      search_level;
-IFP             approxfn();
-IFP             av_cmp_fn();
+IFP             approxfn(short x);
+IFP             av_cmp_fn(short syntax);
 #ifdef TURBO_INDEX
 extern int      optimized_only;
 #endif
@@ -68,8 +68,8 @@ static int      phoneflag;
 extern time_t   timenow;
 extern int      admin_size;
 
-Attr_Sequence   eis_select();
-extern Attr_Sequence entry_find_type();
+Attr_Sequence   eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, DN dnbind, DN target, struct ds_search_task **local, struct ds_search_task **refer, struct di_block **di_p, char dsp, char quipu_ctx, time_t tktime, char entryonly, char authtype) {
 	extern time_t   admin_time;
@@ -427,7 +427,7 @@ int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_sea
  */
 
 void st_comp_free (struct ds_search_task *st) {
-	extern int rc_free();
+	extern int rc_free(struct result_count *rc);
 
 	dn_free(st->st_baseobject);
 	dn_free(st->st_originalbase);
@@ -889,7 +889,7 @@ static int search_kid (Entry e, struct search_kid_arg *ska) {
 	struct ds_search_task	*new_task;
 	DN			dn;
 	extern Avlnode		*subtree_index;
-	extern int		idn_cmp();
+	extern int		idn_cmp(DN a, Index *b);
 #endif
 
 	if (size < 0)
@@ -1031,7 +1031,7 @@ static EntryInfo *filterchildren (
 #ifdef TURBO_INDEX
 	extern Avlnode *subtree_index;
 	extern Avlnode *sibling_index;
-	int             idn_cmp();
+	int             idn_cmp(DN a, Index *b);
 #endif
 
 	DLOG(log_dsap, LLOG_DEBUG, ("search: filter children"));

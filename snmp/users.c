@@ -8,6 +8,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include <crypt.h>
 #include <time.h>
 #include "smux.h"
 #include "objects.h"
@@ -81,7 +82,7 @@ struct gu {
 
 static	struct gu *gu_head = NULL;
 
-static char   *mycrypt ();
+static char   *mycrypt (char *s);
 static void free_pw (void), free_gr (void);
 
 static int  pw_compar (const void *p, const void *q) {
@@ -1504,9 +1505,6 @@ bad_value:
 
 static char itoa64[] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-long	random ();
-char   *crypt ();
 
 static char *mycrypt (char *s) {
 	long    v;

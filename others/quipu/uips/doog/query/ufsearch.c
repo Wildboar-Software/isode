@@ -31,9 +31,9 @@ extern ufsPath ufs_paths;
 extern LLog    *log_stat;
 #endif
 
-static QE_error_code process_ufsearch();
-static QE_error_code do_directory_search();
-static QE_error_code follow_up();
+static QE_error_code process_ufsearch(ufsearchRec ufsrec);
+static QE_error_code do_directory_search(char *baseobject, searchPair search_vals, ufsearchRec ufsrec);
+static QE_error_code follow_up(entryList baseinfo, ufsearchRec ufsrec);
 
 char *TidyString();
 
@@ -507,7 +507,7 @@ request_state process_ufs_ds_result(requestRec request, int task_id, struct DSRe
 		searchPair search_vals, curr_val_list;
 		stringCell curr_val;
 		char *curr_name;
-		void get_read_attrs();
+		void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format);
 		QBool good_match;
 		search_vals = ufsrec->trying_target_search == TRUE?
 					  ufsrec->target_data:

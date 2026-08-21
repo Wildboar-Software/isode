@@ -16,9 +16,9 @@
 
 extern LLog *pgm_log;
 
-char   *SReportString ();
+char   *SReportString (int code);
 
-void	rts_adios (), rts_advise ();
+void	rts_adios (struct RtSAPabort *rta, char *event), rts_advise (struct RtSAPabort *rta, char *event);
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 void	ryr_advise (char *, char *, ...);

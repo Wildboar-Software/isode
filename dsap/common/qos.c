@@ -20,7 +20,7 @@
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
 
-static int  CMD_SRCH ();
+static int  CMD_SRCH (char *str, CMD_TABLE *cmd);
 
 static void dsaQoS_free (void *value) {
 	struct dsaQoS *a = (struct dsaQoS *) value;

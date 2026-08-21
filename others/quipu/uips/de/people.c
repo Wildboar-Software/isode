@@ -26,10 +26,10 @@ extern char exactString[];
 
 extern struct namelist * prratts;
 
-struct ds_search_arg *fillMostPRRSearchArgs();
+struct ds_search_arg *fillMostPRRSearchArgs(char *parentstr, int searchdepth);
 
-void makeExplicitPRRFilter();
-void prrFilter1(), prrFilter2(), prrFilter3(), prrFilter4();
+void makeExplicitPRRFilter(char *prrstr, struct s_filter **fpp);
+void prrFilter1(char *prrstr, struct s_filter **fpp), prrFilter2(char *prrstr, struct s_filter **fpp), prrFilter3(char *prrstr, struct s_filter **fpp), prrFilter4(char *prrstr, struct s_filter **fpp);
 extern void pageprint(char *, ...);
 
 VFP explicitPRR[] = {makeExplicitPRRFilter, NULLVFP};
@@ -171,7 +171,7 @@ int listExactPRRs (char *objectstr, struct namelist **listp) {
 int makeListPRRs (struct namelist **listp, char *parentstr) {
 	entrystruct * x;
 	int retval;
-	void onalarm();
+	void onalarm(void);
 	char *cp, *cp2;
 
 	if (rebind() != OK)

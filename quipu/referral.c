@@ -6,10 +6,10 @@
 
 extern LLog * log_dsap;
 char remote_lookup = TRUE;
-struct PSAPaddr	*	psap_cpy();
-struct dn_seq	* dn_seq_push();
-struct dn_seq	* dn_seq_pop();
-struct di_block	* di_alloc();
+struct PSAPaddr	*	psap_cpy(struct PSAPaddr *a);
+struct dn_seq	* dn_seq_push(DN dn, struct dn_seq *dnseq);
+struct dn_seq	* dn_seq_pop(struct dn_seq *dnseq);
+struct di_block	* di_alloc(void);
 
 static struct access_point * top_ap = NULLACCESSPOINT;
 
@@ -62,8 +62,8 @@ cont_ref_parent (DN name) {
 }
 
 void add_str_parent (char *sdn, char *spsap) {
-	DN dn, str2dn();
-	struct PSAPaddr *psap, * str2paddr();
+	DN dn, str2dn(char *str);
+	struct PSAPaddr *psap, * str2paddr(char *str);
 	struct access_point * next_ap;
 	/* add string DN and string PSAP to list of parents */
 	if ((psap = str2paddr (spsap)) == NULLPA) {

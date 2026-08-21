@@ -14,7 +14,7 @@ extern LLog *log_stat;
 
 #define adios(a, b) fatal(-1, b)
 
-char *new_version();
+char *new_version(void);
 
 /*
  * Function pointers to security routines

@@ -35,14 +35,14 @@ static char sedfil[BUFSIZ];
 
 static void	adios (char *what, char *fmt, ...);
 static void	advise (char *what, char *fmt, ...);
-static char   *version ();
-static char *strdup ();
+static char   *version (void);
+static char *strdup (char *s);
 
-static read_config (), read_psap (), build_root (), build_TLC (),
+static read_config (void), read_psap (), build_root (), build_TLC (),
        build_organization (), build_unit (), make_edb (),
-       build_tailor (), build_startup (), build_nightly (),
-       make_file (), build_dsap (), build_fred (), fudge_file (),
-       arginit (), parse_3166 (), table_3166 ();
+       build_tailor (void), build_startup (), build_nightly (),
+       make_file (char *fl, char *tmpl), build_dsap (), build_fred (), fudge_file (),
+       arginit (int ac, char **av), parse_3166 (), table_3166 ();
 
 extern char  *quipuversion;
 
@@ -98,7 +98,7 @@ struct country {
 #define	C_SHORT	0x01
 };
 
-static struct country *read_country ();
+static struct country *read_country (char *code);
 
 struct pair {
 	char   *p_name;
@@ -200,7 +200,7 @@ static struct pair pairs[] = {
 	NULL
 };
 
-static struct pair *n2p ();
+static struct pair *n2p (char *name, int any);
 
 static void read_config (void) {
 	int	    lineno;

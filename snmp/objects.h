@@ -46,7 +46,7 @@ int	add_syntax (
 	ParseFunction f_parse,
 	PrintFunction f_print
 );
-OS	text2syn ();
+OS	text2syn (char *name);
 
 typedef struct object_instance object_instance, *OI;
 
@@ -91,11 +91,11 @@ typedef struct object_type {
 }		object_type, *OT;
 #define	NULLOT	((OT) 0)
 
-int	readobjects ();
-int	add_objects ();
-OT	name2obj (), text2obj ();
-OID	text2oid ();
-char   *oid2ode_aux ();
+int	readobjects (const char *file);
+int	add_objects (OT ot);
+OT	name2obj (OID oid), text2obj (const char *text);
+OID	text2oid (const char *name);
+char   *oid2ode_aux (OID oid, int quoted);
 
 struct object_instance {
 	OID	    oi_name;			/* instance OID */
@@ -104,27 +104,27 @@ struct object_instance {
 };
 #define	NULLOI	((OI) 0)
 
-OI	name2inst (), next2inst (), text2inst ();
+OI	name2inst (OID oid), next2inst (OID oid), text2inst (const char *text);
 
 extern	IFP	o_advise;
 
 int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
 int s_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
 
-int	o_number ();
-int	o_longword ();
+int	o_number (OI oi, struct type_SNMP_VarBind *v, caddr_t number);
+int	o_longword (OI oi, struct type_SNMP_VarBind *v, integer number);
 #define	o_integer(oi,v,value)	o_longword ((oi), (v), (integer) (value))
 
-int	o_string ();
-int	o_qbstring ();
+int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, int len);
+int	o_qbstring (OI oi, struct type_SNMP_VarBind *v, struct qbuf *value);
 
-int	o_specific ();
+int	o_specific (OI oi, struct type_SNMP_VarBind *v, caddr_t value);
 #define	o_ipaddr(oi,v,value)	o_specific ((oi), (v), (caddr_t) (value))
 #ifdef	BSD44
 #define	o_clnpaddr(oi,v,value)	o_specific ((oi), (v), (caddr_t) (value))
 #endif
 
-int	mediaddr2oid ();
+int	mediaddr2oid (unsigned int *ip, uint8_t *addr, int len, int islen);
 #define	ipaddr2oid(ip,addr) \
 	mediaddr2oid ((ip), (uint8_t*) (addr), sizeof (struct in_addr), 0)
 #ifdef	BSD44
@@ -134,9 +134,9 @@ int	mediaddr2oid ();
 		      (int) (addr) -> isoa_len, 1)
 #endif
 
-OID	oid_extend (), oid_normalize ();
+OID	oid_extend (OID q, int howmuch), oid_normalize (OID q, int howmuch, int bigvalue);
 
 extern	int	debug;
 extern	char	PY_pepy[BUFSIZ];
 
-char   *strdup ();
+char   *strdup (const char *s);

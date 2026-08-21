@@ -8,7 +8,7 @@
 #include "tailor.h"
 
 #ifndef	lint
-static int _susaplose ();
+static int _susaplose (struct SSAPindication *si, int reason, va_list ap);
 
 int	susaplose (struct SSAPindication *si, ...) {
 	int	    reason,

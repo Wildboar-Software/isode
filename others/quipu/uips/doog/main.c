@@ -7,7 +7,7 @@
 
 void exit();
 
-static void read_doog_args();
+static void read_doog_args(int argc, char *argv[]);
 
 QBool testing = FALSE;
 
@@ -17,7 +17,7 @@ int main (int argc, char *argv[]) {
 	init_query_engine(argc, argv);
 	initialize();
 	if (bind_to_ds(argc, argv, SIMPLE_AUTH) == FALSE) exit(1);
-	interact();
+	interact(void);
 	return 0;
 }
 

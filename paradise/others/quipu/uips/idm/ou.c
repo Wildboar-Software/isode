@@ -27,11 +27,11 @@ extern char exactString[];
 
 struct namelist * ouatts;
 
-struct ds_list_arg *fillMostOUListArgs();
-struct ds_search_arg *fillMostOUSearchArgs();
+struct ds_list_arg *fillMostOUListArgs(char *str);
+struct ds_search_arg *fillMostOUSearchArgs(char *parentstr, int searchdepth);
 
-void makeExplicitOUFilter();
-void ouFilter1(), ouFilter2(), ouFilter3(), ouFilter4();
+void makeExplicitOUFilter(char *oustr, struct s_filter **fpp);
+void ouFilter1(char *oustr, struct s_filter **fpp), ouFilter2(char *oustr, struct s_filter **fpp), ouFilter3(char *oustr, struct s_filter **fpp), ouFilter4(char *oustr, struct s_filter **fpp);
 
 VFP explicitOU[] = {makeExplicitOUFilter, NULLVFP};
 VFP normalOU[] = {ouFilter1, ouFilter2, ouFilter3, ouFilter4, NULLVFP};

@@ -44,7 +44,7 @@
 #define DIRSIZ(dp) \
     ((sizeof (struct dirent) - (MAXNAMLEN+1)) + (((dp)->d_namlen+1 + 3) &~ 3))
 
-int scandir(char *dirname, struct dirent ***namelist, int (*select)(), int (*dcomp)())
+int scandir(char *dirname, struct dirent ***namelist, int (*select)(struct dirent *), int (*dcomp)(caddr_t, caddr_t))
 {
 	struct dirent *d, *p, **names;
 	int nitems;

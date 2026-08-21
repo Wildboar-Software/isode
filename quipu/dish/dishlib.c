@@ -39,8 +39,8 @@ PS	opt, rps;
 
 DN              savename = NULLDN;
 
-SFD             dish_quit ();
-SFD             dish_intr ();
+SFD             dish_quit(int sig);
+SFD             dish_intr(int sd);
 char		dad_flag = FALSE;
 unsigned	cache_time = 3600;	/* time to keep process alive */
 unsigned	connect_time = 120;     /* time to keep connection open */
@@ -49,7 +49,7 @@ char            inbuf[LINESIZE];
 char		bound = FALSE;
 char 		remote_prob;
 char 		doneget;
-char		*TidyString();
+char		*TidyString(char *a);
 char 		search_result;		/* another horrid global ! */
 
 extern void call_list (int argc, char **argv), call_compare (int argc, char **argv), call_search (int argc, char **argv),
@@ -66,7 +66,7 @@ static void call_bind_void(int argc, char **argv) {
 
 static struct {
 	char           *command;
-	void             (*handler) ();
+	void             (*handler) (int, char **);
 	int		unique;
 	char		defaults [LINESIZE];
 } Commands[MAXARGS];
@@ -99,7 +99,7 @@ int dish_cmd_init (void) {
 	add_dish_command ("?", 		call_help,		1);
 	add_dish_command ("help", 	call_help,		1);
 	add_dish_command ("fred", 	call_fred,		4);
-	dish_help_init ();
+	dish_help_init();
 }
 
 jmp_buf  dish_env;
@@ -129,7 +129,7 @@ char no_rcfile;
 
 int dish_init (int argc, char **argv) {
 	int             i;
-	char           *ttyname (), *getenv();
+	char           *ttyname (int fd), *getenv(const char *name);
 	char	       *vec [1];
 	char	      **vecptr;
 	extern char *  tailfile;
@@ -137,7 +137,7 @@ int dish_init (int argc, char **argv) {
 	extern char	fromfile;
 #endif
 
-	dish_cmd_init ();
+	dish_cmd_init();
 #ifdef LINUX
 	signal (SIGHUP, (__sighandler_t)dish_quit);
 	signal (SIGQUIT, (__sighandler_t)dish_quit);
@@ -216,7 +216,7 @@ int dish_init (int argc, char **argv) {
 	i = 1;
 	vec[0] = argv[0];
 	vecptr = vec;
-	want_oc_hierarchy ();	/* for add/modify ! */
+	want_oc_hierarchy();	/* for add/modify ! */
 #ifndef NO_STATS
 	log_stat -> ll_file = "dish.log";
 	log_stat -> ll_stat &= ~LLOGCRT;
@@ -233,7 +233,7 @@ int dish_init (int argc, char **argv) {
 	if (user_tailor () != OK) {
 		fprintf (stderr, "Tailoring failed\n");
 		if (frompipe)
-			exit_pipe ();
+			exit_pipe();
 		exit (-66);
 	}
 #ifdef OSISEC
@@ -270,14 +270,14 @@ void unknown_cmd (int argc, char **argv) {
 #ifdef GNUREADLINE
 
 void gnu_gets_setup (void) {
-	extern int           rl_bind_key ();
-	extern int               *rl_insert ();
+	extern int           rl_bind_key(int key, int (*func)(int, int));
+	extern int                rl_insert(int count, int c);
 	rl_bind_key ( '\t', rl_insert );
 }
 
 static char *
 gnu_gets (char *buf, int len) {
-	extern char          *readline ();
+	extern char          *readline(const char *prompt);
 	static char       *gets_line;
 	gets_line = readline ( "Dish -> " );
 	if ( gets_line && *gets_line )
@@ -302,13 +302,12 @@ int do_dish (void) {
 	char		noarg;
 	extern int 	parse_line;
 	extern int	dsa_dead;
-	extern int	errno;
 
 	Commands[num_cmd].command = NULLCP;
 	Commands[num_cmd].handler = unknown_cmd;
 	Commands[num_cmd].unique  = 0;
 #ifdef GNUREADLINE
-	gnu_gets_setup ();
+	gnu_gets_setup();
 #endif
 #ifdef LINUX
 	signal (SIGINT, (__sighandler_t)dish_intr);
@@ -320,17 +319,17 @@ int do_dish (void) {
 	while (1) {
 		dish_state = IDLE;
 		if (dsa_dead) {
-			ds_unbind ();
+			ds_unbind();
 			bound = FALSE;
 			dsa_dead = FALSE;
 		}
 		parse_line = 0;
-		reset_arg ();
+		reset_arg();
 		set_current_pos();
 		remote_prob = FALSE;
 		doneget = FALSE;
 		if (frompipe) {
-			set_alarm ();
+			set_alarm();
 			if (read_pipe (inbuf,sizeof inbuf) == -1)
 				continue;
 			signal (SIGALRM, SIG_IGN);
@@ -345,39 +344,39 @@ int do_dish (void) {
 #endif
 #ifdef	SOCKETS
 			if ((opt = ps_alloc (fdx_open)) == NULLPS) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-68, "ps_alloc failed");
 			}
 			if (fdx_setup (opt, sd_current) == NOTOK) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-69, "fdx_setup failed");
 			}
 			(*opt -> ps_writeP) (opt, "2", 1, 0);
 			if ((rps = ps_alloc (fdx_open)) == NULLPS) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-70, "ps_alloc 2 failed");
 			}
 			if (fdx_setup (rps, sd_current) == NOTOK) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-71, "fdx_setup 2 failed");
 			}
 			(*rps -> ps_writeP) (rps, "1", 1, 0);
 #else
 			if ((opt = ps_alloc (str_open)) == NULLPS) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-68, "ps_alloc failed");
 			}
 			if (str_setup (opt, NULLCP, BUFSIZ, 0) == NOTOK) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-69, "str_setup failed");
 			}
 			opt->ps_ptr++, opt->ps_cnt--;
 			if ((rps = ps_alloc (str_open)) == NULLPS) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-70, "ps_alloc 2 failed");
 			}
 			if (str_setup (rps, NULLCP , BUFSIZ, 0) == NOTOK) {
-				exit_pipe ();
+				exit_pipe();
 				fatal (-71, "str_setup 2 failed");
 			}
 			rps->ps_ptr++, rps->ps_cnt--;
@@ -386,7 +385,7 @@ int do_dish (void) {
 				test_rc_file (opt);
 		} else {
 			do {
-				set_alarm ();
+				set_alarm();
 #ifdef GNUREADLINE
 				if (gnu_gets ( inbuf, sizeof inbuf ) == 0)
 					call_quit(0, NULLVP);
@@ -526,7 +525,7 @@ void call_quit (int argc, char **argv) {
 	signal (SIGINT, SIG_DFL);
 	DLOG (log_dsap, LLOG_DEBUG, ("Dish:- Exiting Dish successfully..."));
 	if (bound)
-		ds_unbind ();
+		ds_unbind();
 	bound = FALSE;
 	ps_free (opt);
 	ps_free (rps);

@@ -25,7 +25,7 @@ union osi_control_msg {
 	char ocm_data[128];
 };
 
-int	gen2tp4 (), tp42gen ();
+int	gen2tp4 (struct TSAPaddr *generic, union sockaddr_osi *specific), tp42gen (struct TSAPaddr *generic, union sockaddr_osi *specific);
 
 #define	CLTS			/* have CL-mode transport service */
 
@@ -91,10 +91,10 @@ struct tp4pkt {
 #define tp4_reason	tp_un.tp_disconnect.reason
 };
 
-struct tp4pkt *newtp4pkt ();
+struct tp4pkt *newtp4pkt (TP_EVENT code);
 #define	freetp4pkt(tp)	cfree ((char *) (tp))
 
-int	gen2tp4 (), tp42gen ();
+int	gen2tp4 (struct TSAPaddr *generic, OSI_ADDR *specific, struct NSAPaddr *template), tp42gen (struct TSAPaddr *generic, OSI_ADDR *specific);
 #endif
 
 #ifdef XTI_TP

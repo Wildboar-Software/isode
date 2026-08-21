@@ -16,7 +16,7 @@
 #include "RFA-types.h"
 #include "rfainfo.h"
 
-extern char *getRelativeFN();
+extern char *getRelativeFN(char *fn);
 extern char *fsBase;
 
 /*--------------------------------------------------------------------

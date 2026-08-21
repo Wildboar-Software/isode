@@ -51,7 +51,7 @@ extern struct nlist nl[];
 void init_mib(void);
 void fin_mib (void);
 void set_variable (char *name, char *newvalue);
-int	getkmem (), setkmem (), chekmem ();
+int	getkmem (struct nlist *n, caddr_t buffer, int cc), setkmem (struct nlist *n, caddr_t buffer, int cc), chekmem (struct nlist *n);
 
 extern  int	nd;
 extern	int	quantum;

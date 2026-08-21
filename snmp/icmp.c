@@ -6,6 +6,7 @@
  * F30602-88-C-0016.
  */
 
+#include <stddef.h>
 #include <string.h>
 #include <stdio.h>
 #include "mib.h"
@@ -62,7 +63,7 @@ static struct icmpstat icmpstat;
 #define	icmpOutAddrMaskReps 25
 
 #ifdef LINUX
-int _read_snmp_stats ();
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
 
 static int _read_icmp_stats (void)
 {

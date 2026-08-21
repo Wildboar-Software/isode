@@ -24,10 +24,10 @@ extern char exactString[];
 
 extern struct namelist * orgatts;
 
-struct ds_search_arg *fillMostOrgSearchArgs();
+struct ds_search_arg *fillMostOrgSearchArgs(char *cstr, int searchdepth);
 
-void makeExplicitOrgFilter();
-void orgFilter1(), orgFilter2(), orgFilter3(), orgFilter4();
+void makeExplicitOrgFilter(char *ostr, struct s_filter **fpp);
+void orgFilter1(char *ostr, struct s_filter **fpp), orgFilter2(char *ostr, struct s_filter **fpp), orgFilter3(char *ostr, struct s_filter **fpp), orgFilter4(char *ostr, struct s_filter **fpp);
 extern void pageprint(char *, ...);
 
 VFP explicitOrg[] = {makeExplicitOrgFilter, NULLVFP};

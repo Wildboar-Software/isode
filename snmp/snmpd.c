@@ -123,7 +123,7 @@ static void hupser (int sig);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-static void	ts_advise ();
+static void	ts_advise (struct TSAPdisconnect *td, int code, char *event);
 
 int	nd = NOTOK;
 
@@ -232,9 +232,9 @@ static	PS	audit = NULLPS;
 /* FUNCTIONS */
 
 static void doit_udp (int pd);
-static void gc_set (void),
-        pb_free (), tb_free (), export_view (), do_trap (),
-        do_traps (), arginit (), readconfig ();
+static void gc_set (void);
+static void pb_free (struct smuxPeer *pb), tb_free (struct smuxTree *tb), export_view (OT ot), do_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings),
+        do_traps (struct type_SNMP_Message *msg, int generic, int specific), arginit (char **vec), readconfig (void);
 static void envinit (void);
 static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx);
 static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu);

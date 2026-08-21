@@ -27,9 +27,9 @@ static jmp_buf toplevel;
 static IFP	startfnx;
 static IFP	stopfnx;
 
-int	ros_init (), ros_work (), ros_indication (), ros_lose ();
+int	ros_init (int vecp, char **vec), ros_work (int fd), ros_indication (int sd, struct RoSAPindication *roi), ros_lose (struct TSAPdisconnect *td);
 
-SFD cleanup ();
+SFD cleanup (void);
 
 /* RESPONDER */
 

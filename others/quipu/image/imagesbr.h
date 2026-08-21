@@ -14,7 +14,7 @@ extern LLog *pgm_log;
 
 /* AKA */
 
-void	init_aka ();
+void	init_aka (char *pgm, int stayopen, char *dit);
 
 /* DIRECTORY */
 
@@ -28,7 +28,7 @@ struct type_IMAGE_Image {
 	struct qbuf *data;
 };
 
-struct type_IMAGE_Image *fetch_image ();
+struct type_IMAGE_Image *fetch_image (char *local, char *domain);
 
 /* ERRORS */
 

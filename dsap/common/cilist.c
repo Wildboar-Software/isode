@@ -66,8 +66,8 @@ static void *cilistparse (char *str) {
 	char * mark = NULLCP;
 	char t61_str = FALSE;
 	extern char t61_flag;
-	char * octparse ();
-	char * prtparse ();
+	char * octparse (char *str);
+	char * prtparse (char *str);
 
 	b = result; /* to keep lint quiet */
 	if (t61_flag) {

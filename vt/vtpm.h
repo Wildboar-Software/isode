@@ -221,13 +221,12 @@ extern int	fd,
 
 extern char	*dprofile, *cprofile;
 #ifndef SVR4
-extern char	*ttyname();
+extern char	*ttyname (int fd);
 #endif
 extern char	*myname;
 extern PE	p_ondq;
 extern LLog _vt_log, *vt_log;
 
-extern int errno;
 extern unsigned	state, sector;
 
 extern int		vns,
@@ -276,30 +275,30 @@ extern int		vns,
 	profile is name of the profile. This is also used for the draft profile.
 */
 
-int	s1_01(),
-	s1_02B(),
-	s1_02S(),
-	s1_03B(),
-	s1_03S(),
-	s1_10B(),
-	s1_10N(),
-	s1_10T(),
-	s1_50B(),
-	s1_51Q(),
-	s1_51R(),
-	s1_51N(),
-	s1_51T();
+int	s1_01 (int event, PE pe),
+	s1_02B (int event, PE pe),
+	s1_02S (int event, PE pe),
+	s1_03B (int event, PE pe),
+	s1_03S (int event, PE pe),
+	s1_10B (int event, PE pe),
+	s1_10N (int event, PE pe),
+	s1_10T (int event, PE pe),
+	s1_50B (int event, PE pe),
+	s1_51Q (int event, PE pe),
+	s1_51R (int event, PE pe),
+	s1_51N (int event, PE pe),
+	s1_51T (int event, PE pe);
 
-int 	s5_400B(),
-		s5_402B(),
-		s5_420B(),
-		s5_422B(),
-		s5_40N(),
-		s5_40T(),
-		s5_42N(),
-		s5_42T(),
-		s5_61(),
-		s5_62();
+int 	s5_400B (int event, PE pe),
+		s5_402B (int event, PE pe),
+		s5_420B (int event, PE pe),
+		s5_422B (int event, PE pe),
+		s5_40N (int event, PE pe),
+		s5_40T (int event, PE pe),
+		s5_42N (int event, PE pe),
+		s5_42T (int event, PE pe),
+		s5_61 (int event, PE pe),
+		s5_62 (int event, PE pe);
 
 extern struct SSAPref sfs;
 extern struct SSAPref *sf;
@@ -322,7 +321,7 @@ extern struct PSAPindication pi;
 extern struct PSAPdata	px;
 extern struct PSAPfinish *pf;
 
-void	finalbye ();
-void	acs_adios ();
+void	finalbye (void);
+void	acs_adios (struct AcSAPabort *aa, char *event);
 
 extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/

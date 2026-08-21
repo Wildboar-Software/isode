@@ -45,9 +45,9 @@ static struct mntent {
 	int   mnt_freq;     /* dump frequency, in days */
 	int   mnt_passno;   /* pass number on parallel fsck */
 };
-FILE 		*setmntent();
-FILE 		*endmntent();
-struct mntent	*getmntent();
+FILE 		*setmntent(char *mntfile, char *mode);
+FILE 		*endmntent(FILE *mntfile);
+struct mntent	*getmntent(FILE *mfile);
 #endif
 
 #ifdef HPUX
@@ -103,14 +103,14 @@ struct fs *fs_tbl = NULL ;
 
 extern int quantum;
 
-int init_unix_fs();
-int sync_unix_fs();
+int init_unix_fs(void);
+int sync_unix_fs(integer cor);
 
-static struct fs *get_fsent();
-static int  get_fs_table();
-static void free_fs_table();
-static int  o_unix_fs();
-static void refresh_entry();
+static struct fs *get_fsent(unsigned *ip, int len, int isnext);
+static int  get_fs_table(void);
+static void free_fs_table(void);
+static int  o_unix_fs(OI oi, struct type_SNMP_VarBind *v, int offset);
+static void refresh_entry(struct fs *fsp);
 
 /*-----------------------------------------------------------------
  * Come here to retreive any variable from this mib group

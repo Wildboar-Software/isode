@@ -33,15 +33,15 @@
 extern	integer	smux_errno;
 extern	char	smux_info[];
 
-int	smux_init ();				/* INIT */
-int	smux_simple_open ();			/* (simple) OPEN */
-int	smux_close ();				/* CLOSE */
-int	smux_register ();			/* REGISTER */
-int	smux_response ();			/* RESPONSE */
-int	smux_wait ();				/* WAIT */
-int	smux_trap ();				/* TRAP */
+int	smux_init (int debug);				/* INIT */
+int	smux_simple_open (OID identity, char *description, char *commname, int commlen);			/* (simple) OPEN */
+int	smux_close (int reason);				/* CLOSE */
+int	smux_register (OID subtree, int priority, int operation);			/* REGISTER */
+int	smux_response (struct type_SNMP_GetResponse__PDU *event);			/* RESPONSE */
+int	smux_wait (struct type_SNMP_SMUX__PDUs **event, int secs);				/* WAIT */
+int	smux_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings);				/* TRAP */
 
-char   *smux_error ();				/* TEXTUAL ERROR */
+char   *smux_error (integer i);				/* TEXTUAL ERROR */
 
 struct smuxEntry {
 	char   *se_name;
@@ -52,9 +52,9 @@ struct smuxEntry {
 	int	    se_priority;
 };
 
-int	setsmuxEntry (), endsmuxEntry ();
+int	setsmuxEntry (int f), endsmuxEntry (void);
 
-struct smuxEntry *getsmuxEntry ();
+struct smuxEntry *getsmuxEntry (void);
 
-struct smuxEntry *getsmuxEntrybyname ();
-struct smuxEntry *getsmuxEntrybyidentity ();
+struct smuxEntry *getsmuxEntrybyname (char *name);
+struct smuxEntry *getsmuxEntrybyidentity (OID identity);

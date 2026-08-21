@@ -14,19 +14,19 @@
 
 #define PADCHARS 22
 
-extern char * TidyString();
-extern char * TidyString2();
-extern int soundex_match();
-extern int sfree();
-extern int dn_free();
-extern PE dn_enc();
-extern DN dn_dec();
-extern DN str2dnX();
-extern char * octparse ();
-extern char * prtparse ();
-extern char * mapPhone ();
+extern char * TidyString(char *a);
+extern char * TidyString2(char *a);
+extern int soundex_match(struct filter_item *fitem, AV_Sequence avs);
+extern int sfree(char *x);
+extern int dn_free(DN dn);
+extern PE dn_enc(DN dn);
+extern DN dn_dec(PE pe);
+extern DN str2dnX(char *str);
+extern char * octparse (char *str);
+extern char * prtparse (char *str);
+extern char * mapPhone (char *from);
 extern int ch_set;
-extern int telcmp();
+extern int telcmp(char *a, char *b);
 
 int greyBook = FALSE;
 char padding[20];

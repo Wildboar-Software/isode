@@ -117,7 +117,6 @@ static void psABORTser (int sd, struct PSAPabort *pa);
 
 static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti);
 static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti);
-static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti);
 static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FTAMindication *fti);
 static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMindication *fti);
 static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMindication *fti);
@@ -138,14 +137,6 @@ int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	sigiomask (smask);
 	return result;
 }
-
-static int  doPSdata ();
-static int  doPStokens ();
-static int  doPSsync ();
-static int  doPSactivity ();
-static int  doPSreport ();
-static int  doPSfinish ();
-static int  doPSabort ();
 
 int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {
 	int     result;

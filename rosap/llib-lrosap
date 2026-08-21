@@ -22,61 +22,35 @@
 
 /* SERVER only */
 
-int	RoExec (ss, roi, arg1, arg2, hook, setperms)
-struct SSAPstart *ss;
-char   *arg1,
-       *arg2;
-struct RoSAPindication *roi;
-IFP	hook,
-	setperms;
+int	RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, IFP hook, IFP setperms)
 {
     return RoExec (ss, roi, arg1, arg2, hook, setperms);
 }
 
 /* RO-BEGIN.INDICATION */
 
-int	RoInit (vecp, vec, ros, roi)
-int	vecp;
-char  **vec;
-struct RoSAPstart *ros;
-struct RoSAPindication *roi;
+int	RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi)
 {
     return RoInit (vecp, vec, ros, roi);
 }
 
 /* RO-BEGIN.RESPONSE */
 
-int	RoBeginResponse (sd, status, data, roi)
-int	sd;
-int	status;
-PE	data;
-struct RoSAPindication *roi;
+int	RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi)
 {
     return RoBeginResponse (sd, status, data, roi);
 }
 
 /* RO-BEGIN.REQUEST */
 
-int	RoBeginRequest (called, data, roc, roi)
-struct	RoSAPaddr *called;
-PE	data;
-struct RoSAPconnect *roc;
-struct RoSAPindication *roi;
+int	RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi)
 {
     return RoBeginRequest (called, data, roc, roi);
 }
 
 /* RO-INVOKE.REQUEST */
 
-int	RoInvokeRequest (sd, op, class, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-	class,
-	invokeID,
-       *linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int	RoInvokeRequest (int sd, int op, int class, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
     return RoInvokeRequest (sd, op, class, args, invokeID, linkedID, priority,
 		roi);
@@ -84,81 +58,49 @@ struct RoSAPindication *roi;
 
 /* RO-RESULT.REQUEST */
 
-int	RoResultRequest (sd, invokeID, op, result, priority, roi)
-int	sd;
-int	invokeID,
-	op,
-	priority;
-PE	result;
-struct RoSAPindication *roi;
+int	RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi)
 {
     return RoResultRequest (sd, invokeID, op, result, priority, roi);
 }
 
 /* RO-ERROR.REQUEST */
 
-int	RoErrorRequest (sd, invokeID, error, params, priority, roi)
-int	sd;
-int	invokeID,
-	error,
-	priority;
-PE	params;
-struct RoSAPindication *roi;
+int	RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi)
 {
     return RoErrorRequest (sd, invokeID, error, params, priority, roi);
 }
 
 /* RO-U-REJECT.REQUEST */
 
-int	RoURejectRequest (sd, invokeID, reason, priority, roi)
-int	sd;
-int    *invokeID,
-	reason,
-	priority;
-struct RoSAPindication *roi;
+int	RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi)
 {
     return RoURejectRequest (sd, invokeID, reason, priority, roi);
 }
 
 /* RO-INVOKE.REQUEST (interruptable) */
 
-int	RoIntrRequest (sd, op, args, invokeID, linkedID, priority, roi)
-int	sd;
-int	op,
-	invokeID,
-       *linkedID,
-	priority;
-PE	args;
-struct RoSAPindication *roi;
+int	RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi)
 {
     return RoIntrRequest (sd, op, args, invokeID, linkedID, priority, roi);
 }
 
 /* RO-WAIT.REQUEST (pseudo) */
 
-int	RoWaitRequest (sd, secs, roi)
-int	sd;
-int	secs;
-struct RoSAPindication *roi;
+int	RoWaitRequest (int sd, int secs, struct RoSAPindication *roi)
 {
     return RoWaitRequest (sd, secs, roi);
 }
 
 /* RO-END.REQUEST */
 
-int	RoEndRequest (sd, priority, roi)
-int	sd;
-int	priority;
-struct RoSAPindication *roi;
+int	RoEndRequest (int sd, int priority, struct RoSAPindication *roi)
 {
     return RoEndRequest (sd, priority, roi);
 }
 
 /* RO-END.RESPONSE */
 
-int	RoEndResponse (sd, roi)
-int	sd;
-struct RoSAPindication *roi;
+int	RoEndResponse (int sd, struct RoSAPindication *roi)
 {
     return RoEndResponse (sd, roi);
 }
@@ -166,10 +108,7 @@ struct RoSAPindication *roi;
 
 /* define vectors for INDICATION events */
 
-int	RoSetIndications (sd, indication, roi)
-int	sd;
-IFP	indication;
-struct RoSAPindication *roi;
+int	RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi)
 {
     return RoSetIndications (sd, indication, roi);
 }
@@ -177,11 +116,7 @@ struct RoSAPindication *roi;
 
 /* map association descriptors for select() */
 
-int	RoSelectMask (sd, mask, nfds, roi)
-int	sd;
-fd_set *mask;
-int    *nfds;
-struct RoSAPindication *roi;
+int	RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi)
 {
     return RoSelectMask (sd, mask, nfds, roi);
 }
@@ -189,10 +124,7 @@ struct RoSAPindication *roi;
 
 /* bind underlying service */
 
-int	RoSetService (sd, bfunc, roi)
-int	sd;
-IFP	bfunc;
-struct RoSAPindication *roi;
+int	RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi)
 {
     return RoSetService (sd, bfunc, roi);
 }
@@ -200,9 +132,7 @@ struct RoSAPindication *roi;
 
 /* modify underyling service */
 
-int	RoSetThorn (sd, roi)
-int	sd;
-struct RoSAPindication *roi;
+int	RoSetThorn (int sd, struct RoSAPindication *roi)
 {
     return RoSetThorn (sd, roi);
 }
@@ -210,8 +140,7 @@ struct RoSAPindication *roi;
 
 /* return RoSAP error code in string form */
 
-char   *RoErrString (c)
-int	c;
+char   *RoErrString (int c)
 {
     return RoErrString (c);
 }

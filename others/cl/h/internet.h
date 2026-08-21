@@ -68,7 +68,7 @@ int	start_udp_server ();
 
 #define	join_udp_server(fd,sock)	join_udp_aux ((fd), (sock), 0)
 #define	join_udp_client(fd,sock)	join_udp_aux ((fd), (sock), 1)
-int	join_udp_aux ();
+int	join_udp_aux (int fd, struct sockaddr_in *sock, int newfd);
 
 int	read_udp_socket ();
 int	write_udp_socket ();

@@ -271,17 +271,17 @@ typedef struct NSAPaddr CONN_DB; /*
 #define WAIT_CONFIRMATION 2
 #endif
 
-int     start_x25_client ();
-int     start_x25_server ();
-int     join_x25_client ();
-int     join_x25_server ();
-int     read_x25_socket ();
-int     write_x25_socket ();
-int     close_x25_socket ();
-int     select_x25_socket ();
+int     start_x25_client (struct NSAPaddr *local);
+int     start_x25_server (struct NSAPaddr *local, int backlog, int opt1, int opt2);
+int     join_x25_client (int fd, struct NSAPaddr *remote);
+int     join_x25_server (int fd, struct NSAPaddr *remote);
+int     read_x25_socket (int fd, char *buffer, int len);
+int     write_x25_socket (int fd, char *buffer, int len);
+int     close_x25_socket (int fd);
+int     select_x25_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
 
-struct NSAPaddr *if2gen();
-CONN_DB *gen2if();
+struct NSAPaddr *if2gen(struct NSAPaddr *generic, CONN_DB *specific, int context);
+CONN_DB *gen2if(struct NSAPaddr *generic, CONN_DB *specific, int context);
 
 #define ADDR_LOCAL      0
 #define ADDR_REMOTE     1

@@ -16,10 +16,10 @@
 extern LLog * log_dsap;
 extern DN mydsadn;
 
-struct oper_act	* oper_alloc();
-struct di_block	* di_alloc();
-struct oper_act	* make_get_dsa_info_op();
-extern Attr_Sequence entry_find_type();
+struct oper_act	* oper_alloc(void);
+struct di_block	* di_alloc(void);
+struct oper_act	* make_get_dsa_info_op(DN dn, struct di_block *di);
+extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 /*
 *  This routine is used to read the info (including presentation address)
@@ -172,7 +172,7 @@ void dsa_info_result_wakeup(struct oper_act *on) {
 	struct di_block	* di;
 	struct di_block	* next_di;
 	struct di_block	**di_p;
-	Entry		  cache_dsp_entry();
+	Entry		  cache_dsp_entry(EntryInfo *ptr,char complete);
 
 	DLOG(log_dsap, LLOG_DEBUG, ("dsa_info_result_wakeup()"));
 	/*

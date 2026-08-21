@@ -19,8 +19,8 @@
 
 void	errexit (char *, char *, ...);
 void	errmsg (char *, char *, ...);
-void	ros_adios (), ros_errmsg (),
-		acs_errmsg (), acs_errexit ();
+void	ros_adios (struct RoSAPpreject *rop, char *event), ros_errmsg (struct RoSAPpreject *rop, char *event),
+		acs_errmsg (struct AcSAPabort *aca, char *event), acs_errexit (struct AcSAPabort *aca, char *event);
 
 static char *myservice = "rfa";
 
@@ -30,7 +30,7 @@ static char *mypci = "rfa pci";
 extern char *isodeversion;
 extern char *myname;
 
-static int ryconnect ();
+static int ryconnect (char *thehost, PE data, char *theservice, char *thecontext, char *thepci);
 
 int makeconn (char *thehost, char *password, char *user) {
 	int	result;
@@ -201,7 +201,7 @@ void acs_errmsg (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_errmsg ();
+static void	_errmsg (char *what, char *fmt, va_list ap);
 
 void	errexit (char *what, char *fmt, ...) {
 	va_list ap;

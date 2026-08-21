@@ -6,7 +6,7 @@
 #define	TRUE	1
 #define	FALSE	0
 
-int test1(), test2(), test3(), test4();
+int test1(void), test2(void), test3(int v), test4(int v);
 int	debug;
 char	*myname;
 
@@ -29,9 +29,9 @@ int main (int argc, char **argv) {
 
 int test1 (void) {
 	int i;
-	double l_fixed_to_double();
+	double l_fixed_to_double(struct l_fixedpt *t);
 	struct l_fixedpt sample;
-	double s_fixed_to_double();
+	double s_fixed_to_double(struct s_fixedpt *t);
 	struct s_fixedpt s_sample;
 
 	for (i = 0; i < 8; i++) {

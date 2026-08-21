@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include "pepsycodec.h"
 #include "ryinitiator.h"
+#include "tailor.h"
 
 #undef	TIMER
 #undef	TMS
@@ -359,7 +360,7 @@ static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0
 		tdiff -> tv_sec--, tdiff -> tv_usec += 1000000;
 }
 #else
-long times ();
+long times (struct tms *);
 
 static void timer (int bytes, int pkts) {
 	long    ms;

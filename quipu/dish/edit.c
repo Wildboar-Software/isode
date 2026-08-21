@@ -150,7 +150,7 @@ void get_password (char *str, char *buffer) {
 	extern char     inbuf[];
 	extern int      fd;
 	extern char	remote_prob;
-	char * 		getpassword ();
+	char * 		getpassword(char *prompt);
 
 	if (frompipe) {
 		sprintf (prog, "p%s\n", str);
@@ -174,7 +174,7 @@ int yesno (char *str) {
 	extern char     inbuf[];
 	extern int      fd;
 	extern char	remote_prob;
-	char * 		getpassword ();
+	char * 		getpassword(char *prompt);
 
 	if (frompipe) {
 		sprintf (prog, "y%s\n", str);

@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
@@ -12,7 +13,7 @@ extern int parse_status;
 
 int main (int argc, char **argv) {
 	char * buffer;
-	char * _getline();
+	char * _getline(FILE *file);
 	int opt;
 	extern int optind;
 	extern char *optarg;
@@ -68,7 +69,7 @@ int main (int argc, char **argv) {
 int do_parse (char *str) {
 	Attr_Sequence as;
 	Attr_Sequence as2;
-	Attr_Sequence as_combine();
+	Attr_Sequence as_combine(Attr_Sequence as, char * str, char allownull);
 	PE pe = NULLPE;
 	static PS ps = NULLPS;
 	extern PS _opt;

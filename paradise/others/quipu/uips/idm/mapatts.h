@@ -7,6 +7,6 @@ struct mapnamelist {
 #define NULLMNLIST (struct mapnamelist *)NULL
 #define mapname_alloc()   (struct mapnamelist *)smalloc(sizeof (struct mapnamelist))
 
-void addToAttList();
-void addAttNode();
-char * mapAttName();
+void addToAttList(char *str);
+void addAttNode(char *tablename, char *nicename);
+char * mapAttName(char *tablename);

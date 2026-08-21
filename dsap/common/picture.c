@@ -127,7 +127,8 @@ void exec_print (
 ) {
 	char * ptr;
 	PS sps;
-	PE pe, grab_pe();
+	PE pe;
+	PE grab_pe(AttributeValue av);
 
 	ps_flush (ps);
 	if ((sps = ps_alloc (str_open)) == NULLPS)
@@ -169,7 +170,7 @@ static void picture_print (PS ps, void *value, int format) {
 		ps_print (ps,"(No display process defined)");
 }
 
-extern int quipu_pe_cmp();
+extern int quipu_pe_cmp(PE a, PE b);
 
 static void *pe_cpy_void (void *value)
 {

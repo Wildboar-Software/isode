@@ -31,8 +31,8 @@ typedef struct dir_entry {
 
 #define NULLDIRENTRY ((dirEntry) 0)
 
-int free_dir_entry();
-int free_ent_attrs();
-int free_mod_vals();
+int free_dir_entry(dirEntry entry);
+int free_ent_attrs(dirAttrs attrs);
+int free_mod_vals(modVals vals);
 
 #endif

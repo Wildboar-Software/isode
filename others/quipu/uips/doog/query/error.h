@@ -60,11 +60,11 @@ typedef struct _error_list {
 #define NULLError (errorList) NULL
 #define error_alloc() (errorList) smalloc(sizeof(error_list))
 
-void error_list_free();
-errorList error_list_copy();
+void error_list_free(errorList *error_list_ptr);
+errorList error_list_copy(errorList list);
 
-void add_error_to_request_rec();
-char *ds_error_message();
-QE_error_code get_log_error_type();
+void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_code error_type, struct DSError *error);
+char *ds_error_message(struct DSError *error);
+QE_error_code get_log_error_type(struct DSError *error, int task_id);
 
 #endif _query_error_h_

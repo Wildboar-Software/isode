@@ -202,7 +202,7 @@ static int  op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *r
 #define	NMAX	(sizeof (ut -> ut_name))
 
 #ifdef	SYS5
-struct utmp *getutent ();
+struct utmp *getutent (void);
 #endif
 
 static int  op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi) {
@@ -506,7 +506,8 @@ static struct web {
 #define	nrand()		(((float) (rand ()) / (float) 2147483647))
 
 #ifndef SVR4	/* defined in <stdlib.h> - comes from general.h */
-int	rand (), srand ();
+int	rand (void);
+void	srand (unsigned int);
 #endif
 #endif
 #define	rng(a,b)	if (((i = ifix (a * nrand ()) * b) ? i -= b : i) < 0 \

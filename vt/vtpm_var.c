@@ -1,7 +1,7 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 
 PE	pre, pwe;
-PE	mkdeliver(); 
+PE	mkdeliver (int ack); 
 int	fd,
 	readfds,
 	writefds,
@@ -11,7 +11,7 @@ int	fd,
 
 char	*dprofile, *cprofile;
 #ifndef SVR4
-char	*ttyname();
+char	*ttyname (int fd);
 #endif
 char	*myname;
 

@@ -22,19 +22,19 @@
 extern int dsap_ad;
 extern int next_task_id;
 
-extern void get_read_attrs();
+extern void get_read_attrs(Attr_Sequence readattrs, attrValList *entryattrs, int format);
 
 #ifndef NO_STATS
 extern LLog *log_stat;
 #endif
 
-static errorList start_modify();
-static struct entrymod * ems_append();
+static errorList start_modify(QCardinal request_id, char *baseobject, modifyAttr mod_attr_list, int *task_id_ptr);
+static struct entrymod * ems_append(struct entrymod *a, struct entrymod *b);
 
-static void get_template_attrs();
-static modifyAttr remove_common_attrs(), remove_double_attrs();
+static void get_template_attrs(Attr_Sequence readattrs, modifyAttr template);
+static modifyAttr remove_common_attrs(modifyAttr primary, modifyAttr secondary), remove_double_attrs(modifyAttr primary);
 
-extern QE_error_code start_read();
+extern QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr_list, int *task_id_ptr);
 
 /*
  * 	Start of procedures for entry modification requests.

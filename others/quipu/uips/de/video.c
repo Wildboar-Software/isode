@@ -29,10 +29,10 @@ char * getenv();
 char * tgetstr();
 char * tgoto();
 char *TidyString();
-char *checkSetTerm();
-int output();
-void turnInverseVideoOn();
-void soundBell();
+char *checkSetTerm(char *termtype, char *defterm);
+int output(int c);
+void turnInverseVideoOn(void);
+void soundBell(void);
 
 void initVideo (void) {
 	char * cp;

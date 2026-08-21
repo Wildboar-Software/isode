@@ -16,10 +16,14 @@
 #endif
 #include <errno.h>
 
-Avlnode *getentry_block();
-Entry get_entry_aux();
+Avlnode *getentry_block(Entry p_parent, char *fname);
+Entry get_entry_aux(FILE *file, Entry parent, int dtype);
 extern LLog * log_dsap;
-char * _getline ();
+#ifdef TURBO_DISK
+char * _getline (GDBM_FILE db);
+#else
+char * _getline (FILE *file);
+#endif
 int master_edbs = 0;
 int slave_edbs = 0;
 
@@ -35,7 +39,11 @@ getentry_block (Entry p_parent, char *fname) {
 	int   dtype;
 	char *version;
 	Avlnode	*tree;
-	Avlnode	*get_entries_aux();
+#ifdef TURBO_DISK
+	Avlnode	*get_entries_aux(GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age);
+#else
+	Avlnode	*get_entries_aux(FILE * file, Entry parent, char * version, int dtype, time_t cache_age);
+#endif
 
 	time_t cache_age;
 #ifdef TURBO_DISK
@@ -234,11 +242,11 @@ Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, 
 #endif
 	Entry eptr = NULLENTRY;
 	Avlnode	*tree = NULLAVL;
-	int	entry_cmp();
+	int	entry_cmp(Entry e1, Entry e2);
 #ifndef TURBO_INDEX
 	Entry trail;
 #endif
-	Entry find_sibling();
+	Entry find_sibling(void);
 #ifdef TURBO_DISK
 	extern int dbmeof;
 #endif

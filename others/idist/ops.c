@@ -14,12 +14,12 @@
 #include "Idist-ops.h"		/* operation definitions */
 #include "defs.h"
 
-extern struct type_Idist_FileSpec *makefs ();
+extern struct type_Idist_FileSpec *makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname);
 extern	char target[];
-static void print_ia5list ();
+static void print_ia5list (struct type_Idist_IA5List *ia5);
 
 int	basic_error ();
-int	null_result (), ia5_result (), query_result ();
+int	null_result (), ia5_result (), query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi);
 
 int	result_value;
 
@@ -57,7 +57,7 @@ int	transfer (unsigned short type, int opts, unsigned short mode, off_t size, ti
 
 int terminate (int type, int status) {
 	struct type_Idist_TermStatus *ts;
-	struct type_Idist_FileType	*makeftype ();
+	struct type_Idist_FileType	*makeftype (int type);
 
 	if ((ts = (struct type_Idist_TermStatus *) malloc ( sizeof *ts)) == NULL)
 		adios ("memory", "out of");
@@ -115,7 +115,7 @@ int	rquery (char *file, time_t *mtime, off_t *size, unsigned short *mode) {
 }
 
 int query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, struct RoSAPindication *roi) {
-	long	convtime ();
+	long	convtime (struct type_Idist_FileTime *fm);
 
 	result_value = OK;
 	if (qr -> offset == type_Idist_QueryResult_doesntExist) {
@@ -147,7 +147,7 @@ int query_result (int sd, int id, int error, struct type_Idist_QueryResult *qr, 
 
 static int copts;
 int rmchk (int opts) {
-	int	listcdir_result ();
+	int	listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi);
 
 	copts = opts;
 	return invoke (operation_Idist_listcdir, (caddr_t)NULL,

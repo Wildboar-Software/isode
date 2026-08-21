@@ -59,7 +59,7 @@ extern char callingDteNumber[],
 	   origDefaultCo[],
 	   origDefaultOrg[],
 	   welcomeMessage[];
-static void read_de_option();
+static void read_de_option(char *line);
 
 extern struct namelist * coatts;
 extern struct namelist * locatts;
@@ -71,7 +71,7 @@ int initialisations(int argc, char **argv) {
 	FILE *config_file;
 	char linebuf[LINESIZE], user_file[LINESIZE];
 	char * cp;
-	void exit();
+	void exit(int status);
 
 	print_parse_errors = FALSE;   /* Stop auto printing of errors */
 	quipu_syntaxes();
@@ -177,7 +177,7 @@ runtimeargs:
  */
 static void read_de_option(char *line) {
 	char *part1, *part2;
-	extern char *TidyString(), *SkipSpace();
+	extern char *TidyString(char *a), *SkipSpace(char *ptr);
 	int n;
 
 	part1 = SkipSpace(line);
@@ -305,7 +305,7 @@ void Usage (char *rtn)
 }
 */
 
-welcome() {
+void welcome(void) {
 	FILE * welcome_file;
 	char linebuf[LINESIZE];
 

@@ -158,12 +158,12 @@ extern char user[];		/* the users name */
 extern int errno;		/* system error number */
 extern char *myname;
 
-char *makestr();
-struct namelist *makenl();
-struct subcmd *makesubcmd();
-struct namelist *lookup();
-struct namelist *expand();
-char *exptilde();
+char *makestr(char *str);
+struct namelist *makenl(char *name);
+struct subcmd *makesubcmd(int type);
+struct namelist *lookup(char *name, int action, struct namelist *value);
+struct namelist *expand(struct namelist *list, int wh);
+char *exptilde(char buf[], char *file);
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);

@@ -37,11 +37,11 @@ LLog    _de_log = {
 };
 LLog *de_log = &_de_log;
 
-extern char *TidyString();
-extern char *findHelp();
-void onint1(), de_exit();
-void foundFollowing(), matchFollowing();
-char enterYesNo();
+extern char *TidyString(char *a);
+extern char *findHelp(char *helpstr);
+void onint1(void), de_exit(int exitCode);
+void foundFollowing(void), matchFollowing(void);
+char enterYesNo(char *str);
 
 struct query qinfo[MAXTYPE + 1];
 
@@ -94,11 +94,11 @@ char origDefaultCo[LINESIZE], origDefaultOrg[LINESIZE],
 char * username, * backup_dsa_address, * password;
 jmp_buf sjbuf;
 
-SFD cleanupok();
+SFD cleanupok(void);
 
 int main(int argc, char *argv[]) {
 	int res;
-	void doUfnSearch();
+	void doUfnSearch(void);
 
 	/*  pdu_dump_init("/tmp"); */
 	if (initialisations(argc, argv) != OK)
@@ -1050,7 +1050,7 @@ int searchFail(int objectType) {
 }
 
 void de_exit(int exitCode) {
-	void exit();
+	void exit(int status);
 
 	if (byeByeMessage == TRUE)
 		displayFile("byebye", FALSE); /* FALSE means not a help screen */

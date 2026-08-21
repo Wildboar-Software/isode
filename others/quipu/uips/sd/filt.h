@@ -22,12 +22,12 @@ typedef struct filter_struct {
 	struct filter_struct *next;
 } filt_struct;
 
-void make_type();
-filt_struct *make_item_filter();
-filt_struct *link_filters();
-filt_struct *make_parent_filter();
-Filter make_filter();
-Filter make_attr_filter();
-void free_filt();
+void make_type(char *name_val, filt_struct *filt);
+filt_struct *make_item_filter(char *oid, int match, char *value);
+filt_struct *link_filters(filt_struct *filt1, filt_struct *filt2);
+filt_struct *make_parent_filter(int filt_type, filt_struct *filt1, filt_struct *filt2, filt_struct *filt3);
+Filter make_filter(filt_struct *filt);
+Filter make_attr_filter(void);
+void free_filt(filt_struct *filt);
 
 #endif

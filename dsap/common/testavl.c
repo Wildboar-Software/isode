@@ -17,7 +17,7 @@ int main( int argc, char **argv ) {
 	char	command[ 10 ];
 	char	name[ 80 ];
 	char	*p;
-	int	free();
+	void	free(void *ptr);
 
 	printf( "> " );
 	while ( fgets( command, sizeof( command ), stdin ) != NULL ) {

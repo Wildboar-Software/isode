@@ -54,7 +54,7 @@
 #include "pepsycodec.h"
 
 extern LLog	* log_dsap;
-PE		  asn2pe();
+PE		  asn2pe(char *str);
 
 PE asnstr2pe (char * orig) {
 	PE	  result;

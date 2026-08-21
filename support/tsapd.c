@@ -127,7 +127,7 @@ struct IAEntry {
 static	struct IAEntry *iz;
 static	struct IAEntry  iae[NENTRIES];
 
-int	str2dnY ();
+int	str2dnY (char *str, DN *dn);
 
 extern	int	dsa_ad;
 extern	int	dsa_dead;
@@ -145,7 +145,7 @@ void	advise (int, char *, char*, ...);
 static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event);
 
 #ifdef SYS5
-static  SFD cldser();
+static  SFD cldser (int sig);
 #endif
 
 #ifdef	NOGOSIP

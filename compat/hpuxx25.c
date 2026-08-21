@@ -35,11 +35,11 @@ struct  fdl_st {
 	struct fdl_st *next;
 };
 static struct fdl_st *fdl = NULL;
-static void setup_sigurg ();
-static void clear_sigurg ();
+void setup_sigurg (int fd);
+void clear_sigurg (int fd);
 
 #ifdef  DEBUG
-void    print_x25_facilities ();
+static void print_x25_facilities (FACILITY_DB *hp, int coc, char *caption);
 #endif
 
 int start_x25_client (struct NSAPaddr *local, int priv) {

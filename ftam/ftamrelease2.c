@@ -8,8 +8,6 @@
 static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);
 
 /* F-TERMINATE.RESPONSE */
-static int  FTerminateResponseAux ();
-
 int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int	    smask;
 	int     result;

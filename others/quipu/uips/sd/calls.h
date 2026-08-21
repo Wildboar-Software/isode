@@ -8,14 +8,14 @@
 #include "filt.h"
 #include "y.tab.h"
 
-void user_tailor(), main_help(), main_bind(), cnnct_quit (), cnnct_bind();
-void rd_start(), back_start(), widen(), set_default_type(), list_start();
-void rdn2str(), srch_start(), dn2buf(), read_print(), quipu_print();
-void quipu_error(), returnmain(), get_listed_object(), scrollbar();
-void make_friendly(), goto_addr(), entry2str(), rfc2jnt();
+void user_tailor(void), main_help(void), main_bind(void), cnnct_quit (void), cnnct_bind(void);
+void rd_start(void), back_start(void), widen(void), set_default_type(void), list_start(void);
+void rdn2str(caddr_t ptr,char *cptr), srch_start(void), dn2buf(caddr_t ptr,char *cptr), read_print(int (*func)(PS, caddr_t *, int),caddr_t ptr), quipu_print(int (*func)(PS, caddr_t *, int),caddr_t ptr);
+void quipu_error(struct DSError *err), returnmain(void), get_listed_object(char number, WIDGET *wdgt), scrollbar(int command);
+void make_friendly(char *fstr, char *str), goto_addr(void), entry2str(caddr_t ptr, char *cptr, int size), rfc2jnt(char *string);
 
-int isleafnode(), issubstr(), indexstring();
+int isleafnode(char *name), issubstr(char *str, char *substr), indexstring(char *string, char *substring);
 
-struct attrcomp *sort_attrs();
+struct attrcomp *sort_attrs(struct attrcomp *entry_attrs);
 
 str_seq SortList();

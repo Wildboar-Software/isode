@@ -26,15 +26,15 @@ int rdn_print(), as_print();
 char *TidyString();
 Attr_Sequence get_sorted_attrs();
 
-void kill_message(), message();
+void kill_message(void), message(Widget refto, char *mess);
 
 void requestPassword();
-void parse_duarc();
+void parse_duarc(char *options_path);
 
-void set_default_type(), make_friendly();
-void quit();
+void set_default_type(void), make_friendly(char *fstr, char *str);
+void quit(int sig);
 
-void put_dn_and_password();
+void put_dn_and_password(char *dn, char *password, char *name);
 
 str_seq dnseq = NULLDS, backseq = NULLDS, showseq = NULLDS;
 str_seq alias_seq = NULLDS, aliased_dn_seq = NULLDS, password_seq = NULLDS;
@@ -42,7 +42,7 @@ int entry_number, back_buf_num, dn_number, histlimit = 50;
 bool read_all_flag = TRUE;
 bool testing = FALSE;
 
-static void make_friendly_aux();
+static void make_friendly_aux(char *fstr, char *rdn);
 
 char            goto_path[STRINGLEN];         /* Used by the 'G:goto' command*/
 char            base_path[STRINGLEN];         /* Used by all DS operations   */
@@ -712,7 +712,7 @@ void make_friendly_rdn (char *friendly, char *object, char *base) {
 int goto_addr (void) {
 	char *str;
 	int count = 0;
-	void add_to_history();
+	void add_to_history(int seqnum);
 
 	set_default_type();
 	make_friendly(friendly_base_path, base_path);

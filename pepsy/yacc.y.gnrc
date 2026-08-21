@@ -37,7 +37,7 @@ typedef struct ypa {
     int	    ya_lineno;
 }		ypa, *YA;
 #define	NULLYA	((YA) 0)
-extern double pow ();
+extern double pow (double, double);
 
 %BEGIN(PEPSY)%
 /* encoding/decoding/printing/freeing functions */

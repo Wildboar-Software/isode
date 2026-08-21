@@ -16,7 +16,7 @@ typedef struct ent_list {
 #define NULLEntryList (entryList) NULL
 #define entry_list_alloc() (entryList) smalloc(sizeof(entry_list))
 
-void dn_list_free(), dn_list_copy();
-QBool dn_list_add(), dn_list_merge(), dn_list_insert();
+void dn_list_free(entryList *entry_list_ptr), dn_list_copy(entryList original, entryList *copy);
+QBool dn_list_add(char *dn, entryList *entry_list_ptr, AttributeType object_type), dn_list_merge(), dn_list_insert(char *dn, entryList *entry_list_ptr, AttributeType object_type);
 
 #endif _query_entry_list_h_
