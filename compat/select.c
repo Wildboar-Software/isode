@@ -315,15 +315,15 @@ again:
    buffered in user-space for reading...
  */
 
-static IFP	sfnx[FD_SETSIZE] = { NULL };
+static int (*sfnx[FD_SETSIZE])(int, void *) = { NULL };
 static caddr_t	sdata[FD_SETSIZE] = { NULL };
 
-IFP	set_check_fd (int fd, IFP fnx, caddr_t data)
+int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *)
 {
-	IFP	    ofnx;
+	int (*ofnx)(int, void *) = sfnx[fd];
 
 	if (fd < 0 || fd >= FD_SETSIZE)
-		return NULLIFP;
+		return NULL;
 	ofnx = sfnx[fd];
 	sfnx[fd] = fnx, sdata[fd] = data;
 	return ofnx;

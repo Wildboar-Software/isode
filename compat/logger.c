@@ -39,7 +39,7 @@ struct ll_private {
 };
 
 static struct ll_private *llp = NULL;
-static IFP _ll_header_routine = (IFP)ll_defmhdr;
+static int (*_ll_header_routine)(char *, char *, char *) = ll_defmhdr;
 
 long	lseek (int, off_t, int);
 
@@ -435,8 +435,8 @@ int ll_defmhdr (
 /*
  * ll_setmhdr - Set "make header" routine, overriding default.
  */
-IFP ll_setmhdr (IFP make_header_routine) {
-	IFP result = _ll_header_routine;
+int (*ll_setmhdr (int (*make_header_routine)(char *, char *, char *)))(char *, char *, char *) {
+	int (*result)(char *, char *, char *) = _ll_header_routine;
 	_ll_header_routine = make_header_routine;
 	return result;
 }

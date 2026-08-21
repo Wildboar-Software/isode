@@ -586,7 +586,7 @@ static void hexprint (char *bp, int n, uint8_t *buf, char *start, char *stop) {
 
 static struct printent {
 	int	    p_family;
-	IFP	    p_function;
+	int (*p_function)(struct sockaddr *, char *);
 } ents[] = {
 #ifdef	TCP
 	AF_INET,	(IFP)inetprint,

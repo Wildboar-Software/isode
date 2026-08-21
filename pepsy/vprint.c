@@ -494,15 +494,15 @@ void vpopstr(void)  {
 }
 
 void vpushpp (
-	FILE *vfp,
+	FILE *f,
 	PE pe,
 	char *text,
 	int rw
 ) {
-	fprintf(vfp, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
+	fprintf(f, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
 	if (pe -> pe_context != PE_DFLT_CTX)
-		fprintf(vfp, ", context %d", pe -> pe_context);
-	fprintf(vfp, "\n");
+		fprintf(f, ", context %d", pe -> pe_context);
+	fprintf(f, "\n");
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 

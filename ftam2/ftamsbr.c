@@ -16,7 +16,7 @@ extern int vfs_fdf;
 
 extern struct vfsmap vfs[];
 
-struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftamfd) {
+struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftam_fd) {
 #ifndef	BRIDGE
 	int    fmt;
 	struct vfsmap *lf;
@@ -41,7 +41,7 @@ struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ft
 #else
 				if ((vf -> vf_flags & VF_OK) && vf -> vf_mode == fmt) {
 					if (vf -> vf_peek
-							&& (*vf -> vf_peek) (vf, fd, file, st, ftamfd)
+							&& (*vf -> vf_peek) (vf, fd, file, st, ftam_fd)
 							== NOTOK)
 						break;
 
@@ -64,7 +64,7 @@ struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ft
 		for (vf = lf; vf >= vfs; vf--)
 			if ((vf -> vf_flags & VF_OK) && vf -> vf_mode == fmt) {
 				if (vf -> vf_peek
-						&& (*vf -> vf_peek) (vf, fd, file, st, ftamfd) != DONE)
+						&& (*vf -> vf_peek) (vf, fd, file, st, ftam_fd) != DONE)
 					continue;
 
 				return vf;
@@ -86,7 +86,7 @@ struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ft
 
 		if (vf -> vf_flags & VF_OK) {
 			if (vf -> vf_peek)
-				(*vf -> vf_peek) (vf, fd, file, st, ftamfd);
+				(*vf -> vf_peek) (vf, fd, file, st, ftam_fd);
 			return vf;
 		}
 	}
@@ -165,7 +165,7 @@ int	textcheck (void *param, char *data) {
 	return OK;
 }
 
-int	binarypeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
+int	binarypeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam_fd) {
 	static struct type_DOCS_FTAM__3__Parameters p3s;
 	struct type_DOCS_FTAM__3__Parameters *p3 = &p3s;
 
@@ -205,7 +205,7 @@ int	binarypeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam
 
 #define	isIA5(c) (isprint ((uint8_t) c) || (isspace ((uint8_t)c) && (c) != '\r'))
 
-int	textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
+int	textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam_fd) {
 #ifndef	BRIDGE
 	int     gd,
 			n;
@@ -286,7 +286,7 @@ int	textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd
 #endif
 }
 
-int	fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd) {
+int	fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam_fd) {
 	struct type_DOCS_NBS__9__Parameters *p9;
 	struct FTAMindication ftis;
 
@@ -296,7 +296,7 @@ int	fdfpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftamfd)
 
 	vf -> vf_parameter = NULLCP, vf -> vf_flags &= ~VF_PARM;
 
-	if (fdf_names2p (ftamfd, FA_RDATTR, &p9, &ftis) == NOTOK)
+	if (fdf_names2p (ftam_fd, FA_RDATTR, &p9, &ftis) == NOTOK)
 		return NOTOK;
 
 	vf -> vf_parameter = (caddr_t) p9;
