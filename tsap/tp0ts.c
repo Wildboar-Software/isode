@@ -1006,23 +1006,23 @@ out:
 #endif
 
 int tp0init (struct tsapblk *tb) {
-	tb -> tb_connPfnx = (IFP)TConnect;
-	tb -> tb_retryPfnx = (IFP)TRetry;
+	tb -> tb_connPfnx = TConnect;
+	tb -> tb_retryPfnx = TRetry;
 
-	tb -> tb_startPfnx = (IFP)TStart;
-	tb -> tb_acceptPfnx = (IFP)TAccept;
+	tb -> tb_startPfnx = TStart;
+	tb -> tb_acceptPfnx = TAccept;
 
-	tb -> tb_writePfnx = (IFP)TWrite;
-	tb -> tb_readPfnx = (IFP)TRead;
-	tb -> tb_discPfnx = (IFP)TDisconnect;
-	tb -> tb_losePfnx = (IFP)TLose;
+	tb -> tb_writePfnx = TWrite;
+	tb -> tb_readPfnx = TRead;
+	tb -> tb_discPfnx = TDisconnect;
+	tb -> tb_losePfnx = TLose;
 
 #ifdef	NODELAY
-	tb -> tb_drainPfnx = (IFP)TDrain;
+	tb -> tb_drainPfnx = TDrain;
 #endif
 
 #ifdef  MGMT
-	tb -> tb_manfnx = (IFP)TManGen;
+	tb -> tb_manfnx = TManGen;
 #endif
 }
 #endif

@@ -157,7 +157,7 @@ int TSetIndications (
 int	TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td);		/* map transport descriptors for select() */
 int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td);	/* estimate of octets that might be returned */
 int	TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td);	/* get TSAPs */
-int	TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td);		/* defining transport manager */
+int	TSetManager (int sd, int (*fnx)(unsigned int type, ...), struct TSAPdisconnect *td);		/* defining transport manager */
 
 char   *TErrString (int code);		/* return TSAP error code in string form */
 

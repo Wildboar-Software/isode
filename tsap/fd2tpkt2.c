@@ -9,11 +9,11 @@
 #include "tailor.h"
 #include "internet.h"
 
-static int  fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx);
-static int  readx (int fd, char *buffer, int n, IFP readfnx);
+static int  fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n));
+static int  readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
 
 struct tsapkt *
-fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
+fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n)) {
 	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
@@ -35,7 +35,7 @@ fd2tpkt (int fd, IFP initfnx, IFP readfnx) {
 	return t;
 }
 
-static int fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
+static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n)) {
 	int    code, len, vlen;
 	char  *vptr;
 
@@ -282,7 +282,7 @@ static int fd2tpktaux (int fd, struct tsapkt *t, IFP initfnx, IFP readfnx) {
 	return OK;
 }
 
-static int readx (int fd, char *buffer, int n, IFP readfnx) {
+static int readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n)) {
 	int    i,
 		   cc;
 	char   *bp;
@@ -304,7 +304,7 @@ static int readx (int fd, char *buffer, int n, IFP readfnx) {
 	return (bp - buffer);
 }
 
-int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx) {
+int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapblk *tb, struct tsapkt *t, char *cp, int n)) {
 	int     i,
 			ilen,
 			ulen;

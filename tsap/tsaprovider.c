@@ -202,7 +202,7 @@ int TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *
 	for (;;) {
 		ifds = efds = mask;		/* struct copy */
 
-		if (tb -> tb_checkfnx == NULLIFP || (*tb -> tb_checkfnx) (tb) != OK)
+		if (tb -> tb_checkfnx == NULL || (*tb -> tb_checkfnx) (tb) != OK)
 			switch ((*tb -> tb_selectfnx) (nfds, &ifds, NULLFD, &efds, secs)) {
 			case NOTOK:		/* let read function find error... */
 				ifds = mask;

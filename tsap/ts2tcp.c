@@ -161,7 +161,7 @@ done:
 #endif
 #endif
 
-	tb -> tb_retryfnx = NULLIFP;	/* No need... */
+	tb -> tb_retryfnx = NULL;	/* No need... */
 
 	return DONE;
 }
@@ -229,7 +229,7 @@ done:
 
 /*    init for read from network */
 
-static int tcpinit (int fd, struct tsapkt *t) {
+static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 	int    cc,
 		   i;
 	char  *bp;
@@ -253,6 +253,10 @@ static int tcpinit (int fd, struct tsapkt *t) {
 		return DR_LENGTH;
 
 	return OK;
+}
+
+static int tcpread (int fd, char *buffer, int n) {
+	return read_tcp_socket (fd, buffer, n);
 }
 
 char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
@@ -329,13 +333,13 @@ int TTService (struct tsapblk *tb) {
 	tb -> tb_tsdusize = MAX1006
 						- (tb -> tb_tpduslop = sizeof t -> t_pkthdr + DT_MAGIC);
 
-	tb -> tb_retryfnx = (IFP)tcpretry;
+	tb -> tb_retryfnx = tcpretry;
 
-	tb -> tb_initfnx = (IFP)tcpinit;
-	tb -> tb_readfnx = (IFP)read_tcp_socket;
-	tb -> tb_writefnx = (IFP)tp0write;
-	tb -> tb_closefnx = (IFP)close_tcp_socket;
-	tb -> tb_selectfnx = (IFP)select_tcp_socket;
+	tb -> tb_initfnx = tcpinit;
+	tb -> tb_readfnx = tcpread;
+	tb -> tb_writefnx = tp0write;
+	tb -> tb_closefnx = close_tcp_socket;
+	tb -> tb_selectfnx = select_tcp_socket;
 
 	tp0init (tb);
 }

@@ -81,7 +81,7 @@ int TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *respond
 /*    define transport manager */
 
 #ifdef	MGMT
-int TSetManager (int sd, IFP fnx, struct TSAPdisconnect *td) {
+int TSetManager (int sd, int (*fnx)(unsigned int type, ...), struct TSAPdisconnect *td) {
 	int	    smask;
 	struct tsapblk *tb;
 

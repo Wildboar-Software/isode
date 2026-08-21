@@ -749,7 +749,7 @@ static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisco
 	return result;
 }
 
-static int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct tp4pkt *tp;
 
 	SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP, ("TPM error %d", reason));

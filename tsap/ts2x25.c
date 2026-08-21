@@ -138,7 +138,7 @@ done:
 	LLOG (x25_log, LLOG_NOTICE,
 		  ("connection %d to %s", fd, na2str (remote)));
 
-	tb -> tb_retryfnx = NULLIFP;	/* No need... */
+	tb -> tb_retryfnx = NULL;	/* No need... */
 
 	return DONE;
 }

@@ -768,7 +768,7 @@ STATIC int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisco
 	return result;
 }
 
-STATIC int TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
+STATIC void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 	struct msghdr *msg = &msgs;
 	union osi_control_msg *oc = &ocm;
 

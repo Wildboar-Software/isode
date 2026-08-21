@@ -72,6 +72,7 @@
 #endif
 
 struct tsapblk;
+struct tsapkt;
 struct TSAPdisconnect;
 
 int	tpktlose(struct tsapblk*, ...), tsaplose (struct TSAPdisconnect*, ...);
@@ -147,34 +148,34 @@ struct tsapblk {
     struct tsapADDR tb_initiating;/* initiator */
     struct tsapADDR tb_responding;/* responder */
 
-    IFP	    tb_retryfnx;	/* resume async connection */
+    int	    (*tb_retryfnx)(struct tsapblk *tb, struct TSAPdisconnect *td);	/* resume async connection */
 
-    IFP	    tb_connPfnx;	/* TP connect */
-    IFP	    tb_retryPfnx;	/* TP retry connect */
-    IFP	    tb_startPfnx;	/* TP start accept */
-    IFP	    tb_acceptPfnx;	/* TP accept */
-    IFP	    tb_writePfnx;	/* TP write data */
-    IFP	    tb_readPfnx;	/* TP read data */
-    IFP	    tb_discPfnx;	/* TP disconnect */
-    IFP	    tb_losePfnx;	/* TP loses */
+    int	    (*tb_connPfnx)(struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);	/* TP connect */
+    int	    (*tb_retryPfnx)(struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);	/* TP retry connect */
+    int	    (*tb_startPfnx)(struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);	/* TP start accept */
+    int	    (*tb_acceptPfnx)(struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);	/* TP accept */
+    int	    (*tb_writePfnx)(struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);	/* TP write data */
+    int	    (*tb_readPfnx)(struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);	/* TP read data */
+    int	    (*tb_discPfnx)(struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);	/* TP disconnect */
+    void    (*tb_losePfnx)(struct tsapblk *tb, int reason, struct TSAPdisconnect *td);	/* TP loses */
 
-    IFP	    tb_drainPfnx;	/* TP drain queued writes */
-    IFP	    tb_queuePfnx;	/* TP note queued writes */
+    int	    (*tb_drainPfnx)(struct tsapblk *tb, struct TSAPdisconnect *td);	/* TP drain queued writes */
+    int	    (*tb_queuePfnx)(struct tsapblk *tb, int insert, struct TSAPdisconnect *td);	/* TP note queued writes */
     struct qbuf tb_qwrites;	/* queue of writes to retry */
 
-    IFP	    tb_initfnx;		/* init for read from network */
-    IFP	    tb_readfnx;		/* read from network */
-    IFP	    tb_writefnx;	/* write to network */
-    IFP	    tb_closefnx;	/* close network */
-    IFP	    tb_selectfnx;	/* select network */
-    IFP	    tb_checkfnx;	/* check network prior to select */
-    IFP	    tb_nreadfnx;	/* estimate of octets waiting to be read */
+    int	    (*tb_initfnx)(int fd, struct tsapkt *t, char *buffer, int n);	/* init for read from network */
+    int	    (*tb_readfnx)(int fd, char *buffer, int n);	/* read from network */
+    int	    (*tb_writefnx)(struct tsapblk *tb, struct tsapkt *t, char *cp, int n);	/* write to network */
+    int	    (*tb_closefnx)(int fd);	/* close network */
+    int	    (*tb_selectfnx)(int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);	/* select network */
+    int	    (*tb_checkfnx)(struct tsapblk *tb);	/* check network prior to select */
+    int	    (*tb_nreadfnx)(struct tsapblk *tb, long *nbytes);	/* estimate of octets waiting to be read */
 
     void (*tb_DataIndication)(int sd, struct TSAPdata *tx);	/* INDICATION handlers */
     void (*tb_DiscIndication)(int sd, struct TSAPdisconnect *td);	/* .. */
 
 #ifdef  MGMT
-    IFP     tb_manfnx;          /* for management reports */
+    int	    (*tb_manfnx)(unsigned int type, ...);	/* for management reports */
     int     tb_pdus;            /* PDUs sent */
     int     tb_pdur;            /* PDUs recv */
     int     tb_bytes;           /* bytes sent since last report */
@@ -371,8 +372,8 @@ struct tsapkt *newtpkt (int code);
 void text2tpkt (struct tsapkt *t);
 void tpkt2text (LLog *lp, struct tsapkt *t, int isread);
 
-int	tpkt2fd (struct tsapblk *tb, struct tsapkt *t, IFP writefnx);
-struct tsapkt  *fd2tpkt (int fd, IFP initfnx, IFP readfnx);
+int	tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapblk *tb, struct tsapkt *t, char *cp, int n));
+struct tsapkt  *fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
 
 char   *tpkt2str (struct tsapkt *t);
 struct tsapkt  *str2tpkt (char *buffer);

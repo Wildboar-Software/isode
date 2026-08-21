@@ -586,10 +586,10 @@ static void hexprint (char *bp, int n, uint8_t *buf, char *start, char *stop) {
 
 static struct printent {
 	int	    p_family;
-	int (*p_function)(struct sockaddr *, char *);
+	void (*p_function)(struct sockaddr *, char *);
 } ents[] = {
 #ifdef	TCP
-	AF_INET,	(IFP)inetprint,
+	AF_INET,	(void (*)(struct sockaddr *, char *))inetprint,
 #endif
 
 #ifdef	CLTS

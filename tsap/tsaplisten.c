@@ -1959,19 +1959,19 @@ int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
 	tsapPsig (tb, sd);
 	result = OK;
 	if (onoff) {
-		if (tb -> tb_drainPfnx == NULLIFP)
+		if (tb -> tb_drainPfnx == NULL)
 			result = tsaplose (td, DR_OPERATION, NULLCP,
 							   "queued writes not supported by TS-stack");
 		else {
 			tb -> tb_flags |= TB_QWRITES;
-			tb -> tb_queuePfnx = (IFP)TNetQueue;
+			tb -> tb_queuePfnx = TNetQueue;
 		}
 	} else if (tb -> tb_qwrites.qb_forw != &tb -> tb_qwrites)
 		result = tsaplose (td, DR_WAITING, NULLCP,
 						   "queued writes still waiting to drain");
 	else {
 		tb -> tb_flags &= ~TB_QWRITES;
-		tb -> tb_queuePfnx = NULLIFP;
+		tb -> tb_queuePfnx = NULL;
 	}
 	sigiomask (smask);
 	return result;
