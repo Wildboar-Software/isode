@@ -8,7 +8,7 @@
 
 /* F-INITIALIZE.INDICATION */
 
-int FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAMindication *fti) {
+int FInit (int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti) {
 	int    i;
 	PE	    pe = NULLPE;
 	struct AcSAPstart acss;

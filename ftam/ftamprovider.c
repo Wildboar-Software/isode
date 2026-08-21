@@ -1594,7 +1594,7 @@ static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindi
 	return acs2ftamabort (fsb, aca, fti);
 }
 static void psDATAser (int sd, struct PSAPdata *px) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1607,7 +1607,7 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 }
 
 static void psTOKENser (int sd, struct PSAPtoken *pt) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1620,7 +1620,7 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 }
 
 static void psSYNCser (int sd, struct PSAPsync *pn) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1633,7 +1633,7 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 }
 
 static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1646,7 +1646,7 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 }
 
 static void psREPORTser (int sd, struct PSAPreport *pp) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1659,7 +1659,7 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 }
 
 static void psFINISHser (int sd, struct PSAPfinish *pf) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1672,7 +1672,7 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 }
 
 static void psABORTser (int sd, struct PSAPabort *pa) {
-	IFP	    handler;
+	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
 	struct FTAMindication *fti = &ftis;
@@ -1688,7 +1688,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 
 #define	e(i)	(indication ? (i) : NULL)
 
-int FSetIndications (int sd, IFP indication, struct FTAMindication *fti) {
+int FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti) {
 	int     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;

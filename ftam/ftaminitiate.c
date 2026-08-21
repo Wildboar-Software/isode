@@ -11,10 +11,10 @@
 #define	FS_CTX		"iso ftam"
 #define	FS_ASN		"ftam pci"
 
-static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti);
+static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);
 
 /* F-INITIALIZE.REQUEST */
-int FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {
+int FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	int     smask;
 	int     result;
 
@@ -80,7 +80,7 @@ not_enough:
 	return result;
 }
 
-static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti) {
+static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	int	i;
 	int	    bits,
 			rcvd_bits,

@@ -1142,9 +1142,9 @@ extern char *ftamversion;
 
 extern LLog _ftam_log, *ftam_log;
 
-int	FInit (int vecp, char **vec, struct FTAMstart *fts, IFP tracing, struct FTAMindication *fti);		/* F-INITIALIZE.INDICATION */
+int	FInit (int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti);		/* F-INITIALIZE.INDICATION */
 int	FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-INITIALIZE.RESPONSE */
-int	FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, IFP tracing, struct FTAMconnect *ftc, struct FTAMindication *fti);	/* F-INITIALIZE.REQUEST */
+int	FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);	/* F-INITIALIZE.REQUEST */
 int	FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti);	/* F-TERMINATE.REQUEST */
 int	FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);	/* F-TERMINATE.RESPONSE */
 int	FUAbortRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-U-ABORT.REQUEST */
@@ -1169,11 +1169,11 @@ int	FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic dia
 int	FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti);	/* F-TRANSFER-END.REQUEST */
 int	FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);	/* F-TRANSFER-END.RESPONSE */
 
-int	FSetIndications (int sd, IFP indication, struct FTAMindication *fti);	/* define vector for INDICATION events */
+int	FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti);	/* define vector for INDICATION events */
 int	FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti);		/* map ftam descriptors for select() */
 
-int	FHookRequest (int sd, IFP tracing, struct FTAMindication *fti);	/* set tracing */
-int	FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw);	/* user-defined tracing */
+int	FHookRequest (int sd, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti);	/* set tracing */
+void	FTraceHook (int sd, char *event, char *fpdu, PE pe, int rw);	/* user-defined tracing */
 
 char   *FErrString (int code);		/* return FTAM error code in string form */
 

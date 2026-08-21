@@ -45,7 +45,7 @@ struct RyOperation {
 #else
 	IFP	    ryo_res_encode;	/* encodes result */
 	IFP	    ryo_res_decode;	/* decodes   .. */
-	IFP	    ryo_res_free;	/* frees     .. */
+	int	  (*ryo_res_free)(caddr_t parm);	/* frees     .. */
 #endif
 
 	struct RyError **ryo_errors;/* errors possible */
@@ -61,7 +61,7 @@ struct RyError {
 #else
 	IFP	    rye_param_encode;	/* encodes parameter */
 	IFP	    rye_param_decode;	/* decodes   .. */
-	IFP	    rye_param_free;	/* frees     .. */
+	int	  (*rye_param_free)(caddr_t parm);	/* frees     .. */
 #endif
 };
 
@@ -89,7 +89,7 @@ struct opsblk {
 	modtyp *opb_free_mod;	/* pointer to table for result type */
 	int	    opb_free_index;	/* index to entry in tables */
 #else
-	IFP	    opb_free;			/* free routine for event parameter */
+	int	  (*opb_free)(caddr_t parm);		/* free routine for event parameter */
 #endif
 
 	PE	    opb_pe;		/* for Simon */

@@ -159,7 +159,7 @@ struct ftamblk {
 
 	int	    fsb_attrs;		/* attribute-groups */
 
-	IFP	    fsb_indication;	/* event handler */
+	void	  (*fsb_indication)(int sd, struct FTAMindication *fti);	/* event handler */
 
 	struct PSAPdata fsb_data;	/* for screwy BDT stuff */
 
@@ -168,7 +168,7 @@ struct ftamblk {
 	struct FTAMdiagnostic *fsb_canceldiags;
 	int	    fsb_cancelndiag;
 
-	IFP	    fsb_trace;		/* user-defined tracing function */
+	void	  (*fsb_trace)(int sd, char *event, char *fpdu, PE pe, int rw);	/* user-defined tracing function */
 };
 #define	NULLFSB		((struct ftamblk *) 0)
 
