@@ -206,7 +206,7 @@ int RtExec (
 	struct RtSAPindication *rti,
 	char *arg1,
 	char *arg2,
-	IFP hook,
+	int (*hook)(struct isoservent *is, struct RtSAPindication *rti),
 #ifndef	IAE
 	int (*setperms) (struct isoservent *)
 #else

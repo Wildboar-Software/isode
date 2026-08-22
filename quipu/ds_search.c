@@ -52,8 +52,8 @@ extern Entry    database_root;
 int             size;
 char            qctx;
 extern int      search_level;
-IFP             approxfn(short x);
-IFP             av_cmp_fn(short syntax);
+int		(*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
+int		(*av_cmp_fn(short syntax))(void *value1, void *value2);
 #ifdef TURBO_INDEX
 extern int      optimized_only;
 #endif
@@ -553,7 +553,7 @@ static int check_filteritem_presrch (struct filter_item *fitem, struct DSError *
 	case FILTERITEM_APPROX:
 		if (fitem->UNAVA.ava_type == NULLTABLE_ATTR)
 			return (invalid_matching(fitem->UNAVA.ava_type, error, dn));
-		if ((fitem->fi_ifp = approxfn(fitem->UNAVA.ava_type->oa_syntax)) == NULLIFP)
+		if ((fitem->fi_ifp.approx = approxfn(fitem->UNAVA.ava_type->oa_syntax)) == NULL)
 			/* approx not suported for this type */
 			/* so set it to equality */
 			fitem->fi_type = FILTERITEM_EQUALITY;
@@ -569,7 +569,7 @@ static int check_filteritem_presrch (struct filter_item *fitem, struct DSError *
 		if (fitem->UNAVA.ava_type == NULLTABLE_ATTR)
 			return (invalid_matching(fitem->UNAVA.ava_type, error, dn));
 		if (fitem->fi_type != FILTERITEM_APPROX)
-			if ((fitem->fi_ifp = av_cmp_fn(fitem->UNAVA.ava_type->oa_syntax)) == NULLIFP)
+			if ((fitem->fi_ifp.cmp = av_cmp_fn(fitem->UNAVA.ava_type->oa_syntax)) == NULL)
 				return (invalid_matching(fitem->UNAVA.ava_type, error, dn));
 		av_acl = str2syntax("acl");
 		av_schema = str2syntax("schema");
@@ -1408,7 +1408,7 @@ static int check_filteritem (struct filter_item *fitem, Entry entryptr, DN bindd
 		res = substr_search(fitem, as->attr_value);
 		break;
 	case FILTERITEM_APPROX:
-		res = (int) (*fitem->fi_ifp) (fitem, as->attr_value);
+		res = (*fitem->fi_ifp.approx) (fitem, as->attr_value);
 		break;
 	default:
 		res = test_avs(fitem, as->attr_value, fitem->fi_type);
@@ -1423,7 +1423,7 @@ static int check_filteritem (struct filter_item *fitem, Entry entryptr, DN bindd
 		res = substr_search(fitem, ias->attr_value);
 		break;
 	case FILTERITEM_APPROX:
-		res = (int) (*fitem->fi_ifp) (fitem, ias->attr_value);
+		res = (*fitem->fi_ifp.approx) (fitem, ias->attr_value);
 		break;
 	default:
 		res = test_avs(fitem, ias->attr_value, fitem->fi_type);
@@ -1434,7 +1434,7 @@ static int check_filteritem (struct filter_item *fitem, Entry entryptr, DN bindd
 
 static int test_avs (struct filter_item *fitem, AV_Sequence avs, int mode) {
 	for (; avs != NULLAV; avs = avs->avseq_next) {
-		switch (((int) (*fitem->fi_ifp) (avs->avseq_av.av_struct, fitem->UNAVA.ava_value->av_struct))) {
+		switch ((*fitem->fi_ifp.cmp) (avs->avseq_av.av_struct, fitem->UNAVA.ava_value->av_struct)) {
 		case 0:
 			return (OK);
 		case 1:

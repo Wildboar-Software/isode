@@ -441,7 +441,7 @@ static int  psapd (struct isoservent *is, struct SSAPindication *si) {
 		return DONE;
 	}
 	if (strcmp (is -> is_entity, "rts") == 0) {
-		if (RtExec (ss, &rtis, buffer1, buffer2, NULLIFP, setperms) == NOTOK) {
+		if (RtExec (ss, &rtis, buffer1, buffer2, NULL, setperms) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"service not started at rtsap: %s",
 					RtErrString (rta -> rta_reason));

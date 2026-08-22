@@ -103,7 +103,10 @@ struct filter_item {
 		Filter_Substrings fi_un_substrings;
 	} fi_un;
 	/* field for DSA use - no need to fill if using DUA */
-	IFP	    fi_ifp;
+	union {
+		int (*approx)(struct filter_item *fitem, AV_Sequence avs);
+		int (*cmp)(void *value1, void *value2);
+	} fi_ifp;
 };
 
 int filter_item_dup (struct filter_item *src, struct filter_item *tgt);

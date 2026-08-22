@@ -33,9 +33,9 @@ struct RyOperation {
 	modtyp *ryo_arg_mod;	/* pointer to table for arguement type */
 	int	    ryo_arg_index;	/* index to entry in tables */
 #else
-	IFP	    ryo_arg_encode;	/* encodes argument */
-	IFP	    ryo_arg_decode;	/* decodes   .. */
-	IFP	    ryo_arg_free;	/* frees     .. */
+	int	  (*ryo_arg_encode)(PE *pe, int top, int len, char *buffer, caddr_t parm);
+	int	  (*ryo_arg_decode)(PE pe, int top, int *len, char **buffer, caddr_t *parm);
+	int	  (*ryo_arg_free)(caddr_t parm);
 #endif
 
 	int	    ryo_result;		/* result possible */
@@ -43,8 +43,8 @@ struct RyOperation {
 	modtyp *ryo_res_mod;	/* pointer to table for result type */
 	int	    ryo_res_index;	/* index to entry in tables */
 #else
-	IFP	    ryo_res_encode;	/* encodes result */
-	IFP	    ryo_res_decode;	/* decodes   .. */
+	int	  (*ryo_res_encode)(PE *pe, int top, int len, char *buffer, caddr_t parm);
+	int	  (*ryo_res_decode)(PE pe, int top, int *len, char **buffer, caddr_t *parm);
 	int	  (*ryo_res_free)(caddr_t parm);	/* frees     .. */
 #endif
 
@@ -59,8 +59,8 @@ struct RyError {
 	modtyp *rye_param_mod;	/* pointer to table for result type */
 	int	    rye_param_index;	/* index to entry in tables */
 #else
-	IFP	    rye_param_encode;	/* encodes parameter */
-	IFP	    rye_param_decode;	/* decodes   .. */
+	int	  (*rye_param_encode)(PE *pe, int top, int len, char *buffer, caddr_t parm);
+	int	  (*rye_param_decode)(PE pe, int top, int *len, char **buffer, caddr_t *parm);
 	int	  (*rye_param_free)(caddr_t parm);	/* frees     .. */
 #endif
 };
