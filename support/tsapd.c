@@ -273,7 +273,12 @@ static void tsapd (int vecp, char **vec) {
 	struct TSAPstart *ts = &tss;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect  *td = &tds;
-	IFP	    hook;
+
+#ifndef	IAE
+	int (*hook)(struct isoservent *, struct TSAPdisconnect *) = NULL;
+#else
+	int (*hook)(struct IAEntry *, struct TSAPdisconnect *) = NULL;
+#endif
 
 	/* begin UGLY */
 	strcpy (buffer1, vec[1]);
@@ -291,7 +296,7 @@ static void tsapd (int vecp, char **vec) {
 			taddr2str (&ts -> ts_calling), taddr2str (&ts -> ts_called),
 			ts -> ts_expedited, ts -> ts_tsdusize);
 
-	hook = (IFP)ssapd;
+	hook = ssapd;
 #ifndef	IAE
 	if (ts -> ts_called.ta_selectlen) {
 		if ((is = getisoserventbyselector ("tsap", ts -> ts_called.ta_selector,

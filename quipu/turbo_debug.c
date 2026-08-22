@@ -18,7 +18,7 @@ AttributeType	*turbo_index;
 
 PS	ps;
 
-static void rsavl_print( Avlnode *root, IFP fn, FILE *fps, int depth ) {
+static void rsavl_print( Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, int depth ) {
 	int	i;
 
 	if ( root == 0 )
@@ -47,7 +47,7 @@ void savl_print (Avlnode *root) {
 		printf( "NULL\n" );
 		return;
 	}
-	rsavl_print( root, (IFP)fprintf, (FILE *)stdout, 0 );
+	rsavl_print( root, fprintf, (FILE *)stdout, 0 );
 	printf( "**** soundex avl_print end ****\n" );
 }
 

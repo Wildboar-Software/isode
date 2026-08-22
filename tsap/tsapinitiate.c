@@ -18,21 +18,24 @@ static struct nsapent {
 	int	    ns_type;
 	int	    ns_stack;
 
-	IFP	    ns_open;
+	int (*ns_open)(struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
+
+	// This just exists because the TP4 open function takes a different set of parameters.
+	int (*ns_open_tp4)(struct tsapblk *tb, struct TSAPaddr *local_ta, struct NSAPaddr *local_na, struct TSAPaddr *remote_ta, struct NSAPaddr *remote_na, struct TSAPdisconnect *td, int async);
 }     nsaps[] = {
 #ifdef	TCP
-	NA_TCP, TS_TCP, (IFP)tcpopen,
+	NA_TCP, TS_TCP, tcpopen, NULL,
 #endif
 #ifdef	X25
-	NA_X25, TS_X25, x25open,
+	NA_X25, TS_X25, x25open, NULL,
 #if defined(SUN_X25) && defined(AEF_NSAP)
 	NA_NSAP, TS_X2584, x25open,
 #endif
 #endif
 #ifdef	TP4
-	NA_NSAP, TS_TP4, tp4open,
+	NA_NSAP, TS_TP4, NULL, tp4open,
 #if defined(ICL_TLI) || defined(XTI_TP)
-	NA_X25, TS_TP4, tp4open,
+	NA_X25, TS_TP4, NULL, tp4open,
 #endif
 #endif
 
@@ -235,7 +238,10 @@ static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int asyn
 		didone = 1;
 		switch (ns -> ns_stack) {
 		case TS_TP4:
-			if ((result = (*ns -> ns_open) (tb, calling, la,
+		    if (ns -> ns_open_tp4 == NULL) {
+				return tsaplose (td, DR_PROTOCOL, NULLCP, "TP4 stack invariant violated: ns_open_tp4 is NULL");
+			}
+			if ((result = (*ns -> ns_open_tp4) (tb, calling, la,
 											realcalled, realna,
 											te, async)) == NOTOK) {
 				te = &tds;

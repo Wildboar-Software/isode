@@ -24,7 +24,7 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-extern	IFP	set_check_fd (int fd, IFP fnx, caddr_t data);
+extern	int (*set_check_fd)(int fd, int (*fnx)(int fd, caddr_t data), caddr_t data);
 
 static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
@@ -103,7 +103,7 @@ static int  fdx_close (PS ps)
 		free (pt -> ps_input.pio_base);
 	if (pt -> ps_output.pio_base)
 		free (pt -> ps_output.pio_base);
-	set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	set_check_fd (pt -> ps_fd, NULL, NULLCP);
 	free ((char *) pt);
 	return OK;
 }

@@ -739,7 +739,7 @@ single:
 			? write_x25_socket
 			: write_tcp_socket;
 #else
-		IFP	wfnx = (tb -> tb_flags & TB_X25)
+		int (*wfnx)(int, const void *, size_t) = (tb -> tb_flags & TB_X25)
 			? write_x25_socket
 			: write_tcp_socket;
 #endif
@@ -928,7 +928,7 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 		: write_tcp_socket;
 #else
 	SFP	    pstat;
-	IFP wfnx = (tb -> tb_flags & TB_X25)
+	int (*wfnx)(int, const void *, size_t) = (tb -> tb_flags & TB_X25)
 		? write_x25_socket
 		: write_tcp_socket;
 #endif

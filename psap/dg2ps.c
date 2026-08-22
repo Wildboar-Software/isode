@@ -20,7 +20,7 @@ struct ps_dg {
 	int (*ps_check)(int fd);
 };
 
-extern	IFP	set_check_fd (int fd, IFP fnx, caddr_t data);
+extern	int (*set_check_fd)(int fd, int (*fnx)(int fd, caddr_t data), caddr_t data);
 
 static int dg_prime (PS ps, int waiting) {
 	struct qbuf *qb;
@@ -117,7 +117,7 @@ static int dg_close (PS ps) {
 	if (pt -> ps_output.pio_qb)
 		qb_free (pt -> ps_output.pio_qb);
 
-	set_check_fd (pt -> ps_fd, NULLIFP, NULLCP);
+	set_check_fd (pt -> ps_fd, NULL, NULLCP);
 
 	free ((char *) pt);
 
