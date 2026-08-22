@@ -804,12 +804,12 @@ static void do_op2 (YO yo, char *id) {
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 
 	if ((yp = yo -> yo_arg)) {
-		fprintf (fstb, "\nint\tstub_%s (int sd, int id, struct %s *in, IFP rfx, IFP efx, int class, struct RoSAPindication *roi)\n",
+		fprintf (fstb, "\nint\tstub_%s (int sd, int id, struct %s *in, int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi), void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi), int class, struct RoSAPindication *roi)\n",
 			modsym (mymodule, yo -> yo_name, NULLCP),
 			modsym (yp -> yp_module, yp -> yp_identifier, "type")
 		);
 	} else {
-		fprintf (fstb, "\nint\tstub_%s (int sd, int id, caddr_t in, IFP rfx, IFP efx, int class, struct RoSAPindication *roi)\n",
+		fprintf (fstb, "\nint\tstub_%s (int sd, int id, caddr_t in, int (*rfx)(int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi), void (*efx)(int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi), int class, struct RoSAPindication *roi)\n",
 			 modsym (mymodule, yo -> yo_name, NULLCP));
 	}
 	fprintf (fstb, "{\n    return RyStub (sd, table_%s_Operations, ",
