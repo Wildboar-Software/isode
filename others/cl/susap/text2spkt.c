@@ -4,6 +4,20 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "spkt.h"
+static	type_id (FILE *fp, char *type, char *rw, char *selector, int len);
+static	type_ssn (FILE *fp, char *rw, char *what, uint32_t ssn);
+static	type_bits (FILE *fp, char *rw, char *s, uint8_t bits, uint8_t mask, char *t);
+static	type_settings (FILE *fp, char *rw, uint8_t settings);
+static	type_tsdu (FILE *fp, char *rw, uint16_t init, uint16_t resp);
+static	type_ref (FILE *fp, char *rw, struct SSAPref *ref);
+static	type_vrsn (FILE *fp, char *rw, uint8_t version);
+static	type_reason (FILE *fp, char *rw, int reason);
+static	type_prepare (FILE *fp, char *rw, uint8_t type);
+static	type_error (FILE *fp, char *rw, uint8_t reason);
+static	type_resync (FILE *fp, char *rw, uint8_t type);
+static	type_data (FILE *fp, char *type, char *rw, int len, char *data);
+static	type_info (FILE *fp, char *fmt, int len, char *data);
+
 
 #define	sprintc(v,b)	sprintb ((int) (v), (b))
 

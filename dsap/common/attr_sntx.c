@@ -11,6 +11,18 @@
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "psap.h"
+static char *find_nest (char *str);
+static void attrSntx_print (PS ps, void *value, int format);
+static void * str2attrSntx (char *str);
+static Attr_Sequence str2attrSeq(char * buf);
+static PE avs_enc(AV_Sequence avs);
+static AV_Sequence avs_dec(PE pe, AttributeType at);
+static PE attr_enc(Attr_Sequence a);
+static Attr_Sequence attr_dec(PE pe);
+static PE attrSntx_enc (Attr_Sequence a);
+static Attr_Sequence attrSntx_dec (PE pe);
+void attribute_syntax (void);
+
 
 #define AS_START_DELIMITER 	'('
 #define AS_END_DELIMITER 	')'

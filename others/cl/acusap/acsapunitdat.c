@@ -54,6 +54,30 @@
 #include "acusap.h"
 #include "isoservent.h"
 #include "tailor.h"
+static int	titles2block ( AEI callingtitle, AEI calledtitle, struct assocblk *acb, struct  AcSAPindication *aci )
+/*---------------------------------------------------------------------------*/;
+static int	titles2pdu ( AEI callingtitle, AEI calledtitle, struct  type_ACS_AUDT__apdu *pdu )
+/*---------------------------------------------------------------------------*/;
+static int ctx2block (
+	/*---------------------------------------------------------------------------*/
+	struct PSAPctxlist *ctxlist,
+	struct assocblk *acb,
+	struct PSAPcontext **ppcx,
+	struct AcSAPindication *aci
+);
+static int validaudtctx (
+	/*---------------------------------------------------------------------------*/
+	int ctx,
+	struct assocblk *acb,
+	struct PuSAPstart *ps,
+	struct AcSAPindication *aci
+);
+static int pdu2start (
+	/*---------------------------------------------------------------------------*/
+	struct type_ACS_AUDT__apdu *pdu,
+	struct AcuSAPstart *acs
+);
+
 
 #define	BER		"asn.1 basic encoding"
 #define NULLACC		((struct AcSAPconnect *)0)

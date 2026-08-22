@@ -6,6 +6,16 @@
 #include "isoaddrs.h"
 #include "acsap.h"
 #include "../x500as/DO-types.h"
+struct PSAPaddr *psap_cpy (struct PSAPaddr *a);
+static void *psap_cpy_void (void *value);
+static void psap_free_void (void *value);
+static int psap_cmp (void *value1, void *value2);
+static PE psap_enc (void *value);
+static void *psap_dec (PE pe);
+static void *psap_parse (char *s);
+static void psap_print (PS ps, void *value, int format);
+void psap_syntax (void);
+
 
 extern LLog * log_dsap;
 

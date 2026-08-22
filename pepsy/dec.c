@@ -8,6 +8,26 @@
 #include	"psap.h"
 #include	"pepsy.h"
 #include	"tailor.h"
+#include "pepsycodec.h"
+static int pr_obj (
+	int expl,			/* do we look at the tag */
+	PE pe,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+);
+
+
+static int pr_obj (
+	int expl,			/* do we look at the tag */
+	PE pe,
+	char **parm,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+);
+static PE
+setpresent (PE head, ptpe *p, modtyp *mod);
+
 
 extern int pepsylose (modtyp *module, ...);
 

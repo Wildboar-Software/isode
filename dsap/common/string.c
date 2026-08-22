@@ -11,6 +11,52 @@
 #include "quipu/attr.h"
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
+#include "quipu/common.h"
+
+static PE ia5enc (void *value);
+static PE nstrenc (void *value);
+PE r_octenc (struct qbuf *x);
+static PE octenc (void *value);
+static PE strenc (void *value);
+static char *local_t61 (char *a);
+static void * prtsdec (PE pe);
+static char * utf8dec (PE pe);
+static void * cntydec (PE pe);
+struct qbuf *r_octsdec (PE pe);
+static void * octsdec (PE pe);
+static void * ia5sdec (PE pe);
+static void * numsdec (PE pe);
+static char * t61dec (PE pe);
+static void * dirstrdec (PE pe);
+static char *quotechar (char a, char *b);
+static char *
+unquotechar (char *a, char *b);
+struct qbuf *r_octparse (char *str);
+char *octparse (char *str);
+static void *octparse_void (char *str);
+char *prtparse (char *str);
+static void *prtparse_void (char *str);
+static void *cntyparse (char *str);
+static void *t61parse (char *str);
+char *cryptstring (char *str);
+char *cryptparse (char *str);
+void sfree (char *x);
+int pstrcmp (char *a, char *b);
+static int pstrcmp_void (void *value1, void *value2);
+static int tpstrcmp (void *value1, void *value2);
+static int tlexequ (void *value1, void *value2);
+static int passwdcmp (char *a, char *b);
+static int telcmp_void (void *value1, void *value2);
+void strprint (PS ps, char *str, int format);
+static void cryptprint (PS ps, char *str, int format);
+void r_octprint (PS ps, struct qbuf *qb, int format);
+int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
+struct qbuf *qb_cpy (struct qbuf *qb);
+static void part_print (PS ps, char *p, int len) /* string to be output (may contain nulls) */ /* number of characters in string */;
+static char *part_parse ( char **pstr, /* address of pointer to string */ int *plen /* address of integer we set the length to */ );
+static void strprint_void (PS ps, void *value, int format);
+void string_syntaxes (void);
+
 
 /* when/if tidy_string every gets removed from getline you can undef this */
 #define TIDY_STRING
@@ -1102,7 +1148,7 @@ struct qbuf *qb_cpy (struct qbuf *qb) {
 /*
  * output the string to the PS - including a delimiter on the end
  */
-void part_print (PS ps, char *p, int len)
+static void part_print (PS ps, char *p, int len)
       
     	   	/* string to be output (may contain nulls) */
    	    	/* number of characters in string */
@@ -1157,7 +1203,7 @@ again:
  * as we support binary strings. But we always terminate out strings with
  * a '\0' for the convience of non binary string users
  */
-char *part_parse (
+static char *part_parse (
 	char **pstr,		/* address of pointer to string */
 	int *plen		/* address of integer we set the length to */
 ) {

@@ -7,6 +7,11 @@
 #include "quipu/bind.h"
 #include "tailor.h"
 #include "quipu/IF-types.h"
+static int bind_to_dsa (void);
+static PE name2value_dap (char *name, char *context, int ontty, char *userdn,
+						  char *passwd, PE *real_name);
+static int set_lookup_dap (int flag);
+
 
 static char bound = FALSE;
 static char unbind = FALSE;

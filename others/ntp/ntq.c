@@ -8,6 +8,17 @@
 #include <unistd.h>
 #include "NTP-ops.h"
 #include "NTP-types.h"
+#include "ryresponder.h"
+#include "vt.h"
+
+static int ntp_monitor (char *host);
+static int mk_connect (char *addr);
+static int ac_failed (struct AcSAPconnect *acc);
+static int send_request (int sd);
+static int query_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
+static PE build_bind_arg (void);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 char	*myname;
 int	sleeptime = 30;

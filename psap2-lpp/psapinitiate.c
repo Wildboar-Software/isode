@@ -9,6 +9,7 @@
 #include "tailor.h"
 #include "pvpdu.h"
 #include "pepsycodec.h"
+#include "acsap.h"
 
 static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSAPindication *pi);
 static int PConnRequestAux (

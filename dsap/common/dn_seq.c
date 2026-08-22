@@ -4,6 +4,11 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "quipu/entry.h"
+#include "quipu/common.h"
+
+struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq);
+struct dn_seq *dn_seq_pop (struct dn_seq *dnseq);
+
 
 void dn_seq_free (struct dn_seq *dnseq) {
 	struct dn_seq * ptr;

@@ -6,6 +6,7 @@
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
+#include "compat.h"
 
 char* crypt(const char* key, const char* salt);
 

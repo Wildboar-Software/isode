@@ -11,6 +11,8 @@
 #include	<stdlib.h>
 #include	<unistd.h>
 #include	"usr.dirent.h"
+static int _opendir_stub(void);
+
 
 #ifndef	GETDENTS
 #ifdef BSD_SYSV
@@ -73,7 +75,7 @@ DIR *opendir(char *dirname) {
 	return dirp;
 }
 #else
-int _opendir_stub(void) {
+static int _opendir_stub(void) {
 	;
 }
 #endif

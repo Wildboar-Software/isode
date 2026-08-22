@@ -5,6 +5,7 @@
 #include <string.h>
 #include "acsap.h"
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
 static struct PSAPaddr vfs_bound;
 

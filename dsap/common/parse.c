@@ -15,6 +15,28 @@
 #include <gdbm.h>
 #endif
 
+static char *getphyline (FILE *file);
+static char *catphyline (FILE *file, char *str);
+int free_phylinebuf (void);
+#ifdef TURBO_DISK
+char *fgetline (FILE *file);
+char *fgetnextline (void);
+static Attr_Sequence fget_attributes_aux (FILE *file);
+Attr_Sequence fget_attributes (FILE *file);
+#else
+char *_getline (FILE *file);
+char *getnextline (void);
+#endif
+static Attr_Sequence get_attributes_aux (FILE *file);
+Attr_Sequence get_attributes (FILE *file);
+Entry get_entry_aux (FILE *file, Entry parent, int dtype);
+Entry get_entry (FILE *file, Entry parent, int dtype);
+static char *unesc_cont (char *ptr, int len);
+static void fpwr_esc (FILE *fp, char *line, int wl);
+static void pswr_esc (PS ps, char *line, int wl);
+static Entry new_constructor (Entry parent);
+Entry make_path (DN dn);
+
 #define	CONT_CHAR	'\\'	/* Continueation character */
 
 Entry database_root = NULLENTRY;
@@ -34,7 +56,6 @@ GDBM_FILE	save_db;
 #endif
 
 extern char	*unesc_char(void);
-extern char	*unesc_cont(char *ptr, int len);
 extern char *getstring(void);
 char *srealloc(char *p, int nsize);
 char	*brkl(void);
@@ -259,7 +280,6 @@ int free_phylinebuf (void) {
 	size = 0;
 }
 
-extern char	*unesc_cont(char *ptr, int len);
 FILE * savefile;
 
 #ifdef TURBO_DISK
@@ -309,7 +329,7 @@ char * getnextline (void)
  * un-escape a continued line and return pointer to end of the buffer
  * if the line is continued
  */
-char *unesc_cont (char *ptr, int len) {
+static char *unesc_cont (char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -462,7 +482,7 @@ Attr_Sequence fget_attributes (FILE * file) {
 
 #endif
 
-Attr_Sequence get_attributes_aux (FILE *file)
+static Attr_Sequence get_attributes_aux (FILE *file)
 #ifdef TURBO_DISK
          	     
 #else
@@ -586,7 +606,7 @@ Entry get_entry (FILE *file, Entry parent, int dtype)
 	return (get_entry_aux (file,parent,dtype));
 }
 
-Entry new_constructor (Entry parent)
+static Entry new_constructor (Entry parent)
 {
 	Entry constructor;
 

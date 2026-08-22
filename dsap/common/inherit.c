@@ -10,6 +10,18 @@
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void inherit_free (void *value);
+static void * inherit_cpy (void *value);
+static int inherit_cmp (void *value1, void *value2);
+static void inherit_print (PS ps, void *value, int format);
+static int setAttributeLine (char *str);
+static char *nextAttributeLine (char *str);
+static char * getInheritAttrs (Attr_Sequence * asptr, char needsoc, char * str);
+static void * str2inherit (char * str);
+static PE inherit_enc (void *value);
+static void * inherit_dec (PE pe);
+void inherit_syntax (void);
+
 
 static void inherit_free (void *value) {
 	InheritAttr ptr = (InheritAttr) value;

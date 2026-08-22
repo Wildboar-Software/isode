@@ -5,6 +5,8 @@
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "quipu/watchdog.h"
+static int DEncodeError (PE *pep, struct DSError *err);
+
 
 extern  LLog    * log_dsap;
 

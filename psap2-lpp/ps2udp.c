@@ -17,7 +17,12 @@
 #include "internet.h"
 
 static int udpretry (struct psapblk *pb, int reason, struct PSAPindication *pi);
+static int udpcheck (struct psapblk *pb, struct PSAPindication *pi);
 static void PUservice (struct psapblk *pb, int fd);
+
+int udpopen (struct psapblk *pb, struct NSAPaddr *calling, struct NSAPaddr *called, struct PSAPindication *pi, int async);
+char *udpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
+int udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
 
 #define	MAXTRIES	 3		/* should be tailorable... */
 #define	WAITRIES	30		/* .. */

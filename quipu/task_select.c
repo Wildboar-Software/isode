@@ -4,6 +4,8 @@
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "quipu/database.h"
+struct task_act * task_select (int *secs_p);
+
 
 extern LLog * log_dsap;
 extern time_t	conn_timeout;

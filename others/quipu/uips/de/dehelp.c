@@ -9,6 +9,12 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "logger.h"
+int tailorHelp (void);
+char *findHelp (char *helpstr);
+int displayFile (char *filename, int help);
+int displayHelp (char *helpstr);
+int validateSetting (int type, char *value);
+
 
 extern LLog *de_log;
 extern int lines, cols;

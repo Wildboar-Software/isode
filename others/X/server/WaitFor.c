@@ -46,6 +46,8 @@ SOFTWARE.
 #include <signal.h>
 #include "osdep.h"
 #include "dixstruct.h"
+static void WaitForSomething(ClientPtr *pClientsReady, int *nready, ClientPtr *pNewClients, int *nnew);
+
 
 extern long AllSockets[];
 extern long AllClients[];

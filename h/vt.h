@@ -136,7 +136,11 @@ int vt_sync (char **vec);
 
 /* vtd.c */
 void interrupt (void);
+#if defined(SVR4) || defined(LINUX)
+void cleanup (int sig);
+#else
 void cleanup (void);
+#endif
 void rmut (void);
 void bye (void);
 

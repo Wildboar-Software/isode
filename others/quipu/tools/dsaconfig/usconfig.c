@@ -23,6 +23,49 @@
 #include "internet.h"
 #include "psap.h"
 #include "tailor.h"
+#include "vt.h"
+
+void arginit (int ac, char **av);
+static void read_dsas (void);
+void read_config (void);
+static void bad_postaladdress (
+	char *line,				/* offending line */
+	int postdef			/* postal address defined? */
+);
+static void build_top (void);
+static void add_us (
+	struct pair *orgcode			/* ansi organization code */
+);
+static void add_state (
+	int addorg			/* add organization to state entry? */
+);
+static void build_dsa (void);
+static void build_orgedb (void);
+static void build_ouedb (void);
+void build_tailor (void);
+static void build_scripts (void);
+static void build_uifl (void);
+static void create_sedfile (void);
+void make_file (
+	char *fl,				/* file to be created */
+	char *tmpl				/* template to use */
+);
+static void build_mesgfl (void);
+static void copy_edb (
+	char *dir,				/* place where EDB should go */
+	char *edbtmpl,				/* location of EDB template */
+	int append			/* append, nonzero if so */
+);
+static struct pair *
+findpair (
+	char *nm,				/* name of 'pair' to find */
+	int any				/* 'pair' can have any value? */
+);
+static void set_permissions (void);
+static void make_usstates (void);
+char *timestamp (void);
+static void _advise (char *what, char *fmt, va_list ap);
+
 
 /* ^L */
 /* DATA */

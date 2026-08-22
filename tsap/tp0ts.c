@@ -15,6 +15,16 @@
 
 #ifdef SUN_X25
 #include <netx25/x25_ioctl.h>
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td);
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td);
+
 #endif
 
 #if	defined(TCP) || defined(X25)

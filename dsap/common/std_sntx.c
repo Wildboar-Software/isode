@@ -17,6 +17,8 @@ extern void guide_syntax (void);
 extern void certificate_syntax (void);
 extern void certificate_pair_syntax (void);
 
+void standard_syntaxes (void);
+
 void standard_syntaxes (void) {
 	string_syntaxes ();
 	cilist_syntax ();

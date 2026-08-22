@@ -12,6 +12,8 @@ extern  LLog    * log_dsap;
 struct connection *conn_alloc(void);
 void conn_free(struct connection *conn);
 
+void ds_log (struct DSAPabort *da, char *str, int fd);
+
 void ds_log (struct DSAPabort *da, char *str, int fd) {
 	char buffer [BUFSIZ];
 	char * source;

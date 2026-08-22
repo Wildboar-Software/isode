@@ -11,6 +11,19 @@
 
 #include "IMISC-ops.h"          /* IMISC operation definitions */
 #include "IMISC-types.h"	/* IMISC type definitions */
+static print_ia5list (struct type_IMISC_IA5List *ia5);
+static int do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5);
+static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5);
+static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep);
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy);
+static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi);
+static int timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi);
+static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi);
+static int  tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static int  null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static int echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi);
+static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
+
 
 #ifdef	SYS5
 struct passwd *getpwuid ();

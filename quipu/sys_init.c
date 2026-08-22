@@ -12,6 +12,10 @@
 #include "logger.h"
 #include "usr.dirent.h"
 #include <sys/stat.h>
+#include "quipu/init.h"
+
+void mk_dsa_tmp_dir (void);
+
 
 extern char *dsaoidtable;
 extern LLog * log_dsap;

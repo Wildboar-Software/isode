@@ -6,6 +6,9 @@
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
+static int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
+static int IspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
+
 
 extern  LLog    * log_dsap;
 

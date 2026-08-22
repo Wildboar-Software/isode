@@ -16,7 +16,7 @@
 #include "quipu/cache.h"
 #include "quipu/database.h"
 #include "quipu/schema.h"
-
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
 static int mod_add_value (
 	Entry eptr,
 	Attr_Sequence newas,

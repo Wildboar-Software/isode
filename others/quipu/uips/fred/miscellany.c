@@ -6,6 +6,14 @@
 #include <strings.h>
 #include <unistd.h>
 #include "fred.h"
+int f_alias (char **vec);
+int f_area (char **vec);
+int f_dish (char **vec);
+int f_edit (char **vec);
+int f_manual (char **vec);
+int f_report (char **vec);
+int f_thisis (char **vec);
+
 
 int	area_quantum = 0;
 

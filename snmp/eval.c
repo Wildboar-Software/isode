@@ -6,6 +6,12 @@
 #include <string.h>
 #include <strings.h>
 #include "mib.h"
+static int  o_funct (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_expressions (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_eval (void);
+int f_expression (char **vec);
+
 
 /*    FUNCTION MIB */
 

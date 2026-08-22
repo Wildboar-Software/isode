@@ -34,6 +34,9 @@
 #include "ftp_var.h"
 #include "general.h"
 #include "logger.h"
+#include "ftamsystem.h"
+
+static void ftp_init(void);
 
 void	advise (int, char *, char *, ...);
 #ifndef	NULLCP
@@ -53,15 +56,6 @@ void	advise (int, char *, char *, ...);
 #define OK	0
 #define DONE	1
 #endif /* NOTOK */
-
-extern int hookup(char *host, int port);
-extern int login(char *user, char *pass, char *acct);
-extern int ftp_type (int modeX);
-extern int recvrequest(char *cmd, char *remote);
-extern int sendrequest(char *cmd, char *remote);
-
-int getreply (int expecteof);
-extern int command (char *fmt, ...);
 
 static void ftp_init(void) {
 	/* default ftp communication values */

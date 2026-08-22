@@ -24,6 +24,10 @@
 #include "isoservent.h"
 #include "logger.h"
 #include "tailor.h"
+#include "vt.h"
+
+static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+
 
 static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
 static void envinit (void);

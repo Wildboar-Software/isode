@@ -14,6 +14,10 @@
 #include "pod.h"
 
 #include <stdarg.h>
+#include "vt.h"
+
+static void read_bind_args (unsigned int *acptr, char ***avptr);
+
 
 extern int print_parse_errors;
 extern char *oidtable, *tailfile, *myname;

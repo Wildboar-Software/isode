@@ -8,6 +8,29 @@
 #include	"psap.h"
 #include	"pepsy.h"
 #include	"tailor.h"
+#include "UNIV-types.h"
+static int p_pr_obj (
+	int expl,			/* do we look at the tag */
+	PE pe,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+);
+static ptpe *next_ptpe (ptpe *p);
+static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
+static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
+
+
+static int p_pr_obj (
+	int expl,			/* do we look at the tag */
+	PE pe,
+	ptpe *p,
+	modtyp *mod			/* Module it is from */
+);
+static ptpe *next_ptpe (ptpe *p);
+static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
+static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
+int printable (char *strptr, int len);
+
 
 #define PRINT_TYPES	0
 #define	CHOICE_PUSH

@@ -8,6 +8,7 @@
 #include <termio.h>
 #else
 #include <sys/ioctl.h>
+#include "vt.h"
 #endif
 
 #define VT_BREAK

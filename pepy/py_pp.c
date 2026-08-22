@@ -4,6 +4,8 @@
 #include <string.h>
 #include <strings.h>
 #include "psap.h"
+static void  _advise (char* what, char* fmt, va_list ap);
+
 
 #define	ps_advise(ps, f) \
 	advise (NULLCP, "%s: %s", (f), ps_error ((ps) -> ps_errno))

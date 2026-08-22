@@ -6,6 +6,24 @@
 #include "spkt.h"
 #include "tailor.h"
 
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);
+
+static int SConnRequestAux (
+	struct SSAPref *ref,
+	struct SSAPaddr *calling,
+	struct SSAPaddr *called,
+	int requirements,
+	int settings,
+	long isn,
+	char *data,
+	int cc,
+	struct QOStype *qos,
+	struct SSAPconnect *sc,
+	struct SSAPindication *si,
+	int async
+);
+
+
 /*    S-(ASYN-)CONNECT.REQUEST */
 
 static int  SConnRequestAux (

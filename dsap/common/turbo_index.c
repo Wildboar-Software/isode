@@ -9,6 +9,34 @@
 #include "quipu/turbo.h"
 #include "logger.h"
 #include "quipu/malloc.h"
+static int index_cmp(caddr_t data1, caddr_t data2);
+static int sindex_cmp(caddr_t data1, caddr_t data2);
+int index_soundex_cmp(caddr_t data1, caddr_t data2);
+int index_soundex_prefix(caddr_t data1, caddr_t data2, caddr_t carg);
+int substring_prefix_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
+int substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
+int substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
+int indexav_cmp(caddr_t data1, caddr_t data2);
+Index_node *new_indexnode(void);
+char *strrev (char *s);
+static int index_dup(caddr_t data1, caddr_t data2);
+static void indexav_free(caddr_t data);
+static void soundex_free(caddr_t data);
+static void index_free(Index *pindex);
+static int i_dup(caddr_t data1, caddr_t data2);
+static int i_cmp(caddr_t data1, caddr_t data2);
+static Index *new_index(DN dn);
+static void print_soundex_node (Index_node *n, int ps);
+static void add_nonlocalalias(struct entry *e, Index *pindex);
+static void add_nonleafkid(struct entry *e, Index *pindex);
+static void delete_nonleafkid(struct entry *e, Index *pindex);
+static void delete_nonlocalalias(struct entry *e, Index *pindex);
+static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Sequence values);
+static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Sequence values);
+void turbo_optimize (char *attr);
+void index_subtree (char *tree);
+void index_siblings (char *parent);
+
 
 #ifdef TURBO_INDEX
 

@@ -34,6 +34,12 @@ int (*signal (int sig, int (*func)(int))) (int)
 
 /* Probably a race condition or two in this code */
 
+static SFD sigser (int sig);
+#ifndef SVR4_UCB
+int sigblock (int mask);
+int sigsetmask (int mask);
+#endif
+
 static int blocked = 0;
 static int pending = 0;
 

@@ -9,6 +9,7 @@
 #include "sequence.h"
 #include "filt.h"
 #include "defs.h"
+#include "wdgtdefs.h"
 
 extern str_seq dnseq, backseq, showseq;
 extern int entry_number, back_buf_num, dn_number;

@@ -8,7 +8,8 @@
 
 #include "psap.h"
 
-static double decode_binary (PE pe), decode_decimal (PE pe);
+static double decode_binary (PE pe);
+static double decode_decimal (PE pe);
 
 double prim2real (PE pe) {
 	if (pe -> pe_form != PE_FORM_PRIM)

@@ -8,6 +8,7 @@
 #include "tailor.h"
 #include "DSE-types.h"
 #include "pepsycodec.h"
+#include "acsap.h"
 
 #define advise	PY_advise
 

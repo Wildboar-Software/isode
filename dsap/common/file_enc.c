@@ -2,6 +2,9 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+static char *readfile (FILE *file);
+PE grab_filepe (AttributeValue av);
+
 
 extern LLog * log_dsap;
 extern char dsa_mode;

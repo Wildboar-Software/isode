@@ -9,6 +9,8 @@
 #include "initialize.h"
 #include "util.h"
 #include "config.parse.h"
+void initialize (void);
+
 
 #ifndef NO_STATS
 extern LLog    *log_stat;

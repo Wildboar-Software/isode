@@ -4,6 +4,8 @@
 #include	<stdlib.h>
 #include	<unistd.h>
 #include	"usr.dirent.h"
+static int _closedir_stub(void);
+
 
 #ifndef	GETDENTS
 typedef char	*pointer;		/* (void *) if you have it */
@@ -31,7 +33,7 @@ int closedir(DIR *dirp) {
 	return close( fd );
 }
 #else
-int _closedir_stub(void) {
+static int _closedir_stub(void) {
 	;
 }
 #endif

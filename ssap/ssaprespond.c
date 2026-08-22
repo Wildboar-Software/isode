@@ -5,6 +5,8 @@
 #include <strings.h>
 #include "spkt.h"
 #include "tailor.h"
+static int refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si);
+
 
 /* S-CONNECT.INDICATION */
 

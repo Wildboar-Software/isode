@@ -3,6 +3,17 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
+static int SActResumeRequestAux (
+	struct ssapblk *sb,
+	struct SSAPactid *id,
+	struct SSAPactid *oid,
+	long ssn,
+	struct SSAPref *ref,
+	char *data,
+	int cc,
+	struct SSAPindication *si
+);
+
 
 /* S-CONTROL-GIVE.REQUEST */
 

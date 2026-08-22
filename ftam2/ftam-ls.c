@@ -11,6 +11,11 @@
 #include "FTAM-types.h"
 #include "ftamuser.h"
 #include "general.h"
+#include "ftam-cmds.h"
+
+static int filcmp (const void *p, const void *q);
+static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
+static int fdfls (char *file);
 
 static int dashl;
 static int didrecurse;
@@ -33,9 +38,6 @@ static void _init_fp (void)
 	lsfp = stdout;
 }
 #endif
-
-static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
-static int fdfls (char *file);
 
 static int filcmp (const void *p, const void *q) {
 	struct filent **a = (struct filent **) p;

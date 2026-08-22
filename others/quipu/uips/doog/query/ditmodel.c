@@ -12,6 +12,13 @@
 #include "ditmodel.h"
 
 #include "quipu/attr.h"
+objectTypeList get_child_list(AttributeType parent_type);
+objectTypeList get_search_attrs(AttributeType attr_type);
+static void set_search_attr(char *type_label, AttributeType obj_type, AttributeType search_type);
+static int test_init_ditmodel (void);
+static QBool is_search_type(AttributeType at);
+entryList get_default_path(AttributeType object_type);
+
 
 ditRelation ditmodel = NULLDitRelation;
 searchInfoList search_type_list = NULLSearchInfo;

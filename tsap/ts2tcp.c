@@ -35,6 +35,10 @@ static struct sockaddr_in *peers = NULL;
 
 #ifdef ULTRIX_X25_DEMSA
 #include <demsa.h>
+static int tcpretry (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n);
+static int tcpread (int fd, char *buffer, int n);
+
 extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 #endif
 

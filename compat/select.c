@@ -11,6 +11,8 @@
 
 int	xselect_blocking_on_intr = 0;
 
+int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
+
 #if	defined(SOCKETS) && !defined(TLI_POLL)
 
 #include <sys/time.h>
@@ -26,6 +28,10 @@ int	xselect_blocking_on_intr = 0;
 
 /* the dec-x25 library */
 #include "/usr/include/x25.h"
+#include "demsa.h"
+
+int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
+
 
 /* declarations and handler functions as proposed by J.Kloppenburg */
 
@@ -201,6 +207,7 @@ int selsocket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs) {
 
 #include "sys/soioctl.h"
 
+int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs);
 int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int    fd;
 	int     n;
@@ -254,6 +261,7 @@ int	selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 #if defined(TLI_TP) && defined(TLI_POLL)
 #include <poll.h>
 
+int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs);
 int selsocket (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int i, j, n;
 	struct pollfd pollfds[128];
@@ -318,6 +326,7 @@ again:
 static int (*sfnx[FD_SETSIZE])(int, void *) = { NULL };
 static caddr_t	sdata[FD_SETSIZE] = { NULL };
 
+int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *);
 int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *)
 {
 	int (*ofnx)(int, void *) = sfnx[fd];
@@ -332,6 +341,7 @@ int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *)
 #if !(defined(_AIX) && defined(X25))
 /* We have an AIX specific version if X25 is defined */
 
+int xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs);
 int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 	int    fd;
 	int	    n;

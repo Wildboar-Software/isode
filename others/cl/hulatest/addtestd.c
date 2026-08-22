@@ -33,6 +33,10 @@
 
 #include "ADD-ops.h"	        /* ADD operation definitions */
 #include "ADD-types.h"	        /* ADD type definitions */
+static int  op_addit (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+
 
 static char *myservice = "addtest";
 static char *mycontext = "addtest context";

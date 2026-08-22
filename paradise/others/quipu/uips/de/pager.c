@@ -9,6 +9,18 @@
 #include <termios.h>
 #include "quipu/util.h"
 #include "demanifest.h"
+void testRedisplay(void);
+void setRedisplay(void);
+void pagerOn(int number);
+void linewrapOn(void);
+void linewrapOff(void);
+int isWrapOn(void);
+void resetprint(char *fmt, ...);
+void pageprint(char *fmt, ...);
+void putPagePrompt(void);
+int getPagerInput(void);
+int getpnum(void);
+
 
 extern int lines, cols;
 

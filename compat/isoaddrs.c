@@ -11,10 +11,16 @@
 #include "isoaddrs.h"
 #include "internet.h"
 #include "tailor.h"
-
-static void read_macros (void);
+static int dec_x25_demsa_invalid_dte (char *s, int *p_n_colon);
+static struct macro *name2macro (char *name);
+static struct macro *value2macro (char *value);
+static void read_macros(void);
 static void read_file (char *file);
 static int add_macro (char *name, char *value);
+char *macro2str (char *name);
+static char *SEL2STR (char *sel, int len);
+
+
 static char *isomacros = "isomacros";
 
 #define	MBUCKETS	128
@@ -29,7 +35,7 @@ static char *isomacros = "isomacros";
 
 /* this routine should be called with *p_n_colon=0 initially  */
 
-int dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
+static int dec_x25_demsa_invalid_dte (char *s, int *p_n_colon)
 /*
 the destination DTE address in case of outgoing calls may be specified by
 a string between one and three components seperated by colons:

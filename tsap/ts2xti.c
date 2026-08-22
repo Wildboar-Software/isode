@@ -20,6 +20,35 @@
 #include <unistd.h>
 #include "tailor.h"
 #include "compat.h"
+static char *
+sys_terrname (int te);
+static int T_getinfo (int fd, struct t_info *info);
+static void T_swapfd (int fd, int nfd);
+static int T_setinfo (int fd, struct t_info *info);
+static int T_delinfo (int fd);
+static int T_open (char *name, int oflag, struct t_info *info);
+static int T_accept (int fd, int resfd, struct t_call *call);
+static int T_close (int fd);
+static char *T_alloc (int fd, int struct_type, int fields);
+static int T_free (char *ptr, int struct_type);
+static tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str);
+static int tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, struct NSAPaddr *na);
+static int tp4info (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int tp4getdis (int fd, struct TSAPdisconnect *td);
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td);
+static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td);
+int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td);
+int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td);
+static int _ts2xti_stub(void);
+
 
 /*
  * Better to do segmenting across the syscall interface than in Session. Make
@@ -84,7 +113,7 @@ sys_terrname (int te) {
 
 # define tp4err2gen(err) (err)
 
-int T_getinfo (int fd, struct t_info *info) {
+static int T_getinfo (int fd, struct t_info *info) {
 	struct td_info *td_current = td_head;
 	while (td_current != NULLTDINFO)
 		if (fd == td_current->fd) {
@@ -112,7 +141,7 @@ static void T_swapfd (int fd, int nfd) {
 			td_current = td_current->next;
 }
 
-int T_setinfo (int fd, struct t_info *info) {
+static int T_setinfo (int fd, struct t_info *info) {
 	struct td_info *td_current;
 	if ((td_current = (struct td_info *) calloc(1,sizeof(struct td_info))) == NULL) {
 		LLOG(tsap_log, LLOG_EXCEPTIONS,
@@ -132,7 +161,7 @@ int T_setinfo (int fd, struct t_info *info) {
 	return OK;
 }
 
-int T_delinfo (int fd) {
+static int T_delinfo (int fd) {
 	struct td_info *td_early = td_head;
 	struct td_info *td_late = td_head;
 	if (td_early == NULLTDINFO) {
@@ -160,7 +189,7 @@ int T_delinfo (int fd) {
 	return NOTOK;
 }
 
-int T_open (char *name, int oflag, struct t_info *info) {
+static int T_open (char *name, int oflag, struct t_info *info) {
 	int             fd;
 	if ((fd = t_open(name, oflag, info)) == -1)
 		return NOTOK;
@@ -169,7 +198,7 @@ int T_open (char *name, int oflag, struct t_info *info) {
 	return fd;
 }
 
-int T_accept (int fd, int resfd, struct t_call *call) {
+static int T_accept (int fd, int resfd, struct t_call *call) {
 	if (t_accept(fd, resfd, call) != 0)
 		return -1;
 	if (resfd != fd) {
@@ -182,13 +211,13 @@ int T_accept (int fd, int resfd, struct t_call *call) {
 	return 0;
 }
 
-int T_close (int fd) {
+static int T_close (int fd) {
 	if (T_delinfo(fd) != 0)
 		LLOG(tsap_log, LLOG_EXCEPTIONS, ("T_delinfo failed in T_close"));
 	return (t_close(fd));
 }
 
-char *T_alloc (int fd, int struct_type, int fields) {
+static char *T_alloc (int fd, int struct_type, int fields) {
 	struct t_info   info;
 	struct t_bind  *get_bind;
 	struct t_call  *get_call;
@@ -247,7 +276,7 @@ char *T_alloc (int fd, int struct_type, int fields) {
 	return NOTOK;
 }
 
-int T_free (char *ptr, int struct_type) {
+static int T_free (char *ptr, int struct_type) {
 	struct t_bind  *bind_free;
 	struct t_call  *call_free;
 	struct t_optmgmt *optmgmt_free;
@@ -1344,7 +1373,7 @@ int close_tp4_socket(int fd)
 }
 
 #else
-int _ts2xti_stub(void) {
+static int _ts2xti_stub(void) {
 	;
 }
 #endif

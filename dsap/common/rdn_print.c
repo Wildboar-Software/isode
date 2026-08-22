@@ -1,6 +1,8 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
+static void rdn_comp_print (PS ps, RDN rdn, int format);
+
 
 void rdn_comp_print (PS ps, RDN rdn, int format) {
 	if (rdn!=NULLRDN) {

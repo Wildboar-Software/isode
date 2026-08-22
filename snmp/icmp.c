@@ -20,6 +20,10 @@
 #include <netinet/ip_icmp.h>
 #ifndef LINUX
 #include <netinet/icmp_var.h>
+static int _read_icmp_stats (void);
+static int  o_icmp (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_icmp (void);
+
 #else
 struct	icmpstat {
 /* statistics related to icmp packets generated */
@@ -32,6 +36,8 @@ struct	icmpstat {
 	int	icps_inhist[ICMP_MAXTYPE + 1];
 };
 #endif
+
+void init_icmp (void);
 
 static struct icmpstat icmpstat;
 

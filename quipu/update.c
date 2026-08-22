@@ -21,6 +21,34 @@
 #include "quipu/cache.h"
 #include "quipu/find.h"
 #include "quipu/shadow.h"
+#include "quipu/database.h"
+
+static int fileexists (char *fname);
+static int allowed_to_send (DN a, DN b);
+static int send_get_edb (char *version, DN dn, DN from);
+static int unravel_edb (Entry e, struct DSError *error);
+static int quick_unrav (Entry e, struct DSError *error);
+static int link_child (Entry e, Avlnode *oldkids);
+struct oper_act *make_get_edb_op (DN dn, char *version, struct di_block *di);
+static int edb_start (
+	struct getedb_arg *arg,
+	struct DSError *error,
+	struct getedb_result *result,
+	DN binddn,
+	int fd
+);
+static int edb_continue (
+	struct getedb_arg *arg,
+	struct DSError *error,
+	struct getedb_result *result,
+	DN binddn,
+	int fd
+);
+static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
+static int pull_up_result (struct getedb_arg *arg, struct getedb_result *result);
+static int read_part_edb (PS ps, PE *pep, int n);
+void getedb_size (int x);
+
 
 extern int parent_link(caddr_t data, caddr_t arg);
 

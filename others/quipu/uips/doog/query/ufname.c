@@ -14,6 +14,26 @@
 #include "quipu/ds_search.h"
 #include "quipu/dap2.h"
 #include "quipu/name.h"
+ufnStatus get_ufn_status(QCardinal request_id);
+ /* get_ufn_status */
+
+/*
+ * Copy and return results for the identified ufn request, then delete all
+ * records for that request.
+ */
+ufnResults get_ufn_results(QCardinal id);
+static QE_error_code process_ufn_search(ufnameRec ufnrec);
+ /* ufname_rec_free */
+
+void ufname_result_free(ufnResults *ufn_result);
+ /* name_part_free */
+
+/*
+ * Convert a string encode UFN into a list of name part_names.
+ */
+namePart str2ufname(char *str_ufn);
+entryList get_ufn_path(int comp_num);
+
 
 extern int dsap_ad;
 extern int next_task_id;

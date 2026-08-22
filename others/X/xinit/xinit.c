@@ -19,6 +19,23 @@
 #include <sys/utsname.h>
 #endif
 #include <setjmp.h>
+static int sigCatch (int sig);
+static int sigAlarm (int sig);
+static
+Execute (
+	char **vec				/* has room from up above */
+);
+static int waitforserver (int serverpid);
+static int processTimeout (int pid, int timeout, char *string);
+static int
+_vError (char *fmt, va_list ap);
+static int startServer (char *server[]);
+static int startClient (char *client[]);
+static int ignorexio (Display *dpy);
+static
+shutdown (int serverpid, int clientpid);
+static int set_environment (void);
+
 
 extern char *getenv();
 extern char **environ;

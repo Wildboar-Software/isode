@@ -8,6 +8,8 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
+static void *silentExit (Display *dis);
+
 
 /* It appears that window manager writers have problems */
 

@@ -36,6 +36,13 @@
 	 * Cray UniCOS does not have readv and writev so we emulate
 	 */
 #include <sys/socket.h>
+static int readv (int fd, struct iovec *iov, int iovcnt);
+static int writev (
+	int fd,
+	struct iovec *iov,
+	int iovcnt
+);
+
 
 static int readv (int fd, struct iovec *iov, int iovcnt) {
 	struct msghdr hdr;

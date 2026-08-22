@@ -1,4 +1,6 @@
 #include "ntp-config.h"
+init_clock_psti(char *timesource);
+
 
 #ifndef	lint
 static char *sccsid = "@(#)read_psti.c	1.1	MS/ACF	89/02/17";

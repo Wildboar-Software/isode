@@ -8,6 +8,33 @@
 #include "NTP-types.h"
 #include "af_osi.h"
 #include "pvpdu.h"
+#include "ryresponder.h"
+
+static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td);
+void create_osilisten (char *addr);
+int transmit_osi (struct ntp_peer *peer);
+static int result_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static void process_packet_osi (struct Naddr *dst, struct type_NTP_Packet *pkt, struct timeval *tvp, struct ntp_peer *peer);
+static struct l_fixedpt
+gstamp (struct type_NTP_TimeStamp *ts);
+static struct s_fixedpt
+gfixed (struct type_NTP_SmallFixed *ts);
+static Refid *gclock (struct type_NTP_ClockIdentifier *ci);
+static struct type_NTP_TimeStamp *
+sstamp (struct l_fixedpt *ts);
+static struct type_NTP_SmallFixed *
+sfixed (struct s_fixedpt *ts);
+static struct type_NTP_ClockIdentifier *srclock (Refid *rid);
+int recv_osi (struct intf *ap, struct timeval *tvp);
+static void terminate (struct intf *ap, struct RoSAPindication *roi);
+void iso_init (int vecp, char **vec, int fd);
+int iso_accept (struct intf *ap);
+int make_osi_conn (struct ntp_peer *peer, char *addr);
+static struct type_NTP_ClockIdentifier *cli_refid (Refid refid);
+static struct type_NTP_ClockInfo *
+peer2clock (struct ntp_peer *peer);
+static int query_func (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+
 
 void	ros_advise (struct RoSAPpreject *rop, char *event), acs_advise (struct AcSAPabort *aca, char *event);
 extern LLog *pgm_log;

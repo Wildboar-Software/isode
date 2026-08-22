@@ -16,6 +16,20 @@
 
 #include "IMISC-types.h"	/* IMISC type definitions */
 #include <utmp.h>
+static int op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_users (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_pwdGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int pwdgen (char *pw);
+static int object (char *pw);
+static int op_exec (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_tellUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp);
+static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+
 #ifdef	SYS5
 struct utmp *getutent ();
 #include <sys/times.h>

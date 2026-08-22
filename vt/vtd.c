@@ -43,6 +43,7 @@
 #include <pwd.h>
 #include <stdarg.h>
 #include <utmp.h>
+#include "vt.h"
 
 extern int data_pending (void);
 

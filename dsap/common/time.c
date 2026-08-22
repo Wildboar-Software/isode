@@ -20,6 +20,12 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"
+static UTC	qstr2utct (char *s, int len);
+static PE timeenc (void *value);
+static void * timedec (PE pe);
+static int utccmp (void *value1, void *value2);
+void time_syntax (void);
+
 
 extern int strprint (PS ps, char *str, int format);
 extern int sfree (char *x);

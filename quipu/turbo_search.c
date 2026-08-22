@@ -9,6 +9,10 @@
 #include "quipu/ds_search.h"
 #include "quipu/turbo.h"
 #include "config.h"
+static void apply_sacl (EntryInfo **list, Entry e, struct search_kid_arg *ska);
+static int eis_merge (EntryInfo *ei, EntryInfo **eilist, int toplevel);
+static int entry_collect (Index_node *node, EntryInfo **eilist);
+
 
 #define new_indexnode() (Index_node *) calloc (1, sizeof (Index_node))
 

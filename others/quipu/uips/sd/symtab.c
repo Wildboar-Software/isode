@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "general.h"
 #include "symtab.h"
+static void put_symbol_value(table_entry table, char *name, char *val);
+static char *get_symbol_value(table_entry table, char *name);
+static void free_table(table_entry table);
+
 
 void put_symbol_value(table_entry table, char *name, char *val) {
 	if (!name) return;

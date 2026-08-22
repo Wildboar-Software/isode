@@ -4,6 +4,18 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void tree_struct_free_void (void *value);
+static void *
+	tree_struct_cpy (void *value);
+static int tree_struct_cmp (void *value1, void *value2);
+static void tree_struct_print (PS ps, void *value, int format);
+static void *str2schema (char *str);
+static PE ts_enc (void *value);
+static void * ts_dec (PE pe);
+void schema_syntax (void);
+
+void tree_struct_free (struct tree_struct *ptr);
+
 
 extern int oidformat;
 

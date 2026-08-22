@@ -13,6 +13,43 @@
 #include <isode/isoaddrs.h>
 #include <isode/tailor.h>
 #include <stdarg.h>
+int	snmp_init (void);
+static void snmp_onceonly (void);
+int	snmp_check (NODE *r, char *name);
+int	snmp_get (NODE *ptr, char *instname);
+struct search *snmp_assoc_scan (NODE *symbol, NODE *instance);
+struct search *snmp_assoc_next (struct search *lookat, int done);
+static int snmp_get_next (struct snmp_search *s);
+static int snmp_get_next_aux (struct snmp_search *s);
+static int req_ready (struct snmp_req *sr, int do_val);
+void snmp_set (void);
+static int e_integer (NODE *x, PE *pe);
+static int e_octets (NODE *x, PE pe);
+static int e_display (NODE *x, PE pe);
+static int e_objectID (NODE *x, PE pe);
+static int e_null (NODE *x, PE pe);
+static int e_ipaddr (NODE *x, PE pe);
+static int  e_ulong (NODE *x, PE pe, PElementID id);
+static int  e_counter (NODE *x, PE pe);
+static int  e_gauge (NODE *x, PE pe);
+static int  e_timeticks (NODE *x, PE pe);
+static int  e_clnpaddr (NODE *x, PE pe);
+static NODE *make_octet_node (char *base, int len);
+static int  d_integer (NODE **x, PE pe);
+static int  d_octets (NODE **x, PE pe);
+static int  d_display (NODE **x, PE pe);
+static int  d_objectID (NODE **x, PE pe);
+static int  d_null (NODE **x, PE pe);
+static int  d_ipaddr (NODE **x, PE pe);
+static int d_ulong (NODE **x, PE pe);
+static int  d_clnpaddr (NODE **x, PE pe);
+static	int snmp_ready (int do_id);
+static	snmp_map (struct sockaddr_in *isock);
+char   *snmp_name (NODE *ptr);
+static char *snmp_error (int i);
+static char *snmp_variable (struct type_SNMP_PDU *parm, int idx);
+static	OID	str2oid (char *s);
+
 
 int	debug = 0;
 

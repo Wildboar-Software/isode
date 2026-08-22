@@ -33,6 +33,8 @@
 
 #include "config.h"
 
+static int _getdents_stub(void);
+
 #if	!defined(SVR3) && !defined(apollo) && !defined(GETDENTS)
 
 #include	<sys/errno.h>
@@ -81,6 +83,14 @@
 #if defined(UFS) + defined(BFS) + defined(NFS) != 1	/* sanity check */
 #include "***** ERROR ***** exactly one of UFS, BFS, or NFS must be defined"
 #endif
+
+#ifdef UFS
+static int NameLen(char name[]);
+#endif
+#ifdef UNK
+static void sig_catch(int sig);
+#endif
+int getdents(int fildes, char *buf, unsigned nbyte);
 
 #ifdef UFS
 #define	RecLen( dp )	(sizeof(struct direct))	/* fixed-length entries */
@@ -283,5 +293,5 @@ int getdents (
 	return (char *)bp - buf;	/* return # bytes read */
 }
 #else
-int _getdents_stub(void) {}
+static int _getdents_stub(void) {}
 #endif

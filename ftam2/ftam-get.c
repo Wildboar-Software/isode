@@ -11,6 +11,7 @@
 #include "pepsy.h"
 #include "pepsycodec.h"
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
 static int effector;
 

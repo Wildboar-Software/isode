@@ -50,6 +50,17 @@ struct	arptab {
 #endif
 #ifndef SVR4_UCB
 #include <sys/ioctl.h>
+static int _read_ip_stats (void);
+static int  o_ip (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_ip (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_ip_routing_stats (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_address (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_address (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct arptab *_read_arptab (void);
+
 #endif
 
 #define	FORW_GATEWAY	1		/* ipForwarding */
@@ -1766,6 +1777,7 @@ out:
 	return NULL;
 }
 
+void init_ip (void);
 void init_ip (void) {
 	OT	    ot;
 
@@ -1982,6 +1994,7 @@ void init_ip (void) {
 }
 
 #ifdef LINUX
+int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
 int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
 {
     FILE *f;
@@ -2026,6 +2039,7 @@ int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
 	return OK;
 }
 
+int _file_printf (const char *path, const char *fmt, ...);
 int _file_printf (const char *path, const char *fmt, ...)
 {
 	FILE *f;

@@ -15,6 +15,13 @@
 #endif
 #include "quipu/syntaxes.h"
 
+char *show_picture (char *picture, char *picture_process, int len);
+static void picture_print (PS ps, void *value, int format);
+static void *pe_cpy_void (void *value);
+static void pe_free_void (void *value);
+void photo_syntax (void);
+
+
 typedef struct childList {
 	struct childList *next;
 	int childpid;

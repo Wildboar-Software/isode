@@ -12,6 +12,10 @@
 #include "query.h"
 
 #include "quipu/util.h"
+static void __yy_bcopy (char *from, char *to, int count);
+static int yylex (YYSTYPE *lvalp, YYLTYPE *llocp);
+int yyerror (char *err);
+
 
 #ifdef _AIX
 #pragma alloca

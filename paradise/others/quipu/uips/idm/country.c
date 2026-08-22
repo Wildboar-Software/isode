@@ -12,6 +12,18 @@
 #include "filter.h"
 #include "destrings.h"
 #include "extmessages.h"
+int makeRootCountry(struct namelist **clistp);
+int listCos(char *cstr, struct namelist **clistp);
+void freeCoSearchArgs(void);
+int listMatchingCos(char *cstr, struct namelist **clistp);
+int listExactCos(char *objectstr, struct namelist **clistp);
+int makeListCountries(struct namelist **clistp);
+void makeAllCoFilter(struct s_filter **fpp);
+int readCo(char *objectstr, struct namelist **clistp);
+void freeCoListArgs (void);
+int listAllCos(struct namelist **clistp);
+int reallyMakeListCountries(struct namelist **clistp);
+
 
 struct ds_read_arg rarg;
 struct ds_read_result rresult;

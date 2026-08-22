@@ -43,6 +43,23 @@ int dish_init (int argc, char **argv);
 void add_dish_help (char *command, char *args, char serv, char other, char *use);
 int do_dish (void);
 void add_dish_command (char *name, void (*func)(int, char **), int len);
+int dish_cmd_init (void);
+
+void call_add (int argc, char **argv);
+void call_compare (int argc, char **argv);
+void call_delete (int argc, char **argv);
+void call_list (int argc, char **argv);
+void call_fred (int argc, char **argv);
+void call_search (int argc, char **argv);
+void call_modify (int argc, char **argv);
+void call_modifyrdn (int argc, char **argv);
+void call_showentry (int argc, char **argv);
+void call_unbind (int argc, char **argv);
+void call_moveto (int argc, char **argv);
+void call_ds (int argc, char **argv);
+void call_help (int argc, char **argv);
+void call_showattribute (int argc, char **argv);
+void dsa_control (int argc, char **argv);
 
 int editentry(int argc, char **argv);
 int yesno(char *str);

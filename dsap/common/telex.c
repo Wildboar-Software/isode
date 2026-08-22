@@ -14,6 +14,15 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void telex_free (void *value);
+static void *telex_cpy (void *value);
+static int telex_cmp (void *value1, void *value2);
+static void telex_print (PS ps, void *value, int format);
+static void *str2telex (char *str);
+static PE telex_enc (void *value);
+static void * telex_dec (PE pe);
+void telex_syntax (void);
+
 
 extern LLog * log_dsap;
 

@@ -52,6 +52,8 @@
 #include "isoservent.h"
 #endif
 #include "tailor.h"
+static void tsapd (int vecp, char **vec);
+
 
 static int  debug = 0;
 static int  foreground = 0;

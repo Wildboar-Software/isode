@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
+#include "quipu/referral.h"
+
+static ContinuationRef new_ref (DN name, int rt, struct access_point *ap);
+struct access_point *ap_append (struct access_point *a, struct access_point *b);
+ContinuationRef cont_ref_parent (DN name);
+void add_str_parent (char *sdn, char *spsap);
+void free_parents (void);
+static struct PSAPaddr *parent_psap (void);
+struct access_point *ap_cpy (struct access_point *ap);
+
 
 extern LLog * log_dsap;
 char remote_lookup = TRUE;

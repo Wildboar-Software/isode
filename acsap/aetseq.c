@@ -5,6 +5,7 @@
 #include <strings.h>
 #include "psap.h"
 #include "isoaddrs.h"
+#include "acsap.h"
 
 extern int _startisoentity (char *descriptor);
 extern int _stopisoentity (char *descriptor, struct isoentity *iep);

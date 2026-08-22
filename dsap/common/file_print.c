@@ -5,6 +5,8 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/malloc.h"
+void as_write_files (Attr_Sequence as, char *where);
+
 
 char * parse_file = NULLCP;
 RDN parse_rdn = NULLRDN;

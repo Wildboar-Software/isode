@@ -4,6 +4,10 @@
 #include <strings.h>
 #include "psap.h"
 #include "tailor.h"
+static int uvec_write (PS ps, PElementData data, PElementLen n, int in_line);
+static int uvec_flush (PS ps);
+static int uvec_close (PS ps);
+
 
 #define	NPSUV		10     	/* really should be NSPUV - 2 */
 

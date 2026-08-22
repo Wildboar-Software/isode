@@ -23,6 +23,10 @@
 #include "psap.h"   /* for generic idempotent responders */
 #include "rfainfo.h"
 #include "rfa.h"
+static int getCompressed (char *fn, struct qbuf **qbp);
+static int fd2qb (int fd, struct qbuf **qbp);
+int op_getFileData (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+
 
 /*--------------------------------------------------------------
  *  spawn compress

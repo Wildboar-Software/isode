@@ -15,6 +15,10 @@
 #include <gdbm.h>
 #endif
 #include <errno.h>
+#ifdef TURBO_DISK
+static Avlnode *get_entries_aux (GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age);
+#endif
+
 
 Avlnode *getentry_block(Entry p_parent, char *fname);
 Entry get_entry_aux(FILE *file, Entry parent, int dtype);
@@ -238,6 +242,7 @@ int get_header (FILE * file, int * typeptr, char ** versionptr) {
 #ifdef TURBO_DISK
 Avlnode *get_entries_aux (GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age) {
 #else
+Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, time_t cache_age);
 Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, time_t cache_age) {
 #endif
 	Entry eptr = NULLENTRY;
@@ -276,8 +281,10 @@ Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, 
 }
 
 #ifdef TURBO_DISK
+Avlnode *get_entries (GDBM_FILE file, Entry parent, char * version, int dtype);
 Avlnode *get_entries (GDBM_FILE file, Entry parent, char * version, int dtype) {
 #else
+Avlnode *get_entries (FILE * file, Entry parent, char * version, int dtype);
 Avlnode *get_entries (FILE * file, Entry parent, char * version, int dtype) {
 #endif
 	extern int parse_status;

@@ -5,6 +5,8 @@
 #include "quipu/common.h"
 #include "quipu/dsargument.h"
 #include "quipu/dsap.h"
+Entry cache_dsp_entry (EntryInfo *ptr,char complete);
+
 
 extern time_t timenow;
 extern LLog * log_dsap;

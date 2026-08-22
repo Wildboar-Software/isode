@@ -13,6 +13,15 @@
 #include "Idist-types.h"
 #include "Idist-ops.h"
 #include "defs.h"
+#include "ryinitiator.h"
+#include "vt.h"
+#include "ryresponder.h"
+
+int makeconn (char *thehost);
+int closeconn (void);
+int invoke (int op, caddr_t arg, modtyp *mod, int ind, IFP rfx, IFP efx);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);

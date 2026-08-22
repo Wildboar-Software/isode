@@ -10,6 +10,10 @@
 #include <strings.h>
 #include <unistd.h>
 #include "internet.h"
+static int TManGenAux (unsigned int type, struct tsapblk *tb, int a, struct TSAPaddr *b);
+static int ManInit (void);
+static int _tsapmgmt_stub(void);
+
 
 #define LOCALTHLD 128		/* local threshold for reporting (bytes) */
 
@@ -161,5 +165,5 @@ static int ManInit (void) {
 	return OK;
 }
 #else
-int _tsapmgmt_stub(void) {}
+static int _tsapmgmt_stub(void) {}
 #endif

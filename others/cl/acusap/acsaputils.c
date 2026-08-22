@@ -51,6 +51,18 @@
 #include "acusap.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "acpkt.h"
+
+int	ACU_print (PE pe, char *text, int rw)
+/*---------------------------------------------------------------------------*/;
+int acusaplose (struct AcSAPindication *aci, int reason, char *what, char *fmt);
+static int _acusaplose (  /* what, fmt, args ... */
+	/*---------------------------------------------------------------------------*/
+	struct AcSAPindication *aci,
+	int reason,
+	va_list ap
+);
+
 
 static int  once_only = 0;
 static struct assocblk assocque;

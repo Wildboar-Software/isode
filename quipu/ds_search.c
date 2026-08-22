@@ -15,6 +15,13 @@
 #include "quipu/DAS-types.h"
 #include "quipu/find.h"
 #include "quipu/referral.h"
+static void prepare_string (caddr_t c);
+static int search_kid2 (Entry e, struct search_kid_arg *ska);
+static int search_kid (Entry e, struct search_kid_arg *ska);
+EntryInfo *filterentry ( struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype, int *saclerror, struct ds_search_task *local, char dosacl );
+
+int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, DN dnbind, DN target, struct ds_search_task **local, struct ds_search_task **refer, struct di_block **di_p, char dsp, char quipu_ctx, time_t tktime, char entryonly, char authtype);
+
 
 extern LLog    *log_dsap;
 

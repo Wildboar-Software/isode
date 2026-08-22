@@ -5,6 +5,8 @@
 #include "sys.file.h"
 #include <ctype.h>
 
+char * TidyString(char *a);
+
 int main (int argc, char **argv) {
 	int		filearg, verbose;
 	FILE		*fp;
@@ -15,7 +17,6 @@ int main (int argc, char **argv) {
 	int		buflen, len;
 	char		type[80], version[256];
 	char		gfname[1024];
-	char		*TidyString(char *a);
 
 	if ( argc < 2 || argc > 3 ) {
 		fprintf(stderr, "usage: %s [-v] edbfile\n", argv[0]);

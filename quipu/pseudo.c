@@ -14,6 +14,11 @@
 #include "tailor.h"
 #include <sys/stat.h>
 #include <errno.h>
+#include "quipu/init.h"
+
+int update_pseudo_attr (void);
+Attr_Sequence get_cacheEDB (void);
+
 
 #define cacheEDB  "0.9.2342.19200300.99.1.29"
 

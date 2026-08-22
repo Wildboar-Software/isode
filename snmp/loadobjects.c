@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "objects.h"
 
+int loadobjects (const char *file);
+
 static unsigned int _elems[] = {
       0, 0, /* ccitt */ 
       0, 0, 0, /* localAgent */ 

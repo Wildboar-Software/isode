@@ -5,6 +5,17 @@
 #include "quipu/ds_search.h"
 #include "quipu/dap2.h"
 #include "quipu/name.h"
+char *qy_dn2str(DN dn);
+static void qy_dn_print(PS ps, DN dn, int format);
+QBool is_good_match(char *match_str, char *dn_str);
+static QBool char_compare(char a, char b);
+QE_error_code make_typed_filter_items(char *filter_str,
+									  Filter *ex_filter_ptr, Filter *ap_filter_ptr);
+QE_error_code make_filter_items(AttributeType attr_type, char *search_value,
+								Filter *ex_filter_ptr, Filter *ap_filter_ptr);
+static char *get_entry_type_name (char *entry_name);
+QBool qy_in_hierarchy(objectclass *a, objectclass *b);
+
 
 static QBool char_compare(char a, char b);
 

@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "psap.h"
+static PElementData
+ffb (PE pe, int n, int *mask, int xtnd);
+static PElementData
+ffb_aux (PE pe, int *n, int *mask);
+
 
 /* the first octet indicates how many unused bits are in the last octet --
 

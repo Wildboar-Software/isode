@@ -9,6 +9,12 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "tailor.h"
+#include "wdgtdefs.h"
+
+void help_cncs (void);
+void help_init (void);
+static void get_help (char *filename, char *line);
+
 
 #define BUFLEN 1024
 #define TEXT 1

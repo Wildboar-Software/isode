@@ -1,5 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
+void AttrT_free (AttributeType x);
+
 
 #ifdef AttrT_free
 #undef AttrT_free

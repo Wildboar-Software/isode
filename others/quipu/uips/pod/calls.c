@@ -15,6 +15,17 @@
 #include "util.h"
 
 #include <X11/Intrinsic.h>
+#include "calls.h"
+
+char *get_strioid (char *ptr);
+static void parse_duarc (char *options_path);
+void make_friendly_rdn (char *friendly, char *object, char *base);
+int clear_dnseq (void);
+int is_dit_leaf (char *name);
+char *GetSurname (char *name);
+char *GetWholeRelName (char *name);
+str_seq SortList(str_seq list);
+
 
 extern mailtype mailformat;
 extern Attr_Sequence read_types, read_types2, oclass;

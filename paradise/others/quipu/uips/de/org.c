@@ -13,6 +13,17 @@
 #include "namelist.h"
 #include "filter.h"
 #include "destrings.h"
+int listOrgs(char *cstr, char *ostr, struct namelist **olistp);
+void freeOrgListArgs (void);
+void freeOrgSearchArgs (void);
+int listAllOrgs(char *cstr, struct namelist **olistp);
+int listMatchingOrgs(char *cstr, char *ostr, struct namelist **olistp);
+int readExactOrg(char *ostr, struct namelist **olistp);
+int reallyMakeListOrgs(struct namelist **olistp);
+int makeListOrganisations(struct namelist **olistp);
+int readOrg(char *ostr, struct namelist **olistp);
+void makeAllOrgFilter(struct s_filter **fpp);
+
 
 extern struct ds_list_arg larg;
 extern struct ds_list_result lresult;

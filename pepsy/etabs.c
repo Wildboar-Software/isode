@@ -9,6 +9,40 @@
 #include "sym.h"
 #include "pass2.h"
 #include "mine.h"
+char *c_flags(YP yp, PElementClass cl);
+static int add_list (char *type, char *id);
+static int print_list(void);
+static int parse_decl (char **s, char **v1, char **v2);
+static YV calc_yv(YP yp, char *id);
+static char *genlabel(char *name, YP yp);
+static YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
+
+char *c_flags(YP yp, PElementClass cl);
+void tenc_typ(FILE *fp, YP yp, char *id, char *type);
+int ferr (int i, char *s);
+int ferrd (int i, char *s, int d);
+int ferrs (int i, char *s, char *d);
+static int add_list (char *type, char *id);
+static int print_list(void);
+static int parse_decl (char **s, char **v1, char **v2);
+int optfield(YP yp);
+void gen_dflts(FILE *fp, YP yp, char *type);
+void gdflt(FILE *fp, YP yp, int which);
+static YV calc_yv(YP yp, char *id);
+int valisttobs(YP yp, YV yv, char **ppstr);
+void prhstr(FILE *fp, char *str, int len);
+int printable (char *str, int i);
+static char *genlabel(char *name, YP yp);
+int gen_modref (char *mod);
+void prnte(FILE *fp, char *t, char *f, YP yp, char *p1);
+void gen_identry( FILE *fp, char *t, char *f, YP yp, void (*fn) (FILE *fp, YP oyp, YP yp1, char *t, char *f) );
+static YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
+void gen_fn(FILE *fp, YP yp, char *fn);
+void gen_act(FILE *fp, Action act, YP yp);
+void prtfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
+void prstfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
+void prcte(FILE *fp, char *type, char *t, char *f, YP yp, char *p1);
+
 
 s_table *head;
 

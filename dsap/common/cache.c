@@ -6,6 +6,10 @@
 #include "quipu/list.h"
 #include "quipu/entry.h"
 #include "quipu/turbo.h"
+#include "quipu/cache.h"
+
+char *new_version (void);
+
 
 extern LLog * log_dsap;
 extern Entry database_root;

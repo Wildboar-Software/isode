@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <sys/termio.h>
 #include <sys/ioctl.h>
+void setRawMode(void);
+void unsetRawMode(void);
+
 
 static short savemode;
 static unsigned char savemin;

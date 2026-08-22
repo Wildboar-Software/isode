@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "tpkt.h"
+#include "tusap.h"
 
 /* returns ptr to header and header len */
 

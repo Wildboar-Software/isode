@@ -23,6 +23,21 @@ static void gen_lint(FILE *fp);
 static int scmp (const char *s1, const char *s2);
 static void dumpact(FILE *fp, YAL yal, int form, int ret);
 static void gen_actions(FILE *fp, YP oyp, int form);
+static void file_header(FILE *fp, char *act);
+static void open_func(FILE *fp);
+void close_func(FILE *fp);
+static void print_table(void);
+SY syfind(char *name);
+static struct univ_typ *simptyp(YP yp);
+YP lkup(YP yp);
+int comptag(int tag, YP yp);
+void dump_ptrtab(FILE *fp);
+char *getfldbit(char *p, char **pstr);
+char *skipspace(char *p);
+int noindirect(char *f);
+int setvaltype(YP yp, char *str);
+char *partyp2str(YP yp);
+char *genstrform(YP yp);
 
 extern int doexternals;
 extern int sflag, mflag, fflag, Cflag;
@@ -815,6 +830,8 @@ static void gen_lint(FILE *fp) {
 			/* Encoding routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyencdflt);
 			fprintf(fp, "\n#undef %s\n", buf);
+			fprintf(fp, "int	%s(PE *pe, int top, int len, char *buffer, %s *parm);\n",
+				buf, sym2type(sy));
 			fprintf(fp, "int	%s", buf);
 			fprintf(fp, "(PE *pe, int top, int len, char *buffer, %s *parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",
@@ -827,6 +844,8 @@ static void gen_lint(FILE *fp) {
 			/* Decoding routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yydecdflt);
 			fprintf(fp, "\n#undef %s\n", buf);
+			fprintf(fp, "int	%s(PE pe, int top, int *len, char **buffer, %s **parm);\n",
+				buf, sym2type(sy));
 			fprintf(fp, "int	%s", buf);
 			fprintf(fp, "(PE pe, int top, int *len, char **buffer, %s **parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",
@@ -839,6 +858,8 @@ static void gen_lint(FILE *fp) {
 			/* Printing routine */
 			buf = modsym (sy -> sy_module, sy -> sy_name, yyprfdflt);
 			fprintf(fp, "\n#undef %s\n/* ARGSUSED */\n", buf);
+			fprintf(fp, "int	%s(PE pe, int top, int *len, char **buffer, %s *parm);\n",
+				buf, sym2type(sy));
 			fprintf(fp, "int	%s", buf);
 			fprintf(fp, "(PE pe, int top, int *len, char **buffer, %s *parm)\n", sym2type(sy));
 			fprintf(fp, "{\n  return (%s(%s%s, ",

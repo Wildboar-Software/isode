@@ -14,6 +14,8 @@ extern LLog * log_dsap;
 extern int local_master_size;
 extern int entry_cmp(Entry e1, Entry e2);
 
+int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+
 int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr, delent = NULLENTRY;
 	char * new_version(void);

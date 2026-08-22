@@ -25,6 +25,14 @@
 #include "rfainfo.h"
 #ifdef SYS5
 #include <unistd.h>
+int op_requestMaster (
+	int sd,
+	struct RyOperation *ryo,
+	struct RoSAPinvoke *rox,
+	caddr_t in,
+	struct RoSAPindication *roi
+);
+
 #endif
 
 /*--------------------------------------------------------------

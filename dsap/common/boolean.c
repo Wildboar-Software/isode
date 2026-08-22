@@ -6,6 +6,14 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"
+static PE boolenc (void *value);
+static void * booldec (PE pe);
+static void *boolget (char *x);
+static void bool_strprint (PS ps, void *value, int format);
+static void *bool_strdup (void *value);
+static int bool_lexequ (void *value1, void *value2);
+void boolean_syntax (void);
+
 
 extern int strprint(PS ps, char *str, int format);
 extern int lexequ(char *str1, char *str2);

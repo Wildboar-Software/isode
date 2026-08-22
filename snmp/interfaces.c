@@ -29,6 +29,13 @@
 #include <linux/if_link.h>
 #include <linux/if_packet.h>
 #include <net/if_arp.h>
+static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct interface *_find_interface_by_name (struct interface *list, const char *ifname);
+static struct address *_upate_addresses (struct interface *list, int *addr_number);
+int init_interfaces (void);
+static int adr_compar (const void *ap, const void *ab);
+
 #endif
 
 #define	TYPE_MIN	1		/* ifType */

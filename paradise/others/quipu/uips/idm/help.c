@@ -6,6 +6,12 @@
 #include "tailor.h"
 #include "quipu/util.h"
 #include "logger.h"
+void tailorHelp(void);
+char *findHelp(char *helpstr);
+void displayFile(char *filename, int help);
+void displayHelp(char *helpstr);
+int validateSetting(int type, char *value);
+
 
 extern LLog *de_log;
 extern int lines, cols;

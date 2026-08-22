@@ -11,10 +11,6 @@ OID	ode2oid (char* descriptor) {
 #include <string.h>
 #include "psap.h"
 #include "ppkt.h"
-
-/* work around define collisions */
-#undef missingP
-#undef pylose
 #include "rtpkt.h"
 
 /* work around type clashes */
@@ -39,6 +35,8 @@ static struct la_cache {
 	int	ref;
 	OID	oid;
 } Cache[ODECACHESIZE];
+
+int free_oid_cache (void);
 
 static void preloadcache (char *str) {
 	struct la_cache *cp = &Cache[0];

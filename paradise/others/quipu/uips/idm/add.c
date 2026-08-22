@@ -9,6 +9,18 @@
 #include "quipu/ds_search.h"
 #include "quipu/add.h"
 #include <stdio.h>
+int de_Add (void);
+static int prompt_atts(int object, struct namelist *atts);
+static int dm_addentry (void);
+static int bind_to_initial_DSA(char *initial_dsa_address);
+int de_Add_person (void);
+int de_Add_role (void);
+int de_Add_room (void);
+static int set_adarg (void);
+int check_error(struct	DSError error);
+int dm_Add_org (void);
+int dm_Add_mgr (void);
+
 extern char *oidtable;
 extern char *tailfile;
 extern char *dsa_address;

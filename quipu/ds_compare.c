@@ -13,6 +13,8 @@ extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 
 static int attribute_not_cached (Entry ptr, DN dn, OID at, DN target, int level);
 
+int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+
 int do_ds_compare (struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;
 	Attr_Sequence  as;

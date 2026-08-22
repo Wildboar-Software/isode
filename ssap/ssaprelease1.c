@@ -4,6 +4,15 @@
 #include <signal.h>
 #include <strings.h>
 #include "spkt.h"
+static int SRelRequestAux (
+	struct ssapblk *sb,
+	char *data,
+	int cc,
+	int secs,
+	struct SSAPrelease *sr,
+	struct SSAPindication *si
+);
+
 
 static int  SRelRequestAux (struct ssapblk *sb, char *data, int cc, int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 static int  SRelRetryRequestAux (struct ssapblk *sb, int secs, struct SSAPrelease *sr, struct SSAPindication *si);

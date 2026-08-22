@@ -13,6 +13,10 @@
 #include "quipu/connection.h"
 #include "quipu/find.h"
 #include "quipu/cache.h"
+static int addrdn_attribute ( Entry eptr, Attr_Sequence newas, struct DSError *error, DN requestor, DN dn );
+
+int do_ds_modifyrdn (struct ds_modifyrdn_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+
 
 extern LLog * log_dsap;
 extern DN mydsadn;
@@ -26,7 +30,7 @@ extern int remove_attribute (
 	Entry real_entry
 );
 
-int addrdn_attribute (
+static int addrdn_attribute (
 	Entry eptr,
 	Attr_Sequence newas,
 	struct DSError *error,

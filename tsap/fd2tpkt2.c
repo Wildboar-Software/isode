@@ -8,10 +8,10 @@
 #include "tpkt.h"
 #include "tailor.h"
 #include "internet.h"
+static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n));
+
 
 static int  fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n));
-static int  readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
-
 struct tsapkt *
 fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t), int (*readfnx)(int fd, char *buffer, int n)) {
 	struct tsapkt *t;

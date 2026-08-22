@@ -34,6 +34,10 @@
 #include "general.h"		/* sys 5 bcopy */
 #include "usr.dirent.h"
 
+int scandir(char *dirname, struct dirent ***namelist, int (*select)(struct dirent *), int (*dcomp)(char *, char *));
+int alphasort(char *d1, char *d2);
+
+
 /*
  * The DIRSIZ macro gives the minimum record length which will hold
  * the directory entry.  This requires the amount of space in struct dirent
@@ -44,7 +48,7 @@
 #define DIRSIZ(dp) \
     ((sizeof (struct dirent) - (MAXNAMLEN+1)) + (((dp)->d_namlen+1 + 3) &~ 3))
 
-int scandir(char *dirname, struct dirent ***namelist, int (*select)(struct dirent *), int (*dcomp)(caddr_t, caddr_t))
+int scandir(char *dirname, struct dirent ***namelist, int (*select)(struct dirent *), int (*dcomp)(char *, char *))
 {
 	struct dirent *d, *p, **names;
 	int nitems;
@@ -111,7 +115,7 @@ int scandir(char *dirname, struct dirent ***namelist, int (*select)(struct diren
 /*
  * Alphabetic order comparison routine for those who want it.
  */
-int alphasort(caddr_t d1, caddr_t d2)
+int alphasort(char *d1, char *d2)
 {
 	return(strcmp((*(struct dirent **)d1)->d_name,
 				  (*(struct dirent **)d2)->d_name));

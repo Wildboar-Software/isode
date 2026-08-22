@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "usr.dirent.h"
+static int _rewinddir_stub(void);
+
 
 #ifndef	GETDENTS
 extern off_t	lseek(int fd, off_t offset, int whence);
@@ -35,7 +37,7 @@ void rewinddir(DIR *dirp) {
 	lseek( dirfd(dirp), (off_t)0, SEEK_SET );	/* may set errno */
 }
 #else
-int _rewinddir_stub(void) {
+static int _rewinddir_stub(void) {
 	;
 }
 #endif

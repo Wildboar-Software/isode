@@ -14,6 +14,15 @@
 #include "quipu/turbo.h"
 #include "quipu/malloc.h"
 #include "quipu/find.h"
+#include "quipu/database.h"
+
+static int allowed_to_send (DN a,DN b);
+int	 send_get_edb (char *version,DN dn,DN from);
+static int unravel_edb(Entry e, struct DSError *error);
+static int quick_unrav (Entry e, struct DSError *error);
+static int link_child(Entry e, Avlnode *oldkids);
+void getedb_size (int x);
+
 
 extern int parent_link(Entry e, Entry parent);
 

@@ -10,6 +10,8 @@
 extern LLog * log_dsap;
 extern char quipu_shutdown;
 
+void dsa_work (struct task_act *task);
+
 extern int do_ds_read (
 	struct ds_read_arg *arg,
 	struct DSError *error,

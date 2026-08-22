@@ -73,6 +73,30 @@ SOFTWARE.
 #include <stdio.h>
 #include "dixstruct.h"
 #include "osdep.h"
+int DefineSelf (int fd);
+int ResetHosts (char *display);
+static Bool
+AuthorizedClient(ClientPtr client);
+static int AddHost (ClientPtr client, int family, unsigned length /* of bytes in pAddr */, pointer pAddr);
+static void NewHost (short family, pointer addr);
+static int RemoveHost (ClientPtr client, int family, unsigned length /* of bytes in pAddr */, pointer pAddr);
+static int GetHosts (pointer *data, int *pnHosts, BOOL *pEnabled);
+static int CheckFamily (int connection, int family);
+int #ifdef ISOCONN
+InvalidHost (struct TSAPaddr *saddr, int len)
+#else /* ISOCONN */
+InvalidHost (struct sockaddr *saddr, int len)
+#endif /* ISOCONN */;
+static ConvertAddr (struct TSAPaddr *saddr, int *len, pointer *addr)
+#else /* ISOCONN */
+ConvertAddr (struct sockaddr *saddr, int *len, pointer *addr)
+#endif /* ISOCONN */;
+static int ChangeAccessControl(ClientPtr client, int fEnabled);
+static int
+XFamily (int af);
+static int
+UnixFamily (int xf);
+
 
 extern int Error (char *fmt, ...);
 extern int Fatal (char *fmt, ...);

@@ -9,6 +9,10 @@
 #include "quipu/attrvalue.h"
 #include "quipu/attr.h"
 
+static void ds_bind_error_aux (PS ps, struct ds_bind_error *err, int mode);
+static char *print_bind_error (struct ds_bind_error *err, int mode);
+
+
 extern LLog * log_dsap;
 
 int dsa_dead;

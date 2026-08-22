@@ -11,6 +11,20 @@
 #include "quipu/bind.h"
 #include "tailor.h"
 #include "quipu/IF-types.h"
+#include "vt.h"
+
+static DNS ufn_interact (
+	DNS dns,
+	DN dn,
+	char * s
+);
+static DNS just_say_no (DNS dns, DN dn, char * s);
+static int bind_to_dsa (void);
+static PE name2psap (DN dn);
+static PE  name2value_ufn (char *name, char *context, int ontty, char *userdn,
+						   char *passwd, PE *real_name);
+void set_lookup_ufn (char flag);
+
 
 extern LLog * addr_log;
 

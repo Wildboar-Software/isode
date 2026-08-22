@@ -3,7 +3,7 @@
 #include <strings.h>
 #include "psap.h"
 
-static PElementData	pe_pullup_aux (PE pe, int *len);
+static PElementData pe_pullup_aux (PE pe, int *len);
 
 int pe_pullup (PE pe) {
 	PElementLen	    len;

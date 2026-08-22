@@ -11,6 +11,14 @@
 #include "namelist.h"
 #include "filter.h"
 #include "destrings.h"
+int listOrgs (char *cstr, char *ostr, struct namelist **olistp);
+void freeOrgSearchArgs (void);
+int listAllOrgs (char *cstr, struct namelist **olistp);
+int listMatchingOrgs (char *cstr, char *ostr, struct namelist **olistp);
+int listExactOrgs (char *ostr, struct namelist **olistp);
+int makeListOrganisations (struct namelist **olistp);
+int makeAllOrgFilter (struct s_filter **fpp);
+
 
 extern struct ds_search_arg sarg;
 extern struct ds_search_result sresult;

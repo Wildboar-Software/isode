@@ -7,6 +7,15 @@
 #include "pass2.h"
 #include "mine.h"
 #include <ctype.h>
+void tdec_typ(FILE *fp, YP yp, char *id, char *type);
+static YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
+
+void tdec_typ(FILE *fp, YP yp, char *id, char *type);
+static YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
+void genmalloc(FILE *fp, YP yp);
+int hasdatstr(YP yp);
+int control_act (Action act);
+int gen_freefn(FILE *fp, YP yp);
 
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp);
@@ -14,8 +23,6 @@ extern char *strip_last(char *s);
 extern char *str_yp_code[];
 extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
 extern s_table *lookup_list(void), *get_offset(void);
-extern YP tdec_loop(FILE *fp, YP yp, char *id, char *type);
-
 extern char *concat(char *s1, char *s2);
 extern char *my_strcat(char *s1, char *s2);
 extern char	*rm_indirect(char *p);

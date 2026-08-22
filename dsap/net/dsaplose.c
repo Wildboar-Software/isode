@@ -5,6 +5,8 @@
 #include <string.h>
 #include "tailor.h"
 #include "quipu/dsap.h"
+static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap);
+
 
 #ifndef	lint
 static int  _dsaplose (struct DSAPindication *di, int reason, va_list ap);

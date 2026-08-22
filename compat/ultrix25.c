@@ -33,6 +33,28 @@
 #ifndef ULTRIX_X25_DEMSA
 
 #include "x25.h"
+static int log_call_status (int fd);
+static int log_call_clear (int fd, int type);
+static int log_x25_facilities (int fd, int coc, char *caption);
+static void *
+epl_prtstr (char *fmt, char *val, int vallen);
+static void *
+epl_prtbool (char *fmt, short *val, int vallen);
+static void *
+epl_prtint (char *fmt, short *val, int vallen);
+static void *
+epl_prtlst (char *fmt, short *val, int vallen);
+int print_x25_facilities (int fd, int coc, char *caption);
+X25vc our_get_vci(int sd, char *s);
+static int compose_text (char *xudatap, char *pid, char *cudf);
+static char * Kloppenburgs_x25_ErrorCause(int what, X25vc vci)
+/* only called after clear and reset events */
+/* adapted from kloppenburgs's ean x25 access module */
+/* rts/netx25/x25int.c */;
+static int check_x25_event(int event_expected, int event_received, X25vc vci);
+static int _ultrix25_stub2 (void);
+static int _ultrix25_stub(void);
+
 
 /* are these needed george? */
 #define         X25_MBIT        0x40
@@ -305,7 +327,7 @@ int close_x25_socket(int fd)
 	close(fd);
 }
 
-int log_call_status (int fd) {
+static int log_call_status (int fd) {
 	struct	X25PortStatus	sbuf;
 	struct	X25PortStatus	*stats = &sbuf;
 	int 			sbl	= sizeof(sbuf);
@@ -405,7 +427,7 @@ int log_call_status (int fd) {
 	return;
 }
 
-int log_call_clear (int fd, int type) {
+static int log_call_clear (int fd, int type) {
 	struct	X25ClearData	cbuf;
 	struct	X25ClearData	*cdata = &cbuf;
 	int 			cbl	= sizeof(cbuf);
@@ -519,7 +541,7 @@ static int log_x25_facilities (int fd, int coc, char *caption) {
 	return OK;
 }
 
-void *
+static void *
 epl_prtstr (char *fmt, char *val, int vallen) {
 	static char	abuf[128];
 	static char	tbuf[128];
@@ -542,7 +564,7 @@ epl_prtstr (char *fmt, char *val, int vallen) {
 	return tbuf;
 }
 
-void *
+static void *
 epl_prtbool (char *fmt, short *val, int vallen) {
 	static char	*true = "true";
 	static char	*false = "false";
@@ -553,7 +575,7 @@ epl_prtbool (char *fmt, short *val, int vallen) {
 		return (false);
 }
 
-void *
+static void *
 epl_prtint (char *fmt, short *val, int vallen) {
 	static char	tbuf[128];
 
@@ -561,7 +583,7 @@ epl_prtint (char *fmt, short *val, int vallen) {
 	return tbuf;
 }
 
-void *
+static void *
 epl_prtlst (char *fmt, short *val, int vallen) {
 	static char	*list = "[LIST]";
 
@@ -737,13 +759,13 @@ X25vc our_get_vci(int sd, char *s)
 	}
 }
 
-int compose_text (char *xudatap, char *pid, char *cudf) {
+static int compose_text (char *xudatap, char *pid, char *cudf) {
 	strcpy(xudatap,pid);
 	strcat(xudatap,DELIMITER);
 	strcat(xudatap,cudf);
 }
 
-char * Kloppenburgs_x25_ErrorCause(int what, X25vc vci)
+static char * Kloppenburgs_x25_ErrorCause(int what, X25vc vci)
 /* only called after clear and reset events */
 /* adapted from kloppenburgs's ean x25 access module */
 /* rts/netx25/x25int.c */
@@ -842,7 +864,7 @@ char * Kloppenburgs_x25_ErrorCause(int what, X25vc vci)
 
 }
 
-int check_x25_event(int event_expected, int event_received, X25vc vci)
+static int check_x25_event(int event_expected, int event_received, X25vc vci)
 {
 
 	switch (event_received) {
@@ -1879,12 +1901,12 @@ int close_x25_socket (int sd)
 
 #endif 	/* ULTRIX_X25_DEMSA */
 #else   /* ULTRIX_X25 */
-int _ultrix25_stub2 (void) {
+static int _ultrix25_stub2 (void) {
 	;
 }
 #endif  /* ULTRIX_X25 */
 #else	/* X25 */
-int _ultrix25_stub(void) {
+static int _ultrix25_stub(void) {
 	;
 }
 #endif  /* X25 */

@@ -9,6 +9,36 @@
 #include "destrings.h"
 #include "namelist.h"
 #include "mapatts.h"
+char *val2str (AttributeValue av);
+char *val2dnstr (AttributeValue av);
+void printDetails(int objectType, struct namelist *lp);
+void printDetailsNumbers(int objectType, struct namelist *lp, int *count);
+void printPersonOneLiner(struct namelist *lp, int number);
+static void de_addrfree (struct postaddr *addr);
+static int de_addrcmp (struct postaddr *a,struct postaddr *b);
+static struct postaddr * de_addrcpy (struct postaddr *a);
+static struct postaddr* de_addrparse (char *str);
+}
+
+static PE de_addrenc (struct postaddr *m);
+static struct postaddr * de_addrdec (PE pe);
+static de_addrprint (PS xps,struct postaddr *addr,int format);
+static PE de_ia5enc (char *x);
+static char * de_ia5sdec (PE pe);
+void de_mailprint (PS xps,char *str);
+void de_dn_print (PS xps,DN dn,int format);
+void de_phone_print (PS ps,char *str,int format);
+static PE de_strenc (char *x);
+static char * de_prtsdec (PE pe);
+static void de_fax_free (struct fax *f);
+static struct fax *de_fax_cpy (struct fax *a);
+static int  de_fax_cmp (struct fax *a, struct fax *b);
+static void de_fax_print (PS ps, struct fax *f, int format);
+static struct fax *de_str2fax (char *str);
+static PE  de_fax_enc (struct fax *f);
+static struct fax *de_fax_dec (PE pe);
+void specialSyntaxHandlers(void);
+
 
 #define PADCHARS 22
 

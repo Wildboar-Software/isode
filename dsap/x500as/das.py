@@ -1450,6 +1450,7 @@ END
 %{
 
 /* same as int2strb but with a real buffer */
+char *int2strb_alloc (int n, int len);
 char *int2strb_alloc (int n, int len) {
     int    i;
     static char *buffer;
@@ -1463,6 +1464,7 @@ char *int2strb_alloc (int n, int len) {
 #ifndef lint
 
 #undef encode_DAS_TokenToSign
+int encode_DAS_TokenToSign( PE *pe, int top, int len, char *buffer, struct type_DAS_TokenToSign *parm );
 int	encode_DAS_TokenToSign(
 	PE *pe,
 	int top,
@@ -1474,6 +1476,7 @@ int	encode_DAS_TokenToSign(
 }
 
 #undef encode_DAS_ReadArgumentData
+int encode_DAS_ReadArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_ReadArgumentData *parm );
 int	encode_DAS_ReadArgumentData(
 	PE *pe,
 	int top,
@@ -1485,6 +1488,7 @@ int	encode_DAS_ReadArgumentData(
 }
 
 #undef encode_DAS_CompareArgumentData
+int encode_DAS_CompareArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_CompareArgumentData *parm );
 int	encode_DAS_CompareArgumentData(
 	PE *pe,
 	int top,
@@ -1495,6 +1499,7 @@ int	encode_DAS_CompareArgumentData(
   	return (enc_f(_ZCompareArgumentDataDAS, &_ZDAS_mod, pe, top, len, buffer, (char *) parm));
 }
 #undef encode_DAS_ListArgumentData
+int encode_DAS_ListArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_ListArgumentData *parm );
 int	encode_DAS_ListArgumentData(
 	PE *pe,
 	int top,
@@ -1506,6 +1511,7 @@ int	encode_DAS_ListArgumentData(
 }
 
 #undef encode_DAS_SearchArgumentData
+int encode_DAS_SearchArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_SearchArgumentData *parm );
 int	encode_DAS_SearchArgumentData(
 	PE *pe,
 	int top,
@@ -1517,6 +1523,7 @@ int	encode_DAS_SearchArgumentData(
 }
 
 #undef encode_DAS_AddEntryArgumentData
+int encode_DAS_AddEntryArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_AddEntryArgumentData *parm );
 int	encode_DAS_AddEntryArgumentData(
 	PE *pe,
 	int top,
@@ -1528,6 +1535,7 @@ int	encode_DAS_AddEntryArgumentData(
 }
 
 #undef encode_DAS_RemoveEntryArgumentData
+int encode_DAS_RemoveEntryArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_RemoveEntryArgumentData *parm );
 int	encode_DAS_RemoveEntryArgumentData(
 	PE *pe,
 	int top,
@@ -1539,6 +1547,7 @@ int	encode_DAS_RemoveEntryArgumentData(
 }
 
 #undef encode_DAS_ModifyEntryArgumentData
+int encode_DAS_ModifyEntryArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_ModifyEntryArgumentData *parm );
 int	encode_DAS_ModifyEntryArgumentData(
 	PE *pe,
 	int top,
@@ -1550,6 +1559,7 @@ int	encode_DAS_ModifyEntryArgumentData(
 }
 
 #undef encode_DAS_ModifyRDNArgumentData
+int encode_DAS_ModifyRDNArgumentData( PE *pe, int top, int len, char *buffer, struct type_DAS_ModifyRDNArgumentData *parm );
 int	encode_DAS_ModifyRDNArgumentData(
 	PE *pe,
 	int top,

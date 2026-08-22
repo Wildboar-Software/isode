@@ -14,6 +14,8 @@
 #include "RFA-ops.h"        /* operation definitions */
 #include "RFA-types.h"  /* type definitions */
 #include "rfa.h"
+int printError (int error, caddr_t param, int *rc);
+
 
 extern FILE *err;
 extern char *shortTime(long *t);

@@ -3,6 +3,16 @@
 #include "quipu/entry.h"
 #include "cmd_srch.h"
 #include "tailor.h"
+#include "quipu/dsap.h"
+
+static int load_obj_hier (char *sep, char *newname);
+static struct oc_seq *
+oc_seq_merge (struct oc_seq *a, struct oc_seq *b);
+static table_seq undo_macro (table_seq top, char *ptr);
+static void dumpalloid (void);
+static int add_oc_macro (char *buf, char *ptr);
+static void table_seq_free (table_seq ts);
+
 
 extern char chrcnv [];
 
@@ -18,6 +28,7 @@ extern int NumEntries;
 extern int attrNumEntries;
 extern int ocNumEntries;
 extern void free_oid_buckets(void);
+void want_oc_hierarchy (void);
 static table_seq table_seq_new (char *str);
 
 struct mac_buf {                        /* for handling macros */

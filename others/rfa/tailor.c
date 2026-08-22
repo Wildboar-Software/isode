@@ -17,6 +17,9 @@
 #include "logger.h"
 #include "rfa.h"
 #include "rfainfo.h"
+char *cut (char *s);
+int tailor (char *fn);
+
 
 extern char *fsBase;
 extern char *user, *host, *passwd, *strdup();

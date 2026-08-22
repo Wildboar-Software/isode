@@ -10,8 +10,14 @@
 #include "isoservent.h"
 #include "manifest.h"
 #include "tailor.h"
+
+int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);
 #ifdef X25
 #include "x25.h"
+#include "spkt.h"
+
+static int TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async);
+
 #endif
 
 static struct nsapent {

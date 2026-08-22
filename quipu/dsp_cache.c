@@ -19,6 +19,8 @@ extern char * edbtmp_path;
 extern AttributeType at_acl;
 extern AttributeType at_objectclass;
 
+Entry cache_dsp_entry (EntryInfo *ptr);
+
 Entry
 cache_dsp_entry (EntryInfo *ptr) {
 	/* assumes entry passed is complete */

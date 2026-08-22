@@ -16,6 +16,15 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void fax_free (void *value);
+static void *fax_cpy (void *value);
+static int fax_cmp (void *value1, void *value2);
+static void fax_print (PS ps, void *value, int format);
+static void *str2fax (char *str);
+static PE  fax_enc (void *value);
+static void *fax_dec (PE pe);
+void fax_syntax (void);
+
 
 extern LLog * log_dsap;
 

@@ -17,6 +17,15 @@
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void addrfree (void *value);
+static int addrcmp (void *value1, void *value2);
+static void *addrcpy (void *value);
+static void *addrparse (char *str);
+static void addrprint (PS ps, void *value, int format);
+static PE addrenc (void *value);
+static void * addrdec (PE pe);
+void post_syntax (void);
+
 
 #define OLD_UB_POSTAL_STRING 60	/* For ISODE-7.0 compat */
 

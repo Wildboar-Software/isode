@@ -10,6 +10,24 @@
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
 #include "pepsycodec.h"
+static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd);
+static int QspWaitRequest (int sd, int secs, struct DSAPindication *di);
+static
+#ifdef LINUX
+void
+#else
+SFP
+#endif
+watch_dog_activate (int sd);
+static
+#ifdef LINUX
+void
+#else
+SFP
+#endif
+slack_watch_dog_activate (int sd);
+static void slack_watch_dog (char *where);
+
 
 extern LLog	* log_dsap;
 extern unsigned watchdog_time;
@@ -913,7 +931,7 @@ void watch_dog_final (
 }
 
 #ifdef LINUX
-void
+static void
 #else
 SFP
 #endif

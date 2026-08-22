@@ -15,6 +15,14 @@
 #include "quipu/dap2.h"
 #include "quipu/attrvalue.h"
 #include "quipu/photo.h"
+modifyResult get_modify_result(QCardinal request_id);
+static errorList start_modify(QCardinal request_id,
+							  char *baseobject,
+							  modifyAttr mod_attr_list,
+							  int *task_id_ptr);
+makeTemplateResult get_make_template_result(QCardinal request_id);
+static modifyAttr avList2modifyAttr(attrValList attr_list);
+
 
 #define AS_SYNTAX(attrSeq) attrSeq->attr_type->oa_syntax
 #define AS_STROID(attrSeq) attrSeq->attr_type->oa_ot.ot_stroid

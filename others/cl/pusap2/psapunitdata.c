@@ -51,6 +51,34 @@
 #include "pupkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pusap2.h"
+
+static int addrs2block (
+	/*---------------------------------------------------------------------------*/
+	struct PSAPaddr *callingaddr,
+	struct PSAPaddr *calledaddr,
+	struct psapblk *pb,
+	struct PSAPindication *pi
+);
+static int contexts2block (
+	/*----------------------------------------------------------------------------*/
+	struct PSAPcontext *contexts,
+	int nctx,
+	struct psapblk *pb,
+	struct PSAPindication *pi
+);
+static int contexts2pdu (
+	/*----------------------------------------------------------------------------*/
+	struct psapblk *pb,
+	struct type_PS_UD__type *pdu
+);
+static int pdu2contexts (
+	/*----------------------------------------------------------------------------*/
+	struct psapblk *pb,
+	struct type_PS_Definition__list *ctxdeflist,
+	struct PSAPctxlist *ctxlist
+);
+
 
 /*---------------------------------------------------------------------------*/
 /* ^L   P-UNIT-DATA.REQUEST */

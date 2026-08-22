@@ -13,6 +13,25 @@
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"
+#include "pathnames.h"
+#include "sys.file.h"
+#include "usr.dirent.h"
+#include <sys/stat.h>
+static int  pq_compar (const void *p, const void *q);
+static int get_pq (int offset);
+static struct pq *get_pqent (unsigned int *ip, int len, int isnext);
+static int pj_compar (const void *p, const void *q);
+static int get_pj (int offset);
+static struct pj *get_pjent (unsigned int *ip, int len, int isnext);
+static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_print (void);
+static int _select (const struct dirent *dd);
+static int sortq (const struct dirent **d1, const struct dirent **d2);
+int sync_print (int cor);
+
 
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
@@ -23,11 +42,6 @@ extern int getprent(char *bp);
 extern void endprent(void);
 
 void	advise (int, char *, char *, ...);
-
-#include "pathnames.h"
-#include "sys.file.h"
-#include "usr.dirent.h"
-#include <sys/stat.h>
 
 struct pq {
 #define	PQ_SIZE	20

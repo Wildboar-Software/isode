@@ -5,6 +5,15 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static int authp_cmp( void *value1, void *value2 );
+static void * authp_cpy( void *value );
+static void * authp_decode( PE pe );
+static PE authp_enc( void *value );
+static int get_policy (char *str);
+static void * str2authp( char *str );
+static void authp_print (PS ps, void *value, int format);
+void authp_syntax (void);
+
 
 extern void sfree(char *x);
 

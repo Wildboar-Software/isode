@@ -25,6 +25,12 @@
 #include "quipu/entry.h"
 #include "quipu/modify.h"
 #include <sys/stat.h>
+#include "vt.h"
+#include "dish.h"
+
+void unset_sequence (void);
+int ems_part_free (struct entrymod *emp);
+
 
 #define ORG_PERSON "thornPerson & quipuObject"
 /* this should probably go elsewhere !!! */

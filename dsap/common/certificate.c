@@ -10,6 +10,16 @@
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static PE cert_enc(void *value);
+static void *cert_dec(PE pe);
+struct certificate *cert_cpy (struct certificate *parm);
+static int str2alg (char *str, struct alg_id *alg);
+static int str2encrypted (char *str, char **cp, int *len);
+struct certificate *str2cert (char *str);
+static void print_algid(PS ps, struct alg_id *parm, int format);
+static void print_encrypted(PS ps, char *str, int n_bits, int format);
+void certificate_syntax (void);
+
 
 static PE cert_enc(void *value) {
 	PE pe;

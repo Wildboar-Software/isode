@@ -7,6 +7,8 @@
 #include "quipu/ds_search.h"
 #include "quipu/read.h"
 #include "quipu/remove.h"
+int dm_List (void);
+
 extern char *oidtable;
 extern char *tailfile;
 extern char *dsa_address;

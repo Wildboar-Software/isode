@@ -64,3 +64,14 @@ extern	char *remglob(void);
 extern int ftp_directory;/* TRUE if last ftp_exist was a multiple listing */
 extern char ftp_error_buffer[BUFSIZ];
 extern char *ftp_error; /* points to FTP diagnostic string */
+
+/* ftp.c client routines */
+int hookup(char *host, int port);
+int login(char *user, char *pass, char *acct);
+int command(char *fmt, ...);
+int getreply(int expecteof);
+int sendrequest(char *cmd, char *remote);
+int recvrequest(char *cmd, char *remote);
+
+/* ftp_lib.c bridge routine not declared in ftamsystem.h */
+int ftp_create(char *filename);

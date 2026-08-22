@@ -10,6 +10,10 @@
 #include "isoservent.h"
 #include "isoaddrs.h"
 #include "internet.h"
+static printsrv (struct isoservent *is);
+static printsaddr (struct SSAPaddr *sa);
+static printtaddr (struct TSAPaddr *ta);
+
 
 char *gets (), *calloc ();
 

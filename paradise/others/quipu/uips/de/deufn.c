@@ -18,6 +18,10 @@
 #include "destrings.h"
 #include "tailor.h"
 #include "query.h"
+void doUfnSearch (void);
+DNS ufn_interact (DNS dns, DN dn, char *s);
+static int printUfnComponents(char *str);
+
 
 extern LLog *de_log;
 extern char *TidyString(char *a);

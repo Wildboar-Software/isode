@@ -231,6 +231,7 @@ int free_at_dummy (oid_table_attr *parm)
 #ifndef lint
 
 #undef encode_IF_AttributeType
+int encode_IF_AttributeType( PE *pe, int top, int len, char* buffer, struct type_IF_AttributeType *parm );
 int	encode_IF_AttributeType(
 	PE *pe,
 	int top,
@@ -243,6 +244,7 @@ int	encode_IF_AttributeType(
 }
 
 #undef decode_IF_AttributeType
+int decode_IF_AttributeType( PE pe, int top, int *len, char **buffer, struct type_IF_AttributeType *parm );
 int	decode_IF_AttributeType(
 	PE pe,
 	int top,
@@ -255,6 +257,7 @@ int	decode_IF_AttributeType(
 }
 
 #undef encode_IF_AttributeValue
+int encode_IF_AttributeValue( PE *pe, int top, int len, char* buffer, struct type_IF_AttributeValue *parm );
 int	encode_IF_AttributeValue(
 	PE *pe,
 	int top,
@@ -267,6 +270,7 @@ int	encode_IF_AttributeValue(
 }
 
 #undef decode_IF_AttributeValue
+int decode_IF_AttributeValue( PE pe, int top, int *len, char **buffer, struct type_IF_AttributeValue *parm );
 int	decode_IF_AttributeValue(
 	PE pe,
 	int top,
@@ -279,6 +283,7 @@ int	decode_IF_AttributeValue(
 }
 
 #undef encode_IF_DistinguishedName
+int encode_IF_DistinguishedName( PE *pe, int top, int len, char* buffer, struct type_IF_DistinguishedName *parm );
 int	encode_IF_DistinguishedName(
 	PE *pe,
 	int top,
@@ -291,6 +296,7 @@ int	encode_IF_DistinguishedName(
 }
 
 #undef decode_IF_DistinguishedName
+int decode_IF_DistinguishedName( PE pe, int top, int *len, char **buffer, struct type_IF_DistinguishedName *parm );
 int	decode_IF_DistinguishedName(
 	PE pe,
 	int top,
@@ -303,6 +309,7 @@ int	decode_IF_DistinguishedName(
 }
 
 #undef encode_IF_Name
+int encode_IF_Name( PE *pe, int top, int len, char* buffer, struct type_IF_Name *parm );
 int	encode_IF_Name(
 	PE *pe,
 	int top,
@@ -315,6 +322,7 @@ int	encode_IF_Name(
 }
 
 #undef decode_IF_Name
+int decode_IF_Name( PE pe, int top, int *len, char **buffer, struct type_IF_Name *parm );
 int	decode_IF_Name(
 	PE pe,
 	int top,

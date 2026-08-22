@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
+static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindication *si);
+
 
 /* S-TOKEN-GIVE.REQUEST */
 

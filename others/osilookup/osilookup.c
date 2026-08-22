@@ -26,6 +26,8 @@
 #include <netosi/osi.h>
 #include <netosi/osi_addr.h>
 #include <sunosi/mapds_user.h>
+static int  explode (char *a, uint8_t *b, int n);
+
 
 main (int argc, char **argv, char **envp) {
 	int	    len,

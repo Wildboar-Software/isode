@@ -27,6 +27,26 @@
 #include "compat.h"
 #include "tailor.h"
 #include "sys/file.h"
+static char *sys_terrname (int te);
+static tli_lose (struct TSAPdisconnect *td, int fd, int reason, char *str);
+static int tp4err2gen (int err);
+static int tp4bind (struct TSAPaddr *ta, int qlen, struct TSAPdisconnect *td, int context);
+static int tp4info (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int tp4getdis (int fd, struct TSAPdisconnect *td);
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td);
+static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td);
+int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td);
+int join_tp4_client (int fd, struct TSAPaddr *remote_ta, char *ud, int *ccp, int *seqp, int *expdp, struct TSAPdisconnect *td);
+static int _ts2tli_stub(void);
+
 
 /*
  *  The TLI does not support the functionality of multi-buffer transfers
@@ -1509,7 +1529,7 @@ int close_tp4_socket (int fd)
 }
 
 #else
-int _ts2tli_stub(void) {
+static int _ts2tli_stub(void) {
 	;
 }
 #endif

@@ -7,6 +7,8 @@
 #include "sector1.h"
 #include "pvpdu.h"
 #include "vt.h"
+static void acs_advise (struct AcSAPabort *aa, char *event);
+
 
 int	cmode;
 extern int sd;		/*Session descriptor for this association*/

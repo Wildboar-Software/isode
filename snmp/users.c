@@ -13,6 +13,31 @@
 #include "smux.h"
 #include "objects.h"
 #include "logger.h"
+#include <pwd.h>
+#include <grp.h>
+static int  pw_compar (const void *p, const void *q);
+static int get_pw (int offset);
+static void fill_pw (struct passwd *pwp);
+static struct pw *get_pwent (unsigned int *ip, int len, int isnext);
+static int gr_compar (const void *p, const void *q);
+static int get_gr (int offset);
+static void fill_gr (struct group *grp);
+static struct gr *get_grent (unsigned int *ip, int len, int isnext);
+static int gu_compar (const void *p, const void *q);
+static int gm_compar (const void *p, const void *q);
+static int get_gu (int offset);
+static struct gu *get_guent (unsigned int *ip, int len, int isnext);
+static int  o_user (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int o_group (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_users (void);
+static int pw_sort (const void *p, const void *q);
+static int gr_sort (const void *p, const void *q);
+void sync_users (int cor);
+
 
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)

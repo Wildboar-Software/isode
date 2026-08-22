@@ -5,6 +5,19 @@
 #include "demanifest.h"
 #include "quipu/util.h"
 #include "namelist.h"
+int de_prompt_yesno(char prompt[], char *value, char default_string[]);
+int de_prompt_value(char prompt[], char *value);
+int ask_addr(char *attr_name, char *lines);
+int ask_tlx(char *attr_name, char *lines);
+int is_postal_address(char *str);
+int is_dn(char *str);
+int is_phone_fax(char *str);
+int is_tlx(char *str);
+int is_x400(char *str);
+int ask_dnhnc(char *str, char attr_name[]);
+static int get_posdn(char posdn[], int *new);
+int ask_password_entry(char pswd[]);
+
 extern char yes_string[];
 extern char no_string[];
 extern char default_country[];

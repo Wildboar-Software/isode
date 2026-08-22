@@ -33,6 +33,42 @@
 
 #include "ssap.h"
 #include "susap.h"
+#include "vt.h"
+#include "ryresponder.h"
+
+static int togglemode (void)
+/*-------------------------------------*/;
+int bind (void)
+/*-------------------------------------*/;
+static int initbindvars (void)
+/*-------------------------------------*/;
+int unbind (void)
+/*-------------------------------------*/;
+static int listenup (void)
+/*-------------------------------------*/;
+static int audtsendreq (void)
+/*-------------------------------------*/;
+static int audtsend (void)
+/*-------------------------------------*/;
+static int audtread (void)
+/*-------------------------------------*/;
+static int validbinding (
+	/*-------------------------------------*/
+	int sd,
+	struct AcuSAPstart *acs
+);
+static int audtrebind (void)
+/*-------------------------------------*/;
+static printsrv (
+	/*-------------------------------------*/
+	struct isoservent *is
+);
+static printpaddr (
+	/*-------------------------------------*/
+	struct PSAPaddr *pa
+);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 static char *myhost = "loopback";
 static char *myservice = "acusaptest";

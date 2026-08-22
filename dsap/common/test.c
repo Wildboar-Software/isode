@@ -7,6 +7,8 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "tailor.h"
+static int do_parse (char *str);
+
 
 extern int parse_line;
 extern int parse_status;

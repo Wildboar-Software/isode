@@ -5,6 +5,7 @@
 #include <string.h>
 #include <strings.h>
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
 static int mv (char *src, char *dst, int multi);
 static int rm (char *file, int multi);

@@ -13,6 +13,19 @@
 #include "Idist-types.h"	/* type definitions */
 #include "Idist-ops.h"		/* operation definitions */
 #include "defs.h"
+int initdir (int flag, char *dest);
+int	transfer (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname);
+int terminate (int type, int status);
+int tran_data (char *data, int len);
+int runspecial (char *cmd);
+int	rquery (char *file, time_t *mtime, off_t *size, unsigned short *mode);
+int rmchk (int opts);
+static int listcdir_result (int sd, int id, int error, struct type_Idist_FileList *files, struct RoSAPindication *roi);
+int deletefile (char *str, int mode);
+static int basic_error (int sd, int id, int error, struct type_Idist_IA5List *parameter, struct RoSAPindication *roi);
+static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static int ia5_result (int sd, int id, int parameter, caddr_t result, struct RoSAPindication *roi);
+
 
 extern struct type_Idist_FileSpec *makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname);
 extern	char target[];

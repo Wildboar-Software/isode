@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "tsap.h"
 #include "uderrors.h"
+char *TuErrString (int code);
+
 
 static char *disc_uerr0[] = {
 	"Reason not specified or Successful Return",

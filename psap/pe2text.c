@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include "psap.h"
 #include "logger.h"
+static int ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line);
+static int ll_psopen (PS ps);
+
 
 /* logfile-backed abstract for PStreams */
 

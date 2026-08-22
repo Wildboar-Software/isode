@@ -7,6 +7,8 @@
 #include "manifest.h"
 #include "tailor.h"
 
+static int strdup_stub (void);
+
 #if !defined(STRDUP) && (!defined(SVR4) || defined(_AIX))
 /* strdup in AIX does not seem to use QUIPUs malloc! */
 
@@ -27,7 +29,7 @@ char   *strdup (char *str)
 
 #else
 
-int strdup_stub (void) {
+static int strdup_stub (void) {
 	;
 }
 

@@ -12,6 +12,9 @@
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */
 
 #include "internet.h"
+int get_dish_sock (struct sockaddr_in *isock, int pid, int islocal);
+void dummy (void);
+
 
 int get_dish_sock (struct sockaddr_in *isock, int pid, int islocal) {
 	int    myppid;

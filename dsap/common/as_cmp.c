@@ -1,5 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+static int as_cmp_comp (Attr_Sequence a, Attr_Sequence b);
+
 
 int avs_cmp (AV_Sequence a, AV_Sequence b);
 

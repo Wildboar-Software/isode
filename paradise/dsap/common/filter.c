@@ -4,6 +4,10 @@
 #include <strings.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
+Filter strfilter (AttributeType at,char *s,char type);
+Filter ocfilter (char *s);
+Filter joinfilter (Filter f, char type);
+
 
 extern LLog * log_dsap;
 

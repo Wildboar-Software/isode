@@ -7,6 +7,7 @@
 #include "quipu/policy.h"
 #include "quipu/oid.h"
 #include "cmd_srch.h"
+#include "tailor.h"
 
 extern void prefer_dsa (char *str);
 extern void reject_prefix (char *str);

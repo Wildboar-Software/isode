@@ -39,6 +39,21 @@
 #include <unistd.h>
 #include "ropkt.h"
 #include "tailor.h"
+#include "rosap.h"
+
+static int ValidBinding (
+	/*---------------------------------------------------------------------------*/
+	struct assocblk *acb,
+	struct AcuSAPstart *acs
+);
+static int aculose (
+	/*---------------------------------------------------------------------------*/
+	struct assocblk *acb,
+	struct RoSAPindication *roi,
+	char *event,
+	struct AcSAPabort *aca
+);
+
 
 int	aculose ();
 

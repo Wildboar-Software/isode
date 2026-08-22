@@ -4,6 +4,8 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
+void call_help (int argc, char **argv);
+
 
 #define	OPT	(!frompipe || rps -> ps_byteno == 0 ? opt : rps)
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
@@ -141,8 +143,10 @@ static void print_service (void) {
 	ps_print (RPS,"[-[no]localscope] [-help]\n");
 }
 
-void call_help (void) {
+void call_help (int argc, char **argv) {
 	int             i;
+	(void) argc;
+	(void) argv;
 	ps_print (RPS, "The following commands are recognised...\n\n");
 	for (i = 0; help_info[i].command != 0; i++)
 		ps_printf (RPS, "%-10s - %s\n", help_info[i].command, help_info[i].use);

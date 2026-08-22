@@ -10,6 +10,9 @@
 #include "acsap.h"
 #include "pvpdu.h"
 
+AEI str2aei_dse (char *string, char *context, int ontty, char *userdn, char *passwd);
+struct PSAPaddr *aei2addr_dse (AEI aei);
+
 static AEInfo aeis;
 static struct PSAPaddr pas;
 

@@ -36,6 +36,15 @@
 #endif
 #ifdef	TP4
 #include "tp4.h"
+#include "vt.h"
+
+static int f_bulk (char **vec);
+static int f_compile (char **vec);
+static void enum_print (integer *x, OS os);
+static void moresyntax (int check);
+static void intrser (int sig);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 #if	!defined(CLTS) && !defined(COTS)
 #define	COTS
 #endif
@@ -411,14 +420,14 @@ out:
 }
 
 #ifdef	BSD42
-int	bulk1 (
+void	bulk1 (
 	PS	ps,
 	int	sd,
 	struct type_SNMP_VarBindList *vb,
 	char   *community
 );
 
-int bulk2 (
+void bulk2 (
 	PS	ps,
 	int	sd,
 	struct type_SNMP_VarBindList *vb,
@@ -427,7 +436,7 @@ int bulk2 (
 
 static int f_bulk (char **vec) {
 	int	    result;
-	int	    (*fnx)(PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) = bulk1;
+	void	    (*fnx)(PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) = bulk1;
 	struct type_SNMP_VarBindList **vp;
 	struct type_SNMP_VarBindList *vb;
 	OT	    et = NULL;

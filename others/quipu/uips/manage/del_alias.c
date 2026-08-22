@@ -7,6 +7,8 @@
 #include "quipu/remove.h"
 #include "quipu/compare.h"
 #include "quipu/modify.h"
+int call_del_alias (int argc, char **argv);
+
 
 extern	DN       dn;
 extern  char    frompipe;

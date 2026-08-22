@@ -6,6 +6,13 @@
 #include "PasswordLookup-types.h"	/* type definitions */
 #include "ryinitiator.h"		/* for generic interctive initiators */
 #include "PasswordLookup-ops.h"		/* operation definitions */
+static int do_lookupUser (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserName **arg);
+static int do_lookupUID (int sd, struct dispatch *ds, char **args, struct type_PasswordLookup_UserID **arg);
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy);
+static int lookup_result (int sd, int id, int dummy, struct type_PasswordLookup_Passwd *result, struct RoSAPindication *roi);
+static print_qb (struct qbuf *q);
+static int  lookup_error (int sd, int id, int error, caddr_t parameter, struct RoSAPindication *roi);
+
 
 static char *myservice = "passwdstore";
 

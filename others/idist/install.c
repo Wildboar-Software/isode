@@ -35,6 +35,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "vt.h"
+
+int install (char *src, char *dest, int destdir, int opts);
+static int sendf (char *rname, int opts);
+static struct linkbuf *
+savelink (struct stat *sp, int opts);
+int update (char *rname, int opts, struct stat *sp);
+void log(FILE *fp, char *fmt, int a1, int a2, int a3);
+int query (char *mess, int mode, char *name);
+
 
 struct	linkbuf *ihead;		/* list of files with more than one link */
 char	target[BUFSIZ];		/* target/source directory name */

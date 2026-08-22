@@ -6,6 +6,10 @@
 #include "extmessages.h"
 #include "namelist.h"
 #include "quipu/remove.h"
+int de_Delete (void);
+int fillMostRmArg (void);
+static int dm_Delete_entry (void);
+
 extern char *oidtable;
 extern char *tailfile;
 extern char *dsa_address;

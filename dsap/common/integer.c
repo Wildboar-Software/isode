@@ -2,6 +2,17 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"
+static PE intenc (void *value);
+static PE enumenc (void *value);
+static void * intdec (PE pe);
+static void * enumdec (PE pe);
+static void intprint (PS ps, void *value, int format);
+static void *intdup (void *value);
+static int intcmp (void *value1, void *value2);
+static void intfree (void *value);
+static void *intparse (char *str);
+void integer_syntax (void);
+
 
 static PE intenc (void *value)
 {

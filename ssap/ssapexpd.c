@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
+static int SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
+
 
 /* S-EXPEDITED-DATA.REQUEST */
 

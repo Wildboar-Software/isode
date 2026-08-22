@@ -14,6 +14,9 @@
 #include "compat.h"
 #include "pvpdu.h"
 #include "pepsycodec.h"
+#include "acsap.h"
+
+PE name2value_dase (char *name, char *context, int ontty, char *userdn, char *passwd, PE *real_name);
 
 static int stayopen = 0;
 

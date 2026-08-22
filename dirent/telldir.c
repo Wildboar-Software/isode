@@ -8,6 +8,8 @@
 #include	<sys/types.h>
 #include	<unistd.h>
 #include	"usr.dirent.h"
+static int _telldir_stub(void);
+
 
 #ifndef	GETDENTS
 extern off_t	lseek(int fd, off_t offset, int whence);
@@ -34,7 +36,7 @@ off_t telldir( DIR *dirp ) {
 		return lseek( dirfd(dirp), (off_t)0, SEEK_CUR );
 }
 #else
-int _telldir_stub(void) {
+static int _telldir_stub(void) {
 	;
 }
 #endif

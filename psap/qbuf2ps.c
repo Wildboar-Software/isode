@@ -5,6 +5,9 @@
 #include <search.h>
 #include <strings.h>
 #include "psap.h"
+static int qbuf_read (PS ps, PElementData data, PElementLen n, int in_line);
+static int qbuf_close (PS ps);
+
 
 static int qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int cc,

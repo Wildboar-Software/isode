@@ -23,6 +23,30 @@
 #include "RFA-types.h"
 #include "rfa.h"
 #include "rfainfo.h"
+#include "vt.h"
+
+int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg);
+static int do_localListDir (char **av);
+static int do_listDir (char **av);
+int getRemoteRfaInfoList (char *fn, struct RfaInfo **rfap);
+static int do_getFile (char **av);
+static int do_unlockFile (char **av);
+static int do_lockFile (char **av);
+static int do_master (char **av);
+static int do_slave (char **av);
+static int do_unregister(char **av);
+static int do_rsyncdir (char **av);
+static int do_syncdir (char **av);
+static int do_setreq (char **av);
+static int do_setauto (char **av);
+static int do_settransfer (char **av, int mode);
+static int do_pwd (char **av);
+static int do_changeDir (char **av);
+static int do_timesync (char **av);
+int do_quit (char **av);
+static int executeCommand (char *cmd);
+int getConnection (void);
+
 
 #define START		retcode=OK
 #define RETURN		return retcode

@@ -15,6 +15,12 @@
 
 #include "widget.h"
 #include "quipu/util.h"
+#include "wdgtdefs.h"
+#include "vt.h"
+
+static void setsignals (void);
+static void eprint (char *str);
+
 
 extern  char    goto_path[], namestr[], passwd[];
 extern  char   *myname;

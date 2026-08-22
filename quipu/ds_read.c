@@ -10,6 +10,8 @@
 #include "quipu/DAS-types.h"
 #include "quipu/find.h"
 #include "quipu/schema.h"
+static Attr_Sequence dsa_control_info (void);
+
 
 extern LLog * log_dsap;
 
@@ -27,6 +29,8 @@ extern int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
 
 static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg);
 static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result);
+
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype);
 
 int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char quipu_ctx, char authtype) {
 	Entry  entryptr;

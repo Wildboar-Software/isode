@@ -6,6 +6,14 @@
 #include <strings.h>
 #include "spkt.h"
 #include "tailor.h"
+int susaplose (struct SSAPindication *si, int reason, char *what, char *fmt);
+static int _susaplose (	/* what, fmt, args ... */
+	struct SSAPindication *si,
+	int reason,
+	va_list ap
+);
+int ts2suslose (struct SSAPindication *si, char *event, struct TSAPdisconnect *td);
+
 
 #ifndef	lint
 static int _susaplose (struct SSAPindication *si, int reason, va_list ap);

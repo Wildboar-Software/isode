@@ -8,6 +8,32 @@
 #include "quipu/util.h"
 #include "quipu/dap2.h"
 #include "quipu/abandon.h"
+QE_error_code _task_invoked(task_type type, char *baseobject, QCardinal request_id, int *task_id_ptr);
+ /* _task_invoked */
+
+/*
+ * - _task_complete() -
+ *  A task has been completed. Remove it from the outstanding list.
+ *
+ */
+void _task_complete (int task_id);
+ /* _task_complete */
+
+/*
+ * - _get_task_of_id() -
+ * Find task_rec of given id and return a pointer to it.
+ *
+ */
+DsTask _get_task_of_id(int task_id);
+ /* _get_task_of_id */
+
+/*
+ * - abort_task() -
+ * Abort an X.500 request
+ *
+ */
+void abort_task (int task_id);
+
 
 /* DsTask tasks_outstanding[MAXTASKS]; */
 DsTask live_task_list = NULLDsTask;

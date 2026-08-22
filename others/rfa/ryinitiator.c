@@ -16,6 +16,18 @@
 #include <unistd.h>
 #include "RFA-ops.h"
 #include "RFA-types.h"
+#include "ryinitiator.h"
+
+int makeconn (char *thehost, char *password, char *user);
+int closeconn (void);
+invoke (int op, caddr_t arg, caddr_t *res, int *err);
+static void ros_errmsg (struct RoSAPpreject *rop, char *event);
+static void acs_errexit (struct AcSAPabort *aca, char *event);
+static void acs_errmsg (struct AcSAPabort *aca, char *event);
+static void errexit (char *what, char *fmt);
+static void  _errmsg (char *what, char *fmt, va_list ap);
+static void ryr_errmsg (char *what, char *fmt);
+
 
 void	errexit (char *, char *, ...);
 void	errmsg (char *, char *, ...);
@@ -203,7 +215,7 @@ void acs_errmsg (struct AcSAPabort *aca, char *event) {
 #ifndef	lint
 static void	_errmsg (char *what, char *fmt, va_list ap);
 
-void	errexit (char *what, char *fmt, ...) {
+static void	errexit (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -248,7 +260,7 @@ void errmsg (char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-void	ryr_errmsg (char *what, char *fmt, ...) {
+static void	ryr_errmsg (char *what, char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);

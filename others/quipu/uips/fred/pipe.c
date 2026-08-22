@@ -17,6 +17,19 @@
 #include "usr.dirent.h"
 #ifdef	BSD42
 #include <sys/wait.h>
+int dish (char *command, int silent);
+static do_edit (int sd, char *octets);
+paginate (FILE *fp, char *buffer, int cc);
+static void foreground (void);
+static	mypager (FILE *fp);
+static pagchar (int ch);
+int f_bind (char **vec);
+int f_quit (char **vec);
+static int da_command (char *fmt);
+static int da_response (void);
+int sync_ufnrc (void);
+int init_ufnrc (void);
+
 #endif
 
 static int	dish_running = NOTOK;

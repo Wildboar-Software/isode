@@ -8,6 +8,13 @@
 #include "demanifest.h"
 #include "namelist.h"
 #include "destrings.h"
+static int listPRRoc(char *parentstr, char *thisstr, struct namelist **listp);
+static int listAllPRRoc(char *parentstr, struct namelist **listp);
+static int listMatchingPRRoc(char *parentstr, char *thisstr, struct namelist **listp);
+static int listExactPRRoc(char *objectstr, struct namelist **listp);
+static struct ds_search_arg *
+fillMostPRRSearchArgoc(char *parentstr, int searchdepth);
+
 
 extern struct ds_search_arg sarg;
 extern struct ds_search_result sresult;

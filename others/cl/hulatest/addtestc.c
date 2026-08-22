@@ -33,6 +33,17 @@
 
 #include "ADD-ops.h"            /* ADD operation definitions */
 #include "ADD-types.h"		/* ADD type definitions */
+static int addit_arg (int sd, struct dispatch *ds, char **args, struct type_ADD_Addends **ppaddends);
+static int  do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy);
+static int addit_result (int sd, int id, int dummy, struct type_ADD_Sum *result, struct RoSAPindication *roi);
+static int addtest_error (
+	int sd,
+	int id,
+	int error,
+	char *parameter, /*???*/
+	struct RoSAPindication *roi
+);
+
 
 #ifdef	SYS5
 struct passwd *getpwuid ();

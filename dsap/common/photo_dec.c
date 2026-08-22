@@ -4,6 +4,11 @@
 #include <signal.h>
 #include "quipu/photo.h"
 #include "psap.h"
+static node *find_node (bit_string *lineptr, node *tree_top);
+static int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr);
+static int undo_uncompressed_mode (bit_string *lineptr, bit_string *t4_lineptr, int xcolour, int twoD);
+static void undo_pass_mode (bit_string *ref_lineptr, bit_string *code_lineptr);
+
 
 #define UNCOMPRESSED_1D	0x0e
 #define ERR_RUN		0x0f

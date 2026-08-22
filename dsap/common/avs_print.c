@@ -1,6 +1,10 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+#ifndef avs_comp_print
+void avs_comp_print (PS ps, AV_Sequence avs, int format);
+#endif
+
 
 void (*oc_avsprint)(PS, AV_Sequence, int) = NULL;
 extern short oc_sntx;

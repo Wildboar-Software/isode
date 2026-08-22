@@ -7,6 +7,24 @@
 #include "quipu/syntaxes.h"
 #include "logger.h"
 #include "pepsycodec.h"
+static Saclinfo sacl_alloc(void);
+static void sacl_free( void *value );
+static void lacl_free( void *value );
+static int sacl_cmp( void *value1, void *value2 );
+static int lacl_cmp( void *value1, void *value2 );
+static void * sacl_cpy( void *value );
+static void * lacl_cpy( void *value );
+static void * sacl_decode( PE pe );
+static PE sacl_enc( void *value );
+static void * str2sacl( char *str );
+static void sacl_print( PS ps, void *value, int format );
+static void * lacl_decode(PE pe);
+static PE lacl_enc( void *value );
+static void * str2lacl(char *str);
+static void lacl_print( PS ps, void *value, int format );
+void sacl_syntax (void);
+void lacl_syntax (void);
+
 
 /*
  * These routines implement the searchACLSyntax.  The EDB representation

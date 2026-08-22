@@ -8,6 +8,21 @@
 #include "quipu/ds_search.h"
 #include "quipu/connection.h"	/* ds_search uses di_block - include this for lint !!! */
 #include "quipu/dua.h"
+DNS DNS_append (DNS a, DNS b);
+static Attr_Sequence read_cache (DN base);
+static char exact_match (DN dn, char *s);
+static char good_match (DN dn, char *s);
+static char present (DN d, AttributeType t);
+int ufn_search ( DN base, char subtree, Filter filt, DNS *res, char *s, DNS (*interact) (DNS, DN, char *), DNS el );
+static int rootSearch (char *s, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result);
+static int intSearch (DN base, char *s, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result);
+static int leafSearch (DN base, char *s, char subtree, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result);
+static int keyedSearch (DN base, char *t, char *v, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result);
+static int purportedMatch(DN base, int c, char **v, DNS (*interact) (DNS, DN, char *), DNS el, DNS *result);
+static int envMatch (int c, char **v, DNS el, DNS (*interact) (DNS, DN, char *), DNS *result);
+static int friendlyMatch_aux (int c, char **v, envlist el, DNS (*interact) (DNS, DN, char *), DNS *result);
+static void print_search (DN dn, char subtree, Filter fi);
+
 
 char ufn_notify = FALSE;
 int ufn_flags = UFN_ALL;

@@ -17,6 +17,59 @@
 
 #include "internet.h"
 #include "clns.h"
+static int integer_encode (integer *x, PE *pe);
+static int integer_decode (integer **x, PE pe);
+static void integer_free (integer *x);
+static int integer_parse (integer **x, char *s);
+static void integer_print (integer *x, OS os);
+static void services_print (integer *x, OS os);
+static void privs_print (integer *x, OS os);
+static void add_integer (void);
+static int string_encode (struct qbuf *x, PE *pe);
+static int string_decode (struct qbuf **x, PE pe);
+static int string_parse (struct qbuf **x, char *s);
+static void string_print (struct qbuf *x, OS os);
+static void string_display (struct qbuf *x, OS os);
+static void add_string (void);
+static int object_encode (OID x, PE *pe);
+static int object_decode (OID *x, PE pe);
+static int object_parse (OID *x, char *s);
+static void object_print (OID x, OS os);
+static void add_object (void);
+static int null_encode (char *x, PE *pe);
+static int null_decode (char **x, PE pe);
+static void null_free (char *x);
+static int null_parse (char **x, char *s);
+static void null_print (char *x, OS os);
+static void add_null (void);
+static int ipaddr_encode (struct sockaddr_in *x, PE *pe);
+static int ipaddr_decode (struct sockaddr_in **x, PE pe);
+static void ipaddr_free (struct sockaddr_in *x);
+static int  ipaddr_parse (struct sockaddr_in **x, char *s);
+static void ipaddr_print (struct sockaddr_in *x, OS os);
+static void add_ipaddr (void);
+static void add_netaddr (void);
+uint32_t prim2ulong (PE pe);
+PE ulong2prim (uint32_t i, PElementClass class, PElementID id);
+static int  counter_encode (uint32_t *x, PE *pe);
+static int counter_decode (uint32_t **x, PE pe);
+static void counter_free (uint32_t *x);
+static int counter_parse (uint32_t **x, char *s);
+static void counter_print (uint32_t *x, OS os);
+static void add_counter (void);
+static int  gauge_encode (uint32_t *x, PE *pe);
+static void add_gauge (void);
+static int timeticks_encode (uint32_t *x, PE *pe);
+static void timeticks_print (uint32_t *x, OS os);
+static void add_timeticks (void);
+static int clnpaddr_encode (struct sockaddr_iso *x, PE *pe);
+static int clnpaddr_decode (struct sockaddr_iso **x, PE pe);
+static void clnpaddr_free (struct sockaddr_iso *x);
+static int clnpaddr_parse (struct sockaddr_iso **x, char *s);
+static void clnpaddr_print (struct sockaddr_iso *x, OS os);
+static void add_clnpaddr (void);
+void flsyntax (OS *first, OS *last);
+
 
 #define	MAXSYN	50
 

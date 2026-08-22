@@ -28,6 +28,15 @@
 #include "ryresponder.h"
 #include "rfainfo.h"
 #include "rfa.h"
+void freeRfaInfoList (struct RfaInfo *rfa);
+static SFD lock_timeout(int sig);
+static struct LockEntry *lockRfainfo(char *fn, FILE *fp);
+static int closeAndUnlockRfainfo (char *fn);
+void releaseRfaInfoList (char *fn, struct RfaInfo *rfa);
+static int statFile (char *fn, struct RfaInfo *rfa);
+static int getRfaInfo(char *dirname, FILE *f, struct RfaInfo **rfap);
+void sortRfaInfoList (struct RfaInfo **rfap);
+
 
 #define MAXSTAT 4
 

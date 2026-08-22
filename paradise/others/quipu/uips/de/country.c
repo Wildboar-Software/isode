@@ -13,6 +13,18 @@
 #include "namelist.h"
 #include "filter.h"
 #include "destrings.h"
+int makeRootCountry(struct namelist **clistp);
+int listCos(char *cstr, struct namelist **clistp);
+void freeCoListArgs (void);
+void freeCoSearchArgs (void);
+int listAllCos(struct namelist **clistp);
+int listMatchingCos(char *cstr, struct namelist **clistp);
+int readCo(char *objectstr, struct namelist **clistp);
+int listExactCos(char *objectstr, struct namelist **clistp);
+int reallyMakeListCountries(struct namelist **clistp);
+int makeListCountries(struct namelist **clistp);
+void makeAllCoFilter(struct s_filter **fpp);
+
 
 struct ds_read_arg rarg;
 struct ds_read_result rresult;

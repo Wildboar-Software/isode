@@ -23,6 +23,17 @@
 #define FREE_RETURN int
 #endif
 
+#ifndef MALLOC_TEST
+static void write_string (char *p);
+static void write_addr (char *addr);
+static void write_int (unsigned x);
+static void log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr);
+static void print_free_list (size_t heap);
+static void write_stack (char * x);
+static struct freelist *new_freelist (void);
+static char *big_malloc (size_t realsize);
+#endif
+
 static int malloc_file = 0;
 
 #ifdef MALLOC_TEST
@@ -112,6 +123,10 @@ struct freehead {
 	struct header	head;
 	struct freelist * flist;
 };
+
+static void big_free (struct header *ptr);
+static void add_free (struct header *x);
+static struct header *next_free_block (struct header *ptr);
 
 static struct freelist  heaps[MAXHEAP][BUCKETS];
 static struct freelist *heapptr[MAXHEAP];
@@ -698,6 +713,10 @@ calloc(size_t n, size_t size)
 	bzero (mem,(int)x);
 	return (mem);
 }
+
+#ifndef lint
+FREE_RETURN cfree(char *mem);
+#endif
 
 FREE_RETURN
 #ifdef lint

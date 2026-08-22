@@ -10,6 +10,9 @@
 #include "quipu/connection.h"
 #include "quipu/oid.h"
 #include "tailor.h"
+static int TMagic (int *vecp, char **vec, struct TSAPdisconnect *td);
+int net_init (void);
+
 
 extern	LLog	* log_dsap;
 extern	char	* mydsaname;

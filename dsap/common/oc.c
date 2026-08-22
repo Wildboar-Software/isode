@@ -4,6 +4,21 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "tailor.h"
+objectclass * str2oc (char *str);
+objectclass * oc_add (OID oid);
+static void *str2oc_void (char *str);
+static AV_Sequence new_oc_avs (objectclass *oc);
+static AV_Sequence str2oc_hier (char *str);
+static int in_hierarchy (AV_Sequence a, AV_Sequence b);
+static void oc_print_avs (PS ps, AV_Sequence avs, int format);
+static int objectclass_cmp (void *value1, void *value2);
+static void * oc_cpy (void *value);
+static void oc_free (void *value);
+static PE oc_enc (void *value);
+static void * oc_dec (PE pe);
+static void oc_print (PS ps, void *value, int format);
+void objectclass_syntax (void);
+
 
 extern LLog * log_dsap;
 extern short oc_sntx;

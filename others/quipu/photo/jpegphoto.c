@@ -15,6 +15,12 @@
 #include "general.h"
 #include "jpeg.h"
 #include <signal.h>
+static int mygetchar (void);
+static void SkipAsn1Len (void);
+static void DoG3Fax (unsigned char firstChar);
+static void DoNewJPEG (void);
+static void DoJPEG (void);
+
 
 #define BAD_EXIT        -1
 

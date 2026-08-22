@@ -9,6 +9,11 @@
 #include "quipu/compare.h"
 #include "quipu/ds_search.h"
 #include "quipu/schema.h"
+#include "quipu/shadow.h"
+
+int call_alias_chk (int argc, char **argv);
+static char verify_alias(EntryInfo *alias_entry);
+
 
 #define ORG_PERSON "newPilotPerson & quipuObject"
 /* this should probably go elsewhere !!! */

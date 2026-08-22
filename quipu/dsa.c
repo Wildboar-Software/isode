@@ -47,6 +47,8 @@
 
 #include "osisec-stub.h"
 
+void clean_exit (int x);
+
 #ifdef SUN_X25
 #include "x25.h"
 #endif
@@ -115,6 +117,24 @@ struct oper_act		* get_edb_ops;
 extern struct SecurityServices *dsap_security;
 
 char ** sargv;
+
+#if defined(SVR4) || defined(LINUX)
+static void stop_dsa (int sig);
+#ifdef	SIGUSR1
+static void list_status (int sig);
+#endif
+#ifdef	SIGUSR2
+static void list_status2 (int sig);
+#endif
+#else
+static SFD stop_dsa (int sig);
+#ifdef	SIGUSR1
+static SFD list_status (int sig);
+#endif
+#ifdef	SIGUSR2
+static SFD list_status2 (int sig);
+#endif
+#endif
 
 static void osisecinit(int *argc, char ***argv, int fn);
 static int do_restart (int sig);
@@ -361,6 +381,8 @@ static int check_conns (int secs) {
 		}
 #endif
 
+	void dsa_abort (int xrestart);
+
 	void dsa_abort(int xrestart) {
 		static int	  been_here = 0;
 #ifdef SBRK_DEBUG
@@ -398,9 +420,9 @@ static int check_conns (int secs) {
 	}
 
 #if defined(SVR4) || defined(LINUX)
-	void stop_dsa (int sig)
+	static void stop_dsa (int sig)
 #else
-	SFD stop_dsa (int sig)
+	static SFD stop_dsa (int sig)
 #endif
 	{
 		signal (sig, SIG_DFL); /* to stop recursion */
@@ -431,9 +453,9 @@ static int check_conns (int secs) {
 #ifdef	SIGUSR1
 	
 #if defined(SVR4) || defined(LINUX)
-	void	list_status (int sig)
+	static void	list_status (int sig)
 #else
-	SFD	list_status (int sig)
+	static SFD	list_status (int sig)
 #endif
 	{
 #ifdef SBRK_DEBUG
@@ -497,9 +519,9 @@ static int check_conns (int secs) {
 #ifdef	SIGUSR2
 	
 #if defined(SVR4) || defined(LINUX)
-	void	list_status2 (int sig)
+	static void	list_status2 (int sig)
 #else
-	SFD	list_status2 (int sig)
+	static SFD	list_status2 (int sig)
 #endif
 	{
 #ifdef SBRK_DEBUG

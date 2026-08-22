@@ -5,6 +5,19 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void edb_info_free (void *value);
+static void *edb_info_cpy (void *value);
+static int edb_info_cmp (void *value1, void *value2);
+static void * edb_info_decode (PE pe);
+static void edb_info_print (
+	PS ps,
+	void *value,
+	int format
+);
+static void *str2update (char *str);
+static PE edb_info_enc (void *value);
+void edbinfo_syntax (void);
+
 extern LLog * log_dsap;
 
 static void edb_info_free (void *value) {

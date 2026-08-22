@@ -9,6 +9,15 @@
 #include "quipu/dap2.h"
 
 #include "logger.h"
+ /* bind_to_ds */
+
+/*
+ * - get_association_descriptor() -
+ * Get association descriptor for a particular request.
+ *
+ */
+int get_association_descriptor(QCardinal request_id);
+
 
 extern char *dsa_address;
 extern char *local_dit;

@@ -9,6 +9,8 @@
 #include "tailor.h"
 #include "pvpdu.h"
 #include "pepsycodec.h"
+int ps2rtslose ( struct assocblk *acb, struct RtSAPindication *rti, char *event, struct PSAPabort *pa );
+
 
 extern int RtWaitRequestAux (
 	struct assocblk *acb,

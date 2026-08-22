@@ -6,6 +6,11 @@
 #include "quipu/connection.h"
 #include "quipu/database.h"
 
+struct connection *conn_alloc (void);
+void conn_free (struct connection *conn);
+void conn_list_log (struct connection *cn);
+
+
 extern LLog * log_dsap;
 
 struct connection *conn_alloc (void) {

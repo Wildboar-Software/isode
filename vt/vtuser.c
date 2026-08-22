@@ -14,6 +14,8 @@
 #include <termio.h>
 #else
 #include <sys/ioctl.h>
+static int vass_req(int class, int acc_ri, VT_PROFILE *profile);
+
 #endif
 
 #undef PTYBUG	/*When testing Break and demon not started from rc.local,

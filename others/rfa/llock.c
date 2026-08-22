@@ -22,6 +22,12 @@
 #include "logger.h"
 #include "rfa.h"
 #include "rfainfo.h"
+#include "vt.h"
+
+int getLocalRfaInfo (char **fn, struct RfaInfo **rfap, struct RfaInfo **rfalp, int reg);
+static int do_lunlock (char *fn);
+static int do_llock (char *fn);
+
 
 extern char *fsBase;
 extern char *strtok();

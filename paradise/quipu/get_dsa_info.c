@@ -12,6 +12,8 @@
 #include "quipu/DAS-types.h"
 #include "osisec-stub.h"
 #include "quipu/find.h"
+char * get_entry_passwd (Attr_Sequence as);
+
 
 extern LLog * log_dsap;
 extern DN mydsadn;

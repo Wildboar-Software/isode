@@ -5,6 +5,14 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 #include "quipu/ds_search.h"
+#include "quipu/common.h"
+
+char *first_word (char *ptr);
+char *next_word (char *ptr);
+static int match_word (char *a);
+static int soundex_cmp (char *a, char *b);
+int soundex_match (struct filter_item *fitem, AV_Sequence avs);
+
 
 extern char chrcnv[];
 extern LLog *log_dsap;

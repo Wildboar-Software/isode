@@ -4,6 +4,13 @@
 #include <signal.h>
 #include "spkt.h"
 #include "tailor.h"
+static int SUAbortRequestAux (
+	struct ssapblk *sb,
+	char *data,
+	int cc,
+	struct SSAPindication *si
+);
+
 
 static int SUAbortRequestAux (
 	struct ssapblk *sb,

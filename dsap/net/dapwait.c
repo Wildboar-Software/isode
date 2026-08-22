@@ -6,6 +6,8 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 #include "pepsycodec.h"
+int DapInitWaitRequest (int sd, int secs, struct DAPindication *di);
+
 
 extern LLog	* log_dsap;
 

@@ -52,6 +52,13 @@
 #include "tailor.h"
 #include "internet.h"
 #include "uderrors.h"
+static int	TSetUnitDataIndications (int sd, IFP data);
+static int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds);
+static int UNITDATAser (int sig, long code, struct sigcontext *sc);
+static int  TUnitDataWakeUp (struct tsapblk *tb);
+static struct TSAPaddr *
+newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na);
+
 
 struct TSAPaddr *newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest);
 
@@ -1076,7 +1083,7 @@ static int  TUnitDataWakeUp (struct tsapblk *tb) {
 }
 #endif
 
-int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
+static int newtuaddr (struct TSAPaddr *ta, struct NSAPaddr *na, struct TSAPaddr *tdest)
 
 {
 	struct NSAPaddr *ndest = tdest -> ta_addrs;

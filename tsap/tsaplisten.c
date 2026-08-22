@@ -39,6 +39,20 @@
 #endif
 #ifdef	TP4
 #include "tp4.h"
+static int	TGetReadMask(fd_set *mask, int *nfds);
+static int	TGetWriteMask(fd_set *mask, int *nfds);
+static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfds, struct TSAPdisconnect *td);
+static        SFD chldser (int sig, long code, struct sigcontext *sc);
+static int x25_pass_to_child(int *vecp, char **vec, struct TSAPdisconnect *td);
+int Post_Exec(int argc, char **argv, char *info);
+int Pre_Exec(int argc, char **argv, char *info);
+static int  tcplisten (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td);
+static int  tcpaccept1 (struct listenblk *lb, struct TSAPdisconnect *td);
+static int tcpaccept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td);
+static int  tcpunique (struct TSAPaddr *ta, struct TSAPdisconnect *td);
+static int  x25listen (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td);
+static int  x25accept1 (struct listenblk *lb, struct TSAPdisconnect *td);
+
 #endif
 
 #ifdef	LPP
@@ -651,7 +665,7 @@ next:
 	}
 }
 
-int	TGetReadMask(fd_set *mask, int *nfds)
+static int	TGetReadMask(fd_set *mask, int *nfds)
 {
 	if (acl_count > 0) {
 		int fd;
@@ -664,7 +678,7 @@ int	TGetReadMask(fd_set *mask, int *nfds)
 	return acl_count;
 }
 
-int	TGetWriteMask(fd_set *mask, int *nfds)
+static int	TGetWriteMask(fd_set *mask, int *nfds)
 {
 	if (qw_count > 0) {
 		int fd;
@@ -677,7 +691,7 @@ int	TGetWriteMask(fd_set *mask, int *nfds)
 	return qw_count;
 }
 
-int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfds, struct TSAPdisconnect *td)
+static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfds, struct TSAPdisconnect *td)
 {
 	int accepted = 0;
 	struct listenblk *lb, *lb2;
@@ -826,7 +840,7 @@ static        SFD chldser (int sig, long code, struct sigcontext *sc)
 #ifdef ULTRIX_X25
 #ifdef ULTRIX_X25_DEMSA
 #include "/usr/include/x25.h"
-int x25_pass_to_child(int *vecp, char **vec, struct TSAPdisconnect *td) {
+static int x25_pass_to_child(int *vecp, char **vec, struct TSAPdisconnect *td) {
 	X25vc vci;
 	int   fd;
 	int   error;
@@ -1883,6 +1897,7 @@ static struct listenblk  *findlblkbyfd (int fd)
 
 #ifdef	LPP
 #ifdef	lint
+int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt);
 int	tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
 	return tsaplose (td, reason, what, fmt);
 }
@@ -1951,6 +1966,7 @@ static int  TFreeQueues (struct listenblk *lb)
 	freelblk (lb);
 }
 
+int TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td);
 int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
 {
 	int	    result;

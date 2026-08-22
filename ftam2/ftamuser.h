@@ -8,6 +8,7 @@ extern int  interrupted;
 void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
 int getftamline(char* prompt, char* buffer);
+char *default_prompt (void);
 
 #ifndef	BRIDGE
 int	ask (char *fmt, ...);
@@ -16,6 +17,7 @@ int	ask (char *fmt, ...);
 extern int  ftamfd;
 #ifdef	BRIDGE
 extern int  dataconn (char *modeX);
+int f_type (int mode);
 #endif
 
 extern char *host;

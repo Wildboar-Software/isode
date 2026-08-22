@@ -10,6 +10,9 @@
 #include <unistd.h>
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
+note (char *fmt, ...);
+nadvise (char *what, char *fmt, ...);
+
 
 int	debug = 0;
 

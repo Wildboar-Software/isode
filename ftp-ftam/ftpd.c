@@ -65,7 +65,13 @@ extern LLog _ftam_log, *ftam_log;
 void adios (char *, char *, ...);
 void advise (char *, char *, ...);
 void reply(int n, ...);
+void lreply(int n, ...);
 void yyerror(char *s);
+char *savestr(char *s);
+void ack(char *s);
+void nack(char *s);
+void fatal(char *s);
+static void replystr(char *s);
 void ftp_delete(char *name);
 void makedir(char *name);
 void removedir(char *name);
@@ -372,7 +378,7 @@ lreply (int n, char *fmt) {
 }
 #endif
 
-void replystr(char *s) {
+static void replystr(char *s) {
 	printf("%s\r\n", s);
 	fflush(stdout);
 	if (verbose)

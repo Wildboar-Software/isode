@@ -6,6 +6,24 @@
 #include <strings.h>
 #include "pepsydefs.h"
 
+OID	addoid (OID o1, OID o2);
+
+void defineoid (char *name, OID oid);
+OID oidlookup (char *name);
+char *oidname (OID oid);
+OID int2oid (int n);
+void addtable (
+	char *name,
+	int lt,
+	int typ	/* Does it allow implicit's to work or not */
+);
+void addtableref (char *name, OID id, int lt);
+int print_expimp(void);
+void check_impexp (YP yp);
+void initoidtbl(void);
+int chkil (char *id);
+
+
 /*  Oid manipulation */
 
 typedef struct oidlist {

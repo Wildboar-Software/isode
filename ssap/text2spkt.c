@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "spkt.h"
 #include "logger.h"
+static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
+
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn);

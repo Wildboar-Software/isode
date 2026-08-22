@@ -23,6 +23,16 @@
 
 #include "x25.h"
 #include "isoaddrs.h"
+static int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp);
+static void fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt);
+int set_x25_facilities (int sd, int coc, char *caption);
+int log_cause_and_diag (int fd);
+static void sigurg (int sig, int code, struct sigcontext *scp);
+static int log_x25_facilities (int fd, int coc, char *caption);
+static void print_x25_facilities (FACILITY_DB *hp, int coc, char *caption);
+static int _hpuxx25_stub2 (void);
+static int _hpuxx25_stub(void);
+
 
 #ifdef  HPUX_X25
 
@@ -35,8 +45,8 @@ struct  fdl_st {
 	struct fdl_st *next;
 };
 static struct fdl_st *fdl = NULL;
-void setup_sigurg (int fd);
-void clear_sigurg (int fd);
+static void setup_sigurg (int fd);
+static void clear_sigurg (int fd);
 
 #ifdef  DEBUG
 static void print_x25_facilities (FACILITY_DB *hp, int coc, char *caption);
@@ -201,7 +211,7 @@ int join_x25_client (int fd, struct NSAPaddr *remote) {
 	return nfd;
 }
 
-int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
+static int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	int	i, j;
 	int			returncode = OK;
 
@@ -260,7 +270,7 @@ int fac_ccitt2hp (CCITT_FACILITY_DB *ccitt, FACILITY_DB *hp) {
 	return (returncode);
 }
 
-void fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
+static void fac_hp2ccitt (FACILITY_DB *hp, CCITT_FACILITY_DB *ccitt) {
 	int	i;
 
 	memset (ccitt, 0, sizeof (CCITT_FACILITY_DB));
@@ -493,7 +503,7 @@ int log_cause_and_diag (int fd) {
 	}
 }
 
-void sigurg (int sig, int code, struct sigcontext *scp) {
+static void sigurg (int sig, int code, struct sigcontext *scp) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
 	signal (SIGURG, sigurg);
@@ -509,7 +519,7 @@ void sigurg (int sig, int code, struct sigcontext *scp) {
 		scp->sc_syscall_action = SIG_RESTART;
 }
 
-void setup_sigurg (int fd) {
+static void setup_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl;
 
 	signal (SIGURG, sigurg);
@@ -527,7 +537,7 @@ void setup_sigurg (int fd) {
 	fdl = fdlp;
 }
 
-void clear_sigurg (int fd) {
+static void clear_sigurg (int fd) {
 	struct fdl_st *fdlp = fdl, *nfdlp;
 
 	if ((fdl != NULL) && (fdl->fd == fd)) {
@@ -823,12 +833,12 @@ print_send:
 }
 #endif
 #else
-int _hpuxx25_stub2 (void) {
+static int _hpuxx25_stub2 (void) {
 	;
 }
 #endif
 #else
-int _hpuxx25_stub(void) {
+static int _hpuxx25_stub(void) {
 	;
 }
 #endif

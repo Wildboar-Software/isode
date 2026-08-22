@@ -5,8 +5,12 @@
 #include "general.h"
 #include "manifest.h"
 #include "isoaddrs.h"
+static int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2);
+static int ssap_addr_cmp (struct SSAPaddr *sa, struct SSAPaddr *sb);
+static int psap_addr_cmp (struct PSAPaddr *pa, struct PSAPaddr *pb);
 
-int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {
+
+static int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {
 	if (na1 -> na_stack != na2 -> na_stack)
 		return NOTOK;
 
@@ -55,14 +59,14 @@ int tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb) {
 	return NOTOK;
 }
 
-int ssap_addr_cmp (struct SSAPaddr *sa, struct SSAPaddr *sb) {
+static int ssap_addr_cmp (struct SSAPaddr *sa, struct SSAPaddr *sb) {
 	if (sa -> sa_selectlen != sb -> sa_selectlen ||
 			bcmp (sa -> sa_selector, sb -> sa_selector, sa -> sa_selectlen) != 0)
 		return NOTOK;
 	return tsap_addr_cmp (&sa -> sa_addr, &sb -> sa_addr);
 }
 
-int psap_addr_cmp (struct PSAPaddr *pa, struct PSAPaddr *pb) {
+static int psap_addr_cmp (struct PSAPaddr *pa, struct PSAPaddr *pb) {
 	if (pa -> pa_selectlen != pb -> pa_selectlen ||
 			bcmp (pa -> pa_selector, pb -> pa_selector, pa -> pa_selectlen) != 0)
 		return NOTOK;

@@ -25,6 +25,12 @@
 #include "x25.h"
 #include <stropts.h>
 #include <fcntl.h>
+static char *npierr2str (int n);
+static char *npiev2str (int n);
+static int get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd);
+static int _ccurx25_stub (void);
+static int _ccurx25_stub2 (void);
+
 
 typedef union N_indication_t {
 	N_bind_ack_t	bind;
@@ -61,8 +67,7 @@ typedef union N_indication_t {
 
 static fd_set	inprogress;
 
-
-char *npierr2str (int n) {
+static char *npierr2str (int n) {
 	static char buf[20];
 	switch (n) {
 	case NBADADDR:
@@ -123,8 +128,7 @@ char *npierr2str (int n) {
 	}
 }
 
-
-char *npiev2str (int n) {
+static char *npiev2str (int n) {
 	static char buf[10];
 
 	switch (n) {
@@ -190,8 +194,7 @@ char *npiev2str (int n) {
 	}
 }
 
-
-int get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd) {
+static int get_prim (int fd, struct strbuf *control, struct strbuf *data, int *flags, int expected, int size, int close_fd) {
 	N_error_ack_t * err;
 	int res;
 

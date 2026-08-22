@@ -52,6 +52,55 @@
 #include "quipu/nrs_info.h"
 #include "quipu/NRS-types.h"
 #include "pepsycodec.h"
+static PE asnstr2pe (char * orig);
+static void str_seq_free (struct str_seq *arg);
+static struct str_seq *str_seq_cpy (struct str_seq *arg);
+static int str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2);
+static void str_seq_print (
+	PS ps,
+	struct str_seq * strseq,
+	int format
+);
+static struct str_seq *str2str_seq (char *orig);
+static void addr_info_free (struct addr_info *arg);
+static struct addr_info *addr_info_cpy (struct addr_info *arg);
+static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2);
+static void addr_info_print (PS ps, struct addr_info * info, int format);
+static struct addr_info *str2addr_info (char *orig);
+static void nrs_routes_free (struct nrs_routes *arg);
+static struct nrs_routes *nrs_routes_cpy (struct nrs_routes *arg);
+static int nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2);
+static void nrs_routes_print (
+	PS ps,
+	struct nrs_routes * routes,
+	int format
+);
+static struct nrs_routes *str2nrs_routes (char *orig);
+static void nrs_info_free (void *value);
+static void *nrs_info_cpy (void *value);
+static int nrs_info_cmp (void *value1, void *value2);
+static void context_print (
+    PS ps,
+    int ctx,
+    int format
+);
+static void addr_sp_id_print (
+    PS ps,
+    int asi,
+    int format
+);
+static void nrs_info_print (
+    PS ps,
+    void *value,
+    int format
+);
+static int str2context (char *orig);
+static int str2addr_sp_id (char *orig);
+static void *str2nrs_info (char *orig);
+static PE nrs_info_enc (void *value);
+static void * nrs_info_dec (PE pe);
+static void nrs_info_syntax (void);
+
 
 extern LLog	* log_dsap;
 PE		  asn2pe(char *str);

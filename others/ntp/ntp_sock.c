@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "ntp.h"
+int create_sockets (unsigned int port);
+int recv_inet (struct intf *ap, struct timeval *tvp);
+int send_inet (struct intf *ap, char *pkt, int size, struct Naddr *peer);
+static int query_mode (struct Naddr *dst, struct ntpdata *ntp, struct intf *ap);
+
 
 struct intf *addrs;
 int nintf = 0;

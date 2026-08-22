@@ -14,6 +14,8 @@
 #include "interfaces.h"
 #include "routes.h"
 
+void init_clns (void);
+
 #ifdef	BSD44
 #include <sys/kinfo.h>
 #include <net/if_dl.h>
@@ -22,6 +24,19 @@
 #include <netiso/clnp.h>
 #include <netiso/clnp_stat.h>
 #include <netiso/esis.h>
+static int  o_clnp (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  clnp_er_index (uint8_t p);
+static int  s_clnp (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_clnp_addr (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_clnp_route (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_address (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  adn_compar (struct adrtab **a, struct adrtab **b);
+static int  adm_compar (struct adrtab **a, struct adrtab **b);
+static int  get_arptab (int offset);
+static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext);
+static int  o_esis (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_clns (void);
+
 
 #define	FORW_IS		1		/* clnpForwarding */
 #define	FORW_ES		2
@@ -1127,6 +1142,7 @@ static int  o_esis (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	}
 }
 
+init_clns ();
 init_clns () {
 	OT	    ot;
 

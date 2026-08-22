@@ -17,11 +17,23 @@
 #include "tailor.h"
 
 #include "dgram.h"
+#include "compat.h"
+
+int hack_dgram_socket (int fd, struct sockaddr *sock);
 #ifdef	TCP
 #include "internet.h"
 #endif
 #ifdef	TP4
 #include "tp4.h"
+#include "compat.h"
+
+static int check_dgram_socket_with_data(int fd, void *data);
+static void inetprint (struct sockaddr *s, char *bp);
+static void isoprint (struct sockaddr_iso *siso, char *bp);
+static void hexprint (char *bp, int n, uint8_t *buf, char *start, char *stop);
+static void action (char *s, int fd, struct sockaddr *sock);
+static int dgram_dummy (void);
+
 #endif
 
 #if	defined(SOCKETS) && (defined(TCP) || defined(CLTS))
@@ -636,6 +648,6 @@ static void action (char *s, int fd, struct sockaddr *sock) {
 
 #else
 
-int dgram_dummy (void) {}
+static int dgram_dummy (void) {}
 
 #endif

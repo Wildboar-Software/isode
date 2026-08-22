@@ -7,6 +7,8 @@
 #include "tpkt.h"
 #include "logger.h"
 #include "internet.h"
+static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
+
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_data (LLog *lp, char *type, char *rw, int len, char *data);

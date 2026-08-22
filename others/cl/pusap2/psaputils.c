@@ -53,6 +53,19 @@
 #include "pupkt.h"
 #include "isoservent.h"
 #include "tailor.h"
+#include "pusap2.h"
+
+int ss2pulose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa);
+int pusaplose (struct PSAPindication *pi, int reason, char *what, char *fmt);
+static int _pusaplose (	/* what, fmt, args ... */
+	/*----------------------------------------------------------------------------*/
+	struct PSAPindication *pi,
+	int reason,
+	va_list ap
+);
+int	PS_print (PE pe, char *text, int rw, IFP fnx)
+/*----------------------------------------------------------------------------*/;
+
 
 /* HULA UD - the entire module */
 

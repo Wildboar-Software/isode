@@ -31,6 +31,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "pepy.h"
+void yyerror (char *s);
+void yyerror_aux (char *s);
+void myyerror (char*fmt, ...);
+int yywrap(void);
+void yyprint (char *s, int f, int top);
+void pass1(void);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
+void pass2(void);
+
 
 #define	SVAL(s)		((s) ? (s) : "")
 #define PARVAL(s)	((s) ? (s) : "parm")
@@ -2177,6 +2186,7 @@ static void qalloc (YP yp, char *var, char *action2, int level)
 }
 #endif
 
+void choice_pullup (YP yp, int partial);
 void choice_pullup (YP yp, int partial)
 {
 	YP	   *x,
@@ -2268,6 +2278,7 @@ static void components_pullup (YP yp)
 	}
 }
 
+int val2int (YV yv);
 int val2int (YV yv)
 {
 	switch (yv -> yv_code) {
@@ -2443,6 +2454,7 @@ static int dfl2int (YP yp) {
 	/* NOTREACHED */
 }
 
+void print_type (YP yp, int level);
 void print_type (YP yp, int level)
 {
 	YP	    y;
@@ -2630,6 +2642,7 @@ static MD lookup_module (char *module) {
 	return NULLMD;
 }
 
+YP new_type (int code);
 YP new_type (int code) {
 	YP    yp;
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -2638,6 +2651,7 @@ YP new_type (int code) {
 	return yp;
 }
 
+YP add_type (YP y, YP z);
 YP	add_type (YP y, YP z) {
 	YP	    yp;
 	for (yp = y; yp -> yp_next; yp = yp -> yp_next)
@@ -2646,6 +2660,7 @@ YP	add_type (YP y, YP z) {
 	return y;
 }
 
+YP copy_type (YP yp);
 YP copy_type (YP yp) {
 	YP	    y;
 
@@ -2752,6 +2767,7 @@ YP copy_type (YP yp) {
 	return y;
 }
 
+YV new_value (int code);
 YV new_value (int code) {
 	YV yv;
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -2760,6 +2776,7 @@ YV new_value (int code) {
 	return yv;
 }
 
+YV add_value (YV y, YV z);
 YV add_value (YV y, YV z) {
 	YV	    yv;
 	for (yv = y; yv -> yv_next; yv = yv -> yv_next)
@@ -2768,6 +2785,7 @@ YV add_value (YV y, YV z) {
 	return y;
 }
 
+YV copy_value (YV yv);
 YV copy_value (YV yv) {
 	YV	    y;
 
@@ -2822,6 +2840,7 @@ YV copy_value (YV yv) {
 	return y;
 }
 
+YT new_tag (PElementClass class);
 YT new_tag (PElementClass class) {
 	YT    yt;
 
@@ -2832,6 +2851,7 @@ YT new_tag (PElementClass class) {
 	return yt;
 }
 
+YT copy_tag (YT yt);
 YT copy_tag (YT yt) {
 	YT	    y;
 
@@ -2842,6 +2862,7 @@ YT copy_tag (YT yt) {
 	return y;
 }
 
+char *new_string (char *s);
 char *new_string (char *s) {
 	char  *p;
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
@@ -2954,10 +2975,12 @@ static char *gensym (char *s, char *a) {
 }
 
 /* pepy compatible routines - you know how it is ... */
+void init_new_file(void);
 void init_new_file(void) {
 	;
 }
 
+void end_file(void);
 void end_file(void) {
 	;
 }

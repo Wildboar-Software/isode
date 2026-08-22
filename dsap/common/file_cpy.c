@@ -1,7 +1,11 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+int file_cmp (struct file_syntax *a, struct file_syntax *b);
+
 
 extern int pstrcmp(char *a, char *b);
+
+struct file_syntax *fileattr_cpy (struct file_syntax *fs);
 
 struct file_syntax *
 fileattr_cpy (struct file_syntax *fs) {

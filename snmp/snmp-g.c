@@ -5,6 +5,8 @@
 #include <strings.h>
 #include "mib.h"
 #include "snmp-g.h"
+static void set_hint (OT ot, int hi);
+
 
 static void set_hint (OT ot, int hi);
 

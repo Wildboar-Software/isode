@@ -79,6 +79,13 @@
 #include "logger.h"
 #include "tailor.h"
 #include "tusap.h"
+#include "vt.h"
+
+static int tsapud (int vecp, char **vec);
+static arginit (char **vec);
+static void envinit (void);
+static void  _advise (int code, char *what, char *fmt, ap);
+
 
 static int  debug = 1;
 static int  nbits = FD_SETSIZE;

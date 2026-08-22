@@ -8,6 +8,17 @@
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "tailor.h"
+static struct connection *make_conn_block ( DN name, struct PSAPaddr *addr, char conn_ctx );
+static int link_op_to_conn (struct oper_act *on);
+int task_chain (struct task_act *tk, struct di_block *di);
+static struct oper_act *task2oper (struct task_act *tk);
+static int chain_ok (struct task_act *tk, char refer_ok, DN dsadn);
+static struct access_point *di2ap (struct di_block *di);
+void subtask_chain (struct task_act *tk);
+static void subtask_dsa_info_wakeup (struct di_block *di);
+void allowrelay (char *str);
+static void chaining_analyse (struct task_act *task, struct di_block *di);
+
 
 extern LLog * log_dsap;
 
@@ -34,7 +45,7 @@ int di2cref (struct di_block *, struct DSError *, char);
 
 static int relayfordsa(DN dn);
 
-struct connection *make_conn_block (
+static struct connection *make_conn_block (
 	DN name,
 	struct PSAPaddr *addr,
 	char conn_ctx

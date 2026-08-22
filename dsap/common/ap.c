@@ -6,6 +6,15 @@
 #include "isoaddrs.h"
 #include "../x500as/DO-types.h"
 #include "pepsycodec.h"
+static void aps_free_void (void *value);
+static void *qap_cpy (void *value);
+static int qap_cmp (void *value1, void *value2);
+static PE qap_enc (void *value);
+static void *qap_dec (PE pe);
+static void *qap_parse (char *s);
+static void qap_print (PS ps, void *value, int format);
+void ap_syntax (void);
+
 
 extern LLog * log_dsap;
 extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);

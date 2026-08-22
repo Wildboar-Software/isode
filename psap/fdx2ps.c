@@ -7,6 +7,12 @@
 #include <strings.h>
 #include "psap.h"
 
+int	fdx_reset (PS ps);
+
+static int fdx_prime (PS ps, int waiting);
+static int fdx_read (PS ps, PElementData data, PElementLen n, int in_line);
+static int fdx_write (PS ps, PElementData data, PElementLen n, int in_line);
+int fdx_reset (PS ps);
 static int  fdx_flush (PS ps);
 
 struct ps_fdx {

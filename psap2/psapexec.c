@@ -13,18 +13,25 @@
 
 /*    SERVER only */
 
+#ifndef	IAE
 int PExec (
 	struct SSAPstart *ss,
 	struct PSAPindication *pi,
 	char *arg1,
 	char *arg2,
 	int (*hook)(struct isoservent *is, struct PSAPindication *pi),
-#ifndef	IAE
 	int (*setperms)(struct isoservent *is)
-#else
-	int (*setperms)(struct IAEntry *is)
-#endif
 ) {
+#else
+int PExec (
+	struct SSAPstart *ss,
+	struct PSAPindication *pi,
+	char *arg1,
+	char *arg2,
+	int (*hook)(struct isoservent *is, struct PSAPindication *pi),
+	int (*setperms)(struct IAEntry *is)
+) {
+#endif
 	int	    len,
 			result,
 			result2;

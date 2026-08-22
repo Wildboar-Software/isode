@@ -10,6 +10,10 @@
 #include "quipu/dap2.h"
 #include "quipu/attrvalue.h"
 #include "quipu/photo.h"
+readResults get_read_results(QCardinal request_id);
+QE_error_code start_read(QCardinal request_id, char *baseobject, stringCell attr_list, int *task_id_ptr);
+readResults get_read_dn_attr_results(QCardinal request_id);
+
 
 extern int dsap_ad;
 extern int next_task_id;

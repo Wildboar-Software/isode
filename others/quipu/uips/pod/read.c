@@ -11,6 +11,14 @@
 #include "sequence.h"
 #include "defs.h"
 #include "util.h"
+#include "calls.h"
+#include "read.h"
+
+Attr_Sequence get_sorted_attrs(Attr_Sequence entry_attrs, Attr_Sequence wanted_attrs);
+dsEnqError read_all(void);
+dsEnqError read_config_types(void);
+void podphoto(PS ps, PE picture, int format);
+
 
 #ifndef NO_STATS
 extern LLog    *log_stat;

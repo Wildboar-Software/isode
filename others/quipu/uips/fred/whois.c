@@ -6,6 +6,10 @@
 #include <string.h>
 #include <strings.h>
 #include "fred.h"
+int f_whois (char **vec);
+static whois_aux (struct whois *w);
+int test_ufn (char *cp);
+
 
 struct whois {
 	char   *w_input;

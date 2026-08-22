@@ -11,6 +11,14 @@
 #include "namelist.h"
 #include "filter.h"
 #include "destrings.h"
+int listOUs (char *parentstr, char *thisstr, struct namelist **listp);
+void freeOUSearchArgs (void);
+int listAllOUs (char *parentstr, struct namelist **listp);
+int listMatchingOUs (char *parentstr, char *thisstr, struct namelist **listp);
+int listExactOUs (char *objectstr, struct namelist **listp);
+int makeListOUs (struct namelist **listp);
+int makeAllOUFilter (struct s_filter **fpp);
+
 
 extern struct ds_search_arg sarg;
 extern struct ds_search_result sresult;

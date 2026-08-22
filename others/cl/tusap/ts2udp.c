@@ -45,6 +45,29 @@
 #include "tsap.h"
 #include "uderrors.h"
 #include "internet.h"
+int udpinit (struct tsapblk *tb);
+static int udp_open (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, int option, struct TSAPdisconnect *td);
+static int udp_start_client (struct sockaddr_in *sock, int opt1, int opt2);
+static }
+
+/*
+ **********************************************************
+ *                                                        *
+ *  udp join server	                                  *
+ *                                                        *
+ *  This routine does the actual binding of remote socket.*
+ *                                                        *
+ *  returns:  OK, NOTOK		                          *
+ *                                                        *
+ **********************************************************
+ */
+
+int udp_join_server (int sd, struct sockaddr_in *sock, int opt1, int opt2);
+static int udp_read_socket (int fd, struct qbuf *q, int secs, struct sockaddr_in *fromsock, struct TSAPdisconnect *td);
+static int udp_write_socket (int fd, char *data, int cc, struct TSAPdisconnect *td);
+static int udp_close (int fd);
+static int	udp_select_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs);
+
 
 /* this structure is allocated for each socket device */
 

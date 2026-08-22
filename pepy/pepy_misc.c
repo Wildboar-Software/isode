@@ -6,6 +6,17 @@
 #include <strings.h>
 #include "pepy.h"
 
+void defineoid (char *name, OID oid);
+OID oidlookup (char *name);
+char *oidname (OID oid);
+OID int2oid (int n);
+void addtable (char *name, int lt);
+void addtableref (char *name, OID id, int lt);
+void print_expimp(void);
+void check_impexp (YP yp);
+static int importedP (char *name);
+void initoidtbl(void);
+
 /*  Oid manipulation */
 
 typedef struct oidlist {
@@ -241,7 +252,7 @@ void check_impexp (YP yp)
 		}
 }
 
-int importedP (char *name) {
+static int importedP (char *name) {
 	SYM		sp;
 
 	for (sp = symtab[TBL_IMPORT]; sp; sp = sp -> sym_next)

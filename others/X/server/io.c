@@ -51,6 +51,20 @@ SOFTWARE.
 #ifdef ISOCONN
 #include <isode/tsap.h>
 #include "tsap.h"
+int TWriteToClient (int sd, char *buf, int len);
+int TWritevToClient (int sd, struct iovec *iov, int iovcnt);
+int TAcceptFromClient (int fd, int vecp, char **vec);
+int TDiscFromClient (int fd);
+static /* buffers for clients */
+
+char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from client */, char *oldbuf);
+static int
+FlushClient(ClientPtr who, OsCommPtr oc, char *extraBuf, int extraCount /* do not modify... returned below */);
+void FlushAllOutput (void);
+static void FlushIfCriticalOutputPending (void);
+static void SetCriticalOutputPending (void);
+static int WriteToClient (ClientPtr who, int count, char *buf);
+
 #endif /* ISOCONN */
 
 extern long ClientsWithInput[];
@@ -189,7 +203,7 @@ int TDiscFromClient (int fd) {
  *    a partial request) because others clients need to be scheduled.
  *****************************************************************/
 
-ConnectionInput inputBuffers[MAXSOCKS];    /* buffers for clients */
+ConnectionInput inputBuffers[MAXSOCKS];static /* buffers for clients */
 
 char *ReadRequestFromClient(ClientPtr who, int *status /* read at least n from client */, char *oldbuf) {
 #define YieldControl()				\

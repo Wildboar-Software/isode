@@ -11,6 +11,9 @@
 #include "mib.h"
 #include "tailor.h"
 #include <sys/time.h>
+static int  o_sysUpTime (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_system (void);
+
 
 static int  o_sysUpTime (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	struct timeval now;

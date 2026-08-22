@@ -30,15 +30,23 @@ OT	Tbuckets[TBUCKETS];
 extern OT	anchor;
 extern OT	chain;
 
-static OID	resolve (const char *id, OT ot);
-static int  read_name (const char *name, const char *value, const char *hash), read_type (char **vec), add_objects_aux (void);
-static void dump_object (OT ot, int i);
-
 #ifdef LINUX
 #include <errno.h>
 #else
 extern	int	errno;
 #endif
+
+int	THASH (const char *name);
+static int	ot_compar (const void *ap, const void *ab);
+static void dump_objects_by_text (void);
+static void dump_object_by_tree (OT ot, int i);
+static void dump_objects_by_tree (void);
+static void dump_objects_by_xxx (void);
+static void dump_object (OT ot, int i);
+void flobjects (FILE *fp);
+
+static OID	resolve (const char *id, OT ot);
+static int  read_name (const char *name, const char *value, const char *hash), read_type (char **vec), add_objects_aux (void);
 
 /* OBJECTS */
 
@@ -662,7 +670,7 @@ OI	text2inst (const char *text) {
 
 #define	DEBUG
 #ifdef	DEBUG
-void dump_objects_by_text (void) {
+static void dump_objects_by_text (void) {
 	int	    hit;
 	int    i;
 	OT	    ot;
@@ -699,7 +707,7 @@ static void dump_objects_by_tree (void) {
 	printf ("///////\n");
 }
 
-void dump_objects_by_xxx (void) {
+static void dump_objects_by_xxx (void) {
 	OT	    ot;
 	for (ot = anchor; ot; ot = ot -> ot_next)
 		dump_object (ot, 0);

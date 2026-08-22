@@ -19,6 +19,8 @@
 #include "tailor.h"
 #include "logger.h"
 #include "query.h"
+int initialisations (int argc, char **argv);
+
 
 static dsaAddFound = FALSE;
 

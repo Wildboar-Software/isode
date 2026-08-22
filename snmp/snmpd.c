@@ -47,6 +47,14 @@
 #endif
 #ifdef	TP4
 #include "tp4.h"
+static void doit_udp (int pd);
+static	doit_clts (int pd);
+static int  start_tsap (int vecp, char **vec);
+static	doit_cots (int fd);
+static	proxy_clear (int fd);
+static void start_view (void);
+static void start_trap (void);
+
 #if	!defined(CLTS) && !defined(COTS)
 #define	COTS
 #endif

@@ -3,6 +3,9 @@
 #include "quipu/util.h"
 #include "quipu/photo.h"
 #include "psap.h"
+int decode_t4 (char *picture, char *persons_name, int len);
+static photolen (char *s1);
+
 
 int decode_t4 (char *picture, char *persons_name, int len) {
 	int i;

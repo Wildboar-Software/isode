@@ -6,6 +6,12 @@
 #include "../x500as/DAS-types.h"
 #include "quipu/watchdog.h"
 #include "pepsycodec.h"
+static int DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async);
+static int QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr, struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async);
+static int IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr, struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async);
+
 
 extern  OID     acse_pci;
 extern  OID     x500_da_ac;
@@ -107,7 +113,7 @@ int DspAsynBindRequest (
 							   bindarg, &qos, dc, di, async));
 }
 
-int	  QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+static int	  QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
 						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
 						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;
@@ -288,7 +294,7 @@ static int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 	return(OK);
 }
 
-int	  IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
+static int	  IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr,
 						 struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings,
 						 struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, int async) {
 	int			  result;

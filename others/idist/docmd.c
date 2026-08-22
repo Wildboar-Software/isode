@@ -34,6 +34,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <regex.h>
+int docmds (char **dhosts, int argc, char **argv);
+static int doarrow (char **filev, struct namelist *files, char *rhost, struct subcmd *scmds);
+static int dodcolon (char **filev, struct namelist *files, char *stamp, struct subcmd *scmds);
+static int cmptime (char *name);
+static int rcmptime (struct stat *st);
+void notify(char *file, char *rhost, struct namelist *to, time_t lmod);
+int inlist (struct namelist *list, char *file);
+int except (char *file);
+static char *colon (char *cp);
+
 
 FILE	*lfp;			/* log file for recording files updated */
 struct	subcmd *subcmds;	/* list of sub-commands for current cmd */

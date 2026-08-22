@@ -12,6 +12,29 @@
 #include "ntp.h"
 #include "patchlevel.h"
 #include "af_osi.h"
+#include "vt.h"
+
+int doit (void);
+struct ntp_peer *
+check_peer (struct Naddr *dst, int sock);
+int demobilize (struct list *l, struct ntp_peer *peer);
+int enqueue (struct list *l, struct ntp_peer *peer);
+static int config_line (char *argv[], int argc);
+static int other_peer_fields (struct ntp_peer *peer, char **argv, int argc);
+static int ynorint (char *s);
+static int GetHostName (char *name, struct Naddr *addr);
+static SFD incdebug(int sig);
+static SFD
+decdebug(int sig);
+static int init_clock (char *name, char *type);
+int read_clock (int cfd, struct timeval **tvpp, struct timeval **otvpp);
+static int create_listeners (void);
+int envinit (void);
+int addr_compare (struct Naddr *pa1, struct Naddr *pa2);
+int psapaddr_cmp (struct PSAPaddr *pa1, struct PSAPaddr *pa2);
+struct ntp_peer *
+find_peer (int n);
+
 
 #ifndef L_SET
 #define L_SET SEEK_SET

@@ -26,6 +26,15 @@
 #include "Idist-ops.h"                /* operation definitions */
 #include "ryresponder.h"      /* for generic idempotent responders */
 #include "defs.h"
+static int  op_init (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_transfer (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_query (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_terminate (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_special (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_deletefile (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int op_listcdir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+int initiate (int sd, struct AcSAPstart *acs, PE *pe);
+
 
 static char *myservice = "isode idist";
 static char *mycontext = "isode idist";

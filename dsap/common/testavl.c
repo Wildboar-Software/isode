@@ -9,6 +9,9 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "quipu/turbo.h"
+static void ravl_print( Avlnode *root, int depth );
+static void myprint( Avlnode *root );
+
 
 static void myprint( Avlnode *root );
 

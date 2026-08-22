@@ -382,5 +382,7 @@ void oper_result (struct connection *cn, struct DSAPindication *di);
 void oper_error (struct connection *conn, struct DSAPindication *di);
 void oper_preject (struct connection *conn, struct DSAPpreject *dp);
 void net_send_abort (struct connection *conn);
+struct oper_act *oper_alloc (void);
+void dsa_abort (int xrestart);
 
 #endif

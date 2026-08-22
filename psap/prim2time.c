@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <strings.h>
 #include "psap.h"
+static long get_usec (char **cp, int *len);
+
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 

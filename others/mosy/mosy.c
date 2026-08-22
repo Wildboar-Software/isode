@@ -9,6 +9,34 @@
 #include <strings.h>
 #include <unistd.h>
 #include "mosy-defs.h"
+#include "rosy-defs.h"
+
+int yyerror (char *s);
+int warning (char *fmt);
+static yyerror_aux (char *s);
+myyerror (char *fmt, ...);
+int yywrap (void);
+int yyprint (char *s, int f, int top);
+static yyprint_aux (char *s, char *mode);
+int pass1 (void);
+static void pass1_oid (char *mod, char *id, YV value);
+static void pass1_obj (char *mod, char *id, YP syntax, YV value, char *aname, char *sname, char *descr, char *refer, YV idx, YV defval);
+static void pass1_trap (char *mod, char *id, YV enterprise, int number, YV vars, char *descr, char *refer);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
+int pass2 (void);
+static do_id (OI yi, char *id);
+static do_obj1 (OT yo, char *id);
+static do_trap1 (TT yt, char *id);
+static void check_objects (YV yv, char *clause, int typesOK);
+static print_yi (OI yi, int level);
+static print_yo (OT yo, int level);
+static print_yt (TT yt, int level);
+static void print_type (YP yp, int level);
+static void print_value (YV yv, int level);
+YP	new_type (int code);
+YP	add_type (YP yp1, YP yp2);
+char *new_string (char *s);
+
 
 static	yyerror_aux (), yyprint_aux (), do_id (), do_obj1 (), do_trap1 (),
         check_objects (), print_yi (), print_yo (), print_yt (), print_type (),

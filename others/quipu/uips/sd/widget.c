@@ -36,6 +36,8 @@
 #include <setjmp.h>
 #include <signal.h>
 #include "general.h"
+void setwidgets(WIDGET *thesewdgts, int y);
+
 
 #if defined(SYS5) || defined (_AIX)
 /* doupdate() call not in BSD curses */

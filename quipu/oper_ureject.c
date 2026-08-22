@@ -3,6 +3,8 @@
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
+static void oper_ureject (struct connection *conn, struct RoSAPureject *rou);
+
 
 extern LLog * log_dsap;
 

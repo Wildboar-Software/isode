@@ -8,6 +8,8 @@
 #include "quipu/entry.h"
 #include "quipu/compare.h"
 #include "quipu/modify.h"
+int call_add_alias (int argc, char **argv);
+
 
 #define ORG_PERSON "newPilotPerson & quipuObject"
 /* this should probably go elsewhere !!! */

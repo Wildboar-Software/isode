@@ -18,6 +18,12 @@
 #include "dgram.h"
 #include "tailor.h"
 #include "pepsycodec.h"
+static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindList *vb, char *community, int next);
+void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community);
+void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community);
+static struct request *new_request (char *community);
+static void bulk_dummy (void);
+
 
 #ifdef	BSD42
 
@@ -56,6 +62,8 @@ struct binding {
 
 	struct binding *b_next;
 };
+
+static int  new_string (PS ps, struct type_SNMP_VarBindList *vb, char *community, struct binding *bp);
 
 /* INVOCATION INFORMATION */
 static	int	last_id = 0;
@@ -1365,6 +1373,6 @@ static OID oid_copy (OID a) {
 
 #else
 
-void bulk_dummy (void) {}
+static void bulk_dummy (void) {}
 
 #endif

@@ -7,6 +7,9 @@
 #include "quipu/connection.h"	/* ds_search uses di_block - include this for lint !!! */
 #include "quipu/dua.h"
 #include "quipu/dap.h"
+static Filter aet_filter (char *context);
+static int aet_search (DN base, char subtree, Filter filt, DNS *res);
+
 
 extern LLog * log_dsap;
 extern LLog * addr_log;

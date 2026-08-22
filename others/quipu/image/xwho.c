@@ -18,6 +18,19 @@
 #include "compat.h"
 #include "sys.file.h"
 #include "usr.dirent.h"
+int arginit (char **vec);
+static void update_X (void);
+static int service_X (void);
+static void init_X (void);
+static void layout_X (void);
+static void display_top (void);
+static display_host (struct host *hp);
+static display_face (struct face *fp);
+static int facecmp (struct face **f1, struct face **f2);
+static int hostcmp (struct host **h1, struct host **h2);
+static void read_X (void);
+static int display_this_host (char *n);
+
 
 #define	NHOSTS	100
 

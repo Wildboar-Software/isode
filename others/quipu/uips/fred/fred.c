@@ -15,6 +15,12 @@
 #include "logger.h"
 
 #include "sys.file.h"
+static arginit (char **vec);
+int str2vecY (char *buffer, char **vec);
+static rcmap (struct sockaddr_in *isock);
+static void  _advise (char *what, char *fmt, va_list ap);
+static	void log_utmp (void);
+
 
 #ifndef	R_OK
 #define	R_OK	4

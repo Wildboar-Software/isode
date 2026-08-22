@@ -16,6 +16,21 @@
 #endif
 #define pname(t)	((t)->pe_typename ? *(t)->pe_typename : "???")
 
+int pepsylose (modtyp*module, ...);
+int ppepsylose (modtyp*module, ...);
+int ferr (int n, char *mesg);
+int ferrd (int n, char *mesg, int d);
+static void dmp_tpe ( char *s, ptpe *p, modtyp *mod /* Module it is from */ );
+char *pr_petype (int type);
+void f_null(void);
+int bitscmp (char *p1, char *p2, int len);
+int ostrcmp (char *p, int len, struct qbuf *qb);
+int hasdata ( PEPYPARM parm, ptpe *p, modtyp *mod, /* Module it is from */ int *popt, int *optcnt );
+ptpe *next_tpe (ptpe *p);
+int ismatch ( ptpe *p, modtyp *mod, /* Module it is from */ unsigned int cl, unsigned int tag );
+ptpe *fdflt_f (ptpe *p);
+ptpe *fdflt_b (ptpe *p);
+
 char *pr_petype (int type);
 void pr_entry (ptpe *p);
 
@@ -154,7 +169,7 @@ int ferrd (int n, char *mesg, int d) {
 #define TYP_PRINT	2
 #define TYP_LAST	2
 
-void dmp_tpe (
+static void dmp_tpe (
 	char *s,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */

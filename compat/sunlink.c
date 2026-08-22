@@ -19,6 +19,12 @@
 
 #include "x25.h"
 #include "isoaddrs.h"
+int set_x25_facilities (int sd, int coc, char *caption);
+int log_cause_and_diag (int fd);
+static void print_x25_facilities (FACILITY_DB f, int coc, char *caption);
+static int _sunlink_stub2 (void);
+static int _sunlink_stub(void);
+
 
 #ifdef  SUN_X25
 
@@ -605,8 +611,8 @@ print_send:
 }
 #endif
 #else
-int _sunlink_stub2 (void) {}
+static int _sunlink_stub2 (void) {}
 #endif
 #else
-int _sunlink_stub(void) {}
+static int _sunlink_stub(void) {}
 #endif

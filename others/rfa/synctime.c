@@ -25,6 +25,9 @@
 #include "psap.h"
 #include "rfa.h"
 #include "rfainfo.h"
+static int changeTimeWithRfatime (long dt);
+int op_syncTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+
 
 extern char *isodesbinpath;
 

@@ -9,6 +9,25 @@
 #include <sys/ioctl.h>
 #endif
 #include <sys/stat.h>
+#include "ftamsystem.h"
+
+__attribute__((constructor))
+static void _init_fp (void);
+int fredloop (char **vec, int error);
+static struct dispatch *
+getds (char *name);
+static int f_set (char **vec);
+static printvar (struct var *v);
+static char **
+getval (char *name, char **choices);
+static struct var *
+getvar (char *name);
+int f_help (char **vec);
+static snarf (char *file, char *name, char **variable);
+int rcfile (char *file, int op, int isystem);
+int	ncols (FILE *fp);
+static int f_version (char **vec);
+
 
 #define	UFN_ALL		0x03
 #define	UFN_MASK	"\020\01approximate-matching\02full-wildcarding"

@@ -19,6 +19,12 @@
 #include "ryresponder.h"    /* for generic idempotent responders */
 #include "psap.h"
 #include "rfa.h"
+static int aux_error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+int str_error (int sd, int err, char *str, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+int syserror (int sd, int err, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+int error (int sd, int err, int type, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+int statusError (int sd, int reason, char *user, long since, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+
 
 /*--------------------------------------------------------------*/
 /*  aux_error							*/

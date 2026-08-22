@@ -5,6 +5,9 @@
 #include <string.h>
 #include "general.h"
 #include "manifest.h"
+int setenv (const char *name, const char *value, int overwrite);
+int unsetenv (const char *name);
+
 
 extern char **environ;
 static int nvmatch (const char *s1, const char *s2);

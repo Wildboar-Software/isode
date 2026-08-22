@@ -19,6 +19,49 @@
 #include	"T3-types.h"
 
 #include "test_table.h"
+static int ed_tst (int tynum);
+static char *fill (int tynum);
+static int tcmp (int tynum, char *parm1, char *parm2);
+static int bit_cmp (PE b1, PE b2);
+static int bitstr_cmp (char *cp1, int len1, char *cp2, int len2);
+static PE
+mkpelist (int i);
+static PE
+mkpe (int i);
+static OID
+mkoid (int i);
+static struct type_UNIV_EXTERNAL *
+mkext (int i);
+static int ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2);
+static struct rep_int *
+mkrep_int (int cnt);
+static struct rep_elem *
+mkrep_elem (int cnt);
+static int ri_cmp (struct rep_int *p1, struct rep_int *p2);
+static int re_cmp (struct rep_elem *p1, struct rep_elem *p2);
+
+static int ed_tst (int tynum);
+static char *fill (int tynum);
+static int tcmp (int tynum, char *parm1, char *parm2);
+int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
+static int bit_cmp (PE b1, PE b2);
+static int bitstr_cmp (char *cp1, int len1, char *cp2, int len2);
+static PE
+mkpelist (int i);
+static PE
+mkpe (int i);
+static OID
+mkoid (int i);
+static struct type_UNIV_EXTERNAL *
+mkext (int i);
+static int ext_cmp (struct type_UNIV_EXTERNAL *e1, struct type_UNIV_EXTERNAL *e2);
+static struct rep_int *
+mkrep_int (int cnt);
+static struct rep_elem *
+mkrep_elem (int cnt);
+static int ri_cmp (struct rep_int *p1, struct rep_int *p2);
+static int re_cmp (struct rep_elem *p1, struct rep_elem *p2);
+
 /* compactly generate the new item of data */
 #define new(x)	((x *)calloc(1, sizeof (x)))
 

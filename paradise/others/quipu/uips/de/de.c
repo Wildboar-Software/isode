@@ -30,6 +30,22 @@
 #include "mapphone.h"
 #include "tailor.h"
 #include "query.h"
+#include "vt.h"
+
+int doCountry (void);
+int doOrganisation(char matchstring[], int searchUnder);
+static int searchOrgUnderLocality(char *costr);
+int doOU(char matchstring[]);
+int doPRR(char matchstring[], int searchparent);
+void printNames(int objectType);
+void printCountry(void);
+int enterString(int objectType);
+void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp, int *nep);
+void displayValidWildCards(void);
+void countryCodeMessage(char *str);
+void onalarm(void);
+int searchFail(int objectType);
+
 
 LLog    _de_log = {
 	"de.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,

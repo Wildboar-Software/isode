@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "quipu/util.h"
+#include "util.h"
+
+void turnInverseVideoOff(void);
+void writeInverse(char *str);
+void clearLine(void);
+
 
 #define LINES 24
 #define COLS  80

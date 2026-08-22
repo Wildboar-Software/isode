@@ -26,6 +26,17 @@
 #include "tailor.h"
 #include "logger.h"
 #include "compat.h"
+#include "vt.h"
+
+static SFD  dishser (int sig, long code, struct sigcontext *sc)
+#else
+static SFD  dishser (int i)
+#endif;
+static dadser (int fd, struct sockaddr_in *isock);
+static da_response (int fd, char *fmt);
+static int start_dish (int binding);
+static SFD  chldser (int sig, long code, struct sigcontext *sc);
+
 
 static	int	debug = 0;
 static	int	nbits = FD_SETSIZE;

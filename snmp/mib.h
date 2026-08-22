@@ -63,3 +63,9 @@ extern	OID	nullSpecific;
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
+
+void init_snmp (void);
+void init_icmp (void);
+void init_tcp (void);
+void init_udp (void);
+void init_clns (void);

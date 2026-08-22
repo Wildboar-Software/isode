@@ -9,6 +9,9 @@
 #include "ntp.h"
 #include <sys/types.h>
 #include <sys/time.h>
+int init_clock_local (char *file);
+int read_clock_local (int cfd, struct timeval **tvp, struct timeval **mtvp);
+
 
 extern LLog *pgm_log;
 

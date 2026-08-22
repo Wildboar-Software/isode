@@ -5,6 +5,8 @@
 #include "psap.h"
 #undef	qbuf2pe
 #include "tailor.h"
+PE qbuf2pe (struct qbuf *qb, int len, int *result);
+
 
 #ifndef	DEBUG
 #endif

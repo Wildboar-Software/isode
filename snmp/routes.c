@@ -13,6 +13,8 @@
 #include "mib.h"
 #include "interfaces.h"
 #include "routes.h"
+static int _read_routes(void);
+
 
 int routeNumber = 0;
 struct rtetab  *rts = NULL;
@@ -212,6 +214,7 @@ static int  rt_compar (const void *p, const void *q) {
 					 (*b) -> rt_instance, (*b) -> rt_insize);
 }
 
+void sort_rtetab (void);
 void sort_rtetab (void) {
 	struct rtetab  *rt,
 			   **base,
@@ -399,6 +402,7 @@ static int  get_radix_node (struct radix_node *rn) {
 }
 #endif
 
+struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext);
 struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext) {
 	int	    family;
 	struct rtetab *rt;

@@ -13,6 +13,16 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void teletex_free (void *value);
+static char *xstrdup (char *a);
+static void *teletex_cpy (void *value);
+static int teletex_cmp (void *value1, void *value2);
+static void teletex_print (PS ps, void *value, int format);
+static void *str2teletex (char *str);
+static PE teletex_enc (void *value);
+static void * teletex_dec (PE pe);
+void teletex_syntax (void);
+
 
 #define nfree(x) if (x != NULLCP) free (x)
 

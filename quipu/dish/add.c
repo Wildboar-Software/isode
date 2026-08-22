@@ -15,6 +15,8 @@
 #include "quipu/DAS-types.h"
 
 #include "osisec-stub.h"
+Attr_Sequence make_template_as (AV_Sequence oc);
+
 
 #define ORG_PERSON "newPilotPerson & quipuObject"
 /* this should probably go elsewhere !!! */

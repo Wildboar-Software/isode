@@ -2,6 +2,19 @@
 #include "quipu/name.h"
 #include "quipu/IF-types.h"
 #include "pepsycodec.h"
+DN str2dn_aux (char *str, char *alias);
+DN str2dnX (char *str);
+DN dn_dec (PE pe);
+PE dn_enc (DN dn);
+static PE dn_enc_void (void *value);
+static void *dn_dec_void (PE pe);
+static void *str2dnX_void (char *str);
+static void dn_print_void (PS ps, void *value, int format);
+static void *dn_cpy_void (void *value);
+static int dn_cmp_void (void *value1, void *value2);
+static void dn_free_void (void *value);
+int dn_syntax (void);
+
 
 static char dn_alias;
 

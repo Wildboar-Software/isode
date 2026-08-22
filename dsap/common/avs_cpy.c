@@ -1,5 +1,8 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+static AV_Sequence  avs_comp_cpy_enc (AV_Sequence avs);
+AV_Sequence avs_cpy_enc (AV_Sequence avs);
+
 
 extern LLog * log_dsap;
 

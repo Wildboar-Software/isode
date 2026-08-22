@@ -1,5 +1,8 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+Attr_Sequence as_merge_aux (Attr_Sequence a, Attr_Sequence b);
+Attr_Sequence as_fast_merge (Attr_Sequence a, Attr_Sequence b, Attr_Sequence c, Attr_Sequence d);
+
 
 Attr_Sequence as_merge (Attr_Sequence a, Attr_Sequence b) {
 	Attr_Sequence aptr, bptr, result, trail, tmp;

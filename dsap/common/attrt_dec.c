@@ -1,6 +1,8 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/syntaxes.h"
+AttributeType AttrT_decode_aux (OID oid);
+
 
 extern LLog * log_dsap;
 

@@ -11,6 +11,8 @@
 #include <suntool/panel.h>
 #include <suntool/gfxsw.h>
 #include  <sys/resource.h>
+static int sigwinched (void);
+
 
 static struct gfxsubwindow *gfx;
 static struct tool *tool;

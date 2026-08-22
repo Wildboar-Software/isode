@@ -3,6 +3,9 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/entry.h"
+static int oid_seq_free_aux (struct oid_seq *ptr);
+struct oid_seq *str2oidseq (char *str);
+
 
 extern int oidformat;
 

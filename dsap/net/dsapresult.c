@@ -6,6 +6,11 @@
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
+static int DapEncodeResult (PE *pep, struct DSResult *res);
+static int DspEncodeResult (PE *pep, struct ds_op_res *res);
+static int QspEncodeResult (PE *pep, struct ds_op_res *res);
+static int IspEncodeResult (PE *pep, struct ds_op_res *res);
+
 
 extern  LLog    * log_dsap;
 

@@ -7,6 +7,16 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "tsap.h"
+static int do_args (int argc, char **argv);
+static int start_listener (void);
+static int ping_address (void);
+static int wait_for_result (void);
+static int sink_data (int sd);
+static int progress_connection (void);
+static int stop_nicely (void);
+static int updatemask (void);
+int ts_advise (char *str, struct TSAPdisconnect *td);
+
 
 struct PSAPaddr * pingaddr;
 struct PSAPaddr * pongaddr;

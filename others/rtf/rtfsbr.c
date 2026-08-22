@@ -6,6 +6,11 @@
 #include <sys/time.h>
 #if	defined(SYS5) && !defined(HPUX)
 #include <sys/times.h>
+#include "ftamsystem.h"
+
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt);
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+
 #define	TMS
 #else
 static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);

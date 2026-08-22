@@ -28,6 +28,13 @@ static  struct NSAPaddr **peers = NULL;
 #ifdef ULTRIX_X25_DEMSA
 #include "/usr/include/x25.h"
 #include <demsa.h>
+static int x25retry (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int x25init (int fd, struct tsapkt *t);
+static int read_nsdu_buffer (int fd, char *buffer, int cc);
+int x25nsaprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
+int XTService (struct tsapblk *tb);
+static int _ts2x25_stub(void);
+
 extern t_list_of_conn_desc list_of_conn_desc[our_TABLE_SIZE];
 #endif
 
@@ -422,7 +429,7 @@ int XTService (struct tsapblk *tb) {
 	tp0init (tb);
 }
 #else
-int _ts2x25_stub(void) {
+static int _ts2x25_stub(void) {
 	;
 }
 #endif

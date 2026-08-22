@@ -17,6 +17,27 @@
 #include "internet.h"
 #include "psap.h"
 #include "tailor.h"
+static struct country *
+read_country (char *code);
+static read_psap (char *dsa, char **addr);
+static int generate_sed (void);
+static struct pair *
+n2p (char *name, int any);
+static void munge (FILE *fp, char *entries[]);
+static void build_root (void);
+static void build_TLC (void);
+static void build_organization (void);
+static void build_unit (void);
+static make_edb (char *dir, char *type, char *date, char *entries[]);
+static void build_startup (void);
+static void build_nightly (void);
+static void build_dsap (void);
+static void build_fred (void);
+static void fudge_file (char *name);
+static void parse_3166 (void);
+static void table_3166 (void);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 #ifdef	SYS5
 struct group *getgrnam ();

@@ -13,6 +13,11 @@
 #include "../x500as/Quipu-types.h"
 #include "pepsycodec.h"
 
+static int DapSyncInvokeRequest (int sd, int id, int op, PE pe, struct DAPindication *di);
+static int pdu_arg_log (PE pe, int op);
+int pdu_res_log (PE pe, int op);
+
+
 extern  LLog    * log_dsap;
 extern	void	  ros_log(struct RoSAPpreject *rop, char *event);
 

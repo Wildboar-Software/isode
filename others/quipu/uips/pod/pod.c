@@ -7,6 +7,18 @@
 #include "pod.h"
 #include "defs.h"
 #include "dir_entry.h"
+void CreateWidgets (void);
+void PodLoop (void);
+static void print_photo (void);
+void add_to_history (int seqnum);
+static void print_search_area(Widget PosWindow);
+void setReadEntryName (char *entry_name);
+void readEntryPrint (char *entry_ptr);
+static set_search_area(Widget search_area);
+static void displayError(Widget refto, String mess);
+void displayStartupError(String mess);
+static void deleteVal(Widget w, XtPointer closure, XtPointer calldata);
+
 
 dsEnqError srch_start(), read_config_types(), list_start(), read_all();
 dsErrorStruct modify_entry();

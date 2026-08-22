@@ -10,6 +10,25 @@
 #include "quipu/attr.h"
 #include "quipu/entry.h"
 #include "quipu/turbo.h"
+static void rsavl_print( Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, int depth );
+static void savl_print (Avlnode *root);
+static void ravl_print (
+	Avlnode *root,
+	void (*fn)(PS, RDN, int),
+	PS fps,
+	int format,
+	int depth
+);
+static void avl_print (Avlnode *root);
+static int rprint_directory (caddr_t data, caddr_t arg);
+static void print_directory (Entry node);
+static void print_optimized_attrs (void);
+static int print_index_node (Index_node *node, PS fps);
+static int print_soundex_node (Index_node *node, PS fps);
+static void print_index( Index *pindex );
+static void print_eis_list (EntryInfo *e);
+static void print_dn (DN dn);
+
 
 extern LLog 		*log_dsap;
 extern int		turbo_index_num;

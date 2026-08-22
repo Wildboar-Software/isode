@@ -30,6 +30,9 @@ without express or implied warranty.
 #include <arpa/inet.h>
 #ifdef notdef
 #include <arpa/inet.h>
+static int
+XFamily (int af);
+
 bogus definition of inet_makeaddr() in BSD 4.2 and Ultrix
 #else
 extern unsigned long inet_makeaddr();

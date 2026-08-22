@@ -6,6 +6,13 @@
 
 #include "quipu/util.h"
 #include "quipu/ds_error.h"
+static char *get_message_of_code(QE_error_code code);
+static char *ds_error_message (struct DSError *error);
+void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_code error_type, struct DSError *error);
+QE_error_code get_log_error_type(struct DSError *error, int task_id);
+void error_list_free(errorList *error_list_ptr);
+static errorList error_list_copy(errorList list);
+
 
 extern LLog *log_stat;
 

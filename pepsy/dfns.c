@@ -7,6 +7,15 @@
 #include "mine.h"
 #include "pepsydefs.h"
 #include "pass2.h"
+char *notidtoid (char *s);
+
+char *notidtoid (char *s);
+char *my_new_str (char *s);
+char *my_strcat (char *s1, char *s2);
+int init(void);
+char *concat (char *s1, char *s2);
+char *gfree ( char *module, /* name of module we are in (usually mymodule) */ char *id, /* name of type we want to free */ char *parm /* name of the pointer to the data */ );
+
 
 id_entry *id_table[TABLESIZE];
 

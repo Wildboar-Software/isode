@@ -10,6 +10,10 @@
 #include <errno.h>
 #include <unistd.h>
 #include "tailor.h"
+static void header_print (PS psa, Entry edb);
+static void entry_print (PS psa, Entry entryptr);
+static void entry_block_print (PS psa, Entry block);
+
 
 extern LLog * log_dsap;
 

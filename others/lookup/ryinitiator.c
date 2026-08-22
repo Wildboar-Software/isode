@@ -7,6 +7,11 @@
 #include <unistd.h>
 #include "PasswordLookup-types.h"
 #include "ryinitiator.h"
+#include "ryresponder.h"
+
+static int invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 static char *myname = "ryinitiator";
 

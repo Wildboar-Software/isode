@@ -7,6 +7,8 @@
 #include	<sys/errno.h>
 #include	<sys/types.h>
 #include	"usr.dirent.h"
+static int _readdir_stub(void);
+
 
 #ifndef	GETDENTS
 extern int	getdents(int fildes, char *buf, unsigned nbyte);		/* SVR3 system call, or emulation */
@@ -47,7 +49,7 @@ struct dirent *readdir( DIR *dirp ) {
 	return dp;
 }
 #else
-int _readdir_stub(void) {
+static int _readdir_stub(void) {
 	;
 }
 #endif

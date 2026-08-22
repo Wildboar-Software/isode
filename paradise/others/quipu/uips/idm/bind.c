@@ -23,6 +23,10 @@
 #include "quipu/dap2.h"
 #include "logger.h"
 #include "compat.h"
+int init_bind_to_ds(int *assoc);
+int wait_bind_to_ds(int assoc, int wantToBlock);
+void de_unbind(void);
+
 
 extern char *dsa_address;
 extern char username[];

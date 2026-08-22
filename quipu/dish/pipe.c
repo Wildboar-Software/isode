@@ -20,6 +20,9 @@
 #include "sys.file.h"
 #include <sys/stat.h>
 #include "tailor.h"
+int send_pipe (char *buf);
+static int reopen_ret (void);
+
 
 #ifdef SOCKETS
 int             sd, sd_current;

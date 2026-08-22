@@ -8,6 +8,23 @@
 #include	"psap.h"
 #include	"pepsy.h"
 #include 	"tailor.h"
+#include "pepsycodec.h"
+static int en_obj (
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+);
+
+
+static int en_obj (
+	PEPYPARM parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	PE *rpe		/* Return value PE */
+);
+static int chkobj (modtyp *mod, ptpe *p, PE head);
+
 
 #ifndef	PEPYPARM
 #define PEPYPARM	char *

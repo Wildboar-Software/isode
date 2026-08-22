@@ -16,6 +16,9 @@
 #include <sys/param.h>
 #include "general.h"
 #include "rfa.h"
+char *getRelativeFN (char *fn);
+char *getRfaContext (char *cwd, char *fn);
+
 
 static char p[MAXPATHLEN];
 char *fsBase = FS_BASE;

@@ -1,6 +1,8 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
 #include "quipu/malloc.h"
+static RDN str2rdn_aux (char *str);
+
 
 RDN str2rdn_aux (char *str)
 {

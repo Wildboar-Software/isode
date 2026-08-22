@@ -9,6 +9,17 @@
 #include <search.h>
 #include "spkt.h"
 #include "tailor.h"
+static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize);
+static int end_spdu (int code, struct local_buf *c);
+static void start_pgi (int code, struct local_buf *c);
+static void end_pgi (struct local_buf *c);
+static void put2spdu (int code, int li, char *value, struct local_buf *c);
+static uint32_t str2ssn (char *s, int n);
+static char *
+pullqb (struct qbuf *qb, int n);
+struct ssapkt *
+udtsdu2spkt (struct qbuf *qb, int len);
+
 
 struct local_buf {
 	char *top;				/* Top of buffer */

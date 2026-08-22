@@ -12,6 +12,17 @@
 #include "Idist-types.h"	/* type definitions */
 #include "Idist-ops.h"		/* operation definitions */
 #include "defs.h"
+struct type_Idist_FileSpec *
+makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname);
+static struct type_Idist_Options *
+makeopts (int opts);
+struct type_Idist_FileType *
+makeftype (int type);
+static struct type_Idist_FileTime *
+makefmtime (long mtime);
+long
+convtime (struct type_Idist_FileTime *fm);
+
 
 struct type_Idist_FileSpec *
 makefs (unsigned short type, int opts, unsigned short mode, off_t size, time_t mtime, char *uname, char *group, char *name, char *lname) {

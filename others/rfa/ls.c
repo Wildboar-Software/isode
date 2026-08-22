@@ -19,6 +19,10 @@
 #include "RFA-types.h"
 #include "rfa.h"
 #include "rfainfo.h"
+static void mode2str (int m, char *mstr);
+char *shortTime (long *t);
+char *rfa2ls (struct RfaInfo *rfa);
+
 
 struct pair {
 	uint16_t	val;

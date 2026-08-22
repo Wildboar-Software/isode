@@ -21,6 +21,14 @@
 #include "quipu/ds_search.h"
 #include "quipu/dap2.h"
 #include "quipu/name.h"
+static /* do_ufsearch */
+
+/*
+ * - process_ufsearch() -
+ */
+static QE_error_code process_ufsearch(ufsearchRec ufsrec);
+ufsearchResult get_ufsearch_result(QCardinal id);
+
 
 extern int dsap_ad;
 extern int next_task_id;

@@ -3,6 +3,14 @@
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
+Attr_Sequence attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node);
+Attr_Sequence dsa_eis_select ( EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, /* If TRUE - it is a Quipu context association */ DN node );
+static Attr_Sequence cpy_as_comp (Attr_Sequence as);
+static Attr_Sequence
+cpy_as_comp_type (Attr_Sequence as);
+int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
+Attr_Sequence eis_select (EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+
 
 extern LLog * log_dsap;
 
@@ -222,7 +230,7 @@ dsa_eis_select (
 	return (result);
 }
 
-Attr_Sequence
+static Attr_Sequence
 cpy_as_comp (Attr_Sequence as) {
 	Attr_Sequence ptr;
 

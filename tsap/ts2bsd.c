@@ -22,6 +22,24 @@
 #include <sys/uio.h>
 #include "tailor.h"
 #include "compat.h"
+static STATIC int sendCmsg (int fd, int cc, int type, char *data);
+int tp4getCmsg (int fd, int *cc, int *type, char *data);
+STATIC int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);
+STATIC int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+STATIC int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);
+STATIC int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);
+STATIC int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);
+STATIC int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td);
+STATIC int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);
+STATIC int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);
+STATIC void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td);
+STATIC int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td);
+int start_tp4_server (struct TSAPaddr *local_ta, int backlog, int opt1, int opt2, struct TSAPdisconnect *td);
+int join_tp4_client (int fd, struct TSAPaddr *remote_ta, struct TSAPdisconnect *td);
+STATIC int gen2tp4X (struct tsapADDR *generic, union sockaddr_osi *specific);
+int tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific);
+static int _ts2bsd_stub(void);
+
 
 /*#define	MAXTP4		8192	/* until we have a dynamic estimate... */
 #define	MAXTP4		1024	/* until we have a dynamic estimate... */
@@ -33,7 +51,7 @@ STATIC union osi_control_msg ocm;
 int tp4_disconnect_reason;
 
 /* Ancillary routines */
-STATIC int sendCmsg (int fd, int cc, int type, char *data) {
+static STATIC int sendCmsg (int fd, int cc, int type, char *data) {
 	int	    result;
 	struct msghdr *msg = &msgs;
 	union osi_control_msg *oc = &ocm;
@@ -1037,5 +1055,5 @@ int tp42genX (struct tsapADDR *generic, union sockaddr_osi *specific) {
 	return result;
 }
 #else
-int _ts2bsd_stub(void) {}
+static int _ts2bsd_stub(void) {}
 #endif

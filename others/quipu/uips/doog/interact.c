@@ -16,6 +16,22 @@
 #include "util.h"
 #include "interact.h"
 #include "initialize.h"
+#include "widget.h"
+
+static void intquit (void);
+static void ufnsearch (char *params);
+static void ufnresolve(char *name, entryList baseobjects, known is_leaf);
+static void readentry (char *params);
+static void print_read_results(readResults results, char *baseobject);
+static void print_entry_list(entryList entries);
+static void printcommands (char *params);
+static void callcommand (char *commandline);
+static void new_current_list(ufnResults results);
+static void looklist (char *params);
+static QBool query_matches(entryList matches, entryList *returnlist);
+static void abort_query (void);
+static void abort_command (void);
+
 
 void ufnsearch(char *params);
 void quitfn(char *params);

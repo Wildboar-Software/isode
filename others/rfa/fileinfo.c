@@ -22,6 +22,8 @@
 #include "psap.h"
 #include "rfa.h"
 #include "rfainfo.h"
+int op_listDir (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+
 
 /*--------------------------------------------------------------
  *  op_listDir - get list of fileinfos for directory

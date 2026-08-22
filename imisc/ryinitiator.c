@@ -23,6 +23,19 @@
 #endif
 #endif
 
+static int getlines (char *buffer);
+static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
+#ifdef	TIMER
+static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static void timer (int bytes, int pkts);
+#ifndef	TMS
+static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+#endif
+#endif
+#ifndef	lint
+static void _advise (char* what, char* fmt, va_list ap);
+#endif
+
 static int count = 1;
 int	length = 536;
 
@@ -30,23 +43,11 @@ int	length = 536;
 #define	DS_RESULT(ds)	(timing ? timing_result : (ds) -> ds_result)
 
 static int timing = 0;
-
-static int	timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
 #else
 #define	DS_RESULT(ds)	((ds) -> ds_result)
 #endif
 
 static char *myname = "ryinitiator";
-
-static int getlines (char *buffer);
-static	void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
-
-#ifdef	TIMER
-static  void timer (int bytes, int pkts);
-#ifndef	TMS
-static  void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
-#endif
-#endif
 
 extern char *isodeversion;
 
@@ -433,8 +434,6 @@ void acs_advise (struct AcSAPabort *aca, char *event) {
 }
 
 #ifndef	lint
-static void	_advise (char* what, char* fmt, va_list ap);
-
 void adios (char* what, char* fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);

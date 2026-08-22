@@ -12,6 +12,16 @@
 #include "demanifest.h"
 #include "namelist.h"
 #include "destrings.h"
+int listPRRs(char *parentstr, char *thisstr, struct namelist **listp);
+void freePRRSearchArgs(void);
+int listAllPRRs(char *parentstr, struct namelist **listp);
+int listMatchingPRRs(char *parentstr, char *thisstr, struct namelist **listp);
+static int readExactPRR(char *objectstr, struct namelist **listp);
+int makeListPRRs(struct namelist **listp, char *parentstr);
+int readPerson(char *pstr, struct namelist **plistp);
+void makeAllPRRFilter(struct s_filter **fpp);
+void makeExactPRRFilter(struct s_filter **fpp);
+
 
 extern struct ds_search_arg sarg;
 extern struct ds_search_result sresult;

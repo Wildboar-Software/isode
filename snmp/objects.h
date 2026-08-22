@@ -140,3 +140,4 @@ extern	int	debug;
 extern	char	PY_pepy[BUFSIZ];
 
 char   *strdup (const char *s);
+int loadobjects (const char *file);

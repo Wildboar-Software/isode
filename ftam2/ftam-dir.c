@@ -6,6 +6,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
 #ifndef	BRIDGE
 static char *lcwd = NULL;

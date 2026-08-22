@@ -14,6 +14,8 @@
 #include "general.h"
 
 #include "jpeg.h"
+static void GotError (char *theStr);
+
 
 #define ASN_LONG_LEN    (0x80)
 

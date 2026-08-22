@@ -103,6 +103,25 @@ static int unixDomainConnection = -1;
 #include "psap.h"
 #include "tsap.h"
 #include "isoservent.h"
+static int
+open_unix_socket ();
+static void CreateWellKnownSockets (void);
+static void ResetWellKnownSockets (void);
+static int TReadFromClient (int client, char *data, int size, int nonblock);
+static void TimeOut (void);
+static Bool
+ReadBuffer(long conn, char *buffer, int charsWanted);
+static int getISOpeername (int conn, struct TSAPaddr *from, int *alen);
+static int ClientAuthorized (
+	long conn,
+	int *pswapped,
+	char **reason   /* if authorization fails, put reason in here */
+);
+void EstablishNewConnections(ClientPtr *newclients, int *nnew, int vecp, char **vec)
+#else /* ISOCONN */
+void EstablishNewConnections(ClientPtr *newclients, int *nnew)
+#endif /* ISOCONN */;
+
 
 extern char *isodetcpath;
 

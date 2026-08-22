@@ -12,6 +12,8 @@
 #include <string.h>
 #include "mib.h"
 
+void init_udp (void);
+
 #include "internet.h"
 #ifdef	BSD44
 #include <sys/param.h>
@@ -25,6 +27,14 @@
 #include <netinet/ip_var.h>
 #include <netinet/udp.h>
 #include <netinet/udp_var.h>
+static int _read_udp_stats (void);
+static int  o_udp (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct udptab *_read_udp_sockets(int *len);
+static int  o_udp_listen (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  ut_compar (const void *p, const void *q);
+static struct udptab *get_udpent (unsigned int *ip, int isnext);
+void init_udp (void);
+
 #else
 struct	udpstat {
 				/* input statistics: */

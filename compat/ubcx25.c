@@ -24,6 +24,9 @@
 
 #include "x25.h"
 #include <sys/uio.h>
+static int _ubcx25_stub2 (void);
+static int _ubcx25_stub(void);
+
 
 #define         X25_MBIT        0x40
 #define         X25_QBIT        0x80
@@ -255,8 +258,8 @@ int     write_x25_socket (int fd, char *buffer, int len)
 #endif
 
 #else   /* UBC_X25 */
-int _ubcx25_stub2 (void) {}
+static int _ubcx25_stub2 (void) {}
 #endif  /* UBC_X25 */
 #else	/* X25 */
-int _ubcx25_stub(void) {}
+static int _ubcx25_stub(void) {}
 #endif  /* X25 */

@@ -55,6 +55,9 @@
 #ifdef HULA
 
 #include <stdint.h>
+static int SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int secs, struct SSAPindication *si, int async, struct TSAPunitdata *tud);
+static int TUNITDATAser (int sd, int tud);
+
 
 #define SSAP_NOT_ASYNC 	0
 #define SSAP_ASYNC 	1

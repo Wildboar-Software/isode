@@ -12,6 +12,22 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include "quipu/turbo.h"
+int fileexists (char *fname);
+static int dir_exists (char *fname);
+static int read_mapped_rdn (PS aps,char *name,char *file);
+static int write_mapped_rdn (PS aps, char * name, char * file);
+static int rdn2filename (PS aps, RDN rdn, char make);
+static int dn2filename (PS aps,DN dn,char make);
+static int file_check (int offset,Entry entryptr);
+static int sibling_expected (Entry e);
+static int load_a_kid(Entry e, int offset);
+static int entry_load_kids (Avlnode *entryptr /* in this case, entryptr is really a tree of kids */,int offset);
+static void check_entry_free (Entry e);
+int parent_link(Entry e, Entry parent);
+static int merge_entry(Entry newentry, Avlnode *oldtree);
+Entry subtree_load (Entry parent,DN dn);
+int refresh_from_disk(DN dn);
+
 
 extern char * treedir;
 extern LLog * log_dsap;

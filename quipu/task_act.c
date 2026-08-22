@@ -6,6 +6,9 @@
 #include <time.h>
 #include "quipu/util.h"
 #include "quipu/connection.h"
+struct task_act *task_alloc (void);
+static void end_of_task_analyse (struct task_act *task);
+
 
 extern LLog * log_dsap;
 

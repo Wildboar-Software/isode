@@ -2,6 +2,7 @@
 
 #include "quipu/util.h"
 #include "quipu/attr.h"
+#include "tailor.h"
 
 extern char *oidtable,
 	   *tailfile,

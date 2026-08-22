@@ -26,6 +26,14 @@
 #include "RFA-types.h"
 #include "rfa.h"
 #include "rfainfo.h"
+static int createEmptyFile (char *dir, struct RfaInfo *rfa);
+static int removeDir (char *dir);
+static int checkState (struct RfaInfo *rfa, struct RfaInfo *rrfa, char *dir, int *wrp);
+static int checkMasterSlave (struct RfaInfo *m, struct RfaInfo *s, char *ms, char *ss);
+static int handleDir (char *dir, struct RfaInfo **localRfaListPtr, struct RfaInfo *rrfa, int rec, int *wrp);
+int syncDir (char *dir, int rec);
+static int rfaMake (char *dir, char *fns);
+
 
 extern FILE *err, *out;
 extern int interactive;

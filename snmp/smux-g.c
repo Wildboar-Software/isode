@@ -7,6 +7,13 @@
 #define	SMUX
 #endif
 #include "smux-g.h"
+static int  o_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  s_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct smuxTree *get_tbent (unsigned int *ip, int len, int isnext);
+void init_smux (void);
+
 
 /*    SMUX GROUP */
 

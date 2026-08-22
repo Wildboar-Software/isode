@@ -6,6 +6,29 @@
 #include "pepsydefs.h"
 #include "pass2.h"
 #include "mine.h"
+ /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
+
+/*
+ * table printe a type. generate tables for the printing of a type
+ */
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
+static YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
+
+ /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
+
+/*
+ * table printe a type. generate tables for the printing of a type
+ */
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
+static YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+void ddflt(FILE *fp, YP yp);
+void prte_enoff(FILE *fp, char *type, YP yp, int idx);
+void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx);
+void prte_obj(FILE *fp, YP yp, char *t, char *f);
+static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
+int addsptr (char *s);
+
 
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp), *pec_class(YP yp);

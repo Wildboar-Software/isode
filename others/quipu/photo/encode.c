@@ -4,6 +4,19 @@
 #include <stdlib.h>
 #include "quipu/photo.h"
 #include "general.h"
+char *encode_t4 (int k_param, char *inbuf, int eolnskip);
+static void code_one (bit_string *lineptr, bit_string *t4_lineptr);
+static void code_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t4_lineptr);
+static void pass_mode (bit_string *t4_lineptr);
+static void vertical_mode (bit_string *t4_lineptr);
+static void horizontal_mode (bit_string *code_lineptr,bit_string *t4_lineptr,char colour);
+static void put_code (bit_string *lineptr,code_word code);
+static void put_eoln (bit_string *lineptr);
+static void get_runs (bit_string *lineptr);
+static void set_output (bit_string *lineptr);
+static void flush_output (bit_string *lineptr);
+static void set_input (bit_string *lineptr);
+
 
 extern int PIC_LINESIZE,STOP,NUMLINES;
 

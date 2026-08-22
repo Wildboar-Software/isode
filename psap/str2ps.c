@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "psap.h"
+static int str_read (PS ps, PElementData data, PElementLen n, int in_line);
+static int str_write (PS ps, PElementData data, PElementLen n, int in_line);
+static int str_close (PS ps);
+
 
 static int str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int    cc;

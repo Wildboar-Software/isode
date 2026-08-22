@@ -5,6 +5,10 @@
 #include "demanifest.h"
 #include "quipu/util.h"
 #include "namelist.h"
+int check_credentials (void);
+static int just_bind (void);
+static int get_username (void);
+
 extern char no_string[];
 extern int assoc;
 extern int boundToDSA;

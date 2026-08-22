@@ -27,6 +27,17 @@
 #include "mapphone.h"
 #include "messages.h"
 #include "tailor.h"
+#include "vt.h"
+
+static int de_Action (void);
+int ask_objectType(char *string, char *object_to_work);
+void enterString(int objectType,char *defaultValue, struct namelist *lp);
+void enterAndValidate(char *prompt, char *buf, int objectType, char *defaultValue, struct namelist *lp);
+void displayValidWildCards(void);
+static void onint2(void);
+SFD cleanupok(void);
+void onalarm(void);
+
 
 static char *myname = "de";
 

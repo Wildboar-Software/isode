@@ -37,6 +37,9 @@
 #include <sys/socket.h>
 #include "ftp_var.h"
 #include "logger.h"
+
+static int _command(char *fmt, va_list ap);
+
 void	advise (int, char *, char *, ...);
 
 #ifndef NOTOK
@@ -55,9 +58,6 @@ int	dataconn(char *modeX);
 static void lostpeer(void);
 
 static int initconn(void);
-
-int getreply (int expecteof);
-int command (char *fmt, ...);
 
 int hookup(char *host, int port) {
 	struct hostent *hp;

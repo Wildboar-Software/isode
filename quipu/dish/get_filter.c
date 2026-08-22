@@ -5,6 +5,9 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/ds_search.h"
+static Filter get_filter_aux (char *str);
+Filter get_filter (char *str);
+
 
 #define	OPT	(!frompipe || rps -> ps_byteno == 0 ? opt : rps)
 #define	RPS	(!frompipe || opt -> ps_byteno == 0 ? rps : opt)
@@ -15,7 +18,7 @@ char           *TidyString(char *a);
 static int getop (char *str, char *ch);
 int filteritem (char *str, Filter fltr);
 
-Filter          get_filter_aux (char *str) {
+static Filter          get_filter_aux (char *str) {
 	int             gotit,
 					bracketed;
 	char            ch,

@@ -45,9 +45,9 @@ static struct mntent {
 	int   mnt_freq;     /* dump frequency, in days */
 	int   mnt_passno;   /* pass number on parallel fsck */
 };
-FILE 		*setmntent(char *mntfile, char *mode);
-FILE 		*endmntent(FILE *mntfile);
-struct mntent	*getmntent(FILE *mfile);
+static FILE 		*setmntent(char *mntfile, char *mode);
+static FILE 		*endmntent(FILE *mntfile);
+static struct mntent	*getmntent(FILE *mfile);
 #endif
 
 #ifdef HPUX
@@ -103,8 +103,9 @@ struct fs *fs_tbl = NULL ;
 
 extern int quantum;
 
-int init_unix_fs(void);
-int sync_unix_fs(integer cor);
+static int init_unix_fs (void);
+static int sync_unix_fs (integer cor);
+static void insert_entry (struct fs *fsp);
 
 static struct fs *get_fsent(unsigned *ip, int len, int isnext);
 static int  get_fs_table(void);
@@ -209,7 +210,7 @@ try_again:
 /*-----------------------------------------------------------------
  * Initialize each node in the object identifier tree.
  *-----------------------------------------------------------------*/
-int init_unix_fs (void) {
+static int init_unix_fs (void) {
 	OT ot;
 
 	if (ot = text2obj("fsIdentifier"))
@@ -252,7 +253,7 @@ int init_unix_fs (void) {
  * Perform commit/rollback operations. (this mib group has no
  * set operations so there are not commit/rollback operations)
  *-----------------------------------------------------------------*/
-int sync_unix_fs (integer cor) {
+static int sync_unix_fs (integer cor) {
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
 		return(1);
@@ -462,7 +463,7 @@ static void free_fs_table(void) {
 
 #if defined(ultrix) && defined(mips)
 
-FILE *
+static FILE *
 setmntent (char *mntfile, char *mode) {
 	/*
 	 * initialize global static counter to zero
@@ -471,7 +472,7 @@ setmntent (char *mntfile, char *mode) {
 	return (FILE *)1;
 }
 
-struct mntent *
+static struct mntent *
 getmntent (FILE *mfile) {
 	static struct fs_data	mnt_buf;
 	static struct mntent	fake;
@@ -492,7 +493,7 @@ getmntent (FILE *mfile) {
 	}
 }
 
-FILE *
+static FILE *
 endmntent (FILE *mntfile) {
 	/* nullop */
 }

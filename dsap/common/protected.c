@@ -8,6 +8,21 @@
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+#include "quipu/common.h"
+
+static PE prot_enc (void *value);
+static void * prot_dec (PE pe);
+static void *
+str2prot (char *str);
+static void prot_print (PS ps, void *value, int format);
+char *hash2str (unsigned long hash, int *len);
+unsigned long hash_passwd (unsigned long seed, char *str, int len);
+static int prot_cmp (void *value1, void *value2);
+static void *
+prot_cpy (void *value);
+static void prot_free (void *value);
+void protected_password_syntax (void);
+
 
 extern LLog *log_dsap;
 extern char dsa_mode;

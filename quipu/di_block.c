@@ -5,10 +5,21 @@
 #include "quipu/connection.h"
 #include "tsap.h"
 #include "tailor.h"
+void prefer_dsa (char *str);
+static int di_prefer_dsa (DN a, DN b);
+static void di_ap2comp (struct di_block **di);
+static int di_cmp_reliability (struct di_block *a, struct di_block *b);
+static int di_cmp_address (struct di_block *a, struct di_block *b);
+static int di_cmp (struct di_block *a, struct di_block *b);
+static int common_address (struct di_block *a, struct TSAPaddr *tb);
+struct di_block *select_refer_dsa (struct di_block *di, struct task_act *tk);
+
 
 extern LLog * log_dsap;
 
 extern time_t timenow;
+
+struct di_block *di_alloc (void);
 extern struct TSAPaddr *ta2norm(struct TSAPaddr *ta);
 
 struct di_block *

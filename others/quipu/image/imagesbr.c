@@ -12,6 +12,15 @@
 #include "quipu/bind.h"
 #include "quipu/ds_search.h"
 #include "quipu/entry.h"
+#include "quipu/photo.h"
+
+static struct aka *
+mbox2ak (char *local, char *domain);
+static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist);
+static  PE  image_search (struct aka *ak);
+static int do_bind (void);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 
 /* GENERAL */
 

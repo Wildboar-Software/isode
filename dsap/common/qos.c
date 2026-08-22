@@ -19,6 +19,29 @@
 #define	cmd_srch	CMD_SRCH
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void dsaQoS_free (void *value);
+static void *dsaQoS_cpy (void *value);
+static int dsaQoS_cmp (void *value1, void *value2);
+static void dsaQoS_print (PS ps, void *value, int format);
+static void *str2dsaQoS (char *str);
+static PE dsaQoS_enc (void *value);
+static void *dsaQoS_dec (PE pe);
+static void attrQoS_free (struct attrQoS *a);
+static void ditQoS_free (void *value);
+static struct attrQoS *attrQoS_cpy (struct attrQoS *a);
+static void *ditQoS_cpy (void *value);
+static int attrQoS_cmp (struct attrQoS *a, struct attrQoS *b);
+static int ditQoS_cmp (void *value1, void *value2);
+static void attrQoS_print (PS ps, struct attrQoS *a, int format);
+static void ditQoS_print (PS ps, void *value, int format);
+static struct attrQoS *str2attrQoS (char *str);
+static void *
+str2ditQoS (char *str);
+static PE ditQoS_enc (void *value);
+static void *ditQoS_dec (PE pe);
+void QoS_syntax (void);
+static int  CMD_SRCH (char *str, CMD_TABLE *cmd);
+
 
 static int  CMD_SRCH (char *str, CMD_TABLE *cmd);
 

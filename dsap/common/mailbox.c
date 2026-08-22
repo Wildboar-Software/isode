@@ -12,6 +12,15 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void mailbox_free (void *value);
+static void *mailbox_cpy (void *value);
+static int mailbox_cmp (void *value1, void *value2);
+static void mailbox_print (PS ps, void *value, int format);
+static void *str2mailbox (char *str);
+static PE mail_enc (void *value);
+static void * mail_dec (PE pe);
+void mailbox_syntax (void);
+
 
 static void mailbox_free (void *value) {
 	struct mailbox *ptr = (struct mailbox *) value;

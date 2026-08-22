@@ -12,6 +12,8 @@
 
 #ifdef QUIPU_CONSOLE
 #include "quipu/attrvalue.h"
+static void running_analyse (struct connection *cn, struct DSAPindication *di);
+
 static void running_analyse(struct connection *cn, struct DSAPindication *di) ;
 #endif /* QUIPU_CONSOLE */
 

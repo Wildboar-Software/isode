@@ -11,6 +11,7 @@
 #include "pepsy.h"
 #include "pepsycodec.h"
 #include "ftamuser.h"
+#include "ftam-cmds.h"
 
 #ifdef	BRIDGE
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);

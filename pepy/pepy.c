@@ -10,6 +10,35 @@
 #include <strings.h>
 #include <unistd.h>
 #include "pepy.h"
+void yyerror (char *s);
+void yyerror_aux (char *s);
+void myyerror (char* fmt, ...);
+void pyyerror (YP yp, char* fmt, ...);
+int yywrap(void);
+void yyprint (char *s, int f, int top);
+void pass1(void);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
+void pass2(void);
+void do_type (YP yp, int level, char *id, char *arg);
+void choice_pullup (YP yp, int partial);
+void tag_pullup (YP yp, int level, char *arg, char *whatsit);
+void tag_pushdown (YP yp, int level, char *arg, char *whatsit);
+void tag_type (YP yp);
+int check_type (char *type, int level, char *class, char *form, char *id, char *arg);
+int is_any_type (YP yp);
+int is_nonimplicit_type (YP yp);
+void uniqint (YV yv);
+void uniqtag (YP y, YP z);
+int val2int (YV yv);
+static void read_ph_file (char *module, OID oid);
+void print_type (YP yp, int level);
+YP new_type (int code);
+YP add_type (YP y, YP z);
+YP copy_type (YP yp);
+char *new_string (char *s);
+void init_new_file(void);
+void end_file(void);
+
 
 static char *aflag = NULL;
 int	Cflag = 1;		/* pepy */
@@ -460,21 +489,26 @@ void pass2(void) {
 	if (strcmp (mymodule, "UNIV"))
 		lookup_module ("UNIV", NULLOID);
 	for (sy = mysymbols; sy; sy = sy -> sy_next) {
+		char   *param_type;
+		char   *stat;
+		char   *fname;
+
 		eval = sy -> sy_name;
 		yp = sy -> sy_type;
 		if (sy -> sy_module == NULLCP)
 			yyerror ("no module name associated with symbol");
 		if (yp -> yp_flags & YP_IMPORTED)
 			continue;
+		param_type = yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM";
 		if (yp -> yp_direction & YP_ENCODER) {
 			if (bflag)
 				init_new_file ();
 			yyprefix = sy -> sy_encpref;
-			printf ("\n/* ENCODER */\n\n%sint\t%s ",
-					!doexternals && (yp -> yp_flags & YP_EXPORTED) ?
-					"static " : "",
-					modsym (sy -> sy_module,
-							sy -> sy_name, YP_ENCODER));
+			stat = !doexternals && (yp -> yp_flags & YP_EXPORTED) ?
+				"static " : "";
+			fname = modsym (sy -> sy_module, sy -> sy_name, YP_ENCODER);
+			printf ("\n/* ENCODER */\n\n%sint\t%s (PE *pe, int explicit, int len, char *buffer, %s parm);\n%sint\t%s ",
+					stat, fname, param_type, stat, fname);
 			do_type (yp, 1, eval, "(*pe)");
 			printf ("\n    return OK;\n}\n");
 			if (bflag)
@@ -484,11 +518,11 @@ void pass2(void) {
 			if (bflag)
 				init_new_file ();
 			yyprefix = sy -> sy_decpref;
-			printf ("\n/* DECODER */\n\n%sint\t%s ",
-					!doexternals && (yp -> yp_flags & YP_EXPORTED) ?
-					"static " : "",
-					modsym (sy -> sy_module,
-							sy -> sy_name, YP_DECODER));
+			stat = !doexternals && (yp -> yp_flags & YP_EXPORTED) ?
+				"static " : "";
+			fname = modsym (sy -> sy_module, sy -> sy_name, YP_DECODER);
+			printf ("\n/* DECODER */\n\n%sint\t%s (PE pe, int explicit, int *len, char **buffer, %s parm);\n%sint\t%s ",
+					stat, fname, param_type, stat, fname);
 			undo_type (yp, 1, eval, "pe", 0);
 			printf ("\n    return OK;\n}\n");
 			if (bflag)
@@ -498,11 +532,11 @@ void pass2(void) {
 			if (bflag)
 				init_new_file ();
 			yyprefix = sy -> sy_prfpref;
-			printf ("\n/* PRINTER */\n\n%sint\t%s ",
-					!doexternals && (yp -> yp_flags & YP_EXPORTED) ?
-					"static " : "",
-					modsym (sy -> sy_module,
-							sy -> sy_name, YP_PRINTER));
+			stat = !doexternals && (yp -> yp_flags & YP_EXPORTED) ?
+				"static " : "";
+			fname = modsym (sy -> sy_module, sy -> sy_name, YP_PRINTER);
+			printf ("\n/* PRINTER */\n\n%sint\t%s (PE pe, int explicit, int *len, char **buffer, %s parm);\n%sint\t%s ",
+					stat, fname, param_type, stat, fname);
 			undo_type (yp, 1, eval, "pe", 1);
 			printf ("\n    return OK;\n}\n");
 			if (bflag)

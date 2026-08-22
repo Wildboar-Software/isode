@@ -7,6 +7,12 @@
 #include "ryresponder.h"	/* for generic idempotent responders */
 #include "PasswordLookup-ops.h"		/* operation definitions */
 #include "PasswordLookup-types.h"	/* type definitions */
+static int  op_lookupUser (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int  op_lookupUID (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
+static int lookup (int sd, struct passwd *pw, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+
 
 #define	xalloc(p, type) \
 	((p) = (type) calloc (1, sizeof *(p)))

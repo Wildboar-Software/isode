@@ -8,6 +8,22 @@
 #include	"pepsy-driver.h" /* for PEPSY_VERSION defn */
 #include	"psap.h"
 #include	"pepsy.h"
+static int fre_seq (
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+);
+static int callsfn (ptpe *p, modtyp *mod);
+
+static int fre_seq (
+	char *parm,
+	ptpe *p,
+	modtyp *mod,			/* Module it is from */
+	int dofree
+);
+static int callsfn (ptpe *p, modtyp *mod);
+
 
 extern int ferr (int n, char *mesg);
 

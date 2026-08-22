@@ -5,6 +5,10 @@
  */
 
 #include "ntp.h"
+void init_logical_clock (void);
+int adj_logical (double offset);
+void adj_host_clock (int n);
+
 
 #ifdef	DEBUG
 extern int debug;

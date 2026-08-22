@@ -37,6 +37,14 @@
 #include <string.h>
 #include <unistd.h>
 #include "pathnames.h"
+void endprent(void);
+int getprent(char *bp);
+int tgetent(char *bp, char *name);
+static int tnchktc (void);
+static int tnamatch (char *np);
+int tgetnum (char *id);
+static int tgetflag (char *id);
+
 
 #ifndef BUFSIZ
 #define	BUFSIZ	1024

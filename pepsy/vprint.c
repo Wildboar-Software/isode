@@ -10,6 +10,15 @@
 #include "pepsy.h"
 #include "logger.h"
 #include "pvpdu.h"
+#include "pepsycodec.h"
+
+static void vprint1(void);
+static char *oct2str (char *s, int len);
+static void vsetfp (FILE *fp, char *s);
+static int ll_vprintf(LLog *lp, const char *fmt, va_list ap);
+static int ll_printf_evil(FILE *fp, const char *format, ...);
+static char *newbuf (int i);
+
 
 #ifndef __STDC__
 int	fprintf (FILE *stream, const char *format, ...);
@@ -64,6 +73,7 @@ void vpush(void)  {
 	didname = didvpop = docomma = 0, didvpush = 1;
 }
 
+void vpop(void);
 void vpop(void)  {
 	if (didname || docomma)
 		vwrite ("\n");

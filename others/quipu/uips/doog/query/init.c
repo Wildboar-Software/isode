@@ -13,6 +13,8 @@
 #include "quipu/entry.h"
 #include "quipu/dua.h"
 #include "tailor.h"
+void init_query_engine (int argc, char *argv[]);
+
 
 extern int print_parse_errors;          /* Quipu variable to disable
                                            printing of errors */

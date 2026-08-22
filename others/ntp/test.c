@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ntp.h"
+int test1 (void);
+int test2 (void);
+static int test3 (int v);
+static int test4 (int v);
+
 
 #define	TRUE	1
 #define	FALSE	0

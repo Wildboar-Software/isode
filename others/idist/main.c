@@ -38,6 +38,10 @@ char copyright[] =
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+int usage (void);
+static int docmdargs (int nargs, char *args[]);
+int prnames (struct namelist *nl);
+
 
 #define NHOSTS 100
 

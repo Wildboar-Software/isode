@@ -5,6 +5,12 @@
 #include <string.h>
 #include "tailor.h"
 #include "quipu/dap2.h"
+static int _daplose (  /* what, fmt, args ... */
+	struct DAPindication *di,
+	int reason,
+	va_list ap
+);
+
 
 #ifndef	lint
 static int  _daplose (struct DAPindication *di, int reason, va_list ap);

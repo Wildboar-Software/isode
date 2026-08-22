@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include "psap.h"
+#include "quipu/util.h"
 
 static char arg_error [1024];
 static char arg_flag [100];

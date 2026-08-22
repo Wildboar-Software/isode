@@ -14,6 +14,13 @@
 #include "quipu/ds_search.h"
 #include "logger.h"
 #include "query.h"
+int listlen(struct namelist *lp);
+unsigned int
+alarmLen(void);
+void handleTimeout(void);
+int starstring(char *istr, char **ostr1, char **ostr2);
+void showAnyProblems(char *str);
+
 
 extern struct query qinfo[];
 extern LLog *de_log;

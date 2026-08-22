@@ -15,6 +15,23 @@
 struct passwd *getpwuid (uid_t uid);
 #endif
 
+static struct type_IMISC_IA5List *vec2ia5list (char **vec);
+static void print_ia5list (struct type_IMISC_IA5List *ia5);
+static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_data (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_help (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_quit (int sd, struct dispatch *ds, char **args, void *parameter);
+static int utctime_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int timeofday_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int ia5_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int tell_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static int echo_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindication *roi);
+
+#define	gentime_result	utctime_result
+
 static char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
 
@@ -23,24 +40,6 @@ static char *mypci = "isode miscellany pci";
 
 extern int length;
 static type_IMISC_Data *data = NULLPE;
-
-struct type_IMISC_IA5List *vec2ia5list (char **vec);
-static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter);
-static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter);
-static int do_data (int sd, struct dispatch *ds, char **args, void *parameter);
-static int do_help (int sd, struct dispatch *ds, char **args, void *parameter);
-static int do_quit (int sd, struct dispatch *ds, char **args, void *parameter);
-
-#define	gentime_result	utctime_result
-
-static int	utctime_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
-static int timeofday_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
-static int ia5_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
-static int tell_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
-static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
-static int echo_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
-
-static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
@@ -123,7 +122,7 @@ int main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-struct type_IMISC_IA5List *vec2ia5list (char **vec) {
+static struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 	struct type_IMISC_IA5List  *ia5;
 	struct type_IMISC_IA5List **ia5p;
 

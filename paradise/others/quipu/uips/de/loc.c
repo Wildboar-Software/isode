@@ -14,6 +14,26 @@
 #include "namelist.h"
 #include "filter.h"
 #include "destrings.h"
+int listLocs(char *cstr, char *lstr, struct namelist **llistp);
+static void freeLocListArgs(void);
+static void freeLocSearchArgs(void);
+static int listAllLocs(char *cstr, struct namelist **llistp);
+static int listMatchingLocs(char *cstr, char *lstr, struct namelist **llistp);
+static int readExactLoc(char *lstr, struct namelist **llistp);
+static int reallyMakeListLocs(struct namelist **llistp);
+static int makeListLocanisations(struct namelist **llistp);
+static int readLoc(char *lstr, struct namelist **llistp);
+static struct ds_list_arg *
+fillMostLocListArgs(char *str);
+static struct ds_search_arg *
+fillMostLocSearchArgs(char *cstr, int searchdepth);
+static makeAllLocFilter(struct s_filter **fpp);
+static void makeExplicitLocFilter(char *lstr, struct s_filter **fpp);
+static void locFilter1(char *lstr, struct s_filter **fpp);
+static void locFilter2(char *lstr, struct s_filter **fpp);
+static void locFilter3(char *lstr, struct s_filter **fpp);
+static void locFilter4(char *lstr, struct s_filter **fpp);
+
 
 extern struct ds_list_arg larg;
 extern struct ds_list_result lresult;

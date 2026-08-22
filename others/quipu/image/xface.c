@@ -14,6 +14,12 @@
 #include "compat.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+static fetch_face (char *host, char *user);
+static void display_X (void);
+static void Redisplay (void);
+static int startsocket (int portno);
+static int readsocket (char *buffer);
+
 
 static int  sd = NOTOK;
 int	debug = 0;

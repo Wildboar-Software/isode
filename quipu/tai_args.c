@@ -2,6 +2,7 @@
 
 #include "quipu/util.h"
 #include "quipu/attr.h"
+#include "tailor.h"
 #ifdef	TCP
 #include "internet.h"
 
@@ -17,14 +18,14 @@ static char        *usage = "[-t <tailor>] [-c <dsa name>] [-T <oidtable>] [-D <
 
 extern LLog * log_dsap;
 
-void dsa_tai_args (int *acptr, char ***avptr) {
+int dsa_tai_args (int *acptr, char ***avptr) {
 	char ** av;
 	char *cp;
 	int cnt;
 	extern char quipu_faststart;
 
 	if (acptr == (int *)NULL)
-		return;
+		return 0;
 	av = *avptr;
 	av++, cnt = 1;
 	while ((cp = *av) && *cp == '-') {
@@ -69,4 +70,5 @@ void dsa_tai_args (int *acptr, char ***avptr) {
 	}
 	*acptr -= cnt;
 	*avptr = av;
+	return 0;
 }

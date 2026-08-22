@@ -152,5 +152,7 @@ char *oid2name(OID oid, int format);
 OID name2oid(char *str);
 void oidprint (PS ps, OID o, int format);
 int load_oid_table (char *table);
+void want_oc_hierarchy (void);
+objectclass * oc_add (OID oid);
 
 #endif

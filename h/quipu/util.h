@@ -95,7 +95,15 @@ void utcprint (PS ps, char *xtime, int format);
 int quipu_pe_cmp (PE a, PE b);
 int test_arg (char *x, char *y, int c);
 void pdu_dump (PE pe, char *type, int op);
+void pdu_dump_init (char *dir);
 int dsa_wait (int secs);
+int dsap_init (int *acptr, char ***avptr);
+void quipu_syntaxes (void);
+void standard_syntaxes (void);
+void hide_picture (void);
+void iso8859print(PS ps, char *sstr);
+int reset_arg (void);
+int print_arg_error (PS opt);
 
 #define _H_UTIL
 

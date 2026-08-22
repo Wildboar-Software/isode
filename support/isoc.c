@@ -36,6 +36,13 @@
 #define	TIMER
 #ifndef	HPUX
 #include <sys/times.h>
+#include "vt.h"
+
+static void raw_main (char *service, char *addr);
+static void ros_invokerequest (int sd, PE pe);
+static	void timer (int cc);
+static void  _advise (char* what, char* fmt, va_list ap);
+
 #define	TMS
 #endif
 #endif

@@ -22,8 +22,15 @@ extern int sd_current;
 
 #ifdef OSISEC
 #include "osisec/osisec.h"
+
 extern LLog *log_osisec;
 #endif
+
+static void call_bind_void(int argc, char **argv);
+static void unknown_cmd (int argc, char **argv);
+static void gnu_gets_setup (void);
+static char *gnu_gets (char *buf, int len);
+void advise (int code, char *what, char *fmt, ...);
 
 #define MAXARGS 50
 
@@ -41,10 +48,10 @@ DN              savename = NULLDN;
 
 #if defined(SVR4) || defined(LINUX)
 void             dish_quit(int sig);
-void             dish_intr(int sd);
+static void      dish_intr(int sd);
 #else
 SFD             dish_quit(int sig);
-SFD             dish_intr(int sd);
+static SFD      dish_intr(int sd);
 #endif
 char		dad_flag = FALSE;
 unsigned	cache_time = 3600;	/* time to keep process alive */
@@ -59,9 +66,10 @@ char 		search_result;		/* another horrid global ! */
 
 extern void call_list (int argc, char **argv), call_compare (int argc, char **argv), call_search (int argc, char **argv),
 	   call_add (int argc, char **argv), call_delete (int argc, char **argv), call_showentry (int argc, char **argv),
-	   call_showattribute (int argc, char **argv), call_unbind (int argc, char **argv), call_help (int argc, char **argv), call_ds (int argc, char **argv),
+	   call_showattribute (int argc, char **argv), call_unbind (int argc, char **argv), call_ds (int argc, char **argv),
 	   unknown_cmd (int argc, char **argv), dsa_control (int argc, char **argv), call_modify (int argc, char **argv), call_modifyrdn (int argc, char **argv),
 	   call_quit (int argc, char **argv), call_moveto (int argc, char **argv), call_fred (int argc, char **argv);
+extern void call_help (int argc, char **argv);
 
 extern int call_bind (int argc, char **argv);
 
@@ -553,7 +561,7 @@ int set_cmd_default (char *cmd, char *dflt) {
 }
 
 #if defined(SVR4) || defined(LINUX)
-void
+static void
 #else
 SFD
 #endif

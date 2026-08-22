@@ -4,6 +4,8 @@
 #include "quipu/util.h"
 #include "psap.h"
 #include "quipu/attr.h"               /* for defn of READOUT */
+PE asn2pe (char *str);
+
 
 extern LLog * log_dsap;
 

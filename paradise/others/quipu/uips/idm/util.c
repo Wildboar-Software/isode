@@ -14,6 +14,11 @@
 #include "quipu/ds_search.h"
 #include "logger.h"
 #include "extmessages.h"
+int listlen(struct namelist *lp);
+unsigned int alarmLen(void);
+int starstring(char *istr, char **ostr1, char **ostr2);
+void showAnyProblems(void);
+
 extern LLog *de_log;
 extern int limitProblem;
 extern int notAllReached;

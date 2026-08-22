@@ -5,6 +5,14 @@
 #include <string.h>
 #include "pepsydefs.h"
 #include "pass2.h"
+static void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa);
+static void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new);
+static char *calc_arg(YP yp, int actno);
+
+static void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa);
+static void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new);
+static char *calc_arg(YP yp, int actno);
+
 
 extern char *sysin;
 extern char *proc_name(char *t, int flag);

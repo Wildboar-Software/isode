@@ -8,6 +8,11 @@
 #include "types.h"
 #include "util.h"
 #include "dn_list.h"
+QBool dn_list_insert(char *dn, entryList *entry_list_ptr, AttributeType object_type);
+QBool dn_list_add(char *dn, entryList *entry_list_ptr, AttributeType object_type);
+void dn_list_free(entryList *entry_list_ptr);
+void dn_list_copy(entryList original, entryList *copy);
+
 
 /*
  * Insert a new entry name into an unsorted listed of entry names.

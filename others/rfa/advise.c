@@ -14,6 +14,11 @@
 #include <unistd.h>
 #include "manifest.h"
 #include "logger.h"
+#include "vt.h"
+#include "ryresponder.h"
+
+void initLog (char *myname);
+
 
 static LLog _pgm_log = {
 	"rfa.log", NULLCP, NULLCP,

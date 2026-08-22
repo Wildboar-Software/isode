@@ -20,6 +20,13 @@
 #include "quipu/read.h"
 #include "tailor.h"
 #include "quipu/ds_search.h"
+static struct dn_seq *dm2dn_seq (char *dm);
+static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist);
+static struct dn_seq *expand_full (DN dn, int *complete);
+static struct dn_seq *expand_partial (DN dn, int *complete);
+static int dns_compar (const void *p, const void *q);
+static int ava_compar (const void *p, const void *q);
+
 
 #ifndef	X_OK
 #define	X_OK	1

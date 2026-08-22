@@ -20,6 +20,11 @@
 #include "demanifest.h"
 #include "destrings.h"
 #include "extmessages.h"
+int initialisations(int argc, char **argv);
+ /* read_de_option */
+
+void welcome(void);
+
 extern int print_parse_errors;          /* Quipu variable to disable
                                            printing of errors */
 

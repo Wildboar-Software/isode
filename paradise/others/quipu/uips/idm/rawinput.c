@@ -2,6 +2,9 @@
 #include <sys/termio.h>
 #include <sys/ioctl.h>
 #include "extmessages.h"
+void setRawMode(void);
+void unsetRawMode(void);
+
 
 static short savemode;
 static unsigned char savemin;

@@ -7,6 +7,8 @@ NDQPDU DEFINITIONS ::=
 
 void	adios (char *, char *, ...);
 size_t enq(TEXT_UPDATE **qhp, TEXT_UPDATE *elem);
+TEXT_UPDATE *deq(TEXT_UPDATE **qhp);
+TEXT_UPDATE *fiq(TEXT_UPDATE **qhp);
 
 #undef PEPYPARM
 #define PEPYPARM int *

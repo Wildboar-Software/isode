@@ -14,6 +14,9 @@
 #include "tailor.h"
 #include "quipu/database.h"
 #include "quipu/shadow.h"
+int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn);
+int dsa_control (Attr_Sequence as, struct DSError *error, DN dn);
+
 
 extern LLog * log_dsap;
 #ifndef NO_STATS

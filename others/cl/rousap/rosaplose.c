@@ -8,6 +8,13 @@
 #include <string.h>
 #include <strings.h>
 #include "ropkt.h"
+int ropktlose (struct assocblk *acb, struct RoSAPindication *roi, int reason, char *what, char *fmt);
+static int _rosaplose (  /* what, fmt, args ... */
+	struct RoSAPindication *roi,
+	int reason,
+	va_list ap
+);
+
 
 #ifndef	lint
 static int	_rosaplose (struct RoSAPindication *roi, int reason, va_list ap);

@@ -15,12 +15,17 @@
 #include "tailor.h"
 #include "acsap.h"
 
+AEI str2aei_stub (char *designator, char *qualifier);
+struct PSAPaddr *aei2addr_stub (AEI aei);
+
 extern int _printent (struct isoentity *ie);
 
 #define	fetch_aet	str2aet_seq
 
 #ifdef	LPP
 static int  lpp_aet (char *designator, char *qualifier, struct isoentity *ie);
+AEI str2aei_dse (char *designator, char *qualifier, char *context, int interactive);
+struct PSAPaddr *aei2addr_dse (AEI aei);
 #endif
 
 static struct isoentity ies;

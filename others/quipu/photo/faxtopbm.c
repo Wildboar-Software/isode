@@ -8,6 +8,11 @@
 #include "psap.h"
 #include "sys.file.h"
 #include "pbm.h"
+#include "quipu/photo.h"
+
+static void ps_die (PS ps, char *s);
+static void pe_die (PE pe, char *s);
+
 
 /* If your pbm_writepbminit() and pbm_writepbmrow() routines only have  */
 /* 3 parameters (look in pbm/pbm.h!) you should remove the next line... */

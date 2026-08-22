@@ -2,6 +2,10 @@
 
 #include <stdio.h>
 #include "psap.h"
+static int std_read (PS ps, PElementData data, PElementLen n, int in_line);
+static int std_write (PS ps, PElementData data, PElementLen n, int in_line);
+int std_flush (PS ps);
+
 
 static int std_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    i;

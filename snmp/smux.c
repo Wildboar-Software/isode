@@ -44,7 +44,7 @@ static	struct timeval my_boottime;
 extern	int	errno;
 #endif
 
-static int  smuxlose (int, char *, char *, ...);
+static int  smuxlose (int reason, char *what, char *fmt, ...);
 static int  smuxalloc (void), smuxsend (struct type_SNMP_SMUX__PDUs *pdu);
 
 /* INIT */

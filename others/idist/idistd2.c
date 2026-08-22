@@ -15,6 +15,19 @@
 #include <sys/wait.h>
 #include "defs.h"
 #include "Idist-types.h"
+#include "vt.h"
+
+int doexec (char *cmd);
+int do_symlink (struct type_Idist_FileSpec *fs);
+static int chkparent (char *name);
+int do_rfile (struct type_Idist_FileSpec *fs);
+int do_hardlink (struct type_Idist_FileSpec *fs);
+int do_direct (struct type_Idist_FileSpec *fs);
+int i_remove (char *str);
+int addtoia5 (char *str, int len);
+int fixup (void);
+static int chog(char *file, char *owner, char *group, integer imode);
+
 
 char	*tp, *stp[128];
 

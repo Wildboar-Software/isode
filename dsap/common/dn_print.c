@@ -1,6 +1,8 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
+static void dn_rprint(PS ps, DN dn, char *sep);
+
 
 void dn_print (PS ps, DN dn, int format)
 {

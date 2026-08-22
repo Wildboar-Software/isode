@@ -13,6 +13,8 @@
 #include "quipu/find.h"
 #include "quipu/cache.h"
 #include "quipu/schema.h"
+int do_ds_addentry (struct ds_addentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
+
 
 extern Entry database_root;
 extern LLog * log_dsap;

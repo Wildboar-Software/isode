@@ -33,6 +33,29 @@
 #include <stdarg.h>
 #include "pepsydefs.h"
 #include "pass2.h"
+void yyerror (char *s);
+
+void yyerror (char *s);
+void warning (char *fmt, ...);
+void myyerror (char* fmt, ...);
+static void pyyerror (YP yp, char *fmt, ...);
+int yywrap(void);
+void yyprint (char *s, int f, int top);
+void pass1(void);
+void pass1_type ( char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp );
+static void hprologue (FILE *fp);
+void pass2(void);
+static void copy_file (FILE *fp1, FILE *fp2);
+static void do_type1 (
+	YP yp,
+	int top,
+	int level,
+	char *id,
+	char *var,
+	char *action2,
+	int direction
+);
+
 
 static void doincl(FILE *fp, char *file[]);
 static void proc_extmod(FILE *fp);
@@ -1422,6 +1445,7 @@ static void do_type1 (
 
 /*    TYPE HANDLING */
 
+YP lookup_type (char *mod, char *id);
 YP lookup_type (char *mod, char *id) {
 	SY	    sy;
 
@@ -1440,6 +1464,7 @@ YP lookup_type (char *mod, char *id) {
 	return NULLYP;
 }
 
+void pepsy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg);
 void pepsy (YP yp, int top, int level, char *id, char *val, char *var, int arrayflg) {
 	int    i,
 		   j;
@@ -2469,6 +2494,7 @@ static SY add_symbol (SY s1, SY s2) {
 
 /* MODULES */
 
+MD lookup_module (char *module, OID oid);
 MD lookup_module (char *module, OID oid) {
 	MD	    md;
 
@@ -2497,6 +2523,7 @@ MD lookup_module (char *module, OID oid) {
 
 /* TYPES */
 
+YP new_type (int code, int lineno);
 YP new_type (int code, int lineno) {
 	YP    yp;
 
@@ -2508,6 +2535,7 @@ YP new_type (int code, int lineno) {
 	return yp;
 }
 
+YP add_type (YP y, YP z);
 YP add_type (YP y, YP z) {
 	YP	    yp;
 
@@ -2518,6 +2546,7 @@ YP add_type (YP y, YP z) {
 	return y;
 }
 
+YP copy_type (YP yp);
 YP copy_type (YP yp) {
 	YP	    y;
 
@@ -2640,6 +2669,7 @@ YP copy_type (YP yp) {
 
 /* VALUES */
 
+YV new_value (int code);
 YV new_value (int code) {
 	YV    yv;
 
@@ -2650,6 +2680,7 @@ YV new_value (int code) {
 	return yv;
 }
 
+YV add_value (YV y, YV z);
 YV add_value (YV y, YV z) {
 	YV	    yv;
 
@@ -2660,6 +2691,7 @@ YV add_value (YV y, YV z) {
 	return y;
 }
 
+YV copy_value (YV yv);
 YV copy_value (YV yv) {
 	YV	    y;
 
@@ -2716,6 +2748,7 @@ YV copy_value (YV yv) {
 
 /* TAGS */
 
+YT new_tag (PElementClass class);
 YT	new_tag (PElementClass class) {
 	YT    yt;
 	if ((yt = (YT) calloc (1, sizeof *yt)) == NULLYT)
@@ -2725,6 +2758,7 @@ YT	new_tag (PElementClass class) {
 	return yt;
 }
 
+YT copy_tag (YT yt);
 YT copy_tag (YT yt) {
 	YT	    y;
 
@@ -2740,6 +2774,7 @@ YT copy_tag (YT yt) {
 
 /* STRINGS */
 
+char *new_string (char *s);
 char *new_string (char *s) {
 	char  *p;
 
@@ -2780,6 +2815,7 @@ static struct triple {
 	NULL
 };
 
+char *modsym (char *module, char *id, char *prefix);
 char *modsym (char *module, char *id, char *prefix) {
 	char    buf1[BUFSIZ],
 			buf2[BUFSIZ],
@@ -2860,8 +2896,10 @@ static char *gensym (char *s, char *a) {
 }
 
 /* pepy compatible routines - you know how it is ... */
+void init_new_file(void);
 void init_new_file(void) { }
 
+void end_file(void);
 void end_file(void) { }
 
 static char *array (char *s, int flg) {
@@ -3075,6 +3113,7 @@ static FILE *open_ph_file (char *fn, char *fnoid, char *mode) {
 	return fp;
 }
 
+YT lookup_tag (YP yp);
 YT lookup_tag (YP yp) {
 	struct tuple *t;
 	static struct ypt ypts;
@@ -3115,6 +3154,7 @@ YT lookup_tag (YP yp) {
 	return NULLYT;
 }
 
+int is_any_type (YP yp);
 int is_any_type (YP yp) {
 	YP z;
 
@@ -3140,6 +3180,7 @@ int is_any_type (YP yp) {
 /*
  * return a string with the leading pathname stripped off
  */
+char *pstrip (char *p);
 char *pstrip (char *p) {
 	char *p1;
 
@@ -3205,6 +3246,7 @@ static char *stand_f[] = {
  * include file which should be in the include/isode directory.
  * return nonzero (true) if it is.
  */
+int is_stand (char *file);
 int is_stand (char *file) {
 	char	**p;
 	char	*f = pstrip (file);
@@ -3226,6 +3268,7 @@ static int   nextmod = 0;	/* next free slot in external module table */
  * build up a list of external modules we have referenced
  * p: name of external module
  */
+int addextmod (char *p);
 int addextmod (char *p) {
 	if (nextmod >= EXTMODSIZE)
 		ferr(1, "Too many external modules reference, table overflow\n");
@@ -3271,6 +3314,7 @@ static void proc_extmod(FILE *fp) {
 /*
  * allocate a yfn structure and intialise it
  */
+YFN new_yfn(char *efn, char *dfn, char *pfn, char *ffn);
 YFN new_yfn(char *efn, char *dfn, char *pfn, char *ffn) {
 	YFN fn;
 	char buf[STRSIZE];
@@ -3313,6 +3357,7 @@ YFN new_yfn(char *efn, char *dfn, char *pfn, char *ffn) {
  * support routine for action_t = allocate space for it and fill it in with
  * the given yy_action field
  */
+Action new_action_t(char *text, int lineno, int num);
 Action new_action_t(char *text, int lineno, int num) {
 	Action	act;
 
@@ -3330,6 +3375,7 @@ Action new_action_t(char *text, int lineno, int num) {
  * support routine for YAL = allocate space for it and make sure it is
  * zero'd
  */
+YAL new_yal(void);
 YAL new_yal(void) {
 	YAL	yal;
 
@@ -3339,6 +3385,7 @@ YAL new_yal(void) {
 	return (yal);
 }
 
+YAL yal_join(YAL yal1, YAL yal2);
 YAL yal_join(YAL yal1, YAL yal2) {
 	if (yal2 == NULLYAL)
 		return (yal1);
@@ -3366,6 +3413,7 @@ YAL yal_join(YAL yal1, YAL yal2) {
 /*
  * join two yfn structures
  */
+YFN join_yfn(YFN fn1, YFN fn2);
 YFN join_yfn(YFN fn1, YFN fn2) {
 	if (fn2 == NULLYFN)
 		return (fn1);

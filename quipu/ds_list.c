@@ -7,11 +7,15 @@
 #include "pepsy.h"
 #include "quipu/DAS-types.h"
 #include "quipu/find.h"
+static int build_list (Entry e, DN dn);
+
 
 extern LLog * log_dsap;
 extern Entry database_root;
 static int build_result(struct ds_list_arg *, Entry, struct ds_list_result *, struct DSError *, DN, char, int);
 static int try_cache (struct ds_list_arg *arg, struct ds_list_result *result, DN target);
+
+int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype);
 
 int do_ds_list (struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result, DN binddn, DN target, struct di_block **di_p, char dsp, char authtype) {
 	Entry  entryptr;

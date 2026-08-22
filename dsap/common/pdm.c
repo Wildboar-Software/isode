@@ -18,6 +18,15 @@
 #include "pepsy.h"
 #include "quipu/SA-types.h"
 #include "pepsycodec.h"
+static void pdmfree (void *value);
+static int pdmcmp (void *value1, void *value2);
+static void *pdmcpy (void *value);
+static void *pdmparse (char *str);
+static void pdmprint (PS ps, void *value, int format);
+static PE pdmenc (void *value);
+static void * pdmdec (PE pe);
+void pref_deliv_syntax (void);
+
 
 static CMD_TABLE pdm_table [] = {
 	"ANY",		0,

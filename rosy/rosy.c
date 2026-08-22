@@ -10,6 +10,19 @@
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
+void yyerror (char *s);
+void warning (char *fmt, ...);
+void yyerror_aux (char *s);
+void myyerror (char* fmt, ...);
+int yywrap(void);
+void yyprint (char *s, int f, int top);
+static void yyprint_aux (char *s, char *mode);
+void pass1(void);
+void pass1_op (char *mod, char *id, YP arg, YP result, YV errors, YV linked, int opcode);
+void pass1_err (char *mod, char *id, YP param, int errcode);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
+void pass2(void);
+
 
 int	Cflag = 0;		/* rosy */
 int	dflag = 0;

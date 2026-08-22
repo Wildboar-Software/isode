@@ -17,6 +17,12 @@
 #include "ryresponder.h"
 #include "tsap.h"		/* for listening */
 #include "rfa.h"
+int ros_init (int vecp, char **vec);
+int ros_work (int fd);
+int ros_indication (int sd, struct RoSAPindication *roi);
+int ros_lose (struct TSAPdisconnect *td);
+int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+
 
 int	debug = 0;
 IFP	startfnx;

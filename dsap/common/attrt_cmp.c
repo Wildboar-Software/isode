@@ -1,5 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/name.h"
+static int AttrT_cmp_old (AttributeType x, AttributeType y);
+
 
 #ifdef AttrT_cmp
 #undef AttrT_cmp

@@ -15,6 +15,31 @@
 #endif
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void * dsa_control_decode (PE pe);
+static void dsa_control_print (PS ps, void *value, int format);
+static int dsa_control_cmp (void *a, void *b);
+static void dsa_control_free (void *value);
+static void *str2dsa_control (char *str);
+static PE quipu_call_enc (void *value);
+static void * quipu_call_decode (PE pe);
+static struct quipu_call *str2quipu_call_aux (char *str, struct quipu_call *item);
+static void *str2quipu_call (char *str);
+static void sub_ch_list_print(PS ps, struct sub_ch_list * item, int format);
+static void chain_list_print(PS ps, struct chain_list * item, int format);
+static int ops_print(PS ps, struct ops * item, int format);
+static int op_list_print(PS ps, struct op_list * item, int format);
+static void quipu_call_print(PS ps, void *value, int format);
+static void *quipu_call_cpy (void *value);
+static struct op_list * op_list_cpy (struct op_list *item);
+static struct ops * ops_cpy (struct ops *item);
+static struct chain_list * chain_list_cpy (struct chain_list *item);
+static struct sub_ch_list * sub_ch_list_cpy (struct sub_ch_list *item);
+static int quipu_call_cmp (void *value1, void *value2);
+static void quipu_call_free (void *value);
+static void auth_level_free (struct auth_level *item);
+void quipu_call_syntax (void);
+void dsa_control_syntax (void);
+
 
 extern struct qbuf *str2qb(char *str, int len, int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;
@@ -538,7 +563,7 @@ static void *quipu_call_cpy (void *value) {
 	return (tmp_item) ;
 }
 
-struct op_list *
+static struct op_list *
 op_list_cpy (struct op_list *item) {
 	struct op_list * new_item = (struct op_list *) 0 ;
 	struct op_list * tmp_item = (struct op_list *) 0 ;
@@ -561,7 +586,7 @@ op_list_cpy (struct op_list *item) {
 	return (new_item) ;
 }
 
-struct ops *
+static struct ops *
 ops_cpy (struct ops *item) {
 	struct ops * tmp_item = (struct ops *) malloc (sizeof (struct ops)) ;
 
@@ -601,7 +626,7 @@ ops_cpy (struct ops *item) {
 	return (tmp_item) ;
 }
 
-struct chain_list *
+static struct chain_list *
 chain_list_cpy (struct chain_list *item) {
 	struct chain_list * new_item = (struct chain_list *) 0 ;
 	struct chain_list * tmp_item = (struct chain_list *) 0 ;
@@ -624,7 +649,7 @@ chain_list_cpy (struct chain_list *item) {
 	return (new_item) ;
 }
 
-struct sub_ch_list *
+static struct sub_ch_list *
 sub_ch_list_cpy (struct sub_ch_list *item) {
 	struct sub_ch_list *new_item = (struct sub_ch_list *) malloc (sizeof (struct sub_ch_list)) ;
 

@@ -5,6 +5,9 @@
 #include "quipu/ds_error.h"
 #include "quipu/schema.h"
 #include "quipu/shadow.h"
+int real_check_schema (Entry eptr, Attr_Sequence as, struct DSError *error);
+int check_schema_type (Entry eptr, AttributeType attr, struct DSError *error);
+
 
 extern int oidformat;
 extern LLog * log_dsap;

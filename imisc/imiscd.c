@@ -55,7 +55,7 @@ static struct dispatch dispatches[] = {
 };
 
 /* TYPES */
-struct type_IMISC_IA5List *str2ia5list (char *s);
+static struct type_IMISC_IA5List *str2ia5list (char *s);
 
 static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
@@ -976,7 +976,7 @@ static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPind
 
 /* TYPES */
 
-struct type_IMISC_IA5List *
+static struct type_IMISC_IA5List *
 str2ia5list (char *s) {
 	struct type_IMISC_IA5List *ia5;
 

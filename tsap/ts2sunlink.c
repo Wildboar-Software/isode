@@ -31,6 +31,23 @@
 #include "tsap.h"
 #include "isoservent.h"
 #include "isoaddrs.h"
+static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, struct TSAPdisconnect *td);
+static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TSAPdisconnect *td);
+static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);
+static int TWrite (struct tsapblk *tb, struct udvec *uv, int expedited, struct TSAPdisconnect *td);
+static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int TRead (struct tsapblk *tb, struct TSAPdata *tx, struct TSAPdisconnect *td, int async, int oob);
+static int ReadDisc (struct tsapblk *tb, struct TSAPdisconnect *td);
+static int TDisconnect (struct tsapblk *tb, char *data, int cc, struct TSAPdisconnect *td);
+static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td);
+static int retry_tp4_socket (struct tsapblk *tb, struct TSAPdisconnect *td);
+int start_tp4_server (struct TSAPaddr *sock, int backlog, int opt1, int opt2, struct TSAPdisconnect *td);
+int join_tp4_client (int fd, struct TSAPaddr *sock, struct TSAPdisconnect *td);
+static	int  gen2tp4X (struct tsapADDR *generic, OSI_ADDR *specific, struct NSAPaddr *template);
+int tp42genX (struct tsapADDR *generic, OSI_ADDR *specific);
+static int _ts2sunlink_stub(void);
+
 #endif
 
 #define MAXTP4 (1 << SIZE_8K)
@@ -1067,5 +1084,5 @@ struct tp4pkt *newtp4pkt (TP_EVENT code)
 	return tp;
 }
 #else
-int _ts2sunlink_stub(void) {}
+static int _ts2sunlink_stub(void) {}
 #endif

@@ -8,6 +8,11 @@
 #include "quipu/sequence.h"
 
 #include "osisec-stub.h"
+#include "quipu/service.h"
+
+static int set_default_service (PS opt);
+int get_default_service (CommonArgs *ca);
+
 
 #define MAXSERV 20
 static char default_service [BUFSIZ] = { 0 };

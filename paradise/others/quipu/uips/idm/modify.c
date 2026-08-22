@@ -10,6 +10,27 @@
 #include "quipu/ds_search.h"
 #include "quipu/modify.h"
 #include "quipu/read.h"
+int de_Modify (void);
+static int modify_av(char *dn, char *rdn, int objectType);
+static int fillMostModArg (void);
+static int dm_modentry(char *dn);
+struct entrymod * ems_append (struct entrymod *a,struct entrymod *b);
+static int rtnstr2dlrstr(char *rtnstr, char dlrstr[]);
+static int new_at(int *atcount, int objectType);
+static int check_new_at(int *atcount, int objectType);
+static int existing_at(char *rdn, int *atcount, int objectType, int numbers /* Unfortunately a control flag,
+                                           to indicate if to print numbers
+					   alongside attributes or not */);
+static void printEmptyAttributes(struct namelist *lp, struct namelist *objatts, int *count);
+static void checkForEmptyAttributes(struct namelist *lp, struct namelist *objatts, int *count);
+static int get_new_attr(char *dn, int at_number);
+static int prompt_new_value(char attr_name[], int *new_value);
+int get_objectClass(char *rdn,int *objectType);
+int get_objectClassPRR(struct namelist *lp, int *objectType);
+int dm_ModifyOrg (void);
+int prompt_new_password(void);
+static int modify_pswd(char old_pswd[], char new_pswd[]);
+
 extern char *oidtable;
 extern char *tailfile;
 extern char *dsa_address;

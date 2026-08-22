@@ -7,7 +7,7 @@
 #include "psap.h"
 #include "tailor.h"
 
-static PE	qb2pe_aux (char *s, int len, int depth, int *result);
+static PE qb2pe_aux (char *s, int len, int depth, int *result);
 
 PE qb2pe (struct qbuf *qb, int len, int depth, int *result) {
 	char   *sp;

@@ -19,6 +19,8 @@
 #include <unistd.h>
 #endif
 #include <fcntl.h>
+static void realptyecho (int on);
+
 
 extern char erase_char;
 extern char erase_line;

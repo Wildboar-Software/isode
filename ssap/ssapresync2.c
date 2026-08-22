@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
+static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int cc, struct SSAPindication *si);
+
 
 static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char *data, int cc, struct SSAPindication *si);
 

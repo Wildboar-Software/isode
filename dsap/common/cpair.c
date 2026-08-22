@@ -4,6 +4,15 @@
 #include "quipu/authen.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static PE cpair_enc(void *value);
+static void *cpair_dec(PE pe);
+static void *str2cpair (char *str);
+static void printcpair(PS ps, void *value, int format);
+struct certificate_list *cpair_cpy (struct certificate_list *parm);
+static void *cpair_cpy_void (void *value);
+static int cpair_cmp (void *value1, void *value2);
+void certificate_pair_syntax (void);
+
 
 /* We import these functions, which ought to be internal to certificate.c */
 struct certificate *cert_cpy(struct certificate *parm);

@@ -7,6 +7,12 @@
 #include "tpkt.h"
 #include "mpkt.h"
 #include "tailor.h"
+static int _tsaplose (
+	struct TSAPdisconnect *td,
+	int reason,
+	va_list ap
+);
+
 
 #ifdef	LPP
 #undef	MGMT

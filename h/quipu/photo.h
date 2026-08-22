@@ -65,6 +65,8 @@ typedef struct nd {
 full_code get_code(int run, char colour);
 int photo_start (char * name);
 int photo_end (char * name);
+void hide_picture (void);
+int decode_t4 (char *data, char *name, int size);
 void photo_black (int length);
 void photo_white (int length);
 void photo_line_end (bit_string * line);

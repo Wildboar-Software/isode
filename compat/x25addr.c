@@ -22,6 +22,11 @@
 #include "tpkt.h"
 #include "sys.file.h"
 #include "x25.h"
+int elucidate_x25_err (int flags, unsigned char *pkt);
+int nsap2if (struct NSAPaddr *nsap, AEF *aef);
+int if2nsap (AEF *aef, struct NSAPaddr *nsap);
+static int _x25addr_stub(void);
+
 
 #ifndef	DEBUG
 #define	DEBUG
@@ -1522,5 +1527,5 @@ int if2nsap (AEF *aef, struct NSAPaddr *nsap)
 #endif
 #endif
 #else
-int _x25addr_stub(void) {}
+static int _x25addr_stub(void) {}
 #endif

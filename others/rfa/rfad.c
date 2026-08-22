@@ -23,6 +23,11 @@
 #include "ryresponder.h"
 #include "tsap.h"
 #include "rfa.h"
+#include "vt.h"
+
+int initiate (int sd, struct AcSAPstart *acs, PE *pe);
+int init_lose (int type, PE *pe, char *str);
+
 
 static char *myservice = "rfa";
 static char *mycontext = "rfa";

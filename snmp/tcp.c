@@ -12,6 +12,8 @@
 #include <string.h>
 #include "mib.h"
 
+void init_tcp (void);
+
 #include "internet.h"
 #ifdef	BSD43
 #include <sys/param.h>
@@ -33,6 +35,16 @@
 #include <netinet/tcp_fsm.h>
 #include <netinet/tcp_timer.h>
 #include <netinet/tcp_var.h>
+static int _read_tcp_stats (void);
+static int  o_tcp (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct tcptab *_read_tcp_connections(int *len);
+static int  o_tcp_conn (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  tt_compar (const void *p, const void *q);
+static struct tcptab *get_tcpent (unsigned int *ip, int isnext);
+static int  o_mbuf (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_mbufType (OI oi, struct type_SNMP_VarBind *v, int offset);
+void init_tcp (void);
+
 #else
 struct	tcpstat {
 	uint32_t	tcps_rtoalgorithm;	/*  */

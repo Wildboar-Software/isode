@@ -3,6 +3,13 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "psap.h"
+static int dg_prime (PS ps, int waiting);
+static int dg_read (PS ps, PElementData data, PElementLen n, int in_line);
+static int dg_write (PS ps, PElementData data, PElementLen n, int in_line);
+static int dg_flush (PS ps);
+static int dg_close (PS ps);
+static int dg_check (int fd, caddr_t data);
+
 
 struct ps_dg {
 	int	    ps_fd;

@@ -26,6 +26,9 @@
 #include "rfa.h"
 #include "rfainfo.h"
 #include "tailor.h"
+int getfile_aux (char *fn, struct RfaInfo *rfa, int *rmode);
+static int instfile (char *fn, struct type_RFA_GetFileDataRes *gfr, int *nump);
+
 
 extern FILE *out, *err;
 

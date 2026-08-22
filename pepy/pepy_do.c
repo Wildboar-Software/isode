@@ -20,8 +20,6 @@ static void do_type_choice (YP yp, int caseindex, int level, char *narg);
 static void do_type_element (YP yp, int level, int last, char *id, char *narg);
 static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg);
 static void do_components_set (YP yp, int level, char *arg, char *id, char *narg);
-void do_type (YP yp, int level, char *id, char *arg);
-
 void do_type (YP yp, int level, char *id, char *arg)
 {
 	int    i;

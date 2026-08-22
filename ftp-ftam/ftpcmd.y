@@ -55,6 +55,13 @@ char	*savestr(char *s);
 static char	*copy(char *);
 static void upper(char *s);
 static void help(char *s);
+struct tab *lookup(char *cmd);
+static char *_getline(char *s, int n, FILE *iop);
+#if defined(SVR4) || defined(LINUX)
+static void toolong(int sd);
+#else
+static SFD toolong(int sd);
+#endif
 
 extern void adios (char *, char *, ...);
 extern void advise (char *, char *, ...);

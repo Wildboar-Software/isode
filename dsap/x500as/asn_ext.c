@@ -10,6 +10,14 @@
 #include "pepsycodec.h"
 
 #include "pepsy.h"
+int substring_decode (struct filter_item **pparm, PE pe);
+int substring_encode (struct filter_item *parm, PE *pe);
+int substring_free (struct filter_item *parm);
+int treestruct_encode (struct tree_struct *parm, PE *pe);
+int treestruct_decode (struct tree_struct **parm, PE pe);
+int EDB_decode (struct getedb_result **pparm, PE pe);
+int EDB_free (struct getedb_result *parm);
+
 
 #define	advise	PY_advise
 

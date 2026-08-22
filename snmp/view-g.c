@@ -8,6 +8,17 @@
 #include "mib.h"
 #include "view-g.h"
 #include "tailor.h"
+static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset);
+static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct community *get_acent (unsigned int *ip, int len, int isnext);
+static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset);
+static struct trap *get_trent (unsigned int *ip, int len, int isnext);
+static int  view_compar (const void *p, const void *q);
+static int  comm_compar (const void *p, const void *q);
+static int  trap_compar (const void *p, const void *q);
+void init_view (void);
+void fin_view (void);
+
 
 /*    VIEW GROUP */
 

@@ -4,6 +4,10 @@
 #include "quipu/dsap.h"
 #include "tsap.h"
 #include <signal.h>
+void ros_log (struct RoSAPpreject *rop, char *event);
+static void acs_log (struct AcSAPabort *aca, char *event);
+static int SetROPS (int ad);
+
 
 extern	LLog	* log_dsap;
 

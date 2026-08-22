@@ -28,6 +28,19 @@
 
 #ifdef UNIXCONN
 #include <sys/un.h>
+static int
+iso_conn (char *server);
+static int _XConnectDisplay (
+	char *display_name,
+	char *expanded_name,	/* return */
+	char *prop_name,		/* return */
+	int *screen_num		/* return */
+);
+static int _XDisconnectDisplay (int server);
+void _XWaitForWritable(Display *dpy);
+void _XWaitForReadable(Display *dpy);
+static void _XSendClientPrefix (Display *dpy, xConnClientPrefix *client);
+
 #ifndef X_UNIX_PATH
 #define X_UNIX_PATH "/tmp/.X11-unix/X"
 #endif /* X_UNIX_PATH */

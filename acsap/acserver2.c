@@ -6,16 +6,13 @@
 #include "tsap.h"
 #include "sys.file.h"
 #include "tailor.h"
-
-static	int	is_nfds;
-static fd_set	is_mask;
-static char	is_single;
-
-int iserver_init (
+int iserver_init_aux (
 	int argc,
 	char **argv,
 	AEI aei,
 	int (*initfnx)(int vecp, char **vec),
+	MagicFunction magicfnx,
+	int flag,
 	struct TSAPdisconnect *td
 );
 
@@ -26,6 +23,18 @@ static int iserver_initAux (
 	int (*initfnx)(int vecp, char **vec),
 	MagicFunction magicfnx,
 	int flag,
+	struct TSAPdisconnect *td
+);
+
+static	int	is_nfds;
+static fd_set	is_mask;
+static char	is_single;
+
+int iserver_init (
+	int argc,
+	char **argv,
+	AEI aei,
+	int (*initfnx)(int vecp, char **vec),
 	struct TSAPdisconnect *td
 );
 

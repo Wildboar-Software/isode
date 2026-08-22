@@ -10,7 +10,6 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-int	acsaplose (struct AcSAPindication *aci, ...);
 static int _acsaplose (
 	struct AcSAPindication *aci,
 	int reason,

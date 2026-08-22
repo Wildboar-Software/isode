@@ -6,6 +6,8 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 #include "pepsycodec.h"
+int DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * callingaddr, struct PSAPaddr * calledaddr, int prequirements, int srequirements, long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, struct QOStype * qos, struct DAPconnect * dc, struct DAPindication * di, int async);
+
 
 extern  LLog    * log_dsap;
 extern  int       dsap_ad;           /* Association descriptor */

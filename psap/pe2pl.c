@@ -32,7 +32,7 @@
 #include <stdint.h>
 #include "psap.h"
 
-static int  pe2pl_aux (PS ps, PE pe, int level);
+static int pe2pl_aux (PS ps, PE pe, int level);
 
 #define	bf_write()	\
     if (ps_write (ps, (PElementData) buffer, (PElementLen) strlen (buffer)) == NOTOK) \

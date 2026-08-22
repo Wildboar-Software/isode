@@ -8,6 +8,30 @@
 #include "quipu/ds_search.h"
 #include "quipu/util.h"
 #include <stdio.h>
+#include "quipu/list.h"
+
+static int common_prefix_len (char *a, char *b);
+void rc_free (caddr_t data);
+static int oid_in_seq (AttributeType at, struct oid_seq *seq);
+static int sacl_match (DN binddn, DN selfdn, Saclinfo s);
+static int check_base_sacl (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	struct ds_search_task *local,
+	char authtype
+);
+static struct result_count *make_rc (
+	DN binddn,
+	DN selfdn,
+	Entry e,
+	int scope,
+	struct ds_search_task *local
+);
+static int entry_rc_cmp (caddr_t data1, caddr_t data2);
+static int rc_cmp (caddr_t data1, caddr_t data2);
+static int check_one_sacl ( DN binddn, DN selfdn, Entry ancestor, int scope, struct ds_search_task *local, int *saclerror, char authtype );
+
 
 extern int 	selector_rank[];
 extern LLog	*log_dsap;
@@ -340,7 +364,7 @@ static int rc_cmp (caddr_t data1, caddr_t data2) {
  * It's also called once to check the parent sacl during a single-level
  * search.
  */
-int check_one_sacl (
+static int check_one_sacl (
 	DN binddn,
 	DN selfdn,
 	Entry ancestor,

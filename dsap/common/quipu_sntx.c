@@ -19,6 +19,8 @@ extern void authp_syntax(void);
 extern void dsa_control_syntax(void);
 extern void quipu_call_syntax(void);
 
+void quipu_syntaxes (void);
+
 void quipu_syntaxes (void) {
 	static char done = 0;
 

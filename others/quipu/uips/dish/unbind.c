@@ -13,6 +13,8 @@
 #ifdef SOCKETS   	/* USE INTERNET SOCKETS */
 
 #include "internet.h"
+void pipe_quit (int sig);
+
 
 int main (int argc, char *argv[]) {
 	int 			sd,res,status;

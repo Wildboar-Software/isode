@@ -1,5 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+AV_Sequence fast_str2avs (char *str, AttributeType at);
+
 
 short oc_sntx = -1;
 AV_Sequence (*oc_hier)(char *) = NULL;

@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+void attempt_restart (void);
+
 
 int	mem_heap;
 

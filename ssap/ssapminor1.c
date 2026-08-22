@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
+static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si);
+
 
 static int SMinSyncRequestAux (struct ssapblk *sb, int type, long *ssn, char *data, int cc, struct SSAPindication *si);
 

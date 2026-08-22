@@ -55,6 +55,8 @@
 #endif
 #ifndef	IAE
 #include "isoservent.h"
+static void tsapd (int vecp, char **vec);
+
 #else
 extern void quipu_syntaxes (void);
 extern int dsap_init (int *acptr, char ***avptr);

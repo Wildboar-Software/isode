@@ -31,6 +31,10 @@ static fd_set	inprogress;
 #define DEVTLI	"/dev/tcp"
 #endif /* DEVTLI */
 #include <fcntl.h>
+static char *sys_terrname (int te);
+static int tli_lose (int fd, char *str);
+static int tligetdis(int fd);
+
 
 static char *sys_terrname (int te)
 {

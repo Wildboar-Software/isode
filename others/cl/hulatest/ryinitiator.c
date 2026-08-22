@@ -61,6 +61,15 @@
 #define	TIMER
 #ifndef	HPUX
 #include <sys/times.h>
+#include "vt.h"
+#include "ryresponder.h"
+
+static invoke (int sd, struct RyOperation ops[], struct dispatch *ds, char **args);
+static timer (int bytes, int pkts);
+static tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static void  _advise (char *what, char *fmt, va_list ap);
+
 #define	TMS
 #endif
 #endif

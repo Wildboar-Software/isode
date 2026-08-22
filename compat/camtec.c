@@ -23,6 +23,9 @@
 
 #include "tailor.h"
 #include "tpkt.h"
+static int _camtec_sunlink_stub2 (void);
+static int _camtec_sunlink_stub(void);
+
 
 /*    4.[23] UNIX: CCL X25 */
 
@@ -205,8 +208,8 @@ int     write_x25_socket (int fd, char *buffer, int len)
 	return count;
 }
 #else 	/* CAMTEC_CCL */
-int _camtec_sunlink_stub2 (void) {}
+static int _camtec_sunlink_stub2 (void) {}
 #endif  /* CAMTEC_CCL */
 #else	/* X25 */
-int _camtec_sunlink_stub(void) {}
+static int _camtec_sunlink_stub(void) {}
 #endif  /* X25 */

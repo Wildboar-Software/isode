@@ -10,6 +10,11 @@
 #include <ctype.h>
 #include <unistd.h>
 #include "calls.h"
+char *get_strioid (char *ptr);
+char *GetSurname (char *name);
+char *GetWholeRelName (char *name);
+str_seq SortList(str_seq list);
+
 
 #define RESBUF 10000
 

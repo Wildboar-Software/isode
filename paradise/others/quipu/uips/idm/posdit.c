@@ -6,6 +6,11 @@
 #include "destrings.h"
 #include "quipu/util.h"
 #include "namelist.h"
+int position_dit (void);
+int display_posdit(int length, char str[]);
+static int get_posdit (void);
+int determine_posdit(int *objectType);
+
 extern char yes_string[];
 extern char no_string[];
 extern int assoc;

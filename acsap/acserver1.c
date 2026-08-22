@@ -6,7 +6,7 @@
 #include "sys.file.h"
 #include "tailor.h"
 
-extern int iserver_init (
+int iserver_init (
 	int argc,
 	char **argv,
 	AEI aei,

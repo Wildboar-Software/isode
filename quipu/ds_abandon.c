@@ -9,6 +9,8 @@
 
 extern LLog * log_dsap;
 
+int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error);
+
 int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {
 	DLOG (log_dsap,LLOG_TRACE,("ds_abandon"));
 	error->dse_type = DSE_ABANDON_FAILED;

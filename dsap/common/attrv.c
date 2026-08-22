@@ -8,6 +8,12 @@
 #include "pepsy.h"
 #include "pepsycodec.h"
 #include <sys/stat.h>
+char *syntax2str (short sntx);
+sntx_table * get_syntax_table (short x);
+PE grab_pe(AttributeValue av);
+static int strip_header (char **str);
+static int str2AttrV_aux (char * str, short syntax, AttributeValue x);
+
 
 extern int oidformat;
 extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);
@@ -17,6 +23,9 @@ extern LLog * log_dsap;
 PE asn2pe(char *str);
 char t61_flag;
 char crypt_flag;
+
+int (*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
+int (*av_cmp_fn(short x))(void *value1, void *value2);
 extern char dsa_mode;
 extern int file_cmp (struct file_syntax *a, struct file_syntax *b);
 extern PE grab_filepe (AttributeValue av);

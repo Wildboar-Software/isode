@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "ssap.h"
 #include "uderrors.h"
+char *SuErrString (int code);
+
 
 /*
  *  Cause the message array to get allocated

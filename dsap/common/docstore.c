@@ -33,6 +33,15 @@
 #include "quipu/entry.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void documentStore_free (void *value);
+static void *documentStore_cpy (void *value);
+static int documentStore_cmp (void *value1, void *value2);
+static void documentStore_print (PS ps, void *value, int format);
+static void *str2documentStore (char *str);
+static PE documentStore_enc (void *value);
+static void *documentStore_dec (PE pe);
+void documentStore_syntax (void);
+
 
 static void documentStore_free (void *value) {
 	struct documentStore *a = (struct documentStore *) value;

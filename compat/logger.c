@@ -32,6 +32,7 @@ extern void closelog(void);
 static
 #endif
 int  _ll_printf (LLog*lp, va_list ap);
+char *CAT (char *x, char *y);
 
 struct ll_private {
 	int	    ll_checks;

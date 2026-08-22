@@ -16,6 +16,11 @@
 #include "quipu/DAS-types.h"
 
 #include "osisec-stub.h"
+struct entrymod * ems_append (struct entrymod *a, struct entrymod *b);
+struct entrymod * modify_avs (AV_Sequence a, AV_Sequence b, AttributeType at);
+static char *foobar (char *string);
+void dsa_control (int argc, char **argv);
+
 
 extern DN       dn;
 

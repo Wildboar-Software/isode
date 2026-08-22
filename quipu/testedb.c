@@ -3,6 +3,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "psap.h"
+#include "quipu/shadow.h"
 
 LLog * log_dsap;
 #ifndef	NO_STATS

@@ -6,6 +6,8 @@
 #include "quipu/photo.h"
 #include "manifest.h"
 #include <signal.h>
+static SFD photo_quit (void);
+
 
 extern int NUMLINES,PIC_LINESIZE;
 extern unsigned position;

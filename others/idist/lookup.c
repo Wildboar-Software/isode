@@ -27,6 +27,8 @@
  */
 #include <string.h>
 #include "defs.h"
+int define (char *name);
+
 
 /* symbol types */
 #define VAR	1

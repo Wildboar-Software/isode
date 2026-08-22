@@ -9,8 +9,7 @@
 #include "isoaddrs.h"
 #include "tailor.h"
 #include "internet.h"
-
-static int  events_value (struct pair *pairs, char *s, char *var);
+static int events_value (struct pair *pairs, char *s, char *var);
 
 #define	SUBNET_MAX	(6 + 10)  /* maximum number of subnet entries */
 

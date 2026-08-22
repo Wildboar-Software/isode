@@ -18,6 +18,7 @@
 #include "objects.h"
 #include "sys.file.h"
 #include "tailor.h"
+#include "vt.h"
 
 int	debug = 0;
 static	int	nbits = FD_SETSIZE;

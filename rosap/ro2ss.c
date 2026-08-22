@@ -14,6 +14,9 @@
 #include "pvpdu.h"
 #include "pepsycodec.h"
 
+static PE
+qbuf2pe_local (struct qbuf *qb, int len, int *result);
+
 #define	doSSabort	ss2rosabort
 
 static void	ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),

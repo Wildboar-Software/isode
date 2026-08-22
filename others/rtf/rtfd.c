@@ -10,6 +10,8 @@
 #include <pwd.h>
 #include "tailor.h"
 #include "pvpdu.h"
+static remove (char *file);
+
 
 #ifdef	SYS5
 struct passwd *getpwnam ();

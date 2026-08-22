@@ -13,6 +13,14 @@
 
 #include <gdbm.h>
 #include "sys.file.h"
+static GDBM_FILE turbo_open(Entry parent, int create, int backup);
+static int turbo_write_entry(Entry e, GDBM_FILE db);
+int turbo_writeall (Entry e);
+int turbo_write (Entry e);
+int turbo_delete (Entry e);
+static int turbo_write_header(GDBM_FILE db, Entry parent, int datatype);
+static int turbo_delete_dummy (void);
+
 
 extern RDN	parse_rdn;
 extern LLog 	*log_dsap;
@@ -299,5 +307,5 @@ int turbo_write_header(GDBM_FILE db, Entry parent, int datatype)
 
 #else
 
-int turbo_delete_dummy (void) {}
+static int turbo_delete_dummy (void) {}
 #endif

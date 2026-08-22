@@ -9,6 +9,12 @@
 #include <strings.h>
 #include <unistd.h>
 #include "ntp.h"
+int answer (char *host);
+int query (char *host);
+static int print_terse (struct clockinfo *n);
+static int print_verbose (struct clockinfo *n);
+static char *cvthname (struct sockaddr_in *f);
+
 
 #define	WTIME	10		/* Time to wait for all responses */
 #define	STIME	500000		/* usec to wait for another response */

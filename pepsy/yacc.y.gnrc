@@ -40,6 +40,13 @@ typedef struct ypa {
 extern double pow (double, double);
 
 %BEGIN(PEPSY)%
+void clrfn (void);
+char *hex2bin (char *s, int *pi);
+char *bit2bin (char *s, int *pi);
+int bin2hex (u_char *s, char *d, int len);
+int hex2int(char *s);
+int bit2int(char *s);
+
 /* encoding/decoding/printing/freeing functions */
 static	char	*efn, *dfn, *pfn, *ffn;
 

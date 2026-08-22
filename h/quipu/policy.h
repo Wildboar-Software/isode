@@ -25,4 +25,6 @@ struct security_policy {
 #define POLICY_ACCESS_WRITE	8
 #define POLICY_ACCESS_ALL	15
 
+unsigned str2permission (char *str);
+
 #endif

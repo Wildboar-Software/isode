@@ -6,6 +6,9 @@
 #include "psap.h"
 #include "sys.file.h"
 #include "quipu/photo.h"
+static void ps_die (PS ps, char *s);
+static void pe_die (PE pe, char *s);
+
 
 #define ALLOCATION_SIZE 16384L
 

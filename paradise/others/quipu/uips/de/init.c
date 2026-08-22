@@ -20,6 +20,18 @@
 #include "logger.h"
 #include "query.h"
 #include "destrings.h"
+int initialisations(int argc, char **argv);
+ /* read_de_option */
+
+/* might want this at some point
+void Usage (char *rtn)
+{
+   fprintf(stderr, "Some helpful message\n");
+}
+*/
+
+void welcome(void);
+
 
 static dsaAddFound = FALSE;
 

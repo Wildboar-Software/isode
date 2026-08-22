@@ -6,6 +6,9 @@
 #include "util.h"
 
 #include "quipu/dap2.h"
+QCardinal directory_wait(QCardinal **id_ptr);
+requestRec _get_request_of_id(QCardinal request_id);
+
 
 requestRec live_requests = NULLReqRec;
 QCardinal live_req_count = 0;

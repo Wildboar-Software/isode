@@ -14,6 +14,16 @@
 #include "quipu/attrvalue.h"
 #include "quipu/syntaxes.h"
 #include "pepsycodec.h"
+static void cilistfree (void *value);
+static int cilistcmp (void *value1, void *value2);
+static void *cilistcpy (void *value);
+static void *cilistparse (char *str);
+
+static void cilistprint (PS ps, void *value, int format);
+static PE cilistenc (void *value);
+static void * cilistdec (PE pe);
+void cilist_syntax (void);
+
 
 static void cilistfree (void *value) {
 	struct CIList *cilist = (struct CIList *) value;

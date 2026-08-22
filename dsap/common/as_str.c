@@ -1,6 +1,8 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/malloc.h"
+Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
+
 
 extern short acl_sntx;
 extern void (*merge_acl)(AV_Sequence, char *);

@@ -6,6 +6,25 @@
 #include "quipu/entry.h"
 #include "cmd_srch.h"
 #include "tailor.h"
+static char *
+soid2gen (char *soid);
+static char *
+get_line (void);
+int set_heap (AttributeType x);
+static char *full_gen (oid_table *ot);
+static char *part_gen (oid_table *ot);
+static void *name2oid_void (char *str);
+static PE oid2pe (OID o);
+static PE oid2pe_void (void *value);
+static void oidprint_void (PS ps, void *value, int format);
+static OID dup_prim2oid (PE pe);
+static void *dup_prim2oid_void (PE pe);
+void free_oid_buckets (void);
+static void *oid_cpy_void (void *value);
+static int oid_cmp_void (void *value1, void *value2);
+static void oid_free_void (void *value);
+void oid_syntax (void);
+
 
 extern char chrcnv [];
 

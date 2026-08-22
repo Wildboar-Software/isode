@@ -7,6 +7,10 @@
 #include "manifest.h"
 #include "logger.h"
 #include "tailor.h"
+#include "vt.h"
+
+int reportailor (char *myname);
+
 
 static LLog _pgm_log = {
 	"callback.log", NULLCP, NULLCP, LLOG_FATAL | LLOG_EXCEPTIONS | LLOG_NOTICE,

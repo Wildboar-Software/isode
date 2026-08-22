@@ -17,6 +17,10 @@
 #include <sys/stat.h>
 #include "osisec-stub.h"
 #include "quipu/find.h"
+void reject_length (char *str);
+void reject_prefix (char *str);
+void accept_prefix (char *str);
+
 
 extern LLog * log_dsap;
 extern DN	mydsadn;

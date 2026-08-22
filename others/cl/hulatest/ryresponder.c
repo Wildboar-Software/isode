@@ -46,6 +46,10 @@
 
 #define ACSE
 #include  "acupkt.h"
+#include "vt.h"
+
+static void  _advise (int code, char *what, va_list ap);
+
 
 /*  #include "tsap.h"  for listening */
 

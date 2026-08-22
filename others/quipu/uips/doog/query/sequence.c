@@ -3,6 +3,11 @@
 #include <string.h>
 #include "util.h"
 #include "sequence.h"
+void add_string_to_seq(char *string, stringCell *sequence);
+stringCell copy_string_seq(stringCell sequence);
+static void delete_from_seq(char *string, stringCell *sequence);
+void free_string_seq(stringCell *sequence);
+
 
 /*
  * Insert a string into a sequence.

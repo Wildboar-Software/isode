@@ -9,6 +9,14 @@
 #include <errno.h>
 #ifndef	SVR4
 #include <sys/wait.h>
+static void audio_print (
+	PS ps,
+	struct qbuf * qb,
+	int format
+);
+static void *audio_parse (char *str);
+void audio_syntax (void);
+
 #endif
 
 #ifndef BINPATH

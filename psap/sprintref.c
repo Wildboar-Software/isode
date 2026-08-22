@@ -4,6 +4,7 @@
 #include <string.h>
 #include "psap.h"
 #include "ssap.h"
+#include "psap2.h"
 
 char *sprintref (struct SSAPref *sr) {
 	char  *cp;

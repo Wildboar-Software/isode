@@ -3,6 +3,8 @@
 #include "quipu/dsap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
+static int test_deadlock (struct oper_act *on);
+
 
 extern LLog * log_dsap;
 extern time_t timenow;

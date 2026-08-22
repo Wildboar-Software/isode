@@ -11,6 +11,31 @@
 #include <stdlib.h>
 #include "ntp.h"
 #include "af_osi.h"
+void transmit (struct ntp_peer *peer);
+
+/* 3.4.3 Packet procedure */
+void process_packet (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, struct ntp_peer *peer);
+
+/* 3.4.5 Clock update procedure */
+
+void clock_update (struct ntp_peer *peer);
+void initialize (void);
+void clear (struct ntp_peer *peer);
+void poll_update (struct ntp_peer *peer, int new_hpoll);
+static int decrypt (void);
+
+/* 4.1 Clock Filter Procedure */
+/*
+ *  The previous incarnation of this code made the assumption that
+ *  the value of PEER_FILTER was a power of two and used shifting.
+ *  This version has been generalized, so that experimenting with
+ *  different PEER_FILTER values should be much easier.
+ */
+
+void clock_filter (struct ntp_peer *peer, double new_delay, double new_offset);
+void select_clock (void);
+static int sanity_check (struct ntp_peer *peer);
+
 
 int peer_switches, peer_sw_inhibited;
 

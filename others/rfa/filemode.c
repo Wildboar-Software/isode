@@ -21,6 +21,24 @@
 #include "general.h"
 #include "rfa.h"
 #include "rfainfo.h"
+  /* we started with effective uid of root */
+
+/*--------------------------------------------------------------*/
+/* initUserId */
+/*		called when rfa or rfad is started. Even if     */
+/*		they are started with effective uid of root	*/
+/*		they are running with eff. uid of user until    */
+/*		the eff. uid of root is REALLY needed (see 	*/
+/*		below)						*/
+/*--------------------------------------------------------------*/
+int initUserId (int uid, int gid, char *user);
+static int getFileOwner (char *fn, int *uidp, int *gidp);
+int changeFileOwner (char *fn, struct RfaInfo *rfa);
+int changeFileMode (char *fn, int mode, char *errmsg);
+int makeFileReadOnly (char *fn, struct RfaInfo *rfa);
+int makeFileReadWrite (char *fn, struct RfaInfo *rfa);
+int changeTime (time_t dt);
+
 
 static int runAsRoot = 0;  /* we started with effective uid of root */
 

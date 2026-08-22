@@ -14,6 +14,14 @@
 #include "dir_entry.h"
 #include "defs.h"
 #include "util.h"
+struct entrymod *
+ems_append (struct entrymod *a, struct entrymod *b);
+dsErrorStruct modify_entry(dirEntry mods);
+void make_template(char *entry_name, dirAttrs *attrs);
+static void make_attr_sequence(char *entry_string, dirAttrs *attrs);
+Attr_Sequence make_template_as(AV_Sequence oc);
+static char *modify_error (struct DSError *error);
+
 
 #define AS_SYNTAX(attrSeq) attrSeq->attr_type->oa_syntax
 #define AS_STROID(attrSeq) attrSeq->attr_type->oa_ot.ot_stroid

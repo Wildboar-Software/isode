@@ -13,7 +13,8 @@
 
 /* Simply including "general.h" is sufficient. */
 
-int	_general_stub (void) {};
+static int	_general_stub (void);
+static int	_general_stub (void) {};
 
 #endif
 
@@ -24,6 +25,9 @@ int	_general_stub (void) {};
 #ifndef	lint
 
 #include <search.h>
+
+void insque (struct qelem *elem, struct qelem *pred);
+void remque (struct qelem *elem);
 
 struct qelem {
 	struct qelem   *q_forw;
@@ -57,6 +61,7 @@ void remque (struct qelem *elem)
 #include <fcntl.h>
 #endif
 
+int     dup2 (int d1, int d2);
 int     dup2 (int d1, int d2)
 {
 	int     d;
@@ -80,7 +85,8 @@ int     dup2 (int d1, int d2)
 }
 
 #ifndef	F_DUPFD
-int dup2_aux (int d1, int d2)
+static int dup2_aux (int d1, int d2);
+static int dup2_aux (int d1, int d2)
 {
 	int fd, result;
 	if ((fd = dup (d1)) == NOTOK || fd == d2)

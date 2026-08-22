@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "pepy.h"
+void undo_type (YP yp, int level, char *id, char *arg, int Vflag);
+
 
 extern struct tuple tuples[];
 extern int	rflag, hflag;

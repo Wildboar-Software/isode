@@ -30,6 +30,41 @@
 #include "pepsy.h"
 #include "quipu/SA-types.h"
 #include "pepsycodec.h"
+static void Criteria_free (struct Criteria *arg);
+static void free_CriteriaItem (struct CriteriaItem *arg);
+static void guidefree (void *value);
+static struct CriteriaItem *CriteriaItem_cpy (struct CriteriaItem *arg);
+static struct Criteria *Criteria_cpy (struct Criteria *a);
+static void *guidecpy (void *value);
+static struct CriteriaItem *CriteriaItem_parse (char *str);
+static int getop (char *str, char *ch);
+static struct Criteria *Criteria_parse (char *str);
+static void *guideparse (char *str);
+static void *nadfparse (char *str);
+static void CriteriaItem_print(
+	PS ps,
+	struct CriteriaItem * parm,
+	int format
+);
+static void Criteria_print (
+	PS ps,
+	struct Criteria * a,
+	int format
+);
+static void guideprint (
+	PS ps,
+	void *value,
+	int format
+);
+static PE guideenc (void *value);
+static void * guidedec (PE pe);
+static PE nadfenc (void *value);
+static void *nadfdec (PE pe);
+static int criteriaItem_cmp (struct CriteriaItem *a, struct CriteriaItem *b);
+static int criteria_cmp (struct Criteria *a, struct Criteria *b);
+static int guidecmp (void *value1, void *value2);
+void guide_syntax (void);
+
 
 static void free_CriteriaItem (struct CriteriaItem *arg);
 

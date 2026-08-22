@@ -7,6 +7,34 @@
 #include "quipu/syntaxes.h"
 #include "quipu/entry.h"
 #include "pepsycodec.h"
+static void acl_info_free (struct acl_info *aclptr);
+static void acl_attr_free (struct acl *aclptr);
+static void acl_free (void *value);
+static int acl_default_cmp (struct acl *a);
+static int acl_info_comp_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);
+static int acl_attr_comp_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2);
+static int acl_attr_cmp (struct acl_attr *acl_attr1, struct acl_attr *acl_attr2);
+static int acl_cmp_void (void *value1, void *value2);
+static struct acl_attr *acl_attr_cpy (struct acl_attr *aclptr, struct acl_info *dflt);
+static void *acl_cpy (void *value);
+static void *acl_decode (PE pe);
+static void get_default_acl (void);
+static struct acl_attr *acl_attr_merge (struct acl_attr *a, struct acl_attr *b);
+static struct acl_info *str2acl_info (char **strptr);
+static struct acl *str2acl_aux (char *str, struct acl *the_acl);
+static void acl_merge (AV_Sequence a, char * str);
+static void acl_info_comp_print (PS ps, struct acl_info * aclptr, int format);
+static void acl_info_print (
+	PS ps,
+	struct acl_info * aclptr,
+	int format,
+	char * acl_type,
+	struct oid_seq * oidseq
+);
+static void acl_print (PS ps, void *value, int format);
+static PE acl_enc (void *value);
+void acl_syntax (void);
+
 
 extern char dsa_mode;
 int acl_info_cmp (struct acl_info *acl_info1, struct acl_info *acl_info2);

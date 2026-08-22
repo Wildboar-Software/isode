@@ -2,6 +2,8 @@
 #include "types.h"
 #include "util.h"
 #include "quipu/util.h"
+void friendlify (char *name, char *fname);
+
 
 char *copy_string (char *string) {
 	char *new_string;

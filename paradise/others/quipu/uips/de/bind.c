@@ -16,6 +16,14 @@
 #include "quipu/dap2.h"
 #include "logger.h"
 #include "compat.h"
+#include "dish.h"
+
+int tryBackup (void);
+int init_bind_to_ds(int *assoc);
+int wait_bind_to_ds(int assoc, int wantToBlock);
+int de_bind(int wantToBlock);
+void de_unbind(void);
+
 
 extern char *dsa_address;
 extern char *backup_dsa_address;

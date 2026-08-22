@@ -17,6 +17,7 @@ extern	PS	opt, rps;
 
 Filter          get_filter(char *str);
 char           *TidyString(char *a);
+int filteritem (char *str, Filter fltr);
 
 int filteritem (char *str, Filter fltr) {
 	char           *ptr;

@@ -4,6 +4,12 @@
 
 #include <errno.h>
 #include "ntp.h"
+double
+l_fixed_to_double (struct l_fixedpt *t);
+void double_to_l_fixed (struct l_fixedpt *t, double value);
+void double_to_s_fixed (struct s_fixedpt *t, double value);
+void tstamp (struct l_fixedpt *stampp, struct timeval *tvp);
+
 
 #define	TRUE	1
 #define	FALSE	0

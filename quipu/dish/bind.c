@@ -28,6 +28,20 @@
 
 #include "osisec-stub.h"
 
+#if defined(SVR4) || defined(LINUX)
+static void alarm_sig (int sd);
+static void bind_sig (int sd);
+#else
+SFD alarm_sig (int sd);
+SFD bind_sig (int sd);
+#endif
+void bind_alarm (void);
+int isnumeric (char *ptr);
+int call_bind (int argc, char **argv);
+void call_unbind (int argc, char **argv);
+void dish_quit (int sig);
+
+
 extern DN       fixed_pos;
 DN	        user_name;
 
@@ -79,7 +93,7 @@ static void protect_password(void);
 static int sign_bindarg(void);
 
 #if defined(SVR4) || defined(LINUX)
-void alarm_sig (int sd)
+static void alarm_sig (int sd)
 #else
 SFD alarm_sig (int sd)
 #endif
@@ -123,7 +137,7 @@ void set_alarm (void) {
 }
 
 #if defined(SVR4) || defined(LINUX)
-void bind_sig (int sd)
+static void bind_sig (int sd)
 #else
 SFD bind_sig (int sd)
 #endif

@@ -1,5 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
+static void avs_comp_fill (AV_Sequence ptr, AttributeValue pe);
+
 
 void avs_comp_fill (AV_Sequence ptr, AttributeValue pe)
 {

@@ -9,6 +9,43 @@
 #include "quipu/entry.h"
 #include "quipu/turbo.h"
 
+static int ravl_insert(
+	Avlnode **iroot,
+	caddr_t data,
+	int *taller,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int (*fdup)(caddr_t data1, caddr_t data2),
+	int depth
+);
+static int right_balance(Avlnode **root);
+static int left_balance(Avlnode **root);
+static caddr_t ravl_delete(
+	Avlnode **root,
+	caddr_t data,
+	int (*fcmp)(caddr_t data1, caddr_t data2),
+	int *shorter
+);
+static int avl_inapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+);
+static int avl_postapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+);
+static int avl_preapply(
+	Avlnode *root,
+	int (*fn)(caddr_t data, caddr_t arg),
+	caddr_t arg,
+	int stopflag
+);
+static int avl_buildlist (caddr_t data, caddr_t arg);
+
+
 extern LLog * log_dsap;
 
 #define ROTATERIGHT(x)	{ \

@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include "general.h"
 #include "manifest.h"
+static void default_smalloc_handler (void);
+
 
 static void default_smalloc_handler (void) {
 	abort ();
