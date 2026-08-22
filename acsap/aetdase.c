@@ -24,7 +24,11 @@ static int armed = 0;
 static int interrupted;
 static jmp_buf intrenv;
 
+#if defined(SVR4) || defined(LINUX)
+static void intrser (int sig);
+#else
 static SFD intrser (int sig);
+#endif
 
 static int dase_init (void);
 static int dase_callback (struct type_DASE_Callback__REQ *arg);
@@ -581,7 +585,12 @@ out:
 	return top;
 }
 
-static SFD intrser (int sig) {
+#if defined(SVR4) || defined(LINUX)
+static void intrser (int sig)
+#else
+static SFD intrser (int sig)
+#endif
+{
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif

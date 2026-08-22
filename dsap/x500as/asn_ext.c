@@ -1034,8 +1034,8 @@ int EDB_decode_force (struct getedb_result **pparm, PE pe) {
 		tmp->e_leaf = TRUE;
 		tmp->e_complete = TRUE;
 		tmp->e_data = E_TYPE_SLAVE;
-		if (avl_insert(tree, (caddr_t)tmp, (int (*)(caddr_t, caddr_t))entry_cmp,
-					   (int (*)(caddr_t data1, caddr_t data2))avl_dup_error) == NOTOK)
+		if (avl_insert(tree, (caddr_t)tmp, entry_cmp_from_caddrs,
+						avl_dup_error) == NOTOK)
 			LLOG(log_dsap, LLOG_EXCEPTIONS, ("Bad EDB update (contains duplicates)"));
 	}
 	return OK;

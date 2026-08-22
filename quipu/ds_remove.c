@@ -99,7 +99,7 @@ int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN
 		turbo_index_delete(entryptr);
 #endif
 		/* removed node in core */
-		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr, (int (*)(caddr_t, caddr_t)) entry_cmp);
+		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr, entry_cmp_from_caddrs);
 		entryptr->e_parent->e_allchildrenpresent = 2 ;
 		if (entryptr->e_parent->e_edbversion)
 			free (entryptr->e_parent->e_edbversion);
@@ -135,7 +135,7 @@ int do_ds_removeentry (struct ds_removeentry_arg *arg, struct DSError *error, DN
 		/* delete index references to this node */
 		turbo_index_delete(entryptr);
 #endif
-		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr, (int (*)(caddr_t, caddr_t)) entry_cmp);
+		avl_delete(&entryptr->e_parent->e_children,(caddr_t) entryptr, entry_cmp_from_caddrs);
 	}
 	if (entryptr->e_parent->e_edbversion)
 		free (entryptr->e_parent->e_edbversion);

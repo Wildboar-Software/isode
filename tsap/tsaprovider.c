@@ -266,9 +266,13 @@ int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	return result;
 }
 
-/*    set asynchronous event indications */
+/* set asynchronous event indications */
 
-static	SFD DATAser (int sig, long int code, struct sigcontext *sc);
+#if defined(SVR4) || defined(LINUX)
+static void DATAser (int sig);
+#else
+static SFD DATAser (int sig, long int code, struct sigcontext *sc);
+#endif
 
 int TSetIndications (
 	int sd,
@@ -307,7 +311,12 @@ int TSetIndications (
 	 * TBD: We could be more efficient by only doing this for only
 	 * one file descriptor.
 	 */
+
+#if defined(SVR4) || defined(LINUX)
+	DATAser(0);
+#else
 	DATAser(0, 0L, ((struct sigcontext *) NULL));
+#endif
 
 	sigiomask (smask);
 
@@ -345,10 +354,10 @@ int TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
 
 /*    NSAP interface: N-DATA.INDICATION */
 
-#ifdef SVR4
-static  SFD DATAser (int sig)
+#if defined(SVR4) || defined(LINUX)
+static void DATAser (int sig)
 #else
-static	SFD DATAser (int sig, long int code, struct sigcontext *sc)
+static void DATAser (int sig, long int code, struct sigcontext *sc)
 #endif
 {
 	int     n,
@@ -518,8 +527,11 @@ static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 
 	if (tb -> tb_flags & TB_ASYN) {
 		if (!inited) {
+#if defined(SVR4) || defined(LINUX)
 			signal (SIGPOLL, (__sighandler_t)DATAser);
-
+#else
+			signal (SIGPOLL, (__sighandler_t)DATAser);
+#endif
 			inited++;
 		}
 

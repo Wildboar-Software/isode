@@ -115,7 +115,17 @@ int entryrdn_cmp(RDN rdn, Entry ent)
 	return( rdn_cmp_reverse( rdn, ent->e_name ) );
 }
 
+int entryrdn_cmp_from_caddrs(caddr_t data1, caddr_t data2)
+{
+	return entryrdn_cmp((RDN) data1, (Entry) data2);
+}
+
 int entry_cmp(Entry e1, Entry e2)
 {
 	return( rdn_cmp_reverse( e1->e_name, e2->e_name ) );
+}
+
+int entry_cmp_from_caddrs(caddr_t data1, caddr_t data2)
+{
+	return entry_cmp((Entry) data1, (Entry) data2);
 }

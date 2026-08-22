@@ -78,7 +78,12 @@ extern struct SecurityServices *dsap_security;
 static void protect_password(void);
 static int sign_bindarg(void);
 
-SFD alarm_sig (int sd) {
+#if defined(SVR4) || defined(LINUX)
+void alarm_sig (int sd)
+#else
+SFD alarm_sig (int sd)
+#endif
+{
 	void dish_quit (int sig);
 	if (frompipe && (parent_pid != 0))
 		if (kill (parent_pid,0) == -1) {
@@ -117,7 +122,12 @@ void set_alarm (void) {
 	alarm (connect_time);
 }
 
-SFD bind_sig (int sd) {
+#if defined(SVR4) || defined(LINUX)
+void bind_sig (int sd)
+#else
+SFD bind_sig (int sd)
+#endif
+{
 	extern jmp_buf  dish_env;
 	ps_print (OPT,"Bind timeout\n");
 	if (referral_dsa != 0) {

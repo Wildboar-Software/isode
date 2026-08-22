@@ -83,7 +83,11 @@ struct task_act	* task_select(int *secs);
 
 char quipu_shutdown = FALSE;
 
+#ifdef LINUX
+extern __sighandler_t abort_vector;
+#else
 extern SFP abort_vector;
+#endif
 
 #ifndef NO_STATS
 extern LLog    *log_stat;
@@ -140,12 +144,22 @@ int main (int argc, char **argv) {
 	/*
 	* Function to stop DSA server.
 	*/
+#if defined(SVR4) || defined(LINUX)
+	void          stop_dsa(int sig);
+#ifdef	SIGUSR1
+	void		 list_status(int sig);
+#endif
+#ifdef	SIGUSR2
+	void		 list_status2(int sig);
+#endif
+#else
 	SFD          stop_dsa(int sig);
 #ifdef	SIGUSR1
 	SFD		 list_status(int sig);
 #endif
 #ifdef	SIGUSR2
 	SFD		 list_status2(int sig);
+#endif
 #endif
 	{
 		int	i;
@@ -271,7 +285,7 @@ signal (SIGUSR2, list_status2);
 #endif
 #endif
 #endif // LINUX
-	abort_vector = (SFP)attempt_restart;
+	abort_vector = attempt_restart;
 	parse_line = 0;
 	sprintf (start_buf,"DSA %s has started on %s",mydsaname,
 			 paddr2str(dsaladdr,NULLNA));
@@ -383,7 +397,12 @@ static int check_conns (int secs) {
 #endif
 	}
 
-	SFD stop_dsa (int sig) {
+#if defined(SVR4) || defined(LINUX)
+	void stop_dsa (int sig)
+#else
+	SFD stop_dsa (int sig)
+#endif
+	{
 		signal (sig, SIG_DFL); /* to stop recursion */
 		LLOG (log_dsap,LLOG_FATAL,("*** Stopping on signal %d ***",sig));
 		dsa_abort(0);
@@ -411,7 +430,12 @@ static int check_conns (int secs) {
 
 #ifdef	SIGUSR1
 	
-	SFD	list_status (int sig) {
+#if defined(SVR4) || defined(LINUX)
+	void	list_status (int sig)
+#else
+	SFD	list_status (int sig)
+#endif
+	{
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif
@@ -472,7 +496,12 @@ static int check_conns (int secs) {
 
 #ifdef	SIGUSR2
 	
-	SFD	list_status2 (int sig) {
+#if defined(SVR4) || defined(LINUX)
+	void	list_status2 (int sig)
+#else
+	SFD	list_status2 (int sig)
+#endif
+	{
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
 #endif

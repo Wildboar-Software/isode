@@ -22,7 +22,7 @@
 #include "quipu/find.h"
 #include "quipu/shadow.h"
 
-extern int parent_link(Entry e, Entry parent);
+extern int parent_link(caddr_t data, caddr_t arg);
 
 extern LLog * log_dsap;
 static int fileexists (char *fname) {
@@ -496,7 +496,7 @@ static int link_child (Entry e, Avlnode *oldkids) {
 	Entry   old_entry;
 	g_entry_cnt++;
 	/* find the old entry the new one is replacing */
-	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, (int (*)(caddr_t, caddr_t)) entryrdn_cmp);
+	old_entry = (Entry) avl_find(oldkids, (caddr_t) e->e_name, entryrdn_cmp_from_caddrs);
 	if (old_entry == NULLENTRY)
 		return(OK);
 	e->e_leaf = old_entry->e_leaf;
@@ -505,7 +505,7 @@ static int link_child (Entry e, Avlnode *oldkids) {
 	turbo_index_delete(old_entry);
 	turbo_add2index(e);
 	/* link children to their new parent */
-	avl_apply(e->e_children, (int (*)(caddr_t, caddr_t)) parent_link, (caddr_t) e,
+	avl_apply(e->e_children, parent_link, (caddr_t) e,
 			  NOTOK, AVL_PREORDER);
 	/* And unravel them to set new ACL pointers */
 	/* MAY need to make this recursive */

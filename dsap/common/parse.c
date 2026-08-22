@@ -612,8 +612,6 @@ Entry make_path (DN dn)
 	RDN    b_rdn;
 	Entry	parent, new;
 	Avlnode	*kids;
-	int	entryrdn_cmp(RDN rdn, Entry ent);
-	int entry_cmp(Entry e1, Entry e2);
 
 	if (database_root == NULLENTRY || database_root->e_children == NULLAVL) {
 		if ((database_root = new_constructor(NULLENTRY)) == NULLENTRY)
@@ -624,8 +622,8 @@ Entry make_path (DN dn)
 				return NULLENTRY;
 			new->e_name = rdn_cpy(dn->dn_rdn);
 			avl_insert(&ptr->e_children, (caddr_t) new,
-			(int (*)(caddr_t data1, caddr_t data2))entry_cmp,
-			(int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
+			entry_cmp_from_caddrs,
+			avl_dup_error);
 			ptr = (Entry) avl_getone(ptr->e_children);
 		}
 		return (ptr);
@@ -638,7 +636,7 @@ Entry make_path (DN dn)
 		b_rdn = dn->dn_rdn;
 		for(;;) { /* return out */
 			if ((ptr = (Entry) avl_find(kids, (caddr_t) b_rdn,
-			(int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp))
+			entryrdn_cmp_from_caddrs))
 					== NULLENTRY ) {
 				for (; dn != NULLDN; dn = dn->dn_parent) {
 					if ((new = new_constructor(parent)) ==
@@ -646,10 +644,10 @@ Entry make_path (DN dn)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					avl_insert(&parent->e_children, (caddr_t) new,
-							   (int (*)(caddr_t data1, caddr_t data2))entry_cmp,
-							   (int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
+							   entry_cmp_from_caddrs,
+							   avl_dup_error);
 					parent = (Entry) avl_find(parent->e_children, (caddr_t) dn->dn_rdn,
-					(int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp);
+					entryrdn_cmp_from_caddrs);
 				}
 				return(parent);
 			}
@@ -664,10 +662,10 @@ Entry make_path (DN dn)
 						return NULLENTRY;
 					new->e_name = rdn_cpy(dn->dn_rdn);
 					avl_insert(&ptr->e_children, (caddr_t) new,
-							   (int (*)(caddr_t data1, caddr_t data2))entry_cmp,
-							   (int (*)(caddr_t data1, caddr_t data2))avl_dup_error);
+							   entry_cmp_from_caddrs,
+							   avl_dup_error);
 					ptr = (Entry) avl_find(ptr->e_children,
-										   (caddr_t) dn->dn_rdn, (int (*)(caddr_t data1, caddr_t data2))entryrdn_cmp);
+										   (caddr_t) dn->dn_rdn, entryrdn_cmp_from_caddrs);
 				}
 				return(ptr);
 			}

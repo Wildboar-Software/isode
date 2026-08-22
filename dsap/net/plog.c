@@ -3,10 +3,15 @@
 #include "quipu/util.h"
 #include "quipu/dsap.h"
 #include "tsap.h"
+#include <signal.h>
 
 extern	LLog	* log_dsap;
 
+#ifdef LINUX
+__sighandler_t	abort_vector = NULL;
+#else
 SFP	abort_vector = NULL;
+#endif
 
 void ros_log (struct RoSAPpreject *rop, char *event) {
 	int level = LLOG_EXCEPTIONS;

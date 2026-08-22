@@ -35,7 +35,7 @@ static EntryInfo	*turbo_and(Entry e, Filter f, struct search_kid_arg *ska, Index
 static EntryInfo	*turbo_or(Entry e, Filter f, struct search_kid_arg *ska, Index *pindex, int toplevel);
 static EntryInfo	*eis_union(EntryInfo *a, EntryInfo *b, int toplevel);
 static void		subtree_refer(Index *pindex, struct search_kid_arg *ska);
-static int build_indexnode (Index_node *node, Index_node *bignode);
+static int build_indexnode (caddr_t data1, caddr_t data2);
 
 Attr_Sequence	eis_select(EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
 EntryInfo	*filterentry(struct ds_search_arg *arg, Entry entryptr, DN binddn, char authtype, int *saclerror, struct ds_search_task *local, char dosacl);
@@ -330,7 +330,9 @@ static int entry_collect (Index_node *node, EntryInfo **eilist) {
 	return( OK );
 }
 
-static int build_indexnode (Index_node *node, Index_node *bignode) {
+static int build_indexnode (caddr_t data1, caddr_t data2) {
+	Index_node *node = (Index_node *) data1;
+	Index_node *bignode = (Index_node *) data2;
 	int	i, j;
 	int	low, mid, high;
 	int	dup;
@@ -418,10 +420,10 @@ static EntryInfo *turbo_item(
 	char		*thestring;
 	char		*word, *code, *small;
 	char		*next_word(char *ptr), *first_word(char *ptr), *strrev(char *s);
-	int		index_soundex_cmp(char *code, Index_node *node), index_soundex_prefix(char *code, Index_node *node, int len);
-	int		substring_prefix_cmp(char *val, Index_node *node, int len), substring_prefix_case_cmp(char *val, Index_node *node, int len);
-	int		substring_prefix_tel_cmp(char *val, Index_node *node, int len);
-	int		indexav_cmp(AttributeValue av, Index_node *node), build_indexnode(Index_node *node, Index_node *bignode);
+	int		index_soundex_cmp(caddr_t data1, caddr_t data2), index_soundex_prefix(caddr_t data1, caddr_t data2, caddr_t carg);
+	int		substring_prefix_cmp(caddr_t data1, caddr_t data2, caddr_t carg), substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
+	int		substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
+	int		indexav_cmp(caddr_t data1, caddr_t data2), build_indexnode(caddr_t data1, caddr_t data2);
 
 	if ( pindex == NULLINDEX ) {
 		return( NULLENTRYINFO );
@@ -440,7 +442,7 @@ static EntryInfo *turbo_item(
 	switch ( f->fi_type ) {
 	case FILTERITEM_EQUALITY:
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
-										(caddr_t) f->UNAVA.ava_value, (int (*)(caddr_t, caddr_t)) indexav_cmp );
+										(caddr_t) f->UNAVA.ava_value, indexav_cmp );
 		if ( node == ((Index_node *) 0) )
 			break;
 		g_toplevel = toplevel;
@@ -471,11 +473,11 @@ static EntryInfo *turbo_item(
 		node = new_indexnode();
 		g_stopearly = 0;
 		avl_prefixapply(pindex[i].i_sroot,
-						(caddr_t) small, (int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
-						(int (*)(caddr_t, caddr_t, caddr_t)) index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
+						(caddr_t) small, build_indexnode, (caddr_t) node,
+						index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
 #else
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
-										(caddr_t) small, (int (*)(caddr_t, caddr_t)) index_soundex_cmp );
+										(caddr_t) small, index_soundex_cmp );
 #endif
 		/* we found nothing */
 		if (node->in_num == 0) {
@@ -536,17 +538,17 @@ static EntryInfo *turbo_item(
 		if (case_exact_match(f->UNSUB.fi_sub_type->oa_syntax)) {
 			if (phoneflag)
 				avl_prefixapply(theindex, thestring,
-								(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
-								(int (*)(caddr_t, caddr_t, caddr_t)) substring_prefix_tel_cmp, (caddr_t)(size_t)len,
+								build_indexnode, (caddr_t) node,
+								substring_prefix_tel_cmp, (caddr_t)(size_t)len,
 								NOTOK);
 			else
 				avl_prefixapply(theindex, thestring,
-								(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
-								(int (*)(caddr_t, caddr_t, caddr_t)) substring_prefix_cmp, (caddr_t)(size_t)len, NOTOK);
+								build_indexnode, (caddr_t) node,
+								substring_prefix_cmp, (caddr_t)(size_t)len, NOTOK);
 		} else {
 			avl_prefixapply(theindex, thestring,
-							(int (*)(caddr_t, caddr_t)) build_indexnode, (caddr_t) node,
-							(int (*)(caddr_t, caddr_t, caddr_t)) substring_prefix_case_cmp, (caddr_t)(size_t)len, NOTOK);
+							build_indexnode, (caddr_t) node,
+							substring_prefix_case_cmp, (caddr_t)(size_t)len, NOTOK);
 		}
 		if (node->in_num == 0) {
 			free((char *) node);

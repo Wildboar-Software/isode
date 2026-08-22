@@ -33,7 +33,7 @@ extern caddr_t	avl_delete(Avlnode **root, caddr_t data, int (*fcmp)(caddr_t data
 extern caddr_t	avl_find(Avlnode *root, caddr_t data, int (*fcmp)(caddr_t data1, caddr_t data2));
 extern caddr_t	avl_getfirst(Avlnode *root);
 extern caddr_t	avl_getnext(void);
-extern int	avl_dup_error(void);
+extern int	avl_dup_error(caddr_t data1, caddr_t data2);
 
 int turbo_isoptimized(AttributeType attr);
 
@@ -112,7 +112,7 @@ int avl_free(
 
 caddr_t avl_getfirst(Avlnode *root);
 caddr_t avl_getnext (void);
-int avl_dup_error (void);
+int avl_dup_error (caddr_t data1, caddr_t data2);
 caddr_t avl_find(
 	Avlnode *root,
 	caddr_t data,

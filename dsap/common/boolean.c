@@ -31,11 +31,23 @@ static void *boolget (char *x) {
 	return (NULLCP);
 }
 
-int boolean_syntax (void) {
+static void bool_strprint (PS ps, void *value, int format) {
+	strprint (ps, (char *) value, format);
+}
+
+static void *bool_strdup (void *value) {
+	return strdup ((char *) value);
+}
+
+static int bool_lexequ (void *value1, void *value2) {
+	return lexequ ((char *) value1, (char *) value2);
+}
+
+void boolean_syntax (void) {
 	add_attribute_syntax ("boolean",
 						  boolenc,		booldec,
-						  boolget,		(AttributeValuePrinter)strprint,
-						  (AttributeValueCopier)strdup,	(AttributeValueComparator)lexequ,
+						  boolget,		bool_strprint,
+						  bool_strdup,	bool_lexequ,
 						  free,		NULLCP,
 						  NULL,		FALSE);
 }

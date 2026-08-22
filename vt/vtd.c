@@ -132,7 +132,11 @@ int	inter;
 extern	char **environ;
 char	line[] = "/dev/ptyp0";
 char	*envinit[] = { "TERM=network", 0 };
+#if defined(SVR4) || defined(LINUX)
+void	cleanup (int sig);
+#else
 SFD	cleanup (void);
+#endif
 static int do_cleaning = 0;
 
 LLog    _vt_log = {
@@ -445,7 +449,11 @@ static void vtd (int f, int p) {
 	}
 	if (debug)
 		advise(LLOG_DEBUG,NULLCP,  "finished loop in vtp");
+#if defined(SVR4) || defined(LINUX)
+	cleanup(0);
+#else
 	cleanup();
+#endif
 }
 
 /*
@@ -606,8 +614,14 @@ static int netflush (void) {
 		nbackp = nfrontp = netobuf;
 }
 
+#if defined(SVR4) || defined(LINUX)
+void
+cleanup (int sig)
+#else
 SFD
-cleanup (void) {
+cleanup (void)
+#endif
+{
 	sleep(1);
 	while(getch() > 0);	/*Clean out unread VT-DATA PDU's still held
 				  in network.  Kludge to overcome deficiency

@@ -262,7 +262,7 @@ Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, 
 		if (dtype == E_TYPE_CACHE_FROM_MASTER)
 			eptr->e_age = cache_age;
 		DATABASE_HEAP;
-		if (avl_insert(&tree, (caddr_t) eptr, (int (*)(caddr_t, caddr_t)) entry_cmp, (int (*)(caddr_t, caddr_t)) avl_dup_error)
+		if (avl_insert(&tree, (caddr_t) eptr, entry_cmp_from_caddrs, avl_dup_error)
 				== NOTOK) {
 			pslog (log_dsap,LLOG_EXCEPTIONS,"Duplicate entry for",
 				   (void (*)(PS, caddr_t, int)) rdn_print,(caddr_t)eptr->e_name);

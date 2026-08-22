@@ -33,47 +33,67 @@ char *strrev (char *s) {
 	return( rsave );
 }
 
-static int index_cmp(Index_node *a, Index_node *b)
+static int index_cmp(caddr_t data1, caddr_t data2)
 {
+	Index_node *a = (Index_node *) data1;
+	Index_node *b = (Index_node *) data2;
 	return( AttrV_cmp( (AttributeValue) a->in_value,
 					   (AttributeValue) b->in_value ) );
 }
 
-static int sindex_cmp(Index_node *a, Index_node *b)
+static int sindex_cmp(caddr_t data1, caddr_t data2)
 {
+	Index_node *a = (Index_node *) data1;
+	Index_node *b = (Index_node *) data2;
 	return( strcmp( (char *) a->in_value, (char *) b->in_value ) );
 }
 
-int index_soundex_cmp(char *code, Index_node *node)
+int index_soundex_cmp(caddr_t data1, caddr_t data2)
 {
+	char *code = (char *) data1;
+	Index_node *node = (Index_node *) data2;
 	return( strcmp( code, (char *) node->in_value ) );
 }
 
-int index_soundex_prefix(char *code, Index_node *node, int len)
+int index_soundex_prefix(caddr_t data1, caddr_t data2, caddr_t carg)
 {
+	char *code = (char *) data1;
+	Index_node *node = (Index_node *) data2;
+	int len = (int) (size_t) carg;
 	return( strncmp( code, (char *) node->in_value, len ) );
 }
 
-int substring_prefix_cmp(char *val, Index_node *node, int len)
+int substring_prefix_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
+	char *val = (char *) data1;
+	Index_node *node = (Index_node *) data2;
+	int len = (int) (size_t) carg;
 	return(strncmp(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-int substring_prefix_tel_cmp(char *val, Index_node *node, int len)
+int substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
+	char *val = (char *) data1;
+	Index_node *node = (Index_node *) data2;
+	int len = (int) (size_t) carg;
 	return(telncmp(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-int substring_prefix_case_cmp(char *val, Index_node *node, int len)
+int substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
+	char *val = (char *) data1;
+	Index_node *node = (Index_node *) data2;
+	int len = (int) (size_t) carg;
 	return(lexnequ(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
 
-int indexav_cmp(AttributeValue av, Index_node *node)
+int indexav_cmp(caddr_t data1, caddr_t data2)
 {
+	AttributeValue av = (AttributeValue) data1;
+	Index_node *node = (Index_node *) data2;
 	return( AttrV_cmp( av, (AttributeValue) node->in_value ) );
 }
 
@@ -88,8 +108,10 @@ Index_node *new_indexnode(void) {
 	return( new );
 }
 
-static int index_dup(Index_node *node, Index_node *dup)
+static int index_dup(caddr_t data1, caddr_t data2)
 {
+	Index_node *node = (Index_node *) data1;
+	Index_node *dup = (Index_node *) data2;
 	int	j;
 	int	low, mid, high;
 	Entry	tmp1, tmp2;
@@ -149,15 +171,17 @@ static int index_dup(Index_node *node, Index_node *dup)
 	return( NOTOK );
 }
 
-static void indexav_free(Index_node *node)
+static void indexav_free(caddr_t data)
 {
+	Index_node *node = (Index_node *) data;
 	AttrV_free( (AttributeValue) node->in_value );
 	free( (char *) node->in_entries );
 	free( (char *) node );
 }
 
-static void soundex_free(Index_node *node)
+static void soundex_free(caddr_t data)
 {
+	Index_node *node = (Index_node *) data;
 	free( (char *) node->in_value );
 	free( (char *) node->in_entries );
 	free( (char *) node );
@@ -166,18 +190,20 @@ static void soundex_free(Index_node *node)
 static void index_free(Index *pindex)
 {
 	dn_free( pindex->i_dn );
-	avl_free( pindex->i_root, (void (*)(caddr_t))indexav_free );
-	avl_free( pindex->i_sroot, (void (*)(caddr_t))soundex_free );
+	avl_free( pindex->i_root, indexav_free );
+	avl_free( pindex->i_sroot, soundex_free );
 	free( (char *) pindex );
 }
 
-static int i_dup(Index *a)
+static int i_dup(caddr_t data1, caddr_t data2)
 {
 	return( NOTOK );
 }
 
-static int i_cmp(Index *a, Index *b)
+static int i_cmp(caddr_t data1, caddr_t data2)
 {
+	Index *a = (Index *)data1;
+	Index *b = (Index *)data2;
 	return( dn_order_cmp( a->i_dn, b->i_dn ) );
 }
 
@@ -400,8 +426,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		 * soundex index for that attribute.
 		 */
 		/* a return of OK means it was the first one inserted */
-		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, (int (*)(caddr_t data1, caddr_t data2))index_cmp,
-						 (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
+		if ( avl_insert( &pindex[ i ].i_root, (caddr_t) imem, index_cmp,
+						 index_dup ) == OK ) {
 			pindex[ i ].i_count++;
 			imem = NULLINDEXNODE;
 		} else if ( substr ) {
@@ -432,7 +458,7 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		/* insert into the reverse index, if appropriate */
 		if ( substr ) {
 			if ( avl_insert( &pindex[ i ].i_rroot, (caddr_t) imem,
-							 (int (*)(caddr_t data1, caddr_t data2))index_cmp, (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
+							 index_cmp, index_dup ) == OK ) {
 				pindex[ i ].i_rcount++;
 				imem = NULLINDEXNODE;
 			} else {
@@ -454,8 +480,8 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			imem->in_entries[ 0 ] = (struct entry *) e;
 			imem->in_num = 1;
 			imem->in_max = 1;
-			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, (int (*)(caddr_t data1, caddr_t data2))sindex_cmp,
-							 (int (*)(caddr_t data1, caddr_t data2))index_dup ) == OK ) {
+			if ( avl_insert( &pindex[i].i_sroot, (caddr_t) imem, sindex_cmp,
+							 index_dup ) == OK ) {
 				pindex[ i ].i_scount++;
 			} else {
 				free( (char *) imem->in_value );
@@ -578,7 +604,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	/* delete all values */
 	for ( av = values; av != NULLAV; av = av->avseq_next ) {
 		node = (Index_node *) avl_find( pindex[ i ].i_root,
-										(caddr_t) &av->avseq_av, (int (*)(caddr_t data1, caddr_t data2))indexav_cmp );
+										(caddr_t) &av->avseq_av, indexav_cmp );
 		if ( node == NULLINDEXNODE ) {
 			LLOG( log_dsap, LLOG_EXCEPTIONS, ("Optimized attribute value not found! (%s)\n", attr->oa_ot.ot_name) );
 			continue;
@@ -594,7 +620,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 		}
 		if ( --(node->in_num) == 0 ) {
 			imem = (Index_node *) avl_delete( &pindex[ i ].i_root,
-											  (caddr_t) &av->avseq_av, (int (*)(caddr_t data1, caddr_t data2))indexav_cmp );
+											  (caddr_t) &av->avseq_av, indexav_cmp );
 			( void ) AttrV_free( (AttributeValue) imem->in_value );
 			( void ) free( (char *) imem->in_entries );
 			( void ) free( (char *) imem );
@@ -620,7 +646,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			 * on a previous pass through this loop.  we hope.
 			 */
 			if ((imem = (Index_node *) avl_find(pindex[i].i_sroot,
-												code, (int (*)(caddr_t data1, caddr_t data2))index_soundex_cmp)) == NULLINDEXNODE) {
+												code, index_soundex_cmp)) == NULLINDEXNODE) {
 				free(code);
 				continue;
 			}
@@ -639,7 +665,7 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 			if ( --(imem->in_num) == 0 ) {
 				imem = (Index_node *)
 					   avl_delete( &pindex[ i ].i_sroot,
-								   (caddr_t) code, (int (*)(caddr_t data1, caddr_t data2))index_soundex_cmp );
+								   (caddr_t) code, index_soundex_cmp );
 				free( (char *) imem->in_value );
 				free( (char *) imem->in_entries );
 				free( (char *) imem );
@@ -801,7 +827,7 @@ void index_subtree (char *tree) {
 	}
 	pindex = new_index( dn );
 	dn_free( dn );
-	if ( avl_insert( &subtree_index, (caddr_t) pindex, (int (*)(caddr_t, caddr_t))i_cmp, (int (*)(caddr_t, caddr_t))i_dup ) == NOTOK ) {
+	if ( avl_insert( &subtree_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Subtree index for %s already exists\n", tree));
 		index_free( pindex );
 	}
@@ -825,7 +851,7 @@ void index_siblings (char *parent) {
 	}
 	pindex = new_index( dn );
 	dn_free( dn );
-	if ( avl_insert( &sibling_index, (caddr_t) pindex, (int (*)(caddr_t, caddr_t))i_cmp, (int (*)(caddr_t, caddr_t))i_dup ) == NOTOK ) {
+	if ( avl_insert( &sibling_index, (caddr_t) pindex, i_cmp, i_dup ) == NOTOK ) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Sibling index for %s already exists\n", parent));
 		index_free( pindex );
 	}

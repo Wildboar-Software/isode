@@ -133,7 +133,11 @@ char *vec[NVEC];
 int	swaitmax = SWAITMAX;
 int	swaitint = SWAITINT;
 
+#if defined(SVR4) || defined(LINUX)
+void	lostconn(int sig);
+#else
 SFD	lostconn(void);
+#endif
 
 void main(int argc, char *argv[]) {
 	int	addrlen;
@@ -192,7 +196,12 @@ void main(int argc, char *argv[]) {
 	}
 }
 
-SFD lostconn(void) {
+#if defined(SVR4) || defined(LINUX)
+void lostconn(int sig)
+#else
+SFD lostconn(void)
+#endif
+{
 	advise (NULLCP,"lost connection");
 	dologout(-1);
 }

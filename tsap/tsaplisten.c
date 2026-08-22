@@ -216,7 +216,11 @@ int	_listen_opts = 0;	/* .. */
 #if defined(BSD42) || defined(HPUX)
 static int	chldhit;
 
+#if defined(SVR4) || defined(LINUX)
+static void	chldser (int sig);
+#else
 static SFD	chldser (int sig, long int code, struct sigcontext *sc);
+#endif
 #endif
 
 int	TNetListen (struct TSAPaddr *ta, struct TSAPdisconnect *td)
@@ -795,7 +799,7 @@ int	TNetClose (struct TSAPaddr *ta, struct TSAPdisconnect *td)
 #include <sys/wait.h>
 
 #ifdef LINUX
-static	SFD chldser (int sig, long int code, struct sigcontext *sc)
+static void chldser (int sig)
 {
 #ifdef UNIONWAIT
 	union wait status;

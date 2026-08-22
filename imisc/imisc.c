@@ -25,74 +25,82 @@ extern int length;
 static type_IMISC_Data *data = NULLPE;
 
 struct type_IMISC_IA5List *vec2ia5list (char **vec);
-static int	do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5), do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5), do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep), do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy), do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy);
+static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_data (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_help (int sd, struct dispatch *ds, char **args, void *parameter);
+static int do_quit (int sd, struct dispatch *ds, char **args, void *parameter);
 
 #define	gentime_result	utctime_result
 
-static int	utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi), timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi), ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi), tell_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi),
-		null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi), echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi);
+static int	utctime_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int timeofday_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int ia5_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int tell_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
+static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
+static int echo_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi);
 
-static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi);
+static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindication *roi);
 
 static struct dispatch dispatches[] = {
 	"utctime",	operation_IMISC_utcTime,
 	NULL, NULL, 0,
-	(ds_result_t)utctime_result, (ds_error_t)imisc_error,
+	(ds_result_t)utctime_result, imisc_error,
 	"the universal time",
 
 	"gentime",	operation_IMISC_genTime,
 	NULL, NULL, 0,
-	(ds_result_t)gentime_result, (ds_error_t)imisc_error,
+	(ds_result_t)gentime_result, imisc_error,
 	"the generalized time",
 
 	"time",	operation_IMISC_timeOfDay,
 	NULL, NULL, 0,
-	(ds_result_t)timeofday_result, (ds_error_t)imisc_error,
+	(ds_result_t)timeofday_result, imisc_error,
 	"the current time since the epoch",
 
 	"users",	operation_IMISC_users,
 	NULL, NULL, 0,
-	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
+	(ds_result_t)ia5_result, imisc_error,
 	"the users logged in on the system",
 
 	"chargen",	operation_IMISC_charGen,
 	NULL, NULL, 0,
-	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
+	(ds_result_t)ia5_result, imisc_error,
 	"the character generation pattern",
 
 	"qotd",	operation_IMISC_qotd,
 	NULL, NULL, 0,
-	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
+	(ds_result_t)ia5_result, imisc_error,
 	"the quote of the day",
 
 	"finger",	operation_IMISC_finger,
 	(ds_argument_t)do_finger, &_ZIMISC_mod, _ZIA5ListIMISC,
-	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
+	(ds_result_t)ia5_result, imisc_error,
 	"the finger of users logged in",
 
 	"pwdgen",	operation_IMISC_pwdGen,
 	NULL, NULL, 0,
-	(ds_result_t)ia5_result, (ds_error_t)imisc_error,
+	(ds_result_t)ia5_result, imisc_error,
 	"some pseudo-randomly generated passwords",
 
 	"tell", operation_IMISC_tellUser,
 	(ds_argument_t)do_tell, &_ZIMISC_mod, _ZIA5ListIMISC,
-	(ds_result_t)tell_result, (ds_error_t)imisc_error,
+	(ds_result_t)tell_result, imisc_error,
 	"send a message to a remote user",
 
 	"ping", operation_IMISC_ping,
 	NULL, NULL, 0,
-	(ds_result_t)null_result, (ds_error_t)imisc_error,
+	(ds_result_t)null_result, imisc_error,
 	"ping responder",
 
 	"sink", operation_IMISC_sink,
 	(ds_argument_t)do_data, NULL, 0,
-	(ds_result_t)null_result, (ds_error_t)imisc_error,
+	(ds_result_t)null_result, imisc_error,
 	"sink data",
 
 	"echo", operation_IMISC_echo,
 	(ds_argument_t)do_data, NULL, 0,
-	(ds_result_t)echo_result, (ds_error_t)imisc_error,
+	echo_result, imisc_error,
 	"echo data",
 
 	"help", 0,
@@ -143,12 +151,14 @@ static void print_ia5list (struct type_IMISC_IA5List *ia5) {
 	}
 }
 
-static int do_finger (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter) {
+	struct type_IMISC_IA5List **ia5 = (struct type_IMISC_IA5List **) parameter;
 	*ia5 = vec2ia5list (args);
 	return OK;
 }
 
-static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_IA5List **ia5) {
+static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter) {
+	struct type_IMISC_IA5List **ia5 = (struct type_IMISC_IA5List **) parameter;
 	char   *cp,
 		   *dp,
 		   buffer[BUFSIZ];
@@ -178,7 +188,8 @@ static int do_tell (int sd, struct dispatch *ds, char **args, struct type_IMISC_
 	return OK;
 }
 
-static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_Data **pep) {
+static int do_data (int sd, struct dispatch *ds, char **args, void *parameter) {
+	struct type_IMISC_Data **pep = (struct type_IMISC_Data **) parameter;
 	char   *cp;
 	if (data == NULLPE) {
 		if (length > 0) {
@@ -195,14 +206,14 @@ static int do_data (int sd, struct dispatch *ds, char **args, struct type_IMISC_
 	return OK;
 }
 
-static int do_help (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
+static int do_help (int sd, struct dispatch *ds, char **args, void *parameter) {
 	printf ("\nCommands are:\n");
 	for (ds = dispatches; ds -> ds_name; ds++)
 		printf ("%s\t%s\n", ds -> ds_name, ds -> ds_help);
 	return NOTOK;
 }
 
-static int do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
+static int do_quit (int sd, struct dispatch *ds, char **args, void *parameter) {
 	struct AcSAPrelease acrs;
 	struct AcSAPrelease   *acr = &acrs;
 	struct AcSAPindication  acis;
@@ -219,7 +230,8 @@ static int do_quit (int sd, struct dispatch *ds, char **args, caddr_t *dummy) {
 	exit (0);
 }
 
-static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResult *result, struct RoSAPindication *roi) {
+static int utctime_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi) {
+	struct type_IMISC_UTCResult *result = (struct type_IMISC_UTCResult *) res;
 	struct qbuf *q;
 	for (q = result -> qb_forw; q != result; q = q -> qb_forw)
 		printf ("%*.*s", q -> qb_len, q -> qb_len, q -> qb_data);
@@ -227,14 +239,16 @@ static int utctime_result (int sd, int id, int dummy, struct type_IMISC_UTCResul
 	return OK;
 }
 
-static int timeofday_result (int sd, int id, int dummy, struct type_IMISC_TimeResult *result, struct RoSAPindication *roi) {
+static int timeofday_result (int sd, int id, int dummy, caddr_t p, struct RoSAPindication *roi) {
+	struct type_IMISC_TimeResult *result = (struct type_IMISC_TimeResult *) p;
 	long	s;
 	s = result -> parm - 2208988800L;	/* UNIX epoch */
 	printf ("%s", ctime (&s));
 	return OK;
 }
 
-static int ia5_result (int sd, int id, int dummy, struct type_IMISC_IA5List *result, struct RoSAPindication *roi) {
+static int ia5_result (int sd, int id, int dummy, caddr_t p, struct RoSAPindication *roi) {
+	struct type_IMISC_IA5List *result = (struct type_IMISC_IA5List *) p;
 	print_ia5list (result);
 	return OK;
 }
@@ -248,18 +262,20 @@ static int null_result (int sd, int id, int dummy, caddr_t result, struct RoSAPi
 	return OK;
 }
 
-static int echo_result (int sd, int id, int dummy, struct type_IMISC_Data *result, struct RoSAPindication *roi) {
+static int echo_result (int sd, int id, int dummy, caddr_t res, struct RoSAPindication *roi) {
+	struct type_IMISC_Data *result = (struct type_IMISC_Data *) res;
 	if (pe_cmp (result, data))
 		advise (NULLCP, "data mismatch");
 	return OK;
 }
 
-static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *parameter, struct RoSAPindication *roi) {
+static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindication *roi) {
+	struct type_IMISC_IA5List *parameter = (struct type_IMISC_IA5List *) p;
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
 		advise (NULLCP, "%s", RoErrString ((ssize_t) parameter));
-		return OK;
+		return;
 	}
 	if (rye = finderrbyerr (table_IMISC_Errors, error))
 		advise (NULLCP, "%s",  rye -> rye_name);
@@ -267,5 +283,4 @@ static int imisc_error (int sd, int id, int error, struct type_IMISC_IA5List *pa
 		advise (NULLCP, "Error %d", error);
 	if (parameter)
 		print_ia5list (parameter);
-	return OK;
 }

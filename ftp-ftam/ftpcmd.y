@@ -582,7 +582,12 @@ static char *_getline(char *s, int n, FILE *iop) {
 	return (s);
 }
 
-static SFD toolong(int sd) {
+#if defined(SVR4) || defined(LINUX)
+static void toolong(int sd)
+#else
+static SFD toolong(int sd)
+#endif
+{
 	time_t now;
 
 	reply(421,

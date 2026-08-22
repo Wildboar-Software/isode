@@ -427,7 +427,7 @@ int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_sea
  */
 
 void st_comp_free (struct ds_search_task *st) {
-	extern int rc_free(struct result_count *rc);
+	extern void rc_free(caddr_t data);
 
 	dn_free(st->st_baseobject);
 	dn_free(st->st_originalbase);
@@ -435,7 +435,7 @@ void st_comp_free (struct ds_search_task *st) {
 	if (st->st_save != NULL_ST)
 		st_free(&st->st_save);
 	if (--st->st_saclrefcount <= 0) {
-		avl_free((Avlnode *) st->st_sacls, (void (*)(caddr_t)) rc_free);
+		avl_free((Avlnode *) st->st_sacls, rc_free);
 		free((char *) st->st_saclheader);
 	}
 	if (--st->st_ftyperefcount <= 0) {

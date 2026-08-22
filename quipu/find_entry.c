@@ -292,7 +292,7 @@ int really_find_entry (
 	}
 	parent = database_root;
 	for(rdns = 1, aliases = 0 ; ; rdns++ ) { /* break or return out */
-		*ent_p = (Entry) avl_find(kids, (caddr_t) b_rdn, (int (*)(caddr_t, caddr_t)) entryrdn_cmp);
+		*ent_p = (Entry) avl_find(kids, (caddr_t) b_rdn, entryrdn_cmp_from_caddrs);
 		if ( *ent_p == NULLENTRY ) {
 			int res = no_reply_edb(object, dn_trail, dn_stack,
 								   master, parent, err, di_p);

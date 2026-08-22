@@ -316,7 +316,9 @@ static char got_all = TRUE;
 
 static int entry_load_kids(Avlnode *entryptr, int offset);
 
-static int load_a_kid (Entry e, int offset) {
+static int load_a_kid (caddr_t data, caddr_t arg) {
+	Entry e = (Entry) data;
+	int offset = (int) (size_t) arg;
 	if ((!e->e_external) &&
 			(e->e_master == NULLAV) &&
 			(e->e_slave == NULLAV)) {
@@ -364,7 +366,7 @@ static int entry_load_kids (
 	if (entryptr == NULLAVL)
 		return(OK);
 	got_all = TRUE;
-	if (avl_apply(entryptr, (int (*)(caddr_t, caddr_t)) load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
+	if (avl_apply(entryptr, load_a_kid,  (caddr_t) (size_t) offset, NOTOK, AVL_PREORDER)
 			== NOTOK)
 		return(NOTOK);
 	akid = (Entry) avl_getone(entryptr);
@@ -386,23 +388,27 @@ static void check_entry_free (Entry e) {
 	entry_free(e);
 }
 
-int parent_link (Entry e, Entry parent) {
+int parent_link (caddr_t data, caddr_t arg) {
+	Entry e = (Entry) data;
+	Entry parent = (Entry) arg;
 	e->e_parent = parent;
 	set_inheritance (e);
 	return(OK);
 }
 
-static int merge_entry (Entry newentry, Avlnode *oldtree) {
+static int merge_entry (caddr_t data, caddr_t arg) {
+	Entry newentry = (Entry) data;
+	Avlnode *oldtree = (Avlnode *) arg;
 	Entry   p;
 	int     entry_cmp(Entry e1, Entry e2);
 
 	newentry->e_parent = ((Entry) avl_getone(oldtree))->e_parent;
-	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, (int (*)(caddr_t, caddr_t)) entry_cmp))
+	if ((p = (Entry) avl_find(oldtree, (caddr_t) newentry, entry_cmp_from_caddrs))
 			!= NULLENTRY ) {
 		newentry->e_leaf = FALSE;
 		newentry->e_allchildrenpresent = p->e_allchildrenpresent;
 		newentry->e_children = p->e_children;
-		avl_apply(newentry->e_children, (int (*)(caddr_t, caddr_t)) parent_link, (caddr_t) newentry,
+		avl_apply(newentry->e_children, parent_link, (caddr_t) newentry,
 				  NOTOK, AVL_PREORDER);
 		if (p->e_edbversion != NULLCP)
 			newentry->e_edbversion = strdup(p->e_edbversion);
@@ -446,7 +452,7 @@ Entry subtree_load (Entry parent, DN dn) {
 		 * go through the tree we just loaded, merging it with the
 		 * tree previously loaded.
 		 */
-		avl_apply(treetop, (int (*)(caddr_t, caddr_t)) merge_entry, (caddr_t) parent->e_children,
+		avl_apply(treetop, merge_entry, (caddr_t) parent->e_children,
 				  NOTOK, AVL_PREORDER);
 		if (got_subtree && (parent->e_allchildrenpresent == 1))
 			parent->e_allchildrenpresent = 2;

@@ -35,7 +35,11 @@ static jmp_buf	intrenv;
 int	interrupted;
 
 static int ftamloop (char **vec, int error);
+#if defined(SVR4) || defined(LINUX)
+static void intrser (int sig);
+#else
 static SFD intrser (int sig);
+#endif
 
 void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
@@ -440,7 +444,12 @@ int getftamline (char *prompt, char *buffer) {
 
 #ifndef	BRIDGE
 
-static SFD intrser (int sig) {
+#if defined(SVR4) || defined(LINUX)
+static void
+#else
+static SFD
+#endif
+intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);
 #endif

@@ -113,7 +113,8 @@ void ftype_free (Ftypelist ft) {
 	}
 }
 
-void rc_free (struct result_count *rc) {
+void rc_free (caddr_t data) {
+	struct result_count *rc = (struct result_count *) data;
 	if ( rc->rc_types != NULLTYPEDATA )
 		free( (char *) rc->rc_types );
 	free( (char *) rc );
@@ -310,7 +311,9 @@ static int srch2sacl_scope[] = {
 	SACL_SUBTREE		/* SRA_WHOLESUBTREE	*/
 };
 
-static int entry_rc_cmp (Entry e, struct result_count *rc) {
+static int entry_rc_cmp (caddr_t data1, caddr_t data2) {
+	Entry e = (Entry) data1;
+	struct result_count *rc = (struct result_count *) data2;
 	return ( e < rc->rc_base
 		? -1
 		: e > rc->rc_base
@@ -318,7 +321,9 @@ static int entry_rc_cmp (Entry e, struct result_count *rc) {
 			: 0 );
 }
 
-static int rc_cmp (struct result_count *a, struct result_count *b) {
+static int rc_cmp (caddr_t data1, caddr_t data2) {
+	struct result_count *a = (struct result_count *) data1;
+	struct result_count *b = (struct result_count *) data2;
 	return( a->rc_base < b->rc_base
 		? -1
 		: a->rc_base > b->rc_base
@@ -355,11 +360,11 @@ int check_one_sacl (
 				 binddn : NULLDN;
 	}
 	if ( (rc = (struct result_count *) avl_find( (Avlnode *)local->st_sacls,
-			   (caddr_t) ancestor, (int (*)(caddr_t, caddr_t))entry_rc_cmp )) == (struct result_count *) 0 ) {
+			   (caddr_t) ancestor, entry_rc_cmp )) == (struct result_count *) 0 ) {
 		/* no running total - make one, possibly a dummy */
 		rc = make_rc( binddn, selfdn, ancestor, scope, local );
 		avl_insert( (Avlnode **)&local->st_sacls, (caddr_t) rc,
-					(int (*)(caddr_t, caddr_t))rc_cmp, (int (*)(caddr_t, caddr_t))avl_dup_error );
+					rc_cmp, avl_dup_error );
 	}
 	rc->rc_count++;
 	for ( ft = (Ftypelist) local->st_ftypes; ft != NULLFTL;

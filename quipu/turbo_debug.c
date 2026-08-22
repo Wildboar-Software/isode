@@ -89,15 +89,18 @@ void avl_print (Avlnode *root) {
 	ps_free( fps );
 }
 
-static void rprint_directory (Entry node, int depth) {
+static int rprint_directory (caddr_t data, caddr_t arg) {
+	Entry node = (Entry) data;
+	int depth = (int) (size_t) arg;
 	int	i;
 	for ( i = 0; i < depth; i++ )
 		ps_print( ps, "\t" );
 	rdn_print( ps, node->e_name, EDBOUT );
 	ps_print( ps, "\n" );
 	if ( node->e_children != NULLAVL )
-		avl_apply( node->e_children, (int (*)(caddr_t, caddr_t)) rprint_directory, (caddr_t) (size_t) (depth + 1),
+		avl_apply( node->e_children, rprint_directory, (caddr_t) (size_t) (depth + 1),
 				   NOTOK, AVL_INORDER );
+	return OK;
 }
 
 void print_directory (Entry node) {
@@ -109,7 +112,7 @@ void print_directory (Entry node) {
 		printf( "avl_print: std_setup failed\n" );
 		return;
 	}
-	rprint_directory( node, 0 );
+	rprint_directory( (caddr_t) node, (caddr_t) 0 );
 	ps_free( ps );
 	fflush( stdout );
 }

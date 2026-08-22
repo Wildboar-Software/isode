@@ -6,7 +6,11 @@
 #include "compat.h"
 
 static int interrupted;
+#if defined(SVR4) || defined(LINUX)
+static void	intrser (int sig);
+#else
 static SFD	intrser (int sig);
+#endif
 
 /*    RO-INVOKE.REQUEST (interruptable) */
 
@@ -50,7 +54,11 @@ int RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int pri
 	return result;
 }
 
+#if defined(SVR4) || defined(LINUX)
+static void
+#else
 static SFD
+#endif
 intrser (int sig) {
 #ifndef	BSDSIGS
 	signal (SIGINT, intrser);

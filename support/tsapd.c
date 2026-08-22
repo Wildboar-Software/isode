@@ -1420,7 +1420,12 @@ int	str2dnY (char *str, DN *dn) {
 #ifdef	BSD42
 #endif
 
-static SFD  hupser (int sig) {
+#if defined(SVR4) || defined(LINUX)
+static void  hupser (int sig)
+#else
+static SFD  hupser (int sig)
+#endif
+{
 #ifndef	BSD42
 #ifdef LINUX
 	signal (sig, (__sighandler_t)hupser);

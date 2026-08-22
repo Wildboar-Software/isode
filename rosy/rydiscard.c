@@ -20,6 +20,7 @@
 #endif
 
 static int	do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi);
+static void	do_response_void (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi);
 
 /* DISCARD */
 
@@ -32,11 +33,12 @@ int	RyDiscard (int sd, int id, struct RoSAPindication *roi)
 						  "invocation %d not in progress on association %d",
 						  id, sd);
 	opb -> opb_resfnx = do_response;
-	// Just a cast to ignore the int.
-	opb -> opb_errfnx = (void (*)(int, int, int, caddr_t, struct RoSAPindication *))do_response;
+	opb -> opb_errfnx = do_response_void;
 	return OK;
 }
 
 static int do_response (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {
 	return OK;
 }
+
+static void do_response_void (int sd, int id, int dummy, caddr_t value, struct RoSAPindication *roi) {}

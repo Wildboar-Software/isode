@@ -39,8 +39,13 @@ PS	opt, rps;
 
 DN              savename = NULLDN;
 
+#if defined(SVR4) || defined(LINUX)
+void             dish_quit(int sig);
+void             dish_intr(int sd);
+#else
 SFD             dish_quit(int sig);
 SFD             dish_intr(int sd);
+#endif
 char		dad_flag = FALSE;
 unsigned	cache_time = 3600;	/* time to keep process alive */
 unsigned	connect_time = 120;     /* time to keep connection open */
@@ -547,7 +552,12 @@ int set_cmd_default (char *cmd, char *dflt) {
 	return (NOTOK);
 }
 
-SFD dish_intr (int sd) {
+#if defined(SVR4) || defined(LINUX)
+void
+#else
+SFD
+#endif
+dish_intr (int sd) {
 #ifndef BSDSIGS
 	signal (SIGINT, dish_intr);
 #endif
