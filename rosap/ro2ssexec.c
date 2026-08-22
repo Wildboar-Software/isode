@@ -19,7 +19,7 @@
 
 /*    SERVER only */
 
-int RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, IFP hook, IFP setperms) {
+int RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, int (*hook)(struct isoservent *is, struct RoSAPindication *roi), int (*setperms)(struct isoservent *is)) {
 	int     result,
 			result2;
 	struct isoservent *is;

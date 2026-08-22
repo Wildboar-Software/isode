@@ -32,4 +32,4 @@ void adios (char* what, char* fmt, ...), advise (char* what, char* fmt, ...);
 void acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
 void ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 
-void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, IFP quit);
+void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, ds_argument_t quit);

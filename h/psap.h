@@ -431,10 +431,10 @@ struct PStream {
 
 #define	ps_seterr(ps, e, v)	((ps) -> ps_errno = (e), (v))
 
-PS	ps_alloc (IFP io);
+PS	ps_alloc (int (*io)(PS ps));
 void	ps_free (PS ps);
 
-int	ps_io (PS ps, IFP io, PElementData data, PElementLen n, int in_line);
+int	ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, PElementLen n, int in_line);
 #define	ps_read(ps, data, cc)	ps_io ((ps), (ps) -> ps_readP, (data), (cc), 0)
 #define	ps_write(ps, data, cc)	ps_write_aux ((ps), (data), (cc), 0)
 #define	ps_write_aux(ps, data, cc, in_line) \
@@ -456,7 +456,7 @@ int	str_open (PS ps);
 int	str_setup (PS ps, char *cp, int cc, int in_line);
 
 int	dg_open (PS ps);
-int	dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx);
+int	dg_setup (PS ps, int fd, int size, int (*rfx)(int fd, struct qbuf **q), int (*wfx)(int fd, struct qbuf *qb), int (*cfx)(int fd));
 
 int	fdx_open (PS ps);
 int	fdx_setup (PS ps, int fd);
@@ -538,7 +538,7 @@ char   *bitstr2strb (PE pe, int *k);
 extern char PY_pepy[];
 
 void	PY_advise (char *, char *, ...);
-int	PY_pp (int argc, char **argv, char **envp, IFP pfx);
+int	PY_pp (int argc, char **argv, char **envp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
 
 int	testdebug (PE pe, char *s);
 

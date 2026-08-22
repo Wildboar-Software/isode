@@ -18,6 +18,6 @@ void	acs_advise (struct AcSAPabort *aca, char *event);
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 void	ryr_advise (char *what, char *fmt, ...);
 
-void	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops, IFP start, IFP stop);
+void	ryresponder (int argc, char **argv, char *host, char *myservice, char *mycontext, struct dispatch *dispatches, struct RyOperation *ops, int (*start)(int sd, struct AcSAPstart *acs), int (*stop)(int sd, struct AcSAPfinish *acf));
 
 extern int  debug;

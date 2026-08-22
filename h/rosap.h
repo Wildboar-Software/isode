@@ -217,7 +217,7 @@ struct RoSAPindication {
 
 extern char *rosapversion;
 
-int	RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, IFP hook, IFP setperms);		/* SERVER only */
+int	RoExec (struct SSAPstart *ss, struct RoSAPindication *roi, char *arg1, char *arg2, int (*hook)(struct isoservent *is, struct RoSAPindication *roi), int (*setperms)(struct isoservent *is));		/* SERVER only */
 int	RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi);		/* RO-BEGIN.INDICATION */
 
 int	RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi);	/* RO-BEGIN.RESPONSE */
@@ -233,12 +233,12 @@ int	RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct Ro
 int	RoIntrRequest (int sd, int op, PE args, int invokeID, int *linkedID, int priority, struct RoSAPindication *roi);	/* RO-INVOKE.REQUEST (interruptable) */
 int	RoWaitRequest (int sd, int secs, struct RoSAPindication *roi);	/* RO-WAIT.REQUEST (pseudo) */
 
-int	RoSetIndications (int sd, IFP indication, struct RoSAPindication *roi);	/* define vectors for INDICATION events */
+int	RoSetIndications (int sd, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi);	/* define vectors for INDICATION events */
 int	RoSelectMask (int sd, fd_set *mask, int *nfds, struct RoSAPindication *roi);	/* map remote operation descriptors for
 				   select() */
 
-int	RoSetService (int sd, IFP bfunc, struct RoSAPindication *roi);	/* bind underlying service */
 struct assocblk;
+int	RoSetService (int sd, int (*bfunc)(struct assocblk *acb, struct RoSAPindication *roi), struct RoSAPindication *roi);	/* bind underlying service */
 int RoRtService (struct assocblk *acb, struct RoSAPindication *roi);
 int	RoPService (struct assocblk *acb, struct RoSAPindication *roi), RoSService (struct assocblk *acb, struct RoSAPindication *roi);
 int	RoSetThorn (int sd, struct RoSAPindication *roi);

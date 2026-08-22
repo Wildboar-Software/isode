@@ -2493,7 +2493,7 @@ static void envinit (void) {
 	fin_view ();
 	fin_mib ();
 	start_view ();
-	o_advise = (IFP) advise;
+	o_advise = advise;
 #endif
 	sprintf (file, "/etc/%s.pid", myname);
 	if (fp = fopen (file, "w")) {

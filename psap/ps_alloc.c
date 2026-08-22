@@ -38,7 +38,7 @@
  */
 
 PS
-ps_alloc (IFP io) {
+ps_alloc (int (*io)(PS ps)) {
 	PS	    ps;
 
 	if ((ps = (PS) calloc (1, sizeof *ps)) == NULLPS)

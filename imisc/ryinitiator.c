@@ -50,7 +50,7 @@ static  void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t
 
 extern char *isodeversion;
 
-void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, IFP quit) {
+void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, ds_argument_t quit) {
 	int	    iloop,
 			sd;
 	char  *cp,

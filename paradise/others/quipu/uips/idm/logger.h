@@ -138,5 +138,5 @@ char   *ll_preset (char *fmt, ...);
 int	ll_check (LLog *lp);
 
 int	ll_defmhdr (char *bufferp, char *headerp, char *dheaderp);
-IFP	ll_setmhdr (IFP make_header_routine);
+int (*ll_setmhdr (int (*make_header_routine)(char *, char *, char *)))(char *, char *, char *);
 #endif

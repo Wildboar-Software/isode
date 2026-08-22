@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include "psap.h"
 
-int ps_io (PS ps, IFP io, PElementData data, PElementLen n, int in_line) {
+int ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, PElementLen n, int in_line) {
 	int    cc;
 
-	if (io == NULLIFP)
+	if (io == NULL)
 		return ps_seterr (ps, PS_ERR_EOF, NOTOK);
 
 	while (n > 0)

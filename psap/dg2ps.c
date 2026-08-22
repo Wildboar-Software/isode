@@ -13,11 +13,11 @@ struct ps_dg {
 		char   *pio_ptr;
 		int	pio_cnt;
 
-		IFP	pio_fnx;
+		int (*pio_wfnx)(int fd, struct qbuf *q);
+		int (*pio_rfnx)(int fd, struct qbuf **q);
 	}	    ps_input,
 	  ps_output;
-
-	IFP	    ps_check;
+	int (*ps_check)(int fd);
 };
 
 extern	IFP	set_check_fd (int fd, IFP fnx, caddr_t data);
@@ -52,7 +52,7 @@ static int dg_prime (PS ps, int waiting) {
 	if (waiting < 0)
 		return ps_seterr (ps, PS_ERR_EXTRA, NOTOK);
 
-	if ((*pi -> pio_fnx) (pt -> ps_fd, &qb) == NOTOK)
+	if ((*pi -> pio_rfnx) (pt -> ps_fd, &qb) == NOTOK)
 		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 
 	if (pi -> pio_qb = qb)
@@ -98,7 +98,7 @@ static int dg_flush (PS ps) {
 	struct qbuf *qb = po -> pio_qb;
 
 	qb -> qb_len = po -> pio_ptr - qb -> qb_data;
-	if ((*po -> pio_fnx) (pt -> ps_fd, qb) != qb -> qb_len)
+	if ((*po -> pio_wfnx) (pt -> ps_fd, qb) != qb -> qb_len)
 		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 
 	po -> pio_ptr = qb -> qb_data, po -> pio_cnt = pt -> ps_maxsize;
@@ -145,7 +145,7 @@ int dg_open (PS ps) {
 	return OK;
 }
 
-int dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx) {
+int dg_setup (PS ps, int fd, int size, int (*rfx)(int fd, struct qbuf **q), int (*wfx)(int fd, struct qbuf *qb), int (*cfx)(int fd)) {
 	struct ps_dg *pt;
 	struct ps_inout *po;
 	struct qbuf *qb;
@@ -168,8 +168,8 @@ int dg_setup (PS ps, int fd, int size, IFP rfx, IFP wfx, IFP cfx) {
 	po = &pt -> ps_output;
 	po -> pio_qb = qb;
 	po -> pio_ptr = qb -> qb_data, po -> pio_cnt = pt -> ps_maxsize;
-	if ((pt -> ps_input.pio_fnx = rfx) == NULLIFP
-			|| (po -> pio_fnx = wfx) == NULLIFP)
+	if ((pt -> ps_input.pio_rfnx = rfx) == NULL
+			|| (po -> pio_wfnx = wfx) == NULL)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 
 	pt -> ps_check = cfx;

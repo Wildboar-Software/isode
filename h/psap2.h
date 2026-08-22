@@ -395,7 +395,7 @@ int PExec (
 	struct PSAPindication *pi,
 	char *arg1,
 	char *arg2,
-	IFP hook,
+	int (*hook)(struct isoservent *is, struct PSAPindication *pi),
 #ifndef	IAE
 	int (*setperms)(struct isoservent *is)
 #else

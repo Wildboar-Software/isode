@@ -24,8 +24,8 @@ static char *myname = "ryresponder";
 
 static jmp_buf toplevel;
 
-static IFP	startfnx;
-static IFP	stopfnx;
+static int (*startfnx)(int sd, struct AcSAPstart *acs);
+static int (*stopfnx)(int sd, struct AcSAPfinish *acf);
 
 static int ros_init (int vecp, char **vec);
 static int ros_work (int fd);
@@ -40,8 +40,8 @@ void ryresponder (
 	char *mycontext,
 	struct dispatch *dispatches,
 	struct RyOperation *ops,
-	IFP start,
-	IFP stop
+	int (*start)(int sd, struct AcSAPstart *acs),
+	int (*stop)(int sd, struct AcSAPfinish *acf)
 ) {
 	struct dispatch   *ds;
 	AEI	    aei;

@@ -211,7 +211,7 @@ struct assocblk {
 	int (*acb_putosdu)(struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi);	/* osdu2acb */
 	int (*acb_rowaitrequest)(struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi);	/* RO-WAIT.REQUEST */
 	int (*acb_ready)(struct assocblk *acb, int priority, struct RoSAPindication *roi);		/* get HDX permission */
-	int (*acb_rosetindications)(struct assocblk *acb, IFP indication, struct RoSAPindication *roi);/* define vectors for INDICATION events */
+	int (*acb_rosetindications)(struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi);/* define vectors for INDICATION events */
 	int (*acb_roselectmask)(struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi);	/* map association descriptors for select () */
 	int (*acb_ropktlose)(struct assocblk *acb, int result);	/* protocol-level abort */
 	PE (*acb_getosdu)(struct qbuf *qb, int len, int *result);	/* for users of THORN... */

@@ -65,7 +65,7 @@ static int  pwdgen (char *pw);
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
-				 dispatches, table_IMISC_Operations, NULLIFP, NULLIFP);
+				 dispatches, table_IMISC_Operations, NULL, NULL);
 
 	exit (0);			/* NOTREACHED */
 }

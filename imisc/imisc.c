@@ -111,7 +111,7 @@ static struct dispatch dispatches[] = {
 
 int main (int argc, char **argv, char **envp) {
 	ryinitiator (argc, argv, myservice, mycontext, mypci,
-				 table_IMISC_Operations, dispatches, (IFP)do_quit);
+				 table_IMISC_Operations, dispatches, (ds_argument_t)do_quit);
 	exit (0);			/* NOTREACHED */
 }
 

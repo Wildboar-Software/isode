@@ -14,7 +14,7 @@
 
 #define	ADVISE	if (o_advise) (*o_advise)
 
-IFP	o_advise = NULLIFP;
+void (*o_advise)(int code, char *what, char *fmt, ...) = NULL;
 
 int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;

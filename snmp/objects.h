@@ -106,7 +106,7 @@ struct object_instance {
 
 OI	name2inst (OID oid), next2inst (OID oid), text2inst (const char *text);
 
-extern	IFP	o_advise;
+extern	void (*o_advise)(int code, char *what, char *fmt, ...);
 
 int	o_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
 int s_generic (OI oi, struct type_SNMP_VarBind *v, int offset);
