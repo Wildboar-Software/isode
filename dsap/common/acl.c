@@ -680,15 +680,15 @@ static PE acl_enc (void *value) {
 
 void acl_syntax (void) {
 	extern short acl_sntx;
-	extern IFP merge_acl;
-	extern IFP acl_fn;
+	extern void (*merge_acl)(AV_Sequence, char *);
+	extern struct acl_info *(*acl_fn)(void);
 	acl_sntx = add_attribute_syntax ("acl",
 									 acl_enc,	acl_decode,
 									 str2acl,	acl_print,
 									 acl_cpy,	acl_cmp_void,
 									 acl_free,	NULLCP,
 									 NULL,		TRUE);
-	merge_acl = (IFP) acl_merge;
-	acl_fn = (IFP) acl_default;
+	merge_acl = acl_merge;
+	acl_fn = acl_default;
 	get_default_acl();
 }

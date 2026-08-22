@@ -22,13 +22,13 @@ extern LLog * log_stat;
 extern void dsa_abort(int xrestart);
 
 int refresh_from_disk (DN dn);
+extern Entry database_root;
+void attempt_restart(int sig);
 
 int dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	char * str;
 	DN dn2;
 	Entry theentry;
-	extern Entry database_root;
-	SFD attempt_restart(int sig);
 
 	if ( ! manager(dn) ) {
 		error->dse_type = DSE_SECURITYERROR;
@@ -149,8 +149,6 @@ int new_dsa_control (Attr_Sequence as, struct DSError *error, DN dn) {
 	char * tmp_ptr ;
 	DN dn2;
 	Entry theentry;
-	extern Entry database_root;
-	SFD attempt_restart(int sig);
 
 	/* Return some silly error to distinguish it from the other dsa_control */
 	if ( ! manager(dn) ) {

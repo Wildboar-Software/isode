@@ -17,7 +17,7 @@ int	_iosignals_set = 0;
 /* Simply including <signal.h> is sufficient for everything but AIX */
 
 #ifdef	AIX		/* #define'd to be _signal */
-IFP	signal (int sig, IFP func)
+int (*signal (int sig, int (*func)(int))) (int)
 {
 	struct sigvec   sv1,
 			   sv2;

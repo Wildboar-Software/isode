@@ -9,9 +9,12 @@ LLog * log_dsap;
 LLog * log_stat;
 #endif
 
+extern int (*unrav_fn)(Entry, struct DSError *);
+extern int (*schema_fn)(Entry, Attr_Sequence, struct DSError *);
+extern void quipu_syntaxes(void);
+extern void free_oid_table(void);
+
 int main (int argc, char *argv[]) {
-	extern IFP unrav_fn;
-	extern IFP schema_fn;
 	int real_unravel_attribute(Entry eptr, struct DSError *error);
 	int real_check_schema(Entry eptr, Attr_Sequence as, struct DSError *error);
 	extern PS opt;
@@ -20,8 +23,8 @@ int main (int argc, char *argv[]) {
 	Avlnode	*treetop;
 
 	dsa_mode = TRUE;
-	unrav_fn = (IFP) real_unravel_attribute;
-	schema_fn = (IFP) real_check_schema;
+	unrav_fn = real_unravel_attribute;
+	schema_fn = real_check_schema;
 	quipu_syntaxes();
 	if (load_oid_table ("oidtable") == NOTOK)
 		fatal (-1, "Can't load oid tables");

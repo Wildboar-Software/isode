@@ -24,7 +24,7 @@ char * find_nest(char *str);
 static int indent = 0;
 short as_sntx;
 extern short oc_sntx;
-extern IFP oc_hier;
+extern void (*oc_hier)(void);
 
 #ifdef TURBO_DISK
 char fromfile;

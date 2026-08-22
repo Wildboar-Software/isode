@@ -327,7 +327,7 @@ int update_aux (DN dn, int isroot) {
 			if ((eptr = make_path (dsainfo->edb_name)) == NULLENTRY) {
 				pslog (log_dsap,LLOG_EXCEPTIONS,
 					   "edbinfo references EDB that does not exist !!!",
-					   (IFP)dn_print,(caddr_t) dsainfo->edb_name);
+					   (void (*)(PS, void *, int))dn_print,(caddr_t) dsainfo->edb_name);
 				continue;
 			}
 		} else {

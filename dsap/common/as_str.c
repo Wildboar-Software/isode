@@ -3,8 +3,8 @@
 #include "quipu/malloc.h"
 
 extern short acl_sntx;
-extern IFP merge_acl;
-extern IFP acl_fn;
+extern void (*merge_acl)(AV_Sequence, char *);
+extern struct acl_info *(*acl_fn)(void);
 extern char dsa_mode;
 
 Attr_Sequence str2as (char * str) {

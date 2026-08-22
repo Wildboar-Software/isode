@@ -25,10 +25,11 @@ unsigned char isode_x25_err[2];
 char isode_x25_errflag = 0;
 #endif
 
-void	_asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ... */
-	int    eindex;
-	eindex = errno;
-
+// FIXME: I think this is insecure.
+// Maybe you could replace it with vsnprintf, and globally only use BUFSIZ for buffers
+// passed into this function.
+void _asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ... */
+	int eindex = errno;
 	*bp = 0;
 
 	if (fmt) {
@@ -54,7 +55,6 @@ void	_asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ...
 		vsprintf (bp, fmt, ap);
 #endif
 		bp += strlen (bp);
-
 	}
 
 	if (what) {
@@ -64,15 +64,12 @@ void	_asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ...
 		}
 		strcpy (bp, sys_errname (eindex));
 		bp += strlen (bp);
-
 #ifdef X25
 		if (isode_x25_errflag) {
 			sprintf (bp, " (%02x %02x)",isode_x25_err[0],isode_x25_err[1]);
 			bp += strlen (bp);
 		}
 #endif
-
 	}
-
 	errno = eindex;
 }

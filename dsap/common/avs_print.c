@@ -2,7 +2,7 @@
 #include "quipu/util.h"
 #include "quipu/attrvalue.h"
 
-IFP oc_avsprint = NULLIFP;
+void (*oc_avsprint)(PS, AV_Sequence, int) = NULL;
 extern short oc_sntx;
 extern int avs_count;
 

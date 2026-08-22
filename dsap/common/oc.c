@@ -7,8 +7,8 @@
 
 extern LLog * log_dsap;
 extern short oc_sntx;
-extern IFP oc_hier;
-extern IFP oc_avsprint;
+extern AV_Sequence (*oc_hier)(char *);
+extern void (*oc_avsprint)(PS, AV_Sequence, int);
 
 static void add_hierarchy (objectclass *oc, AV_Sequence *avsp);
 static void add_oc_avs (objectclass *oc, AV_Sequence *avsp);
@@ -243,7 +243,7 @@ void objectclass_syntax (void) {
 									oc_cpy,		objectclass_cmp,
 									oc_free,	NULLCP,
 									NULL,		FALSE );
-	oc_hier = (IFP) str2oc_hier;
-	oc_avsprint = (IFP) oc_print_avs;
+	oc_hier = str2oc_hier;
+	oc_avsprint = oc_print_avs;
 	want_oc_hierarchy ();
 }

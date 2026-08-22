@@ -281,12 +281,12 @@ DN get_copy_dn (Entry entryptr)
 	return (dn);
 }
 
-IFP unrav_fn = NULLIFP;
-IFP schema_fn = NULLIFP;
+int (*unrav_fn)(Entry, struct DSError *) = NULL;
+int (*schema_fn)(Entry, Attr_Sequence, struct DSError *) = NULL;
 
 int unravel_attribute (Entry eptr, struct DSError *error)
 {
-	if (unrav_fn == NULLIFP)
+	if (unrav_fn == NULL)
 		return (OK);
 	else
 		return ((*unrav_fn)(eptr,error));
@@ -294,7 +294,7 @@ int unravel_attribute (Entry eptr, struct DSError *error)
 
 int check_schema (Entry eptr, Attr_Sequence as, struct DSError *error)
 {
-	if (schema_fn == NULLIFP)
+	if (schema_fn == NULL)
 		return (OK);
 	else
 		return ((*schema_fn)(eptr,as,error));

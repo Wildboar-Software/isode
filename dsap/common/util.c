@@ -275,10 +275,10 @@ int quipu_pe_cmp (PE a, PE b)
 	}
 }
 
-IFP acl_fn = NULLIFP;
+struct acl_info *(*acl_fn)(void) = NULL;
 
 struct acl_info *acl_dflt (void) {
-	if (acl_fn == NULLIFP)
+	if (acl_fn == NULL)
 		return ((struct acl_info *) NULL);
 	else
 		return ((struct acl_info *)(*acl_fn)());

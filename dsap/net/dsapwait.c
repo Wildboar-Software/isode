@@ -892,7 +892,7 @@ static int IspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 
 /* Watchdog stuff */
 
-IFP restart_fn = NULLIFP;
+void (*restart_fn)(int) = NULL;
 
 static char * watch_dog_where;
 static int watchdogfinal = FALSE;
@@ -921,7 +921,7 @@ watch_dog_activate (int sd) {
 	static char called = FALSE;
 
 	if (!called) {
-		if (restart_fn == NULLIFP)
+		if (restart_fn == NULL)
 			return;
 		else {
 			called = TRUE;

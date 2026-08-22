@@ -35,7 +35,7 @@ static char  *py_classlist[] = {
 static char *vbp = NULLCP;
 static char *vsp;
 
-IFP   vfnx = (IFP) fprintf;
+int (*vfnx)(FILE *, const char *, ...) = fprintf;
 FILE *vfp = (FILE*) NULL;
 static PS    vps = NULLPS;
 
@@ -465,7 +465,7 @@ void vpushfp (FILE *fp, PE pe, char *s, int rw) {
 
 void vsetfp (FILE *fp, char *s) {
 	vfp = fp;
-	vfnx = (IFP) fprintf;
+	vfnx = fprintf;
 
 	if(s != NULLCP)
 		(*vfnx) (vfp, "%s\n", s);
@@ -507,7 +507,7 @@ void vpushpp (
 }
 
 void vpopp(void)  {
-	vfp = stdout, vfnx = (IFP) fprintf;
+	vfp = stdout, vfnx = fprintf;
 }
 
 void vpushquipu (PS ps) {
@@ -523,6 +523,22 @@ void vpopquipu(void)  {
 
 #undef	pvpdu
 
+// This was added by AI. Sorry if this destroys your computer.
+static int ll_vprintf(LLog *lp, const char *fmt, va_list ap) {
+	char buffer[BUFSIZ];
+	_asprintf(buffer, NULLCP, (char *)fmt, ap);
+	return ll_printf(lp, "%s", buffer);
+}
+
+static int ll_printf_evil(FILE *fp, const char *format, ...) {
+	va_list ap;
+	int result;
+	va_start(ap, format);
+	result = ll_vprintf((LLog *)fp, format, ap);
+	va_end(ap);
+	return result;
+}
+
 /**
  * ind: index into tables
  * mod: pointer to tables
@@ -530,7 +546,7 @@ void vpopquipu(void)  {
 void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
+	vfp = (FILE *) lp, vfnx = ll_printf_evil;
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -547,7 +563,7 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 		prnt_f (ind, mod, pe, 1, NULL, NULLVP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
-	vfp = stdout, vfnx = (IFP) fprintf;
+	vfp = stdout, vfnx = fprintf;
 }
 
 static char *bufp = NULL;
@@ -570,7 +586,7 @@ static char *newbuf (int i) {
 void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-	vfp = (FILE *) lp, vfnx = (IFP)ll_printf;
+	vfp = (FILE *) lp, vfnx = ll_printf_evil;
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -584,7 +600,7 @@ void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
 	(*fnx) (pe, 1, NULL, NULLVP, NULLCP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
-	vfp = stdout, vfnx = (IFP) fprintf;
+	vfp = stdout, vfnx = fprintf;
 }
 
 #ifdef DEBUG

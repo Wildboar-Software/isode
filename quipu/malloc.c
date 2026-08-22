@@ -37,7 +37,7 @@ int mem_heap = 0;
 
 #ifndef MALLOC_TEST
 extern LLog * log_dsap;
-extern SFD attempt_restart(int sig);
+extern void attempt_restart(int sig);
 #endif
 
 #ifdef MALLOCDEBUG

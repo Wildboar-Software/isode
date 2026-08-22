@@ -76,7 +76,7 @@ void    adios (char *, char *, ...);
 void    advise (int, char *, char *, ...);
 void    mk_dsa_tmp_dir(void);
 static  void envinit (void), setdsauid(void);
-SFD attempt_restart(int sig);
+void attempt_restart(int sig);
 extern int print_parse_errors;
 extern int parse_line;
 struct task_act	* task_select(int *secs);
@@ -623,7 +623,7 @@ fork_ok:
 #define	CLEAR_TIME	300	/* .. */
 #endif
 
-	SFD attempt_restart (int sig)
+	void attempt_restart (int sig)
 	{
 		int sd;
 		static int here_again = 0;

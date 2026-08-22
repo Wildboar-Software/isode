@@ -31,11 +31,11 @@ extern char * get_entry_passwd(Attr_Sequence as);
 extern char * new_version(void);
 extern char * quipuversion, * TidyString(char *a);
 extern int parse_status;
-extern IFP unrav_fn;
-extern IFP schema_fn;
-extern IFP restart_fn;
+extern int (*unrav_fn)(Entry, struct DSError *);
+extern int (*schema_fn)(Entry, Attr_Sequence, struct DSError *);
+extern void (*restart_fn)(int);
 extern AttributeType at_version;
-extern SFD attempt_restart(int sig);
+extern void attempt_restart(int sig);
 extern int free_phylinebuf (void);
 time_t	timenow;
 
@@ -56,9 +56,9 @@ int dsa_init (void) {
 	Entry akid;
 
 	check_dsa_known_oids();
-	unrav_fn = (IFP) real_unravel_attribute;
-	schema_fn = (IFP) real_check_schema;
-	restart_fn = (IFP) attempt_restart;
+	unrav_fn = real_unravel_attribute;
+	schema_fn = real_check_schema;
+	restart_fn = attempt_restart;
 	if (( manager = AttrT_new (MANAGER_OID)) == NULLAttrT)
 		fatal (-1,"Manager - unknown attribute - check oid tables");
 	LLOG (log_dsap,LLOG_NOTICE,("dsa name %s",mydsaname));

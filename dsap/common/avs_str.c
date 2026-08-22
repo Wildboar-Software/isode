@@ -2,9 +2,9 @@
 #include "quipu/attrvalue.h"
 
 short oc_sntx = -1;
-IFP oc_hier = NULLIFP;
+AV_Sequence (*oc_hier)(char *) = NULL;
 short acl_sntx = -1;
-IFP merge_acl = NULLIFP;
+void (*merge_acl)(AV_Sequence, char *) = NULL;
 
 AV_Sequence str2avs (char *str, AttributeType at)
 {

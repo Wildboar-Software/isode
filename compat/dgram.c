@@ -31,7 +31,8 @@
 static void action (char *s, int fd, struct sockaddr *sock);
 #endif
 
-extern IFP set_check_fd (int fd, IFP fnx, caddr_t data);
+static int check_dgram_socket_with_data(int fd, void *data);
+extern int (*set_check_fd (int fd, int (*fnx)(int, void *), void *data))(int, void *);
 
 union sockaddri_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
 	struct sockaddr	sa;
@@ -128,7 +129,7 @@ got_socket:
 	if (opt2)
 		setsockopt (sd, SOL_SOCKET, opt2, (char *)&onoff, sizeof onoff);
 #endif
-	set_check_fd (sd, (IFP)check_dgram_socket, NULLCP);
+	set_check_fd (sd, check_dgram_socket_with_data, NULLCP);
 	return (peers[sd].dgram_parent = sd);
 }
 #endif
@@ -253,7 +254,7 @@ int join_dgram_aux (int fd, struct sockaddr *sock, int newfd) {
 		}
 		if ((sd = dup (fd)) == NOTOK)
 			return NOTOK;
-		set_check_fd (fd, (IFP)check_dgram_socket, NULLCP);
+		set_check_fd (fd, check_dgram_socket_with_data, NULLCP);
 		up = &peers[sd];
 #ifdef	BSD44
 		bcopy (qb -> qb_base, (caddr_t) sock,
@@ -519,12 +520,24 @@ int check_dgram_socket (int fd) {
 	return select_dgram_socket (nfds, &ifds, NULLFD, NULLFD, OK);
 }
 
+static int check_dgram_socket_with_data(int fd, void *data) {
+	int	    nfds;
+	fd_set  ifds;
+
+	FD_ZERO (&ifds);
+	nfds = fd + 1;
+	FD_SET (fd, &ifds);
+	return select_dgram_socket (nfds, &ifds, NULLFD, NULLFD, OK);
+}
+
+
 #ifdef	DEBUG
 
 #ifdef	TCP
 #include "isoaddrs.h"
 
-static void inetprint (struct sockaddr_in *sin, char *bp) {
+static void inetprint (struct sockaddr *s, char *bp) {
+	struct sockaddr_in *sin = (struct sockaddr_in *) s;
 	sprintf (bp, "Internet=%s+%d+%d", inet_ntoa (sin -> sin_addr),
 			 (int) ntohs (sin -> sin_port), NA_TSET_UDP);
 }

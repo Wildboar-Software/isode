@@ -36,6 +36,8 @@ extern LLog * tsap_log;
 
 extern time_t	timenow;
 
+extern void attempt_restart(int sig);
+
 int dsa_wait (int secs) {
 	int                         vecp = 0;
 	char                        *vec[4];
@@ -50,7 +52,7 @@ int dsa_wait (int secs) {
 	char			*ibp;
 	char			wbuffer[BUFSIZ];
 	char			*wbp;
-	SFD 			attempt_restart(int sig);
+	
 	int				newfd;
 	int				result = NOTOK;
 

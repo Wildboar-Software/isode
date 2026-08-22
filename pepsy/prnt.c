@@ -13,7 +13,7 @@
 #define	CHOICE_PUSH
 
 extern PE p_setpresent(PE head, ptpe *p, modtyp *mod);
-extern IFP vfnx;
+extern int (*vfnx)(FILE *, const char *, ...);
 extern FILE *vfp;
 
 extern ptpe *next_ptpe(ptpe *p);
