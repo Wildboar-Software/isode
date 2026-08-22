@@ -93,11 +93,9 @@ struct listenblk {
 #define	lb_rem_xsock	lb_un3.lb_un_xsock
 #define	lb_rem_nsock	lb_un3.lb_un_nsock
 #define	lb_rem_tsock	lb_un3.lb_un_tsock
-
-	IFP	    lb_accept1;			/* accept 1 function */
-	IFP	    lb_accept2;			/* accept 2 function */
-
-	IFP	    lb_close;				/* close function */
+	int	    (*lb_accept1)(struct listenblk *lb, struct TSAPdisconnect *td);	/* accept 1 function */
+	int	    (*lb_accept2)(struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td);	/* accept 2 function */
+	int	    (*lb_close)(int fd);		/* close function */
 };
 #define	NULLLBP		((struct listenblk *) 0)
 
@@ -150,15 +148,15 @@ static struct nsapent {
 	int	    ns_type;
 	int	    ns_stack;
 
-	IFP	    ns_listen;
-	IFP	    ns_accept1;
-	IFP	    ns_accept2;
-	IFP	    ns_unique;
-	IFP	    ns_close;
+	int	    (*ns_listen)(struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdisconnect *td);
+	int	    (*ns_accept1)(struct listenblk *lb, struct TSAPdisconnect *td);
+	int	    (*ns_accept2)(struct listenblk *lb, int *vecp, char **vec, struct TSAPdisconnect *td);
+	int	    (*ns_unique)(struct TSAPaddr *ta, struct TSAPdisconnect *td);
+	int	    (*ns_close)(int fd);
 }	nsaps[] = {
 #ifdef	TCP
 	NA_TCP, TS_TCP,
-	(IFP)tcplisten, (IFP)tcpaccept1, (IFP)tcpaccept2, (IFP)tcpunique, (IFP)close_tcp_socket,
+	tcplisten, tcpaccept1, tcpaccept2, tcpunique, close_tcp_socket,
 #endif
 
 #ifdef	X25
@@ -579,7 +577,7 @@ empty:
 					case LB_ACCEPT: {
 						/* take care - lb2 is free'd by accept2 */
 						MagicFunction magicfnx = lb2 -> lb_magic;
-						IFP closefnx = lb2 -> lb_close;
+						int (*closefnx)(int fd) = lb2 -> lb_close;
 
 						if (accepted) /* only 1 accept at a time */
 							break; /* we'll get it next time */
@@ -724,7 +722,7 @@ int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfds, stru
 
 				case LB_ACCEPT: {
 					/* take care - lb2 is free'd by accept2 */
-					IFP closefnx = lb2 -> lb_close;
+					int (*closefnx)(int fd) = lb2 -> lb_close;
 					MagicFunction magicfnx = lb2 -> lb_magic;
 
 					if (accepted)   /* only 1 accept at a time */
