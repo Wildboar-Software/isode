@@ -149,6 +149,9 @@ RemoteSystemsTempFiles/
 !CHANGELOG.md
 !README.md
 !Chart.yaml
+
+# Quipu end-to-end smoke test working directory (left behind on failure)
+.quipu-e2e/
 z[A-Z]*
 *.o
 *.a
