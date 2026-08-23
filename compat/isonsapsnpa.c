@@ -74,8 +74,10 @@ static struct NSAPinfo *getisonsapsnpa(void) {
 		if (ta -> ta_naddr != 1 ||
 				ta -> ta_addrs[0].na_stack != NA_NSAP)
 			continue;
-		bcopy (ta -> ta_addrs[0].na_address, is -> is_prefix,
-			   is -> is_plen = ta -> ta_addrs[0].na_addrlen);
+		is -> is_plen = ta -> ta_addrs[0].na_addrlen;
+		if (bcopy_int (ta -> ta_addrs[0].na_address, is -> is_prefix,
+				   is -> is_plen) != 0)
+			continue;
 		if (strcmp(vec[1], "-") == 0)
 			is -> is_nsap.na_stack = NOTOK;
 		else {
@@ -118,7 +120,7 @@ struct NSAPaddr *getisosnpa (struct NSAPaddr *nsap) {
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_nsap.na_stack == NOTOK || is -> is_plen < best)
 			continue;
-		if (bcmp (nsap -> na_address, is -> is_prefix,
+		if (bcmp_int (nsap -> na_address, is -> is_prefix,
 				  is -> is_plen) == 0) {
 			best = is -> is_plen;
 			*ns = *is; /* struct copy */
@@ -142,7 +144,7 @@ struct NSAPinfo *getnsapinfo (struct NSAPaddr *nsap) {
 	while (is = getisonsapsnpa ()) {
 		if (is -> is_plen < best)
 			continue;
-		if (bcmp (nsap -> na_address, is -> is_prefix,
+		if (bcmp_int (nsap -> na_address, is -> is_prefix,
 				  is -> is_plen) == 0) {
 			best = is -> is_plen;
 

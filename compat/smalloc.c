@@ -24,8 +24,13 @@ void (*set_smalloc_handler (void (*fnx)(void)))(void) {
 
 char *smalloc (int size) {
 	char *ptr;
+	size_t n;
 
-	if ((ptr = malloc((unsigned) size)) == (char *)0) {
+	if (int2sizet (size, &n) != 0) {
+		(*smalloc_handler) ();
+		_exit(1);
+	}
+	if ((ptr = malloc(n)) == (char *)0) {
 		(*smalloc_handler) ();
 		_exit(1);	/* just in case */
 	}

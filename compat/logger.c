@@ -45,15 +45,19 @@ static int (*_ll_header_routine)(char *, char *, char *) = ll_defmhdr;
 long	lseek (int, off_t, int);
 
 int ll_open (LLog *lp) {
-	int	    mask,
-			mode;
+	mode_t  mask;
+	int	    mode;
+	long    nopen;
+	size_t  n;
 	char   *bp,
 		   buffer[BUFSIZ];
 
+	nopen = sysconf (_SC_OPEN_MAX);
+	if (long2sizet (nopen, &n) != 0)
+		goto you_lose;
 	if (llp == NULL
 			&& (llp = (struct ll_private *)
-					  calloc ((unsigned int) sysconf (_SC_OPEN_MAX),
-							  sizeof *llp)) == NULL)
+					  calloc (n, sizeof *llp)) == NULL)
 		goto you_lose;
 	if (lp -> ll_file == NULLCP
 			|| *lp -> ll_file == NULL) {
@@ -75,9 +79,9 @@ you_lose:
 	mode = O_WRONLY | O_APPEND;
 	if (lp -> ll_stat & LLOGCRT)
 		mode |= O_CREAT;
-	mask = umask (~0666);
+	mask = umask ((mode_t) ~(mode_t) 0666);
 	lp -> ll_fd = open (bp, mode, 0666);
-	umask (mask);
+	(void) umask (mask);
 	if (ll_check (lp) == NOTOK)
 		return (NOTOK);
 	if (lp -> ll_fd != NOTOK)
@@ -116,7 +120,10 @@ int ll_log (LLog *lp, int event, char *what, char *fmt) {
 #endif
 
 int _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {
-	int	    cc, status;
+	int	    status;
+	size_t  nbytes,
+			nwritten;
+	ssize_t nw;
 	char *bp;
 	char buffer[BUFSIZ];
 
@@ -184,17 +191,19 @@ int _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {
 			   && ll_check (lp) == NOTOK)
 		return NOTOK;
 	*bp++ = '\n', *bp = 0;
-	cc = bp - buffer;
-	if ((status = write (lp -> ll_fd, buffer, cc)) != cc) {
-		if (status == NOTOK) {
-			ll_close (lp);
+	if (ptrdiff2sizet (bp - buffer, &nbytes) != 0)
+		goto error;
+	nw = write (lp -> ll_fd, buffer, nbytes);
+	if (nw < 0) {
+		ll_close (lp);
 error:
-			;
-			lp -> ll_stat |= LLOGERR;
-			return NOTOK;
-		}
+		;
+		lp -> ll_stat |= LLOGERR;
+		return NOTOK;
+	}
+	if (ssize2sizet (nw, &nwritten) != 0 || nwritten != nbytes)
 		status = NOTOK;
-	} else
+	else
 		status = OK;
 	if ((lp -> ll_stat & LLOGCLS) && ll_close (lp) == NOTOK)
 		goto error;
@@ -279,8 +288,10 @@ int ll_printf (LLog *lp, char *fmt) {
 static
 #endif
 int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
-	int	    cc,
-			status;
+	int	    status;
+	size_t  nbytes,
+			nwritten;
+	ssize_t nw;
 	char   *bp;
 	char     buffer[BUFSIZ];
 	char    *fmt;
@@ -317,20 +328,21 @@ int  _ll_printf (LLog*lp, va_list ap) {	/* fmt, args ... */
 	} else if ((!llp || llp[lp -> ll_fd].ll_checks-- < 0) && ll_check (lp) == NOTOK)
 		return NOTOK;
 
-	if (bp)
-		cc = bp - buffer;
-	else
-		cc = strlen (fmt);
-
-	if ((status = write (lp -> ll_fd, bp ? buffer : fmt, cc)) != cc) {
-		if (status == NOTOK) {
-			ll_close (lp);
-			lp -> ll_stat |= LLOGERR;
+	if (bp) {
+		if (ptrdiff2sizet (bp - buffer, &nbytes) != 0)
 			return NOTOK;
-		}
-
-		status = NOTOK;
 	} else
+		nbytes = strlen (fmt);
+
+	nw = write (lp -> ll_fd, bp ? buffer : fmt, nbytes);
+	if (nw < 0) {
+		ll_close (lp);
+		lp -> ll_stat |= LLOGERR;
+		return NOTOK;
+	}
+	if (ssize2sizet (nw, &nwritten) != 0 || nwritten != nbytes)
+		status = NOTOK;
+	else
 		status = OK;
 
 	va_end(ap);

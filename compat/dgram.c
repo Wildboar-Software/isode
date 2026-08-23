@@ -365,11 +365,27 @@ int write_dgram_socket (int fd, struct qbuf *qb) {
 	}
 	action ("SENDTO", fd, &up -> dgram_peer.sa);
 #ifdef	BSD44
-	return sendto (fd, qb -> qb_data, qb -> qb_len, NULL,
-				   &up -> dgram_peer.sa, (int) up -> dgram_peer.sa.sa_len);
+	{
+		size_t n;
+
+		if (int2sizet (qb -> qb_len, &n) != 0) {
+			errno = EINVAL;
+			return NOTOK;
+		}
+		return sendto (fd, qb -> qb_data, n, NULL,
+					   &up -> dgram_peer.sa, (int) up -> dgram_peer.sa.sa_len);
+	}
 #else
-	return sendto (fd, qb -> qb_data, qb -> qb_len, 0,
-				   &up -> dgram_peer.sa, sizeof up -> dgram_peer.sa);
+	{
+		size_t n;
+
+		if (int2sizet (qb -> qb_len, &n) != 0) {
+			errno = EINVAL;
+			return NOTOK;
+		}
+		return sendto (fd, qb -> qb_data, n, 0,
+					   &up -> dgram_peer.sa, sizeof up -> dgram_peer.sa);
+	}
 #endif
 }
 
@@ -429,16 +445,21 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 	for (fd = 0, up = peers; fd < mfds; fd++, up++)
 		if (FD_ISSET (fd, &ifds)) {
 			int	    slen;
+			size_t  slen_sz,
+					need,
+					extra;
 			uint8_t  len;
 			char   *data;
 
 			FD_CLR (fd, &ifds);
 			if (up -> dgram_parent == NOTOK)
 				continue;
-			if ((qb = (struct qbuf *) malloc ((unsigned) (sizeof *qb
-											  + (slen
-												 = sizeof *sock)
-											  + MAXDGRAM)))
+			slen_sz = sizeof *sock;
+			if (int2sizet (MAXDGRAM, &extra) != 0
+					|| sizet2int (slen_sz, &slen) != 0)
+				return NOTOK;
+			need = sizeof *qb + slen_sz + extra;
+			if ((qb = (struct qbuf *) malloc (need))
 					== NULL)
 				return NOTOK;
 

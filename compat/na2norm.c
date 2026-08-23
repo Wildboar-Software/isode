@@ -106,7 +106,8 @@ na2norm (struct NSAPaddr *na) {
 
 	cp = nsap, dp = ca -> na_address;
 	if (ts) {
-		bcopy (ts -> ts_prefix, dp, ts -> ts_length);
+		if (bcopy_int (ts -> ts_prefix, dp, ts -> ts_length) != 0)
+			return NULLNA;
 		dp += ts -> ts_length;
 	}
 	while (*cp) {

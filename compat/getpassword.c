@@ -70,7 +70,7 @@ char *getpassword (char *prompt) {
 #if defined(LINUX)
 	tcgetattr(fileno(fp), &oldtty);
 	newtty = oldtty;
-	newtty.c_lflag &= ~ECHO;
+	newtty.c_lflag &= ~(tcflag_t) ECHO;
 	tcsetattr(fileno(fp), TCSAFLUSH, &newtty);
 #endif
 

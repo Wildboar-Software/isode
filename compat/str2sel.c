@@ -29,8 +29,8 @@ int str2sel (char *s, int quoted, char *sel, int n) {
 			if (i > (r = n * 2))
 				i = r;
 			i = implode ((uint8_t *) sel, s, i);
-			if ((r = (n - i)) > 0)
-				bzero (sel + i, r);
+			if ((r = (n - i)) > 0 && bzero_int (sel + i, r) != 0)
+				return NOTOK;
 			return i;
 		}
 		if (*s == '#') {	/* gosip style, network byte-order */
