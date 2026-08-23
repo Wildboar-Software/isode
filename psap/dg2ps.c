@@ -27,7 +27,7 @@ struct ps_dg {
 	int (*ps_check)(int fd);
 };
 
-extern	int (*set_check_fd)(int fd, int (*fnx)(int fd, caddr_t data), caddr_t data);
+extern int (*set_check_fd (int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
 
 static int dg_prime (PS ps, int waiting) {
 	struct qbuf *qb;

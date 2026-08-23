@@ -30,7 +30,7 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-extern	int (*set_check_fd)(int fd, int (*fnx)(int fd, caddr_t data), caddr_t data);
+extern int (*set_check_fd (int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
 
 static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
