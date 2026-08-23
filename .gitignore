@@ -152,6 +152,8 @@ RemoteSystemsTempFiles/
 
 # Quipu end-to-end smoke test working directory (left behind on failure)
 .quipu-e2e/
+# FTAM end-to-end smoke test working directory (left behind on failure)
+.ftam-e2e/
 z[A-Z]*
 *.o
 *.a
