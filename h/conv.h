@@ -264,6 +264,59 @@ sizet2socklen (size_t n, socklen_t *out)
 	return 0;
 }
 
+#include <termios.h>
+
+static inline int
+int2tflag (int n, tcflag_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((tcflag_t) -1 > (tcflag_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (tcflag_t) -1)
+			return -1;
+	} else {
+		tcflag_t f = (tcflag_t) n;
+
+		if ((int) f != n)
+			return -1;
+		*out = f;
+		return 0;
+	}
+	*out = (tcflag_t) n;
+	return 0;
+}
+
+static inline int
+tflag_bic (tcflag_t v, int bits, tcflag_t *out)
+{
+	tcflag_t m;
+
+	if (int2tflag (bits, &m) != 0)
+		return -1;
+	*out = v & ~m;
+	return 0;
+}
+
+static inline int
+tflag_bis (tcflag_t v, int bits, tcflag_t *out)
+{
+	tcflag_t m;
+
+	if (int2tflag (bits, &m) != 0)
+		return -1;
+	*out = v | m;
+	return 0;
+}
+
+static inline int
+cct2char (cc_t c, char *out)
+{
+	if (out == NULL || (uintmax_t) c > (uintmax_t) CHAR_MAX)
+		return -1;
+	*out = (char) c;
+	return 0;
+}
+
 /* POSIX chown/fchown: all-bits-one means "leave this id unchanged". */
 static inline uid_t
 uid_nochg (void)
