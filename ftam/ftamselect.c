@@ -7,7 +7,7 @@
 /*    map ftam descriptors for select() */
 
 int FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti) {
-	int     smask;
+	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;
 	struct PSAPabort  *pa = &pis.pi_abort;

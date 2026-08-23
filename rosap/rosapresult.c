@@ -15,7 +15,7 @@ static int  RoResultRequestAux (struct assocblk *acb, int invokeID, int op, PE r
 /* RO-RESULT.REQUEST */
 
 int RoResultRequest (int sd, int invokeID, int op, PE result, int priority, struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     status;
 	struct assocblk   *acb;
 

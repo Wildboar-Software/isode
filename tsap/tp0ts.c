@@ -942,7 +942,7 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 		? write_x25_socket
 		: write_tcp_socket;
 #endif
-	int	    smask;
+	SBV	    smask;
 
 	pstat = signal (SIGPIPE, (__sighandler_t)SIG_IGN);
 	smask = sigioblock ();

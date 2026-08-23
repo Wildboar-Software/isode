@@ -25,7 +25,7 @@ static int  SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int c
 }
 
 int SGTokenRequest (int sd, int tokens, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -83,7 +83,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindicat
 }
 
 int SPTokenRequest (int sd, int tokens, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 

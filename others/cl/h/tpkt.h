@@ -15,12 +15,12 @@
 #define	tsapPsig(tb, sd) \
 { \
     if ((tb = findtblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return tsaplose (td, DR_PARAMETER, NULLCP, \
 			    "invalid transport descriptor"); \
     } \
     if (!(tb -> tb_flags & TB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return tsaplose (td, DR_OPERATION, NULLCP, \
 			    "transport descriptor not connected"); \
     } \
@@ -38,11 +38,11 @@
 #define	tsap_udPsig(tb, sd) \
 { \
     if ((tb = findtublk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return tusaplose (td, DR_PARAMETER, NULLCP, TuErrString(UDERR_INVALID_XPORT_DESC)); \
     } \
     if (!(tb -> tb_flags & TB_CLNS)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return tusaplose (td, DR_PARAMETER, NULLCP, TuErrString(UDERR_CLNS_NOT_SUPPORTED)); \
     } \
 }

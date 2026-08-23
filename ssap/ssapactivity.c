@@ -24,7 +24,7 @@ static int  SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si);
 static int  SActStartRequestAux (struct ssapblk *sb, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si);
 
 int SGControlRequest (int sd, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 	smask = sigioblock ();
@@ -57,7 +57,7 @@ static int SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si) {
 /* S-ACTIVITY-START.REQUEST */
 
 int SActStartRequest (int sd, struct SSAPactid *id, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -105,7 +105,7 @@ int SActResumeRequest (
 	int cc,
 	struct SSAPindication *si
 ) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -158,7 +158,7 @@ static int SActResumeRequestAux (
 /* S-ACTIVITY-INTERRUPT.REQUEST */
 
 int SActIntrRequest (int sd, int reason, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -168,7 +168,7 @@ int SActIntrRequest (int sd, int reason, struct SSAPindication *si) {
 	smask = sigioblock ();
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		sigsetmask (smask);
+		sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 	result = SActIntrRequestAux (sb, reason, SPDU_AI, si);
@@ -208,7 +208,7 @@ static int SActIntrRequestAux (struct ssapblk *sb, int reason, int type, struct 
 /* S-ACTIVITY-INTERRUPT.RESPONSE */
 
 int SActIntrResponse (int sd, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -245,7 +245,7 @@ static int SActIntrResponseAux (struct ssapblk *sb, int type, struct SSAPindicat
 /* S-ACTIVITY-DISCARD.REQUEST */
 
 int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -255,7 +255,7 @@ int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 	smask = sigioblock ();
 	ssapXsig (sb, sd);
 	if (sb -> sb_flags & SB_MAP) {
-		sigsetmask (smask);
+		sigiomask (smask);
 		return ssaplose (si, SC_OPERATION, NULLCP, "majorsync in progress");
 	}
 	result = SActIntrRequestAux (sb, reason, SPDU_AD, si);
@@ -266,7 +266,7 @@ int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 /* S-ACTIVITY-DISCARD.RESPONSE */
 
 int SActDiscResponse (int sd, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -281,7 +281,7 @@ int SActDiscResponse (int sd, struct SSAPindication *si) {
 /* S-ACTIVITY-END.REQUEST */
 
 int SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 
@@ -298,7 +298,7 @@ int SActEndRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication
 /* S-ACTIVITY-END.RESPONSE */
 
 int SActEndResponse (int sd, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 

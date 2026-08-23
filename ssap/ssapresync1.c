@@ -26,7 +26,7 @@ static int  SReSyncRequestAux (struct ssapblk *sb, int type, long ssn, int setti
 }
 
 int SReSyncRequest (int sd, int type, long ssn, int settings, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 

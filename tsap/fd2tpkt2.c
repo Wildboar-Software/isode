@@ -317,7 +317,7 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 #else
 	SFP	    pstat;
 #endif
-	int	    smask;
+	SBV	    smask;
 
 	if (t -> t_errno != OK)
 		return t -> t_errno;

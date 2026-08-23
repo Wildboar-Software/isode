@@ -8,7 +8,7 @@
 /* P-MINOR-SYNC.REQUEST */
 
 int PMinSyncRequest (int sd, int type, long *ssn, PE *data, int ndata, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int     len,
 			result;
 	char   *base,

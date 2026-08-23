@@ -48,7 +48,7 @@ struct tsapblk *
 }
 
 int freetublk (struct tsapblk *tb) {
-	int     smask;
+	SBV     smask;
 	struct qbuf *qb,
 			   *qp;
 #ifndef	SIGPOLL

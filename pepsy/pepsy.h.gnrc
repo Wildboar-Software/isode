@@ -337,4 +337,8 @@ int is_any_type (YP yp);
 extern int errno;
 #endif
 
+%BEGIN(PEPY)%
+void do_type (YP yp, int level, char *id, char *arg);
+%END(PEPY)%
+
 #endif /* _GOOBIS_BO_BOOBIS_H_ */

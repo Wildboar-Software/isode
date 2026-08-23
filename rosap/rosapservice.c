@@ -11,7 +11,7 @@
 /*    bind underlying service */
 
 int RoSetService (int sd, int (*bfunc)(struct assocblk *acb, struct RoSAPindication *roi), struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
 

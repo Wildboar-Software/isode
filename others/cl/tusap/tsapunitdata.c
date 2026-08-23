@@ -228,7 +228,7 @@ int TUnitDataBind (int sd, struct TSAPaddr *calling, struct TSAPaddr *called, st
 	struct NSAPaddr *la;
 	struct tsapblk *tb;
 	int	 option;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataBind \n");
@@ -399,7 +399,7 @@ int TUnitDataUnbind (int sd, struct TSAPdisconnect *td)
 {
 	struct tsapblk *tb;
 	int	 result;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 
 #ifdef HULADEBUG
 	printf ("\n     in TUnitDataUnbind \n");
@@ -443,7 +443,7 @@ int TuSave (int sd, int vecp, char **vec, struct TSAPdisconnect *td)
 	struct NSAPaddr *na;
 	int      fd;
 	int	     result;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 
 	if (vecp < 3)
 		return tusaplose (td, DR_PARAMETER, NULLCP,
@@ -571,7 +571,7 @@ int TUnitDataWrite (int sd, struct udvec *uv, struct TSAPdisconnect td)
 
 {
 	int 	 n, cc, hlen;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
 	struct udvec	*vv;   		/* udvec            */
 	struct tsapblk *tb;	 	/* transport blk ptr*/
@@ -713,7 +713,7 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
 
 {
 	int	     cc, hlen;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 	struct tsapblk *tb;
 	struct qbuf    *qb;
 	struct sockaddr_in 	    socket;
@@ -805,7 +805,7 @@ int TUnitDataRead (int sd, struct TSAPunitdata *tud, int secs, struct TSAPdiscon
  */
 
 int	TSetUnitDataIndications (int sd, IFP data) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct tsapblk *tb;
 
@@ -844,7 +844,7 @@ int	TSetUnitDataIndications (int sd, IFP data) {
  */
 
 int	TSelectUnitDataMask (int sd, fd_set *mask, int *nfds) {
-	int     smask;
+	SBV     smask;
 	struct tsapblk *tb;
 
 	/*
@@ -895,7 +895,7 @@ static int UNITDATAser (int sig, long code, struct sigcontext *sc)
 	fd_set  ifds,
 			mask;
 #ifndef	BSDSIGS
-	int	    smask;
+	SBV	    smask;
 #endif
 	IFP	    disc;
 	struct tsapblk *tb,
@@ -990,7 +990,7 @@ static int TUnitDataWakeUp (struct tsapblk *tb)
 	if (!inited) {
 #ifndef	BSDSIGS
 #ifdef SIGEMT
-		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
+		SBV    smask = sigdelmask (SIGEMT);
 #endif
 #endif
 #ifdef SIGEMT

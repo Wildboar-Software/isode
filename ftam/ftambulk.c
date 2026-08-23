@@ -12,7 +12,7 @@ static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, str
 /* F-DATA.REQUEST */
 
 int FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 
@@ -78,7 +78,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 /* F-DATA-END.REQUEST */
 
 int FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 
@@ -179,7 +179,7 @@ out:
 /* F-CANCEL.REQUEST */
 
 int FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 
@@ -294,7 +294,7 @@ out:
 /* F-CANCEL.RESPONSE */
 
 int FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

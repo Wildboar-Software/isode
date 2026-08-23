@@ -29,7 +29,7 @@ int FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) 
 /*    F-GROUP.REQUEST (group) */
 
 static int FGroupRequest (int sd, struct FTAMgroup *ftg, int type, int state, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int	    result;
 	struct ftamblk *fsb;
 

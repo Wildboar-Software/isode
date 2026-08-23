@@ -11,7 +11,7 @@
 /* RO-U-REJECT.REQUEST */
 
 int RoURejectRequest (int sd, int *invokeID, int reason, int priority, struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	PElementID id;
 	struct assocblk   *acb;

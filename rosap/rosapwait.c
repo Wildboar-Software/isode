@@ -11,7 +11,7 @@
 /*    RO-WAIT.REQUEST (pseudo) */
 
 int RoWaitRequest (int sd, int secs, struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
 

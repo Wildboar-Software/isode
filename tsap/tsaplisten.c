@@ -1970,7 +1970,7 @@ int TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td);
 int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
 {
 	int	    result;
-	int	    smask;
+	SBV	    smask;
 	struct tsapblk *tb;
 	missingP (td);
 	smask = sigioblock ();

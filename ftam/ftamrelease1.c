@@ -11,7 +11,7 @@ static int FTerminateRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMr
 
 /* F-TERMINATE.REQUEST */
 int FTerminateRequest (int sd, PE sharedASE, struct FTAMrelease *ftr, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

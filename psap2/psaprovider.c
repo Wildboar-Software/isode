@@ -67,7 +67,7 @@ int PDataRequestAux (
 	char *text,
 	int ppdu
 ) {
-	int	    smask;
+	SBV	    smask;
 	int     i,
 			len,
 			result;
@@ -130,7 +130,7 @@ out1:
 /*    P-READ.REQUEST (pseudo) */
 
 int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
 
@@ -434,7 +434,7 @@ int PSetIndications (
 	void (*abort)(int sd, struct PSAPabort *sa),
 	struct PSAPindication *pi
 ) {
-	int     smask;
+	SBV     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;

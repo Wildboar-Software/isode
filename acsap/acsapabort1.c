@@ -12,7 +12,7 @@
 /* A-ABORT.REQUEST */
 
 int AcUAbortRequest (int sd, PE *data, int ndata, struct AcSAPindication *aci) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct assocblk  *acb;
 	PE	    pe;

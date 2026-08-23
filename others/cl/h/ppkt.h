@@ -9,17 +9,17 @@
 #define	psapPsig(pb, sd) \
 { \
     if ((pb = findpblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_PARAMETER, NULLCP, \
 			    "invalid presentation descriptor"); \
     } \
     if (!(pb -> pb_flags & PB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_OPERATION, NULLCP, \
 			    "presentation descriptor not connected"); \
     } \
     if (pb -> pb_flags & PB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_OPERATION, NULLCP, \
 			    "presentation descriptor finishing"); \
     } \
@@ -28,17 +28,17 @@
 #define	psapFsig(pb, sd) \
 { \
     if ((pb = findpblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_PARAMETER, NULLCP, \
 			    "invalid presentation descriptor"); \
     } \
     if (!(pb -> pb_flags & PB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_OPERATION, NULLCP, \
 			    "presentation descriptor not connected"); \
     } \
     if (!(pb -> pb_flags & PB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return psaplose (pi, PC_OPERATION, NULLCP, \
 			    "presentation descriptor not finishing"); \
     } \

@@ -11,7 +11,7 @@ int RtSetDownTrans (
 	int (*fnx)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {
-	int	    smask;
+	SBV	    smask;
 	struct assocblk   *acb;
 
 	missingP (rti);

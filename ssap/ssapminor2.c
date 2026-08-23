@@ -11,7 +11,7 @@ static int  SMinSyncResponseAux (struct ssapblk *sb, long ssn, char *data, int c
 /* S-MINOR-SYNC.RESPONSE */
 
 int SMinSyncResponse (int sd, long ssn, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 

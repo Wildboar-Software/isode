@@ -7,7 +7,7 @@
 /* S-TYPED-DATA.REQUEST */
 
 int STypedRequest (int sd, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct udvec uvs[2];
 	struct udvec *uv = uvs;

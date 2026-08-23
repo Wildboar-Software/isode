@@ -15,7 +15,7 @@ static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle
 
 /* F-INITIALIZE.REQUEST */
 int FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
-	int     smask;
+	SBV     smask;
 	int     result;
 
 #ifdef	notdef

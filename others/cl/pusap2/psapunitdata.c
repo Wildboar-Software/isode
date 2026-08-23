@@ -87,7 +87,7 @@ static int pdu2contexts (
 int	PUnitDataRequest (struct	PSAPaddr *calling, struct	PSAPaddr *called, struct	PSAPctxlist *ctxlist, PE *data, int ndata, struct	QOStype *qos, struct	PSAPindication *pi)
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int	    i, len;
 	PE	    pe;
@@ -222,7 +222,7 @@ int PUnitDataBind (
 	struct QOStype *qos,
 	struct PSAPindication *pi
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int	    i, len;
 	PE	    pe;
@@ -316,7 +316,7 @@ int PUnitDataRebind (
 	struct PSAPaddr *called,
 	struct PSAPindication *pi
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct psapblk *pb;
 	struct PSAPaddr *calling;
@@ -367,7 +367,7 @@ int PUnitDataRebind (
 int	PUnitDataWrite ( int sd, PE *data, int ndata, struct  PSAPindication *pi )
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int	    i, len;
 	PE	    pe;
@@ -460,7 +460,7 @@ int PUnitDataRead (
 	int secs,
 	struct PSAPindication *pi
 ) {
-	int     smask;
+	SBV     smask;
 	int     result, i, len;
 	PE	    pe = NULLPE;
 	char    *base;
@@ -564,7 +564,7 @@ int PUnitDataUnbind (
 	int sd,
 	struct PSAPindication *pi
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPindication sis;

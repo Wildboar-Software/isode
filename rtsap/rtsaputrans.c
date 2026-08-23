@@ -11,7 +11,7 @@ int RtSetUpTrans (
 	int (*fnx)(int sd, int type, caddr_t addr, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {
-	int	    smask;
+	SBV	    smask;
 	struct assocblk   *acb;
 
 	missingP (rti);

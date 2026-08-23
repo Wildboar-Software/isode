@@ -8,7 +8,7 @@
 /* P-RELEASE.RESPONSE */
 
 int PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int	    len,
 			result;
 	char   *base,

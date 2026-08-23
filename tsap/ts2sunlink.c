@@ -561,7 +561,7 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #else
 	SFP	    pstat;
 #endif
-	int	    smask;
+	SBV	    smask;
 
 	if ((tp = newtp4pkt (TP_DATA_REQ)) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, NULLCP);

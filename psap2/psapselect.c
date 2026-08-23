@@ -5,7 +5,7 @@
 /*    map presentation descriptors for select() */
 
 int PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi) {
-	int     smask;
+	SBV     smask;
 	struct psapblk *pb;
 	struct SSAPindication   sis;
 	struct SSAPabort  *sa = &sis.si_abort;

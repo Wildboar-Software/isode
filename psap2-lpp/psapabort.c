@@ -11,7 +11,7 @@
 /* P-U-ABORT.REQUEST */
 
 int	PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
 	PE	    pe;

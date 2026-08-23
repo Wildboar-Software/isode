@@ -2,6 +2,8 @@
 #ifndef	_MANIFEST_
 #define	_MANIFEST_
 
+#include <stdlib.h>
+
 // Trick to avoid conflicting "entry" symbol
 #define entry search_h_entry
 #define ACTION search_h_action
@@ -15,6 +17,8 @@
 #ifndef	_CONFIG_
 #include "config.h"		/* system-specific configuration */
 #endif
+
+#include <signal.h>
 
 /* target-dependent defines:
 
@@ -99,8 +103,6 @@ int   (*_signal (int sig, int (*func)())) ();
 #endif
 #endif
 
-#ifdef	NSIG
-
 #ifndef	sigmask
 #define	sigmask(s)	(1 << ((s) - 1))
 #endif
@@ -121,20 +123,53 @@ int   (*_signal (int sig, int (*func)())) ();
 #endif
 #endif
 
-typedef	int	SBV;
-#ifndef	lint
-#define	sigioblock()	(_iosignals_set ? sigblock (sigmask (_SIGIO)) : 0)
-#define	sigiomask(s)	(_iosignals_set ? sigsetmask (s) : 0)
-#else
-#define	sigioblock()	sigblock (sigmask (_SIGIO))
-#define	sigiomask(s)	sigsetmask (s)
-#endif
+typedef	sigset_t	SBV;
 extern int _iosignals_set;
 
-#define	siginblock()	sigblock (sigmask (SIGINT))
-#define	siginmask(s)	sigsetmask (s)
+static inline SBV
+sigioblock (void) {
+	sigset_t nset, oset;
 
-#endif
+	(void) sigemptyset (&oset);
+	if (_iosignals_set) {
+		(void) sigemptyset (&nset);
+		(void) sigaddset (&nset, _SIGIO);
+		(void) sigprocmask (SIG_BLOCK, &nset, &oset);
+	}
+	return oset;
+}
+
+static inline int
+sigiomask (SBV s) {
+	if (_iosignals_set)
+		return sigprocmask (SIG_SETMASK, &s, NULL);
+	return 0;
+}
+
+static inline SBV
+siginblock (void) {
+	sigset_t nset, oset;
+
+	(void) sigemptyset (&nset);
+	(void) sigaddset (&nset, SIGINT);
+	(void) sigprocmask (SIG_BLOCK, &nset, &oset);
+	return oset;
+}
+
+static inline int
+siginmask (SBV s) {
+	return sigprocmask (SIG_SETMASK, &s, NULL);
+}
+
+static inline SBV
+sigdelmask (int sig) {
+	sigset_t nset, oset;
+
+	(void) sigemptyset (&nset);
+	(void) sigaddset (&nset, sig);
+	(void) sigprocmask (SIG_UNBLOCK, &nset, &oset);
+	return oset;
+}
 
 /* TYPES */
 

@@ -13,17 +13,17 @@
 #define	ftamPsig(fsb, sd) \
 { \
     if ((fsb = findfsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP, \
 			    "invalid ftam descriptor"); \
     } \
     if (!(fsb -> fsb_flags & FSB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, \
 			    "ftam descriptor not connected"); \
     } \
     if (fsb -> fsb_flags & FSB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, \
 			    "ftam descriptor finishing"); \
     } \
@@ -32,17 +32,17 @@
 #define	ftamFsig(fsb, sd) \
 { \
     if ((fsb = findfsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN_NOREASON, 0, NULLCP, \
 			    "invalid ftam descriptor"); \
     } \
     if (!(fsb -> fsb_flags & FSB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, \
 			    "ftam descriptor not connected"); \
     } \
     if (!(fsb -> fsb_flags & FSB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ftamlose (fti, FS_GEN (fsb), 0, NULLCP, \
 			    "ftam descriptor not finishing"); \
     } \

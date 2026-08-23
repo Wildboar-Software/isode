@@ -16,7 +16,7 @@ int PMajSyncResponseAux (
 	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
 	char *stype
 ) {
-	int	    smask;
+	SBV	    smask;
 	int     len,
 			result;
 	char   *base,

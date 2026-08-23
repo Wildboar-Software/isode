@@ -7,6 +7,8 @@
 #include "config.h"		/* system-specific configuration */
 #endif
 
+#include <signal.h>
+
 /* target-dependent defines:
 
 	SYS5NLY -	target has SYS5 types only, no BSD types
@@ -63,8 +65,6 @@ int   (*_signal ()) ();
 
 #endif
 
-#ifdef	NSIG
-
 #ifndef	sigmask
 #define	sigmask(s)	(1 << ((s) - 1))
 #endif
@@ -79,21 +79,32 @@ int   (*_signal ()) ();
 #endif
 #endif
 
-/* HULA removed #if  defined(BSDSIGS) || !defined(SIGPOLL) */
-/* HULA inserted following line instead */
-#if	defined(BSDSIGS)
-typedef	int	SBV;
-#define	sigioblock()	sigblock (sigmask (_SIGIO))
-#define	sigiomask(s)	sigsetmask (s)
-#else
-#define	int	SFP
-#define	sigioblock()	sigset (_SIGIO, SIG_HOLD)
-#define	sigiomask(s)	sigset (_SIGIO, s)
+typedef	sigset_t	SBV;
 
-#define	sigpause(s)	pause ()
-#endif
+static inline SBV
+sigioblock (void) {
+	sigset_t nset, oset;
 
-#endif
+	(void) sigemptyset (&nset);
+	(void) sigaddset (&nset, _SIGIO);
+	(void) sigprocmask (SIG_BLOCK, &nset, &oset);
+	return oset;
+}
+
+static inline int
+sigiomask (SBV s) {
+	return sigprocmask (SIG_SETMASK, &s, NULL);
+}
+
+static inline SBV
+sigdelmask (int sig) {
+	sigset_t nset, oset;
+
+	(void) sigemptyset (&nset);
+	(void) sigaddset (&nset, sig);
+	(void) sigprocmask (SIG_UNBLOCK, &nset, &oset);
+	return oset;
+}
 
 /* TYPES */
 

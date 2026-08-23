@@ -13,7 +13,7 @@ static int RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE 
 /* RO-ERROR.REQUEST */
 
 int RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
 

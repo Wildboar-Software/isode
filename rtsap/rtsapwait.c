@@ -13,7 +13,7 @@ int RtWaitRequestAux (
 /*    RT-WAIT.REQUEST (pseudo) */
 
 int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
 

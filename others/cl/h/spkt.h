@@ -10,47 +10,47 @@
 #define	ssapPsig(sb, sd) \
 { \
     if ((sb = findsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "invalid session descriptor"); \
     } \
     if (!(sb -> sb_flags & SB_CONN)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "session descriptor not connected"); \
     } \
     if (sb -> sb_flags & SB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "session descriptor finishing"); \
     } \
     if (sb -> sb_flags & SB_MAP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "majorsync in progress"); \
     } \
     if (sb -> sb_flags & SB_RS) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "resync in progress"); \
     } \
     if (sb -> sb_flags & SB_RA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your resync response"); \
     } \
     if (sb -> sb_flags & SB_AI) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity interrupt/discard in progress"); \
     } \
     if (sb -> sb_flags & SB_AIA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your activity interrupt/discard response"); \
     } \
     if (sb -> sb_flags & (SB_ED | SB_EDACK | SB_ERACK)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "exception in progress"); \
     } \
@@ -59,42 +59,42 @@
 #define	ssapXsig(sb, sd) \
 { \
     if ((sb = findsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "invalid session descriptor"); \
     } \
     if (!(sb -> sb_flags & SB_CONN)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "session descriptor not connected"); \
     } \
     if (sb -> sb_flags & SB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "session descriptor finishing"); \
     } \
     if (sb -> sb_flags & SB_RS) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "resync in progress"); \
     } \
     if (sb -> sb_flags & SB_RA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your resync response"); \
     } \
     if (sb -> sb_flags & SB_AI) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity interrupt/discard in progress"); \
     } \
     if (sb -> sb_flags & SB_AIA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your activity interrupt/discard response"); \
     } \
     if (sb -> sb_flags & SB_ED) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "exception in progress"); \
     } \
@@ -103,42 +103,42 @@
 #define	ssapRsig(sb, sd) \
 { \
     if ((sb = findsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "invalid session descriptor"); \
     } \
     if (!(sb -> sb_flags & SB_CONN)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "session descriptor not connected"); \
     } \
     if (sb -> sb_flags & SB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "session descriptor finishing"); \
     } \
     if (sb -> sb_flags & SB_RS) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "resync in progress"); \
     } \
     if (sb -> sb_flags & SB_AI) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity interrupt/discard in progress"); \
     } \
     if (sb -> sb_flags & SB_AIA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your activity interrupt/discard response"); \
     } \
     if (sb -> sb_flags & SB_AE) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity end in progress"); \
     } \
     if (sb -> sb_flags & SB_ED) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "exception in progress"); \
     } \
@@ -147,37 +147,37 @@
 #define	ssapAsig(sb, sd) \
 { \
     if ((sb = findsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "invalid session descriptor"); \
     } \
     if (!(sb -> sb_flags & SB_CONN)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "session descriptor not connected"); \
     } \
     if (sb -> sb_flags & SB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "session descriptor finishing"); \
     } \
     if (sb -> sb_flags & SB_MAA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your majorsync response"); \
     } \
     if (sb -> sb_flags & SB_RS) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "resync in progress"); \
     } \
     if (sb -> sb_flags & SB_AI) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity interrupt/discard in response"); \
     } \
     if (sb -> sb_flags & (SB_ED | SB_EDACK | SB_ERACK)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "exception in progress"); \
     } \
@@ -186,47 +186,47 @@
 #define	ssapFsig(sb, sd) \
 { \
     if ((sb = findsblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "invalid session descriptor"); \
     } \
     if (!(sb -> sb_flags & SB_CONN)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "session descriptor not connected"); \
     } \
     if (!(sb -> sb_flags & SB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "session descriptor not finishing"); \
     } \
     if (sb -> sb_flags & SB_MAA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your majorsync response"); \
     } \
     if (sb -> sb_flags & SB_RS) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "resync in progress"); \
     } \
     if (sb -> sb_flags & SB_RA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your resync response"); \
     } \
     if (sb -> sb_flags & SB_AI) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "activity interrupt/discard in progress"); \
     } \
     if (sb -> sb_flags & SB_AIA) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "awaiting your activity interrupt/discard response"); \
     } \
     if (sb -> sb_flags & (SB_ED | SB_EDACK | SB_ERACK)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return ssaplose (si, SC_OPERATION, NULLCP, \
 			    "exception in progress"); \
     } \
@@ -237,11 +237,11 @@
 #define	ssap_udPsig(sb, sd) \
 { \
     if ((sb = findsublk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return susaplose (si, SC_PARAMETER, NULLCP, SuErrString(UDERR_INVALID_SESSION_DESC)); \
     } \
     if (!(sb -> sb_flags & SB_CLNS)) {\
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return susaplose (si, SC_OPERATION, NULLCP, SuErrString(UDERR_CLNS_NOT_SUPPORTED));\
     }\
 }\
@@ -284,7 +284,7 @@
 	n = 0; \
     else \
 	if (n > (sb -> sb_version < SB_VRSN2 ? m : ENCLOSE_MAX)) { \
-	    (void) sigsetmask (smask); \
+	    (void) sigiomask (smask); \
 	    return ssaplose (si, SC_PARAMETER, NULLCP, \
 			    "too much %s user data, %d octets", p, n); \
 	} \

@@ -39,7 +39,7 @@ int	PAsynConnRequest (
 	struct PSAPindication *pi,
 	int async
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);
@@ -321,7 +321,7 @@ out1:
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
 int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPconnect  scs;
@@ -703,7 +703,7 @@ out1:
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
 int PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct psapblk *pb;
 	struct SSAPconnect  scs;

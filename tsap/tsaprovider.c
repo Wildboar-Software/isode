@@ -35,7 +35,7 @@ extern	int	xselect_blocking_on_intr;
 /* T-DATA.REQUEST */
 
 int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	int     smask,
+	SBV     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t istat;
@@ -78,7 +78,7 @@ int TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 /* T-EXPEDITED-DATA.REQUEST */
 
 int TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	int     smask,
+	SBV     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -127,7 +127,7 @@ int TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 
 int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	int    n;
-	int     smask,
+	SBV     smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -168,7 +168,7 @@ int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
 int TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td) {
-	int	    smask,
+	SBV	    smask,
 			imask;
 #ifdef LINUX
 	__sighandler_t	    istat;
@@ -245,7 +245,7 @@ out:
 /* T-DISCONNECT.REQUEST */
 
 int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
 
@@ -280,7 +280,7 @@ int TSetIndications (
 	void (*disc)(int sd, struct TSAPdisconnect *td),
 	struct TSAPdisconnect *td
 ) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct tsapblk *tb;
 
@@ -326,7 +326,7 @@ int TSetIndications (
 /*    map transport descriptors for select() */
 
 int TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
-	int     smask;
+	SBV     smask;
 	struct tsapblk *tb;
 
 	missingP (mask);
@@ -369,7 +369,7 @@ static void DATAser (int sig, long int code, struct sigcontext *sc)
 			imask,
 			emask;
 #ifndef	BSDSIGS
-	int	    smask;
+	SBV	    smask;
 #endif
 	void (*disc)(int sd, struct TSAPdisconnect *td);
 	struct tsapblk *tb,
@@ -472,7 +472,7 @@ static int TWakeUp (struct tsapblk *tb, struct TSAPdisconnect *td) {
 		return tsaplose (td, DR_CONGEST, NULLCP, "you lose");
 	if (!inited) {
 #ifndef	BSDSIGS
-		int    smask = sigsetmask (sigblock (0) & ~sigmask (SIGEMT));
+		SBV    smask = sigdelmask (SIGEMT);
 #endif
 
 		signal (SIGEMT, DATAser);
@@ -607,7 +607,7 @@ newtblk(void) {
 }
 
 void freetblk (struct tsapblk *tb) {
-	int     smask;
+	SBV     smask;
 #ifndef	SIGPOLL
 	struct TSAPdisconnect   tds;
 #endif

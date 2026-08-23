@@ -7,7 +7,7 @@
 /* S-MAJOR-SYNC.REQUEST */
 
 int SMajSyncRequest (int sd, long *ssn, char *data, int cc, struct SSAPindication *si) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 

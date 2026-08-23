@@ -13,22 +13,22 @@
 #define	rtsapPsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_RTS)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "not an association descriptor for RTS"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "association descriptor not connected"); \
     } \
     if (acb -> acb_flags & ACB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "association descriptor finishing"); \
     } \
@@ -37,22 +37,22 @@
 #define	rtsapFsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_RTS)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "not an association descriptor for RTS"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "association descriptor not connected"); \
     } \
     if (!(acb -> acb_flags & ACB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rtsaplose (rti, RTS_OPERATION, NULLCP, \
 			    "association descriptor not finishing"); \
     } \

@@ -9,7 +9,7 @@ static int FTransEndResponseAux (struct ftamblk *fsb, int action, PE sharedASE, 
 
 /* F-TRANSFER-END.RESPONSE */
 int FTransEndResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

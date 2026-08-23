@@ -8,7 +8,7 @@
 #include	"psap.h"
 #include	"pepsy.h"
 #include	"tailor.h"
-#include "UNIV-types.h"
+
 static int p_pr_obj (
 	int expl,			/* do we look at the tag */
 	PE pe,
@@ -18,7 +18,6 @@ static int p_pr_obj (
 static ptpe *next_ptpe (ptpe *p);
 static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
 static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
-
 
 static int p_pr_obj (
 	int expl,			/* do we look at the tag */
@@ -30,7 +29,14 @@ static ptpe *next_ptpe (ptpe *p);
 static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
 static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
 int printable (char *strptr, int len);
-
+int prnt_f (
+	int typ,
+	modtyp *mod,
+	PE pe,
+	int explicit,
+	int *len,
+	char **buf
+);
 
 #define PRINT_TYPES	0
 #define	CHOICE_PUSH
@@ -94,16 +100,21 @@ static int vnamelock = 0;
 #define VPUSH		vnamelock = 0, vpush
 #define VPOP		vnamelock = 0, vpop
 
-/*
+/**
  * Print out ASN data given in pe using the information given in the tables
+ * @param typ - which type it is
+ * @param mod - ASN Module it is from
+ * @param pe - ASN data
+ * @param explicit - nonzero means we are call top level print final LF
+ * @param len - length of the data
+ * @param buf - buffer to print the data to
+ * @return OK if successful, NOTOK if error
  */
 int prnt_f (
-		int typ,			/* which type it is */
-	modtyp *mod,			/* ASN Module it is from */
+	int typ,
+	modtyp *mod,
 	PE pe,
-	int explicit,	/* nonzero means we are call top level
-			 * print final \n
-			 */
+	int explicit,
 	int *len,
 	char **buf
 ) {

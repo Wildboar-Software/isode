@@ -36,17 +36,17 @@
 #define	rosapPsig(acb, sd) \
 { \
     if ((acb = findacublk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_AUDT)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
@@ -55,17 +55,17 @@
 #define	rosapXsig(acb, sd) \
 { \
     if ((acb = findacublk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_AUDT)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
@@ -74,22 +74,22 @@
 #define	rosapFsig(acb, sd) \
 { \
     if ((acb = findacublk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_ROS)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "not an association descriptor for ROS"); \
     } \
     if (!(acb -> acb_flags & ACB_AUDT)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
@@ -98,26 +98,26 @@
 #define	rosapPsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not connected"); \
     } \
     if (acb -> acb_flags & ACB_CLOSING) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_WAITING, NULLCP, NULLCP); \
     } \
     if (acb -> acb_flags & ACB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor finishing"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
@@ -126,22 +126,22 @@
 #define	rosapXsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not connected"); \
     } \
     if (acb -> acb_flags & ACB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor finishing"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \
@@ -150,27 +150,27 @@
 #define	rosapFsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_ROS)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "not an association descriptor for ROS"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not connected"); \
     } \
     if (!(acb -> acb_flags & ACB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not finishing"); \
     } \
     if (acb -> acb_putosdu == NULLIFP) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return rosaplose (roi, ROS_OPERATION, NULLCP, \
 			    "association descriptor not bound"); \
     } \

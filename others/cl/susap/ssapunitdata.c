@@ -98,7 +98,7 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 
 {
 	int     fd;
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct ssapblk *sb;
 	struct  TSAPdisconnect  td;
@@ -153,7 +153,7 @@ int SUnitDataBind (int sd, struct SSAPaddr *local, struct SSAPaddr *remote, stru
 									  NULLCP,
 									  SuErrString(UDERR_NO_MEMORY));
 			} else {
-				sigsetmask (smask);
+				sigiomask (smask);
 				return susaplose (si,
 								  SC_PARAMETER,
 								  NULLCP,
@@ -226,7 +226,7 @@ int SUnitDataUnbind (int sd, struct SSAPindication *si)
 {
 	struct ssapblk *sb;
 	int	 result;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 	struct  TSAPdisconnect  td;
 
 #ifdef HULADEBUG
@@ -271,7 +271,7 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 	struct   TSAPdisconnect tds;
 	struct   TSAPdisconnect *td = &tds;
 	int	     result;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 
 	missing_udP (vec);
 	missing_udP (si);
@@ -293,7 +293,7 @@ int SuSave (int sd, int vecp, char **vec, struct SSAPindication *si)
 		 *  Find the correct session block and set the signal mask.
 		 */
 		if ((sb = findsublk (sd)) == NULL) {
-			sigsetmask (smask);
+			sigiomask (smask);
 			return susaplose (si,
 							  SC_PARAMETER,
 							  NULLCP,
@@ -368,7 +368,7 @@ int SUnitDataWrite (int sd, char *data, int cc, struct SSAPindication *si)
 
 {
 	int 	 n, len, j;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
 	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
@@ -509,7 +509,7 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 
 {
 	int 	 n, cc, len, j;
-	int      smask;			 	/* signal save mask */
+	SBV      smask;			 	/* signal save mask */
 	int      result; 		 	/* write result     */
 	struct ssapblk *sb;	 	/* ssap ctl blk ptr */
 
@@ -684,7 +684,7 @@ int SUnitDataWriteV (int sd, struct udvec *uv, int si)
 int SUnitDataRead (int sd, struct SuSAPstart *sud, int secs, struct SSAPindication *si)
 
 {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
 	struct TSAPunitdata tx;
@@ -822,7 +822,7 @@ static int SUnitDataReadAux (struct ssapblk *sb, struct SuSAPstart *sud, int sec
 
 int	SSetIndications (int sd, IFP data, IFP tokens, IFP sync, IFP activity, IFP report, IFP finish,
 					 IFP abort, struct SSAPindication *si) {
-	int     smask;
+	SBV     smask;
 	struct ssapblk *sb;
 	struct TSAPdisconnect   tds;
 	struct TSAPdisconnect *td = &tds;

@@ -6,7 +6,7 @@
 #include "acpkt.h"
 
 int AcFindPCI (int sd, int *pci, struct AcSAPindication *aci) {
-	int     smask;
+	SBV     smask;
 	struct assocblk  *acb;
 
 	missingP (pci);

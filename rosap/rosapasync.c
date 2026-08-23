@@ -11,7 +11,7 @@
 /*    define vectors for INDICATION events */
 
 int RoSetIndications (int sd, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
 

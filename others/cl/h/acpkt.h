@@ -15,17 +15,17 @@
 #define	acsapPsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return acsaplose (aci, ACS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return acsaplose (aci, ACS_OPERATION, NULLCP, \
 			    "assocation descriptor not connected"); \
     } \
     if (acb -> acb_flags & ACB_FINN) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return acsaplose (aci, ACS_OPERATION, NULLCP, \
 			    "assocation descriptor finishing"); \
     } \
@@ -34,17 +34,17 @@
 #define	acsapFsig(acb, sd) \
 { \
     if ((acb = findacblk (sd)) == NULL) {\
-	(void) sigsetmask (smask);\
+	(void) sigiomask (smask);\
 	return acsaplose (aci, ACS_PARAMETER, NULLCP, \
 			    "invalid association descriptor"); \
     } \
     if (!(acb -> acb_flags & ACB_CONN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return acsaplose (aci, ACS_OPERATION, NULLCP, \
 			    "assocation descriptor not connected"); \
     } \
     if (!(acb -> acb_flags & ACB_FINN)) { \
-	(void) sigsetmask (smask); \
+	(void) sigiomask (smask); \
 	return acsaplose (aci, ACS_OPERATION, NULLCP, \
 			    "assocation descriptor not finishing"); \
     } \

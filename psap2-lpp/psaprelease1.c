@@ -16,7 +16,7 @@ static int  PRelRequestAux (struct psapblk *pb, PE data, struct PSAPrelease *pr,
 /* P-RELEASE.REQUEST */
 
 int	PRelRequest (int sd, PE *data, int ndata, int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
 

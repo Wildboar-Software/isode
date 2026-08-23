@@ -21,7 +21,7 @@ static int  RoBeginRequestAux (struct RoSAPaddr *called, PE data, struct RoSAPco
 /* RO-BEGIN.REQUEST */
 
 int RoBeginRequest (struct RoSAPaddr *called, PE data, struct RoSAPconnect *roc, struct RoSAPindication *roi) {
-	int     smask;
+	SBV     smask;
 	int     result;
 
 	isodetailor (NULLCP, 0);

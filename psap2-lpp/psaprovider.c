@@ -22,7 +22,7 @@ static struct psapblk *PHead = &psapque;
 /* P-DATA.REQUEST */
 
 int	PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
 
@@ -87,7 +87,7 @@ static int _PDataRequestAux (struct psapblk *pb, PE data, struct PSAPindication 
 /*    P-READ.REQUEST (pseudo; synchronous read) */
 
 int	PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
-	int	    smask;
+	SBV	    smask;
 	int	    nfds,
 			result;
 	fd_set  mask;

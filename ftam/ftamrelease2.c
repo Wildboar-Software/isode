@@ -9,7 +9,7 @@ static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAM
 
 /* F-TERMINATE.RESPONSE */
 int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 

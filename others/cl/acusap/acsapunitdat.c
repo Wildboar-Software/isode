@@ -91,7 +91,7 @@ int	AcUnitDataRequest ( OID context, AEI callingtitle, AEI calledtitle,
 						PE *data, int ndata, struct  QOStype *qos, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	PE	    pe;
 	struct assocblk *acb;
@@ -184,7 +184,7 @@ int	AcUnitDataBind ( int sd, int binding, OID context, AEI callingtitle, AEI cal
 					 struct  PSAPaddr *callingaddr, struct  PSAPaddr *calledaddr, struct  PSAPctxlist *ctxlist, struct  QOStype *qos, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int    i;
 	struct assocblk *acb;
@@ -266,7 +266,7 @@ no_good:
 int	AcUnitDataRebind ( int sd, AEI calledtitle, struct  PSAPaddr *calledaddr, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct assocblk *acb;
 	struct PSAPindication pis;
@@ -312,7 +312,7 @@ no_good:
 int	AcUnitDataWrite ( int sd, PE *data, int ndata, struct  AcSAPindication *aci )
 /*---------------------------------------------------------------------------*/
 {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int    i;
 	PE	    pe;
@@ -388,7 +388,7 @@ int AcUnitDataRead (
 	int secs,
 	struct AcSAPindication *aci
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	int     ctx;
 	int    i;
@@ -479,7 +479,7 @@ int AcUnitDataUnbind (
 	int sd,
 	struct AcSAPindication *aci
 ) {
-	int     smask;
+	SBV     smask;
 	int     result;
 	struct assocblk  *acb;
 	struct PSAPindication pis;

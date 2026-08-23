@@ -126,7 +126,7 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 /*    F-WAIT.REQUEST (pseudo) */
 
 int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
-	int	    smask;
+	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
 
@@ -1689,7 +1689,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 #define	e(i)	(indication ? (i) : NULL)
 
 int FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti) {
-	int     smask;
+	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;
 	struct PSAPabort  *pa = &pis.pi_abort;

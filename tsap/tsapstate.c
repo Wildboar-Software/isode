@@ -11,7 +11,7 @@ int TSaveState (int sd, char **vec, struct TSAPdisconnect *td);
 int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td);
 
 int TSaveState (int sd, char **vec, struct TSAPdisconnect *td) {
-	int     smask;
+	SBV     smask;
 	struct tsapblk *tb;
 	static char buffer[sizeof *tb * 2 + 1];
 
