@@ -26,7 +26,7 @@
 #ifndef MALLOC_TEST
 static void write_string (char *p);
 static void write_addr (char *addr);
-static void write_int (unsigned x);
+static void write_uval (unsigned x);
 static void log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr);
 static void print_free_list (size_t heap);
 static void write_stack (char * x);
@@ -223,7 +223,7 @@ static write_addr (char *addr) {
 	write (malloc_file," ",1);
 }
 
-static write_int (unsigned x) {
+static void write_uval (unsigned x) {
 	char buf[20];
 	static char dec[] = "0123456789";
 	char *ptr;
@@ -244,15 +244,15 @@ static write_int (unsigned x) {
 
 static log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr) {
 	write_string ("realloc of ");
-	write_int (oldlen);
+	write_uval (oldlen);
 	write_string ("at ");
 	write_addr (addr);
 	write_string ("\n");
 	write_stack("x");
 	write_string ("realloc-to of ");
-	write_int (newlen);
+	write_uval (newlen);
 	write_string ("gets ");
-	write_int (bsize);
+	write_uval (bsize);
 	write_string ("at ");
 	write_addr (addr);
 	write_string ("\n");
@@ -269,10 +269,10 @@ static print_free_list (size_t heap) {
 	write_string(":\n");
 	for (i=0; i<BUCKETS; i++) {
 		top = &heaps[heap][i];
-		write_int (sizes[i]);
+		write_uval (sizes[i]);
 		write_string (": ");
 		for (ptr = top->next ; ptr != top; ptr=ptr->next)
-			write_int (ptr->size);
+			write_uval (ptr->size);
 		write_string ("\n");
 	}
 }
@@ -366,7 +366,7 @@ static char *big_malloc (size_t realsize) {
 	mem = (char *) head + ALIGN(sizeof (struct header));
 #ifdef MALLOCTRACE
 	write_string ("gets ");
-	write_int (head->bigsize & ~1 );
+	write_uval (head->bigsize & ~1 );
 	write_string ("at ");
 	write_addr (mem);
 	write_string ("\n");
@@ -480,7 +480,7 @@ malloc (size_t size)
 	if (realsize >= SMALLMAX) {
 #ifdef MALLOCTRACE
 		write_string ("malloc of ");
-		write_int (size);
+		write_uval (size);
 #endif
 		return (big_malloc (realsize));
 	}
@@ -542,13 +542,13 @@ return_memory:
 	mem = (char *) head + ALIGN(sizeof (struct header));
 #ifdef MALLOCTRACE
 	write_string ("malloc of ");
-	write_int (size);
+	write_uval (size);
 	write_string ("gets ");
-	write_int (head->smallsize);
+	write_uval (head->smallsize);
 	write_string ("at ");
 	write_addr (mem);
 	write_string ("heap ");
-	write_int (mem_heap);
+	write_uval (mem_heap);
 	write_string ("\n");
 	write_stack("x");
 #endif
@@ -576,7 +576,7 @@ void *s1;
 	if (ptr->smallsize & 1) {
 #ifdef MALLOCTRACE
 		write_string ("free of ");
-		write_int (ptr->bigsize);
+		write_uval (ptr->bigsize);
 		write_string ("at ");
 		write_addr (s);
 		write_string ("heap (big)\n");
@@ -587,11 +587,11 @@ void *s1;
 	}
 #ifdef MALLOCTRACE
 	write_string ("free of ");
-	write_int (ptr->smallsize);
+	write_uval (ptr->smallsize);
 	write_string ("at ");
 	write_addr (s);
 	write_string ("heap ");
-	write_int (ptr->use & ~INUSE);
+	write_uval (ptr->use & ~INUSE);
 	write_string ("\n");
 	write_stack("x");
 #endif
