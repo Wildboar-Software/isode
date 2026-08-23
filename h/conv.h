@@ -154,6 +154,28 @@ int2u8 (int n, uint8_t *out)
 	return 0;
 }
 
+static inline int
+add_sizet_to_int (int *acc, size_t n)
+{
+	int i;
+
+	if (acc == NULL || sizet2int (n, &i) != 0)
+		return -1;
+	if (*acc < 0 || *acc > INT_MAX - i)
+		return -1;
+	*acc += i;
+	return 0;
+}
+
+static inline int
+add_int_to_int (int *acc, int n)
+{
+	if (acc == NULL || n < 0 || *acc < 0 || *acc > INT_MAX - n)
+		return -1;
+	*acc += n;
+	return 0;
+}
+
 /*
  * Length-checked wrappers for the BSD memory routines.  Argument order
  * matches bcopy/bcmp/bzero.  A negative length is rejected rather than
@@ -199,6 +221,33 @@ strncmp_int (const char *a, const char *b, int n)
 	if (int2sizet (n, &len) != 0)
 		return -1;
 	return strncmp (a, b, len);
+}
+
+#include <errno.h>
+#include <unistd.h>
+
+static inline ssize_t
+read_int (int fd, void *buf, int n)
+{
+	size_t len;
+
+	if (int2sizet (n, &len) != 0) {
+		errno = EINVAL;
+		return -1;
+	}
+	return read (fd, buf, len);
+}
+
+static inline ssize_t
+write_int (int fd, const void *buf, int n)
+{
+	size_t len;
+
+	if (int2sizet (n, &len) != 0) {
+		errno = EINVAL;
+		return -1;
+	}
+	return write (fd, buf, len);
 }
 
 #endif

@@ -304,8 +304,10 @@ static int TNetWork (
 
 #ifdef	MGMT
 	bzero ((char *) &tas, sizeof tas);
-	if (tas.ta_selectlen = ta -> ta_selectlen)
-		bcopy (ta -> ta_selector, tas.ta_selector, ta -> ta_selectlen);
+	if (bcopy_int (ta -> ta_selector, tas.ta_selector,
+			   ta -> ta_selectlen) != 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP, "invalid TSAP selector");
+	tas.ta_selectlen = ta -> ta_selectlen;
 	ca = tas.ta_addrs;
 #endif
 
@@ -370,8 +372,10 @@ static int startlb (struct TSAPaddr *ta, struct NSAPaddr *na, struct nsapent *ns
 	struct listenblk *lb;
 
 	bzero ((char *) &tas, sizeof tas);
-	bcopy (ta -> ta_selector, tas.ta_selector,
-		   tas.ta_selectlen = ta -> ta_selectlen);
+	if (bcopy_int (ta -> ta_selector, tas.ta_selector,
+			   ta -> ta_selectlen) != 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP, "invalid TSAP selector");
+	tas.ta_selectlen = ta -> ta_selectlen;
 	if (na) {
 		tas.ta_naddr = 1;
 		tas.ta_addrs[0] = *na;	/* struct copy */
@@ -413,16 +417,20 @@ static int uniqlb (
 	struct listenblk *lb;
 
 	bzero ((char *) &tas, sizeof tas);
-	bcopy (ta -> ta_selector, tas.ta_selector,
-		   tas.ta_selectlen = ta -> ta_selectlen);
+	if (bcopy_int (ta -> ta_selector, tas.ta_selector,
+			   ta -> ta_selectlen) != 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP, "invalid TSAP selector");
+	tas.ta_selectlen = ta -> ta_selectlen;
 	tas.ta_naddr = 1;
 	tas.ta_addrs[0] = *na;	/* struct copy */
 
 	if ((fd = (*ns -> ns_unique) (&tas, td)) == NOTOK)
 		return NOTOK;
 
-	bcopy (tas.ta_selector, ta -> ta_selector,
-		   ta -> ta_selectlen = tas.ta_selectlen);
+	if (bcopy_int (tas.ta_selector, ta -> ta_selector,
+			   tas.ta_selectlen) != 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP, "invalid TSAP selector");
+	ta -> ta_selectlen = tas.ta_selectlen;
 	*na = tas.ta_addrs[0];	/* struct copy */
 
 	ta = &tas;
@@ -1273,7 +1281,7 @@ static int tcpaccept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPd
 
 	if (lb -> lb_addr.ta_selectlen > 0
 			&& (lb -> lb_addr.ta_selectlen != t -> t_calledlen
-				|| bcmp (lb -> lb_addr.ta_selector,
+				|| bcmp_int (lb -> lb_addr.ta_selector,
 						 t -> t_called,
 						 lb -> lb_addr.ta_selectlen))) {
 		tpktlose (tb, td, DR_SESSION, NULLCP,
@@ -1458,7 +1466,7 @@ static int x25accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPd
 	}
 	if (lb -> lb_addr.ta_selectlen > 0
 			&& (lb -> lb_addr.ta_selectlen != t -> t_calledlen
-				|| bcmp (lb -> lb_addr.ta_selector,
+				|| bcmp_int (lb -> lb_addr.ta_selector,
 						 t -> t_called,
 						 lb -> lb_addr.ta_selectlen))) {
 		tpktlose (tb, td, DR_SESSION, NULLCP,
