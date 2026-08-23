@@ -1049,18 +1049,22 @@ static void search_directory(int firstime) {
 
 					cp = (char *) avs -> avseq_av.av_struct;
 					if ((iz -> is_vector =
-								malloc ((unsigned) (strlen (cp) + 1)))
+								malloc_plus_int (strlen (cp), 1))
 							== NULL)
 						adios (NULLCP, "out of memory allocating iaeVector");
 					strcpy (iz -> is_vector, cp);
 
 					if ((vecp = str2vec (iz -> is_vector, evec)) < 1)
 						goto losing_iae;
-					if ((iz -> is_vec =
-								(char **) calloc ((unsigned) (vecp + 3),
-												  sizeof *iz -> is_vec))
-							== NULL)
-						adios (NULLCP, "out of memory allocating execVector");
+					{
+						int nvec = vecp;
+						if (add_int_to_int (&nvec, 3) != 0
+								|| (iz -> is_vec =
+									(char **) calloc_int (nvec,
+											sizeof *iz -> is_vec))
+								== NULL)
+							adios (NULLCP, "out of memory allocating execVector");
+					}
 					iz -> is_tail = iz -> is_vec, vp = evec;
 					while (*iz -> is_tail++ = *vp++)
 						continue;
@@ -1073,7 +1077,7 @@ static void search_directory(int firstime) {
 						goto losing_iae;
 					}
 					if ((iz -> is_vec[0] =
-								malloc ((unsigned) (strlen (cp) + 1)))
+								malloc_plus_int (strlen (cp), 1))
 							== NULL)
 						adios (NULLCP, "out of memory allocating pgmVector");
 					strcpy (iz -> is_vec[0], cp);
@@ -1108,7 +1112,7 @@ losing_iae:
 				for (tb = tys; tb < ty; tb++) {
 					if (na -> na_type == NA_NSAP) {
 						if (ta -> ta_selectlen == tb -> ta_selectlen &&
-								bcmp(ta -> ta_selector, tb -> ta_selector,
+								bcmp_int(ta -> ta_selector, tb -> ta_selector,
 									 ta -> ta_selectlen) == 0 &&
 								(tb -> ta_naddr == 0 ||
 								 bcmp ((char *) na, (char *) tb -> ta_addrs,
@@ -1123,10 +1127,15 @@ losing_iae:
 				}
 
 				if (tb >= ty) {
-					if (na -> na_type == NA_NSAP && !x2584service)
-						bcopy (ta -> ta_selector, ty -> ta_selector,
-							   ty -> ta_selectlen = ta -> ta_selectlen);
-					else
+					if (na -> na_type == NA_NSAP && !x2584service) {
+						if (bcopy_int (ta -> ta_selector, ty -> ta_selector,
+								   ta -> ta_selectlen) != 0) {
+							advise (LLOG_EXCEPTIONS, NULLCP,
+									"invalid TSAP selector length");
+							continue;
+						}
+						ty -> ta_selectlen = ta -> ta_selectlen;
+					} else
 						ty -> ta_selectlen = 0;
 					ty -> ta_naddr = 1;
 					ty -> ta_addrs[0] = *na; /* struct copy */
@@ -1141,7 +1150,7 @@ losing_iae:
 
 			if (ta -> ta_selectlen == tb -> ta_selectlen &&
 					ta -> ta_selectlen != 0
-					&& bcmp (ta -> ta_selector, tb -> ta_selector,
+					&& bcmp_int (ta -> ta_selector, tb -> ta_selector,
 							 ta -> ta_selectlen)  == 0) {
 				char    buffer[BUFSIZ];
 				int n;
