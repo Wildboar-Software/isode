@@ -148,6 +148,7 @@ RemoteSystemsTempFiles/
 !LICENSE
 !CHANGELOG.md
 !README.md
+!AGENTS.md
 !Chart.yaml
 
 # Quipu end-to-end smoke test working directory (left behind on failure)
