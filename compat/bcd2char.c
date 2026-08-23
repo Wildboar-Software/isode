@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "general.h"
 
+// FIXME: This has no idea how big the output buffer d is. Make this more secure.
 int bcd2char (uint8_t *s, char *d, int len) {
 	int i, g;
 

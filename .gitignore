@@ -149,11 +149,21 @@ RemoteSystemsTempFiles/
 !CHANGELOG.md
 !README.md
 !Chart.yaml
+!tests/Makefile
+
+# Unity unit tests
+tests/unittests
+tests/runner.c
+tests/test-*
 
 # Quipu end-to-end smoke test working directory (left behind on failure)
 .quipu-e2e/
 # FTAM end-to-end smoke test working directory (left behind on failure)
 .ftam-e2e/
+# VT end-to-end smoke test working directory (left behind on failure)
+.vt-e2e/
+# FTP/FTAM gateway end-to-end smoke test working directory
+.ftp-ftam-e2e/
 z[A-Z]*
 *.o
 *.a

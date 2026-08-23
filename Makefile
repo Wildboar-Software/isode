@@ -55,8 +55,11 @@ clean:;		rm -f *.a *.so* llib-l* _* *.tmp config/_* util/inst-man.sh
 		    do (echo "cd $$i; $(MAKE) clean"; \
 			      cd $$i; $(MAKE) clean); \
 		    done
+		-cd tests; make TOPDIR=../ -f ../config/CONFIG.make -f Makefile clean
 
 test:;		PATH=$$PATH:${BINDIR} sh isode-test
+
+unit-test:;	cd tests; make TOPDIR=../ -f ../config/CONFIG.make -f Makefile
 
 grind:;		@for i in $(DIRS) $(OTHERS); \
 		    do (echo "cd $$i; $(MAKE) grind"; \
