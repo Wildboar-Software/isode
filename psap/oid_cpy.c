@@ -5,20 +5,26 @@
 #include "psap.h"
 
 OID	oid_cpy (OID q) {
-	unsigned int   i,
-			 *ip,
+	int    i;
+	unsigned int   *ip,
 			 *jp;
 	OID	oid;
+	size_t n,
+		bytes;
 
 	if (q == NULLOID)
 		return NULLOID;
 	if ((i = q -> oid_nelem) < 1)
 		return NULLOID;
+	if (int2sizet (i, &n) != 0)
+		return NULLOID;
+	if (n > (SIZE_MAX / sizeof *ip) - 1)
+		return NULLOID;
+	bytes = (n + 1) * sizeof *ip;
 	if ((oid = (OID) malloc (sizeof *oid)) == NULLOID)
 		return NULLOID;
 
-	if ((ip = (unsigned int *) malloc ((unsigned) (i + 1) * sizeof *ip))
-			== NULL) {
+	if ((ip = (unsigned int *) malloc (bytes)) == NULL) {
 		free ((char *) oid);
 		return NULLOID;
 	}

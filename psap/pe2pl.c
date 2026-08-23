@@ -35,8 +35,12 @@
 static int pe2pl_aux (PS ps, PE pe, int level);
 
 #define	bf_write()	\
-    if (ps_write (ps, (PElementData) buffer, (PElementLen) strlen (buffer)) == NOTOK) \
-	return NOTOK
+    do { \
+	int _n; \
+	if (sizet2int (strlen (buffer), &_n) != 0 \
+	    || ps_write (ps, (PElementData) buffer, _n) == NOTOK) \
+		return NOTOK; \
+    } while (0)
 
 int pe2pl (PS ps, PE pe) {
 	int     result;
@@ -65,24 +69,36 @@ static int pe2pl_aux (PS ps, PE pe, int level) {
 	switch (pe -> pe_class) {
 	case PE_CLASS_UNIV:
 		if ((int)(id = pe -> pe_id) < pe_maxuniv && (bp = pe_univlist[id])) {
-			if (ps_write (ps, (PElementData) bp, (PElementLen) strlen (bp))
-					== NOTOK)
-				return NOTOK;
+			{
+				int n;
+
+				if (sizet2int (strlen (bp), &n) != 0
+						|| ps_write (ps, (PElementData) bp, n) == NOTOK)
+					return NOTOK;
+			}
 		} else
 			goto no_code;
 		break;
 	case PE_CLASS_APPL:
 		if ((int)(id = pe -> pe_id) < pe_maxappl && (bp = pe_applist[id])) {
-			if (ps_write (ps, (PElementData) bp, (PElementLen) strlen (bp))
-					== NOTOK)
-				return NOTOK;
+			{
+				int n;
+
+				if (sizet2int (strlen (bp), &n) != 0
+						|| ps_write (ps, (PElementData) bp, n) == NOTOK)
+					return NOTOK;
+			}
 		} else
 			goto no_code;
 	case PE_CLASS_PRIV:
 		if ((int)(id = pe -> pe_id) < pe_maxpriv && (bp = pe_privlist[id])) {
-			if (ps_write (ps, (PElementData) bp, (PElementLen) strlen (bp))
-					== NOTOK)
-				return NOTOK;
+			{
+				int n;
+
+				if (sizet2int (strlen (bp), &n) != 0
+						|| ps_write (ps, (PElementData) bp, n) == NOTOK)
+					return NOTOK;
+			}
 		}			/* else fall */
 	case PE_CLASS_CONT:
 no_code:
@@ -121,7 +137,8 @@ no_code:
 					break;
 				}
 			for (ep = (dp = pe -> pe_prim) + pe -> pe_len; dp < ep;) {
-				i = min (ep - dp, sizeof (int));
+				if (min_len_cap (ep - dp, sizeof (int), &i) != 0)
+					return NOTOK;
 				if (ia5 = ia5ok) {
 					for (gp = (fp = dp) + i; fp < gp; fp++) {
 						switch (*fp) {

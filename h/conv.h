@@ -155,6 +155,25 @@ int2u8 (int n, uint8_t *out)
 }
 
 static inline int
+u8toint (uint8_t n, int *out)
+{
+	if (out == NULL)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+/* Store an octet in a C char.  Values that do not fit in char fail. */
+static inline int
+u8tochar (uint8_t n, char *out)
+{
+	if (out == NULL || n > (uint8_t) CHAR_MAX)
+		return -1;
+	*out = (char) n;
+	return 0;
+}
+
+static inline int
 add_sizet_to_int (int *acc, size_t n)
 {
 	int i;
@@ -214,6 +233,13 @@ static inline uint16_t
 u16_bic (uint16_t v, unsigned bits)
 {
 	return (uint16_t) (v & ~bits);
+}
+
+/* Interpret a C char as a protocol octet (all 256 values). */
+static inline uint8_t
+as_octet (char c)
+{
+	return (uint8_t) (unsigned char) c;
 }
 
 /*
@@ -296,7 +322,94 @@ strncmp_int (const char *a, const char *b, int n)
 }
 
 #include <errno.h>
+#include <stdlib.h>
 #include <unistd.h>
+
+static inline void *
+malloc_int (int n)
+{
+	size_t len;
+
+	if (int2sizet (n, &len) != 0)
+		return NULL;
+	return malloc (len);
+}
+
+static inline void *
+realloc_int (void *p, int n)
+{
+	size_t len;
+
+	if (int2sizet (n, &len) != 0)
+		return NULL;
+	return realloc (p, len);
+}
+
+static inline void *
+malloc_nmemb (int n, size_t size)
+{
+	size_t count;
+
+	if (int2sizet (n, &count) != 0)
+		return NULL;
+	if (size != 0 && count > SIZE_MAX / size)
+		return NULL;
+	return malloc (count * size);
+}
+
+static inline void *
+calloc_int (int n, size_t size)
+{
+	size_t count;
+
+	if (int2sizet (n, &count) != 0)
+		return NULL;
+	if (size != 0 && count > SIZE_MAX / size)
+		return NULL;
+	return calloc (count, size);
+}
+
+static inline void *
+realloc_nmemb (void *p, int n, size_t size)
+{
+	size_t count;
+
+	if (int2sizet (n, &count) != 0)
+		return NULL;
+	if (size != 0 && count > SIZE_MAX / size)
+		return NULL;
+	return realloc (p, count * size);
+}
+
+static inline void *
+malloc_plus_int (size_t base, int extra)
+{
+	size_t n;
+
+	if (int2sizet (extra, &n) != 0)
+		return NULL;
+	if (n > SIZE_MAX - base)
+		return NULL;
+	return malloc (base + n);
+}
+
+/*
+ * Take a signed count of remaining bytes and a capacity, write the
+ * smaller value to *out as an int.
+ */
+static inline int
+min_len_cap (ptrdiff_t len, size_t cap, int *out)
+{
+	size_t n;
+
+	if (out == NULL)
+		return -1;
+	if (ptrdiff2sizet (len, &n) != 0)
+		return -1;
+	if (n > cap)
+		n = cap;
+	return sizet2int (n, out);
+}
 
 static inline ssize_t
 read_int (int fd, void *buf, int n)
@@ -320,6 +433,46 @@ write_int (int fd, const void *buf, int n)
 		return -1;
 	}
 	return write (fd, buf, len);
+}
+
+#include <stdio.h>
+
+static inline int
+fread_int (void *ptr, size_t size, int nmemb, FILE *stream)
+{
+	size_t n,
+		got;
+	int out;
+
+	if (int2sizet (nmemb, &n) != 0) {
+		errno = EINVAL;
+		return -1;
+	}
+	got = fread (ptr, size, n, stream);
+	if (sizet2int (got, &out) != 0) {
+		errno = EOVERFLOW;
+		return -1;
+	}
+	return out;
+}
+
+static inline int
+fwrite_int (const void *ptr, size_t size, int nmemb, FILE *stream)
+{
+	size_t n,
+		put;
+	int out;
+
+	if (int2sizet (nmemb, &n) != 0) {
+		errno = EINVAL;
+		return -1;
+	}
+	put = fwrite (ptr, size, n, stream);
+	if (sizet2int (put, &out) != 0) {
+		errno = EOVERFLOW;
+		return -1;
+	}
+	return out;
 }
 
 #endif

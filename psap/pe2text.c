@@ -17,19 +17,19 @@ static int ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	if (lp -> ll_stat & LLOGTTY) {
 		fflush (stdout);
 
-		fwrite ((char *) data, sizeof *data, (int) n, stderr);
+		(void) fwrite_int ((char *) data, sizeof *data, n, stderr);
 		fflush (stderr);
 	}
 
 	if (lp -> ll_fd == NOTOK) {
 		if ((lp -> ll_stat & (LLOGERR | LLOGTTY)) == (LLOGERR | LLOGTTY))
-			return ((int) n);
+			return n;
 		if (ll_open (lp) == NOTOK)
 			return NOTOK;
 	} else if (ll_check (lp) == NOTOK)
 		return NOTOK;
 
-	return write (lp -> ll_fd, (char *) data, (int) n);
+	return write_int (lp -> ll_fd, (char *) data, n);
 }
 
 static int ll_psopen (PS ps) {

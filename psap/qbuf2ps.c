@@ -23,7 +23,8 @@ static int qbuf_read (PS ps, PElementData data, PElementLen n, int in_line) {
 			return cc;
 
 		i = min (qp -> qb_len, n);
-		bcopy (qp -> qb_data, (char *) data, i);
+		if (bcopy_int (qp -> qb_data, data, i) != 0)
+			return cc;
 
 		qp -> qb_data += i, qp -> qb_len -= i;
 		if (qp -> qb_len <= 0) {

@@ -7,6 +7,7 @@
 
 int qb_pullup (struct qbuf *qb) {
 	int len = 0;
+	int extra;
 	char *d;
 	struct qbuf *p, *qp, *qpp;
 #ifdef	notdef		/* want null-termination... */
@@ -14,8 +15,12 @@ int qb_pullup (struct qbuf *qb) {
 		return OK;
 #endif
 	for (p = qb -> qb_forw; p != qb; p = p -> qb_forw)
-		len += p -> qb_len;
-	if ((p = (struct qbuf *) malloc ((unsigned) (sizeof *p + len + 1)))
+		if (add_int_to_int (&len, p -> qb_len) != 0)
+			return NOTOK;
+	extra = len;
+	if (add_int_to_int (&extra, 1) != 0)
+		return NOTOK;
+	if ((p = (struct qbuf *) malloc_plus_int (sizeof *p, extra))
 			== NULL)
 		return NOTOK;
 	d = p -> qb_data = p -> qb_base;
@@ -23,7 +28,11 @@ int qb_pullup (struct qbuf *qb) {
 	for (qp = qb -> qb_forw; qp != qb; qp = qpp) {
 		qpp = qp -> qb_forw;
 		remque (qp);
-		bcopy (qp -> qb_data, d, qp -> qb_len);
+		if (bcopy_int (qp -> qb_data, d, qp -> qb_len) != 0) {
+			free ((char *) qp);
+			free ((char *) p);
+			return NOTOK;
+		}
 		d += qp -> qb_len;
 		free ((char *) qp);
 	}

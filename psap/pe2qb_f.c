@@ -4,20 +4,19 @@
 #include <strings.h>
 #include "psap.h"
 
-#define moveit(c, l)        if(Qcp + l > Ecp) { \
-				 printf("pe2qb_f: Qcp %o Ecp %o len %d\n", \
-					Qcp, Ecp, l); \
-				return(NOTOK); \
+#define moveit(c, l)        do { \
+				size_t _ml; \
+				if (int2sizet ((l), &_ml) != 0) \
+					return NOTOK; \
+				if (Qcp + _ml > Ecp) { \
+				 printf("pe2qb_f: Qcp overflow len %d\n", \
+					(l)); \
+				 return(NOTOK); \
 			    } \
-			    if(l == 1) { \
-				*Qcp++ = *c; \
-				Len++; \
-			    }  \
-			    else { \
-				    bcopy((char *)c, Qcp, l); \
-				    Qcp += l; \
-				    Len  += l; \
-			    }
+				memcpy (Qcp, (char *) (c), _ml); \
+				Qcp += _ml; \
+				Len  += (l); \
+			    } while (0)
 
 static PElement pe_eoc = { PE_CLASS_UNIV, PE_FORM_PRIM, PE_UNIV_EOC, 0 };
 
@@ -53,17 +52,30 @@ int pe2qb_f (PE pe) {
 		PElementID jd;
 
 		ep = (bp = idbuffer);
-		*bp = *Qcp | PE_ID_XTND;
+		{
+			uint8_t b;
+
+			if (int2u8 ((int) (as_octet (*Qcp) | (unsigned) PE_ID_XTND),
+					&b) != 0)
+				return NOTOK;
+			*bp = b;
+		}
 		for (jd = id; jd != 0; jd >>= PE_ID_SHIFT)
 			ep++;
 
-		for (bp = ep; id != 0; id >>= PE_ID_SHIFT)
-			*bp-- = id & PE_ID_MASK;
+		for (bp = ep; id != 0; id >>= PE_ID_SHIFT) {
+			uint8_t b;
+
+			if (int2u8 ((int) (id & PE_ID_MASK), &b) != 0)
+				return NOTOK;
+			*bp-- = b;
+		}
 		for (bp = idbuffer + 1; bp < ep; bp++)
 			*bp |= PE_ID_MORE;
 
 		bp = ++ep;
-		elm_len = bp - idbuffer;
+		if (ptrdiff2int (bp - idbuffer, &elm_len) != 0)
+			return NOTOK;
 		moveit(idbuffer, elm_len);
 	}
 
@@ -73,15 +85,32 @@ int pe2qb_f (PE pe) {
 		*Qcp++ = PE_LEN_XTND;
 		Len++;
 	} else if (len <= PE_LEN_SMAX) {
-		*Qcp++ = len & 0xff;
+		uint8_t b;
+
+		if (int2u8 (len, &b) != 0)
+			return NOTOK;
+		memcpy (Qcp, &b, 1);
+		Qcp++;
 		Len++;
 	} else {
+		uint8_t b;
+
 		ep = elmbuffer + sizeof elmbuffer - 1;
-		for (bp = ep; len != 0 && elmbuffer < bp; len >>= 8)
-			*bp-- = len & 0xff;
-		*bp = PE_LEN_XTND | ((ep - bp) & 0xff);
-		elm_len = ep - bp + 1;
-		moveit(bp, elm_len);
+		for (bp = ep; len != 0 && elmbuffer < bp; len >>= 8) {
+			if (int2u8 (len & 0xff, &b) != 0)
+				return NOTOK;
+			*bp-- = b;
+		}
+		{
+			ptrdiff_t nb = ep - bp;
+
+			if (int2u8 (PE_LEN_XTND | (int) (nb & 0xff), &b) != 0)
+				return NOTOK;
+			*bp = b;
+		}
+			if (ptrdiff2int (ep - bp + 1, &elm_len) != 0)
+				return NOTOK;
+			moveit(bp, elm_len);
 	}
 
 	/* Now put the actual value into the qbuf */

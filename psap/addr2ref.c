@@ -24,8 +24,14 @@ addr2ref (char *addr) {
 
 	bzero ((char *) sr, sizeof *sr);
 
-	if ((pe = t61s2prim (addr, strlen (addr))) == NULLPE)
-		return NULL;
+	{
+		int alen;
+
+		if (sizet2int (strlen (addr), &alen) != 0)
+			return NULL;
+		if ((pe = t61s2prim (addr, alen)) == NULLPE)
+			return NULL;
+	}
 	result = stuff (pe, sr -> sr_udata, &sr -> sr_ulen);
 	pe_free (pe);
 	if (result == NOTOK)
@@ -52,7 +58,11 @@ static int stuff (PE pe, char *dbase, uint8_t *dlen) {
 	if (pe2ssdu (pe, &base, &len) == NOTOK)
 		return NOTOK;
 
-	bcopy (base, dbase, (int) (*dlen = len));
+	if (int2u8 (len, dlen) != 0
+			|| bcopy_int (base, dbase, len) != 0) {
+		free (base);
+		return NOTOK;
+	}
 	free (base);
 
 	return OK;

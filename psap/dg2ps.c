@@ -80,7 +80,8 @@ static int dg_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	if (cc > n)
 		cc = n;
 
-	bcopy (pi -> pio_ptr, (char *) data, cc);
+	if (bcopy_int (pi -> pio_ptr, data, cc) != 0)
+		return 0;
 	pi -> pio_ptr += cc, pi -> pio_cnt -= cc;
 
 	return cc;
@@ -93,7 +94,8 @@ static int dg_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	if (po -> pio_cnt < n)
 		return 0;
 
-	bcopy ((char *) data, po -> pio_ptr, n);
+	if (bcopy_int (data, po -> pio_ptr, n) != 0)
+		return 0;
 	po -> pio_ptr += n, po -> pio_cnt -= n;
 
 	return n;
@@ -104,7 +106,8 @@ static int dg_flush (PS ps) {
 	struct ps_inout *po = &pt -> ps_output;
 	struct qbuf *qb = po -> pio_qb;
 
-	qb -> qb_len = po -> pio_ptr - qb -> qb_data;
+	if (ptrdiff2int (po -> pio_ptr - qb -> qb_data, &qb -> qb_len) != 0)
+		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 	if ((*po -> pio_wfnx) (pt -> ps_fd, qb) != qb -> qb_len)
 		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 
@@ -164,8 +167,8 @@ int dg_setup (PS ps, int fd, int size, int (*rfx)(int fd, struct qbuf **q), int 
 	pt -> ps_fd = fd;
 	pt -> ps_maxsize = size;
 
-	if ((qb = (struct qbuf *) malloc (sizeof *qb
-									  + (unsigned) pt -> ps_maxsize))
+	if ((qb = (struct qbuf *) malloc_plus_int (sizeof *qb,
+									  pt -> ps_maxsize))
 			== NULL)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 	qb -> qb_forw = qb -> qb_back = qb;

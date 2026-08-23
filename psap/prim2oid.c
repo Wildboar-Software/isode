@@ -40,9 +40,20 @@ OID	prim2oid (PE pe) {
 				return pe_seterr (pe, PE_ERR_OID, NULLOID);
 	}
 
-	if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL)
-		return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
-	o -> oid_elements = ip, o -> oid_nelem = i;
+	{
+		int nelem,
+			nalloc;
+
+		if (uint2int (i, &nelem) != 0)
+			return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
+		nalloc = nelem;
+		if (add_int_to_int (&nalloc, 1) != 0)
+			return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
+		if ((ip = (unsigned int *) malloc_nmemb (nalloc, sizeof *ip))
+				== NULL)
+			return pe_seterr (pe, PE_ERR_NMEM, NULLOID);
+		o -> oid_elements = ip, o -> oid_nelem = nelem;
+	}
 
 	for (dp = pe -> pe_prim; dp < ep; ) {
 		i = 0;

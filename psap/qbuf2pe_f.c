@@ -15,7 +15,7 @@ static int qbuf2data(PElementData data, PElementLen len);
 #define qbuf2char(c)	{ \
 				qp = Qb; \
 				if (qp->qb_len > 0 && qp != Hqb) { \
-					(c) = *qp->qb_data++; \
+					(c) = as_octet (*qp->qb_data++); \
 					Byteno++; \
 					if(--qp->qb_len == 0) { \
 						if(!(Qb = qp->qb_forw)) \
@@ -58,8 +58,19 @@ PE qbuf2pe_f (int *result) {
 	 * First, decode the id.
 	 */
 	qbuf2char(c);
-	class = ((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT;
-	form = ((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT;
+	{
+		uint8_t cl,
+				fo;
+
+		if (int2u8 (((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT, &cl) != 0
+				|| int2u8 (((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT, &fo)
+				!= 0) {
+			*result = PS_ERR_OVERID;
+			return (NULLPE);
+		}
+		class = cl;
+		form = fo;
+	}
 	j = (c & PE_CODE_MASK);
 	if (j == PE_ID_XTND)
 		for (j = 0;; j <<= PE_ID_SHIFT) {
@@ -80,7 +91,10 @@ PE qbuf2pe_f (int *result) {
 			}
 		}
 
-	id = j;
+	if (int2u16 (j, &id) != 0) {
+		*result = PS_ERR_OVERID;
+		return (NULLPE);
+	}
 	DLOG (psap_log, LLOG_DEBUG,
 		  ("class=%d form=%d id=%d", class, form, id));
 	if ((pe = pe_alloc (class, form, id)) == NULLPE) {
@@ -89,7 +103,12 @@ PE qbuf2pe_f (int *result) {
 	}
 	qbuf2char(c);
 	if ((i = c) & PE_LEN_XTND) {
-		if ((i &= PE_LEN_MASK) > sizeof (PElementLen)) {
+		{
+			size_t ilen;
+
+			i &= PE_LEN_MASK;
+			if (int2sizet (i, &ilen) != 0
+					|| ilen > sizeof (PElementLen)) {
 #ifdef DEBUG
 			DLOG (psap_log, LLOG_DEBUG,
 				  ("c (%x) i (%x) %d is %x %x %x %x\n",
@@ -102,6 +121,7 @@ PE qbuf2pe_f (int *result) {
 #endif
 			*result = PS_ERR_OVERLEN;
 			return (NULLPE);
+			}
 		}
 		if (i) {
 			for (j = 0; i-- > 0;) {
@@ -234,7 +254,8 @@ static int qbuf2data (PElementData data, PElementLen len) {
 		if (qp == Hqb)
 			goto leave;
 		i = min (qp -> qb_len, len);
-		bcopy (qp -> qb_data, (char *) data, i);
+		if (bcopy_int (qp -> qb_data, data, i) != 0)
+			goto leave;
 		qp -> qb_len -= i;
 		if (qp -> qb_len <= 0) {
 			if(!(Qb = (qp = qp->qb_forw)))
