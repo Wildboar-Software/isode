@@ -23,10 +23,10 @@ static int uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	if (ps -> ps_cur >= ps -> ps_end) {
 		SLOG (psap_log, LLOG_DEBUG, NULLCP,
 			  ("%d elements not enough for pe2uvec", ps -> ps_elems));
-		ps -> ps_elems += NPSUV;
-		if ((uv = (struct udvec *) realloc ((char *) ps -> ps_head,
-											(unsigned) (ps -> ps_elems
-													* sizeof *uv)))
+		if (add_int_to_int (&ps -> ps_elems, NPSUV) != 0)
+			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+		if ((uv = (struct udvec *) realloc_nmemb (ps -> ps_head,
+							ps -> ps_elems, sizeof *uv))
 				== NULL)
 			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 
@@ -60,11 +60,14 @@ static int uvec_write (PS ps, PElementData data, PElementLen n, int in_line) {
 			uv -> uv_inline = ps -> ps_cc > 0 ? 1 : 0;
 		}
 
-		uv -> uv_len += n;
-		bcopy ((char *) data, ps -> ps_extra, n);
+		if (add_int_to_int (&uv -> uv_len, n) != 0)
+			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+		if (bcopy_int (data, ps -> ps_extra, n) != 0)
+			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 		ps -> ps_extra += n, ps -> ps_slop -= n;
 	}
-	ps -> ps_cc += n;
+	if (add_int_to_int (&ps -> ps_cc, n) != 0)
+		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 
 	return n;
 }
@@ -111,7 +114,7 @@ int uvec_setup (PS ps, int len) {
 	struct udvec *uv;
 
 	ps -> ps_elems = NPSUV;
-	if ((uv = (struct udvec *) calloc ((unsigned) ps -> ps_elems, sizeof *uv))
+	if ((uv = (struct udvec *) calloc_int (ps -> ps_elems, sizeof *uv))
 			== NULL)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 	ps -> ps_end = (ps -> ps_head = ps -> ps_cur = uv) + ps -> ps_elems - 1;
@@ -122,7 +125,7 @@ int uvec_setup (PS ps, int len) {
 		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP,
 			  ("bad initial slop in pe2uvec, %d octets", len));
 
-	if ((ps -> ps_extra = malloc ((unsigned) len)) == NULL)
+	if ((ps -> ps_extra = malloc_int (len)) == NULL)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 
 	return OK;

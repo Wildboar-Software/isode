@@ -124,7 +124,8 @@ SimpleCredentials [[P struct ds_bind_arg *]]
 		[2] OCTET STRING [[o dba_vtmp $ dba_passwd_len]]
 		%D{
 		if ((*parm)->dba_vtmp) {
-			bcopy((*parm)->dba_vtmp, (*parm)->dba_passwd, (*parm)->dba_passwd_len);
+			if (bcopy_int((*parm)->dba_vtmp, (*parm)->dba_passwd, (*parm)->dba_passwd_len) != 0)
+				return NOTOK;
 			free((*parm)->dba_vtmp);
 			if ((*parm)->dba_auth_type == DBA_AUTH_NONE)
 			   (*parm)->dba_auth_type = DBA_AUTH_SIMPLE;

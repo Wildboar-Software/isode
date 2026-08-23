@@ -472,13 +472,15 @@ static int doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindi
 	}
 
 	if (acb -> acb_len > 0) {
-		unsigned int    i;
+		int	n;
 		char  *cp,
 			  *dp;
 
-		i = acb -> acb_len + sx -> sx_cc;
+		n = acb -> acb_len;
+		if (add_int_to_int (&n, sx -> sx_cc) != 0)
+			goto congested;
 		if (acb -> acb_realbase) {
-			if ((dp = malloc (i)) == NULL) {
+			if ((dp = malloc_int (n)) == NULL) {
 congested:
 				;
 				if (SUReportRequest (acb -> acb_fd, SP_LOCAL, NULLCP, 0,
@@ -489,9 +491,12 @@ congested:
 				FREEACB (acb);
 				goto done;
 			}
-			bcopy (acb -> acb_base, dp, acb -> acb_len);
+			if (bcopy_int (acb -> acb_base, dp, acb -> acb_len) != 0) {
+				free (dp);
+				goto congested;
+			}
 			free (acb -> acb_realbase), acb -> acb_realbase = NULL;
-		} else if ((dp = realloc (acb -> acb_base, i)) == NULL)
+		} else if ((dp = realloc_int (acb -> acb_base, n)) == NULL)
 			goto congested;
 
 		cp = dp + acb -> acb_len;
@@ -499,11 +504,12 @@ congested:
 				qb != &sx -> sx_qbuf;
 				qb = qb -> qb_forw)
 			if (qb -> qb_len) {
-				bcopy (qb -> qb_data, cp, qb -> qb_len);
+				if (bcopy_int (qb -> qb_data, cp, qb -> qb_len) != 0)
+					goto congested;
 				cp += qb -> qb_len;
 			}
 		acb -> acb_base = dp;
-		acb -> acb_len = i;
+		acb -> acb_len = n;
 	} else {
 		if ((qb = sx -> sx_qbuf.qb_forw) != &sx -> sx_qbuf
 				&& qb -> qb_forw == &sx -> sx_qbuf) {

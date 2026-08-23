@@ -40,7 +40,7 @@ node * bl_tree_top;
 node * wt_tree_top;
 node * two_tree_top;
 
-unsigned int position;
+int position;
 
 static char ref_colour;
 static char colour;
@@ -773,7 +773,7 @@ static int set_dinput (bit_string *lineptr, int length)
 				   stderr);
 			return (-1);
 		}
-		cbyte = *lineptr->dbuf++;
+		cbyte = *(unsigned char *)lineptr->dbuf++;
 		if (cbyte & 0x80) { /* long form */
 			count = cbyte & 0x7f;
 			if (count > 4) {
@@ -784,7 +784,7 @@ static int set_dinput (bit_string *lineptr, int length)
 				++lineptr->dbuf;
 		}
 	}
-	lineptr->pos = *lineptr->dbuf++;
+	lineptr->pos = *(unsigned char *)lineptr->dbuf++;
 	lineptr->mask = BIT_MASK;
 	return (0);
 }

@@ -58,8 +58,11 @@ no_pe:
 
 				if (fstat (fileno (stdin), &st) == NOTOK
 						|| (st.st_mode & S_IFMT) != S_IFREG
-						|| (i = st.st_size) <= 0)
+						|| st.st_size <= 0
+						|| st.st_size > (off_t) INT_MAX)
 					i = BUFSIZ;
+				else
+					i = (int) st.st_size;
 
 				onceonly = 0;
 			} else
@@ -70,8 +73,8 @@ no_pe:
 					|| (p -> pe_prim = PEDalloc (p -> pe_len = i)) == NULLPED)
 				goto no_pe;
 
-			switch (i = fread ((char *) p -> pe_prim, sizeof *p -> pe_prim,
-							   (int) p -> pe_len, stdin)) {
+			switch (i = fread_int ((char *) p -> pe_prim, sizeof *p -> pe_prim,
+							   p -> pe_len, stdin)) {
 			case NOTOK:
 				perror ("fread");
 				exit (1);
@@ -95,11 +98,25 @@ no_pe:
 				packet[BUFSIZ];
 
 		while (fgets (buffer, sizeof buffer, stdin)) {
-			if (*buffer == ' ')
-				strncpy (packet, buffer + 1, i = strlen (buffer) - 2);
-			else
-				i = implode ((uint8_t *) packet, buffer, strlen (buffer) - 1);
-			fwrite (packet, sizeof *packet, i, stdout);
+			size_t blen = strlen (buffer);
+			int n;
+
+			if (*buffer == ' ') {
+				if (blen < 2)
+					continue;
+				if (sizet2int (blen - 2, &n) != 0)
+					exit (1);
+				strncpy (packet, buffer + 1, blen - 2);
+				i = n;
+			} else {
+				if (blen < 1)
+					continue;
+				if (sizet2int (blen - 1, &n) != 0)
+					exit (1);
+				i = implode ((uint8_t *) packet, buffer, n);
+			}
+			if (fwrite_int (packet, sizeof *packet, i, stdout) == NOTOK)
+				exit (1);
 		}
 
 		exit (0);

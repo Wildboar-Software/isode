@@ -116,7 +116,8 @@ static int pl_read_class (PS ps, PL pl, PElementClass *class) {
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 	if ((i = pl_read_name (pl -> pl_name, pe_classlist, pe_maxclass)) == NOTOK)
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
-	*class = i;
+	if (int2u8 (i, class) != 0)
+		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 	return OK;
 }
 
@@ -151,7 +152,8 @@ static int pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	default:
 		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 	}
-	*id = i;
+	if (int2u16 (i, id) != 0)
+		return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 	return OK;
 }
 
@@ -201,14 +203,20 @@ static int pl_read_prim (PS ps, PL pl, PE pe) {
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 	pe -> pe_prim = dp, pe -> pe_len = len;
 	for (ep = dp + len; dp < ep;) {
-		i = min (ep - dp, sizeof (int));
+		if (min_len_cap (ep - dp, sizeof (int), &i) != 0)
+			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 		if (pl_read_lex (ps, pl) == NOTOK)
 			return NOTOK;
 		if (pl -> pl_code != PL_CODE_NUM)
 			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 		n = pl -> pl_num;
-		while (i-- > 0)
-			*dp++ = (n >> (i * 8)) & 0xff;
+		while (i-- > 0) {
+			uint8_t b;
+
+			if (int2u8 ((n >> (i * 8)) & 0xff, &b) != 0)
+				return ps_seterr (ps, PS_ERR_XXX, NOTOK);
+			*dp++ = b;
+		}
 	}
 out:
 	;
@@ -283,12 +291,15 @@ static int  pl_read_lex (PS ps, PL pl)
 			pl -> pl_code = PL_CODE_NAME;
 			bp = pl -> pl_name;
 			while (isalnum ((uint8_t) c) || c == '-') {
-				*bp++ = c;
+				if (u8tochar (c, bp) != 0)
+					return ps_seterr (ps, PS_ERR_XXX, NOTOK);
+				bp++;
 				if (pl_read (ps, &c) == NOTOK)
 					return NOTOK;
 			}
 			*bp = 0;
-			ps -> ps_scratch = c;
+			if (u8toint (c, &ps -> ps_scratch) != 0)
+				return NOTOK;
 			return OK;
 		}
 		if (c == '"') {
@@ -317,7 +328,8 @@ static int  pl_read_lex (PS ps, PL pl)
 				base = 8;
 				if (c < '0' || c > '7') {
 					pl -> pl_num = 0;
-					ps -> ps_scratch = c;
+					if (u8toint (c, &ps -> ps_scratch) != 0)
+						return NOTOK;
 					return OK;
 				}
 			}
@@ -350,7 +362,8 @@ static int  pl_read_lex (PS ps, PL pl)
 				return NOTOK;
 			if (!isxdigit ((uint8_t) c)) {
 				pl -> pl_num = n;
-				ps -> ps_scratch = c;
+				if (u8toint (c, &ps -> ps_scratch) != 0)
+					return NOTOK;
 				return OK;
 			}
 		}
@@ -359,7 +372,8 @@ static int  pl_read_lex (PS ps, PL pl)
 
 static int pl_read (PS ps, byte *c) {
 	if (ps -> ps_scratch) {
-		*c = ps -> ps_scratch;
+		if (int2u8 (ps -> ps_scratch, c) != 0)
+			return ps_seterr (ps, PS_ERR_XXX, NOTOK);
 		ps -> ps_scratch = 0;
 		return OK;
 	}

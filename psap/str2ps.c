@@ -17,7 +17,8 @@ static int str_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	if (cc > n)
 		cc = n;
 
-	bcopy (ps -> ps_ptr, (char *) data, cc);
+	if (bcopy_int (ps -> ps_ptr, data, cc) != 0)
+		return 0;
 	ps -> ps_ptr += cc, ps -> ps_cnt -= cc;
 
 	return cc;
@@ -28,30 +29,45 @@ static int str_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	char  *cp;
 
 	if (ps -> ps_base == NULLCP) {
-		if ((cp = malloc ((unsigned) (cc = n + BUFSIZ))) == NULLCP)
+		cc = n;
+		if (add_int_to_int (&cc, BUFSIZ) != 0
+				|| (cp = malloc_int (cc)) == NULLCP)
 			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 		ps -> ps_base = ps -> ps_ptr = cp;
 		ps -> ps_bufsiz = ps -> ps_cnt = cc;
 	} else if (ps -> ps_cnt < n) {
-		int    curlen = ps -> ps_ptr - ps -> ps_base;
+		int    curlen;
+
+		if (ptrdiff2int (ps -> ps_ptr - ps -> ps_base, &curlen) != 0)
+			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 
 		if (ps -> ps_inline) {
 			n = ps -> ps_cnt;
 			goto partial;
 		}
 
-		if ((cp = realloc (ps -> ps_base,
-						   (unsigned) (ps -> ps_bufsiz
-									   + (cc = n + BUFSIZ))))
-				== NULLCP)
+		cc = n;
+		if (add_int_to_int (&cc, BUFSIZ) != 0)
 			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
-		ps -> ps_ptr = (ps -> ps_base = cp) + curlen;
-		ps -> ps_bufsiz += cc, ps -> ps_cnt += cc;
+		{
+			int newsize = ps -> ps_bufsiz;
+			int newcnt = ps -> ps_cnt;
+
+			if (add_int_to_int (&newsize, cc) != 0
+					|| add_int_to_int (&newcnt, cc) != 0)
+				return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+			if ((cp = realloc_int (ps -> ps_base, newsize)) == NULLCP)
+				return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+			ps -> ps_ptr = (ps -> ps_base = cp) + curlen;
+			ps -> ps_bufsiz = newsize;
+			ps -> ps_cnt = newcnt;
+		}
 	}
 partial:
 	;
 
-	bcopy ((char *) data, ps -> ps_ptr, n);
+	if (bcopy_int (data, ps -> ps_ptr, n) != 0)
+		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 	ps -> ps_ptr += n, ps -> ps_cnt -= n;
 
 	return n;
@@ -80,11 +96,14 @@ int str_setup (PS ps, char *cp, int cc, int in_line) {
 		ps -> ps_base = ps -> ps_ptr = cp;
 		ps -> ps_bufsiz = ps -> ps_cnt = cc;
 	} else if (cc > 0) {
-		if ((dp = malloc ((unsigned) (cc))) == NULLCP)
+		if ((dp = malloc_int (cc)) == NULLCP)
 			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 		ps -> ps_base = ps -> ps_ptr = dp;
-		if (cp != NULLCP)
-			bcopy (cp, dp, cc);
+		if (cp != NULLCP && bcopy_int (cp, dp, cc) != 0) {
+			free (dp);
+			ps -> ps_base = ps -> ps_ptr = NULLCP;
+			return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+		}
 		ps -> ps_bufsiz = ps -> ps_cnt = cc;
 	}
 

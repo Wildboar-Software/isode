@@ -641,13 +641,15 @@ int user_tailor (void) {
 			goto no_dice;
 		if (dishinit && !frompipe) {
 			char cmd_buf [LINESIZE];
-			int msk;
+			mode_t msk, mask;
 			ps_print (OPT,"Please wait whilst I initialise everything...\n");
-			msk = umask (0111);
+			if (int2mode (0111, &mask) != 0)
+				return (NOTOK);
+			msk = umask (mask);
 			strcpy (cmd_buf, isodefile ("new_quipurc", 1));
 			if ((file = fopen (Dish_Home, "w")) == 0)
 				return (OK);	/* cant make one */
-			umask (msk);
+			(void) umask (msk);
 			fclose (file);
 			if (system (cmd_buf) == 0) {
 				chmod (Dish_Home,0600);
@@ -696,12 +698,40 @@ no_dice:
 		} else if (lexequ (part1, "password") == 0) {
 			strcpy (bindarg.dba_passwd,part2);
 			strcpy (password, part2);
-			bindarg.dba_passwd_len = strlen (part2);
-		} else if (lexequ (part1, "cache_time") == 0)
-			cache_time = MIN (atoi(part2) * 60, 5 * 60 * 60);
+			{
+				int n;
+
+				if (strlen2int (part2, &n) != 0)
+					return (NOTOK);
+				bindarg.dba_passwd_len = n;
+			}
+		} else if (lexequ (part1, "cache_time") == 0) {
+			int v = atoi(part2);
+			unsigned u;
+
+			if (v < 0 || v > INT_MAX / 60)
+				return (NOTOK);
+			v *= 60;
+			if (v > 5 * 60 * 60)
+				v = 5 * 60 * 60;
+			if (int2uint (v, &u) != 0)
+				return (NOTOK);
+			cache_time = u;
+		}
 		/* enforce 5 hour maximum */
-		else if (lexequ (part1, "connect_time") == 0)
-			connect_time = MIN (atoi(part2) * 60, 5 * 60);
+		else if (lexequ (part1, "connect_time") == 0) {
+			int v = atoi(part2);
+			unsigned u;
+
+			if (v < 0 || v > INT_MAX / 60)
+				return (NOTOK);
+			v *= 60;
+			if (v > 5 * 60)
+				v = 5 * 60;
+			if (int2uint (v, &u) != 0)
+				return (NOTOK);
+			connect_time = u;
+		}
 		/* enforce 5 minute maximum */
 		else if (lexequ (part1, "service") == 0)
 			new_service (part2);
@@ -792,9 +822,9 @@ void dish_quit (int sig) {
 }
 
 static void protect_password (void) {
-	long hash;
+	unsigned long hash;
 	char *cp;
-	int len;
+	int len, plen, tlen;
 
 	bindarg.dba_time1 = new_version();
 	bindarg.dba_time2 = NULLCP;
@@ -803,10 +833,14 @@ static void protect_password (void) {
 	bindarg.dba_r2.n_bits = 0;
 	bindarg.dba_r2.value = NULLCP;
 	hash = 0;
-	hash = hash_passwd(hash, password, strlen(password));
-	hash = hash_passwd(hash, bindarg.dba_time1, strlen(bindarg.dba_time1));
+	if (strlen2int (password, &plen) != 0
+			|| strlen2int (bindarg.dba_time1, &tlen) != 0)
+		return;
+	hash = hash_passwd(hash, password, plen);
+	hash = hash_passwd(hash, bindarg.dba_time1, tlen);
 	cp = hash2str(hash, &len);
-	bcopy(cp, bindarg.dba_passwd, len);
+	if (bcopy_int(cp, bindarg.dba_passwd, len) != 0)
+		return;
 	bindarg.dba_passwd_len = len;
 }
 

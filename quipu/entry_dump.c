@@ -64,17 +64,19 @@ static void entry_block_print (PS psa, Entry block) {
 }
 
 int write_edb (Entry ptr, char *filename) {
-	int um;
+	mode_t um, mask;
 	FILE * fptr;
 	PS entryps;
 	extern char * parse_file;
 
-	um = umask (0177);
+	if (int2mode (0177, &mask) != 0)
+		return NOTOK;
+	um = umask (mask);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("file_open failed: \"%s\" (%d)",filename,errno));
 		return NOTOK;
 	}
-	umask (um);
+	(void) umask (um);
 	if ((entryps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 		fclose (fptr);

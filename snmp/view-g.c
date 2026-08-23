@@ -547,7 +547,7 @@ void fin_view (void) {
 		struct view **base,
 				   **bp,
 				   **ep;
-		if ((base = (struct view **) malloc ((unsigned) (i * sizeof *base)))
+		if ((base = (struct view **) malloc_nmemb (i, sizeof *base))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		ep = base;
@@ -558,10 +558,11 @@ void fin_view (void) {
 			OID	    oid = v -> v_name;
 			v -> v_insize = 1 + (j = oid -> oid_nelem);
 			if ((v -> v_instance =
-						(unsigned int *) calloc ((unsigned) v -> v_insize,
+						(unsigned int *) calloc_int (v -> v_insize,
 												 sizeof *v -> v_instance)) == NULL)
 				adios (NULLCP, "out of memory");
-			v -> v_instance[0] = oid -> oid_nelem;
+			if (int2uint (oid -> oid_nelem, &v -> v_instance[0]) != 0)
+				adios (NULLCP, "view name too long");
 			for (ip = v -> v_instance + 1, jp = oid -> oid_elements;
 					j > 0;
 					j--)
@@ -569,8 +570,8 @@ void fin_view (void) {
 			remque (*ep++ = v);
 		}
 		VHead -> v_forw = VHead -> v_back = VHead;
-		if (i > 1)
-			qsort (base, i, sizeof *base, view_compar);
+		if (i > 1 && qsort_int (base, i, sizeof *base, view_compar) != 0)
+			adios (NULLCP, "too many views");
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, VHead -> v_back);
@@ -585,7 +586,7 @@ void fin_view (void) {
 				   **bp,
 				   **ep;
 		if ((base = (struct community **)
-					malloc ((unsigned) (i * sizeof *base))) == NULL)
+					malloc_nmemb (i, sizeof *base)) == NULL)
 			adios (NULLCP, "out of memory");
 		ep = base;
 		for (c = CHead -> c_forw; c != CHead; c = c -> c_forw) {
@@ -609,16 +610,32 @@ void fin_view (void) {
 				j = 0;
 				break;
 			}
-			c -> c_insize = 1 + strlen (c -> c_name) + 1 + j;
-			if ((c -> c_instance =
-						(unsigned int *) calloc ((unsigned) c -> c_insize,
-												 sizeof *c -> c_instance)) == NULL)
-				adios (NULLCP, "out of memory");
-			ip = c -> c_instance;
-			*ip++ = strlen (c -> c_name);
-			for (cp = c -> c_name; *cp; cp++)
-				*ip++ = *cp & 0xff;
-			*ip++ = j;
+			{
+				size_t nlen;
+				int nleni;
+
+				nlen = strlen (c -> c_name);
+				if (sizet2int (nlen, &nleni) != 0)
+					adios (NULLCP, "community name too long");
+				c -> c_insize = 1;
+				if (add_int_to_int (&c -> c_insize, nleni) != 0
+						|| add_int_to_int (&c -> c_insize, 1) != 0
+						|| add_int_to_int (&c -> c_insize, j) != 0)
+					adios (NULLCP, "community instance too large");
+				if ((c -> c_instance =
+							(unsigned int *) calloc_int (c -> c_insize,
+									sizeof *c -> c_instance)) == NULL)
+					adios (NULLCP, "out of memory");
+				ip = c -> c_instance;
+				if (int2uint (nleni, ip) != 0)
+					adios (NULLCP, "community name too long");
+				ip++;
+				for (cp = c -> c_name; *cp; cp++)
+					*ip++ = (unsigned char) *cp;
+				if (int2uint (j, ip) != 0)
+					adios (NULLCP, "community address too long");
+				ip++;
+			}
 			switch (c -> c_addr.na_stack) {
 			case NA_TCP:
 				sscanf (c -> c_addr.na_domain, "%u.%u.%u.%u",
@@ -642,8 +659,8 @@ stuff_it:
 			}
 			*ep++ = c;
 		}
-		if (i > 1)
-			qsort (base, i, sizeof *base, comm_compar);
+		if (i > 1 && qsort_int (base, i, sizeof *base, comm_compar) != 0)
+			adios (NULLCP, "too many communities");
 		bp = base;
 		c = CLex = *bp++;
 		while (bp < ep) {
@@ -661,7 +678,7 @@ stuff_it:
 		struct trap **base,
 				   **bp,
 				   **ep;
-		if ((base = (struct trap **) malloc ((unsigned) (i * sizeof *base)))
+		if ((base = (struct trap **) malloc_nmemb (i, sizeof *base))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		ep = base;
@@ -672,10 +689,11 @@ stuff_it:
 			OID	    oid = t -> t_view -> v_name;
 			t -> t_insize = 1 + (j = oid -> oid_nelem);
 			if ((t -> t_instance =
-						(unsigned int *) calloc ((unsigned) t -> t_insize,
+						(unsigned int *) calloc_int (t -> t_insize,
 												 sizeof *t -> t_instance)) == NULL)
 				adios (NULLCP, "out of memory");
-			t -> t_instance[0] = oid -> oid_nelem;
+			if (int2uint (oid -> oid_nelem, &t -> t_instance[0]) != 0)
+				adios (NULLCP, "trap view name too long");
 			for (ip = t -> t_instance + 1, jp = oid -> oid_elements;
 					j > 0;
 					j--)
@@ -683,8 +701,8 @@ stuff_it:
 			remque (*ep++ = t);
 		}
 		UHead -> t_forw = UHead -> t_back = UHead;
-		if (i > 1)
-			qsort (base, i, sizeof *base, trap_compar);
+		if (i > 1 && qsort_int (base, i, sizeof *base, trap_compar) != 0)
+			adios (NULLCP, "too many traps");
 		bp = base;
 		while (bp < ep)
 			insque (*bp++, UHead -> t_back);
@@ -833,7 +851,10 @@ int f_trap (char **vec) {
 	v -> v_subtree.s_forw = v -> v_subtree.s_back = &v -> v_subtree;
 	t -> t_generics = 0xfe;
 	vec++;
-	trapview -> oid_elements[trapview -> oid_nelem++] = trapno;
+	if (int2uint (trapno, &trapview -> oid_elements[trapview -> oid_nelem])
+			!= 0)
+		adios (NULLCP, "too many trap views");
+	trapview -> oid_nelem++;
 	v -> v_name = oid_cpy (trapview);
 	trapview -> oid_nelem--;
 	if (v -> v_name == NULLOID)
@@ -931,12 +952,16 @@ int f_view (char **vec) {
 		for (x = s -> s_forw; x != s; x = y) {
 			int    i,
 				   j;
+			size_t nbytes;
+
 			y = x -> s_forw;
+			i = x -> s_subtree -> oid_nelem;
+			j = name -> oid_nelem;
+			if (nmemb_bytes (i <= j ? i : j,
+					 sizeof name -> oid_elements[0], &nbytes) != 0)
+				goto another;
 			if (bcmp ((char *) x -> s_subtree -> oid_elements,
-					  (char *) name -> oid_elements,
-					  ((i = x -> s_subtree -> oid_nelem)
-					   <= (j = name -> oid_nelem) ? i : j)
-					  * sizeof name -> oid_elements[0]) == 0) {
+					  (char *) name -> oid_elements, nbytes) == 0) {
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"%s %s %s",
 						*vec,
@@ -956,7 +981,11 @@ int f_view (char **vec) {
 another:
 		;
 	}
-	v -> v_mask = viewmask;
+	if (int2u32 (viewmask, &v -> v_mask) != 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP,
+				"too many views starting with \"%s\"", *vec);
+		goto you_lose;
+	}
 	viewmask <<= 1;
 	insque (v, VHead -> v_back);
 	return OK;

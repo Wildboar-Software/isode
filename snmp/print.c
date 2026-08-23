@@ -198,8 +198,9 @@ static int get_pq (int offset) {
 			pq++;
 	}
 	endprent ();
-	if (pq - pq_head > 1)
-		qsort ((char *) pq_head, pq - pq_head, sizeof *pq_head, pq_compar);
+	if (pq - pq_head > 1
+			&& qsort_ptrdiff ((char *) pq_head, pq - pq_head, sizeof *pq_head, pq_compar) != 0)
+		adios (NULLCP, "too many print queues");
 	return OK;
 }
 
@@ -307,8 +308,9 @@ static int get_pj (int offset) {
 		if (i <= 1)
 			break;
 	}
-	if (pj - pj_head > 1)
-		qsort ((char *) pj_head, pj - pj_head, sizeof *pj_head, pj_compar);
+	if (pj - pj_head > 1
+			&& qsort_ptrdiff ((char *) pj_head, pj - pj_head, sizeof *pj_head, pj_compar) != 0)
+		adios (NULLCP, "too many print jobs");
 	pq = NULL;
 	for (pj = pj_head; pj -> pj_pq; pj++) {
 		if (pj -> pj_pq != pq) {
@@ -320,7 +322,10 @@ static int get_pj (int offset) {
 					&& strcmp (pj -> pj_file, buffer) == 0)
 				i = 0;
 		}
-		pj -> pj_instance[pj -> pj_insize++] = i++;
+		if (int2uint (i, &pj -> pj_instance[pj -> pj_insize]) != 0)
+			adios (NULLCP, "print job instance overflow");
+		pj -> pj_insize++;
+		i++;
 	}
 	return OK;
 }
@@ -873,7 +878,7 @@ static int sortq (const struct dirent **d1, const struct dirent **d2) {
 }
 
 #define	chmode(file,m) \
-    	   (chmod ((file), (int) (m)) == NOTOK) \
+    	   (chmod_int ((file), (int) (m)) == NOTOK) \
     		advise (LLOG_EXCEPTIONS, (file), \
 			"unable to set mode 0%o for", (int) (m)); \
 	else
@@ -1176,7 +1181,7 @@ static void startdaemon (struct pq *pq) {
 	}
 	sprintf (buffer, "\1%s\n", pq -> pq_name);
 	n = strlen (buffer);
-	if (write (sd, buffer, n) != n) {
+	if (write_int (sd, buffer, n) != n) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "error writing to");
 		close (sd);
 		return;

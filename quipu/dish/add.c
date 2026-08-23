@@ -81,9 +81,17 @@ void call_add (int argc, char **argv) {
 						   argv[x], sys_errname (errno));
 				return;
 			}
-			i = umask (0177);
-			out = fopen (fname, "w");
-			umask (i);
+			{
+				mode_t um, mask;
+
+				if (int2mode (0177, &mask) != 0) {
+					fclose (in);
+					return;
+				}
+				um = umask (mask);
+				out = fopen (fname, "w");
+				(void) umask (um);
+			}
 			if (out == NULL) {
 				ps_printf (OPT, "unable to write draft %s: %s\n",
 						   fname, sys_errname (errno));
@@ -231,7 +239,7 @@ static int add_template (char *name, char *objclass) {
 	char            obuf[LINESIZE];
 	Attr_Sequence   as;
 	Attr_Sequence   ocas;
-	int		um;
+	mode_t		um, mask;
 
 	if (objclass == NULLCP)
 		objclass = ORG_PERSON;
@@ -243,12 +251,14 @@ static int add_template (char *name, char *objclass) {
 			else
 				make_old (fname,FALSE);
 		}
-	um = umask (0177);
+	if (int2mode (0177, &mask) != 0)
+		return (-1);
+	um = umask (mask);
 	if ((fptr = fopen (name, "w")) == NULL) {
 		ps_printf (OPT, "Can't open template entry %s\n", name);
 		return (-1);
 	}
-	umask (um);
+	(void) umask (um);
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
 	}

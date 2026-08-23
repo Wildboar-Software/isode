@@ -513,8 +513,14 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 		if (base) {
 			if (qb -> qb_len > sizeof pc -> pc_responding.pa_selector)
 				qb -> qb_len = sizeof pc -> pc_responding.pa_selector;
-			bcopy (base, pb -> pb_responding.pa_selector,
-				   pb -> pb_responding.pa_selectlen = qb -> qb_len);
+			if (bcopy_int (base, pb -> pb_responding.pa_selector,
+						   qb -> qb_len) != 0) {
+				free (base);
+				ppktlose (pb, pi, PC_INVALID, PPDU_CPA, NULLCP,
+						  "malformed PSAP selector");
+				goto out2;
+			}
+			pb -> pb_responding.pa_selectlen = qb -> qb_len;
 			free (base);
 		}
 	}

@@ -402,7 +402,12 @@ void yyprint (char *s, int f, int top) {
 		if (linepos)
 			fprintf (stderr, "\n\n");
 		fprintf (stderr, "%s:", mymodule);
-		linepos = (nameoutput = strlen (mymodule) + 1) + 1;
+		if (strlen2int (mymodule, &nameoutput) != 0
+				|| add_int_to_int (&nameoutput, 1) != 0)
+			myyerror ("module name too long");
+		linepos = nameoutput;
+		if (add_int_to_int (&linepos, 1) != 0)
+			myyerror ("module name too long");
 		didf = 1;
 	}
 
@@ -410,12 +415,18 @@ void yyprint (char *s, int f, int top) {
 		if (linepos)
 			fprintf (stderr, "\n\n");
 		fprintf (stderr, "%s", mymodule);
-		nameoutput = (linepos = strlen (mymodule)) + 1;
+		if (strlen2int (mymodule, &linepos) != 0)
+			myyerror ("module name too long");
+		nameoutput = linepos;
+		if (add_int_to_int (&nameoutput, 1) != 0)
+			myyerror ("module name too long");
 
 #define	section(flag,prefix) \
 	if (yysection & (flag)) { \
 	     fprintf (stderr, " %s", (prefix)); \
-	    linepos += strlen (prefix) + 1; \
+	    if (add_sizet_to_int (&linepos, strlen (prefix)) != 0 \
+			|| add_int_to_int (&linepos, 1) != 0) \
+			myyerror ("line too long"); \
 	} \
 	else \
 	     fprintf (stderr, " none"), linepos += 5
@@ -430,14 +441,18 @@ void yyprint (char *s, int f, int top) {
 			return;
 	}
 
-	len = strlen (s) + (f ? 2 : 0);
+	if (strlen2int (s, &len) != 0)
+		myyerror ("name too long");
+	if (f && add_int_to_int (&len, 2) != 0)
+		myyerror ("name too long");
 	if (linepos != nameoutput)
 		if (len + linepos + 1 > outputlinelen)
 			fprintf (stderr, "\n%*s", linepos = nameoutput, "");
 		else
 			fprintf (stderr, " "), linepos++;
 	fprintf (stderr, f ? "(%s)" : "%s", s);
-	linepos += len;
+	if (add_int_to_int (&linepos, len) != 0)
+		myyerror ("line too long");
 }
 
 /* PASS1 */

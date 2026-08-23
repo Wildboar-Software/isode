@@ -2395,8 +2395,14 @@ static void dump_real (double r) {
 
 	cp = ecvt (r, 20, &decpt, &sign);
 	strcpy (sbuf, cp);	/* cp gets overwritten by printf */
-	printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
-			decpt - strlen (sbuf));
+	{
+		int slen;
+
+		if (strlen2int (sbuf, &slen) != 0)
+			myyerror ("real encoding too long");
+		printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
+				decpt - slen);
+	}
 #else
 	char   *cp,
 		   *dp,

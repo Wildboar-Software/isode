@@ -18,8 +18,8 @@ static int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {
 	case NA_NSAP:
 		if (na1 -> na_addrlen == 0 ||
 				(na1 -> na_addrlen == na2 -> na_addrlen &&
-				 bcmp (na1 -> na_address, na2 -> na_address,
-					   na1 -> na_addrlen) == 0))
+				 bcmp_int (na1 -> na_address, na2 -> na_address,
+					   (int) na1 -> na_addrlen) == 0))
 			return OK;
 		break;
 
@@ -31,11 +31,11 @@ static int nsap_addr_cmp (struct NSAPaddr *na1, struct NSAPaddr *na2) {
 
 	case NA_X25:
 		if (na1 -> na_dtelen == na2 -> na_dtelen &&
-				bcmp (na1 -> na_dte, na2 -> na_dte,
-					  na1 -> na_dtelen) == 0 &&
+				bcmp_int (na1 -> na_dte, na2 -> na_dte,
+					  (int) na1 -> na_dtelen) == 0 &&
 				na1 -> na_pidlen == na2 -> na_pidlen &&
-				bcmp (na1 -> na_pid, na2 -> na_pid,
-					  na1 -> na_pidlen) == 0)
+				bcmp_int (na1 -> na_pid, na2 -> na_pid,
+					  (int) na1 -> na_pidlen) == 0)
 			return OK;
 		break;
 	}
@@ -47,7 +47,7 @@ int tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb) {
 	int n1, n2;
 
 	if (ta -> ta_selectlen != tb -> ta_selectlen ||
-			bcmp (ta -> ta_selector, tb -> ta_selector, ta -> ta_selectlen) != 0)
+			bcmp_int (ta -> ta_selector, tb -> ta_selector, ta -> ta_selectlen) != 0)
 		return NOTOK;
 	if (ta -> ta_naddr == 0 && tb -> ta_naddr == 0)
 		return OK;
@@ -61,14 +61,14 @@ int tsap_addr_cmp (struct TSAPaddr *ta, struct TSAPaddr *tb) {
 
 static int ssap_addr_cmp (struct SSAPaddr *sa, struct SSAPaddr *sb) {
 	if (sa -> sa_selectlen != sb -> sa_selectlen ||
-			bcmp (sa -> sa_selector, sb -> sa_selector, sa -> sa_selectlen) != 0)
+			bcmp_int (sa -> sa_selector, sb -> sa_selector, sa -> sa_selectlen) != 0)
 		return NOTOK;
 	return tsap_addr_cmp (&sa -> sa_addr, &sb -> sa_addr);
 }
 
 static int psap_addr_cmp (struct PSAPaddr *pa, struct PSAPaddr *pb) {
 	if (pa -> pa_selectlen != pb -> pa_selectlen ||
-			bcmp (pa -> pa_selector, pb -> pa_selector, pa -> pa_selectlen) != 0)
+			bcmp_int (pa -> pa_selector, pb -> pa_selector, pa -> pa_selectlen) != 0)
 		return NOTOK;
 	return ssap_addr_cmp (&pa -> pa_addr, &pb -> pa_addr);
 }

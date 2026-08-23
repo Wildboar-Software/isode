@@ -258,14 +258,24 @@ void call_search (int argc, char **argv) {
 						  **ep;
 				ps_printf (RPS, "%d matches found.\n", i);
 				ps_flush (RPS);
-				if (base = (EntryInfo **) malloc ((unsigned)
-												  (i * sizeof *base))) {
+				{
+					size_t nmemb;
+					if (int2sizet (i, &nmemb) != 0)
+						base = NULL;
+					else
+						base = (EntryInfo **) malloc_nmemb (i, sizeof *base);
+				}
+				if (base) {
 					ep = base;
 					for (ptr = result.CSR_entries;
 							ptr;
 							ptr = ptr -> ent_next)
 						*ep++ = ptr;
-					qsort ((char *) base, i, sizeof *base, (int (*)(const void *, const void *)) csr_compar);
+					{
+						size_t nmemb;
+						if (int2sizet (i, &nmemb) == 0)
+							qsort ((char *) base, nmemb, sizeof *base, (int (*)(const void *, const void *)) csr_compar);
+					}
 					bp = base;
 					ptr = result.CSR_entries = *bp++;
 					while (bp < ep) {

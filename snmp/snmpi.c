@@ -252,7 +252,7 @@ static struct dispatch *getds (char *name) {
 
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -484,14 +484,23 @@ static int f_bulk (char **vec) {
 		if (et) {
 			OID    eid = et -> ot_name,
 				   oid = ot -> ot_name;
-			if (eid -> oid_nelem != oid -> oid_nelem - 1
-					|| bcmp ((char *) eid -> oid_elements,
-							 (char *) oid -> oid_elements,
-							 eid -> oid_nelem
-							 * sizeof (eid -> oid_elements[0])) != 0) {
+			if (eid -> oid_nelem != oid -> oid_nelem - 1) {
 				advise (NULLCP, "%s not in same table as previous arguments",
 						ot -> ot_text);
 				goto out;
+			}
+			{
+				size_t nbytes;
+
+				if (nmemb_bytes (eid -> oid_nelem,
+						 sizeof (eid -> oid_elements[0]),
+						 &nbytes) != 0
+						|| bcmp ((char *) eid -> oid_elements,
+							 (char *) oid -> oid_elements, nbytes) != 0) {
+					advise (NULLCP, "%s not in same table as previous arguments",
+							ot -> ot_text);
+					goto out;
+				}
 			}
 		} else {
 			/*	    int	    i; */
@@ -612,7 +621,9 @@ static int f_compile (char **vec) {
 			for (j = ot -> ot_name -> oid_nelem; j > 0; j--)
 				fprintf (fp, " %u,", *ip++);
 			fprintf (fp, " 0, /* %s */ \n", ot -> ot_text);
-			ot -> ot_views = v++;
+			if (int2u32 (v, &ot -> ot_views) != 0)
+				adios (NULLCP, "too many compiled views");
+			v++;
 		}
 		fprintf (fp, "};\n\n");
 		fprintf (fp, "static OIDentifier _names[] = {\n");
@@ -632,8 +643,15 @@ static int f_compile (char **vec) {
 	} else if (!fast) {
 		for (ot = text2obj ("ccitt"); ot; ot = ot -> ot_next) {
 			i++;
-			j += strlen (ot -> ot_text)
-				 + strlen (sprintoid (ot -> ot_name));
+			{
+				int extra;
+
+				if (strlen2int (ot -> ot_text, &extra) != 0
+						|| add_int_to_int (&j, extra) != 0
+						|| strlen2int (sprintoid (ot -> ot_name), &extra) != 0
+						|| add_int_to_int (&j, extra) != 0)
+					adios (NULLCP, "compiled MIB too large");
+			}
 			k += ot -> ot_name -> oid_nelem;
 		}
 		j += i << 1, k += i;
@@ -788,12 +806,17 @@ try_again:
 		OS	os;
 		struct type_SNMP_VarBind *v = vp -> VarBind;
 		if (oid
-				&& (oid -> oid_nelem > v -> name -> oid_nelem
-					|| bcmp ((char *) oid -> oid_elements,
-							 (char *) v -> name -> oid_elements,
-							 oid -> oid_nelem
-							 * sizeof oid -> oid_elements[0])))
+				&& oid -> oid_nelem > v -> name -> oid_nelem)
 			goto out;
+		if (oid) {
+			size_t nbytes;
+
+			if (nmemb_bytes (oid -> oid_nelem,
+					 sizeof oid -> oid_elements[0], &nbytes) != 0
+					|| bcmp ((char *) oid -> oid_elements,
+							 (char *) v -> name -> oid_elements, nbytes))
+				goto out;
+		}
 		if (timing)
 			continue;
 		printf ("%s=", oid2ode (vp -> VarBind -> name));
@@ -1514,7 +1537,14 @@ cots:
 #ifdef	SYS5
 	srand ((unsigned int) time ((long *) 0));
 #else
-	srandom ((int) time ((long *) 0));
+	{
+		unsigned int seed;
+		long now = time ((long *) 0);
+
+		if (long2uint (now, &seed) != 0)
+			seed = 1;
+		srandom (seed);
+	}
 #endif
 	ps_len_strategy = PS_LEN_LONG;
 	extern int loadobjects (const char *file);

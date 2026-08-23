@@ -241,7 +241,7 @@ static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 	for (bp = (char *) &t -> t_pkthdr, i = TPKT_HDRLEN (t);
 			i > 0;
 			bp += cc, i -= cc)
-		switch (cc = read_tcp_socket (fd, bp, i)) {
+		switch (cc = read_int (fd, bp, i)) {
 		case NOTOK:
 		case OK:
 			return DR_NETWORK;
@@ -260,7 +260,7 @@ static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 }
 
 static int tcpread (int fd, char *buffer, int n) {
-	return read_tcp_socket (fd, buffer, n);
+	return read_int (fd, buffer, n);
 }
 
 char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {

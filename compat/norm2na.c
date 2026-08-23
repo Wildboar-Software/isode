@@ -56,7 +56,7 @@ int norm2na (char *p, int len, struct NSAPaddr *na) {
 		for (ts = ts_interim; ts -> ts_name; ts++)
 			if (len > ts -> ts_length
 					&& (tp == NULL || ts -> ts_length > tp -> ts_length)
-					&& bcmp (p, ts -> ts_prefix, ts -> ts_length) == 0)
+					&& bcmp_int (p, ts -> ts_prefix, ts -> ts_length) == 0)
 				tp = ts;
 		if (tp) {
 			int	    i,
@@ -228,7 +228,11 @@ unrealNS:
 					  ("NSAP address too long: %d octets", len));
 				return NOTOK;
 			}
-			bcopy (p, na -> na_address, na -> na_addrlen = len);
+			if (bcopy_int (p, na -> na_address, len) != 0)
+				return NOTOK;
+			if (len > (int) sizeof na -> na_address)
+				return NOTOK;
+			na -> na_addrlen = (char) len;
 		}
 	}
 

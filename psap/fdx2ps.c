@@ -30,7 +30,7 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-extern	int (*set_check_fd)(int fd, int (*fnx)(int fd, caddr_t data), caddr_t data);
+extern int (*set_check_fd (int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
 
 static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
@@ -45,18 +45,19 @@ static int fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	if ((cc = pi -> pio_cnt) <= 0) {
 		if (n > pi -> pio_bufsiz) {
-			if ((cc = read (pt -> ps_fd, (char *) data, n)) == NOTOK)
+			if ((cc = read_int (pt -> ps_fd, (char *) data, n)) == NOTOK)
 				return ps_seterr (ps, PS_ERR_IO, NOTOK);
 			return cc;
 		}
-		if ((cc = read (pt -> ps_fd, pi -> pio_base, pi -> pio_bufsiz))
+		if ((cc = read_int (pt -> ps_fd, pi -> pio_base, pi -> pio_bufsiz))
 				== NOTOK)
 			return ps_seterr (ps, PS_ERR_IO, NOTOK);
 		pi -> pio_ptr = pi -> pio_base, pi -> pio_cnt = cc;
 	}
 	if (cc > n)
 		cc = n;
-	bcopy (pi -> pio_ptr, (char *) data, cc);
+	if (bcopy_int (pi -> pio_ptr, (char *) data, cc) != 0)
+		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 	pi -> pio_ptr += cc, pi -> pio_cnt -= cc;
 	return cc;
 }
@@ -71,7 +72,7 @@ static int fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 				|| (cc = write (pt -> ps_fd, (char *) data, n)) != n)
 #else
 	if (n > po -> pio_bufsiz && po -> pio_ptr <= po -> pio_base) {
-		if ((cc = write (pt -> ps_fd, (char *) data, n)) != n)
+		if ((cc = write_int (pt -> ps_fd, (char *) data, n)) != n)
 #endif
 			return ps_seterr (ps, PS_ERR_IO, NOTOK);
 
@@ -79,7 +80,8 @@ static int fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	}
 	if (n > po -> pio_cnt)
 		n = po -> pio_cnt;
-	bcopy ((char *) data, po -> pio_ptr, n);
+	if (bcopy_int ((char *) data, po -> pio_ptr, n) != 0)
+		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 	po -> pio_ptr += n, po -> pio_cnt -= n;
 	if (po -> pio_cnt <= 0 && fdx_flush (ps) == NOTOK)
 		return ps_seterr (ps, PS_ERR_IO, NOTOK);
@@ -94,7 +96,7 @@ static int  fdx_flush (PS ps)
 	if ((cc = po -> pio_ptr - po -> pio_base) <= 0)
 		return OK;
 	pt -> ps_nflush++;
-	if (write (pt -> ps_fd, po -> pio_base, cc) != cc)
+	if (write_int (pt -> ps_fd, po -> pio_base, cc) != cc)
 		return ps_seterr (ps, PS_ERR_IO, NOTOK);
 	po -> pio_ptr = po -> pio_base, po -> pio_cnt = po -> pio_bufsiz;
 	return OK;
@@ -131,6 +133,7 @@ int	fdx_open (PS ps)
 int	fdx_setup (PS ps, int fd)
 {
 	int	    pz;
+	size_t	    n;
 	struct ps_fdx *pt;
 
 	if ((pt = (struct ps_fdx *) calloc (1, sizeof *pt)) == NULL)
@@ -141,8 +144,10 @@ int	fdx_setup (PS ps, int fd)
 	if ((pz = getpagesize ()) <= 0)
 #endif
 		pz = BUFSIZ;
-	if ((pt -> ps_input.pio_base = malloc ((unsigned) pz)) == NULL
-			|| (pt -> ps_output.pio_base = malloc ((unsigned) pz)) == NULL)
+	if (int2sizet (pz, &n) != 0)
+		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
+	if ((pt -> ps_input.pio_base = malloc (n)) == NULL
+			|| (pt -> ps_output.pio_base = malloc (n)) == NULL)
 		return ps_seterr (ps, PS_ERR_NMEM, NOTOK);
 	pt -> ps_input.pio_bufsiz = pz, pt -> ps_output.pio_cnt = 0;
 	pt -> ps_input.pio_ptr = pt -> ps_input.pio_base;

@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "general.h"
 #include "pathnames.h"
 void endprent(void);
 int getprent(char *bp);
@@ -255,7 +256,18 @@ int tnchktc(void) {
 		return(0);
 	for (q=tcbuf; *q != ':'; q++)
 		;
-	l = p - holdtbuf + strlen(q);
+	{
+		size_t n, qlen;
+
+		if (ptrdiff2sizet (p - holdtbuf, &n) != 0)
+			return (0);
+		qlen = strlen(q);
+		if (qlen > (size_t) INT_MAX || n > (size_t) INT_MAX - qlen)
+			return (0);
+		n += qlen;
+		if (sizet2int (n, &l) != 0)
+			return (0);
+	}
 	if (l > BUFSIZ) {
 		write(2, "Termcap entry too long\n", 23);
 		q[BUFSIZ - (p-tbuf)] = 0;

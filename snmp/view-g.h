@@ -1,5 +1,6 @@
 /* view-g.h - VIEW group */
 #include <stdint.h>
+#include <string.h>
 #include <strings.h>
 #include "isoaddrs.h"
 #include "internet.h"
@@ -7,12 +8,21 @@
 
 /* VIEWS */
 
-#define	inSubtree(tree,object) \
-    	((tree) -> oid_nelem <= (object) -> oid_nelem \
-	     && bcmp ((char *) (tree) -> oid_elements, \
-		      (char *) (object) -> oid_elements, \
-		      (tree) -> oid_nelem \
-		          * sizeof ((tree) -> oid_elements[0])) == 0)
+static inline int
+inSubtree (OID tree, OID object)
+{
+	size_t nbytes;
+
+	if (tree == NULLOID || object == NULLOID)
+		return 0;
+	if (tree -> oid_nelem > object -> oid_nelem)
+		return 0;
+	if (nmemb_bytes (tree -> oid_nelem, sizeof tree -> oid_elements[0],
+			 &nbytes) != 0)
+		return 0;
+	return memcmp ((char *) tree -> oid_elements,
+		       (char *) object -> oid_elements, nbytes) == 0;
+}
 
 struct subtree {
 	struct subtree *s_forw;	/* doubly-linked list */

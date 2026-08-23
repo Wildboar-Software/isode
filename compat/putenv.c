@@ -25,10 +25,18 @@ int setenv (const char *name, const char *value, int overwrite) {
 			*ep = cp;
 			return 0;
 		}
-	if ((nep = (char **) malloc ((unsigned) ((i + 2) * sizeof *nep)))
-			== NULL) {
-		free (cp);
-		return 1;
+	{
+		size_t nent;
+
+		if (i < 0 || i > INT_MAX - 2 || int2sizet (i + 2, &nent) != 0
+				|| nent > SIZE_MAX / sizeof *nep) {
+			free (cp);
+			return 1;
+		}
+		if ((nep = (char **) malloc (nent * sizeof *nep)) == NULL) {
+			free (cp);
+			return 1;
+		}
 	}
 	for (ep = environ, i = 0; *ep; nep[i++] = *ep++)
 		continue;

@@ -50,18 +50,17 @@ typedef	int	   PElementLen;
 typedef uint8_t	  byte, *PElementData;
 #define	NULLPED	((PElementData) 0)
 
-#define	PEDalloc(s)		((PElementData) malloc ((unsigned int) (s)))
+#define	PEDalloc(s)		((PElementData) malloc_int (s))
 
-#define	PEDrealloc(p, s)	((PElementData) \
-				    realloc ((char *) (p), (unsigned int) (s)))
+#define	PEDrealloc(p, s)	((PElementData) realloc_int ((char *) (p), (s)))
 
 #define	PEDfree(p)		free ((char *) (p))
 
 #define	PEDcmp(b1, b2, length)	\
-			bcmp ((char *) (b1), (char *) (b2), (int) (length))
+			bcmp_int ((char *) (b1), (char *) (b2), (length))
 
 #define	PEDcpy(b1, b2, length)	\
-			bcopy ((char *) (b1), (char *) (b2), (int) (length))
+			((void) bcopy_int ((char *) (b1), (char *) (b2), (length)))
 
 typedef struct PElement {
 	int	    pe_errno;		/* Error codes */

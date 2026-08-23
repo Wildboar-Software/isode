@@ -694,7 +694,12 @@ int yylex(void)
 					;
 				c = cbuf[cpos];
 				cbuf[cpos] = '\0';
-				yylval = atoi(cp);
+				{
+					int num = atoi(cp);
+
+					if (int2sizet (num, &yylval) != 0)
+						yylval = 0;
+				}
 				cbuf[cpos] = c;
 				return (NUMBER);
 			}

@@ -61,14 +61,23 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 	s = *sp, len = *n;
 	if (len-- <= 0)
 		return seterr (PS_ERR_EOF, NOTOK);
-	c = *s++;
-	*class = ((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT;
-	*form = ((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT;
+	c = as_octet (*s++);
+	{
+		uint8_t cl,
+				fo;
+
+		if (int2u8 (((int)(c & PE_CLASS_MASK)) >> PE_CLASS_SHIFT, &cl) != 0
+				|| int2u8 (((int)(c & PE_FORM_MASK)) >> PE_FORM_SHIFT, &fo)
+				!= 0)
+			return seterr (PS_ERR_OVERID, NOTOK);
+		*class = cl;
+		*form = fo;
+	}
 	if ((jd = (c & PE_CODE_MASK)) == PE_ID_XTND)
 		for (jd = 0;; jd <<= PE_ID_SHIFT) {
 			if (len-- <= 0)
 				return seterr (PS_ERR_EOFID, NOTOK);
-			d = *s++;
+			d = as_octet (*s++);
 
 			jd |= d & PE_ID_MASK;
 			if (!(d & PE_ID_MORE))
@@ -83,15 +92,21 @@ static int str_get_start (char **sp, int *n, PElementClass *class, PElementForm 
 #endif
 	if (len-- <= 0)
 		return seterr (PS_ERR_EOFLEN, NOTOK);
-	c = *s++;
+	c = as_octet (*s++);
 	if ((i = c) & PE_LEN_XTND) {
-		if ((i &= PE_LEN_MASK) > sizeof (PElementLen))
-			return seterr (PS_ERR_OVERLEN, NOTOK);
+		{
+			size_t ilen;
+
+			i &= PE_LEN_MASK;
+			if (int2sizet (i, &ilen) != 0
+					|| ilen > sizeof (PElementLen))
+				return seterr (PS_ERR_OVERLEN, NOTOK);
+		}
 		if (i) {
 			for (qlen = 0; i-- > 0;) {
 				if (len-- <= 0)
 					return seterr (PS_ERR_EOFLEN, NOTOK);
-				c = *s++;
+				c = as_octet (*s++);
 
 				qlen = (qlen << 8) | (c & 0xff);
 			}

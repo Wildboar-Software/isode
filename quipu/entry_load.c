@@ -182,10 +182,12 @@ static int write_mapped_rdn (PS aps, char *name, char *file) {
 	if (fileexists(file))
 		mapfp = fopen (file,"a");
 	else {
-		int um;
-		um = umask (0177);
+		mode_t um, mask;
+		if (int2mode (0177, &mask) != 0)
+			return FALSE;
+		um = umask (mask);
 		mapfp = fopen (file,"w");
-		umask (um);
+		(void) umask (um);
 	}
 	if (mapfp == (FILE *)NULL) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,("Can't write to \"%s\" (%d)",file,errno));

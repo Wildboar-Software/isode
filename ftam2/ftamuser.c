@@ -199,7 +199,7 @@ struct dispatch *getds (char *name) {
 
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -432,7 +432,7 @@ static int f_set (char **vec) {
 			value = i - 1;
 			j = 1;
 		} else {
-			if (strncmp (dp, "0x", 2) == 0)
+			if (dp[0] == '0' && dp[1] == 'x')
 				dp += 2;
 			for (j = sscanf (dp, "%x", &value); *dp; dp++)
 				if (!isxdigit ((uint8_t) *dp)) {
@@ -528,11 +528,16 @@ static void printvar (struct var *v) {
 					printf ("%-*s", varwidth2, v -> v_dvalue[i]);
 				else {
 					strcpy (buffer, sprintb (i, v -> v_mask));
-					if ((int)strlen (buffer) <= varwidth2)
-						printf ("%-*s", varwidth2, buffer);
-					else
-						printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
-								"");
+					{
+						int blen;
+
+						if (strlen2int (buffer, &blen) != 0
+								|| blen > varwidth2)
+							printf ("%s\n%*s", buffer, varwidth1 + varwidth2 + 3,
+									"");
+						else
+							printf ("%-*s", varwidth2, buffer);
+					}
 				}
 			} else
 				printf ("0x%-*x", varwidth2 - 2, i);
@@ -631,7 +636,7 @@ static char ** getval (char *name, char **choices) {
 
 	default:
 		for (cp = choices, p = buffer; q = *cp; cp++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -674,7 +679,7 @@ static struct var * getvar (char *name) {
 
 	default:
 		for (v = vars, p = buffer; q = v -> v_name; v++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}

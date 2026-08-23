@@ -1542,22 +1542,28 @@ int valisttobs(YP yp, YV yv, char **ppstr) {
 
 	lastb = -1;
 	size = ROUNDUP;
-	if ((buf = malloc((unsigned)size)) == NULL) {
+	if ((buf = malloc_int(size)) == NULL) {
 		ferrd(1, "valisttobs:malloc:failed on %d\n", size);
 	}
-	bzero(buf, size);
+	if (bzero_int(buf, size) != 0)
+		ferr(1, "valisttobs:bad size\n");
 	for (yv1 = yv->yv_idlist; yv1 != NULL; yv1 = yv1->yv_next) {
 		if ((yv2 = calc_yv(yp, yv1->yv_identifier)) == NULL) {
 			return (-1);
 		}
 		val = yv2->yv_number;
+		if (val < 0)
+			return (-1);
 		/* Bug here probably */
 		if (size < val / NBPC) {
+			if (val / NBPC > INT_MAX - ROUNDUP)
+				ferr(1, "valisttobs:size overflow\n");
 			nsize = val / NBPC + ROUNDUP;
-			if ((buf = realloc(buf, (unsigned)nsize)) == NULL) {
+			if ((buf = realloc_int(buf, nsize)) == NULL) {
 				ferrd(1, "valisttobs:realloc:failed on %d\n", nsize);
 			}
-			bzero(buf + size, nsize - size);
+			if (bzero_int(buf + size, nsize - size) != 0)
+				ferr(1, "valisttobs:bad size\n");
 			size = nsize;
 		}
 		buf[val / NBPC] |= 1 << (NBPC - 1 - (val % NBPC));

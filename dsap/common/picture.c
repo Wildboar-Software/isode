@@ -82,7 +82,7 @@ char *show_picture (char *picture, char *picture_process, int len) {
 		/* in parent process */
 		close (pd[0]);
 		close (pd2[1]);
-		if (write (pd[1], picture, len) != len) {
+		if (write_int (pd[1], picture, len) != len) {
 			close (pd[1]);
 			close (pd2[0]);
 			signal (SIGPIPE, pstat);
@@ -90,7 +90,7 @@ char *show_picture (char *picture, char *picture_process, int len) {
 		}
 		close (pd[1]);
 		for (cp = buffer, len = BUFLEN - 1; len > 0;) {
-			if ((ret = read (pd2[0], cp, len)) <= 0)
+			if ((ret = read_int (pd2[0], cp, len)) <= 0)
 				break;
 			cp += ret;
 			len -= ret;

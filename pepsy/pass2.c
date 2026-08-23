@@ -924,16 +924,18 @@ int addptr (char *p) {
 			return (i);
 	if (ptr_max <= ptr_cnt) {
 		if (ptr_max == 0)
-			ptr_tab = (char **) malloc ((unsigned)sizeof(char **) * (ptr_max = 100));
+			ptr_tab = (char **) malloc_nmemb (ptr_max = 100, sizeof *ptr_tab);
+		else if (ptr_max > INT_MAX / 2)
+			ptr_tab = NULL;
 		else
-			ptr_tab = (char **) realloc ((char *)ptr_tab, (unsigned)sizeof(char **) * (ptr_max *= 2));
+			ptr_tab = (char **) realloc_nmemb (ptr_tab, ptr_max *= 2, sizeof *ptr_tab);
 	}
 	if (ptr_tab == NULL) {
 		fprintf(stderr, "\npointer table out of memeory (%d needed)\n",
 				ptr_cnt);
 		exit(1);
 	}
-	if ((s = malloc ((unsigned) (strlen (p) + 1))) == NULLCP) {
+	if ((s = malloc_plus_int (strlen (p), 1)) == NULLCP) {
 		fprintf(stderr, "\naddptr:out of memory\n");
 		exit(1);
 	}
@@ -1117,7 +1119,8 @@ static char *noindstr[] = {
  */
 int noindirect (char *f) {
 	char *p, **ps;
-	int		l;
+	ptrdiff_t d;
+	int		l, slen;
 	if (f == NULLCP)
 		return (1);
 	f = skipspace(f);
@@ -1127,9 +1130,12 @@ int noindirect (char *f) {
 		return (1);
 	for (p = f; *p && !isspace(*p); p++)
 		;
-	l = p - f;
+	d = p - f;
+	if (ptrdiff2int (d, &l) != 0)
+		return (0);
 	for (ps = noindstr; *ps; ps++)
-		if (l == strlen(*ps) && strncmp(f, *ps, l) == 0)
+		if (strlen2int (*ps, &slen) == 0 && l == slen
+				&& strncmp_int (f, *ps, l) == 0)
 			return (1);
 	return (0);
 }

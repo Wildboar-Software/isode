@@ -384,7 +384,7 @@ static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 
 		if ((i = len1) > len2)
 			i = len2;
-		if (bcmp (cp1, cp2, i))
+		if (bcmp_int (cp1, cp2, i) != 0)
 			return 1;
 
 		if ((len1 -= i) <= 0) {
@@ -433,7 +433,10 @@ void pdu2sel (char *sel, int *len, int i, struct qbuf *pb) {
 	for (qb = pb -> qb_forw; qb != pb && i > 0; qb = qb -> qb_forw) {
 		if (qb -> qb_len > i)
 			qb -> qb_len = i;
-		bcopy (qb -> qb_data, cp, qb -> qb_len);
+		if (bcopy_int (qb -> qb_data, cp, qb -> qb_len) != 0) {
+			*len = 0;
+			return;
+		}
 		cp += qb -> qb_len, i -= qb -> qb_len;
 	}
 	*len = cp - sel;

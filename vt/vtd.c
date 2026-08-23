@@ -352,15 +352,20 @@ static void vtd (int f, int p) {
 		adios(NULLCP, "tcgetattr failed");
 	}
 	if (telnet_profile) {
-		oterm.c_lflag &= ~ECHO;
+		if (tflag_bic (oterm.c_lflag, ECHO, &oterm.c_lflag) != 0) {
+			adios(NULLCP, "ECHO flag out of range");
+		}
 		if (tcsetattr(pty, TCSADRAIN, &oterm) == -1) {
 			perror("tcgetattr");
 			adios(NULLCP, "tcgetattr failed");
 		}
 	}
-	erase_char = oterm.c_cc[VERASE];
-	erase_line = oterm.c_cc[VKILL];
-	intr_char = oterm.c_cc[VINTR];
+	if (cct2char (oterm.c_cc[VERASE], &erase_char) != 0)
+		erase_char = '\0';
+	if (cct2char (oterm.c_cc[VKILL], &erase_line) != 0)
+		erase_line = '\0';
+	if (cct2char (oterm.c_cc[VINTR], &intr_char) != 0)
+		intr_char = '\0';
 #else
 	if (ioctl(pty,TIOCGETP,(char*)&ottyb) == -1) {
 		perror("ioctl");
@@ -430,7 +435,12 @@ static void vtd (int f, int p) {
 		 * Something to read from the pty...
 		 */
 		if (FD_ISSET (p, &ibits)) {
-			pcc = read(p, nfrontp, (&netobuf[BUFSIZ] - nfrontp));
+			int want;
+
+			if (min_len_cap (&netobuf[BUFSIZ] - nfrontp, SIZE_MAX, &want) != 0)
+				pcc = -1;
+			else
+				pcc = read_int (p, nfrontp, want);
 			if (pcc < 0 && errno == EWOULDBLOCK)
 				pcc = 0;
 			else {
@@ -471,8 +481,13 @@ void interrupt(void) {
 		perror("tcgetattr");
 		return;
 	}
-	if ((term.c_lflag&ISIG) && term.c_cc[VINTR] != _POSIX_VDISABLE)
-		*pfrontp++ = term.c_cc[VINTR];
+	if ((term.c_lflag&ISIG) && term.c_cc[VINTR] != _POSIX_VDISABLE) {
+		char ch;
+
+		if (cct2char (term.c_cc[VINTR], &ch) != 0)
+			ch = '\0';
+		*pfrontp++ = ch;
+	}
 	else
 		*pfrontp++ = '\0';
 #else
@@ -756,7 +771,7 @@ void advise (int code, char *what, char *fmt) {
 static void ptyflush (void) {
 	int n;
 	if ((n = pfrontp - pbackp) > 0) {
-		n = write(pty, pbackp, n);
+		n = write_int (pty, pbackp, n);
 	}
 	if (n < 0)
 		return;

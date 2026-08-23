@@ -70,11 +70,21 @@ static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, stru
 				t -> t_tpdusize = j;
 		}
 	}
-	bcopy (tb -> tb_initiating.ta_selector, t -> t_calling,
-		   t -> t_callinglen = tb -> tb_initiating.ta_selectlen);
+	t -> t_callinglen = tb -> tb_initiating.ta_selectlen;
+	if (bcopy_int (tb -> tb_initiating.ta_selector, t -> t_calling,
+			   t -> t_callinglen) != 0) {
+		freetpkt (t);
+		return tsaplose (td, DR_PARAMETER, NULLCP,
+				 "invalid calling selector length");
+	}
 
-	bcopy (tb -> tb_responding.ta_selector, t -> t_called,
-		   t -> t_calledlen = tb -> tb_responding.ta_selectlen);
+	t -> t_calledlen = tb -> tb_responding.ta_selectlen;
+	if (bcopy_int (tb -> tb_responding.ta_selector, t -> t_called,
+			   t -> t_calledlen) != 0) {
+		freetpkt (t);
+		return tsaplose (td, DR_PARAMETER, NULLCP,
+				 "invalid called selector length");
+	}
 	if (expedited) {
 		tb -> tb_flags |= TB_EXPD;
 		t -> t_options |= OPT_TEXPEDITE;
@@ -156,10 +166,17 @@ static int TRetry (struct tsapblk *tb, int async, struct TSAPconnect *tc, struct
 			tb -> tb_tsdusize = tb -> tb_tpdusize - tb -> tb_tpduslop;
 		}
 		if ((len = t -> t_calledlen) > 0) {
-			if (len > sizeof tb -> tb_responding.ta_selector)
-				len = sizeof tb -> tb_responding.ta_selector;
-			bcopy (t -> t_called, tb -> tb_responding.ta_selector,
-				   tb -> tb_responding.ta_selectlen = len);
+			size_t nlen,
+				cap = sizeof tb -> tb_responding.ta_selector;
+
+			if (int2sizet (len, &nlen) != 0)
+				goto out;
+			if (nlen > cap)
+				nlen = cap;
+			memmove (tb -> tb_responding.ta_selector, t -> t_called,
+					 nlen);
+			if (sizet2int (nlen, &tb -> tb_responding.ta_selectlen) != 0)
+				goto out;
 		}
 		copyTSAPaddrX (&tb -> tb_responding, &tc -> tc_responding);
 		if (!(t -> t_options & OPT_TEXPEDITE)
@@ -266,16 +283,36 @@ static int TStart (struct tsapblk *tb, char *cp, struct TSAPstart *ts, struct TS
 		tb -> tb_tsdusize = tb -> tb_tpdusize - tb -> tb_tpduslop;
 	}
 	if ((len = t -> t_callinglen) > 0) {
-		if (len > sizeof tb -> tb_initiating.ta_selector)
-			len = sizeof tb -> tb_initiating.ta_selector;
-		bcopy (t -> t_calling, tb -> tb_initiating.ta_selector,
-			   tb -> tb_initiating.ta_selectlen = len);
+		size_t nlen,
+			cap = sizeof tb -> tb_initiating.ta_selector;
+
+		if (int2sizet (len, &nlen) != 0) {
+			result = NOTOK;
+			goto out;
+		}
+		if (nlen > cap)
+			nlen = cap;
+		memmove (tb -> tb_initiating.ta_selector, t -> t_calling, nlen);
+		if (sizet2int (nlen, &tb -> tb_initiating.ta_selectlen) != 0) {
+			result = NOTOK;
+			goto out;
+		}
 	}
 	if ((len = t -> t_calledlen) > 0) {
-		if (len > sizeof tb -> tb_responding.ta_selector)
-			len = sizeof tb -> tb_responding.ta_selector;
-		bcopy (t -> t_called, tb -> tb_responding.ta_selector,
-			   tb -> tb_responding.ta_selectlen = len);
+		size_t nlen,
+			cap = sizeof tb -> tb_responding.ta_selector;
+
+		if (int2sizet (len, &nlen) != 0) {
+			result = NOTOK;
+			goto out;
+		}
+		if (nlen > cap)
+			nlen = cap;
+		memmove (tb -> tb_responding.ta_selector, t -> t_called, nlen);
+		if (sizet2int (nlen, &tb -> tb_responding.ta_selectlen) != 0) {
+			result = NOTOK;
+			goto out;
+		}
 	}
 	if ((t -> t_options & OPT_TEXPEDITE) && (tb -> tb_flags & TB_TCP))
 		tb -> tb_flags |= TB_EXPD;
@@ -338,8 +375,13 @@ static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, stru
 		}
 	}
 	if (responding)
-		bcopy (tb -> tb_responding.ta_selector, t -> t_called,
-			   t -> t_calledlen = tb -> tb_responding.ta_selectlen);
+		t -> t_calledlen = tb -> tb_responding.ta_selectlen;
+		if (bcopy_int (tb -> tb_responding.ta_selector, t -> t_called,
+				   t -> t_calledlen) != 0) {
+			freetpkt (t);
+			return tsaplose (td, DR_PARAMETER, NULLCP,
+					 "invalid called selector length");
+		}
 	if (tb -> tb_flags & TB_EXPD)
 		t -> t_options |= OPT_TEXPEDITE;
 	copyTPKTdata (t, data, cc);
@@ -654,6 +696,29 @@ static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 extern	int	errno;
 #endif
 
+#if	defined(WRITEV) || defined(SUN_X25) || defined(CAMTEC_CCL)
+static int
+iov_push (struct iovec **iovp, int *cc, void *base, size_t len)
+{
+	if (add_sizet_to_int (cc, len) != 0)
+		return NOTOK;
+	(*iovp) -> iov_base = base;
+	(*iovp) -> iov_len = len;
+	(*iovp)++;
+	return OK;
+}
+
+static int
+iov_push_int (struct iovec **iovp, int *cc, void *base, int len)
+{
+	size_t n;
+
+	if (int2sizet (len, &n) != 0)
+		return NOTOK;
+	return iov_push (iovp, cc, base, n);
+}
+#endif
+
 int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	char   *p,
@@ -683,38 +748,31 @@ int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 		goto single;
 #else
 #ifdef UBC_X25_WRITEV
-		iov -> iov_base = &no_mbit;
-		cc += (iov -> iov_len = sizeof no_mbit);
-		iov++;
+		if (iov_push (&iov, &cc, &no_mbit, sizeof no_mbit) != OK)
+			return NOTOK;
 #endif
-		iov -> iov_base = (char *) &t -> t_li;
-		cc += (iov -> iov_len = sizeof t -> t_li);
-		iov++;
+		if (iov_push (&iov, &cc, (char *) &t -> t_li, sizeof t -> t_li) != OK)
+			return NOTOK;
 
-		iov -> iov_base = (char *) &t -> t_code;
-		cc += (iov -> iov_len = sizeof t -> t_code);
-		iov++;
+		if (iov_push (&iov, &cc, (char *) &t -> t_code, sizeof t -> t_code) != OK)
+			return NOTOK;
 #endif /* CCUR_X25 */
 	} else {
-		iov -> iov_base = (char *) &t -> t_pkthdr;
-		cc += (iov -> iov_len = TPKT_HDRLEN (t));
-		iov++;
+		if (iov_push (&iov, &cc, (char *) &t -> t_pkthdr, TPKT_HDRLEN (t)) != OK)
+			return NOTOK;
 	}
 
-	iov -> iov_base = cp;
-	cc += (iov -> iov_len = n);
-	iov++;
+	if (iov_push_int (&iov, &cc, cp, n) != OK)
+		return NOTOK;
 
 	if (t -> t_vdata) {
-		iov -> iov_base = t -> t_vdata;
-		cc += (iov -> iov_len = t -> t_vlen);
-		iov++;
+		if (iov_push_int (&iov, &cc, t -> t_vdata, t -> t_vlen) != OK)
+			return NOTOK;
 	}
 
 	for (uv = t -> t_udvec; uv -> uv_base; uv++) {
-		iov -> iov_base = uv -> uv_base;
-		cc += (iov -> iov_len = uv -> uv_len);
-		iov++;
+		if (iov_push_int (&iov, &cc, uv -> uv_base, uv -> uv_len) != OK)
+			return NOTOK;
 	}
 
 	if ((n = writev (tb -> tb_fd, iovs, iov - iovs)) != cc) {
@@ -733,15 +791,37 @@ single:
 	;
 #endif
 
-	cc = ((tb -> tb_flags & TB_X25) ? sizeof t -> t_li + sizeof t -> t_code
-		  : TPKT_HDRLEN (t))
-		 + n;
-	if (t -> t_vdata)
-		cc += t -> t_vlen;
-	for (uv = t -> t_udvec; uv -> uv_base; uv++)
-		cc += uv -> uv_len;
+	{
+		size_t hdr;
+		int hdr_i;
 
-	if (p = malloc (sizeof *qb + (unsigned) cc)) {
+		if (tb -> tb_flags & TB_X25)
+			hdr = sizeof t -> t_li + sizeof t -> t_code;
+		else
+			hdr = TPKT_HDRLEN (t);
+		if (sizet2int (hdr, &hdr_i) != 0)
+			return NOTOK;
+		cc = hdr_i;
+		if (add_int_to_int (&cc, n) != 0)
+			return NOTOK;
+		if (t -> t_vdata && add_int_to_int (&cc, t -> t_vlen) != 0)
+			return NOTOK;
+		for (uv = t -> t_udvec; uv -> uv_base; uv++)
+			if (add_int_to_int (&cc, uv -> uv_len) != 0)
+				return NOTOK;
+	}
+
+	{
+		size_t nbytes,
+			extra;
+
+		if (int2sizet (cc, &extra) != 0)
+			return NOTOK;
+		nbytes = sizeof *qb;
+		if (nbytes > SIZE_MAX - extra)
+			return NOTOK;
+		nbytes += extra;
+		if (p = malloc (nbytes)) {
 		int	nc,
 			onoff;
 #ifdef LINUX
@@ -774,16 +854,19 @@ single:
 			q += TPKT_HDRLEN (t);
 		}
 
-		bcopy (cp, q, n);
+		if (bcopy_int (cp, q, n) != 0)
+			goto losing;
 		q += n;
 
 		if (t -> t_vdata) {
-			bcopy (t -> t_vdata, q, t -> t_vlen);
+			if (bcopy_int (t -> t_vdata, q, t -> t_vlen) != 0)
+				goto losing;
 			q += t -> t_vlen;
 		}
 
 		for (uv = t -> t_udvec; uv -> uv_base; uv++) {
-			bcopy (uv -> uv_base, q, uv -> uv_len);
+			if (bcopy_int (uv -> uv_base, q, uv -> uv_len) != 0)
+				goto losing;
 			q += uv -> uv_len;
 		}
 
@@ -804,7 +887,16 @@ single:
 		}
 #endif
 
-		nc = (*wfnx) (tb -> tb_fd, p, cc);
+		{
+			size_t wlen;
+			ssize_t nw;
+
+			if (int2sizet (cc, &wlen) != 0)
+				goto losing;
+			nw = (*wfnx) (tb -> tb_fd, p, wlen);
+			if (ssize2int (nw, &nc) != 0)
+				goto losing;
+		}
 
 #ifdef	NODELAY
 		if (tb -> tb_flags & TB_QWRITES) {
@@ -877,6 +969,7 @@ losing:
 #endif
 			free (p);
 		goto out;
+		}
 	}
 	if ((tb -> tb_flags & TB_X25) || tb -> tb_flags & TB_QWRITES) {
 		SLOG (tsap_log, LLOG_EXCEPTIONS, NULLCP,
@@ -892,26 +985,27 @@ losing:
 		  ("unable to malloc %d octets for pseudo-writev, continuing...",
 		   cc));
 
-	cc = TPKT_HDRLEN (t);
-	if (write_tcp_socket (tb -> tb_fd, (char *) &t -> t_pkthdr, cc) != cc) {
+	if (sizet2int (TPKT_HDRLEN (t), &cc) != 0)
+		goto err;
+	if (write_int (tb -> tb_fd, (char *) &t -> t_pkthdr, cc) != cc) {
 err:
 		;
 		cc = NOTOK;
 		goto out;
 	}
 
-	if (write_tcp_socket (tb -> tb_fd, cp, n) != n)
+	if (write_int (tb -> tb_fd, cp, n) != n)
 		goto err;
 	cc += n;
 
 	if (t -> t_vdata
-			&& write_tcp_socket (tb -> tb_fd, t -> t_vdata, t -> t_vlen)
+			&& write_int (tb -> tb_fd, t -> t_vdata, t -> t_vlen)
 			!= t -> t_vlen)
 		goto err;
 	cc += t -> t_vlen;
 
 	for (uv = t -> t_udvec; uv -> uv_base; uv++) {
-		if (write_tcp_socket (tb -> tb_fd, uv -> uv_base, uv -> uv_len)
+		if (write_int (tb -> tb_fd, uv -> uv_base, uv -> uv_len)
 				!= uv -> uv_len)
 			goto err;
 		cc += uv -> uv_len;
@@ -956,8 +1050,23 @@ static int TDrain (struct tsapblk *tb, struct TSAPdisconnect *td) {
 #endif
 
 	while ((qb = tb -> tb_qwrites.qb_forw) != &tb -> tb_qwrites) {
-		if ((nc = (*wfnx) (tb -> tb_fd, qb -> qb_data, qb -> qb_len))
-				!= qb -> qb_len) {
+		{
+			size_t wlen;
+			ssize_t nw;
+
+			if (int2sizet (qb -> qb_len, &wlen) != 0) {
+				result = tsaplose (td, DR_NETWORK, NULLCP,
+								   "blocked write length overflow");
+				goto out;
+			}
+			nw = (*wfnx) (tb -> tb_fd, qb -> qb_data, wlen);
+			if (ssize2int (nw, &nc) != 0) {
+				result = tsaplose (td, DR_NETWORK, NULLCP,
+								   "blocked write result overflow");
+				goto out;
+			}
+		}
+		if (nc != qb -> qb_len) {
 			if (nc == NOTOK) {
 				if (errno != EWOULDBLOCK) {
 					result = tsaplose (td, DR_NETWORK, "failed",

@@ -138,7 +138,10 @@ static int gstring (char *buf, int buflen, struct qbuf *qb, char *w) {
 	}
 
 	p = qb2str (qb);
-	bcopy (p, buf, qb -> qb_len);
+	if (bcopy_int (p, buf, qb -> qb_len) != 0) {
+		free (p);
+		return 0;
+	}
 	free (p);
 
 	return qb -> qb_len;

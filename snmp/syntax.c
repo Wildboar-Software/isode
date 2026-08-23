@@ -479,7 +479,13 @@ static void add_timeticks (void) {
 static int clnpaddr_encode (struct sockaddr_iso *x, PE *pe) {
 	char    buffer[sizeof x -> siso_data + 1];
 
-	buffer[0] = x -> siso_nlen & 0xff;
+	{
+		uint8_t nlen;
+
+		if (int2u8 (x -> siso_nlen & 0xff, &nlen) != 0
+				|| u8tochar (nlen, &buffer[0]) != 0)
+			return NOTOK;
+	}
 	bcopy (x -> siso_data, buffer + 1, (int) x -> siso_nlen);
 	if ((*pe = str2prim (buffer, (int) (x -> siso_nlen + 1), PE_CLASS_APPL,
 						 5)) == NULLPE)

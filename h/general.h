@@ -265,4 +265,6 @@ int	explode (char *a, uint8_t *b, int n), implode (uint8_t *a, char *b, int n);
 int	char2bcd (char *s, int n, uint8_t *d);
 int	bcd2char (uint8_t *s, char *d, int len);
 
+#include "conv.h"
+
 #endif

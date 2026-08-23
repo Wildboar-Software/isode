@@ -39,7 +39,9 @@ static int  o_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		ifnum = oid -> oid_elements[oid -> oid_nelem - 1];
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0)
+			return int_SNMP_error__status_noSuchName;
 		for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 			if (pb -> pb_index == ifnum)
 				break;
@@ -59,13 +61,18 @@ again:
 			ifnum = pb -> pb_index;
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
-			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
+			if (int2uint (ifnum,
+					  &new -> oid_elements[new -> oid_nelem - 1]) != 0) {
+				oid_free (new);
+				return NOTOK;
+			}
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-			ifnum = oid -> oid_elements[i];
+			if (uint2int (oid -> oid_elements[i], &ifnum) != 0)
+				return NOTOK;
 			for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 				if (pb -> pb_index >= ifnum)
 					break;
@@ -74,7 +81,8 @@ again:
 						&& (pb = pb -> pb_forw) == PHead))
 				return NOTOK;
 			ifnum = pb -> pb_index;
-			oid -> oid_elements[i] = ifnum;
+			if (int2uint (ifnum, &oid -> oid_elements[i]) != 0)
+				return NOTOK;
 			oid -> oid_nelem = i + 1;
 		}
 		if ((ifvar == smuxPidentity || ifvar == smuxPdescription)
@@ -121,7 +129,9 @@ static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_rollback:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		ifnum = oid -> oid_elements[oid -> oid_nelem - 1];
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0)
+			return int_SNMP_error__status_noSuchName;
 		for (pb = PHead -> pb_forw; pb != PHead; pb = pb -> pb_forw)
 			if (pb -> pb_index == ifnum)
 				break;

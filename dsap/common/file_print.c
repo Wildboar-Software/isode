@@ -106,7 +106,7 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 void fileattr_print (PS ps, AttributeValue y, int format)
 {
 	struct file_syntax * fs;
-	int um;
+	mode_t um, mask;
 	AttributeType save_at;
 
 	fs = (struct file_syntax *) y->av_struct;
@@ -138,9 +138,11 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 			return;
 		if (fs->fs_mode & FS_CREATE)	/* already written */
 			return;
-		um = umask (0177);
+		if (int2mode (0177, &mask) != 0)
+			return;
+		um = umask (mask);
 		if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-			umask (um);
+			(void) umask (um);
 			if ((fps = ps_alloc (std_open)) == NULLPS) {
 				fclose (fptr);
 				LLOG (log_dsap,LLOG_EXCEPTIONS,("Could not alloc PS file '%s'",fs->fs_name));
@@ -153,7 +155,7 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 				return;
 			}
 		} else {
-			umask (um);
+			(void) umask (um);
 			LLOG ( log_dsap,LLOG_EXCEPTIONS,("Could not open attribute file '%s'",fs->fs_name));
 			return;
 		}
@@ -173,7 +175,7 @@ void fileattr_print (PS ps, AttributeValue y, int format)
 void as_write_files (Attr_Sequence as, char *where)
 {
 	struct file_syntax * fs;
-	int um;
+	mode_t um, mask;
 	AV_Sequence avs;
 	FILE * fptr;
 	PS fps;
@@ -190,9 +192,11 @@ void as_write_files (Attr_Sequence as, char *where)
 				sprintf (buffer,"%s%D_%s",where,loopcount++,
 						 as -> attr_type -> oa_ot.ot_name);
 				fs->fs_name = strdup(buffer);
-				um = umask (0177);
+				if (int2mode (0177, &mask) != 0)
+					return;
+				um = umask (mask);
 				if ((fptr = fopen (fs->fs_name,"w")) != NULL) {
-					umask (um);
+					(void) umask (um);
 					if ((fps = ps_alloc (std_open)) == NULLPS) {
 						fclose (fptr);
 						LLOG (log_dsap,LLOG_EXCEPTIONS,
@@ -213,7 +217,7 @@ void as_write_files (Attr_Sequence as, char *where)
 						return;
 					}
 				} else {
-					umask (um);
+					(void) umask (um);
 					LLOG ( log_dsap,LLOG_EXCEPTIONS,
 						   ("Could not open attribute file (tmp) '%s'",
 							fs->fs_name));

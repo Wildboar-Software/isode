@@ -155,8 +155,14 @@ static void display_ud (DO_UPDATE *doptr) {
 #ifdef TERMIOS
 				if (tcgetattr(pty, &term) == -1)
 					perror("ioctl");
-				else
-					putch(erase_char=term.c_cc[VERASE]);	/* XXX what if _POSIX_VDISABLE */
+				else {
+					char ch;
+
+					if (cct2char (term.c_cc[VERASE], &ch) != 0)
+						ch = '\0';
+					erase_char = ch;
+					putch(ch);	/* XXX what if _POSIX_VDISABLE */
+				}
 #else
 				if (ioctl(pty,TIOCGETP,(char*)&ttyb) == -1) {
 					perror("ioctl");
@@ -172,8 +178,14 @@ static void display_ud (DO_UPDATE *doptr) {
 #ifdef TERMIOS
 				if (tcgetattr(pty, &term) == -1)
 					perror("ioctl");
-				else
-					putch(erase_line=term.c_cc[VKILL]);	/* XXX what if _POSIX_VDISABLE */
+				else {
+					char ch;
+
+					if (cct2char (term.c_cc[VKILL], &ch) != 0)
+						ch = '\0';
+					erase_line = ch;
+					putch(ch);	/* XXX what if _POSIX_VDISABLE */
+				}
 #else
 				if (ioctl(pty,TIOCGETP,(char*)&ttyb) == -1) {
 					perror("ioctl");
@@ -798,13 +810,16 @@ int tmode (int f) {
 	case 2:
 		onoff = 1;
 		if (f == 1) {
-			term.c_lflag &= ~ECHO;
-			term.c_oflag &= ~OPOST;
+			if (tflag_bic (term.c_lflag, ECHO, &term.c_lflag) != 0
+					|| tflag_bic (term.c_oflag, OPOST, &term.c_oflag) != 0)
+				return (old);
 		} else {
-			term.c_lflag |= ECHO;
-			term.c_oflag |= OPOST;
+			if (tflag_bis (term.c_lflag, ECHO, &term.c_lflag) != 0
+					|| tflag_bis (term.c_oflag, OPOST, &term.c_oflag) != 0)
+				return (old);
 		}
-		term.c_lflag &= ~(IEXTEN|ISIG|ICANON);
+		if (tflag_bic (term.c_lflag, IEXTEN|ISIG|ICANON, &term.c_lflag) != 0)
+			return (old);
 		break;
 	default:
 		return old;
@@ -913,8 +928,13 @@ void kill_proc (void) {	/*Terminate current UNIX process using UNIX interrupt ch
 
 	if (tcgetattr(pty, &term) == -1)
 		perror("tcgetattr");
-	else if (term.c_cc[VINTR] != _POSIX_VDISABLE)
-		putch(term.c_cc[VINTR]);
+	else if (term.c_cc[VINTR] != _POSIX_VDISABLE) {
+		char ch;
+
+		if (cct2char (term.c_cc[VINTR], &ch) != 0)
+			ch = '\0';
+		putch(ch);
+	}
 #else
 	if(ioctl(pty,TIOCGETC,(char *)&otc) == -1) {
 		perror("ioctl");

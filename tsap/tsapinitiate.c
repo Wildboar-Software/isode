@@ -124,8 +124,12 @@ static int TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, i
 							calloc (1, sizeof *tb -> tb_calling)) == NULL)
 		goto no_mem;
 	*tb -> tb_calling = *calling;	/* struct copy */
-	bcopy (calling -> ta_selector, tb -> tb_initiating.ta_selector,
-		   tb -> tb_initiating.ta_selectlen = calling -> ta_selectlen);
+	if (bcopy_int (calling -> ta_selector, tb -> tb_initiating.ta_selector,
+		   calling -> ta_selectlen) != 0) {
+		tsaplose (td, DR_PARAMETER, NULLCP, "invalid calling selector");
+		goto out;
+	}
+	tb -> tb_initiating.ta_selectlen = calling -> ta_selectlen;
 
 	if ((tb -> tb_called = (struct TSAPaddr *)
 						   calloc (1, sizeof *tb -> tb_called)) == NULL)
@@ -139,7 +143,10 @@ no_mem:
 			tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 			goto out;
 		}
-		bcopy (data, tb -> tb_data, cc);
+		if (bcopy_int (data, tb -> tb_data, cc) != 0) {
+			tsaplose (td, DR_PARAMETER, NULLCP, "invalid user data length");
+			goto out;
+		}
 	}
 	tb -> tb_expedited = expedited;
 
@@ -287,8 +294,10 @@ static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int asyn
 		la = calling -> ta_addrs;	/* .. */
 	}
 
-	bcopy (realcalled -> ta_selector, tb -> tb_responding.ta_selector,
-		   tb -> tb_responding.ta_selectlen = realcalled -> ta_selectlen);
+	if (bcopy_int (realcalled -> ta_selector, tb -> tb_responding.ta_selector,
+		   realcalled -> ta_selectlen) != 0)
+		return tsaplose (td, DR_PARAMETER, NULLCP, "invalid called selector");
+	tb -> tb_responding.ta_selectlen = realcalled -> ta_selectlen;
 	tb -> tb_responding.ta_present = 1;
 	tb -> tb_responding.ta_addr = *realna;	/* struct copy */
 
@@ -338,8 +347,19 @@ int TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td
 			freetblk (tb);
 			break;
 		}
-		*tb -> tb_called = *newtaddr (ta, &ta -> ta_addrs[1],
-									  ta -> ta_naddr - 1); /* struct copy */
+		{
+			struct TSAPaddr *naddr;
+
+			naddr = newtaddr (ta, &ta -> ta_addrs[1],
+							  ta -> ta_naddr - 1);
+			if (naddr == NULLTA) {
+				freetblk (tb);
+				result = tsaplose (td, DR_PARAMETER, NULLCP,
+								   "invalid called address");
+				break;
+			}
+			*tb -> tb_called = *naddr; /* struct copy */
+		}
 
 		switch (result = TConnAttempt (tb, td, 1)) {
 		case DONE:
@@ -422,8 +442,19 @@ int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 		sigiomask (smask);
 		return tsaplose (td, DR_PARAMETER, NULLCP, "no more NSAPs to try");
 	}
-	*tb -> tb_called = *newtaddr (ta, &ta -> ta_addrs[1],
-								  ta -> ta_naddr - 1); /* struct copy */
+	{
+		struct TSAPaddr *naddr;
+
+		naddr = newtaddr (ta, &ta -> ta_addrs[1],
+						  ta -> ta_naddr - 1);
+		if (naddr == NULLTA) {
+			freetblk (tb);
+			sigiomask (smask);
+			return tsaplose (td, DR_PARAMETER, NULLCP,
+							 "invalid called address");
+		}
+		*tb -> tb_called = *naddr; /* struct copy */
+	}
 
 	switch (result = TConnAttempt (tb, td, 1)) {
 	case DONE:
@@ -456,8 +487,10 @@ newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
 
 	bzero ((char *) tz, sizeof *tz);
 
-	if (tz -> ta_selectlen = ta -> ta_selectlen)
-		bcopy (ta -> ta_selector, tz -> ta_selector, ta -> ta_selectlen);
+	if (bcopy_int (ta -> ta_selector, tz -> ta_selector,
+			   ta -> ta_selectlen) != 0)
+		return NULLTA;
+	tz -> ta_selectlen = ta -> ta_selectlen;
 	if (na)
 		for (tz -> ta_naddr = n; n > 0; n--)
 			*nz++ = *na++;	/* struct copy */
@@ -486,8 +519,10 @@ ta2norm (struct TSAPaddr *ta) {
 		}
 
 	bzero ((char *) tz, sizeof *tz);
-	bcopy (ta -> ta_selector, tz -> ta_selector,
-		   tz -> ta_selectlen = ta -> ta_selectlen);
+	if (bcopy_int (ta -> ta_selector, tz -> ta_selector,
+			   ta -> ta_selectlen) != 0)
+		return NULLTA;
+	tz -> ta_selectlen = ta -> ta_selectlen;
 	ca = tz -> ta_addrs;
 
 	for (ip = ts_communities; *ip; ip++)
@@ -528,12 +563,27 @@ maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta) {
 	*nta = *taz;	/* struct copy */
 	if ((nna = na2norm (na)) == NULLNA)
 		return NULLTA;
-	if ((nta -> ta_selectlen = 2 + nna -> na_addrlen + ta -> ta_selectlen)
-			>= TSSIZE)
-		return NULLTA;
-	bcopy (nna -> na_address, &nta -> ta_selector[2], nna -> na_addrlen);
-	bcopy (ta -> ta_selector, &nta -> ta_selector[2 + nna -> na_addrlen],
-		   ta -> ta_selectlen);
-	nta -> ta_selector[0] = nta -> ta_selector[1] = nna -> na_addrlen;
-	return nta;
+	{
+		size_t alen,
+			slen,
+			off;
+		int tlen;
+
+		if (char2sizet (nna -> na_addrlen, &alen) != 0)
+			return NULLTA;
+		if (int2sizet (ta -> ta_selectlen, &slen) != 0)
+			return NULLTA;
+		if (alen > SIZE_MAX - 2 || slen > SIZE_MAX - 2 - alen)
+			return NULLTA;
+		off = 2 + alen;
+		if (sizet2int (off + slen, &tlen) != 0)
+			return NULLTA;
+		if (tlen >= TSSIZE)
+			return NULLTA;
+		nta -> ta_selectlen = tlen;
+		memmove (&nta -> ta_selector[2], nna -> na_address, alen);
+		memmove (&nta -> ta_selector[off], ta -> ta_selector, slen);
+		nta -> ta_selector[0] = nta -> ta_selector[1] = nna -> na_addrlen;
+		return nta;
+	}
 }

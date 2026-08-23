@@ -580,12 +580,17 @@ static char *bufp = NULL;
 
 static char *newbuf (int i) {
 	static unsigned int len = 0;
-	if (i++ < len)
+	unsigned int need;
+
+	if (int2uint (i, &need) != 0 || need == UINT_MAX)
+		return NULL;
+	need++;
+	if (need <= len)
 		return bufp;
 	if (bufp)
 		free (bufp);
-	if ((bufp = malloc ((unsigned int) i)))
-		len = i;
+	if ((bufp = malloc (need)))
+		len = need;
 	else
 		len = 0;
 	return bufp;

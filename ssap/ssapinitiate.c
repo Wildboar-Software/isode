@@ -166,14 +166,24 @@ static int SConnRequestAux (
 	if (calling) {
 		if (calling -> sa_selectlen > 0) {
 			s -> s_mask |= SMASK_CN_CALLING;
-			bcopy (calling -> sa_selector, s -> s_calling, s -> s_callinglen = calling -> sa_selectlen);
+			if (bcopy_int (calling -> sa_selector, s -> s_calling,
+					   calling -> sa_selectlen) != 0) {
+				ssaplose (si, SC_PARAMETER, NULLCP, "invalid calling selector");
+				goto out1;
+			}
+			s -> s_callinglen = calling -> sa_selectlen;
 		}
 		sb -> sb_initiating = *calling;	/* struct copy */
 	}
 
 	if (called -> sa_selectlen > 0) {
 		s -> s_mask |= SMASK_CN_CALLED;
-		bcopy (called -> sa_selector, s -> s_called, s -> s_calledlen = called -> sa_selectlen);
+		if (bcopy_int (called -> sa_selector, s -> s_called,
+				   called -> sa_selectlen) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "invalid called selector");
+			goto out1;
+		}
+		s -> s_calledlen = called -> sa_selectlen;
 	}
 	sb -> sb_responding = *called;	/* struct copy */
 
@@ -410,7 +420,8 @@ static int SAsynRetryAux1 (
 	if (tc -> tc_expedited)
 		sb -> sb_flags |= SB_EXPD;
 	else
-		sb -> sb_requirements &= ~SR_EXPEDITED;
+		sb -> sb_requirements = u16_bic (sb -> sb_requirements,
+						 (unsigned) SR_EXPEDITED);
 	if (sb -> sb_version < SB_VRSN2)		/* XXX */
 		sb -> sb_tsdu_us = sb -> sb_tsdu_them = GET_TSDU_SIZE (tc -> tc_tsdusize);
 
@@ -556,9 +567,14 @@ static int SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SS
 		sc -> sc_settings = sc -> sc_please = 0;
 		dotokens ();
 		if (s -> s_mask & SMASK_CN_CALLED) {
-			if ((len = s -> s_calledlen) > sizeof sb -> sb_responding.sa_selector)
-				len = sizeof sb -> sb_responding.sa_selector;
-			bcopy (s -> s_called, sb -> sb_responding.sa_selector, sb -> sb_responding.sa_selectlen = len);
+			if (copy_capped (s -> s_called, sb -> sb_responding.sa_selector,
+					 (ptrdiff_t) s -> s_calledlen,
+					 sizeof sb -> sb_responding.sa_selector,
+					 &sb -> sb_responding.sa_selectlen) != 0) {
+				result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+								   "invalid called selector");
+				goto out;
+			}
 		}
 		sc -> sc_responding = sb -> sb_responding;	/* struct copy */
 		if ((sc -> sc_ssdusize = sb -> sb_tsdu_us - SSDU_MAGIC) < 0)
@@ -582,11 +598,14 @@ static int SAsynRetryAux2 (struct ssapblk *sb, struct TSAPconnect *tc, struct SS
 			sc -> sc_requirements = s -> s_rf_require;
 		if ((s -> s_mask & SMASK_CN_CALLED)
 				&& (sc -> sc_result & SC_BASE)) {
-			if ((len = s -> s_calledlen)
-					> sizeof sb -> sb_responding.sa_selector)
-				len = sizeof sb -> sb_responding.sa_selector;
-			bcopy (s -> s_called, sb -> sb_responding.sa_selector,
-				   sb -> sb_responding.sa_selectlen = len);
+			if (copy_capped (s -> s_called, sb -> sb_responding.sa_selector,
+					 (ptrdiff_t) s -> s_calledlen,
+					 sizeof sb -> sb_responding.sa_selector,
+					 &sb -> sb_responding.sa_selectlen) != 0) {
+				result = spktlose (sb -> sb_fd, si, SC_PROTOCOL, NULLCP,
+								   "invalid called selector");
+				goto out;
+			}
 		}
 		sc -> sc_responding = sb -> sb_responding;	/* struct copy */
 		sc -> sc_data = s -> s_rdata + 1, sc -> sc_cc = s -> s_rlen - 1;

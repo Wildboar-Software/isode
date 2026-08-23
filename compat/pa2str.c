@@ -37,9 +37,10 @@ char *pa2str (struct PSAPaddr *px) {
 			/* encoded! */
 			tz = &px -> pa_addr.sa_addr;
 			bzero ((char *)ta, sizeof *ta);
-			if ((ta -> ta_selectlen = m - n - 2) > 0)
-				bcopy (&tz -> ta_selector[n+2], ta -> ta_selector,
-					   ta -> ta_selectlen);
+			if ((ta -> ta_selectlen = m - n - 2) > 0
+					&& bcopy_int (&tz -> ta_selector[n+2], ta -> ta_selector,
+					   ta -> ta_selectlen) != 0)
+				goto normal;
 			if (norm2na (&tz -> ta_selector[2], n, ta -> ta_addrs) != OK) {
 				*pa = *px;
 				goto normal;

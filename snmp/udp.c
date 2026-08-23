@@ -415,13 +415,19 @@ static int  get_listeners (int offset) {
 	if (i > 1) {
 		struct udptab **base,
 				   **use;
-		if ((base = (struct udptab **) malloc ((unsigned) (i * sizeof *base)))
+		if ((base = (struct udptab **) malloc_nmemb (i, sizeof *base))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		use = base;
 		for (us = uts; us; us = us -> ut_next)
 			*use++ = us;
-		qsort ((char *) base, i, sizeof *base, ut_compar);
+		{
+			size_t n;
+
+			if (int2sizet (i, &n) != 0)
+				adios (NULLCP, "too many UDP listeners");
+			qsort ((char *) base, n, sizeof *base, ut_compar);
+		}
 		usp = base;
 		us = uts = *usp++;
 		while (usp < use) {

@@ -3,6 +3,8 @@
 #ifndef _QUIPUMALLOC_
 #define _QUIPUMALLOC_
 
+#include "general.h"
+
 extern unsigned mem_heap;
 extern unsigned attr_index;
 
@@ -21,7 +23,12 @@ extern unsigned attr_index;
 /* non critical database structures */
 #define RESTORE_HEAP	{if (mem_heap >= 2) mem_heap = 1;}
 
-#define SET_HEAP(x)	{if (mem_heap == 1) mem_heap = 2 + set_heap (x);}
+#define SET_HEAP(x)	{if (mem_heap == 1) { \
+	int _sh = set_heap (x); \
+	unsigned int _uh; \
+	if (add_int_to_int (&_sh, 2) == 0 && int2uint (_sh, &_uh) == 0) \
+		mem_heap = _uh; \
+}}
 
 void start_malloc_trace (char *f);
 void stop_malloc_trace (void);

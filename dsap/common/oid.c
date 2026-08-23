@@ -469,7 +469,11 @@ oid_table_attr *name2attr(char *nodename)
 			for (i=0; i<attrNumEntries; i++,atrptr++)
 				if (lexequ (atrptr->oa_ot.ot_name, ptr) == 0)
 					if (strncmp (str,atrptr->oa_ot.ot_stroid,strlen(str)) == 0) {
-						attr_index = atrptr - &attrOIDTable[0];
+						int idx;
+
+						if (ptrdiff2int (atrptr - &attrOIDTable[0], &idx) != 0
+								|| int2uint (idx, &attr_index) != 0)
+							return (NULLTABLE_ATTR);
 						return (atrptr);
 					} else
 						return (NULLTABLE_ATTR);
@@ -480,9 +484,17 @@ oid_table_attr *name2attr(char *nodename)
 
 int set_heap (AttributeType x)
 {
-	if (x == NULLTABLE_ATTR)
+	int idx;
+
+	if (x == NULLTABLE_ATTR) {
+		attr_index = 0;
 		return 0;
-	return (attr_index = x - &attrOIDTable[0]);
+	}
+	if (ptrdiff2int (x - &attrOIDTable[0], &idx) != 0)
+		return -1;
+	if (int2uint (idx, &attr_index) != 0)
+		return -1;
+	return idx;
 }
 
 oid_table_attr *oid2attr(OID oid)
