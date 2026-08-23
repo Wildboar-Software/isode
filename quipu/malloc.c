@@ -104,7 +104,7 @@ struct header {
 #define smallsize	un.small.size
 #define use		un.small.control
 
-#define INUSE           0x1000
+#define INUSE           0x1000u
 #define USED(x)         (x->use & INUSE)
 
 /* sizes chosen for anticipated QUIPU behaviour */
@@ -127,6 +127,7 @@ struct freehead {
 static void big_free (struct header *ptr);
 static void add_free (struct header *x);
 static struct header *next_free_block (struct header *ptr);
+static void *quipu_sbrk (size_t n);
 
 static struct freelist  heaps[MAXHEAP][BUCKETS];
 static struct freelist *heapptr[MAXHEAP];
@@ -315,13 +316,22 @@ static write_stack (char * x)
 	listfree->next->prev = z; \
 	listfree->next = z; }
 
+static void *
+quipu_sbrk (size_t n) {
+	int incr;
+
+	if (sizet2int (n, &incr) != 0)
+		return (void *)-1;
+	return sbrk (incr);
+}
+
 static struct freelist *
 new_freelist (void) {
 	struct freelist * flist;
-	int i;
+	size_t i;
 	struct freelist * next;
 
-	if ((flist = (struct freelist *) sbrk ((int)PAGESIZE)) == (struct freelist *)-1) {
+	if ((flist = (struct freelist *) quipu_sbrk ((size_t)PAGESIZE)) == (struct freelist *)-1) {
 		/* there are 100s of places where Quipu would choke on a naff malloc */
 		attempt_restart (-2);
 		return ((struct freelist *)0);
@@ -329,7 +339,7 @@ new_freelist (void) {
 	top_mem = (char *)flist + PAGESIZE;
 	next = (struct freelist *)flist;
 	next++;
-	for (i=sizeof (struct freelist); i< PAGESIZE ; i+=sizeof (struct freelist)) {
+	for (i=sizeof (struct freelist); i< (size_t)PAGESIZE ; i+=sizeof (struct freelist)) {
 		return_freelist (next);
 		next++;
 	}
@@ -354,7 +364,7 @@ static char *big_malloc (size_t realsize) {
 	if (head == (struct header *)0) {
 		/* go and get one then !!! */
 		blocksize = PAGEALIGN(realsize);
-		if ((head = (struct header *) sbrk ((int)blocksize)) == (struct header *)-1) {
+		if ((head = (struct header *) quipu_sbrk (blocksize)) == (struct header *)-1) {
 			/* there are 100s of places where Quipu would choke on a naff malloc */
 			attempt_restart (-2);
 			return ((char *)0);
@@ -366,7 +376,7 @@ static char *big_malloc (size_t realsize) {
 	mem = (char *) head + ALIGN(sizeof (struct header));
 #ifdef MALLOCTRACE
 	write_string ("gets ");
-	write_uval (head->bigsize & ~1 );
+	write_uval (head->bigsize & ~(size_t)1 );
 	write_string ("at ");
 	write_addr (mem);
 	write_string ("\n");
@@ -386,7 +396,7 @@ static void big_free (struct header *ptr) {
 		next->prev->next = next->next;
 		next->next->prev = next->prev;
 	}
-	ptr->bigsize &= ~1;
+	ptr->bigsize &= ~(size_t)1;
 	next->size = ptr->bigsize;
 	next->block = ptr;
 	next->next = bigfree->next;
@@ -443,7 +453,7 @@ static struct header *next_free_block (struct header *ptr) {
 	struct header *unext; \
 	unext = (struct header *)((char *)ptr + size); \
 	unext->smallsize = ptr->smallsize - size; \
-	unext->use = ptr->use & ~INUSE; \
+	unext->use = ptr->use & (unsigned short) ~INUSE; \
 	ptr->smallsize = size; \
 	ptr->use |= INUSE; \
 	add_free (unext); }
@@ -465,11 +475,28 @@ malloc (size_t size)
 
 	if (first_malloc) {
 #ifdef	BSD42
-		pagesize = getpagesize();
+		{
+			int pagei = getpagesize();
+
+			if (int2sizet (pagei, &pagesize) != 0) {
+				attempt_restart (-2);
+				return ((char *)0);
+			}
+		}
 #endif
-		pageminusone = PAGESIZE - 1;
+		pageminusone = (size_t)PAGESIZE - 1;
 		pagemask = ~pageminusone;
-		smallmax = (~0) - PAGESIZE;
+		{
+			unsigned short page;
+			int pagei;
+
+			if (sizet2int ((size_t)PAGESIZE, &pagei) != 0
+					|| int2u16 (pagei, &page) != 0) {
+				attempt_restart (-2);
+				return ((char *)0);
+			}
+			smallmax = (unsigned short) (UINT16_MAX - page);
+		}
 	}
 	if (mem_heap >= MAXHEAP)
 		mem_heap = MAXHEAP - 1;
@@ -500,7 +527,7 @@ malloc (size_t size)
 		x = (size_t)sbrk(0);
 		x = PAGEALIGN (x) - x;
 		blocksize = PAGEALIGN(realsize) + x;
-		if ((head = (struct header *) sbrk ((int)blocksize)) == (struct header *)-1) {
+		if ((head = (struct header *) quipu_sbrk (blocksize)) == (struct header *)-1) {
 			/* there are 100s of places where Quipu would choke on a naff malloc */
 			attempt_restart (-2);
 			return ((char *)0);
@@ -527,7 +554,7 @@ malloc (size_t size)
 allocate_more:
 		;
 		blocksize = PAGEALIGN(realsize);
-		if ((head = (struct header *) sbrk ((int)blocksize)) == (struct header *)-1) {
+		if ((head = (struct header *) quipu_sbrk (blocksize)) == (struct header *)-1) {
 			/* there are 100s of places where Quipu would choke on a naff malloc */
 			attempt_restart (-2);
 			return ((char *)0);
@@ -633,7 +660,7 @@ size_t n)
 		write_stack ("x");
 #endif
 		realsize = ALIGN (n) + ALIGN (sizeof (struct header));
-		copysize = ptr->bigsize & ~1;
+		copysize = ptr->bigsize & ~(size_t)1;
 		if (copysize >= realsize)
 			/* its big enough - carry on */
 			return s;
@@ -693,7 +720,15 @@ out:
 		return ((char *)0);
 	copysize -= ALIGN (sizeof (struct header));
 	copysize = MIN (copysize, n);
-	bcopy (s,mem,(int)copysize);
+	{
+		int ncopy;
+
+		if (sizet2int (copysize, &ncopy) != 0
+				|| bcopy_int (s, mem, ncopy) != 0) {
+			free (mem);
+			return ((char *)0);
+		}
+	}
 	free (s);
 	return (mem);
 }
@@ -710,7 +745,14 @@ calloc(size_t n, size_t size)
 	x = n * size;
 	if ((mem = malloc (x)) == (char *)0)
 		return ((char *)0);
-	bzero (mem,(int)x);
+	{
+		int nz;
+
+		if (sizet2int (x, &nz) != 0 || bzero_int (mem, nz) != 0) {
+			free (mem);
+			return ((char *)0);
+		}
+	}
 	return (mem);
 }
 

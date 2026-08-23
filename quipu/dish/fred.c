@@ -912,11 +912,22 @@ static int dns_sort (struct dn_seq **dns, int i) {
 			i++;
 	if (i > 1) {
 		struct dn_seq **base, **bp, **ep;
-		if (base = (struct dn_seq **) malloc ((unsigned) (i * sizeof *base))) {
+		{
+			size_t nmemb;
+			if (int2sizet (i, &nmemb) != 0)
+				base = NULL;
+			else
+				base = (struct dn_seq **) malloc_nmemb (i, sizeof *base);
+		}
+		if (base) {
 			ep = base;
 			for (ptr = *dns; ptr; ptr = ptr -> dns_next)
 				*ep++ = ptr;
-			qsort ((char *) base, i, sizeof *base, dns_compar);
+			{
+				size_t nmemb;
+				if (int2sizet (i, &nmemb) == 0)
+					qsort ((char *) base, nmemb, sizeof *base, dns_compar);
+			}
 			bp = base;
 			ptr = *dns = *bp++;
 			while (bp < ep) {
@@ -1226,13 +1237,24 @@ int showfred (DN mydn, char islong, char subdisplay) {
 			i = 1;
 			for (rdn = myrdn -> rdn_next; rdn; rdn = rdn -> rdn_next)
 				i++;
-			if (base = (RDN *) malloc ((unsigned) (i * sizeof *base))) {
+			{
+				size_t nmemb;
+				if (int2sizet (i, &nmemb) != 0)
+					base = NULL;
+				else
+					base = (RDN *) malloc_nmemb (i, sizeof *base);
+			}
+			if (base) {
 				RDN    *bp,
 				*ep;
 				ep = base;
 				for (rdn = myrdn; rdn; rdn = rdn -> rdn_next)
 					*ep++ = rdn;
-				qsort ((char *) base, i, sizeof *base, ava_compar);
+				{
+					size_t nmemb;
+					if (int2sizet (i, &nmemb) == 0)
+						qsort ((char *) base, nmemb, sizeof *base, ava_compar);
+				}
 				bp = base;
 				rdn = myrdn = *bp++;
 				while (bp < ep) {
@@ -1689,12 +1711,21 @@ void showfredDNs (DN dn, int islong) {
 					unlink (tmp2);
 					continue;
 				}
-				if ((cp = malloc ((unsigned) (cc))) == NULL) {
-					fprintf (stderr, "out of memory\n");
-					goto out;
+				{
+					size_t nbytes;
+
+					if (off2sizet (st.st_size, &nbytes) != 0
+							|| sizet2int (nbytes, &cc) != 0) {
+						fprintf (stderr, "file too large\n");
+						goto out;
+					}
+					if ((cp = malloc (nbytes)) == NULL) {
+						fprintf (stderr, "out of memory\n");
+						goto out;
+					}
 				}
 				for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-					switch (i = fread (dp, sizeof *dp, j, fp)) {
+					switch (i = fread_int (dp, sizeof *dp, j, fp)) {
 					case NOTOK:
 						fprintf (stderr, "error reading %s: %s\n",
 								 tmp2, sys_errname (errno));

@@ -90,12 +90,21 @@ out:
 			remote_prob = FALSE;
 			goto out;
 		}
-		if ((cp = malloc ((unsigned) (cc))) == NULL) {
-			ps_printf (OPT, "out of memory\n");
-			goto out;
+		{
+			size_t nbytes;
+
+			if (off2sizet (st.st_size, &nbytes) != 0
+					|| sizet2int (nbytes, &cc) != 0) {
+				ps_printf (OPT, "file too large\n");
+				goto out;
+			}
+			if ((cp = malloc (nbytes)) == NULL) {
+				ps_printf (OPT, "out of memory\n");
+				goto out;
+			}
 		}
 		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = fread (dp, sizeof *dp, j, fp)) {
+			switch (i = fread_int (dp, sizeof *dp, j, fp)) {
 			case NOTOK:
 				ps_printf (OPT, "error reading %s: %s\n",
 						   fname, sys_errname (errno));
@@ -132,7 +141,7 @@ out2:
 			free (cp);
 			return NOTOK;
 		}
-		if (fwrite (cp, sizeof *cp, cc, fp) == 0) {
+		if (fwrite_int (cp, sizeof *cp, cc, fp) == 0) {
 			ps_printf (OPT, "error writing %s: %s\n",
 					   fname, sys_errname (errno));
 			goto out2;

@@ -222,6 +222,48 @@ int2mode (int n, mode_t *out)
 	return 0;
 }
 
+static inline int
+mode2int (mode_t m, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((mode_t) -1 > (mode_t) 0) {
+		if ((uintmax_t) m > (uintmax_t) INT_MAX)
+			return -1;
+	} else if ((intmax_t) m < (intmax_t) INT_MIN
+			   || (intmax_t) m > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) m;
+	return 0;
+}
+
+static inline int
+long2ulong (long n, unsigned long *out)
+{
+	if (out == NULL || n < 0L)
+		return -1;
+	*out = (unsigned long) n;
+	return 0;
+}
+
+static inline int
+ulong2long (unsigned long n, long *out)
+{
+	if (out == NULL || n > (unsigned long) LONG_MAX)
+		return -1;
+	*out = (long) n;
+	return 0;
+}
+
+static inline int
+off2sizet (off_t n, size_t *out)
+{
+	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) SIZE_MAX)
+		return -1;
+	*out = (size_t) n;
+	return 0;
+}
+
 #include <sys/socket.h>
 
 static inline int

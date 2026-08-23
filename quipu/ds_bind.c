@@ -219,8 +219,11 @@ out:
 			}
 			pp = (struct protected_password *) calloc(1, sizeof(*pp));
 			/* Ought to check for null pointer ... */
-			pp->passwd = malloc((unsigned)arg->dba_passwd_len);
-			bcopy(arg->dba_passwd, pp->passwd, arg->dba_passwd_len);
+			pp->passwd = malloc_int(arg->dba_passwd_len);
+			if (pp->passwd == NULL)
+				return (DS_ERROR_CONNECT);
+			if (bcopy_int(arg->dba_passwd, pp->passwd, arg->dba_passwd_len) != 0)
+				return (DS_ERROR_CONNECT);
 			pp->n_octets = arg->dba_passwd_len;
 			pp->time1 = strdup(arg->dba_time1);
 			pp->is_protected[0] = (char) 1;
@@ -387,7 +390,7 @@ out:
 		if (strlen ((char *)as->attr_value->avseq_av.av_struct) != arg->dba_passwd_len)
 			retval = -1;
 		else
-			retval = strncmp ((char *)as->attr_value->avseq_av.av_struct,
+			retval = strncmp_int ((char *)as->attr_value->avseq_av.av_struct,
 							  arg->dba_passwd, arg->dba_passwd_len);
 	} else
 		retval = check_guard(

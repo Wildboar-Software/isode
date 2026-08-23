@@ -36,12 +36,17 @@ int str2file_aux (char *str, AttributeType at, AttributeValue x)
 				p = fs->fs_name;
 			else
 				p++;
-			if (strlen(p) < strlen(str))
-				if ((fs->fs_name =
-							realloc(fs->fs_name,
-									(unsigned)((p - fs->fs_name) + strlen(str) + 1)))
+			if (strlen(p) < strlen(str)) {
+				size_t n, slen;
+				if (ptrdiff2sizet (p - fs->fs_name, &n) != 0)
+					return NOTOK;
+				slen = strlen(str);
+				if (n > SIZE_MAX - slen - 1)
+					return NOTOK;
+				if ((fs->fs_name = realloc(fs->fs_name, n + slen + 1))
 						== NULLCP)
 					return NOTOK;
+			}
 			strcpy(p, str);
 			fs->fs_mode = 0;
 		} else

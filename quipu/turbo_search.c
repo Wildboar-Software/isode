@@ -389,9 +389,9 @@ static int build_indexnode (caddr_t data1, caddr_t data2) {
 			} else {
 				bignode->in_max *= 2;
 				bignode->in_entries =
-					(struct entry **) realloc((char *)
-											  bignode->in_entries, (unsigned)
-											  (sizeof(struct entry *) * bignode->in_max));
+					(struct entry **) realloc_nmemb((char *)
+											  bignode->in_entries,
+											  bignode->in_max, sizeof(struct entry *));
 			}
 		}
 		bignode->in_num++;

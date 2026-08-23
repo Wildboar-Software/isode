@@ -51,8 +51,17 @@ struct certificate *cert_cpy (struct certificate *parm) {
 	result = (struct certificate *) calloc(1, sizeof(struct certificate));
 	alg_cpy(&(result->sig.alg), &(parm->sig.alg));
 	result->sig.n_bits = parm->sig.n_bits;
-	result->sig.encrypted = malloc((unsigned)(parm->sig.n_bits+7)/8);
-	bcopy(parm->sig.encrypted, result->sig.encrypted, (parm->sig.n_bits+7)/8);
+	{
+		int nbytes = parm->sig.n_bits;
+
+		if (nbytes < 0 || add_int_to_int (&nbytes, 7) != 0)
+			return NULL;
+		nbytes /= 8;
+		if ((result->sig.encrypted = malloc_int (nbytes)) == NULL)
+			return NULL;
+		if (bcopy_int (parm->sig.encrypted, result->sig.encrypted, nbytes) != 0)
+			return NULL;
+	}
 	alg_cpy(&(result->alg), &(parm->alg));
 	alg_cpy(&(result->key.alg), &(parm->key.alg));
 	result->serial = parm->serial;
@@ -64,9 +73,17 @@ struct certificate *cert_cpy (struct certificate *parm) {
 	result->valid.not_after =
 		strdup(parm->valid.not_after);
 	result->key.n_bits = parm->key.n_bits;
-	result->key.value = malloc((unsigned)(parm->key.n_bits+7)/8);
-	bcopy(parm->key.value, result->key.value,
-		  (parm->key.n_bits+7)/8);
+	{
+		int nbytes = parm->key.n_bits;
+
+		if (nbytes < 0 || add_int_to_int (&nbytes, 7) != 0)
+			return NULL;
+		nbytes /= 8;
+		if ((result->key.value = malloc_int (nbytes)) == NULL)
+			return NULL;
+		if (bcopy_int (parm->key.value, result->key.value, nbytes) != 0)
+			return NULL;
+	}
 	return (result);
 }
 

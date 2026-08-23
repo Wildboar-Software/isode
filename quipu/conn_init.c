@@ -65,7 +65,7 @@ void conn_init (struct connection *cn) {
 	}
 	if ( (ds->ds_start.acs_start.ps_called.pa_selectlen !=
 			dsaladdr->pa_selectlen) ||
-			(dsaladdr->pa_selectlen && bcmp (
+			(dsaladdr->pa_selectlen && bcmp_int (
 				 ds->ds_start.acs_start.ps_called.pa_selector,
 				 dsaladdr->pa_selector,
 				 dsaladdr->pa_selectlen) == 0)) {
@@ -79,7 +79,7 @@ out:
 	}
 	if ( (ds->ds_start.acs_start.ps_called.pa_addr.sa_selectlen !=
 			dsaladdr->pa_addr.sa_selectlen) ||
-			(dsaladdr->pa_addr.sa_selectlen && bcmp (
+			(dsaladdr->pa_addr.sa_selectlen && bcmp_int (
 				 ds->ds_start.acs_start.ps_called.pa_addr.sa_selector,
 				 dsaladdr->pa_addr.sa_selector,
 				 dsaladdr->pa_addr.sa_selectlen) == 0))

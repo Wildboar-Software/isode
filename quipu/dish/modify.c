@@ -534,7 +534,7 @@ int mod_template (char *name, char noedit) {
 	extern AttributeType at_objectclass;
 	Attr_Sequence   as;
 	Attr_Sequence   nas, tas, make_template_as(AV_Sequence oc);
-	int		um;
+	mode_t		um, mask;
 
 	if (! new_draft)
 		if ((fptr = fopen (name, "r")) != NULL) {
@@ -547,12 +547,14 @@ int mod_template (char *name, char noedit) {
 			} else
 				return (OK);	/* template already exists ! */
 		}
-	um = umask (0177);
+	if (int2mode (0177, &mask) != 0)
+		return (-1);
+	um = umask (mask);
 	if ((fptr = fopen (name, "w")) == NULL) {
 		ps_printf (OPT, "Can't open template entry %s\n", name);
 		return (-1);
 	}
-	umask (um);
+	(void) umask (um);
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		return (-1);
 	}
