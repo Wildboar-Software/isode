@@ -779,7 +779,7 @@ static int edb_start (
 	PE spe, lpe, pe = NULLPE;
 	char buffer [LINESIZE];
 	char *fname = NULLCP;
-	int um;
+	mode_t um, mask;
 	FILE * fptr = (FILE *) NULL;
 	PS fps;
 	struct edbops_list * nextop;
@@ -811,9 +811,11 @@ out:
 			  ("Too many getedbs at once '%s'",fname));
 		goto out;
 	}
-	um = umask (0177);
+	if (int2mode (0177, &mask) != 0)
+		goto out;
+	um = umask (mask);
 	if ((fptr = fdopen (sfd,"w")) != NULL) {
-		umask (um);
+		(void) umask (um);
 		if ((fps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,
 				  ("Could not alloc PS file '%s'",fname));
@@ -826,7 +828,7 @@ out:
 			goto out;
 		}
 	} else {
-		umask (um);
+		(void) umask (um);
 		LLOG ( log_dsap,LLOG_EXCEPTIONS,
 			   ("Could not open EDB/PE file '%s'",fname));
 		goto out;

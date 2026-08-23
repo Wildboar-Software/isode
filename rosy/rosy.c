@@ -381,22 +381,30 @@ static void yyprint_aux (char *s, char *mode) {
 			fprintf (stderr, "\n\n");
 
 		fprintf (stderr, "%s", mymodule);
-		nameoutput = (linepos = strlen (mymodule)) + 1;
+		if (strlen2int (mymodule, &linepos) != 0)
+			myyerror ("module name too long");
+		nameoutput = linepos;
+		if (add_int_to_int (&nameoutput, 1) != 0)
+			myyerror ("module name too long");
 
 		fprintf (stderr, " %ss", yymode = mode);
-		linepos += strlen (yymode) + 1;
+		if (add_sizet_to_int (&linepos, strlen (yymode)) != 0
+				|| add_int_to_int (&linepos, 1) != 0)
+			myyerror ("line too long");
 		fprintf (stderr, ":");
 		linepos += 2;
 	}
 
-	len = strlen (s);
+	if (strlen2int (s, &len) != 0)
+		myyerror ("name too long");
 	if (linepos != nameoutput)
 		if (len + linepos + 1 > outputlinelen)
 			fprintf (stderr, "\n%*s", linepos = nameoutput, "");
 		else
 			fprintf (stderr, " "), linepos++;
 	fprintf (stderr, "%s", s);
-	linepos += len;
+	if (add_int_to_int (&linepos, len) != 0)
+		myyerror ("line too long");
 }
 
 void pass1(void) {
@@ -1452,8 +1460,14 @@ static void dump_real (double r) {
 
 	cp = ecvt (r, 20, &decpt, &sign);
 	strcpy (sbuf, cp);	/* cp gets overwritten by printf */
-	printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
-			decpt - strlen (sbuf));
+	{
+		int slen;
+
+		if (strlen2int (sbuf, &slen) != 0)
+			myyerror ("real encoding too long");
+		printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
+				decpt - slen);
+	}
 #else
 	char   *cp,
 		   *dp,

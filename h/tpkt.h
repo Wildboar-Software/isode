@@ -55,16 +55,32 @@
 #ifndef	__STDC__
 #define	copyTSAPdata(base,len,d) \
 { \
-    register int i = len; \
-    if ((d -> d/**/_cc = min (i, sizeof d -> d/**/_data)) > 0) \
-	bcopy (base, d -> d/**/_data, d -> d/**/_cc); \
+    size_t _n, _cap = sizeof d -> d/**/_data; \
+    if (ptrdiff2sizet ((ptrdiff_t) (len), &_n) != 0) \
+	d -> d/**/_cc = 0; \
+    else { \
+	if (_n > _cap) \
+	    _n = _cap; \
+	if (sizet2int (_n, &d -> d/**/_cc) != 0) \
+	    d -> d/**/_cc = 0; \
+	else if (d -> d/**/_cc > 0) \
+	    memmove (d -> d/**/_data, base, _n); \
+    } \
 }
 #else
 #define	copyTSAPdata(base,len,d) \
 { \
-    register int i = len; \
-    if ((d -> d##_cc = min (i, sizeof d -> d##_data)) > 0) \
-	bcopy (base, d -> d##_data, d -> d##_cc); \
+    size_t _n, _cap = sizeof d -> d##_data; \
+    if (ptrdiff2sizet ((ptrdiff_t) (len), &_n) != 0) \
+	d -> d##_cc = 0; \
+    else { \
+	if (_n > _cap) \
+	    _n = _cap; \
+	if (sizet2int (_n, &d -> d##_cc) != 0) \
+	    d -> d##_cc = 0; \
+	else if (d -> d##_cc > 0) \
+	    memmove (d -> d##_data, base, _n); \
+    } \
 }
 #endif
 #else

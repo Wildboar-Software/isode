@@ -72,7 +72,13 @@ int init_pipe (void) {
 		return (NOTOK);
 	}
 	strcpy (retpipe, cp);
-	umask (0);
+	{
+		mode_t mask;
+
+		if (int2mode (0, &mask) != 0)
+			return (NOTOK);
+		(void) umask (mask);
+	}
 	if ((fd = open (retpipe, O_RDONLY)) < 0) {
 		mknod (retpipe, S_IFIFO | 0600, 0);
 		if ((fd = open (retpipe, O_RDONLY)) < 0) {
@@ -147,7 +153,13 @@ int read_pipe_aux (char *buf, int len) {
 #ifdef SOCKETS
 	ep = (cp = buf) + len - 1;
 	for (;;) {
-		switch (res = recv (sd_current, cp, ep - cp, 0)) {
+		{
+			size_t nrecv;
+			if (ptrdiff2sizet (ep - cp, &nrecv) != 0)
+				return NOTOK;
+			res = recv (sd_current, cp, nrecv, 0);
+		}
+		switch (res) {
 		case NOTOK:
 			perror ("recv");
 			close (sd_current);
@@ -219,7 +231,13 @@ int read_pipe_aux2 (char **buf, int *len) {
 		break;
 	}
 	for (; j > 0; dp += i, j -= i)
-		switch (i = recv (sd_current, dp, j, 0)) {
+		{
+			size_t nrecv;
+			if (int2sizet (j, &nrecv) != 0)
+				goto out;
+			i = recv (sd_current, dp, nrecv, 0);
+		}
+		switch (i) {
 		case NOTOK:
 			perror ("recv");
 out:
@@ -265,7 +283,13 @@ void send_pipe_aux2 (char *buf, int i) {
 #endif
 	while (i > 0) {
 #ifdef	SOCKETS
-		if ( (res= send(sd_current, buf, i, 0)) == -1) {
+		{
+			size_t nsend;
+			if (int2sizet (i, &nsend) != 0)
+				return;
+			res = send(sd_current, buf, nsend, 0);
+		}
+		if ( res == -1) {
 			perror("send");
 			close (sd_current);
 			return;

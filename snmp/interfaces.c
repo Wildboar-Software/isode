@@ -123,7 +123,9 @@ static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		ifnum = oid -> oid_elements[oid -> oid_nelem - 1];
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0)
+			return int_SNMP_error__status_noSuchName;
 		for (is = ifs; is; is = is -> ifn_next)
 			if (is -> ifn_index == ifnum)
 				break;
@@ -142,14 +144,20 @@ static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			ifnum = is -> ifn_index;
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
-			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
+			if (int2uint (ifnum,
+					  &new -> oid_elements[new -> oid_nelem - 1]) != 0) {
+				oid_free (new);
+				return NOTOK;
+			}
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
 			struct interface *iz;
-			if ((ifnum = oid -> oid_elements[i]) == 0) {
+			if (uint2int (oid -> oid_elements[i], &ifnum) != 0)
+				return NOTOK;
+			if (ifnum == 0) {
 				if ((is = ifs) == NULL)
 					return NOTOK;
 				if (is -> ifn_ready)
@@ -167,7 +175,8 @@ static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 stuff_ifnum:
 			;
 			ifnum = is -> ifn_index;
-			oid -> oid_elements[i] = ifnum;
+			if (int2uint (ifnum, &oid -> oid_elements[i]) != 0)
+				return NOTOK;
 			oid -> oid_nelem = i + 1;
 		}
 		break;
@@ -305,7 +314,9 @@ static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_rollback:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		ifnum = oid -> oid_elements[oid -> oid_nelem - 1];
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0)
+			return int_SNMP_error__status_noSuchName;
 		for (is = ifs; is; is = is -> ifn_next)
 			if (is -> ifn_index == ifnum)
 				break;
@@ -457,7 +468,16 @@ static struct address *_upate_addresses (struct interface *list, int *addr_numbe
 		if (is == NULL)
 			continue;
 		ifn = &is -> ifn_interface.ac_if;
-		ifn -> if_flags |= ifa -> ifa_flags;
+		{
+			int bits;
+
+			if (uint2int (ifa -> ifa_flags, &bits) != 0) {
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface flags out of range");
+				continue;
+			}
+			ifn -> if_flags |= bits;
+		}
 		if (ifa -> ifa_addr -> sa_family == AF_INET) {
 			struct ifaddr *addr, **tail;
 			tail = &ifn -> if_addrlist;
@@ -488,10 +508,12 @@ static struct address *_upate_addresses (struct interface *list, int *addr_numbe
 		} else if (ifa -> ifa_addr -> sa_family == AF_PACKET) {
 			if (ifa->ifa_data != NULL) {
                 struct rtnl_link_stats *stats = ifa -> ifa_data;
-				ifn -> if_ipackets = stats -> rx_packets;
-				ifn -> if_ierrors= stats -> rx_errors;
-				ifn -> if_opackets = stats -> tx_packets;
-				ifn -> if_oerrors= stats -> tx_errors;
+				if (u32toint (stats -> rx_packets, &ifn -> if_ipackets) != 0
+						|| u32toint (stats -> rx_errors, &ifn -> if_ierrors) != 0
+						|| u32toint (stats -> tx_packets, &ifn -> if_opackets) != 0
+						|| u32toint (stats -> tx_errors, &ifn -> if_oerrors) != 0)
+					advise (LLOG_EXCEPTIONS, NULLCP,
+							"interface counters out of range");
             }
 		}
 	}
@@ -594,7 +616,15 @@ disabled:
 			++i;
 			ifn = &is -> ifn_interface.ac_if;
 			ifn -> if_name = strdup (ifa -> ifa_name);
-			ifn -> if_flags = ifa -> ifa_flags;
+			{
+				int bits;
+
+				if (uint2int (ifa -> ifa_flags, &bits) != 0)
+					advise (LLOG_EXCEPTIONS, NULLCP,
+							"interface flags out of range");
+				else
+					ifn -> if_flags = bits;
+			}
 			is -> ifn_speed = 10000000;
 			snprintf (is -> ifn_descr, sizeof (is -> ifn_descr), "%s", ifa -> ifa_name);
 			/* get mtu using ioctl */
@@ -606,12 +636,22 @@ disabled:
 			*ifp = is, ifp = &is -> ifn_next;
 		}
 		ifn = &is -> ifn_interface.ac_if;
-		ifn -> if_flags |= ifa -> ifa_flags;
+		{
+			int bits;
+
+			if (uint2int (ifa -> ifa_flags, &bits) != 0)
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface flags out of range");
+			else
+				ifn -> if_flags |= bits;
+		}
 		if (ifa -> ifa_addr -> sa_family == AF_PACKET) {
 			struct sockaddr_ll *addr = (struct sockaddr_ll*) ifa -> ifa_addr;
 			is -> ifn_type = addr -> sll_hatype == ARPHRD_ETHER ? TYPE_ETHER : TYPE_OTHER;
 			memcpy (is -> ifn_interface.ac_enaddr, addr -> sll_addr, 6);
-			is -> ifn_offset = addr -> sll_ifindex;
+			if (int2ulong (addr -> sll_ifindex, &is -> ifn_offset) != 0)
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface index out of range");
 		}
 	}
 #endif
@@ -945,12 +985,13 @@ int	get_interfaces (int offset) {
 	if (adrNumber <= 1)
 		return OK;
 	if ((base = (struct address **)
-				malloc ((unsigned) (adrNumber * sizeof *base))) == NULL)
+				malloc_nmemb (adrNumber, sizeof *base)) == NULL)
 		adios (NULLCP, "out of memory");
 	afe = base;
 	for (as = afs; as; as = as -> adr_next)
 		*afe++ = as;
-	qsort ((char *) base, adrNumber, sizeof *base, adr_compar);
+	if (qsort_int (base, adrNumber, sizeof *base, adr_compar) != 0)
+		adios (NULLCP, "too many addresses");
 	afp = base;
 	as = afs = *afp++;
 	afs_inet = NULL;

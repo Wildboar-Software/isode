@@ -512,12 +512,23 @@ static DNS dase_interact (DNS dns, DN dn, char *s) {
 				   **bp,
 				   **ep;
 
-		if (base = (struct dn_seq **) malloc ((unsigned) (i * sizeof *base))) {
+		{
+			size_t nmemb;
+			if (int2sizet (i, &nmemb) != 0)
+				base = NULL;
+			else
+				base = (struct dn_seq **) malloc_nmemb (i, sizeof *base);
+		}
+		if (base) {
 			ep = base;
 			for (ds = dns; ds; ds = ds -> dns_next)
 				*ep++ = ds;
 
-			qsort ((char *) base, i, sizeof *base, dns_compar_void);
+			{
+				size_t nmemb;
+				if (int2sizet (i, &nmemb) == 0)
+					qsort ((char *) base, nmemb, sizeof *base, dns_compar_void);
+			}
 
 			bp = base;
 			ds = dns = *bp++;

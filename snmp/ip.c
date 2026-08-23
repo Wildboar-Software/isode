@@ -766,8 +766,14 @@ bad_magic:
 			if (!rz)
 				goto bad_magic;
 		}
-		bcopy ((char *) ip, (char *) rt -> rt_instance,
-			   (rt -> rt_insize = i) * sizeof *ip);
+		{
+			size_t nbytes;
+
+			if (nmemb_bytes (i, sizeof *ip, &nbytes) != 0)
+				return int_SNMP_error__status_genErr;
+			rt -> rt_insize = i;
+			bcopy ((char *) ip, (char *) rt -> rt_instance, nbytes);
+		}
 		rt -> rt_rt.rt_flags |= RTF_UP;
 		{
 			uint8_t *cp;
@@ -875,7 +881,13 @@ bad_magic:
 				break;
 
 			case TYPE_DIRECT:
-				rt -> rt_rt.rt_flags &= ~RTF_GATEWAY;
+				{
+					unsigned int bit;
+
+					if (int2uint (RTF_GATEWAY, &bit) != 0)
+						return int_SNMP_error__status_genErr;
+					rt -> rt_rt.rt_flags &= ~bit;
+				}
 				break;
 
 			case TYPE_REMOTE:
@@ -899,7 +911,13 @@ bad_magic:
 			if (mask.s_addr == (uint32_t) 0xffffffff)
 				rt -> rt_rt.rt_flags |= RTF_HOST;
 			else
-				rt -> rt_rt.rt_flags &= ~RTF_HOST;
+				{
+					unsigned int bit;
+
+					if (int2uint (RTF_HOST, &bit) != 0)
+						return int_SNMP_error__status_genErr;
+					rt -> rt_rt.rt_flags &= ~bit;
+				}
 		}
 		break;
 
@@ -1317,11 +1335,14 @@ static int  s_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			for (kp = (jp = ip) + IFN_SIZE; jp < kp; )
 				*cp++ = *jp++ & 0xff;
 		}
-		at -> adn_instance[0] = at -> adr_index, at -> adn_insize = 1;
+		if (int2uint (at -> adr_index, &at -> adn_instance[0]) != 0)
+			return int_SNMP_error__status_genErr;
+		at -> adn_insize = 1;
 		bcopy ((char *) ip, (char *) (at -> adn_instance + 1),
 			   IFN_SIZE * sizeof *ip);
 		at -> adn_insize += IFN_SIZE;
-		at -> ada_instance[0] = at -> adr_index;
+		if (int2uint (at -> adr_index, &at -> ada_instance[0]) != 0)
+			return int_SNMP_error__status_genErr;
 		at -> ada_instance[1] = 1;
 		at -> ada_insize = 2;
 		bcopy ((char *) ip, (char *) (at -> ada_instance + 2),
@@ -1385,7 +1406,9 @@ bad_value:
 					at -> adm_addrlen = len;
 					p = q -> qb_forw, d = at -> adm_address;
 					do {
-						bcopy (p -> qb_data, (char *) d, p -> qb_len);
+						if (bcopy_int (p -> qb_data, (char *) d, p -> qb_len)
+								!= 0)
+							goto bad_value;
 						d += p -> qb_len;
 						p = p -> qb_forw;
 					} while (p != q);
@@ -1545,7 +1568,7 @@ static struct arptab *_read_arptab (void)
                &h[0], &h[1], &h[2], &h[3], &h[4], &h[5]);
 	}
 	tblsize = i;
-	if ((arptab = calloc(1, sizeof(struct arptab) * tblsize)) == NULL)
+	if ((arptab = calloc_int (tblsize, sizeof(struct arptab))) == NULL)
 		adios (NULLCP, "out of memory");
 	for (i = 0, node = head; node; (node = next), i++) {
 		next = node -> next;
@@ -1619,7 +1642,9 @@ no_dice:
 			at -> adr_index = is -> ifn_index;
 			at -> adr_type = type;
 			at -> adn_address = ac -> at_iaddr;	/* struct copy */
-			at -> adn_instance[0] = at -> adr_index, at -> adn_insize = 1;
+			if (int2uint (at -> adr_index, &at -> adn_instance[0]) != 0)
+				adios (NULLCP, "ARP index out of range");
+			at -> adn_insize = 1;
 			at -> adn_insize += ipaddr2oid (at -> adn_instance + 1,
 											&at -> adn_address);
 #ifdef	NEW_AT
@@ -1632,11 +1657,14 @@ no_dice:
 				   (int) (at -> adm_addrlen =
 							  sizeof ac -> at_enaddr.ether_addr_octet));
 #endif
-			at -> adm_instance[0] = at -> adr_index, at -> adm_insize = 1;
+			if (int2uint (at -> adr_index, &at -> adm_instance[0]) != 0)
+				adios (NULLCP, "ARP index out of range");
+			at -> adm_insize = 1;
 			at -> adm_insize += mediaddr2oid (at -> adm_instance + 1,
 											  at -> adm_address,
 											  (int) at -> adm_addrlen, 0);
-			at -> ada_instance[0] = at -> adr_index;
+			if (int2uint (at -> adr_index, &at -> ada_instance[0]) != 0)
+				adios (NULLCP, "ARP index out of range");
 			at -> ada_instance[1] = 1;
 			at -> ada_insize = 2;
 			at -> ada_insize += ipaddr2oid (at -> ada_instance + 2,
@@ -1687,12 +1715,13 @@ static void sort_arptab (void) {
 			   **afp;
 
 	if ((base = (struct adrtab **)
-				malloc ((unsigned) (adrNumber * sizeof *base))) == NULL)
+				malloc_nmemb (adrNumber, sizeof *base)) == NULL)
 		adios (NULLCP, "out of memory");
 	afe = base;
 	for (at = adn; at; at = at -> adn_next)
 		*afe++ = at;
-	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adn_compar);
+	if (qsort_int ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adn_compar) != 0)
+		adios (NULLCP, "too many ARP entries");
 	afp = base;
 	at = adn = *afp++;
 	while (afp < afe) {
@@ -1700,7 +1729,8 @@ static void sort_arptab (void) {
 		at = *afp++;
 	}
 	at -> adn_next = NULL;
-	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adm_compar);
+	if (qsort_int ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) adm_compar) != 0)
+		adios (NULLCP, "too many ARP entries");
 	afp = base;
 	at = adm = *afp++;
 	while (afp < afe) {
@@ -1708,7 +1738,8 @@ static void sort_arptab (void) {
 		at = *afp++;
 	}
 	at -> adm_next = NULL;
-	qsort ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) ada_compar);
+	if (qsort_int ((char *) base, adrNumber, sizeof *base, (int (*)(const void *, const void *)) ada_compar) != 0)
+		adios (NULLCP, "too many ARP entries");
 	afp = base;
 	at = ada = *afp++;
 	while (afp < afe) {
@@ -2024,11 +2055,21 @@ int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
 		}
         strtok(stats, " ");
 		n--;
-		*values = calloc (1, sizeof (*values) * n);
+		if ((*values = calloc_int (n, sizeof **values)) == NULL) {
+			free (header);
+			fclose (f);
+			return NOTOK;
+		}
         for (i = 0; (value = strtok (NULL, " \n")); i ++) {
 			(*values)[i] = atol (value);
         }
-        *len = i;
+        if (int2sizet (i, len) != 0) {
+			free (*values);
+			*values = NULL;
+			free (header);
+			fclose (f);
+			return NOTOK;
+		}
         break;
     }
     fclose (f);

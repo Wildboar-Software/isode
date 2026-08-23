@@ -680,20 +680,23 @@ findtblk (int sd) {
 int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out) {
 	bzero ((char *) out, sizeof *out);
 
-	bcopy (in -> ta_selector, out -> ta_selector,
-		   out -> ta_selectlen = in -> ta_selectlen);
+	if (bcopy_int (in -> ta_selector, out -> ta_selector,
+		   out -> ta_selectlen = in -> ta_selectlen) != 0)
+		return NOTOK;
 
 	if (in -> ta_present) {
 		out -> ta_addrs[0] = in -> ta_addr;		/* struct copy */
 		out -> ta_naddr = 1;
 	}
+	return OK;
 }
 
 int copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out) {
 	bzero ((char *) out, sizeof *out);
 
-	bcopy (in -> ta_selector, out -> ta_selector,
-		   out -> ta_selectlen = in -> ta_selectlen);
+	if (bcopy_int (in -> ta_selector, out -> ta_selector,
+		   out -> ta_selectlen = in -> ta_selectlen) != 0)
+		return NOTOK;
 
 	if (out -> ta_present = (in -> ta_naddr >= 1) ? 1 : 0)
 		out -> ta_addr = in -> ta_addrs[0];		/* struct copy */

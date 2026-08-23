@@ -23,15 +23,24 @@ char *prim2str (PE pe, int *len) {
 
 	*len = 0;
 	switch (pe -> pe_form) {
-	case PE_FORM_PRIM:
-		if ((dp = malloc ((unsigned) ((i = pe -> pe_len) + 1))) == NULLCP)
+	case PE_FORM_PRIM: {
+		int nbytes;
+
+		i = pe -> pe_len;
+		nbytes = i;
+		if (add_int_to_int (&nbytes, 1) != 0
+				|| (dp = malloc_int (nbytes)) == NULLCP)
 			return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
-		bcopy ((char *) pe -> pe_prim, dp, i);
+		if (bcopy_int (pe -> pe_prim, dp, i) != 0) {
+			free (dp);
+			return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+		}
 		break;
+	}
 
 	case PE_FORM_CONS:
 		if ((p = pe -> pe_cons) == NULLPE) {
-			if ((dp = malloc ((unsigned) ((i = 0) + 1))) == NULLCP)
+			if ((dp = malloc_int (1)) == NULLCP)
 				return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
 			break;
 		}
@@ -52,15 +61,35 @@ char *prim2str (PE pe, int *len) {
 				return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
 			}
 			if (dp) {
-				if ((fp = realloc (dp, (unsigned) ((k = i + j) + 1)))
+				int nbytes;
+
+				k = i;
+				if (add_int_to_int (&k, j) != 0) {
+					free (dp);
+					free (ep);
+					return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+				}
+				nbytes = k;
+				if (add_int_to_int (&nbytes, 1) != 0
+						|| (fp = realloc_int (dp, nbytes))
 						== NULLCP) {
+					free (dp);
+					free (ep);
+					return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+				}
+				if (bcopy_int (ep, fp + i, j) != 0) {
+					free (fp);
+					free (ep);
+					return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
+				}
+				dp = fp, i = k;
+			} else {
+				dp = ep;
+				if (add_int_to_int (&i, j) != 0) {
 					free (dp);
 					return pe_seterr (pe, PE_ERR_NMEM, NULLCP);
 				}
-				bcopy (ep, fp + i, j);
-				dp = fp, i = k;
-			} else
-				dp = ep, i += j;
+			}
 		}
 		break;
 	}

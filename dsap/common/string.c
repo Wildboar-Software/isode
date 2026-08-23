@@ -1118,25 +1118,36 @@ struct qbuf *qb_cpy (struct qbuf *qb) {
 	struct qbuf	*nqb;
 	struct qbuf	*nqp;
 	struct qbuf	*pred;
+	int nqb_size;
 
 	if (qb == (struct qbuf *)0)
 		return ((struct qbuf *)0);
-	nqb = (struct qbuf *) smalloc(SIZEOFQB(qb));
+	if (sizet2int (sizeof (struct qbuf), &nqb_size) != 0)
+		return ((struct qbuf *)0);
+	if (qb->qb_data && add_int_to_int (&nqb_size, qb->qb_len) != 0)
+		return ((struct qbuf *)0);
+	nqb = (struct qbuf *) smalloc(nqb_size);
 	nqb->qb_len = qb->qb_len;
 	if (qb->qb_data) {
 		nqb->qb_data = nqb->qb_base;
-		bcopy(qb->qb_data, nqb->qb_data, qb->qb_len);
+		if (bcopy_int(qb->qb_data, nqb->qb_data, qb->qb_len) != 0)
+			return ((struct qbuf *)0);
 	} else
 		nqb->qb_data = NULLCP;
 	nqb->qb_forw = nqb;
 	nqb->qb_back = nqb;
 	pred = nqb;
 	for (qp = qb->qb_forw; qp != qb; qp = qp->qb_forw) {
-		nqp = (struct qbuf *) smalloc(SIZEOFQB(qp));
+		if (sizet2int (sizeof (struct qbuf), &nqb_size) != 0)
+			return ((struct qbuf *)0);
+		if (qp->qb_data && add_int_to_int (&nqb_size, qp->qb_len) != 0)
+			return ((struct qbuf *)0);
+		nqp = (struct qbuf *) smalloc(nqb_size);
 		nqp->qb_len = qp->qb_len;
 		if (qp->qb_data) {
 			nqp->qb_data = nqp->qb_base;
-			bcopy(qp->qb_data, nqp->qb_data, qp->qb_len);
+			if (bcopy_int(qp->qb_data, nqp->qb_data, qp->qb_len) != 0)
+				return ((struct qbuf *)0);
 		} else
 			nqp->qb_data = NULLCP;
 		insque(nqp, pred);

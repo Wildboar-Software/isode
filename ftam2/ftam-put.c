@@ -711,10 +711,16 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 				}
 			}
 			else {
+				int want;
+
+				if (min_len_cap (ep - bp, SIZE_MAX, &want) != 0)
+					n = NOTOK;
+				else
+					n = read_int (fd, bp, want);
 #ifdef	BRIDGE
-				switch (n = read (fd, bp, ep - bp)) {
+				switch (n) {
 #else
-				switch (n = read (fd, bp, ep - bp)) {
+				switch (n) {
 #endif
 				case NOTOK:
 				case OK:
@@ -801,7 +807,8 @@ do_cancel:
 		dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, sys_errname (errno));
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 		de2fadu (NULLPE, 0);

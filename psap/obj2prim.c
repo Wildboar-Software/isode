@@ -25,7 +25,7 @@ PE	obj2prim (OID o, PElementClass class, PElementID id) {
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;
 
-	if ((np = (int *) malloc ((unsigned) (o -> oid_nelem) * sizeof *np))
+	if ((np = (int *) malloc_nmemb (o -> oid_nelem, sizeof *np))
 			== NULL) {
 		pe_free (pe);
 		return NULLPE;
@@ -43,7 +43,12 @@ PE	obj2prim (OID o, PElementClass class, PElementID id) {
 			m++;
 			j >>= 7;
 		} while (j);
-		n += (*mp++ = m);
+		*mp++ = m;
+		if (add_int_to_int (&n, m) != 0) {
+			free ((char *) np);
+			pe_free (pe);
+			return NULLPE;
+		}
 	}
 
 	if ((pe -> pe_prim = PEDalloc (pe -> pe_len = n)) == NULLPED) {
@@ -64,7 +69,7 @@ PE	obj2prim (OID o, PElementClass class, PElementID id) {
 		ep = dp + (m = *mp++) - 1;
 		for (dp = ep; m-- > 0; j >>= 7)
 			*dp-- = (j & 0x7f) | 0x80;
-		*ep &= ~0x80;
+		*ep = u8_bic (*ep, 0x80);
 		dp = ep + 1;
 	}
 

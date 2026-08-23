@@ -267,16 +267,29 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					vp = vp -> next, vb2 = vb2 -> next) {
 				int	fixup = 0;
 				a = vb2 -> VarBind -> name, b = vp -> VarBind -> name;
-				if (a -> oid_nelem > b -> oid_nelem
-						|| bcmp ((char *) a -> oid_elements,
-								 (char *) b -> oid_elements,
-								 a -> oid_nelem
-								 * sizeof a -> oid_elements[0])) {
+				if (a -> oid_nelem > b -> oid_nelem) {
+					/* mismatch */
+				} else {
+					size_t nbytes;
+
+					if (nmemb_bytes (a -> oid_nelem,
+							 sizeof a -> oid_elements[0], &nbytes) == 0
+							&& bcmp ((char *) a -> oid_elements,
+									 (char *) b -> oid_elements, nbytes) == 0)
+						goto names_ok;
+				}
+				{
 					oid_free (b);
 					vp -> VarBind -> name = b = oid_copy (t -> t_arg);
-					bcopy ((char *) a -> oid_elements,
-						   (char *) b -> oid_elements,
-						   a -> oid_nelem * sizeof *a -> oid_elements);
+					{
+						size_t nbytes;
+
+						if (nmemb_bytes (a -> oid_nelem,
+								 sizeof *a -> oid_elements, &nbytes) != 0)
+							adios (NULLCP, "OID too large");
+						bcopy ((char *) a -> oid_elements,
+							   (char *) b -> oid_elements, nbytes);
+					}
 					/* not really needed...
 							    pe_free (vp -> VarBind -> value);
 							    if ((vp -> VarBind -> value = pe_alloc (PE_CLASS_UNIV,
@@ -287,6 +300,7 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 					 */
 					fixup = 1;
 				}
+names_ok:
 				if ((bv = (struct binding *) calloc (1, sizeof *bv)) == NULL)
 					adios (NULLCP, "out of memory");
 				*bz = bv, bz = &bv -> b_next;
@@ -736,10 +750,15 @@ static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindL
 			adios (NULLCP, "out of memory");
 		bind -> VarBind = v;
 		v -> name = oid_copy (arg);
-		bcopy ((char *) vb -> VarBind -> name -> oid_elements,
-			   (char *) v -> name -> oid_elements,
-			   vb -> VarBind -> name -> oid_nelem
-			   * sizeof *v -> name -> oid_elements);
+		{
+			size_t nbytes;
+
+			if (nmemb_bytes (vb -> VarBind -> name -> oid_nelem,
+					 sizeof *v -> name -> oid_elements, &nbytes) != 0)
+				adios (NULLCP, "OID too large");
+			bcopy ((char *) vb -> VarBind -> name -> oid_elements,
+				   (char *) v -> name -> oid_elements, nbytes);
+		}
 		if ((v -> value = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_NULL))
 				== NULL)
 			adios (NULLCP, "out of memory");

@@ -392,7 +392,13 @@ static int get_fs_table(void) {
 		strcpy(fsp->fs_MountOptions, mp->mnt_opts);
 		p = strstr(mp->mnt_opts, "dev=");
 		fsp->fs_Identifier = (p == NULL) ? ++fake_dev%100 : atoi(p+4);
-		fsp->fs_instance[0] = fsp->fs_Identifier;
+		if (int2uint (fsp->fs_Identifier, &fsp->fs_instance[0]) != 0) {
+			free(fsp->fs_Name);
+			free(fsp->fs_MountPoint);
+			free(fsp->fs_MountType);
+			free(fsp);
+			return(0);
+		}
 		fsp->fs_insize =  1;
 		refresh_entry(fsp);
 		insert_entry(fsp);

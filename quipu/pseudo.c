@@ -233,7 +233,7 @@ get_cacheEDB (void) {
 }
 
 void write_dsa_entry (Entry eptr) {
-	int um;
+	mode_t um, mask;
 	FILE * fptr;
 	char filename[LINESIZE];
 	PS ps;
@@ -241,11 +241,13 @@ void write_dsa_entry (Entry eptr) {
 	update_pseudo_attr();
 	if (dsa_pseudo_attr) {
 		sprintf (filename,"%sDSA.pseudo",isodefile(treedir,0));
-		um = umask (0177);
+		if (int2mode (0177, &mask) != 0)
+			return;
+		um = umask (mask);
 		if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 		}
-		umask (um);
+		(void) umask (um);
 		if ((ps = ps_alloc (std_open)) == NULLPS) {
 			LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 			fclose (fptr);
@@ -288,11 +290,13 @@ void write_dsa_entry (Entry eptr) {
 	if (eptr->e_data == E_DATA_MASTER)
 		return;
 	sprintf (filename,"%sDSA.real",isodefile(treedir,0));
-	um = umask (0177);
+	if (int2mode (0177, &mask) != 0)
+		return;
+	um = umask (mask);
 	if ((fptr = fopen (filename,"w")) == (FILE *) NULL) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("can't write DSA pseudo entry: \"%s\" (%d)",filename,errno));
 	}
-	umask (um);
+	(void) umask (um);
 	if ((ps = ps_alloc (std_open)) == NULLPS) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,("ps_alloc failed"));
 		fclose (fptr);

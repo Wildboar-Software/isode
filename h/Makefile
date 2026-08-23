@@ -7,7 +7,7 @@ DIRS	=	quipu
 
 HEADERS	=	config.h \
 		sys.dirent.h usr.dirent.h \
-		general.h manifest.h isoaddrs.h sys.file.h \
+		general.h conv.h manifest.h isoaddrs.h sys.file.h \
 		internet.h x25.h tp4.h dgram.h \
 		cmd_srch.h isoservent.h logger.h tailor.h \
 		mpkt.h \

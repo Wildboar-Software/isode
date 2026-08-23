@@ -118,9 +118,10 @@ name2macro (char *name) {
 
 static struct macro *
 value2macro (char *value) {
-	int   i,
+	size_t   i,
 		  j,
 		  k;
+	int	diff;
 	struct macro *m,
 			   *p,
 			   **np,
@@ -137,11 +138,13 @@ value2macro (char *value) {
 					&& strncmp (value, m -> m_value, j) == 0)
 				p = m, i = j;
 
-	if (p)
+	if (p) {
+		if (sizet2int (k - strlen (p -> m_value), &diff) != 0)
+			diff = -1;
 		LLOG (addr_log, LLOG_DEBUG,
 			  ("MACRO \"%s\" VALUE \"%s\" differential %d",
-			   p -> m_name, p -> m_value, k - strlen (p -> m_value)));
-	else
+			   p -> m_name, p -> m_value, diff));
+	} else
 		LLOG (addr_log, LLOG_DEBUG,
 			  ("lookup of VALUE \"%s\" failed", value));
 
@@ -268,6 +271,23 @@ static char sel3[TSSIZE];
 static char *sels[3] = {
 	sel1, sel2, sel3
 };
+
+static int
+idi_pad (char **pp, int idi_len, char *dp, int padchar)
+{
+	size_t dlen,
+		ilen;
+
+	dlen = strlen (dp);
+	if (int2sizet (idi_len, &ilen) != 0)
+		return NOTOK;
+	while (ilen > dlen) {
+		*(*pp)++ = (char) padchar;
+		ilen--;
+	}
+	return OK;
+}
+
 
 #define	IMPLODE(intres,octres,octval,intval,losing,loslab) \
 { \
@@ -407,7 +427,7 @@ stuff_selectors:
 			}
 
 			{
-				int    k,
+				size_t k,
 					   l,
 					   n;
 				struct ts_interim *ts,
@@ -516,10 +536,8 @@ too_many:
 						fp = pp -> p_dec0, padchar = '0';
 					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
-					for (len = pp -> p_idi_len - strlen (dp);
-							len > 0;
-							len--)
-						*fp++ = padchar;
+					if (idi_pad (&fp, pp -> p_idi_len, dp, padchar) != OK)
+						return NULLPA;
 					strcpy (fp, dp);
 					fp += strlen (fp);
 					if (*ep != NULL)
@@ -533,10 +551,8 @@ too_many:
 						fp = pp -> p_hex0, padchar = '0';
 					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
-					for (len = pp -> p_idi_len - strlen (dp);
-							len > 0;
-							len--)
-						*fp++ = padchar;
+					if (idi_pad (&fp, pp -> p_idi_len, dp, padchar) != OK)
+						return NULLPA;
 					strcpy (fp, dp);
 					/* Odd length IDI padded below */
 					goto handle_dsp;
@@ -567,8 +583,15 @@ handle_dsp:
 								 NULLPA, L3);
 						na -> na_addrlen += j;
 					} else if (*ep == 'l') {
+						size_t cur, add;
+
 						strcpy (dp, ep + 1);
-						na -> na_addrlen += strlen (ep + 1);
+						if (char2sizet (na -> na_addrlen, &cur) != 0)
+							return NULLPA;
+						add = strlen (ep + 1);
+						if (add > (size_t) NASIZE || cur > (size_t) NASIZE - add)
+							return NULLPA;
+						na -> na_addrlen = (char) (cur + add);
 					}
 					break;
 
@@ -579,10 +602,8 @@ handle_dsp:
 						fp = pp -> p_dec0, padchar = '0';
 					strcpy (nsap, fp);
 					fp = nsap + strlen (nsap);
-					for (len = pp -> p_idi_len - strlen (dp);
-							len > 0;
-							len--)
-						*fp++ = padchar;
+					if (idi_pad (&fp, pp -> p_idi_len, dp, padchar) != OK)
+						return NULLPA;
 					strcpy (fp, dp);
 					if (strncmp ("RFC-1006+", ep, sizeof "RFC-1006+" - 1) == 0) {
 #ifdef	h_addr
@@ -741,7 +762,7 @@ next:
 				tp = NULL;
 				for (ts = ts_interim; ts -> ts_name; ts++)
 					if (ts -> ts_length > n &&
-							bcmp (na -> na_address, ts -> ts_prefix,
+							bcmp_int (na -> na_address, ts -> ts_prefix,
 								  ts -> ts_length) == 0)
 						tp = ts, n = ts -> ts_length;
 				if (tp)
@@ -753,24 +774,30 @@ next:
 
 	switch (sp - sels) {
 	case 3:	/* PSEL+SSEL+TSEL */
-		bcopy (*--sp, ta -> ta_selector,
-			   ta -> ta_selectlen = *--lp);
-		bcopy (*--sp, sa -> sa_selector,
-			   sa -> sa_selectlen = *--lp);
-		bcopy (*--sp, pa -> pa_selector,
-			   pa -> pa_selectlen = *--lp);
+		if (bcopy_int (*--sp, ta -> ta_selector,
+				   ta -> ta_selectlen = *--lp) != 0)
+			return NULLPA;
+		if (bcopy_int (*--sp, sa -> sa_selector,
+				   sa -> sa_selectlen = *--lp) != 0)
+			return NULLPA;
+		if (bcopy_int (*--sp, pa -> pa_selector,
+				   pa -> pa_selectlen = *--lp) != 0)
+			return NULLPA;
 		break;
 
 	case 2:	/* SSEL+TSEL */
-		bcopy (*--sp, ta -> ta_selector,
-			   ta -> ta_selectlen = *--lp);
-		bcopy (*--sp, sa -> sa_selector,
-			   sa -> sa_selectlen = *--lp);
+		if (bcopy_int (*--sp, ta -> ta_selector,
+				   ta -> ta_selectlen = *--lp) != 0)
+			return NULLPA;
+		if (bcopy_int (*--sp, sa -> sa_selector,
+				   sa -> sa_selectlen = *--lp) != 0)
+			return NULLPA;
 		break;
 
 	case 1:	/* TSEL */
-		bcopy (*--sp, ta -> ta_selector,
-			   ta -> ta_selectlen = *--lp);
+		if (bcopy_int (*--sp, ta -> ta_selector,
+				   ta -> ta_selectlen = *--lp) != 0)
+			return NULLPA;
 		break;
 
 	default:
@@ -862,8 +889,8 @@ int macro2comm (char *name, struct ts_interim *ts) {
 			fp = pp -> p_dec0, padchar = '0';
 		strcpy (ap, fp);
 		ap += strlen (ap);
-		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
-			*ap++ = padchar;
+		if (idi_pad (&ap, pp -> p_idi_len, dp, padchar) != OK)
+			return NOTOK;
 		strcpy (ap, dp);
 		ap += strlen (ap);
 		if (*ep != NULL)
@@ -877,8 +904,8 @@ int macro2comm (char *name, struct ts_interim *ts) {
 			fp = pp -> p_hex0, padchar = '0';
 		strcpy (ap, fp);
 		ap += strlen (ap);
-		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
-			*ap++ = padchar;
+		if (idi_pad (&ap, pp -> p_idi_len, dp, padchar) != OK)
+			return NOTOK;
 		strcpy (ap, dp);
 		/* Odd length IDI padded below */
 		break;
@@ -899,8 +926,8 @@ int macro2comm (char *name, struct ts_interim *ts) {
 			fp = pp -> p_dec0, padchar = '0';
 		strcpy (ap, fp);
 		ap += strlen (ap);
-		for (len = pp -> p_idi_len - strlen (dp); len > 0; len--)
-			*ap++ = padchar;
+		if (idi_pad (&ap, pp -> p_idi_len, dp, padchar) != OK)
+			return NOTOK;
 		strcpy (ap, dp);
 		ap += strlen (ap);
 

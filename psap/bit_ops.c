@@ -29,7 +29,13 @@ int bit_on (PE pe, int i) {
 	if ((bp = ffb (pe, i, &mask, 1)) == NULLPED)
 		return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
 
-	*bp |= mask;
+	{
+		uint8_t m;
+
+		if (int2u8 (mask, &m) != 0)
+			return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
+		*bp |= m;
+	}
 
 	return OK;
 }
@@ -41,7 +47,13 @@ int bit_off (PE pe, int i) {
 	if ((bp = ffb (pe, i, &mask, 1)) == NULLPED)
 		return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
 
-	*bp &= ~mask;
+	{
+		uint8_t m;
+
+		if (int2u8 (mask, &m) != 0)
+			return pe_seterr (pe, PE_ERR_NMEM, NOTOK);
+		*bp = u8_bic (*bp, m);
+	}
 
 	return OK;
 }
@@ -78,7 +90,8 @@ ffb (PE pe, int n, int *mask, int xtnd) {
 		if (pe -> pe_len < (PElementLen) (len = i + 1)) {
 			if ((bp = PEDalloc (len)) == NULLPED)
 				return NULLPED;
-			bzero ((char *) bp, len);
+			if (bzero_int (bp, len) != 0)
+				return NULLPED;
 			if (pe -> pe_prim) {
 				PEDcpy (pe -> pe_prim, bp, pe -> pe_len);
 				if (pe -> pe_inline)
@@ -101,7 +114,10 @@ ffb (PE pe, int n, int *mask, int xtnd) {
 			pe_free (r);
 			return NULLPED;
 		}
-		bzero ((char *) r -> pe_prim, len);
+		if (bzero_int (r -> pe_prim, len) != 0) {
+			pe_free (r);
+			return NULLPED;
+		}
 		r -> pe_nbits = j + 1;
 		*mask = 1 << (7 - (j % 8));
 		for (p = &pe -> pe_cons; q = *p; p = &q -> pe_next)

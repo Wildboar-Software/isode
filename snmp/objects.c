@@ -239,8 +239,12 @@ you_lose:
 		for (i = 0; i < TBUCKETS; i++)
 			for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain)
 				j++;
+		if (j < 1) {
+			sprintf (PY_pepy, "no objects to compile");
+			return NOTOK;
+		}
 		/* j > 1 ALWAYS */
-		if ((base = (OT *) malloc ((unsigned) (j * sizeof *base))) == NULL) {
+		if ((base = (OT *) malloc_nmemb (j, sizeof *base)) == NULL) {
 			sprintf (PY_pepy, "out of memory");
 			return NOTOK;
 		}
@@ -249,7 +253,11 @@ you_lose:
 			for (ot = Tbuckets[i]; ot && ot -> ot_text; ot = ot -> ot_chain)
 				*op++ = ot;
 		ep = op;
-		qsort ((char *) base, j, sizeof *base, ot_compar);
+		if (qsort_int (base, j, sizeof *base, ot_compar) != 0) {
+			free ((char *) base);
+			sprintf (PY_pepy, "too many objects");
+			return NOTOK;
+		}
 		op = base;
 		anchor = ot = *op++;
 		while (op < ep) {
@@ -521,7 +529,8 @@ static OID  resolve (const char *id, OT ot) {
 	if (isdigit (*id)) {
 		ot2 = NULLOT;
 		oid -> oid_nelem = 1;
-		oid -> oid_elements[0] = atoi (id);
+		if (int2uint (atoi (id), &oid -> oid_elements[0]) != 0)
+			return NULLOID;
 		if (cp)
 			*cp = '.';
 	} else {
@@ -531,9 +540,14 @@ static OID  resolve (const char *id, OT ot) {
 		if (ot2 == NULLOT || ot2 -> ot_name == NULLOID)
 			return NULLOID;
 		oid -> oid_nelem = ot2 -> ot_name -> oid_nelem;
-		bcopy ((char *) ot2 -> ot_name -> oid_elements,
-			   (char *) oid -> oid_elements,
-			   oid -> oid_nelem * sizeof *elements);
+		{
+			size_t nbytes;
+
+			if (nmemb_bytes (oid -> oid_nelem, sizeof *elements, &nbytes) != 0)
+				return NULLOID;
+			bcopy ((char *) ot2 -> ot_name -> oid_elements,
+				   (char *) oid -> oid_elements, nbytes);
+		}
 	}
 	if (cp) {
 		if ((i = str2elem (++cp, oid -> oid_elements + oid -> oid_nelem)) < 1)
@@ -558,24 +572,30 @@ OT	name2obj (OID oid) {
 
 	if (oid == NULLOID
 			|| oid -> oid_nelem < 1
-			|| (i = (ip = oid -> oid_elements)[0])
-			>= (sizeof roots / sizeof roots[0])
+			|| uint2int ((ip = oid -> oid_elements)[0], &i) != 0
+			|| i >= (int) (sizeof roots / sizeof roots[0])
 			|| (ot = text2obj (roots[i])) == NULL)
 		return NULLOT;
 	i = 0;
 	while (ot) {
 		if ((j = (nm = ot -> ot_name) -> oid_nelem) > oid -> oid_nelem)
 			return NULLOT;
-		if (bcmp ((char *) ip, (char *) (nm -> oid_elements + i),
-				  (j - i) * sizeof *ip))
-			ot = ot -> ot_sibling;
-		else if (oid -> oid_nelem == j
-				 || ot -> ot_children == NULLOT
-				 || ot -> ot_smux)
-			break;
-		else {
-			ot = ot -> ot_children;
-			ip = oid -> oid_elements + j, i = j;
+		{
+			size_t nbytes;
+
+			if (nmemb_bytes (j - i, sizeof *ip, &nbytes) != 0)
+				return NULLOT;
+			if (bcmp ((char *) ip, (char *) (nm -> oid_elements + i),
+					  nbytes))
+				ot = ot -> ot_sibling;
+			else if (oid -> oid_nelem == j
+					 || ot -> ot_children == NULLOT
+					 || ot -> ot_smux)
+				break;
+			else {
+				ot = ot -> ot_children;
+				ip = oid -> oid_elements + j, i = j;
+			}
 		}
 	}
 	return ot;

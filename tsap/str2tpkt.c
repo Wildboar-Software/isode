@@ -25,7 +25,9 @@ char *tpkt2str (struct tsapkt *t) {
 
 	cc = writefnx ((struct tsapblk *) NOTOK, NULLCP, 0);
 	if (t -> t_qbuf) {
-		bcopy (t -> t_qbuf -> qb_data, packet + cc, t -> t_qbuf -> qb_len);
+		if (bcopy_int (t -> t_qbuf -> qb_data, packet + cc,
+				   t -> t_qbuf -> qb_len) != 0)
+			return NULLCP;
 		cc += t -> t_qbuf -> qb_len;
 	}
 	buffer[explode (buffer, (uint8_t *) packet, cc)] = 0;
@@ -44,8 +46,14 @@ str2tpkt (char *buffer) {
 	DLOG (tsap_log, LLOG_PDUS,
 		  ("read %d bytes, \"%s\"", strlen (buffer), buffer));
 
-	getfnx (NOTOK, NULLPKT, packet,
-			implode ((uint8_t *) packet, buffer, strlen (buffer)));
+	{
+		int blen;
+
+		if (sizet2int (strlen (buffer), &blen) != 0)
+			return NULLPKT;
+		getfnx (NOTOK, NULLPKT, packet,
+				implode ((uint8_t *) packet, buffer, blen));
+	}
 	t = fd2tpkt (0, getfnx, readfnx);
 
 	return t;
@@ -59,16 +67,32 @@ static int getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 		return OK;
 	}
 
-	t -> t_length = cc + sizeof t -> t_pkthdr;
+	{
+		int hdr;
+
+		if (sizet2int (sizeof t -> t_pkthdr, &hdr) != 0)
+			return DR_LENGTH;
+		t -> t_length = cc + hdr;
+	}
 	t -> t_vrsn = TPKT_VRSN;
 
-	if (readfnx (fd, (char *) &t -> t_li, sizeof t -> t_li)
-			!= sizeof t -> t_li)
-		return DR_LENGTH;
+	{
+		int nli;
 
-	if (readfnx (fd, (char *) &t -> t_code, sizeof t -> t_code)
-			!= sizeof t -> t_code)
-		return DR_LENGTH;
+		if (sizet2int (sizeof t -> t_li, &nli) != 0)
+			return DR_LENGTH;
+		if (readfnx (fd, (char *) &t -> t_li, nli) != nli)
+			return DR_LENGTH;
+	}
+
+	{
+		int ncode;
+
+		if (sizet2int (sizeof t -> t_code, &ncode) != 0)
+			return DR_LENGTH;
+		if (readfnx (fd, (char *) &t -> t_code, ncode) != ncode)
+			return DR_LENGTH;
+	}
 
 	return OK;
 }
@@ -85,7 +109,8 @@ static int readfnx (int fd, char *buffer, int n) {
 	}
 
 	if ((i = min (cc, n)) > 0) {
-		bcopy (bp, buffer, n);
+		if (bcopy_int (bp, buffer, i) != 0)
+			return NOTOK;
 		bp += i, cc -= i;
 	}
 
@@ -96,14 +121,25 @@ static int putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	int    cc;
 	struct udvec  *uv;
 
-	cc = sizeof t -> t_li;
-	if (writefnx (tb, (char *) &t -> t_li, cc) != cc)
-		return NOTOK;
+	{
+		int nli;
 
-	if (writefnx (tb, (char *) &t -> t_code, sizeof t -> t_code)
-			!= sizeof t -> t_code)
-		return NOTOK;
-	cc += sizeof t -> t_code;
+		if (sizet2int (sizeof t -> t_li, &nli) != 0)
+			return NOTOK;
+		cc = nli;
+		if (writefnx (tb, (char *) &t -> t_li, cc) != cc)
+			return NOTOK;
+	}
+
+	{
+		int ncode;
+
+		if (sizet2int (sizeof t -> t_code, &ncode) != 0)
+			return NOTOK;
+		if (writefnx (tb, (char *) &t -> t_code, ncode) != ncode)
+			return NOTOK;
+		cc += ncode;
+	}
 
 	if (writefnx (tb, cp, n) != n)
 		return NOTOK;
@@ -135,7 +171,8 @@ static int writefnx (struct tsapblk *tb, char *buffer, int n) {
 		return OK;
 	}
 
-	bcopy (buffer, bp, n);
+	if (bcopy_int (buffer, bp, n) != 0)
+		return NOTOK;
 	bp += n, cc += n;
 
 	return n;

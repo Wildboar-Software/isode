@@ -221,9 +221,12 @@ int main (int argc, char *argv[]) {
 #ifdef TERMIOS
 	if (tcgetattr(0, &oterm) == -1)
 		perror("tcgetattr");
-	erase_char = oterm.c_cc[VERASE];
-	erase_line = oterm.c_cc[VKILL];
-	intr_char = oterm.c_cc[VINTR];
+	if (cct2char (oterm.c_cc[VERASE], &erase_char) != 0)
+		erase_char = '\0';
+	if (cct2char (oterm.c_cc[VKILL], &erase_line) != 0)
+		erase_line = '\0';
+	if (cct2char (oterm.c_cc[VINTR], &intr_char) != 0)
+		intr_char = '\0';
 #else
 	if (ioctl(0, TIOCGETP, (char *)&ottyb) == -1) {
 		perror("ioctl");
@@ -425,7 +428,7 @@ struct dispatch *getds (char *name) {
 
 	default:
 		for (ds = dispatches, p = buffer; q = ds -> ds_name; ds++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -714,7 +717,7 @@ static int vt_set (char **vec) {
 			value = i - 1;
 			j = 1;
 		} else {
-			if (strncmp (dp = *vec, "0x", 2) == 0)
+			if (dp[0] == '0' && dp[1] == 'x')
 				dp += 2;
 			for (j = sscanf (dp, "%x", &value); *dp; dp++)
 				if (!isxdigit (*dp)) {
@@ -882,7 +885,7 @@ static char **getval (char *name, char **choices) {
 
 	default:
 		for (cp = choices, p = buffer; q = *cp; cp++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -921,7 +924,7 @@ static struct var *getvar (char *name) {
 
 	default:
 		for (v = vars, p = buffer; q = v -> v_name; v++)
-			if (strncmp (q, name, longest) == 0) {
+			if (strncmp_int (q, name, longest) == 0) {
 				sprintf (p, "%s \"%s\"", p != buffer ? "," : "", q);
 				p += strlen (p);
 			}
@@ -1162,7 +1165,7 @@ void ttyflush (int dd) {
 	int n;
 
 	if ((n = tfrontp - tbackp) > 0) {
-		n = write(dd, tbackp, n);
+		n = write_int (dd, tbackp, n);
 	}
 	if (n < 0) {
 		advise(LLOG_NOTICE,NULLCP,  "ttyflush(): Negative returned from write");

@@ -79,15 +79,15 @@
 #define	copyRtSAPdata(base,len,d) \
 { \
     register int i = len; \
-    if ((d -> d/**/_cc = min (i, sizeof d -> d/**/_data)) > 0) \
-	bcopy (base, d -> d/**/_data, d -> d/**/_cc); \
+    (void) copy_capped (base, d -> d/**/_data, (ptrdiff_t) i, \
+			sizeof d -> d/**/_data, &d -> d/**/_cc); \
 }
 #else
 #define	copyRtSAPdata(base,len,d) \
 { \
     register int i = len; \
-    if ((d -> d##_cc = min (i, sizeof d -> d##_data)) > 0) \
-	bcopy (base, d -> d##_data, d -> d##_cc); \
+    (void) copy_capped (base, d -> d##_data, (ptrdiff_t) i, \
+			sizeof d -> d##_data, &d -> d##_cc); \
 }
 #endif
 #else

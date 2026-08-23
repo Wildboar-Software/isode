@@ -221,13 +221,19 @@ void sort_rtetab (void) {
 			   **rte;
 
 	if ((base = (struct rtetab **)
-				malloc ((unsigned) (routeNumber * sizeof *base)))
+				malloc_nmemb (routeNumber, sizeof *base))
 			== NULL)
 		adios (NULLCP, "out of memory");
 	rte = base;
 	for (rt = rts; rt; rt = rt -> rt_next)
 		*rte++ = rt;
-	qsort ((char *) base, routeNumber, sizeof *base, rt_compar);
+	{
+		size_t n;
+
+		if (int2sizet (routeNumber, &n) != 0)
+			adios (NULLCP, "too many routes");
+		qsort ((char *) base, n, sizeof *base, rt_compar);
+	}
 	rtp = base;
 	rt = rts = *rtp++;
 	rts_inet = NULL;
@@ -333,7 +339,9 @@ static int  get_route (struct rtentry *re) {
 					"duplicate routes for destination %d/%s",
 					rt -> rt_dst.sa.sa_family, sprintoid (&oids));
 		}
-		rt -> rt_instance[rt -> rt_insize++] = ++rz -> rt_magic;
+		if (int2uint (++rz -> rt_magic, &rt -> rt_instance[rt -> rt_insize]) != 0)
+			adios (NULLCP, "route instance overflow");
+		rt -> rt_insize++;
 	}
 	*rtp = rt, rtp = &rt -> rt_next, routeNumber++;
 	if (debug && first_time) {

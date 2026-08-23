@@ -537,9 +537,21 @@ static int pwdgen (char *pw) {
 		s += strlen (s);
 
 #ifndef	SYS5
-		srandom ((int) time ((long *) 0));
+		{
+			unsigned int seed;
+
+			if (long2uint ((long) time ((time_t *) 0), &seed) != 0)
+				seed = 1U;
+			srandom (seed);
+		}
 #else
-		srand ((unsigned int) time ((long *) 0));
+		{
+			unsigned int seed;
+
+			if (long2uint ((long) time ((time_t *) 0), &seed) != 0)
+				seed = 1U;
+			srand (seed);
+		}
 #endif
 
 		latch++;
@@ -600,7 +612,7 @@ static int object (char *pw) {
 
 	for (o = objects; s = o -> o_string; o++)
 		for (n = o -> o_advance; *s; s += n)
-			if (strncmp (f, s, n) == 0)
+			if (strncmp_int (f, s, n) == 0)
 				return NOTOK;
 
 	return OK;
@@ -711,8 +723,13 @@ oops:
 		close (pd[0]);
 		close (pd[1]);
 		if (execuid != 0) {
-			setgid (execgid);
-			setuid (execuid);
+			unsigned int uid, gid;
+
+			if (int2uint (execgid, &gid) != 0
+					|| int2uint (execuid, &uid) != 0)
+				_exit (1);
+			setgid ((gid_t) gid);
+			setuid ((uid_t) uid);
 		}
 		execvp (pgm, vec);
 		_exit (1);

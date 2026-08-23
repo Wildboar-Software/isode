@@ -637,7 +637,7 @@ void isodexport (char *myname) {
 			}
 			for (tp = ts_interim; tp < ts; tp++)
 				if (tp -> ts_length == ts -> ts_length
-						&& bcmp (tp -> ts_prefix, ts -> ts_prefix,
+						&& bcmp_int (tp -> ts_prefix, ts -> ts_prefix,
 								 tp -> ts_length) == 0) {
 					fprintf (stderr,
 							 "duplicate prefixes for communities \"%s\" and \"%s\"\n",

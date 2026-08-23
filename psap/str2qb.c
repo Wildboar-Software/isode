@@ -8,7 +8,7 @@ struct qbuf *str2qb (char *s, int len, int head) {
 	struct qbuf *qb,
 			   *pb;
 
-	if ((pb = (struct qbuf *) malloc ((unsigned) (sizeof *pb + len))) == NULL)
+	if ((pb = (struct qbuf *) malloc_plus_int (sizeof *pb, len)) == NULL)
 		return NULL;
 
 	if (head) {
@@ -25,8 +25,16 @@ struct qbuf *str2qb (char *s, int len, int head) {
 	}
 
 	pb -> qb_data = pb -> qb_base;
-	if ((pb -> qb_len = len) > 0 && s)
-		bcopy (s, pb -> qb_data, len);
+	if ((pb -> qb_len = len) > 0 && s) {
+		if (bcopy_int (s, pb -> qb_data, len) != 0) {
+			if (head) {
+				remque (pb);
+				free ((char *) qb);
+			}
+			free ((char *) pb);
+			return NULL;
+		}
+	}
 
 	return qb;
 }

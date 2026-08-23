@@ -19,7 +19,7 @@ getisoserventbyselector (char *provider, char *selector, int selectlen) {
 	setisoservent (0);
 	while (is = getisoservent ())
 		if (selectlen == is -> is_selectlen
-				&& bcmp (selector, is -> is_selector, is -> is_selectlen) == 0
+				&& bcmp_int (selector, is -> is_selector, is -> is_selectlen) == 0
 				&& strcmp (provider, is -> is_provider) == 0)
 			break;
 	endisoservent ();

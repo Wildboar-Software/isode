@@ -81,7 +81,7 @@ static char ** glob (char *v) {
 	char agpath[BUFSIZ];
 	char *agargv[GAVSIZ];
 	char *vv[2];
-	vv[0] = malloc ((unsigned) (strlen (v) + 1));
+	vv[0] = malloc_plus_int (strlen (v), 1);
 	if (vv[0] == (char *)0)
 		fatal("out of memory");
 	strcpy (vv[0], v);
@@ -483,7 +483,14 @@ static int Gmatch (char *s, char *p) {
 }
 
 static void Gcat (char *s1, char *s2) {
-	int len = strlen(s1) + strlen(s2) + 1;
+	int len = 0;
+
+	if (add_sizet_to_int (&len, strlen (s1)) != 0
+			|| add_sizet_to_int (&len, strlen (s2)) != 0
+			|| add_int_to_int (&len, 1) != 0) {
+		globerr = "Arguments too long";
+		return;
+	}
 
 	if (len >= gnleft || gargc >= GAVSIZ - 1)
 		globerr = "Arguments too long";
@@ -578,9 +585,11 @@ int blkfree (char **av0) {
 }
 
 static char *strspl (char *cp, char *dp) {
-	char *ep = malloc((unsigned)(strlen(cp) + strlen(dp) + 1));
+	int extra = 1;
+	char *ep;
 
-	if (ep == (char *)0)
+	if (add_sizet_to_int (&extra, strlen (dp)) != 0
+			|| (ep = malloc_plus_int (strlen (cp), extra)) == (char *)0)
 		fatal("out of memory");
 	strcpy(ep, cp);
 	strcat(ep, dp);
@@ -588,9 +597,11 @@ static char *strspl (char *cp, char *dp) {
 }
 
 static char **copyblk (char **v) {
-	char **nv = (char **)malloc((unsigned)((blklen(v) + 1) *
-										   sizeof(char **)));
-	if (nv == (char **)0)
+	int n = blklen(v);
+	char **nv;
+
+	if (add_int_to_int (&n, 1) != 0
+			|| (nv = (char **) malloc_nmemb (n, sizeof (char **))) == (char **)0)
 		fatal("out of memory");
 
 	return (blkcpy(nv, v));
@@ -657,7 +668,7 @@ char **xglob (char **v, int remote) {
 
 		for (gp = vp = copyblk (v); *gp; gp++) {
 			cp = remote ? str2file (*gp) : *gp;
-			if ((dp = malloc ((unsigned) (strlen (cp) + 1))) == NULLCP)
+			if ((dp = malloc_plus_int (strlen (cp), 1)) == NULLCP)
 				fatal ("out of memory");
 			strcpy (dp, cp);
 			*gp = dp;
@@ -705,10 +716,15 @@ char **xglob (char **v, int remote) {
 			if ((j = blklen (gp)) > 1)
 				xglobbed++;
 
-			if ((vp = (char **) realloc ((char *) vp,
-										 ((unsigned) (i + j + 1)) * sizeof *vp))
-					== NULLVP)
-				fatal ("out of memory");
+			{
+				int n = i;
+
+				if (add_int_to_int (&n, j) != 0
+						|| add_int_to_int (&n, 1) != 0
+						|| (vp = (char **) realloc_nmemb (vp, n, sizeof *vp))
+						== NULLVP)
+					fatal ("out of memory");
+			}
 
 			for (xp = vp + i, yp = gp; *xp = *yp; xp++, yp++)
 				continue;
@@ -778,7 +794,7 @@ static void matchrdir (char *pattern) {
 	fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 
 	{
-		int len = strlen (cp);
+		size_t len = strlen (cp);
 
 		for (fi = gi; fi; fi = fi -> fi_next)
 			if (strncmp (fi -> fi_name, cp, len) == 0)

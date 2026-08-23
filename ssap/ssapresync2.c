@@ -100,14 +100,14 @@ static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, char 
 		    if (sb -> sb_flags & SB_INIT) \
 			sb -> sb_owned |= bit; \
 		    else \
-			sb -> sb_owned &= ~bit; \
+			sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 		    break; \
  \
 		case ST_RESP_VALUE << shift: \
 		    if (!(sb -> sb_flags & SB_INIT)) \
 			sb -> sb_owned |= bit; \
 		    else \
-			sb -> sb_owned &= ~bit; \
+			sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 		    break; \
 	    } \
 }

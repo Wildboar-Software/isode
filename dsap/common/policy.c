@@ -24,10 +24,16 @@ str2permission (char *str) {
 	unsigned result = 0;
 
 	while (str && (*str != '\0')) {
+		unsigned u;
+		int v;
+
 		cp = index(str, '$');
 		if (cp != NULLCP)
 			*cp++ = '\0';
-		result |= cmd_srch(str, permtab);
+		v = cmd_srch(str, permtab);
+		if (int2uint (v, &u) != 0)
+			return 0;
+		result |= u;
 		str = cp;
 	}
 	return (result);

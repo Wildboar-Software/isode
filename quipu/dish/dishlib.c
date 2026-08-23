@@ -88,8 +88,13 @@ static int num_cmd = 0;
 void add_dish_command (char *name, void (*func)(int, char **), int len) {
 	Commands[num_cmd].command = name;
 	Commands[num_cmd].handler = func;
-	Commands[num_cmd].unique  = (len == 0 ? strlen(name) : len);
-	bzero (Commands[num_cmd].defaults,LINESIZE);
+	if (len == 0) {
+		if (strlen2int (name, &len) != 0)
+			return;
+	}
+	Commands[num_cmd].unique  = len;
+	if (bzero_int (Commands[num_cmd].defaults,LINESIZE) != 0)
+		return;
 	num_cmd++;
 }
 

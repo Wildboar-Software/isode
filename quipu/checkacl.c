@@ -90,8 +90,10 @@ void ftype_add (Ftypelist *l, AttributeType type, int len, char *inequstr) {
 				tmp->ft_numstrs++;
 				if ( tmp->ft_numstrs > 1 ) {
 					tmp->ft_inequstrs = (char **)
-										realloc( (char *) tmp->ft_inequstrs,
-												 (unsigned)(tmp->ft_numstrs * sizeof(char *)));
+										realloc_nmemb( (char *) tmp->ft_inequstrs,
+												 tmp->ft_numstrs, sizeof(char *));
+					if (tmp->ft_inequstrs == NULL)
+						return;
 				} else {
 					tmp->ft_inequstrs = (char **)
 										smalloc( sizeof(char *) );
@@ -320,8 +322,10 @@ static struct result_count *make_rc (
 		if ( rc->rc_types == NULLTYPEDATA ) {
 			rc->rc_types = td;
 		} else {
-			rc->rc_types = (Typedata) realloc( (char *) rc->rc_types,
-											   (unsigned)(rc->rc_numtypes * sizeof(typedata)) );
+			rc->rc_types = (Typedata) realloc_nmemb( (char *) rc->rc_types,
+											   rc->rc_numtypes, sizeof(typedata) );
+			if (rc->rc_types == NULL)
+				return (rc);
 			rc->rc_types[rc->rc_numtypes-1] = *td;
 			free( (char *) td );
 		}

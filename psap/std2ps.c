@@ -10,7 +10,7 @@ int std_flush (PS ps);
 static int std_read (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    i;
 
-	if ((i = fread ((char *) data, sizeof *data, (int) n,
+	if ((i = fread_int ((char *) data, sizeof *data, n,
 					(FILE *) ps -> ps_addr)) == NOTOK)
 		ps -> ps_errno = PS_ERR_IO;
 
@@ -20,7 +20,7 @@ static int std_read (PS ps, PElementData data, PElementLen n, int in_line) {
 static int std_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	int	    i;
 
-	if ((i = fwrite ((char *) data, sizeof *data, (int) n,
+	if ((i = fwrite_int ((char *) data, sizeof *data, n,
 					 (FILE *) ps -> ps_addr)) == NOTOK)
 		ps -> ps_errno = PS_ERR_IO;
 

@@ -552,7 +552,7 @@ int putch (char c) {
 		if (debug)
 			advise(LLOG_DEBUG, NULLCP,  "tail and head set to %p", cbuf.buf);
 	}
-	*(cbuf.tail) = c;
+	*(cbuf.tail) = as_octet (c);
 	if (++(cbuf.tail) > cbuf.buf + CBUFSIZE)
 		cbuf.tail = cbuf.buf;
 	cbuf.queued++;

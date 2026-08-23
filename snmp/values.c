@@ -227,26 +227,47 @@ int	mediaddr2oid (unsigned int *ip, uint8_t *addr, int len, int islen) {
 }
 
 OID	oid_extend (OID q, int howmuch) {
-	unsigned int   i,
-			 *ip,
+	int	nelem,
+			nalloc;
+	unsigned int   *ip,
 			 *jp;
 	OID	    oid;
 
 	if (q == NULLOID)
 		return NULLOID;
-	if ((i = q -> oid_nelem) < 1)
+	nelem = q -> oid_nelem;
+	if (nelem < 1)
 		return NULLOID;
-	if ((oid = (OID) malloc (sizeof *oid)) == NULLOID)
-		return NULLOID;
-	if ((ip = (unsigned int *)
-			  calloc ((unsigned) (i + howmuch + 1), sizeof *ip))
-			== NULL) {
-		free ((char *) oid);
-		return NULLOID;
+	if (howmuch >= 0) {
+		if (nelem > INT_MAX - howmuch)
+			return NULLOID;
+		nalloc = nelem + howmuch;
+	} else {
+		if (howmuch == INT_MIN || nelem < -howmuch)
+			return NULLOID;
+		nalloc = nelem + howmuch;
 	}
-	oid -> oid_elements = ip, oid -> oid_nelem = i + howmuch;
-	for (i = 0, jp = q -> oid_elements; i < oid -> oid_nelem; i++, jp++)
-		*ip++ = *jp;
+	{
+		int extra = nalloc;
+
+		if (add_int_to_int (&extra, 1) != 0)
+			return NULLOID;
+		if ((oid = (OID) malloc (sizeof *oid)) == NULLOID)
+			return NULLOID;
+		if ((ip = (unsigned int *) calloc_int (extra, sizeof *ip))
+				== NULL) {
+			free ((char *) oid);
+			return NULLOID;
+		}
+	}
+	oid -> oid_elements = ip;
+	oid -> oid_nelem = nalloc;
+	{
+		int k;
+
+		for (k = 0, jp = q -> oid_elements; k < nelem; k++, jp++)
+			*ip++ = *jp;
+	}
 	return oid;
 }
 

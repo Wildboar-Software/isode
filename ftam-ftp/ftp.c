@@ -61,7 +61,8 @@ static int initconn(void);
 
 int hookup(char *host, int port) {
 	struct hostent *hp;
-	int s, len;
+	int s;
+	socklen_t len;
 
 	bzero((char *)&hisctladdr, sizeof (hisctladdr));
 	hp = gethostbyname(host);
@@ -109,7 +110,8 @@ int hookup(char *host, int port) {
 				strerror(errno));
 		goto bad;
 	}
-	len = sizeof (myctladdr);
+	if (sizet2socklen (sizeof (myctladdr), &len) != 0)
+		goto bad;
 	if (getsockname(s, (struct sockaddr *)&myctladdr, &len) < 0) {
 		sprintf(ftp_error,"ftp: getsockname %s",
 				strerror(errno));
@@ -305,9 +307,11 @@ int sendport = -1;
 
 static int initconn(void) {
 	char *p, *a;
-	int result, len;
+	int result;
+	socklen_t len;
 #ifdef	BSD43
 	int	on = 1;
+	socklen_t onlen;
 #endif
 
 noport:
@@ -341,11 +345,13 @@ noport:
 #ifndef	BSD43
 			setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) 0, 0) < 0)
 #else
-			setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) &on, on) < 0)
+			(int2socklen (on, &onlen) != 0
+			 || setsockopt(data, SOL_SOCKET, SO_DEBUG, (char *) &on, onlen) < 0))
 #endif
 		sprintf(ftp_error,"ftp: setsockopt (ignoreg) %s",
 				strerror(errno));
-	len = sizeof (data_addr);
+	if (sizet2socklen (sizeof (data_addr), &len) != 0)
+		goto bad;
 	if (getsockname(data, (struct sockaddr *)&data_addr, &len) < 0) {
 		sprintf(ftp_error,"ftp: getsockname  %s",
 				strerror(errno));
@@ -378,8 +384,11 @@ bad:
 
 int dataconn(char *modeX) {
 	struct sockaddr_in from;
-	int s, fromlen = sizeof (from);
+	int s;
+	socklen_t fromlen;
 
+	if (sizet2socklen (sizeof (from), &fromlen) != 0)
+		return (NOTOK);
 	s = accept(data, (struct sockaddr *) &from, &fromlen);
 	if (s < 0) {
 		sprintf(ftp_error,"ftp: accept  %s",

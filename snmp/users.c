@@ -168,7 +168,7 @@ oops:
 		goto oops;
 	}
 	for (dp = pw_data, j = cc; j > 0; dp += i, j -= i)
-		switch (i = read (pw_fd, dp, j)) {
+		switch (i = read_int (pw_fd, dp, j)) {
 		case NOTOK:
 			advise (LLOG_EXCEPTIONS, "/etc/passwd", "error reading");
 losing:
@@ -241,7 +241,8 @@ again:
 out:
 	;
 	if (pw - pw_head > 1)
-		qsort (pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
+		if (qsort_ptrdiff (pw_head, pw - pw_head, sizeof *pw_head, pw_compar) != 0)
+			adios (NULLCP, "too many passwd entries");
 	return OK;
 }
 
@@ -264,11 +265,17 @@ static void fill_pw (struct passwd *pwp) {
 	if (!(cp = index (dp, ':')))
 		return;
 	*cp++ = 0;
-	pwp -> pw_uid = atoi (dp);
-	if (!(dp = index (cp, ':')))
-		return;
-	*dp++ = 0;
-	pwp -> pw_gid = atoi (cp);
+	{
+		int uid, gid;
+
+		if (int2uid (atoi (dp), &pwp -> pw_uid) != 0)
+			return;
+		if (!(dp = index (cp, ':')))
+			return;
+		*dp++ = 0;
+		if (int2gid (atoi (cp), &pwp -> pw_gid) != 0)
+			return;
+	}
 	if (!(cp = index (pwp -> pw_gecos = dp, ':')))
 		return;
 	*cp++ = 0;
@@ -387,7 +394,7 @@ oops:
 		goto oops;
 	}
 	for (dp = gr_data, j = cc; j > 0; dp += i, j -= i)
-		switch (i = read (gr_fd, dp, j)) {
+		switch (i = read_int (gr_fd, dp, j)) {
 		case NOTOK:
 			advise (LLOG_EXCEPTIONS, "/etc/group", "error reading");
 losing:
@@ -461,7 +468,8 @@ again:
 out:
 	;
 	if (gr - gr_head > 1)
-		qsort (gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
+		if (qsort_ptrdiff (gr_head, gr - gr_head, sizeof *gr_head, gr_compar) != 0)
+			adios (NULLCP, "too many group entries");
 	return OK;
 }
 
@@ -472,7 +480,8 @@ static void fill_gr (struct group *grp) {
 	if (!(dp = index (grp -> gr_passwd = cp, ':')))
 		return;
 	*dp++ = 0;
-	grp -> gr_gid = atoi (dp);
+	if (int2gid (atoi (dp), &grp -> gr_gid) != 0)
+		return;
 }
 
 static void free_gr (void) {
@@ -587,9 +596,10 @@ again:
 						goto again;
 					}
 			}
-			if (ap -  grp -> gr_mem > 1)
-				qsort (grp -> gr_mem, ap -  grp -> gr_mem,
-					   sizeof *grp -> gr_mem, gm_compar);
+			if (ap -  grp -> gr_mem > 1
+					&& qsort_ptrdiff (grp -> gr_mem, ap -  grp -> gr_mem,
+					   sizeof *grp -> gr_mem, gm_compar) != 0)
+				adios (NULLCP, "too many group members");
 		}
 	i = 1;
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
@@ -616,8 +626,9 @@ again:
 			gu -> gu_status = GU_OTHER;
 			gu++;
 		}
-	if (gu - gu_head > 1)
-		qsort (gu_head, gu -gu_head, sizeof *gu_head, gu_compar);
+	if (gu - gu_head > 1
+			&& qsort_ptrdiff (gu_head, gu -gu_head, sizeof *gu_head, gu_compar) != 0)
+		adios (NULLCP, "too many group-user entries");
 	return OK;
 }
 
@@ -888,7 +899,8 @@ no_mem:
 		pw++;
 		bzero ((char *) pw, sizeof *pw);
 		if (pw - pw_head > 1)
-			qsort (pw_head, pw - pw_head, sizeof *pw_head, pw_compar);
+			if (qsort_ptrdiff (pw_head, pw - pw_head, sizeof *pw_head, pw_compar) != 0)
+			adios (NULLCP, "too many passwd entries");
 		if (!(pw = get_pwent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -966,7 +978,8 @@ bad_value:
 	case userID:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
-		pwp -> pw_uid = *((integer *) value);
+		if (int2uid (*((integer *) value), &pwp -> pw_uid) != 0)
+			goto bad_value;
 		(*os -> os_free) (value);
 		if (!pwp -> pw_uid)
 			goto bad_value;
@@ -992,7 +1005,8 @@ done_gid:
 					return int_SNMP_error__status_noError;
 				}
 			if (sscanf (cp, "%d", &gid) == 1) {
-				pwp -> pw_gid = gid;
+				if (int2gid (gid, &pwp -> pw_gid) != 0)
+					goto bad_value;
 				goto done_gid;
 			}
 			free (cp);
@@ -1238,7 +1252,7 @@ no_mem:
 		if ((grp -> gr_name = strdup (name)) == NULL
 				|| (grp -> gr_passwd = strdup ("*")) == NULL)
 			goto no_mem;
-		grp -> gr_gid = -1;
+		grp -> gr_gid = gid_nochg ();
 		if ((grp -> gr_mem = (char **) calloc (1, sizeof *grp ->gr_mem))
 				== NULL)
 			goto no_mem;
@@ -1247,7 +1261,8 @@ no_mem:
 		gr++;
 		bzero ((char *) gr, sizeof *gr);
 		if (gr - gr_head > 1)
-			qsort (gr_head, gr - gr_head, sizeof *gr_head, gr_compar);
+			if (qsort_ptrdiff (gr_head, gr - gr_head, sizeof *gr_head, gr_compar) != 0)
+			adios (NULLCP, "too many group entries");
 		if (!(gr = get_grent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -1313,7 +1328,8 @@ bad_value:
 	case groupID:
 		if ((*os -> os_decode) ((void **)&value, v -> value) == NOTOK)
 			goto bad_value;
-		grp -> gr_gid = *((integer *) value);
+		if (int2gid (*((integer *) value), &grp -> gr_gid) != 0)
+			goto bad_value;
 		(*os -> os_free) (value);
 		return int_SNMP_error__status_noError;
 
@@ -1484,8 +1500,9 @@ no_mem:
 		gu -> gu_status = GU_OTHER;
 		gu++;
 		bzero ((char *) gu, sizeof *gu);
-		if (gu - gu_head > 1)
-			qsort (gu_head, gu - gu_head, sizeof *gu_head, gu_compar);
+		if (gu - gu_head > 1
+				&& qsort_ptrdiff (gu_head, gu - gu_head, sizeof *gu_head, gu_compar) != 0)
+			adios (NULLCP, "too many group-user entries");
 		if (!(gu = get_guent (oid -> oid_elements
 							  + ot -> ot_name -> oid_nelem,
 							  oid -> oid_nelem
@@ -1535,7 +1552,14 @@ static char *mycrypt (char *s) {
 	long    v;
 	char    salt[3];
 
-	srandom ((int) time ((long *) 0));
+	{
+		unsigned int seed;
+		long now = time ((long *) 0);
+
+		if (long2uint (now, &seed) != 0)
+			seed = 1;
+		srandom (seed);
+	}
 	salt[0] = itoa64[(v = random ()) & 0x3f];
 	salt[1] = itoa64[(v >> 6) & 0x3f];
 	salt[2] = 0;
@@ -1615,8 +1639,15 @@ static int pw_sort (const void *p, const void *q) {
 		if (strcmp (b -> pw_pw.pw_name, "root") == 0)
 			return (1);
 	}
-	if (i = a -> pw_pw.pw_uid - b -> pw_pw.pw_uid)
-		return i;
+	{
+		int ua, ub;
+
+		if (uid2int (a -> pw_pw.pw_uid, &ua) != 0
+				|| uid2int (b -> pw_pw.pw_uid, &ub) != 0)
+			return strcmp (a -> pw_pw.pw_name, b -> pw_pw.pw_name);
+		if (i = ua - ub)
+			return i;
+	}
 	return strcmp (a -> pw_pw.pw_name, b -> pw_pw.pw_name);
 }
 
@@ -1630,8 +1661,15 @@ static int gr_sort (const void *p, const void *q) {
 		if (strcmp (b -> gr_gr.gr_name, "wheel") == 0)
 			return (1);
 	}
-	if (i = a -> gr_gr.gr_gid - b -> gr_gr.gr_gid)
-		return i;
+	{
+		int ga, gb;
+
+		if (gid2int (a -> gr_gr.gr_gid, &ga) != 0
+				|| gid2int (b -> gr_gr.gr_gid, &gb) != 0)
+			return strcmp (a -> gr_gr.gr_name, b -> gr_gr.gr_name);
+		if (i = ga - gb)
+			return i;
+	}
 	return strcmp (a -> gr_gr.gr_name, b -> gr_gr.gr_name);
 }
 
@@ -1669,8 +1707,9 @@ void sync_users (int cor) {
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
 			if (!pw -> pw_pw.pw_passwd)
 				fill_pw (&pw -> pw_pw);
-		if ((npw = pw - pw_head) > 1)
-			qsort (pw_head, npw, sizeof *pw_head, pw_sort);
+		if ((npw = pw - pw_head) > 1
+				&& qsort_int (pw_head, npw, sizeof *pw_head, pw_sort) != 0)
+			adios (NULLCP, "too many passwd entries");
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
 			struct passwd *pwp = &pw -> pw_pw;
 			if (pw -> pw_status == PW_INVALID) {
@@ -1708,8 +1747,8 @@ void sync_users (int cor) {
 				advise (LLOG_FATAL, "/etc/passwd",
 						"unable to rename %s to", tmpfil);
 		}
-		if (npw > 1)
-			qsort (pw_head, npw, sizeof *pw_head, pw_compar);
+		if (npw > 1 && qsort_int (pw_head, npw, sizeof *pw_head, pw_compar) != 0)
+			adios (NULLCP, "too many passwd entries");
 flush_pw:
 		;
 		if (invalid)
@@ -1740,8 +1779,9 @@ check_gr:
 #endif
 			continue;
 		}
-		if ((ngr = gr - gr_head) > 1)
-			qsort (gr_head, ngr, sizeof *gr_head, gr_sort);
+		if ((ngr = gr - gr_head) > 1
+				&& qsort_int (gr_head, ngr, sizeof *gr_head, gr_sort) != 0)
+			adios (NULLCP, "too many group entries");
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			char   *cp = "";
 			struct group *grp = &gr -> gr_gr;
@@ -1781,8 +1821,8 @@ check_gr:
 				advise (LLOG_FATAL, "/etc/group", "unable to rename %s to",
 						tmpfil);
 		}
-		if (ngr)
-			qsort (gr_head, ngr, sizeof *gr_head, gr_compar);
+		if (ngr > 1 && qsort_int (gr_head, ngr, sizeof *gr_head, gr_compar) != 0)
+			adios (NULLCP, "too many group entries");
 flush_gr:
 		;
 		if (!invalid && gu_head)

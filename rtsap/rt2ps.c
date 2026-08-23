@@ -539,7 +539,6 @@ out:
 /*    PSAP interface */
 
 static int doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti) {
-	unsigned int    i;
 	char  *dp;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -572,9 +571,13 @@ static int doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindi
 	if (pe -> pe_form == PE_FORM_CONS && pe_pullup (pe) == NOTOK)
 		goto congested;
 	if (acb -> acb_len > 0) {
-		i = acb -> acb_len + pe -> pe_len;
+		int	n;
+
+		n = acb -> acb_len;
+		if (add_int_to_int (&n, pe -> pe_len) != 0)
+			goto congested;
 		if (acb -> acb_realbase) {
-			if ((dp = malloc (i)) == NULL) {
+			if ((dp = malloc_int (n)) == NULL) {
 congested:
 				;
 				if (PUReportRequest (acb -> acb_fd, SP_LOCAL, NULLPEP, 0, pi)
@@ -585,21 +588,31 @@ congested:
 				FREEACB (acb);
 				return OK;
 			}
-			bcopy (acb -> acb_base, dp, acb -> acb_len);
+			if (bcopy_int (acb -> acb_base, dp, acb -> acb_len) != 0) {
+				free (dp);
+				goto congested;
+			}
 			free (acb -> acb_realbase), acb -> acb_realbase = NULL;
-		} else if ((dp = realloc (acb -> acb_base, i)) == NULL)
+		} else if ((dp = realloc_int (acb -> acb_base, n)) == NULL)
 			goto congested;
-		bcopy ((char *) pe -> pe_prim, dp + acb -> acb_len, pe -> pe_len);
+		if (bcopy_int ((char *) pe -> pe_prim, dp + acb -> acb_len,
+					   pe -> pe_len) != 0) {
+			if (acb -> acb_realbase)
+				free (acb -> acb_realbase);
+			goto congested;
+		}
 		acb -> acb_base = dp;
-		acb -> acb_len = i;
+		acb -> acb_len = n;
 	} else {
 		if (pe -> pe_inline) {
 			if ((acb -> acb_realbase = acb -> acb_base =
-										   malloc ((unsigned int) pe -> pe_len))
+										   malloc_int (pe -> pe_len))
 					== NULL)
 				goto congested;
-			bcopy ((char *) pe -> pe_prim, acb -> acb_base,
-				   acb -> acb_len = pe -> pe_len);
+			if (bcopy_int ((char *) pe -> pe_prim, acb -> acb_base,
+						   pe -> pe_len) != 0)
+				goto congested;
+			acb -> acb_len = pe -> pe_len;
 		} else {
 			acb -> acb_base = (char *) pe -> pe_prim;
 			acb -> acb_len =  pe -> pe_len;

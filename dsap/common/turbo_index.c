@@ -53,8 +53,16 @@ char *strrev (char *s) {
 	char	*start, *rev, *rsave;
 	int	len;
 
-	len = strlen( start = s );
-	rsave = rev = malloc( (unsigned) (len + 1) );
+	if (strlen2int (start = s, &len) != 0)
+		return NULL;
+	{
+		int n = len;
+		if (add_int_to_int (&n, 1) != 0)
+			return NULL;
+		rsave = rev = malloc_int (n);
+		if (rsave == NULL)
+			return NULL;
+	}
 	for ( s += len; s != start; *rev++ = *--s )
 		;	/* NULL */
 	*rev = '\0';
@@ -87,24 +95,30 @@ int index_soundex_prefix(caddr_t data1, caddr_t data2, caddr_t carg)
 {
 	char *code = (char *) data1;
 	Index_node *node = (Index_node *) data2;
-	int len = (int) (size_t) carg;
-	return( strncmp( code, (char *) node->in_value, len ) );
+	int len;
+	if (sizet2int ((size_t) carg, &len) != 0)
+		return 1;
+	return strncmp_int( code, (char *) node->in_value, len );
 }
 
 int substring_prefix_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
 	char *val = (char *) data1;
 	Index_node *node = (Index_node *) data2;
-	int len = (int) (size_t) carg;
-	return(strncmp(val,
-				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
+	int len;
+	if (sizet2int ((size_t) carg, &len) != 0)
+		return 1;
+	return strncmp_int(val,
+				   (char *) (((AttributeValue) node->in_value)->av_struct), len);
 }
 
 int substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
 	char *val = (char *) data1;
 	Index_node *node = (Index_node *) data2;
-	int len = (int) (size_t) carg;
+	int len;
+	if (sizet2int ((size_t) carg, &len) != 0)
+		return 1;
 	return(telncmp(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
@@ -113,7 +127,9 @@ int substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg)
 {
 	char *val = (char *) data1;
 	Index_node *node = (Index_node *) data2;
-	int len = (int) (size_t) carg;
+	int len;
+	if (sizet2int ((size_t) carg, &len) != 0)
+		return 1;
 	return(lexnequ(val,
 				   (char *) (((AttributeValue) node->in_value)->av_struct), len));
 }
@@ -186,8 +202,8 @@ static int index_dup(caddr_t data1, caddr_t data2)
 		else
 			node->in_max *= 2;
 		node->in_entries =
-			(struct entry **) realloc((char *)node->in_entries,
-									  (unsigned) (sizeof(struct entry *) * node->in_max));
+			(struct entry **) realloc_nmemb((char *)node->in_entries,
+									  node->in_max, sizeof(struct entry *));
 	}
 	node->in_num++;
 	tmp1 = dup->in_entries[0];
@@ -273,7 +289,9 @@ static Index *new_index(DN dn)
 	Index	*pindex;
 	int	i;
 
-	pindex = (Index *) malloc( (unsigned) (sizeof(Index) * turbo_index_num ));
+	pindex = (Index *) malloc_nmemb (turbo_index_num, sizeof(Index));
+	if (pindex == NULL)
+		return NULL;
 	for ( i = 0; i < turbo_index_num; i++ ) {
 		pindex[ i ].i_attr = turbo_index_types[ i ];
 		pindex[ i ].i_count = 0;
@@ -327,9 +345,16 @@ static void add_nonlocalalias(struct entry *e, Index *pindex)
 		if ( *tmp == e )
 			return;
 	}
-	pindex->i_nonlocalaliases = (struct entry **) realloc(
+	{
+		int n = i;
+		if (add_int_to_int (&n, 2) != 0)
+			return;
+		pindex->i_nonlocalaliases = (struct entry **) realloc_nmemb(
 									(char *)pindex->i_nonlocalaliases,
-									(unsigned) sizeof(struct entry *) * (i + 2) );
+									n, sizeof(struct entry *));
+		if (pindex->i_nonlocalaliases == NULL)
+			return;
+	}
 	pindex->i_nonlocalaliases[ i ] = e;
 	pindex->i_nonlocalaliases[ i + 1 ] = NULLENTRY;
 }
@@ -355,9 +380,16 @@ static void add_nonleafkid(struct entry *e, Index *pindex)
 			return;
 		}
 	}
-	pindex->i_nonleafkids = (struct entry **) realloc(
+	{
+		int n = i;
+		if (add_int_to_int (&n, 2) != 0)
+			return;
+		pindex->i_nonleafkids = (struct entry **) realloc_nmemb(
 								(char *) pindex->i_nonleafkids,
-								(unsigned) (sizeof(struct entry *) * (i + 2)) );
+								n, sizeof(struct entry *));
+		if (pindex->i_nonleafkids == NULL)
+			return;
+	}
 	pindex->i_nonleafkids[ i ] = e;
 	pindex->i_nonleafkids[ i + 1 ] = NULLENTRY;
 }
@@ -658,8 +690,8 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 				node->in_entries[ k ] =
 					node->in_entries[ k + 1 ];
 			node->in_entries = (struct entry **)
-							   realloc( (char *) node->in_entries, (unsigned) node->in_num
-										* sizeof(struct entry *) );
+							   realloc_nmemb( (char *) node->in_entries, node->in_num,
+										sizeof(struct entry *) );
 		}
 		/* if there's a soundex index, delete from that too */
 		if ( pindex[i].i_sroot == NULLAVL )
@@ -702,8 +734,8 @@ static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Seq
 					imem->in_entries[ k ] =
 						imem->in_entries[ k+1 ];
 				imem->in_entries = (struct entry **)
-								   realloc( (char *) imem->in_entries,
-											(unsigned) imem->in_num * sizeof(struct entry *) );
+								   realloc_nmemb( (char *) imem->in_entries,
+											imem->in_num, sizeof(struct entry *) );
 			}
 			free(code);
 		}
@@ -827,10 +859,14 @@ void turbo_optimize (char *attr) {
 	if ( turbo_index_types == (AttributeType *) 0 )
 		turbo_index_types = (AttributeType *) malloc(
 								sizeof(AttributeType *));
-	else
-		turbo_index_types = (AttributeType *) realloc(
-								(char *) turbo_index_types, (unsigned) (turbo_index_num + 1) *
+	else {
+		int n = turbo_index_num;
+		if (add_int_to_int (&n, 1) != 0)
+			fatal(66, "turbo_optimize: count overflow!\n");
+		turbo_index_types = (AttributeType *) realloc_nmemb(
+								(char *) turbo_index_types, n,
 								sizeof(AttributeType *));
+	}
 	if ( turbo_index_types == (AttributeType *) 0 )
 		fatal(66, "turbo_optimize: malloc failed!\n");
 	turbo_index_types[ turbo_index_num ] = AttrT_cpy(a);

@@ -144,7 +144,8 @@ int	  DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, struct PSAPaddr * ca
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
 		dc->dc_un.dc_bind_err.dbe_cc = rni->rni_cc;
-		bcopy (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc);
+		if (bcopy_int (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc) != 0)
+			return (NOTOK);
 		return (ronot2daplose (di, "DAP-BIND.REQUEST", rni));
 	}
 	/* Set the connection identifier */
@@ -274,7 +275,8 @@ int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, struct RoNOT
 		dc->dc_un.dc_bind_err.dbe_type = DBE_TYPE_SERVICE;
 		dc->dc_un.dc_bind_err.dbe_value = DSE_SV_UNAVAILABLE;
 		dc->dc_un.dc_bind_err.dbe_cc = rni->rni_cc;
-		bcopy (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc);
+		if (bcopy_int (rni->rni_data,dc->dc_un.dc_bind_err.dbe_data,rni->rni_cc) != 0)
+			return (NOTOK);
 		dc->dc_result = DC_REJECT;
 		return (NOTOK);
 	} /* switch acc->acc_result */

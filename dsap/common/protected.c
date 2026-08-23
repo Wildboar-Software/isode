@@ -71,8 +71,19 @@ static void prot_print (PS ps, void *value, int format) {
 	extern char * cryptstring(char *str);
 
 	/* Make a null-terminated copy */
-	cp = malloc((unsigned)(parm->n_octets + 1));
-	bcopy(parm->passwd, cp, parm->n_octets);
+	{
+		int n = parm->n_octets;
+
+		if (add_int_to_int (&n, 1) != 0)
+			return;
+		cp = malloc_int (n);
+	}
+	if (cp == NULL)
+		return;
+	if (bcopy_int(parm->passwd, cp, parm->n_octets) != 0) {
+		free (cp);
+		return;
+	}
 	cp[parm->n_octets] = '\0';
 	if (dsa_mode == FALSE) {
 		if (format == READOUT)
@@ -138,7 +149,7 @@ static int prot_cmp (void *value1, void *value2) {
 			if (a->n_octets != b->n_octets)
 				retval = 2;
 			else
-				retval = (strncmp(a->passwd, b->passwd, a->n_octets) == 0)? 0:2;
+				retval = (strncmp_int(a->passwd, b->passwd, a->n_octets) == 0)? 0:2;
 		} else
 			retval = check_guard(a->passwd, a->n_octets, b->time1, b->passwd, b->n_octets);
 	} else {
@@ -159,7 +170,7 @@ static int prot_cmp (void *value1, void *value2) {
 			if (a->n_octets != b->n_octets)
 				retval = 2;
 			else
-				retval = (strncmp(a->passwd, b->passwd, a->n_octets) == 0)? 0:2;
+				retval = (strncmp_int(a->passwd, b->passwd, a->n_octets) == 0)? 0:2;
 		}
 	}
 	return (retval);
@@ -172,10 +183,14 @@ prot_cpy (void *value) {
 
 	result = (struct protected_password *)
 			 calloc(1, sizeof(*result));
-	result->passwd = malloc((unsigned)parm->n_octets);
+	result->passwd = malloc_int(parm->n_octets);
 	if (result->passwd == NULLCP)
 		return ((struct protected_password *) 0);
-	bcopy(parm->passwd, result->passwd, parm->n_octets);
+	if (bcopy_int(parm->passwd, result->passwd, parm->n_octets) != 0) {
+		free (result->passwd);
+		free ((char *) result);
+		return ((struct protected_password *) 0);
+	}
 	result->n_octets = parm->n_octets;
 	if (parm->time1 == NULLCP)
 		result->time1 = NULLCP;

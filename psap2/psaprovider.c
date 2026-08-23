@@ -1293,8 +1293,9 @@ struct qbuf *info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
 	struct qbuf *qb;
 
 	if ((qb = qp) == NULL) {
-		if ((qb = (struct qbuf *) malloc ((unsigned) sizeof *qb
-										  + (len = ps_get_abs (pe))))
+		len = ps_get_abs (pe);
+		if (len < 0
+				|| (qb = (struct qbuf *) malloc_plus_int (sizeof *qb, len))
 				== NULL) {
 			psaplose (pi, PC_CONGEST, NULLCP, NULLCP);
 			goto out_f;

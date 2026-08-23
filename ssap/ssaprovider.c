@@ -249,7 +249,7 @@ static int SReadRequestAux (
 	struct TSAPdata *tx
 ) {
 	int     eot;
-	char    tokens;
+	uint8_t    tokens;
 	struct ssapkt *s;
 
 	bzero ((char *) sx, sizeof *sx);
@@ -705,8 +705,13 @@ invalid:
 							  "out of memory");
 					break;
 				}
-				bcopy (s -> s_udata, qb -> qb_data = qb -> qb_base,
-					   qb -> qb_len = s -> s_ulen);
+				if (bcopy_int (s -> s_udata, qb -> qb_data = qb -> qb_base,
+						   s -> s_ulen) != 0) {
+					spktlose (sb -> sb_fd, si, SC_CONGEST, NULLCP,
+							  "invalid user data length");
+					break;
+				}
+				qb -> qb_len = s -> s_ulen;
 				insque (qb, &sx -> sx_qbuf);
 				sx -> sx_cc = s -> s_ulen;
 			}
@@ -933,14 +938,14 @@ spin:
 				    if (sb -> sb_flags & SB_INIT) \
 					sb -> sb_owned |= bit; \
 				    else \
-					sb -> sb_owned &= ~bit; \
+					sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 				    break; \
  \
 				case ST_RESP_VALUE: \
 				    if (!(sb -> sb_flags & SB_INIT)) \
 					sb -> sb_owned |= bit; \
 				    else \
-					sb -> sb_owned &= ~bit; \
+					sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 				    break; \
 			    } \
 			    break;
@@ -949,14 +954,14 @@ spin:
 			    if (sb -> sb_flags & SB_INIT) \
 				sb -> sb_owned |= bit; \
 			    else \
-				sb -> sb_owned &= ~bit; \
+				sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 			    break; \
  \
 			case ST_RESP_VALUE << shift: \
 			    if (!(sb -> sb_flags & SB_INIT)) \
 				sb -> sb_owned |= bit; \
 			    else \
-				sb -> sb_owned &= ~bit; \
+				sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) bit); \
 			    break;
 			dotokens ();
 #undef	dotoken
@@ -1303,7 +1308,11 @@ int spkt2sd (
 				ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
 				return NOTOK;
 			}
-			bcopy (s -> s_udata, (base = dp) + len, s -> s_ulen);
+			if (bcopy_int (s -> s_udata, (base = dp) + len, s -> s_ulen) != 0) {
+				free (base);
+				ssaplose (si, SC_CONGEST, NULLCP, NULLCP);
+				return NOTOK;
+			}
 			len = i;
 		}
 	}

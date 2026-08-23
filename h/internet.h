@@ -127,7 +127,11 @@ int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 #endif
 
 #define	inaddr_copy(hp,sin) \
-    bcopy ((hp) -> h_addr, (char *) &((sin) -> sin_addr), (hp) -> h_length)
+    do { \
+	size_t _hl; \
+	if (int2sizet ((hp) -> h_length, &_hl) == 0) \
+	    memmove ((char *) &((sin) -> sin_addr), (hp) -> h_addr, _hl); \
+    } while (0)
 
 #ifdef	EXOS
 struct hostent {

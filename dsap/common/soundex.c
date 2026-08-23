@@ -121,8 +121,17 @@ void soundex (char *s, char **c) {
 			if (i == SOUNDEX_LEN)
 				break;
 			if (i == cmax) {
-				*c = (char *) realloc(*c, (unsigned) (2 * cmax *
-													  sizeof(char) + 1));
+				{
+					int n = cmax;
+					char *np;
+					if (add_int_to_int (&n, cmax) != 0
+							|| add_int_to_int (&n, 1) != 0)
+						return;
+					np = realloc_int (*c, n);
+					if (np == NULL)
+						return;
+					*c = np;
+				}
 				cmax *= 2;
 			}
 			adjacent = (*c)[i] = code;
@@ -143,7 +152,7 @@ static int match_word (char *a) {
 
 	soundex(a, &as);
 #ifdef SOUNDEX_PREFIX
-	cmp = strncmp(as, g_bcode, g_bcodelen);
+	cmp = strncmp_int(as, g_bcode, g_bcodelen);
 #else
 	cmp = strcmp(as, g_bcode);
 #endif
