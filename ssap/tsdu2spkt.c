@@ -23,6 +23,29 @@ struct	local_buf {
 
 static void put2spdu (int code, int li, char *value, struct local_buf *c);
 
+static int
+copy_li (const void *src, void *dst, int n)
+{
+	return bcopy_int (src, dst, n);
+}
+
+static int
+store_u8 (char *p, int n)
+{
+	uint8_t v;
+
+	if (int2u8 (n, &v) != 0)
+		return NOTOK;
+	memcpy (p, &v, 1);
+	return OK;
+}
+
+static uint8_t
+as_octet (char c)
+{
+	return (uint8_t) (unsigned char) c;
+}
+
 #define PMASK_NODATA		0x000000
 #define	PMASK_CN_ID			0x000001	/*   1: Connection ID */
 #define	PMASK_CN_ITEMS		0x000002	/*   5: Connect/Accept Item */
@@ -448,22 +471,31 @@ static int end_spdu (unsigned char code, struct local_buf *c) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
 				char buf[256];
+				int nbytes = c -> len - c -> left;
 
-				bcopy ((c -> top + 2), buf, (c -> len - c -> left));
-				bcopy (buf, c -> top, (c -> len - c -> left));
-				*(c -> top + 1) = c -> li;
+				if (copy_li ((c -> top + 2), buf, nbytes) != 0
+						|| copy_li (buf, c -> top, nbytes) != 0)
+					return NOTOK;
+				if (store_u8 (c -> top + 1, c -> li) != OK)
+					return NOTOK;
 				c -> len = c -> li + 2;
 			} else {
-				*(c -> top + 1) = 255;
-				*(c -> top + 2) = (c -> li >> 8) & 0xff;
-				*(c -> top + 3) = c -> li & 0xff;
+				if (store_u8 (c -> top + 1, 255) != OK
+						|| store_u8 (c -> top + 2, (c -> li >> 8) & 0xff) != OK
+						|| store_u8 (c -> top + 3, c -> li & 0xff) != OK)
+					return NOTOK;
 				c -> len = c -> li + 4;
 			}
 		} else {
-			*(c -> top + 1) = c -> li;
-			c -> len = c -> ptr - c -> top;
+			ptrdiff_t d;
+
+			if (store_u8 (c -> top + 1, c -> li) != OK)
+				return NOTOK;
+			d = c -> ptr - c -> top;
+			if (ptrdiff2int (d, &c -> len) != 0)
+				return NOTOK;
 		}
-		*c -> top = code;
+		memcpy (c -> top, &code, 1);
 		return OK;
 	}
 
@@ -472,13 +504,21 @@ static int end_spdu (unsigned char code, struct local_buf *c) {
 
 static void start_pgi (unsigned char code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
-	if (c -> len)
-		c -> pgi = (c -> ptr - c -> top - 1);
+	if (c -> len) {
+		ptrdiff_t d = c -> ptr - c -> top - 1;
+
+		if (ptrdiff2int (d, &c -> pgi) != 0)
+			c -> len = 0;
+	}
 }
 
 static void end_pgi (struct local_buf *c) {
-	if (c -> len)
-		*(c -> top + c -> pgi) = (c -> len - c -> left) - (c -> pgi + 1);
+	if (c -> len) {
+		int v = (c -> len - c -> left) - (c -> pgi + 1);
+
+		if (store_u8 (c -> top + c -> pgi, v) != OK)
+			c -> len = 0;
+	}
 }
 
 static void put2spdu (int code, int li, char *value, struct local_buf *c) {
@@ -515,18 +555,33 @@ static void put2spdu (int code, int li, char *value, struct local_buf *c) {
 				c -> left -= 2;
 			}
 		}
-		*c -> ptr++ = code & 0xff;
+		if (store_u8 (c -> ptr, code & 0xff) != OK) {
+			c -> len = 0;
+			return;
+		}
+		c -> ptr++;
 		if (li < 255) {
-			*c -> ptr++ = li;
+			if (store_u8 (c -> ptr, li) != OK) {
+				c -> len = 0;
+				return;
+			}
+			c -> ptr++;
 			c -> li += 2 + li;
 		} else {
-			*c -> ptr++ = 255;
-			*c -> ptr++ = (li >> 8) & 0xff;
-			*c -> ptr++ = li & 0xff;
+			if (store_u8 (c -> ptr, 255) != OK
+					|| store_u8 (c -> ptr + 1, (li >> 8) & 0xff) != OK
+					|| store_u8 (c -> ptr + 2, li & 0xff) != OK) {
+				c -> len = 0;
+				return;
+			}
+			c -> ptr += 3;
 			c -> li += 4 + li;
 		}
 
-		bcopy (value, c -> ptr, li);
+		if (li > 0 && copy_li (value, c -> ptr, li) != 0) {
+			c -> len = 0;
+			return;
+		}
 		c -> ptr += li;
 	}
 }
@@ -941,9 +996,16 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 		*base = NULL;
 		*len = 0;
 	} else {
-		*base = c.top;
-		*len = c.len;
-		s -> s_li = c.li;
+		if (int2u32 (c.li, &s -> s_li) != 0) {
+			s -> s_errno = SC_CONGEST;
+			free (c.top);
+			c.len = 0;
+			*base = NULL;
+			*len = 0;
+		} else {
+			*base = c.top;
+			*len = c.len;
+		}
 	}
 
 #ifdef	DEBUG
@@ -956,9 +1018,17 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 
 static uint32_t str2ssn (char *s, int n) {
 	uint32_t u;
+	unsigned d;
 
-	for (u = 0L; n > 0; n--)
-		u = u * 10 + *s++ - '0';
+	for (u = 0; n > 0; n--, s++) {
+		d = (unsigned) (unsigned char) *s;
+		if (d < '0' || d > '9')
+			return 0;
+		d -= '0';
+		if (u > (UINT32_MAX - d) / 10)
+			return UINT32_MAX;
+		u = u * 10 + d;
+	}
 
 	return u;
 }
@@ -1002,7 +1072,8 @@ static char *pullqb (struct qbuf *qb, int n) {
 				return NULLCP;
 			cp = buffer;
 		}
-		bcopy (qp -> qb_data, cp, i);
+		if (copy_li (qp -> qb_data, cp, i) != 0)
+			return NULLCP;
 
 		qp -> qb_data += i, qp -> qb_len -= i;
 		if (qp -> qb_len <= 0) {
@@ -1035,7 +1106,7 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 		*cc = 0;
 	} else
 		cat0 = 1;
-	if ((base = pullqb (qb, nread = 2)) == NULL || (s = newspkt ((int) (si = *base++))) == NULL)
+	if ((base = pullqb (qb, nread = 2)) == NULL || (s = newspkt ((int) (si = as_octet (*base++)))) == NULL)
 		return NULLSPKT;
 
 	if (*((uint8_t *) base) == 255) {
@@ -1044,15 +1115,20 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 			return s;
 		}
 		nread += 2;
-		s -> s_li = (*((uint8_t *) base) << 8) + *((uint8_t *) (base + 1));
+		s -> s_li = ((uint32_t) *((uint8_t *) base) << 8)
+			+ *((uint8_t *) (base + 1));
 		if (s -> s_li < 255) {
 			s -> s_errno = SC_PROTOCOL;
 			return s;
 		}
-	} else
+	} 	else
 		s -> s_li = *((uint8_t *) base);
 
-	pgilen = pktlen = s -> s_li;
+	if (u32toint (s -> s_li, &pktlen) != 0) {
+		s -> s_errno = SC_PROTOCOL;
+		return s;
+	}
+	pgilen = pktlen;
 
 	if (cat0)
 		switch (si) {
@@ -1085,7 +1161,7 @@ struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	xbase = base;
 	while (pktlen && (s -> s_errno == SC_ACCEPT)) {
 		advance (2);
-		code = *base++;
+		code = as_octet (*base++);
 		if (*((uint8_t *) base) == 255) {
 			base++;
 			advance (2);
@@ -1173,24 +1249,36 @@ do_pgi:
 			case SPDU_CN:
 			case SPDU_AC:
 				s -> s_cn_reference.sr_ulen = li;
-				bcopy (base, s -> s_cn_reference.sr_udata, li);
+				if (copy_li (base, s -> s_cn_reference.sr_udata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
 				s -> s_rf_reference.sr_ulen = li;
-				bcopy (base, s -> s_rf_reference.sr_udata, li);
+				if (copy_li (base, s -> s_rf_reference.sr_udata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_RF_REF);
 				break;
 			case SPDU_AR:
 				switch (code) {
 				case PI_AR_CALLED:
 					s -> s_ar_reference.sr_called_len = li;
-					bcopy (base, s -> s_ar_reference.sr_called, li);
+					if (copy_li (base, s -> s_ar_reference.sr_called, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 					Set (SMASK_AR_REF);
 					break;
 				case PI_AR_CALLING:
 					s -> s_ar_reference.sr_calling_len = li;
-					bcopy (base, s -> s_ar_reference.sr_calling, li);
+					if (copy_li (base, s -> s_ar_reference.sr_calling, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 					Set (SMASK_AR_REF);
 					break;
 				default:
@@ -1213,17 +1301,26 @@ do_pgi:
 			case SPDU_CN:
 			case SPDU_AC:
 				s -> s_cn_reference.sr_clen = li;
-				bcopy (base, s -> s_cn_reference.sr_cdata, li);
+				if (copy_li (base, s -> s_cn_reference.sr_cdata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
 				s -> s_rf_reference.sr_clen = li;
-				bcopy (base, s -> s_rf_reference.sr_cdata, li);
+				if (copy_li (base, s -> s_rf_reference.sr_cdata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_RF_REF);
 				break;
 			case SPDU_AR:
 				s -> s_ar_reference.sr_clen = li;
-				bcopy (base, s -> s_ar_reference.sr_cdata, li);
+				if (copy_li (base, s -> s_ar_reference.sr_cdata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_AR_REF);
 				break;
 			default:
@@ -1241,17 +1338,26 @@ do_pgi:
 			case SPDU_CN:
 			case SPDU_AC:
 				s -> s_cn_reference.sr_alen = li;
-				bcopy (base, s -> s_cn_reference.sr_adata, li);
+				if (copy_li (base, s -> s_cn_reference.sr_adata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
 				s -> s_rf_reference.sr_alen = li;
-				bcopy (base, s -> s_rf_reference.sr_adata, li);
+				if (copy_li (base, s -> s_rf_reference.sr_adata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_RF_REF);
 				break;
 			case SPDU_AR:
 				s -> s_ar_reference.sr_alen = li;
-				bcopy (base, s -> s_ar_reference.sr_adata, li);
+				if (copy_li (base, s -> s_ar_reference.sr_adata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_AR_REF);
 				break;
 			default:
@@ -1263,13 +1369,17 @@ do_pgi:
 
 		case PI_PROTOCOL_OPT:
 			/* ignore what we do not understand */
-			s -> s_options = *base++ & CR_OPT_MASK;
+			s -> s_options = (uint8_t) (as_octet (*base++) & (unsigned) CR_OPT_MASK);
 			Set (SMASK_CN_OPT);
 			break;
 
 		case PI_TSDU_MAXSIZ: {
 			uint32_t tsdu_maxsize;
-			bcopy (base, (char *) &tsdu_maxsize,  pi_length[PI_TSDU_MAXSIZ]);
+			if (copy_li (base, (char *) &tsdu_maxsize,
+					 pi_length[PI_TSDU_MAXSIZ]) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 			tsdu_maxsize = ntohl (tsdu_maxsize);
 			s -> s_tsdu_init = (tsdu_maxsize >> 16) & 0xffff;
 			s -> s_tsdu_resp = tsdu_maxsize & 0xffff;
@@ -1282,11 +1392,11 @@ do_pgi:
 			switch (si) {
 			case SPDU_CN:
 			case SPDU_AC:
-				s -> s_cn_version = *base++;
+				s -> s_cn_version = as_octet (*base++);
 				Set (SMASK_CN_VRSN);
 				break;
 			case SPDU_RF:
-				s -> s_rf_version = *base++;
+				s -> s_rf_version = as_octet (*base++);
 				Set (SMASK_RF_VRSN);
 				break;
 			default:
@@ -1299,12 +1409,12 @@ do_pgi:
 			switch (si) {
 			case SPDU_MIP:
 				/* ignore what we do not understand */
-				s -> s_mip_sync = *base++ & MIP_SYNC_MASK;
+				s -> s_mip_sync = (uint8_t) (as_octet (*base++) & (unsigned) MIP_SYNC_MASK);
 				Set (SMASK_MIP_SYNC);
 				break;
 			case SPDU_MAP:
 				/* ignore what we do not understand */
-				s -> s_map_sync = *base++ & MAP_SYNC_MASK;
+				s -> s_map_sync = (uint8_t) (as_octet (*base++) & (unsigned) MAP_SYNC_MASK);
 				Set (SMASK_MAP_SYNC);
 				break;
 			}
@@ -1314,15 +1424,15 @@ do_pgi:
 			switch (si) {
 			case SPDU_CN:
 			case SPDU_AC:
-				s -> s_settings = *base++;
+				s -> s_settings = as_octet (*base++);
 				Set (SMASK_CN_SET);
 				break;
 			case SPDU_RS:
-				s -> s_rs_settings = *base++;
+				s -> s_rs_settings = as_octet (*base++);
 				Set (SMASK_RS_SET);
 				break;
 			case SPDU_RA:
-				s -> s_ra_settings = *base++;
+				s -> s_ra_settings = as_octet (*base++);
 				Set (SMASK_RA_SET);
 				break;
 			default:
@@ -1334,7 +1444,7 @@ do_pgi:
 		case PI_TOKEN:
 			switch (si) {
 			case SPDU_AC:
-				s -> s_ac_token = *base++;
+				s -> s_ac_token = as_octet (*base++);
 				Set (SMASK_AC_TOKEN);
 				break;
 			case SPDU_GT:
@@ -1342,11 +1452,11 @@ do_pgi:
 					s -> s_errno = SC_PROTOCOL;
 					break;
 				}
-				s -> s_gt_token = *base++;
+				s -> s_gt_token = as_octet (*base++);
 				Set (SMASK_GT_TOKEN);
 				break;
 			case SPDU_PT:
-				s -> s_pt_token = *base++;
+				s -> s_pt_token = as_octet (*base++);
 				Set (SMASK_PT_TOKEN);
 				break;
 			default:
@@ -1359,12 +1469,12 @@ do_pgi:
 			switch (si) {
 			case SPDU_RF:
 				/* ignore what we do not understand */
-				s -> s_rf_disconnect = *base++ & RF_DISC_MASK;
+				s -> s_rf_disconnect = (uint8_t) (as_octet (*base++) & (unsigned) RF_DISC_MASK);
 				Set (SMASK_RF_DISC);
 				break;
 			case SPDU_FN:
 				/* ignore what we do not understand */
-				s -> s_fn_disconnect = *base++ & FN_DISC_MASK;
+				s -> s_fn_disconnect = (uint8_t) (as_octet (*base++) & (unsigned) FN_DISC_MASK);
 				Set (SMASK_FN_DISC);
 				break;
 			case SPDU_AB:
@@ -1373,7 +1483,7 @@ do_pgi:
 					break;
 				}
 				/* ignore what we do not understand */
-				s -> s_ab_disconnect = *base++ & AB_DISC_MASK;
+				s -> s_ab_disconnect = (uint8_t) (as_octet (*base++) & (unsigned) AB_DISC_MASK);
 				Set (SMASK_AB_DISC);
 				break;
 			default:
@@ -1384,7 +1494,10 @@ do_pgi:
 
 		case PI_USER_REQ: {
 			uint16_t requirements;
-			bcopy (base, (char *) &requirements, 2);
+			if (copy_li (base, (char *) &requirements, 2) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 			requirements = ntohs (requirements);
 			if (si != SPDU_RF) {
 				s -> s_cn_require = requirements;
@@ -1418,12 +1531,12 @@ do_pgi:
 				break;
 			}
 			/* ignore what we do not understand */
-			s -> s_enclose = *base++ & ENCL_MASK;
+			s -> s_enclose = (uint8_t) (as_octet (*base++) & (unsigned) ENCL_MASK);
 			Set (SMASK_ENCLOSE);
 			break;
 
 		case PI_RESYNC:
-			s -> s_rs_type = *base++;
+			s -> s_rs_type = as_octet (*base++);
 			if (SYNC_OK (s -> s_rs_type))
 				Set (SMASK_RS_TYPE);
 			else
@@ -1434,7 +1547,10 @@ do_pgi:
 			switch (si) {
 			case SPDU_AS:
 				s -> s_as_id.sd_len = li;
-				bcopy (base, s -> s_as_id.sd_data, li);
+				if (copy_li (base, s -> s_as_id.sd_data, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_AS_ID);
 				break;
 
@@ -1442,10 +1558,16 @@ do_pgi:
 				if ((s -> s_mask & SMASK_AR_OID)
 						&& s -> s_ar_oid.sd_len == 0) {
 					s -> s_ar_oid.sd_len = li;
-					bcopy (base, s -> s_ar_oid.sd_data, li);
+					if (copy_li (base, s -> s_ar_oid.sd_data, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				} else {
 					s -> s_ar_id.sd_len = li;
-					bcopy (base, s -> s_ar_id.sd_data, li);
+					if (copy_li (base, s -> s_ar_id.sd_data, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 					Set (SMASK_AR_ID);
 				}
 				break;
@@ -1512,7 +1634,10 @@ do_pgi:
 				s -> s_errno = SC_CONGEST;
 				break;
 			}
-			bcopy (base, s -> s_udata, li);
+			if (copy_li (base, s -> s_udata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 			base += li;
 			break;
 
@@ -1524,11 +1649,14 @@ do_pgi:
 					s -> s_errno = SC_CONGEST;
 					break;
 				}
-				bcopy (base, s -> s_rdata, li);
+				if (copy_li (base, s -> s_rdata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				base += li;
 				break;
 			case SPDU_ED:
-				s -> s_ed_reason = *base++;
+				s -> s_ed_reason = as_octet (*base++);
 				if (li == 1 && SP_OK (s -> s_ed_reason))
 					Set (SMASK_ED_REASON);
 				else
@@ -1539,14 +1667,14 @@ do_pgi:
 					s -> s_errno = SC_PROTOCOL;
 					break;
 				}
-				s -> s_ai_reason = *base++;
+				s -> s_ai_reason = as_octet (*base++);
 				if (li == 1 && SP_OK (s -> s_ai_reason))
 					Set (SMASK_AI_REASON);
 				else
 					s -> s_errno = SC_PROTOCOL;
 				break;
 			case SPDU_AD:
-				s -> s_ad_reason = *base++;
+				s -> s_ad_reason = as_octet (*base++);
 				if (li == 1 && SP_OK (s -> s_ad_reason))
 					Set (SMASK_AD_REASON);
 				else
@@ -1569,7 +1697,10 @@ do_pgi:
 					s -> s_errno = SC_PROTOCOL;
 					break;
 				}
-				bcopy (base, (char *) s -> s_reflect, li);
+				if (copy_li (base, (char *) s -> s_reflect, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				Set (SMASK_AB_REFL);
 				break;
 			case SPDU_ER:
@@ -1578,7 +1709,10 @@ do_pgi:
 					s -> s_errno = SC_CONGEST;
 					break;
 				}
-				bcopy (base, s -> s_udata, li);
+				if (copy_li (base, s -> s_udata, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 				break;
 			default:
 				s -> s_errno = SC_PROTOCOL;
@@ -1588,19 +1722,27 @@ do_pgi:
 			break;
 
 		case PI_SSAP_CALLING:
-			bcopy (base, s -> s_calling, s -> s_callinglen = li);
+			if (copy_li (base, s -> s_calling, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
+			s -> s_callinglen = li;
 			Set (SMASK_CN_CALLING);
 			base += li;
 			break;
 
 		case PI_SSAP_CALLED:
-			bcopy (base, s -> s_called, s -> s_calledlen = li);
+			if (copy_li (base, s -> s_called, li) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
+			s -> s_calledlen = li;
 			Set (SMASK_CN_CALLED);
 			base += li;
 			break;
 
 		case PI_PREPARE:
-			if ((s -> s_pr_type = *base++) > PR_MAX)
+			if ((s -> s_pr_type = as_octet (*base++)) > PR_MAX)
 				s -> s_errno = SC_PROTOCOL;
 			else
 				Set (SMASK_PR_TYPE);

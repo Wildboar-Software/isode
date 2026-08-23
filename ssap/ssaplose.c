@@ -153,8 +153,8 @@ static int _ssaplose (	/* what, fmt, args ... */
 		bp += strlen (bp);
 		sa -> sa_peer = 0;
 		sa -> sa_reason = reason;
-		if ((sa -> sa_cc = min (bp - buffer, sizeof sa -> sa_prdata)) > 0)
-			bcopy (buffer, sa -> sa_prdata, sa -> sa_cc);
+		(void) copy_capped (buffer, sa -> sa_prdata, bp - buffer,
+				    sizeof sa -> sa_prdata, &sa -> sa_cc);
 	}
 
 	return NOTOK;

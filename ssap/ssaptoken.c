@@ -60,7 +60,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindicat
 	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
 		freesblk (sb);
 	else
-		sb -> sb_owned &= ~s -> s_gt_token;
+		sb -> sb_owned = u8_bic (sb -> sb_owned, (unsigned) s -> s_gt_token);
 	freespkt (s);
 	return result;
 }

@@ -176,6 +176,78 @@ add_int_to_int (int *acc, int n)
 	return 0;
 }
 
+static inline int
+int2u16 (int n, uint16_t *out)
+{
+	if (out == NULL || n < 0 || n > 65535)
+		return -1;
+	*out = (uint16_t) n;
+	return 0;
+}
+
+static inline int
+int2u32 (int n, uint32_t *out)
+{
+	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) UINT32_MAX)
+		return -1;
+	*out = (uint32_t) n;
+	return 0;
+}
+
+static inline int
+u32toint (uint32_t n, int *out)
+{
+	if (out == NULL || n > (uint32_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+/* Bit-clear using unsigned arithmetic so ~mask is not a negative int. */
+static inline uint8_t
+u8_bic (uint8_t v, unsigned bits)
+{
+	return (uint8_t) (v & ~bits);
+}
+
+static inline uint16_t
+u16_bic (uint16_t v, unsigned bits)
+{
+	return (uint16_t) (v & ~bits);
+}
+
+/*
+ * Copy up to cap bytes from src to dst.  len is a signed count (int or
+ * pointer difference).  On success *out_cc is the number of bytes copied.
+ * A negative or unrepresentable length yields *out_cc = 0 and -1.
+ */
+static inline int
+copy_capped (const void *src, void *dst, ptrdiff_t len, size_t cap, int *out_cc)
+{
+	size_t n;
+
+	if (out_cc == NULL)
+		return -1;
+	if (ptrdiff2sizet (len, &n) != 0) {
+		*out_cc = 0;
+		return -1;
+	}
+	if (n > cap)
+		n = cap;
+	if (sizet2int (n, out_cc) != 0) {
+		*out_cc = 0;
+		return -1;
+	}
+	if (*out_cc > 0) {
+		if (src == NULL || dst == NULL) {
+			*out_cc = 0;
+			return -1;
+		}
+		memmove (dst, src, n);
+	}
+	return 0;
+}
+
 /*
  * Length-checked wrappers for the BSD memory routines.  Argument order
  * matches bcopy/bcmp/bzero.  A negative length is rejected rather than

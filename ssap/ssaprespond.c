@@ -141,24 +141,25 @@ int SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si
 	sb -> sb_requirements = (s -> s_mask & SMASK_CN_REQ ? s -> s_cn_require
 							 : SR_DEFAULT) & SR_MYREQUIRE;
 	if (!ts -> ts_expedited)
-		sb -> sb_requirements &= ~SR_EXPEDITED;
+		sb -> sb_requirements = u16_bic (sb -> sb_requirements,
+						 (unsigned) SR_EXPEDITED);
 	ss -> ss_requirements = sb -> sb_requirements;
 	ss -> ss_calling.sa_addr = ts -> ts_calling;	/* struct copy */
 	if (s -> s_mask & SMASK_CN_CALLING) {
-		if ((len = s -> s_callinglen)
-				> sizeof ss -> ss_calling.sa_selector)
-			len = sizeof ss -> ss_calling.sa_selector;
-		bcopy (s -> s_calling, ss -> ss_calling.sa_selector,
-			   ss -> ss_calling.sa_selectlen = len);
+		if (copy_capped (s -> s_calling, ss -> ss_calling.sa_selector,
+				 (ptrdiff_t) s -> s_callinglen,
+				 sizeof ss -> ss_calling.sa_selector,
+				 &ss -> ss_calling.sa_selectlen) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "invalid calling selector");
 	}
 	sb -> sb_initiating = ss -> ss_calling;	/* struct copy */
 	ss -> ss_called.sa_addr = ts -> ts_called;	/* struct copy */
 	if (s -> s_mask & SMASK_CN_CALLED) {
-		if ((len = s -> s_calledlen)
-				> sizeof ss -> ss_called.sa_selector)
-			len = sizeof ss -> ss_called.sa_selector;
-		bcopy (s -> s_called, ss -> ss_called.sa_selector,
-			   ss -> ss_called.sa_selectlen = len);
+		if (copy_capped (s -> s_called, ss -> ss_called.sa_selector,
+				 (ptrdiff_t) s -> s_calledlen,
+				 sizeof ss -> ss_called.sa_selector,
+				 &ss -> ss_called.sa_selectlen) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "invalid called selector");
 	}
 	sb -> sb_responding = ss -> ss_called;	/* struct copy */
 	if ((ss -> ss_ssdusize = sb -> sb_tsdu_us - SSDU_MAGIC) < 0)
@@ -310,8 +311,10 @@ int SConnResponse (
 			goto out2;
 		}
 		*s -> s_rdata = status & 0xff;
-		if (cc > 0)
-			bcopy (data, s -> s_rdata + 1, cc);
+		if (cc > 0 && bcopy_int (data, s -> s_rdata + 1, cc) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "invalid user data length");
+			goto out2;
+		}
 		result = refuse (sb, s, si);
 		freesblk (sb);
 
@@ -347,7 +350,10 @@ int SConnResponse (
 	}
 	if (responding) {
 		s -> s_mask |= SMASK_CN_CALLED;
-		bcopy (sb -> sb_responding.sa_selector, s -> s_called, s -> s_calledlen = sb -> sb_responding.sa_selectlen);
+		if (bcopy_int (sb -> sb_responding.sa_selector, s -> s_called,
+				   sb -> sb_responding.sa_selectlen) != 0)
+			return ssaplose (si, SC_PARAMETER, NULLCP, "invalid responding selector");
+		s -> s_calledlen = sb -> sb_responding.sa_selectlen;
 	}
 	if (cc > 0) {
 		s -> s_mask |= SMASK_UDATA_PGI;
