@@ -145,6 +145,15 @@ char2sizet (char n, size_t *out)
 	return int2sizet ((int) n, out);
 }
 
+static inline int
+int2u8 (int n, uint8_t *out)
+{
+	if (out == NULL || n < 0 || n > 255)
+		return -1;
+	*out = (uint8_t) n;
+	return 0;
+}
+
 /*
  * Length-checked wrappers for the BSD memory routines.  Argument order
  * matches bcopy/bcmp/bzero.  A negative length is rejected rather than

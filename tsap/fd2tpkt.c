@@ -11,6 +11,20 @@
 
 static int  fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
 static int  readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
+static int  set_tpdu_li (struct tsapkt *t, size_t hdr);
+
+static int
+set_tpdu_li (struct tsapkt *t, size_t hdr)
+{
+	size_t n;
+
+	if (int2sizet (t -> t_vlen, &n) != 0)
+		return NOTOK;
+	if (hdr > 0xfe || n > 0xfe - hdr)
+		return NOTOK;
+	t -> t_li = (uint8_t) (hdr + n);
+	return OK;
+}
 
 struct tsapkt *fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n)) {
 	struct tsapkt *t;
@@ -73,21 +87,23 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 				case VDAT_TSAP_SRV:
 					if ((ilen = len) > sizeof t -> t_called)
 						ilen = sizeof t -> t_called;
-					bcopy (vptr, t -> t_called,
-						   t -> t_calledlen = ilen);
+					if (bcopy_int (vptr, t -> t_called, ilen) != 0)
+						return DR_LENGTH;
+					t -> t_calledlen = ilen;
 					break;
 
 				case VDAT_TSAP_CLI:
 					if ((ilen = len) > sizeof t -> t_calling)
 						ilen = sizeof t -> t_calling;
-					bcopy (vptr, t -> t_calling,
-						   t -> t_callinglen = ilen);
+					if (bcopy_int (vptr, t -> t_calling, ilen) != 0)
+						return DR_LENGTH;
+					t -> t_callinglen = ilen;
 					break;
 
 				case VDAT_SIZE:
 					if (len != 1)
 						return DR_LENGTH;
-					t -> t_tpdusize = *vptr & 0xff;
+					t -> t_tpdusize = *(uint8_t *) vptr;
 					break;
 
 				case VDAT_OPTIONS:
@@ -370,55 +386,70 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 			t -> t_vlen += (2 + i) & 0xff;
 		}
 		if (t -> t_callinglen > 0) {
+			uint8_t nlen;
+
+			if (int2u8 (t -> t_callinglen, &nlen) != 0)
+				return DR_LENGTH;
 			*vptr++ = VDAT_TSAP_CLI;
-			*vptr++ = t -> t_callinglen;
-			bcopy (t -> t_calling, vptr, t -> t_callinglen);
+			*(uint8_t *) vptr++ = nlen;
+			if (bcopy_int (t -> t_calling, vptr, t -> t_callinglen) != 0)
+				return DR_LENGTH;
 			vptr += t -> t_callinglen;
 			t -> t_vlen += 2 + t -> t_callinglen;
 		}
 		if (t -> t_calledlen > 0) {
+			uint8_t nlen;
+
+			if (int2u8 (t -> t_calledlen, &nlen) != 0)
+				return DR_LENGTH;
 			*vptr++ = VDAT_TSAP_SRV;
-			*vptr++ = t -> t_calledlen;
-			bcopy (t -> t_called, vptr, t -> t_calledlen);
+			*(uint8_t *) vptr++ = nlen;
+			if (bcopy_int (t -> t_called, vptr, t -> t_calledlen) != 0)
+				return DR_LENGTH;
 			vptr += t -> t_calledlen;
 			t -> t_vlen += 2 + t -> t_calledlen;
 		}
 		if (t -> t_tpdusize) {
 			*vptr++ = VDAT_SIZE;
 			*vptr++ = 1;
-			*vptr++ = t -> t_tpdusize;
+			*(uint8_t *) vptr++ = t -> t_tpdusize;
 			t -> t_vlen += 3;
 		}
 		if (t -> t_vlen == 0) {
 			free (t -> t_vdata);
 			t -> t_vdata = NULL;
 		}
-		t -> t_li = TPDU_MINLEN (t, CR) + t -> t_vlen;
+		if (set_tpdu_li (t, TPDU_MINLEN (t, CR)) != OK)
+			return DR_LENGTH;
 		outptr = (char *) &t -> t_cr;
 		ilen = CR_SIZE (t);
 		break;
 
 	case TPDU_DR:
-		t -> t_li = TPDU_MINLEN (t, DR) + t -> t_vlen;
+		if (set_tpdu_li (t, TPDU_MINLEN (t, DR)) != OK)
+			return DR_LENGTH;
 		outptr = (char *) &t -> t_dr;
 		ilen = DR_SIZE (t);
 		break;
 
 	case TPDU_DT:
-		t -> t_li = TPDU_MINLEN (t, DT) + t -> t_vlen;
+		if (set_tpdu_li (t, TPDU_MINLEN (t, DT)) != OK)
+			return DR_LENGTH;
 		outptr = (char *) &t -> t_dt;
 		ilen = DT_SIZE (t);
 		break;
 
 	case TPDU_ED:
-		t -> t_li = TPDU_MINLEN (t, ED) + t -> t_vlen;
+		if (set_tpdu_li (t, TPDU_MINLEN (t, ED)) != OK)
+			return DR_LENGTH;
 		t -> t_ed.ed_nr = htons (t -> t_ed.ed_nr);
 		outptr = (char *) &t -> t_ed;
 		ilen = ED_SIZE (t);
 		break;
 
 	case TPDU_ER:
-		t -> t_li = TPDU_MINLEN (t, ER) + t -> t_vlen;
+		if (set_tpdu_li (t, TPDU_MINLEN (t, ER)) != OK)
+			return DR_LENGTH;
 		outptr = (char *) &t -> t_er;
 		ilen = ER_SIZE (t);
 		if (ulen > 0)
