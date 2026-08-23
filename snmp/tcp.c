@@ -572,13 +572,19 @@ static int  get_connections (int offset) {
 	if ((tcpConnections = i) > 1) {
 		struct tcptab **base,
 				   **tse;
-		if ((base = (struct tcptab **) malloc ((unsigned) (i * sizeof *base)))
+		if ((base = (struct tcptab **) malloc_nmemb (i, sizeof *base))
 				== NULL)
 			adios (NULLCP, "out of memory");
 		tse = base;
 		for (ts = tts; ts; ts = ts -> tt_next)
 			*tse++ = ts;
-		qsort ((char *) base, i, sizeof *base, tt_compar);
+		{
+			size_t n;
+
+			if (int2sizet (i, &n) != 0)
+				adios (NULLCP, "too many TCP connections");
+			qsort ((char *) base, n, sizeof *base, tt_compar);
+		}
 		tsp = base;
 		ts = tts = *tsp++;
 		while (tsp < tse) {

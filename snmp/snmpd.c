@@ -1453,15 +1453,20 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 			OT	ot = NULLOT;
 			PE	pe;
 			for (sr = reserved; sr -> rb_text; sr++)
-				if (sr -> rb_name
-						&& bcmp ((char *) sr -> rb_name -> oid_elements,
-								 (char *) oid -> oid_elements,
-								 (sr -> rb_name -> oid_nelem
-								  <= oid -> oid_nelem
-								  ? sr -> rb_name -> oid_nelem
-								  : oid -> oid_nelem)
-								 * sizeof oid -> oid_elements[0])
-						== 0) {
+				if (sr -> rb_name) {
+					int ncmp;
+					size_t nbytes;
+
+					ncmp = sr -> rb_name -> oid_nelem
+						   <= oid -> oid_nelem
+						   ? sr -> rb_name -> oid_nelem
+						   : oid -> oid_nelem;
+					if (nmemb_bytes (ncmp,
+							 sizeof oid -> oid_elements[0], &nbytes) != 0)
+						continue;
+					if (bcmp ((char *) sr -> rb_name -> oid_elements,
+							  (char *) oid -> oid_elements, nbytes)
+							== 0) {
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"reservedSubTree: %s %s %s (SMUX %s)",
 							oid2ode (oid),
@@ -1470,6 +1475,7 @@ static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) 
 							? "under" : "contains",
 							sr -> rb_text, source);
 					goto no_dice;
+				}
 				}
 			if ((ot = name2obj (oid)) == NULLOT) {
 				if (rreq -> operation == int_SNMP_operation_delete) {
@@ -1592,10 +1598,14 @@ no_dice:
 						   its priority.  (EJP) */
 						ip = tb -> tb_instance;
 						jp = ot -> ot_name -> oid_elements;
-						*ip++ = ot -> ot_name -> oid_nelem;
+						if (int2uint (ot -> ot_name -> oid_nelem, ip) != 0)
+							goto no_dice;
+						ip++;
 						for (i = ot -> ot_name -> oid_nelem; i > 0; i--)
 							*ip++ = *jp++;
-						*ip++ = tb -> tb_priority;
+						if (int2uint (tb -> tb_priority, ip) != 0)
+							goto no_dice;
+						ip++;
 						tb -> tb_insize = ip - tb -> tb_instance;
 						/* Insert the new element into the doubly-linked chain
 						   of all smuxTree structures that is anchored in THead.
@@ -1645,7 +1655,7 @@ no_dice:
 			if (loopback_addr
 					&& qb_pullup (qb = parm -> agent__addr) != NOTOK
 					&& qb -> qb_len == loopback_addr -> qb_len
-					&& bcmp (qb -> qb_forw -> qb_data,
+					&& bcmp_int (qb -> qb_forw -> qb_data,
 							 loopback_addr -> qb_forw -> qb_data,
 							 qb -> qb_len) == 0)
 				parm -> agent__addr = trap -> data -> un.trap->agent__addr;
@@ -1811,16 +1821,21 @@ lost_peer_again:
 		}
 		v2 = vp -> VarBind;
 		if (offset == type_SNMP_PDUs_get__next__request
-				&& (ot -> ot_name -> oid_nelem
-					> v2 -> name -> oid_nelem
-					|| bcmp ((char *) ot -> ot_name ->oid_elements,
-							 (char *) v2 -> name -> oid_elements,
-							 ot -> ot_name -> oid_nelem
-							 * sizeof ot -> ot_name ->
-							 oid_elements[0]))) {
+				&& ot -> ot_name -> oid_nelem > v2 -> name -> oid_nelem)
 			status = NOTOK;
-			break;
+		else if (offset == type_SNMP_PDUs_get__next__request) {
+			size_t nbytes;
+
+			if (nmemb_bytes (ot -> ot_name -> oid_nelem,
+					 sizeof ot -> ot_name -> oid_elements[0],
+					 &nbytes) != 0
+					|| bcmp ((char *) ot -> ot_name ->oid_elements,
+						 (char *) v2 -> name -> oid_elements,
+						 nbytes) != 0)
+				status = NOTOK;
 		}
+		if (status == NOTOK)
+			break;
 		free_SNMP_ObjectName (v -> name);
 		v -> name = v2 -> name;
 		v2 -> name = NULL;
@@ -1939,17 +1954,27 @@ static struct community *str2comm (char *name, struct NSAPaddr *na) {
 					break;
 
 				case NA_X25:
-					if (c -> c_addr.na_dtelen != na -> na_dtelen
-							|| bcmp (c -> c_addr.na_dte,
-									 na -> na_dte, na -> na_dtelen))
-						continue;
+					{
+						size_t nlen;
+
+						if (char2sizet (na -> na_dtelen, &nlen) != 0
+								|| c -> c_addr.na_dtelen != na -> na_dtelen
+								|| bcmp (c -> c_addr.na_dte,
+										 na -> na_dte, nlen))
+							continue;
+					}
 					break;
 
 				case NA_NSAP:
-					if (c -> c_addr.na_addrlen != na -> na_addrlen
-							|| bcmp (c -> c_addr.na_address,
-									 na -> na_address, na -> na_addrlen))
-						continue;
+					{
+						size_t nlen;
+
+						if (char2sizet (na -> na_addrlen, &nlen) != 0
+								|| c -> c_addr.na_addrlen != na -> na_addrlen
+								|| bcmp (c -> c_addr.na_address,
+										 na -> na_address, nlen))
+							continue;
+					}
 					break;
 
 				default:
@@ -2085,8 +2110,13 @@ static void do_traps (
 		struct view *v = t -> t_view;
 		PE	pe;
 		PS	ps;
-		if (specific == 0 && !(t -> t_generics & mask))
-			continue;
+		if (specific == 0) {
+			uint32_t umask;
+
+			if (int2u32 (mask, &umask) != 0
+					|| !(t -> t_generics & umask))
+				continue;
+		}
 		msg -> community = v -> v_community;
 		pe = NULLPE;
 		if (encode_SNMP_Message (&pe, 1, 0, NULLCP, msg) == NOTOK) {
@@ -2227,8 +2257,11 @@ static void arginit (char **vec) {
 	if (*sargv[0] == '/')
 		spath = sargv[0];
 	else {
-		int	i = strlen (sargv[0]);
-		if (getcwd (sfile, sizeof sfile - (i + 1))) {
+		size_t n = strlen (sargv[0]);
+
+		if (n >= sizeof sfile - 1)
+			strcpy (sfile, _isodefile (isodesbinpath, myname));
+		else if (getcwd (sfile, sizeof sfile - n - 1)) {
 			ap = sfile + strlen (sfile);
 			sprintf (ap, "%s%s", ap > sfile + 1 ? "/" : "", sargv[0]);
 		} else

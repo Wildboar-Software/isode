@@ -241,7 +241,9 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		if ((ifnum = oid -> oid_elements[oid -> oid_nelem - 1]) == 0
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0
+				|| ifnum == 0
 				|| ifnum > exprNumber)
 			return int_SNMP_error__status_noSuchName;
 		if ((e = exprs + ifnum - 1) -> e_expr == NULL)
@@ -259,13 +261,18 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			ifnum = (e - exprs) + 1;
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
-			new -> oid_elements[new -> oid_nelem - 1] = ifnum;
+			if (int2uint (ifnum,
+					  &new -> oid_elements[new -> oid_nelem - 1]) != 0) {
+				oid_free (new);
+				return NOTOK;
+			}
 			if (v -> name)
 				free_SNMP_ObjectName (v -> name);
 			v -> name = new;
 		} else {
 			int	i = ot -> ot_name -> oid_nelem;
-			if ((ifnum = oid -> oid_elements[i]) >= NEXPR)
+			if (uint2int (oid -> oid_elements[i], &ifnum) != 0
+					|| ifnum >= NEXPR)
 				return NOTOK;
 			for (e = exprs + ifnum; e < roofexpr; e++)
 				if (e -> e_expr)
@@ -273,7 +280,8 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			if (e >= roofexpr)
 				return NOTOK;
 			ifnum = (e - exprs) + 1;
-			oid -> oid_elements[i] = ifnum;
+			if (int2uint (ifnum, &oid -> oid_elements[i]) != 0)
+				return NOTOK;
 			oid -> oid_nelem = i + 1;
 		}
 		break;
@@ -451,12 +459,26 @@ static int  read_oid (struct expr *e, char *base, int len, PElementForm form, OI
 				return NOTOK;
 			}
 	}
-	if ((ip = (unsigned int *) malloc ((i + 1) * sizeof *ip)) == NULL) {
-		e -> e_status = E_other;
-		sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_NMEM));
-		return NOTOK;
+	{
+		int nelem,
+			nalloc;
+
+		if (uint2int (i, &nelem) != 0) {
+			e -> e_status = E_other;
+			sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_OID));
+			return NOTOK;
+		}
+		nalloc = nelem;
+		if (add_int_to_int (&nalloc, 1) != 0
+				|| (ip = (unsigned int *) malloc_nmemb (nalloc,
+						sizeof *ip)) == NULL) {
+			e -> e_status = E_other;
+			sprintf (e -> e_hints, "oid: %s", pe_error (PE_ERR_NMEM));
+			return NOTOK;
+		}
+		o -> oid_elements = ip;
+		o -> oid_nelem = nelem;
 	}
-	o -> oid_elements = ip, o -> oid_nelem = i;
 	for (dp = (PElementData) base; dp < ep; ) {
 		i = 0;
 		do {
@@ -565,7 +587,9 @@ static int  s_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	case type_SNMP_PDUs_rollback:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
 			return int_SNMP_error__status_noSuchName;
-		if ((ifnum = oid -> oid_elements[oid -> oid_nelem - 1]) == 0
+		if (uint2int (oid -> oid_elements[oid -> oid_nelem - 1],
+				  &ifnum) != 0
+				|| ifnum == 0
 				|| ifnum > exprNumber + 1)
 			return int_SNMP_error__status_noSuchName;
 		e = exprs + ifnum - 1;

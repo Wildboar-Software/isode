@@ -128,6 +128,15 @@ int2uint (int n, unsigned int *out)
 	return 0;
 }
 
+static inline int
+int2ulong (int n, unsigned long *out)
+{
+	if (out == NULL || n < 0)
+		return -1;
+	*out = (unsigned long) n;
+	return 0;
+}
+
 /*
  * uid_t / gid_t / mode_t may be signed or unsigned, and their width is
  * not assumed.  (uid_t)-1 > 0 is a compile-time unsigned test.
@@ -235,6 +244,21 @@ mode2int (mode_t m, int *out)
 		return -1;
 	*out = (int) m;
 	return 0;
+}
+
+#include <sys/stat.h>
+#include <errno.h>
+
+static inline int
+chmod_int (const char *path, int mode)
+{
+	mode_t m;
+
+	if (int2mode (mode, &m) != 0) {
+		errno = EINVAL;
+		return -1;
+	}
+	return chmod (path, m);
 }
 
 static inline int
@@ -670,6 +694,30 @@ malloc_plus_int (size_t base, int extra)
 	if (n > SIZE_MAX - base)
 		return NULL;
 	return malloc (base + n);
+}
+
+static inline int
+qsort_int (void *base, int n, size_t size,
+	   int (*cmp) (const void *, const void *))
+{
+	size_t count;
+
+	if (int2sizet (n, &count) != 0)
+		return -1;
+	qsort (base, count, size, cmp);
+	return 0;
+}
+
+static inline int
+qsort_ptrdiff (void *base, ptrdiff_t n, size_t size,
+	       int (*cmp) (const void *, const void *))
+{
+	size_t count;
+
+	if (ptrdiff2sizet (n, &count) != 0)
+		return -1;
+	qsort (base, count, size, cmp);
+	return 0;
 }
 
 /*
