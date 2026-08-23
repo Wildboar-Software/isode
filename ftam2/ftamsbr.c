@@ -327,7 +327,7 @@ int de2fd (int fd, PE pe, int text, int effector) {
 
 	if (!text) {
 		n = pe -> pe_len;
-		if (write (fd, (char *) pe -> pe_prim, n) != n)
+		if (write_int (fd, (char *) pe -> pe_prim, n) != n)
 			return NOTOK;
 		goto outside;
 	}
@@ -344,7 +344,7 @@ int de2fd (int fd, PE pe, int text, int effector) {
 			}
 			*bp++ = '\n';
 			i = bp - cp;
-			if (write (fd, cp, i) != i)
+			if (write_int (fd, cp, i) != i)
 				return NOTOK;
 			cp = ++bp, n += i;
 			break;
@@ -360,7 +360,7 @@ write_it:
 					;
 					dp = bp - 2;
 					if ((i = (dp - cp)) > 0
-							&& write (fd, cp, i) != i)
+							&& write_int (fd, cp, i) != i)
 						return NOTOK;
 					cp = ++bp, n += i;
 				} else
@@ -385,7 +385,7 @@ write_it:
 		}
 
 	if (i = bp - cp) {
-		if (write (fd, cp, i) != i)
+		if (write_int (fd, cp, i) != i)
 			return NOTOK;
 
 		n += i;
@@ -395,9 +395,9 @@ outside:
 	;
 	if (text && !effector) {
 #ifndef	BRIDGE
-		if (write (fd, "\n", 1) != 1)
+		if (write_int (fd, "\n", 1) != 1)
 #else
-		if (write (fd, "\r\n", 2) != 2)
+		if (write_int (fd, "\r\n", 2) != 2)
 #endif
 			return NOTOK;
 	}

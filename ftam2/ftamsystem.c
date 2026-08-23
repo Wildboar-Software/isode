@@ -149,7 +149,8 @@ int	ftp_default = VFS_UBF;
     dp -> ftd_identifier = (id); \
     dp -> ftd_observer = (ob), dp -> ftd_source = (so); \
      strncpy (dp -> ftd_data, des, FTD_SIZE);\
-    dp -> ftd_cc = strlen(dp -> ftd_data);\
+    if (strlen2int(dp -> ftd_data, &dp -> ftd_cc) != 0) \
+	dp -> ftd_cc = 0; \
     goto bad2; \
 }
 #else
@@ -285,7 +286,7 @@ void ftam_start (struct FTAMstart *fts) {
 	if (ftp_login(RemoteHost, initiator, password, account) == NOTOK)
 		seterr (FS_ACS_IDENTITY, EREF_RFSU, EREF_IFSU, ftp_error);
 	strcpy (myhome, "");
-	myhomelen = strlen (myhome);
+	myhomelen = 0;
 #else
 	guest = 0;
 #ifdef	NULL_INITIATOR
@@ -324,7 +325,7 @@ void ftam_start (struct FTAMstart *fts) {
 	advise (LLOG_DEBUG, NULLCP,
 			"initiator=%s, account=%s", initiator, fts -> fts_account);
 #endif
-	if ((account = fts -> fts_account) && ((int)strlen(fts -> fts_account) > 1)) {
+	if ((account = fts -> fts_account) && fts -> fts_account[0] && fts -> fts_account[1]) {
 		struct group *gr = getgrnam (account);
 		char **gp;
 
@@ -351,7 +352,8 @@ bad_account:
 		dp -> ftd_delay = DIAG_NODELAY;
 		sprintf (dp -> ftd_data, "unable to change to %s: %s",
 				 pw -> pw_dir, sys_errname (errno));
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 	}
 #endif
@@ -397,7 +399,8 @@ bad_account:
 			dp -> ftd_delay = DIAG_NODELAY;
 			sprintf (dp -> ftd_data, "unable to change root to %s: %s",
 					 pw -> pw_dir, sys_errname (errno));
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			if (debug)
 				dp++;
 			else
@@ -413,7 +416,8 @@ bad_account:
 				sprintf (dp -> ftd_data,
 						 "unable to change to %s: %s",
 						 pw -> pw_dir, sys_errname (errno));
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 				dp++;
 			}
 		}
@@ -426,7 +430,8 @@ bad_account:
 			if (guest)
 				strcpy (dp -> ftd_data,
 						"ANONymous user permitted, access restrictions apply");
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			dp++;
 
 			pw -> pw_dir = "/";
@@ -434,14 +439,19 @@ bad_account:
 	}
 
 	sprintf (myhome, "%s/", pw -> pw_dir);
-	myhomelen = strlen (myhome);
+	if (strlen2int (myhome, &myhomelen) != 0)
+		seterr (FS_ACS_MGMT, EREF_RFPM, EREF_IFSU, "");
 
 	setgid (pw -> pw_gid);
 #ifndef	SYS5
 	initgroups (pw -> pw_name, pw -> pw_gid);
-	seteuid (myuid = pw -> pw_uid);
+	if (uid2int (pw -> pw_uid, &myuid) != 0)
+		seterr (FS_ACS_MGMT, EREF_RFPM, EREF_IFSU, "");
+	seteuid (pw -> pw_uid);
 #else
-	setuid (myuid = pw -> pw_uid);
+	if (uid2int (pw -> pw_uid, &myuid) != 0)
+		seterr (FS_ACS_MGMT, EREF_RFPM, EREF_IFSU, "");
+	setuid (pw -> pw_uid);
 #endif
 
 	umask (0022);

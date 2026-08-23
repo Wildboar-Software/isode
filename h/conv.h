@@ -128,6 +128,127 @@ int2uint (int n, unsigned int *out)
 	return 0;
 }
 
+/*
+ * uid_t / gid_t / mode_t may be signed or unsigned, and their width is
+ * not assumed.  (uid_t)-1 > 0 is a compile-time unsigned test.
+ */
+static inline int
+uid2int (uid_t uid, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((uid_t) -1 > (uid_t) 0) {
+		if ((uintmax_t) uid > (uintmax_t) INT_MAX)
+			return -1;
+	} else if ((intmax_t) uid < (intmax_t) INT_MIN
+			   || (intmax_t) uid > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) uid;
+	return 0;
+}
+
+static inline int
+int2uid (int n, uid_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((uid_t) -1 > (uid_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (uid_t) -1)
+			return -1;
+	} else {
+		uid_t uid = (uid_t) n;
+
+		if ((int) uid != n)
+			return -1;
+		*out = uid;
+		return 0;
+	}
+	*out = (uid_t) n;
+	return 0;
+}
+
+static inline int
+gid2int (gid_t gid, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((gid_t) -1 > (gid_t) 0) {
+		if ((uintmax_t) gid > (uintmax_t) INT_MAX)
+			return -1;
+	} else if ((intmax_t) gid < (intmax_t) INT_MIN
+			   || (intmax_t) gid > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) gid;
+	return 0;
+}
+
+static inline int
+int2gid (int n, gid_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((gid_t) -1 > (gid_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (gid_t) -1)
+			return -1;
+	} else {
+		gid_t gid = (gid_t) n;
+
+		if ((int) gid != n)
+			return -1;
+		*out = gid;
+		return 0;
+	}
+	*out = (gid_t) n;
+	return 0;
+}
+
+static inline int
+int2mode (int n, mode_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((mode_t) -1 > (mode_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (mode_t) -1)
+			return -1;
+	} else {
+		mode_t m = (mode_t) n;
+
+		if ((int) m != n)
+			return -1;
+		*out = m;
+		return 0;
+	}
+	*out = (mode_t) n;
+	return 0;
+}
+
+/* POSIX chown/fchown: all-bits-one means "leave this id unchanged". */
+static inline uid_t
+uid_nochg (void)
+{
+	return ~(uid_t) 0;
+}
+
+static inline gid_t
+gid_nochg (void)
+{
+	return ~(gid_t) 0;
+}
+
+/* Replace file-type bits (S_IFMT) with a new S_IF* type. */
+static inline int
+mode_retype (mode_t mode, int old_fmt, int new_fmt, mode_t *out)
+{
+	mode_t oldm,
+		   newm;
+
+	if (out == NULL || int2mode (old_fmt, &oldm) != 0
+			|| int2mode (new_fmt, &newm) != 0)
+		return -1;
+	*out = (mode & ~oldm) | newm;
+	return 0;
+}
+
 static inline int
 ptrdiff2int (ptrdiff_t n, int *out)
 {

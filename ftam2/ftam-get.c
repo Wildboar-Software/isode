@@ -474,7 +474,8 @@ int getvf (
 			dp -> ftd_delay = DIAG_NODELAY;
 			sprintf (dp -> ftd_data, "unable to write %s: %s",
 					 dst, sys_errname (errno));
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			dp++;
 
 			if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,
@@ -785,7 +786,8 @@ do_cancel:
 				dp -> ftd_observer = dp -> ftd_source = EREF_IFSU;
 				dp -> ftd_delay = DIAG_NODELAY;
 				strcpy (dp -> ftd_data, sys_errname (errno));
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 				dp++;
 
 				if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,

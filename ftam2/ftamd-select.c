@@ -31,8 +31,8 @@ static char *getfile (char*file);
 #ifdef	BRIDGE
 #define	E_OK	R_OK
 #else
-static char *getuser (int uid);
-static char *getgroup (int gid);
+static char *getuser (uid_t uid);
+static char *getgroup (gid_t gid);
 #endif
 
 #ifdef	SYS5
@@ -88,7 +88,8 @@ void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 			dp -> ftd_delay = DIAG_NODELAY;
 			if (errno) {
 				strcpy (dp -> ftd_data, sys_errname (errno));
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			} else
 				dp -> ftd_cc = 0;
 			dp++;
@@ -104,10 +105,10 @@ void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 			break;
 
 		default:
-			if (myst.st_dev == null_dev && myst.st_ino == null_ino) {
-				myst.st_mode &= ~S_IFMT, myst.st_mode |= S_IFREG;
+			if (myst.st_dev == null_dev && myst.st_ino == null_ino
+					&& mode_retype (myst.st_mode, S_IFMT, S_IFREG,
+									&myst.st_mode) == 0)
 				break;
-			}
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = FS_SEL_AVAIL;
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
@@ -134,7 +135,7 @@ void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 			goto done_select;
 		}
 #ifndef	BRIDGE
-		if (ftse -> ftse_account && (int)strlen (ftse -> ftse_account) > 1) {
+		if (ftse -> ftse_account && ftse -> ftse_account[0] && ftse -> ftse_account[1]) {
 			if ((mygid = findgid (ftse -> ftse_account)) == NOTOK) {
 				dp -> ftd_type = DIAG_PERM;
 				dp -> ftd_identifier = FS_SEL_ACCOUNT;
@@ -209,10 +210,10 @@ done_select:
 				break;
 
 			default:
-				if (myst.st_dev == null_dev && myst.st_ino == null_ino) {
-					myst.st_mode &= ~S_IFMT, myst.st_mode |= S_IFREG;
+				if (myst.st_dev == null_dev && myst.st_ino == null_ino
+						&& mode_retype (myst.st_mode, S_IFMT, S_IFREG,
+										&myst.st_mode) == 0)
 					break;
-				}
 				dp -> ftd_type = DIAG_PERM;
 				dp -> ftd_identifier = FS_SEL_AVAIL;
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
@@ -263,7 +264,8 @@ done_select:
 			sprintf (dp -> ftd_data,
 					 "invalid contents-type %s",
 					 sprintoid (fa -> fa_contents));
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = FS_SEL_ATRVALUE;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
@@ -281,7 +283,7 @@ done_select:
 		}
 
 #ifndef	BRIDGE   /* no account checking */
-		if (ftce -> ftce_account && (int)strlen (ftce -> ftce_account) > 1) {
+		if (ftce -> ftce_account && ftce -> ftce_account[0] && ftce -> ftce_account[1]) {
 			if ((mygid = findgid (ftce -> ftce_account)) == NOTOK) {
 				dp -> ftd_type = DIAG_PERM;
 				dp -> ftd_identifier = FS_SEL_ACCOUNT;
@@ -394,7 +396,8 @@ bad_override:
 #else
 				strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				dp++;
 
 bad_create:
@@ -428,7 +431,8 @@ bad_open:
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
 					strcpy (dp -> ftd_data, sys_errname (errno));
-					dp -> ftd_cc = strlen (dp -> ftd_data);
+					if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 					dp++;
 
 					goto bad_create;
@@ -539,7 +543,8 @@ unavailable:
 				dp -> ftd_delay = DIAG_NODELAY;
 				if (errno) {
 					strcpy (dp -> ftd_data, sys_errname (errno));
-					dp -> ftd_cc = strlen (dp -> ftd_data);
+					if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				} else
 					dp -> ftd_cc = 0;
 				dp++;
@@ -595,7 +600,8 @@ no_ascertain:
 				;
 				strcpy (dp -> ftd_data,
 						"unable to ascertain contents-type");
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				dp -> ftd_type = DIAG_PERM;
 				dp -> ftd_identifier = FS_ACC_LCL;
 				dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
@@ -682,7 +688,8 @@ bad_param:
 			if (myvf -> vf_number < 0) {
 				sprintf (dp -> ftd_data,
 						 "unexpected document type parameter");
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				goto bad_param;
 			}
 			myparam = NULL;
@@ -691,7 +698,8 @@ bad_param:
 				sprintf (dp -> ftd_data,
 						 "unable to parse document type parameter: %s",
 						 PY_pepy);
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				goto bad_param;
 			}
 			if (myvf -> vf_check
@@ -701,7 +709,8 @@ bad_param:
 		} else if (myvf -> vf_mandatory > 0) {
 			strcpy (dp -> ftd_data,
 					"mandatory document type parameter missing");
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			goto bad_param;
 		}
 
@@ -785,8 +794,9 @@ done_open:
 #ifdef	BRIDGE
 			if (ftp_delete (myfile) == NOTOK) {
 #else
-			if (!statok && stat (myfile, &myst) == NOTOK)
-				myst.st_mode = S_IFREG;
+			if (!statok && stat (myfile, &myst) == NOTOK
+					&& int2mode (S_IFREG, &myst.st_mode) != 0)
+				myst.st_mode = 0;
 			if (((myst.st_mode & S_IFMT) == S_IFREG ? unlink (myfile)
 					: rmdir (myfile))
 					== NOTOK) {
@@ -800,7 +810,8 @@ done_open:
 #else
 				strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 				dp++;
 
 				ftxe -> ftxe_action = FACTION_PERM;
@@ -825,10 +836,14 @@ static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct F
 	result = OK;
 
 #ifndef	BRIDGE
+	if ((request & FA_PERM_OWNER) && myuid != 0) {
+		int	owner;
+
+		if (uid2int (myst.st_uid, &owner) != 0 || myuid != owner)
+			goto no_access;
+	}
 	if (((request & FA_PERM_READ) && EACCESS (myfile, R_OK) == NOTOK)
-			|| ((request & FA_PERM_WRITE) && EACCESS (myfile, W_OK) == NOTOK)
-			|| ((request & FA_PERM_OWNER)
-				&& (myuid != myst.st_uid && myuid != 0))) {
+			|| ((request & FA_PERM_WRITE) && EACCESS (myfile, W_OK) == NOTOK)) {
 no_access:
 		;
 		dp -> ftd_type = DIAG_PERM;
@@ -918,7 +933,8 @@ bad_concur:
 					dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 					dp -> ftd_delay = DIAG_NODELAY;
 					strcpy (dp -> ftd_data, sys_errname (errno));
-					dp -> ftd_cc = strlen (dp -> ftd_data);
+					if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 					dp++;
 
 					mylock = 0;
@@ -964,7 +980,8 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 			strcpy (dp -> ftd_data, "00 bad filename");
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			dp++;
 
 			result = NOTOK;
@@ -973,14 +990,15 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 	}
 
 #ifndef	BRIDGE
-	if ((present & FA_ACCOUNT) && (int)strlen (fa -> fa_account) > 1) {
+	if ((present & FA_ACCOUNT) && fa -> fa_account && fa -> fa_account[0] && fa -> fa_account[1]) {
 		if (findgid (fa -> fa_account) == NOTOK) {
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = id;
 			dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 			dp -> ftd_delay = DIAG_NODELAY;
 			strcpy (dp -> ftd_data, "02 bad storage account");
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			dp++;
 
 			result = NOTOK;
@@ -993,7 +1011,8 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 		dp -> ftd_observer = EREF_RFSU, dp -> ftd_source = EREF_IFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, "13bad filesize");
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 		dp++;
 
 		result = NOTOK;
@@ -1224,24 +1243,41 @@ static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiag
 bad_system:
 		;
 		strcpy (dp -> ftd_data, sys_errname (errno));
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 		goto no_change;
 	}
 	statok = 1;
-	if (myuid != myst.st_uid && myuid != 0) {
-		errno = EPERM;
-		goto bad_system;
+	if (myuid != 0) {
+		int	owner;
+
+		if (uid2int (myst.st_uid, &owner) != 0 || myuid != owner) {
+			errno = EPERM;
+			goto bad_system;
+		}
 	}
 #endif
 
 #ifndef	BRIDGE
-	if ((present & FA_ACCOUNT) && (int)strlen (fa -> fa_account) > 1)
+	if ((present & FA_ACCOUNT) && fa -> fa_account
+			&& fa -> fa_account[0] && fa -> fa_account[1])
 		if ((gid = findgid (fa -> fa_account)) != NOTOK) {
 #ifndef	SYS5
-			seteuid (0);
-			result = myfd != NOTOK ? fchown (myfd, -1, gid)
-					 : chown (myfile, -1, gid);
-			seteuid (myuid);
+			uid_t	root,
+					self;
+			gid_t	egid;
+
+			if (int2uid (0, &root) != 0
+					|| int2uid (myuid, &self) != 0
+					|| int2gid (gid, &egid) != 0) {
+				errno = EINVAL;
+				result = NOTOK;
+			} else {
+				seteuid (root);
+				result = myfd != NOTOK ? fchown (myfd, uid_nochg (), egid)
+						 : chown (myfile, uid_nochg (), egid);
+				seteuid (self);
+			}
 #else
 			result = chgrp (myfile, gid);
 #endif
@@ -1249,7 +1285,8 @@ bad_system:
 			if (result == NOTOK) {
 				sprintf (dp -> ftd_data, "%s: %s", fa -> fa_account,
 						 sys_errname (errno));
-				dp -> ftd_cc = strlen (dp -> ftd_data);
+				if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+					dp -> ftd_cc = 0;
 
 no_change:
 				;
@@ -1263,7 +1300,16 @@ no_change:
 				return NOTOK;
 			}
 
-			myst.st_gid = gid;
+			{
+				gid_t	stgid;
+
+				if (int2gid (gid, &stgid) != 0) {
+					errno = EINVAL;
+					result = NOTOK;
+					goto no_change;
+				}
+				myst.st_gid = stgid;
+			}
 		}
 #endif
 
@@ -1277,7 +1323,8 @@ no_change:
 			advise (LLOG_NOTICE, NULLCP, "file %s already exists",mvfile);
 			sprintf (dp->ftd_data, "File \"%s\" already exists",
 					 fa -> fa_files[0]);
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 			dp -> ftd_type = DIAG_PERM;
 			dp -> ftd_identifier = FS_MGT_CHANGE;
 			dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
@@ -1292,7 +1339,8 @@ no_change:
 			sprintf (dp -> ftd_data, "%s: %s", fa -> fa_files[0],
 					 sys_errname (errno));
 #endif
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+				dp -> ftd_cc = 0;
 #ifndef	BRIDGE
 			goto no_change;
 #else
@@ -1331,7 +1379,7 @@ static char *getfile (char*file) {
 #ifndef	BRIDGE
 	switch (*file) {
 	case '/':
-		if ((int)strlen (file) >= MAXPATHLEN)
+		if (strlen (file) >= sizeof buffer1)
 			goto trunc;
 
 		strcpy (bp, file);
@@ -1350,8 +1398,13 @@ static char *getfile (char*file) {
 				pp = pw -> pw_dir;
 		}
 
-		if ((int)strlen (pp) + 1 + (cp ? (int)strlen (cp) : 0) >= MAXPATHLEN)
-			goto trunc;
+		{
+			size_t n = strlen (pp);
+			size_t m = cp ? strlen (cp) : 0;
+
+			if (n >= sizeof buffer1 || m >= sizeof buffer1 - n - 1)
+				goto trunc;
+		}
 
 		sprintf (bp, "%s/%s", pp, cp ? cp + 1 : "");
 		if (cp)
@@ -1359,8 +1412,17 @@ static char *getfile (char*file) {
 		break;
 
 	default:
-		if ((int)strlen (file) + myhomelen + 1 >= MAXPATHLEN)
-			goto trunc;
+		{
+			size_t n;
+			size_t homelen;
+
+			if (int2sizet (myhomelen, &homelen) != 0)
+				goto trunc;
+			n = strlen (file);
+			if (n >= sizeof buffer1 || homelen >= sizeof buffer1
+					|| n + homelen + 1 >= sizeof buffer1)
+				goto trunc;
+		}
 
 		sprintf (bp, "%s/%s", myhome, file);
 		break;
@@ -1369,7 +1431,7 @@ static char *getfile (char*file) {
 	compath (bp);
 
 #ifndef	apollo		/* always return RELATIVE pathnames */
-	if (strncmp (bp, myhome, myhomelen - 1) == 0)
+	if (strncmp_int (bp, myhome, myhomelen - 1) == 0)
 		switch (bp[myhomelen - 1]) {
 		case 0:
 			strcpy (bp, ".");
@@ -1401,7 +1463,7 @@ trunc:
    Apollo suggested these algorithms as they work better with distributed
    /etc/passwd and /etc/group files */
 
-static char *getuser (int uid) {
+static char *getuser (uid_t uid) {
 	static struct passwd *pw = NULL;
 
 	if (pw == NULL || pw -> pw_uid != uid)
@@ -1409,17 +1471,19 @@ static char *getuser (int uid) {
 	return (pw ? pw -> pw_name : NULL);
 }
 
-static char *getgroup (int gid) {
+static char *getgroup (gid_t gid) {
 	struct group *gr;
-	static int	my_gid = -1;
+	static int	have;
+	static gid_t my_gid;
 	static char my_name[NMAX + 1];
 
-	if (my_gid != gid) {
+	if (!have || my_gid != gid) {
 		if ((gr = getgrgid (gid)) == NULL)
 			return NULL;
 
 		my_gid = gr -> gr_gid;
 		strcpy (my_name, gr -> gr_name);
+		have = 1;
 	}
 
 	return my_name;
@@ -1427,11 +1491,13 @@ static char *getgroup (int gid) {
 
 static int findgid (char *group) {
 	int	    i;
+	int	    g;
 #ifdef	BSD42
-	int	    gidset[NGROUPS];
+	gid_t	    gidset[NGROUPS];
 #endif
 	struct group *gr;
-	static int my_gid = -1;
+	static int have;
+	static int my_gid;
 	static char my_name[NMAX + 1] = "";
 
 	if (*group == NULL)
@@ -1449,8 +1515,11 @@ static int findgid (char *group) {
 			return NOTOK;
 #endif
 
+		if (gid2int (gr -> gr_gid, &g) != 0)
+			return NOTOK;
 		strcpy (my_name, gr -> gr_name);
-		my_gid = gr -> gr_gid;
+		my_gid = g;
+		have = 1;
 	}
 
 	return my_gid;
@@ -1461,12 +1530,19 @@ static int findgid (char *group) {
 #ifndef	BRIDGE
 static int  EACCESS ( char   *file, int	mode) {
 	int	    result;
+	uid_t	ruid,
+			euid;
 
-	setreuid (myuid, 0);
+	if (int2uid (myuid, &ruid) != 0 || int2uid (0, &euid) != 0)
+		return NOTOK;
+
+	setreuid (ruid, euid);
 
 	result = access (file, mode);
 
-	setreuid (0, myuid);
+	if (int2uid (0, &ruid) != 0 || int2uid (myuid, &euid) != 0)
+		return NOTOK;
+	setreuid (ruid, euid);
 
 	return result;
 }

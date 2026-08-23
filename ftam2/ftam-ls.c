@@ -383,7 +383,7 @@ static int fdfls (char *file) {
 			bp += strlen (bp);
 			i = bp - buffer;
 			for (xi = &filents; fi = *xi;)
-				if (strncmp (fi -> fi_name, buffer, i) == 0) {
+				if (strncmp_int (fi -> fi_name, buffer, i) == 0) {
 					fi -> fi_entry = fi -> fi_name + i;
 					if (!dashl && !silent && *fi -> fi_entry == '.') {
 						*xi = fi -> fi_next;
@@ -423,12 +423,20 @@ static int fdfls (char *file) {
 		break;
 
 	default:
-		xi = (struct filent **)
-			 calloc ((unsigned) (nfilent + 1), sizeof *xi);
-		if (xi) {
-			for (fi = filents, yi = xi; fi; fi = fi -> fi_next)
-				*yi++ = fi;
-			qsort ((char *) xi, nfilent, sizeof *xi, filcmp);
+		{
+			int n = nfilent;
+			size_t nmemb;
+
+			if (add_int_to_int (&n, 1) != 0)
+				xi = NULL;
+			else
+				xi = (struct filent **) calloc_int (n, sizeof *xi);
+			if (xi) {
+				for (fi = filents, yi = xi; fi; fi = fi -> fi_next)
+					*yi++ = fi;
+				if (int2sizet (nfilent, &nmemb) == 0)
+					qsort ((char *) xi, nmemb, sizeof *xi, filcmp);
+			}
 		}
 
 		if (dashl) {

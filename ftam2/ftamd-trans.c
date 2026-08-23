@@ -157,7 +157,8 @@ bad_operation:
 #else
 			strcpy (dp -> ftd_data, sys_errname (errno));
 #endif
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			dp++;
 			goto do_cancel;
 		}
@@ -248,7 +249,8 @@ static int uxfget (struct FTAMdiagnostic **diags) {
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, "failed file access on remote host");
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 		*diags = dp;
@@ -374,7 +376,8 @@ no_mem:
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, "out of memory");
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 error_return:
@@ -399,7 +402,11 @@ error_return:
 
 #ifdef	BRIDGE
 				if (strlen (line) || fgets (line, BUFSIZ, fp)) {
-					if (((int)strlen (line) + 1) < (ep - bp + 1)) {
+					size_t room;
+
+					if (ptrdiff2sizet (ep - bp, &room) != 0)
+						break;
+					if (strlen (line) < room) {
 						strcpy (bp, line);
 						line[0] = 0;
 					} else
@@ -450,7 +457,13 @@ error_return:
 					bp = cp + 1;
 				}
 			} else {
-				switch (n = read (myfd, bp, ep - bp)) {
+				int want;
+
+				if (min_len_cap (ep - bp, SIZE_MAX, &want) != 0)
+					n = NOTOK;
+				else
+					n = read_int (myfd, bp, want);
+				switch (n) {
 				case NOTOK:
 				case OK:
 					break;
@@ -513,7 +526,8 @@ error_return:
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, sys_errname (errno));
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 		*diags = dp;
@@ -567,12 +581,16 @@ static int fdfget (struct FTAMdiagnostic **diags) {
 #ifdef apollo
 		if (strcmp (myfile, "/") == 0 || strcmp (myfile, "//") == 0) {
 			sprintf (pp = path, "%s", myfile);
-			pp += (len = strlen (pp));
+			if (strlen2int (pp, &len) != 0)
+				goto no_mem;
+			pp += len;
 		} else
 #endif
 		{
 			sprintf (pp = path, "%s/", myfile);
-			pp += (len = strlen (pp));
+			if (strlen2int (pp, &len) != 0)
+				goto no_mem;
+			pp += len;
 		}
 
 	pe = NULLPE;
@@ -589,7 +607,8 @@ no_mem:
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		strcpy (dp -> ftd_data, "out of memory");
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 error_return:
@@ -651,11 +670,26 @@ error_return:
 #endif
 
 #ifdef	BRIDGE
-		if (len + (int)strlen (line) >= MAXPATHLEN)
+		{
+			int tot = len;
+			int namelen;
+
+			if (strlen2int (line, &namelen) != 0
+					|| add_int_to_int (&tot, namelen) != 0
+					|| tot >= MAXPATHLEN)
+				continue;
+		}
 #else
-		if (len + (int)strlen (d -> d_name) >= MAXPATHLEN)
+		{
+			int tot = len;
+			int namelen;
+
+			if (strlen2int (d -> d_name, &namelen) != 0
+					|| add_int_to_int (&tot, namelen) != 0
+					|| tot >= MAXPATHLEN)
+				continue;
+		}
 #endif
-			continue;
 
 #ifdef	BRIDGE
 		strcpy (pp, line);
@@ -694,7 +728,8 @@ error_return:
 			dp -> ftd_delay = DIAG_NODELAY;
 			sprintf (dp -> ftd_data, "error encoding Datatype1: %s",
 					 PY_pepy);
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			dp++;
 
 			free_DOCS_NBS__9__Datatype1 (d9);
@@ -731,7 +766,8 @@ error_return:
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
 		dp -> ftd_delay = DIAG_NODELAY;
 		sprintf (dp -> ftd_data, "%s: %s", myfile, sys_errname (errno));
-		dp -> ftd_cc = strlen (dp -> ftd_data);
+		if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 		dp++;
 
 		goto error_return;
@@ -930,7 +966,8 @@ void ftam_dataindication (struct PSAPdata *px) {
 		default:
 			dp -> ftd_identifier = FS_ACC_WRITE;
 			strcpy (dp -> ftd_data, sys_errname (errno));
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0)
+			dp -> ftd_cc = 0;
 			break;
 		}
 		dp -> ftd_observer = dp -> ftd_source = EREF_RFSU;
