@@ -69,7 +69,9 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 			goto congest;
 		if ((len = cp_normal -> calling -> qb_len) > sizeof ps -> ps_calling.pa_selector)
 			len = sizeof ps -> ps_calling.pa_selector;
-		bcopy (base, ps -> ps_calling.pa_selector,  ps -> ps_calling.pa_selectlen = len);
+		if (bcopy_int (base, ps -> ps_calling.pa_selector, len) != 0)
+			goto congest;
+		ps -> ps_calling.pa_selectlen = len;
 		free (base);
 	}
 	ps -> ps_called.pa_addr = ss -> ss_called;	/* struct copy */
@@ -78,7 +80,9 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 			goto congest;
 		if ((len = cp_normal -> called -> qb_len) >	sizeof ps -> ps_called.pa_selector)
 			len = sizeof ps -> ps_called.pa_selector;
-		bcopy (base, ps -> ps_called.pa_selector,  ps -> ps_called.pa_selectlen = len);
+		if (bcopy_int (base, ps -> ps_called.pa_selector, len) != 0)
+			goto congest;
+		ps -> ps_called.pa_selectlen = len;
 		free (base);
 	}
 	if ((pb -> pb_asn = DFLT_ASN_OID) == NULLOID)  {

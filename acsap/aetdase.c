@@ -200,8 +200,14 @@ you_lose:
 			if (q = ans -> diagnostic)
 				for (p = q -> qb_forw;
 						p != q && pp < ep;
-						pp += p -> qb_len, p = p -> qb_forw)
-					bcopy (p -> qb_data, pp, p -> qb_len);
+						p = p -> qb_forw) {
+					int n;
+
+					if (min_len_cap (p -> qb_len, (size_t) (ep - pp), &n) != 0
+							|| bcopy_int (p -> qb_data, pp, n) != 0)
+						break;
+					pp += n;
+				}
 			*pp = 0;
 
 			done = 1;
