@@ -222,6 +222,48 @@ int2mode (int n, mode_t *out)
 	return 0;
 }
 
+#include <sys/socket.h>
+
+static inline int
+int2socklen (int n, socklen_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((socklen_t) -1 > (socklen_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (socklen_t) -1)
+			return -1;
+	} else {
+		socklen_t sl = (socklen_t) n;
+
+		if ((int) sl != n)
+			return -1;
+		*out = sl;
+		return 0;
+	}
+	*out = (socklen_t) n;
+	return 0;
+}
+
+static inline int
+sizet2socklen (size_t n, socklen_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((socklen_t) -1 > (socklen_t) 0) {
+		if ((uintmax_t) n > (uintmax_t) (socklen_t) -1)
+			return -1;
+	} else {
+		socklen_t sl = (socklen_t) n;
+
+		if (sl < 0 || (size_t) sl != n)
+			return -1;
+		*out = sl;
+		return 0;
+	}
+	*out = (socklen_t) n;
+	return 0;
+}
+
 /* POSIX chown/fchown: all-bits-one means "leave this id unchanged". */
 static inline uid_t
 uid_nochg (void)
