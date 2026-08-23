@@ -106,6 +106,8 @@ static void ts_main (struct isoservent *is, char *addr);
 static int  qcmp (char *b, struct qbuf *qb, int l);
 static int  rts_event (int sd, struct RtSAPindication *rti);
 static void rts_transferequest (int sd, PE pe);
+static int stdin_regsize (int *ccp);
+static char *malloc_and_read_stdin (int cc);
 
 long	lseek (int, off_t, int);
 
@@ -162,6 +164,48 @@ void main (int argc, char **argv, char **envp) {
 	exit (status);		/* NOTREACHED */
 }
 
+static int
+stdin_regsize (int *ccp)
+{
+	struct stat st;
+
+	if (ccp == NULL
+			|| fstat (fileno (stdin), &st) == NOTOK
+			|| (st.st_mode & S_IFMT) != S_IFREG
+			|| st.st_size <= 0
+			|| st.st_size > (off_t) INT_MAX)
+		return NOTOK;
+	*ccp = (int) st.st_size;
+	return OK;
+}
+
+static char *
+malloc_and_read_stdin (int cc)
+{
+	char *cp,
+		 *dp;
+	int i,
+		j;
+	ssize_t n;
+
+	if ((cp = malloc_int (cc)) == NULL)
+		adios (NULLCP, "no memory");
+	for (dp = cp, j = cc; j > 0; dp += i, j -= i) {
+		n = read_int (fileno (stdin), dp, j);
+		if (ssize2int (n, &i) != 0)
+			adios (NULLCP, "read too large");
+		switch (i) {
+		case NOTOK:
+			adios ("on stdin", "read failed");
+		case OK:
+			adios (NULLCP, "premature end-of-file");
+		default:
+			break;
+		}
+	}
+	return cp;
+}
+
 #ifdef	TCP
 static void raw_main (char *service, char *addr) {
 	int     sd,
@@ -198,30 +242,15 @@ static void raw_main (char *service, char *addr) {
 	}
 	fprintf (stderr, "connected\n");
 
-	if (fstat (fileno (stdin), &st) == NOTOK
-			|| (st.st_mode & S_IFMT) != S_IFREG
-			|| (cc = st.st_size) == 0)
+	if (stdin_regsize (&cc) != OK)
 		adios (NULLCP, "standard input not a regular file");
 	lseek (fileno (stdin), 0L, 0);
-
-	if ((cp = malloc ((unsigned) cc)) == NULL)
-		adios (NULLCP, "no memory");
-	for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-		switch (i = read (fileno (stdin), dp, j)) {
-		case NOTOK:
-			adios ("on stdin", "read failed");
-
-		case OK:
-			adios (NULLCP, "premature end-of-file");
-
-		default:
-			break;
-		}
+	cp = malloc_and_read_stdin (cc);
 
 #ifdef	TIMER
 	timer (0);
 #endif
-	if (write_tcp_socket (sd, cp, cc) != cc)
+	if (write_int (sd, cp, cc) != cc)
 		adios ("writing", "error");
 	close_tcp_socket (sd);
 #ifdef	TIMER
@@ -321,24 +350,9 @@ static void ts_main (struct isoservent *is, char *addr) {
 	}
 #endif
 
-	if (fstat (fileno (stdin), &st) != NOTOK
-			&& (st.st_mode & S_IFMT) == S_IFREG
-			&& (cc = st.st_size) != 0) {
+	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
-
-		if ((cp = malloc ((unsigned) cc)) == NULL)
-			adios (NULLCP, "no memory");
-		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = read (fileno (stdin), dp, j)) {
-			case NOTOK:
-				adios ("on stdin", "read failed");
-
-			case OK:
-				adios (NULLCP, "premature end-of-file");
-
-			default:
-				break;
-			}
+		cp = malloc_and_read_stdin (cc);
 		for (i = 10; i > 0; i--) {
 #ifdef	TIMER
 			timer (0);
@@ -536,8 +550,12 @@ static void ss_main ( struct isoservent *is, char   *addr) {
 			advise (NULLCP, "greetings: %d octets", sc -> sc_cc);
 	}
 #endif
-	if (bcmp (userdata, sc->sc_data, MIN(sizeof userdata, sc -> sc_cc))) {
-		advise (NULLCP, "data mismatch (0)");
+	{
+		int n;
+
+		if (min_len_cap (sc -> sc_cc, sizeof userdata, &n) != 0
+				|| bcmp_int (userdata, sc->sc_data, n))
+			advise (NULLCP, "data mismatch (0)");
 	}
 
 	requirements = sc -> sc_requirements;
@@ -579,22 +597,9 @@ static void ss_main ( struct isoservent *is, char   *addr) {
 			ss_adios (sa, "S-ACTIVITY-START.REQUEST");
 	}
 
-	if (fstat (fileno (stdin), &st) != NOTOK && (st.st_mode & S_IFMT) == S_IFREG && (cc = st.st_size) != 0) {
+	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
-
-		if ((cp = malloc ((unsigned) cc)) == NULL)
-			adios (NULLCP, "no memory");
-		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = read (fileno (stdin), dp, j)) {
-			case NOTOK:
-				adios ("on stdin", "read failed");
-
-			case OK:
-				adios (NULLCP, "premature end-of-file");
-
-			default:
-				break;
-			}
+		cp = malloc_and_read_stdin (cc);
 		for (i = 10; i > 0; i--) {
 #ifdef	TIMER
 			timer (0);
@@ -1397,24 +1402,9 @@ static void ps_main (struct isoservent *is, char *addr) {
 			ps_adios (pa, "P-ACTIVITY-START.REQUEST");
 	}
 
-	if (fstat (fileno (stdin), &st) != NOTOK
-			&& (st.st_mode & S_IFMT) == S_IFREG
-			&& (cc = st.st_size) != 0) {
+	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
-
-		if ((cp = malloc ((unsigned) cc)) == NULL)
-			adios (NULLCP, "no memory");
-		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = read (fileno (stdin), dp, j)) {
-			case NOTOK:
-				adios ("on stdin", "read failed");
-
-			case OK:
-				adios (NULLCP, "premature end-of-file");
-
-			default:
-				break;
-			}
+		cp = malloc_and_read_stdin (cc);
 		if ((pe = oct2prim (cp, cc)) == NULLPE)
 			adios (NULLCP, "unable to allocate PSDU");
 		free (cp);
@@ -2168,24 +2158,9 @@ static void rts_main (struct isoservent *is, char *addr) {
 		return;
 	}
 
-	if (fstat (fileno (stdin), &st) != NOTOK
-			&& (st.st_mode & S_IFMT) == S_IFREG
-			&& (cc = st.st_size) != 0) {
+	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
-
-		if ((cp = malloc ((unsigned) cc)) == NULL)
-			adios (NULLCP, "no memory");
-		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = read (fileno (stdin), dp, j)) {
-			case NOTOK:
-				adios ("on stdin", "read failed");
-
-			case OK:
-				adios (NULLCP, "premature end-of-file");
-
-			default:
-				break;
-			}
+		cp = malloc_and_read_stdin (cc);
 		if ((pe = oct2prim (cp, cc)) == NULLPE)
 			adios (NULLCP, "unable to allocate APDU");
 		free (cp);
@@ -2546,24 +2521,9 @@ static void do_ros (int sd) {
 	PE	pe;
 	struct stat st;
 
-	if (fstat (fileno (stdin), &st) != NOTOK
-			&& (st.st_mode & S_IFMT) == S_IFREG
-			&& (cc = st.st_size) != 0) {
+	if (stdin_regsize (&cc) == OK) {
 		lseek (fileno (stdin), 0L, 0);
-
-		if ((cp = malloc ((unsigned) cc)) == NULL)
-			adios (NULLCP, "no memory");
-		for (dp = cp, j = cc; j > 0; dp += i, j -= i)
-			switch (i = read (fileno (stdin), dp, j)) {
-			case NOTOK:
-				adios ("on stdin", "read failed");
-
-			case OK:
-				adios (NULLCP, "premature end-of-file");
-
-			default:
-				break;
-			}
+		cp = malloc_and_read_stdin (cc);
 		if ((pe = oct2prim (cp, cc)) == NULLPE)
 			adios (NULLCP, "unable to allocate invocation argument");
 		free (cp);
@@ -2843,7 +2803,7 @@ static int qcmp (char *b, struct qbuf *qb, int l) {
 			return NOTOK;
 		}
 
-		if (bcmp (b, qp -> qb_data, qp -> qb_len)) {
+		if (bcmp_int (b, qp -> qb_data, qp -> qb_len)) {
 			advise (NULLCP, "data mismatch (6)");
 			return NOTOK;
 		}

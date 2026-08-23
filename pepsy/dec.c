@@ -2100,23 +2100,38 @@ again:
 		if (typ[1].pe_type != OCTET_LEN)
 			return pepsylose (mod, typ, NULLPE, "setdval:missing OCTET_LEN");
 		i = IVAL(mod, dflt);
-		p = smalloc((int )i + 1);
-		bcopy(PVAL(mod, dflt), p, (int )i);
-		p[i] = '\0';
-		*(char **) (*parm + typ->pe_ucode) = p;
-		*(int *) (*parm + (typ + 1)->pe_ucode) = i;
+		{
+			int n;
+
+			if (i < 0 || i > (integer) INT_MAX - 1)
+				return pepsylose (mod, typ, NULLPE, "setdval:length out of range");
+			n = (int) i;
+			p = smalloc(n + 1);
+			if (bcopy_int(PVAL(mod, dflt), p, n) != 0)
+				return pepsylose (mod, typ, NULLPE, "setdval:copy failed");
+			p[n] = '\0';
+			*(char **) (*parm + typ->pe_ucode) = p;
+			*(int *) (*parm + (typ + 1)->pe_ucode) = n;
+		}
 		break;
 
 	case BITSTR_PTR:
 		if (typ[1].pe_type != BITSTR_LEN)
 			return pepsylose (mod, typ, NULLPE, "setdval:missing BITSTR_LEN");
 		i = IVAL(mod, dflt);
-		no = (i + 7)/8;	/* round up */
-		p = smalloc(no + 1);
-		bcopy(PVAL(mod, dflt), p, no);
-		p[no] = '\0';
-		*(char **) (*parm + typ->pe_ucode) = p;
-		*(int *) (*parm + (typ + 1)->pe_ucode) = i;
+		{
+			int n;
+
+			if (i < 0 || i > (integer) INT_MAX - 7)
+				return pepsylose (mod, typ, NULLPE, "setdval:length out of range");
+			n = (int) ((i + 7) / 8);
+			p = smalloc(n + 1);
+			if (bcopy_int(PVAL(mod, dflt), p, n) != 0)
+				return pepsylose (mod, typ, NULLPE, "setdval:copy failed");
+			p[n] = '\0';
+			*(char **) (*parm + typ->pe_ucode) = p;
+			*(int *) (*parm + (typ + 1)->pe_ucode) = (int) i;
+		}
 		break;
 
 	case OBJECT:

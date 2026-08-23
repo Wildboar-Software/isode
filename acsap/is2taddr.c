@@ -20,7 +20,10 @@ is2taddr (char *host, char *service, struct isoservent *is) {
 		if (is -> is_selectlen > TSSIZE)	/* XXX */
 			return NULLTA;
 
-		bcopy (is -> is_selector, ta -> ta_selector, ta -> ta_selectlen = is -> is_selectlen);
+		if (bcopy_int (is -> is_selector, ta -> ta_selector,
+					   is -> is_selectlen) != 0)
+			return NULLTA;
+		ta -> ta_selectlen = is -> is_selectlen;
 	}
 
 	return ta;

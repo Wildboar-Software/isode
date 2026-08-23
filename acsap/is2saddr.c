@@ -20,7 +20,10 @@ is2saddr (char *host, char *service, struct isoservent *is) {
 		if (is -> is_selectlen > SSSIZE)	/* XXX */
 			return NULLSA;
 
-		bcopy (is -> is_selector, sa -> sa_selector,  sa -> sa_selectlen = is -> is_selectlen);
+		if (bcopy_int (is -> is_selector, sa -> sa_selector,
+					   is -> is_selectlen) != 0)
+			return NULLSA;
+		sa -> sa_selectlen = is -> is_selectlen;
 	}
 
 	return sa;

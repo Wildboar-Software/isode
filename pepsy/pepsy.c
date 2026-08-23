@@ -439,7 +439,12 @@ void yyprint (char *s, int f, int top) {
 		else  fprintf (stderr, "\n");
 
 		fprintf (stderr, "%s includes:", mymodule);
-		linepos = (nameoutput = strlen (mymodule) + 10) + 1;
+		if (strlen2int (mymodule, &nameoutput) != 0
+				|| add_int_to_int (&nameoutput, 10) != 0)
+			myyerror ("module name too long");
+		linepos = nameoutput;
+		if (add_int_to_int (&linepos, 1) != 0)
+			myyerror ("module name too long");
 
 		didf = 1;
 	}
@@ -449,12 +454,18 @@ void yyprint (char *s, int f, int top) {
 			fprintf (stderr, "\n\n");
 
 		fprintf (stderr, "%s", mymodule);
-		nameoutput = (linepos = strlen (mymodule)) + 1;
+		if (strlen2int (mymodule, &linepos) != 0)
+			myyerror ("module name too long");
+		nameoutput = linepos;
+		if (add_int_to_int (&nameoutput, 1) != 0)
+			myyerror ("module name too long");
 
 #define section(flag,prefix) \
         if (yysection & (flag)) { \
             fprintf (stderr, " %s", (prefix)); \
-            linepos += strlen (prefix) + 1; \
+            if (add_sizet_to_int (&linepos, strlen (prefix)) != 0 \
+			|| add_int_to_int (&linepos, 1) != 0) \
+			myyerror ("line too long"); \
         } \
         else \
             fprintf (stderr, " none"), linepos += 5
@@ -469,14 +480,18 @@ void yyprint (char *s, int f, int top) {
 			return;
 	}
 
-	len = strlen (s) + (f ? 2 : 0);
+	if (strlen2int (s, &len) != 0)
+		myyerror ("name too long");
+	if (f && add_int_to_int (&len, 2) != 0)
+		myyerror ("name too long");
 	if (linepos != nameoutput)
 		if (len + linepos + 1 > outputlinelen)
 			fprintf (stderr, "\n%*s", linepos = nameoutput, "");
 		else
 			fprintf (stderr, " "), linepos++;
 	fprintf (stderr, f ? "(%s)" : "%s", s);
-	linepos += len;
+	if (add_int_to_int (&linepos, len) != 0)
+		myyerror ("line too long");
 }
 
 void pass1(void) { }
@@ -635,10 +650,12 @@ void pass2(void) {
 
 static void copy_file (FILE *fp1, FILE *fp2) {
 	char buf[BUFSIZ];
-	int n;
+	int n, chunk;
 
-	while ((n = fread (buf, 1, BUFSIZ, fp1)) > 0) {
-		if (fwrite (buf, 1, n, fp2) != n) {
+	if (sizet2int (sizeof buf, &chunk) != 0)
+		exit (1);
+	while ((n = fread_int (buf, 1, chunk, fp1)) > 0) {
+		if (fwrite_int (buf, 1, n, fp2) != n) {
 			fprintf (stderr, "Write error\n");
 			exit (1);
 		}
@@ -2250,8 +2267,14 @@ static void dump_real (double r) {
 
 	cp = ecvt (r, 20, &decpt, &sign);
 	strcpy (sbuf, cp);	/* cp gets overwritten by printf */
-	printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
-			decpt - strlen (sbuf));
+	{
+		int slen;
+
+		if (strlen2int (sbuf, &slen) != 0)
+			myyerror ("real encoding too long");
+		printf ("{ %s%s, 10, %d }", sign ? "-" : "", sbuf,
+				decpt - slen);
+	}
 #else
 	char   *cp,
 		   *dp,

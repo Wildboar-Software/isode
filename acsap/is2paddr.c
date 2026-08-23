@@ -17,7 +17,10 @@ struct PSAPaddr* is2paddr (char *host, char *service, struct isoservent *is) {
 		if (is -> is_selectlen > PSSIZE)	/* XXX */
 			return NULLPA;
 
-		bcopy (is -> is_selector, pa -> pa_selector, pa -> pa_selectlen = is -> is_selectlen);
+		if (bcopy_int (is -> is_selector, pa -> pa_selector,
+					   is -> is_selectlen) != 0)
+			return NULLPA;
+		pa -> pa_selectlen = is -> is_selectlen;
 	}
 
 	return pa;

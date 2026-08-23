@@ -148,18 +148,26 @@ int init(void) {
 #define MAX(a, b)	((a) > (b) ? (a) : (b))
 
 static char *buf = NULL;
-static unsigned int len = 0;
+static size_t len = 0;
 
 /*
  * Return in a static buffer the two strings concatenated
  */
 char *concat (char *s1, char *s2) {
-	int     tot;
+	size_t  tot;
+	size_t  l1;
+	size_t  l2;
 
-	tot = strlen(s1) + strlen(s2) + 1;
+	if (s1 == NULL || s2 == NULL)
+		ferr(1, "concat:null arg\n");
+	l1 = strlen(s1);
+	l2 = strlen(s2);
+	if (l1 > SIZE_MAX - l2 - 1)
+		ferr(1, "concat:length overflow\n");
+	tot = l1 + l2 + 1;
 
 	if (tot > len) {
-		len = MAX(BUFSIZE, tot);
+		len = tot > BUFSIZE ? tot : BUFSIZE;
 		if (buf == NULL) {
 			if ((buf = malloc(len)) == NULL)
 				ferr(1, "concat:malloc failed\n");
@@ -183,12 +191,20 @@ char *gfree (
 ) {
 	char   *p1 = notidtoid(module);
 	char   *p2 = notidtoid(id);
-	int tot;
+	size_t tot;
+	size_t l1;
+	size_t l2;
 
-	tot = 3 * strlen(p1) + 2 * strlen(p2) + BUFSIZE;
+	l1 = strlen(p1);
+	l2 = strlen(p2);
+	if (l1 > SIZE_MAX / 3 || l2 > SIZE_MAX / 2)
+		ferr(1, "gfree:length overflow\n");
+	if (3 * l1 > SIZE_MAX - 2 * l2 - BUFSIZE)
+		ferr(1, "gfree:length overflow\n");
+	tot = 3 * l1 + 2 * l2 + BUFSIZE;
 
 	if (tot > len) {
-		len = MAX(BUFSIZE, tot);
+		len = tot > BUFSIZE ? tot : BUFSIZE;
 		if (buf == NULL) {
 			if ((buf = malloc(len)) == NULL)
 				ferr(1, "concat:malloc failed\n");

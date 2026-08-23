@@ -323,17 +323,22 @@ void f_null(void) {
  */
 int bitscmp (char *p1, char *p2, int len) {
 	int i;
-	unsigned int mask;
+	uint8_t mask;
+	int m;
 
-	if (len >= 8 && bcmp(p1, p2, len / 8))
+	if (len < 0)
+		return (1);
+	if (len >= 8 && bcmp_int(p1, p2, len / 8))
 		return (1);
 
 	if (len % 8 == 0)
 		return (0);
 	/* Check those last few bits */
 	i = len / 8;
-	mask = (0xff00 >> len % 8) & 0xff;
-	if ((p1[i] & mask) != (p2[i] & mask))
+	m = (0xff00 >> len % 8) & 0xff;
+	if (int2u8 (m, &mask) != 0)
+		return (1);
+	if ((as_octet(p1[i]) & mask) != (as_octet(p2[i]) & mask))
 		return (1);
 
 	return (0);
@@ -357,7 +362,7 @@ int ostrcmp (char *p, int len, struct qbuf *qb) {
 				ferrd(1, "ostrcmp:qb_len %d < 0", qp->qb_len);
 			if (qp->qb_len > len)
 				return (1);
-			if (bcmp(qp->qb_data, p, qp->qb_len))
+			if (bcmp_int(qp->qb_data, p, qp->qb_len))
 				return (1);
 			if ((len -= qp->qb_len) == 0)
 				return (0);
@@ -536,13 +541,14 @@ ostring:
 			val = 1;
 			break;
 		}
-		len = strlen(p1);
+		if (sizet2int (strlen(p1), &len) != 0)
+			return pepsylose (mod, typ, NULLPE, "same:string too long");
 o1string:
 		if (len != IVAL(mod, dflt)) {
 			val = 0;
 			break;
 		}
-		if (bcmp(PVAL(mod, dflt), p1, len))
+		if (bcmp_int(PVAL(mod, dflt), p1, len))
 			val = 0;
 		else
 			val = 1;

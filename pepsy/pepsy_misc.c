@@ -48,6 +48,8 @@ static SYM	symtab[MAX_TBLS];
 OID	addoid (OID o1, OID o2)
 {
 	OID		noid;
+	int		n;
+	size_t		bytes;
 
 	if (o1 == NULLOID || o2 == NULLOID)
 		return NULLOID;
@@ -56,17 +58,22 @@ OID	addoid (OID o1, OID o2)
 	if (noid == NULLOID)
 		myyerror ("out of memory (%d needed)", sizeof(*noid));
 
-	noid -> oid_nelem = o1->oid_nelem + o2->oid_nelem;
-	noid -> oid_elements = (unsigned int *) calloc ((unsigned)noid->oid_nelem,
+	n = o1->oid_nelem;
+	if (add_int_to_int (&n, o2->oid_nelem) != 0)
+		myyerror ("OID too large");
+	noid -> oid_nelem = n;
+	noid -> oid_elements = (unsigned int *) calloc_int (n,
 						   sizeof(unsigned int));
 	if (noid -> oid_elements == NULL)
-		myyerror ("out of memory (%d needed)", noid->oid_nelem);
+		myyerror ("out of memory (%d needed)", n);
 
-	bcopy ((char *)o1->oid_elements, (char *)noid->oid_elements,
-		   o1->oid_nelem * sizeof(unsigned int));
-	bcopy ((char *)o2 -> oid_elements,
-		   (char *) &noid -> oid_elements[o1->oid_nelem],
-		   o2 -> oid_nelem * sizeof(unsigned int));
+	if (nmemb_bytes (o1->oid_nelem, sizeof (unsigned int), &bytes) != 0)
+		myyerror ("OID too large");
+	memmove (noid -> oid_elements, o1->oid_elements, bytes);
+	if (nmemb_bytes (o2->oid_nelem, sizeof (unsigned int), &bytes) != 0)
+		myyerror ("OID too large");
+	memmove (&noid -> oid_elements[o1->oid_nelem], o2 -> oid_elements,
+			 bytes);
 	return noid;
 }
 
@@ -129,7 +136,8 @@ OID	int2oid (int n) {
 	if (noid -> oid_elements == NULL)
 		myyerror ("out of memory (%d needed)", sizeof(unsigned int));
 	noid -> oid_nelem = 1;
-	noid -> oid_elements[0] = n;
+	if (int2uint (n, &noid -> oid_elements[0]) != 0)
+		myyerror ("OID component out of range");
 	return noid;
 }
 
@@ -177,7 +185,8 @@ int print_expimp(void) {
 			ind = 8;
 		}
 		printf("%s", sp -> sym_name);
-		ind += strlen (sp -> sym_name);
+		if (add_sizet_to_int (&ind, strlen (sp -> sym_name)) != 0)
+			ind = 73;
 		if (sp -> sym_next) {
 			putchar (',');
 			ind ++;
@@ -204,7 +213,8 @@ int print_expimp(void) {
 			ind = 8;
 		}
 		printf ("%s", sp -> sym_name);
-		ind += strlen (sp -> sym_name);
+		if (add_sizet_to_int (&ind, strlen (sp -> sym_name)) != 0)
+			ind = 73;
 		if (sp -> sym_next) {
 			if (strcmp (p, sp -> sym_next -> sym_module) == 0) {
 				putchar (',');

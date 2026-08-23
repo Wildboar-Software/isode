@@ -31,6 +31,14 @@ sizet2int (size_t n, int *out)
 }
 
 static inline int
+strlen2int (const char *s, int *out)
+{
+	if (s == NULL)
+		return -1;
+	return sizet2int (strlen (s), out);
+}
+
+static inline int
 int2sizet (int n, size_t *out)
 {
 	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) SIZE_MAX)
@@ -355,6 +363,19 @@ malloc_nmemb (int n, size_t size)
 	if (size != 0 && count > SIZE_MAX / size)
 		return NULL;
 	return malloc (count * size);
+}
+
+static inline int
+nmemb_bytes (int n, size_t size, size_t *out)
+{
+	size_t count;
+
+	if (out == NULL || int2sizet (n, &count) != 0)
+		return -1;
+	if (size != 0 && count > SIZE_MAX / size)
+		return -1;
+	*out = count * size;
+	return 0;
 }
 
 static inline void *
