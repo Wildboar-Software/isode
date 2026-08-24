@@ -168,7 +168,8 @@ void main(int argc, char *argv[]) {
 		abort();
 		exit(1);
 	}
-	ctrl_addr.sin_port = sp->s_port;
+	if (int2inport (sp->s_port, &ctrl_addr.sin_port) != 0)
+		adios ("failed", "ftp/tcp port");
 	data_source.sin_port = htons(ntohs((uint16_t) sp->s_port) - 1);
 #ifdef LINUX
 	signal(SIGPIPE, (__sighandler_t)lostconn);
