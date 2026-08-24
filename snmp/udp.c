@@ -84,16 +84,20 @@ static int _read_udp_stats (void)
 	if (_read_snmp_stats ("udp", &labels, &values, &len) != OK)
 		return NOTOK;
 	for (i = 0; i < len; i++) {
+		uint32_t uv;
+
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
+		if (long2u32 (value, &uv) != 0)
+			return NOTOK;
 		if (!strcmp ("InDatagrams", label))
-			udpstat.udps_ipackets = value;
+			udpstat.udps_ipackets = uv;
 		else if (!strcmp ("NoPorts", label))
-			udpstat.udps_noport = value;
+			udpstat.udps_noport = uv;
 		else if (!strcmp ("InErrors", label))
-			udpstat.udps_ierrors = value;
+			udpstat.udps_ierrors = uv;
 		else if (!strcmp ("OutDatagrams", label))
-			udpstat.udps_opackets = value;
+			udpstat.udps_opackets = uv;
 	}
 	return OK;
 }
@@ -106,7 +110,8 @@ static int  o_udp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -240,7 +245,8 @@ static int  o_udp_listen (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_listeners (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + UT_SIZE)

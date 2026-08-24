@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <time.h>
 
 /*
@@ -1314,6 +1315,111 @@ int2inport (int n, in_port_t *out)
 	}
 	*out = (in_port_t) n;
 	return 0;
+}
+
+/* Recover a small integer previously stored in a pointer (ot_info, etc.). */
+static inline int
+caddr2int (const void *p, int *out)
+{
+	return ssize2int ((ssize_t) p, out);
+}
+
+static inline int
+uintmax2int (uintmax_t n, int *out)
+{
+	if (out == NULL || n > (uintmax_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+static inline int
+intmax2int (intmax_t n, int *out)
+{
+	if (out == NULL || n < (intmax_t) INT_MIN || n > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+static inline int
+long2double (long n, double *out)
+{
+	double d;
+
+	if (out == NULL)
+		return -1;
+	d = (double) n;
+	if ((long) d != n)
+		return -1;
+	*out = d;
+	return 0;
+}
+
+static inline int
+uint2octet (unsigned n, char *out)
+{
+	if (n > 255U)
+		return -1;
+	return octet2char ((uint8_t) n, out);
+}
+
+static inline int
+u32tooctet (uint32_t n, char *out)
+{
+	if (n > 255U)
+		return -1;
+	return octet2char ((uint8_t) n, out);
+}
+
+static inline int
+timeval_centisecs (const struct timeval *later,
+		   const struct timeval *earlier, int *out)
+{
+	int	secs,
+		usec_part,
+		ticks;
+	long	usec;
+
+	if (later == NULL || earlier == NULL || out == NULL)
+		return -1;
+	if (time_delta2int (later -> tv_sec, earlier -> tv_sec, &secs) != 0)
+		return -1;
+	usec = (long) later -> tv_usec - (long) earlier -> tv_usec;
+	if (usec < 0L) {
+		if (secs == 0)
+			usec = 0L;
+		else {
+			secs--;
+			usec += 1000000L;
+		}
+	}
+	if (secs > INT_MAX / 100)
+		return -1;
+	ticks = secs * 100;
+	if (long2int (usec / 10000L, &usec_part) != 0)
+		return -1;
+	if (ticks > INT_MAX - usec_part)
+		return -1;
+	*out = ticks + usec_part;
+	return 0;
+}
+
+static inline int
+timeval_millis (const struct timeval *tv, uint32_t *out)
+{
+	int	secs,
+		msec;
+
+	if (tv == NULL || out == NULL)
+		return -1;
+	if (time_t2int (tv -> tv_sec, &secs) != 0 || secs < 0)
+		return -1;
+	if (long2int ((long) (tv -> tv_usec / 1000), &msec) != 0 || msec < 0)
+		return -1;
+	if (secs > (INT_MAX - msec) / 1000)
+		return -1;
+	return int2u32 (secs * 1000 + msec, out);
 }
 
 #endif

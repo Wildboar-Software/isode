@@ -419,9 +419,17 @@ do_clts:
 				sr -> rb_name = ot -> ot_name;
 		bzero ((char *) lsock, sizeof *lsock);
 		lsock -> sin_family = AF_INET;
-		lsock -> sin_port = (sp = getservbyname ("smux", "tcp"))
-							? sp -> s_port
-							: htons ((uint16_t) 199);
+	{
+		in_port_t port;
+
+		sp = getservbyname ("smux", "tcp");
+		if (sp) {
+			if (int2inport (sp -> s_port, &port) != 0)
+				adios (NULLCP, "smux port out of range");
+		} else
+			port = htons ((uint16_t) 199);
+		lsock -> sin_port = port;
+	}
 		if (smux_enabled) {
 			if ((smux = start_tcp_server (lsock, SOMAXCONN, 0, 0)) == NOTOK)
 				adios ("failed", "start_tcp_server for SMUX");
@@ -1606,7 +1614,8 @@ no_dice:
 						if (int2uint (tb -> tb_priority, ip) != 0)
 							goto no_dice;
 						ip++;
-						tb -> tb_insize = ip - tb -> tb_instance;
+						if (ptrdiff2int (ip - tb -> tb_instance, &tb -> tb_insize) != 0)
+							goto no_dice;
 						/* Insert the new element into the doubly-linked chain
 						   of all smuxTree structures that is anchored in THead.
 						   Elements are chained in lexicographic order of
@@ -2088,9 +2097,10 @@ static void do_trap (
 			advise (LLOG_EXCEPTIONS, "failed", "gettimeofday");
 			return;
 		}
-		parm -> time__stamp -> parm = (now.tv_sec - my_boottime.tv_sec) * 100
-									  + ((now.tv_usec - my_boottime.tv_usec)
-										 / 10000);
+		if (timeval_centisecs (&now, &my_boottime, &parm -> time__stamp -> parm) != 0) {
+			advise (LLOG_EXCEPTIONS, NULLCP, "uptime overflow");
+			return;
+		}
 	}
 	parm -> variable__bindings = bindings;
 	do_traps (msg, (integer) generic, (integer) specific);
@@ -2192,7 +2202,7 @@ static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, i
 	if ((au = (struct type_SNMP_Audit *) calloc (1, sizeof *au)) == NULL)
 		goto no_mem;
 	au -> sizeOfEncodingWhichFollows = ps_get_abs (p);
-	if ((au -> source = str2qb (source, strlen (source), 1)) == NULL) {
+	if ((au -> source = str2qb_s (source)) == NULL) {
 no_mem:
 		;
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory for audit (%s)",
@@ -2207,7 +2217,7 @@ no_mem:
 		bzero ((char *) ut, sizeof *ut);
 	}
 	if ((cp = gent2str (ut)) == NULL
-			|| (au -> dateAndTime = str2qb (cp, strlen (cp), 1)) == NULL)
+			|| (au -> dateAndTime = str2qb_s (cp)) == NULL)
 		goto no_mem;
 	if (encode_SNMP_Audit (&pe, 1, 0, NULLCP, au) != NOTOK) {
 		PLOGP (pgm_log,SNMP_Audit, pe, "Audit", 0);
@@ -2281,7 +2291,16 @@ static void arginit (char **vec) {
 	tcp_na -> na_community = ts_comm_tcp_default;
 	tcp_na -> na_domain[0] = 0;
 #ifndef	SNMPT
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 161);
+	{
+		uint16_t svcport;
+
+		if (sp) {
+			if (int2u16 (sp -> s_port, &svcport) != 0)
+				adios (NULLCP, "snmp port out of range");
+		} else
+			svcport = htons ((uint16_t) 161);
+		tcp_na -> na_port = svcport;
+	}
 	udport = tcp_na -> na_port;
 #endif
 	tz -> ta_naddr = 1;
@@ -2291,7 +2310,16 @@ static void arginit (char **vec) {
 #ifndef	SNMPT
 	traport = sp ? sp -> s_port : htons ((uint16_t) 162);
 #else
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 162);
+	{
+		uint16_t svcport;
+
+		if (sp) {
+			if (int2u16 (sp -> s_port, &svcport) != 0)
+				adios (NULLCP, "snmp-trap port out of range");
+		} else
+			svcport = htons ((uint16_t) 162);
+		tcp_na -> na_port = svcport;
+	}
 #endif
 #endif
 #ifdef	COTS
@@ -2434,7 +2462,9 @@ static void envinit (void) {
 	char    file[BUFSIZ];
 	FILE   *fp;
 
-	nbits = getdtablesize ();
+	nbits = FD_SETSIZE;
+	if (long2int (getdtablesize (), &nbits) != 0)
+		nbits = FD_SETSIZE;
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -2645,7 +2675,13 @@ static int f_logging (char **vec) {
 	char  **vp;
 	for (vp = ++vec; *vp; vp++)
 		continue;
-	log_tai (pgm_log, vec, vp - vec);
+	{
+		int	ac;
+
+		if (ptrdiff2int (vp - vec, &ac) != 0)
+			return NOTOK;
+		log_tai (pgm_log, vec, ac);
+	}
 	return OK;
 }
 

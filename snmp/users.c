@@ -159,7 +159,11 @@ oops:
 		flock (pw_fd, LOCK_UN);
 		goto ohoh;
 	}
-	if ((cc = st.st_size) == 0) {
+	if (off2int (st.st_size, &cc) != 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/passwd: file too large");
+		goto oops;
+	}
+	if (cc == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/passwd: empty file");
 		goto oops;
 	}
@@ -167,8 +171,15 @@ oops:
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		goto oops;
 	}
-	for (dp = pw_data, j = cc; j > 0; dp += i, j -= i)
-		switch (i = read_int (pw_fd, dp, j)) {
+	for (dp = pw_data, j = cc; j > 0; dp += i, j -= i) {
+		ssize_t nread;
+
+		nread = read_int (pw_fd, dp, j);
+		if (ssize2int (nread, &i) != 0) {
+			advise (LLOG_EXCEPTIONS, "/etc/passwd", "read too large");
+			goto losing;
+		}
+		switch (i) {
 		case NOTOK:
 			advise (LLOG_EXCEPTIONS, "/etc/passwd", "error reading");
 losing:
@@ -184,6 +195,7 @@ losing:
 		default:
 			break;
 		}
+	}
 	*dp = 0;
 	pw_st = st;	/* struct copy */
 	lastq = quantum;
@@ -385,7 +397,11 @@ oops:
 		flock (gr_fd, LOCK_UN);
 		goto ohoh;
 	}
-	if ((cc = st.st_size) == 0) {
+	if (off2int (st.st_size, &cc) != 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/group: file too large");
+		goto oops;
+	}
+	if (cc == 0) {
 		advise (LLOG_EXCEPTIONS, NULLCP, "/etc/group: empty file");
 		goto oops;
 	}
@@ -393,8 +409,15 @@ oops:
 		advise (LLOG_EXCEPTIONS, NULLCP, "out of memory");
 		goto oops;
 	}
-	for (dp = gr_data, j = cc; j > 0; dp += i, j -= i)
-		switch (i = read_int (gr_fd, dp, j)) {
+	for (dp = gr_data, j = cc; j > 0; dp += i, j -= i) {
+		ssize_t nread;
+
+		nread = read_int (gr_fd, dp, j);
+		if (ssize2int (nread, &i) != 0) {
+			advise (LLOG_EXCEPTIONS, "/etc/group", "read too large");
+			goto losing;
+		}
+		switch (i) {
 		case NOTOK:
 			advise (LLOG_EXCEPTIONS, "/etc/group", "error reading");
 losing:
@@ -410,6 +433,7 @@ losing:
 		default:
 			break;
 		}
+	}
 	*dp = 0;
 	gr_st = st;	/* struct copy */
 	lastq = quantum;
@@ -430,7 +454,8 @@ losing:
 	for (gr = gr_head, dp = gr_data; dp < ep; gr++) {
 again:
 		;
-		gr -> gr_serial = gr - gr_head;
+		if (ptrdiff2int (gr - gr_head, &gr -> gr_serial) != 0)
+			goto losing;
 		gr -> gr_gr.gr_name = dp;
 		for (;;) {
 			if (*dp == ':') {
@@ -679,7 +704,9 @@ losing:
 		;
 		return generr (offset);
 	}
-	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		goto losing;
+	if (ifvar == userGroup
 			&& get_gr (offset) == NOTOK)
 		goto losing;
 try_again:
@@ -749,12 +776,11 @@ try_again:
 	}
 	switch (ifvar) {
 	case userName:
-		return o_string (oi, v, pwp -> pw_name,  strlen (pwp -> pw_name));
+		return o_string_s (oi, v, pwp -> pw_name);
 
 	case userPasswd:
 		if (strcmp (pwp -> pw_passwd, "*") == 0)
-			return o_string (oi, v, pwp -> pw_passwd,
-							 strlen (pwp -> pw_passwd));
+			return o_string_s (oi, v, pwp -> pw_passwd);
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
@@ -770,11 +796,10 @@ try_again:
 			if (!grp -> gr_passwd)
 				fill_gr (grp);
 			if (pwp -> pw_gid == grp -> gr_gid)
-				return o_string (oi, v, grp -> gr_name,
-								 strlen (grp -> gr_name));
+				return o_string_s (oi, v, grp -> gr_name);
 		}
 		sprintf (buffer, "%d", pwp -> pw_gid);
-		return o_string (oi, v, buffer, strlen (buffer));
+		return o_string_s (oi, v, buffer);
 	}
 
 	case userQuota:
@@ -789,21 +814,20 @@ try_again:
 	case userComment:
 #if !defined(BSD44) && !defined(__linux__)
 		if (*pwp -> pw_comment)
-			return o_string (oi, v, pwp -> pw_comment,
-							 strlen (pwp -> pw_comment));
+			return o_string_s (oi, v, pwp -> pw_comment);
 #endif
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
 
 	case userFullName:
-		return o_string (oi, v, pwp -> pw_gecos, strlen (pwp -> pw_gecos));
+		return o_string_s (oi, v, pwp -> pw_gecos);
 
 	case userHome:
-		return o_string (oi, v, pwp -> pw_dir, strlen (pwp -> pw_dir));
+		return o_string_s (oi, v, pwp -> pw_dir);
 
 	case userShell:
-		return o_string (oi, v, pwp -> pw_shell, strlen (pwp -> pw_shell));
+		return o_string_s (oi, v, pwp -> pw_shell);
 
 	case userStatus:
 		return o_integer (oi, v, pw -> pw_status);
@@ -829,7 +853,9 @@ static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pw (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-	if ((ifvar = (ssize_t) ot -> ot_info) == userGroup
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return int_SNMP_error__status_genErr;
+	if (ifvar == userGroup
 			&& get_gr (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -842,7 +868,7 @@ static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > PW_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
+			if (uint2octet (*ip, cp) != 0 || !isascii ((unsigned char) *cp))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 		i = 0;
@@ -1104,7 +1130,8 @@ static int o_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gr (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 try_again:
 	;
 	switch (offset) {
@@ -1172,12 +1199,11 @@ try_again:
 	}
 	switch (ifvar) {
 	case groupName:
-		return o_string (oi, v, grp -> gr_name,  strlen (grp -> gr_name));
+		return o_string_s (oi, v, grp -> gr_name);
 
 	case groupPasswd:
 		if (strcmp (grp -> gr_passwd, "*") == 0)
-			return o_string (oi, v, grp -> gr_passwd,
-							 strlen (grp -> gr_passwd));
+			return o_string_s (oi, v, grp -> gr_passwd);
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
@@ -1208,7 +1234,8 @@ static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gr (offset) == NOTOK || get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gr = get_grent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1219,7 +1246,7 @@ static int s_group (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > GR_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = name; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
+			if (uint2octet (*ip, cp) != 0 || !isascii ((unsigned char) *cp))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 		i = 0;
@@ -1247,7 +1274,8 @@ no_mem:
 				i > 0;
 				i--)
 			*jp++ = *ip++;
-		gr -> gr_serial = gr - gr_head;
+		if (ptrdiff2int (gr - gr_head, &gr -> gr_serial) != 0)
+			goto no_mem;
 		grp = &gr -> gr_gr;
 		if ((grp -> gr_name = strdup (name)) == NULL
 				|| (grp -> gr_passwd = strdup ("*")) == NULL)
@@ -1368,7 +1396,8 @@ static int o_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gu (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_SMUX__PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -1442,7 +1471,8 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_gu (offset) == NOTOK)
 		return int_SNMP_error__status_genErr;
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((gu = get_guent (ip = oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -1457,7 +1487,7 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		for (cp = group; i-- > 0; ip++, cp++) {
 			if (*ip == 0)
 				break;
-			else if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
+			else if (uint2octet (*ip, cp) != 0 || !isascii ((unsigned char) *cp))
 				return int_SNMP_error__status_noSuchName;
 		}
 		*cp = 0, ip++;
@@ -1469,7 +1499,7 @@ static int s_gruser (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		if (i > PW_SIZE)
 			return int_SNMP_error__status_noSuchName;
 		for (cp = user; i-- > 0; ip++, cp++)
-			if (*ip > 0xff || !isascii ((uint8_t) (*cp = *ip & 0xff)))
+			if (uint2octet (*ip, cp) != 0 || !isascii ((unsigned char) *cp))
 				return int_SNMP_error__status_noSuchName;
 		*cp = 0;
 		if (cp == user)
@@ -1676,8 +1706,6 @@ static int gr_sort (const void *p, const void *q) {
 void sync_users (int cor) {
 	int	    invalid,
 			iserr,
-			ngr,
-			npw,
 			fd;
 	char    tmpfil[BUFSIZ];
 	struct pw *pw;
@@ -1707,8 +1735,8 @@ void sync_users (int cor) {
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
 			if (!pw -> pw_pw.pw_passwd)
 				fill_pw (&pw -> pw_pw);
-		if ((npw = pw - pw_head) > 1
-				&& qsort_int (pw_head, npw, sizeof *pw_head, pw_sort) != 0)
+		if (pw - pw_head > 1
+				&& qsort_ptrdiff (pw_head, pw - pw_head, sizeof *pw_head, pw_sort) != 0)
 			adios (NULLCP, "too many passwd entries");
 		for (pw = pw_head; pw -> pw_pw.pw_name; pw++) {
 			struct passwd *pwp = &pw -> pw_pw;
@@ -1747,7 +1775,8 @@ void sync_users (int cor) {
 				advise (LLOG_FATAL, "/etc/passwd",
 						"unable to rename %s to", tmpfil);
 		}
-		if (npw > 1 && qsort_int (pw_head, npw, sizeof *pw_head, pw_compar) != 0)
+		if (pw - pw_head > 1
+				&& qsort_ptrdiff (pw_head, pw - pw_head, sizeof *pw_head, pw_compar) != 0)
 			adios (NULLCP, "too many passwd entries");
 flush_pw:
 		;
@@ -1779,8 +1808,8 @@ check_gr:
 #endif
 			continue;
 		}
-		if ((ngr = gr - gr_head) > 1
-				&& qsort_int (gr_head, ngr, sizeof *gr_head, gr_sort) != 0)
+		if (gr - gr_head > 1
+				&& qsort_ptrdiff (gr_head, gr - gr_head, sizeof *gr_head, gr_sort) != 0)
 			adios (NULLCP, "too many group entries");
 		for (gr = gr_head; gr -> gr_gr.gr_name; gr++) {
 			char   *cp = "";
@@ -1821,7 +1850,8 @@ check_gr:
 				advise (LLOG_FATAL, "/etc/group", "unable to rename %s to",
 						tmpfil);
 		}
-		if (ngr > 1 && qsort_int (gr_head, ngr, sizeof *gr_head, gr_compar) != 0)
+		if (gr - gr_head > 1
+				&& qsort_ptrdiff (gr_head, gr - gr_head, sizeof *gr_head, gr_compar) != 0)
 			adios (NULLCP, "too many group entries");
 flush_gr:
 		;

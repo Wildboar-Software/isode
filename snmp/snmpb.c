@@ -205,7 +205,8 @@ void bulk1 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 	RTTperthread = MAXTIME;
 	totreqs = totretr = totrsps = totdups = 0;
 	gettimeofday (&tvs, (struct timezone *) 0);
-	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
+	if (timeval_millis (&tvs, &timenow) != 0)
+		adios (NULLCP, "time overflow");
 	a = oid_copy (arg = vb -> VarBind -> name);
 	a -> oid_elements[a -> oid_nelem++] = 127;
 	if (new_thread (ps, vb, community, arg, a) == NOTOK)
@@ -414,7 +415,8 @@ static int  wait_for_action (int sd, PS ps) {
 	case OK:
 	default:
 		gettimeofday (&tvs, (struct timezone *) 0);
-		timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
+		if (timeval_millis (&tvs, &timenow) != 0)
+		adios (NULLCP, "time overflow");
 		if (n == OK)
 			break;
 again:
@@ -561,7 +563,10 @@ finish_invoke:
 				if (maxrtt < val)
 					maxrtt = val;
 				if (timelap < SETTLETIME) {
-					int  rtt = maxrtt / i -> i_curinvokes;
+					int  rtt;
+
+					if (long2int (maxrtt / i -> i_curinvokes, &rtt) != 0)
+						goto next_request;
 					if (RTTperthread > rtt) {
 						RTTperthread = rtt;
 						if ((threadlimit = i -> i_curinvokes + 1)
@@ -601,9 +606,15 @@ next_request:
 	if (backoff) {
 		if ((timeout <<= 1) > MAXTIME)
 			timeout = MAXTIME;
-		if (debug)
-			fprintf (stderr, "adjusted timeout to %g seconds(0)\n",
-					 timeout / 1000.0);
+		if (debug) {
+			double	dtimeout;
+
+			if (long2double (timeout, &dtimeout) != 0)
+				advise (NULLCP, "timeout overflow");
+			else
+				fprintf (stderr, "adjusted timeout to %g seconds(0)\n",
+						 dtimeout / 1000.0);
+		}
 	} else if (maxrtt > 0 && maxrtt != timeout) {
 		long    timedelta = maxrtt + (maxrtt >> 1);
 		if (timedelta > timeout) {
@@ -617,10 +628,16 @@ next_request:
 				timeout = MINTIME;
 outta_time:
 			;
-			if (debug)
-				fprintf (stderr,
-						 "adjusted timeout to %g seconds(1)\n",
-						 timeout / 1000.0);
+			if (debug) {
+				double	dtimeout;
+
+				if (long2double (timeout, &dtimeout) != 0)
+					advise (NULLCP, "timeout overflow");
+				else
+					fprintf (stderr,
+							 "adjusted timeout to %g seconds(1)\n",
+							 dtimeout / 1000.0);
+			}
 		}
 	}
 	if (timeout < timemin)
@@ -681,7 +698,9 @@ static void print_bulk (struct binding *bl, struct type_SNMP_VarBindList *vb, in
 	for (bv = bl; bv; bv = bv -> b_next) {
 		int    j;
 		char   *cp = sprintoid (bv -> b_name);
-		if (i < (j = strlen (cp)))
+		if (strlen2int (cp, &j) != 0)
+			adios (NULLCP, "OID too long");
+		if (i < j)
 			i = j;
 	}
 	printf ("%-*s", i, "row");
@@ -728,7 +747,7 @@ static struct type_SNMP_Message *new_message (OID arg, struct type_SNMP_VarBindL
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
 	msg -> version = int_SNMP_version_version__1;
-	if ((msg -> community = str2qb (community, strlen (community), 1)) == NULL)
+	if ((msg -> community = str2qb_s (community)) == NULL)
 		adios (NULLCP, "out of memory");
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -876,7 +895,8 @@ void bulk2 (PS ps, int sd, struct type_SNMP_VarBindList *vb, char *community) {
 	RTTperthread = MAXTIME;
 	totreqs = totretr = totrsps = totdups = 0;
 	gettimeofday (&tvs, (struct timezone *) 0);
-	timenow = tvs.tv_sec * 1000L + tvs.tv_usec / 1000L;
+	if (timeval_millis (&tvs, &timenow) != 0)
+		adios (NULLCP, "time overflow");
 	a = oid_copy (arg = vb -> VarBind -> name);
 	a -> oid_elements[a -> oid_nelem++] = 127;
 	new_bound (community, arg, a);

@@ -51,7 +51,8 @@ static int  o_viewPrim (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -187,7 +188,8 @@ static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -256,7 +258,7 @@ static int  o_viewAcl (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	case viewAclCommunity:
 	case viewAclUser:
-		return o_string (oi, v, c -> c_name, strlen (c -> c_name));
+		return o_string_s (oi, v, c -> c_name);
 
 	case viewAclPrivileges:
 		return o_integer (oi, v,
@@ -306,7 +308,8 @@ static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -374,8 +377,10 @@ static int  o_viewTrap (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		return o_specific (oi, v, (caddr_t) t -> t_view -> v_name);
 
 	case viewTrapGenerics: {
-		char   c = t -> t_generics & 0xff;
+		char   c;
 
+		if (u32tooctet (t -> t_generics & 0xff, &c) != 0)
+			return int_SNMP_error__status_genErr;
 		return o_string (oi, v, &c, sizeof c);
 	}
 
@@ -812,7 +817,7 @@ int f_proxy (char **vec) {
 	} else
 		goto you_lose;
 	if (*vec) {
-		if ((v -> v_community = str2qb (*vec, strlen (*vec), 1)) == NULL)
+		if ((v -> v_community = str2qb_s (*vec)) == NULL)
 			adios (NULLCP, "out of memory");
 		if ((c -> c_name = strdup (*vec)) == NULL)
 			adios (NULLCP, "out of memory");
@@ -859,7 +864,7 @@ int f_trap (char **vec) {
 	trapview -> oid_nelem--;
 	if (v -> v_name == NULLOID)
 		adios (NULLCP, "out of memory");
-	if ((v -> v_community = str2qb (t -> t_name, strlen (t -> t_name), 1))
+	if ((v -> v_community = str2qb_s (t -> t_name))
 			== NULL)
 		adios (NULLCP, "out of memory");
 	bzero ((char *) na, sizeof *na);
@@ -1039,14 +1044,18 @@ static int  str2sa (char *s, struct NSAPaddr *na, struct sockaddr *sock, int pro
 			goto you_lose;
 		{
 			struct sockaddr_in sin;
+			int	port;
 
-			sin.sin_port = na -> na_port ? na -> na_port
-						   : proxy ? udport : traport;
+			port = na -> na_port ? na -> na_port
+				   : proxy ? udport : traport;
+			if (int2inport (port, &sin.sin_port) != 0)
+				return NOTOK;
 
 			if ((hp = gethostbystring (na -> na_domain)) == NULL)
 				return NOTOK;
 
-			sin.sin_family = hp -> h_addrtype;
+			if (int2safamily (hp -> h_addrtype, &sin.sin_family) != 0)
+				return NOTOK;
 			inaddr_copy (hp, &sin);
 
 			*((struct sockaddr_in *) sock) = sin;	/* struct copy */

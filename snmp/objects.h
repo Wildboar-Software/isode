@@ -116,6 +116,7 @@ int	o_longword (OI oi, struct type_SNMP_VarBind *v, integer number);
 #define	o_integer(oi,v,value)	o_longword ((oi), (v), (integer) (value))
 
 int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, int len);
+int	o_string_s (OI oi, struct type_SNMP_VarBind *v, char *base);
 int	o_qbstring (OI oi, struct type_SNMP_VarBind *v, struct qbuf *value);
 
 int	o_specific (OI oi, struct type_SNMP_VarBind *v, caddr_t value);

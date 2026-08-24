@@ -236,7 +236,10 @@ static struct dispatch *getds (char *name) {
 				return ds;
 		if (*q == NULL)
 			if (q - name > longest) {
-				longest = q - name;
+				if (ptrdiff2int (q - name, &longest) != 0) {
+					advise (NULLCP, "operation name too long");
+					return NULL;
+				}
 				nmatches = 1;
 				fs = ds;
 			} else if (q - name == longest)
@@ -378,7 +381,16 @@ no_mem:
 			advise (NULLCP, "qb2str: out of memory");
 			break;
 		}
-		ut = str2gent (cp, strlen (cp));
+		{
+			int	n;
+
+			if (strlen2int (cp, &n) != 0) {
+				free (cp);
+				advise (NULLCP, "timestamp too long");
+				break;
+			}
+			ut = str2gent (cp, n);
+		}
 		free (cp);
 		if (ut == NULL) {
 			advise (NULLCP, "str2gent: you lose");
@@ -889,7 +901,7 @@ static struct type_SNMP_Message *new_message (int offset, char **vec) {
 	if ((msg = (struct type_SNMP_Message *) calloc (1, sizeof *msg)) == NULL)
 		adios (NULLCP, "out of memory");
 	msg -> version = int_SNMP_version_version__1;
-	if ((msg -> community = str2qb (community, strlen (community), 1)) == NULL)
+	if ((msg -> community = str2qb_s (community)) == NULL)
 		adios (NULLCP, "out of memory");
 	if ((pdu = (struct type_SNMP_PDUs *) calloc (1, sizeof *pdu)) == NULL)
 		adios (NULLCP, "out of memory");
@@ -1080,7 +1092,15 @@ static int f_help (char **vec) {
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
-		lines = ((es - dispatches) + columns - 1) / columns;
+		{
+			int	nents;
+
+			if (ptrdiff2int (es - dispatches, &nents) != 0)
+				adios (NULLCP, "too many operations");
+			if (columns <= 0 || nents > INT_MAX - (columns - 1))
+				adios (NULLCP, "help layout overflow");
+			lines = (nents + columns - 1) / columns;
+		}
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -1090,7 +1110,9 @@ static int f_help (char **vec) {
 					printf ("\n");
 					break;
 				}
-				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
+				if (strlen2int (ds -> ds_name, &w) != 0)
+					adios (NULLCP, "operation name too long");
+				for (; w < width; w = (w + 8) & ~7)
 					putchar ('\t');
 			}
 		printf ("\n");
@@ -1325,7 +1347,16 @@ static	void arginit (char **vec) {
 	na -> na_community = ts_comm_tcp_default;
 	strncpy (na -> na_domain, getlocalhost (),
 			 sizeof na -> na_domain - 1);
-	na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 161);
+	{
+		uint16_t svcport;
+
+		if (sp) {
+			if (int2u16 (sp -> s_port, &svcport) != 0)
+				adios (NULLCP, "snmp port out of range");
+		} else
+			svcport = htons ((uint16_t) 161);
+		na -> na_port = svcport;
+	}
 	na -> na_tset = NA_TSET_UDP;
 	ta -> ta_naddr = 1;
 #endif
@@ -1349,9 +1380,16 @@ static	void arginit (char **vec) {
 						if ((tz = str2taddr (pp)) && tz -> ta_naddr > 0) {
 							*ta = *tz;	/* struct copy */
 							if (na -> na_stack == NA_TCP) {
-								if (na -> na_port == 0)
-									na -> na_port = sp ? sp -> s_port
-													: htons ((uint16_t) 161);
+								if (na -> na_port == 0) {
+									uint16_t svcport;
+
+									if (sp) {
+										if (int2u16 (sp -> s_port, &svcport) != 0)
+											adios (NULLCP, "snmp port out of range");
+									} else
+										svcport = htons ((uint16_t) 161);
+									na -> na_port = svcport;
+								}
 								na -> na_tset = NA_TSET_UDP;
 							}
 						} else
@@ -1406,7 +1444,9 @@ static	void arginit (char **vec) {
 	}
 	helpwidth = 0;
 	for (ds = dispatches; ds -> ds_name; ds++)
-		if ((w = strlen (ds -> ds_name)) > helpwidth)
+		if (strlen2int (ds -> ds_name, &w) != 0)
+			adios (NULLCP, "operation name too long");
+		if (w > helpwidth)
 			helpwidth = w;
 	if (ta -> ta_naddr == 0)
 		adios (NULLCP, "usage: %s -a string", myname);
@@ -1419,7 +1459,8 @@ static	void arginit (char **vec) {
 		bzero ((char *) lsock, sizeof *lsock);
 		if ((hp = gethostbystring (pp = getlocalhost ())) == NULL)
 			adios (NULLCP, "%s: unknown host", pp);
-		lsock -> sin_family = hp -> h_addrtype;
+		if (int2safamily (hp -> h_addrtype, &lsock -> sin_family) != 0)
+			adios (NULLCP, "address family out of range");
 		inaddr_copy (hp, lsock);
 		/* If the request is being sent out on the loopback interface,
 		   make sure it appears to have originated from the loopback
@@ -1436,7 +1477,8 @@ static	void arginit (char **vec) {
 		bzero ((char *) isock, sizeof *isock);
 		if ((hp = gethostbystring (na -> na_domain)) == NULL)
 			adios (NULLCP, "%s: unknown host", na -> na_domain);
-		isock -> sin_family = hp -> h_addrtype;
+		if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+			adios (NULLCP, "address family out of range");
 		isock -> sin_port = na -> na_port;
 		inaddr_copy (hp, isock);
 		if (join_udp_server (sd, isock) == NOTOK)
@@ -1596,8 +1638,11 @@ static int  _getline (char *prompt, char *buffer) {
 			sticky++;
 			break;
 		}
-		if (cp < ep)
-			*cp++ = i;
+		if (cp < ep) {
+			if (int2octet (i, cp) != 0)
+				adios (NULLCP, "input byte out of range");
+			cp++;
+		}
 	}
 	*cp = 0;
 	armed = 0;

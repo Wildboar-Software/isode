@@ -56,8 +56,11 @@ int	THASH (const char *name) {
 		 *dp;
 
 	for (c = *(dp = cp = name); *cp; cp++)
-		if (isupper (*cp))
-			c = tolower (*(dp = cp));
+		if (isupper ((unsigned char) *cp)) {
+			dp = cp;
+			if (int2octet (tolower ((unsigned char) *dp), &c) != 0)
+				return 0;
+		}
 	if (*++dp)
 		return (((c - *dp) & 0x1f) + (*(dp + 1) & 0x5f));
 	else
@@ -507,7 +510,11 @@ OID	text2oid (const char *name) {
 	if (i > 0)
 		for (j = 0, jp = elements; j < i; j++, jp++)
 			*ip++ = *jp;
-	new -> oid_nelem = ip - new -> oid_elements;
+	if (ptrdiff2int (ip - new -> oid_elements, &new -> oid_nelem) != 0) {
+		oid_free (new);
+		new = NULLOID;
+		goto free_up;
+	}
 free_up:
 	;
 	if (name)
@@ -793,9 +800,13 @@ int loadobjects (const char *file)\n\
 	    return NOTOK;\n\
 	}\n\
 \n\
-    for (ot = _types; ot -> ot_text; ot++)\n\
-	ot -> ot_syntax = (i = (ssize_t) ot -> ot_syntax) < 0\n\
-	    			? NULLOS : _syntaxes[i].value;\n\
+    for (ot = _types; ot -> ot_text; ot++) {\n\
+	if (caddr2int (ot -> ot_syntax, &i) != 0) {\n\
+	     sprintf (PY_pepy, \"object \\\"%%s\\\" syntax index out of range\", ot -> ot_text);\n\
+	    return NOTOK;\n\
+	}\n\
+	ot -> ot_syntax = i < 0 ? NULLOS : _syntaxes[i].value;\n\
+    }\n\
 \n\
     return OK;\n\
 }\n");

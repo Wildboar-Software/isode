@@ -34,7 +34,8 @@ static int  o_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
@@ -101,8 +102,7 @@ again:
 		return o_specific (oi, v, (caddr_t) pb -> pb_identity);
 
 	case smuxPdescription:
-		return o_string (oi, v, pb -> pb_description,
-						 strlen (pb -> pb_description));
+		return o_string_s (oi, v, pb -> pb_description);
 
 	case smuxPstatus:
 		return o_integer (oi, v, pb -> pb_identity ? PB_VALID
@@ -122,7 +122,8 @@ static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OS	    os = ot -> ot_syntax;
 	caddr_t value;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 	case type_SNMP_PDUs_commit:
@@ -199,7 +200,8 @@ static int  o_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OID    oid = oi -> oi_name;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
@@ -282,7 +284,8 @@ static int  s_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	caddr_t value;
 
 #ifndef	lint
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 #endif
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:

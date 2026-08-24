@@ -151,7 +151,7 @@ static int string_parse (struct qbuf **x, char *s) {
 		int	len;
 		char   *p;
 		s += 2;
-		if ((len = strlen (s)) % 3 != 2)
+		if (strlen2int (s, &len) != 0 || len % 3 != 2)
 			return NOTOK;
 		len /= 3, len++;
 		if ((qb = str2qb (NULLCP, len, 1)) == NULL)
@@ -165,12 +165,14 @@ oops:
 				qb_free (qb);
 				return NOTOK;
 			}
-			*p++ = i & 0xff;
+			if (int2octet (i, p) != 0)
+				goto oops;
+			p++;
 			s += 2;
 			if (*s && *s++ != ':')
 				goto oops;
 		}
-	} else if ((qb = str2qb (s, strlen (s), 1)) == NULL)
+	} else if ((qb = str2qb_s (s)) == NULL)
 		return NOTOK;
 	*x = qb;
 	return OK;
@@ -511,8 +513,16 @@ static int clnpaddr_decode (struct sockaddr_iso **x, PE pe) {
 	isock -> siso_family = AF_ISO;
 	if ((len = qb -> qb_data[0] & 0xff) >= qb -> qb_len)
 		len = qb -> qb_len - 1;
-	bcopy (qb -> qb_data + 1, isock -> siso_data,
-		   (int) (isock -> siso_nlen = len));
+	if (int2u8 (len, &isock -> siso_nlen) != 0) {
+		free ((char *) isock);
+		free_SNMP_ClnpAddress (clnp);
+		return NOTOK;
+	}
+	if (bcopy_int (qb -> qb_data + 1, isock -> siso_data, len) != 0) {
+		free ((char *) isock);
+		free_SNMP_ClnpAddress (clnp);
+		return NOTOK;
+	}
 	*x = isock;
 	free_SNMP_ClnpAddress (clnp);
 	return OK;
@@ -528,8 +538,18 @@ static int clnpaddr_parse (struct sockaddr_iso **x, char *s) {
 	if ((isock = (struct sockaddr_iso *) calloc (1, sizeof *isock)) == NULL)
 		return NOTOK;
 	isock -> siso_family = AF_ISO;
-	isock -> siso_nlen = implode ((uint8_t *) isock -> siso_data, s,
-								  strlen (s));
+	{
+		int	nlen,
+			n;
+		uint8_t	nlen8;
+
+		if (strlen2int (s, &n) != 0)
+			return NOTOK;
+		nlen = implode ((uint8_t *) isock -> siso_data, s, n);
+		if (int2u8 (nlen, &nlen8) != 0)
+			return NOTOK;
+		isock -> siso_nlen = nlen8;
+	}
 	*x = isock;
 	return OK;
 }
@@ -569,7 +589,7 @@ int	add_syntax (
 	int	    i;
 	OS	    os = synlast++;
 
-	if ((i = synlast - syntaxes) >= MAXSYN)
+	if (ptrdiff2int (synlast - syntaxes, &i) != 0 || i >= MAXSYN)
 		return NOTOK;
 	bzero ((char *) os, sizeof *os);
 	os -> os_name = name;
