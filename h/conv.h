@@ -998,6 +998,27 @@ int2float (int n, float *out)
 	return 0;
 }
 
+/* Truncates toward zero, matching a C cast.  Rejects NaN and out-of-range. */
+static inline int
+double2int (double n, int *out)
+{
+	if (out == NULL || n != n)
+		return -1;
+	if (n < (double) INT_MIN || n > (double) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+static inline int
+int32_to_int (int32_t n, int *out)
+{
+	if (out == NULL || n < (int32_t) INT_MIN || n > (int32_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
 static inline int
 int2safamily (int n, sa_family_t *out)
 {

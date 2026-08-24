@@ -67,8 +67,14 @@ PE	obj2prim (OID o, PElementClass class, PElementID id) {
 			j = *ip;
 
 		ep = dp + (m = *mp++) - 1;
-		for (dp = ep; m-- > 0; j >>= 7)
-			*dp-- = (j & 0x7f) | 0x80;
+		for (dp = ep; m-- > 0; j >>= 7) {
+			if (int2u8 ((int) ((j & 0x7f) | 0x80), dp) != 0) {
+				free ((char *) np);
+				pe_free (pe);
+				return NULLPE;
+			}
+			dp--;
+		}
 		*ep = u8_bic (*ep, 0x80);
 		dp = ep + 1;
 	}

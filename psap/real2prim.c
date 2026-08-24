@@ -30,20 +30,41 @@ real2prim (double d, PElementClass class, PElementID id) {
 	} else	sign = 1;
 
 	nm = mant;
-	for (i = 0; i < sizeof (double) ; i++) {
-		int intnm;
-		nm *= (1<<8);
-		intnm = ((int)nm) & 0xff;
-		nm -= intnm;
-		if (intnm)
-			maxi = i + 1;
-		parts[i] = intnm;
+	{
+		int nd;
+
+		if (sizet2int (sizeof (double), &nd) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
+		for (i = 0; i < nd; i++) {
+			int intnm;
+			nm *= (1<<8);
+			if (double2int (nm, &intnm) != 0) {
+				pe_free (pe);
+				return NULLPE;
+			}
+			intnm &= 0xff;
+			nm -= intnm;
+			if (intnm)
+				maxi = i + 1;
+			parts[i] = intnm;
+		}
 	}
 
 	exponent -= 8 * maxi;
 
 	expsign = exponent >= 0 ? exponent : exponent ^ (-1);
-	mask = 0x1ff << (((n = sizeof exponent) - 1) * 8 - 1);
+	{
+		int nbytes;
+
+		if (sizet2int (sizeof exponent, &nbytes) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
+		n = nbytes;
+	}
+	mask = 0x1ff << ((n - 1) * 8 - 1);
 	while (n > 1 && (expsign & mask) == 0)
 		mask >>= 8, n--;
 
@@ -59,11 +80,20 @@ real2prim (double d, PElementClass class, PElementID id) {
 	dp = pe -> pe_prim + (pe -> pe_len = n + maxi + 1);
 
 	for (; maxi > 0; maxi --)
-		*--dp = parts[maxi - 1];
+		if (int2u8 (parts[maxi - 1], --dp) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
 	for (n = explen; n-- > 0; exponent >>= 8)
-		*--dp = exponent & 0xff;
+		if (int2u8 (exponent & 0xff, --dp) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
 	if (explen > 3)
-		*--dp = explen & 0xff;
+		if (int2u8 (explen & 0xff, --dp) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
 
 	switch (explen) {
 	case 1:
@@ -79,9 +109,12 @@ real2prim (double d, PElementClass class, PElementID id) {
 		explen = PE_REAL_B_EF3;
 		break;
 	}
-	*--dp = PE_REAL_BINENC
+	if (int2u8 (PE_REAL_BINENC
 			| PE_REAL_B_B2
 			| (sign == -1 ? PE_REAL_B_S : 0)
-			| explen;
+			| explen, --dp) != 0) {
+		pe_free (pe);
+		return NULLPE;
+	}
 	return pe;
 }

@@ -62,27 +62,39 @@ int ps_write_id (PS ps, PE pe) {
 	byte  *bp = buffer;
 	PElementForm    form;
 	PElementID id;
+	int n;
 
 	if ((form = pe -> pe_form) == PE_FORM_ICONS)
 		form = PE_FORM_CONS;
-	*bp = ((pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
-		  | ((form << PE_FORM_SHIFT) & PE_FORM_MASK);
-	if ((id = pe -> pe_id) < PE_ID_XTND)
-		*bp++ |= id;
-	else {
+	if (int2u8 (((int) (pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
+		  | ((int) (form << PE_FORM_SHIFT) & PE_FORM_MASK), bp) != 0)
+		return NOTOK;
+	if ((id = pe -> pe_id) < PE_ID_XTND) {
+		if (int2u8 ((int) (*bp | id), bp) != 0)
+			return NOTOK;
+		bp++;
+	} else {
 		byte *ep;
 		PElementID jd;
-		*bp |= PE_ID_XTND;
+		if (int2u8 ((int) (*bp | PE_ID_XTND), bp) != 0)
+			return NOTOK;
 		ep = buffer;
 		for (jd = id; jd != 0; jd >>= PE_ID_SHIFT)
 			ep++;
-		for (bp = ep; id != 0; id >>= PE_ID_SHIFT)
-			*bp-- = id & PE_ID_MASK;
-		for (bp = buffer + 1; bp < ep; bp++)
-			*bp |= PE_ID_MORE;
+		for (bp = ep; id != 0; id >>= PE_ID_SHIFT) {
+			if (int2u8 ((int) (id & PE_ID_MASK), bp) != 0)
+				return NOTOK;
+			bp--;
+		}
+		for (bp = buffer + 1; bp < ep; bp++) {
+			if (int2u8 ((int) (*bp | PE_ID_MORE), bp) != 0)
+				return NOTOK;
+		}
 		bp = ++ep;
 	}
-	if (ps_write (ps, buffer, bp - buffer) == NOTOK)
+	if (ptrdiff2int (bp - buffer, &n) != 0)
+		return NOTOK;
+	if (ps_write (ps, buffer, n) == NOTOK)
 		return NOTOK;
 	return OK;
 }
@@ -95,22 +107,39 @@ int ps_write_len (PS ps, PE pe) {
 	byte  *bp = buffer,
 		   *ep;
 	PElementLen len;
+	int n;
 
-	if ((len = pe -> pe_len) == PE_LEN_INDF)
-		*bp++ = PE_LEN_XTND;
-	else if (len <= PE_LEN_SMAX)
-		*bp++ = len & 0xff;
-	else {
+	if ((len = pe -> pe_len) == PE_LEN_INDF) {
+		if (int2u8 (PE_LEN_XTND, bp) != 0)
+			return NOTOK;
+		bp++;
+	} else if (len <= PE_LEN_SMAX) {
+		if (int2u8 (len & 0xff, bp) != 0)
+			return NOTOK;
+		bp++;
+	} else {
 		ep = buffer + sizeof buffer - 1;
-		for (bp = ep; len != 0 && buffer < bp; len >>= 8)
-			*bp-- = len & 0xff;
-		*bp = PE_LEN_XTND | ((ep - bp) & 0xff);
-		if (ps_write (ps, bp, ep - bp + 1) == NOTOK)
+		for (bp = ep; len != 0 && buffer < bp; len >>= 8) {
+			if (int2u8 (len & 0xff, bp) != 0)
+				return NOTOK;
+			bp--;
+		}
+		{
+			ptrdiff_t nb = ep - bp;
+
+			if (int2u8 (PE_LEN_XTND | (int) (nb & 0xff), bp) != 0)
+				return NOTOK;
+		}
+		if (ptrdiff2int (ep - bp + 1, &n) != 0)
+			return NOTOK;
+		if (ps_write (ps, bp, n) == NOTOK)
 			return NOTOK;
 
 		return OK;
 	}
-	if (ps_write (ps, buffer, bp - buffer) == NOTOK)
+	if (ptrdiff2int (bp - buffer, &n) != 0)
+		return NOTOK;
+	if (ps_write (ps, buffer, n) == NOTOK)
 		return NOTOK;
 	return OK;
 }

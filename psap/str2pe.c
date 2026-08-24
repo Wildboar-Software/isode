@@ -33,7 +33,10 @@ PE str2pe (char *s, int len, int *advance, int *result) {
 		return NULLPE;
 	if ((pe = pe_alloc (class, form, id)) == NULLPE)
 		return seterr (PS_ERR_NMEM, NULLPE);
-	pe -> pe_ilen = sp - s;
+	if (ptrdiff2int (sp - s, &pe -> pe_ilen) != 0) {
+		pe_free (pe);
+		return seterr (PS_ERR_OVERLEN, NULLPE);
+	}
 	if (form == PE_FORM_ICONS) {
 		pe -> pe_len = pe -> pe_ilen + plen;
 		pe -> pe_prim = (PElementData) s;

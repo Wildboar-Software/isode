@@ -100,9 +100,17 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			u -> ut_min = (u -> ut_sec = usec / 1000000) / 60;
-			u -> ut_sec %= 60;
-			u -> ut_usec = usec % 1000000;
+			{
+				int total_sec,
+				    us;
+
+				if (long2int (usec / 1000000L, &total_sec) != 0
+						|| long2int (usec % 1000000L, &us) != 0)
+					return NULLUTC;
+				u -> ut_min = total_sec / 60;
+				u -> ut_sec = total_sec % 60;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
@@ -120,9 +128,18 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			if ((u -> ut_sec = usec / 1000000) >= 60)
-				return NULLUTC;
-			u -> ut_usec = usec % 1000000;
+			{
+				int sec,
+				    us;
+
+				if (long2int (usec / 1000000L, &sec) != 0
+						|| long2int (usec % 1000000L, &us) != 0)
+					return NULLUTC;
+				if (sec >= 60)
+					return NULLUTC;
+				u -> ut_sec = sec;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
@@ -141,8 +158,15 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			if ((u -> ut_usec = usec) >= 1000000)
-				return NULLUTC;
+			{
+				int us;
+
+				if (long2int (usec, &us) != 0)
+					return NULLUTC;
+				if (us >= 1000000)
+					return NULLUTC;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_USEC;
 			goto get_zone;
 

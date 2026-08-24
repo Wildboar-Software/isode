@@ -17,7 +17,8 @@ time2prim (UTC u, int generalized, PElementClass class, PElementID id) {
 	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
 		return NULLPE;
 
-	if ((pe -> pe_prim = PEDalloc (len = strlen (bp))) == NULLPED) {
+	if (strlen2int (bp, &len) != 0
+			|| (pe -> pe_prim = PEDalloc (len)) == NULLPED) {
 		pe_free (pe);
 		return NULLPE;
 	}

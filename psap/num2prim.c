@@ -8,24 +8,51 @@ PE
 num2prim (integer i, int class, int id) {
 	static const integer MASK = 0x1ff;
 	integer mask, sign, n;
+	int len;
+	PElementClass cl;
+	PElementID pid;
 	PElementData dp;
 	PE	    pe;
 
-	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+	if (int2u8 (class, &cl) != 0 || int2u16 (id, &pid) != 0)
+		return NULLPE;
+
+	if ((pe = pe_alloc (cl, PE_FORM_PRIM, pid)) == NULLPE)
 		return NULLPE;
 
 	sign = i >= 0 ? i : i ^ (-1);
-	mask = MASK << (((n = sizeof i) - 1) * 8 - 1);
+	{
+		int nbytes;
+
+		if (sizet2int (sizeof i, &nbytes) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
+		n = nbytes;
+	}
+	mask = MASK << ((n - 1) * 8 - 1);
 	while (n > 1 && (sign & mask) == 0)
 		mask >>= 8, n--;
 
-	if ((pe -> pe_prim = PEDalloc (n)) == NULLPED) {
+	if (int32_to_int (n, &len) != 0) {
+		pe_free (pe);
+		return NULLPE;
+	}
+	if ((pe -> pe_prim = PEDalloc (len)) == NULLPED) {
 		pe_free (pe);
 		return NULLPE;
 	}
 
-	for (dp = pe -> pe_prim + (pe -> pe_len = n); n-- > 0; i >>= 8)
-		*--dp = i & 0xff;
+	pe -> pe_len = len;
+	for (dp = pe -> pe_prim + pe -> pe_len; n-- > 0; i >>= 8) {
+		int octet;
+
+		if (int32_to_int (i & 0xff, &octet) != 0
+				|| int2u8 (octet, --dp) != 0) {
+			pe_free (pe);
+			return NULLPE;
+		}
+	}
 
 	return pe;
 }
