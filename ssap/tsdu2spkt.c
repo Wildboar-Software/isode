@@ -40,12 +40,6 @@ store_u8 (char *p, int n)
 	return OK;
 }
 
-static uint8_t
-as_octet (char c)
-{
-	return (uint8_t) (unsigned char) c;
-}
-
 #define PMASK_NODATA		0x000000
 #define	PMASK_CN_ID			0x000001	/*   1: Connection ID */
 #define	PMASK_CN_ITEMS		0x000002	/*   5: Connect/Accept Item */

@@ -31,7 +31,7 @@ void init_print (void);
 static int _select (const struct dirent *dd);
 static int sortq (const struct dirent **d1, const struct dirent **d2);
 int sync_print (int cor);
-
+void adios (char *what, char *fmt, ...);
 
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
