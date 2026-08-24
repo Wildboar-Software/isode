@@ -63,7 +63,8 @@ int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm,
 	FCINIT (fc);
 #define	dolock(s,t) \
 { \
-    fc -> t = lock2fc [fpm -> s -> parm]; \
+    if (int2char (lock2fc [fpm -> s -> parm], &fc -> t) != 0) \
+	return ftamlose (fti, FS_GEN (fsb), 1, NULLCP, "invalid lock"); \
 }
 	dolock (read, fc_readlock);
 	dolock (insert, fc_insertlock);

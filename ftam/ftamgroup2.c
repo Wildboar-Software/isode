@@ -109,7 +109,9 @@ out:
 		}			/* else fall */
 
 	default:
-		fsb -> fsb_state = state;
+		if (int2short (state, &fsb -> fsb_state) != 0)
+			return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+					 "invalid FTAM state");
 		break;
 	}
 	return OK;

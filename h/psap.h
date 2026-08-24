@@ -518,6 +518,15 @@ extern struct qbuf *Qb;
 PE qbuf2pe_f (int *result);
 char *qb2str (struct qbuf *q);
 struct qbuf *str2qb (char *s, int len, int head) ;
+static inline struct qbuf *
+str2qb_s (char *s)
+{
+	int n;
+
+	if (s == NULL || strlen2int (s, &n) != 0)
+		return NULL;
+	return str2qb (s, n, 1);
+}
 void qb_free (struct qbuf *qb);
 
 int	pe2ssdu (PE pe, char **base, int *len);

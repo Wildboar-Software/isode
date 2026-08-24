@@ -44,8 +44,7 @@ out:
 				== NULL)
 			goto out;
 		if (fe -> fe_identity
-				&& (ace -> identity = str2qb (fe -> fe_identity,
-											  strlen (fe -> fe_identity), 1))
+				&& (ace -> identity = str2qb_s (fe -> fe_identity))
 				== NULL)
 			goto no_mem;
 		if (passes_present (&fe -> fe_passwords)

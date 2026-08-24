@@ -50,7 +50,7 @@ out:
 					== NULL)
 				goto no_mem;
 			*fc = fn;
-			if ((fn -> GraphicString = str2qb (*ap, strlen (*ap), 1)) == NULL)
+			if ((fn -> GraphicString = str2qb_s (*ap)) == NULL)
 				goto no_mem;
 			fc = &((*fc) -> next);
 		}
@@ -104,7 +104,7 @@ out:
 			fpm -> storage__account -> offset =
 				type_FTAM_Account__Attribute_actual__values;
 			if ((fpm -> storage__account -> un.actual__values =
-						str2qb (fa -> fa_account, strlen (fa -> fa_account), 1))
+						str2qb_s (fa -> fa_account))
 					== NULL)
 				goto no_mem;
 		}
@@ -122,7 +122,7 @@ out:
 		    type_FTAM_Date__and__Time__Attribute_actual__values; \
 	    if ((cp = gent2str (field)) == NULL \
 		    || (fpm -> tag -> un.actual__values = \
-				str2qb (cp, strlen (cp), 1)) == NULL) \
+				str2qb_s (cp)) == NULL) \
 		goto no_mem; \
 	} \
     }
@@ -151,8 +151,7 @@ out:
 	    } \
 	    fpm -> tag -> offset = \
 		    type_FTAM_User__Identity__Attribute_actual__values; \
-	    if ((fpm -> tag -> un.actual__values = str2qb (field, \
-							  strlen (field), 1)) \
+	    if ((fpm -> tag -> un.actual__values = str2qb_s (field)) \
 		    == NULL) \
 		goto no_mem; \
 	} \
@@ -245,7 +244,7 @@ out:
 			fpm -> legal__qualification -> offset =
 				type_FTAM_Legal__Qualification__Attribute_actual__values;
 			if ((fpm -> legal__qualification -> un.actual__values =
-						str2qb (fa -> fa_legal, strlen (fa -> fa_legal), 1))
+						str2qb_s (fa -> fa_legal))
 					== NULL)
 				goto no_mem;
 		}
@@ -336,7 +335,12 @@ no_mem:
 	else { \
 	    if ((cp = qb2str (fpm -> tag -> un.actual__values)) == NULL) \
 		goto no_mem; \
-	    u = str2gent (cp, strlen (cp)); \
+	    { \
+		int n; \
+		if (strlen2int (cp, &n) != 0) \
+		    goto no_mem; \
+		u = str2gent (cp, n); \
+	    } \
 	    free (cp); \
 	    if (u == NULLUTC) \
 		goto no_mem; \

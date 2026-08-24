@@ -549,7 +549,9 @@ no_mem:
 			goto no_mem;
 		rsp -> action__result -> parm = action;
 	}
-	rsp -> presentation__context__management = manage;
+	rsp -> presentation__context__management = 0;
+	if (int2char (manage, &rsp -> presentation__context__management) != 0)
+		goto no_mem;
 	if (fsb -> fsb_class != FCLASS_TRANSFER
 			&& (rsp -> service__class = bits2fpm (fsb, fclass_pairs,
 										fsb -> fsb_class, fti))

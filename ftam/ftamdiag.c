@@ -133,7 +133,11 @@ int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAM
 								 "out of memory");
 			strncpy (dp -> ftd_data, cp, sizeof dp -> ftd_data);
 			dp -> ftd_data[sizeof dp -> ftd_data - 1] = 0;
-			dp -> ftd_cc = strlen (dp -> ftd_data);
+			if (strlen2int (dp -> ftd_data, &dp -> ftd_cc) != 0) {
+				free (cp);
+				return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+								 "diagnostic too long");
+			}
 			free (cp);
 		} else
 			dp -> ftd_cc = 0;

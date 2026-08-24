@@ -870,6 +870,15 @@ int2char (int n, char *out)
 	return 0;
 }
 
+static inline int
+int2short (int n, short *out)
+{
+	if (out == NULL || n < (int) SHRT_MIN || n > (int) SHRT_MAX)
+		return -1;
+	*out = (short) n;
+	return 0;
+}
+
 /*
  * Store a protocol octet as a C char, keeping all 256 bit patterns.
  * Use int2char for text and for signed length fields that must not wrap.

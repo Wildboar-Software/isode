@@ -178,7 +178,9 @@ no_mem:
 			   calloc (1, sizeof *req)) == NULL)
 		goto no_mem;
 	pdu -> un.f__initialize__request = req;
-	req -> presentation__context__management = manage;
+	req -> presentation__context__management = 0;
+	if (int2char (manage, &req -> presentation__context__management) != 0)
+		goto no_mem;
 	if (class != FCLASS_TRANSFER
 			&& (req -> service__class = bits2fpm (fsb, fclass_pairs, class,
 										fti)) == NULLPE)
@@ -221,12 +223,11 @@ no_mem:
 		}
 	}
 	if (initiator
-			&& (req -> initiator__identity = str2qb (initiator,
-					strlen (initiator), 1))
+			&& (req -> initiator__identity = str2qb_s (initiator))
 			== NULL)
 		goto out1;
 	if (account
-			&& (req -> account = str2qb (account, strlen (account), 1))
+			&& (req -> account = str2qb_s (account))
 			== NULL)
 		goto out1;
 	if (password) {
