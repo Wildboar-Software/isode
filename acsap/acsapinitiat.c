@@ -157,7 +157,12 @@ no_mem:
 				i--, pp++) {
 			if (oid_cmp (pp -> pc_asn, oid) == 0) {
 				acb -> acb_id = pp -> pc_id;
-				acb -> acb_offset = pp - ctxlist -> pc_ctx;
+				if (ptrdiff2int (pp - ctxlist -> pc_ctx,
+						 &acb -> acb_offset) != 0) {
+					result = acsaplose (aci, ACS_CONGEST, NULLCP,
+							    "context offset too large");
+					goto out;
+				}
 
 				pp = NULL;
 				goto ready;

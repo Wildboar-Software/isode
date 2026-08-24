@@ -244,7 +244,8 @@ static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindicat
 
 	pt -> pt_type = st -> st_type;
 	pt -> pt_tokens = st -> st_tokens;
-	pt -> pt_owned = pb -> pb_owned = st -> st_owned;
+	pt -> pt_owned = st -> st_owned;
+	pb -> pb_owned = st -> st_owned;
 
 	result = ssdu2info (pb, pi, st -> st_data, st -> st_cc, pt -> pt_info,
 						&pt -> pt_ninfo, "P-PLEASE-TOKEN user-data", PPDU_NONE);

@@ -541,9 +541,47 @@ u8_bic (uint8_t v, unsigned bits)
 }
 
 static inline uint16_t
+u16_bis (uint16_t v, unsigned bits)
+{
+	return (uint16_t) (v | bits);
+}
+
+static inline uint16_t
 u16_bic (uint16_t v, unsigned bits)
 {
 	return (uint16_t) (v & ~bits);
+}
+
+/* Interpret a C short as a 16-bit flag word (all 65536 values). */
+static inline uint16_t
+as_ushort (short n)
+{
+	return *(unsigned short *) &n;
+}
+
+static inline int
+ushort2short (uint16_t n, short *out)
+{
+	if (out == NULL)
+		return -1;
+	*(unsigned short *) out = n;
+	return 0;
+}
+
+static inline int
+short_bis (short *p, unsigned bits)
+{
+	if (p == NULL || bits > 0xffffU)
+		return -1;
+	return ushort2short (u16_bis (as_ushort (*p), bits), p);
+}
+
+static inline int
+short_bic (short *p, unsigned bits)
+{
+	if (p == NULL || bits > 0xffffU)
+		return -1;
+	return ushort2short (u16_bic (as_ushort (*p), bits), p);
 }
 
 /* Interpret a C char as a protocol octet (all 256 values). */

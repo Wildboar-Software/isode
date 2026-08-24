@@ -37,6 +37,17 @@ static int dase_init (void);
 static int dase_callback (struct type_DASE_Callback__REQ *arg);
 static int yesno (void);
 static void print_qb (struct qbuf *q);
+static struct qbuf *str2qb_s (char *s);
+
+static struct qbuf *
+str2qb_s (char *s)
+{
+	int n;
+
+	if (s == NULL || strlen2int (s, &n) != 0)
+		return NULL;
+	return str2qb (s, n, 1);
+}
 
 static struct element_DASE_1 *read_el (void);
 
@@ -102,20 +113,20 @@ no_mem:
 			*dp = dl;
 			dp = &dl -> next;
 
-			if ((dl -> IA5String = str2qb (*vp, strlen (*vp), 1)) == NULL)
+			if ((dl -> IA5String = str2qb_s (*vp)) == NULL)
 				goto no_mem;
 		}
 	}
 	parm -> interactive = ontty ? 1 : 0;
 	if ((parm -> envlist = read_el ()) == NULL)
 		goto out;
-	if ((parm -> context = str2qb (context, strlen (context), 1)) == NULL)
+	if ((parm -> context = str2qb_s (context)) == NULL)
 		goto no_mem;
 	if (userdn
-			&& (parm -> userdn = str2qb (userdn, strlen (userdn), 1)) == NULL)
+			&& (parm -> userdn = str2qb_s (userdn)) == NULL)
 		goto no_mem;
 	if (passwd
-			&& (parm -> passwd = str2qb (passwd, strlen (passwd), 1)) == NULL)
+			&& (parm -> passwd = str2qb_s (passwd)) == NULL)
 		goto no_mem;;
 
 	if (encode_DASE_Query__REQ (&pe, 1, 0, NULLCP, parm) == NOTOK)
@@ -585,7 +596,7 @@ out:
 
 		while (isspace (*bp))
 			bp++;
-		if ((dl -> IA5String = str2qb (bp, strlen (bp), 1)) == NULL)
+		if ((dl -> IA5String = str2qb_s (bp)) == NULL)
 			goto no_mem;
 	}
 

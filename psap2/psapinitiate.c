@@ -265,7 +265,7 @@ no_mem:
 	}
 
 	if (data && ndata > 0) {
-		int dflt = pb -> pb_flags;
+		short dflt = pb -> pb_flags;
 		pb -> pb_flags &= ~PB_DFLT; /* don't be clever for this pdu */
 		if ((normal -> user__data = info2ppdu (pb, pi, data, ndata,
 											   PPDU_CP)) == NULL)
