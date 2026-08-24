@@ -122,16 +122,6 @@ int main (int argc, char **argv, char **envp) {
 	exit (0);			/* NOTREACHED */
 }
 
-static struct qbuf *
-str2qb_s (char *s)
-{
-	int n;
-
-	if (s == NULL || strlen2int (s, &n) != 0)
-		return NULL;
-	return str2qb (s, n, 1);
-}
-
 static struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 	struct type_IMISC_IA5List  *ia5;
 	struct type_IMISC_IA5List **ia5p;

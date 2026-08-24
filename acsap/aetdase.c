@@ -37,18 +37,6 @@ static int dase_init (void);
 static int dase_callback (struct type_DASE_Callback__REQ *arg);
 static int yesno (void);
 static void print_qb (struct qbuf *q);
-static struct qbuf *str2qb_s (char *s);
-
-static struct qbuf *
-str2qb_s (char *s)
-{
-	int n;
-
-	if (s == NULL || strlen2int (s, &n) != 0)
-		return NULL;
-	return str2qb (s, n, 1);
-}
-
 static struct element_DASE_1 *read_el (void);
 
 /* LOOKUP */

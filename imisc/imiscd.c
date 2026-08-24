@@ -56,18 +56,7 @@ static struct dispatch dispatches[] = {
 
 /* TYPES */
 static struct type_IMISC_IA5List *str2ia5list (char *s);
-static struct qbuf *str2qb_s (char *s);
 static int rng_pick (int a, int b, int *out);
-
-static struct qbuf *
-str2qb_s (char *s)
-{
-	int n;
-
-	if (s == NULL || strlen2int (s, &n) != 0)
-		return NULL;
-	return str2qb (s, n, 1);
-}
 
 static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
