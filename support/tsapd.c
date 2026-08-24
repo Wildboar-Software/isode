@@ -1350,8 +1350,14 @@ static	int	make_bind_args ( struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 	ba -> dba_version = DBA_VERSION_V1988;
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
-	if (ba -> dba_passwd_len = strlen (passwd))
-		strcpy (ba -> dba_passwd, passwd);
+	{
+		int n;
+
+		if (passwd == NULL || strlen2int (passwd, &n) != 0)
+			n = 0;
+		if (ba -> dba_passwd_len = n)
+			strcpy (ba -> dba_passwd, passwd);
+	}
 }
 
 static int  unbind_from_directory (void) {
