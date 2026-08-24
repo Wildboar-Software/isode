@@ -52,15 +52,22 @@ int	spktlose (int sd, ...) {
 			return result;
 
 		s -> s_mask |= SMASK_RF_DISC;
-		s -> s_rf_disconnect |= RF_DISC_RELEASE;
+		s -> s_rf_disconnect = u8_bis (s -> s_rf_disconnect, RF_DISC_RELEASE);
 
 		if (reason == SC_VERSION) {
 			s -> s_mask |= SMASK_RF_VRSN;
-			s -> s_rf_version = SB_ALLVRSNS;
+			if (int2u8 (SB_ALLVRSNS, &s -> s_rf_version) != 0) {
+				freespkt (s);
+				return result;
+			}
 		}
 
-		if (s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1)))
-			*s -> s_rdata = reason & 0xff;
+		if (s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1))) {
+			if (int2octet (reason, s -> s_rdata) != 0) {
+				freespkt (s);
+				return result;
+			}
+		}
 
 		secs = ses_rf_timer;
 	} else {
@@ -68,11 +75,14 @@ int	spktlose (int sd, ...) {
 			return result;
 
 		s -> s_mask |= SMASK_SPDU_AB | SMASK_AB_DISC;
-		s -> s_ab_disconnect = AB_DISC_RELEASE;
+		if (int2u8 (AB_DISC_RELEASE, &s -> s_ab_disconnect) != 0) {
+			freespkt (s);
+			return result;
+		}
 		switch (reason) {
 		case SC_PROTOCOL:
 		case SC_VERSION:
-			s -> s_ab_disconnect |= AB_DISC_PROTO;
+			s -> s_ab_disconnect = u8_bis (s -> s_ab_disconnect, AB_DISC_PROTO);
 			break;
 
 		case SC_CONGEST:
@@ -80,7 +90,7 @@ int	spktlose (int sd, ...) {
 			break;
 
 		default:
-			s -> s_ab_disconnect |= AB_DISC_UNKNOWN;
+			s -> s_ab_disconnect = u8_bis (s -> s_ab_disconnect, AB_DISC_UNKNOWN);
 			break;
 		}
 

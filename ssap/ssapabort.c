@@ -30,7 +30,12 @@ static int SUAbortRequestAux (
 		struct ssapkt *p;
 		if (p = newspkt (SPDU_PR)) {
 			p -> s_mask |= SMASK_PR_TYPE;
-			p -> s_pr_type = PR_AB;
+			if (int2u8 (PR_AB, &p -> s_pr_type) != 0) {
+				freespkt (p);
+				result = ssaplose (si, SC_PARAMETER, NULLCP,
+						   "invalid prepare type");
+				goto out1;
+			}
 			result = spkt2sd (p, sb -> sb_fd, 1, si);
 			freespkt (p);
 			if (result == NOTOK)
@@ -42,7 +47,11 @@ static int SUAbortRequestAux (
 		goto out1;
 	}
 	s -> s_mask |= SMASK_SPDU_AB | SMASK_AB_DISC;
-	s -> s_ab_disconnect = AB_DISC_RELEASE | AB_DISC_USER;
+	if (int2u8 (AB_DISC_RELEASE | AB_DISC_USER, &s -> s_ab_disconnect) != 0) {
+		result = ssaplose (si, SC_PARAMETER, NULLCP, "invalid abort flags");
+		freespkt (s);
+		goto out1;
+	}
 	if (cc > 0) {
 		s -> s_mask |= SMASK_UDATA_PGI;
 		s -> s_udata = data, s -> s_ulen = cc;

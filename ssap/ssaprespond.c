@@ -128,16 +128,26 @@ int SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si
 		ss -> ss_isn = SERIAL_NONE;
 	if (!(s -> s_mask & SMASK_CN_TSDU))
 		s -> s_tsdu_init = s -> s_tsdu_resp = 0;
-	if (s -> s_tsdu_init
-			< (sb -> sb_tsdu_them = GET_TSDU_SIZE (ts -> ts_tsdusize)))
-		sb -> sb_tsdu_them = s -> s_tsdu_init;
-	if (s -> s_tsdu_resp
-			< (sb -> sb_tsdu_us = GET_TSDU_SIZE (ts -> ts_tsdusize)))
-		sb -> sb_tsdu_us = s -> s_tsdu_resp;
+	{
+		uint16_t tsz;
+
+		if (int2u16 (GET_TSDU_SIZE (ts -> ts_tsdusize), &tsz) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "TSDU size out of range");
+		sb -> sb_tsdu_them = tsz;
+		if (s -> s_tsdu_init < tsz)
+			sb -> sb_tsdu_them = s -> s_tsdu_init;
+		if (int2u16 (GET_TSDU_SIZE (ts -> ts_tsdusize), &tsz) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "TSDU size out of range");
+		sb -> sb_tsdu_us = tsz;
+		if (s -> s_tsdu_resp < tsz)
+			sb -> sb_tsdu_us = s -> s_tsdu_resp;
+	}
 	if (sb -> sb_version >= SB_VRSN2)		/* XXX */
 		sb -> sb_tsdu_them = sb -> sb_tsdu_us = 0;
-	if (s -> s_mask & SMASK_CN_SET)
-		sb -> sb_settings = ss -> ss_settings = s -> s_settings;
+	if (s -> s_mask & SMASK_CN_SET) {
+		ss -> ss_settings = s -> s_settings;
+		sb -> sb_settings = s -> s_settings;
+	}
 	sb -> sb_requirements = (s -> s_mask & SMASK_CN_REQ ? s -> s_cn_require
 							 : SR_DEFAULT) & SR_MYREQUIRE;
 	if (!ts -> ts_expedited)
@@ -264,7 +274,14 @@ int SConnResponse (
 				&& !(requirements & SR_HALFDUPLEX))
 			return ssaplose (si, SC_PARAMETER, NULLCP,
 							 "exception service requires half-duplex service");
-		sb -> sb_requirements &= requirements;
+		{
+			uint16_t req;
+
+			if (int2u16 (requirements, &req) != 0)
+				return ssaplose (si, SC_PARAMETER, NULLCP,
+								 "requirements out of range");
+			sb -> sb_requirements &= req;
+		}
 		sb -> sb_owned = 0, please = 0;
 		dotokens ();
 		if (sb -> sb_requirements
@@ -304,13 +321,20 @@ int SConnResponse (
 		s -> s_rf_reference = *ref;	/* struct copy */
 		if (status == SC_REJECTED) {
 			s -> s_mask |= SMASK_RF_REQ;
-			s -> s_rf_require = requirements;
+			if (int2u16 (requirements, &s -> s_rf_require) != 0) {
+				ssaplose (si, SC_PARAMETER, NULLCP,
+					  "requirements out of range");
+				goto out2;
+			}
 		}
 		if ((s -> s_rdata = malloc ((unsigned) (s -> s_rlen = 1 + cc))) == NULL) {
 			ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			goto out2;
 		}
-		*s -> s_rdata = status & 0xff;
+		if (int2octet (status & 0xff, s -> s_rdata) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "invalid refuse status");
+			goto out2;
+		}
 		if (cc > 0 && bcopy_int (data, s -> s_rdata + 1, cc) != 0) {
 			ssaplose (si, SC_PARAMETER, NULLCP, "invalid user data length");
 			goto out2;
@@ -329,24 +353,39 @@ int SConnResponse (
 	s -> s_mask |= SMASK_CN_REF | SMASK_CN_OPT | SMASK_CN_VRSN;
 	s -> s_cn_reference = *ref;	/* struct copy */
 	s -> s_options = CR_OPT_NULL;
-	s -> s_cn_version = 1 << sb -> sb_version;
+	if (int2u8 (1 << sb -> sb_version, &s -> s_cn_version) != 0) {
+		ssaplose (si, SC_PARAMETER, NULLCP, "version out of range");
+		goto out2;
+	}
 	if (isn != SERIAL_NONE) {
 		s -> s_mask |= SMASK_CN_ISN;
-		s -> s_isn = isn;
+		if (long2u32 (isn, &s -> s_isn) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "serial number out of range");
+			goto out2;
+		}
 	}
 	if (sb -> sb_tsdu_us || sb -> sb_tsdu_them) {
 		s -> s_mask |= SMASK_CN_TSDU;
-		s -> s_tsdu_resp = GET_TSDU_SIZE (sb -> sb_tsdu_us);
-		s -> s_tsdu_init = GET_TSDU_SIZE (sb -> sb_tsdu_them);
+		if (int2u16 (GET_TSDU_SIZE (sb -> sb_tsdu_us), &s -> s_tsdu_resp) != 0
+				|| int2u16 (GET_TSDU_SIZE (sb -> sb_tsdu_them), &s -> s_tsdu_init) != 0) {
+			ssaplose (si, SC_PROTOCOL, NULLCP, "TSDU size out of range");
+			goto out2;
+		}
 	}
 	s -> s_mask |= SMASK_CN_REQ;
 	if ((s -> s_cn_require = sb -> sb_requirements) & SR_TOKENS) {
 		s -> s_mask |= SMASK_CN_SET;
-		s -> s_settings = settings;
+		if (int2u8 (settings, &s -> s_settings) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "token settings out of range");
+			goto out2;
+		}
 	}
 	if (please) {
 		s -> s_mask |= SMASK_AC_TOKEN;
-		s -> s_ac_token = please;
+		if (int2u8 (please, &s -> s_ac_token) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "token request out of range");
+			goto out2;
+		}
 	}
 	if (responding) {
 		s -> s_mask |= SMASK_CN_CALLED;
@@ -387,7 +426,7 @@ static int refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *
 	struct TSAPdisconnect *td = &tds;
 
 	s -> s_mask |= SMASK_RF_DISC;
-	s -> s_rf_disconnect |= RF_DISC_RELEASE;
+	s -> s_rf_disconnect = u8_bis (s -> s_rf_disconnect, RF_DISC_RELEASE);
 	result = spkt2sd (s, sb -> sb_fd, sb -> sb_flags & SB_EXPD ? 1 : 0, si);
 	freespkt (s);
 	if (result == NOTOK)

@@ -56,7 +56,10 @@ static int SGTokenRequestAux (struct ssapblk *sb, int tokens, struct SSAPindicat
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 	s -> s_mask |= SMASK_SPDU_GT;
 	s -> s_mask |= SMASK_GT_TOKEN;
-	s -> s_gt_token = settings & 0xff;
+	if (int2u8 (settings, &s -> s_gt_token) != 0) {
+		freespkt (s);
+		return ssaplose (si, SC_PARAMETER, NULLCP, "token settings out of range");
+	}
 	if ((result = spkt2sd (s, sb -> sb_fd, 0, si)) == NOTOK)
 		freesblk (sb);
 	else
@@ -111,7 +114,10 @@ static int SPTokenRequestAux (struct ssapblk *sb, int tokens, char *data, int cc
 	if ((s = newspkt (SPDU_PT)) == NULL)
 		return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 	s -> s_mask |= SMASK_PT_TOKEN;
-	s -> s_pt_token = settings & 0xff;
+	if (int2u8 (settings, &s -> s_pt_token) != 0) {
+		freespkt (s);
+		return ssaplose (si, SC_PARAMETER, NULLCP, "token settings out of range");
+	}
 	if (cc > 0) {
 		s -> s_mask |= SMASK_UDATA_PGI;
 		s -> s_udata = data, s -> s_ulen = cc;
