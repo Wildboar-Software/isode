@@ -151,12 +151,17 @@ int f_open (char **vec) {
 		fflush (stderr);
 	}
 #endif
-	if (FInitializeRequest (NULLOID, NULLAEI, aei, NULLPA, pa, manage, ftam_class,
-							units, attrs, NULLPE, fqos, fc,
-							*user ? user : NULLCP, account,
-							passwd[0] ? passwd : NULLCP, strlen (passwd),
-							&myqos, trace ? FTraceHook : NULL, ftc, fti)
-			== NOTOK) {
+	{
+		int passlen;
+
+		if (strlen2int (passwd, &passlen) != 0)
+			return NOTOK;
+		if (FInitializeRequest (NULLOID, NULLAEI, aei, NULLPA, pa, manage, ftam_class,
+								units, attrs, NULLPE, fqos, fc,
+								*user ? user : NULLCP, account,
+								passwd[0] ? passwd : NULLCP, passlen,
+								&myqos, trace ? FTraceHook : NULL, ftc, fti)
+				== NOTOK) {
 #ifndef	BRIDGE
 		if (verbose)
 			fprintf (stderr, "loses big\n");
@@ -164,6 +169,7 @@ int f_open (char **vec) {
 		ftam_advise (&fti -> fti_abort, "F-INITIALIZE.REQUEST");
 
 		return NOTOK;
+	}
 	}
 
 	switch (ftc -> ftc_state) {

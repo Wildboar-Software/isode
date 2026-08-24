@@ -169,6 +169,7 @@ static struct dispatch  dispatches[] = {
 struct dispatch *getds (char *name) {
 	int    longest,
 		   nmatches;
+	int	    d;
 	char  *p,
 		  *q;
 	char    buffer[BUFSIZ];
@@ -180,13 +181,16 @@ struct dispatch *getds (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return ds;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				fs = ds;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 
 	switch (nmatches) {
@@ -357,7 +361,13 @@ static int f_set (char **vec) {
 
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
-		lines = ((u - vars) + columns - 1) / columns;
+		{
+			int nvars;
+
+			if (ptrdiff2int (u - vars, &nvars) != 0)
+				return NOTOK;
+			lines = (nvars + columns - 1) / columns;
+		}
 
 		printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
@@ -368,8 +378,9 @@ static int f_set (char **vec) {
 					printf ("\n");
 					break;
 				}
-				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
-					putchar ('\t');
+				if (strlen2int (v -> v_name, &w) == 0)
+					for (; w < width; w = (w + 8) & ~7)
+						putchar ('\t');
 			}
 
 		return OK;
@@ -415,7 +426,9 @@ static int f_set (char **vec) {
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
 		*v -> v_dvalue = strdup (*vec);
-		if ((w = strlen (*v -> v_dvalue) + 2) > varwidth2)
+		if (strlen2int (*v -> v_dvalue, &w) == 0
+				&& add_int_to_int (&w, 2) == 0
+				&& w > varwidth2)
 			varwidth2 = w;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
@@ -482,7 +495,7 @@ out_of_range:
 
 				return OK;
 			}
-			if ((j = cp - v -> v_dvalue) <= 0)
+			if (ptrdiff2int (cp - v -> v_dvalue, &j) != 0 || j <= 0)
 				continue;
 
 			i |= 1 << (j - 1);
@@ -500,7 +513,10 @@ out_of_range:
 
 	if (v -> v_dvalue && (cp = getval (*vec, v -> v_dvalue))) {
 		vflag = verbose;
-		*v -> v_value = cp - v -> v_dvalue;
+		if (ptrdiff2int (cp - v -> v_dvalue, v -> v_value) != 0) {
+			advise (NULLCP, "value index out of range");
+			return OK;
+		}
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
@@ -606,6 +622,7 @@ static void set_type (struct var *v) {
 static char ** getval (char *name, char **choices) {
 	int    longest,
 		   nmatches;
+	int	    d;
 	char  *p,
 		  *q,
 		  **cp,
@@ -617,13 +634,16 @@ static char ** getval (char *name, char **choices) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return cp;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				fp = cp;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 
 	switch (nmatches) {
@@ -649,6 +669,7 @@ static char ** getval (char *name, char **choices) {
 static struct var * getvar (char *name) {
 	int    longest,
 		   nmatches;
+	int	    d;
 	char  *p,
 		  *q;
 	char    buffer[BUFSIZ];
@@ -660,13 +681,16 @@ static struct var * getvar (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return v;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				f = v;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 
 	switch (nmatches) {
@@ -710,7 +734,13 @@ static int f_help (char **vec) {
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
-		lines = ((es - dispatches) + columns - 1) / columns;
+		{
+			int nops;
+
+			if (ptrdiff2int (es - dispatches, &nops) != 0)
+				return NOTOK;
+			lines = (nops + columns - 1) / columns;
+		}
 
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
@@ -721,8 +751,9 @@ static int f_help (char **vec) {
 					printf ("\n");
 					break;
 				}
-				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
-					putchar ('\t');
+				if (strlen2int (ds -> ds_name, &w) == 0)
+					for (; w < width; w = (w + 8) & ~7)
+						putchar ('\t');
 			}
 
 		printf ("\nversion info:\t%s\n\t\t%s\n", ftamversion, isodeversion);
@@ -1125,12 +1156,12 @@ void rcinit (void) {
 
 #ifndef	BRIDGE
 	for (ds = dispatches, helpwidth = 0; ds -> ds_name; ds++)
-		if ((w = strlen (ds -> ds_name)) > helpwidth)
+		if (strlen2int (ds -> ds_name, &w) == 0 && w > helpwidth)
 			helpwidth = w;
 
 	userdn = strdup ("");
 	for (v = vars, varwidth1 = 0; v -> v_name; v++) {
-		if ((w = strlen (v -> v_name)) > varwidth1)
+		if (strlen2int (v -> v_name, &w) == 0 && w > varwidth1)
 			varwidth1 = w;
 
 		if (v -> v_value) {
@@ -1146,12 +1177,14 @@ void rcinit (void) {
 #endif
 				} else
 					for (; *cp; cp++)
-						if ((w = strlen (*cp)) > varwidth2)
+						if (strlen2int (*cp, &w) == 0 && w > varwidth2)
 							varwidth2 = w;
 			}
 		} else if (*v -> v_dvalue) {
 			*v -> v_dvalue = strdup (*v -> v_dvalue);
-			if ((w = strlen (*v -> v_dvalue) + 2) > varwidth2)
+			if (strlen2int (*v -> v_dvalue, &w) == 0
+					&& add_int_to_int (&w, 2) == 0
+					&& w > varwidth2)
 				varwidth2 = w;
 		}
 	}

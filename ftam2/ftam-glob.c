@@ -324,7 +324,10 @@ doit:
 static int match (char *s, char *p) {
 	int c;
 	char *sentp;
-	char sglobbed = globbed;
+	char sglobbed;
+
+	if (int2char (globbed, &sglobbed) != 0)
+		return (0);
 
 	if (*s == '.' && *p != '.')
 		return (0);

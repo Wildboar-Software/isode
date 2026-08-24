@@ -24,6 +24,12 @@
 #define	FA_PERM_OWNER	FA_PERM_CHNGATTR
 #define	FA_PERM_PARENT	FA_PERM_DELETE
 
+#define	SET_NDIAG(ndiag, dp, diags) \
+	do { \
+		if (ptrdiff2int ((dp) - (diags), &(ndiag)) != 0) \
+			adios (NULLCP, "too many FTAM diagnostics"); \
+	} while (0)
+
 static char mvfile[MAXPATHLEN];
 static PE   rdparam = NULLPE;
 
@@ -157,7 +163,8 @@ done_select:
 		;
 		myaccess = ftse -> ftse_access;
 		ftm -> ftg_select.ftse_state = state;
-		ftm -> ftg_select.ftse_ndiag = dp - ftm -> ftg_select.ftse_diags;
+		SET_NDIAG (ftm -> ftg_select.ftse_ndiag, dp,
+				   ftm -> ftg_select.ftse_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_CREATE) {
@@ -302,7 +309,8 @@ done_select:
 done_create:
 		;
 		ftm -> ftg_create.ftce_state = state;
-		ftm -> ftg_create.ftce_ndiag = dp - ftm -> ftg_create.ftce_diags;
+		SET_NDIAG (ftm -> ftg_create.ftce_ndiag, dp,
+				   ftm -> ftg_create.ftce_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR)
@@ -319,7 +327,8 @@ done_create:
 			action = FACTION_SUCCESS;
 
 		ftm -> ftg_chngattr.ftca_action = action;
-		ftm -> ftg_chngattr.ftca_ndiag = dp - ftm -> ftg_chngattr.ftca_diags;
+		SET_NDIAG (ftm -> ftg_chngattr.ftca_ndiag, dp,
+				   ftm -> ftg_chngattr.ftca_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
@@ -404,7 +413,7 @@ bad_create:
 				;
 				ftce -> ftce_action = FACTION_PERM;
 				ftce -> ftce_attrs = *fa;	/* struct copy */
-				ftce -> ftce_ndiag = dp - ftce -> ftce_diags;
+				SET_NDIAG (ftce -> ftce_ndiag, dp, ftce -> ftce_diags);
 
 				ftce -> ftce_state = FSTATE_FAILURE;
 				ftm -> ftg_flags &= ~(FTG_RDATTR | FTG_CHATTR | FTG_OPEN);
@@ -470,7 +479,7 @@ bad_open:
 				   fa -> fa_parameter, myfile, &myst, &dp);
 		if (fa -> fa_present & FA_ACTIONS)
 			ftce -> ftce_attrs.fa_permitted &= fa -> fa_permitted;
-		ftce -> ftce_ndiag = dp - ftce -> ftce_diags;
+		SET_NDIAG (ftce -> ftce_ndiag, dp, ftce -> ftce_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_RDATTR
@@ -495,7 +504,7 @@ bad_open:
 bad_readattr:
 				;
 				ftra -> ftra_action = FACTION_PERM;
-				ftra -> ftra_ndiag = dp - ftra -> ftra_diags;
+				SET_NDIAG (ftra -> ftra_ndiag, dp, ftra -> ftra_diags);
 				return;
 			} else
 				statok++;
@@ -505,7 +514,7 @@ bad_readattr:
 					   ? ftg -> ftg_open.ftop_contents : NULLOID, NULLPE,
 					   myfile, &myst, &dp) == NOTOK)
 			goto bad_readattr;
-		ftra -> ftra_ndiag = dp - ftra -> ftra_diags;
+		SET_NDIAG (ftra -> ftra_ndiag, dp, ftra -> ftra_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_CHATTR
@@ -516,11 +525,11 @@ bad_readattr:
 
 		if (chngattrs (fa -> fa_present, fa, &dp) == NOTOK) {
 			ftca -> ftca_action = FACTION_PERM;
-			ftca -> ftca_ndiag = dp - ftca -> ftca_diags;
+			SET_NDIAG (ftca -> ftca_ndiag, dp, ftca -> ftca_diags);
 			return;
 		}
 
-		ftca -> ftca_ndiag = dp - ftca -> ftca_diags;
+		SET_NDIAG (ftca -> ftca_ndiag, dp, ftca -> ftca_diags);
 	}
 
 	if (ftg -> ftg_flags & FTG_OPEN) {
@@ -751,7 +760,7 @@ bad_param:
 
 done_open:
 		;
-		ftop -> ftop_ndiag = dp - ftop -> ftop_diags;
+		SET_NDIAG (ftop -> ftop_ndiag, dp, ftop -> ftop_diags);
 
 		if (ftop -> ftop_state != FSTATE_SUCCESS) {
 			ftop -> ftop_action = FACTION_PERM;
@@ -815,7 +824,7 @@ done_open:
 				dp++;
 
 				ftxe -> ftxe_action = FACTION_PERM;
-				ftxe -> ftxe_ndiag = dp - ftxe -> ftxe_diags;
+				SET_NDIAG (ftxe -> ftxe_ndiag, dp, ftxe -> ftxe_diags);
 				return;
 			}
 			advise (LLOG_NOTICE, NULLCP, "delete %s", myfile);

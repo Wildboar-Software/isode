@@ -861,6 +861,35 @@ fwrite_int (const void *ptr, size_t size, int nmemb, FILE *stream)
 	return out;
 }
 
+/*
+ * fgets(s, (ep - s) + 1, fp) with a range-checked size.
+ * ep is the last byte fgets may write (the NUL slot).
+ */
+static inline char *
+fgets_room (char *s, char *ep, FILE *fp)
+{
+	int n;
+
+	if (s == NULL || ep == NULL || fp == NULL)
+		return NULL;
+	if (min_len_cap (ep - s, (size_t) INT_MAX - 1U, &n) != 0)
+		return NULL;
+	if (add_int_to_int (&n, 1) != 0)
+		return NULL;
+	return fgets (s, n, fp);
+}
+
+static inline int
+ptrdiff_plus1_to_int (ptrdiff_t n, int *out)
+{
+	int i;
+
+	if (ptrdiff2int (n, &i) != 0 || i == INT_MAX)
+		return -1;
+	*out = i + 1;
+	return 0;
+}
+
 static inline int
 int2char (int n, char *out)
 {
@@ -1097,6 +1126,47 @@ llong2int32 (long long n, int32_t *out)
 		return -1;
 	*out = (int32_t) n;
 	return 0;
+}
+
+/*
+ * Store a long into a signed integer object of size outsz.  Used for
+ * utmp time fields whose width is not assumed.
+ */
+static inline int
+long2sint_n (long n, void *out, size_t outsz)
+{
+	if (out == NULL)
+		return -1;
+	if (outsz == sizeof (int32_t)) {
+		int32_t v;
+
+		if (long2int32 (n, &v) != 0)
+			return -1;
+		memcpy (out, &v, sizeof v);
+		return 0;
+	}
+	if (outsz == sizeof (long)) {
+		memcpy (out, &n, sizeof n);
+		return 0;
+	}
+	if (outsz == sizeof (int)) {
+		int v;
+
+		if (long2int (n, &v) != 0)
+			return -1;
+		memcpy (out, &v, sizeof v);
+		return 0;
+	}
+	if (outsz == sizeof (short)) {
+		int v;
+		short s;
+
+		if (long2int (n, &v) != 0 || int2short (v, &s) != 0)
+			return -1;
+		memcpy (out, &s, sizeof s);
+		return 0;
+	}
+	return -1;
 }
 
 static inline int

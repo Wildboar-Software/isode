@@ -205,9 +205,15 @@ do_cancel:
 	;
 	FTRWFREE (ftrw);
 
-	if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, dp - diags, fti)
-			== NOTOK)
-		ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
+	{
+		int ndiag;
+
+		if (ptrdiff2int (dp - diags, &ndiag) != 0)
+			adios (NULLCP, "too many FTAM diagnostics");
+		if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, ndiag, fti)
+				== NOTOK)
+			ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
+	}
 
 	if (fti -> fti_type == FTI_CANCEL) {
 		struct FTAMcancel *ftcn = &fti -> fti_cancel;
@@ -416,7 +422,7 @@ error_return:
 					break;
 				}
 #else
-				if (fgets (bp, ep - bp + 1, fp) == NULL) {
+				if (fgets_room (bp, ep, fp) == NULL) {
 					n = (ferror (fp) && !feof (fp)) ? NOTOK : OK;
 					break;
 				}
@@ -435,10 +441,16 @@ error_return:
 						} else
 							*cp = 0;
 #endif
-						n = cp - bp;
+						if (ptrdiff2int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp;
 					} else {			/* XXX: losing! */
-						n = cp - bp + 1;
+						if (ptrdiff_plus1_to_int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp + 1;
 					}
 				} else {
@@ -447,22 +459,32 @@ error_return:
 						*cp++ = '\r';
 #endif
 						*cp++ = '\n';
-						n = cp - bp;
+						if (ptrdiff2int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp;
 						nc++;
 						continue;
 					}
 
-					n = cp - bp + 1;
+					if (ptrdiff_plus1_to_int (cp - bp, &n) != 0) {
+						n = NOTOK;
+						break;
+					}
 					bp = cp + 1;
 				}
 			} else {
 				int want;
+				ssize_t nr;
 
 				if (min_len_cap (ep - bp, SIZE_MAX, &want) != 0)
 					n = NOTOK;
-				else
-					n = read_int (myfd, bp, want);
+				else {
+					nr = read_int (myfd, bp, want);
+					if (nr < 0 || ssize2int (nr, &n) != 0)
+						n = NOTOK;
+				}
 				switch (n) {
 				case NOTOK:
 				case OK:
@@ -475,7 +497,9 @@ error_return:
 			}
 			break;
 		}
-		if (n == NOTOK || (n = bp - (char *) pe -> pe_prim) == 0)
+		if (n == NOTOK)
+			break;
+		if (ptrdiff2int (bp - (char *) pe -> pe_prim, &n) != 0 || n == 0)
 			break;
 		pe -> pe_len = n;
 
@@ -974,9 +998,15 @@ void ftam_dataindication (struct PSAPdata *px) {
 		dp -> ftd_delay = DIAG_NODELAY;
 		dp++;
 
-		if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, dp - diags,
-							fti) == NOTOK)
-			ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
+		{
+			int ndiag;
+
+			if (ptrdiff2int (dp - diags, &ndiag) != 0)
+				adios (NULLCP, "too many FTAM diagnostics");
+			if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, ndiag,
+								fti) == NOTOK)
+				ftam_adios (&fti -> fti_abort, "F-CANCEL-REQUEST");
+		}
 
 		if (fti -> fti_type == FTI_CANCEL) {
 			struct FTAMcancel *ftcn = &fti -> fti_cancel;

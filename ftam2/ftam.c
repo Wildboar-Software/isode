@@ -431,8 +431,11 @@ int getftamline (char *prompt, char *buffer) {
 			break;
 		}
 
-		if (cp < ep)
-			*cp++ = i;
+		if (cp < ep) {
+			if (int2octet (i, cp) != 0)
+				break;
+			cp++;
+		}
 	}
 	*cp = 0;
 

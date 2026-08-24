@@ -669,7 +669,7 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 						break;
 				} else {
 #else
-				if (fgets (bp, ep - bp + 1, fp) == NULL) {
+				if (fgets_room (bp, ep, fp) == NULL) {
 #endif
 					n = (ferror (fp) && !feof (fp)) ? NOTOK : OK;
 					break;
@@ -688,10 +688,16 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 						} else
 							*cp = 0;
 #endif
-						n = cp - bp;
+						if (ptrdiff2int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp;
 					} else {			/* XXX: losing! */
-						n = cp - bp + 1;
+						if (ptrdiff_plus1_to_int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp + 1;
 					}
 				} else {
@@ -700,23 +706,33 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 						*cp++ = '\r';
 #endif
 						*cp++ = '\n';
-						n = cp - bp;
+						if (ptrdiff2int (cp - bp, &n) != 0) {
+							n = NOTOK;
+							break;
+						}
 						bp = cp;
 						nc++;
 						continue;
 					}
 
-					n = cp - bp + 1;
+					if (ptrdiff_plus1_to_int (cp - bp, &n) != 0) {
+						n = NOTOK;
+						break;
+					}
 					bp = cp + 1;
 				}
 			}
 			else {
 				int want;
+				ssize_t nr;
 
 				if (min_len_cap (ep - bp, SIZE_MAX, &want) != 0)
 					n = NOTOK;
-				else
-					n = read_int (fd, bp, want);
+				else {
+					nr = read_int (fd, bp, want);
+					if (nr < 0 || ssize2int (nr, &n) != 0)
+						n = NOTOK;
+				}
 #ifdef	BRIDGE
 				switch (n) {
 #else
@@ -733,7 +749,9 @@ static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsma
 			}
 			break;
 		}
-		if (n == NOTOK || (n = bp - (char *) pe -> pe_prim) == 0)
+		if (n == NOTOK)
+			break;
+		if (ptrdiff2int (bp - (char *) pe -> pe_prim, &n) != 0 || n == 0)
 			break;
 		pe -> pe_len = n;
 
@@ -813,10 +831,16 @@ do_cancel:
 
 		de2fadu (NULLPE, 0);
 
-		if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, dp - diags,
-							fti) == NOTOK) {
-			ftam_advise (fta, "F-CANCEL.REQUEST");
-			return NOTOK;
+		{
+			int ndiag;
+
+			if (ptrdiff2int (dp - diags, &ndiag) != 0)
+				return NOTOK;
+			if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags, ndiag,
+								fti) == NOTOK) {
+				ftam_advise (fta, "F-CANCEL.REQUEST");
+				return NOTOK;
+			}
 		}
 
 		if (fti -> fti_type == FTI_CANCEL) {
