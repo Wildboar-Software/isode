@@ -83,9 +83,14 @@ void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 
 #ifdef	BRIDGE
 	myoperation = ftrw -> ftrw_operation;
-	if (ftp_type (myvf - vfs) == NOTOK
-			&& myoperation == FA_OPS_READ
-			&& (mycontext = ftrw -> ftrw_context) != myvf -> vf_context) {
+	{
+		int vftype;
+
+		if (ptrdiff2int (myvf - vfs, &vftype) != 0)
+			adios (NULLCP, "VFS index out of range");
+		if (ftp_type (vftype) == NOTOK
+				&& myoperation == FA_OPS_READ
+				&& (mycontext = ftrw -> ftrw_context) != myvf -> vf_context) {
 #else
 	if ((myoperation = ftrw -> ftrw_operation) == FA_OPS_READ
 			&& (mycontext = ftrw -> ftrw_context) != myvf -> vf_context) {
@@ -99,6 +104,9 @@ void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 
 		goto do_cancel;
 	}
+#ifdef	BRIDGE
+	}
+#endif
 
 	switch (myvf - vfs) {
 	case VFS_UBF:

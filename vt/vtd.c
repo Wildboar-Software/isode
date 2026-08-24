@@ -425,8 +425,11 @@ static void vtd (int f, int p) {
 		 * Something to read from the network...
 		 */
 		if (FD_ISSET (f, &ibits)) {
-			while ((c = getch()) > 0)
-				*pfrontp++ = c;
+			while ((c = getch()) > 0) {
+				if (int2octet (c, pfrontp) != 0)
+					break;
+				pfrontp++;
+			}
 		}
 		if (c == E_EOF) {
 			break;
@@ -439,8 +442,12 @@ static void vtd (int f, int p) {
 
 			if (min_len_cap (&netobuf[BUFSIZ] - nfrontp, SIZE_MAX, &want) != 0)
 				pcc = -1;
-			else
-				pcc = read_int (p, nfrontp, want);
+			else {
+				ssize_t nr = read_int (p, nfrontp, want);
+
+				if (nr < 0 || ssize2int (nr, &pcc) != 0)
+					pcc = -1;
+			}
 			if (pcc < 0 && errno == EWOULDBLOCK)
 				pcc = 0;
 			else {
@@ -516,7 +523,9 @@ static int netflush (void) {
 			  not be required but some implementations may wait
 			  for it before delivering NDQ to application*/
 	nl_flag = 0;
-	if ((n = nfrontp - nbackp) > 0) {
+	if (ptrdiff2int (nfrontp - nbackp, &n) != 0)
+		return NOTOK;
+	if (n > 0) {
 		if (debug) {
 			ll_log (vt_log, LLOG_DEBUG, NULLCP,
 					("writing to the net"));
@@ -770,11 +779,14 @@ void advise (int code, char *what, char *fmt) {
 
 static void ptyflush (void) {
 	int n;
-	if ((n = pfrontp - pbackp) > 0) {
-		n = write_int (pty, pbackp, n);
-	}
-	if (n < 0)
+	if (ptrdiff2int (pfrontp - pbackp, &n) != 0)
 		return;
+	if (n > 0) {
+		ssize_t nw = write_int (pty, pbackp, n);
+
+		if (nw < 0 || ssize2int (nw, &n) != 0)
+			return;
+	}
 	pbackp += n;
 	if (pbackp == pfrontp)
 		pbackp = pfrontp = ptyobuf;

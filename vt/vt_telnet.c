@@ -95,12 +95,16 @@ void vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 	char int_mask;
 	char image;
 
-	int_mask = IP_OBJ;
+	int_mask = 0;
+	if (int2octet (IP_OBJ, &int_mask) != 0)
+		return;
 	if(my_right == INITIATOR) {
-		kb_image ^= IP_OBJ;
+		if (char_bxor (&kb_image, IP_OBJ) != 0)
+			return;
 		image = kb_image;
 	} else {
-		di_image ^= IP_OBJ;	/*Toggle the Interrupt Process bit*/
+		if (char_bxor (&di_image, IP_OBJ) != 0)
+			return;	/*Toggle the Interrupt Process bit*/
 		image = di_image;
 	}
 	bzero ((char *) &ud, sizeof ud);
@@ -116,9 +120,13 @@ void vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 }
 
 /* Update NA/NI control object as in image */
-void vt_set_nego (char image, char mask) {
+void vt_set_nego (char image, int maskbits) {
 	TEXT_UPDATE ud;
 	char e_image;
+	char mask;
+
+	if (int2octet (maskbits, &mask) != 0)
+		return;
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
 	ud.type_sw = CTRL_OBJ;
@@ -143,10 +151,13 @@ void vt_echo (int echo) {
 		return;
 	}
 	if (echo != ((nego_state & ECHO_OBJ) ? 1 : 0)) {
-		if (echo)
-			ni_image |= ECHO_OBJ;
-		else
-			ni_image &= ~ECHO_OBJ;
+		if (echo) {
+			if (char_bis (&ni_image, ECHO_OBJ) != 0)
+				return;
+		} else {
+			if (char_bic (&ni_image, ECHO_OBJ) != 0)
+				return;
+		}
 		vt_set_nego(ni_image, ECHO_OBJ);/*Set proper UNIX echo state when reponse
 				  is received. */
 	} else
@@ -156,13 +167,15 @@ void vt_echo (int echo) {
 
 /* Request Remote Echo Mode.  Parameter is pointer to image byte. */
 void vt_rem_echo (char *img_addr) {
-	*img_addr |= ECHO_OBJ;
+	if (char_bis (img_addr, ECHO_OBJ) != 0)
+		return;
 	vt_set_nego(*img_addr, ECHO_OBJ);
 }
 
 /* Request Suppress Go Ahead */
 void vt_sup_ga (char *img_addr) {
-	*img_addr |= SUP_GA;
+	if (char_bis (img_addr, SUP_GA) != 0)
+		return;
 	vt_set_nego(*img_addr, SUP_GA);
 }
 
@@ -177,8 +190,10 @@ int vt_break (char **vec) {
 	vbrkreq();
 #else
 	TEXT_UPDATE ud;
-	mask = BRK_OBJ;
-	kb_image ^= BRK_OBJ;	/*Can Only be called by User side*/
+	if (int2octet (BRK_OBJ, &mask) != 0)
+		return NOTOK;
+	if (char_bxor (&kb_image, BRK_OBJ) != 0)
+		return NOTOK;	/*Can Only be called by User side*/
 	image = kb_image;
 	bzero ((char *) ud, sizeof *ud);
 	ud.echo_sw = cur_emode;
@@ -205,8 +220,11 @@ int vt_ayt (char **vec) {
 		advise(LLOG_NOTICE,NULLCP,  "not using TELNET profile");
 		return NOTOK;
 	}
-	mask = AYT_OBJ;
-	kb_image ^= AYT_OBJ;	/*Can only be called by User side*/
+	mask = 0;
+	if (int2octet (AYT_OBJ, &mask) != 0)
+		return NOTOK;
+	if (char_bxor (&kb_image, AYT_OBJ) != 0)
+		return NOTOK;	/*Can only be called by User side*/
 	image = kb_image;
 	bzero ((char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;
@@ -246,10 +264,13 @@ void vt_repertoire (int repertoire) {
 		return;
 	}
 	if (repertoire != transparent) {
-		if (repertoire)
-			ni_image |= (DISP_BIN|KBD_BIN);
-		else
-			ni_image &= ~(DISP_BIN|KBD_BIN);
+		if (repertoire) {
+			if (char_bis (&ni_image, DISP_BIN | KBD_BIN) != 0)
+				return;
+		} else {
+			if (char_bic (&ni_image, DISP_BIN | KBD_BIN) != 0)
+				return;
+		}
 		vt_set_nego(ni_image, DISP_BIN|KBD_BIN);
 	} else
 		advise (LLOG_NOTICE,NULLCP, "already using %s repertoire",
@@ -267,8 +288,11 @@ int vt_sync (char **vec) {
 	PE 	udqp;
 	TEXT_UPDATE 	ud;
 	char 	mask, image;
-	mask = SYNC;
-	sync_image ^= SYNC;
+	mask = 0;
+	if (int2octet (SYNC, &mask) != 0)
+		return NOTOK;
+	if (char_bxor (&sync_image, SYNC) != 0)
+		return NOTOK;
 	image = sync_image;
 	bzero( (char *) &ud, sizeof ud);
 	ud.echo_sw = cur_emode;

@@ -91,7 +91,8 @@ int hookup(char *host, int port) {
 		hp = &def;
 	}
 	hostname = hp->h_name;
-	hisctladdr.sin_family = hp->h_addrtype;
+	if (int2safamily (hp->h_addrtype, &hisctladdr.sin_family) != 0)
+		return (NOTOK);
 	s = socket(hp->h_addrtype, SOCK_STREAM, 0);
 	if (s < 0) {
 		sprintf(ftp_error,"ftp: socket %s",
@@ -219,7 +220,11 @@ int getreply(int expecteof) {
 				return(1);
 				/* exit(1); */
 			}
-			if (c != '\r') *mesg++ = c;
+			if (c != '\r') {
+				if (int2octet (c, mesg) != 0)
+					return (1);
+				mesg++;
+			}
 			else *mesg = '\0';
 			if (dig < 4 && isdigit(c))
 				code = code * 10 + (c - '0');

@@ -527,6 +527,16 @@ str2qb_s (char *s)
 		return NULL;
 	return str2qb (s, n, 1);
 }
+
+static inline PE
+str2prim_s (char *s, PElementClass cl, PElementID id)
+{
+	int n;
+
+	if (s == NULL || strlen2int (s, &n) != 0)
+		return NULLPE;
+	return str2prim (s, n, cl, id);
+}
 void qb_free (struct qbuf *qb);
 
 int	pe2ssdu (PE pe, char **base, int *len);

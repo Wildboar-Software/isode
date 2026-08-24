@@ -944,6 +944,17 @@ char_bic (char *p, unsigned bits)
 }
 
 static inline int
+char_bxor (char *p, unsigned bits)
+{
+	uint8_t v;
+
+	if (p == NULL || bits > 255U)
+		return -1;
+	v = (uint8_t) (as_octet (*p) ^ bits);
+	return octet2char (v, p);
+}
+
+static inline int
 int2octet (int n, char *out)
 {
 	uint8_t u;

@@ -123,7 +123,7 @@ void vt_newline (void);
 void vt_char_erase (void);
 void vt_line_erase (void);
 void vt_interrupt (void);
-void vt_set_nego (char image, char mask);
+void vt_set_nego (char image, int maskbits);
 void vt_echo (int echo);
 void vt_rem_echo (char *img_addr);
 void vt_sup_ga (char *img_addr);

@@ -598,7 +598,7 @@ int a1_102 (	/*VUABreq (Abort by User) in any state*/
 	PE pe_auq;
 	char *reason = "Association Closed by User";
 
-	pe_auq = str2prim(reason,strlen(reason),PE_CLASS_CONT,AUQ_PDU);
+	pe_auq = str2prim_s(reason,PE_CLASS_CONT,AUQ_PDU);
 	if(pe_auq == NULLPE)
 		adios(NULLCP, "a1_102: AUQ build failure (out of memory)");
 	if(AcUAbortRequest(sd,&pe_auq,1,aci) == NOTOK)
