@@ -50,9 +50,21 @@ int TRestoreState (char *buffer, struct TSAPstart *ts, struct TSAPdisconnect *td
 	if ((tb = newtblk ()) == NULL)
 		return tsaplose (td, DR_CONGEST, NULLCP, "out of memory");
 
-	if (implode ((uint8_t *) &tbs, buffer, strlen (buffer)) != sizeof tbs) {
-		tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
-		goto out1;
+	{
+		int nhex,
+			expect,
+			got;
+
+		if (strlen2int (buffer, &nhex) != 0
+				|| sizet2int (sizeof tbs, &expect) != 0) {
+			tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
+			goto out1;
+		}
+		got = implode ((uint8_t *) &tbs, buffer, nhex);
+		if (got == NOTOK || got != expect) {
+			tsaplose (td, DR_PARAMETER, NULLCP, "bad state vector");
+			goto out1;
+		}
 	}
 
 	if (findtblk (tbs.tb_fd)) {

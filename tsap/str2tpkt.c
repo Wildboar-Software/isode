@@ -72,7 +72,10 @@ static int getfnx (int fd, struct tsapkt *t, char *buffer, int n) {
 
 		if (sizet2int (sizeof t -> t_pkthdr, &hdr) != 0)
 			return DR_LENGTH;
-		t -> t_length = cc + hdr;
+		if (cc < 0 || hdr < 0 || cc > INT_MAX - hdr)
+			return DR_LENGTH;
+		if (int2u16 (cc + hdr, &t -> t_length) != 0)
+			return DR_LENGTH;
 	}
 	t -> t_vrsn = TPKT_VRSN;
 

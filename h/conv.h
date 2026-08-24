@@ -515,6 +515,12 @@ u32toint (uint32_t n, int *out)
 
 /* Bit-clear using unsigned arithmetic so ~mask is not a negative int. */
 static inline uint8_t
+u8_bis (uint8_t v, unsigned bits)
+{
+	return (uint8_t) (v | bits);
+}
+
+static inline uint8_t
 u8_bic (uint8_t v, unsigned bits)
 {
 	return (uint8_t) (v & ~bits);
@@ -823,6 +829,28 @@ octet2char (uint8_t n, char *out)
 		return -1;
 	*(unsigned char *) out = n;
 	return 0;
+}
+
+static inline int
+char_bis (char *p, unsigned bits)
+{
+	uint8_t v;
+
+	if (p == NULL || bits > 255U)
+		return -1;
+	v = u8_bis (as_octet (*p), bits);
+	return octet2char (v, p);
+}
+
+static inline int
+char_bic (char *p, unsigned bits)
+{
+	uint8_t v;
+
+	if (p == NULL || bits > 255U)
+		return -1;
+	v = u8_bic (as_octet (*p), bits);
+	return octet2char (v, p);
 }
 
 static inline int

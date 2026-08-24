@@ -59,15 +59,21 @@ static int TConnect (struct tsapblk *tb, int expedited, char *data, int cc, stru
 		if (k == (1 << (j - 1)))
 			j--;
 		if (tb -> tb_flags & TB_TCP) {
-			if (j <= SIZE_8K)
-				t -> t_tpdusize = j;
+			if (int2u8 (j, &t -> t_tpdusize) != 0) {
+				freetpkt (t);
+				return tsaplose (td, DR_CONGEST, NULLCP,
+						 "TPDU size exponent out of range");
+			}
 		} else {
 			if (j > SIZE_MAXTP0) {
 				j = SIZE_MAXTP0;
 				tb -> tb_tsdusize = (1 << j) - tb -> tb_tpduslop;
 			}
-			if (j != SIZE_DFLT)
-				t -> t_tpdusize = j;
+			if (int2u8 (j, &t -> t_tpdusize) != 0) {
+				freetpkt (t);
+				return tsaplose (td, DR_CONGEST, NULLCP,
+						 "TPDU size exponent out of range");
+			}
 		}
 	}
 	t -> t_callinglen = tb -> tb_initiating.ta_selectlen;
@@ -363,15 +369,21 @@ static int TAccept (struct tsapblk *tb, int responding, char *data, int cc, stru
 		if (k == (1 << (j - 1)))
 			j--;
 		if (tb -> tb_flags & TB_TCP) {
-			if (j <= SIZE_8K)
-				t -> t_tpdusize = j;
+			if (int2u8 (j, &t -> t_tpdusize) != 0) {
+				freetpkt (t);
+				return tsaplose (td, DR_CONGEST, NULLCP,
+						 "TPDU size exponent out of range");
+			}
 		} else {
 			if (j > SIZE_MAXTP0) {
 				j = SIZE_MAXTP0;
 				tb -> tb_tsdusize = (1 << j) - tb -> tb_tpduslop;
 			}
-			if (j != SIZE_DFLT)
-				t -> t_tpdusize = j;
+			if (int2u8 (j, &t -> t_tpdusize) != 0) {
+				freetpkt (t);
+				return tsaplose (td, DR_CONGEST, NULLCP,
+						 "TPDU size exponent out of range");
+			}
 		}
 	}
 	if (responding)
@@ -637,7 +649,8 @@ static void TLose (struct tsapblk *tb, int reason, struct TSAPdisconnect *td) {
 
 		t -> t_dr.dr_srcref = tb -> tb_srcref;
 		t -> t_dr.dr_dstref = tb -> tb_dstref;
-		t -> t_dr.dr_reason = reason;
+		if (int2u8 (reason, &t -> t_dr.dr_reason) != 0)
+			break;
 		copyTPKTdata (t, td -> td_data, td -> td_cc);
 		break;
 	default:
@@ -775,15 +788,24 @@ int tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 			return NOTOK;
 	}
 
-	if ((n = writev (tb -> tb_fd, iovs, iov - iovs)) != cc) {
-		cc = NOTOK;
+	{
+		int iovcnt,
+			nout;
+		ssize_t nsent;
+
+		if (ptrdiff2int (iov - iovs, &iovcnt) != 0)
+			return NOTOK;
+		nsent = writev (tb -> tb_fd, iovs, iovcnt);
+		if (ssize2int (nsent, &nout) != 0 || nout != cc) {
+			cc = NOTOK;
 #ifdef	SUN_X25
-		if (tb -> tb_flags & TB_X25
-				&& compat_log -> ll_events & LLOG_EXCEPTIONS)
-			log_cause_and_diag (tb -> tb_fd);
+			if (tb -> tb_flags & TB_X25
+					&& compat_log -> ll_events & LLOG_EXCEPTIONS)
+				log_cause_and_diag (tb -> tb_fd);
 #endif
-	} else if (tb -> tb_flags & TB_X25) {
-		DLOG (compat_log, LLOG_DEBUG, ("X.25 write %d bytes", cc));
+		} else if (tb -> tb_flags & TB_X25) {
+			DLOG (compat_log, LLOG_DEBUG, ("X.25 write %d bytes", cc));
+		}
 	}
 	goto out;
 

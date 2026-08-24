@@ -12,6 +12,36 @@ static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_data (LLog *lp, char *type, char *rw, int len, char *data);
+static void assign_u8 (uint8_t *dst, int data);
+static void assign_u16 (uint16_t *dst, int data);
+static void assign_u16_htons (uint16_t *dst, int data);
+
+static void
+assign_u8 (uint8_t *dst, int data)
+{
+	uint8_t v;
+
+	if (int2u8 (data, &v) == 0)
+		*dst = v;
+}
+
+static void
+assign_u16 (uint16_t *dst, int data)
+{
+	uint16_t v;
+
+	if (int2u16 (data, &v) == 0)
+		*dst = v;
+}
+
+static void
+assign_u16_htons (uint16_t *dst, int data)
+{
+	uint16_t v;
+
+	if (int2u16 (data, &v) == 0)
+		*dst = htons (v);
+}
 
 #define	TPKT_TYPE(e)	 ll_printf (lp, "%sCODE/ %s\n", rw, e)
 
@@ -112,12 +142,12 @@ void text2tpkt (struct tsapkt *t) {
 	fflush(stdout);
 	fgets(buffer, sizeof buffer, stdin);
 	sscanf(buffer, "%d", &data);
-	t -> t_length = data;
+	assign_u16 (&t -> t_length, data);
 	printf("Packet Version [%02x]: ", data = t -> t_vrsn);
 	fflush(stdout);
 	fgets(buffer, sizeof buffer, stdin);
 	sscanf(buffer, "%x", &data);
-	t -> t_vrsn = data;
+	assign_u8 (&t -> t_vrsn, data);
 	printf("Packet Errno [%02x]: ", data = t -> t_errno);
 	fflush(stdout);
 	fgets(buffer, sizeof buffer, stdin);
@@ -140,7 +170,7 @@ void text2tpkt (struct tsapkt *t) {
 			data = 0xF0;
 		} else  sscanf(buffer, "%x", &data);
 	} else  sscanf(buffer, "%x", &data);
-	t -> t_code = data;
+	assign_u8 (&t -> t_code, data);
 	switch (TPDU_CODE(t)) {
 	case TPDU_CR:
 	case TPDU_CC:
@@ -149,40 +179,40 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_li = data;
+		assign_u8 (&t -> t_li, data);
 		printf("Destination Reference [%04x]: ",
 			   data = ntohs (t -> t_cr.cr_dstref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_dstref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_cr.cr_dstref, data);
 		printf("Source Reference [%04x]: ", data = ntohs(t -> t_cr.cr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_srcref = htons ((uint16_t)data);
+		assign_u16_htons (&t -> t_cr.cr_srcref, data);
 		printf("Class/Options [%02x]: ", data = t-> t_cr.cr_class);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_class = data;
+		assign_u8 (&t -> t_cr.cr_class, data);
 		printf("TPDU size [%02x]: ",
 			   data = t -> t_cr.cr_tpdusize);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_tpdusize = data;
+		assign_u8 (&t -> t_cr.cr_tpdusize, data);
 		printf("Real Options [%02x]: ",data = ntohs(t -> t_cr.cr_options));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_options = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_cr.cr_options, data);
 		printf("Alternate classes [%02x]: ",
 			   data = t -> t_cr.cr_alternate);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_alternate = data;
+		assign_u8 (&t -> t_cr.cr_alternate, data);
 		break;
 	case TPDU_DR:
 		t -> t_li = TPDU_MINLEN(t, DR);
@@ -190,23 +220,23 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_li = data;
+		assign_u8 (&t -> t_li, data);
 		printf("Destination Reference [%04x]: ",
 			   data = ntohs(t -> t_dr.dr_dstref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dr.dr_dstref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_dr.dr_dstref, data);
 		printf("Source Reference [%04x]: ", data = ntohs(t -> t_dr.dr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dr.dr_srcref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_dr.dr_srcref, data);
 		printf("Disconnect Reason [%02x]: ", data = t-> t_dr.dr_reason);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dr.dr_reason = data;
+		assign_u8 (&t -> t_dr.dr_reason, data);
 		break;
 	case TPDU_DT:
 	case TPDU_ED:
@@ -215,12 +245,12 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_li = data;
+		assign_u8 (&t -> t_li, data);
 		printf("EOT/Sequence [%04x]: ", data = t -> t_dt.dt_nr);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_dt.dt_nr = data;
+		assign_u8 (&t -> t_dt.dt_nr, data);
 		break;
 	case TPDU_ER:
 		t -> t_li = TPDU_MINLEN(t, ER);
@@ -228,18 +258,18 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_li = data;
+		assign_u8 (&t -> t_li, data);
 		printf("Destination Reference [%04x]: ",
 			   data = ntohs(t -> t_er.er_dstref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_er.er_dstref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_er.er_dstref, data);
 		printf("Reject Cause [%02x]: ", data = t-> t_er.er_reject);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_er.er_reject = data;
+		assign_u8 (&t -> t_er.er_reject, data);
 		break;
 	default:
 		t -> t_li = TPDU_MINLEN(t, CR);
@@ -247,24 +277,24 @@ void text2tpkt (struct tsapkt *t) {
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_li = data;
+		assign_u8 (&t -> t_li, data);
 		printf("Octets 3-4 [%04x]: ",
 			   data = ntohs(t -> t_cr.cr_dstref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_dstref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_cr.cr_dstref, data);
 		printf("Octets 5-6 [%04x]: ",
 			   data = ntohs(t -> t_cr.cr_srcref));
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_srcref = htons((uint16_t)data);
+		assign_u16_htons (&t -> t_cr.cr_srcref, data);
 		printf("Octet 7 [%02x]: ", data = t-> t_cr.cr_class);
 		fflush(stdout);
 		fgets(buffer, sizeof buffer, stdin);
 		sscanf(buffer, "%x", &data);
-		t -> t_cr.cr_class = data;
+		assign_u8 (&t -> t_cr.cr_class, data);
 		break;
 	}
 #ifdef	notdef			/* Dwight can fix this... */

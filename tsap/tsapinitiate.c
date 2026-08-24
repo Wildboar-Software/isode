@@ -148,7 +148,10 @@ no_mem:
 			goto out;
 		}
 	}
-	tb -> tb_expedited = expedited;
+	if (int2char (expedited, &tb -> tb_expedited) != 0) {
+		tsaplose (td, DR_PARAMETER, NULLCP, "invalid expedited flag");
+		goto out;
+	}
 
 	if ((result = TConnAttempt (tb, td, async)) == NOTOK) {
 #ifdef  MGMT
@@ -227,9 +230,13 @@ static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int asyn
 		if (realna -> na_stack == NA_NSAP &&
 				realna -> na_addr_class == NAS_UNKNOWN) {
 			struct NSAPinfo *nsi;
-			if ((nsi = getnsapinfo (realna)) == NULLNI)
-				realna -> na_addr_class = nsap_default_stack;
-			else realna -> na_addr_class = nsi -> is_stack;
+			if ((nsi = getnsapinfo (realna)) == NULLNI) {
+				if (int2char (nsap_default_stack,
+						&realna -> na_addr_class) != 0)
+					continue;
+			} else if (int2char (nsi -> is_stack,
+					     &realna -> na_addr_class) != 0)
+				continue;
 		}
 
 		for (ns = nsaps; ns -> ns_open; ns++)
