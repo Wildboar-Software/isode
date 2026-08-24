@@ -1610,7 +1610,13 @@ int attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 			count = 0;	/* for loop ++ will make it 1 !!! */
 		}
 	}
-	return (str1 - top);
+	{
+		int n;
+
+		if (ptrdiff2int (str1 - top, &n) != 0)
+			return (-1);
+		return n;
+	}
 }
 
 static int subtask_refer (

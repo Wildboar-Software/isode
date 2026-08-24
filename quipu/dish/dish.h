@@ -96,7 +96,7 @@ int read_pipe_aux2 (char **buf, int *len);
 struct subordinate;
 void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit);
 int fdx_reset (PS ps);
-void showfredDNs (DN dn, int islong);
+void showfredDNs (DN dn, char islong);
 int showfred (DN mydn, char islong, char subdisplay);
 void call_showname (int argc, char **argv);
 void showattribute (AttributeType at);

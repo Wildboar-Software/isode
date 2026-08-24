@@ -350,7 +350,9 @@ static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 		s_filter *fi;
 		if ((dsa_status = rebind ()) != OK)
 			return dlist;
-		if ((i = strlen (dp)) < dlevel)
+		if (strlen2int (dp, &i) != 0)
+			return dlist;
+		if (i < dlevel)
 			break;
 		sa -> sra_filter = fi = filter_alloc ();
 		bzero ((char *) fi, sizeof *fi);
@@ -1644,7 +1646,7 @@ static Entry fredentry (DN adn, char islong)
 	return newentry;
 }
 
-void showfredDNs (DN dn, int islong) {
+void showfredDNs (DN dn, char islong) {
 	Attr_Sequence eptr;
 	AV_Sequence avs;
 	Entry    theEntry;
@@ -1740,7 +1742,7 @@ void showfredDNs (DN dn, int islong) {
 				if (i
 						|| (fp = fopen (tmp2, "r")) == NULL
 						|| fstat (fileno (fp), &st) == NOTOK
-						|| (cc = st.st_size) == 0) {
+						|| st.st_size == 0) {
 					if (!i && fp)
 						fclose (fp);
 					unlink (tmp2);
