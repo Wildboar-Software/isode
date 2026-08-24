@@ -267,14 +267,14 @@ static PE ia5enc (void *value)
 {
 	char *x = (char *) value;
 
-	return (ia5s2prim(x,strlen(x)));
+	return str2prim_s (x, PE_CLASS_UNIV, PE_DEFN_IA5S);
 }
 
 static PE nstrenc (void *value)
 {
 	char *x = (char *) value;
 
-	return (nums2prim(x,strlen(x)));
+	return str2prim_s (x, PE_CLASS_UNIV, PE_DEFN_NUMS);
 }
 
 /*
@@ -289,7 +289,7 @@ static PE octenc (void *value)
 {
 	char *x = (char *) value;
 
-	return (oct2prim(x,strlen(x)));
+	return str2prim_s (x, PE_CLASS_UNIV, PE_PRIM_OCTS);
 }
 
 static PE strenc (void *value)
@@ -298,9 +298,9 @@ static PE strenc (void *value)
 
 	if (*x == T61_MARK) {
 		x++;
-		return (t61s2prim(x,strlen(x)));
+		return str2prim_s (x, PE_CLASS_UNIV, PE_DEFN_T61S);
 	} else
-		return (utf2prim(x,strlen(x)));
+		return str2prim_s (x, PE_CLASS_UNIV, PE_DEFN_UTF8);
 }
 
 static char *local_t61 (char *a) {
@@ -308,7 +308,13 @@ static char *local_t61 (char *a) {
 
 	if (a == NULLCP)
 		return (NULLCP);
-	b = smalloc (strlen(a) +2);
+	{
+		int n;
+
+		if (strlen2int (a, &n) != 0 || n > INT_MAX - 2)
+			return (NULLCP);
+		b = smalloc (n + 2);
+	}
 	*b++ = T61_MARK;
 	strcpy (b,a);
 	free (a);
@@ -364,10 +370,14 @@ int check_3166 (char *a) {
 
 	if (strlen (a) != 2)
 		return 0;
-	if (islower ((uint8_t) a[0]))
-		a[0] = toupper (a[0]);
-	if (islower ((uint8_t) a[1]))
-		a[1] = toupper (a[1]);
+	if (islower ((uint8_t) a[0])) {
+		if (int2char (toupper ((uint8_t) a[0]), &a[0]) != 0)
+			return 0;
+	}
+	if (islower ((uint8_t) a[1])) {
+		if (int2char (toupper ((uint8_t) a[1]), &a[1]) != 0)
+			return 0;
+	}
 #ifdef STRICT_X500
 	return (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a));
 #else
@@ -392,10 +402,14 @@ losing:
 		free (a);
 		return (NULLCP);
 	}
-	if (islower ((uint8_t) a[0]))
-		a[0] = toupper (a[0]);
-	if (islower ((uint8_t) a[1]))
-		a[1] = toupper (a[1]);
+	if (islower ((uint8_t) a[0])) {
+		if (int2char (toupper ((uint8_t) a[0]), &a[0]) != 0)
+			goto losing;
+	}
+	if (islower ((uint8_t) a[1])) {
+		if (int2char (toupper ((uint8_t) a[1]), &a[1]) != 0)
+			goto losing;
+	}
 #ifdef STRICT_X500
 	if (isupper ((uint8_t) a[0]) && isupper ((uint8_t) a[1]) && is3166 (a))
 #else
@@ -597,8 +611,10 @@ unquotechar (char *a, char *b) {
 
 	default:
 		if (isxdigit((*a) & 0xff) && sscanf (a,"%2x", &val) == 1) {
-			*b = val & 0xff;
-			a++;
+			if (int2octet (val, b) != 0)
+				parse_error ("Bad Quoted character",NULLCP);
+			else
+				a++;
 		} else
 			parse_error ("Bad Quoted character",NULLCP);
 		break;
@@ -608,8 +624,10 @@ unquotechar (char *a, char *b) {
 		*b = '\\';
 	else {
 		if (sscanf (a,"%2x", &val) == 1) {
-			*b = val & 0xff;
-			a++;
+			if (int2octet (val, b) != 0)
+				parse_error ("Bad Quoted character",NULLCP);
+			else
+				a++;
 		} else
 			parse_error ("Bad Quoted character",NULLCP);
 	}
@@ -664,7 +682,8 @@ struct qbuf *r_octparse (char *str) {
 			} else {
 				buflen += PARSE_INCR;
 				left += PARSE_INCR;
-				curlen = ptr - buf;
+				if (ptrdiff2int (ptr - buf, &curlen) != 0)
+					return NULL;
 				buf = srealloc(buf, buflen);
 				ptr = buf + curlen;
 			}
@@ -679,7 +698,13 @@ struct qbuf *r_octparse (char *str) {
 		left--;
 	}
 	*ptr = 0;	/* just for safety ? */
-	return (str2qb(buf, ptr - buf, 1));
+	{
+		int n;
+
+		if (ptrdiff2int (ptr - buf, &n) != 0)
+			return NULL;
+		return (str2qb(buf, n, 1));
+	}
 }
 
 char *octparse (char *str) {
@@ -993,7 +1018,7 @@ again:
 				if (format != READOUT)
 					*optr++ = '\\';	/* Continuation character */
 				*optr++ = '\n';
-				ps_write(ps, (PElementData)buf, optr - buf);
+				ps_write_span (ps, buf, optr);
 				optr = ptr = buf;
 				goto again;
 			}
@@ -1001,7 +1026,7 @@ again:
 		}
 	}
 	if (ptr > buf)
-		ps_write(ps, (PElementData)buf, ptr - buf);
+		ps_write_span (ps, buf, ptr);
 }
 
 void octprint (PS ps, char *str, int format)
@@ -1040,7 +1065,7 @@ void octprint (PS ps, char *str, int format)
 				*optr++ = '\\';
 				*optr++ = '\n';
 			}
-			ps_write (ps, (PElementData)buf, optr - buf);
+			ps_write_span (ps, buf, optr);
 			ptr = optr = buf;
 			continue;
 		}
@@ -1048,7 +1073,7 @@ void octprint (PS ps, char *str, int format)
 		str++;
 	}
 	if (optr > buf)
-		ps_write (ps, (PElementData)buf, optr - buf);
+		ps_write_span (ps, buf, optr);
 }
 
 /*
@@ -1194,7 +1219,7 @@ again:
 		if (ptr >= pend) {
 			*optr++ = '\\';	/* Continuation character */
 			*optr++ = '\n';
-			ps_write(ps, (PElementData)buf, optr - buf);
+			ps_write_span (ps, buf, optr);
 			optr = ptr = buf;
 			goto again;
 		}
@@ -1204,7 +1229,7 @@ again:
 	*ptr++ = '\\';
 	*ptr++ = 'Z';
 	if (ptr > buf)
-		ps_write(ps, (PElementData)buf, ptr - buf);
+		ps_write_span (ps, buf, ptr);
 }
 /*
  * extract the next string that was written using out_print
@@ -1236,7 +1261,8 @@ static char *part_parse (
 			} else {
 				buflen += PARSE_INCR;
 				left += PARSE_INCR;
-				curlen = ptr - buf;
+				if (ptrdiff2int (ptr - buf, &curlen) != 0)
+					return NULL;
 				buf = srealloc(buf, buflen);
 				ptr = buf + curlen;
 			}
@@ -1247,7 +1273,8 @@ static char *part_parse (
 			*ptr = '\0';
 			str += 2;
 			*pstr = str;
-			*plen = ptr - buf;
+			if (ptrdiff2int (ptr - buf, plen) != 0)
+				return NULL;
 			return (buf);
 		} else {
 			str++;
@@ -1258,7 +1285,8 @@ static char *part_parse (
 	}
 	*ptr = '\0';	/* for users convience */
 	*pstr = ++str;
-	*plen = ptr - buf;
+	if (ptrdiff2int (ptr - buf, plen) != 0)
+		return NULL;
 	return (buf);
 }
 

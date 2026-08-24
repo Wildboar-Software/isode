@@ -380,7 +380,11 @@ static int decode_one (bit_string *lineptr, bit_string *t4_lineptr)
 				return (-1);
 			}
 		} else if (run.r_type == UNCOMPRESSED_1D) {
-			xcolour = undo_uncompressed_mode (lineptr, t4_lineptr, xcolour, 0);
+			int nextc;
+
+			nextc = undo_uncompressed_mode (lineptr, t4_lineptr, xcolour, 0);
+			if (int2char (nextc, &xcolour) != 0)
+				return (-1);
 			if (xcolour == -1) return (-1);
 		} else if (run.r_type == EOLN) {
 			break;
@@ -438,11 +442,16 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 		}
 		switch (ptr->value) {
 
-		case -1:
-			colour = undo_uncompressed_mode (code_lineptr, t4_lineptr,
+		case -1: {
+			int nextc;
+
+			nextc = undo_uncompressed_mode (code_lineptr, t4_lineptr,
 											 colour, 1);
+			if (int2char (nextc, &colour) != 0)
+				return (-1);
 			if (colour < 0) return (colour);
 			break;
+		}
 
 		case P:
 			undo_pass_mode (ref_lineptr, code_lineptr);
@@ -456,9 +465,14 @@ int decode_two (bit_string *ref_lineptr, bit_string *code_lineptr, bit_string *t
 		case EOLN:
 			break;
 
-		default:
-			undo_vert_mode (ref_lineptr, code_lineptr, ptr->value);
+		default: {
+			char off;
+
+			if (int2char (ptr->value, &off) != 0)
+				return (-1);
+			undo_vert_mode (ref_lineptr, code_lineptr, off);
 			break;
+		}
 		}
 	} while (ptr->n_type != EOLN);
 	/* fill to end of line with current colour */
@@ -703,8 +717,11 @@ static void put_run (bit_string *lineptr, int length, char xcolour)
 			for (i = 0; i < l / 8; i++)
 				*lineptr->dbuf++ = 0;
 		else
-			for (i = 0; i < l / 8; i++)
-				*lineptr->dbuf++ = 0xff;
+			for (i = 0; i < l / 8; i++) {
+				if (octet2char (0xff, lineptr->dbuf) != 0)
+					return;
+				lineptr->dbuf++;
+			}
 		/* put the last few bits into the next byte */
 		if (xcolour == WHITE)
 			for (i = 0; i < l % 8; i++)

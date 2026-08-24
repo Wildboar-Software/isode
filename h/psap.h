@@ -439,6 +439,26 @@ int	ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line
 #define	ps_write_aux(ps, data, cc, in_line) \
     	ps_io ((ps), (ps) -> ps_writeP, (data), (cc), (in_line))
 
+static inline int
+ps_print_s (PS ps, char *data)
+{
+	int n;
+
+	if (data == NULL || strlen2int (data, &n) != 0)
+		return NOTOK;
+	return ps_write (ps, (PElementData) data, n);
+}
+
+static inline int
+ps_write_span (PS ps, char *start, char *end)
+{
+	int n;
+
+	if (start == NULL || ptrdiff2int (end - start, &n) != 0)
+		return NOTOK;
+	return ps_write (ps, (PElementData) start, n);
+}
+
 int	ps_flush (PS ps);
 
 int ps_prime (PS ps, int waiting);

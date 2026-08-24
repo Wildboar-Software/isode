@@ -298,7 +298,7 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 		ptr_to_string++ ;
 		if (*ptr_to_string == NULL)
 			return ((struct dsa_control *) 0) ;
-		item->un.setLogLevel = str2qb(ptr_to_string, strlen(ptr_to_string), 1) ;
+		item->un.setLogLevel = str2qb_s(ptr_to_string) ;
 		break ;
 	}
 	case(CONTROL_REFRESH): {
@@ -373,7 +373,7 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 		ptr_to_string++ ;
 		if (*ptr_to_string == NULL)
 			return ((struct dsa_control *) 0) ;
-		item->un.changeTailor = str2qb(ptr_to_string, strlen(ptr_to_string), 1) ;
+		item->un.changeTailor = str2qb_s(ptr_to_string) ;
 		break ;
 	}
 	case(CONTROL_UPDATESLAVEEDBS): {
@@ -385,9 +385,9 @@ static struct dsa_control *str2dsa_control_aux (char *str, struct dsa_control *i
 			return ((struct dsa_control *) 0) ;
 		ptr_to_string++ ;
 		if (*ptr_to_string == NULL)
-			item->un.updateSlaveEDBs = str2qb("all", strlen("all"), 1) ;
+			item->un.updateSlaveEDBs = str2qb_s("all") ;
 		else
-			item->un.updateSlaveEDBs = str2qb(ptr_to_string, strlen(ptr_to_string), 1) ;
+			item->un.updateSlaveEDBs = str2qb_s(ptr_to_string) ;
 		break ;
 	}
 	}

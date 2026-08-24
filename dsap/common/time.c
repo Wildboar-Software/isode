@@ -64,14 +64,18 @@ static void * timedec (PE pe)
 
 void utcprint (PS ps, char *xtime, int format)
 {
-	UTC	    ut;
+	if (format == READOUT) {
+		int n;
+		UTC ut;
 
-	if (format == READOUT && (ut = str2utct (xtime, strlen (xtime)))) {
-		long    mtime;
-		mtime = gtime (ut2tm (ut));
-		ps_printf (ps, "%-24.24s", ctime (&mtime));
-	} else
-		ps_printf (ps, "%s", xtime);
+		if (strlen2int (xtime, &n) == 0 && (ut = str2utct (xtime, n))) {
+			long    mtime;
+			mtime = gtime (ut2tm (ut));
+			ps_printf (ps, "%-24.24s", ctime (&mtime));
+			return;
+		}
+	}
+	ps_printf (ps, "%s", xtime);
 }
 
 static int utccmp (void *value1, void *value2) {
@@ -80,11 +84,19 @@ static int utccmp (void *value1, void *value2) {
 	long a_time, mdiff;
 	UTC ut;
 
-	if ((ut = str2utct (a, strlen (a))) == NULL)
-		return pstrcmp (a, b);
+	{
+		int n;
+
+		if (strlen2int (a, &n) != 0 || (ut = str2utct (a, n)) == NULL)
+			return pstrcmp (a, b);
+	}
 	a_time = gtime (ut2tm (ut));
-	if ((ut = str2utct (b, strlen (b))) == NULL)
-		return pstrcmp (a, b);
+	{
+		int n;
+
+		if (strlen2int (b, &n) != 0 || (ut = str2utct (b, n)) == NULL)
+			return pstrcmp (a, b);
+	}
 	return ((mdiff = a_time - gtime (ut2tm (ut))) == 0L ? 0
 			: mdiff > 0L ? 1 : -1);
 }

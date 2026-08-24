@@ -68,7 +68,8 @@ PE asn2pe (char *str)
 #endif
 
 	StripSpace (str);
-	j = strlen (str);
+	if (sizet2int (strlen (str), &j) != 0)
+		return (NULLPE);
 	if (j % 2 == 1) {
 		LLOG (log_dsap,LLOG_EXCEPTIONS,
 			  ("asn2pe: not an even number of bytes `%s'", str));
@@ -81,9 +82,14 @@ PE asn2pe (char *str)
 			str ++, i++;
 			continue;
 		}
-		*ptr = hex2nib[*str++ & 0x7f] << 4;
-		*ptr |= hex2nib[*str++ & 0x7f];
-		*ptr++ &= 0xff;
+		{
+			int v;
+
+			v = (hex2nib[*str++ & 0x7f] << 4) | hex2nib[*str++ & 0x7f];
+			if (int2octet (v, ptr) != 0)
+				return (NULLPE);
+			ptr++;
+		}
 		i += 2;
 #ifdef oldcode
 		sscanf (str,"%2x",&val);

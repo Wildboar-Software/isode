@@ -79,8 +79,13 @@ int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
 		if (dn->dn_parent != NULLDN)
 			this_one = FALSE;
 	}
-	if (dn->dn_parent != NULLDN)
-		res = ufn_dn_print_aux (ps,dn->dn_parent,next,multiline);
+	if (dn->dn_parent != NULLDN) {
+		int nres;
+
+		nres = ufn_dn_print_aux (ps,dn->dn_parent,next,multiline);
+		if (int2char (nres, &res) != 0)
+			return NOTOK;
+	}
 	if (this_one) {
 		if (res) {
 			if (multiline < 0 || (multiline && res > 1)) {

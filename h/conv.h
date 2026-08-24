@@ -1177,6 +1177,15 @@ long2sint_n (long n, void *out, size_t outsz)
 		memcpy (out, &s, sizeof s);
 		return 0;
 	}
+	if (outsz == sizeof (char)) {
+		int v;
+		char c;
+
+		if (long2int (n, &v) != 0 || int2char (v, &c) != 0)
+			return -1;
+		memcpy (out, &c, sizeof c);
+		return 0;
+	}
 	return -1;
 }
 

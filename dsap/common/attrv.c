@@ -155,8 +155,13 @@ short str2syntax (char *str) {
 	int i;
 
 	for (i=0, ptr = &syntax_table[0] ; i<num_syntax; i++,ptr++)
-		if ( lexequ (ptr->s_sntx,str) == 0)
-			return (i);
+		if ( lexequ (ptr->s_sntx,str) == 0) {
+			short s;
+
+			if (int2short (i, &s) != 0)
+				return (0);
+			return (s);
+		}
 	return (0);
 }
 

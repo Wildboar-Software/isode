@@ -1316,7 +1316,11 @@ static void dumpact(FILE *fp, YAL yal, int form, int ret) {
 	case GEN_ASSIGN:
 		if (control_act (act) == -1)
 			fprintf (fp, "\t\t/* ignored - empty expression */\n");
-		else fprintf (fp, "\t\t(%s) = _val;\n", act -> a_data);
+		else
+			fprintf (fp,
+					 "\t\tif (long2sint_n (_val, &( %s ), sizeof ( %s )) != 0)\n"
+					 "\t\t\treturn NOTOK;\n",
+					 act -> a_data, act -> a_data);
 		break;
 	case GEN_RETURN:
 		fprintf (fp, "\t\treturn (%s);\n",act -> a_data);

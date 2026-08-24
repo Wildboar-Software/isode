@@ -69,15 +69,17 @@ void soundex (char *s, char **c) {
 	*c = (char *) malloc(5*sizeof(char));
 	cmax = 4;
 	adjacent = '0';
-	if ( islower( *p ) )
-		(*c)[0] = toupper(*p);
-	else
+	if ( islower( *p ) ) {
+		if (int2char (toupper ((uint8_t) *p), &(*c)[0]) != 0)
+			return;
+	} else
 		(*c)[0] = *p;
 	(*c)[1]  = '\0';
 	for ( i = 0; i < 99 && (! iswordbreak(*p)); p++ ) {
-		if ( islower( *p ) )
-			ch = toupper (*p);
-		else
+		if ( islower( *p ) ) {
+			if (int2char (toupper ((uint8_t) *p), &ch) != 0)
+				return;
+		} else
 			ch = *p;
 		code = '0';
 		switch (ch) {
@@ -166,7 +168,8 @@ int soundex_cmp (char *a, char *b) {
 
 	for( ; a && b ; b = next_word (b) ) {
 		soundex(b, &g_bcode);
-		g_bcodelen = strlen(g_bcode);
+		if (strlen2int (g_bcode, &g_bcodelen) != 0)
+			return FALSE;
 		for (ptr=first_word(a); ptr; ptr=next_word(ptr) )  {
 			if (match_word (ptr)) {
 				a = next_word (ptr);

@@ -35,7 +35,8 @@ static char *readfile (FILE *file)
 			file_attr_length = curlen;
 			return (parse_buffer);
 		}
-		size = strlen(buf);
+		if (sizet2int (strlen (buf), &size) != 0)
+			return (NULLCP);
 		if (buf[size - 1] == '\n') {
 			buf[--size] = '\0';
 		}
