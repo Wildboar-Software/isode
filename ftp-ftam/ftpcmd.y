@@ -62,6 +62,7 @@ static void toolong(int sd);
 #else
 static SFD toolong(int sd);
 #endif
+static int ftp_port_octet (size_t n, char *out);
 
 extern void adios (char *, char *, ...);
 extern void advise (char *, char *, ...);
@@ -341,15 +342,22 @@ account:	STRING
 byte_size:	NUMBER
 	;
 
-host_port:	NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA 
+host_port:			NUMBER COMMA NUMBER COMMA NUMBER COMMA NUMBER COMMA 
 		NUMBER COMMA NUMBER
 		{
 			register char *a, *p;
 
 			a = (char *)&data_dest.sin_addr;
-			a[0] = $1; a[1] = $3; a[2] = $5; a[3] = $7;
 			p = (char *)&data_dest.sin_port;
-			p[0] = $9; p[1] = $11;
+			if (ftp_port_octet ($1, &a[0]) != 0
+					|| ftp_port_octet ($3, &a[1]) != 0
+					|| ftp_port_octet ($5, &a[2]) != 0
+					|| ftp_port_octet ($7, &a[3]) != 0
+					|| ftp_port_octet ($9, &p[0]) != 0
+					|| ftp_port_octet ($11, &p[1]) != 0) {
+				reply(501, "Invalid PORT");
+				YYERROR;
+			}
 			data_dest.sin_family = AF_INET;
 		}
 	;
@@ -375,8 +383,14 @@ type_code:	A
 	}
 	|	A SP form_code
 	{
+		int n;
+
 		cmd_type = TYPE_A;
-		cmd_form = $3;
+		if (sizet2int ($3, &n) != 0) {
+			reply(501, "Invalid TYPE");
+			YYERROR;
+		}
+		cmd_form = n;
 	}
 	|	E
 	{
@@ -385,8 +399,14 @@ type_code:	A
 	}
 	|	E SP form_code
 	{
+		int n;
+
 		cmd_type = TYPE_E;
-		cmd_form = $3;
+		if (sizet2int ($3, &n) != 0) {
+			reply(501, "Invalid TYPE");
+			YYERROR;
+		}
+		cmd_form = n;
 	}
 	|	I
 	{
@@ -399,14 +419,26 @@ type_code:	A
 	}
 	|	L SP byte_size
 	{
+		int n;
+
 		cmd_type = TYPE_L;
-		cmd_bytesz = $3;
+		if (sizet2int ($3, &n) != 0) {
+			reply(501, "Invalid TYPE");
+			YYERROR;
+		}
+		cmd_bytesz = n;
 	}
 	/* this is for a bug in the BBN ftp */
 	|	L byte_size
 	{
+		int n;
+
 		cmd_type = TYPE_L;
-		cmd_bytesz = $2;
+		if (sizet2int ($2, &n) != 0) {
+			reply(501, "Invalid TYPE");
+			YYERROR;
+		}
+		cmd_bytesz = n;
 	}
 	;
 
@@ -564,6 +596,16 @@ struct tab *lookup(char *cmd) {
 
 #include <arpa/telnet.h>
 
+static int
+ftp_port_octet (size_t n, char *out)
+{
+	int i;
+
+	if (sizet2int (n, &i) != 0 || int2octet (i, out) != 0)
+		return -1;
+	return 0;
+}
+
 /*
  * _getline - a hacked up version of fgets to ignore TELNET escape codes.
  */
@@ -577,7 +619,9 @@ static char *_getline(char *s, int n, FILE *iop) {
 			c = getc(iop);	/* skip command */
 			c = getc(iop);	/* try next char */
 		}
-		*cs++ = c;
+		if (int2octet (c, cs) != 0)
+			exit(1);
+		cs++;
 		if (c=='\n')
 			break;
 	}
@@ -634,9 +678,10 @@ int yylex(void)
 				cp = index(cbuf, '\r');
 				cp[0] = '\n'; cp[1] = 0;
 			}
-			if (index(cbuf, ' '))
-				cpos = index(cbuf, ' ') - cbuf;
-			else
+			if (index(cbuf, ' ')) {
+				if (ptrdiff2int (index(cbuf, ' ') - cbuf, &cpos) != 0)
+					longjmp(errcatch,NOTOK);
+			} else
 				cpos = 4;
 			c = cbuf[cpos];
 			cbuf[cpos] = '\0';
@@ -673,7 +718,8 @@ int yylex(void)
 
 		case STR2:
 			cp = &cbuf[cpos];
-			n = strlen(cp);
+			if (strlen2int (cp, &n) != 0)
+				longjmp(errcatch,NOTOK);
 			cpos += n - 1;
 			/*
 			 * Make sure the string is nonempty and \n terminated.
@@ -777,8 +823,15 @@ int yylex(void)
 
 static void upper(char *s) {
 	while (*s != '\0') {
-		if (islower(*s))
-			*s = toupper(*s);
+		if (islower((unsigned char)*s)) {
+			int u;
+			char t;
+
+			u = toupper((unsigned char)*s);
+			if (int2char (u, &t) != 0)
+				return;
+			*s = t;
+		}
 		s++;
 	}
 }
@@ -799,7 +852,10 @@ static void help(char *s) {
 
 	width = 0, NCMDS = 0;
 	for (c = cmdtab; c->name != NULL; c++) {
-		int len = strlen(c->name);
+		int len;
+
+		if (strlen2int (c->name, &len) != 0)
+			continue;
 
 		if (c->implemented == 0)
 			len++;
@@ -809,7 +865,7 @@ static void help(char *s) {
 	}
 	width = (width + 8) &~ 7;
 	if (s == 0) {
-		register int i, j, w;
+		int i, j, w;
 		int columns, lines;
 
 		lreply(214,
@@ -826,7 +882,8 @@ static void help(char *s) {
 					c->implemented ? ' ' : '*');
 				if (c + lines >= &cmdtab[NCMDS])
 					break;
-				w = strlen(c->name);
+				if (strlen2int (c->name, &w) != 0)
+					break;
 				while (w < width) {
 					putchar(' ');
 					w++;
