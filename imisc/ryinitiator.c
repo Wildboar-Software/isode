@@ -316,8 +316,11 @@ static int getlines (char *buffer) {
 			return NOTOK;
 		}
 
-		if (cp < ep)
-			*cp++ = i;
+		if (cp < ep) {
+			if (int2octet (i, cp) != 0)
+				return NOTOK;
+			cp++;
+		}
 	}
 	*cp = 0;
 	return OK;
@@ -345,8 +348,20 @@ static void timer (int bytes, int pkts) {
 		gettimeofday (&stop, (struct timezone  *) 0);
 	tvsub (&td, &stop, &start);
 	ms = (td.tv_sec * 1000) + (td.tv_usec / 1000);
-	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
-	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
+	{
+		int ims;
+		float fbytes,
+		      fpkts,
+		      fms;
+
+		if (int2float (bytes, &fbytes) != 0
+				|| int2float (pkts, &fpkts) != 0
+				|| long2int (ms ? ms : 1L, &ims) != 0
+				|| int2float (ims, &fms) != 0)
+			return;
+		bs = (fbytes * fpkts * NBBY * 1000 / fms) / NBBY;
+		ps = (fpkts * 1000) / fms;
+	}
 	printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 			pkts, td.tv_sec, td.tv_usec / 10000, ps);
 	if (bytes > 0)
@@ -383,8 +398,20 @@ static void timer (int bytes, int pkts) {
 	td = stop - start;
 	secs = td / 60, msecs = (td % 60) * 1000 / 60;
 	ms = (secs * 1000) +  msecs;
-	bs = (((float) bytes * pkts * NBBY * 1000) / (float) (ms ? ms : 1)) / NBBY;
-	ps = ((float) pkts * 1000) / (float) (ms ? ms : 1);
+	{
+		int ims;
+		float fbytes,
+		      fpkts,
+		      fms;
+
+		if (int2float (bytes, &fbytes) != 0
+				|| int2float (pkts, &fpkts) != 0
+				|| long2int (ms ? ms : 1L, &ims) != 0
+				|| int2float (ims, &fms) != 0)
+			return;
+		bs = (fbytes * fpkts * NBBY * 1000 / fms) / NBBY;
+		ps = (fpkts * 1000) / fms;
+	}
 
 	printf ("%d operations in %d.%02d seconds (%.2f ops/s)",
 			pkts, secs, msecs / 10, ps);

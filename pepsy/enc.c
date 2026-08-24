@@ -426,10 +426,17 @@ static int en_type (
 			if (*(char **) (parm + p->pe_ucode) == NULLCP)
 				return pepsylose (mod, &p[1], NULLPE,
 								  "en_type:T_STRING missing pointer");
-			if ((pe = str2prim(*(char **) (parm + p->pe_ucode),
-							   strlen(*(char **) (parm + p->pe_ucode)),
-							   CLASS(p), TAG(p))) == NULLPE)
-				return oom(mod, p);
+			{
+				int slen;
+
+				if (strlen2int (*(char **) (parm + p->pe_ucode), &slen) != 0)
+					return pepsylose (mod, &p[1], NULLPE,
+							  "en_type:T_STRING length overflow");
+				if ((pe = str2prim(*(char **) (parm + p->pe_ucode),
+								   slen,
+								   CLASS(p), TAG(p))) == NULLPE)
+					return oom(mod, p);
+			}
 			break;
 
 		case OCTET_PTR:
@@ -1512,10 +1519,17 @@ static int en_etype (
 			return pepsylose (mod, &p[1], NULLPE,
 							  "en_etype:T_STRING missing pointer");
 
-		if ((pe = str2prim(*(char **) (parm + p->pe_ucode),
-						   strlen(*(char **) (parm + p->pe_ucode)),
-						   CLASS(p), TAG(p))) == NULLPE)
-			return oom(mod, p);
+		{
+			int slen;
+
+			if (strlen2int (*(char **) (parm + p->pe_ucode), &slen) != 0)
+				return pepsylose (mod, &p[1], NULLPE,
+						  "en_etype:T_STRING length overflow");
+			if ((pe = str2prim(*(char **) (parm + p->pe_ucode),
+							   slen,
+							   CLASS(p), TAG(p))) == NULLPE)
+				return oom(mod, p);
+		}
 		break;
 
 	case OCTET_PTR:

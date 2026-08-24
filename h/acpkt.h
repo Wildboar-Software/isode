@@ -106,15 +106,13 @@
 #ifndef	__STDC__
 #define	copyAcSAPdata(base,len,d) \
 { \
-    register int i = len; \
-    (void) copy_capped (base, d -> d/**/_data, (ptrdiff_t) i, \
+    (void) copy_capped (base, d -> d/**/_data, (ptrdiff_t) (len), \
 			sizeof d -> d/**/_data, &d -> d/**/_cc); \
 }
 #else
 #define	copyAcSAPdata(base,len,d) \
 { \
-    register int i = len; \
-    (void) copy_capped (base, d -> d##_data, (ptrdiff_t) i, \
+    (void) copy_capped (base, d -> d##_data, (ptrdiff_t) (len), \
 			sizeof d -> d##_data, &d -> d##_cc); \
 }
 #endif

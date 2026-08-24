@@ -544,7 +544,10 @@ void do_type (YP yp, int level, char *id, char *arg)
 		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, YP_ENCODER));
-		i = strlen (arg) - 3;
+		if (strlen2int (arg, &i) != 0 || i < 3)
+			i = 0;
+		else
+			i -= 3;
 		printf ("%*.*s, 0, ", i, i, arg + 2);
 		if (yp -> yp_intexp)
 			printf ("%s, ", yp -> yp_intexp);

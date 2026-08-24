@@ -1734,7 +1734,11 @@ static void dmp_ptpe (
 		return;
 	}
 	par--;
-	j = p - *par;
+	if (ptrdiff2int (p - *par, &j) != 0) {
+		ppepsylose (mod, p, NULLPE,
+			    "dmp_ptpe:entry offset overflow\n");
+		return;
+	}
 
 	fprintf(vfp, "%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);

@@ -71,12 +71,20 @@ str2aei_stub (char *designator, char *qualifier) {
 
 		/* guess at what sort of address we have on our hands */
 
-		if ((i = strlen (cp = designator)) > 6
+		if (strlen2int (cp = designator, &i) != 0)
+			return (NULLAEI);
+		if (i > 6
 				&& cp[0] == '4' && cp[2] == '0' && cp[3] == '0') {
+			int n,
+			    alen;
+
 			na -> na_stack = NA_NSAP;
 			na -> na_community = ts_comm_nsap_default;
-			na -> na_addrlen = implode ((uint8_t *) na -> na_address,
-										cp, strlen (cp));
+			if (strlen2int (cp, &n) != 0)
+				return (NULLAEI);
+			alen = implode ((uint8_t *) na -> na_address, cp, n);
+			if (int2char (alen, &na -> na_addrlen) != 0)
+				return (NULLAEI);
 			goto found_it;
 		}
 
@@ -120,7 +128,8 @@ str2aei_stub (char *designator, char *qualifier) {
 				return (NULLAEI);
 		} else {
 			strcpy (na -> na_dte, designator);
-			na -> na_dtelen = strlen (na -> na_dte);
+			if (sizet2char (strlen (na -> na_dte), &na -> na_dtelen) != 0)
+				return (NULLAEI);
 #ifdef	BRIDGE_X25
 			na -> na_stack = bridgediscrim (na) ? NA_BRG : NA_X25;
 #else

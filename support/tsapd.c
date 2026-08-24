@@ -354,9 +354,17 @@ static void tsapd (int vecp, char **vec) {
 out:
 	;
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s", buffer);
-	if ((int)strlen (buffer) >= TD_SIZE)
-		buffer[0] = 0;
-	TDiscRequest (ts -> ts_sd, buffer, strlen (buffer) + 1, td);
+	{
+		int n;
+
+		if (strlen2int (buffer, &n) != 0 || n >= TD_SIZE) {
+			buffer[0] = 0;
+			n = 0;
+		}
+		if (add_int_to_int (&n, 1) != 0)
+			n = 1;
+		TDiscRequest (ts -> ts_sd, buffer, n, td);
+	}
 	exit (1);
 }
 
@@ -399,8 +407,14 @@ static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 
 	if (strcmp (is -> is_entity, "session") || strcmp (is -> is_provider, "tsap"))
 		return OK;
-	if (TInit (is -> is_tail - is -> is_vec, is -> is_vec, ts, td) == NOTOK)
-		return NOTOK;
+	{
+		int vecn;
+
+		if (ptrdiff2int (is -> is_tail - is -> is_vec, &vecn) != 0)
+			return NOTOK;
+		if (TInit (vecn, is -> is_vec, ts, td) == NOTOK)
+			return NOTOK;
+	}
 	sd = ts -> ts_sd;
 	if (TConnResponse (sd, &ts -> ts_called, ts -> ts_expedited, NULLCP, 0, NULLQOS, td) == NOTOK)
 		return NOTOK;
@@ -438,8 +452,14 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 	strcpy (buffer1, *(is -> is_tail - 2));
 	strcpy (buffer2, *(is -> is_tail - 1));
 	/* end UGLY */
-	if (SInit (is -> is_tail - is -> is_vec, is -> is_vec, ss, si) == NOTOK)
-		return NOTOK;
+	{
+		int vecn;
+
+		if (ptrdiff2int (is -> is_tail - is -> is_vec, &vecn) != 0)
+			return NOTOK;
+		if (SInit (vecn, is -> is_vec, ss, si) == NOTOK)
+			return NOTOK;
+	}
 	advise (LLOG_NOTICE, NULLCP,
 			"S-CONNECT.INDICATION: <%d, %s, %s, %s, %s, %ld, %d>",
 			ss -> ss_sd, sprintref (&ss -> ss_connect),
@@ -524,7 +544,9 @@ static void arginit (char **vec) {
 	tcp_na -> na_stack = NA_TCP;
 	tcp_na -> na_community = ts_comm_tcp_default;
 	tcp_na -> na_domain[0] = 0;
-	tcp_na -> na_port = sp ? sp -> s_port : htons ((uint16_t) 102);
+	if (int2u16 (sp ? sp -> s_port : (int) htons ((uint16_t) 102),
+			 &tcp_na -> na_port) != 0)
+		advise (LLOG_EXCEPTIONS, NULLCP, "tcp/tsap: port out of range");
 	tz -> ta_naddr = 1;
 
 	tz++;
@@ -1472,7 +1494,13 @@ static void envinit (void) {
 
 	int pid;
 
-	nbits = getdtablesize ();
+	{
+		long nopen;
+
+		nopen = getdtablesize ();
+		if (long2int (nopen, &nbits) != 0 || nbits <= 0)
+			nbits = FD_SETSIZE;
+	}
 
 	if (debug == 0 && !(debug = isatty (2))) {
 		if (!foreground) {

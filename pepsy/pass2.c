@@ -623,10 +623,13 @@ struct univ_typ *univtyp (char *name) {
 			return (p);
 		if (low == high)
 			return (NULL);
-		if (i < 0)
-			high = p - univ_tab - 1;
-		else
-			low = p - univ_tab + 1;
+		if (i < 0) {
+			if (ptrdiff2int (p - univ_tab - 1, &high) != 0)
+				return (NULL);
+		} else {
+			if (ptrdiff2int (p - univ_tab + 1, &low) != 0)
+				return (NULL);
+		}
 	}
 
 #if OPTIMISED
@@ -975,7 +978,7 @@ void dump_ptrtab(FILE *fp) {
 char *rm_indirect (char *p) {
 	static char	buf[STRSIZE];
 	int	i;
-	if (p == NULLCP || *p == '\0' || (i = strlen(p)) >= STRSIZE)
+	if (p == NULLCP || *p == '\0' || strlen2int (p, &i) != 0 || i >= STRSIZE)
 		return (NULLCP);
 	strncpy(buf, p, STRSIZE);
 	for (; i >= 0; i--) {

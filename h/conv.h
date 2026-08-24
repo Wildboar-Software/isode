@@ -486,6 +486,20 @@ add_int_to_int (int *acc, int n)
 	return 0;
 }
 
+/* strlen(s)+1, as used for NUL-terminated protocol payloads. */
+static inline int
+strlen1_to_int (const char *s, int *out)
+{
+	int n;
+
+	if (out == NULL || strlen2int (s, &n) != 0)
+		return -1;
+	if (add_int_to_int (&n, 1) != 0)
+		return -1;
+	*out = n;
+	return 0;
+}
+
 static inline int
 int2u16 (int n, uint16_t *out)
 {

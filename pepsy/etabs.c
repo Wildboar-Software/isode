@@ -1259,7 +1259,8 @@ static void defdflt(FILE *fp, YP yp, char *name)
 
 		case YV_STRING:
 			str = yv->yv_string;
-			size = strlen(str);
+			if (strlen2int (str, &size) != 0)
+				ferrs (1, "defdflt:STRING:length overflow %s\n", str);
 			goto dumpdef2;
 
 		case YV_HSTRING:

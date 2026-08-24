@@ -228,7 +228,11 @@ static void dmp_tpe (
 		pepsylose (mod, p, NULLPE,
 				   "dmp_tpe:par == prev == %p internal error\n", par);
 	par--;
-	j = p - *par;
+	if (ptrdiff2int (p - *par, &j) != 0) {
+		pepsylose (mod, p, NULLPE,
+			   "dmp_tpe:entry offset overflow\n");
+		return;
+	}
 
 	printf("%s type %d + %d ", name, par - prev, j);
 	pr_entry(p);
