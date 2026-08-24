@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include "manifest.h"
+#include "general.h"
 #include "tailor.h"
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -350,8 +351,13 @@ int	xselect (int nfds, fd_set* rfds, fd_set* wfds, fd_set* efds, int secs) {
 			xfds;
 	static int nsysfds = NOTOK;
 
-	if (nsysfds == NOTOK)
-		nsysfds = sysconf(_SC_OPEN_MAX);
+	if (nsysfds == NOTOK) {
+		long nopen;
+
+		nopen = sysconf (_SC_OPEN_MAX);
+		if (long2int (nopen, &nsysfds) != 0)
+			nsysfds = FD_SETSIZE;
+	}
 	if (nfds > FD_SETSIZE)
 		nfds = FD_SETSIZE;
 	if (nfds > nsysfds + 1)

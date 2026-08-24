@@ -25,18 +25,23 @@ int str2sel (char *s, int quoted, char *sel, int n) {
 			if (!isxdigit ((uint8_t) *cp))
 				break;
 
-		if (*cp == 0 && (i = (cp - s)) >= 2 && (i & 0x01) == 0) {
+		if (ptrdiff2int (cp - s, &i) != 0)
+			return NOTOK;
+		if (*cp == 0 && i >= 2 && (i & 0x01) == 0) {
 			if (i > (r = n * 2))
 				i = r;
 			i = implode ((uint8_t *) sel, s, i);
+			if (i == NOTOK)
+				return NOTOK;
 			if ((r = (n - i)) > 0 && bzero_int (sel + i, r) != 0)
 				return NOTOK;
 			return i;
 		}
 		if (*s == '#') {	/* gosip style, network byte-order */
 			i = atoi (s + 1);
-			sel[0] = (i >> 8) & 0xff;
-			sel[1] = i & 0xff;
+			if (int2octet ((i >> 8) & 0xff, &sel[0]) != 0
+					|| int2octet (i & 0xff, &sel[1]) != 0)
+				return NOTOK;
 
 			return 2;
 		}
@@ -87,5 +92,7 @@ int str2sel (char *s, int quoted, char *sel, int n) {
 	if (n > 0)
 		*cp = 0;
 
-	return (cp - sel);
+	if (ptrdiff2int (cp - sel, &i) != 0)
+		return NOTOK;
+	return i;
 }

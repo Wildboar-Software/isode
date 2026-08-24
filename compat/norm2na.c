@@ -31,18 +31,24 @@ int norm2na (char *p, int len, struct NSAPaddr *na) {
 
 			if ((j = ((*cp & 0xf0) >> 4)) > 9)
 				goto concrete;
-			*dp++ = j + '0';
+			if (int2char (j + '0', dp) != 0)
+				return NOTOK;
+			dp++;
 
 			if ((j = (*cp & 0x0f)) > 9) {
 				if (j != 0x0f)
 					goto concrete;
-			} else
-				*dp++ = j + '0';
+			} else {
+				if (int2char (j + '0', dp) != 0)
+					return NOTOK;
+				dp++;
+			}
 		}
 
 		for (cp = nsap, xlen = 14; *cp == '0'; cp++, xlen--)
 			continue;
-		na -> na_dtelen = xlen;
+		if (int2char (xlen, &na -> na_dtelen) != 0)
+			return NOTOK;
 		for (cp2 = na -> na_dte; xlen-- > 0; )
 			*cp2++ = *cp++;
 		*cp2 = 0;
@@ -82,13 +88,18 @@ concrete:
 						  ("invalid concrete encoding"));
 					goto realNS;
 				}
-				*dp++ = j + '0';
+				if (int2char (j + '0', dp) != 0)
+					return NOTOK;
+				dp++;
 
 				if ((j = (*cp & 0x0f)) > 9) {
 					if (j != 0x0f)
 						goto concrete;
-				} else
-					*dp++ = j + '0';
+				} else {
+					if (int2char (j + '0', dp) != 0)
+						return NOTOK;
+					dp++;
+				}
 			}
 			*dp = 0;
 
@@ -135,7 +146,8 @@ lock_and_load:
 							goto realNS;
 						}
 						dp = na -> na_pid;
-						na -> na_pidlen = ilen;
+						if (int2char (ilen, &na -> na_pidlen) != 0)
+							return NOTOK;
 					} else {
 						if (ilen > CUDFSIZE) {
 							LLOG (addr_log, LLOG_EXCEPTIONS,
@@ -143,7 +155,8 @@ lock_and_load:
 							goto realNS;
 						}
 						dp = na -> na_cudf;
-						na -> na_cudflen = ilen;
+						if (int2char (ilen, &na -> na_cudflen) != 0)
+							return NOTOK;
 					}
 					for (; rlen > 0; rlen -= 3) {
 						sscanf (cp, "%3d", &i);
@@ -154,7 +167,9 @@ lock_and_load:
 								  ("invalid PID/CUDF: %s", nsap));
 							goto realNS;
 						}
-						*dp++ = i & 0xff;
+						if (int2octet (i & 0xff, dp) != 0)
+							return NOTOK;
+						dp++;
 					}
 					break;
 
@@ -164,7 +179,9 @@ lock_and_load:
 					goto realNS;
 				}
 				strcpy (na -> na_dte, cp);
-				na -> na_dtelen = strlen (na -> na_dte);
+				if (sizet2char (strlen (na -> na_dte),
+						&na -> na_dtelen) != 0)
+					return NOTOK;
 				break;
 
 			case NA_TCP:
@@ -232,7 +249,8 @@ unrealNS:
 				return NOTOK;
 			if (len > (int) sizeof na -> na_address)
 				return NOTOK;
-			na -> na_addrlen = (char) len;
+			if (int2char (len, &na -> na_addrlen) != 0)
+				return NOTOK;
 		}
 	}
 

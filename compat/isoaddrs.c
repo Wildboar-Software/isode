@@ -19,6 +19,7 @@ static void read_file (char *file);
 static int add_macro (char *name, char *value);
 char *macro2str (char *name);
 static char *SEL2STR (char *sel, int len);
+static int pack_dec_octets (char *src, char *dst, char **endp);
 
 
 static char *isomacros = "isomacros";
@@ -291,9 +292,13 @@ idi_pad (char **pp, int idi_len, char *dp, int padchar)
 
 #define	IMPLODE(intres,octres,octval,intval,losing,loslab) \
 { \
-    int   z = (intval); \
+    int   z, zres; \
     char *y = (octval); \
-    char *zp = y + z; \
+    char *zp; \
+ \
+    if (sizet2int ((size_t) (intval), &z) != 0) \
+	return (losing); \
+    zp = y + z; \
  \
     while (zp-- > y) \
 	if (!isxdigit ((uint8_t) *zp)) { \
@@ -305,7 +310,35 @@ loslab: ; \
 	} \
     if (z % 2) \
 	goto loslab; \
-    (intres) = implode ((uint8_t *) (octres), y, z); \
+    zres = implode ((uint8_t *) (octres), y, z); \
+    if (zres == NOTOK) \
+	return (losing); \
+    (intres) = zres; \
+}
+
+static int
+pack_dec_octets (char *src, char *dst, char **endp)
+{
+	char *np,
+		 *dp;
+
+	np = src;
+	dp = dst;
+	while (*np) {
+		int octet;
+
+		octet = (*np++ - '0') << 4;
+		if (*np)
+			octet |= (*np++ - '0') & 0x0f;
+		else
+			octet |= 0x0f;
+		if (int2octet (octet, dp) != 0)
+			return NOTOK;
+		dp++;
+	}
+	if (endp)
+		*endp = dp;
+	return OK;
 }
 
 struct PSAPaddr *str2paddr (char *str) {
@@ -356,8 +389,9 @@ struct PSAPaddr *str2paddr (char *str) {
 					return NULLPA;
 				}
 				*cp++ = 0;
+				if (strlen2int (dp, lp) != 0)
+					return NULLPA;
 				strcpy (*sp, dp);
-				*lp = strlen (dp);
 				break;
 
 			case '#':		/* '#' <digitstring> */
@@ -369,8 +403,9 @@ struct PSAPaddr *str2paddr (char *str) {
 						  ("invalid #-style selector: %s", str));
 					return NULLPA;
 				}
-				(*sp)[0] = (j >> 8) & 0xff;
-				(*sp)[1] = j & 0xff;
+				if (int2octet ((j >> 8) & 0xff, &(*sp)[0]) != 0
+						|| int2octet (j & 0xff, &(*sp)[1]) != 0)
+					return NULLPA;
 				*lp = 2;
 				break;
 
@@ -486,8 +521,12 @@ too_many:
 				  ("str2paddr: dp='%s', ep='%s'", dp, ep));
 
 			if (lexequ (dp, "NS") == 0) {
-				IMPLODE (na -> na_addrlen, na -> na_address, ep,
+				int nlen;
+
+				IMPLODE (nlen, na -> na_address, ep,
 						 strlen (ep), NULLPA, L2);
+				if (int2char (nlen, &na -> na_addrlen) != 0)
+					return NULLPA;
 			} else {
 				int	    len;
 				char    padchar;
@@ -518,7 +557,10 @@ too_many:
 					 * Only applies if the DSP is NULL
 					 */
 					strcpy (nsap, dp);
-					if ((na -> na_dtelen = strlen (nsap)) > NSAP_DTELEN) {
+					if (strlen2int (nsap, &j) != 0)
+						return NULLPA;
+					if (int2char (j, &na -> na_dtelen) != 0
+							|| na -> na_dtelen > NSAP_DTELEN) {
 						dp = nsap;
 						goto invalid_dte;
 					}
@@ -570,18 +612,20 @@ too_many:
 handle_dsp:
 					;
 					np = nsap, dp = na -> na_address;
-					while (*np) {
-						*dp = (*np++ - '0') << 4;
-						if (*np)
-							*dp++ |= (*np++ - '0') & 0x0f;
-						else
-							*dp++ |= 0x0f;
-					}
-					na -> na_addrlen = dp - na -> na_address;
+					if (pack_dec_octets (np, dp, &dp) != OK)
+						return NULLPA;
+					if (ptrdiff2char (dp - na -> na_address,
+							  &na -> na_addrlen) != 0)
+						return NULLPA;
 					if (*ep == 'x') {
+						int alen;
+
 						IMPLODE (j, dp, ep + 1, strlen (ep + 1),
 								 NULLPA, L3);
-						na -> na_addrlen += j;
+						alen = na -> na_addrlen;
+						if (add_int_to_int (&alen, j) != 0
+								|| int2char (alen, &na -> na_addrlen) != 0)
+							return NULLPA;
 					} else if (*ep == 'l') {
 						size_t cur, add;
 
@@ -591,7 +635,8 @@ handle_dsp:
 						add = strlen (ep + 1);
 						if (add > (size_t) NASIZE || cur > (size_t) NASIZE - add)
 							return NULLPA;
-						na -> na_addrlen = (char) (cur + add);
+						if (sizet2char (cur + add, &na -> na_addrlen) != 0)
+							return NULLPA;
 					}
 					break;
 
@@ -634,10 +679,18 @@ handle_dsp:
 								ep = dp + strlen (dp);
 							else
 								*ep++ = 0;
-							na -> na_port = htons ((uint16_t) atoi(dp));
+							{
+								uint16_t port;
 
-							if (*ep)
-								na -> na_tset = atoi (ep);
+								if (int2u16 (atoi (dp), &port) != 0)
+									return NULLPA;
+								na -> na_port = htons (port);
+							}
+
+							if (*ep) {
+								if (int2u16 (atoi (ep), &na -> na_tset) != 0)
+									return NULLPA;
+							}
 						}
 #ifdef	h_addr
 						struct in_addr * prev_addr = (struct in_addr *) *(hp -> h_addr_list);
@@ -704,7 +757,9 @@ invalid_dte:
 							goto invalid_dte;
 #endif
 						strcpy (na -> na_dte, dp);
-						na -> na_dtelen = strlen (na -> na_dte);
+						if (sizet2char (strlen (na -> na_dte),
+								&na -> na_dtelen) != 0)
+							return NULLPA;
 						if (*ep) {
 							char   *cudf,
 								   *clen;
@@ -734,7 +789,8 @@ invalid_field:
 								goto invalid_field;
 							IMPLODE (j, cudf, ep, strlen (ep),
 									 NULLPA, L4);
-							*clen = j & 0xff;
+							if (int2char (j, clen) != 0)
+								return NULLPA;
 						}
 						break;
 					}
@@ -962,13 +1018,8 @@ int macro2comm (char *name, struct ts_interim *ts) {
 out:
 	;
 	ap = addr, np = ts -> ts_prefix;
-	while (*ap) {
-		*np = (*ap++ - '0') << 4;
-		if (*ap)
-			*np++ |= (*ap++ - '0') & 0x0f;
-		else
-			*np++ |= 0x0f;
-	}
+	if (pack_dec_octets (ap, np, &np) != OK)
+		return NOTOK;
 	switch (*ep) {
 	case 'x':
 		IMPLODE (j, np, ep + 1, strlen (ep + 1), NOTOK, L6);
@@ -983,7 +1034,8 @@ out:
 	default:
 		break;
 	}
-	ts -> ts_length = np - ts -> ts_prefix;
+	if (ptrdiff2int (np - ts -> ts_prefix, &ts -> ts_length) != 0)
+		return NOTOK;
 
 	return OK;
 }

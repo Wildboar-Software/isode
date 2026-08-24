@@ -289,6 +289,7 @@ off2sizet (off_t n, size_t *out)
 }
 
 #include <sys/socket.h>
+#include <netinet/in.h>
 
 static inline int
 int2socklen (int n, socklen_t *out)
@@ -800,6 +801,213 @@ fwrite_int (const void *ptr, size_t size, int nmemb, FILE *stream)
 		return -1;
 	}
 	return out;
+}
+
+static inline int
+int2char (int n, char *out)
+{
+	if (out == NULL || n < (int) CHAR_MIN || n > (int) CHAR_MAX)
+		return -1;
+	*out = (char) n;
+	return 0;
+}
+
+/*
+ * Store a protocol octet as a C char, keeping all 256 bit patterns.
+ * Use int2char for text and for signed length fields that must not wrap.
+ */
+static inline int
+octet2char (uint8_t n, char *out)
+{
+	if (out == NULL)
+		return -1;
+	*(unsigned char *) out = n;
+	return 0;
+}
+
+static inline int
+int2octet (int n, char *out)
+{
+	uint8_t u;
+
+	if (int2u8 (n, &u) != 0)
+		return -1;
+	return octet2char (u, out);
+}
+
+static inline int
+put_octet (char **pp, int n)
+{
+	if (pp == NULL || *pp == NULL)
+		return -1;
+	if (int2octet (n, *pp) != 0)
+		return -1;
+	(*pp)++;
+	return 0;
+}
+
+static inline int
+u16to8 (uint16_t n, uint8_t *out)
+{
+	if (out == NULL || n > 255U)
+		return -1;
+	*out = (uint8_t) n;
+	return 0;
+}
+
+static inline int
+u16tooctet (uint16_t n, char *out)
+{
+	uint8_t u;
+
+	if (u16to8 (n, &u) != 0)
+		return -1;
+	return octet2char (u, out);
+}
+
+static inline int
+u32to16 (uint32_t n, uint16_t *out)
+{
+	if (out == NULL || n > 65535U)
+		return -1;
+	*out = (uint16_t) n;
+	return 0;
+}
+
+static inline int
+long2u32 (long n, uint32_t *out)
+{
+	if (out == NULL || n < 0L || (uintmax_t) n > (uintmax_t) UINT32_MAX)
+		return -1;
+	*out = (uint32_t) n;
+	return 0;
+}
+
+static inline int
+long2char (long n, char *out)
+{
+	int i;
+
+	if (long2int (n, &i) != 0)
+		return -1;
+	return int2char (i, out);
+}
+
+static inline int
+long2octet (long n, char *out)
+{
+	int i;
+
+	if (long2int (n, &i) != 0)
+		return -1;
+	return int2octet (i, out);
+}
+
+static inline int
+sizet2char (size_t n, char *out)
+{
+	int i;
+
+	if (sizet2int (n, &i) != 0)
+		return -1;
+	return int2char (i, out);
+}
+
+static inline int
+sizet2u8 (size_t n, uint8_t *out)
+{
+	if (out == NULL || n > 255U)
+		return -1;
+	*out = (uint8_t) n;
+	return 0;
+}
+
+static inline int
+u8_minus_sizet (uint8_t a, size_t b, int *out)
+{
+	if (out == NULL || (size_t) a < b)
+		return -1;
+	return sizet2int ((size_t) a - b, out);
+}
+
+static inline int
+sizet2octet (size_t n, char *out)
+{
+	uint8_t u;
+
+	if (sizet2u8 (n, &u) != 0)
+		return -1;
+	return octet2char (u, out);
+}
+
+static inline int
+ptrdiff2char (ptrdiff_t n, char *out)
+{
+	int i;
+
+	if (ptrdiff2int (n, &i) != 0)
+		return -1;
+	return int2char (i, out);
+}
+
+static inline int
+ptrdiff2octet (ptrdiff_t n, char *out)
+{
+	int i;
+
+	if (ptrdiff2int (n, &i) != 0)
+		return -1;
+	return int2octet (i, out);
+}
+
+/* IEEE-754 binary32 has a 24-bit significand; larger ints may round. */
+static inline int
+int2float (int n, float *out)
+{
+	if (out == NULL || n < -16777216 || n > 16777216)
+		return -1;
+	*out = (float) n;
+	return 0;
+}
+
+static inline int
+int2safamily (int n, sa_family_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((sa_family_t) -1 > (sa_family_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (sa_family_t) -1)
+			return -1;
+	} else {
+		sa_family_t f = (sa_family_t) n;
+
+		if ((int) f != n)
+			return -1;
+		*out = f;
+		return 0;
+	}
+	*out = (sa_family_t) n;
+	return 0;
+}
+
+static inline int
+int2inport (int n, in_port_t *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((in_port_t) -1 > (in_port_t) 0) {
+		if (n < 0 || (uintmax_t) n > (uintmax_t) (in_port_t) -1)
+			return -1;
+	} else {
+		in_port_t p = (in_port_t) n;
+
+		if ((int) p != n)
+			return -1;
+		*out = p;
+		return 0;
+	}
+	*out = (in_port_t) n;
+	return 0;
 }
 
 #endif

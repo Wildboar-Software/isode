@@ -82,7 +82,11 @@ int start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 	struct dgramblk *up, *vp;
 
 	if (peers == NULL) {
-		maxpeers = getdtablesize ();
+		long nopen;
+
+		nopen = getdtablesize ();
+		if (long2int (nopen, &maxpeers) != 0 || maxpeers <= 0)
+			return NOTOK;
 		peers = (struct dgramblk *) calloc ((unsigned)maxpeers, sizeof *peers);
 		if (peers == NULL)
 			return NOTOK;
@@ -159,7 +163,11 @@ int start_clts_server (union sockaddr_osi *sock, int backlog, int opt1, int opt2
 	struct sockaddr_iso *ifaddr = &sock -> osi_sockaddr;
 
 	if (peers == NULL) {
-		maxpeers = getdtablesize ();
+		long nopen;
+
+		nopen = getdtablesize ();
+		if (long2int (nopen, &maxpeers) != 0 || maxpeers <= 0)
+			return NOTOK;
 		peers = (struct dgramblk *) calloc ((unsigned)maxpeers, sizeof *peers);
 		if (peers == NULL)
 			return NOTOK;
@@ -367,24 +375,38 @@ int write_dgram_socket (int fd, struct qbuf *qb) {
 #ifdef	BSD44
 	{
 		size_t n;
+		ssize_t nsent;
+		int nout;
 
 		if (int2sizet (qb -> qb_len, &n) != 0) {
 			errno = EINVAL;
 			return NOTOK;
 		}
-		return sendto (fd, qb -> qb_data, n, NULL,
+		nsent = sendto (fd, qb -> qb_data, n, NULL,
 					   &up -> dgram_peer.sa, (int) up -> dgram_peer.sa.sa_len);
+		if (ssize2int (nsent, &nout) != 0) {
+			errno = EOVERFLOW;
+			return NOTOK;
+		}
+		return nout;
 	}
 #else
 	{
 		size_t n;
+		ssize_t nsent;
+		int nout;
 
 		if (int2sizet (qb -> qb_len, &n) != 0) {
 			errno = EINVAL;
 			return NOTOK;
 		}
-		return sendto (fd, qb -> qb_data, n, 0,
+		nsent = sendto (fd, qb -> qb_data, n, 0,
 					   &up -> dgram_peer.sa, sizeof up -> dgram_peer.sa);
+		if (ssize2int (nsent, &nout) != 0) {
+			errno = EOVERFLOW;
+			return NOTOK;
+		}
+		return nout;
 	}
 #endif
 }
@@ -404,8 +426,10 @@ int close_dgram_socket (int fd) {
 	bzero ((char *) &up -> dgram_peer, sizeof up -> dgram_peer);
 	QBFREE (&up -> dgram_queue);
 	for (vp = (up = peers) + maxpeers; up < vp; up++)
-		if (up -> dgram_parent == fd)
-			up -> dgram_parent = up - peers;
+		if (up -> dgram_parent == fd) {
+			if (ptrdiff2int (up - peers, &up -> dgram_parent) != 0)
+				return NOTOK;
+		}
 	set_check_fd (fd, NULLIFP, NULLCP);
 	return close (fd);
 }
@@ -465,8 +489,18 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 
 			sock = (union sockaddri_un *) qb -> qb_base;
 			qb -> qb_data = qb -> qb_base + slen;
-			if ((cc = recvfrom (fd, qb -> qb_data, MAXDGRAM, 0,
-								&sock -> sa, &slen)) == NOTOK) {
+			{
+				ssize_t nrecv;
+
+				nrecv = recvfrom (fd, qb -> qb_data, MAXDGRAM, 0,
+								  &sock -> sa, &slen);
+				if (ssize2int (nrecv, &cc) != 0) {
+					free ((char *) qb);
+					errno = EOVERFLOW;
+					return NOTOK;
+				}
+			}
+			if (cc == NOTOK) {
 				free ((char *) qb);
 				return NOTOK;
 			}
