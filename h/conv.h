@@ -1072,6 +1072,25 @@ int32_to_int (int32_t n, int *out)
 }
 
 static inline int
+long2int32 (long n, int32_t *out)
+{
+	if (out == NULL || n < (long) INT32_MIN || n > (long) INT32_MAX)
+		return -1;
+	*out = (int32_t) n;
+	return 0;
+}
+
+static inline int
+llong2int32 (long long n, int32_t *out)
+{
+	if (out == NULL || n < (long long) INT32_MIN
+			|| n > (long long) INT32_MAX)
+		return -1;
+	*out = (int32_t) n;
+	return 0;
+}
+
+static inline int
 int2safamily (int n, sa_family_t *out)
 {
 	if (out == NULL)
