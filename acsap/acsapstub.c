@@ -75,14 +75,14 @@ str2aei_stub (char *designator, char *qualifier) {
 			return (NULLAEI);
 		if (i > 6
 				&& cp[0] == '4' && cp[2] == '0' && cp[3] == '0') {
-			int n,
+			int nlen,
 			    alen;
 
 			na -> na_stack = NA_NSAP;
 			na -> na_community = ts_comm_nsap_default;
-			if (strlen2int (cp, &n) != 0)
+			if (strlen2int (cp, &nlen) != 0)
 				return (NULLAEI);
-			alen = implode ((uint8_t *) na -> na_address, cp, n);
+			alen = implode ((uint8_t *) na -> na_address, cp, nlen);
 			if (int2char (alen, &na -> na_addrlen) != 0)
 				return (NULLAEI);
 			goto found_it;
@@ -246,7 +246,8 @@ static int lpp_aet (char *designator, char *qualifier, struct isoentity *ie) {
 		na -> na_tset = NA_TSET_UDP;
 		na++;
 	}
-	ta -> ta_naddr = na - ta -> ta_addrs;
+	if (ptrdiff2int (na - ta -> ta_addrs, &ta -> ta_naddr) != 0)
+		return NOTOK;
 
 	return OK;
 }
