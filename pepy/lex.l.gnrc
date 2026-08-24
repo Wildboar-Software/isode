@@ -339,9 +339,11 @@ static struct table reserved[] = {
 				    break;
 
 				if (cp >= ep) {
-				    register int curlen = cp - pp;
+				    int curlen;
 				    register char *dp;
 
+				    if (ptrdiff2int (cp - pp, &curlen) != 0)
+					yyerror ("value too long");
 				    if ((dp = realloc (pp,
 						       (unsigned) (len += BUFSIZ)))
 					    == NULL)
@@ -349,7 +351,9 @@ static struct table reserved[] = {
 				    cp = dp + curlen;
 				    ep = (pp = dp) + len - 1;
 				}
-				*cp++ = c;
+				if (int2octet (c, cp) != 0)
+				    yyerror ("invalid character in value");
+				cp++;
 			    }
 			    *cp = 0;
 			    yylval.yy_string = pp;
