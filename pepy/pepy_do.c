@@ -20,6 +20,19 @@ static void do_type_choice (YP yp, int caseindex, int level, char *narg);
 static void do_type_element (YP yp, int level, int last, char *id, char *narg);
 static void do_components_seq (YP yp, int level, int last, char *id, char *arg, char *narg);
 static void do_components_set (YP yp, int level, char *arg, char *id, char *narg);
+static void emit_strlen2int (int level, char *dst_len, char *src, char *id);
+
+static void
+emit_strlen2int (int level, char *dst_len, char *src, char *id)
+{
+	printf ("%*sif (strlen2int (%s, &%s) != 0) {\n",
+			level * 4, "", src, dst_len);
+	printf ("%*sadvise (NULLCP, \"%s %%s\", PEPY_ERR_INIT_FAILED);\n",
+			(level + 1) * 4, "", id ? id : "string");
+	printf ("%*sreturn NOTOK;\n", (level + 1) * 4, "");
+	printf ("%*s}\n", level * 4, "");
+}
+
 void do_type (YP yp, int level, char *id, char *arg)
 {
 	int    i;
@@ -125,15 +138,21 @@ void do_type (YP yp, int level, char *id, char *arg)
 				if (yp -> yp_intexp)
 					printf ("%*s%s_len = %s;\n", level * 4, "",
 							narg, yp -> yp_intexp);
-				else
-					printf ("%*s%s_len = strlen (%s);\n", level * 4, "",
-							narg, narg);
+				else {
+					char lenname[64];
+
+					(void) sprintf (lenname, "%s_len", narg);
+					emit_strlen2int (level, lenname, narg, id);
+				}
 			} else if (level == 1) {
+				char lenname[64];
+
 				printf ("%*s%s = buffer;\n", level * 4, "", narg);
-				printf ("%*sif ((%s_len = len) == 0)\n", level * 4, "",
-						narg);
-				printf ("%*s%s_len = strlen (%s);\n",
-						(level + 1) * 4, "", narg, narg);
+				printf ("%*s%s_len = len;\n", level * 4, "", narg);
+				printf ("%*sif (%s_len == 0) {\n", level * 4, "", narg);
+				(void) sprintf (lenname, "%s_len", narg);
+				emit_strlen2int (level + 1, lenname, narg, id);
+				printf ("%*s}\n", level * 4, "");
 			} else
 				printf ("%*s%s = NULLCP;\n%*s%s_len = 0;\n",
 						level * 4, "", narg, level * 4, "", narg);
