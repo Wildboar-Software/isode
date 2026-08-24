@@ -462,23 +462,40 @@ static EntryInfo *turbo_item(
 			g_count++;
 			code = NULL;
 			soundex( word, &code );
-			if (small == NULL || (int)strlen(code) > (int)strlen(small))
+			if (small == NULL) {
 				small = code;
-			else
-				free(code);
+			} else {
+				int clen, slen;
+
+				if (strlen2int (code, &clen) != 0
+						|| strlen2int (small, &slen) != 0) {
+					free(code);
+					continue;
+				}
+				if (clen > slen)
+					small = code;
+				else
+					free(code);
+			}
 		}
 		if (small == NULL)
 			break;
 #ifdef SOUNDEX_PREFIX
-		/*
-		 * now traverse the index (smartly) and build a giant
-		 * Index_node to be used below
-		 */
-		node = new_indexnode();
-		g_stopearly = 0;
-		avl_prefixapply(pindex[i].i_sroot,
-						(caddr_t) small, build_indexnode, (caddr_t) node,
-						index_soundex_prefix, (caddr_t)strlen(small), NOTOK);
+		{
+			int slen;
+
+			if (strlen2int (small, &slen) != 0)
+				break;
+			/*
+			 * now traverse the index (smartly) and build a giant
+			 * Index_node to be used below
+			 */
+			node = new_indexnode();
+			g_stopearly = 0;
+			avl_prefixapply(pindex[i].i_sroot,
+							(caddr_t) small, build_indexnode, (caddr_t) node,
+							index_soundex_prefix, (caddr_t) (size_t) slen, NOTOK);
+		}
 #else
 		node = (Index_node *) avl_find( pindex[ i ].i_sroot,
 										(caddr_t) small, index_soundex_cmp );
@@ -522,10 +539,9 @@ static EntryInfo *turbo_item(
 			if (phoneflag) {
 				flen = telstrlen(f->UNSUB.fi_sub_final->avseq_av.av_struct);
 				ilen = telstrlen(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
-			} else {
-				flen = strlen(f->UNSUB.fi_sub_final->avseq_av.av_struct);
-				ilen = strlen(f->UNSUB.fi_sub_initial->avseq_av.av_struct);
-			}
+			} else if (strlen2int (f->UNSUB.fi_sub_final->avseq_av.av_struct, &flen) != 0
+					   || strlen2int (f->UNSUB.fi_sub_initial->avseq_av.av_struct, &ilen) != 0)
+				break;
 			thestring = (flen > ilen ?
 						 strrev(f->UNSUB.fi_sub_final->avseq_av.av_struct) :
 						 strdup(f->UNSUB.fi_sub_initial->avseq_av.av_struct));
@@ -534,8 +550,10 @@ static EntryInfo *turbo_item(
 		}
 		if (phoneflag)
 			len = telstrlen(thestring);
-		else
-			len = strlen(thestring);
+		else if (strlen2int (thestring, &len) != 0) {
+			free(thestring);
+			break;
+		}
 		node = new_indexnode();
 		g_stopearly = toplevel;	/* signifies top level or OR filter */
 		g_count = size * g_size_normalizer;

@@ -128,6 +128,9 @@ static void big_free (struct header *ptr);
 static void add_free (struct header *x);
 static struct header *next_free_block (struct header *ptr);
 static void *quipu_sbrk (size_t n);
+static int remove_free_ent (struct freelist *a);
+static int use_block (struct header *ptr, size_t size);
+static int set_use_heap (struct header *h, unsigned heap);
 
 static struct freelist  heaps[MAXHEAP][BUCKETS];
 static struct freelist *heapptr[MAXHEAP];
@@ -410,12 +413,17 @@ static void big_free (struct header *ptr) {
 static void add_free (struct header *x) {
 	struct freelist *next, *c;
 	size_t * p = sizes;
-	x->use &= ~INUSE;
+	int bucket;
+
+	if (ushort_bic (&x->use, INUSE) != 0)
+		return;
 	if ((c = heapptr[x->use]) == (struct freelist *) 0)
 		c = heapptr[x->use] = heaps[x->use];
 	while ( x->smallsize > *p++ )
 		;
-	c = &c[ (p-1) - sizes];
+	if (ptrdiff2int ((p - 1) - sizes, &bucket) != 0)
+		return;
+	c = &c[bucket];
 	if (listfree->next == listfree) {
 		if ((next = new_freelist ()) == (struct freelist *)0)
 			return;
@@ -433,11 +441,53 @@ static void add_free (struct header *x) {
 	((struct freehead *) x)->flist = next;
 }
 
-#define remove_free(a) { \
-	a->block->use |= INUSE;	\
-	a->prev->next = a->next; \
-	a->next->prev = a->prev; \
-	return_freelist(a); }
+static int
+remove_free_ent (struct freelist *a)
+{
+	if (ushort_bis (&a->block->use, INUSE) != 0)
+		return -1;
+	a->prev->next = a->next;
+	a->next->prev = a->prev;
+	return_freelist(a);
+	return 0;
+}
+
+static int
+set_use_heap (struct header *h, unsigned heap)
+{
+	unsigned short u;
+
+	if (uint2ushort (heap, &u) != 0 || ushort_bis (&u, INUSE) != 0)
+		return -1;
+	h->use = u;
+	return 0;
+}
+
+static int
+use_block (struct header *ptr, size_t size)
+{
+	struct header *unext;
+	unsigned short sz, leftover;
+
+	if (sizet2ushort (size, &sz) != 0)
+		return -1;
+	if (ptr->smallsize == sz)
+		return 0;
+	if ((size_t) ptr->smallsize < size + sizeof (struct freehead))
+		return 0;
+	unext = (struct header *) ((char *) ptr + size);
+	if (uint2ushort ((unsigned) ptr->smallsize - (unsigned) sz, &leftover) != 0)
+		return -1;
+	unext->smallsize = leftover;
+	unext->use = ptr->use;
+	if (ushort_bic (&unext->use, INUSE) != 0)
+		return -1;
+	ptr->smallsize = sz;
+	if (ushort_bis (&ptr->use, INUSE) != 0)
+		return -1;
+	add_free (unext);
+	return 0;
+}
 
 static struct header *next_free_block (struct header *ptr) {
 	struct header * next;
@@ -448,15 +498,6 @@ static struct header *next_free_block (struct header *ptr) {
 		return (next);
 	return (struct header *)0;
 }
-
-#define use_block(ptr,size) if ((ptr->smallsize != size) && (ptr->smallsize >= size + sizeof (struct freehead))) { \
-	struct header *unext; \
-	unext = (struct header *)((char *)ptr + size); \
-	unext->smallsize = ptr->smallsize - size; \
-	unext->use = ptr->use & (unsigned short) ~INUSE; \
-	ptr->smallsize = size; \
-	ptr->use |= INUSE; \
-	add_free (unext); }
 
 MALLOC_RETURN
 #ifdef lint
@@ -532,20 +573,30 @@ malloc (size_t size)
 			attempt_restart (-2);
 			return ((char *)0);
 		}
-		head->smallsize = blocksize;
+		if (sizet2ushort (blocksize, &head->smallsize) != 0
+				|| set_use_heap (head, mem_heap) != 0) {
+			attempt_restart (-2);
+			return ((char *)0);
+		}
 		top_mem = (char *)head + blocksize;
 		first_malloc = 0;
-		head->use = INUSE | mem_heap;
 	} else {
 		if ((top = heapptr[mem_heap]) == (struct freelist *)0)
 			goto allocate_more;
 		while ( size > *p++ )
 			;
-		top = &top[ i = ((p-1) - sizes) ];
+		if (ptrdiff2int ((p - 1) - sizes, &i) != 0) {
+			attempt_restart (-2);
+			return ((char *)0);
+		}
+		top = &top[i];
 		for (; i < BUCKETS ; i++,top++ ) {
 			for (ptr = top->next ; ptr != top; ptr=ptr->next) {
 				if (ptr->size >= realsize) {
-					remove_free (ptr);
+					if (remove_free_ent (ptr) != 0) {
+						attempt_restart (-2);
+						return ((char *)0);
+					}
 					head = ptr->block;
 					goto return_memory;
 				}
@@ -559,13 +610,19 @@ allocate_more:
 			attempt_restart (-2);
 			return ((char *)0);
 		}
-		head->smallsize = blocksize;
+		if (sizet2ushort (blocksize, &head->smallsize) != 0
+				|| set_use_heap (head, mem_heap) != 0) {
+			attempt_restart (-2);
+			return ((char *)0);
+		}
 		top_mem = (char *)head + blocksize;
-		head->use = INUSE | mem_heap;
 	}
 return_memory:
 	;
-	use_block (head,realsize);
+	if (use_block (head, realsize) != 0) {
+		attempt_restart (-2);
+		return ((char *)0);
+	}
 	mem = (char *) head + ALIGN(sizeof (struct header));
 #ifdef MALLOCTRACE
 	write_string ("malloc of ");
@@ -628,8 +685,15 @@ void *s1;
 	}
 	/* join forward free block in loop to catch previous back blocks ! */
 	while ((next = next_free_block(ptr)) != (struct header *) 0) {
-		ptr->smallsize += next->smallsize;
-		remove_free (((struct freehead *)next)->flist);
+		if (ushort_add (&ptr->smallsize, next->smallsize) != 0) {
+			LLOG (log_dsap,LLOG_EXCEPTIONS,("free size overflow"));
+			attempt_restart (-2);
+			return;
+		}
+		if (remove_free_ent (((struct freehead *)next)->flist) != 0) {
+			attempt_restart (-2);
+			return;
+		}
 	}
 	add_free (ptr);
 	return;
@@ -694,18 +758,24 @@ size_t n)
 		top = next;
 		/* join with other free blocks */
 		while ((next = next_free_block(top)) != (struct header *) 0) {
-			top->smallsize += next->smallsize;
-			remove_free (((struct freehead *)next)->flist);
+			if (ushort_add (&top->smallsize, next->smallsize) != 0) {
+				LLOG (log_dsap,LLOG_EXCEPTIONS,("realloc size overflow"));
+				goto out;
+			}
+			if (remove_free_ent (((struct freehead *)next)->flist) != 0)
+				goto out;
 		}
-		remove_free (((struct freehead *)top)->flist);
+		if (remove_free_ent (((struct freehead *)top)->flist) != 0)
+			goto out;
 		/* is it big enough ? */
 		if (ptr->smallsize + top->smallsize >= realsize) {
 #ifdef MALLOCTRACE
 			size_t savesize;
 			savesize = ptr->smallsize;
 #endif
-			ptr->smallsize += top->smallsize;
-			use_block (ptr,realsize);
+			if (ushort_add (&ptr->smallsize, top->smallsize) != 0
+					|| use_block (ptr, realsize) != 0)
+				goto out;
 #ifdef MALLOCTRACE
 			log_realloc (savesize,realsize,ptr->smallsize,s);
 #endif

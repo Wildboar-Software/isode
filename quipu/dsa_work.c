@@ -228,7 +228,8 @@ void dsa_work (struct task_act *tk) {
 		log_x500_event (arg,tk->tk_conn->cn_ctx,orig,base,
 						tk->tk_conn->cn_ad,tk);
 #endif
-	authtype = tk->tk_conn->cn_authen;
+	if (int2char (tk->tk_conn->cn_authen, &authtype) != 0)
+		authtype = DBA_AUTH_NONE;
 	if (!dsp && authtype == DBA_AUTH_NONE) {
 		orig = NULLDN;
 	}

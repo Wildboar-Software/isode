@@ -35,7 +35,7 @@ int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca) {
 	char            do_read = FALSE;
 	Attr_Sequence 	as;
 	extern int	copy_flag;
-	int		deref = FALSE;
+	char		deref = FALSE;
 	struct ds_read_arg read_arg;
 
 	value_flag = TRUE;

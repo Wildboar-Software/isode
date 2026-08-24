@@ -201,8 +201,13 @@ out:
 		} else {
 			UTC ut;
 			long c_time, s_time, delta;
+			int n;
+
 			time(&s_time);
-			ut = str2utct(arg->dba_time1, strlen(arg->dba_time1));
+			if (strlen2int (arg->dba_time1, &n) != 0)
+				ut = NULLUTC;
+			else
+				ut = str2utct(arg->dba_time1, n);
 			if (ut == NULLUTC)
 				c_time = 0L; /* 1970 is a convenient out-of-date timestamp */
 			else

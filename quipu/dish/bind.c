@@ -235,9 +235,11 @@ int call_bind (int argc, char **argv) {
 				x--;
 				*password = 0;
 			} else {
-				int i;
+				int i, plen;
 				strcpy (password,argv[x]);
-				for (i=0; i< (int)strlen(password) ; i++)
+				if (strlen2int (password, &plen) != 0)
+					return (NOTOK);
+				for (i=0; i< plen ; i++)
 					if ( i < 4 )
 						argv[x][i] = 'X';
 					else
@@ -298,10 +300,12 @@ int call_bind (int argc, char **argv) {
 		if ((*username != 0) && (auth_type != DBA_AUTH_NONE)) {
 			get_password (username, password);
 			strcpy(&bindarg.dba_passwd[0], password);
-			bindarg.dba_passwd_len = strlen	(&bindarg.dba_passwd[0]);
+			if (strlen2int (&bindarg.dba_passwd[0], &bindarg.dba_passwd_len) != 0)
+				return (NOTOK);
 		}
 	} else {
-		bindarg.dba_passwd_len = strlen (password);
+		if (strlen2int (password, &bindarg.dba_passwd_len) != 0)
+			return (NOTOK);
 		strcpy (bindarg.dba_passwd, password);
 	}
 	if ((bindarg.dba_passwd_len == 0) && (auth_type != DBA_AUTH_STRONG))
@@ -381,9 +385,13 @@ int call_bind (int argc, char **argv) {
 										  NULLACL_INFO);
 			read_arg.rda_eis.eis_infotypes = EIS_ATTRIBUTESANDVALUES;
 			if (ds_read (&read_arg, &read_error, &read_result) == DS_OK) {
+				char infotypes;
+
+				if (int2char (read_arg.rda_eis.eis_infotypes, &infotypes) != 0)
+					return (NOTOK);
 				cache_entry (&read_result.rdr_entry,
 							 read_arg.rda_eis.eis_allattributes,
-							 read_arg.rda_eis.eis_infotypes);
+							 infotypes);
 				entryinfo_comp_free (&read_result.rdr_entry, 0);
 				e = local_find_entry (dsadn, FALSE);
 			}
@@ -776,7 +784,8 @@ out:
 			return (NOTOK);
 		}
 	strcpy (bindarg.dba_passwd,password);
-	bindarg.dba_passwd_len = strlen (password);
+	if (strlen2int (password, &bindarg.dba_passwd_len) != 0)
+		return (NOTOK);
 	isodexport (NULLCP);
 	return (OK);
 }

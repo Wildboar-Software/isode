@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <sys/types.h>
+#include <time.h>
 
 /*
  * Each helper returns 0 on success and writes *out, or -1 if the value
@@ -582,6 +583,92 @@ short_bic (short *p, unsigned bits)
 	if (p == NULL || bits > 0xffffU)
 		return -1;
 	return ushort2short (u16_bic (as_ushort (*p), bits), p);
+}
+
+static inline int
+ushort_bis (unsigned short *p, unsigned bits)
+{
+	if (p == NULL || bits > 0xffffU)
+		return -1;
+	*p = u16_bis (*p, bits);
+	return 0;
+}
+
+static inline int
+ushort_bic (unsigned short *p, unsigned bits)
+{
+	if (p == NULL || bits > 0xffffU)
+		return -1;
+	*p = u16_bic (*p, bits);
+	return 0;
+}
+
+static inline int
+sizet2ushort (size_t n, unsigned short *out)
+{
+	if (out == NULL || n > (size_t) USHRT_MAX)
+		return -1;
+	*out = (unsigned short) n;
+	return 0;
+}
+
+static inline int
+uint2ushort (unsigned n, unsigned short *out)
+{
+	if (out == NULL || n > (unsigned) USHRT_MAX)
+		return -1;
+	*out = (unsigned short) n;
+	return 0;
+}
+
+static inline int
+time_t2int (time_t n, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((time_t) -1 > (time_t) 0) {
+		if ((uintmax_t) n > (uintmax_t) INT_MAX)
+			return -1;
+	} else if ((intmax_t) n < (intmax_t) INT_MIN
+			   || (intmax_t) n > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
+}
+
+static inline int
+time_delta2int (time_t later, time_t now, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if (later <= now) {
+		*out = 0;
+		return 0;
+	}
+	return time_t2int (later - now, out);
+}
+
+static inline int
+ushort_add (unsigned short *p, unsigned n)
+{
+	if (p == NULL)
+		return -1;
+	return uint2ushort ((unsigned) *p + n, p);
+}
+
+static inline int
+off2int (off_t n, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((off_t) -1 > (off_t) 0) {
+		if ((uintmax_t) n > (uintmax_t) INT_MAX)
+			return -1;
+	} else if ((intmax_t) n < (intmax_t) INT_MIN
+			   || (intmax_t) n > (intmax_t) INT_MAX)
+		return -1;
+	*out = (int) n;
+	return 0;
 }
 
 /* Interpret a C char as a protocol octet (all 256 values). */

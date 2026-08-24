@@ -473,7 +473,12 @@ static int check_conns (int secs) {
 		proc_size = (unsigned) sbrk(0);
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("size = %d bytes", proc_size));
 #endif
-		for (fd = getdtablesize () - 1; fd >= 0; fd--)
+		{
+			int nfd;
+
+			if (long2int (getdtablesize (), &nfd) != 0)
+				nfd = 0;
+			for (fd = nfd - 1; fd >= 0; fd--)
 			if (fstat (fd, &st) != NOTOK)
 				LLOG (log_dsap, LLOG_EXCEPTIONS,
 					  ("fd %d: fmt=0%o", fd, st.st_mode & S_IFMT));
@@ -499,6 +504,7 @@ static int check_conns (int secs) {
 					LLOG (log_dsap, LLOG_EXCEPTIONS,
 						  ("*** fd %d: errno=%d ***", fd, errno));
 			}
+		}
 #ifndef	NO_STATS
 		LLOG (log_dsap, LLOG_EXCEPTIONS, ("logs dsap=%d stat=%d",
 										  log_dsap -> ll_fd, log_stat -> ll_fd));
@@ -546,7 +552,8 @@ static int check_conns (int secs) {
 		int     i,
 				sd;
 
-		nbits = getdtablesize ();
+		if (long2int (getdtablesize (), &nbits) != 0)
+			nbits = 0;
 		if (!(debug = isatty (2))) {
 			for (i = 0; i < 5; i++) {
 				switch (fork ()) {

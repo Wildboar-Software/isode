@@ -97,9 +97,12 @@ getentry_block (Entry p_parent, char *fname) {
 	if (dtype == E_TYPE_CACHE_FROM_MASTER) {
 		UTC sutc;
 		struct tm *tm;
-		if (sutc = str2utct (version,strlen(version)))
-			if (tm = ut2tm (sutc))
-				cache_age = gtime (tm);
+		int n;
+
+		if (strlen2int (version, &n) == 0
+				&& (sutc = str2utct (version, n))
+				&& (tm = ut2tm (sutc)))
+			cache_age = gtime (tm);
 		p_parent->e_allchildrenpresent = FALSE;
 	}
 	tree = get_entries_aux (file,p_parent,version,dtype,cache_age);
