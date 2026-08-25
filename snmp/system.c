@@ -51,8 +51,8 @@ static int  o_sysUpTime (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			advise (LLOG_EXCEPTIONS, "failed", "gettimeofday");
 			return generr (offset);
 		}
-		diff = (now.tv_sec - my_boottime.tv_sec) * 100
-			   + ((now.tv_usec - my_boottime.tv_usec) / 10000);
+		if (timeval_centisecs (&now, &my_boottime, &diff) != 0)
+			return generr (offset);
 	}
 	return o_number (oi, v, (caddr_t) &diff);
 }

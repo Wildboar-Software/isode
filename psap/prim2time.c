@@ -6,30 +6,34 @@
 #include <stdint.h>
 #include <strings.h>
 #include "psap.h"
-static long get_usec (char **cp, int *len);
-
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-
-static long	get_usec (char **cp, int *len);
+static long	get_usec (char **cp, size_t *len);
 
 UTC prim2time (PE pe, int generalized) {
-	int     len;
+	int len;
 	char  *cp;
 	UTC    u;
-	UTC	   (*aux) (char *cp, int len);
+	UTC	   (*aux) (char *cp, size_t len);
+
+	if (pe -> pe_len < 0 || pe -> pe_len > SIZE_MAX) {
+		return pe_seterr (pe, PE_ERR_PRIM, NULLUTC);
+	}
 
 	aux = generalized ? str2gent : str2utct;
 	switch (pe -> pe_form) {
 	case PE_FORM_PRIM:
 		if (pe -> pe_prim == NULLPED)
 			return pe_seterr (pe, PE_ERR_PRIM, NULLUTC);
-		u = (*aux) ((char *) pe -> pe_prim, (int) pe -> pe_len);
+		u = (*aux) ((char *) pe -> pe_prim, (size_t)pe -> pe_len);
 		break;
 	case PE_FORM_CONS:
 		if ((cp = prim2str (pe, &len)) == NULLCP)
 			return NULLUTC;
-		u = len ? (*aux) (cp, len) : NULLUTC;
+		if (len < 0 || len > SIZE_MAX) {
+			return pe_seterr (pe, PE_ERR_PRIM, NULLUTC);
+		}
+		u = len ? (*aux) (cp, (size_t)len) : NULLUTC;
 		free (cp);
 		break;
 	}
@@ -37,7 +41,7 @@ UTC prim2time (PE pe, int generalized) {
 							   NULLUTC));
 }
 
-UTC str2utct (char *cp, int len) {
+UTC str2utct (char *cp, size_t len) {
 	int     year,
 			hours,
 			mins;
@@ -80,7 +84,7 @@ UTC str2utct (char *cp, int len) {
 	return u;
 }
 
-UTC str2gent (char *cp, int len) {
+UTC str2gent (char *cp, size_t len) {
 	int     hours,
 			mins;
 	long    usec;
@@ -100,9 +104,17 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			u -> ut_min = (u -> ut_sec = usec / 1000000) / 60;
-			u -> ut_sec %= 60;
-			u -> ut_usec = usec % 1000000;
+			{
+				int total_sec,
+				    us;
+
+				if (long2int (usec / 1000000L, &total_sec) != 0
+						|| long2int (usec % 1000000L, &us) != 0)
+					return NULLUTC;
+				u -> ut_min = total_sec / 60;
+				u -> ut_sec = total_sec % 60;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
@@ -120,9 +132,18 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			if ((u -> ut_sec = usec / 1000000) >= 60)
-				return NULLUTC;
-			u -> ut_usec = usec % 1000000;
+			{
+				int sec,
+				    us;
+
+				if (long2int (usec / 1000000L, &sec) != 0
+						|| long2int (usec % 1000000L, &us) != 0)
+					return NULLUTC;
+				if (sec >= 60)
+					return NULLUTC;
+				u -> ut_sec = sec;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_SEC | UT_USEC;
 			goto get_zone;
 		default:
@@ -141,8 +162,15 @@ UTC str2gent (char *cp, int len) {
 			cp++, len--;
 			if ((usec = get_usec (&cp, &len)) < 0)
 				return NULLUTC;
-			if ((u -> ut_usec = usec) >= 1000000)
-				return NULLUTC;
+			{
+				int us;
+
+				if (long2int (usec, &us) != 0)
+					return NULLUTC;
+				if (us >= 1000000)
+					return NULLUTC;
+				u -> ut_usec = us;
+			}
 			u -> ut_flags |= UT_USEC;
 			goto get_zone;
 
@@ -174,8 +202,8 @@ get_zone:
 	return u;
 }
 
-static long get_usec (char **cp, int *len) {
-	int    j;
+static long get_usec (char **cp, size_t *len) {
+	size_t    j;
 	long   i;
 	char  *dp;
 

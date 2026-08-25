@@ -129,7 +129,13 @@ static void * str2attrSntx (char *str) {
 Attr_Sequence str2attrSeq(char * buf) {
 	char *cp, cp1[3];
 
-	cp = smalloc(strlen(buf)+4);
+	{
+		int n;
+
+		if (strlen2int (buf, &n) != 0 || n > INT_MAX - 4)
+			return NULLATTR;
+		cp = smalloc(n+4);
+	}
 	sprintf(cp,"%c\n", AS_START_DELIMITER);
 	strcat(cp,buf);
 	sprintf(cp1,"%c\n",AS_END_DELIMITER);

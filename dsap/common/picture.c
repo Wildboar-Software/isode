@@ -90,10 +90,24 @@ char *show_picture (char *picture, char *picture_process, int len) {
 		}
 		close (pd[1]);
 		for (cp = buffer, len = BUFLEN - 1; len > 0;) {
-			if ((ret = read_int (pd2[0], cp, len)) <= 0)
+			ssize_t nread;
+			int got;
+
+			nread = read_int (pd2[0], cp, len);
+			if (nread <= 0) {
+				if (nread < 0)
+					ret = NOTOK;
+				else
+					ret = 0;
 				break;
-			cp += ret;
-			len -= ret;
+			}
+			if (ssize2int (nread, &got) != 0) {
+				ret = NOTOK;
+				break;
+			}
+			cp += got;
+			len -= got;
+			ret = got;
 		}
 		if (cp > buffer) {
 			if (*--cp != '\n')

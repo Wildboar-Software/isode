@@ -30,6 +30,14 @@ copy_li (const void *src, void *dst, int n)
 }
 
 static int
+store_li_u8 (uint8_t *dst, int li)
+{
+	if (int2u8 (li, dst) != 0)
+		return NOTOK;
+	return OK;
+}
+
+static int
 store_u8 (char *p, int n)
 {
 	uint8_t v;
@@ -348,7 +356,16 @@ static int pi_length[PI_TABLE_LEN] = {
 	return NOTOK; \
     } \
      sprintf (isn, "%lu", (ssn)); \
-    put2spdu ((code), strlen (isn), isn, &c); \
+    { \
+	int isnlen; \
+	if (strlen2int (isn, &isnlen) != 0) { \
+	    if (c.len) \
+		free (c.top); \
+	    s -> s_errno = SC_PROTOCOL; \
+	    return NOTOK; \
+	} \
+	put2spdu ((code), isnlen, isn, &c); \
+    } \
 }
 
 /* this used to check
@@ -1242,16 +1259,16 @@ do_pgi:
 			switch (si) {
 			case SPDU_CN:
 			case SPDU_AC:
-				s -> s_cn_reference.sr_ulen = li;
-				if (copy_li (base, s -> s_cn_reference.sr_udata, li) != 0) {
+				if (store_li_u8 (&s -> s_cn_reference.sr_ulen, li) != OK
+						|| copy_li (base, s -> s_cn_reference.sr_udata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
-				s -> s_rf_reference.sr_ulen = li;
-				if (copy_li (base, s -> s_rf_reference.sr_udata, li) != 0) {
+				if (store_li_u8 (&s -> s_rf_reference.sr_ulen, li) != OK
+						|| copy_li (base, s -> s_rf_reference.sr_udata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1260,16 +1277,16 @@ do_pgi:
 			case SPDU_AR:
 				switch (code) {
 				case PI_AR_CALLED:
-					s -> s_ar_reference.sr_called_len = li;
-					if (copy_li (base, s -> s_ar_reference.sr_called, li) != 0) {
+					if (store_li_u8 (&s -> s_ar_reference.sr_called_len, li) != OK
+							|| copy_li (base, s -> s_ar_reference.sr_called, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 					Set (SMASK_AR_REF);
 					break;
 				case PI_AR_CALLING:
-					s -> s_ar_reference.sr_calling_len = li;
-					if (copy_li (base, s -> s_ar_reference.sr_calling, li) != 0) {
+					if (store_li_u8 (&s -> s_ar_reference.sr_calling_len, li) != OK
+							|| copy_li (base, s -> s_ar_reference.sr_calling, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1294,24 +1311,24 @@ do_pgi:
 			switch (si) {
 			case SPDU_CN:
 			case SPDU_AC:
-				s -> s_cn_reference.sr_clen = li;
-				if (copy_li (base, s -> s_cn_reference.sr_cdata, li) != 0) {
+				if (store_li_u8 (&s -> s_cn_reference.sr_clen, li) != OK
+						|| copy_li (base, s -> s_cn_reference.sr_cdata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
-				s -> s_rf_reference.sr_clen = li;
-				if (copy_li (base, s -> s_rf_reference.sr_cdata, li) != 0) {
+				if (store_li_u8 (&s -> s_rf_reference.sr_clen, li) != OK
+						|| copy_li (base, s -> s_rf_reference.sr_cdata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				Set (SMASK_RF_REF);
 				break;
 			case SPDU_AR:
-				s -> s_ar_reference.sr_clen = li;
-				if (copy_li (base, s -> s_ar_reference.sr_cdata, li) != 0) {
+				if (store_li_u8 (&s -> s_ar_reference.sr_clen, li) != OK
+						|| copy_li (base, s -> s_ar_reference.sr_cdata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1331,24 +1348,24 @@ do_pgi:
 			switch (si) {
 			case SPDU_CN:
 			case SPDU_AC:
-				s -> s_cn_reference.sr_alen = li;
-				if (copy_li (base, s -> s_cn_reference.sr_adata, li) != 0) {
+				if (store_li_u8 (&s -> s_cn_reference.sr_alen, li) != OK
+						|| copy_li (base, s -> s_cn_reference.sr_adata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				Set (SMASK_CN_REF);
 				break;
 			case SPDU_RF:
-				s -> s_rf_reference.sr_alen = li;
-				if (copy_li (base, s -> s_rf_reference.sr_adata, li) != 0) {
+				if (store_li_u8 (&s -> s_rf_reference.sr_alen, li) != OK
+						|| copy_li (base, s -> s_rf_reference.sr_adata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				Set (SMASK_RF_REF);
 				break;
 			case SPDU_AR:
-				s -> s_ar_reference.sr_alen = li;
-				if (copy_li (base, s -> s_ar_reference.sr_adata, li) != 0) {
+				if (store_li_u8 (&s -> s_ar_reference.sr_alen, li) != OK
+						|| copy_li (base, s -> s_ar_reference.sr_adata, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1375,8 +1392,11 @@ do_pgi:
 				break;
 			}
 			tsdu_maxsize = ntohl (tsdu_maxsize);
-			s -> s_tsdu_init = (tsdu_maxsize >> 16) & 0xffff;
-			s -> s_tsdu_resp = tsdu_maxsize & 0xffff;
+			if (u32to16 ((tsdu_maxsize >> 16) & 0xffff, &s -> s_tsdu_init) != 0
+					|| u32to16 (tsdu_maxsize & 0xffff, &s -> s_tsdu_resp) != 0) {
+				s -> s_errno = SC_PROTOCOL;
+				break;
+			}
 			Set (SMASK_CN_TSDU);
 		}
 		base += pi_length[PI_TSDU_MAXSIZ];
@@ -1540,8 +1560,8 @@ do_pgi:
 		case PI_ACT_ID:
 			switch (si) {
 			case SPDU_AS:
-				s -> s_as_id.sd_len = li;
-				if (copy_li (base, s -> s_as_id.sd_data, li) != 0) {
+				if (store_li_u8 (&s -> s_as_id.sd_len, li) != OK
+						|| copy_li (base, s -> s_as_id.sd_data, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1551,14 +1571,14 @@ do_pgi:
 			case SPDU_AR:
 				if ((s -> s_mask & SMASK_AR_OID)
 						&& s -> s_ar_oid.sd_len == 0) {
-					s -> s_ar_oid.sd_len = li;
-					if (copy_li (base, s -> s_ar_oid.sd_data, li) != 0) {
+					if (store_li_u8 (&s -> s_ar_oid.sd_len, li) != OK
+							|| copy_li (base, s -> s_ar_oid.sd_data, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
 				} else {
-					s -> s_ar_id.sd_len = li;
-					if (copy_li (base, s -> s_ar_id.sd_data, li) != 0) {
+					if (store_li_u8 (&s -> s_ar_id.sd_len, li) != OK
+							|| copy_li (base, s -> s_ar_id.sd_data, li) != 0) {
 				s -> s_errno = SC_PROTOCOL;
 				break;
 			}
@@ -1839,7 +1859,10 @@ struct ssapkt *newspkt (int code) {
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)
 		return NULL;
-	s -> s_code = code;
+	if (int2u8 (code, &s -> s_code) != 0) {
+		free (s);
+		return NULL;
+	}
 	s -> s_qbuf.qb_forw = s -> s_qbuf.qb_back = &s -> s_qbuf;
 	return s;
 }

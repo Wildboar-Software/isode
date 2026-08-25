@@ -28,7 +28,9 @@ static int bind_to_dsa (void) {
 
 	bindarg.dba_version = DBA_VERSION_V1988;
 	bindarg.dba_dn = username;
-	if (bindarg.dba_passwd_len = strlen (password))
+	if (strlen2int (password, &bindarg.dba_passwd_len) != 0)
+		return FALSE;
+	if (bindarg.dba_passwd_len)
 		strcpy (bindarg.dba_passwd, password);
 	if (ds_bind (&bindarg,&binderr,&bindresult) != DS_OK) {
 		PY_advise (NULLCP, "unable to bind to directory (%s)",
@@ -178,7 +180,9 @@ out:
 int set_lookup_dap (int flag) {
 	extern char * oidtable;
 
-	if ((unbind = flag) && bound) {
+	if (int2char (flag, &unbind) != 0)
+		return NOTOK;
+	if (unbind && bound) {
 		bound = FALSE;
 		ds_unbind ();
 	}

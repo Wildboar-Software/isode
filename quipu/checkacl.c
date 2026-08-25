@@ -311,13 +311,19 @@ static struct result_count *make_rc (
 		/* no sacls applicable to this type */
 		if ( save == NULLSACL )
 			continue;
-		/* We have found an applicable sacl. Add it to the rc */
-		td = (Typedata) smalloc( sizeof( typedata) );
-		td->td_type = ft->ft_type;
-		td->td_limit = save->sac_maxresults;
-		td->td_nopartial = save->sac_zeroifexceeded;
-		td->td_minkey = save->sac_minkeylength;
-		td->td_access = save->sac_access;
+		{
+			char acc;
+
+			if (int2char (save->sac_access, &acc) != 0)
+				continue;
+			/* We have found an applicable sacl. Add it to the rc */
+			td = (Typedata) smalloc( sizeof( typedata) );
+			td->td_type = ft->ft_type;
+			td->td_limit = save->sac_maxresults;
+			td->td_nopartial = save->sac_zeroifexceeded;
+			td->td_minkey = save->sac_minkeylength;
+			td->td_access = acc;
+		}
 		rc->rc_numtypes++;
 		if ( rc->rc_types == NULLTYPEDATA ) {
 			rc->rc_types = td;

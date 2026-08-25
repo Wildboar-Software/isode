@@ -20,7 +20,7 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"
-static UTC	qstr2utct (char *s, int len);
+static UTC	qstr2utct (char *s, size_t len);
 static PE timeenc (void *value);
 static void * timedec (PE pe);
 static int utccmp (void *value1, void *value2);
@@ -33,7 +33,7 @@ extern int pstrcmp(char *a, char *b);
 extern int build_UNIV_UTCTime (PE *pe, int explicit, int len, char *buffer, char *parm);
 extern int parse_UNIV_UTCTime (PE pe, int explicit, int *len, char **buffer, char *parm);
 
-static UTC	qstr2utct (char *s, int len)
+static UTC	qstr2utct (char *s, size_t len)
 {
 	UTC	    ut;
 	if (len > 14
@@ -64,14 +64,15 @@ static void * timedec (PE pe)
 
 void utcprint (PS ps, char *xtime, int format)
 {
-	UTC	    ut;
-
-	if (format == READOUT && (ut = str2utct (xtime, strlen (xtime)))) {
-		long    mtime;
-		mtime = gtime (ut2tm (ut));
-		ps_printf (ps, "%-24.24s", ctime (&mtime));
-	} else
-		ps_printf (ps, "%s", xtime);
+	if (format == READOUT) {
+		UTC ut;
+		if ((ut = str2utct (xtime, strlen(xtime)))) {
+			long mtime = gtime(ut2tm (ut));
+			ps_printf (ps, "%-24.24s", ctime (&mtime));
+			return;
+		}
+	}
+	ps_printf (ps, "%s", xtime);
 }
 
 static int utccmp (void *value1, void *value2) {
@@ -79,11 +80,10 @@ static int utccmp (void *value1, void *value2) {
 	char *b = (char *) value2;
 	long a_time, mdiff;
 	UTC ut;
-
-	if ((ut = str2utct (a, strlen (a))) == NULL)
+	if ((ut = str2utct (a, strlen(a))) == NULL)
 		return pstrcmp (a, b);
 	a_time = gtime (ut2tm (ut));
-	if ((ut = str2utct (b, strlen (b))) == NULL)
+	if ((ut = str2utct (b, strlen(b))) == NULL)
 		return pstrcmp (a, b);
 	return ((mdiff = a_time - gtime (ut2tm (ut))) == 0L ? 0
 			: mdiff > 0L ? 1 : -1);

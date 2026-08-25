@@ -74,9 +74,7 @@ bad_value:
 			goto bad_value;
 		fpm -> offset = type_FTAM_FADU__Identity_single__name;
 		if ((fpm -> un.single__name =
-					str2qb (fa -> fa_singlename,
-							strlen (fa -> fa_singlename),
-							1)) == NULL)
+					str2qb_s (fa -> fa_singlename)) == NULL)
 			goto no_mem;
 		break;
 
@@ -90,7 +88,7 @@ bad_value:
 			if ((*f4 = (struct name_element *) calloc (1, sizeof **f4))
 					== NULL
 					|| ((*f4) -> Node__Name =
-							str2qb (*ap, strlen (*ap), 1)) == NULL)
+							str2qb_s (*ap)) == NULL)
 				goto no_mem;
 			f4 = &((*f4) -> next);
 		}

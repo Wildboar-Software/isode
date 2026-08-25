@@ -89,8 +89,11 @@ char *getpassword (char *prompt) {
 		if (c == '\n' || c == '\r')
 #endif
 			break;
-		else if (bp < ep)
-			*bp++ = c;
+		else if (bp < ep) {
+			if (int2octet (c, bp) != 0)
+				break;
+			bp++;
+		}
 	*bp = 0;
 
 #ifdef SUNLINK_7_0

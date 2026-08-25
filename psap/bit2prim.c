@@ -43,7 +43,8 @@ bit2prim_aux (PE pe) {
 		if (pe -> pe_prim && pe -> pe_len) {
 			if ((i = (((pe -> pe_len - 1) * 8) - pe -> pe_nbits)) > 7)
 				return pe_seterr (pe, PE_ERR_BITS, NULLPE);
-			pe -> pe_prim[0] = i & 0xff;
+			if (int2u8 (i & 0xff, &pe -> pe_prim[0]) != 0)
+				return pe_seterr (pe, PE_ERR_OVER, NULLPE);
 
 		}
 		break;

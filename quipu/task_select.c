@@ -24,6 +24,37 @@ static time_t last_log_close = (time_t)0;
 
 #endif
 
+static int
+timeout_secs (time_t later, time_t now)
+{
+	int n;
+
+	if (time_delta2int (later, now, &n) != 0) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("timeout too large"));
+		return INT_MAX;
+	}
+	return n;
+}
+
+static void
+take_timeout (int *secs_p, int timeout_tmp)
+{
+	if ((*secs_p) == NOTOK || (*secs_p) > timeout_tmp)
+		(*secs_p) = timeout_tmp;
+}
+
+static void
+take_time_t (int *secs_p, time_t t)
+{
+	int n;
+
+	if (time_t2int (t, &n) != 0) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("timeout too large"));
+		n = INT_MAX;
+	}
+	*secs_p = n;
+}
+
 struct task_act *
 task_select (int *secs_p) {
 	struct connection	* cn;
@@ -72,10 +103,8 @@ task_select (int *secs_p) {
 					timeout_task(tk);
 					continue;
 				} else {
-					timeout_tmp = (int) tk->tk_timeout - timenow;
-					if(((*secs_p) == NOTOK) || ((*secs_p) > timeout_tmp)) {
-						(*secs_p) = timeout_tmp;
-					}
+					timeout_tmp = timeout_secs (tk->tk_timeout, timenow);
+					take_timeout (secs_p, timeout_tmp);
 				}
 			}
 			next_tk = &(tk->tk_next);
@@ -113,23 +142,18 @@ task_select (int *secs_p) {
 						if((cn->cn_last_used + conn_timeout) <= timenow) {
 							do_timeout = TRUE;
 						} else {
-							timeout_tmp = (int) (cn->cn_last_used + conn_timeout) - timenow;
-							if(((*secs_p) == NOTOK) || ((*secs_p) > timeout_tmp)) {
-								(*secs_p) = timeout_tmp;
-							}
+							timeout_tmp = timeout_secs (cn->cn_last_used + conn_timeout, timenow);
+							take_timeout (secs_p, timeout_tmp);
 						}
 					} else {
-						timeout_tmp = conn_timeout;	/* safety catch */
+						if (time_t2int (conn_timeout, &timeout_tmp) != 0)
+							timeout_tmp = INT_MAX;
 						if ((tk = cn->cn_operlist->on_task) != NULLTASK) {
 							if (tk->tk_timed) {
-								timeout_tmp = (int) tk->tk_timeout - timenow;
-								if (timeout_tmp < 0)
-									timeout_tmp = 0;
+								timeout_tmp = timeout_secs (tk->tk_timeout, timenow);
 							}
 						}
-						if(((*secs_p) == NOTOK) || ((*secs_p) > timeout_tmp)) {
-							(*secs_p) = timeout_tmp;
-						}
+						take_timeout (secs_p, timeout_tmp);
 						cn->cn_last_used = timenow;
 					}
 				}
@@ -154,18 +178,16 @@ task_select (int *secs_p) {
 					conn_rel_abort (cn);
 					conn_extract (cn);
 				}
-				(*secs_p) = nsap_timeout;
+				take_time_t (secs_p, nsap_timeout);
 			} else {
-				timeout_tmp = (int) (cn->cn_last_used + nsap_timeout) - timenow;
-				if(((*secs_p) == NOTOK) || ((*secs_p) > timeout_tmp)) {
-					(*secs_p) = timeout_tmp;
-				}
+				timeout_tmp = timeout_secs (cn->cn_last_used + nsap_timeout, timenow);
+				take_timeout (secs_p, timeout_tmp);
 			}
 		}
 		if(do_timeout) {
 			LLOG(log_dsap, LLOG_TRACE, ("Timing out connection %d",cn->cn_ad));
 			if (conn_release(cn) == NOTOK) {
-				(*secs_p) = nsap_timeout;
+				take_time_t (secs_p, nsap_timeout);
 				conns_used++;
 			}
 		} else {
@@ -299,9 +321,10 @@ task_select (int *secs_p) {
 	}
 	if ((get_edb_ops == NULLOPER) && startup_update ) {
 		/* make sure we are awake for the next EDB update */
-		if ((timeout_tmp = lastedb_update + slave_timeout - timenow) >= 0)
-			if (((*secs_p) == NOTOK) || ((*secs_p) > timeout_tmp))
-				(*secs_p) = timeout_tmp;
+		if (lastedb_update + slave_timeout >= timenow) {
+			timeout_tmp = timeout_secs (lastedb_update + slave_timeout, timenow);
+			take_timeout (secs_p, timeout_tmp);
+		}
 	}
 	if(suspended) {
 		/*

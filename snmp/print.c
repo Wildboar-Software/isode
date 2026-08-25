@@ -237,7 +237,11 @@ static int pj_compar (const void *p, const void *q)
 	if (i = elem_cmp (a -> pj_instance, a -> pj_insize,
 					  b -> pj_instance, b -> pj_insize))
 		return i;
-	return (a -> pj_st.st_mtime - b -> pj_st.st_mtime);
+	if (a -> pj_st.st_mtime < b -> pj_st.st_mtime)
+		return -1;
+	if (a -> pj_st.st_mtime > b -> pj_st.st_mtime)
+		return 1;
+	return 0;
 }
 
 static int get_pj (int offset) {
@@ -371,7 +375,8 @@ static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 try_again:
 	;
 	switch (offset) {
@@ -488,15 +493,14 @@ try_again:
 	}
 	switch (ifvar) {
 	case printQName:
-		return o_string (oi, v, pq -> pq_name,  strlen (pq -> pq_name));
+		return o_string_s (oi, v, pq -> pq_name);
 
 	case printQStatus:
 		return o_integer (oi, v, pq -> pq_status);
 
 	case printQDisplay:
 		if (pq -> pq_display[0])
-			return o_string (oi, v, pq -> pq_display,
-							 strlen (pq -> pq_display));
+			return o_string_s (oi, v, pq -> pq_display);
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
@@ -523,7 +527,8 @@ static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pq (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pq = get_pqent (oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -583,7 +588,8 @@ static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 try_again:
 	;
 	switch (offset) {
@@ -689,8 +695,13 @@ try_again:
 				default:
 					if (buffer[0] >= 'a'
 							&& buffer[0] <= 'z'
-							&& stat (buffer + 1, &st) != NOTOK)
-						pj -> pj_size += st.st_size;
+							&& stat (buffer + 1, &st) != NOTOK) {
+						int	nbytes;
+
+						if (off2int (st.st_size, &nbytes) != 0
+								|| add_int_to_int (&pj -> pj_size, nbytes) != 0)
+							return generr (offset);
+					}
 					break;
 				}
 			}
@@ -706,20 +717,18 @@ try_again:
 		return o_integer (oi, v, pj -> pj_instance[pj -> pj_insize - 1]);
 
 	case printJName:
-		return o_string (oi, v, pj -> pj_file, strlen (pj -> pj_file));
+		return o_string_s (oi, v, pj -> pj_file);
 
 	case printJOwner:
 		if (pj -> pj_owner[0])
-			return o_string (oi, v, pj -> pj_owner,
-							 strlen (pj -> pj_owner));
+			return o_string_s (oi, v, pj -> pj_owner);
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
 
 	case printJDescription:
 		if (pj -> pj_description[0])
-			return o_string (oi, v, pj -> pj_description,
-							 strlen (pj -> pj_description));
+			return o_string_s (oi, v, pj -> pj_description);
 		if (offset == type_SNMP_SMUX__PDUs_get__next__request)
 			goto try_again;
 		return NOTOK;
@@ -747,7 +756,8 @@ static int s_pj (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_pj (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	if (oid -> oid_nelem <= ot -> ot_name -> oid_nelem)
 		return int_SNMP_error__status_noSuchName;
 	if ((pj = get_pjent (oid -> oid_elements + ot -> ot_name -> oid_nelem,
@@ -864,10 +874,11 @@ static int _select (const struct dirent *dd) {
 }
 
 static int sortq (const struct dirent **d1, const struct dirent **d2) {
+	int	cmp;
 	char c1, c2;
 
-	if (c1 = strcmp ((*d1) -> d_name + 3, (*d2) -> d_name + 3))
-		return c1;
+	if ((cmp = strcmp ((*d1) -> d_name + 3, (*d2) -> d_name + 3)) != 0)
+		return cmp;
 	if ((c1 = (*d1) -> d_name[0]) == (c2 = (*d2) -> d_name[0]))
 		return ((*d1) -> d_name[2] - (*d2) ->d_name[2]);
 	if (c1 == 'c')
@@ -1173,14 +1184,28 @@ static void startdaemon (struct pq *pq) {
 	bzero ((char *) &sunix, sizeof sunix);
 	sunix.sun_family = AF_UNIX;
 	strcpy (sunix.sun_path, _PATH_SOCKETNAME);
-	if (connect(sd, (struct sockaddr *) &sunix, strlen (sunix.sun_path) + 2)
+	{
+		socklen_t slen;
+		size_t pathlen = strlen (sunix.sun_path) + 2;
+
+		if (sizet2socklen (pathlen, &slen) != 0) {
+			advise (LLOG_EXCEPTIONS, NULLCP, "unix socket path too long");
+			close (sd);
+			return;
+		}
+		if (connect(sd, (struct sockaddr *) &sunix, slen)
 			== NOTOK) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "unable to connect");
 		close (sd);
 		return;
+		}
 	}
 	sprintf (buffer, "\1%s\n", pq -> pq_name);
-	n = strlen (buffer);
+	if (strlen2int (buffer, &n) != 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "print command too long");
+		close (sd);
+		return;
+	}
 	if (write_int (sd, buffer, n) != n) {
 		advise (LLOG_EXCEPTIONS, "unix socket", "error writing to");
 		close (sd);
@@ -1193,8 +1218,12 @@ static void startdaemon (struct pq *pq) {
 		}
 	advise (LLOG_EXCEPTIONS, NULLCP, "lpd refuses to start print queue %s",
 			pq -> pq_name);
-	while ((n = read (sd, buffer, sizeof (buffer))) > 0)
-		continue;
+	{
+		ssize_t nr;
+
+		while ((nr = read (sd, buffer, sizeof (buffer))) > 0)
+			continue;
+	}
 	close (sd);
 	return;
 }

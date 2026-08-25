@@ -56,6 +56,7 @@ static struct dispatch dispatches[] = {
 
 /* TYPES */
 static struct type_IMISC_IA5List *str2ia5list (char *s);
+static int rng_pick (int a, int b, int *out);
 
 static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
 static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
@@ -96,7 +97,7 @@ static int  op_utcTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	tm2ut (tm, ut);
 
 	if ((cp = utct2str (ut)) == NULLCP
-			|| (ur = str2qb (cp, strlen (cp), 1)) == NULL)
+			|| (ur = str2qb_s (cp)) == NULL)
 		return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) ur, ROS_NOPRIO, roi) == NOTOK)
@@ -143,11 +144,13 @@ static int  op_genTime (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	tm2ut (tm, ut);
 #ifdef	BSD42
 	ut -> ut_flags |= UT_USEC;
-	ut -> ut_usec = tvs.tv_usec;
+	if (long2int (tvs.tv_usec, &ut -> ut_usec) != 0)
+		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
+					  rox, roi);
 #endif
 
 	if ((cp = gent2str (ut)) == NULLCP
-			|| (gr = str2qb (cp, strlen (cp), 1)) == NULL)
+			|| (gr = str2qb_s (cp)) == NULL)
 		return error (sd, error_IMISC_congested, (caddr_t) NULL, rox, roi);
 
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) gr, ROS_NOPRIO, roi) == NOTOK)
@@ -177,7 +180,9 @@ static int  op_timeOfDay (int sd, struct RyOperation *ryo, struct RoSAPinvoke *r
 	if (time (&clock) == NOTOK)
 		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
 					  rox, roi);
-	tr -> parm = clock + 2208988800;
+	if (llong2int32 ((long long) clock + 2208988800LL, &tr -> parm) != 0)
+		return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL,
+					  rox, roi);
 
 	if (RyDsResult (sd, rox -> rox_id, (caddr_t) tr, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "RESULT");
@@ -327,8 +332,11 @@ static int  op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 
 	re = ring;
 	for (i = 0; i < 0x80; i++)
-		if (isprint ((uint8_t) i))
-			*re++ = i;
+		if (isprint ((uint8_t) i)) {
+			if (int2char (i, re) != 0)
+				goto int_conv_error;
+			re++;
+		}
 
 	ia5 = NULL;
 	ia5p = &ia5;
@@ -355,6 +363,11 @@ static int  op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	free_IMISC_IA5List (ia5);
 
 	return OK;
+
+int_conv_error:
+	;
+	free_IMISC_IA5List (ia5);
+	return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL, rox, roi);
 
 congested:
 	;
@@ -499,20 +512,45 @@ static struct web {
 	0, 0, 0, NULL, NULL
 };
 
-#define	ifix(f)		((int) ((float) (f) + 0.5))
-#ifndef	SYS5
-#define	nrand()		(((float) (random ()) / (float) 2147483647))
-#else
-#define	nrand()		(((float) (rand ()) / (float) 2147483647))
-
+#ifdef	SYS5
 #ifndef SVR4	/* defined in <stdlib.h> - comes from general.h */
 int	rand (void);
 void	srand (unsigned int);
 #endif
 #endif
-#define	rng(a,b)	if (((i = ifix (a * nrand ()) * b) ? i -= b : i) < 0 \
-				|| i >= a * b + (1 - b)) \
-			    return NOTOK;
+
+static int
+rng_pick (int a, int b, int *out)
+{
+	long r;
+	int rounded,
+		i;
+	double x,
+		   hi;
+
+	if (out == NULL || a <= 0 || b <= 0)
+		return -1;
+#ifndef	SYS5
+	r = random ();
+#else
+	r = (long) rand ();
+#endif
+	if (r < 0L)
+		return -1;
+	x = ((double) r / 2147483647.0) * (double) a;
+	if (double2int (x + 0.5, &rounded) != 0)
+		return -1;
+	if (rounded == 0)
+		i = 0;
+	else if (double2int ((double) rounded * (double) b - (double) b, &i)
+			 != 0)
+		return -1;
+	hi = (double) a * (double) b + (1.0 - (double) b);
+	if (i < 0 || (double) i >= hi)
+		return -1;
+	*out = i;
+	return 0;
+}
 
 static int pwdgen (char *pw) {
 	int    i,
@@ -557,7 +595,8 @@ static int pwdgen (char *pw) {
 		latch++;
 	}
 
-	rng (TOT, 1.0);
+	if (rng_pick (TOT, 1, &i) != 0)
+		return NOTOK;
 	for (pair = pairs; pair -> p_form; pair++)
 		if (pair -> p_value < i)
 			f = pair -> p_form;
@@ -572,7 +611,8 @@ static int pwdgen (char *pw) {
 			if (!web -> w_key)
 				return NOTOK;
 
-			rng (web -> w_length, web -> w_factor);
+			if (rng_pick (web -> w_length, web -> w_factor, &i) != 0)
+				return NOTOK;
 
 			for (j = web -> w_factor; j > 0; j--)
 				*s++ = (*web -> w_string)[i++];
@@ -744,8 +784,19 @@ oops:
 		for (; vecq < vecp; vecq++)
 			if (bp = vec[vecq])
 				free (bp);
-		for (dp = data;;)
-			switch (i = read (pd[0], buffer, sizeof buffer)) {
+		for (dp = data;;) {
+			ssize_t nread;
+			int got;
+
+			nread = read (pd[0], buffer, sizeof buffer);
+			if (ssize2int (nread, &got) != 0) {
+				i = errno;
+				close (pd[0]);
+				errno = i;
+				result = error_IMISC_errorReading;
+				goto oops;
+			}
+			switch (got) {
 			case NOTOK:
 				i = errno;
 				close (pd[0]);
@@ -769,7 +820,7 @@ oops:
 				goto out;
 
 			default:
-				for (bp = buffer; i > 0; bp++, i--)
+				for (bp = buffer; got > 0; bp++, got--)
 					switch (*bp) {
 					case '\n':
 						*dp = 0;
@@ -788,6 +839,7 @@ oops:
 					}
 				continue;
 			}
+		}
 	}
 
 congested:
@@ -1000,7 +1052,7 @@ str2ia5list (char *s) {
 	if ((ia5 = (struct type_IMISC_IA5List  *) calloc (1, sizeof *ia5)) == NULL)
 		return NULL;
 
-	if ((ia5 -> IA5String = str2qb (s, strlen (s), 1)) == NULL) {
+	if ((ia5 -> IA5String = str2qb_s (s)) == NULL) {
 		free ((char *) ia5);
 		return NULL;
 	}

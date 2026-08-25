@@ -168,11 +168,11 @@ int SDataRequestAux (
 		if (sb -> sb_tsdu_us) {
 			s -> s_mask |= SMASK_ENCLOSE;
 			if (begin) {
-				s -> s_enclose |= ENCL_BEGIN;
+				s -> s_enclose = u8_bis (s -> s_enclose, ENCL_BEGIN);
 				begin = 0;
 			}
 			if (end && uv -> uv_base == NULL)
-				s -> s_enclose |= ENCL_END;
+				s -> s_enclose = u8_bis (s -> s_enclose, ENCL_END);
 		}
 		if (spkt2tsdu (s, &vv -> uv_base, &vv -> uv_len) == NOTOK) {
 			ssaplose (si, s -> s_errno, NULLCP, NULLCP);

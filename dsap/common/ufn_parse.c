@@ -254,8 +254,12 @@ set_bad_dsa:
 			&& present (base, at_Organisation))
 		ufn_partials = dn_seq_push (base, ufn_partials);
 	for (ptr = result.CSR_entries; ptr != NULLENTRYINFO; ptr=ptr->ent_next) {
+		char infotypes;
+
+		if (int2char (search_arg.sra_eis.eis_infotypes, &infotypes) != 0)
+			continue;
 		cache_entry (ptr, search_arg.sra_eis.eis_allattributes,
-					 search_arg.sra_eis.eis_infotypes);
+					 infotypes);
 		newdns = dn_seq_alloc();
 		newdns->dns_next = r;
 		newdns->dns_dn = dn_cpy (ptr->ent_dn);

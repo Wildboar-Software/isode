@@ -126,7 +126,7 @@ static void *audio_parse (char *str) {
 	if (file_attr_length)
 		return str2qb (str, file_attr_length, 1);
 	else
-		return str2qb (str, strlen (str), 1);
+		return str2qb_s (str);
 }
 
 void audio_syntax (void) {

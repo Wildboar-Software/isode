@@ -228,8 +228,10 @@ static void raw_main (char *service, char *addr) {
 		adios (NULLCP, "%s: unknown host", addr);
 
 	bzero ((char *) isock, sizeof *isock);
-	isock -> sin_family = hp -> h_addrtype;
-	isock -> sin_port = sp -> s_port;
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		adios (NULLCP, "invalid address family");
+	if (int2inport (sp -> s_port, &isock -> sin_port) != 0)
+		adios (NULLCP, "invalid TCP port");
 	inaddr_copy (hp, isock);
 
 	if ((sd = start_tcp_client ((struct sockaddr_in *) 0, 0)) == NOTOK)
@@ -367,7 +369,9 @@ static void ts_main (struct isoservent *is, char *addr) {
 		for (expedited = 0;
 				fgets (buffer, sizeof buffer, stdin);
 				expedited = !expedited) {
-			if ((cc = strlen (buffer) + 1) > TX_SIZE && expedited)
+			if (strlen1_to_int (buffer, &cc) != 0)
+				adios (NULLCP, "line too long");
+			if (cc > TX_SIZE && expedited)
 				expedited = 0;
 
 			ts_datarequest (sd, buffer, cc, expd ? expedited : 0);
@@ -592,7 +596,8 @@ static void ss_main ( struct isoservent *is, char   *addr) {
 
 	if (requirements & SR_ACTIVITY) {
 		strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
-		id -> sd_len = strlen (id -> sd_data);
+		if (sizet2u8 (strlen (id -> sd_data), &id -> sd_len) != 0)
+			adios (NULLCP, "activity identifier too long");
 		if (SActStartRequest (sd, id, userdata, SV_SIZE, si) == NOTOK)
 			ss_adios (sa, "S-ACTIVITY-START.REQUEST");
 	}
@@ -613,7 +618,9 @@ static void ss_main ( struct isoservent *is, char   *addr) {
 	} else {
 		for (j = l = 0; fgets (buffer, sizeof buffer, stdin); ) {
 			k = j >= nmodes ? SX_EXPEDITED : datamodes[j++ % nmodes];
-			if ((cc = strlen (buffer) + 1) > SX_EXSIZE && k == SX_EXPEDITED) {
+			if (strlen1_to_int (buffer, &cc) != 0)
+				adios (NULLCP, "line too long");
+			if (cc > SX_EXSIZE && k == SX_EXPEDITED) {
 				if ((k = datamodes[j++ % nmodes]) == SX_EXPEDITED)
 					k = datamodes[j++ % nmodes];
 			}
@@ -889,8 +896,14 @@ read_it:
 
 		case OK:
 			strcpy (buffer, "protocol screw-up");
-			if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
-				ss_adios (sa, "S-U-ABORT.REQUEST");
+			{
+				int n;
+
+				if (strlen1_to_int (buffer, &n) != 0)
+					adios (NULLCP, "abort diagnostic too long");
+				if (SUAbortRequest (sd, buffer, n, si) == NOTOK)
+					ss_adios (sa, "S-U-ABORT.REQUEST");
+			}
 			adios (NULLCP, "%s, data indication type=0x%x",	buffer, sx -> sx_type);
 
 		case DONE:
@@ -1397,7 +1410,8 @@ static void ps_main (struct isoservent *is, char *addr) {
 
 	if (srequirements & SR_ACTIVITY) {
 		strcpy (id -> sd_data, mode == echo ? "echo" : "sink");
-		id -> sd_len = strlen (id -> sd_data);
+		if (sizet2u8 (strlen (id -> sd_data), &id -> sd_len) != 0)
+			adios (NULLCP, "activity identifier too long");
 		if (PActStartRequest (sd, id, udata, NPDATA, pi) == NOTOK)
 			ps_adios (pa, "P-ACTIVITY-START.REQUEST");
 	}
@@ -1423,7 +1437,9 @@ static void ps_main (struct isoservent *is, char *addr) {
 	} else {
 		for (j = l = m = 0; fgets (buffer, sizeof buffer, stdin); ) {
 			k = j >= nmodes ? SX_EXPEDITED : datamodes[j++ % nmodes];
-			if ((cc = strlen (buffer) + 1) > SX_EXSIZE - 7
+			if (strlen1_to_int (buffer, &cc) != 0)
+				adios (NULLCP, "line too long");
+			if (cc > SX_EXSIZE - 7
 					&& k == SX_EXPEDITED) {
 				if ((k = datamodes[j++ % nmodes]) == SX_EXPEDITED)
 					k = datamodes[j++ % nmodes];
@@ -2176,7 +2192,11 @@ static void rts_main (struct isoservent *is, char *addr) {
 		pe_free (pe);
 	} else
 		while (fgets (buffer, sizeof buffer, stdin)) {
-			if ((pe = oct2prim (buffer, strlen (buffer) + 1)) == NULLPE)
+			int n;
+
+			if (strlen1_to_int (buffer, &n) != 0)
+				adios (NULLCP, "line too long");
+			if ((pe = oct2prim (buffer, n)) == NULLPE)
 				adios (NULLCP, "unable to allocate APDU");
 			rts_transferequest (sd, pe);
 			pe_free (pe);
@@ -2539,7 +2559,11 @@ static void do_ros (int sd) {
 		pe_free (pe);
 	} else
 		while (fgets (buffer, sizeof buffer, stdin)) {
-			if ((pe = oct2prim (buffer, strlen (buffer) + 1)) == NULLPE)
+			int n;
+
+			if (strlen1_to_int (buffer, &n) != 0)
+				adios (NULLCP, "line too long");
+			if ((pe = oct2prim (buffer, n)) == NULLPE)
 				adios (NULLCP, "unable to allocate invocation argument");
 			ros_invokerequest (sd, pe);
 			pe_free (pe);

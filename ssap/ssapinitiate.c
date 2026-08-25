@@ -187,8 +187,11 @@ static int SConnRequestAux (
 	}
 	sb -> sb_responding = *called;	/* struct copy */
 
-	sb -> sb_requirements = requirements;
-	sb -> sb_settings = settings;
+	if (int2u16 (requirements, &sb -> sb_requirements) != 0
+			|| int2u8 (settings, &sb -> sb_settings) != 0) {
+		ssaplose (si, SC_PARAMETER, NULLCP, "connect parameters out of range");
+		goto out1;
+	}
 	if (async)
 		sb -> sb_flags |= SB_ASYNC_CONN;
 
@@ -226,11 +229,17 @@ static int SConnRequestAux (
 	s -> s_mask |= SMASK_CN_REF | SMASK_CN_OPT | SMASK_CN_VRSN;
 	s -> s_cn_reference = *ref;	/* struct copy */
 	s -> s_options = CR_OPT_NULL;
-	s -> s_cn_version = sb -> sb_vrsnmask;
+	if (int2u8 (sb -> sb_vrsnmask, &s -> s_cn_version) != 0) {
+		ssaplose (si, SC_PARAMETER, NULLCP, "version mask out of range");
+		goto out2;
+	}
 
 	if (isn != SERIAL_NONE) {
 		s -> s_mask |= SMASK_CN_ISN;
-		s -> s_isn = isn;
+		if (long2u32 (isn, &s -> s_isn) != 0) {
+			ssaplose (si, SC_PARAMETER, NULLCP, "serial number out of range");
+			goto out2;
+		}
 	}
 
 	if (cc > 0) {		/* XXX: user musn't touch! */
@@ -422,13 +431,19 @@ static int SAsynRetryAux1 (
 	else
 		sb -> sb_requirements = u16_bic (sb -> sb_requirements,
 						 (unsigned) SR_EXPEDITED);
-	if (sb -> sb_version < SB_VRSN2)		/* XXX */
-		sb -> sb_tsdu_us = sb -> sb_tsdu_them = GET_TSDU_SIZE (tc -> tc_tsdusize);
+	if (sb -> sb_version < SB_VRSN2) {		/* XXX */
+		uint16_t tsz;
+
+		if (int2u16 (GET_TSDU_SIZE (tc -> tc_tsdusize), &tsz) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "TSDU size out of range");
+		sb -> sb_tsdu_us = sb -> sb_tsdu_them = tsz;
+	}
 
 	if (sb -> sb_tsdu_us || sb -> sb_tsdu_them) {
 		s -> s_mask |= SMASK_CN_TSDU;
-		s -> s_tsdu_resp = GET_TSDU_SIZE (sb -> sb_tsdu_us);
-		s -> s_tsdu_init = GET_TSDU_SIZE (sb -> sb_tsdu_them);
+		if (int2u16 (GET_TSDU_SIZE (sb -> sb_tsdu_us), &s -> s_tsdu_resp) != 0
+				|| int2u16 (GET_TSDU_SIZE (sb -> sb_tsdu_them), &s -> s_tsdu_init) != 0)
+			return ssaplose (si, SC_PROTOCOL, NULLCP, "TSDU size out of range");
 	}
 
 	s -> s_mask |= SMASK_CN_REQ;

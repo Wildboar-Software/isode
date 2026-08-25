@@ -395,7 +395,7 @@ all_done:
 		ps_print (nps, " ");
 		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
-		rsp -> friendly = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
+		rsp -> friendly = str2qb_s (nps -> ps_base);
 
 		nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
@@ -408,7 +408,7 @@ send_rsp:
 	if (PY_pepy[0]) {
 		advise (LLOG_NOTICE, NULLCP, "diagnostic: %s", PY_pepy);
 
-		if ((rsp -> diagnostic = str2qb (PY_pepy, strlen (PY_pepy), 1))
+		if ((rsp -> diagnostic = str2qb_s (PY_pepy))
 				== NULL)
 			goto no_mem;
 	}
@@ -486,8 +486,14 @@ static void make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 	ba -> dba_version = DBA_VERSION_V1988;
 	if (ba -> dba_dn = userdn)
 		ba -> dba_auth_type = DBA_AUTH_SIMPLE;
-	if (ba -> dba_passwd_len = strlen (passwd))
-		strcpy (ba -> dba_passwd, passwd);
+	{
+		int n;
+
+		if (passwd == NULL || strlen2int (passwd, &n) != 0)
+			n = 0;
+		if (ba -> dba_passwd_len = n)
+			strcpy (ba -> dba_passwd, passwd);
+	}
 }
 
 static DNS dase_interact (DNS dns, DN dn, char *s) {
@@ -559,7 +565,7 @@ out:
 		dn_seq_free (dns);
 		return NULL;
 	}
-	if ((req -> string = str2qb (s, strlen (s), 1)) == NULL)
+	if ((req -> string = str2qb_s (s)) == NULL)
 		goto no_mem;
 
 	dp = &req -> choices;
@@ -580,7 +586,7 @@ out:
 		ps_print (nps, " ");
 		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
-		pair -> complete = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
+		pair -> complete = str2qb_s (nps -> ps_base);
 
 		nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
@@ -588,7 +594,7 @@ out:
 		ps_print (nps, " ");
 		*--nps -> ps_ptr = 0, nps -> ps_cnt++;
 
-		pair -> friendly = str2qb (nps -> ps_base, strlen (nps -> ps_base), 1);
+		pair -> friendly = str2qb_s (nps -> ps_base);
 
 		nps -> ps_ptr = nps -> ps_base, nps -> ps_cnt = nps -> ps_bufsiz;
 
@@ -829,7 +835,8 @@ static void envinit(void)  {
 	int     i,
 	sd;
 
-	nbits = getdtablesize ();
+	if (long2int (getdtablesize (), &nbits) != 0)
+		nbits = 0;
 
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {

@@ -96,7 +96,9 @@ out:
 			freefsblk (fsb);
 		return NOTOK;
 	}
-	fsb -> fsb_state = state;
+	if (int2short (state, &fsb -> fsb_state) != 0)
+		return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				 "invalid FTAM state");
 	fsb -> fsb_group = ftg -> ftg_flags;
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
@@ -424,8 +426,7 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 						shared2fpm (fsb, ftse -> ftse_sharedASE, fti)) == NULL)
 			return NOTOK;
 		if (ftse -> ftse_account
-				&& (req -> account = str2qb (ftse -> ftse_account,
-											 strlen (ftse -> ftse_account), 1))
+				&& (req -> account = str2qb_s (ftse -> ftse_account))
 				== NULL)
 			goto no_mem;
 	}
@@ -468,8 +469,7 @@ static int figrp2pdus (struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_F
 						shared2fpm (fsb, ftce -> ftce_sharedASE, fti)) == NULL)
 			return NOTOK;
 		if (ftce -> ftce_account
-				&& (req -> account = str2qb (ftce -> ftce_account,
-											 strlen (ftce -> ftce_account), 1))
+				&& (req -> account = str2qb_s (ftce -> ftce_account))
 				== NULL)
 			goto no_mem;
 	}

@@ -139,7 +139,8 @@ int str2encrypted (char *str, char **cp, int *len) {
 	int k = 0;
 	int tmp;
 
-	l = strlen(str);
+	if (strlen2int (str, &l) != 0)
+		return NOTOK;
 	if (str[l-1] == '#') l--;
 	if ((l>2) && str[l-2] == '-') {
 		k = atoi(&(str[l-1]));
@@ -149,7 +150,8 @@ int str2encrypted (char *str, char **cp, int *len) {
 	*len = 8*((l+1)/2) - k;
 	for (i=0; i<(l+1)/2; i++) {
 		sscanf(str+2*i, "%02x", &tmp);
-		(*cp)[i] = tmp & 255;
+		if (int2octet (tmp, &(*cp)[i]) != 0)
+			return NOTOK;
 	}
 }
 

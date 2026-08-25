@@ -109,6 +109,8 @@ out:
 		ps2ftamlose (fsb, fti, "PDataRequest", pa);
 		goto out;
 	}
-	fsb -> fsb_state = state;
+	if (int2short (state, &fsb -> fsb_state) != 0)
+		return ftamlose (fti, FS_GEN (fsb), 1, NULLCP,
+				 "invalid FTAM state");
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }

@@ -411,13 +411,16 @@ struct SSAPref *pdu2ref (struct type_PS_SessionConnectionIdentifier *ref) {
 	struct SSAPref *sf = &sfs;
 	pdu2sel (sf -> sr_udata, &i, sizeof sf -> sr_udata,
 			 ref -> callingSSUserReference);
-	sf -> sr_ulen = i;
+	if (int2u8 (i, &sf -> sr_ulen) != 0)
+		sf -> sr_ulen = 0;
 	pdu2sel (sf -> sr_cdata, &i, sizeof sf -> sr_cdata,
 			 ref -> commonReference);
-	sf -> sr_clen = i;
+	if (int2u8 (i, &sf -> sr_clen) != 0)
+		sf -> sr_clen = 0;
 	pdu2sel (sf -> sr_adata, &i, sizeof sf -> sr_adata,
 			 ref -> additionalReferenceInformation);
-	sf -> sr_alen = i;
+	if (int2u8 (i, &sf -> sr_alen) != 0)
+		sf -> sr_alen = 0;
 	sf -> sr_vlen = 0;
 	return sf;
 }
@@ -439,5 +442,6 @@ void pdu2sel (char *sel, int *len, int i, struct qbuf *pb) {
 		}
 		cp += qb -> qb_len, i -= qb -> qb_len;
 	}
-	*len = cp - sel;
+	if (ptrdiff2int (cp - sel, len) != 0)
+		*len = 0;
 }

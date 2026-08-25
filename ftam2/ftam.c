@@ -431,13 +431,17 @@ int getftamline (char *prompt, char *buffer) {
 			break;
 		}
 
-		if (cp < ep)
-			*cp++ = i;
+		if (cp < ep) {
+			if (int2octet (i, cp) != 0)
+				// getchar is supposed to return a byte every time.
+			    // This should never happen.
+				adios (NULLCP, "getchar returned an invalid character");
+				return NOTOK;
+			cp++;
+		}
 	}
 	*cp = 0;
-
 	armed = 0;
-
 	return OK;
 }
 #endif

@@ -202,7 +202,8 @@ static char *getphyline (FILE *file)
 		}
 		if (fgets (buf, buflen,file) == NULLCP)
 			return (NULLCP);
-		size = strlen(buf);
+		if (sizet2int (strlen (buf), &size) != 0)
+			return (NULLCP);
 		ptr = buf + size - 1;
 		if ( *ptr == '\n') {
 			*ptr = '\0';
@@ -231,7 +232,8 @@ static char *catphyline (FILE *file, char *str)
 		/* size will be negative if a long line has been trimmed back
 		 * beyond the last buffer length
 		 */
-		size = str - buf;	/* saves us calling strlen here */
+		if (ptrdiff2int (str - buf, &size) != 0)
+			return (NULLCP);
 		buf += size;
 		buflen -= size;
 		curlen += size;
@@ -255,7 +257,8 @@ static char *catphyline (FILE *file, char *str)
 		}
 		if (fgets (buf, buflen,file) == NULLCP)
 			return (NULLCP);
-		size = strlen(buf);
+		if (sizet2int (strlen (buf), &size) != 0)
+			return (NULLCP);
 		ptr = buf + size - 1;
 		if ( *ptr == '\n') {
 			*ptr = '\0';
@@ -302,7 +305,8 @@ char * _getline (FILE *file)
 	len = curlen + size;
 	npart = p;
 	while ((npart = unesc_cont(npart, len))) {/* continued line keep going */
-		ocurlen = npart - p;
+		if (ptrdiff2int (npart - p, &ocurlen) != 0)
+			return (NULLCP);
 		if ((p = catphyline(file, npart)) == NULLCP)
 			return (NULLCP);
 		len = curlen + size - ocurlen;
@@ -357,7 +361,8 @@ void fpwr_esc(FILE *fp, char *line, int wl)
 	int		n;	/* number of CONT_CHARs we can put on this line */
 	int		i;
 
-	len = strlen(line);
+	if (strlen2int (line, &len) != 0)
+		return;
 	while (len > 0) {
 		if (len < wl)
 			pos = len;
@@ -395,7 +400,8 @@ void pswr_esc(PS ps, char *line, int wl)
 	int		n;	/* number of CONT_CHARs we can put on this line */
 	int		i;
 
-	len = strlen(line);
+	if (strlen2int (line, &len) != 0)
+		return;
 	while (len > 0) {
 		if (len < wl)
 			pos = len;
@@ -546,7 +552,11 @@ Entry get_entry_aux (FILE *file, Entry parent, int dtype)
 			return (NULLENTRY);
 		}
 	eptr = get_default_entry (parent);
-	eptr->e_data = dtype;
+	if (int2char (dtype, &eptr->e_data) != 0) {
+		parse_error ("invalid data type", NULLCP);
+		GENERAL_HEAP;
+		return (NULLENTRY);
+	}
 	if ((eptr->e_name = str2rdn (ptr)) == NULLRDN) {
 		parse_error ("invalid rdn %s",ptr);
 		check = FALSE;

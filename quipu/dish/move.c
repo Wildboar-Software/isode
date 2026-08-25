@@ -124,7 +124,8 @@ int move (char *arg) {
 		} else
 			return (OK);
 	}
-	len = strlen(arg);
+	if (strlen2int (arg, &len) != 0)
+		return (NOTOK);
 	if ((arg[0] == '<') && ( arg[len-1] == '>')) {
 		dn_free(dn);
 		dn = str2dn(arg);

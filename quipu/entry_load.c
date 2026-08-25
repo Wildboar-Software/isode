@@ -109,7 +109,8 @@ static int read_mapped_rdn (PS aps, char *name, char *file) {
 			*tmp = 0;
 		if (lexequ (name,ptr) == 0) {
 			/* got it - replace in ps*/
-			i = strlen (name);
+			if (strlen2int (name, &i) != 0)
+				return FALSE;
 			aps->ps_ptr -= i;
 			aps->ps_cnt += i;
 			ps_print (aps,SkipSpace(newname));
@@ -147,7 +148,8 @@ static int write_mapped_rdn (PS aps, char *name, char *file) {
 			*mptr++ = *nptr, i++;
 	strcpy (sname,name);
 	strcpy (mptr,"XXXXXX");
-	i = strlen (name);
+	if (strlen2int (name, &i) != 0)
+		return FALSE;
 	nptr = (aps->ps_ptr -= i);
 	aps->ps_cnt += i;
 	ps_print (aps,mapname);
@@ -161,7 +163,8 @@ static int write_mapped_rdn (PS aps, char *name, char *file) {
 			*mptr++ = *nptr, i++;
 	*mptr = '\0';
 	strcpy (sname,name);
-	i = strlen (name);
+	if (strlen2int (name, &i) != 0)
+		return FALSE;
 	aps->ps_ptr -= i;
 	aps->ps_cnt += i;
 	*aps->ps_ptr = 0;
@@ -361,9 +364,15 @@ static int load_a_kid (caddr_t data, caddr_t arg) {
 		if (parse_status != 0)
 			return(NOTOK);
 		e->e_leaf = FALSE;
-		if (entry_load_kids(e->e_children, strlen( filename ) - EDBLEN)
-				== NOTOK)
-			return (NOTOK);
+		{
+			int off;
+
+			if (strlen2int (filename, &off) != 0 || off < EDBLEN)
+				return (NOTOK);
+			if (entry_load_kids(e->e_children, off - EDBLEN)
+					== NOTOK)
+				return (NOTOK);
+		}
 		if (e->e_allchildrenpresent != 2)
 			got_all = FALSE;
 	} else {
@@ -501,9 +510,17 @@ Entry subtree_load (Entry parent, DN dn) {
 	if (parse_status != 0)
 		failed = TRUE;
 	parent->e_children = treetop;
-	if (entry_load_kids (treetop,strlen (filename) - EDBLEN) == NOTOK) {
-		parse_status++;
-		return (NULLENTRY);
+	{
+		int off;
+
+		if (strlen2int (filename, &off) != 0 || off < EDBLEN) {
+			parse_status++;
+			return (NULLENTRY);
+		}
+		if (entry_load_kids (treetop, off - EDBLEN) == NOTOK) {
+			parse_status++;
+			return (NULLENTRY);
+		}
 	}
 	ps_free (ps);
 	if (failed) {

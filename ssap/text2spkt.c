@@ -9,7 +9,7 @@ static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 
 static void type_id (LLog *lp, char *type, char *rw, char *selector, int len);
 static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn);
-static void type_bits (LLog *lp, char *rw, char *s, uint8_t bits, int mask, char *t);
+static void type_bits (LLog *lp, char *rw, char *s, uint16_t bits, int mask, char *t);
 static void type_settings (LLog *lp, char *rw, uint8_t settings);
 static void type_tsdu (LLog *lp, char *rw, uint16_t init, uint16_t resp);
 static void type_ref (LLog *lp, char *rw, struct SSAPref *ref);
@@ -321,7 +321,7 @@ static void type_ssn (LLog *lp, char *rw, char *what, uint32_t ssn) {
 	ll_printf (lp, "%s%s/ %d\n", rw, what, ssn);
 }
 
-static void type_bits (LLog *lp, char *rw, char *s, uint8_t bits, int mask, char *t) {
+static void type_bits (LLog *lp, char *rw, char *s, uint16_t bits, int mask, char *t) {
 	ll_printf (lp, "%s%s/ %s", rw, s, sprintc (bits & mask, t));
 	if (bits & ~mask)
 		ll_printf (lp, ": illegal use of %s", sprintc (bits & ~mask, t));

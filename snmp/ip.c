@@ -131,8 +131,10 @@ static int _read_ip_stats (void)
 	for (i = 0; i < len; i++) {
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
-		if (!strcmp ("Forwarding", label))
-			ipforwarding = value;
+		if (!strcmp ("Forwarding", label)) {
+			if (long2int (value, &ipforwarding) != 0)
+				return NOTOK;
+		}
         else if (!strcmp ("DefaultTTL", label))
 			ipstat.ips_defaultTTL = value;
         else if (!strcmp ("InReceives", label))
@@ -181,7 +183,8 @@ static int  o_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -323,7 +326,8 @@ static int  s_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	OS	    os = ot -> ot_syntax;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 	case type_SNMP_PDUs_commit:
@@ -435,7 +439,8 @@ static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + IFN_SIZE)
@@ -546,7 +551,8 @@ static int  o_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_routes (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 try_again:
 	;
 	switch (offset) {
@@ -715,7 +721,8 @@ static int  s_ip_route (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
 		if (get_routes (offset) == NOTOK)
@@ -884,9 +891,9 @@ bad_magic:
 				{
 					unsigned int bit;
 
-					if (int2uint (RTF_GATEWAY, &bit) != 0)
+					if (int2uint (RTF_GATEWAY, &bit) != 0 || bit > 0xffffU)
 						return int_SNMP_error__status_genErr;
-					rt -> rt_rt.rt_flags &= ~bit;
+					rt -> rt_rt.rt_flags = u16_bic (rt -> rt_rt.rt_flags, bit);
 				}
 				break;
 
@@ -914,9 +921,9 @@ bad_magic:
 				{
 					unsigned int bit;
 
-					if (int2uint (RTF_HOST, &bit) != 0)
+					if (int2uint (RTF_HOST, &bit) != 0 || bit > 0xffffU)
 						return int_SNMP_error__status_genErr;
-					rt -> rt_rt.rt_flags &= ~bit;
+					rt -> rt_rt.rt_flags = u16_bic (rt -> rt_rt.rt_flags, bit);
 				}
 		}
 		break;
@@ -1004,7 +1011,8 @@ static int  o_ip_routing_stats (OI oi, struct type_SNMP_VarBind *v, int offset) 
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -1127,7 +1135,9 @@ static int  o_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	if (get_arptab (offset) == NOTOK)
 		return generr (offset);
 
-	switch (ifvar = (ssize_t) ot -> ot_info) {
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
+	switch (ifvar) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
@@ -1274,7 +1284,9 @@ static int  s_address (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OS	    os = ot -> ot_syntax;
 	caddr_t	value;
 
-	switch (ifvar = (ssize_t) ot -> ot_info) {
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
+	switch (ifvar) {
 	case ipNetToMediaIfIndex:
 	case ipNetToMediaPhysAddress:
 	case ipNetToMediaNetAddress:
@@ -1403,7 +1415,8 @@ bad_value:
 						   (char *) at -> adr_oldphys,
 						   (int) (at -> adr_physlen
 								  = at -> adm_addrlen));
-					at -> adm_addrlen = len;
+					if (int2u8 (len, &at -> adm_addrlen) != 0)
+						goto bad_value;
 					p = q -> qb_forw, d = at -> adm_address;
 					do {
 						if (bcopy_int (p -> qb_data, (char *) d, p -> qb_len)

@@ -132,7 +132,7 @@ static struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 		if ((*ia5p = (struct type_IMISC_IA5List *) calloc (1, sizeof **ia5p))
 				== NULL)
 			adios (NULLCP, "out of memory");
-		if (((*ia5p) -> IA5String = str2qb (*vec, strlen (*vec), 1)) == NULL)
+		if (((*ia5p) -> IA5String = str2qb_s (*vec)) == NULL)
 			adios (NULLCP, "out of memory");
 		ia5p = &((*ia5p) -> next);
 	}
@@ -178,7 +178,7 @@ static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter) {
 			== NULL)
 		adios (NULLCP, "out of memory");
 	sprintf (buffer, "%s@%s", cp, dp);
-	if ((ia52 -> IA5String = str2qb (buffer, strlen (buffer), 1)) == NULL)
+	if ((ia52 -> IA5String = str2qb_s (buffer)) == NULL)
 		adios (NULLCP, "out of memory");
 
 	/* kludge this arg onto front of list - HACK ATTACK */
@@ -273,7 +273,12 @@ static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindic
 	struct RyError *rye;
 
 	if (error == RY_REJECT) {
-		advise (NULLCP, "%s", RoErrString ((ssize_t) parameter));
+		int code;
+
+		if (ssize2int ((ssize_t) parameter, &code) != 0)
+			advise (NULLCP, "reject code too large");
+		else
+			advise (NULLCP, "%s", RoErrString (code));
 		return;
 	}
 	if (rye = finderrbyerr (table_IMISC_Errors, error))

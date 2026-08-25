@@ -67,7 +67,15 @@ struct ssapkt *str2spkt (char *buffer) {
 	bzero ((char *) qb, sizeof *qb);
 	qb -> qb_forw = qb -> qb_back = qb;
 
-	cc = implode ((uint8_t *) packet, buffer, strlen (buffer));
+	{
+		int nhex;
+
+		if (strlen2int (buffer, &nhex) != 0)
+			return NULLSPKT;
+		cc = implode ((uint8_t *) packet, buffer, nhex);
+		if (cc == NOTOK)
+			return NULLSPKT;
+	}
 	if ((qp = (struct qbuf *) malloc (sizeof *qp + (unsigned) cc)) == NULL)
 		s = NULLSPKT;
 	else {

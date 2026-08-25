@@ -11,10 +11,10 @@
 #define	FS_CTX		"iso ftam"
 #define	FS_ASN		"ftam pci"
 
-static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);
+static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, size_t passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti);
 
 /* F-INITIALIZE.REQUEST */
-int FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
+int FInitializeRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, size_t passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	SBV     smask;
 	int     result;
 
@@ -80,7 +80,7 @@ not_enough:
 	return result;
 }
 
-static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, int passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
+static int FInitializeRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, char *initiator, char *account, char *password, size_t passlen, struct QOStype *qos, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMconnect *ftc, struct FTAMindication *fti) {
 	int	i;
 	int	    bits,
 			rcvd_bits,
@@ -178,7 +178,9 @@ no_mem:
 			   calloc (1, sizeof *req)) == NULL)
 		goto no_mem;
 	pdu -> un.f__initialize__request = req;
-	req -> presentation__context__management = manage;
+	req -> presentation__context__management = 0;
+	if (int2char (manage, &req -> presentation__context__management) != 0)
+		goto no_mem;
 	if (class != FCLASS_TRANSFER
 			&& (req -> service__class = bits2fpm (fsb, fclass_pairs, class,
 										fti)) == NULLPE)
@@ -221,12 +223,11 @@ no_mem:
 		}
 	}
 	if (initiator
-			&& (req -> initiator__identity = str2qb (initiator,
-					strlen (initiator), 1))
+			&& (req -> initiator__identity = str2qb_s (initiator))
 			== NULL)
 		goto out1;
 	if (account
-			&& (req -> account = str2qb (account, strlen (account), 1))
+			&& (req -> account = str2qb_s (account))
 			== NULL)
 		goto out1;
 	if (password) {
@@ -236,7 +237,10 @@ no_mem:
 			goto no_mem;
 		req -> filestore__password = p;
 		p -> offset = type_FTAM_Password_binary;
-		if ((p -> un.binary = str2qb (password, passlen, 1)) == NULL)
+		if (passlen > INT_MAX) {
+			goto no_mem;
+		}
+		if ((p -> un.binary = str2qb (password, (int)passlen, 1)) == NULL)
 			goto no_mem;
 	}
 	req -> checkpoint__window = 1;

@@ -67,7 +67,9 @@ int tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote
 	if (remote -> na_port == 0) {
 		if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 			sp = getservbyname ("iso-tsap", "tcp");
-		isock -> sin_port = sp ? sp -> s_port : htons ((uint16_t) 102);
+		if (int2inport (sp ? sp -> s_port : (int) htons ((uint16_t) 102),
+				&isock -> sin_port) != 0)
+			return tsaplose (td, DR_ADDRESS, NULLCP, "invalid TCP port");
 	} else
 		isock -> sin_port = remote -> na_port;
 
@@ -79,7 +81,8 @@ int tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote
 			 sizeof remote -> na_domain);
 #endif
 
-	isock -> sin_family = hp -> h_addrtype;
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		return tsaplose (td, DR_ADDRESS, NULLCP, "invalid address family");
 	inaddr_copy (hp, isock);
 
 #ifndef	notanymore
@@ -93,7 +96,9 @@ int tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote
 			return tsaplose (td, DR_ADDRESS, NULLCP, "%s: unknown host",
 							 local -> na_domain);
 
-		if ((lsock -> sin_family = hp -> h_addrtype) != isock -> sin_family)
+		if (int2safamily (hp -> h_addrtype, &lsock -> sin_family) != 0)
+			return tsaplose (td, DR_ADDRESS, NULLCP, "invalid address family");
+		if (lsock -> sin_family != isock -> sin_family)
 			return tsaplose (td, DR_ADDRESS, NULLCP,
 							 "address family mismatch");
 
@@ -240,8 +245,13 @@ static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 
 	for (bp = (char *) &t -> t_pkthdr, i = TPKT_HDRLEN (t);
 			i > 0;
-			bp += cc, i -= cc)
-		switch (cc = read_int (fd, bp, i)) {
+			bp += cc, i -= cc) {
+		ssize_t nread;
+
+		nread = read_int (fd, bp, i);
+		if (ssize2int (nread, &cc) != 0)
+			return DR_NETWORK;
+		switch (cc) {
 		case NOTOK:
 		case OK:
 			return DR_NETWORK;
@@ -249,6 +259,7 @@ static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 		default:
 			break;
 		}
+	}
 
 	if (t -> t_vrsn != TPKT_VRSN)
 		return DR_PROTOCOL;
@@ -260,7 +271,15 @@ static int tcpinit (int fd, struct tsapkt *t, char *buffer, int n) {
 }
 
 static int tcpread (int fd, char *buffer, int n) {
-	return read_int (fd, buffer, n);
+	ssize_t nread;
+	int nout;
+
+	nread = read_int (fd, buffer, n);
+	if (ssize2int (nread, &nout) != 0) {
+		errno = EOVERFLOW;
+		return NOTOK;
+	}
+	return nout;
 }
 
 char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {

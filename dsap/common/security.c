@@ -37,8 +37,11 @@ int check_security_parms(caddr_t data, int type, modtyp *module,
 
 	if (sp != (struct security_parms *) 0) {
 		if (sp->sp_time != NULLCP) {
+			UTC ut;
 			time(&time_now);
-			time_then = gtime(ut2tm(str2utct(sp->sp_time, strlen(sp->sp_time))));
+			if ((ut = str2utct (sp->sp_time, strlen(sp->sp_time))) == NULL)
+				return (DSE_SC_INVALIDCREDENTIALS);
+			time_then = gtime(ut2tm(ut));
 			delta = time_now - time_then;
 		} else
 			delta = 0L;

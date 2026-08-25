@@ -23,13 +23,17 @@ char *bitstr2strb (PE pe, int *k) {
 	for (bit = i = 0, mask = 1 << (j = 7); i < len; i++) {
 		if (bit_test (pe, i))
 			bit |= mask;
-		if (j-- == 0)
-			*dp++ = bit & 0xff, bit = 0, mask = 1 << (j = 7);
-		else
+		if (j-- == 0) {
+			if (int2octet (bit & 0xff, dp) != 0)
+				return NULLCP;
+			dp++, bit = 0, mask = 1 << (j = 7);
+		} else
 			mask >>= 1;
 	}
-	if (j != 7)
-		*dp = bit & 0xff;
+	if (j != 7) {
+		if (int2octet (bit & 0xff, dp) != 0)
+			return NULLCP;
+	}
 
 	return cp;
 }

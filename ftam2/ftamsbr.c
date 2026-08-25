@@ -265,7 +265,12 @@ int	textpeek (struct vfsmap *vf, int fd, char *file, struct stat *st, int ftam_f
 		lseek (gd, 0L, L_SET);
 	}
 #ifndef	MAXBSIZE
-	n = read (gd, buffer, sizeof buffer);
+	{
+		ssize_t nr = read (gd, buffer, sizeof buffer);
+
+		if (nr < 0 || ssize2int (nr, &n) != 0)
+			return NOTOK;
+	}
 #else
 	n = 0 < st -> st_blksize && st -> st_blksize <= sizeof buffer
 		? st -> st_blksize : sizeof buffer;
@@ -343,7 +348,8 @@ int de2fd (int fd, PE pe, int text, int effector) {
 				break;
 			}
 			*bp++ = '\n';
-			i = bp - cp;
+			if (ptrdiff2int (bp - cp, &i) != 0)
+				return NOTOK;
 			if (write_int (fd, cp, i) != i)
 				return NOTOK;
 			cp = ++bp, n += i;
@@ -359,7 +365,9 @@ int de2fd (int fd, PE pe, int text, int effector) {
 write_it:
 					;
 					dp = bp - 2;
-					if ((i = (dp - cp)) > 0
+					if (ptrdiff2int (dp - cp, &i) != 0)
+						return NOTOK;
+					if (i > 0
 							&& write_int (fd, cp, i) != i)
 						return NOTOK;
 					cp = ++bp, n += i;
@@ -384,7 +392,9 @@ write_it:
 			break;
 		}
 
-	if (i = bp - cp) {
+	if (ptrdiff2int (bp - cp, &i) != 0)
+		return NOTOK;
+	if (i) {
 		if (write_int (fd, cp, i) != i)
 			return NOTOK;
 

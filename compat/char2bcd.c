@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include "general.h"
+#include "manifest.h"
 
 int char2bcd (char *s, int n, uint8_t *d) {
 	int c, i;
@@ -16,10 +17,16 @@ int char2bcd (char *s, int n, uint8_t *d) {
 		else
 			c = 0;
 
-		if (i & 1)
-			*d++ |= c & 0xf;
-		else
-			*d = (c & 0xf) << 4;
+		if (i & 1) {
+			uint8_t lo;
+
+			if (int2u8 (c & 0xf, &lo) != 0)
+				return NOTOK;
+			*d++ |= lo;
+		} else {
+			if (int2u8 ((c & 0xf) << 4, d) != 0)
+				return NOTOK;
+		}
 	}
 	return i;
 }

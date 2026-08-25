@@ -27,7 +27,13 @@ int implode (uint8_t *a, char *b, int n) {
 	int    i;
 
 	for (i = 0; i < n; i += 2) {
-		*a++ = (hex2nib[b[0] & 0x7f] << 4) | (hex2nib[b[1] & 0x7f]);
+		int octet;
+
+		octet = ((hex2nib[b[0] & 0x7f] << 4)
+			 | (hex2nib[b[1] & 0x7f] & 0x0f));
+		if (int2u8 (octet, a) != 0)
+			return NOTOK;
+		a++;
 		b += 2;
 	}
 

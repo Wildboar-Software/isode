@@ -1099,8 +1099,11 @@ static int pp(void) {
 				s = S4;
 			else if (c == '[')
 				s = S7;
-			else if (isspace ((uint8_t) c))
-				*bp++ = c;
+			else if (isspace ((uint8_t) c)) {
+				if (int2octet (c, bp) != 0)
+					goto flush;
+				bp++;
+			}
 			else {
 flush:
 				;

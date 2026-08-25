@@ -137,36 +137,43 @@ static int _read_tcp_stats (void)
 	if (_read_snmp_stats ("tcp", &labels, &values, &len) != OK)
 		return NOTOK;
 	for (i = 0; i < len; i++) {
+		uint32_t uv;
+
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
+		if (!strcmp ("CurrEstab", label)) {
+			if (long2int (value, &tcpConnections) != 0)
+				return NOTOK;
+			continue;
+		}
+		if (long2u32 (value, &uv) != 0)
+			return NOTOK;
 		if (!strcmp ("RtoAlgorithm", label))
-			tcpstat.tcps_rtoalgorithm = value;
+			tcpstat.tcps_rtoalgorithm = uv;
 		else if (!strcmp ("RtoMin", label))
-			tcpstat.tcps_rtomin = value;
+			tcpstat.tcps_rtomin = uv;
 		else if (!strcmp ("RtoMax", label))
-			tcpstat.tcps_rtomax = value;
+			tcpstat.tcps_rtomax = uv;
 		else if (!strcmp ("MaxConn", label))
-			tcpstat.tcps_maxconn = value;
+			tcpstat.tcps_maxconn = uv;
 		else if (!strcmp ("ActiveOpens", label))
-			tcpstat.tcps_connattempt = value;
+			tcpstat.tcps_connattempt = uv;
 		else if (!strcmp ("PassiveOpens", label))
-			tcpstat.tcps_accepts = value;
+			tcpstat.tcps_accepts = uv;
 		else if (!strcmp ("AttemptFails", label))
-			tcpstat.tcps_conndrops = value;
+			tcpstat.tcps_conndrops = uv;
 		else if (!strcmp ("EstabResets", label))
-			tcpstat.tcps_drops = value;
-		else if (!strcmp ("CurrEstab", label))
-			tcpConnections = value;
+			tcpstat.tcps_drops = uv;
 		else if (!strcmp ("InSegs", label))
-			tcpstat.tcps_rcvtotal = value;
+			tcpstat.tcps_rcvtotal = uv;
 		else if (!strcmp ("OutSegs", label))
-			tcpstat.tcps_outsegs = value;
+			tcpstat.tcps_outsegs = uv;
 		else if (!strcmp ("RetransSegs", label))
-			tcpstat.tcps_sndrexmitpack = value;
+			tcpstat.tcps_sndrexmitpack = uv;
 		else if (!strcmp ("InErrs", label))
-			tcpstat.tcps_ierrors = value;
+			tcpstat.tcps_ierrors = uv;
 		else if (!strcmp ("OutRsts", label))
-			tcpstat.tcps_orsts = value;
+			tcpstat.tcps_orsts = uv;
 	}
 	return OK;
 }
@@ -179,7 +186,8 @@ static int  o_tcp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -394,7 +402,8 @@ static int  o_tcp_conn (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_connections (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 try_again:
 	;
 	switch (offset) {
@@ -647,7 +656,8 @@ static int  o_mbuf (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1
@@ -730,7 +740,8 @@ static int  o_mbufType (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)

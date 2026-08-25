@@ -285,6 +285,7 @@ struct qbuf {
     struct qbuf *qb_forw;	/* doubly-linked list */
     struct qbuf *qb_back;	/* .. */
 
+	// TODO: Make this a size_t
     int	    qb_len;		/* length of data */
     char   *qb_data;		/* current pointer into data */
     char    qb_base[1];		/* extensible... */

@@ -141,7 +141,9 @@ static int AcRelRetryRequestAux (struct assocblk *acb, int secs, struct AcSAPrel
 				  : PRelRequest (acb -> acb_fd, &acb -> acb_retry, 1,
 								 secs, pr, &pis)) == NOTOK) {
 		if (pa -> pa_reason == PC_TIMER) {
-			acb -> acb_flags |= ACB_RELEASE;
+			if (short_bis (&acb -> acb_flags, ACB_RELEASE) != 0)
+				return acsaplose (aci, ACS_CONGEST, NULLCP,
+						  "unable to record release-in-progress");
 
 			return ps2acslose (NULLACB, aci, id, pa);
 		}

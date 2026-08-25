@@ -374,8 +374,10 @@ bad_account:
 #else
 		uts.ut_type = USER_PROCESS;
 #endif
-		uts.ut_time = clok;
-		write (wtmp, (char *) &uts, sizeof uts);
+		if (long2sint_n (clok, &uts.ut_time, sizeof uts.ut_time) != 0)
+			advise (LLOG_EXCEPTIONS, NULLCP, "utmp time out of range");
+		else
+			write (wtmp, (char *) &uts, sizeof uts);
 #if	defined(SYS5) || defined(bsd43_ut_host)
 		close (wtmp);
 #endif
@@ -457,15 +459,21 @@ bad_account:
 	umask (0022);
 #endif
 
-	if (FInitializeResponse (ftamfd, FSTATE_SUCCESS, FACTION_SUCCESS,
-							 NULLOID, NULLAEI, NULLPA, fts -> fts_manage,
-							 ftam_class, units, attrs, NULLPE,
-							 fqos, &fts -> fts_contents, diags, dp - diags,
-							 fti) == NOTOK)
-		ftam_adios (&fti -> fti_abort, "F-INITIALIZE.RESPONSE");
+	{
+		int ndiag;
 
-	advise (LLOG_NOTICE, NULLCP, "accepting association");
-	ftam_diag (diags, dp - diags);
+		if (ptrdiff2int (dp - diags, &ndiag) != 0)
+			adios (NULLCP, "too many FTAM diagnostics");
+		if (FInitializeResponse (ftamfd, FSTATE_SUCCESS, FACTION_SUCCESS,
+								 NULLOID, NULLAEI, NULLPA, fts -> fts_manage,
+								 ftam_class, units, attrs, NULLPE,
+								 fqos, &fts -> fts_contents, diags, ndiag,
+								 fti) == NOTOK)
+			ftam_adios (&fti -> fti_abort, "F-INITIALIZE.RESPONSE");
+
+		advise (LLOG_NOTICE, NULLCP, "accepting association");
+		ftam_diag (diags, ndiag);
+	}
 	return;
 
 bad2:
@@ -571,8 +579,10 @@ int closewtmp (void) {
 		lseek (wtmp, 0L, L_XTND);
 		SCPYN (uts.ut_name, "");
 		SCPYN (uts.ut_host, "");
-		uts.ut_time = now;
-		write (wtmp, (char *) &uts, sizeof uts);
+		if (long2sint_n (now, &uts.ut_time, sizeof uts.ut_time) != 0)
+			advise (LLOG_EXCEPTIONS, NULLCP, "utmp time out of range");
+		else
+			write (wtmp, (char *) &uts, sizeof uts);
 		close (wtmp);
 	}
 #endif

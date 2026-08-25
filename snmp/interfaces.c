@@ -118,7 +118,8 @@ static int o_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 
 	if (get_interfaces (offset) == NOTOK)
 		return generr (offset);
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
@@ -190,7 +191,7 @@ stuff_ifnum:
 		return o_integer (oi, v, is -> ifn_index);
 
 	case ifDescr:
-		return o_string (oi, v, is -> ifn_descr, strlen (is -> ifn_descr));
+		return o_string_s (oi, v, is -> ifn_descr);
 
 	case ifType:
 		if (is -> ifn_type < TYPE_MIN || is -> ifn_type > TYPE_MAX)
@@ -476,7 +477,9 @@ static struct address *_upate_addresses (struct interface *list, int *addr_numbe
 						"interface flags out of range");
 				continue;
 			}
-			ifn -> if_flags |= bits;
+			if (short_bis (&ifn -> if_flags, (unsigned) bits) != 0)
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface flags out of range");
 		}
 		if (ifa -> ifa_addr -> sa_family == AF_INET) {
 			struct ifaddr *addr, **tail;
@@ -623,15 +626,19 @@ disabled:
 					advise (LLOG_EXCEPTIONS, NULLCP,
 							"interface flags out of range");
 				else
-					ifn -> if_flags = bits;
+					if (int2short (bits, &ifn -> if_flags) != 0)
+						advise (LLOG_EXCEPTIONS, NULLCP,
+								"interface flags out of range");
 			}
 			is -> ifn_speed = 10000000;
 			snprintf (is -> ifn_descr, sizeof (is -> ifn_descr), "%s", ifa -> ifa_name);
 			/* get mtu using ioctl */
 			fd = socket (AF_INET, SOCK_DGRAM, 0);
 			snprintf (ifr.ifr_name, sizeof (ifr.ifr_name), "%s", ifa -> ifa_name);
-			if (ioctl (fd, SIOCGIFMTU, &ifr) == 0)
-				ifn -> if_mtu = ifr.ifr_mtu;
+			if (ioctl (fd, SIOCGIFMTU, &ifr) == 0
+					&& int2short (ifr.ifr_mtu, &ifn -> if_mtu) != 0)
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface MTU out of range");
 			close (fd);
 			*ifp = is, ifp = &is -> ifn_next;
 		}
@@ -643,7 +650,9 @@ disabled:
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"interface flags out of range");
 			else
-				ifn -> if_flags |= bits;
+				if (short_bis (&ifn -> if_flags, (unsigned) bits) != 0)
+				advise (LLOG_EXCEPTIONS, NULLCP,
+						"interface flags out of range");
 		}
 		if (ifa -> ifa_addr -> sa_family == AF_PACKET) {
 			struct sockaddr_ll *addr = (struct sockaddr_ll*) ifa -> ifa_addr;

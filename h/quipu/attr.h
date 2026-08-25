@@ -180,7 +180,7 @@ void exec_print (
 	char * proc
 );
 
-#define ps_print(ps,data) (void)ps_write(ps,(PElementData)data,strlen(data))
+#define ps_print(ps,data) ((void)ps_print_s((ps),(data)))
 void pe_print (PS ps, PE pe, int format);
 
 typedef struct {

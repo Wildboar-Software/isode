@@ -11077,8 +11077,12 @@ int loadobjects (const char *file) {
 	     sprintf (PY_pepy, "lost \"%s\" syntax", sy -> name);
 	    return NOTOK;
 	}
-    for (ot = _types; ot -> ot_text; ot++)
-	ot -> ot_syntax = (i = (ssize_t) ot -> ot_syntax) < 0
-	    			? NULLOS : _syntaxes[i].value;
+    for (ot = _types; ot -> ot_text; ot++) {
+	if (caddr2int (ot -> ot_syntax, &i) != 0) {
+	     sprintf (PY_pepy, "object \"%s\" syntax index out of range", ot -> ot_text);
+	    return NOTOK;
+	}
+	ot -> ot_syntax = i < 0 ? NULLOS : _syntaxes[i].value;
+    }
     return OK;
 }

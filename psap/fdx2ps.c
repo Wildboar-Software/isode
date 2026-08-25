@@ -45,13 +45,24 @@ static int fdx_read (PS ps, PElementData data, PElementLen n, int in_line) {
 
 	if ((cc = pi -> pio_cnt) <= 0) {
 		if (n > pi -> pio_bufsiz) {
-			if ((cc = read_int (pt -> ps_fd, (char *) data, n)) == NOTOK)
+			ssize_t nread;
+
+			nread = read_int (pt -> ps_fd, (char *) data, n);
+			if (ssize2int (nread, &cc) != 0)
+				return ps_seterr (ps, PS_ERR_IO, NOTOK);
+			if (cc == NOTOK)
 				return ps_seterr (ps, PS_ERR_IO, NOTOK);
 			return cc;
 		}
-		if ((cc = read_int (pt -> ps_fd, pi -> pio_base, pi -> pio_bufsiz))
-				== NOTOK)
-			return ps_seterr (ps, PS_ERR_IO, NOTOK);
+		{
+			ssize_t nread;
+
+			nread = read_int (pt -> ps_fd, pi -> pio_base, pi -> pio_bufsiz);
+			if (ssize2int (nread, &cc) != 0)
+				return ps_seterr (ps, PS_ERR_IO, NOTOK);
+			if (cc == NOTOK)
+				return ps_seterr (ps, PS_ERR_IO, NOTOK);
+		}
 		pi -> pio_ptr = pi -> pio_base, pi -> pio_cnt = cc;
 	}
 	if (cc > n)
@@ -68,16 +79,27 @@ static int fdx_write (PS ps, PElementData data, PElementLen n, int in_line) {
 	struct ps_inout *po = &pt -> ps_output;
 #ifdef	oldef
 	if (n > po -> pio_bufsiz) {
-		if (fdx_flush (ps) == NOTOK
-				|| (cc = write (pt -> ps_fd, (char *) data, n)) != n)
-#else
-	if (n > po -> pio_bufsiz && po -> pio_ptr <= po -> pio_base) {
-		if ((cc = write_int (pt -> ps_fd, (char *) data, n)) != n)
-#endif
+		ssize_t nwritten;
+
+		if (fdx_flush (ps) == NOTOK)
+			return ps_seterr (ps, PS_ERR_IO, NOTOK);
+		nwritten = write (pt -> ps_fd, (char *) data, n);
+		if (ssize2int (nwritten, &cc) != 0 || cc != n)
 			return ps_seterr (ps, PS_ERR_IO, NOTOK);
 
 		return cc;
 	}
+#else
+	if (n > po -> pio_bufsiz && po -> pio_ptr <= po -> pio_base) {
+		ssize_t nwritten;
+
+		nwritten = write_int (pt -> ps_fd, (char *) data, n);
+		if (ssize2int (nwritten, &cc) != 0 || cc != n)
+			return ps_seterr (ps, PS_ERR_IO, NOTOK);
+
+		return cc;
+	}
+#endif
 	if (n > po -> pio_cnt)
 		n = po -> pio_cnt;
 	if (bcopy_int ((char *) data, po -> pio_ptr, n) != 0)
@@ -93,11 +115,19 @@ static int  fdx_flush (PS ps)
 	int	    cc;
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
 	struct ps_inout *po = &pt -> ps_output;
-	if ((cc = po -> pio_ptr - po -> pio_base) <= 0)
+	if (ptrdiff2int (po -> pio_ptr - po -> pio_base, &cc) != 0)
+		return ps_seterr (ps, PS_ERR_IO, NOTOK);
+	if (cc <= 0)
 		return OK;
 	pt -> ps_nflush++;
-	if (write_int (pt -> ps_fd, po -> pio_base, cc) != cc)
-		return ps_seterr (ps, PS_ERR_IO, NOTOK);
+	{
+		ssize_t nwritten;
+		int nw;
+
+		nwritten = write_int (pt -> ps_fd, po -> pio_base, cc);
+		if (ssize2int (nwritten, &nw) != 0 || nw != cc)
+			return ps_seterr (ps, PS_ERR_IO, NOTOK);
+	}
 	po -> pio_ptr = po -> pio_base, po -> pio_cnt = po -> pio_bufsiz;
 	return OK;
 }

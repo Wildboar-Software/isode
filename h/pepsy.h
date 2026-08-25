@@ -1,10 +1,11 @@
 /* pepsy.h */
 
-#ifndef PEPSY_DEFINITIONS
+#ifndef	PEPSY_DEFINITIONS
 #define PEPSY_DEFINITIONS
 
 #include <stdint.h>
 #include <sys/types.h>
+#include "conv.h"
 
 #ifndef	PEPYPARM
 #define PEPYPARM	char *
@@ -164,8 +165,10 @@ typedef struct	{
 
 /* To support the OPTIONAL << field $ bitno >> construct */
 #define BITTEST(p, bit)	(((p)[(bit)/8]) & (0x80 >> (bit) % 8))
-#define BITSET(p, bit)	(((p)[(bit)/8]) |= (0x80 >> (bit) % 8))
-#define BITCLR(p, bit)	(((p)[(bit)/8]) &= ~(0x80 >> (bit) % 8))
+#define BITSET(p, bit)	((void) char_bis (&((p)[(bit)/8]), \
+				(unsigned) (0x80 >> ((bit) % 8))))
+#define BITCLR(p, bit)	((void) char_bic (&((p)[(bit)/8]), \
+				(unsigned) (0x80 >> ((bit) % 8))))
 
 /* compute the number of char's required to support x bits */
 #define NBITS2NCHARS(x)		(((x) + 7)/8)

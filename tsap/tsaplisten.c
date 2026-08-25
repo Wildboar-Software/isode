@@ -297,7 +297,11 @@ static int TNetWork (
 				na -> na_stack = ns -> ns_type;
 				na++;
 			}
-		if ((n = ta -> ta_naddr = na - ta -> ta_addrs) == 0)
+		if (ptrdiff2int (na - ta -> ta_addrs, &n) != 0)
+			return tsaplose (td, DR_PARAMETER, NULLCP,
+							 "too many transport stacks");
+		ta -> ta_naddr = n;
+		if (n == 0)
 			return tsaplose (td, DR_PARAMETER, NULLCP,
 							 "no transport stacks active!?!");
 	}
@@ -1108,13 +1112,17 @@ static int  tcplisten (struct listenblk *lb, struct TSAPaddr *ta, struct TSAPdis
 		hp = NULL;
 
 	bzero ((char *) isock, sizeof *isock);
-	isock -> sin_family = hp ? hp -> h_addrtype : AF_INET;
+	if (int2safamily (hp ? hp -> h_addrtype : AF_INET,
+			  &isock -> sin_family) != 0)
+		return tsaplose (td, DR_ADDRESS, NULLCP, "invalid address family");
 	if (na -> na_port == 0) {
 		struct servent *sp;
 
 		if ((sp = getservbyname ("tsap", "tcp")) == NULL)
 			sp = getservbyname ("iso-tsap", "tcp");
-		isock -> sin_port = sp ? sp -> s_port : htons ((uint16_t) 102);
+		if (int2inport (sp ? sp -> s_port : (int) htons ((uint16_t) 102),
+				&isock -> sin_port) != 0)
+			return tsaplose (td, DR_ADDRESS, NULLCP, "invalid TCP port");
 	} else
 		isock -> sin_port = na -> na_port;
 	if (hp)
@@ -1358,7 +1366,8 @@ static int  tcpunique (struct TSAPaddr *ta, struct TSAPdisconnect *td)
 		return tsaplose (td, DR_ADDRESS, NULLCP, "%s: unknown host", cp);
 
 	bzero ((char *) isock, sizeof *isock);
-	isock -> sin_family = hp -> h_addrtype;
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		return tsaplose (td, DR_ADDRESS, NULLCP, "invalid address family");
 	inaddr_copy (hp, isock);
 
 	switch (na -> na_tset) {
@@ -1989,14 +1998,19 @@ int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
 			result = tsaplose (td, DR_OPERATION, NULLCP,
 							   "queued writes not supported by TS-stack");
 		else {
-			tb -> tb_flags |= TB_QWRITES;
-			tb -> tb_queuePfnx = TNetQueue;
+			if (char_bis (&tb -> tb_flags, TB_QWRITES) != 0)
+				result = tsaplose (td, DR_OPERATION, NULLCP,
+								   "queued writes flag out of range");
+			else
+				tb -> tb_queuePfnx = TNetQueue;
 		}
 	} else if (tb -> tb_qwrites.qb_forw != &tb -> tb_qwrites)
 		result = tsaplose (td, DR_WAITING, NULLCP,
 						   "queued writes still waiting to drain");
 	else {
-		tb -> tb_flags &= ~TB_QWRITES;
+		if (char_bic (&tb -> tb_flags, TB_QWRITES) != 0)
+			result = tsaplose (td, DR_OPERATION, NULLCP,
+							   "queued writes flag out of range");
 		tb -> tb_queuePfnx = NULL;
 	}
 	sigiomask (smask);

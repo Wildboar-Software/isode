@@ -33,7 +33,7 @@ static PS       filter_ps;
 EntryInfo      *filterentry(struct ds_search_arg *, struct entry *, struct dncomp *, char,  int *, struct ds_search_task *, char);
 static EntryInfo *filterchildren(struct ds_search_arg *, struct entry *, struct ds_search_task **, struct ds_search_task **, int,  char,  int *);
 static int test_avs(struct filter_item *fitem, AV_Sequence avs, int mode);
-static int apply_search(struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, int authtype, int *saclerror);
+static int apply_search(struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result, struct ds_search_task **local, struct ds_search_task **refer, int ismanager, char authtype, int *saclerror);
 static int substr_search(struct filter_item *fitem, AV_Sequence avs);
 static int aux_substr_search(struct filter_item *fitem, AV_Sequence avs, char chrmatch[]);
 static int check_filteritem_presrch(struct filter_item *fitem, struct DSError *error, DN dn);
@@ -85,7 +85,11 @@ int do_ds_search(struct ds_search_arg *arg, struct DSError *error, struct ds_sea
 
 	qctx = quipu_ctx;
 
-	if ((timelimit = tktime) == (time_t) 0) {
+	if (time_t2int (tktime, &timelimit) != 0) {
+		LLOG(log_dsap, LLOG_EXCEPTIONS, ("search timelimit too large"));
+		return (DS_ERROR_LOCAL);
+	}
+	if (timelimit == 0) {
 		int    i;
 
 		for (i = NBBY * sizeof timelimit - 1; i > 0; i--)
@@ -544,7 +548,8 @@ static void prepare_string (caddr_t c) {
 }
 
 static int check_filteritem_presrch (struct filter_item *fitem, struct DSError *error, DN dn) {
-	int             av_acl, av_update, av_schema, av_syntax;
+	int             av_acl, av_update, av_schema;
+	short		av_syntax;
 	int		maxlen = -1;
 	extern char     chrcnv[];
 	extern char     nochrcnv[];
@@ -567,8 +572,10 @@ static int check_filteritem_presrch (struct filter_item *fitem, struct DSError *
 		/* NO break - check equality is OK */
 		else
 			prepare_string(fitem->UNAVA.ava_value->av_struct);
-		if (sub_string(fitem->UNAVA.ava_type->oa_syntax))
-			maxlen = strlen( fitem->UNAVA.ava_value->av_struct );
+		if (sub_string(fitem->UNAVA.ava_type->oa_syntax)) {
+			if (strlen2int (fitem->UNAVA.ava_value->av_struct, &maxlen) != 0)
+				return (NOTOK);
+		}
 
 	case FILTERITEM_GREATEROREQUAL:
 	case FILTERITEM_LESSOREQUAL:
@@ -619,16 +626,20 @@ static int check_filteritem_presrch (struct filter_item *fitem, struct DSError *
 		{
 			AV_Sequence     loopavs;
 			int		tmplen;
-			if ( fitem->UNSUB.fi_sub_initial != NULLAV )
-				maxlen = strlen( fitem->UNSUB.fi_sub_initial->avseq_av.av_struct );
+			if ( fitem->UNSUB.fi_sub_initial != NULLAV ) {
+				if (strlen2int (fitem->UNSUB.fi_sub_initial->avseq_av.av_struct, &maxlen) != 0)
+					return (NOTOK);
+			}
 			for ( loopavs = fitem->UNSUB.fi_sub_any;
 					loopavs != NULLAV; loopavs = loopavs->avseq_next ) {
-				tmplen = strlen( loopavs->avseq_av.av_struct );
+				if (strlen2int (loopavs->avseq_av.av_struct, &tmplen) != 0)
+					return (NOTOK);
 				if ( tmplen > maxlen )
 					maxlen = tmplen;
 			}
 			if ( fitem->UNSUB.fi_sub_final != NULLAV ) {
-				tmplen = strlen( fitem->UNSUB.fi_sub_final->avseq_av.av_struct );
+				if (strlen2int (fitem->UNSUB.fi_sub_final->avseq_av.av_struct, &tmplen) != 0)
+					return (NOTOK);
 				if ( tmplen > maxlen )
 					maxlen = tmplen;
 			}
@@ -698,7 +709,7 @@ static int apply_search (
 	struct ds_search_task **local,
 	struct ds_search_task **refer,
 	int ismanager,
-	int authtype,
+	char authtype,
 	int *saclerror
 ) {
 	Entry           entryptr;
@@ -1032,7 +1043,7 @@ static EntryInfo *filterchildren (
 ) {
 	EntryInfo      *einfo = NULLENTRYINFO;
 	int    tmp = 0;
-	char            domore = TRUE;
+	int             domore = TRUE;
 	Avlnode        *ptr;
 	struct search_kid_arg ska;
 #ifdef TURBO_INDEX
@@ -1278,7 +1289,13 @@ EntryInfo *filterentry (
 	einfo = entryinfo_alloc();
 	einfo->ent_dn = get_copy_dn(entryptr);
 	einfo->ent_eptr = entryptr;
-	einfo->ent_attr = eis_select(arg->sra_eis, entryptr, binddn, qctx && arg->sra_eis.eis_allattributes, einfo->ent_dn);
+	{
+		char qsel;
+
+		if (int2char (qctx && arg->sra_eis.eis_allattributes, &qsel) != 0)
+			return (NULLENTRYINFO);
+		einfo->ent_attr = eis_select(arg->sra_eis, entryptr, binddn, qsel, einfo->ent_dn);
+	}
 	einfo->ent_iscopy = entryptr->e_data;
 	einfo->ent_age = (time_t) 0;
 	einfo->ent_next = NULLENTRYINFO;
@@ -1593,7 +1610,13 @@ int attr_substr (char *str1, AttributeValue av, char chrmatch[]) {
 			count = 0;	/* for loop ++ will make it 1 !!! */
 		}
 	}
-	return (str1 - top);
+	{
+		int n;
+
+		if (ptrdiff2int (str1 - top, &n) != 0)
+			return (-1);
+		return n;
+	}
 }
 
 static int subtask_refer (

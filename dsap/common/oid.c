@@ -393,9 +393,10 @@ get_line (void) {
 			return (NULLCP);
 		StripSpace (buf);
 		if (*buf != 0) {
-			size = strlen(buf);
-			ptr += size - 1;
-			left -= size;
+		if (sizet2int (strlen (buf), &size) != 0)
+			return (NULLCP);
+		ptr += size - 1;
+		left -= size;
 			if (*ptr == '\\') {
 				buf = ptr;
 				done = FALSE;
@@ -404,7 +405,8 @@ get_line (void) {
 					if ((buffer = realloc(buffer,
 										  (unsigned)buflen)) == NULL)
 						return (NULL);
-					size = strlen(buffer);
+					if (sizet2int (strlen (buffer), &size) != 0)
+						return (NULL);
 					buf = buffer + size - 1;
 					left = buflen - size;
 				}
@@ -449,7 +451,11 @@ oid_table_attr *name2attr(char *nodename)
 				p = p -> p_chain)
 			; /* NO-OP */
 		if ((p != NULL) && (p->p_type == ATTR)) {
-			attr_index = ((oid_table_attr *) p->p_value) - atrptr;
+			int idx;
+
+			if (ptrdiff2int (((oid_table_attr *) p->p_value) - atrptr, &idx) != 0
+					|| int2uint (idx, &attr_index) != 0)
+				return (NULLTABLE_ATTR);
 			return ( (oid_table_attr *) p->p_value);
 		} else
 			return (NULLTABLE_ATTR);
@@ -461,7 +467,11 @@ oid_table_attr *name2attr(char *nodename)
 		if (isdigit (*++ptr)) {
 			for (i=0; i<attrNumEntries; i++,atrptr++)
 				if (lexequ (atrptr->oa_ot.ot_stroid, str) == 0) {
-					attr_index = atrptr - &attrOIDTable[0];
+					int idx;
+
+					if (ptrdiff2int (atrptr - &attrOIDTable[0], &idx) != 0
+							|| int2uint (idx, &attr_index) != 0)
+						return (NULLTABLE_ATTR);
 					return (atrptr);
 				}
 			return (NULLTABLE_ATTR);

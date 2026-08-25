@@ -81,8 +81,11 @@ getisoservent (void) {
 
 #ifdef	DEBUG
 int _printsrv (struct isoservent *is) {
-	int    n = is -> is_tail - is -> is_vec - 1;
+	int    n;
 	char **ap = is -> is_vec;
+
+	if (ptrdiff2int (is -> is_tail - is -> is_vec - 1, &n) != 0)
+		return NOTOK;
 
 	LLOG (addr_log, LLOG_DEBUG,
 		  ("\tENT: \"%s\" PRV: \"%s\" SEL: %s",

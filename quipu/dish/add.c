@@ -49,7 +49,7 @@ void call_add (int argc, char **argv) {
 	extern int	parse_status;
 
 	int             x;
-	int             draft_flag = 0;
+	char            draft_flag = 0;
 	char           *O_class = NULLCP;
 	char		noedit_flag = FALSE;
 	DN		moddn;

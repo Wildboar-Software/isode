@@ -59,13 +59,16 @@ void call_ds (int argc, char **argv) {
 				dn_print (RPS, user_name, EDBOUT);
 			ps_print (RPS, "\n");
 			return;
-		} else if (test_arg (argv[1], "-syntax", 2)) {
+		} 		else if (test_arg (argv[1], "-syntax", 2)) {
 			int i;
+			short sntx;
 			char * syntax2str(short sntx);
 			for (i=1; i<MAX_AV_SYNTAX; i++) {
-				if (syntax2str(i) == NULLCP)
+				if (int2short (i, &sntx) != 0)
 					return;
-				ps_printf (RPS, "%s\n",syntax2str(i));
+				if (syntax2str(sntx) == NULLCP)
+					return;
+				ps_printf (RPS, "%s\n",syntax2str(sntx));
 			}
 			return;
 		} else {

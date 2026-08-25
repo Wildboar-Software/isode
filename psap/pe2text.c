@@ -29,7 +29,15 @@ static int ll_pswrite (PS ps, PElementData data, PElementLen n, int in_line) {
 	} else if (ll_check (lp) == NOTOK)
 		return NOTOK;
 
-	return write_int (lp -> ll_fd, (char *) data, n);
+	{
+		ssize_t nwritten;
+		int nw;
+
+		nwritten = write_int (lp -> ll_fd, (char *) data, n);
+		if (ssize2int (nwritten, &nw) != 0)
+			return NOTOK;
+		return nw;
+	}
 }
 
 static int ll_psopen (PS ps) {

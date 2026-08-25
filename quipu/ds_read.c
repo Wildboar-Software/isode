@@ -73,10 +73,14 @@ int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_r
 	/* User can be authenticated by using strong authentication for this
 	 * operation, or by using the credntials from the bind.
 	 */
-	if (!manager(binddn))
-		authp = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare
-				: AP_SIMPLE;
-	else
+	if (!manager(binddn)) {
+		int ap;
+
+		ap = entryptr->e_authp ? entryptr->e_authp->ap_readandcompare
+			: AP_SIMPLE;
+		if (int2char (ap, &authp) != 0)
+			authp = AP_SIMPLE;
+	} else
 		authp = AP_SIMPLE;
 #ifdef NOTUSED
 	authenticated = 0;

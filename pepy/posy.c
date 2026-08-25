@@ -364,7 +364,9 @@ void yyprint (char *s, int f, int top) {
 			fprintf (stderr, "\n\n");
 
 		fprintf (stderr, "%s", mymodule);
-		nameoutput = (linepos = strlen (mymodule)) + 1;
+		if (strlen2int (mymodule, &linepos) != 0)
+			return;
+		nameoutput = linepos + 1;
 
 		fprintf (stderr, " types:");
 		linepos += 7;
@@ -373,7 +375,8 @@ void yyprint (char *s, int f, int top) {
 			return;
 	}
 
-	len = strlen (s);
+	if (strlen2int (s, &len) != 0)
+		return;
 	if (linepos != nameoutput)
 		if (len + linepos + 1 > outputlinelen)
 			fprintf (stderr, "\n%*s", linepos = nameoutput, "");

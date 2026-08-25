@@ -194,7 +194,11 @@ no_mem:
 		for (pp = ctxlist -> pc_ctx; i >= 0; i--, pp++) {
 			if (oid_cmp (pp -> pc_asn, oid) == 0) {
 				rtsid = pp -> pc_id;
-				offset = pp - ctxlist -> pc_ctx;
+				if (ptrdiff2int (pp - ctxlist -> pc_ctx, &offset) != 0) {
+					result = rtsaplose (rti, RTS_CONGEST, NULLCP,
+							    "context offset too large");
+					goto out1;
+				}
 
 				pp = NULL;
 				goto ready;

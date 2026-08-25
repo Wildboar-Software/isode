@@ -381,7 +381,8 @@ static int fdfls (char *file) {
 #endif
 				sprintf (bp = buffer, "%s/", file);
 			bp += strlen (bp);
-			i = bp - buffer;
+			if (ptrdiff2int (bp - buffer, &i) != 0)
+				return NOTOK;
 			for (xi = &filents; fi = *xi;)
 				if (strncmp_int (fi -> fi_name, buffer, i) == 0) {
 					fi -> fi_entry = fi -> fi_name + i;
@@ -468,7 +469,7 @@ static int fdfls (char *file) {
 
 		width = 0;
 		for (yi = xi; fi = *yi; yi++)
-			if ((w = strlen (fi -> fi_entry)) > width)
+			if (strlen2int (fi -> fi_entry, &w) == 0 && w > width)
 				width = w;
 		if (lsfp != stdout) {
 			columns = 1;
@@ -491,10 +492,11 @@ static int fdfls (char *file) {
 #endif
 					break;
 				}
-				for (w = strlen (fi -> fi_entry);
-						w < width;
-						w = (w + 8) & ~7)
-					fputc ('\t', lsfp);
+				if (strlen2int (fi -> fi_entry, &w) == 0)
+					for (;
+							w < width;
+							w = (w + 8) & ~7)
+						fputc ('\t', lsfp);
 			}
 		free ((char *) xi);
 	}

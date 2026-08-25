@@ -280,8 +280,12 @@ static void do_dm_match (int n, char **vec) {
 			if (sr -> srr_correlated != TRUE)
 				correlate_search_results (sr);
 			for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
+				char infotypes;
+
+				if (int2char (sa -> sra_eis.eis_infotypes, &infotypes) != 0)
+					continue;
 				cache_entry (ptr, sa -> sra_eis.eis_allattributes,
-							 sa -> sra_eis.eis_infotypes);
+							 infotypes);
 				result = dn_seq_push (ptr -> ent_dn, result);
 			}
 			dn_free (sr -> CSR_object);
@@ -307,8 +311,15 @@ free_filter:
 static struct dn_seq *dm2dn_seq (char *dm) {
 	char *dp;
 	for (dp = dm; *dp; dp++)
-		if (isupper (*dp))
-			*dp = tolower (*dp);
+		if (isupper ((unsigned char) *dp)) {
+			int c;
+			char t;
+
+			c = tolower ((unsigned char) *dp);
+			if (int2char (c, &t) != 0)
+				return NULLDNSEQ;
+			*dp = t;
+		}
 	dlevel = 0;
 	dsa_status = OK;
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
@@ -339,7 +350,9 @@ static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 		s_filter *fi;
 		if ((dsa_status = rebind ()) != OK)
 			return dlist;
-		if ((i = strlen (dp)) < dlevel)
+		if (strlen2int (dp, &i) != 0)
+			return dlist;
+		if (i < dlevel)
 			break;
 		sa -> sra_filter = fi = filter_alloc ();
 		bzero ((char *) fi, sizeof *fi);
@@ -366,9 +379,14 @@ static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
 				break;
 			continue;
 		}
-		for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next)
+		for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
+			char infotypes;
+
+			if (int2char (sa -> sra_eis.eis_infotypes, &infotypes) != 0)
+				continue;
 			cache_entry (ptr, sa -> sra_eis.eis_allattributes,
-						 sa -> sra_eis.eis_infotypes);
+						 infotypes);
+		}
 		if (i > dlevel) {
 			dlevel = i;
 			if (dlist)
@@ -523,8 +541,12 @@ static struct dn_seq *expand_partial (DN dn, int *complete)
 	if (sr -> srr_correlated != TRUE)
 		correlate_search_results (sr);
 	for (ptr = sr -> CSR_entries; ptr; ptr = ptr -> ent_next) {
+		char infotypes;
+
+		if (int2char (sa -> sra_eis.eis_infotypes, &infotypes) != 0)
+			continue;
 		cache_entry (ptr, sa -> sra_eis.eis_allattributes,
-					 sa -> sra_eis.eis_infotypes);
+					 infotypes);
 		result = dn_seq_push (ptr -> ent_dn, result);
 	}
 	*complete = sr -> CSR_limitproblem == LSR_NOLIMITPROBLEM;
@@ -991,7 +1013,11 @@ fresh_start:
 				&& opt -> ps_byteno == 0
 				&& fdx_reset (opt) == OK) {		/* MAJOR HACK */
 			char   *cp = fancy ? fancy : "3";
-			(*opt -> ps_writeP) (opt, cp, strlen (cp), 0);
+			int n;
+
+			if (strlen2int (cp, &n) != 0)
+				return;
+			(*opt -> ps_writeP) (opt, (PElementData) cp, n, 0);
 			aps = opt;
 		} else
 			aps = RPS;
@@ -1187,7 +1213,11 @@ static int ava_compar (const void *p, const void *q) {
 	RDN *a = (RDN *) p;
 	RDN *b = (RDN *) q;
 	/* tricky, just check 'a' part, no need to check 'v' part! */
-	return (*a) -> rdn_at - (*b) -> rdn_at;
+	if ((*a) -> rdn_at < (*b) -> rdn_at)
+		return -1;
+	if ((*a) -> rdn_at > (*b) -> rdn_at)
+		return 1;
+	return 0;
 }
 
 int showfred (DN mydn, char islong, char subdisplay) {
@@ -1390,7 +1420,8 @@ int showfred (DN mydn, char islong, char subdisplay) {
 						ps_print (RPS, "Mailbox information:\n");
 				}
 				if (t -> t_prefix) {
-					i = strlen (t -> t_prefix);
+					if (strlen2int (t -> t_prefix, &i) != 0)
+						continue;
 					ps_printf (RPS, "%s", t -> t_prefix);
 				} else
 					i = 0;
@@ -1601,15 +1632,21 @@ static Entry fredentry (DN adn, char islong)
 #endif
 			return newentry;
 		}
-		cache_entry (&read_result.rdr_entry, islong ? TRUE : FALSE,
-					 read_arg.rda_eis.eis_infotypes);
+		{
+			char complete, infotypes;
+
+			if (int2char (islong ? TRUE : FALSE, &complete) != 0
+					|| int2char (read_arg.rda_eis.eis_infotypes, &infotypes) != 0)
+				return newentry;
+			cache_entry (&read_result.rdr_entry, complete, infotypes);
+		}
 		entryinfo_comp_free (&read_result.rdr_entry, 0);
 		newentry = local_find_entry (adn, FALSE);
 	}
 	return newentry;
 }
 
-void showfredDNs (DN dn, int islong) {
+void showfredDNs (DN dn, char islong) {
 	Attr_Sequence eptr;
 	AV_Sequence avs;
 	Entry    theEntry;
@@ -1705,7 +1742,7 @@ void showfredDNs (DN dn, int islong) {
 				if (i
 						|| (fp = fopen (tmp2, "r")) == NULL
 						|| fstat (fileno (fp), &st) == NOTOK
-						|| (cc = st.st_size) == 0) {
+						|| st.st_size == 0) {
 					if (!i && fp)
 						fclose (fp);
 					unlink (tmp2);

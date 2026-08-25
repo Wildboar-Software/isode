@@ -56,7 +56,10 @@ str2prot (char *str) {
 		return (result);
 	/* Using strlen means can't have zeros in the password */
 	result->passwd = cryptparse(str);
-	result->n_octets = strlen(result->passwd);
+	if (strlen2int (result->passwd, &result->n_octets) != 0) {
+		free ((char *) result);
+		return NULL;
+	}
 	result->is_protected[0] = '\0';
 	result->time1 = NULLCP;
 	result->time2 = NULLCP;

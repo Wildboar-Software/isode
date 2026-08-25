@@ -7,8 +7,13 @@
 PE
 flag2prim (int b, int class, int id) {
 	PE	    pe;
+	PElementClass cl;
+	PElementID pid;
 
-	if ((pe = pe_alloc (class, PE_FORM_PRIM, id)) == NULLPE)
+	if (int2u8 (class, &cl) != 0 || int2u16 (id, &pid) != 0)
+		return NULLPE;
+
+	if ((pe = pe_alloc (cl, PE_FORM_PRIM, pid)) == NULLPE)
 		return NULLPE;
 
 	if ((pe -> pe_prim = PEDalloc (pe -> pe_len = 1)) == NULLPED) {
@@ -16,7 +21,10 @@ flag2prim (int b, int class, int id) {
 		return NULLPE;
 	}
 
-	*pe -> pe_prim = b ? 0xff : 0x00;
+	if (int2u8 (b ? 0xff : 0x00, pe -> pe_prim) != 0) {
+		pe_free (pe);
+		return NULLPE;
+	}
 
 	return pe;
 }

@@ -164,8 +164,11 @@ static void printobj (struct isobject *io) {
 }
 
 static void printsrv (struct isoservent *is) {
-	int    n = is -> is_tail - is -> is_vec - 1;
+	int    n;
 	char **ap = is -> is_vec;
+
+	if (ptrdiff2int (is -> is_tail - is -> is_vec - 1, &n) != 0)
+		return;
 
 	printf ("ENT: \"%s\" PRV: \"%s\" SEL: %s\n",
 			is -> is_entity, is -> is_provider,

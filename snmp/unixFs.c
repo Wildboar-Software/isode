@@ -175,21 +175,22 @@ try_again:
 
 	/*** Now, return the particular variable. ***/
 
-	switch( (ssize_t)ot->ot_info ) {
+	{
+		int	ifvar;
+
+		if (caddr2int (ot->ot_info, &ifvar) != 0)
+			return( int_SNMP_error__status_genErr );
+		switch( ifvar ) {
 	case fsIdentifier:
 		return( o_integer(oi, v, fs->fs_Identifier) );
 	case fsName:
-		return( o_string(oi, v, fs->fs_Name,
-						 strlen(fs->fs_Name)) );
+		return( o_string_s(oi, v, fs->fs_Name) );
 	case fsMountPoint:
-		return( o_string(oi, v, fs->fs_MountPoint,
-						 strlen(fs->fs_MountPoint)) );
+		return( o_string_s(oi, v, fs->fs_MountPoint) );
 	case fsMountType:
-		return( o_string(oi, v, fs->fs_MountType,
-						 strlen(fs->fs_MountType)) );
+		return( o_string_s(oi, v, fs->fs_MountType) );
 	case fsMountOptions:
-		return( o_string(oi, v, fs->fs_MountOptions,
-						 strlen(fs->fs_MountOptions)) );
+		return( o_string_s(oi, v, fs->fs_MountOptions) );
 	case fsBlockSize:
 		return( o_integer(oi, v, fs->fs_BlockSize) );
 	case fsBlockCount:
@@ -204,6 +205,7 @@ try_again:
 		return( o_integer(oi, v, fs->fs_InodesAvailable) );
 	default:
 		return( int_SNMP_error__status_noSuchName );
+	}
 	}
 }
 
@@ -421,13 +423,18 @@ static void refresh_entry (struct fs *fsp) {
 		fsp->fs_BlocksAvailable	= -1;
 		fsp->fs_InodeCount	= -1;
 		fsp->fs_InodesAvailable	= -1;
-	} else {
-		fsp->fs_BlockSize	= fss.f_bsize;
-		fsp->fs_BlockCount	= fss.f_blocks;
-		fsp->fs_BlocksFree	= fss.f_bfree;
-		fsp->fs_BlocksAvailable	= fss.f_bavail;
-		fsp->fs_InodeCount	= fss.f_files;
-		fsp->fs_InodesAvailable	= fss.f_ffree;
+	} else if (intmax2int ((intmax_t) fss.f_bsize, &fsp->fs_BlockSize) != 0
+			|| uintmax2int ((uintmax_t) fss.f_blocks, &fsp->fs_BlockCount) != 0
+			|| uintmax2int ((uintmax_t) fss.f_bfree, &fsp->fs_BlocksFree) != 0
+			|| uintmax2int ((uintmax_t) fss.f_bavail, &fsp->fs_BlocksAvailable) != 0
+			|| uintmax2int ((uintmax_t) fss.f_files, &fsp->fs_InodeCount) != 0
+			|| uintmax2int ((uintmax_t) fss.f_ffree, &fsp->fs_InodesAvailable) != 0) {
+		fsp->fs_BlockSize	= -1;
+		fsp->fs_BlockCount	= -1;
+		fsp->fs_BlocksFree	= -1;
+		fsp->fs_BlocksAvailable	= -1;
+		fsp->fs_InodeCount	= -1;
+		fsp->fs_InodesAvailable	= -1;
 	}
 #else
 	struct fs_data  fss;

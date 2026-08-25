@@ -172,6 +172,18 @@ int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, int len) {
 	return int_SNMP_error__status_noError;
 }
 
+int	o_string_s (OI oi, struct type_SNMP_VarBind *v, char *base) {
+	int	len;
+
+	if (strlen2int (base, &len) != 0) {
+		ADVISE (LLOG_EXCEPTIONS, NULLCP,
+				"string too long for object \"%s\"",
+				oi && oi -> oi_type ? oi -> oi_type -> ot_text : "?");
+		return int_SNMP_error__status_genErr;
+	}
+	return o_string (oi, v, base, len);
+}
+
 int	o_qbstring (OI oi, struct type_SNMP_VarBind *v, struct qbuf *value) {
 	int	    result;
 	OT	    ot = oi -> oi_type;

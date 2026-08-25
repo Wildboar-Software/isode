@@ -40,12 +40,9 @@ out:
 		if ((f1 = (struct charge_element *) calloc (1, sizeof *f1)) == NULL)
 			goto no_mem;
 		fpm -> charge = f1;
-		if ((f1 -> resource__identifier = str2qb (fc -> fc_resource,
-										  strlen (fc -> fc_resource),
-										  1))
+		if ((f1 -> resource__identifier = str2qb_s (fc -> fc_resource))
 				== NULL
-				|| (f1 -> charging__unit = str2qb (fc -> fc_unit,
-										   strlen (fc -> fc_unit), 1))
+				|| (f1 -> charging__unit = str2qb_s (fc -> fc_unit))
 				== NULL)
 			goto no_mem;
 		f1 -> charging__value = fc -> fc_value;

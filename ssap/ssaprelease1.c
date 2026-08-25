@@ -117,9 +117,14 @@ static int SRelRetryRequestAux (
 	code = SPDU_FN;
 again:
 	;
-	if (((s = sb -> sb_retry) -> s_code = code) == SPDU_FN) {
+	s = sb -> sb_retry;
+	if (int2u8 (code, &s -> s_code) != 0)
+		return ssaplose (si, SC_PARAMETER, NULLCP, "invalid SPDU code");
+	if (s -> s_code == SPDU_FN) {
 		s -> s_mask |= SMASK_FN_DISC;
-		s -> s_fn_disconnect = FN_DISC_RELEASE;
+		if (int2u8 (FN_DISC_RELEASE, &s -> s_fn_disconnect) != 0)
+			return ssaplose (si, SC_PARAMETER, NULLCP,
+					 "invalid disconnect flags");
 	}
 	result = spkt2sd (s, sb -> sb_fd, 0, si);
 	if (s -> s_code == SPDU_FN) {

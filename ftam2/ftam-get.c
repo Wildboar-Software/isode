@@ -478,12 +478,18 @@ int getvf (
 			dp -> ftd_cc = 0;
 			dp++;
 
-			if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,
-								dp - diags, fti) == NOTOK) {
+			{
+				int ndiag;
+
+				if (ptrdiff2int (dp - diags, &ndiag) != 0)
+					return NOTOK;
+				if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,
+									ndiag, fti) == NOTOK) {
 				ftam_advise (fta, "F-CANCEL.REQUEST");
 				if (fd != NOTOK)
 					close (fd);
 				return NOTOK;
+			}
 			}
 
 			if (fti -> fti_type == FTI_CANCEL) {
@@ -790,10 +796,16 @@ do_cancel:
 			dp -> ftd_cc = 0;
 				dp++;
 
-				if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,
-									dp - diags, fti) == NOTOK) {
+				{
+					int ndiag;
+
+					if (ptrdiff2int (dp - diags, &ndiag) != 0)
+						return NOTOK;
+					if (FCancelRequest (ftamfd, FACTION_PERM, NULLPE, diags,
+										ndiag, fti) == NOTOK) {
 					ftam_advise (fta, "F-CANCEL.REQUEST");
 					return NOTOK;
+				}
 				}
 
 				if (fti -> fti_type == FTI_CANCEL) {

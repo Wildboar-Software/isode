@@ -81,7 +81,8 @@ static int  o_funct (OI oi, struct type_SNMP_VarBind *v, int offset) {
 			arg2;
 	OT	    ot = oi -> oi_type;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (curexpr == NULL)
@@ -236,7 +237,8 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	struct expr *e;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1)
@@ -258,7 +260,8 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 					break;
 			if (e >= roofexpr)
 				return NOTOK;
-			ifnum = (e - exprs) + 1;
+			if (ptrdiff_plus1_to_int (e - exprs, &ifnum) != 0)
+				return NOTOK;
 			if ((new = oid_extend (oid, 1)) == NULLOID)
 				return NOTOK;
 			if (int2uint (ifnum,
@@ -279,7 +282,8 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 					break;
 			if (e >= roofexpr)
 				return NOTOK;
-			ifnum = (e - exprs) + 1;
+			if (ptrdiff_plus1_to_int (e - exprs, &ifnum) != 0)
+				return NOTOK;
 			if (int2uint (ifnum, &oid -> oid_elements[i]) != 0)
 				return NOTOK;
 			oid -> oid_nelem = i + 1;
@@ -306,7 +310,7 @@ static int  o_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		return o_integer (oi, v, e -> e_status);
 
 	case exprHints:
-		return o_string (oi, v, e -> e_hints, strlen (e -> e_hints));
+		return o_string_s (oi, v, e -> e_hints);
 
 	default:
 		return int_SNMP_error__status_noSuchName;
@@ -579,7 +583,8 @@ static int  s_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	struct qbuf *qb;
 
 #ifndef	lint
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 #endif
 	switch (offset) {
 	case type_SNMP_PDUs_set__request:
@@ -626,7 +631,8 @@ static int  s_expressions (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		for (e = exprs + NEXPR - 1; e >= exprs; e--)
 			if (e -> e_expr)
 				break;
-		exprNumber = (e - exprs) + 1;
+		if (ptrdiff_plus1_to_int (e - exprs, &exprNumber) != 0)
+			return int_SNMP_error__status_genErr;
 		break;
 
 	case type_SNMP_PDUs_rollback:
@@ -771,7 +777,9 @@ invalid:
 		adios (NULLCP, "std_setup: %s", ps_error (ps -> ps_errno));
 	if (pe2ps (ps, pe) == NOTOK)
 		adios (NULLCP, "pe2ps: %s", ps_error (ps -> ps_errno));
-	e -> e_size = ps -> ps_ptr - (e -> e_expr = ps -> ps_base);
+	e -> e_expr = ps -> ps_base;
+	if (ptrdiff2int (ps -> ps_ptr - e -> e_expr, &e -> e_size) != 0)
+		adios (NULLCP, "expression encoding too large");
 	ps -> ps_base = NULL, ps -> ps_cnt = 0;
 	ps -> ps_ptr = 0, ps -> ps_bufsiz = 0;
 	ps_free (ps);

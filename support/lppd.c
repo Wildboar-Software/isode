@@ -262,7 +262,9 @@ no_more:
 static void envinit (void) {
 	int     i, sd;
 
-	nbits = getdtablesize ();
+	nbits = FD_SETSIZE;
+	if (long2int (getdtablesize (), &nbits) != 0)
+		nbits = FD_SETSIZE;
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {

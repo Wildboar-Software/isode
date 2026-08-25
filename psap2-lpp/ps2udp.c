@@ -54,7 +54,8 @@ int	udpopen (
 	strncpy (called -> na_domain, hp -> h_name,
 			 sizeof called -> na_domain);
 #endif
-	isock -> sin_family = hp -> h_addrtype;
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		return psaplose (pi, PC_ADDRESS, NULLCP, "address family out of range");
 	inaddr_copy (hp, isock);
 #ifndef	notanymore
 	strcpy (called -> na_domain, inet_ntoa (isock -> sin_addr));
@@ -64,7 +65,10 @@ int	udpopen (
 		if ((hp = gethostbystring (calling -> na_domain)) == NULL)
 			return psaplose (pi, PC_ADDRESS, NULLCP, "%s: unknown host",
 							 calling -> na_domain);
-		if ((lsock -> sin_family = hp -> h_addrtype) != isock -> sin_family)
+		if (int2safamily (hp -> h_addrtype, &lsock -> sin_family) != 0)
+			return psaplose (pi, PC_ADDRESS, NULLCP,
+							 "address family out of range");
+		if (lsock -> sin_family != isock -> sin_family)
 			return psaplose (pi, PC_ADDRESS, NULLCP,
 							 "address family mismatch");
 		inaddr_copy (hp, lsock);

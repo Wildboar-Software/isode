@@ -110,7 +110,9 @@ int rt2pstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication 
 	pe_free (pe);
 	if (result == NOTOK)
 		return rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
-	bcopy (base, id -> sd_data, (int) (id -> sd_len = len));
+	if (int2u8 (len, &id -> sd_len) != 0)
+		return rtsaplose (rti, RTS_CONGEST, NULLCP, NULLCP);
+	bcopy (base, id -> sd_data, id -> sd_len);
 	free (base);
 	base = NULL;
 	if (pe = pe_alloc (PE_CLASS_UNIV, PE_FORM_PRIM, PE_PRIM_OCTS)) {
@@ -742,7 +744,11 @@ static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindi
 		case SN_MINORCNF:
 			if (!(acb -> acb_flags & ACB_TURN))
 				break;
-			acb -> acb_ack = pn -> pn_ssn;
+			if (long2int (pn -> pn_ssn, &acb -> acb_ack) != 0) {
+				rtpktlose (acb, rti, RTS_PROTOCOL, NULLCP,
+					   "serial number too large");
+				goto out;
+			}
 			return OK;
 		default:
 			break;

@@ -14,7 +14,7 @@
 /* Simply including "general.h" is sufficient. */
 
 static int	_general_stub (void);
-static int	_general_stub (void) {};
+static int	_general_stub (void) {}
 
 #endif
 

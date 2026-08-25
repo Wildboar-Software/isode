@@ -389,8 +389,11 @@ static int _getline (char *prompt, char *buffer) {
 			sticky++;
 			break;
 		}
-		if (cp < ep)
-			*cp++ = i;
+		if (cp < ep) {
+			if (int2octet (i, cp) != 0)
+				break;
+			cp++;
+		}
 	}
 	*cp = 0;
 	return OK;
@@ -399,6 +402,7 @@ static int _getline (char *prompt, char *buffer) {
 struct dispatch *getds (char *name) {
 	int    longest,
 		   nmatches;
+	int	    d;
 	char  *p,
 		  *q;
 	char    buffer[BUFSIZ];
@@ -410,13 +414,16 @@ struct dispatch *getds (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return ds;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				fs = ds;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 	switch (nmatches) {
 	case 0:
@@ -652,7 +659,13 @@ static int vt_set (char **vec) {
 		width = varwidth1;
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
-		lines = ((u - vars) + columns - 1) / columns;
+		{
+			int nvars;
+
+			if (ptrdiff2int (u - vars, &nvars) != 0)
+				return NOTOK;
+			lines = (nvars + columns - 1) / columns;
+		}
 		printf ("Variables:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -662,8 +675,9 @@ static int vt_set (char **vec) {
 					printf ("\n");
 					break;
 				}
-				for (w = strlen (v -> v_name); w < width; w = (w + 8) & ~7)
-					putchar ('\t');
+				if (strlen2int (v -> v_name, &w) == 0)
+					for (; w < width; w = (w + 8) & ~7)
+						putchar ('\t');
 			}
 		return DONE;
 	}
@@ -701,7 +715,9 @@ static int vt_set (char **vec) {
 		if (*v -> v_dvalue)
 			free (*v -> v_dvalue);
 		*v -> v_dvalue = strdup (*vec);
-		if ((w = strlen (*v -> v_dvalue) + 2) > varwidth2)
+		if (strlen2int (*v -> v_dvalue, &w) == 0
+				&& add_int_to_int (&w, 2) == 0
+				&& w > varwidth2)
 			varwidth2 = w;
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
@@ -762,7 +778,7 @@ out_of_range:
 				advise (LLOG_NOTICE,NULLCP,  "bad value \"%s\"", *vec);
 				return DONE;
 			}
-			if ((j = cp - v -> v_dvalue) <= 0)
+			if (ptrdiff2int (cp - v -> v_dvalue, &j) != 0 || j <= 0)
 				continue;
 			i |= 1 << (j - 1);
 		}
@@ -776,7 +792,10 @@ out_of_range:
 	}
 	if (v -> v_dvalue && (cp = getval (*vec, v -> v_dvalue))) {
 		vflag = verbose;
-		*v -> v_value = cp - v -> v_dvalue;
+		if (ptrdiff2int (cp - v -> v_dvalue, v -> v_value) != 0) {
+			advise (LLOG_NOTICE,NULLCP,  "value index out of range");
+			return DONE;
+		}
 		if (v -> v_hook)
 			(*v -> v_hook) (v);
 		if (vflag)
@@ -856,6 +875,7 @@ static void set_repertoire (struct var *v) {
 static char **getval (char *name, char **choices) {
 	int    longest,
 		   nmatches;
+	int	    d;
 	char  *p,
 		  *q,
 		  **cp,
@@ -867,13 +887,16 @@ static char **getval (char *name, char **choices) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return cp;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				fp = cp;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 	switch (nmatches) {
 	case 0:
@@ -897,6 +920,7 @@ static char **getval (char *name, char **choices) {
 
 static struct var *getvar (char *name) {
 	int longest, nmatches;
+	int d;
 	char *p, *q;
 	char buffer[BUFSIZ];
 	struct var *v, *f;
@@ -906,13 +930,16 @@ static struct var *getvar (char *name) {
 		for (q = name; *q == *p++; q++)
 			if (*q == NULL)
 				return v;
-		if (*q == NULL)
-			if (q - name > longest) {
-				longest = q - name;
+		if (*q == NULL) {
+			if (ptrdiff2int (q - name, &d) != 0)
+				continue;
+			if (d > longest) {
+				longest = d;
 				nmatches = 1;
 				f = v;
-			} else if (q - name == longest)
+			} else if (d == longest)
 				nmatches++;
+		}
 	}
 	switch (nmatches) {
 	case 0:
@@ -947,7 +974,13 @@ static int vt_help (char **vec) {
 	if (*++vec == NULL) {
 		if ((columns = ncols (stdout) / (width = (width + 8) & ~7)) == 0)
 			columns = 1;
-		lines = ((es - dispatches) + columns - 1) / columns;
+		{
+			int nops;
+
+			if (ptrdiff2int (es - dispatches, &nops) != 0)
+				return NOTOK;
+			lines = (nops + columns - 1) / columns;
+		}
 		printf ("Operations:\n");
 		for (i = 0; i < lines; i++)
 			for (j = 0; j < columns; j++) {
@@ -957,8 +990,9 @@ static int vt_help (char **vec) {
 					printf ("\n");
 					break;
 				}
-				for (w = strlen (ds -> ds_name); w < width; w = (w + 8) & ~7)
-					putchar ('\t');
+				if (strlen2int (ds -> ds_name, &w) == 0)
+					for (; w < width; w = (w + 8) & ~7)
+						putchar ('\t');
 			}
 		printf ("\n");
 		return DONE;
@@ -998,10 +1032,10 @@ static void rcinit (void) {
 		myhome = ".";		/* could do passwd search... */
 	escapestr = strdup (control (escape));
 	for (ds = dispatches, helpwidth = 0; ds -> ds_name; ds++)
-		if ((w = strlen (ds -> ds_name)) > helpwidth)
+		if (strlen2int (ds -> ds_name, &w) == 0 && w > helpwidth)
 			helpwidth = w;
 	for (v = vars, varwidth1 = 0; v -> v_name; v++) {
-		if ((w = strlen (v -> v_name)) > varwidth1)
+		if (strlen2int (v -> v_name, &w) == 0 && w > varwidth1)
 			varwidth1 = w;
 		if (v -> v_value) {
 			if (cp = v -> v_dvalue) {
@@ -1016,12 +1050,14 @@ static void rcinit (void) {
 #endif
 				} else
 					for (; *cp; cp++)
-						if ((w = strlen (*cp)) > varwidth2)
+						if (strlen2int (*cp, &w) == 0 && w > varwidth2)
 							varwidth2 = w;
 			}
 		} else if (*v -> v_dvalue) {
 			*v -> v_dvalue = strdup (*v -> v_dvalue);
-			if ((w = strlen (*v -> v_dvalue) + 2) > varwidth2)
+			if (strlen2int (*v -> v_dvalue, &w) == 0
+					&& add_int_to_int (&w, 2) == 0
+					&& w > varwidth2)
 				varwidth2 = w;
 		}
 	}
@@ -1089,7 +1125,9 @@ static void vt (int s) {
 		 */
 		if (FD_ISSET (s, &ibits)) {
 			while ( (c = getch()) > 0) {
-				*tfrontp++ = c;
+				if (int2octet (c, tfrontp) != 0)
+					break;
+				tfrontp++;
 				if(tfrontp >= &ttyobuf[TBUFSIZ-1]) break;
 			}
 			if (c == E_EOF) {
@@ -1100,15 +1138,16 @@ static void vt (int s) {
 		 * Something to read from the tty...
 		 */
 		if (FD_ISSET (tin, &ibits)) {
-			tcc = read(tin, tibuf, sizeof (tibuf));
-			if (tcc < 0 && errno == EWOULDBLOCK)
-				tcc = 0;
-			else {
-				if (tcc <= 0) {
-					advise(LLOG_NOTICE,NULLCP,  "error: read from terminal returned %d", tcc);
+			{
+				ssize_t nr = read(tin, tibuf, sizeof (tibuf));
+
+				if (nr < 0 && errno == EWOULDBLOCK)
+					tcc = 0;
+				else if (nr <= 0 || ssize2int (nr, &tcc) != 0) {
+					advise(LLOG_NOTICE,NULLCP,  "error: read from terminal returned %ld", (long) nr);
 					break;
-				}
-				tbp = tibuf;
+				} else
+					tbp = tibuf;
 			}
 		}
 		while (tcc > 0) {
@@ -1121,7 +1160,9 @@ static void vt (int s) {
 				tcc = 0;
 				break;
 			}
-			*nfrontp++ = ch;
+			if (int2octet (ch, nfrontp) != 0)
+				break;
+			nfrontp++;
 		}
 		if (FD_ISSET (s, &obits) && (nfrontp - nbackp) > 0)
 			netflush(s);
@@ -1141,11 +1182,13 @@ char *control (int c) {
 	if (c == 0177)
 		return ("^?");
 	if (c >= 040) {
-		buf[0] = c;
+		if (int2octet (c, &buf[0]) != 0)
+			return ("");
 		buf[1] = 0;
 	} else {
 		buf[0] = '^';
-		buf[1] = '@'+c;
+		if (int2octet ('@'+c, &buf[1]) != 0)
+			return ("");
 		buf[2] = 0;
 	}
 	return (buf);
@@ -1164,12 +1207,15 @@ void intr (void) {
 void ttyflush (int dd) {
 	int n;
 
-	if ((n = tfrontp - tbackp) > 0) {
-		n = write_int (dd, tbackp, n);
-	}
-	if (n < 0) {
-		advise(LLOG_NOTICE,NULLCP,  "ttyflush(): Negative returned from write");
+	if (ptrdiff2int (tfrontp - tbackp, &n) != 0)
 		return;
+	if (n > 0) {
+		ssize_t nw = write_int (dd, tbackp, n);
+
+		if (nw < 0 || ssize2int (nw, &n) != 0) {
+			advise(LLOG_NOTICE,NULLCP,  "ttyflush(): Negative returned from write");
+			return;
+		}
 	}
 	tbackp += n;
 	if (tbackp == tfrontp)
@@ -1182,7 +1228,9 @@ static void netflush (int dd) {
 	int nl_flag; // If current PDU includes newline, follow it with a Deliver Request
 
 	nl_flag = 0;
-	if ((n = nfrontp - nbackp) > 0) {
+	if (ptrdiff2int (nfrontp - nbackp, &n) != 0)
+		return;
+	if (n > 0) {
 		if(transparent) {
 			if (vt_text(nbackp,n) != OK)
 				advise(LLOG_NOTICE,NULLCP,  "vt_text failed");

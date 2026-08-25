@@ -343,8 +343,13 @@ static void * str2sacl( char *str )
 				str++;
 		}
 	}
-	if ( scope != 0 )
-		new->sac_scope = scope;
+	if ( scope != 0 ) {
+		if (int2char (scope, &new->sac_scope) != 0) {
+			parse_error( "scope too large in search acl", NULLCP );
+			sacl_free( new );
+			return( NULLSACL );
+		}
+	}
 	if ( new->sac_access == SACL_UNSEARCHABLE ) {
 		if ( s != NULLCP ) {
 			parse_error( "extra junk after nosearch '%s'", s+1 );

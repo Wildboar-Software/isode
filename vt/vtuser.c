@@ -742,7 +742,7 @@ int read_asq (PE pe) {
 	}
 	if( !oid_cmp(ud.asq_profile.prof_oid,ode2oid("telnet")) ) {
 		vtp_profile.profile_name = "telnet";
-		vtp_profile.arg_val.tel_arg_list.full_ascii = 0xff;
+		vtp_profile.arg_val.tel_arg_list.full_ascii = (char)0xff;
 		vtp_profile.arg_val.tel_arg_list.x_window = -1;
 		D = -1;
 		for(n=0; n<ud.asq_profile.num_cds_objects; n++) {

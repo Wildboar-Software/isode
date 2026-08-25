@@ -41,7 +41,11 @@ void conn_init (struct connection *cn) {
 	result = DBindInit (cn->cn_start.cs_vecp, vec, ds, di);
 	cn->cn_ad = ds->ds_sd;
 	cn->cn_initiator = FALSE;
-	cn->cn_ctx = ds->ds_ctx;
+	if (int2char (ds->ds_ctx, &cn->cn_ctx) != 0) {
+		ds_log(da, "Incoming connection failed",cn->cn_ad);
+		conn_extract (cn);
+		return;
+	}
 	cn->cn_dn = NULLDN;
 	if (result != OK) {
 		ds_log(da, "Incoming connection failed",cn->cn_ad);

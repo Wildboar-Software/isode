@@ -79,10 +79,19 @@ int	smux_init (int debug) {
 	bzero ((char *) isock, sizeof *isock);
 	if ((hp = gethostbystring ("127.0.0.1")) == NULL)
 		return smuxlose (youLoseBig, NULLCP, "%s: unknown host", "127.0.0.1");
-	isock -> sin_family = hp -> h_addrtype;
-	isock -> sin_port = (sp = getservbyname ("smux", "tcp"))
-						? sp -> s_port
-						: htons ((uint16_t) 199);
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		return smuxlose (youLoseBig, NULLCP, "address family out of range");
+	{
+		in_port_t port;
+
+		sp = getservbyname ("smux", "tcp");
+		if (sp) {
+			if (int2inport (sp -> s_port, &port) != 0)
+				return smuxlose (youLoseBig, NULLCP, "smux port out of range");
+		} else
+			port = htons ((uint16_t) 199);
+		isock -> sin_port = port;
+	}
 	inaddr_copy (hp, isock);
 
 	if ((sd = start_tcp_client ((struct sockaddr_in *) NULL, 0)) == NOTOK)
@@ -194,9 +203,7 @@ no_mem:
 		goto no_mem;
 	simple -> version = int_SNMP_version_version__1;
 	if ((simple -> identity = oid_cpy (identity)) == NULL
-			|| (simple -> description = str2qb (description,
-										strlen (description),
-										1)) == NULL
+			|| (simple -> description = str2qb_s (description)) == NULL
 			|| (simple -> password = str2qb (commname, commlen, 1)) == NULL)
 		goto no_mem;
 	result = smuxsend (&pdu);
@@ -405,9 +412,8 @@ int	smux_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings
 	trap -> specific__trap = specific;
 	trap -> time__stamp = smux_stamp;
 	gettimeofday (&now, (struct timezone *) 0);
-	trap -> time__stamp -> parm = (now.tv_sec - my_boottime.tv_sec) * 100
-								  + ((now.tv_usec - my_boottime.tv_usec)
-									 / 10000);
+	if (timeval_centisecs (&now, &my_boottime, &trap -> time__stamp -> parm) != 0)
+		return smuxlose (youLoseBig, NULLCP, "uptime overflow");
 	trap -> variable__bindings = bindings;
 	result = smuxsend (&pdu);
 	trap -> enterprise = NULL;

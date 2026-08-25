@@ -140,7 +140,9 @@ static void envinit (void) {
 	char    file[BUFSIZ];
 	FILE   *fp;
 
-	nbits = getdtablesize ();
+	nbits = FD_SETSIZE;
+	if (long2int (getdtablesize (), &nbits) != 0)
+		nbits = FD_SETSIZE;
 	if (debug == 0 && !(debug = isatty (2))) {
 		for (i = 0; i < 5; i++) {
 			switch (fork ()) {
@@ -223,8 +225,14 @@ static void mibinit (void) {
 }
 
 static void start_smux (void) {
+	int	plen;
+
+	if (strlen2int (se -> se_password, &plen) != 0) {
+		advise (LLOG_EXCEPTIONS, NULLCP, "SMUX password too long");
+		goto losing;
+	}
 	if (smux_simple_open (&se -> se_identity, "SMUX UNIX daemon",
-						  se -> se_password, strlen (se -> se_password))
+						  se -> se_password, plen)
 			== NOTOK) {
 		if (smux_errno == inProgress)
 			return;

@@ -199,9 +199,12 @@ int dsa_sys_tai (int argc, char **argv) {
 		oidformat = atoi (arg);
 		break;
 	case ROOTDIR: {
+		int n;
 		unsigned int i;
+
 		treedir = strdup(arg);
-		i = strlen(treedir);
+		if (strlen2int (treedir, &n) != 0 || int2uint (n, &i) != 0)
+			fatal (-1, "rootdir too long");
 		if ( treedir[i - 1] != '/' ) {
 			treedir = realloc (treedir, i + 1);
 			treedir[i] = '/';

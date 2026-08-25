@@ -46,7 +46,11 @@ send_pr:
 			if ((p = newspkt (SPDU_PR)) == NULL)
 				return ssaplose (si, SC_CONGEST, NULLCP, "out of memory");
 			p -> s_mask |= SMASK_PR_TYPE;
-			p -> s_pr_type = result;
+			if (int2u8 (result, &p -> s_pr_type) != 0) {
+				freespkt (p);
+				return ssaplose (si, SC_PARAMETER, NULLCP,
+						 "invalid prepare type");
+			}
 			result = spkt2sd (p, sb -> sb_fd, 1, si);
 			freespkt (p);
 			if (result == NOTOK)
@@ -98,15 +102,18 @@ send_pr:
 	case SPDU_MAP:
 		if (type) {
 			s -> s_mask |= SMASK_MAP_SYNC;
-			s -> s_map_sync = type;
+			if (int2u8 (type, &s -> s_map_sync) != 0)
+				goto bad_conv;
 		}
 		s -> s_mask |= SMASK_MAP_SERIAL;
-		s -> s_map_serial = ssn;
+		if (long2u32 (ssn, &s -> s_map_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_MAA:
 		s -> s_mask |= SMASK_MAA_SERIAL;
-		s -> s_maa_serial = ssn;
+		if (long2u32 (ssn, &s -> s_maa_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_MIP:
@@ -115,32 +122,39 @@ send_pr:
 			s -> s_mip_sync = MIP_SYNC_NOEXPL;
 		}
 		s -> s_mask |= SMASK_MIP_SERIAL;
-		s -> s_mip_serial = ssn;
+		if (long2u32 (ssn, &s -> s_mip_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_MIA:
 		s -> s_mask |= SMASK_MIA_SERIAL;
-		s -> s_mia_serial = ssn;
+		if (long2u32 (ssn, &s -> s_mia_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_RS:
 		if (sb -> sb_requirements & SR_TOKENS) {
 			s -> s_mask |= SMASK_RS_SET;
-			s -> s_rs_settings = settings;
+			if (int2u8 (settings, &s -> s_rs_settings) != 0)
+				goto bad_conv;
 		}
 		s -> s_mask |= SMASK_RS_TYPE;
-		s -> s_rs_type = type;
+		if (int2u8 (type, &s -> s_rs_type) != 0)
+			goto bad_conv;
 		s -> s_mask |= SMASK_RS_SSN;
-		s -> s_rs_serial = ssn;
+		if (long2u32 (ssn, &s -> s_rs_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_RA:
 		if (sb -> sb_requirements & SR_TOKENS) {
 			s -> s_mask |= SMASK_RA_SET;
-			s -> s_ra_settings = settings;
+			if (int2u8 (settings, &s -> s_ra_settings) != 0)
+				goto bad_conv;
 		}
 		s -> s_mask |= SMASK_RA_SSN;
-		s -> s_ra_serial = ssn;
+		if (long2u32 (ssn, &s -> s_ra_serial) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_AS:
@@ -151,7 +165,8 @@ send_pr:
 	case SPDU_AR:
 		s -> s_mask |= SMASK_AR_OID | SMASK_AR_SSN | SMASK_AR_ID;
 		s -> s_ar_oid = *oid;	/* struct copy */
-		s -> s_ar_serial = ssn;
+		if (long2u32 (ssn, &s -> s_ar_serial) != 0)
+			goto bad_conv;
 		s -> s_ar_id = *id;	/* struct copy */
 		if (ref) {
 			s -> s_mask |= SMASK_AR_REF;
@@ -161,17 +176,20 @@ send_pr:
 
 	case SPDU_AI:
 		s -> s_mask |= SMASK_AI_REASON;
-		s -> s_ai_reason = type;
+		if (int2u8 (type, &s -> s_ai_reason) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_AD:
 		s -> s_mask |= SMASK_AD_REASON;
-		s -> s_ad_reason = type;
+		if (int2u8 (type, &s -> s_ad_reason) != 0)
+			goto bad_conv;
 		break;
 
 	case SPDU_ED:
 		s -> s_mask |= SMASK_ED_REASON;
-		s -> s_ed_reason = type;
+		if (int2u8 (type, &s -> s_ed_reason) != 0)
+			goto bad_conv;
 		break;
 
 	default:
@@ -204,6 +222,8 @@ send_pr:
 
 	return result;
 
+bad_conv:
+	ssaplose (si, SC_PARAMETER, NULLCP, "SPDU field out of range");
 out3:
 	;
 	if (uvs[1].uv_base)

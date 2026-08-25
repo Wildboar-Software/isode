@@ -130,7 +130,11 @@ int getprent(char *bp) {
 				*bp = '\0';
 				return(1);
 			}
-			*bp++ = c;
+			if (int2octet (c, bp) != 0) {
+				*bp = '\0';
+				return(1);
+			}
+			bp++;
 		}
 	}
 }
@@ -187,14 +191,19 @@ int tgetent(char *bp, char *name) {
 		cp = bp;
 		for (;;) {
 			if (i == cnt) {
-				cnt = read(tf, ibuf, BUFSIZ);
-				if (cnt <= 0) {
+				ssize_t nr = read(tf, ibuf, BUFSIZ);
+
+				if (nr <= 0) {
 					close(tf);
 					return (0);
 				}
+				if (ssize2int (nr, &cnt) != 0) {
+					close(tf);
+					return (-1);
+				}
 				i = 0;
 			}
-			c = ibuf[i++];
+			c = as_octet (ibuf[i++]);
 			if (c == '\n') {
 				if (cp > bp && cp[-1] == '\\') {
 					cp--;
@@ -205,8 +214,11 @@ int tgetent(char *bp, char *name) {
 			if (cp >= bp+BUFSIZ) {
 				write(2,"Termcap entry too long\n", 23);
 				break;
-			} else
-				*cp++ = c;
+			} else {
+				if (int2octet (c, cp) != 0)
+					break;
+				cp++;
+			}
 		}
 		*cp = 0;
 		/*
@@ -433,7 +445,9 @@ nextc:
 			}
 			break;
 		}
-		*cp++ = c;
+		if (int2octet (c, cp) != 0)
+			return (0);
+		cp++;
 	}
 	*cp++ = 0;
 	str = *area;

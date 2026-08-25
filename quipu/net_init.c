@@ -84,7 +84,13 @@ int net_init (void) {
 		dsaladdr = psap_cpy ( (struct PSAPaddr *) as->attr_value->avseq_av.av_struct);
 	else
 		dsaladdr = mydsaaddr;
-	max_conns = getdtablesize() - 3 - 3 - 1;
+	{
+		int nfd;
+
+		if (long2int (getdtablesize(), &nfd) != 0)
+			return NOTOK;
+		max_conns = nfd - 3 - 3 - 1;
+	}
 	max_conns -= dsaladdr -> pa_addr.sa_addr.ta_naddr;
 	/* allow 3 fd's for stdio, 2 for logging, 1 emergency, and
 	one for each listen.

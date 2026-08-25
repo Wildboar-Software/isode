@@ -73,22 +73,12 @@ int editentry (int argc, char **argv) {
 		}
 		if (fstat (fileno (fp), &st) == NOTOK
 				|| (st.st_mode & S_IFMT) != S_IFREG
-				|| (cc = st.st_size) == 0) {
+				|| st.st_size == 0) {
 			ps_printf (OPT, "%s: not a regular file\n", fname);
 out:
 			;
 			fclose (fp);
 			return NOTOK;
-		}
-		sprintf (prog, "e%d\n", cc);
-		send_pipe_aux (prog);
-		if ((res = read_pipe_aux (prog, sizeof prog)) < 1) {
-			fprintf (stderr, "read failure\n");
-			remote_prob = TRUE;
-			goto out;
-		} else if ((res == 1) && (*prog == 'e')) {
-			remote_prob = FALSE;
-			goto out;
 		}
 		{
 			size_t nbytes;
@@ -96,6 +86,16 @@ out:
 			if (off2sizet (st.st_size, &nbytes) != 0
 					|| sizet2int (nbytes, &cc) != 0) {
 				ps_printf (OPT, "file too large\n");
+				goto out;
+			}
+			sprintf (prog, "e%d\n", cc);
+			send_pipe_aux (prog);
+			if ((res = read_pipe_aux (prog, sizeof prog)) < 1) {
+				fprintf (stderr, "read failure\n");
+				remote_prob = TRUE;
+				goto out;
+			} else if ((res == 1) && (*prog == 'e')) {
+				remote_prob = FALSE;
 				goto out;
 			}
 			if ((cp = malloc (nbytes)) == NULL) {

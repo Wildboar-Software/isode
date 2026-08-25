@@ -199,8 +199,14 @@ SearchACLSyntax [[P struct sacl_info *]]
 			parm->sac_tmpbstr = NULL;
 		%}
 		%D{
-			(*parm)->sac_scope = strb2int( (*parm)->sac_tmpbstr, 
-			    (*parm)->sac_tmplen );
+			{
+				int scope;
+
+				scope = strb2int( (*parm)->sac_tmpbstr,
+				    (*parm)->sac_tmplen );
+				if (int2char (scope, &(*parm)->sac_scope) != 0)
+					return NOTOK;
+			}
 			free( (*parm)->sac_tmpbstr );
 			(*parm)->sac_tmpbstr = NULL;
 		%},

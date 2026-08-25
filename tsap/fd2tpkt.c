@@ -12,6 +12,19 @@
 static int  fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
 static int  readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
 static int  set_tpdu_li (struct tsapkt *t, size_t hdr);
+static int  set_varlen (struct tsapkt *t, size_t minlen, int *vlen);
+
+static int
+set_varlen (struct tsapkt *t, size_t minlen, int *vlen)
+{
+	int n;
+
+	if (u8_minus_sizet (t -> t_li, minlen, &n) != 0)
+		return DR_LENGTH;
+	t -> t_vlen = n;
+	*vlen = n;
+	return OK;
+}
 
 static int
 set_tpdu_li (struct tsapkt *t, size_t hdr)
@@ -67,7 +80,9 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 				!= CR_SIZE (t))
 			return DR_NETWORK;
 
-		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, CR)) {
+		if (set_varlen (t, TPDU_MINLEN (t, CR), &vlen) != OK)
+			return DR_LENGTH;
+		if (vlen) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
@@ -153,7 +168,9 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 				!= DR_SIZE (t))
 			return DR_NETWORK;
 
-		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, DR)) {
+		if (set_varlen (t, TPDU_MINLEN (t, DR), &vlen) != OK)
+			return DR_LENGTH;
+		if (vlen) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
@@ -186,7 +203,9 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 				!= DT_SIZE (t))
 			return DR_NETWORK;
 
-		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, DT)) {
+		if (set_varlen (t, TPDU_MINLEN (t, DT), &vlen) != OK)
+			return DR_LENGTH;
+		if (vlen) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
@@ -217,9 +236,10 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 		if (readx (fd, (char *) &t -> t_ed, ED_SIZE (t), readfnx)
 				!= ED_SIZE (t))
 			return DR_NETWORK;
-		t -> t_ed.ed_nr = ntohs (t -> t_ed.ed_nr);
 
-		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, ED)) {
+		if (set_varlen (t, TPDU_MINLEN (t, ED), &vlen) != OK)
+			return DR_LENGTH;
+		if (vlen) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
@@ -254,7 +274,9 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 				!= ER_SIZE (t))
 			return DR_NETWORK;
 
-		if (vlen = t -> t_vlen = t -> t_li - TPDU_MINLEN (t, ER)) {
+		if (set_varlen (t, TPDU_MINLEN (t, ER), &vlen) != OK)
+			return DR_LENGTH;
+		if (vlen) {
 			if ((vptr = t -> t_vdata = malloc ((unsigned) vlen)) == NULL)
 				return DR_CONGEST;
 			if (readx (fd, t -> t_vdata, t -> t_vlen, readfnx)
@@ -284,7 +306,17 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 		return DR_PROTOCOL;
 	}
 
-	if (len = TPDU_USRLEN (t)) {
+	{
+		size_t hdr,
+			ulen_n;
+
+		hdr = sizeof t -> t_pkthdr + sizeof t -> t_li + (size_t) t -> t_li;
+		if ((size_t) t -> t_length <= hdr)
+			len = 0;
+		else if (sizet2int ((size_t) t -> t_length - hdr, &len) != 0)
+			return DR_LENGTH;
+	}
+	if (len) {
 		if ((t -> t_qbuf = (struct qbuf *)
 						   malloc (sizeof *t -> t_qbuf + (unsigned) len))
 				== NULL)
@@ -305,8 +337,13 @@ static int readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buff
 
 	for (bp = buffer, i = n; i > 0; bp += cc, i -= cc) {
 		switch (cc = (*readfnx) (fd, bp, i)) {
-		case NOTOK:
-			return (i = bp - buffer) ? i : NOTOK;
+		case NOTOK: {
+			int got;
+
+			if (ptrdiff2int (bp - buffer, &got) != 0)
+				return NOTOK;
+			return got ? got : NOTOK;
+		}
 
 		case OK:
 			break;
@@ -317,7 +354,13 @@ static int readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buff
 		break;
 	}
 
-	return (bp - buffer);
+	{
+		int got;
+
+		if (ptrdiff2int (bp - buffer, &got) != 0)
+			return NOTOK;
+		return got;
+	}
 }
 
 int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapblk *tb, struct tsapkt *t, char *cp, int n)) {
@@ -362,27 +405,41 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 											+ (2 + t -> t_calledlen) + 3))) == NULL)
 			return DR_CONGEST;
 		if (t -> t_options) {
-			*vptr++ = VDAT_OPTIONS;
-			*vptr++ = 1;
-			*vptr++ = t -> t_options;
+			if (put_octet (&vptr, VDAT_OPTIONS) != 0
+					|| put_octet (&vptr, 1) != 0
+					|| u16tooctet (t -> t_options, vptr) != 0)
+				return DR_LENGTH;
+			vptr++;
 			t -> t_vlen += 3;
 		}
 		if (CR_CLASS (t) != CR_CLASS_TP0 && t -> t_cr.cr_alternate) {
 			/* XXX: this doesn't preserve the order of alternates */
-			*vptr++ = VDAT_ALTERNATE;
+			if (put_octet (&vptr, VDAT_ALTERNATE) != 0)
+				return DR_LENGTH;
 			cp = vptr++;
-			if (t -> t_cr.cr_alternate & ALT_TP0)
-				*vptr++ = CR_CLASS_TP0;
-			if (t -> t_cr.cr_alternate & ALT_TP1)
-				*vptr++ = CR_CLASS_TP1;
-			if (t -> t_cr.cr_alternate & ALT_TP2)
-				*vptr++ = CR_CLASS_TP2;
-			if (t -> t_cr.cr_alternate & ALT_TP3)
-				*vptr++ = CR_CLASS_TP3;
-			if (t -> t_cr.cr_alternate & ALT_TP4)
-				*vptr++ = CR_CLASS_TP4;
-			i = (vptr - cp) - 1;
-			*cp = i & 0xff;
+			if (t -> t_cr.cr_alternate & ALT_TP0) {
+				if (put_octet (&vptr, CR_CLASS_TP0) != 0)
+					return DR_LENGTH;
+			}
+			if (t -> t_cr.cr_alternate & ALT_TP1) {
+				if (put_octet (&vptr, CR_CLASS_TP1) != 0)
+					return DR_LENGTH;
+			}
+			if (t -> t_cr.cr_alternate & ALT_TP2) {
+				if (put_octet (&vptr, CR_CLASS_TP2) != 0)
+					return DR_LENGTH;
+			}
+			if (t -> t_cr.cr_alternate & ALT_TP3) {
+				if (put_octet (&vptr, CR_CLASS_TP3) != 0)
+					return DR_LENGTH;
+			}
+			if (t -> t_cr.cr_alternate & ALT_TP4) {
+				if (put_octet (&vptr, CR_CLASS_TP4) != 0)
+					return DR_LENGTH;
+			}
+			if (ptrdiff2int ((vptr - cp) - 1, &i) != 0
+					|| int2octet (i & 0xff, cp) != 0)
+				return DR_LENGTH;
 			t -> t_vlen += (2 + i) & 0xff;
 		}
 		if (t -> t_callinglen > 0) {
@@ -390,7 +447,8 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 
 			if (int2u8 (t -> t_callinglen, &nlen) != 0)
 				return DR_LENGTH;
-			*vptr++ = VDAT_TSAP_CLI;
+			if (put_octet (&vptr, VDAT_TSAP_CLI) != 0)
+				return DR_LENGTH;
 			*(uint8_t *) vptr++ = nlen;
 			if (bcopy_int (t -> t_calling, vptr, t -> t_callinglen) != 0)
 				return DR_LENGTH;
@@ -402,7 +460,8 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 
 			if (int2u8 (t -> t_calledlen, &nlen) != 0)
 				return DR_LENGTH;
-			*vptr++ = VDAT_TSAP_SRV;
+			if (put_octet (&vptr, VDAT_TSAP_SRV) != 0)
+				return DR_LENGTH;
 			*(uint8_t *) vptr++ = nlen;
 			if (bcopy_int (t -> t_called, vptr, t -> t_calledlen) != 0)
 				return DR_LENGTH;
@@ -410,8 +469,9 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 			t -> t_vlen += 2 + t -> t_calledlen;
 		}
 		if (t -> t_tpdusize) {
-			*vptr++ = VDAT_SIZE;
-			*vptr++ = 1;
+			if (put_octet (&vptr, VDAT_SIZE) != 0
+					|| put_octet (&vptr, 1) != 0)
+				return DR_LENGTH;
 			*(uint8_t *) vptr++ = t -> t_tpdusize;
 			t -> t_vlen += 3;
 		}
@@ -442,7 +502,6 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 	case TPDU_ED:
 		if (set_tpdu_li (t, TPDU_MINLEN (t, ED)) != OK)
 			return DR_LENGTH;
-		t -> t_ed.ed_nr = htons (t -> t_ed.ed_nr);
 		outptr = (char *) &t -> t_ed;
 		ilen = ED_SIZE (t);
 		break;
@@ -460,7 +519,18 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 		return DR_PROTOCOL;
 	}
 
-	t -> t_length = htons (t -> t_li + 5 + ulen);
+	{
+		int pktlen;
+		uint16_t nlen;
+
+		if (t -> t_li > INT_MAX - 5
+				|| ulen > INT_MAX - 5 - t -> t_li)
+			return DR_LENGTH;
+		pktlen = t -> t_li + 5 + ulen;
+		if (int2u16 (pktlen, &nlen) != 0)
+			return DR_LENGTH;
+		t -> t_length = htons (nlen);
+	}
 
 #ifdef	DEBUG
 	if (tsap_log -> ll_events & LLOG_PDUS)
@@ -491,7 +561,10 @@ struct tsapkt *newtpkt (int code) {
 		return NULL;
 
 	t -> t_vrsn = TPKT_VRSN;
-	t -> t_code = code;
+	if (int2u8 (code, &t -> t_code) != 0) {
+		free (t);
+		return NULL;
+	}
 
 	return t;
 }

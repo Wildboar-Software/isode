@@ -227,8 +227,14 @@ static int ts_main (int argc, char **argv) {
 
 	default:
 		strcpy (buffer, "entity unknown or unavailable");
-		if (TDiscRequest (sd, buffer, strlen (buffer) + 1, td) == NOTOK)
-			ts_adios (td, "T-DISCONNECT.REQUEST");
+		{
+			int cc;
+
+			if (strlen1_to_int (buffer, &cc) != 0)
+				adios (NULLCP, "reject reason too long");
+			if (TDiscRequest (sd, buffer, cc, td) == NOTOK)
+				ts_adios (td, "T-DISCONNECT.REQUEST");
+		}
 		advise (LLOG_NOTICE, NULLCP, "rejected");
 		exit (1);
 	}
@@ -414,11 +420,17 @@ static int ss_main (int argc, char **argv) {
 
 	default:
 		strcpy (buffer, "entity unknown or unavailable");
-		if (SConnResponse (sd, &ss -> ss_connect, NULLSA,
-						   SC_REJECTED, 0, 0, SERIAL_NONE, buffer,
-						   strlen (buffer + 1), si)
-				== NOTOK)
-			ss_adios (sa, "S-CONNECT.RESPONSE (reject)");
+		{
+			int cc;
+
+			if (strlen2int (buffer + 1, &cc) != 0)
+				adios (NULLCP, "reject reason too long");
+			if (SConnResponse (sd, &ss -> ss_connect, NULLSA,
+					   SC_REJECTED, 0, 0, SERIAL_NONE, buffer,
+					   cc, si)
+					== NOTOK)
+				ss_adios (sa, "S-CONNECT.RESPONSE (reject)");
+		}
 		advise (LLOG_NOTICE, NULLCP, "rejected");
 		exit (1);
 	}
@@ -523,8 +535,12 @@ static void ss_dataindication (int sd, struct SSAPdata *sx) {
 			break;
 		if (requirements & SR_HALFDUPLEX) {
 			if (hx -> sx_cc > 0) {
+				int cc;
+
 				strcpy (buffer, "protocol screw-up");
-				if (SUAbortRequest (sd, buffer, strlen (buffer) + 1, si) == NOTOK)
+				if (strlen1_to_int (buffer, &cc) != 0)
+					adios (NULLCP, "abort reason too long");
+				if (SUAbortRequest (sd, buffer, cc, si) == NOTOK)
 					ss_adios (sa, "S-U-ABORT.REQUEST");
 				else
 					adios (NULLCP, "protocol screw-up");

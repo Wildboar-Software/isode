@@ -278,7 +278,13 @@ int really_find_entry (
 	}
 	if (database_root == NULLENTRY) {
 		LLOG (log_dsap,LLOG_NOTICE,("null root !!!"));
-		return(dsa_info_parent(object, err, di_p, master));
+		{
+			char m;
+
+			if (int2char (master, &m) != 0)
+				return (DS_ERROR_LOCAL);
+			return(dsa_info_parent(object, err, di_p, m));
+		}
 	}
 	if ((dn = object) == NULLDN) {
 		DLOG(log_dsap,LLOG_DEBUG,("really_fe - DS_OK: database_root"));
@@ -485,7 +491,13 @@ int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, En
 				continue ;
 			return(dsa_info_new(object,dn_stack,master,ptr,err,di_p));
 		}
-	return(dsa_info_parent(object,err,di_p,master));
+	{
+		char m;
+
+		if (int2char (master, &m) != 0)
+			return (DS_ERROR_LOCAL);
+		return(dsa_info_parent(object,err,di_p, m));
+	}
 }
 
 static int no_reply_child (

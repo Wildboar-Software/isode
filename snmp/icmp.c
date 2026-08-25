@@ -81,60 +81,64 @@ static int _read_icmp_stats (void)
 	if (_read_snmp_stats ("icmp", &labels, &values, &len) != OK)
 		return NOTOK;
 	for (i = 0; i < len; i++) {
+		int	iv;
+
 		label = i == 0 ? strtok (labels, " \n") : strtok (NULL, " ");
 		value = values[i];
+		if (long2int (value, &iv) != 0)
+			return NOTOK;
 		if (!strcmp ("InMsgs", label))
-		    icmpstat.icps_imsgs = value;
+		    icmpstat.icps_imsgs = iv;
 		else if (!strcmp ("InErrors", label))
-		    icmpstat.icps_ierrors = value;
+		    icmpstat.icps_ierrors = iv;
 		else if (!strcmp ("InDestUnreachs", label))
-		    icmpstat.icps_inhist[ICMP_UNREACH] = value;
+		    icmpstat.icps_inhist[ICMP_UNREACH] = iv;
 		else if (!strcmp ("InTimeExcds", label))
-		    icmpstat.icps_inhist[ICMP_TIMXCEED] = value;
+		    icmpstat.icps_inhist[ICMP_TIMXCEED] = iv;
 		else if (!strcmp ("InParmProbs", label))
-		    icmpstat.icps_inhist[ICMP_PARAMPROB] = value;
+		    icmpstat.icps_inhist[ICMP_PARAMPROB] = iv;
 		else if (!strcmp ("InSrcQuenchs", label))
-		    icmpstat.icps_inhist[ICMP_SOURCEQUENCH] = value;
+		    icmpstat.icps_inhist[ICMP_SOURCEQUENCH] = iv;
 		else if (!strcmp ("InRedirects", label))
-		    icmpstat.icps_inhist[ICMP_REDIRECT] = value;
+		    icmpstat.icps_inhist[ICMP_REDIRECT] = iv;
 		else if (!strcmp ("InEchos", label))
-		    icmpstat.icps_inhist[ICMP_ECHO] = value;
+		    icmpstat.icps_inhist[ICMP_ECHO] = iv;
 		else if (!strcmp ("InEchoReps", label))
-		    icmpstat.icps_inhist[ICMP_ECHOREPLY] = value;
+		    icmpstat.icps_inhist[ICMP_ECHOREPLY] = iv;
 		else if (!strcmp ("InTimestamps", label))
-		    icmpstat.icps_inhist[ICMP_TSTAMP] = value;
+		    icmpstat.icps_inhist[ICMP_TSTAMP] = iv;
 		else if (!strcmp ("InTimestampReps", label))
-		    icmpstat.icps_inhist[ICMP_TSTAMPREPLY] = value;
+		    icmpstat.icps_inhist[ICMP_TSTAMPREPLY] = iv;
 		else if (!strcmp ("InAddrMasks", label))
-		    icmpstat.icps_inhist[ICMP_MASKREQ] = value;
+		    icmpstat.icps_inhist[ICMP_MASKREQ] = iv;
 		else if (!strcmp ("InAddrMaskReps", label))
-		    icmpstat.icps_inhist[ICMP_MASKREPLY] = value;
+		    icmpstat.icps_inhist[ICMP_MASKREPLY] = iv;
 		else if (!strcmp ("OutMsgs", label))
-		    icmpstat.icps_omsgs = value;
+		    icmpstat.icps_omsgs = iv;
 		else if (!strcmp ("OutErrors", label))
-		    icmpstat.icps_error = value;
+		    icmpstat.icps_error = iv;
 		else if (!strcmp ("OutDestUnreachs", label))
-		    icmpstat.icps_outhist[ICMP_UNREACH] = value;
+		    icmpstat.icps_outhist[ICMP_UNREACH] = iv;
 		else if (!strcmp ("OutTimeExcds", label))
-		    icmpstat.icps_outhist[ICMP_TIMXCEED] = value;
+		    icmpstat.icps_outhist[ICMP_TIMXCEED] = iv;
 		else if (!strcmp ("OutParmProbs", label))
-		    icmpstat.icps_outhist[ICMP_PARAMPROB] = value;
+		    icmpstat.icps_outhist[ICMP_PARAMPROB] = iv;
 		else if (!strcmp ("OutSrcQuenchs", label))
-		    icmpstat.icps_outhist[ICMP_SOURCEQUENCH] = value;
+		    icmpstat.icps_outhist[ICMP_SOURCEQUENCH] = iv;
 		else if (!strcmp ("OutRedirects", label))
-		    icmpstat.icps_outhist[ICMP_REDIRECT] = value;
+		    icmpstat.icps_outhist[ICMP_REDIRECT] = iv;
 		else if (!strcmp ("OutEchos", label))
-		    icmpstat.icps_outhist[ICMP_ECHO] = value;
+		    icmpstat.icps_outhist[ICMP_ECHO] = iv;
 		else if (!strcmp ("OutEchoReps", label))
-		    icmpstat.icps_outhist[ICMP_ECHOREPLY] = value;
+		    icmpstat.icps_outhist[ICMP_ECHOREPLY] = iv;
 		else if (!strcmp ("OutTimestamps", label))
-		    icmpstat.icps_outhist[ICMP_TSTAMP] = value;
+		    icmpstat.icps_outhist[ICMP_TSTAMP] = iv;
 		else if (!strcmp ("OutTimestampReps", label))
-		    icmpstat.icps_outhist[ICMP_TSTAMPREPLY] = value;
+		    icmpstat.icps_outhist[ICMP_TSTAMPREPLY] = iv;
 		else if (!strcmp ("OutAddrMasks", label))
-		    icmpstat.icps_outhist[ICMP_MASKREQ] = value;
+		    icmpstat.icps_outhist[ICMP_MASKREQ] = iv;
 		else if (!strcmp ("OutAddrMaskReps", label))
-		    icmpstat.icps_outhist[ICMP_MASKREPLY] = value;
+		    icmpstat.icps_outhist[ICMP_MASKREPLY] = iv;
 	}
 	return OK;
 }
@@ -147,7 +151,8 @@ static int  o_icmp (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	OT	    ot = oi -> oi_type;
 	static   int lastq = -1;
 
-	ifvar = (ssize_t) ot -> ot_info;
+	if (caddr2int (ot -> ot_info, &ifvar) != 0)
+		return generr (offset);
 	switch (offset) {
 	case type_SNMP_PDUs_get__request:
 		if (oid -> oid_nelem != ot -> ot_name -> oid_nelem + 1

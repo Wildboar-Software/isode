@@ -41,11 +41,14 @@ int pe2qb_f (PE pe) {
 
 	/* Put the id into the qbuf */
 
-	*Qcp = ((pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
-		   | ((form << PE_FORM_SHIFT) & PE_FORM_MASK);
+	if (int2octet (((int) (pe -> pe_class << PE_CLASS_SHIFT) & PE_CLASS_MASK)
+		   | ((int) (form << PE_FORM_SHIFT) & PE_FORM_MASK), Qcp) != 0)
+		return NOTOK;
 
 	if ((id = pe -> pe_id) < PE_ID_XTND) {
-		*Qcp++ |= id;
+		if (int2octet ((int) (as_octet (*Qcp) | id), Qcp) != 0)
+			return NOTOK;
+		Qcp++;
 		Len++;
 	} else {
 		byte    idbuffer[1 + sizeof (PElementID)];
@@ -70,8 +73,10 @@ int pe2qb_f (PE pe) {
 				return NOTOK;
 			*bp-- = b;
 		}
-		for (bp = idbuffer + 1; bp < ep; bp++)
-			*bp |= PE_ID_MORE;
+		for (bp = idbuffer + 1; bp < ep; bp++) {
+			if (int2u8 ((int) (*bp | PE_ID_MORE), bp) != 0)
+				return NOTOK;
+		}
 
 		bp = ++ep;
 		if (ptrdiff2int (bp - idbuffer, &elm_len) != 0)
@@ -82,7 +87,9 @@ int pe2qb_f (PE pe) {
 	/* Put the length into the qbuf */
 
 	if ((len = pe -> pe_len) == PE_LEN_INDF) {
-		*Qcp++ = PE_LEN_XTND;
+		if (int2octet (PE_LEN_XTND, Qcp) != 0)
+			return NOTOK;
+		Qcp++;
 		Len++;
 	} else if (len <= PE_LEN_SMAX) {
 		uint8_t b;

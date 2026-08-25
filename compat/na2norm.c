@@ -111,13 +111,19 @@ na2norm (struct NSAPaddr *na) {
 		dp += ts -> ts_length;
 	}
 	while (*cp) {
-		*dp = (*cp++ - '0') << 4;
+		int octet;
+
+		octet = (*cp++ - '0') << 4;
 		if (*cp)
-			*dp++ |= (*cp++ - '0') & 0x0f;
+			octet |= (*cp++ - '0') & 0x0f;
 		else
-			*dp++ |= 0x0f;
+			octet |= 0x0f;
+		if (int2octet (octet, dp) != 0)
+			return NULLNA;
+		dp++;
 	}
-	ca -> na_addrlen = dp - ca -> na_address;
+	if (ptrdiff2char (dp - ca -> na_address, &ca -> na_addrlen) != 0)
+		return NULLNA;
 
 	return ca;
 }

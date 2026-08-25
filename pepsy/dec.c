@@ -478,6 +478,8 @@ static int pr_type (
 		case BOOLEAN:
 			if (pe != NULLPE) {
 				int	i;
+				int	off;
+				char   *bp;
 
 				DLOG (psap_log, LLOG_DEBUG, ("Decode BOOLEAN %s.%s -> %d",
 											 mod -> md_name, pname(p),
@@ -485,7 +487,11 @@ static int pr_type (
 				if ((i = prim2flag (pe)) == NOTOK)
 					return pepsylose (mod, p, pe, "pr_type:bad integer %s",
 									  pe_error(pe->pe_errno));
-				*(char *) (*parm + p->pe_ucode) = i & 0xff;
+				if (int32_to_int (p->pe_ucode, &off) != 0)
+					return pepsylose (mod, p, pe, "pr_type:boolean overflow");
+				bp = *parm + off;
+				if (int2char (i, bp) != 0)
+					return pepsylose (mod, p, pe, "pr_type:boolean overflow");
 			}
 			break;
 
@@ -1860,6 +1866,8 @@ static int pr_etype (
 	case BOOLEAN:
 		if (pe != NULLPE) {
 			int	    i;
+			int	    off;
+			char   *bp;
 
 			DLOG(psap_log, LLOG_DEBUG, ("Decode BOOLEAN %s.%s -> %d",
 										mod -> md_name, pname(p),
@@ -1868,7 +1876,11 @@ static int pr_etype (
 			if ((i = prim2flag (pe)) == NOTOK)
 				return pepsylose (mod, p, pe, "pr_etype:bad integer %s",
 								  pe_error(pe->pe_errno));
-			(*(char *) (*parm + p->pe_ucode)) = i & 0xff;
+			if (int32_to_int (p->pe_ucode, &off) != 0)
+				return pepsylose (mod, p, pe, "pr_etype:boolean overflow");
+			bp = *parm + off;
+			if (int2char (i, bp) != 0)
+				return pepsylose (mod, p, pe, "pr_etype:boolean overflow");
 		}
 		break;
 
@@ -2066,7 +2078,18 @@ again:
 #endif
 
 	case BOOLEAN:
-		*(char *) (*parm + typ->pe_ucode) = IVAL(mod, dflt);
+		{
+			int b;
+			int off;
+			char *bp;
+
+			if (int32_to_int (typ->pe_ucode, &off) != 0)
+				return NOTOK;
+			bp = *parm + off;
+			if (int32_to_int (IVAL (mod, dflt), &b) != 0
+					|| int2char (b, bp) != 0)
+				return NOTOK;
+		}
 		break;
 
 	case T_NULL:

@@ -155,9 +155,13 @@ int read_pipe_aux (char *buf, int len) {
 	for (;;) {
 		{
 			size_t nrecv;
+			ssize_t ngot;
+
 			if (ptrdiff2sizet (ep - cp, &nrecv) != 0)
 				return NOTOK;
-			res = recv (sd_current, cp, nrecv, 0);
+			ngot = recv (sd_current, cp, nrecv, 0);
+			if (ssize2int (ngot, &res) != 0)
+				return NOTOK;
 		}
 		switch (res) {
 		case NOTOK:
@@ -179,12 +183,26 @@ int read_pipe_aux (char *buf, int len) {
 		break;
 	}
 	*cp = 0;
-	return (cp - buf);
+	{
+		int n;
+
+		if (ptrdiff2int (cp - buf, &n) != 0)
+			return NOTOK;
+		return n;
+	}
 #else
-	if ((res = read (fd, buf, len)) <= 0) {
-		perror ("read error");
-		reopen_ret();
-		return (-1);
+	{
+		size_t nread;
+		ssize_t ngot;
+
+		if (int2sizet (len, &nread) != 0)
+			return (-1);
+		ngot = read (fd, buf, nread);
+		if (ssize2int (ngot, &res) != 0 || res <= 0) {
+			perror ("read error");
+			reopen_ret();
+			return (-1);
+		}
 	}
 	*(buf + res) = 0;
 	return (res);
@@ -225,18 +243,21 @@ int read_pipe_aux2 (char **buf, int *len) {
 		dp = cp, j = cc;
 		if (ep = index (buffer + 1, '\n')) {
 			strcpy (dp, ++ep);
-			i = strlen (ep);
+			if (strlen2int (ep, &i) != 0)
+				goto out;
 			dp += i, j -= i;
 		}
 		break;
 	}
-	for (; j > 0; dp += i, j -= i)
-		{
-			size_t nrecv;
-			if (int2sizet (j, &nrecv) != 0)
-				goto out;
-			i = recv (sd_current, dp, nrecv, 0);
-		}
+	for (; j > 0; dp += i, j -= i) {
+		size_t nrecv;
+		ssize_t ngot;
+
+		if (int2sizet (j, &nrecv) != 0)
+			goto out;
+		ngot = recv (sd_current, dp, nrecv, 0);
+		if (ssize2int (ngot, &i) != 0)
+			goto out;
 		switch (i) {
 		case NOTOK:
 			perror ("recv");
@@ -254,6 +275,7 @@ out:
 		default:
 			break;
 		}
+	}
 	*dp = 0;
 	return res;
 }
@@ -268,7 +290,11 @@ int send_pipe (char *buf) {
 #endif
 
 void send_pipe_aux (char *buf) {
-	send_pipe_aux2 (buf, strlen (buf));
+	int n;
+
+	if (strlen2int (buf, &n) != 0)
+		return;
+	send_pipe_aux2 (buf, n);
 }
 
 void send_pipe_aux2 (char *buf, int i) {
@@ -285,9 +311,13 @@ void send_pipe_aux2 (char *buf, int i) {
 #ifdef	SOCKETS
 		{
 			size_t nsend;
+			ssize_t nsent;
+
 			if (int2sizet (i, &nsend) != 0)
 				return;
-			res = send(sd_current, buf, nsend, 0);
+			nsent = send(sd_current, buf, nsend, 0);
+			if (ssize2int (nsent, &res) != 0)
+				return;
 		}
 		if ( res == -1) {
 			perror("send");
@@ -295,10 +325,20 @@ void send_pipe_aux2 (char *buf, int i) {
 			return;
 		}
 #else
-		if ((res = write (file, buf, MIN (BUFSIZ,i))) == -1 ) {
-			fprintf (stderr,"result write error (2)\n");
-			reopen_ret();
-			return;
+		{
+			size_t nwrite;
+			ssize_t nsent;
+
+			if (int2sizet (i, &nwrite) != 0)
+				return;
+			if (nwrite > (size_t) BUFSIZ)
+				nwrite = (size_t) BUFSIZ;
+			nsent = write (file, buf, nwrite);
+			if (ssize2int (nsent, &res) != 0 || res == -1 ) {
+				fprintf (stderr,"result write error (2)\n");
+				reopen_ret();
+				return;
+			}
 		}
 #endif
 		buf += res, i -= res;
@@ -343,7 +383,8 @@ static int get_dish_sock (struct sockaddr_in *isock) {
 	}
 	*dp = ' ';
 	bzero ((char *) isock, sizeof *isock);
-	isock -> sin_family = hp -> h_addrtype;
+	if (int2safamily (hp -> h_addrtype, &isock -> sin_family) != 0)
+		return (-1);
 	isock -> sin_port = htons ((uint16_t) portno);
 	inaddr_copy (hp, isock);
 	return (0);

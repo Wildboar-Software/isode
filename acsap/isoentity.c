@@ -64,7 +64,13 @@ int _startisoentity (char *descriptor) {
 	char   *ep;
 
 	ep = (dp = buffer) + sizeof buffer;
-	while (fgets (dp, ep - dp, servf) != NULL) {
+	for (;;) {
+		int n;
+
+		if (ptrdiff2int (ep - dp, &n) != 0)
+			break;
+		if (fgets (dp, n, servf) == NULL)
+			break;
 		if (*buffer == '#')
 			continue;
 		if (*dp == '\n' && dp == buffer)
