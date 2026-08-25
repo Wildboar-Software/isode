@@ -152,14 +152,10 @@ int f_open (char **vec) {
 	}
 #endif
 	{
-		int passlen;
-
-		if (strlen2int (passwd, &passlen) != 0)
-			return NOTOK;
 		if (FInitializeRequest (NULLOID, NULLAEI, aei, NULLPA, pa, manage, ftam_class,
 								units, attrs, NULLPE, fqos, fc,
 								*user ? user : NULLCP, account,
-								passwd[0] ? passwd : NULLCP, passlen,
+								passwd[0] ? passwd : NULLCP, strlen(passwd),
 								&myqos, trace ? FTraceHook : NULL, ftc, fti)
 				== NOTOK) {
 #ifndef	BRIDGE

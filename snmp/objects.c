@@ -801,11 +801,11 @@ int loadobjects (const char *file)\n\
 	}\n\
 \n\
     for (ot = _types; ot -> ot_text; ot++) {\n\
-	if (caddr2int (ot -> ot_syntax, &i) != 0) {\n\
-	     sprintf (PY_pepy, \"object \\\"%%s\\\" syntax index out of range\", ot -> ot_text);\n\
-	    return NOTOK;\n\
-	}\n\
-	ot -> ot_syntax = i < 0 ? NULLOS : _syntaxes[i].value;\n\
+		if (caddr2int (ot -> ot_syntax, &i) != 0) {\n\
+			sprintf (PY_pepy, \"object \\\"%%s\\\" syntax index out of range\", ot -> ot_text);\n\
+			return NOTOK;\n\
+		}\n\
+		ot -> ot_syntax = i < 0 ? NULLOS : _syntaxes[i].value;\n\
     }\n\
 \n\
     return OK;\n\

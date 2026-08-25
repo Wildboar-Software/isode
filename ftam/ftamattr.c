@@ -335,12 +335,7 @@ no_mem:
 	else { \
 	    if ((cp = qb2str (fpm -> tag -> un.actual__values)) == NULL) \
 		goto no_mem; \
-	    { \
-		int n; \
-		if (strlen2int (cp, &n) != 0) \
-		    goto no_mem; \
-		u = str2gent (cp, n); \
-	    } \
+		u = str2gent (cp, strlen(cp)); \
 	    free (cp); \
 	    if (u == NULLUTC) \
 		goto no_mem; \

@@ -97,11 +97,8 @@ getentry_block (Entry p_parent, char *fname) {
 	if (dtype == E_TYPE_CACHE_FROM_MASTER) {
 		UTC sutc;
 		struct tm *tm;
-		int n;
 
-		if (strlen2int (version, &n) == 0
-				&& (sutc = str2utct (version, n))
-				&& (tm = ut2tm (sutc)))
+		if ((sutc = str2utct (version, strlen(version))) && (tm = ut2tm (sutc)))
 			cache_age = gtime (tm);
 		p_parent->e_allchildrenpresent = FALSE;
 	}

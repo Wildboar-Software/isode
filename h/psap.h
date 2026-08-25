@@ -45,6 +45,7 @@ typedef uint16_t    PElementID;	/* 0..16383 are meaningful (14 bits) */
 #define	PE_ID(class,code) \
 	((int) ((((code) & 0x3fff) << 2) | ((class) & 0x0003)))
 
+// TODO: Make this a size_t
 typedef	int	   PElementLen;
 
 typedef uint8_t	  byte, *PElementData;
@@ -342,7 +343,7 @@ PE	time2prim (UTC, int, PElementClass, PElementID);
 char   *time2str (UTC u, int generalized);
 #define	utct2str(u)		time2str ((u), 0)
 #define	gent2str(u)		time2str ((u), 1)
-UTC	str2utct (char *cp, int len), str2gent (char *cp, int len);
+UTC	str2utct (char *cp, size_t len), str2gent (char *cp, size_t len);
 
 PE	prim2set (PE pe);
 #define	set2prim(pe)		(pe)

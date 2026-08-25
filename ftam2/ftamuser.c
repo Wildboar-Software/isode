@@ -378,9 +378,12 @@ static int f_set (char **vec) {
 					printf ("\n");
 					break;
 				}
-				if (strlen2int (v -> v_name, &w) == 0)
-					for (; w < width; w = (w + 8) & ~7)
-						putchar ('\t');
+				if (strlen2int (v -> v_name, &w) != 0) {
+					advise (NULLCP, "strlen2int failed");
+					return NOTOK;
+				}
+				for (; w < width; w = (w + 8) & ~7)
+					putchar ('\t');
 			}
 
 		return OK;

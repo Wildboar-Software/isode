@@ -9,7 +9,7 @@
 extern	LLog	* log_dsap;
 extern time_t	  timenow;
 extern time_t 	  admin_time;
-extern UTC	  str2utct(char *cp, int len);
+extern UTC	  str2utct(char *cp, size_t len);
 struct task_act *       task_alloc(void);
 struct common_args	* get_ca_ref(struct ds_op_arg *dsarg);
 extern char	  quipu_shutdown;
@@ -154,11 +154,9 @@ int task_invoke (register struct connection *conn, register struct DSAPinvoke *d
 #endif
 		} else {
 			UTC	  ut;
-			int n;
 
 			task->tk_timed = TRUE;
-			if (strlen2int (cha->cha_timelimit, &n) != 0
-					|| (ut = str2utct(cha->cha_timelimit, n)) == NULLUTC) {
+			if ((ut = str2utct(cha->cha_timelimit, strlen(cha->cha_timelimit))) == NULLUTC) {
 				task->tk_resp.di_type = DI_ERROR;
 				task->tk_resp.di_error.de_err.dse_type = DSE_SERVICEERROR;
 				task->tk_resp.di_error.de_err.dse_un.dse_un_service.DSE_sv_problem = DSE_SV_UNWILLINGTOPERFORM;

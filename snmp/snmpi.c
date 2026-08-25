@@ -381,16 +381,7 @@ no_mem:
 			advise (NULLCP, "qb2str: out of memory");
 			break;
 		}
-		{
-			int	n;
-
-			if (strlen2int (cp, &n) != 0) {
-				free (cp);
-				advise (NULLCP, "timestamp too long");
-				break;
-			}
-			ut = str2gent (cp, n);
-		}
+		ut = str2gent (cp, strlen(cp));
 		free (cp);
 		if (ut == NULL) {
 			advise (NULLCP, "str2gent: you lose");

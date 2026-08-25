@@ -334,7 +334,7 @@ static int  op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	for (i = 0; i < 0x80; i++)
 		if (isprint ((uint8_t) i)) {
 			if (int2char (i, re) != 0)
-				goto congested;
+				goto int_conv_error;
 			re++;
 		}
 
@@ -363,6 +363,11 @@ static int  op_charGen (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox
 	free_IMISC_IA5List (ia5);
 
 	return OK;
+
+int_conv_error:
+	;
+	free_IMISC_IA5List (ia5);
+	return error (sd, error_IMISC_unableToDetermineTime, (caddr_t) NULL, rox, roi);
 
 congested:
 	;

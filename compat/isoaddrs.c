@@ -316,6 +316,8 @@ loslab: ; \
     (intres) = zres; \
 }
 
+// REVIEW: This is used where src == dst. Is that okay?
+// Added by Cursor Grok 4.6.
 static int
 pack_dec_octets (char *src, char *dst, char **endp)
 {
