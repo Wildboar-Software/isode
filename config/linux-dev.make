@@ -7,10 +7,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-# Extra -Werror=* flags compiled cleanly under ./make everything.
-# Noisy historic diagnostics (type-limits, unused-*, format, empty-body,
-# implicit-fallthrough, parentheses, discarded-qualifiers,
-# multistatement-macros, ...) are omitted.
+# Extra -Werror=* flags below were verified with ./make everything (GCC 13, -g).
 OPTIONS +=	-std=gnu17 \
 		-fdiagnostics-format=sarif-stderr \
 		-Werror=conversion \
