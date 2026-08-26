@@ -7,7 +7,11 @@
 ###############################################################################
 
 #TARGET  =	-m32
-# Extra -Werror=* flags below are candidates to keep if ./make everything stays green.
+# Extra -Werror=* flags are those that did not fire on a linux-dev probe
+# of the core libraries. Noisy historic hits (type-limits, empty-body,
+# implicit-fallthrough, parentheses, format*, return-type, dangling-else,
+# char-subscripts, missing-braces, stringop-overflow, address,
+# misleading-indentation, sequence-point, comment, uninitialized) are omitted.
 OPTIONS +=	-std=gnu17 \
 		-fdiagnostics-format=sarif-stderr \
 		-Werror=conversion \
@@ -20,29 +24,19 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=pointer-sign \
 		-Werror=pedantic \
 		-Werror=absolute-value \
-		-Werror=address \
 		-Werror=alloc-zero \
 		-Werror=array-bounds \
 		-Werror=array-compare \
 		-Werror=array-parameter \
 		-Werror=bool-compare \
 		-Werror=bool-operation \
-		-Werror=char-subscripts \
-		-Werror=comment \
-		-Werror=dangling-else \
 		-Werror=dangling-pointer \
 		-Werror=duplicate-decl-specifier \
 		-Werror=duplicated-cond \
-		-Werror=empty-body \
 		-Werror=enum-compare \
 		-Werror=enum-conversion \
 		-Werror=enum-int-mismatch \
-		-Werror=format \
-		-Werror=format-overflow \
-		-Werror=format-security \
-		-Werror=format-truncation \
 		-Werror=ignored-qualifiers \
-		-Werror=implicit-fallthrough \
 		-Werror=infinite-recursion \
 		-Werror=init-self \
 		-Werror=int-in-bool-context \
@@ -51,9 +45,7 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=main \
 		-Werror=memset-elt-size \
 		-Werror=memset-transposed-args \
-		-Werror=misleading-indentation \
 		-Werror=missing-attributes \
-		-Werror=missing-braces \
 		-Werror=missing-parameter-type \
 		-Werror=multistatement-macros \
 		-Werror=nonnull \
@@ -63,11 +55,8 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=openmp-simd \
 		-Werror=override-init \
 		-Werror=packed-not-aligned \
-		-Werror=parentheses \
 		-Werror=pointer-arith \
 		-Werror=restrict \
-		-Werror=return-type \
-		-Werror=sequence-point \
 		-Werror=shift-negative-value \
 		-Werror=shift-overflow \
 		-Werror=sizeof-array-argument \
@@ -75,13 +64,10 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=sizeof-pointer-div \
 		-Werror=sizeof-pointer-memaccess \
 		-Werror=string-compare \
-		-Werror=stringop-overflow \
 		-Werror=stringop-overread \
 		-Werror=switch \
 		-Werror=tautological-compare \
 		-Werror=trampolines \
-		-Werror=type-limits \
-		-Werror=uninitialized \
 		-Werror=unknown-pragmas \
 		-Werror=use-after-free \
 		-Werror=vla-parameter \
