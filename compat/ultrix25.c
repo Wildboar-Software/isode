@@ -359,7 +359,7 @@ static int log_call_status (int fd) {
 		SLOG (compat_log, LLOG_DEBUG, NULLCP,
 			  ("X25S_RUNNING: The connection is still open."));
 		log_call_clear(fd, 0);
-#endif	DEBUG
+#endif	/* DEBUG */
 		break;
 
 	case X25S_CALLING:         /* Connection in progress       */

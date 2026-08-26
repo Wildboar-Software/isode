@@ -97,7 +97,7 @@ void DoJPEG (void) {
 	/*NOTREACHED*/
 }
 
-void main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	unsigned char   firstChar;
 
 	firstChar = mygetchar();

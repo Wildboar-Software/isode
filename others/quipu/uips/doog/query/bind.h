@@ -15,4 +15,4 @@ typedef enum {
 QBool bind_to_ds(int argc, char *argv[], auth_bind_type auth_type);
 int get_association_descriptor(QCardinal request_id);
 
-#endif _query_bind_h_
+#endif /* _query_bind_h_ */

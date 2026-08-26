@@ -12,7 +12,7 @@ typedef enum {
 
 int bind_to_ds();
 
-#endif _xdua_h_
+#endif /* _xdua_h_ */
 
 #define INV_PSWD -2
 #define PSWD_TRY_LIMIT 3

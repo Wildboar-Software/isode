@@ -72,4 +72,4 @@ QCardinal directory_wait();
 void abort_request(QCardinal request_id);
 requestRec _get_request_of_id();
 
-#endif _query_request_h_
+#endif /* _query_request_h_ */

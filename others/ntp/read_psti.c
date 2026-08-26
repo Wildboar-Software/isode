@@ -4,7 +4,7 @@ init_clock_psti(char *timesource);
 
 #ifndef	lint
 static char *sccsid = "@(#)read_psti.c	1.1	MS/ACF	89/02/17";
-#endif	lint
+#endif	/* lint */
 
 #if	defined(REFCLOCK) && defined(PSTI)
 #define	ERR_RATE	60	/* Repeat errors once an hour */
@@ -52,7 +52,7 @@ static char *sccsid = "@(#)read_psti.c	1.1	MS/ACF	89/02/17";
 
 #ifdef	DEBUG
 extern int debug;
-#endif	DEBUG
+#endif	/* DEBUG */
 
 static int nerrors = 0;
 static char clockdata[32];
@@ -80,7 +80,7 @@ int main (int argc, char **argv) {
 		} while (debug>1);
 	exit(0);
 }
-#endif STANDALONE
+#endif /* STANDALONE */
 
 init_clock_psti(char *timesource) {
 	int cfd;
@@ -94,7 +94,7 @@ init_clock_psti(char *timesource) {
 #ifdef DEBUG
 		if (debug) perror(timesource);
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, timesource, "can't open ");
 		return(-1);
 	}
@@ -102,7 +102,7 @@ init_clock_psti(char *timesource) {
 #ifdef DEBUG
 		if (debug) perror("TIOCEXCL on radioclock failed");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, timesource,
 					"TIOCEXCL on ");
 		return(-1);
@@ -112,7 +112,7 @@ init_clock_psti(char *timesource) {
 #ifdef DEBUG
 		if (debug) perror("ioctl on radioclock failed");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, timesource, "ioctl on failed on");
 		return(-1);
 	}
@@ -124,17 +124,17 @@ init_clock_psti(char *timesource) {
 	tty.c_cc[VMIN] = MIN_READ;
 	tty.c_cc[VTIME] = 0;
 	if (ioctl(cfd, TCSETA, &tty) < 0) {
-#else TCSETA	/* Use older Berkeley style IOCTL's */
+#else /* TCSETA */	/* Use older Berkeley style IOCTL's */
 	bzero((char *)&tty, sizeof tty);
 	tty.sg_ispeed = tty.sg_ospeed = B9600;
 	tty.sg_flags = ANYP|CRMOD;
 	tty.sg_erase = tty.sg_kill = '\0';
 	if (ioctl(cfd, TIOCSETP, &tty) < 0) {
-#endif TCSETA
+#endif /* TCSETA */
 #ifdef DEBUG
 		if (debug) perror("ioctl on radioclock failed");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, timesource, "ioctl failed on");
 		return(-1);
 	}
@@ -142,7 +142,7 @@ init_clock_psti(char *timesource) {
 #ifdef DEBUG
 		if (debug) perror("init write to radioclock failed");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, timesource, "init write to ");
 		return(-1);
 	}
@@ -167,7 +167,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #ifndef TCSETA
 	char *cp;
 	int  need;
-#endif TCSETA
+#endif /* TCSETA */
 
 	FD_ZERO(&readfds);
 	FD_SET(cfd, &readfds);
@@ -181,7 +181,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #ifdef DEBUG
 		if (debug) printf("radioclock write failed\n");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			if ((nerrors++%ERR_RATE) == 0)
 				advise (LLOG_EXCEPTIONS, "failed",
 						"write to radioclock");
@@ -191,7 +191,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #ifdef DEBUG
 		if (debug) printf("radioclock poll timed out\n");
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			if ((nerrors++%ERR_RATE) == 0)
 				advise (LLOG_EXCEPTIONS, "failed",
 						"poll of radioclock failed");
@@ -201,7 +201,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #ifdef DEBUG
 		if (debug) printf("radioclock read error (%d)\n", i);
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			if ((nerrors++%ERR_RATE) == 0)
 				advise (LLOG_EXCEPTIONS, "failed",
 						"radioclock read (%d<%d)", i, MIN_READ);
@@ -214,7 +214,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 		if (debug) printf("radioclock format error1 (%.12s)(0x%x)\n",
 							  clockdata, clockdata[12]);
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			if ((nerrors++%ERR_RATE) == 0)
 				advise (LLOG_EXCEPTIONS, NULLCP,
 						"radioclock format error1 (%.12s)(0x%x)",
@@ -226,7 +226,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 #ifdef DEBUG
 			if (debug) printf("radioclock format error2\n");
 			else
-#endif DEBUG
+#endif /* DEBUG */
 				if ((nerrors++%ERR_RATE) == 0)
 					advise (LLOG_EXCEPTIONS,
 							NULLCP, "radioclock format error2\n");
@@ -265,7 +265,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 							  stat1&0x2?" Year Mismatch,":"",
 							  stat1&0x1?" Clock Reset,":"");
 		else {
-#endif DEBUG
+#endif /* DEBUG */
 			sprintf(message, "radioclock fault #%d 0x%x:%s%s%s%s%s%s\n",
 					nerrors, stat1,
 					stat1&0x20?" Out of Spec,":"",
@@ -286,7 +286,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 							  nerrors, rtm->tm_yday, rtm->tm_hour,
 							  rtm->tm_min, rtm->tm_sec, millis);
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			sprintf(message,
 					"radioclock bogon #%d: %dd %dh %dm %ds %dms\n",
 					nerrors, rtm->tm_yday, rtm->tm_hour,
@@ -301,7 +301,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 		printf("Clock time:  19%d day %03d %02d:%02d:%02d.%03d diff %.3f\n",
 			   rtm->tm_year, rtm->tm_yday, rtm->tm_hour,
 			   rtm->tm_min, rtm->tm_sec, millis, diff);
-#endif DEBUG
+#endif /* DEBUG */
 	if (diff > (90*24*60*60.0) && (nerrors++%ERR_RATE)==0) {
 #ifdef DEBUG
 		if (debug)
@@ -309,7 +309,7 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 				   mtm->tm_year, mtm->tm_yday,
 				   rtm->tm_year, mtm->tm_yday);
 		else
-#endif DEBUG
+#endif /* DEBUG */
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"offset excessive (system 19%d/%d, clock 19%d/%d)\n",
 					mtm->tm_year, mtm->tm_yday,
@@ -341,14 +341,14 @@ int read_clock_psti(int cfd, struct timeval **tvpp, struct timeval **otvpp) {
 				   stat2&0x1?" DST??? -1,":"");
 		printf("\n");
 	}
-#endif DEBUG
+#endif /* DEBUG */
 	/* If necessary, acknowledge "Clock Reset" flag bit */
 	if (stat1 & 0x1) {
 		if (write(cfd, "si0", 3) != 3) {
 #ifdef DEBUG
 			if (debug) printf("radioclock reset write failed\n");
 			else
-#endif DEBUG
+#endif /* DEBUG */
 				advise (LLOG_EXCEPTIONS, "failed",
 						"reset write to radioclock");
 			return(1);

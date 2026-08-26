@@ -960,9 +960,9 @@ void dump_ptrtab(FILE *fp) {
 	fprintf(fp, "caddr_t %s%s%s[] = {\n", PREFIX, PTR_TABNAME, tab);
 #endif
 	for (i = 0; i < ptr_cnt; i++)
-		fprintf(fp, "    (caddr_t ) %s,\n", ptr_tab[i]);
+		fprintf(fp, "    PEPSY_PTR(%s),\n", ptr_tab[i]);
 	if (ptr_cnt <= 0)
-		fprintf(fp, "    (caddr_t ) 0,\n");	/* for fussy C compilers */
+		fprintf(fp, "    PEPSY_PTR(0),\n");	/* for fussy C compilers */
 	fprintf(fp, "};\n");
 }
 

@@ -10,4 +10,4 @@
 #include "util.h"
 #include "attrt_list.h"
 
-#endif _query_query_h_
+#endif /* _query_query_h_ */

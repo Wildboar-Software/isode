@@ -29,4 +29,4 @@
 #define SHORT_OU "ou"
 #define SHORT_CN "cn"
 
-#endif _destrings_h
+#endif /* _destrings_h */

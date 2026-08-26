@@ -143,7 +143,7 @@ int journal (Entry myentry) {
 	dn_free (dn);
 	return OK;
 }
-#endif TURBO_DISK
+#endif /* TURBO_DISK */
 
 void modify_attr (Entry eptr,DN who) {
 	AttributeType at;

@@ -14,4 +14,4 @@ typedef enum {
 
 int bind_to_ds();
 
-#endif _xdua_h_
+#endif /* _xdua_h_ */

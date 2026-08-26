@@ -249,7 +249,7 @@ struct edbdir topdirs[] = {
 #define USDN			"c=US"		/* DN for the US */
 
 /* main () -- main function for program */
-void main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	struct pair *pp;			/* pair pointer */
 	extern struct pair * findpair (char *nm, int any);
 	extern void arginit (int ac, char **av), read_config (void), read_dsas (void);

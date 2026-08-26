@@ -31,4 +31,4 @@
 
 #define SEARCHMESS "Searching "
 
-#endif _destrings_h
+#endif /* _destrings_h */

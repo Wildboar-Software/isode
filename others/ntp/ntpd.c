@@ -900,7 +900,7 @@ int config_line (char *argv[], int argc) {
 					   stratum, prec));
 			transmit(peer);	/* head start for REFCLOCK */
 		}
-#endif REFCLOCK
+#endif /* REFCLOCK */
 		break;
 	case TBL_KEEPALLPEERS:
 		if (argc < 2)
@@ -960,7 +960,7 @@ static void init_kern_vars (void) {
 	kern_hz = HZ;
 	if (tickadj == 0)
 		tickadj = 10*1000/HZ;
-	struct timex txc = {};
+	struct timex txc = {0};
 	txc.tick = tickadj * 1000;  /* convert tickadj to micoseconds */
 	txc.modes = MOD_CLKB;
 	if (ntp_adjtime(&txc) < 0) {
@@ -1214,7 +1214,7 @@ struct refclock {
 int init_clock_local(char *file), read_clock_local(int cfd, struct timeval **tvp, struct timeval **mtvp);
 #ifdef PSTI
 int init_clock_psti(char *timesource), read_clock_psti();
-#endif PSTI
+#endif /* PSTI */
 
 int init_clock (char *name, char *type) {
 	struct refclock *r;
@@ -1229,7 +1229,7 @@ int init_clock (char *name, char *type) {
 		reader = read_clock_psti;
 		cfd = init_clock_psti(name);
 	}
-#endif PSTI
+#endif /* PSTI */
 	else {
 		advise (LLOG_EXCEPTIONS, NULLCP,
 				"Unknown reference clock type (%s)", type);

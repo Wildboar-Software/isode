@@ -3,4 +3,4 @@
 
 #define PAGER "/usr/5bin/pg -e -n -p \"RETURN for next screen; q to quit\""
 
-#endif _deconfig_h
+#endif /* _deconfig_h */

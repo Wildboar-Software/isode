@@ -37,4 +37,4 @@
 #define LIST_OK "ok"
 #define LIST_ERROR "error"
 
-#endif _demanifest_h
+#endif /* _demanifest_h */

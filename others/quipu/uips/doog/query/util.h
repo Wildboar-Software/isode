@@ -12,4 +12,4 @@
 char *copy_string(char *string);
 void friendlify(char *name, char *fname);
 
-#endif _query_util_h_
+#endif /* _query_util_h_ */

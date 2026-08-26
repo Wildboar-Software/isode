@@ -67,4 +67,4 @@ void add_error_to_request_rec(requestRec request, char *baseobject, QE_error_cod
 char *ds_error_message(struct DSError *error);
 QE_error_code get_log_error_type(struct DSError *error, int task_id);
 
-#endif _query_error_h_
+#endif /* _query_error_h_ */

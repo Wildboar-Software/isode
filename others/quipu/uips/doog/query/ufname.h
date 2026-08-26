@@ -132,4 +132,4 @@ void ufname_rec_free(ufnameRec record), name_part_free(namePart *name);
 void add_ufn_path_element(int lower, int upper, entryList path);
 entryList get_ufn_path();
 
-#endif _query_ufname_h_
+#endif /* _query_ufname_h_ */
