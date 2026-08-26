@@ -1,4 +1,12 @@
 # paradise/others — PARADISE DUAs
 
-Adds the COSINE user interfaces under `quipu/uips/`. See
-[quipu/uips](quipu/uips/README.md).
+COSINE (Cooperation for Open Systems Interconnection Networking in
+Europe) was the EC/EUREKA OSI networking programme; PARADISE was its
+X.500 Directory pilot. This overlay’s “COSINE user interfaces” are the
+pilot’s Directory DUAs under [quipu/uips](quipu/uips/README.md) —
+[DE](quipu/uips/de/README.md) (`de`, Directory Enquiries: public-access
+lookup) and [IDM](quipu/uips/idm/README.md) (`idm`, Interactive
+Directory Manager: organisation-account add/modify/delete) — enquiry
+versus management clients, not a GUI toolkit; the tarball replaces
+stock `others/quipu/uips/de/` and adds `idm/`, and does not overlay
+FRED, SD, POD, or Doog.
