@@ -56,7 +56,7 @@ terminal. Tailoring is **system-wide** (`ETCDIR/de/detailor`), not
 | FRED | Whois-style White Pages (`whois`, aliases, areas); also `in.whitepages` for TELNET/WHOIS. Command language, not four prompts. NYSERNet pilot (`doc/user.pdf`). |
 | SD | Full-screen curses DIT browser (ISODE 5 “widget” line). You navigate entries; DE only interviews for a search. SD can be a public PAD service via `x29/`. |
 | POD | X11 novice DUA: read/list and some modify; no add/rename. Needs X11R4. DE is terminal/kiosk. |
-| Doog | Incomplete UFN client (async `libdsap`). Not a kiosk UI. |
+| Doog | Incomplete User-Friendly Naming (UFN) client (async `libdsap`; [IETF RFC 1484](https://www.rfc-editor.org/rfc/rfc1484.html)). Not a kiosk UI. |
 | IDM | PARADISE **management** DUA (add/modify/delete people and OUs). Same prompt style as DE, opposite purpose. See `paradise/others/quipu/uips/idm/`. |
 | DSC | Older enquiry UI in Volume 5; DE replaces it. |
 

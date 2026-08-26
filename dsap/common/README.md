@@ -20,7 +20,7 @@ string-encoded attributes.
 | `acl.c`, `searchacl.c`, `authpolicy.c`, `policy.c` | Access control |
 | `certificate.c`, `cpair.c`, `protected.c` | X.509-style strong authentication |
 | `photo_*.c`, `audio.c`, `picture.c` | Photo/audio syntaxes |
-| `ufn_*.c`, `aetufn.c`, `aetdap.c` | User-friendly naming and AE-title lookup |
+| `ufn_*.c`, `aetufn.c`, `aetdap.c` | User-Friendly Naming (UFN; [IETF RFC 1484](https://www.rfc-editor.org/rfc/rfc1484.html)) and AE-title lookup |
 | `turbo_avl.c`, `turbo_index.c` | AVL indexes used when TURBO is enabled |
 | `sys_tai.c`, `tai_*.c`, `conf.c` | DUA-side tailor parsing |
 

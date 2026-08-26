@@ -5,18 +5,18 @@ parent `doog/` directory is the interactive shell around it; this
 directory is the interesting `libdsap` async example. See the historic
 `README` here for the original build notes.
 
-## What UFN is
+## What User-Friendly Naming (UFN) is
 
 X.500 identifies every entry by a **distinguished name** (DN): a
 sequence of typed attributes such as
 `c=GB@o=Brunel University@ou=…@cn=…`. That is awkward to type.
 **UFN** (User-Friendly Naming) is Steve Kille's scheme for the
 opposite: people type an approximate, human name, and the Directory is
-searched until a DN is found.
-
-The paper is *Using the OSI Directory to achieve User Friendly Naming*
-(`doc/READ-ME` lists it under `ufn/`; Volume 5 §17.3.1 describes the
-`libdsap` routines and cites it as SKill90). A UFN is typically a
+searched until a DN is found. The scheme is described in
+[IETF RFC 1484](https://www.rfc-editor.org/rfc/rfc1484.html) (*Using
+the OSI Directory to achieve User Friendly Naming*; `doc/READ-ME`
+lists it under `ufn/`; Volume 5 §17.3.1 describes the `libdsap`
+routines and cites it as SKill90). A UFN is typically a
 comma-separated string of name parts, written like a postal address —
 person first, country last. Doog's own help gives:
 

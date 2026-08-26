@@ -18,7 +18,7 @@ installed with `dsaptailor` and the `oidtable.*` files.
 | Directory | Role |
 | --- | --- |
 | [x500as/](x500as/README.md) | X.500 ASN.1 modules compiled by `pepsy` into encode/decode tables |
-| [common/](common/README.md) | DNs, attributes, syntaxes, filters, EDB parse, UFN, DUA tailor |
+| [common/](common/README.md) | DNs, attributes, syntaxes, filters, EDB parse, User-Friendly Naming (UFN; [IETF RFC 1484](https://www.rfc-editor.org/rfc/rfc1484.html)), DUA tailor |
 | [net/](net/README.md) | DAP and DSP association, invoke, result, and error over ROS |
 
 ## Files in this directory

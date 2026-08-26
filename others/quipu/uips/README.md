@@ -11,7 +11,7 @@ access.
 | [pod/](pod/README.md) | X11 Athena-widget DUA |
 | [sd/](sd/README.md) | Curses “full screen” DUA |
 | [de/](de/README.md) | Directory Enquiries (PARADISE) |
-| [doog/](doog/README.md) | User-Friendly Naming DUA (pre-beta) |
+| [doog/](doog/README.md) | User-Friendly Naming (UFN; [IETF RFC 1484](https://www.rfc-editor.org/rfc/rfc1484.html)) DUA (pre-beta) |
 | [manage/](manage/README.md) | `dish_manage` alias-management DISH |
 
 `./make` in this directory builds all of them; many need extra libraries
