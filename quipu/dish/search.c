@@ -226,7 +226,7 @@ void call_search (int argc, char **argv) {
 					&& rps -> ps_byteno == 0
 					&& opt -> ps_byteno == 0
 					&& fdx_reset (opt) == OK)   /* MAJOR HACK */
-				(*opt -> ps_writeP) (opt, "3", 1, 0);
+				(*opt -> ps_writeP) (opt, (PElementData) "3", 1, 0);
 #endif
 			ps_printf (OPT,"Multiple hits...\n");
 		}
