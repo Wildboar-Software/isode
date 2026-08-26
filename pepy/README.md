@@ -21,7 +21,9 @@ programs under `others/` still compile through pepy.
 | `pepytest` | Small encoding smoke test (`pepytest < pepy/test/test1.pe`) |
 
 `YACC = bison -y` and `LEX = lex` (flex provides `/usr/bin/lex`). Generated
-parsers live alongside `yacc.y.gnrc` and `lex.l.gnrc`.
+parsers live alongside `yacc.y.gnrc` and `lex.l.gnrc`. `.gnrc` means
+generic: `util/extract.sh` specializes those templates for pepy, pepsy,
+rosy, or mosy.
 
 `cd pepy && ./make tests` is broader than `pepytest` and currently fails
 compiling extra helpers such as `mpp`.
