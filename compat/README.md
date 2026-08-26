@@ -1,8 +1,12 @@
 # compat — Portability and common utilities
 
-`libicompat` is the lowest-level ISODE library. It papers over BSD vs System V differences and holds shared helpers used by every other layer: logging, ISO addressing, the tailor file, host/service lookup, and small string/number utilities.
+`libicompat` is the lowest-level ISODE library. It papers over BSD vs System V
+differences and holds shared helpers used by every other layer: logging, ISO
+addressing, the tailor file, host/service lookup, and small string/number
+utilities.
 
-Volume 2 (`doc/volume2.pdf`) covers the tailor file, logging, and addressing. The man page is `libicompat.3`.
+Volume 2 (`doc/volume2.pdf`) covers the tailor file, logging, and addressing.
+The man page is `libicompat.3`.
 
 ## Layout
 
@@ -17,5 +21,7 @@ Volume 2 (`doc/volume2.pdf`) covers the tailor file, logging, and addressing. Th
 
 ## Quirks
 
-- Historic conversions in this directory (for example `logger.c`) are a common source of `-Werror=sign-conversion` failures under `config/linux-dev.make`.
-- Network backends are selected by compile-time `#define`s in `h/config.h` (`TCP`, `X25`, `TP4`, and so on). See `config/OPTIONS`.
+- Historic conversions in this directory (for example `logger.c`) are a common
+  source of `-Werror=sign-conversion` failures under `config/linux-dev.make`.
+- Network backends are selected by compile-time `#define`s in `h/config.h`
+  (`TCP`, `X25`, `TP4`, and so on). See `config/OPTIONS`.

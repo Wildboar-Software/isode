@@ -6,4 +6,6 @@ Exercises ISODE's async connection establishment:
 pingpong address1 address2
 ```
 
-Same address → connect to self and exit. Different addresses → run two copies that interconnect. See `READ-ME` for the extra `TNetListen` parameter needed above the transport layer.
+Same address → connect to self and exit. Different addresses → run two copies
+that interconnect. See `READ-ME` for the extra `TNetListen` parameter needed
+above the transport layer.

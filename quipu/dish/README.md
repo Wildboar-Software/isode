@@ -1,8 +1,12 @@
 # quipu/dish — Directory Shell (DAP client)
 
-DISH is the command-line Directory User Agent: bind, moveto, showentry, list, search, add, delete, modify, compare, and a `fred` subcommand for white-pages queries.
+DISH is the command-line Directory User Agent: bind, moveto, showentry, list,
+search, add, delete, modify, compare, and a `fred` subcommand for white-pages
+queries.
 
-Volume 5 chapters 4–5 document the commands, `.quipurc`, sequences, and running DISH from the shell. The built binary is `xdish` (installed as `dish`). Extra DISH helpers (auto `.quipurc` creation) live in `others/quipu/uips/dish/`.
+Volume 5 chapters 4–5 document the commands, `.quipurc`, sequences, and running
+DISH from the shell. The built binary is `xdish` (installed as `dish`). Extra
+DISH helpers (auto `.quipurc` creation) live in `others/quipu/uips/dish/`.
 
 ## Layout
 
@@ -16,4 +20,5 @@ Volume 5 chapters 4–5 document the commands, `.quipurc`, sequences, and runnin
 | `pipe.c` | Talking to a DISH server over a pipe |
 | `user.c`, `edit.c` | User identity and `editentry` |
 
-`libdish.a` is also linked by `others/quipu/uips/manage` (`dish_manage`). GNU Readline can be enabled by uncommenting `LGNUREADLINE` in the Makefile.
+`libdish.a` is also linked by `others/quipu/uips/manage` (`dish_manage`). GNU
+Readline can be enabled by uncommenting `LGNUREADLINE` in the Makefile.

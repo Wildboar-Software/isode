@@ -1,8 +1,13 @@
 # dsap/common — Directory information model
 
-The bulk of `libdsap`: in-memory entries, attribute types/values, distinguished names, RDNs, filters, schema, and every attribute syntax Quipu knows about (strings, certificates, photos, ACLs, mailboxes, …).
+The bulk of `libdsap`: in-memory entries, attribute types/values, distinguished
+names, RDNs, filters, schema, and every attribute syntax Quipu knows about
+(strings, certificates, photos, ACLs, mailboxes, …).
 
-Volume 5 §17 is the programmer's guide. New syntaxes used by both the DSA and DUAs are registered in `quipu_sntx.c` (standard syntaxes in `std_sntx.c`). `make test` in this directory builds a small program that round-trips string-encoded attributes.
+Volume 5 §17 is the programmer's guide. New syntaxes used by both the DSA and
+DUAs are registered in `quipu_sntx.c` (standard syntaxes in `std_sntx.c`).
+`make test` in this directory builds a small program that round-trips
+string-encoded attributes.
 
 ## Clusters of files
 
@@ -19,4 +24,5 @@ Volume 5 §17 is the programmer's guide. New syntaxes used by both the DSA and D
 | `turbo_avl.c`, `turbo_index.c` | AVL indexes used when TURBO is enabled |
 | `sys_tai.c`, `tai_*.c`, `conf.c` | DUA-side tailor parsing |
 
-`cstrings.c` is relevant to the modern `UTF8String` work mentioned in the root README.
+`cstrings.c` is relevant to the modern `UTF8String` work mentioned in the root
+README.

@@ -1,6 +1,8 @@
 # others/quipu/uips — Directory User Agents
 
-User interfaces on top of `libdsap` / DISH. Historic `READ-ME` expected DISH to have the broadest appeal; FRED was the White Pages UI; DE was PARADISE public access.
+User interfaces on top of `libdsap` / DISH. Historic `READ-ME` expected DISH to
+have the broadest appeal; FRED was the White Pages UI; DE was PARADISE public
+access.
 
 | Directory | Interface |
 | --- | --- |
@@ -12,4 +14,5 @@ User interfaces on top of `libdsap` / DISH. Historic `READ-ME` expected DISH to 
 | [doog/](doog/README.md) | User-Friendly Naming DUA (pre-beta) |
 | [manage/](manage/README.md) | `dish_manage` alias-management DISH |
 
-`./make` in this directory builds all of them; many need extra libraries (curses, X11).
+`./make` in this directory builds all of them; many need extra libraries
+(curses, X11).

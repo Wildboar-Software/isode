@@ -1,10 +1,15 @@
 # dsap — Directory Service Access Point (`libdsap`)
 
-X.500 client and shared Directory library: DAP/DSP encode/decode, attribute syntaxes, distinguished names, filters, OID tables, and DUA tailoring. Quipu (`quipu/`) links this library; DISH and the other DUAs do too.
+X.500 client and shared Directory library: DAP/DSP encode/decode, attribute
+syntaxes, distinguished names, filters, OID tables, and DUA tailoring. Quipu
+(`quipu/`) links this library; DISH and the other DUAs do too.
 
-Volume 5 (`doc/volume5.pdf`) is the Quipu/Directory manual. The programmer's guide there describes how to add attribute syntaxes (almost always in `common/`).
+Volume 5 (`doc/volume5.pdf`) is the Quipu/Directory manual. The programmer's
+guide there describes how to add attribute syntaxes (almost always in
+`common/`).
 
-Built as part of `all-quipu` (after `h/quipu` headers). The result is `libdsap`, installed with `dsaptailor` and the `oidtable.*` files.
+Built as part of `all-quipu` (after `h/quipu` headers). The result is `libdsap`,
+installed with `dsaptailor` and the `oidtable.*` files.
 
 `.py` files under `x500as/` are PEPSY ASN.1 modules, **not Python**.
 
@@ -25,7 +30,8 @@ Built as part of `all-quipu` (after `h/quipu` headers). The result is `libdsap`,
 | `oidtable.*.local` | Site-local OID additions |
 | `dsaptailor.root-dsas`, `root-dsas.sh` | Known root DSA list |
 
-The DSA named in `dsa_address` must match `mydsaname` in `quipu/quiputailor` and an entry in the EDB.
+The DSA named in `dsa_address` must match `mydsaname` in `quipu/quiputailor` and
+an entry in the EDB.
 
 ## Building
 
@@ -35,4 +41,5 @@ From the repo root, after the OSI stack libraries exist:
 ./make all-quipu
 ```
 
-A subdirectory `make` here will fail if `libisode` and `pepsy` have not already been built.
+A subdirectory `make` here will fail if `libisode` and `pepsy` have not already
+been built.

@@ -1,8 +1,12 @@
 # rosap — Remote Operations Service
 
-`librosap` implements OSI Remote Operations (ROS / X.219 / ISO 9072): invoke an operation, return a result or error, and reject malformed APDUs. It can run over presentation, reliable transfer, or (historically) session.
+`librosap` implements OSI Remote Operations (ROS / X.219 / ISO 9072): invoke an
+operation, return a result or error, and reject malformed APDUs. It can run over
+presentation, reliable transfer, or (historically) session.
 
-Volume 1 (`doc/volume1.pdf`) documents the “raw” ROS API. Most applications do not call RoSAP directly; they use the ROSY stub library (`rosy/`) or the Directory library (`dsap/`).
+Volume 1 (`doc/volume1.pdf`) documents the “raw” ROS API. Most applications do
+not call RoSAP directly; they use the ROSY stub library (`rosy/`) or the
+Directory library (`dsap/`).
 
 ## Layout
 

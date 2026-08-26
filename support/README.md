@@ -1,8 +1,10 @@
 # support — Daemons, tailor files, and ISO databases
 
-Runtime support that is not a protocol library: the transport listener, ISODE databases, and the combined `libisode` archive.
+Runtime support that is not a protocol library: the transport listener, ISODE
+databases, and the combined `libisode` archive.
 
-Volume 1 (aliases, entities, macros, objects) and Volume 2 (services database, `isotailor`, logging) document the files this directory installs.
+Volume 1 (aliases, entities, macros, objects) and Volume 2 (services database,
+`isotailor`, logging) document the files this directory installs.
 
 ## Programs
 

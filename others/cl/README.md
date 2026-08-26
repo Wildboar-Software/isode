@@ -1,6 +1,8 @@
 # others/cl — Connectionless ISODE (does not compile)
 
-Archive of ISODECL from the HULA project: ROS over a UNIT-DATA stack with UDP as the network provider. Based on ISODE 4.0 and **explicitly marked as not compiling** with this tree.
+Archive of ISODECL from the HULA project: ROS over a UNIT-DATA stack with UDP as
+the network provider. Based on ISODE 4.0 and
+**explicitly marked as not compiling** with this tree.
 
 Layer replacements vs the connection-oriented stack:
 
@@ -14,4 +16,5 @@ Layer replacements vs the connection-oriented stack:
 | `hulatest/` | `imisc/`-style test services |
 | `h/` | Extra headers |
 
-See `READ-ME`. Left as a place marker; it was a candidate to drop from later releases.
+See `READ-ME`. Left as a place marker; it was a candidate to drop from later
+releases.

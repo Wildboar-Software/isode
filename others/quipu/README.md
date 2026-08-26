@@ -1,8 +1,11 @@
 # others/quipu — Quipu extras (DUAs, photos, sample DIT)
 
-Everything Directory-related that is not the DSA (`quipu/`) or `libdsap` (`dsap/`). Sample databases, photo renderers, DSA configurator, and the family of user interfaces (FRED, POD, DE, SD, Doog, …).
+Everything Directory-related that is not the DSA (`quipu/`) or `libdsap`
+(`dsap/`). Sample databases, photo renderers, DSA configurator, and the family
+of user interfaces (FRED, POD, DE, SD, Doog, …).
 
-The default `others` Makefile builds `photo` and `image` here; `make pilot` / `inst-pilot` installs sample DIT files via `tools/dsaconfig`.
+The default `others` Makefile builds `photo` and `image` here; `make pilot` /
+`inst-pilot` installs sample DIT files via `tools/dsaconfig`.
 
 ## Subdirectories
 

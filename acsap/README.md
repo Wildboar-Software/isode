@@ -1,8 +1,12 @@
 # acsap — Association Control Service
 
-`libacsap` implements the OSI Association Control Service Element (ACSE). Applications use it to establish, release, and abort associations, and to resolve application-entity titles into presentation addresses.
+`libacsap` implements the OSI Association Control Service Element (ACSE).
+Applications use it to establish, release, and abort associations, and to
+resolve application-entity titles into presentation addresses.
 
-This is the top of the OSI stack that most ISODE applications actually call. It sits on presentation (`psap2`) and is used by remote operations (`rosap`), reliable transfer (`rtsap`), and the Directory (`dsap`).
+This is the top of the OSI stack that most ISODE applications actually call. It
+sits on presentation (`psap2`) and is used by remote operations (`rosap`),
+reliable transfer (`rtsap`), and the Directory (`dsap`).
 
 Volume 1 of the User's Manual (`doc/volume1.pdf`) documents the API.
 
@@ -17,8 +21,11 @@ Volume 1 of the User's Manual (`doc/volume1.pdf`) documents the API.
 | `dased.c` | Directory Assistance Service Entity daemon, built with Quipu |
 | `acserver*.c`, `acsaptest.c` | Example server / test programs |
 
-The library is asymmetric: it follows a client/server model even though the ACSE standard is symmetric.
+The library is asymmetric: it follows a client/server model even though the ACSE
+standard is symmetric.
 
 ## Building
 
-Built as part of `./make everything` (or the core `all` target). The installed library is `libacsap`; headers live under `h/acsap.h` (`#include <isode/acsap.h>`).
+Built as part of `./make everything` (or the core `all` target). The installed
+library is `libacsap`; headers live under `h/acsap.h`
+(`#include <isode/acsap.h>`).

@@ -1,12 +1,17 @@
 # quipu — X.500 Directory System Agent
 
-The shipped product: an OSI Directory System Agent (DSA). Persistence is **EDB files**, not a SQL database. The installed binary is `ros.quipu`. DISH, the DAP client, lives in `dish/`.
+The shipped product: an OSI Directory System Agent (DSA). Persistence is
+**EDB files**, not a SQL database. The installed binary is `ros.quipu`. DISH,
+the DAP client, lives in `dish/`.
 
-Volume 5 (`doc/volume5.pdf`) is the full user, administrator, and programmer guide. `quipu.8c` is the short man page.
+Volume 5 (`doc/volume5.pdf`) is the full user, administrator, and programmer
+guide. `quipu.8c` is the short man page.
 
-Quipu listens on **TCP 17003** (ITOT) itself and does **not** go through `tsapd`. The DSA entry in the EDB must match `mydsaname` in `quiputailor`.
+Quipu listens on **TCP 17003** (ITOT) itself and does **not** go through
+`tsapd`. The DSA entry in the EDB must match `mydsaname` in `quiputailor`.
 
-Smoke test without installing: `./quipu-e2e.sh` (DSA on `QUIPU_E2E_PORT`, default 21703).
+Smoke test without installing: `./quipu-e2e.sh` (DSA on `QUIPU_E2E_PORT`,
+default 21703).
 
 ## Subdirectories
 
@@ -31,6 +36,7 @@ Smoke test without installing: `./quipu-e2e.sh` (DSA on `QUIPU_E2E_PORT`, defaul
 ## Configuration
 
 - `quiputailor` — DSA name, database directory, logging, replication, caching
-- EDB tree — typically under `others/quipu/quipu-db/` as examples; production data is installed beside the tailor file
+- EDB tree — typically under `others/quipu/quipu-db/` as examples; production
+  data is installed beside the tailor file
 
 GDBM is required for TURBO features (`libgdbm-dev` on Debian/Ubuntu).

@@ -1,8 +1,12 @@
 # others — Optional demos, gateways, and Quipu extras
 
-Programs that are **not required** to run the OSI stack or Quipu. The historic `READ-ME` says none of this need be installed unless you want to try it. The default `others` Makefile only builds `quipu/photo`, `quipu/image`, `mosy`, and `tsbridge`; `everything` in this directory adds the demos.
+Programs that are **not required** to run the OSI stack or Quipu. The historic
+`READ-ME` says none of this need be installed unless you want to try it. The
+default `others` Makefile only builds `quipu/photo`, `quipu/image`, `mosy`, and
+`tsbridge`; `everything` in this directory adds the demos.
 
-Volume 4's cookbook example is `lookup/`. SNMP's SMI compiler is `mosy/`. Quipu user interfaces and sample databases are under `quipu/`.
+Volume 4's cookbook example is `lookup/`. SNMP's SMI compiler is `mosy/`. Quipu
+user interfaces and sample databases are under `quipu/`.
 
 ## Subdirectories
 
