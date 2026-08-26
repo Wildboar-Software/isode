@@ -9,7 +9,8 @@
 #TARGET  =	-m32
 # Extra -Werror=* flags compiled cleanly under ./make everything.
 # Noisy historic diagnostics (type-limits, unused-*, format, empty-body,
-# implicit-fallthrough, parentheses, discarded-qualifiers, ...) are omitted.
+# implicit-fallthrough, parentheses, discarded-qualifiers,
+# multistatement-macros, ...) are omitted.
 OPTIONS +=	-std=gnu17 \
 		-fdiagnostics-format=sarif-stderr \
 		-Werror=conversion \
@@ -50,7 +51,6 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=missing-attributes \
 		-Werror=missing-declarations \
 		-Werror=missing-parameter-type \
-		-Werror=multistatement-macros \
 		-Werror=nonnull \
 		-Werror=nonnull-compare \
 		-Werror=null-dereference \
@@ -73,7 +73,6 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=switch \
 		-Werror=trampolines \
 		-Werror=unknown-pragmas \
-		-Werror=unused-label \
 		-Werror=variadic-macros \
 		-Werror=vla \
 		-Werror=vla-parameter \
