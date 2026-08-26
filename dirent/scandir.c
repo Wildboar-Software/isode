@@ -1,3 +1,7 @@
+/**
+ * This is just a stub function to fix "empty translation unit" errors when
+ * building with -Werror=pedantic.
+ */
 static int _scandir_stub(void);
 
 #ifdef	FIXME
@@ -123,6 +127,11 @@ int alphasort(char *d1, char *d2)
 				  (*(struct dirent **)d2)->d_name));
 }
 #else
+
+/**
+ * This is just a stub function to fix "empty translation unit" errors when
+ * building with -Werror=pedantic.
+ */
 static int _scandir_stub(void) {
 	;
 }
