@@ -1250,7 +1250,7 @@ static int tcpaccept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPd
 #ifdef	SOCKETS
 	struct sockaddr_in  in_socket;
 	struct sockaddr_in *isock = &in_socket;
-	int len;
+	socklen_t len;
 #endif
 #ifndef	LPP
 	struct tsapblk *tb = lb -> lb_tb;
@@ -1263,8 +1263,9 @@ static int tcpaccept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAPd
 			 ntohs (lb -> lb_rem_isock.sin_port));
 
 #ifdef	SOCKETS
-	len = sizeof *isock;
-	if (getsockname (fd, (struct sockaddr *) isock, &len) != NOTOK) {
+	if (sizet2socklen (sizeof *isock, &len) != 0)
+		sprintf (buffer2, "%s", TLocalHostName ());
+	else if (getsockname (fd, (struct sockaddr *) isock, &len) != NOTOK) {
 		sprintf (buffer2, "%s+%d",
 				 inet_ntoa (isock -> sin_addr),
 				 ntohs (isock -> sin_port));
@@ -1678,14 +1679,19 @@ static int  tp4accept2 (struct listenblk *lb, int *vecp, char **vec, struct TSAP
 			cmsgtype,
 			fd = lb -> lb_fd,
 			len;
+	socklen_t socklen;
 	char    udata[TS_SIZE];
 	struct tsapblk *tb = lb -> lb_tb;
 	union sockaddr_osi	sock;
 	struct sockaddr_iso	*ifaddr = &sock.osi_sockaddr;
 	static char buffer[BUFSIZ];
 
-	len = sizeof sock;
-	if (getsockname (fd, (struct sockaddr *) ifaddr, &len) != NOTOK) {
+	if (sizet2socklen (sizeof sock, &socklen) == 0
+			&& getsockname (fd, (struct sockaddr *) ifaddr, &socklen) != NOTOK) {
+		if (socklen2int (socklen, &len) != 0) {
+			tsaplose (td, DR_CONGEST, NULLCP, NULLCP);
+			goto out;
+		}
 		ifaddr -> siso_len = len;
 		tp42genX (&tb -> tb_initiating, &sock);
 	} else

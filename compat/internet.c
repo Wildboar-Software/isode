@@ -182,13 +182,15 @@ got_socket:
 int	join_tcp_client (int fd, struct sockaddr_in *sock)
 {
 	int     eindex,
-			len = sizeof *sock,
 			result;
+	socklen_t len;
 
 #ifdef ULTRIX_X25_DEMSA
 	int our_count;
 #endif
 
+	if (sizet2socklen (sizeof *sock, &len) != 0)
+		return NOTOK;
 	if ((result = accept (fd, (struct sockaddr *) sock, &len)) == NOTOK) {
 		eindex = errno;
 		SLOG (compat_log, LLOG_EXCEPTIONS, "failed", ("accept"));

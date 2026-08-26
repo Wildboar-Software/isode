@@ -369,7 +369,7 @@ int do_dish (void) {
 				exit_pipe();
 				fatal (-69, "fdx_setup failed");
 			}
-			(*opt -> ps_writeP) (opt, "2", 1, 0);
+			(*opt -> ps_writeP) (opt, (PElementData) "2", 1, 0);
 			if ((rps = ps_alloc (fdx_open)) == NULLPS) {
 				exit_pipe();
 				fatal (-70, "ps_alloc 2 failed");
@@ -378,7 +378,7 @@ int do_dish (void) {
 				exit_pipe();
 				fatal (-71, "fdx_setup 2 failed");
 			}
-			(*rps -> ps_writeP) (rps, "1", 1, 0);
+			(*rps -> ps_writeP) (rps, (PElementData) "1", 1, 0);
 #else
 			if ((opt = ps_alloc (str_open)) == NULLPS) {
 				exit_pipe();

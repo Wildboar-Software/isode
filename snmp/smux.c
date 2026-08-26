@@ -122,7 +122,7 @@ int	smux_init (int debug) {
 }
 
 static int  smuxalloc (void) {
-	int	    len;
+	socklen_t len;
 
 	if ((ps = ps_alloc (fdx_open)) == NULLPS || fdx_setup (ps, sd) == NOTOK) {
 		if (ps) {
@@ -136,8 +136,8 @@ you_lose:
 		close_tcp_socket (sd);
 		return (sd = NOTOK);
 	}
-	if (getsockname (sd, (struct sockaddr *) &in_socket,
-					 (len = sizeof in_socket, &len)) == NOTOK)
+	if (sizet2socklen (sizeof in_socket, &len) != 0
+			|| getsockname (sd, (struct sockaddr *) &in_socket, &len) == NOTOK)
 		bzero ((char *) &in_socket.sin_addr, 4);
 	if ((smux_addr = str2qb ((char *) &in_socket.sin_addr, 4, 1)) == NULL) {
 		smuxlose (youLoseBig, NULLCP, "str2qb: failed");

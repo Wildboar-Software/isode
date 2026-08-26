@@ -1036,7 +1036,7 @@ fresh_start:
 			&& opt -> ps_byteno == 0
 			&& fdx_reset (rps) == OK) {		/* MAJOR HACK */
 		showfredDNs (dns -> dns_dn, fred_long);
-		(*rps -> ps_writeP) (rps, "4", 1, 0);
+		(*rps -> ps_writeP) (rps, (PElementData) "4", 1, 0);
 		ufn_dn_print_aux (rps, dns -> dns_dn, NULLDN, 0);
 		ps_print (RPS, "$");
 		dn_print (RPS, dns -> dns_dn, EDBOUT);

@@ -7,7 +7,7 @@
 ###############################################################################
 
 #TARGET  =	-m32
-OPTIONS +=  -std=gnu17 -fdiagnostics-format=sarif-stderr -Werror=conversion -Werror=sign-conversion -Werror=missing-prototypes -Werror=cast-function-type -Werror=shadow -Werror=old-style-definition -Werror=strict-prototypes -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
+OPTIONS +=  -std=gnu17 -fdiagnostics-format=sarif-stderr -Werror=conversion -Werror=sign-conversion -Werror=missing-prototypes -Werror=cast-function-type -Werror=shadow -Werror=old-style-definition -Werror=strict-prototypes -Werror=pointer-sign -g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
 
 HDIR	=	$(TOPDIR)h/

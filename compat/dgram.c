@@ -125,11 +125,13 @@ got_socket:
 	;
 #ifdef	DEBUG
 	{
-		int	len = sizeof *sock;
+		socklen_t len;
 
-		action ("FOO1", sd, (struct sockaddr *) sock);
-		if (getsockname (sd, (struct sockaddr *) sock, &len) != NOTOK)
-			action ("FOO2", sd, (struct sockaddr *) sock);
+		if (sizet2socklen (sizeof *sock, &len) == 0) {
+			action ("FOO1", sd, (struct sockaddr *) sock);
+			if (getsockname (sd, (struct sockaddr *) sock, &len) != NOTOK)
+				action ("FOO2", sd, (struct sockaddr *) sock);
+		}
 	}
 #endif
 
@@ -225,11 +227,13 @@ got_socket:
 	;
 #ifdef	DEBUG
 	{
-		int	len = sizeof *sock;
+		socklen_t len;
 
-		action ("FOO1", sd, ifaddr);
-		if (getsockname (sd, (struct sockaddr *) ifaddr, &len) != NOTOK)
-			action ("FOO2", sd, ifaddr);
+		if (sizet2socklen (sizeof *sock, &len) == 0) {
+			action ("FOO1", sd, ifaddr);
+			if (getsockname (sd, (struct sockaddr *) ifaddr, &len) != NOTOK)
+				action ("FOO2", sd, ifaddr);
+		}
 	}
 #endif
 
@@ -469,6 +473,7 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 	for (fd = 0, up = peers; fd < mfds; fd++, up++)
 		if (FD_ISSET (fd, &ifds)) {
 			int	    slen;
+			socklen_t socklen;
 			size_t  slen_sz,
 					need,
 					extra;
@@ -480,7 +485,8 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 				continue;
 			slen_sz = sizeof *sock;
 			if (int2sizet (MAXDGRAM, &extra) != 0
-					|| sizet2int (slen_sz, &slen) != 0)
+					|| sizet2int (slen_sz, &slen) != 0
+					|| sizet2socklen (slen_sz, &socklen) != 0)
 				return NOTOK;
 			need = sizeof *qb + slen_sz + extra;
 			if ((qb = (struct qbuf *) malloc (need))
@@ -493,7 +499,7 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 				ssize_t nrecv;
 
 				nrecv = recvfrom (fd, qb -> qb_data, MAXDGRAM, 0,
-								  &sock -> sa, &slen);
+								  &sock -> sa, &socklen);
 				if (ssize2int (nrecv, &cc) != 0) {
 					free ((char *) qb);
 					errno = EOVERFLOW;
@@ -505,6 +511,11 @@ int select_dgram_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int
 				return NOTOK;
 			}
 #ifdef	BSD44
+			if (socklen2int (socklen, &slen) != 0) {
+				free ((char *) qb);
+				errno = EOVERFLOW;
+				return NOTOK;
+			}
 			sock -> sa.sa_len = slen;
 #endif
 			qb -> qb_len = cc;
