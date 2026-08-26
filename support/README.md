@@ -13,7 +13,7 @@ Volume 1 (aliases, entities, macros, objects) and Volume 2 (services database,
 | `tsapd` | OSI transport listener (RFC 1006 on TCP, plus X.25/TP4 when compiled in). Exec's the server named in `isoservices`. |
 | `iaed` | Application-entity daemon used with Quipu |
 | `isod` / `isoc` | Generic ISODE initiator/responder helpers |
-| `isore` | ISODE “re” utility |
+| `isore` | Auto-spawned `libtsap` helper for async transport indications; watches sockets and SIGEMT-wakes the parent (4.2BSD SIGIO workaround). |
 | `lppd` | Lightweight-presentation listener (LPP build) |
 
 ## Installed databases
