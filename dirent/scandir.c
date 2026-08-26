@@ -1,3 +1,5 @@
+static int _scandir_stub(void);
+
 #ifdef	FIXME
 /* used by permission */
 
@@ -119,5 +121,9 @@ int alphasort(char *d1, char *d2)
 {
 	return(strcmp((*(struct dirent **)d1)->d_name,
 				  (*(struct dirent **)d2)->d_name));
+}
+#else
+static int _scandir_stub(void) {
+	;
 }
 #endif
