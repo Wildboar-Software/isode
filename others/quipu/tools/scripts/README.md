@@ -5,9 +5,10 @@ ISODE originally resolved application names through the stub file
 to store the same information as X.500 **Application Entity** entries in
 Quipu, so ACSE can look them up in the Directory.
 
-These three shell scripts dump that part of the DIT to a text file, and
-load edits back. They are not compilers; they emit and consume DISH
-commands (`search`, `add`, `modify`, `showname`, `showentry`).
+`dsa2aei` dumps that part of the DIT to a text file; `aei2dsa` turns edits
+into DISH commands (`showname`, `showentry`, `add`, `modify`). They are not
+compilers. `ent2aei` is a one-way conversion from stub `isoentities` lines
+toward the same text file.
 
 ## What gets stored
 
@@ -30,18 +31,26 @@ Each AE entry carries:
 | --- | --- |
 | `presentationAddress` | Where to connect (ISODE string form) |
 | `supportedApplicationContext` | e.g. `iso ftam`, `iso vt` |
-| `execVector` | Program `tsapd` should exec (optional) |
+| `execVector` | Program `iaed` should exec (optional) |
 
-`support/bootsvc` seeds a default `cn=services` tree (FTAM, VT, echo,
-IMISC, …). Run that once as manager if the subtree is empty. These
-scripts then maintain whatever is already there.
+`support/bootsvc` prints a `/bin/sh` script of DISH `add`s that seeds a
+default applicationProcess tree (FTAM, VT, echo, IMISC, …). The optional
+first argument is the process RDN; it defaults to `services`. Pipe it
+through `sh` once, as manager, if the subtree is empty:
+
+```text
+support/bootsvc [hostname] | sh
+```
+
+These scripts then maintain whatever is already there.
 
 ## Prerequisites
 
-The scripts call DISH as if its commands were on your `PATH`. Either:
+`dsa2aei` runs DISH commands as if they were on your `PATH`; `aei2dsa` and
+`bootsvc` print the same kind of commands for `sh`. Either:
 
 - run them from a `dish` session, or
-- use “DISH from the shell” (Volume 5 §4.7) with `DISHPROC` set so each
+- use "DISH from the shell" (Volume 5 §4.7) with `DISHPROC` set so each
   command talks to one bound DISH process instead of starting a new one.
 
 Before `dsa2aei` / `aei2dsa` / `bootsvc`:
@@ -99,15 +108,20 @@ when you ran `dsa2aei`.
 
 ## `ent2aei` — stub `isoentities` → triples
 
-Reads `isoentities`-style lines on stdin (host, service qualifier,
-address; `default` rows skipped). Maps a few historic qualifiers
-(`filestore` → `iso ftam`, `terminal` → `iso vt`, and similar) and
-prints space-separated `host`, context name, and address. That is a
-migration aid toward `quipuentities`, not something `aei2dsa` can read
-until you add colons and the remaining fields.
+Reads `isoentities`-style lines on stdin. Each stub entry is four fields
+(designator, qualifier, object identifier, presentation address);
+`default` rows and `#` comments are skipped. A few historic qualifiers
+are mapped to Directory context names (`filestore` → `iso ftam`,
+`terminal` → `iso vt`, and similar). Output is space-separated `host`,
+context name, and address — the OID column is dropped, and a mapped
+qualifier replaces the original common name.
+
+That is a migration aid toward `quipuentities`, not something `aei2dsa`
+can read. Rearrange into the five colon-separated fields (restore a
+common name and add an exec vector) before loading.
 
 ## See also
 
 - `READ-ME` in this directory (original 1990 notes)
 - [`../README.md`](../README.md) for the other Quipu admin tools
-- Volume 1, “The ISODE Entities Database”; Volume 5, DISH
+- Volume 1, "The ISODE Entities Database"; Volume 5, DISH
