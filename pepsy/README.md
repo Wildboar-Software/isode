@@ -5,6 +5,13 @@ module and emits C type definitions plus encoding/decoding *tables* driven by
 `libpepsy`. Quipu's Directory ASN.1 (`dsap/x500as`) and SNMP (`snmp/snmp.py`) go
 through pepsy.
 
+The older pair was a two-tool pipeline: `posy` emitted C structs and an
+augmented `.py` for `pepy`, which then generated a C encoder, decoder, and
+printer function for each ASN.1 type. Volume 4 Chapter 7 calls `pepsy` a
+table-driven replacement that does both jobs in one compiler; `pepsy(1)`
+and `pepsy/doc/overview.ms` contrast pepy's per-type C with tables that are
+"far far smaller."
+
 Volume 4 (`doc/volume4.pdf`) and `pepsy(1)` document the compiler. `libpepsy(3)`
 documents the runtime.
 

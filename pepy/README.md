@@ -8,7 +8,10 @@ structs.
 Volume 4 (`doc/volume4.pdf`) is the reference.
 **PEPSY (`pepsy/`) is the intended replacement** for both `pepy` and `posy`; the
 root README still lists removing pepy/posy as future work. `vt/` and several
-programs under `others/` still compile through pepy.
+programs under `others/` still compile through pepy. Volume 4 Chapter 7 and
+`pepsy(1)` call it a table-driven replacement: `posy` generated C structs and
+`pepy` a C function per type; `pepsy` emits those structs plus compact
+encode/decode/print tables instead.
 
 `.py` files in this tree are PEPY compiler inputs, **not Python**.
 
