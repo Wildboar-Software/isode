@@ -5,7 +5,9 @@ An organisation manager binds over DAP, then lists, reads, adds,
 modifies, and deletes people, roles, and rooms under that organisation
 (or department). The org/OU header can be updated separately. With
 tailor flags, a new organisation can be registered. Introduced in
-PARADISE package release 2.
+PARADISE package release 2. There is no stock ISODE IDM: the main tree
+has no `others/quipu/uips/idm/`. This overlay is the only copy. Overlay
+versus stock DE is in the [parent README](../README.md).
 
 It is the same code family as DE (`de/`): interview-style prompts,
 inverse video via termcap, per-object-class `.c` files, and `libdsap`
