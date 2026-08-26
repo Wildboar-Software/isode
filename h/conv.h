@@ -488,6 +488,32 @@ sizet2socklen (size_t n, socklen_t *out)
 	return 0;
 }
 
+/**
+ * @brief Convert @c socklen_t to @c int.
+ * @param n Value to convert.
+ * @param[out] out Destination.
+ * @return 0 on success, -1 if @p out is NULL or @p n does not fit in @c int.
+ */
+static inline int
+socklen2int (socklen_t n, int *out)
+{
+	if (out == NULL)
+		return -1;
+	if ((socklen_t) -1 > (socklen_t) 0) {
+		if ((uintmax_t) n > (uintmax_t) INT_MAX)
+			return -1;
+	} else {
+		int i = (int) n;
+
+		if ((socklen_t) i != n)
+			return -1;
+		*out = i;
+		return 0;
+	}
+	*out = (int) n;
+	return 0;
+}
+
 #include <termios.h>
 
 /**

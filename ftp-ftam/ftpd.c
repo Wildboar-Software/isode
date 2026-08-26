@@ -146,7 +146,7 @@ SFD	lostconn(void);
 #endif
 
 void main(int argc, char *argv[]) {
-	int	addrlen;
+	socklen_t addrlen;
 	char *ptr;
 	struct servent *sp;
 
@@ -159,7 +159,8 @@ void main(int argc, char *argv[]) {
 		ll_hdinit (ftam_log, ptr);
 	}
 	advise (NULLCP, "starting");
-	addrlen = sizeof his_addr;
+	if (sizet2socklen (sizeof his_addr, &addrlen) != 0)
+		adios ("failed", "address length");
 	if (getpeername (0, (struct sockaddr *) &his_addr, &addrlen) == NOTOK)
 		adios ("failed", "getpeername");
 	sp = getservbyname("ftp", "tcp");
@@ -189,7 +190,8 @@ void main(int argc, char *argv[]) {
 	form = FORM_N;
 	stru = STRU_F;
 	mode = MODE_S;
-	addrlen = sizeof ctrl_addr;
+	if (sizet2socklen (sizeof ctrl_addr, &addrlen) != 0)
+		adios ("failed", "address length");
 	if (getsockname(0, (struct sockaddr *) &ctrl_addr, &addrlen) == NOTOK)
 		adios ("failed", "getsockname");
 	gethostname(hostname, sizeof (hostname));
