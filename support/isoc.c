@@ -115,7 +115,7 @@ long	lseek (int, off_t, int);
 			    adios (NULLCP, "no association control for %s", \
 					argv[2])
 
-void main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	struct isoservent *is;
 
 	if (myname = rindex (argv[0], '/'))

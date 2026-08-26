@@ -83,7 +83,7 @@
 #define IGNLNKS	0x40
 #ifdef UW
 #define NOINSTALL	0x80
-#endif UW
+#endif /* UW */
 #define QUERYM	0x100
 
 /* expand type definitions */

@@ -19,4 +19,4 @@ void add_string_to_seq(char *string, stringCell *sequence),
 
 stringCell copy_string_seq();
 
-#endif _query_sequence_h_
+#endif /* _query_sequence_h_ */

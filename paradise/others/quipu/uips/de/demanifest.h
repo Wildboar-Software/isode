@@ -41,4 +41,4 @@
 #define SF_ACCRIGHT 2
 #define SF_OPFAIL 3
 
-#endif _demanifest_h
+#endif /* _demanifest_h */

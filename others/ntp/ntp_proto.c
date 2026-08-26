@@ -154,7 +154,7 @@ void transmit (struct ntp_peer *peer) {
 		peer->timer = 1<<NTP_MINPOLL;	/* poll refclocks frequently */
 		refclock_input(peer, pkt);
 		return;
-#endif REFCLOCK
+#endif /* REFCLOCK */
 	} else {
 #ifdef	BROADCAST_NTP
 		if (addrs[peer->sock].addr.type == AF_INET) {
@@ -243,7 +243,7 @@ void refclock_input (struct ntp_peer *peer, struct ntpdata *pkt) {
 	receive((struct Naddr *)peer, pkt, otvp, -1);
 	return;
 }
-#endif REFCLOCK
+#endif /* REFCLOCK */
 
 /* 3.4.2. Receive Procedure */
 void receive (struct Naddr *dst, struct ntpdata *pkt, struct timeval *tvp, int sock) {

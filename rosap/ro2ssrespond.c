@@ -21,7 +21,7 @@ int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication
 	struct assocblk   *acb;
 	PE	pe;
 	struct SSAPref ref;
-	struct SSAPstart    sss = {};
+	struct SSAPstart    sss = {0};
 	struct SSAPstart  *ss = &sss;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

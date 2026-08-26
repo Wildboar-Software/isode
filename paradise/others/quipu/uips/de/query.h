@@ -12,4 +12,4 @@ struct query {
 	int listlen;
 };
 
-#endif _query_h
+#endif /* _query_h */

@@ -29,7 +29,7 @@
 static int  explode (char *a, uint8_t *b, int n);
 
 
-main (int argc, char **argv, char **envp) {
+int main (int argc, char **argv, char **envp) {
 	int	    len,
 			paddr_type;
 	char   *prefix,

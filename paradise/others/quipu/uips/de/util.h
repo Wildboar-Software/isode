@@ -46,4 +46,4 @@ void freeSavedLocs(void);
 #define ANYSUBSTR 3
 #define LEADANDTRAIL 4
 
-#endif _xdua_util_h_
+#endif /* _xdua_util_h_ */

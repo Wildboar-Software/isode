@@ -732,7 +732,7 @@ static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfd
 				FD_CLR (fd, ofds);
 			}
 		} else
-#endif LPP
+#endif /* LPP */
 			if (ifds && FD_ISSET (fd, ifds)) {
 				FD_CLR (fd, ifds);
 				switch (lb2 -> lb_type) {

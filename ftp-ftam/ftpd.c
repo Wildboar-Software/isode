@@ -145,7 +145,7 @@ void	lostconn(int sig);
 SFD	lostconn(void);
 #endif
 
-void main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 	socklen_t addrlen;
 	char *ptr;
 	struct servent *sp;

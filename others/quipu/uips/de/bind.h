@@ -14,4 +14,4 @@ typedef enum {
 
 int bind_to_ds(int argc, char *argv[], auth_bind_type auth_type);
 
-#endif _xdua_h_
+#endif /* _xdua_h_ */

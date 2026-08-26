@@ -16,11 +16,11 @@ static void *silentExit (Display *dis);
 #ifndef	NEVER_USE_WM
 #define	WM_DISAPPEARED_BUG	/* wm screw up & loses the window ! */
 #define	WM_WINGE_BUG		/* When wm screws up, it also winges */
-#endif	NEVER_USE_WM
+#endif	/* NEVER_USE_WM */
 
 #ifndef	NEVER_USE_TWM
 #define	TWM_RESIZE_BUG		/* twm looses the resize if done too early. */
-#endif	NEVER_USE_TWM
+#endif	/* NEVER_USE_TWM */
 
 static void * silentExit(Display *dis);
 

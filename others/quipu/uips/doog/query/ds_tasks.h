@@ -37,4 +37,4 @@ void _task_complete(int task_id);
 DsTask _get_task_of_id();
 void abort_task(int task_id);
 
-#endif _query_ds_task_h_
+#endif /* _query_ds_task_h_ */

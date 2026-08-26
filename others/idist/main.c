@@ -138,7 +138,7 @@ int main (int argc, char *argv[]) {
 		case 'u':
 			options |= NOINSTALL;
 			break;
-#endif UW
+#endif /* UW */
 		case 'R':
 			options |= REMOVE;
 			break;

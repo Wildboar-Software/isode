@@ -172,7 +172,7 @@ int sendf (char *rname, int opts) {
 			log(lfp, "does not exist, did not install: %s\n", target);
 			goto dospecial;
 		}
-#endif UW
+#endif /* UW */
 		if (opts & VERIFY) {
 			log(lfp, "need to install: %s\n", target);
 			goto dospecial;
@@ -318,7 +318,7 @@ dospecial:
 		if (opts & NOINSTALL)  /* don't do specials associated with
 					  non-installation notices */
 			continue;
-#endif UW
+#endif /* UW */
 		if (sc->sc_args != NULL && !inlist(sc->sc_args, target))
 			continue;
 		log(lfp, "special \"%s\"\n", sc->sc_name);
