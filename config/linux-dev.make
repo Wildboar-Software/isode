@@ -7,11 +7,9 @@
 ###############################################################################
 
 #TARGET  =	-m32
-# Extra -Werror=* flags are those that did not fire on a linux-dev probe
-# of the core libraries. Noisy historic hits (type-limits, empty-body,
-# implicit-fallthrough, parentheses, format*, return-type, dangling-else,
-# char-subscripts, missing-braces, stringop-overflow, address,
-# misleading-indentation, sequence-point, comment, uninitialized) are omitted.
+# Extra -Werror=* flags compiled cleanly under ./make everything.
+# Noisy historic diagnostics (type-limits, unused-*, format, empty-body,
+# implicit-fallthrough, parentheses, discarded-qualifiers, ...) are omitted.
 OPTIONS +=	-std=gnu17 \
 		-fdiagnostics-format=sarif-stderr \
 		-Werror=conversion \
@@ -25,17 +23,21 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=pedantic \
 		-Werror=absolute-value \
 		-Werror=alloc-zero \
+		-Werror=alloca \
 		-Werror=array-bounds \
 		-Werror=array-compare \
 		-Werror=array-parameter \
 		-Werror=bool-compare \
 		-Werror=bool-operation \
-		-Werror=dangling-pointer \
+		-Werror=cast-align \
+		-Werror=date-time \
 		-Werror=duplicate-decl-specifier \
 		-Werror=duplicated-cond \
 		-Werror=enum-compare \
 		-Werror=enum-conversion \
 		-Werror=enum-int-mismatch \
+		-Werror=format-signedness \
+		-Werror=frame-address \
 		-Werror=ignored-qualifiers \
 		-Werror=infinite-recursion \
 		-Werror=init-self \
@@ -46,6 +48,7 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=memset-elt-size \
 		-Werror=memset-transposed-args \
 		-Werror=missing-attributes \
+		-Werror=missing-declarations \
 		-Werror=missing-parameter-type \
 		-Werror=multistatement-macros \
 		-Werror=nonnull \
@@ -54,6 +57,7 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=old-style-declaration \
 		-Werror=openmp-simd \
 		-Werror=override-init \
+		-Werror=packed \
 		-Werror=packed-not-aligned \
 		-Werror=pointer-arith \
 		-Werror=restrict \
@@ -65,13 +69,17 @@ OPTIONS +=	-std=gnu17 \
 		-Werror=sizeof-pointer-memaccess \
 		-Werror=string-compare \
 		-Werror=stringop-overread \
+		-Werror=stringop-truncation \
 		-Werror=switch \
-		-Werror=tautological-compare \
 		-Werror=trampolines \
 		-Werror=unknown-pragmas \
-		-Werror=use-after-free \
+		-Werror=unused-label \
+		-Werror=variadic-macros \
+		-Werror=vla \
 		-Werror=vla-parameter \
 		-Werror=volatile-register-var \
+		-Werror=write-strings \
+		-Werror=xor-used-as-pow \
 		-Werror=zero-length-bounds \
 		-g -I. -I$(TOPDIR)h $(PEPYPATH) $(KRBOPT)
 #OPTIONS	+=	$(TARGET) -fno-inline -fno-omit-frame-pointer
