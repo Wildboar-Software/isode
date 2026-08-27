@@ -36,7 +36,7 @@ static void build_fred (void);
 static void fudge_file (char *name);
 static void parse_3166 (void);
 static void table_3166 (void);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 
 #ifdef	SYS5
@@ -54,8 +54,8 @@ static char *myname = "dsaconfig";
 static char *wildlife = NULL;
 static char sedfil[BUFSIZ];
 
-static void	adios (char *what, char *fmt, ...);
-static void	advise (char *what, char *fmt, ...);
+static void	adios (char *what, const char *fmt, ...);
+static void	advise (char *what, const char *fmt, ...);
 static char   *version (void);
 static char *strdup (char *s);
 
@@ -1122,7 +1122,7 @@ static void table_3166 (void) {
 #ifndef	lint
 static void	_advise (void);
 
-static void  adios (char *what, char *fmt, ...) {
+static void  adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
@@ -1133,13 +1133,13 @@ static void  adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void adios (char *what, char *fmt) {
+static void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void  advise (char *what, char *fmt, ...) {
+static void  advise (char *what, const char *fmt, ...) {
 	va_list ap;
 
     va_start (ap, fmt);
@@ -1147,7 +1147,7 @@ static void  advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap) {
+static void  _advise (char *what, const char *fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);
@@ -1160,7 +1160,7 @@ static void  _advise (char *what, char *fmt, va_list ap) {
 #else
 /* VARARGS */
 
-static void advise (char *what, char *fmt) {
+static void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

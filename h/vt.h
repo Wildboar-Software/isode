@@ -113,8 +113,8 @@ void intr (void);
 void ttyflush (const int dd);
 void flushbufs (void);
 void finalbye (void);
-void adios (char *what, char *fmt, ...);
-void advise (int code, char *what, char *fmt, ...);
+void adios (char *what, const char *fmt, ...);
+void advise (int code, char *what, const char *fmt, ...);
 void ptyecho (const int on);
 void setmode (int on, int off);
 

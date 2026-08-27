@@ -67,8 +67,8 @@ static int dns_compar_void (const void *a, const void *b);
 static DNS	dase_interact (DNS dns, DN dn, const char *s), just_say_no (DNS dns, DN dn, const char *s);
 static PE	name2psap (DN dn);
 
-static void	adios (char *, char *, ...);
-static void	advise (const int, char *, char *, ...);
+static void	adios (char *, const char *, ...);
+static void	advise (const int, char *, const char *, ...);
 static void	ts_adios (struct TSAPdisconnect *td, const char *event), ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 static void	dased (const int, char **),
 dase_aux (const struct type_DASE_Query__REQ *),
@@ -895,7 +895,7 @@ static void envinit(void)  {
 }
 
 #ifndef lint
-static void    adios (char *what, char *fmt, ...)
+static void    adios (char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -910,13 +910,13 @@ static void    adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void adios (char *what, char *fmt) {
+static void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef lint
-static void    advise (int code, char *what, char *fmt, ...)
+static void    advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -929,7 +929,7 @@ static void    advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void advise (int code, char *what, char *fmt) {
+static void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

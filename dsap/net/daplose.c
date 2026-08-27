@@ -32,7 +32,7 @@ int	daplose (struct DAPindication *di, ...) {
 #else
 /* VARARGS4 */
 
-int daplose (struct DAPindication *di, int reason, char *what, char *fmt) {
+int daplose (struct DAPindication *di, int reason, char *what, const char *fmt) {
 	return daplose (di, reason, what, fmt);
 }
 #endif
@@ -79,7 +79,7 @@ int	dapreject (struct DAPindication *di, ...) {
 #else
 /* VARARGS4 */
 
-int dapreject (struct DAPindication *di, int reason, int id, char *what, char *fmt) {
+int dapreject (struct DAPindication *di, int reason, int id, char *what, const char *fmt) {
 	return dapreject (di, reason, id, what, fmt);
 }
 #endif

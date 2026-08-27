@@ -80,7 +80,7 @@ int	ppktlose (struct psapblk*pb, ...) {
 #else
 /* VARARGS6 */
 
-int ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, char *fmt) {
+int ppktlose (struct psapblk *pb, struct PSAPindication *pi, int reason, int ppdu, char *what, const char *fmt) {
 	return ppktlose (pb, pi, reason, ppdu, what, fmt);
 }
 #endif
@@ -97,7 +97,7 @@ int	psaplose (struct PSAPindication*pi, ...) {
 	return result;
 }
 #else
-int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
+int psaplose (struct PSAPindication *pi, int reason, char *what, const char *fmt) {
 	return psaplose (pi, reason, what, fmt);
 }
 #endif
@@ -106,7 +106,7 @@ int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */
 	char  *bp;
 	char  *what;
-	char  *fmt;
+	const char  *fmt;
 	char    buffer[BUFSIZ];
 
 	struct PSAPabort *pa;

@@ -9,8 +9,8 @@ static struct dispatch {
 	IFP	    ds_vector;
 };
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 void	acs_advise (struct AcSAPabort *aca, char *event);
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 

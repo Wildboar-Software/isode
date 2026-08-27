@@ -165,5 +165,5 @@ struct namelist *lookup(char *name, int action, struct namelist *value);
 struct namelist *expand(struct namelist *list, int wh);
 char *exptilde(char buf[], char *file);
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);

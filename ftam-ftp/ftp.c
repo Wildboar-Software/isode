@@ -40,7 +40,7 @@
 
 static int _command(const char *fmt, va_list ap);
 
-void	advise (int, char *, char *, ...);
+void	advise (int, char *, const char *, ...);
 
 #ifndef NOTOK
 #define NOTOK (-1)
@@ -168,7 +168,7 @@ int login(const char *user, const char *pass, const char *acct) {
 #ifndef	lint
 static int _command (const char *fmt, va_list ap);
 
-int command(char *fmt, ...) {
+int command(const char *fmt, ...) {
 	int	    val;
 	va_list ap;
 	va_start (ap, fmt);
@@ -193,7 +193,7 @@ static int _command(const char *fmt, va_list ap) {
 }
 #else
 /* VARARGS1 */
-int command (char *fmt, ...) {
+int command (const char *fmt, ...) {
 	return command (fmt);
 }
 #endif

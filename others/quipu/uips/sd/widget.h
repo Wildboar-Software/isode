@@ -103,8 +103,8 @@ void initwidgets(void), textfresh(void), makewidgets(WIDGET wdgts[]), setwdgtwdt
 	 redraw(void), rfrshwidgets(WIDGET *thesewdgts), boxwdgt(WIDGET *wdgt, char xch, char ych), printwdgt(WIDGET *wdgt), printbar(int list_size, int first, int display_num),
 	 printlabel(WIDGET *wdgt), printdialog(WIDGET *wdgt), printtoggle(WIDGET *wdgt), printcommand(WIDGET *wdgt),
 	 interact(void), docallback(int indx), dialog(WIDGET *wdgt), setdialogstr(WIDGET *wdgt, char *dstr, int maxlen),
-	 toggle(WIDGET *wdgt), settogglstrs(WIDGET *wdgt, char **togglstrs, int togglindx), setlabel(WIDGET *wdgt, char *label), getlabel(WIDGET *wdgt, char label[]), wprint(WINDOW *here, char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j), tprint(char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j),
-	 xprint(char *fmt), xprintint(char *fmt, int a), cleartext(void), jumpback(void), nullfn(void), quitfn(void),
+	 toggle(WIDGET *wdgt), settogglstrs(WIDGET *wdgt, char **togglstrs, int togglindx), setlabel(WIDGET *wdgt, char *label), getlabel(WIDGET *wdgt, char label[]), wprint(WINDOW *here, const char *fmt, char *a,char *b,char *c,char *d,char *e,char *f,char *g,char *h,char *i,char *j), tprint(const char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j),
+	 xprint(const char *fmt), xprintint(const char *fmt, int a), cleartext(void), jumpback(void), nullfn(void), quitfn(void),
 	 endwidgets(void);
 
 int linec(void), gety(void), posnwidgets(WIDGET thesewdgts[], int starty), getwidgetindex(WIDGET wdgts[], int callch), getdialogstr(WIDGET *wdgt, char str[]),

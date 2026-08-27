@@ -74,8 +74,8 @@ void   Remove_openCall_attribute(void) ;
 
 static  char *myname;
 
-void    adios (char *, char *, ...);
-void    advise (int, char *, char *, ...);
+void    adios (char *, const char *, ...);
+void    advise (int, char *, const char *, ...);
 void    mk_dsa_tmp_dir(void);
 static  void envinit (void), setdsauid(void);
 void attempt_restart(int sig);
@@ -620,7 +620,7 @@ fork_ok:
 	/* ERRORS */
 
 #ifndef	lint
-	void    adios (char *what, char *fmt, ...) {
+	void    adios (char *what, const char *fmt, ...) {
 		va_list ap;
 
 		va_start (ap, fmt);
@@ -643,7 +643,7 @@ fork_ok:
 #endif
 
 #ifndef	lint
-	void    advise (int code, char *what, char *fmt, ...) {
+	void    advise (int code, char *what, const char *fmt, ...) {
 		va_list ap;
 
 		va_start (ap, fmt);

@@ -576,7 +576,7 @@ char   *bitstr2strb (PE pe, int *k);
 
 extern char PY_pepy[];
 
-void	PY_advise (char *, char *, ...);
+void	PY_advise (char *, const char *, ...);
 int	PY_pp (int argc, char **argv, char **envp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
 
 int	testdebug (PE pe, char *s);
@@ -625,7 +625,7 @@ extern char *pepy_strings[];
 #define	 PEPY_ERR_TOO_MANY_TAGGED 	(pepy_strings[20])
 #define	 PEPY_ERR_EXTRA_MEMBERS 	(pepy_strings[21])
 
-void ps_printf (PS ps, char *fmt, ...);
+void ps_printf (PS ps, const char *fmt, ...);
 int std_open (PS ps);
 int std_flush (PS ps);
 int free_static_oid (void);

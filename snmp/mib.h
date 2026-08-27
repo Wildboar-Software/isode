@@ -61,8 +61,8 @@ extern	struct timeval
 
 extern	OID	nullSpecific;
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 void init_snmp (void);
 void init_icmp (void);

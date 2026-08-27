@@ -12,8 +12,8 @@
 #include "pepy.h"
 void yyerror (char *s);
 void yyerror_aux (char *s);
-void myyerror (char* fmt, ...);
-void pyyerror (YP yp, char* fmt, ...);
+void myyerror (const char* fmt, ...);
+void pyyerror (YP yp, const char* fmt, ...);
 int yywrap(void);
 void yyprint (char *s, const int f, const int top);
 void pass1(void);
@@ -312,7 +312,7 @@ static void prologue(void) {
 	}
 	if (aflag)
 		printf ("#define\tadvise\t%s\n\n", aflag);
-	printf ("void\tadvise (char *what, char *fmt, ...);\n");
+	printf ("void\tadvise (char *what, const char *fmt, ...);\n");
 }
 
 void yyerror (char *s) {
@@ -323,7 +323,7 @@ void yyerror (char *s) {
 }
 
 #ifndef lint
-void warning (char* fmt, ...) {
+void warning (const char* fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
@@ -336,7 +336,7 @@ void warning (char* fmt, ...) {
 }
 #else
 /* VARARGS1 */
-int warning (char *fmt) {
+int warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
@@ -354,7 +354,7 @@ void yyerror_aux (char *s) {
 }
 
 #ifndef	lint
-void myyerror (char* fmt, ...) {
+void myyerror (const char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	va_start (ap, fmt);
@@ -365,7 +365,7 @@ void myyerror (char* fmt, ...) {
 #endif
 
 #ifndef	lint
-void pyyerror (YP yp, char* fmt, ...) {
+void pyyerror (YP yp, const char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
 	va_start (ap, fmt);
@@ -379,7 +379,7 @@ void pyyerror (YP yp, char* fmt, ...) {
 }
 #else
 /* VARARGS */
-void pyyerror (YP yp, char* fmt, ...) {
+void pyyerror (YP yp, const char* fmt, ...) {
 	pyyerror (yp, fmt);
 }
 #endif

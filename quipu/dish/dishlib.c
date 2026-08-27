@@ -30,7 +30,7 @@ static void call_bind_void(int argc, char **argv);
 static void unknown_cmd (int argc, char **argv);
 static void gnu_gets_setup (void);
 static char *gnu_gets (char *buf, int len);
-void advise (int code, char *what, char *fmt, ...);
+void advise (int code, char *what, const char *fmt, ...);
 
 #define MAXARGS 50
 
@@ -583,7 +583,7 @@ dish_intr (int sd) {
 	longjmp (dish_env,2);
 }
 
-void    advise (int code, char *what, char *fmt, ...) {
+void    advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	extern LLog    *log_dsap;
 

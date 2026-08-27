@@ -37,8 +37,8 @@ struct dispatch {
 	enum mode ds_mode;
 };
 
-void	adios (char *, char *, ...),
-		advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...),
+		advise (int, char *, const char *, ...);
 
 static void ts_adios (struct TSAPdisconnect *td, const char *message), ts_advise (struct TSAPdisconnect *td, const char *event);
 static void ts_dataindication (int sd, struct TSAPdata *tx), ts_discindication (int sd, struct TSAPdisconnect *td);
@@ -2294,7 +2294,7 @@ static void ros_advise (struct RoSAPpreject *rop, const char *event) {
 }
 
 #ifndef	lint
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -2304,13 +2304,13 @@ void adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (int code, char *what, char *fmt, ...)
+void advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -2318,7 +2318,7 @@ void advise (int code, char *what, char *fmt, ...)
 	va_end (ap);
 }
 #else
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

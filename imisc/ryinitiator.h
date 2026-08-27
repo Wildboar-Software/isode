@@ -28,7 +28,7 @@ struct dispatch {
 	char   *ds_help;
 };
 
-void adios (char* what, char* fmt, ...), advise (char* what, char* fmt, ...);
+void adios (char* what, const char* fmt, ...), advise (char* what, const char* fmt, ...);
 void acs_adios (struct AcSAPabort *aca, const char *event), acs_advise (struct AcSAPabort *aca, char *event);
 void ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 

@@ -8,7 +8,7 @@
 #ifndef	lint
 char   PY_pepy[BUFSIZ] = "";
 
-void	PY_advise (char* what, char* fmt, ...) {
+void	PY_advise (char* what, const char* fmt, ...) {
 	va_list	ap;
 
 	va_start (ap, fmt);
@@ -20,7 +20,7 @@ void	PY_advise (char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-void PY_advise (char *what, char *fmt) {
+void PY_advise (char *what, const char *fmt) {
 	PY_advise (what, fmt);
 }
 #endif

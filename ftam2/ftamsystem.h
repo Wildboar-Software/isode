@@ -18,8 +18,8 @@ void	ftam_adios (struct FTAMabort *fta, char *event);
 void	ftam_advise (struct FTAMabort *fta, char *event);
 void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag);
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 /*    UNIX DATA */
 

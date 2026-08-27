@@ -33,8 +33,8 @@ extern int do_break;
 extern int telnet_profile;
 extern int connected;
 
-void adios (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 
 int send_queue (const TEXT_UPDATE ud);
 void vtsend (void);

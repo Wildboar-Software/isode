@@ -68,7 +68,7 @@ extern char *ftp_error; /* points to FTP diagnostic string */
 /* ftp.c client routines */
 int hookup(char *host, const int port);
 int login(const char *user, const char *pass, const char *acct);
-int command(char *fmt, ...);
+int command(const char *fmt, ...);
 int getreply(const int expecteof);
 int sendrequest(const char *cmd, const char *remote);
 int recvrequest(const char *cmd, const char *remote);

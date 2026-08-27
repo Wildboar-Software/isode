@@ -101,8 +101,8 @@ extern void clock_update(struct ntp_peer *peer);
 extern void clear(struct ntp_peer *peer);
 extern void clock_filter(struct ntp_peer *peer, double new_delay, double new_offset);
 extern void select_clock(void);
-extern void adios(char *, char *, ...);
-extern void advise(int, char *, char *, ...);
+extern void adios(char *, const char *, ...);
+extern void advise(int, char *, const char *, ...);
 extern void init_logical_clock(void);
 extern void create_osilisten (char *addr);
 extern void iso_init (int vecp, char **vec, int fd);
@@ -1319,7 +1319,7 @@ int envinit (void) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	extern LLog *pgm_log;
 
@@ -1331,13 +1331,13 @@ void	adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS2 */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...)
+void	advise (int code, char *what, const char *fmt, ...)
 {
 	extern LLog    *pgm_log;
 	va_list ap;
@@ -1349,7 +1349,7 @@ void	advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS3 */
 
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

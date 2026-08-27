@@ -60,8 +60,8 @@ struct dispatch {
 static struct dispatch *dz;
 static struct dispatch  dps[NTADDRS];
 
-void adios  (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios  (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 void ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 
 int main (int argc, char **argv, char **envp) {
@@ -316,7 +316,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void  adios (char *what, char *fmt, ...)
+void  adios (char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -325,13 +325,13 @@ void  adios (char *what, char *fmt, ...)
 	_exit (1);
 }
 #else
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void  advise (int code, char *what, char *fmt, ...)
+void  advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -339,7 +339,7 @@ void  advise (int code, char *what, char *fmt, ...)
 	va_end (ap);
 }
 #else
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

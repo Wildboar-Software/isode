@@ -98,8 +98,8 @@ static int
 UnixFamily (int xf);
 
 
-extern int Error (char *fmt, ...);
-extern int Fatal (char *fmt, ...);
+extern int Error (const char *fmt, ...);
+extern int Fatal (const char *fmt, ...);
 
 #define acmp(a1, a2, len) bcmp((char *)(a1), (char *)(a2), len)
 #define acopy(a1, a2, len) bcopy((char *)(a1), (char *)(a2), len)

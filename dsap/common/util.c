@@ -150,7 +150,7 @@ int test_prim_pe (PE pe, const PElementClass class, const PElementID id)
 }
 
 #ifndef lint
-void ps_printf (PS ps, char *fmt, ...) {
+void ps_printf (PS ps, const char *fmt, ...) {
 	extern int std_flush (PS ps);
 	va_list ap;
 	va_start (ap, fmt);
@@ -169,12 +169,12 @@ void ps_printf (PS ps, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void ps_printf (PS ps, char *fmt) {
+void ps_printf (PS ps, const char *fmt) {
 	ps_printf (ps,fmt);
 }
 #endif
 
-void fatal (int code, char *fmt) {
+void fatal (int code, const char *fmt) {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));

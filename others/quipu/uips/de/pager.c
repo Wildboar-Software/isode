@@ -15,8 +15,8 @@ int pagerOn (int number);
 int linewrapOn (void);
 int linewrapOff (void);
 int isWrapOn (void);
-void resetprint(char *fmt, ...);
-void pageprint(char *fmt, ...);
+void resetprint(const char *fmt, ...);
+void pageprint(const char *fmt, ...);
 int putPagePrompt (void);
 int getPagerInput (void);
 int getpnum (void);
@@ -65,7 +65,7 @@ int isWrapOn (void) {
 	return wrapLines;
 }
 
-void resetprint(char *fmt, ...) {
+void resetprint(const char *fmt, ...) {
 	va_list ap;
 	char buf[BUFSIZ];
 
@@ -77,7 +77,7 @@ void resetprint(char *fmt, ...) {
 	va_end(ap);
 }
 
-void pageprint(char *fmt, ...)
+void pageprint(const char *fmt, ...)
 {
 	va_list ap;
 	char buf[BUFSIZ];

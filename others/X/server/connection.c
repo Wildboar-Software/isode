@@ -125,8 +125,8 @@ void EstablishNewConnections(ClientPtr *newclients, int *nnew)
 
 extern char *isodetcpath;
 
-extern int Error (char *fmt, ...);
-extern int Fatal (char *fmt, ...);
+extern int Error (const char *fmt, ...);
+extern int Fatal (const char *fmt, ...);
 
 #ifdef ISODEBUG
 /*

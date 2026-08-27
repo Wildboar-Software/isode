@@ -20,8 +20,8 @@ static struct dispatch {
 	char   *ds_help;
 };
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 void	acs_adios (struct AcSAPabort *aca, char *event), acs_advise (struct AcSAPabort *aca, char *event);
 void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 

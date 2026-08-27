@@ -38,7 +38,7 @@
 
 static void ftp_init(void);
 
-void	advise (int, char *, char *, ...);
+void	advise (int, char *, const char *, ...);
 #ifndef	NULLCP
 #define	NULLCP	((char *) 0)
 #endif

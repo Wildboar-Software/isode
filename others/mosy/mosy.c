@@ -12,9 +12,9 @@
 #include "rosy-defs.h"
 
 int yyerror (char *s);
-int warning (char *fmt);
+int warning (const char *fmt);
 static yyerror_aux (char *s);
-myyerror (char *fmt, ...);
+myyerror (const char *fmt, ...);
 int yywrap (void);
 int yyprint (char *s, int f, int top);
 static yyprint_aux (char *s, char *mode);
@@ -256,7 +256,7 @@ int yyerror (char *s) {
 }
 
 #ifndef lint
-warning (char *fmt, ...) {
+warning (const char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
@@ -272,7 +272,7 @@ warning (char *fmt, ...) {
 #else
 
 /* VARARGS1 */
-int warning (char *fmt) {
+int warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
@@ -290,7 +290,7 @@ static yyerror_aux (char *s) {
 }
 
 #ifndef	lint
-myyerror (char *fmt, ...) {
+myyerror (const char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 

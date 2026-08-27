@@ -125,7 +125,7 @@ void vtag (const int class, const int id) {
 }
 
 #ifndef	lint
-void vprint (char *fmt, ...) {
+void vprint (const char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	vprint1 ();
@@ -138,7 +138,7 @@ void vprint (char *fmt, ...) {
 #else
 /* VARARGS */
 
-int vprint (char *fmt) {
+int vprint (const char *fmt) {
 	vprint (fmt);
 }
 #endif

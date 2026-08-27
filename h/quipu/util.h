@@ -90,7 +90,7 @@ void octprint (PS ps, char *str, int format);
 char *SkipSpace (char *ptr);
 void StripSpace (char *b);
 void StripSpace2 (const char *b);
-void fatal (int code, char *fmt);
+void fatal (int code, const char *fmt);
 void utcprint (PS ps, char *xtime, int format);
 int quipu_pe_cmp (PE a, PE b);
 int test_arg (const char *x, const char *y, const int c);

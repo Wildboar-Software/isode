@@ -43,7 +43,7 @@ static int f_compile (char **vec);
 static void enum_print (integer *x, OS os);
 static void moresyntax (int check);
 static void intrser (int sig);
-static void  _advise (char *what, char *fmt, va_list ap);
+static void  _advise (char *what, const char *fmt, va_list ap);
 
 #if	!defined(CLTS) && !defined(COTS)
 #define	COTS
@@ -84,8 +84,8 @@ static	struct TSAPaddr  snmp_ta;
 char   *snmp_error (int i);
 static struct type_SNMP_Message *new_message (const int offset, char **vec);
 
-void	adios (char *what, char *fmt, ...);
-void	advise (char *what, char *fmt, ...);
+void	adios (char *what, const char *fmt, ...);
+void	advise (char *what, const char *fmt, ...);
 
 struct dispatch {
 	char   *ds_name;		      /* command name */
@@ -1667,7 +1667,7 @@ static int  ncols (FILE *fp) {
 #ifndef	lint
 static void	_advise (char *what, const char *fmt, va_list ap);
 
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -1676,13 +1676,13 @@ void adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS */
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (char *what, char *fmt, ...) {
+void advise (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -1701,7 +1701,7 @@ static void  _advise (char *what, const char *fmt, va_list ap)
 }
 #else
 /* VARARGS */
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

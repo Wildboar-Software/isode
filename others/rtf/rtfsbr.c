@@ -8,7 +8,7 @@
 #include <sys/times.h>
 #include "ftamsystem.h"
 
-int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt);
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, const char *fmt);
 static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
 
 #define	TMS
@@ -75,7 +75,7 @@ void rts_advise (struct RtSAPabort *rta, char *event) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...)
+void	adios (char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -87,13 +87,13 @@ void	adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -103,13 +103,13 @@ void	advise (int code, char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	ryr_advise (char *what, char *fmt, ...)
+void	ryr_advise (char *what, const char *fmt, ...)
 {
 	va_list ap;
 
@@ -120,7 +120,7 @@ void	ryr_advise (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void ryr_advise (char *what, char *fmt) {
+void ryr_advise (char *what, const char *fmt) {
 	ryr_advise (what, fmt);
 }
 #endif
@@ -128,7 +128,7 @@ void ryr_advise (char *what, char *fmt) {
 #ifdef	lint
 /* VARARGS4 */
 
-int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
+int rtsaplose (struct RtSAPindication *rti, int reason, char *what, const char *fmt) {
 	return rtsaplose (rti, reason, what, fmt);
 }
 #endif

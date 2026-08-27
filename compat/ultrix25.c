@@ -37,13 +37,13 @@ static int log_call_status (int fd);
 static int log_call_clear (int fd, int type);
 static int log_x25_facilities (int fd, int coc, char *caption);
 static void *
-epl_prtstr (char *fmt, char *val, int vallen);
+epl_prtstr (const char *fmt, char *val, int vallen);
 static void *
-epl_prtbool (char *fmt, short *val, int vallen);
+epl_prtbool (const char *fmt, short *val, int vallen);
 static void *
-epl_prtint (char *fmt, short *val, int vallen);
+epl_prtint (const char *fmt, short *val, int vallen);
 static void *
-epl_prtlst (char *fmt, short *val, int vallen);
+epl_prtlst (const char *fmt, short *val, int vallen);
 int print_x25_facilities (int fd, int coc, char *caption);
 X25vc our_get_vci(int sd, char *s);
 static int compose_text (char *xudatap, char *pid, char *cudf);
@@ -542,7 +542,7 @@ static int log_x25_facilities (int fd, int coc, char *caption) {
 }
 
 static void *
-epl_prtstr (char *fmt, char *val, int vallen) {
+epl_prtstr (const char *fmt, char *val, int vallen) {
 	static char	abuf[128];
 	static char	tbuf[128];
 	char	*c, *d;
@@ -565,7 +565,7 @@ epl_prtstr (char *fmt, char *val, int vallen) {
 }
 
 static void *
-epl_prtbool (char *fmt, short *val, int vallen) {
+epl_prtbool (const char *fmt, short *val, int vallen) {
 	static char	*true = "true";
 	static char	*false = "false";
 
@@ -576,7 +576,7 @@ epl_prtbool (char *fmt, short *val, int vallen) {
 }
 
 static void *
-epl_prtint (char *fmt, short *val, int vallen) {
+epl_prtint (const char *fmt, short *val, int vallen) {
 	static char	tbuf[128];
 
 	sprintf(tbuf, fmt, *val);
@@ -584,7 +584,7 @@ epl_prtint (char *fmt, short *val, int vallen) {
 }
 
 static void *
-epl_prtlst (char *fmt, short *val, int vallen) {
+epl_prtlst (const char *fmt, short *val, int vallen) {
 	static char	*list = "[LIST]";
 
 	return list;
@@ -597,7 +597,7 @@ static struct {
 #define	EPL_BOOL	1
 #define	EPL_INT		2
 #define	EPL_LIST	3
-	char	*fmt;
+	const char	*fmt;
 } epl_tab[] = {
 	X25I_CALLEDEXTISO,	     EPL_STR,	"Address ext for dest (ISO): %s",
 	X25I_CALLEDEXTNONISO,    EPL_STR,	"Non-ISO format: %s",

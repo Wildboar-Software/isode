@@ -14,8 +14,8 @@ static char *myname = "pp";
 
 static enum { ps2pp, pl2pp } mode = ps2pp;
 
-static void	adios (char* what, char* fmt, ...),
-			advise (char* what, char* fmt, ...);
+static void	adios (char* what, const char* fmt, ...),
+			advise (char* what, const char* fmt, ...);
 
 static int  process (const char *file, const FILE *fp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
 
@@ -113,7 +113,7 @@ done:
 #ifndef	lint
 static void	_advise (char*, const char*, va_list);
 
-static void  adios (char* what, char* fmt, ...) {
+static void  adios (char* what, const char* fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -127,13 +127,13 @@ static void  adios (char* what, char* fmt, ...) {
 #else
 /* VARARGS */
 
-static void adios (char *what, char *fmt) {
+static void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void  advise (char* what, char* fmt, ...) {
+static void  advise (char* what, const char* fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -159,7 +159,7 @@ static void  _advise (char* what, const char* fmt, va_list ap) {
 #else
 /* VARARGS */
 
-static void advise (char *what, char *fmt) {
+static void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

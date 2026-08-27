@@ -36,9 +36,9 @@
 void yyerror (char *s);
 
 void yyerror (char *s);
-void warning (char *fmt, ...);
-void myyerror (char* fmt, ...);
-static void pyyerror (YP yp, char *fmt, ...);
+void warning (const char *fmt, ...);
+void myyerror (const char* fmt, ...);
+static void pyyerror (YP yp, const char *fmt, ...);
 int yywrap(void);
 void yyprint (char *s, const int f, const int top);
 void pass1(void);
@@ -350,7 +350,7 @@ void yyerror (char *s) {
 }
 
 #ifndef lint
-void warning (char* fmt, ...) {
+void warning (const char* fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	va_list	ap;
@@ -364,7 +364,7 @@ void warning (char* fmt, ...) {
 #else
 
 /* VARARGS1 */
-void warning (char *fmt) {
+void warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
@@ -382,7 +382,7 @@ static void yyerror_aux (char *s) {
 }
 
 #ifndef	lint
-void myyerror (char* fmt, ...) {
+void myyerror (const char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	va_start (ap, fmt);
@@ -393,7 +393,7 @@ void myyerror (char* fmt, ...) {
 #endif
 
 #ifndef	lint
-static void pyyerror (YP yp, char* fmt, ...) {
+static void pyyerror (YP yp, const char* fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list	ap;
 	va_start (ap, fmt);
@@ -413,7 +413,7 @@ static void pyyerror (YP yp, char* fmt, ...) {
 #else
 /* VARARGS */
 
-static void pyyerror (YP yp, char *fmt) {
+static void pyyerror (YP yp, const char *fmt) {
 	pyyerror (yp, fmt);
 }
 #endif

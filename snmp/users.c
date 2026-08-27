@@ -37,14 +37,14 @@ void init_users (void);
 static int pw_sort (const void *p, const void *q);
 static int gr_sort (const void *p, const void *q);
 void sync_users (int cor);
-void adios (char *what, char *fmt, ...);
+void adios (char *what, const char *fmt, ...);
 
 #define	generr(offset)	((offset) == type_SNMP_SMUX__PDUs_get__next__request \
 				    ? NOTOK : int_SNMP_error__status_genErr)
 
 extern	int	quantum;
 
-void	advise (int, char *, char *, ...);
+void	advise (int, char *, const char *, ...);
 
 #include <pwd.h>
 #include <grp.h>

@@ -129,8 +129,8 @@ static	int	didhup = OK;
 static void hupser (int sig);
 #endif
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 static void	ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 
 int	nd = NOTOK;
@@ -2729,7 +2729,7 @@ static int f_variable (char **vec) {
 #endif	/* SNMPT */
 
 #ifndef	lint
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -2739,13 +2739,13 @@ void adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (int code, char *what, char *fmt, ...)
+void advise (int code, char *what, const char *fmt, ...)
 {
 	va_list ap;
 	va_start (ap, fmt);
@@ -2755,7 +2755,7 @@ void advise (int code, char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-void	advise (int code, char *what, char *fmt) {
+void	advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

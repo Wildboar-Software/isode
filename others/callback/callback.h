@@ -22,5 +22,5 @@ typedef struct sblk {
 	long    sb_isn;		/* initial serial number */
 }		*SB;
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);

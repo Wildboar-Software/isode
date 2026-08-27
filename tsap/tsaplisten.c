@@ -1920,8 +1920,8 @@ static struct listenblk  *findlblkbyfd (const int fd)
 
 #ifdef	LPP
 #ifdef	lint
-int tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt);
-int	tsaplose (struct TSAPdisconnect *td, int reason, char *what, char *fmt) {
+int tsaplose (struct TSAPdisconnect *td, int reason, char *what, const char *fmt);
+int	tsaplose (struct TSAPdisconnect *td, int reason, char *what, const char *fmt) {
 	return tsaplose (td, reason, what, fmt);
 }
 #endif

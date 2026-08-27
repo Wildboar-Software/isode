@@ -5,13 +5,13 @@
 extern int  ontty;
 extern int  interrupted;
 
-void	adios (char *what, char *fmt, ...);
-void	advise (char *what, char *fmt, ...);
+void	adios (char *what, const char *fmt, ...);
+void	advise (char *what, const char *fmt, ...);
 int getftamline(const char* prompt, const char* buffer);
 char *default_prompt (void);
 
 #ifndef	BRIDGE
-int	ask (char *fmt, ...);
+int	ask (const char *fmt, ...);
 #endif
 
 extern int  ftamfd;

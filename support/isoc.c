@@ -41,7 +41,7 @@
 static void raw_main (char *service, char *addr);
 static void ros_invokerequest (int sd, PE pe);
 static	void timer (int cc);
-static void  _advise (char* what, char* fmt, va_list ap);
+static void  _advise (char* what, const char* fmt, va_list ap);
 
 #define	TMS
 #endif
@@ -69,8 +69,8 @@ static int   status = 0;
 
 static char *myname = "isoc";
 
-void	adios (char* what, char* fmt, ...),
-		advise (char* what, char* fmt, ...);
+void	adios (char* what, const char* fmt, ...),
+		advise (char* what, const char* fmt, ...);
 static void	ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, char *event);
 static void	ss_adios (struct SSAPabort *sa, char *event), ss_advise (struct SSAPabort *sa, char *event);
 static void	ps_adios (struct PSAPabort *pa, char *event), ps_advise (struct PSAPabort *pa, char *event);
@@ -2846,7 +2846,7 @@ static int qcmp (char *b, struct qbuf *qb, int l) {
 #ifndef	lint
 static void	_advise (char *what, const char *fmt, va_list ap);
 
-void adios (char* what, char* fmt, ...) {
+void adios (char* what, const char* fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -2855,13 +2855,13 @@ void adios (char* what, char* fmt, ...) {
 }
 #else
 /* VARARGS */
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (char* what, char* fmt, ...) {
+void	advise (char* what, const char* fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_advise (what, fmt, ap);
@@ -2878,7 +2878,7 @@ static void  _advise (char* what, const char* fmt, va_list ap) {
 	fflush (stderr);
 }
 #else
-void advise (char *what, char *fmt) {
+void advise (char *what, const char *fmt) {
 	advise (what, fmt);
 }
 #endif

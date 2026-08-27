@@ -146,7 +146,7 @@ void quit (int sig) {
 	exit(sig);
 }
 
-advise (int code, char *what, char *fmt, ...) {
+advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	extern LLog * log_dsap;
 

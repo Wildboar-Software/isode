@@ -88,7 +88,7 @@ int	ppktlose (
 	int reason,
 	struct type_PS_SessionConnectionIdentifier *pref,
 	char *what,
-	char *fmt
+	const char *fmt
 ) {
 	return ppktlose (pb, pi, reason, pref, what, fmt);
 }
@@ -105,7 +105,7 @@ int	psaplose (struct PSAPindication *pi, ...) {
 	return result;
 }
 #else
-int	psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
+int	psaplose (struct PSAPindication *pi, int reason, char *what, const char *fmt) {
 	return psaplose (pi, reason, what, fmt);
 }
 #endif

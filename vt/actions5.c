@@ -15,8 +15,8 @@
 
 extern int sd;		/*Global Session Descriptor (ISODE) */
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 /*  xx1x xxxx = awaiting ack from peer i.e., 420 */
 /*  xxxx xx1x = awaiting ack from user */

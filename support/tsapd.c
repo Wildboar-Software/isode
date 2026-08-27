@@ -141,8 +141,8 @@ extern void fi_print (PS ps, Filter fi, int format);
 extern void de_print (PS ps, struct DSError *err, int format);
 #endif
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char*, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char*, ...);
 
 static void  ts_advise ( struct TSAPdisconnect *td, const int	code, const char   *event);
 
@@ -1588,7 +1588,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, LLOG_FATAL, what, fmt, ap);
@@ -1597,20 +1597,20 @@ void	adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS */
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (pgm_log, code, what, fmt, ap);
 	va_end (ap);
 }
 #else
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

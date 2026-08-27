@@ -50,8 +50,8 @@ extern int debug;
 
 int default_rep_flag = 0;
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 int		putch (const char);
 

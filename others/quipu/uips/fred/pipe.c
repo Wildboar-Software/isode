@@ -25,7 +25,7 @@ static	mypager (FILE *fp);
 static pagchar (int ch);
 int f_bind (char **vec);
 int f_quit (char **vec);
-static int da_command (char *fmt);
+static int da_command (const char *fmt);
 static int da_response (void);
 int sync_ufnrc (void);
 int init_ufnrc (void);
@@ -45,7 +45,7 @@ static	mypager ();
 static pagchar ();
 #ifndef	lint
 static int  da_command (char *, ...);
-static int  _da_command (char *fmt, va_list ap);
+static int  _da_command (const char *fmt, va_list ap);
 #endif
 static int  da_response (void);
 
@@ -786,7 +786,7 @@ int f_quit (char **vec) {
 /* DA */
 
 #ifndef	lint
-static int  da_command (char *fmt, ...) {
+static int  da_command (const char *fmt, ...) {
 	int	    val;
 	va_list ap;
 
@@ -796,7 +796,7 @@ static int  da_command (char *fmt, ...) {
 	return val;
 }
 
-static int  _da_command (char *fmt, va_list ap)
+static int  _da_command (const char *fmt, va_list ap)
 {
 	int	    cc,
 			len;
@@ -818,7 +818,7 @@ static int  _da_command (char *fmt, va_list ap)
 #else
 /* VARARGS1 */
 
-static int da_command (char *fmt) {
+static int da_command (const char *fmt) {
 	return da_command (fmt);
 }
 #endif

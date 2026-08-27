@@ -133,8 +133,8 @@ extern void fi_print (PS ps, Filter fi, int format);
 extern void de_print (PS ps, struct DSError *err, int format);
 #endif
 
-void	adios (char *, char *, ...)
-		advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...)
+		advise (int, char *, const char *, ...);
 static void	ts_advise (struct TSAPdisconnect *td, int code, char *event);
 #ifdef SYS5
 static  SFD cldser(int sig);
@@ -1389,7 +1389,7 @@ static void envinit (void) {
 }
 
 #ifndef	lint
-void	adios (char *what, char *fmt, ...) {
+void	adios (char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -1398,13 +1398,13 @@ void	adios (char *what, char *fmt, ...) {
 	_exit (1);
 }
 #else
-void	adios (char *what, char *fmt) {
+void	adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt);
@@ -1412,7 +1412,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 	va_end (ap);
 }
 #else
-void	advise (int code, char *what, char *fmt) {
+void	advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

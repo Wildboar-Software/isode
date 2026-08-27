@@ -28,7 +28,7 @@ Execute (
 static int waitforserver (int serverpid);
 static int processTimeout (int pid, int timeout, char *string);
 static int
-_vError (char *fmt, va_list ap);
+_vError (const char *fmt, va_list ap);
 static int startServer (char *server[]);
 static int startClient (char *client[]);
 static int ignorexio (Display *dpy);
@@ -41,8 +41,8 @@ extern char *getenv();
 extern char **environ;
 char **newenviron = NULL;
 
-int Error (char *fmt, ...);
-int Fatal (char *fmt, ...);
+int Error (const char *fmt, ...);
+int Fatal (const char *fmt, ...);
 
 #ifndef SHELL
 #define SHELL "sh"
@@ -384,14 +384,14 @@ int processTimeout (int pid, int timeout, char *string) {
 }
 
 static int
-_vError (char *fmt, va_list ap) {
+_vError (const char *fmt, va_list ap) {
 	fprintf(stderr, "%s:  ", program);
 	if (errno)
 		fprintf (stderr, "%s (errno %d):  ", strerror(errno), errno);
 	vfprintf(stderr, fmt, ap);
 }
 
-int Error (char *fmt, ...) {
+int Error (const char *fmt, ...) {
 	va_list ap;
 
 	va_start (ap, fmt)
@@ -399,7 +399,7 @@ int Error (char *fmt, ...) {
 	va_end (ap);
 }
 
-int Fatal (char *fmt, ...) {
+int Fatal (const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt)
 	_vError(fmt, ap);

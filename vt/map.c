@@ -56,8 +56,8 @@ static void def_echo (const CO_UPDATE *coptr);
 static void realptyecho (const int on);
 #endif
 
-void adios (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 
 TEXT_UPDATE *ndq_queue;			/* Incoming (From Net) NDQ's */
 TEXT_UPDATE *deq (TEXT_UPDATE **qhp);

@@ -62,8 +62,8 @@ extern LLog _ftam_log, *ftam_log;
 #include "ftamuser.h"
 #include "ftam-cmds.h"
 
-void adios (char *, char *, ...);
-void advise (char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (char *, const char *, ...);
 void reply(int n, ...);
 void lreply(int n, ...);
 void yyerror(const char *s);
@@ -359,7 +359,7 @@ void lreply(int n, ...)
 
 static void _reply (int n, const char c, va_list ap) {
     char    buffer[BUFSIZ];
-    char    *fmt;
+    const char    *fmt;
 
 	fmt = va_arg (ap, char *);
     _asprintf (buffer, NULLCP, fmt, ap);
@@ -371,12 +371,12 @@ static void _reply (int n, const char c, va_list ap) {
 #else
 /* VARARGS2 */
 
-reply (int n, char *fmt) {
+reply (int n, const char *fmt) {
 	reply(n,fmt);
 }
 /* VARARGS2 */
 
-lreply (int n, char *fmt) {
+lreply (int n, const char *fmt) {
 	lreply(n,fmt);
 }
 #endif

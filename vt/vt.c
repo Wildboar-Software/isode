@@ -124,8 +124,8 @@ static int vtploop (char **vec, const int error);
 static void printvar (const struct var *v);
 void do_vt (void);
 
-void adios (char *, char *, ...);
-void advise (int, char *, char *, ...);
+void adios (char *, const char *, ...);
+void advise (int, char *, const char *, ...);
 
 static struct dispatch dispatches[] = {
 	"ayt", vt_ayt, DS_OPEN,
@@ -1371,7 +1371,7 @@ void finalbye (void) {
 }
 
 #ifndef	lint
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	static int latched = 0;
 	va_start (ap, fmt);
@@ -1383,13 +1383,13 @@ void adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void	advise (int code, char *what, char *fmt, ...) {
+void	advise (int code, char *what, const char *fmt, ...) {
 	int flags;
 	char    buffer[BUFSIZ];
 	va_list ap;
@@ -1410,7 +1410,7 @@ void	advise (int code, char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS3 */
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif

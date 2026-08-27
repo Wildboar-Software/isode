@@ -176,8 +176,8 @@ static OID	oid_median (OID a, OID b), oid_copy (OID a);
 extern	int	debug;
 extern	int	watch;
 
-void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 char   *snmp_error (int i);
 
 /* BULK1 */

@@ -36,8 +36,8 @@ struct PSAPdata	px;
 struct PSAPfinish *pf;
 
 static void  ps_adios (struct PSAPabort *pab, const char *event),  ps_advise (struct PSAPabort *pab, const char *event);
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 
 int do_event (const int event, PE pe);
 int pn_ind (const int dd, struct PSAPsync *psync);

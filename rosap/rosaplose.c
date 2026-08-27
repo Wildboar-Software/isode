@@ -96,7 +96,7 @@ static int _rosaplose (
 ) {
 	char  *bp;
 	char  *what;
-	char  *fmt;
+	const char  *fmt;
 	char    buffer[BUFSIZ];
 	struct RoSAPpreject *rop;
 	if (roi) {

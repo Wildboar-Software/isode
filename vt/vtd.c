@@ -61,8 +61,8 @@ int	vhangup (void);
 int	connected = FALSE;
 char	command[256];
 
-void	adios (char *, char *, ...);
-void	advise (int, char *, char *, ...);
+void	adios (char *, const char *, ...);
+void	advise (int, char *, const char *, ...);
 static void vtd (const int f, const int p);
 static int fatalperror (const int f, char *msg, const int errnum);
 static int fatal (const int f, char *msg);
@@ -748,7 +748,7 @@ void finalbye (void) {
 }
 
 #ifndef	lint
-void adios (char *what, char *fmt, ...) {
+void adios (char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (vt_log, LLOG_FATAL, what, fmt, ap);
@@ -758,13 +758,13 @@ void adios (char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS2 */
-void adios (char *what, char *fmt) {
+void adios (char *what, const char *fmt) {
 	adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-void advise (int code, char *what, char *fmt, ...) {
+void advise (int code, char *what, const char *fmt, ...) {
 	va_list ap;
 	va_start (ap, fmt);
 	_ll_log (vt_log, code, what, fmt, ap);
@@ -772,7 +772,7 @@ void advise (int code, char *what, char *fmt, ...) {
 }
 #else
 /* VARARGS3 */
-void advise (int code, char *what, char *fmt) {
+void advise (int code, char *what, const char *fmt) {
 	advise (code, what, fmt);
 }
 #endif
