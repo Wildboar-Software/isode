@@ -19,6 +19,76 @@
 #endif
 
 #include <signal.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+/*
+ * glibc's ISO C dialect hides BSD types.  C11 allows these typedefs to
+ * repeat when the libc already provided the same types.
+ */
+typedef unsigned char	u_char;
+typedef unsigned short	u_short;
+typedef unsigned int	u_int;
+typedef unsigned long	u_long;
+typedef char		*caddr_t;
+
+/* POSIX signal handler; glibc names this __sighandler_t. */
+typedef void (*__sighandler_t)(int);
+
+#ifndef getdtablesize
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
+#endif
+
+#ifndef getpagesize
+#define getpagesize() ((int) sysconf (_SC_PAGESIZE))
+#endif
+
+#ifndef NSIG
+#ifdef _NSIG
+#define NSIG _NSIG
+#else
+#define NSIG 65
+#endif
+#endif
+
+#include <limits.h>
+#ifndef MAXNAMLEN
+#ifdef NAME_MAX
+#define MAXNAMLEN NAME_MAX
+#else
+#define MAXNAMLEN 255
+#endif
+#endif
+
+#include <sys/stat.h>
+#ifndef S_IWRITE
+#define S_IREAD		S_IRUSR
+#define S_IWRITE	S_IWUSR
+#define S_IEXEC		S_IXUSR
+#endif
+
+#include <sys/wait.h>
+#ifndef wait3
+#define wait3(status, options, rusage) waitpid (-1, (status), (options))
+#endif
+
+/*
+ * BSD/GNU APIs that glibc hides from ISO C.  chroot(2) and setgroups(2)
+ * still exist in libc; initgroups(3) and flock(2) are reimplemented in
+ * compat/bsd.c using POSIX getgrent/setgroups and fcntl(F_SETLK).
+ */
+#ifndef LOCK_SH
+#define LOCK_SH	1
+#define LOCK_EX	2
+#define LOCK_NB	4
+#define LOCK_UN	8
+#endif
+
+int	chroot (const char *path);
+int	setgroups (size_t size, const gid_t *list);
+int	initgroups (const char *user, gid_t group);
+int	flock (int fd, int operation);
+int	vhangup (void);
 
 /* target-dependent defines:
 
@@ -202,6 +272,8 @@ typedef char *CP;
 typedef INTDEF integer;
 #define NULLINT		((integer) 0)
 #define NULLINTP	((integer *) 0)
+
+void *sbrk (intptr_t increment);
 
 #if defined(SVR4) || defined(SYSV) || defined(BSD44) || defined(LINUX)
 #else

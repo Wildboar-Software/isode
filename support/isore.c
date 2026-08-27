@@ -8,7 +8,7 @@
 #include "manifest.h"
 #include "compat.h"
 
-static SFD	EMTser (int sig, long int code, struct sigcontext *sc);
+static void EMTser (int sig);
 
 int main (int argc, char **argv, char **envp) {
 	int	    fd,
@@ -54,18 +54,8 @@ int main (int argc, char **argv, char **envp) {
 	}
 }
 
-/* SIGNALS */
-
-#ifdef SVR4
-static  SFD EMTser (sig)
-int	sig;
-#else
-static  SFD EMTser (int sig, long int code, struct sigcontext *sc)
-   	    
-    	     
-                      
-#endif
-{
+static void EMTser (int sig) {
+	(void) sig;
 #ifndef	BSDSIGS
 	signal (SIGEMT, EMTser);
 #endif

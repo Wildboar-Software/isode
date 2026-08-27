@@ -11,8 +11,6 @@
 #include <sys/stat.h>
 #include "ftamsystem.h"
 
-__attribute__((constructor))
-static void _init_fp (void);
 int fredloop (char **vec, int error);
 static struct dispatch *
 getds (char *name);
@@ -68,13 +66,6 @@ extern char *isodeversion;
 
 FILE   *stdfp = NULL;
 FILE   *errfp = NULL;
-
-#ifdef __GNUC__
-__attribute__((constructor))
-static void _init_fp (void) {
-	stdfp = stdout;
-}
-#endif
 
 static int	f_set (char **vec);
 int	f_help (char **vec);
@@ -149,6 +140,9 @@ static void snarf (void);
 
 int fredloop (char **vec, int error) {
 	struct dispatch *ds;
+
+	if (stdfp == NULL)
+		stdfp = stdout;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -227,7 +221,7 @@ getds (char *name) {
 
 /* VARIABLES */
 
-static char *bool[] = {
+static char *bool_values[] = {
 	"off", "on", NULL
 };
 
@@ -240,10 +234,10 @@ static char *ufnoptions[] = {
 };
 
 static struct var vars[] = {
-	"bell", &bflag, "ring bell at end of screen", bool,
+	"bell", &bflag, "ring bell at end of screen", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
-	"debug", &debug, "debug FRED", bool,
+	"debug", &debug, "debug FRED", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
 	"manager", NULL, "mail-address of local white pages manager", &manager,
@@ -255,16 +249,16 @@ static struct var vars[] = {
 	"pager", NULL, "program to use for output pagination", &pager,
 	NULLCP, NULLIFP, V_RDONLY,
 
-	"phone", &phone, "display phone numbers in one-liner", bool,
+	"phone", &phone, "display phone numbers in one-liner", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
-	"query", &query, "confirm two-step operations", bool,
+	"query", &query, "confirm two-step operations", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
 	"server", NULL, "IP-address of directory assistance server", &server,
 	NULLCP, NULLIFP, V_RDONLY | V_SERVER,
 
-	"soundex", &soundex, "use soundex for matching", bool,
+	"soundex", &soundex, "use soundex for matching", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
 	"timelimit", &timelimit, "maximum time (in seconds) for matching", NULLVP,
@@ -273,10 +267,10 @@ static struct var vars[] = {
 	"ufn", &ufn_options, "UFN customization options", ufnoptions,
 	UFN_MASK, NULLIFP, V_NULL,
 
-	"verbose", &verbose, "verbose interaction", bool,
+	"verbose", &verbose, "verbose interaction", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
-	"watch", &watch, "watch dialogue with dish", bool,
+	"watch", &watch, "watch dialogue with dish", bool_values,
 	NULLCP, NULLIFP, V_NULL,
 
 	NULL

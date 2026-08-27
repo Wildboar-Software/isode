@@ -378,22 +378,14 @@ struct hostent *gethostbystring (char *s) {
 #ifndef	DG
 	int result;
 	static struct in_addr iaddr;
-	result =  inet_aton(s, &iaddr);
-	if (result == 0)
-#ifdef LINUX
-		return gethostbyname2 (s, AF_INET);
-#else
+	result = inet_pton (AF_INET, s, &iaddr);
+	if (result != 1)
 		return gethostbyname (s);
-#endif
 #else
 	static struct in_addr iaddr;
 	iaddr = inet_addr (s);
 	if (iaddr.s_addr == NOTOK && strcmp (s, "255.255.255.255"))
-#ifdef LINUX
-		return gethostbyname2 (s, AF_INET);
-#else
 		return gethostbyname (s);
-#endif
 #endif
 	static struct hostent   hs;
 
