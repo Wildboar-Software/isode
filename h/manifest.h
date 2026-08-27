@@ -88,6 +88,7 @@ int	chroot (const char *path);
 int	setgroups (size_t size, const gid_t *list);
 int	initgroups (const char *user, gid_t group);
 int	flock (int fd, int operation);
+int	vhangup (void);
 
 /* target-dependent defines:
 

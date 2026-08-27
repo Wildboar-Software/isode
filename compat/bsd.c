@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 #include "general.h"
 #include "manifest.h"
 
@@ -95,4 +96,23 @@ flock (int fd, int operation)
 	fl.l_len = 0;
 	cmd = (operation & LOCK_NB) ? F_SETLK : F_SETLKW;
 	return fcntl (fd, cmd, &fl);
+}
+
+/*
+ * ISO C23 / glibc hides vhangup(2).  Drop the controlling terminal so
+ * cleanup of a VT session matches the historic hangup.
+ */
+int
+vhangup (void)
+{
+	int	fd;
+
+	fd = open ("/dev/tty", O_RDWR);
+	if (fd < 0)
+		return 0;
+#ifdef TIOCNOTTY
+	(void) ioctl (fd, TIOCNOTTY, 0);
+#endif
+	close (fd);
+	return 0;
 }
