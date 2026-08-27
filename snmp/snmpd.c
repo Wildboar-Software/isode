@@ -259,10 +259,10 @@ static int do_pass (const struct type_SNMP_Message *msg, const int offset, const
            smux_method (struct type_SNMP_PDUs *pdu, OT ot, struct smuxPeer *pb, struct type_SNMP_VarBind *v, const int offset),
 		   f_logging (char **vec),
 		   f_variable (char **vec);
-static int do_operation (PS ps, struct type_SNMP_Message *msg, const struct community *comm, const int size);
+static int do_operation (PS ps, struct type_SNMP_Message *msg, const struct community *comm, int size);
 static struct community *str2comm (const char *name, const struct NSAPaddr *na);
 static void doit_smux (const int fd);
-static int process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, const int size);
+static int process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, int size);
 
 #ifdef	TCP
 static void doit_udp (const int pd) {
@@ -780,7 +780,7 @@ out:
 /* PROCESS */
 
 #ifndef	SNMPT
-static int  process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, const int size) {
+static int  process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, int size) {
 	int	    result;
 	char   *commname;
 	struct community *comm;
@@ -831,7 +831,7 @@ static int do_operation (
 	PS ps,
 	struct type_SNMP_Message *msg,
 	const struct community *comm,
-	const int size
+	int size
 ) {
 	int	    idx,
 			offset;

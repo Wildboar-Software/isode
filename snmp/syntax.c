@@ -50,7 +50,7 @@ static void ipaddr_print (struct sockaddr_in *x, OS os);
 static void add_ipaddr (void);
 static void add_netaddr (void);
 uint32_t prim2ulong (PE pe);
-PE ulong2prim (const uint32_t i, const PElementClass class, const PElementID id);
+PE ulong2prim (uint32_t i, const PElementClass class, const PElementID id);
 static int  counter_encode (uint32_t *x, PE *pe);
 static int counter_decode (uint32_t **x, PE pe);
 static void counter_free (uint32_t *x);
@@ -367,7 +367,7 @@ uint32_t prim2ulong (PE pe) {
 }
 
 /* also used in SNMP-capable gawk... */
-PE  ulong2prim (const uint32_t i, const PElementClass class, const PElementID id) {
+PE  ulong2prim (uint32_t i, const PElementClass class, const PElementID id) {
 	int	    extend;
 	int    n;
 	uint32_t mask;
