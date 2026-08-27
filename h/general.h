@@ -103,6 +103,9 @@
 #ifndef	BSDFORK
 #define	vfork	fork
 #endif
+#ifndef vfork
+#define	vfork	fork
+#endif
 
 /* STRINGS */
 

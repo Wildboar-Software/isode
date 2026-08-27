@@ -60,6 +60,18 @@ typedef void (*__sighandler_t)(int);
 #endif
 #endif
 
+#include <sys/stat.h>
+#ifndef S_IWRITE
+#define S_IREAD		S_IRUSR
+#define S_IWRITE	S_IWUSR
+#define S_IEXEC		S_IXUSR
+#endif
+
+#include <sys/wait.h>
+#ifndef wait3
+#define wait3(status, options, rusage) waitpid (-1, (status), (options))
+#endif
+
 /* target-dependent defines:
 
 	SYS5NLY -	target has SYS5 types only, no BSD types
