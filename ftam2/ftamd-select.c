@@ -50,13 +50,13 @@ static char *getgroup (const gid_t gid);
 
 #ifdef	BRIDGE
 extern int ftp_create (char *filename);
-extern int ftp_exist (char *filename);
+extern int ftp_exist (const char *filename);
 #define	ftp_access(file,mode)	ftp_exist (file)
 #endif
 
-static int  chkaccess (const int fd, const int request, const struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags);
-static int  chkattrs ( const struct FTAMattributes *fa, const long	present, const int	select, struct FTAMdiagnostic **diags);
-static int  chngattrs ( const long	present, const struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
+static int  chkaccess (const int fd, const int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags);
+static int  chkattrs ( struct FTAMattributes *fa, long	present, const int	select, struct FTAMdiagnostic **diags);
+static int  chngattrs ( const long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
 
 static int  EACCESS (const char *file, const int mode);
 
@@ -64,7 +64,7 @@ static int findgid (const char *group);
 
 /*    SELECTION REGIME */
 
-void ftam_selection (const struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
+void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 	int     action,
 			state;
 
@@ -835,7 +835,7 @@ done_open:
 #ifdef	BRIDGE
 #endif
 
-static int  chkaccess (const int fd, const int request, const struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
+static int  chkaccess (const int fd, const int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
 	int     result;
 #ifndef	BRIDGE
 	char  *cp;
@@ -958,7 +958,7 @@ bad_concur:
 	return result;
 }
 
-static int  chkattrs ( const struct FTAMattributes *fa, const long	present, const int	select, struct FTAMdiagnostic **diags) {
+static int  chkattrs ( struct FTAMattributes *fa, long	present, const int	select, struct FTAMdiagnostic **diags) {
 	int     id,
 			result;
 	char   *file;
@@ -1234,7 +1234,7 @@ bad_param:
 	return OK;
 }
 
-static int  chngattrs ( const long	present, const struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
+static int  chngattrs ( const long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
 	int     gid,
 			result;
@@ -1408,7 +1408,7 @@ static char *getfile (char*file) {
 		}
 
 		{
-			const size_t n = strlen (pp);
+			size_t n = strlen (pp);
 			const size_t m = cp ? strlen (cp) : 0;
 
 			if (n >= sizeof buffer1 || m >= sizeof buffer1 - n - 1)

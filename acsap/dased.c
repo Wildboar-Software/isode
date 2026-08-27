@@ -35,7 +35,7 @@
 #define	STATS
 #endif
 extern void quipu_syntaxes (void);
-extern int dsap_init (const int *acptr, char ***avptr);
+extern int dsap_init (int *acptr, char ***avptr);
 
 static int debug = 0;
 static int nbits = FD_SETSIZE;
@@ -69,7 +69,7 @@ static PE	name2psap (DN dn);
 
 static void	adios (char *, char *, ...);
 static void	advise (const int, char *, char *, ...);
-static void	ts_adios (const struct TSAPdisconnect *td, const char *event), ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
+static void	ts_adios (struct TSAPdisconnect *td, const char *event), ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 static void	dased (const int, char **),
 dase_aux (const struct type_DASE_Query__REQ *),
 make_bind_args (struct ds_bind_arg *, struct ds_bind_arg *, struct ds_bind_error *),
@@ -916,7 +916,7 @@ static void adios (char *what, char *fmt) {
 #endif
 
 #ifndef lint
-static void    advise (const int code, char *what, char *fmt, ...)
+static void    advise (int code, char *what, char *fmt, ...)
 {
 	va_list ap;
 
@@ -934,13 +934,13 @@ static void advise (int code, char *what, char *fmt) {
 }
 #endif
 
-static void ts_adios (const struct TSAPdisconnect *td, const char *event) {
+static void ts_adios (struct TSAPdisconnect *td, const char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
 
-static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)

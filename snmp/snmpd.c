@@ -131,7 +131,7 @@ static void hupser (int sig);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-static void	ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
+static void	ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 
 int	nd = NOTOK;
 
@@ -595,7 +595,7 @@ do_clts:
 	}
 }
 
-static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -2279,7 +2279,7 @@ static void arginit (char **vec) {
 	if (*sargv[0] == '/')
 		spath = sargv[0];
 	else {
-		const size_t n = strlen (sargv[0]);
+		size_t n = strlen (sargv[0]);
 
 		if (n >= sizeof sfile - 1)
 			strcpy (sfile, _isodefile (isodesbinpath, myname));

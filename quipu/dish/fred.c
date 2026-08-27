@@ -87,7 +87,7 @@ static int fred_children (DN parentdn, const struct subordinate *ptr, const int 
 static void done_match (struct dn_seq *dns, const char *fancy);
 static int dns_sort (struct dn_seq **dns, int i);
 static void do_ufn_match (int n, char **vec);
-static void build_ufnrc (const int argc, char **argv);
+static void build_ufnrc (int argc, char **argv);
 static void do_expand (int n, char **vec);
 static void fred_init (void);
 static void showfredattr (AttributeValue av);
@@ -561,7 +561,7 @@ free_filter:
 
 static	envlist myel = NULLEL;
 
-static void build_ufnrc (const int argc, char **argv) {
+static void build_ufnrc (int argc, char **argv) {
 	envlist	el;
 	envlist  en,
 			 *ep;

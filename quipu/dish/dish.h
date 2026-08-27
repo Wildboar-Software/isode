@@ -24,7 +24,7 @@ void show_sequence (PS ps, char *str, const char ufn);
 int referral_bind (const struct PSAPaddr *addr);
 
 struct ds_bind_error;
-void ds_bind_error(PS ps, const struct ds_bind_error *err);
+void ds_bind_error(PS ps, struct ds_bind_error *err);
 
 void pdu_dump_init(char *dir);
 void get_password(char *str, char *buffer);
@@ -42,7 +42,7 @@ int osisecinit (int *argc, char ***argv, const int fn);
 int dish_init (int argc, char **argv);
 void add_dish_help (const char *command, const char *args, const char serv, const char other, const char *use);
 int do_dish (void);
-void add_dish_command (char *name, void (*func)(int, char **), const int len);
+void add_dish_command (char *name, void (*func)(int, char **), int len);
 int dish_cmd_init (void);
 
 void call_add (int argc, char **argv);
@@ -76,20 +76,20 @@ void shuffle_up (const int argc, char **argv, const int start);
 void help_arg (const char *rtn);
 int init_pipe (void);
 void want_oc_hierarchy (void);
-int dsap_init (const int *acptr, char ***avptr);
+int dsap_init (int *acptr, char ***avptr);
 int user_tailor (void);
 int print_arg_error (PS opt);
 int reset_arg (void);
 void set_current_pos (void);
 void set_alarm (void);
-int read_pipe (char *buf, const int len);
+int read_pipe (char *buf, int len);
 void test_rc_file (PS ps);
 void consolidate_move (void);
 
 /* pipe helpers used by edit.c and elsewhere */
 void send_pipe_aux (char *buf);
-void send_pipe_aux2 (const char *buf, const int i);
-int read_pipe_aux (char *buf, const int len);
+void send_pipe_aux2 (const char *buf, int i);
+int read_pipe_aux (char *buf, int len);
 int read_pipe_aux2 (char **buf, int *len);
 
 /* dsap/cache and fred helpers */

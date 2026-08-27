@@ -7,10 +7,10 @@
 #include "quipu/watchdog.h"
 #include "pepsycodec.h"
 static int DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr,
-						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings,
-						 const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
-static int QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr, const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
-static int IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr, const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
+						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
+static int QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr, const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
+static int IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr, const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings, struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async);
 
 
 extern  OID     acse_pci;
@@ -30,11 +30,11 @@ extern  struct PSAPctxlist      * internet_ds_pcdl;
 extern LLog	* log_dsap;
 
 static char * qlocalhost = "DSAP";	/* Bind speed up */
-static int DBindDecode (const struct AcSAPconnect *acc, struct DSAPconnect *dc);
+static int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc);
 
 static int DspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr,
-						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings,
-						 const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
+						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
@@ -114,8 +114,8 @@ int DspAsynBindRequest (
 }
 
 static int	  QspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr,
-						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings,
-						 const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
+						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
@@ -195,7 +195,7 @@ int QspAsynBindRequest (
 							   bindarg, &qos, dc, di, async));
 }
 
-int DspAsynBindRetry (const int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
+int DspAsynBindRetry (int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -215,7 +215,7 @@ int DspAsynBindRetry (const int sd, const int do_next_nsap, struct DSAPconnect *
 	return (result);
 }
 
-int QspAsynBindRetry (const int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
+int QspAsynBindRetry (int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -235,7 +235,7 @@ int QspAsynBindRetry (const int sd, const int do_next_nsap, struct DSAPconnect *
 	return (result);
 }
 
-static int DBindDecode (const struct AcSAPconnect *acc, struct DSAPconnect *dc) {
+static int DBindDecode (struct AcSAPconnect *acc, struct DSAPconnect *dc) {
 	struct ds_bind_arg  * bind_res;
 	struct ds_bind_error        * bind_err;
 
@@ -295,8 +295,8 @@ static int DBindDecode (const struct AcSAPconnect *acc, struct DSAPconnect *dc) 
 }
 
 static int	  IspAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr * callingaddr,
-						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, const int settings,
-						 const struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
+						 const struct PSAPaddr * calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+						 struct SSAPref * sf, struct ds_bind_arg * bindarg, const struct QOStype * qos, struct DSAPconnect * dc, struct DSAPindication * di, const int async) {
 	int			  result;
 	OID			  app_ctx;
 	struct PSAPctxlist	* pcl;
@@ -369,7 +369,7 @@ int IspAsynBindRequest (const struct PSAPaddr *calledaddr, struct ds_bind_arg *b
 							   bindarg, &qos, dc, di, async));
 }
 
-int IspAsynBindRetry (const int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
+int IspAsynBindRetry (int sd, const int do_next_nsap, struct DSAPconnect *dc, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);

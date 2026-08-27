@@ -6,7 +6,7 @@
 
 /* S-TYPED-DATA.REQUEST */
 
-int STypedRequest (const int sd, const char *data, const int cc, struct SSAPindication *si) {
+int STypedRequest (int sd, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct udvec uvs[2];

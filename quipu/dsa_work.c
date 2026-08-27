@@ -13,7 +13,7 @@ extern char quipu_shutdown;
 void dsa_work (struct task_act *task);
 
 extern int do_ds_read (
-	const struct ds_read_arg *arg,
+	struct ds_read_arg *arg,
 	struct DSError *error,
 	struct ds_read_result *result,
 	DN binddn,
@@ -24,7 +24,7 @@ extern int do_ds_read (
 	const char authtype
 );
 extern int do_ds_compare (
-	const struct ds_compare_arg *arg,
+	struct ds_compare_arg *arg,
 	struct DSError *error,
 	struct ds_compare_result *result,
 	DN binddn,
@@ -33,9 +33,9 @@ extern int do_ds_compare (
 	const char dsp,
 	const char authtype
 );
-extern int do_ds_abandon (const struct ds_abandon_arg *arg, struct DSError *error);
+extern int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error);
 extern int do_ds_list (
-	const struct ds_list_arg *arg,
+	struct ds_list_arg *arg,
 	struct DSError *error,
 	struct ds_list_result *result,
 	DN binddn,
@@ -60,7 +60,7 @@ extern int do_ds_search (
 	const char authtype
 );
 extern int do_ds_addentry (
-	const struct ds_addentry_arg *arg,
+	struct ds_addentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
@@ -69,7 +69,7 @@ extern int do_ds_addentry (
 	const char authtype
 );
 extern int do_ds_removeentry (
-	const struct ds_removeentry_arg *arg,
+	struct ds_removeentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
@@ -78,7 +78,7 @@ extern int do_ds_removeentry (
 	const char authtype
 );
 extern int do_ds_modifyentry (
-	const struct ds_modifyentry_arg *arg,
+	struct ds_modifyentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
@@ -87,7 +87,7 @@ extern int do_ds_modifyentry (
 	const char authtype
 );
 extern int do_ds_modifyrdn (
-	const struct ds_modifyrdn_arg *arg,
+	struct ds_modifyrdn_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,

@@ -6,12 +6,12 @@
 #include "fpkt.h"
 
 static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], const int nfadu, struct FTAMindication *fti);
-static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
-static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
+static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 
 /* F-DATA.REQUEST */
 
-int FDataRequest (const int sd, PE fadus[], const int nfadu, struct FTAMindication *fti) {
+int FDataRequest (int sd, PE fadus[], const int nfadu, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -77,7 +77,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], const int nfadu, st
 
 /* F-DATA-END.REQUEST */
 
-int FDataEndRequest (const int sd, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FDataEndRequest (int sd, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -101,7 +101,7 @@ int FDataEndRequest (const int sd, const int action, struct FTAMdiagnostic diag[
 	return result;
 }
 
-static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -178,7 +178,7 @@ out:
 
 /* F-CANCEL.REQUEST */
 
-int FCancelRequest (const int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FCancelRequest (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -202,7 +202,7 @@ int FCancelRequest (const int sd, const int action, PE sharedASE, struct FTAMdia
 	return result;
 }
 
-static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result,
 			settings;
 	char   *prequest;
@@ -293,7 +293,7 @@ out:
 
 /* F-CANCEL.RESPONSE */
 
-int FCancelResponse (const int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FCancelResponse (int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -317,7 +317,7 @@ int FCancelResponse (const int sd, const int action, PE sharedASE, struct FTAMdi
 	return result;
 }
 
-int FCancelResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FCancelResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int	    result;
 	char   *prequest;
 	PE	    pe;

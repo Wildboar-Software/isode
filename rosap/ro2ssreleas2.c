@@ -8,11 +8,11 @@
 #include <signal.h>
 #include "ropkt.h"
 
-static int  RoEndResponseAux (struct assocblk *acb, const struct RoSAPindication *roi);
+static int  RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi);
 
 /* RO-END.RESPONSE */
 
-int RoEndResponse (const int sd, struct RoSAPindication *roi) {
+int RoEndResponse (int sd, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -31,7 +31,7 @@ int RoEndResponse (const int sd, struct RoSAPindication *roi) {
 
 }
 
-static int RoEndResponseAux (struct assocblk *acb, const struct RoSAPindication *roi) {
+static int RoEndResponseAux (struct assocblk *acb, struct RoSAPindication *roi) {
 	int     result;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

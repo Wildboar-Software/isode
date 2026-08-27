@@ -41,7 +41,7 @@ void quipu_call_syntax (void);
 void dsa_control_syntax (void);
 
 
-extern struct qbuf *str2qb(char *str, const int len, const int head) ;
+extern struct qbuf *str2qb(char *str, int len, const int head) ;
 extern struct qbuf *qb_cpy(struct qbuf *qb) ;
 
 static PE dsa_control_enc(void *value) ;

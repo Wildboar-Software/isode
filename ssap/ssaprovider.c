@@ -26,7 +26,7 @@ int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 int SSendRequest (
 	const int sd,
 	const char *data,
-	const int cc,
+	int cc,
 	const int begin,
 	const int end,
 	struct SSAPindication *si
@@ -76,7 +76,7 @@ int SWriteRequest (
 
 int SDataRequestAux (
 	const struct ssapblk *sb,
-	const int code,
+	int code,
 	const struct udvec *uv,
 	int begin,
 	const int end,
@@ -1595,7 +1595,7 @@ static void TDISCser (int sd, struct TSAPdisconnect *td) {
 int ts2sslose (
 	struct SSAPindication *si,
 	const char *event,
-	const struct TSAPdisconnect *td
+	struct TSAPdisconnect *td
 ) {
 	int     reason;
 	char   *cp,
@@ -1698,7 +1698,7 @@ void freesblk (struct ssapblk *sb) {
 	free ((char *) sb);
 }
 
-struct ssapblk *findsblk (const int sd) {
+struct ssapblk *findsblk (int sd) {
 	struct ssapblk *sb;
 
 	if (once_only == 0)

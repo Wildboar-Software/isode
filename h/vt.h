@@ -147,7 +147,7 @@ void bye (void);
 /* vtpm.c */
 int get_event (const int dd, PE *pe);
 int do_event (const int event, PE pe);
-int pn_ind (const int dd, const struct PSAPsync *psync);
+int pn_ind (const int dd, struct PSAPsync *psync);
 int p_data (PE pdu);
 int p_maj_sync_req (PE pdu);
 int p_maj_sync_resp (PE pdu);
@@ -155,7 +155,7 @@ int p_typed_data (PE pdu);
 int p_resync_req (PE pdu, const int type);
 int p_resync_resp (PE pdu);
 int asr (PE pe, int status);
-int send_bad_asr (const int reason);
+int send_bad_asr (int reason);
 int send_rlr (PE pe);
 int clear_vte (void);
 int vgvt_ind (void);
@@ -163,7 +163,7 @@ int vrtq_ind (void);
 int give_token (void);
 int request_token (void);
 int send_all (void);
-void acs_adios (const struct AcSAPabort *aa, const char *event);
+void acs_adios (struct AcSAPabort *aa, const char *event);
 
 /* vtuser.c */
 // int vass_req (int class, int acc_ri, VT_PROFILE *profile);
@@ -172,7 +172,7 @@ void vrelreq (void);
 void vrelrsp (const int result);
 void vrelcnf (void);
 int vrelind (void);
-int vt_text (const char *str, const int len);
+int vt_text (const char *str, int len);
 // int send_queue (TEXT_UPDATE ud);
 int setemode (const int mode);
 int getch (void);
@@ -342,7 +342,7 @@ int print_VT_VTsdi (PE pe, int explicit, int *len, char **buffer, PEPYPARM parm)
 void vdatind (const int type, PE pe);
 void vhdatind (PE pe);
 void vudatind (PE pe);
-int vt_text (const char *str, const int len);
+int vt_text (const char *str, int len);
 #ifdef TERMIOS
 void ptyecho (const int on);
 #endif

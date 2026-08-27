@@ -5,7 +5,7 @@
 #define	ACSE
 #include "acpkt.h"
 
-int AcFindPCI (const int sd, int *pci, struct AcSAPindication *aci) {
+int AcFindPCI (int sd, int *pci, struct AcSAPindication *aci) {
 	SBV     smask;
 	struct assocblk  *acb;
 

@@ -8,7 +8,7 @@
 #include "tailor.h"
 
 #ifndef	lint
-static int  _rtsaplose (struct RtSAPindication *rti, const int reason, va_list ap);
+static int  _rtsaplose (struct RtSAPindication *rti, int reason, va_list ap);
 #endif
 
 #ifndef	lint
@@ -76,7 +76,7 @@ int rtsaplose (struct RtSAPindication *rti, int reason, char *what, char *fmt) {
 #ifndef	lint
 static int _rtsaplose (  /* what, fmt, args ... */
 	struct RtSAPindication *rti,
-	const int reason,
+	int reason,
 	va_list ap
 ) {
 	char  *bp;

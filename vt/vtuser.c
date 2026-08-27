@@ -356,7 +356,7 @@ int	cur_emode = NOT_ECHO_NOW; /* echo mode (ECHO_NOW or NOT_ECHO_NOW)*/
 /*		LEN - Number of characters in the string.		 */
 /*************************************************************************/
 
-int vt_text (const char *str, const int len) {
+int vt_text (const char *str, int len) {
 	TEXT_UPDATE ud;
 
 	if (debug > 6) {

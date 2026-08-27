@@ -1110,7 +1110,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-static struct adrtab *get_arpent (const unsigned int *ip, const int len, const int isnpa, const int isnext);
+static struct adrtab *get_arpent (const unsigned int *ip, int len, const int isnpa, const int isnext);
 
 #define	atIfIndex	0
 #define	atPhysAddress	1
@@ -1763,7 +1763,7 @@ static void sort_arptab (void) {
 	free ((char *) base);
 }
 
-static struct adrtab *get_arpent (const unsigned int *ip, const int len, const int isnpa, const int isnext) {
+static struct adrtab *get_arpent (const unsigned int *ip, int len, const int isnpa, const int isnext) {
 	struct adrtab *at;
 
 	switch (isnpa) {

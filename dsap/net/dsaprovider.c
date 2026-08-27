@@ -26,7 +26,7 @@ int ronot2dsaplose (struct DSAPindication * di, const char * event, const struct
 
 /*    ROS interface */
 
-int ros2dsaplose (struct DSAPindication *di, const char *event, const struct RoSAPpreject *rop) {
+int ros2dsaplose (struct DSAPindication *di, const char *event, struct RoSAPpreject *rop) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 

@@ -10,14 +10,14 @@
 #include <strings.h>
 #include <unistd.h>
 #include "pepy.h"
-void yyerror (const char *s);
+void yyerror (char *s);
 void yyerror_aux (char *s);
 void myyerror (char* fmt, ...);
 void pyyerror (YP yp, char* fmt, ...);
 int yywrap(void);
-void yyprint (const char *s, const int f, const int top);
+void yyprint (char *s, const int f, const int top);
 void pass1(void);
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
 void do_type (YP yp, int level, char *id, char *arg);
 void choice_pullup (YP yp, const int partial);
@@ -32,10 +32,10 @@ void uniqtag (YP y, YP z);
 int val2int (YV yv);
 static void read_ph_file (char *module, OID oid);
 void print_type (YP yp, const int level);
-YP new_type (const int code);
+YP new_type (int code);
 YP add_type (YP y, YP z);
 YP copy_type (YP yp);
-char *new_string (const char *s);
+char *new_string (char *s);
 void init_new_file(void);
 void end_file(void);
 
@@ -315,7 +315,7 @@ static void prologue(void) {
 	printf ("void\tadvise (char *what, char *fmt, ...);\n");
 }
 
-void yyerror (const char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -390,7 +390,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (const char *s, const int f, const int top) {
+void yyprint (char *s, const int f, const int top) {
 	int	    len;
 	static int didf = 0;
 	static int nameoutput = 0;
@@ -469,7 +469,7 @@ static void prologue3(void) {
 	printf (" */\n");
 }
 
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp)
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
 	SY	    sy;
 
@@ -864,7 +864,7 @@ void uniqint (YV yv) {
 }
 
 void uniqtag (YP y, YP z) {
-	const int     i;
+	int     i;
 	int    id;
 	YT yt;
 	YP yp;
@@ -1378,7 +1378,7 @@ static MD  lookup_module (char *module, OID oid)
 
 /* TYPES */
 
-YP	new_type (const int code) {
+YP	new_type (int code) {
 	YP yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -1478,7 +1478,7 @@ YP	copy_type (YP yp) {
 	return y;
 }
 
-YV new_value (const int code) {
+YV new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -1594,7 +1594,7 @@ YT lookup_tag (YP yp) {
 	return NULLYT;
 }
 
-char *new_string (const char *s) {
+char *new_string (char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)

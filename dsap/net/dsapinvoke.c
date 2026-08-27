@@ -16,7 +16,7 @@ static int DapEncodeInvoke (PE *pep, const struct DSArgument *arg);
 static int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
 static int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg);
 
-int DapInvokeRequest (const int sd, const int id, const struct DSArgument *arg, struct DSAPindication *di) {
+int DapInvokeRequest (int sd, const int id, const struct DSArgument *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -82,7 +82,7 @@ static int DapEncodeInvoke (PE *pep, const struct DSArgument *arg) {
 	return(success);
 }
 
-int DspInvokeRequest (const int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
+int DspInvokeRequest (int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -150,7 +150,7 @@ static int DspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return(success);
 }
 
-int QspInvokeRequest (const int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
+int QspInvokeRequest (int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	int				  result;
 	PE				  arg_pe;
 	struct RoSAPindication	  roi_s;
@@ -221,7 +221,7 @@ int QspEncodeInvoke (PE *pep, struct ds_op_arg *arg) {
 	return(success);
 }
 
-int IspInvokeRequest (const int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
+int IspInvokeRequest (int sd, const int id, struct ds_op_arg *arg, struct DSAPindication *di) {
 	return QspInvokeRequest (sd, id, arg, di);
 }
 

@@ -133,15 +133,15 @@ char   *_isodefile (char *path, char *file);
 
 char   *getlocalhost (void);
 
-int ll_hdfree (const LLog *lp);
+int ll_hdfree (LLog *lp);
 
 int dsa_tai_string (const char *str);
 int dsa_sys_tai (const int argc, char **argv);
-int dsa_tai_args (const int *acptr, char ***avptr);
+int dsa_tai_args (int *acptr, char ***avptr);
 int dsa_tai_init (const char *name);
 int tai_string (const char *str);
 int dsap_tai (const int argc, char **argv);
-void tai_args (const int *acptr, char ***avptr);
+void tai_args (int *acptr, char ***avptr);
 int dsap_tai_init (void);
 int tailorfree (void);
 

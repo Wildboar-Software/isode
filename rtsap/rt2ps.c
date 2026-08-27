@@ -9,7 +9,7 @@
 #include "tailor.h"
 #include "pvpdu.h"
 #include "pepsycodec.h"
-int ps2rtslose ( struct assocblk *acb, const struct RtSAPindication *rti, const char *event, const struct PSAPabort *pa );
+int ps2rtslose ( struct assocblk *acb, struct RtSAPindication *rti, const char *event, struct PSAPabort *pa );
 
 
 extern int RtWaitRequestAux (
@@ -19,21 +19,21 @@ extern int RtWaitRequestAux (
 	struct RtSAPindication *rti
 );
 
-static void psDATAser (const int sd, struct PSAPdata *px);
-static void psTOKENser (const int sd, const struct PSAPtoken *pt);
-static void psSYNCser (const int sd, const struct PSAPsync *pn);
-static void psACTIVITYser (const int sd, const struct PSAPactivity *pv);
-static void psREPORTser (const int sd, const struct PSAPreport *pp);
-static void psFINISHser (const int sd, struct PSAPfinish *pf);
-static void psABORTser (const int sd, struct PSAPabort *pa);
+static void psDATAser (int sd, struct PSAPdata *px);
+static void psTOKENser (int sd, struct PSAPtoken *pt);
+static void psSYNCser (int sd, struct PSAPsync *pn);
+static void psACTIVITYser (int sd, struct PSAPactivity *pv);
+static void psREPORTser (int sd, struct PSAPreport *pp);
+static void psFINISHser (int sd, struct PSAPfinish *pf);
+static void psABORTser (int sd, struct PSAPabort *pa);
 
 static int doPSdata (struct assocblk *acb, struct PSAPdata *px, struct RtSAPindication *rti);
 static int doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPindication *rti);
 static int doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RtSAPindication *rti);
-static int doPSreport (struct assocblk *acb, const struct PSAPreport *pp, struct RtSAPindication *rti);
-static int doPSactivity (struct assocblk *acb, const struct PSAPactivity *pv, struct RtSAPindication *rti);
-static int doPSsync (struct assocblk *acb, const struct PSAPsync *pn, struct RtSAPindication *rti);
-static int doPStoken (struct assocblk *acb, const struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti);
+static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti);
+static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti);
+static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti);
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti);
 
 int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result;
@@ -412,7 +412,7 @@ void rt2pslose (struct assocblk *acb, int result) {
 
 /*    AcSAP interface */
 
-int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, const char *event, const struct AcSAPabort *aca) {
+int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, const char *event, struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -459,7 +459,7 @@ int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, const char *
 		return rtsaplose (rti, reason, NULLCP, "%s", cp);
 }
 
-int acs2rtsabort (struct assocblk *acb, const struct AcSAPabort *aca, struct RtSAPindication *rti) {
+int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct type_RTS_RTSE__apdus *rtpdu = NULL;
@@ -635,7 +635,7 @@ out:
 	return NOTOK;
 }
 
-static int doPStoken (struct assocblk *acb, const struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti) {
+static int doPStoken (struct assocblk *acb, struct PSAPtoken *pt, const int trans, struct RtSAPindication *rti) {
 	PE	    pe;
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
@@ -711,7 +711,7 @@ out:
 	return NOTOK;
 }
 
-static int doPSsync (struct assocblk *acb, const struct PSAPsync *pn, struct RtSAPindication *rti) {
+static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -761,7 +761,7 @@ out:
 	return NOTOK;
 }
 
-static int doPSactivity (struct assocblk *acb, const struct PSAPactivity *pv, struct RtSAPindication *rti) {
+static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -899,7 +899,7 @@ out:
 	return NOTOK;
 }
 
-static int doPSreport (struct assocblk *acb, const struct PSAPreport *pp, struct RtSAPindication *rti) {
+static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RtSAPindication *rti) {
 	struct PSAPindication   pis;
 	struct PSAPindication *pi = &pis;
 	struct PSAPabort  *pa = &pi -> pi_abort;
@@ -986,7 +986,7 @@ static int doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RtSAPin
 	return acs2rtsabort (acb, aca, rti);
 }
 
-static void psDATAser (const int sd, struct PSAPdata *px) {
+static void psDATAser (int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -998,7 +998,7 @@ static void psDATAser (const int sd, struct PSAPdata *px) {
 		(*handler) (sd, rti);
 }
 
-static void psTOKENser (const int sd, const struct PSAPtoken *pt) {
+static void psTOKENser (int sd, struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1010,7 +1010,7 @@ static void psTOKENser (const int sd, const struct PSAPtoken *pt) {
 		(*handler) (sd, rti);
 }
 
-static void psSYNCser (const int sd, const struct PSAPsync *pn) {
+static void psSYNCser (int sd, struct PSAPsync *pn) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1022,7 +1022,7 @@ static void psSYNCser (const int sd, const struct PSAPsync *pn) {
 		(*handler) (sd, rti);
 }
 
-static void psACTIVITYser (const int sd, const struct PSAPactivity *pv) {
+static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1034,7 +1034,7 @@ static void psACTIVITYser (const int sd, const struct PSAPactivity *pv) {
 		(*handler) (sd, rti);
 }
 
-static void psREPORTser (const int sd, const struct PSAPreport *pp) {
+static void psREPORTser (int sd, struct PSAPreport *pp) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1046,7 +1046,7 @@ static void psREPORTser (const int sd, const struct PSAPreport *pp) {
 		(*handler) (sd, rti);
 }
 
-static void psFINISHser (const int sd, struct PSAPfinish *pf) {
+static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1058,7 +1058,7 @@ static void psFINISHser (const int sd, struct PSAPfinish *pf) {
 	(*handler) (sd, rti);
 }
 
-static void psABORTser (const int sd, struct PSAPabort *pa) {
+static void psABORTser (int sd, struct PSAPabort *pa) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1072,9 +1072,9 @@ static void psABORTser (const int sd, struct PSAPabort *pa) {
 
 int ps2rtslose (
 	struct assocblk *acb,
-	const struct RtSAPindication *rti,
+	struct RtSAPindication *rti,
 	const char *event,
-	const struct PSAPabort *pa
+	struct PSAPabort *pa
 ) {
 	int     reason;
 	char   *cp,

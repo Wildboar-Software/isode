@@ -7,7 +7,7 @@
 
 /* F-U-ABORT.REQUEST */
 
-int FUAbortRequest (const int sd, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FUAbortRequest (int sd, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -31,7 +31,7 @@ int FUAbortRequest (const int sd, const int action, struct FTAMdiagnostic diag[]
 	return result;
 }
 
-int FAbortRequestAux (struct ftamblk *fsb, const int id, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FAbortRequestAux (struct ftamblk *fsb, const int id, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;

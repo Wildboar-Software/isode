@@ -268,7 +268,7 @@ struct QOStype {
 
 int macro2comm (char *name, struct ts_interim *ts);
 void free_macros(void);
-int norm2na (char *p, const int len, struct NSAPaddr *na);
+int norm2na (char *p, int len, struct NSAPaddr *na);
 int add_alias (const char *name, const char *value);
 
 #ifdef DEBUG

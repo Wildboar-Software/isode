@@ -82,11 +82,11 @@ struct ds_search_result {
 #define NULLSRR	((struct ds_search_result *) 0)
 
 int dap_search (const int ad, int *id, struct ds_search_arg *arg, struct DSError *error, struct ds_search_result *result);
-void search_arg_free (const struct ds_search_arg *arg);
+void search_arg_free (struct ds_search_arg *arg);
 int search_arg_dup (struct ds_search_arg *src, struct ds_search_arg *tgt);
 
 void merge_search_results (struct ds_search_result *sr_res, struct ds_search_result *sr_tmp);
-void search_result_free (const struct ds_search_result *arg);
+void search_result_free (struct ds_search_result *arg);
 void correlate_search_results (struct ds_search_result *sr_res);
 
 /*
@@ -128,7 +128,7 @@ typedef struct ftype {
 #define NULLFTL	((Ftypelist) 0)
 
 void ftype_free (Ftypelist ft);
-void ftype_add (Ftypelist *l, AttributeType type, const int len, const char *inequstr);
+void ftype_add (Ftypelist *l, AttributeType type, int len, const char *inequstr);
 
 /* allows a reference count for things all search tasks reference */
 typedef struct thing_header {
@@ -184,13 +184,13 @@ int check_ancestor_sacls (
 	DN selfdn,
 	Entry e,
 	int scope,
-	const struct ds_search_task *local,
+	struct ds_search_task *local,
 	const char authtype,
 	int *saclerror
 );
 
 void search_refer (
-	const struct ds_search_arg *arg,
+	struct ds_search_arg *arg,
 	Entry entryptr,
 	struct ds_search_task **local,
 	struct ds_search_task **refer,

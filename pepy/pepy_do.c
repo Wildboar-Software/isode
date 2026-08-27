@@ -702,7 +702,7 @@ static void do_type_choice (YP yp, const int caseindex, int level, char *narg) {
 	printf ("%*s}\n%*sbreak;\n", level * 4, "", level * 4, "");
 }
 
-int do_action (const char *action, const int level, char *arg, const int lineno) {
+int do_action (char *action, const int level, char *arg, const int lineno) {
 	char c, d;
 
 	printf ("%*s{\n", level * 4, "");

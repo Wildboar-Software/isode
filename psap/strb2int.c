@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-int strb2int (const char *cp, const int len) {
+int strb2int (const char *cp, int len) {
 	int    i,
 		   j,
 		   bit,

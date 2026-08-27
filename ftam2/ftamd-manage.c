@@ -6,7 +6,7 @@
 
 /* MANAGEMENT */
 
-void ftam_managementindication (const struct FTAMgroup *ftg) {
+void ftam_managementindication (struct FTAMgroup *ftg) {
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;

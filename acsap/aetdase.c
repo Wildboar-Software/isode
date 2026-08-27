@@ -36,7 +36,7 @@ static SFD intrser (int sig);
 static int dase_init (void);
 static int dase_callback (const struct type_DASE_Callback__REQ *arg);
 static int yesno (void);
-static void print_qb (const struct qbuf *q);
+static void print_qb (struct qbuf *q);
 static struct element_DASE_1 *read_el (void);
 
 /* LOOKUP */
@@ -468,7 +468,7 @@ again:
 	return result;
 }
 
-static void print_qb (const struct qbuf *q) {
+static void print_qb (struct qbuf *q) {
 	struct qbuf *p;
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);

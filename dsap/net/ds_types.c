@@ -21,7 +21,7 @@ void bind_arg_free (struct ds_bind_arg *arg) {
 	/* free certificate_list */
 }
 
-void op_arg_free (const struct ds_op_arg *arg) {
+void op_arg_free (struct ds_op_arg *arg) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_arg_free()"));
 	if (arg->dca_dsarg.arg_type == -1 )
 		/* Already freed - argument part anyway */
@@ -114,49 +114,49 @@ void ds_arg_free (struct DSArgument *arg) {
 	arg->arg_type = -1;
 }
 
-void read_arg_free (const struct ds_read_arg *arg) {
+void read_arg_free (struct ds_read_arg *arg) {
 	ca_free (&arg->rda_common);
 	dn_free (arg->rda_object);
 	as_free (arg->rda_eis.eis_select);
 }
 
-void compare_arg_free (const struct ds_compare_arg *arg) {
+void compare_arg_free (struct ds_compare_arg *arg) {
 	ca_free (&arg->cma_common);
 	dn_free (arg->cma_object);
 	AttrT_free (arg->cma_purported.ava_type);
 	AttrV_free (arg->cma_purported.ava_value);
 }
 
-void list_arg_free (const struct ds_list_arg *arg) {
+void list_arg_free (struct ds_list_arg *arg) {
 	ca_free (&arg->lsa_common);
 	dn_free (arg->lsa_object);
 }
 
-void search_arg_free (const struct ds_search_arg *arg) {
+void search_arg_free (struct ds_search_arg *arg) {
 	ca_free (&arg->sra_common);
 	dn_free (arg->sra_baseobject);
 	as_free (arg->sra_eis.eis_select);
 	filter_free (arg->sra_filter);
 }
 
-void addentry_arg_free (const struct ds_addentry_arg *arg) {
+void addentry_arg_free (struct ds_addentry_arg *arg) {
 	ca_free (&arg->ada_common);
 	dn_free (arg->ada_object);
 	as_free (arg->ada_entry);
 }
 
-void removeentry_arg_free (const struct ds_removeentry_arg *arg) {
+void removeentry_arg_free (struct ds_removeentry_arg *arg) {
 	ca_free (&arg->rma_common);
 	dn_free (arg->rma_object);
 }
 
-void modifyentry_arg_free (const struct ds_modifyentry_arg *arg) {
+void modifyentry_arg_free (struct ds_modifyentry_arg *arg) {
 	ca_free (&arg->mea_common);
 	dn_free (arg->mea_object);
 	ems_free (arg->mea_changes);
 }
 
-void modifyrdn_arg_free (const struct ds_modifyrdn_arg *arg) {
+void modifyrdn_arg_free (struct ds_modifyrdn_arg *arg) {
 	ca_free (&arg->mra_common);
 	dn_free (arg->mra_object);
 	rdn_free (arg->mra_newrdn);
@@ -167,7 +167,7 @@ void getedb_arg_free (const struct getedb_arg *arg) {
 	free ((char *)arg->ga_version);
 }
 
-void op_res_free (const struct ds_op_res *res) {
+void op_res_free (struct ds_op_res *res) {
 	DLOG(log_dsap, LLOG_TRACE, ("op_res_free()"));
 	if (res->dcr_dsres.result_type == -1 )
 		/* Already freed - result part anyway */
@@ -313,7 +313,7 @@ int ds_arg_dup (const struct DSArgument *src, struct DSArgument *tgt) {
 	}
 }
 
-int read_arg_dup (const struct ds_read_arg *src, struct ds_read_arg *tgt) {
+int read_arg_dup (struct ds_read_arg *src, struct ds_read_arg *tgt) {
 	if (ca_dup (&(src->rda_common), &(tgt->rda_common)) != OK)
 		return (NOTOK);
 	if (src->rda_object == NULLDN)
@@ -325,7 +325,7 @@ int read_arg_dup (const struct ds_read_arg *src, struct ds_read_arg *tgt) {
 	return (OK);
 }
 
-int compare_arg_dup (const struct ds_compare_arg *src, struct ds_compare_arg *tgt) {
+int compare_arg_dup (struct ds_compare_arg *src, struct ds_compare_arg *tgt) {
 	if (ca_dup (&(src->cma_common), &(tgt->cma_common)) != OK)
 		return (NOTOK);
 	if (src->cma_object == NULLDN)
@@ -337,12 +337,12 @@ int compare_arg_dup (const struct ds_compare_arg *src, struct ds_compare_arg *tg
 	return (OK);
 }
 
-int abandon_arg_dup (const struct ds_abandon_arg *src, struct ds_abandon_arg *tgt) {
+int abandon_arg_dup (struct ds_abandon_arg *src, struct ds_abandon_arg *tgt) {
 	tgt->aba_invokeid = src->aba_invokeid;
 	return (OK);
 }
 
-int list_arg_dup (const struct ds_list_arg *src, struct ds_list_arg *tgt) {
+int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt) {
 	if (ca_dup (&(src->lsa_common), &(tgt->lsa_common)) != OK)
 		return (NOTOK);
 	if (src->lsa_object == NULLDN)
@@ -385,7 +385,7 @@ int addentry_arg_dup (struct ds_addentry_arg *src, struct ds_addentry_arg *tgt) 
 	return (OK);
 }
 
-int removeentry_arg_dup (const struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt) {
+int removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt) {
 	if (ca_dup (&(src->rma_common), &(tgt->rma_common)) != OK)
 		return (NOTOK);
 	if (src->rma_object == NULLDN)
@@ -395,7 +395,7 @@ int removeentry_arg_dup (const struct ds_removeentry_arg *src, struct ds_removee
 	return (OK);
 }
 
-int modifyentry_arg_dup (const struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt) {
+int modifyentry_arg_dup (struct ds_modifyentry_arg *src, struct ds_modifyentry_arg *tgt) {
 	struct entrymod	* ems_cpy(const struct entrymod *em);
 	if (ca_dup (&(src->mea_common), &(tgt->mea_common)) != OK)
 		return (NOTOK);
@@ -410,7 +410,7 @@ int modifyentry_arg_dup (const struct ds_modifyentry_arg *src, struct ds_modifye
 	return (OK);
 }
 
-int modifyrdn_arg_dup (const struct ds_modifyrdn_arg *src, struct ds_modifyrdn_arg *tgt) {
+int modifyrdn_arg_dup (struct ds_modifyrdn_arg *src, struct ds_modifyrdn_arg *tgt) {
 	if (ca_dup (&(src->mra_common), &(tgt->mra_common)) != OK)
 		return (NOTOK);
 	if (src->mra_object == NULLDN)

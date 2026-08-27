@@ -175,7 +175,7 @@ out1:
 
 /*    RT-BEGIN.RESPONSE (X.410 OPEN.RESPONSE) */
 
-int RtBeginResponse (const int sd, int status, PE data, struct RtSAPindication *rti) {
+int RtBeginResponse (int sd, int status, PE data, struct RtSAPindication *rti) {
 	int	    len,
 			result;
 	char   *base;

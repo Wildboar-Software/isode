@@ -7,7 +7,7 @@
 
 /* P-RESYNCHRONIZE.RESPONSE */
 
-int PReSyncResponse (const int sd, const long ssn, const int settings, PE *data, const int ndata, struct PSAPindication *pi) {
+int PReSyncResponse (int sd, const long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

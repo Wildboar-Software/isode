@@ -13,11 +13,11 @@
 #include "pepsycodec.h"
 
 static void vprint1(void);
-static char *oct2str (char *s, const int len);
+static char *oct2str (char *s, int len);
 static void vsetfp (const FILE *fp, char *s);
 static int ll_vprintf(LLog *lp, const char *fmt, va_list ap);
 static int ll_printf_evil(FILE *fp, const char *format, ...);
-static char *newbuf (const int i);
+static char *newbuf (int i);
 
 
 #ifndef __STDC__
@@ -56,8 +56,8 @@ static void _init_vfp (void)
 }
 #endif
 
-static char *oct2str (char *s, const int len);
-static char *newbuf (const int i);
+static char *oct2str (char *s, int len);
+static char *newbuf (int i);
 
 void vpush(void)  {
 	if (didvpush)
@@ -203,7 +203,7 @@ void vstring (PE pe) {
 	}
 }
 
-static char *oct2str (char *s, const int len) {
+static char *oct2str (char *s, int len) {
 	int     ia5ok;
 	int    k;
 	char  *bp, *cp, *dp, *zp;
@@ -578,7 +578,7 @@ void pvpdu (LLog *lp, const int ind, modtyp *mod, PE pe, const char *text, const
 
 static char *bufp = NULL;
 
-static char *newbuf (const int i) {
+static char *newbuf (int i) {
 	static unsigned int len = 0;
 	unsigned int need;
 

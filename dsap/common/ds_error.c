@@ -9,8 +9,8 @@
 #include "quipu/attrvalue.h"
 #include "quipu/attr.h"
 
-static void ds_bind_error_aux (PS ps, const struct ds_bind_error *err, const int mode);
-static char *print_bind_error (const struct ds_bind_error *err, const int mode);
+static void ds_bind_error_aux (PS ps, struct ds_bind_error *err, const int mode);
+static char *print_bind_error (struct ds_bind_error *err, const int mode);
 
 
 extern LLog * log_dsap;
@@ -300,7 +300,7 @@ void ds_error_free (struct DSError *err) {
 	err->dse_type = DSE_NOERROR;
 }
 
-void ds_bind_error_aux (PS ps, const struct ds_bind_error *err, const int mode)
+void ds_bind_error_aux (PS ps, struct ds_bind_error *err, const int mode)
 {
 	switch (err->dbe_type) {
 	case DBE_TYPE_SERVICE:
@@ -321,14 +321,14 @@ void ds_bind_error_aux (PS ps, const struct ds_bind_error *err, const int mode)
 	}
 }
 
-void ds_bind_error(PS ps, const struct ds_bind_error *err)
+void ds_bind_error(PS ps, struct ds_bind_error *err)
 {
 	ds_bind_error_aux (ps, err, 0);
 }
 
 static PS ps = NULLPS;
 
-char *print_bind_error (const struct ds_bind_error *err, const int mode) {
+char *print_bind_error (struct ds_bind_error *err, const int mode) {
 	char       *cp;
 
 	if (ps == NULL

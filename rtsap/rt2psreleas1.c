@@ -4,11 +4,11 @@
 #include <signal.h>
 #include "rtpkt.h"
 
-static int  RtCloseRequestAux (struct assocblk *acb, const int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti);
+static int  RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti);
 
 /* RT-CLOSE.REQUEST */
 
-int RtCloseRequest (const int sd, const int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
+int RtCloseRequest (int sd, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -22,7 +22,7 @@ int RtCloseRequest (const int sd, const int reason, PE data, struct AcSAPrelease
 	return result;
 }
 
-static int RtCloseRequestAux (struct assocblk *acb, const int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
+static int RtCloseRequestAux (struct assocblk *acb, int reason, PE data, struct AcSAPrelease *acr, struct RtSAPindication *rti) {
 	int	    result;
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;

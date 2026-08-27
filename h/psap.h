@@ -207,8 +207,8 @@ int	pe_pullup (PE pe);
 PE	pe_expunge (PE pe, PE r);
 int	pe_extract (PE pe, PE r);
 
-PE str2pe (char *s, const int len, int *advance, int *result);
-PE qb2pe (struct qbuf *qb, const int len, const int depth, int *result);
+PE str2pe (char *s, int len, int *advance, int *result);
+PE qb2pe (struct qbuf *qb, int len, const int depth, int *result);
 
 extern int    pe_maxclass;
 extern char  *pe_classlist[];
@@ -253,7 +253,7 @@ PE	flag2prim (const int b, const int class, const int id);
 #define	bool2prim(b)		flag2prim ((b), PE_CLASS_UNIV, PE_PRIM_BOOL)
 
 integer	prim2num (PE pe);
-PE	num2prim (const integer i, const int class, const int id);
+PE	num2prim (integer i, const int class, const int id);
 #define	int2prim(i)		num2prim ((integer) (i), PE_CLASS_UNIV, PE_PRIM_INT)
 
 #define	prim2enum(i)		prim2num((i))
@@ -299,7 +299,7 @@ PE	real2prim (const double, const PElementClass, const PElementID);
 char   *prim2str (PE pe, int *len);
 PE	str2prim (char *, const int, const PElementClass, const PElementID);
 struct qbuf *prim2qb (PE pe);
-PE	qb2prim_aux (const struct qbuf *, const PElementClass, const PElementID, const int);		/* really should be qb2pe () */
+PE	qb2prim_aux (struct qbuf *, const PElementClass, const PElementID, const int);		/* really should be qb2pe () */
 #define	qb2prim(q,c,i)		qb2prim_aux ((q), (c), (i), 0)
 #define	oct2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_PRIM_OCTS)
 #define	ode2prim(s,len)		str2prim ((s), (len), PE_CLASS_UNIV, PE_PRIM_ODE)
@@ -327,8 +327,8 @@ PE	qb2prim_aux (const struct qbuf *, const PElementClass, const PElementID, cons
 PE	prim2bit (PE pe);
 PE	bit2prim (PE pe);
 
-int	bit_on (PE pe, const int i), bit_off (PE pe, const int i);
-int	bit_test (PE pe, const int i);
+int	bit_on (PE pe, int i), bit_off (PE pe, int i);
+int	bit_test (PE pe, int i);
 
 OID	prim2oid (PE pe);
 PE	obj2prim (OID, const PElementClass, const PElementID);
@@ -355,8 +355,8 @@ PE	set_find (PE, const PElementClass, const PElementID);
 
 #define	prim2seq(pe)		(prim2set (pe))
 #define	seq2prim(pe)		(pe)
-int	seq_add (PE pe, PE r, int i), seq_addon (PE pe, PE last, PE new), seq_del (PE pe, const int i);
-PE	seq_find (PE pe, const int i);
+int	seq_add (PE pe, PE r, int i), seq_addon (PE pe, PE last, PE new), seq_del (PE pe, int i);
+PE	seq_find (PE pe, int i);
 
 char   *pe_error (const int c);
 
@@ -434,7 +434,7 @@ struct PStream {
 PS	ps_alloc (int (*io)(PS ps));
 void	ps_free (PS ps);
 
-int	ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, const PElementLen n, const int in_line);
+int	ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, PElementLen n, const int in_line);
 #define	ps_read(ps, data, cc)	ps_io ((ps), (ps) -> ps_readP, (data), (cc), 0)
 #define	ps_write(ps, data, cc)	ps_write_aux ((ps), (data), (cc), 0)
 #define	ps_write_aux(ps, data, cc, in_line) \
@@ -473,7 +473,7 @@ int	std_open (PS ps);
 #define	std_setup(ps, fp)	((ps) -> ps_addr = (char *) (fp), OK)
 
 int	str_open (PS ps);
-int	str_setup (PS ps, char *cp, const int cc, const int in_line);
+int	str_setup (PS ps, char *cp, int cc, const int in_line);
 
 int	dg_open (PS ps);
 int	dg_setup (PS ps, const int fd, const int size, int (*rfx)(int fd, struct qbuf **q), int (*wfx)(int fd, struct qbuf *qb), int (*cfx)(int fd));
@@ -489,7 +489,7 @@ int	qbuf_open (PS ps);
 int	ts_read (int fd, struct qbuf **q), ts_write (int fd, struct qbuf *qb);
 
 int	uvec_open (PS ps);
-int	uvec_setup (PS ps, const int len);
+int	uvec_setup (PS ps, int len);
 
 #define	ps2pe(ps)		ps2pe_aux ((ps), 1, 1)
 PE	ps2pe_aux (PS ps, const int top, const int all);
@@ -538,7 +538,7 @@ extern struct qbuf *Qb;
                                         qbuf2pe_f (result))
 PE qbuf2pe_f (int *result);
 char *qb2str (struct qbuf *q);
-struct qbuf *str2qb (char *s, const int len, const int head) ;
+struct qbuf *str2qb (char *s, int len, const int head) ;
 static inline struct qbuf *
 str2qb_s (char *s)
 {
@@ -561,15 +561,15 @@ str2prim_s (char *s, const PElementClass cl, const PElementID id)
 void qb_free (struct qbuf *qb);
 
 int	pe2ssdu (PE pe, char **base, int *len);
-PE	ssdu2pe (char *base, const int len, const char *realbase, int *result);
+PE	ssdu2pe (char *base, int len, const char *realbase, int *result);
 
 struct ll_struct;
-void	pe2text (struct ll_struct *lp, PE pe, const int rw, const int cc), text2pe (void);
+void	pe2text (struct ll_struct *lp, PE pe, const int rw, int cc), text2pe (void);
 
 int	pe2uvec (PE pe, struct udvec **uv);
 
-char   *int2strb (const int n, const int len);
-int	strb2int (const char *cp, const int len);
+char   *int2strb (int n, int len);
+int	strb2int (const char *cp, int len);
 
 PE	strb2bitstr (const char *, const int, const PElementClass, const PElementID);
 char   *bitstr2strb (PE pe, int *k);

@@ -5,7 +5,7 @@
 #include "psap.h"
 
 PE
-num2prim (const integer i, const int class, const int id) {
+num2prim (integer i, const int class, const int id) {
 	static const integer MASK = 0x1ff;
 	integer mask, sign, n;
 	int len;

@@ -34,7 +34,7 @@
  * @return 0 on success, -1 if @p out is NULL or @p n > INT_MAX.
  */
 static inline int
-sizet2int (const size_t n, int *out)
+sizet2int (size_t n, int *out)
 {
 	if (out == NULL || n > (size_t) INT_MAX)
 		return -1;
@@ -63,7 +63,7 @@ strlen2int (const char *s, int *out)
  * @return 0 on success, -1 on NULL @p out, negative @p n, or overflow.
  */
 static inline int
-int2sizet (const int n, size_t *out)
+int2sizet (int n, size_t *out)
 {
 	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) SIZE_MAX)
 		return -1;
@@ -78,7 +78,7 @@ int2sizet (const int n, size_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside INT_MIN..INT_MAX.
  */
 static inline int
-ssize2int (const ssize_t n, int *out)
+ssize2int (ssize_t n, int *out)
 {
 	if (out == NULL || n < (ssize_t) INT_MIN || n > (ssize_t) INT_MAX)
 		return -1;
@@ -93,7 +93,7 @@ ssize2int (const ssize_t n, int *out)
  * @return 0 on success, -1 on NULL @p out, negative @p n, or overflow.
  */
 static inline int
-ssize2sizet (const ssize_t n, size_t *out)
+ssize2sizet (ssize_t n, size_t *out)
 {
 	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) SIZE_MAX)
 		return -1;
@@ -108,7 +108,7 @@ ssize2sizet (const ssize_t n, size_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside INT_MIN..INT_MAX.
  */
 static inline int
-long2int (const long n, int *out)
+long2int (long n, int *out)
 {
 	if (out == NULL || n < (long) INT_MIN || n > (long) INT_MAX)
 		return -1;
@@ -123,7 +123,7 @@ long2int (const long n, int *out)
  * @return 0 on success, -1 on NULL @p out, negative @p n, or overflow of UINT_MAX.
  */
 static inline int
-long2uint (const long n, unsigned int *out)
+long2uint (long n, unsigned int *out)
 {
 	if (out == NULL || n < 0L || (unsigned long) n > (unsigned long) UINT_MAX)
 		return -1;
@@ -138,7 +138,7 @@ long2uint (const long n, unsigned int *out)
  * @return 0 on success, -1 on NULL @p out, negative @p n, or overflow.
  */
 static inline int
-long2sizet (const long n, size_t *out)
+long2sizet (long n, size_t *out)
 {
 	if (out == NULL || n < 0L || (uintmax_t) n > (uintmax_t) SIZE_MAX)
 		return -1;
@@ -198,7 +198,7 @@ uint2int (const unsigned int n, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n < 0.
  */
 static inline int
-int2uint (const int n, unsigned int *out)
+int2uint (int n, unsigned int *out)
 {
 	if (out == NULL || n < 0)
 		return -1;
@@ -213,7 +213,7 @@ int2uint (const int n, unsigned int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n < 0.
  */
 static inline int
-int2ulong (const int n, unsigned long *out)
+int2ulong (int n, unsigned long *out)
 {
 	if (out == NULL || n < 0)
 		return -1;
@@ -254,7 +254,7 @@ uid2int (const uid_t uid, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit in @c uid_t.
  */
 static inline int
-int2uid (const int n, uid_t *out)
+int2uid (int n, uid_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -301,7 +301,7 @@ gid2int (const gid_t gid, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit in @c gid_t.
  */
 static inline int
-int2gid (const int n, gid_t *out)
+int2gid (int n, gid_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -327,7 +327,7 @@ int2gid (const int n, gid_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit in @c mode_t.
  */
 static inline int
-int2mode (const int n, mode_t *out)
+int2mode (int n, mode_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -395,7 +395,7 @@ chmod_int (const char *path, const int mode)
  * @return 0 on success, -1 if @p out is NULL or @p n < 0.
  */
 static inline int
-long2ulong (const long n, unsigned long *out)
+long2ulong (long n, unsigned long *out)
 {
 	if (out == NULL || n < 0L)
 		return -1;
@@ -443,7 +443,7 @@ off2sizet (const off_t n, size_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit.
  */
 static inline int
-int2socklen (const int n, socklen_t *out)
+int2socklen (int n, socklen_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -469,7 +469,7 @@ int2socklen (const int n, socklen_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit.
  */
 static inline int
-sizet2socklen (const size_t n, socklen_t *out)
+sizet2socklen (size_t n, socklen_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -503,7 +503,7 @@ socklen2int (const socklen_t n, int *out)
 		if ((uintmax_t) n > (uintmax_t) INT_MAX)
 			return -1;
 	} else {
-		const int i = (int) n;
+		int i = (int) n;
 
 		if ((socklen_t) i != n)
 			return -1;
@@ -523,7 +523,7 @@ socklen2int (const socklen_t n, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit.
  */
 static inline int
-int2tflag (const int n, tcflag_t *out)
+int2tflag (int n, tcflag_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -671,7 +671,7 @@ ptrdiff2sizet (const ptrdiff_t n, size_t *out)
  * @return 0 on success, -1 if @p n is negative or does not fit.
  */
 static inline int
-char2sizet (const char n, size_t *out)
+char2sizet (char n, size_t *out)
 {
 	return int2sizet ((int) n, out);
 }
@@ -683,7 +683,7 @@ char2sizet (const char n, size_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside 0..255.
  */
 static inline int
-int2u8 (const int n, uint8_t *out)
+int2u8 (int n, uint8_t *out)
 {
 	if (out == NULL || n < 0 || n > 255)
 		return -1;
@@ -729,7 +729,7 @@ u8tochar (const uint8_t n, char *out)
  * @return 0 on success, -1 if @p acc is NULL, @p n does not fit, or the sum overflows INT_MAX.
  */
 static inline int
-add_sizet_to_int (const int *acc, const size_t n)
+add_sizet_to_int (int *acc, size_t n)
 {
 	int i;
 
@@ -748,7 +748,7 @@ add_sizet_to_int (const int *acc, const size_t n)
  * @return 0 on success, -1 if @p acc is NULL, @p n < 0, or the sum overflows INT_MAX.
  */
 static inline int
-add_int_to_int (const int *acc, const int n)
+add_int_to_int (int *acc, int n)
 {
 	if (acc == NULL || n < 0 || *acc < 0 || *acc > INT_MAX - n)
 		return -1;
@@ -782,7 +782,7 @@ strlen1_to_int (const char *s, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside 0..65535.
  */
 static inline int
-int2u16 (const int n, uint16_t *out)
+int2u16 (int n, uint16_t *out)
 {
 	if (out == NULL || n < 0 || n > 65535)
 		return -1;
@@ -797,7 +797,7 @@ int2u16 (const int n, uint16_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside 0..UINT32_MAX.
  */
 static inline int
-int2u32 (const int n, uint32_t *out)
+int2u32 (int n, uint32_t *out)
 {
 	if (out == NULL || n < 0 || (uintmax_t) n > (uintmax_t) UINT32_MAX)
 		return -1;
@@ -874,7 +874,7 @@ u16_bic (const uint16_t v, const unsigned bits)
  * @return Those bits as @c uint16_t (high bit is not a sign).
  */
 static inline uint16_t
-as_ushort (const short n)
+as_ushort (short n)
 {
 	return *(unsigned short *) &n;
 }
@@ -959,7 +959,7 @@ ushort_bic (unsigned short *p, const unsigned bits)
  * @return 0 on success, -1 if @p out is NULL or @p n > USHRT_MAX.
  */
 static inline int
-sizet2ushort (const size_t n, unsigned short *out)
+sizet2ushort (size_t n, unsigned short *out)
 {
 	if (out == NULL || n > (size_t) USHRT_MAX)
 		return -1;
@@ -974,7 +974,7 @@ sizet2ushort (const size_t n, unsigned short *out)
  * @return 0 on success, -1 if @p out is NULL or @p n > USHRT_MAX.
  */
 static inline int
-uint2ushort (const unsigned n, unsigned short *out)
+uint2ushort (unsigned n, unsigned short *out)
 {
 	if (out == NULL || n > (unsigned) USHRT_MAX)
 		return -1;
@@ -1029,7 +1029,7 @@ time_delta2int (const time_t later, const time_t now, int *out)
  * @return 0 on success, -1 if @p p is NULL or the sum does not fit.
  */
 static inline int
-ushort_add (unsigned short *p, const unsigned n)
+ushort_add (unsigned short *p, unsigned n)
 {
 	if (p == NULL)
 		return -1;
@@ -1112,7 +1112,7 @@ copy_capped (const void *src, void *dst, const ptrdiff_t len, const size_t cap, 
  * @return 0 on success, -1 if @p n does not fit in @c size_t.
  */
 static inline int
-bcopy_int (const void *src, void *dst, const int n)
+bcopy_int (const void *src, void *dst, int n)
 {
 	size_t len;
 
@@ -1130,7 +1130,7 @@ bcopy_int (const void *src, void *dst, const int n)
  * @return @c memcmp result, or -1 if @p n does not fit in @c size_t.
  */
 static inline int
-bcmp_int (const void *a, const void *b, const int n)
+bcmp_int (const void *a, const void *b, int n)
 {
 	size_t len;
 
@@ -1146,7 +1146,7 @@ bcmp_int (const void *a, const void *b, const int n)
  * @return 0 on success, -1 if @p n does not fit in @c size_t.
  */
 static inline int
-bzero_int (void *s, const int n)
+bzero_int (void *s, int n)
 {
 	size_t len;
 
@@ -1164,7 +1164,7 @@ bzero_int (void *s, const int n)
  * @return @c strncmp result, or -1 if @p n does not fit in @c size_t.
  */
 static inline int
-strncmp_int (const char *a, const char *b, const int n)
+strncmp_int (const char *a, const char *b, int n)
 {
 	size_t len;
 
@@ -1183,7 +1183,7 @@ strncmp_int (const char *a, const char *b, const int n)
  * @return Allocated block, or NULL if @p n is invalid or allocation fails.
  */
 static inline void *
-malloc_int (const int n)
+malloc_int (int n)
 {
 	size_t len;
 
@@ -1199,7 +1199,7 @@ malloc_int (const int n)
  * @return Reallocated block, or NULL if @p n is invalid or allocation fails.
  */
 static inline void *
-realloc_int (void *p, const int n)
+realloc_int (void *p, int n)
 {
 	size_t len;
 
@@ -1215,7 +1215,7 @@ realloc_int (void *p, const int n)
  * @return Allocated block, or NULL on invalid count, overflow, or allocation failure.
  */
 static inline void *
-malloc_nmemb (const int n, const size_t size)
+malloc_nmemb (int n, const size_t size)
 {
 	size_t count;
 
@@ -1234,7 +1234,7 @@ malloc_nmemb (const int n, const size_t size)
  * @return 0 on success, -1 if @p out is NULL, @p n is invalid, or the product overflows.
  */
 static inline int
-nmemb_bytes (const int n, const size_t size, size_t *out)
+nmemb_bytes (int n, const size_t size, size_t *out)
 {
 	size_t count;
 
@@ -1253,7 +1253,7 @@ nmemb_bytes (const int n, const size_t size, size_t *out)
  * @return Zeroed block, or NULL on invalid count, overflow, or allocation failure.
  */
 static inline void *
-calloc_int (const int n, const size_t size)
+calloc_int (int n, const size_t size)
 {
 	size_t count;
 
@@ -1272,7 +1272,7 @@ calloc_int (const int n, const size_t size)
  * @return Reallocated block, or NULL on invalid count, overflow, or allocation failure.
  */
 static inline void *
-realloc_nmemb (void *p, const int n, const size_t size)
+realloc_nmemb (void *p, int n, const size_t size)
 {
 	size_t count;
 
@@ -1310,7 +1310,7 @@ malloc_plus_int (const size_t base, const int extra)
  * @return 0 on success, -1 if @p n does not fit in @c size_t.
  */
 static inline int
-qsort_int (void *base, const int n, const size_t size,
+qsort_int (void *base, int n, const size_t size,
 	   int (*cmp) (const void *, const void *))
 {
 	size_t count;
@@ -1370,7 +1370,7 @@ min_len_cap (const ptrdiff_t len, const size_t cap, int *out)
  * @return @c read result, or -1 with EINVAL if @p n is invalid.
  */
 static inline ssize_t
-read_int (const int fd, void *buf, const int n)
+read_int (const int fd, void *buf, int n)
 {
 	size_t len;
 
@@ -1389,7 +1389,7 @@ read_int (const int fd, void *buf, const int n)
  * @return @c write result, or -1 with EINVAL if @p n is invalid.
  */
 static inline ssize_t
-write_int (const int fd, const void *buf, const int n)
+write_int (const int fd, const void *buf, int n)
 {
 	size_t len;
 
@@ -1501,7 +1501,7 @@ ptrdiff_plus1_to_int (const ptrdiff_t n, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside CHAR_MIN..CHAR_MAX.
  */
 static inline int
-int2char (const int n, char *out)
+int2char (int n, char *out)
 {
 	if (out == NULL || n < (int) CHAR_MIN || n > (int) CHAR_MAX)
 		return -1;
@@ -1516,7 +1516,7 @@ int2char (const int n, char *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside SHRT_MIN..SHRT_MAX.
  */
 static inline int
-int2short (const int n, short *out)
+int2short (int n, short *out)
 {
 	if (out == NULL || n < (int) SHRT_MIN || n > (int) SHRT_MAX)
 		return -1;
@@ -1598,7 +1598,7 @@ char_bxor (char *p, const unsigned bits)
  * @return 0 on success, -1 if @p n is outside 0..255 or @p out is NULL.
  */
 static inline int
-int2octet (const int n, char *out)
+int2octet (int n, char *out)
 {
 	uint8_t u;
 
@@ -1614,7 +1614,7 @@ int2octet (const int n, char *out)
  * @return 0 on success, -1 if @p pp or @c *pp is NULL or @p n is not an octet.
  */
 static inline int
-put_octet (char **pp, const int n)
+put_octet (char **pp, int n)
 {
 	if (pp == NULL || *pp == NULL)
 		return -1;
@@ -1677,7 +1677,7 @@ u32to16 (const uint32_t n, uint16_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside 0..UINT32_MAX.
  */
 static inline int
-long2u32 (const long n, uint32_t *out)
+long2u32 (long n, uint32_t *out)
 {
 	if (out == NULL || n < 0L || (uintmax_t) n > (uintmax_t) UINT32_MAX)
 		return -1;
@@ -1692,7 +1692,7 @@ long2u32 (const long n, uint32_t *out)
  * @return 0 on success, -1 if @p n does not fit in @c int then @c char.
  */
 static inline int
-long2char (const long n, char *out)
+long2char (long n, char *out)
 {
 	int i;
 
@@ -1708,7 +1708,7 @@ long2char (const long n, char *out)
  * @return 0 on success, -1 if @p n does not fit in @c int then 0..255.
  */
 static inline int
-long2octet (const long n, char *out)
+long2octet (long n, char *out)
 {
 	int i;
 
@@ -1724,7 +1724,7 @@ long2octet (const long n, char *out)
  * @return 0 on success, -1 if @p n does not fit in @c int then @c char.
  */
 static inline int
-sizet2char (const size_t n, char *out)
+sizet2char (size_t n, char *out)
 {
 	int i;
 
@@ -1740,7 +1740,7 @@ sizet2char (const size_t n, char *out)
  * @return 0 on success, -1 if @p out is NULL or @p n > 255.
  */
 static inline int
-sizet2u8 (const size_t n, uint8_t *out)
+sizet2u8 (size_t n, uint8_t *out)
 {
 	if (out == NULL || n > 255U)
 		return -1;
@@ -1770,7 +1770,7 @@ u8_minus_sizet (const uint8_t a, const size_t b, int *out)
  * @return 0 on success, -1 if @p n > 255 or @p out is NULL.
  */
 static inline int
-sizet2octet (const size_t n, char *out)
+sizet2octet (size_t n, char *out)
 {
 	uint8_t u;
 
@@ -1818,7 +1818,7 @@ ptrdiff2octet (const ptrdiff_t n, char *out)
  * @return 0 on success, -1 if @p out is NULL or @p n would not convert exactly.
  */
 static inline int
-int2float (const int n, float *out)
+int2float (int n, float *out)
 {
 	if (out == NULL || n < -16777216 || n > 16777216)
 		return -1;
@@ -1865,7 +1865,7 @@ int32_to_int (const int32_t n, int *out)
  * @return 0 on success, -1 if @p out is NULL or @p n is outside INT32_MIN..INT32_MAX.
  */
 static inline int
-long2int32 (const long n, int32_t *out)
+long2int32 (long n, int32_t *out)
 {
 	if (out == NULL || n < (long) INT32_MIN || n > (long) INT32_MAX)
 		return -1;
@@ -1897,7 +1897,7 @@ llong2int32 (const long long n, int32_t *out)
  * @return 0 on success, -1 if @p out is NULL, @p outsz is unsupported, or @p n does not fit.
  */
 static inline int
-long2sint_n (const long n, void *out, const size_t outsz)
+long2sint_n (long n, void *out, const size_t outsz)
 {
 	if (out == NULL)
 		return -1;
@@ -1949,7 +1949,7 @@ long2sint_n (const long n, void *out, const size_t outsz)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit.
  */
 static inline int
-int2safamily (const int n, sa_family_t *out)
+int2safamily (int n, sa_family_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -1975,7 +1975,7 @@ int2safamily (const int n, sa_family_t *out)
  * @return 0 on success, -1 if @p out is NULL or @p n does not fit.
  */
 static inline int
-int2inport (const int n, in_port_t *out)
+int2inport (int n, in_port_t *out)
 {
 	if (out == NULL)
 		return -1;
@@ -2043,7 +2043,7 @@ intmax2int (const intmax_t n, int *out)
  * @return 0 on success, -1 if @p out is NULL or casting back to @c long does not yield @p n.
  */
 static inline int
-long2double (const long n, double *out)
+long2double (long n, double *out)
 {
 	double d;
 
@@ -2063,7 +2063,7 @@ long2double (const long n, double *out)
  * @return 0 on success, -1 if @p n > 255 or @p out is NULL.
  */
 static inline int
-uint2octet (const unsigned n, char *out)
+uint2octet (unsigned n, char *out)
 {
 	if (n > 255U)
 		return -1;

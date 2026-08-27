@@ -603,7 +603,7 @@ struct oper_act *task2oper (const struct task_act *tk) {
 
 int chain_ok (const struct task_act *tk, const char refer_ok, DN dsadn) {
 	struct common_args	* ca;
-	struct common_args	* get_ca_ref(const struct ds_op_arg *dsarg);
+	struct common_args	* get_ca_ref(struct ds_op_arg *dsarg);
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
 	/* if refer_ok is FALSE - we MUST chain unless prevented, otherwise operation will fail */
@@ -944,7 +944,7 @@ void subtask_chain (struct task_act *tk) {
 	struct trace_info		* ti;
 	struct DSError		err;
 	struct common_args		* ca;
-	struct common_args		* get_ca_ref(const struct ds_op_arg *dsarg);
+	struct common_args		* get_ca_ref(struct ds_op_arg *dsarg);
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
 	if(tk->refer_st == NULL_ST)

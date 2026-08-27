@@ -282,7 +282,7 @@ static int tcpread (int fd, char *buffer, int n) {
 	return nout;
 }
 
-char *tcpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td) {
+char *tcpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d %s %s", NT_TCP, fd, cp1, cp2);

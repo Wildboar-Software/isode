@@ -11,7 +11,7 @@
 #include "manifest.h"
 #include "tailor.h"
 
-int TAsynNextRequest (const int sd, const struct TSAPconnect *tc, struct TSAPdisconnect *td);
+int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);
 #ifdef X25
 #include "x25.h"
 #include "spkt.h"
@@ -52,7 +52,7 @@ static struct nsapent {
 extern char isode_x25_errflag;
 #endif
 
-static int  TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async);
+static int  TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async);
 static int  TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, const int async);
 
 struct TSAPaddr *ta2norm (const struct TSAPaddr *ta);
@@ -61,7 +61,7 @@ static struct TSAPaddr *maketsbaddr (const char *cp, const struct NSAPaddr *na, 
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 
-int TAsynConnRequest (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
+int TAsynConnRequest (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
 	int  n;
 	SBV     smask;
 	int     result;
@@ -97,7 +97,7 @@ int TAsynConnRequest (struct TSAPaddr *calling, const struct TSAPaddr *called, c
 	return result;
 }
 
-static int TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
+static int TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
 	int	    result;
 	struct tsapblk *tb;
 
@@ -320,7 +320,7 @@ static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, const in
 
 /*    T-ASYN-RETRY.REQUEST (pseudo) */
 
-int TAsynRetryRequest (const int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -409,7 +409,7 @@ int TAsynRetryRequest (const int sd, struct TSAPconnect *tc, struct TSAPdisconne
 
 /*    T-ASYN-NEXT.REQUEST (pseudo) */
 
-int TAsynNextRequest (const int sd, const struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;

@@ -11,7 +11,7 @@
 #include "pvpdu.h"
 #include "pepsycodec.h"
 
-static int qb_cmp (const struct qbuf *qb1, const struct qbuf *qb2);
+static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2);
 static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, struct PSAPindication *pi);
 static int _PDataRequestAux (const struct psapblk *pb, PE data, struct PSAPindication *pi);
 
@@ -21,7 +21,7 @@ static struct psapblk *PHead = &psapque;
 
 /* P-DATA.REQUEST */
 
-int	PDataRequest (const int sd, PE *data, const int ndata, struct PSAPindication *pi) {
+int	PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -86,7 +86,7 @@ static int _PDataRequestAux (const struct psapblk *pb, PE data, struct PSAPindic
 
 /*    P-READ.REQUEST (pseudo; synchronous read) */
 
-int	PReadRequest (const int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi) {
+int	PReadRequest (int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    nfds,
 			result;
@@ -331,7 +331,7 @@ void freepblk (struct psapblk *pb) {
 	free ((char *) pb);
 }
 
-struct psapblk *findpblk (const int sd) {
+struct psapblk *findpblk (int sd) {
 	struct psapblk *pb;
 	if (once_only == 0)
 		return NULL;
@@ -359,7 +359,7 @@ int	refcmp (
 	return 0;
 }
 
-static int qb_cmp (const struct qbuf *qb1, const struct qbuf *qb2) {
+static int qb_cmp (struct qbuf *qb1, struct qbuf *qb2) {
 	int    i, len1, len2;
 	char  *cp1, *cp2;
 	struct qbuf *qp1, *qp2;
@@ -425,7 +425,7 @@ struct SSAPref *pdu2ref (const struct type_PS_SessionConnectionIdentifier *ref) 
 	return sf;
 }
 
-void pdu2sel (char *sel, int *len, const int i, const struct qbuf *pb) {
+void pdu2sel (char *sel, int *len, int i, struct qbuf *pb) {
 	char  *cp;
 	struct qbuf *qb;
 	if (pb == NULL) {

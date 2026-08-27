@@ -24,9 +24,9 @@
 #endif
 
 static int getlines (const char *buffer);
-static void invoke (const int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
+static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
 #ifdef	TIMER
-static int timing_result (const int sd, const int id, const int dummy, caddr_t result, const struct RoSAPindication *roi);
+static int timing_result (int sd, const int id, const int dummy, caddr_t result, struct RoSAPindication *roi);
 static void timer (const int bytes, const int pkts);
 #ifndef	TMS
 static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0);
@@ -219,7 +219,7 @@ void ryinitiator (const int argc, char **argv, char *myservice, char *mycontext,
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-static void invoke (const int sd, struct RyOperation *ops, struct dispatch *ds, char **args) {
+static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args) {
 	int    i;
 	int	    cc,
 			result;
@@ -422,16 +422,16 @@ static void timer (int bytes, int pkts) {
 #endif
 #endif
 
-static int timing_result (const int sd, const int id, const int dummy, caddr_t result, const struct RoSAPindication *roi) {
+static int timing_result (int sd, const int id, const int dummy, caddr_t result, struct RoSAPindication *roi) {
 	return OK;
 }
 
-void ros_adios (const struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 	_exit (1);
 }
 
-void ros_advise (const struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 	if (rop -> rop_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
@@ -441,12 +441,12 @@ void ros_advise (const struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-void acs_adios (const struct AcSAPabort *aca, const char *event) {
+void acs_adios (struct AcSAPabort *aca, const char *event) {
 	acs_advise (aca, event);
 	_exit (1);
 }
 
-void acs_advise (const struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)

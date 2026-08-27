@@ -235,17 +235,17 @@ out2:
 
 int PConnResponse (
 	const int sd,
-	const int status,
+	int status,
 	const struct PSAPaddr *responding,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int defctxresult,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi
 ) {
 	int	    i,

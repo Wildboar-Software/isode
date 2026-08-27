@@ -49,8 +49,8 @@ static long  clok;
 
 struct utmp  uts;
 
-static void ftam_finishindication (const struct FTAMfinish *ftf);
-static void ftam_abortindication (const struct FTAMabort *fta);
+static void ftam_finishindication (struct FTAMfinish *ftf);
+static void ftam_abortindication (struct FTAMabort *fta);
 
 /*    VFS DATA */
 
@@ -499,10 +499,10 @@ bad1:
 	exit (1);
 }
 
-static void ftam_finishindication(const struct FTAMfinish *ftf);
-static void ftam_abortindication(const struct FTAMabort *fta);
+static void ftam_finishindication(struct FTAMfinish *ftf);
+static void ftam_abortindication(struct FTAMabort *fta);
 
-int ftam_indication (const struct FTAMindication *fti) {
+int ftam_indication (struct FTAMindication *fti) {
 	switch (fti -> fti_type) {
 	case FTI_FINISH:
 		ftam_finishindication (&fti -> fti_finish);
@@ -541,7 +541,7 @@ int ftam_indication (const struct FTAMindication *fti) {
 
 /* TERMINATION */
 
-static void ftam_finishindication (const struct FTAMfinish *ftf) {
+static void ftam_finishindication (struct FTAMfinish *ftf) {
 #ifdef	DEBUG
 	long    now;
 	struct FTAMcharging fcs;
@@ -590,7 +590,7 @@ int closewtmp (void) {
 
 /* ABORT */
 
-static void ftam_abortindication (const struct FTAMabort *fta) {
+static void ftam_abortindication (struct FTAMabort *fta) {
 	struct FTAMindication   ftis;
 	advise (LLOG_NOTICE, NULLCP, "F-%s-ABORT.INDICATION %d",
 			fta -> fta_peer ? "U" : "P", fta -> fta_action);

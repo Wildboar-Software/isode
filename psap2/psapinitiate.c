@@ -14,8 +14,8 @@
 #include "pepsycodec.h"
 #include "acsap.h"
 
-static int	PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, const struct PSAPctxlist *ctxlist, OID defctxname,
-								 const int	prequirements, const int srequirements, const long	isn, const int settings, const struct SSAPref *ref, PE    *data,
+static int	PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
+								 const int	prequirements, const int srequirements, const long	isn, int settings, struct SSAPref *ref, PE    *data,
 								 const int	ndata, const struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, const int	async);
 
 static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi);
@@ -25,15 +25,15 @@ static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSA
 int	PAsynConnRequest (
 	const struct PSAPaddr *calling,
 	const struct PSAPaddr *called,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
@@ -69,9 +69,9 @@ int	PAsynConnRequest (
 	return result;
 }
 
-static int PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, const struct PSAPctxlist *ctxlist, OID	defctxname,
-								const int prequirements, const int	srequirements, const long isn, const int settings, const struct SSAPref *ref, PE* data,
-								const int ndata, const struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, const int async) {
+static int PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID	defctxname,
+								const int prequirements, const int	srequirements, const long isn, int settings, struct SSAPref *ref, PE* data,
+								int ndata, const struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, const int async) {
 	int	    i, len, result;
 	PE	    pe;
 	struct psapblk *pb;
@@ -320,7 +320,7 @@ out1:
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int PAsynRetryRequest (const int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;
@@ -708,7 +708,7 @@ out1:
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int PAsynNextRequest (const int sd, const struct PSAPconnect *pc, struct PSAPindication *pi) {
+int PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;

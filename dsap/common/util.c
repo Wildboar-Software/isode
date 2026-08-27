@@ -174,7 +174,7 @@ void ps_printf (PS ps, char *fmt) {
 }
 #endif
 
-void fatal (const int code, char *fmt) {
+void fatal (int code, char *fmt) {
 	if (dsa_mode)
 		log_dsap -> ll_syslog = LLOG_FATAL;
 	LLOG (log_dsap,LLOG_FATAL,("Quipu failure (%d): %s",code,fmt));
@@ -186,7 +186,7 @@ void fatal (const int code, char *fmt) {
 
 static PS ps = NULLPS;
 
-void pslog (LLog *lp, const int event, const char *str, void (*func) (PS, caddr_t, int), caddr_t ptr) {
+void pslog (LLog *lp, int event, char *str, void (*func) (PS, caddr_t, int), caddr_t ptr) {
 	/* log info to pstream */
 	if (!(lp -> ll_events & event))
 		return;

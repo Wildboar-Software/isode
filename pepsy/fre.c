@@ -25,7 +25,7 @@ static int fre_seq (
 static int callsfn (const ptpe *p, modtyp *mod);
 
 
-extern int ferr (const int n, const char *mesg);
+extern int ferr (int n, char *mesg);
 
 extern int ismatch (
 	ptpe *p,

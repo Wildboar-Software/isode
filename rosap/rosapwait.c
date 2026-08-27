@@ -10,7 +10,7 @@
 
 /*    RO-WAIT.REQUEST (pseudo) */
 
-int RoWaitRequest (const int sd, const int secs, struct RoSAPindication *roi) {
+int RoWaitRequest (int sd, const int secs, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

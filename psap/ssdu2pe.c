@@ -5,7 +5,7 @@
 #include "tailor.h"
 
 PE
-ssdu2pe (char *base, const int len, const char *realbase, int *result) {
+ssdu2pe (char *base, int len, const char *realbase, int *result) {
 	PE pe;
 	PS ps;
 

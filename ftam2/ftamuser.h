@@ -98,9 +98,9 @@ extern struct vfsmap vfs[];	/* ordering depends on char *tmodes[] */
 
 extern struct vfsmap *myvf;
 
-void	ftam_advise (const struct FTAMabort *fta, char *event);
-void	ftam_chrg (const struct FTAMcharging *charges);
-void	ftam_diag (struct FTAMdiagnostic diag[], const int ndiag, const int peer, const int action);
+void	ftam_advise (struct FTAMabort *fta, char *event);
+void	ftam_chrg (struct FTAMcharging *charges);
+void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag, const int peer, const int action);
 
 /* FILES */
 
@@ -135,7 +135,7 @@ void rcinit (void);
 int getvf (
 	char *src,
 	char *dst,
-	const struct FADUidentity *faduid,
+	struct FADUidentity *faduid,
 	const struct vfsmap *vf,
 	int (*wfnx) (int fd, struct PSAPdata *px, int status)
 );
@@ -160,9 +160,9 @@ int f_quit (char **vec);
 
 int fdf_p2names (const int fd, PE bits, int *names, struct FTAMindication *fti);
 int fdf_names2p (const int fd, const int names, PE *bits, struct FTAMindication *fti);
-int fdf_attrs2d (const int fd, const struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
+int fdf_attrs2d (const int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
 int fdf_d2attrs (const int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
-void timer (const int cc, const char *action);
+void timer (int cc, const char *action);
 int	de2fadu (PE pe, const int concat);
 
 extern char *isodeversion;

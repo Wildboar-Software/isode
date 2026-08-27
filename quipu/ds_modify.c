@@ -16,7 +16,7 @@
 #include "quipu/cache.h"
 #include "quipu/database.h"
 #include "quipu/schema.h"
-int do_ds_modifyentry (const struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype);
 static int mod_add_value (
 	Entry eptr,
 	Attr_Sequence newas,
@@ -78,7 +78,7 @@ int remove_attribute (
 	Entry real_entry
 );
 
-int do_ds_modifyentry (const struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
+int do_ds_modifyentry (struct ds_modifyentry_arg *arg, struct DSError *error, DN binddn, DN target, struct di_block **di_p, const char dsp, const char authtype) {
 	Entry  entryptr;
 	Entry  real_entry;
 	struct entrymod *eptr;

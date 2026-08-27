@@ -41,7 +41,7 @@ static int ftam_nappl = sizeof ftam_appls / sizeof ftam_appls[0];
 
 /*    set tracing */
 
-int FHookRequest (const int sd, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti) {
+int FHookRequest (int sd, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti) {
 	SBV	    smask;
 	struct ftamblk *fsb;
 

@@ -193,8 +193,8 @@ out:
 
 /* P-CONNECT.RESPONSE */
 
-int	PConnResponse (const int sd, const int status, const struct PSAPaddr *responding, const struct PSAPctxlist *ctxlist, const int defctxresult,
-				   const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref *ref, PE *data, const int ndata, struct PSAPindication *pi) {
+int	PConnResponse (int sd, int status, const struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, const int defctxresult,
+				   const int prequirements, const int srequirements, const long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS	    ps;

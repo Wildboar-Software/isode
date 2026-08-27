@@ -6,7 +6,7 @@
 
 /*    map session descriptors for select() */
 
-int SSelectMask (const int sd, const fd_set *mask, const int *nfds, struct SSAPindication *si) {
+int SSelectMask (int sd, fd_set *mask, int *nfds, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;

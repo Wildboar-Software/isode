@@ -16,7 +16,7 @@
 /*    SERVER only */
 
 int RtExec (
-	const struct SSAPstart *ss,
+	struct SSAPstart *ss,
 	struct RtSAPindication *rti,
 	const char *arg1,
 	const char *arg2,

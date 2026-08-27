@@ -13,7 +13,7 @@ extern LLog *log_dsap;
 char        *dsap_usage = "[flags]";
 char        *options = "T:t:c:";
 
-void tai_args (const int *acptr, char ***avptr) {
+void tai_args (int *acptr, char ***avptr) {
 	char ** av;
 
 	int cnt;

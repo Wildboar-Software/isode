@@ -173,20 +173,20 @@ out1:
 
 int AcAssocResponse (
 	const int sd,
-	const int status,
-	const int reason,
+	int status,
+	int reason,
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int defctxresult,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct AcSAPindication *aci
 ) {
 	int	    pstatus,

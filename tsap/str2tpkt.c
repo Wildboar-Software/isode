@@ -9,10 +9,10 @@
 static int getfnx (int fd, struct tsapkt *t, char *buffer, int n);
 static int readfnx (int fd, char *buffer, int n);
 static int putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
-static int writefnx (const struct tsapblk *tb, char *buffer, const int n);
+static int writefnx (const struct tsapblk *tb, char *buffer, int n);
 
 
-static int	readfnx (int fd, char *buffer, int n), getfnx (int fd, struct tsapkt *t, char *buffer, int n), writefnx (const struct tsapblk *tb, char *buffer, const int n), putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
+static int	readfnx (int fd, char *buffer, int n), getfnx (int fd, struct tsapkt *t, char *buffer, int n), writefnx (const struct tsapblk *tb, char *buffer, int n), putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
 
 char *tpkt2str (struct tsapkt *t) {
 	int	    cc;
@@ -162,7 +162,7 @@ static int putfnx (struct tsapblk *tb, struct tsapkt *t, char *cp, int n) {
 	return cc;
 }
 
-static int writefnx (const struct tsapblk *tb, char *buffer, const int n) {
+static int writefnx (const struct tsapblk *tb, char *buffer, int n) {
 	static int  cc;
 	static char *bp;
 

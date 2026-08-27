@@ -677,7 +677,7 @@ next:
 	}
 }
 
-static int	TGetReadMask(const fd_set *mask, int *nfds)
+static int	TGetReadMask(fd_set *mask, int *nfds)
 {
 	if (acl_count > 0) {
 		int fd;
@@ -690,7 +690,7 @@ static int	TGetReadMask(const fd_set *mask, int *nfds)
 	return acl_count;
 }
 
-static int	TGetWriteMask(const fd_set *mask, int *nfds)
+static int	TGetWriteMask(fd_set *mask, int *nfds)
 {
 	if (qw_count > 0) {
 		int fd;
@@ -703,7 +703,7 @@ static int	TGetWriteMask(const fd_set *mask, int *nfds)
 	return qw_count;
 }
 
-static int	TNetCheck (int *vecp, char **vec, const fd_set *ifds, const fd_set *ofds, const int nfds, struct TSAPdisconnect *td)
+static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, const int nfds, struct TSAPdisconnect *td)
 {
 	int accepted = 0;
 	struct listenblk *lb, *lb2;
@@ -1989,8 +1989,8 @@ static int  TFreeQueues (struct listenblk *lb)
 	freelblk (lb);
 }
 
-int TSetQueuesOK (const int sd, const int onoff, struct TSAPdisconnect *td);
-int	TSetQueuesOK (const int sd, const int onoff, struct TSAPdisconnect *td)
+int TSetQueuesOK (int sd, const int onoff, struct TSAPdisconnect *td);
+int	TSetQueuesOK (int sd, const int onoff, struct TSAPdisconnect *td)
 {
 	int	    result;
 	SBV	    smask;

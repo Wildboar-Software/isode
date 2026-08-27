@@ -4,11 +4,11 @@
 #include <signal.h>
 #include "rtpkt.h"
 
-static int  RtCloseResponseAux (struct assocblk *acb, const int reason, PE data, struct RtSAPindication *rti);
+static int  RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti);
 
 /* RT-CLOSE.RESPONSE */
 
-int RtCloseResponse (const int sd, const int reason, PE data, struct RtSAPindication *rti) {
+int RtCloseResponse (int sd, int reason, PE data, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -26,7 +26,7 @@ int RtCloseResponse (const int sd, const int reason, PE data, struct RtSAPindica
 	return result;
 }
 
-static int RtCloseResponseAux (struct assocblk *acb, const int reason, PE data, struct RtSAPindication *rti) {
+static int RtCloseResponseAux (struct assocblk *acb, int reason, PE data, struct RtSAPindication *rti) {
 	int	    result;
 	struct AcSAPindication acis;
 	struct AcSAPindication *aci = &acis;

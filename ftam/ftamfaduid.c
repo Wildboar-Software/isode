@@ -7,7 +7,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_FADU__Identity *
-faduid2fpm (const struct ftamblk *fsb, const struct FADUidentity *fa, struct FTAMindication *fti) {
+faduid2fpm (const struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti) {
 	int    n;
 	char **ap;
 	struct type_FTAM_FADU__Identity *fpm;

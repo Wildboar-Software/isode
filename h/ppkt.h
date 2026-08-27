@@ -196,7 +196,7 @@ int	psaplose (struct PSAPindication*pi, ...);
 
 void freepblk (struct psapblk *pb);
 struct psapblk *newpblk (void);
-struct psapblk *findpblk (const int sd);
+struct psapblk *findpblk (int sd);
 
 int	psaplose (struct PSAPindication*, ...);
 
@@ -207,20 +207,20 @@ int	psaplose (struct PSAPindication*, ...);
 #define	PC_REASON_BASE \
 	(PC_ABSTRACT - int_PS_provider__reason_abstract__syntax__not__supported)
 
-struct type_PS_User__data *info2ppdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, const int ndata, const int ppdu);
-int ppdu2info (struct psapblk *pb, const struct PSAPindication *pi, const struct type_PS_User__data *info, PE *data, int *ndata, const int ppdu);
+struct type_PS_User__data *info2ppdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, const int ppdu);
+int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, const struct type_PS_User__data *info, PE *data, int *ndata, const int ppdu);
 
 int info2ssdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, const char *text, const int ppdu);
-int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, const int len, PE *data, int *ndata, const char *text, const int ppdu);
-int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, const struct qbuf *qb, const int len, PE *data, int *ndata, const char *text, const int ppdu);
+int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, const char *text, const int ppdu);
+int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, const char *text, const int ppdu);
 
-struct qbuf *info2qb (PE pe, const struct qbuf *qp, struct PSAPindication *pi);
-int	qb2info (const struct qbuf *qb, PE *pe);
+struct qbuf *info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi);
+int	qb2info (struct qbuf *qb, PE *pe);
 
 struct type_PS_Identifier__list *silly_list (const struct psapblk *pb, struct PSAPindication *pi);
 
-int ss2psabort (struct psapblk *pb, const struct SSAPabort *sa, struct PSAPindication *pi);
-int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, const char *event, const struct SSAPabort *sa);
+int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi);
+int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, const char *event, struct SSAPabort *sa);
 
 struct pair {
 	int	    p_mask;
@@ -230,7 +230,7 @@ struct pair {
 extern struct pair preq_pairs[], sreq_pairs[];
 #endif
 
-int SAsynNextRequest (const int sd, struct SSAPconnect *sc, struct SSAPindication *si);
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);
 
 #define	REASON_BASE	PC_NOTSPECIFIED
 
@@ -262,7 +262,7 @@ int SAsynNextRequest (const int sd, struct SSAPconnect *sc, struct SSAPindicatio
 	? psaplose ((pi), PC_CONGEST, NULLCP, "%s", ps_error (reason)) \
 	: psaplose ((pi), PC_SESSION, NULLCP, NULLCP))
 
-void pdu2sel (char *sel, int *len, const int i, const struct qbuf *pb);
+void pdu2sel (char *sel, int *len, int i, struct qbuf *pb);
 int refcmp (const struct type_PS_SessionConnectionIdentifier *ref1, const struct type_PS_SessionConnectionIdentifier *ref2);
 struct SSAPref *pdu2ref (const struct type_PS_SessionConnectionIdentifier *ref);
 #endif

@@ -46,7 +46,7 @@ struct PSAPctxlist {		/* list of presentation contexts */
 
 struct SSAPref *addr2ref (char *addr);	/* address to session reference */
 
-char   *sprintref (const struct SSAPref *sr);		/* return session reference in string form */
+char   *sprintref (struct SSAPref *sr);		/* return session reference in string form */
 
 struct PSAPstart {		/* P-CONNECT.INDICATION */
 	int	    ps_sd;		/* PRESENTATION descriptor */
@@ -391,7 +391,7 @@ extern char *psap2version;
 
 /* SERVER only */
 int PExec (
-	const struct SSAPstart *ss,
+	struct SSAPstart *ss,
 	struct PSAPindication *pi,
 	const char *arg1,
 	const char *arg2,
@@ -408,17 +408,17 @@ int PInit (int vecp, char **vec, struct PSAPstart *ps, struct PSAPindication *pi
 /* P-CONNECT.RESPONSE */
 int PConnResponse (
 	const int sd,
-	const int status,
+	int status,
 	const struct PSAPaddr *responding,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int defctxresult,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi
 );
 /* P-CONNECT.REQUEST (backwards-compatible) */
@@ -427,26 +427,26 @@ int PConnResponse (
 int	PAsynConnRequest (
 	const struct PSAPaddr *calling,
 	const struct PSAPaddr *called,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
 	const int async
 );	/* P-(ASYN-)CONNECT.REQUEST */
-int PAsynRetryRequest (const int sd, struct PSAPconnect *pc, struct PSAPindication *pi);	/* P-ASYN-RETRY.REQUEST (pseudo) */
-int PDataRequest (const int sd, PE *data, const int ndata, struct PSAPindication *pi);	/* P-DATA.REQUEST */
+int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi);	/* P-ASYN-RETRY.REQUEST (pseudo) */
+int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi);	/* P-DATA.REQUEST */
 int PDataRequestAux (
 	const int sd,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
 	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
@@ -475,17 +475,17 @@ int PDataRequestAux (
 	PDataRequestAux ((s), (d), (n), (p), "capability", SCapdResponse, \
 			"SCapdResponse","P-CAPABILITY-DATA user-data",PPDU_TCC)
 
-int PReadRequest (const int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi);	/* P-READ.REQUEST (pseudo) */
-int PGTokenRequest (const int sd, const int tokens, struct PSAPindication *pi);	/* P-TOKEN-GIVE.REQUEST */
-int PPTokenRequest (const int sd, const int tokens, PE *data, const int ndata, struct PSAPindication *pi);	/* P-TOKEN-PLEASE.REQUEST */
-int PGControlRequest (const int sd, struct PSAPindication *pi);	/* P-CONTROL-GIVE.REQUEST */
+int PReadRequest (int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi);	/* P-READ.REQUEST (pseudo) */
+int PGTokenRequest (int sd, const int tokens, struct PSAPindication *pi);	/* P-TOKEN-GIVE.REQUEST */
+int PPTokenRequest (int sd, const int tokens, PE *data, int ndata, struct PSAPindication *pi);	/* P-TOKEN-PLEASE.REQUEST */
+int PGControlRequest (int sd, struct PSAPindication *pi);	/* P-CONTROL-GIVE.REQUEST */
 
 /* P-{MAJOR-SYNC,ACTIVITY-END}.REQUEST */
 int PMajSyncRequestAux (
 	const int sd,
 	long *ssn,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
 	int (*sfunc)(int sd, long *ssn, char *data, int cc, struct SSAPindication *si),
@@ -504,7 +504,7 @@ int PMajSyncRequestAux (
 int PMajSyncResponseAux (
 	const int sd,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
 	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
@@ -519,17 +519,17 @@ int PMajSyncResponseAux (
 	PMajSyncResponseAux ((s), (d), (n), (p), "activity end", \
 			SActEndResponse, "SActEndResponse")
 
-int PMinSyncRequest (const int sd, const int type, long *ssn, PE *data, const int ndata, struct PSAPindication *pi);	/* P-MINOR-SYNC.REQUEST */
-int PMinSyncResponse (const int sd, const long ssn, PE *data, const int ndata, struct PSAPindication *pi);	/* P-MINOR-SYNC.RESPONSE */
-int PReSyncRequest (const int sd, const int type, const long ssn, const int settings, PE *data, const int ndata, struct PSAPindication *pi);	/* P-RESYNCHRONIZE.REQUEST */
-int PReSyncResponse (const int sd, const long ssn, const int settings, PE *data, const int ndata, struct PSAPindication *pi);	/* P-RESYNCHRONIZE.RESPONSE */
-int PActStartRequest (const int sd, const struct SSAPactid *id, PE *data, const int ndata, struct PSAPindication *pi);	/* P-ACTIVITY-START.REQUEST */
-int PActResumeRequest (const int sd, const struct SSAPactid *id, const struct SSAPactid *oid, const long ssn, const struct SSAPref *ref, PE *data, const int ndata, struct PSAPindication *pi);	/* P-ACTIVITY-RESUME.REQUEST */
+int PMinSyncRequest (int sd, const int type, long *ssn, PE *data, int ndata, struct PSAPindication *pi);	/* P-MINOR-SYNC.REQUEST */
+int PMinSyncResponse (int sd, const long ssn, PE *data, int ndata, struct PSAPindication *pi);	/* P-MINOR-SYNC.RESPONSE */
+int PReSyncRequest (int sd, const int type, const long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi);	/* P-RESYNCHRONIZE.REQUEST */
+int PReSyncResponse (int sd, const long ssn, int settings, PE *data, int ndata, struct PSAPindication *pi);	/* P-RESYNCHRONIZE.RESPONSE */
+int PActStartRequest (int sd, struct SSAPactid *id, PE *data, int ndata, struct PSAPindication *pi);	/* P-ACTIVITY-START.REQUEST */
+int PActResumeRequest (int sd, struct SSAPactid *id, const struct SSAPactid *oid, const long ssn, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi);	/* P-ACTIVITY-RESUME.REQUEST */
 
 /* P-ACTIVITY-{INTERRUPT,DISCARD}.REQUEST */
 int PActIntrRequestAux (
 	const int sd,
-	const int reason,
+	int reason,
 	struct PSAPindication *pi,
 	int (*sfunc)(int sd, int reason, struct SSAPindication *si),
 	const char *stype
@@ -560,10 +560,10 @@ int PActIntrResponseAux (
 			SActDiscResponse, "SActDiscResponse")
 
 int PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi);	/* P-U-ABORT.REQUEST */
-int PUReportRequest (const int sd, const int reason, PE *data, const int ndata, struct PSAPindication *pi);	/* P-U-EXCEPTION-REPORT.REQUEST */
-int PRelRequest (const int sd, PE *data, const int ndata, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi);		/* P-RELEASE.REQUEST */
-int PRelRetryRequest (const int sd, const int secs, const struct PSAPrelease *pr, struct PSAPindication *pi);	/* P-RELEASE-RETRY.REQUEST (pseudo) */
-int PRelResponse (const int sd, const int status, PE *data, const int ndata, struct PSAPindication *pi);	/* P-RELEASE.RESPONSE */
+int PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi);	/* P-U-EXCEPTION-REPORT.REQUEST */
+int PRelRequest (int sd, PE *data, int ndata, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi);		/* P-RELEASE.REQUEST */
+int PRelRetryRequest (int sd, const int secs, const struct PSAPrelease *pr, struct PSAPindication *pi);	/* P-RELEASE-RETRY.REQUEST (pseudo) */
+int PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi);	/* P-RELEASE.RESPONSE */
 
 /* define vectors for INDICATION events */
 int PSetIndications (
@@ -578,10 +578,10 @@ int PSetIndications (
 	struct PSAPindication *pi
 );
 /* map presentation descriptors for select() */
-int PSelectMask (const int sd, const fd_set *mask, int *nfds, struct PSAPindication *pi);
+int PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi);
 
 /* return PSAP error code in string form */
-char *PErrString (const int code);
+char *PErrString (int code);
 
 #define	PLocalHostName	getlocalhost
 /* return name of local host (sigh) */

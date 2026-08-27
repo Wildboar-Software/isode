@@ -75,11 +75,11 @@ static int fix_mem(char **parm, const ptpe *p);
  * pe
  */
 int dec_f (
-	const int typ,			/* which type it is */
+	int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE pe,
-	const int explicit,
-	const int *len,
+	int explicit,
+	int *len,
 	char **buf,
 	char **parm
 ) {

@@ -315,7 +315,7 @@ static node *find_node (bit_string *lineptr, const node *tree_top)
 run_type next_run (bit_string *lineptr, const char xcolour)
 {
 	node *   ptr;
-	const run_type result;
+	run_type result;
 
 	result.run_length = 0;
 	if (xcolour == BLACK)

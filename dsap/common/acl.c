@@ -307,7 +307,7 @@ void set_default_acl (struct acl_info *ai_ptr) {
 	ai_ptr->acl_next->acl_name = NULLDNSEQ;
 }
 
-int test_acl_default (const struct acl_info *a) {
+int test_acl_default (struct acl_info *a) {
 	if ((a == NULLACL_INFO) || (a == defaultacl))
 		return (OK);
 	if (a ->acl_categories != ACL_READ) {

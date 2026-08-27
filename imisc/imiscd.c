@@ -58,8 +58,8 @@ static struct dispatch dispatches[] = {
 static struct type_IMISC_IA5List *str2ia5list (char *s);
 static int rng_pick (const int a, const int b, int *out);
 
-static int  ureject (const int sd, const int reason, const struct RoSAPinvoke *rox, struct RoSAPindication *roi);
-static int  error (const int sd, const int err, caddr_t param, const struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  error (int sd, const int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
 static int  do_the_tell (const struct utmp *ut, char *from, char *vec[], const int vecp);
 static int  object (const char *pw);
 static int  pwdgen (const char *pw);
@@ -1027,7 +1027,7 @@ static int  op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 
 /* ERROR */
 
-static int error (const int sd, const int err, caddr_t param, const struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int error (int sd, const int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -1036,7 +1036,7 @@ static int error (const int sd, const int err, caddr_t param, const struct RoSAP
 
 /* U-REJECT */
 
-static int ureject (const int sd, const int reason, const struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

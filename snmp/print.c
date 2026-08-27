@@ -19,10 +19,10 @@
 #include <sys/stat.h>
 static int  pq_compar (const void *p, const void *q);
 static int get_pq (const int offset);
-static struct pq *get_pqent (const unsigned int *ip, const int len, const int isnext);
+static struct pq *get_pqent (const unsigned int *ip, int len, const int isnext);
 static int pj_compar (const void *p, const void *q);
 static int get_pj (const int offset);
-static struct pj *get_pjent (const unsigned int *ip, const int len, const int isnext);
+static struct pj *get_pjent (const unsigned int *ip, int len, const int isnext);
 static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -210,7 +210,7 @@ static void free_pq (void) {
 	free_pj ();
 }
 
-static struct pq *get_pqent (const unsigned int *ip, const int len, const int isnext) {
+static struct pq *get_pqent (const unsigned int *ip, int len, const int isnext) {
 	struct pq *pq;
 
 	for (pq = pq_head; pq -> pq_name; pq++)
@@ -339,7 +339,7 @@ static void free_pj (void) {
 		free ((char *) pj_head), pj_head = NULL;
 }
 
-static struct pj *get_pjent (const unsigned int *ip, const int len, const int isnext) {
+static struct pj *get_pjent (const unsigned int *ip, int len, const int isnext) {
 	struct pj *pj;
 
 	for (pj = pj_head; pj -> pj_pq; pj++)

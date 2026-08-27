@@ -12,7 +12,7 @@ static int  RoEndRequestAux (struct assocblk *acb, const int priority, struct Ro
 
 /* RO-END.REQUEST */
 
-int RoEndRequest (const int sd, const int priority, struct RoSAPindication *roi) {
+int RoEndRequest (int sd, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

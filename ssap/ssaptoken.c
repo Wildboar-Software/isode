@@ -9,7 +9,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPi
 /* S-TOKEN-GIVE.REQUEST */
 
 static int  SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPindication *si);
-static int  SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, const int cc, struct SSAPindication *si);
+static int  SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, int cc, struct SSAPindication *si);
 
 #define	dotoken(requires,shift,bit,type) \
 { \
@@ -24,7 +24,7 @@ static int  SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char 
     } \
 }
 
-int SGTokenRequest (const int sd, const int tokens, struct SSAPindication *si) {
+int SGTokenRequest (int sd, const int tokens, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -85,7 +85,7 @@ static int SGTokenRequestAux (struct ssapblk *sb, const int tokens, struct SSAPi
     } \
 }
 
-int SPTokenRequest (const int sd, const int tokens, const char *data, const int cc, struct SSAPindication *si) {
+int SPTokenRequest (int sd, const int tokens, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -99,7 +99,7 @@ int SPTokenRequest (const int sd, const int tokens, const char *data, const int 
 	return result;
 }
 
-static int SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, const int cc, struct SSAPindication *si) {
+static int SPTokenRequestAux (struct ssapblk *sb, const int tokens, const char *data, int cc, struct SSAPindication *si) {
 	int     result,
 			settings;
 	struct ssapkt *s;

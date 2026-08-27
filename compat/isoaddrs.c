@@ -18,7 +18,7 @@ static void read_macros(void);
 static void read_file (const char *file);
 static int add_macro (const char *name, char *value);
 char *macro2str (char *name);
-static char *SEL2STR (const char *sel, const int len);
+static char *SEL2STR (const char *sel, int len);
 static int pack_dec_octets (const char *src, const char *dst, char **endp);
 
 
@@ -523,7 +523,7 @@ too_many:
 				  ("str2paddr: dp='%s', ep='%s'", dp, ep));
 
 			if (lexequ (dp, "NS") == 0) {
-				const int nlen;
+				int nlen;
 
 				IMPLODE (nlen, na -> na_address, ep,
 						 strlen (ep), NULLPA, L2);
@@ -866,7 +866,7 @@ next:
 }
 
 int macro2comm (char *name, struct ts_interim *ts) {
-	const int	    j,
+	int	    j,
 			len;
 	char  *ap,
 		  *cp,
@@ -1044,7 +1044,7 @@ out:
 
 /* PADDR2STR */
 
-static char *SEL2STR (const char *sel, const int len) {
+static char *SEL2STR (const char *sel, int len) {
 	char  *cp,
 		  *dp,
 		  *ep;

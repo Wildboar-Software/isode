@@ -21,7 +21,7 @@ static int udpcheck (struct psapblk *pb, struct PSAPindication *pi);
 static void PUservice (struct psapblk *pb, const int fd);
 
 int udpopen (struct psapblk *pb, struct NSAPaddr *calling, struct NSAPaddr *called, struct PSAPindication *pi, int async);
-char *udpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td);
+char *udpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
 int udprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi);
 
 #define	MAXTRIES	 3		/* should be tailorable... */
@@ -104,7 +104,7 @@ int	udpopen (
 		}
 }
 
-char *udpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td) {
+char *udpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	static char	buffer[BUFSIZ];
 	sprintf (buffer, "%c%d %s %s", PT_UDP, fd, cp1, cp2);
 	return buffer;

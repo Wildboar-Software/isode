@@ -13,13 +13,13 @@
 #include "../x500as/Quipu-types.h"
 #include "pepsycodec.h"
 
-static int DapSyncInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di);
+static int DapSyncInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di);
 static int pdu_arg_log (PE pe, int op);
 int pdu_res_log (PE pe, int op);
 
 
 extern  LLog    * log_dsap;
-extern	void	  ros_log(const struct RoSAPpreject *rop, const char *event);
+extern	void	  ros_log(struct RoSAPpreject *rop, const char *event);
 
 #ifdef PDU_DUMP
 #define DUMP_ARG 	"arg"
@@ -27,12 +27,12 @@ extern	void	  ros_log(const struct RoSAPpreject *rop, const char *event);
 #define DUMP_ERR 	"err"
 #endif
 
-static int DapSyncInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di);
-static int DapIntrInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di);
-static int DapAsynInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di);
-static int DapInterrupt (const int sd, int id, const int op, struct DAPindication *di);
+static int DapSyncInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di);
+static int DapIntrInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di);
+static int DapAsynInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di);
+static int DapInterrupt (int sd, int id, const int op, struct DAPindication *di);
 
-int DapInvokeReqAux (const int sd, const int id, const int op, PE pe, struct DAPindication *di, const int asyn) {
+int DapInvokeReqAux (int sd, const int id, const int op, PE pe, struct DAPindication *di, const int asyn) {
 #ifdef PDU_DUMP
 	pdu_dump (pe,DUMP_ARG,op);
 #endif
@@ -55,7 +55,7 @@ int DapInvokeReqAux (const int sd, const int id, const int op, PE pe, struct DAP
 	}
 }
 
-static int DapSyncInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di) {
+static int DapSyncInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -110,7 +110,7 @@ static int DapSyncInvokeRequest (const int sd, const int id, const int op, PE pe
 	return (OK);
 }
 
-static int DapIntrInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di) {
+static int DapIntrInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -167,7 +167,7 @@ static int DapIntrInvokeRequest (const int sd, const int id, const int op, PE pe
 	return (OK);
 }
 
-static int DapAsynInvokeRequest (const int sd, const int id, const int op, PE pe, struct DAPindication *di) {
+static int DapAsynInvokeRequest (int sd, const int id, const int op, PE pe, struct DAPindication *di) {
 	int				  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -207,7 +207,7 @@ static int DapAsynInvokeRequest (const int sd, const int id, const int op, PE pe
 * Unless something goes wrong there should be 2 Ro events to
 * collect before returning.
 */
-static int DapInterrupt (const int sd, int id, const int op, struct DAPindication *di) {
+static int DapInterrupt (int sd, int id, const int op, struct DAPindication *di) {
 	struct ds_abandon_arg	  ab_arg;
 	struct DSError		  ab_err;
 	PE				  ab_req_pe;

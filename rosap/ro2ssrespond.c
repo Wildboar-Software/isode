@@ -116,7 +116,7 @@ out1:
 
 /* RO-BEGIN.RESPONSE */
 
-int RoBeginResponse (const int sd, int status, PE data, struct RoSAPindication *roi) {
+int RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi) {
 	int	    len,
 			result;
 	char   *base;

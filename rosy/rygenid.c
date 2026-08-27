@@ -3,7 +3,7 @@
 
 /* generate unique invoke ID */
 
-int	RyGenID (const int sd) {
+int	RyGenID (int sd) {
 	static int id = 0;
 	return (++id);
 }

@@ -9,19 +9,19 @@
 OID	addoid (OID o1, OID o2);
 
 void defineoid (const char *name, OID oid);
-OID oidlookup (const char *name);
+OID oidlookup (char *name);
 char *oidname (OID oid);
-OID int2oid (const int n);
+OID int2oid (int n);
 void addtable (
-	const char *name,
+	char *name,
 	const int lt,
 	int typ	/* Does it allow implicit's to work or not */
 );
-void addtableref (const char *name, OID id, const int lt);
+void addtableref (char *name, OID id, const int lt);
 int print_expimp(void);
 void check_impexp (YP yp);
 void initoidtbl(void);
-int chkil (const char *id);
+int chkil (char *id);
 
 
 /*  Oid manipulation */
@@ -104,7 +104,7 @@ void defineoid (const char *name, OID oid) {
 	myoids = op;
 }
 
-OID oidlookup (const char *name) {
+OID oidlookup (char *name) {
 	OP	op;
 
 	for (op = myoids; op; op = op -> op_next)
@@ -125,7 +125,7 @@ char *oidname (OID oid) {
 	return NULLCP;
 }
 
-OID	int2oid (const int n) {
+OID	int2oid (int n) {
 	OID		noid;
 
 	noid = (OID) calloc(1, sizeof(*noid));
@@ -142,7 +142,7 @@ OID	int2oid (const int n) {
 }
 
 void addtable (
-	const char *name,
+	char *name,
 	const int lt,
 	int typ	/* Does it allow implicit's to work or not */
 ) {
@@ -155,7 +155,7 @@ void addtable (
 	symtab[lt] = sp;
 }
 
-void addtableref (const char *name, OID id, const int lt) {
+void addtableref (char *name, OID id, const int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;
@@ -332,7 +332,7 @@ char *oidprint (OID oid) {
  * look at import list and return any clue found as to handling implicit tags
  * on that type
  */
-int chkil (const char *id) {
+int chkil (char *id) {
 	SYM sy;
 	for (sy = symtab[TBL_IMPORT]; sy; sy = sy->sym_next)
 		if (strcmp(sy->sym_name, id) == 0)

@@ -9,7 +9,7 @@ static struct opsblk *OPHead = &opsque;
 
 /* OPERATION BLOCKS */
 
-struct opsblk *newopblk (const int sd, const int id) {
+struct opsblk *newopblk (int sd, const int id) {
 	struct opsblk *opb;
 
 	opb = (struct opsblk   *) calloc (1, sizeof *opb);
@@ -44,7 +44,7 @@ void freeopblk (struct opsblk *opb) {
 	free ((char *) opb);
 }
 
-struct opsblk *findopblk (const int sd, const int id, const int flags) {
+struct opsblk *findopblk (int sd, const int id, int flags) {
 	struct opsblk *opb;
 
 	if (once_only == 0)
@@ -58,7 +58,7 @@ struct opsblk *findopblk (const int sd, const int id, const int flags) {
 	return NULL;
 }
 
-struct opsblk *firstopblk (const int sd) {
+struct opsblk *firstopblk (int sd) {
 	struct opsblk *opb, *op2;
 
 	if (once_only == 0)
@@ -74,7 +74,7 @@ struct opsblk *firstopblk (const int sd) {
 	return op2;
 }
 
-void loseopblk (const int sd, const int reason) {
+void loseopblk (int sd, int reason) {
 	struct opsblk *opb,
 			   *op2;
 	struct RoSAPindication  rois;

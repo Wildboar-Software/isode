@@ -322,6 +322,6 @@ extern struct PSAPdata	px;
 extern struct PSAPfinish *pf;
 
 void	finalbye (void);
-void	acs_adios (const struct AcSAPabort *aa, const char *event);
+void	acs_adios (struct AcSAPabort *aa, const char *event);
 
 extern int connected;	/*TEMP -- for sector 1 testing only -- will be supplied by VTP*/

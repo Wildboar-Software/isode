@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-int ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, const PElementLen n, const int in_line) {
+int ps_io (PS ps, int (*io)(PS ps, PElementData data, PElementLen n, int in_line), PElementData data, PElementLen n, const int in_line) {
 	int    cc;
 
 	if (io == NULL)

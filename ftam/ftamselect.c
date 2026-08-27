@@ -6,7 +6,7 @@
 
 /*    map ftam descriptors for select() */
 
-int FSelectMask (const int sd, const fd_set *mask, int *nfds, struct FTAMindication *fti) {
+int FSelectMask (int sd, fd_set *mask, int *nfds, struct FTAMindication *fti) {
 	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;

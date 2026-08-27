@@ -230,12 +230,12 @@ out1:
 }
 
 int SConnResponse (
-	const int sd,
-	const struct SSAPref *ref,
+	int sd,
+	struct SSAPref *ref,
 	const struct SSAPaddr *responding,
-	const int status,
+	int status,
 	const int requirements,
-	const int settings,
+	int settings,
 	const long isn,
 	char *data,
 	int cc,

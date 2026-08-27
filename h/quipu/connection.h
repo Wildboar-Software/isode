@@ -240,7 +240,7 @@ struct conn_start {
 	struct ds_bind_error	  cs_err;
 };
 
-void conn_start_free (const struct conn_start *cs);
+void conn_start_free (struct conn_start *cs);
 
 struct conn_connect {
 	/* Bind argument used in conn_request() */
@@ -249,7 +249,7 @@ struct conn_connect {
 	struct DSAPconnect		cc_dc;
 };
 
-void conn_connect_free (const struct conn_connect *cc);
+void conn_connect_free (struct conn_connect *cc);
 
 /*
 * Conn is the structure used to represent external connections

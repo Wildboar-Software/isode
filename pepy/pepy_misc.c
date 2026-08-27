@@ -7,11 +7,11 @@
 #include "pepy.h"
 
 void defineoid (const char *name, OID oid);
-OID oidlookup (const char *name);
+OID oidlookup (char *name);
 char *oidname (OID oid);
-OID int2oid (const int n);
-void addtable (const char *name, const int lt);
-void addtableref (const char *name, OID id, const int lt);
+OID int2oid (int n);
+void addtable (char *name, const int lt);
+void addtableref (char *name, OID id, const int lt);
 void print_expimp(void);
 void check_impexp (YP yp);
 static int importedP (const char *name);
@@ -97,7 +97,7 @@ void defineoid (const char *name, OID oid)
 	myoids = op;
 }
 
-OID	oidlookup (const char *name)
+OID	oidlookup (char *name)
 {
 	OP	op;
 
@@ -120,7 +120,7 @@ char *oidname (OID oid)
 	return NULLCP;
 }
 
-OID	int2oid (const int n)
+OID	int2oid (int n)
 {
 	OID		noid;
 
@@ -137,7 +137,7 @@ OID	int2oid (const int n)
 	return noid;
 }
 
-void addtable (const char *name, const int lt) {
+void addtable (char *name, const int lt) {
 	SYM		sp;
 
 	sp = (SYM)calloc (1, sizeof *sp);
@@ -146,7 +146,7 @@ void addtable (const char *name, const int lt) {
 	symtab[lt] = sp;
 }
 
-void addtableref (const char *name, OID id, const int lt) {
+void addtableref (char *name, OID id, const int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;

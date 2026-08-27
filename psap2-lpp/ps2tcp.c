@@ -26,7 +26,7 @@ static int tcpready (struct psapblk *pb, struct PSAPindication *pi);
 static void PTservice (struct psapblk *pb, const int fd);
 
 int tcpopen (struct psapblk *pb, struct NSAPaddr *calling, struct NSAPaddr *called, struct PSAPindication *pi, int async);
-char *tcpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td);
+char *tcpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
 int tcprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi);
 
 #ifdef	FIONBIO
@@ -143,7 +143,7 @@ char *tcpsave (
 	const int fd,
 	char *cp1,
 	char *cp2,
-	const struct TSAPdisconnect *td
+	struct TSAPdisconnect *td
 ) {
 	static char	buffer[BUFSIZ];
 	sprintf (buffer, "%c%d %s %s", PT_TCP, fd, cp1, cp2);

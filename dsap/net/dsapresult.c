@@ -54,7 +54,7 @@ static int DapEncodeResult (PE *pep, const struct DSResult *res) {
 	return(success);
 }
 
-int DapResultRequest (const int sd, const int id, const struct DSResult *res, struct DSAPindication *di) {
+int DapResultRequest (int sd, const int id, const struct DSResult *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -122,7 +122,7 @@ static int DspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return(success);
 }
 
-int DspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
+int DspResultRequest (int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -194,7 +194,7 @@ static int QspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return(success);
 }
 
-int QspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
+int QspResultRequest (int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -223,7 +223,7 @@ int QspResultRequest (const int sd, const int id, struct ds_op_res *res, struct 
 	return (OK);
 }
 
-int IspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
+int IspResultRequest (int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	return QspResultRequest (sd, id, res, di);
 }
 

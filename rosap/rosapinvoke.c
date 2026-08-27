@@ -13,7 +13,7 @@ static int  RoInvokeRequestAux (struct assocblk *acb, const int op, const int cl
 
 /* RO-INVOKE.REQUEST */
 
-int RoInvokeRequest (const int sd, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi) {
+int RoInvokeRequest (int sd, const int op, const int class, PE args, const int invokeID, const int *linkedID, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

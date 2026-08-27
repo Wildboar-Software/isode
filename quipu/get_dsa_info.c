@@ -466,7 +466,7 @@ int quipu_ctx_supported (Entry ptr) {
 	static OID dsp = NULLOID;
 	static OID quipu_dsp = NULLOID;
 	static OID internet_dsp = NULLOID;
-	const int res = 0;
+	int res = 0;
 
 	/* return 0 if "ptr" is not a quipu DSA */
 	/* return 1 if "ptr" represents a quipu_dsa (by objectclass) */

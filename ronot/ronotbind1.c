@@ -16,7 +16,7 @@ int RoAsynBindRequest(OID context, AEI callingtitle, AEI calledtitle,
                       const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr,
                       struct PSAPctxlist *ctxlist, OID defctxname,
                       const int prequirements, const int srequirements, const long isn,
-                      const int settings, const struct SSAPref *ref, PE bindargpe,
+                      int settings, struct SSAPref *ref, PE bindargpe,
                       const struct QOStype *qos, struct AcSAPconnect *acc,
                       struct RoNOTindication *rni, const int async) {
   int result;

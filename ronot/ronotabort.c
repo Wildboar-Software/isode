@@ -7,7 +7,7 @@
 
 /* RO-ABORT.REQUEST */
 
-int RoBindUAbort (const int sd, struct RoNOTindication *rni) {
+int RoBindUAbort (int sd, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication    aci_s;
 	struct AcSAPindication  * aci = &(aci_s);

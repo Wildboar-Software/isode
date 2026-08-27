@@ -19,15 +19,15 @@ qbuf2pe_local (struct qbuf *qb, int len, int *result);
 
 #define	doSSabort	ss2rosabort
 
-static void	ssDATAser (const int sd, const struct SSAPdata *sx), ssTOKENser (const int sd, const struct SSAPtoken *st), ssSYNCser (const int sd, const struct SSAPsync *sn), ssACTIVITYser (const int sd, const struct SSAPactivity *sv),
-		ssREPORTser (const int sd, const struct SSAPreport *sp), ssFINISHser (const int sd, const struct SSAPfinish *sf), ssABORTser (const int sd, const struct SSAPabort *sa);
+static void	ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),
+		ssREPORTser (int sd, struct SSAPreport *sp), ssFINISHser (int sd, struct SSAPfinish *sf), ssABORTser (int sd, struct SSAPabort *sa);
 
-static int  doSSdata (struct assocblk *acb, const int *invokeID, const struct SSAPdata *sx, struct RoSAPindication *roi);
-static int  doSStokens (struct assocblk *acb, const struct SSAPtoken *st, const struct RoSAPindication *roi);
-static int  doSSsync (struct assocblk *acb, const struct SSAPsync *sn, const struct RoSAPindication *roi);
-static int  doSSactivity (struct assocblk *acb, const struct SSAPactivity *sv, const struct RoSAPindication *roi);
-static int  doSSreport (struct assocblk *acb, const struct SSAPreport *sp, const struct RoSAPindication *roi);
-static int  doSSfinish (struct assocblk *acb, const struct SSAPfinish *sf, struct RoSAPindication *roi);
+static int  doSSdata (struct assocblk *acb, const int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi);
+static int  doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi);
+static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi);
+static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi);
+static int  doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi);
+static int  doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi);
 
 /*    local stub routine for psap/qbuf2pe */
 
@@ -354,7 +354,7 @@ int ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int doSSdata (struct assocblk *acb, const int *invokeID, const struct SSAPdata *sx, struct RoSAPindication *roi) {
+static int doSSdata (struct assocblk *acb, const int *invokeID, struct SSAPdata *sx, struct RoSAPindication *roi) {
 	int     result;
 	PE	    pe;
 
@@ -382,7 +382,7 @@ out:
 	return NOTOK;
 }
 
-static int doSStokens (struct assocblk *acb, const struct SSAPtoken *st, const struct RoSAPindication *roi) {
+static int doSStokens (struct assocblk *acb, struct SSAPtoken *st, struct RoSAPindication *roi) {
 	int     result = DONE;
 	struct SSAPindication   sis;
 	struct SSAPindication  *si = &sis;
@@ -435,7 +435,7 @@ out:
 	return NOTOK;
 }
 
-static int doSSsync (struct assocblk *acb, const struct SSAPsync *sn, const struct RoSAPindication *roi) {
+static int doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected sync indication (0x%x)", sn -> sn_type);
 
@@ -445,7 +445,7 @@ static int doSSsync (struct assocblk *acb, const struct SSAPsync *sn, const stru
 	return NOTOK;
 }
 
-static int doSSactivity (struct assocblk *acb, const struct SSAPactivity *sv, const struct RoSAPindication *roi) {
+static int doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected activity indication (0x%x)", sv -> sv_type);
 
@@ -455,7 +455,7 @@ static int doSSactivity (struct assocblk *acb, const struct SSAPactivity *sv, co
 	return NOTOK;
 }
 
-static int doSSreport (struct assocblk *acb, const struct SSAPreport *sp, const struct RoSAPindication *roi) {
+static int doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected exception report indication (0x%x)", sp -> sp_peer);
 
@@ -465,7 +465,7 @@ static int doSSreport (struct assocblk *acb, const struct SSAPreport *sp, const 
 	return NOTOK;
 }
 
-static int doSSfinish (struct assocblk *acb, const struct SSAPfinish *sf, struct RoSAPindication *roi) {
+static int doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RoSAPindication *roi) {
 	SFFREE (sf);
 
 	if (acb -> acb_flags & ACB_INIT) {
@@ -486,7 +486,7 @@ static int doSSfinish (struct assocblk *acb, const struct SSAPfinish *sf, struct
 	return DONE;
 }
 
-int ss2rosabort (struct assocblk *acb, const struct SSAPabort *sa, struct RoSAPindication *roi) {
+int ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi) {
 	int	    result;
 	PE	pe;
 	struct type_OACS_AbortInformation *pabort
@@ -548,7 +548,7 @@ out:
 	return NOTOK;
 }
 
-static void ssDATAser (const int sd, const struct SSAPdata *sx) {
+static void ssDATAser (int sd, struct SSAPdata *sx) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -560,7 +560,7 @@ static void ssDATAser (const int sd, const struct SSAPdata *sx) {
 		(*handler) (sd, roi);
 }
 
-static void ssTOKENser (const int sd, const struct SSAPtoken *st) {
+static void ssTOKENser (int sd, struct SSAPtoken *st) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -572,7 +572,7 @@ static void ssTOKENser (const int sd, const struct SSAPtoken *st) {
 		(*handler) (sd, roi);
 }
 
-static void ssSYNCser (const int sd, const struct SSAPsync *sn) {
+static void ssSYNCser (int sd, struct SSAPsync *sn) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -584,7 +584,7 @@ static void ssSYNCser (const int sd, const struct SSAPsync *sn) {
 		(*handler) (sd, roi);
 }
 
-static void ssACTIVITYser (const int sd, const struct SSAPactivity *sv) {
+static void ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -596,7 +596,7 @@ static void ssACTIVITYser (const int sd, const struct SSAPactivity *sv) {
 		(*handler) (sd, roi);
 }
 
-static void ssREPORTser (const int sd, const struct SSAPreport *sp) {
+static void ssREPORTser (int sd, struct SSAPreport *sp) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -608,7 +608,7 @@ static void ssREPORTser (const int sd, const struct SSAPreport *sp) {
 		(*handler) (sd, roi);
 }
 
-static void ssFINISHser (const int sd, const struct SSAPfinish *sf) {
+static void ssFINISHser (int sd, struct SSAPfinish *sf) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -620,7 +620,7 @@ static void ssFINISHser (const int sd, const struct SSAPfinish *sf) {
 	(*handler) (sd, roi);
 }
 
-static void ssABORTser (const int sd, const struct SSAPabort *sa) {
+static void ssABORTser (int sd, struct SSAPabort *sa) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -634,9 +634,9 @@ static void ssABORTser (const int sd, const struct SSAPabort *sa) {
 
 int ss2roslose (
 	struct assocblk *acb,
-	const struct RoSAPindication *roi,
+	struct RoSAPindication *roi,
 	const char *event,
-	const struct SSAPabort *sa
+	struct SSAPabort *sa
 ) {
 	int     reason;
 	char   *cp,

@@ -64,15 +64,15 @@ struct RoNOTindication {
 #endif
 
 int	ronotlose (struct RoNOTindication *rni, ...);
-int acs2ronotlose (struct RoNOTindication *rni, const char *event, const struct AcSAPabort *aca);
+int acs2ronotlose (struct RoNOTindication *rni, const char *event, struct AcSAPabort *aca);
 
-int RoBindReject (const struct AcSAPstart *acs, const int status, const int reason, struct RoNOTindication *rni);
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni);
 
 int RoAsynBindRequest(OID context, AEI callingtitle, AEI calledtitle,
 	const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr,
 	struct PSAPctxlist *ctxlist, OID defctxname,
 	const int prequirements, const int srequirements, const long isn,
-	const int settings, const struct SSAPref *ref, PE bindargpe,
+	int settings, struct SSAPref *ref, PE bindargpe,
 	const struct QOStype *qos, struct AcSAPconnect *acc,
 	struct RoNOTindication *rni, const int async);
 
@@ -86,13 +86,13 @@ int	RoBindResult (
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int	defctxresult,
 	const int	prequirements,
 	const int	srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE bindrespe,
 	struct RoNOTindication *rni
 );
@@ -102,25 +102,25 @@ int RoBindError (
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int	defctxresult,
 	const int	prequirements,
 	const int	srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE binderrpe,
 	struct RoNOTindication *rni
 );
 
-int RoBindReject (const struct AcSAPstart *acs, const int status, const int reason, struct RoNOTindication *rni);
-int RoUnBindRequest (const int sd, PE unbindargpe, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
-int RoUnBindRetry (const int sd, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
-int RoBindUAbort (const int sd, struct RoNOTindication *rni);
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni);
+int RoUnBindRequest (int sd, PE unbindargpe, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
+int RoUnBindRetry (int sd, const int secs, struct AcSAPrelease *acr, struct RoNOTindication *rni);
+int RoBindUAbort (int sd, struct RoNOTindication *rni);
 
-int RoUnBindInit (const int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni);
-int RoUnBindError (const int sd, PE unbinderrpe, struct RoNOTindication *rni);
-int RoUnBindResult (const int sd, PE unbindrespe, struct RoNOTindication *rni);
-int RoUnBindReject (const int sd, const int status, const int reason, struct RoNOTindication *rni);
+int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni);
+int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni);
+int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni);
+int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni);
 
 #endif

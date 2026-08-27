@@ -8,22 +8,22 @@ static int SActResumeRequestAux (
 	const struct SSAPactid *id,
 	const struct SSAPactid *oid,
 	const long ssn,
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 );
 
 
 /* S-CONTROL-GIVE.REQUEST */
 
-static int  SActResumeRequestAux (struct ssapblk *sb, const struct SSAPactid *id, const struct SSAPactid *oid, const long ssn, const struct SSAPref *ref, const char *data, const int cc, struct SSAPindication *si);
-static int  SActIntrRequestAux (struct ssapblk *sb, const int reason, const int type, struct SSAPindication *si);
+static int  SActResumeRequestAux (struct ssapblk *sb, const struct SSAPactid *id, const struct SSAPactid *oid, const long ssn, struct SSAPref *ref, const char *data, int cc, struct SSAPindication *si);
+static int  SActIntrRequestAux (struct ssapblk *sb, int reason, const int type, struct SSAPindication *si);
 static int  SActIntrResponseAux (struct ssapblk *sb, const int type, struct SSAPindication *si);
 static int  SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si);
-static int  SActStartRequestAux (struct ssapblk *sb, const struct SSAPactid *id, const char *data, const int cc, struct SSAPindication *si);
+static int  SActStartRequestAux (struct ssapblk *sb, const struct SSAPactid *id, const char *data, int cc, struct SSAPindication *si);
 
-int SGControlRequest (const int sd, struct SSAPindication *si) {
+int SGControlRequest (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -56,7 +56,7 @@ static int SGControlRequestAux (struct ssapblk *sb, struct SSAPindication *si) {
 
 /* S-ACTIVITY-START.REQUEST */
 
-int SActStartRequest (const int sd, const struct SSAPactid *id, const char *data, const int cc, struct SSAPindication *si) {
+int SActStartRequest (int sd, struct SSAPactid *id, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -76,7 +76,7 @@ static int SActStartRequestAux (
 	struct ssapblk *sb,
 	const struct SSAPactid *id,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 ) {
 	int result;
@@ -100,9 +100,9 @@ int SActResumeRequest (
 	const struct SSAPactid *id,
 	const struct SSAPactid *oid,
 	const long ssn,
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 ) {
 	SBV	    smask;
@@ -134,9 +134,9 @@ static int SActResumeRequestAux (
 	const struct SSAPactid *id,
 	const struct SSAPactid *oid,
 	const long ssn,
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 ) {
 	int	    result;
@@ -157,7 +157,7 @@ static int SActResumeRequestAux (
 
 /* S-ACTIVITY-INTERRUPT.REQUEST */
 
-int SActIntrRequest (const int sd, const int reason, struct SSAPindication *si) {
+int SActIntrRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -176,7 +176,7 @@ int SActIntrRequest (const int sd, const int reason, struct SSAPindication *si) 
 	return result;
 }
 
-static int SActIntrRequestAux (struct ssapblk *sb, const int reason, const int type, struct SSAPindication *si) {
+static int SActIntrRequestAux (struct ssapblk *sb, int reason, const int type, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_ACTIVITY))
@@ -207,7 +207,7 @@ static int SActIntrRequestAux (struct ssapblk *sb, const int reason, const int t
 
 /* S-ACTIVITY-INTERRUPT.RESPONSE */
 
-int SActIntrResponse (const int sd, struct SSAPindication *si) {
+int SActIntrResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -244,7 +244,7 @@ static int SActIntrResponseAux (struct ssapblk *sb, const int type, struct SSAPi
 
 /* S-ACTIVITY-DISCARD.REQUEST */
 
-int SActDiscRequest (const int sd, const int reason, struct SSAPindication *si) {
+int SActDiscRequest (int sd, int reason, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -265,7 +265,7 @@ int SActDiscRequest (const int sd, const int reason, struct SSAPindication *si) 
 
 /* S-ACTIVITY-DISCARD.RESPONSE */
 
-int SActDiscResponse (const int sd, struct SSAPindication *si) {
+int SActDiscResponse (int sd, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -280,7 +280,7 @@ int SActDiscResponse (const int sd, struct SSAPindication *si) {
 
 /* S-ACTIVITY-END.REQUEST */
 
-int SActEndRequest (const int sd, long *ssn, const char *data, const int cc, struct SSAPindication *si) {
+int SActEndRequest (int sd, long *ssn, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -297,7 +297,7 @@ int SActEndRequest (const int sd, long *ssn, const char *data, const int cc, str
 
 /* S-ACTIVITY-END.RESPONSE */
 
-int SActEndResponse (const int sd, const char *data, const int cc, struct SSAPindication *si) {
+int SActEndResponse (int sd, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;

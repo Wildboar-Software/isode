@@ -88,7 +88,7 @@ extern struct address *afs_iso;
 #endif
 
 int	get_interfaces (const int offset);
-struct address *get_addrent (const unsigned int *ip, const int len, const struct address *head, const int isnext);
+struct address *get_addrent (const unsigned int *ip, int len, const struct address *head, const int isnext);
 
 #if	defined(BSD44) || defined(BSD43_Tahoe) || defined(RT) || defined(MIPS) || defined(ultrix) || defined(__NeXT__) || defined(LINUX)
 #define	NEW_AT

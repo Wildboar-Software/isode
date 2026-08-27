@@ -11,7 +11,7 @@
  */
 
 PE
-qb2prim_aux (const struct qbuf *qb, const PElementClass class, const PElementID id, const int in_line) {
+qb2prim_aux (struct qbuf *qb, const PElementClass class, const PElementID id, const int in_line) {
 	PE	    pe,
 	 p;
 	struct qbuf *qp;

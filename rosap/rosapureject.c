@@ -10,7 +10,7 @@
 
 /* RO-U-REJECT.REQUEST */
 
-int RoURejectRequest (const int sd, const int *invokeID, const int reason, const int priority, struct RoSAPindication *roi) {
+int RoURejectRequest (int sd, const int *invokeID, int reason, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	PElementID id;
@@ -60,7 +60,7 @@ int RoURejectRequest (const int sd, const int *invokeID, const int reason, const
 int RoURejectRequestAux (
 	struct assocblk *acb,
 	const int *invokeID,
-	const int reason,
+	int reason,
 	PElementID id,
 	const int priority,
 	struct RoSAPindication *roi

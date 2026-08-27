@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-int seq_del (PE pe, const int i) {
+int seq_del (PE pe, int i) {
 	int	    offset;
 	PE	   *p,
 	 q;

@@ -6,7 +6,7 @@
 
 /* S-MAJOR-SYNC.RESPONSE */
 
-int SMajSyncResponse (const int sd, const char *data, const int cc, struct SSAPindication *si) {
+int SMajSyncResponse (int sd, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -25,7 +25,7 @@ int SMajSyncResponse (const int sd, const char *data, const int cc, struct SSAPi
 	return result;
 }
 
-int SMajSyncResponseAux (struct ssapblk *sb, const char *data, const int cc, struct SSAPindication *si) {
+int SMajSyncResponseAux (struct ssapblk *sb, const char *data, int cc, struct SSAPindication *si) {
 	int     result;
 
 	if (!(sb -> sb_requirements & SR_MAJORSYNC)

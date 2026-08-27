@@ -42,7 +42,7 @@ static void		subtree_refer(const Index *pindex, const struct search_kid_arg *ska
 static int build_indexnode (caddr_t data1, caddr_t data2);
 
 Attr_Sequence	eis_select(const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node);
-EntryInfo	*filterentry(const struct ds_search_arg *arg, Entry entryptr, DN binddn, const char authtype, int *saclerror, const struct ds_search_task *local, const char dosacl);
+EntryInfo	*filterentry(struct ds_search_arg *arg, Entry entryptr, DN binddn, const char authtype, int *saclerror, struct ds_search_task *local, const char dosacl);
 
 int optimized_filter (Filter f) {
 	struct filter_item	*fi;

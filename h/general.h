@@ -194,19 +194,19 @@ int	baduser (char *file, const char *user);
 
 extern char chrcnv[], nochrcnv[];
 
-int	lexequ (char *str1, char *str2), lexnequ (const char *str1, const char *str2, const int len);
+int	lexequ (char *str1, char *str2), lexnequ (const char *str1, const char *str2, int len);
 
 struct ll_struct;
 int	log_tai (struct ll_struct *lgptr, char **av, const int ac);
 
-int	sstr2arg (const char *srcptr, const int maxpf, char *argv[], const char *dlmstr);
+int	sstr2arg (const char *srcptr, int maxpf, char *argv[], const char *dlmstr);
 
 void	(*set_smalloc_handler (void (*fnx)(void)))(void);
 char    *smalloc (const int size);
 
 /* MISC */
 
-char   *sys_errname (const int i);
+char   *sys_errname (int i);
 
 #ifdef	lint
 #define	insque(e,p)	INSQUE ((char *) (e), (char *) (p))
@@ -261,9 +261,9 @@ unsigned long	htonl (unsigned long);
 #endif
 
 #include <stdint.h>
-int	explode (char *a, const uint8_t *b, const int n), implode (uint8_t *a, const char *b, const int n);
+int	explode (char *a, const uint8_t *b, int n), implode (uint8_t *a, const char *b, int n);
 int	char2bcd (const char *s, int n, uint8_t *d);
-int	bcd2char (const uint8_t *s, char *d, const int len);
+int	bcd2char (const uint8_t *s, char *d, int len);
 
 #include "conv.h"
 

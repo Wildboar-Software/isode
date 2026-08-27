@@ -7,7 +7,7 @@
 
 /* P-RELEASE.RESPONSE */
 
-int PRelResponse (const int sd, const int status, PE *data, const int ndata, struct PSAPindication *pi) {
+int PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    len,
 			result;

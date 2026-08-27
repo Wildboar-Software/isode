@@ -90,7 +90,7 @@ void merge_search_results (struct ds_search_result *sr_res, struct ds_search_res
 	DLOG(log_dsap, LLOG_DEBUG, ("After merging results:"));
 }
 
-void search_result_free (const struct ds_search_result *arg) {
+void search_result_free (struct ds_search_result *arg) {
 	DLOG(log_dsap, LLOG_DEBUG, ("search_result_free"));
 	if(arg == NULLSRR) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("Lost part of search structure somewhere!"));

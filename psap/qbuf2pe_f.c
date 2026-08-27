@@ -5,7 +5,7 @@
 #include "tailor.h"
 
 static int qb_read_cons (PE *pe, const PElementLen len, int *cresult);
-static int qbuf2data(PElementData data, const PElementLen len);
+static int qbuf2data(PElementData data, PElementLen len);
 
 /*
  * The following macro takes one byte from a qbuf, stuffs it in c,
@@ -44,7 +44,7 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 PE qbuf2pe_f (int *result) {
 	PE	pe;
 	struct qbuf *qp;
-	const byte c, d;
+	byte c, d;
 	PElementClass class;
 	PElementForm form;
 	PElementID id;
@@ -246,7 +246,7 @@ no_cons:
 	}
 }
 
-static int qbuf2data (PElementData data, const PElementLen len) {
+static int qbuf2data (PElementData data, PElementLen len) {
 	struct qbuf *qp;
 	int i, cc;
 

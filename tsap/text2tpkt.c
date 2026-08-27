@@ -7,11 +7,11 @@
 #include "tpkt.h"
 #include "logger.h"
 #include "internet.h"
-static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, const int len);
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len);
 
 
-static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, const int len);
-static void type_data (LLog *lp, const char *type, const char *rw, const int len, const char *data);
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len);
+static void type_data (LLog *lp, const char *type, const char *rw, int len, const char *data);
 static void assign_u8 (uint8_t *dst, const int data);
 static void assign_u16 (uint16_t *dst, const int data);
 static void assign_u16_htons (uint16_t *dst, const int data);
@@ -109,13 +109,13 @@ void tpkt2text (LLog *lp, const struct tsapkt *t, const int isread) {
 	ll_sync (lp);
 }
 
-static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, const int len) {
+static void type_id (LLog *lp, const char *type, const char *rw, const char *selector, int len) {
 	char    buffer[BUFSIZ];
 	buffer[explode (buffer, (uint8_t *) selector, len)] = 0;
 	ll_printf (lp, "%s%s/ %d/\"%s\"\n", rw, type, len, buffer);
 }
 
-static void type_data (LLog *lp, const char *type, const char *rw, const int len, const char *data) {
+static void type_data (LLog *lp, const char *type, const char *rw, int len, const char *data) {
 	char    buffer[BUFSIZ];
 	char *cp;
 	int i;

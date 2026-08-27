@@ -80,7 +80,7 @@ extern void vdatind(const int type, PE pe);
 extern void vhdatind(PE pe);
 extern void vudatind(PE pe);
 static void ptyflush (void);
-extern int vt_text (const char *str, const int len);
+extern int vt_text (const char *str, int len);
 extern void vt_newline(void);
 void rmut (void);
 

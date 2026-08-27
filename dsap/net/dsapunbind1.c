@@ -5,7 +5,7 @@
 
 /* D-UNBIND.REQUEST */
 
-int DUnBindRequest (const int sd, const int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
+int DUnBindRequest (int sd, const int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);
@@ -29,7 +29,7 @@ int DUnBindRequest (const int sd, const int secs, struct DSAPrelease *dr, struct
 
 /* D-UNBIND.RETRY */
 
-int DUnBindRetry (const int sd, const int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
+int DUnBindRetry (int sd, const int secs, struct DSAPrelease *dr, struct DSAPindication *di) {
 	int			  result;
 	struct AcSAPrelease	  acr_s;
 	struct AcSAPrelease	* acr = &(acr_s);

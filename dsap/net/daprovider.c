@@ -27,7 +27,7 @@ int ronot2daplose (struct DAPindication * di, const char * event, const struct R
 
 /*    ROS interface */
 
-int ros2daplose (struct DAPindication *di, const char *event, const struct RoSAPpreject *rop) {
+int ros2daplose (struct DAPindication *di, const char *event, struct RoSAPpreject *rop) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 

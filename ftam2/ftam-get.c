@@ -259,7 +259,7 @@ static int check_get (char *dst) {
 int getvf (
 	char *src,
 	char *dst,
-	const struct FADUidentity *faduid,
+	struct FADUidentity *faduid,
 	const struct vfsmap *vf,
 	int (*wfnx) (int fd, struct PSAPdata *px, int status)
 ) {

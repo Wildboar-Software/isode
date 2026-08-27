@@ -10,17 +10,17 @@
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
-void yyerror (const char *s);
+void yyerror (char *s);
 void warning (char *fmt, ...);
 void yyerror_aux (char *s);
 void myyerror (char* fmt, ...);
 int yywrap(void);
-void yyprint (const char *s, const int f, const int top);
+void yyprint (char *s, const int f, const int top);
 static void yyprint_aux (char *s, const char *mode);
 void pass1(void);
 void pass1_op (const char *mod, char *id, YP arg, YP result, YV errors, YV linked, const int opcode);
 void pass1_err (const char *mod, char *id, YP param, const int errcode);
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
 
 
@@ -277,7 +277,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (const char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -366,7 +366,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (const char *s, const int f, const int top) { }
+void yyprint (char *s, const int f, const int top) { }
 
 static void yyprint_aux (char *s, const char *mode) {
 	int	    len;
@@ -470,7 +470,7 @@ void pass1_err (const char *mod, char *id, YP param, const int errcode) {
 	myerrors = add_symbol (myerrors, sy);
 }
 
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp) {
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp) {
 	SY	    sy;
 
 	if (dflag && lookup_type (mod, id))	/* no duplicate entries, please... */
@@ -1781,7 +1781,7 @@ static SY add_symbol (SY s1, SY s2) {
 	return s1;
 }
 
-YP new_type (const int code) {
+YP new_type (int code) {
 	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -1801,7 +1801,7 @@ YP add_type (YP y, YP z) {
 	return y;
 }
 
-YV new_value (const int code) {
+YV new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -1831,7 +1831,7 @@ YT new_tag (const PElementClass class) {
 	return yt;
 }
 
-char *new_string (const char *s) {
+char *new_string (char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)

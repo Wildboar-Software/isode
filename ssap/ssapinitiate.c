@@ -6,17 +6,17 @@
 #include "spkt.h"
 #include "tailor.h"
 
-int SAsynNextRequest (const int sd, struct SSAPconnect *sc, struct SSAPindication *si);
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);
 
 static int SConnRequestAux (
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const struct SSAPaddr *calling,
 	const struct SSAPaddr *called,
 	const int requirements,
-	const int settings,
+	int settings,
 	const long isn,
 	const char *data,
-	const int cc,
+	int cc,
 	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
@@ -27,14 +27,14 @@ static int SConnRequestAux (
 /*    S-(ASYN-)CONNECT.REQUEST */
 
 static int  SConnRequestAux (
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const struct SSAPaddr *calling,
 	const struct SSAPaddr *called,
 	const int requirements,
-	const int settings,
+	int settings,
 	const long isn,
 	const char *data,
-	const int cc,
+	int cc,
 	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
@@ -58,11 +58,11 @@ static int  SAsynRetryAux2 (struct ssapblk *sb, const struct TSAPconnect *tc, st
 }
 
 int SAsynConnRequest (
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const struct SSAPaddr *calling,
 	const struct SSAPaddr *called,
 	const int requirements,
-	const int settings,
+	int settings,
 	const long int isn,
 	const char *data,
 	int cc,
@@ -129,14 +129,14 @@ int SAsynConnRequest (
 #undef	dotoken
 
 static int SConnRequestAux (
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const struct SSAPaddr *calling,
 	const struct SSAPaddr *called,
 	const int requirements,
-	const int settings,
+	int settings,
 	const long isn,
 	const char *data,
-	const int cc,
+	int cc,
 	const struct QOStype *qos,
 	struct SSAPconnect *sc,
 	struct SSAPindication *si,
@@ -273,7 +273,7 @@ out1:
 
 /*    S-ASYN-RETRY.REQUEST (pseudo) */
 
-int SAsynRetryRequest (const int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
+int SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;
 	int     result;
 	struct ssapblk *sb;
@@ -329,7 +329,7 @@ int SAsynRetryRequest (const int sd, struct SSAPconnect *sc, struct SSAPindicati
 
 /*    S-ASYN-NEXT.REQUEST (pseudo) */
 
-int SAsynNextRequest (const int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
+int SAsynNextRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si) {
 	SBV     smask;
 	int     result;
 	struct ssapblk *sb;
@@ -477,7 +477,7 @@ static int SAsynRetryAux1 (
 }
 
 static int SAsynRetryAux2 (struct ssapblk *sb, const struct TSAPconnect *tc, struct SSAPconnect *sc, struct SSAPindication *si) {
-	const int	    len,
+	int	    len,
 			result;
 	struct ssapkt *s;
 

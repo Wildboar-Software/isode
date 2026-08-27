@@ -50,7 +50,7 @@ static char *reject_err0[] = {
 
 static int reject_err0_cnt = sizeof reject_err0 / sizeof reject_err0[0];
 
-char *RoErrString (const int code) {
+char *RoErrString (int code) {
 	static char buffer[50];
 
 	if (code < reject_err0_cnt)

@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SReSyncResponseAux (struct ssapblk *sb, long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si);
+static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, const char *data, int cc, struct SSAPindication *si);
 
 
-static int SReSyncResponseAux (struct ssapblk *sb, long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si);
+static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, const char *data, int cc, struct SSAPindication *si);
 
 /* S-RESYNCHRONIZE.RESPONSE */
 
-int SReSyncResponse (const int sd, const long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si) {
+int SReSyncResponse (int sd, const long ssn, int settings, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -24,7 +24,7 @@ int SReSyncResponse (const int sd, const long ssn, const int settings, const cha
 	return result;
 }
 
-static int SReSyncResponseAux (struct ssapblk *sb, long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si) {
+static int SReSyncResponseAux (struct ssapblk *sb, long ssn, int settings, const char *data, int cc, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_RESYNC))

@@ -6,7 +6,7 @@
 
 /* RT-TURN-GIVE.REQUEST */
 
-int RtGTurnRequest (const int sd, struct RtSAPindication *rti) {
+int RtGTurnRequest (int sd, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;

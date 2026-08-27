@@ -27,12 +27,12 @@ extern DN mydsadn;
 extern struct di_block * di_alloc(void);
 extern int eis_check (const EntryInfoSelection eis, Entry entryptr, DN dn);
 
-static int need_pseudo_dsa (Entry eptr, const struct ds_read_arg *arg);
-static int dsa_read_control (const struct ds_read_arg *arg, struct ds_read_result *result);
+static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg);
+static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result);
 
-int do_ds_read (const struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype);
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype);
 
-int do_ds_read (const struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype) {
+int do_ds_read (struct ds_read_arg *arg, struct DSError *error, struct ds_read_result *result, DN binddn, DN target, struct di_block **di_p, const char dsp, const char quipu_ctx, const char authtype) {
 	Entry  entryptr;
 	int retval;
 #ifdef NOTUSED
@@ -278,7 +278,7 @@ static Attr_Sequence dsa_control_info (void) {
 	return (as);
 }
 
-static int dsa_read_control (const struct ds_read_arg *arg, struct ds_read_result *result) {
+static int dsa_read_control (struct ds_read_arg *arg, struct ds_read_result *result) {
 	if ((arg->rda_eis.eis_allattributes) ||
 			(arg->rda_eis.eis_infotypes == EIS_ATTRIBUTETYPESONLY))
 		return FALSE;
@@ -299,7 +299,7 @@ static int dsa_read_control (const struct ds_read_arg *arg, struct ds_read_resul
 	return TRUE;
 }
 
-static int need_pseudo_dsa (Entry eptr, const struct ds_read_arg *arg) {
+static int need_pseudo_dsa (Entry eptr, struct ds_read_arg *arg) {
 	Attr_Sequence as;
 
 	if (quipu_ctx_supported (eptr) <= 2)

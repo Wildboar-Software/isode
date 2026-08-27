@@ -144,7 +144,7 @@ extern void de_print (PS ps, struct DSError *err, int format);
 void	adios (char *, char *, ...);
 void	advise (int, char *, char*, ...);
 
-static void  ts_advise ( const struct TSAPdisconnect *td, const int	code, const char   *event);
+static void  ts_advise ( struct TSAPdisconnect *td, const int	code, const char   *event);
 
 #ifdef SYS5
 static  SFD cldser (int sig);
@@ -158,9 +158,9 @@ static  SFD cldser (int sig);
 #endif
 #else
 #ifndef	IAE
-	static int (*ssapd)(struct isoservent *, struct TSAPdisconnect *);
+	static int ssapd (struct isoservent *, struct TSAPdisconnect *);
 #else
-	static int (*ssapd)(struct IAEntry *, struct TSAPdisconnect *);
+	static int ssapd (struct IAEntry *, struct TSAPdisconnect *);
 #endif
 static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
@@ -393,7 +393,7 @@ static int setperms (struct IAEntry *is)
 	}
 }
 
-static void  ts_advise ( const struct TSAPdisconnect *td, const int	code, const char   *event) {
+static void  ts_advise ( struct TSAPdisconnect *td, const int	code, const char   *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -407,7 +407,7 @@ static void  ts_advise ( const struct TSAPdisconnect *td, const int	code, const 
 
 #ifndef	NOGOSIP
 #ifndef	IAE
-static int  ssapd ( const struct isoservent *is, struct TSAPdisconnect *td) {
+static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
 #else
 static int  ssapd ( struct IAEntry *is, struct TSAPdisconnect *td) {
 #endif

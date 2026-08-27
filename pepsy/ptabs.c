@@ -11,7 +11,7 @@
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type);
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
 static YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type);
 static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 
@@ -20,12 +20,12 @@ static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type);
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
 static YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type);
 void ddflt(FILE *fp, YP yp);
 void prte_enoff(FILE *fp, char *type, YP yp, const int idx);
-void prte_off(FILE *fp, char *type, YP yp, const char *t, const char *f, const int idx);
-void prte_obj(FILE *fp, YP yp, const char *t, char *f);
+void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, const int idx);
+void prte_obj(FILE *fp, YP yp, char *t, char *f);
 static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 int addsptr (char *s);
 
@@ -45,7 +45,7 @@ extern char	*rm_indirect(char *p);
 extern char	*getfield(char *p);
 extern char	*setfield(char *p);
 extern char	*yp2name (YP yp);
-extern char	*code2name (const int code);
+extern char	*code2name (int code);
 extern char	*modsym (const char *module, const char *id, char *prefix);
 char *c_flags(YP yp, const PElementClass cl);
 
@@ -75,7 +75,7 @@ static int	mrose3; /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type) {
+void tprnt_typ(FILE *fp, YP yp, char *id, char *type) {
 	char   *t, *f;
 	char   *p1;
 	YP      y;
@@ -745,7 +745,7 @@ void prte_enoff(FILE *fp, char *type, YP yp, const int idx)
 /*
  * print an offset table entry
  */
-void prte_off(FILE *fp, char *type, YP yp, const char *t, const char *f, const int idx) {
+void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, const int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -811,7 +811,7 @@ do_obj:
 /*
  * print an offset table entry for an OBJECT type entry
  */
-void prte_obj(FILE *fp, YP yp, const char *t, char *f) {
+void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 	char	*type;
 	char	*obj;
 	char	*flags;

@@ -12,7 +12,7 @@
 
 static int _acsaplose (
 	struct AcSAPindication *aci,
-	const int reason,
+	int reason,
 	char *what,
 	const char *fmt,
 	va_list ap
@@ -75,7 +75,7 @@ int	acsaplose (struct AcSAPindication*aci, ...) {
 
 static int _acsaplose (
 	struct AcSAPindication *aci,
-	const int reason,
+	int reason,
 	char *what,
 	const char *fmt,
 	va_list ap

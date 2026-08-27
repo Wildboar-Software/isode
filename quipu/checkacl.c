@@ -18,7 +18,7 @@ static int check_base_sacl (
 	DN binddn,
 	DN selfdn,
 	Entry e,
-	const struct ds_search_task *local,
+	struct ds_search_task *local,
 	const char authtype
 );
 static struct result_count *make_rc (
@@ -26,11 +26,11 @@ static struct result_count *make_rc (
 	DN selfdn,
 	Entry e,
 	const int scope,
-	const struct ds_search_task *local
+	struct ds_search_task *local
 );
 static int entry_rc_cmp (caddr_t data1, caddr_t data2);
 static int rc_cmp (caddr_t data1, caddr_t data2);
-static int check_one_sacl ( DN binddn, DN selfdn, Entry ancestor, const int scope, const struct ds_search_task *local, int *saclerror, const char authtype );
+static int check_one_sacl ( DN binddn, DN selfdn, Entry ancestor, const int scope, struct ds_search_task *local, int *saclerror, const char authtype );
 
 
 extern int 	selector_rank[];
@@ -50,7 +50,7 @@ static int common_prefix_len (const char *a, const char *b) {
  * a running total of the minimum common prefix of <= and >= filters.
  * This information is used later when checking search acls.
  */
-void ftype_add (Ftypelist *l, AttributeType type, const int len, const char *inequstr) {
+void ftype_add (Ftypelist *l, AttributeType type, int len, const char *inequstr) {
 	Ftypelist	new, tmp;
 	int		i, plen;
 
@@ -186,7 +186,7 @@ static int check_base_sacl (
 	DN binddn,
 	DN selfdn,
 	Entry e,
-	const struct ds_search_task *local,
+	struct ds_search_task *local,
 	const char authtype
 ) {
 	AV_Sequence		avs;
@@ -255,7 +255,7 @@ static struct result_count *make_rc (
 	DN selfdn,
 	Entry e,
 	const int scope,
-	const struct ds_search_task *local
+	struct ds_search_task *local
 ) {
 	struct result_count	*rc;
 	AV_Sequence		avs;
@@ -379,7 +379,7 @@ static int check_one_sacl (
 	DN selfdn,
 	Entry ancestor,
 	const int scope,
-	const struct ds_search_task *local,
+	struct ds_search_task *local,
 	int *saclerror,
 	const char authtype
 ) {
@@ -446,7 +446,7 @@ int check_ancestor_sacls (
 	DN selfdn,
 	Entry e,
 	int scope,
-	const struct ds_search_task *local,
+	struct ds_search_task *local,
 	const char authtype,
 	int *saclerror
 ) {

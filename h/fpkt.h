@@ -171,7 +171,7 @@ struct ftamblk {
 #define	NULLFSB		((struct ftamblk *) 0)
 
 void freefsblk (struct ftamblk *fsb);
-struct ftamblk *newfsblk (void), *findfsblk (const int sd);
+struct ftamblk *newfsblk (void), *findfsblk (int sd);
 
 int	ftamlose (struct FTAMindication* fti, ...);
 int	ftamoops (struct FTAMindication* fti, ...);
@@ -196,23 +196,23 @@ extern struct pair fclass_pairs[],
 		frequested_pairs[],
 		fpermitted_pairs[];
 
-struct type_FTAM_Access__Control__List *acl2fpm (const struct ftamblk *fsb, const struct FTAMacelement *fe, struct FTAMindication *fti);
+struct type_FTAM_Access__Control__List *acl2fpm (const struct ftamblk *fsb, struct FTAMacelement *fe, struct FTAMindication *fti);
 int	fpm2acl (const struct ftamblk *fsb, const struct type_FTAM_Access__Control__List *fpm, struct FTAMacelement **fe, struct FTAMindication *fti);
 
-struct type_FTAM_Read__Attributes *attr2fpm (const struct ftamblk *fsb, const struct FTAMattributes *fa, struct FTAMindication *fti);
+struct type_FTAM_Read__Attributes *attr2fpm (const struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti);
 int	fpm2attr (const struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti);
 
 PE	bits2fpm (const struct ftamblk *fsb, struct pair pairs[], const int actions, struct FTAMindication *fti);
-int	fpm2bits (const struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, const struct FTAMindication *fti);
+int	fpm2bits (const struct ftamblk *fsb, struct pair pairs[], PE fpm, int *actions, struct FTAMindication *fti);
 
-struct type_FTAM_Charging *chrg2fpm (const struct ftamblk *fsb, const struct FTAMcharging *charging, struct FTAMindication *fti);
+struct type_FTAM_Charging *chrg2fpm (const struct ftamblk *fsb, struct FTAMcharging *charging, struct FTAMindication *fti);
 int	fpm2chrg (const struct ftamblk *fsb, const struct type_FTAM_Charging *fpm, struct FTAMcharging *charging, struct FTAMindication *fti);
 
-struct type_FTAM_Concurrency__Access *conacc2fpm (const struct ftamblk *fsb, const struct FTAMconcurrency *fc, struct FTAMindication *fti);
-int	fpm2conacc (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Access *fpm, const struct FTAMconcurrency *fc, const struct FTAMindication *fti);
+struct type_FTAM_Concurrency__Access *conacc2fpm (const struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti);
+int	fpm2conacc (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti);
 
-struct type_FTAM_Concurrency__Control *conctl2fpm (const struct ftamblk *fsb, const struct FTAMconcurrency *fc, struct FTAMindication *fti);
-int	fpm2conctl (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Control *fpm, const struct FTAMconcurrency *fc, struct FTAMindication *fti);
+struct type_FTAM_Concurrency__Control *conctl2fpm (const struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti);
+int	fpm2conctl (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti);
 #define	conctl_present(fc) \
     ((fc) -> fc_readlock != FLOCK_NOTREQD \
 	|| (fc) -> fc_insertlock != FLOCK_NOTREQD \
@@ -224,13 +224,13 @@ int	fpm2conctl (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__C
 	|| (fc) -> fc_deletelock != FLOCK_NOTREQD) \
  
 
-struct type_FTAM_Diagnostic *diag2fpm (const struct ftamblk *fsb, const int magic, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
+struct type_FTAM_Diagnostic *diag2fpm (const struct ftamblk *fsb, const int magic, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
 int	fpm2diag (const struct ftamblk *fsb, const struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti);
 
-struct type_FTAM_FADU__Identity *faduid2fpm (const struct ftamblk *fsb, const struct FADUidentity *fa, struct FTAMindication *fti);
+struct type_FTAM_FADU__Identity *faduid2fpm (const struct ftamblk *fsb, struct FADUidentity *fa, struct FTAMindication *fti);
 int	fpm2faduid (const struct ftamblk *fsb, const struct type_FTAM_FADU__Identity *fpm, struct FADUidentity *fa, struct FTAMindication *fti);
 
-struct type_FTAM_Access__Passwords *pass2fpm (const struct ftamblk *fsb, const struct FTAMpasswords *fp, struct FTAMindication *fti);
+struct type_FTAM_Access__Passwords *pass2fpm (const struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti);
 int	fpm2pass (const struct ftamblk *fsb, const struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti);
 #define	passes_present(fp) \
     ((fp) -> fp_read || (fp) -> fp_insert || (fp) -> fp_replace \
@@ -240,9 +240,9 @@ int	fpm2pass (const struct ftamblk *fsb, const struct type_FTAM_Access__Password
 struct type_FTAM_Shared__ASE__Information *shared2fpm (const struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
 int	fpm2shared (const struct ftamblk *fsb, const struct type_FTAM_Shared__ASE__Information *fpm, PE *sharedASE, struct FTAMindication *fti);
 
-int	acs2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, const struct AcSAPabort *aca), acs2ftamabort (struct ftamblk *fsb, const struct AcSAPabort *aca, struct FTAMindication *fti);
-int	ps2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, const struct PSAPabort *pa);
+int	acs2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca), acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti);
+int	ps2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa);
 
 int FWaitRequestAux (struct ftamblk *fsb, const int secs, struct FTAMindication *fti);
-int FCancelResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
-int FAbortRequestAux (struct ftamblk *fsb, const int id, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
+int FCancelResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+int FAbortRequestAux (struct ftamblk *fsb, const int id, const int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);

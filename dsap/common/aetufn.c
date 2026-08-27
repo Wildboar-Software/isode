@@ -30,7 +30,7 @@ extern LLog * addr_log;
 
 extern struct dn_seq *dn_seq_push (DN dn, const struct dn_seq *dnseq);
 extern void quipu_syntaxes(void);
-extern int dsap_init (const int *acptr, char ***avptr);
+extern int dsap_init (int *acptr, char ***avptr);
 
 static void set_el (void);
 

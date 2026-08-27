@@ -31,7 +31,7 @@ static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 
 static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 static void envinit (void);
-static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 static void arginit (char **vec);
 
 static int  debug = 0;
@@ -62,7 +62,7 @@ static struct dispatch  dps[NTADDRS];
 
 void adios  (char *, char *, ...);
 void advise (int, char *, char *, ...);
-void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
+void ts_advise (struct TSAPdisconnect *td, int code, const char *event);
 
 int main (int argc, char **argv, char **envp) {
 	int	    listening,
@@ -148,7 +148,7 @@ static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta) {
 	adios (*is -> is_vec, "unable to exec");
 }
 
-static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
+static void ts_advise (struct TSAPdisconnect *td, int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)

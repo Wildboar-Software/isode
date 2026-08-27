@@ -9,7 +9,7 @@
 #include "ronot.h"
 
 #ifndef	lint
-static int  _ronotlose (struct RoNOTindication *rni, const int reason, va_list ap);
+static int  _ronotlose (struct RoNOTindication *rni, int reason, va_list ap);
 #endif
 
 int	ronotlose (struct RoNOTindication *rni, ...) {
@@ -26,7 +26,7 @@ int	ronotlose (struct RoNOTindication *rni, ...) {
 
 static int _ronotlose (  /* what, fmt, args ... */
 	struct RoNOTindication *rni,
-	const int reason,
+	int reason,
 	va_list ap
 ) {
 	char  *bp;
@@ -44,7 +44,7 @@ static int _ronotlose (  /* what, fmt, args ... */
 
 /*    ACSAP interface */
 
-int acs2ronotlose (struct RoNOTindication *rni, const char *event, const struct AcSAPabort *aca) {
+int acs2ronotlose (struct RoNOTindication *rni, const char *event, struct AcSAPabort *aca) {
 	char	* cp;
 
 	/*

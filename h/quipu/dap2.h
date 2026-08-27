@@ -150,10 +150,10 @@ struct DAPindication {
 int	daplose (struct DAPindication *di, ...);
 int	dapreject (struct DAPindication *di, ...);
 int DapAbandon (const int ad, const int id, struct ds_abandon_arg *arg, struct DAPindication *di, const int asyn);
-int DapBindDecode (const struct AcSAPconnect *acc, struct DAPconnect *dc, const struct RoNOTindication *rni);
-int DapInvokeReqAux (const int sd, const int id, const int op, PE pe, struct DAPindication *di, const int asyn);
-int DapDecodeResult (const int sd, const struct RoSAPresult *ror, struct DAPindication *di);
-int DapDecodeError (const int sd, const struct RoSAPerror *roe, struct DAPindication *di);
+int DapBindDecode (struct AcSAPconnect *acc, struct DAPconnect *dc, const struct RoNOTindication *rni);
+int DapInvokeReqAux (int sd, const int id, const int op, PE pe, struct DAPindication *di, const int asyn);
+int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di);
+int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di);
 
 #ifndef	lint
 #ifndef	__STDC__
@@ -175,18 +175,18 @@ int DapDecodeError (const int sd, const struct RoSAPerror *roe, struct DAPindica
 
 /* DAP-BIND.REQUEST (ARGUMENT) */
 int DapAsynBindReqAux (AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr,
-	const struct PSAPaddr *calledaddr, const int prequirements, const int srequirements, const long isn, const int settings,
-	const struct SSAPref *sf, struct ds_bind_arg *bindarg, const struct QOStype *qos, struct DAPconnect *dc, struct DAPindication *di, const int async);
+	const struct PSAPaddr *calledaddr, const int prequirements, const int srequirements, const long isn, int settings,
+	struct SSAPref *sf, struct ds_bind_arg *bindarg, const struct QOStype *qos, struct DAPconnect *dc, struct DAPindication *di, const int async);
 /* DAP-BIND.REQUEST (ARGUMENT) */
 int DapAsynBindRequest (const struct PSAPaddr *calledaddr, struct ds_bind_arg *bindarg, struct DAPconnect *dc, struct DAPindication *di, const int async);	/* DAP-BIND.REQUEST (ARGUMENT) */
 /* DAP-BIND-RETRY.REQUEST */
-int DapAsynBindRetry (const int sd, const int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di);
+int DapAsynBindRetry (int sd, const int do_next_nsap, struct DAPconnect *dc, struct DAPindication *di);
 
-int DapUnBindRequest (const int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-UNBIND.REQUEST */
-int DapUnBindRetry (const int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-BIND-RETRY.REQUEST (pseudo) */
+int DapUnBindRequest (int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-UNBIND.REQUEST */
+int DapUnBindRetry (int sd, const int secs, struct DAPrelease *dr, struct DAPindication *di);	/* DAP-BIND-RETRY.REQUEST (pseudo) */
 
 int ronot2daplose (struct DAPindication * di, const char * event, const struct RoNOTindication * rni);
-int ros2daplose (struct DAPindication *di, const char *event, const struct RoSAPpreject *rop);
+int ros2daplose (struct DAPindication *di, const char *event, struct RoSAPpreject *rop);
 int ros2dapreject (struct DAPindication *di, const char *event, const struct RoSAPureject *rou);
 
 int DapRead (const int ad, const int id, struct ds_read_arg *arg, struct DAPindication *di, const int asyn);

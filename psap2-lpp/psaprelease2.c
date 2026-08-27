@@ -12,7 +12,7 @@ static int  PRelResponseAux (const struct psapblk *pb, PE data, struct PSAPindic
 
 /* P-RELEASE.RESPONSE */
 
-int	PRelResponse (const int sd, const int status, PE *data, const int ndata, struct PSAPindication *pi) {
+int	PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;

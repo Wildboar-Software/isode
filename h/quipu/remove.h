@@ -13,7 +13,7 @@ struct ds_removeentry_arg {
 };
 
 int dap_removeentry (const int ad, int *id, struct ds_removeentry_arg *arg, struct DSError *error);
-void removeentry_arg_free (const struct ds_removeentry_arg *arg);
-int removeentry_arg_dup (const struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt);
+void removeentry_arg_free (struct ds_removeentry_arg *arg);
+int removeentry_arg_dup (struct ds_removeentry_arg *src, struct ds_removeentry_arg *tgt);
 
 #endif

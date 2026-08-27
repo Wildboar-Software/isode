@@ -81,7 +81,7 @@ static	char   *community = "public";
 static	int	sd;
 static	struct TSAPaddr  snmp_ta;
 
-char   *snmp_error (const int i);
+char   *snmp_error (int i);
 static struct type_SNMP_Message *new_message (const int offset, char **vec);
 
 void	adios (char *what, char *fmt, ...);
@@ -875,7 +875,7 @@ static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"
 };
 
-char *snmp_error (const int i) {
+char *snmp_error (int i) {
 	static char buffer[BUFSIZ];
 	if (0 < i && i < sizeof errors / sizeof errors[0])
 		return errors[i];

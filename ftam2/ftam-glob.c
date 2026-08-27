@@ -797,7 +797,7 @@ static void matchrdir (char *pattern) {
 	fdffnx (NOTOK, (struct PSAPdata *) 0, 0);
 
 	{
-		const size_t len = strlen (cp);
+		size_t len = strlen (cp);
 
 		for (fi = gi; fi; fi = fi -> fi_next)
 			if (strncmp (fi -> fi_name, cp, len) == 0)

@@ -44,7 +44,7 @@ static	struct timeval my_boottime;
 extern	int	errno;
 #endif
 
-static int  smuxlose (const int reason, char *what, char *fmt, ...);
+static int  smuxlose (int reason, char *what, char *fmt, ...);
 static int  smuxalloc (void), smuxsend (struct type_SNMP_SMUX__PDUs *pdu);
 
 /* INIT */
@@ -246,7 +246,7 @@ out:
 
 /* CLOSE */
 
-int	smux_close (const int reason) {
+int	smux_close (int reason) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_ClosePDU *close;
@@ -427,7 +427,7 @@ int	smux_trap (const int generic, const int specific, const struct type_SNMP_Var
 /* LOSE */
 
 #ifndef	lint
-static int  smuxlose (const int reason, char *what, char *fmt, ...)
+static int  smuxlose (int reason, char *what, char *fmt, ...)
 {
 	va_list ap;
 

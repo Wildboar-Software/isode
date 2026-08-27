@@ -50,7 +50,7 @@ struct expr {
 	}	    e_save;
 };
 
-static int  eval_expr (struct expr *e), read_tl (struct expr *e, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *len), read_long (struct expr *e, const char *base, const int len, const PElementForm form, integer *result), read_oid (struct expr *e, const char *base, const int len, const PElementForm form, OID *ox), get_var_value (struct expr *e, OID oid, integer *i);
+static int  eval_expr (struct expr *e), read_tl (struct expr *e, PElementClass *class, PElementForm *form, PElementID *id, PElementLen *len), read_long (struct expr *e, const char *base, int len, const PElementForm form, integer *result), read_oid (struct expr *e, const char *base, int len, const PElementForm form, OID *ox), get_var_value (struct expr *e, OID oid, integer *i);
 
 static integer	exprNumber = 0;
 
@@ -409,7 +409,7 @@ static int  read_tl (struct expr *e, PElementClass *class, PElementForm *form, P
 	return OK;
 }
 
-static int  read_long (struct expr *e, const char *base, const int len, const PElementForm form, integer *result) {
+static int  read_long (struct expr *e, const char *base, int len, const PElementForm form, integer *result) {
 	integer    i;
 	PElementData dp,
 				 ep;
@@ -431,7 +431,7 @@ static int  read_long (struct expr *e, const char *base, const int len, const PE
 	return OK;
 }
 
-static int  read_oid (struct expr *e, const char *base, const int len, const PElementForm form, OID *ox) {
+static int  read_oid (struct expr *e, const char *base, int len, const PElementForm form, OID *ox) {
 	unsigned int i,
 			 *ip;
 	PElementData dp,

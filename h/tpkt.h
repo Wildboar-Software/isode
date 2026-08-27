@@ -201,7 +201,7 @@ struct tsapblk {
 #define	NULLBP		((struct tsapblk *) 0)
 
 void freetblk (struct tsapblk *tb);
-struct tsapblk *newtblk (void), *findtblk (const int sd);
+struct tsapblk *newtblk (void), *findtblk (int sd);
 
 /*    TPKT datastructure */
 
@@ -383,7 +383,7 @@ struct tsapkt {
 #define	NULLPKT		((struct tsapkt *) 0)
 
 void freetpkt (struct tsapkt *t);
-struct tsapkt *newtpkt (const int code);
+struct tsapkt *newtpkt (int code);
 
 void text2tpkt (struct tsapkt *t);
 void tpkt2text (LLog *lp, const struct tsapkt *t, const int isread);
@@ -449,7 +449,7 @@ int	tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
 
 int	tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
 
-char   *tcpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td);
+char   *tcpsave (const int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
 int	tcprestore (struct tsapblk *tb, const char *buffer, struct TSAPdisconnect *td);
 
 /* X.25 is NS-provider */

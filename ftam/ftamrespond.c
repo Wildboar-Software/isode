@@ -347,7 +347,7 @@ carry_on:
 
 /* F-INITIALIZE.RESPONSE */
 
-int FInitializeResponse (const int sd, const int state, const int action, OID context, AEI respondtitle, const struct PSAPaddr *respondaddr, const int manage, const int class, const int units, const int attrs, PE sharedASE, const int fqos, const struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
+int FInitializeResponse (int sd, const int state, const int action, OID context, AEI respondtitle, const struct PSAPaddr *respondaddr, const int manage, const int class, const int units, const int attrs, PE sharedASE, const int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
 	int    i;
 	int	    result,
 			status;

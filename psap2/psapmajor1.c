@@ -11,7 +11,7 @@ int PMajSyncRequestAux (
 	const int sd,
 	long *ssn,
 	PE *data,
-	const int ndata,
+	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
 	int (*sfunc)(int sd, long *ssn, char *data, int cc, struct SSAPindication *si),

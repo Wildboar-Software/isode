@@ -14,8 +14,8 @@ struct dispatch {
 
 void	adios (char *what, char *fmt, ...),
 		advise (int code, char *what, char *fmt, ...);
-void	acs_advise (const struct AcSAPabort *aca, char *event);
-void	ros_adios (const struct RoSAPpreject *rop, char *event), ros_advise (const struct RoSAPpreject *rop, char *event);
+void	acs_advise (struct AcSAPabort *aca, char *event);
+void	ros_adios (struct RoSAPpreject *rop, char *event), ros_advise (struct RoSAPpreject *rop, char *event);
 void	ryr_advise (char *what, char *fmt, ...);
 
 void	ryresponder (const int argc, char **argv, char *host, char *myservice, char *mycontext, const struct dispatch *dispatches, struct RyOperation *ops, int (*start)(int sd, struct AcSAPstart *acs), int (*stop)(int sd, struct AcSAPfinish *acf));

@@ -21,10 +21,10 @@ struct	local_buf {
 	int len;				/* Current buffer size */
 };
 
-static void put2spdu (const int code, const int li, char *value, struct local_buf *c);
+static void put2spdu (int code, const int li, char *value, struct local_buf *c);
 
 static int
-copy_li (const void *src, void *dst, const int n)
+copy_li (const void *src, void *dst, int n)
 {
 	return bcopy_int (src, dst, n);
 }
@@ -38,7 +38,7 @@ store_li_u8 (uint8_t *dst, const int li)
 }
 
 static int
-store_u8 (char *p, const int n)
+store_u8 (char *p, int n)
 {
 	uint8_t v;
 
@@ -532,7 +532,7 @@ static void end_pgi (struct local_buf *c) {
 	}
 }
 
-static void put2spdu (const int code, const int li, char *value, struct local_buf *c) {
+static void put2spdu (int code, const int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1, *p2;
 
@@ -1057,7 +1057,7 @@ static uint32_t str2ssn (const char *s, int n) {
     } \
     else
 
-static char *pullqb (const struct qbuf *qb, const int n) {
+static char *pullqb (struct qbuf *qb, int n) {
 	int    i;
 	int	    once;
 	char  *cp;
@@ -1098,7 +1098,7 @@ static char *pullqb (const struct qbuf *qb, const int n) {
 	return buffer;
 }
 
-struct ssapkt *tsdu2spkt (const struct qbuf *qb, const int len, int *cc) {
+struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
 	int    li;
 	int     cat0,
 			nread,
@@ -1854,7 +1854,7 @@ do_pgi:
 	return s;
 }
 
-struct ssapkt *newspkt (const int code) {
+struct ssapkt *newspkt (int code) {
 	struct ssapkt *s;
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)

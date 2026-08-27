@@ -64,8 +64,8 @@ extern LLog _ftam_log, *ftam_log;
 
 void adios (char *, char *, ...);
 void advise (char *, char *, ...);
-void reply(const int n, ...);
-void lreply(const int n, ...);
+void reply(int n, ...);
+void lreply(int n, ...);
 void yyerror(const char *s);
 char *savestr(const char *s);
 void ack(const char *s);
@@ -80,7 +80,7 @@ void renamecmd(const char *from, const char *to);
 void dolog(const struct sockaddr_in *sin);
 void directory(const char *how, const char *name);
 int dologin(void);
-void dologout(const int status);
+void dologout(int status);
 int checkuser(const char *name);
 int retrieve(const char *name);
 int ftp_store(const char *name, const char *modeX);
@@ -295,7 +295,7 @@ bad:
 
 int dataconn(const char *name) {
 	/* UCB data connection routine */
-	const int retry = 0;
+	int retry = 0;
 
 	if (data >= 0) {
 		reply(125, "Using existing data connection for %s.",
@@ -339,9 +339,9 @@ void fatal(char *s) {
 }
 
 #ifndef	lint
-static void _reply (const int n, const char c, va_list ap);
+static void _reply (int n, const char c, va_list ap);
 
-void reply(const int n, ...)
+void reply(int n, ...)
 {
     va_list ap;
     va_start (ap, n);
@@ -349,7 +349,7 @@ void reply(const int n, ...)
 	va_end (ap);
 }
 
-void lreply(const int n, ...)
+void lreply(int n, ...)
 {
     va_list ap;
     va_start (ap, n);
@@ -357,7 +357,7 @@ void lreply(const int n, ...)
 	va_end (ap);
 }
 
-static void _reply (const int n, const char c, va_list ap) {
+static void _reply (int n, const char c, va_list ap) {
     char    buffer[BUFSIZ];
     char    *fmt;
 
@@ -544,7 +544,7 @@ int dologin(void) {
 /*
  * exit with supplied status.
  */
-void dologout(const int status) {
+void dologout(int status) {
 	vec[0] = "f_close";
 	vec[1] = NULL;
 	/* f_close performs the logout sequence and receives charging

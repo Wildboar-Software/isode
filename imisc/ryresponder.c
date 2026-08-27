@@ -29,7 +29,7 @@ static int (*stopfnx)(int sd, struct AcSAPfinish *acf);
 
 static int ros_init (int vecp, char **vec);
 static int ros_work (int fd);
-static void ros_indication (const int sd, const struct RoSAPindication *roi);
+static void ros_indication (int sd, struct RoSAPindication *roi);
 static void ros_lose (struct TSAPdisconnect *td);
 
 void ryresponder (
@@ -188,7 +188,7 @@ static int ros_work (int fd) {
 	return OK;
 }
 
-static void ros_indication (const int sd, const struct RoSAPindication *roi) {
+static void ros_indication (int sd, struct RoSAPindication *roi) {
 	int	    reply,
 			result;
 
@@ -260,12 +260,12 @@ static void ros_lose (struct TSAPdisconnect *td) {
 		adios (NULLCP, "TNetAccept: [%s]", TErrString (td -> td_reason));
 }
 
-void ros_adios (const struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 	longjmp (toplevel, NOTOK);
 }
 
-void ros_advise (const struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 	if (rop -> rop_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
@@ -275,7 +275,7 @@ void ros_advise (const struct RoSAPpreject *rop, char *event) {
 	advise (LLOG_EXCEPTIONS, NULLCP, "%s: %s", event, buffer);
 }
 
-void acs_advise (const struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)

@@ -46,7 +46,7 @@ static int edb_continue (
 );
 static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
 static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *result);
-static int read_part_edb (PS ps, PE *pep, const int n);
+static int read_part_edb (PS ps, PE *pep, int n);
 void getedb_size (const int x);
 
 
@@ -87,7 +87,7 @@ struct oper_act *	make_get_edb_op(DN dn, char *version, const struct di_block *d
 
 static int split_size = 10;
 static void get_more_edb (struct oper_act *oper, struct oper_act **newop);
-static int read_part_edb (PS ps, PE *pep, const int n);
+static int read_part_edb (PS ps, PE *pep, int n);
 static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *result);
 static int edb_start (
 	const struct getedb_arg *arg,
@@ -1101,7 +1101,7 @@ static int pull_up_result (const struct getedb_arg *arg, struct getedb_result *r
 	return TRUE;
 }
 
-static int read_part_edb (PS ps, PE *pep, const int n) {
+static int read_part_edb (PS ps, PE *pep, int n) {
 	int i;
 	PE pe;
 	PE lpe = NULLPE;

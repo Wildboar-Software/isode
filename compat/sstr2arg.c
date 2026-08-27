@@ -21,7 +21,7 @@
 
 int sstr2arg (
 	const char *srcptr,  /* source data */
-	const int maxpf,              /* maximum number of permitted fields */
+	int maxpf,              /* maximum number of permitted fields */
 	char *argv[],           /* where to put the pointers */
 	const char *dlmstr           /* Delimiting character */
 ) {

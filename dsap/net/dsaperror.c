@@ -57,7 +57,7 @@ static int DEncodeError (PE *pep, const struct DSError *err) {
 	return(success);
 }
 
-int DapErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
+int DapErrorRequest (int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -85,7 +85,7 @@ int DapErrorRequest (const int sd, const int id, const struct DSError *err, stru
 	return (OK);
 }
 
-int DspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
+int DspErrorRequest (int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -113,7 +113,7 @@ int DspErrorRequest (const int sd, const int id, const struct DSError *err, stru
 	return (OK);
 }
 
-int QspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
+int QspErrorRequest (int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -141,6 +141,6 @@ int QspErrorRequest (const int sd, const int id, const struct DSError *err, stru
 	return (OK);
 }
 
-int IspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
+int IspErrorRequest (int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	return QspErrorRequest (sd, id, err, di);
 }

@@ -35,13 +35,13 @@ void conn_free (struct connection *conn) {
 	free((char *)conn);
 }
 
-void conn_connect_free (const struct conn_connect *cc) {
+void conn_connect_free (struct conn_connect *cc) {
 	bind_arg_free (&(cc->cc_req));
 	/* cc_dc should not be freed before calling conn_free() */
 	DCFREE (&(cc->cc_dc));
 }
 
-void conn_start_free (const struct conn_start *cs) {
+void conn_start_free (struct conn_start *cs) {
 	if (cs->cs_svec[0])
 		free (cs->cs_svec[0]);
 	if (cs->cs_svec[1])

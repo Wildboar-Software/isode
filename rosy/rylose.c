@@ -19,7 +19,7 @@
 
 /*    clean-up after association termination */
 
-int	RyLose (const int sd, struct RoSAPindication *roi) {
+int	RyLose (int sd, struct RoSAPindication *roi) {
 	missingP (roi);
 	loseopblk (sd, ROS_DONE);
 	losedsblk (sd);

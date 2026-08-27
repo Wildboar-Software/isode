@@ -150,14 +150,14 @@ int	ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 
 int	ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi), ro2psasync (struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi), ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi);
 
-int	ss2roslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct SSAPabort *sa), ss2rosabort (struct assocblk *acb, const struct SSAPabort *sa, struct RoSAPindication *roi);
+int	ss2roslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct SSAPabort *sa), ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi);
 int	ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi), ro2ssasync (struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi), ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi), ro2sslose (struct assocblk *acb, int result),
 	ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi);
 
 int RoURejectRequestAux (
 	struct assocblk *acb,
 	const int *invokeID,
-	const int reason,
+	int reason,
 	PElementID id,
 	const int priority,
 	struct RoSAPindication *roi

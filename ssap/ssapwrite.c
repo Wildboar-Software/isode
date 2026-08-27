@@ -6,15 +6,15 @@
 
 int SWriteRequestAux (
 	const struct ssapblk *sb,
-	const int code,
+	int code,
 	const char *data,
-	const int cc,
+	int cc,
 	const int type,
 	const long ssn,
-	const int settings,
+	int settings,
 	const struct SSAPactid *id,
 	const struct SSAPactid *oid,
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	struct SSAPindication *si
 ) {
 	int     result;

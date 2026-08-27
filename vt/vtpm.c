@@ -7,7 +7,7 @@
 #include "sector1.h"
 #include "pvpdu.h"
 #include "vt.h"
-static void acs_advise (const struct AcSAPabort *aa, const char *event);
+static void acs_advise (struct AcSAPabort *aa, const char *event);
 
 
 int	cmode;
@@ -35,12 +35,12 @@ struct PSAPindication pi;
 struct PSAPdata	px;
 struct PSAPfinish *pf;
 
-static void  ps_adios (const struct PSAPabort *pab, const char *event),  ps_advise (const struct PSAPabort *pab, const char *event);
+static void  ps_adios (struct PSAPabort *pab, const char *event),  ps_advise (struct PSAPabort *pab, const char *event);
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
 int do_event (const int event, PE pe);
-int pn_ind (const int dd, const struct PSAPsync *psync);
+int pn_ind (const int dd, struct PSAPsync *psync);
 extern int build_ASRPDU_ASRpdu (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);
 
 /****************************************************************************/
@@ -238,7 +238,7 @@ int do_event (const int event, PE pe) {
 
 int pn_ind ( /* sync indications */
 	const int dd,
-	const struct PSAPsync *psync
+	struct PSAPsync *psync
 ) {
 	switch(psync->pn_type) {
 	case SN_MAJORIND:
@@ -377,7 +377,7 @@ int p_typed_data (PE pdu) {
 
 int p_resync_req (PE pdu, const int type) {
 	const long ssn = 0; /* should be made a global at some time */
-	const int settings = ST_INIT_VALUE;
+	int settings = ST_INIT_VALUE;
 
 #define VTKP_REQ   0x00 /* setting values, see ssap.h */
 #define VTKP_ACC   0x15
@@ -405,7 +405,7 @@ int p_resync_req (PE pdu, const int type) {
 
 int p_resync_resp (PE pdu) {
 	const long ssn = 0; /* should be made a global at some time */
-	const int settings = ST_INIT_VALUE;
+	int settings = ST_INIT_VALUE;
 	OLDPLOG (vt_log, print_VT_PDUs, pdu, NULLCP, 0);
 	if (PReSyncResponse(sd, ssn, settings, &pdu, 1, &pi) != OK)
 		ps_adios (&pi.pi_abort, "P-RESYNCHRONIZE.RESPONSE");
@@ -468,7 +468,7 @@ int send_bad_asr (	/*Compose and send ASR with result = failure.  Encode
 			  ASR-FailureReason using the reason parameter
 			  (0 means no reason).
 			*/
-	const int reason
+	int reason
 ) {
 	PE asr_pe;
 	ASR_MSG ud;
@@ -549,15 +549,15 @@ int send_all (void) {	/*TEMP -- Should be supplied by Sector 5 actions*/
 	advise(LLOG_DEBUG,NULLCP,  "send_all dummy routine");
 }
 
-static void  acs_advise (const struct AcSAPabort *aa, const char *event);
+static void  acs_advise (struct AcSAPabort *aa, const char *event);
 
-void acs_adios (const struct AcSAPabort *aa, const char *event) {
+void acs_adios (struct AcSAPabort *aa, const char *event) {
 	acs_advise (aa, event);
 	finalbye ();
 	_exit (1);
 }
 
-static void acs_advise (const struct AcSAPabort *aa, const char *event) {
+static void acs_advise (struct AcSAPabort *aa, const char *event) {
 	char	buffer[BUFSIZ];
 
 	if (aa -> aca_cc > 0)
@@ -570,13 +570,13 @@ static void acs_advise (const struct AcSAPabort *aa, const char *event) {
 			aa -> aca_source);
 }
 
-static void ps_adios (const struct PSAPabort *pab, const char *event) {
+static void ps_adios (struct PSAPabort *pab, const char *event) {
 	ps_advise (pab, event);
 	finalbye ();
 	_exit (1);
 }
 
-static void ps_advise (const struct PSAPabort *pab, const char *event) {
+static void ps_advise (struct PSAPabort *pab, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (pab -> pa_cc > 0)

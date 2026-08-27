@@ -47,7 +47,7 @@ int	select_context (OID app_ctx) {
 	return (NOTOK);
 }
 
-int judge_ctxlist (struct PSAPctxlist *req_ctxlist, const struct PSAPctxlist *ok_ctxlist) {
+int judge_ctxlist (struct PSAPctxlist *req_ctxlist, struct PSAPctxlist *ok_ctxlist) {
 	int			  ctxlist_notok = OK;
 	int                   i;
 	int                   j;
@@ -94,7 +94,7 @@ int judge_ctxlist (struct PSAPctxlist *req_ctxlist, const struct PSAPctxlist *ok
 	return(ctxlist_notok);
 }
 
-int	  find_ctx_id(const struct PSAPctxlist * pcdl, OID ctx_oid) {
+int	  find_ctx_id(struct PSAPctxlist * pcdl, OID ctx_oid) {
 	int	  i;
 
 	DLOG (log_dsap, LLOG_TRACE, ("find_ctx_id"));

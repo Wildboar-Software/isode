@@ -18,13 +18,13 @@
 
 int pepsylose (modtyp*module, ...);
 int ppepsylose (modtyp*module, ...);
-int ferr (const int n, const char *mesg);
-int ferrd (const int n, const char *mesg, const int d);
+int ferr (int n, char *mesg);
+int ferrd (int n, char *mesg, const int d);
 static void dmp_tpe ( char *s, ptpe *p, modtyp *mod /* Module it is from */ );
 char *pr_petype (const int type);
 void f_null(void);
-int bitscmp (char *p1, char *p2, const int len);
-int ostrcmp (char *p, const int len, const struct qbuf *qb);
+int bitscmp (char *p1, char *p2, int len);
+int ostrcmp (char *p, int len, struct qbuf *qb);
 int hasdata ( PEPYPARM parm, const ptpe *p, modtyp *mod, /* Module it is from */ const int *popt, int *optcnt );
 ptpe *next_tpe (ptpe *p);
 int ismatch ( ptpe *p, modtyp *mod, /* Module it is from */ const unsigned int cl, const unsigned int tag );
@@ -145,7 +145,7 @@ int	ppepsylose (modtyp*module, ...) {
  * print out the message and if the arguement is greater than 0
  * terminate
  */
-int ferr (const int n, const char *mesg) {
+int ferr (int n, char *mesg) {
 	printf(mesg);
 	if (n > 0)
 		exit(n);
@@ -155,7 +155,7 @@ int ferr (const int n, const char *mesg) {
  * print out the message and number and if the arguement is greater
  * than 0 terminate
  */
-int ferrd (const int n, const char *mesg, const int d) {
+int ferrd (int n, char *mesg, const int d) {
 	printf(mesg, d);
 	if (n > 0)
 		exit(n);
@@ -325,7 +325,7 @@ void f_null(void) {
  * compare a given number of bits pointed to by the two character
  * pointers return 0 if they are the same non zero otherwise
  */
-int bitscmp (char *p1, char *p2, const int len) {
+int bitscmp (char *p1, char *p2, int len) {
 	int i;
 	uint8_t mask;
 	int m;
@@ -354,7 +354,7 @@ int bitscmp (char *p1, char *p2, const int len) {
  * compare an octet string and a qb and return 0 if they are the same
  * and non zero otherwise
  */
-int ostrcmp (char *p, const int len, const struct qbuf *qb) {
+int ostrcmp (char *p, int len, struct qbuf *qb) {
 	struct qbuf *qp;
 
 	if (len < 0 || qb == NULL || p == NULL)

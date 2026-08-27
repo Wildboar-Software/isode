@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SUReportRequestAux (struct ssapblk *sb, const int reason, const char *data, const int cc, struct SSAPindication *si);
+static int SUReportRequestAux (struct ssapblk *sb, int reason, const char *data, int cc, struct SSAPindication *si);
 
 
-static int  SUReportRequestAux (struct ssapblk *sb, const int reason, const char *data, const int cc, struct SSAPindication *si);
+static int  SUReportRequestAux (struct ssapblk *sb, int reason, const char *data, int cc, struct SSAPindication *si);
 
 /* S-U-EXCEPTION-REPORT.REQUEST */
 
-int SUReportRequest (const int sd, const int reason, const char *data, const int cc, struct SSAPindication *si) {
+int SUReportRequest (int sd, int reason, const char *data, int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -26,7 +26,7 @@ int SUReportRequest (const int sd, const int reason, const char *data, const int
 	return result;
 }
 
-static int SUReportRequestAux (struct ssapblk *sb, const int reason, const char *data, const int cc, struct SSAPindication *si) {
+static int SUReportRequestAux (struct ssapblk *sb, int reason, const char *data, int cc, struct SSAPindication *si) {
 	int	    result;
 
 	if (!(sb -> sb_requirements & SR_EXCEPTIONS))

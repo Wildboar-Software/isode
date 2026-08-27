@@ -7,10 +7,10 @@
 #include "pass2.h"
 #include "mine.h"
 #include <ctype.h>
-void tdec_typ(FILE *fp, YP yp, const char *id, const char *type);
+void tdec_typ(FILE *fp, YP yp, char *id, char *type);
 static YP tdec_loop(FILE *fp, YP yp, const char *id, const char *type);
 
-void tdec_typ(FILE *fp, YP yp, const char *id, const char *type);
+void tdec_typ(FILE *fp, YP yp, char *id, char *type);
 static YP tdec_loop(FILE *fp, YP yp, const char *id, const char *type);
 void genmalloc(FILE *fp, YP yp);
 int hasdatstr(YP yp);
@@ -40,7 +40,7 @@ extern char *c_flags(YP yp, const PElementClass cl);
 /*
  * table encode a type. generate tables for the encoding of a type
  */
-void tdec_typ(FILE *fp, YP yp, const char *id, const char *type)
+void tdec_typ(FILE *fp, YP yp, char *id, char *type)
 {
 	char   *t, *f;
 	char   *p1;

@@ -431,19 +431,19 @@ int SExec (
 );		/* SERVER only */
 int	SInit (const int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si);		/* S-CONNECT.INDICATION */
 
-int	SConnResponse (const int sd, const struct SSAPref *ref, const struct SSAPaddr *responding, const int status, const int requirements, const int settings, const long isn, char *data, int cc, struct SSAPindication *si);	/* S-CONNECT.RESPONSE */
+int	SConnResponse (int sd, struct SSAPref *ref, const struct SSAPaddr *responding, int status, const int requirements, int settings, const long isn, char *data, int cc, struct SSAPindication *si);	/* S-CONNECT.RESPONSE */
 int	SConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr *called, int requirements, int settings, long isn, char *data, int cc, struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si);	/* S-CONNECT.REQUEST (backwards-compatible) */
 #define	SConnRequest(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11) \
 	SAsynConnRequest (a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,0)
-int	SAsynConnRequest (const struct SSAPref *ref, const struct SSAPaddr *calling, const struct SSAPaddr *called, const int requirements, const int settings, const long int isn, const char *data, int cc, const struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, const int async);	/* S-(ASYN-)CONNECT.REQUEST */
-int	SAsynRetryRequest (const int sd, struct SSAPconnect *sc, struct SSAPindication *si);	/* S-ASYN-RETRY.REQUEST (pseudo) */
+int	SAsynConnRequest (struct SSAPref *ref, const struct SSAPaddr *calling, const struct SSAPaddr *called, const int requirements, int settings, const long int isn, const char *data, int cc, const struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, const int async);	/* S-(ASYN-)CONNECT.REQUEST */
+int	SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);	/* S-ASYN-RETRY.REQUEST (pseudo) */
 /* S-DATA.REQUEST */
 int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si);
 /* S-SEND.REQUEST (segmented) */
 int SSendRequest (
 	const int sd,
 	const char *data,
-	const int cc,
+	int cc,
 	const int begin,
 	const int end,
 	struct SSAPindication *si
@@ -455,21 +455,21 @@ int SWriteRequest (
 	const struct udvec *uv,
 	struct SSAPindication *si
 );
-int	SExpdRequest (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-EXPEDITED-DATA.REQUEST */
-int	STypedRequest (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-TYPED-DATA.REQUEST */
-int	SCapdRequest (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-CAPABILITY-DATA.REQUEST */
-int	SCapdResponse (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-CAPABILITY-DATA.RESPONSE */
-int	SReadRequest (const int sd, struct SSAPdata *sx, const int secs, struct SSAPindication *si);	/* S-READ.REQUEST (pseudo) */
-int	SGTokenRequest (const int sd, const int tokens, struct SSAPindication *si);	/* S-TOKEN-GIVE.REQUEST */
-int	SPTokenRequest (const int sd, const int tokens, const char *data, const int cc, struct SSAPindication *si);	/* S-TOKEN-PLEASE.REQUEST */
-int SGControlRequest (const int sd, struct SSAPindication *si);	/* S-CONTROL-GIVE.REQUEST */
-int	SMajSyncRequest (const int sd, long *ssn, const char *data, const int cc, struct SSAPindication *si);	/* S-MAJOR-SYNC.REQUEST */
-int	SMajSyncResponse (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-MAJOR-SYNC.RESPONSE */
-int	SMinSyncRequest (const int sd, const int type, long *ssn, const char *data, const int cc, struct SSAPindication *si);	/* S-MINOR-SYNC.REQUEST */
-int	SMinSyncResponse (const int sd, const long ssn, const char *data, const int cc, struct SSAPindication *si);	/* S-MINOR-SYNC.RESPONSE */
-int	SReSyncRequest (const int sd, const int type, const long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si);	/* S-RESYNCHRONIZE.REQUEST */
-int	SReSyncResponse (const int sd, const long ssn, const int settings, const char *data, const int cc, struct SSAPindication *si);	/* S-RESYNCHRONIZE.RESPONSE */
-int SActStartRequest (const int sd, const struct SSAPactid *id, const char *data, const int cc, struct SSAPindication *si);	/* S-ACTIVITY-START.REQUEST */
+int	SExpdRequest (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-EXPEDITED-DATA.REQUEST */
+int	STypedRequest (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-TYPED-DATA.REQUEST */
+int	SCapdRequest (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-CAPABILITY-DATA.REQUEST */
+int	SCapdResponse (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-CAPABILITY-DATA.RESPONSE */
+int	SReadRequest (int sd, struct SSAPdata *sx, const int secs, struct SSAPindication *si);	/* S-READ.REQUEST (pseudo) */
+int	SGTokenRequest (int sd, const int tokens, struct SSAPindication *si);	/* S-TOKEN-GIVE.REQUEST */
+int	SPTokenRequest (int sd, const int tokens, const char *data, int cc, struct SSAPindication *si);	/* S-TOKEN-PLEASE.REQUEST */
+int SGControlRequest (int sd, struct SSAPindication *si);	/* S-CONTROL-GIVE.REQUEST */
+int	SMajSyncRequest (int sd, long *ssn, const char *data, int cc, struct SSAPindication *si);	/* S-MAJOR-SYNC.REQUEST */
+int	SMajSyncResponse (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-MAJOR-SYNC.RESPONSE */
+int	SMinSyncRequest (int sd, const int type, long *ssn, const char *data, int cc, struct SSAPindication *si);	/* S-MINOR-SYNC.REQUEST */
+int	SMinSyncResponse (int sd, const long ssn, const char *data, int cc, struct SSAPindication *si);	/* S-MINOR-SYNC.RESPONSE */
+int	SReSyncRequest (int sd, const int type, const long ssn, int settings, const char *data, int cc, struct SSAPindication *si);	/* S-RESYNCHRONIZE.REQUEST */
+int	SReSyncResponse (int sd, const long ssn, int settings, const char *data, int cc, struct SSAPindication *si);	/* S-RESYNCHRONIZE.RESPONSE */
+int SActStartRequest (int sd, struct SSAPactid *id, const char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-START.REQUEST */
 
 /* S-ACTIVITY-RESUME.REQUEST */
 int SActResumeRequest (
@@ -477,22 +477,22 @@ int SActResumeRequest (
 	const struct SSAPactid *id,
 	const struct SSAPactid *oid,
 	const long ssn,
-	const struct SSAPref *ref,
+	struct SSAPref *ref,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 );
-int SActIntrRequest (const int sd, const int reason, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.REQUEST */
-int SActIntrResponse (const int sd, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.RESPONSE */
-int SActDiscRequest (const int sd, const int reason, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.REQUEST */
-int SActDiscResponse (const int sd, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.RESPONSE */
-int SActEndRequest (const int sd, long *ssn, const char *data, const int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.REQUEST */
-int SActEndResponse (const int sd, const char *data, const int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.RESPONSE */
+int SActIntrRequest (int sd, int reason, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.REQUEST */
+int SActIntrResponse (int sd, struct SSAPindication *si);	/* S-ACTIVITY-INTERRUPT.RESPONSE */
+int SActDiscRequest (int sd, int reason, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.REQUEST */
+int SActDiscResponse (int sd, struct SSAPindication *si);	/* S-ACTIVITY-DISCARD.RESPONSE */
+int SActEndRequest (int sd, long *ssn, const char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.REQUEST */
+int SActEndResponse (int sd, const char *data, int cc, struct SSAPindication *si);	/* S-ACTIVITY-END.RESPONSE */
 int	SUAbortRequest (int sd, char *data, int cc, struct SSAPindication *si);	/* S-U-ABORT.REQUEST */
-int	SUReportRequest (const int sd, const int reason, const char *data, const int cc, struct SSAPindication *si);	/* S-U-EXCEPTION-REPORT.REQUEST */
-int	SRelRequest (const int sd, const char *data, const int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);		/* S-RELEASE.REQUEST */
-int	SRelRetryRequest (const int sd, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);	/* S-RELEASE-RETRY.REQUEST (pseudo) */
-int	SRelResponse (const int sd, const int status, const char *data, const int cc, struct SSAPindication *si);	/* S-RELEASE.RESPONSE */
+int	SUReportRequest (int sd, int reason, const char *data, int cc, struct SSAPindication *si);	/* S-U-EXCEPTION-REPORT.REQUEST */
+int	SRelRequest (int sd, const char *data, int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);		/* S-RELEASE.REQUEST */
+int	SRelRetryRequest (int sd, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);	/* S-RELEASE-RETRY.REQUEST (pseudo) */
+int	SRelResponse (int sd, int status, const char *data, int cc, struct SSAPindication *si);	/* S-RELEASE.RESPONSE */
 
 int	SSetIndications (
 	const int sd,
@@ -505,9 +505,9 @@ int	SSetIndications (
 	void (*abort)(int sd, struct SSAPabort *sa),
 	struct SSAPindication *si
 );	/* define vectors for INDICATION events */
-int	SSelectMask (const int sd, const fd_set *mask, const int *nfds, struct SSAPindication *si);		/* map session descriptors for select() */
+int	SSelectMask (int sd, fd_set *mask, int *nfds, struct SSAPindication *si);		/* map session descriptors for select() */
 
-char   *SErrString (const int code);		/* return SSAP error code in string form */
+char   *SErrString (int code);		/* return SSAP error code in string form */
 
 int SDoCollideAux (
 	const int init,

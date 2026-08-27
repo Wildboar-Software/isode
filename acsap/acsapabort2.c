@@ -14,7 +14,7 @@
 
 /*    handle P-{U,P}-ABORT.INDICATION */
 
-int AcABORTser (const int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
+int AcABORTser (int sd, struct PSAPabort *pa, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;

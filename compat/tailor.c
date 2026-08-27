@@ -983,7 +983,7 @@ int tailorfree (void) {
 #endif
 }
 
-int ll_hdfree (const LLog *lp) {
+int ll_hdfree (LLog *lp) {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);
 	lp -> ll_stat &= ~LLOGHDR;

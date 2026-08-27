@@ -108,9 +108,9 @@ typedef struct ds_op_arg {
 	char *			dca_bit;
 } OPArgument;
 
-void op_arg_free (const struct ds_op_arg *arg);
+void op_arg_free (struct ds_op_arg *arg);
 
-struct common_args *get_ca_ref (const struct ds_op_arg *dsarg);
+struct common_args *get_ca_ref (struct ds_op_arg *dsarg);
 
 typedef struct ds_op_res {
 	struct chain_res	dcr_chres;
@@ -121,6 +121,6 @@ typedef struct ds_op_res {
 	char *			dcr_bit;
 } OPResult;
 
-void op_res_free (const struct ds_op_res *res);
+void op_res_free (struct ds_op_res *res);
 
 #endif

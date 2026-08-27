@@ -85,7 +85,7 @@ extern int parent_pid;
 static unsigned waiting = 0;
 
 extern char *new_version(void);
-extern unsigned long hash_passwd(unsigned long seed, const char *str, const int len);
+extern unsigned long hash_passwd(unsigned long seed, const char *str, int len);
 extern char *hash2str(unsigned long hash, int *len);
 extern struct certificate *cert_cpy(struct certificate *parm);
 extern struct SecurityServices *dsap_security;

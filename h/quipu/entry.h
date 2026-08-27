@@ -237,7 +237,7 @@ struct getedb_result {
 #define NULL_GETRESULT (struct getedb_result *) NULL
 
 int EDB_decode_force (struct getedb_result **pparm, PE pe);
-int EDB_encode (const struct getedb_result *parm, PE *pe);
+int EDB_encode (struct getedb_result *parm, PE *pe);
 
 struct getedb_arg {
 	DN 	ga_entry;

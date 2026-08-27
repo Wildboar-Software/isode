@@ -4,7 +4,7 @@
 #include <strings.h>
 #include "psap.h"
 
-char *int2strb (const int n, const int len) {
+char *int2strb (int n, int len) {
 	int    i;
 	static char buffer[sizeof (int) + 1];
 

@@ -24,7 +24,7 @@ static int de2fadu (PE pe, const int concat);
 
 /* TRANSFER */
 
-void ftam_bulkbeginindication (const struct FTAMgroup *ftg) {
+void ftam_bulkbeginindication (struct FTAMgroup *ftg) {
 	int	    state;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
@@ -70,7 +70,7 @@ void ftam_bulkbeginindication (const struct FTAMgroup *ftg) {
    are sent.
 */
 
-void ftam_readwriteindication (const struct FTAMreadwrite *ftrw) {
+void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
 	int	    result;
 	struct FADUidentity *fa = &ftrw -> ftrw_identity;
 	struct FTAMdiagnostic   diags[NFDIAG];
@@ -905,7 +905,7 @@ static int de2fadu (PE pe, const int concat) {
 	return DONE;
 }
 
-void ftam_dataindication (const struct PSAPdata *px) {
+void ftam_dataindication (struct PSAPdata *px) {
 	int    i;
 	int	    effector,
 			n;
@@ -1029,7 +1029,7 @@ void ftam_dataindication (const struct PSAPdata *px) {
 	PXFREE (px);
 }
 
-void ftam_dataendindication (const struct FTAMdataend *ftda) {
+void ftam_dataendindication (struct FTAMdataend *ftda) {
 	timer (nbytes, "received");
 #if     !defined(SYS5) || defined(SVR4)
 	if (ftda -> ftda_action == FACTION_SUCCESS)
@@ -1037,7 +1037,7 @@ void ftam_dataendindication (const struct FTAMdataend *ftda) {
 #endif
 }
 
-void ftam_cancelindication (const struct FTAMcancel *ftcn) {
+void ftam_cancelindication (struct FTAMcancel *ftcn) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1050,7 +1050,7 @@ void ftam_cancelindication (const struct FTAMcancel *ftcn) {
 		ftam_adios (&fti -> fti_abort, "F-CANCEL.RESPONSE");
 }
 
-void ftam_transendindication (const struct FTAMtransend *ftre) {
+void ftam_transendindication (struct FTAMtransend *ftre) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1059,7 +1059,7 @@ void ftam_transendindication (const struct FTAMtransend *ftre) {
 		ftam_adios (&fti -> fti_abort, "F-TRANSFER-END.RESPONSE");
 }
 
-void ftam_bulkendindication (const struct FTAMgroup *ftg) {
+void ftam_bulkendindication (struct FTAMgroup *ftg) {
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
@@ -1086,7 +1086,7 @@ void ftam_bulkendindication (const struct FTAMgroup *ftg) {
 #endif
 
 #ifndef	TMS
-void timer (const int cc, const char *action) {
+void timer (int cc, const char *action) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,

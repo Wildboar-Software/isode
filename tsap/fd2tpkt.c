@@ -10,7 +10,7 @@
 #include "internet.h"
 
 static int  fd2tpktaux (const int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
-static int  readx (const int fd, char *buffer, const int n, int (*readfnx)(int fd, char *buffer, int n));
+static int  readx (const int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
 static int  set_tpdu_li (struct tsapkt *t, const size_t hdr);
 static int  set_varlen (struct tsapkt *t, const size_t minlen, int *vlen);
 
@@ -330,7 +330,7 @@ static int fd2tpktaux (const int fd, struct tsapkt *t, int (*initfnx)(int fd, st
 	return OK;
 }
 
-static int readx (const int fd, char *buffer, const int n, int (*readfnx)(int fd, char *buffer, int n)) {
+static int readx (const int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n)) {
 	int    i,
 		   cc;
 	char   *bp;
@@ -553,7 +553,7 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 	return i;
 }
 
-struct tsapkt *newtpkt (const int code) {
+struct tsapkt *newtpkt (int code) {
 	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);

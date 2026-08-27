@@ -18,15 +18,15 @@
 static int  pw_compar (const void *p, const void *q);
 static int get_pw (const int offset);
 static void fill_pw (struct passwd *pwp);
-static struct pw *get_pwent (const unsigned int *ip, const int len, const int isnext);
+static struct pw *get_pwent (const unsigned int *ip, int len, const int isnext);
 static int gr_compar (const void *p, const void *q);
 static int get_gr (const int offset);
 static void fill_gr (struct group *grp);
-static struct gr *get_grent (const unsigned int *ip, const int len, const int isnext);
+static struct gr *get_grent (const unsigned int *ip, int len, const int isnext);
 static int gu_compar (const void *p, const void *q);
 static int gm_compar (const void *p, const void *q);
 static int get_gu (const int offset);
-static struct gu *get_guent (const unsigned int *ip, const int len, const int isnext);
+static struct gu *get_guent (const unsigned int *ip, int len, const int isnext);
 static int  o_user (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int  s_user (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int o_group (OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -330,7 +330,7 @@ static void free_pw (void) {
 	}
 }
 
-static struct pw *get_pwent (const unsigned int *ip, const int len, const int isnext) {
+static struct pw *get_pwent (const unsigned int *ip, int len, const int isnext) {
 	struct pw *pw;
 
 	for (pw = pw_head; pw -> pw_pw.pw_name; pw++)
@@ -542,7 +542,7 @@ static void free_gr (void) {
 	}
 }
 
-static struct gr *get_grent (const unsigned int *ip, const int len, const int isnext) {
+static struct gr *get_grent (const unsigned int *ip, int len, const int isnext) {
 	struct gr *gr;
 	for (gr = gr_head; gr -> gr_gr.gr_name; gr++)
 		switch (elem_cmp (gr -> gr_instance, gr -> gr_insize, ip, len)) {
@@ -657,7 +657,7 @@ again:
 	return OK;
 }
 
-static struct gu *get_guent (const unsigned int *ip, const int len, const int isnext) {
+static struct gu *get_guent (const unsigned int *ip, int len, const int isnext) {
 	struct gu *gu;
 
 	if (!gu_head)

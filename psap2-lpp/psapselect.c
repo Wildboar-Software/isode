@@ -5,7 +5,7 @@
 #include "ppkt.h"
 
 /* map presentation descriptors for select() */
-int	PSelectMask (const int sd, const fd_set *mask, int *nfds, struct PSAPindication *pi)
+int	PSelectMask (int sd, fd_set *mask, int *nfds, struct PSAPindication *pi)
 {
 	SBV     smask;
 	int	    reason,

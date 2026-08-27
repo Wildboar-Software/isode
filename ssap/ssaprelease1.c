@@ -7,19 +7,19 @@
 static int SRelRequestAux (
 	struct ssapblk *sb,
 	const char *data,
-	const int cc,
+	int cc,
 	const int secs,
 	struct SSAPrelease *sr,
 	struct SSAPindication *si
 );
 
 
-static int  SRelRequestAux (struct ssapblk *sb, const char *data, const int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);
+static int  SRelRequestAux (struct ssapblk *sb, const char *data, int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 static int  SRelRetryRequestAux (struct ssapblk *sb, const int secs, struct SSAPrelease *sr, struct SSAPindication *si);
 
 /* S-RELEASE.REQUEST */
 
-int SRelRequest (const int sd, const char *data, const int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
+int SRelRequest (int sd, const char *data, int cc, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -44,7 +44,7 @@ int SRelRequest (const int sd, const char *data, const int cc, const int secs, s
 static int SRelRequestAux (
 	struct ssapblk *sb,
 	const char *data,
-	const int cc,
+	int cc,
 	const int secs,
 	struct SSAPrelease *sr,
 	struct SSAPindication *si
@@ -84,7 +84,7 @@ static int SRelRequestAux (
 
 /*    S-RELEASE-RETRY.REQUEST (pseudo) */
 
-int SRelRetryRequest (const int sd, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
+int SRelRetryRequest (int sd, const int secs, struct SSAPrelease *sr, struct SSAPindication *si) {
 	SBV	    smask;
 	int	    result;
 	struct ssapblk *sb;

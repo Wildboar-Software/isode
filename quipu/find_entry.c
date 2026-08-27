@@ -50,7 +50,7 @@ int find_entry (
 	const int optype
 ) {
 	int deref = FALSE;
-	extern const time_t cache_timeout;
+	extern time_t cache_timeout;
 	DN dn_found;
 	int res;
 

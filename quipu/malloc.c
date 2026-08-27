@@ -124,10 +124,10 @@ struct freehead {
 	struct freelist * flist;
 };
 
-static void big_free (const struct header *ptr);
+static void big_free (struct header *ptr);
 static void add_free (struct header *x);
 static struct header *next_free_block (const struct header *ptr);
-static void *quipu_sbrk (const size_t n);
+static void *quipu_sbrk (size_t n);
 static int remove_free_ent (struct freelist *a);
 static int use_block (struct header *ptr, const size_t size);
 static int set_use_heap (struct header *h, const unsigned heap);
@@ -320,7 +320,7 @@ static write_stack (char * x)
 	listfree->next = z; }
 
 static void *
-quipu_sbrk (const size_t n) {
+quipu_sbrk (size_t n) {
 	int incr;
 
 	if (sizet2int (n, &incr) != 0)
@@ -388,7 +388,7 @@ static char *big_malloc (const size_t realsize) {
 	return (mem);
 }
 
-static void big_free (const struct header *ptr) {
+static void big_free (struct header *ptr) {
 	struct freelist *next;
 	struct freehead *x;
 	if (listfree->next == listfree) {
@@ -708,9 +708,9 @@ realloc(
 #ifndef LINUX
 char *s1,
 #else
-const void *s1,
+void *s1,
 #endif
-const size_t n)
+size_t n)
 {
 	char *mem, *s = (char*) s1;
 	size_t realsize;
@@ -807,7 +807,7 @@ MALLOC_RETURN
 #ifdef lint
 x_calloc(size_t n, size_t size)
 #else
-calloc(const size_t n, const size_t size)
+calloc(size_t n, const size_t size)
 #endif
 {
 	char * mem;

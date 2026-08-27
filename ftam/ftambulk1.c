@@ -5,14 +5,14 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FReadWriteRequestAux (struct ftamblk *fsb, const int state, const int operation, const struct FADUidentity *identity, const int context, const int level, const int lock, struct FTAMindication *fti);
+static int FReadWriteRequestAux (struct ftamblk *fsb, const int state, const int operation, struct FADUidentity *identity, const int context, const int level, const int lock, struct FTAMindication *fti);
 static int FTransEndRequestAux (struct ftamblk *fsb, PE sharedASE, struct FTAMindication *fti);
 
 /*    F-{READ,WRITE}.REQUEST */
 int FReadWriteRequest (
 	const int sd,
 	const int operation,
-	const struct FADUidentity *identity,
+	struct FADUidentity *identity,
 	const int context,		/* F-READ.REQUEST only */
 	const int level,			/* .. */
 	const int lock,
@@ -63,7 +63,7 @@ int FReadWriteRequest (
 	return result;
 }
 
-static int FReadWriteRequestAux (struct ftamblk *fsb, const int state, const int operation, const struct FADUidentity *identity, const int context, const int level, const int lock, struct FTAMindication *fti) {
+static int FReadWriteRequestAux (struct ftamblk *fsb, const int state, const int operation, struct FADUidentity *identity, const int context, const int level, const int lock, struct FTAMindication *fti) {
 	int     result;
 	char   *fpdu;
 	PE	    pe;
@@ -179,7 +179,7 @@ out:
 
 /* F-TRANSFER-END.REQUEST */
 
-int FTransEndRequest (const int sd, PE sharedASE, struct FTAMindication *fti) {
+int FTransEndRequest (int sd, PE sharedASE, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;

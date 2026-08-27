@@ -31,13 +31,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "pepy.h"
-void yyerror (const char *s);
+void yyerror (char *s);
 void yyerror_aux (char *s);
 void myyerror (char*fmt, ...);
 int yywrap(void);
-void yyprint (const char *s, const int f, const int top);
+void yyprint (char *s, const int f, const int top);
 void pass1(void);
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp);
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
 
 
@@ -267,7 +267,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (const char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -351,7 +351,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (const char *s, const int f, const int top) {
+void yyprint (char *s, const int f, const int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -394,7 +394,7 @@ void pass1(void) {
 	printf ("DEFINITIONS ::=\n\n");
 }
 
-void pass1_type (const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp)
+void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp)
 {
 	SY	    sy;
 
@@ -2651,8 +2651,8 @@ static MD lookup_module (const char *module) {
 	return NULLMD;
 }
 
-YP new_type (const int code);
-YP new_type (const int code) {
+YP new_type (int code);
+YP new_type (int code) {
 	YP    yp;
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
 		yyerror ("out of memory");
@@ -2776,8 +2776,8 @@ YP copy_type (YP yp) {
 	return y;
 }
 
-YV new_value (const int code);
-YV new_value (const int code) {
+YV new_value (int code);
+YV new_value (int code) {
 	YV yv;
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
 		yyerror ("out of memory");
@@ -2871,8 +2871,8 @@ YT copy_tag (YT yt) {
 	return y;
 }
 
-char *new_string (const char *s);
-char *new_string (const char *s) {
+char *new_string (char *s);
+char *new_string (char *s) {
 	char  *p;
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");

@@ -69,13 +69,13 @@ int	RoBindResult (
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int	defctxresult,
 	const int	prequirements,
 	const int	srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE bindrespe,
 	struct RoNOTindication *rni
 ) {
@@ -124,13 +124,13 @@ int RoBindError (
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int	defctxresult,
 	const int	prequirements,
 	const int	srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE binderrpe,
 	struct RoNOTindication *rni
 ) {
@@ -172,7 +172,7 @@ int RoBindError (
 	return (result);
 }
 
-int RoBindReject (const struct AcSAPstart *acs, const int status, const int reason, struct RoNOTindication *rni) {
+int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni) {
 	struct PSAPstart	* ps = &(acs->acs_start);
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

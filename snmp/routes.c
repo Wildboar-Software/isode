@@ -410,8 +410,8 @@ static int  get_radix_node (struct radix_node *rn) {
 }
 #endif
 
-struct rtetab *get_rtent (const unsigned int *ip, const int len, const struct rtetab *head, const int isnext);
-struct rtetab *get_rtent (const unsigned int *ip, const int len, const struct rtetab *head, const int isnext) {
+struct rtetab *get_rtent (const unsigned int *ip, int len, const struct rtetab *head, const int isnext);
+struct rtetab *get_rtent (const unsigned int *ip, int len, const struct rtetab *head, const int isnext) {
 	int	    family;
 	struct rtetab *rt;
 

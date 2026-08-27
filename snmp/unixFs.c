@@ -107,7 +107,7 @@ static int init_unix_fs (void);
 static int sync_unix_fs (const integer cor);
 static void insert_entry (struct fs *fsp);
 
-static struct fs *get_fsent(const unsigned *ip, const int len, const int isnext);
+static struct fs *get_fsent(const unsigned *ip, int len, const int isnext);
 static int  get_fs_table(void);
 static void free_fs_table(void);
 static int  o_unix_fs(OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -268,7 +268,7 @@ static int sync_unix_fs (const integer cor) {
 /*-----------------------------------------------------------------
  * Find an entry in the file system table.
  *-----------------------------------------------------------------*/
-static struct fs *get_fsent (const unsigned *ip, const int len, const int isnext) {
+static struct fs *get_fsent (const unsigned *ip, int len, const int isnext) {
 	static long last = 0;
 	static int lastq = -1;
 	int refresh = 1;

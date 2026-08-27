@@ -5,13 +5,13 @@
 #include "psap.h"
 #undef	qbuf2pe
 #include "tailor.h"
-PE qbuf2pe (const struct qbuf *qb, const int len, int *result);
+PE qbuf2pe (struct qbuf *qb, int len, int *result);
 
 
 #ifndef	DEBUG
 #endif
 
-PE	qbuf2pe (const struct qbuf *qb, const int len, int *result) {
+PE	qbuf2pe (struct qbuf *qb, int len, int *result) {
 #ifdef	notdef
 	struct qbuf *qp;
 #endif

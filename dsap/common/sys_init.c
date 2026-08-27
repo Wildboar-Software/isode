@@ -10,7 +10,7 @@ extern char *dsa_address;
 extern char *myname;
 extern LLog * log_dsap;
 
-int dsap_init (const int *acptr, char ***avptr) {
+int dsap_init (int *acptr, char ***avptr) {
 	char * name;
 	char ** ptr;
 	int cnt;

@@ -12,13 +12,13 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int rtslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct RtSAPabort *rta);
-static int rtsINDICATIONser (const int sd, const struct RtSAPindication *rti);
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct RtSAPabort *rta);
+static int rtsINDICATIONser (int sd, struct RtSAPindication *rti);
 
-static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, const struct RoSAPindication *roi);
+static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, struct RoSAPindication *roi);
 static int doRTSclose (struct assocblk *acb, const struct RtSAPclose *rtc, struct RoSAPindication *roi);
-static int doRTSfinish (struct assocblk *acb, const struct AcSAPfinish *acf, struct RoSAPindication *roi);
-static int doRTSabort (struct assocblk *acb, const struct RtSAPabort *rta, struct RoSAPindication *roi);
+static int doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi);
+static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi);
 
 /*    bind underlying service */
 
@@ -213,7 +213,7 @@ int ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPi
 	return NOTOK;
 }
 
-static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, const struct RoSAPindication *roi) {
+static int doRTSturn (struct assocblk *acb, const struct RtSAPturn *rtu, struct RoSAPindication *roi) {
 	struct RtSAPindication  rtis;
 	struct RtSAPindication *rti = &rtis;
 	struct RtSAPabort *rta = &rti -> rti_abort;
@@ -244,7 +244,7 @@ static int doRTSclose (struct assocblk *acb, const struct RtSAPclose *rtc, struc
 	return DONE;
 }
 
-static int doRTSfinish (struct assocblk *acb, const struct AcSAPfinish *acf, struct RoSAPindication *roi) {
+static int doRTSfinish (struct assocblk *acb, struct AcSAPfinish *acf, struct RoSAPindication *roi) {
 	if (acb -> acb_flags & ACB_INIT) {
 		ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 				   "association management botched");
@@ -259,7 +259,7 @@ static int doRTSfinish (struct assocblk *acb, const struct AcSAPfinish *acf, str
 	return DONE;
 }
 
-static int doRTSabort (struct assocblk *acb, const struct RtSAPabort *rta, struct RoSAPindication *roi) {
+static int doRTSabort (struct assocblk *acb, struct RtSAPabort *rta, struct RoSAPindication *roi) {
 	if (!rta -> rta_peer) {
 		if (rta -> rta_reason == RTS_TIMER)
 			return rosaplose (roi, ROS_TIMER, NULLCP, NULLCP);
@@ -275,7 +275,7 @@ static int doRTSabort (struct assocblk *acb, const struct RtSAPabort *rta, struc
 	return NOTOK;
 }
 
-static int rtsINDICATIONser (const int sd, const struct RtSAPindication *rti) {
+static int rtsINDICATIONser (int sd, struct RtSAPindication *rti) {
 	int     result;
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
@@ -408,7 +408,7 @@ out:
 	return NOTOK;
 }
 
-static int rtslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct RtSAPabort *rta) {
+static int rtslose (struct assocblk *acb, struct RoSAPindication *roi, const char *event, struct RtSAPabort *rta) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];

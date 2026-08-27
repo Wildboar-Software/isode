@@ -80,7 +80,7 @@ static struct acl_info * acl_info_cpy (const struct acl_info *aclptr);
 struct acl_info *acl_info_new (const int x, const int y, const struct dn_seq *z);
 struct acl_info *acl_default(void);
 struct acl_info *acl_dflt(void);
-int test_acl_default (const struct acl_info *a);
+int test_acl_default (struct acl_info *a);
 void set_default_acl (struct acl_info *ai_ptr);
 int check_acl (DN who, const int mode, const struct acl_info *acl, DN node);
 int manager (DN dn);

@@ -6,7 +6,7 @@
 #include <strings.h>
 #include "fpkt.h"
 
-static int _ftamoops (struct FTAMindication *fti, const int reason, const int fatal, const int observer, const int source, va_list ap);
+static int _ftamoops (struct FTAMindication *fti, int reason, const int fatal, const int observer, const int source, va_list ap);
 
 #ifndef	lint
 int	fpktlose (struct ftamblk *fsb, ...) {
@@ -83,7 +83,7 @@ int	ftamoops (struct FTAMindication *fti, ...) {
 	return result;
 }
 
-static int _ftamoops (struct FTAMindication *fti, const int reason, const int fatal, const int observer, const int source, va_list ap) {
+static int _ftamoops (struct FTAMindication *fti, int reason, const int fatal, const int observer, const int source, va_list ap) {
 	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct FTAMabort  *fta;

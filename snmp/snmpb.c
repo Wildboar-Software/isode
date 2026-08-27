@@ -152,8 +152,8 @@ struct request {
 #define	r_curinvokes  r_invoke.i_curinvokes
 };
 
-static int  wait_for_action (const int sd, PS ps), new_thread (PS ps, const struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop), next_thread (struct thread *t, PS ps, const int next),
-            bulk2_aux (PS ps, const int sd, const struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community), new_bound (char *community, OID start, OID stop);
+static int  wait_for_action (int sd, PS ps), new_thread (PS ps, const struct type_SNMP_VarBindList *vb, char *community, OID start, OID stop), next_thread (struct thread *t, PS ps, const int next),
+            bulk2_aux (PS ps, int sd, struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community), new_bound (char *community, OID start, OID stop);
 static  void print_bulk (const struct binding *bl, const struct type_SNMP_VarBindList *vb, const int partial), free_thread (struct thread *t), free_request (struct request *r),
         free_bound (struct bound *b);
 static int push_requests (PS ps, char *community, const int onemore);
@@ -178,7 +178,7 @@ extern	int	watch;
 
 void	adios (char *, char *, ...);
 void	advise (char *, char *, ...);
-char   *snmp_error (const int i);
+char   *snmp_error (int i);
 
 /* BULK1 */
 
@@ -359,7 +359,7 @@ losing:
 	print_bulk (bl, vb, dedthreads);
 }
 
-static int  wait_for_action (const int sd, PS ps) {
+static int  wait_for_action (int sd, PS ps) {
 	int	    backoff,
 			n,
 			nfds,
@@ -1034,7 +1034,7 @@ losing:
 	print_bulk (bl, vb, dedrequests || dedthreads);
 }
 
-static int bulk2_aux (PS ps, const int sd, const struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community) {
+static int bulk2_aux (PS ps, int sd, struct binding *bl, const struct type_SNMP_VarBindList *vb, char *community) {
 	int	    backoff;
 	struct thread *t;
 

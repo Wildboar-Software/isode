@@ -15,7 +15,7 @@ static int  AcRelRetryRequestAux (struct assocblk *acb, const int secs, struct A
 
 /* A-RELEASE.REQUEST */
 
-int AcRelRequest (const int sd, const int reason, PE *data, const int ndata, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
+int AcRelRequest (int sd, int reason, PE *data, int ndata, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;
@@ -99,7 +99,7 @@ out1:
 
 /*    A-RELEASE-RETRY.REQUEST (pseudo) */
 
-int AcRelRetryRequest (const int sd, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
+int AcRelRetryRequest (int sd, const int secs, struct AcSAPrelease *acr, struct AcSAPindication *aci) {
 	SBV	    smask;
 	int	    result;
 	struct assocblk *acb;

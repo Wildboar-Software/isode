@@ -7,7 +7,7 @@
 
 /* P-MINOR-SYNC.REQUEST */
 
-int PMinSyncRequest (const int sd, const int type, long *ssn, PE *data, const int ndata, struct PSAPindication *pi) {
+int PMinSyncRequest (int sd, const int type, long *ssn, PE *data, int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

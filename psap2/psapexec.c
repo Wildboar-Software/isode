@@ -15,7 +15,7 @@
 
 #ifndef	IAE
 int PExec (
-	const struct SSAPstart *ss,
+	struct SSAPstart *ss,
 	struct PSAPindication *pi,
 	const char *arg1,
 	const char *arg2,

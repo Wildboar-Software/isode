@@ -58,8 +58,8 @@ struct list_cache {
 struct list_cache *find_list_cache (DN dn, const int sizelimit);
 
 int dap_list (const int ad, int *id, struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result);
-void list_arg_free (const struct ds_list_arg *arg);
-int list_arg_dup (const struct ds_list_arg *src, struct ds_list_arg *tgt);
+void list_arg_free (struct ds_list_arg *arg);
+int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt);
 
 int check_lacl (
 	DN binddn,

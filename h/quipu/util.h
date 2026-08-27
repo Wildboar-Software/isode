@@ -78,7 +78,7 @@ extern  jmp_buf _timeobuf;
 # define        MAXFORK 10      /* no. of times to try a fork() */
 
 void parse_error (char *a, const char *b);
-void pslog (LLog *lp, const int event, const char *str, void (*func) (PS ps, caddr_t ptr, int format), caddr_t ptr);
+void pslog (LLog *lp, int event, char *str, void (*func) (PS ps, caddr_t ptr, int format), caddr_t ptr);
 int test_prim_pe (PE pe, const PElementClass class, const PElementID id);
 int add_entry_aux (char *a, caddr_t b, const int c, char *d);
 int stop_listeners (void);
@@ -90,14 +90,14 @@ void octprint (PS ps, char *str, int format);
 char *SkipSpace (char *ptr);
 void StripSpace (char *b);
 void StripSpace2 (const char *b);
-void fatal (const int code, char *fmt);
+void fatal (int code, char *fmt);
 void utcprint (PS ps, char *xtime, int format);
 int quipu_pe_cmp (PE a, PE b);
 int test_arg (const char *x, const char *y, const int c);
 void pdu_dump (PE pe, char *type, const int op);
 void pdu_dump_init (char *dir);
 int dsa_wait (const int secs);
-int dsap_init (const int *acptr, char ***avptr);
+int dsap_init (int *acptr, char ***avptr);
 void quipu_syntaxes (void);
 void standard_syntaxes (void);
 void hide_picture (void);

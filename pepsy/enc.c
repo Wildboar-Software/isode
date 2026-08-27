@@ -78,12 +78,12 @@ extern int hasdata (
  * pe
  */
 int enc_f (
-	const int typ,			/* which type it is */
+	int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE *pe,
-	const int explicit,
-	const int len,
-	const char *buf,
+	int explicit,
+	int len,
+	char *buf,
 	char *parm
 ) {
 	ptpe *p;

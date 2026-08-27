@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FAccessRequestAux (struct ftamblk *fsb, const int state, const struct FADUidentity *identity, const int lock, struct FTAMindication *fti);
+static int FAccessRequestAux (struct ftamblk *fsb, const int state, struct FADUidentity *identity, const int lock, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.REQUEST */
 int FAccessRequest (
 	const int sd,
 	const int operation,
-	const struct FADUidentity *identity,
+	struct FADUidentity *identity,
 	const int lock,	/* F-LOCATE.REQUEST only */
 	struct FTAMindication *fti
 ) {
@@ -42,7 +42,7 @@ int FAccessRequest (
 	return result;
 }
 
-static int FAccessRequestAux (struct ftamblk *fsb, const int state, const struct FADUidentity *identity, const int lock, struct FTAMindication *fti) {
+static int FAccessRequestAux (struct ftamblk *fsb, const int state, struct FADUidentity *identity, const int lock, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;

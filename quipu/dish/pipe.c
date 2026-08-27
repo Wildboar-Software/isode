@@ -125,7 +125,7 @@ int exit_pipe (void) {
 #endif
 }
 
-int read_pipe (char *buf, const int len) {
+int read_pipe (char *buf, int len) {
 #ifdef SOCKETS
 	struct sockaddr_in sock;
 
@@ -142,7 +142,7 @@ int read_pipe (char *buf, const int len) {
 	return (read_pipe_aux(buf,len));
 }
 
-int read_pipe_aux (char *buf, const int len) {
+int read_pipe_aux (char *buf, int len) {
 	int res;
 #ifdef	SOCKETS
 	char *cp,
@@ -297,7 +297,7 @@ void send_pipe_aux (char *buf) {
 	send_pipe_aux2 (buf, n);
 }
 
-void send_pipe_aux2 (const char *buf, const int i) {
+void send_pipe_aux2 (const char *buf, int i) {
 	int res;
 
 #ifndef	SOCKETS

@@ -2,21 +2,21 @@
 #include "psap.h"
 
 int enc_f (
-	const int typ,
+	int typ,
 	modtyp *mod,
 	PE *pe,
-	const int explicit,
-	const int len,
-	const char *buf,
+	int explicit,
+	int len,
+	char *buf,
 	char *parm
 );
 
 int dec_f (
-	const int typ,
+	int typ,
 	modtyp *mod,
 	PE pe,
-	const int explicit,
-	const int *len,
+	int explicit,
+	int *len,
 	char **buf,
 	char **parm
 );

@@ -7,28 +7,28 @@
 #include <strings.h>
 #include "fpkt.h"
 
-static int FGroupRequest (const int sd, const struct FTAMgroup *ftg, const int type, const int state, struct FTAMindication *fti);
-static int FGroupRequestAux (struct ftamblk *fsb, const struct FTAMgroup *ftg, const int state, struct FTAMindication *fti);
-static int figrpchk (const struct ftamblk *fsb, const struct FTAMgroup *ftg, const int type, struct FTAMindication *fti);
-static int figrp2pdus (const struct ftamblk *fsb, const struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti);
+static int FGroupRequest (int sd, struct FTAMgroup *ftg, const int type, const int state, struct FTAMindication *fti);
+static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, const int state, struct FTAMindication *fti);
+static int figrpchk (const struct ftamblk *fsb, struct FTAMgroup *ftg, const int type, struct FTAMindication *fti);
+static int figrp2pdus (const struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti);
 
 /*    F-{MANAGE,BULK-{BEGIN,END}}.REQUEST (group) */
 
-int FManageRequest (const int sd, const struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FManageRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_MANAGEMENT, FSB_MANAGEMENT, fti);
 }
 
-int FBulkBeginRequest (const int sd, const struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkBeginRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKBEGIN, FSB_BULKBEGIN, fti);
 }
 
-int FBulkEndRequest (const int sd, const struct FTAMgroup *ftg, struct FTAMindication *fti) {
+int FBulkEndRequest (int sd, struct FTAMgroup *ftg, struct FTAMindication *fti) {
 	return FGroupRequest (sd, ftg, FTI_BULKEND, FSB_BULKEND, fti);
 }
 
 /*    F-GROUP.REQUEST (group) */
 
-static int FGroupRequest (const int sd, const struct FTAMgroup *ftg, const int type, const int state, struct FTAMindication *fti) {
+static int FGroupRequest (int sd, struct FTAMgroup *ftg, const int type, const int state, struct FTAMindication *fti) {
 	SBV	    smask;
 	int	    result;
 	struct ftamblk *fsb;
@@ -43,7 +43,7 @@ static int FGroupRequest (const int sd, const struct FTAMgroup *ftg, const int t
 	return result;
 }
 
-static int FGroupRequestAux (struct ftamblk *fsb, const struct FTAMgroup *ftg, const int state, struct FTAMindication *fti) {
+static int FGroupRequestAux (struct ftamblk *fsb, struct FTAMgroup *ftg, const int state, struct FTAMindication *fti) {
 	int    i;
 	int     did_loop,
 			npdu,
@@ -103,7 +103,7 @@ out:
 	return FWaitRequestAux (fsb, NOTOK, fti);
 }
 
-static int figrpchk (const struct ftamblk *fsb, const struct FTAMgroup *ftg, const int type, struct FTAMindication *fti) {
+static int figrpchk (const struct ftamblk *fsb, struct FTAMgroup *ftg, const int type, struct FTAMindication *fti) {
 	int     i,
 			request;
 	struct FTAMpasswords  *fp;
@@ -368,7 +368,7 @@ finish_create:
 	return OK;
 }
 
-static int figrp2pdus (const struct ftamblk *fsb, const struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
+static int figrp2pdus (const struct ftamblk *fsb, struct FTAMgroup *ftg, struct type_FTAM_PDU *pdus[], char *texts[], int *npdu, struct FTAMindication *fti) {
 	int     i;
 	struct type_FTAM_PDU *pdu;
 

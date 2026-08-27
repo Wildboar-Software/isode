@@ -1079,7 +1079,7 @@ static struct address *find_address (const union sockaddr_un *addr) {
 
 struct address *get_addrent (
 	const unsigned int *ip,
-	const int len,
+	int len,
 	const struct address *head,
 	const int isnext
 ) {

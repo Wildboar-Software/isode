@@ -845,7 +845,7 @@ int	vfs_fdf = VFS_FDF;
 
 struct vfsmap *myvf;
 
-void ftam_advise (const struct FTAMabort *fta, char *event) {
+void ftam_advise (struct FTAMabort *fta, char *event) {
 	if (hash && marks >= BUFSIZ) {
 		marks = 0;
 		printf ("\n");
@@ -912,7 +912,7 @@ void ftam_advise (const struct FTAMabort *fta, char *event) {
 	}
 }
 
-void ftam_chrg (const struct FTAMcharging *charges) {
+void ftam_chrg (struct FTAMcharging *charges) {
 	int    i;
 	char   *cp;
 	struct fc_charge  *fc;
@@ -939,7 +939,7 @@ static char *entity[] = {
 	"responder"
 };
 
-void ftam_diag (struct FTAMdiagnostic diag[], const int ndiag, const int peer, const int action) {
+void ftam_diag (struct FTAMdiagnostic diag[], int ndiag, const int peer, const int action) {
 	int    i;
 	int     didit;
 	struct FTAMdiagnostic *dp;
@@ -1216,7 +1216,7 @@ int	ncols (FILE *fp) {
 #endif
 
 #ifndef	TMS
-void timer (const int cc, const char *action) {
+void timer (int cc, const char *action) {
 	long    ms;
 	float   bs;
 	struct timeval stop, td;

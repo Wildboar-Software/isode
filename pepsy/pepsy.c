@@ -33,16 +33,16 @@
 #include <stdarg.h>
 #include "pepsydefs.h"
 #include "pass2.h"
-void yyerror (const char *s);
+void yyerror (char *s);
 
-void yyerror (const char *s);
+void yyerror (char *s);
 void warning (char *fmt, ...);
 void myyerror (char* fmt, ...);
 static void pyyerror (YP yp, char *fmt, ...);
 int yywrap(void);
-void yyprint (const char *s, const int f, const int top);
+void yyprint (char *s, const int f, const int top);
 void pass1(void);
-void pass1_type ( const char *encpref, const char *decpref, const char *prfpref, const char *mod, char *id, YP yp );
+void pass1_type ( char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp );
 static void hprologue (FILE *fp);
 void pass2(void);
 static void copy_file (FILE *fp1, FILE *fp2);
@@ -338,7 +338,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (const char *s) {
+void yyerror (char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -424,7 +424,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (const char *s, const int f, const int top) {
+void yyprint (char *s, const int f, const int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -497,10 +497,10 @@ void yyprint (const char *s, const int f, const int top) {
 void pass1(void) { }
 
 void pass1_type (
-	const char *encpref,
-	const char *decpref,
-	const char *prfpref,
-	const char *mod,
+	char *encpref,
+	char *decpref,
+	char *prfpref,
+	char *mod,
 	char *id,
 	YP yp
 ) {
@@ -2546,8 +2546,8 @@ MD lookup_module (char *module, OID oid) {
 
 /* TYPES */
 
-YP new_type (const int code, int lineno);
-YP new_type (const int code, int lineno) {
+YP new_type (int code, int lineno);
+YP new_type (int code, int lineno) {
 	YP    yp;
 
 	if ((yp = (YP) calloc (1, sizeof *yp)) == NULLYP)
@@ -2692,8 +2692,8 @@ YP copy_type (YP yp) {
 
 /* VALUES */
 
-YV new_value (const int code);
-YV new_value (const int code) {
+YV new_value (int code);
+YV new_value (int code) {
 	YV    yv;
 
 	if ((yv = (YV) calloc (1, sizeof *yv)) == NULLYV)
@@ -2797,8 +2797,8 @@ YT copy_tag (YT yt) {
 
 /* STRINGS */
 
-char *new_string (const char *s);
-char *new_string (const char *s) {
+char *new_string (char *s);
+char *new_string (char *s) {
 	char  *p;
 
 	if (s == NULLCP)
@@ -3380,8 +3380,8 @@ YFN new_yfn(char *efn, char *dfn, char *pfn, char *ffn) {
  * support routine for action_t = allocate space for it and fill it in with
  * the given yy_action field
  */
-Action new_action_t(const char *text, const int lineno, const int num);
-Action new_action_t(const char *text, const int lineno, const int num) {
+Action new_action_t(char *text, const int lineno, const int num);
+Action new_action_t(char *text, const int lineno, const int num) {
 	Action	act;
 
 	if ((act = (Action) malloc(sizeof (action_t))) == NULLAction)

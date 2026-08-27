@@ -110,7 +110,7 @@ int uvec_open (PS ps) {
 	return OK;
 }
 
-int uvec_setup (PS ps, const int len) {
+int uvec_setup (PS ps, int len) {
 	struct udvec *uv;
 
 	ps -> ps_elems = NPSUV;

@@ -28,12 +28,12 @@ static int p_pr_obj (
 static ptpe *next_ptpe (ptpe *p);
 static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
 static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
-int printable (const char *strptr, int len);
+int printable (char *strptr, int len);
 int prnt_f (
 	const int typ,
 	modtyp *mod,
 	PE pe,
-	const int explicit,
+	int explicit,
 	const int *len,
 	char **buf
 );
@@ -114,7 +114,7 @@ int prnt_f (
 	const int typ,
 	modtyp *mod,
 	PE pe,
-	const int explicit,
+	int explicit,
 	const int *len,
 	char **buf
 ) {
@@ -1682,7 +1682,7 @@ int setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
 /*
  * return non zero if we can print out the string
  */
-int printable (const char *strptr, int len) {
+int printable (char *strptr, int len) {
 	if (strptr == NULL || *strptr == '\0') {
 		return (0);
 	}

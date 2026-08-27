@@ -7,7 +7,7 @@
 static int SUAbortRequestAux (
 	struct ssapblk *sb,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 );
 
@@ -15,7 +15,7 @@ static int SUAbortRequestAux (
 static int SUAbortRequestAux (
 	struct ssapblk *sb,
 	const char *data,
-	const int cc,
+	int cc,
 	struct SSAPindication *si
 ) {
 	int     result;

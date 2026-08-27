@@ -4,7 +4,7 @@
 #include "psap.h"
 
 PE
-seq_find (PE pe, const int i) {
+seq_find (PE pe, int i) {
 	PE	    p;
 
 	if (i >= pe -> pe_cardinal)

@@ -23,7 +23,7 @@ char	hex2nib[0x80] = {
 	0, 0, 0, 0, 0, 0, 0, 0
 };
 
-int implode (uint8_t *a, const char *b, const int n) {
+int implode (uint8_t *a, const char *b, int n) {
 	int    i;
 
 	for (i = 0; i < n; i += 2) {

@@ -31,7 +31,7 @@ static Attr_Sequence get_attributes_aux (FILE *file);
 Attr_Sequence get_attributes (FILE *file);
 Entry get_entry_aux (FILE *file, Entry parent, const int dtype);
 Entry get_entry (FILE *file, Entry parent, const int dtype);
-static char *unesc_cont (const char *ptr, const int len);
+static char *unesc_cont (const char *ptr, int len);
 static void fpwr_esc (FILE *fp, char *line, const int wl);
 static void pswr_esc (PS ps, char *line, const int wl);
 static Entry new_constructor (Entry parent);
@@ -59,7 +59,7 @@ extern char	*unesc_char(void);
 extern char *getstring(void);
 char *srealloc(const char *p, const int nsize);
 char	*brkl(void);
-static int cnt_escp (const char *ptr, const int len);
+static int cnt_escp (const char *ptr, int len);
 
 #ifdef TURBO_DISK
 
@@ -333,7 +333,7 @@ char * getnextline (void)
  * un-escape a continued line and return pointer to end of the buffer
  * if the line is continued
  */
-static char *unesc_cont (const char *ptr, const int len) {
+static char *unesc_cont (const char *ptr, int len) {
 	char	*p;
 	int		cnt;
 
@@ -438,7 +438,7 @@ void pswr_esc(PS ps, char *line, const int wl)
 	}
 }
 
-static int cnt_escp (const char *ptr, const int len) {
+static int cnt_escp (const char *ptr, int len) {
 	char	*p;
 	int		cnt;
 

@@ -119,7 +119,7 @@ out:
 
 /* T-CONNECT.RESPONSE */
 
-int TConnResponse (const int sd, const struct TSAPaddr *responding, const int expedited, char *data, const int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
+int TConnResponse (int sd, struct TSAPaddr *responding, const int expedited, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td) {
 	int	    result;
 	struct tsapblk *tb;
 	struct tsapADDR tas;

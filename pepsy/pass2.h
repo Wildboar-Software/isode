@@ -103,7 +103,7 @@ extern char *class2str(const PElementClass cl);
 extern void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f);	/* generate a Value Passing Entry */
 extern void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy);	/* generate a function calling entry */
 /* extern Action	start_action, final_action; */
-extern char	*int2tstr(const int i);	/* integer to temporary string */
+extern char	*int2tstr(int i);	/* integer to temporary string */
 
 extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
 extern char *class2str(const PElementClass cl);

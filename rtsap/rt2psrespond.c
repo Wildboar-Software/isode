@@ -195,11 +195,11 @@ out:
 
 int RtOpenResponse (
 	const int sd,
-	const int status,
+	int status,
 	OID context,
 	AEI respondtitle,
 	const struct PSAPaddr *respondaddr,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	const int defctxresult,
 	PE data,
 	struct RtSAPindication *rti

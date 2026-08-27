@@ -85,7 +85,7 @@ static struct {
 } Commands[MAXARGS];
 static int num_cmd = 0;
 
-void add_dish_command (char *name, void (*func)(int, char **), const int len) {
+void add_dish_command (char *name, void (*func)(int, char **), int len) {
 	Commands[num_cmd].command = name;
 	Commands[num_cmd].handler = func;
 	if (len == 0) {

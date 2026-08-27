@@ -34,7 +34,7 @@ extern	int	xselect_blocking_on_intr;
 
 /* T-DATA.REQUEST */
 
-int TDataRequest (const int sd, const char *data, const int cc, struct TSAPdisconnect *td) {
+int TDataRequest (int sd, const char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 #ifdef LINUX
@@ -77,7 +77,7 @@ int TDataRequest (const int sd, const char *data, const int cc, struct TSAPdisco
 
 /* T-EXPEDITED-DATA.REQUEST */
 
-int TExpdRequest (const int sd, const char *data, const int cc, struct TSAPdisconnect *td) {
+int TExpdRequest (int sd, const char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask,
 			imask;
 #ifdef LINUX
@@ -125,7 +125,7 @@ int TExpdRequest (const int sd, const char *data, const int cc, struct TSAPdisco
 
 /*    T-WRITE.REQUEST (pseudo; write user data vectors) */
 
-int TWriteRequest (const int sd, struct udvec *uv, struct TSAPdisconnect *td) {
+int TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 	int    n;
 	SBV     smask,
 			imask;
@@ -167,7 +167,7 @@ int TWriteRequest (const int sd, struct udvec *uv, struct TSAPdisconnect *td) {
 
 /*    T-READ.REQUEST (pseudo; synchronous read) */
 
-int TReadRequest (const int sd, struct TSAPdata *tx, const int secs, struct TSAPdisconnect *td) {
+int TReadRequest (int sd, struct TSAPdata *tx, const int secs, struct TSAPdisconnect *td) {
 	SBV	    smask,
 			imask;
 #ifdef LINUX
@@ -244,7 +244,7 @@ out:
 
 /* T-DISCONNECT.REQUEST */
 
-int TDiscRequest (const int sd, char *data, const int cc, struct TSAPdisconnect *td) {
+int TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -325,7 +325,7 @@ int TSetIndications (
 
 /*    map transport descriptors for select() */
 
-int TSelectMask (const int sd, const fd_set *mask, const int *nfds, struct TSAPdisconnect *td) {
+int TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td) {
 	SBV     smask;
 	struct tsapblk *tb;
 
@@ -664,7 +664,7 @@ void freetblk (struct tsapblk *tb) {
 }
 
 struct tsapblk *
-findtblk (const int sd) {
+findtblk (int sd) {
 	struct tsapblk *tb;
 
 	if (once_only == 0)

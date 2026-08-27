@@ -23,7 +23,7 @@ struct ds_compare_result {
 };
 
 int dap_compare (const int ad, int *id, struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result);
-void compare_arg_free (const struct ds_compare_arg *arg);
-int compare_arg_dup (const struct ds_compare_arg *src, struct ds_compare_arg *tgt);
+void compare_arg_free (struct ds_compare_arg *arg);
+int compare_arg_dup (struct ds_compare_arg *src, struct ds_compare_arg *tgt);
 
 #endif

@@ -15,8 +15,8 @@ static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSA
 static int PConnRequestAux (
 	const struct PSAPaddr *calling,
 	const struct PSAPaddr *called,
-	const struct PSAPctxlist *ctxlist,
-	const struct SSAPref *ref,
+	struct PSAPctxlist *ctxlist,
+	struct SSAPref *ref,
 	PE data,
 	const struct QOStype *qos,
 	struct PSAPconnect *pc,
@@ -40,15 +40,15 @@ static int PConnRequestAux2 (
 int	PAsynConnRequest (
 	const struct PSAPaddr *calling,
 	const struct PSAPaddr *called,
-	const struct PSAPctxlist *ctxlist,
+	struct PSAPctxlist *ctxlist,
 	OID defctxname,
 	const int prequirements,
 	const int srequirements,
 	const long isn,
-	const int settings,
-	const struct SSAPref *ref,
+	int settings,
+	struct SSAPref *ref,
 	PE *data,
-	const int ndata,
+	int ndata,
 	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
@@ -110,8 +110,8 @@ int	PAsynConnRequest (
 static int PConnRequestAux (
 	const struct PSAPaddr *calling,
 	const struct PSAPaddr *called,
-	const struct PSAPctxlist *ctxlist,
-	const struct SSAPref *ref,
+	struct PSAPctxlist *ctxlist,
+	struct SSAPref *ref,
 	PE data,
 	const struct QOStype *qos,
 	struct PSAPconnect *pc,
@@ -363,7 +363,7 @@ static int  PConnRequestAux2 (
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int	PAsynRetryRequest (const int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int	PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;
@@ -538,7 +538,7 @@ out:
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int	PAsynNextRequest (const int sd, const struct PSAPconnect *pc, struct PSAPindication *pi) {
+int	PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	return psaplose (pi, PC_OPERATION, NULLCP,
 					 "operation not supported with lightweight presentation");
 }

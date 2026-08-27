@@ -760,7 +760,7 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	OID     oid_tmp;
 	int	is_first;
 	objectclass * oc_add(OID oid);
-	const char explicit = 0;
+	char explicit = 0;
 
 	int p34_count = 0;
 	PE p34;
@@ -988,7 +988,7 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	return OK;
 }
 
-int EDB_encode (const struct getedb_result *parm, PE *pe) {
+int EDB_encode (struct getedb_result *parm, PE *pe) {
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
 	PE  p32_z = NULLPE;

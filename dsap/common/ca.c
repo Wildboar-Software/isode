@@ -6,7 +6,7 @@
 
 DN mydsadn = NULLDN;
 
-struct common_args *get_ca_ref (const struct ds_op_arg *dsarg) {
+struct common_args *get_ca_ref (struct ds_op_arg *dsarg) {
 	struct common_args  * ca;
 
 	switch(dsarg->dca_dsarg.arg_type) {

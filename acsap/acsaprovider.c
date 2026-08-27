@@ -10,7 +10,7 @@
 
 /*    PSAP interface */
 
-int ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, const char *event, const struct PSAPabort *pa) {
+int ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, const char *event, struct PSAPabort *pa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -117,7 +117,7 @@ out:
 	return NULL;
 }
 
-int apdu2info (struct assocblk *acb, const struct AcSAPindication *aci, const struct type_ACS_Association__information *info, PE *data, int *ndata) {
+int apdu2info (struct assocblk *acb, struct AcSAPindication *aci, const struct type_ACS_Association__information *info, PE *data, int *ndata) {
 	int    i;
 	PE	    pe;
 	struct type_UNIV_EXTERNAL *q;

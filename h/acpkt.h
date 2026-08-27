@@ -123,10 +123,10 @@
 #define	ACS_USER_BASE	ACS_USER_NULL
 #define	ACS_PROV_BASE	ACS_PROV_NULL
 
-int	ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, const char *event, const struct PSAPabort *pa);
+int	ps2acslose (struct assocblk *acb, struct AcSAPindication *aci, const char *event, struct PSAPabort *pa);
 
 struct type_ACS_Association__information *info2apdu (const struct assocblk *acb, struct AcSAPindication *aci, PE *data, int ndata);
-int	apdu2info (struct assocblk *acb, const struct AcSAPindication *aci, const struct type_ACS_Association__information *info, PE *data, int *ndata);
+int	apdu2info (struct assocblk *acb, struct AcSAPindication *aci, const struct type_ACS_Association__information *info, PE *data, int *ndata);
 #endif
 
 typedef int (*UAAbortFunction)(int sd, PE *data, int ndata, void *pi);
@@ -231,7 +231,7 @@ struct assocblk {
 }
 
 void freeacblk (struct assocblk *acb);
-struct assocblk *newacblk (void), *findacblk (const int sd);
+struct assocblk *newacblk (void), *findacblk (int sd);
 
 int	acpktlose (struct assocblk *acb, ...);
 int	acsaplose (struct AcSAPindication*aci, ...);
