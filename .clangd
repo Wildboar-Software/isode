@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-Ih, -Werror=cast-function-type]
+  Add: [-x, c, -Ih]

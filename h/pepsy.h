@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
-#include "conv.h"
+#include "psap.h"
 
 #ifndef	PEPYPARM
 #define PEPYPARM	char *
@@ -48,6 +48,10 @@ typedef struct	{
 
 /* macros for getting the function pointer (for a FN_CALL entry) */
 #define FN_PTR(mod, x)	  (*GPTR(mod, (x)->pe_ucode, IFP ))  /* function ptr */
+#define DEC_FN_PTR(mod, x)	  (*GPTR(mod, (x)->pe_ucode, int (*)(char **parm, PE pe)))  /* function ptr */
+#define ENC_FN_PTR(mod, x)	  (*GPTR(mod, (x)->pe_ucode, int (*)(char *parm, PE *pe)))  /* function ptr */
+#define FRE_FN_PTR(mod, x)	  (*GPTR(mod, (x)->pe_ucode, int (*)(char *parm)))  /* function ptr */
+#define PRN_FN_PTR(mod, x)	  (*GPTR(mod, (x)->pe_ucode, int (*)(PE pe)))  /* function ptr */
 
 /* macros for getting other more general pointers transparently */
 #define EXT2MOD(mod, x)	   (GPTR(mod, (x)->pe_ucode, modtyp *))
@@ -194,9 +198,9 @@ typedef	struct	{
 	ptpe    **md_ptab;	/* Pointer to printing tables */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-prototypes"
-	int	(*md_eucode)();	/* User code for encoding */
-	int	(*md_ducode)();	/* User code for decoding */
-	int	(*md_pucode)();	/* User code for printing */
+	int	(*md_eucode)(char *parm, PE *pe, ptpe *p);	/* User code for encoding */
+	int	(*md_ducode)(char **parm, PE pe, ptpe *p, int expl);	/* User code for decoding */
+	int	(*md_pucode)(PE pe, ptpe *p);	/* User code for printing */
 #pragma GCC diagnostic pop
 	caddr_t	*md_ptrtab;	/* pointer table */
 

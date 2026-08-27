@@ -453,7 +453,7 @@ static int p_pr_type (
 			break;
 
 		case FN_CALL:
-			if ((FN_PTR(mod, p))(pe) == NOTOK)
+			if ((PRN_FN_PTR(mod, p))(pe) == NOTOK)
 				return ppepsylose (mod, &p[1], NULLPE,
 								   "p_pr_type:FN_CALL:call failed");
 			break;

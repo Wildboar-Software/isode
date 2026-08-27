@@ -622,7 +622,7 @@ static int pr_type (
 			break;
 
 		case FN_CALL:
-			if ((FN_PTR(mod, p))(parm, pe) == NOTOK)
+			if ((DEC_FN_PTR(mod, p))(parm, pe) == NOTOK)
 				return pepsylose (mod, p, NULLPE,
 								  "pr_type:FN_CALL:call failed");
 			break;
@@ -1982,7 +1982,7 @@ static int pr_etype (
 		break;
 
 	case FN_CALL:
-		if ((FN_PTR(mod, p))(parm, pe) == NOTOK)
+		if ((DEC_FN_PTR(mod, p))(parm, pe) == NOTOK)
 			return pepsylose (mod, p, NULLPE, "pr_etype:FN_CALL:call failed");
 		break;
 
@@ -2193,7 +2193,7 @@ again:
 		break;
 
 	case FN_CALL:
-		if ((FN_PTR(mod, typ))(parm, NULLPE) == NOTOK)
+		if ((DEC_FN_PTR(mod, typ))(parm, NULLPE) == NOTOK)
 			return pepsylose (mod, typ, NULLPE,
 							  "setdval:FN_CALL:call failed");
 		break;

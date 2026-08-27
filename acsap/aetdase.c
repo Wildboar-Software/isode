@@ -309,7 +309,7 @@ you_lose:
 	}
 
 	if ((ps = ps_alloc (dg_open)) == NULLPS
-			|| dg_setup (ps, tc -> tc_sd, MAXDGRAM, ts_read, ts_write, NULLIFP)
+			|| dg_setup (ps, tc -> tc_sd, MAXDGRAM, ts_read, ts_write, NULL)
 			== NOTOK) {
 		if (ps == NULLPS)
 			PY_advise (NULLCP, "ps_alloc: out of memory");

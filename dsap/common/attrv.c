@@ -1,5 +1,6 @@
 /* attrv.c - Attribute Value routines */
 
+#include "quipu/attr.h"
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/ds_error.h"
@@ -37,7 +38,7 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 		NULL,	/* no decoding needed */
 		NULL,	/* default parse */
 		NULL, 	/* default print */
-		(PFP)pe_cpy,	/* default copy */
+		(AttributeValueCopier)pe_cpy,	/* default copy */
 #ifdef STRICT_X500
 		NULL,	/* Not allowed if syntax unknown (X.501 9.6.2) */
 #else

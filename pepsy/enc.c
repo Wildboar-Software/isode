@@ -513,7 +513,7 @@ static int en_type (
 			break;
 
 		case FN_CALL:
-			if ((FN_PTR(mod, p))(parm, &pe) == NOTOK)
+			if ((ENC_FN_PTR(mod, p))(parm, &pe) == NOTOK)
 				return pepsylose (mod, p, NULLPE,
 								  "en_type:FN_CALL:call failed");
 			if (STAG(p) >= 0) {
@@ -1245,7 +1245,7 @@ static int en_choice (
 
 	if (IF_USELECT(p)) {
 		if (mod->md_eucode == NULLIFP ||
-				(cnt = (*mod -> md_eucode) (parm, &rpe, p)) == NOTOK)
+				(cnt = (*mod -> md_eucode) (parm, rpe, p)) == NOTOK)
 			return pepsylose (mod, p, NULLPE, "choice selection failed");
 	} else
 		cnt = *(int *) (parm + p->pe_ucode);
@@ -1263,7 +1263,7 @@ static int en_choice (
 	for (p++; p->pe_type != PE_END; NEXT_TPE(p)) {
 		if (cnt == 0 && p->pe_type == UCODE) {
 			if (mod->md_eucode == NULLIFP
-					|| (*mod->md_eucode) (parm, &rpe, p) == NOTOK)
+					|| (*mod->md_eucode) (parm, rpe, p) == NOTOK)
 				return (NOTOK);
 		}
 		if (ISDTYPE(p)) {
@@ -1597,7 +1597,7 @@ static int en_etype (
 		break;
 
 	case FN_CALL:
-		if ((FN_PTR(mod, p))(parm, &pe) == NOTOK)
+		if ((ENC_FN_PTR(mod, p))(parm, &pe) == NOTOK)
 			return pepsylose (mod, p, NULLPE,
 							  "en_etype:FN_CALL:call failed");
 		if (STAG(p) >= 0) {

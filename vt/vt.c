@@ -548,7 +548,7 @@ static char *debug_val[] = {
 	"0", "1", "2", "3", "4", "5", "6", "7", NULL
 };
 
-static char *bool[] = {
+static char *bool_values[] = {
 	"off", "on", NULL
 };
 
@@ -591,7 +591,7 @@ static struct var vars[] = {
 	"compatfile", NULL, "COMPAT trace file", &_compat_log.ll_file, NULLCP,
 	NULL,
 
-	"crmod", &crmod, "map CR on output", bool, NULLCP, NULL,
+	"crmod", &crmod, "map CR on output", bool_values, NULLCP, NULL,
 
 	"debug", &debug, "debug VT", debug_val, NULLCP, set_debug,
 
@@ -599,7 +599,7 @@ static struct var vars[] = {
 
 	"escape", NULL, "escape character", &escapestr, NULLCP, set_escape,
 
-	"options", &showoptions, "show option processing", bool, NULLCP, NULL,
+	"options", &showoptions, "show option processing", bool_values, NULLCP, NULL,
 
 	"psaplevel", &_psap_log.ll_events, "PSAP logging", xsaplevels,
 	LLOG_MASK, NULL,
@@ -629,7 +629,7 @@ static struct var vars[] = {
 	"tsapfile", NULL, "TSAP trace file", &_tsap_log.ll_file, NULLCP,
 	NULL,
 
-	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULL,
+	"verbose", &verbose, "verbose interaction", bool_values, NULLCP, NULL,
 
 	NULL
 };

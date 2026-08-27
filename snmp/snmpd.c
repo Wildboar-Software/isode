@@ -244,7 +244,13 @@ static void gc_set (void);
 static void pb_free (struct smuxPeer *pb), tb_free (struct smuxTree *tb), export_view (OT ot), do_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings),
         do_traps (struct type_SNMP_Message *msg, int generic, int specific), arginit (char **vec), readconfig (void);
 static void envinit (void);
-static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx);
+static void doit_aux (
+	int fd,
+	struct NSAPaddr *na,
+	int (*rfx)(int fd, struct qbuf **q),
+	int (*wfx)(int fd, struct qbuf *qb),
+	int (*cfx)(int fd)
+);
 static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu);
 static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu),
            proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm),
@@ -280,7 +286,7 @@ static void doit_udp (int pd) {
 	na -> na_community = ts_comm_tcp_default;
 	strncpy (na -> na_domain, cp, sizeof na -> na_domain - 1);
 	na -> na_port = isock -> sin_port;
-	doit_aux (fd, na, (IFP) read_udp_socket, (IFP) write_udp_socket, (IFP) check_udp_socket);
+	doit_aux (fd, na, read_udp_socket, write_udp_socket, check_udp_socket);
 #ifndef	SNMPT
 	if (pqr)
 		pqr -> pq_fd = fd, pqr -> pq_closefnx = close_udp_socket;
@@ -665,7 +671,13 @@ static	doit_cots (int fd) {
 }
 #endif
 
-static void doit_aux (int fd, struct NSAPaddr *na, IFP rfx, IFP wfx, IFP cfx) {
+static void doit_aux (
+	int fd,
+	struct NSAPaddr *na,
+	int (*rfx)(int fd, struct qbuf **q),
+	int (*wfx)(int fd, struct qbuf *qb),
+	int (*cfx)(int fd)
+) {
 	int	    result,
 			size;
 	PE	    pe;

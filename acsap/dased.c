@@ -181,7 +181,7 @@ static void dased (int vecp, char **vec) {
 
 	if ((ps = ps_alloc (dg_open)) == NULLPS)
 		adios (NULLCP, "ps_alloc: out of memory");
-	if (dg_setup (ps, sd, MAXDGRAM, ts_read, ts_write, NULLIFP) == NOTOK)
+	if (dg_setup (ps, sd, MAXDGRAM, ts_read, ts_write, NULL) == NOTOK)
 		adios (NULLCP, "dg_setup: %s", ps_error (ps -> ps_errno));
 
 	for (;;) {

@@ -434,7 +434,7 @@ int close_dgram_socket (int fd) {
 			if (ptrdiff2int (up - peers, &up -> dgram_parent) != 0)
 				return NOTOK;
 		}
-	set_check_fd (fd, NULLIFP, NULLCP);
+	set_check_fd (fd, NULL, NULLCP);
 	return close (fd);
 }
 

@@ -217,7 +217,8 @@ struct dispatch *getds (char *name) {
 /* VARIABLES */
 
 #ifndef	BRIDGE
-static char *bool[] = {
+
+static char *bool_values[] = {
 	"off", "on", NULL
 };
 
@@ -267,7 +268,7 @@ static struct var vars[] = {
 	"addrfile", NULL, "address trace file", &_addr_log.ll_file, NULLCP,
 	NULL,
 
-	"bell", &bell, "ring the bell when a command finishes", bool, NULLCP,
+	"bell", &bell, "ring the bell when a command finishes", bool_values, NULLCP,
 	NULL,
 
 	"compatlevel", &_compat_log.ll_events, "COMPAT logging", xsaplevels,
@@ -276,11 +277,11 @@ static struct var vars[] = {
 	NULL,
 
 	"concurrency", &concurrency,	/* Olivier Dubois */
-	"request concurrency control for transfers", bool, NULLCP, NULL,
+	"request concurrency control for transfers", bool_values, NULLCP, NULL,
 
-	"debug", &debug, "debug FTAM", bool, NULLCP, NULL,
+	"debug", &debug, "debug FTAM", bool_values, NULLCP, NULL,
 
-	"glob", &globbing, "expand metacharacters like the shell", bool, NULLCP,
+	"glob", &globbing, "expand metacharacters like the shell", bool_values, NULLCP,
 	NULL,
 
 	"hash", &hash, "hash mark printing", hmodes, NULLCP, NULL,
@@ -302,7 +303,7 @@ static struct var vars[] = {
 
 	"qualifier", NULL, "service qualifier", &storename, NULLCP, NULL,
 
-	"query", &query, "confirm operations on globbing", bool, NULLCP, NULL,
+	"query", &query, "confirm operations on globbing", bool_values, NULLCP, NULL,
 
 	"realstore", &realstore, "type of remote realstore", realstores, NULLCP,
 	set_realstore,
@@ -315,7 +316,7 @@ static struct var vars[] = {
 	"sversion", &myqos.qos_sversion, "session version number", sversions,
 	NULLCP, NULL,
 
-	"trace", &trace, "trace FPDUs", bool, NULLCP, set_trace,
+	"trace", &trace, "trace FPDUs", bool_values, NULLCP, set_trace,
 	"tracefile", NULL, "FTAM trace file", &_ftam_log.ll_file, NULLCP,
 	NULL,
 
@@ -326,12 +327,12 @@ static struct var vars[] = {
 
 	"type", &tmode, "file transfer mode", tmodes, NULLCP, set_type,
 
-	"verbose", &verbose, "verbose interaction", bool, NULLCP, NULL,
+	"verbose", &verbose, "verbose interaction", bool_values, NULLCP, NULL,
 
 	"userdn", NULL, "DN to use when binding for AE-lookup", &userdn, NULLCP,
 	NULL,
 
-	"watch", &watch, "watch transfers", bool, NULLCP, NULL,
+	"watch", &watch, "watch transfers", bool_values, NULLCP, NULL,
 
 	NULL
 };
