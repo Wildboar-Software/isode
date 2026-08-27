@@ -16,7 +16,7 @@ lint:		l-libcompat
 # libcompat
 ################################################################
 
-CFILES	=	general.c logger.c select.c signals.c \
+CFILES	=	general.c bsd.c logger.c select.c signals.c \
 		asprintf.c explode.c implode.c isofiles.c isohost.c sel2str.c \
 			serror.c sprintb.c str2elem.c str2sel.c str2vec.c \
 			tailor.c \
@@ -31,7 +31,7 @@ CFILES	=	general.c logger.c select.c signals.c \
 		camtec.c sunlink.c ubcx25.c \
 		ccurx25.c hpuxx25.c ultrix25.c x25addr.c \
 		isonsapsnpa.c char2bcd.c bcd2char.c
-OFILES =	general.o logger.o select.o signals.o \
+OFILES =	general.o bsd.o logger.o select.o signals.o \
 		asprintf.o explode.o implode.o isofiles.o isohost.o sel2str.o \
 			serror.o sprintb.o str2elem.o str2sel.o str2vec.o \
 			tailor.o \
@@ -88,6 +88,7 @@ l-libcompat:;	$(LINT) $(LFLAGS) -DBINPATH=\"$(BINDIR)\" \
 			| grep -v "warning: possible pointer alignment problem"
 
 general.o:	$(HFILES)
+bsd.o:		$(HFILES)
 logger.o:	$(HFILES) $(HDIR)logger.h $(HDIR)tailor.h
 select.o:	$(HFILES) $(HDIR)logger.h $(HDIR)tailor.h
 signals.o:	$(HFILES)

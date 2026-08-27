@@ -72,6 +72,23 @@ typedef void (*__sighandler_t)(int);
 #define wait3(status, options, rusage) waitpid (-1, (status), (options))
 #endif
 
+/*
+ * BSD/GNU APIs that glibc hides from ISO C.  chroot(2) and setgroups(2)
+ * still exist in libc; initgroups(3) and flock(2) are reimplemented in
+ * compat/bsd.c using POSIX getgrent/setgroups and fcntl(F_SETLK).
+ */
+#ifndef LOCK_SH
+#define LOCK_SH	1
+#define LOCK_EX	2
+#define LOCK_NB	4
+#define LOCK_UN	8
+#endif
+
+int	chroot (const char *path);
+int	setgroups (size_t size, const gid_t *list);
+int	initgroups (const char *user, gid_t group);
+int	flock (int fd, int operation);
+
 /* target-dependent defines:
 
 	SYS5NLY -	target has SYS5 types only, no BSD types
