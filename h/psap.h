@@ -587,7 +587,7 @@ void vname (char *name);
 void vtag (const int class, const int id);
 void vstring (PE pe);
 void vunknown (PE pe);
-void vprint (char*, ...);
+void vprint (const char *, ...);
 char *bit2str (PE pe, const char *s);
 void vpushfp (FILE *fp, PE pe, const char *s, const int rw);
 void vpopfp (void);

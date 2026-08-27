@@ -232,7 +232,7 @@ END
 
 #ifdef PEPYTEST
 
-void advise (char *what, char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
+void advise (char *what, const char *fmt, char *a, char *b, char *c, char *d, char *e, char *f, char *g, char *h, char *i, char *j) {
 
 	(void) fflush(stdout);
 

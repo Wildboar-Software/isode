@@ -8,8 +8,8 @@ static int  count;
 
 static char *myname = "bigpepytest";
 
-static void	adios (char *, char *, ...);
-void	advise (char *, char *, ...);
+static void	adios (char *, const char *, ...);
+void	advise (char *, const char *, ...);
 
 main (int argc, char **argv, char **envp)
 {
@@ -640,7 +640,7 @@ static int rnd(int n)
 #ifndef	lint
 static void	_advise ();
 
-static void  adios (char *what, char *fmt, ...)
+static void  adios (char *what, const char *fmt, ...)
 {
     va_list ap;
 
@@ -655,14 +655,14 @@ static void  adios (char *what, char *fmt, ...)
 #else
 /* VARARGS */
 
-static void  adios (char *what, char *fmt)
+static void  adios (char *what, const char *fmt)
 {
     adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
     char    buffer[BUFSIZ];
 

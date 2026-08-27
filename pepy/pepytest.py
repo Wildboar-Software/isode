@@ -15,8 +15,8 @@ static enum { ps2test, pl2test } mode = ps2test;
 
 static int  process (char *file, FILE *fp);
 
-static void	adios (char *, char *, ...);
-void advise (char *, char *, ...);
+static void	adios (char *, const char *, ...);
+void advise (char *, const char *, ...);
 
 extern int parse_PEPYTEST_PersonnelRecord (PE pe, int explicit, int *len, char **buffer, char *parm);
 int	print_PEPYTEST_PersonnelRecord (PE pe, int explicit, int *len, char **buffer, char *parm);
@@ -174,9 +174,9 @@ END
 #include <unistd.h>
 
 #ifndef	lint
-static void	_advise (char *, char *, va_list);
+static void	_advise (char *, const char *, va_list);
 
-static void  adios (char *what, char *fmt, ...) {
+static void  adios (char *what, const char *fmt, ...) {
     va_list ap;
     va_start (ap, fmt);
     _advise (what, fmt, ap);
@@ -186,13 +186,13 @@ static void  adios (char *what, char *fmt, ...) {
 #else
 /* VARARGS */
 
-static void  adios (char *what, char *fmt) {
+static void  adios (char *what, const char *fmt) {
     adios (what, fmt);
 }
 #endif
 
 #ifndef	lint
-static void _advise (char *what, char *fmt, va_list ap) {
+static void _advise (char *what, const char *fmt, va_list ap) {
     char    buffer[BUFSIZ];
     _asprintf (buffer, what, fmt, ap);
     (void) fflush (stdout);
