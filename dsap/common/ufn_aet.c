@@ -90,7 +90,7 @@ static int aet_search (DN base, const char subtree, Filter filt, DNS *res)
 int aet_match (
 	const int c,
 	char **v,
-	DNS (*interact) (DNS, DN, char *),
+	DNS (*interact) (DNS, DN, const char *),
 	DNS *result,
 	envlist el,
 	char *context

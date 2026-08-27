@@ -16,7 +16,7 @@
 static DNS ufn_interact (
 	DNS dns,
 	DN dn,
-	char * s
+	const char * s
 );
 static DNS just_say_no (DNS dns, DN dn, const char * s);
 static int bind_to_dsa (void);
@@ -37,7 +37,7 @@ static void set_el (void);
 static DNS ufn_interact (
 	DNS dns,
 	DN dn,
-	char * s
+	const char * s
 ) {
 	char buf[LINESIZE];
 	DNS result = NULLDNS;

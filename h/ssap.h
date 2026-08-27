@@ -438,7 +438,7 @@ int	SConnRequest (struct SSAPref *ref, struct SSAPaddr *calling, struct SSAPaddr
 int	SAsynConnRequest (struct SSAPref *ref, const struct SSAPaddr *calling, const struct SSAPaddr *called, const int requirements, int settings, const long int isn, const char *data, int cc, const struct QOStype *qos, struct SSAPconnect *sc, struct SSAPindication *si, const int async);	/* S-(ASYN-)CONNECT.REQUEST */
 int	SAsynRetryRequest (int sd, struct SSAPconnect *sc, struct SSAPindication *si);	/* S-ASYN-RETRY.REQUEST (pseudo) */
 /* S-DATA.REQUEST */
-int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si);
+int SDataRequest (int sd, const char *data, int cc, struct SSAPindication *si);
 /* S-SEND.REQUEST (segmented) */
 int SSendRequest (
 	const int sd,

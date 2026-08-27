@@ -64,7 +64,7 @@ static	PS	nps;
 
 static int	dns_compar (const struct dn_seq **a, const struct dn_seq **b);
 static int dns_compar_void (const void *a, const void *b);
-static DNS	dase_interact (DNS dns, DN dn, char *s), just_say_no (DNS dns, DN dn, const char *s);
+static DNS	dase_interact (DNS dns, DN dn, const char *s), just_say_no (DNS dns, DN dn, const char *s);
 static PE	name2psap (DN dn);
 
 static void	adios (char *, char *, ...);
@@ -496,7 +496,7 @@ static void make_bind_args (struct ds_bind_arg *ba, struct ds_bind_arg *br, stru
 	}
 }
 
-static DNS dase_interact (DNS dns, DN dn, char *s) {
+static DNS dase_interact (DNS dns, DN dn, const char *s) {
 	int i;
 	struct type_DASE_Callback__REQ *req = NULL;
 	struct element_DASE_3 **dp;

@@ -80,7 +80,7 @@ int showfred (DN mydn, const char islong, const char subdisplay);
 static Entry fredentry (DN adn, const char islong);
 Attr_Sequence fred_as (void), fred_full (void);
 
-static struct dn_seq *interact(struct dn_seq *dns, DN dn, char *s);
+static struct dn_seq *interact(struct dn_seq *dns, DN dn, const char *s);
 
 static void do_dm_match (int n, char **vec);
 static int fred_children (DN parentdn, const struct subordinate *ptr, const int prob);
@@ -747,7 +747,7 @@ lost_entry:
 	}
 }
 
-static struct dn_seq *interact (struct dn_seq *dns, DN dn, char *s)
+static struct dn_seq *interact (struct dn_seq *dns, DN dn, const char *s)
 {
 	int	    i,
 			j;

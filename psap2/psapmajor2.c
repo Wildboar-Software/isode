@@ -13,7 +13,7 @@ int PMajSyncResponseAux (
 	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
-	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
+	int (*sfunc)(int sd, const char *data, int cc, struct SSAPindication *si),
 	const char *stype
 ) {
 	SBV	    smask;

@@ -19,7 +19,7 @@ static void TDISCser (int sd, struct TSAPdisconnect *td);
 
 /* S-DATA.REQUEST */
 
-int SDataRequest (int sd, char *data, int cc, struct SSAPindication *si) {
+int SDataRequest (int sd, const char *data, int cc, struct SSAPindication *si) {
 	return SSendRequest (sd, data, cc, 1, 1, si);
 }
 

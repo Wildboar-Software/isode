@@ -343,7 +343,7 @@ PE	time2prim (UTC, const int, const PElementClass, const PElementID);
 char   *time2str (UTC u, const int generalized);
 #define	utct2str(u)		time2str ((u), 0)
 #define	gent2str(u)		time2str ((u), 1)
-UTC	str2utct (const char *cp, size_t len), str2gent (char *cp, size_t len);
+UTC	str2utct (const char *cp, size_t len), str2gent (const char *cp, size_t len);
 
 PE	prim2set (PE pe);
 #define	set2prim(pe)		(pe)

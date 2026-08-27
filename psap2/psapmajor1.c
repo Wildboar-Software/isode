@@ -14,7 +14,7 @@ int PMajSyncRequestAux (
 	int ndata,
 	struct PSAPindication *pi,
 	const char *dtype,
-	int (*sfunc)(int sd, long *ssn, char *data, int cc, struct SSAPindication *si),
+	int (*sfunc)(int sd, long *ssn, const char *data, int cc, struct SSAPindication *si),
 	const char *stype
 ) {
 	SBV	    smask;
