@@ -1189,7 +1189,7 @@ static void gen_actfunct(FILE *fp) {
 		fprintf(fp, "\t\t}\t/* switch */\n    return (OK);\n}\n");
 	}
 	if (d_actions > 0) {
-		fprintf(fp, "\nstatic\tint\ndfn_%s(caddr_t __p, PE pe, ptpe *_Zp, int _val)\n{\n", tab);
+		fprintf(fp, "\nstatic\tint\ndfn_%s(caddr_t *__p, PE pe, ptpe *_Zp, int _val)\n{\n", tab);
 		fprintf(fp, "\t\t\n\t/* %d cases */\n    switch(_Zp->pe_ucode) {\n",
 				d_actions);
 		for (sy = mysymbols; sy; sy = sy->sy_next) {

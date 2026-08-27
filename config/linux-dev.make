@@ -8,7 +8,7 @@
 
 #TARGET  =	-m32
 # Extra -Werror=* flags below were verified with ./make everything (GCC 13, -g).
-OPTIONS +=	-std=gnu17 \
+OPTIONS +=	-std=gnu23 \
 		-fdiagnostics-format=sarif-stderr \
 		-Werror=conversion \
 		-Werror=sign-conversion \

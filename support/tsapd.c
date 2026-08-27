@@ -151,9 +151,17 @@ static  SFD cldser (int sig);
 #endif
 
 #ifdef	NOGOSIP
-#define	ssapd	NULLIFP
+#ifndef	IAE
+	static int (*ssapd)(struct isoservent *, struct TSAPdisconnect *) = NULL;
 #else
-static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td);
+	static int (*ssapd)(struct IAEntry *, struct TSAPdisconnect *) = NULL;
+#endif
+#else
+#ifndef	IAE
+	static int (*ssapd)(struct isoservent *, struct TSAPdisconnect *);
+#else
+	static int (*ssapd)(struct IAEntry *, struct TSAPdisconnect *);
+#endif
 static int  psapd ( struct isoservent *is, struct SSAPindication *si);
 #endif
 
@@ -398,7 +406,11 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 }
 
 #ifndef	NOGOSIP
+#ifndef	IAE
 static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
+#else
+static int  ssapd ( struct IAEntry *is, struct TSAPdisconnect *td) {
+#endif
 	int	    sd;
 	struct TSAPstart    tss;
 	struct TSAPstart  *ts = &tss;
@@ -467,7 +479,7 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 			sprintb (ss -> ss_requirements, RMASK), ss -> ss_isn,
 			ss -> ss_ssdusize);
 	if (strcmp (is -> is_entity, "presentation") == 0) {
-		if (PExec (ss, &pis, buffer1, buffer2, NULLIFP, setperms) == NOTOK) {
+		if (PExec (ss, &pis, buffer1, buffer2, NULL, setperms) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"service not started at psap: %s",
 					PErrString (pa -> pa_reason));
@@ -488,7 +500,7 @@ static int  psapd ( struct isoservent *is, struct SSAPindication *si) {
 						rta -> rta_cc, rta -> rta_cc, rta -> rta_data);
 		}
 	} else {
-		if (RoExec (ss, &rois, buffer1, buffer2, NULLIFP, setperms) == NOTOK) {
+		if (RoExec (ss, &rois, buffer1, buffer2, NULL, setperms) == NOTOK) {
 			advise (LLOG_EXCEPTIONS, NULLCP,
 					"service not started at rosap: %s",
 					RoErrString (rop -> rop_reason));

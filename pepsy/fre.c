@@ -304,7 +304,7 @@ again:
 		break;	/* can't do anything with this */
 
 	case FFN_CALL:
-		if ((FN_PTR(mod, p))(parm) == NOTOK)
+		if ((FRE_FN_PTR(mod, p))(parm) == NOTOK)
 			return pepsylose (mod, p, NULLPE,
 							  "fre_type:FN_CALL:call failed");
 		break;

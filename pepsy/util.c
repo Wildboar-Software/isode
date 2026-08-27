@@ -418,7 +418,7 @@ int hasdata (
 		break;
 
 	case FN_CALL:	/* function call */
-		if ((val = (FN_PTR(mod, p))(parm, (PE *)0)) == NOTOK)
+		if ((val = (ENC_FN_PTR(mod, p))(parm, (PE *)0)) == NOTOK)
 			return pepsylose (mod, p, NULLPE,
 							  "hasdata:FN_CALL:call failed");
 		if (val != OK)
@@ -598,7 +598,7 @@ o1string:
 		break;
 
 	case FN_CALL:	/* function call */
-		if ((val = (FN_PTR(mod, typ))(parm, (PE *)0)) == NOTOK)
+		if ((val = (ENC_FN_PTR(mod, typ))(parm, (PE *)0)) == NOTOK)
 			return pepsylose (mod, typ, NULLPE,
 							  "same:FN_CALL:call failed");
 		if (val != OK)
