@@ -46,15 +46,24 @@ static char *vsp;
 
 int (*vfnx)(FILE *, const char *, ...) = fprintf;
 FILE *vfp = (FILE*) NULL;
+static int vfp_inited = 0;
 static PS    vps = NULLPS;
 
-#ifdef __GNUC__
-__attribute__((constructor))
-static void _init_vfp (void)
-{
-	vfp = stdout;
+FILE *vfp_stream (void);
+static void vfp_set (FILE *fp);
+
+FILE *vfp_stream (void) {
+	if (!vfp_inited) {
+		vfp = stdout;
+		vfp_inited = 1;
+	}
+	return vfp;
 }
-#endif
+
+static void vfp_set (FILE *fp) {
+	vfp = fp;
+	vfp_inited = 1;
+}
 
 static char *oct2str (char *s, int len);
 static char *newbuf (int i);
@@ -66,8 +75,8 @@ void vpush(void)  {
 		vwrite (",\n");
 	if (didname)
 		vwrite (" ");
-	else if (vfp && vlevel > 0)
-		(*vfnx) (vfp, "%*s", vlevel * 3, "");
+	else if (vfp_stream () && vlevel > 0)
+		(*vfnx) (vfp_stream (), "%*s", vlevel * 3, "");
 	vwrite ("{");
 	vlevel++;
 	didname = didvpop = docomma = 0, didvpush = 1;
@@ -78,8 +87,8 @@ void vpop(void)  {
 	if (didname || docomma)
 		vwrite ("\n");
 	vlevel--;
-	if (!didvpush && vfp && vlevel > 0)
-		(*vfnx) (vfp, "%*s", vlevel * 3, "");
+	if (!didvpush && vfp_stream () && vlevel > 0)
+		(*vfnx) (vfp_stream (), "%*s", vlevel * 3, "");
 	vwrite ("}");
 	if (vlevel == 0)
 		vwrite ("\n");
@@ -92,8 +101,8 @@ void vname (char *name) {
 	else if (docomma)
 		vwrite (",\n");
 
-	if (vfp && vlevel > 0)
-		(*vfnx) (vfp, "%*s", vlevel * 3, "");
+	if (vfp_stream () && vlevel > 0)
+		(*vfnx) (vfp_stream (), "%*s", vlevel * 3, "");
 	vwrite (name);
 	didname = 1;
 }
@@ -154,8 +163,8 @@ static void vprint1(void) {
 			vwrite (",\n");
 indent:
 		;
-		if (vfp && vlevel > 0)
-			(*vfnx) (vfp, "%*s", vlevel * 3, "");
+		if (vfp_stream () && vlevel > 0)
+			(*vfnx) (vfp_stream (), "%*s", vlevel * 3, "");
 	}
 }
 
@@ -166,8 +175,8 @@ static void vprint2(void)  {
 }
 
 static void vwrite (char *s) {
-	if (vfp)
-		(*vfnx) (vfp, "%s", s);
+	if (vfp_stream ())
+		(*vfnx) (vfp_stream (), "%s", s);
 	else {
 		char   c,
 			   *cp;
@@ -474,23 +483,23 @@ void vpushfp (FILE *fp, PE pe, char *s, int rw) {
 }
 
 void vsetfp (FILE *fp, char *s) {
-	vfp = fp;
+	vfp_set (fp);
 	vfnx = fprintf;
 
 	if(s != NULLCP)
-		(*vfnx) (vfp, "%s\n", s);
+		(*vfnx) (vfp_stream (), "%s\n", s);
 
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
 void vpopfp(void)  {
-	(*vfnx) (vfp, "-------\n");
-	fflush (vfp);
+	(*vfnx) (vfp_stream (), "-------\n");
+	fflush (vfp_stream ());
 	vpopp ();
 }
 
 void vpushstr (char *cp) {
-	vfp = NULL;
+	vfp_set (NULL);
 	vbp = vsp = cp;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
@@ -500,7 +509,7 @@ void vpopstr(void)  {
 		if (*vbp != ' ')
 			break;
 	*++vbp = 0;
-	vfp = stdout;
+	vfp_set (stdout);
 }
 
 void vpushpp (
@@ -517,12 +526,13 @@ void vpushpp (
 }
 
 void vpopp(void)  {
-	vfp = stdout, vfnx = fprintf;
+	vfp_set (stdout);
+	vfnx = fprintf;
 }
 
 void vpushquipu (PS ps) {
 	vps = ps;
-	vfp = NULL;
+	vfp_set (NULL);
 	vlevel = didname = didvpush = didvpop = docomma = 0;
 }
 
@@ -556,7 +566,8 @@ static int ll_printf_evil(FILE *fp, const char *format, ...) {
 void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-	vfp = (FILE *) lp, vfnx = ll_printf_evil;
+	vfp_set ((FILE *) lp);
+	vfnx = ll_printf_evil;
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -573,7 +584,8 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 		prnt_f (ind, mod, pe, 1, NULL, NULLVP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
-	vfp = stdout, vfnx = fprintf;
+	vfp_set (stdout);
+	vfnx = fprintf;
 }
 
 static char *bufp = NULL;
@@ -601,7 +613,8 @@ static char *newbuf (int i) {
 void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
-	vfp = (FILE *) lp, vfnx = ll_printf_evil;
+	vfp_set ((FILE *) lp);
+	vfnx = ll_printf_evil;
 	bp = buffer;
 	sprintf (bp, "%s %s", rw ? "read" : "wrote",
 			 text ? text : "pdu");
@@ -615,7 +628,8 @@ void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
 	(*fnx) (pe, 1, NULL, NULLVP, NULLCP);
 	ll_printf (lp, "-------\n");
 	ll_sync (lp);
-	vfp = stdout, vfnx = fprintf;
+	vfp_set (stdout);
+	vfnx = fprintf;
 }
 
 #ifdef DEBUG

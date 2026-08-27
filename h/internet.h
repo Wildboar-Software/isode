@@ -122,7 +122,7 @@ int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2)
 #endif
 #endif
 
-#if	defined(BIND) && !defined(h_addr)
+#ifndef	h_addr
 #define	h_addr	h_addr_list[0]
 #endif
 

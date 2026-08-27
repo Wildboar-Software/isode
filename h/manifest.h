@@ -19,6 +19,46 @@
 #endif
 
 #include <signal.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+/*
+ * glibc's ISO C dialect hides BSD types.  C11 allows these typedefs to
+ * repeat when the libc already provided the same types.
+ */
+typedef unsigned char	u_char;
+typedef unsigned short	u_short;
+typedef unsigned int	u_int;
+typedef unsigned long	u_long;
+typedef char		*caddr_t;
+
+/* POSIX signal handler; glibc names this __sighandler_t. */
+typedef void (*__sighandler_t)(int);
+
+#ifndef getdtablesize
+#define getdtablesize() (sysconf (_SC_OPEN_MAX))
+#endif
+
+#ifndef getpagesize
+#define getpagesize() ((int) sysconf (_SC_PAGESIZE))
+#endif
+
+#ifndef NSIG
+#ifdef _NSIG
+#define NSIG _NSIG
+#else
+#define NSIG 65
+#endif
+#endif
+
+#include <limits.h>
+#ifndef MAXNAMLEN
+#ifdef NAME_MAX
+#define MAXNAMLEN NAME_MAX
+#else
+#define MAXNAMLEN 255
+#endif
+#endif
 
 /* target-dependent defines:
 
@@ -202,6 +242,8 @@ typedef char *CP;
 typedef INTDEF integer;
 #define NULLINT		((integer) 0)
 #define NULLINTP	((integer *) 0)
+
+void *sbrk (intptr_t increment);
 
 #if defined(SVR4) || defined(SYSV) || defined(BSD44) || defined(LINUX)
 #else
