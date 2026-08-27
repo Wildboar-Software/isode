@@ -2183,7 +2183,7 @@ static void do_traps (
 #endif
 #else	/* SNMPT */
 
-static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size) {
+static int process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, int size) {
 	char   *cp;
 	long    now;
 	PE	    pe,
