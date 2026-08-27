@@ -8,7 +8,7 @@
 
 /* F-INITIALIZE.INDICATION */
 
-int FInit (int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti) {
+int FInit (const int vecp, char **vec, struct FTAMstart *fts, void (*tracing)(int sd, char *event, char *fpdu, PE pe, int rw), struct FTAMindication *fti) {
 	int    i;
 	PE	    pe = NULLPE;
 	struct AcSAPstart acss;
@@ -347,7 +347,7 @@ carry_on:
 
 /* F-INITIALIZE.RESPONSE */
 
-int FInitializeResponse (int sd, int state, int action, OID context, AEI respondtitle, struct PSAPaddr *respondaddr, int manage, int class, int units, int attrs, PE sharedASE, int fqos, struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FInitializeResponse (const int sd, const int state, const int action, OID context, AEI respondtitle, const struct PSAPaddr *respondaddr, const int manage, const int class, const int units, const int attrs, PE sharedASE, const int fqos, const struct FTAMcontentlist *contents, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int    i;
 	int	    result,
 			status;

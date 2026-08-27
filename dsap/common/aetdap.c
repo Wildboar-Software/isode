@@ -10,7 +10,7 @@
 static int bind_to_dsa (void);
 static PE name2value_dap (char *name, char *context, int ontty, char *userdn,
 						  char *passwd, PE *real_name);
-static int set_lookup_dap (int flag);
+static int set_lookup_dap (const int flag);
 
 
 static char bound = FALSE;
@@ -177,7 +177,7 @@ out:
 }
 
 /* flag: if TRUE always unbind */
-int set_lookup_dap (int flag) {
+int set_lookup_dap (const int flag) {
 	extern char * oidtable;
 
 	if (int2char (flag, &unbind) != 0)

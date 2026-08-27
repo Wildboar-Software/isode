@@ -11,8 +11,8 @@
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
-static YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type);
+static YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type);
 static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 
  /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
@@ -20,38 +20,38 @@ static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, char *id, char *type);
-static YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type);
+static YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type);
 void ddflt(FILE *fp, YP yp);
-void prte_enoff(FILE *fp, char *type, YP yp, int idx);
-void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx);
-void prte_obj(FILE *fp, YP yp, char *t, char *f);
+void prte_enoff(FILE *fp, char *type, YP yp, const int idx);
+void prte_off(FILE *fp, char *type, YP yp, const char *t, const char *f, const int idx);
+void prte_obj(FILE *fp, YP yp, const char *t, char *f);
 static void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 int addsptr (char *s);
 
 
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp), *pec_class(YP yp);
-extern char *strip_last(char *s);
+extern char *strip_last(const char *s);
 extern char *str_yp_code[];
-extern char *get_val(char **s), *get_comp(char **s), *strp2name(char *s1, char *s2);
+extern char *get_val(char **s), *get_comp(char **s), *strp2name(const char *s1, const char *s2);
 extern s_table *lookup_list(void), *get_offset(void);
-extern YP tprnt_loop(FILE *fp, YP yp, char *id, char *type);
+extern YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type);
 extern void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f);
 
-extern char *concat(char *s1, char *s2);
-extern char *my_strcat(char *s1, char *s2);
+extern char *concat(const char *s1, const char *s2);
+extern char *my_strcat(const char *s1, char *s2);
 extern char	*rm_indirect(char *p);
 extern char	*getfield(char *p);
 extern char	*setfield(char *p);
 extern char	*yp2name (YP yp);
-extern char	*code2name (int code);
-extern char	*modsym (char *module, char *id, char *prefix);
-char *c_flags(YP yp, PElementClass cl);
+extern char	*code2name (const int code);
+extern char	*modsym (const char *module, const char *id, char *prefix);
+char *c_flags(YP yp, const PElementClass cl);
 
-static void pr_deftyp(FILE *fp, YP yp, char *t, char *f);
-static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f);
-static void prte_noff(FILE *fp, char *type, YP yp, int idx);
+static void pr_deftyp(FILE *fp, YP yp, const char *t, char *f);
+static void prte_univt(FILE *fp, const struct univ_typ *p, YP yp, const char *t, char *f);
+static void prte_noff(FILE *fp, char *type, YP yp, const int idx);
 
 /*
 extern int explicit;
@@ -75,7 +75,7 @@ static int	mrose3; /* (mrose1 || !mrose2) && TAG && (OPTIONAL|DEFAULT) */
 /*
  * table printe a type. generate tables for the printing of a type
  */
-void tprnt_typ(FILE *fp, YP yp, char *id, char *type) {
+void tprnt_typ(FILE *fp, YP yp, const char *id, const char *type) {
 	char   *t, *f;
 	char   *p1;
 	YP      y;
@@ -635,7 +635,7 @@ void tprnt_typ(FILE *fp, YP yp, char *id, char *type) {
 /*
  * generate tables for printing a contructed type
  */
-YP tprnt_loop(FILE *fp, YP yp, char *id, char *type) {
+YP tprnt_loop(FILE *fp, YP yp, const char *id, const char *type) {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tprnt_typ(fp, yp, id, type);
 	}
@@ -677,7 +677,7 @@ void ddflt(FILE *fp, YP yp) {
 /*
  * print a Non offset table entry
  */
-static void prte_noff(FILE *fp, char *type, YP yp, int idx) {
+static void prte_noff(FILE *fp, char *type, YP yp, const int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -697,7 +697,7 @@ static void prte_noff(FILE *fp, char *type, YP yp, int idx) {
 	else
 		typename = (char *)0;
 	if (typename) {
-		int pindex = addsptr (typename);
+		const int pindex = addsptr (typename);
 		fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 				type, idx, tag, flags,
 				PREFIX, PTR_TABNAME, tab, pindex);
@@ -709,7 +709,7 @@ static void prte_noff(FILE *fp, char *type, YP yp, int idx) {
 /*
  * print a Non offset table entry for an ETAG - special case
  */
-void prte_enoff(FILE *fp, char *type, YP yp, int idx)
+void prte_enoff(FILE *fp, char *type, YP yp, const int idx)
 {
 	char	*tag;
 	char	*flags;
@@ -733,7 +733,7 @@ void prte_enoff(FILE *fp, char *type, YP yp, int idx)
 	} else
 		typename = NULL;
 	if (typename) {
-		int pindex = addsptr (typename);
+		const int pindex = addsptr (typename);
 		fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 				type, idx, tag, flags,
 				PREFIX, PTR_TABNAME, tab, pindex);
@@ -745,7 +745,7 @@ void prte_enoff(FILE *fp, char *type, YP yp, int idx)
 /*
  * print an offset table entry
  */
-void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx) {
+void prte_off(FILE *fp, char *type, YP yp, const char *t, const char *f, const int idx) {
 	char	*tag;
 	char	*flags;
 	char	*typename;
@@ -775,7 +775,7 @@ void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx) {
 				type, t, f, tag, flags);
 #else
 	if (typename) {
-		int pindex = addsptr (typename);
+		const int pindex = addsptr (typename);
 		fprintf(fp, "\t{ %s, %d, %s, %s, (char **)&%s%s%s[%d] },\n",
 				type, idx, tag, flags,
 				PREFIX, PTR_TABNAME, tab, pindex);
@@ -789,7 +789,7 @@ void prte_off(FILE *fp, char *type, YP yp, char *t, char *f, int idx) {
  * handle the very complex task of defined types.
  * Basically generating object calls
  */
-static void pr_deftyp(FILE *fp, YP yp, char *t, char *f) {
+static void pr_deftyp(FILE *fp, YP yp, const char *t, char *f) {
 	/* Predefined Universal Type */
 	struct univ_typ *p, *univtyp(char *name);
 
@@ -811,7 +811,7 @@ do_obj:
 /*
  * print an offset table entry for an OBJECT type entry
  */
-void prte_obj(FILE *fp, YP yp, char *t, char *f) {
+void prte_obj(FILE *fp, YP yp, const char *t, char *f) {
 	char	*type;
 	char	*obj;
 	char	*flags;
@@ -861,7 +861,7 @@ void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 #endif
 		off = "0";
 	if (typename) {
-		int pindex = addsptr (typename);
+		const int pindex = addsptr (typename);
 		fprintf(fp, "\t{ %s, %s, _Z%s, %s, (char **)&%s%s%s[%d] },\n",
 				type, off, obj, flags,
 				PREFIX, PTR_TABNAME, tab, pindex);
@@ -876,7 +876,7 @@ void prte_obj(FILE *fp, YP yp, char *t, char *f) {
 /*
  * print an table entry for Universal type with the given entry
  */
-static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
+static void prte_univt(FILE *fp, const struct univ_typ *p, YP yp, const char *t, char *f) {
 	char	*type;
 	int		tag;
 	PElementClass class;
@@ -925,7 +925,7 @@ static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
 #endif
 		off = "0";
 	if (typename) {
-		int pindex = addsptr (typename);
+		const int pindex = addsptr (typename);
 		fprintf(fp, "\t{ %s, %s, %d, %s, (char **)&%s%s%s[%d] },\n",
 				type, off, tag, flags,
 				PREFIX, PTR_TABNAME, tab, pindex);
@@ -940,7 +940,7 @@ static void prte_univt(FILE *fp, struct univ_typ *p, YP yp, char *t, char *f) {
  */
 void gen_pentry(FILE *fp, YP oyp, YP yp, char *t, char *f) {
 	char	*p1;
-	char	s = oyp->yp_prfexp;	/* type of value passing */
+	const char	s = oyp->yp_prfexp;	/* type of value passing */
 	int		idx;
 
 	if (noindirect(f) && s != 'q' && s != 'a')

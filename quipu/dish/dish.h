@@ -15,22 +15,22 @@
  * prototypes keeps compilation free of implicit-function-declaration errors.
  */
 
-void Usage(char *rtn);
+void Usage(const char *rtn);
 int move(char *arg);
 
 int rebind(void);
 int dish_error(PS ps, struct DSError *error);
-void show_sequence (PS ps, char *str, char ufn);
-int referral_bind (struct PSAPaddr *addr);
+void show_sequence (PS ps, char *str, const char ufn);
+int referral_bind (const struct PSAPaddr *addr);
 
 struct ds_bind_error;
-void ds_bind_error(PS ps, struct ds_bind_error *err);
+void ds_bind_error(PS ps, const struct ds_bind_error *err);
 
 void pdu_dump_init(char *dir);
 void get_password(char *str, char *buffer);
 void set_sequence(char *str);
-int set_cmd_default(char *cmd, char *dflt);
-void new_service(char *ptr);
+int set_cmd_default(const char *cmd, const char *dflt);
+void new_service(const char *ptr);
 void show_unknown(void);
 void new_ignore(char *ptr);
 int add_sequence(DN adn);
@@ -38,11 +38,11 @@ void hide_picture(void);
 
 /* dish main/init */
 void quipu_syntaxes (void);
-int osisecinit (int *argc, char ***argv, int fn);
+int osisecinit (int *argc, char ***argv, const int fn);
 int dish_init (int argc, char **argv);
-void add_dish_help (char *command, char *args, char serv, char other, char *use);
+void add_dish_help (const char *command, const char *args, const char serv, const char other, const char *use);
 int do_dish (void);
-void add_dish_command (char *name, void (*func)(int, char **), int len);
+void add_dish_command (char *name, void (*func)(int, char **), const int len);
 int dish_cmd_init (void);
 
 void call_add (int argc, char **argv);
@@ -61,7 +61,7 @@ void call_help (int argc, char **argv);
 void call_showattribute (int argc, char **argv);
 void dsa_control (int argc, char **argv);
 
-int editentry(int argc, char **argv);
+int editentry(const int argc, char **argv);
 int yesno(char *str);
 
 void delete_list_cache(DN adn);
@@ -72,41 +72,41 @@ int get_ava (AVA *avasert, char *type, char *value);
 
 /* dishlib/dish.c shared helpers */
 void dish_help_init (void);
-void shuffle_up (int argc, char **argv, int start);
-void help_arg (char *rtn);
+void shuffle_up (const int argc, char **argv, const int start);
+void help_arg (const char *rtn);
 int init_pipe (void);
 void want_oc_hierarchy (void);
-int dsap_init (int *acptr, char ***avptr);
+int dsap_init (const int *acptr, char ***avptr);
 int user_tailor (void);
 int print_arg_error (PS opt);
 int reset_arg (void);
 void set_current_pos (void);
 void set_alarm (void);
-int read_pipe (char *buf, int len);
+int read_pipe (char *buf, const int len);
 void test_rc_file (PS ps);
 void consolidate_move (void);
 
 /* pipe helpers used by edit.c and elsewhere */
 void send_pipe_aux (char *buf);
-void send_pipe_aux2 (char *buf, int i);
-int read_pipe_aux (char *buf, int len);
+void send_pipe_aux2 (const char *buf, const int i);
+int read_pipe_aux (char *buf, const int len);
 int read_pipe_aux2 (char **buf, int *len);
 
 /* dsap/cache and fred helpers */
 struct subordinate;
-void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit);
+void cache_list (struct subordinate *ptr, const int prob, DN dn, const int sizelimit);
 int fdx_reset (PS ps);
-void showfredDNs (DN dn, char islong);
-int showfred (DN mydn, char islong, char subdisplay);
+void showfredDNs (DN dn, const char islong);
+int showfred (DN mydn, const char islong, const char subdisplay);
 void call_showname (int argc, char **argv);
 void showattribute (AttributeType at);
 void as_comp_free (Attr_Sequence as);
 
 /* read/modify shared helpers */
-int read_cache (int argc, char **argv);
-int read_cache_aux (int argc, char **argv, char ali, CommonArgs *ca);
+int read_cache (const int argc, char **argv);
+int read_cache_aux (int argc, char **argv, const char ali, const CommonArgs *ca);
 int set_read_flags (int argc, char **argv);
-void make_old (char *file, char commit);
+void make_old (char *file, const char commit);
 void unbind_from_dsa (void);
 int avs_cmp (AV_Sequence a, AV_Sequence b);
 

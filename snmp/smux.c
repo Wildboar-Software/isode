@@ -44,12 +44,12 @@ static	struct timeval my_boottime;
 extern	int	errno;
 #endif
 
-static int  smuxlose (int reason, char *what, char *fmt, ...);
+static int  smuxlose (const int reason, char *what, char *fmt, ...);
 static int  smuxalloc (void), smuxsend (struct type_SNMP_SMUX__PDUs *pdu);
 
 /* INIT */
 
-int	smux_init (int debug) {
+int	smux_init (const int debug) {
 	int	    onoff;
 	struct sockaddr_in *isock = &in_socket;
 	struct hostent *hp;
@@ -149,7 +149,7 @@ you_lose:
 
 /*    SIMPLE OPEN */
 
-int	smux_simple_open (OID identity, char *description, char *commname, int commlen) {
+int	smux_simple_open (OID identity, char *description, char *commname, const int commlen) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_SimpleOpen *simple;
@@ -246,7 +246,7 @@ out:
 
 /* CLOSE */
 
-int	smux_close (int reason) {
+int	smux_close (const int reason) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_ClosePDU *close;
@@ -284,7 +284,7 @@ int	smux_close (int reason) {
 
 /* REGISTER */
 
-int	smux_register (OID subtree, int priority, int operation) {
+int	smux_register (OID subtree, const int priority, const int operation) {
 	int	    result;
 	struct type_SNMP_SMUX__PDUs pdu;
 	struct type_SNMP_RReqPDU *rreq;
@@ -318,7 +318,7 @@ no_mem:
 
 /* WAIT */
 
-int	smux_wait (struct type_SNMP_SMUX__PDUs **event, int secs) {
+int	smux_wait (struct type_SNMP_SMUX__PDUs **event, const int secs) {
 	fd_set  mask;
 	PE	    pe;
 
@@ -371,7 +371,7 @@ out:
 
 /* RESPONSE */
 
-int	smux_response (struct type_SNMP_GetResponse__PDU *event) {
+int	smux_response (const struct type_SNMP_GetResponse__PDU *event) {
 	struct type_SNMP_SMUX__PDUs pdu;
 
 	if (event == NULL)
@@ -386,7 +386,7 @@ int	smux_response (struct type_SNMP_GetResponse__PDU *event) {
 
 /* TRAP */
 
-int	smux_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings) {
+int	smux_trap (const int generic, const int specific, const struct type_SNMP_VarBindList *bindings) {
 	int	    result;
 	struct timeval now;
 	struct type_SNMP_SMUX__PDUs pdu;
@@ -427,7 +427,7 @@ int	smux_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings
 /* LOSE */
 
 #ifndef	lint
-static int  smuxlose (int reason, char *what, char *fmt, ...)
+static int  smuxlose (const int reason, char *what, char *fmt, ...)
 {
 	va_list ap;
 

@@ -17,12 +17,12 @@
 
 extern int	tcprestore (
 	struct psapblk *pb,
-	char *buffer,
+	const char *buffer,
 	struct PSAPindication *pi
 );
-extern int	udprestore (struct psapblk *pb, char *buffer, struct PSAPindication *pi);
+extern int	udprestore (struct psapblk *pb, const char *buffer, struct PSAPindication *pi);
 
-static int  PInitAux (struct psapblk *pb, char **vec, int vecp, struct PSAPstart *ps, struct PSAPindication *pi);
+static int  PInitAux (struct psapblk *pb, char **vec, const int vecp, struct PSAPstart *ps, struct PSAPindication *pi);
 
 /* P-CONNECT.INDICATION */
 
@@ -72,7 +72,7 @@ out:
 	return NOTOK;
 }
 
-static int  PInitAux (struct psapblk *pb, char **vec, int vecp, struct PSAPstart *ps, struct PSAPindication *pi) {
+static int  PInitAux (struct psapblk *pb, char **vec, const int vecp, struct PSAPstart *ps, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	OID	    oid;
@@ -193,8 +193,8 @@ out:
 
 /* P-CONNECT.RESPONSE */
 
-int	PConnResponse (int sd, int status, struct PSAPaddr *responding, struct PSAPctxlist *ctxlist, int defctxresult,
-				   int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct PSAPindication *pi) {
+int	PConnResponse (const int sd, const int status, const struct PSAPaddr *responding, const struct PSAPctxlist *ctxlist, const int defctxresult,
+				   const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref *ref, PE *data, const int ndata, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS	    ps;

@@ -143,23 +143,23 @@
 int	ropktlose (struct assocblk *acb, ...);
 int	rosapreject (struct assocblk *acb, ...);
 
-int	acb2osdu (struct assocblk *acb, int *invokeID, PE pe, struct RoSAPindication *roi);
+int	acb2osdu (struct assocblk *acb, const int *invokeID, PE pe, struct RoSAPindication *roi);
 
 int	ro2rtswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2rtswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi), ro2rtsready (struct assocblk *acb, int priority, struct RoSAPindication *roi), ro2rtsasync (struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi),
 	ro2rtsmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi);
 
 int	ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2pswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi), ro2psasync (struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi), ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi);
 
-int	ss2roslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct SSAPabort *sa), ss2rosabort (struct assocblk *acb, struct SSAPabort *sa, struct RoSAPindication *roi);
+int	ss2roslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct SSAPabort *sa), ss2rosabort (struct assocblk *acb, const struct SSAPabort *sa, struct RoSAPindication *roi);
 int	ro2sswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPindication *roi), ro2sswait (struct assocblk *acb, int *invokeID, int secs, struct RoSAPindication *roi), ro2ssasync (struct assocblk *acb, int (*indication)(int sd, struct RoSAPindication *roi), struct RoSAPindication *roi), ro2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindication *roi), ro2sslose (struct assocblk *acb, int result),
 	ro2ssready (struct assocblk *acb, int priority, struct RoSAPindication *roi);
 
 int RoURejectRequestAux (
 	struct assocblk *acb,
-	int *invokeID,
-	int reason,
+	const int *invokeID,
+	const int reason,
 	PElementID id,
-	int priority,
+	const int priority,
 	struct RoSAPindication *roi
 );
 

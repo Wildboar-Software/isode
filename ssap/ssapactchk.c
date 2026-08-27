@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "spkt.h"
 
-int SDoActivityAux (struct ssapblk *sb, struct SSAPindication *si, int act, int rls) {
+int SDoActivityAux (const struct ssapblk *sb, struct SSAPindication *si, const int act, const int rls) {
 	if (act) {
 		if (!(sb -> sb_requirements & SR_ACT_EXISTS))
 			return ssaplose (si, SC_OPERATION, NULLCP, "activity management service unavailable");

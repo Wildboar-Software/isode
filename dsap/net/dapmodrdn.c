@@ -4,7 +4,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int dap_modifyrdn (int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError *error) {
+int dap_modifyrdn (const int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError *error) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
@@ -38,7 +38,7 @@ int dap_modifyrdn (int ad, int *id, struct ds_modifyrdn_arg *arg, struct DSError
 	}
 }
 
-int DapModifyRDN (int ad, int id, struct ds_modifyrdn_arg *arg, struct DAPindication *di, int asyn) {
+int DapModifyRDN (const int ad, const int id, struct ds_modifyrdn_arg *arg, struct DAPindication *di, const int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_ModifyRDNArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

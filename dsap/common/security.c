@@ -26,8 +26,8 @@ struct SecurityServices *dsap_security = (struct SecurityServices *) 0;
  * Check security parameters
  * @returns 0 or the number of the security error.
  */
-int check_security_parms(caddr_t data, int type, modtyp *module,
-						 struct security_parms *sp, struct signature *sig,
+int check_security_parms(caddr_t data, const int type, modtyp *module,
+						 const struct security_parms *sp, struct signature *sig,
 						 DN *nameptr) {
 	long time_now;
 	long time_then;

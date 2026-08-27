@@ -9,7 +9,7 @@
 
 #define	MAXDGRAM	8192
 
-int	join_dgram_aux (int fd, struct sockaddr *sock, int newfd);
+int	join_dgram_aux (const int fd, struct sockaddr *sock, const int newfd);
 int	read_dgram_socket (int fd, struct qbuf **q);
 int	write_dgram_socket (int fd, struct qbuf *qb);
 int	close_dgram_socket (int fd);

@@ -18,27 +18,27 @@
 
 int pepsylose (modtyp*module, ...);
 int ppepsylose (modtyp*module, ...);
-int ferr (int n, char *mesg);
-int ferrd (int n, char *mesg, int d);
+int ferr (const int n, const char *mesg);
+int ferrd (const int n, const char *mesg, const int d);
 static void dmp_tpe ( char *s, ptpe *p, modtyp *mod /* Module it is from */ );
-char *pr_petype (int type);
+char *pr_petype (const int type);
 void f_null(void);
-int bitscmp (char *p1, char *p2, int len);
-int ostrcmp (char *p, int len, struct qbuf *qb);
-int hasdata ( PEPYPARM parm, ptpe *p, modtyp *mod, /* Module it is from */ int *popt, int *optcnt );
+int bitscmp (char *p1, char *p2, const int len);
+int ostrcmp (char *p, const int len, const struct qbuf *qb);
+int hasdata ( PEPYPARM parm, const ptpe *p, modtyp *mod, /* Module it is from */ const int *popt, int *optcnt );
 ptpe *next_tpe (ptpe *p);
-int ismatch ( ptpe *p, modtyp *mod, /* Module it is from */ unsigned int cl, unsigned int tag );
+int ismatch ( ptpe *p, modtyp *mod, /* Module it is from */ const unsigned int cl, const unsigned int tag );
 ptpe *fdflt_f (ptpe *p);
 ptpe *fdflt_b (ptpe *p);
 
-char *pr_petype (int type);
-void pr_entry (ptpe *p);
+char *pr_petype (const int type);
+void pr_entry (const ptpe *p);
 
 extern void exit(int);
 
 extern int same (
-	ptpe *typ,
-	ptpe *dflt,
+	const ptpe *typ,
+	const ptpe *dflt,
 	char *parm,
 	modtyp *mod			/* Module it is from */
 );
@@ -145,7 +145,7 @@ int	ppepsylose (modtyp*module, ...) {
  * print out the message and if the arguement is greater than 0
  * terminate
  */
-int ferr (int n, char *mesg) {
+int ferr (const int n, const char *mesg) {
 	printf(mesg);
 	if (n > 0)
 		exit(n);
@@ -155,7 +155,7 @@ int ferr (int n, char *mesg) {
  * print out the message and number and if the arguement is greater
  * than 0 terminate
  */
-int ferrd (int n, char *mesg, int d) {
+int ferrd (const int n, const char *mesg, const int d) {
 	printf(mesg, d);
 	if (n > 0)
 		exit(n);
@@ -301,7 +301,7 @@ static CMD_TABLE pepsy_type_tbl[] = {
 	NULLCP,		-10,
 };
 
-char *pr_petype (int type) {
+char *pr_petype (const int type) {
 	static char nbuf[30];
 	char *p;
 
@@ -310,7 +310,7 @@ char *pr_petype (int type) {
 	return p;
 }
 
-void pr_entry (ptpe *p) {
+void pr_entry (const ptpe *p) {
 	printf ("%s, ", pr_petype (p -> pe_type));
 	printf("%d, %d, %d}\n", p->pe_ucode, p->pe_tag, p->pe_flags);
 }
@@ -325,7 +325,7 @@ void f_null(void) {
  * compare a given number of bits pointed to by the two character
  * pointers return 0 if they are the same non zero otherwise
  */
-int bitscmp (char *p1, char *p2, int len) {
+int bitscmp (char *p1, char *p2, const int len) {
 	int i;
 	uint8_t mask;
 	int m;
@@ -354,7 +354,7 @@ int bitscmp (char *p1, char *p2, int len) {
  * compare an octet string and a qb and return 0 if they are the same
  * and non zero otherwise
  */
-int ostrcmp (char *p, int len, struct qbuf *qb) {
+int ostrcmp (char *p, const int len, const struct qbuf *qb) {
 	struct qbuf *qp;
 
 	if (len < 0 || qb == NULL || p == NULL)
@@ -383,9 +383,9 @@ int ostrcmp (char *p, int len, struct qbuf *qb) {
  */
 int hasdata (
 	PEPYPARM parm,
-	ptpe *p,
+	const ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int *popt,
+	const int *popt,
 	int *optcnt
 ) {
 	int	val;
@@ -442,8 +442,8 @@ next:
  * item). On error return NOTOK
  */
 int same (
-	ptpe *typ,
-	ptpe *dflt,
+	const ptpe *typ,
+	const ptpe *dflt,
 	char *parm,
 	modtyp *mod			/* Module it is from */
 ) {
@@ -704,8 +704,8 @@ again:
 int ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 ) {
 	while (!ISDTYPE(p) && p->pe_type != PE_END)
 		p++;

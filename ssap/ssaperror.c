@@ -30,7 +30,7 @@ static char *reject_err8[] = {
 
 static int reject_err8_cnt = sizeof reject_err8 / sizeof reject_err8[0];
 
-char *SErrString (int code) {
+char *SErrString (const int code) {
 	int    fcode;
 	static char buffer[50];
 

@@ -1,7 +1,7 @@
 /* str2oid.c - string to object identifier */
 #include "psap.h"
 
-OID	str2oid (char *s) {
+OID	str2oid (const char *s) {
 	int	    i;
 	static struct OIDentifier   oids;
 	static unsigned int elements[NELEM + 1];

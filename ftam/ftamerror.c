@@ -190,7 +190,7 @@ static char *diag_rvy[] = {
 
 static int diag_rvy_cnt = sizeof diag_rvy / sizeof diag_rvy[0];
 
-char *FErrString (int code) {
+char *FErrString (const int code) {
 	int    offset;
 	char    buffer[BUFSIZ];
 

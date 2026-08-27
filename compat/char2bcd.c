@@ -4,7 +4,7 @@
 #include "general.h"
 #include "manifest.h"
 
-int char2bcd (char *s, int n, uint8_t *d) {
+int char2bcd (const char *s, int n, uint8_t *d) {
 	int c, i;
 
 	for (i = 0; *s && n-- > 0; i++) {

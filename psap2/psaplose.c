@@ -11,7 +11,7 @@
 #include "pvpdu.h"
 
 #ifndef	lint
-static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap);
+static int  _psaplose (struct PSAPindication*pi, const int reason, va_list ap);
 #endif
 
 #ifndef	lint
@@ -103,7 +103,7 @@ int psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int  _psaplose (struct PSAPindication*pi, int reason, va_list ap) { /*  what, fmt, args ... */
+static int  _psaplose (struct PSAPindication*pi, const int reason, va_list ap) { /*  what, fmt, args ... */
 	char  *bp;
 	char  *what;
 	char  *fmt;

@@ -13,11 +13,11 @@
 #include "pepsycodec.h"
 
 static void vprint1(void);
-static char *oct2str (char *s, int len);
-static void vsetfp (FILE *fp, char *s);
+static char *oct2str (char *s, const int len);
+static void vsetfp (const FILE *fp, char *s);
 static int ll_vprintf(LLog *lp, const char *fmt, va_list ap);
 static int ll_printf_evil(FILE *fp, const char *format, ...);
-static char *newbuf (int i);
+static char *newbuf (const int i);
 
 
 #ifndef __STDC__
@@ -56,8 +56,8 @@ static void _init_vfp (void)
 }
 #endif
 
-static char *oct2str (char *s, int len);
-static char *newbuf (int i);
+static char *oct2str (char *s, const int len);
+static char *newbuf (const int i);
 
 void vpush(void)  {
 	if (didvpush)
@@ -98,7 +98,7 @@ void vname (char *name) {
 	didname = 1;
 }
 
-void vtag (int class, int id) {
+void vtag (const int class, const int id) {
 	char *bp;
 	static char buffer[BUFSIZ];
 
@@ -203,7 +203,7 @@ void vstring (PE pe) {
 	}
 }
 
-static char *oct2str (char *s, int len) {
+static char *oct2str (char *s, const int len) {
 	int     ia5ok;
 	int    k;
 	char  *bp, *cp, *dp, *zp;
@@ -294,7 +294,7 @@ static char *oct2str (char *s, int len) {
 	return zp;
 }
 
-char *bit2str (PE pe, char *s) {
+char *bit2str (PE pe, const char *s) {
 	int ia5ok;
 	int hit, i, j, k;
 	char *bp, *cp, *zp;
@@ -469,11 +469,11 @@ bad_pe:
 	}
 }
 
-void vpushfp (FILE *fp, PE pe, char *s, int rw) {
+void vpushfp (FILE *fp, PE pe, const char *s, const int rw) {
 	vpushpp (fp, pe, s, rw);
 }
 
-void vsetfp (FILE *fp, char *s) {
+void vsetfp (const FILE *fp, char *s) {
 	vfp = fp;
 	vfnx = fprintf;
 
@@ -489,7 +489,7 @@ void vpopfp(void)  {
 	vpopp ();
 }
 
-void vpushstr (char *cp) {
+void vpushstr (const char *cp) {
 	vfp = NULL;
 	vbp = vsp = cp;
 	vlevel = didname = didvpush = didvpop = docomma = 0;
@@ -506,8 +506,8 @@ void vpopstr(void)  {
 void vpushpp (
 	FILE *f,
 	PE pe,
-	char *text,
-	int rw
+	const char *text,
+	const int rw
 ) {
 	fprintf(f, "%s %s", rw ? "read" : "wrote", text ? text : "pdu");
 	if (pe -> pe_context != PE_DFLT_CTX)
@@ -553,7 +553,7 @@ static int ll_printf_evil(FILE *fp, const char *format, ...) {
  * ind: index into tables
  * mod: pointer to tables
  */
-void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
+void pvpdu (LLog *lp, const int ind, modtyp *mod, PE pe, const char *text, const int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	vfp = (FILE *) lp, vfnx = ll_printf_evil;
@@ -578,7 +578,7 @@ void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw) {
 
 static char *bufp = NULL;
 
-static char *newbuf (int i) {
+static char *newbuf (const int i) {
 	static unsigned int len = 0;
 	unsigned int need;
 
@@ -598,7 +598,7 @@ static char *newbuf (int i) {
 
 /*  VPDU - support for backwards compatibility */
 
-void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, char *text, int rw) {
+void _vpdu (LLog *lp, pepy_printfn fnx, PE pe, const char *text, const int rw) {
 	char   *bp;
 	char   buffer[BUFSIZ];
 	vfp = (FILE *) lp, vfnx = ll_printf_evil;

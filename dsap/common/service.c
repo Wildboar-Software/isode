@@ -50,9 +50,9 @@ int get_default_service (CommonArgs *ca)
 {
 	PS opt;
 	char buffer [LINESIZE];
-	extern int sizelimit;
-	extern int timelimit;
-	static CommonArgs sca = default_common_args;
+	extern const int sizelimit;
+	extern const int timelimit;
+	static const CommonArgs sca = default_common_args;
 
 	*ca = sca;  /* struct copy */
 	ca->ca_servicecontrol.svc_sizelimit = sizelimit;
@@ -81,7 +81,7 @@ int get_default_service (CommonArgs *ca)
 	return (OK);
 }
 
-int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
+int service_control (PS opt, const int argc, char **argv, CommonArgs *ca)
 {
 	if (get_default_service (ca) != OK) {
 		ps_print (opt,"default service error - check quipurc\n");
@@ -94,7 +94,7 @@ int service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 {
 	ServiceControl  *sc;
-	void shuffle_up (int argc, char **argv, int start);
+	void shuffle_up (const int argc, char **argv, const int start);
 	int             x;
 	char            shuffle;
 
@@ -215,7 +215,7 @@ int do_service_control (PS opt, int argc, char **argv, CommonArgs *ca)
 	return (argc);
 }
 
-void shuffle_up (int argc, char **argv, int start) {
+void shuffle_up (const int argc, char **argv, const int start) {
 	int    x;
 
 	for (x = start; x < argc; x++)
@@ -225,7 +225,7 @@ void shuffle_up (int argc, char **argv, int start) {
 			argv[x] = argv[x + 1];
 }
 
-void new_service (char *ptr) {
+void new_service (const char *ptr) {
 	if (ptr != 0) {
 		if (*default_service != 0)
 			strcat (default_service," ");
@@ -282,7 +282,7 @@ int add_sequence (DN adn)
 	return (x);
 }
 
-DN sequence_dn(int y)
+DN sequence_dn(const int y)
 {
 	struct dua_seq_entry * ptr;
 	int x = 1;
@@ -300,7 +300,7 @@ DN sequence_dn(int y)
 	return (NULLDN);
 }
 
-void show_sequence (PS RPS, char *str, char ufn)
+void show_sequence (PS RPS, char *str, const char ufn)
 {
 	struct dua_seq_entry * ptr;
 	int x = 1;

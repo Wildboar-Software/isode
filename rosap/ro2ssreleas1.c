@@ -8,11 +8,11 @@
 #include <signal.h>
 #include "ropkt.h"
 
-static int  RoEndRequestAux (struct assocblk *acb, int priority, struct RoSAPindication *roi);
+static int  RoEndRequestAux (struct assocblk *acb, const int priority, struct RoSAPindication *roi);
 
 /* RO-END.REQUEST */
 
-int RoEndRequest (int sd, int priority, struct RoSAPindication *roi) {
+int RoEndRequest (const int sd, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -31,7 +31,7 @@ int RoEndRequest (int sd, int priority, struct RoSAPindication *roi) {
 
 }
 
-static int RoEndRequestAux (struct assocblk *acb, int priority, struct RoSAPindication *roi) {
+static int RoEndRequestAux (struct assocblk *acb, const int priority, struct RoSAPindication *roi) {
 	int     result;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;

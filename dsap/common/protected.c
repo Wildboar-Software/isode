@@ -16,7 +16,7 @@ static void *
 str2prot (char *str);
 static void prot_print (PS ps, void *value, int format);
 char *hash2str (unsigned long hash, int *len);
-unsigned long hash_passwd (unsigned long seed, char *str, int len);
+unsigned long hash_passwd (unsigned long seed, const char *str, const int len);
 static int prot_cmp (void *value1, void *value2);
 static void *
 prot_cpy (void *value);
@@ -125,18 +125,18 @@ char *hash2str (unsigned long hash, int *len) {
 /* insecure hash function for testing purposes */
 
 unsigned long
-hash_passwd (unsigned long seed, char *str, int len) {
+hash_passwd (unsigned long seed, const char *str, const int len) {
 	seed = 0;
 	DLOG(log_dsap, LLOG_DEBUG, ("Hash = %D", seed));
 	return (seed);
 }
 
 int check_guard (
-	char *pwd, /* This string is not null-terminated */
-	int pwd_len,
-	char *salt, /* Null-terminated salt */
-	char *hval, /* This string is not null-terminated */
-	int hlen
+	const char *pwd, /* This string is not null-terminated */
+	const int pwd_len,
+	const char *salt, /* Null-terminated salt */
+	const char *hval, /* This string is not null-terminated */
+	const int hlen
 ) {
 	return (2);
 }

@@ -7,7 +7,7 @@
 
 /* P-U-EXCEPTION-REPORT.REQUEST */
 
-int PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi) {
+int PUReportRequest (const int sd, const int reason, PE *data, const int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     len,
 			result;

@@ -12,33 +12,33 @@ static int fre_seq (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 );
-static int callsfn (ptpe *p, modtyp *mod);
+static int callsfn (const ptpe *p, modtyp *mod);
 
 static int fre_seq (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 );
-static int callsfn (ptpe *p, modtyp *mod);
+static int callsfn (const ptpe *p, modtyp *mod);
 
 
-extern int ferr (int n, char *mesg);
+extern int ferr (const int n, const char *mesg);
 
 extern int ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 );
 
 static int fre_type (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 );
 
 extern ptpe *next_tpe(ptpe *p);
@@ -46,16 +46,16 @@ extern int pepsylose (modtyp *module, ...);
 #define NEXT_TPE(p)	p = next_tpe(p)
 #define CHKTAG(mod, p, pe)	ismatch(p, mod, pe->pe_class, pe->pe_id)
 
-static int fre_seq(char *parm, ptpe *p, modtyp *mod, int dofree);
-static int fre_seqof(char *parm, ptpe *p, modtyp *mod, int dofree);
-static int fre_choice(char *parm, ptpe *p, modtyp *mod, int dofree);
+static int fre_seq(char *parm, ptpe *p, modtyp *mod, const int dofree);
+static int fre_seqof(char *parm, ptpe *p, modtyp *mod, const int dofree);
+static int fre_choice(char *parm, ptpe *p, modtyp *mod, const int dofree);
 
 /*
  * free an objects data. Basic algorithm is to walk through it twice
  * first time freeing all the "children" of the data structure - then
  * the second time free the structure itself
  */
-int fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree) {
+int fre_obj (char *parm, ptpe *p, modtyp *mod, const int dofree) {
 	char   *malptr = NULL;	/* Have we seen a malloc */
 	int	    ndofree = dofree;	/* Does the function below deallocate space */
 
@@ -105,7 +105,7 @@ static int fre_type (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 ) {
 
 	if (parm == 0)
@@ -325,7 +325,7 @@ static int fre_seq (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 ) {
 	/*    int    *popt = NULL;	Pointer to optional field */
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -462,7 +462,7 @@ static int fre_seqof (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 ) {
 	ptpe    *start;		/* first entry in list */
 	char   *oparm;
@@ -595,7 +595,7 @@ static int fre_choice (
 	char *parm,
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int dofree
+	const int dofree
 ) {
 	int     cnt;
 	char   *malptr = NULL;	/* Have we seen a malloc */
@@ -656,7 +656,7 @@ static int fre_choice (
  * Basically we have to stop FN_CALL being tested by hasdata which will call
  * the decoding function which is illegal and gives rubbish.
  */
-int callsfn (ptpe *p, modtyp *mod) {
+int callsfn (const ptpe *p, modtyp *mod) {
 
 	while (p->pe_type != PE_END) {
 		switch (p->pe_type) {

@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+static int FAccessResponseAux (struct ftamblk *fsb, const int action, const struct FADUidentity *identity, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
 
 /*    F-{LOCATE,ERASE}.RESPONSE */
 int FAccessResponse (
-	int sd,
-	int action,
-	struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */
+	const int sd,
+	const int action,
+	const struct FADUidentity *identity,	/* F-LOCATE.RESPONSE only */
 	struct FTAMdiagnostic diag[],
-	int ndiag,
+	const int ndiag,
 	struct FTAMindication *fti
 ) {
 	SBV	    smask;
@@ -39,7 +39,7 @@ int FAccessResponse (
 	return result;
 }
 
-static int FAccessResponseAux (struct ftamblk *fsb, int action, struct FADUidentity *identity, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+static int FAccessResponseAux (struct ftamblk *fsb, const int action, const struct FADUidentity *identity, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;

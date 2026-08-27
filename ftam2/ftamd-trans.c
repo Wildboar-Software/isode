@@ -19,12 +19,12 @@ static int  nbytes;
 
 static int uxfget (struct FTAMdiagnostic **diags);
 static int fdfget (struct FTAMdiagnostic **diags);
-static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0);
-static int de2fadu (PE pe, int concat);
+static void tvsub (struct timeval* tdiff,const struct timeval* t1,const struct timeval* t0);
+static int de2fadu (PE pe, const int concat);
 
 /* TRANSFER */
 
-void ftam_bulkbeginindication (struct FTAMgroup *ftg) {
+void ftam_bulkbeginindication (const struct FTAMgroup *ftg) {
 	int	    state;
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
@@ -70,7 +70,7 @@ void ftam_bulkbeginindication (struct FTAMgroup *ftg) {
    are sent.
 */
 
-void ftam_readwriteindication (struct FTAMreadwrite *ftrw) {
+void ftam_readwriteindication (const struct FTAMreadwrite *ftrw) {
 	int	    result;
 	struct FADUidentity *fa = &ftrw -> ftrw_identity;
 	struct FTAMdiagnostic   diags[NFDIAG];
@@ -824,7 +824,7 @@ error_return:
 	}
 }
 
-static int de2fadu (PE pe, int concat) {
+static int de2fadu (PE pe, const int concat) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -905,7 +905,7 @@ static int de2fadu (PE pe, int concat) {
 	return DONE;
 }
 
-void ftam_dataindication (struct PSAPdata *px) {
+void ftam_dataindication (const struct PSAPdata *px) {
 	int    i;
 	int	    effector,
 			n;
@@ -1029,7 +1029,7 @@ void ftam_dataindication (struct PSAPdata *px) {
 	PXFREE (px);
 }
 
-void ftam_dataendindication (struct FTAMdataend *ftda) {
+void ftam_dataendindication (const struct FTAMdataend *ftda) {
 	timer (nbytes, "received");
 #if     !defined(SYS5) || defined(SVR4)
 	if (ftda -> ftda_action == FACTION_SUCCESS)
@@ -1037,7 +1037,7 @@ void ftam_dataendindication (struct FTAMdataend *ftda) {
 #endif
 }
 
-void ftam_cancelindication (struct FTAMcancel *ftcn) {
+void ftam_cancelindication (const struct FTAMcancel *ftcn) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1050,7 +1050,7 @@ void ftam_cancelindication (struct FTAMcancel *ftcn) {
 		ftam_adios (&fti -> fti_abort, "F-CANCEL.RESPONSE");
 }
 
-void ftam_transendindication (struct FTAMtransend *ftre) {
+void ftam_transendindication (const struct FTAMtransend *ftre) {
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;
 
@@ -1059,7 +1059,7 @@ void ftam_transendindication (struct FTAMtransend *ftre) {
 		ftam_adios (&fti -> fti_abort, "F-TRANSFER-END.RESPONSE");
 }
 
-void ftam_bulkendindication (struct FTAMgroup *ftg) {
+void ftam_bulkendindication (const struct FTAMgroup *ftg) {
 	struct FTAMgroup    ftms;
 	struct FTAMgroup   *ftm = &ftms;
 	struct FTAMindication   ftis;
@@ -1086,7 +1086,7 @@ void ftam_bulkendindication (struct FTAMgroup *ftg) {
 #endif
 
 #ifndef	TMS
-void timer (int cc, char *action) {
+void timer (const int cc, const char *action) {
 	long    ms;
 	float   bs;
 	struct timeval  stop,
@@ -1108,7 +1108,7 @@ void timer (int cc, char *action) {
 			cc, action, td.tv_sec, td.tv_usec / 10000, bs / 1024);
 }
 
-static void tvsub (struct timeval* tdiff,struct timeval* t1,struct timeval* t0) {
+static void tvsub (struct timeval* tdiff,const struct timeval* t1,const struct timeval* t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)

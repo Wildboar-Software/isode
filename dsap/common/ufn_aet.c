@@ -8,14 +8,14 @@
 #include "quipu/dua.h"
 #include "quipu/dap.h"
 static Filter aet_filter (char *context);
-static int aet_search (DN base, char subtree, Filter filt, DNS *res);
+static int aet_search (DN base, const char subtree, Filter filt, DNS *res);
 
 
 extern LLog * log_dsap;
 extern LLog * addr_log;
 
 extern Filter ocfilter (char *s);
-extern Filter joinfilter (Filter f, char type);
+extern Filter joinfilter (Filter f, const char type);
 
 extern char PY_pepy[];
 void	PY_advise (char *, char *, ...);
@@ -43,12 +43,12 @@ static Filter aet_filter (char *context)
 	return joinfilter (b,FILTER_AND);
 }
 
-static int aet_search (DN base, char subtree, Filter filt, DNS *res)
+static int aet_search (DN base, const char subtree, Filter filt, DNS *res)
 {
 	struct ds_search_arg search_arg;
 	static struct ds_search_result result;
 	struct DSError err;
-	static CommonArgs ca = default_common_args;
+	static const CommonArgs ca = default_common_args;
 	EntryInfo * ptr;
 	DNS newdns, r = NULLDNS;
 
@@ -88,7 +88,7 @@ static int aet_search (DN base, char subtree, Filter filt, DNS *res)
 }
 
 int aet_match (
-	int c,
+	const int c,
 	char **v,
 	DNS (*interact) (DNS, DN, char *),
 	DNS *result,

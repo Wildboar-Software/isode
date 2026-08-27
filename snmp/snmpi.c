@@ -81,8 +81,8 @@ static	char   *community = "public";
 static	int	sd;
 static	struct TSAPaddr  snmp_ta;
 
-char   *snmp_error (int i);
-static struct type_SNMP_Message *new_message (int offset, char **vec);
+char   *snmp_error (const int i);
+static struct type_SNMP_Message *new_message (const int offset, char **vec);
 
 void	adios (char *what, char *fmt, ...);
 void	advise (char *what, char *fmt, ...);
@@ -106,7 +106,7 @@ static int f_set (char **vec);
 static int f_help (char **vec);
 static int f_quit (char **vec);
 static int f_status (char **vec);
-static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset);
+static int get_ava (struct type_SNMP_VarBind *v, char *ava, const int offset);
 static int process (struct type_SNMP_Message *msg);
 static int ncols (FILE *fp);
 static void arginit (char **argv); 
@@ -138,7 +138,7 @@ static struct dispatch dispatches[] = {
 };
 
 static	int	helpwidth;
-static int  _getline (char *prompt, char *buffer), snmploop (char **vec, int error);
+static int  _getline (const char *prompt, const char *buffer), snmploop (char **vec, const int error);
 
 int main (int argc, char **argv, char **envp) {
 	int	    eof,
@@ -205,7 +205,7 @@ were_out_of_here:
 	exit (status);		/* NOTREACHED */
 }
 
-static int  snmploop (char **vec, int error) {
+static int  snmploop (char **vec, const int error) {
 	struct dispatch *ds;
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
 		return error;
@@ -875,7 +875,7 @@ static char *errors[] = {
 	"noError", "tooBig", "noSuchName", "badValue", "readOnly", "genErr"
 };
 
-char *snmp_error (int i) {
+char *snmp_error (const int i) {
 	static char buffer[BUFSIZ];
 	if (0 < i && i < sizeof errors / sizeof errors[0])
 		return errors[i];
@@ -883,7 +883,7 @@ char *snmp_error (int i) {
 	return buffer;
 }
 
-static struct type_SNMP_Message *new_message (int offset, char **vec) {
+static struct type_SNMP_Message *new_message (const int offset, char **vec) {
 	struct type_SNMP_Message *msg;
 	struct type_SNMP_PDUs *pdu;
 	struct type_SNMP_PDU *parm;
@@ -926,7 +926,7 @@ static struct type_SNMP_Message *new_message (int offset, char **vec) {
 	return msg;
 }
 
-static int get_ava (struct type_SNMP_VarBind *v, char *ava, int offset) {
+static int get_ava (struct type_SNMP_VarBind *v, char *ava, const int offset) {
 	int	    result;
 	caddr_t value;
 	char *cp;
@@ -1269,7 +1269,7 @@ static struct ivar {
 };
 
 static void enum_print (integer *x, OS os) {
-	int	    i = *x;
+	const int	    i = *x;
 
 	if (i <= 0 || i > os -> os_data2)
 		printf ("unknown(%d)", i);
@@ -1277,7 +1277,7 @@ static void enum_print (integer *x, OS os) {
 		printf ("%s(%d)", os -> os_data1[i - 1], i);
 }
 
-static void moresyntax (int check) {
+static void moresyntax (const int check) {
 	struct ivar *iv;
 	OT	   ot;
 	OS	   os;
@@ -1572,7 +1572,7 @@ cots:
 #else
 	{
 		unsigned int seed;
-		long now = time ((long *) 0);
+		const long now = time ((long *) 0);
 
 		if (long2uint (now, &seed) != 0)
 			seed = 1;
@@ -1592,7 +1592,7 @@ cots:
 
 /* INTERACTIVE */
 
-static int  _getline (char *prompt, char *buffer) {
+static int  _getline (const char *prompt, const char *buffer) {
 	int    i;
 	char  *cp, *ep;
 	static int  sticky = 0;
@@ -1665,7 +1665,7 @@ static int  ncols (FILE *fp) {
 }
 
 #ifndef	lint
-static void	_advise (char *what, char *fmt, va_list ap);
+static void	_advise (char *what, const char *fmt, va_list ap);
 
 void adios (char *what, char *fmt, ...) {
 	va_list ap;
@@ -1689,7 +1689,7 @@ void advise (char *what, char *fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char *what, char *fmt, va_list ap)
+static void  _advise (char *what, const char *fmt, va_list ap)
 {
 	char    buffer[BUFSIZ];
 	_asprintf (buffer, what, fmt, ap);

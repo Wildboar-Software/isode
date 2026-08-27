@@ -21,7 +21,7 @@ char   *getpass ();
 char *getpassword (char *prompt) {
 #ifndef	BSD44
 	int    c;
-	int	    flags,
+	const int	    flags,
 			isopen;
 	char  *bp,
 		  *ep;

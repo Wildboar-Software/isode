@@ -132,47 +132,47 @@ struct TSAPdisconnect {		/* T-DISCONNECT.INDICATION */
 
 extern char *tsapversion;
 
-int	TInit (int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td);		/* T-CONNECT.INDICATION */
+int	TInit (const int vecp, char **vec, struct TSAPstart *ts, struct TSAPdisconnect *td);		/* T-CONNECT.INDICATION */
 
-int	TConnResponse (int sd, struct TSAPaddr *responding, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPdisconnect *td);	/* T-CONNECT.RESPONSE */
+int	TConnResponse (const int sd, const struct TSAPaddr *responding, const int expedited, char *data, const int cc, struct QOStype *qos, struct TSAPdisconnect *td);	/* T-CONNECT.RESPONSE */
 /* T-CONNECT.REQUEST (backwards-compatible) */
 #define	TConnRequest(a1,a2,a3,a4,a5,a6,a7,a8) \
 	TAsynConnRequest(a1,a2,a3,a4,a5,a6,a7,a8,0)
-int	TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async);	/* T-(ASYN-)CONNECT.REQUEST */
-int	TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);	/* T-ASYN-RETRY.REQUEST (pseudo) */
-int	TDataRequest (int sd, char *data, int cc, struct TSAPdisconnect *td);	/* T-DATA.REQUEST */
+int	TAsynConnRequest (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async);	/* T-(ASYN-)CONNECT.REQUEST */
+int	TAsynRetryRequest (const int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);	/* T-ASYN-RETRY.REQUEST (pseudo) */
+int	TDataRequest (const int sd, const char *data, const int cc, struct TSAPdisconnect *td);	/* T-DATA.REQUEST */
 struct udvec;
-int	TWriteRequest (int sd, struct udvec *uv, struct TSAPdisconnect *td);	/* T-WRITE.REQUEST (pseudo) */
-int	TExpdRequest (int sd, char *data, int cc, struct TSAPdisconnect *td);	/* T-EXPEDITED-DATA.REQUEST */
-int	TReadRequest (int sd, struct TSAPdata *tx, int secs, struct TSAPdisconnect *td);	/* T-READ.REQUEST (pseudo) */
-int	TDiscRequest (int sd, char *data, int cc, struct TSAPdisconnect *td);	/* T-DISCONNECT.REQUEST */
+int	TWriteRequest (const int sd, struct udvec *uv, struct TSAPdisconnect *td);	/* T-WRITE.REQUEST (pseudo) */
+int	TExpdRequest (const int sd, const char *data, const int cc, struct TSAPdisconnect *td);	/* T-EXPEDITED-DATA.REQUEST */
+int	TReadRequest (const int sd, struct TSAPdata *tx, const int secs, struct TSAPdisconnect *td);	/* T-READ.REQUEST (pseudo) */
+int	TDiscRequest (const int sd, char *data, const int cc, struct TSAPdisconnect *td);	/* T-DISCONNECT.REQUEST */
 
 /* define vectors for INDICATION events */
 int TSetIndications (
-	int sd,
+	const int sd,
 	void (*data)(int sd, struct TSAPdata *tx),
 	void (*disc)(int sd, struct TSAPdisconnect *td),
 	struct TSAPdisconnect *td
 );
-int	TSelectMask (int sd, fd_set *mask, int *nfds, struct TSAPdisconnect *td);		/* map transport descriptors for select() */
-int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td);	/* estimate of octets that might be returned */
-int	TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td);	/* get TSAPs */
+int	TSelectMask (const int sd, const fd_set *mask, const int *nfds, struct TSAPdisconnect *td);		/* map transport descriptors for select() */
+int	TSelectOctets (const int sd, long int *nbytes, struct TSAPdisconnect *td);	/* estimate of octets that might be returned */
+int	TGetAddresses (const int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td);	/* get TSAPs */
 int	TSetManager (int sd, int (*fnx)(unsigned int type, ...), struct TSAPdisconnect *td);		/* defining transport manager */
 
-char   *TErrString (int code);		/* return TSAP error code in string form */
+char   *TErrString (const int code);		/* return TSAP error code in string form */
 
 int	TNetListen (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* start listenting on an TSAP */
 int	TNetUnique (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* start listenting on a set of unique TSAPs */
 #define	TNetAccept(p,v,n,r,w,e,s,t) \
 	TNetAcceptAux ((p), (v), NULL, NULLTA, (n), (r), (w), (e), (s), (t))
-int	TNetAcceptAux (int *vecp, char **vec, int *newfd, struct TSAPaddr *ta, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td);	/* accept a call on an TSAP */
-int	TNetClose (struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* stop listening on an TSAP */
-int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td);	/* enable/disable queued (non-blocking) writes */
+int	TNetAcceptAux (int *vecp, char **vec, int *newfd, struct TSAPaddr *ta, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, const int secs, struct TSAPdisconnect *td);	/* accept a call on an TSAP */
+int	TNetClose (const struct TSAPaddr *ta, struct TSAPdisconnect *td);		/* stop listening on an TSAP */
+int	TSetQueuesOK (const int sd, const int onoff, struct TSAPdisconnect *td);	/* enable/disable queued (non-blocking) writes */
 
 typedef int (*MagicFunction)(int *vecp, char **vec, struct TSAPdisconnect *td);
 
 int	TNetListenAux (struct TSAPaddr *ta, MagicFunction magic, struct TSAPdisconnect *td);
-int	TNetFork (int vecp, char **vec, struct TSAPdisconnect *td);
+int	TNetFork (const int vecp, char **vec, struct TSAPdisconnect *td);
 
 int	tsaplose (struct TSAPdisconnect*td, ...);
 

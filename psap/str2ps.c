@@ -88,7 +88,7 @@ int str_open (PS ps) {
 	return OK;
 }
 
-int str_setup (PS ps, char *cp, int cc, int in_line) {
+int str_setup (PS ps, char *cp, const int cc, const int in_line) {
 	char  *dp;
 
 	if (in_line) {

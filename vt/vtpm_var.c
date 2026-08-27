@@ -1,7 +1,7 @@
 #include "acsap.h"		/* definitions for AcS-USERs */
 
 PE	pre, pwe;
-PE	mkdeliver (int ack); 
+PE	mkdeliver (const int ack); 
 int	fd,
 	readfds,
 	writefds,

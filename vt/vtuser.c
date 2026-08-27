@@ -14,7 +14,7 @@
 #include <termio.h>
 #else
 #include <sys/ioctl.h>
-static int vass_req(int class, int acc_ri, VT_PROFILE *profile);
+static int vass_req(const int class, const int acc_ri, const VT_PROFILE *profile);
 
 #endif
 
@@ -53,28 +53,28 @@ int default_rep_flag = 0;
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
 
-int		putch (char);
+int		putch (const char);
 
 void vtsend (void);
 void vtdata (PE ndq);
-void vdelreq (int ack);
-void vdelind (PE del_pe, int ack);
-void vdatind (int type, PE pe);
+void vdelreq (const int ack);
+void vdelind (PE del_pe, const int ack);
+void vdatind (const int type, PE pe);
 void vhdatind (PE pe);
 void vudatind (PE pe);
 int con_req (void);
 int read_asq (PE pe);
 int data_pending (void);
 int getch (void);
-int send_queue (TEXT_UPDATE ud);
+int send_queue (const TEXT_UPDATE ud);
 int queued (void);
-int do_event (int event, PE pe);
-int get_event (int dd, PE *pe);
+int do_event (const int event, PE pe);
+int get_event (const int dd, PE *pe);
 void map (PE ndq);
-void control_ud (CO_UPDATE *coptr);
+void control_ud (const CO_UPDATE *coptr);
 void flushbufs (void);
 void vt_clr_obj (void);
-void ptyecho (int on);
+void ptyecho (const int on);
 void vt_rem_echo (char *img_addr);
 void vt_sup_ga (char *img_addr);
 void kill_proc (void);
@@ -93,7 +93,7 @@ int con_req (void);
 /*									 */
 /*		PROFILE - designator of the VT profile to request	 */
 /*************************************************************************/
-int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
+int vass_req(const int class, const int acc_ri, const VT_PROFILE *profile) {
 	PE		a_req;
 	ASQ_MSG		ud;
 	char		my_version, my_fu;
@@ -183,7 +183,7 @@ int vass_req(int class, int acc_ri, VT_PROFILE *profile) {
 /*		RESULT - SUCCESS or FAILURE				      */
 /******************************************************************************/
 
-int vass_resp (int result) {
+int vass_resp (const int result) {
 	PE	a_resp;
 	char	my_version, my_fu;
 	ASR_MSG ud;
@@ -287,7 +287,7 @@ void vrelreq (void) {
 /*									 */
 /*************************************************************************/
 
-void vrelrsp (int result) {
+void vrelrsp (const int result) {
 	int offset = 0;
 	PE  r_rsp, r_result, r_coll;
 
@@ -356,7 +356,7 @@ int	cur_emode = NOT_ECHO_NOW; /* echo mode (ECHO_NOW or NOT_ECHO_NOW)*/
 /*		LEN - Number of characters in the string.		 */
 /*************************************************************************/
 
-int vt_text (char *str, int len) {
+int vt_text (const char *str, const int len) {
 	TEXT_UPDATE ud;
 
 	if (debug > 6) {
@@ -380,7 +380,7 @@ int vt_text (char *str, int len) {
 }
 
 /*Build NDQ with update supplied in ud structure*/
-int send_queue (TEXT_UPDATE ud) {
+int send_queue (const TEXT_UPDATE ud) {
 	PE vtsdip;
 	if(p_ondq == NULLPE) {	/*Nothing waiting to be sent*/
 		if(build_NDQPDU_NDQpdu(&p_ondq,1,0,NULLCP,(PEPYPARM)&ud) == NOTOK)
@@ -402,7 +402,7 @@ int send_queue (TEXT_UPDATE ud) {
 
 		MODE - ECHO_NOW or NOT_ECHO_NOW
 */
-int setemode (int mode) {
+int setemode (const int mode) {
 	if (mode != ECHO_NOW && mode != NOT_ECHO_NOW)
 		return(NOTOK);
 	if (cur_emode != mode) {
@@ -535,7 +535,7 @@ int queued (void) {
 /*									 */
 /*	RETURNS - OK on success, NOTOK otherwise			 */
 /*************************************************************************/
-int putch (char c) {
+int putch (const char c) {
 	if (debug > 1) {
 		advise(LLOG_DEBUG, NULLCP,  "in putch, queued is %d, c is %c", cbuf.queued, c);
 		advise(LLOG_DEBUG, NULLCP,  "cbuf.buf is %p, cbuf.head is %p, cbuf.tail is %p", cbuf.buf, cbuf.head, cbuf.tail);
@@ -593,7 +593,7 @@ void vtdata (PE ndq) {
 /*		allowed at this time.					*/
 /************************************************************************/
 
-PE mkdeliver (int ack) {
+PE mkdeliver (const int ack) {
 	PE	p_dlq;
 
 	if (ack != FALSE)
@@ -610,7 +610,7 @@ PE mkdeliver (int ack) {
 /* VDELREQ - create a deliver request PE and generate a VDELreq		  */
 /*			event to send it.				  */
 /**************************************************************************/
-void vdelreq (int ack) {
+void vdelreq (const int ack) {
 	PE	p_dlq;
 
 	if (ack)
@@ -629,7 +629,7 @@ void vdelreq (int ack) {
 /*			ACK - TRUE or FALSE according to whether 	  */
 /*			acknowledgement is requested or not.		  */
 /**************************************************************************/
-void vdelind (PE del_pe, int ack) {
+void vdelind (PE del_pe, const int ack) {
 	if (ack) {
 		if (debug)
 			advise(LLOG_DEBUG, NULLCP,  "vdelind with ack requested not implemented!");
@@ -644,7 +644,7 @@ void vdelind (PE del_pe, int ack) {
 /* PARAMETERS - "type" can be SEQUENCED or NONSEQUENCED			*/
 /*				only SEQUENCED is implemented now	*/
 /************************************************************************/
-void vdatind (int type, PE pe) {
+void vdatind (const int type, PE pe) {
 	if (type != SEQUENCED)
 		adios(NULLCP, "unimplemented NDQ type %d", type);
 	map(pe);
@@ -1005,7 +1005,7 @@ void vt_disconnect (void) {
 char   *ctime (const time_t *timer);
 int	result;
 
-int ass_ind (int argc, char **argv) {
+int ass_ind (const int argc, char **argv) {
 	struct PSAPctxlist *pl;
 
 	aca = &aci->aci_abort;

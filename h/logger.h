@@ -65,11 +65,11 @@ int	ll_printf (LLog*, ...);
 char   *ll_preset (char*, ...);
 
 int	ll_open (LLog *lp);
-int	_ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap);
+int	_ll_log (LLog *lp, const int event, char *what, const char *fmt, va_list ap);
 int	ll_close (LLog *lp);
 
-void ll_hdinit (LLog *lp, char *prefix);
-void ll_dbinit (LLog *lp, char *prefix);
+void ll_hdinit (LLog *lp, const char *prefix);
+void ll_dbinit (LLog *lp, const char *prefix);
 
 int	ll_printf (LLog*, ...);
 int	ll_sync (LLog *lp);

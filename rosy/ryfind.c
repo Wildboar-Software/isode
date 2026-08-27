@@ -3,7 +3,7 @@
 #include <string.h>
 #include "rosy.h"
 
-struct RyOperation *findopbyop (struct RyOperation *ryo, int op)
+struct RyOperation *findopbyop (struct RyOperation *ryo, const int op)
 {
 	if (!ryo)
 		return NULL;
@@ -13,7 +13,7 @@ struct RyOperation *findopbyop (struct RyOperation *ryo, int op)
 	return NULL;
 }
 
-struct RyOperation *findopbyname (struct RyOperation *ryo, char *name)
+struct RyOperation *findopbyname (struct RyOperation *ryo, const char *name)
 {
 	if (!ryo)
 		return NULL;
@@ -23,7 +23,7 @@ struct RyOperation *findopbyname (struct RyOperation *ryo, char *name)
 	return NULL;
 }
 
-struct RyError *finderrbyerr (struct RyError *rye, int err)
+struct RyError *finderrbyerr (struct RyError *rye, const int err)
 {
 	if (!rye)
 		return NULL;
@@ -33,7 +33,7 @@ struct RyError *finderrbyerr (struct RyError *rye, int err)
 	return NULL;
 }
 
-struct RyError *finderrbyname (struct RyError *rye, char *name)
+struct RyError *finderrbyname (struct RyError *rye, const char *name)
 {
 	if (!rye)
 		return NULL;

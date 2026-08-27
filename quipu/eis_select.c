@@ -3,13 +3,13 @@
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 #include "quipu/entry.h"
-Attr_Sequence attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node);
-Attr_Sequence dsa_eis_select ( EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, /* If TRUE - it is a Quipu context association */ DN node );
+Attr_Sequence attr_eis_select (const EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node);
+Attr_Sequence dsa_eis_select ( const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, /* If TRUE - it is a Quipu context association */ DN node );
 static Attr_Sequence cpy_as_comp (Attr_Sequence as);
 static Attr_Sequence
 cpy_as_comp_type (Attr_Sequence as);
-int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn);
-Attr_Sequence eis_select (EntryInfoSelection eis, Entry entryptr, DN dn, char qctx, DN node);
+int eis_check (const EntryInfoSelection eis, Entry entryptr, DN dn);
+Attr_Sequence eis_select (const EntryInfoSelection eis, Entry entryptr, DN dn, const char qctx, DN node);
 
 
 extern LLog * log_dsap;
@@ -19,7 +19,7 @@ extern LLog * log_dsap;
 static Attr_Sequence  cpy_as_comp_type(Attr_Sequence as);
 Attr_Sequence  cpy_as_comp(Attr_Sequence as);
 static Attr_Sequence  as_cpy_type(Attr_Sequence as);
-static Attr_Sequence  as_cpy_enc (Attr_Sequence, DN, DN, char);
+static Attr_Sequence  as_cpy_enc (Attr_Sequence, DN, DN, const char);
 extern AV_Sequence avs_cpy_enc(AV_Sequence avs);
 extern Attr_Sequence dsa_pseudo_attr;
 extern AttributeType at_acl;
@@ -27,10 +27,10 @@ extern AttributeType at_acl;
 extern int update_pseudo_attr (void);
 
 Attr_Sequence eis_select (
-	EntryInfoSelection eis,
+	const EntryInfoSelection eis,
 	Entry entryptr,
 	DN dn,
-	char qctx,	/* If TRUE - it is a Quipu context association */
+	const char qctx,	/* If TRUE - it is a Quipu context association */
 	DN node
 ) {
 	Attr_Sequence result = NULLATTR;
@@ -138,7 +138,7 @@ got_always:
 }
 
 Attr_Sequence
-attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
+attr_eis_select (const EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 	Attr_Sequence result = NULLATTR;
 	Attr_Sequence trail;
 	Attr_Sequence temp;
@@ -188,10 +188,10 @@ attr_eis_select (EntryInfoSelection eis, Attr_Sequence as, DN dn, DN node) {
 
 Attr_Sequence
 dsa_eis_select (
-	EntryInfoSelection eis,
+	const EntryInfoSelection eis,
 	Entry entryptr,
 	DN dn,
-	char qctx,	/* If TRUE - it is a Quipu context association */
+	const char qctx,	/* If TRUE - it is a Quipu context association */
 	DN node
 ) {
 	Attr_Sequence result = NULLATTR;
@@ -262,7 +262,7 @@ cpy_as_comp_type (Attr_Sequence as) {
 	return (ptr);
 }
 
-int eis_check (EntryInfoSelection eis, Entry entryptr, DN dn) {
+int eis_check (const EntryInfoSelection eis, Entry entryptr, DN dn) {
 	Attr_Sequence temp;
 	Attr_Sequence as;
 	DN node;
@@ -310,7 +310,7 @@ as_cpy_type (Attr_Sequence as) {
 }
 
 static Attr_Sequence
-as_cpy_enc (Attr_Sequence as, DN dn, DN node, char qctx) {
+as_cpy_enc (Attr_Sequence as, DN dn, DN node, const char qctx) {
 	Attr_Sequence start;
 	Attr_Sequence ptr,ptr2;
 	Attr_Sequence eptr;

@@ -21,7 +21,7 @@
 #endif
 /* ERROR */
 
-int	RyDsError (int sd, int id, int err, caddr_t out, int priority, struct RoSAPindication *roi) {
+int	RyDsError (const int sd, const int id, const int err, caddr_t out, const int priority, struct RoSAPindication *roi) {
 	int	    result;
 	PE	    pe;
 	struct opsblk *opb;

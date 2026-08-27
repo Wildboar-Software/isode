@@ -9,7 +9,7 @@ static struct dspblk *DSHead = &dspque;
 
 /*    DISPATCH BLOCKS */
 
-struct dspblk  *newdsblk (int sd, struct RyOperation *ryo)
+struct dspblk  *newdsblk (const int sd, const struct RyOperation *ryo)
 {
 	struct dspblk *dsb;
 
@@ -33,7 +33,7 @@ void freedsblk (struct dspblk *dsb) {
 	free ((char *) dsb);
 }
 
-struct dspblk *finddsblk (int sd, int op) {
+struct dspblk *finddsblk (const int sd, const int op) {
 	struct dspblk *dsb;
 	if (once_only == 0)
 		return NULL;
@@ -43,7 +43,7 @@ struct dspblk *finddsblk (int sd, int op) {
 	return NULL;
 }
 
-void losedsblk (int sd) {
+void losedsblk (const int sd) {
 	struct dspblk *dsb, *ds2;
 	if (once_only == 0)
 		return;

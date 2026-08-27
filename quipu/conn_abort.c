@@ -12,9 +12,9 @@ extern  LLog    * log_dsap;
 struct connection *conn_alloc(void);
 void conn_free(struct connection *conn);
 
-void ds_log (struct DSAPabort *da, char *str, int fd);
+void ds_log (const struct DSAPabort *da, char *str, const int fd);
 
-void ds_log (struct DSAPabort *da, char *str, int fd) {
+void ds_log (const struct DSAPabort *da, char *str, const int fd) {
 	char buffer [BUFSIZ];
 	char * source;
 	char * reason;
@@ -75,7 +75,7 @@ void ds_log (struct DSAPabort *da, char *str, int fd) {
 	LLOG (log_dsap, LLOG_EXCEPTIONS, ("%s", buffer));
 }
 
-void force_close (int fd, struct DSAPindication *di) {
+void force_close (const int fd, const struct DSAPindication *di) {
 	struct tsapblk *tb;
 	int level = LLOG_EXCEPTIONS;
 

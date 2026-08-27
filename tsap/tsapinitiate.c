@@ -11,7 +11,7 @@
 #include "manifest.h"
 #include "tailor.h"
 
-int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td);
+int TAsynNextRequest (const int sd, const struct TSAPconnect *tc, struct TSAPdisconnect *td);
 #ifdef X25
 #include "x25.h"
 #include "spkt.h"
@@ -52,16 +52,16 @@ static struct nsapent {
 extern char isode_x25_errflag;
 #endif
 
-static int  TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async);
-static int  TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async);
+static int  TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async);
+static int  TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, const int async);
 
-struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
-static struct TSAPaddr *newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n);
-static struct TSAPaddr *maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta);
+struct TSAPaddr *ta2norm (const struct TSAPaddr *ta);
+static struct TSAPaddr *newtaddr (const struct TSAPaddr *ta, const struct NSAPaddr *na, int n);
+static struct TSAPaddr *maketsbaddr (const char *cp, const struct NSAPaddr *na, const struct TSAPaddr *ta);
 
 /*    T-(ASYN-)CONNECT.REQUEST */
 
-int TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
+int TAsynConnRequest (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
 	int  n;
 	SBV     smask;
 	int     result;
@@ -97,7 +97,7 @@ int TAsynConnRequest (struct TSAPaddr *calling, struct TSAPaddr *called, int exp
 	return result;
 }
 
-static int TConnRequestAux (struct TSAPaddr *calling, struct TSAPaddr *called, int expedited, char *data, int cc, struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, int async) {
+static int TConnRequestAux (struct TSAPaddr *calling, const struct TSAPaddr *called, const int expedited, char *data, const int cc, const struct QOStype *qos, struct TSAPconnect *tc, struct TSAPdisconnect *td, const int async) {
 	int	    result;
 	struct tsapblk *tb;
 
@@ -181,7 +181,7 @@ out:
 	return NOTOK;
 }
 
-static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int async) {
+static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, const int async) {
 	int   n;
 	int	    didone,
 			l,
@@ -320,7 +320,7 @@ static int TConnAttempt (struct tsapblk *tb, struct TSAPdisconnect *td, int asyn
 
 /*    T-ASYN-RETRY.REQUEST (pseudo) */
 
-int TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynRetryRequest (const int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -409,7 +409,7 @@ int TAsynRetryRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td
 
 /*    T-ASYN-NEXT.REQUEST (pseudo) */
 
-int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td) {
+int TAsynNextRequest (const int sd, const struct TSAPconnect *tc, struct TSAPdisconnect *td) {
 	SBV     smask;
 	int     result;
 	struct tsapblk *tb;
@@ -487,7 +487,7 @@ int TAsynNextRequest (int sd, struct TSAPconnect *tc, struct TSAPdisconnect *td)
 }
 
 static struct TSAPaddr *
-newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
+newtaddr (const struct TSAPaddr *ta, const struct NSAPaddr *na, int n) {
 	static struct TSAPaddr tzs;
 	struct TSAPaddr *tz = &tzs;
 	struct NSAPaddr *nz = tz -> ta_addrs;
@@ -506,7 +506,7 @@ newtaddr (struct TSAPaddr *ta, struct NSAPaddr *na, int n) {
 }
 
 struct TSAPaddr *
-ta2norm (struct TSAPaddr *ta) {
+ta2norm (const struct TSAPaddr *ta) {
 	int    n,
 		   *ip;
 	static struct TSAPaddr tzs;
@@ -558,7 +558,7 @@ ta2norm (struct TSAPaddr *ta) {
 }
 
 static struct TSAPaddr *
-maketsbaddr (char *cp, struct NSAPaddr *na, struct TSAPaddr *ta) {
+maketsbaddr (const char *cp, const struct NSAPaddr *na, const struct TSAPaddr *ta) {
 	static struct TSAPaddr newta;
 	struct TSAPaddr *nta = &newta;
 	struct TSAPaddr *taz;

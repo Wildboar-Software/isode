@@ -7,25 +7,25 @@
 #include "mine.h"
 #include "pepsydefs.h"
 #include "pass2.h"
-char *notidtoid (char *s);
+char *notidtoid (const char *s);
 
-char *notidtoid (char *s);
-char *my_new_str (char *s);
-char *my_strcat (char *s1, char *s2);
+char *notidtoid (const char *s);
+char *my_new_str (const char *s);
+char *my_strcat (const char *s1, char *s2);
 int init(void);
-char *concat (char *s1, char *s2);
-char *gfree ( char *module, /* name of module we are in (usually mymodule) */ char *id, /* name of type we want to free */ char *parm /* name of the pointer to the data */ );
+char *concat (const char *s1, const char *s2);
+char *gfree ( const char *module, /* name of module we are in (usually mymodule) */ const char *id, /* name of type we want to free */ char *parm /* name of the pointer to the data */ );
 
 
 id_entry *id_table[TABLESIZE];
 
 #define my_error(mesg)	(fprintf(stderr, "%s\n",mesg),exit(1))
 
-extern char *notidtoid(char *s), *my_new_str(char *s), *my_strcat(char *s1, char *s2);
+extern char *notidtoid(const char *s), *my_new_str(const char *s), *my_strcat(const char *s1, char *s2);
 extern char *
-proc_name(char *t, int flag), *mymodule;
+proc_name(const char *t, const int flag), *mymodule;
 
-static int hash_val (char *s);
+static int hash_val (const char *s);
 
 /*
  * Lookup the hash table (id_table) for the string t and insert it at
@@ -33,7 +33,7 @@ static int hash_val (char *s);
  * The argument flag indicates whether t is being defined (1) or used
  * (0).
  */
-char *proc_name (char *t, int flag) {
+char *proc_name (const char *t, const int flag) {
 	int     i;
 	static int curr = 0;
 	id_entry *ptr;
@@ -82,7 +82,7 @@ void out_final_defs(FILE *fp)
 /*
  * return a copy of the string s with '-' replaced by '_'
  */
-char *notidtoid (char *s) {
+char *notidtoid (const char *s) {
 
 	char   *t, *r;
 
@@ -96,7 +96,7 @@ char *notidtoid (char *s) {
 /*
  * return a copy of the string s
  */
-char *my_new_str (char *s) {
+char *my_new_str (const char *s) {
 	char   *t;
 	if ((t = (char *) malloc((unsigned)strlen(s) + 1)) == NULL)
 		my_error("my_new_str: Out of memory");
@@ -107,7 +107,7 @@ char *my_new_str (char *s) {
 /*
  * return the concatenation of the strings s1 and s2
  */
-char *my_strcat (char *s1, char *s2) {
+char *my_strcat (const char *s1, char *s2) {
 	char   *s3, *s, *t;
 
 	if (s1 == NULL || *s1 == '\0')
@@ -125,7 +125,7 @@ char *my_strcat (char *s1, char *s2) {
 /*
  * a simple hash function
  */
-static int hash_val (char *s) {
+static int hash_val (const char *s) {
 	int     i, sum;
 	char   *t;
 
@@ -153,7 +153,7 @@ static size_t len = 0;
 /*
  * Return in a static buffer the two strings concatenated
  */
-char *concat (char *s1, char *s2) {
+char *concat (const char *s1, const char *s2) {
 	size_t  tot;
 	size_t  l1;
 	size_t  l2;
@@ -185,8 +185,8 @@ char *concat (char *s1, char *s2) {
  * name, and the name of the type
  */
 char *gfree (
-	char *module, /* name of module we are in (usually mymodule) */
-	char *id,	  /* name of type we want to free */
+	const char *module, /* name of module we are in (usually mymodule) */
+	const char *id,	  /* name of type we want to free */
 	char *parm	  /* name of the pointer to the data */
 ) {
 	char   *p1 = notidtoid(module);

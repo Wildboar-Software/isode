@@ -121,7 +121,7 @@ static void freelblk (struct listenblk *lb);
 static int  TDoQueues (struct listenblk *lb, struct TSAPdisconnect *td);
 static int  TFreeQueues (struct listenblk *lb);
 
-static struct listenblk  *findlblk (struct TSAPaddr *ta, int type), *newlblk (int type, struct TSAPaddr *ta), *findlblkbyfd (int fd);
+static struct listenblk  *findlblk (const struct TSAPaddr *ta, const int type), *newlblk (const int type, const struct TSAPaddr *ta), *findlblkbyfd (const int fd);
 
 #define	add_fd(fd) \
 { \
@@ -452,7 +452,7 @@ static int uniqlb (
 	return OK;
 }
 
-int	TNetAcceptAux (int *vecp, char **vec, int *newfd, struct TSAPaddr *ta, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int secs, struct TSAPdisconnect *td)
+int	TNetAcceptAux (int *vecp, char **vec, int *newfd, struct TSAPaddr *ta, int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, const int secs, struct TSAPdisconnect *td)
 {
 	int     accepted,
 			fd,
@@ -677,7 +677,7 @@ next:
 	}
 }
 
-static int	TGetReadMask(fd_set *mask, int *nfds)
+static int	TGetReadMask(const fd_set *mask, int *nfds)
 {
 	if (acl_count > 0) {
 		int fd;
@@ -690,7 +690,7 @@ static int	TGetReadMask(fd_set *mask, int *nfds)
 	return acl_count;
 }
 
-static int	TGetWriteMask(fd_set *mask, int *nfds)
+static int	TGetWriteMask(const fd_set *mask, int *nfds)
 {
 	if (qw_count > 0) {
 		int fd;
@@ -703,7 +703,7 @@ static int	TGetWriteMask(fd_set *mask, int *nfds)
 	return qw_count;
 }
 
-static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfds, struct TSAPdisconnect *td)
+static int	TNetCheck (int *vecp, char **vec, const fd_set *ifds, const fd_set *ofds, const int nfds, struct TSAPdisconnect *td)
 {
 	int accepted = 0;
 	struct listenblk *lb, *lb2;
@@ -775,7 +775,7 @@ static int	TNetCheck (int *vecp, char **vec, fd_set *ifds, fd_set *ofds, int nfd
 	return OK;
 }
 
-int	TNetClose (struct TSAPaddr *ta, struct TSAPdisconnect *td)
+int	TNetClose (const struct TSAPaddr *ta, struct TSAPdisconnect *td)
 {
 	struct listenblk  *lb,
 			   *lp;
@@ -996,7 +996,7 @@ int Pre_Exec(int argc, char **argv, char *info)
 #endif /* ULTRIX_X25_DEMSA */
 #endif /* ULTRIX_X25 */
 
-int	TNetFork (int vecp, char **vec, struct TSAPdisconnect *td)
+int	TNetFork (const int vecp, char **vec, struct TSAPdisconnect *td)
 {
 	int	    pid;
 #ifdef	TIOCNOTTY
@@ -1852,7 +1852,7 @@ static int  tp4unique (struct TSAPaddr *ta, struct TSAPdisconnect *td) {
 
 /* INTERNAL */
 
-static struct listenblk  *newlblk (int type, struct TSAPaddr *ta)
+static struct listenblk  *newlblk (const int type, const struct TSAPaddr *ta)
 {
 	struct listenblk  *lb;
 
@@ -1891,7 +1891,7 @@ static void freelblk (struct listenblk *lb)
 	free ((char *) lb);
 }
 
-static struct listenblk  *findlblk (struct TSAPaddr *ta, int type)
+static struct listenblk  *findlblk (const struct TSAPaddr *ta, const int type)
 {
 	struct listenblk  *lb;
 	if (once_only == 0)
@@ -1903,7 +1903,7 @@ static struct listenblk  *findlblk (struct TSAPaddr *ta, int type)
 	return NULLLBP;
 }
 
-static struct listenblk  *findlblkbyfd (int fd)
+static struct listenblk  *findlblkbyfd (const int fd)
 {
 	struct listenblk  *lb;
 
@@ -1989,8 +1989,8 @@ static int  TFreeQueues (struct listenblk *lb)
 	freelblk (lb);
 }
 
-int TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td);
-int	TSetQueuesOK (int sd, int onoff, struct TSAPdisconnect *td)
+int TSetQueuesOK (const int sd, const int onoff, struct TSAPdisconnect *td);
+int	TSetQueuesOK (const int sd, const int onoff, struct TSAPdisconnect *td)
 {
 	int	    result;
 	SBV	    smask;

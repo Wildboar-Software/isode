@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti);
+static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, const struct FTAMcharging *charging, struct FTAMindication *fti);
 
 /* F-TERMINATE.RESPONSE */
-int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
+int FTerminateResponse (const int sd, PE sharedASE, const struct FTAMcharging *charging, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -24,7 +24,7 @@ int FTerminateResponse (int sd, PE sharedASE, struct FTAMcharging *charging, str
 	return result;
 }
 
-static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, struct FTAMcharging *charging, struct FTAMindication *fti) {
+static int FTerminateResponseAux (struct ftamblk *fsb, PE sharedASE, const struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct AcSAPindication  acis;

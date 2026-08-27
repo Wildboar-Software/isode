@@ -6,7 +6,7 @@
 
 /* map a string onto a value */
 
-int cmd_srch (char *str, CMD_TABLE *cmd) {
+int cmd_srch (char *str, const CMD_TABLE *cmd) {
 	extern char chrcnv[];
 
 	for(; cmd->cmd_key != NULLCP; cmd++)

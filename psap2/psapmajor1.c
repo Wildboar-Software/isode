@@ -8,14 +8,14 @@
 /*    P-{MAJOR-SYNC,ACTIVITY-END}.REQUEST */
 
 int PMajSyncRequestAux (
-	int sd,
+	const int sd,
 	long *ssn,
 	PE *data,
-	int ndata,
+	const int ndata,
 	struct PSAPindication *pi,
-	char *dtype,
+	const char *dtype,
 	int (*sfunc)(int sd, long *ssn, char *data, int cc, struct SSAPindication *si),
-	char *stype
+	const char *stype
 ) {
 	SBV	    smask;
 	int     len,

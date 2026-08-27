@@ -30,7 +30,7 @@ struct ps_fdx {
 	int	    ps_nflush;
 };
 
-extern int (*set_check_fd (int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
+extern int (*set_check_fd (const int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
 
 static int fdx_prime (PS ps, int waiting) {
 	struct ps_fdx *pt = (struct ps_fdx *) ps -> ps_addr;
@@ -160,7 +160,7 @@ int	fdx_open (PS ps)
 	return OK;
 }
 
-int	fdx_setup (PS ps, int fd)
+int	fdx_setup (PS ps, const int fd)
 {
 	int	    pz;
 	size_t	    n;

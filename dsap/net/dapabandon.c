@@ -6,9 +6,9 @@
 #include "../x500as/DAS-types.h"
 
 extern  LLog    * log_dsap;
-void ros_log (struct RoSAPpreject *rop, char *event);
+void ros_log (const struct RoSAPpreject *rop, const char *event);
 
-int dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error) {
+int dap_abandon (const int ad, int *id, struct ds_abandon_arg *arg, struct DSError *error) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
@@ -42,7 +42,7 @@ int dap_abandon (int ad, int *id, struct ds_abandon_arg *arg, struct DSError *er
 	}
 }
 
-int DapAbandon (int ad, int id, struct ds_abandon_arg *arg, struct DAPindication *di, int asyn) {
+int DapAbandon (const int ad, const int id, struct ds_abandon_arg *arg, struct DAPindication *di, const int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_AbandonArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

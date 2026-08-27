@@ -37,8 +37,8 @@ static char *getfile (char*file);
 #ifdef	BRIDGE
 #define	E_OK	R_OK
 #else
-static char *getuser (uid_t uid);
-static char *getgroup (gid_t gid);
+static char *getuser (const uid_t uid);
+static char *getgroup (const gid_t gid);
 #endif
 
 #ifdef	SYS5
@@ -54,17 +54,17 @@ extern int ftp_exist (char *filename);
 #define	ftp_access(file,mode)	ftp_exist (file)
 #endif
 
-static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags);
-static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags);
-static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
+static int  chkaccess (const int fd, const int request, const struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags);
+static int  chkattrs ( const struct FTAMattributes *fa, const long	present, const int	select, struct FTAMdiagnostic **diags);
+static int  chngattrs ( const long	present, const struct FTAMattributes *fa, struct FTAMdiagnostic **diags);
 
-static int  EACCESS (char *file, int mode);
+static int  EACCESS (const char *file, const int mode);
 
-static int findgid (char *group);
+static int findgid (const char *group);
 
 /*    SELECTION REGIME */
 
-void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
+void ftam_selection (const struct FTAMgroup *ftg, struct FTAMgroup *ftm) {
 	int     action,
 			state;
 
@@ -835,7 +835,7 @@ done_open:
 #ifdef	BRIDGE
 #endif
 
-static int  chkaccess (int fd, int request, struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
+static int  chkaccess (const int fd, const int request, const struct FTAMconcurrency *fc, struct FTAMdiagnostic **diags) {
 	int     result;
 #ifndef	BRIDGE
 	char  *cp;
@@ -958,7 +958,7 @@ bad_concur:
 	return result;
 }
 
-static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, struct FTAMdiagnostic **diags) {
+static int  chkattrs ( const struct FTAMattributes *fa, const long	present, const int	select, struct FTAMdiagnostic **diags) {
 	int     id,
 			result;
 	char   *file;
@@ -1033,7 +1033,7 @@ static int  chkattrs ( struct FTAMattributes *fa, long	present, int	select, stru
 }
 
 int	readattrs (
-	int attrnames,
+	const int attrnames,
 	struct FTAMattributes *fa,
 	OID proposed,
 	PE parameter,
@@ -1234,7 +1234,7 @@ bad_param:
 	return OK;
 }
 
-static int  chngattrs ( long	present, struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
+static int  chngattrs ( const long	present, const struct FTAMattributes *fa, struct FTAMdiagnostic **diags) {
 #ifndef	BRIDGE
 	int     gid,
 			result;
@@ -1408,8 +1408,8 @@ static char *getfile (char*file) {
 		}
 
 		{
-			size_t n = strlen (pp);
-			size_t m = cp ? strlen (cp) : 0;
+			const size_t n = strlen (pp);
+			const size_t m = cp ? strlen (cp) : 0;
 
 			if (n >= sizeof buffer1 || m >= sizeof buffer1 - n - 1)
 				goto trunc;
@@ -1472,7 +1472,7 @@ trunc:
    Apollo suggested these algorithms as they work better with distributed
    /etc/passwd and /etc/group files */
 
-static char *getuser (uid_t uid) {
+static char *getuser (const uid_t uid) {
 	static struct passwd *pw = NULL;
 
 	if (pw == NULL || pw -> pw_uid != uid)
@@ -1480,7 +1480,7 @@ static char *getuser (uid_t uid) {
 	return (pw ? pw -> pw_name : NULL);
 }
 
-static char *getgroup (gid_t gid) {
+static char *getgroup (const gid_t gid) {
 	struct group *gr;
 	static int	have;
 	static gid_t my_gid;
@@ -1498,7 +1498,7 @@ static char *getgroup (gid_t gid) {
 	return my_name;
 }
 
-static int findgid (char *group) {
+static int findgid (const char *group) {
 	int	    i;
 	int	    g;
 #ifdef	BSD42
@@ -1537,7 +1537,7 @@ static int findgid (char *group) {
 
 #ifndef	SYS5
 #ifndef	BRIDGE
-static int  EACCESS ( char   *file, int	mode) {
+static int  EACCESS ( const char   *file, const int	mode) {
 	int	    result;
 	uid_t	ruid,
 			euid;

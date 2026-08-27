@@ -9,7 +9,7 @@ static char nib2hex[0x10] = {
 	'8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 };
 
-int explode (char *a, uint8_t *b, int n) {
+int explode (char *a, const uint8_t *b, const int n) {
 	int    i;
 	uint8_t c;
 

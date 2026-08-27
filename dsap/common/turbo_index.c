@@ -18,7 +18,7 @@ int substring_prefix_tel_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
 int substring_prefix_case_cmp(caddr_t data1, caddr_t data2, caddr_t carg);
 int indexav_cmp(caddr_t data1, caddr_t data2);
 Index_node *new_indexnode(void);
-char *strrev (char *s);
+char *strrev (const char *s);
 static int index_dup(caddr_t data1, caddr_t data2);
 static void indexav_free(caddr_t data);
 static void soundex_free(caddr_t data);
@@ -27,10 +27,10 @@ static int i_dup(caddr_t data1, caddr_t data2);
 static int i_cmp(caddr_t data1, caddr_t data2);
 static Index *new_index(DN dn);
 static void print_soundex_node (Index_node *n, int ps);
-static void add_nonlocalalias(struct entry *e, Index *pindex);
-static void add_nonleafkid(struct entry *e, Index *pindex);
-static void delete_nonleafkid(struct entry *e, Index *pindex);
-static void delete_nonlocalalias(struct entry *e, Index *pindex);
+static void add_nonlocalalias(const struct entry *e, Index *pindex);
+static void add_nonleafkid(const struct entry *e, Index *pindex);
+static void delete_nonleafkid(const struct entry *e, Index *pindex);
+static void delete_nonlocalalias(const struct entry *e, Index *pindex);
 static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Sequence values);
 static void turbo_attr_delete(Index *pindex, Entry e, AttributeType attr, AV_Sequence values);
 void turbo_optimize (char *attr);
@@ -49,7 +49,7 @@ Avlnode		*subtree_index;		/* array of subtree indexes */
 Avlnode		*sibling_index;		/* array of sibling indexes */
 int		optimized_only;		/* only allow indexed searches */
 
-char *strrev (char *s) {
+char *strrev (const char *s) {
 	char	*start, *rev, *rsave;
 	int	len;
 
@@ -251,7 +251,7 @@ static int i_cmp(caddr_t data1, caddr_t data2)
 	return( dn_order_cmp( a->i_dn, b->i_dn ) );
 }
 
-int idn_cmp(DN a, Index *b)
+int idn_cmp(DN a, const Index *b)
 {
 	return( dn_order_cmp( a, b->i_dn ) );
 }
@@ -326,7 +326,7 @@ static print_soundex_node( Index_node *n, int ps ) {
  * kept with index index.
  */
 
-static void add_nonlocalalias(struct entry *e, Index *pindex)
+static void add_nonlocalalias(const struct entry *e, Index *pindex)
 {
 	struct entry	**tmp;
 	int		i;
@@ -363,7 +363,7 @@ static void add_nonlocalalias(struct entry *e, Index *pindex)
  * addnonleafkids - add entry e to the list of nonlocal kids kept
  * in index index.
  */
-static void add_nonleafkid(struct entry *e, Index *pindex)
+static void add_nonleafkid(const struct entry *e, Index *pindex)
 {
 	struct entry	**tmp;
 	int		i;
@@ -398,7 +398,7 @@ static void add_nonleafkid(struct entry *e, Index *pindex)
  * delete_nonleafkid - delete a reference to nonleaf child entry e
  * in index index.
  */
-static void delete_nonleafkid(struct entry *e, Index *pindex)
+static void delete_nonleafkid(const struct entry *e, Index *pindex)
 {
 	int		i, j;
 	struct entry	**tmp;
@@ -422,7 +422,7 @@ static void delete_nonleafkid(struct entry *e, Index *pindex)
  * delete_nonlocalalias - delete a reference to nonlocal alias entry e
  * in index index.
  */
-static void delete_nonlocalalias(struct entry *e, Index *pindex)
+static void delete_nonlocalalias(const struct entry *e, Index *pindex)
 {
 	int		i, j;
 	struct entry	**tmp;
@@ -458,7 +458,7 @@ static void turbo_attr_insert(Index *pindex, Entry e, AttributeType attr, AV_Seq
 	Index_node	*imem;
 	char		*word, *code, *savestr;
 	char		*first_word(char *ptr), *next_word(char *ptr);
-	int		(*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
+	int		(*approxfn(const short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
 	int		soundex_match(struct filter_item *fitem, AV_Sequence avs);
 
 	/* find the appropriate index */

@@ -10,8 +10,8 @@
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
 #include "pepsycodec.h"
-static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd);
-static int QspWaitRequest (int sd, int secs, struct DSAPindication *di);
+static void dsap_wait_err (const char *str, const struct RoSAPindication *roi, const int sd);
+static int QspWaitRequest (const int sd, const int secs, struct DSAPindication *di);
 static
 #ifdef LINUX
 void
@@ -26,13 +26,13 @@ void
 SFP
 #endif
 slack_watch_dog_activate (int sd);
-static void slack_watch_dog (char *where);
+static void slack_watch_dog (const char *where);
 
 
 extern LLog	* log_dsap;
 extern unsigned watchdog_time;
 
-extern char * RoErrString(int code);
+extern char * RoErrString(const int code);
 
 #ifdef PDU_DUMP
 #define DUMP_ARG 	"arg"
@@ -40,22 +40,22 @@ extern char * RoErrString(int code);
 #define DUMP_ERR 	"err"
 #endif
 
-static void slack_watch_dog (char *where);
+static void slack_watch_dog (const char *where);
 extern char dsa_mode;
 
-static int DspWaitRequest (int sd, int secs, struct DSAPindication *di);
-static int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di);
-static int QspWaitRequest (int sd, int secs, struct DSAPindication *di);
-static int IspWaitRequest (int sd, int secs, struct DSAPindication *di);
-static int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
-static int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di);
-static int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
-static int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di);
-static int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di);
-static int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di);
-static int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di);
+static int DspWaitRequest (const int sd, const int secs, struct DSAPindication *di);
+static int DapRespWaitRequest (const int sd, const int secs, struct DSAPindication *di);
+static int QspWaitRequest (const int sd, const int secs, struct DSAPindication *di);
+static int IspWaitRequest (const int sd, const int secs, struct DSAPindication *di);
+static int DapDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di);
+static int DDecodeUnbind (const int sd, struct AcSAPfinish *acf, struct DSAPindication *di);
+static int QspDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di);
+static int QspDecodeResult (const int sd, const struct RoSAPresult *ror, struct DSAPindication *di);
+static int DDecodeError (const int sd, const struct RoSAPerror *roe, struct DSAPindication *di);
+static int DspDecodeResult (const int sd, const struct RoSAPresult *ror, struct DSAPindication *di);
+static int DspDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di);
 
-int DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
+int DWaitRequest (const int ctx, const int sd, const int secs, struct DSAPindication *di) {
 	int	  result;
 
 	switch (ctx) {
@@ -83,7 +83,7 @@ int DWaitRequest (int ctx, int sd, int secs, struct DSAPindication *di) {
 	return (result);
 }
 
-static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
+static void dsap_wait_err (const char *str, const struct RoSAPindication *roi, const int sd) {
 	int op;
 	char * err;
 	int cc = 0;
@@ -138,7 +138,7 @@ static void dsap_wait_err (char *str, struct RoSAPindication *roi, int sd) {
 	}
 }
 
-static int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int DapRespWaitRequest (const int sd, const int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -201,7 +201,7 @@ static int DapRespWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	}
 }
 
-static int DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int DspWaitRequest (const int sd, const int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -256,7 +256,7 @@ static int DspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	}
 }
 
-int QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
+int QspWaitRequest (const int sd, const int secs, struct DSAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -313,7 +313,7 @@ int QspWaitRequest (int sd, int secs, struct DSAPindication *di) {
 	}
 }
 
-static int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int DapDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 	struct ds_op_arg	* dsarg = &(di->di_invoke.dx_arg);
@@ -417,7 +417,7 @@ static int DapDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindicati
 	return(success);
 }
 
-static int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int DspDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -514,7 +514,7 @@ static int DspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindicati
 	return(success);
 }
 
-static int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
+static int DspDecodeResult (const int sd, const struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
@@ -603,7 +603,7 @@ static int DspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindicati
 	return(success);
 }
 
-static int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindication *di) {
+static int QspDecodeInvoke (const int sd, const struct RoSAPinvoke *rox, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = rox->rox_args;
 
@@ -703,7 +703,7 @@ static int QspDecodeInvoke (int sd, struct RoSAPinvoke *rox, struct DSAPindicati
 	return (success);
 }
 
-static int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindication *di) {
+static int QspDecodeResult (const int sd, const struct RoSAPresult *ror, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = ror->ror_result;
 
@@ -798,7 +798,7 @@ static int QspDecodeResult (int sd, struct RoSAPresult *ror, struct DSAPindicati
 	return(success);
 }
 
-static int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *di) {
+static int DDecodeError (const int sd, const struct RoSAPerror *roe, struct DSAPindication *di) {
 	int			  success;
 	PE			  pe = roe->roe_param;
 	struct DSError	* err = &(di->di_error.de_err);
@@ -885,7 +885,7 @@ static int DDecodeError (int sd, struct RoSAPerror *roe, struct DSAPindication *
 	return(success);
 }
 
-static int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
+static int DDecodeUnbind (const int sd, struct AcSAPfinish *acf, struct DSAPindication *di) {
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
 
@@ -904,7 +904,7 @@ static int DDecodeUnbind (int sd, struct AcSAPfinish *acf, struct DSAPindication
 
 /* Isp == Qsp here */
 
-static int IspWaitRequest (int sd, int secs, struct DSAPindication *di) {
+static int IspWaitRequest (const int sd, const int secs, struct DSAPindication *di) {
 	return QspWaitRequest (sd, secs, di);
 }
 
@@ -964,7 +964,7 @@ slack_watch_dog_activate (int sd) {
 	watch_dog (watch_dog_where);
 }
 
-void watch_dog (char *where) {
+void watch_dog (const char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
@@ -978,7 +978,7 @@ void watch_dog (char *where) {
 	}
 }
 
-static void slack_watch_dog (char *where) {
+static void slack_watch_dog (const char *where) {
 	/*
 		A simple timer to stop DSAs holding onto associations, due to
 		a lower level failure.
@@ -993,7 +993,7 @@ static void slack_watch_dog (char *where) {
 	}
 }
 
-void watch_dog_aux (char *where, unsigned secs) {
+void watch_dog_aux (const char *where, const unsigned secs) {
 	if (watchdogfinal)
 		return;
 	if (dsa_mode) {

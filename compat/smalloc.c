@@ -22,7 +22,7 @@ void (*set_smalloc_handler (void (*fnx)(void)))(void) {
 	return savefnx;
 }
 
-char *smalloc (int size) {
+char *smalloc (const int size) {
 	char *ptr;
 	size_t n;
 

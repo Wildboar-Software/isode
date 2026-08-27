@@ -18,11 +18,11 @@
 #include "usr.dirent.h"
 #include <sys/stat.h>
 static int  pq_compar (const void *p, const void *q);
-static int get_pq (int offset);
-static struct pq *get_pqent (unsigned int *ip, int len, int isnext);
+static int get_pq (const int offset);
+static struct pq *get_pqent (const unsigned int *ip, const int len, const int isnext);
 static int pj_compar (const void *p, const void *q);
-static int get_pj (int offset);
-static struct pj *get_pjent (unsigned int *ip, int len, int isnext);
+static int get_pj (const int offset);
+static struct pj *get_pjent (const unsigned int *ip, const int len, const int isnext);
 static int o_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int s_pq (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int o_pj (OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -107,9 +107,9 @@ static	struct pj *pj_head = NULL;
 #ifdef LINUX
 #define pgetstr tgetstr
 #endif
-extern char   *pgetstr (char *id, char **area);
-static void free_pq (void), free_pj (void), upstat (struct pq *pq, char *msg), startdaemon (struct pq *pq);
-static int findaemon (struct pq *pq, char *current);
+extern char   *pgetstr (const char *id, char **area);
+static void free_pq (void), free_pj (void), upstat (const struct pq *pq, const char *msg), startdaemon (const struct pq *pq);
+static int findaemon (const struct pq *pq, char *current);
 
 static int  pq_compar (const void *p, const void *q) {
 	struct pq *a = (struct pq *) p;
@@ -118,7 +118,7 @@ static int  pq_compar (const void *p, const void *q) {
 					 b -> pq_instance, b -> pq_insize);
 }
 
-static int get_pq (int offset) {
+static int get_pq (const int offset) {
 	int    i;
 	char   *bp,
 		   buffer[BUFSIZ],
@@ -210,7 +210,7 @@ static void free_pq (void) {
 	free_pj ();
 }
 
-static struct pq *get_pqent (unsigned int *ip, int len, int isnext) {
+static struct pq *get_pqent (const unsigned int *ip, const int len, const int isnext) {
 	struct pq *pq;
 
 	for (pq = pq_head; pq -> pq_name; pq++)
@@ -244,7 +244,7 @@ static int pj_compar (const void *p, const void *q)
 	return 0;
 }
 
-static int get_pj (int offset) {
+static int get_pj (const int offset) {
 	int    i;
 	struct pj *pj;
 	struct pq *pq;
@@ -339,7 +339,7 @@ static void free_pj (void) {
 		free ((char *) pj_head), pj_head = NULL;
 }
 
-static struct pj *get_pjent (unsigned int *ip, int len, int isnext) {
+static struct pj *get_pjent (const unsigned int *ip, const int len, const int isnext) {
 	struct pj *pj;
 
 	for (pj = pj_head; pj -> pj_pq; pj++)
@@ -869,7 +869,7 @@ void init_print (void) {
  */
 
 static int _select (const struct dirent *dd) {
-	char c = dd -> d_name[0];
+	const char c = dd -> d_name[0];
 	return ((c == 't' || c == 'c' || c == 'd') && dd -> d_name[1] == 'f');
 }
 
@@ -1151,7 +1151,7 @@ int	sync_print (int cor) {
 	}
 }
 
-static void upstat (struct pq *pq, char *msg) {
+static void upstat (const struct pq *pq, const char *msg) {
 	int	    fd;
 
 	if ((fd = open (pq -> pq_ST, O_WRONLY | O_CREAT, 0664)) == NOTOK) {
@@ -1171,7 +1171,7 @@ static void upstat (struct pq *pq, char *msg) {
 #include <sys/socket.h>
 #include <sys/un.h>
 
-static void startdaemon (struct pq *pq) {
+static void startdaemon (const struct pq *pq) {
 	int    n,
 		   sd;
 	char buffer[BUFSIZ];
@@ -1186,7 +1186,7 @@ static void startdaemon (struct pq *pq) {
 	strcpy (sunix.sun_path, _PATH_SOCKETNAME);
 	{
 		socklen_t slen;
-		size_t pathlen = strlen (sunix.sun_path) + 2;
+		const size_t pathlen = strlen (sunix.sun_path) + 2;
 
 		if (sizet2socklen (pathlen, &slen) != 0) {
 			advise (LLOG_EXCEPTIONS, NULLCP, "unix socket path too long");
@@ -1228,7 +1228,7 @@ static void startdaemon (struct pq *pq) {
 	return;
 }
 
-static int findaemon (struct pq *pq, char *current) {
+static int findaemon (const struct pq *pq, char *current) {
 	int	    pid;
 	char    buffer[BUFSIZ];
 	FILE   *fp;

@@ -14,22 +14,22 @@
 
 extern int RtWaitRequestAux (
 	struct assocblk *acb,
-	int secs,
-	int trans,
+	const int secs,
+	const int trans,
 	struct RtSAPindication *rti
 );
 
 #define	doSSabort	ss2rtsabort
 
-static void ssDATAser (int sd, struct SSAPdata *sx), ssTOKENser (int sd, struct SSAPtoken *st), ssSYNCser (int sd, struct SSAPsync *sn), ssACTIVITYser (int sd, struct SSAPactivity *sv),
-		ssREPORTser (int sd, struct SSAPreport *sp),	ssFINISHser (int sd, struct SSAPfinish *sf), ssABORTser (int sd, struct SSAPabort *sa);
+static void ssDATAser (const int sd, const struct SSAPdata *sx), ssTOKENser (const int sd, const struct SSAPtoken *st), ssSYNCser (const int sd, const struct SSAPsync *sn), ssACTIVITYser (const int sd, const struct SSAPactivity *sv),
+		ssREPORTser (const int sd, const struct SSAPreport *sp),	ssFINISHser (const int sd, const struct SSAPfinish *sf), ssABORTser (const int sd, const struct SSAPabort *sa);
 
-static int  doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti);
-static int  doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti);
-static int  doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti);
-static int  doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti);
-static int  doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti);
-static int  doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti);
+static int  doSSdata (struct assocblk *acb, const struct SSAPdata *sx, struct RtSAPindication *rti);
+static int  doSSfinish (struct assocblk *acb, const struct SSAPfinish *sf, struct RtSAPindication *rti);
+static int  doSSreport (struct assocblk *acb, const struct SSAPreport *sp, struct RtSAPindication *rti);
+static int  doSSactivity (struct assocblk *acb, const struct SSAPactivity *sv, struct RtSAPindication *rti);
+static int  doSSsync (struct assocblk *acb, const struct SSAPsync *sn, struct RtSAPindication *rti);
+static int  doSStoken (struct assocblk *acb, const struct SSAPtoken *st, const int trans, struct RtSAPindication *rti);
 
 int rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti) {
 	int     result,
@@ -451,7 +451,7 @@ void rt2sslose (struct assocblk *acb, int result) {
 
 /*    SSAP interface */
 
-static int doSSdata (struct assocblk *acb, struct SSAPdata *sx, struct RtSAPindication *rti) {
+static int doSSdata (struct assocblk *acb, const struct SSAPdata *sx, struct RtSAPindication *rti) {
 	struct qbuf *qb;
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
@@ -538,7 +538,7 @@ out:
 	return NOTOK;
 }
 
-static int doSStoken (struct assocblk *acb, struct SSAPtoken *st, int trans, struct RtSAPindication *rti) {
+static int doSStoken (struct assocblk *acb, const struct SSAPtoken *st, const int trans, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct SSAPindication   sis;
@@ -630,7 +630,7 @@ out:
 	return NOTOK;
 }
 
-static int doSSsync (struct assocblk *acb, struct SSAPsync *sn, struct RtSAPindication *rti) {
+static int doSSsync (struct assocblk *acb, const struct SSAPsync *sn, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -683,7 +683,7 @@ out:
 	return NOTOK;
 }
 
-static int doSSactivity (struct assocblk *acb, struct SSAPactivity *sv, struct RtSAPindication *rti) {
+static int doSSactivity (struct assocblk *acb, const struct SSAPactivity *sv, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct SSAPindication   sis;
@@ -830,7 +830,7 @@ out:
 	return NOTOK;
 }
 
-static int doSSreport (struct assocblk *acb, struct SSAPreport *sp, struct RtSAPindication *rti) {
+static int doSSreport (struct assocblk *acb, const struct SSAPreport *sp, struct RtSAPindication *rti) {
 	struct SSAPindication   sis;
 	struct SSAPindication *si = &sis;
 	struct SSAPabort  *sa = &si -> si_abort;
@@ -875,7 +875,7 @@ out1:
 	return NOTOK;
 }
 
-static int doSSfinish (struct assocblk *acb, struct SSAPfinish *sf, struct RtSAPindication *rti) {
+static int doSSfinish (struct assocblk *acb, const struct SSAPfinish *sf, struct RtSAPindication *rti) {
 	SFFREE (sf);
 
 	if (((acb -> acb_flags & ACB_INIT) && (acb -> acb_flags & ACB_TWA))
@@ -906,7 +906,7 @@ out:
 	return NOTOK;
 }
 
-int ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti) {
+int ss2rtsabort (struct assocblk *acb, const struct SSAPabort *sa, struct RtSAPindication *rti) {
 	int     result;
 	PE	    pe;
 	struct type_OACS_AbortInformation *pabi = 0;
@@ -971,7 +971,7 @@ out:
 	return NOTOK;
 }
 
-static void ssDATAser (int sd, struct SSAPdata *sx) {
+static void ssDATAser (const int sd, const struct SSAPdata *sx) {
 	// TODO: This pattern is used a lot, and its unnecessarily verbose. Simplify this.
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
@@ -984,7 +984,7 @@ static void ssDATAser (int sd, struct SSAPdata *sx) {
 		(*handler) (sd, rti);
 }
 
-static void ssTOKENser (int sd, struct SSAPtoken *st) {
+static void ssTOKENser (const int sd, const struct SSAPtoken *st) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -996,7 +996,7 @@ static void ssTOKENser (int sd, struct SSAPtoken *st) {
 		(*handler) (sd, rti);
 }
 
-static void ssSYNCser (int sd, struct SSAPsync *sn) {
+static void ssSYNCser (const int sd, const struct SSAPsync *sn) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1008,7 +1008,7 @@ static void ssSYNCser (int sd, struct SSAPsync *sn) {
 		(*handler) (sd, rti);
 }
 
-static void ssACTIVITYser (int sd, struct SSAPactivity *sv) {
+static void ssACTIVITYser (const int sd, const struct SSAPactivity *sv) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1020,7 +1020,7 @@ static void ssACTIVITYser (int sd, struct SSAPactivity *sv) {
 		(*handler) (sd, rti);
 }
 
-static void ssREPORTser (int sd, struct SSAPreport *sp) {
+static void ssREPORTser (const int sd, const struct SSAPreport *sp) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1032,7 +1032,7 @@ static void ssREPORTser (int sd, struct SSAPreport *sp) {
 		(*handler) (sd, rti);
 }
 
-static void ssFINISHser (int sd, struct SSAPfinish *sf) {
+static void ssFINISHser (const int sd, const struct SSAPfinish *sf) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1044,7 +1044,7 @@ static void ssFINISHser (int sd, struct SSAPfinish *sf) {
 	(*handler) (sd, rti);
 }
 
-static void ssABORTser (int sd, struct SSAPabort *sa) {
+static void ssABORTser (const int sd, const struct SSAPabort *sa) {
 	int (*handler)(int sd, struct RtSAPindication *rti);
 	struct assocblk   *acb;
 	struct RtSAPindication  rtis;
@@ -1058,9 +1058,9 @@ static void ssABORTser (int sd, struct SSAPabort *sa) {
 
 int ss2rtslose (
 	struct assocblk *acb,
-	struct RtSAPindication *rti,
-	char *event,
-	struct SSAPabort *sa
+	const struct RtSAPindication *rti,
+	const char *event,
+	const struct SSAPabort *sa
 ) {
 	int     reason;
 	char   *cp,

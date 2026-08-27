@@ -11,7 +11,7 @@ int	oid_cmp (OID p, OID q) {
 					 q -> oid_elements, q -> oid_nelem);
 }
 
-int elem_cmp (unsigned int *ip, int i, unsigned int *jp, int j) {
+int elem_cmp (const unsigned int *ip, int i, const unsigned int *jp, int j) {
 	while (i > 0) {
 		if (j == 0)
 			return 1;

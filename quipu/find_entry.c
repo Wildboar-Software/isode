@@ -16,13 +16,13 @@ extern time_t timenow;
 extern time_t cache_timeout;
 extern DN  mydsadn;
 extern struct di_block * di_alloc(void);
-extern int di2cref (struct di_block *, struct DSError *, char);
+extern int di2cref (struct di_block *, struct DSError *, const char);
 
 static int no_reply_child (
 	DN object,
 	DN dn, 	/* tail - not matched */
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entryptr,
 	struct DSError *err,
 	struct di_block **di_p
@@ -31,8 +31,8 @@ static int no_reply_child (
 static int no_reply_edb (
 	DN object,
 	DN dn, 	/* tail - not matched */
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entryptr,
 	struct DSError *err,
 	struct di_block **di_p
@@ -40,17 +40,17 @@ static int no_reply_edb (
 
 int find_entry (
 	DN object,
-	common_args *ca,
+	const common_args *ca,
 	DN acl_who,
-	struct dn_seq *dn_stack,
+	const struct dn_seq *dn_stack,
 	int master,
 	Entry *ent_p,
 	struct DSError *err,
 	struct di_block **di_p,
-	int optype
+	const int optype
 ) {
 	int deref = FALSE;
-	extern time_t cache_timeout;
+	extern const time_t cache_timeout;
 	DN dn_found;
 	int res;
 
@@ -165,9 +165,9 @@ out:
 
 int find_child_entry (
 	DN object,
-	common_args *ca,
+	const common_args *ca,
 	DN acl_who,
-	struct dn_seq *dn_stack,
+	const struct dn_seq *dn_stack,
 	int master,
 	Entry *ent_p,
 	struct DSError *err,
@@ -253,9 +253,9 @@ int find_child_entry (
 
 int really_find_entry (
 	DN object,
-	int deref,
-	struct dn_seq *dn_stack,
-	int master,	/* Generate only master references - NB
+	const int deref,
+	const struct dn_seq *dn_stack,
+	const int master,	/* Generate only master references - NB
 				   does not imply returned entry is master */
 	Entry *ent_p,
 	struct DSError *err,
@@ -440,12 +440,12 @@ int really_find_entry (
 
 int referral_dsa_info (
 	DN object,
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry ptr,
 	struct DSError *err,
 	struct di_block **di_p,
-	char chain
+	const char chain
 ) {
 	int ret;
 	struct di_block     * di_tmp;
@@ -472,14 +472,14 @@ int referral_dsa_info (
 	return DS_CONTINUE;
 }
 
-int constructor_dsa_info (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
+int constructor_dsa_info (DN object, const struct dn_seq *dn_stack, const int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("constructor dsa_info"));
 	if (ptr != NULLENTRY)
 		ptr=ptr->e_parent;
 	return(constructor_dsa_info_aux(object,dn_stack,master,ptr,err,di_p));
 }
 
-int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
+int constructor_dsa_info_aux (DN object, const struct dn_seq *dn_stack, const int master, Entry ptr, struct DSError *err, struct di_block **di_p) {
 	DLOG (log_dsap,LLOG_TRACE,("construct dsa_info aux"));
 	/* follow entry back, until something that is not a CONSTRUCTOR */
 	for (; ptr!= NULLENTRY; ptr=ptr->e_parent)
@@ -503,8 +503,8 @@ int constructor_dsa_info_aux (DN object, struct dn_seq *dn_stack, int master, En
 static int no_reply_child (
 	DN object,
 	DN dn, 	/* tail - not matched */
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entryptr,
 	struct DSError *err,
 	struct di_block **di_p
@@ -532,8 +532,8 @@ static int no_reply_child (
 static int no_reply_edb (
 	DN object,
 	DN dn, 	/* tail - not matched */
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entryptr,
 	struct DSError *err,
 	struct di_block **di_p

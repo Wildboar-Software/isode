@@ -7,7 +7,7 @@
 /*    set uptrans upcall */
 
 int RtSetUpTrans (
-	int sd,
+	const int sd,
 	int (*fnx)(int sd, int type, caddr_t addr, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {

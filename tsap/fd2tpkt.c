@@ -9,13 +9,13 @@
 #include "tailor.h"
 #include "internet.h"
 
-static int  fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
-static int  readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n));
-static int  set_tpdu_li (struct tsapkt *t, size_t hdr);
-static int  set_varlen (struct tsapkt *t, size_t minlen, int *vlen);
+static int  fd2tpktaux (const int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
+static int  readx (const int fd, char *buffer, const int n, int (*readfnx)(int fd, char *buffer, int n));
+static int  set_tpdu_li (struct tsapkt *t, const size_t hdr);
+static int  set_varlen (struct tsapkt *t, const size_t minlen, int *vlen);
 
 static int
-set_varlen (struct tsapkt *t, size_t minlen, int *vlen)
+set_varlen (struct tsapkt *t, const size_t minlen, int *vlen)
 {
 	int n;
 
@@ -27,7 +27,7 @@ set_varlen (struct tsapkt *t, size_t minlen, int *vlen)
 }
 
 static int
-set_tpdu_li (struct tsapkt *t, size_t hdr)
+set_tpdu_li (struct tsapkt *t, const size_t hdr)
 {
 	size_t n;
 
@@ -39,7 +39,7 @@ set_tpdu_li (struct tsapkt *t, size_t hdr)
 	return OK;
 }
 
-struct tsapkt *fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n)) {
+struct tsapkt *fd2tpkt (const int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n)) {
 	struct tsapkt *t;
 
 	if ((t = newtpkt (0)) == NULL)
@@ -61,7 +61,7 @@ struct tsapkt *fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t, char *b
 	return t;
 }
 
-static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n)) {
+static int fd2tpktaux (const int fd, struct tsapkt *t, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n)) {
 	int    code, len, vlen;
 	char  *vptr;
 
@@ -330,7 +330,7 @@ static int fd2tpktaux (int fd, struct tsapkt *t, int (*initfnx)(int fd, struct t
 	return OK;
 }
 
-static int readx (int fd, char *buffer, int n, int (*readfnx)(int fd, char *buffer, int n)) {
+static int readx (const int fd, char *buffer, const int n, int (*readfnx)(int fd, char *buffer, int n)) {
 	int    i,
 		   cc;
 	char   *bp;
@@ -553,7 +553,7 @@ int tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapbl
 	return i;
 }
 
-struct tsapkt *newtpkt (int code) {
+struct tsapkt *newtpkt (const int code) {
 	struct tsapkt *t;
 
 	t = (struct tsapkt *) calloc (1, sizeof *t);

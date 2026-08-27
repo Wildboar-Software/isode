@@ -4,7 +4,7 @@
 #include "psap.h"
 
 PE
-strb2bitstr (char *cp, int len, PElementClass class, PElementID id) {
+strb2bitstr (const char *cp, const int len, const PElementClass class, const PElementID id) {
 	int    i,
 		   j,
 		   bit,

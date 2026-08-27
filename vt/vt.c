@@ -26,18 +26,18 @@ extern void vrelreq (void);
 extern int data_pending (void);
 extern int getch (void);
 extern int con_req (void);
-extern void vt_echo (int echo);
-extern void vt_repertoire (int repertoire);
+extern void vt_echo (const int echo);
+extern void vt_repertoire (const int repertoire);
 extern void vt_rem_echo (char *img_addr);
 extern void vt_sup_ga (char *img_addr);
-extern void ttyflush (int dd);
+extern void ttyflush (const int dd);
 extern void vtsend (void);
-extern void vdelreq (int ack);
-extern void vdelind (PE del_pe, int ack);
+extern void vdelreq (const int ack);
+extern void vdelind (PE del_pe, const int ack);
 
-static void netflush (int dd);
-static void vt (int s);
-static void command (int top);
+static void netflush (const int dd);
+static void vt (const int s);
+static void command (const int top);
 
 #define	strip(x)	((x)&0177)
 #define TBUFSIZ		1024
@@ -120,8 +120,8 @@ static int vt_suspend (char **vec);
 static int vt_set (char **vec);
 int vt_ayt (char **vec);
 int vt_break (char **vec);
-static int vtploop (char **vec, int error);
-static void printvar (struct var *v);
+static int vtploop (char **vec, const int error);
+static void printvar (const struct var *v);
 void do_vt (void);
 
 void adios (char *, char *, ...);
@@ -162,8 +162,8 @@ static struct dispatch dispatches[] = {
 };
 
 void intr(void), deadpeer(void);
-char *control(int c);
-static int _getline (char *prompt, char *buffer);
+char *control(const int c);
+static int _getline (const char *prompt, const char *buffer);
 
 #ifdef TERMIOS
 struct	termios oterm;
@@ -175,7 +175,7 @@ struct	sgttyb ottyb;
 
 static int runcom = 0;
 static char *myhome;
-int	tmode(int f);
+int	tmode(const int f);
 
 static int ncols (FILE *fp);
 static void rcinit (void);
@@ -303,7 +303,7 @@ int main (int argc, char *argv[]) {
 		command(1);
 }
 
-static void command (int top) {
+static void command (const int top) {
 	int eof,oldmode;
 	char *vec[NVEC + 1];
 
@@ -340,7 +340,7 @@ static void command (int top) {
 	}
 }
 
-static int vtploop (char **vec, int error) {
+static int vtploop (char **vec, const int error) {
 	struct dispatch *ds;
 
 	if ((ds = getds (strcmp (*vec, "?") ? *vec : "help")) == NULL)
@@ -368,7 +368,7 @@ static int vtploop (char **vec, int error) {
 	}
 }
 
-static int _getline (char *prompt, char *buffer) {
+static int _getline (const char *prompt, const char *buffer) {
 	int    i;
 	char  *cp,
 		  *ep;
@@ -805,7 +805,7 @@ out_of_range:
 	return DONE;
 }
 
-static void printvar (struct var *v) {
+static void printvar (const struct var *v) {
 	int	    i;
 	char    buffer[BUFSIZ];
 
@@ -1070,9 +1070,9 @@ int	tcc;
 /*
  * Select from tty and network...
  */
-static void vt (int s) {
+static void vt (const int s) {
 	int c;
-	int tin = fileno(stdin), tout = fileno(stdout);
+	const int tin = fileno(stdin), tout = fileno(stdout);
 	int nfds, result;
 
 	if ((nfds = (tin > tout ? tin : tout)) < s)
@@ -1176,7 +1176,7 @@ static void vt (int s) {
  * Construct a control character sequence
  * for a special character.
  */
-char *control (int c) {
+char *control (const int c) {
 	static char buf[3];
 
 	if (c == 0177)
@@ -1204,7 +1204,7 @@ void intr (void) {
 	longjmp(toplevel, -1);
 }
 
-void ttyflush (int dd) {
+void ttyflush (const int dd) {
 	int n;
 
 	if (ptrdiff2int (tfrontp - tbackp, &n) != 0)
@@ -1222,7 +1222,7 @@ void ttyflush (int dd) {
 		tbackp = tfrontp = ttyobuf;
 }
 
-static void netflush (int dd) {
+static void netflush (const int dd) {
 	char *cp;
 	int n, i, j;
 	int nl_flag; // If current PDU includes newline, follow it with a Deliver Request
@@ -1417,7 +1417,7 @@ void advise (int code, char *what, char *fmt) {
 
 /* XXX -- why is this stubbed ? */
 #ifdef TERMIOS
-void ptyecho (int on) {}
+void ptyecho (const int on) {}
 #else
 void setmode (int on, int off) {}
 #endif

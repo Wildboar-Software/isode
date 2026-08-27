@@ -66,12 +66,12 @@ extern char ftp_error_buffer[BUFSIZ];
 extern char *ftp_error; /* points to FTP diagnostic string */
 
 /* ftp.c client routines */
-int hookup(char *host, int port);
-int login(char *user, char *pass, char *acct);
+int hookup(char *host, const int port);
+int login(const char *user, const char *pass, const char *acct);
 int command(char *fmt, ...);
-int getreply(int expecteof);
-int sendrequest(char *cmd, char *remote);
-int recvrequest(char *cmd, char *remote);
+int getreply(const int expecteof);
+int sendrequest(const char *cmd, const char *remote);
+int recvrequest(const char *cmd, const char *remote);
 
 /* ftp_lib.c bridge routine not declared in ftamsystem.h */
-int ftp_create(char *filename);
+int ftp_create(const char *filename);

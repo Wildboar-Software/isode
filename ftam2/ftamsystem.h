@@ -14,9 +14,9 @@ extern int  cflag;
 extern int  debug;
 extern char *myname;
 
-void	ftam_adios (struct FTAMabort *fta, char *event);
-void	ftam_advise (struct FTAMabort *fta, char *event);
-void	ftam_diag (struct FTAMdiagnostic diag[], int ndiag);
+void	ftam_adios (const struct FTAMabort *fta, char *event);
+void	ftam_advise (const struct FTAMabort *fta, char *event);
+void	ftam_diag (struct FTAMdiagnostic diag[], const int ndiag);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
@@ -111,25 +111,25 @@ extern int  mylevel;		/* .. */
 
 extern char *ftp_error;
 
-int	ftp_exist (char *filename), ftp_delete (char *file), ftp_mkdir (char *dir), ftp_rename (char *from, char *to), ftp_type (int modeX),
-	ftp_write (char *file), ftp_append (char *file), ftp_read (char *file), ftp_ls (char *dir), ftp_login (char *host, char *user, char *passwd, char *acct),
+int	ftp_exist (const char *filename), ftp_delete (const char *file), ftp_mkdir (const char *dir), ftp_rename (const char *from, const char *to), ftp_type (const int modeX),
+	ftp_write (const char *file), ftp_append (const char *file), ftp_read (const char *file), ftp_ls (const char *dir), ftp_login (char *host, const char *user, const char *passwd, const char *acct),
 	ftp_quit (void), ftp_abort (void), ftp_reply (void);
 #endif
 
 void ftam_start (struct FTAMstart *fts);
 // void ftam_bulkbeginindication (struct FTAMgroup *ftg);
-void ftam_bulkbeginindication (struct FTAMgroup *ftg);
-void ftam_readwriteindication (struct FTAMreadwrite *ftrw);
-void ftam_dataindication (struct PSAPdata *px);
-void ftam_dataendindication (struct FTAMdataend *ftda);
-void ftam_cancelindication (struct FTAMcancel *ftcn);
-void ftam_transendindication (struct FTAMtransend *ftre);
-void ftam_bulkendindication (struct FTAMgroup *ftg);
-void ftam_managementindication (struct FTAMgroup *ftg);
-void ftam_selection (struct FTAMgroup *ftg, struct FTAMgroup *ftm);
-int ftam_indication (struct FTAMindication *fti);
+void ftam_bulkbeginindication (const struct FTAMgroup *ftg);
+void ftam_readwriteindication (const struct FTAMreadwrite *ftrw);
+void ftam_dataindication (const struct PSAPdata *px);
+void ftam_dataendindication (const struct FTAMdataend *ftda);
+void ftam_cancelindication (const struct FTAMcancel *ftcn);
+void ftam_transendindication (const struct FTAMtransend *ftre);
+void ftam_bulkendindication (const struct FTAMgroup *ftg);
+void ftam_managementindication (const struct FTAMgroup *ftg);
+void ftam_selection (const struct FTAMgroup *ftg, struct FTAMgroup *ftm);
+int ftam_indication (const struct FTAMindication *fti);
 int	readattrs (
-	int attrnames,
+	const int attrnames,
 	struct FTAMattributes *fa,
 	OID proposed,
 	PE parameter,
@@ -137,10 +137,10 @@ int	readattrs (
 	struct stat *st,
 	struct FTAMdiagnostic **diags
 );
-int fdf_p2names (int fd, PE bits, int *names, struct FTAMindication *fti);
-int fdf_names2p (int fd, int names, PE *bits, struct FTAMindication *fti);
-int fdf_attrs2d (int fd, struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
-int fdf_d2attrs (int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
-void timer (int cc, char *action);
+int fdf_p2names (const int fd, PE bits, int *names, struct FTAMindication *fti);
+int fdf_names2p (const int fd, const int names, PE *bits, struct FTAMindication *fti);
+int fdf_attrs2d (const int fd, const struct FTAMattributes *fa, struct type_FTAM_Read__Attributes **attrs, struct FTAMindication *fti);
+int fdf_d2attrs (const int fd, struct type_FTAM_Read__Attributes *attrs, struct FTAMattributes *fa, struct FTAMindication *fti);
+void timer (const int cc, const char *action);
 int closewtmp (void);
 void rcinit (void);

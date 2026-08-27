@@ -5,12 +5,12 @@
 #include <string.h>
 #include "tailor.h"
 #include "quipu/dsap.h"
-static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap);
+static int _dsaplose (  struct DSAPindication *di, const int reason, va_list ap);
 
 
 #ifndef	lint
-static int  _dsaplose (struct DSAPindication *di, int reason, va_list ap);
-static int  _dsapreject (struct DSAPindication *di, int reason, int id, va_list ap);
+static int  _dsaplose (struct DSAPindication *di, const int reason, va_list ap);
+static int  _dsapreject (struct DSAPindication *di, const int reason, const int id, va_list ap);
 #endif
 
 #ifndef	lint
@@ -34,7 +34,7 @@ int dsaplose (struct DSAPindication *di, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int _dsaplose (  struct DSAPindication *di, int reason, va_list ap) { /* what, fmt, args ... */
+static int _dsaplose (  struct DSAPindication *di, const int reason, va_list ap) { /* what, fmt, args ... */
 	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct DSAPabort	* da;
@@ -79,8 +79,8 @@ int dsapreject (struct DSAPindication *di, int reason, int id, char *what, char 
 #ifndef	lint
 static int _dsapreject (  /* what, fmt, args ... */
 	struct DSAPindication *di,
-	int reason,
-	int id,
+	const int reason,
+	const int id,
 	va_list ap
 ) {
 	char  *bp, *what, *fmt;

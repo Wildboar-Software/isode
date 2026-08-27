@@ -7,7 +7,7 @@
 #include "manifest.h"
 #include "isoaddrs.h"
 
-char *sel2str (char *sel, int len, int quoted) {
+char *sel2str (char *sel, int len, const int quoted) {
 	char *cp,
 		 *dp,
 		 *ep;

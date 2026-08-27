@@ -8,11 +8,11 @@
 #include <signal.h>
 #include "ropkt.h"
 
-static int RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi);
+static int RoErrorRequestAux (struct assocblk *acb, const int invokeID, const int error, PE params, const int priority, struct RoSAPindication *roi);
 
 /* RO-ERROR.REQUEST */
 
-int RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {
+int RoErrorRequest (const int sd, const int invokeID, const int error, PE params, const int priority, struct RoSAPindication *roi) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -30,7 +30,7 @@ int RoErrorRequest (int sd, int invokeID, int error, PE params, int priority, st
 	return result;
 }
 
-static int RoErrorRequestAux (struct assocblk *acb, int invokeID, int error, PE params, int priority, struct RoSAPindication *roi) {
+static int RoErrorRequestAux (struct assocblk *acb, const int invokeID, const int error, PE params, const int priority, struct RoSAPindication *roi) {
 	PE	pe,
 	 p;
 

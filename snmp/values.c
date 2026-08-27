@@ -98,7 +98,7 @@ int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 		if ((*os -> os_decode) ((void **)&ot -> ot_save, v -> value) == NOTOK)
 			return int_SNMP_error__status_badValue;
 		if (os -> os_data2) {
-			integer	value = *((integer *) ot -> ot_save);
+			const integer	value = *((integer *) ot -> ot_save);
 			if (value <= 0 || value > os -> os_data2)
 				return int_SNMP_error__status_badValue;
 		}
@@ -118,7 +118,7 @@ int	s_generic (OI oi, struct type_SNMP_VarBind *v, int offset)
 	return int_SNMP_error__status_noError;
 }
 
-int	o_longword (OI oi, struct type_SNMP_VarBind *v, integer number) {
+int	o_longword (OI oi, struct type_SNMP_VarBind *v, const integer number) {
 	return o_number (oi, v, (caddr_t) &number);
 }
 
@@ -144,7 +144,7 @@ int	o_number (OI oi, struct type_SNMP_VarBind *v, caddr_t number) {
 	return int_SNMP_error__status_noError;
 }
 
-int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, int len) {
+int	o_string (OI oi, struct type_SNMP_VarBind *v, char *base, const int len) {
 	int	    result;
 	struct qbuf *value;
 	OT	    ot = oi -> oi_type;
@@ -228,7 +228,7 @@ int	o_specific (OI oi, struct type_SNMP_VarBind *v, caddr_t value) {
 	return int_SNMP_error__status_noError;
 }
 
-int	mediaddr2oid (unsigned int *ip, uint8_t *addr, int len, int islen) {
+int	mediaddr2oid (unsigned int *ip, const uint8_t *addr, const int len, const int islen) {
 	int   i;
 
 	if (islen)
@@ -238,7 +238,7 @@ int	mediaddr2oid (unsigned int *ip, uint8_t *addr, int len, int islen) {
 	return (len + (islen ? 1 : 0));
 }
 
-OID	oid_extend (OID q, int howmuch) {
+OID	oid_extend (OID q, const int howmuch) {
 	int	nelem,
 			nalloc;
 	unsigned int   *ip,
@@ -283,7 +283,7 @@ OID	oid_extend (OID q, int howmuch) {
 	return oid;
 }
 
-OID	oid_normalize (OID q, int howmuch, int bigvalue) {
+OID	oid_normalize (OID q, const int howmuch, const int bigvalue) {
 	int	i;
 	unsigned int   *ip,
 			 *jp;

@@ -18,9 +18,9 @@
 #endif
 
 int	RyOperation (
-	int sd,
+	const int sd,
 	struct RyOperation *ryo,
-	int op,
+	const int op,
 	caddr_t in,
 	caddr_t *out,
 	int *response,

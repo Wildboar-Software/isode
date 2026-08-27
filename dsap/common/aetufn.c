@@ -18,19 +18,19 @@ static DNS ufn_interact (
 	DN dn,
 	char * s
 );
-static DNS just_say_no (DNS dns, DN dn, char * s);
+static DNS just_say_no (DNS dns, DN dn, const char * s);
 static int bind_to_dsa (void);
 static PE name2psap (DN dn);
 static PE  name2value_ufn (char *name, char *context, int ontty, char *userdn,
 						   char *passwd, PE *real_name);
-void set_lookup_ufn (char flag);
+void set_lookup_ufn (const char flag);
 
 
 extern LLog * addr_log;
 
-extern struct dn_seq *dn_seq_push (DN dn, struct dn_seq *dnseq);
+extern struct dn_seq *dn_seq_push (DN dn, const struct dn_seq *dnseq);
 extern void quipu_syntaxes(void);
-extern int dsap_init (int *acptr, char ***avptr);
+extern int dsap_init (const int *acptr, char ***avptr);
 
 static void set_el (void);
 
@@ -79,7 +79,7 @@ again:
 	return result;
 }
 
-static DNS just_say_no (DNS dns, DN dn, char * s) {
+static DNS just_say_no (DNS dns, DN dn, const char * s) {
 	/* we only want good hits ! */
 	dn_seq_free (dns);
 	SLOG (addr_log, LLOG_NOTICE, NULLCP,
@@ -358,7 +358,7 @@ done:
 }
 
 /* if flag is TRUE always unbind */
-void set_lookup_ufn (char flag) {
+void set_lookup_ufn (const char flag) {
 	if ((unbind = flag) && bound) {
 		bound = FALSE;
 		ds_unbind ();

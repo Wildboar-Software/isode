@@ -8,11 +8,11 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int  PRelResponseAux (struct psapblk *pb, PE data, struct PSAPindication *pi);
+static int  PRelResponseAux (const struct psapblk *pb, PE data, struct PSAPindication *pi);
 
 /* P-RELEASE.RESPONSE */
 
-int	PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi) {
+int	PRelResponse (const int sd, const int status, PE *data, const int ndata, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;
@@ -34,7 +34,7 @@ int	PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication
 	return result;
 }
 
-static int PRelResponseAux (struct psapblk *pb, PE data, struct PSAPindication *pi) {
+static int PRelResponseAux (const struct psapblk *pb, PE data, struct PSAPindication *pi) {
 	int	    result;
 	PE	    pe;
 	PS	    ps;

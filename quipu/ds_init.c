@@ -22,7 +22,7 @@ extern LLog * log_dsap;
 extern DN mydsadn;
 extern Entry database_root;
 static Entry load_dsa_cache_entry(DN dn), load_dsa_remote_entry(void);
-extern Entry local_find_entry_aux(DN object, char deref);
+extern Entry local_find_entry_aux(DN object, const char deref);
 extern Attr_Sequence entry_find_type(Entry a, AttributeType b);
 extern Attr_Sequence dsa_real_attr;
 extern char * mydsaname;
@@ -214,7 +214,7 @@ static void set_context (Entry eptr) {
 	AttributeValue av;
 	AV_Sequence avs;
 	Attr_Sequence as, entry_find_type(Entry a, AttributeType b);
-	extern int	  no_last_mod;
+	extern const int	  no_last_mod;
 	/* DAP */
 	at = AttrT_new (APPLCTX_OID);
 	av = AttrV_alloc ();

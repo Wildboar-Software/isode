@@ -9,31 +9,31 @@
 #include "sym.h"
 #include "pass2.h"
 #include "mine.h"
-char *c_flags(YP yp, PElementClass cl);
-static int add_list (char *type, char *id);
+char *c_flags(YP yp, const PElementClass cl);
+static int add_list (const char *type, const char *id);
 static int print_list(void);
 static int parse_decl (char **s, char **v1, char **v2);
-static YV calc_yv(YP yp, char *id);
-static char *genlabel(char *name, YP yp);
+static YV calc_yv(YP yp, const char *id);
+static char *genlabel(const char *name, YP yp);
 static YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
 
-char *c_flags(YP yp, PElementClass cl);
-void tenc_typ(FILE *fp, YP yp, char *id, char *type);
-int ferr (int i, char *s);
-int ferrd (int i, char *s, int d);
-int ferrs (int i, char *s, char *d);
-static int add_list (char *type, char *id);
+char *c_flags(YP yp, const PElementClass cl);
+void tenc_typ(FILE *fp, YP yp, char *id, const char *type);
+int ferr (const int i, const char *s);
+int ferrd (const int i, const char *s, const int d);
+int ferrs (const int i, const char *s, char *d);
+static int add_list (const char *type, const char *id);
 static int print_list(void);
 static int parse_decl (char **s, char **v1, char **v2);
 int optfield(YP yp);
-void gen_dflts(FILE *fp, YP yp, char *type);
-void gdflt(FILE *fp, YP yp, int which);
-static YV calc_yv(YP yp, char *id);
+void gen_dflts(FILE *fp, YP yp, const char *type);
+void gdflt(FILE *fp, YP yp, const int which);
+static YV calc_yv(YP yp, const char *id);
 int valisttobs(YP yp, YV yv, char **ppstr);
-void prhstr(FILE *fp, char *str, int len);
-int printable (char *str, int i);
-static char *genlabel(char *name, YP yp);
-int gen_modref (char *mod);
+void prhstr(FILE *fp, const char *str, int len);
+int printable (const char *str, int i);
+static char *genlabel(const char *name, YP yp);
+int gen_modref (const char *mod);
 void prnte(FILE *fp, char *t, char *f, YP yp, char *p1);
 void gen_identry( FILE *fp, char *t, char *f, YP yp, void (*fn) (FILE *fp, YP oyp, YP yp1, char *t, char *f) );
 static YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
@@ -41,7 +41,7 @@ void gen_fn(FILE *fp, YP yp, char *fn);
 void gen_act(FILE *fp, Action act, YP yp);
 void prtfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
 void prstfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp);
-void prcte(FILE *fp, char *type, char *t, char *f, YP yp, char *p1);
+void prcte(FILE *fp, const char *type, char *t, char *f, YP yp, char *p1);
 
 
 s_table *head;
@@ -51,20 +51,20 @@ extern s_table *lookup_list(void), *proc_def(void);
 extern char *genstrform (YP yp);
 extern char *c_tag(YP yp), *c_class(YP yp);
 extern char *ec_tag(YP yp), *ec_class(YP yp);
-extern char *strip_last(char *s);
-extern char *get_val(char **s), *get_comp(char **s), *get_string(char *s, int direction);
+extern char *strip_last(const char *s);
+extern char *get_val(char **s), *get_comp(char **s), *get_string(char *s, const int direction);
 extern s_table *get_offset(void);
-extern char *my_strcat(char *s1, char *s2), *strp2name(char *s1, char *s2);
-extern char *my_new_str(char *s);
+extern char *my_strcat(const char *s1, char *s2), *strp2name(const char *s1, const char *s2);
+extern char *my_new_str(const char *s);
 extern char *mymodule;
-extern char *modsym(char *module, char *id, char *prefix);
-extern char *concat(char *s1, char *s2);
-extern char *genlabel(char *name, YP yp);
-extern char *notidtoid(char *s);
-extern char *code2name(int code);
+extern char *modsym(const char *module, const char *id, char *prefix);
+extern char *concat(const char *s1, const char *s2);
+extern char *genlabel(const char *name, YP yp);
+extern char *notidtoid(const char *s);
+extern char *code2name(const int code);
 extern char *yp2name(YP yp);
-extern YV calc_yv(YP yp, char *id);
-extern SY syfind(char *name);
+extern YV calc_yv(YP yp, const char *id);
+extern SY syfind(const char *name);
 static s_table *en_ptr;
 extern char	*rm_indirect(char *p);
 extern char	*getfield(char *);
@@ -77,11 +77,11 @@ static s_table *save_ptr;
 
 extern YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags);
 
-static void tenc_loop(FILE *fp, YP yp, char *id, char *type);
-static void defdflt(FILE *fp, YP yp, char *name);
+static void tenc_loop(FILE *fp, YP yp, char *id, const char *type);
+static void defdflt(FILE *fp, YP yp, const char *name);
 static int numtobstr(YV yv, char **ppstr);
-static void declfns(FILE *fp, YFN fn);
-static void prstr(FILE *fp, char *str, int len);
+static void declfns(const FILE *fp, YFN fn);
+static void prstr(FILE *fp, const char *str, int len);
 
 #define WORDSIZE	20
 #define MAXNAME		256	/* maximum size of a identifier */
@@ -103,7 +103,7 @@ char   *str_yp_code[] = {
  * produce a string that represents the class/flags field for a given
  * yp entry taking the class to be that given in cl
  */
-char *c_flags(YP yp, PElementClass cl) {
+char *c_flags(YP yp, const PElementClass cl) {
 	char   *p1;
 	static char buf[STRSIZE];
 
@@ -140,7 +140,7 @@ char *c_flags(YP yp, PElementClass cl) {
 /*
  * table encode a type. generate tables for the encoding of a type
  */
-void tenc_typ(FILE *fp, YP yp, char *id, char *type) {
+void tenc_typ(FILE *fp, YP yp, char *id, const char *type) {
 	char   *t, *f;
 	char   *p1;
 	YP      y;
@@ -756,7 +756,7 @@ char *ec_tag(YP yp) {
 /*
  * turn the class number into its corresponding string
  */
-char *class2str(PElementClass cl)
+char *class2str(const PElementClass cl)
 {
 	char *p1;
 
@@ -869,7 +869,7 @@ char *ec_class(YP yp)
 /*
  * generate tables for encoding a contructed type
  */
-static void tenc_loop(FILE *fp, YP yp, char *id, char *type)
+static void tenc_loop(FILE *fp, YP yp, char *id, const char *type)
 {
 	for (; yp != NULL; yp = yp->yp_next) {
 		tenc_typ(fp, yp, id, type);
@@ -879,7 +879,7 @@ static void tenc_loop(FILE *fp, YP yp, char *id, char *type)
 /*
  * Print the string and exit if argument greater than zero
  */
-int ferr (int i, char *s) {
+int ferr (const int i, const char *s) {
 	fprintf(stderr, "%s", s);
 	if (i > 0)
 		exit(i);
@@ -888,7 +888,7 @@ int ferr (int i, char *s) {
 /*
  * Print the integer and exit if argument greater than zero
  */
-int ferrd (int i, char *s, int d) {
+int ferrd (const int i, const char *s, const int d) {
 	fprintf(stderr, s, d);
 	if (i > 0)
 		exit(i);
@@ -897,7 +897,7 @@ int ferrd (int i, char *s, int d) {
 /*
  * Print the string and exit if argument greater than zero
  */
-int ferrs (int i, char *s, char *d) {
+int ferrs (const int i, const char *s, char *d) {
 	fprintf(stderr, s, d);
 	if (i > 0)
 		exit(i);
@@ -906,7 +906,7 @@ int ferrs (int i, char *s, char *d) {
 /*
  * return a copy of the string s minus its last character
  */
-char *strip_last (char *s) {
+char *strip_last (const char *s) {
 	char   *t, *r;
 
 	if (s) {
@@ -923,7 +923,7 @@ char *strip_last (char *s) {
  * add the declaration specified by the strings type and id to the
  * start of the declaration list
  */
-int add_list (char *type, char *id) {
+int add_list (const char *type, const char *id) {
 
 	s_table *prev;
 
@@ -1021,7 +1021,7 @@ char *get_comp (char **s) {
  * return a copy of that part of the string s which may contain
  * definitions for the variables generated by posy
  */
-char *get_string (char *s, int direction) {
+char *get_string (char *s, const int direction) {
 	char   *t, *t1;
 
 	if (direction & YP_ENCODER)
@@ -1067,7 +1067,7 @@ int optfield(YP yp)
 	return (0);
 }
 
-void gen_dflts(FILE *fp, YP yp, char *type)
+void gen_dflts(FILE *fp, YP yp, const char *type)
 {
 	YP      y;
 
@@ -1101,7 +1101,7 @@ void gen_dflts(FILE *fp, YP yp, char *type)
  * Compute the concatenation into a temporary buffer of two strings
  * after having run notid on them first
  */
-char *strp2name (char *s1, char *s2) {
+char *strp2name (const char *s1, const char *s2) {
 	char   *p;
 	static char buf[STRSIZE * 2 + 5];
 
@@ -1120,7 +1120,7 @@ char *strp2name (char *s1, char *s2) {
  * to have pointers which reference these definitions for use by
  * gdflt routine.
  */
-static void defdflt(FILE *fp, YP yp, char *name)
+static void defdflt(FILE *fp, YP yp, const char *name)
 {
 	YV      yv;
 	YV      yv1;
@@ -1335,7 +1335,7 @@ dumpdef3:	/* Reals */
  * should contain the default value which the encoder will know means
  * default encoding
  */
-void gdflt(FILE *fp, YP yp, int which)
+void gdflt(FILE *fp, YP yp, const int which)
 {
 	YV      yv;
 	YV      yv1;
@@ -1486,7 +1486,7 @@ void gdflt(FILE *fp, YP yp, int which)
  * looking at the value definitions associated with type definition
  * yp. Returns the value definition if found or NULL if not.
  */
-YV calc_yv(YP yp, char *id)
+YV calc_yv(YP yp, const char *id)
 {
 	YV      yv;
 	for (yv = yp->yp_value; yv != NULL; yv = yv->yv_next) {
@@ -1580,7 +1580,7 @@ int valisttobs(YP yp, YV yv, char **ppstr) {
  * a C program including the quotes. Using \ escapes for unprintable
  * characters
  */
-static void prstr(FILE *fp, char *str, int len)
+static void prstr(FILE *fp, const char *str, int len)
 {
 	fputc('"', fp);
 	while (len-- > 0) {
@@ -1599,7 +1599,7 @@ static void prstr(FILE *fp, char *str, int len)
  * output a initialisation for a character array as unsigned hex
  * numbers
  */
-void prhstr(FILE *fp, char *str, int len)
+void prhstr(FILE *fp, const char *str, int len)
 {
 	int     npline;		/* number on this line */
 
@@ -1621,7 +1621,7 @@ void prhstr(FILE *fp, char *str, int len)
  * determine if the string is printable i.e. only sensible to be read
  * as a character string. 1 (true) if it is 0, if it isn't
  */
-int printable (char *str, int i) {
+int printable (const char *str, int i) {
 	while (i-- > 0) {
 		if (!isprint(*str & 0xff))
 			return (0);		/* look for the first non printable
@@ -1635,7 +1635,7 @@ int printable (char *str, int i) {
  * generate a unique identifier  using the name given and the name if
  * present in yp. Return a pointer to it in a space malloc'ed out
  */
-char *genlabel(char *name, YP yp) {
+char *genlabel(const char *name, YP yp) {
 	char    buf[MAXNAME];
 	static int cnt;
 	char   *p1, *p2;
@@ -1655,7 +1655,7 @@ char *genlabel(char *name, YP yp) {
 /*
  * generate a ptr table reference for the given module table entry
  */
-int gen_modref (char *mod) {
+int gen_modref (const char *mod) {
 	char	buf[BUFSIZ];
 	char	*p1;
 	int		ind;
@@ -1840,7 +1840,7 @@ YT gen_etag(FILE *fp, YT pd_yt, YP yp, char *flags) {
 void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f)
 {
 	char	*p1;
-	char	s = oyp->yp_prfexp;	/* type of value passing */
+	const char	s = oyp->yp_prfexp;	/* type of value passing */
 
 	if (noindirect(f) && s != 'q' && s != 'a')
 		ferrs(1,
@@ -1985,7 +1985,7 @@ void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy) {
  * declare the functions that are used
  * One day generate ANSII C definitions as well
  */
-static void declfns(FILE *fp, YFN fn) {
+static void declfns(const FILE *fp, YFN fn) {
 	// Sorry. Now you have to do this manually.
 	// if (fn->yfn_enc) {
 	// 	fprintf(fp, "extern int	%s();\n", fn->yfn_enc);
@@ -2050,7 +2050,7 @@ void prstfield(FILE *fp, char *typ, char *t, char *f, char *cl, char *fl, YP yp)
  * convert an integer into a temporary string. Useful for calling
  * the printing routines with
  */
-char *int2tstr (int i) {
+char *int2tstr (const int i) {
 	static char	buf[STRSIZE];
 	sprintf(buf, "%d", i);
 	return (buf);
@@ -2068,7 +2068,7 @@ static char	*codetab[] = {
 /*
  * produce a user readable name for a yp_code value
  */
-char *code2name (int code) {
+char *code2name (const int code) {
 	static char	buf[STRSIZE];
 	if (code < 0 || code > YP_IMPTYPE) {
 		sprintf(buf, "Unknown code (%d)", code);
@@ -2124,7 +2124,7 @@ char *yp2name(YP yp) {
  * yp: object
  * p1: table entry name
  */
-void prcte(FILE *fp, char *type, char *t, char *f, YP yp, char *p1) {
+void prcte(FILE *fp, const char *type, char *t, char *f, YP yp, char *p1) {
 	if (type == NULL || (type && noindirect(f)))
 		prstfield(fp, p1, t, f, c_tag(yp), c_class(yp), yp);
 	else

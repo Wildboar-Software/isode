@@ -9,11 +9,11 @@
 #include "tailor.h"
 
 #ifndef	lint
-static int  _ssaplose (struct SSAPindication *si, int reason, va_list ap);
+static int  _ssaplose (struct SSAPindication *si, const int reason, va_list ap);
 #endif
 
 #ifndef	lint
-int	spktlose (int sd, ...) {
+int	spktlose (const int sd, ...) {
 	int	    reason,
 			result,
 			secs,
@@ -144,7 +144,7 @@ int ssaplose (struct SSAPindication *si, int reason, char *what, char *fmt) {
 #ifndef	lint
 static int _ssaplose (	/* what, fmt, args ... */
 	struct SSAPindication *si,
-	int reason,
+	const int reason,
 	va_list ap
 ) {
 	char  *bp;

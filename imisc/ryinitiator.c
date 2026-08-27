@@ -23,17 +23,17 @@
 #endif
 #endif
 
-static int getlines (char *buffer);
-static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
+static int getlines (const char *buffer);
+static void invoke (const int sd, struct RyOperation *ops, struct dispatch *ds, char **args);
 #ifdef	TIMER
-static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi);
-static void timer (int bytes, int pkts);
+static int timing_result (const int sd, const int id, const int dummy, caddr_t result, const struct RoSAPindication *roi);
+static void timer (const int bytes, const int pkts);
 #ifndef	TMS
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0);
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0);
 #endif
 #endif
 #ifndef	lint
-static void _advise (char* what, char* fmt, va_list ap);
+static void _advise (char* what, const char* fmt, va_list ap);
 #endif
 
 static int count = 1;
@@ -51,7 +51,7 @@ static char *myname = "ryinitiator";
 
 extern char *isodeversion;
 
-void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char *mypci, struct RyOperation *ops, struct dispatch *dispatches, ds_argument_t quit) {
+void ryinitiator (const int argc, char **argv, char *myservice, char *mycontext, const char *mypci, struct RyOperation *ops, const struct dispatch *dispatches, ds_argument_t quit) {
 	int	    iloop,
 			sd;
 	char  *cp,
@@ -219,7 +219,7 @@ void ryinitiator (int argc, char **argv, char *myservice, char *mycontext, char 
 	(*quit) (sd, (struct dispatch *) NULL, (char **) NULL, (caddr_t *) NULL);
 }
 
-static void invoke (int sd, struct RyOperation *ops, struct dispatch *ds, char **args) {
+static void invoke (const int sd, struct RyOperation *ops, struct dispatch *ds, char **args) {
 	int    i;
 	int	    cc,
 			result;
@@ -291,7 +291,7 @@ out:
 				 ds -> ds_fr_mod, 1);
 }
 
-static int getlines (char *buffer) {
+static int getlines (const char *buffer) {
 	int    i;
 	char  *cp, *ep;
 	static int  sticky = 0;
@@ -333,7 +333,7 @@ static int getlines (char *buffer) {
 #endif
 
 #ifndef	TMS
-static void timer (int bytes, int pkts) {
+static void timer (const int bytes, const int pkts) {
 	long    ms;
 	float   bs,
 			ps;
@@ -369,7 +369,7 @@ static void timer (int bytes, int pkts) {
 	printf ("\n");
 }
 
-static void tvsub (struct timeval *tdiff, struct timeval *t1, struct timeval *t0) {
+static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0) {
 	tdiff -> tv_sec = t1 -> tv_sec - t0 -> tv_sec;
 	tdiff -> tv_usec = t1 -> tv_usec - t0 -> tv_usec;
 	if (tdiff -> tv_usec < 0)
@@ -422,16 +422,16 @@ static void timer (int bytes, int pkts) {
 #endif
 #endif
 
-static int timing_result (int sd, int id, int dummy, caddr_t result, struct RoSAPindication *roi) {
+static int timing_result (const int sd, const int id, const int dummy, caddr_t result, const struct RoSAPindication *roi) {
 	return OK;
 }
 
-void ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (const struct RoSAPpreject *rop, char *event) {
 	ros_advise (rop, event);
 	_exit (1);
 }
 
-void ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (const struct RoSAPpreject *rop, char *event) {
 	char    buffer[BUFSIZ];
 	if (rop -> rop_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
@@ -441,12 +441,12 @@ void ros_advise (struct RoSAPpreject *rop, char *event) {
 	advise (NULLCP, "%s: %s", event, buffer);
 }
 
-void acs_adios (struct AcSAPabort *aca, char *event) {
+void acs_adios (const struct AcSAPabort *aca, const char *event) {
 	acs_advise (aca, event);
 	_exit (1);
 }
 
-void acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (const struct AcSAPabort *aca, char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)
@@ -483,7 +483,7 @@ void advise (char* what, char* fmt, ...) {
 	va_end (ap);
 }
 
-static void _advise (char* what, char* fmt, va_list ap) {
+static void _advise (char* what, const char* fmt, va_list ap) {
 	char buffer[BUFSIZ];
 	_asprintf (buffer, what, fmt, ap);
 	fflush (stdout);

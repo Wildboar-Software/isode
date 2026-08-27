@@ -4,7 +4,7 @@
 #include <string.h>
 #include <strings.h>
 #include "psap.h"
-static void  _advise (char* what, char* fmt, va_list ap);
+static void  _advise (char* what, const char* fmt, va_list ap);
 
 
 #define	ps_advise(ps, f) \
@@ -17,7 +17,7 @@ static enum { ps2pp, pl2pp } mode = ps2pp;
 static void	adios (char* what, char* fmt, ...),
 			advise (char* what, char* fmt, ...);
 
-static int  process (char *file, FILE *fp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
+static int  process (const char *file, const FILE *fp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
 
 int PY_pp (int argc, char **argv, char **envp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm)) {
 	int    status = 0;
@@ -59,7 +59,7 @@ int PY_pp (int argc, char **argv, char **envp, int (*pfx)(PE pe, int explicit, i
 	return status;
 }
 
-static int  process (char *file, FILE *fp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm))
+static int  process (const char *file, const FILE *fp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm))
 {
 	PE	    pe;
 	PS	    ps;
@@ -111,7 +111,7 @@ done:
 #include <unistd.h>
 
 #ifndef	lint
-static void	_advise (char*, char*, va_list);
+static void	_advise (char*, const char*, va_list);
 
 static void  adios (char* what, char* fmt, ...) {
 	va_list ap;
@@ -143,7 +143,7 @@ static void  advise (char* what, char* fmt, ...) {
 	va_end (ap);
 }
 
-static void  _advise (char* what, char* fmt, va_list ap) {
+static void  _advise (char* what, const char* fmt, va_list ap) {
 	char    buffer[BUFSIZ];
 
 	_asprintf (buffer, what, fmt, ap);

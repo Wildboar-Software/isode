@@ -21,7 +21,7 @@ Entry  current_entry = NULLENTRY;
 DN     current_dn = NULLDN;
 extern time_t cache_timeout;
 
-Entry local_find_entry_aux (DN object, char deref);
+Entry local_find_entry_aux (DN object, const char deref);
 
 struct subordinate *
 subord_cpy (struct subordinate *x) {
@@ -49,7 +49,7 @@ subord_cpy (struct subordinate *x) {
 	return (top);
 }
 
-void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit)
+void cache_list (struct subordinate *ptr, const int prob, DN dn, const int sizelimit)
 {
 	struct list_cache *cache;
 	struct subordinate *sub;
@@ -107,7 +107,7 @@ void delete_list_cache (DN adn)
 		trail->dn_parent = adn;
 }
 
-struct list_cache *find_list_cache (DN dn, int sizelimit)
+struct list_cache *find_list_cache (DN dn, const int sizelimit)
 {
 	struct list_cache *ptr;
 	int i;
@@ -136,7 +136,7 @@ int free_all_list_cache (void) {
 	}
 }
 
-void cache_entry (EntryInfo *ptr, char complete, char vals)
+void cache_entry (const EntryInfo *ptr, const char complete, const char vals)
 {
 	Entry           make_path (DN dn);
 	DN              dnptr;
@@ -210,7 +210,7 @@ void delete_cache (DN adn)
 	}
 }
 
-Entry local_find_entry (DN object, char deref)
+Entry local_find_entry (DN object, const char deref)
 {
 	Entry the_entry;
 
@@ -224,7 +224,7 @@ Entry local_find_entry (DN object, char deref)
 		return (the_entry);
 }
 
-Entry local_find_entry_aux (DN object, char deref)
+Entry local_find_entry_aux (DN object, const char deref)
 {
 	Entry  the_entry;
 	RDN    b_rdn;

@@ -10,7 +10,7 @@
 #include	"tailor.h"
 
 static int p_pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -20,7 +20,7 @@ static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
 static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
 
 static int p_pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
@@ -28,13 +28,13 @@ static int p_pr_obj (
 static ptpe *next_ptpe (ptpe *p);
 static PE p_setpresent (PE head, ptpe *p, modtyp *mod);
 static int setpval (ptpe *typ, ptpe *dflt, modtyp *mod);
-int printable (char *strptr, int len);
+int printable (const char *strptr, int len);
 int prnt_f (
-	int typ,
+	const int typ,
 	modtyp *mod,
 	PE pe,
-	int explicit,
-	int *len,
+	const int explicit,
+	const int *len,
 	char **buf
 );
 
@@ -47,14 +47,14 @@ extern FILE *vfp;
 
 extern ptpe *next_ptpe(ptpe *p);
 extern int pepsylose (modtyp *module, ...);
-extern void pr_entry (ptpe *p);
+extern void pr_entry (const ptpe *p);
 extern int ppepsylose (modtyp*module, ...);
 
 static int p_ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 );
 
 static void dmp_ptpe (
@@ -70,8 +70,8 @@ int     xpushed = 0;
 #define NEXT_PTPE(p)	(p = next_ptpe(p))
 #define CHKTAG(mod, p, pe)	p_ismatch(p, mod, pe->pe_class, pe->pe_id)
 
-static int p_pr_obj(int expl, PE pe, ptpe *p, modtyp *mod);
-static int p_pr_type(int expl, PE pe, ptpe *p, modtyp *mod);
+static int p_pr_obj(const int expl, PE pe, ptpe *p, modtyp *mod);
+static int p_pr_type(const int expl, PE pe, ptpe *p, modtyp *mod);
 static int p_pr_seq(PE head, ptpe *p, modtyp *mod);
 static int p_pr_set(PE head, ptpe *p, modtyp *mod);
 static int p_pr_seqof(PE head, ptpe *p, modtyp *mod);
@@ -111,11 +111,11 @@ static int vnamelock = 0;
  * @return OK if successful, NOTOK if error
  */
 int prnt_f (
-	int typ,
+	const int typ,
 	modtyp *mod,
 	PE pe,
-	int explicit,
-	int *len,
+	const int explicit,
+	const int *len,
 	char **buf
 ) {
 	ptpe   *p;
@@ -152,12 +152,12 @@ int prnt_f (
  * must assume that it has an offset.
  */
 static int p_pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
 ) {
-	int     cnt = 0;
+	const int     cnt = 0;
 
 #if PRINT_TYPES
 	if (p->pe_typename)
@@ -217,12 +217,12 @@ bad:
  * call the appropriate parsing routine
  */
 static int p_pr_type (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
 ) {
-	int     cnt = 0;
+	const int     cnt = 0;
 	integer     i;
 	OID     oid;
 
@@ -816,7 +816,7 @@ static int p_pr_seqof (
 ) {
 	PE      pe;
 	ptpe   *start;		/* first entry in list */
-	int     dflt = 0;
+	const int     dflt = 0;
 
 	if (p->pe_type != SEQOF_START && p->pe_type != SSEQOF_START) {
 		return (ppepsylose (mod, p, head, "p_pr_seqof: missing SEQOF_START\n"));
@@ -1486,8 +1486,8 @@ bad:
 static int p_ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 ) {
 	if (!ISDTYPE(p))
 		return (0);
@@ -1682,7 +1682,7 @@ int setpval (ptpe *typ, ptpe *dflt, modtyp *mod) {
 /*
  * return non zero if we can print out the string
  */
-int printable (char *strptr, int len) {
+int printable (const char *strptr, int len) {
 	if (strptr == NULL || *strptr == '\0') {
 		return (0);
 	}

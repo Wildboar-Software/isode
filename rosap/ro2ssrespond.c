@@ -16,7 +16,7 @@
 
 /* RO-BEGIN.INDICATION */
 
-int RoInit (int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi) {
+int RoInit (const int vecp, char **vec, struct RoSAPstart *ros, struct RoSAPindication *roi) {
 	int     result;
 	struct assocblk   *acb;
 	PE	pe;
@@ -116,7 +116,7 @@ out1:
 
 /* RO-BEGIN.RESPONSE */
 
-int RoBeginResponse (int sd, int status, PE data, struct RoSAPindication *roi) {
+int RoBeginResponse (const int sd, int status, PE data, struct RoSAPindication *roi) {
 	int	    len,
 			result;
 	char   *base;

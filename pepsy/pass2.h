@@ -95,20 +95,20 @@ extern int	options[];
 
 #define STRSIZE 128	/* general buffer size */
 
-extern char *proc_name(char *t, int flag);
+extern char *proc_name(const char *t, const int flag);
 
 extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
-extern char *class2str(PElementClass cl);
+extern char *class2str(const PElementClass cl);
 
 extern void gen_ventry(FILE *fp, YP oyp, YP yp, char *t, char *f);	/* generate a Value Passing Entry */
 extern void gen_fnentry(FILE *fp, YP oyp, YP yp, char *fn, char *dummy);	/* generate a function calling entry */
 /* extern Action	start_action, final_action; */
-extern char	*int2tstr(int i);	/* integer to temporary string */
+extern char	*int2tstr(const int i);	/* integer to temporary string */
 
 extern char *getfield(char *p), *getfldbit(char *p, char **pstr);
-extern char *class2str(PElementClass cl);
+extern char *class2str(const PElementClass cl);
 void out_final_defs(FILE *fp);
 int noindirect (char *f);
-int addptr (char *p);
+int addptr (const char *p);
 
 /* extern Action	start_action, final_action; */

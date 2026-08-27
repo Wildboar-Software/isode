@@ -28,8 +28,8 @@ char isode_x25_errflag = 0;
 // FIXME: I think this is insecure.
 // Maybe you could replace it with vsnprintf, and globally only use BUFSIZ for buffers
 // passed into this function.
-void _asprintf (char *bp, char *what, char *fmt, va_list ap) {	/* fmt, args, ... */
-	int eindex = errno;
+void _asprintf (char *bp, char *what, const char *fmt, va_list ap) {	/* fmt, args, ... */
+	const int eindex = errno;
 	*bp = 0;
 
 	if (fmt) {

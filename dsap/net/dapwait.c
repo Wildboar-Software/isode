@@ -6,7 +6,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 #include "pepsycodec.h"
-int DapInitWaitRequest (int sd, int secs, struct DAPindication *di);
+int DapInitWaitRequest (const int sd, const int secs, struct DAPindication *di);
 
 
 extern LLog	* log_dsap;
@@ -21,7 +21,7 @@ extern LLog	* log_dsap;
 * Wait routine for a DAP initiator.
 */
 
-int DapInitWaitRequest (int sd, int secs, struct DAPindication *di) {
+int DapInitWaitRequest (const int sd, const int secs, struct DAPindication *di) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);
@@ -62,7 +62,7 @@ int DapInitWaitRequest (int sd, int secs, struct DAPindication *di) {
 	/* NOT REACHED */
 }
 
-int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) {
+int DapDecodeResult (const int sd, const struct RoSAPresult *ror, struct DAPindication *di) {
 	int			  success = NOTOK;
 	PE			  pe = ror->ror_result;
 	struct DSResult	* res = &(di->di_result.dr_res);
@@ -132,7 +132,7 @@ int DapDecodeResult (int sd, struct RoSAPresult *ror, struct DAPindication *di) 
 	return(success);
 }
 
-int DapDecodeError (int sd, struct RoSAPerror *roe, struct DAPindication *di) {
+int DapDecodeError (const int sd, const struct RoSAPerror *roe, struct DAPindication *di) {
 	int			  success;
 	PE			  pe = roe->roe_param;
 	struct DSError	* err = &(di->di_error.de_err);

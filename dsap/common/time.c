@@ -20,20 +20,20 @@
 #include "quipu/util.h"
 #include "quipu/attr.h"
 #include "psap.h"
-static UTC	qstr2utct (char *s, size_t len);
+static UTC	qstr2utct (char *s, const size_t len);
 static PE timeenc (void *value);
 static void * timedec (PE pe);
 static int utccmp (void *value1, void *value2);
 void time_syntax (void);
 
 
-extern int strprint (PS ps, char *str, int format);
+extern int strprint (PS ps, char *str, const int format);
 extern int sfree (char *x);
-extern int pstrcmp(char *a, char *b);
+extern int pstrcmp(const char *a, const char *b);
 extern int build_UNIV_UTCTime (PE *pe, int explicit, int len, char *buffer, char *parm);
 extern int parse_UNIV_UTCTime (PE pe, int explicit, int *len, char **buffer, char *parm);
 
-static UTC	qstr2utct (char *s, size_t len)
+static UTC	qstr2utct (char *s, const size_t len)
 {
 	UTC	    ut;
 	if (len > 14

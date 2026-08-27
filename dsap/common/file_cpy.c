@@ -3,7 +3,7 @@
 int file_cmp (struct file_syntax *a, struct file_syntax *b);
 
 
-extern int pstrcmp(char *a, char *b);
+extern int pstrcmp(const char *a, const char *b);
 
 struct file_syntax *fileattr_cpy (struct file_syntax *fs);
 

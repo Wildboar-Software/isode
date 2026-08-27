@@ -38,7 +38,7 @@ static	int	dont_bother_anymore = 0;
 void init_users (void), sync_users (int cor);	/* users group */
 void init_print (void), sync_print (int cor);	/* print group */
 static void arginit (char **vec), envinit (void), mibinit (void), start_smux (void),
-        doit_smux (void), do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset);
+        doit_smux (void), do_smux (struct type_SNMP_GetRequest__PDU *pdu, const int offset);
 
 static struct triple {
 	char   *t_tree;
@@ -355,7 +355,7 @@ unexpected:
 	}
 }
 
-static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, int offset) {
+static void do_smux (struct type_SNMP_GetRequest__PDU *pdu, const int offset) {
 	int	    idx,
 			status;
 	object_instance ois;

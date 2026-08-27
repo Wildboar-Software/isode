@@ -9,9 +9,9 @@
 
 extern LLog * log_dsap;
 
-int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error);
+int do_ds_abandon (const struct ds_abandon_arg *arg, struct DSError *error);
 
-int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {
+int do_ds_abandon (const struct ds_abandon_arg *arg, struct DSError *error) {
 	DLOG (log_dsap,LLOG_TRACE,("ds_abandon"));
 	error->dse_type = DSE_ABANDON_FAILED;
 	error->ERR_ABANDON_FAIL.DSE_ab_problem = DSE_AB_CANNOTABANDON;
@@ -22,7 +22,7 @@ int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error) {
 int perform_abandon (struct task_act *tk) {
 	struct task_act	* tk_tmp;
 	struct task_act	**tk_p;
-	int			  ab_id = tk->tk_dx.dx_arg.dca_dsarg.arg_ab.aba_invokeid;
+	const int			  ab_id = tk->tk_dx.dx_arg.dca_dsarg.arg_ab.aba_invokeid;
 	struct DSError	* err = &(tk->tk_resp.di_error.de_err);
 
 	DLOG(log_dsap, LLOG_TRACE, ("perform_abandon"));

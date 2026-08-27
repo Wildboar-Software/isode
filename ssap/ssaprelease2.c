@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si);
+static int SRelResponseAux (struct ssapblk *sb, const int status, const char *data, const int cc, struct SSAPindication *si);
 
 
-static int  SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si);
+static int  SRelResponseAux (struct ssapblk *sb, const int status, const char *data, const int cc, struct SSAPindication *si);
 
 /* S-RELEASE.RESPONSE */
 
-int SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication *si) {
+int SRelResponse (const int sd, const int status, const char *data, const int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -26,7 +26,7 @@ int SRelResponse (int sd, int status, char *data, int cc, struct SSAPindication 
 
 /* S-RELEASE.RESPONSE */
 
-static int SRelResponseAux (struct ssapblk *sb, int status, char *data, int cc, struct SSAPindication *si) {
+static int SRelResponseAux (struct ssapblk *sb, const int status, const char *data, const int cc, struct SSAPindication *si) {
 	int     code,
 			result;
 	struct ssapkt *s;

@@ -15,10 +15,10 @@
 
 #ifndef	IAE
 int PExec (
-	struct SSAPstart *ss,
+	const struct SSAPstart *ss,
 	struct PSAPindication *pi,
-	char *arg1,
-	char *arg2,
+	const char *arg1,
+	const char *arg2,
 	int (*hook)(struct isoservent *is, struct PSAPindication *pi),
 	int (*setperms)(struct isoservent *is)
 ) {

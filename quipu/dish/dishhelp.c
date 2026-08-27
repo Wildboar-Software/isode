@@ -23,10 +23,10 @@ struct {
 } help_info[MAXARG];
 int num_help = 0;
 
-static void print_other (PS aps, char x);
+static void print_other (PS aps, const char x);
 static void print_service (void);
 
-void add_dish_help (char *command, char *args, char serv, char other, char *use) {
+void add_dish_help (const char *command, const char *args, const char serv, const char other, const char *use) {
 	help_info[num_help].command = command;
 	help_info[num_help].args = args;
 	help_info[num_help].serv = serv;
@@ -86,7 +86,7 @@ void dish_help_init (void) {
 		"control the operation of the DSA (managers only)," );
 }
 
-void Usage (char *rtn) {
+void Usage (const char *rtn) {
 	extern DN       dn,
 		   savename;
 	int             i;
@@ -109,7 +109,7 @@ void Usage (char *rtn) {
 	ps_print (OPT, "Usage...\n");
 }
 
-void help_arg (char *rtn) {
+void help_arg (const char *rtn) {
 	int             i;
 
 	for (i = 0; help_info[i].command != 0; i++)
@@ -126,7 +126,7 @@ void help_arg (char *rtn) {
 	ps_print (OPT,"Sorry - No help available\n");
 }
 
-static void print_other (PS aps, char x) {
+static void print_other (PS aps, const char x) {
 	if (x == FALSE)
 		return;
 	ps_print (aps,"\n[-[no]types <attribute-type> *] [-[no]all]\n[-[no]value] [-[no]show] \n[-[no]key] [-edb]\n[-proc <syntax> <process>]");

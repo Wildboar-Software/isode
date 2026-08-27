@@ -38,34 +38,34 @@ struct pair sreq_pairs[] = {
 
 #define	doABORT		ss2psabort
 
-static void DATAser (int sd, struct SSAPdata *sx), TOKENser (int sd, struct SSAPtoken *st), SYNCser (int sd, struct SSAPsync *sn), ACTIVITYser (int sd, struct SSAPactivity *sv), REPORTser (int sd, struct SSAPreport *sp),
-		FINISHser (int sd, struct SSAPfinish *sf), ABORTser (int sd, struct SSAPabort *sa);
+static void DATAser (const int sd, const struct SSAPdata *sx), TOKENser (const int sd, const struct SSAPtoken *st), SYNCser (const int sd, const struct SSAPsync *sn), ACTIVITYser (const int sd, const struct SSAPactivity *sv), REPORTser (const int sd, const struct SSAPreport *sp),
+		FINISHser (const int sd, const struct SSAPfinish *sf), ABORTser (const int sd, const struct SSAPabort *sa);
 
 static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, struct PSAPindication *pi);
-static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi);
-static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi);
-static int doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi);
-static int doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi);
-static int doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi);
-static int doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi);
+static int doDATA (struct psapblk *pb, const struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi);
+static int doTOKEN (struct psapblk *pb, const struct SSAPtoken *st, struct PSAPindication *pi);
+static int doSYNC (struct psapblk *pb, const struct SSAPsync *sn, struct PSAPindication *pi);
+static int doACTIVITY (struct psapblk *pb, const struct SSAPactivity *sv, struct PSAPindication *pi);
+static int doREPORT (struct psapblk *pb, const struct SSAPreport *sp, struct PSAPindication *pi);
+static int doFINISH (struct psapblk *pb, const struct SSAPfinish *sf, struct PSAPindication *pi);
 
 /*    P-[*-]DATA.REQUEST */
 
-int PDataRequest (int sd, PE *data, int ndata, struct PSAPindication *pi) {
+int PDataRequest (const int sd, PE *data, const int ndata, struct PSAPindication *pi) {
 	return PDataRequestAux (sd, data, ndata, pi, "user", SDataRequest,
 							"SDataRequest", "P-DATA user-data", PPDU_TD);
 }
 
 int PDataRequestAux (
-	int sd,
+	const int sd,
 	PE *data,
-	int ndata,
+	const int ndata,
 	struct PSAPindication *pi,
-	char *dtype,
+	const char *dtype,
 	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
-	char *stype,
-	char *text,
-	int ppdu
+	const char *stype,
+	const char *text,
+	const int ppdu
 ) {
 	SBV	    smask;
 	int     i,
@@ -129,7 +129,7 @@ out1:
 
 /*    P-READ.REQUEST (pseudo) */
 
-int PReadRequest (int sd, struct PSAPdata *px, int secs, struct PSAPindication *pi) {
+int PReadRequest (const int sd, struct PSAPdata *px, const int secs, struct PSAPindication *pi) {
 	SBV	    smask;
 	int     result;
 	struct psapblk *pb;
@@ -186,7 +186,7 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, s
 	return NOTOK;
 }
 
-static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
+static int doDATA (struct psapblk *pb, const struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
 	int     ppdu,
 			result;
 	char   *text;
@@ -236,7 +236,7 @@ out:
 	return result;
 }
 
-static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindication *pi) {
+static int doTOKEN (struct psapblk *pb, const struct SSAPtoken *st, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPtoken  *pt = &pi -> pi_token;
 
@@ -255,7 +255,7 @@ static int doTOKEN (struct psapblk *pb, struct SSAPtoken *st, struct PSAPindicat
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindication *pi) {
+static int doSYNC (struct psapblk *pb, const struct SSAPsync *sn, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPsync   *pn = &pi -> pi_sync;
 
@@ -283,7 +283,7 @@ static int doSYNC (struct psapblk *pb, struct SSAPsync *sn, struct PSAPindicatio
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPindication *pi) {
+static int doACTIVITY (struct psapblk *pb, const struct SSAPactivity *sv, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPactivity   *pv = &pi -> pi_activity;
 
@@ -308,7 +308,7 @@ static int doACTIVITY (struct psapblk *pb, struct SSAPactivity *sv, struct PSAPi
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindication *pi) {
+static int doREPORT (struct psapblk *pb, const struct SSAPreport *sp, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPreport *pp = &pi -> pi_report;
 
@@ -323,7 +323,7 @@ static int doREPORT (struct psapblk *pb, struct SSAPreport *sp, struct PSAPindic
 	return (result != NOTOK ? DONE : NOTOK);
 }
 
-static int doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindication *pi) {
+static int doFINISH (struct psapblk *pb, const struct SSAPfinish *sf, struct PSAPindication *pi) {
 	int	    result;
 	struct PSAPfinish *pf = &pi -> pi_finish;
 	pi -> pi_type = PI_FINISH;
@@ -336,7 +336,7 @@ static int doFINISH (struct psapblk *pb, struct SSAPfinish *sf, struct PSAPindic
 	return DONE;
 }
 
-int ss2psabort (struct psapblk *pb, struct SSAPabort *sa, struct PSAPindication *pi) {
+int ss2psabort (struct psapblk *pb, const struct SSAPabort *sa, struct PSAPindication *pi) {
 	int	    result,
 			ppdu;
 	PE	    pe;
@@ -425,7 +425,7 @@ out:
 #define	e(i)	(data ? (i) : 0)
 
 int PSetIndications (
-	int sd,
+	const int sd,
 	void (*data)(int sd, struct PSAPdata *sx),
 	void (*tokens)(int sd, struct PSAPtoken *st),
 	void (*sync)(int sd, struct PSAPsync *sn),
@@ -485,7 +485,7 @@ int PSetIndications (
 
 /*    SSAP interface */
 
-int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struct SSAPabort *sa) {
+int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, const char *event, const struct SSAPabort *sa) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -554,7 +554,7 @@ int ss2pslose (struct psapblk *pb, struct PSAPindication *pi, char *event, struc
 	}
 }
 
-static void DATAser (int sd, struct SSAPdata *sx) {
+static void DATAser (const int sd, const struct SSAPdata *sx) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -572,7 +572,7 @@ static void DATAser (int sd, struct SSAPdata *sx) {
 		(*pb -> pb_DataIndication) (sd, px);
 }
 
-static void TOKENser (int sd, struct SSAPtoken *st) {
+static void TOKENser (const int sd, const struct SSAPtoken *st) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -588,7 +588,7 @@ static void TOKENser (int sd, struct SSAPtoken *st) {
 		(*pb -> pb_TokenIndication) (sd, &pi -> pi_token);
 }
 
-static void SYNCser (int sd, struct SSAPsync *sn) {
+static void SYNCser (const int sd, const struct SSAPsync *sn) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -604,7 +604,7 @@ static void SYNCser (int sd, struct SSAPsync *sn) {
 		(*pb -> pb_SyncIndication) (sd, &pi -> pi_sync);
 }
 
-static void ACTIVITYser (int sd, struct SSAPactivity *sv) {
+static void ACTIVITYser (const int sd, const struct SSAPactivity *sv) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -620,7 +620,7 @@ static void ACTIVITYser (int sd, struct SSAPactivity *sv) {
 		(*pb -> pb_ActivityIndication) (sd, &pi -> pi_activity);
 }
 
-static void REPORTser (int sd, struct SSAPreport *sp) {
+static void REPORTser (const int sd, const struct SSAPreport *sp) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -636,7 +636,7 @@ static void REPORTser (int sd, struct SSAPreport *sp) {
 		(*pb -> pb_ReportIndication) (sd, &pi -> pi_report);
 }
 
-static void FINISHser (int sd, struct SSAPfinish *sf) {
+static void FINISHser (const int sd, const struct SSAPfinish *sf) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -652,7 +652,7 @@ static void FINISHser (int sd, struct SSAPfinish *sf) {
 		(*pb -> pb_ReleaseIndication) (sd, &pi -> pi_finish);
 }
 
-static void ABORTser (int sd, struct SSAPabort *sa) {
+static void ABORTser (const int sd, const struct SSAPabort *sa) {
 	void (*abort)(int sd, struct PSAPabort *pa);
 	struct psapblk *pb;
 	struct PSAPindication   pis;
@@ -717,7 +717,7 @@ void freepblk (struct psapblk *pb) {
 	free ((char *) pb);
 }
 
-struct psapblk *findpblk (int sd) {
+struct psapblk *findpblk (const int sd) {
 	struct psapblk *pb;
 
 	if (once_only == 0)
@@ -728,7 +728,7 @@ struct psapblk *findpblk (int sd) {
 	return NULL;
 }
 
-struct type_PS_User__data *info2ppdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, int ppdu) {
+struct type_PS_User__data *info2ppdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, const int ndata, const int ppdu) {
 	int    i,
 		   j;
 	PE	   *d,
@@ -886,7 +886,7 @@ out:
 	return NULL;
 }
 
-int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_User__data *info, PE *data, int *ndata, int ppdu) {
+int ppdu2info (struct psapblk *pb, const struct PSAPindication *pi, const struct type_PS_User__data *info, PE *data, int *ndata, const int ppdu) {
 	int    i,
 		   j;
 	int	    ctx,
@@ -988,7 +988,7 @@ int ppdu2info (struct psapblk *pb, struct PSAPindication *pi, struct type_PS_Use
 #ifndef	DEBUG
 #endif
 
-int info2ssdu (struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, char *text, int ppdu) {
+int info2ssdu (const struct psapblk *pb, struct PSAPindication *pi, PE *data, int ndata, char **realbase, char **base, int *len, const char *text, const int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1065,7 +1065,7 @@ serialize:
 #ifndef	DEBUG
 #endif
 
-int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, int len, PE *data, int *ndata, char *text, int ppdu) {
+int ssdu2info (struct psapblk *pb, struct PSAPindication *pi, char *base, const int len, PE *data, int *ndata, const char *text, const int ppdu) {
 	int    result;
 	PE	    pe;
 	struct type_PS_User__data *info;
@@ -1189,7 +1189,7 @@ punch_it:
 #ifndef	DEBUG
 #endif
 
-int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, struct qbuf *qb, int len, PE *data, int *ndata, char *text, int ppdu) {
+int qbuf2info (struct psapblk *pb, struct PSAPindication *pi, const struct qbuf *qb, const int len, PE *data, int *ndata, const char *text, const int ppdu) {
 	int	    result;
 	PE	    pe;
 	struct qbuf *qp;
@@ -1289,7 +1289,7 @@ out:
 	return NOTOK;
 }
 
-struct qbuf *info2qb (PE pe, struct qbuf *qp, struct PSAPindication *pi) {
+struct qbuf *info2qb (PE pe, const struct qbuf *qp, struct PSAPindication *pi) {
 	int           len, qlen;
 	struct qbuf *qb;
 
@@ -1335,7 +1335,7 @@ out_f:
 	return NULL;
 }
 
-int qb2info (struct qbuf *qb, PE *pe) {
+int qb2info (const struct qbuf *qb, PE *pe) {
 	int	    result;
 #ifdef	DEBUG
 	int	    len;
@@ -1368,7 +1368,7 @@ int qb2info (struct qbuf *qb, PE *pe) {
 	return result;
 }
 
-struct type_PS_Identifier__list *silly_list (struct psapblk *pb, struct PSAPindication *pi) {
+struct type_PS_Identifier__list *silly_list (const struct psapblk *pb, struct PSAPindication *pi) {
 	int    j;
 	struct PSAPcontext *qp;
 	struct type_PS_Identifier__list *list;

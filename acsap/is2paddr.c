@@ -6,7 +6,7 @@
 #include "isoaddrs.h"
 #include "isoservent.h"
 
-struct PSAPaddr* is2paddr (char *host, char *service, struct isoservent *is) {
+struct PSAPaddr* is2paddr (char *host, char *service, const struct isoservent *is) {
 	AEI	    aei;
 	struct PSAPaddr *pa;
 

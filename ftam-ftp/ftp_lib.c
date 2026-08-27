@@ -73,7 +73,7 @@ static void ftp_init(void) {
  * ftp_login: establish command connection with remote host
  * then execute login process.
  */
-int ftp_login (char *host, char *user, char *passwd, char *acct) {
+int ftp_login (char *host, const char *user, const char *passwd, const char *acct) {
 	if (connected) return NOTOK; /* already connected */
 	ftp_init(); /* initialize control state structures */
 	if (hookup(host, FTP_PORT) == NOTOK)
@@ -123,7 +123,7 @@ int ftp_abort (void) {
  * insensitive scan then falling back on record counts in the case of
  * directories.
  */
-int ftp_exist (char *filename) {
+int ftp_exist (const char *filename) {
 	int n, count;
 	int fd;
 	FILE *fp;
@@ -162,7 +162,7 @@ int ftp_exist (char *filename) {
 /* Basicly set transfer type to ascii and issue NLST command
  * and returning the socket descriptor for the data stream.
  */
-int ftp_ls (char *dir) {
+int ftp_ls (const char *dir) {
 	int fd;
 
 	if (!connected) return NOTOK;
@@ -172,7 +172,7 @@ int ftp_ls (char *dir) {
 	if ((fd = recvrequest("NLST",dir)) == NOTOK) return NOTOK;
 	return(fd);
 }
-int ftp_delete (char *file) {
+int ftp_delete (const char *file) {
 	if (!connected) return NOTOK;
 	/* send delete command, return OK if complete, NOTOK otherwise */
 	if (command("DELE %s", file) == COMPLETE) return OK;
@@ -182,14 +182,14 @@ int ftp_delete (char *file) {
 	return NOTOK;
 }
 
-int ftp_mkdir (char *dir) {
+int ftp_mkdir (const char *dir) {
 	if (!connected) return NOTOK;
 	/* send MKDIR command, return OK if complete, NOTOK otherwise */
 	if (command("XMKD %s", dir) == COMPLETE) return OK;
 	return NOTOK;
 }
 
-int ftp_rename (char *from, char *to) {
+int ftp_rename (const char *from, const char *to) {
 	int n;
 
 	if (!connected) return NOTOK;
@@ -200,21 +200,21 @@ int ftp_rename (char *from, char *to) {
 	return NOTOK;
 }
 
-int ftp_write (char *file) {
+int ftp_write (const char *file) {
 	if (!connected) return NOTOK;
 	return(sendrequest("STOR",file));
 }
-int ftp_append (char *file) {
+int ftp_append (const char *file) {
 	if (!connected) return NOTOK;
 	return(sendrequest("APPE",file));
 }
 
-int ftp_read (char *file) {
+int ftp_read (const char *file) {
 	if (!connected) return NOTOK;
 	return(recvrequest("RETR", file));
 }
 
-int ftp_type (int modeX) {
+int ftp_type (const int modeX) {
 	int n;
 	char cmd[10];
 
@@ -255,7 +255,7 @@ int ftp_reply (void) {
 	return NOTOK;
 }
 
-int ftp_create (char *filename) {
+int ftp_create (const char *filename) {
 	int fd,n;
 
 	if (!connected) return NOTOK;

@@ -7,10 +7,10 @@
 #include "ftamuser.h"
 #include "ftam-cmds.h"
 
-static int mv (char *src, char *dst, int multi);
-static int rm (char *file, int multi);
-static int chgrp (char *group, char *file, int multi);
-static int makedir (char *dir, int multi);
+static int mv (char *src, const char *dst, const int multi);
+static int rm (char *file, const int multi);
+static int chgrp (const char *group, char *file, const int multi);
+static int makedir (char *dir, const int multi);
 
 int f_mv (char **vec) {
 #ifdef	BRIDGE
@@ -204,7 +204,7 @@ out:
 #endif
 }
 
-static int mv (char *src, char *dst, int multi) {
+static int mv (char *src, const char *dst, const int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -336,7 +336,7 @@ out:
 #endif
 }
 
-static int rm (char *file, int multi) {
+static int rm (char *file, const int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -454,7 +454,7 @@ out:
 	return OK;
 }
 
-static int chgrp (char *group, char *file, int multi) {
+static int chgrp (const char *group, char *file, const int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -566,7 +566,7 @@ int f_mkdir (char **vec) {
 #endif
 }
 
-static int makedir (char *dir, int multi) {
+static int makedir (char *dir, const int multi) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;

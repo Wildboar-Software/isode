@@ -4,7 +4,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result) {
+int dap_compare (const int ad, int *id, struct ds_compare_arg *arg, struct DSError *error, struct ds_compare_result *result) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
@@ -42,7 +42,7 @@ int dap_compare (int ad, int *id, struct ds_compare_arg *arg, struct DSError *er
 	}
 }
 
-int DapCompare (int ad, int id, struct ds_compare_arg *arg, struct DAPindication *di, int asyn) {
+int DapCompare (const int ad, const int id, struct ds_compare_arg *arg, struct DAPindication *di, const int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_CompareArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

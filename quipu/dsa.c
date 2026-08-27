@@ -136,8 +136,8 @@ static SFD list_status2 (int sig);
 #endif
 #endif
 
-static void osisecinit(int *argc, char ***argv, int fn);
-static int do_restart (int sig);
+static void osisecinit(int *argc, char ***argv, const int fn);
+static int do_restart (const int sig);
 
 int main (int argc, char **argv) {
 #ifdef SBRK_DEBUG
@@ -381,9 +381,9 @@ static int check_conns (int secs) {
 		}
 #endif
 
-	void dsa_abort (int xrestart);
+	void dsa_abort (const int xrestart);
 
-	void dsa_abort(int xrestart) {
+	void dsa_abort(const int xrestart) {
 		static int	  been_here = 0;
 #ifdef SBRK_DEBUG
 		unsigned proc_size;
@@ -717,7 +717,7 @@ fork_ok:
 		do_restart (sig);
 	}
 
-	static int do_restart (int sig) {
+	static int do_restart (const int sig) {
 		int fpid, sd;
 		unsigned int secs;
 		extern char * mydsaname;
@@ -849,7 +849,7 @@ fork_ok:
 
 #endif /* QUIPU_CONSOLE */
 
-	static void osisecinit(int *argc, char ***argv, int fn) {
+	static void osisecinit(int *argc, char ***argv, const int fn) {
 		char   *ap;
 		char  **argptr;
 		static char   *args[10];

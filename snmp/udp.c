@@ -60,7 +60,7 @@ struct socket {
 
 static struct udpstat udpstat;
 
-static int  get_listeners (int offset);
+static int  get_listeners (const int offset);
 
 #if defined(BSD44) || defined(LINUX)
 #define	udpInDatagrams	1
@@ -72,7 +72,7 @@ static int  get_listeners (int offset);
 #endif
 
 #ifdef LINUX
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len);
 
 static int _read_udp_stats (void)
 {
@@ -188,7 +188,7 @@ static struct udptab *uts = NULL;
 
 static	int	flush_udp_cache = 0;
 
-static struct udptab *get_udpent (unsigned int *ip, int isnext);
+static struct udptab *get_udpent (const unsigned int *ip, const int isnext);
 
 #define	udpLocalAddress 0
 #define	udpLocalPort 1
@@ -335,7 +335,7 @@ static int  ut_compar (const void *p, const void *q) {
 					 (*b) -> ut_instance, UT_SIZE);
 }
 
-static int  get_listeners (int offset) {
+static int  get_listeners (const int offset) {
 	int    i;
 	unsigned int  *cp;
 	struct udptab *us,
@@ -349,7 +349,7 @@ static int  get_listeners (int offset) {
 	struct nlist nzs;
 	struct nlist *nz = &nzs;
 #endif
-	static   int first_time = 1;
+	static   const int first_time = 1;
 	static   int lastq = -1;
 
 	if (quantum == lastq)
@@ -446,7 +446,7 @@ static int  get_listeners (int offset) {
 	return OK;
 }
 
-static struct udptab *get_udpent (unsigned int *ip, int isnext) {
+static struct udptab *get_udpent (const unsigned int *ip, const int isnext) {
 	struct udptab *ut;
 
 	for (ut = uts; ut; ut = ut -> ut_next)

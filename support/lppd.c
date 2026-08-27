@@ -26,12 +26,12 @@
 #include "tailor.h"
 #include "vt.h"
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta);
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta);
 static void envinit (void);
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event);
+static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
 static void arginit (char **vec);
 
 static int  debug = 0;
@@ -62,7 +62,7 @@ static struct dispatch  dps[NTADDRS];
 
 void adios  (char *, char *, ...);
 void advise (int, char *, char *, ...);
-void ts_advise (struct TSAPdisconnect *td, int code, char *event);
+void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
 
 int main (int argc, char **argv, char **envp) {
 	int	    listening,
@@ -120,8 +120,8 @@ int main (int argc, char **argv, char **envp) {
 	return 0;
 }
 
-static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
-	uint16_t port = ta -> ta_addrs[0].na_port;
+static int lppd (const int vecp, char **vec, const struct TSAPaddr *ta) {
+	const uint16_t port = ta -> ta_addrs[0].na_port;
 	struct dispatch *dp;
 	struct isoservent *is;
 
@@ -148,7 +148,7 @@ static int lppd (int vecp, char **vec, struct TSAPaddr *ta) {
 	adios (*is -> is_vec, "unable to exec");
 }
 
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)

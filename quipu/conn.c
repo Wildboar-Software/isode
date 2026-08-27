@@ -8,7 +8,7 @@
 
 struct connection *conn_alloc (void);
 void conn_free (struct connection *conn);
-void conn_list_log (struct connection *cn);
+void conn_list_log (const struct connection *cn);
 
 
 extern LLog * log_dsap;
@@ -35,13 +35,13 @@ void conn_free (struct connection *conn) {
 	free((char *)conn);
 }
 
-void conn_connect_free (struct conn_connect *cc) {
+void conn_connect_free (const struct conn_connect *cc) {
 	bind_arg_free (&(cc->cc_req));
 	/* cc_dc should not be freed before calling conn_free() */
 	DCFREE (&(cc->cc_dc));
 }
 
-void conn_start_free (struct conn_start *cs) {
+void conn_start_free (const struct conn_start *cs) {
 	if (cs->cs_svec[0])
 		free (cs->cs_svec[0]);
 	if (cs->cs_svec[1])
@@ -111,7 +111,7 @@ void conn_extract (struct connection *conn) {
 	conn_free(conn);
 }
 
-void conn_log (struct connection *conn, int level) {
+void conn_log (const struct connection *conn, const int level) {
 	struct oper_act     * oper;
 	struct task_act     * task;
 	char * cntxt;
@@ -195,7 +195,7 @@ void conn_log (struct connection *conn, int level) {
 }
 
 #ifdef DEBUG
-void conn_list_log (struct connection *cn) {
+void conn_list_log (const struct connection *cn) {
 	struct connection	* cn_tmp;
 	DLOG(log_dsap, LLOG_DEBUG, ("Connection List:"));
 	for(cn_tmp=cn; cn_tmp!=NULLCONN; cn_tmp=cn_tmp->cn_next) {

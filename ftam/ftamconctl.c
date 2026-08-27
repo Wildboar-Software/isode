@@ -27,7 +27,7 @@ struct pair fconctl_pairs [] = {
 };
 
 struct type_FTAM_Concurrency__Control *
-conctl2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+conctl2fpm (const struct ftamblk *fsb, const struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	struct type_FTAM_Concurrency__Control *fpm;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Control *)
@@ -59,7 +59,7 @@ no_mem:
 	return fpm;
 }
 
-int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+int fpm2conctl (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Control *fpm, const struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	FCINIT (fc);
 #define	dolock(s,t) \
 { \
@@ -79,9 +79,9 @@ int fpm2conctl (struct ftamblk *fsb, struct type_FTAM_Concurrency__Control *fpm,
 }
 
 struct type_FTAM_Concurrency__Access *
-conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+conacc2fpm (const struct ftamblk *fsb, const struct FTAMconcurrency *fc, struct FTAMindication *fti) {
 	struct type_FTAM_Concurrency__Access *fpm;
-	int key;
+	const int key;
 
 	if ((fpm = (struct type_FTAM_Concurrency__Access *)
 			   calloc (1, sizeof *fpm)) == NULL) {
@@ -107,7 +107,7 @@ conacc2fpm (struct ftamblk *fsb, struct FTAMconcurrency *fc, struct FTAMindicati
 	return fpm;
 }
 
-int fpm2conacc (struct ftamblk *fsb, struct type_FTAM_Concurrency__Access *fpm, struct FTAMconcurrency *fc, struct FTAMindication *fti) {
+int fpm2conacc (const struct ftamblk *fsb, const struct type_FTAM_Concurrency__Access *fpm, const struct FTAMconcurrency *fc, const struct FTAMindication *fti) {
 	int	    key;
 
 	FCINIT (fc);

@@ -11,7 +11,7 @@
 #include "quipu/util.h"
 #include "quipu/common.h"
 #include "psap.h"
-static char *find_nest (char *str);
+static char *find_nest (const char *str);
 static void attrSntx_print (PS ps, void *value, int format);
 static void * str2attrSntx (char *str);
 static Attr_Sequence str2attrSeq(char * buf);
@@ -31,7 +31,7 @@ extern PE dn_enc(DN dn);
 extern DN dn_dec(PE pe);
 extern DN str2dnX(char *str);
 
-char * find_nest(char *str);
+char * find_nest(const char *str);
 
 static int indent = 0;
 short as_sntx;
@@ -41,7 +41,7 @@ extern void (*oc_hier)(void);
 #ifdef TURBO_DISK
 char fromfile;
 #endif
-char *find_nest (char *str) {
+char *find_nest (const char *str) {
 	char *cp, *ptr1, *ptr2;
 
 	if(!(cp = index(str,AS_START_DELIMITER)))
@@ -67,7 +67,7 @@ static void attrSntx_print (PS ps, void *value, int format) {
 	char buf[LINESIZE];
 	Attr_Sequence  atl;
 	AV_Sequence avs;
-	extern int oidformat;
+	extern const int oidformat;
 	int i;
 
 	if (a) {

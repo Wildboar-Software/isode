@@ -9,7 +9,7 @@ PE asn2pe (char *str);
 
 extern LLog * log_dsap;
 
-void pe_print (PS ps, PE pe, int format)
+void pe_print (PS ps, PE pe, const int format)
 {
 	char * ptr, *s;
 	int i, j;

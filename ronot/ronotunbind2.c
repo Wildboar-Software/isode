@@ -8,7 +8,7 @@
 
 /* RO-UNBIND.INDICATION */
 
-int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
+int RoUnBindInit (const int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) {
 	/*
 	* What is provided here is in-line handling of the
 	* (usually NULL) user data as an unbind argument value.
@@ -41,7 +41,7 @@ int RoUnBindInit (int sd, struct AcSAPfinish *acf, struct RoNOTindication *rni) 
 
 /* RO-UNBIND.RESULT */
 
-int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
+int RoUnBindResult (const int sd, PE unbindrespe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -77,7 +77,7 @@ int RoUnBindResult (int sd, PE unbindrespe, struct RoNOTindication *rni) {
 
 /* RO-UNBIND.ERROR */
 
-int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
+int RoUnBindError (const int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 	int			  result;
 	PE			  user_data;
 	PE			* user_data_p = &(user_data);
@@ -112,7 +112,7 @@ int RoUnBindError (int sd, PE unbinderrpe, struct RoNOTindication *rni) {
 
 /* RO-UNBIND.REJECT */
 
-int RoUnBindReject (int sd, int status, int reason, struct RoNOTindication *rni) {
+int RoUnBindReject (const int sd, const int status, const int reason, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

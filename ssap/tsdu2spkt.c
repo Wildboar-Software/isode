@@ -21,16 +21,16 @@ struct	local_buf {
 	int len;				/* Current buffer size */
 };
 
-static void put2spdu (int code, int li, char *value, struct local_buf *c);
+static void put2spdu (const int code, const int li, char *value, struct local_buf *c);
 
 static int
-copy_li (const void *src, void *dst, int n)
+copy_li (const void *src, void *dst, const int n)
 {
 	return bcopy_int (src, dst, n);
 }
 
 static int
-store_li_u8 (uint8_t *dst, int li)
+store_li_u8 (uint8_t *dst, const int li)
 {
 	if (int2u8 (li, dst) != 0)
 		return NOTOK;
@@ -38,7 +38,7 @@ store_li_u8 (uint8_t *dst, int li)
 }
 
 static int
-store_u8 (char *p, int n)
+store_u8 (char *p, const int n)
 {
 	uint8_t v;
 
@@ -477,12 +477,12 @@ static void start_spdu (struct ssapkt *s, struct local_buf *c, int basesize) {
 		c -> ptr = c -> top + 2;
 }
 
-static int end_spdu (unsigned char code, struct local_buf *c) {
+static int end_spdu (const unsigned char code, struct local_buf *c) {
 	if (c -> len) {
 		if (c -> allocli > 254) {
 			if (c -> li < 255) {
 				char buf[256];
-				int nbytes = c -> len - c -> left;
+				const int nbytes = c -> len - c -> left;
 
 				if (copy_li ((c -> top + 2), buf, nbytes) != 0
 						|| copy_li (buf, c -> top, nbytes) != 0)
@@ -513,10 +513,10 @@ static int end_spdu (unsigned char code, struct local_buf *c) {
 	return NOTOK;
 }
 
-static void start_pgi (unsigned char code, struct local_buf *c) {
+static void start_pgi (const unsigned char code, struct local_buf *c) {
 	put2spdu ((int) code, 0, NULLCP, c);
 	if (c -> len) {
-		ptrdiff_t d = c -> ptr - c -> top - 1;
+		const ptrdiff_t d = c -> ptr - c -> top - 1;
 
 		if (ptrdiff2int (d, &c -> pgi) != 0)
 			c -> len = 0;
@@ -525,14 +525,14 @@ static void start_pgi (unsigned char code, struct local_buf *c) {
 
 static void end_pgi (struct local_buf *c) {
 	if (c -> len) {
-		int v = (c -> len - c -> left) - (c -> pgi + 1);
+		const int v = (c -> len - c -> left) - (c -> pgi + 1);
 
 		if (store_u8 (c -> top + c -> pgi, v) != OK)
 			c -> len = 0;
 	}
 }
 
-static void put2spdu (int code, int li, char *value, struct local_buf *c) {
+static void put2spdu (const int code, const int li, char *value, struct local_buf *c) {
 	int     cl = li;
 	char   *p1, *p2;
 
@@ -1027,7 +1027,7 @@ int spkt2tsdu (struct ssapkt *s, char **base, int *len) {
 	return c.len ? OK : NOTOK;
 }
 
-static uint32_t str2ssn (char *s, int n) {
+static uint32_t str2ssn (const char *s, int n) {
 	uint32_t u;
 	unsigned d;
 
@@ -1057,7 +1057,7 @@ static uint32_t str2ssn (char *s, int n) {
     } \
     else
 
-static char *pullqb (struct qbuf *qb, int n) {
+static char *pullqb (const struct qbuf *qb, const int n) {
 	int    i;
 	int	    once;
 	char  *cp;
@@ -1098,7 +1098,7 @@ static char *pullqb (struct qbuf *qb, int n) {
 	return buffer;
 }
 
-struct ssapkt *tsdu2spkt (struct qbuf *qb, int len, int *cc) {
+struct ssapkt *tsdu2spkt (const struct qbuf *qb, const int len, int *cc) {
 	int    li;
 	int     cat0,
 			nread,
@@ -1854,7 +1854,7 @@ do_pgi:
 	return s;
 }
 
-struct ssapkt *newspkt (int code) {
+struct ssapkt *newspkt (const int code) {
 	struct ssapkt *s;
 	s = (struct ssapkt *) calloc (1, sizeof *s);
 	if (s == NULL)

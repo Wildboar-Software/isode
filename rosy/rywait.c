@@ -25,10 +25,10 @@
 /* WAIT */
 
 int	RyWait (
-	int sd,
-	int *id,
+	const int sd,
+	const int *id,
 	caddr_t *out,
-	int secs,
+	const int secs,
 	struct RoSAPindication *roi
 ) {
 	int     reason,
@@ -77,10 +77,10 @@ int	RyWait (
 }
 
 int	RyWaitAux (
-	int sd,
-	struct opsblk *opb,
+	const int sd,
+	const struct opsblk *opb,
 	caddr_t *out,
-	int secs,
+	const int secs,
 	struct RoSAPindication *roi
 ) {
 	int     id,

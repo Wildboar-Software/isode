@@ -10,23 +10,23 @@
 #include "quipu/attr.h"
 #include "quipu/entry.h"
 #include "quipu/turbo.h"
-static void rsavl_print( Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, int depth );
-static void savl_print (Avlnode *root);
+static void rsavl_print( const Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, const int depth );
+static void savl_print (const Avlnode *root);
 static void ravl_print (
-	Avlnode *root,
+	const Avlnode *root,
 	void (*fn)(PS, RDN, int),
 	PS fps,
-	int format,
-	int depth
+	const int format,
+	const int depth
 );
-static void avl_print (Avlnode *root);
+static void avl_print (const Avlnode *root);
 static int rprint_directory (caddr_t data, caddr_t arg);
 static void print_directory (Entry node);
 static void print_optimized_attrs (void);
 static int print_index_node (Index_node *node, PS fps);
 static int print_soundex_node (Index_node *node, PS fps);
-static void print_index( Index *pindex );
-static void print_eis_list (EntryInfo *e);
+static void print_index( const Index *pindex );
+static void print_eis_list (const EntryInfo *e);
 static void print_dn (DN dn);
 
 
@@ -37,7 +37,7 @@ AttributeType	*turbo_index;
 
 PS	ps;
 
-static void rsavl_print( Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, int depth ) {
+static void rsavl_print( const Avlnode *root, int (*fn)(FILE *, const char *, ...), FILE *fps, const int depth ) {
 	int	i;
 
 	if ( root == 0 )
@@ -50,7 +50,7 @@ static void rsavl_print( Avlnode *root, int (*fn)(FILE *, const char *, ...), FI
 	rsavl_print( root->avl_left, fn, fps, depth+1 );
 }
 
-void savl_print (Avlnode *root) {
+void savl_print (const Avlnode *root) {
 #ifndef __STDC__
 	int	fprintf(FILE *stream, const char *format, ...);
 #else
@@ -71,11 +71,11 @@ void savl_print (Avlnode *root) {
 }
 
 static void ravl_print (
-	Avlnode *root,
+	const Avlnode *root,
 	void (*fn)(PS, RDN, int),
 	PS fps,
-	int format,
-	int depth
+	const int format,
+	const int depth
 ) {
 	int	i;
 	if ( root == 0 )
@@ -88,7 +88,7 @@ static void ravl_print (
 	ravl_print( root->avl_left, fn, fps, format, depth+1 );
 }
 
-void avl_print (Avlnode *root) {
+void avl_print (const Avlnode *root) {
 	PS	fps;
 	printf( "**** avl_print ****\n" );
 	if ( root == 0 ) {
@@ -110,7 +110,7 @@ void avl_print (Avlnode *root) {
 
 static int rprint_directory (caddr_t data, caddr_t arg) {
 	Entry node = (Entry) data;
-	int depth = (int) (size_t) arg;
+	const int depth = (int) (size_t) arg;
 	int	i;
 	for ( i = 0; i < depth; i++ )
 		ps_print( ps, "\t" );
@@ -192,7 +192,7 @@ static int print_soundex_node (Index_node *node, PS fps) {
 /*
  * print_index -- print the given attribute index.
  */
-void print_index( Index *pindex ) {
+void print_index( const Index *pindex ) {
 	PS	fps;
 	int	i;
 
@@ -224,7 +224,7 @@ void print_index( Index *pindex ) {
 	ps_free( fps );
 }
 
-void print_eis_list (EntryInfo *e) {
+void print_eis_list (const EntryInfo *e) {
 	DN	dnend;
 
 	if ( e == NULLENTRYINFO ) {

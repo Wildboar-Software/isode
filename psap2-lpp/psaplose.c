@@ -13,7 +13,7 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int  _psaplose (struct PSAPindication *pi, int reason, va_list ap);
+static int  _psaplose (struct PSAPindication *pi, const int reason, va_list ap);
 
 #ifndef	lint
 int	ppktlose (struct psapblk *pb, ...) {
@@ -111,7 +111,7 @@ int	psaplose (struct PSAPindication *pi, int reason, char *what, char *fmt) {
 #endif
 
 #ifndef	lint
-static int  _psaplose (struct PSAPindication *pi, int reason, va_list ap) {
+static int  _psaplose (struct PSAPindication *pi, const int reason, va_list ap) {
 	char  *bp, *what, *fmt;
 	char    buffer[BUFSIZ];
 	struct PSAPabort *pa;

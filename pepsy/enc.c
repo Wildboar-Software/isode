@@ -31,12 +31,12 @@ static int chkobj (modtyp *mod, ptpe *p, PE head);
 #endif
 
 extern ptpe *next_tpe(ptpe *p), *fdflt_f(ptpe *p);
-extern char *pr_petype(int type);
+extern char *pr_petype(const int type);
 char   *idname(int id), *clname(int cl);
 extern int pepsylose (modtyp *module, ...);
 extern int same (
-	ptpe *typ,
-	ptpe *dflt,
+	const ptpe *typ,
+	const ptpe *dflt,
 	char *parm,
 	modtyp *mod			/* Module it is from */
 );
@@ -44,8 +44,8 @@ extern int same (
 extern int ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 );
 
 #define NEXT_TPE(p) (p = next_tpe(p))
@@ -67,9 +67,9 @@ static int en_etype(char *parm, ptpe *p, modtyp *mod, PE *rpe);
 
 extern int hasdata (
 	PEPYPARM parm,
-	ptpe *p,
+	const ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	int *popt,
+	const int *popt,
 	int *optcnt
 );
 
@@ -78,12 +78,12 @@ extern int hasdata (
  * pe
  */
 int enc_f (
-	int typ,			/* which type it is */
+	const int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE *pe,
-	int explicit,
-	int len,
-	char *buf,
+	const int explicit,
+	const int len,
+	const char *buf,
 	char *parm
 ) {
 	ptpe *p;

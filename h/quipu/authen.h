@@ -18,14 +18,14 @@ struct alg_id {
 	} un;
 };
 
-int alg_cpy (struct alg_id *a, struct alg_id *b);
+int alg_cpy (struct alg_id *a, const struct alg_id *b);
 
 struct random_number {
 	int n_bits;
 	char *value;
 };
 
-struct random_number *random_cpy (struct random_number *rand);
+struct random_number *random_cpy (const struct random_number *rand);
 
 struct key_info {
 	struct alg_id alg;
@@ -45,7 +45,7 @@ struct signature {
 	char *encrypted;
 };
 
-struct signature *sig_cpy (struct signature *sig);
+struct signature *sig_cpy (const struct signature *sig);
 
 struct certificate {
 	struct alg_id alg;

@@ -1,7 +1,7 @@
 #include "quipu/util.h"
 #include "quipu/entry.h"
 #include "quipu/malloc.h"
-Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull);
+Attr_Sequence as_combine (Attr_Sequence as, char * str, const char allownull);
 
 
 extern short acl_sntx;
@@ -61,7 +61,7 @@ Attr_Sequence str2as (char * str) {
 
 }
 
-Attr_Sequence as_combine (Attr_Sequence as, char * str, char allownull) {
+Attr_Sequence as_combine (Attr_Sequence as, char * str, const char allownull) {
 	char * ptr = str;
 	char * save, val;
 	AV_Sequence avs;

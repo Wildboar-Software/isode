@@ -6,7 +6,7 @@
 
 extern	LLog	* log_dsap;
 
-void oper_preject (struct connection *conn, struct DSAPpreject *dp) {
+void oper_preject (const struct connection *conn, const struct DSAPpreject *dp) {
 	struct oper_act *       on;
 
 	DLOG(log_dsap, LLOG_TRACE, ("oper_preject"));

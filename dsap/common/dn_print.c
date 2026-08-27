@@ -1,7 +1,7 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
-static void dn_rprint(PS ps, DN dn, char *sep);
+static void dn_rprint(PS ps, DN dn, const char *sep);
 
 
 void dn_print (PS ps, DN dn, int format)
@@ -36,7 +36,7 @@ void dn_print (PS ps, DN dn, int format)
 	}
 }
 
-static void dn_rprint(PS ps, DN dn, char *sep)
+static void dn_rprint(PS ps, DN dn, const char *sep)
 {
 	if (dn -> dn_parent != NULLDN) {
 		dn_rprint(ps, dn -> dn_parent, sep);
@@ -45,7 +45,7 @@ static void dn_rprint(PS ps, DN dn, char *sep)
 	dn_comp_print (ps, dn, READOUT);
 }
 
-void dn_rfc_print(PS ps, DN dn, char *sep)
+void dn_rfc_print(PS ps, DN dn, const char *sep)
 {
 	if (dn == NULLDN) {
 		ps_print (ps, "NULL DN");
@@ -57,7 +57,7 @@ void dn_rfc_print(PS ps, DN dn, char *sep)
 static DN localdn = NULLDN;
 extern char * local_dit;
 
-void ufn_dn_print (PS ps, DN dn, int multiline)
+void ufn_dn_print (PS ps, DN dn, const int multiline)
 {
 	if (dn == NULLDN)
 		return;
@@ -68,7 +68,7 @@ void ufn_dn_print (PS ps, DN dn, int multiline)
 
 int	ufn_indent = 16;
 
-int ufn_dn_print_aux (PS ps, DN dn, DN marker, int multiline)
+int ufn_dn_print_aux (PS ps, DN dn, DN marker, const int multiline)
 {
 	DN next = NULLDN;
 	char res = 0;
@@ -136,7 +136,7 @@ char   *dn2str (DN dn)
 	return cp;
 }
 
-char   *dn2ufn (DN dn, int multiline)
+char   *dn2ufn (DN dn, const int multiline)
 {
 	char       *cp;
 
@@ -156,7 +156,7 @@ char   *dn2ufn (DN dn, int multiline)
 	return cp;
 }
 
-char   *dn2rfc (DN dn, char *sep)
+char   *dn2rfc (DN dn, const char *sep)
 {
 	char       *cp;
 

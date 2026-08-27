@@ -4,7 +4,7 @@
 #include "quipu/dap2.h"
 #include "../x500as/DAS-types.h"
 
-int dap_modifyentry (int ad, int *id, struct ds_modifyentry_arg *arg, struct DSError *error) {
+int dap_modifyentry (const int ad, int *id, struct ds_modifyentry_arg *arg, struct DSError *error) {
 	struct DAPindication	  di_s;
 	struct DAPindication	* di = &(di_s);
 
@@ -38,7 +38,7 @@ int dap_modifyentry (int ad, int *id, struct ds_modifyentry_arg *arg, struct DSE
 	}
 }
 
-int DapModifyEntry (int ad, int id, struct ds_modifyentry_arg *arg, struct DAPindication *di, int asyn) {
+int DapModifyEntry (const int ad, const int id, struct ds_modifyentry_arg *arg, struct DAPindication *di, const int asyn) {
 	PE                  arg_pe;
 
 	if(encode_DAS_ModifyEntryArgument(&arg_pe,1,0,NULLCP,arg) != OK) {

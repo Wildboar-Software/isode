@@ -6,7 +6,7 @@
 #include "ssap.h"
 #include "psap2.h"
 
-char *sprintref (struct SSAPref *sr) {
+char *sprintref (const struct SSAPref *sr) {
 	char  *cp;
 	static char buffer[BUFSIZ];
 

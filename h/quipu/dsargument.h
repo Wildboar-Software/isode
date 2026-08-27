@@ -43,7 +43,7 @@ struct DSArgument {
 };
 
 void ds_arg_free (struct DSArgument *arg);
-int ds_arg_dup (struct DSArgument *src, struct DSArgument *tgt);
+int ds_arg_dup (const struct DSArgument *src, struct DSArgument *tgt);
 
 struct DSResult {
 	int result_type;    /* same values as for DSArgument                */
@@ -88,7 +88,7 @@ typedef struct chain_arg {
 } * ChainingArg;
 
 void ch_arg_free (struct chain_arg *arg);
-int cha_loopdetected (struct chain_arg *cha);
+int cha_loopdetected (const struct chain_arg *cha);
 void set_my_chain_args (struct chain_arg *cha, DN dn);
 
 typedef struct chain_res {
@@ -97,7 +97,7 @@ typedef struct chain_res {
 	struct security_parms 		* chr_security;
 } * ChainingRes;
 
-void ch_res_free (struct chain_res *res);
+void ch_res_free (const struct chain_res *res);
 
 typedef struct ds_op_arg {
 	struct chain_arg	dca_charg;
@@ -108,9 +108,9 @@ typedef struct ds_op_arg {
 	char *			dca_bit;
 } OPArgument;
 
-void op_arg_free (struct ds_op_arg *arg);
+void op_arg_free (const struct ds_op_arg *arg);
 
-struct common_args *get_ca_ref (struct ds_op_arg *dsarg);
+struct common_args *get_ca_ref (const struct ds_op_arg *dsarg);
 
 typedef struct ds_op_res {
 	struct chain_res	dcr_chres;
@@ -121,6 +121,6 @@ typedef struct ds_op_res {
 	char *			dcr_bit;
 } OPResult;
 
-void op_res_free (struct ds_op_res *res);
+void op_res_free (const struct ds_op_res *res);
 
 #endif

@@ -30,7 +30,7 @@ int dsap_tai_init (void) {
 	return OK;
 }
 
-int tai_string (char *str) {
+int tai_string (const char *str) {
 	char    *args[MAXTAIARGS];
 	char    *p;
 	int     ac;

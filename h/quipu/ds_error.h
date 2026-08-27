@@ -154,9 +154,9 @@ possible values
 
 void ds_error (PS ps, struct DSError *err);
 void ds_error_free (struct DSError *err);
-void log_ds_error (struct DSError *err);
-void de_print (PS ps, struct DSError *err, int format);
+void log_ds_error (const struct DSError *err);
+void de_print (PS ps, struct DSError *err, const int format);
 struct ds_bind_error;
-void ds_bind_error(PS ps, struct ds_bind_error *err);
+void ds_bind_error(PS ps, const struct ds_bind_error *err);
 
 #endif

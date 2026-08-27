@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include "fpkt.h"
 
-static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti);
-static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
-static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti);
+static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], const int nfadu, struct FTAMindication *fti);
+static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
+static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti);
 
 /* F-DATA.REQUEST */
 
-int FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
+int FDataRequest (const int sd, PE fadus[], const int nfadu, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -24,7 +24,7 @@ int FDataRequest (int sd, PE fadus[], int nfadu, struct FTAMindication *fti) {
 	return result;
 }
 
-static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct FTAMindication *fti) {
+static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], const int nfadu, struct FTAMindication *fti) {
 	int    i;
 	PE	    pe,
 	 *pep;
@@ -77,7 +77,7 @@ static int FDataRequestAux (struct ftamblk *fsb, PE fadus[], int nfadu, struct F
 
 /* F-DATA-END.REQUEST */
 
-int FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FDataEndRequest (const int sd, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -101,7 +101,7 @@ int FDataEndRequest (int sd, int action, struct FTAMdiagnostic diag[], int ndiag
 	return result;
 }
 
-static int FDataEndRequestAux (struct ftamblk *fsb, int action, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+static int FDataEndRequestAux (struct ftamblk *fsb, const int action, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int     result;
 	PE	    pe;
 	struct PSAPindication   pis;
@@ -178,7 +178,7 @@ out:
 
 /* F-CANCEL.REQUEST */
 
-int FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FCancelRequest (const int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -202,7 +202,7 @@ int FCancelRequest (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag
 	return result;
 }
 
-static int FCancelRequestAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+static int FCancelRequestAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int	    result,
 			settings;
 	char   *prequest;
@@ -293,7 +293,7 @@ out:
 
 /* F-CANCEL.RESPONSE */
 
-int FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FCancelResponse (const int sd, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -317,7 +317,7 @@ int FCancelResponse (int sd, int action, PE sharedASE, struct FTAMdiagnostic dia
 	return result;
 }
 
-int FCancelResponseAux (struct ftamblk *fsb, int action, PE sharedASE, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+int FCancelResponseAux (struct ftamblk *fsb, const int action, PE sharedASE, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int	    result;
 	char   *prequest;
 	PE	    pe;

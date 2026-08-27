@@ -14,30 +14,30 @@
 #include "pepsycodec.h"
 #include "acsap.h"
 
-static int	PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID defctxname,
-								 int	prequirements, int srequirements, long	isn, int settings, struct SSAPref *ref, PE    *data,
-								 int	ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int	async);
+static int	PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, const struct PSAPctxlist *ctxlist, OID defctxname,
+								 const int	prequirements, const int srequirements, const long	isn, const int settings, const struct SSAPref *ref, PE    *data,
+								 const int	ndata, const struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, const int	async);
 
 static int PAsynRetryAux (struct psapblk *pb, struct SSAPconnect *sc, struct SSAPindication *si, struct PSAPconnect *pc, struct PSAPindication *pi);
 
 /*    P-(ASYN-)CONNECT.REQUEST */
 
 int	PAsynConnRequest (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
-	struct PSAPctxlist *ctxlist,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
+	const struct PSAPctxlist *ctxlist,
 	OID defctxname,
-	int prequirements,
-	int srequirements,
-	long isn,
-	int settings,
-	struct SSAPref *ref,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
+	const int settings,
+	const struct SSAPref *ref,
 	PE *data,
-	int ndata,
-	struct QOStype *qos,
+	const int ndata,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	SBV     smask;
 	int     result;
@@ -69,9 +69,9 @@ int	PAsynConnRequest (
 	return result;
 }
 
-static int PAsynConnRequestAux (struct PSAPaddr *calling, struct PSAPaddr *called, struct PSAPctxlist *ctxlist, OID	defctxname,
-								int prequirements, int	srequirements, long isn, int settings, struct SSAPref *ref, PE* data,
-								int ndata, struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, int async) {
+static int PAsynConnRequestAux (const struct PSAPaddr *calling, const struct PSAPaddr *called, const struct PSAPctxlist *ctxlist, OID	defctxname,
+								const int prequirements, const int	srequirements, const long isn, const int settings, const struct SSAPref *ref, PE* data,
+								const int ndata, const struct QOStype *qos, struct PSAPconnect *pc, struct PSAPindication *pi, const int async) {
 	int	    i, len, result;
 	PE	    pe;
 	struct psapblk *pb;
@@ -265,7 +265,7 @@ no_mem:
 	}
 
 	if (data && ndata > 0) {
-		short dflt = pb -> pb_flags;
+		const short dflt = pb -> pb_flags;
 		pb -> pb_flags &= ~PB_DFLT; /* don't be clever for this pdu */
 		if ((normal -> user__data = info2ppdu (pb, pi, data, ndata,
 											   PPDU_CP)) == NULL)
@@ -320,7 +320,7 @@ out1:
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int PAsynRetryRequest (const int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;
@@ -708,7 +708,7 @@ out1:
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int PAsynNextRequest (const int sd, const struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;

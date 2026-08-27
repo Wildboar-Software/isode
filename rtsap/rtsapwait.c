@@ -5,14 +5,14 @@
 
 int RtWaitRequestAux (
 	struct assocblk *acb,
-	int secs,
-	int trans,
+	const int secs,
+	const int trans,
 	struct RtSAPindication *rti
 );
 
 /*    RT-WAIT.REQUEST (pseudo) */
 
-int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
+int RtWaitRequest (const int sd, const int secs, struct RtSAPindication *rti) {
 	SBV	    smask;
 	int     result;
 	struct assocblk   *acb;
@@ -27,8 +27,8 @@ int RtWaitRequest (int sd, int secs, struct RtSAPindication *rti) {
 
 int RtWaitRequestAux (
 	struct assocblk *acb,
-	int secs,
-	int trans,
+	const int secs,
+	const int trans,
 	struct RtSAPindication *rti
 ) {
 	if (!trans && (acb -> acb_flags & ACB_PLEASE)) {

@@ -20,8 +20,8 @@ static Avlnode *get_entries_aux (GDBM_FILE file, Entry parent, char * version, i
 #endif
 
 
-Avlnode *getentry_block(Entry p_parent, char *fname);
-Entry get_entry_aux(FILE *file, Entry parent, int dtype);
+Avlnode *getentry_block(Entry p_parent, const char *fname);
+Entry get_entry_aux(FILE *file, Entry parent, const int dtype);
 extern LLog * log_dsap;
 #ifdef TURBO_DISK
 char * _getline (GDBM_FILE db);
@@ -36,7 +36,7 @@ extern datum	turbo_header_key;
 #endif
 
 Avlnode *
-getentry_block (Entry p_parent, char *fname) {
+getentry_block (Entry p_parent, const char *fname) {
 	extern char * parse_file;
 	extern int parse_status;
 	extern int parse_line;
@@ -46,7 +46,7 @@ getentry_block (Entry p_parent, char *fname) {
 #ifdef TURBO_DISK
 	Avlnode	*get_entries_aux(GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age);
 #else
-	Avlnode	*get_entries_aux(FILE * file, Entry parent, char * version, int dtype, time_t cache_age);
+	Avlnode	*get_entries_aux(FILE * file, Entry parent, const char * version, const int dtype, const time_t cache_age);
 #endif
 
 	time_t cache_age;
@@ -69,7 +69,7 @@ getentry_block (Entry p_parent, char *fname) {
 	file = fopen (fname, "r");
 #endif
 	if (file == NULL) {
-		extern int	refreshing;
+		extern const int	refreshing;
 		LLOG (log_dsap,LLOG_NOTICE,("WARNING - Can't open \"%s\" (%d)- should I be able to ?",fname,errno));
 		if (refreshing)
 			parse_error("Can't open \"%s\"", fname);
@@ -242,8 +242,8 @@ int get_header (FILE * file, int * typeptr, char ** versionptr) {
 #ifdef TURBO_DISK
 Avlnode *get_entries_aux (GDBM_FILE file, Entry parent, char * version, int dtype, time_t cache_age) {
 #else
-Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, time_t cache_age);
-Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, time_t cache_age) {
+Avlnode *get_entries_aux (FILE * file, Entry parent, const char * version, const int dtype, const time_t cache_age);
+Avlnode *get_entries_aux (FILE * file, Entry parent, const char * version, const int dtype, const time_t cache_age) {
 #endif
 	Entry eptr = NULLENTRY;
 	Avlnode	*tree = NULLAVL;
@@ -284,8 +284,8 @@ Avlnode *get_entries_aux (FILE * file, Entry parent, char * version, int dtype, 
 Avlnode *get_entries (GDBM_FILE file, Entry parent, char * version, int dtype);
 Avlnode *get_entries (GDBM_FILE file, Entry parent, char * version, int dtype) {
 #else
-Avlnode *get_entries (FILE * file, Entry parent, char * version, int dtype);
-Avlnode *get_entries (FILE * file, Entry parent, char * version, int dtype) {
+Avlnode *get_entries (FILE * file, Entry parent, char * version, const int dtype);
+Avlnode *get_entries (FILE * file, Entry parent, char * version, const int dtype) {
 #endif
 	extern int parse_status;
 	extern int parse_line;

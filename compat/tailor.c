@@ -12,7 +12,7 @@
 #include "internet.h"
 
 struct pair;
-static int  events_value (struct pair *pairs, char *s, char *var);
+static int  events_value (const struct pair *pairs, const char *s, char *var);
 
 #define	SUBNET_MAX	(6 + 10)  /* maximum number of subnet entries */
 
@@ -458,9 +458,9 @@ static struct bind {
 };
 
 static int	tailor_read (char *file);
-static char   *tailor_value (char *s);
+static char   *tailor_value (const char *s);
 
-char *isodesetailor (char *file) {
+char *isodesetailor (const char *file) {
 	char   *ofile = isotailor;
 
 	if ((isotailor = file) == NULLCP)
@@ -469,7 +469,7 @@ char *isodesetailor (char *file) {
 	return ofile;
 }
 
-void isodetailor (char *myname, int wantuser) {
+void isodetailor (const char *myname, const int wantuser) {
 	char *hp,
 		 *mp;
 	char   buffer[BUFSIZ];
@@ -545,7 +545,7 @@ static int tailor_read (char *file) {
 	}
 }
 
-int isodesetvar (char *name, char *value, int dynamic) {
+int isodesetvar (const char *name, const char *value, const int dynamic) {
 	struct bind   *b;
 
 	for (b = binds; b -> b_key; b++)
@@ -559,7 +559,7 @@ int isodesetvar (char *name, char *value, int dynamic) {
 	return NOTOK;
 }
 
-void isodexport (char *myname) {
+void isodexport (const char *myname) {
 	compat_log -> ll_events = events_value (ll_pairs, compatdebug, "compatlevel");
 	addr_log -> ll_events = events_value (ll_pairs, addrdebug, "addrlevel");
 	tsap_log -> ll_events = events_value (ll_pairs, tsapdebug, "tsaplevel");
@@ -871,7 +871,7 @@ void isodexport (char *myname) {
 #define	QUOTE	'\\'
 
 static char *
-tailor_value (char *s) {
+tailor_value (const char *s) {
 	int    i,
 		   r;
 	char  *bp;
@@ -928,7 +928,7 @@ tailor_value (char *s) {
 	return bp;
 }
 
-static int events_value (struct pair *pairs, char *s, char *var) {
+static int events_value (const struct pair *pairs, const char *s, char *var) {
 	int     value;
 	char  *cp,
 		  **ap;
@@ -983,7 +983,7 @@ int tailorfree (void) {
 #endif
 }
 
-int ll_hdfree (LLog *lp) {
+int ll_hdfree (const LLog *lp) {
 	if (lp -> ll_stat & LLOGHDR)
 		free (lp -> ll_hdr);
 	lp -> ll_stat &= ~LLOGHDR;

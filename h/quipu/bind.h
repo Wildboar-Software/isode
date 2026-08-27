@@ -55,9 +55,9 @@ struct ds_bind_error {
 
 int ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result);
 int secure_ds_bind (struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result);
-int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, struct PSAPaddr *addr);
+int dap_bind (int *ad, struct ds_bind_arg *arg, struct ds_bind_error *error, struct ds_bind_arg *result, const struct PSAPaddr *addr);
 int ds_unbind (void);
-int dap_unbind (int ad);
+int dap_unbind (const int ad);
 void bind_arg_free (struct ds_bind_arg *arg);
 
 #endif

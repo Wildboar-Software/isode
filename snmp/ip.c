@@ -69,11 +69,11 @@ static int	ipforwarding;
 
 static struct ipstat ipstat;
 
-static int  get_arptab (int offset);
+static int  get_arptab (const int offset);
 static void sort_arptab (void);
 
 #ifdef LINUX
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len);
 int _file_printf (const char *path, const char *fmt, ...);
 #endif
 
@@ -425,7 +425,7 @@ static int  s_ip (OI oi, struct type_SNMP_VarBind *v, int offset) {
 #define	ipAdEntBcastAddr 3
 #define	ipAdEntReasmMaxSize 4
 
-extern int	get_interfaces (int offset);
+extern int	get_interfaces (const int offset);
 
 static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int   i;
@@ -507,7 +507,7 @@ static int  o_ip_addr (OI oi, struct type_SNMP_VarBind *v, int offset) {
 		return o_ipaddr (oi, v, (struct sockaddr_in *) &as -> adr_netmask);
 
 	case ipAdEntBcastAddr: {	/* beyond belief! */
-		uint32_t a =  (((struct sockaddr_in *) &as -> adr_netmask)
+		const uint32_t a =  (((struct sockaddr_in *) &as -> adr_netmask)
 					 -> sin_addr.s_addr)
 					& ~(((struct sockaddr_in *) &as
 						 -> adr_broadaddr) -> sin_addr.s_addr);
@@ -1110,7 +1110,7 @@ static	struct adrtab *adm = NULL;
 
 static	int	flush_arp_cache = 0;
 
-static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext);
+static struct adrtab *get_arpent (const unsigned int *ip, const int len, const int isnpa, const int isnext);
 
 #define	atIfIndex	0
 #define	atPhysAddress	1
@@ -1593,8 +1593,8 @@ static struct arptab *_read_arptab (void)
 }
 #endif
 
-static int  get_arptab (int offset) {
-	int	    arptab_size,
+static int  get_arptab (const int offset) {
+	const int	    arptab_size,
 			tblsize;
 	struct arptab *ac,
 			   *ae;
@@ -1763,7 +1763,7 @@ static void sort_arptab (void) {
 	free ((char *) base);
 }
 
-static struct adrtab *get_arpent (unsigned int *ip, int len, int isnpa, int isnext) {
+static struct adrtab *get_arpent (const unsigned int *ip, const int len, const int isnpa, const int isnext) {
 	struct adrtab *at;
 
 	switch (isnpa) {
@@ -2038,8 +2038,8 @@ void init_ip (void) {
 }
 
 #ifdef LINUX
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len);
-int _read_snmp_stats (char *proto, char **labels, long **values, size_t *len)
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len);
+int _read_snmp_stats (const char *proto, char **labels, long **values, size_t *len)
 {
     FILE *f;
     char *header, stats[1024];

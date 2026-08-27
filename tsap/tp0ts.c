@@ -711,7 +711,7 @@ extern	int	errno;
 
 #if	defined(WRITEV) || defined(SUN_X25) || defined(CAMTEC_CCL)
 static int
-iov_push (struct iovec **iovp, int *cc, void *base, size_t len)
+iov_push (struct iovec **iovp, const int *cc, const void *base, const size_t len)
 {
 	if (add_sizet_to_int (cc, len) != 0)
 		return NOTOK;
@@ -722,7 +722,7 @@ iov_push (struct iovec **iovp, int *cc, void *base, size_t len)
 }
 
 static int
-iov_push_int (struct iovec **iovp, int *cc, void *base, int len)
+iov_push_int (struct iovec **iovp, const int *cc, const void *base, const int len)
 {
 	size_t n;
 

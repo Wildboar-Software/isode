@@ -34,9 +34,9 @@ static SFD intrser (int sig);
 #endif
 
 static int dase_init (void);
-static int dase_callback (struct type_DASE_Callback__REQ *arg);
+static int dase_callback (const struct type_DASE_Callback__REQ *arg);
 static int yesno (void);
-static void print_qb (struct qbuf *q);
+static void print_qb (const struct qbuf *q);
 static struct element_DASE_1 *read_el (void);
 
 /* LOOKUP */
@@ -328,7 +328,7 @@ oops:
 	return OK;
 }
 
-static int dase_callback (struct type_DASE_Callback__REQ *arg) {
+static int dase_callback (const struct type_DASE_Callback__REQ *arg) {
 	int i,
 		j;
 	int	    result;
@@ -468,7 +468,7 @@ again:
 	return result;
 }
 
-static void print_qb (struct qbuf *q) {
+static void print_qb (const struct qbuf *q) {
 	struct qbuf *p;
 	for (p = q -> qb_forw; p != q; p = p -> qb_forw)
 		printf ("%*.*s", p -> qb_len, p -> qb_len, p -> qb_data);
@@ -609,7 +609,7 @@ static SFD intrser (int sig)
 	interrupted++;
 }
 
-int set_lookup_dase (char flag) {
+int set_lookup_dase (const char flag) {
 	if (!(stayopen = flag) && ps) {
 		struct TSAPdisconnect tds;
 

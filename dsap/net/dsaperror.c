@@ -5,13 +5,13 @@
 #include "quipu/dsap.h"
 #include "../x500as/DAS-types.h"
 #include "quipu/watchdog.h"
-static int DEncodeError (PE *pep, struct DSError *err);
+static int DEncodeError (PE *pep, const struct DSError *err);
 
 
 extern  LLog    * log_dsap;
 
 
-static int DEncodeError (PE *pep, struct DSError *err) {
+static int DEncodeError (PE *pep, const struct DSError *err) {
 	int		success;
 
 	switch(err->dse_type) {
@@ -57,7 +57,7 @@ static int DEncodeError (PE *pep, struct DSError *err) {
 	return(success);
 }
 
-int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int DapErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -85,7 +85,7 @@ int DapErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 	return (OK);
 }
 
-int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int DspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -113,7 +113,7 @@ int DspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 	return (OK);
 }
 
-int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int QspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	int				  result;
 	PE				  err_pe;
 	struct RoSAPindication	  roi_s;
@@ -141,6 +141,6 @@ int QspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication 
 	return (OK);
 }
 
-int IspErrorRequest (int sd, int id, struct DSError *err, struct DSAPindication *di) {
+int IspErrorRequest (const int sd, const int id, const struct DSError *err, struct DSAPindication *di) {
 	return QspErrorRequest (sd, id, err, di);
 }

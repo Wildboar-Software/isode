@@ -36,13 +36,13 @@ extern int connected;
 void adios (char *, char *, ...);
 void advise (int, char *, char *, ...);
 
-int send_queue (TEXT_UPDATE ud);
+int send_queue (const TEXT_UPDATE ud);
 void vtsend (void);
-int tmode (int f);
+int tmode (const int f);
 void vt_clr_obj (void);
 int vbrkreq (void);
-int do_event (int event, PE pe);
-void vt_echo (int echo);
+int do_event (const int event, PE pe);
+void vt_echo (const int echo);
 extern int build_UDQPDU_UDQpdu (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);
 
 void vt_newline(void) {	/*Produce Newline update*/
@@ -120,7 +120,7 @@ void vt_interrupt (void) {	/*Toggle Bit 1 of DI/KB control object*/
 }
 
 /* Update NA/NI control object as in image */
-void vt_set_nego (char image, int maskbits) {
+void vt_set_nego (const char image, const int maskbits) {
 	TEXT_UPDATE ud;
 	char e_image;
 	char mask;
@@ -141,7 +141,7 @@ void vt_set_nego (char image, int maskbits) {
 	vtsend();	/*Since we're bypassing normal keyboard entry*/
 }
 
-void vt_echo (int echo) {
+void vt_echo (const int echo) {
 	if (!telnet_profile) {
 		advise (LLOG_NOTICE,NULLCP, "not using TELNET profile");
 		return;
@@ -242,7 +242,7 @@ int vt_ayt (char **vec) {
 
 /* Change to specified repertoire. Switching is done by sending
 a Write Attribute NDQ. */
-void switch_rep (int rep_num) {
+void switch_rep (const int rep_num) {
 	TEXT_UPDATE ud;
 	if(rep_num == 1) transparent = 0;
 	else transparent = 1;
@@ -258,7 +258,7 @@ void switch_rep (int rep_num) {
 	vtsend();
 }
 
-void vt_repertoire (int repertoire) {
+void vt_repertoire (const int repertoire) {
 	if (!telnet_profile) {
 		advise (LLOG_NOTICE,NULLCP, "not using TELNET profile");
 		return;

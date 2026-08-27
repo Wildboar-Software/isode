@@ -13,36 +13,36 @@ extern char quipu_shutdown;
 void dsa_work (struct task_act *task);
 
 extern int do_ds_read (
-	struct ds_read_arg *arg,
+	const struct ds_read_arg *arg,
 	struct DSError *error,
 	struct ds_read_result *result,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char quipu_ctx,
-	char authtype
+	const char dsp,
+	const char quipu_ctx,
+	const char authtype
 );
 extern int do_ds_compare (
-	struct ds_compare_arg *arg,
+	const struct ds_compare_arg *arg,
 	struct DSError *error,
 	struct ds_compare_result *result,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
-extern int do_ds_abandon (struct ds_abandon_arg *arg, struct DSError *error);
+extern int do_ds_abandon (const struct ds_abandon_arg *arg, struct DSError *error);
 extern int do_ds_list (
-	struct ds_list_arg *arg,
+	const struct ds_list_arg *arg,
 	struct DSError *error,
 	struct ds_list_result *result,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
 extern int do_ds_search (
 	struct ds_search_arg *arg,
@@ -53,54 +53,54 @@ extern int do_ds_search (
 	struct ds_search_task **local,
 	struct ds_search_task **refer,
 	struct di_block **di_p,
-	char dsp,
-	char quipu_ctx,
-	time_t tktime,
-	char entryonly,
-	char authtype
+	const char dsp,
+	const char quipu_ctx,
+	const time_t tktime,
+	const char entryonly,
+	const char authtype
 );
 extern int do_ds_addentry (
-	struct ds_addentry_arg *arg,
+	const struct ds_addentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
 extern int do_ds_removeentry (
-	struct ds_removeentry_arg *arg,
+	const struct ds_removeentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
 extern int do_ds_modifyentry (
-	struct ds_modifyentry_arg *arg,
+	const struct ds_modifyentry_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
 extern int do_ds_modifyrdn (
-	struct ds_modifyrdn_arg *arg,
+	const struct ds_modifyrdn_arg *arg,
 	struct DSError *error,
 	DN binddn,
 	DN target,
 	struct di_block **di_p,
-	char dsp,
-	char authtype
+	const char dsp,
+	const char authtype
 );
 extern int do_get_edb (
-	struct getedb_arg *arg,
+	const struct getedb_arg *arg,
 	struct DSError *error,
 	struct getedb_result *result,
 	DN binddn,
-	int fd
+	const int fd
 );
 extern int task_chain (struct task_act *tk, struct di_block *di);
 extern void subtask_chain (struct task_act *tk);
@@ -108,12 +108,12 @@ extern void subtask_chain (struct task_act *tk);
 static void search_continue (struct task_act *tk);
 
 void log_x500_event (
-	struct DSArgument *arg,
-	int context,
+	const struct DSArgument *arg,
+	const int context,
 	DN orig,
 	DN dsptarget,
-	int ad,
-	struct task_act *tk
+	const int ad,
+	const struct task_act *tk
 );
 
 void dsa_work (struct task_act *tk) {
@@ -387,12 +387,12 @@ static void search_continue (struct task_act *tk) {
 
 #ifndef NO_STATS
 void log_x500_event (
-	struct DSArgument *arg,
-	int context,
+	const struct DSArgument *arg,
+	const int context,
 	DN orig,
 	DN dsptarget,
-	int ad,
-	struct task_act *tk
+	const int ad,
+	const struct task_act *tk
 ) {
 	extern LLog * log_stat;
 	char * op;

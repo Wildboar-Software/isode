@@ -2,8 +2,8 @@
 #include <signal.h>
 #endif
 
-void watch_dog (char *where);
-void watch_dog_aux (char *where, unsigned secs);
+void watch_dog (const char *where);
+void watch_dog_aux (const char *where, const unsigned secs);
 void watch_dog_reset (void);
 void watch_dog_final_reset (void);
 void watch_dog_final (

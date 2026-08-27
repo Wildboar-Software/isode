@@ -55,7 +55,7 @@
 #endif
 #ifndef	IAE
 #include "isoservent.h"
-static void tsapd (int vecp, char **vec);
+static void tsapd (const int vecp, char **vec);
 
 #else
 extern void quipu_syntaxes (void);
@@ -144,7 +144,7 @@ extern void de_print (PS ps, struct DSError *err, int format);
 void	adios (char *, char *, ...);
 void	advise (int, char *, char*, ...);
 
-static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event);
+static void  ts_advise ( const struct TSAPdisconnect *td, const int	code, const char   *event);
 
 #ifdef SYS5
 static  SFD cldser (int sig);
@@ -170,7 +170,7 @@ static int setperms (struct isoservent *is);
 #else
 static int setperms (struct IAEntry *is);
 #endif
-static void tsapd (int vecp, char **vec);
+static void tsapd (const int vecp, char **vec);
 static void envinit (void);
 static void arginit (char **vec);
 static void search_directory (int firstime);
@@ -271,7 +271,7 @@ int main (int argc, char **argv, char **envp) {
 static char buffer1[4096];
 static char buffer2[32768];
 
-static void tsapd (int vecp, char **vec) {
+static void tsapd (const int vecp, char **vec) {
 	char    buffer[BUFSIZ];
 #ifndef	IAE
 	struct isoservent *is;
@@ -393,7 +393,7 @@ static int setperms (struct IAEntry *is)
 	}
 }
 
-static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
+static void  ts_advise ( const struct TSAPdisconnect *td, const int	code, const char   *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -407,7 +407,7 @@ static void  ts_advise ( struct TSAPdisconnect *td, int	code, char   *event) {
 
 #ifndef	NOGOSIP
 #ifndef	IAE
-static int  ssapd ( struct isoservent *is, struct TSAPdisconnect *td) {
+static int  ssapd ( const struct isoservent *is, struct TSAPdisconnect *td) {
 #else
 static int  ssapd ( struct IAEntry *is, struct TSAPdisconnect *td) {
 #endif

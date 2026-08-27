@@ -7,7 +7,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_Charging *
-chrg2fpm (struct ftamblk *fsb, struct FTAMcharging *charging, struct FTAMindication *fti) {
+chrg2fpm (const struct ftamblk *fsb, const struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int    i;
 	struct fc_charge  *fc;
 	struct type_FTAM_Charging *fpmp;
@@ -51,7 +51,7 @@ out:
 	return fpmp;
 }
 
-int fpm2chrg (struct ftamblk *fsb, struct type_FTAM_Charging *fpm, struct FTAMcharging *charging, struct FTAMindication *fti) {
+int fpm2chrg (const struct ftamblk *fsb, const struct type_FTAM_Charging *fpm, struct FTAMcharging *charging, struct FTAMindication *fti) {
 	int    i;
 	struct fc_charge *fc;
 	struct charge_element *f1;

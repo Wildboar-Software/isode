@@ -5,7 +5,7 @@
 #include "tailor.h"
 
 struct isobject *
-getisobjectbyname (char *descriptor) {
+getisobjectbyname (const char *descriptor) {
 	struct isobject   *io;
 
 	isodetailor (NULLCP, 0);

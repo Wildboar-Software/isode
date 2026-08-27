@@ -55,20 +55,20 @@ struct list_cache {
 
 #define NULLCACHE (struct list_cache *) NULL
 
-struct list_cache *find_list_cache (DN dn, int sizelimit);
+struct list_cache *find_list_cache (DN dn, const int sizelimit);
 
-int dap_list (int ad, int *id, struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result);
-void list_arg_free (struct ds_list_arg *arg);
-int list_arg_dup (struct ds_list_arg *src, struct ds_list_arg *tgt);
+int dap_list (const int ad, int *id, struct ds_list_arg *arg, struct DSError *error, struct ds_list_result *result);
+void list_arg_free (const struct ds_list_arg *arg);
+int list_arg_dup (const struct ds_list_arg *src, struct ds_list_arg *tgt);
 
 int check_lacl (
 	DN binddn,
 	DN selfdn,
 	AV_Sequence avs,
-	int scope,
+	const int scope,
 	int *sizelimit
 );
 
-void cache_list (struct subordinate *ptr, int prob, DN dn, int sizelimit);
+void cache_list (struct subordinate *ptr, const int prob, DN dn, const int sizelimit);
 
 #endif

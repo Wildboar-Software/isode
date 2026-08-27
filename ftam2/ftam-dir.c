@@ -93,7 +93,7 @@ int f_cd (char **vec) {
 	return OK;
 }
 
-int isdir (char *dir, char *dp, int silent) {
+int isdir (const char *dir, char *dp, const int silent) {
 	int	    result;
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;

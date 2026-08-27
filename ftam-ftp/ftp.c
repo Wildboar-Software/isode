@@ -38,7 +38,7 @@
 #include "ftp_var.h"
 #include "logger.h"
 
-static int _command(char *fmt, va_list ap);
+static int _command(const char *fmt, va_list ap);
 
 void	advise (int, char *, char *, ...);
 
@@ -54,12 +54,12 @@ int	data = -1;
 struct	sockaddr_in myctladdr;
 
 FILE	*cin, *cout;
-int	dataconn(char *modeX);
+int	dataconn(const char *modeX);
 static void lostpeer(void);
 
 static int initconn(void);
 
-int hookup(char *host, int port) {
+int hookup(char *host, const int port) {
 	struct hostent *hp;
 	int s;
 	socklen_t len;
@@ -136,7 +136,7 @@ bad:
 	return (NOTOK);
 }
 
-int login(char *user, char *pass, char *acct) {
+int login(const char *user, const char *pass, const char *acct) {
 	int n;
 
 	if (!user) {
@@ -166,7 +166,7 @@ int login(char *user, char *pass, char *acct) {
 }
 
 #ifndef	lint
-static int _command (char *fmt, va_list ap);
+static int _command (const char *fmt, va_list ap);
 
 int command(char *fmt, ...) {
 	int	    val;
@@ -177,7 +177,7 @@ int command(char *fmt, ...) {
 	return val;
 }
 
-static int _command(char *fmt, va_list ap) {
+static int _command(const char *fmt, va_list ap) {
 	char buffer[BUFSIZ];
 	if (cout == NULL) {
 		sprintf(ftp_error,"No control connection for command %s",
@@ -200,7 +200,7 @@ int command (char *fmt, ...) {
 
 #include <ctype.h>
 
-int getreply(int expecteof) {
+int getreply(const int expecteof) {
 	int c, n;
 	int code, dig;
 	int originalcode = 0, continuation = 0;
@@ -251,7 +251,7 @@ int getreply(int expecteof) {
  *  The FTAM code treats this as though it were a local file (which
  *  is about what FTP does)
  */
-int sendrequest(char *cmd, char *remote) {
+int sendrequest(const char *cmd, const char *remote) {
 	int dout;
 	int expectingreply = 0;
 
@@ -277,7 +277,7 @@ bad:
 	return(NOTOK);
 }
 
-int recvrequest(char *cmd, char *remote) {
+int recvrequest(const char *cmd, const char *remote) {
 	int din;
 	int expectingreply = 0;
 
@@ -387,7 +387,7 @@ bad:
 	return (NOTOK);
 }
 
-int dataconn(char *modeX) {
+int dataconn(const char *modeX) {
 	struct sockaddr_in from;
 	int s;
 	socklen_t fromlen;

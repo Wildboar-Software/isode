@@ -35,7 +35,7 @@
 #define	STATS
 #endif
 extern void quipu_syntaxes (void);
-extern int dsap_init (int *acptr, char ***avptr);
+extern int dsap_init (const int *acptr, char ***avptr);
 
 static int debug = 0;
 static int nbits = FD_SETSIZE;
@@ -64,14 +64,14 @@ static	PS	nps;
 
 static int	dns_compar (const struct dn_seq **a, const struct dn_seq **b);
 static int dns_compar_void (const void *a, const void *b);
-static DNS	dase_interact (DNS dns, DN dn, char *s), just_say_no (DNS dns, DN dn, char *s);
+static DNS	dase_interact (DNS dns, DN dn, char *s), just_say_no (DNS dns, DN dn, const char *s);
 static PE	name2psap (DN dn);
 
 static void	adios (char *, char *, ...);
-static void	advise (int, char *, char *, ...);
-static void	ts_adios (struct TSAPdisconnect *td, char *event), ts_advise (struct TSAPdisconnect *td, int code, char *event);
-static void	dased (int, char **),
-dase_aux (struct type_DASE_Query__REQ *),
+static void	advise (const int, char *, char *, ...);
+static void	ts_adios (const struct TSAPdisconnect *td, const char *event), ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
+static void	dased (const int, char **),
+dase_aux (const struct type_DASE_Query__REQ *),
 make_bind_args (struct ds_bind_arg *, struct ds_bind_arg *, struct ds_bind_error *),
 arginit (char **), envinit (void);
 static int	bind_to_dsa (void);
@@ -160,7 +160,7 @@ int main (int argc, char **argv, char **envp) {
 
 /* DASE */
 
-static void dased (int vecp, char **vec) {
+static void dased (const int vecp, char **vec) {
 	int	    sd;
 	struct TSAPstart tss;
 	struct TSAPstart *ts = &tss;
@@ -217,7 +217,7 @@ static void dased (int vecp, char **vec) {
 	exit (0);
 }
 
-static void dase_aux (struct type_DASE_Query__REQ *req) {
+static void dase_aux (const struct type_DASE_Query__REQ *req) {
 	int    i;
 	int	    vecp;
 	char **vp;
@@ -671,7 +671,7 @@ static int dns_compar_void (const void *a, const void *b) {
 }
 
 static DNS
-just_say_no (DNS dns, DN dn, char *s) {
+just_say_no (DNS dns, DN dn, const char *s) {
 	dn_seq_free (dns);
 
 	return NULL;
@@ -916,7 +916,7 @@ static void adios (char *what, char *fmt) {
 #endif
 
 #ifndef lint
-static void    advise (int code, char *what, char *fmt, ...)
+static void    advise (const int code, char *what, char *fmt, ...)
 {
 	va_list ap;
 
@@ -934,13 +934,13 @@ static void advise (int code, char *what, char *fmt) {
 }
 #endif
 
-static void ts_adios (struct TSAPdisconnect *td, char *event) {
+static void ts_adios (const struct TSAPdisconnect *td, const char *event) {
 	ts_advise (td, LLOG_EXCEPTIONS, event);
 
 	exit (1);
 }
 
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)

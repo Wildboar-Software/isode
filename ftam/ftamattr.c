@@ -7,7 +7,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_Read__Attributes *
-attr2fpm (struct ftamblk *fsb, struct FTAMattributes *fa, struct FTAMindication *fti) {
+attr2fpm (const struct ftamblk *fsb, const struct FTAMattributes *fa, struct FTAMindication *fti) {
 	int    i;
 	char  *cp,
 		  **ap;
@@ -262,7 +262,7 @@ out:
 	return fpm;
 }
 
-int fpm2attr (struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
+int fpm2attr (const struct ftamblk *fsb, struct type_FTAM_Read__Attributes *fpm, struct FTAMattributes *fa, struct FTAMindication *fti) {
 	char   *cp;
 	UTC     u;
 

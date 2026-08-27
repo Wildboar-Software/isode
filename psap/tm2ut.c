@@ -10,7 +10,7 @@
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
 
-void tm2ut (struct tm *tm, UTC ut) {
+void tm2ut (const struct tm *tm, UTC ut) {
 	bzero ((char *) ut, sizeof *ut);
 
 	ut -> ut_year = YEAR (tm -> tm_year);

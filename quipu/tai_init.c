@@ -11,7 +11,7 @@ extern  char    *dsatailfile;
 
 extern  LLog    *log_dsap;
 
-int dsa_tai_init (char *name) {
+int dsa_tai_init (const char *name) {
 	FILE    *fp;
 	char    buf[BUFSIZ];
 	char   *cp;
@@ -31,7 +31,7 @@ int dsa_tai_init (char *name) {
 	return OK;
 }
 
-int dsa_tai_string (char *str) {
+int dsa_tai_string (const char *str) {
 	char    *args[MAXTAIARGS];
 	char    *p;
 	int     ac;

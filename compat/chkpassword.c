@@ -24,7 +24,7 @@ char* crypt(const char* key, const char* salt);
 #ifndef	KRB_PASSWD
 #endif
 
-int chkpassword (char *usrname, char *pwpass, char *usrpass) {
+int chkpassword (const char *usrname, const char *pwpass, const char *usrpass) {
 #ifdef	KRB_PASSWD
 	char realm[REALM_SZ];
 	int krbval;

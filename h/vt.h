@@ -72,7 +72,7 @@ void map (PE ndq);
 // void display_ud (DO_UPDATE *doptr);
 // void control_ud (CO_UPDATE *coptr);
 // void attrib_hdlr (DO_UPDATE *doptr);
-int tmode (int f);
+int tmode (const int f);
 void kill_proc (void);
 // void def_echo (CO_UPDATE *coptr);
 
@@ -107,15 +107,15 @@ int s5_62 (int event, PE pe);
 void do_vt (void);
 struct dispatch;
 struct dispatch *getds (char *name);
-char *control (int c);
+char *control (const int c);
 void deadpeer (void);
 void intr (void);
-void ttyflush (int dd);
+void ttyflush (const int dd);
 void flushbufs (void);
 void finalbye (void);
 void adios (char *what, char *fmt, ...);
 void advise (int code, char *what, char *fmt, ...);
-void ptyecho (int on);
+void ptyecho (const int on);
 void setmode (int on, int off);
 
 /* vt_telnet.c */
@@ -123,14 +123,14 @@ void vt_newline (void);
 void vt_char_erase (void);
 void vt_line_erase (void);
 void vt_interrupt (void);
-void vt_set_nego (char image, int maskbits);
-void vt_echo (int echo);
+void vt_set_nego (const char image, const int maskbits);
+void vt_echo (const int echo);
 void vt_rem_echo (char *img_addr);
 void vt_sup_ga (char *img_addr);
 int vt_break (char **vec);
 int vt_ayt (char **vec);
-void switch_rep (int rep_num);
-void vt_repertoire (int repertoire);
+void switch_rep (const int rep_num);
+void vt_repertoire (const int repertoire);
 void vt_clr_obj (void);
 int vt_sync (char **vec);
 
@@ -145,17 +145,17 @@ void rmut (void);
 void bye (void);
 
 /* vtpm.c */
-int get_event (int dd, PE *pe);
-int do_event (int event, PE pe);
-int pn_ind (int dd, struct PSAPsync *psync);
+int get_event (const int dd, PE *pe);
+int do_event (const int event, PE pe);
+int pn_ind (const int dd, const struct PSAPsync *psync);
 int p_data (PE pdu);
 int p_maj_sync_req (PE pdu);
 int p_maj_sync_resp (PE pdu);
 int p_typed_data (PE pdu);
-int p_resync_req (PE pdu, int type);
+int p_resync_req (PE pdu, const int type);
 int p_resync_resp (PE pdu);
 int asr (PE pe, int status);
-int send_bad_asr (int reason);
+int send_bad_asr (const int reason);
 int send_rlr (PE pe);
 int clear_vte (void);
 int vgvt_ind (void);
@@ -163,28 +163,28 @@ int vrtq_ind (void);
 int give_token (void);
 int request_token (void);
 int send_all (void);
-void acs_adios (struct AcSAPabort *aa, char *event);
+void acs_adios (const struct AcSAPabort *aa, const char *event);
 
 /* vtuser.c */
 // int vass_req (int class, int acc_ri, VT_PROFILE *profile);
-int vass_resp (int result);
+int vass_resp (const int result);
 void vrelreq (void);
-void vrelrsp (int result);
+void vrelrsp (const int result);
 void vrelcnf (void);
 int vrelind (void);
-int vt_text (char *str, int len);
+int vt_text (const char *str, const int len);
 // int send_queue (TEXT_UPDATE ud);
-int setemode (int mode);
+int setemode (const int mode);
 int getch (void);
 int data_pending (void);
 int queued (void);
-int putch (char c);
+int putch (const char c);
 void vtsend (void);
 void vtdata (PE ndq);
-PE mkdeliver (int ack);
-void vdelreq (int ack);
-void vdelind (PE del_pe, int ack);
-void vdatind (int type, PE pe);
+PE mkdeliver (const int ack);
+void vdelreq (const int ack);
+void vdelind (PE del_pe, const int ack);
+void vdatind (const int type, PE pe);
 void vhdatind (PE pe);
 void vudatind (PE pe);
 int con_req (void);
@@ -192,7 +192,7 @@ int read_asq (PE pe);
 int vasscnf (PE pe);
 void asq (PE data);
 void vt_disconnect (void);
-int ass_ind (int argc, char **argv);
+int ass_ind (const int argc, char **argv);
 int vassind (PE pe);
 int vbrkreq (void);
 void vbrkrsp (void);
@@ -339,11 +339,11 @@ int print_VT_Squat (PE pe, int explicit, int *len, char **buffer, PEPYPARM parm)
 int print_VT_VTsdi (PE pe, int explicit, int *len, char **buffer, PEPYPARM parm);
 
 // Other things I added
-void vdatind (int type, PE pe);
+void vdatind (const int type, PE pe);
 void vhdatind (PE pe);
 void vudatind (PE pe);
-int vt_text (char *str, int len);
+int vt_text (const char *str, const int len);
 #ifdef TERMIOS
-void ptyecho (int on);
+void ptyecho (const int on);
 #endif
 #endif

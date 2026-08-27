@@ -16,7 +16,7 @@ avs_comp_print (PS ps, AV_Sequence avs, int format) {
 }
 #endif
 
-void avs_print (PS ps, AV_Sequence avs, int format)
+void avs_print (PS ps, AV_Sequence avs, const int format)
 {
 	if (avs == NULLAV) {
 		ps_print (ps,"\n");
@@ -29,7 +29,7 @@ void avs_print (PS ps, AV_Sequence avs, int format)
 	ps_print (ps,"\n");
 }
 
-void avs_print_aux (PS ps, AV_Sequence avs, int format, char *sep)
+void avs_print_aux (PS ps, AV_Sequence avs, const int format, char *sep)
 {
 	AV_Sequence eptr;
 

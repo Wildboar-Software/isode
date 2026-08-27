@@ -56,13 +56,13 @@ static struct dispatch dispatches[] = {
 
 /* TYPES */
 static struct type_IMISC_IA5List *str2ia5list (char *s);
-static int rng_pick (int a, int b, int *out);
+static int rng_pick (const int a, const int b, int *out);
 
-static int  ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
-static int  error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi);
-static int  do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp);
-static int  object (char *pw);
-static int  pwdgen (char *pw);
+static int  ureject (const int sd, const int reason, const struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  error (const int sd, const int err, caddr_t param, const struct RoSAPinvoke *rox, struct RoSAPindication *roi);
+static int  do_the_tell (const struct utmp *ut, char *from, char *vec[], const int vecp);
+static int  object (const char *pw);
+static int  pwdgen (const char *pw);
 
 int main (int argc, char **argv, char **envp) {
 	ryresponder (argc, argv, PLocalHostName (), myservice, NULLCP,
@@ -520,7 +520,7 @@ void	srand (unsigned int);
 #endif
 
 static int
-rng_pick (int a, int b, int *out)
+rng_pick (const int a, const int b, int *out)
 {
 	long r;
 	int rounded,
@@ -552,7 +552,7 @@ rng_pick (int a, int b, int *out)
 	return 0;
 }
 
-static int pwdgen (char *pw) {
+static int pwdgen (const char *pw) {
 	int    i,
 		   j;
 	char   c,
@@ -640,7 +640,7 @@ static struct obj {
 	NULL, 0
 };
 
-static int object (char *pw) {
+static int object (const char *pw) {
 	int    n;
 	char  *f,
 		  *s;
@@ -962,7 +962,7 @@ out:
 	return result;
 }
 
-static int do_the_tell (struct utmp *ut, char *from, char *vec[], int vecp) {
+static int do_the_tell (const struct utmp *ut, char *from, char *vec[], const int vecp) {
 	int     i,
 			pid;
 	char   *bp,
@@ -1027,7 +1027,7 @@ static int  op_data (int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, c
 
 /* ERROR */
 
-static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int error (const int sd, const int err, caddr_t param, const struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsError (sd, rox -> rox_id, err, param, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "ERROR");
 
@@ -1036,7 +1036,7 @@ static int error (int sd, int err, caddr_t param, struct RoSAPinvoke *rox, struc
 
 /* U-REJECT */
 
-static int ureject (int sd, int reason, struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
+static int ureject (const int sd, const int reason, const struct RoSAPinvoke *rox, struct RoSAPindication *roi) {
 	if (RyDsUReject (sd, rox -> rox_id, reason, ROS_NOPRIO, roi) == NOTOK)
 		ros_adios (&roi -> roi_preject, "U-REJECT");
 

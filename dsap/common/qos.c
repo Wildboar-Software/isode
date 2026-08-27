@@ -28,11 +28,11 @@ static PE dsaQoS_enc (void *value);
 static void *dsaQoS_dec (PE pe);
 static void attrQoS_free (struct attrQoS *a);
 static void ditQoS_free (void *value);
-static struct attrQoS *attrQoS_cpy (struct attrQoS *a);
+static struct attrQoS *attrQoS_cpy (const struct attrQoS *a);
 static void *ditQoS_cpy (void *value);
-static int attrQoS_cmp (struct attrQoS *a, struct attrQoS *b);
+static int attrQoS_cmp (const struct attrQoS *a, const struct attrQoS *b);
 static int ditQoS_cmp (void *value1, void *value2);
-static void attrQoS_print (PS ps, struct attrQoS *a, int format);
+static void attrQoS_print (PS ps, const struct attrQoS *a, const int format);
 static void ditQoS_print (PS ps, void *value, int format);
 static struct attrQoS *str2attrQoS (char *str);
 static void *
@@ -40,10 +40,10 @@ str2ditQoS (char *str);
 static PE ditQoS_enc (void *value);
 static void *ditQoS_dec (PE pe);
 void QoS_syntax (void);
-static int  CMD_SRCH (char *str, CMD_TABLE *cmd);
+static int  CMD_SRCH (char *str, const CMD_TABLE *cmd);
 
 
-static int  CMD_SRCH (char *str, CMD_TABLE *cmd);
+static int  CMD_SRCH (char *str, const CMD_TABLE *cmd);
 
 static void dsaQoS_free (void *value) {
 	struct dsaQoS *a = (struct dsaQoS *) value;
@@ -164,7 +164,7 @@ static void ditQoS_free (void *value) {
 	free ((char *) a);
 }
 
-static struct attrQoS *attrQoS_cpy (struct attrQoS *a) {
+static struct attrQoS *attrQoS_cpy (const struct attrQoS *a) {
 	struct attrQoS *b;
 	b = (struct attrQoS *) smalloc (sizeof *b);
 	*b = *a;	/* struct copy */
@@ -192,7 +192,7 @@ static void *ditQoS_cpy (void *value) {
 	return b;
 }
 
-static int attrQoS_cmp (struct attrQoS *a, struct attrQoS *b) {
+static int attrQoS_cmp (const struct attrQoS *a, const struct attrQoS *b) {
 	int	    res;
 
 	if (!a)
@@ -253,7 +253,7 @@ static CMD_TABLE attrQoS_tab[] = {
 	NULL,		-1
 };
 
-static void attrQoS_print (PS ps, struct attrQoS *a, int format)
+static void attrQoS_print (PS ps, const struct attrQoS *a, const int format)
 {
 	char   *p = rcmd_srch (a -> attr_level, attrQoS_tab),
 			*q = rcmd_srch (a -> attr_completeness, ditQoS_tab);
@@ -451,7 +451,7 @@ void QoS_syntax (void) {
 }
 
 #undef	cmd_srch
-static int  CMD_SRCH (char *str, CMD_TABLE *cmd)
+static int  CMD_SRCH (char *str, const CMD_TABLE *cmd)
 {
 	int	    result;
 	char    c;

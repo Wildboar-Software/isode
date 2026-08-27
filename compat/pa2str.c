@@ -11,7 +11,7 @@
 
 /*    Presentation Address to String */
 
-char *pa2str (struct PSAPaddr *px) {
+char *pa2str (const struct PSAPaddr *px) {
 	char *bp;
 	struct PSAPaddr pas;
 	struct PSAPaddr *pa = &pas;

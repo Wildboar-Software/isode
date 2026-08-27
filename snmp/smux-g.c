@@ -11,7 +11,7 @@ static int  o_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int  o_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset);
 static int  s_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset);
-static struct smuxTree *get_tbent (unsigned int *ip, int len, int isnext);
+static struct smuxTree *get_tbent (const unsigned int *ip, const int len, const int isnext);
 void init_smux (void);
 
 
@@ -189,7 +189,7 @@ static int  s_smuxPeer (OI oi, struct type_SNMP_VarBind *v, int offset) {
 #define	TB_VALID	1		/* smuxTstatus */
 #define	TB_INVALID	2		/* .. */
 
-static struct smuxTree *get_tbent (unsigned int *ip, int len, int isnext);
+static struct smuxTree *get_tbent (const unsigned int *ip, const int len, const int isnext);
 
 static int  o_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	int	    ifvar;
@@ -335,7 +335,7 @@ static int  s_smuxTree (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	return int_SNMP_error__status_noError;
 }
 
-static struct smuxTree *get_tbent (unsigned int *ip, int len, int isnext) {
+static struct smuxTree *get_tbent (const unsigned int *ip, const int len, const int isnext) {
 	struct smuxTree *tb;
 
 	for (tb = THead -> tb_forw; tb != THead; tb = tb -> tb_forw)

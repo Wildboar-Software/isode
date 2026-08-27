@@ -5,7 +5,7 @@
 
 /* D-UNBIND.ACCEPT */
 
-int DUnBindAccept (int sd, struct DSAPindication *di) {
+int DUnBindAccept (const int sd, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);
@@ -22,7 +22,7 @@ int DUnBindAccept (int sd, struct DSAPindication *di) {
 
 /* D-UNBIND.REJECT */
 
-int DUnBindReject (int sd, int status, int reason, struct DSAPindication *di) {
+int DUnBindReject (const int sd, const int status, const int reason, struct DSAPindication *di) {
 	int			  result;
 	struct RoNOTindication	  rni_s;
 	struct RoNOTindication	* rni = &(rni_s);

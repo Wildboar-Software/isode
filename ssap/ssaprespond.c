@@ -12,8 +12,8 @@ static int refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *
 
 static int  refuse (struct ssapblk *sb, struct ssapkt *s, struct SSAPindication *si);
 
-int SInit (int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
-	int	    len;
+int SInit (const int vecp, char **vec, struct SSAPstart *ss, struct SSAPindication *si) {
+	const int	    len;
 	struct ssapblk *sb;
 	struct ssapkt *s;
 	struct TSAPstart tss;
@@ -230,13 +230,13 @@ out1:
 }
 
 int SConnResponse (
-	int sd,
-	struct SSAPref *ref,
-	struct SSAPaddr *responding,
-	int status,
-	int requirements,
-	int settings,
-	long isn,
+	const int sd,
+	const struct SSAPref *ref,
+	const struct SSAPaddr *responding,
+	const int status,
+	const int requirements,
+	const int settings,
+	const long isn,
 	char *data,
 	int cc,
 	struct SSAPindication *si

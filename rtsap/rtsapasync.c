@@ -7,7 +7,7 @@
 /*    define vectors for INDICATION events */
 
 int RtSetIndications (
-	int sd,
+	const int sd,
 	int (*indication)(int sd, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {

@@ -107,25 +107,25 @@ static int  once_only = 0;
 static struct ftamblk ftamque;
 static struct ftamblk *FSHead = &ftamque;
 
-static void psDATAser (int sd, struct PSAPdata *px);
-static void psTOKENser (int sd, struct PSAPtoken *pt);
-static void psSYNCser (int sd, struct PSAPsync *pn);
-static void psACTIVITYser (int sd, struct PSAPactivity *pv);
-static void psREPORTser (int sd, struct PSAPreport *pp);
-static void psFINISHser (int sd, struct PSAPfinish *pf);
-static void psABORTser (int sd, struct PSAPabort *pa);
+static void psDATAser (const int sd, const struct PSAPdata *px);
+static void psTOKENser (const int sd, const struct PSAPtoken *pt);
+static void psSYNCser (const int sd, struct PSAPsync *pn);
+static void psACTIVITYser (const int sd, const struct PSAPactivity *pv);
+static void psREPORTser (const int sd, const struct PSAPreport *pp);
+static void psFINISHser (const int sd, struct PSAPfinish *pf);
+static void psABORTser (const int sd, struct PSAPabort *pa);
 
-static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti);
-static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti);
-static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FTAMindication *fti);
-static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMindication *fti);
+static int doPSdata (struct ftamblk *fsb, const struct PSAPdata *px, struct FTAMindication *fti);
+static int doPStokens (struct ftamblk *fsb, const struct PSAPtoken *pt, const struct FTAMindication *fti);
+static int doPSactivity (struct ftamblk *fsb, const struct PSAPactivity *pv, const struct FTAMindication *fti);
+static int doPSreport (struct ftamblk *fsb, const struct PSAPreport *pp, const struct FTAMindication *fti);
 static int doPSfinish (struct ftamblk *fsb, struct PSAPfinish *pf, struct FTAMindication *fti);
 static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindication *fti);
 static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindication *fti);
 
 /*    F-WAIT.REQUEST (pseudo) */
 
-int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
+int FWaitRequest (const int sd, const int secs, struct FTAMindication *fti) {
 	SBV	    smask;
 	int     result;
 	struct ftamblk *fsb;
@@ -138,7 +138,7 @@ int FWaitRequest (int sd, int secs, struct FTAMindication *fti) {
 	return result;
 }
 
-int FWaitRequestAux (struct ftamblk *fsb, int secs, struct FTAMindication *fti) {
+int FWaitRequestAux (struct ftamblk *fsb, const int secs, struct FTAMindication *fti) {
 	int     result;
 	struct PSAPdata pxs;
 	struct PSAPdata   *px = &pxs;
@@ -211,7 +211,7 @@ do_data:
 	}
 }
 
-static int doPSdata (struct ftamblk *fsb, struct PSAPdata *px, struct FTAMindication *fti) {
+static int doPSdata (struct ftamblk *fsb, const struct PSAPdata *px, struct FTAMindication *fti) {
 	int     next;
 	int    i;
 	PE	pe,
@@ -1437,7 +1437,7 @@ out:
 	return NOTOK;
 }
 
-static int doPStokens (struct ftamblk *fsb, struct PSAPtoken *pt, struct FTAMindication *fti) {
+static int doPStokens (struct ftamblk *fsb, const struct PSAPtoken *pt, const struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
@@ -1504,7 +1504,7 @@ static int doPSsync (struct ftamblk *fsb, struct PSAPsync *pn, struct FTAMindica
 	return doPSdata (fsb, px, fti);
 }
 
-static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FTAMindication *fti) {
+static int doPSactivity (struct ftamblk *fsb, const struct PSAPactivity *pv, const struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
@@ -1512,7 +1512,7 @@ static int doPSactivity (struct ftamblk *fsb, struct PSAPactivity *pv, struct FT
 	return NOTOK;
 }
 
-static int doPSreport (struct ftamblk *fsb, struct PSAPreport *pp, struct FTAMindication *fti) {
+static int doPSreport (struct ftamblk *fsb, const struct PSAPreport *pp, const struct FTAMindication *fti) {
 	fpktlose (fsb, fti, FS_PRO_ERR, NULLCP,
 			  "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
@@ -1593,7 +1593,7 @@ static int doPSabort (struct ftamblk *fsb, struct PSAPabort *pa, struct FTAMindi
 	}
 	return acs2ftamabort (fsb, aca, fti);
 }
-static void psDATAser (int sd, struct PSAPdata *px) {
+static void psDATAser (const int sd, const struct PSAPdata *px) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1606,7 +1606,7 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 		(*handler) (sd, fti);
 }
 
-static void psTOKENser (int sd, struct PSAPtoken *pt) {
+static void psTOKENser (const int sd, const struct PSAPtoken *pt) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1619,7 +1619,7 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 		(*handler) (sd, fti);
 }
 
-static void psSYNCser (int sd, struct PSAPsync *pn) {
+static void psSYNCser (const int sd, struct PSAPsync *pn) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1632,7 +1632,7 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 		(*handler) (sd, fti);
 }
 
-static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
+static void psACTIVITYser (const int sd, const struct PSAPactivity *pv) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1645,7 +1645,7 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 		(*handler) (sd, fti);
 }
 
-static void psREPORTser (int sd, struct PSAPreport *pp) {
+static void psREPORTser (const int sd, const struct PSAPreport *pp) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1658,7 +1658,7 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 		(*handler) (sd, fti);
 }
 
-static void psFINISHser (int sd, struct PSAPfinish *pf) {
+static void psFINISHser (const int sd, struct PSAPfinish *pf) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1671,7 +1671,7 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 		(*handler) (sd, fti);
 }
 
-static void psABORTser (int sd, struct PSAPabort *pa) {
+static void psABORTser (const int sd, struct PSAPabort *pa) {
 	void	  (*handler)(int sd, struct FTAMindication *fti);
 	struct ftamblk   *fsb;
 	struct FTAMindication  ftis;
@@ -1688,7 +1688,7 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 
 #define	e(i)	(indication ? (i) : NULL)
 
-int FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti) {
+int FSetIndications (const int sd, void (*indication)(int sd, struct FTAMindication *fti), struct FTAMindication *fti) {
 	SBV     smask;
 	struct ftamblk *fsb;
 	struct PSAPindication   pis;
@@ -1726,7 +1726,7 @@ int FSetIndications (int sd, void (*indication)(int sd, struct FTAMindication *f
 
 /*    AcSAP interface */
 
-int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct AcSAPabort *aca) {
+int acs2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, const struct AcSAPabort *aca) {
 	int     observer,
 			reason;
 	char   *cp,
@@ -1780,7 +1780,7 @@ int acs2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, 
 						 EREF_NONE, NULLCP, "%s", *cp ? cp + 1 : cp);
 }
 
-int acs2ftamabort (struct ftamblk *fsb, struct AcSAPabort *aca, struct FTAMindication *fti) {
+int acs2ftamabort (struct ftamblk *fsb, const struct AcSAPabort *aca, struct FTAMindication *fti) {
 	int     peer;
 	PE	    pe;
 	struct FTAMabort  *fta = &fti -> fti_abort;
@@ -1841,7 +1841,7 @@ out:
 
 /*    PSAP interface */
 
-int ps2ftamlose (struct ftamblk *fsb, struct FTAMindication *fti, char *event, struct PSAPabort *pa) {
+int ps2ftamlose (const struct ftamblk *fsb, struct FTAMindication *fti, char *event, const struct PSAPabort *pa) {
 	int     observer,
 			reason;
 	char   *cp,
@@ -1941,7 +1941,7 @@ void freefsblk (struct ftamblk *fsb) {
 }
 
 struct ftamblk *
-findfsblk (int sd) {
+findfsblk (const int sd) {
 	struct ftamblk *fsb;
 
 	if (once_only == 0)

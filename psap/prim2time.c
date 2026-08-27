@@ -8,9 +8,9 @@
 #include "psap.h"
 
 #define	YEAR(y)		((y) >= 100 ? (y) : (y) + 1900)
-static long	get_usec (char **cp, size_t *len);
+static long	get_usec (char **cp, const size_t *len);
 
-UTC prim2time (PE pe, int generalized) {
+UTC prim2time (PE pe, const int generalized) {
 	int len;
 	char  *cp;
 	UTC    u;
@@ -41,7 +41,7 @@ UTC prim2time (PE pe, int generalized) {
 							   NULLUTC));
 }
 
-UTC str2utct (char *cp, size_t len) {
+UTC str2utct (const char *cp, size_t len) {
 	int     year,
 			hours,
 			mins;
@@ -202,7 +202,7 @@ get_zone:
 	return u;
 }
 
-static long get_usec (char **cp, size_t *len) {
+static long get_usec (char **cp, const size_t *len) {
 	size_t    j;
 	long   i;
 	char  *dp;

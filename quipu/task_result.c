@@ -5,7 +5,7 @@
 #include "quipu/connection.h"
 
 extern  LLog    * log_dsap;
-void ros_log(struct RoSAPpreject *rop, char *event);
+void ros_log(const struct RoSAPpreject *rop, const char *event);
 
 /*
 * The DSA has produced a result for the task, encode the result,

@@ -11,7 +11,7 @@ static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *
 
 /* RO-BIND.INDICATION */
 
-int RoBindInit (int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
+int RoBindInit (const int vecp, char **vec, struct AcSAPstart *acs, struct RoNOTindication *rni) {
 	int			  result;
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);
@@ -65,17 +65,17 @@ static int ParseRoBindArgument (struct AcSAPstart *acs, struct RoNOTindication *
 /* RO-BIND.RESULT */
 
 int	RoBindResult (
-	int sd,
+	const int sd,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
-	struct PSAPctxlist *ctxlist,
-	int	defctxresult,
-	int	prequirements,
-	int	srequirements,
-	long isn,
-	int settings,
-	struct SSAPref *ref,
+	const struct PSAPaddr *respondaddr,
+	const struct PSAPctxlist *ctxlist,
+	const int	defctxresult,
+	const int	prequirements,
+	const int	srequirements,
+	const long isn,
+	const int settings,
+	const struct SSAPref *ref,
 	PE bindrespe,
 	struct RoNOTindication *rni
 ) {
@@ -120,17 +120,17 @@ int	RoBindResult (
 /* RO-BIND.ERROR */
 
 int RoBindError (
-	int sd,
+	const int sd,
 	OID context,
 	AEI respondtitle,
-	struct PSAPaddr *respondaddr,
-	struct PSAPctxlist *ctxlist,
-	int	defctxresult,
-	int	prequirements,
-	int	srequirements,
-	long isn,
-	int settings,
-	struct SSAPref *ref,
+	const struct PSAPaddr *respondaddr,
+	const struct PSAPctxlist *ctxlist,
+	const int	defctxresult,
+	const int	prequirements,
+	const int	srequirements,
+	const long isn,
+	const int settings,
+	const struct SSAPref *ref,
 	PE binderrpe,
 	struct RoNOTindication *rni
 ) {
@@ -172,7 +172,7 @@ int RoBindError (
 	return (result);
 }
 
-int RoBindReject (struct AcSAPstart *acs, int status, int reason, struct RoNOTindication *rni) {
+int RoBindReject (const struct AcSAPstart *acs, const int status, const int reason, struct RoNOTindication *rni) {
 	struct PSAPstart	* ps = &(acs->acs_start);
 	struct AcSAPindication	  aci_s;
 	struct AcSAPindication	* aci = &(aci_s);

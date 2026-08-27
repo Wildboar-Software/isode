@@ -12,12 +12,12 @@
 
 #define advise	PY_advise
 
-static struct type_DSE_PSAPaddr *psap2dse (struct PSAPaddr *pa);
+static struct type_DSE_PSAPaddr *psap2dse (const struct PSAPaddr *pa);
 
-static int  dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa);
-static int  gstring (char *buf, int buflen, struct qbuf *qb, char *w);
+static int  dse2psap (const struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa);
+static int  gstring (char *buf, const int buflen, struct qbuf *qb, const char *w);
 
-int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm) {
+int build_DSE_PSAPaddr (PE *pe, const int explicit, const int len, const char *buffer, const char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
@@ -30,7 +30,7 @@ int build_DSE_PSAPaddr (PE *pe, int explicit, int len, char *buffer, char *parm)
 }
 
 static struct type_DSE_PSAPaddr *
-psap2dse (struct PSAPaddr *pa) {
+psap2dse (const struct PSAPaddr *pa) {
 	int    n;
 	struct type_DSE_PSAPaddr *dse;
 	struct SSAPaddr *sa = &pa -> pa_addr;
@@ -79,7 +79,7 @@ losing:
 	return dse;
 }
 
-int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm) {
+int parse_DSE_PSAPaddr (PE pe, const int explicit, const int *len, char **buffer, const char *parm) {
 	int	    result;
 	struct PSAPaddr *pa = (struct PSAPaddr *) parm;
 	struct type_DSE_PSAPaddr *dse;
@@ -91,7 +91,7 @@ int parse_DSE_PSAPaddr (PE pe, int explicit, int *len, char **buffer, char *parm
 	return result;
 }
 
-static int dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
+static int dse2psap (const struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	struct SSAPaddr *sa = &pa -> pa_addr;
 	struct TSAPaddr *ta = &sa -> sa_addr;
 	struct member_DSE_0 *nDSE;
@@ -126,7 +126,7 @@ static int dse2psap (struct type_DSE_PSAPaddr *dse, struct PSAPaddr *pa) {
 	return OK;
 }
 
-static int gstring (char *buf, int buflen, struct qbuf *qb, char *w) {
+static int gstring (char *buf, const int buflen, struct qbuf *qb, const char *w) {
 	char   *p;
 
 	if (qb == NULL || qb -> qb_len <= 0)

@@ -110,7 +110,7 @@ static char *cons_err1[] = {
 };
 #endif
 
-char *TErrString (int code) {
+char *TErrString (const int code) {
 	int    fcode;
 	static char buffer[60];
 

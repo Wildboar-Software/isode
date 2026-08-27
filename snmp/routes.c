@@ -28,7 +28,7 @@ struct rtetab *rts_iso = NULL;
 static	int	first_time = 1;
 int	flush_rt_cache = 0;
 
-static int  get_route (struct rtentry *re);
+static int  get_route (const struct rtentry *re);
 
 #ifdef LINUX
 static int _read_routes(void)
@@ -72,9 +72,9 @@ static int _read_routes(void)
 }
 #endif
 
-int	get_routes (int offset) {
-	int   i;
-	int	    rthashsize,
+int	get_routes (const int offset) {
+	const int   i;
+	const int	    rthashsize,
 			tblsize;
 #ifdef	ultrix
 	struct rtentry **rtaddr,
@@ -272,7 +272,7 @@ void sort_rtetab (void) {
 	free ((char *) base);
 }
 
-static int  get_route (struct rtentry *re) {
+static int  get_route (const struct rtentry *re) {
 	struct rtetab *rt,
 			   *rz;
 #ifdef	BSD44
@@ -410,8 +410,8 @@ static int  get_radix_node (struct radix_node *rn) {
 }
 #endif
 
-struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext);
-struct rtetab *get_rtent (unsigned int *ip, int len, struct rtetab *head, int isnext) {
+struct rtetab *get_rtent (const unsigned int *ip, const int len, const struct rtetab *head, const int isnext);
+struct rtetab *get_rtent (const unsigned int *ip, const int len, const struct rtetab *head, const int isnext) {
 	int	    family;
 	struct rtetab *rt;
 

@@ -10,7 +10,7 @@
 #include	"tailor.h"
 #include "pepsycodec.h"
 static int pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
 	ptpe *p,
@@ -19,7 +19,7 @@ static int pr_obj (
 
 
 static int pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
 	ptpe *p,
@@ -32,13 +32,13 @@ setpresent (PE head, ptpe *p, modtyp *mod);
 extern int pepsylose (modtyp *module, ...);
 
 extern ptpe *next_tpe(ptpe *p), *fdflt_b(ptpe *p);
-extern char *pr_petype(int type);
+extern char *pr_petype(const int type);
 
 extern int ismatch (
 	ptpe *p,
 	modtyp *mod,			/* Module it is from */
-	unsigned int cl,
-	unsigned int tag
+	const unsigned int cl,
+	const unsigned int tag
 );
 
 #define NEXT_TPE(p)	(p = next_tpe(p))
@@ -59,27 +59,27 @@ static PE setpresent(PE head, ptpe *p, modtyp *mod);
 #define ALLOC_MEM(p, parm)	(p->pe_type == SOBJECT \
 	&& p[-1].pe_type == MEMALLOC)
 
-static int pr_obj(int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
-static int pr_type(int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
+static int pr_obj(const int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
+static int pr_type(const int expl, PE pe, char **parm, ptpe *p, modtyp *mod);
 static int pr_seq(PE head, char **parm, ptpe *p, modtyp *mod);
 static int pr_set(PE head, char **parm, ptpe *p, modtyp *mod);
 static int pr_seqof(PE head, char **parm, ptpe *p, modtyp *mod);
 static int pr_setof(PE head, char **parm, ptpe *p, modtyp *mod);
 static int pr_choice(PE head, char **parm, ptpe *p, modtyp *mod);
 static int pr_etype(PE pe, char **parm, ptpe *p, modtyp *mod);
-static int setdval(ptpe *typ, ptpe *dflt, char **parm, modtyp *mod);
-static int fix_mem(char **parm, ptpe *p);
+static int setdval(ptpe *typ, const ptpe *dflt, char **parm, modtyp *mod);
+static int fix_mem(char **parm, const ptpe *p);
 
 /*
  * decode the specified type of the specified module into the given
  * pe
  */
 int dec_f (
-	int typ,			/* which type it is */
+	const int typ,			/* which type it is */
 	modtyp *mod,			/* Module it is from */
 	PE pe,
-	int explicit,
-	int *len,
+	const int explicit,
+	const int *len,
 	char **buf,
 	char **parm
 ) {
@@ -120,13 +120,13 @@ bad:
  * must assume that it has an offset.
  */
 static int pr_obj (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
 ) {
-	int     cnt = 0;
+	const int     cnt = 0;
 
 	DLOG (psap_log, LLOG_DEBUG, ("Decode object %s.%s type %s",
 								 mod -> md_name, pname(p),
@@ -190,13 +190,13 @@ bad:
  * call the appropriate parsing routine
  */
 static int pr_type (
-	int expl,			/* do we look at the tag */
+	const int expl,			/* do we look at the tag */
 	PE pe,
 	char **parm,
 	ptpe *p,
 	modtyp *mod			/* Module it is from */
 ) {
-	int	cnt = 0;
+	const int	cnt = 0;
 	int len;
 	OID     oid;
 	char    *nparm;
@@ -1171,7 +1171,7 @@ static int pr_seqof (
 ) {
 	PE      pe;
 	ptpe    *start;		/* first entry in list */
-	int     dflt = 0;
+	const int     dflt = 0;
 	char    *nparm;
 
 	if (p->pe_type != SEQOF_START && p->pe_type != SSEQOF_START)
@@ -2044,10 +2044,10 @@ setpresent (PE head, ptpe *p, modtyp *mod) {
 /*
  * set the default value to that value in the structure
  */
-static int setdval (ptpe *typ, ptpe *dflt, char **parm, modtyp *mod) {
+static int setdval (ptpe *typ, const ptpe *dflt, char **parm, modtyp *mod) {
 	char	*p;
 	integer	i;
-	int		no;	/* number of octets */
+	const int		no;	/* number of octets */
 	char	*nparm;
 
 again:
@@ -2215,7 +2215,7 @@ again:
  * this is present because it then believes the object is present and
  * tries to process it ...
  */
-static int fix_mem (char **parm, ptpe *p) {
+static int fix_mem (char **parm, const ptpe *p) {
 	if (p->pe_type != SOBJECT || p[-1].pe_type != MEMALLOC
 			|| p[1].pe_type != PE_END)
 		SLOG (psap_log, LLOG_EXCEPTIONS, NULLCP, ("fix_mem:inconsistency"));

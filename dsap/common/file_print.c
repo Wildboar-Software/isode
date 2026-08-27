@@ -20,7 +20,7 @@ static char used_temp;
 #ifndef SYS5
 #endif
 
-int dflt_attr_file (AttributeType at, AttributeValue x, char full)
+int dflt_attr_file (AttributeType at, AttributeValue x, const char full)
 {
 	/* make default file name */
 	char buffer [LINESIZE];
@@ -103,7 +103,7 @@ int dflt_attr_file (AttributeType at, AttributeValue x, char full)
 	return (OK);
 }
 
-void fileattr_print (PS ps, AttributeValue y, int format)
+void fileattr_print (PS ps, AttributeValue y, const int format)
 {
 	struct file_syntax * fs;
 	mode_t um, mask;

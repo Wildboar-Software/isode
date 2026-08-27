@@ -12,12 +12,12 @@
 extern void prefer_dsa (char *str);
 extern void reject_prefix (char *str);
 extern void accept_prefix (char *str);
-extern void reject_length (char *str);
+extern void reject_length (const char *str);
 extern void allowrelay (char *str);
-extern void add_str_parent (char *str, char *addr);
-extern int isodesetvar (char *str, char *value, int ispgm);
+extern void add_str_parent (char *str, const char *addr);
+extern int isodesetvar (const char *str, const char *value, const int ispgm);
 extern void shadow_attribute (char *str);
-extern void getedb_size (int size);
+extern void getedb_size (const int size);
 extern void turbo_optimize (char *str);
 extern void index_subtree (char *str);
 extern void index_siblings (char *str);
@@ -167,7 +167,7 @@ static  CMD_TABLE  authtab[] = {
  * do system wide initialisations
  */
 
-int dsa_sys_tai (int argc, char **argv) {
+int dsa_sys_tai (const int argc, char **argv) {
 	char    *arg;
 
 	if(argc < 2)

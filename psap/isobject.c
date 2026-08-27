@@ -13,7 +13,7 @@ static int  stayopen = 0;
 
 static struct isobject    ios;
 
-int setisobject (int f) {
+int setisobject (const int f) {
 	if (servf == NULL)
 		servf = fopen (isodefile (isobjects, 0), "r");
 	else

@@ -11,7 +11,7 @@
 
 /*    estimate of octets that might be returned */
 
-int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td)
+int	TSelectOctets (const int sd, long int *nbytes, struct TSAPdisconnect *td)
 {
 	int	    result;
 	long    value;
@@ -58,7 +58,7 @@ int	TSelectOctets (int sd, long int *nbytes, struct TSAPdisconnect *td)
 
 /*    get TSAPs */
 
-int TGetAddresses (int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td) {
+int TGetAddresses (const int sd, struct TSAPaddr *initiating, struct TSAPaddr *responding, struct TSAPdisconnect *td) {
 	SBV	    smask;
 	struct tsapblk *tb;
 

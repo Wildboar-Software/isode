@@ -66,7 +66,7 @@ void freeacblk (struct assocblk *acb) {
 	free ((char *) acb);
 }
 
-struct assocblk *findacblk (int sd) {
+struct assocblk *findacblk (const int sd) {
 	struct assocblk *acb;
 
 	if (once_only == 0)

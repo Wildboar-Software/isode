@@ -6,19 +6,19 @@
 #include "pepsydefs.h"
 #include "pass2.h"
 static void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa);
-static void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new);
-static char *calc_arg(YP yp, int actno);
+static void my_do_action(FILE *fp, const char *action, const int level, char *arg, const int lineno, char *new);
+static char *calc_arg(YP yp, const int actno);
 
 static void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa);
-static void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new);
-static char *calc_arg(YP yp, int actno);
+static void my_do_action(FILE *fp, const char *action, const int level, char *arg, const int lineno, char *new);
+static char *calc_arg(YP yp, const int actno);
 
 
 extern char *sysin;
-extern char *proc_name(char *t, int flag);
-extern char *my_strcat(char *s1, char *s2);
+extern char *proc_name(const char *t, const int flag);
+extern char *my_strcat(const char *s1, char *s2);
 
-char   *calc_arg(YP yp, int actno);
+char   *calc_arg(YP yp, const int actno);
 
 #define MAXLENGTH 30
 
@@ -53,7 +53,7 @@ void do_sw_type(char *name, YP yp, FILE *fp, FILE *fpa)
 }
 #endif
 
-void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char *new)
+void my_do_action(FILE *fp, const char *action, const int level, char *arg, const int lineno, char *new)
 {
 	int     i;
 	char    t[MAXLENGTH];
@@ -113,7 +113,7 @@ void my_do_action(FILE *fp, char *action, int level, char *arg, int lineno, char
 	fprintf(fp, "%*s}\n", level * 4, "");
 }
 
-char *calc_arg(YP yp, int actno)
+char *calc_arg(YP yp, const int actno)
 {
 
 	switch (actno) {

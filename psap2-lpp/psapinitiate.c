@@ -13,23 +13,23 @@
 
 static int PAsynRetryAux (struct psapblk *pb, struct PSAPconnect *pc, struct PSAPindication *pi);
 static int PConnRequestAux (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
-	struct PSAPctxlist *ctxlist,
-	struct SSAPref *ref,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
+	const struct PSAPctxlist *ctxlist,
+	const struct SSAPref *ref,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 );
 static int PConnRequestAux2 (
 	struct psapblk *pb,
-	struct TSAPaddr *calling,
-	struct TSAPaddr *called,
-	struct QOStype *qos,
+	const struct TSAPaddr *calling,
+	const struct TSAPaddr *called,
+	const struct QOStype *qos,
 	struct PSAPindication *pi,
-	int async
+	const int async
 );
 
 /*    P-(ASYN-)CONNECT.REQUEST */
@@ -38,21 +38,21 @@ static int PConnRequestAux2 (
 #endif
 
 int	PAsynConnRequest (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
-	struct PSAPctxlist *ctxlist,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
+	const struct PSAPctxlist *ctxlist,
 	OID defctxname,
-	int prequirements,
-	int srequirements,
-	long isn,
-	int settings,
-	struct SSAPref *ref,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
+	const int settings,
+	const struct SSAPref *ref,
 	PE *data,
-	int ndata,
-	struct QOStype *qos,
+	const int ndata,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	SBV     smask;
 	int     result;
@@ -108,15 +108,15 @@ int	PAsynConnRequest (
 }
 
 static int PConnRequestAux (
-	struct PSAPaddr *calling,
-	struct PSAPaddr *called,
-	struct PSAPctxlist *ctxlist,
-	struct SSAPref *ref,
+	const struct PSAPaddr *calling,
+	const struct PSAPaddr *called,
+	const struct PSAPctxlist *ctxlist,
+	const struct SSAPref *ref,
 	PE data,
-	struct QOStype *qos,
+	const struct QOStype *qos,
 	struct PSAPconnect *pc,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	int	    result;
 	OID     asn;
@@ -306,11 +306,11 @@ static struct nsapent {
 
 static int  PConnRequestAux2 (
 	struct psapblk *pb,
-	struct TSAPaddr *calling,
-	struct TSAPaddr *called,
-	struct QOStype *qos,
+	const struct TSAPaddr *calling,
+	const struct TSAPaddr *called,
+	const struct QOStype *qos,
 	struct PSAPindication *pi,
-	int async
+	const int async
 ) {
 	int	    reliability,
 			result;
@@ -363,7 +363,7 @@ static int  PConnRequestAux2 (
 
 /*    P-ASYN-RETRY.REQUEST (pseudo) */
 
-int	PAsynRetryRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int	PAsynRetryRequest (const int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
 	SBV     smask;
 	int     result;
 	struct psapblk *pb;
@@ -538,7 +538,7 @@ out:
 
 /*    P-ASYN-NEXT.REQUEST (pseudo) */
 
-int	PAsynNextRequest (int sd, struct PSAPconnect *pc, struct PSAPindication *pi) {
+int	PAsynNextRequest (const int sd, const struct PSAPconnect *pc, struct PSAPindication *pi) {
 	return psaplose (pi, PC_OPERATION, NULLCP,
 					 "operation not supported with lightweight presentation");
 }

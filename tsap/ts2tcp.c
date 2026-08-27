@@ -282,7 +282,7 @@ static int tcpread (int fd, char *buffer, int n) {
 	return nout;
 }
 
-char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
+char *tcpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td) {
 	static char buffer[BUFSIZ];
 
 	sprintf (buffer, "%c%d %s %s", NT_TCP, fd, cp1, cp2);
@@ -290,7 +290,7 @@ char *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td) {
 	return buffer;
 }
 
-int tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td) {
+int tcprestore (struct tsapblk *tb, const char *buffer, struct TSAPdisconnect *td) {
 	int     fd;
 	char *cp;
 	char    domain1[NSAP_DOMAINLEN + 1 + 5 + 1],

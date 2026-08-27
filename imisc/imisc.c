@@ -16,7 +16,7 @@ struct passwd *getpwuid (uid_t uid);
 #endif
 
 static struct type_IMISC_IA5List *vec2ia5list (char **vec);
-static void print_ia5list (struct type_IMISC_IA5List *ia5);
+static void print_ia5list (const struct type_IMISC_IA5List *ia5);
 static int do_finger (int sd, struct dispatch *ds, char **args, void *parameter);
 static int do_tell (int sd, struct dispatch *ds, char **args, void *parameter);
 static int do_data (int sd, struct dispatch *ds, char **args, void *parameter);
@@ -139,7 +139,7 @@ static struct type_IMISC_IA5List *vec2ia5list (char **vec) {
 	return ia5;
 }
 
-static void print_ia5list (struct type_IMISC_IA5List *ia5) {
+static void print_ia5list (const struct type_IMISC_IA5List *ia5) {
 	struct qbuf *p, *q;
 
 	for (; ia5; ia5 = ia5 -> next) {

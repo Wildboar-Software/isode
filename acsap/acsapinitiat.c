@@ -12,12 +12,12 @@
 #include "pvpdu.h"
 #include "pepsycodec.h"
 
-static int AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async);
-static int  AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci);
+static int AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref *ref, PE *data, const int ndata, const struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, const int async);
+static int  AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, const struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci);
 
 /*    A-(ASYN-)ASSOCIATE.REQUEST */
 
-int AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
+int AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref *ref, PE *data, const int ndata, const struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, const int async) {
 	SBV     smask;
 	int     result;
 
@@ -59,7 +59,7 @@ int AcAsynAssocRequest (OID context, AEI callingtitle, AEI calledtitle, struct P
 	return result;
 }
 
-static int AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, struct PSAPaddr *callingaddr, struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, int prequirements, int srequirements, long isn, int settings, struct SSAPref *ref, PE *data, int ndata, struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, int async) {
+static int AcAssocRequestAux (OID context, AEI callingtitle, AEI calledtitle, const struct PSAPaddr *callingaddr, const struct PSAPaddr *calledaddr, struct PSAPctxlist *ctxlist, OID defctxname, const int prequirements, const int srequirements, const long isn, const int settings, const struct SSAPref *ref, PE *data, const int ndata, const struct QOStype *qos, struct AcSAPconnect *acc, struct AcSAPindication *aci, const int async) {
 	int    i;
 	int	    result;
 	PE	    pe;
@@ -244,7 +244,7 @@ out:
 
 /*    A-ASYN-RETRY.REQUEST (pseudo) */
 
-int AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
+int AcAsynRetryRequest (const int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
 	SBV     smask;
 	int     result;
 	struct assocblk *acb;
@@ -294,7 +294,7 @@ int AcAsynRetryRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication
 	return result;
 }
 
-static int AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
+static int AcAsynRetryAux (struct assocblk *acb, struct PSAPconnect *pc, const struct PSAPindication *pi, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
 	int    i;
 	int	    result;
 	PE	    pe;
@@ -480,7 +480,7 @@ out:
 
 /*    A-ASYN-NEXT.REQUEST (pseudo) */
 
-int AcAsynNextRequest (int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
+int AcAsynNextRequest (const int sd, struct AcSAPconnect *acc, struct AcSAPindication *aci) {
 	SBV     smask;
 	int     result;
 	struct assocblk *acb;

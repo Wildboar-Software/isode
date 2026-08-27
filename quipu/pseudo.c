@@ -35,7 +35,7 @@ extern Attr_Sequence fget_attributes(FILE *file);
 #else
 extern Attr_Sequence get_attributes(FILE *file);
 #endif
-extern Entry local_find_entry_aux(DN object, char deref);
+extern Entry local_find_entry_aux(DN object, const char deref);
 
 #ifdef QUIPU_CONSOLE
 /* SPT: Some imported defines. */
@@ -340,7 +340,7 @@ void write_dsa_entry (Entry eptr) {
 	LLOG (log_dsap,LLOG_NOTICE,("Written %s",filename));
 }
 
-void load_pseudo_attrs (char data_type) {
+void load_pseudo_attrs (const char data_type) {
 	FILE * fptr;
 	char filename[LINESIZE];
 	DN dn;

@@ -209,7 +209,7 @@ typedef	struct	{
 
 #define	LOTSOFBITS	128
 
-int fre_obj (char *parm, ptpe *p, modtyp *mod, int dofree);
+int fre_obj (char *parm, ptpe *p, modtyp *mod, const int dofree);
 void free_pepsy_bp(void);
 
 #endif

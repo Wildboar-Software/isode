@@ -6,7 +6,7 @@
 #include "isoaddrs.h"
 
 struct SSAPaddr *
-str2saddr (char *str) {
+str2saddr (const char *str) {
 	struct PSAPaddr *pa;
 
 	if (pa = str2paddr (str))

@@ -160,7 +160,7 @@ int free(char *);
 
 /* SPRINTB */
 
-char   *sprintb (int v, char *bits);
+char   *sprintb (const int v, const char *bits);
 
 /* STR2VEC */
 
@@ -169,18 +169,18 @@ char   *sprintb (int v, char *bits);
 
 #define	str2vec(s,v)	str2vecX ((s), (v), 0, (int *)0, 0, 1)
 
-int	str2vecX (char *, char **, int,  int *, char,  int);
+int	str2vecX (char *, char **, const int,  int *, const char,  const int);
 
 /* STR2ELEM */
 
 #define	NELEM	100
 
-int	str2elem (char *s, unsigned int elements[]);
+int	str2elem (const char *s, unsigned int elements[]);
 
 /* STR2SEL */
 
-int	str2sel (char *s, int quoted, char *sel, int n);
-char   *sel2str (char *sel, int len, int quoted);
+int	str2sel (char *s, const int quoted, char *sel, int n);
+char   *sel2str (char *sel, int len, const int quoted);
 
 /* GETPASS */
 
@@ -188,25 +188,25 @@ char   *getpassword (char *prompt);
 
 /* BADUSER */
 
-int	baduser (char *file, char *user);
+int	baduser (char *file, const char *user);
 
 /* UTILITIES */
 
 extern char chrcnv[], nochrcnv[];
 
-int	lexequ (char *str1, char *str2), lexnequ (char *str1, char *str2, int len);
+int	lexequ (char *str1, char *str2), lexnequ (const char *str1, const char *str2, const int len);
 
 struct ll_struct;
-int	log_tai (struct ll_struct *lgptr, char **av, int ac);
+int	log_tai (struct ll_struct *lgptr, char **av, const int ac);
 
-int	sstr2arg (char *srcptr, int maxpf, char *argv[], char *dlmstr);
+int	sstr2arg (const char *srcptr, const int maxpf, char *argv[], const char *dlmstr);
 
 void	(*set_smalloc_handler (void (*fnx)(void)))(void);
-char    *smalloc (int size);
+char    *smalloc (const int size);
 
 /* MISC */
 
-char   *sys_errname (int i);
+char   *sys_errname (const int i);
 
 #ifdef	lint
 #define	insque(e,p)	INSQUE ((char *) (e), (char *) (p))
@@ -217,7 +217,7 @@ char   *sys_errname (int i);
 #ifndef ASPRINTF
 void    asprintf(char*bp, va_list ap);            /* fmt, args, ... */
 #endif
-void    _asprintf(char*bp, char*what, char* fmt, va_list ap);   /* fmt, args, ... */
+void    _asprintf(char*bp, char*what, const char* fmt, va_list ap);   /* fmt, args, ... */
 
 /* time */
 
@@ -261,9 +261,9 @@ unsigned long	htonl (unsigned long);
 #endif
 
 #include <stdint.h>
-int	explode (char *a, uint8_t *b, int n), implode (uint8_t *a, char *b, int n);
-int	char2bcd (char *s, int n, uint8_t *d);
-int	bcd2char (uint8_t *s, char *d, int len);
+int	explode (char *a, const uint8_t *b, const int n), implode (uint8_t *a, const char *b, const int n);
+int	char2bcd (const char *s, int n, uint8_t *d);
+int	bcd2char (const uint8_t *s, char *d, const int len);
 
 #include "conv.h"
 

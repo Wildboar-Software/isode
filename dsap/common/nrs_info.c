@@ -54,26 +54,26 @@
 #include "pepsycodec.h"
 static PE asnstr2pe (char * orig);
 static void str_seq_free (struct str_seq *arg);
-static struct str_seq *str_seq_cpy (struct str_seq *arg);
-static int str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2);
+static struct str_seq *str_seq_cpy (const struct str_seq *arg);
+static int str_seq_cmp (const struct str_seq *arg1, const struct str_seq *arg2);
 static void str_seq_print (
 	PS ps,
-	struct str_seq * strseq,
-	int format
+	const struct str_seq * strseq,
+	const int format
 );
-static struct str_seq *str2str_seq (char *orig);
+static struct str_seq *str2str_seq (const char *orig);
 static void addr_info_free (struct addr_info *arg);
-static struct addr_info *addr_info_cpy (struct addr_info *arg);
-static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2);
-static void addr_info_print (PS ps, struct addr_info * info, int format);
+static struct addr_info *addr_info_cpy (const struct addr_info *arg);
+static int addr_info_cmp (const struct addr_info *arg1, const struct addr_info *arg2);
+static void addr_info_print (PS ps, const struct addr_info * info, const int format);
 static struct addr_info *str2addr_info (char *orig);
 static void nrs_routes_free (struct nrs_routes *arg);
-static struct nrs_routes *nrs_routes_cpy (struct nrs_routes *arg);
-static int nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2);
+static struct nrs_routes *nrs_routes_cpy (const struct nrs_routes *arg);
+static int nrs_routes_cmp (const struct nrs_routes *arg1, const struct nrs_routes *arg2);
 static void nrs_routes_print (
 	PS ps,
-	struct nrs_routes * routes,
-	int format
+	const struct nrs_routes * routes,
+	const int format
 );
 static struct nrs_routes *str2nrs_routes (char *orig);
 static void nrs_info_free (void *value);
@@ -81,13 +81,13 @@ static void *nrs_info_cpy (void *value);
 static int nrs_info_cmp (void *value1, void *value2);
 static void context_print (
     PS ps,
-    int ctx,
-    int format
+    const int ctx,
+    const int format
 );
 static void addr_sp_id_print (
     PS ps,
-    int asi,
-    int format
+    const int asi,
+    const int format
 );
 static void nrs_info_print (
     PS ps,
@@ -133,7 +133,7 @@ static void str_seq_free (struct str_seq *arg) {
 	free ((char *)arg);
 }
 
-static struct str_seq *str_seq_cpy (struct str_seq *arg) {
+static struct str_seq *str_seq_cpy (const struct str_seq *arg) {
 	struct str_seq	* ret;
 	if (arg == (struct str_seq *)NULL)
 		return ((struct str_seq *)NULL);
@@ -143,7 +143,7 @@ static struct str_seq *str_seq_cpy (struct str_seq *arg) {
 	return (ret);
 }
 
-static int str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2) {
+static int str_seq_cmp (const struct str_seq *arg1, const struct str_seq *arg2) {
 	int	  ret;
 	if (arg1 == (struct str_seq *)NULL)
 		if (arg2 == (struct str_seq *)NULL)
@@ -159,8 +159,8 @@ static int str_seq_cmp (struct str_seq *arg1, struct str_seq *arg2) {
 
 static void str_seq_print (
 	PS ps,
-	struct str_seq * strseq,
-	int format
+	const struct str_seq * strseq,
+	const int format
 ) {
 	struct str_seq * ss;
 
@@ -174,7 +174,7 @@ static void str_seq_print (
 	}
 }
 
-static struct str_seq *str2str_seq (char *orig) {
+static struct str_seq *str2str_seq (const char *orig) {
 	struct str_seq	* result;
 	struct str_seq	**ss;
 	char		* ptr_prev;
@@ -228,7 +228,7 @@ static void addr_info_free (struct addr_info *arg) {
 	free ((char *) arg);
 }
 
-static struct addr_info *addr_info_cpy (struct addr_info *arg) {
+static struct addr_info *addr_info_cpy (const struct addr_info *arg) {
 	struct addr_info	* ret;
 
 	if (arg == (struct addr_info *)NULL)
@@ -322,7 +322,7 @@ static struct addr_info *addr_info_cpy (struct addr_info *arg) {
 	return (ret);
 }
 
-static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
+static int addr_info_cmp (const struct addr_info *arg1, const struct addr_info *arg2) {
 	int	  ret;
 
 	if (arg1 == (struct addr_info *)NULL)
@@ -442,7 +442,7 @@ static int addr_info_cmp (struct addr_info *arg1, struct addr_info *arg2) {
 	return (0);
 }
 
-static void addr_info_print (PS ps, struct addr_info * info, int format) {
+static void addr_info_print (PS ps, const struct addr_info * info, const int format) {
 	switch (info->addr_info_type) {
 	case ADDR_INFO_DTE_ONLY:
 		ps_printf (ps, "%s", "dte_only");
@@ -909,7 +909,7 @@ static void nrs_routes_free (struct nrs_routes *arg) {
 	free ((char *) arg);
 }
 
-static struct nrs_routes *nrs_routes_cpy (struct nrs_routes *arg) {
+static struct nrs_routes *nrs_routes_cpy (const struct nrs_routes *arg) {
 	struct nrs_routes * ret;
 	if (arg == (struct nrs_routes *)NULL)
 		return ((struct nrs_routes *)NULL);
@@ -923,7 +923,7 @@ static struct nrs_routes *nrs_routes_cpy (struct nrs_routes *arg) {
 	return (ret);
 }
 
-static int nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2) {
+static int nrs_routes_cmp (const struct nrs_routes *arg1, const struct nrs_routes *arg2) {
 	int	  ret;
 	if (arg1 == (struct nrs_routes *)NULL)
 		if (arg2 == (struct nrs_routes *)NULL)
@@ -941,8 +941,8 @@ static int nrs_routes_cmp (struct nrs_routes *arg1, struct nrs_routes *arg2) {
 
 static void nrs_routes_print (
 	PS ps,
-	struct nrs_routes * routes,
-	int format
+	const struct nrs_routes * routes,
+	const int format
 ) {
 	struct nrs_routes	* rt;
 
@@ -1077,8 +1077,8 @@ static int nrs_info_cmp (void *value1, void *value2) {
 
 static void context_print (
     PS ps,
-    int ctx,
-    int format
+    const int ctx,
+    const int format
 ) {
 	if (format != READOUT) {
 		ps_printf (ps, "%d", ctx);
@@ -1138,8 +1138,8 @@ static void context_print (
 
 static void addr_sp_id_print (
     PS ps,
-    int asi,
-    int format
+    const int asi,
+    const int format
 ) {
 	if (format != READOUT) {
 		ps_printf (ps, "%d", asi);

@@ -9,7 +9,7 @@
 
 char *first_word (char *ptr);
 char *next_word (char *ptr);
-static int match_word (char *a);
+static int match_word (const char *a);
 static int soundex_cmp (char *a, char *b);
 int soundex_match (struct filter_item *fitem, AV_Sequence avs);
 
@@ -55,7 +55,7 @@ char *next_word (char *ptr) {
 	/* NOTREACHED */
 }
 
-void soundex (char *s, char **c) {
+void soundex (const char *s, char **c) {
 	char code, adjacent, ch, *p;
 	int i, cmax;
 
@@ -148,7 +148,7 @@ void soundex (char *s, char **c) {
 static char	*g_bcode;
 static int	g_bcodelen;
 
-static int match_word (char *a) {
+static int match_word (const char *a) {
 	char	*as;
 	int	cmp;
 

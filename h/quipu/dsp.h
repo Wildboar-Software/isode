@@ -61,8 +61,8 @@ struct trace_info {
 void trace_info_free (struct trace_info *ti);
 
 #define NULLTRACEINFO ((struct trace_info *) 0)
-struct trace_info* ti_cpy(struct trace_info *ti);
-int ti_is_elem (struct trace_info *ti, struct trace_info *ti_list);
+struct trace_info* ti_cpy(const struct trace_info *ti);
+int ti_is_elem (const struct trace_info *ti, const struct trace_info *ti_list);
 
 /* THIS SECTION GIVES VARIOUS COMMON STRUCTURES */
 

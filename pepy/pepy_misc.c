@@ -6,15 +6,15 @@
 #include <strings.h>
 #include "pepy.h"
 
-void defineoid (char *name, OID oid);
-OID oidlookup (char *name);
+void defineoid (const char *name, OID oid);
+OID oidlookup (const char *name);
 char *oidname (OID oid);
-OID int2oid (int n);
-void addtable (char *name, int lt);
-void addtableref (char *name, OID id, int lt);
+OID int2oid (const int n);
+void addtable (const char *name, const int lt);
+void addtableref (const char *name, OID id, const int lt);
 void print_expimp(void);
 void check_impexp (YP yp);
-static int importedP (char *name);
+static int importedP (const char *name);
 void initoidtbl(void);
 
 /*  Oid manipulation */
@@ -69,7 +69,7 @@ OID	addoid (OID o1, OID o2)
 	return noid;
 }
 
-void defineoid (char *name, OID oid)
+void defineoid (const char *name, OID oid)
 {
 	char	*p;
 	OP		op;
@@ -97,7 +97,7 @@ void defineoid (char *name, OID oid)
 	myoids = op;
 }
 
-OID	oidlookup (char *name)
+OID	oidlookup (const char *name)
 {
 	OP	op;
 
@@ -120,7 +120,7 @@ char *oidname (OID oid)
 	return NULLCP;
 }
 
-OID	int2oid (int n)
+OID	int2oid (const int n)
 {
 	OID		noid;
 
@@ -137,7 +137,7 @@ OID	int2oid (int n)
 	return noid;
 }
 
-void addtable (char *name, int lt) {
+void addtable (const char *name, const int lt) {
 	SYM		sp;
 
 	sp = (SYM)calloc (1, sizeof *sp);
@@ -146,7 +146,7 @@ void addtable (char *name, int lt) {
 	symtab[lt] = sp;
 }
 
-void addtableref (char *name, OID id, int lt) {
+void addtableref (const char *name, OID id, const int lt) {
 	SYM		sp;
 	char	*nm;
 	OID		oid;
@@ -262,7 +262,7 @@ void check_impexp (YP yp)
 		}
 }
 
-static int importedP (char *name) {
+static int importedP (const char *name) {
 	SYM		sp;
 
 	for (sp = symtab[TBL_IMPORT]; sp; sp = sp -> sym_next)

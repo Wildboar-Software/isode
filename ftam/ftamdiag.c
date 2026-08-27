@@ -6,7 +6,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_Diagnostic *
-diag2fpm (struct ftamblk *fsb, int magic, struct FTAMdiagnostic diag[], int ndiag, struct FTAMindication *fti) {
+diag2fpm (const struct ftamblk *fsb, const int magic, struct FTAMdiagnostic diag[], const int ndiag, struct FTAMindication *fti) {
 	int    i;
 	struct FTAMdiagnostic *dp;
 	struct type_FTAM_Diagnostic *fpmp;
@@ -106,7 +106,7 @@ bad_dp:
 	return fpmp;
 }
 
-int fpm2diag (struct ftamblk *fsb, struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti) {
+int fpm2diag (const struct ftamblk *fsb, const struct type_FTAM_Diagnostic *fpm, struct FTAMdiagnostic diag[], int *ndiag, struct FTAMindication *fti) {
 	int    i;
 	struct FTAMdiagnostic *dp;
 	struct diag_element *f3;

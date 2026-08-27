@@ -6,7 +6,7 @@
 
 /*    BIND interface */
 
-int ronot2dsaplose (struct DSAPindication * di, char * event, struct RoNOTindication * rni) {
+int ronot2dsaplose (struct DSAPindication * di, const char * event, const struct RoNOTindication * rni) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 	cp = buffer;
@@ -26,7 +26,7 @@ int ronot2dsaplose (struct DSAPindication * di, char * event, struct RoNOTindica
 
 /*    ROS interface */
 
-int ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *rop) {
+int ros2dsaplose (struct DSAPindication *di, const char *event, const struct RoSAPpreject *rop) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 
@@ -45,7 +45,7 @@ int ros2dsaplose (struct DSAPindication *di, char *event, struct RoSAPpreject *r
 		return (dsaplose (di, DA_ROS, NULLCP, "%s", cp));
 }
 
-int ros2dsapreject (struct DSAPindication *di, char *event, struct RoSAPureject *rou) {
+int ros2dsapreject (struct DSAPindication *di, const char *event, const struct RoSAPureject *rou) {
 	char	* cp;
 	char	  buffer[BUFSIZ];
 

@@ -14,7 +14,7 @@
 #include "ftam-cmds.h"
 
 static int filcmp (const void *p, const void *q);
-static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi);
+static int ls (char *file, const char *entry, const int top, const int first, const int last, int invis, const int multi);
 static int fdfls (char *file);
 
 static int dashl;
@@ -185,7 +185,7 @@ int f_ls (char **vec) {
 	return result;
 }
 
-static int ls (char *file, char *entry, int top, int first, int last, int invis, int multi) {
+static int ls (char *file, const char *entry, const int top, const int first, const int last, int invis, const int multi) {
 	int	    recurse;
 	long    mtime;
 	char   *s;

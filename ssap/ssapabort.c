@@ -6,16 +6,16 @@
 #include "tailor.h"
 static int SUAbortRequestAux (
 	struct ssapblk *sb,
-	char *data,
-	int cc,
+	const char *data,
+	const int cc,
 	struct SSAPindication *si
 );
 
 
 static int SUAbortRequestAux (
 	struct ssapblk *sb,
-	char *data,
-	int cc,
+	const char *data,
+	const int cc,
 	struct SSAPindication *si
 ) {
 	int     result;

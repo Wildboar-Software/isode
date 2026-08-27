@@ -10,17 +10,17 @@
 #include "tailor.h"
 #include "pvpdu.h"
 
-static int	acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca);
+static int	acslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct AcSAPabort *aca);
 
-static int	pslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct PSAPabort *pa);
-static void	psDATAser (int sd, struct PSAPdata *px), psTOKENser (int sd, struct PSAPtoken *pt), psSYNCser (int sd, struct PSAPsync *pn), psACTIVITYser (int sd, struct PSAPactivity *pv),
-		psREPORTser (int sd, struct PSAPreport *pp), psFINISHser (int sd, struct PSAPfinish *pf), psABORTser (int sd, struct PSAPabort *pa);
+static int	pslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct PSAPabort *pa);
+static void	psDATAser (const int sd, struct PSAPdata *px), psTOKENser (const int sd, const struct PSAPtoken *pt), psSYNCser (const int sd, const struct PSAPsync *pn), psACTIVITYser (const int sd, const struct PSAPactivity *pv),
+		psREPORTser (const int sd, const struct PSAPreport *pp), psFINISHser (const int sd, struct PSAPfinish *pf), psABORTser (const int sd, struct PSAPabort *pa);
 
-static int  doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi);
-static int  doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi);
-static int  doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi);
-static int  doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi);
-static int  doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi);
+static int  doPSdata (struct assocblk *acb, const int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi);
+static int  doPStokens (struct assocblk *acb, const struct PSAPtoken *pt, const struct RoSAPindication *roi);
+static int  doPSsync (struct assocblk *acb, const struct PSAPsync *pn, const struct RoSAPindication *roi);
+static int  doPSactivity (struct assocblk *acb, const struct PSAPactivity *pv, const struct RoSAPindication *roi);
+static int  doPSreport (struct assocblk *acb, const struct PSAPreport *pp, const struct RoSAPindication *roi);
 static int  doPSfinish (struct assocblk *acb, struct PSAPfinish *pf, struct RoSAPindication *roi);
 static int  doPSabort (struct assocblk *acb, struct PSAPabort *pa, struct RoSAPindication *roi);
 
@@ -100,7 +100,7 @@ int ro2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RoSAPindica
 
 /*    AcSAP interface */
 
-static int acslose (struct assocblk *acb, struct RoSAPindication *roi, char *event, struct AcSAPabort *aca) {
+static int acslose (struct assocblk *acb, const struct RoSAPindication *roi, const char *event, const struct AcSAPabort *aca) {
 	int     reason;
 	char   *cp,
 		   buffer[BUFSIZ];
@@ -229,7 +229,7 @@ int ro2pswrite (struct assocblk *acb, PE pe, PE fe, int priority, struct RoSAPin
 	return result;
 }
 
-static int doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
+static int doPSdata (struct assocblk *acb, const int *invokeID, struct PSAPdata *px, struct RoSAPindication *roi) {
 	PE	    pe;
 
 	if (px -> px_type != SX_NORMAL) {
@@ -247,7 +247,7 @@ static int doPSdata (struct assocblk *acb, int *invokeID, struct PSAPdata *px, s
 	return acb2osdu (acb, invokeID, pe, roi);
 }
 
-static int doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPindication *roi) {
+static int doPStokens (struct assocblk *acb, const struct PSAPtoken *pt, const struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected token indication (0x%x)", pt -> pt_type);
 	PTFREE (pt);
@@ -256,7 +256,7 @@ static int doPStokens (struct assocblk *acb, struct PSAPtoken *pt, struct RoSAPi
 	return NOTOK;
 }
 
-static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindication *roi) {
+static int doPSsync (struct assocblk *acb, const struct PSAPsync *pn, const struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected sync indication (0x%x)", pn -> pn_type);
 	PNFREE (pn);
@@ -265,7 +265,7 @@ static int doPSsync (struct assocblk *acb, struct PSAPsync *pn, struct RoSAPindi
 	return NOTOK;
 }
 
-static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct RoSAPindication *roi) {
+static int doPSactivity (struct assocblk *acb, const struct PSAPactivity *pv, const struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected activity indication (0x%x)", pv -> pv_type);
 	PVFREE (pv);
@@ -274,7 +274,7 @@ static int doPSactivity (struct assocblk *acb, struct PSAPactivity *pv, struct R
 	return NOTOK;
 }
 
-static int doPSreport (struct assocblk *acb, struct PSAPreport *pp, struct RoSAPindication *roi) {
+static int doPSreport (struct assocblk *acb, const struct PSAPreport *pp, const struct RoSAPindication *roi) {
 	ropktlose (acb, roi, ROS_PROTOCOL, NULLCP,
 			   "unexpected exception report indication (0x%x)", pp -> pp_peer);
 	PPFREE (pp);
@@ -340,7 +340,7 @@ out:
 	return NOTOK;
 }
 
-static void psDATAser (int sd, struct PSAPdata *px) {
+static void psDATAser (const int sd, struct PSAPdata *px) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -354,7 +354,7 @@ static void psDATAser (int sd, struct PSAPdata *px) {
 		(*handler) (sd, roi);
 }
 
-static void psTOKENser (int sd, struct PSAPtoken *pt) {
+static void psTOKENser (const int sd, const struct PSAPtoken *pt) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -368,7 +368,7 @@ static void psTOKENser (int sd, struct PSAPtoken *pt) {
 		(*handler) (sd, roi);
 }
 
-static void psSYNCser (int sd, struct PSAPsync *pn) {
+static void psSYNCser (const int sd, const struct PSAPsync *pn) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -382,7 +382,7 @@ static void psSYNCser (int sd, struct PSAPsync *pn) {
 		(*handler) (sd, roi);
 }
 
-static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
+static void psACTIVITYser (const int sd, const struct PSAPactivity *pv) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -396,7 +396,7 @@ static void psACTIVITYser (int sd, struct PSAPactivity *pv) {
 		(*handler) (sd, roi);
 }
 
-static void psREPORTser (int sd, struct PSAPreport *pp) {
+static void psREPORTser (const int sd, const struct PSAPreport *pp) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -410,7 +410,7 @@ static void psREPORTser (int sd, struct PSAPreport *pp) {
 		(*handler) (sd, roi);
 }
 
-static void psFINISHser (int sd, struct PSAPfinish *pf) {
+static void psFINISHser (const int sd, struct PSAPfinish *pf) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -422,7 +422,7 @@ static void psFINISHser (int sd, struct PSAPfinish *pf) {
 	(*handler) (sd, roi);
 }
 
-static void psABORTser (int sd, struct PSAPabort *pa) {
+static void psABORTser (const int sd, struct PSAPabort *pa) {
 	int (*handler)(int sd, struct RoSAPindication *roi);
 	struct assocblk   *acb;
 	struct RoSAPindication  rois;
@@ -436,9 +436,9 @@ static void psABORTser (int sd, struct PSAPabort *pa) {
 
 static int pslose (
 	struct assocblk *acb,
-	struct RoSAPindication *roi,
-	char *event,
-	struct PSAPabort *pa
+	const struct RoSAPindication *roi,
+	const char *event,
+	const struct PSAPabort *pa
 ) {
 	int     reason;
 	char   *cp,

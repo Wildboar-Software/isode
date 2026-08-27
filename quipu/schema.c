@@ -193,8 +193,8 @@ int test_schema (AV_Sequence tree, AV_Sequence oc) {
 }
 
 int test_hierarchy (    /* see if b in oc a */
-	objectclass *a,
-	objectclass *b
+	const objectclass *a,
+	const objectclass *b
 ) {
 	struct oc_seq * oidseq;
 

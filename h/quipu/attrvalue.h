@@ -29,8 +29,8 @@ typedef struct attrcomp {       /* A sequence of attributes             */
 } attrcomp, *Attr_Sequence;
 
 void as_comp_free (Attr_Sequence as);
-void as_comp_print (PS ps, Attr_Sequence as, int format);
-void as_print (PS ps, Attr_Sequence as, int format);
+void as_comp_print (PS ps, Attr_Sequence as, const int format);
+void as_print (PS ps, Attr_Sequence as, const int format);
 int split_attr (Attr_Sequence as);
 void as_delnext (Attr_Sequence as);
 
@@ -38,7 +38,7 @@ void as_delnext (Attr_Sequence as);
 #define as_comp_alloc()          (Attr_Sequence) smalloc(sizeof(attrcomp))
 #define as_comp_cmp(x,y)      (((oid_cmp (&x->attr_type ,&y->attr_type) == OK) && (avs_cmp (x->attr_value ,y->attr_value) == OK)) ? OK : NOTOK)
 
-Attr_Sequence as_comp_new (AttributeType at, AV_Sequence as, struct acl_info *acl);
+Attr_Sequence as_comp_new (AttributeType at, AV_Sequence as, const struct acl_info *acl);
 Attr_Sequence as_comp_cpy (Attr_Sequence as);
 Attr_Sequence as_cpy (Attr_Sequence as);
 Attr_Sequence as_find_type (Attr_Sequence a, AttributeType b);
@@ -76,13 +76,13 @@ struct acl_info {
 #define acl_info_fill(w,x,y,z)    w -> acl_categories = x ;  \
 				  w -> acl_selector_type = y; \
 				  w -> acl_name = z;
-static struct acl_info * acl_info_cpy (struct acl_info *aclptr);
-struct acl_info *acl_info_new (int x, int y, struct dn_seq *z);
+static struct acl_info * acl_info_cpy (const struct acl_info *aclptr);
+struct acl_info *acl_info_new (const int x, const int y, const struct dn_seq *z);
 struct acl_info *acl_default(void);
 struct acl_info *acl_dflt(void);
-int test_acl_default (struct acl_info *a);
+int test_acl_default (const struct acl_info *a);
 void set_default_acl (struct acl_info *ai_ptr);
-int check_acl (DN who, int mode, struct acl_info *acl, DN node);
+int check_acl (DN who, const int mode, const struct acl_info *acl, DN node);
 int manager (DN dn);
 
 /*

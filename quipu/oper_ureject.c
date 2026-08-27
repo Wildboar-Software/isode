@@ -3,12 +3,12 @@
 #include "rosap.h"
 #include "quipu/util.h"
 #include "quipu/connection.h"
-static void oper_ureject (struct connection *conn, struct RoSAPureject *rou);
+static void oper_ureject (const struct connection *conn, const struct RoSAPureject *rou);
 
 
 extern LLog * log_dsap;
 
-void oper_ureject (struct connection *conn, struct RoSAPureject *rou) {
+void oper_ureject (const struct connection *conn, const struct RoSAPureject *rou) {
 	DLOG(log_dsap,LLOG_TRACE,( "oper_ureject"));
 	if(rou->rou_noid) {
 		LLOG(log_dsap,LLOG_EXCEPTIONS,( "Non-specific U-REJECT.INDICATION : %d (%d)",

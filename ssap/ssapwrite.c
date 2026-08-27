@@ -5,16 +5,16 @@
 #include "spkt.h"
 
 int SWriteRequestAux (
-	struct ssapblk *sb,
-	int code,
-	char *data,
-	int cc,
-	int type,
-	long ssn,
-	int settings,
-	struct SSAPactid *id,
-	struct SSAPactid *oid,
-	struct SSAPref *ref,
+	const struct ssapblk *sb,
+	const int code,
+	const char *data,
+	const int cc,
+	const int type,
+	const long ssn,
+	const int settings,
+	const struct SSAPactid *id,
+	const struct SSAPactid *oid,
+	const struct SSAPref *ref,
 	struct SSAPindication *si
 ) {
 	int     result;

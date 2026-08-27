@@ -17,7 +17,7 @@ void ap_syntax (void);
 
 
 extern LLog * log_dsap;
-extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);
+extern struct PSAPaddr * psap_cpy (const struct PSAPaddr *a);
 extern void aps_free (struct access_point *app);
 
 void aps_free_void (void *value) {

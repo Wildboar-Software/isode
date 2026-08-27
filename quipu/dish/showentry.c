@@ -35,12 +35,12 @@ void call_showentry (int argc, char **argv) {
 	char           *vect[2];
 	int             x;
 	extern char	name_flag;
-	extern char	all_flag;
+	extern const char	all_flag;
 	extern Attr_Sequence as_flag;
-	extern char	flag_show;
+	extern const char	flag_show;
 	char            full_edb_flag;
 	char            *temp_file_name;
-	extern int      mod_template(char *name, char noedit);
+	extern int      mod_template(const char *name, const char noedit);
 
 	vect[0] = "showentry";
 	move_flag = FALSE;

@@ -50,7 +50,7 @@ static int test_deadlock (struct oper_act *on) {
 * Deal with an incoming acceptance of association establishment.
 * Return value says whether anything has happened or not.
 */
-void conn_retry (struct connection *conn, int moveon) {
+void conn_retry (struct connection *conn, const int moveon) {
 	struct DSAPconnect		* dc = &(conn->cn_connect.cc_dc);
 	struct DSAPindication      di_s;
 	struct DSAPindication      *di = &di_s;

@@ -13,7 +13,7 @@
 
 static int _rosaplose (
 	struct RoSAPindication *roi,
-	int reason,
+	const int reason,
 	va_list ap
 );
 
@@ -91,7 +91,7 @@ int	rosaplose (struct RoSAPindication *roi, ...) {
 
 static int _rosaplose (
 	struct RoSAPindication *roi,
-	int reason,
+	const int reason,
 	va_list ap
 ) {
 	char  *bp;

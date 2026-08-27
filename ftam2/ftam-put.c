@@ -17,8 +17,8 @@
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
 static int  put (char*dst, int append);
 #else
-static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size);
-static int  put (char*src, char*dst, int append);
+static int  putaux (char* src, const char* dst, int append, const int fd, PE pe,const struct vfsmap*vf, const int size);
+static int  put (char*src, const char*dst, const int append);
 #endif
 
 int f_put (char **vec) {
@@ -234,7 +234,7 @@ out:
 #ifdef	BRIDGE
 static int  put (char*dst, int append)
 #else
-static int  put (char*src, char*dst, int append)
+static int  put (char*src, const char*dst, const int append)
 #endif
 {
 	int     bsize,
@@ -360,7 +360,7 @@ you_lose:
 #ifdef	BRIDGE
 static int  putaux (char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
 #else
-static int  putaux (char* src, char* dst, int append, int fd, PE pe,struct vfsmap*vf, int size)
+static int  putaux (char* src, const char* dst, int append, const int fd, PE pe,const struct vfsmap*vf, const int size)
 #endif
 {
 	int    n;
@@ -942,7 +942,7 @@ you_lose:
 	return NOTOK;
 }
 
-int	de2fadu (PE pe, int concat) {
+int	de2fadu (PE pe, const int concat) {
 	int	    result;
 	struct FTAMindication   ftis;
 	struct FTAMindication *fti = &ftis;

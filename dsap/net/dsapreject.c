@@ -7,7 +7,7 @@
 
 extern LLog	* log_dsap;
 
-int DRejectRequest (int sd, int reason, int id) {
+int DRejectRequest (const int sd, const int reason, const int id) {
 	int	  result;
 	struct RoSAPindication	  roi_s;
 	struct RoSAPindication	* roi = &(roi_s);

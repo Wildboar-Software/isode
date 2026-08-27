@@ -8,7 +8,7 @@
 #include "tailor.h"
 
 struct isoservent *
-getisoserventbyselector (char *provider, char *selector, int selectlen) {
+getisoserventbyselector (const char *provider, char *selector, const int selectlen) {
 	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);

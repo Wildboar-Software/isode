@@ -31,7 +31,7 @@ static void log_realloc (size_t oldlen, size_t newlen, size_t bsize, char *addr)
 static void print_free_list (size_t heap);
 static void write_stack (char * x);
 static struct freelist *new_freelist (void);
-static char *big_malloc (size_t realsize);
+static char *big_malloc (const size_t realsize);
 #endif
 
 static int malloc_file = 0;
@@ -124,13 +124,13 @@ struct freehead {
 	struct freelist * flist;
 };
 
-static void big_free (struct header *ptr);
+static void big_free (const struct header *ptr);
 static void add_free (struct header *x);
-static struct header *next_free_block (struct header *ptr);
-static void *quipu_sbrk (size_t n);
+static struct header *next_free_block (const struct header *ptr);
+static void *quipu_sbrk (const size_t n);
 static int remove_free_ent (struct freelist *a);
-static int use_block (struct header *ptr, size_t size);
-static int set_use_heap (struct header *h, unsigned heap);
+static int use_block (struct header *ptr, const size_t size);
+static int set_use_heap (struct header *h, const unsigned heap);
 
 static struct freelist  heaps[MAXHEAP][BUCKETS];
 static struct freelist *heapptr[MAXHEAP];
@@ -161,7 +161,7 @@ static char * malloc_fname = (char *)0;
 
 #endif	/* QUIPU_MALLOC */
 
-void start_malloc_trace (char *f) {
+void start_malloc_trace (const char *f) {
 #ifdef MALLOCTRACE
 	char * env, *getenv(const char *name);
 
@@ -320,7 +320,7 @@ static write_stack (char * x)
 	listfree->next = z; }
 
 static void *
-quipu_sbrk (size_t n) {
+quipu_sbrk (const size_t n) {
 	int incr;
 
 	if (sizet2int (n, &incr) != 0)
@@ -350,7 +350,7 @@ new_freelist (void) {
 }
 
 /* used for mallocs of > MAXSMALL */
-static char *big_malloc (size_t realsize) {
+static char *big_malloc (const size_t realsize) {
 	size_t blocksize;
 	struct freelist * flist;
 	struct header * head = (struct header *)0;
@@ -388,7 +388,7 @@ static char *big_malloc (size_t realsize) {
 	return (mem);
 }
 
-static void big_free (struct header *ptr) {
+static void big_free (const struct header *ptr) {
 	struct freelist *next;
 	struct freehead *x;
 	if (listfree->next == listfree) {
@@ -453,7 +453,7 @@ remove_free_ent (struct freelist *a)
 }
 
 static int
-set_use_heap (struct header *h, unsigned heap)
+set_use_heap (struct header *h, const unsigned heap)
 {
 	unsigned short u;
 
@@ -464,7 +464,7 @@ set_use_heap (struct header *h, unsigned heap)
 }
 
 static int
-use_block (struct header *ptr, size_t size)
+use_block (struct header *ptr, const size_t size)
 {
 	struct header *unext;
 	unsigned short sz, leftover;
@@ -489,7 +489,7 @@ use_block (struct header *ptr, size_t size)
 	return 0;
 }
 
-static struct header *next_free_block (struct header *ptr) {
+static struct header *next_free_block (const struct header *ptr) {
 	struct header * next;
 	next = (struct header *)((char *)ptr + ptr->smallsize);
 	if (((size_t)(next - 1) & pagemask) != ((size_t)next & pagemask))
@@ -503,7 +503,7 @@ MALLOC_RETURN
 #ifdef lint
 x_malloc (size_t size)
 #else
-malloc (size_t size)
+malloc (const size_t size)
 #endif
 {
 	char * mem;
@@ -517,7 +517,7 @@ malloc (size_t size)
 	if (first_malloc) {
 #ifdef	BSD42
 		{
-			int pagei = getpagesize();
+			const int pagei = getpagesize();
 
 			if (int2sizet (pagei, &pagesize) != 0) {
 				attempt_restart (-2);
@@ -708,9 +708,9 @@ realloc(
 #ifndef LINUX
 char *s1,
 #else
-void *s1,
+const void *s1,
 #endif
-size_t n)
+const size_t n)
 {
 	char *mem, *s = (char*) s1;
 	size_t realsize;
@@ -807,7 +807,7 @@ MALLOC_RETURN
 #ifdef lint
 x_calloc(size_t n, size_t size)
 #else
-calloc(size_t n, size_t size)
+calloc(const size_t n, const size_t size)
 #endif
 {
 	char * mem;

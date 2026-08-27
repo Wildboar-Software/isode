@@ -15,11 +15,11 @@
 #define	NULLIE	((struct isoentity *) 0)
 
 char   *macro2str (char *name);
-struct TSAPaddr *ta2norm (struct TSAPaddr *ta);
+struct TSAPaddr *ta2norm (const struct TSAPaddr *ta);
 
-static	void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa);
-static	void printobj (struct isobject *io);
-static	void printsrv (struct isoservent *is);
+static	void printent (const struct isoentity *ie, AEI aei, const struct PSAPaddr *pa);
+static	void printobj (const struct isobject *io);
+static	void printsrv (const struct isoservent *is);
 
 int main (int argc, char **argv, char **envp) {
 	AEI	    aei;
@@ -102,7 +102,7 @@ you_lose:
 	exit (1);			/* NOTREACHED */
 }
 
-static void printent (struct isoentity *ie, AEI aei, struct PSAPaddr *pa) {
+static void printent (const struct isoentity *ie, AEI aei, const struct PSAPaddr *pa) {
 	if (ie)
 		printf ("Entity:  %s (%s)\n", ie -> ie_descriptor,
 				oid2ode (&ie -> ie_identifier));
@@ -158,12 +158,12 @@ dont_touch:
 		printf ("\n");
 }
 
-static void printobj (struct isobject *io) {
+static void printobj (const struct isobject *io) {
 	printf ("ODE: \"%s\"\nOID: %s\n\n", io -> io_descriptor,
 			sprintoid (&io -> io_identity));
 }
 
-static void printsrv (struct isoservent *is) {
+static void printsrv (const struct isoservent *is) {
 	int    n;
 	char **ap = is -> is_vec;
 

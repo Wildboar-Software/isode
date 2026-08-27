@@ -5,25 +5,25 @@
 #include "quipu/connection.h"
 #include "quipu/referral.h"
 
-static ContinuationRef new_ref (DN name, int rt, struct access_point *ap);
+static ContinuationRef new_ref (DN name, const int rt, const struct access_point *ap);
 struct access_point *ap_append (struct access_point *a, struct access_point *b);
 ContinuationRef cont_ref_parent (DN name);
-void add_str_parent (char *sdn, char *spsap);
+void add_str_parent (char *sdn, const char *spsap);
 void free_parents (void);
 static struct PSAPaddr *parent_psap (void);
-struct access_point *ap_cpy (struct access_point *ap);
+struct access_point *ap_cpy (const struct access_point *ap);
 
 
 extern LLog * log_dsap;
 char remote_lookup = TRUE;
-struct PSAPaddr	*	psap_cpy(struct PSAPaddr *a);
-struct dn_seq	* dn_seq_push(DN dn, struct dn_seq *dnseq);
+struct PSAPaddr	*	psap_cpy(const struct PSAPaddr *a);
+struct dn_seq	* dn_seq_push(DN dn, const struct dn_seq *dnseq);
 struct dn_seq	* dn_seq_pop(struct dn_seq *dnseq);
 struct di_block	* di_alloc(void);
 
 static struct access_point * top_ap = NULLACCESSPOINT;
 
-struct access_point *ap_cpy (struct access_point *ap) {
+struct access_point *ap_cpy (const struct access_point *ap) {
 	struct access_point	* ret_ap;
 	struct access_point	**tmp_ap;
 	if(ap == NULLACCESSPOINT)
@@ -39,7 +39,7 @@ struct access_point *ap_cpy (struct access_point *ap) {
 	return(ret_ap);
 }
 
-static ContinuationRef new_ref (DN name, int rt, struct access_point *ap) {
+static ContinuationRef new_ref (DN name, const int rt, const struct access_point *ap) {
 	ContinuationRef ptr;
 	if (ap == NULLACCESSPOINT)
 		return (NULLCONTINUATIONREF);
@@ -71,9 +71,9 @@ cont_ref_parent (DN name) {
 	return (new_ref(name,RT_SUPERIOR,top_ap));
 }
 
-void add_str_parent (char *sdn, char *spsap) {
+void add_str_parent (char *sdn, const char *spsap) {
 	DN dn, str2dn(char *str);
-	struct PSAPaddr *psap, * str2paddr(char *str);
+	struct PSAPaddr *psap, * str2paddr(const char *str);
 	struct access_point * next_ap;
 	/* add string DN and string PSAP to list of parents */
 	if ((psap = str2paddr (spsap)) == NULLPA) {
@@ -125,8 +125,8 @@ static struct PSAPaddr *parent_psap (void) {
 */
 int dsa_info_new (
 	DN name,
-	struct dn_seq *dn_stack,
-	int master,
+	const struct dn_seq *dn_stack,
+	const int master,
 	Entry entry_ptr,
 	struct DSError *err,
 	struct di_block **di_p
@@ -261,12 +261,12 @@ out:
 }
 
 struct di_block *ap2di (
-	struct access_point *ap,
+	const struct access_point *ap,
 	DN name,
-	char master,
-	char di_type,
-	struct oper_act *oper,
-	int cr_type
+	const char master,
+	const char di_type,
+	const struct oper_act *oper,
+	const int cr_type
 ) {
 	struct access_point *loop;
 	struct di_block	*res = NULL_DI_BLOCK;
@@ -299,7 +299,7 @@ struct di_block *ap2di (
 	return res;
 }
 
-int dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, char master) {
+int dsa_info_parent (DN name, struct DSError *err, struct di_block **di_p, const char master) {
 	DLOG(log_dsap, LLOG_TRACE, ("dsa_info_parent"));
 	if(top_ap == NULLACCESSPOINT) {
 		LLOG(log_dsap, LLOG_EXCEPTIONS, ("No parents!"));

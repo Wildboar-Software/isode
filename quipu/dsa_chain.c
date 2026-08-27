@@ -8,11 +8,11 @@
 #include "quipu/util.h"
 #include "quipu/connection.h"
 #include "tailor.h"
-static struct connection *make_conn_block ( DN name, struct PSAPaddr *addr, char conn_ctx );
+static struct connection *make_conn_block ( DN name, const struct PSAPaddr *addr, const char conn_ctx );
 static int link_op_to_conn (struct oper_act *on);
 int task_chain (struct task_act *tk, struct di_block *di);
-static struct oper_act *task2oper (struct task_act *tk);
-static int chain_ok (struct task_act *tk, char refer_ok, DN dsadn);
+static struct oper_act *task2oper (const struct task_act *tk);
+static int chain_ok (const struct task_act *tk, const char refer_ok, DN dsadn);
 static struct access_point *di2ap (struct di_block *di);
 void subtask_chain (struct task_act *tk);
 static void subtask_dsa_info_wakeup (struct di_block *di);
@@ -32,23 +32,23 @@ extern AV_Sequence open_call_avs ;
 void chaining_analyse(struct task_act *task, struct di_block *di) ;
 #endif /* QUIPU_CONSOLE */
 
-struct oper_act	* task2oper(struct task_act *tk);
+struct oper_act	* task2oper(const struct task_act *tk);
 struct di_block	* di_alloc(void);
-struct di_block	* select_refer_dsa(struct di_block *di, struct task_act *tk);
+struct di_block	* select_refer_dsa(const struct di_block *di, const struct task_act *tk);
 struct connection	* conn_alloc(void);
 struct oper_act * oper_alloc(void);
-struct PSAPaddr	* psap_cpy(struct PSAPaddr *a);
-struct access_point *ap_cpy(struct access_point *ap);
-extern Entry local_find_entry_aux(DN object, char deref);
-int chain_ok (struct task_act *, char, DN);
-int di2cref (struct di_block *, struct DSError *, char);
+struct PSAPaddr	* psap_cpy(const struct PSAPaddr *a);
+struct access_point *ap_cpy(const struct access_point *ap);
+extern Entry local_find_entry_aux(DN object, const char deref);
+int chain_ok (const struct task_act *, const char, DN);
+int di2cref (struct di_block *, struct DSError *, const char);
 
 static int relayfordsa(DN dn);
 
 static struct connection *make_conn_block (
 	DN name,
-	struct PSAPaddr *addr,
-	char conn_ctx
+	const struct PSAPaddr *addr,
+	const char conn_ctx
 ) {
 	struct connection	* cn;
 
@@ -470,7 +470,7 @@ int oper_rechain (struct oper_act *on) {
 	struct continuation_ref     * cref;
 	struct chain_arg	* cha = &(on->on_req.dca_charg);
 	struct trace_info		* ti;
-	struct di_block * ap2di(struct access_point *ap, DN name, char master, char di_type, struct oper_act *oper, int cr_type);
+	struct di_block * ap2di(const struct access_point *ap, DN name, const char master, const char di_type, const struct oper_act *oper, const int cr_type);
 
 	DLOG(log_dsap, LLOG_TRACE, ("Rechain an operation ..."));
 	cref = ref->DSE_ref_candidates;
@@ -539,7 +539,7 @@ int oper_rechain (struct oper_act *on) {
 	return(oper_chain(on));
 }
 
-struct oper_act *task2oper (struct task_act *tk) {
+struct oper_act *task2oper (const struct task_act *tk) {
 	struct chain_arg	* cha = &(tk->tk_dx.dx_arg.dca_charg);
 	struct continuation_ref	* cref = tk->tk_resp.di_error.de_err.ERR_REFERRAL.DSE_ref_candidates;
 	struct trace_info		* ti;
@@ -601,9 +601,9 @@ struct oper_act *task2oper (struct task_act *tk) {
 	return(on);
 }
 
-int chain_ok (struct task_act *tk, char refer_ok, DN dsadn) {
+int chain_ok (const struct task_act *tk, const char refer_ok, DN dsadn) {
 	struct common_args	* ca;
-	struct common_args	* get_ca_ref(struct ds_op_arg *dsarg);
+	struct common_args	* get_ca_ref(const struct ds_op_arg *dsarg);
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
 	/* if refer_ok is FALSE - we MUST chain unless prevented, otherwise operation will fail */
@@ -829,7 +829,7 @@ static struct access_point *di2ap (struct di_block *di) {
 	}
 }
 
-int di2cref (struct di_block *di, struct DSError *err, char ctx) {
+int di2cref (struct di_block *di, struct DSError *err, const char ctx) {
 	struct continuation_ref     * cref;
 	struct di_block * loop;
 	struct access_point *ap_append(struct access_point *a, struct access_point *b), *ap;
@@ -944,7 +944,7 @@ void subtask_chain (struct task_act *tk) {
 	struct trace_info		* ti;
 	struct DSError		err;
 	struct common_args		* ca;
-	struct common_args		* get_ca_ref(struct ds_op_arg *dsarg);
+	struct common_args		* get_ca_ref(const struct ds_op_arg *dsarg);
 
 	ca = get_ca_ref(&(tk->tk_dx.dx_arg));
 	if(tk->refer_st == NULL_ST)

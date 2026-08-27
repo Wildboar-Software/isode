@@ -6,7 +6,7 @@
 #include "manifest.h"
 #include "tailor.h"
 
-int baduser (char *file, char *user) {
+int baduser (char *file, const char *user) {
 	int     hit,
 			tries;
 	char  *bp;

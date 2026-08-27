@@ -8,13 +8,13 @@
 /*    P-{MAJOR-SYNC,ACTIVITY-END}.RESPONSE */
 
 int PMajSyncResponseAux (
-	int sd,
+	const int sd,
 	PE *data,
-	int ndata,
+	const int ndata,
 	struct PSAPindication *pi,
-	char *dtype,
+	const char *dtype,
 	int (*sfunc)(int sd, char *data, int cc, struct SSAPindication *si),
-	char *stype
+	const char *stype
 ) {
 	SBV	    smask;
 	int     len,

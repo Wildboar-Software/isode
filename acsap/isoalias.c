@@ -29,7 +29,7 @@ static int inited = 0;
 static struct pair *Pbuckets[PBUCKETS];
 
 static void read_aliases (void);
-static void read_file (char *file);
+static void read_file (const char *file);
 
 char *alias2name (char *name) {
 	struct pair *p;
@@ -63,7 +63,7 @@ static void read_aliases(void)  {
 	read_file (buffer);
 }
 
-static void read_file (char *file) {
+static void read_file (const char *file) {
 	char *cp;
 	char   buffer[BUFSIZ + 1],
 		   *vec[NVEC + NSLACK + 1];
@@ -87,7 +87,7 @@ static void read_file (char *file) {
 	fclose (fp);
 }
 
-int add_alias (char *name, char *value) {
+int add_alias (const char *name, const char *value) {
 	int	    i;
 	struct pair *p;
 

@@ -6,7 +6,7 @@
 #include "fpkt.h"
 
 struct type_FTAM_Access__Passwords *
-pass2fpm (struct ftamblk *fsb, struct FTAMpasswords *fp, struct FTAMindication *fti) {
+pass2fpm (const struct ftamblk *fsb, const struct FTAMpasswords *fp, struct FTAMindication *fti) {
 	struct type_FTAM_Access__Passwords *fpm;
 
 	if ((fpm = (struct type_FTAM_Access__Passwords *)
@@ -40,7 +40,7 @@ no_mem:
 	return fpm;
 }
 
-int fpm2pass (struct ftamblk *fsb, struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti) {
+int fpm2pass (const struct ftamblk *fsb, const struct type_FTAM_Access__Passwords *fpm, struct FTAMpasswords *fp, struct FTAMindication *fti) {
 	struct qbuf *qb;
 
 	bzero ((char *) fp, sizeof *fp);

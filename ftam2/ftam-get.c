@@ -16,8 +16,8 @@
 static int effector;
 
 static int check_get (char *dst);
-static struct vfsmap *findvf (char* file);
-static int  getloop (int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status));
+static struct vfsmap *findvf (const char* file);
+static int  getloop (const int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status));
 static int  ubffnx ( int	fd, struct PSAPdata *px, int	status);
 
 int f_get (char **vec) {
@@ -259,8 +259,8 @@ static int check_get (char *dst) {
 int getvf (
 	char *src,
 	char *dst,
-	struct FADUidentity *faduid,
-	struct vfsmap *vf,
+	const struct FADUidentity *faduid,
+	const struct vfsmap *vf,
 	int (*wfnx) (int fd, struct PSAPdata *px, int status)
 ) {
 	int	    fd,
@@ -614,7 +614,7 @@ you_lose:
 	return NOTOK;
 }
 
-static struct vfsmap *findvf (char* file) {
+static struct vfsmap *findvf (const char* file) {
 	struct FTAMgroup    ftgs;
 	struct FTAMgroup  *ftg = &ftgs;
 	struct FTAMindication   ftis;
@@ -734,7 +734,7 @@ you_lose:
 	return NULL;
 }
 
-static int getloop (int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status)) {
+static int getloop (const int fd, char* dst, int (*wfnx) (int fd, struct PSAPdata *px, int status)) {
 	int	    reason,
 			result;
 	struct FTAMindication   ftis;

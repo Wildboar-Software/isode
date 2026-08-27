@@ -201,7 +201,7 @@ struct tsapblk {
 #define	NULLBP		((struct tsapblk *) 0)
 
 void freetblk (struct tsapblk *tb);
-struct tsapblk *newtblk (void), *findtblk (int sd);
+struct tsapblk *newtblk (void), *findtblk (const int sd);
 
 /*    TPKT datastructure */
 
@@ -383,16 +383,16 @@ struct tsapkt {
 #define	NULLPKT		((struct tsapkt *) 0)
 
 void freetpkt (struct tsapkt *t);
-struct tsapkt *newtpkt (int code);
+struct tsapkt *newtpkt (const int code);
 
 void text2tpkt (struct tsapkt *t);
-void tpkt2text (LLog *lp, struct tsapkt *t, int isread);
+void tpkt2text (LLog *lp, const struct tsapkt *t, const int isread);
 
 int	tpkt2fd (struct tsapblk *tb, struct tsapkt *t, int (*writefnx)(struct tsapblk *tb, struct tsapkt *t, char *cp, int n));
-struct tsapkt  *fd2tpkt (int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
+struct tsapkt  *fd2tpkt (const int fd, int (*initfnx)(int fd, struct tsapkt *t, char *buffer, int n), int (*readfnx)(int fd, char *buffer, int n));
 
 char   *tpkt2str (struct tsapkt *t);
-struct tsapkt  *str2tpkt (char *buffer);
+struct tsapkt  *str2tpkt (const char *buffer);
 
 /*    VARIABLE DATA codes, from ISO8073: */
 
@@ -449,8 +449,8 @@ int	tp0write (struct tsapblk *tb, struct tsapkt *t, char *cp, int n);
 
 int	tcpopen (struct tsapblk *tb, struct NSAPaddr *local, struct NSAPaddr *remote, struct TSAPdisconnect *td, int async);
 
-char   *tcpsave (int fd, char *cp1, char *cp2, struct TSAPdisconnect *td);
-int	tcprestore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
+char   *tcpsave (const int fd, char *cp1, char *cp2, const struct TSAPdisconnect *td);
+int	tcprestore (struct tsapblk *tb, const char *buffer, struct TSAPdisconnect *td);
 
 /* X.25 is NS-provider */
 
@@ -477,5 +477,5 @@ char   *tp4save (int fd, int seq, int exp, struct tsapADDR *calling_ta, struct t
 int	tp4restore (struct tsapblk *tb, char *buffer, struct TSAPdisconnect *td);
 
 int TTService (struct tsapblk *tb);
-int copyTSAPaddrX (struct tsapADDR *in, struct TSAPaddr *out);
-int copyTSAPaddrY (struct TSAPaddr *in, struct tsapADDR *out);
+int copyTSAPaddrX (const struct tsapADDR *in, struct TSAPaddr *out);
+int copyTSAPaddrY (const struct TSAPaddr *in, struct tsapADDR *out);

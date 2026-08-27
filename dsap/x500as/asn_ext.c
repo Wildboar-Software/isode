@@ -11,12 +11,12 @@
 
 #include "pepsy.h"
 int substring_decode (struct filter_item **pparm, PE pe);
-int substring_encode (struct filter_item *parm, PE *pe);
-int substring_free (struct filter_item *parm);
-int treestruct_encode (struct tree_struct *parm, PE *pe);
+int substring_encode (const struct filter_item *parm, PE *pe);
+int substring_free (const struct filter_item *parm);
+int treestruct_encode (const struct tree_struct *parm, PE *pe);
 int treestruct_decode (struct tree_struct **parm, PE pe);
 int EDB_decode (struct getedb_result **pparm, PE pe);
-int EDB_free (struct getedb_result *parm);
+int EDB_free (const struct getedb_result *parm);
 
 
 #define	advise	PY_advise
@@ -90,7 +90,7 @@ extern	LLog	* log_dsap;
  *
  */
 
-int substring_encode (struct filter_item *parm, PE *pe) {
+int substring_encode (const struct filter_item *parm, PE *pe) {
 	int		subs_type;
 	AV_Sequence	avs_temp;
 	Filter_Substrings	*subs_temp;
@@ -538,7 +538,7 @@ int substring_decode (struct filter_item **pparm, PE pe) {
 	return OK;
 }
 
-int substring_free (struct filter_item *parm) {
+int substring_free (const struct filter_item *parm) {
 	avs_free (parm->UNSUB.fi_sub_initial);
 	avs_free (parm->UNSUB.fi_sub_any);
 	avs_free (parm->UNSUB.fi_sub_final);
@@ -591,7 +591,7 @@ int substring_free (struct filter_item *parm) {
  *
  */
 
-int treestruct_encode (struct tree_struct *parm, PE *pe) {
+int treestruct_encode (const struct tree_struct *parm, PE *pe) {
 	OID     oid_tmp;
 	int	do_once;
 
@@ -760,7 +760,7 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	OID     oid_tmp;
 	int	is_first;
 	objectclass * oc_add(OID oid);
-	char explicit = 0;
+	const char explicit = 0;
 
 	int p34_count = 0;
 	PE p34;
@@ -988,7 +988,7 @@ int treestruct_decode (struct tree_struct **parm, PE pe) {
 	return OK;
 }
 
-int EDB_encode (struct getedb_result *parm, PE *pe) {
+int EDB_encode (const struct getedb_result *parm, PE *pe) {
 	struct entry *ent_tmp;
 	PE  p31 = NULLPE;
 	PE  p32_z = NULLPE;
@@ -1063,7 +1063,7 @@ int EDB_decode (struct getedb_result **pparm, PE pe) {
 	return OK;
 }
 
-int EDB_free (struct getedb_result *parm) {
+int EDB_free (const struct getedb_result *parm) {
 	/* All done for us at some other time (hopefully) */
 	return OK;
 }

@@ -131,7 +131,7 @@ static void hupser (int sig);
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-static void	ts_advise (struct TSAPdisconnect *td, int code, char *event);
+static void	ts_advise (const struct TSAPdisconnect *td, const int code, const char *event);
 
 int	nd = NOTOK;
 
@@ -239,33 +239,33 @@ static	PS	audit = NULLPS;
 
 /* FUNCTIONS */
 
-static void doit_udp (int pd);
+static void doit_udp (const int pd);
 static void gc_set (void);
-static void pb_free (struct smuxPeer *pb), tb_free (struct smuxTree *tb), export_view (OT ot), do_trap (int generic, int specific, struct type_SNMP_VarBindList *bindings),
-        do_traps (struct type_SNMP_Message *msg, int generic, int specific), arginit (char **vec), readconfig (void);
+static void pb_free (struct smuxPeer *pb), tb_free (struct smuxTree *tb), export_view (OT ot), do_trap (const int generic, const int specific, const struct type_SNMP_VarBindList *bindings),
+        do_traps (struct type_SNMP_Message *msg, const int generic, const int specific), arginit (char **vec), readconfig (void);
 static void envinit (void);
 static void doit_aux (
-	int fd,
-	struct NSAPaddr *na,
+	const int fd,
+	const struct NSAPaddr *na,
 	int (*rfx)(int fd, struct qbuf **q),
 	int (*wfx)(int fd, struct qbuf *qb),
 	int (*cfx)(int fd)
 );
-static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu);
-static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu),
-           proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm),
+static int smux_process (struct smuxPeer *pb, const struct type_SNMP_SMUX__PDUs *pdu);
+static int do_pass (const struct type_SNMP_Message *msg, const int offset, const struct view *vu),
+           proxy1 (PS psp, struct type_SNMP_Message *msg, const struct community *comm),
 		   proxy2 (struct type_SNMP_Message *msg),
 		   start_smux (void),
-           smux_method (struct type_SNMP_PDUs *pdu, OT ot, struct smuxPeer *pb, struct type_SNMP_VarBind *v, int offset),
+           smux_method (struct type_SNMP_PDUs *pdu, OT ot, struct smuxPeer *pb, struct type_SNMP_VarBind *v, const int offset),
 		   f_logging (char **vec),
 		   f_variable (char **vec);
-static int do_operation (PS ps, struct type_SNMP_Message *msg, struct community *comm, int size);
-static struct community *str2comm (char *name, struct NSAPaddr *na);
-static void doit_smux (int fd);
-static int process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size);
+static int do_operation (PS ps, struct type_SNMP_Message *msg, const struct community *comm, const int size);
+static struct community *str2comm (const char *name, const struct NSAPaddr *na);
+static void doit_smux (const int fd);
+static int process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, const int size);
 
 #ifdef	TCP
-static void doit_udp (int pd) {
+static void doit_udp (const int pd) {
 	int	    fd;
 	char   *cp;
 	struct sockaddr_in in_socket;
@@ -595,7 +595,7 @@ do_clts:
 	}
 }
 
-static void ts_advise (struct TSAPdisconnect *td, int code, char *event) {
+static void ts_advise (const struct TSAPdisconnect *td, const int code, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (td -> td_cc > 0)
@@ -672,8 +672,8 @@ static	doit_cots (int fd) {
 #endif
 
 static void doit_aux (
-	int fd,
-	struct NSAPaddr *na,
+	const int fd,
+	const struct NSAPaddr *na,
 	int (*rfx)(int fd, struct qbuf **q),
 	int (*wfx)(int fd, struct qbuf *qb),
 	int (*cfx)(int fd)
@@ -780,7 +780,7 @@ out:
 /* PROCESS */
 
 #ifndef	SNMPT
-static int  process (PS ps, struct type_SNMP_Message *msg, struct NSAPaddr *na, int size) {
+static int  process (PS ps, struct type_SNMP_Message *msg, const struct NSAPaddr *na, const int size) {
 	int	    result;
 	char   *commname;
 	struct community *comm;
@@ -830,8 +830,8 @@ out:
 static int do_operation (
 	PS ps,
 	struct type_SNMP_Message *msg,
-	struct community *comm,
-	int size
+	const struct community *comm,
+	const int size
 ) {
 	int	    idx,
 			offset;
@@ -937,7 +937,7 @@ no_mem:
 
 	case type_SNMP_PDUs_set__request:
 		if (idx = do_pass (msg, offset, vu)) {
-			int	status = parm -> error__status;
+			const int	status = parm -> error__status;
 			do_pass (msg, type_SNMP_PDUs_rollback, vu);
 			parm -> error__status = status;
 		} else
@@ -1010,7 +1010,7 @@ losing:
 	return DONE;
 }
 
-static int do_pass (struct type_SNMP_Message *msg, int offset, struct view *vu) {
+static int do_pass (const struct type_SNMP_Message *msg, const int offset, const struct view *vu) {
 	int	    idx,
 			status;
 	object_instance ois;
@@ -1091,7 +1091,7 @@ losing_name:
 			   the portion of the object tree that the SMUX sub-agent has
 			   'mounted over'. (EJP) */
 			if (ot -> ot_smux) {
-				int level = ot -> ot_name -> oid_nelem;
+				const int level = ot -> ot_name -> oid_nelem;
 				while (ot -> ot_next
 						&& ot -> ot_next -> ot_name -> oid_nelem
 						> level)
@@ -1148,7 +1148,7 @@ static void gc_set (void) {
 
 /* PROXY */
 
-static int proxy1 (PS psp, struct type_SNMP_Message *msg, struct community *comm) {
+static int proxy1 (PS psp, struct type_SNMP_Message *msg, const struct community *comm) {
 	int	    result;
 	struct view *v = comm -> c_view;
 	struct proxyque *pq;
@@ -1357,7 +1357,7 @@ out:
 	return (pb -> pb_fd = fd);
 }
 
-static void doit_smux (int fd) {
+static void doit_smux (const int fd) {
 	PE	    pe;
 	struct smuxPeer *pb;
 	struct type_SNMP_SMUX__PDUs *pdu;
@@ -1398,7 +1398,7 @@ out:
 		pe_free (pe);
 }
 
-static int smux_process (struct smuxPeer *pb, struct type_SNMP_SMUX__PDUs *pdu) {
+static int smux_process (struct smuxPeer *pb, const struct type_SNMP_SMUX__PDUs *pdu) {
 	int	    result = OK;
 
 	switch (pdu -> offset) {
@@ -1710,7 +1710,7 @@ static int smux_method (
 	OT ot,
 	struct smuxPeer *pb,
 	struct type_SNMP_VarBind *v,
-	int offset
+	const int offset
 ) {
 	int	    status,
 			orig_id;
@@ -1956,7 +1956,7 @@ mark_it:
 
 /* COMMUNITIES */
 
-static struct community *str2comm (char *name, struct NSAPaddr *na) {
+static struct community *str2comm (const char *name, const struct NSAPaddr *na) {
 	struct community *c, *d;
 	d = NULL;
 	for (c = CHead -> c_forw; c != CHead; c = c -> c_forw)
@@ -2077,9 +2077,9 @@ out:
 #endif
 
 static void do_trap (
-	int generic,
-	int specific,
-	struct type_SNMP_VarBindList *bindings
+	const int generic,
+	const int specific,
+	const struct type_SNMP_VarBindList *bindings
 ) {
 #ifdef	TCP
 	struct type_SNMP_Message *msg;
@@ -2122,10 +2122,10 @@ static void do_trap (
 #ifdef	TCP
 static void do_traps (
 	struct type_SNMP_Message *msg,
-	int generic,
-	int specific
+	const int generic,
+	const int specific
 ) {
-	int	    mask = 1 << 7 - generic;
+	const int	    mask = 1 << 7 - generic;
 	struct trap *t;
 
 	for (t = UHead -> t_forw; t != UHead; t = t -> t_forw) {
@@ -2279,7 +2279,7 @@ static void arginit (char **vec) {
 	if (*sargv[0] == '/')
 		spath = sargv[0];
 	else {
-		size_t n = strlen (sargv[0]);
+		const size_t n = strlen (sargv[0]);
 
 		if (n >= sizeof sfile - 1)
 			strcpy (sfile, _isodefile (isodesbinpath, myname));

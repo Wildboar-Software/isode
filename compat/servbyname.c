@@ -7,7 +7,7 @@
 #include "tailor.h"
 
 struct isoservent *
-getisoserventbyname (char *entity, char *provider) {
+getisoserventbyname (const char *entity, const char *provider) {
 	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);

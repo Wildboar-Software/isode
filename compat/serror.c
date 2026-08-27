@@ -5,7 +5,7 @@
 #include "general.h"
 #include "manifest.h"
 
-char *sys_errname (int i)
+char *sys_errname (const int i)
 {
 	static char buffer[128];
 	char* se;

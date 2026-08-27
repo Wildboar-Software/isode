@@ -39,10 +39,10 @@ extern	int	errno;
 int	THASH (const char *name);
 static int	ot_compar (const void *ap, const void *ab);
 static void dump_objects_by_text (void);
-static void dump_object_by_tree (OT ot, int i);
+static void dump_object_by_tree (OT ot, const int i);
 static void dump_objects_by_tree (void);
 static void dump_objects_by_xxx (void);
-static void dump_object (OT ot, int i);
+static void dump_object (OT ot, const int i);
 void flobjects (FILE *fp);
 
 static OID	resolve (const char *id, OT ot);
@@ -620,7 +620,7 @@ OT	text2obj (const char *text) {
 	return ot;
 }
 
-char   *oid2ode_aux (OID oid, int quoted) {
+char   *oid2ode_aux (OID oid, const int quoted) {
 	int    i;
 	char  *bp;
 	unsigned int *ip;
@@ -712,7 +712,7 @@ static void dump_objects_by_text (void) {
 	printf ("///////\n");
 }
 
-static void dump_object_by_tree (OT ot, int i) {
+static void dump_object_by_tree (OT ot, const int i) {
 	if (ot == NULL)
 		return;
 	dump_object (ot, i);
@@ -741,7 +741,7 @@ static void dump_objects_by_xxx (void) {
 	printf ("///////\n");
 }
 
-static void dump_object (OT ot, int i) {
+static void dump_object (OT ot, const int i) {
 	printf ("%*.*s%s %s %s %s %d %d 0x%x\n", i, i, "",
 			ot -> ot_text, ot -> ot_id, sprintoid (ot -> ot_name),
 			ot -> ot_syntax ? ot -> ot_syntax -> os_name : "NULL",

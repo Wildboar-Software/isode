@@ -27,7 +27,7 @@ struct ps_dg {
 	int (*ps_check)(int fd);
 };
 
-extern int (*set_check_fd (int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
+extern int (*set_check_fd (const int fd, int (*fnx)(int fd, caddr_t data), caddr_t data))(int, void *);
 
 static int dg_prime (PS ps, int waiting) {
 	struct qbuf *qb;
@@ -155,7 +155,7 @@ int dg_open (PS ps) {
 	return OK;
 }
 
-int dg_setup (PS ps, int fd, int size, int (*rfx)(int fd, struct qbuf **q), int (*wfx)(int fd, struct qbuf *qb), int (*cfx)(int fd)) {
+int dg_setup (PS ps, const int fd, const int size, int (*rfx)(int fd, struct qbuf **q), int (*wfx)(int fd, struct qbuf *qb), int (*cfx)(int fd)) {
 	struct ps_dg *pt;
 	struct ps_inout *po;
 	struct qbuf *qb;

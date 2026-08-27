@@ -7,7 +7,7 @@
 /*    set downtrans upcall */
 
 int RtSetDownTrans (
-	int sd,
+	const int sd,
 	int (*fnx)(int sd, char **base, int *len, int size, long ssn, long ack, struct RtSAPindication *rti),
 	struct RtSAPindication *rti
 ) {

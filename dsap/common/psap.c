@@ -6,7 +6,7 @@
 #include "isoaddrs.h"
 #include "acsap.h"
 #include "../x500as/DO-types.h"
-struct PSAPaddr *psap_cpy (struct PSAPaddr *a);
+struct PSAPaddr *psap_cpy (const struct PSAPaddr *a);
 static void *psap_cpy_void (void *value);
 static void psap_free_void (void *value);
 static int psap_cmp (void *value1, void *value2);
@@ -23,7 +23,7 @@ void psap_free (struct PSAPaddr *psap) {
 	free ((char *)psap) ;
 }
 
-struct PSAPaddr *psap_cpy (struct PSAPaddr *a) {
+struct PSAPaddr *psap_cpy (const struct PSAPaddr *a) {
 	struct PSAPaddr * r;
 	r = (struct PSAPaddr *) smalloc (sizeof (struct PSAPaddr));
 	bzero ((char *) r,sizeof (struct PSAPaddr));
@@ -43,7 +43,7 @@ static void psap_free_void (void *value)
 	psap_free (psap);
 }
 
-void psap_dup (struct PSAPaddr *r, struct PSAPaddr *a) {
+void psap_dup (struct PSAPaddr *r, const struct PSAPaddr *a) {
 	*r = *a;    /* struct copy */
 }
 

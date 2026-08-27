@@ -6,7 +6,7 @@
 #include "../x500as/DAS-types.h"
 #include "../x500as/Quipu-types.h"
 #include "quipu/watchdog.h"
-static int DapEncodeResult (PE *pep, struct DSResult *res);
+static int DapEncodeResult (PE *pep, const struct DSResult *res);
 static int DspEncodeResult (PE *pep, struct ds_op_res *res);
 static int QspEncodeResult (PE *pep, struct ds_op_res *res);
 static int IspEncodeResult (PE *pep, struct ds_op_res *res);
@@ -14,7 +14,7 @@ static int IspEncodeResult (PE *pep, struct ds_op_res *res);
 
 extern  LLog    * log_dsap;
 
-static int DapEncodeResult (PE *pep, struct DSResult *res) {
+static int DapEncodeResult (PE *pep, const struct DSResult *res) {
 	int		success;
 
 	switch(res->result_type) {
@@ -54,7 +54,7 @@ static int DapEncodeResult (PE *pep, struct DSResult *res) {
 	return(success);
 }
 
-int DapResultRequest (int sd, int id, struct DSResult *res, struct DSAPindication *di) {
+int DapResultRequest (const int sd, const int id, const struct DSResult *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -122,7 +122,7 @@ static int DspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return(success);
 }
 
-int DspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+int DspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -194,7 +194,7 @@ static int QspEncodeResult (PE *pep, struct ds_op_res *res) {
 	return(success);
 }
 
-int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+int QspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	int				  result;
 	PE				  res_pe;
 	struct RoSAPindication	  roi_s;
@@ -223,7 +223,7 @@ int QspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindicati
 	return (OK);
 }
 
-int IspResultRequest (int sd, int id, struct ds_op_res *res, struct DSAPindication *di) {
+int IspResultRequest (const int sd, const int id, struct ds_op_res *res, struct DSAPindication *di) {
 	return QspResultRequest (sd, id, res, di);
 }
 

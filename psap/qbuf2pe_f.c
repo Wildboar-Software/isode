@@ -4,8 +4,8 @@
 #include "psap.h"
 #include "tailor.h"
 
-static int qb_read_cons (PE *pe, PElementLen len, int *cresult);
-static int qbuf2data(PElementData data, PElementLen len);
+static int qb_read_cons (PE *pe, const PElementLen len, int *cresult);
+static int qbuf2data(PElementData data, const PElementLen len);
 
 /*
  * The following macro takes one byte from a qbuf, stuffs it in c,
@@ -44,7 +44,7 @@ static int pe_id_overshift = PE_ID_MASK << (PE_ID_BITS - PE_ID_SHIFT);
 PE qbuf2pe_f (int *result) {
 	PE	pe;
 	struct qbuf *qp;
-	byte c, d;
+	const byte c, d;
 	PElementClass class;
 	PElementForm form;
 	PElementID id;
@@ -188,7 +188,7 @@ you_lose:
 	return NULLPE;
 }
 
-static int qb_read_cons (PE *pe, PElementLen len, int *cresult) {
+static int qb_read_cons (PE *pe, const PElementLen len, int *cresult) {
 	int    cc;
 	PE    p, q;
 	int result;
@@ -246,7 +246,7 @@ no_cons:
 	}
 }
 
-static int qbuf2data (PElementData data, PElementLen len) {
+static int qbuf2data (PElementData data, const PElementLen len) {
 	struct qbuf *qp;
 	int i, cc;
 

@@ -123,7 +123,7 @@ void oper_task_extract (struct oper_act *on) {
 	on->on_task = NULLTASK; /* Shows that this has been task_extracted */
 }
 
-void oper_log (struct oper_act *on, int level) {
+void oper_log (const struct oper_act *on, const int level) {
 	char * state;
 	char * xtype;
 

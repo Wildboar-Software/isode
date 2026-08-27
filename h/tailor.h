@@ -121,10 +121,10 @@ extern char    *ns_address;
 
 /* ROUTINES */
 
-void	isodetailor (char *myname, int wantuser);
-int	isodesetvar (char *name, char *value, int dynamic);
-void	isodexport (char *myname);
-char  	*isodesetailor (char *file);
+void	isodetailor (const char *myname, const int wantuser);
+int	isodesetvar (const char *name, const char *value, const int dynamic);
+void	isodexport (const char *myname);
+char  	*isodesetailor (const char *file);
 
 #define	isodefile(file,ispgm) \
 	_isodefile ((ispgm) ? isodesbinpath : isodetcpath, (file))
@@ -133,15 +133,15 @@ char   *_isodefile (char *path, char *file);
 
 char   *getlocalhost (void);
 
-int ll_hdfree (LLog *lp);
+int ll_hdfree (const LLog *lp);
 
-int dsa_tai_string (char *str);
-int dsa_sys_tai (int argc, char **argv);
-int dsa_tai_args (int *acptr, char ***avptr);
-int dsa_tai_init (char *name);
-int tai_string (char *str);
-int dsap_tai (int argc, char **argv);
-void tai_args (int *acptr, char ***avptr);
+int dsa_tai_string (const char *str);
+int dsa_sys_tai (const int argc, char **argv);
+int dsa_tai_args (const int *acptr, char ***avptr);
+int dsa_tai_init (const char *name);
+int tai_string (const char *str);
+int dsap_tai (const int argc, char **argv);
+void tai_args (const int *acptr, char ***avptr);
 int dsap_tai_init (void);
 int tailorfree (void);
 

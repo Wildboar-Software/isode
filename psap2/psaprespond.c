@@ -234,18 +234,18 @@ out2:
 /* P-CONNECT.RESPONSE */
 
 int PConnResponse (
-	int sd,
-	int status,
-	struct PSAPaddr *responding,
-	struct PSAPctxlist *ctxlist,
-	int defctxresult,
-	int prequirements,
-	int srequirements,
-	long isn,
-	int settings,
-	struct SSAPref *ref,
+	const int sd,
+	const int status,
+	const struct PSAPaddr *responding,
+	const struct PSAPctxlist *ctxlist,
+	const int defctxresult,
+	const int prequirements,
+	const int srequirements,
+	const long isn,
+	const int settings,
+	const struct SSAPref *ref,
 	PE *data,
-	int ndata,
+	const int ndata,
 	struct PSAPindication *pi
 ) {
 	int	    i,

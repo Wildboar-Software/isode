@@ -63,24 +63,24 @@ char	command[256];
 
 void	adios (char *, char *, ...);
 void	advise (int, char *, char *, ...);
-static void vtd (int f, int p);
-static int fatalperror (int f, char *msg, int errnum);
-static int fatal (int f, char *msg);
+static void vtd (const int f, const int p);
+static int fatalperror (const int f, char *msg, const int errnum);
+static int fatal (const int f, char *msg);
 static int netflush (void);
 
-extern int ass_ind (int argc, char **argv);
+extern int ass_ind (const int argc, char **argv);
 extern void vrelreq (void);
 extern int getch (void);
 extern void vtsend(void);
 extern void vtdata(PE ndq);
-extern PE mkdeliver(int ack);
-extern void vdelreq(int ack);
-extern void vdelind(PE del_pe, int ack);
-extern void vdatind(int type, PE pe);
+extern PE mkdeliver(const int ack);
+extern void vdelreq(const int ack);
+extern void vdelind(PE del_pe, const int ack);
+extern void vdatind(const int type, PE pe);
 extern void vhdatind(PE pe);
 extern void vudatind(PE pe);
 static void ptyflush (void);
-extern int vt_text (char *str, int len);
+extern int vt_text (const char *str, const int len);
 extern void vt_newline(void);
 void rmut (void);
 
@@ -286,7 +286,7 @@ gotpty:
 	/*NOTREACHED*/
 }
 
-static int fatal (int f, char *msg) {
+static int fatal (const int f, char *msg) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s.\n", myname, msg);
@@ -294,7 +294,7 @@ static int fatal (int f, char *msg) {
 	adios (NULLCP, msg);
 }
 
-static int fatalperror (int f, char *msg, int errnum) {
+static int fatalperror (const int f, char *msg, const int errnum) {
 	char buf[BUFSIZ];
 
 	sprintf(buf, "%s: %s", msg, strerror(errnum));
@@ -305,7 +305,7 @@ static int fatalperror (int f, char *msg, int errnum) {
  * Main loop.  Select from pty and network.
  */
 
-static void vtd (int f, int p) {
+static void vtd (const int f, const int p) {
 	int on = 1;
 	int	nfds, result;
 
@@ -793,7 +793,7 @@ static void ptyflush (void) {
 }
 
 #ifdef TERMIOS
-void ptyecho (int on) {
+void ptyecho (const int on) {
 	struct termios term;
 
 	ptyflush();

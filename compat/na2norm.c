@@ -16,7 +16,7 @@
  */
 
 struct NSAPaddr *
-na2norm (struct NSAPaddr *na) {
+na2norm (const struct NSAPaddr *na) {
 	int	    ilen;
 	char  *cp,
 		  *dp;

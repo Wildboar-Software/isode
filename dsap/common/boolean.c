@@ -15,7 +15,7 @@ static int bool_lexequ (void *value1, void *value2);
 void boolean_syntax (void);
 
 
-extern int strprint(PS ps, char *str, int format);
+extern int strprint(PS ps, char *str, const int format);
 extern int lexequ(char *str1, char *str2);
 
 static PE boolenc (void *value) {

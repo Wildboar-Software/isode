@@ -9,24 +9,24 @@
 #include "pepsy.h"
 #include "pepsycodec.h"
 #include <sys/stat.h>
-char *syntax2str (short sntx);
-sntx_table * get_syntax_table (short x);
+char *syntax2str (const short sntx);
+sntx_table * get_syntax_table (const short x);
 PE grab_pe(AttributeValue av);
 static int strip_header (char **str);
-static int str2AttrV_aux (char * str, short syntax, AttributeValue x);
+static int str2AttrV_aux (char * str, const short syntax, AttributeValue x);
 
 
 extern int oidformat;
-extern struct PSAPaddr * psap_cpy (struct PSAPaddr *a);
-extern void pe_print (PS ps, PE pe, int format);
+extern struct PSAPaddr * psap_cpy (const struct PSAPaddr *a);
+extern void pe_print (PS ps, PE pe, const int format);
 AttributeValue str2file (char *str, AttributeType at);
 extern LLog * log_dsap;
 PE asn2pe(char *str);
 char t61_flag;
 char crypt_flag;
 
-int (*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
-int (*av_cmp_fn(short x))(void *value1, void *value2);
+int (*approxfn(const short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq);
+int (*av_cmp_fn(const short x))(void *value1, void *value2);
 extern char dsa_mode;
 extern int file_cmp (struct file_syntax *a, struct file_syntax *b);
 extern PE grab_filepe (AttributeValue av);
@@ -51,7 +51,7 @@ static sntx_table syntax_table [MAX_AV_SYNTAX] = { {
 	}
 };
 
-short add_attribute_syntax (char *sntx,
+short add_attribute_syntax (const char *sntx,
 							AttributeValueEncoder enc,
 							AttributeValueDecoder dec,
 							AttributeValueParser parse,
@@ -59,9 +59,9 @@ short add_attribute_syntax (char *sntx,
 							AttributeValueCopier cpy,
 							AttributeValueComparator cmp,
 							AttributeValueFree sfree,
-							char *print_pe,
+							const char *print_pe,
 							AttributeValueApproximator approx,
-							char multiline) {
+							const char multiline) {
 	if (num_syntax >= MAX_AV_SYNTAX)
 		return (-1);
 	syntax_table[num_syntax].s_sntx = sntx;
@@ -69,7 +69,7 @@ short add_attribute_syntax (char *sntx,
 	return (num_syntax++);
 }
 
-void set_attribute_syntax (short sntx,
+void set_attribute_syntax (const short sntx,
 						   AttributeValueEncoder enc,
 						   AttributeValueDecoder dec,
 						   AttributeValueParser parse,
@@ -78,8 +78,8 @@ void set_attribute_syntax (short sntx,
 						   AttributeValueComparator cmp,
 						   AttributeValueFree sfree,
 						   AttributeValueApproximator approx,
-						   char *  print_pe,
-						   char multiline) {
+						   const char *  print_pe,
+						   const char multiline) {
 	if (sntx > num_syntax)
 		return;
 	syntax_table[sntx].s_encode  = enc;
@@ -94,14 +94,14 @@ void set_attribute_syntax (short sntx,
 	syntax_table[sntx].s_multiline  = multiline;
 }
 
-void set_av_pe_print (short sntx, char *print_pe) {
+void set_av_pe_print (const short sntx, const char *print_pe) {
 	if (sntx >= num_syntax)
 		return;
 	syntax_table[sntx].s_pe_print= print_pe;
 }
 
 void set_av_printer (
-	short sntx,
+	const short sntx,
 	void (*print)(PS ps, void *value, int format)
 ) {
 	if (sntx >= num_syntax)
@@ -111,7 +111,7 @@ void set_av_printer (
 
 short modify_av_printer (
 	AttributeType at,
-	char * sntx,
+	const char * sntx,
 	void (*print)(PS ps, void *value, int format)
 ) {
 	short nstx;
@@ -139,13 +139,13 @@ int split_attr (Attr_Sequence as) {
 		return syntax_table[as->attr_type->oa_syntax].s_multiline;
 }
 
-int (*approxfn(short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq) {
+int (*approxfn(const short x))(struct filter_item *filter_item, AV_Sequence attr_value_seq) {
 	if (x >= num_syntax)
 		return NULL;
 	return (syntax_table[x].s_approx);
 }
 
-char *syntax2str (short sntx) {
+char *syntax2str (const short sntx) {
 	if (sntx >= num_syntax)
 		return NULLCP;
 	return (syntax_table[sntx].s_sntx);
@@ -166,7 +166,7 @@ short str2syntax (char *str) {
 	return (0);
 }
 
-sntx_table * get_syntax_table (short x) {
+sntx_table * get_syntax_table (const short x) {
 	if (x >= num_syntax)
 		return (sntx_table * )NULL;
 	return ( &syntax_table[x]);
@@ -304,7 +304,7 @@ AttributeValue str_at2AttrV (char * str, AttributeType at) {
 	return (NULLAttrV);
 }
 
-int str2AttrV_aux (char * str, short syntax, AttributeValue x) {
+int str2AttrV_aux (char * str, const short syntax, AttributeValue x) {
 	if (str == NULLCP)
 		return (NOTOK);
 	if ((x->av_syntax = syntax) > AV_WRITE_FILE)
@@ -355,7 +355,7 @@ int str_at2AttrV_aux (char * str, AttributeType at, AttributeValue rav) {
 	return (NOTOK);
 }
 
-AttributeValue str2AttrV (char * str, short syntax) {
+AttributeValue str2AttrV (char * str, const short syntax) {
 	AttributeValue x;
 	short ns;
 	x = AttrV_alloc();
@@ -451,7 +451,7 @@ int AttrV_cmp (AttributeValue x, AttributeValue y) {
 		return (2); /* can't compare */
 }
 
-int (*av_cmp_fn(short syntax))(void *value1, void *value2)
+int (*av_cmp_fn(const short syntax))(void *value1, void *value2)
 {
 	if ( syntax >= AV_WRITE_FILE )
 		return NULL;

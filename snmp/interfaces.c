@@ -66,8 +66,8 @@ struct address *afs_iso = NULL;
 
 static	int	flush_if_cache = 0;
 
-int	get_interfaces (int offset);
-static struct address *find_address (union sockaddr_un *addr);
+int	get_interfaces (const int offset);
+static struct address *find_address (const union sockaddr_un *addr);
 
 #define	ifIndex		0
 #define	ifDescr		1
@@ -382,7 +382,7 @@ static int s_interfaces (OI oi, struct type_SNMP_VarBind *v, int offset) {
 	return int_SNMP_error__status_noError;
 }
 
-void set_interface (char *name, char *ava) {
+void set_interface (const char *name, char *ava) {
 	int	    i;
 	uint32_t  l;
 	char   *cp;
@@ -767,7 +767,7 @@ static int adr_compar (const void *ap, const void *ab) {
 					 (*b) -> adr_instance, (*b) -> adr_insize);
 }
 
-int	get_interfaces (int offset) {
+int	get_interfaces (const int offset) {
 	int	    adrNumber = 0;
 	struct interface  *is;
 	struct address    *as, *ap, **base, **afe, **afp;
@@ -1040,7 +1040,7 @@ int	get_interfaces (int offset) {
 	return OK;
 }
 
-static struct address *find_address (union sockaddr_un *addr) {
+static struct address *find_address (const union sockaddr_un *addr) {
 	struct address *as;
 	struct in_addr *in;
 #ifdef	BSD44
@@ -1078,10 +1078,10 @@ static struct address *find_address (union sockaddr_un *addr) {
 }
 
 struct address *get_addrent (
-	unsigned int *ip,
-	int len,
-	struct address *head,
-	int isnext
+	const unsigned int *ip,
+	const int len,
+	const struct address *head,
+	const int isnext
 ) {
 	int	    family;
 	struct address *as;

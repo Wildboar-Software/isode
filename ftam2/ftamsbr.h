@@ -148,7 +148,7 @@ struct vfsmap {
 	char  *vf_text;		/* textual description */
 };
 
-struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ftamfd);
+struct vfsmap *st2vfs (const int fd, char *file, struct stat *st, OID proposed, const int ftamfd);
 
 /* WATCHP is one pepsy people should use as the macro which is
  * not expansion order dependant
@@ -160,7 +160,7 @@ struct vfsmap *st2vfs (int fd, char *file, struct stat *st, OID proposed, int ft
 #else
 #ifdef __STDC__
 #include "pepsy.h"
-void pvpdu (LLog *lp, int ind, modtyp *mod, PE pe, char *text, int rw);
+void pvpdu (LLog *lp, const int ind, modtyp *mod, PE pe, const char *text, const int rw);
 #define	WATCHP(args, pe, rw) \
     pvpdu (ftam_log, print_##args##_P, pe, \
 	rw ? "F-DATA.INDICATION" : "F-DATA.REQUEST", rw)
@@ -192,6 +192,6 @@ extern int  ftp_default;
 extern int  ftp_directory;
 #endif
 
-int	de2fd (int fd, PE pe, int text, int effector);
+int	de2fd (const int fd, PE pe, const int text, const int effector);
 
-void compath (char *f);
+void compath (const char *f);

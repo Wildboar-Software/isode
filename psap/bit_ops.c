@@ -5,9 +5,9 @@
 #include <strings.h>
 #include "psap.h"
 static PElementData
-ffb (PE pe, int n, int *mask, int xtnd);
+ffb (PE pe, const int n, int *mask, const int xtnd);
 static PElementData
-ffb_aux (PE pe, int *n, int *mask);
+ffb_aux (PE pe, const int *n, int *mask);
 
 
 /* the first octet indicates how many unused bits are in the last octet --
@@ -19,10 +19,10 @@ ffb_aux (PE pe, int *n, int *mask);
 	bit_test  -	test a bit
  */
 
-static PElementData ffb (PE pe, int n, int *mask, int xtnd), ffb_aux (PE pe, int *n, int *mask);
+static PElementData ffb (PE pe, const int n, int *mask, const int xtnd), ffb_aux (PE pe, const int *n, int *mask);
 static PE	ffb_pe (PE pe);
 
-int bit_on (PE pe, int i) {
+int bit_on (PE pe, const int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -40,7 +40,7 @@ int bit_on (PE pe, int i) {
 	return OK;
 }
 
-int bit_off (PE pe, int i) {
+int bit_off (PE pe, const int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -58,7 +58,7 @@ int bit_off (PE pe, int i) {
 	return OK;
 }
 
-int bit_test (PE pe, int i) {
+int bit_test (PE pe, const int i) {
 	int	    mask;
 	PElementData bp;
 
@@ -69,7 +69,7 @@ int bit_test (PE pe, int i) {
 }
 
 static PElementData
-ffb (PE pe, int n, int *mask, int xtnd) {
+ffb (PE pe, const int n, int *mask, const int xtnd) {
 	int    len,
 		   i;
 	int     j;
@@ -131,7 +131,7 @@ ffb (PE pe, int n, int *mask, int xtnd) {
 }
 
 static PElementData
-ffb_aux (PE pe, int *n, int *mask) {
+ffb_aux (PE pe, const int *n, int *mask) {
 	int    i,
 		   nbits;
 	PElementData bp;

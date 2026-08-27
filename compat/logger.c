@@ -119,7 +119,7 @@ int ll_log (LLog *lp, int event, char *what, char *fmt) {
 }
 #endif
 
-int _ll_log (LLog *lp, int event, char *what, char *fmt, va_list ap) {
+int _ll_log (LLog *lp, const int event, char *what, const char *fmt, va_list ap) {
 	int	    status;
 	size_t  nbytes,
 			nwritten;
@@ -210,7 +210,7 @@ error:
 	return status;
 }
 
-void ll_hdinit (LLog *lp, char *prefix) {
+void ll_hdinit (LLog *lp, const char *prefix) {
 	char  *cp,
 		  *up;
 	char    buffer[BUFSIZ],
@@ -243,7 +243,7 @@ void ll_hdinit (LLog *lp, char *prefix) {
 	lp -> ll_stat |= LLOGHDR;
 }
 
-void ll_dbinit (LLog *lp, char *prefix) {
+void ll_dbinit (LLog *lp, const char *prefix) {
 	char  *cp;
 	char    buffer[BUFSIZ];
 

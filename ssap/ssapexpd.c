@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <signal.h>
 #include "spkt.h"
-static int SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
+static int SExpdRequestAux (struct ssapblk *sb, const char *data, const int cc, struct SSAPindication *si);
 
 
 /* S-EXPEDITED-DATA.REQUEST */
 
-static int  SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si);
+static int  SExpdRequestAux (struct ssapblk *sb, const char *data, const int cc, struct SSAPindication *si);
 
-int SExpdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
+int SExpdRequest (const int sd, const char *data, const int cc, struct SSAPindication *si) {
 	SBV	    smask;
 	int     result;
 	struct ssapblk *sb;
@@ -27,7 +27,7 @@ int SExpdRequest (int sd, char *data, int cc, struct SSAPindication *si) {
 	return result;
 }
 
-static int SExpdRequestAux (struct ssapblk *sb, char *data, int cc, struct SSAPindication *si) {
+static int SExpdRequestAux (struct ssapblk *sb, const char *data, const int cc, struct SSAPindication *si) {
 	int     result;
 	struct ssapkt *s;
 

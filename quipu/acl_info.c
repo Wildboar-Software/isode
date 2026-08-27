@@ -6,7 +6,7 @@
 extern AV_Sequence super_user;
 extern LLog * log_dsap;
 
-int check_acl (DN who, int mode, struct acl_info *acl, DN node) {
+int check_acl (DN who, const int mode, const struct acl_info *acl, DN node) {
 	struct acl_info *ptr;
 	AV_Sequence avs;
 

@@ -7,10 +7,10 @@ extern int avs_count;
 short inherit_sntx = -1;
 extern char dsa_mode;
 
-void as_comp_print (PS ps, Attr_Sequence as, int format) {
+void as_comp_print (PS ps, Attr_Sequence as, const int format) {
 	AV_Sequence avs;
 	char buffer [LINESIZE];
-	extern int oidformat;
+	extern const int oidformat;
 	char * ptr;
 
 	last_at = as->attr_type;
@@ -53,7 +53,7 @@ void as_comp_print (PS ps, Attr_Sequence as, int format) {
 	avs_count = 1;
 }
 
-void as_print (PS ps, Attr_Sequence as, int format) {
+void as_print (PS ps, Attr_Sequence as, const int format) {
 	Attr_Sequence eptr;
 
 	for(eptr = as; eptr != NULLATTR; eptr=eptr->attr_link)

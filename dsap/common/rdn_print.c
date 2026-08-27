@@ -1,10 +1,10 @@
 #include <string.h>
 #include "quipu/util.h"
 #include "quipu/name.h"
-static void rdn_comp_print (PS ps, RDN rdn, int format);
+static void rdn_comp_print (PS ps, RDN rdn, const int format);
 
 
-void rdn_comp_print (PS ps, RDN rdn, int format) {
+void rdn_comp_print (PS ps, RDN rdn, const int format) {
 	if (rdn!=NULLRDN) {
 		AttrT_print (ps,rdn->rdn_at,format);
 		ps_print (ps,"=");

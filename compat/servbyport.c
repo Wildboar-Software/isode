@@ -8,7 +8,7 @@
 #include "internet.h"
 
 struct isoservent *
-getisoserventbyport (char *provider, unsigned short port) {
+getisoserventbyport (const char *provider, const unsigned short port) {
 	struct isoservent *is;
 
 	isodetailor (NULLCP, 0);

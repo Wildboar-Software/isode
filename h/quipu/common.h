@@ -26,19 +26,19 @@ typedef struct simple_creds {
 	char    *usc_time2;
 } USC;
 
-int sub_string (short sntx);
-int telephone_match (short sntx);
-int case_exact_match (short sntx);
-int approx_string (short sntx);
+int sub_string (const short sntx);
+int telephone_match (const short sntx);
+int case_exact_match (const short sntx);
+int approx_string (const short sntx);
 int check_3166 (char *a);
-void soundex (char *s, char **c);
-int	dn_in_dnseq(DN dn, struct dn_seq *dnseq);
+void soundex (const char *s, char **c);
+int	dn_in_dnseq(DN dn, const struct dn_seq *dnseq);
 int check_guard (
-	char *pwd,
-	int pwd_len,
-	char *salt,
-	char *hval,
-	int hlen
+	const char *pwd,
+	const int pwd_len,
+	const char *salt,
+	const char *hval,
+	const int hlen
 );
 
 #endif

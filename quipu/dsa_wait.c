@@ -38,7 +38,7 @@ extern time_t	timenow;
 
 extern void attempt_restart(int sig);
 
-int dsa_wait (int secs) {
+int dsa_wait (const int secs) {
 	int                         vecp = 0;
 	char                        *vec[4];
 	fd_set                      iads;

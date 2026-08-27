@@ -4,7 +4,7 @@
 #include "quipu/util.h"
 #include "quipu/commonarg.h"
 
-void entryinfo_comp_free (EntryInfo *a, int state)
+void entryinfo_comp_free (const EntryInfo *a, const int state)
 {
 	EntryInfo * einfo, *e2;
 	Attr_Sequence as;
@@ -35,7 +35,7 @@ void entryinfo_comp_free (EntryInfo *a, int state)
 	}
 }
 
-void entryinfo_free (EntryInfo *a, int state)
+void entryinfo_free (EntryInfo *a, const int state)
 {
 	if (a == NULLENTRYINFO)
 		return;
@@ -43,7 +43,7 @@ void entryinfo_free (EntryInfo *a, int state)
 	free ((char *) a);
 }
 
-void entryinfo_cpy (EntryInfo *a, EntryInfo *b)
+void entryinfo_cpy (EntryInfo *a, const EntryInfo *b)
 {
 	a->ent_dn        = dn_cpy (b->ent_dn);
 	a->ent_attr      = as_cpy (b->ent_attr);
@@ -52,7 +52,7 @@ void entryinfo_cpy (EntryInfo *a, EntryInfo *b)
 	a->ent_next      = b->ent_next;
 }
 
-void entryinfo_append (EntryInfo *a, EntryInfo *b)
+void entryinfo_append (const EntryInfo *a, const EntryInfo *b)
 {
 	EntryInfo *ptr;
 	if ( a  == NULLENTRYINFO )
@@ -62,7 +62,7 @@ void entryinfo_append (EntryInfo *a, EntryInfo *b)
 	ptr->ent_next = b;
 }
 
-void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast)
+void entryinfo_merge (const EntryInfo *a, const EntryInfo *b, const int fast)
 {
 	EntryInfo *ptr;
 	EntryInfo *tmp, *prev, *trail;
@@ -98,7 +98,7 @@ void entryinfo_merge (EntryInfo *a, EntryInfo *b, int fast)
 	trail->ent_next = b;
 }
 
-void entryinfo_print (PS ps, EntryInfo *entryinfo, int format)
+void entryinfo_print (PS ps, const EntryInfo *entryinfo, const int format)
 {
 	EntryInfo *einfo;
 

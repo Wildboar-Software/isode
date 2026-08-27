@@ -21,7 +21,7 @@
 #include "tailor.h"
 #include "quipu/ds_search.h"
 static struct dn_seq *dm2dn_seq (char *dm);
-static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist);
+static struct dn_seq *dm2dn_seq_aux (const char *dm, DN dn, struct dn_seq *dlist);
 static struct dn_seq *expand_full (DN dn, int *complete);
 static struct dn_seq *expand_partial (DN dn, int *complete);
 static int dns_compar (const void *p, const void *q);
@@ -76,26 +76,26 @@ static AttributeType t_slave;
 static AttributeType t_surname;
 static AttributeType t_title;
 
-int showfred (DN mydn, char islong, char subdisplay);
-static Entry fredentry (DN adn, char islong);
+int showfred (DN mydn, const char islong, const char subdisplay);
+static Entry fredentry (DN adn, const char islong);
 Attr_Sequence fred_as (void), fred_full (void);
 
 static struct dn_seq *interact(struct dn_seq *dns, DN dn, char *s);
 
 static void do_dm_match (int n, char **vec);
-static int fred_children (DN parentdn, struct subordinate *ptr, int prob);
-static void done_match (struct dn_seq *dns, char *fancy);
+static int fred_children (DN parentdn, const struct subordinate *ptr, const int prob);
+static void done_match (struct dn_seq *dns, const char *fancy);
 static int dns_sort (struct dn_seq **dns, int i);
 static void do_ufn_match (int n, char **vec);
-static void build_ufnrc (int argc, char **argv);
+static void build_ufnrc (const int argc, char **argv);
 static void do_expand (int n, char **vec);
 static void fred_init (void);
 static void showfredattr (AttributeValue av);
 
-Filter	joinfilter(Filter f, char type), ocfilter(char *s), strfilter(AttributeType at, char *s, char type);
+Filter	joinfilter(Filter f, const char type), ocfilter(char *s), strfilter(AttributeType at, char *s, const char type);
 PE	grab_pe(AttributeValue av);
-sntx_table *get_syntax_table(short x);
-struct dn_seq *dn_seq_push(DN dn, struct dn_seq *dnseq);
+sntx_table *get_syntax_table(const short x);
+struct dn_seq *dn_seq_push(DN dn, const struct dn_seq *dnseq);
 
 /*    FRED BACK-END */
 
@@ -155,7 +155,7 @@ static	int	dlevel = 0;
 static	int	dsa_status;
 
 static struct dn_seq *dm2dn_seq(char *dm);
-static struct dn_seq *dm2dn_seq_aux(char *dm, DN dn, struct dn_seq *dlist);
+static struct dn_seq *dm2dn_seq_aux(const char *dm, DN dn, struct dn_seq *dlist);
 
 #define	make_filter(cp,at) \
     	strfilter ((at), (cp), index ((cp), '*') ? FILTERITEM_SUBSTRINGS \
@@ -325,7 +325,7 @@ static struct dn_seq *dm2dn_seq (char *dm) {
 	return dm2dn_seq_aux (dm, NULLDN, NULLDNSEQ);
 }
 
-static struct dn_seq *dm2dn_seq_aux (char *dm, DN dn, struct dn_seq *dlist) {
+static struct dn_seq *dm2dn_seq_aux (const char *dm, DN dn, struct dn_seq *dlist) {
 	char   *dp;
 	struct ds_search_arg search_arg;
 	struct ds_search_arg *sa = &search_arg;
@@ -561,7 +561,7 @@ free_filter:
 
 static	envlist myel = NULLEL;
 
-static void build_ufnrc (int argc, char **argv) {
+static void build_ufnrc (const int argc, char **argv) {
 	envlist	el;
 	envlist  en,
 			 *ep;
@@ -962,7 +962,7 @@ static int dns_sort (struct dn_seq **dns, int i) {
 	}
 }
 
-static void done_match (struct dn_seq *dns, char *fancy) {
+static void done_match (struct dn_seq *dns, const char *fancy) {
 	int	    i;
 	struct dn_seq *ptr;
 
@@ -1220,7 +1220,7 @@ static int ava_compar (const void *p, const void *q) {
 	return 0;
 }
 
-int showfred (DN mydn, char islong, char subdisplay) {
+int showfred (DN mydn, const char islong, const char subdisplay) {
 	int	    didtime,
 	hasauthor,
 	haspost,
@@ -1523,7 +1523,7 @@ out:
 	return nchild;
 }
 
-static int fred_children (DN parentdn, struct subordinate *ptr, int prob) {
+static int fred_children (DN parentdn, const struct subordinate *ptr, const int prob) {
 	int	    i,
 	nchild;
 	struct subordinate *qtr;
@@ -1605,7 +1605,7 @@ static void fred_init (void) {
 		t -> t_at = AttrT_new (t -> t_name);
 }
 
-static Entry fredentry (DN adn, char islong)
+static Entry fredentry (DN adn, const char islong)
 {
 	Entry newentry;
 
@@ -1646,7 +1646,7 @@ static Entry fredentry (DN adn, char islong)
 	return newentry;
 }
 
-void showfredDNs (DN dn, char islong) {
+void showfredDNs (DN dn, const char islong) {
 	Attr_Sequence eptr;
 	AV_Sequence avs;
 	Entry    theEntry;

@@ -51,8 +51,8 @@ typedef struct PList {
 
 static PE  pl2pe_aux (PS ps, PL pl);
 static int pl_read_class (PS ps, PL pl, PElementClass *class);
-static int pl_read_id (PS ps, PL pl, int class, PElementID *id);
-static int  pl_read_name (char *name, char **list, int n);
+static int pl_read_id (PS ps, PL pl, const int class, PElementID *id);
+static int  pl_read_name (const char *name, char **list, const int n);
 static int  pl_read_cons (PS ps, PL pl, PE *pe);
 static int  pl_read_prim (PS ps, PL pl, PE pe);
 static int  pl_read_lex (PS ps, PL pl);
@@ -121,7 +121,7 @@ static int pl_read_class (PS ps, PL pl, PElementClass *class) {
 	return OK;
 }
 
-static int pl_read_id (PS ps, PL pl, int class, PElementID *id) {
+static int pl_read_id (PS ps, PL pl, const int class, PElementID *id) {
 	int    i;
 	char **list;
 
@@ -157,7 +157,7 @@ static int pl_read_id (PS ps, PL pl, int class, PElementID *id) {
 	return OK;
 }
 
-static int pl_read_name (char *name, char **list, int n) {
+static int pl_read_name (const char *name, char **list, const int n) {
 	int    i;
 	char  *bp;
 

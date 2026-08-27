@@ -21,7 +21,7 @@ static CMD_TABLE permtab[] = {
 unsigned
 str2permission (char *str) {
 	char *cp;
-	unsigned result = 0;
+	const unsigned result = 0;
 
 	while (str && (*str != '\0')) {
 		unsigned u;

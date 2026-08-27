@@ -9,7 +9,7 @@
 #include "tailor.h"
 static int _tsaplose (
 	struct TSAPdisconnect *td,
-	int reason,
+	const int reason,
 	va_list ap
 );
 
@@ -20,7 +20,7 @@ static int _tsaplose (
 
 static int _tsaplose (
 	struct TSAPdisconnect *td,
-	int reason,
+	const int reason,
 	va_list ap
 );
 
@@ -93,7 +93,7 @@ int	tsaplose (struct TSAPdisconnect*td, ...) {
 
 static int _tsaplose (
 	struct TSAPdisconnect *td,
-	int reason,
+	const int reason,
 	va_list ap
 ) {
 	char  *bp;

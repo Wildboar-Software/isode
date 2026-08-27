@@ -39,12 +39,12 @@
 
 #endif /* defined(WIN) || defined(WINTLI) */
 
-int	start_tcp_client (struct sockaddr_in *sock, int priv);
-int	start_tcp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2);
+int	start_tcp_client (struct sockaddr_in *sock, const int priv);
+int	start_tcp_server (struct sockaddr_in *sock, const int backlog, const int opt1, const int opt2);
 
 #if defined(SOCKETS) && !defined(TLI_TCP)
-int	join_tcp_client (int fd, struct sockaddr_in *sock);
-int	join_tcp_server (int fd, struct sockaddr_in *sock);
+int	join_tcp_client (const int fd, const struct sockaddr_in *sock);
+int	join_tcp_server (const int fd, const struct sockaddr_in *sock);
 #include <unistd.h>
 #define	read_tcp_socket		read
 #define	write_tcp_socket	write
@@ -94,7 +94,7 @@ int	select_tcp_socket (int nfds, fd_set *rfds, fd_set *wfds, fd_set *efds, int s
 #include "dgram.h"
 #endif
 
-int	start_udp_server (struct sockaddr_in *sock, int backlog, int opt1, int opt2);
+int	start_udp_server (struct sockaddr_in *sock, const int backlog, const int opt1, const int opt2);
 #define	start_udp_client	start_udp_server
 
 #define	join_udp_server(fd,sock) \

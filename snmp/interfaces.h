@@ -56,7 +56,7 @@ struct interface {
 
 extern struct interface *ifs;
 
-void set_interface (char *name, char *ava);
+void set_interface (const char *name, char *ava);
 int	sort_interface (void);
 
 union sockaddr_un {		/* 'cause sizeof (struct sockaddr_iso) == 32 */
@@ -87,8 +87,8 @@ extern struct address *afs_inet;
 extern struct address *afs_iso;
 #endif
 
-int	get_interfaces (int offset);
-struct address *get_addrent (unsigned int *ip, int len, struct address *head, int isnext);
+int	get_interfaces (const int offset);
+struct address *get_addrent (const unsigned int *ip, const int len, const struct address *head, const int isnext);
 
 #if	defined(BSD44) || defined(BSD43_Tahoe) || defined(RT) || defined(MIPS) || defined(ultrix) || defined(__NeXT__) || defined(LINUX)
 #define	NEW_AT

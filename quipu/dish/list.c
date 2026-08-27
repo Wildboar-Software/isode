@@ -21,7 +21,7 @@ extern char	move_flag;
 extern int      sizelimit;
 char  list_show;
 
-static void print_list_subordinates (struct subordinate *ptr, int prob);
+static void print_list_subordinates (const struct subordinate *ptr, const int prob);
 
 void call_list (int argc, char **argv) {
 	struct ds_list_arg list_arg;
@@ -30,7 +30,7 @@ void call_list (int argc, char **argv) {
 	struct DSError  error;
 	int             x;
 	char            nocacheflag = FALSE;
-	extern 	int	copy_flag;
+	extern 	const int	copy_flag;
 
 	list_show = TRUE;
 	move_flag = FALSE;
@@ -88,7 +88,7 @@ void call_list (int argc, char **argv) {
 	consolidate_move();
 }
 
-static void print_list_subordinates (struct subordinate *ptr, int prob) {
+static void print_list_subordinates (const struct subordinate *ptr, const int prob) {
 	DN adn;
 	DN newdn;
 	int seqno;

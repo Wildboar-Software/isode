@@ -128,12 +128,12 @@ int	rtpktlose (struct assocblk*, ...), rtsaplose (struct RtSAPindication*, ...);
 
 int ps2rtslose (
 	struct assocblk *acb,
-	struct RtSAPindication *rti,
-	char *event,
-	struct PSAPabort *pa
+	const struct RtSAPindication *rti,
+	const char *event,
+	const struct PSAPabort *pa
 );
-int acs2rtsabort (struct assocblk *acb, struct AcSAPabort *aca, struct RtSAPindication *rti);
-int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct AcSAPabort *aca);
+int acs2rtsabort (struct assocblk *acb, const struct AcSAPabort *aca, struct RtSAPindication *rti);
+int acs2rtslose (struct assocblk *acb, struct RtSAPindication *rti, const char *event, const struct AcSAPabort *aca);
 void rt2pslose (struct assocblk *acb, int result);
 int rt2pspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti);
 int rt2psgturn (struct assocblk *acb, struct RtSAPindication *rti);
@@ -157,7 +157,7 @@ int rt2psmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindica
     (acb) -> acb_rtpktlose = rt2sslose; \
 }
 
-int	ss2rtslose (struct assocblk *acb, struct RtSAPindication *rti, char *event, struct SSAPabort *sa), ss2rtsabort (struct assocblk *acb, struct SSAPabort *sa, struct RtSAPindication *rti);
+int	ss2rtslose (struct assocblk *acb, const struct RtSAPindication *rti, const char *event, const struct SSAPabort *sa), ss2rtsabort (struct assocblk *acb, const struct SSAPabort *sa, struct RtSAPindication *rti);
 int	rt2sspturn (struct assocblk *acb, int priority, struct RtSAPindication *rti), rt2ssgturn (struct assocblk *acb, struct RtSAPindication *rti), rt2sstrans (struct assocblk *acb, PE data, int secs, struct RtSAPindication *rti), rt2sswait (struct assocblk *acb, int secs, int trans, struct RtSAPindication *rti),
 	rt2ssasync (struct assocblk *acb, int (*indication)(int sd, struct RtSAPindication *rti), struct RtSAPindication *rti), rt2ssmask (struct assocblk *acb, fd_set *mask, int *nfds, struct RtSAPindication *rti);
 void rt2sslose (struct assocblk *acb, int result);

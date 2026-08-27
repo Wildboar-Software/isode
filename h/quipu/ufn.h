@@ -28,10 +28,10 @@ extern int ufn_flags;
 #define	UFN_ALL	(UFN_APPROX | UFN_WILDHEAD)
 
 int	ufn_init (void);
-int ufn_match (int c, char **v, DNS (*interact) (DNS, DN, char *), DNS *result, envlist el);
+int ufn_match (const int c, char **v, DNS (*interact) (DNS, DN, char *), DNS *result, envlist el);
 
 int aet_match (
-	int c,
+	const int c,
 	char **v,
 	DNS (*interact) (DNS, DN, char *),
 	DNS *result,

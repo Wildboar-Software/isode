@@ -25,7 +25,7 @@ static time_t last_log_close = (time_t)0;
 #endif
 
 static int
-timeout_secs (time_t later, time_t now)
+timeout_secs (const time_t later, const time_t now)
 {
 	int n;
 
@@ -37,14 +37,14 @@ timeout_secs (time_t later, time_t now)
 }
 
 static void
-take_timeout (int *secs_p, int timeout_tmp)
+take_timeout (int *secs_p, const int timeout_tmp)
 {
 	if ((*secs_p) == NOTOK || (*secs_p) > timeout_tmp)
 		(*secs_p) = timeout_tmp;
 }
 
 static void
-take_time_t (int *secs_p, time_t t)
+take_time_t (int *secs_p, const time_t t)
 {
 	int n;
 
@@ -69,7 +69,7 @@ task_select (int *secs_p) {
 	int			  suspended = FALSE;
 	int 		  xi = 0;
 	struct task_act	* ret_tk = NULLTASK;
-	extern char	  startup_update;
+	extern const char	  startup_update;
 	struct oper_act	* newop = NULLOPER;
 
 	time (&timenow);

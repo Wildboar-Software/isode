@@ -104,10 +104,10 @@ struct fs *fs_tbl = NULL ;
 extern int quantum;
 
 static int init_unix_fs (void);
-static int sync_unix_fs (integer cor);
+static int sync_unix_fs (const integer cor);
 static void insert_entry (struct fs *fsp);
 
-static struct fs *get_fsent(unsigned *ip, int len, int isnext);
+static struct fs *get_fsent(const unsigned *ip, const int len, const int isnext);
 static int  get_fs_table(void);
 static void free_fs_table(void);
 static int  o_unix_fs(OI oi, struct type_SNMP_VarBind *v, int offset);
@@ -255,7 +255,7 @@ static int init_unix_fs (void) {
  * Perform commit/rollback operations. (this mib group has no
  * set operations so there are not commit/rollback operations)
  *-----------------------------------------------------------------*/
-static int sync_unix_fs (integer cor) {
+static int sync_unix_fs (const integer cor) {
 	switch (cor) {
 	case int_SNMP_SOutPDU_commit:
 		return(1);
@@ -268,7 +268,7 @@ static int sync_unix_fs (integer cor) {
 /*-----------------------------------------------------------------
  * Find an entry in the file system table.
  *-----------------------------------------------------------------*/
-static struct fs *get_fsent (unsigned *ip, int len, int isnext) {
+static struct fs *get_fsent (const unsigned *ip, const int len, const int isnext) {
 	static long last = 0;
 	static int lastq = -1;
 	int refresh = 1;

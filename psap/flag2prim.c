@@ -5,7 +5,7 @@
 #include "psap.h"
 
 PE
-flag2prim (int b, int class, int id) {
+flag2prim (const int b, const int class, const int id) {
 	PE	    pe;
 	PElementClass cl;
 	PElementID pid;
