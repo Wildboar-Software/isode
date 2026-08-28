@@ -33,7 +33,7 @@ emit_strlen2int (const int level, char *dst_len, char *src, const char *id)
 	printf ("%*s}\n", level * 4, "");
 }
 
-void do_type (YP yp, int level, char *id, char *arg)
+void do_type (YP yp, int level, const char *id, char *arg)
 {
 	int    i;
 	char  *narg;
@@ -558,8 +558,7 @@ void do_type (YP yp, int level, char *id, char *arg)
 			"%*sextern int %s (PE *pe, int explicit, int len, char *buffer, PEPYPARM parm);\n",
 			level * 4,
 			"",
-			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER),
-			yp -> yp_param_type ? yp -> yp_param_type : "PEPYPARM"
+			modsym (yp -> yp_module, yp -> yp_identifier, YP_ENCODER)
 		);
 		printf ("%*sif (%s (", level * 4, "", modsym (yp -> yp_module,
 				yp -> yp_identifier, YP_ENCODER));

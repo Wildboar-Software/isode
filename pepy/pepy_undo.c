@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "pepy.h"
-void undo_type (YP yp, int level, char *id, char *arg, const int Vflag);
 
 
 extern struct tuple tuples[];
@@ -21,7 +20,7 @@ static int  undo_type_choice (YP yp, int level, char *narg, const int Vflag);
 static int undo_components_seq (YP yp, const int level, const int first, const int last, char *id, char *arg, char *narg, const int Vflag);
 static void undo_components_set (YP yp, const int level, char *arg, char *narg, const int Vflag);
 
-void undo_type (YP yp, int level, char *id, char *arg, const int Vflag)
+void undo_type (YP yp, int level, const char *id, char *arg, const int Vflag)
 {
 	int    i,
 		   j;

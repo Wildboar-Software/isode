@@ -273,7 +273,7 @@ static int importedP (const char *name) {
 }
 
 static struct oidtbl {
-	char	*oid_name;
+	const char	*oid_name;
 	int		oid_value;
 } oidtable[] =  {
 	/* Top level OIDS */

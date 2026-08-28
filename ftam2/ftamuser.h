@@ -61,7 +61,7 @@ char   *str2file (char *s);
 /* DISPATCH */
 
 struct dispatch {
-	char   *ds_name;
+	const char   *ds_name;
 	int (*ds_fnx)(char **vec);
 
 	int	    ds_flags;
@@ -73,7 +73,7 @@ struct dispatch {
 	int	    ds_class;
 	int	    ds_units;
 
-	char   *ds_help;
+	const char   *ds_help;
 };
 
 struct dispatch *getds (char *name);

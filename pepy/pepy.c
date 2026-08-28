@@ -10,18 +10,18 @@
 #include <strings.h>
 #include <unistd.h>
 #include "pepy.h"
-void yyerror (char *s);
-void yyerror_aux (char *s);
+void yyerror (const char *s);
+void yyerror_aux (const char *s);
 void myyerror (const char* fmt, ...);
 void pyyerror (YP yp, const char* fmt, ...);
 int yywrap(void);
-void yyprint (char *s, const int f, const int top);
+void yyprint (const char *s, const int f, const int top);
 void pass1(void);
 void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
-void do_type (YP yp, int level, char *id, char *arg);
+void do_type (YP yp, int level, const char *id, char *arg);
 void choice_pullup (YP yp, const int partial);
-void tag_pullup (YP yp, int level, char *arg, char *whatsit);
+void tag_pullup (YP yp, int level, const char *arg, const char *whatsit);
 void tag_pushdown (YP yp, int level, char *arg, char *whatsit);
 void tag_type (YP yp);
 int check_type (char *type, int level, char *class, char *form, char *id, char *arg);
@@ -30,12 +30,12 @@ int is_nonimplicit_type (YP yp);
 void uniqint (YV yv);
 void uniqtag (YP y, YP z);
 int val2int (YV yv);
-static void read_ph_file (char *module, OID oid);
+static void read_ph_file (const char *module, OID oid);
 void print_type (YP yp, const int level);
 YP new_type (int code);
 YP add_type (YP y, YP z);
 YP copy_type (YP yp);
-char *new_string (char *s);
+char *new_string (const char *s);
 void init_new_file(void);
 void end_file(void);
 
@@ -62,16 +62,16 @@ char   *mymodule = "";
 OID	mymoduleid = NULLOID;
 
 int yysection = YP_DECODER;
-char *yyencpref = "build";
-char *yydecpref = "parse";
-char *yyprfpref = "print";
-char *yyencdflt = "build";
-char *yydecdflt = "parse";
-char *yyprfdflt = "print";
+const char *yyencpref = "build";
+const char *yydecpref = "parse";
+const char *yyprfpref = "print";
+const char *yyencdflt = "build";
+const char *yydecdflt = "parse";
+const char *yyprfdflt = "print";
 static char *yyprefix;
 
 static struct section {
-	char   *s_name;
+	const char   *s_name;
 	int	    s_mode;
 }	sections[] = {
 	"ENCODE", YP_ENCODER,
@@ -110,8 +110,8 @@ typedef struct symlist {
 static	SY	mysymbols = NULLSY;
 
 char   *gensym (void), *modsym (const char *module, const char *id, const int direct);
-static MD	lookup_module (char *module, OID oid);
-static FILE   *open_ph_file (char *fn, char *fnoid, char *mode);
+static MD	lookup_module (const char *module, OID oid);
+static FILE   *open_ph_file (char *fn, char *fnoid, const char *mode);
 static SY	new_symbol (const char *encpref, const char *decpref, const char *prfpref, const char *mod, const char *id, YP type), add_symbol (SY s1, SY s2);
 extern FILE *yyin, *yyout;
 
@@ -126,7 +126,6 @@ static void write_ph_file (void);
 static int  pp (void);
 static void print_value (YV yv, const int level);
 static void modsym_aux (const char *name, char *bp);
-void do_type (YP yp, int level, char *id, char *arg);
 
 int main (int argc, char **argv, char **envp) {
 	char  *cp,
@@ -237,7 +236,7 @@ usage:
 		}
 
 		if (*cp == '-') {
-			if (*++cp != NULL)
+			if (*++cp != 0)
 				goto usage;
 			sysin = "";
 		}
@@ -305,17 +304,12 @@ static void prologue(void) {
 			cp - pepyversion, cp - pepyversion, pepyversion);
 	printf("#include <string.h>\n");
 	printf ("#include %s\n\n", mflag ? "\"psap.h\"" : "<isode/psap.h>");
-	if (!bflag) {
-		printf ("#ifndef lint\n");
-		printf ("static char *pepyid = \"%s\";\n", pepyversion);
-		printf ("#endif\n\n");
-	}
 	if (aflag)
 		printf ("#define\tadvise\t%s\n\n", aflag);
 	printf ("void\tadvise (char *what, const char *fmt, ...);\n");
 }
 
-void yyerror (char *s) {
+void yyerror (const char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -341,7 +335,7 @@ int warning (const char *fmt) {
 }
 #endif
 
-void yyerror_aux (char *s) {
+void yyerror_aux (const char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	if (eval)
@@ -390,7 +384,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (char *s, const int f, const int top) {
+void yyprint (const char *s, const int f, const int top) {
 	int	    len;
 	static int didf = 0;
 	static int nameoutput = 0;
@@ -638,7 +632,7 @@ void choice_pullup (YP yp, const int partial) {
 	}
 }
 
-void tag_pullup (YP yp, int level, char *arg, char *whatsit)
+void tag_pullup (YP yp, int level, const char *arg, const char *whatsit)
 {
 	char   *narg;
 	char   *id = yp -> yp_flags & YP_ID ? yp -> yp_id : "member";
@@ -913,7 +907,7 @@ int val2int (YV yv) {
 
 /* really need much more information in the .ph file... */
 
-static void read_ph_file (char *module, OID oid) {
+static void read_ph_file (const char *module, OID oid) {
 	int     class,
 			value,
 			direction;
@@ -1016,7 +1010,7 @@ static void write_ph_file(void) {
 #define	PEPYPATH	""
 #endif
 
-static FILE *open_ph_file (char *fn, char *fnoid, char *mode) {
+static FILE *open_ph_file (char *fn, char *fnoid, const char *mode) {
 	char  *dst,
 		  *path;
 	char    fnb[BUFSIZ];
@@ -1353,7 +1347,7 @@ static SY add_symbol (SY s1, SY s2) {
 	return s1;
 }
 
-static MD  lookup_module (char *module, OID oid)
+static MD  lookup_module (const char *module, OID oid)
 {
 	MD md;
 
@@ -1594,7 +1588,7 @@ YT lookup_tag (YP yp) {
 	return NULLYT;
 }
 
-char *new_string (char *s) {
+char *new_string (const char *s) {
 	char  *p;
 
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
@@ -1604,7 +1598,7 @@ char *new_string (char *s) {
 }
 
 static struct triple {
-	char	   *t_name;
+	const char	   *t_name;
 	PElementClass   t_class;
 	PElementID	    t_id;
 }		triples[] = {

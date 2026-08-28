@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static char *ps_errorlist[] = {
+static const char *ps_errorlist[] = {
 	"Error 0",
 	"Overflow in ID",
 	"Overflow in length",

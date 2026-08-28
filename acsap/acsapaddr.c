@@ -24,8 +24,8 @@ static struct PSAPaddr *(*lookup) (AEI aei) = NULL;
 /* backwards compatibility... */
 
 static struct mapping {
-	char   *m_key;
-	char   *m_value;
+	const char   *m_key;
+	const char   *m_value;
 }	sac2cn[] = {
 	"iso ftam", 	"filestore",
 	"iso vt",		"terminal",

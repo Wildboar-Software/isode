@@ -32,11 +32,11 @@ static void imisc_error (int sd, int id, int error, caddr_t p, struct RoSAPindic
 
 #define	gentime_result	utctime_result
 
-static char *myservice = "isode miscellany";/* should be something other
+static const char *myservice = "isode miscellany";/* should be something other
 					       than mycontext */
 
-static char *mycontext = "isode miscellany";
-static char *mypci = "isode miscellany pci";
+static const char *mycontext = "isode miscellany";
+static const char *mypci = "isode miscellany pci";
 
 extern int length;
 static type_IMISC_Data *data = NULLPE;

@@ -51,7 +51,7 @@ static char *myname = "ryinitiator";
 
 extern char *isodeversion;
 
-void ryinitiator (const int argc, char **argv, char *myservice, char *mycontext, const char *mypci, struct RyOperation *ops, const struct dispatch *dispatches, ds_argument_t quit) {
+void ryinitiator (const int argc, char **argv, const char *myservice, const char *mycontext, const char *mypci, struct RyOperation *ops, const struct dispatch *dispatches, ds_argument_t quit) {
 	int	    iloop,
 			sd;
 	char  *cp,
@@ -79,7 +79,7 @@ void ryinitiator (const int argc, char **argv, char *myservice, char *mycontext,
 
 	if (myname = rindex (argv[0], '/'))
 		myname++;
-	if (myname == NULL || *myname == NULL)
+	if (myname == NULL || *myname == 0)
 		myname = argv[0];
 
 	isodetailor (myname, 1);
@@ -426,12 +426,12 @@ static int timing_result (int sd, const int id, const int dummy, caddr_t result,
 	return OK;
 }
 
-void ros_adios (struct RoSAPpreject *rop, char *event) {
+void ros_adios (struct RoSAPpreject *rop, const char *event) {
 	ros_advise (rop, event);
 	_exit (1);
 }
 
-void ros_advise (struct RoSAPpreject *rop, char *event) {
+void ros_advise (struct RoSAPpreject *rop, const char *event) {
 	char    buffer[BUFSIZ];
 	if (rop -> rop_cc > 0)
 		sprintf (buffer, "[%s] %*.*s", RoErrString (rop -> rop_reason),
@@ -446,7 +446,7 @@ void acs_adios (struct AcSAPabort *aca, const char *event) {
 	_exit (1);
 }
 
-void acs_advise (struct AcSAPabort *aca, char *event) {
+void acs_advise (struct AcSAPabort *aca, const char *event) {
 	char    buffer[BUFSIZ];
 
 	if (aca -> aca_cc > 0)

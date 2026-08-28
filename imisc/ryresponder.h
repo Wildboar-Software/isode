@@ -7,7 +7,7 @@
 #include "logger.h"
 
 struct dispatch {
-	char   *ds_name;
+	const char   *ds_name;
 	int	    ds_operation;
 	int (*ds_vector)(int sd, struct RyOperation *ryo, struct RoSAPinvoke *rox, caddr_t in, struct RoSAPindication *roi);
 };

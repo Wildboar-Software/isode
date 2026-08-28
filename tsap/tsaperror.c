@@ -8,7 +8,7 @@
 #include <netosi/cons_impl.h>
 #endif
 
-static char *disc_err0[] = {
+static const char *disc_err0[] = {
 	"Reason not specified",
 	"Congestion at TSAP",
 	"Session entity not attached to TSAP",
@@ -17,7 +17,7 @@ static char *disc_err0[] = {
 
 static int  disc_err0_cnt = sizeof disc_err0 / sizeof disc_err0[0];
 
-static char *disc_err8[] = {
+static const char *disc_err8[] = {
 	"Normal disconnect initiated by session entity",
 	"Remote transport entity congestion at connect time",
 	"Connection negotiation failed (proposed class(es) not supported)",
@@ -39,11 +39,11 @@ static char *disc_err8[] = {
 static int  disc_err8_cnt = sizeof disc_err8 / sizeof disc_err8[0];
 
 #ifdef	SUNLINK_7_0
-static char *cons_err0 =
+static const char *cons_err0 =
 	"Unspecified (undefined) CONS error";
 
 /* CONS Error 224 through 255 */
-static char *cons_err1[] = {
+static const char *cons_err1[] = {
 	"CONS provider: undefined",	/* R_CP_OSI_NETWORK_SERVICE_PROBLEM  */
 	"CONS provider: disconnection-transient",
 	/* R_CP_DIS_TRANS */

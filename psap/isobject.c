@@ -6,7 +6,7 @@
 #include "psap.h"
 #include "tailor.h"
 
-static char *isobjects = "isobjects";
+static const char *isobjects = "isobjects";
 
 static FILE *servf = NULL;
 static int  stayopen = 0;

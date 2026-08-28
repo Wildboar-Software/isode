@@ -19,9 +19,9 @@
 
 struct tuple {
     int     t_type;
-    char   *t_class;
-    char   *t_form;
-    char   *t_id;
+    const char   *t_class;
+    const char   *t_form;
+    const char   *t_id;
     PElementClass t_classnum;
     int	    t_idnum;
 };
@@ -273,12 +273,12 @@ extern char *mosyversion;
 %END(MOSY)%
 
 extern int yysection;
-extern char *yyencpref;
-extern char *yydecpref;
-extern char *yyprfpref;
-extern char *yyencdflt;
-extern char *yydecdflt;
-extern char *yyprfdflt;
+extern const char *yyencpref;
+extern const char *yydecpref;
+extern const char *yyprfpref;
+extern const char *yyencdflt;
+extern const char *yydecdflt;
+extern const char *yyprfdflt;
 
 extern int yydebug;
 extern int yylineno;
@@ -302,13 +302,13 @@ OID	int2oid (int n);
 OID	oidlookup (char *name);
 char *oidname (OID oid);
 char *oidprint (OID oid);
-void yyerror (char *s);
+void yyerror (const char *s);
 void init_new_file(void);
 void end_file(void);
 void initoidtbl(void);
 int yyparse (void);
-void yyerror_aux (char *s);
-void warning (char* fmt, ...);
+void yyerror_aux (const char *s);
+void warning (const char *fmt, ...);
 void print_type (YP yp, int level);
 void pass1(void);
 void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
@@ -321,10 +321,10 @@ void choice_pullup (YP yp, int partial);
 void uniqtag (YP y, YP z);
 int do_action (char *action, int level, char *arg, int lineno);
 int val2int (YV yv);
-void myyerror (char*fmt, ...);
-void pyyerror (YP yp, char* fmt, ...);
+void myyerror (const char *fmt, ...);
+void pyyerror (YP yp, const char* fmt, ...);
 void uniqint (YV yv);
-void yyprint (char *s, int f, int top);
+void yyprint (const char *s, const int f, const int top);
 int check_type (char *type, int level, char *class, char *form, char *id, char *arg);
 void addtableref (char *name, OID id, int lt);
 void print_expimp(void);
@@ -338,7 +338,7 @@ extern int errno;
 #endif
 
 %BEGIN(PEPY)%
-void do_type (YP yp, int level, char *id, char *arg);
+void do_type (YP yp, int level, const char *id, char *arg);
 %END(PEPY)%
 
 #endif /* _GOOBIS_BO_BOOBIS_H_ */

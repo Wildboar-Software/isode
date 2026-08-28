@@ -26,7 +26,7 @@ int	fprintf (FILE *stream, const char *format, ...);
 
 static void vprint1 (void);
 static void vprint2 (void);
-static void vwrite (char *s);
+static void vwrite (const char *s);
 
 #define	VPRINT(s)	vprint1 (), vwrite ((s)), vprint2 ()
 
@@ -37,7 +37,7 @@ static int didvpop = 0;
 static int didvpush = 0;
 static int docomma = 0;
 
-static char  *py_classlist[] = {
+static const char  *py_classlist[] = {
 	"UNIVERSAL", "APPLICATION", "", "PRIVATE"
 };
 
@@ -86,7 +86,7 @@ void vpop(void)  {
 	didname = didvpush = 0, didvpop = docomma = vlevel ? 1 : 0;
 }
 
-void vname (char *name) {
+void vname (const char *name) {
 	if (didvpush)
 		vwrite ("\n"), didvpush = 0;
 	else if (docomma)
@@ -165,12 +165,12 @@ static void vprint2(void)  {
 	didname = didvpop = 0, docomma = vlevel ? 1 : 0;
 }
 
-static void vwrite (char *s) {
+static void vwrite (const char *s) {
 	if (vfp)
 		(*vfnx) (vfp, "%s", s);
 	else {
-		char   c,
-			   *cp;
+		char c;
+		const char *cp;
 
 		if (vps)
 			for (cp = s; *cp; cp++) {

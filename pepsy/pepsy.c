@@ -33,16 +33,13 @@
 #include <stdarg.h>
 #include "pepsydefs.h"
 #include "pass2.h"
-void yyerror (char *s);
+void yyerror (const char *s);
 
-void yyerror (char *s);
 void warning (const char *fmt, ...);
 void myyerror (const char* fmt, ...);
 static void pyyerror (YP yp, const char *fmt, ...);
 int yywrap(void);
-void yyprint (char *s, const int f, const int top);
 void pass1(void);
-void pass1_type ( char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp );
 static void hprologue (FILE *fp);
 void pass2(void);
 static void copy_file (FILE *fp1, FILE *fp2);
@@ -88,21 +85,21 @@ OID	mymoduleid = NULLOID;
 static char modulename[BUFSIZ];
 
 int yysection = YP_DECODER;
-char *yyencpref = "encode";
-char *yydecpref = "decode";
-char *yyprfpref = "print";
-char *yyencdflt = "encode";
-char *yydecdflt = "decode";
-char *yyprfdflt = "print";
+const char *yyencpref = "encode";
+const char *yydecpref = "decode";
+const char *yyprfpref = "print";
+const char *yyencdflt = "encode";
+const char *yydecdflt = "decode";
+const char *yyprfdflt = "print";
 
-static char *classes[] = {
+static const char *classes[] = {
 	"UNIVERSAL ",
 	"APPLICATION ",
 	"",
 	"PRIVATE "
 };
 
-static char *tags[] = {
+static const char *tags[] = {
 	"", "BOOLEAN", "INTEGER", "INTEGER", "BIT STRING", "BIT STRING",
 	"OCTET STRING", "NULL", "SEQUENCE", "SEQUENCE OF", "SEQUENCE",  "SET",
 	"SET OF", "SET", "CHOICE", "ANY", "OBJECT IDENTIFIER", "", "ENUMERATED",
@@ -173,7 +170,7 @@ typedef struct symlist {
 SY	mysymbols = NULLSY;
 
 char *modsym (const char *module, const char *id, char *prefix);
-static char *gensym (char *s, char *a);
+static char *gensym (const char *s, const char *a);
 static char *array (char *s, const int flg);
 extern char *my_strcat(const char *s1, char *s2);
 extern char *gfree(const char *module, const char *id, char *parm);
@@ -194,7 +191,7 @@ static double val2real (YV yv);
 static void prime_default (YP yp, const int level);
 static void merge_files (char *stem);
 
-static void yyerror_aux (char *s);
+static void yyerror_aux (const char *s);
 static void do_struct0 (YP yp, const char *id);
 static void do_struct1 (YP yp, const char *id, char *pullup);
 static void do_struct2 (YP yp, const char *id, char *pullup);
@@ -338,7 +335,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (char *s) {
+void yyerror (const char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -369,7 +366,7 @@ void warning (const char *fmt) {
 }
 #endif
 
-static void yyerror_aux (char *s) {
+static void yyerror_aux (const char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	if (eval)
@@ -424,7 +421,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (char *s, const int f, const int top) {
+void yyprint (const char *s, const int f, const int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -2814,7 +2811,7 @@ char *new_string (char *s) {
 /* SYMBOLS */
 
 static struct triple {
-	char	   *t_name;
+	const char	   *t_name;
 	PElementClass   t_class;
 	PElementID	    t_id;
 }		triples[] = {
@@ -2883,7 +2880,7 @@ static void modsym_aux (const char *name, char *bp) {
 	*bp = 0;
 }
 
-static char *gensym (char *s, char *a) {
+static char *gensym (const char *s, const char *a) {
 	int     i;
 	char  *p;
 	char    buffer[BUFSIZ];
@@ -3203,13 +3200,13 @@ int is_any_type (YP yp) {
 /*
  * return a string with the leading pathname stripped off
  */
-char *pstrip (char *p);
-char *pstrip (char *p) {
+char *pstrip (const char *p);
+char *pstrip (const char *p) {
 	char *p1;
 
 	if (p1 = rindex(p, '/'))
 		return (p1 + 1);
-	return (p);
+	return p;
 }
 
 /*
@@ -3255,7 +3252,7 @@ static void doincl(FILE *fp, char *file[]) {
 }
 
 /* standard files  - that should be found in the <isode> directory */
-static char *stand_f[] = {
+static const char *stand_f[] = {
 	"psap.h",
 	"pepsy.h",
 	"UNIV-types.h",
@@ -3271,7 +3268,7 @@ static char *stand_f[] = {
  */
 int is_stand (char *file);
 int is_stand (char *file) {
-	char	**p;
+	const char	**p;
 	char	*f = pstrip (file);
 	for (p = stand_f; *p; p++) {
 		if (strcmp(f, pstrip(*p)) == 0)

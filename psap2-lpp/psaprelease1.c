@@ -191,6 +191,6 @@ out:
 	return result;
 }
 
-int	PRelRetryRequest (int sd, const int secs, const struct PSAPrelease *pr, struct PSAPindication *pi) {
+int	PRelRetryRequest (int sd, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	return psaplose (pi, PC_OPERATION, "release not in progress");
 }

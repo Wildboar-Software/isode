@@ -52,7 +52,7 @@ typedef struct PList {
 static PE  pl2pe_aux (PS ps, PL pl);
 static int pl_read_class (PS ps, PL pl, PElementClass *class);
 static int pl_read_id (PS ps, PL pl, const int class, PElementID *id);
-static int  pl_read_name (const char *name, char **list, int n);
+static int  pl_read_name (const char *name, const char **list, int n);
 static int  pl_read_cons (PS ps, PL pl, PE *pe);
 static int  pl_read_prim (PS ps, PL pl, PE pe);
 static int  pl_read_lex (PS ps, PL pl);
@@ -123,7 +123,7 @@ static int pl_read_class (PS ps, PL pl, PElementClass *class) {
 
 static int pl_read_id (PS ps, PL pl, const int class, PElementID *id) {
 	int    i;
-	char **list;
+	const char **list;
 
 	if (pl_read_lex (ps, pl) == NOTOK)
 		return NOTOK;
@@ -140,7 +140,7 @@ static int pl_read_id (PS ps, PL pl, const int class, PElementID *id) {
 			list = NULL, i = 0;
 			break;
 		case PE_CLASS_PRIV:
-			list = pe_privlist, i = pe_maxpriv;
+			list = NULL, i = pe_maxpriv;
 			break;
 		}
 		if ((i = pl_read_name (pl -> pl_name, list, i)) == NOTOK)
@@ -157,9 +157,9 @@ static int pl_read_id (PS ps, PL pl, const int class, PElementID *id) {
 	return OK;
 }
 
-static int pl_read_name (const char *name, char **list, int n) {
+static int pl_read_name (const char *name, const char **list, int n) {
 	int    i;
-	char  *bp;
+	const char  *bp;
 
 	for (i = n; i > 0; i--)
 		if ((bp = *list++) && strcmp (bp, name) == 0)

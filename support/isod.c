@@ -32,7 +32,7 @@ static char *myname = "isod";
 static enum mode { echo, sink, XXX } mymode = XXX;
 
 struct dispatch {
-	char   *ds_entity;
+	const char   *ds_entity;
 
 	enum mode ds_mode;
 };

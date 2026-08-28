@@ -202,7 +202,6 @@ extern int    pe_maxappl;
 extern char **pe_applist;
 
 extern int    pe_maxpriv;
-extern char **pe_privlist;
 
 typedef struct UTCtime {
 	int	    ut_year;

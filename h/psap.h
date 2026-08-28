@@ -211,16 +211,15 @@ PE str2pe (char *s, int len, int *advance, int *result);
 PE qb2pe (struct qbuf *qb, int len, const int depth, int *result);
 
 extern int    pe_maxclass;
-extern char  *pe_classlist[];
+extern const char  *pe_classlist[];
 
 extern int    pe_maxuniv;
-extern char  *pe_univlist[];
+extern const char  *pe_univlist[];
 
 extern int    pe_maxappl;
-extern char **pe_applist;
+extern const char **pe_applist;
 
 extern int    pe_maxpriv;
-extern char **pe_privlist;
 
 typedef struct UTCtime {
 	int	    ut_year;
@@ -538,9 +537,9 @@ extern struct qbuf *Qb;
                                         qbuf2pe_f (result))
 PE qbuf2pe_f (int *result);
 char *qb2str (struct qbuf *q);
-struct qbuf *str2qb (char *s, int len, const int head) ;
+struct qbuf *str2qb (const char *s, int len, const int head) ;
 static inline struct qbuf *
-str2qb_s (char *s)
+str2qb_s (const char *s)
 {
 	int n;
 
@@ -579,11 +578,11 @@ extern char PY_pepy[];
 void	PY_advise (char *, const char *, ...);
 int	PY_pp (int argc, char **argv, char **envp, int (*pfx)(PE pe, int explicit, int *len, char **buffer, char *parm));
 
-int	testdebug (PE pe, char *s);
+int	testdebug (PE pe, const char *s);
 
 void vpush (void);
 void vpop (void);
-void vname (char *name);
+void vname (const char *name);
 void vtag (const int class, const int id);
 void vstring (PE pe);
 void vunknown (PE pe);

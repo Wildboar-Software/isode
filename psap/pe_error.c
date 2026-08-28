@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "psap.h"
 
-static char *pe_errorlist[] = {
+static const char *pe_errorlist[] = {
 	"Error 0",
 	"Overflow",
 	"Out of memory",

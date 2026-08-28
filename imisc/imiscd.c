@@ -433,7 +433,7 @@ congested:
 #define	TOT	54636577
 
 static struct pair {
-	char   *p_form;
+	const char   *p_form;
 	int     p_value;
 } pairs[] = {
 	"cvcvcvce", 0,
@@ -498,7 +498,7 @@ static struct web {
 	int	    w_length;
 	int	    w_factor;
 	char  **w_string;
-	char   *w_special;
+	const char   *w_special;
 } webs[] = {
 	'm', 189, 2, &Mx, NULL,
 	'c', 18, 1, &Cx, "HWJ",
@@ -631,7 +631,7 @@ static int pwdgen (const char *pw) {
 }
 
 static struct obj {
-	char   *o_string;
+	const char   *o_string;
 	int     o_advance;
 } objects[] = {
 	"TRAFLLEHPARCTIHS", 4,

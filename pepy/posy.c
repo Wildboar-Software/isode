@@ -31,11 +31,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "pepy.h"
-void yyerror (char *s);
-void yyerror_aux (char *s);
+void yyerror (const char *s);
+void yyerror_aux (const char *s);
 void myyerror (const char*fmt, ...);
 int yywrap(void);
-void yyprint (char *s, const int f, const int top);
 void pass1(void);
 void pass1_type (char *encpref, char *decpref, char *prfpref, char *mod, char *id, YP yp);
 void pass2(void);
@@ -71,21 +70,21 @@ OID	mymoduleid = NULLOID;
 static char modulename[BUFSIZ];
 
 int yysection = YP_DECODER;
-char *yyencpref = "encode";
-char *yydecpref = "decode";
-char *yyprfpref = "print";
-char *yyencdflt = "encode";
-char *yydecdflt = "decode";
-char *yyprfdflt = "print";
+const char *yyencpref = "encode";
+const char *yydecpref = "decode";
+const char *yyprfpref = "print";
+const char *yyencdflt = "encode";
+const char *yydecdflt = "decode";
+const char *yyprfdflt = "print";
 
-static char *classes[] = {
+static const char *classes[] = {
 	"UNIVERSAL ",
 	"APPLICATION ",
 	"",
 	"PRIVATE "
 };
 
-static char *tags[] = {
+static const char *tags[] = {
 	"", "BOOLEAN", "INTEGER", "INTEGER", "BIT STRING", "BIT STRING",
 	"OCTET STRING", "NULL", "SEQUENCE", "SEQUENCE OF", "SEQUENCE",  "SET",
 	"SET OF", "SET", "CHOICE", "ANY", "OBJECT IDENTIFIER", "", "ENUMERATED",
@@ -129,7 +128,7 @@ typedef struct symlist {
 
 static	SY	mysymbols = NULLSY;
 
-static char   *gensym (char *s, char *a), *modsym (const char *module, const char *id, const char *prefix), *array (char *s, const int flg);
+static char   *gensym (const char *s, const char *a), *modsym (const char *module, const char *id, const char *prefix), *array (char *s, const int flg);
 static MD	lookup_module (const char *module);
 static SY	new_symbol (const char *encpref, const char *decpref, const char *prfpref, const char *mod, const char *id, YP type), add_symbol (SY s1, SY s2);
 static double val2real (YV yv);
@@ -267,7 +266,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (char *s) {
+void yyerror (const char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -279,7 +278,7 @@ void yyerror (char *s) {
 }
 
 #ifndef lint
-void warning (const char*fmt, ...) {
+void warning (const char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
@@ -298,7 +297,7 @@ int warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
-void yyerror_aux (char *s) {
+void yyerror_aux (const char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 
@@ -351,7 +350,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (char *s, const int f, const int top) {
+void yyprint (const char *s, const int f, const int top) {
 	int     len;
 	static int  nameoutput = 0;
 	static int  outputlinelen = 79;
@@ -2871,8 +2870,8 @@ YT copy_tag (YT yt) {
 	return y;
 }
 
-char *new_string (char *s);
-char *new_string (char *s) {
+char *new_string (const char *s);
+char *new_string (const char *s) {
 	char  *p;
 	if ((p = malloc ((unsigned) (strlen (s) + 1))) == NULLCP)
 		yyerror ("out of memory");
@@ -2881,7 +2880,7 @@ char *new_string (char *s) {
 }
 
 static struct triple {
-	char	   *t_name;
+	const char	   *t_name;
 	PElementClass   t_class;
 	PElementID	    t_id;
 }		triples[] = {
@@ -2948,7 +2947,7 @@ static void modsym_aux (const char *name, char *bp) {
 	*bp = 0;
 }
 
-static char *gensym (char *s, char *a) {
+static char *gensym (const char *s, const char *a) {
 	int     i;
 	char  *p;
 	char    buffer[BUFSIZ];

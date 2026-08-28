@@ -10,9 +10,9 @@
 #define pepyversion rosyversion
 #include "rosy-defs.h"
 #include "../pepsy/pass2.h"
-void yyerror (char *s);
+void yyerror (const char *s);
 void warning (const char *fmt, ...);
-void yyerror_aux (char *s);
+void yyerror_aux (const char *s);
 void myyerror (const char* fmt, ...);
 int yywrap(void);
 void yyprint (char *s, const int f, const int top);
@@ -48,12 +48,12 @@ static int opvc;
 OID	mymoduleid;
 
 int yysection = 0;
-char *yyencpref = "none";
-char *yydecpref = "none";
-char *yyprfpref = "none";
-char *yyencdflt = "none";
-char *yydecdflt = "none";
-char *yyprfdflt = "none";
+const char *yyencpref = "none";
+const char *yydecpref = "none";
+const char *yyprfpref = "none";
+const char *yyencdflt = "none";
+const char *yydecdflt = "none";
+const char *yyprfdflt = "none";
 
 static char *yymode = "";
 
@@ -277,7 +277,7 @@ usage:
 	exit (yyparse ());		/* NOTREACHED */
 }
 
-void yyerror (char *s) {
+void yyerror (const char *s) {
 	yyerror_aux (s);
 	if (*sysout)
 		unlink (sysout);
@@ -291,7 +291,7 @@ void yyerror (char *s) {
 }
 
 #ifndef lint
-void warning (const char*fmt, ...) {
+void warning (const char *fmt, ...) {
 	char	buffer[BUFSIZ];
 	char	buffer2[BUFSIZ];
 	char	*cp;
@@ -309,7 +309,7 @@ void warning (const char *fmt) {
 	warning (fmt);
 }
 #endif
-void yyerror_aux (char *s) {
+void yyerror_aux (const char *s) {
 	if (linepos)
 		fprintf (stderr, "\n"), linepos = 0;
 	if (eval)
@@ -322,7 +322,7 @@ void yyerror_aux (char *s) {
 }
 
 #ifndef	lint
-void myyerror (const char* fmt, ...) {
+void myyerror (const char *fmt, ...) {
 	char    buffer[BUFSIZ];
 	va_list ap;
 	va_start (ap, fmt);
@@ -366,7 +366,7 @@ int yywrap(void) {
 	return 1;
 }
 
-void yyprint (char *s, const int f, const int top) { }
+void yyprint (const char *s, const int f, const int top) { }
 
 static void yyprint_aux (char *s, const char *mode) {
 	int	    len;
@@ -1842,7 +1842,7 @@ char *new_string (char *s) {
 }
 
 static struct triple {
-	char	   *t_name;
+	const char	   *t_name;
 	PElementClass   t_class;
 	PElementID	    t_id;
 }		triples[] = {

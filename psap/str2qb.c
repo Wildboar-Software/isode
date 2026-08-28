@@ -4,7 +4,7 @@
 #include <strings.h>
 #include "psap.h"
 
-struct qbuf *str2qb (char *s, int len, const int head) {
+struct qbuf *str2qb (const char *s, int len, const int head) {
 	struct qbuf *qb,
 			   *pb;
 

@@ -85,10 +85,10 @@ static int f_help (char **vec);
 static void tvsub (struct timeval *tdiff, const struct timeval *t1, const struct timeval *t0);
 
 struct var {
-	char   *v_name;
+	const char   *v_name;
 	int	   *v_value;
 
-	char   *v_dname;
+	const char   *v_dname;
 	char  **v_dvalue;
 	char   *v_mask;
 

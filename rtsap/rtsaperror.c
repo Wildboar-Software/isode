@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "rtsap.h"
 
-static char *reject_err0[] = {
+static const char *reject_err0[] = {
 	"Busy",
 	"Cannot recover",
 	"Validation failure",

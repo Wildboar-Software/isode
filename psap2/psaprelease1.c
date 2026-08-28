@@ -47,7 +47,7 @@ out:
 
 /*    P-RELEASE-RETRY.REQUEST (pseudo) */
 
-int PRelRetryRequest (int sd, const int secs, const struct PSAPrelease *pr, struct PSAPindication *pi) {
+int PRelRetryRequest (int sd, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi) {
 	SBV	    smask;
 	int	    result;
 	struct psapblk *pb;

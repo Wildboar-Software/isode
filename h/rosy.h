@@ -26,7 +26,7 @@
 #define RyOperation		PRyOperation
 #endif /* PEPSY_DEFINITIONS */
 struct RyOperation {
-	char   *ryo_name;		/* operation name */
+	const char   *ryo_name;		/* operation name */
 	int	    ryo_op;		/* operation code */
 
 #ifdef PEPSY_DEFINITIONS

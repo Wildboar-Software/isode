@@ -189,7 +189,7 @@ static int PReadRequestAux (struct psapblk *pb, struct PSAPdata *px, int secs, s
 static int doDATA (struct psapblk *pb, struct SSAPdata *sx, struct PSAPdata *px, struct PSAPindication *pi) {
 	int     ppdu,
 			result;
-	char   *text;
+	const char   *text;
 
 	switch (px -> px_type = sx -> sx_type) {
 	case SX_NORMAL:

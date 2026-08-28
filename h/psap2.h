@@ -562,7 +562,7 @@ int PActIntrResponseAux (
 int PUAbortRequest (int sd, PE *data, int ndata, struct PSAPindication *pi);	/* P-U-ABORT.REQUEST */
 int PUReportRequest (int sd, int reason, PE *data, int ndata, struct PSAPindication *pi);	/* P-U-EXCEPTION-REPORT.REQUEST */
 int PRelRequest (int sd, PE *data, int ndata, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi);		/* P-RELEASE.REQUEST */
-int PRelRetryRequest (int sd, const int secs, const struct PSAPrelease *pr, struct PSAPindication *pi);	/* P-RELEASE-RETRY.REQUEST (pseudo) */
+int PRelRetryRequest (int sd, const int secs, struct PSAPrelease *pr, struct PSAPindication *pi);	/* P-RELEASE-RETRY.REQUEST (pseudo) */
 int PRelResponse (int sd, int status, PE *data, int ndata, struct PSAPindication *pi);	/* P-RELEASE.RESPONSE */
 
 /* define vectors for INDICATION events */
